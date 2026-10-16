@@ -1,75 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99D148DB39;
-	Fri, 16 Oct 2026 18:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BC3487CF0
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792175777; cv=none; b=FeuIp8TN+FmUQM5eJdRS3Stu9omoKVM32T/TSfx3wKXNDdiCZejG4OSDBxXK6QC1FBTJaJyomVHIzuX1TJBn4Mg9M9sCdlEZ1jStpRxiviqYLMKhVxIQb7nFKjAO/CqX0NGxYYciW11/xaAgUHJera/RJzdT2zkza+SEpL7goW8=
+	t=1792175896; cv=none; b=TNILw/216MVE9Nh15ZFZRNHYSaNX9MeNonAgVOrHpfZLy9emjzrB9NFEGkDPdadwyQyNo4R6nydbi9Upm3/MtxGI/79gV2uy41elW1+df/e7nlU+qAn9CEVvbH3uQ71s+h3QXMuBTahnUoYzSbAgF9bLL5pgzOmIW4wvnb2X8TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792175777; c=relaxed/simple;
-	bh=HTzZI6mAMlXzEP7meSO/k2+Na8M5iOG5404X8vxnt0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UpYBbz+w2rmoC8H072si6Pxz9B5U1qdw1qB5CM8/VQ4Kaf73Y0Y4j7EGMw0POd13VoSlIMI1L6ikF/HAPzn1e7MD0znlK5m2UxJiVOZ+JqrAYpHdzs4XX5BziThBB+rk3XGxJ6fGEeEJXxYuzn+Z8voemt2Etktx5K0qQ8QTo8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D23yUEoE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792175896; c=relaxed/simple;
+	bh=GvKsuENTrQHOfPZEd4h9uKsA+6rtzet/D/9I+J2KKtQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y++ircokRf2DyMI0qBn0RwB4qp0NM5m8Pyc0dE+XQutgP3uRnfPbk3m9owrkQCtRSDKSXEwnaZE9egBh8fw6Fjj5+MmvE6MuP9PzO6qMcZB9mbB3MHKvnBSV5PeWpV4ZF/lw9QKVVneeDM6wOj2VZ+DvrC+6OfU0pnPVVZbdHkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=j8nUAF2Z; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D23yUEoE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC1B1F000C4;
-	Fri, 16 Oct 2026 18:36:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792175776;
-	bh=cm8mnV94gF2ml40bQYfePT+4ayAcDw6RHhOxfuMz/kA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D23yUEoE+p5nN9LU7GHfL+11o/RJzpTZzqkpY8t/6w14DNmF/Lj2mfrNBIgT2xArC
-	 7VfGdI3NAdkmAKkJ0p/mu2cUSTjNjaIz91R4IeUMooRuOHk2Z+5VYw6drYaVSK7DB6
-	 4TeM141lWqSl98xTnNF54S7f5LgBvlPvk5TDBu3XXMF8uIdUztsHohM5QdgTvIPmDj
-	 7nsD9Gu0kBmnUESE0UPwALfRm+zaSkpmve7heky5y9XqzEyxU7tMi3W40NwyX3EWRA
-	 7UFzjGRFzYcRN+3DifhdLaIc9yypIK9j9nXNUx5GhHo8yntXZ3dsX0CKrLfLjxiUIq
-	 DD/GGhecPtk6g==
-Date: Fri, 16 Oct 2026 19:36:09 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="j8nUAF2Z"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4C7BA1060E4;
+	Fri, 16 Oct 2026 20:38:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1792175888; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=cQj2Q90MupHjRjGZgKF4oV9E2GEJk/cNp1updTRRcAY=;
+	b=j8nUAF2Z7+ykrELW52n5JeGHRarkTmTp4JArFNN94RgPXVwKUsir+ev8af31t5+KhC4UQg
+	UBUwxqgBEMapwDWvACMPDQNug9mEamYHpFR9zkz/gYFMJYuMn8upcR1QNwAZaI+cKdKY8h
+	sGrAm0Bxe9A2yRbf6ojuTJFzWFR70sXESoO8rOaat+ypWg+MYIT324xyqkxP21M4CRe3t5
+	czjZAagpl7fZHJz1AvYC+aBiYLrbnJrsaK6ANd4OtyWuVI0Vv8rUEcalf07UQuEWc2xoED
+	LwLR6a3d0PFyHFa8joBUBausuIQ+vHuy2BaaipHdyh1J0JxP9ufKmeBEXDbwEA==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
 	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Carolina Jubran <cjubran@nvidia.com>, Chris Mi <cmi@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>,
-	Kees Cook <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	linux-doc@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH net-next] net/mlx5: Remove max_external_SFs device
- resource
-Message-ID: <20261016183609.GN363352@horms.kernel.org>
-References: <20261011093828.784454-1-tariqt@nvidia.com>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>
+Subject: [net-next,PATCH] net/fsl: xgmac_mdio: Add missing newlines to error prints
+Date: Fri, 16 Oct 2026 20:37:42 +0200
+Message-ID: <20261016183804.39217-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261011093828.784454-1-tariqt@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, Oct 11, 2026 at 12:38:28PM +0300, Tariq Toukan wrote:
-> From: Or Har-Toov <ohartoov@nvidia.com>
-> 
-> The device-level max_external_SFs resource is redundant now that
-> per-port max_SFs resources are registered on each PF port representor.
-> Users can look up SF limits per-port directly via 'devlink port show'
-> to correlate with controller number and pfnum.
-> 
-> Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-> Reviewed-by: Shay Drori <shayd@nvidia.com>
-> Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Add missing newlines at the end of debug prints.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: dd8f467eda72 ("net/fsl: xgmac_mdio: Support setting the MDC frequency")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Eric Dumazet <edumazet@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>
+Cc: netdev@vger.kernel.org
+---
+ drivers/net/ethernet/freescale/xgmac_mdio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/xgmac_mdio.c b/drivers/net/ethernet/freescale/xgmac_mdio.c
+index 65dc07d0df0fc..c7df633050683 100644
+--- a/drivers/net/ethernet/freescale/xgmac_mdio.c
++++ b/drivers/net/ethernet/freescale/xgmac_mdio.c
+@@ -336,13 +336,13 @@ static int xgmac_mdio_set_mdc_freq(struct mii_bus *bus)
+ 
+ 	priv->enet_clk = devm_clk_get(dev, NULL);
+ 	if (IS_ERR(priv->enet_clk)) {
+-		dev_err(dev, "Input clock unknown, not changing MDC frequency");
++		dev_err(dev, "Input clock unknown, not changing MDC frequency\n");
+ 		return PTR_ERR(priv->enet_clk);
+ 	}
+ 
+ 	div = ((clk_get_rate(priv->enet_clk) / priv->mdc_freq) - 1) / 2;
+ 	if (div < 5 || div > 0x1ff) {
+-		dev_err(dev, "Requested MDC frequency is out of range, ignoring");
++		dev_err(dev, "Requested MDC frequency is out of range, ignoring\n");
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.53.0
 
