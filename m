@@ -1,86 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611862D0614;
-	Fri, 16 Oct 2026 17:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F16A53E308;
+	Fri, 16 Oct 2026 17:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792170012; cv=none; b=PdP8jtK91faw0gUSKCqSTrkI31Zti7AdaIJbHZlKwzhQkL75xRTYLb6GngUGXAgZpw/aG9PEQUoWGwdLjZByE1eCzKecLB2QIuHsQp3r4YpipvRYQldUgM74pFHdp9Z99X1y08SDNKU5FfVXK8uLcaTubFeEFQ9xWkLHcPdwcvc=
+	t=1792170014; cv=none; b=X1EqzUW/dIZI9zIdlM/p7b7b3ua+6JZ0rpLflyPhFtYbxn2eS+e7KQH0iWTbqri4wk3FWcmKKTI292MKHtXwlUPLW6NgcDQkipTL+r7GpwpzPlmiSj/YI4Mk6g8vo91m27zQaiqOcZl3N3eY4g1WxPLBWsWQId+tX3flFonNnNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792170012; c=relaxed/simple;
-	bh=AsFZhgB21QxgMaccGaPIY6BeLC3vaHprBIeC0TEDAmk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=p7OGN2NM2BCKVjuEFblhUcfMZwHgJXs0jhjEvzFc1tH7suzq1LLMIeYSa3QMdK+F9SUo20mcdZeucrczNDHZRWzXBZ0O6aFvpnheHbiQjO+a5jZjn8L7F1KWAs2RvRXGP9XMsBmtp7795dDUDBFfIE91IJd5c1aTTBv8TJojyxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sq7BaDvw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792170014; c=relaxed/simple;
+	bh=/ak6vK17bkaE86rZ7vaBahm6omxqFSWgpPC/T5JNeO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VW2f20u70ZJyVcUvlVobevhBNZGQ5YZ1p109IxftwIPkBhZGpXwH6SAvNkwCEfxJR3lHbDFvEfWVhgJt/MO/OD9k69c3ZhXTocgz39JWF7w99oyGYDbkwFHarEkDsKHTs/eDKQTStmwXklmNG1UpbhLDMjevfn4JaDfNX3F8AzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DbfQ7R3x; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sq7BaDvw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFD61F000C6;
-	Fri, 16 Oct 2026 17:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbfQ7R3x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60A21F000C7;
+	Fri, 16 Oct 2026 17:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792170006;
-	bh=VmLjeuHdZ9AD3s/Vxb4MAnUdqD9kSYMiZXXClv/vstk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Sq7BaDvwXsdyRVCjUnJV8umLptTR/Nk4x3FBZJ+tSyNO4k38J8ATJnkWPKiCDoDQ5
-	 O+4FLi4nanJfT/qxzFPmbi8mi3NN2YmZ/Yc45nb5VbBep4BgSGte95febGofyA/x23
-	 BQR/WcqsouxWndUhB7uYb84+gdO8GgltsqbhhWq9XLTs+AmkTjuyBBouFFxW06HUK2
-	 YgdKYnQlc2/Re4ZVWhnem4UmY4erW10rjjVo0dk0+QxQmJF1TQsnNidoN881iJCl+M
-	 po3EFTgl5r+GRI3cVaNoksEj6IFSlQNR1Z6sjKIQJccgiMJOtxSD5GGVSybB+WCir2
-	 jMQqLYutWOIzA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 25EE1380AA4C;
-	Fri, 16 Oct 2026 17:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792170011;
+	bh=/qqXVe5p9S/gEhsn3j6mqdXqY8DCRG0YIMtV/BtA0xI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DbfQ7R3x4eXk03s9KoSQ8p0KsSDNXroXPf4bLuws/D8JglWenQ6ui+rGNKaEaIOa6
+	 ozosD9yP8WNd+MjrnbXCvVb52YEOGl3AOKP88lpq/weNsCD/BEMbzAJojOMoiSm3At
+	 XV9/Ysw+pR0yrrhnOXfJrg698TVF3HM0WPZ0rBKugCln3YJixosf0OGNr19zBF+s4k
+	 VsLZy6lxCbE6GyID39w7Vdf7/EsnHVlTXb7KyB+JAmlYlX6HwTX7KmzzD/KbiaWxCm
+	 MoFD/JzY+fC+AGdyq3dpgCRysn9UYS2A7b1JxPodibMIegCgrumpaWtofgezBWdTNT
+	 upg4xJOPSU7DA==
+Date: Fri, 16 Oct 2026 18:00:07 +0100
+From: Simon Horman <horms@kernel.org>
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] ipconfig: fix use-after-free of device list after
+ ic_close_devs()
+Message-ID: <20261016170007.GH363352@horms.kernel.org>
+References: <20261010085003.3261587-1-bsdhenrymartin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v7 1/2] bpf: Allow ksock connect/send calls from
- wq
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179217000494.875581.6270942748112870456.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Oct 2026 17:00:04 +0000
-References: <20261016133318.33999-1-mahe.tardy@gmail.com>
-In-Reply-To: <20261016133318.33999-1-mahe.tardy@gmail.com>
-To: Mahe Tardy <mahe.tardy@gmail.com>
-Cc: bpf@vger.kernel.org, andrii@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
- edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org,
- liamwisehart@meta.com, martin.lau@linux.dev, pabeni@redhat.com,
- song@kernel.org, netdev@vger.kernel.org, sdf.kernel@gmail.com,
- ameryhung@gmail.com, kuniyu@google.com, memxor@gmail.com,
- jiayuan.chen@linux.dev, almagui@kernel.org
+In-Reply-To: <20261010085003.3261587-1-bsdhenrymartin@gmail.com>
 
-Hello:
-
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
-
-On Fri, 16 Oct 2026 13:33:17 +0000 you wrote:
-> The initial ksock implementation, commit 7ae4eb14c5f9 ("bpf: Add ksock
-> kfuncs"), kept LSM checks from the kfunc calls and disallowed
-> asynchronous workqueues because worker credentials differ from those of
-> the triggering task. However, discussions at Plumbers 2026[^1] revealed
-> that bypassing LSM checks for BPF-created sockets could be acceptable.
+On Sat, Oct 10, 2026 at 04:49:58PM +0800, Henry Martin wrote:
+> ic_close_devs() kfree()s every ic_device node but leaves the static
+> ic_first_dev and ic_dev pointers dangling behind.  When a DHCP
+> negotiation gets an OFFER but never the matching ACK, ic_bootp_recv()
+> accepts the OFFER and records ic_dev = <list node>, the round times
+> out and ic_close_devs() frees the whole list — node included.  The
+> next failed retry round runs ic_close_devs() once more, evaluating
 > 
-> This patch allows workqueue use while retaining LSM checks for now,
-> paving the way to call bpf_ksock_connect() and bpf_ksock_send() from
-> non-sleepable programs, such as tracing programs, in future patches.
+>     selected_dev = ic_dev ? ic_dev->dev : NULL;
 > 
-> [...]
+> against the freed ic_device — an 8-byte use-after-free read.
+> 
+> KASAN confirms:
+> 
+>   BUG: KASAN: slab-use-after-free in ic_close_devs+0x214/0x220
+>   Read of size 8
+>     ic_close_devs    <- ip_auto_config
+>   Allocated by: ip_auto_config (ic_open_devs)
+>   Freed by:      ic_close_devs <- ip_auto_config
+> 
+> NULL both pointers after the free loop so retry rounds take the
+> clean empty-list path.
+> 
+> This memory-safety issue was discovered by Tencent CodeBuddy Security.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 46acf7bdbc72 ("Revert "net: ipv4: handle DSA enabled master network devices"")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> ---
+> Changes in v2:
+>  - Fixes: tag corrected to the commit that introduced the ic_dev->dev
+>    dereference that makes this a UAF (46acf7bdbc72); in 2.6.12 ic_dev
+>    was a struct net_device * that was only compared, never dereferenced.
+>  - Code comment in ic_close_devs() dropped per review.
+>  - Message reduced to the memory-safety mechanism (no vulnerability
+>    framing).
 
-Here is the summary with links:
-  - [bpf-next,v7,1/2] bpf: Allow ksock connect/send calls from wq
-    https://git.kernel.org/bpf/bpf-next/c/60bbe76a3f9e
-  - [bpf-next,v7,2/2] selftests/bpf: Test ksock connect/send calls from wq
-    https://git.kernel.org/bpf/bpf-next/c/242d8416f60c
+Thanks for the updates.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Simon Horman <horms@kernel.org>
