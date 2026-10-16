@@ -1,67 +1,68 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685681E98EF
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760DC27A462
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792131001; cv=none; b=FeAuNeHmncEFMO267hk1VF2hQ6b+1vblGZlL+jUVOSLi81vd1Da84d4iBGaWh0CRwlmKiBYWqI/VKI6a9TN2EQWEzaTjv6bEfOYvSiaYsUobAVs6UskF7EPH6MAPsZrt4BEnnC7UC9QEkQpvw8tgPkIVauUe91L1r7s43V2g6Kw=
+	t=1792131005; cv=none; b=C9zZjfL9XyDcGcjkgha4wzjbYWDdc3ln7EOOsMTg4WT9gt+CeBJHRI9fWq+akxasjsvm/ro4xkYdOvowtxJHXsrbymWnWsn9R0lm9ftwA+2BEU+q5GcUgTJoBUf/Racrpi5+MARyxZRX90ZQS+rvJwNuIOx6tWEUqtS8KQGjgSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792131001; c=relaxed/simple;
-	bh=DqG2AIGPL1uGXvBJhqSHPSDtvVR7TWwuzpI0OdCQ/xE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CojyPCWKUNAkAs6R1H/SN53tKa4jCBPv3ol1wsOqJkCYmSLehAdel5CgjPPFNXhfXYQnaW0tJYpAQPc0x1oIQkNOaUe2GWs9CxuM/jJ4e5PatG/ARW+4uezbmQRknkuQPvFDnADXpyRzpUoiEKGV77eYW4Tg8Crb7LjkI1sG4Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=omF1nW6M; arc=none smtp.client-ip=74.125.82.45
+	s=arc-20240116; t=1792131005; c=relaxed/simple;
+	bh=+7sClc0UlZ/ro+c8Ux340SLqfAT2DdVzKZer1dA6xpE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LCAMpS6o+M6eCMSzFcl9IGWfHjr/hV4oTelr8+2MlHpl6T+eNIqRy/hjSTUMuw3eEl5zj1nRs6uLsQa0HegXU3NXstolPusSobRhEF5re12Yv7Lufk1fl5Y06dLLynTIioR3UXLDrX/TZWv4oB0wFeBZncqTH4cL+jZ8Stkfs/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qSVcxPEj; arc=none smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="omF1nW6M"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-17bc533fda3so3017117c88.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:10:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qSVcxPEj"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-35f036b17easo1719101eec.1
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:10:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792130999; x=1792735799; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gwEs0x+XqCChaDuPK/8cuCgIucGP91NXK3xMck8OY0Y=;
-        b=omF1nW6Mb7kFmQb7/yrueN4kDQZIiqwvhrZNrPPLcJKDHlZHoqmNHyfnwuDuZkJoHy
-         BqNen+ojI+tkPuhTis7JYR6s0+W1TPjbHxcnh15HpO8qheuwMkQrFHC6f3q9i9babTDW
-         BbWCs6tghYxhovwctsfuB8JoUc70VwJr2X4X+ffC/cL0xfNbw5sr8ntZVvAhluMyJ0Mj
-         ZnehJuMq67gZ0jef2h4ZBzuW4VeBIP1M/CVKQJd30t8OyI041ykmvbjH5xoQ2oyF0YRD
-         4I9SHJbVpG0vrBK3PDvUroaSKzCU+HAxCRZADHPcsE/oOPxKP5cnAFIOw9Wq1qAd12iS
-         W75g==
+        d=gmail.com; s=20251104; t=1792131003; x=1792735803; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f13zQM70fxdWdbIX13XHJ7wfdDe1cyyalRnX7KMTblc=;
+        b=qSVcxPEjabkcsv5GCWo4O5LB2mwzO2Z2u+ie/gkugHfRdxaa4oZtcK2I0Q1eOlIzZM
+         5+h5gVdjT/ILJquJlfrNVVd8yWzOQK7yuVTtSqq4UJPWYqDRC6qmb6RzLf+4XO2HZW5O
+         UJy/4UdhEKtnLh1xgKghIHFyqTx+Nkwp0tNtXRqoPXKNOhnfRahaKq8yEoCV+fCdEKv/
+         9Ht27bI7M2tjsh8GSiwVxOd6B4FJTfKS5T13TCOzC7rHrlbPVIMIohv4yIY1F/LHgvRk
+         Dw87EfFXJAOe3c139JUxwSeVG7f7L+oR3JV7TIppc1pml+fY4I/HYuv5q3FmuMlIKA+m
+         AKCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792130999; x=1792735799;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gwEs0x+XqCChaDuPK/8cuCgIucGP91NXK3xMck8OY0Y=;
-        b=TuTV8057se8BFR2VO14rSjmLo+Z9EVZX8CEqhvPK/eVm+P+z1/pxxiXfVXFi7JzYSS
-         pFIiNysF2UaoQ6KkFwe0It5I1OPmjLHvU/vwnjmK9e4LUV7TkKVFIvhCJFfJODZ9KY1k
-         GCJhr82szTbzVhv+HImmg8wGOeJoo06JlUI+9R0lAZGp8Tk07e1bCx5L+UxfRi3FBBNu
-         YP0YzxuYhKn4dxoqr7qnSE38vm8iGpAnqvgBy5ETNwNq9LILEdxWF8GLNHEXNftIiDNw
-         2krYGqS+Hzu4bcKj2ByiVdviyRpYx+F3X147tBbhP8I8CJiux/nHII+MRlsY9NTKijct
-         twOw==
-X-Forwarded-Encrypted: i=1; AKwUvBxCmAUzxOnpMlzfLQJaKLjwO6aHMDOCgKo0II1WIPMNDIG/nik58PzuZOOjOSm9KiMJFT4ACHA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLFHdwosgX36OqIMImWTqG/swmK/6KDWZ8I9KUDVgUTzfM5TtFb
-	8U2MeNcfgO1wt/IPsr5nLJk2P6uycFFq4B80gwuaRjwX/hfTr12bYubT
-X-Gm-Gg: AYBFou2YEccN79VaGgtJmKuADJP78oiLGG4qipYjYrLfTOPN288gseuDwjGoYJwkcR8
-	irpKdygFa9dUltUP3gEaJqyis6aB4XX2XxFpxH1WpT5KCUSwJadSk7clIGKwELvrfFNrHoxiqjk
-	XRLJX02SKrpu/hfkZd3mBXyRoKxIyEV0S1cfLh5SyxEse8mPRYXK9t94JlIyA55Wg48S0n21ooS
-	dPXa69Qjpk7DPasqI9E9Os9HOV6Tkxs/HFCtzdPgUwv3jtQcecQcunW94idA7YkSieiMdV+Huov
-	ME4FqdGeWlYcAH5tDDsoYrbHF6rKLgKzHJ2qX2/Z6iGZ1pfPHkporrwKy2cBaon8dJ4M2tX++yL
-	Ykojo/RPrT5A9hyWjp48/ht1zi323Gr28nyz3lOilm2XahwNHOBkzbg07xPjiSpsVWPXpaoLc61
-	95ggwhvUqgvJFAm0dkicqTaR5S8i45+1kYZygHhtBs4ikm0TWyqtMHzn6G+QtlHW8EEA==
-X-Received: by 2002:a05:701b:230c:b0:143:2967:c0b1 with SMTP id a92af1059eb24-16a5fc91121mr29007550c88.25.1792130999447;
-        Thu, 15 Oct 2026 23:09:59 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792131003; x=1792735803;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f13zQM70fxdWdbIX13XHJ7wfdDe1cyyalRnX7KMTblc=;
+        b=EMtOy7/l5KtMs4R39+K8HJLNHcA3ujJkAehqYOxRv3lVsAuMQNuqhcpbmbdQ6CsOJI
+         izpvg76CQldhUNPnMiZVEpVa94iNNGEnJ8GFxWW9geFzi7nlWJCxgKdc02661dC4y1p6
+         a107OIGK7mxJ5q46rSxstyVQcrfmtYrUvFUzr+8MSV79ywjRA+SK6Lx5xjTwcFZBnZuv
+         D9NmJ0zJfmu6r0Ij3gAINNI+Rm0QAl/RpvVDoYZID5OKLWhuggbF5tPmsfUVpbq1C/ah
+         etmIZPP1N5ZiBmjZp27SjjT0F9TsnG2zdvRLwxnW0v6TC879DRjV0A1gF+DtfzTXBXaz
+         N5rA==
+X-Forwarded-Encrypted: i=1; AKwUvByeD2HszkWOWd+n0gUH1js38UHJZVrmr8OjZAdG+s8BK/BSz7nVnZtfTpTkDTayfkSps7bgO6s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ1NbpF6Kgal8y76iN7dBYat81kXGdJAtN1So3uWUi7TP/+Rs8o
+	TAxby+qQzj7QrRsTbGkqrjE5NegATDW65GZreWdc7rE6kd5QC20at1Dz
+X-Gm-Gg: AYBFou3qMbNQ8L2LBp/KpIsjRs6hC5Xg8kcx3yFKEVZN7NDrIkWfR9YoZ6ZgHo9y9HW
+	8LNZqAJw1os/4hDrOHysEHjuUor1Ia1tLzag5mxI3xKk63AQ27EUkhc27mFgnEYzu7daauziUJx
+	Y1MvWlFctT1biGT+P7cR1aUrcR+PsdMURWT8BFihdIBq5/U3zUf/wm7EMx7HajjvgixsSC414R2
+	vFJYhs+mU0KjfFAjdZVKaZ50SbR1wVUg4Axu2A+7oDpv+B5vtNjWr0ng/61VdnLkFnJ1kDP64e2
+	Q7Z+NdR0I721UgFXzDFEIfjLqn8xEtUI3K+CVyFY3eI+Po6kAsiTlPUDwTaKTmddP+OZ0WgiXtL
+	Q4jAoe4YKagPUZoZ2evRbggZLL09eAUVRRbaLuY4pMRTbCZEUJ/VrB2kf3h7O1dwb2rxenponDs
+	DT198xy62C9G4fYC73AcxFp8hZtRyhn1xCtYKrzzYxzOo56L6Et17hBi5N9X+vKbiQ3A==
+X-Received: by 2002:a05:701b:420c:20b0:17c:5435:cdad with SMTP id a92af1059eb24-17c5435d082mr12519029c88.12.1792131003386;
+        Thu, 15 Oct 2026 23:10:03 -0700 (PDT)
 Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa411sm3309068c88.4.2026.10.15.23.09.54
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa411sm3309068c88.4.2026.10.15.23.09.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 23:09:58 -0700 (PDT)
+        Thu, 15 Oct 2026 23:10:02 -0700 (PDT)
 From: Qiliang Yuan <odys.yuan@gmail.com>
-Subject: [PATCH net-next 0/3] net: make moving a device to another netns
- cheaper
-Date: Fri, 16 Oct 2026 14:09:52 +0800
-Message-Id: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
+Date: Fri, 16 Oct 2026 14:09:53 +0800
+Subject: [PATCH net-next 1/3] ipv4: draw rt_genid from a sequence shared by
+ all netns
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,9 +71,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALC/0WoC/yWNQQ5AMBBFryKzNklLNOoqYkENZqFkikjE3RWLv
- 3iL/94FgYQpQJVcIHRw4MVH0GkCbmr9SMh9ZMhUZrTSBrt9RE/bOx9wXg5CcTt2rUSPYG9t6Ux
- uizJXECWr0MDnF6jh/50bNPf9AOPA0V56AAAA
+Message-Id: <20261016-bug-net-netns-move-rcu-barrier-v1-1-4157d798658f@gmail.com>
+References: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
+In-Reply-To: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>, 
  Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
@@ -82,52 +83,92 @@ Cc: Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
 X-Mailer: b4 0.13.0
 
-Moving a device to another netns waits in rcu_barrier() with RTNL held.
-Container and sandbox managers move one end of a veth pair for every
-new network namespace, so this barrier limits how fast such namespaces
-can be created on the whole system, to about 75 per second in a 16
-vCPU guest no matter how many threads create them.
+An IPv4 route records the rt_genid of the netns it was created in, and
+rt_is_expired() compares it with the rt_genid of the netns its device
+belongs to when the route is checked. Every netns starts its rt_genid
+at 0 and increments it on each cache flush, so different netns often
+hold the same value.
 
-The barrier was added for NETDEV_UNREGISTER_FINAL, which is long gone,
-but it still keeps cached IPv4 routes through the moved device from
-being accepted in the old netns. Routes through nexthop objects are not
-covered by it: their cached dst entries are released by an RCU callback
-queued from another RCU callback, so a socket in the old netns can still
-send through a device that now belongs to another netns whenever the
-route generation numbers of the two netns happen to match.
+When a device moves to another netns, routes cached through it remain
+usable until dst_dev_put() points them to blackhole_netdev. For a route
+using a nexthop object this happens in nexthop_free_rcu(), which
+free_fib_info_rcu() queues from inside an RCU callback, so the
+rcu_barrier() in __dev_change_net_namespace() does not wait for it. If
+the rt_genid of the new netns matches the cached one in that window,
+ipv4_dst_check() accepts the route and a socket in the old netns keeps
+sending through a device that now belongs to another netns.
 
-Patches 1 and 2 make the IPv4 rt_genid and the IPv6 fib6_sernum unique
-across netns, which fixes that leak for nexthop objects and leaves
-nothing that relies on the barrier. Patch 3 removes it. Patches 1 and 2
-fix bugs that exist today and can go to net on their own if preferred.
+Take every rt_genid, including the initial one, from one global
+sequence, so that a cached route never matches the rt_genid of another
+netns.
 
-Creating 400 netns, each with a veth pair whose host end is moved back
-to the initial netns, a tap device, addresses and routes, median of 5
-runs:
+A connected UDP socket in netns A caches a route through a nexthop
+object on a veth. The veth is moved to netns B and brought up with one
+RTM_NEWLINK, then the socket sends 200000 datagrams. B's rt_genid is
+bumped 0 to 20 times before the move, 63 trials:
 
-                   before      after
-  1 thread        67 /s      440 /s
-  4 threads       75 /s      409 /s
-  16 threads      76 /s      283 /s
+                                before     after
+  trials sending after move          2         0
+  datagrams sent after move       2353         0
 
+Fixes: 4c7e8084fd46 ("ipv4: Plumb support for nexthop object in a fib_info")
 Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 ---
-Qiliang Yuan (3):
-      ipv4: draw rt_genid from a sequence shared by all netns
-      ipv6: take fib6_sernum from a sequence shared by all netns
-      net: remove rcu_barrier() from __dev_change_net_namespace()
-
  include/net/net_namespace.h |  5 +----
- net/core/dev.c              |  1 -
  net/ipv4/route.c            | 16 +++++++++++++++-
- net/ipv6/af_inet6.c         |  1 -
- net/ipv6/ip6_fib.c          | 14 ++++++++++++--
- 5 files changed, 28 insertions(+), 9 deletions(-)
----
-base-commit: 6b3e73774815910a39d8ca75b9ad7df963f61d50
-change-id: 20261016-bug-net-netns-move-rcu-barrier-d998c6395830
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-Best regards,
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 46b4c67e2966f..9c78f1d90fb62 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -556,10 +556,7 @@ static inline int rt_genid_ipv6(const struct net *net)
+ }
+ #endif
+ 
+-static inline void rt_genid_bump_ipv4(struct net *net)
+-{
+-	atomic_inc(&net->ipv4.rt_genid);
+-}
++void rt_genid_bump_ipv4(struct net *net);
+ 
+ extern void (*__fib6_flush_trees)(struct net *net);
+ static inline void rt_genid_bump_ipv6(struct net *net)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 595a3b7f17830..bd52d14476f6f 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -393,6 +393,20 @@ static inline int ip_rt_proc_init(void)
+ }
+ #endif /* CONFIG_PROC_FS */
+ 
++/*
++ * Draw every rt_genid from one sequence shared by all netns. A route keeps
++ * the genid of the netns it was created in, and is checked against the netns
++ * its device is in now. Distinct values make that check fail once the device
++ * has moved to another netns.
++ */
++static atomic_t rt_genid_seq;
++
++void rt_genid_bump_ipv4(struct net *net)
++{
++	atomic_set(&net->ipv4.rt_genid, atomic_inc_return(&rt_genid_seq));
++}
++EXPORT_SYMBOL_GPL(rt_genid_bump_ipv4);
++
+ static inline bool rt_is_expired(const struct rtable *rth)
+ {
+ 	bool res;
+@@ -3716,7 +3730,7 @@ static struct pernet_operations __net_initdata ip_rt_ops = {
+ 
+ static __net_init int rt_genid_init(struct net *net)
+ {
+-	atomic_set(&net->ipv4.rt_genid, 0);
++	rt_genid_bump_ipv4(net);
+ 	atomic_set(&net->fnhe_genid, 0);
+ 	atomic_set(&net->ipv4.dev_addr_genid, get_random_u32());
+ 	return 0;
+
 -- 
-Qiliang Yuan <odys.yuan@gmail.com>
+2.43.0
 
