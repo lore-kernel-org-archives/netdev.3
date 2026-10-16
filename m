@@ -1,80 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-159.mta0.migadu.com [91.218.175.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672EA396597;
-	Fri, 16 Oct 2026 02:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35E3296BAF
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792116615; cv=none; b=E+WcER47IN7aMp8clQl9hSAZR5iOXJNnbZjx9WTbSNNBz4YGSxAFkZJiGBvUoql9afpoE/QdI8fXav6JYQqt3VJI6xRvrOK7iAi0Em66JMygKw6rJI/XeKR1T7KwFd64ycB5Qi5F8qr51JCzhaoby0Yq/OzzKWnVM08eAbg9af4=
+	t=1792117036; cv=none; b=Qcy/Qi+ibnr6FUAJWH9bKkEOlfo7YxQvKeaedrS11PAhBbSiDCdkLgYLJNalGU1LfEYemAjdu3Ci4nSS5pkECyxQUhqJ9enBuIcq4SepQMkXLsuh/m6S8Rc5rXQm1aXoZwMK+M1LzLL6zx5gYXmShWWDHlui3RXwJTbZCSWbz/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792116615; c=relaxed/simple;
-	bh=HDcNXLX0ebqLfIIIZAyYCmZu2RHW/htp+k/tD/VkSug=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WHb/R62NOO5hv4pzCEpG8Ob8h8eeXiIdfiAIrZfwWFR+dy3Njy9S7Q9x/wDexj7FOKp3350LAt0ArbWvBgdkrCu3g89PRpHYejMjxn3VwMluS0hoCVlEJGS8Ta6GfWfQVGuz7AbhNW/Mbt2gDFnJj1+L6yygOnpapXVJjTSkeAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5arWOq6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792117036; c=relaxed/simple;
+	bh=ZfcXLYbEROYmyRqjxI5fimsigiDO9HVNJZE8yeuoZdI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=us9Iqz2luvQ7mHllZ7PwP/rN/l44CMJrad2dtDIRylRTjU8GxNfr6+ZX+b+9LCAKTQEXirLljCituj9MxVPzuDzEz/vjFyRADLqotAD2Ih3OMJHbHJrTHy3OyAKjpHbxzU2s2iXo2GrMvEn78FEQLz/DOnnb5yTLIPl+aTSLoqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AWDQIbv7; arc=none smtp.client-ip=91.218.175.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5arWOq6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C881F000C4;
-	Fri, 16 Oct 2026 02:10:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792116614;
-	bh=/8G0i+JZS8AjFlkfyzHRi4ZZaTJKWSRbfygBayHjiU8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=n5arWOq6fi1EMOskQrRWtoOCgoZrgdaRpH+eNgXD8hTTPhFWeWf8WHqjVSXvFOc32
-	 MpVtO/oXRM+YnRmQmxNo0EKTSmrW68MyLrhJfPdymR6eA5yeXwHmTZtdGpK1VwF3Ps
-	 KN1i3u/b2JDkcyfrhx1mj3zeJUM35O/9WhbCMUMzQP9h6QPljJZo9OHRiookL07W5d
-	 VVYlA3qh+YP8NzygkU2jbM/D6Z0FryV9rREL9IS6HZ0v0yrrqKi0k1NzmTkQ60DKqo
-	 QSVtHFAdk8y6rkWtGa5X+lnDOGfkW70KQ3OMEtMQrGlqdPJvoPy8gnuVs/gZLf4ud0
-	 yoVXxcNNiTdHA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A4AF3808209;
-	Fri, 16 Oct 2026 02:10:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AWDQIbv7"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ZfcXLYbEROYmyRqjxI5fimsigiDO9HVNJZE8yeuoZdI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792117032; v=1; x=1792721832;
+ b=AWDQIbv7VXDVARXMz3cnIY7IwbFyBk/WyT7uj979voIVQA0tGLe1xD6PVaeYLcern5sjohe/
+ GiW7jaYqjFeEjEnEROv6g0Qd8+QjmMz0Tjmr9Pn4hlnLxN9HqNeaPzwSUXsuNanU5mOWFo1KC4Q
+ xkNWgcvYBNq1HXc8THj0umoY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id d0888d6955ce37ff;
+	Fri, 16 Oct 2026 02:17:12 +0000
+X-Mizu-Trace-ID: d0888d6955ce37ff
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 16 Oct 2026 10:17:06 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+	edumazet@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	liuhangbin@kylinos.cn
+Subject: Re: [PATCH net-next v2 2/5] seg6: add RFC8986 flavor support for
+ End.X
+Message-ID: <atGJIp4nmheErhrh@fedora>
+References: <20261009-srv6_flavors_endx-v2-2-56ac7f838f41@kylinos.cn>
+ <179162766256.434549.13511080924871737471@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] macsec: check for duplicate SCIs before
- registering the device
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179211661277.15365.8704541160200567615.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Oct 2026 02:10:12 +0000
-References: <20261011-macsec-early-sci-check-2b1f06af193f@gmail.com>
-In-Reply-To: <20261011-macsec-early-sci-check-2b1f06af193f@gmail.com>
-To: Haseeb Malik <haseebulhaq55@gmail.com>
-Cc: sd@queasysnail.net, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+In-Reply-To: <179162766256.434549.13511080924871737471@kernel.org>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 11 Oct 2026 21:57:11 +0000 you wrote:
-> From: Haseeb Malik <haseebulhaq55@gmail.com>
+On Sat, Oct 10, 2026 at 10:21:02AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 > 
-> macsec_newlink() registers and links the device before rejecting a
-> duplicate SCI. Registration can emit link notifications for a device
-> whose creation ultimately fails with -EBUSY.
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
 > 
-> The SCI is already resolved before SecY initialization, so check for a
-> duplicate there and return -EBUSY directly. Remove the now-unused unlink
-> label while preserving cleanup for failures after registration.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> [...]
+> - [Medium] End.X now accepts the flavor pair NEXT-C-SID + PSP but only
+>   applies NEXT-C-SID.
 
-Here is the summary with links:
-  - [net-next] macsec: check for duplicate SCIs before registering the device
-    https://git.kernel.org/netdev/net-next/c/de3ef6921c00
+Andrea has posted the NEXT-C-SID + PSP fixes to net-next. I will rebase the
+patch set based on his works. So there will be a new version after his patch
+applied.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+---
+pw-bot: cr
