@@ -1,80 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7007C416860;
-	Fri, 16 Oct 2026 23:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6983AE1A0;
+	Fri, 16 Oct 2026 23:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792193407; cv=none; b=GsoyJ/swKnlYdbgpUk+qG+eZnCv7DPAny9OLLYMVp1Wq7Dt/085Zji2Vjyt5Yy2JqSbJeq3EziYfjVWDQ6R7oI6uAXkFhTuVdQVZYXj7bZXngzPQQchbpw4uB7lhqJzTX920LANv9/sb52SVXo3NwyMpsNN3bzDYH8cUYpLZLC0=
+	t=1792193832; cv=none; b=fTKM4hub43aTIUxcNMBWJZAOP2AVX5c7ry4gVyY29lC/UzubnuZ2gQaJn+03QXeBtafl4faXiFaEzvAtng3WXdHZ2v4LbkfvJcYaaGPkPeVTBaMgEeHcQHOKKaPVO2pZXBCnnhLriH7LWjsdTzO7KKZiG4CggdvHuSzQaQJs5Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792193407; c=relaxed/simple;
-	bh=qfX0gFCtvMGWZyUqyCp4lNGvKbaMkYo24aif/B7zlfA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=LYx/gIOR0Ajww6okAhlr2DJtxqBarBTHYMASGC8e4l/Qj3eorsVdOzgbu5OjUvbnalkBrVmEjEebT8gjUj1T9gev0LedI110MNQBV9b3VC6YDEjOO4L91N5qTnqqOlNH7iPU8mamRhs2U7pjgOiSI9TaP+pB05ceMTe7U0a0DiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frDnzJdj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792193832; c=relaxed/simple;
+	bh=h6tEoQaLTi+vKhbUM715c+hLbsGi6OgBFWS6x/3C8R4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZaexIzhLcT2S3DrwVEp6PM/0dt7bGhlXCfJThbRPGtrnVFLXj6+aTH2PHxYevpKyR60d5CCF4ogmgR64hS2FBcQ980lV7puA/kBAQzASs6FPevSRzAN7jfbTnVP/2tEkQlXq+D3qOHvkp37KY3Vm3zaRC/DuPyMRSOf+eOVFxxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTmYIRN4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frDnzJdj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EC91F000C4;
-	Fri, 16 Oct 2026 23:30:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTmYIRN4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF301F000C4;
+	Fri, 16 Oct 2026 23:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792193406;
-	bh=j1n8z0ONvPUgvfWn0I/qw18tnvb5dO0IA0KouUl3Y7Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=frDnzJdj4dJeReQuTKAGAee1e6QBmoSx4mmKjdaAeEyv2l385Xk2Johrl2JuZimos
-	 i15GbkvEWF1eap3r4z8QanaXoMeX9h0WjpixgMvoZ2chdHWxJDCvRhc6PDpNquns5c
-	 iMplX0fzw2yVzWYIu4vKaGqFYnMXQWQhJhI/zc+sB5aYRp9BcINGTZKWgRDQbSzZO5
-	 3Nmhk9AvwLepCYXi9davUXqSaOZ2/FoQh5U+dokyTbQ/KTGK4jLHtbaXsSkox0Igtz
-	 Y4Wm9C2TXmD4KslcV8IqYYXSRP1PlQJ239Yf6pmAh5uGZrJWJVhEBPs5F8J6D5KU23
-	 TTIroAISi0DSA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1558380CECD;
-	Fri, 16 Oct 2026 23:30:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792193830;
+	bh=43dmYeJ/z+ZxlGAmge5piW4Cp5LEqx3lnTOjZcqfDnc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=nTmYIRN4QNxbA3F470LzUbUhvzUkwGOw2235mQrsCYOqOPtJc4PF9rRHdFO7lIKxp
+	 eG+GwMr5zt32zIMJNboTIR+ysq9AXOC4c4Ice9fsdvr+8mZse44UWuY/Qh1+4W8DKE
+	 WZoKr9B4NydAfnHF3eVC5HXgveDBJS7LBeO0qhnGZsiEYdx2C6ddkAPGukp5+dFLih
+	 EbIdiDlqJBljTpnMjh78LQIEwrFRHrNRkJszxoChmXqK2T+898EiYUeNFx84F5yTYq
+	 2ax24A07eEMvGbQFVjtwHykeLzcj9efN2SO0GDyiigog0ddHIlBformmepc2SfR5tI
+	 iX78LGI+5JP1A==
+Date: Fri, 16 Oct 2026 16:37:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heiko
+ Stuebner <heiko@sntech.de>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, David Wu <david.wu@rock-chips.com>,
+ linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v11 3/6] net: pcs: xpcs: add Rockchip RK3568
+ platform glue driver
+Message-ID: <20261016163709.00cc7c12@kernel.org>
+In-Reply-To: <20261008175225.3375274-4-coiaprant@gmail.com>
+References: <20261008175225.3375274-1-coiaprant@gmail.com>
+	<20261008175225.3375274-4-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] calipso: update payload_len when removing the
- CALIPSO
- option
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179219340478.1009070.12393619315617500002.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Oct 2026 23:30:04 +0000
-References: <179147329205.58079.5847298721173675285@gmail.com>
-In-Reply-To: <179147329205.58079.5847298721173675285@gmail.com>
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: paul@paul-moore.com, edumazet@kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-security-module@vger.kernel.org, alice.kernel@fastmail.im
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri,  9 Oct 2026 01:51:57 +0800 Coia Prant wrote:
+> +config PCS_XPCS_PLATFORM
+> +	tristate "Generic XPCS controller support"
+> +	default PCS_XPCS
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Why the default? Surely there are platforms with PCS_XPCS enabled
+which work today == don't care about the new code?
 
-On Thu, 08 Oct 2026 12:28:12 -0300 you wrote:
-> calipso_skbuff_delattr() removes the CALIPSO option from the hop-by-hop
-> extension header, or the whole extension header if CALIPSO is its only
-> option, and pulls the skb by the removed length.  It never updates
-> ipv6hdr->payload_len, so after a successful removal the header still
-> claims the original length.
-> 
-> calipso_skbuff_setattr() already adjusts payload_len by the length it
-> adds; the delete path was missed.
-> 
-> [...]
+Linus is known to hate _any_ new symbols defaulting to enabled
+on olddefconfig.
 
-Here is the summary with links:
-  - [net,v2] calipso: update payload_len when removing the CALIPSO option
-    https://git.kernel.org/netdev/net/c/00accbd9d502
+> +	help
+> +	  Generic DWXPCS driver for platforms that don't require any
+> +	  platform specific code to function or is using platform
+> +	  data for setup.
+> +
+> +	  If you have a controller with this interface, say Y or M here.
+> +
+> +config PCS_XPCS_ROCKCHIP
+> +	tristate "Rockchip XPCS controller support"
+> +	default ARCH_ROCKCHIP
 
-You are awesome, thank you!
+Same here.
+
+> +	depends on OF && (ARCH_ROCKCHIP || COMPILE_TEST)
+> +	select GENERIC_PHY
+> +	select PM_GENERIC_DOMAINS if PM
+> +	help
+> +	  Support for XPCS controller on Rockchip RK356x SoC.
+> +
+> +	  If you have a Rockchip SoC with this interface, say Y or M here.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
