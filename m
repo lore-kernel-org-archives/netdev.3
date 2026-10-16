@@ -1,231 +1,180 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2833E4611C2
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792141127; cv=none; b=T93dA30nfKjswB5knbNi9aYck6TLUxrRBopiCjzU1CEoxb0V5lHjtWRotdJXzz1p9QBME5ZZw0rXuQx1EWptH96RUbSbHJXJUZUHbbg4Mn0IP5yS5mdlRaz8eX2xLn9sXYt4SzBN50oluvJNYR/PA0nI9n+eMM2eQ2nquTjuMvs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792141127; c=relaxed/simple;
-	bh=8Cg9W/VqDPpxJP1l4PDNRsec1BC+6QLcbtrneiacO90=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XegLaGDRbhIeigufA1QG9Os4G92hrKMi+Z4+JQej5PtdGJ2WpFcfNrd24EzR+x11SgFA7TjwFHoXFaOAYLURaWQyBTXIGn0IW7IuXTVWNv1pVhIPHK+1NgbJIWFtP4Rt0Gm7cxqILdeyPi3xLCmp7+/I0RjVH2IIiPNQdCSvR/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=prY0fydv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=e30m/48H; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC66463B76
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792141185; cv=pass; b=b+u9970oqKS7dUwfrPhPcl6x41SdbnbF+D35cFLLYXFrMSEfeYhkPXBQOs8+DA5atQhoKp4wW6brCHJqKCx40YPWg9Svu1mltdQX3xDBGO3VMfIVdNKgxptZtEMykiQWe2D355k0hJ7fY+7HFhw9aTSbf5C0eEmtO7oxuGErvIw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792141185; c=relaxed/simple;
+	bh=tX8oW19EzNSpx55rVPyv0ZfQzctQtnlywYu1+2gW2R8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IyUhJjY7Z7dh8UAjdPSTWRLUi022MmnLfbut8o97jYWZbBbZSEPUZ3vGUOtAvpOi6WH6RBPCww1xiPSLnafXdzSYsx5oyfYwSBfEE04w4a9KG/oM5BJCpvknf85OqbAwYyentOPRRvw7zWSN002nLqsKixHFS72eBqVxOFS7m4c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AqD6hVh5; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="prY0fydv";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="e30m/48H"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69G8lWZ52885550
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:58:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ziNg9NxoSUN4305GBlBnhwtN4upme4eDf/usG7Qbn1U=; b=prY0fydvJbZLkJGc
-	rJpuT3zBzeUK5dPt0w/fJ2B+halnt8x4Rg5I+LDjohaJbJpjxWsZRbE6Q7x33ORj
-	IezRx3s6BYwrAWkJCjOOxzT3HpvGjU3x/HsoXdmxocdclg0fnUp7YNiifJjKiMUo
-	n5MUodR4/PFWVdZAe9vLU7cy5Q3SGNS+jxD759vQngtZLjovmo0R4L2BPNfyvGE2
-	nIhRyIr9n5hu8Ljmx9hG+f7mESuYEOrK/u8y5/r1e0BvMwBIUDvMz5s06XmDrNib
-	tZxHfdawYSzOOpej0Z4DqS4oMA87kpciKhCQBVO5JQJjghkJ+p9y8uF3m+5Us7HH
-	seEx/g==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hba261h39-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:58:43 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-35c5aef2a74so8188647eec.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:58:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AqD6hVh5"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so5639a12.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:59:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792141181; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PGoRd4g1Gwn04HWEyEhKB+ZIlW0nC/H6TsehhaEUqkjWtpcw2J/DKpZIcxGECrI9Ur
+         IhmR+/fXOm7LoFX3wr9m/c+VlGP4kFozdcYeI++/RWr9mARUTjk5ZdXBTFkUvHdGm/qo
+         RIICXahS+oUClKZjUqKtKcYxfAYixGBIUR5Xx2GwQ/ZeCA6MsEqOCRsIzwh4r7oSnKEd
+         dl1g29YD5BZ612iWm6MTPpWA1aUgt9VmDJPX+gtrM8SI8+FB5RGp8tCoy/XNzqXqgtXw
+         T521ObfERGi53TgugpCPBw/ccYd1F51MVukMc1A5W+Xk+qXIZxtEhCQrtqvkhaq/V2fv
+         OpdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EZlGH4yy9O7O0nf1ZYvJL4ZoQnTfHAsB9O8BKxrx/Xs=;
+        fh=qZH4IOUuHtrSPCS/MoiTv97crgdHcwmNowaBioLg8WA=;
+        b=bY54LwoGulhp31oNtze8fjNSlfaTLqPlRP1q7DrlyXrX4z2GPD5TvMgS1NIy1stddZ
+         Dr2QmkTIFcyzk1CVQqQodY1eBxaONW2hnCiO/W3JopExOA9KbgQbIt/AJX7mVrnm/Ix+
+         vTiJAUNmeQFMiEBse3Ne2Z9j3jZl5XXDSqC6tbEaBH6j4+1xlDv2ufrMxwq6MtVYePi4
+         w+FQlzXbQgJ4oFXFzexH/dO2GskJogpAFZfRlptTc2O7MHqWeAJIYkXL+eWFOb9AqkeP
+         Wm9VuRBzg67JqTthCv8hbxBxu8C7QgsPRtS+rRNX1zEtpURbTwf0ljBryOP7wIUGA51w
+         4lJQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792141123; x=1792745923; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ziNg9NxoSUN4305GBlBnhwtN4upme4eDf/usG7Qbn1U=;
-        b=e30m/48HonVKoBbfkZPJUHLpmziE/DeNlZtZWO4fNLA43xvbTn1VRYj00JBOTFfvna
-         IYKoVgppiqH6XmRRJdz3+eRs6vm51kjfl17Qjh1+u+YGij7M7xM4YPdcIzvU9FGV7HJy
-         QYlIoISMSfK6axGOMd1t3LeyCW7UDzkJDWLWSDjdaJ+Xq3YAdHDdX0k0fmoCMhFvU2nU
-         FH6ItEbdS+F1z5nGmOtkBUmO1RZR6AtNsNgoQjOLCXofChazEf+8RGrAK1SJgQc2m/yh
-         kEyWmbJZDFsHRqc8v6eSxjCNs5xpi4iKOjRc9PJ1h41yhXIWDtq5MgoXibkPNiaZGUSW
-         tkug==
+        d=google.com; s=20251104; t=1792141181; x=1792745981; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EZlGH4yy9O7O0nf1ZYvJL4ZoQnTfHAsB9O8BKxrx/Xs=;
+        b=AqD6hVh5Z8fsmeU9NWVsCuw0LvJ4423W89OeuInlBsI6XDsT6K//yzPoLT5m8HbJfh
+         offi0z3iCY9M7g/YE/QZ9uSCmbzN/yB+j6kHHYXPfPp+gJEco49tuFOYQRD4fdtKnpia
+         OJ29jEM9LUnCBAIFRwV7Qo61yGxZ2XbCNVCXvePMbQJ7OokiX56LnTyj8TfZodb9e+6J
+         2yNoBfR8ijIVY3SfKdln8IF4BCMScMOLgLasTQA/ZEXk5YH0Whv2WLcn8YNZmtAyfn9Y
+         9l4vI4wlmM7f4Mn+lyI8VxxB6fqJfSro1+mLMppkUBm1AXdtxhZk3QCRy0luHD36UGzj
+         h3NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792141123; x=1792745923;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1792141181; x=1792745981;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ziNg9NxoSUN4305GBlBnhwtN4upme4eDf/usG7Qbn1U=;
-        b=DsqLSZjagJ3+e3je7awt3GKUFF/Fth+W8qpFwr6aMm7atVSPr6/P7go0+VbVZRaMpd
-         nb0PWMp+6v5IsBFZ0ybiCgcSf3HKexN8AY8LLMx6BjTVIJFaZGawSCsZka7FCOUjB1vt
-         PgyjmzmCV8g41Br3Fz9G0Bu4F2Bi2XDGafUr/XTKRw8gOXGcpqsR/Zx3txJnC1yqiFtp
-         xR+C6dB++pq3LuXgwC396JgCvkXVDGSatOiPPMQRNXnR+PKLc/Ivz3LfF8N8BxOw1FmI
-         Muvr0XPAyRMeQ7to1IN3iBUlPk7TiFye2ZZs7Zlgyf8WX9ZJZk+jfotAsdUHbMMykfFA
-         nr7Q==
-X-Forwarded-Encrypted: i=1; AKwUvByd54ZVbBZfkGnduKZrBM8KoCbbdkJxyhm03gpeYRR/EAMz4//ZXVIr7cdEwkIpxcqJvoLdBww=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK3WYJWH0SOaa1NgZpL1Q8XzoaPa/Dwe1RUn6tZ6mEzZq0AQF2W
-	EN4N+JCObn9RoR7zjPbvBfJxQ7TT7nBqyf++YMD29bpUyCqkU3MDq+4CEJq2/Vw8DxPD9LgPelC
-	gPBKznaYBQVPzE96tR/rNpnICHtEdppDq3RYwuHC7P9iqgADespvtDsJ/jjE=
-X-Gm-Gg: AYBFou2g/hWYdql/JOuXcLPsSLRwzIqpWJBbfZIcdfTXwagwfpVv2+vGWgVY7D9lyqD
-	vkYwe9X3Q1nQuWSbIk3+NCY/dMTlQAEuI8Je8mr0CtIVc0jHSfvgBPBW4jBD3MnN4YO8IT4W1NY
-	2SGf1YOrGPAdPFzAJ3Os60jsFk2XXjP9rfRLBek7JIt6b+9g8rbp6Y9uOOQU3SZb9y6LrJkLNma
-	xo0kpvNCVbKBBhfI4lxbqcCTU4wyY4bi2xWKr3h1yNU7OZaSD5p2IcDwiUam6jmJEWYOnYaTHx2
-	eU9uM/1S1icwfrUQVoE3AT76i9kyIOOmhsfzXwnLNJQjEerlsdcNFh6XlLxC9/ma9DslNJZJzJG
-	E921LkI9ujkZF4qW6+bfqeaUnqsCCyDeU0D1OAnDTNwbEZL8aNWeMV0o=
-X-Received: by 2002:a05:693c:66d5:10b0:35c:3dd3:9410 with SMTP id 5a478bee46e88-35c3dd39553mr15036372eec.30.1792141122459;
-        Fri, 16 Oct 2026 01:58:42 -0700 (PDT)
-X-Received: by 2002:a05:693c:66d5:10b0:35c:3dd3:9410 with SMTP id 5a478bee46e88-35c3dd39553mr15036342eec.30.1792141121926;
-        Fri, 16 Oct 2026 01:58:41 -0700 (PDT)
-Received: from hu-chunkaid-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36082a7b33bsm9475436eec.24.2026.10.16.01.58.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 01:58:40 -0700 (PDT)
-From: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
-Date: Fri, 16 Oct 2026 01:58:20 -0700
-Subject: [PATCH net-next 3/3] net: qrtr: implement shutdown()
+        bh=EZlGH4yy9O7O0nf1ZYvJL4ZoQnTfHAsB9O8BKxrx/Xs=;
+        b=KdWCKj1Ftahj8csZ+i7nAxzlh1hhOyqaFTwt44xPXsUHu2wPAONuO4NbAZEceEcPJ3
+         +fPkKB3pJndK834vygYP/N+n3DriJ08wMpG/MLVmT5gh2hFXNYWTSIFWKbFKTkKwKLRH
+         cFcAF7+wTGxK3Sp51ky6O5shTSKtnaaQIu1Ws4AOZw/bYM8BTetdqRz1AaIuSGTgY3s8
+         O9CchLvN0ZV+3Lj5X2x9A6QzleyPI71N+8uTOxnWNsW6YqFK2UzfnCHo21tNkgXdJ5bw
+         JcEoBdPY4wcjGJ/pJYoFL2ltxwG7/2tI6pVLHlFiIEoIICrutlUlJ/FQ9u5rxwQy4yEI
+         ciQw==
+X-Forwarded-Encrypted: i=1; AKwUvBwLtlRno91CApe+XxQWPfQI4IbNh7jOVGn0TexN+zy3GwBi7B6XtDV24DKoEpj5pjMIdcDP9zE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJbe/sJLZPvysiXrocuTa6yIEMoVuSsDrz5at0bmd6vi11V2F46
+	HFvdZSUR8f9HZ2Ynmiqd5L104zYr5ObYMq6sZhvbTJt6coYGKKf2kNzMLMrY31pWdeBuyNhbedx
+	zwhU7/llX+AS2+s2VTNwuzp7XwOsBD37cRQ/9tIqGaLxcQDlPaxbBz6wsh0Ub4Q==
+X-Gm-Gg: AYBFou2PrCKE1OCviGh04tZ7ozFCvoUIWX56tuOc+K/o30yoot9pGBEEg2aYEJJtq+R
+	g7ENhAxRIomIZvdhR6san5ewhBBB8hJt/a4NM9+OXhvcOtI14t0ME1vPrCAtyGKGoBSqtmLc58+
+	5rIGfCWzbyUmzcnOBBSBC28grEeao2rPQGCnns7J508Vd5jr+EgwfzbSBUc5qrAF03i5SyeSTNB
+	IQjGRI+ZYM/TFNgX72CnlZfwNfMvl2ODq5W8udipuRvR4GFbErwOofMK69SUeBh80jhnxpPYKAk
+	DgFXKSMunxiunNlKwbMOm1xy3sxdp8V/VhuB/MK32YdLQ6h0ZYvBq8AeEJTSUtT0VhM8JiFC1up
+	v66poeLxtRUTtKwlZew2fK7zU
+X-Received: by 2002:aa7:d7c8:0:b0:6a9:d188:2374 with SMTP id
+ 4fb4d7f45d1cf-6b38c3c7baamr30067a12.1.1792141180097; Fri, 16 Oct 2026
+ 01:59:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-qrtr-add-shutdown-v1-3-e1cc01ca5919@oss.qualcomm.com>
-References: <20261016-qrtr-add-shutdown-v1-0-e1cc01ca5919@oss.qualcomm.com>
-In-Reply-To: <20261016-qrtr-add-shutdown-v1-0-e1cc01ca5919@oss.qualcomm.com>
-To: Manivannan Sadhasivam <mani@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: Chunkai Deng <chunkai.deng@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, tao.zhang1@oss.qualcomm.com,
-        peter.chen@oss.qualcomm.com, jeff.johnson@oss.qualcomm.com,
-        konrad.dybcio@oss.qualcomm.com
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792141117; l=2830;
- i=chunkai.deng@oss.qualcomm.com; s=20260604; h=from:subject:message-id;
- bh=8Cg9W/VqDPpxJP1l4PDNRsec1BC+6QLcbtrneiacO90=;
- b=tsbd1XCAahBbSDVdpBUCqEjrx+aW4kI/713JISZRFcHHRo/jjHZMxn8hzGwdxWEZ751VLnnBF
- Oy7cE4cHsVyANV/8uguh/Fu3GH4cNJkrfdOleeF/TjIgI3RGzjXSny4
-X-Developer-Key: i=chunkai.deng@oss.qualcomm.com; a=ed25519;
- pk=wWxCpsJRKQeVRzpZ8GLRnUX6ozLMowqE3hiz/j+j9O8=
-X-Authority-Analysis: v=2.4 cv=bsHZl0ai c=1 sm=1 tr=0 ts=6ad1e743 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=EUspDBNiAAAA:8 a=m2P955qNnlo4rMcBazoA:9 a=QEXdDO2ut3YA:10
- a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE2MDAzNSBTYWx0ZWRfX6mA/N87H51BL
- NqgXVXQ5EzW/CFVu468yRt3MgnC7Y1Rbvcftb7YfXTd7nyt2vXtDEu4OERNG+3XdPUtuoxhg0pP
- CkYWEa2AESbdi4ULt+vK+FCLBo0k0PxX8JPv+gRNcuS8dqfX99T+Rl5f6DJfTGFPXLI8E/oG8TR
- eqCEtTwT4QyBx/vzawv97hFf9vMxweK1uGJBNQeJq4/z+MOxhmbxmUOfAlxyGB43Z7mhvJ9Cl2y
- rAsgS2jPGb93qK2be0QrGDgl4G6NawcOU8JzV/P2P6srJhr6w7iJZGzTSepN5lb/OdTa6TMhJj7
- KtcvUl97edaPkF5m+wf5A50gAikofft4luVSe4OkzSBz5RI0gvulOlqzcyeOsKLUTc4PRIAGrsK
- TZ0ugtQb97Akr1C943Q4hxwTIP1HZA0zbDIIulc3WvdvYHCwpX13KYUZVCjwnLupy8bbY0y3Hcr
- l8GBe4dJg3vFgaAwCkQ==
-X-Proofpoint-ORIG-GUID: XXKWuo30U-mxpB4ONpwGv3-gS5Z8ooOl
-X-Proofpoint-GUID: XXKWuo30U-mxpB4ONpwGv3-gS5Z8ooOl
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE2MDAzNSBTYWx0ZWRfX4WkNeNt51yAz
- aGZYzmG1I/WXV9/YUpBqiw3p1uGOs52pFbny19h5glaUd/sEmcrX+kv/giYKsdbL7G8YNHwmXfX
- s3ZOUgW9N+HO0SCgTB0wg+jp8XS73uQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- suspectscore=0 phishscore=0 spamscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610160035
+References: <20261015073736.2944215-1-tavip@google.com> <20261015073736.2944215-3-tavip@google.com>
+ <CAAVpQUCpFC-7J=uEgBfh37hFb5BCJvhJQZx7_YKEDCtvbGrGWw@mail.gmail.com>
+ <CAL4WiiozXgApewA6WWQA--YxaweezQASpiOiiLz7=ijrqbkqgQ@mail.gmail.com> <CAL4WiioJjvno8r7YeLCTf00q9L5w+OOGLbGz-t330R=NZ8ATkQ@mail.gmail.com>
+In-Reply-To: <CAL4WiioJjvno8r7YeLCTf00q9L5w+OOGLbGz-t330R=NZ8ATkQ@mail.gmail.com>
+From: Octavian Purdila <tavip@google.com>
+Date: Fri, 16 Oct 2026 01:59:27 -0700
+X-Gm-Features: AclHuK8hZWfSCQBFUZf2062w8cM86knegB4R5UxwwsJOxtJtgSEQ4r1q2T_WaWU
+Message-ID: <CAGWr4cTPTqYvfKg_e7kTgg_ioav+v2AWTre5aQqzkm7tvfS1sA@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] selftests: net: packetdrill: add test for
+ negative sk_forward_alloc in tcp_wmem_schedule()
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Wei Wang <weiwan@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-QRTR uses sock_no_shutdown(), so shutdown() fails with -EOPNOTSUPP and
-there is no way to wake up a thread blocked in recv() on the socket.
+On Fri, Oct 16, 2026 at 1:23=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> =
+wrote:
+>
+> Le ven. 16 oct. 2026 =C3=A0 10:22, Eric Dumazet <edumazet@kernel.org> a =
+=C3=A9crit :
+> >
+> > Le ven. 16 oct. 2026 =C3=A0 09:54, Kuniyuki Iwashima <kuniyu@google.com=
+> a =C3=A9crit :
+> > >
+> > > On Thu, Oct 15, 2026 at 12:37=E2=80=AFAM Octavian Purdila <tavip@goog=
+le.com> wrote:
+> > > >
+> > > > Add a packetdrill test that drives sk->sk_forward_alloc negative vi=
+a
+> > > > tcp_collapse() on the receive queue while sk->sk_wmem_queued exceed=
+s
+> > > > sysctl_tcp_wmem[0], and verifies that a subsequent non-blocking wri=
+te()
+> > > > under TCP memory pressure fails with EAGAIN rather than returning a
+> > > > negative copy length from tcp_wmem_schedule() and failing with EFAU=
+LT.
+> > > >
+> > > > Assisted-by: LLM
+> > > > Signed-off-by: Octavian Purdila <tavip@google.com>
+> > >
+> > > Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > >
+> > > Thanks !
+> >
+> > Are you sure this test is passing on arches with 6K pages (as some
+> > arm64 and ppc64 platforms) ?
+>
+> This was meant to read : 64K pages.
+>
+> > We might need to add a check to only run it on 4K platforms.
 
-Implement it the same way as unix_shutdown(): map SHUT_* to the
-*_SHUTDOWN bits, set them in sk_shutdown and call sk_state_change().
+Ah, yes it would not pass. Thanks! I plan to add a check like the one
+below in v2:
 
-Do not use lock_sock() here. qrtr_sendmsg() holds it while sleeping in
-qrtr_tx_wait() until the remote returns flow control credit, which would
-leave shutdown() stuck in an uninterruptible wait. Take sk_lock.slock to
-serialize concurrent callers instead, and use WRITE_ONCE() for the
-lockless readers. Do the same for the store in qrtr_release().
+diff --git a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+index 0a97d5ae34699..e2a418357bf1c 100755
+--- a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
++++ b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+@@ -52,6 +52,12 @@ if [[ -n "${KSFT_MACHINE_SLOW}" ]]; then
+  failfunc=3Dktap_test_xfail
+ fi
 
-A sender already sleeping in qrtr_tx_wait() is not woken by SHUT_WR;
-later sendmsg() calls fail with -EPIPE.
-
-Signed-off-by: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
----
- net/qrtr/af_qrtr.c | 35 +++++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
-
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 09c1cb443f5c..c955c05e71bd 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2013, The Linux Foundation. All rights reserved.
-  */
- #include <linux/module.h>
-+#include <linux/net.h>
- #include <linux/netlink.h>
- #include <linux/qrtr.h>
- #include <linux/termios.h>	/* For TIOCINQ/OUTQ */
-@@ -1193,6 +1194,36 @@ static int qrtr_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 	return rc;
- }
- 
-+static int qrtr_shutdown(struct socket *sock, int mode)
-+{
-+	struct sock *sk;
++pagesize=3D$(grep -E '^--define=3DREQUIRES_PAGESIZE=3D' $script | cut -d
+'=3D' -f 3 | tr -d '"')
++if [[ -n "$pagesize" && "$(getconf PAGESIZE)" !=3D "$pagesize" ]]; then
++ ktap_skip_all "requires ${pagesize}B PAGE_SIZE"
++ exit "$KSFT_SKIP"
++fi
 +
-+	if (mode < SHUT_RD || mode > SHUT_RDWR)
-+		return -EINVAL;
-+
-+	/*
-+	 * This maps:
-+	 * SHUT_RD   (0) -> RCV_SHUTDOWN  (1)
-+	 * SHUT_WR   (1) -> SEND_SHUTDOWN (2)
-+	 * SHUT_RDWR (2) -> SHUTDOWN_MASK (3)
-+	 */
-+	mode++;
-+
-+	sk = sock->sk;
-+
-+	/*
-+	 * Do not use lock_sock() here: sendmsg() holds it while sleeping on
-+	 * remote flow control, which would block shutdown() indefinitely.
-+	 * The spinlock only serializes concurrent shutdown() callers.
-+	 */
-+	spin_lock_bh(&sk->sk_lock.slock);
-+	WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | mode);
-+	spin_unlock_bh(&sk->sk_lock.slock);
-+	sk->sk_state_change(sk);
-+
-+	return 0;
-+}
-+
- static int qrtr_release(struct socket *sock)
- {
- 	struct sock *sk = sock->sk;
-@@ -1204,7 +1235,7 @@ static int qrtr_release(struct socket *sock)
- 	lock_sock(sk);
- 
- 	ipc = qrtr_sk(sk);
--	sk->sk_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
- 	if (!sock_flag(sk, SOCK_DEAD))
- 		sk->sk_state_change(sk);
- 
-@@ -1237,7 +1268,7 @@ static const struct proto_ops qrtr_proto_ops = {
- 	.ioctl		= qrtr_ioctl,
- 	.gettstamp	= sock_gettstamp,
- 	.poll		= datagram_poll,
--	.shutdown	= sock_no_shutdown,
-+	.shutdown	= qrtr_shutdown,
- 	.release	= qrtr_release,
- 	.mmap		= sock_no_mmap,
- };
+ ip_versions=3D$(grep -E '^--ip_version=3D' $script | cut -d '=3D' -f 2)
+ if [[ -z $ip_versions ]]; then
+  ip_versions=3D"ipv4 ipv6 ipv4-mapped-ipv6"
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_nega=
+tive_fwd_alloc.pkt
+b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_al=
+loc.pkt
+index 8e31db546f432..5e6a40e740b42 100644
+--- a/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fw=
+d_alloc.pkt
++++ b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fw=
+d_alloc.pkt
+@@ -3,6 +3,7 @@
+ // when sk_wmem_schedule() fails under memory pressure and
+ // sk->sk_wmem_queued >=3D sysctl_tcp_wmem[0], returning EAGAIN rather
+than EFAULT.
 
--- 
-2.43.0
-
++--define=3DREQUIRES_PAGESIZE=3D"4096"
+ --mtu=3D65535
+ --tolerance_usecs=3D100000
