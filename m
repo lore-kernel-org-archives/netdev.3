@@ -1,66 +1,68 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5981C466B08
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 10:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DAF475351
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 10:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792146633; cv=none; b=uhmc7v5VcqSoUJ/ghUTd/nDDXCUlxBCq1HFdmZt5QThi6jc6CzxkR33m8DN8fdEOuezgWac8XgMM1ooENhTmwyPnMZOa3Bq4tRr6az94FaRBu/Xfxk9D+qyhSOMMiKtpSvE404Ge6gu6xbt5q7ndzRb28Q02Z0OjgTmQuH8yMCU=
+	t=1792146636; cv=none; b=k4FmLhvUzLH3Eekz+aaBRtiqFhnghz//SemKtx3oUKubzkOH1u2r6ecOAvX5w8dJmmjdeAaDPYZ1x/hJ/SNkYZrLwizrR5qpgzi31W5oQ0TG2cj8lXjnIoOyh5pErBJYYDX5MrLSq/xyhANd8wVUM9cDESaVKQXXwbGrQeN9jyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792146633; c=relaxed/simple;
-	bh=Ege0/EoNxjOYq/JSHXKRjvnL6FEhr0EiMU8LIrSzUr8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tg1jRyJ8kxL9LUDQXZFRzr6dLOqEsD8Via564c88Cg9DJcJ7HH2jImsevHrD9EUYr1eTArRNC/oUEK2nEZrAYzxEEUMibaaHICowwo8KC+owScmSQ3tJhOAUbGJDq8sgFzbuDwhL+6NrIbIW+uN/SMtQP/gylvU5moJ68/4zMmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ibQy4fc7; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1792146636; c=relaxed/simple;
+	bh=gxIq6ifytR/JAI05/Wxbb2mz24KshSEfWdEtAzkQt6Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WFN/WeFUE1Y8pJMHUU5QMEUJXi+ZYJGQ8RJdnTo9fN+qwO9BIz2Th2ouMqzrvYn3b44/Mkt396CFR71ABwT3LW4UGQAi6pwtOSshlNXyNfVicJwd+NAXLnZJSUzs2YLMRYrln5IiA+U58wh2MziHdV+fWXfCAPY33cViTmQzxhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CryHwVKP; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ibQy4fc7"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b170129413so5269431a12.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 03:30:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CryHwVKP"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c20ce3c118aso169933866b.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 03:30:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792146629; x=1792751429; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=a+WpDzd7OYp8TJV8imDgncnEO+VG7E395HCXpXIMqtU=;
-        b=ibQy4fc72nf3RHmGgfh0kBg7LokguvEqtLVZUWx/nQLVCe6R2uyXgkXy5XQl8yZpc6
-         8eOa6flFn53jRUUtRZ5cldIuSGx1VvXEGs0L5TQyUTpnb5GFviM0BzsjBWm1KaMpOeR6
-         3QYcU5ES7SWdDypn5x1zWV/LGDKLhyF+88zJjhMgDvQfjsNxjA7mjAJcJKbRj5B4XefT
-         mjPskxp7RigU7YOV8IZVLazlHP0NHTHm3EXtYjZwTNa63n7KShwkprc1+ougT/4RbFSx
-         QKLY+IPUgDxeydXDjDv60e17GNIFsMZB0XhTMTa28f9audxlPfLruaYZaqrFnwWstzR8
-         y6Zg==
+        d=gmail.com; s=20251104; t=1792146633; x=1792751433; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2bKjwQPxfej5CEalIEgEN/iRfsSwjtHzCvEmFIdw6Pg=;
+        b=CryHwVKPuixPPFVkoEqDZ+a+8ONpHPSF9HPFLkoOncTHTdnsOqyTkoxjIma/0YvlBW
+         YRdfMu+UPCAl9RxbksjtfJGMWH78iPhI2f4YW/0MCbTwBlFsLSd2rwlIuKTHRX/vLdSE
+         tycOUIVuSjYmk0Yyj/DbSteZmeznfGRFf8WhRbvgDidOQ4Le1YmqV4GCAILmCNa/bK4Q
+         GM1YSxtDXaALEJo4rYwdTyXBYulGfTKm3gWc8DUKCTAtoS2HyMnzgTVzEBPYm6sjRlyi
+         J3fWj6OWRT5PjUOHStrDNowyvnDq9L7XciDKTDu/BVXJfmDthAyiwflKTdwNJqcZ39bI
+         +qWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792146629; x=1792751429;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=a+WpDzd7OYp8TJV8imDgncnEO+VG7E395HCXpXIMqtU=;
-        b=cbAXeiOS+pOcJMVEYCrGg969xi8+9iuN65oXpti80HiDoXhkSuajvkcPQ+Siv3EMC+
-         m54FPdU4kkSGblpPIBP2LqLVSduKyG2ploFxuUcaa3ZHc2RXuzMjH8kKbvqdNNEGi+IO
-         8ACGedJW8h6JLwfaLFwSOu9cEom74O8iAe9y1BQMrRjC2X6ARAwZEOmHaIWW/EHDtsKI
-         Or9g7HYR2ODcH51fYuG0BsdtxIPA2azkdZ7du2ugmAN1QGAmz4QAUVqRQrUuQ/gozCr8
-         nxdh+zvuAuhLFiAFaTSrrsrcPtb/jDSbuCVK7UB9b/0eAv2S29EvBumeSqRwPVZ4ycf6
-         ljsg==
-X-Gm-Message-State: AFq9FYKkd540vq9Pz7LbxKZCQDeetJ7JtSa0C6ZTwvtBs0/Dmnd35phK
-	/vAf9MTGZ5qi5L5DfPPlG/pFNM/6jJOzfykIKQp+q0L12nEt7w/vLors
-X-Gm-Gg: AYBFou3J/4IOTfHfmrcYpRrkzfxtwFOQxTZKl3RoZ0+qidgcYPSAj0assCBASWRZkUU
-	HyUo9HoXDnIBFT8Gp6hIAG5GMaszWGebOYjFlOXOlfbaCAaDEuv091XMLJY9rcYK+0i9lkbwcvo
-	8iMn90xPbaIZb7Lw9nB8U5+FDVFKYRl0Fh1FWArjxfQa/YxJeBwHQRpCUArjuMqW+OTCyGW6GS9
-	A1yRnKkFnH0Ap7XBibHYDrMRXejZ8yHiB5GO8S6COM1B7iRmbeUmICLyx8h0zvvP8KLjtQQgw5l
-	KtWk6coBve/LjRdh+zASv16JJUEyzgos/tNb19yhlVD+kqcMadwZzqbr1ZXSURKHvB2zep7wK9b
-	PtzAGd5YYnlQqR3OPJLRlSqqmE+zHf3FWjenYeIfFGANvPCWSVZczp3ZKGro9LqZ7U9ydfmkH1E
-	MU6PtEjES1GRPaxj2iU54GjH/T0dT+8ChiggRDJKlB8MuW3d9KcUvt5aS0VdcLB9diMI3+DkDgO
-	6KvNR1sNngx
-X-Received: by 2002:a17:906:ef0e:b0:c3f:c878:7c1d with SMTP id a640c23a62f3a-c3fc887c5f8mr325847366b.9.1792146629272;
-        Fri, 16 Oct 2026 03:30:29 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792146633; x=1792751433;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2bKjwQPxfej5CEalIEgEN/iRfsSwjtHzCvEmFIdw6Pg=;
+        b=ah+LyRTqkfW7AopZTEJy8Lj030+9WuqPTU0Sw2RCgQNiT4sIFQRlJRFiPkFZjYWYAf
+         vrwQlOm40LlAAXbaiQdmdM5lqjpM81zyjORXEiB8ExDUJfIg8uQ4hXPzl+zYoXI44euh
+         ThWRYADJg3bHMg1D601fFvXnhDdFxgU3pdIp2gTURG8QqwrISysD43QLKWerQF/9/BWV
+         JsdFwQwV8vLxJgZ3ir91CgPG7Na8tjdE9XXzIAuUzGOoIV121iCfEdmPgEoErcZY/x5U
+         nkgJmNzTCOx0emtBJuuI6MfQxIKPzMvDy20Cb3BERJPPkUTgOlThwWtvmt73pTzeshG6
+         uOuw==
+X-Gm-Message-State: AFq9FYIzyucR07+jzSJkBcS4W85LLwOwBTANJoQRIoMOPiJ0c03RF/Wz
+	H5Orbq9Ki6XQfmtDtdr8FdUhmbQH6RzzE5rLuooXk7Qbh19VfvV86K1X
+X-Gm-Gg: AYBFou1JUiOKW0GlaKLAl0oewtj1c8xr1UF9IURYay2SLu2nv896OHoOGvRjHrAdyJ6
+	betPeiewWH7mDOzbHzrH5eautk7hXmhsj3K9yQ4lbZBRYNSm2F1Jk2mjBAOvt6RDX8tegAzx8f0
+	LGdC3vFC28+t6eAwCTzFBojcJLGsKO+9k5A/K5NmK6ddwPFOPQpNLgORCnv64q2lOa/hGme44U7
+	CbSeI571Q7/JkaW1qzcttzgqknVgn2ELpX0d/JN4sJnowOohet6epTtIRwmt0PCr8gqK38CH2P/
+	rnd30LWWHeBjYbGZXV7BFp8hMCxOYaVgzQQlWQOmcmcArXJYKchqD4ipQRaYgDlOyurc9WS9hm1
+	9Mqsuu21ufSyp0D/H20snuUCJ2ObcN0UYqvtaBfoouFt23mWFurMeuNgIrVMfEFPF0xRKY3VLen
+	Oc7JtPEPLW+L2eqB+3YbQiUlfXXb8oT2ubeev4WnDdx+Ao7PAh6uuc9Po9Y2U/G6OpZUggOtovK
+	8q6+9DrQs1L
+X-Received: by 2002:a17:907:86a3:b0:c31:6fda:52b7 with SMTP id a640c23a62f3a-c4020eedba8mr234447766b.21.1792146632831;
+        Fri, 16 Oct 2026 03:30:32 -0700 (PDT)
 Received: from localhost.localdomain ([193.107.16.241])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40912ce133sm60613866b.31.2026.10.16.03.30.25
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40912ce133sm60613866b.31.2026.10.16.03.30.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 03:30:28 -0700 (PDT)
+        Fri, 16 Oct 2026 03:30:32 -0700 (PDT)
 From: Dmitry Yashin <dmt.yashin@gmail.com>
-Subject: [PATCH v2 0/5] arm64: dts: rockchip: add Forlinx OK3568-C
-Date: Fri, 16 Oct 2026 15:29:32 +0500
-Message-Id: <20261016-ok3568-c-v2-0-068d68430e6d@gmail.com>
+Date: Fri, 16 Oct 2026 15:29:33 +0500
+Subject: [PATCH v2 1/5] dt-bindings: net: rfkill-gpio: document reset-gpios
+ property
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,11 +71,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIz80WoC/22NQQ6CMBBFr0JmbU0pGWJdeQ/DAsoURoWaFomG9
- O62uHX5kvff3yCQZwpwLjbwtHJgNydQhwLM2M4DCe4Tg5KqlrqSwt0rrE/CCCM1aoVdSaqGpD8
- 9WX7vqWvz4/DqbmSWvM/GyGFx/rN/rWX2/mTXUkjRSmt7RItG42WYWn4cjZugiTF+Ae77i1qyA
- AAA
-X-Change-ID: 20260930-ok3568-c-c095925b1e26
+Message-Id: <20261016-ok3568-c-v2-1-068d68430e6d@gmail.com>
+References: <20261016-ok3568-c-v2-0-068d68430e6d@gmail.com>
+In-Reply-To: <20261016-ok3568-c-v2-0-068d68430e6d@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -83,83 +83,72 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
  Philipp Zabel <p.zabel@pengutronix.de>, Heiko Stuebner <heiko@sntech.de>
 Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, Dmitry Yashin <dmt.yashin@gmail.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ linux-rockchip@lists.infradead.org, Dmitry Yashin <dmt.yashin@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792146625; l=2792;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792146625; l=1639;
  i=dmt.yashin@gmail.com; s=20260930; h=from:subject:message-id;
- bh=Ege0/EoNxjOYq/JSHXKRjvnL6FEhr0EiMU8LIrSzUr8=;
- b=gQMaPTFI9gCYRJTK2Gs8mv2HzZL8Bu9hcZ52inWpJiLiEgR03jDdpuRHrtWBGfnPpScKzLCtG
- VKmL8wHlDVMCtYsn7sviLOi6bVj8Ske/TfJX84rqBsFp1J7gmTO7CYI
+ bh=gxIq6ifytR/JAI05/Wxbb2mz24KshSEfWdEtAzkQt6Y=;
+ b=VbqmIKE9xA/W/LJMZES0LcVcRSUOVVY2CefAm9neUM3UYLCdrjlwuk7AeZQMIAGrmt7q54X5W
+ UzhAtJ28ZoIBby0Ort5ufWzrkitHUI6oxTUyh4O2Fn91/s2EoQEi5Y9
 X-Developer-Key: i=dmt.yashin@gmail.com; a=ed25519;
  pk=vBe9jaaOEH5bQEvfzb1tWOlz3AMIcXCu/GL/CdlwJco=
 
-This series add support for Forlinx OK3568-C board based on FET3568-C
-SoM (rk3568).
+rfkill-gpio driver requiers at-least one of the gpios to be defined:
+shutdown-gpios or reset-gpios. Document missing reset-gpios property.
+Also add example for wwan with both gpios.
 
-Patch 1 adds missing reset-gpios property to rfkill-gpio binding.
-Patches 2-4 add .dtsi for FET3568-C and .dts for OK3568-C (depends on
- patch 1 to suppress dt warnings).
-Patch 5 adds .dtso for FIT-PCIE-SATA adapter that allows to connect
- SATA drives to the board.
-
-Note: tested on v1.1 board. On v1.2 RTL8211F phys use dedicated
-crystal oscillator instead of 25 MHz reference clock from SoC. Patch
-should be compatible with both revisions, as in [1] solution.
-
-[1] https://lore.kernel.org/all/20250704-rk3576-rock4d-phy-handling-fixes-v1-1-1d64130c4139@kernel.org/
-
+Signed-off-by: Dmitry Yashin <dmt.yashin@gmail.com>
 ---
-Changes in v2:
-- added patch for rfkill-gpio's dt-binding with reset-gpios property to
-  suppress dt warnings
-- removed mmc-pwrseq. AW-CM358SM has only power management PDn pin
-  for both wifi and bt. Using shared wifi_bt_reg_on regulator fixes
-  bluetooth failure on cold boots
-- added bluetooth wakein/wakeout pins
-- moved leds/common.h to the SoM dtsi
-- switched gmac's phy-mode to rgmii-id
-- added rfkill-gpio for modem reset
-- dropped unused wifi and bt pinctrl's
-- Link to v1: https://patch.msgid.link/20260930-ok3568-c-v1-0-a0ffd55f5c95@gmail.com
+ .../devicetree/bindings/net/rfkill-gpio.yaml       | 23 +++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-To: Heiko Stuebner <heiko@sntech.de>
-Cc: netdev@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-rockchip@lists.infradead.org
+diff --git a/Documentation/devicetree/bindings/net/rfkill-gpio.yaml b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
+index 4a706a41ab38..66f6ad2872ff 100644
+--- a/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
++++ b/Documentation/devicetree/bindings/net/rfkill-gpio.yaml
+@@ -29,7 +29,12 @@ properties:
+       - wlan
+       - wwan
+ 
++  reset-gpios:
++    description: GPIO connected to device's reset pin (RESET#)
++    maxItems: 1
++
+   shutdown-gpios:
++    description: GPIO connected to device's shutdown pin (W_DISABLE1#, etc.)
+     maxItems: 1
+ 
+   default-blocked:
+@@ -39,7 +44,12 @@ properties:
+ required:
+   - compatible
+   - radio-type
+-  - shutdown-gpios
++
++anyOf:
++  - required:
++      - reset-gpios
++  - required:
++      - shutdown-gpios
+ 
+ additionalProperties: false
+ 
+@@ -54,3 +64,14 @@ examples:
+         shutdown-gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>;
+         default-blocked;
+     };
++
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    rfkill-wwan {
++        compatible = "rfkill-gpio";
++        label = "m2 usb wwan";
++        radio-type = "wwan";
++        reset-gpios = <&gpio2 23 GPIO_ACTIVE_HIGH>;
++        shutdown-gpios = <&gpio2 25 GPIO_ACTIVE_HIGH>;
++    };
 
----
-Dmitry Yashin (5):
-      dt-bindings: net: rfkill-gpio: document reset-gpios property
-      dt-bindings: arm: rockchip: add Forlinx FET3568-C
-      arm64: dts: rockchip: add Forlinx FET3568-C
-      arm64: dts: rockchip: add Forlinx OK3568-C
-      arm64: dts: rockchip: add FIT-PCIE-SATA overlay
-
- .../devicetree/bindings/arm/rockchip.yaml          |   7 +
- .../devicetree/bindings/net/rfkill-gpio.yaml       |  23 +-
- arch/arm64/boot/dts/rockchip/Makefile              |   6 +
- arch/arm64/boot/dts/rockchip/rk3568-fet3568-c.dtsi | 332 ++++++++++++
- .../rockchip/rk3568-ok3568-c-fit-pcie-sata.dtso    |  16 +
- arch/arm64/boot/dts/rockchip/rk3568-ok3568-c.dts   | 579 +++++++++++++++++++++
- 6 files changed, 962 insertions(+), 1 deletion(-)
----
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
-change-id: 20260930-ok3568-c-c095925b1e26
-
-Best regards,
---  
-Dmitry Yashin <dmt.yashin@gmail.com>
+-- 
+2.56.0
 
