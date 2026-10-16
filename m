@@ -1,85 +1,79 @@
-Received: from mta1.migadu.com (out-141.mta1.migadu.com [95.215.58.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AE34772B5
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 15:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0361A2D7817;
+	Fri, 16 Oct 2026 15:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792163959; cv=none; b=iqsYwZPzQblk2CbfFZq3V8zSL1VfyTBatYdwclepGv4xurNMHsk9tcWfRjjFXomv+bbunL337Qyqr3rxBVQm7qRF9iSPbdr41R86ontSv/N2Pf6FwTSzJDo9Ma/WNSrwdzQSbUtlJWzYOyYndblr9/93DQUPVoDK0j/umAWKbSo=
+	t=1792164006; cv=none; b=La/vTuemsbz0rrur0szNqeTFR7RrAMO8PiJDrCkzMX1J23mPx7ij45bzDPe09Ziq7sIB+Tq6Jwn+pZroOzuMeUDbnKg9n2SND4CEiizmWHJ9hYEf50+2WtlJfqsezVrCmmIkS7I0xp1QnE9/TZkUEyw+oDK9nFZwyMfwt3AzuxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792163959; c=relaxed/simple;
-	bh=JgjAGc1yvO+GZR/lMz41Sy+B81/XedX2R7qPQROM1P0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pLdrOvkeo4xtCZ2mkW3u+WdidKNvIj5p/rxMZg7FQRjL+Co+bdqDC5DglxN/WJX0mgB3PRkpxeqHVMhouJKjgbvXUQ0ppGpPO9Fisj5Lno/ZD4eHX2mIXAjP1TZf1IdjG82MynU3+IEWEr1UqB3adGXVBWGqdxBVwHnRfrBeawU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EmSs2cBc; arc=none smtp.client-ip=95.215.58.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1792164006; c=relaxed/simple;
+	bh=QWyrNBfMkUlbdXJSdmg9tZmmFd3tYkyFPii0W9J5mNE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hZRun4ezRxHhbNYotZKYzqrDjrbeQEszpGijCjgK7fze2IQRiX2BTxDccVqTiz0wyJUqfwcyW2DYAmD4NEMUPCFq24qgkOMYeTpRcW3iYaiYTAr57QxUIc7aP9RTGKhBxnkl5kVeQM8qM9UEQRNi9Yye+FlCDhPITkL5zkwbQKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5Rx1nK9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EmSs2cBc"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=JgjAGc1yvO+GZR/lMz41Sy+B81/XedX2R7qPQROM1P0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792163954; v=1; x=1792768754;
- b=EmSs2cBcB3doNAIjtpdTkto7UMnK2jB3+G1bdN15msWzaKjPK5kl99gpT7nHePSyOk10YEEG
- yqY9ITUenWi29PZ/YdZ3rxVvC6+9Djmdyu5DwPG3jC0jXIPYdURLqks/AEXGvFqCPfM80UWv3Ld
- LsBsfQRVBlBOXiCJN4Lmp0Yo=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 8e118369b878a887;
-	Fri, 16 Oct 2026 15:19:13 +0000
-X-Mizu-Trace-ID: 8e118369b878a887
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <6d16da53-0917-45cb-a5eb-5b85de5e2fb1@linux.dev>
-Date: Fri, 16 Oct 2026 23:19:02 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5Rx1nK9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828A71F000C4;
+	Fri, 16 Oct 2026 15:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792164005;
+	bh=RgYq0+99nB4s7Z6YFAw3BNSSx8JH/I3EnogCY3sRCqo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=C5Rx1nK99yebsuZviYIbNkkqL5xUz/VT+WYiIjwO9ciAOvfQkERjY/ieeUALgTFqq
+	 F4fouP776yj+IDI6lGah/R4RbLnQG3HrVbkMuOWAnTQd2lx6cMASzRRrqCCPe7v4xt
+	 JvO3hmCEmKKfYgTSXZNmSZD4bR43hOyJnKWoUR77xjYQW2qv9twuqvFGcJXC/S4Sjt
+	 ApfUxYAP2gvydGfALdo7lIPY5iOC/tpaOdd9j251/Tlub+TH/NCBCFqysZUWHmGyKv
+	 caik2ULKfaFTBl1e8mJwg15Fo1er0nJL7mELgh8srM2ds3qC0gsNFoi40QBgRjRZ+b
+	 KP6A0oFQ+/mtg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774DE380A96A;
+	Fri, 16 Oct 2026 15:20:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next net] netdev: Hide the netdev_priv() origin from
- GCC in netdev_from_priv()
-To: Kees Cook <kees@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Jiri Pirko
- <jiri@resnulli.us>, Brad Spengler <spender@grsecurity.net>,
- PaX Team <pageexec@gmail.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org,
- Yeswanth Krishna Tellakula <yeswanth@linux.ibm.com>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261015165959.i.798-kees@kernel.org>
-Content-Language: en-US
-From: Qingfang Deng <qingfang.deng@linux.dev>
-In-Reply-To: <20261015165959.i.798-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/1] net: ethernet: micrel: ks8842: use dmaengine_submit()
+ instead of ->tx_submit()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179216400428.812602.6391711676783414058.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 15:20:04 +0000
+References: <20261002193022.168248-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261002193022.168248-1-Frank.Li@oss.nxp.com>
+To: Frank Li <Frank.Li@oss.nxp.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com, yiconghui@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, vkoul@kernel.org,
+ imx@lists.linux.dev
 
-Hi,
+Hello:
 
-On 10/16/2026 1:00 AM, Kees Cook wrote:
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -2838,6 +2838,13 @@ static inline void *netdev_priv(const struct net_device *dev)
->    */
->   static inline struct net_device *netdev_from_priv(const void *priv)
->   {
-> +	/*
-> +	 * When GCC can see that @priv came from netdev_priv(), it can
-> +	 * compute an object size of 0 for the net_device and its members,
-> +	 * which makes FORTIFY_SOURCE fail valid accesses through the result:
-> +	 * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=127875
-> +	 */
-> +	OPTIMIZER_HIDE_VAR(priv);
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-If this bug only affects GCC, you may wrap it with a
-#ifdef CONFIG_CC_IS_GCC block.
+On Fri,  2 Oct 2026 15:30:19 -0400 you wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Replace direct dma_async_tx_descriptor->tx_submit() calls with the
+> proper dmaengine_submit() API wrapper.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> [...]
 
->   	return container_of(priv, struct net_device, priv);
->   }
->   
+Here is the summary with links:
+  - [1/1] net: ethernet: micrel: ks8842: use dmaengine_submit() instead of ->tx_submit()
+    https://git.kernel.org/netdev/net-next/c/9b6fb15a5cc6
 
-Kind regards,
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
