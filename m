@@ -1,182 +1,180 @@
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219EB4A43FE
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792154996; cv=none; b=cnejroSo5SFOxSNdFaksyZLpYfIgzzdytChbOPmAzkrYoOC0qVSmWBYOi58RCfxRokbrbvzAynGysWWLqQhnCyaKZDG6g30w9zKxCht4TW3oIyjh5QaPhCCwy0KNMznrWlfPGJ4sRv5TSJIkfHbpapmwCBafjxQXhrPuvv5qmL0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792154996; c=relaxed/simple;
-	bh=ltBDINOqkCYKfRNOKYp32QAr/6wBJHOQJSo9PQDklg4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K8kCNhD1kUCmfueHaTwXn8PePVrjTuUv2Qcp+Vpf26Pir6ciV14IUxyX6P6YApczbnl5n5tGiTETCRU6vmU179AIE00keEtohHibfFwWNmr1lp42a6Oy9vjV9vnda3dlyCvQyCjnAwCXPHaGISVK1y7brIIdF+Cr1Z/fHbJMhuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=nnfNJX/s; arc=none smtp.client-ip=212.77.101.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80134973AE
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792155079; cv=pass; b=gb5ZfLA9KC8jwXPw8JOD+RnkoPwU8dETAnuiwZlqbA4ibsM+QRkjiMuEVqekA99OG+jdIc10d0REWUkie0V+tz0RpErrIGv02+iPLTQjrqASHfP9yUTF/ooLbwve9apH+qEFjn4eDq2lfrh/kNHd3pPtl44MIQWuAEDr6KQV6KY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792155079; c=relaxed/simple;
+	bh=NhOW2dh4m8kfq9MbFov+5iQ04Dt9NX8wqPTkeJTUa+8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RNu2BaiCXMLuRrmVSOdITWefKx6K09ytN/on0ISHbz1sckSzPS+m71nxUKElFOV+nTBOAEAP4cHyPcn+cfjjuj9wDhH53u5YFqT9NDddkE+/z7SmZWhLc03qr8ZNJCe7youiLxc1W8cOjg4G2EwwB/vJBcRw16c4E9IoRQrpNQo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rDsZerex; arc=pass smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="nnfNJX/s"
-Received: (wp-smtpd smtp.wp.pl 25324 invoked from network); 16 Oct 2026 14:23:06 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=s20261001;
-          t=1792153386; bh=4bTkFT+F2hA2/znsJfPcE/M31DKOZlPTYzijVZ/YGCU=;
-          h=From:To:Cc:Subject;
-          b=nnfNJX/s03ZUdYA8IXtb8ij8HDNRK+1vVn/Aeeb0GaPi6APxoYbc/alR9XIraG1MK
-           H+P5CzatMv5QyV3nPuRUYVT6NI8ZFYeGAJFlrFSpJyXmdaPq/hlSlY0liuGki//wNq
-           dgXLYyx7YzScXL9pkVlG80YBb2VzlZttt4gKCWyDUYzFFvD9Ze2YyPJTW7uLqSL3J8
-           Zo/9I2SAr+xsVNSzatt9UIqVyKhMoBMQXmlrY1mC9nikUWzYSZ9MGVEFIKvAcEn1E5
-           JANp5+QnT7NPaVmZUr3QvnNGUgfnrb+IPWI4DfpYgeVd/RNxam819G+OlAD8n33CKM
-           eKXRRarwjX3Kg==
-Received: from localhost (77-236-6-58.static.play.pl [77.236.6.58])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <edumazet@kernel.org>; 16 Oct 2026 14:23:06 +0200
-Date: Fri, 16 Oct 2026 14:23:06 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH -next] wifi: rt2x00: use skb_put_padto() for beacon
- padding
-Message-ID: <20261016122306.GA71823@wp.pl>
-References: <20261016101602.2770015-1-edumazet@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rDsZerex"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso8291a12.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 05:51:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792155075; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FrjHHs3jqMzYLRuI6IwW/A1b1DK36SG2Axs9eDXgMS/5yM0yRS4vUJkjc3r5/bn5ds
+         w8AcbULgTm8I9VvytWdqXmRsWPozYD9NsmkoSxkB1/mYyAmVs6xoHtSbEutegqHI2ZDI
+         VUdVRyXuvXvYCtTMTnURV777OZCVTp/VZ88qzsY+YgGeRSJjopA+Y2SQs7rjvbddfN9l
+         jIejnHAHERYKZqa2/gqG0uKc+qNDbdkgIyaI7Els+0JmHI32+qbhX6+bUSVLcMuZ++JP
+         D4WL3XEKGYK1EldidF7s6zVDUlWjVcmaGeLxiOr0cXslhJBwHvqqTQAn0q5LdLCEkfi/
+         UNow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CIregvBSP9juxzobcyMQ+rByYbCLFuXclbRVa9ESVqs=;
+        fh=AV7nf5UXfrGWO4kmdzU560mUupHuV9zQk0cwkqEBe7c=;
+        b=bmV+wZgF26+UZlnrMlilz2uMuLP65sX4NAqnyEr8AnCwhXXS2UtFbJ+DKbL1JQnrox
+         vjxn7NLJ541wPdY/ySbwWhAaoyNF0x+khXSQVl8d1+idmvhs99avCS7oCeHW/91hPWYM
+         p/hrQoJ8dRZSWhY8hoTZv3NqxuWxraWIppKpgcwJAdHVNXqnAmeWZwNMab1HhO7Sk6tM
+         0+5KA+btAZf9Ybx8GtGjc+JGRIgEK9JyCHetJr066KbuxwqpUAHCOyb5k3tw0UcTLZPb
+         Q6PETqadC7IHyBXF7JKiVoFVSA4UBLrKztvgikjyA4fxA8Orw7xInO2O3Jqd/+WNyDxl
+         3s2g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792155075; x=1792759875; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CIregvBSP9juxzobcyMQ+rByYbCLFuXclbRVa9ESVqs=;
+        b=rDsZerexR6sYpZzJizFUW5S66B+yb7F1zpyipD11lJyMpP6nTFCyNJS0DQt528R79s
+         YX59o+BYcSPRJz/UpEP6UxaLcqrBl1edQycGhyjE0ss8eaHvnzRByaVKJHGNVRrAOb1O
+         jyl1QWD7gxIJ9W0tC7Nc4u8sBiFo5C15E51StGL76kLlbII84hjesCAvvlKBdDqbFGsm
+         yHPu4AXUT4T7dZhsDoZU0KUSHTsd7pf2u9E19rSh4NIH0M0GCrGXfc8cOdoggYepXTqU
+         WfBT4ZUHFWkNrewmzqe1f8h7U29yjbiE5y24/7hvp24wBNGiNEJXb7scH1EYfROdhx3H
+         ZwVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792155075; x=1792759875;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CIregvBSP9juxzobcyMQ+rByYbCLFuXclbRVa9ESVqs=;
+        b=Q5FwMnYM1bgiUHHXjxeaIqQcb1rrHkjwJkl4WH+H9+3dovUOlvjWraaS+JnBD8Lbvg
+         IQCRFacFYVz3l3iZkqC5exs/76N4Vz7N6mrIm9pHZBiEzh0kShajILMNaaRvcjNU+Fne
+         YyKJj3PTkoSwhf8ocnwrd3b/gub2hKnVz8SVZeVlhq8g+lxvMzmsrX5Y+qSOi80WAFfL
+         I774qTaBWmjgubz2+ZhDKmvdZPRk+XHevlvMx9I1oABR3CzFq6GbE4Of3plp7dpZ4qvV
+         XMHohOnua0F/x6fQaXu7teNiA4FDeECHBswScTXhn3czc9QQg4M1cEdGO99ypnOQZ2X2
+         yaIw==
+X-Forwarded-Encrypted: i=1; AKwUvBzco9mo2GpSbwkJlzZbYjI+w+TV+VbMoSVuvKN5NPKuWEGPi710+2tDtUck6rKL4baq2LzxMyQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJPFuzOHAr7Oq+VcXoGIBW6FRpJ+N//78fVNEd7gEn8i+fi/Rq0
+	af0hAHqhhklQZrLmAA3/XtrF6a1Tqo89EAxe1Leoj6nDbdr9IvbKQVMQ1gQeMislFqW43DihOzM
+	1YyIvXbSGMWCd8IczfaeTAElYcXLwUUWUqgQjx75l
+X-Gm-Gg: AYBFou2JaZsvTsR20MMzd1TbyBYyQ6Z3XDRNgR7Gn6qGR7DxToE8Khq198N1WcoXmQn
+	U2CjE7GyJG+nybtCnsQqo4XByx3ZBdlu/BsGbxCX2QIOTfiFhvmItBNNN8wm8Is/1tyVvaIOWvm
+	xMjWh7fZhSGvB0GBs+kaZcp3wNe/fUdxmOhuMY6uxn4BiGLY2gW/UriahPWuJ+TwJP+P74318Uj
+	pK7jdGmUk/r9dvR3W//KEbAA8flJ8hlwdgHwYoiAxuYVZ6moz7v5A11Wso3FkRkW0I98piseIlm
+	jV6tJt0Zr/qxv3jVPogPbT2rFTVejrtFp8fUig9T4hHB+DgYs3AUHQ==
+X-Received: by 2002:a05:6402:1512:b0:6b1:bbbf:25b4 with SMTP id
+ 4fb4d7f45d1cf-6b3896bb8e1mr55897a12.6.1792155074206; Fri, 16 Oct 2026
+ 05:51:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261016101602.2770015-1-edumazet@kernel.org>
-X-WP-MailID: 1145b0cbfd87b40f0092c40874a853ec
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [8YPB]                               
+References: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
+In-Reply-To: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 16 Oct 2026 05:51:02 -0700
+X-Gm-Features: AclHuK-iMNhhxZAcYE0H3a3QC5Uul0gFiT_mer94jWWIdH2TOqEIhyDt2MtD6oI
+Message-ID: <CAHS8izMCh6UzOz8B8O6Mc=MGtCbxLQN9+V8aiA1nGHY6P4xs9w@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits() report
+ unreadable frags
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 16, 2026 at 12:16:02PM +0200, Eric Dumazet wrote:
-> rt2800_write_beacon(), rt61pci_write_beacon() and rt73usb_write_beacon()
-> pad the beacon with skb_pad(), which does not change skb->len, and
-> then have to add the padding length again when writing the beacon
-> to the hardware.
-> 
-> Use skb_put_padto() instead, and remove the padding_len variables.
-> 
-> No functional change: the beacon skb is freed right after
-> being written to the hardware.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+On Tue, Oct 13, 2026 at 11:02=E2=80=AFAM Josef Bacik <josef@toxicpanda.com>=
+ wrote:
+>
+> skb_copy_and_csum_bits() has no way to fail.  When it reaches
+> unreadable frags it zero-fills the rest of the buffer and returns 0,
+> and since commit ab9414ed70bd ("net: skbuff: don't leave stale bytes in
+> skb_copy_and_csum_bits()") that 0 is the correct checksum for what's in
+> the buffer.  Its callers can't tell the copy didn't happen.
+>
+> That matters in the !sg && !csum branch of skb_segment().  A devmem TCP
+> skb keeps its whole payload in unreadable frags, so every segment ends
+> up with a payload of zeroes, tcp_gso_segment() writes a valid TCP
+> checksum over it, and the peer accepts the zeroes as stream data.  This
+> is reachable when both SG and TX checksum offload are turned off on a
+> device used for devmem TX: sk_setup_caps() still gives TCP SG and
+> HW_CSUM, so the dmabuf send is accepted, validate_xmit_unreadable_skb()
+> lets the skb through for a NETMEM_TX_NO_DMA device or a matching
+> binding, and software GSO segments it with neither feature.  Before
+> that commit the segments carried uninitialized memory with a checksum
+> that almost never matched.
+>
+> Make skb_copy_and_csum_bits() return 0 or -EFAULT and hand the checksum
+> back through a pointer, and make it __must_check so a new caller can't
+> ignore the failure.  Each caller takes the error path it already has
+> for a failed copy:
+>
+>  - skb_segment() fails the segmentation, as the csum branch already
+>    does when skb_copy_bits() fails.
+>  - icmp_glue_bits() and icmpv6_getfrag() return the error, so the ICMP
+>    error isn't sent.
+>  - __ip_append_data() and __ip6_append_data() drop the new skb and
+>    return -EFAULT, as they do when getfrag fails.
+>  - vnet_skb_shape() fails the same way it does when its skb_copy_bits()
+>    call fails.
+>  - xdr_skb_read_bits() returns 0 without consuming anything, as it does
+>    when skb_copy_bits() fails, so desc.count stays non-zero and
+>    csum_partial_copy_to_xdr() fails.  csum_partial_copy_to_xdr() used
+>    to checksum the bytes it hadn't copied before checking desc.count.
+>    desc.offset and desc.count always add up to skb->len, so that only
+>    ran when it was about to fail anyway, and on an unreadable skb
+>    skb_checksum() would WARN.  Drop it.
+>  - skb_copy_and_csum_dev() can't return an error, so it leaves the
+>    checksum alone and the frame goes out with a bad one.  Its callers
+>    are drivers that never see unreadable skbs anyway.
+>
+> The zero-fill stays, so a caller that does send the buffer still
+> doesn't leak anything.
+>
+> This was found by the Sashiko AI review of that commit, and
+> Mina suggested reporting the error from the helper rather than checking
+> for unreadable frags in skb_segment().
+>
+> Fixes: ab9414ed70bd ("net: skbuff: don't leave stale bytes in skb_copy_an=
+d_csum_bits()")
+> Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+> Link: https://lore.kernel.org/all/179148235783.434549.1432237422747783281=
+7@kernel.org/
+> Suggested-by: Mina Almasry <almasrymina@google.com>
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-> ---
-> Part of a medium term plan to get rid of skb_pad(), source of many mistakes.
-> 
->  drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 8 +++-----
->  drivers/net/wireless/ralink/rt2x00/rt61pci.c   | 9 +++------
->  drivers/net/wireless/ralink/rt2x00/rt73usb.c   | 8 +++-----
->  3 files changed, 9 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> index 2e2e382b624757ffcd826f37faebc36f38d04f11..4f7beca668bb032ef469e19e8919afd6316fe3eb 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> @@ -1414,7 +1414,6 @@ void rt2800_write_beacon(struct queue_entry *entry, struct txentry_desc *txdesc)
->  	struct rt2x00_dev *rt2x00dev = entry->queue->rt2x00dev;
->  	struct skb_frame_desc *skbdesc = get_skb_frame_desc(entry->skb);
->  	unsigned int beacon_base;
-> -	unsigned int padding_len;
->  	u32 orig_reg, reg;
->  	const int txwi_desc_size = entry->queue->winfo_size;
->  
-> @@ -1452,10 +1451,9 @@ void rt2800_write_beacon(struct queue_entry *entry, struct txentry_desc *txdesc)
->  	/*
->  	 * Write entire beacon with TXWI and padding to register.
->  	 */
-> -	padding_len = roundup(entry->skb->len, 4) - entry->skb->len;
-> -	if (padding_len && skb_pad(entry->skb, padding_len)) {
-> +	if (skb_put_padto(entry->skb, roundup(entry->skb->len, 4))) {
->  		rt2x00_err(rt2x00dev, "Failure padding beacon, aborting\n");
-> -		/* skb freed by skb_pad() on failure */
-> +		/* skb freed by skb_put_padto() on failure */
->  		entry->skb = NULL;
->  		rt2800_register_write(rt2x00dev, BCN_TIME_CFG, orig_reg);
->  		return;
-> @@ -1464,7 +1462,7 @@ void rt2800_write_beacon(struct queue_entry *entry, struct txentry_desc *txdesc)
->  	beacon_base = rt2800_hw_beacon_base(rt2x00dev, entry->entry_idx);
->  
->  	rt2800_register_multiwrite(rt2x00dev, beacon_base, entry->skb->data,
-> -				   entry->skb->len + padding_len);
-> +				   entry->skb->len);
->  	__set_bit(ENTRY_BCN_ENABLED, &entry->flags);
->  
->  	/*
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt61pci.c b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
-> index d4783658b2c5dbb69ab6c715a23ac8814ef3afb0..974a6d85b37b600f9cac22055c7a0fe0e17e2d5f 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt61pci.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
-> @@ -1875,7 +1875,6 @@ static void rt61pci_write_beacon(struct queue_entry *entry,
->  	struct rt2x00_dev *rt2x00dev = entry->queue->rt2x00dev;
->  	struct queue_entry_priv_mmio *entry_priv = entry->priv_data;
->  	unsigned int beacon_base;
-> -	unsigned int padding_len;
->  	u32 orig_reg, reg;
->  
->  	/*
-> @@ -1900,10 +1899,9 @@ static void rt61pci_write_beacon(struct queue_entry *entry,
->  	/*
->  	 * Write entire beacon with descriptor and padding to register.
->  	 */
-> -	padding_len = roundup(entry->skb->len, 4) - entry->skb->len;
-> -	if (padding_len && skb_pad(entry->skb, padding_len)) {
-> +	if (skb_put_padto(entry->skb, roundup(entry->skb->len, 4))) {
->  		rt2x00_err(rt2x00dev, "Failure padding beacon, aborting\n");
-> -		/* skb freed by skb_pad() on failure */
-> +		/* skb freed by skb_put_padto() on failure */
->  		entry->skb = NULL;
->  		rt2x00mmio_register_write(rt2x00dev, TXRX_CSR9, orig_reg);
->  		return;
-> @@ -1913,8 +1911,7 @@ static void rt61pci_write_beacon(struct queue_entry *entry,
->  	rt2x00mmio_register_multiwrite(rt2x00dev, beacon_base,
->  				       entry_priv->desc, TXINFO_SIZE);
->  	rt2x00mmio_register_multiwrite(rt2x00dev, beacon_base + TXINFO_SIZE,
-> -				       entry->skb->data,
-> -				       entry->skb->len + padding_len);
-> +				       entry->skb->data, entry->skb->len);
->  
->  	/*
->  	 * Enable beaconing again.
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt73usb.c b/drivers/net/wireless/ralink/rt2x00/rt73usb.c
-> index d6b7174d087a26c7a403b8b743d59f9fb5f9fb62..ee308bcf0bed00edea24278deb1770f035012998 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt73usb.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt73usb.c
-> @@ -1523,7 +1523,6 @@ static void rt73usb_write_beacon(struct queue_entry *entry,
->  {
->  	struct rt2x00_dev *rt2x00dev = entry->queue->rt2x00dev;
->  	unsigned int beacon_base;
-> -	unsigned int padding_len;
->  	u32 orig_reg, reg;
->  
->  	/*
-> @@ -1554,10 +1553,9 @@ static void rt73usb_write_beacon(struct queue_entry *entry,
->  	/*
->  	 * Write entire beacon with descriptor and padding to register.
->  	 */
-> -	padding_len = roundup(entry->skb->len, 4) - entry->skb->len;
-> -	if (padding_len && skb_pad(entry->skb, padding_len)) {
-> +	if (skb_put_padto(entry->skb, roundup(entry->skb->len, 4))) {
->  		rt2x00_err(rt2x00dev, "Failure padding beacon, aborting\n");
-> -		/* skb freed by skb_pad() on failure */
-> +		/* skb freed by skb_put_padto() on failure */
->  		entry->skb = NULL;
->  		rt2x00usb_register_write(rt2x00dev, TXRX_CSR9, orig_reg);
->  		return;
-> @@ -1565,7 +1563,7 @@ static void rt73usb_write_beacon(struct queue_entry *entry,
->  
->  	beacon_base = HW_BEACON_OFFSET(entry->entry_idx);
->  	rt2x00usb_register_multiwrite(rt2x00dev, beacon_base, entry->skb->data,
-> -				      entry->skb->len + padding_len);
-> +				      entry->skb->len);
->  
->  	/*
->  	 * Enable beaconing again.
-> -- 
-> 2.53.0
-> 
+Patch LGTM, but net + stable + fixes is very overkill for me. This is
+a very minor issue and only results in some devmem packets maybe
+having a bad csum and get dropped. I would suggest fixing in net-next
+(and I know the bot will complain it's a fix that's going to net-next,
+but in this case, ignore).
+
+If you send to net-next, plaese add:
+
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+
+--=20
+Thanks,
+Mina
