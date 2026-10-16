@@ -1,68 +1,86 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84247415F1F;
-	Fri, 16 Oct 2026 11:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4292D7817
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 11:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792149621; cv=none; b=nndaKTqMUONdozQXwC8aPAeqVWf+6QgF+cH8VfaYhP7ciF2rT8KT1y0zIQ/1pmePVFVPrhPwbHE/C5IfIXIkZhyYMhE9itBqnOMdva2WfyZhWYXrdyVGeMgj/h+5q6ZQfCpxaBkH0LCRF9+G/Jno38ApirnBVmIR0q/d4aLSvNU=
+	t=1792149647; cv=none; b=miofpb9EWhY2nSyYtC0s4LfwnNx2HwE8ntEX0sSCGHJARRyWNmxrf2o4SAfOit4EkV4STHU0NE3PZPRCM1AJ+zUlALo7KQU12Rlx64jaeJAeaP6LYQpUvnM1hpkpyy1RsAjVZY2Mo/yWBk0Bl9lVA56mlHHLNvgBdmNSuD/fJ98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792149621; c=relaxed/simple;
-	bh=yC7/op8iHdXpBtfOBlqmSIfSNyxQdVW5x8XqgtLiVeU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a7vpiXp+z+7WT+JYMIIQzPqmtkDuL2lDCNDq3pqolBazXUyRVbJTBY9uy8ny/DAlvKzXbquH0+7K6piANS3cIPfZ17kWW2q1k2gCmD6qpQar8y1ClGDY20Q5RadsBmgzLsaKcgTJa26SGat3iF/I3jGnLjLhEfxBexlTUkMkWWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=2kAsX4y/; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1792149647; c=relaxed/simple;
+	bh=+OdSs83QXKRZeXBku3v0tG7jLA8SyVPmuroYMjYCBl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EndQpQ1DUFdNEbbcD9Mydog7ouTDfOR+ou7IrH1kS3ZUSjtoAhNk3kZfVbq3StTSawuoSPQ7XmDQvsscv2hOpnbYlhx31oVJUiL4oovrX3YcuMX+SBQlSF18cSo8ixb815hd1Pnd54Qk+DZlHNaDpepD1hEiylLrw6yspnUlRdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=eNjmrs5l; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="2kAsX4y/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
-	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=rhJI7F0zU+E/8xsIkBIN5MZPJE26Grg+5HNG9FQ1W7Q=; b=2kAsX4y/5GbY0reGuaB8BzWyQE
-	As/CswEbTraGIaIcVuHy6YLEFtKTdg2nXf7aHrJdoY0Wg2P6PgMeRtJHmcIE9LKy8mgEJ3ZMSTuDD
-	gEaJvL66/pUVTQiBSnr5DfEHYExnLgKdFMp5oJUQB1OUt0u96veNd5zZI2AV1Z4QKb1nhIfa6KRUx
-	5imqGV+rS6ZHyg9XovESgdDR9WIdIachTCkzINYniuXMT493bS2wNs9yEsKk11WfNHuzpph9DBVxN
-	JbD1bv1tZOwIUerHu2iGfvZF1xpalL0ZVUsPhop0tLT5box48EfWyFJ07nFXHhBRHlF2CC58aDFPo
-	FKZBqtSw==;
-Received: from [115.246.246.98] (port=28851 helo=bulbasuar.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <saivarun@couthit.com>)
-	id 1xHfZP-0000000FERK-27cF;
-	Fri, 16 Oct 2026 06:53:51 -0400
-From: Sai Varun Mudepally <saivarun@couthit.com>
-To: danishanwar@ti.com,
-	parvathi@couthit.com,
-	rogerq@kernel.org,
-	pmohan@couthit.com,
-	andrew+netdev@lunn.ch,
+	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="eNjmrs5l"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c2dc63f8d8aso1099925166b.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 04:20:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura.hr; s=sartura; t=1792149645; x=1792754445; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nP6Hen4ha32UaSHEgIpuQsbgsTYGlvUW0UsDEzDl+hQ=;
+        b=eNjmrs5lbIqzIJ8J3huCanjBIWaxjFGuEudBBZEpadeBVSF6NNWLmuN/aqs/plPnzq
+         34iCDo16j6BEewJz/hEbuZ97OdcddusLkWcrOtqDSeddl3KY4aF8ZsOh+KoNrwNlagQo
+         lgofYV7gXr4IqgUChJKZ/YQc7tlvTMOIVhFX6o0psOK9SW+1lKg8hBsX2Vxavf8yUYxc
+         fN0m+EjONRqPJtss85P6/fiBsZYVN5xSax3YyqaGMP2EDfArUJ8X/dhV4T/B4SnsFnf9
+         Jem6bvuQyUTeag+MRZTagzqnT0sZSMQ4TS8WJ7gzk06sKWYoCrHkLBRyS95TDQBe3UDs
+         kx5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792149645; x=1792754445;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nP6Hen4ha32UaSHEgIpuQsbgsTYGlvUW0UsDEzDl+hQ=;
+        b=Jyc1mFKOG1rnboT0uaOBouvvQrzf57Wu++Jw1qpofjmwC0HvFi7ZyIT5/1AJgFS0E+
+         eu45DO/Vd+UfIjfj8omSJhHbiEweLrBVoJmlK+c7GToPXpF0/v5S6v/BQgiCDDWWkApp
+         yyLk8shP+JDTVfYTpiiXg7JpARadbzv4sZEwDLSYn+9W2H4Et5AtJyuaAhTKRIPZczpJ
+         JB5ucaFiYMyO4CDk8kjFpAHrewlWlCeK+pbtuaYVMbDoRNSV3OJtYyxEOsx3bNYLLGN4
+         Ls7W44LjFbaVLI92DZT8B5Tp05wlBcCqpzEm5sZW4DCjxRyvRmfWkSsjFkdfVIEBVEcM
+         K7Mw==
+X-Forwarded-Encrypted: i=1; AKwUvBzwbTRdKAjGfJlg4UA9JYqaolXgJRsaxsn3iiuDNm+DkDagc8oJyb8IBZ/ySZmmOA+mC9pJykQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI21LuBdR1OQ1p4ej+FlFUeB4+pjyrCOmfk89DXnrLzSkZP8r1u
+	DZPFyd2iaRSRq6GArPah5h2wbxVadkuI/GrogAcKvpsqsVFeBMewEfAODAJ6TMVmFlE=
+X-Gm-Gg: AYBFou0VbzFWyiACJ8RERpERmNLFoCpxQIj5RE5n84OnyCBglCTlacAzcokeaGLiFoD
+	RX2UhjnVfd3YAU1K7IBStxm0cTPNbSleo+YmAreSxCnGpirwy59NRI+Gv4PSYiKxvtcw42DduFd
+	euy1Tu8z09xORcgrjXp4JY/1Dpe2SJdoSQgQTDPZC5r9N9k1Uxa0pvreP3C64M3r4drBLn2oVZ1
+	0L5YPjUFnIghryk/igQq+gBPusUr2iBupyUPBcaW1c9vkcRi+cflAA2CVzpsfInCEqj4Jfql+bY
+	9AKUnR25DGTjjCGpJYV31CKVE7plQDzMPXal7Zi7ifY0YKCCP3FwQ1YUbq3qlqVdqBtFUp6MkPo
+	X3333pbY4nKMwHNxgQjt7lgeSoCnwaeT5j69NjE3NHnOqg4UbghwflDWC9IK78G4GMsPcrvhx9S
+	H7y00EBuMWog8ASfhee1dB2054hi8PcCXHK/OnZOFjUiw99fzq4rmWVLDWEpT1OkZYs8iGp31pE
+	1zF0Mnyi83Uk5KCIbs/SoeHYVjrtngucXRr7ymsJCokDJPCaodDYzMZM6Vs+YHZNZairuy5TDJ5
+	oJ5cAHFqrDOuAryNKFtdoAIfH5bA
+X-Received: by 2002:a17:906:478d:b0:c41:4d5:e97c with SMTP id a640c23a62f3a-c4104d5f1abmr63177666b.37.1792149643725;
+        Fri, 16 Oct 2026 04:20:43 -0700 (PDT)
+Received: from threadripper-fedora-workstation (dh207-15-194.xnet.hr. [88.207.15.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c408e32c075sm63947666b.11.2026.10.16.04.20.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 04:20:43 -0700 (PDT)
+From: Robert Marko <robert.marko@sartura.hr>
+To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	afd@ti.com,
-	basharath@couthit.com,
-	horms@kernel.org
-Cc: linux-arm-kernel@lists.infradead.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	lxu@maxlinear.com,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	michael@walle.cc,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pratheesh@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	j-rameshbabu@ti.com,
-	m-malladi@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	mohan@couthit.com,
-	Sai Varun Mudepally <saivarun@couthit.com>
-Subject: [PATCH net-next] net: ti: icssm-prueth: use dev_close()/dev_open() in icssm_prueth_change_mode()
-Date: Fri, 16 Oct 2026 16:21:35 +0530
-Message-ID: <20261016105206.167094-1-saivarun@couthit.com>
-X-Mailer: git-send-email 2.43.0
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: lrosu@maxlinear.com,
+	luka.perkov@sartura.hr,
+	Robert Marko <robert.marko@sartura.hr>
+Subject: [PATCH net-next v2 1/5] dt-bindings: net: maxlinear: add MxL86211C VDDP supply
+Date: Fri, 16 Oct 2026 13:19:32 +0200
+Message-ID: <20261016112033.949026-1-robert.marko@sartura.hr>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,125 +88,91 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: saivarun@couthit.com
-X-Authenticated-Sender: server.couthit.com: saivarun@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-In icssm_prueth_change_mode(), if ndev->netdev_ops->ndo_open(ndev) fails
-and returns an error, the function aborts without restoring the NAPI state.
-Later, when the interface is brought down, the kernel naturally invokes
-ndo_stop() again. A second napi_disable() call on an already disabled NAPI
-might trigger an infinite sleep waiting for NAPI_STATE_SCHED.
+Describe the VDDP supply used by the MxL86211C PHY. Its voltage
+determines whether the MDIO, MDC, and MDINT pads use 1.8 V or 3.3 V.
 
-Use dev_close()/dev_open() so the core keeps IFF_UP consistent. If
-dev_open() fails, close the ports already reopened and fall back to
-EMAC mode.
+Select this binding for the MxL86211C PHY ID so the supply requirement
+is validated.
 
-Also undo the br_members update in icssm_prueth_ndev_port_link() when
-icssm_prueth_port_offload_fwd_mark_update() fails.
-
-Test Log:
-https://gist.github.com/SaiVarun754/688a21038f1b2bd2b89d2db65224edb0
-
-Fixes: eca327ae9aa6 ("net: ti: icssm-prueth: Add support for ICSSM RSTP switch")
-Signed-off-by: Sai Varun Mudepally <saivarun@couthit.com>
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
 ---
- drivers/net/ethernet/ti/icssm/icssm_prueth.c | 38 ++++++++++++++------
- 1 file changed, 28 insertions(+), 10 deletions(-)
+Changes in v2:
+- Model VDDP as a supply instead of a regulator provider.
+- Select the schema for the MxL86211C PHY ID.
 
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index b42c98e861e0..d50aa0992c33 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -1100,7 +1100,7 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
- 	bool portstatus[PRUETH_NUM_MACS];
- 	struct prueth_emac *emac;
- 	struct net_device *ndev;
--	int i, ret;
-+	int i, j, ret;
+ .../bindings/net/maxlinear,gpy2xx.yaml        | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
+index 8a3713abd1ca9..a0dfb6192d81b 100644
+--- a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
++++ b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
+@@ -10,10 +10,38 @@ maintainers:
+   - Andrew Lunn <andrew@lunn.ch>
+   - Michael Walle <michael@walle.cc>
  
- 	for (i = 0; i < PRUETH_NUM_MACS; i++) {
- 		if (!prueth->emac[i]) {
-@@ -1115,11 +1115,7 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
- 		if (!portstatus[i])
- 			continue;
- 
--		ret = ndev->netdev_ops->ndo_stop(ndev);
--		if (ret < 0) {
--			netdev_err(ndev, "failed to stop: %d", ret);
--			return ret;
--		}
-+		dev_close(ndev);
- 	}
- 
- 	if (mode == PRUSS_ETHTYPE_EMAC || mode == PRUSS_ETHTYPE_SWITCH) {
-@@ -1141,14 +1137,25 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
- 		if (!portstatus[i])
- 			continue;
- 
--		ret = ndev->netdev_ops->ndo_open(ndev);
-+		ret = dev_open(ndev, NULL);
- 		if (ret < 0) {
- 			netdev_err(ndev, "failed to start: %d", ret);
--			return ret;
-+			goto err_dev_open;
- 		}
- 	}
- 
- 	return 0;
++select:
++  properties:
++    compatible:
++      contains:
++        const: ethernet-phy-idc133.5400
++  required:
++    - compatible
 +
-+err_dev_open:
-+	for (j = 0; j < i; j++) {
-+		if (portstatus[j])
-+			dev_close(prueth->emac[j]->ndev);
-+	}
+ allOf:
+   - $ref: ethernet-phy.yaml#
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: ethernet-phy-idc133.5400
++      required:
++        - compatible
 +
-+	/* Fall back to EMAC mode */
-+	prueth->eth_type = PRUSS_ETHTYPE_EMAC;
++    then:
++      required:
++        - vddp-supply
 +
-+	return ret;
- }
++    else:
++      properties:
++        vddp-supply: false
  
- /* VLAN-tag PCP to priority queue map for EMAC/Switch/HSR/PRP used by driver
-@@ -1639,6 +1646,8 @@ bool icssm_prueth_sw_port_dev_check(const struct net_device *ndev)
- 
- static int icssm_prueth_port_offload_fwd_mark_update(struct prueth *prueth)
- {
-+	struct prueth_emac *emac;
-+	unsigned long flags;
- 	int set_val = 0;
- 	int i, ret = 0;
- 	u8 all_slaves;
-@@ -1661,11 +1670,20 @@ static int icssm_prueth_port_offload_fwd_mark_update(struct prueth *prueth)
- 	 */
- 	if (set_val && !PRUETH_IS_SWITCH(prueth)) {
- 		ret = icssm_prueth_change_mode(prueth, PRUSS_ETHTYPE_SWITCH);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(prueth->dev, "Failed to enable Switch mode\n");
--		else
-+			emac = prueth->emac[0];
-+			spin_lock_irqsave(&emac->addr_lock, flags);
+ properties:
++  vddp-supply:
++    description: |
++      Regulator supplying the VDDP pin. Its voltage configures the MDIO,
++      MDC, and MDINT pad voltage and must be either 1.8 V or 3.3 V.
 +
-+			prueth->br_members &= ~BIT(emac->port_id);
-+			if (!prueth->br_members)
-+				prueth->hw_bridge_dev = NULL;
-+
-+			spin_unlock_irqrestore(&emac->addr_lock, flags);
-+		} else {
- 			dev_info(prueth->dev,
- 				 "TI PRU ethernet now in Switch mode\n");
-+		}
- 	}
+   maxlinear,use-broken-interrupts:
+     description: |
+       Interrupts are broken on some GPY2xx PHYs in that they keep the
+@@ -45,4 +73,25 @@ examples:
+         };
+     };
  
- 	/* Bridge is deleted, switch to Dual EMAC mode */
++  - |
++    vddp: regulator-vddp {
++        compatible = "regulator-fixed";
++        regulator-name = "vddp";
++        regulator-min-microvolt = <1800000>;
++        regulator-max-microvolt = <1800000>;
++    };
++
++    ethernet {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy@0 {
++            compatible = "ethernet-phy-idc133.5400",
++                         "ethernet-phy-ieee802.3-c45";
++            reg = <0>;
++            vddp-supply = <&vddp>;
++
++        };
++    };
++
+ ...
 -- 
-2.43.0
+2.56.0
 
