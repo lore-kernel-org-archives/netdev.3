@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFD4325483
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6412DC791;
+	Fri, 16 Oct 2026 01:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792114209; cv=none; b=ROuAtSdapRq2U56gRWf8yrvRFGl3jOf1DDL+8UoaGdaowlB7OE+a9wNfQucu47iYwhhuJb6RqaXff5lpz2EpAPGqzzEcYCsI52oLh9jdoxM0ZHFPbNUzhZJEFsU7qrJUPc8G7GaV0zp7kUY/vz8Nff9qvVFXAQE+WtROh/ig01w=
+	t=1792114212; cv=none; b=C+ZPNkn7PDaacm29hZtD8qxxFFTg4SuyGVPi+4BbK7tm+O+x1AJr75hwCKoxYqnpxatup2gZcHcY1qTJvJB2AUitVYCnWCh6mAt9YlnUOGNiq3yO01TnZe4CeCsGgUhEEr2Myjm++Z+JS5MAdqJ22dA99VmzBWIIOMwkD6ZJI9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792114209; c=relaxed/simple;
-	bh=VglXxyRxx+XtpECeZyr9oREfDBotwPq1P+2ySICGR8g=;
+	s=arc-20240116; t=1792114212; c=relaxed/simple;
+	bh=FMRpqHY1JkdCInE0AyMV4ZIwU7oEQvNFojiCX5fa820=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NHLLYcbgJnw2qBf8n50X8jVP8Qm/BD2oxXEykjkRQZW3Z3DeBfSaaeT1dKaE7j3+HaD3TAYxEJeTZV00F6ypTYEe0RrqDJ+Xvt33Exp7iGhyt2EzNAg3Ak+66efhjq7cuhY+5KdVDU4qNvptM8J5MUz54XvxohD4tS80fiD5iMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDLyUZfk; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=VOt05cRnDtZb41Iz8JUQ6OA2WPIYbj5mOP0RJ5I6zYuIWdDN6zMjKwoP+VCoJ8l1vyXs3kg45SK34ApcHhkXGxSStdpB0hfCyhCJkxT/7X3LrmiRL/toryC7RlbINW3Pbzp4Kh/cGkH3YraI0xBJJTJiaJXmuUi0kdzgiTb3jTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/Fokwrk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDLyUZfk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FAD1F000C5;
-	Fri, 16 Oct 2026 01:30:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/Fokwrk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F801F000C4;
+	Fri, 16 Oct 2026 01:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792114208;
-	bh=BR1PycvQS2gBXK/FPY5yiYTWZH/pMhrtduU9ZthqMac=;
+	s=k20260515; t=1792114211;
+	bh=a4vmDGMEqXxNymS5nsWlu7+LR8nHxK3Uxy8Tp7bvucY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XDLyUZfklpAORVZIfzvi9QW43t3bMhQMlnVBitkJN2VMeLEf0cCPzCb8wLnyHFcvS
-	 y926J4XKxT6DjAXEjyGCGHwY4WSfSMjq6JLnL4wPA/hjR+MFlnufVeQxft9A1HNWxW
-	 bxj54xtqPxH4cfF/HpHBbDr0CCNZj5l1gq95iaNQWurlIDMvVhel1TBJSGFNE22daL
-	 9yYNt1HJ+PYOt/70qbE87Mx7U+k1is1tGMMTR9qs8TE0dW7Q0lshkydGwj+YoPf2+/
-	 IP91OD9DIcsuFTvW56tuwgSen5mWfpGW3pxTffz3VQa/Kkk7FBkmxLyMm84RwS3l6K
-	 pV68gMqKYJhmw==
+	b=P/Fokwrk0D9CP27dJNbtQDaRNpXr/+TYePGiJENY7+1TY46XrgPD/FGYMRMZfsZ4K
+	 nFwyBNxYRTQuUZzrzOwQJqODzwp73RPOjrgtZhvWx85yc5f/Wtg+kAwTrky7rQu/JX
+	 XNyElluRqw5yc+8J8Gcah0b2M+Bk3dyaVtaGSI4EqBTet/rYTK0ppUbsv02eNnj+Ft
+	 j+WusJI5vEj4V29yQY6mxuniuTabibGK354tioVZSf8wxmouVDZdB18ZAz1j4eXdvr
+	 mwuN42l2j5oiupHebuYAXIKt1qbG2t7mR4LNJEUXBoadMej0smH2uKBQL6L/b05kO2
+	 luy8014JGrT8Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F147F3808209;
-	Fri, 16 Oct 2026 01:30:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A7023808209;
+	Fri, 16 Oct 2026 01:30:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ipv4: use RCU protection in
- inet_netconf_get_devconf()
+Subject: Re: [PATCH net-next] selftests: net: veth: test own ndo-xmit after
+ peer
+ GRO toggle while down
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179211420665.3903.7250959899697067362.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Oct 2026 01:30:06 +0000
-References: <20261009074906.729877-1-edumazet@kernel.org>
-In-Reply-To: <20261009074906.729877-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- dsahern@kernel.org, idosch@nvidia.com, kuniyu@google.com,
- netdev@vger.kernel.org, baul.lee@xbow.com
+ <179211420976.3903.15268146983159753897.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 01:30:09 +0000
+References: <20261010192914.83651-1-tianyi@cloudflare.com>
+In-Reply-To: <20261010192914.83651-1-tianyi@cloudflare.com>
+To: Tianyi Gao <tianyi@cloudflare.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ shuah@kernel.org, toke@toke.dk, lorenzo@kernel.org, hawk@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ sdf@fomichev.me, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kernel-team@cloudflare.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  9 Oct 2026 09:49:05 +0200 you wrote:
-> inet_netconf_get_devconf() runs without RTNL. It uses dev_get_by_index()
-> and in_dev_get() to pin the device and its in_device while the reply is
-> allocated and filled.
+On Sat, 10 Oct 2026 20:29:14 +0100 you wrote:
+> Test that a veth device advertises ndo-xmit when GRO is enabled on its
+> peer while both are down and only the device is brought up.
 > 
-> in_dev_get() is not safe for a lockless caller. Since commit 9d40c84cf5bc
-> ("net: devinet: Reduce refcount before grace period"), inetdev_destroy()
-> drops the final reference before the RCU grace period. A reader can load
-> dev->ip_ptr, then call refcount_inc() on a zero refcount after
-> in_dev_free_rcu() has been queued, and keep using the in_device once it
-> has been freed.
+> Commit 7a6102aa6df0 ("veth: Update XDP feature set when bringing up
+> device") made veth_open() set the flag in this case, and selftests were
+> requested in its review [1].
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ipv4: use RCU protection in inet_netconf_get_devconf()
-    https://git.kernel.org/netdev/net/c/b2039a6dd36b
+  - [net-next] selftests: net: veth: test own ndo-xmit after peer GRO toggle while down
+    https://git.kernel.org/netdev/net-next/c/109b08f37639
 
 You are awesome, thank you!
 -- 
