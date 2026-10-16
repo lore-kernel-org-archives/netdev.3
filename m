@@ -1,92 +1,196 @@
-Received: from mta0.migadu.com (out-117.mta0.migadu.com [91.218.175.117])
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC4B399890
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20C63033EC
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792118629; cv=none; b=eopgStCUQQhWbwzKao9R1uVwsg9SQSsTw7Is3UovIxcmC/K8PDjz5dXJyvFTEbGaeLO6c6z/zwBS6YI/j4si+6iVuzrMNg3n4Zwtx4xOrMi6J2EwUBjleUa3J0Q5sIotmICYfl4tCr9wlz4+IfjaHKUN5XUSHEYa2aJ7b/fRu8E=
+	t=1792118739; cv=none; b=sn4KsnESYI/ra/OJ68fkZ/wTE+zAsd4e+8j3rPuZFQ+hzNf/xQNr4xC3isDCYG8rbjrgQkMZe/xzBlfSMIsjqkbO+SpCZ3pty3X20KqU+Hb/OAHoCnDytHwlQyGv7gGtySVZ/Y2IsOlXrPeAAUsiMLHinpIono2z6bE0MmVH8Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792118629; c=relaxed/simple;
-	bh=vWZ/hae/0kIcNybhhEkkPXgWxtSubbVnInKF9+ZL+lk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PBGq0bcZJAI8Alb2eMzFLBDh3hdAbhjL9htlleSbBCVveJv+lnTste6eMOb4LtG4gl6DKutee9K9kCI/X94n5FTNX5e1CwlFneZ/q8VGfSLpjiq3cIPY+4A8khjb4iNZLUlPtjS5kWGedX0j5iSTc4z3DJrz1Fw/9pP3FT7YPIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ENgyG2EC; arc=none smtp.client-ip=91.218.175.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ENgyG2EC"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=vWZ/hae/0kIcNybhhEkkPXgWxtSubbVnInKF9+ZL+lk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792118626; v=1; x=1792723426;
- b=ENgyG2EC1a3j0WBHbH4zOt5Q6MIo0Dg7FWnmDWqQboELQ4r65PzjSsxr+P+L7SkuL5NZeWaj
- tUc66jtkx+R2WPlCWW3wil6rR0eNSL9lAA+NjOWpRQPngguzvJCZ6YHFZNADqdHMaFvNshz7s/X
- Vu/6ng2+O5VNFUQDHPkefVRY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id fa0e80597ab449b7;
-	Fri, 16 Oct 2026 02:43:46 +0000
-X-Mizu-Trace-ID: fa0e80597ab449b7
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 16 Oct 2026 10:43:35 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] selftests: tc-testing: use $IP in hfsc test 8c39
- setup
-Message-ID: <atGPVzNYUlKY0ekD@fedora>
-References: <20261014121414.2373985-1-ivecera@redhat.com>
+	s=arc-20240116; t=1792118739; c=relaxed/simple;
+	bh=QqmRt76cw0feAYYdqgTzhiJexD1f/46qnCyzzSgGQOY=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=TRGR2GpvFqZB82HN5zbmJj1FljOz3nS2aGCv+rzwDryC4luUqHTKlv/uX/uF2tlqT6+l74+fjms6qfiDoDXIQJdNd2USvzaI+lRADkR9CrdNjYaRWY2zgI5P+xMdBYwbgIspOPtWGYxX2OwyLiOt783fNdXi7QE5xEj5cv/JI6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4e778acdbc6so9734551b6e.3
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 19:45:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792118737; x=1792723537;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=seQXTxHTBDCS8PCf+EWgSHwzgEZlNkH5MH0J2kC2r+M=;
+        b=WcDWWU9g7paIsc5S46hoYXc6zeVZ5SSveb4QVSUAuUacjhKulFV8JzgbRpt73AZCmx
+         r21WaWHEH2gYSs9Nqki8/jc7SXNjHPIts13STiUIcsQNJ7lWYb5ShKdjplAkVvKrSgtB
+         5gp1NiKt35xQ3k3wzNlw6lzSzWcejdjuCd8Th+SIIGwbQ6+faEkFKx6BfmFvQeouNbbm
+         frEGu2YPaZQi7FfTmCO1LOmhFgpcxDE64Et00xXYjl1uz77MHRswY3dqU0t8MOFy+P96
+         gW0Ys+qApbW3wFsLTmPYqCS7XGocMYulAVP95vqsRG5//i0cZlBYv9ksaXboVNYdE64+
+         c41Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzAeuy80MuYFr0VXHj5btb7xdf5WwAfYfLVWcicYfjsZyX5qmHq6KWMGh0+9mz1WxV8cwMX4Vg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYInl3BfxFJ5CzL1CXrexPUrVwMxfBknhC1pvy7TX3Q8MzkhKga4
+	xZzWM2Dc4rezRphvc03bcX//PLsJyWyYWwrB55PB9kpvnx1GZFM2p9RQaZOfjpktjffvStwVE86
+	q61fUlodb2cFcDYjXptP/ZaXKN55cUr7o7xDN+1R//YYgjvjI3otJTsS3e/Q=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014121414.2373985-1-ivecera@redhat.com>
+X-Received: by 2002:a05:6808:4fdf:b0:4f5:6fff:3ac4 with SMTP id
+ 5614622812f47-50c516e42b7mr22514191b6e.41.1792118736843; Thu, 15 Oct 2026
+ 19:45:36 -0700 (PDT)
+Date: Thu, 15 Oct 2026 19:45:36 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ad18fd0.7514cce4.1ece07.011f.GAE@google.com>
+Subject: [syzbot] [rds?] WARNING in __rds_conn_create (2)
+From: syzbot <syzbot+c3741bb338b5c6d6a4aa@syzkaller.appspotmail.com>
+To: achender@kernel.org, allison.henderson@oracle.com, davem@davemloft.net, 
+	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, rds-devel@oss.oracle.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Oct 14, 2026 at 02:14:12PM +0200, Ivan Vecera wrote:
-> Test 8c39 brings up lo with a bare "ip" command. nsPlugin runs it as
-> "$IP netns exec <ns> ip ...", and as tdc runs commands with an empty
-> environment, "ip netns exec" searches only the default execvp() path
-> (/bin:/usr/bin). On systems that install ip only in /sbin, like Fedora,
-> the setup fails:
-> 
->   # ./tdc.py -e 8c39
->   Test 8c39: HFSC classify walk still reaches leaf after lateral drift
->   -----> prepare stage *** Could not execute: "ip link set lo up"
->   -----> prepare stage *** Error message: "exec of "ip" failed: No such file or directory
-> 
-> Use $IP like all other tdc tests do.
-> 
-> Fixes: 1e24c4f2ee44 ("selftests: tc-testing: add a lateral-drift hfsc classify-walk test")
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->  tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
-> index 4f6bbb8b57f9..557730eef055 100644
-> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
-> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
-> @@ -181,7 +181,7 @@
->              "requires": "nsPlugin"
->          },
->          "setup": [
-> -            "ip link set lo up",
-> +            "$IP link set lo up",
->              "$TC qdisc add dev lo handle 1: root hfsc default 30",
->              "$TC class add dev lo parent 1: classid 1:1 hfsc rt m2 100kbit",
->              "$TC class add dev lo parent 1:1 classid 1:10 hfsc rt m2 50kbit",
-> -- 
-> 2.56.0
-> 
+Hello,
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+syzbot found the following issue on:
+
+HEAD commit:    0fcb05b72344 Merge tag 'libcrypto-fixes-for-linus' of git:..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11e64dd1580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4ccb65e03706547e
+dashboard link: https://syzkaller.appspot.com/bug?extid=c3741bb338b5c6d6a4aa
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14ef43c9580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-0fcb05b7.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d63a4093e9d7/vmlinux-0fcb05b7.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/238bf14f8b3f/bzImage-0fcb05b7.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/b883c5a2bb3e/mount_0.gz
+  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=13f70fd1580000)
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c3741bb338b5c6d6a4aa@syzkaller.appspotmail.com
+
+XFS (loop0): Quotacheck: Done.
+------------[ cut here ]------------
+raw_local_irq_restore() called with IRQs enabled
+WARNING: kernel/locking/irqflag-debug.c:10 at warn_bogus_irq_restore+0xc/0x20 kernel/locking/irqflag-debug.c:10, CPU#0: syz.0.18/5745
+Modules linked in:
+CPU: 0 UID: 0 PID: 5745 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:warn_bogus_irq_restore+0xc/0x20 kernel/locking/irqflag-debug.c:10
+Code: cc cc cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 90 48 8d 3d c4 18 93 05 <67> 48 0f b9 3a 90 e9 99 04 03 00 cc cc cc cc cc cc cc cc cc 90 90
+RSP: 0018:ffffc9000797f8c0 EFLAGS: 00010206
+RAX: 0000000000000202 RBX: 0000000000000287 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffffffff917dce80
+RBP: ffffc9000797fa40 R08: ffffffff914a10e3 R09: 1ffffffff229421c
+R10: dffffc0000000000 R11: fffffbfff229421d R12: ffffffff8b2acb15
+R13: ffff888051146318 R14: ffffffff914a10e0 R15: 0000000000000287
+FS:  00007f7afe2f56c0(0000) GS:ffff88808b0b4000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f7afd3ebc40 CR3: 000000004db87000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:210 [inline]
+ _raw_spin_unlock_irqrestore+0x67/0x80 kernel/locking/spinlock.c:221
+ spin_unlock_irqrestore include/linux/spinlock.h:425 [inline]
+ __rds_conn_create+0x1de5/0x2290 net/rds/connection.c:364
+ rds_conn_create_outgoing+0x43/0x60 net/rds/connection.c:394
+ rds_sendmsg+0xfca/0x20e0 net/rds/send.c:1348
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ __sys_sendto+0x408/0x5a0 net/socket.c:2281
+ __do_sys_sendto net/socket.c:2288 [inline]
+ __se_sys_sendto net/socket.c:2284 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2284
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f7afd39e559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f7afe2f5028 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f7afd625fa0 RCX: 00007f7afd39e559
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00007f7afd4358b0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f7afd626038 R14: 00007f7afd625fa0 R15: 00007ffd156f7018
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	cc                   	int3
+   1:	cc                   	int3
+   2:	cc                   	int3
+   3:	cc                   	int3
+   4:	cc                   	int3
+   5:	cc                   	int3
+   6:	cc                   	int3
+   7:	cc                   	int3
+   8:	cc                   	int3
+   9:	cc                   	int3
+   a:	cc                   	int3
+   b:	cc                   	int3
+   c:	cc                   	int3
+   d:	cc                   	int3
+   e:	90                   	nop
+   f:	90                   	nop
+  10:	90                   	nop
+  11:	90                   	nop
+  12:	90                   	nop
+  13:	90                   	nop
+  14:	90                   	nop
+  15:	90                   	nop
+  16:	90                   	nop
+  17:	90                   	nop
+  18:	90                   	nop
+  19:	90                   	nop
+  1a:	90                   	nop
+  1b:	90                   	nop
+  1c:	90                   	nop
+  1d:	90                   	nop
+  1e:	f3 0f 1e fa          	endbr64
+  22:	90                   	nop
+  23:	48 8d 3d c4 18 93 05 	lea    0x59318c4(%rip),%rdi        # 0x59318ee
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	90                   	nop
+  30:	e9 99 04 03 00       	jmp    0x304ce
+  35:	cc                   	int3
+  36:	cc                   	int3
+  37:	cc                   	int3
+  38:	cc                   	int3
+  39:	cc                   	int3
+  3a:	cc                   	int3
+  3b:	cc                   	int3
+  3c:	cc                   	int3
+  3d:	cc                   	int3
+  3e:	90                   	nop
+  3f:	90                   	nop
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
