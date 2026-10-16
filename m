@@ -1,147 +1,120 @@
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DC547535E;
-	Fri, 16 Oct 2026 14:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E0F4DD3AB
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 14:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792159742; cv=none; b=YHQj/VotkobYWi0imx6yZShSXoMbJdVxKy4f+4x2+1PSb1m537i2rIk3niM3lh3YFVUXELwUY9F5SX4ZM0aQUuWR7xDdlsBZbiOuMtSXHsh0KFR9kRvjMR0Bze/QWw9V8l689W+lWvUbwDNMASjE1JrLvakOrpP8YY4YzbWj5gQ=
+	t=1792160023; cv=none; b=WKPDjpQWPx28i7soxOPYEiRFkkleKGcX2ep78ne2UMZMJ7YMmbNXd+p3Xz9dvGKF0vUmWsidNpBmChHJdQ8ir271BNPCtr9jVRRHPcdB9dvBediwk2wvo60NGqTq0XmoqXv/0kjsXnyH9YuHAFniZyIkbFIzkBGmsU3TDU9XEVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792159742; c=relaxed/simple;
-	bh=5+jNcPrFVwyar2TgHXjQU7Gg8W4bNNaqqDwQA/tIK5w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k5mPdvp+ctiagRgavpMJdwumSObkfPPsfpw94tuV/pOJ4aZS4HZb4RMbVzQ/w8/309CnviOFibxZ+LxLTIcWQGCU23Og0PfBT/Dm0ztyDcRCwyag56HTs1+caKtlIVjB+dBmuTlAyqxiPl1Y9L2xsM1iWuHdy+7Z2wuN3ZMqHwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=tzG6IAaL; arc=none smtp.client-ip=37.230.196.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	s=arc-20240116; t=1792160023; c=relaxed/simple;
+	bh=KJgCaBKgzhlQ6j4VpKM2iFyUAr1RpvtkySGD+mGP2zI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RGc/pgEyQH0DGAA+9ff4jH4xpj71hLdBQjYXdpGb3LAqvEAVZvIKW0I6kHZD48pOflCGfNGWCW9BMsP6BEJsWHmwlU0VAhU585VT8kMI/wz84B5qJ8G0D4FPQxcL8u5CVXHZafdqCBb+5vXRWfv3YF8bxWXNerA4TfvOOPgJ8XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JFRXNfY/; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="tzG6IAaL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1792159729;
-	bh=5+jNcPrFVwyar2TgHXjQU7Gg8W4bNNaqqDwQA/tIK5w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=tzG6IAaLMLuiNDg/07xA+hyFpMX/8iTpk81K5XjQaR9wadIcObhDUp10NxdduxHX7
-	 8AzPDdtWv6cwnlBpAnM415MV/f4Lqhllxs39EMfItPog7WBznCbN+z1e773jt5ggRE
-	 ltNLRUQPfif0bnzT8z+plKfBG01NGr15DR6ixJokcdzIKZj7yB6VL1WKbLCOwXgdWL
-	 LhyM/u0R5jTUCrfkNMcy0EonfwWAqnaKszsMMRBoDBheagthK4jMJLKgwGSe72wbPB
-	 KAvTvIi8CnmwWscmQzvGo3B9Izw8m55sTmOipyhVVqZLdGoBulUXWLCCZCctYpkT67
-	 VVDIWd0cLAx6w==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 05A0125D2B;
-	Fri, 16 Oct 2026 17:08:49 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Fri, 16 Oct 2026 17:08:47 +0300 (MSK)
-Received: from DESKTOP-D46TNHI (unknown [10.198.49.29])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4j5mdS38KFzY9W;
-	Fri, 16 Oct 2026 16:54:20 +0300 (MSK)
-From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>,
-	Tobi Gaertner <tob.gaertner@me.com>,
-	Oliver Neukum <oliver@neukum.org>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10/5.15] net: usb: cdc_ncm: add ndpoffset to NDP16 nframes bounds check
-Date: Fri, 16 Oct 2026 16:53:07 +0300
-Message-ID: <20261016135308.600-1-mdmitrichenko@astralinux.ru>
-X-Mailer: git-send-email 2.54.0.windows.1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JFRXNfY/"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id F35301A1255;
+	Fri, 16 Oct 2026 14:13:31 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BF8F06075D;
+	Fri, 16 Oct 2026 14:13:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4AF1103281F4;
+	Fri, 16 Oct 2026 16:13:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792160010; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=blwq1pXBCQjTGMl+JWvwWp+PQ7nHppX+egLYS89xJeg=;
+	b=JFRXNfY/cQ7P5wBnYY3ft07I0gMR2s634u1n99dDArTUzg20EF9olCxy8ILqkbo0repWYr
+	i+RrkZdPbVFBgH55Aqc1KO+IXoxfihLwqJsuAYnJ86Xjor29wt8YmkhHh4DjIdxTIQq3lL
+	uLQBczkD04IIx3RGgqLe0Jogt5UcIlwv2LTduSz15I27CbTwUNkNOqBlH2M9NgFAvD2z1B
+	ig27IjqWg5Wp8kzHYklPqM5rW4wvVPq6QFNJnSf6PBQV7tPHgdXy3JuAPbyoRt1xqt85Mq
+	f7JsigUmSzMK3tcvmm4b93soNc46q7k2pfSvC/zMV0DTgz1MlnKzLOVXsA3JOg==
+Message-ID: <84af909c-a94e-4408-a24d-d3fd729cd90e@bootlin.com>
+Date: Fri, 16 Oct 2026 16:13:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/16 12:54:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 127 0.3.127 0884f7b061fa529b810563f359267cd65d2ec05c, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;patch.msgid.link:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 206758 [Oct 16 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.27
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/16 06:35:00 #28691046
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/10/16 12:54:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/2] net: stmmac: fix XDP TX DMA address for
+ compound RX pages
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ Ong Boon Leong <boon.leong.ong@intel.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ bpf@vger.kernel.org
+References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
+ <20261012-stmmac-xdp-tx-pre-fixes-v1-1-05fd0c90f7e1@oss.qualcomm.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20261012-stmmac-xdp-tx-pre-fixes-v1-1-05fd0c90f7e1@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Tobi Gaertner <tob.gaertner@me.com>
+Hi Lorenzo,
 
-commit 2aa8a4fa8d5b7d0e1ebcec100e1a4d80a1f4b21a upstream.
+On 10/12/26 17:24, Lorenzo Bianconi wrote:
+> When RX buffers are compound pages (order > 0), only the head page
+> carries the DMA address programmed by the page pool
+> (page_pool_get_dma_addr()). stmmac_xdp_xmit_xdpf() computed the head
+> buffer's bus address from the page that happens to contain the data:
+> 
+> 	page = frag ? skb_frag_page(frag)
+> 		    : virt_to_page(xdpf->data);
+> 	dma_addr = page_pool_get_dma_addr(page);
+> 	...
+> 
+> RX pages become compound as soon as dma_buf_sz needs more than one page
+> (pp_params.order = order_base_2(num_pages) > 0), which happens from an
+> MTU around 3000 bytes once dma_buf_sz reaches 4096. If an XDP program
+> moves the data forward with bpf_xdp_adjust_head() by more than about a
+> page, xdpf->data points into a tail page whose struct page has no DMA
+> address: page_pool_get_dma_addr() then returns a bogus bus address, and
+> dma_sync_single_for_device() together with the TX descriptor transmit
+> from the wrong location.
+> 
+> Use virt_to_head_page() to read the DMA base of the buffer and keep the
+> offset relative to the head page (sizeof(*xdpf) + xdpf->headroom), which
+> is correct no matter which page the data ends up in.
+> 
+> Fixes: be8b38a722e6 ("net: stmmac: Add support for XDP_TX action")
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-cdc_ncm_rx_verify_ndp16() validates that the NDP header and its DPE
-entries fit within the skb. The first check correctly accounts for
-ndpoffset:
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-  if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len)
+Maxime
 
-but the second check omits it:
-
-  if ((sizeof(struct usb_cdc_ncm_ndp16) +
-       ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len)
-
-This validates the DPE array size against the total skb length as if
-the NDP were at offset 0, rather than at ndpoffset. When the NDP is
-placed near the end of the NTB (large wNdpIndex), the DPE entries can
-extend past the skb data buffer even though the check passes.
-cdc_ncm_rx_fixup() then reads out-of-bounds memory when iterating
-the DPE array.
-
-Add ndpoffset to the nframes bounds check and use struct_size_t() to
-express the NDP-plus-DPE-array size more clearly.
-
-Fixes: ff06ab13a4cc ("net: cdc_ncm: splitting rx_fixup for code reuse")
-Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
-Link: https://patch.msgid.link/20260314054640.2895026-2-tob.gaertner@me.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ mdmitrichenko: use struct_size() on the already initialized ndp16
-  pointer instead of struct_size_t(), which does not exist in 5.10 and
-  5.15; struct_size_t(type, ...) is defined as
-  struct_size((type *)NULL, ...), so the result is the same. ]
-Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
----
-Backport fix for CVE-2026-23448
- drivers/net/usb/cdc_ncm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 57b1e6dc62f0..a3d3f2b6cb1b 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1638,6 +1638,7 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
- 	struct usbnet *dev = netdev_priv(skb_in->dev);
- 	struct usb_cdc_ncm_ndp16 *ndp16;
- 	int ret = -EINVAL;
-+	size_t ndp_len;
- 
- 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
-@@ -1657,8 +1658,8 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
- 					sizeof(struct usb_cdc_ncm_dpe16));
- 	ret--; /* we process NDP entries except for the last one */
- 
--	if ((sizeof(struct usb_cdc_ncm_ndp16) +
--	     ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len) {
-+	ndp_len = struct_size(ndp16, dpe16, ret);
-+	if (ndpoffset + ndp_len > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
- 		ret = -EINVAL;
- 	}
--- 
-2.43.0
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b8b4de4c5b1a..ca61ab449e32 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -5301,7 +5301,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+>  			struct page *page;
+>  
+>  			page = frag ? skb_frag_page(frag)
+> -				    : virt_to_page(xdpf->data);
+> +				    : virt_to_head_page(xdpf->data);
+>  			dma_addr = page_pool_get_dma_addr(page);
+>  			if (frag)
+>  				dma_addr += skb_frag_off(frag);
+> 
 
