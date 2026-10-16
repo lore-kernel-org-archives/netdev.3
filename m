@@ -1,182 +1,137 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89C32FE042
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 05:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792128271; cv=pass; b=M5g391cGigA2BLQIS+siYM/YGGSbnQWNfXIXULIE/59mr61vCuNSdSLJvWsfKz7orIAUoTlBnW2KlGmA32KEeruPCBan61xzloVqdnbKg2l5nOor0BcL2ObWk+iAVTQbP8M1zxwJAjJjEgJMd3toblN1ARATYh5Pm3oE3u1Jvoc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792128271; c=relaxed/simple;
-	bh=BTRcAoLz9G3GYaIgNNZe5UyvedxRfE+nhPVx4QlhTAA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y6Huva5zUo8RL/KVgmNxZJE7gZIoLRmnVK+8fqJJfCEhs1PS+7C/+Cg0Ah2WHDLNh9ZNBFjX32+awpba1332oTraIZcxJ+fbM2w2UG3rcSVKXFfKyKllQKQsYs5qmL7xDxogXe1IIUnmyZMkcka7UJTIsMg5VC3lOuw7Ikr6TVQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=KHjFk8kR; arc=pass smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A652830CD89
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 05:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792130397; cv=none; b=jQafs9jJDp+8N9Z5xQ0JIVLCmnEUs6iFqFYvT57Yh0IFfan2QDU9eI22JjJ9xzUIvMAmUV0PHcOzeTeDjNNrcPGbtXu2ZdVBKzm4N2dT4aXNHFZPfpRVD/VBbTBiFNkksxaGPL4D1zXs6Ria1YFzhkenGezrJf7OlmJdEALfGKc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792130397; c=relaxed/simple;
+	bh=ffT1uC8Tx5LWXnu0ZHL17b8Pkk4WgBDhMPPfK8nul2M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E2G85mVVRdI2/ASTw0+XxaZ8TFodgNyoMnuVn/hdwZ/n7yY/kTzMFJB/c0wgQxMSRCLF7IUQV6iiztx4HS/AdKcVOW4c9nJtSHFqAYAfS5UkJHxcxZTzA0/JTyZsqfzO9/TssqxwO9xbvvMHNDxE0ZAE5RUlXOwZRe9NbI4Uiqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J56dckrd; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="KHjFk8kR"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6768403e9bbso5356066d50.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 22:24:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792128268; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QGWKdbAb9vqx6r1pkZvsxP7IJA8sdYxteuctt7re/YTikPz3MohqHjRTzBbc4F4zUO
-         8CZs8Tfzwkj9R/PtZP79B+hXs07Q/R6gLEdxRjkBFcZ1q1RbnH3/oFoqVguURIoFgUJO
-         LM8nPmN3bdh6Kx0AazelS1Zl/68OsRLT9mQfapEfv7YDV0SaEVDbmRNG1lSxbW9dg+Ks
-         gtfKwP95qk11xStXfm+xzk+vcJmTECak6ewnJG1Xid48xhwCTONp1WJH9NsZoqqLr7KR
-         HkwUoq/1sm2QL9RBKZZ1V2/cdVlenTC+2lsjPojpOcWnB5+/KQP5LIJDb5T6hKiiX7s0
-         vUHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5SLREY56Y75V68L1t/rYBb7KWe+heQEE9CMZN2v5p1Q=;
-        fh=sfl5oLa4NciaDj7O/Sh2msbeRXgFjYL6CdVo4pDibiA=;
-        b=tDjy7sHxbi93BOEG2arLGDgHBn99wmV1E7V05waqlIJqQxEWsZ1fHkbW7Q0cLtYYNX
-         J3eCRLyhTILvhbcLGt3NMU+pfSI8txFtyPzl6ew4nXgQBHUNk0zYJRkDAEiD8enUzEda
-         z/uQYRGScQv8Ta1RjOzxYWt/rnwmwwnOw65ebzn5ndA02nOCkGXNCh/RB6tSBYoGJ0eR
-         nZoDl8Inu7ZpXlQMaqr8fPTp4iOzf2LfBqVQvN8wyho7AESYZ74X77GUFvBtikaUJlHH
-         Bb520UVB0UlF98UaLtdMVHvMLF7IfaqxgriWSmZQtiHOHoNqSe/CQdzi6VgcFmwFP1V6
-         Eefg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1792128268; x=1792733068; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5SLREY56Y75V68L1t/rYBb7KWe+heQEE9CMZN2v5p1Q=;
-        b=KHjFk8kRUSaJYwUrFR46vsWj1trK0vQ7AAC+mCZ8TEdAScm7KiB/NhApShU5rDP73z
-         eySCGR6LP7fCOkNircLZhOif1Pk+SVTAjDIp9FXuJxkdEhj8brY3lLwLJASG2Z2akJZ/
-         r3dMwoKEAoBeWK/E1pSg5wgK949WILrHl/gQAwecs56k8JOB34C+z5lWMsK+IuadUZIb
-         +lTQNKyMBLPGhSZBYJ9rAFU11HxWRir5z8C7TxVGh6OXwjpJm6jd2kDe/D+DVF7g6qqO
-         r01srOQpDRouKvS07zctGyyJ2wgzvbCryHu2MZ01+5WBAqHz/PD5RtZVmtLV4q0Cp8Yq
-         y4cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792128268; x=1792733068;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5SLREY56Y75V68L1t/rYBb7KWe+heQEE9CMZN2v5p1Q=;
-        b=FcgAdNrgGVMRu60UXDJXFBfbXjTUZzSG1fKO0nMK5Uvrb+4dnYaydta4hH4B1p/pc5
-         uwqvgLrtm4VHsDwoOuWNpT/APDdTtTa1kuIDMk5Rq67bXYpGTofxzPzv75cfin27DkR6
-         nw0U3CrtsWF7co6rSQDo1ByjxjgFO+ftQIObtK6HRLSlsYKr2pyMUcJlP15fXtpdfYqq
-         IUkU+mUs8zOQe0T+Hs0MB04H01ON0JQ1zimeeIxARUOvvtiSiLcoyJf3nuMWwwuTYzHn
-         i8X3U+ZLebUoS4OMePvDKLIfKZE3BzuOawd5lNVBtT075JCeRZO0xXaEh8JchT7pXvMm
-         YKjg==
-X-Gm-Message-State: AFq9FYLy90meOrBBhYDeL679KBhulszdWL3xTD0tJ+BigS+lyP+iCFNr
-	EUdVIHvAoiL7oqRRdQYUPYFwO76KQgpkcow05lEMR5zDwiifnnC9PNdnNJCpX7B4lat/VbxXfTu
-	dQyfHRJAK8HzxWNujWCgrxjrNHg5FeOF8oCI3enUZH1g=
-X-Gm-Gg: AYBFou2WoXyOskfVrLRoHXP0lrkbO+FIYo5S2iqXHAOoSSUA9kdL7Uw9dUSX8D3KOfM
-	Umsx5vpafyBPX7q3NEb2bt6LBDuYG09oCd7l0dxjMadm3GxQ0x8Es9bDaUh4tfV/VrNV/8f2Yfv
-	AouQ9HPx3OcoHaM8Wy03994cig8m/CT1240BJuXo5BFyGtpvnkBx9N14Px/y/rtbROcUexEEfqa
-	kGXuxbyFJ97KRWLiBPcSOoAFmLX/z0mM9PgeXerUfks9pc9SUeOJuN4nx6kZJ3DqXpwG4HNh2Dz
-	De20FSH9cCUfTZr2ZwTKDSBcJiXykB4JzolBn3DdaVtcjtgnN1mnHSRHRFhzxuCv4a6V7+NVs6e
-	lR+kl24Z9U/MXWY2PB4P2PA==
-X-Received: by 2002:a05:690e:138f:b0:675:3507:46e7 with SMTP id
- 956f58d0204a3-67936984262mr8103308d50.24.1792128267662; Thu, 15 Oct 2026
- 22:24:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J56dckrd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792130395; x=1823666395;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ffT1uC8Tx5LWXnu0ZHL17b8Pkk4WgBDhMPPfK8nul2M=;
+  b=J56dckrdL0WJ54Cmmoxx4ljIF+4p5CJMzlRGUZxpu5uyWYf9+4QYkVGh
+   OnsG4NAbef/81Sx6RR4BI/2zEH5/psUohSlq53p6NqShFrlehV75IiBY2
+   c2VqbhCAc4CGB0bPvEpSrsi4ZaXAw+uoAKVKZ86QwH+wv685z974VsUKU
+   BnE0qwi2X1BddbhhwT7ZculvXGGoWrIopKmVzppgdgirsIDNZwvIT33na
+   Gz4YfwCx+cwZQnvUBKn4UV/kAqxcMkAmniJxs8AtXbCrzWUem2swV0R5G
+   vm/xffaSOiMh8mRtuaCkn10ipsOYHUdNgAortze2Fo0Lq/R3KEMwxxi7z
+   w==;
+X-CSE-ConnectionGUID: 537kF1z1TqOqCPY41GSurw==
+X-CSE-MsgGUID: NbWWu1RYTuueZ4LfwT0Viw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="777886"
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="777886"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 22:59:54 -0700
+X-CSE-ConnectionGUID: s6K5pGUBTr+Dk4bRSngZrw==
+X-CSE-MsgGUID: 5Bg4tbOVRF6nQQ+UylFw9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="2239417"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 15 Oct 2026 22:59:52 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xHayr-00000000Hha-3SjE;
+	Fri, 16 Oct 2026 05:59:49 +0000
+Date: Fri, 16 Oct 2026 13:59:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>, dhowells@redhat.com,
+	davem@davemloft.net, marc.dionne@auristor.com
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Subject: Re: [PATCH] net/rxrpc: Simplify rxrpcpeerseq_next()
+Message-ID: <202610161338.9QHAZ7bn-lkp@intel.com>
+References: <20261015200115.59571-1-chelsyratnawat2001@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1791980149.git.zhilinz@nebusec.ai> <1fa798d444efac579e91ee0716e228902a8f9afe.1791980149.git.zhilinz@nebusec.ai>
- <CAMB2axNZ=Js_-jGodWE22VoeVmR=9AL2V8jr_t9G38eAaMs_ZA@mail.gmail.com>
-In-Reply-To: <CAMB2axNZ=Js_-jGodWE22VoeVmR=9AL2V8jr_t9G38eAaMs_ZA@mail.gmail.com>
-From: zhilin zou <zhilinz@nebusec.ai>
-Date: Fri, 16 Oct 2026 13:24:16 +0800
-X-Gm-Features: AclHuK87alqiyIDJZ3M374_YEDlQ3Taa4gVDZp-YmbWB5v7D8853YUxGknzxZQI
-Message-ID: <CANB6i5wK87uZ+jYqVVy4pM_jW4We5Tey4rGmzb9Kx567U473Dw@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] bpf: reject raw iteration over managed sk_storage values
-To: Amery Hung <ameryhung@gmail.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net, 
-	edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org, 
-	martin.lau@kernel.org, daniel@iogearbox.net, leon.hwang@linux.dev, 
-	mattbobrowski@google.com, menglong8.dong@gmail.com, kees@kernel.org, 
-	bestswngs@gmail.com, memxor@gmail.com, vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015200115.59571-1-chelsyratnawat2001@gmail.com>
 
-On Fri, Oct 16, 2026 at 1:01=E2=80=AFAM Amery Hung <ameryhung@gmail.com> wr=
-ote:
->
-> On Wed, Oct 14, 2026 at 5:24=E2=80=AFAM Zhiling Zou <zhilinz@nebusec.ai> =
-wrote:
-> >
-> > The sk_storage iterator exposes values as raw PTR_TO_BUF memory. Attach
-> > validation checks only the maximum access against value_size, so BPF
-> > programs can read or overwrite BTF-managed fields such as __kptr withou=
-t
-> > the verifier's ownership checks.
-> >
-> > Reject value accesses when the storage map has a BTF record containing
-> > managed fields. Iterators that do not access values, and maps without
-> > managed fields, retain their existing behavior.
->
-> AI is right. It also appears that iter/bpf_map_elem may expose special
-> fields as writable PTR_TO_BUF. Could you cover that path as well?
->
+Hi Chelsy,
 
-Thanks, Amery. Agreed. I=E2=80=99ll extend the fix to cover iter/bpf_map_el=
-em as well
-and ensure bpf_link_update() validates the replacement program against the
-attached map.
+kernel test robot noticed the following build warnings:
 
-> >
-> > Fixes: 9db44fdd8105 ("bpf: Support kptrs in local storage maps")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: LLM
-> > Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> > ---
-> >  net/core/bpf_sk_storage.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-> > index 1d295a8769fa..b54fd90d4bde 100644
-> > --- a/net/core/bpf_sk_storage.c
-> > +++ b/net/core/bpf_sk_storage.c
-> > @@ -863,6 +863,12 @@ static int bpf_iter_attach_map(struct bpf_prog *pr=
-og,
-> >         if (map->map_type !=3D BPF_MAP_TYPE_SK_STORAGE)
-> >                 goto put_map;
-> >
-> > +       /* The iterator exposes values as raw buffers, bypassing field =
-checks. */
-> > +       if (map->record && prog->aux->max_rdwr_access) {
-> > +               err =3D -EACCES;
-> > +               goto put_map;
-> > +       }
-> > +
->
-> Could we preserve access to non-special fields of the value? Since
-> max_rdwr_access is an exclusive upper bound and record->fields[] is
-> sorted by offset, attachment could be rejected only when:
->
-> prog->aux->max_rdwr_access > map->record->fields[0].offset
->
-> This remains conservative, while allowing users to place special
-> fields at the end of the value structure and iterate over the
-> preceding fields.
->
-> Please also add a selftest covering allowed non-special access,
-> rejected special-field access.
->
+[auto build test WARNING on net-next/main]
+[also build test WARNING on net/main linus/master dhowells-fs/fscache-next dhowells-fs/keys-next v7.3-rc7 next-20261012]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Agreed. Since max_rdwr_access is an exclusive upper bound and the
-managed fields are ordered by offset, I=E2=80=99ll reject access when it ex=
-tends
-past the first managed field=E2=80=99s offset. This preserves access to ord=
-inary
-fields before it. I=E2=80=99ll add selftests for both allowed prefix access
-and rejected
-managed-field access.
+url:    https://github.com/intel-lab-lkp/linux/commits/Chelsy-Ratnawat/net-rxrpc-Simplify-rxrpcpeerseq_next/20261015-130115
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20261015200115.59571-1-chelsyratnawat2001%40gmail.com
+patch subject: [PATCH] net/rxrpc: Simplify rxrpcpeerseq_next()
+config: nios2-randconfig-1000-20261016 (https://download.01.org/0day-ci/archive/20261016/202610161338.9QHAZ7bn-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261016/202610161338.9QHAZ7bn-lkp@intel.com/reproduce)
 
-> >         if (prog->aux->max_rdwr_access > map->value_size) {
-> >                 err =3D -EACCES;
-> >                 goto put_map;
-> > --
-> > 2.55.0
-> >
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610161338.9QHAZ7bn-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   net/rxrpc/proc.c: In function 'rxrpc_peer_seq_next':
+>> net/rxrpc/proc.c:355:30: warning: unused variable 'n' [-Wunused-variable]
+     355 |         unsigned int bucket, n;
+         |                              ^
+
+
+vim +/n +355 net/rxrpc/proc.c
+
+bc0e7cf43370a8e David Howells   2018-10-15  351  
+bc0e7cf43370a8e David Howells   2018-10-15  352  static void *rxrpc_peer_seq_next(struct seq_file *seq, void *v, loff_t *_pos)
+bc0e7cf43370a8e David Howells   2018-10-15  353  {
+bc0e7cf43370a8e David Howells   2018-10-15  354  	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
+bc0e7cf43370a8e David Howells   2018-10-15 @355  	unsigned int bucket, n;
+bc0e7cf43370a8e David Howells   2018-10-15  356  	unsigned int shift = 32 - HASH_BITS(rxnet->peer_hash);
+bc0e7cf43370a8e David Howells   2018-10-15  357  	void *p;
+bc0e7cf43370a8e David Howells   2018-10-15  358  
+bc0e7cf43370a8e David Howells   2018-10-15  359  	if (*_pos >= UINT_MAX)
+bc0e7cf43370a8e David Howells   2018-10-15  360  		return NULL;
+bc0e7cf43370a8e David Howells   2018-10-15  361  
+bc0e7cf43370a8e David Howells   2018-10-15  362  	bucket = *_pos >> shift;
+bc0e7cf43370a8e David Howells   2018-10-15  363  
+bc0e7cf43370a8e David Howells   2018-10-15  364  	p = seq_hlist_next_rcu(v, &rxnet->peer_hash[bucket], _pos);
+bc0e7cf43370a8e David Howells   2018-10-15  365  	if (p)
+bc0e7cf43370a8e David Howells   2018-10-15  366  		return p;
+bc0e7cf43370a8e David Howells   2018-10-15  367  
+bc0e7cf43370a8e David Howells   2018-10-15  368  	for (;;) {
+bc0e7cf43370a8e David Howells   2018-10-15  369  		bucket++;
+da940c1bf91ae9e Chelsy Ratnawat 2026-10-15  370  		*_pos = (bucket << shift) | 1;
+bc0e7cf43370a8e David Howells   2018-10-15  371  
+bc0e7cf43370a8e David Howells   2018-10-15  372  		if (bucket >= HASH_SIZE(rxnet->peer_hash)) {
+bc0e7cf43370a8e David Howells   2018-10-15  373  			*_pos = UINT_MAX;
+bc0e7cf43370a8e David Howells   2018-10-15  374  			return NULL;
+bc0e7cf43370a8e David Howells   2018-10-15  375  		}
+bc0e7cf43370a8e David Howells   2018-10-15  376  
+da940c1bf91ae9e Chelsy Ratnawat 2026-10-15  377  		p = seq_hlist_start_rcu(&rxnet->peer_hash[bucket], 0);
+bc0e7cf43370a8e David Howells   2018-10-15  378  		if (p)
+bc0e7cf43370a8e David Howells   2018-10-15  379  			return p;
+bc0e7cf43370a8e David Howells   2018-10-15  380  	}
+bc0e7cf43370a8e David Howells   2018-10-15  381  }
+bc0e7cf43370a8e David Howells   2018-10-15  382  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
