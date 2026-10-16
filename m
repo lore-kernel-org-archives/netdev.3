@@ -1,113 +1,130 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBF64D5968
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792158806; cv=pass; b=R+UVHMtgr16cEqJ1e8l/Z5upSr3Hjg8MLCCBQVkE2uGab3/TNSqEPXtQhzvGSdRksCGudCB8/2g4wlcmtepJgiV33ca+cnd07MVd63UAPtZfGxSchltEtFojKKxwoo/1jS/Ler/nz01Y339tx/ixHbdGGjwEDcUNquYeq9e26bE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792158806; c=relaxed/simple;
-	bh=cFvCifBg1Erj7yodq2VFcaiWk0MntVdZBsFvLjc5PDc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jf/YLV2tLpADvOOgqMk1hEpVYIp/s7DDjC50iQtGOpvFJ/KQwpm4E10l1Og9NuzZnJRVC5uHJMwL1QJk5RqyMXU84UDhlL7ebJphen2LysJ8Ym+THZUWYVqQpbbKJSUFb2Vsw3qSpmGAitqt1+H59mM0hYUsy2OIVxZCs2/C4M8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UrkPKG3T; arc=pass smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0873403F1
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 14:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792159218; cv=none; b=Gk0iL10qkjiYJ7JxQAGeWdIX3c6ckx3Mq94oxES/7KiFR0CGaH9bxN/bD6tMBTIwOiuRD3eH6uwB43iz5EL+AdmUPWTT4YS+Y6mUyRvL2LBOk49segMiTt1mYvikLKPL/YX/6lhJQ8Wpux39IQ/oY+VFzTKuzNJp+IKSKuYIclY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792159218; c=relaxed/simple;
+	bh=v2V5fnVsa5KLtIz1AyZRKlfVKI+s2yAGKM9+SZyiR6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Yo01cLB+7rTXYi43rHOGPuIkGefY1hH0GBJdI8hPoBPl8CgjGZeH1OB12oUJ2sJN4PfImbbiKaB+NkSTapAwM6UvIR2CZvHZxNEsneoA1rdoHteucykkrGTVqHx5E0ZDfvbro4/FgFDaDFN11LqhNLVtjsb5E2FJpQjsSAwIu+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=NR/Q1CL9; arc=none smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UrkPKG3T"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a642495d81so8680671a12.2
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:53:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792158803; cv=none;
-        d=google.com; s=arc-20260327;
-        b=S1AXPmZJ6rXEOKS6FDsO4T8fRBdbSUR5mcgiyERGNjXjICla4fWJ1Umv4HkYCWlhNI
-         edAoBmKrjkvlYtyVzJ90K4oUxTzN9wkKYtnf98OMAiBEMVO4ND9cAVqQTzEWl9lxDT0W
-         Q0ODOqTjvs5S1Ig5wV1usabe94Ll8PmQvkz7V4XmlEpgrbDAlHzwel4z4V2tyVAInspc
-         rUB1MitDRUNpsQij9QMxX3KkaE+ilBJUfH7q92Of4y1hQZegdQyr14n5cztvbuxO14BS
-         jbJt8QDsG5aC6DQNMs6MMrNt5RkQY8jg6+mM0NcLVf05DioChQ82iZUr/1yP0xhj2I+b
-         xXMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=cFvCifBg1Erj7yodq2VFcaiWk0MntVdZBsFvLjc5PDc=;
-        fh=vok9nZPDfo3Qc/l09g/irL93B13VMLwoUhGtL1dcFsQ=;
-        b=qi/4O+1taD2X2iumFQjGNQAm05SKQMe9ftyiAfUsR3QafauLRdyJ4vKavcJG3RyD5/
-         QgVwiox3+yZFMHRXSOpnS0yySD5ywZMlTalRCXrjbGWHgOmhE6Se3+MfhN3E625nPJwr
-         boOERwLKTxSBC9rXjXeDel3/6GMxxxhJJi0SQWUm27uLOiXEft5PDglpYgt611cR4zjS
-         0I6ruoo8fvR7uNHOGg/X3xOqK5QMKvDughBCmDTaeTUfCdxtkCAXiyqQVMQD48+baxMg
-         S3yT+hDUaAt4pHrFQFFpeDrVPzrz6CGwgATBRgAaB6LJm9L4eSfNZ6UzhQAsa+ztzIyB
-         FO9A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="NR/Q1CL9"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-35f1f76ea84so3674365eec.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 07:00:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792158803; x=1792763603; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cFvCifBg1Erj7yodq2VFcaiWk0MntVdZBsFvLjc5PDc=;
-        b=UrkPKG3TQqFSqYcoBcmKc/Ou03DNJXJAbsOtE0PveJeD9h6ORhmph1PUQOAhPa4My1
-         y9isF1oCV6zbjbSxteywL3yvSxO96cO0He3iGJpUx78oY3L0wzOfGe+Oi5Djzf7ww5G8
-         7YEnCPTkylMB1Z1A83rpN7v5en/3m2E89NQXK5gUlDrHGeJeMGwsm2S9CUkUxuRgohTy
-         90hhlMlXGnHtmxd61xwJM6Lhf++J4icKeaADsn4LJxgku0nK6AlvWF3XkYiXVrOi+RJC
-         WC9f7A9zFPeP7ocSTEFsL3EzVYCrjO/yuL0xOEbqE8xTNBDmuo7kHWbz96uOEdt/OaB4
-         Kgrg==
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1792159215; x=1792764015; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2Z5Tjzw79dxuxAtPkKiR6MybscKYv3iH1kbV3jyfWto=;
+        b=NR/Q1CL9Qa0Qc3V3DzWap3i8pkUCekX3fBBPqHNzB/idGNB/rq7k3zjM6/6V1/2SUT
+         4n4OICp9Ih761z+VxntV1kZX5I6qB7w9yioGfGToQa2o8MAq9amDG0/YLRnLkK2g0OZU
+         sHnt1v2hBZnebsX2C7PrpqwIlfBmKqU5/0sWJ/khop7JqqLfAdwU2KstI3eyMm1IE5NX
+         TaRo5SF0PFMyOSpS2vRUNBFOMBYCtzIESYUWEKadoMe+XR7/ELMDv1+HDLVH2wNMevLK
+         mF5p4XYmFLj6LHC541uenjUkYzn4TdJfI3fXyHRswVPYUiiGppzdG6IpOA/sFXHVxxQT
+         hw2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792158803; x=1792763603;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cFvCifBg1Erj7yodq2VFcaiWk0MntVdZBsFvLjc5PDc=;
-        b=sNQgPdiZ1WzPXA9tTpV7KSnZkLmF4+hdsfh5NaIYsbn1ZUCsVjB7WGNW3QAjyvjwNb
-         OJBwfJxA0DPvG+1Q13F504hg4xK2LT1uOUUdkm3uVwgaN2jjnG8Qwy+Jr6sHwUbdv6Ul
-         aGo0eyTiDSwTGJCrfVfd1ERuT+L51LuGI6d5ALgdPXe7j5OS18/JuMaDoVJam/PUQoE+
-         r1yCQ4LTnQP5S3/CaEmp1IFrNSfm3cMg8/RQx6eKWoV0mOjqKavyIbkE9BiPJiyxisuh
-         7vEd6PjgkKjtzvgzVU7JCUFQ4iSF8Ds17wFPRkAcfUp4zp32M7vfl9rlzBVNjbC2J5Qm
-         chDg==
-X-Forwarded-Encrypted: i=1; AKwUvBxxNkk30djPZ0I3SYB+Jy/qZTIKWWTIBv2TBKPJta3+ng1ktwvT2dKhot26GpYOa/l5qQO86Y4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLxpnDaP5V+LzIjveEaMFsJotc5Dt/Bv/ZeAx0yc2B7qDWG3LTr
-	p0jhww7p8Q1KQFO49F87KSIG2iP8gn5oiEUAGy/mjdx/Cd2xVFceVCXGF4E9hFLJmiVX2BgUHMv
-	CiyMpnIxlI5r1++FAODhWV+fayVuMIhQ=
-X-Gm-Gg: AYBFou0KbsQhhBogIRHiECO5SX2GyiSG6iB/IwD5UdRWkg9ovuF4k4YBLNr7uOgARQC
-	XtopuXfWXQ5UKE0Fg1Jhk1kmtf9HCqHmyjDQopXkm+2XrcZ14ZP2IR737Tw68sz9ZkuIjP42weS
-	hmFSEFamqf6q5tyJG1eBNZYQoeyfvbssCbRzOrMA51BtyjVFqLJhr5M/rpStPjqQfksRZu1gkiF
-	E9arWhNgrEq6aGVpA1UUSw1QzSuXeFqMq9jRmsB/lhruKuYlcAW8jGLuK3barV7snp+8W1gOIXC
-	lixGc9U3e7nmiGg2eCZWKjk/OkLi0xxsbewvJhrK0Rd1kISobIBkmEeDcbc=
-X-Received: by 2002:a17:907:3f0b:b0:c29:c079:676d with SMTP id
- a640c23a62f3a-c31a9a2d869mr2007763866b.3.1792158802842; Fri, 16 Oct 2026
- 06:53:22 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792159215; x=1792764015;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2Z5Tjzw79dxuxAtPkKiR6MybscKYv3iH1kbV3jyfWto=;
+        b=xjY+k5hbD8NDh2Yzp27/QANxIrkgJUiI3PvFDGbjFIL9NgV9tG7Vsasl+GTWXqg2Rs
+         HBSyHp7LLKUwEPL3AMiGgpxHCcYpW9ZR/wVoz3L608Dns2rLCSAaAa1+beokLBcdaLbb
+         BEv40u+7/pIHXhmXF3teumoEksVaIclLSGhDP5ZefKPzgJbNBbd95HOumv+iKc5fWh/m
+         onjreTKC2A1YBQmWejj2Je9YzPU+u8rEHijOGM68nYzgWzPnZJNw9GxKFQQep+kNdD4t
+         wpPbUwZhonjmdDYH9fkngpHjFK7etX8VQYCelqTtIkRCTlZMkEKYwgKTOH97bB9sKTPc
+         kErA==
+X-Gm-Message-State: AFq9FYIlj1fpDIi//iwKQH4DqAnf58+qEnJKMwxVuUE0yi73O1gtKovR
+	s8V+hNwE5EhhXgXR7lmXwpGHxsM+vE1yCGa0/j8rFZfUIsRyiw6zyXTrzXTGYq0irPqLXOVVnLc
+	6HUMQO0jw2GMg95EggTFrNelVSGaCiNhzQXIpsnVsCuMASSAz186ESk6pzMmHkzBev5uzn7PN
+X-Gm-Gg: AYBFou1Qd74LlaHkhdd1QpJLN6mNSUr95oEkWtSmlHbNfK2C3cUDFclgWQQEUuOIwKM
+	BlG+Wt1xADRwRjjwpN/IfsiKkvXHqoSQW4MWSx2p1pEU91GC8eI7Gt0Bc8Ramu3yqFkqEmTjcsf
+	PmI8VPoO+S52V1n/yrb568/wL6LYXZXyHpwxAkEwljWP1g+zHz9bWNNhM+ipyc690+7Dam92TZZ
+	vzvJOCmy7t1Hm4b6EW81UaiQmoYUe6ePr661pbWsgGXaBmmyrYU0DyfxlMGIe9VtvOven8xvbfd
+	4qhm/57bslWPmZ3jFeY933Ce8i+Ey7bo8jXMm0Y5ne+8XTo2gB5/zdcVvj5k4prllviHhxEhC+f
+	/fhJWKJsjUuVdRQPLkdjP6PlKF9+6xU+hUffVHnURI1qsnoD+T7TvHS8Id4iVIP5ckr42f1ahbV
+	f5Lewl7cDtAEzDIV29GQmQ+VEz2u1jNFFQ9Sng3/XKPMOV6MoJD4L0G2u9ju0/H9fBsMd8ClrZG
+	TmtHUuA+uU=
+X-Received: by 2002:a05:693c:4146:10b0:35d:ddf2:e986 with SMTP id 5a478bee46e88-35dddf2eaf5mr12328335eec.11.1792159208802;
+        Fri, 16 Oct 2026 07:00:08 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.241])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36082b8573dsm7159141eec.25.2026.10.16.07.00.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 07:00:08 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Qiliang Yuan <odys.yuan@gmail.com>
+Cc: Wang Zhan <wang.zhan@smartx.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] veth: set the real number of queues before registering the devices
+Date: Fri, 16 Oct 2026 21:59:55 +0800
+Message-ID: <20261016135955.714731-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261016-bug-veth-init-queues-before-register-v1-1-f48eb2bb25a0@gmail.com>
+References: <20261016-bug-veth-init-queues-before-register-v1-1-f48eb2bb25a0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5a4715dd-89e0-4868-9ffb-c8fb73b18d04@yahoo.com> <8a7eb315-b8af-45b8-a0a0-52814a5341de@yahoo.com>
-In-Reply-To: <8a7eb315-b8af-45b8-a0a0-52814a5341de@yahoo.com>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Fri, 16 Oct 2026 10:53:07 -0300
-X-Gm-Features: AclHuK_zgmTCWwlrEtDavnlWwYCxIc6oJyBMHV4DNMVoRBrUuHmo5hygFtbQTgE
-Message-ID: <CAJq09z6it-Vz3cF+sJgAP1X3tcr_L3ir=iqoSduiw9XaB5FyPg@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 2/9] net: dsa: realtek: rtl8365mb: add chip
- family infrastructure
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, 
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	linux@armlinux.org.uk, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> Add enum rtl8365mb_family and a family member to struct
-> rtl8365mb_chip_info, together with rtl8365mb_get_family() declared in a
-> new rtl8365mb.h so that the VLAN code can use it too. Tag all existing
-> chips as RTL8365MB_FAMILY_C.
+On Fri, 16 Oct 2026 14:51:05 +0800 Qiliang Yuan wrote:
+> Since commit 9d3684c24a52 ("veth: create by default nr_possible_cpus
+> queues"), each veth device is allocated with one rx and one tx queue
+> per possible CPU, and veth_newlink() reduces the real number of queues
+> to one unless the user asked for a number.
 >
-> RTL8365MB_FAMILY_D is defined here but no chip uses it yet; it is needed
-> by the following patches, which add family D handling for chips whose
-> register layout differs from the existing ones.
+> Both devices are already registered at that point, so
+> netif_set_real_num_tx_queues() and netif_set_real_num_rx_queues()
+> remove the sysfs objects of every extra queue that register_netdevice()
+> has just created, each one emitting an add and a remove uevent, and the
+> tx side also waits for an expedited RCU grace period. This happens with
+> RTNL held, twice per pair, and grows with the number of possible CPUs:
+> with 240 of them a veth pair emits about 1900 uevents, and udev
+> processing them slows down later sysfs work such as deleting devices.
 >
-> No functional change.
+> Set the number of queues before registering each device. For a device
+> that is not registered yet this only updates the counters, so the extra
+> queues never appear in sysfs, and the error paths that undid a
+> registration are no longer needed.
 >
-> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Creating and then deleting 500 veth pairs, one ip -batch each, in a 16
+> vCPU guest, median of 3 runs, per pair:
+>
+>                                    before      after
+>   16 possible CPUs    create      1644 us     520 us
+>                       delete     11822 us    9750 us
+>   240 possible CPUs   create     17253 us    1339 us
+>                       delete     17082 us    9941 us
+>                       uevents        1918          6
+>
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 
-Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Looks fine to me. virtio-net uses this ordering too. I checked that
+veth's ndo_init() leaves the real queue counts alone, and I don't see
+any missing cleanup after the move.
+
+I ran some basic veth tests under QEMU TCG; no regressions found.
+
+Reviewed-by: Wang Zhan <wang.zhan@smartx.com>
+Tested-by: Wang Zhan <wang.zhan@smartx.com>
+
+BTW, Li RongQing also posted a net fix changing veth_init_queues(peer, tb)
+to use tbp, so there may be a conflict.
+
+https://lore.kernel.org/netdev/20261014013620.2497-1-lirongqing@baidu.com/
