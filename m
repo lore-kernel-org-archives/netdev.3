@@ -1,80 +1,114 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB39457E5F;
-	Fri, 16 Oct 2026 12:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36A1480DED;
+	Fri, 16 Oct 2026 12:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792153625; cv=none; b=ZhghMugK9l4z77HStKcobD1DnSnLXiWM3L1m5XUDz8n0evLwY58eSqr9ExP8l87feXgd3bIUZaanT+2b8kj0B6n0bW/KXza2cjHp7kBEZBO0bH0YuuO26OjCw0kYQMBEd8ENjf1CVZOiyLlNqLr8q2CzR95rHNry/lV85vaZTZ0=
+	t=1792153848; cv=none; b=arRQYUbSVCGynP43JjsXiSZ5PI4p520I7cX6luTfYTW05LXk8dSNtsbQ9NpDRmMZh9VOWyuIXKPtemd3sfxAh6ZydP2w81bL4H2GOAmRcjHSaRoCKwW8Do3M4PC+rkD72dqQjra6OpueBGS3Gte1+Wbc/SiJr5DwmyLGoOrsDMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792153625; c=relaxed/simple;
-	bh=MmGvErraHmGXymUgElckL0Yil5M9Kitm7TIQpXtyBTU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LqWTTGXn6ZbCYfCTXjzRjmYYJChEzC4Q6mu2PZyHIq0NRN8a1wpsRjvo9WxUzRXfH/2w3wWPpi6EcJZ8IdoG/4oR7JkFKy4yYxV3ZWrzhXN+Wuy0x8+ZHrJ1GFrlZ7CP024C+kdlm90sqafTyZ7sLLMX5VS4x7efyFSaRpU4Jh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Wnp1Q22P; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1792153848; c=relaxed/simple;
+	bh=rod6xy9+gndHUdnbr4wgG656s1uGxUW7SPIP+EVNlHM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Nj46AvS6WCgx61n0ro9dxzaXGV/IRjP5N3Pi2QTTk4lxtLYx6Hr/ljm1KITFADCHbs3/Y6YaIVwzHZSfn3AHhB3/jRxhhsthzdscnCy99C7rvoQPqDaoiuFIoc1o+YOncBcHnmgE0m+hgg7E1OjoTX3J5hyA7D/VUU3yDFbvOVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com; spf=pass smtp.mailfrom=ugreen.com; dkim=pass (1024-bit key) header.d=ugreen.com header.i=@ugreen.com header.b=rP4UF5tK; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ugreen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Wnp1Q22P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792153624; x=1823689624;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MmGvErraHmGXymUgElckL0Yil5M9Kitm7TIQpXtyBTU=;
-  b=Wnp1Q22Pws3WaLj8UsXckRdR7aVoCa5Ywuwv0OdoQm6Ac07BzBljOmlq
-   eBOZNREQB4+xsCbouzavEkjRObp4436CRrJjqkBRihdXgfpICik/DqR8y
-   ++HawzcReQ1YwEaz4j3QSw5oOlF0XR5K+S9KEwlMAk51wsKap1YgmkmsY
-   fkosLpnYhZOhk+iW8tI2D4x6P2DnLgOmWvjJxiehNN8Bsy2EpClXucCi8
-   FxMb5iNHZ3dBzyM7+yWeC7j3QhATNq8I0NZlu/g7p8NSWw41tnQPh8OyA
-   +9gitf+IyB658CEGanuEr+HMMxjNwJR8kh2uL6sHTgLjhqts7SzbrnKdV
-   w==;
-X-CSE-ConnectionGUID: I0R7QpXoSLeudXur/QpfVA==
-X-CSE-MsgGUID: NPZwkujlShm4Mhi8gM3t+w==
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="296564488"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2026 05:27:03 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 16 Oct 2026 05:27:03 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 16 Oct 2026 05:27:00 -0700
-Date: Fri, 16 Oct 2026 14:26:59 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Jijie Shao <shaojijie@huawei.com>
-CC: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <shenjian15@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
-	<yangshuaisong@h-partners.com>, <ningwei15@huawei.com>,
-	<shiyongbang@huawei.com>, <fengzheng6@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: hibmcge: set netdev_ops before hbg_init() to
- fix NULL pointer dereference
-Message-ID: <20261016122659.3nyou6kycfu3m74x@DEN-DL-M70577>
-References: <20261016110421.2288670-1-shaojijie@huawei.com>
+	dkim=pass (1024-bit key) header.d=ugreen.com header.i=@ugreen.com header.b="rP4UF5tK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
+	s=pkvm2402; t=1792153799;
+	bh=PTGNf+pFA4HlvSUNJLATMTS2BdbiXazN6lRObVyVPC0=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=rP4UF5tKmoJzRdfIra7YzOMp+2iUIg+jw/GGGOD9kFdTXFPcwI55HXgfA2K38nCvq
+	 0NcwSq86L8zPnhGwG9F51goITWSPRq4LlzH151gqWhcOX6V/kFaQsmjyCxzFx/2Bma
+	 wFKhLn+y01SXB+b45cingkEo7Zkuimk7QlwJFTQY=
+X-QQ-mid: zesmtpsz8t1792153794td166a33c
+X-QQ-Originating-IP: +8ylvwj65TkPxlY7DREeXjDYclub16XfNEoyv3MvgGA=
+Received: from exmail.qq.com ( [113.88.77.42])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 16 Oct 2026 20:29:46 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 3139676211192935493
+EX-QQ-RecipientCnt: 6
+From: Hanson Wang <hanson.wang@ugreen.com>
+To: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org,
+	oneukum@suse.com,
+	jakub.kicinski@kernel.org,
+	andrew+netdev@lunn.ch,
+	hanson.wang@ugreen.com
+Subject: [PATCH net v2] net: usb: aqc111: fix set_mac_address return value
+Date: Fri, 16 Oct 2026 20:29:44 +0800
+Message-Id: <20261016122944.1889622-1-hanson.wang@ugreen.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260703073936.462231-1-hanson.wang@ugreen.com>
+References: <20260703073936.462231-1-hanson.wang@ugreen.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261016110421.2288670-1-shaojijie@huawei.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: N+sUQ11wBK5qy7i/Q3cLsLARQ0I4WvjA2npztSrd3PrN88qhgpsMCa9Z
+	bBfFtR5aIu3zkUJ0EVl/9K8Tix4yDh9JLoHwc4PGmvC22J+gRLNs/naNB/6Qsz/EKycvVIR
+	ljKtZ0Uu4GBWiKbdIace7+9bJAgS9/8kq0ShVYHkSXDgoRQFFlIRS54fSpAcffeI/XMsvRV
+	jS6Wlko8dHak6f90i/lq9urS1AB/+m4uHx3dufwi5ZJiOcJ9A3uko3pbsMXKCFhekx7OJyq
+	xY1kiIjv/5COP6e/K9HFofi0qvKdl+YwTunShq9MWmZc/paRQ9T0W6hWK8vSnLORI5uCaBB
+	JqDT3C+J6ZsOwudbTTX09c40+H4d0KSeLHUEs0tAyMQbkkYni7QUtpVBJqhOa3wPj+MBqFR
+	GZSv/ISBu9njpFZIOAH0FBqraH7Kd6AIg0rrTZkji49hpXIcyw4GwgLeZM6NU7BBLPCqvlJ
+	8qJOVqllWmjOJRw53QJmrxqJIGG+XzZgF/lYtG03przZn91CTgSbIXyzg4ufuTF/n9K98Hp
+	f6XG0DkC30vBdKU3mqcceDQwHoZhVPZalkhxOiChWBIfb+fjlVm29y1MvChPqLYzXCbrW9q
+	9OduhvdCbuPIQfNd4Xh1pbWSTSOqut7MW89bM3+umL1APHWDoSDnTytWc6kg0Qly1DFHSPu
+	NdOKwsRYmN5jTgqkXUo9qGc3tNlV37OL/EG1nVk0AI6KYJnIepDFJnCkw0STM2yBjNDe822
+	9FqRb4LIIMFqSkuO/OZSWIEHhtigdG8n6nR0QCnoDpZeidc3S33vhUSUWrmEoOeX/UxFOlZ
+	av6fhInouIWr5P4VGWdnHN6Ky4y6iUWqIvzNXtt+iqhPKwUWqqLvX7hT890CNqi9XWVxyU6
+	7BV/VbVQFDhPCWc/wZvLw4DcPNzWRFCWF4QTOc6cP9dxnmZlp7IL4/GhCejrfi29N339bXJ
+	f39PNXXcAh4RaWd7bV3r0NG51rA9q+9kcPWRSW7bYrHcQFpVERgKXWMyRu2waJnAsm5oS56
+	/AKTq0rbvJ3AQ2/f8/LIsrcHgHrv7VQBRMBbLWH11d/qZWeG1zPvH2/lEuh9U0aNEBNyhtF
+	9G1YWNh9NG71igT3zrgLFFuzhHN1PJx2GuV3iUjdpsyK8SchDpaFlI=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-> The driver assigns netdev_ops after hbg_init(), but hbg_init() calls
-> hbg_mdio_init() -> hbg_phy_connect() -> phy_connect_direct() ->
-> phy_attach_direct() -> phy_link_topo_add_phy(), which invokes
-> netdev_need_ops_lock(). With CONFIG_NET_SHAPER enabled, this function
-> dereferences dev->netdev_ops->net_shaper_ops. Since netdev_ops is still
-> NULL at this point, a NULL pointer dereference occurs.
-> 
-> Move the netdev_ops assignment before hbg_init() so that
-> netdev_need_ops_lock() can safely access netdev_ops during PHY
-> attachment.
+aqc111_set_mac_addr() returns the result of aqc111_write_cmd() on
+success. That function wraps usb_control_msg(), which returns the
+number of bytes transferred (6 for ETH_ALEN) rather than zero.
 
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Callers such as netif_set_mac_address() and bonding treat any
+non-zero return value as failure when setting the MAC address.
+
+Return 0 on success and propagate negative error codes on failure.
+
+Link: https://lore.kernel.org/netdev/20260703073936.462231-1-hanson.wang@ugreen.com
+
+Signed-off-by: Hanson Wang <hanson.wang@ugreen.com>
+---
+ drivers/net/usb/aqc111.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 9201ee10a..827aab540 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -476,8 +476,12 @@ static int aqc111_set_mac_addr(struct net_device *net, void *p)
+ 		return ret;
+ 
+ 	/* Set the MAC address */
+-	return aqc111_write_cmd(dev, AQ_ACCESS_MAC, SFR_NODE_ID, ETH_ALEN,
+-				ETH_ALEN, net->dev_addr);
++	ret = aqc111_write_cmd(dev, AQ_ACCESS_MAC, SFR_NODE_ID,
++			       ETH_ALEN, ETH_ALEN, net->dev_addr);
++	if (ret < 0)
++		return ret;
++
++	return 0;
+ }
+ 
+ static int aqc111_vlan_rx_kill_vid(struct net_device *net,
+-- 
+2.34.1
+
