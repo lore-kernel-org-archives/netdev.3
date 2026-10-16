@@ -1,93 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F308439EF12
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927942EC0A4;
+	Fri, 16 Oct 2026 08:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792139003; cv=none; b=VdmDhs2/1sfCn+E1rInhE83NvFIhvxKb81jgRi4wGDII5/H8DO0CiKJwGygMjHPwAt0SDEjzyiBISB87sgXEnBMMTZsy66zX59Md9cRqL/jKPeqivO8a5d1R55+sklTEkCtoDkAdiixgqtAsllwcbKn25lu7l5aRd2h6/qo4M6U=
+	t=1792139017; cv=none; b=FODnpiOer0dNkeprD+xlI0Bd5+jIzGnITQ+mhK3BDifzYW4flRoDgooOy5aeZfHA4bL3duD+8N1FVCgk3UVuiI3s1D4SAg7i7sLHcclBI9NN2tkKXCRMF4jJfVSWndH3ImWf0lZrCqcU5xoIecDRIevTxx0obccotLsbebUfskk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792139003; c=relaxed/simple;
-	bh=oN8eUitwwNXlNWMV6fer3OLGhSyJBfwnxPpO0+hBr1c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XcjVzoj10evJol6ZruN17efSbW8XiTrdRxzG4WFBDeHXM9pwRpZMoQiTTKHKMEktbPeygdTtFtoqD/+ljLgobs+BOo6qIQpC3OIUS5mUBMevbUx5ACkYlxSIbuTNMO8MCn/Y3ec40MImwkMLXG9W9oRHgymKu3Vpfbt0f81Tt4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Di0gfyvR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792139017; c=relaxed/simple;
+	bh=xw8krlJdXOTKOBJ6KwmsMvV3jpT9EDV8kD+SABruImc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RrdPlwwk5665MCF/kCc9F8JZO2qHwsmlJv2dq1lvzUSnmST6gRaorNilGAiDcJ0nq4U0dCZ7g7D16p6pevCm53jPM0E6m0ci+Uvw3b0vQUXw4H38rIkmLHUa4skCd/f6AlVkjHPyIzK+4Ts5jR2rssQJmqfAH/Q/bXUQr0a3rQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Ke2qrQfn; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Di0gfyvR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04EF1F000CD
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:23:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792139002;
-	bh=oN8eUitwwNXlNWMV6fer3OLGhSyJBfwnxPpO0+hBr1c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Di0gfyvRqBM+0yZrmva33+BfTwUfy2QfCp5UD6nNNAI2OaPMnu+9o1S/l7dTO3nmp
-	 w/YFkRjr/CGE/Z4TGLlZdhj9D4oZ4+vDGP8uLBhgbd0Pay0E+BqMhw9mE/JUTzMUmn
-	 HrI0preXy+EixVqwMp6OaaG9hGy2POqrxUBnBVfh1M1hHhH1H84l9ADGFkbpfu0s/q
-	 OPFWpGCF+LqjDnp4Q+mDr1D0SzhyxD9Rcn4zR/9G7nary5jVMYjQYRM2FOKW7uFvmf
-	 4rJq/vFkgVZ2AXcLZjkwfZfHc7pCtCJ7/4RIOHxVtnTQUd7RBY72Y+A/hBaZJFU7BN
-	 1XggGgR44mZIw==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6faddda49e7so2910712eaf.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:23:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwfyL3qnToqhccRVlic946Vk/KxqdAdNf9LgWih35cBsGoEfFYkW9kw/KMNFC6CHK8vzzVZA0I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ8E+Y/S6Rr1kGXYolkdJo2AvlU74SYsLSEK0zptOsGTWNoSYUf
-	RNlYGQd9qT6bNVr7GKd9lv/GcS/Qff0VQQl9JStLibeSN1AKiNMrtwoIoiglZv0MvmxaY3nE/Ip
-	pKSt+fZh+FYstaeDM3uNFh+4rSFddl04=
-X-Received: by 2002:a05:6820:d0e:b0:6dd:696d:b222 with SMTP id
- 006d021491bc7-6ef0fdb0ac9mr16267832eaf.67.1792139001923; Fri, 16 Oct 2026
- 01:23:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Ke2qrQfn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792139016; x=1823675016;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xw8krlJdXOTKOBJ6KwmsMvV3jpT9EDV8kD+SABruImc=;
+  b=Ke2qrQfnzx1ReMdx9anMuGNFgpuszgRCKy7ALmMfMtcXrCEPm+C0nNYj
+   FFEgH9F/ouhiBht+kyA3k1V8E4eSU9QodVbCtb24vhAsHlrQ/nQSqLjaI
+   qHeiEndIgMaMg1wysBJ4Rb92tUlF1daOXN3+d8atVs1mkRFpCHTFG1Srg
+   eeknEz3JOq+Lc4Y3N2Hk7xrmPc0dwwe59GO3R4s/wijuVtzrslPlPZQem
+   DRePmJwP8iCpuHII+3jk6FT8gACj16+HO37LF5Xk7BmjcZfJBTDxMPkVC
+   ZI8XKI94dVFG/eTue/n29wMJwdHkglRXd4YxFEQBVCnoG/dF2Hmf9gC6N
+   w==;
+X-CSE-ConnectionGUID: b51GVT9OTT2iDWhDvh9MPA==
+X-CSE-MsgGUID: kApJifJFQ/idQEaHt503EA==
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="232221585"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2026 01:23:34 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 16 Oct 2026 01:23:34 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 16 Oct 2026 01:23:31 -0700
+Date: Fri, 16 Oct 2026 10:23:30 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Thomas Fourier <fourier.thomas@gmail.com>, Iyappan Subramanian
+	<iyappan@os.amperecomputing.com>, Keyur Chudgar
+	<keyur@os.amperecomputing.com>, Quan Nguyen <quan@os.amperecomputing.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, "open list:NETWORKING DRIVERS"
+	<netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v2] drivers: net: xgene: Fix dma_unmap_single()
+ size
+Message-ID: <20261016082330.j6pqrxwjbuhgvzjr@DEN-DL-M70577.microsemi.net>
+References: <20261015124547.29996-2-fourier.thomas@gmail.com>
+ <6046e419-2a1d-4e01-9f0d-f718ba8bfda9@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261015073736.2944215-1-tavip@google.com> <20261015073736.2944215-3-tavip@google.com>
- <CAAVpQUCpFC-7J=uEgBfh37hFb5BCJvhJQZx7_YKEDCtvbGrGWw@mail.gmail.com> <CAL4WiiozXgApewA6WWQA--YxaweezQASpiOiiLz7=ijrqbkqgQ@mail.gmail.com>
-In-Reply-To: <CAL4WiiozXgApewA6WWQA--YxaweezQASpiOiiLz7=ijrqbkqgQ@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 16 Oct 2026 10:23:10 +0200
-X-Gmail-Original-Message-ID: <CAL4WiioJjvno8r7YeLCTf00q9L5w+OOGLbGz-t330R=NZ8ATkQ@mail.gmail.com>
-X-Gm-Features: AclHuK_u3lR1D2ljkRGIQeZr4gzrwuVUaxoazNDubSWnSNscw9cZRLoBFUMJFNA
-Message-ID: <CAL4WiioJjvno8r7YeLCTf00q9L5w+OOGLbGz-t330R=NZ8ATkQ@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] selftests: net: packetdrill: add test for
- negative sk_forward_alloc in tcp_wmem_schedule()
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Octavian Purdila <tavip@google.com>, Neal Cardwell <ncardwell@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Wei Wang <weiwan@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <6046e419-2a1d-4e01-9f0d-f718ba8bfda9@lunn.ch>
 
-Le ven. 16 oct. 2026 =C3=A0 10:22, Eric Dumazet <edumazet@kernel.org> a =C3=
-=A9crit :
+> > In xgene_enet_refill_bufpool(), the skb->data is dma-mapped with length
+> > len which is set to XGENE_ENET_STD_MTU which equals 1536. However, in
+> > xgene_enet_delete_bufpool(), the same buffer is unmapped with length
+> > XGENE_ENET_MAX_MTU which is 9600. This may erroneously unmap other
+> > DMA buffers or cause other issues.
+> > 
+> > Change unmap length to XGENE_ENET_STD_MTU.
+> 
+> I don't know this driver, so i could be wrong.....
+> 
+> map/unmap is expensive, because it needs to flush/invalidate the cache
+> etc. So the hot path part of the code, dealing with real frame data,
+> sometimes only maps/unmaps the length of the frame, which is less than
+> the length of the buffer, particularly when jumbo is involved.
+> 
+> So you could allocate a buffer for 9600 jumbo, but in the hot path
+> only map/unmap part of it, but when you release the buffer, you need
+> to unmap the full 9600 size of the buffer, to be on the safe size.
+
+I don't think that applies here. The bufpool skbs are mapped and unmapped in the
+RX path with XGENE_ENET_STD_MTU, never with the frame length. The teardown unmap
+with XGENE_ENET_MAX_MTU is the only mismatch (AFAICT), and that is what this
+patch fixes.
+
+> 
+> Please look at the driver and consider this. As i said, i could be
+> wrong...
+> 
+> 	Andrew
 >
-> Le ven. 16 oct. 2026 =C3=A0 09:54, Kuniyuki Iwashima <kuniyu@google.com> =
-a =C3=A9crit :
-> >
-> > On Thu, Oct 15, 2026 at 12:37=E2=80=AFAM Octavian Purdila <tavip@google=
-.com> wrote:
-> > >
-> > > Add a packetdrill test that drives sk->sk_forward_alloc negative via
-> > > tcp_collapse() on the receive queue while sk->sk_wmem_queued exceeds
-> > > sysctl_tcp_wmem[0], and verifies that a subsequent non-blocking write=
-()
-> > > under TCP memory pressure fails with EAGAIN rather than returning a
-> > > negative copy length from tcp_wmem_schedule() and failing with EFAULT=
-.
-> > >
-> > > Assisted-by: LLM
-> > > Signed-off-by: Octavian Purdila <tavip@google.com>
-> >
-> > Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> >
-> > Thanks !
->
-> Are you sure this test is passing on arches with 6K pages (as some
-> arm64 and ppc64 platforms) ?
 
-This was meant to read : 64K pages.
+/Daniel
 
-> We might need to add a check to only run it on 4K platforms.
