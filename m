@@ -1,243 +1,143 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214A142123F
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617A45C70B
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792141271; cv=none; b=iFC9+dl0uvGFZQBz3+IboDjkUDdK7cTBZlgu+53cVegXdhwAOkFjqngCWU0cfQDm4FGVn29N1x06EZ6/v7cianh3zcKYvkNtdvHoXEbGn8KR4r5cH1W6ozEgwT1S3g2gshUkp2NRyKfWtfs3LyNeCLhr1E442jlOulCXKpJ6jVg=
+	t=1792141558; cv=none; b=Nhvs2Zf9fUxPcHahzj01VgRAWm8hk68wYX4V+QaVJBFsAztI2KnZLa79WRGg0O2xtSnFoPjY6LyWHcb+yylXsAqR0fLl99q7NCede5sfRB1Nh8wbQYN0OWW6VTNaWQK/U/5KE9LhubjAcK//yJw14f3ExpLgjofpXh0eqrUsMVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792141271; c=relaxed/simple;
-	bh=7rievG5oH4a47PFqylXvWpWaWTQ3re+8nOd+7POFa1Q=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ssjkHRkYNdHdazvs72Pu6AIYc07xxPxg38HHVg7vHp6O6KtN4D3EXfPgCWUmh+o7UQcaexL9PZtVv+EWFhmwrk+Kn340tXehrl4xTxYyXHFewH9XIa9TgudnhDTiPOXU5/CKYewcsrEbYd6zS0F/rZW1vFCHoywfniE43UxLMLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=XGzn4gZU; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1792141558; c=relaxed/simple;
+	bh=vBIXkU5a0czakfaG5UvhQYLDQmtPpOHhwRqC+37to5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bn0iZ4kbjyBlthjXpetyEQ8omqkXlL6NXn4JeNxY+eoekl4xZuOQcXwlJGsbgI4j58c4leZsGw0MHxI+xQesGt83Mb8SCVBS9n44KfPSU9jBz0bmQyyXrl0WP/EPJY9rZtqzJW5yMWhYiuYLUVPiXXSPa/llf7tBqgd8J9K1Kd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R/ma36wG; arc=none smtp.client-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="XGzn4gZU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792141269; x=1823677269;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=7rievG5oH4a47PFqylXvWpWaWTQ3re+8nOd+7POFa1Q=;
-  b=XGzn4gZUM5QgRealMXR3WfOm1vULUMdnapvse83RS81vbazld0hBNuK5
-   +LM+cOPyo48MItmVCIjzn8U6q8QMGCPEH6kAHDFpQNayLIQ5o+dNhektm
-   zzyIlt74rTqdYgSznSX0aw0/hn0EbZyDBuVsKI/2Owuqnvy6sMy3CoyFs
-   8lDEKFMSlfBvUU6vjZ0gCaPdMLJJ87Dbocp90UlsJg/g5OfwcwzDHaBZ1
-   //bQ/i9//aibnFZaOBQQctLsGLdFkFw8j5S0Y5aHYq5HWnp/HUmSDcULp
-   0b58V+shTA8ymND9YR8ztufkuLmRPVnYiALUEe7VK5kjsMkBb7nvV/XCM
-   Q==;
-X-CSE-ConnectionGUID: nz5ujrE0Rr65Kj1Z2PYKjQ==
-X-CSE-MsgGUID: DpaU7qlXQW6mCFTR04D97g==
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="64187826"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 02:01:09 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Fri, 16 Oct 2026 02:01:08 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 16 Oct 2026 02:01:05 -0700
-Date: Fri, 16 Oct 2026 11:01:04 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: <netdev@vger.kernel.org>, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Chintan Vankar <c-vankar@ti.com>, Danish
- Anwar <danishanwar@ti.com>, Daolin Qiu <d-qiu@ti.com>, "David S. Miller"
-	<davem@davemloft.net>, Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski
-	<kuba@kernel.org>, Neelima Muralidharan <neelima@ti.com>, Paolo Abeni
-	<pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>, Pratheesh Gangadhar
- TK <pratheesh@ti.com>, Richard Cochran <richardcochran@gmail.com>, Simon
- Horman <horms@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Willem de
- Bruijn <willemdebruijn.kernel@gmail.com>, Eric Dumazet <edumazet@kernel.org>
-Subject: Re: [PATCH net-next v9 0/8] hsr: Add additional info to send/
- receive skbs
-Message-ID: <20261016090104.cqli34hczhsav6e3@DEN-DL-M70577.microsemi.net>
-References: <20261014-hsr_ptp-v9-0-2d20a2a0f816@linutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R/ma36wG"
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-3a0aa5e2b20so1730555a91.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:05:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792141557; x=1792746357; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yIua1GyF5CyLs9zVRRQ2YP0+xQy31M4iXC7gh2QlT8o=;
+        b=R/ma36wG/IHRU2eoU0KCWSBoMR66p9M6DTdmOOjFlc/4eMkm5OzKOY0h56NXsULWRY
+         IgsALiiGVxAVMLQL7HCOIv+AbktrciTx4F3MkyaXiPIi637hKWySRrD+hEdtTuDPpzcT
+         PUbRvbJw6xC7unByrBbLZoCGZry+bWJ5MeodvfScKLm8GObt1ltBDiBNGDO8OoEAzuDG
+         S2VwVqWIrI8ptNhYehpvTZE/CfJeP1bBSZe+yQgtlQDOdAcTUW2g9wk+BDZhuTmtASqC
+         Qyqop8R0nbuEjwJfiJiPmjuLZQeOT0z+ljTYOrc8er4X2LhLtpK1s4QNct00ji8/iJEN
+         iAXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792141557; x=1792746357;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yIua1GyF5CyLs9zVRRQ2YP0+xQy31M4iXC7gh2QlT8o=;
+        b=q/hnmPxJzFL2Tq6rtTDAqi1d9kfz7MyvZ3evtCSpDYkUrh26EfKiH/+VmKuLCP3oaM
+         KwiOPNv9vD449yE7WJunIsxgmGdNaqH0QA2oJfsju0XLiNkro7KLFa0alnVR88LEmHL7
+         o0djQgsjpa1ev2Ju0TU6HxcsdDLkZGorWiQFT2ALaHP54dQu+RmXCYhh11ZYSuQOiOTU
+         aPrLgAsFLB71iuQ1UlJt2CeyTe4lWEmpfavQ7bO0dlqW6GcZ7orImW0/o5Ag5IJ+fEio
+         JDN7DdN8CiVpHYZHgEIEvuS+TqKzeizmmqiI5fxYoX1QoyNIwIUYxSYM8/vqcddV8ThO
+         ckWw==
+X-Forwarded-Encrypted: i=1; AKwUvBxMqbyUvYM9FTe21c4V0O17YwHJEq5xGPGcMjvp8p88yc9z+5+s4kmIyhYVmHnLu7HTjV58tPI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJwHTdmVwLJzAHfbzimSxvSrNdVidzjuu+WG85VqWhsfyQ1N2FR
+	82HEiZs86r/1JzsXAu1M4BMhJ1o4zFCLvVQlLedrxu5gVogfaWFHs8aU
+X-Gm-Gg: AYBFou21Zhalym11HW1qpHZF8QVskQxtqwhcDqf7Vh2gqvDi2cWAgjIMEX+lyIc4PNG
+	uPPE1+yqrDi7F19J6SaiEi0gLkyDi78zpsthjoUSSCBbxV/JNzdC0A4fULLsLjojnz2IA/gdSIU
+	QQqKADck5fYtMQGJ1GHSPoWU61RSxEI/J4J7e6SKLgdI6P44wn6fqa39xDl7Q7ZjYeG6H9558G3
+	qGuONlkIIFYvC6y/umBWLG61HfXCbbcm2FmvhGCziq0uvNPAQN0DF2LH090e28/YC+uEqgkE4QR
+	Ce5vGK8m2DQ7GDfjL+VY+stiB/+opgMdu/SC8aAvPVRxrYz+pmrVVcefdmxq5Yzll2HlHF7L+kp
+	o97bMjWokrVkb+p7SBU4d4oA3Wzduzc8qpVbHSTiabez4xs+wlgkVX0stt+bShT1z7gm4Y6lwyQ
+	bGEW4dBFV3f0wfJDKfKxzY8QSiQ7VyfCp9es4Sm6LHQOyf2l/B/TTdvGaT+g2LOwp07JacVYpSC
+	8rXMXa08aajaVnihgc=
+X-Received: by 2002:a17:90b:2d0b:b0:3ab:36c4:b4ff with SMTP id 98e67ed59e1d1-3ab3a747069mr19095398a91.24.1792141556494;
+        Fri, 16 Oct 2026 02:05:56 -0700 (PDT)
+Received: from LAPTOP-QJLDGQ2L.localdomain ([112.224.225.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd0aa3c24sm1310370a91.4.2026.10.16.02.05.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 02:05:55 -0700 (PDT)
+From: Boyan Liu <yymhvert@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	co+98d7de09cd94fec5@bugs.sh
+Subject: Re: [PATCH net] udp: Fix out-of-bounds read with unset mac header in unexpected GSO path
+Date: Fri, 16 Oct 2026 17:05:25 +0800
+Message-ID: <20261016090526.2497-1-yymhvert@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <willemdebruijn.kernel.2a345d6bd54c5@gmail.com>
+References: <willemdebruijn.kernel.2a345d6bd54c5@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261014-hsr_ptp-v9-0-2d20a2a0f816@linutronix.de>
 
-Hi Sebastian,
+Hi Willem,
 
-> I am trying to extend linuxptp to support PTP over a HSR network.
-> 
-> This is the kernel side of the changes. In short PTP over HSR sends its
-> packets to a multicast address and every node needs to forward the PTP
-> packet (SYNC and FOLLOW-UP for instance) within the HSR ring.
-> In order to achieve this, the HSR stack must not duplicate and forward
-> the PTP packets as it would do with other packets. The delay caused by
-> the duplication and forwarding adds overhead which in turn makes the
-> timing information within the PTP packet inaccurate.
-
-I think the main reason is that PTP over HSR needs per-path delays, so packets
-have to be steered out a specific ring port.
-
-> 
-> My current approach is to open the slave devices (eth0/ eth1) from
-> userland in order to receive the PTP packets. Sending happens from the
-> hsr0 device. The actual packet has an inline header prepended of type
-> struct hsr_inline_header. The size of the header is equivalent to
-> ethhdr. The header has a type (h_proto) at the same position as ethhdr
-> and expects it to be ETH_P_1588 as this extra meta information is only
-> relevant for PTP packets. It makes no sense to send PTP packets via the
-> HSR interface because it gets duplicated and the timestamp information
-> is lost so this should not break anything. As an additional safe guard
-> there is a magic value at h_source position. The value has '0xaf' at the
-> most significant byte which makes the address a locally administered
-> multicast address.
-> 
-> The header passes two information from userland: On which slave port
-> the packet has to be sent and does the HSR stack need to prepend a
-> header or not.
-
-It was not entirely clear to me that hsr_hdr=1 meant "this frame already carries
-an HSR tag" as opossed to "please add one".
-
-> The header is skipped so that the remaining stack sees the actual data
-> and can send it as requested.
-> 
-> The PRP packets are sent directly via the SLAVE interface. The standard
-> mandates not add a PRP trailer (PRP, redundancy control trailer) to PTP
-> packets. There is not really a reason to use hsr interface.
-> 
-> HSR hardware offloading is optional. The driver needs to know if the
-> operating mode is HSR or PRP. In PRP mode it needs to check the ether
-> type and for ETH_P_1588 it must not perform any offloading.
-> In HSR mode, for ether-type ETH_P_1588 there must be no offloading. If
-> the ether-type is ETH_P_HSR there must be no offloading if the
-> encapsulated protocol is ETH_P_1588.
-
-I think my question on v8 still stands: some existing drivers will undo the
-directed TX. Should they be updated to check for PTP frames? I am not sure
-myself.
-
-> 
-> This has been tested in a pure software environment and in an HW-assisted
-> environment where the HW is able to duplicate and duplicate packets
-
-s/duplicate and duplicate/duplicate and deduplicate/
-
-> but does not do it for PTP packets.
-> It has not been tested within an environment where the HW is able to
-> forward the PTP packet and correctly update the timing information.
-> 
-> ---
-> v8…v9: https://patch.msgid.link/20261002-hsr_ptp-v8-0-60dabc07e554@linutronix.de
-> - Use skb_postpush_data_move() for the data move
-> - A few patches got their description updated so that the bot does
->   hopefully not complain about a few things that are meant to be (such
->   as skipping PRP).
-> 
-> v7…v8: https://patch.msgid.link/20260928-hsr_ptp-v7-0-d55d304d9a7e@linutronix.de
-> - Use __u8 instead of uint8_t, add header file for in hsr_ptp.h
-> - Add header file to if_hsr.h for struct ethhdr
-> - Remove the inline keyword from hsr_ptp_test.c 
-> 
-> v6…v7: https://patch.msgid.link/20260923-hsr_ptp-v6-0-6ea07b3fb8a8@linutronix.de
-> - Change the logic in hsr_create_tagged_frame():
->   - Don't update ->csum_start (the cloning takes care of this)
->   - pskb_may_pull() does not need to include HSR_HLEN (it only copies
->     'movelen')
->   - Set network header to 'movelen' which takes VLAN into account
-> - Drop also PTP packets which were received on HSR_PT_INTERLINK (not
->   just HSR A/B).
-> - Move include HSR header to include/uapi/linux/hsr_ptp.h, so it is also
->   available in userland.
-> - selftests:
->   - Add hsr_ptp.sh alphabetically ordered to the Makefile
->   - Use "$0" in hsr_ptp.sh
->   - Drop unnused arguments in open_socket()
-> 
-> v5…v6: https://lore.kernel.org/r/20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de
-> - hsr_ptp_test: Let it wait up to 100ms for a packet. Otherwise it will
->   complain if the recevied packet is not already in socket.
-> - Use TEST_GEN_PROGS instead TEST_GEN_FILES, the test can not run
->   without additional arguments.
-> - Make the inline header mandatory for sending ETH_P_1588 packets via
->   the HSR device.
-> - Use kfree_skb() instead kfree() for the skb.
-> - Rephrase the commit message saying that skb_clone() shares
->   skb_shared_info and does not copy it.
-> 
-> v4…v5: https://lore.kernel.org/r/20260508-hsr_ptp-v4-1-aa19aa7c6a71@linutronix.de
-> - Split the patch into smaller pieces
-> - Added a test for the added inline header (which signals the port while
->   sending packets).
-> - Replaced __pskb_copy() with skb_clone() + skb_cow_head() in
->   hsr_create_tagged_frame() to preserve timestamp request.
-> 
-> v3…v4: https://lore.kernel.org/r/20260429-hsr_ptp-v3-1-afbf8f200f48@linutronix.de
-> - Removed skb extention. The information within HSR is passed via
->   struct hsr_frame_info. Driver with HSR-offloading capabilities need to
->   know the HSR mode (HSR or PRP) and parse the skb to decide what needs
->   to be done (whether to send on both ports and if adding a header is
->   needed).
-> 
-> v2…v3: https://patch.msgid.link/20260309-hsr_ptp-v2-0-798262aad3a4@linutronix.de
-> - Remove af_packet changes entirely.
-> - Add an internal header to pass additional information for HSR-PTP
->   packets.
-> - Remove PRP, userland will use slave devices directly.
-> - Drop all received PTP packets. Userland needs to use the slave device
->   for RX.
-> 
-> v1…v2: https://patch.msgid.link/20260204-hsr_ptp-v1-0-b421c69a77da@linutronix.de
-> - Added PRP support
-> - skb extention is used instead of extending struct skb_shared_info
-> - in af_packet
->   - packet_sendmsg_spkt() is no longer extended
->   - jump labels are used to avoid the overhead if there no socket that
->     is using this HSR extension.
-> 
-> ---
-> Sebastian Andrzej Siewior (8):
->       hsr: Add header_ops::parse_protocol
->       hsr: Use skb_clone() while adding the HSR header
->       hsr: Add a magic header for sending PTP packets
->       hsr: Drop received PTP packets
->       hsr: Use the port and header information in hsr_forward_skb()
->       hsr: Assign a socket for cloned skbs
->       hsr: Move struct hsr_ethhdr to a global header
->       selftests: hsr: Add test for the inline PTP header on HSR
-> 
->  MAINTAINERS                                    |   1 +
->  include/linux/if_hsr.h                         |   7 +
->  include/uapi/linux/hsr_ptp.h                   |  20 +
->  net/hsr/hsr_device.c                           |  67 +++-
->  net/hsr/hsr_forward.c                          |  84 +++--
->  net/hsr/hsr_forward.h                          |   3 +-
->  net/hsr/hsr_framereg.h                         |   2 +
->  net/hsr/hsr_main.h                             |   5 -
->  net/hsr/hsr_slave.c                            |  34 +-
->  tools/include/uapi/linux/hsr_ptp.h             |  20 +
->  tools/testing/selftests/net/hsr/.gitignore     |   1 +
->  tools/testing/selftests/net/hsr/Makefile       |   5 +
->  tools/testing/selftests/net/hsr/hsr_ptp.sh     | 109 ++++++
->  tools/testing/selftests/net/hsr/hsr_ptp_test.c | 482 +++++++++++++++++++++++++
->  14 files changed, 791 insertions(+), 49 deletions(-)
-> ---
-> base-commit: ec8bf8280261294a9b9b4520414b42704c7f9f6b
-> change-id: 20260204-hsr_ptp-1f6380f1d35f
-> 
-> Best regards,
-> --  
-> Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+On Thu, Oct 15, 2026 at 10:49 AM, Willem de Bruijn wrote:
+> I wonder if the right fix here is to not call skb_unset_mac_header in
+> the first place.
 >
+> There are plenty of L3 device type with no L2 header. They still have
+> a valid skb_mac_header.
+>
+> This fix may be papering over a tunnel doing something non-standard.
 
-nit: the subject for the cover letter says little about the patchset, maybe that
-could be updated.
+You're right, and after digging into it I agree the seg6local side is
+the real offender.
 
-/Daniel
+I checked every skb_unset_mac_header() call site in the tree. There
+are exactly two: net/ipv6/seg6_local.c (end_dt_vrf_rcv) and
+net/core/filter.c (BPF egress, unrelated to the rx path). Every other
+receive path delivers packets with a valid mac header: NIC drivers set
+it in eth_type_trans(), and L3 tunnels without an L2 header (ipip,
+sit, gre, tun, loopback) reset it to the network header after
+decapsulation. seg6local is the only producer that lets a packet
+continue up the stack with mac_header unset, which is also the state
+skb_mac_header() warns about with DEBUG_NET_WARN_ON_ONCE().
+
+One complication: the unset in end_dt_vrf_rcv() is not gratuitous.
+vrf_l3_rcv() -> vrf_add_mac_header_if_unset() relies on it to
+synthesize a fake Ethernet header when a sniffer (e.g. tcpdump) is
+attached to the VRF device. Dropping the unset entirely would change
+what sniffers see on VRF devices.
+
+So instead of removing it, I restore a valid mac header once the VRF
+rx handler returns:
+
+        if (!skb_mac_header_was_set(skb))
+                skb_reset_mac_header(skb);
+
+The sniffer rebuild happens inside the handler while the header is
+still unset, so tap behavior is unchanged; when no rebuild happened,
+the packet now carries the same mac header state as any packet
+received on an L3 device.
+
+Tested under QEMU with the original reproducer:
+- unpatched kernel: KASAN slab-out-of-bounds in inet_gso_segment,
+  same stack as the original report;
+- patched kernel: no crash, the re-segmented datagrams are delivered
+  intact, and the unexpected GSO path is confirmed taken;
+- with a sniffer attached to the VRF device, the fake Ethernet header
+  presented to the tap is identical before and after the patch.
+
+I'll send this as v2 with the fix moved to seg6_local.c. If you'd
+rather drop the skb_unset_mac_header() altogether and accept the
+sniffer behavior change, I'm happy to do that instead.
+
+Thanks,
+Boyan
