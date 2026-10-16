@@ -1,220 +1,177 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E866F36403B
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792179516; cv=none; b=o8aJt53ORMSDHplQQ5jRnHeEYi07PsZwT864krtKX3bj7yQtQbEH1BfsaabrXnjoVIEiMc7oFVejbBZdmuo+lF52DyXbRUXF7P2gxuyAPXwnit0LIAEbMpaRvnOmb2C1rfuQ2WaJFJdb7jjUFhwGpE6swu3WruzBPevDm52nWGw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792179516; c=relaxed/simple;
-	bh=369BcXlwouHKov14aSY209TKJH58jvqib+z/yvVhBgc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tJqP1ZJmkibBDt4AisVfvsKAiOnkcHjpXCo/ja2Iur29hajKyBseSSBYzZK/HEn5zza4f2Q9d3BPchL2jMgexHeIulh6oUWlqd1Ki6/cs/fxfqD/xTCQIPlcEwHduAMt9M6bgVAYTje7FYoPRqIBmMLO7dxpWoMxj6vSZHjk8qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=d2BVoisP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=R7BrVbjT; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EB23C8C60
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792179546; cv=pass; b=QSsoFFV+F4UC/I38bH6bXfw9oc9iRGpBYtk7mNZLOl8ceKdsaT8Gyr5mKflQiDtVveHTTXn7EUyAg+CcXlr/XYM8iy3oCgHNuHMhNm4kQBvkDkbChr7RJwWRvkjtMJJutuyityOuDQv/CJNykok+YuVmUCGDqTZoVL9eX2+9cZs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792179546; c=relaxed/simple;
+	bh=ttNt0pCWtIYi5Xwqcvq+nRkbDyN+s8BRgGWTRR1hLng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pGEgqsUSPiBXxDODqB81r/X+PD6dPjlWhN7+LCHrZeJL53dObmWKvqW85yGr8Y/1wbv+U02n3uL4OJ6iR0jaSeEJA86HtgJjiulEdsFpT22ZdLEgdkLJe/7QSc7wXcwSbhlS78m6aYc2u6VQ2V/arF5o28qdiGr0LqwAh6mruuQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M4oXtQhp; arc=pass smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="d2BVoisP";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="R7BrVbjT"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69GG3Zws3260332
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:38:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=saxkIlCiRm98oCdv5a136rITpS+jtk+TC4p
-	NKPpq7zU=; b=d2BVoisPlOZmnH6iLwLwxW7VAC7W3ceH0VXWd4e69HaMaMRqp2I
-	mx5V5RNM0BPiaesoWwMd8/Uew4tqIe1UNKiVVu7VNLjNPw8PPHWtENow6ei7hSXU
-	VFOaZoJMQl0DfRsndwgZKr/Gp1mdU1vPPZws/taJ434nK/N683EPHIJGQ8ejQnj5
-	xigJNhQVaTDzTj3io9yLMvU8azSrDwba+occTC5CuvdiAsq4+EA4VCiKclLu2e65
-	U3tpFn1SKwHbfOcjnkdHmQ1aLn0lleOcimoN6CgUXaZIXx1kcseRwoJtPD61206C
-	e+SNhZUhBZ9az3hdB9QyCsrfkxbyyPmsgJQ==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hbq450sjb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:38:28 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso322192eec.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:38:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M4oXtQhp"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-843b6f8e2c7so148123a34.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:38:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792179538; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X8/SwO4/d+2r6u/1nyCSEbdatGgpTeJm8/3wxekerrBO7sqWir0bSanTUhYk06cPbM
+         yJSqSXsMeAltxc4b/upJqQ3Kj/RqUbCRvBi9xDfPsFuqZcsSCkyAkxCu8gJ8mP41BCLR
+         VqlqLdsLAj/vTOTbAjFxs1sWLp/naP7ruZF7d4b9MSE7L59e6YsAWrUUVoyzCq4S7Jk9
+         LiINXrM2Bl37PHyezntPkmMJwU1AZIKrRMOZWDWUwRb5ofoCe6IUXf53JNKR7fROrS1t
+         duNmfkm53tH4Vtq2Y4B0nljza+Nj6/V5rD0kYh6rtsjvn/AeY5LFygnacoXSDOWLOTFx
+         8i3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=77hTM8EJJKmduk7MEyJTqP0/PRriK6Ki1atqibncfhI=;
+        fh=936zHD9EqajUl0jnIxT9Q6nOeoKGEls+y+aXwvroLSQ=;
+        b=m1Hb/nWMooyzB19UAX/NiAZpFJaBQ5MThYxlTcGykv8Ho+Zd/sz1OFHfkcqIMceHaa
+         NBHsHMEZRiYtaktX6IjLcSsiLlPhbymOMKBaBSpry0lyQVx8z8PjX4jTQvch4m4X93xD
+         CXkJOjdxOH3TNsjAmLw3GfrcUQVz/dRMADpkbigf8TzY7k7+AbOR6i5R0rBdtyYIBdTC
+         1h4CqKRsBO3EXfhx8h9hDFXbBJeOLP4pFM8Da5R+9M1KSaJWiD5LL15YEKrgiM/A4bTq
+         gH5Tvnb8Kk4fzxKHc4CCAo6jGJD+cj4pGkpWLq4XBErVD+UKkXar4ZotO9AAK5TnmIhu
+         P9sQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792179507; x=1792784307; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=saxkIlCiRm98oCdv5a136rITpS+jtk+TC4pNKPpq7zU=;
-        b=R7BrVbjTpNRJZFe5dFtVahY92NkoP1RM5Gqx8aglDw9mQXSAYXGkuwmf7aPFgnQD1C
-         WigmSWOBU5IJr1+2949BqUx3Ab8vIR8XfG3AaayAWnxAhGBP9ErR60z6OSn01v4zKUkC
-         yV0DfFo6wQ2AovBf8oBZlG81eDZZr0zTVygReaAaNNCqfBcLokbHIo+833BwNj1YHhcp
-         PvlINt+R3GuJAN+Lw343RIJOnTrZ69xmKh0KwUVFCKo8AfTduMw+wflafYn61R//v6/D
-         iQMNYf/+asJ71x3VH225rrE24Ln+0yYvYB4UxQ1RW1qtVmL1qFl3BvncrVfvySPG9GYd
-         g9pA==
+        d=gmail.com; s=20251104; t=1792179538; x=1792784338; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=77hTM8EJJKmduk7MEyJTqP0/PRriK6Ki1atqibncfhI=;
+        b=M4oXtQhpHmumqaJWPWN8sZKGsqL6L5qPrNXGfv9Fr1/qsDPX6LprOewCRSAvxun2xM
+         P1RbnyO9jg6e6wp5Rr5vVFAyE25iWBqGwOeEq1VeGdY7ipGRK1zIF96EcEIuDYAJVY4I
+         nYawlVyji5PVQFozReAxGYtu44HEGbq7SuKujpYH3mJVA4DnHOX9JONMDYtG7p5GFl6x
+         j4AgJflV6JGoq1EADqA3mzCdqWbdZJLszj15Md7pIT0t4im8LECrVVHEVneUIBvH8X9V
+         gQJXab4oo6wMTFMKLKuuBHIaAjyrqSLmsZn43zuEuvUkVenT0XYbil6X6XDYLZoYHLOg
+         LkbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792179507; x=1792784307;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=saxkIlCiRm98oCdv5a136rITpS+jtk+TC4pNKPpq7zU=;
-        b=d9B25YvY5b4Bewr6tGQ40BtsbdCfJHPvH0Vsz18yS/Pp9LFW5aIy6EXfVJ54rXk03a
-         Q3K+GvvcS++37AOatAYeYVTGmmKpEfNWwd7hhULEDpEgA0rtrot964g4OfyTdxSKzKHJ
-         /VQmChEqFjlIvuCNkdoWpf33e1nz3hbpuS9Il9HljKIzgpo9598YqkFiMsSG03Ys2XFV
-         DqnqufhHO1V5felxBpKZmmZIdfWlnfDl3LszmWxWBU8ByFKfWYCeCmSEsNLiEWHni8A2
-         r3Zcq58tHhn1CcicRDRnihVP0G4oxZbEIqhwbsY/sKBLIVSx0fmGvapDRht9DywlTkSy
-         1vnQ==
-X-Gm-Message-State: AFq9FYLfABk7EL3Xb/3P0WscywhwYGwVotQ+aNbymy00uYd/4g0Ii/9u
-	V3QQTIPgfyzlNJZ4VeG0QcjsNCC7b4NxQLRBaelJ7ALcie0vQ/tsKRcoZRYLEl26Px9eKAitPIF
-	ge13xKFJ4UfdVvfy0E4GG706PNZiQC1FSI/YHiuhVTaLS/wsi5Aizhjr1pgo=
-X-Gm-Gg: AYBFou0PPTtVX8n9Onnv3ReW0jWN1ESGlrLpLCqV6PztHWTl2j4oLFKOlZefJ+wTiQy
-	VuDrtBJwdNSLJStiISinf0WDBV06lGTFSRv1tGiL49UIDIBEqoIHRg3MpdCm5rio/PGMF/TLwa6
-	ozXt7J2k2q2FvIL/wRmNNCUKmaKWEc7+UZee0bk57Isx72mHoKQ3ecTA5V1od7h0Tw4MnE6A599
-	qUlKPaLSskuGWFN9TMHPaaPfucDFBHbPJzwowyGT1J5XVzvLIpkGTCn8CUSypspoxmnxiP1oTtc
-	Nqy/S/ZzFRkMY1ir9D9LYZkVtKi4g9cAXwRJTJ4l/4/UxBHl2sv8jlVgiXc1F8SK9KUZfgfi0Fc
-	3Ik7LiFiIUus/UD0zjFUdjF9XAQlDPK+Pqi/fbVHfh1YXAnZJlyC8dQNv2YDNWHE=
-X-Received: by 2002:a05:693c:6311:b0:35c:9631:f389 with SMTP id 5a478bee46e88-361a136acadmr995294eec.17.1792179507168;
-        Fri, 16 Oct 2026 12:38:27 -0700 (PDT)
-X-Received: by 2002:a05:693c:6311:b0:35c:9631:f389 with SMTP id 5a478bee46e88-361a136acadmr995136eec.17.1792179504724;
-        Fri, 16 Oct 2026 12:38:24 -0700 (PDT)
-Received: from hu-scheluve-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3607ee0d391sm8960205eec.4.2026.10.16.12.38.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 12:38:24 -0700 (PDT)
-From: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-To: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, j.raczynski@samsung.com,
-        k.domagalski@samsung.com, k.tegowski@samsung.com,
-        cs0617.lee@samsung.com, abhishek.chauhan@oss.qualcomm.com,
-        lorenzo.bianconi@oss.qualcomm.com, sarosh.hasan@oss.qualcomm.com,
-        hongmei.xu@oss.qualcomm.com,
-        Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-Subject: [PATCH net-next] net/stmmac/dwxgmac: Extend MTL/DMA support to 16 queues
-Date: Fri, 16 Oct 2026 12:38:23 -0700
-Message-Id: <20261016193823.2711773-1-sagar.cheluvegowda@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20260707; t=1792179538; x=1792784338;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=77hTM8EJJKmduk7MEyJTqP0/PRriK6Ki1atqibncfhI=;
+        b=thpha0fxeM1aVdzH01gifQhZYW33IL/8FsyXOUBrID4c6+7GiyaIgpzUOz4DVn52QH
+         Z0lK3YCVybhX9I9deDZBDoqXu3SwwMxlc5NVmEZPq6qxEze2H2s3F6/KG5dQ9li5yDrv
+         wc1nd99+uDJQBzhKX9krWpUTYxPnhEqpE3r4dlQi32clgQb58zFYtG1x8qGeFLtlWx8r
+         7r6NHz7OVRizthyx70VBTm5KBCDaueYayYNYtIfymoj543NodSE/JlbDfkLdaedCUjg7
+         qn/04dx3WDxgMWvi8f+MkXx4MaClPFz5ZNeFEx/1ncdnaq+A13PRsNicF2XUl7wNTjde
+         3hIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwWO00Cr+PJmQq9l2mTLWUi7KxxMOCkRYaipYa9JZIwW8LIa9JqhPK1O6R+QICnnjjwJnW/YU0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKELWI2z2MoGpo0OyEUtiZgp2OjXz3eGPkH99/3n8kyKs4wKRM/
+	WXWFMdSw07QzRnuWQgFQ16hxShApTOJAPRWuQaN0r/jsdaqrH8j9L2Xyxt0IeniVt5IKlgG4z4h
+	nhmVTItBYo10CEAQ0tQEu5tEuzu0AbvgSig3GG0j5ng==
+X-Gm-Gg: AYBFou0Z86ZgiBLU5nXyTLu4mteyit0L4bpxC0dLgOtX3J+t9fDTR4XjGf0Af5OTVA1
+	bMYHCjfNTEnoKqkJ6qePDNc9lpf816f9fJ+hvWzkqSVXck8HKGOcUR55vU7QhMgwDYqKbSqmVGe
+	b2TeTEfkR4CISO6HJmVSl/ktdNuGGc4bg7YsHk/D8nCX9gQdG283AlgrSu69qATIf1QGMv1z1wD
+	lv+qfDJJOpmOm5v52kMLwN49PDOlFXKsNWcD78Ptn5XUPIhmSIthqB4aOKPxzlYvfRg6LcdhPoO
+	anBQIpzXnMkDWjQWKTvxLG6Q5YN2BoKRZDrVJzePat6JM0+rsnthqsIbTjom384Rd/4ORzCgs/L
+	f++n3OVUR73XDSo4zoIeeIqA9PaYUfGcpev9I9LGobi9NJA==
+X-Received: by 2002:a05:6808:6409:b0:511:528d:7576 with SMTP id
+ 5614622812f47-53cd0b3dc69mr594244b6e.54.1792179537603; Fri, 16 Oct 2026
+ 12:38:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 9trHsMASQ4BXj7FT_7IVazpVqdOZBLqk
-X-Proofpoint-GUID: 9trHsMASQ4BXj7FT_7IVazpVqdOZBLqk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE2MDA3OCBTYWx0ZWRfX/TQPEng1z/af
- 0+atC+SwsOBFf+m7xiLzJa7dn7PQ4CHAQKbPPTwuFmWb91hYsgqdoOip6wUvZjmWV0+3DUwl2eZ
- Xjwn9Z9o/frKswrROcqA717C3wLWkcmGIzBXjjQa5pmeDHis/mMHnZ266fnJHGoU3Kfx4D2MQpN
- 8us3lskltV/Zc0ERBdJnkH/XU0xajgI7A2n0PbE2KlhfdadYjaNxoeDj7IfVWeFc9i3CSOA6Om3
- uyd04+VtS5REmriR6lOjvcKlEavA+d0x9GCD83qUIzt12hX2ZULl3i7CfsLvFFpGaehF6Y/cz3o
- TOvJqqATwF5mNhoqw/3EIZE3s36utwXuBB5kBwlv2MBDw2cvzine3IiEbltx6bw8YaPUk97UcHE
- tbaqLki6Yyr9k12b/kUDMtYU5dD8C6BSKNIkRbqtl0/R45LO8QWCzBQDSWTbp1OknbBCKSTZhSK
- aneg+h0ri2S6Fr6njFg==
-X-Authority-Analysis: v=2.4 cv=e4GT2qp/ c=1 sm=1 tr=0 ts=6ad27d34 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=VwQbUJbxAAAA:8
- a=hD80L64hAAAA:8 a=EUspDBNiAAAA:8 a=x3-vh77kN9uJXWvyjNsA:9
- a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE2MDA3OCBTYWx0ZWRfX78hQNmQmzXam
- 36bSWwHX71K3VwnUfLJXQNf++l8Ns7BURMm9KwqJQwE3NA0aalvNAURoAddpweZi3gz7VAT7jDd
- l1ZcvM/lr6Flj7kKfnspU9c1iSMn/HI=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-16_02,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
- suspectscore=0 malwarescore=0 spamscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610160078
+References: <20261013011122.1889766-1-kyle.switch@motor-comm.com> <20261013011122.1889766-4-kyle.switch@motor-comm.com>
+In-Reply-To: <20261013011122.1889766-4-kyle.switch@motor-comm.com>
+From: David Yang <mmyangfl@gmail.com>
+Date: Sat, 17 Oct 2026 03:38:21 +0800
+X-Gm-Features: AclHuK9JrFOTB97m2FwJ_OxHZFE5heOx-9wmGKbfro2yt9RYpPOHq0k3WoWbavg
+Message-ID: <CAAXyoMMw5ygXT7vO-GWWodY1HRuf+SgyfcaLenqnUGUvjTxjOg@mail.gmail.com>
+Subject: Re: [PATCH net-next v14 3/5] net: dsa: motorcomm: use fixed-width
+ GENMASK_U*() helpers
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com, 
+	jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jakub Raczynski <j.raczynski@samsung.com>
+On Tue, Oct 13, 2026 at 9:11=E2=80=AFAM Kyle Switch <kyle.switch@motor-comm=
+.com> wrote:
+> @@ -36,19 +36,19 @@
+>  static const struct yt921x_info yt921x_infos[] =3D {
+>         {
+>                 "YT9215SC", YT9215_MAJOR, 1, 0,
+> -               GENMASK(4, 0),
+> +               GENMASK_U16(4, 0),
+>                 BIT(9),
+>                 BIT(8) | BIT(9),
+>         },
+>         {
+>                 "YT9215S", YT9215_MAJOR, 2, 0,
+> -               GENMASK(4, 0),
+> +               GENMASK_U16(4, 0),
+>                 BIT(9),
+>                 BIT(8),
+>         },
+>         {
+>                 "YT9215RB", YT9215_MAJOR, 3, 0,
+> -               GENMASK(4, 0),
+> +               GENMASK_U16(4, 0),
+>                 BIT(8) | BIT(9),
+>                 0,
+>         },
+> @@ -66,13 +66,13 @@ static const struct yt921x_info yt921x_infos[] =3D {
+>         },
+>         {
+>                 "YT9218N", YT9218_MAJOR, 0, 0,
+> -               GENMASK(7, 0),
+> +               GENMASK_U16(7, 0),
+>                 0,
+>                 0,
+>         },
+>         {
+>                 "YT9218MB", YT9218_MAJOR, 1, 0,
+> -               GENMASK(7, 0),
+> +               GENMASK_U16(7, 0),
+>                 BIT(8) | BIT(9),
+>                 BIT(8) | BIT(9),
+>         },
+> @@ -3741,7 +3741,7 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv=
+ *priv)
+>         if (res)
+>                 return res;
+>
+> -       ctrl =3D GENMASK(10, 0);
+> +       ctrl =3D GENMASK_U32(10, 0);
+>         res =3D yt921x_reg_write(priv, YT921X_FILTER_UNK_UCAST, ctrl);
+>         if (res)
+>                 return res;
 
-New datasheets for XGMAC (3.20a and 3.40a, depending on product)
-support up to 16 MTL/DMA queues. Before we increase max amount
-through macro, prepare dwxgmac functions to handle that.
+The change below is fine, but the ones above aren't, the width is
+already pinned by the variable being assigned to. Also DSA expects u32
+port masks to some extent, those add unnecessary changes if you want
+to change port masks in yt921x_info to u32 some day.
 
-Queue numbers above 15 are not valid for this hardware. Callers are
-expected to bound them, so reaching the default case is a programming
-error rather than a runtime condition. Use WARN_ON() for it instead
-of a netdev_err() message: the callback has no net_device of its own,
-and a message-only failure in a void callback is easy to miss, while a
-warning with a backtrace points straight at the offending caller.
-
-Co-developed-by: Chang-Sub Lee <cs0617.lee@samsung.com>
-Signed-off-by: Chang-Sub Lee <cs0617.lee@samsung.com>
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
-Co-developed-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-Signed-off-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
----
-Patch 2/3 of Jakub's v2 series:
-https://lore.kernel.org/netdev/20260601162537.553512-3-j.raczynski@samsung.com/
-
-Jakub has confirmed he will not be continuing this series, so we are
-posting this patch on its own. We need it for Qualcomm Nord, a
-25GMAC-based SoC that implements 12 MTL/DMA queues. Jakub's authorship
-and sign-offs are kept.
-
-Changes vs v2 2/3:
-- Replace the netdev_err() + return in the default case with
-  WARN_ON() + return, following the review feedback on 1/3 against
-  message-only failures in void callbacks.
-
-Tested on Qualcomm Nord with 12 queues: the MAP0..MAP2 registers were
-checked to hold the expected RX queue to DMA channel mapping. The MAP3
-register (queues 12-15) is carried over unchanged from v2 and is not
-exercised on that hardware.
-
-This is needed for XGMAC-based hardware with more than 8 MTL/DMA
-queues (Qualcomm Nord has 12).
-
- .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 ++
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 21 +++++++++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-index f8ab347f7b5b..6d4affbd34a1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-@@ -257,6 +257,8 @@
- #define XGMAC_MTL_INT_STATUS		0x00001020
- #define XGMAC_MTL_RXQ_DMA_MAP0		0x00001030
- #define XGMAC_MTL_RXQ_DMA_MAP1		0x00001034
-+#define XGMAC_MTL_RXQ_DMA_MAP2		0x00001038
-+#define XGMAC_MTL_RXQ_DMA_MAP3		0x0000103c
- #define XGMAC_QxMDMACH(x)		GENMASK((x) * 8 + 7, (x) * 8)
- #define XGMAC_QxMDMACH_SHIFT(x)		((x) * 8)
- #define XGMAC_QDDMACH			BIT(7)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 1a88cbaed70c..563d29d72543 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -257,9 +257,26 @@ static void dwxgmac2_map_mtl_to_dma(struct mac_device_info *hw, u32 queue,
- 	void __iomem *ioaddr = hw->pcsr;
- 	u32 value, reg;
- 
--	reg = (queue < 4) ? XGMAC_MTL_RXQ_DMA_MAP0 : XGMAC_MTL_RXQ_DMA_MAP1;
--	if (queue >= 4)
-+	switch (queue) {
-+	case 0 ... 3:
-+		reg = XGMAC_MTL_RXQ_DMA_MAP0;
-+		break;
-+	case 4 ... 7:
-+		reg = XGMAC_MTL_RXQ_DMA_MAP1;
- 		queue -= 4;
-+		break;
-+	case 8 ... 11:
-+		reg = XGMAC_MTL_RXQ_DMA_MAP2;
-+		queue -= 8;
-+		break;
-+	case 12 ... 15:
-+		reg = XGMAC_MTL_RXQ_DMA_MAP3;
-+		queue -= 12;
-+		break;
-+	default:
-+		WARN_ON(1);
-+		return;
-+	}
- 
- 	value = readl(ioaddr + reg);
- 	value &= ~XGMAC_QxMDMACH(queue);
--- 
-2.34.1
-
+> diff --git a/drivers/net/dsa/motorcomm/mdio_bus.c b/drivers/net/dsa/motor=
+comm/mdio_bus.c
+> index 83f0212551ff..3aa1111efaa4 100644
+> --- a/drivers/net/dsa/motorcomm/mdio_bus.c
+> +++ b/drivers/net/dsa/motorcomm/mdio_bus.c
+> @@ -159,7 +159,7 @@ int yt921x_mbus_int_init(struct yt921x_priv *priv, st=
+ruct device_node *mnp)
+>         mbus->write =3D yt921x_mbus_int_write;
+>         mbus->parent =3D dev;
+>         max_ports =3D priv->series->max_ports;
+> -       mbus->phy_mask =3D (u32)~GENMASK(max_ports - 1, 0);
+> +       mbus->phy_mask =3D ~GENMASK_U32(max_ports - 1, 0);
+>
+>         res =3D devm_of_mdiobus_register(dev, mbus, mnp);
+>         if (res)
+> --
+> 2.25.1
+>
