@@ -1,419 +1,319 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012040.outbound.protection.outlook.com [40.107.200.40])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD9E45A29F;
-	Fri, 16 Oct 2026 09:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792143189; cv=fail; b=t6NebVZzKzOkwKiLbq40yx5ytrdDbN5L0uMVXdS8kkiICVZuM1FkRmhiBlk7AJMJYposBd7nkHGItwKKVCgJJr2M/B2VA6oCUSHzhKWY2+NFcgppKZ/unLPFYR85eBqKuLLqtOSitSMnm9Sn6WdJHGpulJg6uAn8wZwjdEDi56Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792143189; c=relaxed/simple;
-	bh=QqjoOgK/EkidCE61uFQDzS4D3Vzjk7XzWqh8mAtEvk4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=DI+/rzRU4Vf5RS93UdS12kM4rZ3fL0vRH9LNCoqtD+Yzlgt0V/JjisPD76lE56Fs4+gTM264cxohmevoDOyqxs7Q1zlzGu/U2j5qy9zxA16o6egNFeIzEYqwcmzUxm1/xBW6sAP+3zwodni+8HVU4+W9XzmCEnRrqihjbArQ844=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Bic6H/bu; arc=fail smtp.client-ip=40.107.200.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F5E47D45B
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792143196; cv=none; b=SB2hnyQbcEiqMfFFXUg6FYRNjjg6Hojsax2bRq62FLG2iy8DJ8NwDwaY4T7m9Mu6F7J3+3GYCXbVXOa0lIJNIsAdeb04YtS3mFthiaO8opyg30DGehohy/lo8UzKJ8/Fm0+1Q6KX0593uqpSNYiVPakIB4/f2BhA/J8vnbOYdJU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792143196; c=relaxed/simple;
+	bh=O/OiA4BQPUKLUXonJsE5pdtPrknSunNzaSfCvLDOogo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bsuo8ULLyb13xkJk5QrmpgDIe5se24l2MJbHjpOK/Rya0JrmVs3a/l2dtTyzOJy55RRsnnHoyCuWe/yhiSdHOibxfvuWxlc7n3eGbiQUXN2wG826KIitjrdEf5r9A4n+a2anm/7Gf25hvkDpvF/XxiGS202XsBKO9W2xP5t33ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AM3nYNW6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=N1ydN9P6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Bic6H/bu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EPUs5TycedtmL0ZlhnnWMtTjxRbhoCxl+GfzKExG/LnIRH0TBgWrRbBTBdLHZleo3iPO1jgfCywnjoWyQuWoqzI3pxxk/ltQFu6qUap0C/NWc0hTDWj+cFi8dOw+rLEn1YTayl122q/8quMh4KQWXS+Qf90So3RTaTkDJIq3K2t9pEZ2vDxj/16h3trdjJ+KSlkKZntBFh0z92+saIhat/c8rJv3IX6Mp93QJDJB4DemtaMDtTuOR0f+DJAj+kEiC5LpmMs16Tx+0gt4uKJNK5CEqMU+kdGhwrhdUM20Q/XzVplMU8EOn98wKt4hnCLa3DPsVfpZArtZdYa8UXumww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SFuDSNg+UrTBz7E/chTHJJ84Q2cg4MLn/fKbjAyCVFM=;
- b=pCYOPMpNXDLxV/zDj6BxrD4NENjv7HKmlCL6njlZ4m6+eKdYTA1J1ioctwzywFCjUNnsg2/NYzGzrimy0MEsgdCVegiw/hhndJCyJgPAWMrA2GD/YxizcAPBmaFq0N+peOc+jYrMmOLWZfMLlKm0nm74qvPUS88BptUzjHsErCTNl22cEi/HnqH/uxG0yfgdnePzq7wFDPfmWtcVs31wQcF/p3JlCHfvpv/L4LTpVDQmNUjGydUmJ71IUGAoAUPn9qu2XXw2DLD8kkq5sn4KWkMHXoiiI6aljPL+i2I5NG1ZdD/kBkGO5RFCdAglktZmvOPgnBMA3Cp+W6g8skFB2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SFuDSNg+UrTBz7E/chTHJJ84Q2cg4MLn/fKbjAyCVFM=;
- b=Bic6H/buLS+ggZF/WugmuCZctDNGBYgLaEI9Is0u5nl0WvFmdrLLwOFED3/2XJE1unC0NXiJszQpoY/0Jv4JnVUQweTEAQ+VrbIHGfcGzMG8P0sVr2Y4Z7+MKpIkDaAM4Q71KlAVKlMIfQhs8/SSg1uvc/BeeOxRQ0yAejxvEvs=
-Received: from IA1P220CA0009.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:461::6)
- by SA1PR12MB8886.namprd12.prod.outlook.com (2603:10b6:806:375::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Fri, 16 Oct
- 2026 09:33:02 +0000
-Received: from IA0PEPF0000003B.namprd03.prod.outlook.com
- (2603:10b6:208:461:cafe::8d) by IA1P220CA0009.outlook.office365.com
- (2603:10b6:208:461::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Fri, 16
- Oct 2026 09:33:01 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- IA0PEPF0000003B.mail.protection.outlook.com (10.167.249.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 09:33:01 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 16 Oct
- 2026 04:32:54 -0500
-Received: from xhdsneeli40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Fri, 16 Oct 2026 04:32:49 -0500
-From: Srinivas Neeli <srinivas.neeli@amd.com>
-Date: Fri, 16 Oct 2026 15:02:03 +0530
-Subject: [PATCH net-next v3 4/8] net: xilinx: tsn: parse endpoint DMA
- channel configuration
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AM3nYNW6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="N1ydN9P6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792143191;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F1WIlfJD+ulbctbVceU+ouilxpQA89DiQidLIlC9D0g=;
+	b=AM3nYNW6DdV4sLxY3CPMCibgsaUUcnEaJr838VbRYWooywOAc9W2riMWm0uYP/QNUdsiS9
+	UROl6aHd0q36spBJY7jDeL7QhfAI7+Tkwf+nYH+kpt1rp9sTlmvJrfyBMb58I7AxG9IbaT
+	2ghXsttvD2VRv0XqZYJQIp9NpUnkrug=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-224-Aio03SHgPaaMi2PZWfdwZg-1; Fri, 16 Oct 2026 09:33:09 +0000
+X-MC-Unique: Aio03SHgPaaMi2PZWfdwZg-1
+X-Mimecast-MFC-AGG-ID: Aio03SHgPaaMi2PZWfdwZg_1792143188
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49cdc4080ddso5674975e9.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:33:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792143188; x=1792747988; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=F1WIlfJD+ulbctbVceU+ouilxpQA89DiQidLIlC9D0g=;
+        b=N1ydN9P6jLCmdDDkPrFUc99czMW1fGI89cmkgFqItRS830Tj1gH/9haAuXopUzLd/g
+         ojf9cj63SI2Hn0u0l+9+dkKAmqU5x7CqxhhXb8auls1inzCAMN40dFUJkVqLiCykg106
+         EyqqdmDFdN5jo7hFTCuz8nQcSyShwXwHK6i1wR7iFzqO7e+vidlS4pymB3S28lNcRH8u
+         7FtMR5sqpeyvFXs2lgYezdZ0h9SADSRIbsk/JE9SB8MvFgNsMpH7jrOyFYFlJaAybwWQ
+         vtJNRZaNUIrw59/W/W0CtP7cPevLjTUcjpGYNqezScXdzgNXkWLDcZgdg/nKWZq83gpX
+         zPQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792143188; x=1792747988;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F1WIlfJD+ulbctbVceU+ouilxpQA89DiQidLIlC9D0g=;
+        b=TTuHjetv2jkxS6Mb7/symZrb/fz/9vX3jOOrF3aSySlJnhsnrmJDeSTmflthjyH5N3
+         C9ELwr3EzVoB8HuEtKa1wquFqvEZmjczbFBl9piG0W7th8j2yvLd2qSBjpH8+uvZiwCM
+         kef1a+u1a+UaMD6UDuZB1y8AsHjvgONJJtgtJyh3kdd6XwB965QixI7k966Lbav+EEOW
+         +AxvCGA8cR+EicTU0YlepfFul3eO2+QXMKVlVlfAEz5cRAhyAhzXmnfAvIyfRgK6mfWB
+         lthBh7uPWV/LNl+7DH/zmexPjDozzRjIyZeYxvvzMKZFVSiUJJWmb1laHBykclCY02oQ
+         NlVw==
+X-Forwarded-Encrypted: i=1; AKwUvByYAABv4YeUJ8PQY9kWj3tMEYitidI+lp1huZB+CFBu+CfzWRmaUlsGPb85r2QffiUywZEYdxs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIKXWck/52SXVGrPsOaof1rXNF6ERm/HK3nx/vDe45vY3IMTcg+
+	JpE/cas5nOz5GrXhocHvxCoEREsKVvlu3doix7BYBAVMwGn4P4A198RwmrvN8faoKMnJS/6dGB+
+	ZZZ2zSh7Y88qJizMwNjDz0hDESkg/pkVeFRFU9hYd9ovjhTEqNSluEOVnHg==
+X-Gm-Gg: AYBFou2yx+b1f/ZD2VGr9iFODCg0wnufUZ4xrH38gQ/4bMooMWkSdv1NdvchzJRCt1j
+	irCTuaASiJh/4SeR3W3owYGOCY9tM1eO+p1LHkMscoPmGDlGkQ6dEoETFYayt0da4wkHwxz2JT9
+	o4IVla+5YjNz20yqnS8wWpC7MDSna8Qo7gOFd981uWuOZ6eYumOk5xvQpCWKzDAC1lLfLh+OU8z
+	QSyvqsqtpBDc/nZXODgFxcMOpTm9XV/of5dbtM07N7J+TWeIUp84HKiUq5YiY890ltHqeyXwRgO
+	FuTEnwZKoxAl77W/rnWgDa6fw3wfp78dmvvDqbSHL+5fXxx+jh9H+sDpWJi1hw6rKtBQ9w==
+X-Received: by 2002:a05:600c:c0d4:b0:49e:63cc:6324 with SMTP id 5b1f17b1804b1-4a1c664db70mr51292395e9.6.1792143188191;
+        Fri, 16 Oct 2026 02:33:08 -0700 (PDT)
+X-Received: by 2002:a05:600c:c0d4:b0:49e:63cc:6324 with SMTP id 5b1f17b1804b1-4a1c664db70mr51291755e9.6.1792143187537;
+        Fri, 16 Oct 2026 02:33:07 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1c8ae6d2esm44682945e9.6.2026.10.16.02.33.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 02:33:06 -0700 (PDT)
+Date: Fri, 16 Oct 2026 05:33:03 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Max Krasnyansky <maxk@qualcomm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Simon Horman <horms@kernel.org>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v2 5/7] net: add a sysctl to opt out of virtio
+ net hdr checksum validation
+Message-ID: <20261016051827-mutt-send-email-mst@kernel.org>
+References: <cover.1792067836.git.mst@redhat.com>
+ <ad05a40681719a579691a1da6413f0dd7064f2a0.1792067836.git.mst@redhat.com>
+ <willemdebruijn.kernel.3a7d04e1c306e@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261016-patches_v2_external-v3-4-e33d3960ca1e@amd.com>
-References: <20261016-patches_v2_external-v3-0-e33d3960ca1e@amd.com>
-In-Reply-To: <20261016-patches_v2_external-v3-0-e33d3960ca1e@amd.com>
-To: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>, "Michal
- Simek" <michal.simek@amd.com>, Sebastian Andrzej Siewior
-	<bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>, Eric Dumazet <edumazet@kernel.org>, "Eric
- Dumazet" <edumazet@kernel.org>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-rt-devel@lists.linux.dev>, Srinivas Neeli <srinivas.neeli@amd.com>,
-	<neelisrinivas18@gmail.com>, <git@amd.com>
-X-Mailer: b4 0.16.0
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PEPF0000003B:EE_|SA1PR12MB8886:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b82971f-08e3-472c-f2f7-08df2b687926
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|36860700016|7416014|82310400026|11063799006|56012099006|921020|5023799004|261009223027099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	/oSzJYpxvQKOVIQ8DqjHd5TMU/WI5gq/yzoxrtBbyymiTkQkLg2vrPk8pu+sI0xrS+WcxQnMWhgkyRvR+lsB0JTM7W9XYBI24SYb2wRrCT+kNGLU2P24snMUVe78kWc4uaHgmbdVXspJpUPnfCKf8le+OrnBBq1dL9ffg/Y7lEy1OupbT08myfTiKLCtJ1mJ+cR8rBp2Lr6GIHtPqHZMQsvaqC6AAnWati0iHMwdw5576J8RX1brWIDwvwbAMTyeYjzemJsLPVRTi+J1tMDaO5SJN7PYra+0160j4tGiNQ89bxyReD3MY7cnPoEcDN/UkWuzcqhpda1l0rw1cEhRfdV6mWZrggoPODJb2WodX2PgGkKJIIopk0LGbxKtLrv4O1IFgGFJTAmahsvSspLZxGuvowqvoxngy9dU8TbtkXUZKuzYk/GjG31GRk9ZhMIaopvtK1Ma6RqRTZEyki7xgfTK0nK+IKh5ozEktgczkPAn2Dxd5Dlb6oZ3T256etQl8b/LE/Vc/f3hwd1W4y519LaD3FkxO5C3R/sPXkDtKqENxHIMokOurTw490aKkD3sV5JjZmUWxuAQ2IQhrB9X4qo4zssE4bRHENZ/ckLbpgzkm2Lt64KSNXvfdQHClzm2rr9Urt2ZSWS4Tb0ABeZR1qDlgrEWG6+KxHcEYagpWhYaYx/ePP3UKQelwnYC6yHrl4+rIozNdch0qj6CaDctfFRbYDUQDNcvC6x6hvx0wBSvDodxD6pi+JlMHThfvoHT
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(36860700016)(7416014)(82310400026)(11063799006)(56012099006)(921020)(5023799004)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	AGipfRyA0/lLsbMjjhG/FOwn8MDhe3uepnv1kPmeJcZWfjRpwmaGEPkqRIPcmKH6t+bNjd71HFGCUX37pjyX9Ft8Qiz2vkci2u3d1H/Qsz2RNMAQIW0IgJCLCpNW+QNDpyeXIZb96hI5kWh/RcafzoE5aLKjdDW3gerMQ5cidXG7ITjwq8Y86DsjUVhjGLV+F7GJjWzhsyzBfyATfWn2gUUXakIpVoQ6VJmcbKfn0ryzVt09NJ6T4rva//rNEI5iiQliWnouoyWKdOeaz9fDlop6tVF3mN5hvcQ/fBQYFPtZP2BCAeIDZUA+Md8EpW9wnZgXBK2/WuLGwIO+Pe4KGelc5EAZvEvLKJjeA3rvLg52CNsHuXm9crMCqwSRQHSimt4cd2m6+1yw/8FXf/PNqaw68Iako2b2r2rt7eeRl0sW7/5qIosFlZ1+RBsDQZsK
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 09:33:01.8144
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b82971f-08e3-472c-f2f7-08df2b687926
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	IA0PEPF0000003B.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8886
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <willemdebruijn.kernel.3a7d04e1c306e@gmail.com>
 
-The endpoint has one MCDMA channel per TX queue and per RX queue, and
-the device tree lists them in "dma-names". The transmit path needs to
-know which channel backs each logical TX queue.
+On Thu, Oct 15, 2026 at 01:50:54PM -0400, Willem de Bruijn wrote:
+> Michael S. Tsirkin wrote:
+> > The ingress validation as implemented by the previous
+> > patch is stricter than what it replaced: GSO
+> > packets whose checksum metadata matches no transport header are
+> > dropped, and non-GSO ones get their checksum completed in place.
+> > Such packets used to pass with the metadata unvalidated,
+> > and with no overhead.
+> > 
+> > I judge that this should not affect any deployments, but there is still
+> > some risk that it does.  In case a deployment depends on them anyway,
+> > provide a per-netns switch to get the old behavior back:
+> > 
+> > echo 0 > /proc/sys/net/core/virtio_net_hdr_csum_check
+> > 
+> > The default is validating.
+> > 
+> > Assisted-by: LLM
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> >  Documentation/admin-guide/sysctl/net.rst | 15 +++++++
+> >  include/linux/virtio_net.h               | 23 ++++++++++
+> >  include/net/netns/core.h                 |  1 +
+> >  net/core/dev.c                           |  6 +++
+> >  net/core/net_namespace.c                 |  1 +
+> >  net/core/sysctl_net_core.c               | 54 ++++++++++++++++++++++++
+> >  6 files changed, 100 insertions(+)
+> > 
+> > diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+> > index e586e17fc7a5..7f230929c37e 100644
+> > --- a/Documentation/admin-guide/sysctl/net.rst
+> > +++ b/Documentation/admin-guide/sysctl/net.rst
+> > @@ -246,6 +246,21 @@ processes are dropped unless socket option SOF_TIMESTAMPING_OPT_TSONLY is set.
+> >  Default: 1 (on)
+> >  
+> >  
+> > +virtio_net_hdr_csum_check
+> > +-------------------------
+> 
+> Make more generic, virtio_net_hdr_validate?
+> 
+> In case we add more validation in the future (as we have in the past),
+> without having to introduce multiple such knobs.
 
-Count the TX and RX channels in "dma-names" and allocate the conduit
-netdev with that many hardware queues. Parse the "tx-queues-config"
-child node to map each logical TX queue to its channel.
+But it's uapi, are you sure we'll be able to change the meaning
+of an existing knob, even if we keep the name vague?
 
-The device tree describes one "queueN" child per TX channel under
-"tx-queues-config". Each child names its channel with
-"xlnx,dma-channel-num", given as the N of the tx_chanN entry in
-"dma-names". Every logical TX queue must be described exactly once and
-name a distinct channel that "dma-names" lists, and the TX channel count
-must equal "xlnx,num-priorities" on the parent IP node. Probe fails with
-dev_err_probe() when any of that does not hold.
+> > +
+> > +When processing packets with a virtio net header (through tun, tap, a
+> > +packet socket or a virtio network device) that request checksum offload
+> > +(VIRTIO_NET_HDR_F_NEEDS_CSUM), validate the packet: complete the checksum
+> > +in software, or drop the packet where the header does not match it.
+> > +
+> > +When disabled, the header is trusted not to corrupt the packet, and the
+> > +checksum is offloaded to hardware (or not verified if it never reaches
+> > +hardware). This is only safe if no protocol is processing the packets.
+> > +
+> > +Default: 1 (on)
+> > +
+> > +
+> >  wmem_default
+> >  ------------
+> >  
+> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> > index 357115ff0ec2..aa2f8ac4657c 100644
+> > --- a/include/linux/virtio_net.h
+> > +++ b/include/linux/virtio_net.h
+> > @@ -5,6 +5,7 @@
+> >  #include <linux/if_vlan.h>
+> >  #include <linux/ip.h>
+> >  #include <linux/ipv6.h>
+> > +#include <linux/jump_label.h>
+> >  #include <linux/netdevice.h>
+> >  #include <linux/udp.h>
+> >  #include <net/gso.h>
+> > @@ -78,6 +79,19 @@ static inline struct iphdr *virtio_net_ip4_parse(struct sk_buff *skb,
+> >  	*thoff = nhoff + iph->ihl * sizeof(u32);
+> >  	return iph;
+> >  }
+> > +/* Defined in net/core/dev.c, enabled while any network namespace
+> > + * has net.core.virtio_net_hdr_csum_check set to 0.
+> > + */
+> 
+> Should this be a global sysctl, rather than per netns?
 
-Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
-Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
 
----
-Changes in v3:
-- State the device tree requirements in the commit body. One "queueN"
-  child per TX channel naming its channel with "xlnx,dma-channel-num",
-  every TX queue described exactly once, and the TX channel count equal
-  to "xlnx,num-priorities". They were only in the v2 changelog before.
-- Correct the kernel-doc for tx_dma_chan_map. It holds the N of a tx_chanN
-  entry in "dma-names", not a hardware channel number.
-- Name the counting helper ep_count_dma_channels() and its probe results
-  num_tx_dma_channels and num_rx_dma_channels. Both count MCDMA channels
-  listed in "dma-names", which "queues" did not convey.
-- Call the RX map rx_dma_chan_map, matching tx_dma_chan_map. Both hold the
-  N of a chanN entry in "dma-names", so one concept now has one name.
-- Keep the RX map in a probe local rather than copying it into the private
-  struct. Nothing outside probe reads it.
+For customers I work with, it would be much less useful.
 
-Changes in v2:
-- Check xlnx,dma-channel-num against the channels that dma-names actually
-  lists, using a presence bitmask. Reject duplicates and out-of-range channels,
-  and index the channel arrays by logical queue.
-- Require one queue node per tx_chan and num-priorities equal to the TX channel
-  count. This also gives xlnx,num-priorities a consumer.
-- Cap TX and RX at 8 to match the binding.
-- Error out on an unknown dma-names entry instead of skipping it.
-- Drop the unreachable TX and RX count guards. The in-loop index and duplicate
-  checks already bound the count, so the channel arrays cannot be over-indexed.
----
- drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c | 198 +++++++++++++++++++++++-
- 1 file changed, 197 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-index 609d444c6835..2adee07f6f51 100644
---- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-+++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-@@ -5,9 +5,11 @@
-  * Copyright (C) 2026 Advanced Micro Devices, Inc.
-  */
- 
-+#include <linux/bitops.h>
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
- #include <linux/if_ether.h>
-+#include <linux/if_vlan.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/netdevice.h>
-@@ -21,14 +23,30 @@
- 
- #define DRIVER_NAME			"xilinx_tsn_ep"
- 
-+#define TSN_DMA_CH_INVALID		0xFFU
-+#define TSN_MAX_TX_QUEUE		8
-+#define TSN_MAX_RX_QUEUE		8
-+
-+#define TSN_MAX_VLAN_FRAME_SIZE		(ETH_DATA_LEN + VLAN_ETH_HLEN + \
-+					 ETH_FCS_LEN)
-+
- /**
-  * struct xlnx_tsn_ep - EP MAC private data, embedded in net_device priv area
-  * @ndev: the conduit netdev
-  * @dev: backing device
-+ * @num_tx_queues: number of TX DMA channels (one per priority)
-+ * @num_rx_queues: number of RX DMA channels
-+ * @tx_dma_chan_map: TX queue to tx_chanN map, or TSN_DMA_CH_INVALID when
-+ *	the queue has no channel
-+ * @max_frm_size: maximum frame size accepted on RX
-  */
- struct xlnx_tsn_ep {
- 	struct net_device *ndev;
- 	struct device *dev;
-+	u32 num_tx_queues;
-+	u32 num_rx_queues;
-+	u32 tx_dma_chan_map[TSN_MAX_TX_QUEUE];
-+	u32 max_frm_size;
- };
- 
- static netdev_tx_t ep_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-@@ -69,15 +87,176 @@ static const struct ethtool_ops ep_ethtool_ops = {
- 	.get_drvinfo	= ep_get_drvinfo,
- };
- 
-+/*
-+ * Parse the "tx-queues-config" child of the EP node. The logical queue
-+ * index is taken from the "queue<N>" node name, so the mapping does not
-+ * depend on the order the child nodes appear in the device tree.
-+ */
-+static int ep_parse_tx_queue_config(struct xlnx_tsn_ep *ep,
-+				    struct device_node *txcfg_np, u16 tx_present)
-+{
-+	DECLARE_BITMAP(queue_seen, TSN_MAX_TX_QUEUE) = {};
-+	DECLARE_BITMAP(chan_seen, TSN_MAX_TX_QUEUE) = {};
-+	unsigned int count = 0;
-+	int ret;
-+
-+	for_each_child_of_node_scoped(txcfg_np, qnode) {
-+		u32 chan, queue;
-+
-+		if (!str_has_prefix(qnode->name, "queue") ||
-+		    kstrtou32(qnode->name + strlen("queue"), 10, &queue) ||
-+		    queue >= ep->num_tx_queues)
-+			return dev_err_probe(ep->dev, -EINVAL,
-+					     "tx-config: invalid queue node %pOFn (have %u queues)\n",
-+					     qnode, ep->num_tx_queues);
-+
-+		if (test_and_set_bit(queue, queue_seen))
-+			return dev_err_probe(ep->dev, -EINVAL,
-+					     "tx-config: queue %u described twice\n",
-+					     queue);
-+
-+		ret = of_property_read_u32(qnode, "xlnx,dma-channel-num", &chan);
-+		if (ret)
-+			return dev_err_probe(ep->dev, ret,
-+					     "tx-config: queue %u missing xlnx,dma-channel-num\n",
-+					     queue);
-+
-+		if (chan >= TSN_MAX_TX_QUEUE || !(tx_present & BIT(chan)))
-+			return dev_err_probe(ep->dev, -EINVAL,
-+					     "tx-config: queue %u maps to channel %u not present in dma-names\n",
-+					     queue, chan);
-+
-+		if (test_and_set_bit(chan, chan_seen))
-+			return dev_err_probe(ep->dev, -EINVAL,
-+					     "tx-config: channel %u already assigned to another queue\n",
-+					     chan);
-+
-+		ep->tx_dma_chan_map[queue] = chan;
-+		count++;
-+	}
-+
-+	if (count != ep->num_tx_queues)
-+		return dev_err_probe(ep->dev, -EINVAL,
-+				     "tx-config: described %u queues but expected %u\n",
-+				     count, ep->num_tx_queues);
-+
-+	return 0;
-+}
-+
-+static int ep_count_dma_channels(struct device *dev, u32 *out_tx, u32 *out_rx,
-+				 u16 *tx_present, u32 *rx_dma_chan_map)
-+{
-+	u32 tx = 0, rx = 0;
-+	u16 rx_present = 0;
-+	int n, i, ret;
-+
-+	n = of_property_count_strings(dev->of_node, "dma-names");
-+	if (n < 0)
-+		return dev_err_probe(dev, n, "failed to read dma-names\n");
-+
-+	for (i = 0; i < n; i++) {
-+		const char *name;
-+		size_t plen;
-+		u32 idx;
-+
-+		ret = of_property_read_string_index(dev->of_node, "dma-names",
-+						    i, &name);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "failed to read dma-names[%d]\n", i);
-+
-+		plen = str_has_prefix(name, "tx_chan");
-+		if (plen) {
-+			if (kstrtou32(name + plen, 10, &idx) ||
-+			    idx >= TSN_MAX_TX_QUEUE)
-+				return dev_err_probe(dev, -EINVAL,
-+						     "invalid TX channel name %s\n",
-+						     name);
-+
-+			if (*tx_present & BIT(idx))
-+				return dev_err_probe(dev, -EINVAL,
-+						     "duplicate TX channel %s\n",
-+						     name);
-+
-+			*tx_present |= BIT(idx);
-+			tx++;
-+			continue;
-+		}
-+
-+		plen = str_has_prefix(name, "rx_chan");
-+		if (plen) {
-+			if (kstrtou32(name + plen, 10, &idx) ||
-+			    idx >= TSN_MAX_RX_QUEUE)
-+				return dev_err_probe(dev, -EINVAL,
-+						     "invalid RX channel name %s\n",
-+						     name);
-+
-+			if (rx_present & BIT(idx))
-+				return dev_err_probe(dev, -EINVAL,
-+						     "duplicate RX channel %s\n",
-+						     name);
-+
-+			rx_present |= BIT(idx);
-+			rx_dma_chan_map[rx] = idx;
-+			rx++;
-+			continue;
-+		}
-+
-+		return dev_err_probe(dev, -EINVAL,
-+				     "unrecognised dma-names entry %s\n", name);
-+	}
-+
-+	if (!tx)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "no TX channels in dma-names\n");
-+
-+	if (!rx)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "no RX channels in dma-names\n");
-+
-+	*out_tx = tx;
-+	*out_rx = rx;
-+
-+	return 0;
-+}
-+
- static int xlnx_tsn_ep_probe(struct platform_device *pdev)
- {
-+	u32 num_tx_dma_channels, num_rx_dma_channels, num_prio;
-+	u32 rx_dma_chan_map[TSN_MAX_RX_QUEUE];
- 	struct device *dev = &pdev->dev;
-+	struct device_node *txcfg_np;
-+	struct device_node *ip_np;
- 	struct net_device *ndev;
- 	struct xlnx_tsn_ep *ep;
- 	u8 mac_addr[ETH_ALEN];
-+	u16 tx_present = 0;
- 	int ret;
-+	int i;
-+
-+	ret = ep_count_dma_channels(dev, &num_tx_dma_channels,
-+				    &num_rx_dma_channels, &tx_present,
-+				    rx_dma_chan_map);
-+	if (ret)
-+		return ret;
-+
-+	ip_np = of_get_parent(dev->of_node);
-+	if (!ip_np)
-+		return dev_err_probe(dev, -EINVAL, "missing parent IP node\n");
-+
-+	ret = of_property_read_u32(ip_np, "xlnx,num-priorities", &num_prio);
-+	of_node_put(ip_np);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "missing xlnx,num-priorities\n");
-+
-+	if (num_tx_dma_channels != num_prio)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "TX channel count %u must equal num-priorities %u\n",
-+				     num_tx_dma_channels, num_prio);
- 
--	ndev = alloc_netdev(sizeof(*ep), "eth%d", NET_NAME_UNKNOWN, ether_setup);
-+	ndev = alloc_netdev_mqs(sizeof(*ep), "eth%d", NET_NAME_UNKNOWN,
-+				ether_setup, num_tx_dma_channels,
-+				num_rx_dma_channels);
- 	if (!ndev)
- 		return -ENOMEM;
- 
-@@ -89,6 +268,23 @@ static int xlnx_tsn_ep_probe(struct platform_device *pdev)
- 	ep = netdev_priv(ndev);
- 	ep->ndev = ndev;
- 	ep->dev = dev;
-+	ep->num_tx_queues = num_tx_dma_channels;
-+	ep->num_rx_queues = num_rx_dma_channels;
-+	ep->max_frm_size = TSN_MAX_VLAN_FRAME_SIZE;
-+
-+	for (i = 0; i < TSN_MAX_TX_QUEUE; i++)
-+		ep->tx_dma_chan_map[i] = TSN_DMA_CH_INVALID;
-+
-+	txcfg_np = of_get_child_by_name(dev->of_node, "tx-queues-config");
-+	if (!txcfg_np) {
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "missing tx-queues-config node\n");
-+		goto err_free_ndev;
-+	}
-+	ret = ep_parse_tx_queue_config(ep, txcfg_np, tx_present);
-+	of_node_put(txcfg_np);
-+	if (ret)
-+		goto err_free_ndev;
- 
- 	ret = of_get_mac_address(dev->of_node, mac_addr);
- 	if (ret == -EPROBE_DEFER) {
+> Even if per-netns, most likely do not want it writable by netns root
+> with user namespaces.
+>
+> That is the equivalent of ns_capable(CAP_NET_RAW), which is the cause
+> of many crashes due to bad packets ingested by, e.g., a packet socket.
 
--- 
-2.44.4
+Hmm, yes i get that. Two knobs? a. verify b. the per netns value ro? Both
+on by default?
+
+> A global sysctl also allows using proc_do_static_key and avoids the
+> custom logic in virtio_net_hdr_csum_check_sysctl.
+> 
+> >  /* Where does the L3 header start, and what protocol is it?
+> >   * Handles Ethernet and VLAN headers; other devices use the
+> > @@ -152,6 +166,12 @@ virtio_net_csum_partial_ok_at_offset(struct sk_buff *skb, u8 hdr_gso_type,
+> >  	unsigned int thoff;
+> >  	int ip_proto;
+> >  
+> > +	/* Failsafe: a namespace opted out of the validation,
+> > +	 * trust the checksum metadata as before.
+> > +	 */
+> 
+> nit: as before, imho the code here is clear and comment unnecessary.
+
+
+Ugh. One of these got through. Absolutely.
+
+> > +	if (virtio_net_hdr_csum_check_disabled(skb))
+> > +		return true;
+> > +
+> >  	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
+> >  		return false;
+> >  
+> > @@ -483,6 +503,9 @@ virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool outer_isv6,
+> >  	unsigned int thoff;
+> >  	int ip_proto;
+> >  
+> > +	if (virtio_net_hdr_csum_check_disabled(skb))
+> > +		return true;
+> > +
+> >  	if (!virtio_net_l3_start(skb, &nhoff, &proto))
+> >  		return false;
+> >  	if (outer_isv6 != (proto == htons(ETH_P_IPV6)))
+> 
+> > +/* Defined in net/core/dev.c, declared for the gate in
+> > + * include/linux/virtio_net.h.
+> > + */
+> > +DECLARE_STATIC_KEY_FALSE(virtio_net_hdr_csum_check_disabled_key);
+> > +
+> > +/*
+> > + * Protects changes to virtio_net_hdr_csum_check_disabled_key and each
+> > + * net->core.sysctl_virtio_net_hdr_csum_check. Readers don't use a lock.
+> > + */
+> > +static DEFINE_MUTEX(virtio_net_hdr_csum_check_mutex);
+> > +
+> > +static int virtio_net_hdr_csum_check_sysctl(const struct ctl_table *table,
+> > +					    int write, void *buffer,
+> > +					    size_t *lenp, loff_t *ppos)
+> > +{
+> > +	struct net *net = (struct net *)table->data;
+> > +	/* checkpatch warns but this can't be const: tmp.data is set below */
+> > +	struct ctl_table tmp = *table;
+> > +	u8 old;
+> > +	int ret;
+> > +
+> > +	/*
+> > +	 * Make sure virtio_net_hdr_csum_check_disabled_key counts zero values of
+> > +	 * net->core.sysctl_virtio_net_hdr_csum_check.
+> > +	 */
+> > +	mutex_lock(&virtio_net_hdr_csum_check_mutex);
+> > +
+> > +	old = net->core.sysctl_virtio_net_hdr_csum_check;
+> > +	tmp.data = &net->core.sysctl_virtio_net_hdr_csum_check;
+> > +	ret = proc_dou8vec_minmax(&tmp, write, buffer, lenp, ppos);
+> > +	if (write && !ret && old != net->core.sysctl_virtio_net_hdr_csum_check) {
+> > +		if (net->core.sysctl_virtio_net_hdr_csum_check)
+> > +			static_branch_dec(&virtio_net_hdr_csum_check_disabled_key);
+> > +		else
+> > +			static_branch_inc(&virtio_net_hdr_csum_check_disabled_key);
+> > +	}
+> > +
+> > +	mutex_unlock(&virtio_net_hdr_csum_check_mutex);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> >  static const struct ctl_table netns_core_table[] = {
+> >  #if IS_ENABLED(CONFIG_RPS)
+> >  	{
+> > @@ -737,6 +780,15 @@ static const struct ctl_table netns_core_table[] = {
+> >  		.extra1		= SYSCTL_ZERO,
+> >  		.extra2		= SYSCTL_ONE
+> >  	},
+> > +	{
+> > +		.procname	= "virtio_net_hdr_csum_check",
+> > +		.data		= &init_net,
+> > +		.maxlen		= sizeof(u8),
+> > +		.mode		= 0644,
+> > +		.proc_handler	= virtio_net_hdr_csum_check_sysctl,
+> > +		.extra1		= SYSCTL_ZERO,
+> > +		.extra2		= SYSCTL_ONE
+> > +	},
+> >  	/* sysctl_core_net_init() will set the values after this
+> >  	 * to readonly in network namespaces
+> >  	 */
+> > @@ -841,6 +893,8 @@ static __net_exit void sysctl_core_net_exit(struct net *net)
+> >  	tbl = net->core.sysctl_hdr->ctl_table_arg;
+> >  	unregister_net_sysctl_table(net->core.sysctl_hdr);
+> >  	BUG_ON(tbl == netns_core_table);
+> > +	if (!net->core.sysctl_virtio_net_hdr_csum_check)
+> > +		static_branch_dec(&virtio_net_hdr_csum_check_disabled_key);
+> >  #if IS_ENABLED(CONFIG_RPS)
+> >  	kfree(net->core.rps_default_mask);
+> >  #endif
+> > -- 
+> > MST
+> > 
+> 
 
