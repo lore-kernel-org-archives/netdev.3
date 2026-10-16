@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE70F2D0614;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE68B29BDBF;
 	Fri, 16 Oct 2026 03:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792121498; cv=none; b=kZPLG9+6oQsDL8UZIQBmq0XuylOB8pr3aOK7kRZGC1Zb+e84I6KZLlcRq+0k+xXHkzqLtjGkxgV6Z5QW0/Z+QZiP92Tn7+7frJW+0eOPInobwLXnqFWEPNqyhZu8Sy9cJOWvPyjq3YkPnMfuA0ktIKAtqlNOW8fmStympGYMpds=
+	t=1792121498; cv=none; b=YsTB4GmIF0ogp/wSEfmPpfB+2e4CLdvK78pTwtVNV3Hq9TUAsKsq3WAQmcUQ6y16GKBTC5/PDGLm41CXpQzRKnukBXU+eHmHdpzT40Y/ojyWscg+wl766D9eHHlhvMwRZkRl9ywBBEE/K7k6HtRKvoPcIiR7aaBIlNPeO/sTHeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792121498; c=relaxed/simple;
-	bh=tJxl6szbEu/sixUPfjPjMWFV7t5uJftR95+/Px8Swc8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R5aTKnpMV49Wv/1sA79FArp6npPtzNcdGhdh1uxXP0Q1YUZsQfMt+wT+BJuJ9W3y+zhURsX2MrzHSUBjSshSr50jaARURk6cVi+TP7S10Gi2emWQjAAu4DkodhY0rqWcPtwtUeQYRd2o3g42toPz70hL0cBFMtSuiaQj/DS6dNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLqN/1Hu; arc=none smtp.client-ip=10.30.226.201
+	bh=6Pnkji9+C3LHn1Eo3bFDJpcSdQKou14K0FEREsN4rXk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=o3MotAy3/w6L9nlWYVBbbxdFQJw1XliB4Srga28vZjivlda6m+S58ldwU8OuIBh3JkXqO4MoB8KL/vvInaSlllzZKDS+EQhVe4X3z/RONlKxmXApy6Dxn3905DUKFktHFKnBjqZdCa76hjLSJ0dSystB5Y6bS6Wo2LhzhmiIj2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6ij9QUk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLqN/1Hu"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 59BABC2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6ij9QUk"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 86C13C2BD00;
 	Fri, 16 Oct 2026 03:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1792121498;
-	bh=tJxl6szbEu/sixUPfjPjMWFV7t5uJftR95+/Px8Swc8=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=RLqN/1HuQgFl0+yy+g4Bmk0hoN8g6yp3OdfDUemPNng/oodBA9draTuXr5ZCNFb09
-	 QIc7aN0QNteJT6cH4X2T/RGuTbu2IWt1Kdtkx8c5ipyt0I0bKExqxZ76Nzs7qcCCo+
-	 SC/jBVFFBlUsgwN6BTQYuCSDFar9ejQmXsWbU9VYAkemdom7MCM7WccZ0U05gtkf0c
-	 th2p+pKJ3iwY3vja7/06ZPKoZqV+lI+WhRjX06sMBa557OhDOYXqr61UsY4iOjfDZ3
-	 VOtEduMdP/ToTwvv+6aySz5aKWrwmbjfpmSxlopRgM7tDIhrclWnTKC7+br7bdd6se
-	 H/pS8D/VNyigg==
+	bh=6Pnkji9+C3LHn1Eo3bFDJpcSdQKou14K0FEREsN4rXk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=H6ij9QUk1EZSg+MO/cCTArfVkhAOFQwNuVFgYmaw0T0aWxUy5zakdHZgYo4NeqIW2
+	 BTFS2Ixu+3qmnvsQ2Eyds40j29XK6eZLLZCL2ALrutkx1GmoCMZhyXcdCqy8cr8VfK
+	 8VgM00JX33BpzDPB5mLvLf441dWeKI2gYu+NYCkGZKCFIU9sUygFd4d1QyQsy+Ci18
+	 ckgZdjsXZfV5vE9DOYSB9q5lHOIBt2v6YoHPTm0d7KsUchusjCiThbfbmzowU8SkH9
+	 4cqaBOF62ZcIyTqs7Zi0Azor7fv9JY7dv04r0nITuas8amXfrL3RyHHiO40mVz/ypw
+	 9Xs7v8EeQlQ6Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 454DBCC6B38;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6ADCECCA46C;
 	Fri, 16 Oct 2026 03:31:38 +0000 (UTC)
 From: Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org>
-Subject: [PATCH net-next v4 0/2] net: annotate remaining lockless
- sk->sk_err accesses
-Date: Thu, 15 Oct 2026 20:31:35 -0700
-Message-Id: <20261015-tls-fix-sk-kcsan-err-v4-0-391d788327f3@proton.me>
+Date: Thu, 15 Oct 2026 20:31:37 -0700
+Subject: [PATCH net-next v4 2/2] net: annotate lockless writes to
+ sk->sk_err
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,12 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33OSQ7CMAwF0KugrDFKnLYMK+6BWDiNC2FIURIqE
- OrdScumQoLll+33/RKRg+MoNrOXCNy56FqfQzGfifpI/sDgbM4CJVZKSoR0idC4B8QznOtIHjg
- EqBpuNC6LolGlyKe3wHlnZHfCcwLPjyT2n0m8mxPXaVCH3aOLqQ3P8YNOjRf/yzoFEgyRNCTLS
- qPe3kKbWr+48ljR4RTRPxDMCK/1mpCNtWX1jegJouQPRA8IrogsG63ITpG+798rrVNlXgEAAA=
- =
-X-Change-ID: 20261002-tls-fix-sk-kcsan-err-6fef32744f15
+Message-Id: <20261015-tls-fix-sk-kcsan-err-v4-2-391d788327f3@proton.me>
+References: <20261015-tls-fix-sk-kcsan-err-v4-0-391d788327f3@proton.me>
+In-Reply-To: <20261015-tls-fix-sk-kcsan-err-v4-0-391d788327f3@proton.me>
 To: John Fastabend <john.fastabend@gmail.com>, 
  Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
@@ -56,11 +53,11 @@ To: John Fastabend <john.fastabend@gmail.com>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  bpf@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792121497; l=2335;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792121497; l=2452;
  i=quanyeyang@proton.me; s=20260801; h=from:subject:message-id;
- bh=tJxl6szbEu/sixUPfjPjMWFV7t5uJftR95+/Px8Swc8=;
- b=rfObpSk8GQeJLi5fzl0oFdpqlw6AcSh1a0WtbkL3Jaya4s6iGA/Se9EulONiXZ2ocdERruI/b
- ZYC37w4PGurBqPVtHWjI/mSuQgpLWcZ7OLzMqAz0no38FoS41TIBVxr
+ bh=xhyr/APrQP/DN3UvFtImVGyApw1ErZ/6ymmTvs2y5mo=;
+ b=CXBCdVyhtyWn/0xpLp3zsnaOxdBxRg2WPxaEYq6Vk+ZZoX/BNlI9IBijWfcr6oI63qPVIj6j4
+ ybX52q7LCWQBwrYh1cFLgnUbkD0bZeBINaQUmoOtvACXVyHT+lvduD0
 X-Developer-Key: i=quanyeyang@proton.me; a=ed25519;
  pk=9L9FrcvzMgxPaBRU6XV0EnqTgjDqVO596rQKSZ9qZoY=
 X-Endpoint-Received: by B4 Relay for quanyeyang@proton.me/20260801 with
@@ -68,64 +65,79 @@ X-Endpoint-Received: by B4 Relay for quanyeyang@proton.me/20260801 with
 X-Original-From: Quanye Yang <quanyeyang@proton.me>
 Reply-To: quanyeyang@proton.me
 
-The TCP/MPTCP series that annotated lockless sk_err peeks and
-consumes is in net-next. Paolo asked for the same treatment on
-kTLS and on the unmarked writers that still race those readers.
+From: Quanye Yang <quanyeyang@proton.me>
 
-do_recvmmsg() and getsockopt(SO_ERROR) still call sock_error()
-without the socket lock. kTLS is a ULP on that same struct sock,
-so tls_rx_rec_wait() has the same peek-versus-consume split, and
-the send path still does a double unmarked load.
+do_recvmmsg() and getsockopt(SO_ERROR) clear sk_err with xchg()
+without the socket lock. TCP, MPTCP and kTLS already peek the same
+field with READ_ONCE() or consume it via sock_error().
 
-sock_dequeue_err_skb() can store sk_err from MSG_ERRQUEUE before
-lock_sock(). strp_abort_strp() and sk_psock_report_error() write
-the same field on the TCP/TLS and sockmap paths.
+sock_dequeue_err_skb() still uses plain stores. tcp_recvmsg() can
+call it via MSG_ERRQUEUE before lock_sock(), so those writes race
+with the annotated readers and with sock_error(). The same unmarked
+stores exist in strp_abort_strp() and sk_psock_report_error(), which
+run on the TCP/TLS socket.
 
-Patch 1 annotates the TLS readers and consumes sk_err once on the
-no-data path. Patch 2 pairs the remaining writers with WRITE_ONCE().
-No extra ordering is added; ICMP error-queue overwrite semantics
-are unchanged.
+Annotate those writers with WRITE_ONCE(). No extra ordering is
+needed; this does not change who wins when ICMP error-queue entries
+overwrite sk_err.
 
 Link: https://lore.kernel.org/netdev/3d9d442f-f168-43da-87b0-010ad5a78365@redhat.com/
-
 Signed-off-by: Quanye Yang <quanyeyang@proton.me>
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 ---
-Changes in v4:
-- tls_rx_rec_wait() / bpf_exec_tx_verdict(): declare skerr at function
-  scope (Jakub Kicinski)
-- Patch 2: unchanged
-- Link to v3: https://patch.msgid.link/20261010-tls-fix-sk-kcsan-err-v3-0-e28aadeb31ad@proton.me
+ include/linux/skmsg.h     | 2 +-
+ net/core/skbuff.c         | 5 +++--
+ net/strparser/strparser.c | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- rebase on net-next after the net merge
-- refresh WRITE_ONCE() in strp_abort_strp() after the strparser
-  refactor (Jakub Kicinski)
-- Patch 2: carry Reviewed-by from Eric Dumazet
-- Patch 1: unchanged
-- Link to v2: https://patch.msgid.link/20261003-tls-fix-sk-kcsan-err-v2-0-e939a2ebdd56@proton.me
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index d5e35f24738d..52ce45f25f5a 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -429,7 +429,7 @@ static inline void sk_psock_report_error(struct sk_psock *psock, int err)
+ {
+ 	struct sock *sk = psock->sk;
+ 
+-	sk->sk_err = err;
++	WRITE_ONCE(sk->sk_err, err);
+ 	sk_error_report(sk);
+ }
+ 
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index d56f4f0102f7..a6c9cf57bc3b 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5539,12 +5539,13 @@ struct sk_buff *sock_dequeue_err_skb(struct sock *sk)
+ 	if (skb && (skb_next = skb_peek(q))) {
+ 		icmp_next = is_icmp_err_skb(skb_next);
+ 		if (icmp_next)
+-			sk->sk_err = SKB_EXT_ERR(skb_next)->ee.ee_errno;
++			WRITE_ONCE(sk->sk_err,
++				   SKB_EXT_ERR(skb_next)->ee.ee_errno);
+ 	}
+ 	spin_unlock_irqrestore(&q->lock, flags);
+ 
+ 	if (is_icmp_err_skb(skb) && !icmp_next)
+-		sk->sk_err = 0;
++		WRITE_ONCE(sk->sk_err, 0);
+ 
+ 	if (skb_next)
+ 		sk_error_report(sk);
+diff --git a/net/strparser/strparser.c b/net/strparser/strparser.c
+index 9c1559d7923f..5f1da32b152f 100644
+--- a/net/strparser/strparser.c
++++ b/net/strparser/strparser.c
+@@ -56,7 +56,7 @@ static void strp_abort_strp(struct strparser *strp, int err)
+ 	strp->need_bytes = 0;
+ 
+ 	/* Report an error on the lower socket */
+-	sk->sk_err = -err;
++	WRITE_ONCE(sk->sk_err, -err);
+ 	sk_error_report(sk);
+ }
+ 
 
-Changes in v2:
-- tls_encrypt_done(): fold the three unmarked sk_err loads into one
-  READ_ONCE()
-- Link to v1: https://patch.msgid.link/20261002-tls-fix-sk-kcsan-err-v1-0-baa0ba056323@proton.me
-
----
-Quanye Yang (2):
-      tls: annotate lockless access to sk->sk_err
-      net: annotate lockless writes to sk->sk_err
-
- include/linux/skmsg.h     |  2 +-
- net/core/skbuff.c         |  5 +++--
- net/strparser/strparser.c |  2 +-
- net/tls/tls_device.c      |  5 +++--
- net/tls/tls_sw.c          | 51 ++++++++++++++++++++++++++++++-----------------
- 5 files changed, 41 insertions(+), 24 deletions(-)
----
-base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
-change-id: 20261002-tls-fix-sk-kcsan-err-6fef32744f15
-
-Best regards,
---  
-Quanye Yang <quanyeyang@proton.me>
+-- 
+2.55.0
 
 
