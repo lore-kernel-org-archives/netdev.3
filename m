@@ -1,139 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A081B3E7BCC
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809F8337BB8
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792144442; cv=none; b=iyf2ASptfJlAkkMEDbavbBo7anoukP8SQZct3lh3FI0HAuzZMBZJ0PkCAHtJod1kc7lB53wxLjBOuJgILKV3NR0mKcWCygVNUh5qZv8I5Gz8FkTwoIfU8NFly7fEYqHQeBIrZJ35wQSyUzEuRzYRXiDmNXlwY8eA5TUkKMw9fdw=
+	t=1792144583; cv=none; b=cTYOTNn9yBDKDgGp7EbCDy2IQUpYlJ43lBQVVIgcZL+Ckp0dsuBBYeHp2zpdN0A5NNkkAExQNAJ7HUU9LWL89TNnUsn3athm2QmA0Jrk4PwtfiBmsaIdYx7fXGGSIzxoHNkh7+tRFA+RwyZoV4PSHyY9Eo+nPUPmuZTbPZfq/vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792144442; c=relaxed/simple;
-	bh=GZNsXghh6SZMQS0etCLAbkbM/Gi10aQpjd8kmsWf+hc=;
+	s=arc-20240116; t=1792144583; c=relaxed/simple;
+	bh=KS+hyG8c1op4kAF/V5/p31OA1NEKdfCe5DgHHpZ9sjw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ruMcG4FMXOykezWLUKRGaRPjJcs+V2EkrGlIb8KVvNMH7626qPz7e7KRbnaVA4W3eckOSGvzwriCYi1fIbrZxNGxJVsFQ9b2ULaX4xP1sCVkGJ1Kav1Qy81lQVfIzc7slucVCgn5HrT/Q5EjXkLQ9QqaOk2oGyAJtiyzxPeSGvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ur5ved8E; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KRsinRvl; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0HF6hbX0yqOtrCDo/YFLIuO15LgvRGGmVp+OfFUbaQDdNhVL1MqUMMOZLYNLfS/m3x6IsnkXnScB1Blx31x3Vs25z8+KFw3b1RgFD2ySzSWq13OXgXQEIbev44eN2vZ1yR9Lkwm8PIHWQnZlVaDooZdHx8vgiA36SltaYkmzkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UOKCmCom; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cpWDeT5p; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ur5ved8E";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KRsinRvl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792144439;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UOKCmCom";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cpWDeT5p"
+Date: Fri, 16 Oct 2026 11:56:11 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1792144572;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Rr7WSuKask2p1j98eCEcwTF9HIf7GILCC9to1Tz+WQ4=;
-	b=Ur5ved8ESuVlro1vNpLLOqn0DmMNhW3MzcwxgTEQlZ9oWcpYjN2Wf12nC8uulvHHrlQqB5
-	PeTQD+4BbOiGGKl3GPqC6rQhwvGrKt7dEcFrJ5b7LL5jAr/3vwzkSh0MqBY5ixVUra5zj3
-	66IqGl26U8TWNgWUch3d/iToqRc/mc8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-Q4YhR3GaNvaCcu4l6Y4PVQ-1; Fri, 16 Oct 2026 09:53:54 +0000
-X-MC-Unique: Q4YhR3GaNvaCcu4l6Y4PVQ-1
-X-Mimecast-MFC-AGG-ID: Q4YhR3GaNvaCcu4l6Y4PVQ_1792144433
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e00f3929bso188319f8f.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:53:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792144433; x=1792749233; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Rr7WSuKask2p1j98eCEcwTF9HIf7GILCC9to1Tz+WQ4=;
-        b=KRsinRvl36/aCM68UzJnt7n0CLzZfPDUy+IrjVbn5lY/RYeuQpi1H7/IoG340uv0hA
-         Lj5aEd2tdE8jkW0xA3tGxDavnKGI9wQPBH6VlnC2msoaNNoRBbvrBzZsk2/ndPw8B4RO
-         4lYk+VbLyDRthfEhu2S4JTmjS3Rbe/WQ9UfhzpQ2NCBmh+vP5JNcxra2577b5ZwV9il4
-         vjB6QsPxCYUeWuOA2SuHDsMHVWtx3XcdYxb1wi8EocQELljwXUPJBdCmV2gB8KbT2V/l
-         2j2OHcG8OPfrKJVD44kQ5XgRh60lJuv6u7pNQ+HqMFJLqma/OxY0csfljO1I3EXkm7PK
-         RHJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792144433; x=1792749233;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Rr7WSuKask2p1j98eCEcwTF9HIf7GILCC9to1Tz+WQ4=;
-        b=UwgckZpE8gSCDfbFpgHu9kPvWesiT/dDWSFUfkQq8bMAZb6TzVONuAhHKL3SFjwNEV
-         jEzJ8SkVcKNlO98wNXCLhjNPE74QcJmv0ApqaPRwj31pNhg6Ft1BNiz2fC8yP0hiUVPK
-         C39TNXbRkbnrhwuHHkvgmTFq7jT8npFRmOe/SsVZ4E1X7I4qcYxyyPA+p3Xsn3Ph5I6d
-         9kqWAQ4xdv7gU3FDmi2g8QhLdLnGa+tjFYdIMgp1YKlAGeZDqbvt0g0+Kk1yB+SROpzL
-         OpGwKEXmK3pnQx9MnTsbp5KS7+2weiR4wzGik2r0grRZ6zWlTGoJbB7EDIXz4LcQdq3g
-         5k0g==
-X-Forwarded-Encrypted: i=1; AKwUvBxSn8KWsncNxgSp0saxs0A0oNSq+EikTyYyO/JaK8Opkv85RcyLBoQ+uWSDCtXYuf478K9h+9c=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIha27NnjR8OiZ5EotvYqHe942zXFQhNfuhEqTmllUtZVtcCSMy
-	JSHAIDS85CePjfcHtjvzjL39mBgBLOeFH879xanAJZRr+chTOW+YQDhasYLyDZ2eOgX7Tjr7+yI
-	iJghuJSLl79bfzIoflnUEn1N9/LXPNWwJwYsJwX7SNUvTTegOtXNUvLl8EQ==
-X-Gm-Gg: AYBFou2nVx2wJhisBOKL6LgSL9T3vUnSwXqNaTI9Lir0LHc4HudlzOJpwAmIN7pUZB+
-	w3nlZT2EMMxzpkTZVZvgTDpoAGZ7qUe6r5w5Ykf9KnzD9yU3Tmk5neWRi/cStEBkyekD1y9xmui
-	SXWbtjvshGhw6cjT0P7V2gMXtL2xwwPoGb1d6zCXtK+ajubToz+nvyNDUcBXZLMD+KUMgNgsRA3
-	ykBcLZyaqmJLSOeNDddLOqaZmE3bqVHv3FiKD+zcNBzUM50qdd8rzIfximTwiEH7UJr1+w3bzvw
-	K5dOBjf+atCVOOV9na20m/TWqsETS0AFCMBjQfwLJFlTiOyEvMOjXL4rXu6amcDQk6jrmA==
-X-Received: by 2002:a05:6000:26d3:b0:48d:f4ef:62e7 with SMTP id ffacd0b85a97d-48dfaca5f59mr6434748f8f.0.1792144432666;
-        Fri, 16 Oct 2026 02:53:52 -0700 (PDT)
-X-Received: by 2002:a05:6000:26d3:b0:48d:f4ef:62e7 with SMTP id ffacd0b85a97d-48dfaca5f59mr6434697f8f.0.1792144432170;
-        Fri, 16 Oct 2026 02:53:52 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd471a72sm4456837f8f.4.2026.10.16.02.53.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 02:53:51 -0700 (PDT)
-Date: Fri, 16 Oct 2026 05:53:48 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-kernel@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	bh=TQPC4olfHWFHQdUeCdi2r09y8heMXe015t/8jgh07KA=;
+	b=UOKCmComBwA2vTZAW6nDIWyDE9TY5QhDwAx1wUBVMOx+0xvBPT+UUto/xsLjXi7D0GswMM
+	Kee5lNYb1xYvsElmzAhGmoAizxf/JwEffPEWex/V2hcNRSgr8/dJNV8/41rp7tJiiQcZ0i
+	sCr1jzCH0N2+i+P2iV2Wuarwd8N8GQLErXdYCyP1rW68ZXEngswfhB2IhwcNfhNr6B5+Zw
+	1mipnNhubX0sfCnbwcUOu+6cvUaGmYCuIPoTNkfvdmD9OzBBBwKs0TvewZbv5E9V19KSLK
+	Xr1Kjln1OXmQcl2oI9tcSUhhjlfQtLumaUGKbtwr8g+YLY2utmUiuVy/cF67Ww==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1792144572;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQPC4olfHWFHQdUeCdi2r09y8heMXe015t/8jgh07KA=;
+	b=cpWDeT5pSXPIYJshKpcNoP+kCMq5bghlprss+B+9PyACwKyV5YmOtr7+hKtHVic47GOIwM
+	CviwHIapeXcYKkAw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: netdev@vger.kernel.org, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	linux-um@lists.infradead.org
-Subject: Re: [PATCH net-next v2 2/7] um: vector: honor virtio net hdr
- conversion failures
-Message-ID: <20261016055312-mutt-send-email-mst@kernel.org>
-References: <cover.1792067836.git.mst@redhat.com>
- <6716834884238de0ab1ab313004044122aa2adbf.1792067836.git.mst@redhat.com>
- <8420ba1fe84fc7d105825026802d4ad10d44af71.camel@sipsolutions.net>
- <20261015085119-mutt-send-email-mst@kernel.org>
- <64ee40b97fc447bbf3abb80250ad0d9f3cf3c6fa.camel@sipsolutions.net>
- <20261016054142-mutt-send-email-mst@kernel.org>
- <18ba10ec7aa6659ee4711f8dd3f3138e314e4af6.camel@sipsolutions.net>
- <20261016054558-mutt-send-email-mst@kernel.org>
- <77e9eb61d0e81ead5d5840abb95ffbd695a4e513.camel@sipsolutions.net>
+	Chintan Vankar <c-vankar@ti.com>, Danish Anwar <danishanwar@ti.com>,
+	Daolin Qiu <d-qiu@ti.com>, "David S. Miller" <davem@davemloft.net>,
+	Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Neelima Muralidharan <neelima@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>,
+	Pratheesh Gangadhar TK <pratheesh@ti.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: Re: [PATCH net-next v9 5/8] hsr: Use the port and header information
+ in hsr_forward_skb()
+Message-ID: <20261016095611.x_Nm0lpH@linutronix.de>
+References: <20261014-hsr_ptp-v9-0-2d20a2a0f816@linutronix.de>
+ <20261014-hsr_ptp-v9-5-2d20a2a0f816@linutronix.de>
+ <20261016092416.5ssargoekf74pcwn@DEN-DL-M70577.microsemi.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <77e9eb61d0e81ead5d5840abb95ffbd695a4e513.camel@sipsolutions.net>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20261016092416.5ssargoekf74pcwn@DEN-DL-M70577.microsemi.net>
 
-On Fri, Oct 16, 2026 at 11:49:14AM +0200, Johannes Berg wrote:
-> On Fri, 2026-10-16 at 05:47 -0400, Michael S. Tsirkin wrote:
-> > > > 
-> > > Right, but virtio_net_hdr_to_skb() cannot return 1, only 0 on success
-> > > and -ERROR on failure?
-> > 
-> > After this patchset, it can, to signal slow path software checksum.
-> > I'm changing callers first so that changing the function itself
-> > does not break bisect. I should mention this in the commit log.
-> 
-> Oh, OK, that I clearly missed, but also was only CC'ed on patches 2 and
-> 3 :)
-> 
-> johannes
+On 2026-10-16 11:24:16 [+0200], Daniel Machon wrote:
+> > The upper layer can submit a port on which the skb should be sent and
+> > whether or not a HSR header should be added. Use this information while
+> > forwarding the packet:
+> > - If the port set, deliver it only on the requested port.
+> > - If a header is already present then skip parts of the stack:
+> >   - The packet originates from the master port and we don't want to
+> >     assign a sequence number to it, it needs to preserve the original
+> >     one.
+> >   - The existing h_source must be used (and not replaced).
+> >   - The node should already exist in the node_db if "other" packets are
+> >     exchanged. If the node information is not yet existing then
+> >     creating it makes no sense because it is used for deduplication of
+> >     incoming packets and this is not used in the PTP case. If no other
+> >     packets are exchanged then the node_db will age and then removed.
+> >=20
+> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > ---
+> >  net/hsr/hsr_forward.c  | 45 ++++++++++++++++++++++++++++++++++++------=
+---
+> >  net/hsr/hsr_framereg.h |  2 ++
+> >  2 files changed, 38 insertions(+), 9 deletions(-)
+> >=20
+> > diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> > index 2b8ae9723bd7f..534798da48d53 100644
+> > --- a/net/hsr/hsr_forward.c
+> > +++ b/net/hsr/hsr_forward.c
+> > @@ -426,7 +426,7 @@ static void hsr_deliver_master(struct sk_buff *skb,=
+ struct net_device *dev,
+> >  static int hsr_xmit(struct sk_buff *skb, struct hsr_port *port,
+> >  		    struct hsr_frame_info *frame)
+> >  {
+> > -	if (frame->port_rcv->type =3D=3D HSR_PT_MASTER) {
+> > +	if (frame->port_rcv->type =3D=3D HSR_PT_MASTER && !frame->has_foreign=
+_header) {
+> >  		hsr_addr_subst_dest(frame->node_src, skb, port);
+> > =20
+> >  		/* Address substitution (IEC62439-3 pp 26, 50): replace mac
+> > @@ -547,11 +547,12 @@ bool hsr_drop_frame(struct hsr_frame_info *frame,=
+ struct hsr_port *port)
+> >  static void hsr_forward_do(struct hsr_frame_info *frame)
+> >  {
+> >  	struct hsr_port *port;
+> > -	struct sk_buff *skb;
+>=20
+> Is this needed, or just cleanup?
 
-Right, I am trying not to spam too widely.
-Indeed, this is why commit log should explain.
+Sort of cleanup. It is still used in the loop where it is used. The NULL
+init is not needed so It could stay as-is where it is.
 
--- 
-MST
+> >  	bool sent =3D false;
+> > =20
+> >  	hsr_for_each_port(frame->port_rcv->hsr, port) {
+> >  		struct hsr_priv *hsr =3D port->hsr;
+> > +		struct sk_buff *skb =3D NULL;
+> > +
+> >  		/* Don't send frame back the way it came */
+> >  		if (port =3D=3D frame->port_rcv)
+> >  			continue;
+> > @@ -570,6 +571,17 @@ static void hsr_forward_do(struct hsr_frame_info *=
+frame)
+> >  		if ((port->dev->features & NETIF_F_HW_HSR_DUP) && sent)
+> >  			continue;
+> > =20
+> > +		/* PTP TX packets have an outgoing port specified */
+> > +		if (frame->req_tx_port !=3D HSR_PT_NONE && frame->req_tx_port !=3D p=
+ort->type)
+> > +			continue;
+>=20
+> This checks that if the frame is directed and that the frame is only send=
+ to the
+> directed port. Maybe the comments could be more clear about that.
 
+Oki.
+
+=E2=80=A6
+> > diff --git a/net/hsr/hsr_framereg.h b/net/hsr/hsr_framereg.h
+> > index 127a3fb64d5f0..e5e6363c0466f 100644
+> > --- a/net/hsr/hsr_framereg.h
+> > +++ b/net/hsr/hsr_framereg.h
+> > @@ -29,6 +29,8 @@ struct hsr_frame_info {
+> >  	bool is_from_san;
+> >  	bool dst_in_node_db;
+> >  	bool dst_in_proxy_node_db;
+> > +	bool has_foreign_header;
+> > +	enum hsr_port_type req_tx_port;
+>=20
+> The same flag is hsr_hdr in the uAPI, has_header in hsr_dev_xmit(),
+> has_hsr_header in hsr_forward_skb() and has_foreign_header here. The
+> port is tx_port in some places and req_tx_port in others. Could the namin=
+g be
+> aligned?
+
+I could align it with has_hsr_header probably.
+
+> >  };
+> > =20
+> >  void hsr_del_self_node(struct hsr_priv *hsr);
+>=20
+> /Daniel
+
+Sebastian
