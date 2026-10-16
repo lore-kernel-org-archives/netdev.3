@@ -1,319 +1,266 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B380641E6C9
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B067A377EAC;
+	Fri, 16 Oct 2026 08:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792138488; cv=none; b=hOVshI2sA/eSYPtJBRJsnmUUZXVnHKu4sPaqiZpE0Ay/UlIcfoMIyQQPRo17QWD+FBAyA70UoY8ZVbZSmHGR3NfGwrIp3vIQdRS3M6CgDPsLnNCp82xo4EZVSECoaGp+gHM9kpmxosygcZWKl3pMzNOXxCFm1TWK4AjvGA5MQV0=
+	t=1792138507; cv=none; b=qd6dmiASNAoYVGsk9GRKyOwf7IZY0ymY3TZtw6tK2OWZBRouY8VDJSeB2fo3Mwy+GEhuE12ARYdw2aMcvIhJxc00e4JK5P/DV9yvCkUJcHqURBLcJ4jY4EcKqeIJUTG78XqPto21RfQEUYCJwZUD/bS+LvGkwWLC3/xhCTw+01k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792138488; c=relaxed/simple;
-	bh=6URY0D6oYme6xz01rwrlqB2zCECHzV8y7FzNmRlu6EY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V1pWI2afA2WqXbZuYULLsV4FqLWyEI1fLIRVb7e3ZojVbN+lB5NEJ9q0M5yMA905N8FedXZ/sjW8lIKvPzTeAc/526hYLv1Yk/eva5pX3e9ZijmLZki+FuRzkXsFa7eYdJSSfyGuw7sw04fquGom1/zpQIIo80U+gYLJqt6dLfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pt8MuYQb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lzc/A7Ga; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792138507; c=relaxed/simple;
+	bh=dHL2K4hZcbv3gpJ0meEra9CDkE5P8NpYUDndTG6l2s8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tdJvVS+io6D775GtmbOPgBS1iVuAsUdas5kz2zSw6wfAgprZcJL07ACdD2vxBn1EIKRe8Fm/OgQxopjANPfIYq0OjkAE3m7gpJG2wtRAYEULtuAWPTQeM6309JmUgIh3zjhlglumXsKgg92Qt2f3XD37aml1mbCZMoigd7SqEWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=in/+l1kq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pt8MuYQb";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lzc/A7Ga"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792138485;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=56RICpgwGhNm6LSWh8AoomM8aDXtuq7tL8RIbQGojuE=;
-	b=Pt8MuYQbhHj7TvfVcvWHxchQziLBqNcClk6qcUDPztE/+5VhVYm0WDI9miUwx9pu+yfSTv
-	7ovdWINGBNE69kHTnOPuOJNhIPZkuUXOOnqFhgy4jadeSq1PCU9vi0RJJ7RS/QxeTz32gK
-	EJjBzeVx83jYkD5YabZAfSUOrNGSqlQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-BQQOUpP8OEGfVVTUMCOdIA-1; Fri, 16 Oct 2026 08:14:42 +0000
-X-MC-Unique: BQQOUpP8OEGfVVTUMCOdIA-1
-X-Mimecast-MFC-AGG-ID: BQQOUpP8OEGfVVTUMCOdIA_1792138481
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4994d67d0e3so20139525e9.2
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:14:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792138481; x=1792743281; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=56RICpgwGhNm6LSWh8AoomM8aDXtuq7tL8RIbQGojuE=;
-        b=Lzc/A7Gamz+gQPJhr4UEKRx2WeSl3HpfGfE3m2fkB5kNU2Si/Q1+3tNYW2cUBaJZ15
-         dfK+eIU0Ut9JdMoBR2fy/d2D1tovzOMLnPftfh+42Yd0SBHTjG+wnX/JYqjSavCfqV+C
-         5htEfdRGJ96STAmEY2GshKIjiX5jXdR5M7G+OGjHd17Xy3omGYxFYj+ZkyOX3M/4JsHT
-         SWQsTMuq4tfWzW5dD/5shyKKfTsFxVT8RXa9sE3hJ0jM3Rijs97ZPWekGuYOeiMfkrs8
-         0LmWgDOwB06H8VvDeFc1b24hvCLPPTGujNSGzkeVrVViL/r8zz+Ror4N+BjrRNPPSap8
-         Ktwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792138481; x=1792743281;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=56RICpgwGhNm6LSWh8AoomM8aDXtuq7tL8RIbQGojuE=;
-        b=e5LP1ddA0bZOQO0RToeydxUHpTOVt5gwnjxbtnQWsFRxXA6S++lAyAf9H03yD4kmAl
-         IyNvzvkAppysLnPS27xAYkVwR/COgpalXbJbqdc74saM16oYpn9LimH8VcBNmRw6O7PC
-         QlNSUUaaQQgbIQMFGnuadHZa5s0T1friFikE7amOty+TbWY03hXgjEDUx3XdHJRDICxX
-         zuJblN4SumYtEP+GfyNM2iU22wGh3ww4M5D11vVtxNAIiYgT/HRFUBbkXgdr62T5tV7l
-         ADgyPWGzMEffZey4cHwKbtbNHiZrgywZtO6tsLC3U/Jyb/ha4f2B4jbOjbAgDCfirtut
-         KMEQ==
-X-Gm-Message-State: AFq9FYJ1RZT87iISClg4f7C2MZzztmFVF7M4Xm4sFiVo8U2oMdoB0tnk
-	5ZtSbK1ZmTVPrPIKWlDhiYpCZtjQ4MxNjxmTw+3JKfI63Jor5NoP2hmb9uXrPcu0qtPYTJMTUWO
-	5vJgGUC+ugLuxdu9GaSta/rA3BuERR83FAeXg5g1PEYY1/OHyqUswItBO+w==
-X-Gm-Gg: AYBFou05nkDDbYzYDSjN9wARWbcwbcsNlDkxDFRn/rtJHypKchsu4aX2Ex6re1uQtw5
-	xaRLK5X90Xea6OZ7vuUXdObCiKEgr0uwmafyILphwRwROCOEfNcHUIxjFPNghGSFJdb+i8TtyGm
-	36VX/V/RGx+6AHjZOKkTCZ+UUOVxoD9NDiYLUMCQOBur2rl35D6WF7kF7zVA1E5jjdQ362xykBr
-	NA9mzRkA3mI0IYwJ2ihd6oKV+Rmg3JLkw5lWtldRF3gBSxa8FY/wNDs6VmYyWPMXumuL67+HwT+
-	21V6qT6vZleF78qbLqAxnZxtK3dD578dkvIayi2EkdpbZkX0vu8RwE6PNSqYfet9jrkpSggdHqw
-	8vS8S
-X-Received: by 2002:a05:600c:19cf:b0:4a0:168f:d962 with SMTP id 5b1f17b1804b1-4a18e44363dmr423676055e9.3.1792138481259;
-        Fri, 16 Oct 2026 01:14:41 -0700 (PDT)
-X-Received: by 2002:a05:600c:19cf:b0:4a0:168f:d962 with SMTP id 5b1f17b1804b1-4a18e44363dmr423675585e9.3.1792138480725;
-        Fri, 16 Oct 2026 01:14:40 -0700 (PDT)
-Received: from sgarzare-redhat ([80.116.137.133])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd47104csm3835450f8f.8.2026.10.16.01.14.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 01:14:39 -0700 (PDT)
-Date: Fri, 16 Oct 2026 10:14:37 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: David Carlier <devnexen@gmail.com>
-Cc: netdev@vger.kernel.org, bobbyeshleman@gmail.com, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] vsock: support SO_INQ on stream sockets
-Message-ID: <atHT4vOo39HBEBva@sgarzare-redhat>
-References: <20261015154334.3217358-1-devnexen@gmail.com>
- <20261015154334.3217358-2-devnexen@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="in/+l1kq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5681F000C4;
+	Fri, 16 Oct 2026 08:15:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792138505;
+	bh=WhJQShRZnAAN8bJPhh/C1URcM7H1xauzce/dmuhwcd4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=in/+l1kqD9B55xfTvz+qShZqoytkdmfyNuIzyYA8TWW88Z57BimZF6kPi0hoBnjGD
+	 6+uOD50bj4dgVffX/BI8O/KmKsztgmT4Uv6woQZ8EmMuWiDGRD+IHXT/49/wXIHbjb
+	 p+jwdxjO4c/baFS93cStqA+LFEyMV82b4ls8xXV4g0OW4C//MDnEvrFe68qyJ0FXce
+	 gxQ9+vq/i8T+qCetUde1kAe+MO/Y28IXr1vZvPuo0Kds60eZn/O1SNh8T7RFfjTVgB
+	 FLRs5fgHHd1YSdCq9UZMGJd9AFkkljdFMr2PrPBl4FGxYU2mmUt4VugT9VqpzBDTsI
+	 07cRrNsJTq7Pg==
+Subject: Re: [PATCH net-next v2 1/5] net: enetc: Add pseudo-MAC support for
+ ENETCv4 Ports via a fixed-link node
+From: netdev-bot+sashiko@kernel.org
+To: claudiu.manoil@nxp.com
+Cc: netdev@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ bhelgaas@google.com, linux-pci@vger.kernel.org, kuba@kernel.org
+Date: Fri, 16 Oct 2026 08:15:04 +0000
+Message-ID: <179213850452.434549.17833070545168867976@kernel.org>
+In-Reply-To: =?utf-8?q?=3Cd7b51cb29758538a4c68a700dd8cd41b6e7e08b6=2E1791908?=
+ =?utf-8?q?694=2Egit=2Eclaudiu=2Emanoil=40nxp=2Ecom=3E?=
+References: =?utf-8?q?=3Cd7b51cb29758538a4c68a700dd8cd41b6e7e08b6=2E17919086?=
+ =?utf-8?q?94=2Egit=2Eclaudiu=2Emanoil=40nxp=2Ecom=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261015154334.3217358-2-devnexen@gmail.com>
 
-On Thu, Oct 15, 2026 at 04:43:33PM +0100, David Carlier wrote:
->SO_INQ makes recvmsg() return the bytes left in the receive queue in an
->SCM_INQ cmsg, saving a SIOCINQ call per receive. AF_UNIX stream sockets
->support it, AF_VSOCK fails with ENOPROTOOPT.
->
->Add it for SOCK_STREAM, reusing the hint already computed for io_uring.
->As with TCP_INQ, 1 is reported once the stream is finished so the caller
->reads again and sees EOF, and accepted sockets inherit the setting from
->the listener. No cmsg is sent when the transport cannot report the queue
->length.
->
->SOCK_SEQPACKET is refused, as on AF_UNIX: its transport callback counts
->messages, not bytes.
->
->Signed-off-by: David Carlier <devnexen@gmail.com>
->---
-> include/net/af_vsock.h   |   1 +
-> net/vmw_vsock/af_vsock.c | 111 +++++++++++++++++++++++++++++----------
-> 2 files changed, 84 insertions(+), 28 deletions(-)
->
->diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
->index 5549298c1ec6..e8481f12312e 100644
->--- a/include/net/af_vsock.h
->+++ b/include/net/af_vsock.h
->@@ -68,6 +68,7 @@ struct vsock_sock {
-> 	u64 buffer_size;
-> 	u64 buffer_min_size;
-> 	u64 buffer_max_size;
->+	bool recvmsg_inq;
->
-> 	/* Private to transport. */
-> 	void *trans;
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 1c2d1cea67f4..186ed57fd797 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -984,6 +984,7 @@ static struct sock *__vsock_create(struct net *net,
-> 		vsk->buffer_size = psk->buffer_size;
-> 		vsk->buffer_min_size = psk->buffer_min_size;
-> 		vsk->buffer_max_size = psk->buffer_max_size;
->+		vsk->recvmsg_inq = psk->recvmsg_inq;
-> 		security_sk_clone(parent, sk);
-> 	} else {
-> 		vsk->trusted = ns_capable_noaudit(&init_user_ns, CAP_NET_ADMIN);
->@@ -2014,6 +2015,66 @@ static void vsock_update_buffer_size(struct vsock_sock *vsk,
-> 	vsk->buffer_size = val;
-> }
->
->+static bool vsock_custom_sockopt(int optname)
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Looking at the other function, what about vsock_sol_socket_custom()?
+Critical: 0 · High: 0 · Medium: 3 · Low: 1
 
->+{
->+	switch (optname) {
->+	case SO_ZEROCOPY:
->+	case SO_INQ:
->+		return true;
->+	default:
->+		return false;
->+	}
->+}
->+
->+static int vsock_sol_socket_setsockopt(struct sock *sk, int optname,
->+				       sockptr_t optval, unsigned int optlen)
->+{
->+	struct vsock_sock *vsk = vsock_sk(sk);
->+	int err = 0;
->+	int val;
->+
->+	/* Use 'int' type here, because variable to
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-nit: why not using at least 80 columns for this comment?
+- [Medium] Build break when CONFIG_OF_DYNAMIC=n.
+- [Medium] enetc4_link_init() uses the OF_DYNAMIC flag alone to decide
+  that a pseudo-MAC port's node is 'an empty node created by the PCI…
+- [Medium] The pseudo-MAC fixed-link speed is the boot-time PCR[PSPEED]
+  rounded down to a phylink-supported value, and the existing link-up…
+- [Low] enetc4_add_ppm_fixed_link() can write 20000 or 25000 into the
+  synthesized node's fixed-link 'speed' property.
 
->+	 * set these options usually has this type.
->+	 */
->+	if (optlen < sizeof(val))
->+		return -EINVAL;
->+
->+	if (copy_from_sockptr(&val, optval, sizeof(val)))
->+		return -EFAULT;
->+
->+	if (val < 0 || val > 1)
->+		return -EINVAL;
+--
 
-What about adding an helper with this code, and call it after checks for 
-each SO_, in this way using SO_INQ on sock_dgram with 2 will return 
--ENOPROTOOPT.
+net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a fixed-link node
 
-Oh wait, we can use COPY_IN and duplicate the check in each place or add 
-an helper just for that.
+This commit lets ENETCv4 pseudo-MAC ports probe when they have no static
+DT description. At probe time it uses an of_changeset to add a
+fixed-link child node to the port's OF node, with the speed taken from
+PCR[PSPEED], so that phylink can pick it up. The changeset is reverted
+and destroyed on teardown and on the probe error path.
 
->+
->+	lock_sock(sk);
->+
->+	switch (optname) {
->+	case SO_ZEROCOPY:
->+		if (vsk->transport && !vsock_msgzerocopy_allow(vsk->transport)) {
->+			err = -EOPNOTSUPP;
->+			break;
->+		}
->+
->+		sock_valbool_flag(sk, SOCK_ZEROCOPY, val);
->+		break;
->+
->+	case SO_INQ:
->+		if (sk->sk_type != SOCK_STREAM) {
->+			err = -ENOPROTOOPT;
->+			break;
->+		}
->+
->+		vsk->recvmsg_inq = val;
->+		break;
->+
->+	default:
->+		err = -ENOPROTOOPT;
->+		break;
->+	}
->+
->+	release_sock(sk);
->+	return err;
->+}
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> index 71c971618388b..70e34ca6ddf8e 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
 
-Now it's much better, but we should not mix a refactoring with a new 
-feature, so please split this patch in 2 patches, first one introducing 
-vsock_sol_socket_setsockopt() just for SO_ZEROCOPY, second one 
-introducing SO_INQ handling.
+[ ... ]
 
-In this way, if we have to backport a fix to SO_ZEROCOPY handling in a 
-stable branch, we can do it easily.
+> @@ -946,23 +955,112 @@ static void enetc4_pci_remove(void *data)
 
-The rest LGTM,
-Stefano
+[ ... ]
 
->+
-> static int vsock_connectible_setsockopt(struct socket *sock,
-> 					int level,
-> 					int optname,
->@@ -2045,36 +2106,16 @@ static int vsock_connectible_setsockopt(struct socket *sock,
-> 	sk = sock->sk;
-> 	vsk = vsock_sk(sk);
->
->-	lock_sock(sk);
->-
->-	transport = vsk->transport;
->-
-> 	if (level == SOL_SOCKET) {
->-		int zerocopy;
->-
->-		if (optname != SO_ZEROCOPY) {
->-			release_sock(sk);
->+		if (!vsock_custom_sockopt(optname))
-> 			return sock_setsockopt(sock, level, optname, optval, optlen);
->-		}
->-
->-		/* Use 'int' type here, because variable to
->-		 * set this option usually has this type.
->-		 */
->-		COPY_IN(zerocopy);
->
->-		if (zerocopy < 0 || zerocopy > 1) {
->-			err = -EINVAL;
->-			goto exit;
->-		}
->+		return vsock_sol_socket_setsockopt(sk, optname, optval, optlen);
->+	}
->
->-		if (transport && !vsock_msgzerocopy_allow(transport)) {
->-			err = -EOPNOTSUPP;
->-			goto exit;
->-		}
->+	lock_sock(sk);
->
->-		sock_valbool_flag(sk, SOCK_ZEROCOPY, zerocopy);
->-		goto exit;
->-	}
->+	transport = vsk->transport;
->
-> 	switch (optname) {
-> 	case SO_VM_SOCKETS_BUFFER_SIZE:
->@@ -2581,6 +2622,7 @@ __vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
-> 	struct sock *sk;
-> 	struct vsock_sock *vsk;
-> 	const struct vsock_transport *transport;
->+	bool do_cmsg = false;
-> 	int err;
->
-> 	sk = sock->sk;
->@@ -2637,13 +2679,26 @@ __vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
-> 		err = __vsock_seqpacket_recvmsg(sk, msg, len, flags);
->
-> out:
->-	/* Seqpacket has_data counts messages, while io_uring treats msg_inq as
->-	 * a byte length when sizing retries, so only streams report a hint.
->+	/* Seqpacket has_data counts messages, while SCM_INQ reports bytes and
->+	 * io_uring treats msg_inq as a byte length when sizing retries, so
->+	 * only streams report it.
-> 	 */
->-	if (msg->msg_get_inq && err >= 0 && sk->sk_type == SOCK_STREAM)
->+	if ((vsk->recvmsg_inq || msg->msg_get_inq) && err >= 0 &&
->+	    sk->sk_type == SOCK_STREAM) {
-> 		msg->msg_inq = vsock_stream_inq_hint(sk);
->
->+		/* A negative hint means the transport could not tell. SCM_INQ
->+		 * has no encoding for that, so report nothing.
->+		 */
->+		do_cmsg = vsk->recvmsg_inq && msg->msg_inq >= 0;
->+	}
->+
-> 	release_sock(sk);
->+
->+	if (do_cmsg)
->+		put_cmsg(msg, SOL_SOCKET, SCM_INQ, sizeof(msg->msg_inq),
->+			 &msg->msg_inq);
->+
-> 	return err;
-> }
->
->-- 
->2.55.0
->
+> +static int enetc4_add_ppm_fixed_link(struct enetc_ndev_priv *priv)
+> +{
+> +	struct device_node *np = dev_of_node(priv->dev);
+> +	struct device_node *fixed_link;
+> +	struct of_changeset *ocs;
+> +	int speed, err;
+> +
+> +	if (!np)
+> +		return dev_err_probe(priv->dev, -ENODEV,
+> +				     "Missing of_node for Pseudo-MAC port\n");
+> +
+> +	enetc4_get_pcr_speed(&priv->si->hw, &speed);
+> +	speed = enetc_phylink_match_pseudo_mac_speed(speed);
 
+[Severity: Medium]
+Does this rounding end up overwriting the boot-time PCR[PSPEED] value?
+
+enetc4_get_pcr_speed() decodes PSPEED as (pspeed + 1) * 10, so the
+result can be any multiple of 10 Mbps. enetc_phylink_match_pseudo_mac_speed()
+then rounds down to the first table entry that is <= that value, with no
+warning. For example, 4000 becomes 2500 and 40000 becomes 25000.
+
+The rounded value goes into the fixed-link "speed" property. On link-up,
+phylink passes it to enetc4_pl_mac_link_up(), which has no pseudo-MAC
+check:
+
+enetc4_pl_mac_link_up()
+    enetc4_set_port_speed(priv, speed);
+
+priv->speed starts at 0, so the first call always does a read-modify-write
+of ENETC4_PCR with PCR_PSPEED_VAL(rounded speed).
+
+Suppose the switch owner programmed a PSPEED that is not in the table.
+Wouldn't the driver replace it with a lower rate? priv->speed is used by
+enetc_qos.c for the CBS port_transmit_rate. Wouldn't it also stop
+matching the real internal link?
+
+This seems to conflict with the commit message statement that "the fixed
+link reflects the actual boot-time configuration". I could not confirm
+whether firmware actually programs rates outside the table.
+
+> +
+> +	ocs = kzalloc_obj(*ocs);
+> +	if (!ocs)
+> +		return -ENOMEM;
+> +
+> +	of_changeset_init(ocs);
+
+[Severity: Medium]
+Will this build when CONFIG_OF_DYNAMIC is not set?
+
+This function calls of_changeset_init(), of_changeset_create_node(),
+of_changeset_add_prop_u32(), of_changeset_add_prop_bool() and
+of_changeset_apply(). enetc4_put_ppm_fixed_link() also calls
+of_changeset_revert() and of_changeset_destroy(). All of these are
+declared in include/linux/of.h only under #ifdef CONFIG_OF_DYNAMIC.
+
+The #else branch only has stubs for the of_reconfig_* helpers.
+drivers/of/dynamic.c is also only built with OF_DYNAMIC=y.
+
+config NXP_ENETC4 only depends on PTP_1588_CLOCK_OPTIONAL and PCI_MSI.
+OF_DYNAMIC is a hidden symbol that is only enabled when something
+selects it (OF_OVERLAY, PCI_DYNAMIC_OF_NODES, ...).
+
+With NXP_ENETC4=y/m and OF_DYNAMIC=n, wouldn't the build fail? I'd
+expect implicit declaration errors first, then undefined symbols at
+modpost or link time. That includes CONFIG_OF=n builds through
+COMPILE_TEST.
+
+The commit message says:
+
+  This is intentionally not a hard Kconfig dependency, since the ENETC4
+  driver also serves regular ports described by static DT; when
+  PCI_DYNAMIC_OF_NODES is absent the PCI function has no of_node and the
+  pseudo-MAC probe path fails gracefully with a clear -ENODEV error.
+
+If nothing selects OF_DYNAMIC, the driver would not build at all, so it
+never gets to the -ENODEV path. Should NXP_ENETC4 select or depend on
+OF_DYNAMIC, or should these calls be guarded?
+
+> +
+> +	fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
+> +	if (!fixed_link) {
+> +		err = -ENOMEM;
+> +		goto err_destroy;
+> +	}
+> +
+> +	err = of_changeset_add_prop_u32(ocs, fixed_link, "speed", speed);
+
+[Severity: Low]
+This isn't a functional bug, but can this write a speed that the
+fixed-link binding doesn't allow?
+
+enetc_phylink_pseudo_mac_caps[] includes SPEED_25000 and SPEED_20000. For
+PSPEED >= 20 Gbps, enetc_phylink_match_pseudo_mac_speed() returns 20000
+or 25000.
+
+For the object form of fixed-link, the "speed" property in
+Documentation/devicetree/bindings/net/ethernet-controller.yaml only
+allows:
+
+  enum: [10, 100, 1000, 2500, 5000, 10000]
+
+The commit message says the node is added "exactly as if it had come
+from static DT". A static DT describing this port the same way would
+fail dtschema validation. phylink_parse_fixedlink() accepts these speeds
+at runtime, so nothing breaks.
+
+Should the binding be extended to 20000 and 25000, or should the driver
+avoid emitting them?
+
+[ ... ]
+
+>  static int enetc4_link_init(struct enetc_ndev_priv *priv,
+>  			    struct device_node *node)
+>  {
+> +	bool dynamic = node && of_node_check_flag(node, OF_DYNAMIC);
+>  	struct enetc_pf *pf = enetc_si_priv(priv->si);
+>  	struct device *dev = priv->dev;
+>  	int err;
+>  
+> -	err = of_get_phy_mode(node, &pf->if_mode);
+> -	if (err) {
+> -		dev_err(dev, "Failed to get PHY mode\n");
+> -		return err;
+> +	/* Pseudo-MAC ENETCs are described by a runtime-synthesized fixed-link
+> +	 * node rather than static DT. This covers both a missing OF node and a
+> +	 * PCI-synthesized (OF_DYNAMIC) node, which is an empty node created
+> +	 * by the PCI core and thus carries no fixed-link description.
+> +	 */
+> +	if (enetc_is_pseudo_mac(priv->si) && (!node || dynamic)) {
+> +		pf->if_mode = PHY_INTERFACE_MODE_INTERNAL;
+
+[Severity: Medium]
+Can OF_DYNAMIC be relied on to mean the node has no link description?
+
+OF_DYNAMIC only records that a node was allocated at runtime.
+__of_node_dup() sets it on every runtime-created node. That includes
+nodes created by the overlay engine (add_changeset_node()->__of_node_dup())
+and PCI-synthesized nodes that a later overlay fills in. The
+PCI-synthesized node is not empty either, since it has compatible and
+reg.
+
+Take an OF_DYNAMIC pseudo-MAC node that already has phy-mode and a
+fixed-link child. This path skips of_get_phy_mode() and forces
+PHY_INTERFACE_MODE_INTERNAL. enetc4_add_ppm_fixed_link() then adds a
+second child named "fixed-link" without checking for an existing one.
+
+__of_attach_node() inserts the new node at the head of the parent's
+child list:
+
+	np->sibling = np->parent->child;
+	np->parent->child = np;
+
+So phylink_parse_fixedlink()->fwnode_get_named_child_node(fwnode,
+"fixed-link") would find the synthesized node first. Wouldn't the
+overlay's speed, pause, asym-pause and link-gpios be silently ignored?
+The tree would also end up with two sibling nodes of the same name.
+
+Before this patch, such a node went through of_get_phy_mode() and its
+own fixed-link was used. Would a check based on the node's contents (no
+phy-mode, no phy-handle, and !of_phy_is_fixed_link()) match the intent
+in the comment better than the flag?
+
+I couldn't find in-tree code that applies such an overlay to an ENETC
+node today, so this may be theoretical for now.
+
+> +
+> +		err = enetc4_add_ppm_fixed_link(priv);
+> +		if (err)
+> +			return err;
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1791908694.git.claudiu.manoil%40nxp.com
