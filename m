@@ -1,63 +1,65 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8998A466AF5
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2374145C710
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792143157; cv=none; b=RxzwHADavOeMJ65PZ3qr96PhkgOQYvK9lUF5Nu7EZRmwxztNUqjuJT6V+AnErBsaWRkXEu3aqZdGy/Lgh/k3jf4HeySxwL1E2iQc7+Y1WXY1MSysPtMhRKpvQhZ3w/zP1zcdGOBtNYbiZY5ZnxFP6bZwi1puZ77Yuok8lFE2grM=
+	t=1792143161; cv=none; b=qxFvZKT5vnHY802nUjNKxIK9tMlKZ9xtdRUZsQvwI5H3lzGuOpNLyZ61nYZ68JKdVA/p3IeGrmqk1HK8Q9FjfZZ4Uzk4bo8rBJIOHi/DML8BIjNX5s7jomqEIbRZobGbjA+AsTLDbpvfTEV0FHi+i8x83hdlRXkwt8kXhtQr1g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792143157; c=relaxed/simple;
-	bh=sWkP4JPpzh1PrUWgTn0gKtwQ2WpS/1O8YY32jiHfj9E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FoSvrBwAIc7q4S7TfLTsnR+La23pc5UtlBZwoxpGcaxilTAt1KQ1X+M7dSIM5gIjfzcSyOT+XRMB44Y7rlAPr1Ndv9yRW8lqLBuhMKj8MiOLGNQF6Pt4OqWPXLhdefBJFh88nJG/JZtjbzrc+rREtwUEibohEDg92jE4naQ9cTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dskCgRcn; arc=none smtp.client-ip=74.125.82.177
+	s=arc-20240116; t=1792143161; c=relaxed/simple;
+	bh=3OTy30U9zaA/EoJrB2LEVikw7T9erylLWW9kg7srSqA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aIS55n9MSnfaspi+J9F99NbDfvL+gTgGPrOtCAKaCiwnE4UYi3c471Gm9PzvBVJXuqM9MiwIUM+7arEHgdqKmb3EnB1epo0UHiWUhlD0lORkyCrRfWT9e8VHBnA7aGK37f9NeDuyCZc/0+39rP99Hijfhw/W8m0eMLlse6qBWKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lG9eWanX; arc=none smtp.client-ip=74.125.82.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dskCgRcn"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-3550c917fd3so4019437eec.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:32:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lG9eWanX"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-35f1f76ea84so3251638eec.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:32:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792143153; x=1792747953; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M4EHfv55CyvmCv6DKOzDwfo547V/LhUX2GtLqYL05K0=;
-        b=dskCgRcnPjt5HwMZBceVdt217XXbp6cpjEQ9oIIR26EZ2Dr8PnyUvZrlmq5MGzRImz
-         4EfN9W/L2QY2mPrHG2prMNPOFd261a/lmzNWJW8moxDze7nALpBS/yy4u8Xx5Fa7T3Vj
-         tonW+K4zH/EBoI26PQCNpmB74YNXLWeZJR/cGxAQ7fifFpz+98EkUxoLe5PQbIQwHSS1
-         OW68wO04D5iMyiABS9+p/lqrGyZ/kDMO4a27ki9pIEomcv6MH5LRZVAaEwb8ud1xip6K
-         QV7HRCvArG7ivvKBX8WVYNF3OHws93CGfRQ9+WTNk2F9hvm+/s6tQ6WCmOdAZhn91AMG
-         6fzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792143153; x=1792747953;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792143159; x=1792747959; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=M4EHfv55CyvmCv6DKOzDwfo547V/LhUX2GtLqYL05K0=;
-        b=NI1GEUro0e18BqHfhCppvhsXNrlshLymX0tILGt/Uw8tT84FY4xlzhqri6/ISEyh4l
-         /vjg1eV9TguEy9kpOhxaBOdF8ubXIT9Nr/GPVqQgAlgJozX8C7U6jWmq2ZqUaOi6LZDS
-         nBlXk3TtE+WQ/nmSpUWVu/ctd7/RRpBoTzzAGOf0QuzXpPF46eTZgm7+SOFAiL7IJkbq
-         7VfY+bj0v8dHTvMJLELCTM1vpYOPeEbcI5YWZHGTax1RPuBWGxmvyzu78cKRhgNIuj9T
-         nj5oun4LpONy2O332n0203/P5Jl7TYaQeMzvcyNuSWlEzXejCtrfr61EsX9TzVbap1BJ
-         0e1w==
-X-Forwarded-Encrypted: i=1; AKwUvBxgiVxm423xaol4sm36OMLf0s5trtJR45eEtF7RycovyngJNqFBl2IpgCmXToDJeBfoyUz6hMI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLJYKNjlLI8ttKtzFRCn/P6akWsQbAtYFUx+3pqq855DeVAHN3U
-	U5xQz9N3k+wUaVpxDfe4EJx7JcG1bOMFN2JfACIhaPJOekel85l/X/1/
-X-Gm-Gg: AYBFou3HouauquIYXu8lSgv57AIVda79BCPhucRau1IRSe/36ZR/WWItDC7AfCPEDj4
-	XGgYJRGMa7Er84pm65tXILiA9uWKHH44oeuzd5ajrZEHS9Xq2mmqSYQo9qoY2eqEZmHeGKKT1OK
-	dOtZv4C2UJh6VEdABy6n5wWCNkhJGrbD09aeNOio1LeVWLP5R4CcAGs4JYB7sfyTvqlgXaWobLp
-	rLHSTXkLhVy+rkWchiaEu05SLIEnETfoQt1wkddeZk1cKZVI6WnY2Qat2uG3fvt24pjoYLGdW3c
-	+PWl3XTNYSFKlvWH623fKc7uDmHN4BMVthGNaV0Wf5NQWcQBh/5rbj41+CkqbHHqGhgDVWJ8Cwo
-	VGSTUSUwmZAJSEngttPLUA22rxDB6JrEhuLyFrCriMhji3+I3aLrG7I3SepdJCCpogcqk9hZ1Tc
-	pVDPiRREQwxj1Le/i9AUP/vfl+vIrlwAPWAo0udQ3eaVLp1hneFTv5rCmQ/fQNzqiNA2oXjK9Po
-	5A3/oHR6iaXx81v01AhW/6Nr787ratPAsukWqTIMnYmv039N/cUUC6W5TygIHeWlTkQlf8E732f
-	IwQnMTbIGls1KnCMio3HAWjAEt1TdHK3Ush77KbmeF6J
-X-Received: by 2002:a05:7300:e9d6:10b0:359:bdc8:c9d5 with SMTP id 5a478bee46e88-359bdd83104mr25799822eec.21.1792143153301;
-        Fri, 16 Oct 2026 02:32:33 -0700 (PDT)
+        bh=uV/uHpIyvSDg1rMqWOrJjW5nbbNl8aiS8yrcLtotir0=;
+        b=lG9eWanXp6F34VL+5KABtmaUD/FqjI/9F1aRT5KoeQsWikE7x4YtnSIg5F2/ZPg8Dq
+         PePTpdsCVU4ZWXqstpXLsySY4u9tBu1lrbUykdf9yk2JO2fxO17cX5IdogM+kq2ndZS1
+         BPQOv9MrXmSaMx+HIg/c5JAGEO3bBQakipVu8VcRIxEFe+4dWirEnWCvlp8hdOkOaDhT
+         CI0ThqY8xcgrcQmTG+scdgYqjTixt3eJGCbZRX2h3CThnRuwmRjoSC/6mu0nHH23ElF6
+         azoxe8JwGb031mFgckOWiSzV3psUNE8eWaLFLrqN8yseVA5GtEJoTOd1I5UAMYBKGtFL
+         +gIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792143159; x=1792747959;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uV/uHpIyvSDg1rMqWOrJjW5nbbNl8aiS8yrcLtotir0=;
+        b=ATx/y4gaAq7D5gxVNNsAlDOGZClL93/IvT2Whsar6lmKuVk7Cqc83/g/TRB+2Td1nq
+         PSmCaOlfgXVIFxy26VBYXYTYE8yCS+IEm13jsgdwvxTMH2wTyN6eyyzNH5w54chlVnfD
+         3t24n7jd4h5pIeqxJZ74zMUNEis/10YyVRWAa7d4/32edG2c4UCgd7sO9Wmyb3qVEVYy
+         EcTedoQuRgCfJUS9LS1eYs3M9FnqP1/QlA55VTuXVpBuyDFkJ/lIXp4lM0GHAeld/Waq
+         UI/Ue9yQCgOX8MMTH4eB80j5tuajdQDHC30LY8wOjBhxuOUmDSXaxCJaNKqWENgevElS
+         a5VA==
+X-Forwarded-Encrypted: i=1; AKwUvBwwOaeW06Cb49VCprl6bJmpMPbHB7e4Q0tS+twJPTLbe2XJrKSBAyUEgVbg5vTlvxVDL9jM9Wk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJC5ySKGAjDP+Se8cneHIDTyE8jqe0A9vZLmyFyIxO+FH3qwFZ7
+	dFRKEWI/bwckrC8O3D+M235CcKG2wLCxlDf+Y3qyJkcwW2+VCFNRFGD+tWF25A==
+X-Gm-Gg: AYBFou3P8I4Kz9LlWy2Gs/Q4Koqbqrh+0QvCy+PooaUkL2mfKFFAAn+8ZYckZX6TT+A
+	RVwbJZVmIl2nK0hTofOCXZJh4OLcyxe2YnQjjDogbydulYu+3xmvY1xXErRHaREx7Qw4jLodNL8
+	HQD/B7yLw1oKxDCAdL+CHHBC445/MF3/wXhufUHHP355yvEbeT+Qr31e9OHsHknZk2jVWfD+WqQ
+	3JfpoxHXbqObsiQ9hjcCZTnrRZEVjEOl7+KiTh9du77uGIUikie2H75IC3So1CMkUiU6C/FJiQx
+	LbSpR494DWmoSL0M6xTzwNxamDhkTdREaI9mnaOVg+aZtrvcZDXYMbw/Z5635cxC9GvYRH0sXWe
+	iShmxy08hixJOc03R5siGj//b9Jn8aIRMl1q/eljcp9SI+QBp/PckZIHMi6F+zfoaEfdybVDLZ7
+	BP5kGFH9tG/hoKZjVrwGYfnNyblMP3+TU7L+Jc7qamNDYWzzHY2xOlfIas/eB1OPw84ZRLDBwEA
+	QD1DVuuSI3BPZNU8P5AXAny26GhkHbG2MmlozL05az2+imDjI+kxZIoXFZWgE1gzIZ2uilGIii8
+	4aEfA0FeTa9bDtv1whJb1i23gCQ183CrldUn0pHYUlg=
+X-Received: by 2002:a05:7300:87:b0:360:c266:cddf with SMTP id 5a478bee46e88-360c266d46amr1747387eec.5.1792143158891;
+        Fri, 16 Oct 2026 02:32:38 -0700 (PDT)
 Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360820a79c7sm5157172eec.18.2026.10.16.02.32.28
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360820a79c7sm5157172eec.18.2026.10.16.02.32.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 02:32:32 -0700 (PDT)
+        Fri, 16 Oct 2026 02:32:38 -0700 (PDT)
 From: Anil Kaushik <anilkaushikwireless@gmail.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>,
 	Harald Welte <laforge@gnumonks.org>,
@@ -76,10 +78,12 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net-next v7 0/4] gtp: ynl spec for the GTP netlink family, two fixes, and a selftest
-Date: Fri, 16 Oct 2026 09:32:21 +0000
-Message-Id: <20261016093225.1036375-1-anilkaushikwireless@gmail.com>
+Subject: [PATCH net-next v7 1/4] gtp: set a valid genl command in PDP context get and dump replies
+Date: Fri, 16 Oct 2026 09:32:22 +0000
+Message-Id: <20261016093225.1036375-2-anilkaushikwireless@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261016093225.1036375-1-anilkaushikwireless@gmail.com>
+References: <20261016093225.1036375-1-anilkaushikwireless@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,64 +92,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This adds a ynl spec for the gtp genetlink family, two small driver
-fixes, and a selftest.
+gtp_genl_fill_info() stamps the reply with the command its callers pass
+in. gtp_genl_get_pdp() and gtp_genl_dump_pdp() pass nlmsg_type, which in
+a genl message is the dynamically assigned family id rather than a
+GTP_CMD_* value, so replies to a PDP context get or dump carry a
+meaningless command number.
 
-Patch 1: the GET and dump replies carried the family id in the command
-field, so ynl dropped them. Use GTP_CMD_GETPDP instead.
-Patch 2: new in v7. On the netdev CI debug kernel, the selftest hit an
-RCU warning: adding a PDP context looks up the device without the RCU
-read lock. Hold it around the lookup.
-Patch 3: the spec (NEWPDP/DELPDP/GETPDP/ECHOREQ), no uapi change.
-Patch 4: a selftest that adds, dumps and deletes PDP contexts.
+libgtpnl ignores the command and is unaffected, but parsers that check
+it (for example the ynl tooling) treat the reply as an unknown command
+and discard it. Pass GTP_CMD_GETPDP, as gtp_tunnel_notify() already
+passes a real command on the notification path. No uapi change.
 
-The multicast notifications are not in the spec: they reuse the request
-command values, which the ynl C generator can't express with the
-current uapi header.
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+---
+ drivers/net/gtp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v7:
- - new patch 2: fix the RCU warning the selftest found on debug kernels
- - selftest: add a docstring to GtpFamily (pylint)
- - Cc Stanislav for lib/py
-v6:
- - spec: use the gtp_version uapi enum for the version attribute
- - spec: family only applies to the MS address, fix its doc
- - selftest: also skip on "Unknown device type", printed by iproute2
-   with extack support when the kernel has no gtp
-v5:
- - ynl: add CFLAGS_gtp so the generated code builds with older headers
- - spec: doc fixes, min-len for the IPv6 attributes
- - selftest: only skip when GTP is unavailable, close the ynl handle
-v4:
- - spec: request/reply attributes now match the handlers
- - selftest: fix the gtp.ko autoload crash, check ENOENT, delete by
-   TEI and by MS address
-
-v6: https://lore.kernel.org/netdev/20261013031000.528393-1-anilkaushikwireless@gmail.com/
-v5: https://lore.kernel.org/netdev/20261012024800.400616-1-anilkaushikwireless@gmail.com/
-v4: https://lore.kernel.org/netdev/20261010105740.223992-1-anilkaushikwireless@gmail.com/
-v3: https://lore.kernel.org/netdev/20261009060615.4177402-1-anilkaushikwireless@gmail.com/
-v2: https://lore.kernel.org/netdev/20261008181031.4129029-1-anilkaushikwireless@gmail.com/
-
-Anil Kaushik (4):
-  gtp: set a valid genl command in PDP context get and dump replies
-  gtp: hold RCU for the device lookup when adding a PDP context
-  netlink: specs: add genetlink-legacy spec for GTP
-  selftests: net: add a test for the gtp netlink family
-
- Documentation/netlink/specs/gtp.yaml          | 196 ++++++++++++++++++
- MAINTAINERS                                   |   2 +
- drivers/net/gtp.c                             |   7 +-
- tools/net/ynl/Makefile.deps                   |   1 +
- tools/testing/selftests/net/Makefile          |   1 +
- tools/testing/selftests/net/config            |   1 +
- tools/testing/selftests/net/gtp.py            | 123 +++++++++++
- .../testing/selftests/net/lib/py/__init__.py  |   5 +-
- tools/testing/selftests/net/lib/py/ynl.py     |   9 +-
- 9 files changed, 340 insertions(+), 5 deletions(-)
- create mode 100644 Documentation/netlink/specs/gtp.yaml
- create mode 100755 tools/testing/selftests/net/gtp.py
-
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 4aff23bcfdd1..99836b773e5c 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -2279,7 +2279,7 @@ static int gtp_genl_get_pdp(struct sk_buff *skb, struct genl_info *info)
+ 	}
+ 
+ 	err = gtp_genl_fill_info(skb2, NETLINK_CB(skb).portid, info->snd_seq,
+-				 0, info->nlhdr->nlmsg_type, pctx);
++				 0, GTP_CMD_GETPDP, pctx);
+ 	if (err < 0)
+ 		goto err_unlock_free;
+ 
+@@ -2326,7 +2326,7 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
+ 					    NETLINK_CB(cb->skb).portid,
+ 					    cb->nlh->nlmsg_seq,
+ 					    NLM_F_MULTI,
+-					    cb->nlh->nlmsg_type, pctx)) {
++					    GTP_CMD_GETPDP, pctx)) {
+ 					cb->args[0] = i;
+ 					cb->args[1] = j;
+ 					cb->args[2] = (unsigned long)gtp;
 -- 
 2.25.1
 
