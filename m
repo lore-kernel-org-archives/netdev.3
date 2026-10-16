@@ -1,114 +1,182 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911F03264C4;
-	Fri, 16 Oct 2026 12:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219EB4A43FE
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792154993; cv=none; b=ofLoKJ7+XBw2MpOsqznl64bDwATQnKO1XY5jBK9w2U5q1GaDIC6XJUhdubySOydvcs3gbokU7Krpgl2AbFrbpu4rjDqeGvpFztCILXFhFjgOB4Zwqk1Qmgph3j0exllAWGYQ2+oCsF3SEQKakO/KQS3/4hFiGRnNG861GRT1c6s=
+	t=1792154996; cv=none; b=cnejroSo5SFOxSNdFaksyZLpYfIgzzdytChbOPmAzkrYoOC0qVSmWBYOi58RCfxRokbrbvzAynGysWWLqQhnCyaKZDG6g30w9zKxCht4TW3oIyjh5QaPhCCwy0KNMznrWlfPGJ4sRv5TSJIkfHbpapmwCBafjxQXhrPuvv5qmL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792154993; c=relaxed/simple;
-	bh=rod6xy9+gndHUdnbr4wgG656s1uGxUW7SPIP+EVNlHM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c7vxrfEfzOfcp9yAaPqsNJhazJO+xWOxNl4qsr2gd7gc3Zton2d+KL5ES612WXrjaYT/tmNz2ZRh5o2d19k2+9/3XFzIU1Q4iFY6SmPn0huhRDrNGzJMkRchQSje+uW8iNBb2qCpUk9gdIO6MDwJOHCfQ4D7vVt/GxdxY+mC3xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com; spf=pass smtp.mailfrom=ugreen.com; dkim=pass (1024-bit key) header.d=ugreen.com header.i=@ugreen.com header.b=l4gXVKAM; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ugreen.com
+	s=arc-20240116; t=1792154996; c=relaxed/simple;
+	bh=ltBDINOqkCYKfRNOKYp32QAr/6wBJHOQJSo9PQDklg4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K8kCNhD1kUCmfueHaTwXn8PePVrjTuUv2Qcp+Vpf26Pir6ciV14IUxyX6P6YApczbnl5n5tGiTETCRU6vmU179AIE00keEtohHibfFwWNmr1lp42a6Oy9vjV9vnda3dlyCvQyCjnAwCXPHaGISVK1y7brIIdF+Cr1Z/fHbJMhuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=nnfNJX/s; arc=none smtp.client-ip=212.77.101.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ugreen.com header.i=@ugreen.com header.b="l4gXVKAM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
-	s=pkvm2402; t=1792154950;
-	bh=PTGNf+pFA4HlvSUNJLATMTS2BdbiXazN6lRObVyVPC0=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=l4gXVKAMC3yETwkqcs1lFqJ8Qc0sAwQA76Y0SGeybbnWHA1it7xcHbXgla3dwVn6t
-	 3+xSLhgLMVHG9bTTzOezXXlCuMlQ/1r4fOISDmMggcza/XbpEsGv8Kqf08yjqS381g
-	 DsZ9PHj73mXQj8nbx2iZtcJUG1p3zgPHrmK/jkfI=
-X-QQ-mid: zesmtpgz8t1792154945t80257fa0
-X-QQ-Originating-IP: fxmolzZxMAKzmLOLloioZrYju46a8tj5RAF29sd94ss=
-Received: from exmail.qq.com ( [14.153.252.100])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 16 Oct 2026 20:49:00 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5218228176751609531
-EX-QQ-RecipientCnt: 6
-From: Hanson Wang <hanson.wang@ugreen.com>
-To: netdev@vger.kernel.org
-Cc: linux-usb@vger.kernel.org,
-	oneukum@suse.com,
-	kuba@kernel.org,
-	andrew@lunn.ch,
-	hanson.wang@ugreen.com
-Subject: [PATCH net v2] net: usb: aqc111: fix set_mac_address return value
-Date: Fri, 16 Oct 2026 20:48:58 +0800
-Message-Id: <20261016124858.1939743-1-hanson.wang@ugreen.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260703073936.462231-1-hanson.wang@ugreen.com>
-References: <20260703073936.462231-1-hanson.wang@ugreen.com>
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="nnfNJX/s"
+Received: (wp-smtpd smtp.wp.pl 25324 invoked from network); 16 Oct 2026 14:23:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=s20261001;
+          t=1792153386; bh=4bTkFT+F2hA2/znsJfPcE/M31DKOZlPTYzijVZ/YGCU=;
+          h=From:To:Cc:Subject;
+          b=nnfNJX/s03ZUdYA8IXtb8ij8HDNRK+1vVn/Aeeb0GaPi6APxoYbc/alR9XIraG1MK
+           H+P5CzatMv5QyV3nPuRUYVT6NI8ZFYeGAJFlrFSpJyXmdaPq/hlSlY0liuGki//wNq
+           dgXLYyx7YzScXL9pkVlG80YBb2VzlZttt4gKCWyDUYzFFvD9Ze2YyPJTW7uLqSL3J8
+           Zo/9I2SAr+xsVNSzatt9UIqVyKhMoBMQXmlrY1mC9nikUWzYSZ9MGVEFIKvAcEn1E5
+           JANp5+QnT7NPaVmZUr3QvnNGUgfnrb+IPWI4DfpYgeVd/RNxam819G+OlAD8n33CKM
+           eKXRRarwjX3Kg==
+Received: from localhost (77-236-6-58.static.play.pl [77.236.6.58])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <edumazet@kernel.org>; 16 Oct 2026 14:23:06 +0200
+Date: Fri, 16 Oct 2026 14:23:06 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH -next] wifi: rt2x00: use skb_put_padto() for beacon
+ padding
+Message-ID: <20261016122306.GA71823@wp.pl>
+References: <20261016101602.2770015-1-edumazet@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NLIGCJzX3Qmez+MNMKksA/1yHF4RoeseEmx7qU8echuQlHQNG9HELPSI
-	/CRwPoWzNFTkW+WcAboyncIJ9/N36iMcUxBlpn6yinfVDhskB9rWMPIIy9iEQQzSc8tMgh1
-	mLnhFSfpCmQoJuDRk2rCNzOjyH/NODcnYKRVnCI1vdu5uSopbQYgy/vIlroEe1p9PwavUjD
-	4EqzAFb9KIVCYQSyrNRBAfMsBNwyu+nTh7cdYRNbLX8hyT+l8TjTDEsXpmEUtNvA/LyYDWF
-	kHvJSs7vgKgH4ID5WtzmL918Lm/7feltwwHwsTMQGcae/rq4CynArcnOl59YrYxBhifg/kn
-	C+L9uAhlt951Tl0dUKk7MQU/2fWZAquRE1B0qwYE17z2OORN3HjuH7AqDvjxpPpEVABgJSn
-	cs3nfbunp7ZrhMgu3kVHuVo/mWhsbZ5fcCJD7/0QHBj263PsTslQAfFu++9MdMe2TB1hH/7
-	Lv0Jq2WVJ19Cns6JrhWeXYgLMmlSE7U2YOHb47tog750uJigas4/6sqlq/NA/Bp5pwmCxTq
-	T8CIEUi0VlNNrKZjxVRO0aoQqVMzBQ1gzWvy4onIh9C47fhY/TSPZID4N1FucIVX9ukkawJ
-	LWKLyvCgym4Fxxj+PGG1JwXKSuyu8zxAxU2z+st+vcv2Dx2NyLd735Q0kUGVUS+u5kdgyMy
-	q3jjphsM2jE64esCjieeM8uCw0jVJn1q5+i3sLH8Ba8tIxTfW4+mV6Lwz5q+8HZF2a8b4F7
-	5c6ue+F3EN7R+/UfcAorX5D0b7vUC1LHfFp1XZYQtEUL0Pcp2po/8IJgdXf+gWdbbi98OfS
-	x6VvRYWm4F4JeDQ3FvcA4hsnBvGzIDtqVNdARSSjWOf/XOMCf//3ZjfHyEr8mG3kS3/hCXy
-	Y8zBwcHPWQiT6GfS2EnFy4FbGm5ewnjOdEjaK26RrbCNC/KEiPbQF89pcXCzCQwqLdFG9bl
-	XbXTwoqgbjkPSqIaKCA+p22CMlQsmPNZYwDYrDJjOUoHc/kBZbLUrqLMuvK+sXf3iMqooaA
-	Hy2to5bA952ttl1Kn9VUx/j/eUKnBhVonxCi8yfdzZsBcTy58sByxu311xAcXi6+bUUU+Pa
-	N8bryIKg+CRXFqydthrA7x7yDpyVQv3Wm+RGC7cm5hvpeHyySZMYF4=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261016101602.2770015-1-edumazet@kernel.org>
+X-WP-MailID: 1145b0cbfd87b40f0092c40874a853ec
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [8YPB]                               
 
-aqc111_set_mac_addr() returns the result of aqc111_write_cmd() on
-success. That function wraps usb_control_msg(), which returns the
-number of bytes transferred (6 for ETH_ALEN) rather than zero.
+On Fri, Oct 16, 2026 at 12:16:02PM +0200, Eric Dumazet wrote:
+> rt2800_write_beacon(), rt61pci_write_beacon() and rt73usb_write_beacon()
+> pad the beacon with skb_pad(), which does not change skb->len, and
+> then have to add the padding length again when writing the beacon
+> to the hardware.
+> 
+> Use skb_put_padto() instead, and remove the padding_len variables.
+> 
+> No functional change: the beacon skb is freed right after
+> being written to the hardware.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-Callers such as netif_set_mac_address() and bonding treat any
-non-zero return value as failure when setting the MAC address.
-
-Return 0 on success and propagate negative error codes on failure.
-
-Link: https://lore.kernel.org/netdev/20260703073936.462231-1-hanson.wang@ugreen.com
-
-Signed-off-by: Hanson Wang <hanson.wang@ugreen.com>
----
- drivers/net/usb/aqc111.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 9201ee10a..827aab540 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -476,8 +476,12 @@ static int aqc111_set_mac_addr(struct net_device *net, void *p)
- 		return ret;
- 
- 	/* Set the MAC address */
--	return aqc111_write_cmd(dev, AQ_ACCESS_MAC, SFR_NODE_ID, ETH_ALEN,
--				ETH_ALEN, net->dev_addr);
-+	ret = aqc111_write_cmd(dev, AQ_ACCESS_MAC, SFR_NODE_ID,
-+			       ETH_ALEN, ETH_ALEN, net->dev_addr);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
- }
- 
- static int aqc111_vlan_rx_kill_vid(struct net_device *net,
--- 
-2.34.1
-
+> ---
+> Part of a medium term plan to get rid of skb_pad(), source of many mistakes.
+> 
+>  drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 8 +++-----
+>  drivers/net/wireless/ralink/rt2x00/rt61pci.c   | 9 +++------
+>  drivers/net/wireless/ralink/rt2x00/rt73usb.c   | 8 +++-----
+>  3 files changed, 9 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> index 2e2e382b624757ffcd826f37faebc36f38d04f11..4f7beca668bb032ef469e19e8919afd6316fe3eb 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> @@ -1414,7 +1414,6 @@ void rt2800_write_beacon(struct queue_entry *entry, struct txentry_desc *txdesc)
+>  	struct rt2x00_dev *rt2x00dev = entry->queue->rt2x00dev;
+>  	struct skb_frame_desc *skbdesc = get_skb_frame_desc(entry->skb);
+>  	unsigned int beacon_base;
+> -	unsigned int padding_len;
+>  	u32 orig_reg, reg;
+>  	const int txwi_desc_size = entry->queue->winfo_size;
+>  
+> @@ -1452,10 +1451,9 @@ void rt2800_write_beacon(struct queue_entry *entry, struct txentry_desc *txdesc)
+>  	/*
+>  	 * Write entire beacon with TXWI and padding to register.
+>  	 */
+> -	padding_len = roundup(entry->skb->len, 4) - entry->skb->len;
+> -	if (padding_len && skb_pad(entry->skb, padding_len)) {
+> +	if (skb_put_padto(entry->skb, roundup(entry->skb->len, 4))) {
+>  		rt2x00_err(rt2x00dev, "Failure padding beacon, aborting\n");
+> -		/* skb freed by skb_pad() on failure */
+> +		/* skb freed by skb_put_padto() on failure */
+>  		entry->skb = NULL;
+>  		rt2800_register_write(rt2x00dev, BCN_TIME_CFG, orig_reg);
+>  		return;
+> @@ -1464,7 +1462,7 @@ void rt2800_write_beacon(struct queue_entry *entry, struct txentry_desc *txdesc)
+>  	beacon_base = rt2800_hw_beacon_base(rt2x00dev, entry->entry_idx);
+>  
+>  	rt2800_register_multiwrite(rt2x00dev, beacon_base, entry->skb->data,
+> -				   entry->skb->len + padding_len);
+> +				   entry->skb->len);
+>  	__set_bit(ENTRY_BCN_ENABLED, &entry->flags);
+>  
+>  	/*
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt61pci.c b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
+> index d4783658b2c5dbb69ab6c715a23ac8814ef3afb0..974a6d85b37b600f9cac22055c7a0fe0e17e2d5f 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt61pci.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt61pci.c
+> @@ -1875,7 +1875,6 @@ static void rt61pci_write_beacon(struct queue_entry *entry,
+>  	struct rt2x00_dev *rt2x00dev = entry->queue->rt2x00dev;
+>  	struct queue_entry_priv_mmio *entry_priv = entry->priv_data;
+>  	unsigned int beacon_base;
+> -	unsigned int padding_len;
+>  	u32 orig_reg, reg;
+>  
+>  	/*
+> @@ -1900,10 +1899,9 @@ static void rt61pci_write_beacon(struct queue_entry *entry,
+>  	/*
+>  	 * Write entire beacon with descriptor and padding to register.
+>  	 */
+> -	padding_len = roundup(entry->skb->len, 4) - entry->skb->len;
+> -	if (padding_len && skb_pad(entry->skb, padding_len)) {
+> +	if (skb_put_padto(entry->skb, roundup(entry->skb->len, 4))) {
+>  		rt2x00_err(rt2x00dev, "Failure padding beacon, aborting\n");
+> -		/* skb freed by skb_pad() on failure */
+> +		/* skb freed by skb_put_padto() on failure */
+>  		entry->skb = NULL;
+>  		rt2x00mmio_register_write(rt2x00dev, TXRX_CSR9, orig_reg);
+>  		return;
+> @@ -1913,8 +1911,7 @@ static void rt61pci_write_beacon(struct queue_entry *entry,
+>  	rt2x00mmio_register_multiwrite(rt2x00dev, beacon_base,
+>  				       entry_priv->desc, TXINFO_SIZE);
+>  	rt2x00mmio_register_multiwrite(rt2x00dev, beacon_base + TXINFO_SIZE,
+> -				       entry->skb->data,
+> -				       entry->skb->len + padding_len);
+> +				       entry->skb->data, entry->skb->len);
+>  
+>  	/*
+>  	 * Enable beaconing again.
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt73usb.c b/drivers/net/wireless/ralink/rt2x00/rt73usb.c
+> index d6b7174d087a26c7a403b8b743d59f9fb5f9fb62..ee308bcf0bed00edea24278deb1770f035012998 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt73usb.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt73usb.c
+> @@ -1523,7 +1523,6 @@ static void rt73usb_write_beacon(struct queue_entry *entry,
+>  {
+>  	struct rt2x00_dev *rt2x00dev = entry->queue->rt2x00dev;
+>  	unsigned int beacon_base;
+> -	unsigned int padding_len;
+>  	u32 orig_reg, reg;
+>  
+>  	/*
+> @@ -1554,10 +1553,9 @@ static void rt73usb_write_beacon(struct queue_entry *entry,
+>  	/*
+>  	 * Write entire beacon with descriptor and padding to register.
+>  	 */
+> -	padding_len = roundup(entry->skb->len, 4) - entry->skb->len;
+> -	if (padding_len && skb_pad(entry->skb, padding_len)) {
+> +	if (skb_put_padto(entry->skb, roundup(entry->skb->len, 4))) {
+>  		rt2x00_err(rt2x00dev, "Failure padding beacon, aborting\n");
+> -		/* skb freed by skb_pad() on failure */
+> +		/* skb freed by skb_put_padto() on failure */
+>  		entry->skb = NULL;
+>  		rt2x00usb_register_write(rt2x00dev, TXRX_CSR9, orig_reg);
+>  		return;
+> @@ -1565,7 +1563,7 @@ static void rt73usb_write_beacon(struct queue_entry *entry,
+>  
+>  	beacon_base = HW_BEACON_OFFSET(entry->entry_idx);
+>  	rt2x00usb_register_multiwrite(rt2x00dev, beacon_base, entry->skb->data,
+> -				      entry->skb->len + padding_len);
+> +				      entry->skb->len);
+>  
+>  	/*
+>  	 * Enable beaconing again.
+> -- 
+> 2.53.0
+> 
