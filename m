@@ -1,177 +1,326 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BC1199FB0;
-	Fri, 16 Oct 2026 13:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792158120; cv=pass; b=KqcdD+uudHeGoZQL977Np8hkdzSg+xQukm0cgtgwtysv9BmWZN4XLboMeBs/xcrDgLi86q1i3BXk17E9BDcZ1k9tHmalY3/O2ubgDJAMRDZtNA1Ia/un7/23+EbwaiWnCwM7K24xBKNFvNznG/BDZG2whpBXJhobwXudubkdVb8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792158120; c=relaxed/simple;
-	bh=wQf8cBdLbkN+n13ETYe3Omp2nqOm8F5PkFiPvoKJxts=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DFC4CB8A8
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792158468; cv=none; b=cNSxL8M1JDMeVPcKEe/m9IUJBb/7OAiOg6GkUNqN3gPvOBQU4ubxClADdFCgD/oPTWuQjistp3X1buIzY9X5QmRqVtLhZdp3qvBCPtYKyAyjVY95aDU/mscpcG900o2sziPxpfDUSK5hjG19NVKjaiSJU5pFPT4ZAZHDery2lZI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792158468; c=relaxed/simple;
+	bh=CU3/MfdDC5CCAi2IBjM7GBTNHGS8rDLFUgIS668OelY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ExyV7cjUzogU4NQA8PVd/7LEw7mbpSKJ1Da/JpQ5j2n4NiMi67+Iy561lO45GoAqVCltVJAXh2Qtc4XoXeEaepGsNy5c6S3S+6vBJ60/wVpeMrfNcY5r3tAES5Dpy/ynFvun8H5V14leUis5tj1sYL0LKzTAellKJxp51hh1qyU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=gLp1JjcF; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=MT4MtS/QpNWIXksano/IhPnaBlWcNN+leHbvjYpvzU03Cdpvi3257eu70/4rTL9u7Ea4qkS5TjLCjNbRhehxI/WvRlp4q6UmWUcOUhX/5TH+gSsWQJnhBo44/wrt3aF/GcD43V+KgeWY4wRn30BKG6M861HGFL5evCppRn3U0Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WIlwO/XY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rsIkOg/d; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="gLp1JjcF"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3F3B620280F;
-	Fri, 16 Oct 2026 15:41:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792158117;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WIlwO/XY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rsIkOg/d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792158465;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3Vz0tiREf/olk0Bwh1RKgjnBEKu3DMA+zLtTJF4ZdFU=;
-	b=gLp1JjcFOVnrKD2l6gSi5BlXpK1rFQfKERB4a5vAyWmiA4/EhiC3u/0P4B/bMtRMG6egfF
-	6FkwLPlQLlpU1vsLgbu8z3GliT/IRGw87voRWCnHkVs+PqJanWbZpyXRy2JOhGSM/dvYS4
-	nDci0hIyESh7kJoiHrUPPPW9yVMcSNQbvX7ZFSOBf4IUxNQEwsSVisYS+wjCMMwNHYhJuJ
-	Cq5aVFjcg1U/vgfSU0kGg9FB6yoAeJ4jhFtegfEtpYeB9epfsDyDnn+glvbQqAk59cwjZy
-	Mj1bVP1QvXsJUsy7zLyjhFDR6CH8vrS5/G6jKTbWIvOaSPAdb8AuRWw8eWRrZQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792158117; a=rsa-sha256;
-	cv=none;
-	b=M3PMs0EQd9s6ArX+KsHhEUdY7MRgXBNlXI3F194nIEC5iSsC5fIJKd2uCwIzNLBcEX8Ag+
-	GufKjbRW079YLVq40+iZ9NH8wgtIMOGPyTsG+BCVWSALAPXMomNWlcKFbPpxesyxBAqaiv
-	Sb4F5knyuAvSojyft2AA9F6CFhXSzE5gxwY0XRREHVLt9ffvStQtVDpnrsTWQEJ2ApaDkz
-	aZrngjtZ6MfMmmHhD6b++aCnV58zMcRjz0g2RCmEK0umg7lu0Mch4TmWx5I5cpmRK7zIJt
-	ts6Hb3dj74UrMFw6HCptXyhWk2uZROAxfxlXBkg+QXOjW0CeLM+p23b9tOZP/g==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792158117;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Vz0tiREf/olk0Bwh1RKgjnBEKu3DMA+zLtTJF4ZdFU=;
-	b=gjoVss/Lfo31jmzBBRs0T7zlSmKfe4O4VDEBW6kH8PgdZ0FmWIUj3i+vR8/C5HwvoZavMl
-	QiZZajy0v6+hj7DfD9cPMwIye2U/7o8Qtxk4TBgGLqwNnYOZpxWbsqZ6T7Vk9pHVQgCTIq
-	GDaps0FMGSWixIsOIroMmbtR2Sv5o9g03M8Z2uUXrmiA66zUXp5nm8dxW295mcYMIrmJ2B
-	JkBKfKF2OlpweX98nd44BimQ+3QpUO/uzQjuQ6otWIWJBPGSOW4+ISrszz0X8Hgk3r0S8s
-	igmCI456MXiyWEu3DcHLdl4HRq876uCtiHRsj9AfFqrfDisOxfC8W1yX/n83UA==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xHiC5-006C3W-0W;
-	Fri, 16 Oct 2026 15:41:57 +0200
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E46485C6273;
-	Fri, 16 Oct 2026 13:41:56 +0000 (UTC)
-Date: Fri, 16 Oct 2026 15:41:56 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net, 
-	kurt.van.dijck@eia.be
-Subject: Re: [PATCH net-next 15/37] can: rcar_canfd: Allow the CAN FD clock
- to be sourced from fck
-Message-ID: <20261016-frisky-warping-swallow-f816c1-mkl@pengutronix.de>
-References: <20261015015336.816543-16-mkl@pengutronix.de>
- <179211822725.434549.10997986390340946212@kernel.org>
+	bh=5SSnXLe6871QixsCS+2sjMCeMY5DVo6y3bWbHQzmraY=;
+	b=WIlwO/XYWKbCHnJcCeBN97D9YC8e6K6ZnnlkBW8gRTJFtnBHqwG+9jjuOXs0bT5DBCYfIy
+	SmLW9RfLTBU3X8f10vuSNBZOtZarHU8TiUZc+ImGapq9XgCfA58TQ9L0D3zW1YZznp+olR
+	SILcKYpu0WqPNLbuHsGUIQ0mxhgvtjo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-411-zpA8YEtRNF2dH5BZSNcQTQ-1; Fri, 16 Oct 2026 13:47:40 +0000
+X-MC-Unique: zpA8YEtRNF2dH5BZSNcQTQ-1
+X-Mimecast-MFC-AGG-ID: zpA8YEtRNF2dH5BZSNcQTQ_1792158459
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-487038bc9b8so5164408f8f.2
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792158459; x=1792763259; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5SSnXLe6871QixsCS+2sjMCeMY5DVo6y3bWbHQzmraY=;
+        b=rsIkOg/d94mc+KJIfXAR8AG7rwcVjb4D8q5hXIG+tty2kIu4x7v481BPbKmMSRH2/n
+         1fhbWoPHaMNfcVqT+AQ6inKgOlah3LtnjOoCHb+l52j2eOmqza1Eu7tc3SXwzWOdd5jw
+         rXcjw4p24kvbmGninrHCwxBzrXvZ8nNL5BomDRWHzkbVDci5u/SenxYeasLOzU09uU/h
+         aZoO+TQYEEBSFHmJ7q/9i2UWVPF9N9rOCHBIuFK65kI+gb6tS4/KpkXahgYa7s7DLI7Y
+         pDduKP3FZeMwGNrURpLVgraFEJAiY7NhjWcszXMwqC/MUQIiuKhHxlXx+sg5O6wp6yWa
+         Im/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792158459; x=1792763259;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5SSnXLe6871QixsCS+2sjMCeMY5DVo6y3bWbHQzmraY=;
+        b=gtLRD8Vd9NGAaFX/D/yesejYMFF74Ue31dvXCxAMzT1wwlNn0scWHgf9L4YHktLD+i
+         kOx7FWQE4DZxnjRuXLeOdd0x62l6wNUY/tL3wr3ENaAi2HHFjnUzJWYDP74mSSMOoDEv
+         Ucf9JItZp3yqPs8vjrsiT4RaSIunP9KWpvtThJUFg1jw0gwU6N//5KuFVvDUmNoUd+9x
+         BfarUBM32HfzkNjhEuAn+xkSfrotsDS1LLlbvBPJThHH6hmD9Dd8oIB/bt0koB37sLk8
+         GvOdlXj0ZCdX11FhEarx9In1dD4K3sxuLNzotKMj5p8FFFNGWImOkRG309C0TAXc1ujE
+         NBOA==
+X-Forwarded-Encrypted: i=1; AKwUvByJv2xr/bPA+ubXmAOrUuL7em4VGd1CM3Yy+T8pFh6ka3eod68qYTVzrYk1/lko2J72lWLW5MQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKO598ZVKXVJGhSc0KpmDp1E+GB+00vCW06O7tfFlYv1YZYrIFM
+	AebjhE1QaQteN36biwdVefYkrQY5X3LJkmids5vVXAi3L+ITpIjKL6nhHzgf5XoW6HnicNTu2Of
+	2rh9eiGYRIoRtuFoalIFHNU8lLPB3sFxJXogK1Z3VmntY0+dwrUu9GbYGjNxwHGUX6w==
+X-Gm-Gg: AYBFou1XosIbTNkseiiuW8NSNQ4Sz3sIUWbr0l2ZJowYyHcZ8UuhRsdlxxDTd6HsX/M
+	josCkDY3TOErDArOGv+dfo9ATlJf2Ke9nTUiucVoI1PyfEdJA4ptX3bU4oJbveVfsi/zfUQPCfa
+	5jGzu2/heIGUo4n2fB82XgOwWJwMF3WgGAqyNm9U76DYVO+WT0CbUa1YVqv+Bx08IsKvti/dZo4
+	lstzdNchAFztAPPoka0j5YHwtP+u8aS6SUffUbbTEl5dLJAzEC2RjGUBNmA4L2w18TUcKnC5yJO
+	leCb/qu1BJlaTw8Z+d0UH0fMqodXwGNRkVsKjItW/JQmAkyxSP8EyIFlSUDtEhDMzBYFH2lTh5M
+	KjB3Z
+X-Received: by 2002:a05:6000:200c:b0:48c:55c1:fb50 with SMTP id ffacd0b85a97d-48dbace6841mr41485214f8f.40.1792158458831;
+        Fri, 16 Oct 2026 06:47:38 -0700 (PDT)
+X-Received: by 2002:a05:6000:200c:b0:48c:55c1:fb50 with SMTP id ffacd0b85a97d-48dbace6841mr41485142f8f.40.1792158458102;
+        Fri, 16 Oct 2026 06:47:38 -0700 (PDT)
+Received: from sgarzare-redhat ([80.116.137.133])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4d4dddsm5276537f8f.22.2026.10.16.06.47.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 06:47:35 -0700 (PDT)
+Date: Fri, 16 Oct 2026 15:47:33 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bobbyeshleman@gmail.com
+Subject: Re: [PATCH net-next v4 1/4] vsock/virtio: split socket lookup from
+ locked RX processing
+Message-ID: <atImp74JbTbEb0d_@sgarzare-redhat>
+References: <20261014115640.184286-1-physicalmtea@gmail.com>
+ <20261014115640.184286-2-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="y66ab3bfamycz25c"
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <179211822725.434549.10997986390340946212@kernel.org>
+In-Reply-To: <20261014115640.184286-2-physicalmtea@gmail.com>
 
-
---y66ab3bfamycz25c
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next 15/37] can: rcar_canfd: Allow the CAN FD clock
- to be sourced from fck
-MIME-Version: 1.0
-
-On 16.10.2026 02:37:07, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
+On Wed, Oct 14, 2026 at 07:56:37PM +0800, Jia Jia wrote:
+>Split virtio_transport_recv_pkt() so socket lookup is separate from
+>receive state machine processing under the socket lock. This prepares the
+>receive path to keep a looked-up socket across multiple packets in a later
+>change.
 >
-> Low priority / nit picks for your consideration:
+>Keep virtio_transport_recv_pkt() on its existing per-packet locking path.
+>The locked helper obtains packet-specific addresses from the skb and uses
+>the matched socket namespace for reset replies. Preserve source validation
+>and failure handling.
 >
-> - [Low] The patch adds a third fCAN source (fck/pclk, used when
->   `info->fcan_pclk` is set), but the clock comments and the boot banner=
-=E2=80=A6
+>No functional change intended.
 >
-> --
+>Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+>---
+> net/vmw_vsock/virtio_transport_common.c | 128 ++++++++++++++----------
+> 1 file changed, 75 insertions(+), 53 deletions(-)
 >
-> can: rcar_canfd: Allow the CAN FD clock to be sourced from fck
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index f225f53ed4bab..61ee3bc205d5d 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1774,81 +1774,60 @@ static bool virtio_transport_valid_type(u16 type)
+> 	       (type == VIRTIO_VSOCK_TYPE_SEQPACKET);
+> }
 >
-> This commit adds an fcan_pclk hardware info flag. With it set, the fCAN
-> clock falls back to the peripheral clock (fck) when the external can_clk
-> is unavailable, the rate is divided by info->postdiv and can_clk is set
-> to NULL. All existing rcar_canfd_hw_info instances now set fcan_pclk =3D 0
-> explicitly.
+>-/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+>- * lock.
+>- */
+>-void virtio_transport_recv_pkt(struct virtio_transport *t,
+>-			       struct sk_buff *skb, struct net *net)
+>+static struct sock *
+>+virtio_transport_find_socket(struct sk_buff *skb, struct sockaddr_vm *src,
+>+			     struct sockaddr_vm *dst, struct net *net)
+> {
+> 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+>-	struct sockaddr_vm src, dst;
+>-	struct vsock_sock *vsk;
+> 	struct sock *sk;
+>-	bool space_available;
+>-
+>-	vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+>-			le32_to_cpu(hdr->src_port));
+>-	vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
+>-			le32_to_cpu(hdr->dst_port));
+>-
+>-	trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
+>-					dst.svm_cid, dst.svm_port,
+>-					le32_to_cpu(hdr->len),
+>-					le16_to_cpu(hdr->type),
+>-					le16_to_cpu(hdr->op),
+>-					le32_to_cpu(hdr->flags),
+>-					le32_to_cpu(hdr->buf_alloc),
+>-					le32_to_cpu(hdr->fwd_cnt));
 >
-> Link: https://lore.kernel.org/all/1d9719e3-10ff-4cd8-b729-55fea93c37ce@wa=
-nadoo.fr
-> Link: https://patch.msgid.link/20260902141544.565763-4-claudiu.beznea+ren=
-esas@tuxon.dev
+>-	if (!virtio_transport_valid_type(le16_to_cpu(hdr->type))) {
+>-		(void)virtio_transport_reset_no_sock(t, skb, net);
+>-		goto free_pkt;
+>-	}
+>+	if (!virtio_transport_valid_type(le16_to_cpu(hdr->type)))
+>+		return NULL;
 >
-> > diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/r=
-car_canfd.c
-> > index b7c4fe3477ac..f9173774387f 100644
-> > --- a/drivers/net/can/rcar/rcar_canfd.c
-> > +++ b/drivers/net/can/rcar/rcar_canfd.c
+>-	/* The socket must be in connected or bound table
+>-	 * otherwise send reset back
+>-	 */
+>-	sk = vsock_find_connected_socket_net(&src, &dst, net);
+>-	if (!sk) {
+>-		sk = vsock_find_bound_socket_net(&dst, net);
+>-		if (!sk) {
+>-			(void)virtio_transport_reset_no_sock(t, skb, net);
+>-			goto free_pkt;
+>-		}
+>-	}
+>+	sk = vsock_find_connected_socket_net(src, dst, net);
+>+	if (!sk)
+>+		sk = vsock_find_bound_socket_net(dst, net);
+>+	if (!sk)
+>+		return NULL;
 >
-> [ ... ]
+> 	if (virtio_transport_get_type(sk) != le16_to_cpu(hdr->type)) {
+>-		(void)virtio_transport_reset_no_sock(t, skb, net);
+> 		sock_put(sk);
+>-		goto free_pkt;
+>+		return NULL;
+> 	}
 >
-> > @@ -2190,13 +2196,20 @@ static int rcar_canfd_probe(struct platform_dev=
-ice *pdev)
-> >  	 */
-> >  	gpriv->can_clk =3D devm_clk_get(dev, "can_clk");
-> >  	if (IS_ERR(gpriv->can_clk) || (clk_get_rate(gpriv->can_clk) =3D=3D 0)=
-) {
-> > -		gpriv->can_clk =3D devm_clk_get(dev, "canfd");
-> > -		if (IS_ERR(gpriv->can_clk))
-> > -			return dev_err_probe(dev, PTR_ERR(gpriv->can_clk),
-> > -					     "cannot get canfd clock\n");
-> > +		if (info->fcan_pclk) {
-> > +			fcan_freq =3D clk_get_rate(gpriv->clkp);
-> > +			gpriv->can_clk =3D NULL;
-> > +		} else {
+>-	if (!skb_set_owner_sk_safe(skb, sk)) {
+>-		WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+>-		goto free_pkt;
+>-	}
+>+	return sk;
+>+}
 >
-> [Severity: Low]
-> Should the clock comments and the probe banner be updated for this new
-> fck source? Several places still describe only the external and canfd
-> clocks.
+>-	vsk = vsock_sk(sk);
+>+/*
+>+ * The caller holds sk's socket lock and must free skb if this returns true.
 
-valid issue.
+Why the skb must be freed by the caller and not by this function itself?
 
-pw-bot: cr
+>+ */
+>+static bool
+>+virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+>+				 struct sk_buff *skb, struct sock *sk)
+>+{
+>+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+>+	struct sockaddr_vm src;
+>+	struct vsock_sock *vsk = vsock_sk(sk);
+>+	bool space_available;
 
-Marc
+Please, follow the netdev convection for ordering local variables: 
+https://www.kernel.org/doc/html/v7.2/process/maintainer-netdev.html#local-variable-ordering-reverse-xmas-tree-rcs
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+>
+>-	lock_sock(sk);
+>+	vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+>+			le32_to_cpu(hdr->src_port));
+>
+>-	/* Check if sk has been closed or assigned to another transport before
+>-	 * lock_sock (note: listener sockets are not assigned to any transport)
+>+	/* Listener sockets accept packets from any source and are not assigned to
+>+	 * a transport.
+> 	 */
 
---y66ab3bfamycz25c
-Content-Type: application/pgp-signature; name="signature.asc"
+Why changing this comment in this commit?
 
------BEGIN PGP SIGNATURE-----
+Oh because we moved out lock_sock, right?
 
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatIpogAKCRDMOmT6rpmt
-0n7NAQDigPYzJZkKbyLKO5SXiJhg1rLBK3NSCUWYvWbKYDpS4QD/QyjgV7cF1Ia8
-NuScr3wX1A0Uhrn/GJ1yIyXwjJuy4Aw=
-=vyHM
------END PGP SIGNATURE-----
+I think we should keep in some way the old info that was much more 
+informative that the current comment that just say what the check is 
+doing and not why.
 
---y66ab3bfamycz25c--
+> 	if (sock_flag(sk, SOCK_DONE) ||
+> 	    (sk->sk_state != TCP_LISTEN &&
+> 	     !vsock_check_source(vsk, &t->transport, &src))) {
+>-		(void)virtio_transport_reset_no_sock(t, skb, net);
+>-		release_sock(sk);
+>-		sock_put(sk);
+>-		goto free_pkt;
+>+		(void)virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+
+We need to be careful here, IIRC Bobby used the net from the caller for 
+a reason.
+
+Are you sure it's fine this change? Why not passing net as parameter and 
+minimize changes?
+
+>+		return true;
+> 	}
+>
+> 	space_available = virtio_transport_space_update(sk, skb);
+>
+> 	/* Update CID in case it has changed after a transport reset event */
+> 	if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
+>-		vsk->local_addr.svm_cid = dst.svm_cid;
+>+		vsk->local_addr.svm_cid = le64_to_cpu(hdr->dst_cid);
+>
+> 	if (space_available)
+> 		sk->sk_write_space(sk);
+>@@ -1870,17 +1849,60 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> 		kfree_skb(skb);
+> 		break;
+> 	default:
+>-		(void)virtio_transport_reset_no_sock(t, skb, net);
+>+		(void)virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+> 		kfree_skb(skb);
+> 		break;
+> 	}
+>
+>+	return false;
+>+}
+>+
+>+/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+>+ * lock.
+>+ */
+>+void virtio_transport_recv_pkt(struct virtio_transport *t,
+>+			       struct sk_buff *skb, struct net *net)
+>+{
+>+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+>+	struct sockaddr_vm src, dst;
+>+	struct sock *sk;
+>+	bool free_pkt;
+>+
+>+	vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+>+			le32_to_cpu(hdr->src_port));
+>+	vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
+>+			le32_to_cpu(hdr->dst_port));
+>+
+>+	trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
+>+					dst.svm_cid, dst.svm_port,
+>+					le32_to_cpu(hdr->len),
+>+					le16_to_cpu(hdr->type),
+>+					le16_to_cpu(hdr->op),
+>+					le32_to_cpu(hdr->flags),
+>+					le32_to_cpu(hdr->buf_alloc),
+>+					le32_to_cpu(hdr->fwd_cnt));
+>+
+>+	sk = virtio_transport_find_socket(skb, &src, &dst, net);
+>+	if (!sk) {
+>+		(void)virtio_transport_reset_no_sock(t, skb, net);
+>+		goto free_pkt;
+>+	}
+>+
+>+	if (!skb_set_owner_sk_safe(skb, sk)) {
+>+		WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+>+		goto free_pkt;
+>+	}
+>+
+>+	lock_sock(sk);
+>+	free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk);
+> 	release_sock(sk);
+>
+> 	/* Release refcnt obtained when we fetched this socket out of the
+> 	 * bound or connected list.
+> 	 */
+> 	sock_put(sk);
+>+	if (free_pkt)
+>+		kfree_skb(skb);
+> 	return;
+>
+> free_pkt:
+>-- 
+>2.53.0
+>
+
