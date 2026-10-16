@@ -1,395 +1,184 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6373E4112
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE333B71A9
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792140845; cv=none; b=qFzUpvWJr9yX+WkPryqiVT9OLWCSHqMsJZbD9lmDRiRfMeKTdUteAJ5s8Xv0XnMfmfeEA4RfI+Ydd/3dB9cjMLfs+INFVJVarXCgLrFTujI+hOyLBPuvYBSP9QW5WcJwzjkMVPCc7cT26cnqQO4ljk8mZkxVijOtRQyCdLqszII=
+	t=1792141121; cv=none; b=szFuu5TJPcRjtWxiAXLD1AM48TGrP9+FwNAT/omXNSnncAcFb4YS6EAaAgGVz6aANsJrC2pqVfbbYfwHNF5QMKmgODwKJJ6R8i3hYggZyfAKX23MSoHzn5/GcUFdyToDu0yQ5kjQ2dF27+diNps61c8Svc+b25MdLyhDKBxMYlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792140845; c=relaxed/simple;
-	bh=EVgnD5pqk/2+Ds+lMnDAozwkD4fmr1vMXcslwpWpKgI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EJU6Vr/BNU3KwITgusCeg9BWolbfiR2oEVtHmM215CvLlUvV4OMAPkH8lfpxqBBHxi8bTH2j2wMqE0LP34JrLXcox9JB958Hay/+5o7IUj8xP3dqwYiWZnV8QqVD2JkgTAWhvPft9hX8wqcQGqfKsA3/fdG3U3TxBmNM18LeKAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLfa9YBp; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792141121; c=relaxed/simple;
+	bh=PNIpR7E+HEAfTqXSWWHMSaHir6ljo4+AAvuJ5sSi5dQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ebyhx6qS+uSp61ga2GXeTx0TI+oZx1GA2g8aL4PHC/LkXHQkxwh50NKCrYg04UAluMmrsJem/ACthYESlFCb3WLpbhF8XXUyi2kmBVxURNwcI9+V8WFhVxtgAMHF1kDcBOXabu2U3jpchjDLmhWB2krmV6m+GFf4IdB3Rv91gg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ApUgOqLV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=E7MktzJC; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLfa9YBp"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48bbb06e746so1420843f8f.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:54:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ApUgOqLV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="E7MktzJC"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69G8lePo1218649
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:58:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=6T6E/PTJKYn9a4JTmrufJx
+	VWoTdQbQUGAhkm/RbWkjo=; b=ApUgOqLVpGcReJ/uQR7ssiWCcNEpdYm78gsqz3
+	j9mFh2tVdjg6X0KbTeIiNPv2pvm+e4R8w6EFokWqvB9JAWw+LgvudZQgvyEEpzT8
+	MVCuvhs39JsD+H60DI+rOB1v6bEsf//JAlY+88UsoU5jJPZpVsbT7nov0TwJDify
+	4fuP+uRR4xumAClnMf6eOePXuNxSsGlcDK5zw8kMP2zkmExW5u5uMJ5IL7sYRHn/
+	tnD7R6zZdPonw1kjCZJe89uGD1CYZvGQPCWJNz3/mXH48ig6V57F2DYvkbiAdkw7
+	Y5qweRjL/zsxB+xNwIYoD+YvGBr8CuynBUQN00gts1vLfEAg==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hb5seaepa-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:58:39 +0000 (GMT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-35cbea41088so4420165eec.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:58:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792140842; x=1792745642; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/Cad5VRQZezTW2uJ2xgaD8dGgKtN1zqLOsmVB5ElnDU=;
-        b=GLfa9YBpSgD9Qse11TiPqRSc8zafmjd2QAEGP0okworVb8aPeaZqHq8ktdzPGnmVGx
-         6UfC7qK9+p+fUelPukbL7T1cbDypgcXHKRiT43VZqHM0UoMEBAm4jVNWZBli687Fo3Zd
-         wrZrfbJYjBTUZtejuJ2U2AWUbZp9osgC7Lz41bSRTQJWQSJLlsjOU1vE41/UhBKgxN2h
-         84Fv6dhMf9Xd4m75Kv2bzhDBvT5/XZ7ZmAmXgDhKv0L+gEWz0vJyDMLfl5z+Qmbtbene
-         JAoygnwSxZOA/n77aEDZzx+usKEpu1P8Dgg/j6X+Dk3Yg3bvRnxi/eiUMuUP26I0bUFk
-         BhRA==
+        d=oss.qualcomm.com; s=google; t=1792141119; x=1792745919; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=6T6E/PTJKYn9a4JTmrufJxVWoTdQbQUGAhkm/RbWkjo=;
+        b=E7MktzJCNdVRAZiuxXB91OV9AeY5hHZMriQ/1HrZtz5u2qrMf8KNZNDgk2GDeF02s7
+         TgMzlJWWJhkNkKflYqzMFUh9jIkG6pa8QPm7WaFojAgIC2dY8tJ2kF7PjK2g3JLXVtxz
+         yJmEtm0i+gaTWGlpn8cy0ZjTpsYsmiG3nfEKS00KR99P0ODRTdJ+JN33QNZTilddr/Gz
+         nisqaQwjICAscKKA3uJ/k7EHPMHRjK0EFPD1EZ5BquZxHovv5MRAwqnOylDe9Eeogfmm
+         ZoYzeeznIOztZiNpRwIwPUnLsaCltuc5M4DSz915Kz+D1l2TUBCpaUdDN6TjrDzqgPq7
+         EtKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792140842; x=1792745642;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/Cad5VRQZezTW2uJ2xgaD8dGgKtN1zqLOsmVB5ElnDU=;
-        b=cay3y7d0uQgYjaO46jsM8ax8AZ4dLgSq7l3j7sJ3f2CFCAyqdVD7LY9DATi13GtjOk
-         ECr0ic0jogjkaycirGZ+y2sbrOzEQWs4WONdhRANQoyfTTE0pL8GmCOQhRVLHgJBjGYc
-         plrU3dxqKJdgqp2e1S5kRGrMqGgAXg2M7hGhgJaKUy3HqWp4IASb7ErwGlQB8kayZv+5
-         bv5Z2lU9nIZjhn9jeovnyayo8zZq7rQUhs5+HhvZ7lMabl/dgs2Fe2p3f9Am0zQbADtc
-         MPE7e/7thN7RACTviGh9FRBP4NrxYZ9REiRKqGd4Wtt64mSEurIVKcVj2PTc8RQlT4eD
-         vwsg==
-X-Forwarded-Encrypted: i=1; AKwUvBzIFQ0ZyappaLVVvjMtD2w/UUKYmi7v4zavOa1iU4giXkZOT2oobIefA+nrsgWb31Q2Ec9wtII=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKztivYdE3Mc529QcJt7yZTaWrTebhmUoxUSo6z7jSRiPtzqoZN
-	KGIdaOmZ4gPqFsldemtJ9pqwx4ai6IikKzKCkkWzdg7bHf78NTJ+flSj
-X-Gm-Gg: AYBFou2t0hIFgdfRZ08zH+hrSNjEhxfjW1msHhDmNqRxluusC+THDOxhcHTpbG5/Hi8
-	09Q19KtDcbboJg+bet+h+pV4TcPMv0vKfw5nBDhJfut2QTsT/GmA/+I1ziTawUEFHl6hdI5df+P
-	NfChR1w72C5pi8pX55sH21RJGPg4zzR8x57nSPLzAlJUp79e48heS29Uiw+rawKFpHFBvYqwloM
-	/F3FHcmGVyAqTPai2KmKtybbixBESdlDQ+5OsK3GF5bcbPFdJXtVlktvZOtKXKfxLUi5ny6WYE6
-	3+0xJNm7iTzF344/8k8BnSEH0IxAg/ywBPVugzpbkeXQlzmsIsNj1fJc18GEyy00pVqPYp+cxqW
-	ivci5OU0WE8k8xi3ZF2h+Uy7CHSDPmkzrM3IoBw9z6dvV0+IGeIE3gTurAS6tBNx0JqYkzsU7ie
-	7V14A2KeJjUy0DhXq+AJbFCh0JZHW/WLM5HKlded3I9PG6HFx/ygQKC49wQMd56y3aY67+f+B2i
-	Lsmux5usKp406VlE/udxKh5SFQFz3g1f72eL8q1PwboPaFo9i+4W/Jp
-X-Received: by 2002:a05:6000:4810:b0:488:7bdc:f7f8 with SMTP id ffacd0b85a97d-48dba9d2c0bmr41576790f8f.29.1792140842108;
-        Fri, 16 Oct 2026 01:54:02 -0700 (PDT)
-Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48dfd4e7889sm3565929f8f.24.2026.10.16.01.54.01
+        d=1e100.net; s=20260707; t=1792141119; x=1792745919;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6T6E/PTJKYn9a4JTmrufJxVWoTdQbQUGAhkm/RbWkjo=;
+        b=AWh/O2jKH1CkPJSBBYY+IxqWY0cukHoUstUBqsNR5TRlGWI1p0PgcyO4MkZic6NcUs
+         sD66hJfpWRhN4DE20xbD/+75txRgaiTQKQHX1Rxf9Zvs8uVJ+FqRYen5LguaanxAxpPT
+         niKl2GA/TUr/2gPFTgt8qxyCMruc0q3MDBqgBD8aj6Rj/JgEQJEkQtR37BN3scpbxzFq
+         PhCUP6rJxn971ZU/1Wk/d2hAN7voPBWaZpsxvXxbvjo8EktlsxV7apdgsKECYNERBe91
+         Cgrecq2N9die+vr7d7lr+LdYmvujkySFAcZWGWfQHVgHsbroZRioLGgfnIhMnGNkYvgM
+         q8nw==
+X-Forwarded-Encrypted: i=1; AKwUvBw7UDod+4k7yxM0gzT5UAPTqYs3vPGLTKAAv7IdGZ3Kvbe2NSm+RFN06jv5pnxUHyJ8LTvUOTo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIeti0Z1YjEO92QNs4sk1LFh0hT5+tL0zNnmE8Nlo8g8QmPIYnB
+	J4aPtKxP1vLNVc/GlvhDY0FjEXh2uHkqFolHu9Qg2PGb6lZajDV4gMBfXZ+Q49M0OM4Lu5kLFQh
+	AOT8veudKppNw4UlOkSdP+AeDm1fMwRw+S75yVQYARlY/Oe9xL1dejvqm+mw=
+X-Gm-Gg: AYBFou3pD57fLWaPapuVggssltxPkklVTVixfB47S2IO8iECiJCzOeVRJbhYx5J0J+s
+	GzIpydzJcomtuMhCMWsaDwZ6lyAFR1f119Z/tsm6hi/ssNtn6XoGb2aA/YX5mUvi0tiJEsZmmAh
+	vMHXyeW1euKDB7vKSF5RUpBD5MUsraY33MAtRi9bsVNVDlGf9wnI+OQlFvp1qX0CftH2zbQ5qmN
+	XcJcv/0t/ME3/Cp8eY+oia77nCQLaiglJYvmp23xwzH9bOtTtBJ54lwgidYtSVguQsXDS2kn9Cw
+	l2n/f3dr71unSaKSo/KSkV6RUl8MiLzi/Q2AtbJNEAkbfwYiDzzSnoeHzvTqJjNjHvpXd5CoTs4
+	y3ifH67m1iCthdOx5BUw/o7o4DYrr5EFm14W6x4p2il5uwB/QHPTMFxk=
+X-Received: by 2002:a05:693c:895c:20b0:351:bb8f:540c with SMTP id 5a478bee46e88-3537e04f58fmr30651961eec.35.1792141118708;
+        Fri, 16 Oct 2026 01:58:38 -0700 (PDT)
+X-Received: by 2002:a05:693c:895c:20b0:351:bb8f:540c with SMTP id 5a478bee46e88-3537e04f58fmr30651934eec.35.1792141118063;
+        Fri, 16 Oct 2026 01:58:38 -0700 (PDT)
+Received: from hu-chunkaid-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36082a7b33bsm9475436eec.24.2026.10.16.01.58.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 01:54:01 -0700 (PDT)
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bpf@vger.kernel.org
-Cc: andrii@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	eddyz87@gmail.com,
-	edumazet@google.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	liamwisehart@meta.com,
-	martin.lau@linux.dev,
-	pabeni@redhat.com,
-	song@kernel.org,
-	netdev@vger.kernel.org,
-	sdf.kernel@gmail.com,
-	ameryhung@gmail.com,
-	kuniyu@google.com,
-	memxor@gmail.com,
-	jiayuan.chen@linux.dev,
-	almagui@kernel.org,
-	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next v6] bpf: allow ksock connect/send calls from wq
-Date: Fri, 16 Oct 2026 08:53:53 +0000
-Message-ID: <20261016085353.9512-1-mahe.tardy@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Fri, 16 Oct 2026 01:58:37 -0700 (PDT)
+From: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
+Subject: [PATCH net-next 0/3] net: qrtr: implement socket shutdown()
+Date: Fri, 16 Oct 2026 01:58:17 -0700
+Message-Id: <20261016-qrtr-add-shutdown-v1-0-e1cc01ca5919@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACnn0WoC/yWNwQ7CIBBEf6XZsyTQpDbxV4wHLIusB9DdrdY0/
+ Lugx5eZebODIBMKnIYdGF8kVHIDdxhgST7f0FBoDKMdj3Z21jxZ2fgQjKRVQ3lnM0Vng598nEc
+ HbfdgjLT9nGfIqCbjpnD5J7Je77hoV/ZuItHCn35fa/0Cbqux844AAAA=
+X-Change-ID: 20260710-qrtr-add-shutdown-5f10da5af721
+To: Manivannan Sadhasivam <mani@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: Chunkai Deng <chunkai.deng@oss.qualcomm.com>,
+        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, tao.zhang1@oss.qualcomm.com,
+        peter.chen@oss.qualcomm.com, jeff.johnson@oss.qualcomm.com,
+        konrad.dybcio@oss.qualcomm.com
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792141117; l=1573;
+ i=chunkai.deng@oss.qualcomm.com; s=20260604; h=from:subject:message-id;
+ bh=PNIpR7E+HEAfTqXSWWHMSaHir6ljo4+AAvuJ5sSi5dQ=;
+ b=sYbm/wqRPWpKdkEHgg9PzkJJllBZtX2T2VclwmFkpDsGizFMEmKV8zQMlcL7lYfneqYiYONlW
+ gjD+z1bIPs3AuRxcFSjYppDjiy3ixnx5eN1qhYOKp2Bbcn7rsMPr5AT
+X-Developer-Key: i=chunkai.deng@oss.qualcomm.com; a=ed25519;
+ pk=wWxCpsJRKQeVRzpZ8GLRnUX6ozLMowqE3hiz/j+j9O8=
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE2MDAzNSBTYWx0ZWRfX5h6Z4p8IrqSA
+ nqfqmOPzFMYiOTzEV718gPRrdUMbbnTCrQRu/ANVIdzhh6jSXbWLKqu4rNK5EtmnacJ4CaTMU25
+ lHXMWQ2S+pvhbWROaC4hxuSoTBXlFWQ=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE2MDAzNSBTYWx0ZWRfX3lzCTOiGMP1A
+ +xjQv+BVjXtIJZrB5xYl0vBNHkGLkeTkXGo+GDar9i6qO6gw5kpP6dGd8Mpb1QoN8ixNTBB5uif
+ Ou25fJp0ZDeU+mfQFQviW71ZNyh+u0ZE7wEteGwy1dDCiZ86L6GIfU1ZYhkx5B4d4+CxeiNrGMM
+ 8sBZ5Otlq+GTEWrTNIBj9z9Uhw6TyEBJWaCt1M0qi+60kXjAhRqDga2z19b4W9vWZ9tHfS2GRgf
+ RRODso74ixjO+AhrmdCq01USiFNgbaPkrmQI2gKw+9NzUfBfVqEEZtuyIpfRiIuNuWnlVPBOl9t
+ sTEun7OdyEp3U83lwqwEMu+o8TPcfUTraCRSS5wO4ITBd/N5KM4chnmPoZ9WHgqUk4usyKXjmKL
+ xhTOHufd/Ew2W7vf945BP7KschsrJloqI7DnfaotBNneJUY0qsINnZy9trXh6I8j9jJwC7hSSsj
+ hg6QuTKsughVHJreN0w==
+X-Authority-Analysis: v=2.4 cv=P4yvFSAu c=1 sm=1 tr=0 ts=6ad1e73f cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=J1Y8HTJGAAAA:8 a=1XWaLZrsAAAA:8
+ a=20KFwNOVAAAA:8 a=PfFHbZv5qE7Lj_dxh7oA:9 a=QEXdDO2ut3YA:10
+ a=6Ab_bkdmUrQuMsNx7PHu:22 a=y1Q9-5lHfBjTkpIzbSAN:22
+X-Proofpoint-ORIG-GUID: WCHMIe52vZq_ZW48TL1Hb7FwPmz1REFq
+X-Proofpoint-GUID: WCHMIe52vZq_ZW48TL1Hb7FwPmz1REFq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1011
+ malwarescore=0 impostorscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610160035
 
-The initial ksock implementation, commit 7ae4eb14c5f9 ("bpf: Add ksock
-kfuncs"), kept LSM checks from the kfunc calls and disallowed
-asynchronous workqueues because worker credentials differ from those of
-the triggering task. However, discussions at Plumbers 2026[^1] revealed
-that bypassing LSM checks for BPF-created sockets could be acceptable.
+QRTR does not support shutdown(), so a thread blocked in recv() cannot
+be woken up by another thread. This series adds it.
 
-This patch allows workqueue use while retaining LSM checks for now,
-paving the way to call bpf_ksock_connect() and bpf_ksock_send() from
-non-sleepable programs, such as tracing programs, in future patches.
+Patch 1 stops recvmsg() from holding the socket lock while it waits for
+data. Patch 2 stops sendmsg() from turning every allocation failure into
+-ENOMEM, so errors such as -ENETRESET and -EPIPE reach userspace. Patch 3
+adds qrtr_shutdown().
 
-Also adapt test_ksock_wq() added in 'c93cbdb13f99 ("selftests/bpf: Add
-ksock test for async callback guard")' to test that the connect() and
-send() kfuncs are now allowed and work when called from workqueues.
+Patches 1 and 2 address long-standing behaviour rather than regressions,
+so they carry no Fixes: tags.
 
-Note that bpf_ksock_create() still checks:
-* for current to not be a kernel thread (thus excluding bpf workqueue
-  callbacks) because the socket is created within a userspace task
-  network namespace. It should, most of the time, be the process that
-  triggered the SYSCALL program, but could be another task when called
-  from bpf_task_work callbacks.
-* for current->nsproxy to be non-NULL since when called from a
-  bpf_task_work callback and the task is in the do_exit() phase, nsproxy
-  is torn down just before the remaining task work is executed.
-
-[^1]: https://lpc.events/event/20/contributions/2430/
-
-Tested-by: Alan Maguire (Oracle) <almagui@kernel.org>
-Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+Signed-off-by: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
 ---
- net/core/bpf_ksock.c                          | 24 +-----
- .../selftests/bpf/prog_tests/ksock_wq.c       | 29 +++++--
- tools/testing/selftests/bpf/progs/ksock_wq.c  | 84 ++++++++++++++++---
- 3 files changed, 102 insertions(+), 35 deletions(-)
+To: Manivannan Sadhasivam <mani@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: tao.zhang1@oss.qualcomm.com
+Cc: peter.chen@oss.qualcomm.com
+Cc: jeff.johnson@oss.qualcomm.com
+Cc: konrad.dybcio@oss.qualcomm.com
+Cc: christopher.lew@oss.qualcomm.com>
 
-diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-index e9943aeeadd3..7bf796193ab6 100644
---- a/net/core/bpf_ksock.c
-+++ b/net/core/bpf_ksock.c
-@@ -37,15 +37,6 @@ static void ksock_release_work_fn(struct work_struct *work)
- 	kfree(ks);
- }
+---
+Chunkai Deng (3):
+      net: qrtr: do not take the sock lock on blocking recv
+      net: qrtr: propagate sock_alloc_send_skb() errors from sendmsg()
+      net: qrtr: implement shutdown()
 
--static bool bpf_ksock_has_user_task_context(void)
--{
--	/*
--	 * Task work can run from do_exit() after exit_nsproxy_namespaces()
--	 * cleared current->nsproxy, while current is still not a kthread.
--	 */
--	return !(current->flags & PF_KTHREAD) && current->nsproxy;
--}
--
- __bpf_kfunc_start_defs();
+ net/qrtr/af_qrtr.c | 51 ++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 38 insertions(+), 13 deletions(-)
+---
+base-commit: 34cf6dafc47441dfb6b356a095b89c3585a93714
+change-id: 20260710-qrtr-add-shutdown-5f10da5af721
 
- /**
-@@ -59,7 +50,7 @@ __bpf_kfunc_start_defs();
-  * This function may sleep (sock_create), so it can only be used
-  * in sleepable BPF programs (SYSCALL).
-  * It cannot be called from a BPF workqueue callback because that callback
-- * does not retain the invoking task's namespace or security context.
-+ * does not retain the invoking task's namespace.
-  *
-  * @opts:	Pointer to struct bpf_ksock_create_opts with socket parameters.
-  * @opts__sz:	Size of the opts struct.
-@@ -74,11 +65,10 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
- 	int err;
-
- 	/*
--	 * sock_create() derives the network namespace, credentials, and cgroup
--	 * from current. Kernel threads, including BPF workqueue callbacks, do
--	 * not carry the context of the task that invoked the BPF program.
-+	 * sock_create() derives the network namespace from current and task
-+	 * work can run from do_exit() after exit_nsproxy_namespaces()
- 	 */
--	if (!bpf_ksock_has_user_task_context()) {
-+	if ((current->flags & PF_KTHREAD) || !current->nsproxy) {
- 		err = -EOPNOTSUPP;
- 		goto err_out;
- 	}
-@@ -165,9 +155,6 @@ __bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *ks,
- 	struct sockaddr_storage sa;
- 	int addrlen;
-
--	if (!bpf_ksock_has_user_task_context())
--		return -EOPNOTSUPP;
--
- 	if (!addr || addr__sz != sizeof(*addr))
- 		return -EINVAL;
-
-@@ -247,9 +234,6 @@ __bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *data,
- 	};
- 	int ret;
-
--	if (!bpf_ksock_has_user_task_context())
--		return -EOPNOTSUPP;
--
- 	ret = kernel_sendmsg(ks->sock, &msg, &iov, 1, data__sz);
-
- 	return ret;
-diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-index d6dc20b8f95b..12c2275e8177 100644
---- a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-@@ -4,6 +4,7 @@
- #include <unistd.h>
-
- #include "test_progs.h"
-+#include "network_helpers.h"
- #include "ksock_wq.skel.h"
-
- #define CALLBACK_WAIT_RETRIES 1000
-@@ -13,13 +14,22 @@ void test_ksock_wq(void)
- {
- 	LIBBPF_OPTS(bpf_test_run_opts, opts);
- 	struct ksock_wq *skel;
-+	char recv_data[sizeof(skel->data->send_data)];
- 	u32 callback_done;
--	int err, i;
-+	int err, i, port, rfd;
-
- 	skel = ksock_wq__open_and_load();
- 	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
- 		return;
-
-+	rfd = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 1000);
-+	if (!ASSERT_OK_FD(rfd, "receiver socket"))
-+		goto out;
-+	port = get_socket_local_port(rfd);
-+	if (!ASSERT_GE(port, 0, "receiver port"))
-+		goto out;
-+	skel->bss->remote_port = port;
-+
- 	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.ksock_wq_start),
- 				     &opts);
- 	if (!ASSERT_OK(err, "run ksock_wq_start"))
-@@ -28,18 +38,27 @@ void test_ksock_wq(void)
- 		goto out;
-
- 	for (i = 0; i < CALLBACK_WAIT_RETRIES; i++) {
--		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
-+		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE) == 2)
- 			break;
- 		usleep(CALLBACK_WAIT_US);
- 	}
- 	callback_done = __atomic_load_n(&skel->bss->callback_done,
- 					__ATOMIC_ACQUIRE);
--	if (!ASSERT_EQ(callback_done, 1, "workqueue callback completed"))
-+	if (!ASSERT_EQ(callback_done, 2, "workqueue callbacks completed"))
- 		goto out;
-
--	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
--		  "workqueue create rejected");
-+	ASSERT_EQ(skel->bss->create_ret, -EOPNOTSUPP, "workqueue create rejected");
-+
-+	if (!ASSERT_EQ(skel->bss->connect_send_ret, sizeof(recv_data),
-+		       "workqueue send bytes"))
-+		goto out;
-+	err = recv(rfd, recv_data, sizeof(recv_data), 0);
-+	if (ASSERT_EQ(err, sizeof(recv_data), "recv len"))
-+		ASSERT_MEMEQ(recv_data, skel->data->send_data, sizeof(recv_data),
-+			     "payload match");
-
- out:
-+	if (rfd >= 0)
-+		close(rfd);
- 	ksock_wq__destroy(skel);
- }
-diff --git a/tools/testing/selftests/bpf/progs/ksock_wq.c b/tools/testing/selftests/bpf/progs/ksock_wq.c
-index 16a1873d132e..24246bf2c748 100644
---- a/tools/testing/selftests/bpf/progs/ksock_wq.c
-+++ b/tools/testing/selftests/bpf/progs/ksock_wq.c
-@@ -2,9 +2,11 @@
- /* Copyright (c) 2026 Isovalent */
-
- #include "vmlinux.h"
-+#include <bpf/bpf_endian.h>
- #include <bpf/bpf_helpers.h>
- #include "bpf_experimental.h"
- #include "bpf_tracing_net.h"
-+#include "bpf_misc.h"
- #include "errno.h"
- #include "ksock_common.h"
-
-@@ -14,15 +16,19 @@ struct ksock_wq_value {
-
- struct {
- 	__uint(type, BPF_MAP_TYPE_ARRAY);
--	__uint(max_entries, 1);
-+	__uint(max_entries, 2);
- 	__type(key, u32);
- 	__type(value, struct ksock_wq_value);
- } work_map SEC(".maps");
-
--int create_err;
-+char send_data[] = "hello from bpf workqueue";
-+
-+__be16 remote_port;
-+int connect_send_ret;
-+int create_ret;
- u32 callback_done;
-
--static int ksock_wq_callback(void *map, int *key, void *value)
-+static int ksock_wq_create_cb(void *map, int *key, void *value)
- {
- 	struct bpf_ksock_create_opts opts = {
- 		.family = AF_INET,
-@@ -35,28 +41,86 @@ static int ksock_wq_callback(void *map, int *key, void *value)
- 	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
- 	if (ks)
- 		bpf_ksock_release(ks);
--	create_err = err;
-+	create_ret = err;
- 	__sync_fetch_and_add(&callback_done, 1);
- 	return 0;
- }
-
--SEC("syscall")
--int ksock_wq_start(void *ctx)
-+static int ksock_wq_connect_send_cb(void *map, int *key, void *value)
-+{
-+	union bpf_ksock_addr addr = {
-+		.sin = {
-+			.sin_family = AF_INET,
-+			.sin_port = remote_port,
-+			.sin_addr.s_addr = bpf_htonl(0x7f000001),
-+		},
-+	};
-+	struct bpf_ksock *ks;
-+	int err = -ENOENT;
-+
-+	ks = ksock_ctx_get();
-+	if (!ks)
-+		goto out;
-+	err = bpf_ksock_connect(ks, &addr, sizeof(addr));
-+	if (!err)
-+		err = bpf_ksock_send(ks, send_data, sizeof(send_data));
-+	bpf_ksock_release(ks);
-+out:
-+	connect_send_ret = err;
-+	__sync_fetch_and_add(&callback_done, 1);
-+	return 0;
-+}
-+
-+static int wq_set_callback_start(int (*callback_fn)(void *, int *, void *), u32 key)
- {
- 	struct ksock_wq_value *value;
--	u32 key = 0;
--	int err;
-+	int err = 0;
-
- 	value = bpf_map_lookup_elem(&work_map, &key);
- 	if (!value)
- 		return -ENOENT;
-+
- 	err = bpf_wq_init(&value->work, &work_map, 0);
- 	if (err)
- 		return err;
--	err = bpf_wq_set_callback(&value->work, ksock_wq_callback, 0);
-+	err = bpf_wq_set_callback(&value->work, callback_fn, 0);
-+	if (err)
-+		return err;
-+	err = bpf_wq_start(&value->work, 0);
- 	if (err)
- 		return err;
--	return bpf_wq_start(&value->work, 0);
-+
-+	return 0;
-+}
-+
-+
-+SEC("syscall")
-+int ksock_wq_start(void *ctx)
-+{
-+	struct bpf_ksock_create_opts opts = {
-+		.family = AF_INET,
-+		.type = SOCK_DGRAM,
-+		.protocol = IPPROTO_UDP,
-+	};
-+	struct bpf_ksock *ks;
-+	int err = 0;
-+
-+	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
-+	if (!ks)
-+		return err;
-+	err = ksock_ctx_insert(ks);
-+	if (err)
-+		return err;
-+
-+	err = wq_set_callback_start(ksock_wq_connect_send_cb, 0);
-+	if (err)
-+		return err;
-+
-+	err = wq_set_callback_start(ksock_wq_create_cb, 1);
-+	if (err)
-+		return err;
-+
-+	return 0;
- }
-
- char __license[] SEC("license") = "GPL";
---
-2.43.0
+Best regards,
+--  
+Chunkai Deng <chunkai.deng@oss.qualcomm.com>
 
