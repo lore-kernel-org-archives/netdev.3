@@ -1,101 +1,103 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D51C41836E;
-	Fri, 16 Oct 2026 07:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1BF41DDEC
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 07:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792134970; cv=none; b=m0KVs0upO/TiZj0UzoOa30P8BQSBg2g1IPDya2cfLt6IB9ui3t2EHY+EZ3mubt7DlqoWvgZjD9m5nKegYbYRCJux49XX/HrFoTtex3NGi6td41etP8XmWffuV8JFsHJNlRDNbHFkWTwH/cnILZK8qBwVKf/E+6D8hYkfmL1dpsg=
+	t=1792135032; cv=none; b=PKobHbSiVHixvRRyw5qKYqdbgv8FxaDrMAOQaQyjKNs0bm5pavwdmn88q3Jhv0eoTug/eLUbqy33I1GxTaDAkUj0Cwr+deaQc8xk9bf9QtC3E6aeWgjaVqYy1Hebc76ohrUHlOuDBw+lkYbLgkRqHi5WP7ZPgbmBOfi/Io5qGIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792134970; c=relaxed/simple;
-	bh=reMh8EImUs0mPoq7Sn7CI9WwCw+gKKbPUySGUxJmUWA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DLReJ/ghHr2euUtx4nRTjOcz3TD3BFLEsE7tHmpfiW/F2PwYCScTjTPWoZmw/PFk/S867I7P09IMzFxnIOIxImTMd4e+BOD9GuGRE1ZmQYD4PB11nqv+2lS3tDBr7VvtIyPQs8CdppjyhYJUewLkXNiz9eKs8hA2U9XkDxr/iUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 71d9c718c93111f19a56ed5b684f684d-20261016
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:adc9d3c2-c7d9-4237-8ddd-2956ea1e427c,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:c17ac3be8ee54d42ba4eb173530fc794,BulkI
-	D:nil,BulkQuantity:0,SF:80|81|82|83|102|865|898|915,TC:nil,Content:0|15|52
-	|99,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
-	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 71d9c718c93111f19a56ed5b684f684d-20261016
-X-User: lilinmao@kylinos.cn
-Received: from [192.168.1.101] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <lilinmao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 2073871153; Fri, 16 Oct 2026 15:16:02 +0800
-Message-ID: <cf64cf73-aa31-4a78-82c4-a9a6c866d7cf@kylinos.cn>
-Date: Fri, 16 Oct 2026 15:15:55 +0800
+	s=arc-20240116; t=1792135032; c=relaxed/simple;
+	bh=WYIoHRWahmE2fvmt+avDjJLVf4iUC15MrcJZtroluhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JYxAbD8iaNVGwZt7u2Q/J/yMtTdGlDoWBKzUUVc1NdZmA+d9vZHDhZMNPu27ZI/jLS+JiYjsFYLP5BGhdAjRu15p8t9pMNUiQWANXEOxVnofpZNA203/MXGG1wOkDqWDX7mG2IP+Hr2t3eS1XplFm4osxWmhh7RCHd0wia9cI7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ljB4bnyv; arc=none smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ljB4bnyv"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-30b6dad2382so14704264eec.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 00:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792135030; x=1792739830; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WYIoHRWahmE2fvmt+avDjJLVf4iUC15MrcJZtroluhw=;
+        b=ljB4bnyvKLk/t8VWqupEePEo8p86nyEJndWQkJ+twE7aQsnLkR1ip0bPAF+i9J/Ewx
+         Y+7ALoeK8MWK1FbCZfM5r1kJIwqu5Zx8tnJ84LZpUt2xxTeVjWlDKrMNzW47WBsWBAOi
+         DUqddf0ExPC866enxMpjhX7vPULYdXzmLYn/Ztg80GQCvN9KReZqvbTeB3yaFHIwmAb5
+         ftMCLH4y5ClGAhFXBuR1GndE+VIgCXFXDNoURkMC1q+9b02V6693dHpC+Z5DVW90pyeQ
+         PGhZ7g5uM/VPhGsgJj7m/q/w/SuRYoWcIyKphiGqSeuQs44EgzLearY80ZP1l7TVGVsd
+         tLuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792135030; x=1792739830;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WYIoHRWahmE2fvmt+avDjJLVf4iUC15MrcJZtroluhw=;
+        b=cyIlyQ4+9mohx+S/oJdyHctVZ0swfEJ/YPSrGc7gdq8bGAZnmDVkgSQ8cDCgEx1zk4
+         buDZBXSzZKEXlbYtyjOfoFXOSs1iUXQ331297ouyvVAoAwN/4kimpfFiZxe3LtccqiMD
+         yokEfOY6UqZ3N72g6P9Qn1QO1bIkLHNwytSuxWicfKszfviyzrLZyzlwS+fRKJ8NHXJV
+         wdaStXwg06sM8cps5oP0mIGZQra/FO1qJepim++bbWbm1tcPHaOX9Kvr5YLQFQApICHA
+         F6f83D+d9rTvZYdvjBSJzEqBC4HVr37vgWav327CC6TOv3kYp6SZFMeuLksuK7nmxzs8
+         CJLA==
+X-Forwarded-Encrypted: i=1; AKwUvBwW7OzbUOOSlP7wLf6KKvIncJUqJJLa+bRpX0amF+R4XdWKg83A9GGSYxzZnsfS4TjxVem8sXY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+2YDkr2U4SSJAVO4p2O93wy5j/q4HXKy+kQjNSMiyPbnsR+BF
+	S95WcY03Mx0wnNA3XogNEjJdarYSiTyfs999d602Ve1LsY2+1D02lFQ5
+X-Gm-Gg: AYBFou3cyc4F2arxObVr1p7+XpN3f3mNqzWyJpnOARvftZ0zDSUYCRuE4o6zme8c0u2
+	CJBU3YdyfBFzAuEVBjtscVhHV63F4TG4I/Z2WD7NMOchR96P/U/gXxyctWRUuaDQl4lpobFOOAG
+	uD3NRmvIUUVI2MRgywwBsue+vZ+mdiu1Q1cubd+EcptTw72Lpz4fjlTknhHFD4cQmI9SKYpaA1v
+	ovSI6HNZ11MUYdh0e3ZlhO77nC3wtVgF4yklmUCGW4L4fzebqWCAzSl9oCXMwKo6wKiXz+v2mVe
+	+gLI8vWw6HzZH4vLHY/QSIZDcGPLneJRBkD8sBEBnsVrByBHlV23588XATpdAEqXZNnMxk7tfEZ
+	B1QWJTdV+cvOxdZgV6RLyj7hSDriGL5aHiU7PAAAYeWZpN0ZBMD9qAy6LG2ykgvYmXiShE7U5C1
+	/rWxeFKTr1GMZZbrt3Rk7RI/CDQRmWSjNu7BfqyIai3JvrQkWYywwf4Ubqo2kCxYrGK5tc
+X-Received: by 2002:a05:7301:9c91:b0:35f:8c5d:5928 with SMTP id 5a478bee46e88-35f8c5d5bc7mr4763847eec.30.1792135029915;
+        Fri, 16 Oct 2026 00:17:09 -0700 (PDT)
+Received: from [127.0.1.1] ([183.242.161.82])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36082784ec8sm3973233eec.22.2026.10.16.00.17.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 00:17:09 -0700 (PDT)
+From: chaosheng.qu.linux@gmail.com
+To: netdev-bot+sinfo@kernel.org
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-can@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/4] can: don't discard the platform_get_irq()
+ error in probe
+Date: Fri, 16 Oct 2026 15:16:59 +0800
+Message-ID: <179213501981.212310.9988031427961239592@gmail.com>
+In-Reply-To: <179213131512.408196.11368789495251891862@kernel.org>
+References: <cover.1792118040.git.chaosheng.qu.linux@gmail.com>
+ <179213131512.408196.11368789495251891862@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] r8152: Use BMSR to detect the link state
-To: Andrew Lunn <andrew@lunn.ch>, Hayes Wang <hayeswang@realtek.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Chih Kai Hsu <hsu.chih.kai@realtek.com>,
- nic_swsd <nic_swsd@realtek.com>, Birger Koblitz <mail@birger-koblitz.de>,
- Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
- <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
- <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
- <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
- <591ca604-b296-4469-94b5-957d9ba45ae4@lunn.ch>
- <16d9caec96e8449d88ac456e8512f08b@realtek.com>
- <06aaa778-ad49-4e30-b1c6-a7dc68718a21@lunn.ch>
-From: Linmao Li <lilinmao@kylinos.cn>
-In-Reply-To: <06aaa778-ad49-4e30-b1c6-a7dc68718a21@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
+Hi,
 
-在 2026/10/15 0:10, Andrew Lunn 写道:
->>> For those devices which are broken, double read the BMSR.  The danger is,
->>> somebody who quickly unplugs and replugs the cable is not going to get the
->>> down notification. The dhcp client will not restart, so the old IP address will be
->>> used, for the next hour to day, and the network is broken.
->> Could this actually happen?
->> I think it would take several seconds for the link to go down and then come back up.
->> Wouldn't this issue occur only if the link transitions from up to down and back up before the driver processes the link-down event?
-> 802.3 thinks this can happen, otherwise why make it latch?
->
-> If i'm just going from port 7 to port 8 of my switch, it might happen.
->
-> Or i reconfigure my managed switch to change the port from one subnet
-> to another subnet. The RJ45 is not moved, it is just a configuration
-> change. The switch should do a down/up on its side to indicate
-> something has changed, and that needs to be reported to userspace so
-> dhcpcd gets a new IP address.
->
->         Andrew
-Hi Andrew,
+The issue was identified during development while reviewing the probe error h=
+andling in these CAN platform drivers. Manual inspection showed that negative=
+ results from platform_get_irq() were being replaced with fixed error codes. =
+For drivers matched via OF, this can discard -EPROBE_DEFER and prevent the dr=
+iver core from retrying once the interrupt controller becomes available. I co=
+mpared these paths with platform_get_irq() semantics and neighboring drivers.
 
-Agreed, my replug numbers do not rule out those cases.
-
-Option a) addresses only the speed regression. It keeps the existing
-PLA_PHYSTATUS carrier detection and does not improve reporting of
-short link drops that recover before the link work runs.
-
-I plan to post a) as v3 for net next week, keeping that scope
-explicit. Please let me know if you see a problem with this approach.
+This was not a production hit or a syzbot report, and it was not found by a s=
+tatic-analysis scan. LLM assistance was used in preparing the patches, as dis=
+closed by the Assisted-by tag. The controllers were unavailable for runtime t=
+esting, so the series was build-tested only.
 
 Thanks,
-Linmao
+Chaosheng
