@@ -1,107 +1,132 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE281D5146;
-	Fri, 16 Oct 2026 03:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8E22AE78;
+	Fri, 16 Oct 2026 04:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792123112; cv=none; b=YsTcNcsiM8N7bzoS4/NK5LDFD53l1zpJP7zsH5gbheJAodKLnTPM/AX+npIrkz/lsyneLLTJ4/fhXPyhdCfceox8SbcAGahsV0aNTcipZzH7WnVRI3Knd9q+j/tWvJmOrw1K0E+CIS70gWuEmYJ5nh5/+GQ+17jkufPuXuxHAD8=
+	t=1792123487; cv=none; b=M2colbPlAReXR73QLS2WmpSpDWSk58tPSJSzrQqOLUpIe5GqbVnX+HG7X2By1NYLxyT6tApdMbz4BZ1Gq5335TSAPRmk5DgjjKAUtY85T2GXkPpyTsVgIgsSnwsFlTMkXK+TmGY+k7YBu2anfSUe9lgUKOvXY0Q4tL8LVdarxVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792123112; c=relaxed/simple;
-	bh=o8knNmKbwni93ndQr26ckoCYWTOHKQ7tdW4QMghAOsw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GD1LWo6hi5vCPm0YN/jbRObGBVvmuiFp3OZr+qbV64Ex7BIgBVoAyAgEJPqErK2fnwBJCHUdPmoo1IWI9X3ex0EuK3igvfLt4gLG75K1BjKMMBv0+5XRioc/qfLlYOYrl5h72KSTF61o+CP5sa76MEHpIZmD3rFyQBjRleLan+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=aSbPCCaq; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1792123487; c=relaxed/simple;
+	bh=dBccgCuaVzH+N1Rz9JtQ4trlumXJHxiMaEFh5SW0AVE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cZ8F1fDCqSuQyaovFQfkGy54+VJIcJcgFGTo9OZe1PDSKXSLaLGkqlyMXeA1lrPftOwKPQ+aoQpzpTfkQFULqy6U8T4JvvNT/zNR5uIpfscBYLmwTGPpakbO0phiO3klReRCEBx10FUMlo60A0CqorMaKgxeZE2CdyrWTuhwziM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DJ0fKwU5; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="aSbPCCaq"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69G0hHtE3702173;
-	Thu, 15 Oct 2026 19:44:26 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=QT4Awu5TidmNGqflwTrlMnPqQ
-	f7PXq4o4cGDIype+IU=; b=aSbPCCaq0UphXQSMVMW35tm7cl6hKNsVjllOvSxZ0
-	tZqL3/dmHcYgICDmKu5JAxNtLx8pWIYgoX1p3qoPnu5MkPdjrT5Ls/Yyg7PPsTeg
-	u/ZhPGG56ANlFQ2MlNh+ZSTA0/QSCLBN/oOIjOpfUDNYEucAbp3q/rmFYL+DJDQ4
-	VhnJH7UrycljSa/0GEh2joKFIV7D3LeMKAq5EdR2CB6+wm9VVIlNSqlGvtNFEkLh
-	NhTxmWw5AhLYcWnjNCJDheoJkLFcFGgEWeyRu79rni5KmV2J1/dC6JePY+6vG3/0
-	xuzVNikAyod/HLWjXe0QMW/76Yn8CcfbC/xyD9pEbENrg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hapqmde1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Oct 2026 19:44:25 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 15 Oct 2026 19:44:24 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 15 Oct 2026 19:44:24 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 52BF33F704A;
-	Thu, 15 Oct 2026 19:44:21 -0700 (PDT)
-Date: Fri, 16 Oct 2026 08:14:20 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Binbin Deng <18983559317@163.com>
-CC: <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
-        <bbhushan2@marvell.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1] octeontx2: Fix use-after-free of qos node in delete
- path
-Message-ID: <atGPhOA3oH_g1RTm@rkannoth-OptiPlex-7090>
-References: <20261014064204.291688-1-18983559317@163.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DJ0fKwU5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=4b
+	e52hP6zWTa7KhzJ+Re6k7CxAgZ28hbTTZrb39cHuQ=; b=DJ0fKwU5o3ImQNDeeT
+	WDSGSmMdy7SiT7PGFC05iOutxAHlgN4QAJGjby2sksLWDyxlmiwyogbAmBopu1XU
+	qkJZpcl6qfWknwpPEwUisofajMjIURRaP+acp5r0MO40TMUBTkWBOwB/09XPMSIM
+	f8YixgMtZMYWbM6d/xxixriPU=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3_5MzotFqa0TGAQ--.25685S2;
+	Fri, 16 Oct 2026 12:04:04 +0800 (CST)
+From: Wei Tao <taowei@kylinos.cn>
+To: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wei Tao <taowei@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/sched: cls_flow: avoid integer overflow in perturb_period
+Date: Fri, 16 Oct 2026 12:03:30 +0800
+Message-Id: <20261016040330.59041-1-taowei@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261014064204.291688-1-18983559317@163.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE2MDAxMCBTYWx0ZWRfX5Cx7BpKZut0N
- U8yusISLIY3Q+vlYloiE9NEFtyovMJV9SWun2ZSI+0khH80+s49rAvU96uqnBk4mDzZmHZDNfUT
- XWZxvWcMXGXIlZ5WT7TpYXxHLkTdDgnG2hJRqyofkzOm+W/JLyIV6/3N4TkiuI1ZCx/05OiQmvW
- 9p4EfNxCOR4lkHeC+yC+fxhA/Q8ndu4klh+DzDxGWtYdw5ENYpH0n/qIqMXWJ4xe2KaT/pE4wbs
- 1rHuWLH3y+sHQW311/SMBh46kCBiL3RFfhNzhg9zNZlVFquN2jlz9a/cZdvVRq9IEDnO/zeaTex
- XjS0To0QMRelon/Vw8uQ2mFXE3LPHAujHJyAFC7gdRymkT4EUUDMZft/5O1IW9RtmLzqtMBvNKm
- tWAMDDGrNBXfMF3K+27kjYFKdThKw3pFZLxXZwEJqC0UJrWkFu/zqlXuDCWxwth/8RjXrxUlTvQ
- QSr7N5GXVLMq9IK5h4Q==
-X-Proofpoint-GUID: Bqa6uQRUTSqIv8jb8axeeSeeeetxstTr
-X-Proofpoint-ORIG-GUID: Bqa6uQRUTSqIv8jb8axeeSeeeetxstTr
-X-Authority-Analysis: v=2.4 cv=U+sHnuru c=1 sm=1 tr=0 ts=6ad18f89 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=Byx-y9mGAAAA:8
- a=M5GUcnROAAAA:8 a=itfu8BSAOx6kz2H9srYA:9 a=CjuIK1q_8ugA:10
- a=OBjm3rFKGHvpk9ecZwUJ:22 a=1CYo9-gkzx054UpEq_5a:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE2MDAxMCBTYWx0ZWRfXzLrwTvvdVPeK
- E/ji5tkwuaCwpcrZjquZ5kkXA5aeOxk46lEd2JXLByqNJx3m1oLv8IfZhVkormnAdu7sS4tCrTf
- TaVHlmrdBWTQCHUzcPtu7sTlx7ju8eQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_5MzotFqa0TGAQ--.25685S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF1Utw13Gw4DZFW8Zr1xuFg_yoW5JrWrpF
+	9rJw1rJw4kZry7G3s7Ar1kZ3Zxuw4IkFy8CF4Ikw45JwnrGF1vkw10g34SgFsrCFWrAayr
+	JFy5KrW2yr1qyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jCJP_UUUUU=
+Sender: cs_taowei@163.com
+X-CM-SenderInfo: xfvb3tprzhxqqrwthudrp/xtbC-RTEBmrRojQvrAAA3F
 
-On 2026-10-14 at 12:12:04, Binbin Deng (18983559317@163.com) wrote:
-> hash_del_rcu() only unlinks the node; a reader that already holds the
-> bucket iterator still uses the node.  The immediate kfree() has no
-> grace period, so a concurrent transmit on a socket whose skb priority
-> carries the deleted classid reads node->classid / node->qid from freed
-> memory (use-after-free in the softirq transmit path).
->
-> Fix this by calling synchronize_net() before the node is freed, as
-> mlx5e does.
->
-> Found during a static-analysis-assisted audit: candidate sites were
-> surfaced by a Coccinelle rule, and the reader/writer paths were
-> confirmed by LLM-assisted (GLM-5.3) code inspection.  The issue was
-> not observed at runtime; it is identified by code inspection only.
->
-> Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-> Signed-off-by: Binbin Deng <18983559317@163.com>
+flow_change() calculates perturb_period by directly multiplying
+nla_get_u32(tb[TCA_FLOW_PERTURB]) by HZ, without any overflow
+protection. Since perturb_period is a u32, the multiplication
+overflows when the value from netlink exceeds UINT_MAX / HZ.
+The result can be an unexpectedly short period or even zero.
 
-Reviewed-by: Ratheesh Kannoth <rkannoth@marvell.com>
+  # tc qdisc add dev lo clsact
+  # tc filter add dev lo ingress protocol ip pref 1 handle 1 flow \
+        hash keys src perturb 42949673 baseclass 1:10
+
+With HZ=100, 42949673*100=4294967300, but UINT_MAX is 4294967295,
+so the product wraps to 4 jiffies.
+
+Both the filter-modify and filter-create paths in flow_change()
+are affected.
+
+Since perturb_period is ultimately fed to mod_timer(), and
+calc_wheel_index() internally casts delta to signed long for
+comparison, reject values greater than INT_MAX / HZ. Besides
+preventing the u32 multiplication from wrapping, this also
+keeps the relative timeout within the signed-long range on
+32-bit systems.
+
+Fixes: 72d9794f4447 ("net-sched: cls_flow: add perturbation support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wei Tao <taowei@kylinos.cn>
+---
+ net/sched/cls_flow.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
+index a9ac3acf6eda..29d1042a1988 100644
+--- a/net/sched/cls_flow.c
++++ b/net/sched/cls_flow.c
+@@ -408,6 +408,7 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
+ 	u32 keymask = 0;
+ 	u32 mode;
+ 	int err;
++	u32 val;
+ 
+ 	if (opt == NULL)
+ 		return -EINVAL;
+@@ -486,7 +487,13 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
+ 		if (tb[TCA_FLOW_PERTURB]) {
+ 			if (mode != FLOW_MODE_HASH)
+ 				goto err2;
+-			perturb_period = nla_get_u32(tb[TCA_FLOW_PERTURB]) * HZ;
++			val = nla_get_u32(tb[TCA_FLOW_PERTURB]);
++			if (val > INT_MAX / HZ) {
++				NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
++				err = -EINVAL;
++				goto err2;
++			}
++			perturb_period = val * HZ;
+ 		}
+ 	} else {
+ 		err = -EINVAL;
+@@ -504,7 +511,13 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
+ 		if (tb[TCA_FLOW_PERTURB]) {
+ 			if (mode != FLOW_MODE_HASH)
+ 				goto err2;
+-			perturb_period = nla_get_u32(tb[TCA_FLOW_PERTURB]) * HZ;
++			val = nla_get_u32(tb[TCA_FLOW_PERTURB]);
++			if (val > INT_MAX / HZ) {
++				NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
++				err = -EINVAL;
++				goto err2;
++			}
++			perturb_period = val * HZ;
+ 		}
+ 
+ 		if (TC_H_MAJ(baseclass) == 0) {
+-- 
+2.25.1
+
