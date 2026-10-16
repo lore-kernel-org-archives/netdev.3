@@ -1,241 +1,187 @@
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022109.outbound.protection.outlook.com [52.101.126.109])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8692DECA1
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A388E2AD0C;
+	Fri, 16 Oct 2026 01:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.109
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792114967; cv=pass; b=uE97MdfKNzPDYD4lnrXqrYimSzqEuDzeJNiPtcfG83QbQw0hiRxB5Y47VmyqP39JnwYKu9zaNphjepaTcryjYttTZHjsBfgMFnV90qAKlFT6BGsYVl+vV0wCUxU1nA9whGYp3ln+XLJTiHmbwtdlB6Ym9SNMqcVB2+3puUD9j9E=
+	t=1792115282; cv=fail; b=qSQHWfsixdLjbf+Rt4wjIIIAg2Sr5LW1OF3iLsnvcsHhFPfWDHblsnde9bpvwxCU6JosjamdjpDbGEJhHUoUnRZG76cg569Hk/7sOIapZ1JiuAnX1IGneG4xGVwOqE/KLqGWTklcnnMt36J5Pz3KfPno32wuTLCg4+WB3RsXGCE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792114967; c=relaxed/simple;
-	bh=6i0WeLMlEghQpb8uyJNW0pyE1aTfMio3zAYz4uekepw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GYAS6B4XHjAr81iS+ya7Q7YHBuRaE+kh3R0mu8XKwjFIhRHfgVJihQhD1FrCZddighg0wurK6eExlw29FafHQl9fZV4VXyLh7REoh7/tjaDwX4GtvUeMJXhnMBrjHDuxZ6ENCYK0B4nm6utjwvEZnS83PvXc/lr6JGBsovDR0+k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=dHwUKkxt; arc=pass smtp.client-ip=209.85.217.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+	s=arc-20240116; t=1792115282; c=relaxed/simple;
+	bh=qKHuQCKnu5TuBnDhFEqGdCM3anw2AHXqtzbLAQEq4M4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ch11V7EkIbugpnLUYytsllAs2bBRySAZ+EedLe28sbBh78UcQax3iMXqLdWFVFU2+On3UUmzuRI+n+hJeZCa8jqsXH2zMu++H7cKgd8rXHjjCeVBFShw0MYCBd7OvIrATGHqUjhb06FRtoSJzxmcO9DlKVPu9hcJPAMhjR1PHEY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; dkim=pass (2048-bit key) header.d=aspeedtech.com header.i=@aspeedtech.com header.b=rZeiTsS0; arc=fail smtp.client-ip=52.101.126.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="dHwUKkxt"
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-7c6e6822b11so725741137.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 18:42:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792114964; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Rvw4iBVy3n5cxrMSLvbhOLLFq21bDgRO9WpN55WI5LEv0S2NsmqwD0s0VAx16G17NT
-         lYfC/J7421YY8k7ADmwV9Gd3Z3ShcgtEmQfw09/fTaoQOZFSLFQftQpPSgxzZUqToEcn
-         +/kLuX3iqZIUng9s1rUkZ5lqoU9VyVrr/SEyhgkPa5TKttZTA0GaCrk1uZIY+ODRBoat
-         tMWy6UWzz+HLyuSi574VaEnz8oXqZjKvylSPo4xp+9z7jBb+lDqRPDa/jFktWSci79Ga
-         PhkLxty+b4DN0E6ky9gxII+UIL4NWMls3T8E3mKjFf0ZJ7d2VMLkoXmmb2I2FBCicLEp
-         FTLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vVZmsIf6HaIgsl+foEZt+wGwwAVohSj5QpggFF4Hfm0=;
-        fh=xiu7Hc4Gf5e4PiE8i6Rut264GWnNVjdDb4M1FmnrlMc=;
-        b=Skm5mGNkyO4f4imHQcpwRe7kWq96xziiL83W+aVfibgyO3jHkcmj40jR4ZtiTnx0Di
-         cPqhTJ2nRmsoNJ7DRw5+8H5Fa+wfvq65ww7cI6bE4gOcgQpxv0vBUDjxXPIy6atbw7bw
-         jffO1lv7L5u1vduYhSVq9jmPPkdJc3v6WpSY6ZxB4R2a3zlqFAXPeX5MrAvD3Cl0e/NY
-         UCo2oi9GVMEYMdfHaMIJPvgLeRiOeamo2mGNBKRxpkh6o7wkzdhF6GirXUCxNxK1mlB9
-         Ruf1triViU2hmTOW9xnZ5foWbxXA2lWEn/VJYLeuTDXWv+kT8WGY70z5nazUUqCF3rPK
-         ulmA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1792114964; x=1792719764; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vVZmsIf6HaIgsl+foEZt+wGwwAVohSj5QpggFF4Hfm0=;
-        b=dHwUKkxtT9v4HUYv2Lld2UBpMEcFf3QrincCRGO7nxo0C2NCt+rLHbMsRVi0CTdbXC
-         CAOa/ulY+xcyzRp7Lsx1CZV8jwOF9L0fK47LvHAp2V7k/52bZxoi9dXBS+N59qc5RwBi
-         LcvRfeO3yfDVTHbW3F/6EdQBtBszkeCvXPAn1/7wu1S/7KdWESV8fJFbXSuXnI8dKOw6
-         6fWENLEA5WfJOeikjeARsP1G5yJg98Kl+xgJUCQY4CQ8tcdG5BjJ52R+ZlZCEqSa1rAj
-         UV7aPcRqw1thDiWWUtrWSnXuqVNRO+QF/0dJr2YQjEoUxf3tgzQsQwrWmo1g0biXT9bK
-         LNeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792114964; x=1792719764;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vVZmsIf6HaIgsl+foEZt+wGwwAVohSj5QpggFF4Hfm0=;
-        b=ckv0pv22h6jkGI9UoQrv1QJRcNDBRjU/fDYGLv2L8lL7SzJXt5oRESHw5waHO7VLay
-         B92WpIzjQ0R/JMidPCilYOu94sBmounEbHAbv96tmCgJ+gq0fQk0z+z4sbZROUHTFUgk
-         q9h1Ovrb0pEwIpcVf4FzZdImpQOs0gok2ZqZnLHrevNbyj1rgtTSoJ1+YIkqNjaD/MHx
-         aK2DfuwYBBrlODVAJBI+HR0HFeOJz+W4VyLqU9vRO7X/iryhgSyotk5opWPnjzAOnTCj
-         TUi4B+xV7YKeYzFQMCwJ58P/fcks/aVKRQ4Lyn76RBFNT8z23nbVdHL5RgT4slvviXlM
-         lYzA==
-X-Forwarded-Encrypted: i=1; AKwUvBygMk8zU/RkQ1SnhDOdcdYrGuST9akQ2mMdq54s4YzYtBZMRsnhiUmZlHUXslMvnGgKSEXqN9Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL/SjAz2bFHv8YkEMDNZnPy73tN8CT7y3CfY0ko1K+Z50ele+3v
-	aQUNhDvJAksZnbM/jiYiUfX81+gOAlhW4I6O6G/zCTtElVGlIH4F/wW3cvUkol4bg2iY1D0DDHd
-	qe9TejSy1qKGOi/RVxRx7dHZqIgwqH5hUqRabJNcuug==
-X-Gm-Gg: AYBFou2JdBJmeyipwHULvXoJAd3DGqFWC6Z0IvygScDrAMYDMDMn/4yQ4p80wxhAgJ2
-	Uj4Q4rF+beBw1NIWAuW/aySfa46Z8x0xeXTqL6+9ivJ4Z8KMF90EhiGs1/87o+zB4NGR9yawtvY
-	GamO+dZvdXStDTW6C7AEvfKSyyC2bsASPu5I7xFfnoxKLcSHX7BJMK62qy3KBn9M02AW1gEuGNa
-	FVIVAryn8hS/NkW3D+/bFaXroSqfdZzx//JXPOd6Dp2vtMGpkGCH+YwP6gP54a2ELEo4Zr+00aP
-	hp5Sgi5v745ECfkrgcr56n3UfG6HUymhlBPsq6iRQLM4LYpvf7OzNmF9Pb3JteY8d4uK0WICJ02
-	DJMvHSvFR8cx+j+Fj342OSLmJAuZH7EUjY9OTdHC6D/JKM0V4RiYe1dYeiobyMhQcJSIqlS8PvV
-	glKdPPB/ltsit/hvTgio8xVtXF+UK79DM2PmaoTaE=
-X-Received: by 2002:a05:6102:1624:b0:7b4:740b:9b6 with SMTP id
- ada2fe7eead31-7cb373de30cmr5338155137.26.1792114964042; Thu, 15 Oct 2026
- 18:42:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=aspeedtech.com header.i=@aspeedtech.com header.b="rZeiTsS0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZnQAkxEwwfkWxBpYQ3igo6e77pPGENnwlPvPJCgCO2x5iCBh5EDLg8782IilNB2ulBrjVSnA4Xz2Pom9rucv+3dP5lTbzWAj161tjVU6WOc/HYLNtn8omAuybRni6FqyV/ab3MQ5Snlrq+ycky2kbP+S6uV3sbu9BOsijkIqxwNTmYmRA54t+ScRaKks8Ar4Eo1ZBWJ1ehK84KVKD8NgOnTmN+99DMBKUiXINccDmxwNIyUOdE9/kaLUfn9eSOfkC026ROH/BuWwV+bEHYpvkCs+0+N2LQIYYhrQkLOJ6RRMzG/lY0bxFMxjv4QLyjcHaNjsnWD5jefyZRwxqzDafQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qKHuQCKnu5TuBnDhFEqGdCM3anw2AHXqtzbLAQEq4M4=;
+ b=EVAA+cEd+fLUzAO7XpZoK/yjMDDFxudHSK2jt3mByMDqaFmL0m7CgNDMLDV8zyKpsgpIVfaUAtttayOVd7bFCOrAwpFUZBzKa0rOJtxYPvBCfggvF/8ex9IY9vDbPvltxl3mnLVeF3Gplvall/gJk4cSp7yc5HmK+eSRTKkGeUcC+Tw8+GSnoyfwpVpZsJgN1DbsHrA8X5mCLETS0UZuEwJm98WBFWou/AU94DG8kd05Uh/y5JATpM+jcRsbl4WaaVZT9izM80hyG3Em4x+T8IXXlVJ2bvfcSgytnWv0u/IEPBKhGLSyoWTQ5hES6+PoBd6vmvPaRDIYlyiE8drLGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qKHuQCKnu5TuBnDhFEqGdCM3anw2AHXqtzbLAQEq4M4=;
+ b=rZeiTsS0WJBuV7m/6cT4cunaHE03oNukBpHM7z+EMEPoTq+padF1eSJd1/X5xsAlqJJLT7aUjg3P+TebTMFeMJkdsw5YUrPAk0hNCjIdhGFkLRvvM1LcLoe5PdFuAx33tE+lFS8Ui3G1STPDrVw3hp/GD2RJ4VRxf1x6DC4fbuZ0tyUx5itXTH3asHkiJbxybfrdNuxwMFUzpzYCZ0PbnXOtRWFt+9pCyrXRkTWGKAR1nLHVzlCaxo3upZm4WJW6wnBvdb3oa1EtAR+3q3mz3qivUh3R1xVPZPWa579zYCSphQKNCq+O0eq07gXhjxQ7kHXHE3qI/b/cAu6ptDsNwg==
+Received: from SEYPR06MB5134.apcprd06.prod.outlook.com (2603:1096:101:5a::12)
+ by SEZPR06MB6207.apcprd06.prod.outlook.com (2603:1096:101:e8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Fri, 16 Oct
+ 2026 01:47:54 +0000
+Received: from SEYPR06MB5134.apcprd06.prod.outlook.com
+ ([fe80::f53d:547a:8c11:fc6c]) by SEYPR06MB5134.apcprd06.prod.outlook.com
+ ([fe80::f53d:547a:8c11:fc6c%3]) with mapi id 15.21.0522.012; Fri, 16 Oct 2026
+ 01:47:54 +0000
+From: Jacky Chou <jacky_chou@aspeedtech.com>
+To: Conor Dooley <conor@kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Po-Yu Chuang
+	<ratbert@faraday-tech.com>, Eric Dumazet <edumazet@kernel.org>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject:
+ =?big5?B?pl7C0DogW1BBVENIIG5ldC1uZXh0IHYzIDEvNl0gZHQtYmluZGluZ3M6IG5ldDog?=
+ =?big5?Q?ftgmac100:_Add_AST2700_compatible?=
+Thread-Topic: [PATCH net-next v3 1/6] dt-bindings: net: ftgmac100: Add AST2700
+ compatible
+Thread-Index: AQHdXHD9n9Q7HrGikUqVTdhqbVWs7bb++zAAgABqZOA=
+Date: Fri, 16 Oct 2026 01:47:54 +0000
+Message-ID:
+ <SEYPR06MB51346CDBE8434290ED671A979D9B2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+References: <20261015-support_ast2700-v3-0-8d7999171ac4@aspeedtech.com>
+ <20261015-support_ast2700-v3-1-8d7999171ac4@aspeedtech.com>
+ <20261015-anthem-kitty-d0f8794da246@spud>
+In-Reply-To: <20261015-anthem-kitty-d0f8794da246@spud>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SEYPR06MB5134:EE_|SEZPR06MB6207:EE_
+x-ms-office365-filtering-correlation-id: 360a5922-476c-4f51-ca43-08df2b277f0f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|366016|376014|1800799024|23010399003|38070700021|56012099006|4143699003|261009223027099003|10067099003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ XLhYe4cnBfMwN6vNi+PPpu8pDE1Vtf8tFTvk2k0IFha8E0HC4XJraM59tnizuaffzAQ9UDCCaUTldQ6YbMbnzKESlEcs7XDFHirkM8khyZXl9qLy9KMaCDIZIQX+s8hSJ2KrojzY2TkU6/IRuF365yMYsekQnH3BAXLY+ZEyLhP5jsy1iFp4Ui++VvI8hprklfYHn4711meMbiwUQiBzZpiqIc73xP6w1vHRIXBCGUttAEpsmEqjl70b8GYCPFmF2e5YzzPAGhYTmBZgNbAUm0bl5ll6nI5ScbkvL4vZWHEDqulTKpPhXd+Rfg3sAbjWU9+R4YoiRDcvEckAUCDdzwAeFo8rbZyiFpbYDag5VT21ljniTFZpHcOau8JopFfyrnTFIieGEMmuxOAk6wxzlW9En8EoQE31xw5Kjbx/ca2vJ5JxMaiWHglSzwD9ApxldAmw+NLr/up+9Z5/eS6eZ/oeGIae0jmdi8iyGmqmBbbhE+D/hzcJsVSCOtgfn+nHpl2h0BQasX/NJOyCjSkNFCjilOa6b6yrHLaJB8Al5Wwe3X6Fp+5ay4wQIAmmRaZtHoC1cfUx13P9/jPg9sx10RQZykL6C1ke9QEnQ+D1Tn9xTddCGWwCwRIVLmAWag8mGW156lhyhJ4/7BCcxKrmtVydaZ8Y8wmiCaLmTw4q/+l9Xy+VIBk35ViF7qS3hbo8JlmIOnsxab4XuglWgkau+YWTf5ZEwtoeTPLHcU9Lcsk=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-tw;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEYPR06MB5134.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(23010399003)(38070700021)(56012099006)(4143699003)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?big5?B?QzRrak5sOEgveVVyOHp4clR3YUt1ZWk0bnFud3kvbmw0Uzh3eVc2TitBMVc2bkhM?=
+ =?big5?B?YkFCbHdvL1JvZWU0N2J1MzdFQzhzVmFhYkk1b1hhTVlMUmNPL1lYVWdyY1RUbDU1?=
+ =?big5?B?eWlIK0MvdFZxMUhCS1Y0TEV5bHpsUzd6TWdnM1NRM0xLZE9IMFU2TkUyVDViZ1A0?=
+ =?big5?B?eHd5dGN1bWFnZUcwQlpzWWEzZTM5T3RZeHFYRnJhVk1tV0ZrSGp1SVlJSGkyWE96?=
+ =?big5?B?dDBoem5rMEw1N2lzNXdMbklVVk4xUEpUU0dIdlNsaDFudzBQd3JmSHNSLzV2VlhI?=
+ =?big5?B?Ymw0YXRYSEl2K2NIOUhKVHpVeFpDd2VNZU1LcC9raUZmYktPb1ZQWHZ5bnlyVW1o?=
+ =?big5?B?NTdZcWk5WFY2eVc0QUFxU3pWQlNBaVBXNnQrTUcrMWp0NzlKY3JVR0U2T1hzZnZJ?=
+ =?big5?B?ZXdoY203dFYzbGpBOHhseWVvU2R3dExsMTQ3RlFCY1ppbmkwbi9mczBESFZrY1oy?=
+ =?big5?B?WG5WYXgxSjljTXJhbkw1NHVodEd0dFBlM3dLbVEzV3lmMWYvSm1OY0V4VzE2QkZ0?=
+ =?big5?B?QkVaTkFVRHRwZDZCY1ZHWXUveUtZRXlVRjBQWkIrUVdXSWdrSk0zcGZLWDRPOUto?=
+ =?big5?B?dXFiN0V0bDRRWU95b1VDK1BIdGJ5UkEzcDRteXpmamVDdGdaWUdlS0tkbTFwRG50?=
+ =?big5?B?YUlIUEZDUkcyZk1NdGNmYW5rUDA0RjFKdXJ4bWNWZTVjWXJXOVhqQWs5aTR0djNL?=
+ =?big5?B?WmlSTkFLVy9uRlNuc2gyNFFtWXdUZ0llNUZEZ2FqZGxKZ1N5R0FCbGdzYTNQMzR0?=
+ =?big5?B?MGZvNUZ2SDRFR3d4dnoxcHVOM013UXhXdW9XUGo1UStGMHExclg0VUx5V29ua1NG?=
+ =?big5?B?YVN1dTdjZGQ5bkdCSUduL01qM2tXV2ZKNGR0OGlUUjlkdVpTRVNGRS9IZktiR2hF?=
+ =?big5?B?bGx3di8vbHIveUlpaGNBVUwwL3lESTg0RTFTU2Y3cEs2WURoSDlRNjhSbHFvNkM1?=
+ =?big5?B?MFF5SUJ4WW1pZXN1Y1hVcEhaaUFtclF0cEV4RmlRR1ErOE9IcnNydVhIUjY2VGJC?=
+ =?big5?B?MUtQbzZ6M3VKQ1llTlI4Z2ZGNHdxaVV4ams1ZTNneWZQZFFna016UHpOL1F5Um8v?=
+ =?big5?B?T1RTc21aK0ppS3BxUzZ4YzVVbWVuTDFXeUVnbVNwOG90N1BLR3UwOTZCbnJoZTRa?=
+ =?big5?B?UlVZUGtyWms2enVzOGNJWERVNDJlclhZdXVBZloxNE1tbHJIdlM4SEVWOXlhbitq?=
+ =?big5?B?OVY1Z29OZXVlenJIbWhSUDY1RVp4UlBPM0cvYXBpSEZ5bmlwTnRIRmk3NnFOb1VL?=
+ =?big5?B?ZzF4QnVtN1lIMTNFSTdybzlFRC8rV0c5d1pIbVFVajdTZ2hueHhXYk1mbnBETVVK?=
+ =?big5?B?VS8vS0hZSTUrRVhNSkw1aTc0SXNuMURxb01tYnM2SWt6UW13bDJCaEhLMGZ0TlNt?=
+ =?big5?B?VlUybGlwci9TSG95YmlOTERkdDFnaUp6aHB5d0tvSnVjbEZ4Ry9Hemlvc1FCOXVk?=
+ =?big5?B?bGt6NWRlS1hQd0lET1p6VXV5ZW1KSE9JbXMwSGRtVmpsQWdta0dwNVhaQlhQSjlE?=
+ =?big5?B?TzB4aGpIekRYM2RJOGlrRit6T1BZVDB4YWloU0xWYVF1S1V4S091dUNYU0FtVnBJ?=
+ =?big5?B?Y2NKbjFoM3FEZlB6VmJEc0swZ1JCN0JjNXMra1FScG9aemRkdnBMaTF4VStzem9y?=
+ =?big5?B?c3JnWVV1TmNBME5NRU15MVBGQ3ZQelY5UlBONnBaZ2NkK2tla3ArVTJvZGNnRENR?=
+ =?big5?B?dnZjUlkzSmJjWEV4aFUzcVV3MnBWUWxPVjI0TlQvVngzZGNTdWxVVWo5c0I2Zk9Y?=
+ =?big5?B?Q2VpM1pGcmZvQ1djWW44dFZJenRTNWZRN0EvNEtkNjlIcnZ1bG8xSTlEQ1NHajly?=
+ =?big5?B?Qm80N0hLU3N2TkRIbGNEK21VT0JoZ1ZqeW43Q1d2UTU3UHVjWkZXU1dPblo1UmRa?=
+ =?big5?B?V2tNQ2JKTHhqYm51d0x5VFdqNzFVanc4aGszSnRtOVZuMlA0b0dkdlAzUi9MVTZV?=
+ =?big5?B?bGlzQVJrblRwWVlxOXNpYkRSQytUcDM4RGhpQ2pyR2tWM0R6elp6U3JqY05vWlZp?=
+ =?big5?B?TkdvQU5xZVdyNGVzV2FDSWgrT0lGTWhrbGJQSUZoaS9VYkVzNHQ2VENLYUFIeEps?=
+ =?big5?B?dkRETy9xMEhWRWhCMVV3eE1vRlh5UHdCV2gySDR1dVZxYzd2VHFydzZWSFRmZjFz?=
+ =?big5?B?UUEyeXFUR29XWVZkN1pTM2V5OGpyUytXQ243SCtLN0twekNaU0dYYTFGOTMwMTZs?=
+ =?big5?B?MkJZQWZyNk45ZFg5K1RtN2dFKzJGZz09?=
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261013033920.2069285-1-rjethwani@purestorage.com> <179195063165.434549.13463545924832836566@kernel.org>
-In-Reply-To: <179195063165.434549.13463545924832836566@kernel.org>
-From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Thu, 15 Oct 2026 18:42:32 -0700
-X-Gm-Features: AclHuK8N27mGc1KdN4KK4gKo4gYl82sgI4zi_aMkVLpv1hbhFdnlLIxftdE1ahY
-Message-ID: <CAKaoeS1Bvpm2OQ_yrfqe6gJRMdY5UZ2P9oNc-d4CEqTMSUmuyg@mail.gmail.com>
-Subject: Re: [PATCH net] kcm: defer receive parsing when the lower socket's
- read_sock may sleep
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, leitao@debian.org, zirajs7@gmail.com, 
-	runyu.xiao@seu.edu.cn, jiayuan.chen@shopee.com, brauner@kernel.org, 
-	sagi@grimberg.me, hare@suse.de, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Exchange-RoutingPolicyChecked:
+	FzykdAjGAIH1Gd1IkRT63dGbDXsn1yifw8zP/xVbmW6aZ+X+8PmM01reo0D2wQb1qt208OdNK0DpmgWLb/IFFargU75Ze9dgzwhhnwDZ+3eFgR6C2s1GFh/4h/s2b0V2op0nqd5uCdkrf4pwVCHDES14ZWiMBqanjZ7YMpUeE8C+j9Tyk01BwKPNe2D36K333aYPPSyUXk8ZWElmznmSwiEIRHNVJd6g5Kb0Q1CYTrnU2hENC1nMpXuwV0vWmH1YBVjjrCZI6t3LHPW4xl18Aagit9iiyKZNo3c7gddeYkHxvTLFNHXz6MrR1g+mdv/NU3nfjdwyEQWiD0iIZr5QSA==
+X-OriginatorOrg: aspeedtech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR06MB5134.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 360a5922-476c-4f51-ca43-08df2b277f0f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2026 01:47:54.4942
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: wvym7tI3kLIHQoVgAny0PkQyt6/k8KcXk8BdvPENaLHnDr224zHs+tBCZxOqBODXtJUWyDFfoHIeWcS7MVT9WTYptpevk/nuxIPMV23Jtfs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB6207
 
-On Tue, Oct 13, 2026 at 9:03=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] In net/kcm/kcmsock.c, psock_data_ready() now passes every
->   data_ready event on a non-tcp_read_sock lower socket (for example, a=E2=
-=80=A6
->
-> --
->
-> kcm: defer receive parsing when the lower socket's read_sock may sleep
->
-> This commit changes psock_data_ready() so that strp_data_ready() runs
-> inline only when the lower socket's read_sock is tcp_read_sock(). Any
-> other read_sock, such as kTLS's tls_sw_read_sock(), is now deferred to
-> the strparser work via strp_check_rcv(). The goal is to avoid sleeping
-> in softirq context.
->
-> > diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-> > index 71af69d442f21..381a8f0b792e3 100644
-> > --- a/net/kcm/kcmsock.c
-> > +++ b/net/kcm/kcmsock.c
->
-> [ ... ]
->
-> > @@ -358,8 +359,19 @@ static void psock_data_ready(struct sock *sk)
-> >       read_lock_bh(&sk->sk_callback_lock);
-> >
-> >       psock =3D (struct kcm_psock *)sk->sk_user_data;
-> > -     if (likely(psock))
-> > -             strp_data_ready(&psock->strp);
-> > +     if (likely(psock)) {
-> > +             struct socket *sock =3D sk->sk_socket;
-> > +
-> > +             /* strp_data_ready() calls sock->ops->read_sock() inline =
-from
-> > +              * this softirq callback. A ULP's read_sock, such as kTLS=
-'s
-> > +              * tls_sw_read_sock(), may sleep, so hand anything other =
-than
-> > +              * TCP's own to the parser work, which runs under lock_so=
-ck().
-> > +              */
-> > +             if (likely(sock && sock->ops->read_sock =3D=3D tcp_read_s=
-ock))
-> > +                     strp_data_ready(&psock->strp);
-> > +             else
-> > +                     strp_check_rcv(&psock->strp);
->
-> [Severity: Medium]
-> Will this serialize all KCM-over-kTLS receive processing on a single
-> system-wide worker?
->
-> strp_check_rcv() only does queue_work(strp_wq, &strp->work). strp_wq is
-> created in strp_dev_init() as an ordered workqueue:
->
-> net/strparser/strparser.c:strp_dev_init() {
->     ...
->         strp_wq =3D create_singlethread_workqueue("kstrp");
->     ...
-> }
->
-> So only one strparser work item can run at a time across the whole
-> system. KCM psocks, the sockmap strparser in net/core/skmsg.c and
-> espintcp in net/xfrm/espintcp.c all share this queue.
->
-> With this change, every data_ready event on a kTLS-backed psock ends up
-> in this path:
->
-> strp_work()
->   do_strp_work()
->     lock_sock()
->     strp_read_sock()
->       tls_sw_read_sock()
->         tls_rx_one_record()   /* sync AEAD decrypt or crypto_wait_req() *=
-/
->         tls_read_flush_backlog()
->
-> While one psock is decrypting or waiting there, do_strp_work() for every
-> other strparser instance waits behind it on kstrp.
->
-> Before this patch, the common case ran inline in softirq on the
-> receiving CPU, so several sockets could be processed in parallel. kstrp
-> was only used for the sock_owned_by_user() and -ENOMEM fallbacks.
->
-> Could this add receive latency for unrelated KCM, sockmap and espintcp
-> users? Each individual wait is bounded, but a local user who controls
-> KCM+kTLS sockets could keep the shared worker busy. Would a per-psock or
-> unbound workqueue for this deferred path be a better fit?
->
-> > +     }
-> >
-> >       read_unlock_bh(&sk->sk_callback_lock);
-> >  }
-
-Thanks, the point about kstrp being ordered is correct, and it goes further
-than this patch.
-
-kstrp has been create_singlethread_workqueue() since strparser was
-introduced, and the serialization already bites today. strp_work() takes
-cb.lock, which is lock_sock() for every in-tree user (KCM, sockmap,
-espintcp, ovpn), so the single kstrp worker already stalls for as long as
-any process holds the socket lock of any strparser-attached socket. That
-wait has no bound and is a bigger hazard than one AEAD decrypt. KCM
-over plain TCP already queues to kstrp on attach and under receive-buffer
-backpressure (kcm_rcv_ready() -> strp_check_rcv()), and strparser itself
-queues there when the socket is owned or on -ENOMEM. This patch makes the
-deferred path more common for KCM-over-kTLS, which currently sleeps in
-atomic context. It changes nothing for plain TCP psocks.
-
-Nothing in strparser relies on kstrp being ordered. The workqueue core
-never runs one work item on two workers at once; strp_work() and
-strp_msg_timeout() both run under cb.lock; strp_done() uses the
-cancel_*_sync() variants; and separate strparsers were never ordered
-against each other, since the common strp_data_ready() path runs inline in
-softirq on whichever CPU received the data.
-
-So rather than a per-psock workqueue, which would need a new strparser
-API, v2 adds a follow-up patch that allocates kstrp with
-alloc_workqueue("kstrp", WQ_PERCPU | WQ_MEM_RECLAIM, 0), per-CPU and
-WQ_MEM_RECLAIM like kTLS's tls-strp. That removes the system-wide
-serialization for all strparser users, so a slow or lock-blocked psock only
-delays its own work item. v2 also reads sock->ops with READ_ONCE(), since
-kTLS can replace it with WRITE_ONCE() after the socket is attached to KCM.
-
-pw-bot: cr
+SGkgQ29ub3IsDQoNClRoYW5rIHlvdSBmb3IgeW91ciByZXBseS4NCg0KPiA+IEFkZCBBU1QyNzAw
+IHRvIHRoZSBGVEdNQUMxMDAgY29tcGF0aWJsZSBsaXN0IGFuZCBkb2N1bWVudCB0aGF0IGl0cw0K
+PiA+IFJNSUkgUkNMSyBnYXRlIG1hdGNoZXMgdGhlIGVhcmxpZXIgQXNwZWVkIFNvQ3MuIEFsbG93
+IHRoZSByZXNldCBsaW5lDQo+ID4gZm9yDQo+ID4gQVNUMjcwMCBhcyBpdCBmb2xsb3dzIHRoZSBz
+YW1lIHJlc2V0IHJlcXVpcmVtZW50cyBhcyBBU1QyNjAwLg0KPiA+DQo+ID4gUmVxdWlyZSAicGh5
+LW1vZGUiIHRvIGJlIHByZXNlbnQgaW4gdGhlIGRldmljZSB0cmVlIHdoZW4gdGhlIEFTVDI3MDAN
+Cj4gPiBjb21wYXRpYmxlIGlzIHVzZWQsIG1hdGNoaW5nIHRoZSBkcml2ZXIncyBwcm9iZS10aW1l
+IHJlcXVpcmVtZW50Lg0KPiA+DQo+ID4gTWFrZSBhc3BlZWQsYXN0MjcwMC1tYWMgYSBzdGFuZGFs
+b25lIGNvbXBhdGlibGUgaW5zdGVhZCBvZiBwYWlyaW5nIGl0DQo+ID4gd2l0aCB0aGUgZ2VuZXJp
+YyAiZmFyYWRheSxmdGdtYWMxMDAiIGZhbGxiYWNrOiBpZiBhIG5vZGUgZXZlciBib3VuZA0KPiA+
+IHRocm91Z2ggdGhlIGdlbmVyaWMgZW50cnkgYWxvbmUsIGZ0Z21hYzEwMF9wcm9iZSgpIHdvdWxk
+IHNldA0KPiA+IHJ4ZGVzMF9lZG9ycl9tYXNrL3R4ZGVzMF9lZG90cl9tYXNrIHRvIEJJVCgxNSkg
+aW5zdGVhZCBvZiB0aGUgQXNwZWVkDQo+ID4gQklUKDMwKSwgc2tpcCBBc3BlZWQgY2xvY2sgc2V0
+dXAsIGFuZCBsZWF2ZSB0aGUgRE1BIG1hc2sgdG9vIG5hcnJvdy4NCj4gPg0KPiA+IFRoZSBleGlz
+dGluZyBhc3BlZWQsYXN0MjQwMC1tYWMsIGFzcGVlZCxhc3QyNTAwLW1hYywgYW5kDQo+ID4gYXNw
+ZWVkLGFzdDI2MDAtbWFjIGNvbXBhdGlibGVzIGhhdmUgdGhlIHNhbWUgc3RydWN0dXJhbCBwcm9i
+bGVtOiB0aGV5DQo+ID4gYXJlIGN1cnJlbnRseSBvbmx5IHZhbGlkIHdoZW4gcGFpcmVkIHdpdGgg
+ImZhcmFkYXksZnRnbWFjMTAwIiwgYW5kIGENCj4gPiBub2RlIHRoYXQgYm91bmQgdGhyb3VnaCB0
+aGUgZ2VuZXJpYyBlbnRyeSBhbG9uZSB3b3VsZCBoaXQgdGhlIHNhbWUNCj4gPiBCSVQoMTUpIHZz
+IEJJVCgzMCkgbWlzbWF0Y2guIEdpdmUgdGhlbSB0aGUgc2FtZSBzdGFuZGFsb25lIHRyZWF0bWVu
+dA0KPiA+IGFzIEFTVDI3MDAsIHNvIG5vbmUgb2YgdGhlIEFzcGVlZCBjb21wYXRpYmxlcyByZXF1
+aXJlIHRoZSBnZW5lcmljDQo+ID4gZmFsbGJhY2sgYWxvbmdzaWRlIHRoZW0uDQo+IA0KPiBUaGlz
+IG5lZWRzIHRvIGJlIHR3byBjb21taXRzLiBPbmUgZml4aW5nIHRoZSBleGlzdGluZyBkZXZpY2Vz
+IGFuZCBvbmUgYWRkaW5nDQo+IHRoZSBuZXcgb25lLg0KPiANCg0KQWdyZWVkLCBJIHdpbGwgc3Bs
+aXQgdGhlbSB0byB0d28gY29tbWl0cyBpbiBuZXh0IHZlcnNpb24uDQoNCj4gPiBmdGdtYWMxMDBf
+b2ZfbWF0Y2hbXSBoYXMgaGFkIGRlZGljYXRlZCBlbnRyaWVzIGZvciBBU1QyNDAwLCBBU1QyNTAw
+LA0KPiA+IGFuZCBBU1QyNjAwIHNpbmNlIGNvbW1pdCAwM2EyYWJhNTBiMmMgKCJuZXQ6IGZ0Z21h
+YzEwMDogTGlzdCBhbGwNCj4gPiBjb21wYXRpYmxlcyIpLCBzbyB0aGVyZSBpcyBubyBrbm93biBr
+ZXJuZWwgKyBkZXZpY2V0cmVlIGNvbWJpbmF0aW9uDQo+ID4gd2hlcmUgYSBub2RlIGhhcyBhY3R1
+YWxseSBib3VuZCB0aHJvdWdoIHRoZSBnZW5lcmljIGVudHJ5IGFuZCBnb3R0ZW4NCj4gPiB0aGUg
+d3JvbmcgRURPUlIgYml0LiBUaGlzIHBhcnQgaXMgYSBiaW5kaW5nIGNvcnJlY3RuZXNzIGZpeCwg
+bm90IGEgZml4DQo+ID4gZm9yIGFuIG9ic2VydmVkIGZhaWx1cmUuDQo+IA0KPiA+IE5vdGUgdGhh
+dCBhcmNoL2FybS9ib290L2R0cy9hc3BlZWQvYXNwZWVkLWc0LmR0c2ksIGFzcGVlZC1nNS5kdHNp
+LCBhbmQNCj4gPiBhc3BlZWQtZzYuZHRzaSBzdGlsbCBkZWNsYXJlIHRoZWlyIE1BQyBub2RlcyB3
+aXRoIHRoZSB0d28tc3RyaW5nDQo+ID4gImFzcGVlZCxhc3RYWFhYLW1hYyIsICJmYXJhZGF5LGZ0
+Z21hYzEwMCIgY29tcGF0aWJsZSwgc28gdGhpcyB3aWxsDQo+ID4gbWFrZSBkdGJzX2NoZWNrIHdh
+cm4gYWdhaW5zdCB0aG9zZSBmaWxlcyB1bnRpbCB0aGUgcmVkdW5kYW50IGZhbGxiYWNrDQo+ID4g
+Y29tcGF0aWJsZSBpcyBkcm9wcGVkIHRoZXJlIGFzIHdlbGwuIFRoYXQgLmR0c2kgY2hhbmdlIHdp
+bGwgYmUgc2VudCBhcw0KPiA+IGEgc2VwYXJhdGUgc2VyaWVzIHRocm91Z2ggdGhlIEFzcGVlZC9h
+cm0tc29jIHRyZWUsIHNpbmNlIGR0LWJpbmRpbmdzDQo+ID4gY2hhbmdlcyBkb24ndCBnbyB0aHJv
+dWdoIHRoYXQgdHJlZS4NCj4gDQo+IFRoaXMgc2hvdWxkIGJlIGJlbG93IHRoZSAtLS0gbGluZSBv
+ciBub3QgZXZlbiBpbmNsdWRlZCBpbiB0aGUgcGF0Y2guDQo+IA0KDQpJIGFsc28gdXBkYXRlIHRo
+aXMgaW4gbmV4dCB2ZXJzaW9uLg0KDQpUaGFua3MsDQpKYWNreQ0KDQo=
