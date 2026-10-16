@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC2B32B135;
-	Fri, 16 Oct 2026 01:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642BC33F5AA;
+	Fri, 16 Oct 2026 01:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792113013; cv=none; b=Iufeb42GQqQZZEttbXK4pH6hYGKwUJVJx+BTAg1YyqI+Z/r9NkMuBAGtq3OtXt+lUjQFRv5SLWNA91AKZbxDfALk6GNH49N8Q4lJvcdnjgqNsdbgg0FtpSU93F2kndSr5PD1EPkEXg35doSdtt7g50lUrQE+ZTuPxg7+BlZsV8w=
+	t=1792113015; cv=none; b=dam5IDKGRBuCz52rXA+ayDCsoYWjrlci+vVIZit0LTDys+1lm1s9fM0DKp4EFmQdROO6oGq1TwS49V2Lv6zFZTarKMmTFGyzo/2QSRD2g2GdUr8DXoC+tWdlo0JekggRzSru39AHRiSmFaXPxArAGLFqp1ADWXP631vCjm1x/3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792113013; c=relaxed/simple;
-	bh=b5028DQrQKW6ZF+VhPTKQY0eEDmIRlSwjq0y9yyp+qQ=;
+	s=arc-20240116; t=1792113015; c=relaxed/simple;
+	bh=uKWmPriZqqzypHB6jm0jeSACUly6+POxaUEWZHb1XOE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=c7wq2WsLWo8TFfDTt8xYksImYqNCG2amlBk49+V1UHFwR0clDt7gyDBEzKIitiEZb6LO3YRbn5WB+JR9PJ9gANEKbCQ5qbGKgoqd/Q3fYbDYZtX2pPymKuV7BrbpfVaQB1jJdfQ7Qswt6zs0G7Ai2H4lV5X8PPR2dbvoUHusCgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DUiXHPEL; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=PcYmszhcWOiF8CvTzCP2mO5elugRZLJHMCHC/tW5XK/NU6LebXlmfDfLNvlboZzkJPDqWgNsgMjiXRLIdZ0ZDbpB1PfNIKxNgSc/z8pj3LYnvtECUpWjc46btM+ATfQT6ihScAlEmN0J+dVAqvEq9NUDE0etSQqNu7gJ5elVyw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlY1pQn7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DUiXHPEL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB931F000C4;
-	Fri, 16 Oct 2026 01:10:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlY1pQn7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F4E1F000C4;
+	Fri, 16 Oct 2026 01:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792113012;
-	bh=ymNhEkjimRGeSuYmrBqIBrAIzE//R8j4khgVGTq7IF0=;
+	s=k20260515; t=1792113014;
+	bh=ZsmDfOR4MqlTvsluJlYS5l8ry4+iNBk487udyPZhM7M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DUiXHPELW7LD5aVh5zyrpeo+ElpXD2Gz2NuKdck07UbrtQBZwvIR1pMToE3xUJFO3
-	 pvk0N0+Xm+oro6MH/+H4KtKbtaDne00Asnr0l+rBWAefozaQqmWouL03aZK3LDhtEj
-	 wvZunW2fgzdW2mnbkXlvMfd2z9D6HpxdWx4U49eFS/1gGa/DWIX+BWQqjNA++yWdzJ
-	 PACCxEg7sbAPfXEBSlvt+IZqTeTtB3cptT/YcRcUv5WBbSy8hmuVs/I/g8SDhYT7/7
-	 KDscpQCBMfrdz9/+UqtcbhyTCcxzltHadJHiB6FRM8TvXsXr0r2gmc3qOWNMmRQo+9
-	 JpkbJkBQpSVXg==
+	b=mlY1pQn7BRTtQkxMAWtgS1RAm7/UI/IZsOz+9qfnGQy2C2x5ueEsvCySQM0pLMMPe
+	 YpKgeh1VrGmLcRLUjkdn8onAuMc7TsLfuz7/j9/T7pEpcbWLPdgojxeilQCklO1GJn
+	 qEIMys5hXC23JM88GLyifnCBS8weM+NCuYNcNMhQG0xpIYsliPq5Cz07md9NP7viLP
+	 StRhq+82LHMWn/SuXjcrqUtzIJsPLN2mAUtl//mIru85w3bABpYRIe5Izhcrh6diTn
+	 Q/eNv7iRCdXBdSsvzEuf8zrUIbpUrIK3Np1K7aDaQDyL+j2nDfWSvpPfPmGNjWEowp
+	 5zkJqXGQ5RcKg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774413808209;
-	Fri, 16 Oct 2026 01:10:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F14D33808209;
+	Fri, 16 Oct 2026 01:10:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] mpls: unregister sysctls before network device teardown
+Subject: Re: [PATCH net-next] net/mlx5e: Rename state_destroy to
+ rx_mode_active in
+ flow steering
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179211301102.4187796.14903692896368030856.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Oct 2026 01:10:11 +0000
-References: <20261007201237.171863-2-Jeremy.Jean@oss.cyber.gouv.fr>
-In-Reply-To: <20261007201237.171863-2-Jeremy.Jean@oss.cyber.gouv.fr>
-To: =?utf-8?b?SsOpcsOpbXkgSmVhbiA8SmVyZW15LkplYW5Ab3NzLmN5YmVyLmdvdXYuZnI+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <179211301252.4187796.3489924200999581576.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 01:10:12 +0000
+References: <20261011093100.769149-1-tariqt@nvidia.com>
+In-Reply-To: <20261011093100.769149-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ aleksandr.loktionov@intel.com, alazar@nvidia.com, cratiu@nvidia.com,
+ dtatulea@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ saeedm@nvidia.com, shshitrit@nvidia.com, sdf@fomichev.me,
+ sdf.kernel@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  7 Oct 2026 20:12:37 +0000 you wrote:
-> On network namespace exit, loopback is freed before MPLS unregisters its
-> sysctls. A task can keep platform_labels open and write to it during exit.
-> The handler can then use the freed loopback device.
+On Sun, 11 Oct 2026 12:31:00 +0300 you wrote:
+> From: Alexei Lazar <alazar@nvidia.com>
 > 
-> Unregister the sysctls in pre_exit.
-> 
-> Fixes: 7720c01f3f59 ("mpls: Add a sysctl to control the size of the mpls label table")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+> This flag controls the enablement of RX mode handling (promisc,
+> allmulti, broadcast, netdev addr sync). It acts as a safeguard
+> that prevents new FS (flow steering) operations during device
+> teardown. When the device is in destroying state it is set to
+> false to indicate RX mode operations are not allowed.
+> Its name is misleading, as it suggests a destroy-state flag
+> rather than RX mode activity. Rename it for clarity.
 > 
 > [...]
 
 Here is the summary with links:
-  - mpls: unregister sysctls before network device teardown
-    https://git.kernel.org/netdev/net-next/c/c71d33e31b0e
+  - [net-next] net/mlx5e: Rename state_destroy to rx_mode_active in flow steering
+    https://git.kernel.org/netdev/net-next/c/cdcb648a97eb
 
 You are awesome, thank you!
 -- 
