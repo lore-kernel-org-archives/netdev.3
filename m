@@ -1,68 +1,269 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FF43A255F;
-	Fri, 16 Oct 2026 21:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50CB447237;
+	Fri, 16 Oct 2026 21:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792185628; cv=none; b=qqbL41kI9LdpIaKJz1Wb5qPEyVZHP/9qVzQZReZoP6CalckkIG+jSbO4rjOKaPY7W7ThinZZuWAm1tJhbltaX8Y9Mx+cAokZhQlf+YHAHQU3k2wdmBOkoG6S93SNDApI7eA9ltPoiGNjoanq2EnwYyKJ3ykIA+kxF7lNHiIuiBo=
+	t=1792185632; cv=none; b=Wbg6F1qY4e4AfQs/cEFoiS3p0oqGSegDOU+WgJz0Sqae27wITgIgVizpW5DEzDu8gDxxXPd95VZDJvG9lZof9gDq9uOTTCgFE6ynLxQ+sK/5kw1xfosSp/yWg3Ki9CqtW/dor29AII2Q/2pF9Srw3LGWzwUZGwc+IbK9iZ6gnvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792185628; c=relaxed/simple;
-	bh=3tWgWRurkGM4RcABbyobiv8UywCAr0DWbUZfUFSKFJo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HbaLSIY4eepEZdCBYTbUihojbo4ae+Ks16p93XkvWjPNNgQCPlXQIyjpGG7dlCZqvMJajIHrd7xZ0d4NDjrDbMRNxM7lT50LFBQ+d6yZRoZC8jSoKnWmO1N2cDi/oD2vtZCu/FQLdgrZBSBCwl1d1n/sw5eekP/DxwlPfkZMHt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CTUTXEos; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1792185632; c=relaxed/simple;
+	bh=OdKy32Jqan6bAzDpc0sKtlJIX0vMrwxr2S7flCylqVI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I5HcQgSmUIyTUrzqVcViKWUUeqogVvb90JIAhuZRu9QS+pWuIAx7NV046DJyjEOsE+JCiH7VoNtLeC87FQx5+MlF8OpvyF7JYKmPBzOP9U/4bES47rFPf3IuDZIe2LaJo5ssDqzI3k5vh3pgQ9nxIqaIqOwZE7CL8Vwz5Va4wAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EgU4zL2z; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CTUTXEos"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ZYa51UvLksBCVLWhobeX+7zoR9DCUur+g2uNbn5PXt4=; b=CTUTXEosgjzr4XjI1Aheq1QkTl
-	qBmfQCPnymsEuHcfsv2K1sLtl2buzQNU2SmIpE4Fn+jHEKDqyhWXIEMc9k0g61dvVSbwAcOYAOFGF
-	P67zPJLPXIaWF9GGaRIXysmwumVuwktZtYp4RMSx9RYaPFdVYwDVDj1knUXcgPgOUI0s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xHpLe-00BEIC-Eq; Fri, 16 Oct 2026 23:20:18 +0200
-Date: Fri, 16 Oct 2026 23:20:18 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/2] net: phy: aquantia: add get_features()
- for AQR113C
-Message-ID: <202c1214-ad73-477c-b74d-d2ca47894c46@lunn.ch>
-References: <20261016-net-phy-aqr113c-fix-pma-capability-v3-0-0bbb1b84035d@oss.qualcomm.com>
- <20261016-net-phy-aqr113c-fix-pma-capability-v3-2-0bbb1b84035d@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EgU4zL2z"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69GJiVVm490428;
+	Fri, 16 Oct 2026 21:19:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xNPZw3
+	EXSZ4uPiOZfoHoPbFl9PKDY4YhWD1OfoEY5XM=; b=EgU4zL2z5Z3ACfQgm9YYeA
+	1fne1LemoT36UHHAGYYzoZH9vt/JRw9kqpFILWJmG5lR1JugUkgQ4prOEPiHb9oa
+	Xzf9AhCkooX9waQTcDUZ5/36erULE3ftofRk+Eyw3m9L4cG5NApO1ObNn2ax6RQ9
+	jJVY7m4cgVH/HY6USwIc65cFX9ElOFiDLal8W3O9AGSX0VoLTvXJuCHwK6C9ImaY
+	bwnxQBFELop56xFQldWhe3R1MuNO9/iJ6IIx+f8jh91J/mYt0s8lfcT5K38I+niT
+	e4B3sgsYW8ctBN4C/QcUkwqlniqMcUM+SwgUJb5T5f0RPpmslSdrzsV2y+oO+8gw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dv41jcm-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 16 Oct 2026 21:19:52 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69GJo89t2965759;
+	Fri, 16 Oct 2026 21:19:51 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hbne4sg7y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Oct 2026 21:19:51 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69GLJohX32899590
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Oct 2026 21:19:50 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 21EA358059;
+	Fri, 16 Oct 2026 21:19:50 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F1CE158067;
+	Fri, 16 Oct 2026 21:19:46 +0000 (GMT)
+Received: from [9.67.103.235] (unknown [9.67.103.235])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 16 Oct 2026 21:19:46 +0000 (GMT)
+Message-ID: <de6d786b-fdbd-42f8-b2c9-b175a6a33c69@linux.ibm.com>
+Date: Fri, 16 Oct 2026 14:19:46 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261016-net-phy-aqr113c-fix-pma-capability-v3-2-0bbb1b84035d@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 1/6] ibmvnic: Move long delayed work on
+ system_dfl_long_wq
+To: Marco Crivellari <marco.crivellari@suse.com>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org
+References: <20261012095452.135828-1-marco.crivellari@suse.com>
+ <20261012095452.135828-2-marco.crivellari@suse.com>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20261012095452.135828-2-marco.crivellari@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: LGXgFU0TpwWO4Rmjiw6wRlCKA4EQoH_L
+X-Proofpoint-ORIG-GUID: TjZICohO1dTAQx0xDC9FPrm7GTarATKr
+X-Authority-Analysis: v=2.4 cv=aqInmiZV c=1 sm=1 tr=0 ts=6ad294f9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=voM4FWlXAAAA:8 a=iox4zFpeAAAA:8
+ a=tkcf6-MeEqR6izG4hBoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=O8hF6Hzn-FEA:10 a=IC2XNlieTeVoXbcui8wp:22 a=WzC6qhA0u3u7Ye7llzcV:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE2MDA4NCBTYWx0ZWRfX0bt0ILkmD9/o
+ jTvfNCQLa1mQGB/qU9SmRmSyCy5cu6kye+YCQsWqwlXlzFl5nj/HnIpudSINruK9rVsCdUTSVvy
+ /I0QQ5fxZglk3YjzxiKRNLMgy/Yczb8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE2MDA4NCBTYWx0ZWRfXxB+JlbBJyzI3
+ Acx+6yxotE9DfpYHkf7VC14+iL7TU8Hkt15f+nOtqxnd7LARup7oYoSbbqmTh+mD+yqBolAZafH
+ yldDBD2tWVkwoWks82qds8rjeJJ9Xtxklko5ODfDfdWcc2BN0gmcE6v/MZKAThuQXlYRBm7p/K9
+ bKhLIuUtrfOP/V0bGnxH/NHPuUBCYPDh+DHAvTKzzk3tEFxWD0cYFjGIIFWEKhERFSsZtIMzPfj
+ 3l4voCqS1xDaESbmSKwkAMQZ7rnEcIYo15yhsMnGDF282GmxBFeYuKBh9N+vyRQbv2CIxpOXoFj
+ Z2atUTKMJhOZILSlv0SJQWakYrfyA53cy5MZf2s796AnetRBgL/qgra21Y0d28kxzekHwfaHt7v
+ XNqjgbdwOFMczd8sWJ5K684vumk87mkCXJV8uA4MYdRCMGyzBQG/+mYbZzzTUploGq3z0gqTIZx
+ 8kdTtEk5emp9CPiF64w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-16_03,2026-10-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1011 spamscore=0 malwarescore=0 suspectscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610160084
 
-On Fri, Oct 16, 2026 at 11:23:19AM +0800, Hongmei Xu wrote:
-> AQR113c does not correctly report its supported PMA capabilities
-> which includes speeds like 10G/5G/2.5G. Add get_features() to
-> explicitly declare 10G/5G/2.5G/1G support instead of relying on
-> PMA register reads.
+On 10/12/26 2:54 AM, Marco Crivellari wrote:
+> Currently the code enqueue work items using {queue|mod}_delayed_work(),
+> using system_long_wq. This workqueue should be used when long works are
+> expected and it is a per-cpu workqueue.
 > 
-> The AQR113 likely has the same issue since it is a closely related
-> variant, but this fix is limited to AQR113C as that is the only
-> hardware available for testing.
+> The function(s) end up calling __queue_delayed_work(), which set a global
+> timer that could fire anywhere, enqueuing the work where the timer fired.
 > 
-> Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+> Unbound works could benefit from scheduler task placement, to optimize
+> performance and power consumption. Long work shouldn't stick to a single
+> CPU.
+> 
+> Recently, a new unbound workqueue specific for long running work has
+> been added:
+> 
+>      c116737e972e ("workqueue: Add system_dfl_long_wq for long unbound works")
+> 
+> Since the workqueue work doesn't rely on per-cpu variables, there is no
+> obvious reason that justify the use of a per-cpu workqueue. So change
+> system_long_wq with system_dfl_long_wq so that the work may benefit from
+> scheduler task placement.
+> 
+> Cc: Haren Myneni <haren@linux.ibm.com>
+> Cc: Rick Lindsley <ricklind@linux.ibm.com>
+> Cc: Nick Child <nnac123@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+> ---
+>   drivers/net/ethernet/ibm/ibmvnic.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+> index 5a510eed335e..d4c284c8ef43 100644
+> --- a/drivers/net/ethernet/ibm/ibmvnic.c
+> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+> @@ -3229,7 +3229,7 @@ static void __ibmvnic_reset(struct work_struct *work)
+>   	if (adapter->state == VNIC_PROBING &&
+>   	    !wait_for_completion_timeout(&adapter->probe_done, timeout)) {
+>   		dev_err(dev, "Reset thread timed out on probe");
+> -		queue_delayed_work(system_long_wq,
+> +		queue_delayed_work(system_dfl_long_wq,
+>   				   &adapter->ibmvnic_delayed_reset,
+>   				   IBMVNIC_RESET_DELAY);
+>   		return;
+> @@ -3267,7 +3267,7 @@ static void __ibmvnic_reset(struct work_struct *work)
+>   	spin_lock(&adapter->rwi_lock);
+>   	if (!list_empty(&adapter->rwi_list)) {
+>   		if (test_and_set_bit_lock(0, &adapter->resetting)) {
+> -			queue_delayed_work(system_long_wq,
+> +			queue_delayed_work(system_dfl_long_wq,
+>   					   &adapter->ibmvnic_delayed_reset,
+>   					   IBMVNIC_RESET_DELAY);
+>   		} else {
+> @@ -3454,7 +3454,7 @@ static int ibmvnic_reset(struct ibmvnic_adapter *adapter,
+>   	list_add_tail(&rwi->list, &adapter->rwi_list);
+>   	netdev_dbg(adapter->netdev, "Scheduling reset (reason %s)\n",
+>   		   reset_reason_to_string(reason));
+> -	queue_work(system_long_wq, &adapter->ibmvnic_reset);
+> +	queue_work(system_dfl_long_wq, &adapter->ibmvnic_reset);
+>   
+>   	ret = 0;
+>   err:
+On 10/12/26 2:54 AM, Marco Crivellari wrote:
+ > Currently the code enqueue work items using {queue|mod}_delayed_work(),
+ > using system_long_wq. This workqueue should be used when long works are
+ > expected and it is a per-cpu workqueue.
+ >
+ > The function(s) end up calling __queue_delayed_work(), which set a global
+ > timer that could fire anywhere, enqueuing the work where the timer fired.
+ >
+ > Unbound works could benefit from scheduler task placement, to optimize
+ > performance and power consumption. Long work shouldn't stick to a single
+ > CPU.
+ >
+ > Recently, a new unbound workqueue specific for long running work has
+ > been added:
+ >
+ >      c116737e972e ("workqueue: Add system_dfl_long_wq for long 
+unbound works")
+ >
+ > Since the workqueue work doesn't rely on per-cpu variables, there is no
+ > obvious reason that justify the use of a per-cpu workqueue. So change
+ > system_long_wq with system_dfl_long_wq so that the work may benefit from
+ > scheduler task placement.
+ >
+ > Cc: Haren Myneni <haren@linux.ibm.com>
+ > Cc: Rick Lindsley <ricklind@linux.ibm.com>
+ > Cc: Nick Child <nnac123@linux.ibm.com>
+ > Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+ > Cc: Michael Ellerman <mpe@ellerman.id.au>
+ > Cc: Nicholas Piggin <npiggin@gmail.com>
+ > Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+ > Cc: linuxppc-dev@lists.ozlabs.org
+ > Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+ > ---
+ >   drivers/net/ethernet/ibm/ibmvnic.c | 6 +++---
+ >   1 file changed, 3 insertions(+), 3 deletions(-)
+ >
+ > diff --git a/drivers/net/ethernet/ibm/ibmvnic.c 
+b/drivers/net/ethernet/ibm/ibmvnic.c
+ > index 5a510eed335e..d4c284c8ef43 100644
+ > --- a/drivers/net/ethernet/ibm/ibmvnic.c
+ > +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+ > @@ -3229,7 +3229,7 @@ static void __ibmvnic_reset(struct work_struct 
+*work)
+ >   	if (adapter->state == VNIC_PROBING &&
+ >   	    !wait_for_completion_timeout(&adapter->probe_done, timeout)) {
+ >   		dev_err(dev, "Reset thread timed out on probe");
+ > -		queue_delayed_work(system_long_wq,
+ > +		queue_delayed_work(system_dfl_long_wq,
+ >   				   &adapter->ibmvnic_delayed_reset,
+ >   				   IBMVNIC_RESET_DELAY);
+ >   		return;
+ > @@ -3267,7 +3267,7 @@ static void __ibmvnic_reset(struct work_struct 
+*work)
+ >   	spin_lock(&adapter->rwi_lock);
+ >   	if (!list_empty(&adapter->rwi_list)) {
+ >   		if (test_and_set_bit_lock(0, &adapter->resetting)) {
+ > -			queue_delayed_work(system_long_wq,
+ > +			queue_delayed_work(system_dfl_long_wq,
+ >   					   &adapter->ibmvnic_delayed_reset,
+ >   					   IBMVNIC_RESET_DELAY);
+ >   		} else {
+ > @@ -3454,7 +3454,7 @@ static int ibmvnic_reset(struct ibmvnic_adapter 
+*adapter,
+ >   	list_add_tail(&rwi->list, &adapter->rwi_list);
+ >   	netdev_dbg(adapter->netdev, "Scheduling reset (reason %s)\n",
+ >   		   reset_reason_to_string(reason));
+ > -	queue_work(system_long_wq, &adapter->ibmvnic_reset);
+ > +	queue_work(system_dfl_long_wq, &adapter->ibmvnic_reset);
+ >
+ >   	ret = 0;
+ >   err:
+I walked through the reset path and the conversion looks fine.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+All three system_long_wq users move together and there are no
+remaining users in the driver. The work items don't rely on per-CPU
+state, so system_dfl_long_wq seems appropriate here.
 
-    Andrew
+Minor commit message nit: ibmvnic doesn't use mod_delayed_work(), and
+one of the conversions is queue_work() rather than delayed work.
+
+Acked-by: Mingming Cao <mmc@linux.ibm.com>
