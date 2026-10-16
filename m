@@ -1,87 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1603A2EEE69
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 16:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF3B4E3ECF
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 16:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792166637; cv=none; b=OAeA4W61Rvp4rEsSEUAEGMcbJ5aTo2On07lamMkYZyMHMdg/74fMmbqOpuVTcp0LPoWBTHr8/w8CaNmhuX3a9aNgwhXthx4nVq9mFd0NkLMtm6B9WEAYnqT1MCMU/ZScEvxOzB5oT3mJYK+DY+5KceExzyW//UWOQXGd9EMzVwc=
+	t=1792166920; cv=none; b=e5r+oiipC+7Cg3N85S2qKcJlIHj0OYB68aOTs1WO9Y7z5iovdaEOJmcgjV1Utcq3HIPbLq5rsY/tgxrYl7AO0iyB8EAbliHEq7WPgsXhbGhq7YXyvMNPOL272KH3LyvMtaBLVrV31pu7bOYm2tHG79r0xeAvT+bRPhTzObdunfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792166637; c=relaxed/simple;
-	bh=097lIpU2xEmdx+YBb9L9JjNE80obm2+Aor02Nn4LrbU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IbwsdCWAYnaSoG+op6vt4Z/I2HsHtse9ohkcyCd8M6mvwCxgUWKyhxdyPUqnOe9eeuM/oss4qvRc9Gzn/YKOGkADZUZ1ljH08Fl7GDG6PoYs0qfSsX85joJ+65WBy/5ruoHRmyQ7rCOHn30FL4CyDEyUQDZCJYIrdZ4NQPUjodg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoQ6MlDs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792166920; c=relaxed/simple;
+	bh=kXhP1OwYjv8R26m2rEknmw6BEFPz4ktTEFaQcRoV4Yw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OdcpG3U/dfyMP40/jzTH9j+QC1vliYuz0CtaLEOr5+TaX+cY4BkfRy9yjvj4LorHB7c4Mzm2cIbOYZQDv1O5hIm/p9eGup1wSLlBDAa/6GgJnmjROAZHXJta/fqnd+pYcfmMnzhXhgntfh+ub/0YZwnoeaFJ0YrYxWeWopLvUBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VN6plTRx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoQ6MlDs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4681F000C5;
-	Fri, 16 Oct 2026 16:03:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VN6plTRx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A081F000C9
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 16:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792166635;
-	bh=yHpWNNua0AJeOthGlwDVs9U4hU1m9l5wVM7p8IB0ZjY=;
-	h=From:To:Cc:Subject:Date;
-	b=KoQ6MlDs+v9GyrdHkAQZykwP3+8UyK53/o7NSHce0hL/ThdZ6V1dhrE2gzrnUTaKz
-	 DIVcxi3KGxrnq3/4tUcQduk7OJnRYq7GNOTL62S0RUDffpEtWCkGfHZiTZqSGyCfIg
-	 QRcPfB+qqfFTWKgkYmZIXkxxQIYYSAppeA8Pqc0Y1WmgfOGpDMn6j3yKnJIbThjOoa
-	 JYXDRqGZSZZ4G+9dR++11HvPOqUZupLGN1NYaqVVamOAI9QP8jL2d2UBa3em6IHGop
-	 5/7GS68TyHEx3/rnqkFSWy2T0xRBLiVJPXing1vDASR32z0yJm4ir/20HinkfNGfUc
-	 bewMbNyKBEYgA==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Qiliang Yuan <odys.yuan@gmail.com>
-Subject: [PATCH net-next] veth: use peer attributes to set peer real number of queues
-Date: Fri, 16 Oct 2026 18:03:51 +0200
-Message-ID: <20261016160351.3022939-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1792166919;
+	bh=kXhP1OwYjv8R26m2rEknmw6BEFPz4ktTEFaQcRoV4Yw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VN6plTRxybrjuXOoHCsNU7srtGyxVg8ixtdDuuN4WvVGL8J9U1QycdaFncVJD74AC
+	 2tiQIhJ0S1jm3dcYvDRbW3b5zX7UQze5gQsmkmSswRzfYs95c+wAnsl/rLN6C9YhM6
+	 cnjj9ZK0AVzWbfmJwXwT2+LUq9RAt25wyGs+EWLPgI2ZaYSUQ++1OEp5x/bOAWMCE7
+	 QW+9xMHMjnjl7oDfqwCjbkaVIUGTx5RWHh5eoBsE7+XNE/OJGQyU8YJRucjhKXFdx8
+	 NwRgqpOcmIzVg6hAJj5O54uDSDATYAiACeC57/LJuGFkOCxlvkAe0NluQuu94KrQt0
+	 ZiSUxoYqdxEMg==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6df7f544919so70358eaf.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:08:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzV8PJU2pG1KOanrNjBPwXdmBrvttFY8pdgpGTgB6xGQykACY9pa7Z/Hu0M0ehQMyrKYxtp83U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLM85VRjdnPidwb5SBWFVTmWME76oOWM1wNkP0sMzMzeaCY1Syn
+	Q6OIjsNfCZEIBFCCrwVpO5fKhfx8Rz1vWDq/dHo/E318gcjBgDF3LvpRtMWpQ4YS+CMxYbFrVNV
+	TOHISZucSMDcYMuf8XFOwT6Wu1a6wskY=
+X-Received: by 2002:a05:6820:150b:b0:6e0:fd89:f011 with SMTP id
+ 006d021491bc7-6ef0fda9de3mr17758771eaf.65.1792166918426; Fri, 16 Oct 2026
+ 09:08:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261016084802.2725187-1-edumazet@kernel.org> <CADVnQynq30ROV3jndQevAWWpk-1iWn+dizW6zwTaO1gdpOZMyw@mail.gmail.com>
+In-Reply-To: <CADVnQynq30ROV3jndQevAWWpk-1iWn+dizW6zwTaO1gdpOZMyw@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 16 Oct 2026 18:08:27 +0200
+X-Gmail-Original-Message-ID: <CAL4WiiprJUw5AW-bMMz96=SMrAz1h+rGJjw5aG=2KFQhx3RT_g@mail.gmail.com>
+X-Gm-Features: AclHuK_az6SKAb1DEXpGoQsgRsuEFeCYJ2qT5Qli9D_xYl-NBAC2aDQW2KxZysk
+Message-ID: <CAL4WiiprJUw5AW-bMMz96=SMrAz1h+rGJjw5aG=2KFQhx3RT_g@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: tcp_metrics: use the socket netns, not the dst
+ device netns
+To: Neal Cardwell <ncardwell@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-veth_newlink() creates the peer from its own attributes (tbp), which
-come from the nested VETH_INFO_PEER ifinfomsg when present, so the
-peer num_tx_queues/num_rx_queues follow the peer IFLA_NUM_TX_QUEUES
-and IFLA_NUM_RX_QUEUES.
+Le ven. 16 oct. 2026 =C3=A0 17:56, Neal Cardwell <ncardwell@google.com> a =
+=C3=A9crit :
 
-veth_init_queues(peer, ...) is then called with the attributes of
-the first device (tb) instead, so the decision to reduce the peer to
-a single real queue is based on the wrong device:
+> Reviewed-by: Neal Cardwell <ncardwell@google.com>
+> Tested-by: Neal Cardwell <ncardwell@google.com>
+>
+> Thanks, Eric!
+>
+> I got an LLM to write and run a repro that verifies the bug and
+> validates the fix. The script and its outputs are attached. In the
+> control case, both kernels put the entry in netns A. In the three
+> trigger cases, the base kernel puts the entry in init_net and the
+> patched kernel puts it in netns A.
 
-  ip link add va type veth peer vb numtxqueues 4
-	-> vb has 4 tx queues, but only 1 real tx queue.
+Nice, thanks a lot Neal.
 
-  ip link add va numtxqueues 4 type veth peer vb
-	-> vb keeps nr_possible_cpus real tx queues.
-
-Pass tbp, which is tb when no peer attributes were given.
-
-Fixes: 9d3684c24a52 ("veth: create by default nr_possible_cpus queues")
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-Cc: Qiliang Yuan <odys.yuan@gmail.com>
----
- drivers/net/veth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 38f263d4f06b406eaf0a801334272cd438386c14..ba8953fef979aac3868d39c8fb9b19becb47d8e9 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1924,7 +1924,7 @@ static int veth_newlink(struct net_device *dev,
- 	priv = netdev_priv(peer);
- 	rcu_assign_pointer(priv->peer, dev);
- 	netdev_hold(dev, &priv->peer_tracker, GFP_KERNEL);
--	err = veth_init_queues(peer, tb);
-+	err = veth_init_queues(peer, tbp);
- 	if (err)
- 		goto err_peer_queues;
- 
--- 
-2.53.0
-
+>
+>
+> neal
