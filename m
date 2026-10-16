@@ -1,180 +1,69 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80134973AE
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792155079; cv=pass; b=gb5ZfLA9KC8jwXPw8JOD+RnkoPwU8dETAnuiwZlqbA4ibsM+QRkjiMuEVqekA99OG+jdIc10d0REWUkie0V+tz0RpErrIGv02+iPLTQjrqASHfP9yUTF/ooLbwve9apH+qEFjn4eDq2lfrh/kNHd3pPtl44MIQWuAEDr6KQV6KY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792155079; c=relaxed/simple;
-	bh=NhOW2dh4m8kfq9MbFov+5iQ04Dt9NX8wqPTkeJTUa+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RNu2BaiCXMLuRrmVSOdITWefKx6K09ytN/on0ISHbz1sckSzPS+m71nxUKElFOV+nTBOAEAP4cHyPcn+cfjjuj9wDhH53u5YFqT9NDddkE+/z7SmZWhLc03qr8ZNJCe7youiLxc1W8cOjg4G2EwwB/vJBcRw16c4E9IoRQrpNQo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rDsZerex; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A4947C118;
+	Fri, 16 Oct 2026 12:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792155199; cv=none; b=nvnXOGt+OeZaW/gFxo8FPMnBfLwn/g2sbpG0Q8RkodnfBjY7cIw0uKu5k0L7QlmLw/WVHblBLovmIO+m6vqgJ9bzJCy7FY1GnVq2BZTOc33KGOApmRDtYcMfRNWaYhKXsiqCXE4ziSxy1v4azBziWyn0/ELo0/fdWZj5NJ6j07w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792155199; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gHgBuTYSNQzMNCOHEbOpMnWY4fvG/05Gl6L04mQYUnLh1aRhIf9o1PQfHXyL4ZmBpZZhebd0RFmlPCZ8iRh+KHer9q1XgaPlzC5wMp0Uh+AdVaR+jBxjt4RLKW3nyjTZeAFsQIIrNJsxQB6F59EeW5bjmHqL/slxIyKpAGltjCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QtX0/ZFu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rDsZerex"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso8291a12.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 05:51:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792155075; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FrjHHs3jqMzYLRuI6IwW/A1b1DK36SG2Axs9eDXgMS/5yM0yRS4vUJkjc3r5/bn5ds
-         w8AcbULgTm8I9VvytWdqXmRsWPozYD9NsmkoSxkB1/mYyAmVs6xoHtSbEutegqHI2ZDI
-         VUdVRyXuvXvYCtTMTnURV777OZCVTp/VZ88qzsY+YgGeRSJjopA+Y2SQs7rjvbddfN9l
-         jIejnHAHERYKZqa2/gqG0uKc+qNDbdkgIyaI7Els+0JmHI32+qbhX6+bUSVLcMuZ++JP
-         D4WL3XEKGYK1EldidF7s6zVDUlWjVcmaGeLxiOr0cXslhJBwHvqqTQAn0q5LdLCEkfi/
-         UNow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CIregvBSP9juxzobcyMQ+rByYbCLFuXclbRVa9ESVqs=;
-        fh=AV7nf5UXfrGWO4kmdzU560mUupHuV9zQk0cwkqEBe7c=;
-        b=bmV+wZgF26+UZlnrMlilz2uMuLP65sX4NAqnyEr8AnCwhXXS2UtFbJ+DKbL1JQnrox
-         vjxn7NLJ541wPdY/ySbwWhAaoyNF0x+khXSQVl8d1+idmvhs99avCS7oCeHW/91hPWYM
-         p/hrQoJ8dRZSWhY8hoTZv3NqxuWxraWIppKpgcwJAdHVNXqnAmeWZwNMab1HhO7Sk6tM
-         0+5KA+btAZf9Ybx8GtGjc+JGRIgEK9JyCHetJr066KbuxwqpUAHCOyb5k3tw0UcTLZPb
-         Q6PETqadC7IHyBXF7JKiVoFVSA4UBLrKztvgikjyA4fxA8Orw7xInO2O3Jqd/+WNyDxl
-         3s2g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792155075; x=1792759875; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CIregvBSP9juxzobcyMQ+rByYbCLFuXclbRVa9ESVqs=;
-        b=rDsZerexR6sYpZzJizFUW5S66B+yb7F1zpyipD11lJyMpP6nTFCyNJS0DQt528R79s
-         YX59o+BYcSPRJz/UpEP6UxaLcqrBl1edQycGhyjE0ss8eaHvnzRByaVKJHGNVRrAOb1O
-         jyl1QWD7gxIJ9W0tC7Nc4u8sBiFo5C15E51StGL76kLlbII84hjesCAvvlKBdDqbFGsm
-         yHPu4AXUT4T7dZhsDoZU0KUSHTsd7pf2u9E19rSh4NIH0M0GCrGXfc8cOdoggYepXTqU
-         WfBT4ZUHFWkNrewmzqe1f8h7U29yjbiE5y24/7hvp24wBNGiNEJXb7scH1EYfROdhx3H
-         ZwVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792155075; x=1792759875;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CIregvBSP9juxzobcyMQ+rByYbCLFuXclbRVa9ESVqs=;
-        b=Q5FwMnYM1bgiUHHXjxeaIqQcb1rrHkjwJkl4WH+H9+3dovUOlvjWraaS+JnBD8Lbvg
-         IQCRFacFYVz3l3iZkqC5exs/76N4Vz7N6mrIm9pHZBiEzh0kShajILMNaaRvcjNU+Fne
-         YyKJj3PTkoSwhf8ocnwrd3b/gub2hKnVz8SVZeVlhq8g+lxvMzmsrX5Y+qSOi80WAFfL
-         I774qTaBWmjgubz2+ZhDKmvdZPRk+XHevlvMx9I1oABR3CzFq6GbE4Of3plp7dpZ4qvV
-         XMHohOnua0F/x6fQaXu7teNiA4FDeECHBswScTXhn3czc9QQg4M1cEdGO99ypnOQZ2X2
-         yaIw==
-X-Forwarded-Encrypted: i=1; AKwUvBzco9mo2GpSbwkJlzZbYjI+w+TV+VbMoSVuvKN5NPKuWEGPi710+2tDtUck6rKL4baq2LzxMyQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJPFuzOHAr7Oq+VcXoGIBW6FRpJ+N//78fVNEd7gEn8i+fi/Rq0
-	af0hAHqhhklQZrLmAA3/XtrF6a1Tqo89EAxe1Leoj6nDbdr9IvbKQVMQ1gQeMislFqW43DihOzM
-	1YyIvXbSGMWCd8IczfaeTAElYcXLwUUWUqgQjx75l
-X-Gm-Gg: AYBFou2JaZsvTsR20MMzd1TbyBYyQ6Z3XDRNgR7Gn6qGR7DxToE8Khq198N1WcoXmQn
-	U2CjE7GyJG+nybtCnsQqo4XByx3ZBdlu/BsGbxCX2QIOTfiFhvmItBNNN8wm8Is/1tyVvaIOWvm
-	xMjWh7fZhSGvB0GBs+kaZcp3wNe/fUdxmOhuMY6uxn4BiGLY2gW/UriahPWuJ+TwJP+P74318Uj
-	pK7jdGmUk/r9dvR3W//KEbAA8flJ8hlwdgHwYoiAxuYVZ6moz7v5A11Wso3FkRkW0I98piseIlm
-	jV6tJt0Zr/qxv3jVPogPbT2rFTVejrtFp8fUig9T4hHB+DgYs3AUHQ==
-X-Received: by 2002:a05:6402:1512:b0:6b1:bbbf:25b4 with SMTP id
- 4fb4d7f45d1cf-6b3896bb8e1mr55897a12.6.1792155074206; Fri, 16 Oct 2026
- 05:51:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QtX0/ZFu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D011F000C4;
+	Fri, 16 Oct 2026 12:53:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792155198;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=QtX0/ZFuxsGYPTz1M4mU30tIpKUdjEejHx85+NktBpAD0NTzXc0bjZXQ/khQj7PXL
+	 R1QJxphhIC68Kc6q7MVIEmFbCbKXltlcGddagqtu63P4OioNn/R1Xu4uHfytDpRXkK
+	 6PMupEyp5dXsa3tRMhYwF/ws8YHx7GqpBrSMeaxSasILG0FLnkRDskzDfOnupRQ3i1
+	 mmdN6vD/llj6E7UloLccp/cuwdHqRD1+cfG4TmngK7GSy58wsGKp3yiAPf43WrJSbm
+	 gumid34MlGW8Ug9DcaJj9fYDxR0HonBFOR2holBotAo/daH3BRljgOGlXRhnWMyiV0
+	 ZsaMHL9RdQvHg==
+From: netdev-bot+sinfo@kernel.org
+To: Hanson Wang <hanson.wang@ugreen.com>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, oneukum@suse.com,
+ kuba@kernel.org, andrew@lunn.ch
+Subject: Re: [PATCH net v2] net: usb: aqc111: fix set_mac_address return value
+Date: Fri, 16 Oct 2026 12:53:17 +0000
+Message-ID: <179215519735.408196.139629932849333374@kernel.org>
+In-Reply-To: <20261016124858.1939743-1-hanson.wang@ugreen.com>
+References: <20260703073936.462231-1-hanson.wang@ugreen.com>
+ <20261016124858.1939743-1-hanson.wang@ugreen.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
-In-Reply-To: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 16 Oct 2026 05:51:02 -0700
-X-Gm-Features: AclHuK-iMNhhxZAcYE0H3a3QC5Uul0gFiT_mer94jWWIdH2TOqEIhyDt2MtD6oI
-Message-ID: <CAHS8izMCh6UzOz8B8O6Mc=MGtCbxLQN9+V8aiA1nGHY6P4xs9w@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits() report
- unreadable frags
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 11:02=E2=80=AFAM Josef Bacik <josef@toxicpanda.com>=
- wrote:
->
-> skb_copy_and_csum_bits() has no way to fail.  When it reaches
-> unreadable frags it zero-fills the rest of the buffer and returns 0,
-> and since commit ab9414ed70bd ("net: skbuff: don't leave stale bytes in
-> skb_copy_and_csum_bits()") that 0 is the correct checksum for what's in
-> the buffer.  Its callers can't tell the copy didn't happen.
->
-> That matters in the !sg && !csum branch of skb_segment().  A devmem TCP
-> skb keeps its whole payload in unreadable frags, so every segment ends
-> up with a payload of zeroes, tcp_gso_segment() writes a valid TCP
-> checksum over it, and the peer accepts the zeroes as stream data.  This
-> is reachable when both SG and TX checksum offload are turned off on a
-> device used for devmem TX: sk_setup_caps() still gives TCP SG and
-> HW_CSUM, so the dmabuf send is accepted, validate_xmit_unreadable_skb()
-> lets the skb through for a NETMEM_TX_NO_DMA device or a matching
-> binding, and software GSO segments it with neither feature.  Before
-> that commit the segments carried uninitialized memory with a checksum
-> that almost never matched.
->
-> Make skb_copy_and_csum_bits() return 0 or -EFAULT and hand the checksum
-> back through a pointer, and make it __must_check so a new caller can't
-> ignore the failure.  Each caller takes the error path it already has
-> for a failed copy:
->
->  - skb_segment() fails the segmentation, as the csum branch already
->    does when skb_copy_bits() fails.
->  - icmp_glue_bits() and icmpv6_getfrag() return the error, so the ICMP
->    error isn't sent.
->  - __ip_append_data() and __ip6_append_data() drop the new skb and
->    return -EFAULT, as they do when getfrag fails.
->  - vnet_skb_shape() fails the same way it does when its skb_copy_bits()
->    call fails.
->  - xdr_skb_read_bits() returns 0 without consuming anything, as it does
->    when skb_copy_bits() fails, so desc.count stays non-zero and
->    csum_partial_copy_to_xdr() fails.  csum_partial_copy_to_xdr() used
->    to checksum the bytes it hadn't copied before checking desc.count.
->    desc.offset and desc.count always add up to skb->len, so that only
->    ran when it was about to fail anyway, and on an unreadable skb
->    skb_checksum() would WARN.  Drop it.
->  - skb_copy_and_csum_dev() can't return an error, so it leaves the
->    checksum alone and the frame goes out with a bad one.  Its callers
->    are drivers that never see unreadable skbs anyway.
->
-> The zero-fill stays, so a caller that does send the buffer still
-> doesn't leak anything.
->
-> This was found by the Sashiko AI review of that commit, and
-> Mina suggested reporting the error from the helper rather than checking
-> for unreadable frags in skb_segment().
->
-> Fixes: ab9414ed70bd ("net: skbuff: don't leave stale bytes in skb_copy_an=
-d_csum_bits()")
-> Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-> Link: https://lore.kernel.org/all/179148235783.434549.1432237422747783281=
-7@kernel.org/
-> Suggested-by: Mina Almasry <almasrymina@google.com>
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Hi!
 
-Patch LGTM, but net + stable + fixes is very overkill for me. This is
-a very minor issue and only results in some devmem packets maybe
-having a bad csum and get dropped. I would suggest fixing in net-next
-(and I know the bot will complain it's a fix that's going to net-next,
-but in this case, ignore).
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-If you send to net-next, plaese add:
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
---=20
-Thanks,
-Mina
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
