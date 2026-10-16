@@ -1,187 +1,179 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56543DAAD7
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792139969; cv=none; b=NcP9ae8aEOKe4hDaOA0tjoVgqmGNvlgq7GUqMt7RXAk0zKlXmH5Jy35QOjpM1GcGfNI1+rSM+opsXFQF6TXUvjnXILA21u37hwDSmSQRNHf5RmlFrDvx9RkAmrzRPdPz6LgKe14c63xxzaAKJdAomY4g2Zb/F54LNdP1QBoKkww=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792139969; c=relaxed/simple;
-	bh=2vUfpCqB6arRjfJ3KPHapqfeAhBKxgvIcU1LXx14dMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GalilHKDMqRZc3/Xy4/B7atWN27qiQZvB5Fpg0vMi/ffJllqN8Z3bTW5lFFzqECK1N1pPq84/fdBSsnEeA8XRojxi0ubCmq+hpUjIp1fVi/oq+OBEV8zCF/iSDAF6o5R7MoY/+/JwqdO3qMTCPmZAJdf/cW3NjPGR9AaHOvs34I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=SlwEFiw0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=u/KtTLyi; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626F93B5820;
+	Fri, 16 Oct 2026 08:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792140173; cv=pass; b=YOkBd+inQTdvTMgmyAS5OpstrVGmCbEwXOg6pdZAo+5p0s7Mzup772VIA/D7y2CmKHjExhKpWHRjkzP5STZXofYRiRbp7z6rGqUG4HaEUJ6523zb+gCfOXJ2XYxwXJx0FWAgBnlUcrqOn2+dpkMS64tSI/9vkL9xfwEROfQ025s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792140173; c=relaxed/simple;
+	bh=2ot9xwMfDVL6qCue7UJ8KB8GkkrXIWmfeL3NirAlb9Y=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=fnUcAVLPzfl0EOugjgKXGLxPLmvD1zdNFAaDTDQXkSnIK+rgu2GMx8akQDwSvMsLnyFR8S29vWXkz66FSIO9suRNiBDVuNU+XswJGPDtJ9rO3Bj6HVNuJJuLrahmpMw++8f7ETubERzXEVznm6I71gpsFrAhNloSq9YlUk54YUg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=esJoF/Mn; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="SlwEFiw0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="u/KtTLyi"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id EAD94140014F
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 04:39:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Fri, 16 Oct 2026 04:39:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1792139965; x=1792226365; bh=MGcm7yt5rkjkwGxDwn+nCpIgUmt3dbHJ
-	nZ2E7d60Ius=; b=SlwEFiw0UmH2omxWxjkD0qBibzBO+jmJwH+L9/fQe4A2fZa5
-	nf1RZKteXF8PWVbQkxOdyW9wyEZ2XuhiKC6wnTsqFVHZITBB3mxuI21EwDyI8huQ
-	i12x+MQKfgjYUD5xtSqKYJNOUO2+V9UxeWdEMbSYYxuKypSdla2TUarpOb5PUQeC
-	KhCHsZYksx3ag7phBknXjYonObcrHk1lMlaU0A5JtKK/7w14deQVUx9xO1r1D0Hs
-	3dlApU7j/fJ+ZRVCjbIcRaXA+CygllCv8zG+k39OpYzKQpQ2tHVM9PvA6MnH4/tn
-	GUOjHNIHLbzLewKm4LK3VKgjFES5LPOi+h8E6g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792139965; x=
-	1792226365; bh=MGcm7yt5rkjkwGxDwn+nCpIgUmt3dbHJnZ2E7d60Ius=; b=u
-	/KtTLyi1nFZyzGsxSqBC87fzQZHV2wb2ZrzmXgeMYOLCn9d+B8eVRmV1I8s/AhpL
-	ct3q1ryiEhXKuyD1/U6+5Qt0nQeoilPldjwHxIvS4w+dnSxDgAsMs5tuXUKSsLhw
-	TRse8YOLctNw4PQm0d6/CnXvBQ7gWu0YGWjbfCOiAJuxmvQzon86nL8Q2zX33EtK
-	CT1ii+nMESa28z25iu8GgBJuxIbLNpz2JuUf8lvElFn9pkkhPlhiRAG65gv11VZc
-	4j8POxT3hgYoxAa4PV8iAravcZPzMrCXUkJt0S0kxWrsYaI3BQbxd1ygFxjwaSkj
-	jeaK43BXVL8EJ7qCxzMbQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=sign d=queasysnail.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792139965; d=queasysnail.net;
-	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm3:rsa-sha256:cikx0Zy9oCVbMa6zRT2+tz6fFh9VZDBQyMiKGBgKf90rdXP
-	1UsOI/FNZJD6MLMnbofUL67Os8OtzgaOGIeGJPkNoalTCU5Ged+j+8gIMEOC8yd/
-	BKq6FRX6D9x2BeMHvz6ENZVz50yD+owNqnooQOrAKL5ronrgjQnVii8jz3VpUEn/
-	K1+JWIJa6+X7O1qhzud1OMWKM0idxuhPGmest+KxBHzQX7UFzCLhm5NY5XfyLwqY
-	gPSYgHkRyArP/6+HU0cP0ArKnbTop2wUNnDF7oJzLkuK0PO/dZET1qD/C7jDTISM
-	v/zQtcNeBg0XQ2GHQAHsqPBDc0tQcy7w3smBa6w==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-disposition,content-transfer-encoding,
-	content-type,date,feedback-id,from,in-reply-to,message-id,
-	mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:SJ3kX2eTGKgXrqDXngm6d4mVMdr2f/LtcavSxlxMiQg=:2vUfpCqB6arRjfJ3KPHapqfeAhBKxgvIcU1LXx14dMo=;
-X-ME-Sender: <xms:veLRardFrgOBH04g7LNC9ujzhFMD9sJiNojeVTsWzqMbtSkCikBZJQ>
-    <xme:veLRak4MULgsNrfgs15inipPNcKYWwQLU5Q0ypJC4DNucUJG8lzgNutCbDw4pBJMK
-    7mWchuVCScR0fQRqBaHx5JVZVGWWaSxHmdZbIhTj235InPm_UFvbs4>
-X-ME-Received: <xmr:veLRatKegijhwrkemurOvHzEMBHnVwhSwaO0GsSZXTAQ_gwknmzzDzMGCPA>
-X-ME-Proxy-Cause: dmFkZTGm6mBkZB8wsCnbaRONJj0gUzKLj4+7j3xqlzxkDDn0+lEwC8DyiDGNrr3QdPq3gU
-    NSYOeOP1jbjKE25PhP5WFZf7RozX4BYk6jeohnf1cWoF2Jn/Qyyg0pFAi1nqBLDqI3OX5O
-    VGp24z2ABNdPAb6iQubwN8g5q7BzdIS3tdl1+PENBcWj8in7R6arbtlu4huAmdZg1s+IGk
-    9y7c3m00fOFRlxPPWw1/5xDkZnwVpGK/3v/9rT04Yaqs6A9qEv88UOOcded3Rk+GQmtk/p
-    CsniU0NAQIKm6FayrBKbRCby51SCzKYNAG5fOCObWKActP+FzNq6I/egqci3nVyDNvSyWa
-    zifKPzJy9Ht5nQfPX0FmR2CuyRwoPaxa/+fGTLSdTr6H7ke4iAor9MRbgR+dB5tm85grhr
-    P45tkiFgk5DxLwCOUhBTG392xd8pjUH8BOuO/T34NzXbzvc+51NN6hH6cq53VpD+fZYn6W
-    1SBnViQhKwOukZF83p1eNtKMdYrnD+oTF2vDoyixkx5hNBSxqFH57mesBXGwBygnMaZx9L
-    gLFnsYaYUXFmnnAKBVJy/UVan5kRp1A+9J+A0OyttqI0e3XCIet4oZPhQ3ODoaFnIA/twr
-    RTatQjVJ1Heb7Bteyo7AwC1UcgMms7Zo4L+1CPh+XDHHYpoJVXHNv2lmaaQw
-X-ME-Proxy: <xmx:veLRauWSZlDfLsAbdr00xNPBIEhbR5kc8vG5B7jXr98jpti7rQtJwQ>
-    <xmx:veLRapHRLISPzlPJHwwFCexD2jJ55fx1vWSCffkSwIRkjueBTLpWRQ>
-    <xmx:veLRat6_JxmrjObz0e4FkWnODUQflo_7Y-ffE1xkVM2FCrPUPqWyvA>
-    <xmx:veLRave4cbPQi04zxBszKlsvrJHCVlQs3Tqu1wleiI-SalZ77ADh6g>
-    <xmx:veLRaum5F-zyh5VRkeUDnf4ws1zNf6a9s4e0DmGMMy3Igr-4TIzGZFJB>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 16 Oct 2026 04:39:24 -0400 (EDT)
-Date: Fri, 16 Oct 2026 10:39:23 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tls: refuse RX records after record-number exhaustion
-Message-ID: <atHiu9gmKQAoqTD0@krikkit>
-References: <20261013002701.1957686-1-rjethwani@purestorage.com>
- <as37-A3DKONrFuxs@krikkit>
- <CAKaoeS1E7jMyP8F9a+SAheE4+o6RG2VOdA5uiSjZe5yX+E0wEg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="esJoF/Mn"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 100592007F9;
+	Fri, 16 Oct 2026 10:42:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792140168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vWznGaYZLYIhQHVFt1q76zV8ZoAZF4MamyVCcsrJ0Yw=;
+	b=esJoF/MnONiyp6hJx7xmg5e0GxRrerppIy6kuiIqOiLtAeP1HPAgm6CP3YMtqaaJ9MEoxb
+	AsluNDoJISbdlFu/HNwU0lSAnYqbMSXGDAHGujhNi9aA3lVWPkXFfRlkOFszZJmRlUXaFR
+	pgBgMQTvB6y8EDnBg4uLdNXBa8lKBIrqjWanaWFayk7sI7OzUNmr8aOmMbdKRLs0m4Z3d8
+	0UpSXBrUPuhYbhwkNUjTml3C/RVU3RQPFIbp10FHED0Zs8jizBhRmvMqYGBIjT1d9A5jWP
+	rl7shFxLMJtTXrzhTSMl6E0GFOwHNshSN9PXnb8VgMfNw4/J03SRzNbnJwfPuw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792140168; a=rsa-sha256;
+	cv=none;
+	b=RnykvqnOu2PacdVLIbmbMACNcEkNoZ8LUUVfL/IbtScoM2RkZ9l30exBH5NZg34mImgKZ6
+	AhS8Sf6n+I4lFc3aEgJwMfJdO0KKcQJ9ArlELCfBpvy/Zie2M1nrxQMJnUkYqdRWQ3CTTm
+	/u/N1lY7OtvmX0KtYa1WjihecrPUnVKfhxc3o17aoAYpYaaUlFkPO+tRsXWr1rrcU6HAau
+	m3OhtdfuGwXTvwPww4FMcVNJqaq9GXP0YOWKA03a33GkZyEFaWQzyroPD4FtVXomDnWKym
+	9uCRH4XGD23u3wntFnspqHntZeXJkASUbvn6OROJ75QJzMbYbsE+WqmyIJfTrw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792140168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vWznGaYZLYIhQHVFt1q76zV8ZoAZF4MamyVCcsrJ0Yw=;
+	b=WSg5artA9TaJtaD41eY2VvwpDkrowW3r3ypFKfIidhkgbNTgCwW4kyFGBJspaOyzcDpmog
+	eUdcAYZXLoNi0iYNZvgafPoPGcX0BnIBmC/WFOEqdZ4W3KXQ6eQlkC8n8uiXrlJ+9Vaxgu
+	yuRbufsLSADqwI58QmzWZEpRX/FbCR8YLuzSB0MyMMH5cIuwkMzjWl7az82QL28Gvt9yfk
+	KHLybzZkWxvf1MLeHz/D5zCoec8dp0JhOFD/FgzpiAzo/GCmSY2n0dfGGZ5ksl7425JK4H
+	6Q3/S76ONBQGn6X6sRRTVJRaZ7YTZ7+GtagaC5qd6lxT+yyQ3qDKjsXFEY6WBw==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xHdWZ-0069rP-36;
+	Fri, 16 Oct 2026 10:42:47 +0200
+Received: from hardanger.blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id ACBA05C5E25;
+	Fri, 16 Oct 2026 08:42:47 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKaoeS1E7jMyP8F9a+SAheE4+o6RG2VOdA5uiSjZe5yX+E0wEg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next 03/37] can: replace ARPHRD_CAN type checks
+ with can_get_ml_priv()
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: mkl@pengutronix.de, netdev@vger.kernel.org, davem@davemloft.net, 
+ kuba@kernel.org, linux-can@vger.kernel.org, kernel@pengutronix.de, 
+ socketcan@hartkopp.net, kurt.van.dijck@eia.be
+In-Reply-To: <179211822219.434549.7841003426566715206@kernel.org>
+References: <20261015015336.816543-4-mkl@pengutronix.de>
+ <179211822219.434549.7841003426566715206@kernel.org>
+Date: Fri, 16 Oct 2026 10:42:44 +0200
+Message-Id: <179214016466.1225518.8931119252169589153.b4-reply@b4>
+X-Mailer: b4 0.17-dev-6be7c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2772; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=2ot9xwMfDVL6qCue7UJ8KB8GkkrXIWmfeL3NirAlb9Y=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsi6+LjlZ5cy/yQ18clCVpefMinnTon59vWks3HzJq/oI
+ N/k8OwzHaUsDGJcDLJiiixLf5xQFAh0KO19mTAJZg4rE8gQBi5OAZjI7ShGhtOMfrdanhbltHKc
+ cFqwe1pX7bXa8Lab4j/unD4T915s5yRGhoXXVz43a3Xon95f2Xv+hV+pr0VJwdvlQbPvtKSfF8w
+ 7zw8A
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-2026-10-13, 10:55:26 -0700, Rishikesh Jethwani wrote:
-> On Tue, Oct 13, 2026 at 2:38 AM Sabrina Dubroca <sd@queasysnail.net> wrote:
-> >
-> > 2026-10-12, 18:27:01 -0600, Rishikesh Jethwani wrote:
-> > > A receive socket records sequence-number exhaustion only in sk_err.
-> > > After processing record UINT64_MAX, it advances the counter to zero and
-> > > reports EBADMSG, but SO_ERROR or sock_error() can clear that error.
-> >
-> > I vaguely remember a discussion around making some fatal errors more
-> > permanent (ie not use sk_err).
-> 
-> Do you have a pointer to that thread? If there's a preferred way to make
-> these errors sticky, I'd rather use it than add a one-off flag.
+On 2026-10-16 02:37 +0000, netdev-bot+sashiko@kernel.org wrote:
+> can: replace ARPHRD_CAN type checks with can_get_ml_priv()
+>
+> This patch replaces the remaining dev->type == ARPHRD_CAN checks in
+> af_can, bcm, gw, isotp and raw with can_get_ml_priv(). The goal is to
+> keep TUN/TAP devices that were retyped to ARPHRD_CAN via TUNSETLINK away
+> from CAN code that dereferences a NULL dev->ml_priv.
+>
+> Link: https://patch.msgid.link/20261012164802.94113-1-socketcan@hartkopp.net
+>
+> > The TUNSETLINK ioctl allows a down TUN/TAP device to set its hardware
+> > type to ARPHRD_CAN while dev->ml_priv remains NULL. Such a repurposed
+> > netdevice passes the ARPHRD_CAN checks and triggers a NULL pointer
+> > dereference when CAN filters are created and when they are removed,
+> > e.g. by the CAN protocols' netdevice notifier handlers.
+>
+> [Severity: Low]
+> Is the "when CAN filters are created" part accurate for this tree?
+>
+> Before this patch, can_rx_register() already rejected such a device:
+>
+> net/can/af_can.c:can_rx_register() {
+>     ...
+> 	if (dev && (dev->type != ARPHRD_CAN || !can_get_ml_priv(dev)))
+> 		return -ENODEV;
+>     ...
+> }
+>
+> can_rcv(), canfd_rcv() and canxl_rcv() also already tested
+> !can_get_ml_priv(dev). That makes those four af_can.c hunks look like
+> simplifications that don't change behavior. This holds for kernels
+> that already carry commit 8aa59e3559494.
 
-https://lore.kernel.org/all/ajFpejsl1ukTbG96@krikkit/
+The anslysis looks correct to me. Oliver, can you re-spin this patch
+with an updated description?
 
-and I had a suggestion at the end, but I guess I got interrupted and
-never got back to it.
+pw-bot: cr
 
-> 
-> > > parser-ready record also bypasses the socket-error check in the record
-> > > wait. The receiver can then accept a record authenticated for sequence
-> > > zero under the same exhausted key.
-> >
-> > I guess, but what's the problem with wrapping as long as we don't
-> > reuse the same record number?
-> 
-> You're right, in practice there isn't one. The only way to get there is
-> for userspace to install a rec_seq close to the limit, so sequence 0 was
-> never used under that key and nothing can be replayed. Starting there
-> already breaks RFC 8446 5.3, which requires the first record under a
-> key to use sequence number 0.
-> 
-> What's left is consistency. Today the wrap gives at most one EBADMSG,
-> and none if the next record has already been parsed. After that recv
+> [ ... 26 lines skipped ... ]
 
-I'm not seeing the "none if the next record has already been parsed"
-flow. Can you describe the sequence of events?
+> The code change itself looks complete. No ARPHRD_CAN checks remain in
+> net/can/ after this patch.
+>
+> > diff --git a/net/can/isotp.c b/net/can/isotp.c
+> > index f5dc9d04bd68..6c28802c0605 100644
+> > --- a/net/can/isotp.c
+> > +++ b/net/can/isotp.c
+>
+> [ ... ]
+>
+> > @@ -1610,7 +1611,7 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+> >  		err = -ENODEV;
+> >  		goto out;
+> >  	}
+> > -	if (dev->type != ARPHRD_CAN) {
+> > +	if (!can_get_ml_priv(dev)) {
+> >  		err = -ENODEV;
+> >  		goto out_put_dev;
+> >  	}
+>
+> [Severity: Medium]
+> This issue was not introduced by this patch. Further down in
+> isotp_bind(), the return values of both can_rx_register() calls are
+> thrown away, and the socket is marked bound anyway:
+>
+> 	if (isotp_register_rxid(so))
+> 		can_rx_register(net, dev, rx_id, SINGLE_MASK(rx_id),
+> 				isotp_rcv, sk, "isotp", sk);
+> 	...
+> 	can_rx_register(net, dev, tx_id, SINGLE_MASK(tx_id),
+> 			isotp_rcv_echo, sk, "isotpe", sk);
+>
+> 	/* switch to new settings */
+> 	...
+> 	so->bound = 1;
 
-> continues at record 0, which is neither rekeying nor terminating. TX
-> behaves the same way: the UINT64_MAX record is queued, and it goes out
-> once SO_ERROR is cleared.
-
-Then why are you patching only RX here? Both are just as problematic?
-
-
-If we implement the "abort with (some error code) is actually final,
-and not cleared with sk_err" idea, all this goes away?
-
-
-> So I'll drop the security framing and the Fixes tag. I can either drop
-> the patch, or send a minimal version for net/net-next that makes the wrap
-> error stick on both RX and TX, without touching the rekey path. Which
-> would you prefer?
-
-For this, net-next should be fine.
-
-
-> > For 1.3, just do a "silent rekey" (change the key but don't send a
-> > keyupdate) on the TX side to record number 0 with the same key? And it
-> > should be enough to test this with just 1.3.
-> 
-> Agreed, that gets rid of the fixed vectors. Since 1.3 only uses the
-> record number in the nonce, TX can also produce the UINT64_MAX record
-> cleanly, using rec_seq 0 and the IV XORed with UINT64_MAX. If the patch
-
-I don't get this rec_seq 0 and IV to reach UINT64_MAX. Why not just
-pass rec_seq = 0xff..., like the current recseq_wrap test?
+Oliver, can you add error handling for can_rx_register() to isotp?
 
 -- 
-Sabrina
+Marc Kleine-Budde <mkl@pengutronix.de>
