@@ -1,142 +1,141 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6DF4ADD9D
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792155684; cv=none; b=Kcdq427+m8I20zUxmR4a3bpHaoZgtkDcWdWicD4Sb6xmHoJ23rouGS6HKHk1nzNSBvAp/JYEdVn852Dw64YfgHL3BVHEsGg+wCStZG67mZkCeJlf1i3WO5Bpg3JghD3f3pOxoFLshL9KFwt9Lxs/b//0pyfiesixYKxK5FIRLMc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792155684; c=relaxed/simple;
-	bh=zLNCi/x43r+dPYZ+ZjrT65xXB3nkdcDSz7QxgPGzn80=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uFfvyModPtaRExDQSuGc2DfJng3b8G3KSoOYm3RgSnfLGchqhGzI2ktYjHK/V6/PxvLQy8YEo7zRwLpgES7tEIAGMZ/GCwVKEB9HGQTlNDl1YXRyDW9lX+TRWmaAhI+Gj8DUNMSIB8oqrZYN6D01xKJz6EUPTj2YXdTYSZfFw88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfJUyhjp; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2BA4AC153;
+	Fri, 16 Oct 2026 13:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792156071; cv=pass; b=c0DqBnGit0EAbXE7GKo69sH9IIDzKcn7VUHEabvFQlYmR7EL/KwSh0b0IfqKg+6tzfr9W3o48WZmYULzzbwYaXxSGpxL+7CTTA0pGbBrNilaqZRU6bt1ttgB36fGQqqPgZx0FYn9euoS3wGcNDyZaUUGow2uzo92LK7/zKumr/8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792156071; c=relaxed/simple;
+	bh=G5PewHa1kGUtmPzvpl0umIc2YyN/m22bpuMOB9b2pTs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cHM/aLdDBpevZQplFOBlJ/gL6Go2pREx8li0oItdyPG/+2yWhFxr0LW4/jdhBKa62RWU3ZIR1aBvjvBPadJ/Xr8rF3TWzFDJw7HIn28F6k2rEEqJMNRU6rlc9CtWTZ0jWfq5Q4Q+mxUhsuH6yKUB7zHLGMUv2zxX16UNwYs+3Ac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=IabUxbFP; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfJUyhjp"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48af4ba4425so1001315f8f.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:01:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792155680; x=1792760480; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D6SG43mHsHGUs5imH1Rk9lZLOCzzEMaWfOhJt2v6hsE=;
-        b=OfJUyhjpk5iJiJJBLciyxNtmfHa/lMAgpFGFyWWxfZjqjW1kY3fy8pbMJc9KtPQHBA
-         CSozXvMJebwvarT8jnWOS7M7BzIJqNobk/pU7T5MkyIdlrGE62i8fnGM6rHXvgg0E2Nl
-         nOVUzk/RmXX96KiHBwPFLRodHlZhVe38XI8J8tn/2IO4s9qcKBQom2iXkHjHNlSj5SsB
-         6vidzkJKlOtFqcwbopdsTR0aD/veIE8ImFtwjOpsXagqj6LHZPA7p4oEhxdwnB9B2PbA
-         25Kfmhk8OhzgTFGPL9tnu7UrQe+BJUsjRqNapuPL+0FVcRtoXr7FW2dCha6FMw0uxxl3
-         Ig5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792155680; x=1792760480;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D6SG43mHsHGUs5imH1Rk9lZLOCzzEMaWfOhJt2v6hsE=;
-        b=lmVTBtgNSXiqe+x+9rfmVq5pUHGMI2xtPwURH4GmYqqtKEWFf115HeDpxeQWbmRL+4
-         v9mwkTkx2ThF5qsdQxgdb/S3u7KdfaHhb07eONL2pgtUbijGqBRZ3RfEyIV4phz1Yc/v
-         0OtkP491fVFVoQk+rAthzRSKBkqIdVmx5rdoeTKupImDShbqWOLbqfGX83oC7ntzI0Ay
-         8kqElMVgnX9yFnKXqzT+MfFrL8/iadM6RvB9OPIwhKdL+Jg/RKaZakFpi6sAWMlbTLia
-         vgUrB8XweXlpdqBMKBXNLNpOc56TgKVlreyBsguYsn1m5PlJ1TkGK7jvsOBzhtm9uqWD
-         nphw==
-X-Forwarded-Encrypted: i=1; AKwUvByiKOmQYniO92Xh/u5gybn9jGKZLv4pJkzmHa3ZIJG84cjc4vUonS75onFwIpfdcp6Kw0c7i2k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL2427rCnT1uLRnETqtPiEPx1QPoiVlZ2QEfPcUh8wOF+Icwi8G
-	zXTIC0PYKXwIHP3haBwjSBugzENE5vt05hAc0ilZSqnxjLVgqeQWQC8D
-X-Gm-Gg: AYBFou3p0EDVGRMiYjTEBRdTKIGh6eu116DCn5Pgzr9p+yiXGDm0+MVqNJfHbZ6+xw5
-	b0u1IsYSFfnfebXWXBD53sKbs/oj6BWB+O8iv36er3T9Fcvu7WDPJnAYwvqKhq+YDgL5MvVhGBI
-	alq+vxTqAxr4lGzNXNDzGY9EzqrxNrxkzAWmwc4oQVi+/1cJesgkVNVM/I2rjTNzffW75XVQPJz
-	kxIgg4I5MDlHrOBIooL59k9ABmoJoiLx1FAMsjX3qrRjODCxWk3JGDYGuM519hpT9wpdRFu91v4
-	ujtBANH/cltJ1NppMoamwkPl9JGmTZLtICZf76rdqYmb8ojyPLaOUzFrfAblMBAHZaXacQUjE/C
-	cVKttFHPZyzLeyye/KttYgtsdqIhacCURmEHpCSFF0QHHDosFLJbEvQG1pXFt2Tq+z5vA7Xuu/w
-	hcgH8Wuy4CmvtH7bALhbCx1BE4k51tWX0KGlrseQIEywnVtH7t8P2ira6XH88vCXOfjFMGgZShi
-	QPrTyXw8mYBq42Iw8Bd38C6ScZDmn1nzQks8BGW69TUuOnFDNlGCsA1vSHRyaQR4Vs=
-X-Received: by 2002:a05:600c:404f:b0:4a1:d05f:3efb with SMTP id 5b1f17b1804b1-4a1d05f3fe9mr18704235e9.0.1792155679827;
-        Fri, 16 Oct 2026 06:01:19 -0700 (PDT)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-149.paris.inria.fr. [128.93.83.149])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48dfd471a35sm4331624f8f.7.2026.10.16.06.01.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 06:01:19 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Kevin Hao <haokexin@gmail.com>,
-	Diogo Ivo <diogo.ivo@siemens.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	linux-arm-kernel@lists.infradead.org (moderated list:TI ICSSG ETHERNET DRIVER (ICSSG)),
-	netdev@vger.kernel.org (open list:TI ICSSG ETHERNET DRIVER (ICSSG)),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next] net: ti: icssg-prueth: Fix dma_unmap_single() direction
-Date: Fri, 16 Oct 2026 14:55:28 +0200
-Message-ID: <20261016125534.36024-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="IabUxbFP"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4CFC4202381;
+	Fri, 16 Oct 2026 15:07:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792156067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1Ye1AL/hVroUhmHjg/xlGGb1OMIXRdg354muAkQrn+A=;
+	b=IabUxbFP1gFyQPaKp38N0VLevSXzFuwSf9bAeSLPJebQz19pG8bc1G8sRQVBkyHIF8nYkW
+	DGraihJeP2xKyHmiS1lZMWL3md38tkmF0EKoykRM2Za+/rgG1GpN8F7nqEZJjHw8eOQSup
+	0vGJidm+bQR4ohtjISkASN/DDXqcJMcab4PCbgJ6+e8stwLvY4G70mn/3GRkBMzT1rcZIz
+	HM0sr1fpq2NlMWiwKzOhz+QHeLZdEcYb09AJonx+4UWTaD7KUVCaplJ1L7DENCWubL2vw8
+	lVWzaXXDnvjcX6hS3UEY5AhRZ4IPks8U2OKkwIboprDfcGaSTjF8td3Olz7pyw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792156067; a=rsa-sha256;
+	cv=none;
+	b=TzXDU70kB4iR4CIWNeEaRDhLKEenWM/TzgagacvrSLgCP/bGYdCYcnleZBDNdxLmV6/OB1
+	jr+9lw1p3ICvexzHRgoNTBkcixK1xqri34uRC25na7Zboi1ckFkyKufVjwt5204AtplvC3
+	u7EmZP5t8PLZPyElHLav5S6TrGsl2CEx+qWMbiYVn1djjf3+BpOaf2YzaU7uqZQV6EY66y
+	6tgbM9H5Rw7S+T7CvkkRMwNg9ZcJo3WC6pI2bdSz+rkezoBzgXD4BZ2fR+0uStrXDuH99J
+	A75ftdDJGSQm0+11dJ6vPRfAcJFzc3dzb0odp9d7vEVKkMM/mwzyjvx1YZSCBg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792156067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1Ye1AL/hVroUhmHjg/xlGGb1OMIXRdg354muAkQrn+A=;
+	b=GvQ9AXJOM+xxaagl3YM/asVycCY6t7vRK6HqsKSsmUwM7owsqd0Cn4gM8sInkNKAgQEVVd
+	wYIxOpbR2G7qvinyh9n3DmdY11b/nq5IEVhWFf/k7MpCVMISJqv9zDgXHTUJK4A1uag8Rn
+	9M6Ao64n6tJBUgH+mvz9K0rItmhuX1x1Cp1FRbx4dYkwEZIDOyv6CVRf8ZGHhRUHIpbudQ
+	E3dhOGYS85AdFPM1DWd8X7b4cfVNmMv6ExV7GSpLZmpJcGhM6tQePNRYiRtF//W1t7jzgM
+	JdMe8zXcD2GUgBhpeoYqcFeOmxN/5pZKGl9kh0e+224ONyqvUBMEhM2xRYSt8Q==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xHhf1-006Bjf-0c;
+	Fri, 16 Oct 2026 15:07:47 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DBC2C5C61D8;
+	Fri, 16 Oct 2026 13:07:46 +0000 (UTC)
+Date: Fri, 16 Oct 2026 15:07:46 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net, 
+	kurt.van.dijck@eia.be
+Subject: Re: [PATCH net-next 05/37] can: proc: remove pointers from CAN
+ specific proc output
+Message-ID: <20261016-impossible-lucky-reindeer-d50334-mkl@pengutronix.de>
+References: <20261015015336.816543-6-mkl@pengutronix.de>
+ <179211822419.434549.2749733586204077125@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="h7qmez3iajpnxox7"
+Content-Disposition: inline
+In-Reply-To: <179211822419.434549.2749733586204077125@kernel.org>
 
-In emac_send_command_sr1(), the command data is mapped with direction
-DMA_TO_DEVICE. However, in prueth_process_rx_mgm(), dma_unmap_single()
-is called with direction DMA_FROM_DEVICE. It seems like the buffer is
-written to by the CPU before mapping the buffer; and, after mapping the
-buffer, the device writes to the buffer. The DMA_TO_DEVICE direction will
-handle well the cache maintenance operations, however, if the IOMMU is
-enabled, it may cause issues with device write permissions.
 
-Change direction to DMA_BIDIRECTIONNAL.
+--h7qmez3iajpnxox7
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next 05/37] can: proc: remove pointers from CAN
+ specific proc output
+MIME-Version: 1.0
 
-This bug was statically found and compile-tested only.
+On 16.10.2026 02:37:04, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [Medium] The new CONFIG_KALLSYMS guard in can_print_rcvlist()
+>   (net/can/proc.c) does not stop the receiver callback address from=E2=80=
+=A6
+> - [Low] The updated text in Documentation/networking/can.rst says every
+>   rcvlist entry contains 'the CAN network device and the subscribed=E2=80=
+=A6
 
-Fixes: e654b85a693e ("net: ti: icssg-prueth: Add ICSSG Ethernet driver for AM65x SR1.0 platforms")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+FTR: The found issue look valid and should be fixed.
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-index b8115ca47082..6f4a3f64ad39 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-@@ -98,7 +98,7 @@ static int emac_send_command_sr1(struct prueth_emac *emac, u32 cmd)
- 	tx_chn = &emac->tx_chns[emac->tx_ch_num - 1];
- 
- 	/* Map the linear buffer */
--	buf_dma = dma_map_single(tx_chn->dma_dev, data, pkt_len, DMA_TO_DEVICE);
-+	buf_dma = dma_map_single(tx_chn->dma_dev, data, pkt_len, DMA_BIDIRECTIONAL);
- 	if (dma_mapping_error(tx_chn->dma_dev, buf_dma)) {
- 		netdev_err(emac->ndev, "cmd %x: failed to map cmd buffer\n", cmd);
- 		ret = -EINVAL;
-@@ -108,7 +108,7 @@ static int emac_send_command_sr1(struct prueth_emac *emac, u32 cmd)
- 	first_desc = k3_cppi_desc_pool_alloc(tx_chn->desc_pool);
- 	if (!first_desc) {
- 		netdev_err(emac->ndev, "cmd %x: failed to allocate descriptor\n", cmd);
--		dma_unmap_single(tx_chn->dma_dev, buf_dma, pkt_len, DMA_TO_DEVICE);
-+		dma_unmap_single(tx_chn->dma_dev, buf_dma, pkt_len, DMA_BIDIRECTIONAL);
- 		ret = -ENOMEM;
- 		goto err_unlock;
- 	}
-@@ -303,7 +303,7 @@ static struct page *prueth_process_rx_mgm(struct prueth_emac *emac,
- 	page = swdata->data.page;
- 	cppi5_hdesc_get_obuf(desc_rx, &buf_dma, &buf_dma_len);
- 
--	dma_unmap_single(rx_chn->dma_dev, buf_dma, buf_dma_len, DMA_FROM_DEVICE);
-+	dma_unmap_single(rx_chn->dma_dev, buf_dma, buf_dma_len, DMA_BIDIRECTIONAL);
- 	k3_cppi_desc_pool_free(rx_chn->desc_pool, desc_rx);
- 
- 	new_page = page_pool_dev_alloc_pages(rx_chn->pg_pool);
--- 
-2.53.0
+pw-bot: cr
 
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--h7qmez3iajpnxox7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatIhoAAKCRDMOmT6rpmt
+0o1rAQCqH3pHLDq5D3zgaIazlZ97zqnJexsWupsCL2LpDpKT7QD/X0MH9H1cDhIm
+04iz6AnmwlFPOF9FWE4GzuIKy/bWagY=
+=oIOO
+-----END PGP SIGNATURE-----
+
+--h7qmez3iajpnxox7--
