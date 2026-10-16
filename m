@@ -1,65 +1,67 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B052190462
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2123037882A
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792140447; cv=none; b=dv+dzVOYeao96rAIkcXR7fA9wNa17HsrL/Uqx8nL4HEni0ID4RKwNocxEzqZFbWyX6jHW1KQzgDNCMRVr7IXE2ranDa3TIMsjB442yUB/+JkdcfaeZBbzJAOsIY+itiQxRSUkF9CaqaQjVV3XlrAidrR1EgNIixxELIxUIlCUCY=
+	t=1792140452; cv=none; b=mTpLq+zLSjNvn6iUrsc6TbpnhYEBWHJKrRhsL1HkktqKRNEwS2CWw+kAoQKWXz+ott8GDmBM/Y3aILYfDC/nehkkapMTh+hNK6GWz4sz+FUqQ77E5G4KYVa6AAD6bZAudeLWkhaijL9lNKugehtHhmPqg/TPH1U47yO6Acr9Vfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792140447; c=relaxed/simple;
-	bh=lxJ9/R+nPocJAVyK7ncDpSazd9bCHXPMmaMpTjYhrIE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IhUKAeFbRzBFRiPG1qp9qFi5ajiPu5h3sS4++EJIPUmnfpE+LzLnae8JESLXEtJew3JBNT3w5cg15gABDhdP9mvuwSsv9j0cZDwcMerWkOe5D13ZEfsxpDZNwMkkz/T2w63JiZP3POfBFvV+JBV62o8v6ZLmGgM9SEM0u27pCSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=DSAwTYht; arc=none smtp.client-ip=209.85.219.49
+	s=arc-20240116; t=1792140452; c=relaxed/simple;
+	bh=FCm9AgtpDJofEEf2z0U1asvYbnbxbKvjBbZrd7RpdvA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=D7sRiVHAzZhWEkRtrC8g/HGKllFjwnpn0lcdXTbd8l9V2V2uF3yZn7tJUnH+el0NJDmxgerxv4kfO1tIEYCvg+ITMtIh9VvEyZYV9b1jNAoREiMv6BXrU+2tE6y8LDz1rTwrdRITDEXSpcjH5gFeBlcFJXyCSADODBvkzGmx8nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=TGskceX+; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="DSAwTYht"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-917866225aaso82513256d6.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:47:25 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="TGskceX+"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-53512cd2f85so76870921cf.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:47:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792140444; x=1792745244; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aBhmuSMaG4Pa2MSUzOSH5FgUKD63s+LESTxgG06O3FE=;
-        b=DSAwTYhtVkLiKZR4HzGQ8sEOxcdTU/lsY7UW7HzWEVpEdhi5EOa3LMZS6Hvcelez9o
-         Lh/lsKgs0V2yAZmLY8Wc+AlHObKi1JSurbcujZlMK3gZooHmCqgIdEy3PgAgH7gTmpaB
-         7fhEDrw7vChLbp/QnqyXhwwtp7Ce0ACC1lNJk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792140444; x=1792745244;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1792140449; x=1792745249; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aBhmuSMaG4Pa2MSUzOSH5FgUKD63s+LESTxgG06O3FE=;
-        b=misNSPPyY/Xzn6p+OF5msF1yKU4mZLhUnzkVnYSybP8FPA2Mjtp0MsixxibmGxY3Gr
-         uGQ0UItWQ/caOQ3tGk/urnDzKRXM6iEzH5Jwmz+ced+CMbN036OIFj37QBucLgbNWD1H
-         6DLfVn5T/BahsbO1UlAHyNtJxmnFadeLlV/qkuh9Erm0HJzi41MyBH4ZIJ4FX/P7VFEQ
-         akA+C/Y2T/gBsOpWqdplQOy2ffyMQoIrXD5HKSPEmD2bn7vjEgVUc8JHWTre3vROr9re
-         B6x4F8QydkFCbjaPk+Vk3PBmDNnDBNx0JOCsxdBuRTR130cz68W5VpKgCFZfBOZVY5ZW
-         6UzQ==
-X-Gm-Message-State: AFq9FYKFgQKumCE22ZaC8ZXUftYebsgive20OWrb2Ej+n1ojLMTD5hfh
-	ofXnDz83SgvEhgFJDJDkWLbZZsNTYVKDo7Xv9FDmEPzLLH+2BBN8PcsumS5NjeIasahltzVRrLF
-	yz7s=
-X-Gm-Gg: AYBFou0lgpMsr2nI6zzmioykTcc8G8z8DDerBYTINpoxgh+2Z/s98p49yz2Jb/XqVEE
-	OKE+vVC6fRSvR4k/Xo6RXw3OeOeDPiis+WAkKONVud1pH+FA2ATnCgVZuPZ9SlDD2j+UJKNqp7L
-	0rLVQdWLzTJpHB8f/kOSigY7gA3nuu3tlUnzG90C9S95szXbEs4TRyhW2h8gWijD+BXpY3ka02x
-	9EUuO8TKZvhXKMIdPs3+8YcicMOXdE9w2lTJr4YjWPBp7nwc+J3+GYCzqYc7v8UGYZLbLIsEiDH
-	Xr5+t5THjRT0D9iDADw3p5++sK/Lf8rILp+mADJzAQPPCW91/SW9P4CglHs87J8AqX6L9WsE/dr
-	j8laK6Alq7WI2rKWmf4mV+UmQPtKm3CB/4HKI4bQvfb6OFevJwOK1MTZ1hhSbQOH/ZHkyfgM9us
-	6GIveuEAmRGsXaRzjR8MC5EWwzOWViKrNDw+bwelONBWqBMzGaG0/OaZ1vGBa1r4J6h537X7oX/
-	0gSNqr0DRkIwhZ4KcXlKmxzsZGpPRSD/hjFNHpZcLOP
-X-Received: by 2002:a05:6214:240d:b0:91b:9136:d303 with SMTP id 6a1803df08f44-91b9136d5c9mr213297676d6.10.1792140444130;
-        Fri, 16 Oct 2026 01:47:24 -0700 (PDT)
+        bh=qq6uWh4XSjsvNDt5HJOYQDJcHsqqsHEfpTjDOEw7wH8=;
+        b=TGskceX+sNty6sluwcFFzXg4h/Ai9/mSthfmkOv2+8U0IsexV9c1F9YpRglIcnjYez
+         X9Ie63F+rZn0iXZfaO/Yia0sF++d35j70GjXQHtonioXQ0y+M2hkVGKaxgzUlnsvTtK5
+         RDIADEd4NCfdS6Lc7q+DaQMHqElehz9aofFfE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792140449; x=1792745249;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qq6uWh4XSjsvNDt5HJOYQDJcHsqqsHEfpTjDOEw7wH8=;
+        b=Lx5tyB1ZqIH/za9e1s5+c0lgaukWEb3RUnPxFZ4kFC9FXZdpojgMm2c3DoH6qrRRkF
+         Xgf+BOqlN0HJalA2fT1Y3znyRerKSf7tpob3zjVIgxChp2gDc78R47AbrCcG2zbu1hH8
+         l4oChkcXUcbuLdg8DE3h4xnYKLfuS+G+/FbI4bgITqN4IDrKSR7hRROoOaIrl8Po3tat
+         bjiyM/SkJDr5X9BKBaWR5paByME4akHaopaYRlbhOHhSlCu/J71otufw0vvkbz9oHfTi
+         2Fn9pTRpn5ujGOdto1R/LUBf/L9/6d4s/nKpexzLCe4cZllsrPhIbgiEZMjXtcYw4g8r
+         jDPw==
+X-Gm-Message-State: AFq9FYJFJYXpam+I2VmtFzKL0UW0iZslJudrs0AuwvTD7+ckaa6fBu8P
+	72TMn/cjJYR1+gMa6KehHlY4iaGuIcoIh/hffXWwffPZVGoT1hG70U8tlGGHSIsj+OGb+X/YNHR
+	tNVk=
+X-Gm-Gg: AYBFou09++SLYAApt3QxhJQWwRgXheH54KJx2LXRT+JDylcxPm8a4oWAjYxYP9boYmU
+	4+4uDoX67nIr5X5ooYUXOnHZlHWa9abg3Xh3s8A7o5bLqVBLx+LaU7XnZJAVMaKwfWKf6rVqeai
+	msW90tgLCefu2tv1oLHdN8d2lBpKhGaK1B3xa79RkWe8lXFlziLRRTnT1PZyMSv3AOeKLoEJPXN
+	/FGo/af0hWqjUSmbJ778ek5GBdk/etuh7/M4KYP8PirJ0dtKCstztM5+OhZECzaim6KEdh45ukY
+	wEWuLyB6QnZh2BHfqm40ntOvH51sEH6HAEI7RXzoqJKgkUn+MHc03dPjOH7uKPWhk6aFKWsGTcc
+	G16IsS+UYUQwu5RkvarO+/7n7QCULWCN7no7aeP+4sGpnpZ/3ovNNb3TD6iZYjHQYY03eRIWFlr
+	oRml1rKB9LLNrhjv+7mgzUyPZs/XB9JWVjBfty+/BVHC7DhM3BjHFxZWbocAQb5y9GbfPy9j9k0
+	U9imi+51Iaot5WYVcnKXpXCMHwZawjepc8ewxzUIiiHpw==
+X-Received: by 2002:a05:622a:1c15:b0:535:1cf3:cf0 with SMTP id d75a77b69052e-5359fde8758mr332647811cf.56.1792140448840;
+        Fri, 16 Oct 2026 01:47:28 -0700 (PDT)
 Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcb8c4adasm17863946d6.1.2026.10.16.01.47.21
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcb8c4adasm17863946d6.1.2026.10.16.01.47.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 01:47:23 -0700 (PDT)
+        Fri, 16 Oct 2026 01:47:27 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Victor Nogueira <victor@mojatatu.com>,
 	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
@@ -67,16 +69,16 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Clark Williams <clrkwllms@kernel.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
-	Patrick McHardy <kaber@trash.net>,
-	owen kwan <owen@verialabs.com>,
 	linux-rt-devel@lists.linux.dev,
 	stable@vger.kernel.org,
-	sashiko-bot@kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
 	zdi-disclosures@trendmicro.com
-Subject: [PATCH net 0/2] net/sched: sch_teql: fix transmit-path regressions
-Date: Fri, 16 Oct 2026 04:47:17 -0400
-Message-Id: <QDISC-Y0BY.v1.r0.20261015184107@mojatatu.com>
+Subject: [PATCH net 1/2] net/sched: sch_teql: fix slaves_lock IRQ deadlock
+Date: Fri, 16 Oct 2026 04:47:18 -0400
+Message-Id: <QDISC-Y0BY.v1.r0.20261015184107-1@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-Y0BY.v1.r0.20261015184107@mojatatu.com>
+References: <QDISC-Y0BY.v1.r0.20261015184107@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,22 +87,244 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Two independent sch_teql regressions on the transmit path.
+This is a followup of commit e5b811fe7931 ("net/sched: sch_teql:
+Introduce slaves_lock to avoid race condition and UAF") as reported by
+Sashiko.
 
-Patch 1 makes slaves_lock safe for the hard-IRQ-disabled netpoll path and
-for PREEMPT_RT by converting it to a raw spinlock taken with IRQs saved.
+The issue: master->slaves_lock serializes the master's ring of slave
+qdiscs.  The control paths -- teql_dequeue(), teql_destroy() and
+teql_qdisc_init() -- take it with spin_lock_bh(), while
+teql_master_xmit() (the master's ndo_start_xmit) takes it with plain
+spin_lock().
 
-Patch 2 fixes a use-after-free when a lower virtual device consumes an skb
-but returns NET_XMIT_DROP rather than NETDEV_TX_OK.
+netpoll_send_skb() wraps the transmit in local_irq_save(), and
+__netpoll_send_skb() asserts lockdep_assert_irqs_disabled(), so
+teql_master_xmit() reached from netconsole always acquires slaves_lock
+with hard IRQs disabled.  On PREEMPT_RT spinlock_t is an rtmutex, and
+Documentation/locking/locktypes.rst names
 
-Jamal Hadi Salim (1):
-  net/sched: sch_teql: fix slaves_lock IRQ deadlock
+	local_irq_disable();
+	spin_lock(&lock);
 
-owen kwan (1):
-  net/sched: sch_teql: fix use-after-free on lower qdisc drop
+as a sequence that breaks there because the rtmutex requires a fully
+preemptible context.  This is reachable without any panic: the nbcon
+printer thread calls netconsole's write_thread() callback on every
+message.  The usual remedy -- folding the IRQ disable into the lock with
+spin_lock_irqsave() -- is unavailable because the local_irq_save() is
+netpoll's, not ours.
 
- net/sched/sch_teql.c | 49 +++++++++++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 19 deletions(-)
+On non-RT the same asymmetry leaves slaves_lock acquirable with hard IRQs
+disabled on one path and held with hard IRQs enabled on another.  That is
+only exploitable during the panic console flush (netconsole is
+CON_NBCON_ATOMIC_UNSAFE, so console_is_usable() admits its write_atomic()
+only from nbcon_atomic_flush_unsafe(), which panic() alone calls), and
+even then an IRQ-saving lock does not help if the holder oopsed inside the
+section or was stopped by panic_other_cpus_shutdown().  So the non-RT half
+is hardening; the PREEMPT_RT half is the bug.
 
+The Fix: take slaves_lock as a raw spinlock with IRQs saved at every
+site.  Since skb_queue_purge() takes the queue's spinlock_t and may not
+nest inside a raw lock on PREEMPT_RT, move its call in teql_destroy()
+outside the raw section; dat->q is the dying qdisc's own queue and was
+never serialized by slaves_lock, so the move is behaviour-neutral.
+
+The new critical sections contain only RCU pointer assignments and
+netdev_get_tx_queue(); skb_queue_purge(), netif_wake_queue() and
+dev_reset_queue() are all outside them.  teql_destroy()'s ring walk is
+O(slaves), two pointer loads and a compare per iteration, so even a large
+ring is microseconds with IRQs off.  Keeping the purge conditional rather
+than dropping it outright is the conservative call for a backport.
+
+Some context: commit 6301f6a34ed8 ("net/sched: sch_teql: move
+rcu_read_lock()/spin_lock() from _bh variants") hardened the parent
+fix; together they addressed the master->slaves resurrection
+use-after-free and the xmit-side BH warning but left the reverse
+direction -- a hard IRQ re-entering xmit while a control path holds the
+lock -- unaddressed.
+
+Conditions to recreate the bug:
+- CONFIG_PREEMPT_RT, CONFIG_NET_SCH_TEQL, CONFIG_DUMMY and
+  CONFIG_NETCONSOLE.
+- Run `ip link add dev teqlslave0 type dummy`, bring teqlslave0 up, attach
+  it with `tc qdisc add dev teqlslave0 root teql0`, and bring teql0 up.
+- Configure a netconsole target on teql0 with explicit local and remote
+  IP addresses and a remote MAC address, then emit a console message.
+  The nbcon printer thread reaches teql_master_xmit() with hard IRQs
+  disabled by netpoll; taking slaves_lock as a spinlock_t is invalid on
+  PREEMPT_RT. No panic or concurrent qdisc change is required.
+- Reachable by an admin with CAP_NET_ADMIN; teql devices exist only in the
+  initial netns (no per-netns ops), so a user namespace does not suffice.
+
+Fixes: e5b811fe7931 ("net/sched: sch_teql: Introduce slaves_lock to avoid race condition and UAF")
+Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260630150922.238714-1-jhs%40mojatatu.com
+Link: https://lore.kernel.org/netdev/20260630150922.238714-1-jhs@mojatatu.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ net/sched/sch_teql.c | 45 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 17 deletions(-)
+
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 409ce50cc0db..c7dcec25ef42 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -53,7 +53,7 @@ struct teql_master {
+ 	struct Qdisc_ops qops;
+ 	struct net_device *dev;
+ 	struct Qdisc __rcu	*slaves;
+-	spinlock_t		slaves_lock; /* serializes writes to ->slaves */
++	raw_spinlock_t		slaves_lock; /* serializes writes to ->slaves */
+ 	struct list_head master_list;
+ 	unsigned long	tx_bytes;
+ 	unsigned long	tx_packets;
+@@ -92,6 +92,7 @@ teql_dequeue(struct Qdisc *sch)
+ {
+ 	struct teql_sched_data *dat = qdisc_priv(sch);
+ 	struct netdev_queue *dat_queue;
++	unsigned long flags;
+ 	struct sk_buff *skb;
+ 	struct Qdisc *q;
+ 
+@@ -102,9 +103,9 @@ teql_dequeue(struct Qdisc *sch)
+ 	if (skb == NULL) {
+ 		struct net_device *m = qdisc_dev(q);
+ 		if (m) {
+-			spin_lock_bh(&dat->m->slaves_lock);
++			raw_spin_lock_irqsave(&dat->m->slaves_lock, flags);
+ 			rcu_assign_pointer(dat->m->slaves, sch);
+-			spin_unlock_bh(&dat->m->slaves_lock);
++			raw_spin_unlock_irqrestore(&dat->m->slaves_lock, flags);
+ 			netif_wake_queue(m);
+ 		}
+ 	} else {
+@@ -137,11 +138,13 @@ teql_destroy(struct Qdisc *sch)
+ 	struct teql_master *master = dat->m;
+ 	struct netdev_queue *txq = NULL;
+ 	bool reset_master_queue = false;
++	unsigned long flags;
++	bool purge = false;
+ 
+ 	if (!master)
+ 		return;
+ 
+-	spin_lock_bh(&master->slaves_lock);
++	raw_spin_lock_irqsave(&master->slaves_lock, flags);
+ 	prev = rcu_dereference_protected(master->slaves,
+ 					 lockdep_is_held(&master->slaves_lock));
+ 	if (prev) {
+@@ -169,12 +172,18 @@ teql_destroy(struct Qdisc *sch)
+ 					reset_master_queue = true;
+ 				}
+ 			}
+-			skb_queue_purge(&dat->q);
++			purge = true;
+ 			break;
+ 		} while (prev != rcu_dereference_protected(master->slaves,
+ 							   lockdep_is_held(&master->slaves_lock)));
+ 	}
+-	spin_unlock_bh(&master->slaves_lock);
++	raw_spin_unlock_irqrestore(&master->slaves_lock, flags);
++
++	/* skb_queue_purge() takes the queue's spinlock_t, which cannot nest
++	 * inside a raw lock on PREEMPT_RT; purge after the raw section.
++	 */
++	if (purge)
++		skb_queue_purge(&dat->q);
+ 
+ 	if (reset_master_queue)
+ 		dev_reset_queue(master->dev, txq, NULL);
+@@ -187,6 +196,7 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 	struct teql_master *m = (struct teql_master *)sch->ops;
+ 	struct teql_sched_data *q = qdisc_priv(sch);
+ 	struct Qdisc *first;
++	unsigned long flags;
+ 
+ 	if (dev->hard_header_len > m->dev->hard_header_len)
+ 		return -EINVAL;
+@@ -203,7 +213,7 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	skb_queue_head_init(&q->q);
+ 
+-	spin_lock_bh(&m->slaves_lock);
++	raw_spin_lock_irqsave(&m->slaves_lock, flags);
+ 	first = rcu_dereference_protected(m->slaves, lockdep_is_held(&m->slaves_lock));
+ 	if (first) {
+ 		if (m->dev->flags & IFF_UP) {
+@@ -214,7 +224,7 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 			    (m->dev->flags & IFF_MULTICAST &&
+ 			     !(dev->flags & IFF_MULTICAST)) ||
+ 			    dev->mtu < m->dev->mtu) {
+-				spin_unlock_bh(&m->slaves_lock);
++				raw_spin_unlock_irqrestore(&m->slaves_lock, flags);
+ 				return -EINVAL;
+ 			}
+ 		} else {
+@@ -237,7 +247,7 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 		m->dev->mtu = dev->mtu;
+ 		m->dev->flags = (m->dev->flags&~FMASK)|(dev->flags&FMASK);
+ 	}
+-	spin_unlock_bh(&m->slaves_lock);
++	raw_spin_unlock_irqrestore(&m->slaves_lock, flags);
+ 	return 0;
+ }
+ 
+@@ -302,11 +312,12 @@ static inline int teql_resolve(struct sk_buff *skb,
+ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct teql_master *master = netdev_priv(dev);
+-	struct Qdisc *start, *q;
+-	int busy;
+-	int nores;
+ 	int subq = skb_get_queue_mapping(skb);
+ 	struct sk_buff *skb_res = NULL;
++	struct Qdisc *start, *q;
++	unsigned long flags;
++	int nores;
++	int busy;
+ 
+ restart:
+ 	nores = 0;
+@@ -342,13 +353,13 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+ 				    NETDEV_TX_OK) {
+ 					__netif_tx_unlock(slave_txq);
+-					spin_lock(&master->slaves_lock);
++					raw_spin_lock_irqsave(&master->slaves_lock, flags);
+ 					if (rcu_dereference_protected(master->slaves,
+ 								      lockdep_is_held(&master->slaves_lock)) == q)
+ 						rcu_assign_pointer(master->slaves,
+ 								   rcu_dereference_protected(NEXT_SLAVE(q),
+ 											     lockdep_is_held(&master->slaves_lock)));
+-					spin_unlock(&master->slaves_lock);
++					raw_spin_unlock_irqrestore(&master->slaves_lock, flags);
+ 					netif_wake_queue(dev);
+ 					master->tx_packets++;
+ 					master->tx_bytes += length;
+@@ -361,13 +372,13 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 				busy = 1;
+ 			break;
+ 		case 1:
+-			spin_lock(&master->slaves_lock);
++			raw_spin_lock_irqsave(&master->slaves_lock, flags);
+ 			if (rcu_dereference_protected(master->slaves,
+ 						      lockdep_is_held(&master->slaves_lock)) == q)
+ 				rcu_assign_pointer(master->slaves,
+ 						   rcu_dereference_protected(NEXT_SLAVE(q),
+ 									     lockdep_is_held(&master->slaves_lock)));
+-			spin_unlock(&master->slaves_lock);
++			raw_spin_unlock_irqrestore(&master->slaves_lock, flags);
+ 			rcu_read_unlock();
+ 			return NETDEV_TX_OK;
+ 		default:
+@@ -489,7 +500,7 @@ static __init void teql_master_setup(struct net_device *dev)
+ 	struct teql_master *master = netdev_priv(dev);
+ 	struct Qdisc_ops *ops = &master->qops;
+ 
+-	spin_lock_init(&master->slaves_lock);
++	raw_spin_lock_init(&master->slaves_lock);
+ 	master->dev	= dev;
+ 	ops->priv_size  = sizeof(struct teql_sched_data);
+ 
 -- 
 2.43.0
