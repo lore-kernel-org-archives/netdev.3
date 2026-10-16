@@ -1,65 +1,64 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0744B4EC657
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 15:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5664EF130
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 15:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792164568; cv=none; b=a3BIV/ObO85uaVo3Wk2611PQmiFBtmupwYIpcgp+7QKsnRkgCh77MQcTxMHDQS89tGb9Y8BONoj45QFV4uj5rRh2WuumR+eZiyYcufL97kJ3wRzquYLVDlnnJ2EreS1ac+DsgraNX5jYIymZoJGgZNE9cG+dmLFPCSYzawOtrtM=
+	t=1792164570; cv=none; b=oHFY1nKV1YthcDgekMJBK65kJXpoaDWeJTvC4i5bloap02QKgXeMtgAnIn779PSLOHyDb2AdLwgmQlfRyObE20waVMtBaT0bJ7pj59kEkQRwdd8/3orKj2Yda6dKavY2ko8pBUmu4RbFReiTF1ihC4nd0SskBG6r6JSvCD0IFMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792164568; c=relaxed/simple;
-	bh=IF35a4a3Mpz9XtjGUcjDapv82syqo8hSnPBHgl6W//c=;
+	s=arc-20240116; t=1792164570; c=relaxed/simple;
+	bh=JJQ+LEXiLC67cPzwdvWPGjff+6giQpYF9Mp1JrMNmfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V08DQuDhj+4M21BWrLcPoERr4Ikex6u6rv/MssgNA4KnCwCja5mLgF1qtjwH2g5M1Q5SCNV045HYHsk+AFJbtP/8CUVkEyXlecTXBxGbXaehZKDlMNTZ6m67IgHdw0/0iWEdnCDcaPGG1mTcTFMUPv4uFk5AgaalgVbyDs+7E3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m3fMtJuM; arc=none smtp.client-ip=209.85.219.47
+	 MIME-Version; b=i+ge+RbDhwf/eaUIJ59k6AOUnUpPY2T4nMzQ7zHKsFkUNn6lucCRVqnCY/oP71Cw7z5T88ymuU0Fwc9G8KUA7TmTu/VxBTir3dw5EJaVt8Iv9Nlplgmd5mGewHZwsmNYTw5HQADbJcxh4YvJkL1UYp4dH5LAIaEiB8a6I1suknk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kuE4HP8X; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m3fMtJuM"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91b813ac020so1253436d6.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:29:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kuE4HP8X"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-9178510f3bdso955226d6.2
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792164556; x=1792769356; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tMbs8hWAbtt+ARgOXoEeeaTREqcjolxU1jN7ZThIS8Y=;
-        b=m3fMtJuMI5KN3Ofzh4aJRzGDp/xH3K0zGB5iap89WXKX3QAuH5XH0YS5MWC1iA5aCw
-         cHWTlD7ZlhI8okCEVs6Q8XhoIYsVCsmhBo70xufdwn62HIH+in8oWwrnoAy1IzkrQMkh
-         QS8Lc+HEB0QrGb7PUOqYGhbbcXj+wDmLGh20nc3Zhe2F5L/aysiSf26u/qrOWADL/Ac0
-         LhSKQZYW6ZVHanr5rkeo2iHLqVK4O+1BH4ODkKc4jX0sE29TnadEi0WKeTforI02hHGl
-         XxMuZ1TQNaB09AbcUD+Dr27fpk2S0HgAh0IQjgzA1OHwuhjmY74LvBqnZsHmeCy6hUtE
-         anCQ==
+        d=gmail.com; s=20251104; t=1792164559; x=1792769359; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f7DPc1Dyu49JWGD9lBQdHhbhyqpNrSPHKwPo8WBI0fI=;
+        b=kuE4HP8Xu+XveH9wX69dxWwFi62Yl314snh6qM7+2BR1hpKAqmwhibbxr6KhRWdxo9
+         sviLw3vkrClY7AuK5ScJkY8Rkh/DEA+6ctGrxtwsvi8p95OZVUagQDAMyuUAf/iKKHiO
+         EiAWA7rZmnqFQdMiLBUafbhvgWWYIHfaGDJykOOjkmNYTiGC+4ndbDAUdzWi0WX3BV5o
+         qvFbzFLUUQo9Kaj0Tn3qdLgs2qZkdz+Q1RQa9nWO3V9CEViybH//diH4b7Fv6hqNP0aU
+         QN7hIqPZzNoQDhl4+RI/rPDXeiVn+qtnKvAKbs0MN2Ebo0j/x7SUbgtkK2CvDO3lwA9r
+         L4qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792164556; x=1792769356;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tMbs8hWAbtt+ARgOXoEeeaTREqcjolxU1jN7ZThIS8Y=;
-        b=j0CJ5PwdhKSNtWckAYdwpdGlg0jgUl5sCvi3o9eJvw+X7xWvpmvnTwc6jq/F3QTKkh
-         Ek1yL3zR54R8uuMekIL63Rk5A27WjufAGglxzVqMbq0niHD2p8UnEB1woGXpeNURnLSl
-         JhcvBDo6WTkwxMtzC8vjfrU+DmRozKvlIPnvXaTA3rbh0JgARyBexBOKCnjF0FPgmV54
-         /VyHalErmv7L5gx5fsfaAzoyegWt/OM0HzeUaDI3LHpulKN1jNfoczU8hURGyG/QxAgk
-         wg7vXoPE+sYTUmh86KpoeCFHSOAZWOPwjlB9iTRlpvrVtFGp9Nby/lv6OJilVQ6KOUeX
-         lEuA==
-X-Gm-Message-State: AFq9FYJsg8Jk133l5JMjW16JoWXCpaxf6YDjhwDWOdTvvr7IBV/Ah7/5
-	Id57/lRaZBsqG2iTALWMU/NkpB3p0NGXm6nL0v/He/H5zyxJ8E6bUzGk5aTPjst9
-X-Gm-Gg: AYBFou1UqAnTDJcZmvjvawzZcq8UoYBVA3fM9OfRPp0mi/RPZ4zXb3sgQevSRje4eEH
-	bARKqw66YYwoFYuA4T2rnzW/kXM+j+9f8F0sIoxQtxbQi2xl4JJXxJzRz80hcuMDIRgUMWuuNQB
-	koRbzkCkrzoZk5QdgZaPCoVrdMlz9F8kU0b923w6F3hRH/XK52eWlfRK9pniEt2tp87uWxCPeK8
-	jPMKYxFLb+E9wl17gpNDXtPiiCorPHoJTcFJgBHbsG43tVLikXfVBd+bIFG4hbZOx1zqZwQLbfw
-	A9fMu8bhT0ftklD465dR7jdP7KponsiyJFUfaa8KsIfj/8wG3wLLxtKESJ2ixsRUc7cAs0Ycv9L
-	wmcHkNP4Y7F5q87RdPSzOY6nz2KVpAG9QupCIeOliDMDdTh+E5eEVkkfdgYjCS7yf1dgokxA5BN
-	KlwoEH9t76Wwmf238JgZEUpnfurXqujZKW6CnccV3BDoCOM9iSacaHcI+DVPn2JZT7AUe443cxy
-	q3G30RaMGjHMvazE3UFcyhFJVzcLLlxSCILiyVz8IhGkHVJJce9IsWZg+tXdq4M5/EvnGjj0h95
-	yxJPCOYRT7epke+K5iolF7H/Vn+PufI8fV4gFI0a
-X-Received: by 2002:a05:620a:410c:b0:93c:3d7e:6e90 with SMTP id af79cd13be357-93f29d02d5fmr33308685a.32.1792164555991;
-        Fri, 16 Oct 2026 08:29:15 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792164559; x=1792769359;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f7DPc1Dyu49JWGD9lBQdHhbhyqpNrSPHKwPo8WBI0fI=;
+        b=JaZZ9ILVNUXFXRZdjXWQRiXuwusXC/AkT1ZMH/1hMTO5EJSealGZNJzQrRDcEaZA/+
+         XixzYDY6d9bq0znsudMGXyyZngGTlPA1M+BpC0zhRIxRIgxHXE6VzAqZkQAARoEpHPg6
+         zowIVcNmwRf6A1Dwsft1KjHTVLEDednMYEokC2ac7PbZKrh7V1r7e1E45C7bA4zYss3U
+         Vje88NRJWlZGRi84WWQUKcMflORf8+q/usEG6JTerl1mTZVmL9Lmb5cU+8HnZRGcnCOG
+         OTDfZL10Z+kFRYgZIXsWbjZrlHpBNuTvr4wZUZfdjKodn/T/aZyHJo3N3srsCVrA3rpI
+         Brtg==
+X-Gm-Message-State: AFq9FYL4SbJ5cQ+bPlUYeWhZgg2AddthEDisCsq9iX6Gi1M8OZFJsk9o
+	7dI+SuuLeV7r+hgHKf4CaVK/Qu7ArpWg2bw+yYC8Iq4yDbRfoBceU6r3wKuPpQ/1
+X-Gm-Gg: AYBFou2J3GYt6lRZUvY/hE4D9gjdPjusnqLCvn16p2V7zIxxpx0Jtm3NeSy1kbC/xjF
+	3OnsWhJSL1MCvR/rUwng1gM3VzqUF4GPypoXzg4+US/DhCa4ayenQ0QWVS6Wkh9WicU5/nUheNu
+	vit+Unb23l3FvUemcZgGjq20zdV62NxMF0cqmjPo5q3EGZaU8pJ0XdxzOLzgZuvXpcW2BZEF7rx
+	0HgYECkrO5M6FHhWqMJZ8N4c5OVYxpVEll8dcDg2GMJsaqPUydVvU4VESLcY25Ontbji0lrA++S
+	bpwb15rwSo6rU5hqokTV1s3QOwwfI7GmvWX/eSUa7HUUxqaQqDAONV9Bj99sa0mdKMtseDWR9Su
+	uXnLSmrj9fYOolO0HPaa8FVD+k7rkYBKkdSdncnsB2BPYH/MZ1C84uXlO0hIdOGIZJDr+Rickst
+	LZRvZLtH9qsPrCC6o8+F2s04x/C/sxW+pE9Q0mSYPe+JxXtdQuXXt99XI2uQC069QI/JvV0dTLQ
+	HpZu7PB42oLigrmd+6vzAdjFIQ8LB5JKTbCg5YvEoYJxdh1bO/U9hc+SYvKVqff36CB6IyFZdfX
+	1FkbzVk6O72v2iI2dSCLx6f/QbElu9US3cljm34j
+X-Received: by 2002:a05:6214:cc1:b0:919:96b8:d1cd with SMTP id 6a1803df08f44-91bdf09ee8dmr5901296d6.26.1792164558998;
+        Fri, 16 Oct 2026 08:29:18 -0700 (PDT)
 Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcba473easm25601866d6.17.2026.10.16.08.29.14
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcba473easm25601866d6.17.2026.10.16.08.29.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 08:29:15 -0700 (PDT)
+        Fri, 16 Oct 2026 08:29:18 -0700 (PDT)
 From: Xin Long <lucien.xin@gmail.com>
 To: network dev <netdev@vger.kernel.org>,
 	quic@lists.linux.dev
@@ -97,9 +96,9 @@ Cc: davem@davemloft.net,
 	mef@scarletmail.rutgers.edu,
 	paul@jakma.org,
 	Kuniyuki Iwashima <kuniyu@google.com>
-Subject: [PATCH net-next v17 08/15] quic: add path management
-Date: Fri, 16 Oct 2026 11:27:11 -0400
-Message-ID: <ae36949f7685ef74318d3c742f02e1398db3b454.1792164438.git.lucien.xin@gmail.com>
+Subject: [PATCH net-next v17 10/15] quic: add packet number space
+Date: Fri, 16 Oct 2026 11:27:13 -0400
+Message-ID: <54b5856774635b8c99777f7e46955225c65e8295.1792164438.git.lucien.xin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1792164438.git.lucien.xin@gmail.com>
 References: <cover.1792164438.git.lucien.xin@gmail.com>
@@ -109,1012 +108,455 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This patch introduces 'quic_path_group' for managing paths, represented
-by 'struct quic_path'. A connection may use two paths simultaneously
-for connection migration.
+This patch introduces 'quic_pnspace', which manages per packet number
+space members.
 
-Each path is associated with a UDP tunnel socket (sk), and a single
-UDP tunnel socket can be related to multiple paths from different sockets.
-These UDP tunnel sockets are wrapped in 'quic_udp_sock' structures and
-stored in a hash table.
+It maintains the next packet number to assign, tracks the total length of
+frames currently in flight, and records the time when the next packet may
+be considered lost. It also keeps track of the largest acknowledged packet
+number, the time it was acknowledged, and when the most recent ack
+eliciting packet was sent. These fields are useful for loss detection,
+RTT estimation, and congestion control.
 
-It includes mechanisms to bind and unbind paths, detect alternative paths
-for migration, and swap paths to support seamless transition between
-networks.
+To support ACK frame generation, quic_pnspace includes a packet number
+acknowledgment map (pn_ack_map) that tracks received packet numbers.
+Supporting functions are provided to validate and mark received packet
+numbers and compute the number of gap blocks needed during ACK frame
+construction.
 
-- quic_path_bind(): Bind a path to a port and associate it with a UDP sk.
+- quic_pnspace_check(): Validates a received packet number.
 
-- quic_path_unbind(): Unbind a path from a port and disassociate it from a
-  UDP sk.
+- quic_pnspace_mark(): Marks a received packet number in the ACK map.
 
-- quic_path_swap(): Swap two paths to facilitate connection migration.
+- quic_pnspace_num_gabs(): Returns the gap ACK blocks for constructing
+  ACK frames.
 
-- quic_path_detect_alt(): Determine if a packet is using an alternative
-  path, used for connection migration.
+It also tracks ECN counts and provides helpers to validate peer ECN counts
+per rfc9000#section-13.4.2.1.
 
-It also integrates basic support for Packetization Layer Path MTU
-Discovery (PLPMTUD), using PING frames and ICMP feedback to adjust path
-MTU and handle probe confirmation or resets during routing changes.
-
-- quic_path_pl_recv(): state transition and pmtu update after the probe
-  packet is acked.
-
-- quic_path_pl_toobig(): state transition and pmtu update after
-  receiving a toobig or needfrag icmp packet.
-
-- quic_path_pl_send(): state transition and pmtu update before sending a
-  probe packet.
-
-- quic_path_pl_reset(): restart the probing when path routing changes.
-
-- quic_path_pl_confirm(): check if probe packet gets acked.
+Note QUIC uses separate packet number spaces for each encryption level
+(APP, INITIAL, HANDSHAKE, EARLY) except EARLY and all generations of
+APP keys use the same packet number space, as describe in
+rfc9002#section-4.1.
 
 Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
 ---
 Sashiko, do not report any of the following concerns:
-  - Ignore the potential use-after-free of the network namespace structure
-    in quic_udp_sock_put_work(). Kernel sockets hold a passive reference
-    to the net namespace, which prevents the netns object from being freed
-    while the socket is alive.
+  - Ignore the concern about valid reordered packets being rejected when
+    their packet number is smaller than min_pn_seen in
+    quic_pnspace_check(). The QUIC packet number decoding and duplicate
+    detection logic requires maintaining a lower bound for the packet
+    numbers that can still be tracked. Packets arriving below this window
+    are treated as too old, which is expected behavior.
 
-  - Ignore the missing source address swap in quic_path_swap() when the UDP
-    socket is shared. This case only occurs when paths->path[1].udp_sk is
-    NULL, which indicates a peer address change scenario.
+  - Ignore the concern about incorrectly reporting packets as missing when
+    the maximum number of gap acknowledgment blocks is reached in
+    quic_pnspace_num_gabs(). QUIC ACK frames have a bounded number of ACK
+    ranges in this implementation. When the limit is exceeded, the ACK
+    generation logic intentionally sacrifices older range precision and
+    preserves the most recent acknowledgment information.
 
-  - Ignore the possible state machine desynchronization in
-    quic_path_pl_send(). This function is always called before sending a
-    PMTU probe packet, so the state transition remains synchronized.
+  - Ignore the concern about an out-of-bounds ECN index. The callers of
+    quic_pnspace_inc_ecn_acked() and quic_pnspace_inc_ecn_local() will
+    guarantee ecn <= QUIC_ECN_MAX in the next patchset.
 
-  - Ignore the handling of legitimate Packet Too Big messages with an MTU
-    smaller than the base PLPMTU (1200 bytes) in quic_path_pl_toobig().
-    Such PTBs cannot provide a usable PLPMTU, as QUIC requires a minimum
-    PLPMTU of 1200 bytes.
+  - Ignore the concern about a missing third ECN validation condition in
+    quic_pnspace_validate_ecn(). RFC 9000 section 13.4.2.1 explicitly
+    allows the total increase in ECT(0), ECT(1), and ECN-CE counts to
+    exceed the number of newly acknowledged packets, for example when an
+    earlier ACK was lost. The function correctly implements the required
+    ECN validation checks; no additional total-increase check is needed.
 
-  - Ignore the concern about stale or torn reads in quic_path_set_udp_sk().
-    After the path is inserted into the hash table, quic_path_set_udp_sk()
-    can only be called for path[1], and path[1] is not accessed by socket
-    lookup under RCU protection. Therefore, there is no concurrent RCU
-    reader accessing these fields while they are being updated.
+  - Ignore the concern about initializing base_pn to pn + 1 in
+    quic_pnspace_mark(). This does not imply that packets below pn were
+    received; it only means packet numbers below pn are not tracked when
+    generating ACK/SACK information. Missing packets below the first
+    received packet therefore do not result in false acknowledgments.
 
-  - Ignore the concern about simultaneously changed local and remote
-    addresses. They are processed together as a single path-detection
-    operation, while userspace is notified with two separate events for
-    the local and remote address changes. Therefore, the combined check
-    is intentional.
+  - Ignore the concern about quic_pnspace_mark() not validating the packet
+    number range. Callers always invoke quic_pnspace_check() before
+    quic_pnspace_mark(), so the input has already been validated. Adding
+    the same range check again in quic_pnspace_mark() would be redundant.
 
-  - Ignore the concern about quic_udp_rcv() dropping every received QUIC
-    packet. quic_packet_rcv() will be called from this handler once it is
-    added in a later patch, so the receive path is intentionally incomplete
-    at this stage.
-
-  - Ignore the concern about the missing seqcount read side. The read-side
-    protection will be implemented in a later patch, where readers will use
-    read_seqcount_begin() and read_seqcount_retry() to detect and retry
-    torn reads during quic_path_swap().
-
-  - Ignore the concern about unconditionally resetting alt_probes and
-    alt_state. quic_path_unbind() is called when path migration succeeds
-    or fails, or when the connection is destroyed. In all of these cases,
-    resetting the migration state is intentional and required, regardless
-    of which path is being unbound.
-
-  - Ignore the concern about using a bare seqcount_t. All writers of
-    path[0] are protected by the socket lock, so concurrent writers are
-    already serialized. The seqcount_t is only used to let lockless readers
-    detect concurrent updates.
-
-  - Ignore the concern about the initial PLPMTUD state.
-    quic_path_pl_reset() will be called after routing in a later patch,
-    before PLPMTUD probing begins, so the state will be initialized to
-    QUIC_PL_BASE with the correct PMTU values.
-
-  - Ignore the concern about seqcount protection in quic_path_unbind().
-    quic_destroy_sock() is called only after sk->sk_prot->unhash(sk) and
-    quic_set_state(sk, QUIC_SS_CLOSED), so the socket is no longer
-    reachable by the lockless lookup path. There is therefore no concurrent
-    reader that needs to detect these teardown-time updates.
-
-  - Ignore the concern about sending one extra probe. quic_path_pl_send()
-    is called before the probe is actually transmitted. Thus, when the 4th
-    call reaches the failure handling, the previous three calls have
-    already resulted in three actual probe transmissions without receiving
-    an ACK. This correctly corresponds to QUIC_MAX_PROBES = 3.
-
-  - Ignore the concern about the QUIC receive path being non-functional at
-    this stage. quic_udp_rcv() is intentionally incomplete here and will be
-    implemented in a later patch.
-
-  - Ignore the concern about QUIC_PL_ERROR needing a recovery transition.
-    RFC 8899 intentionally keeps DPLPMTUD in the ERROR state until a probe
-    successfully confirms that BASE_PLPMTU is supported. Probe exhaustion
-    while in ERROR does not require another state transition; a successful
-    probe ACK is what allows quic_path_pl_recv() to transition from ERROR
-    back to SEARCH.
-
-  - Ignore the concern about skb_dst_force() triggering
-    WARN_ON(!rcu_read_lock_held()). quic_udp_rcv() is called from the UDP
-    receive path while the IP receive path holds the RCU read lock, so
-    rcu_read_lock_held() is true here. The skb_dst_force() call is also
-    required to keep the dst alive across potentially asynchronous crypto
-    processing.
-
-  - Ignore the concern about quic_wq being used after it is destroyed.
-    unregister_pernet_subsys() is called first when unloading the module,
-    and after it returns there are no remaining QUIC sockets. Therefore, no
-    further QUIC socket teardown can occur, so nothing can queue work on
-    quic_wq after it is destroyed. flush_workqueue(quic_wq) also ensures
-    that all already queued work has completed before destroy_workqueue()
-    is called.
-
-  - Ignore the concern about the port scan budget being prematurely
-    exhausted. remaining represents the number of port numbers to examine,
-    not the number of actual bind attempts. Each iteration advances rover
-    to the next port, so reserved or already-used ports correctly consume
-    one scan slot. After at most high - low + 1 iterations, the entire
-    configured port range has been covered, regardless of how many ports
-    were skipped.
-
-  - Ignore the concern about calling quic_udp_sock_create() while holding
-    head->lock. head->lock is a mutex, so the socket creation path is
-    allowed to sleep. Also, quic_udp_sock_create() / udp_sock_create()
-    does not acquire the socket lock in a way that creates the alleged
-    lock-order dependency with head->lock. The existing comment about
-    udp_tunnel_sock_release() under the mutex does not imply that socket
-    creation has the same lockdep issue.
-
-  - Ignore the concern about packet number 0 in quic_path_pl_confirm(). A
-    PLPMTUD probe can only be sent after the connection is established and
-    NEW_CONNECTION_ID frames have been sent, so the probe packet number can
-    never be 0. Therefore, using paths->pl.number == 0 to indicate that no
-    probe is active is safe.
-
-  - Ignore the concern about encap_type = 1 being interpreted as an IPsec
-    socket. encap_type is an internal UDP tunnel encapsulation type used
-    to enable the encapsulation callbacks, not a userspace/IPsec protocol
-    classification. Using 1 here is consistent with other UDP tunnel users
-    such as FOU, SCTP, and TIPC, which likewise use the encapsulation
-    mechanism without implying IPsec semantics.
-
-  - Ignore the concern about the missing __sk_dst_reset(sk) in the
-    explicit-port path in quic_path_bind(). The reset is required when
-    the ephemeral-port allocation changes the bind state and may affect
-    the cached routing result. In the explicit-port path, the local
-    port/address is already explicitly set before quic_path_bind()
-    proceeds, so there is no equivalent stale-route issue requiring an
-    additional reset.
-
-  - Ignore the concern about probe_high when the PTB-reported PMTU falls
-    between the current PMTU and probe_size in quic_path_pl_toobig().
-    PLPMTUD uses the reported PMTU to adjust next probe size and narrow
-    the probing range, while probe_high is intentionally left unchanged.
-
-  - Ignore the concern about equal-PMTU PTB handling in
-    quic_path_pl_toobig(). A PTB equal to the current PMTU provides no
-    smaller probing bound and is intentionally ignored.
-
-  - Ignore the concern about the destination cache in quic_path_swap().
-    __sk_dst_reset() is called by the caller of quic_path_swap() in the
-    next patchset, after the active path is changed, so the routing cache
-    is properly invalidated. No change is needed in quic_path_swap()
-    itself.
-
-  - Ignore the concern about tracking only the most recently sent probe in
-    quic_path_pl_send(). Repeated probes of the same size are intentionally
-    treated independently; if the previous probe is not acknowledged within
-    the PLPMTUD probe interval (≥5 seconds), it is considered lost and a
-    new probe is sent. A late ACK for the earlier probe is intentionally
-    ignored.
-
-  - Ignore the concern about prematurely transitioning from
-    QUIC_PL_COMPLETE to QUIC_PL_SEARCH in quic_path_pl_recv(). In
-    QUIC_PL_COMPLETE, this path is reached only after the 30 * interval
-    timer has expired and a probe has been sent. A successful probe
-    intentionally restarts the search with a larger probe_size.
-
-  - Ignore the concern about returning pathmtu == 0 while PLPMTUD is still
-    searching in quic_path_pl_recv(). The PMTU is intentionally updated
-    only when an optimized PMTU is found, which is indicated by probe_high
-    being set. During the ongoing search, the current PMTU remains in use
-    while larger probe sizes are tested.
-
-  - Ignore the concern about leaking the socket counters in
-    quic_init_sock(). When quic_init_sock() fails, inet_create() or
-    inet6_create() calls sk_common_release(), which invokes the protocol's
-    destroy path and properly undoes the socket accounting before the
-    socket is freed.
-
-  - Ignore the concern about the reuse branch allowing a non-local source
-    address. The source address is validated by quic_get_user_addr() when
-    the quic_bind() socket API is added in the next patchset, including the
-    FREEBIND and sysctl_ip_nonlocal_bind checks. Therefore, the address has
-    already been validated before this UDP tunnel socket reuse path is
-    reached.
-
-  - Ignore the concern about adding a socket-lock assertion to
-    quic_path_swap(). This function only receives struct quic_path_group
-    *paths and does not have access to the associated struct sock, so it
-    cannot assert that the socket lock is held.
-
-  - Ignore the concern about accessing us->sk after
-    udp_tunnel_sock_release(). The socket is explicitly held with
-    sock_hold() before udp_tunnel_sock_release(), so its struct sock
-    remains valid while quic_udp_sock_lookup() accesses it. The release is
-    intentionally performed before __hlist_del() so a new UDP tunnel socket
-    can be created for the same address and port if the lookup no longer
-    matches, and udp_tunnel_sock_release() cannot be called under the mutex
-    due to lockdep constraints.
-
-  - Ignore the concern about accessing us->sk after
-    udp_tunnel_sock_release(). udp_tunnel_sock_release() does not clear
-    sk->sk_ipv6only, and ipv6_only_sock() used by quic_cmp_sk_addr()
-    remains safe to call on the socket during this window. The socket is
-    also held by the reference, so the object remains valid until it is
-    removed from the hash.
-
-  - Ignore the concern about silently ignoring a valid remote-only
-    migration when path[1] has a stale source address in
-    quic_path_detect_alt(). This is intentional: only one alternate path
-    can be pending at a time, and a new candidate must wait until the
-    current path is successfully probed or fails and path[1] is cleared.
-    Therefore, a candidate with a different source address is intentionally
-    rejected rather than overwriting an in-flight path validation.
-
-v3:
-  - Fix annotation in quic_udp_sock_lookup() (noted by Paolo).
-  - Use inet_sk_get_local_port_range() instead of
-    inet_get_local_port_range() (suggested by Paolo).
-  - Adjust global UDP tunnel socket hashtable operations for the new
-    hashtable type.
-  - Delete quic_workqueue; use system_wq for UDP tunnel socket destroy.
-v4:
-  - Cache UDP tunnel socket pointer and its source address in struct
-    quic_path for RCU-protected lookup/access.
-  - Return -EAGAIN instead of -EINVAL in quic_path_bind() when UDP
-    socket is being released in workqueue.
-  - Move udp_tunnel_sock_release() out of the mutex_lock to avoid a
-    warning of lockdep in quic_udp_sock_put_work().
-  - Introduce quic_wq for UDP socket release work, so all pending works
-    can be flushed before destroying the hashtable in quic_exit().
 v5:
-  - Rename quic_path_free() to quic_path_unbind() (suggested by Paolo).
-  - Remove the 'serv' member from struct quic_path_group, since
-    quic_is_serv() defined in a previous patch now uses
-    sk->sk_max_ack_backlog for server-side detection.
-  - Use quic_ktime_get_us() to set skb_cb->time, as RTT is measured
-    in microseconds and jiffies_to_usecs() is not accurate enough.
+  - Change timestamp variables from u32 to u64 and use quic_ktime_get_us()
+    to set max_pn_acked_time, as jiffies_to_usecs() is not accurate enough.
+  - Reorder some members in quic_pnspace to reduce 32-bit holes (noted
+    by Paolo).
 v6:
-  - Do not reset transport_header for QUIC in quic_udp_rcv(), allowing
-    removal of udph_offset and enabling access to the UDP header via
-    udp_hdr(); Pull skb->data in quic_udp_rcv() to allow access to the
-    QUIC header via skb->data.
-v7:
-  - Pass udp sk to quic_path_rcv() and move the call to skb_linearize()
-    and skb_set_owner_sk_safe() to .quic_path_rcv().
-  - Delete the call to skb_linearize() and skb_set_owner_sk_safe() from
-    quic_udp_err(), as it should not change skb in .encap_err_lookup()
-    (noted by AI review).
+  - Note for AI reviews: it's safe to do cast (u16)(pn - space->base_pn)
+    in quic_pnspace_mark(), as the pn < base_pn + QUIC_PN_MAP_SIZE (4096)
+    validation is always done in quic_pnspace_check(), which will always
+    be called before quic_pnspace_mark() in a later patchset.
+  - Note for AI reviews: failures in quic_pnspace_init() do not result in a
+    pn_map leak in quic_init_sock(), because quic_destroy_sock() is always
+    called to free it in err path, either via inet/6_create() or through
+    quic_accept() in a later patchset.
 v8:
-  - Remove indirect quic_path_rcv and late call quic_packet_rcv()
-    directly via extern (noted by Paolo).
-  - Add a comment in quic_udp_rcv() clarifying it must return 0.
-  - Add a comment in quic_udp_sock_put() clarifying the UDP socket
-    may be freed in atomic RX context during connection migration.
-  - Reorder some quic_path_group members to reduce struct size.
+  - Replace bitfields with plain u8 in struct quic_pnspace.
 v10:
-  - Replace open-coded kzalloc(sizeof(*us)) with kzalloc_obj(*us) in
-    quic_stream_create().
-  - Use get_random_u32_below() for ephemeral port selection instead of
-    manual scaling of get_random_u32() in quic_path_bind().
-  - Reset additional PLPMTUD probe state (probe_high, probe_count) in
-    quic_path_pl_reset() to ensure a clean probe restart.
-  - Add plpmtud_interval to struct quic_path_group to store the PLPMTUD
-    probe timer interval, previously kept in struct quic_sock.config.
+  - Fix a grammar error in the comment of quic_pnspace_check().
 v11:
+  - Note for AI reviews: RFC 9000 does not define integer IDs for packet
+    number spaces. In this implementation, App=0, Initial=1,
+    Handshake=2, and Early maps to 0 (3 % 3).
   - Set maximum line length to 80 characters.
-  - Add additional comments in quic_path_bind() and quic_path_pl_send()
-    for clarity.
-  - Return ERR_PTR() instead of NULL on error in quic_udp_sock_create().
-  - Change return type of quic_path_detect_alt() to bool.
-  - Allocate quic_wq using alloc_workqueue(WQ_MEM_RECLAIM | WQ_UNBOUND)
-    for UDP socket destruction and backlog packet processing (noted by
-    AI review).
+  - clear space->pn_map pointer after free in quic_pnspace_free().
+  - Change quic_pnspace_grow() to return negative errno on failure or 0
+    on success.
+  - Change return type of quic_pnspace_next_gap_ack() and
+    quic_pnspace_set_ecn_count() to bool.
+  - Return -EINVAL instead of -1 on failure in quic_pnspace_check().
 v12:
-  - Call quic_set_skb_iif() at the start of quic_udp_rcv().
-  - Set us->bind_ifindex from udp_conf.bind_ifindex instead of
-    sk->sk_bound_dev_if in quic_udp_sock_create().
-  - Compare us->bind_ifindex against quic_get_dev_if(sk, a) instead of
-    sk->sk_bound_dev_if, and do not match when only one is zero in
-    quic_udp_sock_lookup().
-  - Call cond_resched() in the retry loop of quic_path_bind() when
-    quic_udp_sock_create() returns -EADDRINUSE.
-  - Improve address-change handling and disable_saddr/daddr_alt checks
-    in quic_path_detect_alt().
-  - Do not pass WQ_MEM_RECLAIM to alloc_workqueue() to avoid a potential
-    deadlock.
-  - Change ampl_snd/rcvlen in struct quic_path_group to u32 to avoid
-    overflow, and move mtu_info for a better layout.
-  - Add keepalive_interval to struct quic_path_group to control path
-    liveness probing, and add version to indicate version negotiation
-    was performed.
-  - Pass sk instead of sk_socket to setup_udp_tunnel_sock() and
-    udp_tunnel_sock_release(), following their parameter type changes.
-  - Set bit fields paths->disable_saddr_alt and paths->disable_daddr_alt
-    from p->disable_active_migration using '!!'.
-  - Add QUIC_PMTUD_RAISE_TIMER_FACTOR for later use.
-  - Change QUIC_PATH_MAX_PMTU from 65536U to 65535U.
-v13:
-  - Drop explicit GFP_KERNEL from kzalloc_obj() in quic_udp_sock_create().
+  - Initialize max_pn_acked_seen to -1 in quic_pnspace_init().
+  - Allow large packet number jumps when processing higher PN values
+    (>= base_pn + QUIC_PN_MAP_SIZE) in quic_pnspace_check(),
+    quic_pnspace_mark(), and quic_pnspace_grow().
+  - Call quic_pnspace_has_gap() before updating max_pn_seen in
+    quic_pnspace_mark().
+  - Rename ECN-related helpers:
+    quic_pnspace_set_ecn_count() -> quic_pnspace_set_ecn_peer(),
+    quic_pnspace_has_ecn_count() -> quic_pnspace_has_ecn_local(),
+    quic_pnspace_inc_ecn_count() -> quic_pnspace_inc_ecn_local().
+  - Add QUIC_ECN_ACKED and introduce quic_pnspace_inc_ecn_acked(),
+    quic_pnspace_reset_ecn_acked(), and quic_pnspace_validate_ecn() for
+    validating ECN counts in ACKs.
+  - Add sack_pending field in struct quic_pnspace for later use in sack
+    piggybacking.
 v14:
-  - Replace kzalloc_obj() with kmalloc_obj() in quic_udp_sock_create(), as
-    all members of the object are initialized afterwards.
-  - Move INIT_WORK() before hlist_add_head() in quic_udp_sock_create(), as
-    it makes the initialization order clearer.
-  - Remove the unnecessary pmtu >= QUIC_MIN_PLPMTU check from
-    quic_path_pl_toobig().
+  - Pass gfp flags to quic_pnspace_mark() and quic_pnspace_grow().
+  - Add more pn checks in quic_pnspace_check().
+  - Remove dead code from the else branch in quic_pnspace_init().
 v15:
-  - Add seqcount_t path_seq to quic_path_group to protect path[0] updates
-    during path migration when accessed by a concurrent quic_sock_lookup().
-    Also add quic_path_init() to initialize it in quic_init_sock().
-  - Add CAP_NET_BIND_SERVICE and sk_uid checks to quic_path_bind().
+  - Use a sliding-window approach in quic_pnspace_num_gabs() to preserve
+    the most recent gaps when their total number exceeds
+    QUIC_PN_MAP_MAX_GAPS.
+  - Improve the annotation for quic_pnspace_check().
 v16:
-  - Disable preemption during the path swap in quic_path_swap(), as a
-    plain seqcount_t requires preemption to be disabled while its write
-    sequence is active. local_bh_disable() does not disable preemption
-    on PREEMPT_RT kernels (noted by Sashiko AI review).
-  - Fix the path group name from 'dst' to 'paths' in PMTU debug messages
-    (noted by Sashiko AI review).
-  - Clarify that quic_path_pl_recv() returns the new PMTU when it
-    changes, and 0 when it remains unchanged (noted by Sashiko AI review).
-  - Align struct member comments in quic_path_group using spaces instead
-    of tabs for consistent formatting.
-  - Fix the inaccurate comment for quic_path_pl_send(), which is called
-    before, not after, sending a probe packet. Also improve its summary
-    in the comment.
-  - Improve path.c file description.
-  - Improve quic_path_pl_recv() comment to clarify that PMTU expansion uses
-    a two-phase linear search.
+  - Correct the quic_pnspace_num_gabs() annotation to reflect that at most
+    QUIC_PN_MAP_MAX_GABS - 1 gaps are preserved individually, with the
+    remaining gap reserved for merging older gaps (noted by Sashiko AI
+    review).
+  - Clarify that min_pn_seen in struct quic_pnspace represents the lower
+    bound of the trackable packet number window, rather than simply the
+    smallest packet number received (noted by Sashiko AI review).
+  - Improve pnspace.c file description.
+  - Fix pn_map comment for last_max_pn_time and Gap Search Range.
 v17:
-  - Hold a netns reference when creating quic_udp_sock and release it after
-    deferred UDP socket cleanup completes (noted by Sashiko AI review).
-  - Compare the current fsuid with the existing tunnel socket's sk_uid to
-    match the ownership semantics used when creating the tunnel socket
-    (noted by Sashiko AI review).
-  - Replace us->sk->sk_uid with sk_uid(us->sk) in quic_path_bind().
-  - Fix the alternate path detection comment for quic_path_detect_alt().
-  - Fix format specifier for PMTU with pr_debug() in quic_path_pl_toobig().
+  - Update the comment to document that the packet count condition uses the
+    minimum of last_max_pn_seen and base_pn when deciding whether to
+    advance pn_map.
+  - Account pn_map allocations to memcg in quic_pnspace_init() and
+    quic_pnspace_grow() and converts the code to use the bitmap API
+    (bitmap_zalloc, bitmap_free).
 ---
- net/quic/Makefile   |   2 +-
- net/quic/path.c     | 596 ++++++++++++++++++++++++++++++++++++++++++++
- net/quic/path.h     | 191 ++++++++++++++
- net/quic/protocol.c |  14 ++
- net/quic/socket.c   |   4 +
- net/quic/socket.h   |   7 +
- 6 files changed, 813 insertions(+), 1 deletion(-)
- create mode 100644 net/quic/path.c
- create mode 100644 net/quic/path.h
+ net/quic/Makefile  |   2 +-
+ net/quic/pnspace.c | 273 +++++++++++++++++++++++++++++++++++++++++++++
+ net/quic/pnspace.h | 201 +++++++++++++++++++++++++++++++++
+ net/quic/socket.c  |  12 ++
+ net/quic/socket.h  |   7 ++
+ 5 files changed, 494 insertions(+), 1 deletion(-)
+ create mode 100644 net/quic/pnspace.c
+ create mode 100644 net/quic/pnspace.h
 
 diff --git a/net/quic/Makefile b/net/quic/Makefile
-index eee7501588d3..1565fb5cef9d 100644
+index 4d4a42c6d565..9d8e18297911 100644
 --- a/net/quic/Makefile
 +++ b/net/quic/Makefile
-@@ -5,4 +5,4 @@
- 
+@@ -6,4 +6,4 @@
  obj-$(CONFIG_IP_QUIC) += quic.o
  
--quic-y := common.o family.o protocol.o socket.o stream.o connid.o
-+quic-y := common.o family.o protocol.o socket.o stream.o connid.o path.o
-diff --git a/net/quic/path.c b/net/quic/path.c
+ quic-y := common.o family.o protocol.o socket.o stream.o connid.o path.o \
+-	  cong.o
++	  cong.o pnspace.o
+diff --git a/net/quic/pnspace.c b/net/quic/pnspace.c
 new file mode 100644
-index 000000000000..ba7e2c952a36
+index 000000000000..fcf68f0df184
 --- /dev/null
-+++ b/net/quic/path.c
-@@ -0,0 +1,596 @@
++++ b/net/quic/pnspace.c
+@@ -0,0 +1,273 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/* QUIC kernel implementation
 + * (C) Copyright Red Hat Corp. 2023
 + *
 + * This file is part of the QUIC kernel implementation
 + *
-+ * Path management.
++ * Packet number space management.
 + *
 + * Written or modified by:
 + *    Xin Long <lucien.xin@gmail.com>
 + */
 +
-+#include <net/udp_tunnel.h>
-+#include <linux/quic.h>
++#include <linux/slab.h>
 +
 +#include "common.h"
-+#include "family.h"
-+#include "path.h"
++#include "pnspace.h"
 +
-+static int quic_udp_rcv(struct sock *sk, struct sk_buff *skb)
++int quic_pnspace_init(struct quic_pnspace *space)
 +{
-+	quic_set_skb_iif(skb);
++	space->pn_map = bitmap_zalloc(QUIC_PN_MAP_INITIAL, GFP_KERNEL_ACCOUNT);
++	if (!space->pn_map)
++		return -ENOMEM;
++	space->pn_map_len = QUIC_PN_MAP_INITIAL;
 +
-+	memset(skb->cb, 0, sizeof(skb->cb));
-+	QUIC_SKB_CB(skb)->seqno = -1;
-+	QUIC_SKB_CB(skb)->time = quic_ktime_get_us();
-+
-+	skb_pull(skb, sizeof(struct udphdr));
-+	skb_dst_force(skb);
-+	kfree_skb(skb);
-+	/* .encap_rcv must return 0 if skb was either consumed or dropped. */
++	space->max_time_limit = QUIC_PNSPACE_TIME_LIMIT;
++	space->next_pn = QUIC_PNSPACE_NEXT_PN;
++	space->max_pn_acked_seen = -1;
++	space->base_pn = -1;
 +	return 0;
 +}
 +
-+static int quic_udp_err(struct sock *sk, struct sk_buff *skb)
++void quic_pnspace_free(struct quic_pnspace *space)
 +{
++	bitmap_free(space->pn_map);
++	space->pn_map = NULL;
++	space->pn_map_len = 0;
++}
++
++/* Expand the bitmap tracking received packet numbers.  Ensures the pn_map
++ * bitmap can cover at least @size packet numbers.  Allocates a larger bitmap,
++ * copies existing data, and updates metadata.
++ *
++ * Return: 0 on success, or a negative errno value on failure.
++ */
++static int quic_pnspace_grow(struct quic_pnspace *space, u16 size, gfp_t gfp)
++{
++	u16 len, inc, offset;
++	unsigned long *new;
++
++	inc = ALIGN((size - space->pn_map_len), BITS_PER_LONG) +
++	      QUIC_PN_MAP_INCREMENT;
++	len = (u16)min(space->pn_map_len + inc, QUIC_PN_MAP_SIZE);
++
++	new = bitmap_zalloc(len, gfp | __GFP_ACCOUNT);
++	if (!new)
++		return -ENOMEM;
++
++	offset = (u16)(space->max_pn_seen + 1 - space->base_pn);
++	bitmap_copy(new, space->pn_map, offset);
++	bitmap_free(space->pn_map);
++	space->pn_map = new;
++	space->pn_map_len = len;
++
 +	return 0;
 +}
 +
-+static void quic_udp_sock_put_work(struct work_struct *work)
++/* Check if a packet number has been received.
++ *
++ * Returns: 0 if the packet number has not been received.  1 if it has already
++ * been received. -EINVAL if the packet number is invalid (out of range 0 to
++ * QUIC_PN_MAX) or too old to track (below min_pn_seen).
++ */
++int quic_pnspace_check(struct quic_pnspace *space, s64 pn)
 +{
-+	struct quic_udp_sock *us = container_of(work, struct quic_udp_sock,
-+						work);
-+	struct quic_uhash_head *head;
-+	struct sock *sk = us->sk;
++	if (pn > QUIC_PN_MAX || pn < 0)
++		return -EINVAL;
 +
-+	/* Hold the sock to safely access it in quic_udp_sock_lookup() even
-+	 * after udp_tunnel_sock_release(). The release must occur before
-+	 * __hlist_del() so a new UDP tunnel socket can be created for the same
-+	 * address and port if quic_udp_sock_lookup() fails to find one.
-+	 *
-+	 * Note: udp_tunnel_sock_release() cannot be called under the mutex due
-+	 * to some lockdep warnings.
-+	 */
-+	sock_hold(sk);
-+	udp_tunnel_sock_release(sk);
++	if (space->base_pn == -1) /* No packet number received yet. */
++		return 0;
 +
-+	head = quic_udp_sock_head(sock_net(sk), ntohs(us->addr.v4.sin_port));
-+	mutex_lock(&head->lock);
-+	__hlist_del(&us->node);
-+	mutex_unlock(&head->lock);
++	if (pn < space->min_pn_seen)
++		return -EINVAL;
 +
-+	put_net(sock_net(sk));
-+	sock_put(sk);
-+	kfree(us);
++	if (pn < space->base_pn)
++		return 1;
++	if (pn - space->base_pn < space->pn_map_len &&
++	    test_bit(pn - space->base_pn, space->pn_map))
++		return 1;
++
++	return 0;
 +}
 +
-+static struct quic_udp_sock *quic_udp_sock_create(struct sock *sk,
-+						  union quic_addr *a)
++/* Advance base_pn past contiguous received packet numbers.  Finds the next gap
++ * (unreceived packet) beyond @pn, shifts the bitmap, and updates base_pn
++ * accordingly.
++ */
++static void quic_pnspace_move(struct quic_pnspace *space, s64 pn)
 +{
-+	struct udp_tunnel_sock_cfg tuncfg = {};
-+	struct udp_port_cfg udp_conf = {};
-+	struct net *net = sock_net(sk);
-+	struct quic_uhash_head *head;
-+	struct quic_udp_sock *us;
-+	struct socket *sock;
++	u16 offset;
++
++	offset = (u16)(pn + 1 - space->base_pn);
++	offset = (u16)find_next_zero_bit(space->pn_map, space->pn_map_len,
++					 offset);
++	space->base_pn += offset;
++	bitmap_shift_right(space->pn_map, space->pn_map, offset,
++			   space->pn_map_len);
++}
++
++/* Mark a packet number as received. Updates the packet number map to record
++ * reception of @pn.  Advances base_pn if possible, and updates max/min/last
++ * seen fields as needed.
++ *
++ * Returns: 0 on success or if the packet was already marked, or a negative
++ * error returned by bitmap growth when expanding the map.
++ */
++int quic_pnspace_mark(struct quic_pnspace *space, s64 pn, gfp_t gfp)
++{
++	s64 last_max_pn_seen, off;
++	u64 last_max_pn_time;
++	bool has_gap;
 +	int err;
 +
-+	us = kmalloc_obj(*us);
-+	if (!us)
-+		return ERR_PTR(-ENOMEM);
-+
-+	quic_udp_conf_init(sk, &udp_conf, a);
-+	err = udp_sock_create(net, &udp_conf, &sock);
-+	if (err) {
-+		pr_debug("%s: failed to create udp sock\n", __func__);
-+		kfree(us);
-+		return ERR_PTR(err);
-+	}
-+
-+	tuncfg.encap_type = 1;
-+	tuncfg.encap_rcv = quic_udp_rcv;
-+	tuncfg.encap_err_lookup = quic_udp_err;
-+	setup_udp_tunnel_sock(net, sock->sk, &tuncfg);
-+
-+	refcount_set(&us->refcnt, 1);
-+	us->sk = sock->sk;
-+	memcpy(&us->addr, a, sizeof(*a));
-+	us->bind_ifindex = udp_conf.bind_ifindex;
-+	get_net(net);
-+
-+	INIT_WORK(&us->work, quic_udp_sock_put_work);
-+	head = quic_udp_sock_head(net, ntohs(a->v4.sin_port));
-+	hlist_add_head(&us->node, &head->head);
-+
-+	return us;
-+}
-+
-+static bool quic_udp_sock_get(struct quic_udp_sock *us)
-+{
-+	return refcount_inc_not_zero(&us->refcnt);
-+}
-+
-+static void quic_udp_sock_put(struct quic_udp_sock *us)
-+{
-+	/* The UDP socket may be freed in atomic RX context during connection
-+	 * migration; defer the release to a workqueue.
-+	 */
-+	if (refcount_dec_and_test(&us->refcnt))
-+		queue_work(quic_wq, &us->work);
-+}
-+
-+/* Lookup a quic_udp_sock in the global hash table by port or address.  If 'a'
-+ * is provided, it searches for a socket whose local address matches 'a' and,
-+ * if applicable, matches the device binding. If 'a' is NULL, it searches only
-+ * by port.
-+ */
-+static struct quic_udp_sock *quic_udp_sock_lookup(struct sock *sk,
-+						  union quic_addr *a, u16 port)
-+{
-+	struct net *net = sock_net(sk);
-+	struct quic_uhash_head *head;
-+	struct quic_udp_sock *us;
-+
-+	head = quic_udp_sock_head(net, port);
-+	hlist_for_each_entry(us, &head->head, node) {
-+		if (net != sock_net(us->sk))
-+			continue;
-+		if (a) {
-+			if (quic_cmp_sk_addr(us->sk, &us->addr, a) &&
-+			    us->bind_ifindex == quic_get_dev_if(sk, a))
-+				return us;
-+			continue;
-+		}
-+		if (ntohs(us->addr.v4.sin_port) == port)
-+			return us;
-+	}
-+	return NULL;
-+}
-+
-+static void quic_path_set_udp_sk(struct quic_path *path,
-+				 struct quic_udp_sock *us)
-+{
-+	if (path->udp_sk)
-+		quic_udp_sock_put(path->udp_sk);
-+
-+	path->udp_sk = us;
-+	if (!us) {
-+		path->usk = NULL;
-+		memset(&path->uaddr, 0, sizeof(path->uaddr));
-+		return;
-+	}
-+	path->usk = us->sk;
-+	memcpy(&path->uaddr, &us->addr, sizeof(us->addr));
-+}
-+
-+/* Binds a QUIC path to a local port and sets up a UDP socket. */
-+int quic_path_bind(struct sock *sk, struct quic_path_group *paths, u8 path)
-+{
-+	union quic_addr *a = quic_path_saddr(paths, path);
-+	int rover, low, high, remaining;
-+	struct net *net = sock_net(sk);
-+	struct quic_uhash_head *head;
-+	struct quic_udp_sock *us;
-+	u16 port;
-+
-+	port = ntohs(a->v4.sin_port);
-+	if (port) {
-+		if (inet_port_requires_bind_service(net, port) &&
-+		    !ns_capable(net->user_ns, CAP_NET_BIND_SERVICE))
-+			return -EACCES;
-+		head = quic_udp_sock_head(net, port);
-+		mutex_lock(&head->lock);
-+		us = quic_udp_sock_lookup(sk, a, port);
-+		if (us) {
-+			if (!uid_eq(current_fsuid(), sk_uid(us->sk))) {
-+				mutex_unlock(&head->lock);
-+				return -EADDRINUSE;
-+			}
-+			/* Allow reuse of an existing UDP tunnel socket.
-+			 * However, if it is in the middle of asynchronous
-+			 * teardown (via workqueue), it is temporarily unusable.
-+			 * Return -EAGAIN (not -EADDRINUSE) to signal the caller
-+			 * to retry soon.
-+			 */
-+			if (!quic_udp_sock_get(us)) {
-+				mutex_unlock(&head->lock);
-+				return -EAGAIN;
-+			}
-+		} else {
-+			us = quic_udp_sock_create(sk, a);
-+			if (IS_ERR(us)) {
-+				mutex_unlock(&head->lock);
-+				return PTR_ERR(us);
-+			}
-+		}
-+		mutex_unlock(&head->lock);
-+		quic_path_set_udp_sk(&paths->path[path], us);
-+		return 0;
-+	}
-+
-+	inet_sk_get_local_port_range(sk, &low, &high);
-+	remaining = (high - low) + 1;
-+	rover = get_random_u32_below(remaining) + low;
-+	do {
-+		rover++;
-+		if (rover < low || rover > high)
-+			rover = low;
-+		port = (u16)rover;
-+		if (inet_is_local_reserved_port(net, port))
-+			continue;
-+
-+		head = quic_udp_sock_head(net, port);
-+		mutex_lock(&head->lock);
-+		if (quic_udp_sock_lookup(sk, NULL, port)) {
-+			mutex_unlock(&head->lock);
-+			cond_resched();
-+			continue;
-+		}
-+		a->v4.sin_port = htons(port);
-+		us = quic_udp_sock_create(sk, a);
-+		if (IS_ERR(us)) {
-+			a->v4.sin_port = 0;
-+			mutex_unlock(&head->lock);
-+			if (PTR_ERR(us) == -EADDRINUSE) {
-+				cond_resched();
-+				continue;
-+			}
-+			return PTR_ERR(us);
-+		}
-+		mutex_unlock(&head->lock);
-+
-+		quic_path_set_udp_sk(&paths->path[path], us);
-+		__sk_dst_reset(sk);
-+		return 0;
-+	} while (--remaining > 0);
-+
-+	return -EADDRINUSE;
-+}
-+
-+/* Swaps the active and alternate QUIC paths.
-+ *
-+ * Promotes the alternate path (path[1]) to become the new active path
-+ * (path[0]).  If the alternate path has a valid UDP socket, the entire path is
-+ * swapped.  Otherwise, only the destination address is exchanged, assuming the
-+ * source address is the same and no rebind is needed.
-+ *
-+ * This is typically used during path migration or alternate path promotion.
-+ */
-+void quic_path_swap(struct quic_path_group *paths)
-+{
-+	struct quic_path path = paths->path[0];
-+
-+	paths->alt_probes = 0;
-+	paths->alt_state = QUIC_PATH_ALT_SWAPPED;
-+
-+	/* Protect path[0] modifications with seqcount for RCU readers in
-+	 * quic_sock_lookup(). The seqcount allows readers to detect torn reads
-+	 * during the non-atomic structure assignment.
-+	 */
-+	local_bh_disable();
-+	preempt_disable_nested();
-+	write_seqcount_begin(&paths->path_seq);
-+	if (paths->path[1].udp_sk) {
-+		paths->path[0] = paths->path[1];
-+		paths->path[1] = path;
-+		goto out;
-+	}
-+
-+	paths->path[0].daddr = paths->path[1].daddr;
-+	paths->path[1].daddr = path.daddr;
-+out:
-+	write_seqcount_end(&paths->path_seq);
-+	preempt_enable_nested();
-+	local_bh_enable();
-+}
-+
-+/* Frees resources associated with a QUIC path.
-+ *
-+ * This is used for cleanup during error handling or when the path is no longer
-+ * needed.
-+ */
-+void quic_path_unbind(struct sock *sk, struct quic_path_group *paths, u8 path)
-+{
-+	paths->alt_probes = 0;
-+	paths->alt_state = QUIC_PATH_ALT_NONE;
-+
-+	quic_path_set_udp_sk(&paths->path[path], NULL);
-+
-+	memset(quic_path_daddr(paths, path), 0, sizeof(union quic_addr));
-+	memset(quic_path_saddr(paths, path), 0, sizeof(union quic_addr));
-+}
-+
-+/* Detects and records a potential alternate path.
-+ *
-+ * If the new source or destination address differs from the active path, and
-+ * alternate path detection is not disabled, the function updates the alternate
-+ * path slot (path[1]) with the new addresses.
-+ *
-+ * This is typically called on packet receive to detect new possible network
-+ * paths (e.g., NAT rebinding, mobility).
-+ *
-+ * Returns true if the alternate path (path[1]) matches (sa, da), regardless
-+ * of whether it was newly detected or already present. Returns false if the
-+ * addresses don't match the alternate path.
-+ */
-+bool quic_path_detect_alt(struct quic_path_group *paths, union quic_addr *sa,
-+			  union quic_addr *da, struct sock *sk)
-+{
-+	bool remote = !quic_cmp_sk_addr(sk, quic_path_daddr(paths, 0), da);
-+	bool local = !quic_cmp_sk_addr(sk, quic_path_saddr(paths, 0), sa);
-+
-+	if (!local && !remote)
-+		return false;
-+
-+	if ((local && paths->disable_saddr_alt) ||
-+	    (remote && paths->disable_daddr_alt))
-+		return false;
-+
-+	if (!quic_path_saddr(paths, 1)->v4.sin_port)
-+		quic_path_set_saddr(paths, 1, sa);
-+
-+	if (!quic_cmp_sk_addr(sk, quic_path_saddr(paths, 1), sa))
-+		return false;
-+
-+	if (!quic_path_daddr(paths, 1)->v4.sin_port)
-+		quic_path_set_daddr(paths, 1, da);
-+
-+	return quic_cmp_sk_addr(sk, quic_path_daddr(paths, 1), da);
-+}
-+
-+void quic_path_get_param(struct quic_path_group *paths,
-+			 struct quic_transport_param *p)
-+{
-+	if (p->remote) {
-+		p->disable_active_migration = paths->disable_saddr_alt;
-+		return;
-+	}
-+	p->disable_active_migration = paths->disable_daddr_alt;
-+}
-+
-+void quic_path_set_param(struct quic_path_group *paths,
-+			 struct quic_transport_param *p)
-+{
-+	if (p->remote) {
-+		paths->disable_saddr_alt = !!p->disable_active_migration;
-+		return;
-+	}
-+	paths->disable_daddr_alt = !!p->disable_active_migration;
-+}
-+
-+/* State Machine defined in rfc8899#section-5.2 */
-+enum quic_plpmtud_state {
-+	QUIC_PL_DISABLED,
-+	QUIC_PL_BASE,
-+	QUIC_PL_SEARCH,
-+	QUIC_PL_COMPLETE,
-+	QUIC_PL_ERROR,
-+};
-+
-+#define QUIC_BASE_PLPMTU        1200
-+#define QUIC_MAX_PLPMTU         9000
-+#define QUIC_MIN_PLPMTU         512
-+
-+#define QUIC_MAX_PROBES         3
-+
-+#define QUIC_PL_BIG_STEP        32
-+#define QUIC_PL_MIN_STEP        4
-+
-+/* Track PLPMTUD probe sends and handle probe exhaustion.
-+ *
-+ * Called right before sending a probe packet in QUIC Path MTU Discovery.
-+ * Tracks probe count and manages state transitions based on the number of
-+ * probes sent and current PLPMTUD state (BASE, SEARCH, COMPLETE, ERROR).
-+ * Detects probe failures and black holes, adjusting PMTU and probe sizes
-+ * accordingly.
-+ *
-+ * Return: New PMTU value if updated, else 0.
-+ */
-+u32 quic_path_pl_send(struct quic_path_group *paths, s64 number)
-+{
-+	u32 pathmtu = 0;
-+
-+	paths->pl.number = number;
-+	if (paths->pl.probe_count < QUIC_MAX_PROBES)
-+		goto out;
-+
-+	paths->pl.probe_count = 0;
-+	if (paths->pl.state == QUIC_PL_BASE) {
-+		if (paths->pl.probe_size == QUIC_BASE_PLPMTU) {
-+			/* BASE_PLPMTU Confirming Failed: Base -> Error. */
-+			paths->pl.state = QUIC_PL_ERROR;
-+
-+			paths->pl.pmtu = QUIC_BASE_PLPMTU;
-+			pathmtu = QUIC_BASE_PLPMTU;
-+		}
-+	} else if (paths->pl.state == QUIC_PL_SEARCH) {
-+		if (paths->pl.pmtu == paths->pl.probe_size) {
-+			/* Black Hole Detected: Search -> Base. */
-+			paths->pl.state = QUIC_PL_BASE;
-+			paths->pl.probe_size = QUIC_BASE_PLPMTU;
-+			paths->pl.probe_high = 0;
-+
-+			paths->pl.pmtu = QUIC_BASE_PLPMTU;
-+			pathmtu = QUIC_BASE_PLPMTU;
-+		} else { /* Normal probe failure. */
-+			paths->pl.probe_high = paths->pl.probe_size;
-+			paths->pl.probe_size = paths->pl.pmtu;
-+		}
-+	} else if (paths->pl.state == QUIC_PL_COMPLETE) {
-+		if (paths->pl.pmtu == paths->pl.probe_size) {
-+			/* Black Hole Detected:  Search Complete -> Base. */
-+			paths->pl.state = QUIC_PL_BASE;
-+			paths->pl.probe_size = QUIC_BASE_PLPMTU;
-+
-+			/* probe_high already reset when entering COMPLETE. */
-+			paths->pl.pmtu = QUIC_BASE_PLPMTU;
-+			pathmtu = QUIC_BASE_PLPMTU;
-+		}
-+	}
-+
-+out:
-+	pr_debug("%s: paths: %p, state: %d, pmtu: %d, size: %d, high: %d\n",
-+		 __func__, paths, paths->pl.state, paths->pl.pmtu,
-+		 paths->pl.probe_size, paths->pl.probe_high);
-+	paths->pl.probe_count++;
-+	return pathmtu;
-+}
-+
-+/* Handle successful reception of a PMTU probe.
-+ *
-+ * Called when a probe packet is acknowledged. Updates probe size and
-+ * transitions state if needed (e.g., from SEARCH to COMPLETE). Expands PMTU
-+ * using a two-phase linear search: coarse stepping (QUIC_PL_BIG_STEP) to
-+ * quickly find the upper bound, then fine stepping (QUIC_PL_MIN_STEP) to
-+ * refine.
-+ *
-+ * Return: New PMTU to apply, or 0 if unchanged.
-+ */
-+u32 quic_path_pl_recv(struct quic_path_group *paths, bool *raise_timer,
-+		      bool *complete)
-+{
-+	u32 pathmtu = 0;
-+	u16 next;
-+
-+	pr_debug("%s: paths: %p, state: %d, pmtu: %d, size: %d, high: %d\n",
-+		 __func__, paths, paths->pl.state, paths->pl.pmtu,
-+		 paths->pl.probe_size, paths->pl.probe_high);
-+
-+	*raise_timer = false;
-+	paths->pl.number = 0;
-+	paths->pl.pmtu = paths->pl.probe_size;
-+	paths->pl.probe_count = 0;
-+	if (paths->pl.state == QUIC_PL_BASE) {
-+		paths->pl.state = QUIC_PL_SEARCH; /* Base -> Search */
-+		paths->pl.probe_size += QUIC_PL_BIG_STEP;
-+	} else if (paths->pl.state == QUIC_PL_ERROR) {
-+		paths->pl.state = QUIC_PL_SEARCH; /* Error -> Search */
-+
-+		paths->pl.pmtu = paths->pl.probe_size;
-+		pathmtu = (u32)paths->pl.pmtu;
-+		paths->pl.probe_size += QUIC_PL_BIG_STEP;
-+	} else if (paths->pl.state == QUIC_PL_SEARCH) {
-+		if (!paths->pl.probe_high) {
-+			if (paths->pl.probe_size < QUIC_MAX_PLPMTU) {
-+				next = paths->pl.probe_size + QUIC_PL_BIG_STEP;
-+				paths->pl.probe_size =
-+					min_t(u16, next, QUIC_MAX_PLPMTU);
-+				*complete = false;
-+				return 0;
-+			}
-+			paths->pl.probe_high = QUIC_MAX_PLPMTU;
-+		}
-+		paths->pl.probe_size += QUIC_PL_MIN_STEP;
-+		if (paths->pl.probe_size >= paths->pl.probe_high) {
-+			paths->pl.probe_high = 0;
-+			/* Search -> Search Complete */
-+			paths->pl.state = QUIC_PL_COMPLETE;
-+
-+			paths->pl.probe_size = paths->pl.pmtu;
-+			pathmtu = (u32)paths->pl.pmtu;
-+			*raise_timer = true;
-+		}
-+	} else if (paths->pl.state == QUIC_PL_COMPLETE) {
-+		/* Raise probe_size after 30 * interval in Search Complete;
-+		 * Search Complete -> Search.
++	if (space->base_pn == -1) {
++		/* Initialize base_pn based on the peer's first packet number
++		 * since peer's packet numbers may start at a non-zero value.
 +		 */
-+		paths->pl.state = QUIC_PL_SEARCH;
-+		next = paths->pl.probe_size + QUIC_PL_MIN_STEP;
-+		paths->pl.probe_size = min_t(u16, next, QUIC_MAX_PLPMTU);
++		quic_pnspace_set_base_pn(space, pn + 1);
++		return 0;
 +	}
 +
-+	*complete = (paths->pl.state == QUIC_PL_COMPLETE);
-+	return pathmtu;
-+}
++	/* Ignore packets with number less than current base (already
++	 * processed).
++	 */
++	if (pn < space->base_pn)
++		return 0;
 +
-+/* Handle ICMP "Packet Too Big" messages.
-+ *
-+ * Responds to an incoming ICMP error by reducing the probe size or falling
-+ * back to a safe baseline PMTU depending on current state.  Also handles cases
-+ * where the PMTU hint lies between probe and current PMTU.
-+ *
-+ * Return: New PMTU to apply if state changes, or 0 if no change.
-+ */
-+u32 quic_path_pl_toobig(struct quic_path_group *paths, u32 pmtu,
-+			bool *reset_timer)
-+{
-+	u32 pathmtu = 0;
-+
-+	pr_debug("%s: paths: %p, state: %d, pmtu: %d, size: %d, ptb: %u\n",
-+		 __func__, paths, paths->pl.state, paths->pl.pmtu,
-+		 paths->pl.probe_size, pmtu);
-+
-+	*reset_timer = false;
-+	if (pmtu < QUIC_MIN_PLPMTU || pmtu >= (u32)paths->pl.probe_size)
-+		return pathmtu;
-+
-+	if (paths->pl.state == QUIC_PL_BASE) {
-+		if (pmtu < QUIC_BASE_PLPMTU) {
-+			paths->pl.state = QUIC_PL_ERROR; /* Base -> Error */
-+
-+			paths->pl.pmtu = QUIC_BASE_PLPMTU;
-+			pathmtu = QUIC_BASE_PLPMTU;
++	/* If offset is beyond current map length, try to grow the bitmap to
++	 * accommodate.
++	 */
++	off = pn - space->base_pn;
++	if (off >= space->pn_map_len) {
++		if (off >= QUIC_PN_MAP_SIZE) {
++			bitmap_zero(space->pn_map, space->pn_map_len);
++			quic_pnspace_set_base_pn(space, pn + 1);
++			return 0;
 +		}
-+	} else if (paths->pl.state == QUIC_PL_SEARCH) {
-+		if (pmtu >= QUIC_BASE_PLPMTU && pmtu < (u32)paths->pl.pmtu) {
-+			paths->pl.state = QUIC_PL_BASE;  /* Search -> Base */
-+			paths->pl.probe_size = QUIC_BASE_PLPMTU;
-+			paths->pl.probe_count = 0;
-+
-+			paths->pl.probe_high = 0;
-+			paths->pl.pmtu = QUIC_BASE_PLPMTU;
-+			pathmtu = QUIC_BASE_PLPMTU;
-+		} else if (pmtu > (u32)paths->pl.pmtu &&
-+			   pmtu < (u32)paths->pl.probe_size) {
-+			paths->pl.probe_size = (u16)pmtu;
-+			paths->pl.probe_count = 0;
-+		}
-+	} else if (paths->pl.state == QUIC_PL_COMPLETE) {
-+		if (pmtu >= QUIC_BASE_PLPMTU && pmtu < (u32)paths->pl.pmtu) {
-+			paths->pl.state = QUIC_PL_BASE;  /* Complete -> Base */
-+			paths->pl.probe_size = QUIC_BASE_PLPMTU;
-+			paths->pl.probe_count = 0;
-+
-+			paths->pl.probe_high = 0;
-+			paths->pl.pmtu = QUIC_BASE_PLPMTU;
-+			pathmtu = QUIC_BASE_PLPMTU;
-+			*reset_timer = true;
-+		}
++		err = quic_pnspace_grow(space, off + 1, gfp);
++		if (err)
++			return err;
 +	}
-+	return pathmtu;
++
++	has_gap = quic_pnspace_has_gap(space);
++	if (space->max_pn_seen < pn) {
++		space->max_pn_seen = pn;
++		space->max_pn_time = space->time;
++	}
++
++	if (space->base_pn == pn) { /* PN is next expected packet. */
++		if (has_gap) /* Advance to next gap. */
++			quic_pnspace_move(space, pn);
++		else /* Fast path: increment base_pn if no gaps. */
++			space->base_pn++;
++	} else { /* Mark this packet as received in the bitmap. */
++		set_bit(off, space->pn_map);
++	}
++
++	/* Only update min and last_max_pn_seen if this packet is the current
++	 * max_pn.
++	 */
++	if (space->max_pn_seen != pn)
++		return 0;
++
++	/* Check if enough time has elapsed or enough packets have been
++	 * received to update tracking.
++	 */
++	last_max_pn_seen = min_t(s64, space->last_max_pn_seen, space->base_pn);
++	last_max_pn_time = space->last_max_pn_time;
++	if (space->max_pn_time < last_max_pn_time + space->max_time_limit &&
++	    space->max_pn_seen <= last_max_pn_seen + QUIC_PN_MAP_LIMIT)
++		return 0;
++
++	/* Advance base_pn if last_max_pn_seen is ahead of current base_pn.
++	 * This is needed because QUIC doesn't retransmit packets;
++	 * retransmitted frames are carried in new packets, so we move forward.
++	 */
++	if (space->last_max_pn_seen + 1 > space->base_pn)
++		quic_pnspace_move(space, space->last_max_pn_seen);
++
++	space->min_pn_seen = space->last_max_pn_seen;
++	space->last_max_pn_seen = space->max_pn_seen;
++	space->last_max_pn_time = space->max_pn_time;
++	return 0;
 +}
 +
-+/* Reset PLPMTUD state for a path.
++/* Find the next gap in received packet numbers. Scans pn_map for a gap
++ * starting from *@iter. A gap is a contiguous block of unreceived packets
++ * between received ones.
 + *
-+ * Resets all PLPMTUD-related state to its initial configuration.  Called when
-+ * a new path is initialized or when recovering from errors.
++ * Returns: true if a gap was found, false if no more gaps exist or are
++ * relevant.
 + */
-+void quic_path_pl_reset(struct quic_path_group *paths)
++static bool quic_pnspace_next_gap_ack(const struct quic_pnspace *space,
++				      s64 *iter, u16 *start, u16 *end)
 +{
-+	paths->pl.number = 0;
-+	paths->pl.probe_high = 0;
-+	paths->pl.probe_count = 0;
-+	paths->pl.state = QUIC_PL_BASE;
-+	paths->pl.pmtu = QUIC_BASE_PLPMTU;
-+	paths->pl.probe_size = QUIC_BASE_PLPMTU;
++	u16 start_ = 0, end_ = 0, offset = (u16)(*iter - space->base_pn);
++
++	start_ = (u16)find_next_zero_bit(space->pn_map, space->pn_map_len,
++					 offset);
++	if (space->max_pn_seen <= space->base_pn + start_)
++		return false;
++
++	end_ = (u16)find_next_bit(space->pn_map, space->pn_map_len, start_);
++	if (space->max_pn_seen <= space->base_pn + end_ - 1)
++		return false;
++
++	*start = start_ + 1;
++	*end = end_;
++	*iter = space->base_pn + *end;
++	return true;
 +}
 +
-+/* Check if a packet number confirms PLPMTUD probe.
++/* Generate gap acknowledgment blocks (GABs). GABs describe ranges of
++ * unacknowledged packets between received ones, and are used in ACK frames.
 + *
-+ * Checks whether the last probe (tracked by .number) has been acknowledged.
-+ * If the probe number lies within the ACK range, confirmation is successful.
++ * This function uses a sliding window approach to ensure the most recent gaps
++ * are preserved when the total number exceeds QUIC_PN_MAP_MAX_GABS. If there
++ * are more gaps than the limit, the oldest gaps are merged into a single gap,
++ * and the newest (QUIC_PN_MAP_MAX_GABS - 1) gaps are preserved individually.
 + *
-+ * Return: true if probe is confirmed, false otherwise.
++ * Returns: Number of generated GABs (up to QUIC_PN_MAP_MAX_GABS).
 + */
-+bool quic_path_pl_confirm(struct quic_path_group *paths, s64 largest,
-+			  s64 smallest)
++u16 quic_pnspace_num_gabs(struct quic_pnspace *space,
++			  struct quic_gap_ack_block *gabs)
 +{
-+	return paths->pl.number && paths->pl.number >= smallest &&
-+	       paths->pl.number <= largest;
-+}
++	struct quic_gap_ack_block tmp[QUIC_PN_MAP_MAX_GABS];
++	u16 start, end, mstart = 0, ngaps = 0, i = 0;
++	s64 iter;
 +
-+void quic_path_init(struct quic_path_group *paths)
-+{
-+	seqcount_init(&paths->path_seq);
++	if (!quic_pnspace_has_gap(space))
++		return 0;
++
++	iter = space->base_pn;
++
++	/* Scan all gaps using a sliding window to keep the newest ones. */
++	while (quic_pnspace_next_gap_ack(space, &iter, &start, &end)) {
++		if (ngaps < QUIC_PN_MAP_MAX_GABS) {
++			if (ngaps == 0)
++				mstart = start;
++			gabs[ngaps].start = start;
++			gabs[ngaps].end = end;
++			ngaps++;
++			continue;
++		}
++		gabs[i].start = start;
++		gabs[i].end = end;
++		i = (i + 1) % QUIC_PN_MAP_MAX_GABS;
++	}
++	if (i == 0) {
++		if (ngaps == QUIC_PN_MAP_MAX_GABS)
++			gabs[0].start = mstart;
++		return ngaps;
++	}
++
++	/* Overflow occurred: merge all discarded gaps with the gap at
++	 * position i (which hasn't been overwritten yet) into one.
++	 */
++	gabs[i].start = mstart;
++	memcpy(tmp, gabs, ngaps * sizeof(*gabs));
++	memcpy(gabs, &tmp[i], (ngaps - i) * sizeof(*gabs));
++	memcpy(gabs + (ngaps - i), tmp, i * sizeof(*gabs));
++
++	return ngaps;
 +}
-diff --git a/net/quic/path.h b/net/quic/path.h
+diff --git a/net/quic/pnspace.h b/net/quic/pnspace.h
 new file mode 100644
-index 000000000000..c2537cf65a7d
+index 000000000000..562bbc139c3c
 --- /dev/null
-+++ b/net/quic/path.h
-@@ -0,0 +1,191 @@
++++ b/net/quic/pnspace.h
+@@ -0,0 +1,201 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/* QUIC kernel implementation
 + * (C) Copyright Red Hat Corp. 2023
@@ -1125,287 +567,264 @@ index 000000000000..c2537cf65a7d
 + *    Xin Long <lucien.xin@gmail.com>
 + */
 +
-+#define QUIC_PATH_MIN_PMTU	1200U
-+#define QUIC_PATH_MAX_PMTU	65535U
++#define QUIC_PN_MAP_MAX_GABS	32
 +
-+#define QUIC_MIN_UDP_PAYLOAD	1200
-+#define QUIC_MAX_UDP_PAYLOAD	65527
++#define QUIC_PN_MAP_INITIAL	64
++#define QUIC_PN_MAP_INCREMENT	QUIC_PN_MAP_INITIAL
++#define QUIC_PN_MAP_SIZE	4096
++#define QUIC_PN_MAP_LIMIT	(QUIC_PN_MAP_SIZE * 3 / 4)
 +
-+#define QUIC_PATH_ENTROPY_LEN	8
++#define QUIC_PNSPACE_MAX	(QUIC_CRYPTO_MAX - 1)
++#define QUIC_PNSPACE_NEXT_PN	0
++#define QUIC_PNSPACE_TIME_LIMIT	(333000 * 3)
 +
-+#define QUIC_PMTUD_RAISE_TIMER_FACTOR	30
-+
-+extern struct workqueue_struct	*quic_wq;
-+
-+/* Connection Migration State Machine:
-+ *
-+ * +--------+      recv non-probing, free old path    +----------+
-+ * |  NONE  | <-------------------------------------- | SWAPPED  |
-+ * +--------+                                         +----------+
-+ *      |   ^ \                                            ^
-+ *      |    \ \                                           |
-+ *      |     \ \   new path detected,                     | recv
-+ *      |      \ \  has another DCID,                      | Path
-+ *      |       \ \ snd Path Challenge                     | Response
-+ *      |        \ -------------------------------         |
-+ *      |         ------------------------------- \        |
-+ *      | new path detected,            Path     \ \       |
-+ *      | has no other DCID,            Challenge \ \      |
-+ *      | request a new DCID            failed     \ \     |
-+ *      v                                           \ v    |
-+ * +----------+                                       +----------+
-+ * | PENDING  | ------------------------------------> | PROBING  |
-+ * +----------+  recv a new DCID, snd Path Challenge  +----------+
-+ */
 +enum {
-+	QUIC_PATH_ALT_NONE,
-+	QUIC_PATH_ALT_PENDING, /* Waiting for new dest conn ID for migration */
-+	QUIC_PATH_ALT_PROBING, /* Validating alternate path (PATH_CHALLENGE) */
-+	QUIC_PATH_ALT_SWAPPED, /* Alternate path is now active; roles swapped */
++	QUIC_ECN_ECT1,
++	QUIC_ECN_ECT0,
++	QUIC_ECN_CE,
++	QUIC_ECN_MAX
 +};
 +
-+struct quic_udp_sock {
-+	struct work_struct work; /* Workqueue to destroy UDP tunnel socket */
-+	struct hlist_node node;  /* Node in addr-based UDP socket hash table */
-+	union quic_addr addr; /* Source addr of underlying UDP tunnel socket */
-+	int bind_ifindex;
-+	refcount_t refcnt;
-+	struct sock *sk; /* Underlying UDP tunnel socket */
++enum {
++	QUIC_ECN_LOCAL, /* ECN bits from incoming IP headers */
++	QUIC_ECN_PEER,  /* ECN bits reported by peer in ACK frames */
++	QUIC_ECN_ACKED, /* ECN bits from packets newly ACKed */
++	QUIC_ECN_DIR_MAX
 +};
 +
-+struct quic_path {
-+	union quic_addr daddr; /* Destination address */
-+	union quic_addr saddr; /* Source address */
-+
-+	/* Wrapped UDP socket for receiving QUIC */
-+	struct quic_udp_sock *udp_sk;
-+	/* Cached UDP tunnel socket and source addr for RCU access */
-+	union quic_addr uaddr;
-+	struct sock *usk;
-+};
-+
-+struct quic_path_group {
-+	/* Connection ID validation during handshake (rfc9000#section-7.3) */
-+	struct quic_conn_id retry_dcid; /* Source CID from Retry packet */
-+	struct quic_conn_id orig_dcid;  /* Destination CID from first Initial */
-+
-+	/* Path validation (rfc9000#section-8.2) */
-+	u8 entropy[QUIC_PATH_ENTROPY_LEN]; /* Entropy for PATH_CHALLENGE */
-+	struct quic_path path[2]; /* Active path (0) and alternate path (1) */
-+	seqcount_t path_seq;      /* Protects path[0] during swap */
-+	struct flowi fl;          /* Flow info from routing decisions */
-+
-+	/* Anti-amplification limit (rfc9000#section-8) */
-+	u32 ampl_sndlen; /* Bytes sent before address is validated */
-+	u32 ampl_rcvlen; /* Bytes received to lift amplification limit */
-+
-+	/* MTU discovery handling */
-+	struct { /* PLPMTUD probing (rfc8899) */
-+		s64 number; /* Packet number used for current probe */
-+		u16 pmtu;   /* Confirmed path MTU */
-+
-+		u16 probe_size; /* Current probe packet size */
-+		u16 probe_high; /* Highest failed probe size */
-+		u8 probe_count; /* Retry count for current probe_size */
-+		u8 state;       /* Probe state machine (rfc8899#section-5.2) */
-+	} pl;
-+	u32 mtu_info; /* PMTU value from received ICMP, pending apply */
-+
-+	u32 plpmtud_interval;   /* Time interval for the PLPMTUD probe timer */
-+	u32 keepalive_interval; /* Time interval to maintain path liveness */
-+
-+	u8 ecn_probes;  /* ECN probe counter */
-+	u8 validated:1; /* Path validated with PATH_RESPONSE */
-+	u8 blocked:1;   /* Blocked by anti-amplification limit */
-+	u8 version:1;   /* Version negotiation performed */
-+	u8 retry:1;     /* Retry used in initial packet */
-+
-+	/* Connection Migration (rfc9000#section-9) */
-+	u8 disable_saddr_alt:1; /* Remote disable_active_migration parameter */
-+	u8 disable_daddr_alt:1; /* Local disable_active_migration parameter */
-+	u8 pref_addr:1; /* Preferred address offered (rfc9000#section-18.2) */
-+	u8 alt_probes;  /* Number of PATH_CHALLENGE probes sent */
-+	u8 alt_state;   /* Connection migration state (see above) */
-+};
-+
-+static inline union quic_addr *quic_path_saddr(struct quic_path_group *paths,
-+					       u8 path)
-+{
-+	return &paths->path[path].saddr;
-+}
-+
-+static inline void quic_path_set_saddr(struct quic_path_group *paths, u8 path,
-+				       union quic_addr *addr)
-+{
-+	memcpy(quic_path_saddr(paths, path), addr, sizeof(*addr));
-+}
-+
-+static inline union quic_addr *quic_path_daddr(struct quic_path_group *paths,
-+					       u8 path)
-+{
-+	return &paths->path[path].daddr;
-+}
-+
-+static inline void quic_path_set_daddr(struct quic_path_group *paths, u8 path,
-+				       union quic_addr *addr)
-+{
-+	memcpy(quic_path_daddr(paths, path), addr, sizeof(*addr));
-+}
-+
-+static inline union quic_addr *quic_path_uaddr(struct quic_path_group *paths,
-+					       u8 path)
-+{
-+	return &paths->path[path].uaddr;
-+}
-+
-+static inline struct sock *quic_path_usock(struct quic_path_group *paths,
-+					   u8 path)
-+{
-+	return paths->path[path].usk;
-+}
-+
-+static inline bool quic_path_alt_state(struct quic_path_group *paths, u8 state)
-+{
-+	return paths->alt_state == state;
-+}
-+
-+static inline void quic_path_set_alt_state(struct quic_path_group *paths,
-+					   u8 state)
-+{
-+	paths->alt_state = state;
-+}
-+
-+/* Returns the destination Connection ID (DCID) used for identifying the
-+ * connection.  Per rfc9000#section-7.3, handshake packets are considered part
-+ * of the same connection if their DCID matches the one returned here.
++/* Represents a gap (range of missing packets) in the ACK map.  The values are
++ * offsets from base_pn, with both 'start' and 'end' being +1.
 + */
-+static inline struct quic_conn_id *
-+quic_path_orig_dcid(struct quic_path_group *paths)
++struct quic_gap_ack_block {
++	u16 start;
++	u16 end;
++};
++
++/* Packet Number Map (pn_map) Layout:
++ *
++ *     min_pn_seen -->++-----------------------+---------------------+---
++ *         base_pn -----^   last_max_pn_seen --^       max_pn_seen --^
++ *
++ * Map Advancement Logic:
++ *   - min_pn_seen = last_max_pn_seen;
++ *   - base_pn = first zero bit after last_max_pn_seen;
++ *   - last_max_pn_seen = max_pn_seen;
++ *   - last_max_pn_time = max_pn_time;
++ *
++ * Conditions to Advance pn_map:
++ *   - (max_pn_time - last_max_pn_time) >= max_time_limit, or
++ *   - (max_pn_seen - min(last_max_pn_seen, base_pn)) > QUIC_PN_MAP_LIMIT
++ *
++ * Gap Search Range:
++ *   - From base_pn to max_pn_seen
++ */
++struct quic_pnspace {
++	/* ECN counters indexed by dir and ECN codepoint (ECT1, ECT0, CE) */
++	u64 ecn_count[QUIC_ECN_DIR_MAX][QUIC_ECN_MAX];
++	unsigned long *pn_map; /* Received PN bitmap for ACK generation */
++	u16 pn_map_len;        /* Length of the PN bit map (in bits) */
++	u8  need_sack;         /* Flag indicating a SACK frame should be sent */
++	u8  sack_path;         /* Path used for sending the SACK frame */
++	u8  sack_pending;      /* Delayed ACK pending */
++
++	s64 last_max_pn_seen; /* Largest PN seen before pn_map advance */
++	u64 last_max_pn_time; /* Timestamp last_max_pn_seen was received */
++	s64 min_pn_seen;      /* Lower bound of the trackable PN window */
++	s64 max_pn_seen;      /* Largest PN received */
++	u64 max_pn_time;      /* Timestamp max_pn_seen was received */
++	s64 base_pn; /* PN corresponding to the start of the pn_map */
++	u64 time;    /* Cached now, or latest socket accept timestamp */
++
++	s64 max_pn_acked_seen; /* Largest PN ACKed by peer */
++	u64 max_pn_acked_time; /* Timestamp max_pn_acked_seen was ACKed */
++	u64 last_sent_time;    /* Timestamp last ack-eliciting packet sent */
++	u64 loss_time;         /* Timestamp the packet can be declared lost */
++	s64 next_pn;           /* Next PN to send */
++
++	u32 max_time_limit; /* Time threshold to trigger pn_map advance */
++	u32 inflight;       /* Ack-eliciting bytes in flight */
++};
++
++static inline void
++quic_pnspace_set_max_pn_acked_seen(struct quic_pnspace *space,
++				   s64 max_pn_acked_seen)
 +{
-+	return paths->retry ? &paths->retry_dcid : &paths->orig_dcid;
++	if (space->max_pn_acked_seen >= max_pn_acked_seen)
++		return;
++	space->max_pn_acked_seen = max_pn_acked_seen;
++	space->max_pn_acked_time = quic_ktime_get_us();
 +}
 +
-+void quic_path_init(struct quic_path_group *paths);
++static inline void quic_pnspace_set_base_pn(struct quic_pnspace *space, s64 pn)
++{
++	space->base_pn = pn;
++	space->max_pn_seen = space->base_pn - 1;
++	space->last_max_pn_seen = space->max_pn_seen;
++	space->min_pn_seen = space->max_pn_seen;
 +
-+bool quic_path_detect_alt(struct quic_path_group *paths, union quic_addr *sa,
-+			  union quic_addr *da, struct sock *sk);
-+int quic_path_bind(struct sock *sk, struct quic_path_group *paths, u8 path);
-+void quic_path_unbind(struct sock *sk, struct quic_path_group *paths, u8 path);
-+void quic_path_swap(struct quic_path_group *paths);
++	space->max_pn_time = space->time;
++	space->last_max_pn_time = space->max_pn_time;
++}
 +
-+u32 quic_path_pl_recv(struct quic_path_group *paths, bool *raise_timer,
-+		      bool *complete);
-+u32 quic_path_pl_toobig(struct quic_path_group *paths, u32 pmtu,
-+			bool *reset_timer);
-+u32 quic_path_pl_send(struct quic_path_group *paths, s64 number);
++static inline bool quic_pnspace_has_gap(const struct quic_pnspace *space)
++{
++	return space->base_pn != space->max_pn_seen + 1;
++}
 +
-+void quic_path_get_param(struct quic_path_group *paths,
-+			 struct quic_transport_param *p);
-+void quic_path_set_param(struct quic_path_group *paths,
-+			 struct quic_transport_param *p);
-+bool quic_path_pl_confirm(struct quic_path_group *paths,
-+			  s64 largest, s64 smallest);
-+void quic_path_pl_reset(struct quic_path_group *paths);
-diff --git a/net/quic/protocol.c b/net/quic/protocol.c
-index d6ea3c8708b8..25308653ebb4 100644
---- a/net/quic/protocol.c
-+++ b/net/quic/protocol.c
-@@ -21,6 +21,7 @@
- static unsigned int quic_net_id __read_mostly;
- 
- struct percpu_counter quic_sockets_allocated;
-+struct workqueue_struct *quic_wq;
- 
- DEFINE_STATIC_KEY_FALSE(quic_alpn_demux_key);
- 
-@@ -342,6 +343,15 @@ static __init int quic_init(void)
- 	if (err)
- 		goto err_hash;
- 
-+	/* Allocate an unbound workqueue for UDP socket destruction and backlog
-+	 * packet processing.
++static inline void quic_pnspace_inc_ecn_acked(struct quic_pnspace *space,
++					      u8 ecn)
++{
++	if (!ecn)
++		return;
++	space->ecn_count[QUIC_ECN_ACKED][ecn - 1]++;
++}
++
++static inline void quic_pnspace_reset_ecn_acked(struct quic_pnspace *space)
++{
++	space->ecn_count[QUIC_ECN_ACKED][QUIC_ECN_ECT0] = 0;
++	space->ecn_count[QUIC_ECN_ACKED][QUIC_ECN_ECT1] = 0;
++	space->ecn_count[QUIC_ECN_ACKED][QUIC_ECN_CE] = 0;
++}
++
++static inline void quic_pnspace_inc_ecn_local(struct quic_pnspace *space,
++					      u8 ecn)
++{
++	if (!ecn)
++		return;
++	space->ecn_count[QUIC_ECN_LOCAL][ecn - 1]++;
++}
++
++/* Check if any ECN-marked packets were received. */
++static inline bool quic_pnspace_has_ecn_local(struct quic_pnspace *space)
++{
++	return space->ecn_count[QUIC_ECN_LOCAL][QUIC_ECN_ECT0] ||
++	       space->ecn_count[QUIC_ECN_LOCAL][QUIC_ECN_ECT1] ||
++	       space->ecn_count[QUIC_ECN_LOCAL][QUIC_ECN_CE];
++}
++
++/* Validate ECN counts received in an ACK. */
++static inline bool quic_pnspace_validate_ecn(struct quic_pnspace *space,
++					     u64 *ecn_count)
++{
++	u64 *acked = space->ecn_count[QUIC_ECN_ACKED];
++	u64 *peer = space->ecn_count[QUIC_ECN_PEER];
++	u64 ect0, ect1, ce;
++
++	if (peer[QUIC_ECN_ECT0] > ecn_count[QUIC_ECN_ECT0] ||
++	    peer[QUIC_ECN_ECT1] > ecn_count[QUIC_ECN_ECT1] ||
++	    peer[QUIC_ECN_CE] > ecn_count[QUIC_ECN_CE])
++		return false;
++
++	/* rfc9000#section-13.4.2.1:
++	 *
++	 * ECN validation also fails if the sum of the increase in ECT(0) and
++	 * ECN-CE counts is less than the number of newly acknowledged packets
++	 * that were originally sent with an ECT(0) marking (Same for ECT(1)).
 +	 */
-+	quic_wq = alloc_workqueue("quic_workqueue", WQ_UNBOUND, 0);
-+	if (!quic_wq) {
-+		err = -ENOMEM;
-+		goto err_wq;
-+	}
++	ect0 = ecn_count[QUIC_ECN_ECT0] - peer[QUIC_ECN_ECT0];
++	ect1 = ecn_count[QUIC_ECN_ECT1] - peer[QUIC_ECN_ECT1];
++	ce = ecn_count[QUIC_ECN_CE] - peer[QUIC_ECN_CE];
 +
- 	err = register_pernet_subsys(&quic_net_ops);
- 	if (err)
- 		goto err_def_ops;
-@@ -359,6 +369,8 @@ static __init int quic_init(void)
- err_protosw:
- 	unregister_pernet_subsys(&quic_net_ops);
- err_def_ops:
-+	destroy_workqueue(quic_wq);
-+err_wq:
- 	quic_hash_tables_destroy();
- err_hash:
- 	percpu_counter_destroy(&quic_sockets_allocated);
-@@ -373,6 +385,8 @@ static __exit void quic_exit(void)
- #endif
- 	quic_protosw_exit();
- 	unregister_pernet_subsys(&quic_net_ops);
-+	flush_workqueue(quic_wq);
-+	destroy_workqueue(quic_wq);
- 	quic_hash_tables_destroy();
- 	percpu_counter_destroy(&quic_sockets_allocated);
- 	rcu_barrier();
++	return ect0 + ce >= acked[QUIC_ECN_ECT0] &&
++	       ect1 + ce >= acked[QUIC_ECN_ECT1];
++}
++
++/* Updates the stored ECN counters based on values received in the peer's ACK
++ * frame. Each counter is updated only if the new value is higher.
++ *
++ * Returns: true if CE count was increased (congestion indicated), false
++ * otherwise.
++ */
++static inline bool quic_pnspace_set_ecn_peer(struct quic_pnspace *space,
++					     u64 *ecn_count)
++{
++	u64 *count = space->ecn_count[QUIC_ECN_PEER];
++
++	if (count[QUIC_ECN_ECT0] < ecn_count[QUIC_ECN_ECT0])
++		count[QUIC_ECN_ECT0] = ecn_count[QUIC_ECN_ECT0];
++	if (count[QUIC_ECN_ECT1] < ecn_count[QUIC_ECN_ECT1])
++		count[QUIC_ECN_ECT1] = ecn_count[QUIC_ECN_ECT1];
++	if (count[QUIC_ECN_CE] < ecn_count[QUIC_ECN_CE]) {
++		count[QUIC_ECN_CE] = ecn_count[QUIC_ECN_CE];
++		return true;
++	}
++	return false;
++}
++
++u16 quic_pnspace_num_gabs(struct quic_pnspace *space,
++			  struct quic_gap_ack_block *gabs);
++int quic_pnspace_check(struct quic_pnspace *space, s64 pn);
++int quic_pnspace_mark(struct quic_pnspace *space, s64 pn, gfp_t gfp);
++
++void quic_pnspace_free(struct quic_pnspace *space);
++int quic_pnspace_init(struct quic_pnspace *space);
 diff --git a/net/quic/socket.c b/net/quic/socket.c
-index b59f6a70464e..1ef2f7c88735 100644
+index 567d9b8b325e..12f0817c8b55 100644
 --- a/net/quic/socket.c
 +++ b/net/quic/socket.c
-@@ -51,6 +51,7 @@ static int quic_init_sock(struct sock *sk)
+@@ -42,6 +42,8 @@ static void quic_write_space(struct sock *sk)
  
- 	quic_conn_id_set_init(quic_source(sk), true);
- 	quic_conn_id_set_init(quic_dest(sk), false);
-+	quic_path_init(quic_paths(sk));
+ static int quic_init_sock(struct sock *sk)
+ {
++	u8 i;
++
+ 	sk->sk_write_space = quic_write_space;
+ 	sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
  
+@@ -57,11 +59,21 @@ static int quic_init_sock(struct sock *sk)
  	if (quic_stream_init(quic_streams(sk)))
  		return -ENOMEM;
-@@ -60,6 +61,9 @@ static int quic_init_sock(struct sock *sk)
+ 
++	for (i = 0; i < QUIC_PNSPACE_MAX; i++) {
++		if (quic_pnspace_init(quic_pnspace(sk, i)))
++			return -ENOMEM;
++	}
++
+ 	return 0;
+ }
  
  static void quic_destroy_sock(struct sock *sk)
  {
-+	quic_path_unbind(sk, quic_paths(sk), 0);
-+	quic_path_unbind(sk, quic_paths(sk), 1);
++	u8 i;
 +
- 	quic_conn_id_set_free(quic_source(sk));
- 	quic_conn_id_set_free(quic_dest(sk));
++	for (i = 0; i < QUIC_PNSPACE_MAX; i++)
++		quic_pnspace_free(quic_pnspace(sk, i));
++
+ 	quic_path_unbind(sk, quic_paths(sk), 0);
+ 	quic_path_unbind(sk, quic_paths(sk), 1);
  
 diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 68a58f0016cc..91338601905e 100644
+index 9201ca3edad0..68c7b22d1e88 100644
 --- a/net/quic/socket.h
 +++ b/net/quic/socket.h
-@@ -15,6 +15,7 @@
+@@ -12,6 +12,7 @@
+ #include <linux/quic.h>
+ 
+ #include "common.h"
++#include "pnspace.h"
  #include "family.h"
  #include "stream.h"
  #include "connid.h"
-+#include "path.h"
- 
- #include "protocol.h"
- 
-@@ -39,6 +40,7 @@ struct quic_sock {
- 	struct quic_stream_table	streams;
- 	struct quic_conn_id_set		source;
+@@ -43,6 +44,7 @@ struct quic_sock {
  	struct quic_conn_id_set		dest;
-+	struct quic_path_group		paths;
+ 	struct quic_path_group		paths;
+ 	struct quic_cong		cong;
++	struct quic_pnspace		space[QUIC_PNSPACE_MAX];
  };
  
  struct quic6_sock {
-@@ -86,6 +88,11 @@ static inline struct quic_conn_id_set *quic_dest(const struct sock *sk)
- 	return &quic_sk(sk)->dest;
+@@ -105,6 +107,11 @@ static inline struct quic_cong *quic_cong(const struct sock *sk)
+ 	return &quic_sk(sk)->cong;
  }
  
-+static inline struct quic_path_group *quic_paths(const struct sock *sk)
++static inline struct quic_pnspace *quic_pnspace(const struct sock *sk, u8 level)
 +{
-+	return &quic_sk(sk)->paths;
++	return &quic_sk(sk)->space[level % QUIC_CRYPTO_EARLY];
 +}
 +
- static inline bool quic_is_serv(const struct sock *sk)
+ static inline bool quic_is_establishing(struct sock *sk)
  {
- 	return !!sk->sk_max_ack_backlog;
+ 	return sk->sk_state == QUIC_SS_ESTABLISHING;
 -- 
 2.47.1
 
