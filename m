@@ -1,118 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACC3321F5E;
-	Fri, 16 Oct 2026 08:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6E93BFACE
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792138699; cv=none; b=WRxl67lka4CabzefHp5bPeTVPs22GXHKV3mwhPoEfb0vtXXzFaY8FHSGlY8/FuP+y37tpSg52C1o1L1Vsp9YCQUJxpshgrOi9HYNip3ETI0zQGwjrbMIV4V+94CZarlc6CE1afhJK1L0au9NVxgC5jGqhDRJpmvUVSp0jUf7OvI=
+	t=1792138801; cv=none; b=NjCyJ+SSPME7uzlIxdpfFAAIjEuPBKKNknhrHpFGtKL0Y9LyTNPujH/15dnXuLc5ExzlEdvvubXsZ2Cp7a7L+UGkRmmeW5xPievx8aauO5h/luxU71dre9uCc+Hgu9Oe/1tXGKHuSciex/HMPl7kqpv25vc4DkLqqml+vCWovf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792138699; c=relaxed/simple;
-	bh=jPT2TNYxgshiy5c36ncFZHEPx/mEloRIpcHB+v9LGrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fmpH4cnMcr7FYDxDz5q1QGWq1CU+v0LYkrKIf0iaCzIgFrm8zMpGatmR1gkoNuUv41m4/stTRU9fXbd+BSavMpC9E6gqmYnWgZIAjCNxzjj0J7TUsV+hn8QwzntE0gwJxL1YBYxAiqiYQbowvmRMU8lsnIRtim7UZa9prf+bUOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnGcFODt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792138801; c=relaxed/simple;
+	bh=Q/VFJDeaY/23ZJwVigeNwes0ycOyUM1dhiVYAZgu9lE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jLSWm24RP0p0wQBarWL7w/E7yAcBFjNILBD0OFlJTwKejWNN+kMhd0Ae1agwuI68zfXRB80oAXiOJVGkzCLzm870REDtt0SlzFzzUWnoGdutOi40d83YRDFwHiu5oHDp07L0M+CZUPrh2ZpIB9gdGELRuZVGez7fO6gqUCWXLz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iKxlHMUo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnGcFODt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351BE1F000C4;
-	Fri, 16 Oct 2026 08:18:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iKxlHMUo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BF51F000D2
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792138697;
-	bh=dBB+2bgOQbqNUHoch49xb5bDvd9pyA5NBJLGE5ayi94=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cnGcFODt0h+SiVoV8i/+BzuEC7rd1EYEB7hAH8IjoVWjs9otPZhAF0LZ+NJTszPnS
-	 yH6dBCBq4lujTy7tEM+DH51XDx5FghhtalN0V+RmJX909ilj1oe/s6BjZVANAFs8Nn
-	 RUnd/S9/OJHgaLbW6RJHKYl80MTn0P+OAkbjkkEk1x12486G0q3vWZCRlJNKsszCd6
-	 6w4rOfZTtp9esNIaKqxCU9C1gKCPWbZ5/J8QNTa/k9HxCNJ+N6qqjBH+MuFTL+sSN+
-	 5fs3nAH9D9uyJxzmpVn11wY1Kds+00rPCKHEXuPlRc/lWmBRW53MGe6eu3I/FaHL2H
-	 ogHUR9q8SSk0A==
-Date: Fri, 16 Oct 2026 10:18:15 +0200
-From: Antoine Tenart <atenart@kernel.org>
-To: Liu Chao <liuc63@xiaopeng.com>
-Cc: "David S . Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: ipv4: ipconfig: fix OOB read in DHCP option parsing
-Message-ID: <atHc9N49BfiGal3l@kwain>
-References: <20261016041152.2294843-1-liuc63@xiaopeng.com>
+	s=k20260515; t=1792138800;
+	bh=NQNdQ79CqehE3MN8JBQ8cGNawuMei/JypxZtTt4YpYc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=iKxlHMUo+/1GZcAn9zFCZJrdBiM4xpOj7aQo/0biOZE99rPXdb9j84gzoYcPY3MQL
+	 n/vzJrQYSYACTqxmx/rxDWNdYugxZfkWiXvYgc6XW4MINFf4Br37NBRmQI7V9nw5vk
+	 e7lZJa8fl3D5k0KHMwV/Rg/qYUt3z1f6h3o8jAyRfc6NdkoGyOPLHQFX07bVm6B7G8
+	 snxa5s3JukuEMx+ugj0XqfA4DSQs3jawv/jwA3SsRPIGxcoYO/Df966VlkutDzq23b
+	 HeiTGXGGke2+QgOmf3/uXIOp5HxVSGPK9gm4OAlGKi1XAciFRVX16J5QOnnkYL9gjd
+	 c5dB4fQdnxYgg==
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6df0b02fe91so620864eaf.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:20:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw85lrsmrbE+9hDNtxwqrKYLEiXHSzsEemXWOzROvRINY05ku0VQidMOqIUUC6ses+aCNvmkXs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI/XrDDf73dCoGFCfHcCJFgkInJQp6hEgxIJCWhshXQ22B+/z9m
+	cprUWlPC+uLi4FUDUOho+uvdhTGu1a/9KF2N/IS77s/nj6XIT/+sb9JJXmPvGvkUlq85yQWJvwF
+	85vzKqx59HnZVMC9YgKa3QvFwqO8iRjo=
+X-Received: by 2002:a05:6820:f02a:b0:6d8:462d:2755 with SMTP id
+ 006d021491bc7-70114debb9bmr1594715eaf.37.1792138799204; Fri, 16 Oct 2026
+ 01:19:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261016041152.2294843-1-liuc63@xiaopeng.com>
+References: <20261015073736.2944215-1-tavip@google.com> <20261015073736.2944215-2-tavip@google.com>
+ <CAAVpQUAnURtwVgKmRYXTZBjEyb58mxXkeJoMkh7Mc6+ESb1Sfg@mail.gmail.com>
+In-Reply-To: <CAAVpQUAnURtwVgKmRYXTZBjEyb58mxXkeJoMkh7Mc6+ESb1Sfg@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 16 Oct 2026 10:19:46 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiipff3Aai0f=iwXmvc1MKessWzO2fojVu67BQ6e-pGPk3A@mail.gmail.com>
+X-Gm-Features: AclHuK_ghVWdNzfqvDun0kKrC7LGzJBYtDJxzI9zBA3uy3mDqEmjWu5L0M5ujAU
+Message-ID: <CAL4Wiipff3Aai0f=iwXmvc1MKessWzO2fojVu67BQ6e-pGPk3A@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] tcp: clamp return value of tcp_wmem_schedule() to non-negative
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Octavian Purdila <tavip@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Soheil Hassas Yeganeh <soheil@google.com>, Wei Wang <weiwan@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 16, 2026 at 12:11:52PM +0800, Liu Chao wrote:
-> The DHCP option parser in ic_bootp_recv() advances the option
-> pointer by the option length and only checks that the new pointer
-> has not reached the end of the packet.  The length byte and the
-> option payload (opt[1], opt[2]) are then read without verifying
-> that they lie within the buffer, so a malformed reply from a
-> rogue DHCP server can trigger an out-of-bounds read.
-> 
-> Validate the option length against the remaining bytes before
-> consuming the option, and skip options that do not fit.  This
-> keeps the existing parsing logic intact while ensuring all reads
-> stay within the received packet.
-> 
-> Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
-> Signed-off-by: Liu Chao <liuc63@xiaopeng.com>
-> ---
->  net/ipv4/ipconfig.c | 38 ++++++++++++++++++++------------------
->  1 file changed, 20 insertions(+), 18 deletions(-)
-> 
-> diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
-> index 22a788987..0b39a5ccf 100644
-> --- a/net/ipv4/ipconfig.c
-> +++ b/net/ipv4/ipconfig.c
-> @@ -1081,25 +1081,27 @@ static int __init ic_bootp_recv(struct sk_buff *skb, struct net_device *dev, str
->  			__be32 server_id = NONE;
->  			int mt = 0;
->  
-> -			ext = &b->exten[4];
-> -			while (ext < end && *ext != 0xff) {
-> -				u8 *opt = ext++;
-> -				if (*opt == 0)	/* Padding */
-> -					continue;
-> -				ext += *ext + 1;
-> -				if (ext >= end)
-> -					break;
-> -				switch (*opt) {
-> -				case 53:	/* Message type */
-> -					if (opt[1])
-> -						mt = opt[2];
-> -					break;
-> -				case 54:	/* Server ID (IP address) */
-> -					if (opt[1] >= 4)
-> -						memcpy(&server_id, opt + 2, 4);
-> -					break;
-> +				ext = &b->exten[4];
-> +				while (ext < end && *ext != 0xff) {
-> +					u8 *opt = ext++;
-> +					if (*opt == 0)	/* Padding */
-> +						continue;
-> +					if (ext >= end)
-> +						break;
-> +					ext += *ext + 1;
-> +					if (ext > end)
-> +						break;
-> +					switch (*opt) {
-> +					case 53:	/* Message type */
-> +						if (opt[1])
-> +							mt = opt[2];
-> +						break;
-> +					case 54:	/* Server ID (IP address) */
-> +						if (opt[1] >= 4)
-> +							memcpy(&server_id, opt + 2, 4);
-> +						break;
-> +					}
->  				}
-> -			}
+Le ven. 16 oct. 2026 =C3=A0 09:42, Kuniyuki Iwashima <kuniyu@google.com> a =
+=C3=A9crit :
+>
+> On Thu, Oct 15, 2026 at 12:37=E2=80=AFAM Octavian Purdila <tavip@google.c=
+om> wrote:
+> >
+> > When sk_wmem_schedule(sk, copy) fails under TCP memory pressure and
+> > sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0],
+> > tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc).
+> >
+> > However, sk->sk_forward_alloc is a signed int that can transiently
+> > become negative when tcp_collapse() re-packs partially read or high
+> > payload-to-truesize SKBs in the receive queue and charges newly
+> > allocated SKBs via sk_mem_charge() before freeing the original SKB.
+> >
+> > If tcp_wmem_schedule() returns a negative value, tcp_sendmsg_locked()
+> > passes that negative copy length to skb_copy_to_page_nocache() ->
+> > copy_from_iter_full() -> check_copy_size(), where it is converted to an
+> > unsigned size_t > INT_MAX, triggering a WARN_ON_ONCE(bytes > INT_MAX)
+> > and returning -EFAULT instead of waiting for memory or returning
+> > -EAGAIN.
+> >
+> > Clamp the return value of tcp_wmem_schedule() to [0, copy] so callers
+> > treat negative sk_forward_alloc as 0 available bytes.
+> >
+> > Fixes: 849b425cd091 ("tcp: fix possible freeze in tx path under memory =
+pressure")
+> > Assisted-by: LLM
+> > Signed-off-by: Octavian Purdila <tavip@google.com>
+>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+>
 
-Please fix the indentation.
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 
-Isn't there a similar issue later in that function?
+> Basically sk->sk_forward_alloc should not be negative, and
+> I was able to avoid that by refactoring tcp_collapse(), but it was
+> a bit invasive for stable and late in rc8, so I'll post it in the next cy=
+cle.
+>
+> $ git diff --stat HEAD~4
+>  net/ipv4/tcp_input.c | 158 ...
+>  1 file changed, 109 insertions(+), 49 deletions(-)
