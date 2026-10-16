@@ -1,86 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1345043B6CB
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808CE44CAC6;
+	Fri, 16 Oct 2026 09:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792143799; cv=none; b=KMV5j/Jz5ogt6jhKCHQrT9d7xcUOqrsLVvRt8O949a50qndNB4kPAesrlSWggwDGg1rYs7safmN09fw1eKVlJi273A1YSpmIk7sD97CyFtXJQDPhVohE+uACd+7OS7s2dLVUfWzSHkQt1XhTZu/4oG6mJE16CKAj70Ho+F44Hfk=
+	t=1792143877; cv=none; b=IPXxOn9F3uT56bg+GZAGYnqyzelfNJITJXmh/OUCRcOGELci5Hz3OtIXbEXB84TZMjpAzbxxc6kJ9a3ErOZF72Q47lHfSoGyzzoHtN50qlaJh8VceMm6zAkoxWQZIGFTKPBWJ7F500BDpE9mCk7kubmrXrDqhY6zrM8PDXuXH9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792143799; c=relaxed/simple;
-	bh=YyTzn6ek5qXEnmUuD30Tnu8qQyVMMw+tK6ncWRzZV14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tMy0RTjnC0CSEJ8whP2VbbzFNgcs8fkDo+dKho5cWX1YkpNA/iXF7OTbUG6hQry8qTm7NV2eDNZyN13+df/5LhPA/qnElwySrAvH13g9pMfGBW4xGp0ujFMTye8yH6I2vev+Q9XwZZmjdYo5xbvknADqcSrWpTzD9xXjg+J8T9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2avaNkw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792143877; c=relaxed/simple;
+	bh=zDWNr4AnOOv1lhYK2bkBkb9CY9qN2RBP5lbHwr3KTJk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ph1CyXBbTQMeMg0tf/hlW53ZJuCzYhowoje7QdQBfju36osZ2onFHxstP3PVloy5oN6FzR8xDfDbqErlcuzcHsCNe29RZZE6g5ZNDUVWCKc4+xvgJAJXWq6+A0FHsu9175Nz1rMyRZDuV3iwrJjJTOsDlGvPnM45w4a4KudFNE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YiMl1guw; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2avaNkw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4AB1F000C5;
-	Fri, 16 Oct 2026 09:43:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792143797;
-	bh=8ApGlbv1yO5tmmZOTA7DnXv6Lcy2I+cKRyP4UlT0qV8=;
-	h=From:To:Cc:Subject:Date;
-	b=g2avaNkwj4k4IjRZ/fUMVHzwWrzSXJUZwc15+MTF7o+4jiVGVWc8VKqXxpb5YU9Kv
-	 R2+uW4gGCYVwK/C+qCG2mZNOGhP/Edm8auJ4lAmSqG/Kbq+6nChz8UEYSXL/u9pSUG
-	 U4sIhlY0tU1m+dAfijPSGKSMNpR810/mRQLt0P8R0gMwpSHGdcqmDeXorP5QLJOVLr
-	 qml4qzy7JxkkBQOqJCH1nvUqZnX0MCqDqFAknSq1BGM1hUM2AL/+IBEtj1HpLviAV+
-	 N8wAIAOIEgqmkXfPrH+hA4RSrUaVihYhwqbf/hH/uFnhCt6jXkAb0xnEM/rs49MdIU
-	 QMeQpThZKVFKA==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: [PATCH net-next] fm10k: use skb_put_padto()
-Date: Fri, 16 Oct 2026 11:43:12 +0200
-Message-ID: <20261016094312.2759956-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YiMl1guw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=f/uMLjCIp2jROhfmRYKxJtNgmOf39cw4XgLVOb0p/jw=;
+	t=1792143875; x=1793353475; b=YiMl1guw4CORM986w1ZLKmMOJJy8BezznRuXpSX0cME+760
+	OtoMXfkdFcztNjIjoLkCTi6iOT2JZZGS0Pqb6q7+Qne5y+tqLjCRcwcjwwTb2PhzCwUBiV3zG7Lrl
+	2FRHVPkDY4PI3d/XNi0seHrtqNsYdzQBqvVaa2+I7eEc1EnbEkSU0tsBmYW7ciBoq0pXs6sLPX0d8
+	ByBnBH1UgyhpDCHgzgspBXDfx0dGBlY88Lt6kUrEHAAbyZHY+WEpTmkYR+xrSlu1FoFWrVSyR6h+h
+	BrKzNZj7Nphp++c9gayFiak6+Rp+/8oXbk85cfHcGScD+K+NdnRgtHchf+cSAaVw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xHeU5-00000005eqa-3gLI;
+	Fri, 16 Oct 2026 11:44:18 +0200
+Message-ID: <18ba10ec7aa6659ee4711f8dd3f3138e314e4af6.camel@sipsolutions.net>
+Subject: Re: [PATCH net-next v2 2/7] um: vector: honor virtio net hdr
+ conversion failures
+From: Johannes Berg <johannes@sipsolutions.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Willem de Bruijn	
+ <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>, 
+ Eugenio =?ISO-8859-1?Q?P=E9rez?=	 <eperezma@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Andrew Lunn	 <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet	 <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni	 <pabeni@redhat.com>,
+ netdev@vger.kernel.org, virtualization@lists.linux.dev,  Rusty Russell
+ <rusty@rustcorp.com.au>, Max Krasnyansky <maxk@qualcomm.com>, Richard
+ Weinberger <richard@nod.at>,  Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, linux-um@lists.infradead.org
+Date: Fri, 16 Oct 2026 11:44:16 +0200
+In-Reply-To: <20261016054142-mutt-send-email-mst@kernel.org>
+References: <cover.1792067836.git.mst@redhat.com>
+	 <6716834884238de0ab1ab313004044122aa2adbf.1792067836.git.mst@redhat.com>
+	 <8420ba1fe84fc7d105825026802d4ad10d44af71.camel@sipsolutions.net>
+	 <20261015085119-mutt-send-email-mst@kernel.org>
+	 <64ee40b97fc447bbf3abb80250ad0d9f3cf3c6fa.camel@sipsolutions.net>
+	 <20261016054142-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Replace the open-coded skb_pad() + __skb_put() sequence
-in fm10k_xmit_frame() with skb_put_padto().
+On Fri, 2026-10-16 at 05:43 -0400, Michael S. Tsirkin wrote:
+>=20
+> > > > > -	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_end=
+ian());
+> > > > > +	if (virtio_net_hdr_to_skb(skb, vheader,
+> > > > > +			virtio_legacy_is_little_endian()) < 0)
+> > > > > +		return -1;
+> > > > >  	return 0;
+> > > > >=20
+> > > >=20
+> > > > Seems it'd be simpler to just
+> > > >=20
+> > > > 	return virtio_net_hdr_to_skb(...);
+> > > >=20
+> > > > As far as I can tell, the function only returns -EINVAL or 0 (never=
+ a
+> > > > positive value), and the caller only cares about negative (error) o=
+r
+> > > > positive (no checksum needed), so that'd be equivalent?
+> > > >=20
+> > > > johannes
+> > >=20
+> > > if raw_verify_header can safely return any errno - i did not want to
+> > > audit it.
+> >=20
+> > You already used an LLM and still didn't want to? ;-)
+> >=20
+> > I checked briefly (by hand) and it seems fine, it's assigned to the
+> > function pointer, which only has two callers on the _kern.c side.
+> >=20
+> > johannes
+>=20
+>=20
+>                                header_check =3D vp->verify_header(
+>                                         mmsg_vector->msg_hdr.msg_iov->iov=
+_base,
+>                                         skb,
+>                                         vp
+>                                 );
+>                                 if (header_check < 0) {
+>                                 /* Overlay header failed to verify - disc=
+ard.
+>                                  * We can actually keep this skb and reus=
+e it,
+>                                  * but that will make the prep logic too
+>                                  * complex.
+>                                  */
+>                                         dev_kfree_skb_irq(skb);
+>                                         vp->estats.rx_encaps_errors++;
+>                                         (*skbuff_vector) =3D NULL;
+>                                         mmsg_vector++;
+>                                         skbuff_vector++;
+>                                         continue;
+>                                 }
+>                                 if (header_check > 0) {
+>                                         vp->estats.rx_csum_offload_good++=
+;
+>                                         skb->ip_summed =3D CHECKSUM_UNNEC=
+ESSARY;
+>                                 }
+>=20
+>=20
+>=20
+> so any negative is fine, but if we return 1 then it will force to CHECKSU=
+M_UNNECESSARY
+> which I am not sure is what was intended?
+>=20
+Right, but virtio_net_hdr_to_skb() cannot return 1, only 0 on success
+and -ERROR on failure?
 
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
----
-Part of a medium term plan to get rid of skb_pad(), source of many mistakes.
-
- drivers/net/ethernet/intel/fm10k/fm10k_netdev.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_netdev.c b/drivers/net/ethernet/intel/fm10k/fm10k_netdev.c
-index c86701be4364aeae2831d8551b0012ab27b4bfa7..669a02c6415c65a37e43cb283cc24f57b31dd770 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_netdev.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_netdev.c
-@@ -561,13 +561,8 @@ static netdev_tx_t fm10k_xmit_frame(struct sk_buff *skb, struct net_device *dev)
- 	/* The minimum packet size for a single buffer is 17B so pad the skb
- 	 * in order to meet this minimum size requirement.
- 	 */
--	if (unlikely(skb->len < 17)) {
--		int pad_len = 17 - skb->len;
--
--		if (skb_pad(skb, pad_len))
--			return NETDEV_TX_OK;
--		__skb_put(skb, pad_len);
--	}
-+	if (skb_put_padto(skb, 17))
-+		return NETDEV_TX_OK;
- 
- 	if (r_idx >= num_tx_queues)
- 		r_idx %= num_tx_queues;
--- 
-2.53.0
-
+johannes
