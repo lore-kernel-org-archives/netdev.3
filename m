@@ -1,162 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9C12264A9;
-	Fri, 16 Oct 2026 13:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792156086; cv=none; b=GCV+YPWI3KgYYEsPs7yUzOXD7ob+7CfJRHQrvpYcoiRbvDLMYS/PhEJ3bwQZbQpA47a2YHHseVWQJ9zoT0TGAc8slTdsGPOX8fBO5oerIAfDMqEELYuG6CsAPK6sRi1eucPptGq89/HOO5lS64KqbRwW3GRK5r73UTzs8WpJEnU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792156086; c=relaxed/simple;
-	bh=sYjJ0b0+DR9RbJ933aIA6Pe3CVrOOpnmRI/6zRSn1S0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=plYPoZjwGbTcKJmWCEJ5kGy2Tfa/ypB6YK0pyYH/j7Fpr8e5gMH+DYu/K9MfU6UZRyXLWx/AfZWMA55/OhBGLESlZRjIo9x5JH8CAz0fiHpbmJrSJgK3Y+1XMst4v83xOlair0aEQluzxQ7QJtrUR8ucExscy8nAZr5hKE23riI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HhO4bKNA; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E68547F3B3;
+	Fri, 16 Oct 2026 13:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792156125; cv=pass; b=jLnOgu/SmGZ3t/eaoL3WARnk8tW+iT/pUrC90J3irFa0vO8PYCfuUKmhE0PQ5qZblA3C46PO9dhctqoQ3cHQeTr0UKJ+QM8Ak9PHQEspNPbJMC/EiHrbbmdvGOG44EcJor1O0Gd20wjIVJ73dxO9iy1UFQztXimrDrs4evsdzKc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792156125; c=relaxed/simple;
+	bh=l8OPRfOyTUjhA8e+Owq9WybJJ6X+xrMWvll0MdyXk8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lbmYE/e6sGjCFyZv162Zrrgfby8mKoosaP8CQj5TuyiRFjx+uRNTsP6JUf3bTf1tmN8ajv5FMYHOj1k0i41e7SNzWGZOum409nK5LRCAYxvL287ssNn+WxaUDsTU/Q3DlleEnuikzAEGBuYPtY2OurM89oRZfE7ES+n8NrVWzTA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=LfyPZvVc; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HhO4bKNA"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 34044C2BCFA;
-	Fri, 16 Oct 2026 13:08:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792156086;
-	bh=sYjJ0b0+DR9RbJ933aIA6Pe3CVrOOpnmRI/6zRSn1S0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=HhO4bKNAtFPxYuifk1wT8CFwwmNJKF3TpdRmqlQs3pImRAfB5c0cVImkaM4r9zft9
-	 FciZAqMoQdyMeVg47531TiKv+OLE2f5eeWa1eSBeww7++4Ahsfodr/WrG8IKS4jzXb
-	 lVzflBrwwk8N+qVNE1MdCGDfDUU/KhqAIgUq9HMjtRKAC5T79U9wcYM3AylNqbnpEX
-	 Y8iUvAPH53LbaqKszpdSI/1KePPZ73VnQ5yUHJDg4lpgSWKJi6Jq9gwT8XgCy0lpll
-	 VbwEnwbzSohkWJ/ercfh1taYKwtu1dWY/bkoAKAwiOMuy1TRvIxHOpC762Z8cMNa6R
-	 c+G9PKqlHG5SA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EEDFCC6B38;
-	Fri, 16 Oct 2026 13:08:06 +0000 (UTC)
-From: Vincent Choiniere via B4 Relay <devnull+choiniere.vincent.hydroquebec.com@kernel.org>
-Date: Fri, 16 Oct 2026 09:08:06 -0400
-Subject: [PATCH net] ice: fix Tx hang dump using stale tx_buf[0].skb
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="LfyPZvVc"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D69D120191D;
+	Fri, 16 Oct 2026 15:08:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792156121;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UsuiChFjwGDyB7+l/bqzFLHTc+3rZpy+97B9UadVP7Q=;
+	b=LfyPZvVcAs1BCR3gNa9d6PcD92MABr4FESSyrdgDMs9Z2Hq2XIM3Ntknx/HVTd1B0Jf4T7
+	1P/nn+Hk1AAwApLchIN/5/DGkxW6ugGp6S99pFj/Nbp03+Xgvxb4kii9KCrEfanGRFnmzT
+	aIIyxRc6eOhMCl9Hh4KFPOxMY6FI2rgFYYlGAj5mkYQVw2q9n53mKvrz9KSHgqMPpxETZq
+	yacj+mmW/KDYnjvH7pEeHtjeaO5v1mDf78wQNW3lYogJoZa3sVExsBFtgB7N1GePDfUHaV
+	z/rhb+AiAO8+iqupIfDDDzMSA8zee+4DB8G+tj9cuYfvNPfry5rKKAE1/o/5rA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792156121; a=rsa-sha256;
+	cv=none;
+	b=Xy2eHUNIAkXkSLuzV5NkySBWfS3gRrMre+MsoqE1bUDCMUTHLXkdcv0KRDMma38+6aezso
+	qS0rfrlmw6RfIQ08aPC7J+2hgZBfRvAe+j3kJfExZMiskTo32FHnR/lD9v29Dbs0fsN2Jn
+	BNVsr7hcHcoAJ93EsBSJwRSHJ1nWW+UPVZFfKdjiEY3BA5FKjlQ8t/F0C9xQz1qzEHYgqn
+	dJwV4Qa8pQ6YgRao28AcMtZ9BMwyjgshr505Oq6xLsZ7GB6KmJsyFzHdxOnVrilp+ojNjY
+	7BfoNOwIBci5fBHMWOY8S5PL3iUlZEuL0YUXEF6Cv2lLKnCl6ZFB2CWVaG6roQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792156121;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UsuiChFjwGDyB7+l/bqzFLHTc+3rZpy+97B9UadVP7Q=;
+	b=V+mzmuvpQPpmNlKD715SvDkJjEh7QXb3Ks4TmA+WlxNdrcd7UfTGC8HilkSGPWYJIXeQx0
+	Rg/fscWIKPyIthyRCOAC4ZsN02OKgVpiwH7Imx3tVtffAkLB82DPFVEnczCBrmD31hVdec
+	5z7Uzxy6bJz7rRAz1vqGqlwyHOQNKnm5u8AUTzs52rY7J24MD5CwndLfh0Vrt3X9AqujFj
+	0rMzQ8loEnEeiwJrtTFYfSApPNUWG6uClB8gRbrrfyuPPDxsBTxSUdMjCTs7xNTkR8fk69
+	8+gAoayksLTYis/F/6lNG7sjDjFJvMjuDWnBhj0+Odn3FgNdXGA/Mir0nk11pg==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xHhft-006Bjv-2R;
+	Fri, 16 Oct 2026 15:08:41 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 831E65C61DF;
+	Fri, 16 Oct 2026 13:08:41 +0000 (UTC)
+Date: Fri, 16 Oct 2026 15:08:41 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net, 
+	kurt.van.dijck@eia.be
+Subject: Re: [PATCH net-next 08/37] can: bcm: fix filter removal race between
+ release and netns change
+Message-ID: <20261016-sensible-evasive-hippo-c04bdd-mkl@pengutronix.de>
+References: <20261015015336.816543-9-mkl@pengutronix.de>
+ <179211822523.434549.241636889494644724@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-ice-tx-hang-dump-v1-1-3df0f5979a51@hydroquebec.com>
-X-B4-Tracking: v=1; b=H4sIALUh0moC/yWMQQrCMBREr1Jm7YemhiBeRVzYZFq/YCxJWgqld
- zfV5ZvhvQ2ZSZlxbTYkLpr1EyuYUwP/fMSRoqEyurZzpjVO1FPKKscnYX5PQut6y2Av5+BQtSl
- x0PWXvCGy4P4f89y/6MsRw75/AVz2cXJ5AAAA
-X-Change-ID: 20261016-ice-tx-hang-dump-e46b4ed483d6
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- intel-wired-lan@lists.osuosl.org
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Michal Kubiak <michal.kubiak@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- Vincent Choiniere <choiniere.vincent@hydroquebec.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792156085; l=3665;
- i=choiniere.vincent@hydroquebec.com; s=20261016;
- h=from:subject:message-id;
- bh=kt4dx1VrvDe36KXprpuSVG48M5IH9Jew3kkpwsyl//I=;
- b=rpz6gaUYmlu/qQeArQzXjGbdt7hmwbh5F2PXicMHbyd04KAmR7m0AivdHwD8NF8xUWPxaCq66
- vusrlXo13J0B8Xt4KnPmLoDzQSufiqzXYtu2F+evb6a33g6/z8dzX7W
-X-Developer-Key: i=choiniere.vincent@hydroquebec.com; a=ed25519;
- pk=MctQE067DucsZOaNqb+sjY7aQ+urhztuURanagEW3+8=
-X-Endpoint-Received: by B4 Relay for
- choiniere.vincent@hydroquebec.com/20261016 with auth_id=1210
-X-Original-From: Vincent Choiniere <choiniere.vincent@hydroquebec.com>
-Reply-To: choiniere.vincent@hydroquebec.com
-
-From: Vincent Choiniere <choiniere.vincent@hydroquebec.com>
-
-ice_tx_hang_reporter_dump() always reads tx_ring->tx_buf[0].skb,
-regardless of next_to_clean. The Tx cleanup path frees the skb and
-marks the buffer empty without clearing the skb pointer, so slot 0 can
-hold a stale pointer. A NULL check alone does not cover this, and
-devlink_fmsg_dump_skb() can fault on the freed skb.
-
-Read tx_buf[next_to_clean] instead, use its skb only if the buffer type
-is ICE_TX_BUF_SKB, and skip the skb dump otherwise.
-
-Observed on an E810 PF passed through to a KVM guest (Ubuntu 7.0.0-14,
-PREEMPT_RT, local scheduler patch): a delayed queue IRQ led to a Tx
-timeout and a page fault in devlink_fmsg_dump_skb():
-
- BUG: unable to handle page fault for address: 0000000004cd0c11
- Workqueue: ice ice_service_task [ice]
- RIP: devlink_fmsg_dump_skb+0x2d8/0x5d0
- Call Trace:
-  ice_tx_hang_reporter_dump+0x1ce/0x210 [ice]
-  devlink_health_do_dump+0xcc/0x190
-  devlink_health_report+0x1d7/0x260
-  ice_report_tx_hang+0x7d/0xa0 [ice]
-
-With this change and auto_dump enabled, starving a queue IRQ thread
-reproduced the Tx timeout; the dump contained the test packet, no Oops
-occurred and the PF recovered.
-
-Fixes: 2a82874a3b7b ("ice: add Tx hang devlink health reporter")
-Link: https://lore.kernel.org/all/20260327072332.130320-1-aleksandr.loktionov@intel.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Vincent Choiniere <choiniere.vincent@hydroquebec.com>
----
-This complements the NULL check in [1]. With only that check, a non-NULL
-but stale tx_buf[0].skb is still dereferenced by devlink_fmsg_dump_skb().
-I have only reproduced the crash on an Ubuntu 7.0.0-14 kernel with
-PREEMPT_RT and a local scheduler patch, and the skb lifetime against
-concurrent Tx cleanup still needs review. Feedback welcome.
-
-In my case next_to_clean was 0xfc while the reporter read slot 0.
-Upstream v7.0, v7.2 and current net main (191aa4154) all read
-tx_buf[0].skb unconditionally. Before this change, recovery stayed
-stuck until reboot.
-
-[1] https://lore.kernel.org/all/20260327072332.130320-1-aleksandr.loktionov@intel.com/
----
- drivers/net/ethernet/intel/ice/devlink/health.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/devlink/health.c b/drivers/net/ethernet/intel/ice/devlink/health.c
-index 8e9a8a817..059859c36 100644
---- a/drivers/net/ethernet/intel/ice/devlink/health.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/health.c
-@@ -390,12 +390,15 @@ static int ice_tx_hang_reporter_dump(struct devlink_health_reporter *reporter,
- 				     struct netlink_ext_ack *extack)
- {
- 	struct ice_tx_hang_event *event = priv_ctx;
--	struct sk_buff *skb;
-+	struct sk_buff *skb = NULL;
-+	struct ice_tx_buf *tx_buf;
- 
- 	if (!event)
- 		return 0;
- 
--	skb = event->tx_ring->tx_buf->skb;
-+	tx_buf = &event->tx_ring->tx_buf[event->next_to_clean];
-+	if (tx_buf->type == ICE_TX_BUF_SKB)
-+		skb = tx_buf->skb;
- 	devlink_fmsg_obj_nest_start(fmsg);
- 	ICE_DEVLINK_FMSG_PUT_FIELD(fmsg, event, head);
- 	ICE_DEVLINK_FMSG_PUT_FIELD(fmsg, event, intr);
-@@ -409,7 +412,8 @@ static int ice_tx_hang_reporter_dump(struct devlink_health_reporter *reporter,
- 	ice_fmsg_put_ptr(fmsg, "skb-ptr", skb);
- 	devlink_fmsg_binary_pair_put(fmsg, "desc", event->tx_ring->desc,
- 				     event->tx_ring->count * sizeof(struct ice_tx_desc));
--	devlink_fmsg_dump_skb(fmsg, skb);
-+	if (skb)
-+		devlink_fmsg_dump_skb(fmsg, skb);
- 	devlink_fmsg_obj_nest_end(fmsg);
- 
- 	return 0;
-
----
-base-commit: 191aa41548b2d2b6af534a6d5cf84a552435c74c
-change-id: 20261016-ice-tx-hang-dump-e46b4ed483d6
-
-Best regards,
---  
-Vincent Choiniere <choiniere.vincent@hydroquebec.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lj43sgrs57t64oxo"
+Content-Disposition: inline
+In-Reply-To: <179211822523.434549.241636889494644724@kernel.org>
 
 
+--lj43sgrs57t64oxo
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next 08/37] can: bcm: fix filter removal race between
+ release and netns change
+MIME-Version: 1.0
+
+On 16.10.2026 02:37:05, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [Medium] The commit moves remove_proc_entry() ahead of rtnl_lock() so
+>   that procfs readers cannot stall RTNL from close().
+> - [Medium] bcm_release() now holds the global rtnl_mutex across the whole
+>   rx_ops unregistration loop (rtnl_lock() at net/can/bcm.c:1951,=E2=80=A6
+> - [Low] Stale comment in bcm_release().
+
+Valid issues, should be fixed.
+
+pw-bot: cr
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--lj43sgrs57t64oxo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatIh1wAKCRDMOmT6rpmt
+0gjzAP0cV/5V2h+5w1oyBAgtVl97rchjVhFfsdOT2DsNd9Uf+AEAmQ25kdaCl6lE
+2nkIWE4m7hio4p4ePDN0MxuuZSd/HQ0=
+=D597
+-----END PGP SIGNATURE-----
+
+--lj43sgrs57t64oxo--
