@@ -1,103 +1,127 @@
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B02438E8BB;
-	Fri, 16 Oct 2026 06:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE4837F8DD
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 07:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792133985; cv=none; b=J9k7vgxVMb4Qw7+CdYLAxIn8Kn9b+2Mhq4X+d/R/r81uab4+/BbasEt6yVHSuu/v0poT3sec2xKKEWiem1pcnF5MwGUTy4TjCKVbG8z89IijFuAPoa51BTZ0Xr+6i4Xe3JolX4KMfWRSozRaLALEDwODJTNyTz+YeLAut3TnhuU=
+	t=1792134447; cv=none; b=qJjOUEtNXUCkJMvFb4IhXCdAPs+0B6G3LrC3uMA3uI5AsTYzxM2D9lGGP+L1ohVUOJmPWmmkQKWiToouu9aQfoa9oeaEo5RbnLeR1zGzClAP8WZJkIaxs7lU8n7QJKTH6YK2NplXwGvPtCXtcoDIFPEKYU9k+n1lejHYKPLflWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792133985; c=relaxed/simple;
-	bh=oiKeBWTIwWhSBuTaKT2Q4n7DD1q3cThWeYYSAxkcU1Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SRbjyWXPAO36POgIpYMU61tnqmddFth2pJ2zLXQpL6WH7kpCo58Uc11I1sWB+8BFXQOFHAAFAdZTlVlMNTh7caafs4coG4D+QugaNVSSZb5hkKq1hxwrARfO75v3+hCr9VrIj8jAetkuKCh540i94mEwca4a7hHcG2oyHEeHMpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4j5b8f1Z0Vz1T4Fq;
-	Fri, 16 Oct 2026 14:47:14 +0800 (CST)
-Received: from kwepemf100018.china.huawei.com (unknown [7.202.181.17])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5266B40579;
-	Fri, 16 Oct 2026 14:59:38 +0800 (CST)
-Received: from [10.67.120.168] (10.67.120.168) by
- kwepemf100018.china.huawei.com (7.202.181.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 16 Oct 2026 14:59:36 +0800
-Message-ID: <1ce84c99-7f55-a146-7333-4ad791434097@hisilicon.com>
-Date: Fri, 16 Oct 2026 14:59:35 +0800
+	s=arc-20240116; t=1792134447; c=relaxed/simple;
+	bh=K39YGSxjfWyyl+7+GdlZVK8ivofGvEAdf1YPQNm6KVU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=V/n0xHxsu1PD1IMF0qmR3wKVvdpRbFu9hFs7A0u7yJeF4hMDLTaVlnBUnBHRLvWjgP0a4GKWdZDzi1+OQzXkzSkV+gGNh9xBlnINttS52VA9dPG+tv9ZjLxrjS9K3/3UF0VvWyy25ZgLnJmC4DN9NIR8/ksKHub2+x3QIwBOHT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IvwJRR4A; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IvwJRR4A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=v9
+	3WurFOh37Cc6a05HYADFjHfrVWwrve8/drkZSTFDI=; b=IvwJRR4AXjWj7jMonj
+	aMiYIrfezCbDwtiOCYJBbHnLS5ZMVwzzZ6g2oru1B9HiPRaXExcfpNcw/56b5MST
+	9XoprVdm0opyLW6w3Ujm3vssutp5AEeqpjxqxA7HqV5Ua+kOMGXqduNsWFH88hGh
+	62+E/MnLyRSJCf1pmQCJzYHm0=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnr7wPzdFqoTHrAQ--.20287S2;
+	Fri, 16 Oct 2026 15:06:57 +0800 (CST)
+From: Rongguang Wei <clementwei90@163.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	Rongguang Wei <weirongguang@kylinos.cn>
+Subject: [PATCH net v6 0/2] tun: fix re-attaching the socket filter
+Date: Fri, 16 Oct 2026 15:06:52 +0800
+Message-Id: <20261016070654.170932-1-clementwei90@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH net-next v1 0/4] net/mlx5: Don't free CQs whose destroy
- failed
-Content-Language: en-US
-To: Yuho Choi <oss.patchbox@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark
- Bloch <mbloch@nvidia.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ariel Levkovich
-	<lariel@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>, Alex Vesker
-	<valex@nvidia.com>, Yevgeny Kliteynik <kliteyn@nvidia.com>, Itamar Gozlan
-	<igozlan@nvidia.com>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20261016045849.813696-6-oss.patchbox@gmail.com>
-From: Junxian Huang <huangjunxian6@hisilicon.com>
-In-Reply-To: <20261016045849.813696-6-oss.patchbox@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemf100018.china.huawei.com (7.202.181.17)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnr7wPzdFqoTHrAQ--.20287S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAF43Xr1kuw1rCF15ur1fXrb_yoW5ury8pa
+	y5W345Gw4kW347u3Za9ayxZ34Yyws7GFW3Zwn7G34rZa15Wryjv3ySg34YvF1qyrZ2gw1j
+	yFn0vwnIg3WDJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07joGQDUUUUU=
+X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-RGG8WrRzRFioQAA3-
 
-Hi Yuho,
+From: Rongguang Wei <weirongguang@kylinos.cn>
 
-On 2026/10/16 12:57, Yuho Choi wrote:
-> mlx5_core_destroy_cq() can fail, and when it does the CQ may still
-> exist in firmware with access to its buffer and doorbell record. It
-> also returns early in that case, without waiting for EQ handlers that
-> may already hold a reference to the CQ. The four helpers in this series
-> ignore that error and free the CQ buffer anyway, while their teardown
-> paths also free the object that embeds the struct mlx5_core_cq.
-> 
-> Keep the buffer and the object that embeds the CQ when DESTROY_CQ
+This is v6 of the series that fixes attaching a queue to a TAP device which
+re-installs the socket filter of a persistent device.
 
-Are the buffer and object freed somewhere else later? Or are they
-leaked forever?
+Patch 1 keeps a copy of the program in the kernel when it is configured,
+instead of reading tun->fprog from user space again on every later attach,
+and fixes the inverted error check in tun_attach(). The two changes are
+one patch on purpose: with only the kernel copy every re-attach returns 0
+without publishing the queue, and with only the check fixed a re-attach
+that used to succeed without a filter starts to fail. IFF_NOFILTER keeps
+working and is no longer needed as a workaround.
 
-Thanks,
-Junxian
+Patch 2 adds selftests: it re-attaches a queue after the buffer the program
+was copied from was made unreadable, attaches a second queue from a fresh
+socket to check that the filter is rebuilt from the kernel copy, and checks
+that a rejected TUNATTACHFILTER keeps the saved program, plus the ways to
+attach a queue without a filter.
 
-> fails, as the regular mlx5_ib CQ destroy path does. The HWS send ring
-> CQs are polled and never armed, so the HWS patch keeps only their
-> buffer rather than passing the error up through the queue open and
-> close paths.
-> 
-> The issues were found with a static analysis tool from ongoing, not yet
-> published research, and confirmed by code inspection. None of them was
-> reproduced, so this targets net-next; I can resend for net if you
-> prefer.
-> 
-> Compile-tested only (x86_64 defconfig with MLX5_CORE_EN, MLX5_ESWITCH,
-> MLX5_SW_STEERING and MLX5_HW_STEERING, W=1).
-> 
-> Yuho Choi (4):
->   net/mlx5: Don't free the ASO CQ if destroying it fails
->   net/mlx5: Don't free the WC test CQ if destroying it fails
->   net/mlx5: DR, Don't free the send ring CQ if destroying it fails
->   net/mlx5: HWS, Don't free the send ring CQ buffer if destroying the CQ
->     fails
-> 
->  .../net/ethernet/mellanox/mlx5/core/lib/aso.c  | 18 +++++++++++++-----
->  .../mellanox/mlx5/core/steering/hws/send.c     |  4 +++-
->  .../mellanox/mlx5/core/steering/sws/dr_send.c  |  4 +++-
->  drivers/net/ethernet/mellanox/mlx5/core/wc.c   | 17 ++++++++++++-----
->  4 files changed, 31 insertions(+), 12 deletions(-)
-> 
-> 
-> base-commit: 2f2f7eeef8b0a1a9b9ca998231419873ccae8d4e
+Thanks to Willem de Bruijn for the reviews, and to the CI reviews for
+the comments they raised.
+
+Rongguang Wei (2):
+  tun: keep a kernel copy of the socket filter program
+  selftests: net: add TAP socket filter attach tests
+
+---
+v6:
+  - add description for return value of sk_attach_filter_kern and No code
+    change is involved.
+v5:
+  - add kernel-doc for sk_attach_filter_kern() describing what the missing
+    original program means for SO_GET_FILTER and sock_diag
+  - mention in the message that a rejected header now leaves the installed
+    filter alone
+  - fix the wording of the mprotect() comment and note what the IFF_NOFILTER
+    and TUNGETFILTER checks in the re-attach test
+  - https://lore.kernel.org/netdev/20261012021113.45939-1-clementwei90@163.com/
+v4:
+  - merge the kernel copy and the error check into one patch, so that no
+    step of the series turns a re-attach into a silent no-op or into a new
+    failure
+  - charge the kernel copy to the caller's memory cgroup
+  - selftests: check that the queue is attached again, and attach a new
+    queue to see that the filter was installed from the kernel copy
+  - https://lore.kernel.org/netdev/20261003063859.136895-1-clementwei90@163.com/
+v3:
+  - reorder: the kernel copy of the program comes before the corrected
+    error check
+  - add sk_attach_filter_kern() in the patch that first uses it
+  - address the review of the selftests
+  - https://lore.kernel.org/netdev/20260930080746.135017-1-clementwei90@163.com/
+v2:
+  - roll back the filter attach when a later step of tun_attach() fails
+  - keep a copy of the program in the kernel, so that a later attach does
+    not depend on the address space of the process that set the filter
+  - add selftests for the re-attach and for a rejected TUNATTACHFILTER
+  - https://lore.kernel.org/netdev/20260929093712.131096-1-clementwei90@163.com/
+v1:
+  - https://lore.kernel.org/netdev/20260923025653.59348-1-clementwei90@163.com/
+---
+ drivers/net/tun.c                 |  56 ++++++++-
+ include/linux/filter.h            |   1 +
+ net/core/filter.c                 |  41 +++++++
+ tools/testing/selftests/net/tun.c | 197 ++++++++++++++++++++++++++++++
+ 4 files changed, 290 insertions(+), 5 deletions(-)
+
+base-commit: 0fcb05b72344f40806cbe810de8872f1698bf053
+-- 
+2.25.1
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
+
