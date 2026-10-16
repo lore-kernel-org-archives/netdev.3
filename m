@@ -1,108 +1,112 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp10.goneo.de (smtp10.goneo.de [85.220.189.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FF47ECCB;
-	Fri, 16 Oct 2026 15:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EBE257845;
+	Fri, 16 Oct 2026 15:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.189.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792165705; cv=none; b=NL72o45K0e1WBmh8QT/e44QzXxJZnOnJLcfOBRIs5CNHVuCtEDo8tthQoXjDviDKSisDjmROwvZur4hcSiBYZEmRPMXrY1v7oVCh3VzhDMlyPAUCasaKXvnE6bLAktXmtx7aqM2A0/RyKyoVnUh97b8Coo+Czw9RDiWgLXml+Ec=
+	t=1792165837; cv=none; b=KXQy9KKWBnFkzeF3vpiUAvEIcD6zpLt1iipnGSSZ5ZR9Bc6Dm7qI3XPGpXFzoYASqx7Hl8Zn3rOA1N1RHZaw1GHIUdJkHwD0Y4Ifq/i6F2OnKsVX3UvBPMaBoTFeENwEwDWFnR7CnNR8szYNyQ9z6A7vBHfz8ccNx4sKKav1NFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792165705; c=relaxed/simple;
-	bh=MWQolsQMP/R0xFMm25F4SiAZYHr1og2dwTLxkuZYUYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hc3yqKZknsRHIdpF4pdDNHcP6Bch7TYBav7mSJ3Q6jXMVN81tmpwvGL59yxf/bQWgKU9dHC+Z/ibq5KOG9jYgu4EC2W/9yLRJ9J9xSM/gC5nnLgM75JtT3oGSHpbtEz2gGqmbrGcYzKBoW5pKA5wvS57g2unRBvb4ooW/QZ7gqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2nnl7trS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1792165837; c=relaxed/simple;
+	bh=EQRmU6Sr5j4REVMWye23mnyXQcCCUDct+ihHbCHqm80=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c+aDFcXSU+vX/ATQZ6I9zd/8RPiGbPEU1z4itodS7CtzvDxoWMQJSLelGhcruLUPYKGwX8Ka+EEbDLamZJHgAymCTozGz29dLrBQZcH5eF8LfSK3Z4kOzAoe2NwNFmxB8A7x51RAP30Q784PR7Xu6XURsMj1ip0naIsDCzJ8mN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=F+c7Ty5M; arc=none smtp.client-ip=85.220.189.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2nnl7trS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QunjdoyS2VP8sVHK+P0nXc1zdB5/E8xy4McPChK5nU8=; b=2nnl7trSgRrRUbAJxW1SdJLoWN
-	K04uHr8nJfWn8jwwmC7nWzH0RF3e2neTXAB/KvB6LoE+YfjktMLA2/NREFk2DVUV6Ye601vessMks
-	ui1BXN10jjodbJUb58fqOwUYCyRlAoMiv1zQGtaQ85Jh1M8OSm0j9ztH9exwJI3proO0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xHkAF-00BAwL-HC; Fri, 16 Oct 2026 17:48:11 +0200
-Date: Fri, 16 Oct 2026 17:48:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Biao Huang <biao.huang@mediatek.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Eric Dumazet <edumazet@kernel.org>, kernel@collabora.com,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next v3 7/9] net: stmmac: mediatek: use TX clock
- phase shift in RGMII mode with 1Gbps speed
-Message-ID: <1f347450-a68b-44e2-8b57-53204eb61e55@lunn.ch>
-References: <20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35@collabora.com>
- <20261016-dwmac-mediatek-mt8189-v3-7-25daf2bbcf35@collabora.com>
- <eabe305d-bb0f-4927-919a-21b025ec145d@bootlin.com>
+	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="F+c7Ty5M"
+Received: from hub1.goneo.de (hub1.goneo.de [85.220.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by smtp10.goneo.de (Postfix) with ESMTPS id 811F32404D2;
+	Fri, 16 Oct 2026 17:50:30 +0200 (CEST)
+Received: from hub1.goneo.de (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by hub1.goneo.de (Postfix) with ESMTPS id 46D052407E1;
+	Fri, 16 Oct 2026 17:50:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
+	t=1792165828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d8YCP5jGBgTmgTQAyniXagzF04gSlvO3R6wmBiiY5pM=;
+	b=F+c7Ty5MHDd0atKwWzhDfKWcJntgAtNzQsV77d0FIqrMPpMEUlNoPio5SEyFjS5eG6BwL3
+	hgVggcRgjThz3bFX5nV0bRGYNIYYKOyq2kZ0B2+8jvzWULCzIGRMx1PdIEPYUKsVEp1IR/
+	ZJ7vgR6uAgNl0dNDhjw5Bzrj2XrpbkkfQzOfmjw90+lbixQzPLUxtP9jp5Ju+MqaEzKAXp
+	i2U3kCPtyjbDJmv3AkhdeuONzShZLu3TRJ9Ui9HO+bszoB/LOa53oXNG40wFF0sRq4DzYP
+	fugPIrPWNadO3CLvWlGgyXaTDDpMLY3d5J5RwH7bzB7gM0Rc2E2JGvpDwElZLg==
+Received: from [10.35.35.107] (unknown [195.37.88.189])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hub1.goneo.de (Postfix) with ESMTPSA id 7066E2404EF;
+	Fri, 16 Oct 2026 17:50:25 +0200 (CEST)
+Message-ID: <892399f9-0fcf-47e6-b07e-434410afc694@tk154.de>
+Date: Fri, 16 Oct 2026 17:50:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eabe305d-bb0f-4927-919a-21b025ec145d@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/2] net: ethernet: qualcomm: ppe: Fix queue access
+ and port validation
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, linux-kernel@vger.kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, quic_leiwei@quicinc.com,
+ quic_suruchia@quicinc.com, quic_pavir@quicinc.com,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+References: <20261016150140.929729-1-mail@tk154.de>
+ <179216336717.408196.3512649985663407159@kernel.org>
+Content-Language: en-US, de-DE
+From: Til Kaiser <mail@tk154.de>
+In-Reply-To: <179216336717.408196.3512649985663407159@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-UID: 88f7fa
+X-Rspamd-UID: 6224de
 
-> > +static void mt8195_fix_mac_speed(void *priv, phy_interface_t interface,
-> > +				 int speed, unsigned int mode)
-> > +{
-> > +	struct mediatek_dwmac_plat_data *priv_plat = priv;
-> > +	const struct mediatek_dwmac_variant *variant;
-> > +	struct mac_delay_struct *mac_delay;
-> > +	u32 tx_delay_stage_val, reg_offset;
-> > +	u32 reg_val = 0;
-> > +
-> > +	if (!priv_plat)
-> > +		return;
-> > +
-> > +	mac_delay = &priv_plat->mac_delay;
-> > +	variant = priv_plat->variant;
-> > +
-> > +	if (!mac_delay->tx_delay ||
-> > +	    (interface != PHY_INTERFACE_MODE_RGMII &&
-> > +	     interface != PHY_INTERFACE_MODE_RGMII_RXID))
-> > +		return;
+On 10/16/26 5:09 PM, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
 > 
-> I don't think this is right. PHY_INTERFACE_MODE_RGMII in that context comes
-> from the devicetree, and therefore means "RGMII delays are implemented through
-> traces on the PCB", the MAC isn't supposed to insert any. RXID means "TX delays
-> are on PCB, RX delays are internal).
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
 > 
-> I'd expect the condition here to be:
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
 > 
-> > +	if (!mac_delay->tx_delay ||
-> > +	    (interface != PHY_INTERFACE_MODE_RGMII_ID &&
-> > +	     interface != PHY_INTERFACE_MODE_RGMII_TXID))
-> > +		return;
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-I would maybe base it on the value of tx-internal-delay-ps. If it is
-2000, then add the delay here. But that has implications for the
-interface mode value passed to the PHY.
+Hi,
 
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
+The multicast indexing issue was reported by Sashiko. The oversized
+bulk access was found during follow-up code inspection. These issues
+were identified through review, rather than an observed hardware
+failure. The register layout was checked against Qualcomm’s QSDK.
 
-We could keep mt8195 KISS, and reject all these properties, and let
-the PHY add the delays.
+The binding issue was reproduced with compiled example DTBs and
+dt-validate. I tested the fixes on the Ubiquiti UniFi 7 Pro XGS
+access point (IPQ5332).
 
-	Andrew
+Thanks,
+Til
