@@ -1,105 +1,80 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4DB46C827
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB39457E5F;
+	Fri, 16 Oct 2026 12:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792153253; cv=none; b=gwj1A46LKlIt9sn4mWps51HqNEO8UJh2S3dQkg1EHe/Ej/6JSwsLWWamOTLlO1U5kZ4w8cmqq5q0s9v34jS3fIvBaJ/j4duez3VcHSKWjPsvH+Rjr00iyB4aDhjxS0l2BDua71UmYA2N2bI63W8mNRLK1gGYg69u4AvUaLkXZYc=
+	t=1792153625; cv=none; b=ZhghMugK9l4z77HStKcobD1DnSnLXiWM3L1m5XUDz8n0evLwY58eSqr9ExP8l87feXgd3bIUZaanT+2b8kj0B6n0bW/KXza2cjHp7kBEZBO0bH0YuuO26OjCw0kYQMBEd8ENjf1CVZOiyLlNqLr8q2CzR95rHNry/lV85vaZTZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792153253; c=relaxed/simple;
-	bh=Xt7Ar0Z9qghEr4doSJBVv/+mwlE2B0uXGNimXF75FwI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=P0GtRx5R2EgLNTtQlClE3i95/A0d5PzSyXcZq4SGcrxREzI1Njqu4mpHVTo6j9KaVxFfmS1QGuCCMWkcmWA7axarETmqQE+k0SWUxnqYMt21NwMOtIK0/GDkf+GobnNH3+uTSVwqIarjlEJP6l/Cfdz5AaiAnKNELjEWl3CynrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=V3QADrNV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hF7zAdEI; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1792153625; c=relaxed/simple;
+	bh=MmGvErraHmGXymUgElckL0Yil5M9Kitm7TIQpXtyBTU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LqWTTGXn6ZbCYfCTXjzRjmYYJChEzC4Q6mu2PZyHIq0NRN8a1wpsRjvo9WxUzRXfH/2w3wWPpi6EcJZ8IdoG/4oR7JkFKy4yYxV3ZWrzhXN+Wuy0x8+ZHrJ1GFrlZ7CP024C+kdlm90sqafTyZ7sLLMX5VS4x7efyFSaRpU4Jh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Wnp1Q22P; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="V3QADrNV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hF7zAdEI"
-From: Kurt Kanzenbach <kurt@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1792153250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xt7Ar0Z9qghEr4doSJBVv/+mwlE2B0uXGNimXF75FwI=;
-	b=V3QADrNVdGKuNfI8sJ4taCpBUAnXU/XUgcMIKDOpiekZv/Pn5mLqKnh8PVyufg7ZF3cmZt
-	THekaMdWQz1Rppgm6Wtgwr7+VmnKBboObqrDYCj+Ks5ts3uuu20RBV0z5c19Ci4SuSf5Bt
-	mCl2D38J8LBbAubuQNAeySEYb1uT2THOGazeewFjFa+QrpDR5o2vObm3T3O76PhKYtlUfM
-	E8XEhUuGnbO7V3O6h7a49TJsIRemYQy51tW4egGRBGFIsFqNSj8Ncijm+tH5xuWu/2Jrrj
-	wnr1rpAFE5V/uDXRvtJpLCwUodxTXBIJP6OFJX19QdE+Bxgku5zfxMKA4RYrpw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1792153250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xt7Ar0Z9qghEr4doSJBVv/+mwlE2B0uXGNimXF75FwI=;
-	b=hF7zAdEIb0kMRJV4D65LC37K/cC8jK0M2FFNEUpF3arRxyGMO5LbRuQEsPFnioitp703Sn
-	tcn6m9Ff064uJlBg==
-To: Carlos Fangmeier <carlos.fangmeier@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH] net: stmmac: prevent kernel panic during XDP program
- and XSK pool transitions
-In-Reply-To: <20261014222628.3206770-1-carlos.fangmeier@gmail.com>
-References: <20260605-main-v1-1-aed15b1cf1af@gmail.com>
- <20261014222628.3206770-1-carlos.fangmeier@gmail.com>
-Date: Fri, 16 Oct 2026 14:20:48 +0200
-Message-ID: <87bj8tn8f3.fsf@jax.kurt.home>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Wnp1Q22P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792153624; x=1823689624;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MmGvErraHmGXymUgElckL0Yil5M9Kitm7TIQpXtyBTU=;
+  b=Wnp1Q22Pws3WaLj8UsXckRdR7aVoCa5Ywuwv0OdoQm6Ac07BzBljOmlq
+   eBOZNREQB4+xsCbouzavEkjRObp4436CRrJjqkBRihdXgfpICik/DqR8y
+   ++HawzcReQ1YwEaz4j3QSw5oOlF0XR5K+S9KEwlMAk51wsKap1YgmkmsY
+   fkosLpnYhZOhk+iW8tI2D4x6P2DnLgOmWvjJxiehNN8Bsy2EpClXucCi8
+   FxMb5iNHZ3dBzyM7+yWeC7j3QhATNq8I0NZlu/g7p8NSWw41tnQPh8OyA
+   +9gitf+IyB658CEGanuEr+HMMxjNwJR8kh2uL6sHTgLjhqts7SzbrnKdV
+   w==;
+X-CSE-ConnectionGUID: I0R7QpXoSLeudXur/QpfVA==
+X-CSE-MsgGUID: NPZwkujlShm4Mhi8gM3t+w==
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="296564488"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2026 05:27:03 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 16 Oct 2026 05:27:03 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 16 Oct 2026 05:27:00 -0700
+Date: Fri, 16 Oct 2026 14:26:59 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Jijie Shao <shaojijie@huawei.com>
+CC: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <shenjian15@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<yangshuaisong@h-partners.com>, <ningwei15@huawei.com>,
+	<shiyongbang@huawei.com>, <fengzheng6@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: hibmcge: set netdev_ops before hbg_init() to
+ fix NULL pointer dereference
+Message-ID: <20261016122659.3nyou6kycfu3m74x@DEN-DL-M70577>
+References: <20261016110421.2288670-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261016110421.2288670-1-shaojijie@huawei.com>
 
---=-=-=
-Content-Type: text/plain
+> The driver assigns netdev_ops after hbg_init(), but hbg_init() calls
+> hbg_mdio_init() -> hbg_phy_connect() -> phy_connect_direct() ->
+> phy_attach_direct() -> phy_link_topo_add_phy(), which invokes
+> netdev_need_ops_lock(). With CONFIG_NET_SHAPER enabled, this function
+> dereferences dev->netdev_ops->net_shaper_ops. Since netdev_ops is still
+> NULL at this point, a NULL pointer dereference occurs.
+> 
+> Move the netdev_ops assignment before hbg_init() so that
+> netdev_need_ops_lock() can safely access netdev_ops during PHY
+> attachment.
 
-Hey Carlos,
-
-On Wed Oct 14 2026, Carlos Fangmeier wrote:
-> On Tue, Jun 10 2026, Jakub Kicinski wrote:
->> This still looks racy. Please look at other drivers
->
-> You were right. The intel drivers (ixgbe/i40e) disable the queue pair
-> as a unit around the pool swap rather than gating TX piecemeal, which
-> is the pattern my patch was missing.
->
-> Kurt Kanzenbach's series "net: stmmac: Fix XSK crashes on stm32mp2"
-> [1] takes that approach for the XSK pool enable/disable path and is
-> further along in review, so I'll drop this patch in favour of it.
->
-> [1] https://lore.kernel.org/netdev/20261013-stmmac_xsk_crashes-v3-0-50fca7790af2@linutronix.de/
->
-
-Well, looking at the Sashiko reports, it needs some work though. I'll
-put you on Cc for the next iteration.
-
-Thanks,
-Kurt
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmrSFqATHGt1cnRAbGlu
-dXRyb25peC5kZQAKCRDBk9HyqkZzguCVEACLB7jOw+qZLfQSYOAtNqEc29oYtngT
-l1rUQ+qQJ1DeG2b8+amNpn9NJiun5nuxQh+wwQcZP6JkzxMIaKDH8BoVwWRyufbj
-GPyBHtBlwAo2X01owNOeTsBXaLatuPo7NK41YBXCAW8nm/TXxaqR9geHeJUmd2KR
-yi645Hjd1Rl4B9AQ70XtdthLdmzL6oYkhVac8Vq6s/cjT1D4eSwBG4eUqUVbBhjA
-IDQmdmsy9alMkt2jfBDCTDEifa6OyrYLz14tOFhrhHQDVb6cT76Ijgrvu7jSc0sP
-8rpj9e58getO+a5TS3bZNDPTMhm+gKCz3fqplNmkW4lbrVI4X3Ea65Bw/t2kAXtZ
-gBgBEofRffZ0ASVpfrXWfPxZCYJZyKjLruNW2CmyyNGG1BTw3Gmm95Nt03Vlpz3K
-SCkyTbDHXuo2GKcM2ZWm4fv67vbYKkDG9SWI35F6PjyIptyW/fuokF8t/uGGfQBz
-h84bZ0DJ5G7WW3+UcIHCVKHHaixrEAn/660FY5oHhOtVasVinNupd1Dj7fmjp+/8
-y3+qxnZZTMudzLAGmroNt2J52jOB2dz6uvLAaFqHNhvgXrXpIHxL6VZqgkfXD3V/
-LJ60E7R8Yh8WUrhB710jXBr2vGtDo14p+L91y3N0VWt3/6qR8cBNd9CJUM9YzJ9g
-dT1uy+Enk8gQrQ==
-=SP8V
------END PGP SIGNATURE-----
---=-=-=--
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
