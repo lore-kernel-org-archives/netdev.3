@@ -1,167 +1,163 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF244199E89
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 04:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792125408; cv=pass; b=AP5cvSEmpD8T2YKvGwR00ZJvEY0kKUy2we+SPeX5iVKHXX/2qzoSpfB5UuWQ0ZAgKfYGv18FY7J94xmCYMg1KNPo1c9Kias0VmWrOCzhJsb0zG6aKtLmqS5sOH9NnGMMXeL7jJQ7ZNvxIw1+3EDBbVdclSUPnrX77hPHTX+kuK8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792125408; c=relaxed/simple;
-	bh=P+x8kRtOLy4oSQMU2h0DRz2Z99Ee7PlxjSH6SaCd3ho=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WdWDyKEk/BcdGKcU9ODEY2Swj3tS2cBJi0rK7IJbcqO0vyx8B2abGECy72jEra7YaIn2WkhMzObOct65oCzpH6XnbSMDn58FkdQcThPRjl79S8dhHy7YSMTHUe3B+QKEvIXibIzjMnGCrf4HpA/LzWYw1zr899GjJYyXfGhxd0o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com; spf=pass smtp.mailfrom=jclark.com; dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b=t+JTU6AY; arc=pass smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02CC364933;
+	Fri, 16 Oct 2026 04:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792126313; cv=none; b=p07T6EJY8/53qr75ZD9N0pKcA0xWBFzxBB/5DQMnQJpTE1uXDT1DJgjPku/swSHGsPTeWm6hqOYaQwwdK5Z2suoJ6SwItUDkcyIgqYi/nYbJCDdYX4PHMHHYlwRoNsSSZfQrT+B50JuamZzZhsHs5zW+ItruyeJyxRgA8YO4sn4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792126313; c=relaxed/simple;
+	bh=YdxYgV0cyICXIRBGQmu2hwnZbzsJyfTCaAgkpvzARew=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=L03xHD7gVaWmrcclDpAPc1+zLofYG3MrkunRXdmfm7DySsJzgDP3Zt9W8sHZoSxyxJy07kSmWui4OcOOABsMr7TAZyuzESWG4ydF9fdEcCgKS7z9YW9xQcl3WyTQDSCYMDjj2Q2Thf+9oOENysPlvWsd5wotrux3CDfJrL0n+3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOZSFC/T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b="t+JTU6AY"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-9179bfa9e9cso96554666d6.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 21:36:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792125405; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RgoW4lpce5DUrlqUToXleEqQzGHZMC0c0fRGSrvPQeHPPDECpGYOk9lyUO0V+56cSP
-         VPLoIEGlLxQ62H7FMAj0UZt89bbgzENAelD5+3w6h1jPsvnT6LMtzTBH9bjvK2Yir8ck
-         SpHr5lMsttwvv1E+Z/nnLvRDsM9AHazeWsD58hNBDzgy/EEOE+ILlAoDkcdhOkwlt6LP
-         1lCbeeZFvdXvn4m/PUlGFfyRV6hvkZsVFmDOGqtrJSqBCoXVhV+F4cQg53YHW5fmEsUW
-         txg2PGvlwwXSbmGter0m8y0915C4KtlxJD9z7e0RLaDqsxKT0rPxUwfj4LYJ7ubcWzTR
-         vAUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gHxN4BYf/potofF65wZfHFE1Jsf+16i1RZHL7zoXIPg=;
-        fh=bTSh5dLIsHXsM7p485GwdY+tfS7wLTHOY3LrgHmeWO0=;
-        b=NI3/Goh1ubHiqUrdUY7+YhmWSJxv+0ix9KkOxD+VU+arvzWEHyfPV+kBCYGTEtnLpX
-         rnlPuwVqGrvMBjjyfc8wsnPqj9Y/bTsokIxwGSbl+KmqH1X7dRxW4M2RQy7CzHNA+fM8
-         ATDAInUdClNsmBpbC182+ot0nmrayb+pjbmwb48+bqcjgF2c8V4amDZ5/WOUVnQVjr4e
-         xJ6r6Nqo1GqNQXJv/trHaxu6p0LW81z6RJfz6ZcdU0wnLLEWfhldkCHa9eyZUc3gGAkq
-         88rXQnfralCVlwij62eE1HYNtY8N/HhP6tl1atsWPRpD9DsQW8kcOb0Inm0yfu0x2fQW
-         SXWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1792125405; x=1792730205; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gHxN4BYf/potofF65wZfHFE1Jsf+16i1RZHL7zoXIPg=;
-        b=t+JTU6AY2h27bMwst4bespXPSm1j/ly4lDhaNgTVJuHhFYo8PegkQuCoGjUXfSOEN5
-         lg3XJK9eRW2KD9FKHQQ5VTpXvu7o4DvpsYjGUn52c/vmSQr6u82SGe3S+JR5SjIuZy2H
-         ualSQnpFR6AYSvuAxjDPuER3Yl6uv24REEIr5dgmU6M6g1nULegw+ZLSdWeXW3Hz67lc
-         x1rbdpgJiWAlNnFHk2Asea6anZjHTSbB/RX2gLhbbCILrzpRSrzf6AKBdgs4eakCYSeg
-         vIzvUES2y69h0mhzmb1WhdLNcJx4IN5Z4sVct0Qt/HOh9kodCKxUiUP8nwC6VYn4Ium+
-         cuHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792125405; x=1792730205;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gHxN4BYf/potofF65wZfHFE1Jsf+16i1RZHL7zoXIPg=;
-        b=LxTmLIX8SwUOnj7uj3tk02ZWX7N9or80QXExR2NDj0TmEfHAiWhH4R4L1SUVlJv2Gz
-         vn+B/ORYLbL9tO1K5D6nBJUnQybMW0TXnDqiH4GAhj/500br6/hGoSXV8HKEew1ywWdb
-         7G+8H67bHHD4ICDLN63ACiSk4VzKfap5m3vQ1yRdrKiKEklWAK7u46vtzUGMkvvsq1sl
-         4jxwJhBrZdvP0II61pBc8rB3K0ehNRbyRbQ5Li+gbwW+y+wBznVY68Xf/pDXErPFKeSS
-         aUgMHV49ZN59P9yN6VFe6W+rgFBh0R9vy2YuUhz9Mv7oFVR5U2G5W1bj6nZ5zwoM7Oce
-         OHmg==
-X-Forwarded-Encrypted: i=1; AKwUvBzulPFOSWDuET1oPPV7kpVOs3oTiTkZmB0REBlZCfO5YQu8vmI5dyE6laYbWBqBYANFdCUZEVw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLJPwsxFB1WOYdZY+iDPmc2nZ+gkfj18jwKStoJynlPhlON6dfo
-	k0BS9lVCzjBHJA2q+B22v8uV+asedRK77OyH8LFXbb0WgCM/4xgEzRuUUvw3z3hfUPF4a2VmzXM
-	WGibHTrMYIb5VwLoYyp0XFCxL9AvdbHGfp9qYRgsR
-X-Gm-Gg: AYBFou1nJYaE8zi4Hw/OIBn8DIdgQA2sIgGcCxz+0lptlozSfJOf3hCqWfJo/SOcAe5
-	1nboZhmZaZLamXVRhvPsNxNGCXFB+dMglbWUfeE8jwMvwpX/PkTXkQ53DBmjDHdAOiq+kx7AVWC
-	QTZTMwoAfMV8asFwo4IWnPiP6UR0QcqXHjzKFLfZ+DvjimPOji4sVNwhJXvjUPqa2yOsgwTvlXx
-	/HnVqtsK2frvvWM/5WSmTZ6Y1k7Wb0H6rQQZJUsOI9RwI+PtjMvELaUHL3SW8f+16MsmHyvUXBD
-	S4RPMAXEqKi9Vg+uGuOB9fBieInLq0PbV5sZSAEw4urDltvcgSR3Ov35DXPlHOhOLLfy/ES4QeU
-	+TuQk2iulWbpMGOn4imoZsh/fkEMzVKlbhvoUi2+5vxMPxn+A3hIlXw==
-X-Received: by 2002:a05:6214:300a:b0:912:517b:40f8 with SMTP id
- 6a1803df08f44-91b55580735mr359965686d6.42.1792125405570; Thu, 15 Oct 2026
- 21:36:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOZSFC/T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D89D1F000C4;
+	Fri, 16 Oct 2026 04:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792126312;
+	bh=mGSLHm+5r2YjDZa9OvTpQNpwlOfK9c7WttCpRckwv6g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NOZSFC/Tf2CsanFYXB5WHiRVu4KtaVvuxq1LA07PMZNZhbBMcLMo2V83DUDjKzoOU
+	 13NLxyI81DDgcubxJqN0CaLIxFPl5l86co7+w23gNyji/6KrByha/A7yRgC2675F61
+	 NI5Vao9uw2I9L5reRMmtt2f7Nh9fA+QzLBjlKtvBrHanYr4BrSLPuJEKnc8t3hHNtr
+	 qjdJJpzP5P45TNg6eV9vnSMc0FvarasA+bZASqnZ3bbiaAl6IkzC+tcmzzFQR6Ijx1
+	 wtfmApVrQVslahtWyELu/+jMRXI715MI/TV56WJiZx8s7m2VA1y3eouhUtNCFsZFJY
+	 9cjC6SF3SYZmQ==
+Message-ID: <6732a24185668fe8b527f7f562dc8453b85ec138.camel@kernel.org>
+Subject: Re: [PATCH v4 1/4] nvmet-tcp: unify sockopt with do_sock_setsockopt
+From: Geliang Tang <geliang@kernel.org>
+To: Christoph Hellwig <hch@lst.de>, Jakub Kicinski <kuba@kernel.org>, Hannes
+ Reinecke <hare@suse.de>, Breno Leitao <leitao@debian.org>, Sagi Grimberg
+ <sagi@grimberg.me>
+Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, Chaitanya
+ Kulkarni <kch@nvidia.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>,  "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Geliang Tang	
+ <tanggeliang@kylinos.cn>, linux-nvme@lists.infradead.org, 
+	netdev@vger.kernel.org, mptcp@lists.linux.dev
+Date: Fri, 16 Oct 2026 12:51:43 +0800
+In-Reply-To: <20260819090439.GB9267@lst.de>
+References: <cover.1786947923.git.tanggeliang@kylinos.cn>
+			 <010e6810cc4c10b30237c964b2bb9dfa7a3c740c.1786947923.git.tanggeliang@kylinos.cn>
+			 <20260819090439.GB9267@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2-10build1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009143506.2507607-1-jjc@jclark.com> <20261009143506.2507607-5-jjc@jclark.com>
- <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com> <CANz3_EamUFhoQJ54g9pxdrxGK9EYxu_KeqRTdAdxWzV15k4_9w@mail.gmail.com>
- <DM5J6J74NCTY.1IDZXHZM276JS@bootlin.com>
-In-Reply-To: <DM5J6J74NCTY.1IDZXHZM276JS@bootlin.com>
-From: James Clark <jjc@jclark.com>
-Date: Fri, 16 Oct 2026 11:36:33 +0700
-X-Gm-Features: AclHuK_ZD4gUu1IbX_yR4EZ6Uk1KbcugUxaSvPnFQkiKQfTclPy8-cgdfudXXBY
-Message-ID: <CANz3_EZ7SZau+xL8CaaNAHMvMia+_t1oVGiA-aksPCDUWkadHg@mail.gmail.com>
-Subject: Re: [PATCH net-next 4/5] net: macb: implement timestamped MDIO writes
-To: =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
-	Nicolai Buchwitz <nb@tipi-net.de>, Russell King <linux@armlinux.org.uk>, 
-	Conor Dooley <conor.dooley@microchip.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Brian Masney <bmasney+clk@redhat.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Jerome Brunet <jbrunet+clk@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 15, 2026 at 10:52=E2=80=AFPM Th=C3=A9o Lebrun <theo.lebrun@boot=
-lin.com> wrote:
->
-> I'm not convinced by the idea of a flag only allowed to RP1. Our caps
-> are usually to restrict what IP revisions can do; here we're talking
-> about a driver implementation detail.
+Hi,
 
-I take your point. I will drop that idea.
+Sorry for the late reply. In another patch "mptcp: sockopt: implement
+IPV6_TCLASS" [1] on the MPTCP mailing list, I implemented the
+__ip6_sock_set_tclass() helper and hoped it would be upstreamed first,
+but it is still pending.
 
-But I wonder if it makes sense to have a cap that says that the delay
-is exactly 63.5 periods as it is on RP1. Without this, it would assume
-the MDC is free-running and so would use bounds of 63.5 to 64.5 MDC
-periods as on unimac.
+Thank you all very much for your review comments, but I was caught in a
+dilemma after receiving different suggestions.
 
-> Sashiko is technically correct. But then the bug is not in your MDIO
-> delay computation, it is in the PCLK/divisor/suspend code. You should
-> be capable of determining the current divisor rate without reading the
-> NCFGR register.
+On Wed, 2026-08-19 at 11:04 +0200, Christoph Hellwig wrote:
+> On Tue, Aug 18, 2026 at 02:03:00PM +0800, Geliang Tang wrote:
+> > From: Geliang Tang <tanggeliang@kylinos.cn>
+> > 
+> > This patch consolidates socket option settings in nvmet-tcp by
+> > utilizing
+> > the generic do_sock_setsockopt() helper for options including
+> > SO_LINGER,
+> > SO_PRIORITY, SO_REUSEADDR, TCP_NODELAY, and IP_TOS. This change
+> > eliminates
+> > the need to export and use specialized helpers for each individual
+> > socket
+> > option.
+> 
+> Hmm.  I see that do_sock_setsockopt is exported, but it really should
+> not be.  It's really just an internal helper exposed for io_uring
+> and no modular code should be using it (never mind the non-GPL
+> export).
 
-OK. In v2 I'll record the MDC rate where macb_mdc_clk_div() chooses
-the divisor and use that instead of reading NCFGR.
+You are right, my current version has several problems:
 
-> >> > +     if (sts) {
-> >> > +             delay_ns =3D macb_mdio_sts_delay(bp);
-> >> > +             local_irq_save(flags);
-> >> > +             ptp_read_system_prets(sts);
-> >> > +             /* macb_writel() is relaxed; order it after the timest=
-amp. */
-> >> > +             mb();
-> >> > +     }
-> >> > +     macb_writel(bp, MAN, cmd);
-> >> > +     if (sts) {
-> >> > +             /* Flush the posted write before taking the upper boun=
-d. */
-> >> > +             macb_readl(bp, NSR);
-> >>
-> >> An unconditional readl for flushing the posted write won't do it.
-> >> MACB is over PCI only on very few platforms. I guess the straightforwa=
-rd
-> >> solution is a POSTED_WRITES flag that is then read from here.
-> >
-> > This is only under sts.  Assuming write_sts becomes RP1 only, then it
-> > is only over PCIe. I am not sure if I have understood what you are
-> > getting at here.
->
-> On any platform but RP1, such a readl() is useless. My remark was that
-> the readl()-for-posted-writes must be made conditional, and I don't
-> think we should make the whole of write_sts conditional.
+1. do_sock_setsockopt() should be exported with EXPORT_SYMBOL_GPL(),
+not EXPORT_SYMBOL().
 
-I may be missing something, but I don't think the read-back is
-specific to PCIe. device-io.rst says that on many platforms and buses
-writes through ioremap() are posted, so the CPU doesn't wait for the
-write to reach the device, and it gives a dummy read as the way to
-wait for it that works on all platforms. On arm64 the mapping is
-Device-nGnRE, where the E means an intermediate point in the fabric
-may acknowledge the write before it reaches the MAC. The unimac patch
-in this series does the same read-back, on an on-chip controller.
+2. The "compat" parameter of do_sock_setsockopt() should be "true"
+instead of "false" to skip BPF cgroup setsockopt programs, matching the
+behavior of the original nvme-tcp code.
 
-James
+3. The helpers should return "void" instead of "int", to preserve the
+original behavior in nvme-tcp where these socket options are set on a
+best-effort basis.
+
+4. Error logging (pr_err) should be inside the helpers to minimize
+changes to nvme-tcp code.
+
+5. The helpers should not be duplicated between host and target, they
+should be consolidated into a shared header, e.g., nvme/common/tcp-
+sockopt.h.
+
+I wonder if we can move forward with this approach once these issues
+are fixed?
+
+> 
+> > A key benefit of this refactoring is that it decouples the socket
+> > option
+> > configuration from the underlying transport protocol. This makes it
+> > easier to extend nvmet-tcp to support other protocols, such as
+> > MPTCP, in
+> > the future, as do_sock_setsockopt() abstracts away protocol-
+> > specific
+> > differences without requiring per-option protocol-specific
+> > wrappers.
+> 
+> We really should have generic helpers in the networking code for this
+> and not duplicate them in driver using socket options.
+
+However, I still need to use do_sock_setsockopt() for a fundamental
+reason: the upcoming NVMe MPTCP support series requires protocol-
+independent socket option handling.
+
+When NVMe creates MPTCP sockets instead of TCP sockets, calling
+protocol-specific helpers like tcp_sock_set_nodelay() or
+ip_sock_set_tos() directly will not work correctly on MPTCP sockets.
+MPTCP needs to set options not only on the MPTCP socket itself but also
+synchronize them to all subflow sockets.
+
+In the previous NVMe MPTCP support implementation [2], I exported
+protocol-specific sockopt helpers separately on the TCP side and MPTCP
+side, then had NVMe switch between them based on the protocol. This is
+not as clean as using do_sock_setsockopt() for protocol-independent
+calls.
+
+For MPTCP, we could use sock_common_setsockopt() which always
+dispatches to the protocol's .setsockopt for all options. However, for
+TCP, this doesn't work correctly for SOL_SOCKET level options
+(SO_LINGER, SO_PRIORITY, SO_REUSEADDR, SO_BINDTODEVICE) which should be
+handled by sock_setsockopt() directly. That's why do_sock_setsockopt()
+is used here - it intelligently chooses between sock_setsockopt() for
+SOL_SOCKET options and sock->ops->setsockopt() for protocol-specific
+options, making it work correctly for both TCP and MPTCP without
+requiring nvme-tcp to know which protocol it is dealing with. This is
+the key to enabling NVMe MPTCP support without adding MPTCP-specific
+exports or protocol dispatch logic in nvme-tcp. A more detailed
+discussion can be found in [3].
+
+I would appreciate any further suggestions you may have.
+
+Thanks,
+-Geliang
+
+[1]
+https://patchwork.kernel.org/project/mptcp/patch/c17925172fd53c98f0ec5c0095c86e6e28cbebf4.1786938892.git.tanggeliang@kylinos.cn/
+[2]
+https://patchwork.kernel.org/project/linux-nvme/cover/cover.1779934709.git.tanggeliang@kylinos.cn/
+[3]
+https://patchwork.kernel.org/project/linux-nvme/patch/a1fa5dd3ebb0cafe1bf7948bf2a96436e9452e19.1779934709.git.tanggeliang@kylinos.cn/
+
