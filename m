@@ -1,62 +1,64 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2503A6B8F
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AB226ED3D
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792131092; cv=none; b=KWxeBwEKDbvfOrTamaO7cC05oF8cdi0u2j5XS/GiknF2sazzZcGbLObnxEuU41oApXRwU6nst7wWG7oiNKz1QY9C/uWjIF99uN8EY5tV0hlVK+jPYG3EwRa4YTlJWc2ml9fNMwj7CzAHf740bmip/yh3SWcvNJLPUklrX/SpBWA=
+	t=1792131097; cv=none; b=P+yAcGJNDFeirdSyuu0/jNuF6aI4UG2SBkofw4JL/wYWxe5Kt/NdJMYj9yh7XQ0MZ/0ts+Abw81gmF1J/VbNkJ4Qpwh7cdUSNoRmlMX5vv977+eF5GNjJhNp3BM/fPHtTxoxtIZzjwu+QDjjadTE1PcSo5XZwo+PdhJwspexAXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792131092; c=relaxed/simple;
-	bh=Tx3nO3gPySKjOpFH/Qz/c8UnQxOYcrJOu25+NL8Z3kY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iVZdM9JHSRNq0OitSdlePwDduMU/VD8u4NSrnYbM9n2ve2qgXZZP+4hKgVxxIPK5pCwZ87KodmLe/k1iALAy6a9XzEqd7+L8vwarlO2ZV/Q9wNAAZBPPD8A/LAk/U4OLRrfhDjHBXVpPkIqZxwToAGv5FYOcpOafZWNETIrnsL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDqWd03M; arc=none smtp.client-ip=74.125.82.181
+	s=arc-20240116; t=1792131097; c=relaxed/simple;
+	bh=6J1j99RkGgHd7qnYJJuahkEuuMeFF8fLW/57SAMBioY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dqQ4XxJ7M2xYXtLAGlSnwyqHKpzZYzMQplSgkx4SOJCSdYpNFTKViiD4IQedAwOUj3hqBhfbtBxX59x6XROq1v0N8PTb+cc1VvYhAfQZxxRvxphMrsXhPsek2nZl3Kh+0EvXgs4f3oCoE/zuwKQFup/+I75CXfajWFbXiA3Jfyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jxK1gOx3; arc=none smtp.client-ip=74.125.82.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDqWd03M"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso7906391eec.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:11:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jxK1gOx3"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-3282db206d3so1719485eec.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:11:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792131090; x=1792735890; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kcslZZQo3mohhGw1TvUFqfaBbmuwHjcR/UsbiocVbwI=;
-        b=XDqWd03MpPbUeAJQovOURZS8Jm6F9CcnYCNAWTwy8ht4d1Z1uF6jJ/Tw3etjGE0dLk
-         uO6tBaZXjHw7G6SohCn6YLDqVZA2zyLd88TLgytTxLDCQrlikx09h3GjcscaaXo4r5hB
-         D6knu/eRImVa+5gfbbspNWBk15jL0Gy1NrC/0+yYd7ZahWYgL7WM7uaMGEo5jN3mPove
-         Tudt/JV4+MhxXaoFm6us0Y3HAMEobPaYvPDosN7C2+pXyr2EpOXVh5dG2BaEntrI+ebt
-         Gn1E7HMlnksITYAsUYwkvQSgyYTzOdLKDqUtFmtlKNtHv5nccZNUTkmKM8VPc/axR/oe
-         ZENw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792131090; x=1792735890;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792131096; x=1792735896; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kcslZZQo3mohhGw1TvUFqfaBbmuwHjcR/UsbiocVbwI=;
-        b=CYVv1RmeviHF8vuZr29EvXvu8mhOgKugsYDe7lyiAXYBl5CoKnKfpv0lmygxV2/i+L
-         e5HSQqVh9L4dv/VKv1JTHS0ur1Gtr1QhV6ZAiGzQXBFDU6mOZLhIoe5j6BT2xjtI2wgt
-         JzuPrp3AU5QeDhqiIBFCdxvzTCS+QfyThq5rwxIU4BUYGpf4WixwUGUuQJO4tElAgBng
-         d5wJSWnPsOjNxmf3ONNXiIt795c7oDTFj0RGDp/IBaiAZI6MVPSfcmDGxonVQQr7lMzW
-         yVwZGZJQdv0JuYO5slLCBIrrA+L6WnAlMOFRitv0bnLYeieUQ5S0fvMumxrATmzDUs4R
-         LW7w==
-X-Forwarded-Encrypted: i=1; AKwUvBz2fdisiKi9//ayEyTbMFrXmE68je5+DIOzTxza+de/5bAQbfAeU5T1DhOi5vHVJ1wxFlPpbJ4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIr6c2dEny4tMTyuKKE/HlHH3h+evYr152QCX7N5nxdzyt9bxkh
-	Z6KuNBqhHcF/+Bdk6gTiikmQJ8ku0gA5G3raEfSXHQcYwILVfsgYpvju
-X-Gm-Gg: AYBFou3c3MHHuOPqDxbciAuPs7j1W5GMHDBiCd1EetXrvQ2YIzubyPGcsWnBHjP8SDJ
-	NW59qDGPZnvNRDYOhsiTdNjShlOyO/Y9HAgrc69674Y7KphHYGF6WX2TVyHJ0K1ZI2VuAm+KVPk
-	m8nnkxT+ydFCdfMiIPeYzgZPT6TvJOBOZtY2kIbxODmHaP8Aio2TdBFFw1h2l7/hA0ewnT8UmFt
-	VrzMJqiVqKVfGr0wYFtorU+0OOKcZsTJvSa6/LXFfO1uSgjPXQGS1dS7dMRHXyF5+l0oN4asxOI
-	CWW0xik3LSQdQGZKI26FEKMCcsAp7CFd2ZqgGfN3WEfc878FuoKaldkeRMeqXOBtsSRca0E1AeU
-	Sz6BR6EzkknNHSVJvE7wOS60dMBgf5FmeKb1dWJBY1LdVGLmeymeii+A9hPI55sOXEbqL6zRzVp
-	aySS7/NgHZHxVsup2tqe7AQFJfqO4saXHkcZvw4x6/sR2VqX+NbU82hhz0ECJDEe7kOocW1DJO2
-	sagSLSwOG1oPj15NngMzcckCfPWEjZso9ghCVsxrU1mOpbi7O0w/vjrXg==
-X-Received: by 2002:a05:7022:7e08:b0:144:fa58:95d8 with SMTP id a92af1059eb24-16a61a6ebb0mr39541036c88.27.1792131089901;
-        Thu, 15 Oct 2026 23:11:29 -0700 (PDT)
+        bh=qWf8bZZYyS9ZR2mGM/elWEcGt1jLdPTo6uVsODf8oOg=;
+        b=jxK1gOx3cqnle8IoFxB2w69TaBKR0aYow0y6D/miyy95ZiVmylgNTd30yJyObAIjy2
+         lO6QAfVB/cHGRI1ABXReGFrfD3kE4prnrb0R7n50vxiR8y9s3AKzI9TcpUgt1oXqf1+w
+         4expdPGqy94uLtBPuosLgTq6BVe0nSly1L6PRRbSvi0vMo3DWFC8esvlh2jpgboDZNGZ
+         3TmFCqXngfUZ9RigvbgiHf5eZQ4FynMaFaE+6oFHY0FUnoHFkJEtoguaaAPacrYt8d0T
+         59sbH+dJXOIrzaEKwAigEtvs4Jt6VjAo26FwRQo1SY9K/SlasFOZRjghf/ZW9OOyLurN
+         vwaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792131096; x=1792735896;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qWf8bZZYyS9ZR2mGM/elWEcGt1jLdPTo6uVsODf8oOg=;
+        b=2rrPP5jY+tQ8v8mqNXttexABzr3KtEr1Xn2S0uI9E9YKyJv5kL6yDZa7rd1GmUErqh
+         iCt5cjeKnOVNDbs4NVtMbLZg0K2UlpTCQhWyANtMZhNp3UPP0P4c91s963yTN7cwnz2K
+         t4pzfNwbhQtrjSvf1WqyCU2DJ/1JiyCPPAqM7A05Sdz/TV5yk5zx0vAkdr9dHbeQIBfQ
+         u0ESGqFGv1w7bcvGk6fKEbMAvXxBPOc8DMM1i+5WrcJ8t8BSUv5YPFKg2PoVfocmBRS4
+         FRJA6qJdIfJyXe125mRbd8WitAyULtf6XT4Iks2jVdmW5WbQrz9WpcXMyryip6/RCmu7
+         UJqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwjfsGgc8lXlRZgr91K7h3hiYd8qpo3OkNMUJ/FFZA+9vqhGyzGGddMGP7ANGLZnge7+FNXFI0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKpw4fQIXeOz8nruVMiGJsce7M0pUtvH9O4bM2nWoX1G7lCSX/B
+	KYFKLJnHOU39YOa5WQoCGt2/2GZHahK6HbCDhlqHzkwkkYjqquNJmwdeRqINGqtv
+X-Gm-Gg: AYBFou2IqtGw5NGu0y8np8p941Wf9KxgpkJN/NQWrLwXfUczpZUqbGPPCYC46QjM8em
+	ajGXNSCdi/bWvbR0wEUDENFCWpWQLK7MWYB3cjoOZLSVJDRazc6pAm3Fy3RaRAZmofF+q4mbdW1
+	jR5W7o9HYEeNUgIT+/VKFjBMk/2EvmiOKGYnTT18WYz6fywTWiZa1FYXDOZ/GVBXavs8Q3mU9FF
+	CgQos769bWeLYvQpF2hfnQHA1IVhY6Bq/Ns1//K4vbsLAOt+1Qnd0T6lHdnpqo8LGx+sYZX93jv
+	qL+Wxg/gn1IkRVGAGmko7wzpOFru00ZQXP3063HO1x5193GrRn7TOhW0uzvLnDx2Cy+RelefBlm
+	tobvbUUfSjnJBw6hwd5VP4v44SCBelDXeLt5xmZFI2J+sVLH2j7f/PFPKPRZYFNmUTfnNeLoV1M
+	wo/UeG0tqD/Pvz+kSe9BeHV1AAcNCR76wFRtP/XaKPkIDovdWm9m+3Nw6MyozhuvnfNpbjMFuS7
+	Jt5IGeNE/H64fnmRhungmGsOePIIQzQ+uLnt1wImz3RL0yP
+X-Received: by 2002:a05:693c:810e:b0:359:861:7cbd with SMTP id 5a478bee46e88-35908617e44mr23583050eec.10.1792131095475;
+        Thu, 15 Oct 2026 23:11:35 -0700 (PDT)
 Received: from chaosheng-ASUS-TUF-Gaming-F16-FX607JV-FX607JV.lan ([183.242.161.82])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3607ee0d391sm3725600eec.4.2026.10.15.23.11.25
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3607ee0d391sm3725600eec.4.2026.10.15.23.11.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 23:11:29 -0700 (PDT)
+        Thu, 15 Oct 2026 23:11:34 -0700 (PDT)
 From: Chaosheng Qu <chaosheng.qu.linux@gmail.com>
 To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
 	Max Staudt <max@enpas.org>,
@@ -65,10 +67,12 @@ Cc: Vincent Mailhol <mailhol@kernel.org>,
 	linux-can@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/2] can: publish tty->disc_data only after register_candev()
-Date: Fri, 16 Oct 2026 14:11:18 +0800
-Message-ID: <cover.1792118038.git.chaosheng.qu.linux@gmail.com>
+Subject: [PATCH net-next 1/2] can: slcan: publish tty->disc_data only after register_candev()
+Date: Fri, 16 Oct 2026 14:11:19 +0800
+Message-ID: <afc724d533dc3e7d6d423a641ecb6ca5b40451f7.1792118038.git.chaosheng.qu.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1792118038.git.chaosheng.qu.linux@gmail.com>
+References: <cover.1792118038.git.chaosheng.qu.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,45 +81,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-slcan_open() and can327_ldisc_open() publish the private structure to the
-tty layer through tty->disc_data and register the net_device afterwards.
-If register_candev() fails, free_candev() releases the net_device and the
-private area with it, while tty->disc_data still points at the freed
-memory. register_candev() fails with -ENOMEM from register_netdevice()
-when the device name node or the kobject cannot be allocated.
+slcan_open() publishes the private structure to the tty layer before
+registering the net_device:
 
-Both patches publish the pointer only after the device is registered, so
-the error path has nothing to unwind.
+	tty->disc_data = sl;
 
-The slcan side is a regression. From the driver's addition in 2010 until
-the 2022 rewrite the error path cleared the pointer in err_free_chan;
-commit cfcb4465e992 ("can: slcan: remove legacy infrastructure") folded
-that label away and dropped the tty->disc_data = NULL with it. can327 was
-written later against this tree and never had the cleanup.
+	err = register_candev(dev);
+	if (err) {
+		free_candev(dev);
+		pr_err("can't register candev\n");
+		return err;
+	}
 
-The stale pointer is not observable today. tty_set_termios_ldisc() clears
+register_candev() fails with -ENOMEM from register_netdevice() when the
+device name node or the kobject cannot be allocated. The error path then
+frees the net_device and the slcan structure in its private area, while
+tty->disc_data still points at the freed memory.
+
+This is a regression from the 2022 rewrite. From the driver's addition in
+2010 until then the error path cleared the pointer:
+
+	err_free_chan:
+		sl->tty = NULL;
+		tty->disc_data = NULL;
+		clear_bit(SLF_INUSE, &sl->flags);
+
+Commit cfcb4465e992 ("can: slcan: remove legacy infrastructure") folded
+that label away and dropped the tty->disc_data = NULL with it.
+
+Publish the pointer only after the device is registered, so the error
+path has nothing to unwind. ppp_async and nci_uart assign it the same
+way; nci_uart was changed to that in commit fc27ab48904c ("NFC: nci:
+uart: Set tty->disc_data only in success path").
+
+The stale pointer is not observable today: tty_set_termios_ldisc() clears
 tty->disc_data before .open() runs and again when a failed ldisc change
 falls back, and the ldisc entry points are serialised against .open() by
-tty_ldisc_ref() (async) and tty_ldisc_ref_wait() (syscall). The series
-removes a trap for the next modification of these functions rather than
-fixing a bug that can be hit now.
+tty_ldisc_ref() (async) and tty_ldisc_ref_wait() (syscall). The change
+removes a trap for the next modification of these functions.
 
-Both patches apply with git am to mkl/linux-can-next testing and build
-without new warnings on x86_64 with CAN_SLCAN and CAN_CAN327 enabled;
-checkpatch.pl --strict is clean. The success path was tested by attaching
-N_SLCAN and N_CAN327 to a pty under QEMU: the ldisc opens, creates the
-net_device and SIOCGIFNAME returns its name. The register_candev()
-failure path cannot be forced from userspace and is only compile tested.
+The success path was tested by attaching N_SLCAN to a pty under QEMU: the
+ldisc opens, creates the net_device and SIOCGIFNAME returns its name. The
+register_candev() failure path cannot be forced from userspace and is
+only compile tested.
 
 Assisted-by: LLM
-
-Chaosheng Qu (2):
-  can: slcan: publish tty->disc_data only after register_candev()
-  can: can327: publish tty->disc_data only after register_candev()
-
- drivers/net/can/can327.c           | 3 ++-
+Signed-off-by: Chaosheng Qu <chaosheng.qu.linux@gmail.com>
+---
  drivers/net/can/slcan/slcan-core.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/can/slcan/slcan-core.c b/drivers/net/can/slcan/slcan-core.c
+index c9414faafe66..fc6ecf110aab 100644
+--- a/drivers/net/can/slcan/slcan-core.c
++++ b/drivers/net/can/slcan/slcan-core.c
+@@ -849,7 +849,6 @@ static int slcan_open(struct tty_struct *tty)
+ 
+ 	/* Mark ldisc channel as alive */
+ 	sl->tty = tty;
+-	tty->disc_data = sl;
+ 
+ 	err = register_candev(dev);
+ 	if (err) {
+@@ -858,6 +857,8 @@ static int slcan_open(struct tty_struct *tty)
+ 		return err;
+ 	}
+ 
++	tty->disc_data = sl;
++
+ 	netdev_info(dev, "slcan on %s.\n", tty->name);
+ 	/* TTY layer expects 0 on success */
+ 	return 0;
 -- 
 2.43.0
+
