@@ -1,163 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02CC364933;
-	Fri, 16 Oct 2026 04:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792126313; cv=none; b=p07T6EJY8/53qr75ZD9N0pKcA0xWBFzxBB/5DQMnQJpTE1uXDT1DJgjPku/swSHGsPTeWm6hqOYaQwwdK5Z2suoJ6SwItUDkcyIgqYi/nYbJCDdYX4PHMHHYlwRoNsSSZfQrT+B50JuamZzZhsHs5zW+ItruyeJyxRgA8YO4sn4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792126313; c=relaxed/simple;
-	bh=YdxYgV0cyICXIRBGQmu2hwnZbzsJyfTCaAgkpvzARew=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=L03xHD7gVaWmrcclDpAPc1+zLofYG3MrkunRXdmfm7DySsJzgDP3Zt9W8sHZoSxyxJy07kSmWui4OcOOABsMr7TAZyuzESWG4ydF9fdEcCgKS7z9YW9xQcl3WyTQDSCYMDjj2Q2Thf+9oOENysPlvWsd5wotrux3CDfJrL0n+3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOZSFC/T; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88C3372EFF
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 04:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792126565; cv=pass; b=ECtmmrwUWrptnzVakqUPSwJSI8l8PWXFD4gqiS9j4ksYEdydKQ2lOX/YCetPHvt0aG1IrPx8aCZT5zvekSGI9yHGQQwDgS7Eh30QndyBlNBpr0d5d78OO8QsPdCWVAb57TElax+xyaUvH7zi55Z08OUzbMvd4zZ75xLS/zksZ94=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792126565; c=relaxed/simple;
+	bh=bHEyx5CWdu87K8jT+B4RRZF0X7+omCHa3P6e2tPw5rI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b7vrLvAASaDWS2xKhbIPXnNXKyUU+FT1Kicp3uRLj6Cf4H09aLMs9ds0SSY3OzNAbLxNFYtChlDONzo2iZf1rSJzeieZBaW2YbjU3bSXT9FDKB26FCLoutsj/TNYkBT+9/H8P3gG0aidGSxGmji6bjOCFMCjFuBByRK6Nvbo5dA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=UyPhnG7c; arc=pass smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOZSFC/T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D89D1F000C4;
-	Fri, 16 Oct 2026 04:51:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792126312;
-	bh=mGSLHm+5r2YjDZa9OvTpQNpwlOfK9c7WttCpRckwv6g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NOZSFC/Tf2CsanFYXB5WHiRVu4KtaVvuxq1LA07PMZNZhbBMcLMo2V83DUDjKzoOU
-	 13NLxyI81DDgcubxJqN0CaLIxFPl5l86co7+w23gNyji/6KrByha/A7yRgC2675F61
-	 NI5Vao9uw2I9L5reRMmtt2f7Nh9fA+QzLBjlKtvBrHanYr4BrSLPuJEKnc8t3hHNtr
-	 qjdJJpzP5P45TNg6eV9vnSMc0FvarasA+bZASqnZ3bbiaAl6IkzC+tcmzzFQR6Ijx1
-	 wtfmApVrQVslahtWyELu/+jMRXI715MI/TV56WJiZx8s7m2VA1y3eouhUtNCFsZFJY
-	 9cjC6SF3SYZmQ==
-Message-ID: <6732a24185668fe8b527f7f562dc8453b85ec138.camel@kernel.org>
-Subject: Re: [PATCH v4 1/4] nvmet-tcp: unify sockopt with do_sock_setsockopt
-From: Geliang Tang <geliang@kernel.org>
-To: Christoph Hellwig <hch@lst.de>, Jakub Kicinski <kuba@kernel.org>, Hannes
- Reinecke <hare@suse.de>, Breno Leitao <leitao@debian.org>, Sagi Grimberg
- <sagi@grimberg.me>
-Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, Chaitanya
- Kulkarni <kch@nvidia.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel
- <idosch@nvidia.com>,  "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Geliang Tang	
- <tanggeliang@kylinos.cn>, linux-nvme@lists.infradead.org, 
-	netdev@vger.kernel.org, mptcp@lists.linux.dev
-Date: Fri, 16 Oct 2026 12:51:43 +0800
-In-Reply-To: <20260819090439.GB9267@lst.de>
-References: <cover.1786947923.git.tanggeliang@kylinos.cn>
-			 <010e6810cc4c10b30237c964b2bb9dfa7a3c740c.1786947923.git.tanggeliang@kylinos.cn>
-			 <20260819090439.GB9267@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.2-10build1 
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="UyPhnG7c"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8b0e21048f8so7696837b3.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 21:56:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792126562; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OkGrtElAutzc+6ZgghIh5G52RE4MxwhJ7WiFoFjv+tcZUk5NKi4SZQz8ObzgoDKqAB
+         fPfJ3QYzJ48tf1+Z1PWS1JNsNeONDYzbfY09PqLWTxNhYE1KfcvvstbPndO8jKtFtxWP
+         fzxu4IqKRICHfQZt6Jycxa3WN8G2MdKQisI2O7D3qKAFO03ofEP+5i5UtqarhuXtdTjj
+         V0Qoy3DvL1TlVWTxlmKAoz8hzK4j74l6PXbdS1RHKofX9hOxhWYUVlVurhnCG/WiW44n
+         GyVEZzdOFOHj84w6HBjsCBWPJKhqHh5ftcNgS0dDBWJQCES5LMB3XycG7znUP1qzK6rR
+         UXEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bHEyx5CWdu87K8jT+B4RRZF0X7+omCHa3P6e2tPw5rI=;
+        fh=3Bfwu2C1ZPcvqyZdEKUbCTRFMO+APbvaajEIKZkC55E=;
+        b=cqW4fZxrlWVfOJ340U01BO4hoph8znziXKp3D94Gt5FlTNPSAiGiO1RW3vgO600sEC
+         LDOlf+h21FXr0cr65HLHteqNabXfn1cGg7FfvBmQitg9ai2CvRfWP6xD0yWEidfc4t2P
+         kYGGsFvtOTmQuzK1dyMWubGsEA0SwW0v5oKazXWUwoS++7cbA3Vg8IzkVgKUf+MJINUQ
+         QkwfLiXQ7Wqw92bQ/sYePIFol3hcrPsN5KivSiHs/nJRWmaGdZnBtTK3e8GS8gfnwH5Q
+         m3JjMkYIcCHRWQXeGyS2WcLGI4Pp1CvHHcHH+c5J1+ur0MBQlzA/EAuUT4LTldHLhVrJ
+         cB0g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1792126562; x=1792731362; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bHEyx5CWdu87K8jT+B4RRZF0X7+omCHa3P6e2tPw5rI=;
+        b=UyPhnG7cHz7RLi+YfpC1XpMlizYeO6ZG+v5wPSVqkpVwgIKftAKEcOWe1xJoaOInus
+         u+13Xz9y0QfpLfvKnCYVe7ACTx7S2MIQMpTkYxvVBzTpTqtQZKVi5kAfIN7qp9PX0Jve
+         2xlWyqE3u8R2CSozO6tSml0y++5LuOEr8660gKlJyqO12uyYEEjO/mVwD84qiORXGDn3
+         uHRgIojTMTGHZU2zNao/FImmM4fegqyA+kMnnu63lKVdNrXPEGcn9TSZtNjGepxQbT+o
+         ELauO4xt14b2GL8vFD9shYda5kEzKnQRUpd9oJvO4eJqA9M1PjbDjMqJzjxc4xYs/GXd
+         Ksxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792126562; x=1792731362;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bHEyx5CWdu87K8jT+B4RRZF0X7+omCHa3P6e2tPw5rI=;
+        b=fNEpfw4jBEfb9aLJ/drBv5uT3ns3jx5rfgOZqq+Z5PkyqAomxonRop4gYavCwIJF23
+         JNgbHkbhUal13rUUJUfHiypUmd7IoA8EhbXv7JBFxfEFCOAY7GUg/TZo/a2/UY6e+CEA
+         m6yUKTYRZengawIwbSYfudX2S0q96Oh6nFjlbgrP+2dC0tYwf8zh86eqZLJd0kkPN9JR
+         UkDY5Vqv2FxcNfi10CcMd2bOeNO5ZyKcAV8pt4+orLo4230Wc28pKC5moKu8l6JVoXWt
+         ui3KxIJBUqyM5QVhzJw/9zCIe9CtWhmAKkwE1sy2U79Ewa+v70RBIT+ExzSKDN+GhuBr
+         6QLA==
+X-Gm-Message-State: AFq9FYLh2p151EACaMmKLOpX0bXQiX97v+f31BURrlvweOD/bi83x2/h
+	NBF/ib4ys7Tl8K1Gz+7nVJIZbkMnHs72SvcVQh8BKL47g2mDQHE/uO3EXU7I/l4Hc07Jq3cI0uM
+	03JFuPiORe0D5xE4a71jzECGg5/KQg8VPX+YZL3vQJyY=
+X-Gm-Gg: AYBFou2VwTDGQfBQrUD/P3/UV6iZ+8U53l7DGk7zR7I2/PeC6xVp27XcXTENKgejgXE
+	enjul2gzrpwBN6TAa7b9XOP05Yoa4q2fekrCXD6vNKJPPssreZIlRyck9acfuRr8uCdcAQ9XRjd
+	G12GuqrZLSMYuL0KpERYTad+PxLtAN0YEome3lnJGgtcOZys+pSEjj/7cni53frcACXrZwK13Pc
+	3fWWBVqEAw4d17FG6DEGZy4BLo+f4FIiFPXT/Vi+Xynycolw/+B1Hm5ghIxLkmlnV6ELSXJxkOy
+	I2witG0x65S+olNBjTIfF064OO5tfPpPBTrTvY8qwrN5j4EJiRWn/maABxe5tuoUPV8v7mRicFF
+	wdFZjy95oxC3CApMs97rN
+X-Received: by 2002:a05:690c:6213:b0:8aa:5af3:e420 with SMTP id
+ 00721157ae682-8b07ed1e710mr81711707b3.11.1792126562578; Thu, 15 Oct 2026
+ 21:56:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1791978740.git.zhilinz@nebusec.ai> <ae0f5aedfff54432f75c7bd4d369166c028497b0.1791978740.git.zhilinz@nebusec.ai>
+ <DM5WMW2M6YYO.2X4FN4OPSQGJH@gmail.com>
+In-Reply-To: <DM5WMW2M6YYO.2X4FN4OPSQGJH@gmail.com>
+From: zhilin zou <zhilinz@nebusec.ai>
+Date: Fri, 16 Oct 2026 12:55:50 +0800
+X-Gm-Features: AclHuK-R2uMw61ooPFJuj3FAuAmc4ceDB4I1tQc0aEakP9ODeTb-n3CB2dzp8Y4
+Message-ID: <CANB6i5wui9AzpQy1MKrEUcd1ifUuE64uZc14GQ9WegtnThxrrQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] bpf: reject unsafe pointers in TCP congestion
+ control access
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net, 
+	edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	martin.lau@kernel.org, kafai.wan@linux.dev, yhs@fb.com, vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri, Oct 16, 2026 at 10:25=E2=80=AFAM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+>
+> On Wed, Oct 14, 2026 at 07:57 PM Zhiling Zou <zhilinz@nebusec.ai> wrote:
+> > bpf_tcp_ca_btf_struct_access() authorizes writes based on the BTF type
+> > and member offset, but does not check pointer modifiers. A BPF program
+> > can use bpf_rdonly_cast() to create an untrusted tcp_sock pointer and
+> > write through an allowlisted member, bypassing the read-only cast.
+>
+> Not anymore. It was fixed in July. See
+> commit ac65c710cc64 ("bpf: Reject writes through untrusted BTF pointers")
+> and the follow up
+> commit ee9ad135b208 ("bpf: Reject a store through a fault prone pointer")=
+.
+> check_ptr_to_btf_access() rejects such store with
+> "only read is supported" before it calls any btf_struct_access callback.
+> progs/tcp_ca_untrusted_btf_write.c is the same prog as your PoC.
+> All of that is in 7.3-rc1, so net tree has it and this hunk is dead code.
+>
+> The splat in the cover letter is from 6.12.95.
+> 6.18.y and 7.2.y have ac65c710cc64. 6.12.y and 6.6.y don't.
+> nf_conn, sched_ext and hid-bpf callbacks in 6.12.y have the same issue,
+> so patching tcp_ca alone doesn't help there either.
+> Pls send the backport of ac65c710cc64 to stable instead.
+>
+> pw-bot: cr
 
-Sorry for the late reply. In another patch "mptcp: sockopt: implement
-IPV6_TCLASS" [1] on the MPTCP mailing list, I implemented the
-__ip6_sock_set_tclass() helper and hoped it would be upstreamed first,
-but it is still pending.
+Thanks, Alexei. You=E2=80=99re right. The verifier rejects these stores bef=
+ore reaching
+the TCP congestion-control callback, and the relevant fix is already
+in the net tree.
+My reproducer was run on 6.12.95, so it does not demonstrate a bug in
+the current
+net tree. This patch is redundant there.
 
-Thank you all very much for your review comments, but I was caught in a
-dilemma after receiving different suggestions.
-
-On Wed, 2026-08-19 at 11:04 +0200, Christoph Hellwig wrote:
-> On Tue, Aug 18, 2026 at 02:03:00PM +0800, Geliang Tang wrote:
-> > From: Geliang Tang <tanggeliang@kylinos.cn>
-> > 
-> > This patch consolidates socket option settings in nvmet-tcp by
-> > utilizing
-> > the generic do_sock_setsockopt() helper for options including
-> > SO_LINGER,
-> > SO_PRIORITY, SO_REUSEADDR, TCP_NODELAY, and IP_TOS. This change
-> > eliminates
-> > the need to export and use specialized helpers for each individual
-> > socket
-> > option.
-> 
-> Hmm.  I see that do_sock_setsockopt is exported, but it really should
-> not be.  It's really just an internal helper exposed for io_uring
-> and no modular code should be using it (never mind the non-GPL
-> export).
-
-You are right, my current version has several problems:
-
-1. do_sock_setsockopt() should be exported with EXPORT_SYMBOL_GPL(),
-not EXPORT_SYMBOL().
-
-2. The "compat" parameter of do_sock_setsockopt() should be "true"
-instead of "false" to skip BPF cgroup setsockopt programs, matching the
-behavior of the original nvme-tcp code.
-
-3. The helpers should return "void" instead of "int", to preserve the
-original behavior in nvme-tcp where these socket options are set on a
-best-effort basis.
-
-4. Error logging (pr_err) should be inside the helpers to minimize
-changes to nvme-tcp code.
-
-5. The helpers should not be duplicated between host and target, they
-should be consolidated into a shared header, e.g., nvme/common/tcp-
-sockopt.h.
-
-I wonder if we can move forward with this approach once these issues
-are fixed?
-
-> 
-> > A key benefit of this refactoring is that it decouples the socket
-> > option
-> > configuration from the underlying transport protocol. This makes it
-> > easier to extend nvmet-tcp to support other protocols, such as
-> > MPTCP, in
-> > the future, as do_sock_setsockopt() abstracts away protocol-
-> > specific
-> > differences without requiring per-option protocol-specific
-> > wrappers.
-> 
-> We really should have generic helpers in the networking code for this
-> and not duplicate them in driver using socket options.
-
-However, I still need to use do_sock_setsockopt() for a fundamental
-reason: the upcoming NVMe MPTCP support series requires protocol-
-independent socket option handling.
-
-When NVMe creates MPTCP sockets instead of TCP sockets, calling
-protocol-specific helpers like tcp_sock_set_nodelay() or
-ip_sock_set_tos() directly will not work correctly on MPTCP sockets.
-MPTCP needs to set options not only on the MPTCP socket itself but also
-synchronize them to all subflow sockets.
-
-In the previous NVMe MPTCP support implementation [2], I exported
-protocol-specific sockopt helpers separately on the TCP side and MPTCP
-side, then had NVMe switch between them based on the protocol. This is
-not as clean as using do_sock_setsockopt() for protocol-independent
-calls.
-
-For MPTCP, we could use sock_common_setsockopt() which always
-dispatches to the protocol's .setsockopt for all options. However, for
-TCP, this doesn't work correctly for SOL_SOCKET level options
-(SO_LINGER, SO_PRIORITY, SO_REUSEADDR, SO_BINDTODEVICE) which should be
-handled by sock_setsockopt() directly. That's why do_sock_setsockopt()
-is used here - it intelligently chooses between sock_setsockopt() for
-SOL_SOCKET options and sock->ops->setsockopt() for protocol-specific
-options, making it work correctly for both TCP and MPTCP without
-requiring nvme-tcp to know which protocol it is dealing with. This is
-the key to enabling NVMe MPTCP support without adding MPTCP-specific
-exports or protocol dispatch logic in nvme-tcp. A more detailed
-discussion can be found in [3].
-
-I would appreciate any further suggestions you may have.
-
-Thanks,
--Geliang
-
-[1]
-https://patchwork.kernel.org/project/mptcp/patch/c17925172fd53c98f0ec5c0095c86e6e28cbebf4.1786938892.git.tanggeliang@kylinos.cn/
-[2]
-https://patchwork.kernel.org/project/linux-nvme/cover/cover.1779934709.git.tanggeliang@kylinos.cn/
-[3]
-https://patchwork.kernel.org/project/linux-nvme/patch/a1fa5dd3ebb0cafe1bf7948bf2a96436e9452e19.1779934709.git.tanggeliang@kylinos.cn/
-
+I=E2=80=99ll withdraw this patch and prepare the stable backport of
+ac65c710cc64, as suggested.
+Sorry for the noise.
