@@ -1,334 +1,354 @@
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010068.outbound.protection.outlook.com [52.101.201.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A76475356
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792143179; cv=none; b=TAnKrMOxfvfRx2muWj3ifXsf/5GY7RrpwoWzBiyjp1XT5fgZ7UQrJsdZjzJ0Gy7h9wyfvmB3yyyoidDy9+OXcsli3F9DHo4V0mzrdA+CRFcy+jyUAsxNzStOS7e+/rdx2aD3hUDr8vXcryPgX+OSE9F85ij9t2qBj0IGGHtCQlc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792143179; c=relaxed/simple;
-	bh=WL3wUIMkwwoPY1trwqCqPuiTCJPxhOE48Ga4j+J8YxM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AZ9GW4j29C3gbGoZlMtGh68YtDFk6vc+LY54qsfDKlRuZ7s2RB4fZOGzQT/RqhNrwHlIq7tJAwdxV2u+9hhOSgXesFqZy0brlNOHaC4B8WgQNYh0SRo61lBiXktLOYMLteFc9OFc6H1EHyNGIxp9BZe/aOwCrgaSzv7tG5ITzfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwnG2uY7; arc=none smtp.client-ip=74.125.82.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5EF4749D4;
+	Fri, 16 Oct 2026 09:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792143183; cv=fail; b=coHfsJW0uJjWg6GbyXxSXfZ7bGxQGKQq28AfmjnoBqqaBCstUOVaFxjPA9KT0aEnDqSZPlA304s4TxZABaUXumJZW9+l6aidG2EMJkqOjuK9npbhMpSwnX5Tc9IAOmtu6iXAMkkwB/MiIzpb9334KoyYD28hlcPeF+74vWw9Fwo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792143183; c=relaxed/simple;
+	bh=rvWUIFw1EjDnncdtMySsinn7+WFaV55SUQLj9s5a7FY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=j/6yMluIUj1JsRNTHbSjgylzdmFAnA7c/Ii6IUxZAUOmiGObMSR9Wec5KaRi7cUe4gm3fMexuk1W3kEmIdg1zI+bMlH+zjMI/+N9NwVIMuOqXZpEQ8kaME3c9j6aBbR6pEOqkY4A/FmXd3fd3navjoShZFunVjk6H3DDig9/yr4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hKiRS6ec; arc=fail smtp.client-ip=52.101.201.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwnG2uY7"
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-15756f82e8aso553838c88.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:32:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792143176; x=1792747976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hejOVt37x/utq4gG5Lp53Db9B5jQdRD2zxHIuxDYm5c=;
-        b=cwnG2uY7FEsnSsDJH9ph5p2KvAI6Pj6PySZSzu94Yyd+TxRxQZb9F6Sy7fpOZr7+Pe
-         WNAAN49JIL2vxoRWyQjBSqxyo+rdJzJqgvDJ/yugpJNwaiumZzSRJcDv0FY0j8UqnEdw
-         t/CifHxeHF5CTINTy3liWZAtB3ZMLNhtmkABq+wLStr6HdlCNuOhcdK3+KYWK7nblclE
-         yGZ8HGkWYuXAeY8wy6qKiIUyjpe+DvWkW6/4EMNxmboYYZ6O20XdPTc06Q11mB+typGm
-         eFncXbrA38FQ+cwzCWky5RiYFs3CjZjXErdKDhrssu2JN/xrAKH8McJczJt8lz+AOdxw
-         HsBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792143176; x=1792747976;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hejOVt37x/utq4gG5Lp53Db9B5jQdRD2zxHIuxDYm5c=;
-        b=PnMTm3C9bhuI1ygc9n4dLbj3CwadY6/IEE4g6iRRt2rPS1FLZ736VtG92Gid0IPtbz
-         QMZjPhJErRKM3nTqGF62mbEQqaQyMf3ncl0V+4PnS75uX2wgSkw+NCcZT/rEpdrIt40l
-         JiBBb8HM0/X+KWlLZaEsp6EJBmip7OkObfUSCVg39VYvgONPwgT3KqQk4mRt/b31Zk99
-         PprRj55awysvMz4v7mBJAy9lY7kVgt0te8epULdrNwZpw3ZoQoF5LKpwVuUDjw9+8us3
-         Byuni4XVK/3lUdpegl3G2QtMyt0N/yQDl9Vi5nAe/taxpW06KhghiJ+mSuNPgOqVYR5Y
-         P+XA==
-X-Forwarded-Encrypted: i=1; AKwUvByPGlKH2C5htVNLrfD8U1kIPRfKrsMsbcrjAkShz4EaWO8NyWdJsvUe+Fxqxg0T0Jqf4sGY9E0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKSyoW7hNm3OPaDQrVy5T7ynR+yfTnSTGdx0GpHEZr3WxxXpIx3
-	tFmwPhaI/dnxEe1EW/mqQ/kjdCQ/1mJvrKCj8DreZJ57m2qjVUjIv8rj
-X-Gm-Gg: AYBFou2Rv6qllhHCp7e38e4Sy1PYd+OvGl6AUY45fb2Un3k8M7/0qKrM9kvCALKeKp3
-	VPZ/bN4ZAVOJOMymotHeBreMOVgnNMF9Orlh/dPquiDHkxL/uyFzT8IxVLYX07142ChBczdLRc/
-	fA8QRvfugbxM2U8rsEAkl675/URD8O7y3942WhSEzkLD0FVqTSX0y5IoA2g7IkSAo2h+MeE2feq
-	H/GhXwZvVhRTgge/GQ8FNQNrbg+lLmphoqYplSd1Hx2AV6NdID36rfE2r85Cm5YYMrv3OR63nSP
-	G+M4JRqDDhdBKsVxJIlXtIY1HosUU+ysarwXMt9uKyWYZmGofLd3ezXcT0T2/umEuc4IsKJzEbi
-	n3QNWi4/8EtwAupflbSJZKoMbhDJgRbPp+mm8bXFrEZgKkNnrf5Hcc4N4MVy3Y7FAGKNt+u+OT8
-	1hEg4tWMsHHOCklD2WTtc6jBBjYuOCKsAPJV9bbfiyowTLYDpg0YgqYX6ovx/O1jKv5llzC6Htb
-	gIy9DtRprrJkpNssNLPT2yAei+EHmtPCwYvKqGcyyAZXcj92yEIufAuHA+GOkjTG8kE8WEoP+of
-	QpY2hNVRVUtPo5Z4WZ8sILuRYs4vpLKFqYPzZZmASyg=
-X-Received: by 2002:a05:701b:2405:b0:155:734:9cc9 with SMTP id a92af1059eb24-1825a19724dmr3014474c88.16.1792143175843;
-        Fri, 16 Oct 2026 02:32:55 -0700 (PDT)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360820a79c7sm5157172eec.18.2026.10.16.02.32.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 02:32:55 -0700 (PDT)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Harald Welte <laforge@gnumonks.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Shuah Khan <shuah@kernel.org>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net-next v7 4/4] selftests: net: add a test for the gtp netlink family
-Date: Fri, 16 Oct 2026 09:32:25 +0000
-Message-Id: <20261016093225.1036375-5-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261016093225.1036375-1-anilkaushikwireless@gmail.com>
-References: <20261016093225.1036375-1-anilkaushikwireless@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hKiRS6ec"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dJQxNaH2ZyMIU+7OWOT/vsZs8sCl6wKVrT5lSey4kOWAt/ccAc1w/gIJr4g7oxGLOR75wWMz9vTv2C66gugCkDiYo+/AeulbQHnTMgfpXZ9fjEkmk/I+NUGk0dTbInBmNt8TVDEIZDd60N+vTwQ22tbVdJKGtFkIuwGJ8rS3ydfNckG+uFqx3cA4krSKFhxn5FnXiBCXOzmdMOQT6F7WO7E2/0xkgbfmumrmrxurNkCikc4OM8adCoOquW3sZo3V6U8tLwavqkCWMt40J1FzXHZJ31wfjcR1zi51BLnIfdgQt0dRleBGfrUxJovLUXcsfXO79b/ECEri2T7YyheJUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LYV0rthsZuGLzQi6M19UuOhff30zgcQel7ywp16itho=;
+ b=cKeUwTY7IA2aZvSqztBZh+uzBSlTgNRfa0ki4IQ/0yJLk9+7r+UWBYirVsp0uApBVKv3qDZBvLoLQtWGW6qH0UFP+veAKjTNHhoEb6US2eGmOXa0L2OZcekRMGaIjsSuCsCop3Q3QYzt0TfyyZdJyxImqwRwG9oMl2QtUsVCxi10H6KBWs0Su4+WqUl06tCz9RRxwVcRGEKWZAK4OAAFWU8CilTkNgAIpge8JwVzFtFWNI55ndJ2ckE5+d1Wy75a9hRcr7wjLGJJcUlzf0G9Ina/KC1r4WYR2VdSIEfuz10M8vVxHdNbAbke4GmN/yKQmG5F56Kj2Ak2rhRsHvQQ6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LYV0rthsZuGLzQi6M19UuOhff30zgcQel7ywp16itho=;
+ b=hKiRS6ecQNduPMzFnUnkBGb2xHVqR+6kI2PxiRSGAI69eS5ipvQoxdFiIZYmG4z9MaVk/7Rf6vm+rfZ4CczyXNIjBkmZp44kYhQYLyQJTVu4DaZKUx7DfheAbMwZRRB73iAOfk+TKr0VCYY/Zfsxh25uvxT0CPo42L7ZxbWOZi8=
+Received: from SJ0PR05CA0016.namprd05.prod.outlook.com (2603:10b6:a03:33b::21)
+ by SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.24; Fri, 16 Oct
+ 2026 09:32:58 +0000
+Received: from SJ5PEPF0000020A.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b:cafe::47) by SJ0PR05CA0016.outlook.office365.com
+ (2603:10b6:a03:33b::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Fri, 16
+ Oct 2026 09:32:58 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF0000020A.mail.protection.outlook.com (10.167.244.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 09:32:58 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 16 Oct
+ 2026 04:32:48 -0500
+Received: from xhdsneeli40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Fri, 16 Oct 2026 04:32:43 -0500
+From: Srinivas Neeli <srinivas.neeli@amd.com>
+Date: Fri, 16 Oct 2026 15:02:02 +0530
+Subject: [PATCH net-next v3 3/8] net: xilinx: tsn: add endpoint MAC driver
+ skeleton
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261016-patches_v2_external-v3-3-e33d3960ca1e@amd.com>
+References: <20261016-patches_v2_external-v3-0-e33d3960ca1e@amd.com>
+In-Reply-To: <20261016-patches_v2_external-v3-0-e33d3960ca1e@amd.com>
+To: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>, "Michal
+ Simek" <michal.simek@amd.com>, Sebastian Andrzej Siewior
+	<bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, "Steven
+ Rostedt" <rostedt@goodmis.org>, Eric Dumazet <edumazet@kernel.org>, "Eric
+ Dumazet" <edumazet@kernel.org>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-rt-devel@lists.linux.dev>, Srinivas Neeli <srinivas.neeli@amd.com>,
+	<neelisrinivas18@gmail.com>, <git@amd.com>
+X-Mailer: b4 0.16.0
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF0000020A:EE_|SJ2PR12MB8690:EE_
+X-MS-Office365-Filtering-Correlation-Id: d17ac424-272a-4e66-d164-08df2b68770d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|36860700016|82310400026|23010399003|56012099006|11063799006|261009223027099003|921020|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	tsbg3CsUBjO+CM37l3XhnMEctzupI7D0fg3ESvYIsuBcdGDFLsNuojvlkMF7GnxZe+O2BjwVoC82aD32vQQdmZmQ/EgWdLhbr0IlRQzgPPR4wKONwt5PH7wiJC0Imx5fp3RMTDKIoMDWmvDVeOev/fe97yQFWzw5F/gNGzGNwPEcjQoU8JmUJ0+A9HZDlRK4T6VOul6mKIUZkO1VdkxYqhzWPiOn+R+HOcXlOZDRCJrDF7O7zs6zowIaecW7iUKQqbQ+sLJChbEwn3ybckZyC2gwaAdGmhlrSOi0e9aj99AAsuk4NYa1+X9OFJnW5PsMO8HHA/NNUqhbtpxdxikzhaCw2O6iwTKZGJH/opR9gIsftmlVYDSdVUNZHJl2Dbfg0id1LEoYbDVg56Xb5CTuExSKuUd04+LRLHvDe/kKnXZSJEY6K1L0cX1Sn+b3sPGaEl2ZLh/Oapxn4lX5EZ7Rd8W4DD/JbytpIpPT7bV9HU4s9+KRE3eUhyY0mh4kc24grThi7N0yP8eTARoXoCCmZFBl5hMWbHcafShO/PwEc3nqYx8oqx6pv2OeS6j+VccghYWafa+b/uLGH6kOv3SIXpjjS7HlqKCIqZ4sgxpd3SEg5PAVvNZouQCzf1EFdenZbyyL4nN8xP8Dy/sC6kDwQsXpT1FJcaHCO5zCRikobJbvIW/U7QcJq2z3ShuFmOk2dyNmQqEtSXqFwSEQ9M7iRdnNvyH82X3fJk94fse7yBwcWFtrs3TVhfZJy12OUnLt
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(36860700016)(82310400026)(23010399003)(56012099006)(11063799006)(261009223027099003)(921020)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	XzX/kAoIUKWyionlY5rcMN1b2UEU/knMvDUPafSBUEDsrT5UZ3g/RD3lKF3FYzO7Q8aTX/RO/ycjy8JgxiiwGRLyiOQmQjeyQfdS445Rbxc3zLCGnEcermE93GHNjssQy1WFKPZ99lCkG9z7h9Gc8kK/7VxteT7XAS8JxJetcOoWRYkdabCllkl0X3aPZWQXn0/SqgBorzVpOLDhgsTlRf52A2352Am7kDm9Tj00peEi0QW9arEIoIUcN1Kv4OPwVK4xgeNDvticzFHXIHJOCDNIYkgfRT0e+oB/PKB6NnoJh4MTQaFEEdcLuOjJo4balzvLv1DnrzW2tPmjISylt2wkhkgynQ45cfgjnyBX9fRKqdKbueQno5wfVwQBPb25cF+nI/FF1UseuMW8HIMxuk+R/DimW9dLtsnz9OzOq1WlwyDD58skJvKgjKfmS53G
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 09:32:58.3170
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d17ac424-272a-4e66-d164-08df2b68770d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF0000020A.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8690
 
-Exercise the gtp generic netlink family through its ynl spec: create a
-gtp device, add a PDP context with newpdp, check getpdp dumps it on that
-device with the expected TEIDs and addresses, and that delpdp by TEI
-removes it. Two more cases check that two contexts are dumped and one
-can be deleted by its MS address, and that deleting an unknown context
-fails with ENOENT, both by TEI and by MS address.
+The TSN Endpoint MAC owns the IP's host-side MCDMA data path and is the
+netdev physically wired to the CPU. The DSA switch needs this netdev to
+exist as its conduit.
 
-ynl resolves the family ids once per process, with a CTRL_CMD_GETFAMILY
-dump which does not autoload modules, so the gtp device is created
-before the family handle: that loads gtp.ko through its rtnl link alias.
-The test is skipped when the kernel or iproute2 lack GTP support; any
-other failure to create the device fails it.
+Add a platform driver (compatible "xlnx,tsn-ep-mac") for the endpoint.
+Register the netdev with the standard eth%d name, set its MAC address, and
+provide minimal netdev and ethtool ops. ndo_open starts the queues and
+ndo_start_xmit drops frames.
 
-Add a GtpFamily ynl wrapper and register the test.
+Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
 
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
 ---
- MAINTAINERS                                   |   1 +
- tools/testing/selftests/net/Makefile          |   1 +
- tools/testing/selftests/net/config            |   1 +
- tools/testing/selftests/net/gtp.py            | 123 ++++++++++++++++++
- .../testing/selftests/net/lib/py/__init__.py  |   5 +-
- tools/testing/selftests/net/lib/py/ynl.py     |   9 +-
- 6 files changed, 137 insertions(+), 3 deletions(-)
- create mode 100755 tools/testing/selftests/net/gtp.py
+Changes in v3:
+- Register the netdev with the standard eth%d name (NET_NAME_UNKNOWN) instead
+  of a custom "ep%d".
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 42df33aea837..8489c37f06fc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11424,6 +11424,7 @@ S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/gtp.git
- F:	Documentation/netlink/specs/gtp.yaml
- F:	drivers/net/gtp.c
-+F:	tools/testing/selftests/net/gtp.py
- 
- GUID PARTITION TABLE (GPT)
- M:	Davidlohr Bueso <dave@stgolabs.net>
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 54beea2e348c..df5bcc55ea8e 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -46,6 +46,7 @@ TEST_PROGS := \
- 	fq_band_pktlimit.sh \
- 	gre_gso.sh \
- 	gre_ipv6_lladdr.sh \
-+	gtp.py \
- 	icmp.sh \
- 	icmp_redirect.sh \
- 	io_uring_zerocopy_tx.sh \
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index d355cf980597..cb8cb4696df7 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -16,6 +16,7 @@ CONFIG_DEBUG_INFO_BTF=y
- CONFIG_DEBUG_INFO_BTF_MODULES=n
- CONFIG_DUMMY=y
- CONFIG_GENEVE=m
-+CONFIG_GTP=m
- CONFIG_IFB=y
- CONFIG_INET_DIAG=y
- CONFIG_INET_ESP=y
-diff --git a/tools/testing/selftests/net/gtp.py b/tools/testing/selftests/net/gtp.py
-new file mode 100755
-index 000000000000..d793ca7b70d2
+Changes in v2:
+- Name the netdev ep%d with NET_NAME_ENUM instead of a fixed "ep", so a second
+  IP instance does not clash on register_netdev(). The %d enumeration is what
+  NET_NAME_ENUM describes, and it matches the eth%d naming in net/dsa/user.c.
+- Drop the mapped but unused register window (ep->regs and its ioremap).
+  It was intended for QBV support, which is not part of this series, so the
+  endpoint driver does not use it. The mapping will be re-added when QBV
+  support lands.
+- Use dev_kfree_skb_any() on the drop path, not dev_kfree_skb().
+- Drop the mod_devicetable.h include, platform_device.h already pulls it in.
+---
+ drivers/net/ethernet/xilinx/tsn/Makefile          |   2 +-
+ drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h      |  15 +++
+ drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c   | 143 ++++++++++++++++++++++
+ drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c |   3 +
+ 4 files changed, 162 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/xilinx/tsn/Makefile b/drivers/net/ethernet/xilinx/tsn/Makefile
+index 6f99226f3dc8..5886828b386f 100644
+--- a/drivers/net/ethernet/xilinx/tsn/Makefile
++++ b/drivers/net/ethernet/xilinx/tsn/Makefile
+@@ -1,2 +1,2 @@
+ obj-$(CONFIG_XILINX_TSN) += xilinx_tsn.o
+-xilinx_tsn-y := xilinx_tsn_main.o
++xilinx_tsn-y := xilinx_tsn_main.o xilinx_tsn_ep.o
+diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
+new file mode 100644
+index 000000000000..b0757e22d1fd
 --- /dev/null
-+++ b/tools/testing/selftests/net/gtp.py
-@@ -0,0 +1,123 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
++++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * AMD/Xilinx TSN Endpoint Ethernet MAC driver, shared definitions.
++ *
++ * Copyright (C) 2026 Advanced Micro Devices, Inc.
++ */
 +
-+"""Tests for the gtp netlink family."""
++#ifndef _XILINX_TSN_H
++#define _XILINX_TSN_H
 +
-+import errno
++#include <linux/platform_device.h>
 +
-+from lib.py import ksft_run, ksft_exit
-+from lib.py import ksft_eq, ksft_in, ksft_not_in, ksft_raises
-+from lib.py import KsftSkipEx
-+from lib.py import NetNS, NetNSEnter
-+from lib.py import GtpFamily, NlError
-+from lib.py import CmdExitFailure
-+from lib.py import ip, defer
++extern struct platform_driver xlnx_tsn_ep_driver;
 +
-+_NO_GTP_ERRORS = ("Unknown device type", "Operation not supported",
-+                  "Garbage instead of arguments")
++#endif /* _XILINX_TSN_H */
+diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+new file mode 100644
+index 000000000000..609d444c6835
+--- /dev/null
++++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+@@ -0,0 +1,143 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * AMD/Xilinx TSN Endpoint MAC driver.
++ *
++ * Copyright (C) 2026 Advanced Micro Devices, Inc.
++ */
 +
++#include <linux/etherdevice.h>
++#include <linux/ethtool.h>
++#include <linux/if_ether.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/netdevice.h>
++#include <linux/of.h>
++#include <linux/of_net.h>
++#include <linux/platform_device.h>
++#include <linux/string.h>
++#include <linux/types.h>
 +
-+def _setup(ns):
-+    """Return a gtp family handle, and the ifindex of a new gtp device.
++#include "xilinx_tsn.h"
 +
-+    Create the device first: that loads gtp.ko through its rtnl link
-+    alias. ynl resolves the family ids once per process, with a
-+    CTRL_CMD_GETFAMILY dump which does not autoload modules, so the
-+    family must be registered before the first family handle is created.
-+    """
-+    try:
-+        ip("link add gtp0 type gtp role ggsn", ns=str(ns))
-+    except CmdExitFailure as e:
-+        # gtp.ko not available, or iproute2 without gtp support: any other
-+        # failure to create the device is a real error.
-+        if not any(msg in e.cmd.stderr for msg in _NO_GTP_ERRORS):
-+            raise
-+        raise KsftSkipEx("no gtp support (CONFIG_GTP, iproute2)") from e
-+    defer(ip, "link del gtp0", ns=str(ns))
-+    ip("link set gtp0 up", ns=str(ns))
-+    link = ip("-d link show gtp0", ns=str(ns), json=True)[0]["ifindex"]
++#define DRIVER_NAME			"xilinx_tsn_ep"
 +
-+    with NetNSEnter(str(ns)):
-+        gtp = GtpFamily()
-+    defer(gtp.close)
++/**
++ * struct xlnx_tsn_ep - EP MAC private data, embedded in net_device priv area
++ * @ndev: the conduit netdev
++ * @dev: backing device
++ */
++struct xlnx_tsn_ep {
++	struct net_device *ndev;
++	struct device *dev;
++};
 +
-+    return gtp, link
++static netdev_tx_t ep_start_xmit(struct sk_buff *skb, struct net_device *ndev)
++{
++	dev_kfree_skb_any(skb);
++	DEV_STATS_INC(ndev, tx_dropped);
++	return NETDEV_TX_OK;
++}
 +
++static int ep_open(struct net_device *ndev)
++{
++	netif_tx_start_all_queues(ndev);
 +
-+def _contexts(gtp, link):
-+    return [c for c in gtp.getpdp({}, dump=True) if c.get("link") == link]
++	return 0;
++}
 +
++static int ep_stop(struct net_device *ndev)
++{
++	netif_tx_disable(ndev);
 +
-+def _iteis(contexts):
-+    return [c.get("i-tei") for c in contexts]
++	return 0;
++}
 +
++static void ep_get_drvinfo(struct net_device *ndev, struct ethtool_drvinfo *ed)
++{
++	strscpy(ed->driver, DRIVER_NAME, sizeof(ed->driver));
++}
 +
-+def add_del_pdp(ns) -> None:
-+    """Add a PDP context, query it, then delete it by TEI.
++static const struct net_device_ops ep_netdev_ops = {
++	.ndo_open		= ep_open,
++	.ndo_stop		= ep_stop,
++	.ndo_start_xmit		= ep_start_xmit,
++	.ndo_validate_addr	= eth_validate_addr,
++	.ndo_set_mac_address	= eth_mac_addr,
++};
 +
-+    The dump must return the context with the link, TEIDs and addresses
-+    it was created with, and it must be gone after the delete. The delete
-+    only identifies the context by its TEI, to use the GTPv1 TEI lookup.
-+    """
-+    gtp, link = _setup(ns)
++static const struct ethtool_ops ep_ethtool_ops = {
++	.get_drvinfo	= ep_get_drvinfo,
++};
 +
-+    gtp.newpdp({"link": link, "version": 1,
-+                "i-tei": 0x100, "o-tei": 0x200,
-+                "ms-address": "10.0.0.1", "peer-address": "192.0.2.1"})
++static int xlnx_tsn_ep_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct net_device *ndev;
++	struct xlnx_tsn_ep *ep;
++	u8 mac_addr[ETH_ALEN];
++	int ret;
 +
-+    pdp = [c for c in _contexts(gtp, link) if c.get("i-tei") == 0x100]
-+    ksft_eq(len(pdp), 1)
-+    ksft_eq(pdp[0]["o-tei"], 0x200)
-+    ksft_eq(pdp[0]["ms-address"], "10.0.0.1")
-+    ksft_eq(pdp[0]["peer-address"], "192.0.2.1")
++	ndev = alloc_netdev(sizeof(*ep), "eth%d", NET_NAME_UNKNOWN, ether_setup);
++	if (!ndev)
++		return -ENOMEM;
 +
-+    gtp.delpdp({"link": link, "version": 1, "i-tei": 0x100})
-+    ksft_not_in(0x100, _iteis(_contexts(gtp, link)))
++	SET_NETDEV_DEV(ndev, dev);
++	ndev->netdev_ops = &ep_netdev_ops;
++	ndev->ethtool_ops = &ep_ethtool_ops;
++	ndev->features = NETIF_F_SG;
 +
++	ep = netdev_priv(ndev);
++	ep->ndev = ndev;
++	ep->dev = dev;
 +
-+def add_two_pdp(ns) -> None:
-+    """Add two PDP contexts, check both are dumped, delete one by address.
++	ret = of_get_mac_address(dev->of_node, mac_addr);
++	if (ret == -EPROBE_DEFER) {
++		goto err_free_ndev;
++	} else if (!ret && is_valid_ether_addr(mac_addr)) {
++		eth_hw_addr_set(ndev, mac_addr);
++	} else {
++		eth_hw_addr_random(ndev);
++		dev_info(dev, "no valid MAC in DT, using random address %pM\n",
++			 ndev->dev_addr);
++	}
 +
-+    The delete identifies the context by its MS address, and must leave
-+    the other context in place.
-+    """
-+    gtp, link = _setup(ns)
++	platform_set_drvdata(pdev, ep);
 +
-+    for i_tei, o_tei, ms in ((0x111, 0x211, "10.0.1.1"),
-+                             (0x112, 0x212, "10.0.1.2")):
-+        gtp.newpdp({"link": link, "version": 1,
-+                    "i-tei": i_tei, "o-tei": o_tei,
-+                    "ms-address": ms, "peer-address": "192.0.2.5"})
++	ret = register_netdev(ndev);
++	if (ret) {
++		dev_err_probe(dev, ret, "failed to register net device\n");
++		goto err_free_ndev;
++	}
 +
-+    iteis = _iteis(_contexts(gtp, link))
-+    ksft_in(0x111, iteis)
-+    ksft_in(0x112, iteis)
++	return 0;
 +
-+    gtp.delpdp({"link": link, "version": 1, "ms-address": "10.0.1.1"})
-+    iteis = _iteis(_contexts(gtp, link))
-+    ksft_not_in(0x111, iteis)
-+    ksft_in(0x112, iteis)
++err_free_ndev:
++	free_netdev(ndev);
++	return ret;
++}
 +
++static void xlnx_tsn_ep_remove(struct platform_device *pdev)
++{
++	struct xlnx_tsn_ep *ep = platform_get_drvdata(pdev);
 +
-+def del_unknown_pdp(ns) -> None:
-+    """Deleting a context that was never added must fail with ENOENT.
++	if (!ep)
++		return;
 +
-+    Both lookups are checked: by TEI, and by MS address.
-+    """
-+    gtp, link = _setup(ns)
++	unregister_netdev(ep->ndev);
++	free_netdev(ep->ndev);
++}
 +
-+    for attrs in ({"i-tei": 0x999}, {"ms-address": "10.9.9.9"}):
-+        with ksft_raises(NlError) as cm:
-+            gtp.delpdp({"link": link, "version": 1, **attrs})
-+        ksft_eq(cm.exception.error, errno.ENOENT)
++static const struct of_device_id xlnx_tsn_ep_of_match[] = {
++	{ .compatible = "xlnx,tsn-ep-mac" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, xlnx_tsn_ep_of_match);
 +
-+
-+def main() -> None:
-+    """Run the PDP context tests in a temporary netns."""
-+    with NetNS() as ns:
-+        ksft_run([add_del_pdp, add_two_pdp, del_unknown_pdp], args=(ns,))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
-diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-index 71df5880b356..e269a260d58e 100644
---- a/tools/testing/selftests/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/net/lib/py/__init__.py
-@@ -18,7 +18,7 @@ from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
- from .bpf import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
- from .ynl import NlError, NlctrlFamily, YnlFamily, \
-     EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily, RtnlRouteFamily
--from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily, Netlink
-+from .ynl import NetshaperFamily, DevlinkFamily, GtpFamily, PSPFamily, Netlink
++struct platform_driver xlnx_tsn_ep_driver = {
++	.probe	= xlnx_tsn_ep_probe,
++	.remove	= xlnx_tsn_ep_remove,
++	.driver	= {
++		.name		= DRIVER_NAME,
++		.of_match_table	= xlnx_tsn_ep_of_match,
++	},
++};
+diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
+index afe7609c67fb..d33a00dd6d15 100644
+--- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
++++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
+@@ -15,6 +15,8 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
  
- __all__ = ["KSRC",
-            "KsftFailEx", "KsftSkipEx", "KsftXfailEx", "ksft_pr", "ksft_eq",
-@@ -32,6 +32,7 @@ __all__ = ["KSRC",
-            "wait_port_listen", "ctl_file_write", "wait_file", "tool", "tc",
-            "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
-            "NetdevSim", "NetdevSimDev",
--           "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-+           "NetshaperFamily", "DevlinkFamily", "GtpFamily", "PSPFamily",
-+           "NlError",
-            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
-            "NlctrlFamily", "RtnlAddrFamily", "RtnlRouteFamily", "Netlink"]
-diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
-index 08deff756f29..69a6e9d9b390 100644
---- a/tools/testing/selftests/net/lib/py/ynl.py
-+++ b/tools/testing/selftests/net/lib/py/ynl.py
-@@ -31,7 +31,7 @@ __all__ = [
-     "NlError", "NlPolicy", "Netlink", "YnlFamily", "SPEC_PATH",
-     "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily", "RtnlRouteFamily",
-     "NetdevFamily", "NetshaperFamily", "NlctrlFamily", "DevlinkFamily",
--    "PSPFamily",
-+    "GtpFamily", "PSPFamily",
- ]
++#include "xilinx_tsn.h"
++
+ #define TSN_NUM_CLOCKS		6
  
- #
-@@ -85,3 +85,10 @@ class PSPFamily(YnlFamily):
-     def __init__(self, recv_size=0):
-         super().__init__((SPEC_PATH / Path('psp.yaml')).as_posix(),
-                          schema='', recv_size=recv_size)
-+
-+
-+class GtpFamily(YnlFamily):
-+    """YNL family for gtp, see Documentation/netlink/specs/gtp.yaml."""
-+    def __init__(self, recv_size=0):
-+        super().__init__((SPEC_PATH / Path('gtp.yaml')).as_posix(),
-+                         schema='', recv_size=recv_size)
+ /**
+@@ -85,6 +87,7 @@ static struct platform_driver tsn_driver = {
+ 
+ static struct platform_driver * const tsn_drivers[] = {
+ 	&tsn_driver,
++	&xlnx_tsn_ep_driver,
+ };
+ 
+ static int __init xlnx_tsn_init(void)
+
 -- 
-2.25.1
+2.44.4
 
