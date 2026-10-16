@@ -1,129 +1,107 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C0D3033EC
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 03:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792122498; cv=pass; b=D4AOO6leHsOD6scEtcxXQxVM5BtSN824ESaNw0R160fmnQmhHSDMW46/CML1kudmJzVdI0ToQwsSnDVhdwuFzHEovTR1HSQP7FA8QyLu87EMNfltch+omVgia6H/3oCJlfmQeiG7hYFp+CyU4eXC2dptWdI3oxhrKVjj0uDHNtw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792122498; c=relaxed/simple;
-	bh=WDhfqi9KVGdv84+1ic9hTc/O7+GDjdOl7MkC6oMvKIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TedqsumIj49rdTUpKYETKwGb3noHkiXqj3nQF7UEoRCCWt7RJIHoGBl1Oxhreae8xRd1b0QRpeHpgNu3WN9/ImN2Gf5kPKWRpp9yXzy93F2LzTGhfcoewEHKyUo+XI03NuCRfl0q+PQ06Ngx9LUSxW9AB6wyxxB6xJzckdfnj0o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MFUnJYMq; arc=pass smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE281D5146;
+	Fri, 16 Oct 2026 03:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792123112; cv=none; b=YsTcNcsiM8N7bzoS4/NK5LDFD53l1zpJP7zsH5gbheJAodKLnTPM/AX+npIrkz/lsyneLLTJ4/fhXPyhdCfceox8SbcAGahsV0aNTcipZzH7WnVRI3Knd9q+j/tWvJmOrw1K0E+CIS70gWuEmYJ5nh5/+GQ+17jkufPuXuxHAD8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792123112; c=relaxed/simple;
+	bh=o8knNmKbwni93ndQr26ckoCYWTOHKQ7tdW4QMghAOsw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GD1LWo6hi5vCPm0YN/jbRObGBVvmuiFp3OZr+qbV64Ex7BIgBVoAyAgEJPqErK2fnwBJCHUdPmoo1IWI9X3ex0EuK3igvfLt4gLG75K1BjKMMBv0+5XRioc/qfLlYOYrl5h72KSTF61o+CP5sa76MEHpIZmD3rFyQBjRleLan+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=aSbPCCaq; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MFUnJYMq"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso6353a12.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 20:48:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792122496; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NBjwWRy0YWXdoHcB2CJdk+IW2KCehr7nLUvyclfjXhEPQu1x/aUv0Hqea06DXwgOvE
-         4RiAvlSVXdsg9tJW6/hA08cZbAsYZ2Kq7gqellVNRaPwWF+LBZXjKMQwWSBLXI27lIit
-         ZhZB5NrZut7FeaGxvkS4ExrIL8DWAztx3anKa0IjHDXlZuQwq+HfWRjdawunCoy/NwAw
-         AB32L/Vga1gZGycs/z9yda4NuPDlWBIypDOE7KAt2K3vXsoF3ajKDm4na4Onda23fmsc
-         Ct4OAbWAY5zK9ClkiIt0sWGPrY7JKn5dVyYTIq8PORODHXCMK/mRywjxofPep6yc8/8e
-         uOTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cHwmVcL3Ea2QJiHo6JwLvdH2j4OcK78NhenhdrCZCWk=;
-        fh=1qiJ3F5uBo3fC5LI1LrOGTcuGDFIRg99y0nYm63EnrE=;
-        b=oEWJtoea2dSyAzUke6SWNRwsLroQTkdoUfqbScyCHFely2mQirqj1gc1y+tA65VkUE
-         I9bXJIPbaArAfuLhGg0YjdOsuADXpqfRm+WanFgQ6QRHujVemiFVzJTmJcuWBxb5V7aI
-         abaDALO+C2tnWD6pDYYGi6vcVuIZhKyIOrc1E98hVzM9rIeCy1de9v1EhXnLhNPvoCfI
-         4OYxj4dWgtI66d7JcOQFuFtv8TdyVzfBGR/BIWBB+K/s2remy4oC2GKSouL5e3p9XRLZ
-         q4YnRTHwhHxsoFckjwcZaj9LE3hh+03ut/j+EiNPuYJT3ktEUOq79hi3qykLC39EbElt
-         6tFQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792122496; x=1792727296; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cHwmVcL3Ea2QJiHo6JwLvdH2j4OcK78NhenhdrCZCWk=;
-        b=MFUnJYMqeRN8pn5oS/fx7Cd7aYGZTuAmL2OPtbvk0h3AtusqHufhUy/9R6we1FzGNn
-         bBiaEt0IoROvODwpQgTngVSOBgbPr3GOWyKRzCSfikrMcdUKGd0EziFzmIUG00VCAETh
-         GcF95UW2KmEWCHa4jPsDafHok/nbbXBUu5l4cFYA73wuuyQl1nvwkiiyQqZngE4O17V9
-         ZTY095u1puHUkVdeCxOdqk+UQTLkUeao3SXccnbw6t2YW6/4qw8Yyc5EHtrT4/gFylU1
-         9QHOTqyYD5w+XTG1uqls1Fi7QAXNy3HD7iLDB9Nqi0L0HcPN7mWIcD2UnifQm39korJ+
-         dJlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792122496; x=1792727296;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cHwmVcL3Ea2QJiHo6JwLvdH2j4OcK78NhenhdrCZCWk=;
-        b=JQA9OeYOWp5Gv0+w7oTgF5mKegx65OtvJYq7/fyT80B1p2eJqKkeLJBZPYpCjIHSy1
-         6VmsbU7d/lhV70WPCZLzJ1+KKG3gL27nSHrgZcbMr6BEYF/T0cJf+nH1hBiSqhsY/piz
-         Cf8wfaY7dI6PmAqbTWPWIJXnZCgGj4hnLw+tkb1Dhm0EHayNWWW1NPZx4/7xofqTlmyT
-         qpEj3xpAqkYcHgH2Lxk8BWabXxHLdEZ5mSPzSk11GGcC4+hJbGjxgQgwDJ54tnBG05iZ
-         6HEdKjlj+up0CPmJhQ5mZys5Uh5RwueCuriwZQCeNCV4oRA+ey5V2IydDsYIsH+YdVrd
-         3N5g==
-X-Gm-Message-State: AFq9FYJrgHZoTDziE/E8sNSiaJcgtkOOn5GZh9ThB1zLJ5+PVvWpHOPP
-	DllekTO3KJA/0xX4gvLluGYZSqaSunuZjGSF6KI3xzFzJBXCjrkISCq3uj4pLx025Q5EosKs8pK
-	4zUIA5IiVjCPV4p2KV9/TXDtyE3Gol+HXTc2JYdRC
-X-Gm-Gg: AYBFou3ZeoLhq+P7hgyl5+3wXAc++6IZ8Mo/C4r8jsY2qscEpn1NRvbVeiVP5imw3rM
-	YCNf7lOWmD6v4pr5kxqxs7XwBhnyDsizSdpurxXDojlDJww/olXMHdMm69NG1jdTgU3+Nfaiy1m
-	ffqRWTQpaKxwpvvX1VTM56gg1sdJu8NGgds8h200KzlbUoX20lavVlMsB4f1mI9yQeuZ1dmA0wu
-	Qjj7SPMk5Ao74uZgHN4cP1oLCa70sOw/cj5YwFIvse4OJZCoZMEUfDI4hfGZOQRqelfhVVa4l/N
-	lixHimIjIVcUJnDXVQzu26tEb7bCs0eRzRwr6xjCpnjYw/SC8d0v0Q==
-X-Received: by 2002:a05:6402:a6c6:20b0:6b1:aa31:a627 with SMTP id
- 4fb4d7f45d1cf-6b38ba0dfd0mr16268a12.4.1792122495231; Thu, 15 Oct 2026
- 20:48:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="aSbPCCaq"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69G0hHtE3702173;
+	Thu, 15 Oct 2026 19:44:26 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=QT4Awu5TidmNGqflwTrlMnPqQ
+	f7PXq4o4cGDIype+IU=; b=aSbPCCaq0UphXQSMVMW35tm7cl6hKNsVjllOvSxZ0
+	tZqL3/dmHcYgICDmKu5JAxNtLx8pWIYgoX1p3qoPnu5MkPdjrT5Ls/Yyg7PPsTeg
+	u/ZhPGG56ANlFQ2MlNh+ZSTA0/QSCLBN/oOIjOpfUDNYEucAbp3q/rmFYL+DJDQ4
+	VhnJH7UrycljSa/0GEh2joKFIV7D3LeMKAq5EdR2CB6+wm9VVIlNSqlGvtNFEkLh
+	NhTxmWw5AhLYcWnjNCJDheoJkLFcFGgEWeyRu79rni5KmV2J1/dC6JePY+6vG3/0
+	xuzVNikAyod/HLWjXe0QMW/76Yn8CcfbC/xyD9pEbENrg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hapqmde1x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Oct 2026 19:44:25 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 15 Oct 2026 19:44:24 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 15 Oct 2026 19:44:24 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 52BF33F704A;
+	Thu, 15 Oct 2026 19:44:21 -0700 (PDT)
+Date: Fri, 16 Oct 2026 08:14:20 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Binbin Deng <18983559317@163.com>
+CC: <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
+        <bbhushan2@marvell.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1] octeontx2: Fix use-after-free of qos node in delete
+ path
+Message-ID: <atGPhOA3oH_g1RTm@rkannoth-OptiPlex-7090>
+References: <20261014064204.291688-1-18983559317@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261014173945.373295-4-almasrymina@google.com> <179209666051.434549.2929683677785392178@kernel.org>
-In-Reply-To: <179209666051.434549.2929683677785392178@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 15 Oct 2026 20:48:03 -0700
-X-Gm-Features: AclHuK82vYjG9iaKBiwqWzObGCIoi3MxPyudlxUnlS3qJQCEAcDwsenVdF71kak
-Message-ID: <CAHS8izPxoA6fU10fSNzKkZHFrWingOgduWOoD7ywii2058GABQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 3/6] net: skbuff: replace skb_page_unref() and
- __skb_frag_unref() with skb_netmem_unref()
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, ayush.sawal@chelsio.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, tariqt@nvidia.com, horms@kernel.org, 
-	steffen.klassert@secunet.com, herbert@gondor.apana.org.au, 
-	ncardwell@google.com, kuniyu@google.com, john.fastabend@gmail.com, 
-	sd@queasysnail.net, ebiggers@kernel.org, kees@kernel.org, 
-	aleksandr.loktionov@intel.com, petrm@nvidia.com, u.kleine-koenig@baylibre.com, 
-	j.raczynski@samsung.com, wang.zhan@smartx.com, willemb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261014064204.291688-1-18983559317@163.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE2MDAxMCBTYWx0ZWRfX5Cx7BpKZut0N
+ U8yusISLIY3Q+vlYloiE9NEFtyovMJV9SWun2ZSI+0khH80+s49rAvU96uqnBk4mDzZmHZDNfUT
+ XWZxvWcMXGXIlZ5WT7TpYXxHLkTdDgnG2hJRqyofkzOm+W/JLyIV6/3N4TkiuI1ZCx/05OiQmvW
+ 9p4EfNxCOR4lkHeC+yC+fxhA/Q8ndu4klh+DzDxGWtYdw5ENYpH0n/qIqMXWJ4xe2KaT/pE4wbs
+ 1rHuWLH3y+sHQW311/SMBh46kCBiL3RFfhNzhg9zNZlVFquN2jlz9a/cZdvVRq9IEDnO/zeaTex
+ XjS0To0QMRelon/Vw8uQ2mFXE3LPHAujHJyAFC7gdRymkT4EUUDMZft/5O1IW9RtmLzqtMBvNKm
+ tWAMDDGrNBXfMF3K+27kjYFKdThKw3pFZLxXZwEJqC0UJrWkFu/zqlXuDCWxwth/8RjXrxUlTvQ
+ QSr7N5GXVLMq9IK5h4Q==
+X-Proofpoint-GUID: Bqa6uQRUTSqIv8jb8axeeSeeeetxstTr
+X-Proofpoint-ORIG-GUID: Bqa6uQRUTSqIv8jb8axeeSeeeetxstTr
+X-Authority-Analysis: v=2.4 cv=U+sHnuru c=1 sm=1 tr=0 ts=6ad18f89 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=Byx-y9mGAAAA:8
+ a=M5GUcnROAAAA:8 a=itfu8BSAOx6kz2H9srYA:9 a=CjuIK1q_8ugA:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=1CYo9-gkzx054UpEq_5a:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE2MDAxMCBTYWx0ZWRfXzLrwTvvdVPeK
+ E/ji5tkwuaCwpcrZjquZ5kkXA5aeOxk46lEd2JXLByqNJx3m1oLv8IfZhVkormnAdu7sS4tCrTf
+ TaVHlmrdBWTQCHUzcPtu7sTlx7ju8eQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
 
-On Thu, Oct 15, 2026 at 1:37=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
+On 2026-10-14 at 12:12:04, Binbin Deng (18983559317@163.com) wrote:
+> hash_del_rcu() only unlinks the node; a reader that already holds the
+> bucket iterator still uses the node.  The immediate kfree() has no
+> grace period, so a concurrent transmit on a socket whose skb priority
+> carries the deleted classid reads node->classid / node->qid from freed
+> memory (use-after-free in the softirq transmit path).
 >
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
+> Fix this by calling synchronize_net() before the node is freed, as
+> mlx5e does.
 >
-> Low priority / nit picks for your consideration:
+> Found during a static-analysis-assisted audit: candidate sites were
+> surfaced by a Coccinelle rule, and the reader/writer paths were
+> confirmed by LLM-assisted (GLM-5.3) code inspection.  The issue was
+> not observed at runtime; it is identified by code inspection only.
 >
-> - [Low] This commit fixes a real refcount imbalance in
->   mlx4_en_complete_rx_desc()=E2=80=A6
-> - [Low] The commit message describes the mlx4 RX error-path bug as
->   "underflowing the page refcount".
-> - [Low] At this commit, the new kernel-doc in include/linux/skbuff_ref.h
->   names ref-side counterparts that do not match the code.
->
+> Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
+> Signed-off-by: Binbin Deng <18983559317@163.com>
 
-If it's OK with folks I'll just ignore low comments. Even if I
-reworded the commit messages, the bot will find some other complaint
-about how the commit message is worded I think.
-
---=20
-Thanks,
-Mina
+Reviewed-by: Ratheesh Kannoth <rkannoth@marvell.com>
