@@ -1,174 +1,277 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4D1541445;
-	Fri, 16 Oct 2026 17:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E014550DAA;
+	Fri, 16 Oct 2026 17:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792170401; cv=none; b=mLOmD5+HwEbeAqGvdo+O4JWOrZ7mZji6QJngIQ78xYWb7/3B3HjhsMC8rOpvk2d8tBNnjKkq4AoDRn+VvdpNMseJWHSNJ1yKR/mhQfVcN1g1tn0IdUe6UibGE/qoPFO7S8vxxPYIe8BqtUL3zHVFwwk33Uku8CeBRjPf4S0ISQI=
+	t=1792170648; cv=none; b=PUgziZgsdNud/SZM+qAN0RjX6lQbQIHm1zKRj+hIU8Fvsm3VJtJMvKNWbPgyBy6MeQBJpFwv+VkQrfN36D8kLLM6Y9KSAcA7mVPe+sIX/nOeIQ/GZ7AZRD6UPqMzN5IB1WR0N305C8FS2BEdpctQkGZ7l/DUagiqo6kyjo+/9nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792170401; c=relaxed/simple;
-	bh=QATHSqJJztJnV0paSL0pCTmsmHHABXkfxxSjlOcycNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=so8voWn+2/bDKtirNlGcUykbodPrr/MD8Lu7S6veKgkmLkfh6onXm3+LbRBPR+TJmgxR6YJ/y1aw/rK9qGDrzEryglzUhgRCTt/E/PvXM3YzShuSic0gbYnn+VKD+yEmBVn4sUrAV/e6Kr4I8MUzXwwRGrvQayaSi+Ksgm2/M1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RPE/DYLq; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792170648; c=relaxed/simple;
+	bh=ClWatQNDLxiU3ylwVIvGAKjZ9bslSf25aw2Yg91ytsc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qv3bY1LR8Gg53B7WmYw2ccBzGGvFhkBcg+UeAocZxtLIfctPuJpc2cWtcqmKLHp/ZiU4AXvtwV7dp++UPbCY+1VuQTq3on4sBy7mWfntaMADEcwz45F87PkP9pIBIvm/4TFvbz1EdASYLSdD8zU9pq72KQtJ6tlgljmVvF1YUkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfrIXKL+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RPE/DYLq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792170397; x=1823706397;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QATHSqJJztJnV0paSL0pCTmsmHHABXkfxxSjlOcycNI=;
-  b=RPE/DYLquV6X7xwPiucytVOQkwxZ/9TwQS1A0UE70Zghoshsx1+MGwmO
-   Xg18bLQRXYK1i4h2UL0JI7D96iSHA0eKD8CPGWfKugSecpGEB5XKwho/h
-   qCQ6qygKs33IwWXWqpr1g720P6zGBF9hvDsFhhJ7M6NwWoEv66lIEz9a5
-   gHifN1tMsnxZnP4QOqiC7h3Pzac89pmR9ZDiGMn0fyCYR4ajaIl3clNHm
-   wIahlEtgnVKsnw/SWPJ6Y/3Hjw3X4AElVDd0Lpx9WlmNyi7JHuhv4/5AR
-   HQsq6Xf8T/0oEkbVpgudf2RDKBCRh2DTztlrE9gRFGQXCDohTWOhdOPgn
-   g==;
-X-CSE-ConnectionGUID: QmkOLJNkTzWrpi5BbMuHfg==
-X-CSE-MsgGUID: 1FmeIew/TpSBUgUtMT9rWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11937"; a="977157"
-X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
-   d="scan'208";a="977157"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 10:06:36 -0700
-X-CSE-ConnectionGUID: y1tY0Dv3QrOetd2Xls98bg==
-X-CSE-MsgGUID: 9N7QS/2nTK+WtvdFc6wO3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
-   d="scan'208";a="2366450"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 16 Oct 2026 10:06:32 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xHlO1-00000000ISY-14Lc;
-	Fri, 16 Oct 2026 17:06:29 +0000
-Date: Sat, 17 Oct 2026 01:05:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Liu Chao <liuc63@xiaopeng.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Liu Haijun <haijun.liu@mediatek.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: wwan: t7xx: fix tx buffer release loop on invalid
- skb
-Message-ID: <202610170128.gs8DZ6Gj-lkp@intel.com>
-References: <20261016041156.2295670-1-liuc63@xiaopeng.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfrIXKL+"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B2AA6C2BCF4;
+	Fri, 16 Oct 2026 17:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1792170647;
+	bh=ClWatQNDLxiU3ylwVIvGAKjZ9bslSf25aw2Yg91ytsc=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=jfrIXKL+oSsRQgoTLmCeJBgiFENWK3IivvN+1MoVxL1yPFErDwZLUqSu0W+mwoqUI
+	 CoZ0XkfN/teQkxmluWYZHawnug6+qmQaRihr6xxg7A5Ci7UsnpEEOgF1efE8E9K7Id
+	 hgh1yNz3SIfgxo3vuBCnYmhJ0bHa+XrxG/HzMgQlHFFBJHm/m8kGTHLQVK79GCJJUl
+	 8rkUwXcDnpw9p0u8i+w5oKVDGWRUeDMc6m5SkCsLsO9Nfd6DVzoP24VGHO4frX/BUB
+	 o9EoH6RlNhDxO9YIJtCX5A9BiQ+ZzEFYS3+bicAIZyDHz2Sg33KMwRyIa3Wl845PvT
+	 imJ3U/DN9w3zw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C04FCCA462;
+	Fri, 16 Oct 2026 17:10:47 +0000 (UTC)
+From: Pierre-Yves Le Borgne via B4 Relay <devnull+pylaterreur.gmail.com@kernel.org>
+Date: Fri, 16 Oct 2026 18:10:47 +0100
+Subject: [PATCH net] net: gso: complete partial checksums of fraglist
+ segments
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261016041156.2295670-1-liuc63@xiaopeng.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261016-fraglist-csum-v1-1-93945be7bb5d@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJZa0moC/yWMQQqDMBQFryJv3YCJNWivUlzY9Ed/sWnJjyKId
+ 2+qyxmY2SAUmQS3YkOkhYU/IYO+FHBjHwZS/MwMUxqrS22Vj/0wsSTlZH6rtqm1r2rjbXVFbr6
+ RPK/H745ACd0pZX68yKX/Cfv+A3VL7rV2AAAA
+X-Change-ID: 20261016-fraglist-csum-9851f352f634
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ Steffen Klassert <steffen.klassert@secunet.com>, 
+ Willem de Bruijn <willemb@google.com>, Felix Fietkau <nbd@nbd.name>, 
+ David Ahern <dsahern@kernel.org>
+Cc: Alice Mikityanska <alice.kernel@fastmail.im>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Pierre-Yves Le Borgne <pylaterreur@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792170647; l=8691;
+ i=pylaterreur@gmail.com; s=20261016; h=from:subject:message-id;
+ bh=+6s2T+CDmwwAnHYG9GYCPGRzPJ9RBMWkgGA4q3senVk=;
+ b=kZzQ4Q7JYQK/iQAX86QuOUaPz9n59cwbCQvw5z16j8UbmaSVTVaLDxCwzAcBN2BDJwUW0C3bn
+ h+ruCMlV2a6BIR0Eh5Wb13xnichnsrpVhlyQ+5GOhXeZIE3t1VctYFW
+X-Developer-Key: i=pylaterreur@gmail.com; a=ed25519;
+ pk=ji67AkgYQ74oEk6yXWqtaQNCkT8ZDb7Jmi6SF/Neu7g=
+X-Endpoint-Received: by B4 Relay for pylaterreur@gmail.com/20261016 with
+ auth_id=1214
+X-Original-From: Pierre-Yves Le Borgne <pylaterreur@gmail.com>
+Reply-To: pylaterreur@gmail.com
 
-Hi Liu,
+From: Pierre-Yves Le Borgne <pylaterreur@gmail.com>
 
-kernel test robot noticed the following build warnings:
+Since commit f0b8c3034556 ("udp: do not transition UDP GRO fraglist
+partial checksums to unnecessary"), fraglist GRO keeps CHECKSUM_PARTIAL
+on the packets it aggregates, and skb_segment_list() gives every segment
+the ip_summed of the head. Before it, UDP fraglist GRO turned them into
+CHECKSUM_UNNECESSARY, which left their checksums unfinished whatever the
+output device. Packets arrive with CHECKSUM_PARTIAL from veth, or from
+virtio-net when the host sets VIRTIO_NET_HDR_F_NEEDS_CSUM, which it does
+for packets that the host itself or another VM on the same bridge sent
+with checksum offload.
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main wireless-next/main wireless/main linus/master v7.3-rc7 next-20261016]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+validate_xmit_skb() completes CHECKSUM_PARTIAL checksums only for packets
+that need no segmentation, and relies on the GSO callbacks for the
+others: skb_segment() computes the checksums of its segments when the
+device can't. The fraglist path doesn't, so when the output device has no
+checksum offload, e.g. a tun device without TUN_F_CSUM, the segments leave
+with only the pseudo-header sum in their TCP or UDP checksum field and are
+dropped by the receiver. Only the packets that GRO aggregated are hit, so
+sparse traffic gets through while bulk transfers stall.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Liu-Chao/net-wwan-t7xx-fix-tx-buffer-release-loop-on-invalid-skb/20261016-121156
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20261016041156.2295670-1-liuc63%40xiaopeng.com
-patch subject: [PATCH] net: wwan: t7xx: fix tx buffer release loop on invalid skb
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20261017/202610170128.gs8DZ6Gj-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261017/202610170128.gs8DZ6Gj-lkp@intel.com/reproduce)
+This was seen with OpenWrt running as a VM, as OpenWrt turns rx-gro-list
+on by default: WireGuard packets from the host, which the VM routed into
+a VPN tun device, reached the VPN peer with unfinished UDP checksums, all
+with the same value. TCP is affected the same way.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610170128.gs8DZ6Gj-lkp@intel.com/
+Complete the checksums of the segments once the protocol code has fixed
+their headers up, as validate_xmit_skb() does for unsegmented packets.
+skb_segment_list() itself is too early for UDP, as
+__udp_gso_segment_list() restores the length in the head's UDP header
+only after it. Segments that are GSO packets themselves, which TCP
+fraglist GRO can chain, are left as they were: skb_checksum_help()
+refuses GSO packets.
 
-All warnings (new ones prefixed by >>):
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/Ysurac/openmptcprouter/issues/4402
+Assisted-by: LLM
+Signed-off-by: Pierre-Yves Le Borgne <pylaterreur@gmail.com>
+---
+Tested on net/main 191aa41548b2 in UML: frames written with
+VIRTIO_NET_HDR_F_NEEDS_CSUM to a tap opened with IFF_NAPI | IFF_VNET_HDR
+(virtio_net_hdr_to_skb() and napi_gro_receive(), as on virtio-net RX),
+rx-gro-list on, routed with and without SNAT to a tun device read
+without vnet header. Packets that left the tun with the bare
+pseudo-header sum as checksum, with 2000 frames written per case:
 
-   drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c: In function 't7xx_dpmaif_release_tx_buffer':
->> drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c:102:25: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
-     102 |                         if (!cur_drb_skb->is_msg)
-         |                         ^~
-   drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c:106:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
-     106 |                                 if (!FIELD_GET(DRB_HDR_CONT, le32_to_cpu(cur_drb->header))) {
-         |                                 ^~
+                    UDPv4  TCPv4  UDPv6  TCPv6
+  without, no NAT    1030    836   1106   1424
+  without, SNAT       250    721    683    196
+  with, either          0      0      0      0
+
+With rx-gro-list off, both kernels complete every checksum. TCP from a
+TSO veth sender through a router with rx-gro-list on, out of a veth with
+and without tx checksum offload, still works. The error path was
+exercised by injecting failures into 1 in 8 checksummed segments, under
+KASAN, kmemleak and lockdep. The same reproducer showed the problem, and
+an earlier version of this fix working, on an OpenWrt 6.18 kernel in a
+VM.
+
+Callers of skb_gso_segment() that pass no offload features (xfrm,
+nfnetlink_queue, wireguard, ovpn) now get completed checksums from the
+fraglist path too, as they already do from skb_segment().
+
+Not done: allyesconfig and full allmodconfig builds (not enough disk
+here); the changed objects build without new warnings on x86_64
+allmodconfig with W=1 and sparse (GCC 15). No selftest: the
+reproducer needs a NAPI tap fed with virtio_net_hdr frames and a tun
+reader that checks checksums, about 300 lines of C. I can turn it into
+one under tools/testing/selftests/net if that is wanted.
+
+This patch was developed with an LLM coding agent (Claude Code). It was
+asked to find out why forwarded WireGuard traffic got bad UDP checksums
+in the OpenMPTCProuter report linked above, then to fix that and test
+the fix; it did the analysis, wrote the fix and this changelog, and ran
+the tests above.
+---
+ include/linux/skbuff.h   |  2 ++
+ net/core/skbuff.c        | 40 ++++++++++++++++++++++++++++++++++++++++
+ net/ipv4/tcp_offload.c   |  4 +++-
+ net/ipv4/udp_offload.c   |  6 ++++--
+ net/ipv6/tcpv6_offload.c |  4 +++-
+ 5 files changed, 52 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index a3ff380d43f0..9c3dbbeb1e6e 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4288,6 +4288,8 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet);
+ struct sk_buff *skb_segment(struct sk_buff *skb, netdev_features_t features);
+ struct sk_buff *skb_segment_list(struct sk_buff *skb, netdev_features_t features,
+ 				 unsigned int offset);
++struct sk_buff *skb_segment_list_csum_help(struct sk_buff *segs,
++					   netdev_features_t features);
+ struct sk_buff *skb_vlan_untag(struct sk_buff *skb);
+ int skb_ensure_writable(struct sk_buff *skb, unsigned int write_len);
+ int skb_ensure_writable_head_tail(struct sk_buff *skb, struct net_device *dev);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 41beaf625421..be3fa938e1da 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4782,6 +4782,46 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL_GPL(skb_segment_list);
+ 
++/**
++ * skb_segment_list_csum_help - finish the checksums of fraglist segments
++ * @segs: segments built by skb_segment_list(), with their final headers
++ * @features: features of the output path
++ *
++ * The segments built by skb_segment_list() all have the ip_summed of the
++ * GRO head. If the aggregated packets were CHECKSUM_PARTIAL, e.g. received
++ * from virtio-net or veth, compute the checksums that the output device
++ * can't offload, as skb_segment() does for the segments it builds.
++ * Segments that are GSO packets themselves (TCP fraglist GRO can chain
++ * those) are left alone, as skb_checksum_help() can't handle them.
++ *
++ * Return: @segs, or an error pointer after freeing the segments.
++ */
++struct sk_buff *skb_segment_list_csum_help(struct sk_buff *segs,
++					   netdev_features_t features)
++{
++	struct sk_buff *seg;
++	int err;
++
++	if (segs->ip_summed != CHECKSUM_PARTIAL)
++		return segs;
++
++	for (seg = segs; seg; seg = seg->next) {
++		if (skb_is_gso(seg))
++			continue;
++
++		err = skb_csum_hwoffload_help(seg, features);
++		if (err) {
++			kfree_skb_list(segs->next);
++			segs->next = NULL;
++			/* drop the extra reference skb_segment_list() took */
++			kfree_skb(segs);
++			return ERR_PTR(err);
++		}
++	}
++
++	return segs;
++}
++
+ /**
+  *	skb_segment - Perform protocol segmentation on skb.
+  *	@head_skb: buffer to segment
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index e74d99ca9fac..0bb73e7eeff0 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -92,7 +92,9 @@ static struct sk_buff *__tcp4_gso_segment_list(struct sk_buff *skb,
+ 	if (IS_ERR(skb))
+ 		return skb;
+ 
+-	return __tcpv4_gso_segment_list_csum(skb);
++	skb = __tcpv4_gso_segment_list_csum(skb);
++
++	return skb_segment_list_csum_help(skb, features);
+ }
+ 
+ static struct sk_buff *tcp4_gso_segment(struct sk_buff *skb,
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index cf07c3c6611a..4a90cdb1a9eb 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -473,9 +473,11 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 	udp_set_len_short(udp_hdr(skb), sizeof(struct udphdr) + mss);
+ 
+ 	if (is_ipv6)
+-		return __udpv6_gso_segment_list_csum(skb);
++		skb = __udpv6_gso_segment_list_csum(skb);
+ 	else
+-		return __udpv4_gso_segment_list_csum(skb);
++		skb = __udpv4_gso_segment_list_csum(skb);
++
++	return skb_segment_list_csum_help(skb, features);
+ }
+ 
+ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index eec3778855eb..e664904020e7 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -162,7 +162,9 @@ static struct sk_buff *__tcp6_gso_segment_list(struct sk_buff *skb,
+ 	if (IS_ERR(skb))
+ 		return skb;
+ 
+-	return __tcpv6_gso_segment_list_csum(skb);
++	skb = __tcpv6_gso_segment_list_csum(skb);
++
++	return skb_segment_list_csum_help(skb, features);
+ }
+ 
+ static struct sk_buff *tcp6_gso_segment(struct sk_buff *skb,
+
+---
+base-commit: 191aa41548b2d2b6af534a6d5cf84a552435c74c
+change-id: 20261016-fraglist-csum-9851f352f634
+
+Best regards,
+--  
+Pierre-Yves Le Borgne <pylaterreur@gmail.com>
 
 
-vim +/if +102 drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c
-
-d642b012df70a76 Haijun Liu 2022-05-06   79  
-d642b012df70a76 Haijun Liu 2022-05-06   80  static unsigned int t7xx_dpmaif_release_tx_buffer(struct dpmaif_ctrl *dpmaif_ctrl,
-d642b012df70a76 Haijun Liu 2022-05-06   81  						  unsigned int q_num, unsigned int release_cnt)
-d642b012df70a76 Haijun Liu 2022-05-06   82  {
-d642b012df70a76 Haijun Liu 2022-05-06   83  	struct dpmaif_tx_queue *txq = &dpmaif_ctrl->txq[q_num];
-d642b012df70a76 Haijun Liu 2022-05-06   84  	struct dpmaif_callbacks *cb = dpmaif_ctrl->callbacks;
-d642b012df70a76 Haijun Liu 2022-05-06   85  	struct dpmaif_drb_skb *cur_drb_skb, *drb_skb_base;
-d642b012df70a76 Haijun Liu 2022-05-06   86  	struct dpmaif_drb *cur_drb, *drb_base;
-d642b012df70a76 Haijun Liu 2022-05-06   87  	unsigned int drb_cnt, i, cur_idx;
-d642b012df70a76 Haijun Liu 2022-05-06   88  	unsigned long flags;
-d642b012df70a76 Haijun Liu 2022-05-06   89  
-d642b012df70a76 Haijun Liu 2022-05-06   90  	drb_skb_base = txq->drb_skb_base;
-d642b012df70a76 Haijun Liu 2022-05-06   91  	drb_base = txq->drb_base;
-d642b012df70a76 Haijun Liu 2022-05-06   92  
-d642b012df70a76 Haijun Liu 2022-05-06   93  	spin_lock_irqsave(&txq->tx_lock, flags);
-d642b012df70a76 Haijun Liu 2022-05-06   94  	drb_cnt = txq->drb_size_cnt;
-d642b012df70a76 Haijun Liu 2022-05-06   95  	cur_idx = txq->drb_release_rd_idx;
-d642b012df70a76 Haijun Liu 2022-05-06   96  	spin_unlock_irqrestore(&txq->tx_lock, flags);
-d642b012df70a76 Haijun Liu 2022-05-06   97  
-d642b012df70a76 Haijun Liu 2022-05-06   98  	for (i = 0; i < release_cnt; i++) {
-d642b012df70a76 Haijun Liu 2022-05-06   99  		cur_drb = drb_base + cur_idx;
-d642b012df70a76 Haijun Liu 2022-05-06  100  		if (FIELD_GET(DRB_HDR_DTYP, le32_to_cpu(cur_drb->header)) == DES_DTYP_PD) {
-d642b012df70a76 Haijun Liu 2022-05-06  101  			cur_drb_skb = drb_skb_base + cur_idx;
-d642b012df70a76 Haijun Liu 2022-05-06 @102  			if (!cur_drb_skb->is_msg)
-d642b012df70a76 Haijun Liu 2022-05-06  103  				dma_unmap_single(dpmaif_ctrl->dev, cur_drb_skb->bus_addr,
-d642b012df70a76 Haijun Liu 2022-05-06  104  						 cur_drb_skb->data_len, DMA_TO_DEVICE);
-d642b012df70a76 Haijun Liu 2022-05-06  105  
-d642b012df70a76 Haijun Liu 2022-05-06  106  				if (!FIELD_GET(DRB_HDR_CONT, le32_to_cpu(cur_drb->header))) {
-d642b012df70a76 Haijun Liu 2022-05-06  107  					if (!cur_drb_skb->skb) {
-d642b012df70a76 Haijun Liu 2022-05-06  108  						dev_err(dpmaif_ctrl->dev,
-d642b012df70a76 Haijun Liu 2022-05-06  109  							"txq%u: DRB check fail, invalid skb\n", q_num);
-35baede15130184 Liu Chao   2026-10-16  110  					} else {
-d642b012df70a76 Haijun Liu 2022-05-06  111  						dev_kfree_skb_any(cur_drb_skb->skb);
-d642b012df70a76 Haijun Liu 2022-05-06  112  					}
-35baede15130184 Liu Chao   2026-10-16  113  				}
-d642b012df70a76 Haijun Liu 2022-05-06  114  
-d642b012df70a76 Haijun Liu 2022-05-06  115  			cur_drb_skb->skb = NULL;
-d642b012df70a76 Haijun Liu 2022-05-06  116  		}
-d642b012df70a76 Haijun Liu 2022-05-06  117  
-d642b012df70a76 Haijun Liu 2022-05-06  118  		spin_lock_irqsave(&txq->tx_lock, flags);
-d642b012df70a76 Haijun Liu 2022-05-06  119  		cur_idx = t7xx_ring_buf_get_next_wr_idx(drb_cnt, cur_idx);
-d642b012df70a76 Haijun Liu 2022-05-06  120  		txq->drb_release_rd_idx = cur_idx;
-d642b012df70a76 Haijun Liu 2022-05-06  121  		spin_unlock_irqrestore(&txq->tx_lock, flags);
-d642b012df70a76 Haijun Liu 2022-05-06  122  
-d642b012df70a76 Haijun Liu 2022-05-06  123  		if (atomic_inc_return(&txq->tx_budget) > txq->drb_size_cnt / 8)
-d642b012df70a76 Haijun Liu 2022-05-06  124  			cb->state_notify(dpmaif_ctrl->t7xx_dev, DMPAIF_TXQ_STATE_IRQ, txq->index);
-d642b012df70a76 Haijun Liu 2022-05-06  125  	}
-d642b012df70a76 Haijun Liu 2022-05-06  126  
-d642b012df70a76 Haijun Liu 2022-05-06  127  	if (FIELD_GET(DRB_HDR_CONT, le32_to_cpu(cur_drb->header)))
-d642b012df70a76 Haijun Liu 2022-05-06  128  		dev_err(dpmaif_ctrl->dev, "txq%u: DRB not marked as the last one\n", q_num);
-d642b012df70a76 Haijun Liu 2022-05-06  129  
-d642b012df70a76 Haijun Liu 2022-05-06  130  	return i;
-d642b012df70a76 Haijun Liu 2022-05-06  131  }
-d642b012df70a76 Haijun Liu 2022-05-06  132  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
