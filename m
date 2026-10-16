@@ -1,62 +1,62 @@
 Received: from sonic317-33.consmr.mail.ne1.yahoo.com (sonic317-33.consmr.mail.ne1.yahoo.com [66.163.184.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BFB64A8C
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BB31FE47B
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792113140; cv=none; b=I891VJvrrF6yN+buifwlgAF7iUnfhs+ieKWQrX2IINXPJqYE9aRm+715UCLA7YOtwpW/ExTOTJa6/PDXMdM8xZB4aJmTYQNGJuW29GrsZZySY5RVXZRCBMVpaczrGMrL8eTCY8J2zdQujtqvSAcCFjvUrBPG0kve67qQyNkTEU8=
+	t=1792113305; cv=none; b=msG/BUw9rsMQnNsjWMO/gBdV7r3NCY6a94EZcm71EsJ2E86qkT0vS8yTLUMlwMR3g49yXN5XujpBL18UvNaXxwmIV4nYf4rTcO+GKVJExr2YUBWdsGIi6zJe7kE8ap/dJvZp3IDl6eSWCvTSzOR/mKbLvhEb19SqVGUfo+M/w+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792113140; c=relaxed/simple;
-	bh=DZpciyiHrnfZi/U6tegj4iEP8brHE8DE89jDeeiGZ9w=;
+	s=arc-20240116; t=1792113305; c=relaxed/simple;
+	bh=vc4cv9TfXy6V0eLdTZ8XChpWs9cMoE+yk9vORjbehJg=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=ZjUKapYZbGuWGpCE60LNLFeEGIfagyt/YysTIOP8x86oMux+miOrYb+nCpntV0+lzxTZu5NSWFh2tx2D/YqlaB2v45Ke+LbDMyw8exi4gCOyRFINXsHIpqcw4yYUFKAfoZPfYrJr8Cpo2f2p7k2RaS1z70QwQSehBVopIwkxmTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Bj8eB/QU; arc=none smtp.client-ip=66.163.184.44
+	 In-Reply-To:Content-Type; b=ie7kcEEzf1xogpf73VH/GALOLWPT7VLH86bKztjHF4STbo3Q7EW3Ti4OweenHfaxGkyX0C+PKiC1YMt403AtT1YSl0vyjMt4F6QpiGW+t/6ky1piG3/bgyE94Hdj3hdVWjIfs7jvrHNb4AF6GHBLfmxSv6K83esRtxWV0Y/WBdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=tNsjv7CF; arc=none smtp.client-ip=66.163.184.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Bj8eB/QU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792113132; bh=gsRorfpiRWfdlb5OcQgolk/n/Hz6due+H0Gle/vIg0g=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=Bj8eB/QUfhoiFDm6tdsjE+ZPkQwWEFZT6hmCOHWsl8bEeKtd9kKuBHzhwtGUmOVtMC9AoFaFNFDjt7ryRLJVJu2tIJ5cueUDM+YRB4Amsjx2bDNGmLkjH0luS+PP1g3MFLHb72X05+lp4V4D38phyutuP0x7tZW+V1aDl1m38O8oWnd3hIvMfVcsKPjMw0n7vqVw3H98cSQSpBf+MSvdLnKwC/LuMreBb11nznrPgh97AYyblO542EVAQvOGJ57S99D3CSOTqdK6JHMICbuj0cOPJdZ3/s6wXqpM5xq743/FiLoAydffffjq/t6jtsZ2XjtP8NAoF1PG7Srpi90DPQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792113132; bh=K35H1uzBDLq2bzDCkEjIWqUA+pi3Aq/vV1haFFvv5c3=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=jP3SABH90q3+bOzO7Vny0qHVFF0EB+ivBtrQFayQ51OTRkh7oIHPHws6U7oPS6fOaB1L1UOwlrVD+1qWBe+Q8B/OQYNAYv7r8cvpZnr75xZw8joTmgmW8kGqErM2Csw2yuC577IHmV9UvO23WLZmP+5puD13r104KWevq9hRqQ1wHMI7sSYnmtDNBRb0fOiFTWAXu0Cj/VhjTJR5yv/94rocWPKRE0L7qOMk2WOLpxa1GWPHXFegX+fzW+DuShWo2lnBh+MyE8IpRsqW+Bf3S43u0gvhsGNAx0f9uJPyY4sYQFIa7o2o6qRgayARhfpAT+rEoLljfBbaS8Oym6zlVw==
-X-YMail-OSG: 9PX1dWQVM1kRA7IcAlvjApSC6uV82oV0skHZS83tahcXjOagmjczimTj1PqlBx9
- SzSS8E2feg1OghnCurbuT9H95zoHygOYZ9HKQm4OE.qXohd7eoMEilGsudueKCtc4Q1YLdWdxKJQ
- w8Rlehtk9m2yGllmmCucRASUt5QUh2o2e9Ookbl6AblIrF3QOecq14OGcYliGWy94gVijst9.a0E
- OXlWvniBobtuYcfoJlQG99FnQexkLLSaXflxowkzRWsZ0KDgVKIvVNUqRVYWYU.KSj0K2bDD70cU
- R4jDPH5e7j.nOTyD20CkTRiKuA0A1Rbtso_5PMjP_Y4tUq_P2ZGd6jMipxjTU8OVqkijF2vkgj0Z
- dEFa.DURoRqwlm_DwgdpuLhYTpq7R3kDF_Y4mWnqf7PEueEa1WI0ui4x_Vc0QjUF0xRrCv4Pupi4
- _DGEWvYNHEIH.l9bApdd5Q1Q0vsmMfhupX3OVDSIV3m4mvGVbIqcWUQUmmFx4Hf3vatXnLDhkZNn
- WAfttiWSfIeqlyuFOnoP8cXxm3h90IPFcHxs_EOzusiQtgVny8Ou5XpVLrAdL_bGJ3CW2KAKdJm8
- jAMNEfJd1edaffKRmhKuED1EHtZE7A2Jwr9EyMOrCiSl7QqvRR52jDNZZzJzBJvgVNHD3N7hySwN
- 7vnHbFzx.sVeTmduVMORWrF20bub4GF27Uum72UFXu2Mef_IjV0NCX3Oz8k9trXPPPdFlWjAcg6W
- Y8op6pWecppqdb2bi3Pj_oVvhE.tl7eecqDpbzqxPC17Gdup0XPltguwrVoU.4FWkSSEiS6aWkMT
- HTwNYT4kGvfnR.lCzj6yuXAjRVZB40ndffKE7fuKEo3Yf8kzNGj3cipLh7iXG1_tOd8yUZM9w3y6
- E1XTYSAIDqL6RCOV13OM.XntJUZ9gG1J00gjyCEZsyqkUrFDZKQvvXZ4jQqK99vWX.S1DhRtp8Tk
- Yt8sLOQ95GeVBrfIcNR2eAS9gZYaJ9qEJ37.79IBByPA6K7_q2kk24G6FLFyXol1oA.nLgq1xXMs
- Iuk9tqmVpBVckzO3jueao1tliS66yKSwHbqKbSooV1YHNgYT1BwKPT7lGpOZxfOcxF79JY9aOaii
- x.yBiqeRsK4XcxnzNYe4Z0Ffk_1KdzSM.vz5lHl.NuKBKV75onrXC98SErtV.uEUDGMvW9cpMT3R
- tHlpeeod8Hgc9hqCSGmg8cGTPD84UggKq69BBLNdaIgg799xpd5UnzrJUNHIsQR._BLJ7YOm3DiU
- _z7STKEcGizwRDANeziI2TOOemc.T8kZHbenzRe245ufWUiu_ioUgOtW6lV6gf24DUxWN_Mb2LUB
- 7GGlfj1bXh38xMGhXlfhmPKHcC9bJDEFs4fwPforzgdMQGui6vyXhDAn5BYIBBfCL4R0tJ4OZePJ
- UJXYefx9esCNccwqxHVzVslY72nXBSzISPRFvM6uOUOQjJtJBn5WX9qHYh1Yz0joKp7T_3Y4MZcR
- 3SZVNtu28mqUWJxt.OD_Bt.eqIw8dK7JjrjrPID4a8oueXGmYIETWLgBiuEb_oOi6BhqpqWxE8NO
- Bj2yLvJQozdjN.6U4BoqAzKbfd7nyc2v_CJ.qdoEeRTBwqitqbG1EG4dMd2tpHRuYPi9Q5iIRiMa
- V_zZwLfc5LONP17wjyaEC0TJCFW8SVgDQsA2CKKTWFLqSpNixlFT8FCpw2cnnU6eZhUk1sxC2ITm
- BiaWadFuoDn5ZlbqBLw1EQEkbz2E4NbbLtmgIyf2Khlprm0zNjXtfWI3we4wHoIwl4DwSRXAg0oC
- p8f8hUg_uctlxWwdFp8wDVYoLods_7zRgp9OtV0.ViC8GtQhVbwuID8OquAESlNbU1_O6kve712m
- lRndNM4PUnCGCa4DVLp32_5hmarhIi2f1KtvRzyAtoZkRj3ohdb46x.cle3xn9mP5WzRqyiLR02g
- AR2HnTLHrfhzIGx6uVzDl7o3ju5E0UIL1FL9jq0BFZalzV6K9MGk0ullCBChLWIjiMV6D0CQxkj2
- prd9JQaUtSn3_WhWm7CPbh9DS6LK8UmQpyx_p9cCxB_lGFFKIICJHOFVHh2ZvLlXybGECz8q7xQb
- sTLZuEpd9pkJmLvB7DK6FTRV3pIFaudFmHxatJi92BOXbXo2K531ZZqmMwWc0Mbe81Sa7xVQ8xqc
- h_LtmSs3rdep9348uu4IgsjBAEc9e2BZOaSAJHgyxdk4sRGP4Y6oF8mVlL2u_Qfk.0WCcFDrd6VB
- hCUG50HC5M.n9b254dauf6B8a17IkKE0GEyc1KbJMSvRjH2nT398BaEGOvRvQJJdHOSUK0UD7Sts
- Dt1Tx4SqIH335fSzBCJDTAvaY3jKluDn3oX4-
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="tNsjv7CF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792113303; bh=2r/v4f4+CTOzNYNcrtTt3nliQmx97miAvQ2bp6jBsgk=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=tNsjv7CFfUl/ScLOYCNPehF1DaDxO0vn7a9gJrmQQE3DDNy5Wb1nsDRNPyV2lUSE5h1vjWMeZSNbQbNnbfvwlyz1x/QHhaMYTW76ivZ4N2OYsk5JLrctnKc1K7cc03thuTgsZAbQP7eEvfBrom4FYH4JIOXQg5XxZ84kWE+HFwC+PWBJRrIvfFHantrQAaXpAzaKaziGkkA9nvPq5KIlq1+ikT1WJCrgtKedkbwlpxkpHfBkP6c8JYzRBirWWuidNvMt0f8+nh1nkoOkaE+EOOofnRLhGfBFt62A0QbAkCgs5EalnaljiCISW6XWV6ln28/epZJ6jX/Pl+Qz/jf8Eg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1792113303; bh=qqjmpPHim1CmyZRUhm7mO83M5asNnG2148Zlgar350w=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=S6HuC+rHuhE7fUi8t7b/f9Dz5wGl8p3mKRki70CrmJjaLvjx0v2UZNsiB9vscq4DUiwvNVUJ0EFUvfomf9cONr2aKBbMRabTWo7Le5qNMgzZ2YUT/4saiCzzRlYRUR5moe58jSZIV9z9Q/fLnRzcVer89uJwBV2O5++QieDn0Mri+bDc4/V9Rjq+fewtwjbcBHfsi0FarB42xJxhqfbUR/Z++e9Dc7A2cYEPixHnGL9Rvp8y3aXVqa8PLAzYNSrH2D1efBO8tAzSCR134IyiJ6tp7SYU4xTnZwBakMuy0ruc2T7L21q68my87cYSiWW2D4U1L+nQnV+9HIgb7daRGQ==
+X-YMail-OSG: .WYQ_kQVM1niajJ1KaOQqCVlAFecPF9lr4OHpbZoP7Te5Tx_YM7bC0dT9QRcBjX
+ UxbE.qKlrKgKLlydSklEP2HDzxwQmSsyL.0xIi2qBIcyt_JwmtewUV3b6AtycBrEfz_rz8Rn7_yd
+ cQAw0gvVMPN7B6.UD76XWaVOsifVHf84m0xm2dD2a0kynG3RwZpjLFtrGx0mBTpVxCybh03T7ApS
+ sxiXyihVP3ndZk5LeXSqas9_twdSb5IUPa5zRneGWmi0k_PZMgzRDWKjix5W6vDEBzw0cbQk2oly
+ Ayk_dntEDJG9l3YCZwamIBmt7yfSKN5KXHzvzMmKb_Xm7jumz6T6CKR6Vu4CzFdB9a_EG31GxqL_
+ J.MuQftWmsGWMcaYAAbFIrU679nMwREnDfHyQvq4kIOkGZ8FhH3Z8iRpoh273Z35wW4_8DghEZlm
+ flwR3kl5y5igHAOvlpBiQxzSxhoP9a7k0uoCwEx_WurhpgUP.eBtlSds0vnpXINlkU8a2LGmRdWf
+ fbHsSlnq5gfwb8XZM3oX8VvpHxhvmKnmwlzEA2ofemYlEuVjoDzqAcfEFysu8eaNhKMC1n2nRIw.
+ MIDkks5aiK.1xoeJzGNQTZsjZudWefz0e.rm_k9f6M8vwJJca7FLNxu1Jp14IAofdiVeQvFrkD8K
+ OssLhgycQtjArs5_kVnPpQcjTJQs8FB4otje0PWxbOKE_jW7o1d4Kg6G_i961go9j5B1x5YNPByk
+ tRXS4yCHxVQ.AvgdAFpceCGVIp7rrQyr.lWVMOrD.Q0KOTwMxa6IFBKDwh2ClgCRQrnFW.2q9zo5
+ m0NZvbdabUlth7X1BbQCe3ZqGKv7weTar5LAruDM.0oRU6YNVMRNsZmcuynZc7Dg9JfTKGG3r.yp
+ AH4SJv3U5c0ddreUJl82VshwWTaxS22ZJWphowmuP8WY.1nZ4iq9jDep3eUaR7MLVF4d8RoEJW_k
+ SaUzOa12mHyYGjfYy2f_aNn3WQlnUYIRPA5z_G__1KjWyuidtbR8jYDpynBaKszfN27M.DQRMPFI
+ 6bRSrI30ZFCobTK1mpkOIuzjoXA34gXOx8P3L0JErgfYNwEc2JusddxGm_ynGcb5VXEn8NHGkMoP
+ i.wstUhNwt0zM7aC9Nt1h22fsVB9n_3MJwU.Ya8J_5ZEGv06OcQvj_.bfIfiIRGZIXxbWPqfa_NG
+ Vf.OIK_xoAQWSy2J9MNqzF.fUHKYcnCuO2OrFdf3Uaox2mcbWYvzlv3WVBwL7fdFDi2s7BiFPHYE
+ Fi12tXBccIF9m63_6xGi_LMn_yhZew087PJ2MG2KJXyL5sKpoIej3lzcOXUndNEvaV6w6l0YilFP
+ JNjLDd0q.R1jABhed8On_YoQJK7AZmcHj6cWkxGpCvoLEk5mAHhP6hYSUGS4Qqg5XIPna2dDXnlR
+ WpjRMmLKVPgz3W66SfBs5z97HVrh6V3Y2I5sTJ50i1G2NUVZCp5W5G8laNEIw4DdR3B6Wix0oupY
+ XlujvTzEHrjYgAvEclDBniv1LQj3kdJQBnqXymDZYnehNk2CWEafmtdKNCECG3JAv5C6osjfhIcA
+ 699nbCSfQ7vcFeVKFc1N2Y61EcLfdMcl5HG3Nkp4Xri31QkDY0zNLlGxf8MIlqJUMCh8fXLKnJK0
+ F4qqA9dni_Qq5Zuv9jxQtlkZUzhH6YGp6LLHNYI0nPVnr5LoCAQDs54LY.ukMPYAqzagFzTrQ4.L
+ 9SFWh7JaoA55fZ045YtXrfkxLwYQ15JspAkPjAAqoJ44MTcuQZ5tEXCc6eIyF7FcxjtMDR81g1P.
+ 4Glw17wBtw7aL4bdUb_BWw1nIZ17Ia4jEZ_wpN9JrAw33amQ5Db_OnZYrlfo4iWhuJfmZLhq9v4d
+ zvGyihmkF2UdGuY3Ms6jgFdSH7BeG0XoSD84.6NLJGiSJ3Wlx38vKEBqxVmroTVF6rvZPMwx2bAh
+ pCYdNOlfst3V4.jcId4uPligNA4AIbUNAxKWuKfUo8PIMxVcNaVCWHfQXROVXoj1J4r4_izPlrIr
+ k5xFD684wq.IfohLOmQmmw3TYyl439JrAyG.xP60ivhHlEllfJzm0fvPe5by95F3U5uubiVTDaq.
+ ayk2ES_3kwltPsRrIfvfvfkVYoo0bNOdPl9BcgbOfICtjQ.1rhVVpi4J8z3.jqa_6A5VdHtEix98
+ 62Cfcq74ipQiqlkaR52JpyV_rFj.9lDbNktg5XK2a9NIJTfEGHQ1Dwx5BYDNSjVW0bl5W8szdIgk
+ GZZAKe_A7bxTIr_t1aLYLcMeD_1ijslumA.7jnJXGsSbk3wVJkOa7a5Wq7lcsmPiMWDZyv6a7D4L
+ KxrtOsN0cL1q_DiIdBxGd7wuF.bLovPdFQes-
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: c00d73b6-18b2-4096-813c-398f9b2a0bc1
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Fri, 16 Oct 2026 01:12:12 +0000
-Received: by hermes--production-ir2-5dd9bf4598-fvbwk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 29a607ffaeb72dc5bc81399c1e82b61e;
-          Fri, 16 Oct 2026 01:01:51 +0000 (UTC)
-Message-ID: <7bc13c51-6e93-4dd8-bf4d-b65d87fb36e1@yahoo.com>
-Date: Fri, 16 Oct 2026 03:01:44 +0200
+X-Sonic-ID: aec25bf8-369e-4eb8-927d-ccf1a4a23a18
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Fri, 16 Oct 2026 01:15:03 +0000
+Received: by hermes--production-ir2-5dd9bf4598-xpdvn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 1104f8dfdca916fd523cdad120337e09;
+          Fri, 16 Oct 2026 01:04:46 +0000 (UTC)
+Message-ID: <aca905a9-9cc2-456d-ba5f-2d9425f1b5c1@yahoo.com>
+Date: Fri, 16 Oct 2026 03:04:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,8 +64,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v6 1/9] dt-bindings: net: dsa: realtek: add
- RTL8367S-VB
+Subject: [PATCH net-next v6 4/9] net: dsa: realtek: rtl8365mb: set RGMII mode
+ for family D
 From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
@@ -78,30 +78,140 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.26740 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-The RTL8367S-VB (chip ID 0x6642) is supported by the rtl8365mb driver
-with the changes that follow in this series. It is identified by its
-chip ID register, so it does not need a compatible string of its own.
-List it under realtek,rtl8365mb.
+On family D, RGMII on extension interface 1 needs two things that the
+other families do not: the EXT1 RGMII TX clock delay field in
+EXT_TXC_DLY (0x13f9, bits [5:3]) must be cleared, and the pin mux in
+the top-level configuration register must be set up.
+
+The vendor RGMII setup for EXT1 clears the RGMII field of EXT_TXC_DLY
+(0x13f9, bits [5:3]) in addition to programming TXDELAY in RGMXF.
+Do the same. The init jam table writes 0x0090 to this register, which
+leaves the field at 2, so without the clear an extra TX delay would be
+applied on top of tx-internal-delay-ps. Clearing it makes
+tx-internal-delay-ps the only source of TX delay.
+
+If the internal MAC4 block occupies extension 1, do not advertise RGMII
+for port 7 in phylink_get_caps(), so the configuration is refused before
+any EXT1 register is touched. This mirrors the vendor RTL8367D API, which
+returns an error for RGMII on port 7 when UTP port 4 uses the RGMII
+interface. Otherwise bind the RGMII/MII pins to MAC7. SerDes 1, which
+shares the pins, is always disabled.
+
+The family D branch is not reachable until the chip table entry is
+added in the last patch.
 
 Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
 ---
- Documentation/devicetree/bindings/net/dsa/realtek.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 68 +++++++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/realtek.yaml b/Documentation/devicetree/bindings/net/dsa/realtek.yaml
-index 473facd..ca775f6 100644
---- a/Documentation/devicetree/bindings/net/dsa/realtek.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/realtek.yaml
-@@ -43,7 +43,7 @@ properties:
-       realtek,rtl8365mb:
-         Use with models RTL8363NB, RTL8363NB-VB, RTL8363SC, RTL8363SC-VB,
-         RTL8364NB, RTL8364NB-VB, RTL8365MB, RTL8366SC, RTL8367RB-VB, RTL8367S,
--        RTL8367SB, RTL8370MB, RTL8310SR
-+        RTL8367S-VB, RTL8367SB, RTL8370MB, RTL8310SR
-       realtek,rtl8366rb:
-         Use with models RTL8366RB, RTL8366S
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+index 2dabc4d..f00c1c2 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_main.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+@@ -332,6 +332,12 @@
+ #define   RTL8365MB_SDS_OPTION_ARM_KEY		0x0249
+ #define RTL8365MB_SDS_OPTION_REG		0x13C1
  
++#define RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK		GENMASK(4, 0)
++/* Shared "disable" encoding for both SDS_MISC's and SDS1_MISC0's
++ * 5-bit mode fields.
++ */
++#define RTL8365MB_D_PORT_SDS_MODE_DISABLE		0x1f
++
+ /* Embedded DW8051 microcontroller control registers. The microcontroller
+  * can run firmware to manage the SerDes link, but this driver keeps it in
+  * reset and disabled: phylink already performs the link management that
+@@ -465,6 +471,20 @@
+ #define   RTL8365MB_PORT_MISC_CFG_VLAN_EGRESS_MODE_MASK		GENMASK(5, 4)
+ #define   RTL8365MB_PORT_MISC_CFG_CONGESTION_SUSTAIN_TIME_MASK	GENMASK(3, 0)
+ 
++/* EXT_TXC_DLY holds a 3-bit TX clock delay per external interface, for
++ * RGMII ([2:0] EXT0, [5:3] EXT1, [8:6] EXT2) and separately for GMII.
++ * Only the EXT1 RGMII field is used here, and it is cleared in RGMII
++ * mode so that tx-internal-delay-ps is the only TX delay applied.
++ */
++#define RTL8365MB_D_REG_EXT_TXC_DLY				0x13f9
++#define   RTL8365MB_D_EXT1_RGMII_TX_DLY_MASK			GENMASK(5, 3)
++
++#define RTL8365MB_D_REG_TOP_CON0				0x1d70
++#define   RTL8365MB_D_MAC7_SEL_EXT1_MASK			BIT(13)
++#define   RTL8365MB_D_MAC4_SEL_EXT1_MASK			BIT(12)
++
++#define RTL8365MB_D_REG_SDS1_MISC0				0x1d78
++
+ /**
+  * enum rtl8365mb_vlan_egress_mode - port VLAN egress mode
+  * @RTL8365MB_VLAN_EGRESS_MODE_ORIGINAL: follow untag mask in VLAN4k table entry
+@@ -1270,6 +1290,33 @@ static int rtl8365mb_ext_config_rgmii(struct realtek_priv *priv, int port,
+ 	if (ret)
+ 		return ret;
+ 
++	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D &&
++	    extint->id == 1) {
++		ret = regmap_update_bits(priv->map,
++					 RTL8365MB_D_REG_EXT_TXC_DLY,
++					 RTL8365MB_D_EXT1_RGMII_TX_DLY_MASK, 0);
++		if (ret)
++			return ret;
++
++		/* Bind the RGMII/MII pins to MAC7. MAC4 does not own them:
++		 * RGMII is not advertised otherwise, see
++		 * rtl8365mb_phylink_get_caps().
++		 */
++		ret = regmap_update_bits(priv->map,
++					 RTL8365MB_D_REG_TOP_CON0,
++					 RTL8365MB_D_MAC7_SEL_EXT1_MASK,
++					 RTL8365MB_D_MAC7_SEL_EXT1_MASK);
++		if (ret)
++			return ret;
++
++		ret = regmap_update_bits(priv->map,
++					 RTL8365MB_D_REG_SDS1_MISC0,
++					 RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK,
++					 RTL8365MB_D_PORT_SDS_MODE_DISABLE);
++		if (ret)
++			return ret;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -1773,6 +1820,8 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
+ 		rtl8365mb_get_port_extint(ds->priv, port);
+ 	struct realtek_priv *priv = ds->priv;
+ 	struct rtl8365mb *mb = priv->chip_data;
++	u32 data;
++	int ret;
+ 
+ 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
+ 				   MAC_10 | MAC_100 | MAC_1000FD;
+@@ -1802,8 +1851,23 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
+ 	 * which remain unimplemented.
+ 	 */
+ 
+-	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII)
+-		phy_interface_set_rgmii(config->supported_interfaces);
++	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII) {
++		/* On family D the EXT1 pins are shared with MAC4 (UTP port 4).
++		 * If MAC4 owns them, RGMII on this port cannot work.
++		 */
++		if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D &&
++		    extint->id == 1) {
++			ret = regmap_read(priv->map, RTL8365MB_D_REG_TOP_CON0, &data);
++			if (ret)
++				dev_warn(priv->dev,
++					 "failed to read TOP_CON0, RGMII on port %d disabled: %pe\n",
++					 port, ERR_PTR(ret));
++			else if (!(data & RTL8365MB_D_MAC4_SEL_EXT1_MASK))
++				phy_interface_set_rgmii(config->supported_interfaces);
++		} else {
++			phy_interface_set_rgmii(config->supported_interfaces);
++		}
++	}
+ 
+ 	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_SGMII &&
+ 	    mb->sds_supported)
 -- 
 2.53.0
 
