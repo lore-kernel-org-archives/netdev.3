@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887873BE17E;
-	Fri, 16 Oct 2026 09:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08388369208
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792142351; cv=none; b=MDcynYq8obqf+PgdJI5q7xajApZ8SQql4QDS0QD9wWm7Uc79azuxsoAtyX46FszEQSIp5AiOQqIofDYIDv6IaiXF7kSlgDC7mf+JMbAbdZCt+dZwgtLfWoatFnmZvACEAhdPnEWBSKKw6+foHSpOjWwuofndoveqAOjRy/eUmT8=
+	t=1792142357; cv=none; b=ewixPrHIRHnNaApJCVQC3SMG7CITLBk0DWxuncOuvug50MamcWQqs1Rblwl2ipL/Ot4yW4MDTlFdiQFpT2t3GSVrhnlhNc23i1rMnUw0gHcukUR4RKiNpJJ7ZVKA2ic+rEXDHRPEOPDasKOjEz/MHt77LoAoNkOUrLnDwo2T6sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792142351; c=relaxed/simple;
-	bh=zvpmhm+BAUlfIVJ/6Kp9ShG7pA3G2q65FWBMzuTisWM=;
+	s=arc-20240116; t=1792142357; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n/LCmWw3iBoqsDKjVTyPE6ERM68qNS2UdTOhApacMNUNRFk5YWQIcR2TKUESW+JOq59j9w0fDU9OPj3eXaFC+Au0An9tlpxsMPAtQFRopHG8ww+J73KmhwfYwESb6/Z2zvnUYhmvElBvtlaEBYor4jCtOvcg+l69Ye6bSSyetOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7mT5XDP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=u4QmyJ1RXPocHSrxfjp9GlbMX4IEdFvRmVjFxsx9t1ODBjapotdFGWb13eerGILrRxDZXEwer53GKEES7slcOzoVt9iHxzoflybPpGwt3/bEXmL+f006qt40cq96TLti9tqPgPIf83+VzffWfcf2xrKKs530TtaALB8Q28a7bB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EoMGtO3T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7mT5XDP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179381F000C4;
-	Fri, 16 Oct 2026 09:19:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EoMGtO3T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BF31F000C4;
+	Fri, 16 Oct 2026 09:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792142349;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	s=k20260515; t=1792142356;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R7mT5XDP+2oPGJhvdpCOK/511QiGEeN7bLMU3Bip4mljZXwdc3HKRiTwWMfFBmVz2
-	 9vtGszLeSkIP/MK3fmyTqmi9cKVNnR2QRVx9DbbTAMadPNqehqRznEwf6+9Sp+IJVg
-	 MpWw6qZ6dXuE8EBoHojDeqR5oZ27QVLUq3W+KuTxMJxenDFAx0PqyETroc4qYnxmwA
-	 GY1Xm+55yGbsADcEO4rubxIdYoEpU60CAaSyMnJV0Df1ApkkyJpak2t1mmfrr8EGdf
-	 At5nB8yiKDM+y9VEX9Hd6sAZwMqyXD2lsDLGrDSAtQU9mws+pJVi3bRKbJjxqKely6
-	 tbfGRUPorGlGw==
+	b=EoMGtO3THpstrM01B9Qp/j6cmJyYgI0c5tIcSxSybFYqyZ2gHnj8y4No3SYEyxQ5D
+	 mOHiXgYxv9vnIkWH8eAb1jFij31Iz2Ep/4/tRFClzlwQAJNLUa2TPzfRTG3TpJ/Ri6
+	 YFy7b/HQfD9v94Ry1cb/WfcTABaKq/i1XagmspJwF7xqc2qboX2CRrCwa8PLzjr9SU
+	 8iVY68fWlKeQpnIWawCd5XgggZOP5ACs9UV+wevOVB6yjL2qEOi+WztBpOmsDV/oT/
+	 TbJqKmjWGM/ZJmXI0NR9xwKOjoi3XZgzYJD4U2aBTQk+WEJ6XLTlwirumFs/mRolzB
+	 2riC+Fr0UuTZA==
 From: netdev-bot+sinfo@kernel.org
-To: Zhi-Jun You <hujy652@gmail.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Sujuan Chen <sujuan.chen@mediatek.com>, Rex Lu <rex.lu@mediatek.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net v5 0/5] net: ethernet: mtk_wed: misc fixes
-Date: Fri, 16 Oct 2026 09:19:08 +0000
-Message-ID: <179214234859.408196.13768026652794039093@kernel.org>
-In-Reply-To: <20261016-wedfix-v5-0-8b02e78fd34f@gmail.com>
-References: <20261016-wedfix-v5-0-8b02e78fd34f@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Qiliang Yuan <odys.yuan@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ netdev@vger.kernel.org
+Subject: 
+ Re: [PATCH net] ipv6: account route exceptions to the netns of their dst
+Date: Fri, 16 Oct 2026 09:19:15 +0000
+Message-ID: <179214235565.408196.17937869760737531000@kernel.org>
+In-Reply-To: <20261016091556.2750902-1-edumazet@kernel.org>
+References: <20261016091556.2750902-1-edumazet@kernel.org>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -59,10 +57,6 @@ commit messages seem to be missing some information:
  - Whether the issue was actually triggered, or is only theoretical
    (e.g. found by code inspection). If it was triggered please include
    the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
