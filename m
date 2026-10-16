@@ -1,307 +1,134 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41FB4CC61A
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792157612; cv=none; b=kCNaRQh2IDb2CJvJddeuLqhXldAg2foUDMYCpfDlsyuSIhD3nN0KJhPvYcfEiSyTzlLZ0EZnAoG8px4yRwLZmhzWkkCt3qVxUFigoCEDgbSXohXqlF81MdMgFe3HjW7XQhKjCaWEshzYC8s+29vm5/iEkA7TBMQ9HA2g0ZP73m4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792157612; c=relaxed/simple;
-	bh=4Y6SYs9MEcs53fXFPlQhL8v/q3rgFtQd5UUjEJH0C5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipGlTbm/EZe45kVmxTA8ShWz6YMRlOCvGZezBPOrdU8pcClF/37nX45DUf49mkoNSgLhGikG+O2rHAr6zDRjMchsdszhGCWy0vDJ1PcEWrgVFQhN8T/3o3/newPb7sNzGUaaqO2bzt5uRJP4Z6vclhhfIGoQ6inNmaV3YtvM0S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dK+l06q6; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E344DA528;
+	Fri, 16 Oct 2026 13:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792157696; cv=pass; b=ilvloZS6OnTBKCn4CyFzWes8mG5BDtyWkp3fx+HK50rE+cPlc58UzgmhtRtbKuopsIVquISTQTR6nVxy3pHQVFMFN0fBHAzsT5/ubUVGLFgoZHHNfg5eyz9nH2bUHnVQdLFIKzqnO3EYzCuCgtMFDo8hv4X4Y5XIsZOPXwvVyfA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792157696; c=relaxed/simple;
+	bh=DhaodQ6KoIlnXsGaZAW3D6vNyIrfdUAFV6iRLiAgwv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZGcXwy9nHOemkr3nMxHQgAb14VX+oIyrPFgj4S8uEhpAwPHc+RCdOvxa5QfGTPpF7GPE//nFEdRz7dwNBn/FI78UcfndQJyzYd+8MdfaWksswcypF39MvNkrTWmTYTGSS7YPJIgW4T31UKNOOVheHOspw75IpQBRQIMd9IWI9f8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=XGT3WLNP; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dK+l06q6"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso12173795e9.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:33:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792157609; x=1792762409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=K+TfspIsgszCaheztkekodTGIJdI6RSSRUdKsSKbZVM=;
-        b=dK+l06q6x//RnTwPrQ6XKQZ7VfTrt1SpGpP8rawWbvXZL6xzVJqiK8WXRQDw1vMlid
-         a9L40bq/vC1gBrctXLKJbbVHRj5H3ALASQma9giN2pkV7pm/LaO/gpYNceMuzYP1netp
-         +82IvNQ5VusqEKQz/P+r6Uk4aj08Q40lzlsPr4+rQ0TUqr5dwcTuQYhgHjQJTRZeksLc
-         iBDX/P2z3JFUA9Lh3rBFMHPa6+vytsWKautGAvQw10eNaP8RvSAz18GWD+eqTfFL5qbX
-         h2jgTg2nO3R56xEsvoOOacyaat1d7oUB8a7W0+07Q5CkcUaMcUUcqYobQBzG4kKbDq/9
-         gUJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792157609; x=1792762409;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=K+TfspIsgszCaheztkekodTGIJdI6RSSRUdKsSKbZVM=;
-        b=w+qnSjSH8kaJzfJN9ukxgf2Q3YN5iqoBFqL/nr5nt1cqbJGSe+BaEIF7nobdP11SWW
-         o8gaUQeMkGTymbbLuJQeIfeAcLHlhYgwSPJnkTszSUDoSf7DTI08k0ZjVBxohLQUVwI9
-         n9V/1FiWAtyFEpYGZT5jJVk19+crNA2EChZhKJR4On+EVIznsdV5x69wGTrczRxxMn6I
-         +WTCGf1mKuZabaTuFmvOflR+pXMU7YXRiZu1O3nOsQkl/gTO9c2QttWM5TYF+ljrrkLl
-         Z+/yeI/lQlrZ2McjJdPUxxUFY91qYEVdXqpjEuFa85NBrffhttAOZK7vHnO9CRAhBmbb
-         cdpA==
-X-Forwarded-Encrypted: i=1; AKwUvBwmDVPWGoeSXAF+6XpiO571qoZfC3mPcmmq0fjuFHPorZef7zqe92b1f5DKS+aj30yN8D0X7Jg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKkrpikrcmCOTGhp59f0Q8MuGmIBI8knTFvu6L7Tha5LAhoWK7O
-	aLICvS+p/Sv0JESIQcp2FgkpMnvDVI72gTc572F0BwyL1VDtVVN7MINr
-X-Gm-Gg: AYBFou31MsEc2iIRFtkfhQasoeeXH98j4KHSd7Gnn5ochf1SGjWdYDaR+IRz9xNoess
-	gBmSz5WAHwfSxRNZzFkCHCybEjZLagcSLlQuSF4AKW5Qj2rLgKUbVCrHforCajfplQbivEqquGb
-	T+BvNiCBWqrPW+I7HPRCRuHpshnsX40SalbsYI1BcxM72q+AzbcXP+0UiLfaLXgk+phXLg1vaoB
-	5+JCuQhjrx+OSbK2DYanF4tgyOzyYmnjR24FdaL+txfu+Q+ybcQkm55d2Udwjmk4zWrd8m/Q1K1
-	McbldUFDoXte5lsnKyiQ1z35L+AdwINbaztMmx0OtzHld4UEzzq9L5OWOua6fbdptr/Pf4o1oLP
-	FyRhgydGW+jGoi0EEWrGhguKKeCnYsdh4/TGJNS5isG8CGaNn43rNV5R6Pq+B7J2yt4pTo3cGmS
-	k0KAm/LeLs9YWZqUgp0jZG/9bamX8fiOpW7HdvxV3NubLwpr6p2O9alnIqz0+D7UsgURpLdcYXl
-	igQvLvmlWqwodK72EuabzsC8y2PBrMtFj9uc43on0i/7A==
-X-Received: by 2002:a05:600c:2154:b0:4a1:ac66:604b with SMTP id 5b1f17b1804b1-4a1c6635d20mr51037185e9.1.1792157608917;
-        Fri, 16 Oct 2026 06:33:28 -0700 (PDT)
-Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a1cf05009csm42169885e9.10.2026.10.16.06.33.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 06:33:28 -0700 (PDT)
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bpf@vger.kernel.org
-Cc: andrii@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	eddyz87@gmail.com,
-	edumazet@google.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	liamwisehart@meta.com,
-	martin.lau@linux.dev,
-	pabeni@redhat.com,
-	song@kernel.org,
-	netdev@vger.kernel.org,
-	sdf.kernel@gmail.com,
-	ameryhung@gmail.com,
-	kuniyu@google.com,
-	memxor@gmail.com,
-	jiayuan.chen@linux.dev,
-	almagui@kernel.org,
-	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next v7 2/2] selftests/bpf: Test ksock connect/send calls from wq
-Date: Fri, 16 Oct 2026 13:33:18 +0000
-Message-ID: <20261016133318.33999-2-mahe.tardy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261016133318.33999-1-mahe.tardy@gmail.com>
-References: <20261016133318.33999-1-mahe.tardy@gmail.com>
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="XGT3WLNP"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 82E2420280A;
+	Fri, 16 Oct 2026 15:34:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792157691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nynqbi7c7C/ctSmvJecHEBxqxNFKRN1gv8jebyfIX5g=;
+	b=XGT3WLNP8Wh+HLcZ6K3Yic+2i70cs8haUGJrCLeP4S/o+ahlH/hgR8zA4/sX5fs58AWlZY
+	wS9Dt4syfLdbHtHuYrJCimqScQ7uUyk4V++EoCo0fm8eU4oWWDqmpE0PxBVv0LpubfADBH
+	CASWYnUnlaQSXPTvFLTgOp3UiaGG64snph5984C4l5tD2ezEFCtnZAiapFM4TS+EDqK3tr
+	Wfeb1P9c2hxbfdOSFVYhiZ/37mQUxMpd7JU1MSkdIcRqtTQJJSkMrIRu+UVISFRYrpcUV6
+	gymteETYz3PXKOUtDO3IFe27lQsNRRpFTUYi+DkpHKD38pu8eeFsfSxnRlCHIg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792157691; a=rsa-sha256;
+	cv=none;
+	b=RdlSVP4IcsRHu6cgVmBYyvlaqXGdK+X3MTeP/gptW+yFIJwU5o/o6UXwTa0r1EIuCLSWvm
+	VosTh5AOBBXJlnQRatrkMDTcrEp51i+jmcwr964z81REWvVqKAO4YXmUinCOSsahO/01Lh
+	53urpROCIS2KsVT37tc7EHkj1n3ZurCshSEPncGvaWUduZjJEuxThhIlTnnDpnHmss3Nsx
+	fkn/Ai6DWSG34x8nfS/RdSQWrf+FDaPC3bxN4FpXIE7g3m2HMmtSMkNHgsDeICtp7dbng7
+	j36yjPalK5SkktLPqcBv3Gxl0Nm7NxQ/05LnGRU7UfbgGasFqI5rvJ/2sLKL9g==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792157691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nynqbi7c7C/ctSmvJecHEBxqxNFKRN1gv8jebyfIX5g=;
+	b=Pg+CyPux4XaRPzfrJ50CWUWhCX69+qpCOlRBdLjzZ9Fw4BOdweIe2u+XUqjx2vlvR1iH/O
+	+Ik9WQzKGcp0bvrjXvW6CQjtMS4hWroVP7YLJfvsJ3t9GtxP48tuAqJNir80hblIWwSgcq
+	LCDjHXWRlKAv5w3hU/DTT1zOpmTaKvjmFc3UnEa35d/XmmJUDxfbtGWTEMEMx/76OJJ/Gu
+	mBp4ObCsPFbCXbPau+xJokJF/WKEDCJlKeTnqAZvv7QsgsUqdw95dB1ISAtNJMlIDnQpQE
+	Hjyx50dlQgN/6ITkoFhvrmj1BXkkUG1CvjPuxhWetk0nr1ktXoIvj1bzH3BrNA==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xHi5D-006C2j-1K;
+	Fri, 16 Oct 2026 15:34:51 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 2C5065C6258;
+	Fri, 16 Oct 2026 13:34:51 +0000 (UTC)
+Date: Fri, 16 Oct 2026 15:34:51 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net, 
+	kurt.van.dijck@eia.be
+Subject: Re: [PATCH net-next 11/37] dt-bindings: can: renesas,rcar-canfd:
+ Document RZ/G3S SoC
+Message-ID: <20261016-daring-expert-ocelot-8a5c0f-mkl@pengutronix.de>
+References: <20261015015336.816543-12-mkl@pengutronix.de>
+ <179211822620.434549.8950926089601634766@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zlu7vaetrscfpdbj"
+Content-Disposition: inline
+In-Reply-To: <179211822620.434549.8950926089601634766@kernel.org>
 
-Extend test_ksock_wq() added in 'c93cbdb13f99 ("selftests/bpf: Add ksock
-test for async callback guard")' to test that the bpf_ksock_connect()
-and bpf_ksock_send() kfuncs are now allowed and work when called from
-workqueues.
 
-Tested-by: Alan Maguire (Oracle) <almagui@kernel.org>
-Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
----
- .../selftests/bpf/prog_tests/ksock_wq.c       | 29 +++++--
- tools/testing/selftests/bpf/progs/ksock_wq.c  | 80 ++++++++++++++++---
- 2 files changed, 95 insertions(+), 14 deletions(-)
+--zlu7vaetrscfpdbj
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next 11/37] dt-bindings: can: renesas,rcar-canfd:
+ Document RZ/G3S SoC
+MIME-Version: 1.0
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-index d6dc20b8f95b..12c2275e8177 100644
---- a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-@@ -4,6 +4,7 @@
- #include <unistd.h>
+On 16.10.2026 02:37:06, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in ca=
+se
+> you want to address the nit picks below when you respin.
+>
+> Low priority / nit picks for your consideration:
+>
+> - [Low] The free-text description of renesas,no-can-fd in the binding
+>   still says Classical CAN mode is available on every controller: 'The=E2=
+=80=A6
 
- #include "test_progs.h"
-+#include "network_helpers.h"
- #include "ksock_wq.skel.h"
+valid nitpick.
 
- #define CALLBACK_WAIT_RETRIES 1000
-@@ -13,13 +14,22 @@ void test_ksock_wq(void)
- {
- 	LIBBPF_OPTS(bpf_test_run_opts, opts);
- 	struct ksock_wq *skel;
-+	char recv_data[sizeof(skel->data->send_data)];
- 	u32 callback_done;
--	int err, i;
-+	int err, i, port, rfd;
+Marc
 
- 	skel = ksock_wq__open_and_load();
- 	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
- 		return;
+pw-bot: cr
 
-+	rfd = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 1000);
-+	if (!ASSERT_OK_FD(rfd, "receiver socket"))
-+		goto out;
-+	port = get_socket_local_port(rfd);
-+	if (!ASSERT_GE(port, 0, "receiver port"))
-+		goto out;
-+	skel->bss->remote_port = port;
-+
- 	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.ksock_wq_start),
- 				     &opts);
- 	if (!ASSERT_OK(err, "run ksock_wq_start"))
-@@ -28,18 +38,27 @@ void test_ksock_wq(void)
- 		goto out;
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
- 	for (i = 0; i < CALLBACK_WAIT_RETRIES; i++) {
--		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
-+		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE) == 2)
- 			break;
- 		usleep(CALLBACK_WAIT_US);
- 	}
- 	callback_done = __atomic_load_n(&skel->bss->callback_done,
- 					__ATOMIC_ACQUIRE);
--	if (!ASSERT_EQ(callback_done, 1, "workqueue callback completed"))
-+	if (!ASSERT_EQ(callback_done, 2, "workqueue callbacks completed"))
- 		goto out;
+--zlu7vaetrscfpdbj
+Content-Type: application/pgp-signature; name="signature.asc"
 
--	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
--		  "workqueue create rejected");
-+	ASSERT_EQ(skel->bss->create_ret, -EOPNOTSUPP, "workqueue create rejected");
-+
-+	if (!ASSERT_EQ(skel->bss->connect_send_ret, sizeof(recv_data),
-+		       "workqueue send bytes"))
-+		goto out;
-+	err = recv(rfd, recv_data, sizeof(recv_data), 0);
-+	if (ASSERT_EQ(err, sizeof(recv_data), "recv len"))
-+		ASSERT_MEMEQ(recv_data, skel->data->send_data, sizeof(recv_data),
-+			     "payload match");
+-----BEGIN PGP SIGNATURE-----
 
- out:
-+	if (rfd >= 0)
-+		close(rfd);
- 	ksock_wq__destroy(skel);
- }
-diff --git a/tools/testing/selftests/bpf/progs/ksock_wq.c b/tools/testing/selftests/bpf/progs/ksock_wq.c
-index 16a1873d132e..fab356252d53 100644
---- a/tools/testing/selftests/bpf/progs/ksock_wq.c
-+++ b/tools/testing/selftests/bpf/progs/ksock_wq.c
-@@ -2,6 +2,7 @@
- /* Copyright (c) 2026 Isovalent */
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatIn+AAKCRDMOmT6rpmt
+0qzuAP9bLK6YrBcNwQ4vvKfW9qidKdVEWYCk2f7PfRosToFPNAD+KD8KF0bFLMDG
+rqv2cEgTimXGTnq2WE5Au9P+YX+vGQE=
+=vCW1
+-----END PGP SIGNATURE-----
 
- #include "vmlinux.h"
-+#include <bpf/bpf_endian.h>
- #include <bpf/bpf_helpers.h>
- #include "bpf_experimental.h"
- #include "bpf_tracing_net.h"
-@@ -14,15 +15,19 @@ struct ksock_wq_value {
-
- struct {
- 	__uint(type, BPF_MAP_TYPE_ARRAY);
--	__uint(max_entries, 1);
-+	__uint(max_entries, 2);
- 	__type(key, u32);
- 	__type(value, struct ksock_wq_value);
- } work_map SEC(".maps");
-
--int create_err;
-+char send_data[] = "hello from bpf workqueue";
-+
-+__be16 remote_port;
-+int connect_send_ret;
-+int create_ret;
- u32 callback_done;
-
--static int ksock_wq_callback(void *map, int *key, void *value)
-+static int ksock_wq_create_cb(void *map, int *key, void *value)
- {
- 	struct bpf_ksock_create_opts opts = {
- 		.family = AF_INET,
-@@ -35,28 +40,85 @@ static int ksock_wq_callback(void *map, int *key, void *value)
- 	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
- 	if (ks)
- 		bpf_ksock_release(ks);
--	create_err = err;
-+	create_ret = err;
- 	__sync_fetch_and_add(&callback_done, 1);
- 	return 0;
- }
-
--SEC("syscall")
--int ksock_wq_start(void *ctx)
-+static int ksock_wq_connect_send_cb(void *map, int *key, void *value)
-+{
-+	union bpf_ksock_addr addr = {
-+		.sin = {
-+			.sin_family = AF_INET,
-+			.sin_port = remote_port,
-+			.sin_addr.s_addr = bpf_htonl(0x7f000001),
-+		},
-+	};
-+	struct bpf_ksock *ks;
-+	int err = -ENOENT;
-+
-+	ks = ksock_ctx_get();
-+	if (!ks)
-+		goto out;
-+	err = bpf_ksock_connect(ks, &addr, sizeof(addr));
-+	if (!err)
-+		err = bpf_ksock_send(ks, send_data, sizeof(send_data));
-+	bpf_ksock_release(ks);
-+out:
-+	connect_send_ret = err;
-+	__sync_fetch_and_add(&callback_done, 1);
-+	return 0;
-+}
-+
-+static int wq_set_callback_start(int (*callback_fn)(void *, int *, void *), u32 key)
- {
- 	struct ksock_wq_value *value;
--	u32 key = 0;
- 	int err;
-
- 	value = bpf_map_lookup_elem(&work_map, &key);
- 	if (!value)
- 		return -ENOENT;
-+
- 	err = bpf_wq_init(&value->work, &work_map, 0);
- 	if (err)
- 		return err;
--	err = bpf_wq_set_callback(&value->work, ksock_wq_callback, 0);
-+	err = bpf_wq_set_callback(&value->work, callback_fn, 0);
-+	if (err)
-+		return err;
-+	err = bpf_wq_start(&value->work, 0);
- 	if (err)
- 		return err;
--	return bpf_wq_start(&value->work, 0);
-+
-+	return 0;
-+}
-+
-+SEC("syscall")
-+int ksock_wq_start(void *ctx)
-+{
-+	struct bpf_ksock_create_opts opts = {
-+		.family = AF_INET,
-+		.type = SOCK_DGRAM,
-+		.protocol = IPPROTO_UDP,
-+	};
-+	struct bpf_ksock *ks;
-+	int err = 0;
-+
-+	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
-+	if (!ks)
-+		return err;
-+	err = ksock_ctx_insert(ks);
-+	if (err)
-+		return err;
-+
-+	err = wq_set_callback_start(ksock_wq_connect_send_cb, 0);
-+	if (err)
-+		return err;
-+
-+	err = wq_set_callback_start(ksock_wq_create_cb, 1);
-+	if (err)
-+		return err;
-+
-+	return 0;
- }
-
- char __license[] SEC("license") = "GPL";
---
-2.43.0
-
+--zlu7vaetrscfpdbj--
