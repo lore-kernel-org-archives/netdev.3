@@ -1,309 +1,116 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AE2463B88
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE6343E4B0
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792142119; cv=none; b=I4PB0kG7u0kRUALsTDF6jBWAmp4kDcAXqrptV46PbDIOeWbfqEhm2zvnF2v3reLG2XBub2KjEUeEjwu5Nzcl46Xll3dtZ1f2vpRMOlBuvbhZvmqM7TlyUPvXXzVhFsYGjO/NSoACvtuw91qG8Hu15XiUwwQ5THBKp4NKiwRrmN4=
+	t=1792142164; cv=none; b=Zlph/Ph6gPFpK4wqaxS1bEu/apd2T+tdIOVmsQNakFCIktJzyBymIuhMVmUhxtIwTTm2c5cc5yum2v64EQIpveOicDwe21jKe7bCR7u87Ro/w9DXTo9xMC8/YUh8NQrVle0DFk6sHjUds1O7aYfk6p3oAJe0zaFcgOXTLXzAfGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792142119; c=relaxed/simple;
-	bh=BYhk5C+Zm2lXO/HMuAksvz8NTWmbeCB6INeu8mwY/s4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cx7YdoDvTeO2khJs4o62VHSxTuDJYep7mceXk/eDWT1YKpuHgNwSgtu3xda1f0x3r4dwaVM2unjmY3bAABhcZsxjABYgQVIYoL76ND/u4LWIKhah+YI1H+F790NE098HBVFlGgFcscjVf+jgrEy+e7AKw4Jj+kEiY0n4QNtbwa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=vguBHYt5; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1792142164; c=relaxed/simple;
+	bh=E7mpl7I6DsC5uzkfguWQD3b8PgcKno8oTjK9o+TFPMA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XKvwIkL6PvconVYH66nK/mVFnBbiKg4Lz37JmhOb1PD+0MUroswj4Zs3lL8UcVY2OvK/up83UbwE5qa9PU1YN/J1SyS7ikj9jXCY47ZzVR90B6Qzzp8oTtwBojKD/Fte/qG2FhBpj4s437G0ByDTeFIMGkXgnDtrEtV+7k6RA+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THlqrEoB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="vguBHYt5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792142118; x=1823678118;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BYhk5C+Zm2lXO/HMuAksvz8NTWmbeCB6INeu8mwY/s4=;
-  b=vguBHYt5d3cvJgQJZ5mUP0p84OyZXYuU9UfuU+jMvr+KlrY5d+nVVtHM
-   EU+cab7K9+i5rrxnzgZ/9pzK8d/JgqYzGFPWWza7BYSnF3QI2yAqTT9IO
-   Jv1FZLVNa71pS+khnu4c+ymYBjX56bGivE87hlD7j3KyoPmM9WQ9f1ljp
-   Tc2phGx86kU13iGO/uab7iZfzqB0znICpVeyPI9fGcHp0ROmHTw0t/tfy
-   hW7ZrHk29gvxz8YtvCM/tf80Lc79gaHQroYgPbz8SCj4COuF0nGfdM01u
-   nPlfw8uyDLOhjuY+Kj7y+n4Y5mmkjbfrWv28IJrWwGFTDooWa+QH45RCn
-   Q==;
-X-CSE-ConnectionGUID: UmWDmK0gSDCSf3JPpN/+Mw==
-X-CSE-MsgGUID: wX9DVRaCTduudE94hZWUBg==
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="296554681"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2026 02:15:17 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 16 Oct 2026 02:15:16 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 16 Oct 2026 02:15:12 -0700
-Date: Fri, 16 Oct 2026 11:15:12 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: <netdev@vger.kernel.org>, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Chintan Vankar <c-vankar@ti.com>, Danish
- Anwar <danishanwar@ti.com>, Daolin Qiu <d-qiu@ti.com>, "David S. Miller"
-	<davem@davemloft.net>, Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski
-	<kuba@kernel.org>, Neelima Muralidharan <neelima@ti.com>, Paolo Abeni
-	<pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>, Pratheesh Gangadhar
- TK <pratheesh@ti.com>, Richard Cochran <richardcochran@gmail.com>, Simon
- Horman <horms@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Willem de
- Bruijn <willemdebruijn.kernel@gmail.com>, Eric Dumazet <edumazet@kernel.org>
-Subject: Re: [PATCH net-next v9 3/8] hsr: Add a magic header for sending PTP
- packets
-Message-ID: <20261016091512.tqrunkdgiorm4jo3@DEN-DL-M70577.microsemi.net>
-References: <20261014-hsr_ptp-v9-0-2d20a2a0f816@linutronix.de>
- <20261014-hsr_ptp-v9-3-2d20a2a0f816@linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THlqrEoB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE37D1F000C4;
+	Fri, 16 Oct 2026 09:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792142161;
+	bh=o3ggBl62aSnr9Win5mFK5uRuud6rGb/7McQZk51Xkl8=;
+	h=From:To:Cc:Subject:Date;
+	b=THlqrEoBfQp0t3mRElX2xqmn+ZaK86XxOKOMbijf/ORZXS82fPFSjtKLQJ3kpyJFs
+	 AVfy3fTHNBx4eJa+DUF+JnOLu/dG04AUAdyt1diMXeBWwwZOU1QvsP7oPoumwRDTTe
+	 i0/fT6uQ8hrOswfxQOgVyXghZ6ZgT8YuCOBuuh5N+yT8HcqhLWEbfONz9tjzwb0fb2
+	 lB5sQWF+AmlCZmpDXUdftw6wjg4Wn/gSS/A+/pREIDRJQ74jBEPk29uq/30qHHIcHO
+	 lEYc8xF2hV2gnsBHKZ0Xki0hncLWctqTRb4QNqZ2E6Vangx4OD/s6zlLwWAy5JtkEv
+	 vqJhSwrMSTz3g==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Qiliang Yuan <odys.yuan@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net] ipv6: account route exceptions to the netns of their dst
+Date: Fri, 16 Oct 2026 11:15:56 +0200
+Message-ID: <20261016091556.2750902-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261014-hsr_ptp-v9-3-2d20a2a0f816@linutronix.de>
+Content-Transfer-Encoding: 8bit
 
-> Sending PTP packets (ETH_P_1588) via the HSR stack is pointless in its
-> current shape because the requested PTP timestamp is not routed to the
-> sender. It also needs to be distinguished on which port the message
-> should be sent and whether or not a HSR header should be attached.
-> 
-> To pass this information, a custom header (struct hsr_inline_header) is
-> introduced. This header is expected and mandatory if the ether type is
-> ETH_P_1588. To avoid any wrong usage, there is a magic field to ensure
-> it really is the header.
-> 
-> The inline header is just prepended containing the port and header
-> parameter. After the header, a regular packet follows. It is ensured that
-> the inline header and the following ethernet or HSR header is linear
-> and can be accessed. Given that this information is important for how
-> PTP is used, PTP packets missing this information will be dropped.
-> 
-> The two retrieved parameters are passed to hsr_forward_skb() and will be
-> used later.
-> 
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> ---
->  MAINTAINERS                  |  1 +
->  include/linux/if_hsr.h       |  1 +
->  include/uapi/linux/hsr_ptp.h | 20 ++++++++++++++
->  net/hsr/hsr_device.c         | 66 ++++++++++++++++++++++++++++++++++++--------
->  net/hsr/hsr_forward.c        |  3 +-
->  net/hsr/hsr_forward.h        |  3 +-
->  net/hsr/hsr_slave.c          |  4 +--
->  7 files changed, 82 insertions(+), 16 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f53047aa8d3c1..5f8bed05ed6b6 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12023,6 +12023,7 @@ F:	drivers/net/usb/hso.c
->  HSR NETWORK PROTOCOL
->  L:	netdev@vger.kernel.org
->  S:	Orphan
-> +F:	include/uapi/linux/hsr_ptp.h
->  F:	net/hsr/
->  F:	tools/testing/selftests/net/hsr/
->  
-> diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-> index f4cf2dd36d193..7b6b60ef592db 100644
-> --- a/include/linux/if_hsr.h
-> +++ b/include/linux/if_hsr.h
-> @@ -3,6 +3,7 @@
->  #define _LINUX_IF_HSR_H_
->  
->  #include <linux/types.h>
-> +#include <uapi/linux/hsr_ptp.h>
->  
->  struct net_device;
->  
-> diff --git a/include/uapi/linux/hsr_ptp.h b/include/uapi/linux/hsr_ptp.h
-> new file mode 100644
-> index 0000000000000..a0b104a3df569
-> --- /dev/null
-> +++ b/include/uapi/linux/hsr_ptp.h
-> @@ -0,0 +1,20 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-> +#ifndef __UAPI_HSR_PTP_H
-> +#define __UAPI_HSR_PTP_H
-> +
-> +#include <linux/types.h>
-> +
-> +#define HSR_INLINE_HDR  0xaf485352
-> +#define HSR_INLINE_HDR_PORT_A	1
-> +#define HSR_INLINE_HDR_PORT_B	2
-> +
-> +struct hsr_inline_header {
-> +	__u8 tx_port;
-> +	__u8 hsr_hdr;
-> +	__u8 __pad0[4];
-> +	__be32 magic;
-> +	__u8 __pad1[2];
-> +	__be16 eth_type;
-> +} __attribute__ ((packed));
-> +
-> +#endif
-> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-> index 6d96bc4a12446..c5ea7ef0209db 100644
-> --- a/net/hsr/hsr_device.c
-> +++ b/net/hsr/hsr_device.c
-> @@ -223,24 +223,66 @@ static netdev_features_t hsr_fix_features(struct net_device *dev,
->  
->  static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
->  {
-> +	enum hsr_port_type tx_port = HSR_PT_NONE;
->  	struct hsr_priv *hsr = netdev_priv(dev);
->  	struct hsr_port *master;
-> +	bool has_header = false;
->  
->  	rcu_read_lock();
->  	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
-> -	if (master) {
-> -		skb->dev = master->dev;
-> -		skb_reset_mac_header(skb);
-> -		skb_reset_mac_len(skb);
-> -		spin_lock_bh(&hsr->seqnr_lock);
-> -		hsr_forward_skb(skb, master);
-> -		spin_unlock_bh(&hsr->seqnr_lock);
-> -	} else {
-> -		dev_core_stats_tx_dropped_inc(dev);
-> -		dev_kfree_skb_any(skb);
-> +	if (!master)
-> +		goto drop;
-> +
-> +	skb->dev = master->dev;
-> +	if (skb->protocol == htons(ETH_P_1588)) {
+rt6_insert_exception() and rt6_remove_exception() update
+rt6_stats->fib_rt_cache of dev_net(rt6i->dst.dev), but the device of an
+exception dst can move to another netns while the exception is still in
+its bucket.
 
-Seems like this is also accepted for PRP - should it?
+This happens when the bucket is flushed from an RCU callback, for
+instance from nexthop_free_rcu() for the nh_info of a replaced nexthop,
+whose exceptions still point to live routes. If the device moves to
+another netns before that callback runs, the decrement hits the other
+netns, whose u32 counter underflows in /proc/net/rt6_stats, while the
+counter of the original netns never goes back down.
 
-> +		struct hsr_inline_header *hsr_opt;
-> +		struct ethhdr *eth_hdr;
-> +		unsigned int hdr_len;
-> +
-> +		BUILD_BUG_ON(sizeof(struct hsr_inline_header) != sizeof(struct ethhdr));
-> +
-> +		/* need to access the magic header */
-> +		if (!pskb_may_pull(skb, sizeof(struct hsr_inline_header)))
-> +			goto drop;
-> +
-> +		hsr_opt = (struct hsr_inline_header *)skb_mac_header(skb);
-> +		if (hsr_opt->magic != htonl(HSR_INLINE_HDR))
-> +			goto drop;
-> +
-> +		has_header = hsr_opt->hsr_hdr;
-> +		tx_port = hsr_opt->tx_port;
-> +		if (tx_port != HSR_PT_SLAVE_A && tx_port != HSR_PT_SLAVE_B)
-> +			goto drop;
-> +
-> +		if (has_header)
-> +			hdr_len = ETH_HLEN + HSR_HLEN;
-> +		else
-> +			hdr_len = ETH_HLEN;
+Account exceptions to the netns their dst was allocated in, derived from
+dst->ops as ip6_dst_gc() already does, which does not depend on the
+device. The dst already relies on that netns' ip6_dst_ops being alive
+when it is destroyed, which happens after the exception is removed.
 
-Nit: Maybe hdr_len = ETH_HLEN during declaration, hdr_len += HSR_HLEN reads a
-bit simpler.
+Fixes: 81eb8447daae ("ipv6: take care of rt6_stats")
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+Discovered while reviewing https://lore.kernel.org/netdev/20261016-bug-net-netns-move-rcu-barrier-v1-1-4157d798658f@gmail.com/T/#m7f6763afc4dc72233969ae22567af09cfdb3923a
 
-> +
-> +		/* Ensure the real header after the stripped one can be
-> +		 * accessed
-> +		 */
-> +		if (!pskb_may_pull(skb, sizeof(struct hsr_inline_header) +
-> +				   hdr_len))
-> +			goto drop;
-> +
-> +		eth_hdr = skb_pull(skb, sizeof(struct hsr_inline_header));
-> +		skb_set_network_header(skb, hdr_len);
-> +		skb->protocol = eth_hdr->h_proto;
->  	}
-> +
-> +	skb_reset_mac_header(skb);
-> +	skb_reset_mac_len(skb);
-> +	spin_lock_bh(&hsr->seqnr_lock);
-> +	hsr_forward_skb(skb, master, tx_port, has_header);
-> +	spin_unlock_bh(&hsr->seqnr_lock);
->  	rcu_read_unlock();
->  
-> +	return NETDEV_TX_OK;
-> +drop:
-> +	rcu_read_unlock();
-> +	dev_core_stats_tx_dropped_inc(dev);
-> +	dev_kfree_skb_any(skb);
->  	return NETDEV_TX_OK;
->  }
->  
-> @@ -362,7 +404,7 @@ static void send_hsr_supervision_frame(struct hsr_port *port,
->  		return;
->  	}
->  
-> -	hsr_forward_skb(skb, port);
-> +	hsr_forward_skb(skb, port, HSR_PT_NONE, false);
->  	spin_unlock_bh(&hsr->seqnr_lock);
->  	return;
->  }
-> @@ -430,7 +472,7 @@ static void send_prp_supervision_frame(struct hsr_port *master,
->  		return;
->  	}
->  
-> -	hsr_forward_skb(skb, master);
-> +	hsr_forward_skb(skb, master, HSR_PT_NONE, false);
->  	spin_unlock_bh(&hsr->seqnr_lock);
->  }
->  
-> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> index 5862c05f52110..2b8ae9723bd7f 100644
-> --- a/net/hsr/hsr_forward.c
-> +++ b/net/hsr/hsr_forward.c
-> @@ -771,7 +771,8 @@ static int fill_frame_info(struct hsr_frame_info *frame,
->  }
->  
->  /* Must be called holding rcu read lock (because of the port parameter) */
-> -void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port)
-> +void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port,
-> +		     enum hsr_port_type tx_port, bool has_hsr_header)
->  {
->  	struct hsr_frame_info frame;
->  
-> diff --git a/net/hsr/hsr_forward.h b/net/hsr/hsr_forward.h
-> index 206636750b300..e64b0358907a9 100644
-> --- a/net/hsr/hsr_forward.h
-> +++ b/net/hsr/hsr_forward.h
-> @@ -13,7 +13,8 @@
->  #include <linux/netdevice.h>
->  #include "hsr_main.h"
->  
-> -void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port);
-> +void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port,
-> +		     enum hsr_port_type tx_port, bool has_hsr_header);
->  struct sk_buff *prp_create_tagged_frame(struct hsr_frame_info *frame,
->  					struct hsr_port *port);
->  struct sk_buff *hsr_create_tagged_frame(struct hsr_frame_info *frame,
-> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-> index a546f70f9cc8b..5274ba6dd36e6 100644
-> --- a/net/hsr/hsr_slave.c
-> +++ b/net/hsr/hsr_slave.c
-> @@ -78,10 +78,10 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
->  	 */
->  	if (port->type == HSR_PT_INTERLINK) {
->  		spin_lock_bh(&hsr->seqnr_lock);
-> -		hsr_forward_skb(skb, port);
-> +		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
->  		spin_unlock_bh(&hsr->seqnr_lock);
->  	} else {
-> -		hsr_forward_skb(skb, port);
-> +		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
->  	}
->  
->  finish_consume:
-> 
-> -- 
-> 2.55.0
->
+ net/ipv6/route.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-/Daniel
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 34ab7f330540c89291773e4fdc8dd1f348c9de8e..6d39fdd14d1b7dc5bd50a4fc8db0466b51db6bea 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1511,6 +1511,15 @@ static struct rt6_info *rt6_make_pcpu_route(struct net *net,
+  */
+ static DEFINE_SPINLOCK(rt6_exception_lock);
+ 
++/* Exceptions are accounted to the netns their dst was allocated in.
++ * Unlike dev_net(dst->dev), it does not change when the device moves to
++ * another netns or when dst_dev_put() points the dst to blackhole_netdev.
++ */
++static struct net *rt6_exception_net(const struct rt6_info *rt)
++{
++	return container_of(rt->dst.ops, struct net, ipv6.ip6_dst_ops);
++}
++
+ /* Remove rt6_ex from hash table and free the memory
+  * Caller must hold rt6_exception_lock
+  */
+@@ -1522,7 +1531,7 @@ static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
+ 	if (!bucket || !rt6_ex)
+ 		return;
+ 
+-	net = dev_net(rt6_ex->rt6i->dst.dev);
++	net = rt6_exception_net(rt6_ex->rt6i);
+ 	net->ipv6.rt6_stats->fib_rt_cache--;
+ 
+ 	/* purge completely the exception to allow releasing the held resources:
+@@ -1750,7 +1759,7 @@ static int rt6_insert_exception(struct rt6_info *nrt,
+ 	rt6_ex->stamp = jiffies;
+ 	hlist_add_head_rcu(&rt6_ex->hlist, &bucket->chain);
+ 	bucket->depth++;
+-	net->ipv6.rt6_stats->fib_rt_cache++;
++	rt6_exception_net(nrt)->ipv6.rt6_stats->fib_rt_cache++;
+ 
+ 	/* Randomize max depth to avoid some side channels attacks. */
+ 	max_depth = FIB6_MAX_DEPTH + get_random_u32_below(FIB6_MAX_DEPTH);
+-- 
+2.53.0
+
