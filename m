@@ -1,174 +1,173 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3153B6343
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA57471CE0;
+	Fri, 16 Oct 2026 09:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792143463; cv=none; b=dVlbGKjZYNqJ4YAIY9T9NK85vyYV+3IZ4bvWHafCy8vc3qeR2slSAQkxFAwxwFib35J7PayVShhSNjFTMG17NdTr5TzqLpy2a+iKPALi5L3TfdCDs0TzUKZFRVEuwlYGKpWfgEXPJqynL+2PJEIoUc8PGpOQVZUg08IAZJ2myiM=
+	t=1792143465; cv=none; b=qr7sXJSkvTEFbB+6jUtFOJPnPeU/gqxJ1F73YPe2PiFYnoguw3pDMyLub2fNcFDlpHDjGaaiwjVxvLCCgLEitLevUfQA8ACrO/WWh6Us51ATBsiYLSeqklcUs/r0Bb0BE2Zm/3zZW/eOe7hCTKGz4hc/K0pxiYQOJQW6IVHWt8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792143463; c=relaxed/simple;
-	bh=EULeSIJ8HNnMPsQZ4YnhJWYAbD8Oae+53dQmmt9inXY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=edmip57jfqepH11DCYKKdCNx5QBXxSC5up6v9GLKa0V/6gq9DgZGNkBNCXcsE7nePxv/5+If3eGyiGkChi1uyM7D+kWDTGWhWIUjB9jm/+BYSsFCpjK5gh7xs08C0jimnopCV4xcJteRBSW4xsYuDDdlsPKwhoUPXDwB5hSyUAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XqxYI4DH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XF1gTa2R; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792143465; c=relaxed/simple;
+	bh=e9gbeLWoGual7E/T5uFf4fnd+cwMhh5w3w0gTWnzGag=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tClTz4evJP6Bv77qQusyBRc2vNMZHBPuETLwq5IBUVJPRNMNlZMrNpIMGcvWcZBsrzxkSWodcq1Ohu1PCAHpgADP1EUwRkAiI5ZNnmS3kkuDAqi5zPVUPgMpBbnlLr8tmYspzlAa8vwNMPZ/X7vuYptkXJPvWrMPvqg9UDVu2Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+DfBHHw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XqxYI4DH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XF1gTa2R"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792143460;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jEPuNhSxsbUvh+PW3O30AyJYlH++sXV5pTbl3odzk7E=;
-	b=XqxYI4DH8gD1zWiiceV4GYWN5vqXxNZW3MUaeoAksja61e1oxNvvYh6l/elkWy0ibMlQ6T
-	KEIJkh4h9f7sYd3hbQCHiFvhc8MRN/YzBipqt6dtldGydlkQYTyK//JQKOhILjaHnfh5Nn
-	m/ZTCjAI6Ir49oiY6GTDQyojRxrKbNs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-ygyyPYWHOQqINVsyv9Ofew-1; Fri, 16 Oct 2026 09:37:38 +0000
-X-MC-Unique: ygyyPYWHOQqINVsyv9Ofew-1
-X-Mimecast-MFC-AGG-ID: ygyyPYWHOQqINVsyv9Ofew_1792143457
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48b0a199b20so5092152f8f.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792143457; x=1792748257; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jEPuNhSxsbUvh+PW3O30AyJYlH++sXV5pTbl3odzk7E=;
-        b=XF1gTa2RYtdJpEtCz1OgikGIv9mHWIji0efsJp1BHn0QovQjLn2TAst/VPl2v3JjgS
-         yOnvZPQU9GA3m2K+4NFCZoOQgGF4JSrsFLQGMvxYjb3VK+HEU9f5LmFlUY0HHsEJqpnV
-         CvekaMGy7I6W1iOvMzk3sG1YUM2bvd0OX7aChd9FseJMPRQIJXiM1jf5Ci2UzZa4uMn5
-         p4zsTNo4Yg8+yz71gbX4PuZiPQ3pGKxtki4CMJFn1CS0NtXMLmc+zQ6YvUAqX0wP8cV5
-         QsUQfyWxtRMI6N6YjRUEBcqN3XbU1Z8MvWvt/jMPqXZiS08ALM8Wp2CYNthkZOTfXL2x
-         65KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792143457; x=1792748257;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jEPuNhSxsbUvh+PW3O30AyJYlH++sXV5pTbl3odzk7E=;
-        b=fxK6RlhAXuBXihM+05qcq6SO8YXxEh1IHKVsMRYCduxi1Mgo08Y+uprYsBug0SEzi4
-         nZDPmgzkEXF86OwWsnGv6BqTr/4syR+nQMsetx0hQ3cvMifXR4Ex6+lFMnHd3B9qMBSS
-         96xrDJdW6bc998TRSFAL/w62gG6OYiP7aT49GpMJsKgySYVFu5pvpSUzZ7RbQtdTumGG
-         Uplunb4EG77uWWvt2QwbrznUFAov094Y/8Lyv5SBJnehu48I/ZDoJSASCOF7uXJ1ya/E
-         Y+4RARraEAT+Kv6BKJbrPP63C4mtHUt6CfW0/Jp7YZvl7SwiV/pYY/uHDx0+FXGxuYs0
-         grsA==
-X-Forwarded-Encrypted: i=1; AKwUvBynEnnmrA91OA2BoEyQiVgWVcYP+OoVMiuii33uYfx1KIqAv8glSN5uu+x7n3ymjRi/OwLlt/I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ6JcfyT2MUw47AMlkuVG78Y4yfNzosDszlS8Q7lDFUePrBJxNx
-	s3hYXtQpw8DPA5w/Av4aaQQ8R0qWWkeBIoOYNMfzKnWLoJ0903IKi5abmtKRjFrWOQmqqOSZ2AJ
-	HixIVAUbRsUkWf+jfPEsUdaZ+ARPMANG1d9583FvlYv1Z+8oHm9spzBcXMA==
-X-Gm-Gg: AYBFou3srjWFUGTnYVO2s5S7Sz2qAv6JRbSTy3YIR0+Y65PmoxHveYsUcoYWalB3O+y
-	kHmmEF75AJKihBI2I+jv9wDJ294zIk5eZmb/WVa/fP0kxpMFLbmi5sin9Wv0a1bUeLsPi7m8nPX
-	bBgvjnV6My7WKWa4Crzul8t5yHItd/OOOEb5mpPE+rGDmDgHSwx6dyd0zKUnueMTcnMZw/KnBTP
-	7z/BM1po05OmoMDDkei4l+TF2c7aagJA7lHSey7y1Km836/GqcjTJwu8LKY6k/C6AZt1ryuPFYW
-	wRGeedVdgC73U5GJhBu6fLCVouKPzrrcYqgJb5gT+/yEIwzl4lB+9pqd2wiNxl8AUY7zRw==
-X-Received: by 2002:a5d:64e3:0:b0:48d:fd48:86c0 with SMTP id ffacd0b85a97d-48dfd48878dmr4550988f8f.47.1792143457349;
-        Fri, 16 Oct 2026 02:37:37 -0700 (PDT)
-X-Received: by 2002:a5d:64e3:0:b0:48d:fd48:86c0 with SMTP id ffacd0b85a97d-48dfd48878dmr4550928f8f.47.1792143456859;
-        Fri, 16 Oct 2026 02:37:36 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd5008e7sm3899434f8f.43.2026.10.16.02.37.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 02:37:36 -0700 (PDT)
-Date: Fri, 16 Oct 2026 05:37:32 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-kernel@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	linux-um@lists.infradead.org
-Subject: Re: [PATCH net-next v2 2/7] um: vector: honor virtio net hdr
- conversion failures
-Message-ID: <20261016053633-mutt-send-email-mst@kernel.org>
-References: <cover.1792067836.git.mst@redhat.com>
- <6716834884238de0ab1ab313004044122aa2adbf.1792067836.git.mst@redhat.com>
- <8420ba1fe84fc7d105825026802d4ad10d44af71.camel@sipsolutions.net>
- <20261015085119-mutt-send-email-mst@kernel.org>
- <64ee40b97fc447bbf3abb80250ad0d9f3cf3c6fa.camel@sipsolutions.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+DfBHHw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29F61F000C4;
+	Fri, 16 Oct 2026 09:37:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792143463;
+	bh=LQ2IT7TR1yICH3fFYYaeo1ICf/N7bybfC80lKaTGcLQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=X+DfBHHw9sTSENXkZd4TQRxyq1INaQqK59Np4H1rVrx/2Vvuc/hgyj7EiPGnccS0z
+	 VcimmsElX/astSlSLZOvpwo1h0zYDIx+PABzb0ADp+ypD3Hk5fvLnqKEs3ZMMWVgFW
+	 l9f3eabxVpyCOmuRdMKqe8bqyrxGMotikaDDAAjIy0MMHSCXTG035Vbgh1lcFMPCWU
+	 b/dcmj2yJ2imgHMivTcWZhjeiUy4KcKYClXRF9r/R5thVsoAnvGIxMW348nMIjHjjL
+	 4+AInFY9WmyxIIkkJacumavZqMe2P5pyMvx7Pn0N3MJTHA39LWB+astR6cLcOoNDyY
+	 74mcXlLh+iY6A==
+Subject: Re: [PATCH net-next v10 1/2] net: wwan: core: propagate modem control
+ signals to port drivers
+From: netdev-bot+sashiko@kernel.org
+To: peter.hunt@opengear.com
+Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com, dnlplm@gmail.com,
+ johannes@sipsolutions.net, mani@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Fri, 16 Oct 2026 09:37:42 +0000
+Message-ID: <179214346234.434549.2545307661462448073@kernel.org>
+In-Reply-To: <20261013183500.261229-2-peter.hunt@opengear.com>
+References: <20261013183500.261229-2-peter.hunt@opengear.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64ee40b97fc447bbf3abb80250ad0d9f3cf3c6fa.camel@sipsolutions.net>
 
-On Thu, Oct 15, 2026 at 02:55:23PM +0200, Johannes Berg wrote:
-> On Thu, 2026-10-15 at 08:52 -0400, Michael S. Tsirkin wrote:
-> > On Thu, Oct 15, 2026 at 02:47:01PM +0200, Johannes Berg wrote:
-> > > On Thu, 2026-10-15 at 08:41 -0400, Michael S. Tsirkin wrote:
-> > > > virtio_net_hdr_to_skb() refuses packets whose checksum metadata
-> > > > it cannot make sense of, but the vector raw transport ignored
-> > > > its return value: rejected packets went on into the stack with
-> > > > their metadata unvalidated.
-> > > > 
-> > > > Propagate the failure.
-> > > > 
-> > > > Assisted-by: LLM
-> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > ---
-> > > >  arch/um/drivers/vector_transports.c | 4 +++-
-> > > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/vector_transports.c
-> > > > index e1fb2a76fdff..8b7548458663 100644
-> > > > --- a/arch/um/drivers/vector_transports.c
-> > > > +++ b/arch/um/drivers/vector_transports.c
-> > > > @@ -210,7 +210,9 @@ static int raw_verify_header(
-> > > >  		return 1;
-> > > >  
-> > > >  	skb_set_network_header(skb, ETH_HLEN);
-> > > > -	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
-> > > > +	if (virtio_net_hdr_to_skb(skb, vheader,
-> > > > +			virtio_legacy_is_little_endian()) < 0)
-> > > > +		return -1;
-> > > >  	return 0;
-> > > > 
-> > > 
-> > > Seems it'd be simpler to just
-> > > 
-> > > 	return virtio_net_hdr_to_skb(...);
-> > > 
-> > > As far as I can tell, the function only returns -EINVAL or 0 (never a
-> > > positive value), and the caller only cares about negative (error) or
-> > > positive (no checksum needed), so that'd be equivalent?
-> > > 
-> > > johannes
-> > 
-> > if raw_verify_header can safely return any errno - i did not want to
-> > audit it.
-> 
-> You already used an LLM and still didn't want to? ;-)
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-I don't really trust it to do code audits especially in code I
-do not test.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-> I checked briefly (by hand) and it seems fine, it's assigned to the
-> function pointer, which only has two callers on the _kern.c side.
-> 
-> johannes
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks, will make the change.
+- [Medium] The patch moves the AT/QCDM termios and TIOCM state from the
+  private data_lock to ops_lock, but wwan_port_op_tx() holds ops_lock…
+
+--
+
+net: wwan: core: propagate modem control signals to port drivers
+
+This adds an optional ->dtr_rts() operation to struct wwan_port_ops. The
+wwan core calls it when an AT port is first opened, on last close if
+HUPCL is set, on port removal and when TIOCMSET/TIOCMBIS/TIOCMBIC changes
+DTR or RTS. The termios and TIOCM state is moved from data_lock to
+ops_lock, and data_lock is removed.
+
+> diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+> index ffbcf11e4e681..7097b58dafdea 100644
+> --- a/drivers/net/wwan/wwan_core.c
+> +++ b/drivers/net/wwan/wwan_core.c
+
+[ ... ]
+
+> @@ -976,92 +1017,109 @@ static __poll_t wwan_port_fops_poll(struct file *filp, poll_table *wait)
+>  }
+>  
+>  /* Implements minimalistic stub terminal IOCTLs support */
+> -static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
+> -				    unsigned long arg)
+> +/* TCGETS/TCSETS and their termios2 variants. @size is the size of the user
+> + * structure, a prefix of struct ktermios. As for the TIOCM ioctls, user
+> + * memory is only accessed outside ops_lock.
+> + */
+> +static long wwan_port_termios_ioctl(struct wwan_port *port, bool set,
+> +				    void __user *uarg, size_t size)
+>  {
+> -	int ret = 0;
+> +	struct ktermios termios;
+>  
+> -	mutex_lock(&port->data_lock);
+> +	if (!set) {
+> +		scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &port->ops_lock)
+> +			termios = port->at_data.termios;
+
+[Severity: Medium]
+Can TCGETS and the other termios and TIOCM ioctls now block indefinitely
+behind a blocking write() on the same AT port?
+
+wwan_port_op_tx() holds ops_lock for the whole of ->tx_blocking():
+
+drivers/net/wwan/wwan_core.c:wwan_port_op_tx() {
+	mutex_lock(&port->ops_lock);
+	...
+	if (nonblock || !port->ops->tx_blocking)
+		ret = port->ops->tx(port, skb);
+	else
+		ret = port->ops->tx_blocking(port, skb);
+	...
+}
+
+Before this patch, these ioctls only took data_lock, and no TX path takes
+data_lock. After this patch, TCGETS/TCSETS*/TCGETS2/TCSETS*2 in
+wwan_port_termios_ioctl() and TIOCMGET/TIOCMSET/TIOCMBIS/TIOCMBIC in
+wwan_port_fops_at_ioctl() all take ops_lock. They would sleep until an
+in-flight blocking write finishes, or return -ERESTARTSYS if a signal
+arrives first.
+
+This seems reachable with in-tree drivers. rpmsg_wwan_ctrl registers
+DATA4 and DATA1 as WWAN_PORT_AT, and its .tx_blocking calls rpmsg_send().
+On SMD that ends up in __qcom_smd_send(), which has an untimed wait:
+
+wwan_port_op_tx()
+  mutex_lock(&port->ops_lock)
+  rpmsg_wwan_ctrl_tx_blocking()
+    rpmsg_send()
+      __qcom_smd_send()
+        wait_event_interruptible(channel->fblockread_event,
+                qcom_smd_get_tx_avail(channel) >= tlen ||
+                channel->state != SMD_CHANNEL_OPENED);
+
+If the remote side never drains the FIFO, a tcgetattr(), tcsetattr() or
+TIOCMGET from another thread or process could stay stuck until it gets a
+signal. On a real TTY, TCGETS and tty_tiocmget()/tty_tiocmset() do not
+take the tty write lock.
+
+The commit message says the ioctls wait behind a blocking write and that
+the lock is taken interruptibly. That makes the wait interruptible, but
+the wait itself is still unbounded.
+
+A driver that implements both .tx_blocking and .dtr_rts could also end
+up in a circular wait, where the write only completes once the host
+raises DTR, but TIOCMBIS(DTR) is stuck on ops_lock. No in-tree driver
+does this right now: rpmsg_wwan_ctrl has no .dtr_rts and mhi_wwan_ctrl
+has no .tx_blocking.
+
+Could the termios/TIOCM state be kept under a lock the TX path does not
+hold? If ->dtr_rts() needs to be serialised against removal, only that
+call could take ops_lock.
+
+> +		return copy_to_user(uarg, &termios, size) ? -EFAULT : 0;
+> +	}
+> +
+> +	/* Commit only on success, a partial copy must not clear HUPCL */
+> +	if (copy_from_user(&termios, uarg, size))
+> +		return -EFAULT;
+> +	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &port->ops_lock)
+> +		memcpy(&port->at_data.termios, &termios, size);
+> +	return 0;
+> +}
+
+[ ... ]
 
 -- 
-MST
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013183500.261229-1-peter.hunt%40opengear.com
