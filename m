@@ -1,122 +1,151 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856C238E8CB;
-	Fri, 16 Oct 2026 09:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792142722; cv=pass; b=ku3XeUq93dPpl1fFr3Evdth7ssDNcEpdKb+okYs8IvAHy12N2+yBa2Ut646zpYUxOUQ+qxXrSGeSQwu9gnTbA7/kdCGNf/lMzFrFnfIifotY5vUxOpEmwxZocvvu/Nt5QhmykWUey24FOEgSBojmKkV0/ujG9cJ4KA4cDStRE9Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792142722; c=relaxed/simple;
-	bh=KexnCeRpOAQE9180IYk1FKXNgLIajXRfkiUVfeZljtk=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=ZYB0/qQMCMy3nwUOB9Gx36w3V2Iuhv7dlLWlMj6i541eEPE1Dy52yNckOw3g+uG70YOWCgiAPmbt4huXXSSsJf9w2yl+89Vyvjr1TXnbvzDrn/NvwJLUymvjmt0m3F+6iyvTsffDH5klP1zEBvMVGts7U2TN4sWc6i86bl9Fdx0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=S9TqQSmC; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8998A466AF5
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792143157; cv=none; b=RxzwHADavOeMJ65PZ3qr96PhkgOQYvK9lUF5Nu7EZRmwxztNUqjuJT6V+AnErBsaWRkXEu3aqZdGy/Lgh/k3jf4HeySxwL1E2iQc7+Y1WXY1MSysPtMhRKpvQhZ3w/zP1zcdGOBtNYbiZY5ZnxFP6bZwi1puZ77Yuok8lFE2grM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792143157; c=relaxed/simple;
+	bh=sWkP4JPpzh1PrUWgTn0gKtwQ2WpS/1O8YY32jiHfj9E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FoSvrBwAIc7q4S7TfLTsnR+La23pc5UtlBZwoxpGcaxilTAt1KQ1X+M7dSIM5gIjfzcSyOT+XRMB44Y7rlAPr1Ndv9yRW8lqLBuhMKj8MiOLGNQF6Pt4OqWPXLhdefBJFh88nJG/JZtjbzrc+rREtwUEibohEDg92jE4naQ9cTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dskCgRcn; arc=none smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="S9TqQSmC"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3AFE9202012;
-	Fri, 16 Oct 2026 11:25:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792142717;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jZYSsCUvqBl6KyD65mCxhuofq3aWnyIb6liMgBcsMZw=;
-	b=S9TqQSmCoJ5BzwDeAf7lMVvHe4T1EabvWVsqaKZ3JEVUkXtKU1M5orN16PaXu2XMRuvDXn
-	qZEA+0Rm/8uAlNnpvnHd/UsrUKj1CGx9bOGBWwrnW5QjLoBIaLgr3smx3mMT4wZ8bq3032
-	+dIf4J2M9Js/1uG9ycIzCRLmlkSh6S+IxoyrtmGs7tA0L7DYxoaGTkyNZvOJ7Gm61wUi8c
-	GuLYs2ILRlGtEYwxdDQWmc8kxYeRxdkhdFOyoViL4GJFy1fpY7axU1B8aDUDqT6sdtAFa9
-	rMpiRMZKnfgb+LtLJ+9GKYldAtvJ2YRz5uM1jkEvdmLW1hkRbvqTq8eNcaizdA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792142717; a=rsa-sha256;
-	cv=none;
-	b=A4uw/a1JsEJOooIBqz8lu6GFW59cI4PWemXvWo/dB/+7piJuYMerqAzQno9Gtan9wzzGrx
-	sAWxiQzjJTN50OtFFxnI0Yb+YyRb8RZ22RtmXc8EP0oYBKP94KjKTukJAhN7mioQESxrgd
-	9L55nJRRPvDhYe5xwr3JdGXw3NhoSt1NQVoJDv2bAc3PdTg2v7DtrXtlN6C/04Tk0Awqdh
-	4Vv7vnLbyd2ki9ArwodzjyDxpGY7+sudH1ngpUegrZ20GTfv1rBbgUPUV8qO/uJaw09sLw
-	lXd9ONLX0tovMg52EZkn4lx8zr6UANDMWtGmeO3BMVyn1VmNUhkZ3iIXORhNXw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792142717;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jZYSsCUvqBl6KyD65mCxhuofq3aWnyIb6liMgBcsMZw=;
-	b=CszAY7n23kQ+7Oc2IwUzVkvRQfAdvaPk6t4Mp922E+0zxJHAYUJnVH47diZ/3UNvwgIkrX
-	s98F8KuvxR9kJIZY55TCpOkT7mDXZVrVD0cOM66RHs40veYUluYV2k0PTZxPwUm4HRjlrE
-	Dw8CdOtybSnLivmCaTXSBq8RUfmE63p7ubBY8qQOtn+ZiHbqLBCpNIhJe2QIAxdkWq27x7
-	9Z/b0B20uunPZtlmmIeD8Ps8lsBLHRQ0fRsoxLvPo1Zm4y8H5qoTqEgKGWr3oUIg9mZNZU
-	+l/VeiivlEmzyjxuMX9ZI2yAHq5Wc0EAP5bHQUJ6PaCXn5KFSg6eU/VrxdG6rg==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xHeBh-006AAh-0M;
-	Fri, 16 Oct 2026 11:25:17 +0200
-Received: from hardanger.blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id CC7D85C5EDA;
-	Fri, 16 Oct 2026 09:25:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dskCgRcn"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-3550c917fd3so4019437eec.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:32:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792143153; x=1792747953; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M4EHfv55CyvmCv6DKOzDwfo547V/LhUX2GtLqYL05K0=;
+        b=dskCgRcnPjt5HwMZBceVdt217XXbp6cpjEQ9oIIR26EZ2Dr8PnyUvZrlmq5MGzRImz
+         4EfN9W/L2QY2mPrHG2prMNPOFd261a/lmzNWJW8moxDze7nALpBS/yy4u8Xx5Fa7T3Vj
+         tonW+K4zH/EBoI26PQCNpmB74YNXLWeZJR/cGxAQ7fifFpz+98EkUxoLe5PQbIQwHSS1
+         OW68wO04D5iMyiABS9+p/lqrGyZ/kDMO4a27ki9pIEomcv6MH5LRZVAaEwb8ud1xip6K
+         QV7HRCvArG7ivvKBX8WVYNF3OHws93CGfRQ9+WTNk2F9hvm+/s6tQ6WCmOdAZhn91AMG
+         6fzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792143153; x=1792747953;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=M4EHfv55CyvmCv6DKOzDwfo547V/LhUX2GtLqYL05K0=;
+        b=NI1GEUro0e18BqHfhCppvhsXNrlshLymX0tILGt/Uw8tT84FY4xlzhqri6/ISEyh4l
+         /vjg1eV9TguEy9kpOhxaBOdF8ubXIT9Nr/GPVqQgAlgJozX8C7U6jWmq2ZqUaOi6LZDS
+         nBlXk3TtE+WQ/nmSpUWVu/ctd7/RRpBoTzzAGOf0QuzXpPF46eTZgm7+SOFAiL7IJkbq
+         7VfY+bj0v8dHTvMJLELCTM1vpYOPeEbcI5YWZHGTax1RPuBWGxmvyzu78cKRhgNIuj9T
+         nj5oun4LpONy2O332n0203/P5Jl7TYaQeMzvcyNuSWlEzXejCtrfr61EsX9TzVbap1BJ
+         0e1w==
+X-Forwarded-Encrypted: i=1; AKwUvBxgiVxm423xaol4sm36OMLf0s5trtJR45eEtF7RycovyngJNqFBl2IpgCmXToDJeBfoyUz6hMI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLJYKNjlLI8ttKtzFRCn/P6akWsQbAtYFUx+3pqq855DeVAHN3U
+	U5xQz9N3k+wUaVpxDfe4EJx7JcG1bOMFN2JfACIhaPJOekel85l/X/1/
+X-Gm-Gg: AYBFou3HouauquIYXu8lSgv57AIVda79BCPhucRau1IRSe/36ZR/WWItDC7AfCPEDj4
+	XGgYJRGMa7Er84pm65tXILiA9uWKHH44oeuzd5ajrZEHS9Xq2mmqSYQo9qoY2eqEZmHeGKKT1OK
+	dOtZv4C2UJh6VEdABy6n5wWCNkhJGrbD09aeNOio1LeVWLP5R4CcAGs4JYB7sfyTvqlgXaWobLp
+	rLHSTXkLhVy+rkWchiaEu05SLIEnETfoQt1wkddeZk1cKZVI6WnY2Qat2uG3fvt24pjoYLGdW3c
+	+PWl3XTNYSFKlvWH623fKc7uDmHN4BMVthGNaV0Wf5NQWcQBh/5rbj41+CkqbHHqGhgDVWJ8Cwo
+	VGSTUSUwmZAJSEngttPLUA22rxDB6JrEhuLyFrCriMhji3+I3aLrG7I3SepdJCCpogcqk9hZ1Tc
+	pVDPiRREQwxj1Le/i9AUP/vfl+vIrlwAPWAo0udQ3eaVLp1hneFTv5rCmQ/fQNzqiNA2oXjK9Po
+	5A3/oHR6iaXx81v01AhW/6Nr787ratPAsukWqTIMnYmv039N/cUUC6W5TygIHeWlTkQlf8E732f
+	IwQnMTbIGls1KnCMio3HAWjAEt1TdHK3Ush77KbmeF6J
+X-Received: by 2002:a05:7300:e9d6:10b0:359:bdc8:c9d5 with SMTP id 5a478bee46e88-359bdd83104mr25799822eec.21.1792143153301;
+        Fri, 16 Oct 2026 02:32:33 -0700 (PDT)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360820a79c7sm5157172eec.18.2026.10.16.02.32.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 02:32:32 -0700 (PDT)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Shuah Khan <shuah@kernel.org>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Anil Kaushik <anilkaushikwireless@gmail.com>
+Subject: [PATCH net-next v7 0/4] gtp: ynl spec for the GTP netlink family, two fixes, and a selftest
+Date: Fri, 16 Oct 2026 09:32:21 +0000
+Message-Id: <20261016093225.1036375-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 04/37] can: proc: reset pkg_stats atomics
- individually
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: mkl@pengutronix.de, netdev@vger.kernel.org, davem@davemloft.net, 
- kuba@kernel.org, linux-can@vger.kernel.org, kernel@pengutronix.de, 
- socketcan@hartkopp.net, kurt.van.dijck@eia.be
-In-Reply-To: <179211822321.434549.9771966136026807937@kernel.org>
-References: <20261015015336.816543-5-mkl@pengutronix.de>
- <179211822321.434549.9771966136026807937@kernel.org>
-Date: Fri, 16 Oct 2026 11:25:13 +0200
-Message-Id: <179214271380.1225518.13670821676227816602.b4-reply@b4>
-X-Mailer: b4 0.17-dev-6be7c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=764; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=KexnCeRpOAQE9180IYk1FKXNgLIajXRfkiUVfeZljtk=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsi6+LbK76Ns2C2bg/4fjLZySzV3XFywSOpa8TZl9a7OC
- bUlxw74dJSyMIhxMciKKbIs/XFCUSDQobT3ZcIkmDmsTCBDGLg4BWAie9IZGb4K3ev90ny3UM/8
- 4dqlZi7bGIUv6c2bJLvzn2DBdRmlzDUM/92Wi/28eI/tr7DzaYeauXGK8TPvxjw85mYzeZXCQcs
- X9TwA
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-On 2026-10-16 02:37 +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 0 · Medium: 1 (3) · Low: 0 (1)
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [Medium] can: dropped statistics updates due to unprotected
->   atomic_long_set()
+This adds a ynl spec for the gtp genetlink family, two small driver
+fixes, and a selftest.
 
-The found issue should be fixed.
+Patch 1: the GET and dump replies carried the family id in the command
+field, so ynl dropped them. Use GTP_CMD_GETPDP instead.
+Patch 2: new in v7. On the netdev CI debug kernel, the selftest hit an
+RCU warning: adding a PDP context looks up the device without the RCU
+read lock. Hold it around the lookup.
+Patch 3: the spec (NEWPDP/DELPDP/GETPDP/ECHOREQ), no uapi change.
+Patch 4: a selftest that adds, dumps and deletes PDP contexts.
 
-Marc
+The multicast notifications are not in the spec: they reuse the request
+command values, which the ynl C generator can't express with the
+current uapi header.
 
-bt-bot: cr
+v7:
+ - new patch 2: fix the RCU warning the selftest found on debug kernels
+ - selftest: add a docstring to GtpFamily (pylint)
+ - Cc Stanislav for lib/py
+v6:
+ - spec: use the gtp_version uapi enum for the version attribute
+ - spec: family only applies to the MS address, fix its doc
+ - selftest: also skip on "Unknown device type", printed by iproute2
+   with extack support when the kernel has no gtp
+v5:
+ - ynl: add CFLAGS_gtp so the generated code builds with older headers
+ - spec: doc fixes, min-len for the IPv6 attributes
+ - selftest: only skip when GTP is unavailable, close the ynl handle
+v4:
+ - spec: request/reply attributes now match the handlers
+ - selftest: fix the gtp.ko autoload crash, check ENOENT, delete by
+   TEI and by MS address
+
+v6: https://lore.kernel.org/netdev/20261013031000.528393-1-anilkaushikwireless@gmail.com/
+v5: https://lore.kernel.org/netdev/20261012024800.400616-1-anilkaushikwireless@gmail.com/
+v4: https://lore.kernel.org/netdev/20261010105740.223992-1-anilkaushikwireless@gmail.com/
+v3: https://lore.kernel.org/netdev/20261009060615.4177402-1-anilkaushikwireless@gmail.com/
+v2: https://lore.kernel.org/netdev/20261008181031.4129029-1-anilkaushikwireless@gmail.com/
+
+Anil Kaushik (4):
+  gtp: set a valid genl command in PDP context get and dump replies
+  gtp: hold RCU for the device lookup when adding a PDP context
+  netlink: specs: add genetlink-legacy spec for GTP
+  selftests: net: add a test for the gtp netlink family
+
+ Documentation/netlink/specs/gtp.yaml          | 196 ++++++++++++++++++
+ MAINTAINERS                                   |   2 +
+ drivers/net/gtp.c                             |   7 +-
+ tools/net/ynl/Makefile.deps                   |   1 +
+ tools/testing/selftests/net/Makefile          |   1 +
+ tools/testing/selftests/net/config            |   1 +
+ tools/testing/selftests/net/gtp.py            | 123 +++++++++++
+ .../testing/selftests/net/lib/py/__init__.py  |   5 +-
+ tools/testing/selftests/net/lib/py/ynl.py     |   9 +-
+ 9 files changed, 340 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/netlink/specs/gtp.yaml
+ create mode 100755 tools/testing/selftests/net/gtp.py
 
 -- 
-Marc Kleine-Budde <mkl@pengutronix.de>
+2.25.1
+
