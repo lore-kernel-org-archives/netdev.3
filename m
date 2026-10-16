@@ -1,80 +1,44 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB79282F1D
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A21937882A
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792140455; cv=none; b=m7LA6myIDuzl0YSjqMUXQp0kSgFkziBD3YY2mQOkysHD0v+RL84zjfmLGesqC2p/UWStF7NhSbcJs/Zbg0TI2qosmfrjt0aIl+t5jA/7ZM4i0O4unsu1PIQvjksKb/pWIk6lcj35KIBfseynrKP+lMnf2K4mNCc7Ax90TSwhhE8=
+	t=1792140493; cv=none; b=UCDL7SSnfMW8ORyFgM8rYEwAw/KNBV6A6mbBmb6FEx4YS8VghRyPPPfNO7bkFQG149exqP8FKbXA0mxw3KD3d0R9iF0Na6GRciRgFzNQ9qqQmtoLumkcGbWnSwkpdDDjAkzNn8JaR6QhXikJRZ1DvhLH60Xn7UFZkPsc86KM+6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792140455; c=relaxed/simple;
-	bh=wawo+HWArGTMCt+S2qKcVQwGBT+E0mr03FFdusdgGKA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mlZBIHcekqXWT3q4hKaXscQ0+bKJiia8QTMBFB09ZNAZ8OoPr7+Pnpetvg4r5J4gwPvt8m/1EbQt0hHQGGCsQ/GafXuoR/63cxfb8Or/0HjTHuDMoxpOtljsMnPmrpbe32bkchgEUuzP2BMHL6pc4HF4gz0kEX8YkzA9rWdpfGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=EKRT2xsA; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1792140493; c=relaxed/simple;
+	bh=5U0cWj16TuzpJ6LypMJIFdb8UNY75AXVQ8zBdqY/BAY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O07R9g+N0/KXvxIK3J0g6ds7aIjtNPSa+RLje30k4clFjswqxCteWIrqHIEm8qXABmz1DHFvHu3cSBpBDau30Y0Yr/rnkZ6Br503e6YsoJNvwc87uIRNPgfNeWK6enzUOJMS6kgNeglVV4IH8sfU49tueg6JYPLrx0iUSRUfy+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSq+BrF4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="EKRT2xsA"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5351748222cso20811411cf.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792140453; x=1792745253; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o1YO8GZRPT+tLk1k1KaGUnKumuD+56wkUQINq0Ps5Q0=;
-        b=EKRT2xsA13x2GHMORY/yh46Pa7M7Uo3TGsEFBV/xzm9bIcvIUsmMEyzPLuOjJ25w2l
-         52YjOwN8q0OlM9Or15zQPAk9AZma8LpQfhBkkt76AOpwraYP77nPQkkKrjT0Ll0OR2rl
-         yvz8Vi3xypqkRJ1m0NtrADdSMpK+6BKWlhIOQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792140453; x=1792745253;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o1YO8GZRPT+tLk1k1KaGUnKumuD+56wkUQINq0Ps5Q0=;
-        b=anYX+8IEC8aeUUj5BfFYxIM9vIsOqHxvYgr/qTcK5FTOsk6l9uo3ExTmoe0gq+o2a+
-         Olj7WSjcjySikQ5b4NGcnME0q/tC01W72fQTDwDuHGbrWS8rZLzcH4bZAgFGl5x+7CN8
-         +hIt8zLdyhtx1bU+NC2ol8bbbq4yr2L3QChjMJmh9MGJ1i3Qp5gLmAQBqSPDhFSQ/Sl6
-         A3TN3H5m1mWBivsWVf1ea5T2OKaSZMMyaf27GCSA/BARbY5YO/UEGu1TGZeih5EX7gXA
-         w8EaFtlc9wLvuADOfczbN2+bNCAZU4Riv2tJMT6s3xuLjkZY5dU54mAuoVcT0M/bA7TO
-         Kedw==
-X-Gm-Message-State: AFq9FYLdZFnMSqd1NEYcHolx9qXIvMGVDM/KPIxblLDbnVYZqZt2hjoo
-	EQvl+nXW3sZD3WPgzZb/SNede1YppW4+2zaBNXEAf78oeOMu6iyf9dIC2zb6WbVq6WDfod4IwRK
-	5CFc=
-X-Gm-Gg: AYBFou34z7CNmdgnWaGEq3vIm/Z0SMXiMXU2PAn1B8eg5et9OXJQFpiRo1S5bxO+ngY
-	auFXIrdL7WjfMxekU3U8jOhJ5M1ZCjvPR4KwledpWE3q6YmgYChsFHFX0JBsFwu2cP1bK/ckc/S
-	j13RFlaZqLRrcgdp86+VV1lRtDqdXUmJ7ar5QJWMbn2Zjq+1ymNySzcuJxC7GwmnwYzwXcwQD4d
-	i/teMlKR8l1ZCdvPJU3xJCfauwQRFQ30+Q8SPmfmvoSr9CiKbsZzrvSswlmun+UhwBIN3ujrLBs
-	eJVOkDqxsZLo81fQDsqPTR3PikVqMNg188ObDlA9KBKfI5utfULmbylykPn1dLA0JuWdCQC7GeH
-	HAKbKAiMBhCtWff+aSZRrMR1C179KRrI1n1V/U1WbYaMI36Q2Pt7AO0dya7A6lIdK+56z+BUm3p
-	baAhPU2UDLbcwxdKdgwKuUub3CDbSU/a3Uzb2S6DimPSbe5wcANRQaA1byWAgE2OSoM79R7p8F8
-	H+lOr+scfdmkUxq1Knt1xzCjelfAD/bd9ySvVLSY5Mc
-X-Received: by 2002:a05:622a:4d05:b0:535:ed1:cdbb with SMTP id d75a77b69052e-5359f46d560mr347991571cf.1.1792140452812;
-        Fri, 16 Oct 2026 01:47:32 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcb8c4adasm17863946d6.1.2026.10.16.01.47.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 01:47:32 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: owen kwan <owen@verialabs.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSq+BrF4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9221F000C4;
+	Fri, 16 Oct 2026 08:48:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792140491;
+	bh=PwALp2Ex+NAygyLDKXMv1KuSJwM5TCw3qafRqShoQSY=;
+	h=From:To:Cc:Subject:Date;
+	b=aSq+BrF4UphQfTVgwo0a6WIDSITKJWnyp0ogWmc6+dlygeA8c22O0KGLLIgu9TySY
+	 DpgI1Fj7Y3ryBJ252fPWzJWH9prJ7WbccGyTgLQve+G6HL12wnDbp6VbeFN4jZrpIJ
+	 qB/K17/9PT4WDdRWYuIR0s0cflQNkQz0LHMzRlM5xZWSykdP6cQacogDwpL8o4RTEV
+	 NWSLQmBugrfldTB973xEgi4iYgJI1S5aQY/8LHHoYY1zIWe6zsbeuskA2211CZViGI
+	 snczuJdN5KXLRElub6+evYmf5LTkLvDjirZKt4W0UJU1par1B4XeW3C2/n1cN8Db0x
+	 vKyUUcOv1MYTg==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
 	Simon Horman <horms@kernel.org>,
-	Patrick McHardy <kaber@trash.net>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] net/sched: sch_teql: fix use-after-free on lower qdisc drop
-Date: Fri, 16 Oct 2026 04:47:19 -0400
-Message-Id: <QDISC-Y0BY.v1.r0.20261015184107-2@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-Y0BY.v1.r0.20261015184107@mojatatu.com>
-References: <QDISC-Y0BY.v1.r0.20261015184107@mojatatu.com>
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Qiliang Yuan <odys.yuan@gmail.com>
+Subject: [PATCH net] tcp: tcp_metrics: use the socket netns, not the dst device netns
+Date: Fri, 16 Oct 2026 10:48:02 +0200
+Message-ID: <20261016084802.2725187-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,51 +47,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: owen kwan <owen@verialabs.com>
+tcp_get_metrics(), __tcp_get_metrics_req() and tcpm_new() look up and
+create metrics entries in the netns of the cached dst device rather than
+in the netns of the socket.
 
-The issue: teql_master_xmit() tests the slave's ndo_start_xmit() return
-value against NETDEV_TX_OK alone. A slave that consumes the skb but
-returns an error code (rc < NET_XMIT_MASK, e.g. NET_XMIT_DROP) is treated
-as if the skb were still owned, so the loop restores skb->dev and calls
-__skb_pull() on it. A VLAN slave returns the result of dev_queue_xmit()
-from its ndo_start_xmit() (propagated since cbbef5e18307), and when the
-lower qdisc drops the packet that value is NET_XMIT_DROP after the skb
-has been freed, giving a use-after-free in teql_master_xmit().
+These usually match, but not after the device has been moved to another
+netns or unregistered: a socket can keep a stale dst in sk_dst_cache
+until it is checked again, and tcp_update_metrics() reads it with
+__sk_dst_get() without any dst_check(). Once dst_dev_put() has run, the
+dst device is blackhole_netdev and the entry is created in init_net.
+Before that, for instance for routes through nexthop objects whose
+cached dsts are released from a nested RCU callback, it is the netns the
+device has just been moved to.
 
-The Fix: test for consumption with dev_xmit_complete(), which accepts
-NETDEV_TX_OK and every rc < NET_XMIT_MASK, matching other callers that
-need to distinguish consumed results from busy.
+A TCP socket of netns A that enters TIME_WAIT in that window then
+creates or updates an entry carrying A's addresses and RTT in another
+netns, where TCP_METRICS_CMD_GET can dump it and where new connections
+to the same peer inherit those metrics.
 
-Conditions to recreate the bug:
-With CONFIG_NET_SCH_TEQL,
-CONFIG_VLAN_8021Q and CONFIG_DUMMY enabled, add lkrdummy0 (dummy) and
-lkrvlan0 (VLAN id 37 on lkrdummy0); set a pfifo limit 0 root on lkrdummy0
-and a teql0 root on lkrvlan0; bring teql0 up with an address and send one
-UDP packet to it. The VLAN xmit returns NET_XMIT_DROP from the lower
-qdisc while holding a freed skb.
+The metrics belong to the netns of the socket, so use sock_net() for
+full sockets and request sockets, and pass it to tcpm_new().
 
-Fixes: 572a9d7b6fc7 ("net: allow to propagate errors through ->ndo_hard_start_xmit()")
-Cc: stable@vger.kernel.org
-Signed-off-by: owen kwan <owen@verialabs.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Kernel sockets that do not hold a netns reference can still reach
+tcp_time_wait() after tcp_net_metrics_exit_batch() has flushed the
+entries of their dismantling netns, and an entry created then would
+never be flushed and would keep a dangling tcpm_net. Make tcpm_new()
+refuse to create entries when check_net() fails. Its callers are in
+an RCU read-side section, and cleanup_net() waits for a grace period
+between the refcount reaching zero and the flush, so an entry added
+after a successful check is always seen by the flush.
+
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Cc: Qiliang Yuan <odys.yuan@gmail.com>
 ---
- net/sched/sch_teql.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_metrics.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index c7dcec25ef42..b3efd5c28198 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -350,8 +350,8 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index dc0c081fc1f33f735a38aaae8a7b4ab3d633b148..d58f99c67d4dc0877d0e853c9e9faddd80343c22 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -161,16 +161,26 @@ static void tcpm_check_stamp(struct tcp_metrics_block *tm,
+ 	rcu_dereference_protected(p, lockdep_is_held(&tcp_metrics_lock))
  
- 				skb->dev = slave;
- 				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
--				    netdev_start_xmit(skb, slave, slave_txq, false) ==
--				    NETDEV_TX_OK) {
-+				    dev_xmit_complete(netdev_start_xmit(skb, slave,
-+									slave_txq, false))) {
- 					__netif_tx_unlock(slave_txq);
- 					raw_spin_lock_irqsave(&master->slaves_lock, flags);
- 					if (rcu_dereference_protected(master->slaves,
+ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
++					  struct net *net,
+ 					  struct inetpeer_addr *saddr,
+ 					  struct inetpeer_addr *daddr,
+ 					  unsigned int hash)
+ {
+ 	struct tcp_metrics_block *tm;
+ 	bool reclaim = false;
+-	struct net *net;
+ 
+ 	spin_lock_bh(&tcp_metrics_lock);
+-	net = dst_dev_net_rcu(dst);
++
++	/* Do not add entries to a dismantling netns: they would not be
++	 * flushed again. Callers are in an RCU read-side section, and
++	 * cleanup_net() waits for a grace period after the netns refcount
++	 * reached zero and before tcp_metrics_flush_all(NULL) runs, so an
++	 * entry added after a successful check_net() is seen by the flush.
++	 */
++	if (unlikely(!check_net(net))) {
++		tm = NULL;
++		goto out_unlock;
++	}
+ 
+ 	/* While waiting for the spin-lock the cache might have been populated
+ 	 * with this entry and so we have to check again.
+@@ -273,7 +283,7 @@ static struct tcp_metrics_block *__tcp_get_metrics_req(struct request_sock *req,
+ 		return NULL;
+ 	}
+ 
+-	net = dst_dev_net_rcu(dst);
++	net = sock_net(req_to_sk(req));
+ 	hash ^= net_hash_mix(net);
+ 	hash = hash_32(hash, tcp_metrics_hash_log);
+ 
+@@ -318,7 +328,7 @@ static struct tcp_metrics_block *tcp_get_metrics(struct sock *sk,
+ 	else
+ 		return NULL;
+ 
+-	net = dst_dev_net_rcu(dst);
++	net = sock_net(sk);
+ 	hash ^= net_hash_mix(net);
+ 	hash = hash_32(hash, tcp_metrics_hash_log);
+ 
+@@ -326,7 +336,7 @@ static struct tcp_metrics_block *tcp_get_metrics(struct sock *sk,
+ 	if (tm == TCP_METRICS_RECLAIM_PTR)
+ 		tm = NULL;
+ 	if (!tm && create)
+-		tm = tcpm_new(dst, &saddr, &daddr, hash);
++		tm = tcpm_new(dst, net, &saddr, &daddr, hash);
+ 	else
+ 		tcpm_check_stamp(tm, dst);
+ 
 -- 
-2.43.0
+2.53.0
+
