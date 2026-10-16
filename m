@@ -1,158 +1,190 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AC3486E43;
-	Fri, 16 Oct 2026 10:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D7E3A5430;
+	Fri, 16 Oct 2026 10:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792146730; cv=none; b=FD9spNrj49hgIW0eypfMRABl6d5HGp8H4iCijkgpGyf60l53qWcMot2IdZwynH4uBq4r9jTMMC+M6aNU/2OCfphAwcvThT/yKPxoSUdbq+8gVaopltHMKo/9oPl9NVJ0zsGpAKj34Wf8kOrQuTD8LbQ6eyxyHRfGhUzVX2QOwIQ=
+	t=1792147147; cv=none; b=hnkGV+twUK4KIvIomfPmdKz1iASBYHocI3RXpQG+dccGSt47bhNBBVu6l5IgcnbwmEf57DwaxCFQfEAy8HivQfnhnM208Y1QJ27aLL9X6ppcGDYVyxO2yGLvniePn7pzl5kefECcPZZuqdO7TGWG30GFmjZWzFd1OPTLd2qvV5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792146730; c=relaxed/simple;
-	bh=i2eA1g8hDVZivBeAZaOHWG6zdSgE3ONYneQsyHDZBF8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lQxEh8Cjk09GbIfN8Yb6D5q1HC50brYT9Bq9YkL+WjsAjbVHcvbGAJRHid1Gkioi9wCRJ2lEMZ7rNGb7X7ubDebB2Yym5aUW5VkWAA2DWfgKQkiit4qtzYvFh05ACBKUZQIwQxZY6aGiL2OaFYBMuMH+GwmtcOUUFnYDJziXpxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=K27pmBMH; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1792147147; c=relaxed/simple;
+	bh=dgPyojKrklW2/ydEPGCV2gH9I4AT3YqSs/zddDCl9bg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g1l5kwc+3IRQsGviq4WIsdmEp6UB3Uzo+iy7DEkT6uxiPiGWOhCIeufrAfifQXGxHMY/pqwyQIeXRqWWesuZ4BN//F0/FX2ahF5kcFfdwNm0PPPGh+yJw6gJg5guieT9Z3dCUIcl8dsGAyJNiamROibhcZDqNpzx2FRDqesHIao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=2C6nLOlH; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="K27pmBMH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1792146727;
-	bh=i2eA1g8hDVZivBeAZaOHWG6zdSgE3ONYneQsyHDZBF8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=K27pmBMHZzU+7NVK8xmAja3oWC9Hj0xg4sgcGjS0yUfsnyLxBsmHPD7mS2cw4cGqN
-	 H/ZUUkPiR2W9UiO8WtxyuXASvmNSX+Z2lHcN0UYXOFGzyHcJSHTVZELX2or2OYuy/p
-	 4saUPA7JMNjtvQDwpTK1GvD2zs6mRtKPt8EC9sxyOaxL72YwmpOqIkW+82Zv1E/mYm
-	 XANUA9nzuBDbcCZwCSLbboL1OT2OBtyX1l0azFbHJpaEZNaUmOf00Ug1duf5/MZv+y
-	 MzD0c1o521+BpCD6WEg8gW+yeukGppoYW5FHB5p/A0GN5sdaQwRLJ0aS4GSERB5svn
-	 sQwv221kl7ouw==
-Received: from yukiji.home (unknown [100.64.0.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 510B017E020C;
-	Fri, 16 Oct 2026 12:32:06 +0200 (CEST)
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Fri, 16 Oct 2026 12:31:13 +0200
-Subject: [PATCH net-next v3 9/9] net: stmmac: mediatek: add support for
- MT8189 SoC
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="2C6nLOlH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792147141; x=1823683141;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dgPyojKrklW2/ydEPGCV2gH9I4AT3YqSs/zddDCl9bg=;
+  b=2C6nLOlHiz8Y/R7kFsf51qi8UGAYksvjsLqLFaUFFgQBsRWfd8F6Y6XK
+   CuLQ2qhAlHJale8eIsYxubeiDltT52UAwCKGKpz9K5aWi1sNX5vxptW4S
+   6jll/wHVcqF1NOIZ3JA1JF0z2uySlWksxGS5ZwX+YMNbnzb631WN2uJn0
+   Pzw/96t1WVOABqO4JSZUvVOTUNG2Z67pMnf7vtyFUr5yaxJXTaFNr3YU9
+   1b7g1QUw50+cLaWWpEXCFs6A/RF20PEFB59mwexax19/cXiKk8QNe7wST
+   VOzQhbxx5x38BiYEt2g39M0U7eh4MLRj2l0pBlQkWYmnXV3BkIpaiacdD
+   Q==;
+X-CSE-ConnectionGUID: n/wAGzuIRsihiIuVm98YmA==
+X-CSE-MsgGUID: 6doiG0+yTYeGdsWNhpqRbw==
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="296557701"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2026 03:39:00 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 16 Oct 2026 03:38:58 -0700
+Received: from che-ll-i67131.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 16 Oct 2026 03:38:48 -0700
+From: Manikandan Muralidharan <manikandan.m@microchip.com>
+To: <pratyush@kernel.org>, <mwalle@kernel.org>,
+	<takahiro.kuwano@infineon.com>, <miquel.raynal@bootlin.com>,
+	<richard@nod.at>, <vigneshr@ti.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <srini@kernel.org>, <nicolas.ferre@microchip.com>,
+	<alexandre.belloni@bootlin.com>, <claudiu.beznea@tuxon.dev>,
+	<linux@armlinux.org.uk>, <richardcochran@gmail.com>, <linusw@kernel.org>,
+	<arnd@arndb.de>, <pengpeng@iscas.ac.cn>, <gregkh@linuxfoundation.org>,
+	<mathieu.dubois-briand@bootlin.com>, <michael@walle.cc>,
+	<linux-mtd@lists.infradead.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<netdev@vger.kernel.org>
+CC: <manikandan.m@microchip.com>
+Subject: [PATCH v9 0/8] Read MAC address from SST vendor specific SFDP region
+Date: Fri, 16 Oct 2026 16:08:28 +0530
+Message-ID: <cover.1792145382.git.manikandan.m@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-dwmac-mediatek-mt8189-v3-9-25daf2bbcf35@collabora.com>
-References: <20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35@collabora.com>
-In-Reply-To: <20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35@collabora.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Biao Huang <biao.huang@mediatek.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Eric Dumazet <edumazet@kernel.org>, Eric Dumazet <edumazet@kernel.org>
-Cc: kernel@collabora.com, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792146716; l=3119;
- i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=i2eA1g8hDVZivBeAZaOHWG6zdSgE3ONYneQsyHDZBF8=;
- b=9yIUu0ofzyAAWDOQnO/YpjHDr+MOngyMS/O2iwlxiUts+wqjUGCc9WrenITtvMepTp6Grlj64
- UwLNfyetg6FCPEYMyoaCcIMLqTt37pAgepfdrAEOoUvJ+IqA/czy+1B
-X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
- pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Like MT8195 SoC, MT8189 SoC uses the Ethernet control registers from
-the peripheral configuration (pericfg) but at a different offset.
-It also has different RX and TX internal delay stage dividers (290ps
-for MT8195, 180ps for MT8189), and by consequence a reduced value range
-for these delays. It finally needs additional feature such as the
-TX clock output enable one.
+Some Microchip/SST QSPI flashes (e.g. the SST26VF064BEUI) are factory
+programmed with globally unique, write-protected EUI-48 and EUI-64
+identifiers stored in a vendor-specific SFDP parameter table. On boards
+that have no on-board EEPROM (sama5d27_wlsom1, sama5d29 curiosity,
+sam9x75 curiosity) this is a reliable source for an Ethernet MAC address,
+instead of relying on a U-Boot-provided or random address.
 
-Thus, add compatible, clock definitions and specific platform data to
-support the MT8189 SoC.
+The series exposes the SFDP as a generic NVMEM framework with no vendor
+code in the SPI NOR core:
+ - The SPI NOR core exposes the entire SFDP as a generic read-only NVMEM
+   device, rooted at a new "sfdp" child node of the flash.
+ - A new NVMEM layout driver (drivers/nvmem/layouts/) locates the
+   Microchip vendor parameter table at runtime and presents the EUI-48 as
+   a "mac-address" cell.
+ - Arbitrary parameters can be read with a standard fixed-layout
+   (known offset) or with an nvmem-layout parser (location discovered at runtime).
 
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
----
- .../net/ethernet/stmicro/stmmac/dwmac-mediatek.c   | 28 ++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Changes in v9:
+ - 3/8 - Add Reviewed-by: Miquel Raynal, Reviewed-by: Michael Walle.
+ - 4/8 - Add Reviewed-by: Miquel Raynal, Reviewed-by: Michael Walle.
+         Drop the early return after of_get_compatible_child(). Updated the
+		 comments and commit message to match.
+ - 5/8 - Move the Makefile entry for sst26vf-sfdp-eui.o to the end.
+         Move the ETH_ALEN check to the top of sfdp_eui_read_post_process()
+		 and bail out early.
+		 Compute nph as hdr.nph+1 and loop for the 0-based parameter-header count.
+         Cosmetic fixes.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-index 147e217b8662..d480c339a16d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-@@ -45,8 +45,15 @@
- #define MT2712_RGMII_DLY_TXC_MAX	17600 /* 32 x 550ps */
- 
- /* Peri Configuration register for mt8189 */
-+#define MT8189_PERI_ETH_CTRL_OFFSET	0x270
-+
- #define MT8189_CTRL0_TXC_OUT_OP_EN	BIT(20)
- 
-+#define MT8189_DLY_RXC_STAGE_DIV	180  /* 180ps per stage */
-+#define MT8189_DLY_RXC_MAX		5760 /* 32 * 180ps */
-+#define MT8189_DLY_TXC_STAGE_DIV	180  /* 180ps per stage */
-+#define MT8189_DLY_TXC_MAX		5760 /* 32 * 180ps */
-+
- /* Peri Configuration register for mt8195 */
- #define MT8195_PERI_ETH_CTRL_OFFSET	0xFD0
- 
-@@ -134,6 +141,10 @@ static const char * const mt8195_dwmac_clk_l[] = {
- 	"axi", "apb", "mac_cg", "mac_main", "ptp_ref"
- };
- 
-+static const char * const mt8189_dwmac_clk_l[] = {
-+	"axi", "apb", "mac_main", "ptp_ref"
-+};
-+
- static int mt2712_set_interface(struct mediatek_dwmac_plat_data *plat,
- 				u8 phy_intf_sel)
- {
-@@ -495,6 +506,21 @@ static void mt8195_fix_mac_speed(void *priv, phy_interface_t interface,
- 			   reg_val);
- }
- 
-+static const struct mediatek_dwmac_variant mt8189_gmac_variant = {
-+	.dwmac_set_phy_interface = mt8195_set_interface,
-+	.dwmac_set_delay = mt8195_set_delay,
-+	.dwmac_fix_mac_speed = mt8195_fix_mac_speed,
-+	.clk_list = mt8189_dwmac_clk_l,
-+	.num_clks = ARRAY_SIZE(mt8189_dwmac_clk_l),
-+	.dma_bit_mask = 35,
-+	.rx_delay_max = MT8189_DLY_RXC_MAX,
-+	.tx_delay_max = MT8189_DLY_TXC_MAX,
-+	.rx_rgmii_delay_stage_div = MT8189_DLY_RXC_STAGE_DIV,
-+	.tx_rgmii_delay_stage_div = MT8189_DLY_TXC_STAGE_DIV,
-+	.peri_eth_ctrl_offset = MT8189_PERI_ETH_CTRL_OFFSET,
-+	.mac_txclk_out_en = true,
-+};
-+
- static const struct mediatek_dwmac_variant mt8195_gmac_variant = {
- 	.dwmac_set_phy_interface = mt8195_set_interface,
- 	.dwmac_set_delay = mt8195_set_delay,
-@@ -751,6 +777,8 @@ static void mediatek_dwmac_remove(struct platform_device *pdev)
- static const struct of_device_id mediatek_dwmac_match[] = {
- 	{ .compatible = "mediatek,mt2712-gmac",
- 	  .data = &mt2712_gmac_variant },
-+	{ .compatible = "mediatek,mt8189-gmac",
-+	  .data = &mt8189_gmac_variant },
- 	{ .compatible = "mediatek,mt8195-gmac",
- 	  .data = &mt8195_gmac_variant },
- 	{ }
+Changes in v8:
+ - New 3/8 - nvmem: core: take a reference on dev.of_node in
+             nvmem_register(). v7's 3/8 (now 4/8) called of_node_put() right
+			 after devm_nvmem_register(), which left nvmem->dev.of_node backed by
+			 no reference at all once the caller's own reference was dropped.
+			 Fixing it at the nvmem_register() by taking  its own of_node_get()
+			 when assigning nvmem->dev.of_node and released in nvmem_release().
+ - 6/8 - drop the #address-cells/#size-cells from the qspi1_flash node.
 
--- 
-2.56.0
+Changes in v7:
+ - 1/7 - Add blank lines in the "sfdp" schema per review;
+ 		 Add Reviewed-by: Rob Herring.
+ - 2/7 - Add Reviewed-by: Rob Herring.
+ - 3/7 - Drop the spi_nor_sfdp_nvmem_put_np() helper and
+ 		 call of_node_put() right after devm_nvmem_register().
+ - 6/7 - Note in the commit message that the sama5d27_wlsom1 SoM ships the
+         factory-programmed SST26VF064BEUI, so the EUI-48 "mac-address"
+         cell is always present.
+
+Changes in v6:
+ - 3/7 - Move the SFDP NVMEM registration from sfdp.c into core.c, since
+         sfdp.c is only for parsing the tables;use of_get_compatible_child()
+		 instead of the open-coded child-node lookup.
+ - 2/7, 6/7, 7/7 - Add Reviewed-by: Linus Walleij.
+
+Changes in v5:
+ - 1/7 and 5/7 - Add R-b tags
+ - 3/7- Rework the comments, function name and commit message.Check all the nodes
+        (for_each_available_child) for the right compatible "jedec,sfdp" instead
+		of node name.
+
+Changes in v4:
+ - Rework per v3 review: remove the vendor-specific SFDP handling from the
+   SPI NOR core; expose the whole SFDP as a generic read-only NVMEM device
+   and move the EUI extraction into an nvmem-layout driver.
+ - Introduce a new nvmem-layout driver to discover the vendor-table location
+   at runtime; no offset hardcoded in the device tree.
+ - Describe the SFDP via a dedicated "sfdp" subnode (compatible
+   "jedec,sfdp"), which also resolves the v3 dtbs_check "Unevaluated
+   properties ('nvmem-layout')" warning.
+ - Reverse the stored EUI bytes into canonical MAC order.
+ - Enable the layout in sama5_defconfig.
+
+Changes in v3:
+ - 2/3 - add support to update the QSPI partition into 'fixed-partition'
+   binding in sama5d27_wlsom1
+ - 3/3 - add nvmem-layout in qspi node for EUI48 MAC Address and nvmem cell
+   properties for macb node in sama5d27_wlsom1
+
+Changes in v2:
+ - 1/3 - parse the SST vendor table, read and store the addresses
+  into a resource - managed space. Register the addresses
+  into NVMEM framework
+ - 2/3 - add support to update the QSPI partition into 'fixed-partition'
+  binding
+
+v8: https://lore.kernel.org/all/cover.1790847519.git.manikandan.m@microchip.com/
+v7: https://lore.kernel.org/all/20260812104955.485667-1-manikandan.m@microchip.com/
+
+Manikandan Muralidharan (8):
+  dt-bindings: mtd: jedec,spi-nor: allow the SFDP to be exposed via
+    NVMEM
+  dt-bindings: nvmem: layouts: add Microchip/SST SFDP EUI layout
+  nvmem: core: take a reference on dev.of_node in nvmem_register()
+  mtd: spi-nor: sfdp: expose the SFDP as a read-only NVMEM device
+  nvmem: layouts: add Microchip/SST SFDP EUI layout driver
+  ARM: dts: microchip: sama5d27_wlsom1: use fixed-partitions for QSPI
+    flash
+  ARM: dts: microchip: sama5d27_wlsom1: read MAC address from QSPI SFDP
+  ARM: configs: sama5: enable Microchip/SST SFDP EUI NVMEM layout
+
+ .../bindings/mtd/jedec,spi-nor.yaml           |  20 ++
+ .../layouts/microchip,sst26vf-sfdp-eui.yaml   |  60 ++++++
+ .../bindings/nvmem/layouts/nvmem-layout.yaml  |   1 +
+ MAINTAINERS                                   |   6 +
+ .../dts/microchip/at91-sama5d27_wlsom1.dtsi   |  63 +++---
+ .../dts/microchip/at91-sama5d27_wlsom1_ek.dts |   2 +
+ arch/arm/configs/sama5_defconfig              |   1 +
+ drivers/mtd/spi-nor/core.c                    |  75 ++++++++
+ drivers/nvmem/core.c                          |   5 +-
+ drivers/nvmem/layouts/Kconfig                 |  10 +
+ drivers/nvmem/layouts/Makefile                |   1 +
+ drivers/nvmem/layouts/sst26vf-sfdp-eui.c      | 181 ++++++++++++++++++
+ 12 files changed, 399 insertions(+), 26 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/nvmem/layouts/microchip,sst26vf-sfdp-eui.yaml
+ create mode 100644 drivers/nvmem/layouts/sst26vf-sfdp-eui.c
+
+
+base-commit: 2f2f7eeef8b0a1a9b9ca998231419873ccae8d4e
+--
+2.43.0
 
