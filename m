@@ -1,82 +1,50 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D224A482B
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 12:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911F03264C4;
+	Fri, 16 Oct 2026 12:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792154769; cv=none; b=SqXfjkEvhs15JnoKuZj9qYgD87Hq2XzjVwwQ+XtGXn4IDfZ9ReqqJgXnghXAEi/rhedFFB8HRnwLyikpVhfsgJ6CLuQSwTHwxSaj4caT24rybm99Ey9Ye7pk3iqNnrA2eAjo6w+BdS2zvosUkIkgb70oKYnA5i256K9nxyLQBcs=
+	t=1792154993; cv=none; b=ofLoKJ7+XBw2MpOsqznl64bDwATQnKO1XY5jBK9w2U5q1GaDIC6XJUhdubySOydvcs3gbokU7Krpgl2AbFrbpu4rjDqeGvpFztCILXFhFjgOB4Zwqk1Qmgph3j0exllAWGYQ2+oCsF3SEQKakO/KQS3/4hFiGRnNG861GRT1c6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792154769; c=relaxed/simple;
-	bh=lKAkidrvbBJ/vTXYNpqVpCG9VNbWjHMk4s8lEayu9QY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B8hZ+Qb8vjovJ4P3+9oZr2QMY46vKw+Wgq0MyYOT2lEBo8suGZ6wg6dU/UdYhbe5KNLA8rBkCvBlnX4/Hvi4KkXfym6C2HOudiQkMXHnqx8C2O8FVdpmerDVXS62hj9/mNxC6TihhWpKzLL+3pe9yRspb55AWd9oXdYxIrgz0rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=boDcVw12; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792154993; c=relaxed/simple;
+	bh=rod6xy9+gndHUdnbr4wgG656s1uGxUW7SPIP+EVNlHM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=c7vxrfEfzOfcp9yAaPqsNJhazJO+xWOxNl4qsr2gd7gc3Zton2d+KL5ES612WXrjaYT/tmNz2ZRh5o2d19k2+9/3XFzIU1Q4iFY6SmPn0huhRDrNGzJMkRchQSje+uW8iNBb2qCpUk9gdIO6MDwJOHCfQ4D7vVt/GxdxY+mC3xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com; spf=pass smtp.mailfrom=ugreen.com; dkim=pass (1024-bit key) header.d=ugreen.com header.i=@ugreen.com header.b=l4gXVKAM; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ugreen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="boDcVw12"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ab98332238so3766295a91.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 05:46:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792154767; x=1792759567; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TrslgNHse2Dg20EAEUVpp54Hl92z5vT+wdBvkKVG3Qo=;
-        b=boDcVw12UrVWhMkX6Y79s5SYBhSnNzOYML/hJzXJsU7wbdaUQYiv9Kfl2zjUzvuZL2
-         tc6Ijo4lF9PJiXKns5vs1ctbNfcC41qzmYtWwg6WhPWjS49NaQCtB3+YfI0YuF9sEOB/
-         mxNeY5YMajRUhe2cePGZPfXmhgijhEfAI+2boCtjKLpXCr6QH+97Ps4dyjaMULOLhcfw
-         wg6wpT4O8OzJaHHrQucvw5kfjXnCKbwcfjGM6G3LXvSEqDLGP95zMcX+qPXawzuUCAiK
-         fQRPIpN/x41dYlp14jtKhUwph1eQy6t1o63dVhOQObxCFHJd6Q1Xzct0zCjrAkcvAmje
-         ypNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792154767; x=1792759567;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TrslgNHse2Dg20EAEUVpp54Hl92z5vT+wdBvkKVG3Qo=;
-        b=IOCmrGyOQMKAnq0lJPX+MusN/I9gAD6/AP6v2qL8o7CuVmFTSHFrcWpshsANHue+SC
-         IuKaQEqlb+xKoBF2QWHf2eHSXNwtQTLQ9Wx3mbyV977RIEpAYYp5ZR+xjtyFCm5bPoKl
-         EF+af4KrhZS2CiqFrUQKC4d5i/e6bs6e9bVS9/DjWppXkyN9fS+bnk1V9LlLxUg3Wa9v
-         l5bwB8Gjw252WpDq0tPCDFTj0x5CqAtACyLgKJTKX4DaeMz+2AMAtxhclsa9MWoUzWG0
-         4TokyrISjK3qg47K5CT3g2vNJxhpjnDjGzKZLghVQiJVOTkokUGSR8eH2+QaNlXy7jA2
-         ZzGg==
-X-Forwarded-Encrypted: i=1; AKwUvByD/HU66AjdVdsKn2dufx6ehIJx2BnyBiRQNqXVZ2vui3EtuX4czaO+j+lsQCk4ZQimenzBiLo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ8C2AeFTNMvibYjciT4aujpI6e2sYgl5xJwTnoTLHsekDlYr7W
-	q84LcgzlXetHxrEkMdDyso/bd0VJfk0yQy2uFve99zaavRH31NoLf5aX
-X-Gm-Gg: AYBFou3Vze5AIZCf/VzYJSPKE/6i6dfG6DK7svVLmppNpeGYn4R6Oixnc0oG1dKm3J/
-	Q6rBnLBHHfRcfmksf6/pykYwlW9j/qc29054pbF6ZR1yE9F6FB77rka9I1wk6Cmu43vK3ujGZeZ
-	krclZeBczCoD2dcGq2fJLkVNQVZRQ6qzrAbfjbdBNjAr1PJXF+22nz4Hf60Pw4x5kdKIdf5+rkU
-	GwFEdCv7C6HmZ+PVBBWj/RBRPLx12A9MtHMdjhgLO1VBASe5KO9D+53P8veGKdMWJ+Ylv6Ya+Xw
-	HtrcxWwCwWQcEZSsY3AOVmXqhHoow7Sl0dO2ficWBxQ/yoP6axAZtlQemtRdZaMI14YGni42WrN
-	+kYyW6TtqnEzdrKLtFuhJguDU3kHSQmHxpLZlaM98sDw9+6GunX9aoyzPxt/alTIztXB68p8NFq
-	53eqO/qeaB6Ip2te1h/UMdBywWCAbPSii9vW71BE1WoogOP7aLA3LJZRheqNnmSj4kxDTcIVZ+Q
-	i+wRWlXwaezVQ==
-X-Received: by 2002:a17:90a:d604:b0:3ac:8af9:4a6a with SMTP id 98e67ed59e1d1-3ac8af94f17mr5664608a91.42.1792154767359;
-        Fri, 16 Oct 2026 05:46:07 -0700 (PDT)
-Received: from DESKTOP-NM9EKIA ([125.134.240.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ace34c8d9asm753751a91.5.2026.10.16.05.46.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 05:46:06 -0700 (PDT)
-From: Joonhoe Kim <26rote@gmail.com>
-To: mani@kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
+	dkim=pass (1024-bit key) header.d=ugreen.com header.i=@ugreen.com header.b="l4gXVKAM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
+	s=pkvm2402; t=1792154950;
+	bh=PTGNf+pFA4HlvSUNJLATMTS2BdbiXazN6lRObVyVPC0=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=l4gXVKAMC3yETwkqcs1lFqJ8Qc0sAwQA76Y0SGeybbnWHA1it7xcHbXgla3dwVn6t
+	 3+xSLhgLMVHG9bTTzOezXXlCuMlQ/1r4fOISDmMggcza/XbpEsGv8Kqf08yjqS381g
+	 DsZ9PHj73mXQj8nbx2iZtcJUG1p3zgPHrmK/jkfI=
+X-QQ-mid: zesmtpgz8t1792154945t80257fa0
+X-QQ-Originating-IP: fxmolzZxMAKzmLOLloioZrYju46a8tj5RAF29sd94ss=
+Received: from exmail.qq.com ( [14.153.252.100])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 16 Oct 2026 20:49:00 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5218228176751609531
+EX-QQ-RecipientCnt: 6
+From: Hanson Wang <hanson.wang@ugreen.com>
+To: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org,
+	oneukum@suse.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	christopher.lew@oss.qualcomm.com,
-	deepak.singh@oss.qualcomm.com,
-	pranav.phansalkar@oss.qualcomm.com,
-	andersson@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: qrtr: ns: retry service announcements on -EAGAIN
-Date: Fri, 16 Oct 2026 21:45:59 +0900
-Message-ID: <20261016124600.31-1-26rote@gmail.com>
-X-Mailer: git-send-email 2.55.0.windows.5
+	andrew@lunn.ch,
+	hanson.wang@ugreen.com
+Subject: [PATCH net v2] net: usb: aqc111: fix set_mac_address return value
+Date: Fri, 16 Oct 2026 20:48:58 +0800
+Message-Id: <20261016124858.1939743-1-hanson.wang@ugreen.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260703073936.462231-1-hanson.wang@ugreen.com>
+References: <20260703073936.462231-1-hanson.wang@ugreen.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,60 +52,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: NLIGCJzX3Qmez+MNMKksA/1yHF4RoeseEmx7qU8echuQlHQNG9HELPSI
+	/CRwPoWzNFTkW+WcAboyncIJ9/N36iMcUxBlpn6yinfVDhskB9rWMPIIy9iEQQzSc8tMgh1
+	mLnhFSfpCmQoJuDRk2rCNzOjyH/NODcnYKRVnCI1vdu5uSopbQYgy/vIlroEe1p9PwavUjD
+	4EqzAFb9KIVCYQSyrNRBAfMsBNwyu+nTh7cdYRNbLX8hyT+l8TjTDEsXpmEUtNvA/LyYDWF
+	kHvJSs7vgKgH4ID5WtzmL918Lm/7feltwwHwsTMQGcae/rq4CynArcnOl59YrYxBhifg/kn
+	C+L9uAhlt951Tl0dUKk7MQU/2fWZAquRE1B0qwYE17z2OORN3HjuH7AqDvjxpPpEVABgJSn
+	cs3nfbunp7ZrhMgu3kVHuVo/mWhsbZ5fcCJD7/0QHBj263PsTslQAfFu++9MdMe2TB1hH/7
+	Lv0Jq2WVJ19Cns6JrhWeXYgLMmlSE7U2YOHb47tog750uJigas4/6sqlq/NA/Bp5pwmCxTq
+	T8CIEUi0VlNNrKZjxVRO0aoQqVMzBQ1gzWvy4onIh9C47fhY/TSPZID4N1FucIVX9ukkawJ
+	LWKLyvCgym4Fxxj+PGG1JwXKSuyu8zxAxU2z+st+vcv2Dx2NyLd735Q0kUGVUS+u5kdgyMy
+	q3jjphsM2jE64esCjieeM8uCw0jVJn1q5+i3sLH8Ba8tIxTfW4+mV6Lwz5q+8HZF2a8b4F7
+	5c6ue+F3EN7R+/UfcAorX5D0b7vUC1LHfFp1XZYQtEUL0Pcp2po/8IJgdXf+gWdbbi98OfS
+	x6VvRYWm4F4JeDQ3FvcA4hsnBvGzIDtqVNdARSSjWOf/XOMCf//3ZjfHyEr8mG3kS3/hCXy
+	Y8zBwcHPWQiT6GfS2EnFy4FbGm5ewnjOdEjaK26RrbCNC/KEiPbQF89pcXCzCQwqLdFG9bl
+	XbXTwoqgbjkPSqIaKCA+p22CMlQsmPNZYwDYrDJjOUoHc/kBZbLUrqLMuvK+sXf3iMqooaA
+	Hy2to5bA952ttl1Kn9VUx/j/eUKnBhVonxCi8yfdzZsBcTy58sByxu311xAcXi6+bUUU+Pa
+	N8bryIKg+CRXFqydthrA7x7yDpyVQv3Wm+RGC7cm5hvpeHyySZMYF4=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-Since commit 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint
-register"), qrtr_node_enqueue() returns -EAGAIN for every packet but
-HELLO until our HELLO has gone out to the node. The HELLO is retried,
-but the NEW_SERVER announcements sent in reply to the remote's HELLO
-are not, so a service registered before the remote came up is never
-announced to it.
+aqc111_set_mac_addr() returns the result of aqc111_write_cmd() on
+success. That function wraps usb_control_msg(), which returns the
+number of bytes transferred (6 for ETH_ALEN) rather than zero.
 
-On Kaanapali the modem sends its HELLO before it accepts ours. With
-rmtfs started first, the modem never learns about rmtfs and its
-watchdog resets the SoC about 40 s later.
+Callers such as netif_set_mac_address() and bonding treat any
+non-zero return value as failure when setting the MAC address.
 
-Retry each announcement for up to 10 s while it fails with -EAGAIN.
-announce_servers() runs from the name service worker, which can sleep.
+Return 0 on success and propagate negative error codes on failure.
 
-Fixes: 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint register")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joonhoe Kim <26rote@gmail.com>
+Link: https://lore.kernel.org/netdev/20260703073936.462231-1-hanson.wang@ugreen.com
+
+Signed-off-by: Hanson Wang <hanson.wang@ugreen.com>
 ---
-Tested on a Lenovo Legion Tab Y700 Gen 5 (out-of-tree board support)
-with rmtfs started before the modem: without this patch the SoC resets;
-with it the announcement goes out on the first retry and the modem
-stays up. Starting rmtfs after the modem avoids the problem, but
-distribution units start rmtfs first and let it boot the modem.
+ drivers/net/usb/aqc111.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
- net/qrtr/ns.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index bcb090ee79d4..33a9c4449d6f 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2020, Linaro Ltd.
-  */
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 9201ee10a..827aab540 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -476,8 +476,12 @@ static int aqc111_set_mac_addr(struct net_device *net, void *p)
+ 		return ret;
  
-+#include <linux/delay.h>
- #include <linux/module.h>
- #include <linux/qrtr.h>
- #include <linux/workqueue.h>
-@@ -226,7 +227,13 @@ static int announce_servers(struct sockaddr_qrtr *sq)
- 
- 	/* Announce the list of servers registered in this node */
- 	xa_for_each(&node->servers, index, srv) {
-+		unsigned long timeout = jiffies + 10 * HZ;
+ 	/* Set the MAC address */
+-	return aqc111_write_cmd(dev, AQ_ACCESS_MAC, SFR_NODE_ID, ETH_ALEN,
+-				ETH_ALEN, net->dev_addr);
++	ret = aqc111_write_cmd(dev, AQ_ACCESS_MAC, SFR_NODE_ID,
++			       ETH_ALEN, ETH_ALEN, net->dev_addr);
++	if (ret < 0)
++		return ret;
 +
- 		ret = service_announce_new(sq, srv);
-+		while (ret == -EAGAIN && time_before(jiffies, timeout)) {
-+			msleep(100);
-+			ret = service_announce_new(sq, srv);
-+		}
- 		if (ret < 0) {
- 			if (ret == -ENODEV)
- 				continue;
++	return 0;
+ }
+ 
+ static int aqc111_vlan_rx_kill_vid(struct net_device *net,
 -- 
-2.43.0
+2.34.1
 
