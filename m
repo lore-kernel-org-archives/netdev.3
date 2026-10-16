@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE8B313523
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ABB39280A;
+	Fri, 16 Oct 2026 02:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792117207; cv=none; b=sv8GSvTNevZJggTg1hIu/0ulCSP/PjGKimNao8C0SxRWfsYkrP1TXQPiCVRaBfvmlhVSTKvYOk4NnAhOVL1NTlRSBb6UJXXPWP9J46dt8pRrg7OTVYk7Nxkc2QQ/CmK19uFqcDuOe3kC2cqj97f3NjZZG1Kvkuf0yMN/BMeM6/s=
+	t=1792117208; cv=none; b=O4gQvEp941JOoRZ3Tk/hIRA3SngGQCi3IsHBGNjbXXiGQWwc/LXfWN9toFL7LN7Tepvxlw0cSAZ/xT+rnw2urDzkCSrFNcl5/fhHRShqeRaLxEfllOiWckx8aa4VxfaIuleg/VwlzkvbYdFPUPAFURsG592zjV07eXJznaG0Fdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792117207; c=relaxed/simple;
-	bh=Wd4/feDx4laM6DYNniYJbpBwthxmAvZoPymMlrMOQrA=;
+	s=arc-20240116; t=1792117208; c=relaxed/simple;
+	bh=RSX+4nXRYb6tF/eBdUz+A6Xl/K0HXVPC0hFrPvZ1ZcY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SYGN1M6vfttQjEf1SCEsFh85tSHwARyHpH+LAfz2AKI3AVMMle2Us91U6oukOOeC7Lfh1HomVo6w0uui2UeACq4LYF1gn7IiEEBGUqjg47auuSDE+DBlxX8TpQD8SVDH1NEOd5cozjTU8Ik1ackfEtHwE+kpDE+PjHrvLizyMUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPhcQU9f; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=P4srSG8gZmrPRo+szZtPyQdITXjn1/eI4BXvckT9aCxdeeCmYC9hmGnuXI79XsJJ7ysQick+MuVlRfpiTKrOGvuUG3kW26l46qABt6GE3BzJ35C5qgEh4+K0D4N9s5XNA0mj1+rBt3VEj7tVR7EI5S4B9guRIBn3ddy0cHsMS+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGlaHKom; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPhcQU9f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3931F000C4;
-	Fri, 16 Oct 2026 02:20:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGlaHKom"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831371F000C4;
+	Fri, 16 Oct 2026 02:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792117206;
-	bh=dGngXH8UacWK/sRPDesVwBZAVVuIQpnFQi+Yvvg5myQ=;
+	s=k20260515; t=1792117207;
+	bh=+SOsYnUxcsp4rmruGbrB7lpTSGL/Kvdc9rNKiksd3P4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XPhcQU9fcxmtV9bRcv1V+4WxEBk2ed6b5unfO7IXjO0r8Gmq1ELULRy4U87XqSiEG
-	 pLNQLFvSACAAkH0lIB1iSP2UvU6uJ4/SgaKyXeFMvJUYLS01nL4snZb6D9i7EpDDuC
-	 OYpCpjhNo9KAiRMJfaRP+GlntYRLukj2u2KZvXKp2tBhP+rLcHIKJqkzYxj8+WYtot
-	 8pA5Rtlx8Ppm/0O5dDXcghWMnVtSui+N52v5kcDxaux5InG/DYqqklQhJxHCXSm92O
-	 vEoFjGz9cp4CFufZ4mXeoFZNLrrrsBBmimVI3OB3uXKSUu/vMdgEfUP8FsZTLAAYfb
-	 LiqgGZ9RZzvXA==
+	b=QGlaHKomcGqaKCXTuQn4Pry4mCXL9oUXvlY/q+Z3+DyULKWXNhH8V3T4wC2TGhLEc
+	 i+9UfNwSqPChfSe4PD+Dpw0N/jcGmOY6XV7ubQdcYOLPSFsrIDLW3J6U+nAQzBvLJP
+	 mwmU+o+LOFI1zHpCPCjJ6up6yN2cTtwfwmf+fsazWAgG6rBULUHrQ9uaDozv/fYv0z
+	 RmQCd9vH7RIQymJouslrIxcM5NxcNUr3nalV1EdBeVPRBTTRw36EqC8KLikaz8QnT6
+	 njEbi7TfHnGbCud+Ea4bYntFuifs/3ZxqCLcjYg83BlMz1QAQX8/E/LD7QaI/BFTNF
+	 Ad5jkfo04/cag==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F16F63808209;
-	Fri, 16 Oct 2026 02:20:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7757C3808209;
+	Fri, 16 Oct 2026 02:20:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/1] devlink: fix reload error on netns teardown
+Subject: Re: [PATCH net] net: bgmac: enable interrupts only after NAPI is
+ ready
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179211720477.18595.3783846730219507235.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Oct 2026 02:20:04 +0000
-References: <cover.1791555658.git.petalzu987@gmail.com>
-In-Reply-To: <cover.1791555658.git.petalzu987@gmail.com>
-To: Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
- horms@kernel.org, vega@nebusec.ai, petalzu987@gmail.com
+ <179211720602.18595.409341972831796996.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 02:20:06 +0000
+References: <20261010070011.60403-1-rosenp@gmail.com>
+In-Reply-To: <20261010070011.60403-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, rafal@milecki.pl,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ jon.mason@broadcom.com, f.fainelli@gmail.com, zhongx@broadcom.com,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 10 Oct 2026 14:25:30 +0800 you wrote:
-> From: Zixuan Chai <petalzu987@gmail.com>
+On Sat, 10 Oct 2026 00:00:11 -0700 you wrote:
+> bgmac_open() calls bgmac_chip_init(), which unmasks the interrupts and
+> enables the MAC receiver, before request_irq() and napi_enable().
+> bgmac_enet_resume() also enables NAPI only after bgmac_chip_init().
 > 
-> Hi Linux kernel maintainers,
-> 
-> We found an issue in net/devlink/core.c.
-> 
-> This bug is tracked at: https://bugtracker.nebusec.ai/f/11365
+> When frames arrive in that window, the first RX interrupt masks all
+> interrupts in bgmac_interrupt() and calls napi_schedule() on a NAPI
+> instance that is still disabled, so nothing is scheduled. Nothing
+> unmasks the interrupts again, the RX ring fills up and the interface
+> stays deaf until it is brought down and up without traffic.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/1] devlink: fix reload error on netns teardown
-    https://git.kernel.org/netdev/net-next/c/6b3e73774815
+  - [net] net: bgmac: enable interrupts only after NAPI is ready
+    https://git.kernel.org/netdev/net-next/c/ac1f6e58cb77
 
 You are awesome, thank you!
 -- 
