@@ -1,137 +1,138 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00492C08BB;
-	Fri, 16 Oct 2026 14:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792160546; cv=pass; b=BPEicUJGfQA3ioC/ou1f8w/0oqv9ZJ6eYHRkKblCMMigpFQ+YxzUiOEenxUrkMW90U9Qd2t95Pr8KCe2R5ybSdshY1Oc511hd2ORhJ3LZM0Qgl6yzshWTjoaaRSSAVjYIufbhK9YpGD0ADBfaRYlpqCyJ9PMjoB/Y5bcdVhdXIA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792160546; c=relaxed/simple;
-	bh=TE+NeMObnw7cV2DSl8zm5/5kphmiKQFfXjysKCj72YM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GClFJg59sBp0e6WU/i4sD+Y7tdfg858YlXQo5ffERjAkHrSKSRgmrmZ//C4pMlUNHKeQ1sx6MUam1TCSxrlHT/ShTyeqTwJNo7xp+5NseTdtCZ9Jg2t/r3yTbia3PwMyKTk1Jr4imVbEjlEd9WS+sK08mBkECngFHwhvSyxsMYY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=ccmO/NmQ; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C293148B4;
+	Fri, 16 Oct 2026 14:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792160702; cv=none; b=DGWqrajGSO2rUpEFxgWgk/VHzIL5OVCOgsWNxS7EV2SOAKkfAnkxWhZEuzpDsR4VPA4R393DLoEArya6r8aUAG3GwBxzji9l00x9aQEKVcENkzWq3DNyH4yiXWzKRs/yWStz+uQC3ZjfSIf0BST0FGbMMvHBT7b0znGUMo4HRQ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792160702; c=relaxed/simple;
+	bh=BjaG0A3KflZ2fnKglMM+nFKkPwxYCIsn9Y6W0gKdy5c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K+dzT7Nv1GPYL+uWb5jtRSDonk3Fn0qPMBoCUHxT33MrmaBkRGIwBf6eHUyTDt8nsuvB0MlhkYpRQplTUfH1wmOCEaWu6Fl4MiBqFzbqkVCcRn5qBDPQJ5sycZaGQxTYzboWEvHn/Lg12E1juaRHEFLp/7BxDg5ayTIpjE8WM+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4rxLjkU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="ccmO/NmQ"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CE37A2022C9;
-	Fri, 16 Oct 2026 16:22:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792160538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eKbF9RFkKWoB5pWbmAsRWMNhQMOff8da/uxoiKigJzc=;
-	b=ccmO/NmQWb4OFsfFsjbp0QFq7srpuFyOp6dk/u3EjEmzDR5fzItGweSDq9n8vsBRSKaoC7
-	sq1daH2jkJ2yb73gLMfTSUypf7HRiAyELnVMXkL+Ji6N+GafwIluyvQ32zmij5+BUcoZrl
-	5hnVt01JfEVangVI8RWyo0OliBabU3UmPyW6byLn7qZzMrfLmDqAM2z1FvB04Tf+aCDJBc
-	vU6JhH02NnGmeXmMpNBk2/dIStI6OOwjQIQ5ENMEocM5lOEG2O3kNlsm91ChgaYhdrxW+L
-	BNWtgjRajnsn7ZueQkPng6ErTY1FYjV1Lo9kB/8SEOMs20W7Ylb2/K30U5EJRA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792160538; a=rsa-sha256;
-	cv=none;
-	b=E7lvEjmCGPbbauxGC8XbhOi34LTGSATxtGmsd8J/4hYHrLdg3G6J1jPnvTqBl8XfzXo/pe
-	BKoaC3urIFiF5a/bLjc5A1upSOTqoZKBx5G63glgt4P9XhP8d5m3ryXdPRLI87++mY4SX4
-	yCDL7bWJw/j99p5BbYoU7HrPSeL2zhn8SG4jhUX9cIyX2wLxk92h3XWgwfxTxjvtehYZb9
-	MPhpu6MXTqrd+cJrI6kITwTukeFLNGmUubyPDZ0CcjWt3tGIpagfrXZ6eW+HkPFoTuUAnJ
-	GcSmnba7ym9MFesKuvk0tjHxh+0YIRSIe8SyYS3cPbtz5xvmbzGM5wndUAf+xw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792160538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eKbF9RFkKWoB5pWbmAsRWMNhQMOff8da/uxoiKigJzc=;
-	b=AHlnuqWnrvzMuGLodzju/rd23v9xuAjv9NWN0wy4W0oXHoRujzNPwe9hjJLUsueW95L+qI
-	/b6ZdKgy0wKMi6IPF4MraO2+BQytAovonmiEdXwDtYdGfgZzuzMmGF8UzEy2d6cPBT5tGq
-	CXfWAO9bM8AFFGa2d/PjgtoGWz6LGsCpOucyeJGU8KXhHL6Liyto/JjzFlr2wrAgsQDHDD
-	P+aFX44T0dMpr0v8W7iUEmHrvQu1PRSqJcWh5kCR+vpGTYwitRC/OKkJy7stMSe5DZf5f8
-	PROJMhuiryxUHzhM33f4rn7naWzVTsukGbxSgvEAp5oQZCjnQcJUcL1FEgH2AA==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xHip8-006CNF-2P;
-	Fri, 16 Oct 2026 16:22:18 +0200
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 7CABE5C62D7;
-	Fri, 16 Oct 2026 14:22:18 +0000 (UTC)
-Date: Fri, 16 Oct 2026 16:22:18 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net, 
-	kurt.van.dijck@eia.be
-Subject: Re: [PATCH net-next 22/37] can: rcar_canfd: Add support for Renesas
- RZ/G3L
-Message-ID: <20261016-international-aquatic-chowchow-8ffc4f-mkl@pengutronix.de>
-References: <20261015015336.816543-23-mkl@pengutronix.de>
- <179211823337.434549.12652981577769724778@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4rxLjkU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0F21F000C5;
+	Fri, 16 Oct 2026 14:24:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792160701;
+	bh=Bz+GxVr4dlEeQzhf+FUIQ3S+8z4o4wVUtyCodsJ/Q5Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=a4rxLjkURZIsI/Fd6D5pBcUhIqHG50MaciNasuiafr8h7qg2+b9L0G/YZktwVQzkD
+	 kLBVchM2FcOkvQjO/E1PbHMzLrCl4VlYlIse/uRL1JBmRuuoiTBp1nwa/qH7VMaFxi
+	 xhZWNUpPF/cxjsmMLUHpQOizWdtk8aJGG33dK1uyB6FUD/4l7iABQ12aGo9Q13oOJq
+	 wu7wqNC24hHrSiq+Bi7CpBu5BydYWxivMuqARUleFJRAaptHqRUEU2x03dV3kXj8JX
+	 xZVxOO5Ykm5wSiKdYpCNQUGm1BHV5EFjGv+KN9W157gYenDnTRtLJKD5TqTxxYSriN
+	 jOaSS5Kz4Gakw==
+Message-ID: <7d4d6870-7734-460a-8391-a41322d61e79@kernel.org>
+Date: Fri, 16 Oct 2026 15:24:56 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fwntjsudtuolmsoq"
-Content-Disposition: inline
-In-Reply-To: <179211823337.434549.12652981577769724778@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next] bpftool: Print verified instruction count in
+ prog show
+To: chenyuan_fl@163.com, bpf@vger.kernel.org
+Cc: Yuan Chen <chenyuan@kylinos.cn>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Mykyta Yatsenko <yatsenko@meta.com>,
+ Menglong Dong <menglong8.dong@gmail.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20261016071700.280539-1-chenyuan_fl@163.com>
+From: Quentin Monnet <qmo@kernel.org>
+Content-Language: en-GB
+In-Reply-To: <20261016071700.280539-1-chenyuan_fl@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+2026-10-16 15:16 UTC+0800 ~ chenyuan_fl@163.com
+> From: Yuan Chen <chenyuan@kylinos.cn>
+> 
+> The number of instructions processed by the verifier is available
+> through bpf_prog_info::verified_insns and the program's fdinfo since
+> commit aba64c7da983 ("bpf: Add verified_insns to bpf_prog_info and
+> fdinfo"), but bpftool does not display it, leaving no convenient way
+> to check a program's verifier cost.
+> 
+> Print the count in the plain and JSON output of bpftool prog show,
+> following the convention of the other conditional stats
+> (run_time_ns, run_cnt, recursion_misses): kernels that do not fill
+> the field leave it zeroed and nothing is printed.
 
 
---fwntjsudtuolmsoq
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next 22/37] can: rcar_canfd: Add support for Renesas
- RZ/G3L
-MIME-Version: 1.0
+It's different from the other conditional stats though, unless you run
+bpftool on an old kernel verified_insns will show up every time. Can we
+move it to another line to avoid growing the first line too much,
+please? Maybe after loaded_at and uid?
 
-On 16.10.2026 02:37:13, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 (1) =C2=B7 Medium: 1 (1) =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [Medium] The RZ/G3L binding never makes resets/reset-names required,
->   but the driver gives RZ/G3L the same reset handling as RZ/G3S.
 
-looks like a valid issue
+> 
+> Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+> ---
+>  tools/bpf/bpftool/Documentation/bpftool-prog.rst | 3 ++-
+>  tools/bpf/bpftool/prog.c                         | 4 ++++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/bpf/bpftool/Documentation/bpftool-prog.rst b/tools/bpf/bpftool/Documentation/bpftool-prog.rst
+> index 8dbd34ef3d8b..d4a94e0737a9 100644
+> --- a/tools/bpf/bpftool/Documentation/bpftool-prog.rst
+> +++ b/tools/bpf/bpftool/Documentation/bpftool-prog.rst
+> @@ -285,7 +285,7 @@ EXAMPLES
+>  
+>  ::
+>  
+> -    10: xdp  name some_prog  tag 005a3d2123620c8b  gpl run_time_ns 81632 run_cnt 10
+> +    10: xdp  name some_prog  tag 005a3d2123620c8b  gpl run_time_ns 81632 run_cnt 10 verified_insns 528
+>              loaded_at 2017-09-29T20:11:00+0000  uid 0
+>              xlated 528B  jited 370B  memlock 4096B  map_ids 10
+>              pids systemd(1)
+> @@ -301,6 +301,7 @@ EXAMPLES
+>              "gpl_compatible": true,
+>              "run_time_ns": 81632,
+>              "run_cnt": 10,
+> +            "verified_insns": 528,
+>              "loaded_at": 1506715860,
+>              "uid": 0,
+>              "bytes_xlated": 528,
+> diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+> index eb077236d2ea..c77e871b8859 100644
+> --- a/tools/bpf/bpftool/prog.c
+> +++ b/tools/bpf/bpftool/prog.c
+> @@ -441,6 +441,8 @@ static void print_prog_header_json(struct bpf_prog_info *info, int fd)
+>  	}
+>  	if (info->recursion_misses)
+>  		jsonw_uint_field(json_wtr, "recursion_misses", info->recursion_misses);
+> +	if (info->verified_insns)
+> +		jsonw_uint_field(json_wtr, "verified_insns", info->verified_insns);
+>  }
+>  
+>  static void print_prog_json(struct bpf_prog_info *info, int fd, bool orphaned)
+> @@ -526,6 +528,8 @@ static void print_prog_header_plain(struct bpf_prog_info *info, int fd)
+>  		       info->run_time_ns, info->run_cnt);
+>  	if (info->recursion_misses)
+>  		printf(" recursion_misses %llu", info->recursion_misses);
+> +	if (info->verified_insns)
+> +		printf(" verified_insns %u", info->verified_insns);
 
-Marc
+
+Note: Moving it to another line means you should use a double space
+(rather than single) at the beginning of the string.
 
 pw-bot: cr
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---fwntjsudtuolmsoq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatIzFwAKCRDMOmT6rpmt
-0vTAAP4jUJsqpdVmos02NDp+3CuG2scKxVFpE/YhkMZ+bdrzKgEAhca4npCSDVIL
-lKHsmKa6St5Sgqa6vrlRueLty3pkUQg=
-=sgTy
------END PGP SIGNATURE-----
-
---fwntjsudtuolmsoq--
+Thanks,
+Quentin
