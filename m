@@ -1,102 +1,80 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E52242D67
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 00:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BEF2E719B
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 00:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792110681; cv=none; b=NrWbK7OJn3lcv/QCtLCGvOGscO/ESGFsfxdI5MeJeBNdGHJACJZN6vyHEKiw2O2qsOViGnK7Y1IKWAbxi3OJJnOVsjlzYNdXMgIBPSV7b4IZElPia6Fw3AB0Ei3xR2lbdC7EGVIwTlBuMCPdhbfyHdDtv6xZhYnA05wr6BEBnmQ=
+	t=1792111213; cv=none; b=lgAQsp9BFz1lQSn9RWPNTOi5YVINxFWviY7iWZ519FOK0fKEsSyXZFiDJy9rTi8hm9W6pG5TIMipzZok29bh3GrTY3Uqi/gTNaJn+AfIz7RTGGLZS5pIYuOu4Eobb1JFmzp+NnjXXaxnDCfqDpKgBLZDC1/FItqH+8Uzh23zeTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792110681; c=relaxed/simple;
-	bh=pPpVYZE37MEdXM4A+LvUAcPCWE74zNQfH8gS2u8rINM=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:MIME-Version; b=bpEEYbLQguPXHnFKr6NhUFROqFmZPUEndXYYDoy6O7fRKlAveyW21l2pO5xXekQVuFnu6p6IsO2iEyZvL2JB9eQ1a6mTLY/kjDb1iuG6Pu8W5bLVK9WWJ6QwmpnehA6PV0rx06ROYhOscdaaUDvBkPK9gGdLgrnsRzrpaig8Ybo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dA54Ps/7; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792111213; c=relaxed/simple;
+	bh=M5zKPoTrmHkgjDCgT3mX8+0o2kiAzf9bGRTYZKwI0Wg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=c+jOG+AiNaPQ3WbCQ9k25BLlMGpxKVS4HtFST86FoNOCYFzDPEqE5e5t6yufb+QmwNpiJLL7m7Ou/+VIPJFqBC/1rrDw20wpyNG7dg6PDOcLujwaDsdP/hqixKRo3+wLZlO1NIyr7IXwO+jTjCRYij7oXVdxguJWmxJhIbejdJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+jqsKAb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dA54Ps/7"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-89d6bd67045so314027b3a.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 17:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792110680; x=1792715480; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pPpVYZE37MEdXM4A+LvUAcPCWE74zNQfH8gS2u8rINM=;
-        b=dA54Ps/7pR0FU9wNDr9tY3+FpNTxC29Ck0g7Lx9551UcjbWRuergvCfYwqHsLcci0k
-         psV0muIX38K/9zdQFoVCKZE1QuBHSNFSNJcHGrfhYSkHKdbgpAR/k+6dEMK4jXpl6CeR
-         dfOsI3iMB0v9G3k+hGqStjHifMQklrv5V3tG7rT6Pbl9WQl5Nd747zoKFCwZvskD8vcx
-         By3uujNiVzEnkZnMcewEvCnuM9nwy5SvP8+Z2Yr+/OE+OmmWeJ89NDzyy7U4r8Y25AKT
-         3UJ8/pWZLrLw6U69XeNrydWYhGkvQHY9JPqNx6eNd5x+xdTMs/o2QPCc8f1Z/n9d8dHN
-         PmNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792110680; x=1792715480;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pPpVYZE37MEdXM4A+LvUAcPCWE74zNQfH8gS2u8rINM=;
-        b=xUIoK6qv9uPG5NCwf6gnhIe6HdInidWI6MyTM/aP680HtdeS0HS+ftzaJfYpm4LRYq
-         iUC2JmBpCKCuggKiGWE+mDTaM1SrSqHHt/D0ON/m0dt8IX+W1OSWSy5Xu0IW0D8H+pWD
-         7+dJbbx15++jxNpEznKxZUn8XCoIu4vJPCnNDOtPiNpMPXHKqF69aX84gbbtC1OuvOR6
-         bzPl9qudsIQmjbviNmTZB9UajeB6Ll/iY6Izs4XkAdE5QFOViRH2rkvTpxQNTDdH0cso
-         lsah7tKb8g5DN87A4Eo4ArCXegEcoJ52P1fUhPD8tByKMdCbg1DHoQ32Uf4hMDoyotPP
-         xpKw==
-X-Forwarded-Encrypted: i=1; AKwUvBy0bBmp8cDgsHuURU06wcOZ11vDIPdHV/X6FZ9HTYVeqyK+eZJD8xk6HRCg0CxdA9RPWPcl7bQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKmtpxCl7Tu2Hi6mk9IkwX8FZU2lOgkJ2jn9zrrvcT3c/3PxNvQ
-	J3/fe5MnZf7l0EBWI5YsBP2cvnKtqwCYGoP9z2yAnK2fcaVnKfyhJO5S
-X-Gm-Gg: AYBFou303eq7Ltm9S2tSYxr5BYVhnM1oRqzVQ9DLziWRM2Pg8+v3gUlIa8Jak50nS/2
-	xul5nKsUgI/ZVLh4d/gCdSsW/EzCHfdeMBv38B11dx83spErwYkqZmUpQuj91OOA8OQHh2fHNTC
-	S9xijWYoqpmrkPOV+NR2SGAGteAqVVB5rXmVtmI/UDLp4NlEW5FHrzuUqV5h+OnJoIWOgdaGyM9
-	Mn19d5UIxwG8HpJCoeqWgoBYuUFuK17QqrDeNEgQyugmFLkXUfGoUqILF+4pKZDg8ilqzKE/wYp
-	Z53R+lG6tI9H4nskHbQJgJcrKSLac9bx9w/5WJqsBuPJvq1PxpTzwykwIxyNymF8xrDGprHFrQ8
-	z/zhip91cZdgU80b4qLg9U3MvzBcxzvwEi+l3Re6Gm1nOUzTeH0HdaWEbmPQ1LV2JmxZDb+8pYd
-	fpEyN6TNrruugF6I0rxg9Oq7COHoc/CRehAfTs9ry/kyoClge1JuqqgvkByisJt0kKcGk8dT6ms
-	C9co+ElBbNOCgyEzjhAqMSSGeZmgMYb0cgiPzp3pYC/+V3RO/AY62aDCYoedN20b6UIVVCBfbZY
-	2KQ=
-X-Received: by 2002:a05:6a00:230c:b0:877:ce59:bd6 with SMTP id d2e1a72fcca58-89f1e9a1c35mr1115329b3a.1.1792110679891;
-        Thu, 15 Oct 2026 17:31:19 -0700 (PDT)
-Received: from localhost ([153.61.198.242])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89f57947a64sm275547b3a.41.2026.10.15.17.31.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Oct 2026 17:31:19 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Oct 2026 00:31:18 +0000
-Message-Id: <DM5U7S0WO4CB.72E73EAOUSGZ@gmail.com>
-Cc: <daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>,
- <memxor@gmail.com>, <martin.lau@linux.dev>, <song@kernel.org>,
- <yonghong.song@linux.dev>, <jolsa@kernel.org>, <emil@etsalapatis.com>,
- <ihor.solodrai@linux.dev>, <john.fastabend@gmail.com>,
- <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
- <pabeni@redhat.com>, <horms@kernel.org>, <jakub@cloudflare.com>,
- <jiayuan.chen@linux.dev>, <kuniyu@google.com>, <willemb@google.com>,
- <shuah@kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH bpf 0/2] bpf: Fix iterator link update target validation
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jan-Gerd Tenberge" <janten@gmail.com>, <bpf@vger.kernel.org>
-In-Reply-To: <20261008161309.8179-1-janten@gmail.com>
-References: <20261008161309.8179-1-janten@gmail.com>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+jqsKAb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090A61F000C4;
+	Fri, 16 Oct 2026 00:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792111212;
+	bh=Xiy5ikkIpLDve+VNg4Fc6Ql5i7o/6h8hHNaGa5vXmnc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=E+jqsKAbhs9kDafoX4+M7ygc2ZhqSqXTcoUd5CmKjSrRFMC3qhmNBeWCJ/OpGND9v
+	 QJSCGL9Bxy6fnw07kZNgW0TtLGIq8DXfv4Os25FJ2eHwh090s/C3hJnzY0kYXFqd3a
+	 brzuAyqNHs4nm3zFp3me2fZj4kSCPK747JBa/LSNFwsrL7/9bgLDbYSoihhbZF8vQb
+	 LPpGNt/z0/V+HW8i5QaUGC4ZarNwTPp6vl5Vc+nY1NWV1w54Gwx1Oo7HMbjcAqem3B
+	 C6kEgey+UWvtZB0DJRA7Ho9rQDMROreHRzIctwyNdXRiPj5im4Tisfmg4SRfbAVa+D
+	 LPAFiHSgo9s4Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F16233808209;
+	Fri, 16 Oct 2026 00:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v6] net: phy: dp83td510: Add config phase
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179211121051.4176565.8749139812361762632.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 00:40:10 +0000
+References: <e9e0499a28a49e489fb623429c7487b8ece78d12.camel@sprinte.eu>
+In-Reply-To: <e9e0499a28a49e489fb623429c7487b8ece78d12.camel@sprinte.eu>
+To: Julien Blanc <julien.blanc@sprinte.eu>
+Cc: netdev@vger.kernel.org, o.rempel@pengutronix.de, hkallweit1@gmail.com,
+ kuba@kernel.org, andrew@lunn.ch
 
-On Thu, Oct 08, 2026 at 06:13 PM Jan-Gerd Tenberge <janten@gmail.com> wrote:
-> Runtime testing in disposable QEMU guests confirmed that the resulting
-> out-of-bounds access can reach kernel-owned metadata of a separately
-> allocated live map and cause a deterministic kernel panic. Corrupting a
+Hello:
 
-Way too long.
-The prog needs CAP_BPF and CAP_PERFMON and it writes past the end
-of the map value. That's all that needs to be said.
-See "Length" and "Impact Evaluation" in
-Documentation/process/security-bugs.rst.
-Trim the commit log of patch 1 as well.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-pw-bot: cr
+On Fri, 9 Oct 2026 08:08:33 +0000 you wrote:
+> Add a config phase for the Texas Instruments DP83TD510E ethernet PHY
+> 
+> The config phase currently sets the following properties from the
+> device tree:
+>   * RMII / RGMII mode (note : RMII master / slave can only be set
+>     by straps and cannot be changed at runtime)
+>   * RGMII delays. These delays can be enabled on the phy side, only
+>     as a boolean. Delays are enabled if phy-mode is rgmii-id, or
+>     rgmii-[rx|tx]id which enables only the corresponding delay.
+>   * In case another mode is encountered, do nothing and return
+>     success (keep old behavior)
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v6] net: phy: dp83td510: Add config phase
+    https://git.kernel.org/netdev/net-next/c/b8aa6bedc5fb
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
