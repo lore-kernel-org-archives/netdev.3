@@ -1,39 +1,39 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A2A4CF48E
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A192561A2
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792178001; cv=none; b=NEQ7IwGD0FjtxJqzBTv/dq7BYQ1pI8sZXzlFYCs4EOjUl+9i4txtkWNo5dnyaZh6B6eDHFNQm1LZhjEv37tdODUi+tuEbgWqFXmogUm7rTAbnV8aj2H3lHRRfQtBnLNB3PktdHed5CklXmAoKvUaA3ykELCAo26BnJLeD14QEho=
+	t=1792178111; cv=none; b=MIpLB7pxPSElYq01PUg2gRdOvT9E3OCebE3tAerL+aeJMfFipP6TNriVs6x0eEuockyH6jjXpFAZnSHOgNyBcH+DOL9xewD3A0FgL69teRP+MxS/2QkRyaqUuiRKr8ajiTJLmTiU3DumdOM+7iNKdAJocBvg+bh3BUAT8RZ7BY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792178001; c=relaxed/simple;
-	bh=vY6TcaHr0Y/arc+I/x215U07JypwpU6u8XzTXc09dH4=;
+	s=arc-20240116; t=1792178111; c=relaxed/simple;
+	bh=0oETJIFK4EOr5jLr8efrR+xINET0nC+2g7m/B1VcwrI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e9bXrZcOjcDmCdGwL5iwqYIWtvI7f6xiC6rQuCNmGom9stcO/wpEQLoX6EYoFoA7FD11koL02DOodrT7AqWBlQhj5pAVVBG1gDzJPL2A7bU2z0Qy6B4yF3M7zFLMJqT6TFJSsSdb0tg0/ghodN6EBTXGMXuRRCzR+HKNVZsuMjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=a7GabdfS; arc=none smtp.client-ip=121.127.44.73
+	 In-Reply-To:Content-Type; b=I+VkhuUktO6gEW3Qu7PVCBvnPWgbkRuWdx/R19uLU6Tf0VE5ACUzPzZGXBx7d/zlrG1k1SZsDT8NvdngvgIKBdP5sGw3f1Zyf8ZkA/NHQNBE1xIC5dd5T1RYsmPkFhLTqVliyqXJwcBjVYMiisEVkOryHpRIK2x7GAYQBVa2TT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=hXFgo1bW; arc=none smtp.client-ip=121.127.44.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="a7GabdfS"
+	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="hXFgo1bW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
  h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
  Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1792177999;
- bh=yYFzkWWvgtEwNVJdEhd+XfDCXerOP+Aze9nLn6x0lHM=;
- b=a7GabdfSPga5g92pQVa4RzXu7TQnaT2n8obonN3OABXFQeoBcGDCaUkUy5FPzRQkCkftToyrT
- oLNPMjZNSZdQo66iaAbhMexezr+80WJwmzSedt6loskNKYdoUN3Ev5ZrNR59EY5Cl3nbdWC0Gyr
- RVbypTQH9sDnicagcVgQhxM=
-X-Forward-Email-ID: 6ad276a3e13a4ec5cf942eeb
+ s=fe-13eddc7e57; t=1792178109;
+ bh=a2kcvsFERIcUhN/Jtz29zcKv0BzymnoDo8Go3edlO10=;
+ b=hXFgo1bWhUWRFCx2BOSp8+o1ygy62iL7SgM2mfE7N2zclD7rNzeo1DShraT7D4K1tXIgbyNsu
+ WOwDeKLQxAc+ge9CM99xrXy75/OHM6mzsy5JNypuZcda6idFpVjNTR6PmDKRzYXkQf47m5lpmmK
+ jXs/DN3PbxGsSIJzEHH+MO4=
+X-Forward-Email-ID: 6ad277b9a8fe260eb8e2d4d8
 X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 121.127.44.73
+ 121.127.44.66
 X-Forward-Email-Version: 2.18.6
 X-Forward-Email-Website: https://forwardemail.net
 X-Complaints-To: abuse@forwardemail.net
 X-Report-Abuse: abuse@forwardemail.net
 X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <e6113c76-db4d-4204-bf6a-69c0758eb9b6@ovn.org>
-Date: Fri, 16 Oct 2026 21:10:23 +0200
+Message-ID: <983acf2d-cd59-4b6b-a6d6-b2a747ac1c46@ovn.org>
+Date: Fri, 16 Oct 2026 21:15:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,13 +43,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2 net-next] net: openvswitch: skip IPv4 later fragments
  on TCP/UDP set actions
-To: netdev-bot+sinfo@kernel.org, Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, horms@kernel.org,
- pabeni@redhat.com, kuba@kernel.org, edumazet@kernel.org,
- davem@davemloft.net, i.maximets@ovn.org, echaudro@redhat.com,
- aconole@redhat.com
+To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
+Cc: dev@openvswitch.org, horms@kernel.org, pabeni@redhat.com,
+ kuba@kernel.org, edumazet@kernel.org, davem@davemloft.net,
+ i.maximets@ovn.org, echaudro@redhat.com, aconole@redhat.com
 References: <20261015124749.4694-1-fmancera@suse.de>
- <179206883697.408196.1280247362935192335@kernel.org>
 Content-Language: en-US
 From: Ilya Maximets <i.maximets@ovn.org>
 Autocrypt: addr=i.maximets@ovn.org; keydata=
@@ -95,30 +93,57 @@ Autocrypt: addr=i.maximets@ovn.org; keydata=
  yWOKeCw9bCZX4a/uFw77TZMEq3upjeq21oi6NMTwvvWWMYuEKNi0340yZRrBdcDhbXkl9x/o
  skB2IbnvSB8iikbPng1ihCTXpA2yxioUQ96Akb+WEGopPWzlxTTK+T03G2ljOtspjZXKuywV
  Wu/eHyqHMyTu8UVcMRR44ki8wam0LMs+fH4dRxw5ck69AkV+JsYQVfI7tdOu7+r465LUfg==
-In-Reply-To: <179206883697.408196.1280247362935192335@kernel.org>
+In-Reply-To: <20261015124749.4694-1-fmancera@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/15/26 2:53 PM, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+On 10/15/26 2:47 PM, Fernando Fernandez Mancera wrote:
+> An IPv4 later fragment carries no L4 header, but key extraction leaves
+> ip.proto set to the real protocol and the flow may wildcard the frag
+> field, so validate_set() accepts such packets. set_tcp() and set_udp()
+> then treat the first bytes of the fragment payload as an L4 header,
+> rewrite them as ports and patch the bytes at the checksum offset,
+> corrupting the packet.
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> Skip these actions for OVS_FRAG_TYPE_LATER. IPv6 later fragments are not
+> affected, since their ip.proto is NEXTHDR_FRAGMENT and validate_set()
+> rejects L4 set actions for them.
 > 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-
-Sashiko report while reviewing another patch, IIRC.
-
+> Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> ---
+>  net/openvswitch/actions.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+> index 27152bca8a8c..4aade471afc4 100644
+> --- a/net/openvswitch/actions.c
+> +++ b/net/openvswitch/actions.c
+> @@ -595,6 +595,9 @@ static int set_udp(struct sk_buff *skb, struct sw_flow_key *flow_key,
+>  	__be16 src, dst;
+>  	int err;
+>  
+> +	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
+> +		return 0;
+> +
+>  	err = skb_ensure_writable(skb, skb_transport_offset(skb) +
+>  				  sizeof(struct udphdr));
+>  	if (unlikely(err))
+> @@ -638,6 +641,9 @@ static int set_tcp(struct sk_buff *skb, struct sw_flow_key *flow_key,
+>  	__be16 src, dst;
+>  	int err;
+>  
+> +	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
+> +		return 0;
+> +
+>  	err = skb_ensure_writable(skb, skb_transport_offset(skb) +
+>  				  sizeof(struct tcphdr));
+>  	if (unlikely(err))
 
-It can be triggered manually, but should not be triggerable in any
-real OVS setups, as ovs-vswitchd always has the fragmentation bits
-exactly matched and will not produce set(tcp/udp) actions for later
-fragments.
+Ideally, we would not allow this actions to be installed in the first place,
+but that would require quite a bit of rework in the flow parsing and needs
+some extra assessment on the uAPI impact.  Though it would be a more complete
+fix and LLMs may complain that the current patch is not.  But, IMO, it's
+good enough for what it is trying to achieve right now.
 
-Best regards, Ilya Maximets.
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
