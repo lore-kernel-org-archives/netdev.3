@@ -1,152 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBA632C94A
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 15:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FF47ECCB;
+	Fri, 16 Oct 2026 15:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792165448; cv=none; b=XzLG+RHwURQWznAIpDJicPn2t8/trVh22FUlim14Ezi2Jj16wBiL0IbxemG6vYe5Flh+leEacHmq/bJ7H5Ed8SOZO/3Ka6VrqhYoGNxuGHktrp9EFt0hYqcgh95y9KeLqzgU643hYl0og0zQ859gUBZFBe6ct1pokvDl5V6e8Qo=
+	t=1792165705; cv=none; b=NL72o45K0e1WBmh8QT/e44QzXxJZnOnJLcfOBRIs5CNHVuCtEDo8tthQoXjDviDKSisDjmROwvZur4hcSiBYZEmRPMXrY1v7oVCh3VzhDMlyPAUCasaKXvnE6bLAktXmtx7aqM2A0/RyKyoVnUh97b8Coo+Czw9RDiWgLXml+Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792165448; c=relaxed/simple;
-	bh=Zz8i0lUTzRkuZgBP2+V7pWig14l8N8fd7W2Q0Mi/UCw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dmbShe2isrTmWCvntzGp7Gc8+yZFFE1fLc5Rz5UShd+dLpZw1GUMXKdhIaf/IknK21C4mMs28Dsob8QipTqZnJOfrkzacLkiwvScDTuCKZYV/YugqeqVw+6pgdFJZslpwYw4F51pcNxrwqpgO7VcmsqQYNLXQvB4HanZCavgj8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWl7COJF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792165705; c=relaxed/simple;
+	bh=MWQolsQMP/R0xFMm25F4SiAZYHr1og2dwTLxkuZYUYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hc3yqKZknsRHIdpF4pdDNHcP6Bch7TYBav7mSJ3Q6jXMVN81tmpwvGL59yxf/bQWgKU9dHC+Z/ibq5KOG9jYgu4EC2W/9yLRJ9J9xSM/gC5nnLgM75JtT3oGSHpbtEz2gGqmbrGcYzKBoW5pKA5wvS57g2unRBvb4ooW/QZ7gqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2nnl7trS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWl7COJF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE641F000C4
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 15:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792165446;
-	bh=x4BlVnBkdABSzxNkd7xtQc1KrHevTV+nHJUmN1WOF50=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NWl7COJFN7Hf2rYjR08s5lUnWdyU60zFI9qWzWql2nZLxLwFDrOUuWaPtlZlEJCXf
-	 k8HQ2guCGgRB450IeMTOxyhWfFQhO05ODS6uVNvGrehUbFykMXgPbVAwTDeiX6Xvf1
-	 +sXx/gEJeltqf0VDI3BwB08CXxKGzx2LHRPe4qPXP+NoRKR0j0Cgj4YpApDJ9AdrLc
-	 o+p29XbXvdplq512JPyDc7qGFzWLTorWk3hXmOdCW1MKV2cElO27KeSH5l39+z++5n
-	 Zv50sIRji7pMPoHHTsw6CJkqOZ1/FXpBL26ojt3RPb0YMo9zvKdTqcTLzwfS4AXcgf
-	 l7JQpzxGgEt1g==
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-833e671ee9fso4742138a34.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:44:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzklj2dZy9hJmECzUhobKQ1pIRP+S9eb0hQK0MRvGlO3OQBDA9b9jwhWvs0dzgJ9a8DMfn5bjI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKSXiDqY/3gMvdMU9EBAuxh7msmYuQvHRZBuyGtPuLcFxGmz7na
-	WtXUuM3F8jbCiQv1AqNXqOAXFFIeAwY3gQkSTGPpOehmgUYLGKvZ5X6yIEkClW2Oe5Px3yHe88i
-	4G7lJphQSbk09IXWPchaogf49rDfUybg=
-X-Received: by 2002:a05:6808:6f8f:b0:4ea:686e:fe86 with SMTP id
- 5614622812f47-50c5b464a7emr20203589b6e.63.1792165446007; Fri, 16 Oct 2026
- 08:44:06 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2nnl7trS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=QunjdoyS2VP8sVHK+P0nXc1zdB5/E8xy4McPChK5nU8=; b=2nnl7trSgRrRUbAJxW1SdJLoWN
+	K04uHr8nJfWn8jwwmC7nWzH0RF3e2neTXAB/KvB6LoE+YfjktMLA2/NREFk2DVUV6Ye601vessMks
+	ui1BXN10jjodbJUb58fqOwUYCyRlAoMiv1zQGtaQ85Jh1M8OSm0j9ztH9exwJI3proO0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xHkAF-00BAwL-HC; Fri, 16 Oct 2026 17:48:11 +0200
+Date: Fri, 16 Oct 2026 17:48:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Biao Huang <biao.huang@mediatek.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Eric Dumazet <edumazet@kernel.org>, kernel@collabora.com,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next v3 7/9] net: stmmac: mediatek: use TX clock
+ phase shift in RGMII mode with 1Gbps speed
+Message-ID: <1f347450-a68b-44e2-8b57-53204eb61e55@lunn.ch>
+References: <20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35@collabora.com>
+ <20261016-dwmac-mediatek-mt8189-v3-7-25daf2bbcf35@collabora.com>
+ <eabe305d-bb0f-4927-919a-21b025ec145d@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261016-bug-veth-init-queues-before-register-v1-1-f48eb2bb25a0@gmail.com>
-In-Reply-To: <20261016-bug-veth-init-queues-before-register-v1-1-f48eb2bb25a0@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 16 Oct 2026 17:43:54 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipGJT316aRQSMtyHo9s0qGoWGeZLxqnksyQTO9mioidQA@mail.gmail.com>
-X-Gm-Features: AclHuK-vfqoap1s0w_q-N6yPL7qX4SBSAmBMtMa8Gsw7Q-KmBm3I-033Cj2xIhU
-Message-ID: <CAL4WiipGJT316aRQSMtyHo9s0qGoWGeZLxqnksyQTO9mioidQA@mail.gmail.com>
-Subject: Re: [PATCH net-next] veth: set the real number of queues before
- registering the devices
-To: Qiliang Yuan <odys.yuan@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eabe305d-bb0f-4927-919a-21b025ec145d@bootlin.com>
 
-Le ven. 16 oct. 2026 =C3=A0 08:51, Qiliang Yuan <odys.yuan@gmail.com> a =C3=
-=A9crit :
->
-> Since commit 9d3684c24a52 ("veth: create by default nr_possible_cpus
-> queues"), each veth device is allocated with one rx and one tx queue
-> per possible CPU, and veth_newlink() reduces the real number of queues
-> to one unless the user asked for a number.
->
-> Both devices are already registered at that point, so
-> netif_set_real_num_tx_queues() and netif_set_real_num_rx_queues()
-> remove the sysfs objects of every extra queue that register_netdevice()
-> has just created, each one emitting an add and a remove uevent, and the
-> tx side also waits for an expedited RCU grace period. This happens with
-> RTNL held, twice per pair, and grows with the number of possible CPUs:
-> with 240 of them a veth pair emits about 1900 uevents, and udev
-> processing them slows down later sysfs work such as deleting devices.
->
-> Set the number of queues before registering each device. For a device
-> that is not registered yet this only updates the counters, so the extra
-> queues never appear in sysfs, and the error paths that undid a
-> registration are no longer needed.
->
-> Creating and then deleting 500 veth pairs, one ip -batch each, in a 16
-> vCPU guest, median of 3 runs, per pair:
->
->                                    before      after
->   16 possible CPUs    create      1644 us     520 us
->                       delete     11822 us    9750 us
->   240 possible CPUs   create     17253 us    1339 us
->                       delete     17082 us    9941 us
->                       uevents        1918          6
->
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> ---
->  drivers/net/veth.c | 20 ++++++++------------
->  1 file changed, 8 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> index 38f263d4f06b4..92ad064567327 100644
-> --- a/drivers/net/veth.c
-> +++ b/drivers/net/veth.c
-> @@ -1875,6 +1875,10 @@ static int veth_newlink(struct net_device *dev,
->
->         netif_inherit_tso_max(peer, dev);
->
-> +       err =3D veth_init_queues(peer, tb);
-> +       if (err)
-> +               goto err_register_peer;
-> +
->         err =3D register_netdevice(peer);
->         if (err < 0)
->                 goto err_register_peer;
-> @@ -1904,6 +1908,10 @@ static int veth_newlink(struct net_device *dev,
->         else
->                 snprintf(dev->name, IFNAMSIZ, DRV_NAME "%%d");
->
-> +       err =3D veth_init_queues(dev, tb);
-> +       if (err)
-> +               goto err_register_dev;
-> +
->         err =3D register_netdevice(dev);
->         if (err < 0)
->                 goto err_register_dev;
-> @@ -1917,16 +1925,10 @@ static int veth_newlink(struct net_device *dev,
->         priv =3D netdev_priv(dev);
->         rcu_assign_pointer(priv->peer, peer);
->         netdev_hold(peer, &priv->peer_tracker, GFP_KERNEL);
-> -       err =3D veth_init_queues(dev, tb);
-> -       if (err)
-> -               goto err_queues;
->
->         priv =3D netdev_priv(peer);
->         rcu_assign_pointer(priv->peer, dev);
->         netdev_hold(dev, &priv->peer_tracker, GFP_KERNEL);
-> -       err =3D veth_init_queues(peer, tb);
+> > +static void mt8195_fix_mac_speed(void *priv, phy_interface_t interface,
+> > +				 int speed, unsigned int mode)
+> > +{
+> > +	struct mediatek_dwmac_plat_data *priv_plat = priv;
+> > +	const struct mediatek_dwmac_variant *variant;
+> > +	struct mac_delay_struct *mac_delay;
+> > +	u32 tx_delay_stage_val, reg_offset;
+> > +	u32 reg_val = 0;
+> > +
+> > +	if (!priv_plat)
+> > +		return;
+> > +
+> > +	mac_delay = &priv_plat->mac_delay;
+> > +	variant = priv_plat->variant;
+> > +
+> > +	if (!mac_delay->tx_delay ||
+> > +	    (interface != PHY_INTERFACE_MODE_RGMII &&
+> > +	     interface != PHY_INTERFACE_MODE_RGMII_RXID))
+> > +		return;
+> 
+> I don't think this is right. PHY_INTERFACE_MODE_RGMII in that context comes
+> from the devicetree, and therefore means "RGMII delays are implemented through
+> traces on the PCB", the MAC isn't supposed to insert any. RXID means "TX delays
+> are on PCB, RX delays are internal).
+> 
+> I'd expect the condition here to be:
+> 
+> > +	if (!mac_delay->tx_delay ||
+> > +	    (interface != PHY_INTERFACE_MODE_RGMII_ID &&
+> > +	     interface != PHY_INTERFACE_MODE_RGMII_TXID))
+> > +		return;
 
-Orthogonal to your patch, but here we should have used @tbp instead of @tb.
+I would maybe base it on the value of tx-internal-delay-ps. If it is
+2000, then add the delay here. But that has implications for the
+interface mode value passed to the PHY.
 
-# ip link add va type veth peer vb numtxqueues 4
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
 
--> vb has 4 tx queues, but only 1 real tx queue, which is quite unexpected.
+We could keep mt8195 KISS, and reject all these properties, and let
+the PHY add the delays.
 
-# ip -d link sh vb
-13: vb@va: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN
-mode DEFAULT group default qlen 1000
-    link/ether e2:53:93:f3:f4:f8 brd ff:ff:ff:ff:ff:ff promiscuity 0
-allmulti 0 minmtu 68 maxmtu 65535
-    veth addrgenmode eui64 numtxqueues 4 numrxqueues 8 gso_max_size
-65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535
-gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536
-
-# ls /sys/class/net/vb/queues/
-rx-0  tx-0
+	Andrew
