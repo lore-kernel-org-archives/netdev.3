@@ -1,89 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08CB3BE63F;
-	Sat, 17 Oct 2026 17:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE993A7D63;
+	Sat, 17 Oct 2026 17:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792258207; cv=none; b=WnTjbrauFcpoTzeqcjX3Mfwb1aSw2YmBRTmpsueeWsaxG6QFPsk1UQlpZvVTpB76mPAwiUw2jc1WYODEqR+c64OmWP7jYFSjPjZ8IoQ3Y5i7ep3ree4lc8f5ML9qK02x4Ct5bJY01lmdCqqfDC7qdkzCwJFIYGdbWwSxmDsXEos=
+	t=1792258373; cv=none; b=MuVcEmeGiyIQZuS/2mnGUlhB3jzq5bmxbr4vQNOvhSOsHoYf9NBugmSs0yMe9PQlJR/1nhH1xXUBv+NmsOIorAt6T7hTBD1Zjm/6PETqTw6BT6l/JFlodXK3CuxAMPeVrHqc4P1QNLg8JCITOVzy3NPNMctHys41BRXwEJ02VNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792258207; c=relaxed/simple;
-	bh=xKayjomk9GQDppaUoDEm+lh88KqoWYQ9vzQprrfDZvs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SSJmRhIezMqCzviCEMICdN9rpPga2nuryyhR9Wpb494v8Rcf0sK6LjTzm5JhiI++dVxH1RyMRH+GZDwIvFplsGbNKe7m+ggecLDCB8RXzpC9OZnxEz6BmPcAxQhSXkFxk1mRemhRecexFd/3O7/kVGZJtZkMLZ58Mu0bl9P5bcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGEHWOkb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792258373; c=relaxed/simple;
+	bh=8q9gTXWjkyurVHTIYBRu3kMfmEX64bUpQa09VGPt7Wo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mAg0cVNngCGETS9Z4WSt+QON2gSkdbt9ZhMnN9MMZuBRqHRvP5OeoqoyeBif3fdcXRyLFc4pQin1oRnai+cQseROa5RE6Np2MUAiAOwZPyWKzIP9CODZA3zP3wtqB9zrljC5o14A6118pD+FQYbb6+X6S6jwhI6Ks2tBfvarr0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=NJe2De6d; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGEHWOkb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816281F000C4;
-	Sat, 17 Oct 2026 17:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792258206;
-	bh=Kl9ugjikto1ArJJxBUqnsPnROHNwYNXVHIDItV2Ceec=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mGEHWOkbo0VC7g7wQRnHs2eE0ulQ7gb+niBq/5+xlEKa3Exv2a/iVyA2NrYn45VRr
-	 Cbxs/4q1XlpBZgOUH/3o9DmaAuoTPO1R/OUbtGXwPVrmj0CQavMK9vUrbIt9cOKPWm
-	 YlWaE9FauFkh0kNTeDPr0oHx5I7cgDn23amBjrKkRgGiSVnfGitZb6TnnalxQtb23z
-	 LDokpH+nUaV+AINljoUTknjrx4M8F88YUk7anzvilu103gabRS2sgWHh4m6O6T1Uaj
-	 GLQjUnO2g61x03AIyrN4lxFnQoZIPY9eYp26Gl7CVL4CxcDg5hgjy6Tm6UH//Z9K+N
-	 nK3WqtjH1sMmA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 772B5380DBD7;
-	Sat, 17 Oct 2026 17:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="NJe2De6d"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F16D8105FB3;
+	Sat, 17 Oct 2026 19:32:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1792258360;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=gOGIRzzzR0vzZdCdgNOPxzBc4k7KuaPHEI2DL4pIPwY=;
+	b=NJe2De6d9yMBsAIyHgnWUF4nKZu9OND0sgMZkUEkHsg5woqC9kyaczQTArtK2tevf2S6tM
+	9qn9wzt/NbkmDwrS13Ii2WUGTm3CACAwuYOmutnz6HUCrAF5GaxlDiQrCf3C1D8P3b1sZw
+	OPl+JEYCiGVaHUGpeg1OkTzzIWz4BXWs1/U8xJ68XuG+3Q+7qx0joL1hDuTDsrEV7X9CYl
+	D80mBi99+Z8KMgxo3mOvl6x7xwk2unBMI3G0jrmny1O2sHtH1BbbBE5vC8SZEl9V6upivH
+	3t4xCn7VqbbSnYNmjKUbUuzX1JS+tuppNZUEDxHDuvg/yV+xR7pcxUMJ6DDLpA==
+Message-ID: <329d56ac-00ce-4fb6-87fc-eeb14ed78959@nabladev.com>
+Date: Sat, 17 Oct 2026 00:04:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v2 1/2] bpf: Fix verifier WARN on narrow read of
- bpf_tcp_sock u64 fields
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179225820531.1342507.15548197169352983692.git-patchwork-notify@kernel.org>
-Date: Sat, 17 Oct 2026 17:30:05 +0000
-References: <20261017143819.209510-1-jiayuan.chen@linux.dev>
-In-Reply-To: <20261017143819.209510-1-jiayuan.chen@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: bpf@vger.kernel.org, M202472210@hust.edu.cn, dddddd@hust.edu.cn,
- dzm91@hust.edu.cn, daniel@iogearbox.net, john.fastabend@gmail.com,
- sdf@fomichev.me, martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- ameryhung@gmail.com, martin.teichmann@xfel.eu, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
+ DT
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
+ Eric Dumazet <edumazet@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ UNGLinuxDriver@microchip.com, Wei Fang <wei.fang@nxp.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <20261016193344.115518-1-marex@nabladev.com>
+ <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <atKDNdxl0w65s8yQ@SMW015318>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+On 10/16/26 10:04 PM, Frank Li wrote:
 
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+[...]
 
-On Sat, 17 Oct 2026 22:38:12 +0800 you wrote:
-> A BPF program can read the middle of a u64 field in struct bpf_tcp_sock:
+>> +int enetc_mdio_update_mdc_div(struct mii_bus *bus)
+>> +{
+>> +	struct enetc_mdio_priv *mdio_priv = bus->priv;
+>> +	struct device *dev = bus->parent;
+>> +	struct clk *enet_clk;
+>> +	u32 div, mdc_freq;
+>> +
+>> +	if (device_property_read_u32(dev, "clock-frequency", &mdc_freq))
+>> +		return 0;
+>> +
+>> +	enet_clk = devm_clk_get(dev, NULL);
+>> +	if (IS_ERR(enet_clk))
+>> +		return dev_err_probe(dev, PTR_ERR(enet_clk),
+>> +				     "Input clock unknown, not changing MDC frequency\n");
 > 
-> 	tp = bpf_tcp_sock(listener);
-> 	/* +0x54 is in the middle of the u64 bytes_received */
-> 	unsigned hi = *(unsigned *)((char *)tp + 0x54);
+> binding said clock is optional. If return failure here, it will block
+> existing dts, which have not clock property.
 > 
-> bpf_tcp_sock_is_valid_access() allows this 4-byte read (the default case
-> only checks size == 4), but bpf_tcp_sock_convert_ctx_access() only knows
-> the field starts and has no idea how to handle such an offset. It emits
-> no instruction, cnt stays 0 and the fixup pass trips verifier_bug():
-> 
-> [...]
-
-Here is the summary with links:
-  - [bpf,v2,1/2] bpf: Fix verifier WARN on narrow read of bpf_tcp_sock u64 fields
-    https://git.kernel.org/bpf/bpf-next/c/af873495cbcb
-  - [bpf,v2,2/2] selftests/bpf: Test narrow read of bpf_tcp_sock u64 fields
-    https://git.kernel.org/bpf/bpf-next/c/5256161e3573
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> should be devm_clk_get_optional()?
+Existing DTs are fine, since they don't define clock-frequency property. 
+And whoever wants to define clock-frequency property, they also must 
+provide clock property.
