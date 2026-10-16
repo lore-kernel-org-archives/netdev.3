@@ -1,112 +1,64 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.enpas.org (lighthouse.enpas.org [46.38.232.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EB735675E
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 14:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD72369D47;
+	Fri, 16 Oct 2026 14:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.38.232.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792160782; cv=none; b=JnrHvGbQK5ShuJduN97MciJXSzGp5eMFEOdgtJcnymvF/butJKeYaCf6gvfcHlEQ5XjQv0DU9EPvex8KDMbUh+UMGwHG87QQac950/X2KB3nxSeNMwOBK3U3ciTw1jK6XVNo0BopZ194rN2T0t1gOUA0BUAWExSRrDFbFVaIW98=
+	t=1792161059; cv=none; b=JJ4lD+o1K6DlsjF1h8NedLFxA/QXysjji3Ox1z3J8aI/LMZUyHqRAj75PEyyzdIAwHoerOuDeQAG6JOUoCtCK3DXhVwlxFVSeQHItv7KEOddtmrHnf876BANEJAaAMql64WgAXMEqCDb02WqVbax2UzV/BF4LsMr+ovlVC1pAyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792160782; c=relaxed/simple;
-	bh=BA3ZOMsHyP2GTKp/rqwxW3xgiYBeA3bbd1xCYOxEnto=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pcqW0LzTsAdaYwb2ou8wYpRk8Tx12sUVcLt8lp2JsiGiFgox97sBzqoq9BqItVTWwfbzz0s/duKK+WI1v5EfOyqHT3vgQ2m/nodvS35ssfuJmQWC+GrV2EVz9a8VXjsP9S0rE7yL2EfRCloYJfJq5+rE8MbL3g73h32mT0UYaCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRUpRL1M; arc=none smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792161059; c=relaxed/simple;
+	bh=JFPTy9V3/Al+yGNezlNHX5Lcqefw9/okxFnrMJCgA3U=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=lueR+LbpHULbNS00VOkWWNfB7pQGdULqU6sYffdmpjheLnlhUMvnz4L2Tt9U7hxPmmGgvdKItZ0l9+Q/7NN1OrtF6OO+1bcjnnG/WSsU0f/4nRypGtdJgQSgSeqo7V+KrpgVOmHscH91oljsonoWg/XjhlC4nsNIxgYXsJjE3g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enpas.org; spf=pass smtp.mailfrom=enpas.org; dkim=pass (2048-bit key) header.d=enpas.org header.i=@enpas.org header.b=X7ZZwbt9; arc=none smtp.client-ip=46.38.232.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enpas.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enpas.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRUpRL1M"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3535bf8b3e0so5288645eec.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 07:26:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792160780; x=1792765580; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BMcQDGMpfF+Xt2i/WNjW/x8k2X+ctHzEstRfrAzmcvk=;
-        b=NRUpRL1MzMDAaRTXXFuHrqn4wko3xp/8JnOIn7pYQnxhCO99toCDQkZmTO/2bTJcnv
-         H27wEl9FegfrAHFdfBpSt9Yg3x5ZTbOiqmd1gsMZCczKn8TpsQ3iWwwuI50XfFtW3k5t
-         Rf+e2PaT7aVBSAL+fPosWssDsQo/R7fA+kfWTvK34LkN8M9S22wL9nbP5+NnwvxGVyqq
-         lPEQHlXLh36DzpNw6lokYGHVhIwzKehLN+PgmkUISoOyKg0o0TjZzoY+OLSDyNuRMze7
-         VwQ69ZsZRMMfvy6qwjuN7PWYzzWc2SXTVfU0OBrPlP8A2XRp1V89hx264PDzphYX6Z2G
-         41LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792160780; x=1792765580;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BMcQDGMpfF+Xt2i/WNjW/x8k2X+ctHzEstRfrAzmcvk=;
-        b=kSuhLSstLTOy7+nfA8YwQ2awTfrLQDj9Nab2TrVc941RRDijLdnP8vkFAYaGEZkN8z
-         RYJkjkzHcpIxBi2W2++FjgBKMWbhiEOvSR29BBRPsKr+Ihpx7FJsOGTQ3yyXBP9p6eBu
-         htuxSFB844ERzscHIZr561BUBdL/k2m3U5EFFTUwOeXbgdKPIuC4O7W9yYXw/wBAh/Jw
-         O8lpEwy4GnhCvKxayTg2Z7ZgajzWvyMmHAgpjQ1UmwKP0YNrWAhzxs7RXIKhIiQTxgs9
-         X/ducgySDNtTOcyxN16ypqokCbHAg1CmdwmnkIBiZvXIzXD/rDZlueYwbJeucYEnqF61
-         gmdw==
-X-Forwarded-Encrypted: i=1; AKwUvBzoUCA/Wk6rYuapV9QRnuOWbBAZjm17KYsLma74j+l9ub0TkDZh68qB17qitFTjQcgUHhdRPCE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJtJSHBt1V5gVj3+jf/RFnx6Gqtr0qbvPNtCj/YYHZJ8QjSgw//
-	rEJ+4yKLg24smWUANp0Kor9XiqqFHFaHsd4Z09K3l+p6LuEHcDfsPjI8
-X-Gm-Gg: AYBFou0GSpASJFaJdlxeyh1rFnEUOSNxLmA0YUg+teq2Txb4FupmkfTCVi4gH3v0pFz
-	gyhBN1uwMfZH1deHG0qtUfroF5lVhtFHFjLzeJ59QU7ZtyWEhp6s3hz6HfCflv/K6Fdin/AHEf3
-	71H8wruhkCimN1MeU0rLoI/9ATVjQKEibGmcUCFIjBeSPPX/dU8v8AomPuwMXf9nqtfpCpndmaV
-	erarDTbkS1Ia+TRpcihG3O4HORTSXvlLWZyYg27E86atkHpsEOBE8yozQSVGGbIh1P1zJHP/9Xh
-	9b2ZwWmoVfTPNnzKJqZE4cj5yxDgdle+ciJM5HAUyG7l0TEKWLBc0eY0lgZAQDgZBvgSEfTBm2K
-	4fCGpbxjR1D17LVRk6dMYsSHQFEdRRoP5tAzwxC8cf3i997W/jyScldMia0gpbABcTDf9N2uKfA
-	+dZ+RyQJOoGM+LEsOS8v+R0g9PHqlsiZrWUaUSapVbTY/MpAIFRs4q3l/I17+GhJA8LN/6gpkjo
-	I6yKiGw7CmOtLSWYuMoPx5WUofzQhwUyCnP3YosbYvukFprnHRwDZUsQNQeO1qBpMa2XNct1fqy
-	ikm4b7KgCV4+naYbuOGVND+mgli0SXU9IKVtEYs1G3EOK3rfLT9oDQnC
-X-Received: by 2002:a05:7022:28b:10b0:16f:c9db:c5af with SMTP id a92af1059eb24-185118eded7mr132172c88.11.1792160779405;
-        Fri, 16 Oct 2026 07:26:19 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2804:7f0:b100:ece0:b5:bb23:a54:ce61])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-18314ef8ed8sm6348059c88.3.2026.10.16.07.26.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 07:26:18 -0700 (PDT)
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Eric Dumazet <edumazet@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
- Alice Mikityanska <alice.kernel@fastmail.im>
-Subject:
- Re: [PATCH net] calipso: update payload_len when removing the CALIPSO option
-Date: Fri, 16 Oct 2026 11:26:14 -0300
-Message-ID: <179216077404.22091.15636720633867774901@gmail.com>
-In-Reply-To:
- <CAHC9VhT5w3K1MvmP=1Mxf6KKWZD5BbK14bVHJGYFN93080j5jg@mail.gmail.com>
-References: <179138670045.80227.16292613517250896744@gmail.com>
- <CAL4WiirbJrQThGS4BUo=a=AV9ckJk2AyedO8AgJgozjHOwu5Vw@mail.gmail.com>
- <CAHC9VhT5w3K1MvmP=1Mxf6KKWZD5BbK14bVHJGYFN93080j5jg@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=enpas.org header.i=@enpas.org header.b="X7ZZwbt9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=enpas.org; s=mail;
+	t=1792160659; bh=JFPTy9V3/Al+yGNezlNHX5Lcqefw9/okxFnrMJCgA3U=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=X7ZZwbt9lqb+o+vkiSo2kANwRnTmdq0ocdkYRpPKYBkPa7QFS0+iXixZ1VeFS8dCB
+	 GzA5Bjt7oReQSZMN6NQ5tr/t3Mh6IMba6oFIQPrApmTdnvYMc/fTdaXpmgPX1r7Hqt
+	 +UVskA2p+RVSDMOhT0DMRHM4Qzhg0z8he8xkWsWMvfrNitltWXpnBUNnwy21Sa/mZZ
+	 y21ImwNAtwqS60VVXSZTktEtZNImzhBxnR2sr+H1qsicHkq7WlHmaz269lyj14kTmC
+	 neYNJnfoH1LHRKUjEfDfGUNWwkjRqNhOSg7Fx4pKODC/rr39MIRK0QloXHLmNvuXl8
+	 L12Flh44pESCg==
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by mail.enpas.org (Postfix) with ESMTPSA id B83B5104DD3;
+	Fri, 16 Oct 2026 14:24:18 +0000 (UTC)
+Date: Fri, 16 Oct 2026 14:10:00 +0000
+From: Max <max@enpas.org>
+To: Chaosheng Qu <chaosheng.qu.linux@gmail.com>,
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ Marc Kleine-Budde <mkl@pengutronix.de>
+CC: Vincent Mailhol <mailhol@kernel.org>, linux-can@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_2/2=5D_can=3A_can327=3A_publis?=
+ =?US-ASCII?Q?h_tty-=3Edisc=5Fdata_only_after_register=5Fcandev=28=29?=
+In-Reply-To: <e02d5a1d31bb8dbc6397e3469cd0578b85d78970.1792118038.git.chaosheng.qu.linux@gmail.com>
+References: <cover.1792118038.git.chaosheng.qu.linux@gmail.com> <e02d5a1d31bb8dbc6397e3469cd0578b85d78970.1792118038.git.chaosheng.qu.linux@gmail.com>
+Message-ID: <7F7B6C68-4055-4899-89E1-5E5BB5A68099@enpas.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 9:39 AM Paul Moore wrote:
-> while basic CALIPSO labeling is tested via an automated test job, this
-> particular code path is not part of the automated testing.
-> Improvements to the tests are always welcome.
+Hi Chaosheng,
 
-Hi Paul,
+Thank you for your patch=2E
 
-I opened a PR adding a forwarding test to tests/inet_socket:
+I won't have time to review this properly until the end of the month=2E
 
-  https://github.com/SELinuxProject/selinux-testsuite/pull/106
+If someone else feels comfortable reviewing this, please go ahead!
 
-It builds a client -- router -- server setup with network namespaces
-and checks both directions: the router removing the CALIPSO option and
-the router adding one.  On Fedora 44 (6.19.10, without the fix) only
-the removal subtest fails, with the forwarded packet dropped as
-truncated; with the fix all inet_socket and sctp tests pass, both as
-unconfined_t and sysadm_t.
-
-Until the fix reaches the kernel used by the CI, the removal subtest
-will fail there; I'm happy to gate it on a kernel version if you
-prefer.
 
 Thanks,
-Joas
+
+Max
