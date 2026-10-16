@@ -1,73 +1,70 @@
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp9.goneo.de (smtp9.goneo.de [85.220.189.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5B1380FD8
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 15:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8445E3E1204;
+	Fri, 16 Oct 2026 15:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.189.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792162902; cv=none; b=tV5iZQ1iRuSIDIY3ebEpuR8ThvwJnRKMwE5OD15ZVEdX6eQTEn3wMRPskzMdO40CF6w1F4nCQdPnHpRXmzPEojajDiL+tpldnTLuMSrqulNnrTPripajMLWpj7fULnm4CMW5qSvIB7huvEcruCg/B2B1S7xjflQv0Rax0z+/n04=
+	t=1792162952; cv=none; b=oSe828PqMqblsvPulva+M+fU3AxspV7kTf9rWwBBjSgFwhDrb3Xm8bwCMMiQXqXnz0OJ3PFz2OGRlERkS2hOEEtZ/yPbjxzUotIfYpJIqTGThUbW+eotViVCsXtOksPsFITsKG4ZUgGaX4cwIUf/a8PAzBglIo6bHo5ZQxI+ucg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792162902; c=relaxed/simple;
-	bh=pvohegabuBj5eTTWNotWQSLtJioMovHzOJdZ5mt1v1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kEyOU+SOIApgBSLJTDvrfPt9TNBeHvr5DUb4BQvqv/Z1AwxpFoqFeX0ciHzwwQGy7N1lFjtf/mc/in3LOyiruWreW4fn6SnEo8SJn+gm9Ch9xtO3XEU8nDjMkzX+ve/q/7cYxyg+A8MWpv6drpgoGJX4wV2T6kyXeVp1J+iSdiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=oWLvZSQ+; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1792162952; c=relaxed/simple;
+	bh=TXmEH/lbQZ5d+KFc77OAq91S0zusSMKP/XcdSKqzRPQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gyasTkYbGGBxXgZptsdcQ9IwsOmfIuIfETDuLY07EM1c7LHCUtV/hmVkbfdOt8GOcCjAzmJzRR/YMy57wTsF+gYaBup7WAYqLflXhJnF8NDxf0BfjBJjSlQ9bAbk/433Xvmo3ubgRr2fkXWwiGtb0JDzjnq5is+DH4bTySH9zWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=s1wKmWZq; arc=none smtp.client-ip=85.220.189.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="oWLvZSQ+"
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-451a49abd8aso70339fac.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:01:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792162900; x=1792767700; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bPFpShE31DFsBY6WFUeD5aKN1mR/pM7EoNnfe4+19WQ=;
-        b=oWLvZSQ+/5I2to3rHmVueiSK8mcMnfnUL9fw8d9Wrfa3c5ZktAMbDRFCb2NcEd4Qcn
-         yCiOL9Mnt+hb7pwzIhbb33r1Hiy9tKBJGdSZW6WhCQO7H+kOnQQi3eSWcjN7qssp8Dzc
-         cdPUYoX7Ws5JlR+fxvD/mkH8dGi5D61lVtgWA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792162900; x=1792767700;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bPFpShE31DFsBY6WFUeD5aKN1mR/pM7EoNnfe4+19WQ=;
-        b=JTF4RnjewsW76jwkIm29wh2BihMhkWcnKmYMid8AKZ+3UTl/m+H3aTw7t9C3KPWSy+
-         Dj7pO0BT7lmvSECRshfQSg9Y1JGALAXzYq0LyznI1ZftVrHBecSYlCNFPsZhLUCiQGoW
-         iQszdo+BFZLX/Fi8pn40bJa0zAtGuUlOdPdb8mNh7CtYMsdtjYHz09LFNElyJJTOY8Cm
-         hWAGmW0/0WJ/rQaOpTu+n7E71mUza04MJcTxqhwHGTfCLyenLqyKe9EdqbM+yWyml3hq
-         PwTFUMJxIzYWDZplDTG6eZrBNR1ylxdNDd1oRD+W4J6gmOLAYE3Glmn9gXbXGuF/gX+e
-         e3Jw==
-X-Forwarded-Encrypted: i=1; AKwUvBwFIDwQqDwitDrqnAlUpF9mF9RykcjXEcSxgWcIyQEiWprAGz2/MyOiqq+qIE7i3Eq7uYqka7c=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ2KFYQq4MWGhVrmXxca4VIpZHvzX/ma2Wv90z097xD+3zdP7R6
-	2Po9wKACx8PUDTOVtcOCn72w6y8r839jqxAQyTY8096Kzn1BGDr0gNnvMarC9CEQyw==
-X-Gm-Gg: AYBFou1slWfzdwMTs92V32WbDx94PVwDxhy428f/p+FL5FoTaNZQ12YKVi1g1bBvGHz
-	UJ8fp9xxMA0TPU1VyLMKMNLoL3YVLcTsYHCAehgrp8hIEVqb23Jqa723310/sOInOK6jWUmaEEA
-	jTdfa3mR6CfvLeR9NOKOM96xn5l04MR21EJDGVmLnTYVBsr1dvO8EFxtEyVyPzLbHKOBH9EPAkh
-	TX/DjIrpY6AG1CUsmoOVfFkvEfncaoRcZjLH/Vh7wyRJ6ybv+eL4dXhg2yMQT9V0q1YslUnkPm2
-	8h431uKuX0bshwxCjCknywiIzWHHeP1epzCswQSamr/W0d8VvvxF7fMY1X9lDgMrQmaKiRoaRLp
-	mDJdkYFX+CZ8O1XGeWg+54EL+k8v/KGLM0X83hbjAPJf/gFeG0cAFOUwopUdQiPI9+sCLWPsbCR
-	sF+V/JAUsEAV31M7nTNRDVXx6vnG0Wl4AFvQKMRNrqlTdD3wdz9Q81KC4ejJbM3nHgVy7oTvn23
-	uRj
-X-Received: by 2002:a05:6870:241b:b0:491:520f:e6d0 with SMTP id 586e51a60fabf-4a7575c5a5fmr207409fac.4.1792162899300;
-        Fri, 16 Oct 2026 08:01:39 -0700 (PDT)
-Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67::2000])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a73b5b4291sm1746650fac.5.2026.10.16.08.01.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 08:01:38 -0700 (PDT)
-From: Victor Nogueira <victor@mojatatu.com>
-To: davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="s1wKmWZq"
+Received: from hub1.goneo.de (hub1.goneo.de [85.220.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by smtp9.goneo.de (Postfix) with ESMTPS id 18563240280;
+	Fri, 16 Oct 2026 17:02:25 +0200 (CEST)
+Received: from hub1.goneo.de (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by hub1.goneo.de (Postfix) with ESMTPS id CFE32240555;
+	Fri, 16 Oct 2026 17:02:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
+	t=1792162942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/F8X4FgLFzjbPuRP8RhC1y1JQLf/dWD9TVWr/+buM8Y=;
+	b=s1wKmWZqTFdQ60Ip13QisyIbQ0eFXNnGqshbBbz65I8xJ1azFu6QhW6y029SrLwMvdBdMC
+	G3bhXThXRE+okga1qSELwc2AyQ3uyZz2bF7dYndvkg9bxf0AWz+Te0esmiFPd3Gn6LpdKz
+	F0dQyjBsu8PeaSOpVChkqKjBeg+99OqZneOv2bay2trXrdto3swCov/xOWFJyy/dGVnkZA
+	qMQH/FQ1e60ynYQQzZeG2KR1/C/fflx6Fhi64V2PQN0i4FwsC2FuLL1YSqZ+TIZQRjpBV3
+	TiK0np2ev5r3GHPio22IwfIGnI4hbhqYnOAe7PJHNnaARJ3LVzZS/MDYz8U72Q==
+Received: from CASE (unknown [195.37.88.189])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hub1.goneo.de (Postfix) with ESMTPSA id DE6D32407E1;
+	Fri, 16 Oct 2026 17:02:16 +0200 (CEST)
+From: Til Kaiser <mail@tk154.de>
+To: netdev@vger.kernel.org
+Cc: jie.luo@oss.qualcomm.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net-next] net/sched: em_text: pad the text pattern in the ematch dump
-Date: Fri, 16 Oct 2026 12:01:28 -0300
-Message-ID: <QDISC-7SHE.v1.r0.20261016101330-1@mojatatu.com>
-X-Mailer: git-send-email 2.55.0
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	quic_leiwei@quicinc.com,
+	quic_suruchia@quicinc.com,
+	quic_pavir@quicinc.com,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH net 0/2] net: ethernet: qualcomm: ppe: Fix queue access and port validation
+Date: Fri, 16 Oct 2026 17:01:38 +0200
+Message-ID: <20261016150140.929729-1-mail@tk154.de>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,64 +72,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-UID: 0f7c70
 
-This is a follow-up to commit 9c572a83037a ("net/sched: fix potential
-stack infoleak in em_text_dump()"), which zero-initialised the dump-side
-struct.  Sashiko separately pointed at the unaligned pattern tail on the
-same dump path.
+Patch 1 corrects multicast admission control table accesses. The table
+uses indices 0 through 43 for global queues 256 through 299, and each
+entry contains three words. The driver currently uses the global queue
+ID as the index and accesses five words.
 
-em_text_dump() appends the text pattern with nla_append(), which is a bare
-skb_put_data() and does not pad the attribute to a 4-byte boundary.  When
-pattern_len is not a multiple of four the skb tail is left unaligned.
+Patch 2 applies the PPE port constraints to every container and port
+naming form accepted by the common switch schema. This prevents ports
+from bypassing the reg limit and required PPE clocks and resets.
 
-tcf_em_tree_dump() records the raw span as the ematch entry's nla_len and
-then writes the next ematch's nlattr header at that unaligned tail.
-Userspace walks the list with RTA_NEXT()/NLA_NEXT(), which rounds each
-attribute length up to four bytes, so it looks for the next entry at an
-aligned offset the kernel did not write.  The ematch list is therefore
-misparsed as soon as a text ematch has a pattern length that is not a
-multiple of four.
+These fixes were split out of the IPQ5332 support series. The feature
+patches are submitted separately to net-next.
 
-Append the pattern with nla_put_nohdr(), which reserves NLA_ALIGN(attrlen)
-bytes and zero-fills the padding, so the following ematch stays aligned.
-The emitted ematch entry then carries the padding in its nla_len, which is
-what NLA_NEXT() already assumes.  em_text_change() only checks that len
-covers the struct and the pattern, so a dump replayed as a request is still
-accepted.  This also removes the last variable-length nla_append() caller
-(sch_gred's is a fixed-size, already aligned struct).
+Previous discussion:
+  https://lore.kernel.org/netdev/20261005152915.101780-1-mail@tk154.de/
 
-Conditions to recreate the bug:
-- CAP_NET_ADMIN on the target netns (namespace-local via unshare -Urn is
-  enough)
-- add a basic filter with two text ematches whose pattern_len is not a
-  multiple of 4 (e.g. 1 and 2), then dump it with RTM_GETTFILTER
-- the first ematch entry comes back with an unaligned nla_len and the next
-  entry's nlattr header is written at that raw offset, while RTA_NEXT()
-  reads an aligned offset three bytes later
+Thanks,
+Til
 
-Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260918133953.12494-1-bernard.ladenthin%40gmail.com
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
----
- net/sched/em_text.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Til Kaiser (2):
+  net: ethernet: qualcomm: ppe: Fix multicast queue admission control
+    access
+  dt-bindings: net: qcom,ipq9574-ppe: Apply PPE constraints to all
+    switch ports
 
-diff --git a/net/sched/em_text.c b/net/sched/em_text.c
-index 4132f8c3c5fc..fbf78d61f109 100644
---- a/net/sched/em_text.c
-+++ b/net/sched/em_text.c
-@@ -125,8 +125,8 @@ static int em_text_dump(struct sk_buff *skb, struct tcf_ematch *m)
- 
- 	if (nla_put_nohdr(skb, sizeof(conf), &conf) < 0)
- 		goto nla_put_failure;
--	if (nla_append(skb, conf.pattern_len,
--		       textsearch_get_pattern(tm->config)) < 0)
-+	if (nla_put_nohdr(skb, conf.pattern_len,
-+			  textsearch_get_pattern(tm->config)) < 0)
- 		goto nla_put_failure;
- 	return 0;
- 
+ .../devicetree/bindings/net/qcom,ipq9574-ppe.yaml          | 5 +++--
+ drivers/net/ethernet/qualcomm/ppe/ppe_config.c             | 7 +++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+
+base-commit: 191aa41548b2d2b6af534a6d5cf84a552435c74c
 -- 
-2.43.0
+2.56.0
 
