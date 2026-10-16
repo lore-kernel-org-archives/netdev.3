@@ -1,147 +1,209 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D3E4BA1D5
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792156492; cv=none; b=hnEmKg+8s6xyORq1kn6ciJ7rxZ+z4CEukVpwWzEmbZQqh2huqUxfX2Lb0rVGxHTDo7zNohOafTkoAk7BdGEkcMPkAediSCQR82wbUxPDgvXl8i7qUZE8bQJoB4Mn77zCxg6s69wtZLDmHzqPnfBUv1xftuSngGvms8VSl5vpvMw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792156492; c=relaxed/simple;
-	bh=CndP1bLne+UX3AI97tK+HL16zqhF/jGzueNBiUg3cEs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BEYLpDPPpb6SSEPVYSp19g/1AHIIuBNZZcA8JHIXjPkQPaO8hpU2u6VpkC+Q2KGkDO8F9bYGUqxNVdGPUC0XdXjQWAt/jjMpE3WX5Vj2CP6yKJ3w/Fcc+umyjL5Ov/aOaSmVf9TFtias5rLt9lA0ZnfR9IuSfGuW4OGgYW6/Mfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OfG7Ut8w; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=E+YP8q3Y; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3FB4C33F0
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792156582; cv=pass; b=rhZtxJypliY+rb1aYedtQC9NqifwCj5W0EYeO82C3JGAaBh0IxFuv7Pv9EgbhN+5JxWJz7aWsYVJFqpPtCAuS638xwM9kN8iz0vgl7ek9c1Jxa6M0iFQfFCwD5GiV4mbSOX01j1FjmXW2mWYM6ua+ZCV8JI6VjR7cE5x/3Y6Rvo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792156582; c=relaxed/simple;
+	bh=WxKFwcJVOeUaFHQx1ghUjglbbmu9mBiG4gBTht9gmmw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=rUoiZcb0XrF0FB7Le9e1Bj+gS3tTl1r6yeVrm9oGhcUtdwjWQBuofNnPotY2fxNvx9zRgaYE1G/I3plEMwRWSMQhkHgcNYmu2n67v4tiwOFy+A4qKsfOySsuSVG8LY/bEyxE5f0qvyObmbLpqyOYnIg124CW3PuHyJSwH6xhraQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ia16J9S6; arc=pass smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OfG7Ut8w";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="E+YP8q3Y"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69GAA0Q3942520
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:14:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	KQZsw4ftvBo7+ZjIXx+lUmsyKGeSp9JqGs4axL88zkQ=; b=OfG7Ut8wEH1FASSl
-	NEvHE2n3yl99902oZL5LLaDFq7dvc20v6xIeQzZFh1PncyKohYE+C4nq69HHZKVX
-	WN17GyN8VxxNLmLVPQlWBg1Z9kr8Y7PwSsnkBU6a1pIRiGhRrzAKPZ9SLIk2J2gI
-	7iB2vkAgxufgYPzjoN8VejpzWNDck1fPhA/Bas3u2i7AUwNJKovlEMtVQjmQZkuB
-	HvRiaQf3mWrALcCUAlom2KtqaXKgiLFIyi5LSbRz5r5kcQWo9KX4JZTDBgCbqewl
-	Xwu/Jv9+crSCvZt6lM7CBybKRU86eB+C2DDvsP/IJM1mlbe0NSI1hh6vb1etnrb9
-	++8WHg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hbhur0msa-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 13:14:48 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93ea6b66e53so102486485a.2
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:14:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ia16J9S6"
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5ea7137b147so65981e0c.3
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:16:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792156579; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LgiKRGF7srahRCV+5iWZeKqLTyQv0m6LH6LTyazMtAWvJbdqUF/OMpDeq3n8zDhSkD
+         5gPD8CgHBukw7zCoUJ5SHB5VsRNApQ82BM6XJmC/+MBzcW0+p1k1BzPRmV3DtWx8QLNd
+         Jwnia7gO16jJqo0Rzpg0lvY2ozx4JezY9p6MNXup/rpshKg6+5ysGrsmGkBIuihD/dtg
+         TN8cKE25AFfC8US+4r2KxpnPiSZpRRtpBZlb3cXKTzctAgEfrZWRhFaa11CFiCGVZk+v
+         RH3WzSi9PfQBeoytV2FQakBq0Q3tjt3B0fagaYOqA+8kyHqXFyjOig1k2v69WNXXY+J2
+         S1VA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=m34V2DPSJQMgJ0PsxVie6y4fZxdO2kQHq0+ZE0ltKgQ=;
+        fh=hjnyWgENE+pnBT/rwySrzUaRIEDZDpLOCmbWyXmJTCA=;
+        b=HzCMPP5g5gF/q//Vorclkyu4yojPHDSrc3g0SlxboUD6NwTBR7Ivi1TJlguTvvkqQ6
+         Z+dy7h9/JqRhehwDf9bc3TaDYBr8FrauxsFP9JRjw013fanIS1D7TpQ4PUDZAUEW+0+5
+         5EPg4EQ9MUS1Nals6tfo8z2QcTyfDHINu7A2vNgqIacoJgA96E1LyOlL4JbkJlvLrMls
+         v+eJvKGrBzUgGQAAMnfuxXwlaIqdrqterQdoOX1GRUmQZzD2rFiDYIpPmtuutSwZcvP7
+         BZEHdDAvP/hyFHvJ4fnlHgSXG9EAD6MVvEOO6b6ZguVpxTH2X8OXOL6Vxc+gJxCNVsJu
+         fxHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792156487; x=1792761287; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1792156579; x=1792761379; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KQZsw4ftvBo7+ZjIXx+lUmsyKGeSp9JqGs4axL88zkQ=;
-        b=E+YP8q3YpnzAR1LmVbpfji4+vcTji3bI6ExV+Cda9QNwJz/VA9poOwg1+OpJ3LJoQz
-         ODS4LwNrdDeJt4OyaBq+hL3tUP+eLsdB/NINS4vi91erE5G7HaBZFMvU8FdGcydYnupw
-         40PTJ4l/uIPoHidLCRlybqLXB0wGVTy0IUFmzKZd4boH+KPnCATe3KFqG5UEg91N6aTq
-         xm+9aSGwvRKUXKymJJRu+C/XaZxc+P9ZdRPS46dL4UDaT6zAYkOF+lZ4E4mnfpPG+fFe
-         kJd2X6orW+uaCFo4Ft/fCKc4kdwfvG1cvn3yRq/YMHJ1auUBWGFXyib8PPrSlD/+Hi4P
-         J+vQ==
+        bh=m34V2DPSJQMgJ0PsxVie6y4fZxdO2kQHq0+ZE0ltKgQ=;
+        b=Ia16J9S6fkXDxuyv039Zr7xALZiHFeXi51ANUxZKwtwrI0chmKm0d7xkW4WWMxweeP
+         9n+OVNoQ78iirKGiMawIWirs5s94HMe0RsEyVpX3jqwbkLs8edfmkZb/NZwWvB8HFHfd
+         xERY94YDwuRh5UaUAs4GQyNGpX+RgqRo6nTfx9TfHoOF2KAnpaws1mqh3U+2c4S9CWYO
+         fHil0J9LXa2ZF6UMUINbr/l6kKRy4++gaAn/DACKgyEMBxSb6wrbbXI+enrOJC3uJQjA
+         WIS77tcUf3nLs4AQY4GqroE32Hjl1mtykh1YfU3mhbv5a9Hss2gkUl5Es8x44nwgcATe
+         vxuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792156487; x=1792761287;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KQZsw4ftvBo7+ZjIXx+lUmsyKGeSp9JqGs4axL88zkQ=;
-        b=GHrihc4BjUKtJaHs9IiSQLvfJU9y5k00sNpWx6iP+xMm5Zqvy6ZvNQisNe0bIp5oc9
-         10LpevST2tJ5qVl/XBGkz67oMr6exIEACFx4BnCmnGmqMEHUaulfFG0IeXZ9PoVbDpbz
-         Sl1uM2XS/YsdsveuZL6aDx/YerBdPLgogLeWBj9opn8cmY6XiDRCFnehBfw9U7rC1V8z
-         1r5ko8NS1V4f3mgSvHuDxmQc7rek7GsgnPKTcg5lLx546IFgtAeQ/eu0vIe6fhaKyHiU
-         1DUcBzNkWr+gHqXrk7aDruNZNM6qp9l0SCh98v874WB6+mANVi90VIBYIQOCtwcwcJKP
-         d+/w==
-X-Forwarded-Encrypted: i=1; AKwUvBywe/5nVnyUjU94E1E7fieRAD7yx81au7gPgoTF2+Bny07yyttE4+dFxiH5/ToF3gcA/SMnSzs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL6DHjCxPPQjqhaW6cN+BTI9TZACaTY4EEQhbBT856fdFiMfben
-	hrrEOh+pGYOQbFBwnITaXaKxxMxfkxCfPOta5OlVca5NgqzW/CEWzVvNahadCOW8LHvODoamNay
-	uyWsL+pHyNjO1KPzmOENChhDxxzWwVaXNbmRax6YTMFHTmzlJMKGsqIqQFO4=
-X-Gm-Gg: AYBFou3AuVS+bs4rBazFUampX3qRayxrDVOWeCoOz9bICHP6ROvROyBj81vsHMyTGOv
-	/Z3BpIWI0JNid5GXGSG+Ch3HB39E79heZCv4Rcn9/VoTITSxXM2gjmZnr2SeOWszhX90zp3unta
-	fLeswrJS0BUD65nk+DAGkv/5EwVxtBN4yWpoBkHR98HZI2Fw4JOkpgy9Mq9NPvxrBj2VROxOQA8
-	9GPE0IEM/4evUbC+RVMObH10zqvVgi57Si908Deg78peXHabV/UKizIN9L2/jzcFmbRyZnKBwJu
-	3xVjwClKD2HVQfn7qardYiCqIj9XRl/uUhBdNK2RKpOW1Ih1yUJRk5isAd7vWxpgplKXJ9cO8Up
-	a1mCZ4YG6NCQPKKCCEhu/Gg==
-X-Received: by 2002:a05:620a:a43:b0:93f:211f:7ba4 with SMTP id af79cd13be357-93f211f7e97mr152804685a.5.1792156487363;
-        Fri, 16 Oct 2026 06:14:47 -0700 (PDT)
-X-Received: by 2002:a05:620a:a43:b0:93f:211f:7ba4 with SMTP id af79cd13be357-93f211f7e97mr152800585a.5.1792156486768;
-        Fri, 16 Oct 2026 06:14:46 -0700 (PDT)
-Received: from [192.168.226.26] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c408b4a85b8sm71612466b.0.2026.10.16.06.14.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Oct 2026 06:14:45 -0700 (PDT)
-Message-ID: <bbdaabf7-ffdb-433d-91fb-f6ca03b0747c@oss.qualcomm.com>
-Date: Fri, 16 Oct 2026 15:14:43 +0200
+        d=1e100.net; s=20260707; t=1792156579; x=1792761379;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=m34V2DPSJQMgJ0PsxVie6y4fZxdO2kQHq0+ZE0ltKgQ=;
+        b=pIk1EI7Tfj1rS9xUqeu6XT3EKwZrIIyf9vEjov/0vlqLu5SIWBoThNkwNtwY0dbi/9
+         RrTSBu+xZa3w6YKSUbqqSi4lehYEfuW/KtBbbDwUn4pvYlz1h5nVxlEppKGNpIrhkjJ3
+         YUNU+0b7nB1J03EDzWeucJCm3pcU3z88SMfV0zfxOSWiqOUsP/Vpvw49Rn0Vn3r4nbDM
+         qk0FSDtMyE/L4BwFjYSCsSiK2W8WEUJy2hevsi0HMIlldFpNXSicq49/XcscjgDeGOHL
+         68U6nQjW4L2hTW9GKTt0Y/iwqBOVoYVdhJOJi2p9c0Bdq9PaNYulgGsgtCbnvYNmbOUO
+         sqGA==
+X-Gm-Message-State: AFq9FYJk2ZKHRjhdA2rD64l9XzP1q8ApsmpavnW/SjoEUZfCum08SAdn
+	xEWSYvvLZa+5vJpNJSGHWGHRTn13YoXOr22HJYoTwmj/bK3au+ohPPYsM/dAPbuKfUToLYfCsvq
+	K1RODh7/S9vZtnCTE2Sz8rASzRWXa6/THLlMWu0bmbw==
+X-Gm-Gg: AYBFou0Pi9sa0L8vB9AazFmDkAs8VNo3+KoG+fXw/WdzqQB5FAHq1W43GpF19QWWmjj
+	R0sExIE+xeb+R39TLWhix7vdjvipiVfXfHbck1Ku+XexeJ/4YfljGEGCW5WYSKrk2jHC566oMc7
+	cCFNFpn5FHEuu1FdvOvFps0FgM1a7v943dISa0a9VXt43cDS1SscAb3dzHBiDiP3igUC+vWppFA
+	ee85TbIlnBerLZrehCkQFLrfEkTrRjnPKxBPZCAbz0HGKnDBNhO/eBqh7urzTYBNst2WrJt56Bd
+	5OxfF2/FdQrFb0hsPFY7uDtU08M/E+AvPskN6VUKEkDgI9NMBNz2/VsDzdD0T6D+OkaOJnf0WbP
+	M5rDsUldYXW9tA8K6ERGH9moXNoLFuXSX5xhN9liMvw==
+X-Received: by 2002:a05:6122:8704:b0:5e9:397d:b197 with SMTP id
+ 71dfb90a1353d-5e9397db6b5mr5174161e0c.3.1792156578871; Fri, 16 Oct 2026
+ 06:16:18 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Fri, 16 Oct 2026 08:16:17 -0500
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Fri, 16 Oct 2026 08:16:17 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: qrtr: ns: retry service announcements on -EAGAIN
-To: Joonhoe Kim <26rote@gmail.com>, mani@kernel.org, davem@davemloft.net,
-        edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
-Cc: horms@kernel.org, christopher.lew@oss.qualcomm.com,
-        deepak.singh@oss.qualcomm.com, pranav.phansalkar@oss.qualcomm.com,
-        andersson@kernel.org, linux-arm-msm@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        regressions@lists.linux.dev, stable@vger.kernel.org
-References: <20261016124600.31-1-26rote@gmail.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20261016124600.31-1-26rote@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE2MDA1MiBTYWx0ZWRfX8BqMhiPDWmsK
- /Xi4CbG20ZTFyxAo3IOQRvnFrSXrZ/PgCUs2ZxzkqNLW8GWRlRaBiQ2aApjxJP9oUu2SatwIoet
- 8wdErgBns3Ei4/5CU2q6d92OqMFrMQV3Ofcz98FJCsz2knyZzvz8w4WVUzJaHKJpt6/gyBSjALQ
- ZPPk9+7SqteB/r7a2KGXs3afQJKjxWIkvCmNozqZ2bXgjMBuCzDCrsu5szsGwhSxT5NowkN4ERJ
- eGzgR87/JxbzV/5rMbFt9cjznCUfASV5Ie6xkVupkG749Fs7wvATPerWe5dH62Y/qbV6KZJFfnA
- nSgFF0L9F/HxfnBMxByRN6GZOnIgBIII6dPWSuRFMZ8C7D8NlhSlXT3WUFSAAbIXjzEXtdCzFnP
- MdJOss/OkhGdWL+Y/zBtwaXnTvQVyUTz7lETSCvT1HUN+6kwP22zrK3M9yI7nMIKlVh4yYYqV/5
- 3OeEJnm9apLzlDw3F+Q==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE2MDA1MiBTYWx0ZWRfX+r5qGUsSg69N
- EydxyQSrv4bd4SQO/jn2EGM7EHsD/0RxuVW0T29oFbK+BFUvjBICL2On7RM6YwsQPK/5hG/5fHQ
- NDuNoyKLi+WvBrzeBSyz0u3VQHa63D4=
-X-Authority-Analysis: v=2.4 cv=PqsG/AM3 c=1 sm=1 tr=0 ts=6ad22348 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=tdnHcQlNMze5R78DgzoA:9 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-ORIG-GUID: K2KRx-bCJDvvg-1CpsmmdinCsHAzzJTQ
-X-Proofpoint-GUID: K2KRx-bCJDvvg-1CpsmmdinCsHAzzJTQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-16_01,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- phishscore=0 clxscore=1015 malwarescore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610160052
+From: =?UTF-8?B?TWlndWVsIEdhcmPDrWEgUm9tw6Fu?= <miguelgarciaroman8@gmail.com>
+Date: Fri, 16 Oct 2026 08:16:17 -0500
+X-Gm-Features: AclHuK8xJbV9fsv1Ej8XzXPH6zX3IbQC6Zj0JpmjQur27sv77M0ATC1K6PdxLXU
+Message-ID: <CABKbRoJw5SOQH6ydjxyi9j4k2uhjnDSwN2dOpzCAGsFeJZ0bJw@mail.gmail.com>
+Subject: [PATCH net v3] llc: shut down timers before dropping SAP and device references
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+44efda9647c52be29d9c@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/16/26 2:45 PM, Joonhoe Kim wrote:
-> Since commit 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint
-> register"), qrtr_node_enqueue() returns -EAGAIN for every packet but
-> HELLO until our HELLO has gone out to the node. The HELLO is retried,
-> but the NEW_SERVER announcements sent in reply to the remote's HELLO
-> are not, so a service registered before the remote came up is never
-> announced to it.
-> 
-> On Kaanapali the modem sends its HELLO before it accepts ours. With
-> rmtfs started first, the modem never learns about rmtfs and its
-> watchdog resets the SoC about 40 s later.
+syzbot reports a slab-use-after-free in
+llc_conn_ac_send_sabme_cmd_p_set_x() when a connection timer dereferences
+its SAP after the last socket reference has been dropped.
 
-Please remember about Assisted-by tags if they apply in your case
+llc_ui_release() holds an extra SAP reference for release_sock(), but
+drops it before llc_sk_free() stops the connection timers. If this was
+the last socket using the SAP, llc_sap_close() can RCU-free it while a
+timer callback is still running.
 
-Konrad
+Keep the extra SAP reference until llc_sk_free() has completed. Use
+timer_shutdown_sync() for final teardown: a fixed-order pass with
+timer_delete_sync() permits a callback or concurrent state-machine
+action to rearm an earlier timer. Keep the device reference through
+timer shutdown and queue purge as well, since timer actions can use
+llc->dev. The non-final timer stop path retains timer_delete().
+
+Fixes: 9708d2b5b7c6 ("llc: avoid blocking in llc_sap_close()")
+Reported-by: syzbot+44efda9647c52be29d9c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3D44efda9647c52be29d9c
+Signed-off-by: Miguel Garc=C3=ADa Rom=C3=A1n <miguelgarciaroman8@gmail.com>
+
+---
+v3:
+  - Keep SAP and device references until after final timer shutdown.
+  - Use timer_shutdown_sync() to prevent cross-timer rearming.
+  - Remove the separate unlocked timer stop from llc_ui_release().
+  - Reproduced the KASAN report on the unpatched kernel; the patched
+    kernel completed five reproducer runs without a KASAN report.
+  - syzbot reproduced the UAF on the unpatched control. Two patched
+    jobs built successfully, but their C reproducer aborted at bind()
+    with EBUSY, so no Tested-by tag is included.
+v2: https://lore.kernel.org/netdev/20260916104735.3565609-1-miguelgarciarom=
+an8@gmail.com/
+v1: https://lore.kernel.org/netdev/20260916074158.3375909-1-miguelgarciarom=
+an8@gmail.com/
+
+ net/llc/af_llc.c   | 11 +++++------
+ net/llc/llc_conn.c |  9 +++++----
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+index b0447c33d..e34d1e7b5 100644
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -196,6 +196,7 @@ static int llc_ui_release(struct socket *sock)
+ {
+ 	struct sock *sk =3D sock->sk;
+ 	struct llc_sock *llc;
++	struct llc_sap *sap =3D NULL;
+
+ 	if (unlikely(sk =3D=3D NULL))
+ 		goto out;
+@@ -207,23 +208,21 @@ static int llc_ui_release(struct socket *sock)
+ 	if (!llc_send_disc(sk))
+ 		llc_ui_wait_for_disc(sk, READ_ONCE(sk->sk_rcvtimeo));
+ 	if (!sock_flag(sk, SOCK_ZAPPED)) {
+-		struct llc_sap *sap =3D llc->sap;
++		sap =3D llc->sap;
+
+-		/* Hold this for release_sock(), so that llc_backlog_rcv()
+-		 * could still use it.
+-		 */
++		/* Keep SAP alive through backlog processing and timer shutdown. */
+ 		llc_sap_hold(sap);
+ 		llc_sap_remove_socket(llc->sap, sk);
+ 		release_sock(sk);
+-		llc_sap_put(sap);
+ 	} else {
+ 		release_sock(sk);
+ 	}
+-	netdev_put(llc->dev, &llc->dev_tracker);
+ 	sock_put(sk);
+ 	sock_orphan(sk);
+ 	sock->sk =3D NULL;
+ 	llc_sk_free(sk);
++	if (sap)
++		llc_sap_put(sap);
+ out:
+ 	return 0;
+ }
+diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
+index 260460d50..2ad5a69dd 100644
+--- a/net/llc/llc_conn.c
++++ b/net/llc/llc_conn.c
+@@ -942,10 +942,10 @@ void llc_sk_stop_all_timers(struct sock *sk, bool syn=
+c)
+ 	struct llc_sock *llc =3D llc_sk(sk);
+
+ 	if (sync) {
+-		timer_delete_sync(&llc->pf_cycle_timer.timer);
+-		timer_delete_sync(&llc->ack_timer.timer);
+-		timer_delete_sync(&llc->rej_sent_timer.timer);
+-		timer_delete_sync(&llc->busy_state_timer.timer);
++		timer_shutdown_sync(&llc->pf_cycle_timer.timer);
++		timer_shutdown_sync(&llc->ack_timer.timer);
++		timer_shutdown_sync(&llc->rej_sent_timer.timer);
++		timer_shutdown_sync(&llc->busy_state_timer.timer);
+ 	} else {
+ 		timer_delete(&llc->pf_cycle_timer.timer);
+ 		timer_delete(&llc->ack_timer.timer);
+@@ -978,6 +978,7 @@ void llc_sk_free(struct sock *sk)
+ 	skb_queue_purge(&sk->sk_receive_queue);
+ 	skb_queue_purge(&sk->sk_write_queue);
+ 	skb_queue_purge(&llc->pdu_unack_q);
++	netdev_put(llc->dev, &llc->dev_tracker);
+ #ifdef LLC_REFCNT_DEBUG
+ 	if (refcount_read(&sk->sk_refcnt) !=3D 1) {
+ 		printk(KERN_DEBUG "Destruction of LLC sock %p delayed in %s, cnt=3D%d\n"=
+,
+--=20
+2.43.0
