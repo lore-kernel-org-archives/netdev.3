@@ -1,73 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FA64C9E0C;
-	Fri, 16 Oct 2026 15:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B292746F4A6;
+	Fri, 16 Oct 2026 15:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792163369; cv=none; b=WcAkeu6Ez/0Df/uUDPXBQezBQuu1G/bjh5lqLEh57bhpNXtKsXgS0telbb4UmddEUlHj3qKg8pM8cOSZbWQM9EzS/d/N4qo7KBJtyeDANv1bTzf9+mRL1WGPk3My0kFmbBoZ3d7ijvOSMR6k+jpCLab4AVF4n7HxwpjRVL2qglQ=
+	t=1792163864; cv=none; b=g03PJQMFsmTTLSnWwiTsZHUyoblJ+40jlhwiidCSjvMo9CujobLcmP19KmXmYnbRDnyZRwKtBkiw/uilirf95HZ46dL/fN0I51ECObqAJTXu/p03LhrHLaNWsE3VL5Fy5xpGGDbNpcKnIz1cB00HqG9QNlSKc7Qd0Lsa92gsmvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792163369; c=relaxed/simple;
-	bh=zvpmhm+BAUlfIVJ/6Kp9ShG7pA3G2q65FWBMzuTisWM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JrqFOc8XrF40nOFUKVIn1UaaowdXGruDKJ9FSY8u1tpqmX4nUmjld31xOraxyCsVn58IS1t6GqpBbhjMIT+Rxv0cOHZJf6wTBE3lx5ZbR4DXrUpOifWbRCoDELEA6Q7fIIx3knUZa2+vqfhrHyTfcusNd1r8Rc5q/bDBZ+FEX2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+dr46nS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792163864; c=relaxed/simple;
+	bh=S0cC7/QOZ211s+sMqObPJG6rINXOGu5G5uygArOyVF8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A3dCKfH4TkyeY6pvstXl7ShR2sqtGUGGrKxIoasxKx8DKE8iH1tpsJGQ6hrJjmH61V8w1p7Nu0qDVzuEiKWCQNoUVbf23cDIqyaw8uXl8SmPPwAr8roBUeh8sEF9BZtN0ofqp11KOmrHK1+5VEx8/tOx0ssmRLdqhW88/tzlWaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zh4hh7ut; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+dr46nS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86041F000C4;
-	Fri, 16 Oct 2026 15:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792163368;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m+dr46nSdP2qlLIB2fmp3Kbk/BFMqVufNzirPvqKWC8uNsGwg7lgxsd7gXxlToQ0X
-	 1YhneGxZX9TZZTKLenN6dG1Kh/Qf2vuGZRdZJk/m438Lt3YNdyB9vdiwow476kpzsd
-	 Zt5sHxLOxok3rthvI+zVfV4IILi1hp0kGpFr5ZMTGuQP5hHWMM23cNl+fB+IC7NUlB
-	 vXtm2wmlsA0NstoHv2GXKsz6Ni8ys9lHM+IXbxQFXkyUZa8LK6JJQ5Gpurib4UGtci
-	 SmQ4HJSMrxN9J5zR3/KEMm5vpIzrBMBTEREWsGpG1GHduNB/r2yswnbUgT87N80/G7
-	 TzMDrQoKgvmpQ==
-From: netdev-bot+sinfo@kernel.org
-To: Til Kaiser <mail@tk154.de>
-Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, quic_leiwei@quicinc.com, quic_suruchia@quicinc.com,
- quic_pavir@quicinc.com, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH net 0/2] net: ethernet: qualcomm: ppe: Fix queue access
- and port validation
-Date: Fri, 16 Oct 2026 15:09:27 +0000
-Message-ID: <179216336717.408196.3512649985663407159@kernel.org>
-In-Reply-To: <20261016150140.929729-1-mail@tk154.de>
-References: <20261016150140.929729-1-mail@tk154.de>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zh4hh7ut"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=7885/ixmP6gyJsNIj6uZTmUOqtGEvwBooBf2XJfbSZ8=; b=zh4hh7ut/zpdYEgCDGAJZlNqVr
+	67h/rDyowHcsN3HbsbtxYE1EcDVETrFsW0lyi/2IFox45vTdW5+aAuXSDBd05uxqrJg/oeBsww598
+	o6RheaHaOUdpfaUt4UEGq9kfQ0VE4EiYgT0mHqiu2gYx0cxHEV1v34nxWNBzRWq87Eig=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xHjgO-00BAXW-HJ; Fri, 16 Oct 2026 17:17:20 +0200
+Date: Fri, 16 Oct 2026 17:17:20 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: Alex Elder <elder@riscstar.com>,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, Daniel Thompson <daniel@riscstar.com>,
+	ansuelsmth@gmail.com, donggeunyoo.kernel@gmail.com,
+	devicetree@vger.kernel.org, netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] net: phy: qcom: qca808x: Add regulator
+ management
+Message-ID: <e489ed64-9319-44f1-a74f-f75165c189c5@lunn.ch>
+References: <20261015143849.483339-1-elder@riscstar.com>
+ <20261015143849.483339-3-elder@riscstar.com>
+ <atDz2hJ6xpA3p5y7@lore-desk>
+ <4fc165eb-b57d-41f8-b7b9-c9fe433d866c@riscstar.com>
+ <1af4e7a8-adb9-41bd-8841-61180b284470@lunn.ch>
+ <atEBPbpMtlmG+Mxe@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atEBPbpMtlmG+Mxe@oss.qualcomm.com>
 
-Hi!
+> I was going to share a text version of the power-up diagram given in
+> this PHY's datasheet. This might help.
+> 
+> Power-Up Sequence
+> 
+> 1. DVDD asserted
+>    |
+>    |<-------- 10 ms -------->|   (required for external power)
+>    |
+> 2. DVDD18 / AVDD18 asserted
+> 
+> 3. VDD1P25 asserted
+>    |
+>    |<-------- 0.2 ms ------->|   (required for LDO to settle)
+>    |
+> 4. VDD_LDO asserted
+> 
+> 5. AVDD asserted
+>    |
+>    |<--------- 2 ms -------->|   (required for XTL to oscillate)
+>    |
+> 6. Crystal 50 MHz starts oscillating
+> 
+> 7. PAD reset deasserted
+>    |
+>    |<------- 10 ms --------->|   (deglitch time)
+> 
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Are these supposed to be staggered? Or can you turn them all on at
+once.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+23ms does seem like the worst case.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+	Andrew
