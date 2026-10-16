@@ -1,70 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5F73BB57
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C382253B0;
+	Fri, 16 Oct 2026 02:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792116522; cv=none; b=atyrNbUe31o29vyzM+jRmG76xcjco3ZGforZ7uLJXkbpWrQxrwNvwM/4izLziQIO/BiCVmUh2LP8CqcSNw5yfjJx3D+UoZns+ekzNs7KVuS18DG0d1dNwyTKeqnEEGZbgeKkkAuVl/+sf9ygFIw1puh3i/UMJqR64XsQrD3cmxM=
+	t=1792116607; cv=none; b=XBbD12iFNxyXq8psh1EPlfQoEQjGWP/TL2pH/oBPnPvGShHAb/KTJh2lb5WMmv0KNYSJmoLQ5OnHuJLGqr14AwVw5JA6kakzxgzBxNI658lcZ1sfEJTMQUqosvoTlGodBjtv0S0E1pOi6fBqgqx4Ey/vD79fTmdur0ayk+DO3Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792116522; c=relaxed/simple;
-	bh=j0sMEPq2AA5hcCJzEfDCayKWc0NTPUfbf9yWpGlcjWE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dDMylpXmIOjZIZRRSZQqUwpm9S8esQzCQjaoTePWlUhkjzYhI+Fph3SHCX6R6ZlA+cgnwiVdSSrOUFoj1e+fnZ0j97TqtWt/HvbNsd6i9qTJyLcE1bUR3UpRcmOXuKsRB+G1dqfTrUnxFGd9Ah5PjBjgRU4+eSVcMrVoKnKgywc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fapsf2fk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792116607; c=relaxed/simple;
+	bh=8kkZFsuiz0auIp4TPMz2lTi1ked1gHc5TreNeKkusRg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=mco8dEhLxVPTuvNKsbszY0W1XziN8YrG7Ux0zKe1AKVw4tTV7j4Rc9Eww4QLofeR/wP9yzZzVuNC+SR9R1UNeo2IGdjchvBeOylmW2RdYQzQqLadTU/vEf2YllbY8WG1Y7pc85jY5PJyG14h+n3KgGIaRWYAnlPkdv2gm5CRD34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntIiEnZp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fapsf2fk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962911F000C4;
-	Fri, 16 Oct 2026 02:08:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntIiEnZp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8550A1F000C4;
+	Fri, 16 Oct 2026 02:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792116520;
-	bh=vDIIUftqRZ2TKJGmVipLpGowTGgcw0HOnSmojkd3fpA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Fapsf2fkOGU3EO1oxO5qxEjSV6WgAKHg4m5Q/uadmZO57e1p+lxSrjn5HmELFXzWI
-	 dU9uwuvyu/ZL1Mo8P6sbGDs/t3AMzFHhZkpSYcx5SZT58duf45mkr1Nttp2yJlGsTM
-	 qRTbF/x1cwIIH/4siQx9MPlFSTEGa0FPQjtadZGWzBi1Y1pjwcONZ1B/WWKYC/NJya
-	 9cFM3vk5lb8F7asxUkuFc18oqnArfj7gn81zJMJ+VvIIwE7zBSAAwoDWNxATxO0G4W
-	 vKaMFsAg1GBL2TuTpuM/o2x7tn0n2xrgmw9QTTOcy7OY6lB1IKuupmCVm/RHTijOff
-	 4i4bZWu0SXs1w==
-Date: Thu, 15 Oct 2026 19:08:40 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Rongguang Wei <clementwei90@163.com>
-Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
- jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, Rongguang
- Wei <weirongguang@kylinos.cn>, Willem de Bruijn <willemb@google.com>
-Subject: Re: [RESEND PATCH net v5 1/2] tun: keep a kernel copy of the socket
- filter program
-Message-ID: <20261015190840.1f972d69@kernel.org>
-In-Reply-To: <20261012021113.45939-2-clementwei90@163.com>
-References: <20261012021113.45939-1-clementwei90@163.com>
-	<20261012021113.45939-2-clementwei90@163.com>
+	s=k20260515; t=1792116606;
+	bh=ovnm/qowvJZT7R3W4KnHOmuenJoKcJJNqA48GQ0sZcQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ntIiEnZpZw8bbP84KIMVBu18OYYHJmCe5aAgzUie5YLM6PRRvVIHD1huhqTfefaAb
+	 7SJ72QoGK+FBO8YHvvHKXCYLMwqldUX2VJhaS8aGStWzUcdu10ZGXM91bUQXoQOivk
+	 cLugOZY56FvwPA5j7fkZQY87/VDs1OVP7hKLf4zss6hPZGmlJCAg3tRsvBCfFYaBAw
+	 Mr1DmqVj+UOZR/0qQiy7URGdApnHTXbBYtxVVGwRwJnUpk+hk1c0hZK6q3JgvpCoVi
+	 DN2cNWLDqz0NegTYBgX6yX5Hk67jeTqb7s1QpG/031O12BrLT7ijBioIaSDY5D3FjF
+	 tAnUQdIzqCZ+g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774D73808209;
+	Fri, 16 Oct 2026 02:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4] RDS/IB: validate receive fragment completions
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179211660497.15365.17816447060855250887.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 02:10:04 +0000
+References: <20261013025729.40815-1-shubham@octane.security>
+In-Reply-To: <20261013025729.40815-1-shubham@octane.security>
+To: Shubham Antil <shubham@octane.security>
+Cc: netdev@vger.kernel.org, achender@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ andy.grover@oracle.com, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+ linux-kernel@vger.kernel.org, gio@octane.security, tjdqudcks0424@naver.com,
+ robert@octane.security, paolo@octane.security, stable@vger.kernel.org
 
-On Mon, 12 Oct 2026 10:11:12 +0800 Rongguang Wei wrote:
-> +/**
-> + * sk_attach_filter_kern - attach a classic BPF filter held in kernel memory
-> + * @fprog: program to attach, with @fprog->filter pointing at kernel memory
-> + * @sk: socket to attach the filter to
-> + *
-> + * Attach a copy of a classic BPF program that the kernel already holds, the
-> + * way sk_attach_filter() does for one that still lives in user space. The
-> + * caller must hold the socket lock; SOCK_FILTER_LOCKED is checked here.
-> + *
-> + * The program is built by bpf_prog_create(), which does not keep an original
-> + * copy of the instructions. sk_get_filter() therefore returns -EACCES and
-> + * sock_diag leaves the filter out for a socket that uses this helper. A
-> + * classic BPF program cannot be duplicated with bpf_prog_copy(), so keeping
-> + * the original would cost another allocation and a copy per attach.
-> + */
-> +int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
+Hello:
 
-Warning: net/core/filter.c:1585 No description found for return value of 'sk_attach_filter_kern'
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 13 Oct 2026 08:27:29 +0530 you wrote:
+> rds_ib_process_recv() accounts every receive fragment as contributing
+> min(i_recv_data_rem, RDS_FRAG_SIZE) bytes, regardless of the completion
+> length. When a completion is shorter than the header-declared amount,
+> receive accounting can advance beyond the payload supplied by the
+> completion.
+> 
+> Only an IB_WC_RECV completion has the buffer layout expected by this
+> receive path. Other successful completion opcodes must not be interpreted
+> as ordinary receive completions.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v4] RDS/IB: validate receive fragment completions
+    https://git.kernel.org/netdev/net/c/65cf6863606b
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
