@@ -1,67 +1,67 @@
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D1548DB49
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050C848DB58
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792174635; cv=none; b=b6eGvhQJYWuhcJoRfHHCcNppcCw4LtzaVLVR/ZjHOJc48tzZwnR9tsTMBLef2z0klPyMak4+0YDqzv9VVYN5hJT45tML+6JBXrg12dA8Qz5ISL+23cW/gMwW/e50kkdTMHFdT4qHzlfJ2PgdzH1SYlyGyScuocLEoPOKPleoiYg=
+	t=1792174783; cv=none; b=Ufn0cUW+MYWW+/tnDmzsEpypOTtMpYo52YeepYopBvPvOOsrNDrumXROTon0nvxWmZys722zncl+uT+DFoVo4JMcqEa6iX8I9kXH12vIxHvxB3nqc/M3wGzRCZRF1KhJU8mc1lNL+mVhidOCLCFVub6HSCsK2xTs5445bxvN3V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792174635; c=relaxed/simple;
-	bh=SBCt/eBXMWQ8dCo0YSEHtUPDvD40Qpw86uvOcqNS834=;
+	s=arc-20240116; t=1792174783; c=relaxed/simple;
+	bh=7oz8HPvheVIvTGYESdpSdhYdJVJsRJpxnpOPaR0bQ90=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=d14NxFh+SchbriI9XnNJ9qoIqAeyy4UqjcHJgChD4EiTHQpBwJ/xC89q5IYw9+IzuuAoyj6FlxOaaQhx5zwnkMNn2umn/BCZNCQLiyhyadZuukIcK2zp2yMvbtqtYLWQYzOajFKAmY3SLMA/giW0nBde+49HZgNXAREseKAWPbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LB3pgZ4C; arc=none smtp.client-ip=209.85.221.177
+	 MIME-Version:Content-Type; b=oh7j7HfGjwa2UY3y07VOrr+hs6ugkqmb0cmJMWbKwCwkgW23XDK2QE5SmQJLQp5JYMGztSCN8CvGjVkipRuIDPlJs6g3aw7deLM6MBuUtsc+XIxepOAI+rykU8LKzv6Y/FMTMp8mAe2fm9eSdQXyMWkoTvbLZ8KYs0m0ftT5tww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NmoWLcYf; arc=none smtp.client-ip=209.85.222.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LB3pgZ4C"
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5e931215e5fso143590e0c.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 11:17:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NmoWLcYf"
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-982d6efbeadso77514241.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 11:19:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792174633; x=1792779433; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792174781; x=1792779581; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Y8u6hYFXZk0LfN+Hez4/Z5m0bA/NCutshHV861wnw+M=;
-        b=LB3pgZ4CUJXxXMAzxjd23UwEauPagvkvYuJeVPlXl7grKK5cjddpphlzR+zMVZa12f
-         gusrI2PfnCS4A95A/lhEhAd+APKEo1Z3sMJvOL68uMCQw8VI1GitZTFgYMhUQxbKdVFO
-         dlV3sPd8RCEtUZM0ZU1P97yO6VVrHA78mEISl39kOOPF0DPNjtJCGW0YXYGlkLL7NOKU
-         0Dy2JJPKQaTpX8gFk2pqddkg5th5fYEOxTl+oBWY0yJaccycLdBGr27vRQuJQagyGFQ3
-         xepvZp3kbhqOBhLG2x2jGvROnddeLOA5zblXCRtBjOJCXJZsNbx8AD/xNKMd0DIFT74y
-         xB9A==
+        bh=RVF+KNTB3PtvNAoY46w+x0vdrM5zplysVyH1LA9K07M=;
+        b=NmoWLcYfRo52mtDN875V+tDOnyXSuBV3EEenqQ4VK54P3YmJhCTmp/tBwwRZYumSD9
+         x/e5moJsq8QENUOzQNdUXdx6HTaIYYH2aC3U8siN+npNX+OEl0W6l+xwPVycqrS6kLPr
+         JxIYzUxBXj4TL5QF2SKB587vTjgB0WpPHKnDqZE9a/TruClb465zuRRUmvd2H4wxvvWZ
+         yxrtjFIH4TEbaCC4xTcSqYC6mwWtIyrABsMKS/SmxXGOGpKrjBuQdCkQ4pkDjFsZUVy3
+         Uhia4+QxkRAGjSl6+ZJ5YfXGWuHd5XYp1C0c2lBZp+gMFEs0O4IEe3lKg/N6RxfYZD1f
+         x4Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792174633; x=1792779433;
+        d=1e100.net; s=20260707; t=1792174781; x=1792779581;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y8u6hYFXZk0LfN+Hez4/Z5m0bA/NCutshHV861wnw+M=;
-        b=xCPhtI8xnbVFJwF+YelgMdZYjVzO1RpWUscIvvY4Fone0XsNSblpXMKWWM0yhwiDKt
-         9ws0A7ClT7hA0AIeL7DENsxgJNy45/8kOM8VZqbUC20x+i5DHPPyPEEOsOC3hRxMsLhL
-         dmkGYm5Cra4C2mWpkcYY09olQ2D4xMenT8CC7SKBYnX52jfsydJZHTnqdhpm2t78PtgC
-         6vzM3ROnDmMrPrRCVR1FYh7uK4xRl/K6nn9t95IJnAMarcaeoJFH2tMp7zp67Ldn77KI
-         2OKfeoHrTAHxsH1v3tGOS6oWV8FK3kl4cv1dVzJfcb0wwtxHi+auoJoZJv4PJznfIEQh
-         65eQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz4rWSoNYe9cNnAhFzeDkWzZ4w/FyhExiJ/QPNLmI/C226BU9+m7S2y3eNiSakxc6LvcyQcH6o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIsbmy/XdoWz98BwFfqChqKddh2/uDM4GcVog/q+sb7KozHyXIj
-	NNYmNmzKp+TkYTkv7yxNU5zoJPq1gvFXxJm1fvlkBnnEWAvFqccT2Xuq
-X-Gm-Gg: AYBFou3gHb6nnnxVE3uXosUJOnm+P5z7zYVivmW15rYZhkXCW9QKc61DTA0hprvuL9v
-	/loG8zvVERIlrJpCTJiaZZ/c2x7nGtz8xhXjjNjTv4H+YTkoZ2jHFY3xqShh2r43GLNnqBrrXMF
-	dxAGeylK8aWGA/Ak8VCqPry0Ja9t8E6sRC45lG3Y9xMmIkbYNSLwi5b/VSv7z7V/hFyTvDpDRE/
-	9yWeF6riTfXwiZgf+ut2twH4suPTYgaAd6PCQ5UffvdrkHUk9WJBLitSPr9I6ESbwrCZJoOXDR+
-	0+Wb4wx/xBa9VN4oUe/wLE0K5Vn10rm4sigE9FlLW+lCvonWjwIeiYoMdzJJw4XHIHjFA3xTQyj
-	gJ+99MNjwPMQBCQXhDVAt2g71NtdnskP3hX1aOmNfKFX2/mF8zrjEUgCRmIEK7R4UCut+54T/wE
-	ZyXBKjGbdjke08YTEAFqioN+ahIXNWVR4chR8X9JnNs/nCSO4FtikB4a/6cMTG/mfrY/uFRSFVY
-	y7p4uz3oG2PBWxGSPfRGYB7MCuK1goAAUulD2Drm7AFCQtNBXnjwNR1zFtgU6MC+uQqEZUEb2kP
-	YsbderjYhd5sFQMRi+UTM9f2M1xC3d1TNV7c2ulxOJpkNaJO
-X-Received: by 2002:a05:6102:4187:b0:7c1:94eb:d72b with SMTP id ada2fe7eead31-7cc36b23993mr155186137.34.1792174633433;
-        Fri, 16 Oct 2026 11:17:13 -0700 (PDT)
+        bh=RVF+KNTB3PtvNAoY46w+x0vdrM5zplysVyH1LA9K07M=;
+        b=UzpPanCsQDGSJRvrNXiekDMOC7Klkq6EzJhJ566fdXJaOrgpcCM2PcF0VERClNLwEW
+         cw3TN3noHfk/sBvR8LN1YcuZaunC8muruPjXP6iZioNLAhLLACCR8tU6SBqm36mDTNFR
+         yEij9gmsgKcnwu2UHgqtBa7k4r18E5X7bWXukY8MS/2kPq/RO8N+nnwDqZNeFFBMSB0A
+         HWGEVpoGFtudwGRzNwZIhXv89mNdToDApYMltoD3FU62xr296d+PvTy1GA3LIzvPMzGJ
+         3Kz7qZh8moa91jHpXiSNUY4cRNReLq+ERt10GP7uBOi7QaR2LSU0cqxhLY465UXvqQFD
+         W/Ag==
+X-Forwarded-Encrypted: i=1; AKwUvBxYGIfilE4Z5NduwhAWAsCrzroyJMYVb5zsKC9vqT6aGLaObZTWG3XJqSKrYTdGlhjy9GWrLUI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIw0trFCBC6bJsIQCAHD7BMHbi2Y8g/vqiAghfpZ5Oq1xO9ZyDr
+	7PjiVSrb+SSywVaK7Q5Lw8Evaus3WS5vHrxOgN6Cb7FOf9sj4odV5X6v
+X-Gm-Gg: AYBFou0dpZGOSDGMcFUBmSSih4e40ixYHMhFTvB+SVY9bGcJlYeztVJ33qk145CdEqq
+	7GOf1NyuHrAzkFe4/0klIYTwTFimoJ6i2m/0N2QBH4vXEfvTAjL2MTWnyuRVHyleGqt5KyRKbV5
+	GPr+Zgb8SSViF64Y5ioIGiLKHlWx8YhHoOwOqulcDbiQW0NCC4xIMaumbK7rmfKPsSJUH3H5el6
+	0C5osH1UKU8UxyIxyEcyEhDcl4j2Rx1NXWbQQqlV8J6T0/419kgSIAD4DYo3S2HEzA/IJavXSlr
+	ZJMV5a9hbkW4fPE18yvQt1sl7CpPBMhw7QleFdTwpMqrV1N+kARqfMvLVxFkkLZpo2vOOLsXa3R
+	1hk1f2h45z0/EkmiK0IdVdQVZ0UBUhJQfUN13OupkaI1ShDcE6ro9fqYYFOHuejUAXVDUULUxjD
+	NRbBq9Id/ccv/TOmPwnAsRkcVNvvptRiPYc89q5UhbhwGVnwOPxV4eiLNo9C5q6wqSERRFiDtLG
+	Dx0J7mGXg7kZmTBnL6IhxRs00GBvWe4OO/Dq2769dzqDipGZMUOrhgI2LV9VgsU6MjgU2Oyd2FR
+	lGOO8+YlWNIhs4fdP5RUfn3o6qG0eDLTSodwjVEi/dIV2VEf/Q==
+X-Received: by 2002:a05:6102:419e:b0:7c3:2f33:54bb with SMTP id ada2fe7eead31-7cc36aa3d6bmr96424137.28.1792174780679;
+        Fri, 16 Oct 2026 11:19:40 -0700 (PDT)
 Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9908366328dsm2092409241.12.2026.10.16.11.17.11
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-990835c253csm2173395241.5.2026.10.16.11.19.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 11:17:12 -0700 (PDT)
-Date: Fri, 16 Oct 2026 14:17:11 -0400
+        Fri, 16 Oct 2026 11:19:40 -0700 (PDT)
+Date: Fri, 16 Oct 2026 14:19:39 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
  Willem de Bruijn <willemdebruijn.kernel@gmail.com>
@@ -83,14 +83,14 @@ Cc: linux-kernel@vger.kernel.org,
  Randy Dunlap <rdunlap@infradead.org>, 
  Simon Horman <horms@kernel.org>, 
  linux-doc@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1150b0c0fbbbe@gmail.com>
-In-Reply-To: <20261016135328-mutt-send-email-mst@kernel.org>
+Message-ID: <willemdebruijn.kernel.2deaddfb31bd9@gmail.com>
+In-Reply-To: <20261016134823-mutt-send-email-mst@kernel.org>
 References: <cover.1792067836.git.mst@redhat.com>
  <ad05a40681719a579691a1da6413f0dd7064f2a0.1792067836.git.mst@redhat.com>
  <willemdebruijn.kernel.3a7d04e1c306e@gmail.com>
  <20261016051827-mutt-send-email-mst@kernel.org>
  <willemdebruijn.kernel.1d7ce6b64753a@gmail.com>
- <20261016135328-mutt-send-email-mst@kernel.org>
+ <20261016134823-mutt-send-email-mst@kernel.org>
 Subject: Re: [PATCH net-next v2 5/7] net: add a sysctl to opt out of virtio
  net hdr checksum validation
 Precedence: bulk
@@ -199,11 +199,42 @@ Michael S. Tsirkin wrote:
 > > 0: no validation
 > > 1: current level of validation
 > > 2 and beyond: if we have to extend it later
+> > 
+> > Not pretty, I'll admit. So fine to keep as is too if you prefer.
+> > But I do foresee more changes in this area, if history is a guide.
+> >  
+> > > 
+> > > > Even if per-netns, most likely do not want it writable by netns root
+> > > > with user namespaces.
+> > > >
+> > > > That is the equivalent of ns_capable(CAP_NET_RAW), which is the cause
+> > > > of many crashes due to bad packets ingested by, e.g., a packet socket.
+> > > 
+> > > Hmm, yes i get that. Two knobs? a. verify b. the per netns value ro? Both
+> > > on by default?
+> > 
+> > A single system wide field is simplest.
+> > 
+> > Is there a benefit to making this configurable on a per netns basis?
 > 
-> 
-> Oh that's an interesting idea. Issue: userspace learns about 1, then
-> someone sets it to 1 thinking this is the highest level and in fact
-> disables some security.
+> As I tried to explain: a specific container breaks, you decide to trust it,
+> you do not need to trust all.
 
-True. If concerned about that we could change the interpretation,
-keep 1 the highest, subsequent for legacy.
+Ok
+
+> > If so, that's fine too. As long as root-in-namespace cannot modify it,
+> > so readonly indeed.
+> 
+> 
+> Right. So I envision along the lines of:
+> 
+> net.core.virtio_net_hdr_validate_all - validate packets from any netns,
+> netns root can not change it, only host root
+> 
+> net.core.virtio_net_hdr_validate - per netns
+
+Then skip the global option, as it's just a convenience: the same can be
+achieved by iterating over all the per-netns settings.
+
+Per netns validation, but only settable by root, not by root-in-namespace.
+
