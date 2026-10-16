@@ -1,143 +1,170 @@
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617A45C70B
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5986545D5F6
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 09:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792141558; cv=none; b=Nhvs2Zf9fUxPcHahzj01VgRAWm8hk68wYX4V+QaVJBFsAztI2KnZLa79WRGg0O2xtSnFoPjY6LyWHcb+yylXsAqR0fLl99q7NCede5sfRB1Nh8wbQYN0OWW6VTNaWQK/U/5KE9LhubjAcK//yJw14f3ExpLgjofpXh0eqrUsMVA=
+	t=1792141790; cv=none; b=Oh6l3yyn81t03vXhCwZqm1PIy05vXrdOHbDfSrLyLM6S5b1xV6AvGR9Ul/yyClfNU+f+FN8DJVyLTGnGYFoYiuB0/HSC/0UJuIvPqEZJKjX9k1lIodohu0Z4OGfq11BoLA3gFlR0+OQ2u2Ywkx0JzoAjlTUPSxIQjz1OBTbVjFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792141558; c=relaxed/simple;
-	bh=vBIXkU5a0czakfaG5UvhQYLDQmtPpOHhwRqC+37to5w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bn0iZ4kbjyBlthjXpetyEQ8omqkXlL6NXn4JeNxY+eoekl4xZuOQcXwlJGsbgI4j58c4leZsGw0MHxI+xQesGt83Mb8SCVBS9n44KfPSU9jBz0bmQyyXrl0WP/EPJY9rZtqzJW5yMWhYiuYLUVPiXXSPa/llf7tBqgd8J9K1Kd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R/ma36wG; arc=none smtp.client-ip=74.125.227.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792141790; c=relaxed/simple;
+	bh=4LaZ0214tKw5r60HpnJdgVE8Ofbq0hoJXCXixcM3GdU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rnx0H48KHaifiW6NWmGeK0NS7dRylsqg+1vx+rdG1mQwsQfnFw36uugi9EOrWSe52bjDrUh8nSfW8DN8O6CmQ1hfSGIg0YBjicXhHJ9p1Tn6I0JwXahabowBNguGmmcP9Cl5y+ZpcefMvDSg70bJo7OiLDBWHri871viqWONAHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=lBT63E16; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R/ma36wG"
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-3a0aa5e2b20so1730555a91.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:05:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792141557; x=1792746357; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yIua1GyF5CyLs9zVRRQ2YP0+xQy31M4iXC7gh2QlT8o=;
-        b=R/ma36wG/IHRU2eoU0KCWSBoMR66p9M6DTdmOOjFlc/4eMkm5OzKOY0h56NXsULWRY
-         IgsALiiGVxAVMLQL7HCOIv+AbktrciTx4F3MkyaXiPIi637hKWySRrD+hEdtTuDPpzcT
-         PUbRvbJw6xC7unByrBbLZoCGZry+bWJ5MeodvfScKLm8GObt1ltBDiBNGDO8OoEAzuDG
-         S2VwVqWIrI8ptNhYehpvTZE/CfJeP1bBSZe+yQgtlQDOdAcTUW2g9wk+BDZhuTmtASqC
-         Qyqop8R0nbuEjwJfiJiPmjuLZQeOT0z+ljTYOrc8er4X2LhLtpK1s4QNct00ji8/iJEN
-         iAXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792141557; x=1792746357;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yIua1GyF5CyLs9zVRRQ2YP0+xQy31M4iXC7gh2QlT8o=;
-        b=q/hnmPxJzFL2Tq6rtTDAqi1d9kfz7MyvZ3evtCSpDYkUrh26EfKiH/+VmKuLCP3oaM
-         KwiOPNv9vD449yE7WJunIsxgmGdNaqH0QA2oJfsju0XLiNkro7KLFa0alnVR88LEmHL7
-         o0djQgsjpa1ev2Ju0TU6HxcsdDLkZGorWiQFT2ALaHP54dQu+RmXCYhh11ZYSuQOiOTU
-         aPrLgAsFLB71iuQ1UlJt2CeyTe4lWEmpfavQ7bO0dlqW6GcZ7orImW0/o5Ag5IJ+fEio
-         JDN7DdN8CiVpHYZHgEIEvuS+TqKzeizmmqiI5fxYoX1QoyNIwIUYxSYM8/vqcddV8ThO
-         ckWw==
-X-Forwarded-Encrypted: i=1; AKwUvBxMqbyUvYM9FTe21c4V0O17YwHJEq5xGPGcMjvp8p88yc9z+5+s4kmIyhYVmHnLu7HTjV58tPI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJwHTdmVwLJzAHfbzimSxvSrNdVidzjuu+WG85VqWhsfyQ1N2FR
-	82HEiZs86r/1JzsXAu1M4BMhJ1o4zFCLvVQlLedrxu5gVogfaWFHs8aU
-X-Gm-Gg: AYBFou21Zhalym11HW1qpHZF8QVskQxtqwhcDqf7Vh2gqvDi2cWAgjIMEX+lyIc4PNG
-	uPPE1+yqrDi7F19J6SaiEi0gLkyDi78zpsthjoUSSCBbxV/JNzdC0A4fULLsLjojnz2IA/gdSIU
-	QQqKADck5fYtMQGJ1GHSPoWU61RSxEI/J4J7e6SKLgdI6P44wn6fqa39xDl7Q7ZjYeG6H9558G3
-	qGuONlkIIFYvC6y/umBWLG61HfXCbbcm2FmvhGCziq0uvNPAQN0DF2LH090e28/YC+uEqgkE4QR
-	Ce5vGK8m2DQ7GDfjL+VY+stiB/+opgMdu/SC8aAvPVRxrYz+pmrVVcefdmxq5Yzll2HlHF7L+kp
-	o97bMjWokrVkb+p7SBU4d4oA3Wzduzc8qpVbHSTiabez4xs+wlgkVX0stt+bShT1z7gm4Y6lwyQ
-	bGEW4dBFV3f0wfJDKfKxzY8QSiQ7VyfCp9es4Sm6LHQOyf2l/B/TTdvGaT+g2LOwp07JacVYpSC
-	8rXMXa08aajaVnihgc=
-X-Received: by 2002:a17:90b:2d0b:b0:3ab:36c4:b4ff with SMTP id 98e67ed59e1d1-3ab3a747069mr19095398a91.24.1792141556494;
-        Fri, 16 Oct 2026 02:05:56 -0700 (PDT)
-Received: from LAPTOP-QJLDGQ2L.localdomain ([112.224.225.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd0aa3c24sm1310370a91.4.2026.10.16.02.05.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 02:05:55 -0700 (PDT)
-From: Boyan Liu <yymhvert@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	co+98d7de09cd94fec5@bugs.sh
-Subject: Re: [PATCH net] udp: Fix out-of-bounds read with unset mac header in unexpected GSO path
-Date: Fri, 16 Oct 2026 17:05:25 +0800
-Message-ID: <20261016090526.2497-1-yymhvert@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <willemdebruijn.kernel.2a345d6bd54c5@gmail.com>
-References: <willemdebruijn.kernel.2a345d6bd54c5@gmail.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="lBT63E16"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792141792; x=1823677792;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4LaZ0214tKw5r60HpnJdgVE8Ofbq0hoJXCXixcM3GdU=;
+  b=lBT63E16CQuFqOtlXU3KBc3czQ5MQv06Cd3wT7FKZYCqqc4D4K0/95tW
+   VrFIp5DoqG2JW6PWVmPWugHhsTh8uCv6IbfqOq5KUbpi0OZT4NahHZCqG
+   Q/Ty2pI1KNppkH7y8KtUdkGR9e4Eq6jbB5Zbp0C5yl4AKccDCMvHxAgdK
+   Ahs3GrRiffMoKtHpVsXnIN3asaz6QLLhsc1uV0QFTRVPOd/EzaCQNtrVA
+   yiKlHVF8zivSoFSAXIrAJgZT7KyO/gOn+CvZ1ShC/yHmO8bQTAp//yauL
+   NTq2yCGBg4wG5BZbV7xq09C2rBhR6lt/NptMer4peTMtS8g6WV9tlMrXU
+   g==;
+X-CSE-ConnectionGUID: Rm+mEW+1Qxig7DnRZxaajg==
+X-CSE-MsgGUID: hFG6W5TIRrG24l8UO/+5EA==
+X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
+   d="scan'208";a="75538339"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2026 02:09:51 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Fri, 16 Oct 2026 02:09:44 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 16 Oct 2026 02:09:41 -0700
+Date: Fri, 16 Oct 2026 11:09:40 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC: <netdev@vger.kernel.org>, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Chintan Vankar <c-vankar@ti.com>, Danish
+ Anwar <danishanwar@ti.com>, Daolin Qiu <d-qiu@ti.com>, "David S. Miller"
+	<davem@davemloft.net>, Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski
+	<kuba@kernel.org>, Neelima Muralidharan <neelima@ti.com>, Paolo Abeni
+	<pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>, Pratheesh Gangadhar
+ TK <pratheesh@ti.com>, Richard Cochran <richardcochran@gmail.com>, Simon
+ Horman <horms@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Willem de
+ Bruijn <willemdebruijn.kernel@gmail.com>, Eric Dumazet <edumazet@kernel.org>
+Subject: Re: [PATCH net-next v9 2/8] hsr: Use skb_clone() while adding the
+ HSR header
+Message-ID: <20261016090940.a2ztkv6p3wtysk57@DEN-DL-M70577.microsemi.net>
+References: <20261014-hsr_ptp-v9-0-2d20a2a0f816@linutronix.de>
+ <20261014-hsr_ptp-v9-2-2d20a2a0f816@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261014-hsr_ptp-v9-2-2d20a2a0f816@linutronix.de>
 
-Hi Willem,
+> hsr_create_tagged_frame() creates a new skb where the HSR header can be
+> prepended via __pskb_copy(). This does not copy the skb_shared_info part
+> of the original skb so any timestamp request is lost.
+> 
+> An alternative is to use skb_clone() where the skb_shared_info part is
+> shared and then skb_cow_head() to make the header part writeable. This
+> avoids touching manually the tx_flags and tskey members.
+> Using skb_clone() allows also return early (after the clone) in the
+> offloaded case so this can be unified a bit. The clone also preserves
+> metadata so skb_postpush_data_move() is used instead of memmove().
+> 
+> This is a prepartion for PTP handling where timestatmps are requested.
 
-On Thu, Oct 15, 2026 at 10:49 AM, Willem de Bruijn wrote:
-> I wonder if the right fix here is to not call skb_unset_mac_header in
-> the first place.
+s/prepartion/preparation/
+s/timestatmps/timestamps/
+
+> 
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> ---
+>  net/hsr/hsr_forward.c | 30 ++++++++++++++++++------------
+>  1 file changed, 18 insertions(+), 12 deletions(-)
+> 
+> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> index 7734a521a96c2..5862c05f52110 100644
+> --- a/net/hsr/hsr_forward.c
+> +++ b/net/hsr/hsr_forward.c
+> @@ -331,7 +331,6 @@ static struct sk_buff *hsr_fill_tag(struct sk_buff *skb,
+>  struct sk_buff *hsr_create_tagged_frame(struct hsr_frame_info *frame,
+>  					struct hsr_port *port)
+>  {
+> -	unsigned char *dst, *src;
+>  	struct sk_buff *skb;
+>  	int movelen;
+>  
+> @@ -342,33 +341,40 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_frame_info *frame,
+>  		/* set the lane id properly */
+>  		hsr_set_path_id(frame, hsr_ethhdr, port);
+>  		return skb_clone(frame->skb_hsr, GFP_ATOMIC);
+> -	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
+> -		return skb_clone(frame->skb_std, GFP_ATOMIC);
+>  	}
+>  
+> -	/* Create the new skb with enough headroom to fit the HSR tag */
+> -	skb = __pskb_copy(frame->skb_std,
+> -			  skb_headroom(frame->skb_std) + HSR_HLEN, GFP_ATOMIC);
+> +	skb = skb_clone(frame->skb_std, GFP_ATOMIC);
+>  	if (!skb)
+>  		return NULL;
+> -	skb_reset_mac_header(skb);
+>  
+> -	if (skb->ip_summed == CHECKSUM_PARTIAL)
+> -		skb->csum_start += HSR_HLEN;
+> +	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
+> +		return skb;
+> +
+> +	/* Ensure the cloned skb has enough headroom to fit the HSR tag */
+> +	if (skb_cow_head(skb, HSR_HLEN))
+> +		goto err;
+>  
+>  	movelen = ETH_HLEN;
+>  	if (frame->is_vlan)
+>  		movelen += VLAN_HLEN;
+>  
+> -	src = skb_mac_header(skb);
+> -	dst = skb_push(skb, HSR_HLEN);
+> -	memmove(dst, src, movelen);
+> +	/* The entire header area needs to be linear */
+> +	if (!pskb_may_pull(skb, movelen))
+> +		goto err;
+> +
+> +	skb_push(skb, HSR_HLEN);
+> +	skb_postpush_data_move(skb, HSR_HLEN, movelen);
+> +	skb_set_network_header(skb, HSR_HLEN + movelen);
+>  	skb_reset_mac_header(skb);
+> +	skb_reset_mac_len(skb);
+
+It took me some time to realize why skb_reset_mac_header() and the
+csum_start adjustment were removed, and why skb_cow_head(),
+skb_set_network_header() and skb_reset_mac_len() were added. Could the
+commit message say why? Or maybe a comment.
+
+>  
+>  	/* skb_put_padto free skb on error and hsr_fill_tag returns NULL in
+>  	 * that case
+>  	 */
+>  	return hsr_fill_tag(skb, frame, port, port->hsr->prot_version);
+> +err:
+> +	kfree_skb(skb);
+> +	return NULL;
+>  }
+>  
+>  struct sk_buff *prp_create_tagged_frame(struct hsr_frame_info *frame,
+> 
+> -- 
+> 2.55.0
 >
-> There are plenty of L3 device type with no L2 header. They still have
-> a valid skb_mac_header.
->
-> This fix may be papering over a tunnel doing something non-standard.
 
-You're right, and after digging into it I agree the seg6local side is
-the real offender.
-
-I checked every skb_unset_mac_header() call site in the tree. There
-are exactly two: net/ipv6/seg6_local.c (end_dt_vrf_rcv) and
-net/core/filter.c (BPF egress, unrelated to the rx path). Every other
-receive path delivers packets with a valid mac header: NIC drivers set
-it in eth_type_trans(), and L3 tunnels without an L2 header (ipip,
-sit, gre, tun, loopback) reset it to the network header after
-decapsulation. seg6local is the only producer that lets a packet
-continue up the stack with mac_header unset, which is also the state
-skb_mac_header() warns about with DEBUG_NET_WARN_ON_ONCE().
-
-One complication: the unset in end_dt_vrf_rcv() is not gratuitous.
-vrf_l3_rcv() -> vrf_add_mac_header_if_unset() relies on it to
-synthesize a fake Ethernet header when a sniffer (e.g. tcpdump) is
-attached to the VRF device. Dropping the unset entirely would change
-what sniffers see on VRF devices.
-
-So instead of removing it, I restore a valid mac header once the VRF
-rx handler returns:
-
-        if (!skb_mac_header_was_set(skb))
-                skb_reset_mac_header(skb);
-
-The sniffer rebuild happens inside the handler while the header is
-still unset, so tap behavior is unchanged; when no rebuild happened,
-the packet now carries the same mac header state as any packet
-received on an L3 device.
-
-Tested under QEMU with the original reproducer:
-- unpatched kernel: KASAN slab-out-of-bounds in inet_gso_segment,
-  same stack as the original report;
-- patched kernel: no crash, the re-segmented datagrams are delivered
-  intact, and the unexpected GSO path is confirmed taken;
-- with a sniffer attached to the VRF device, the fake Ethernet header
-  presented to the tap is identical before and after the patch.
-
-I'll send this as v2 with the fix moved to seg6_local.c. If you'd
-rather drop the skb_unset_mac_header() altogether and accept the
-sniffer behavior change, I'm happy to do that instead.
-
-Thanks,
-Boyan
+/Daniel
