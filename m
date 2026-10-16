@@ -1,37 +1,30 @@
-Received: from sender-op-o7.zohocloud.ca (sender-op-o7.zohocloud.ca [199.67.87.7])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2264F85B7
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 16:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=199.67.87.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792169693; cv=pass; b=XU20d+3x3B5kkWXR9qGxEd2H/DT6pDW0EZj2Y/vp4qDgaa726NsinwFDkYo74TZUxynbWVTvN8Ep3FzP7nOPKR35ueXpBJpxsjYPwNRZUT4j8C2id4FeWtJITzamS16VvRn6Gi6OJ74GGaNRAMr7JgJy6K/qhFCYMEun+jO6Auk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792169693; c=relaxed/simple;
-	bh=kTayI7LwuIEDvDgixD0K8j3ha14UfHQapmMWNDkh/5Y=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117AF37A833;
+	Fri, 16 Oct 2026 16:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792169825; cv=none; b=r+JW469AstOmMECDxORFRdjAwB2md0cbF0fpp7BpFm+q1e6Opu26YglSs1oyK4mMQyFvoP10nS32n0XwdCctHjtvKMb5fLF83JYgmSclaCyFEPmCxbQqe8+uKHAWO+aeb+pHWqdHh5ipbEm1FJlmwhbgmt4zI04oehbmJvlItko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792169825; c=relaxed/simple;
+	bh=Akx0YvKoaSycAnST5WW9WCTjIwrjKDBD4IujP+nsVy0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jYXP//sy6fHVc5n8KEC/CEvRZWu5147OJUEtMsKwRuj3jqWSUilHGB9FlCob0NdjqKFFgIqR7kDMb/IAarwRW+MtFg5KN2Zm/KNdxyeQGbSX6XLLX4ONaL09UzmHMr3Mj1efYPW2dQfDkPGOMi7wFggGtb40IvA01RSylgCpjks=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chasehil.tz; spf=pass smtp.mailfrom=chasehil.tz; dkim=pass (1024-bit key) header.d=chasehil.tz header.i=@chasehil.tz header.b=SsLxiir8; arc=pass smtp.client-ip=199.67.87.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chasehil.tz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chasehil.tz
+	 In-Reply-To:Content-Type; b=idMkLYFMRHnZ9jcbPlzdjKG/16MZrFhS6KTJ51P0k96Q8l9pT2nLi98Gz2fuj13jSPSpAlCOzwlNo4B53kQYY/o3yKUbZ909C1LVIE0ZQGglgoMauR7lgDYic9C5baV1FpiI7eWUTgy/BfPIe3hqEG/20NFrw31IdldpSU7caDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; dkim=pass (2048-bit key) header.d=molgen.mpg.de header.i=@molgen.mpg.de header.b=YfFF7DuQ; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chasehil.tz header.i=@chasehil.tz header.b="SsLxiir8"
-ARC-Seal: i=1; a=rsa-sha256; t=1792169668; cv=none; 
-	d=zohomailcloud.ca; s=zohoarc; 
-	b=V3wwxp5bkolg+Fj8zazzRhQu2smYFzvGDj09IYMT3zslRhP24ByRYDE80JOJbJGQuxX3TVNgO3PbRT8NCPSr/I6zFSGnNx8X2lvMlnMSvSD8BTVTkAfAHY9GmMXx8FcyF47LXsN1aKTDmGegzDXHuLU/5JiJd5bBozt7LzrRw8c=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomailcloud.ca; s=zohoarc; 
-	t=1792169668; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=hhSrfTTll5Ub10UtJCM54/HOryqKjca9wP4JRMPpmKY=; 
-	b=i26gt1pEmUNNcGd4+0dqhn833o6KlgMHzrE1EiaCS+QtHhpQmRdij7aavXkN4Ojm6sOiCCwyixRG8b6+CiuH37cZf/FqvLV9NFjVF21wzAwh52eFtzuvwl0y4BMiyE1uNNJ3cw6OnU+N+MNf3F0qmNMxCWPZQCOGfghU2c6eokQ=
-ARC-Authentication-Results: i=1; mx.zohomailcloud.ca;
-	dkim=pass  header.i=chasehil.tz;
-	spf=pass  smtp.mailfrom=me@chasehil.tz;
-	dmarc=pass header.from=<me@chasehil.tz>
-DKIM-Signature: a=rsa-sha256; b=SsLxiir8IAC8x2XQSQbpAP3bjqnXgCA5RUdjgAkwkO+81sN6I/U874igeU1wmiQSluW0HMsvP4+c4BDdOq7mGmyTJttCIEJ5VsaDc3LE5uWxsDXXCOWmm6PPssifMFYkc2XhzW0XGt348afHjXGMkmVZkpErOAa8JEnOjjRnjvo=; c=relaxed/relaxed; s=zmail; d=chasehil.tz; v=1; bh=hhSrfTTll5Ub10UtJCM54/HOryqKjca9wP4JRMPpmKY=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohocloud.ca with SMTPS id 1792169665694170.7247955204707;
-	Fri, 16 Oct 2026 12:54:25 -0400 (EDT)
-Message-ID: <180dae0e-6bd5-476c-a12c-619fa1b21f96@chasehil.tz>
-Date: Fri, 16 Oct 2026 13:54:24 -0300
+	dkim=pass (2048-bit key) header.d=molgen.mpg.de header.i=@molgen.mpg.de header.b="YfFF7DuQ"
+Received: from [10.0.36.124] (unknown [62.214.191.67])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0ABF64C442F863;
+	Fri, 16 Oct 2026 18:56:02 +0200 (CEST)
+Message-ID: <5a1b4d3d-c2c4-4b3f-8969-551767309ded@molgen.mpg.de>
+Date: Fri, 16 Oct 2026 18:56:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,139 +32,125 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: gro: don't chain linear parts larger than
- gso_size into frag_list
-To: Sorah Fukumori <her@sorah.jp>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
-Cc: horms@kernel.org, willemb@google.com, lixiaoyan@google.com,
- linux-kernel@vger.kernel.org
-References: <20261013130250.3643916-1-her@sorah.jp>
+Subject: Re: [PATCH net] ice: fix Tx hang dump using stale tx_buf[0].skb
+To: Vincent Choiniere <choiniere.vincent@hydroquebec.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ intel-wired-lan@lists.osuosl.org,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Michal Kubiak <michal.kubiak@intel.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261016-ice-tx-hang-dump-v1-1-3df0f5979a51@hydroquebec.com>
 Content-Language: en-US
-From: Chase Hiltz <me@chasehil.tz>
-In-Reply-To: <20261013130250.3643916-1-her@sorah.jp>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20261016-ice-tx-hang-dump-v1-1-3df0f5979a51@hydroquebec.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=molgen.mpg.de; s=20260906; 
+	t=1792169762; 
+	h=from:from:subject:date:message-id:mime-version:content-type:content-transfer-encoding; 
+	bh=M86NJ4IZ6fNbViWJtHydCb8YPVJzzZtCVo1NWFk9yDs=; 
+	b=YfFF7DuQldV9OVPmSexX3aVubwPR3i7CDpaUPPEl2FVG7McvNAIyadMcH8KU0dHwLfR7yPtJgvLN
+	Vm+a/eC3ntuytUHmF2fFiGPatyVGHvr+9bzMr53XlFLNwf6/4U/DH1DhwHY6mtiwfTPkSI8xRSFMZA
+	0tzGsuxV7WmroroHeNKUbT3ckgXUI8x5hOOLgkgM6Zl644V4vI/mQYqWuMk0wKaZJ5EWNl0EEBsC2n
+	/XT0YqbVeHElexuLi4TsnW3t8nRH1QMz4hrRtjYtxHLp2ysH9TIJ+TMTeI9dxSARGo2zOSQwCgUIPD
+	H79DG8g1YWw+xyVpVLJbA3knh+wc9P5A==
+
+Dear Vincent,
 
 
-On 2026-10-13 10:02, Sorah Fukumori wrote:
-> skb_gro_receive() chains an skb into the frag_list of the held packet
-> when its payload cannot be attached as page frags: when its head is
-> not a page fragment and still holds payload, or when its head and
-> frags would overflow the frags[] array of the last packet. Since commit
-> 5eddb24901ee ("gro: add support of (hw)gro packets to gro stack"), that
-> skb may itself be a GSO packet whose linear part holds several
-> gso_size segments. skb_segment() cannot split the linear part of a
-> frag_list member across segments, so segmenting the aggregate in
-> software, e.g. when forwarding it to a device without NETIF_F_FRAGLIST,
-> hits
+Thank you for your patch.
+
+Am 16.10.26 um 15:08 schrieb Vincent Choiniere via B4 Relay:
+> From: Vincent Choiniere <choiniere.vincent@hydroquebec.com>
 > 
->    BUG_ON(skb_headlen(list_skb) > len);
+> ice_tx_hang_reporter_dump() always reads tx_ring->tx_buf[0].skb,
+> regardless of next_to_clean. The Tx cleanup path frees the skb and
+> marks the buffer empty without clearing the skb pointer, so slot 0 can
+> hold a stale pointer. A NULL check alone does not cover this, and
+> devlink_fmsg_dump_skb() can fault on the freed skb.
 > 
-> Fully linear GSO packets come from generic XDP. When the program does
-> not support frags, netif_skb_check_for_xdp() linearizes any nonlinear
-> skb with pskb_expand_head() and skb_linearize() and keeps its GSO
-> metadata. GRO on the device runs before generic XDP, so each aggregate
-> passed by the program carries all of its payload in a kmalloc'ed head.
-> A tunnel that decapsulates these packets and runs GRO again through
-> gro_cells then builds the bad frag_list. This was first seen on a
-> router that forwards TCP received over VXLAN, with a non-frags XDP
-> program attached in SKB mode to the underlying bond because one slave
-> lacks native XDP:
+> Read tx_buf[next_to_clean] instead, use its skb only if the buffer type
+> is ICE_TX_BUF_SKB, and skip the skb dump otherwise.
 > 
->    kernel BUG at net/core/skbuff.c:4917!
->    RIP: 0010:skb_segment+0xbb6/0xf40
->    Call Trace:
->     tcp_gso_segment
->     ipv6_gso_segment
->     skb_mac_gso_segment
->     __skb_gso_segment
->     validate_xmit_skb
->     __dev_queue_xmit
->     ip6_output
->     ip6_sublist_rcv_finish
->     ipv6_list_rcv
->     netif_receive_skb_list_internal
->     gro_complete
->     dev_gro_receive
->     gro_receive_skb
->     gro_cell_poll
->     __napi_poll
->     net_rx_action
+> Observed on an E810 PF passed through to a KVM guest (Ubuntu 7.0.0-14,
+> PREEMPT_RT, local scheduler patch): a delayed queue IRQ led to a Tx
+> timeout and a page fault in devlink_fmsg_dump_skb():
 > 
-> It reproduces with three network namespaces: TCP sent over VXLAN on an
-> IPv6 veth link to a router namespace that has an XDP_PASS program
-> without frags support attached to the underlay veth in generic mode
-> and GRO enabled on its VXLAN device, and forwards to a veth with
-> tx-scatter-gather-fraglist disabled.
+>   BUG: unable to handle page fault for address: 0000000004cd0c11
+>   Workqueue: ice ice_service_task [ice]
+>   RIP: devlink_fmsg_dump_skb+0x2d8/0x5d0
+>   Call Trace:
+>    ice_tx_hang_reporter_dump+0x1ce/0x210 [ice]
+>    devlink_health_do_dump+0xcc/0x190
+>    devlink_health_report+0x1d7/0x260
+>    ice_report_tx_hang+0x7d/0xa0 [ice]
 > 
-> A program with frags support in generic mode gives similar packets.
-> skb_pp_cow_data() rebuilds the skb with up to about a page of linear
-> data in a page_pool head_frag and keeps the GSO metadata, so once
-> frags[] is full the next such packet is chained through frag_list
-> with more than gso_size bytes in its head as well.
-> 
-> Refuse the merge when the linear part to be chained exceeds the held
-> packet's gso_size. tcp_gro_receive() then flushes the held packet and
-> the skb starts a new GRO packet as its head, whose linear length
-> skb_segment() handles.
-> 
-> Fixes: 5eddb24901ee ("gro: add support of (hw)gro packets to gro stack")
+> With this change and auto_dump enabled, starving a queue IRQ thread
+> reproduced the Tx timeout; the dump contained the test packet, no Oops
+> occurred and the PF recovered.
+
+Also past the dump (excerpt)?
+
+> Fixes: 2a82874a3b7b ("ice: add Tx hang devlink health reporter")
+> Link: https://lore.kernel.org/all/20260327072332.130320-1-aleksandr.loktionov@intel.com/
 > Cc: stable@vger.kernel.org
-> Assisted-by: claude-opus-5-5
-> Signed-off-by: Sorah Fukumori <her@sorah.jp>
+> Signed-off-by: Vincent Choiniere <choiniere.vincent@hydroquebec.com>
 > ---
+> This complements the NULL check in [1]. With only that check, a non-NULL
+> but stale tx_buf[0].skb is still dereferenced by devlink_fmsg_dump_skb().
+> I have only reproduced the crash on an Ubuntu 7.0.0-14 kernel with
+> PREEMPT_RT and a local scheduler patch, and the skb lifetime against
+> concurrent Tx cleanup still needs review. Feedback welcome.
 > 
-> Notes:
->      v2:
->        - Mention the head_frag path that reaches merge: once frags[] is
->          full, e.g. after a frags-capable generic XDP program (Eric Dumazet)
->      v1: https://lore.kernel.org/netdev/20261013102453.3272620-1-her@sorah.jp/
->      
->      Testing, on net b7ad72414c67 in qemu/KVM (x86_64_defconfig plus
->      VETH/VXLAN/BPF_SYSCALL built in), using the reproducer described above
->      with iperf3 -P 4 for 20s:
->        - without this patch: BUG in skb_segment() within ~3s in 4/4 runs
->        - with this patch: 8/8 runs completed without a splat
->      The same reproducer also hits the BUG on Ubuntu 7.0.0-38-generic and
->      on v7.3-rc3. W=1 build of net/core/gro.o under allmodconfig adds no
->      warnings. Full allyesconfig/allmodconfig builds and the net selftests
->      were not run, and no selftest is included.
->      
->      The frags variant did not crash an unpatched kernel in the same
->      reproducer with an xdp.frags XDP_PASS program, also with RPS on the
->      underlay, gro_max_size 196608 or sender gso_max_size 8000-20000: GRO
->      batches there are too short to fill frags[]. A kprobe on
->      skb_gro_receive() shows the 64K page_pool skbs carrying about 3.4K of
->      payload in the head, and the non-frags variant returning -E2BIG from
->      the new check about 4000 times per 20s run.
->      
->      The crash analysis, reproducer and fix were developed with an AI
->      coding assistant (Claude); I reviewed the change and the analysis.
+> In my case next_to_clean was 0xfc while the reporter read slot 0.
+> Upstream v7.0, v7.2 and current net main (191aa4154) all read
+> tx_buf[0].skb unconditionally. Before this change, recovery stayed
+> stuck until reboot.
 > 
->   net/core/gro.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> [1] https://lore.kernel.org/all/20260327072332.130320-1-aleksandr.loktionov@intel.com/
+> ---
+>   drivers/net/ethernet/intel/ice/devlink/health.c | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
 > 
-> diff --git a/net/core/gro.c b/net/core/gro.c
-> index 29b4d02bf519..ff828a3dce3c 100644
-> --- a/net/core/gro.c
-> +++ b/net/core/gro.c
-> @@ -187,6 +187,10 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
->   	}
+> diff --git a/drivers/net/ethernet/intel/ice/devlink/health.c b/drivers/net/ethernet/intel/ice/devlink/health.c
+> index 8e9a8a817..059859c36 100644
+> --- a/drivers/net/ethernet/intel/ice/devlink/health.c
+> +++ b/drivers/net/ethernet/intel/ice/devlink/health.c
+> @@ -390,12 +390,15 @@ static int ice_tx_hang_reporter_dump(struct devlink_health_reporter *reporter,
+>   				     struct netlink_ext_ack *extack)
+>   {
+>   	struct ice_tx_hang_event *event = priv_ctx;
+> -	struct sk_buff *skb;
+> +	struct sk_buff *skb = NULL;
+> +	struct ice_tx_buf *tx_buf;
 >   
->   merge:
-> +	/* skb_segment() cannot split the linear part of a frag_list member. */
-> +	if (unlikely(headlen > offset + skb_shinfo(p)->gso_size))
-> +		return -E2BIG;
-> +
->   	/* sk ownership - if any - completely transferred to the aggregated packet */
->   	skb->destructor = NULL;
->   	skb->sk = NULL;
-> 
-> base-commit: b7ad72414c673ce1fa1f463e807cd4f34f8be9bf
+>   	if (!event)
+>   		return 0;
+>   
+> -	skb = event->tx_ring->tx_buf->skb;
+> +	tx_buf = &event->tx_ring->tx_buf[event->next_to_clean];
+> +	if (tx_buf->type == ICE_TX_BUF_SKB)
+> +		skb = tx_buf->skb;
+>   	devlink_fmsg_obj_nest_start(fmsg);
+>   	ICE_DEVLINK_FMSG_PUT_FIELD(fmsg, event, head);
+>   	ICE_DEVLINK_FMSG_PUT_FIELD(fmsg, event, intr);
+> @@ -409,7 +412,8 @@ static int ice_tx_hang_reporter_dump(struct devlink_health_reporter *reporter,
+>   	ice_fmsg_put_ptr(fmsg, "skb-ptr", skb);
+>   	devlink_fmsg_binary_pair_put(fmsg, "desc", event->tx_ring->desc,
+>   				     event->tx_ring->count * sizeof(struct ice_tx_desc));
+> -	devlink_fmsg_dump_skb(fmsg, skb);
+> +	if (skb)
+> +		devlink_fmsg_dump_skb(fmsg, skb);
+>   	devlink_fmsg_obj_nest_end(fmsg);
+>   
+>   	return 0;
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
-Tested-by: Chase Hiltz <me@chasehil.tz>
 
-I encountered and reproduced the same bug independently on Ubuntu 26.04 running 
-the upstream v7.2.6 kernel. Applying the patch on top of v7.2.6 results in the 
-crash no longer happening for me.
+Kind regards,
+
+Paul
