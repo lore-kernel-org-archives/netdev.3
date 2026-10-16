@@ -1,129 +1,137 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A5636EAB0;
-	Fri, 16 Oct 2026 14:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792160300; cv=none; b=Eq15puY53IBuFRTYSu4kLpoqzAMmScKOBoeFA+lyRqNOR09KWpLT7x4j3qfPkjdfQGGhDJ4+dTlBtXP73teek96WR7bv2nHXkmU6XY3d9ZXUahH2VgBF7vIWOwzBFXxwbgINwl0PYmO/YhaIr7PnnKarL4+40duGYk6tx8XYqic=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792160300; c=relaxed/simple;
-	bh=6fPTbXuXpebnLxYlJmv8nSqO6htrsz1cdf2F38c7eGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pf/MigKxKzUOpAyCvuyIHHpRd096DW0/ql28/ZYCt7xImoSR6NcX3BQdTlh2sYGKjIbaF0KEgKza1ia0NjeHFE9qlcXpj/5vg7vo5zpeu/GjYsoHbIqmqb79oxzCyeZOXWa2yVQyuNX+G3n6Pd4Iddr9VgfTXt64BuazuzE0K1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VGpBpV3/; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00492C08BB;
+	Fri, 16 Oct 2026 14:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792160546; cv=pass; b=BPEicUJGfQA3ioC/ou1f8w/0oqv9ZJ6eYHRkKblCMMigpFQ+YxzUiOEenxUrkMW90U9Qd2t95Pr8KCe2R5ybSdshY1Oc511hd2ORhJ3LZM0Qgl6yzshWTjoaaRSSAVjYIufbhK9YpGD0ADBfaRYlpqCyJ9PMjoB/Y5bcdVhdXIA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792160546; c=relaxed/simple;
+	bh=TE+NeMObnw7cV2DSl8zm5/5kphmiKQFfXjysKCj72YM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GClFJg59sBp0e6WU/i4sD+Y7tdfg858YlXQo5ffERjAkHrSKSRgmrmZ//C4pMlUNHKeQ1sx6MUam1TCSxrlHT/ShTyeqTwJNo7xp+5NseTdtCZ9Jg2t/r3yTbia3PwMyKTk1Jr4imVbEjlEd9WS+sK08mBkECngFHwhvSyxsMYY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=ccmO/NmQ; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VGpBpV3/"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 17AF4C62214;
-	Fri, 16 Oct 2026 14:19:14 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 98E7C6075D;
-	Fri, 16 Oct 2026 14:18:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B1C2F10328528;
-	Fri, 16 Oct 2026 16:18:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792160291; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=ZJ2733YwARgE1Qwcji1IsWT4iPJBGi64T05DaYIrqJI=;
-	b=VGpBpV3/mIpN8RCvaqNdFYhlEv8JpqL/IKivBqkMOrjOuWJqcA7bEDCo3rUg6z5C5nrr0s
-	454BQNZGYsXDory6vk9waOY9JZE/GvN9H71zUVkhP5rfPxyHm5RvdtCe4ITjX17k1C5cg7
-	+Ac6PvEwWTeBz6KayzJ6Fo8clSJR96Y9YrfuBn34m1j8Vqoeari2xi8GCiqKVV/JJcBfmg
-	Gcrso3ExZUxSzKGWlkH1yjqfEoQTCdJ2pdHTYX4Bv0+ASeX/CrYt/JA6m+0xe3rl7Q9L7D
-	FUM5Zi9+1sB/5MF87OmJkeBdVpM8gdAlU4GZWLq7WOf6dRHcvHkj2X3hO9+oSA==
-Message-ID: <6d1d99b5-1c3c-4e59-a0b2-e4d671e594ce@bootlin.com>
-Date: Fri, 16 Oct 2026 16:18:06 +0200
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="ccmO/NmQ"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CE37A2022C9;
+	Fri, 16 Oct 2026 16:22:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792160538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eKbF9RFkKWoB5pWbmAsRWMNhQMOff8da/uxoiKigJzc=;
+	b=ccmO/NmQWb4OFsfFsjbp0QFq7srpuFyOp6dk/u3EjEmzDR5fzItGweSDq9n8vsBRSKaoC7
+	sq1daH2jkJ2yb73gLMfTSUypf7HRiAyELnVMXkL+Ji6N+GafwIluyvQ32zmij5+BUcoZrl
+	5hnVt01JfEVangVI8RWyo0OliBabU3UmPyW6byLn7qZzMrfLmDqAM2z1FvB04Tf+aCDJBc
+	vU6JhH02NnGmeXmMpNBk2/dIStI6OOwjQIQ5ENMEocM5lOEG2O3kNlsm91ChgaYhdrxW+L
+	BNWtgjRajnsn7ZueQkPng6ErTY1FYjV1Lo9kB/8SEOMs20W7Ylb2/K30U5EJRA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792160538; a=rsa-sha256;
+	cv=none;
+	b=E7lvEjmCGPbbauxGC8XbhOi34LTGSATxtGmsd8J/4hYHrLdg3G6J1jPnvTqBl8XfzXo/pe
+	BKoaC3urIFiF5a/bLjc5A1upSOTqoZKBx5G63glgt4P9XhP8d5m3ryXdPRLI87++mY4SX4
+	yCDL7bWJw/j99p5BbYoU7HrPSeL2zhn8SG4jhUX9cIyX2wLxk92h3XWgwfxTxjvtehYZb9
+	MPhpu6MXTqrd+cJrI6kITwTukeFLNGmUubyPDZ0CcjWt3tGIpagfrXZ6eW+HkPFoTuUAnJ
+	GcSmnba7ym9MFesKuvk0tjHxh+0YIRSIe8SyYS3cPbtz5xvmbzGM5wndUAf+xw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792160538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eKbF9RFkKWoB5pWbmAsRWMNhQMOff8da/uxoiKigJzc=;
+	b=AHlnuqWnrvzMuGLodzju/rd23v9xuAjv9NWN0wy4W0oXHoRujzNPwe9hjJLUsueW95L+qI
+	/b6ZdKgy0wKMi6IPF4MraO2+BQytAovonmiEdXwDtYdGfgZzuzMmGF8UzEy2d6cPBT5tGq
+	CXfWAO9bM8AFFGa2d/PjgtoGWz6LGsCpOucyeJGU8KXhHL6Liyto/JjzFlr2wrAgsQDHDD
+	P+aFX44T0dMpr0v8W7iUEmHrvQu1PRSqJcWh5kCR+vpGTYwitRC/OKkJy7stMSe5DZf5f8
+	PROJMhuiryxUHzhM33f4rn7naWzVTsukGbxSgvEAp5oQZCjnQcJUcL1FEgH2AA==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xHip8-006CNF-2P;
+	Fri, 16 Oct 2026 16:22:18 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 7CABE5C62D7;
+	Fri, 16 Oct 2026 14:22:18 +0000 (UTC)
+Date: Fri, 16 Oct 2026 16:22:18 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net, 
+	kurt.van.dijck@eia.be
+Subject: Re: [PATCH net-next 22/37] can: rcar_canfd: Add support for Renesas
+ RZ/G3L
+Message-ID: <20261016-international-aquatic-chowchow-8ffc4f-mkl@pengutronix.de>
+References: <20261015015336.816543-23-mkl@pengutronix.de>
+ <179211823337.434549.12652981577769724778@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] net: stmmac: disable TX checksum offload for
- jumbo frames on bugged cores
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Ong Boon Leong <boon.leong.ong@intel.com>, Jisheng Zhang <jszhang@kernel.org>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- bpf@vger.kernel.org
-References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
- <20261012-stmmac-xdp-tx-pre-fixes-v1-2-05fd0c90f7e1@oss.qualcomm.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261012-stmmac-xdp-tx-pre-fixes-v1-2-05fd0c90f7e1@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fwntjsudtuolmsoq"
+Content-Disposition: inline
+In-Reply-To: <179211823337.434549.12652981577769724778@kernel.org>
 
-Hi Lorenzo,
 
-On 10/12/26 17:24, Lorenzo Bianconi wrote:
-> stmmac_xdp_xmit_xdpf() decides TX checksum insertion from the queue COE
-> capability only:
-> 
-> 	csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
-> 
-> and lets the enhanced descriptor set TX_CIC_FULL accordingly. On the
-> bugged_jumbo cores (snps,dwmac-3.40a, snps,dwmac-3.610 and
-> snps,dwmac-3.710) hardware checksum insertion is broken for jumbo
-> frames; the skb path works around it by clearing NETIF_F_CSUM_MASK in
-> stmmac_fix_features() when the MTU exceeds ETH_DATA_LEN, so skbs are
-> never marked CHECKSUM_PARTIAL and no checksum is inserted. The XDP TX
-> path bypasses that workaround, so once XDP is allowed at MTU >
-> ETH_DATA_LEN, jumbo frames sent via XDP_TX or redirected into the
-> device would leave the interface with a full checksum insertion enabled
-> on those cores - exactly what the workaround is meant to avoid.
-> 
-> Disable checksum insertion for oversized frames on bugged_jumbo cores in
-> the XDP TX path too.
-> 
-> Fixes: be8b38a722e6 ("net: stmmac: Add support for XDP_TX action")
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+--fwntjsudtuolmsoq
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next 22/37] can: rcar_canfd: Add support for Renesas
+ RZ/G3L
+MIME-Version: 1.0
 
-Looks cleaner to me than the alternative patch from Jisheng :
+On 16.10.2026 02:37:13, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 (1) =C2=B7 Medium: 1 (1) =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [Medium] The RZ/G3L binding never makes resets/reset-names required,
+>   but the driver gives RZ/G3L the same reset handling as RZ/G3S.
 
-https://lore.kernel.org/netdev/20260929121025.20821-1-jszhang@kernel.org/
+looks like a valid issue
 
-It sure seems there're a lot of people interested in getting XDP/XSK
-working properly on stmmac :)
+Marc
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+pw-bot: cr
 
-Maxime
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index ca61ab449e32..0e29c5d04714 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5276,6 +5276,14 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
->  		return STMMAC_XDP_CONSUMED;
->  	}
->  
-> +	/* Disable TX checksum offload for jumbo frames on cores where
-> +	 * checksum insertion is broken for oversized frames, matching the
-> +	 * stmmac_fix_features() workaround used by the skb path.
-> +	 */
-> +	if (priv->plat->bugged_jumbo &&
-> +	    xdp_get_frame_len(xdpf) > ETH_FRAME_LEN)
-> +		csum = false;
-> +
->  	while (true) {
->  		skb_frag_t *frag = i ? &sinfo->frags[i - 1] : NULL;
->  		int len = frag ? skb_frag_size(frag) : xdpf->len;
-> 
+--fwntjsudtuolmsoq
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatIzFwAKCRDMOmT6rpmt
+0vTAAP4jUJsqpdVmos02NDp+3CuG2scKxVFpE/YhkMZ+bdrzKgEAhca4npCSDVIL
+lKHsmKa6St5Sgqa6vrlRueLty3pkUQg=
+=sgTy
+-----END PGP SIGNATURE-----
+
+--fwntjsudtuolmsoq--
