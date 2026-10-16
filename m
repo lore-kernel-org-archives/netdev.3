@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42BC1ABEDE;
-	Fri, 16 Oct 2026 01:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDE4320A14;
+	Fri, 16 Oct 2026 01:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792113010; cv=none; b=rMVbrjyXv4StqMHDYwaAvlmms8ZOeZ1K2YH5b1R5Qfirzuy6mwpO8HZINiqjhg0rkFUfY69l4okRZcL/Cug61JS1mdhghwyh5nUr1Slm15Ldy3YibQ47+4OGgjiPFWK2kd9kRou2HNjTz1CHC0S0RjibzZX/cA6HjVR0nu6iy8I=
+	t=1792113012; cv=none; b=co4LquQ8BqdX8RYHJHg/lEzfJMfGS5HfbGaXxTt9WS88c5oF0w8EwHr4u3DaODkskr5/AQrMXiZ2TjHzpHFrhBj8ftQ/U+cz1nQN2I6Jdqv6K7fuGLEXIcqVLY5ev1j1pA3K7SosFI9oOlhU7Soxf1nhN3N0eNXnyvZJRXPyOug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792113010; c=relaxed/simple;
-	bh=R0w1STXSO7ZbsFI7l7JdkL9mw/WSsj/u6jUOvOzMipg=;
+	s=arc-20240116; t=1792113012; c=relaxed/simple;
+	bh=jJBwI57N8NxOtNqR/lw1rTxK+DKwr9DBAKHPdGAVqQA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dY5zm5TweXSeibg8khCLrRUPyiYbJgzL4QUh+JilpOtXQgwtWdAI6/h+crgCoYwCuU0L6JCkethZO36FNw73o7Rj5N3XQW+jUs+tNZvaic70ZTJLKVBg2lL5OD4T/BeuaiMBkydFmMh3lOWCHuHHGTqPaJjQIHT9ripzsSXOG+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7Y9XKOV; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=osHtIruFxzkPBCwAudIIXYTJ+KYZgXoOJEIDVWs2uh0vERCtgzMMCzdSB69AxD+Xuc1VrVDoLXfKGcbPVuiTp9PBD7pbYoMteFuIGSmoWDXIFGQtnbSX9ZHf274ZkpxqESi2FkwPoEge3Z5jp4jrcm2U6ck5W6r7bFfdP9+tDdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3AMCqLG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7Y9XKOV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FA71F000C4;
-	Fri, 16 Oct 2026 01:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3AMCqLG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067D51F000C4;
+	Fri, 16 Oct 2026 01:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792113009;
-	bh=nAXeX20TUuPCCVL6iWrrKcAYv23SAxZ1bAiWSQ5JksE=;
+	s=k20260515; t=1792113011;
+	bh=3QKdo1CDvZjCcBHwv4n9MX+nM3umv5CEWvZzfgzuyUc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=f7Y9XKOVaJ/wdZsaqYrgGSu0+j1V4fieBFlQfL/5JQZLhNX98uTClwChrCGKeYoIn
-	 Q7h34/LThtw1z3eHwxS2Ou+eFWTYaXmmeq+AoNZ2NfnTN8SEZI7+CUZdFi3TumTANp
-	 RbG0zeUOy/K0t40EcF0GToCFYYAHr8emIKUuEgQQvV7H+Z2gyRQ5T4kny2RuY6lJs5
-	 aTbsl+a1JH8wVZvmaEo9/wmC5yktc4Nxa1WSLLl5n4d5hyopHmlhhOop12QSx/SwC3
-	 L2tmqM/M2QlmvebudLZX1fszup7hWD5elugZa3ZUtvh4ZyonK+QiwF8m8o1MAyQIgu
-	 rYDo4hkhfWuLA==
+	b=O3AMCqLG6ivZN/p0HbmyAfcRQir91OOXINWIySGfFmZcmlUDylPZgdNV65fvMlnlv
+	 aSk2Kqc2K15XeSm9um7lSpXwcI5ehQ+Yq00+Wxzh4kHZ41Wh2imI7HtMpz424Hj945
+	 yfbkQau+S5qfzfUw9ApMRHcFFk4DDIOWWNOgAYhtgJNGQus+AP2DINDAtg802jqHpD
+	 Mwijn17tQDT1Is+iBOdxGhqOzYaZ1i04Xb+fuwzv30q8S/Ysc/rATh0lR6YSSVM1l8
+	 rJRdWD9lOfGzSWZNJ0i39s1vg3285GQ+d4zZvoU48DKuvW/CDcmX23xY7jaqLaHZz0
+	 UIzg7Ou7HTctw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 77A423808209;
-	Fri, 16 Oct 2026 01:10:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F15853808209;
+	Fri, 16 Oct 2026 01:10:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,52 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/3] net: phy: motorcomm: Add cable test
- support
- for internal YT861x PHYs
+Subject: Re: [PATCH net] devlink: Fix accidental merge error in nested devlink
+ docs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179211300813.4187796.258497069495042661.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Oct 2026 01:10:08 +0000
-References: <20261009175936.428256-1-mmyangfl@gmail.com>
-In-Reply-To: <20261009175936.428256-1-mmyangfl@gmail.com>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Frank.Sae@motor-comm.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- hkallweit1@gmail.com, linux@armlinux.org.uk, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179211300952.4187796.17115058563137504280.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Oct 2026 01:10:09 +0000
+References: <20261011090739.746757-1-tariqt@nvidia.com>
+In-Reply-To: <20261011090739.746757-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ cjubran@nvidia.com, cratiu@nvidia.com, gal@nvidia.com, jiri@resnulli.us,
+ corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rdunlap@infradead.org, skhan@linuxfoundation.org, horms@kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 10 Oct 2026 01:59:29 +0800 you wrote:
-> The YT921x switches integrate GbE PHYs of the YT861x family (PHY ID
-> 0x01e04281) on the switch-internal MDIO bus exposed by the yt921x DSA
-> driver. Add a driver entry and TDR cable test support.
+On Sun, 11 Oct 2026 12:07:39 +0300 you wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
 > 
-> v3:
->  - add dt-bindings
->  - add PHY_IS_INTERNAL
-> v2: https://lore.kernel.org/r/20261006202352.1616626-1-mmyangfl@gmail.com
->  - split into a driver entry patch and a cable test patch
->  - update comments and kconfig
->  - add yt861x_config_init() and apply the auto sleep setting, restore auto
->    sleep when starting the TDR test fails
->  - use separate variables for the TDR status
-> v1: https://lore.kernel.org/r/20261004184246.1260426-1-mmyangfl@gmail.com
+> The referenced "Fixes" commit accidentally reverted a correction
+> introduced in commit [1].
+> Revert that mistake.
+> 
+> [1] commit e504cf18ef47 ("docs: net: fix minor issues with devlink
+> docs")
+> Fixes: 3bf4c5970ca8 ("devlink: Update nested instance locking comment")
+> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3,1/3] dt-bindings: net: motorcomm: Add YT861x PHY compatible
-    https://git.kernel.org/netdev/net-next/c/1202140b297e
-  - [net-next,v3,2/3] net: phy: motorcomm: Add driver entry for internal YT861x PHYs
-    https://git.kernel.org/netdev/net-next/c/ae0c7e8d0bab
-  - [net-next,v3,3/3] net: phy: motorcomm: Add cable test support for internal YT861x PHYs
-    https://git.kernel.org/netdev/net-next/c/fc697291ad0a
+  - [net] devlink: Fix accidental merge error in nested devlink docs
+    https://git.kernel.org/netdev/net-next/c/393acb51d048
 
 You are awesome, thank you!
 -- 
