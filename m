@@ -1,210 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-122.mta1.migadu.com [95.215.58.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEE73845AC;
-	Fri, 16 Oct 2026 02:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D402175A6C
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792118238; cv=none; b=Kcxl97Tq8JQTJJy4qrhnQ7GA0C5A8zhZrZuh9uIW3qU/BBu01BXcTWjjHxn2YOOS4X2GNN+oHP3QRv6iHqTFeHP3+P8H1wmh/Nk3e9JwB6+mX3u+A4ZFPUKQBnz/zGTgxxHARhug/LI1REqrdm0hGm9pg9/EUc/fKJ+N2hjkxBI=
+	t=1792118534; cv=none; b=UI2Rey5hOVHYE8WLMUQhMGwj4ijg5+kwHbOZYJ5Ql6weMGEf1Ipz3TxBp+MqJzPV9TyZKvV2B7c8gXY1+wYY1LAwjnm9dIDx8uaoJGj7iHvfS1axWBLDLQFkbnsWiIpp6f9AMBLrp2oSyBNPerNaYUcRkNEs+AMWsnjYn15qo28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792118238; c=relaxed/simple;
-	bh=NLGXQ6S+UzrGweleq2coDo6hDP7rUjR1GgWAHQcJWeo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HegdBV4yyFMSabQwTDHQjdleO8vSfvrG5J2Zs62A/1nLP2xJPsiahERyiOGqHkUX3hqRBEVvIP5cJVQ475pppZ9uuer3RwbY3+8hU3BexONiiTaMO7AgdmzETdHhhGOSHKlucMZCWLj5cGqGnKPTAoU8SdclUvBTp84UhFH8Xcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WaZhC4Kf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792118534; c=relaxed/simple;
+	bh=JiozdCoEa+i8cnI7fmP2rtddLWizrFN6D4IuJeVEtY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D+37uSLxvmsKEXy4IaUa2tSX5RjdwRv3BdkCgTTq6jJ9VSzLiii9q7q6W5mRJT85vIpMXjkCHhCf2y6H1JG2/uro13y1JivyinSzkPqPlUkxcvd/qsMlQv79oWYwZtBp0CE7adcdPya0OlmUswTwfYcdWmgChcEYqztJ2pbIvuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aACR5q0P; arc=none smtp.client-ip=95.215.58.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WaZhC4Kf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E591F000C4;
-	Fri, 16 Oct 2026 02:37:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792118235;
-	bh=noAKhCMP/308XIoU2rOkCFa1m5zPEvdiql5A/84HVao=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WaZhC4KfXg6k68n8r7dhWD1ximVSY6zqUpMSGRDR/JYyDxoC7A/mNopGXJJ+gj/Ew
-	 sM2xFM8jJQuvMKSzIQ/dnKkk8mnN3BXAULzSmUdS89kyPFp65FlXHuRJZiaxeB+3+i
-	 6kXy/UvjrG43Gkx+wKgFjxIdZbrLJuIqEdyxvSZgw+78tIr/1csW0girSjbbZyfrT5
-	 Izq11wvw51oKZcR0ogqsNsKGeuOpCXVuQyhwiTBCV+Rb1kl71AYgCwpqBhJMcT4s9b
-	 hWRSQcROk1sLRkbbIReid+1OkVZf2ZHHjD/H2wPvp/2NPKbDPQh+PbnW6yy1WMQk6g
-	 s+2OG2qD2hGdw==
-Subject: Re: [PATCH net-next 28/37] can: ems_usb: use usb_kill_urb() to stop
- the intr URB
-From: netdev-bot+sashiko@kernel.org
-To: mkl@pengutronix.de
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net,
- kurt.van.dijck@eia.be
-Date: Fri, 16 Oct 2026 02:37:14 +0000
-Message-ID: <179211823441.434549.9677243526506061190@kernel.org>
-In-Reply-To: <20261015015336.816543-29-mkl@pengutronix.de>
-References: <20261015015336.816543-29-mkl@pengutronix.de>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aACR5q0P"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=JiozdCoEa+i8cnI7fmP2rtddLWizrFN6D4IuJeVEtY0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792118531; v=1; x=1792723331;
+ b=aACR5q0P6b7Nprm8T89n+YFuPkOPeMamjr53GO0MjKX3czR+OUsjIpB+amduBTOPgsgvnYET
+ M96Eku+n6ZfMQHLfvhUq+fRyKjsyl4pJVxawCOA+uRCz43jQ3vSm85uXgwQJ43EbO7Jia2ClbXd
+ uLMvWWXfIo40+ypOHvtmW068=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id aaefb83f638cd73e;
+	Fri, 16 Oct 2026 02:42:11 +0000
+X-Mizu-Trace-ID: aaefb83f638cd73e
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 16 Oct 2026 10:42:01 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next] selftests: tc-testing: preload all qdisc
+ modules enabled in config
+Message-ID: <atGO-QnYwzjcyBr0@fedora>
+References: <20261014122045.2375722-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014122045.2375722-1-ivecera@redhat.com>
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Hi Ivan,
+On Wed, Oct 14, 2026 at 02:20:45PM +0200, Ivan Vecera wrote:
+> tdc.sh preloads only some of the qdisc modules that the tc-testing
+> config enables. Add the missing ones: ingress, mqprio, multiq, netem,
+> pie, plug, prio, qfq, red, sfb, sfq, skbprio, taprio and tbf.
+> 
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> ---
+>  tools/testing/selftests/tc-testing/tdc.sh | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/tc-testing/tdc.sh b/tools/testing/selftests/tc-testing/tdc.sh
+> index dae19687912d..25cdc256287d 100755
+> --- a/tools/testing/selftests/tc-testing/tdc.sh
+> +++ b/tools/testing/selftests/tc-testing/tdc.sh
+> @@ -65,6 +65,20 @@ try_modprobe sch_gred
+>  try_modprobe sch_hfsc
+>  try_modprobe sch_hhf
+>  try_modprobe sch_htb
+> +try_modprobe sch_ingress
+> +try_modprobe sch_mqprio
+> +try_modprobe sch_multiq
+> +try_modprobe sch_netem
+> +try_modprobe sch_pie
+> +try_modprobe sch_plug
+> +try_modprobe sch_prio
+> +try_modprobe sch_qfq
+> +try_modprobe sch_red
+> +try_modprobe sch_sfb
+> +try_modprobe sch_sfq
+> +try_modprobe sch_skbprio
+> +try_modprobe sch_taprio
+> +try_modprobe sch_tbf
+>  try_modprobe sch_teql
+>  try_modprobe sch_dualpi2
+>  ./tdc.py -J"$(nproc)"
+> -- 
+> 2.56.0
+> 
 
-Low priority / nit picks for your consideration:
-
-- [Low] Now that unlink_all_urbs() stops the intr URB with
-  usb_kill_urb(), there is a new race window on close.
-
-Pre-existing issues:
-- [Critical] unlink_all_urbs() in drivers/net/can/usb/ems_usb.c (lines
-  755-757) can free the RX coherent buffers twice.
-- [Medium] ems_usb_start() does not undo partial setup when it fails.
-
---
-
-can: ems_usb: use usb_kill_urb() to stop the intr URB
-
-This commit changes unlink_all_urbs() to stop the intr URB with
-usb_kill_urb() instead of usb_unlink_urb(). The goal is to make sure
-ems_usb_read_interrupt_callback() has returned before
-ems_usb_disconnect() frees dev->intr_in_buffer and the candev.
-
-Link: https://patch.msgid.link/20260923030522.409344-1-fanwu01@zju.edu.cn
-
-> diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
-> index 24cf8f651f8f..2d31f0b86859 100644
-> --- a/drivers/net/can/usb/ems_usb.c
-> +++ b/drivers/net/can/usb/ems_usb.c
-> @@ -748,7 +748,7 @@ static void unlink_all_urbs(struct ems_usb *dev)
->  {
->  	int i;
->  
-> -	usb_unlink_urb(dev->intr_urb);
-> +	usb_kill_urb(dev->intr_urb);
-
-[Severity: Low]
-Can this now log a spurious error during a normal ifdown?
-
-usb_kill_urb() raises urb->reject before it unlinks the URB. Suppose the
-intr URB completes with status 0 while ems_usb_close()->unlink_all_urbs()
-is inside usb_kill_urb(). In that case ems_usb_read_interrupt_callback()
-takes the case 0 path and resubmits:
-
-ems_usb_read_interrupt_callback() {
-    ...
-	err = usb_submit_urb(urb, GFP_ATOMIC);
-
-	if (err == -ENODEV)
-		netif_device_detach(netdev);
-	else if (err)
-		netdev_err(netdev, "failed resubmitting intr urb: %d\n", err);
-}
-
-usb_hcd_link_urb_to_ep() in drivers/usb/core/hcd.c then rejects the
-resubmit:
-
-	/* Check that the URB isn't being killed */
-	if (unlikely(atomic_read(&urb->reject))) {
-		rc = -EPERM;
-		goto done;
-	}
-
-As a result, "failed resubmitting intr urb: -1" gets printed. The
-netif_device_present() check at the top of the callback doesn't catch
-this, because the device is still present during close. usb_unlink_urb()
-never set reject, so this message couldn't appear here before.
-
-The kill itself still completes, so the only effect is log noise. Would it
-make sense to treat -EPERM as an expected result, alongside -ENODEV?
-
->  
->  	usb_kill_anchored_urbs(&dev->rx_submitted);
->  
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but it is in the same helper
-and the same disconnect teardown. Can unlink_all_urbs() free the RX
-coherent buffers twice?
-
-The loop just below this hunk frees every dev->rxbuf[i] but never clears
-the pointers:
-
-	for (i = 0; i < MAX_RX_URBS; ++i)
-		usb_free_coherent(dev->udev, RX_BUFFER_SIZE,
-				  dev->rxbuf[i], dev->rxbuf_dma[i]);
-
-unlink_all_urbs() is called from ems_usb_close() and also unconditionally
-from ems_usb_disconnect():
-
-ems_usb_disconnect() {
-	...
-		unregister_netdev(dev->netdev);
-
-		unlink_all_urbs(dev);
-	...
-}
-
-There are three ways to reach a second free:
-
-If the interface is up at unplug, unregister_netdev() closes it and
-ems_usb_close()->unlink_all_urbs() frees the buffers. ems_usb_disconnect()
-then calls unlink_all_urbs() again on the same pointers.
-
-If the interface was opened and closed earlier and is down at unplug,
-ems_usb_disconnect() frees the stale pointers from the last session a
-second time.
-
-If a later ems_usb_start() breaks out of the RX loop early because an
-alloc or submit fails, the slots it didn't refill still hold pointers that
-the previous close already freed. The next close or disconnect frees them
-again.
-
-usb_free_coherent() only skips a NULL addr, so each stale pointer goes to
-hcd_buffer_free(). Depending on the HCD, that means dma_pool_free(),
-kfree() or gen_pool_free() on memory that was already freed.
-
-This loop appears to date from commit 9969e3c5f40c ("can: ems_usb: fix
-memory leak").
-
-Could dev->rxbuf[i] be set to NULL after each free, or could the extra
-unlink_all_urbs() call in ems_usb_disconnect() be dropped?
-
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch. Does
-ems_usb_start() leave URBs in flight when it fails part way through?
-
-If usb_submit_urb(dev->intr_urb) fails, ems_usb_start() returns while the
-RX URBs are still anchored on rx_submitted and in flight.
-
-If a later ems_usb_control_cmd() or ems_usb_write_mode() call fails, it
-returns with both the RX URBs and the self-resubmitting intr URB still
-active:
-
-failed:
-	netdev_warn(netdev, "couldn't submit control: %d\n", err);
-
-	return err;
-
-On this path ems_usb_open() only calls close_candev(). ndo_stop isn't
-called after a failed open, so unlink_all_urbs() never runs.
-
-On the next open, ems_usb_start() overwrites dev->rxbuf[], so the earlier
-buffers and URBs leak. usb_fill_int_urb() also rewrites the intr URB while
-it is still active. usb_submit_urb() then hits:
-
-	if (urb->hcpriv) {
-		WARN_ONCE(1, "URB %p submitted while active\n", urb);
-		return -EBUSY;
-	}
-
->From then on every open fails until the device is replugged.
-
-This doesn't reopen the disconnect use-after-free fixed here, because
-ems_usb_disconnect()->unlink_all_urbs() now kills the leftover intr URB
-before the frees.
-
-Should ems_usb_start() unwind the submitted URBs on these error paths?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015015336.816543-2-mkl%40pengutronix.de
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
