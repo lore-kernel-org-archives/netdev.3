@@ -1,137 +1,121 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455F235B636
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2503A6B8F
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792131016; cv=none; b=N1gspxt6gcqp8TWJ1qaUL8ogR1bkKKj2LfTRLmUp2MurnydWJxtGrlsG/ONGW2unLjiGOhd5mQkx3cIJby+DRwD9enJ6y3xkcm2RusS7VQBSXFsp1wWcV9rqJbaThQftsEV3iCaE9ONmW+gduT3uXPHp5SZuHQw5xuIqDw9tLWM=
+	t=1792131092; cv=none; b=KWxeBwEKDbvfOrTamaO7cC05oF8cdi0u2j5XS/GiknF2sazzZcGbLObnxEuU41oApXRwU6nst7wWG7oiNKz1QY9C/uWjIF99uN8EY5tV0hlVK+jPYG3EwRa4YTlJWc2ml9fNMwj7CzAHf740bmip/yh3SWcvNJLPUklrX/SpBWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792131016; c=relaxed/simple;
-	bh=rfclI43Gt0jOxEzPCEKf62xMSKmmsFMZNhF9lP4Mfck=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a6EpWGNGNVBc9aQocFA91dOvnTkYshuJuRryvw+cFZj5QwvH20s5Slap7TDuNK0MQux5yxPA8EoEEeToFL5gLNfLfsdWBPBoAP7MJadvWfY/woW+lBxNoBppLbsVUtu+hfkoRAKrPrDFyaNsSJpe3kkCTOshEztJmnhOTl5TPzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hgn96mft; arc=none smtp.client-ip=74.125.82.41
+	s=arc-20240116; t=1792131092; c=relaxed/simple;
+	bh=Tx3nO3gPySKjOpFH/Qz/c8UnQxOYcrJOu25+NL8Z3kY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iVZdM9JHSRNq0OitSdlePwDduMU/VD8u4NSrnYbM9n2ve2qgXZZP+4hKgVxxIPK5pCwZ87KodmLe/k1iALAy6a9XzEqd7+L8vwarlO2ZV/Q9wNAAZBPPD8A/LAk/U4OLRrfhDjHBXVpPkIqZxwToAGv5FYOcpOafZWNETIrnsL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDqWd03M; arc=none smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hgn96mft"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15354aa70e8so2093467c88.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:10:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDqWd03M"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso7906391eec.1
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792131014; x=1792735814; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kItInSB7Il0bFX5rQnMMdEMc2ibDWAXPMzy5j1ycaRI=;
-        b=Hgn96mftoFUSxo+xbH2o0Ww2+oSKGIq0bq0wOwcpWtah898wMdDR1+GjATgw8IU+mx
-         K5ja4y8FQzij2GjCiwjhmswLB1O+lvjhbh4JHmCPMVlt5kIxsRbZmnTYNAjXknZDa7Ep
-         uFcxF0eBAhJDOJKapYWvcA7ZD0jZIHudK50rdjyjTnbxsb1tTUTZf14oXXPGm9xZo6Zw
-         8Cd3gxY6z+GmprqdJSjAjs9gksjDh+LDU1QhQsgWC1B+gAQCPcaUPDn/9JT5M6Q35jDO
-         vmm5F3WqMvLGE/gAofa1ioYAkm9gxTMQzFBZr3h77VJrw4I7mjoeUVZrrqOcR3ZmB/q9
-         +ARA==
+        d=gmail.com; s=20251104; t=1792131090; x=1792735890; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kcslZZQo3mohhGw1TvUFqfaBbmuwHjcR/UsbiocVbwI=;
+        b=XDqWd03MpPbUeAJQovOURZS8Jm6F9CcnYCNAWTwy8ht4d1Z1uF6jJ/Tw3etjGE0dLk
+         uO6tBaZXjHw7G6SohCn6YLDqVZA2zyLd88TLgytTxLDCQrlikx09h3GjcscaaXo4r5hB
+         D6knu/eRImVa+5gfbbspNWBk15jL0Gy1NrC/0+yYd7ZahWYgL7WM7uaMGEo5jN3mPove
+         Tudt/JV4+MhxXaoFm6us0Y3HAMEobPaYvPDosN7C2+pXyr2EpOXVh5dG2BaEntrI+ebt
+         Gn1E7HMlnksITYAsUYwkvQSgyYTzOdLKDqUtFmtlKNtHv5nccZNUTkmKM8VPc/axR/oe
+         ZENw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792131014; x=1792735814;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kItInSB7Il0bFX5rQnMMdEMc2ibDWAXPMzy5j1ycaRI=;
-        b=I8usKXSCVx6TtRuDMd3qD+QnjNVrf7HlLteuxORcybalJzC5lbD+0o1d74ODfFbobc
-         lLzUfxYLf4W7bUFwyJ/NDY80xDkvAw8R82jq9oYZftxoXLSlMDS5i9mlXDbPYSZMcK9m
-         lp51X9uKyM1zHzN6L1JWZ5zlgGVQB0UtHeWNvIF5OflIjONnvCrFZFR21VihjgZCcJCk
-         Zr+xhBVaE4d7RKO3Rizol5598n9ZHX0Chy/9k9d/PDrBFS/q1vG2esuI7hvF7//WFZZ7
-         on3GKygrSSoNm1UvWfjOVTFoJHBHYBKR8TcHSqSi9m9i2d3AdeWBj/XVI3takemjHL7B
-         JCzA==
-X-Forwarded-Encrypted: i=1; AKwUvBzp1IVdsvRy+3BbpugwI2bJs6IoHdgVpB3hHsMQ93NVXedfN3E4tPWf3HB2onYJCWvGh+s8JgY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI4eesn/OT9m8QECPXS3sdmjqSUT2f68EV65AecASkLWNYcfyYJ
-	CU1xvCi5iveUWyiEUHTqeha+rfBhrsrq/sqC0IyxsMsX/itQWoQuO//i
-X-Gm-Gg: AYBFou2egUgGAQ25nT6mf2lpG35ducjeN8qZNkIyK97c8caatieVWm23lw9VJnbH/kj
-	HkzCPKvfFhzuCdqGV/CHIDqHqqZYreG2W3xJxEeqonuw/inztvcfe7AXYrEYyy/+qi4pOySoFPN
-	HI+SV9GDz4S58+qX38xnRMXdBgft1WO+oyD8rT+AglIZiAWp4UTgR9y+RbHcKaYrAY4xRlebdC4
-	TixZla3ItrPpWN8w9+SwS9nDM2OfxfMfCjhhw/mIo8pmhv+W1GmpHOMhuxUT/pI8i71F/dSHUmF
-	TZOvRIy+0QLXyLXv+J9mcXlEpV8eq6PHVDfzs7Ul2WzIChwPBb8UlTkwika7t1BZIIpH9ESAsbC
-	GosN0o5yHYS6FNdtb182dG9UNQSIGwDSTXKec+/PVsroFKZQEIYC3RsUfocw4dri46d3PAX7iJG
-	6bLnX+8G/N6rejuGlqM4WEQhSEeWcXD/A84ru/uxv7REtbTmbmbvN9h98KYUPPJSOxUvjK0mMKu
-	hLu
-X-Received: by 2002:a05:7022:3f0c:b0:151:2e62:fe8d with SMTP id a92af1059eb24-16a5dcf817bmr31111126c88.9.1792131014345;
-        Thu, 15 Oct 2026 23:10:14 -0700 (PDT)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa411sm3309068c88.4.2026.10.15.23.10.08
+        d=1e100.net; s=20260707; t=1792131090; x=1792735890;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kcslZZQo3mohhGw1TvUFqfaBbmuwHjcR/UsbiocVbwI=;
+        b=CYVv1RmeviHF8vuZr29EvXvu8mhOgKugsYDe7lyiAXYBl5CoKnKfpv0lmygxV2/i+L
+         e5HSQqVh9L4dv/VKv1JTHS0ur1Gtr1QhV6ZAiGzQXBFDU6mOZLhIoe5j6BT2xjtI2wgt
+         JzuPrp3AU5QeDhqiIBFCdxvzTCS+QfyThq5rwxIU4BUYGpf4WixwUGUuQJO4tElAgBng
+         d5wJSWnPsOjNxmf3ONNXiIt795c7oDTFj0RGDp/IBaiAZI6MVPSfcmDGxonVQQr7lMzW
+         yVwZGZJQdv0JuYO5slLCBIrrA+L6WnAlMOFRitv0bnLYeieUQ5S0fvMumxrATmzDUs4R
+         LW7w==
+X-Forwarded-Encrypted: i=1; AKwUvBz2fdisiKi9//ayEyTbMFrXmE68je5+DIOzTxza+de/5bAQbfAeU5T1DhOi5vHVJ1wxFlPpbJ4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIr6c2dEny4tMTyuKKE/HlHH3h+evYr152QCX7N5nxdzyt9bxkh
+	Z6KuNBqhHcF/+Bdk6gTiikmQJ8ku0gA5G3raEfSXHQcYwILVfsgYpvju
+X-Gm-Gg: AYBFou3c3MHHuOPqDxbciAuPs7j1W5GMHDBiCd1EetXrvQ2YIzubyPGcsWnBHjP8SDJ
+	NW59qDGPZnvNRDYOhsiTdNjShlOyO/Y9HAgrc69674Y7KphHYGF6WX2TVyHJ0K1ZI2VuAm+KVPk
+	m8nnkxT+ydFCdfMiIPeYzgZPT6TvJOBOZtY2kIbxODmHaP8Aio2TdBFFw1h2l7/hA0ewnT8UmFt
+	VrzMJqiVqKVfGr0wYFtorU+0OOKcZsTJvSa6/LXFfO1uSgjPXQGS1dS7dMRHXyF5+l0oN4asxOI
+	CWW0xik3LSQdQGZKI26FEKMCcsAp7CFd2ZqgGfN3WEfc878FuoKaldkeRMeqXOBtsSRca0E1AeU
+	Sz6BR6EzkknNHSVJvE7wOS60dMBgf5FmeKb1dWJBY1LdVGLmeymeii+A9hPI55sOXEbqL6zRzVp
+	aySS7/NgHZHxVsup2tqe7AQFJfqO4saXHkcZvw4x6/sR2VqX+NbU82hhz0ECJDEe7kOocW1DJO2
+	sagSLSwOG1oPj15NngMzcckCfPWEjZso9ghCVsxrU1mOpbi7O0w/vjrXg==
+X-Received: by 2002:a05:7022:7e08:b0:144:fa58:95d8 with SMTP id a92af1059eb24-16a61a6ebb0mr39541036c88.27.1792131089901;
+        Thu, 15 Oct 2026 23:11:29 -0700 (PDT)
+Received: from chaosheng-ASUS-TUF-Gaming-F16-FX607JV-FX607JV.lan ([183.242.161.82])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3607ee0d391sm3725600eec.4.2026.10.15.23.11.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 23:10:13 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Fri, 16 Oct 2026 14:09:55 +0800
-Subject: [PATCH net-next 3/3] net: remove rcu_barrier() from
- __dev_change_net_namespace()
+        Thu, 15 Oct 2026 23:11:29 -0700 (PDT)
+From: Chaosheng Qu <chaosheng.qu.linux@gmail.com>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Max Staudt <max@enpas.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Vincent Mailhol <mailhol@kernel.org>,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/2] can: publish tty->disc_data only after register_candev()
+Date: Fri, 16 Oct 2026 14:11:18 +0800
+Message-ID: <cover.1792118038.git.chaosheng.qu.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-bug-net-netns-move-rcu-barrier-v1-3-4157d798658f@gmail.com>
-References: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
-In-Reply-To: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
-Commit 6549dd43c043 ("net: dev: fix the incorrect hold of net
-namespace's lo device") added rcu_barrier() before
-NETDEV_UNREGISTER_FINAL in dev_change_net_namespace(), so that dst
-entries released by RCU callbacks were on the dst garbage list before
-dst_ifdown() moved them to the loopback device of the old netns.
-Commit 070f2d7e264a ("net: Drop NETDEV_UNREGISTER_FINAL") removed the
-event but kept the barrier, and dead dst entries now point to
-blackhole_netdev instead of a loopback device.
+slcan_open() and can327_ldisc_open() publish the private structure to the
+tty layer through tty->disc_data and register the net_device afterwards.
+If register_candev() fails, free_candev() releases the net_device and the
+private area with it, while tty->disc_data still points at the freed
+memory. register_candev() fails with -ENOMEM from register_netdevice()
+when the device name node or the kobject cannot be allocated.
 
-The barrier waits for the RCU callbacks pending on every CPU while RTNL
-is held, which takes a full grace period on each netns move. Container
-and sandbox managers move one end of a veth pair for every new network
-namespace, so this limits how fast such namespaces can be created on the
-whole system, regardless of how many threads create them.
+Both patches publish the pointer only after the device is registered, so
+the error path has nothing to unwind.
 
-Remove the barrier. The RCU callbacks queued by NETDEV_UNREGISTER
-handlers free memory and drop device references, which the move does not
-wait for. Cached IPv4 and IPv6 routes through the moved device are
-rejected once its netns changes, since rt_genid and fib6_sernum are now
-unique across netns.
+The slcan side is a regression. From the driver's addition in 2010 until
+the 2022 rewrite the error path cleared the pointer in err_free_chan;
+commit cfcb4465e992 ("can: slcan: remove legacy infrastructure") folded
+that label away and dropped the tty->disc_data = NULL with it. can327 was
+written later against this tree and never had the cleanup.
 
-Creating 400 netns, each with a veth pair whose host end is moved back
-to the initial netns, a tap device, addresses and routes, in a 16 vCPU
-guest, median of 5 runs:
+The stale pointer is not observable today. tty_set_termios_ldisc() clears
+tty->disc_data before .open() runs and again when a failed ldisc change
+falls back, and the ldisc entry points are serialised against .open() by
+tty_ldisc_ref() (async) and tty_ldisc_ref_wait() (syscall). The series
+removes a trap for the next modification of these functions rather than
+fixing a bug that can be hit now.
 
-                   before      after
-  1 thread        68 /s      440 /s
-  4 threads       74 /s      409 /s
-  16 threads      77 /s      283 /s
+Both patches apply with git am to mkl/linux-can-next testing and build
+without new warnings on x86_64 with CAN_SLCAN and CAN_CAN327 enabled;
+checkpatch.pl --strict is clean. The success path was tested by attaching
+N_SLCAN and N_CAN327 to a pty under QEMU: the ldisc opens, creates the
+net_device and SIOCGIFNAME returns its name. The register_candev()
+failure path cannot be forced from userspace and is only compile tested.
 
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
----
- net/core/dev.c | 1 -
- 1 file changed, 1 deletion(-)
+Assisted-by: LLM
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 8eb9bf1ff9eb6..ef172905109ee 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -12994,7 +12994,6 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
- 	 * the device is just moving and can keep their slaves up.
- 	 */
- 	call_netdevice_notifiers(NETDEV_UNREGISTER, dev);
--	rcu_barrier();
- 
- 	new_nsid = peernet2id_alloc(dev_net(dev), net, GFP_KERNEL);
- 
+Chaosheng Qu (2):
+  can: slcan: publish tty->disc_data only after register_candev()
+  can: can327: publish tty->disc_data only after register_candev()
+
+ drivers/net/can/can327.c           | 3 ++-
+ drivers/net/can/slcan/slcan-core.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 -- 
 2.43.0
-
