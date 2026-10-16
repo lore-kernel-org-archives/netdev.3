@@ -1,76 +1,76 @@
-Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
+Received: from mail-pg1-f227.google.com (mail-pg1-f227.google.com [209.85.215.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8E53B440F
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927613B6BF9
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792133116; cv=none; b=CNoaKjH0+u2Lml7WZDKCc5LROwXkppiGFvux+isuj6X/3OcxmgCYB6X7nU/ObnGpNcBv/u2ncznVuoSh3JtaT/YfRCEKw3/5IFpCzZIOfBsUi1O7Et3XhTljwo/8F9Xqs6V4gB9ue8+TIAuLm+zmfzL1WDBoVnIFz30sX7LFozg=
+	t=1792133119; cv=none; b=ibvaQaV1bdoZerje4RRXwVfR3VS9DsR876Evx/Du21k8KOKe9ocwg94/+ghfFia1BVCU35RYqukcRqHVswPAdNdnns7O/RmyRD5ZRSW94WVtmi9xdfaxM0zsCstW/FBZjcI51i42+TSxjW7zoPiqwIse+THcxDYB1NgBeHcyqBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792133116; c=relaxed/simple;
-	bh=tAQVrdsyyJJ1/VnlrCyQBVjCC3hfP/5vQzBoldMena8=;
+	s=arc-20240116; t=1792133119; c=relaxed/simple;
+	bh=MNDDEaMXwDqaAjuDvRRbbyikQsRSGWJtgyzz/iDzSjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6vqv57XxvR0taMYJUrRJsPHWCvJpQOZHe+qU3ylOTrJhFEPttIS5pVGZnDbta4xKIe4Fmbu20jOgONsYffOvZeZfbAq3Irtf/YqoCi2iNDWncTVOAb1T014hkFGCVY5q/zEi0TuEOKep6K7JN8KVNpG12cnLhd1TwR8680g6a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=heEqN4Ye; arc=none smtp.client-ip=209.85.214.225
+	 MIME-Version; b=Z4JoFoaZvQ/9hUjXLx9pLB6ZRUeNGV7AeOh9ylbtCBJmbP74vkURmX+MRSDk0V4GyX+JzgcskCLLoUaL0xmOpB80BL61iwhIv1/4gewOToo4dNWBYVFKuOzm8xMUnywRqIfSwrHGq3uURE4TWgUvMAOSCEYlrVOSxZIVZiJHj6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MFwXftQd; arc=none smtp.client-ip=209.85.215.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="heEqN4Ye"
-Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2e8b20a899fso25504075ad.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:45:14 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MFwXftQd"
+Received: by mail-pg1-f227.google.com with SMTP id 41be03b00d2f7-cd5e2d696e0so2167637a12.1
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:45:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792133114; x=1792737914;
+        d=1e100.net; s=20260707; t=1792133116; x=1792737916;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7SflNjtxf0PkggpWCmTLlCNVOS69GChOXUbWcOkeOVE=;
-        b=Hde1Y5DnNZ81lKTESwnkWlr1vTEOFXzzXyHRtyodvzqExySlsy2CzioxwzPcYnOIKk
-         MyTXjcQlE8budAin9gHJeoOVU9JEIWoYdbb3LOAozF9CO7Z/3Pf6G40GpHnQV2aCIOMf
-         Ds+IdH9x7Cs55RAUsLSlo5w2sypWwLs7J2k5KXUxAWPJ8Efe4VQmyp3gTmLkLDO041ch
-         ktyr/4dzYF74oWNKRsezVhCwJaMlBDZxX21uo2zy9yAGJZ92SJ0cJxlcS8gOEbC+87kw
-         5TR76OTfxHht59m5lXZpvehrNcAty5E11jnIur9s8DT7FzPPi7V+7qyqRnNk9avnVC6t
-         ZgUg==
-X-Gm-Message-State: AFq9FYIDArivdHpemomSrhVjjpq9ool/kPumP4iNR/yEPwnXRvx8wile
-	yqXFWIxUeD840owGx7wLtCg9G70QsOIVfXbSA5eZ0uriD8SFLolzy5PlCplqrrVdP3xK1XaV5VW
-	/CQjd0hgmvsTITAAbiTgWL9cRGEMePUOgdpuAaFselJ3lt650pTLUcM8C1VZScgNeE82QGbqV++
-	eawrbtUrRcNOMkjRZwbH1cj10/MRvV1ErSbk3IVasoxPALDi3nFQaDLC+liua+NAuR6URp4/DcW
-	+4xP5kaZeA=
-X-Gm-Gg: AYBFou0+CAgWLsyjnxsY6yRppWeTVeYyvbLDbAoxVSla5HmQoWe0R8iZW267SLKlesf
-	/KNSL4GS8RWJbiporXmbN5Vd/6Wh15lS4YUAhWsaVvHedrgLnH6G5gOCMQxude27Y6bPKu8DWf7
-	cyapliHamQgfkr5dXk0ddUyD0m/mhJsAPgDmhvd/eXKM7usovhrnRiEpLGT5uwc/A/i4R38tFuR
-	QHqvv+IITLsDm3E+mrRHQ9gIRCSA0vGPdK7Vd+I0FLUWwIXZIKr3NUXpJY7JB4S7aq8QQ3BF+AW
-	dlh4pckpVHR03KFUDWrXjl/ydMDwYY/9Xb/l3SlOrafNImLGhDOM/BcnZJW5kJ4C8VTvIrEE+e0
-	QutnpVuBzd3SG8Z9PRqPVe24Se9NJq74M9Nazc1rDWshxBIrbP3ZLZlMMoOkeY/GdvS70L9KFvu
-	4Nhtz3ZUtTRoS9HX1G4lcNtokA7YBmhFUSivVRWA==
-X-Received: by 2002:a17:903:b0d:b0:2dd:b6e7:ac1b with SMTP id d9443c01a7336-2e84280afafmr203586635ad.2.1792133114341;
-        Thu, 15 Oct 2026 23:45:14 -0700 (PDT)
+        bh=jNP3KNAyXLznusJNacuIWBjtx1HBqGd3rzjyEoPPL1I=;
+        b=eS1RxDWHcH+8Rf8tYiZXkW3VxWt7tQbh3/Tivu78mbrhx5OKMELReDpjWoRXCI7Vwt
+         2wwCLdHimm1zz4IBP1T6m5QfwYRR7MVoVUea96j37vpS9fCudO7DitgXpmrD02ycHU2V
+         pMOX8bUmQnrdA2w5bccaj8Rh9cHu0xAusSYOckeM2Td0EqvVfkEaIK0zzBKb7AUXrECI
+         QhXbI/C52lALVzcSr9gh+WTBGVRzqjtF6cxP73qwKmTUyYMoSvuEvbXrszxgUMQeZen0
+         cZyinIEZ0m4Thih5+F819MtQSZtW7oJ38U0N4LHbR7iiwoxu77MmAaargmPJNKdHgt77
+         1DnQ==
+X-Gm-Message-State: AFq9FYLvnkjLffzUtEsKAVdKYxFDr4pdkxH1YfvA8BVW6wZxeqqhd6Gv
+	y1RqoIByxUN64TiyNj9TBinlXmsGiByt5NtBFjLb1gzCavocdAJlC1Hs6io/JdFg7TeN1FoHjyw
+	5tz9ah+5XF4R76hpSWm2cWhYRC5aAwYlC3Gt15wksKAT6Y1izmXAZnWqASLTVTHcSqvM4DSjaO+
+	L0Lbk98/1KlsBPW9P7MXApCkPaBVsoac2y41me/9RNn7c2FkXILvBvlBGV5uE2DUTx98OfIlRIF
+	X/IYM0psHY=
+X-Gm-Gg: AYBFou0iNXuFpiL1w+RSsN8ByrePGp8kIsB6L8zOWxpdfSN2Rk3ybMeRBfwkyIQX7Wa
+	saomTZ+VmzqvN3avlJ/MWTCPD/asIHNNLTbOs3E3FkGjIyYX6cZ4D0SaUWsLzlUUR/EJ+Mm8LzS
+	7KDhCTR2kOX3CIEP+ngXNAoLyriN9N12kCIdqbjwV/zOsC84c1GYNlPmrHqMjHeR0hilOgFB0W1
+	8+Paxh/qEtd/nZa5KsJQ1KbJ5jt2uA2CtRZuVQ/uDf4Ov7cvUGpP7CiH01eJzXDMxFJo/PCbd1M
+	6OEdCWTyg0yjGjHQtLOwkAbgey/b6fhksxCAwvXU0arFj7sVASOeskbxWv4RzFpJRgRgYmtXTIK
+	lYOrwLTdduw+iyzJkXJxuP/E7glIcphGud2SsbJMNb4+2YTQCVhnA7mRu0OdJiGE8vDDcAXPlJf
+	UZIq74QECf82wh4ljpR8bHdKMD7+8PxLhErVcCnw==
+X-Received: by 2002:a17:90b:5343:b0:3a8:9d0d:ca50 with SMTP id 98e67ed59e1d1-3ab3a956dd3mr18890462a91.10.1792133115664;
+        Thu, 15 Oct 2026 23:45:15 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2e97e7fd1e0sm233835ad.51.2026.10.15.23.45.13
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3acbee7ae31sm1267023a91.7.2026.10.15.23.45.14
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 15 Oct 2026 23:45:14 -0700 (PDT)
+        Thu, 15 Oct 2026 23:45:15 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-147be78cd56so23721853c88.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:45:13 -0700 (PDT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-35c5aef2a74so7689829eec.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:45:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1792133112; x=1792737912; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1792133114; x=1792737914; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7SflNjtxf0PkggpWCmTLlCNVOS69GChOXUbWcOkeOVE=;
-        b=heEqN4Yeo7gDbTpmHpaWsT18aq3vbuHXw8+F1RYvACVoseneQEstelsFXJ8p213c6l
-         oY5Rrh0oDsJkzjsRDyB3XZcKAkiLj4wNudK6MqZ95WvIJx7grR2IPmcmOibwJihZqydd
-         VYsC6C6HnSj6xZaEUz/IcUt2km20619MR36lY=
-X-Received: by 2002:a05:701b:4306:20b0:154:e9d2:d741 with SMTP id a92af1059eb24-16a6187e53bmr27472103c88.8.1792133111975;
-        Thu, 15 Oct 2026 23:45:11 -0700 (PDT)
-X-Received: by 2002:a05:701b:4306:20b0:154:e9d2:d741 with SMTP id a92af1059eb24-16a6187e53bmr27472070c88.8.1792133111297;
-        Thu, 15 Oct 2026 23:45:11 -0700 (PDT)
+        bh=jNP3KNAyXLznusJNacuIWBjtx1HBqGd3rzjyEoPPL1I=;
+        b=MFwXftQd+QYQuZqDP+6LzfYGWcIBb35z9sS7HNQ7toCuxxmiCNumSUEaoI5Na+CT2i
+         0q3lnvr3tk51lQhSU57OY2vcJAePIqJIMt+BHW2/CN8Hb+N7EZbZ/c6sf4QFvzQ1G1tq
+         pkZ4RawtCxxyZje8Ow9ZU5KrUf8tKM4KX2yCQ=
+X-Received: by 2002:a05:7022:3a83:b0:181:83c:5df8 with SMTP id a92af1059eb24-181083c5e69mr7030267c88.11.1792133108678;
+        Thu, 15 Oct 2026 23:45:08 -0700 (PDT)
+X-Received: by 2002:a05:7022:3a83:b0:181:83c:5df8 with SMTP id a92af1059eb24-181083c5e69mr7030213c88.11.1792133107952;
+        Thu, 15 Oct 2026 23:45:07 -0700 (PDT)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1830f213ba7sm3791401c88.0.2026.10.15.23.45.09
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1830f213ba7sm3791401c88.0.2026.10.15.23.45.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 23:45:10 -0700 (PDT)
+        Thu, 15 Oct 2026 23:45:07 -0700 (PDT)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -79,11 +79,10 @@ Cc: netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	Joe Damato <joe@dama.to>
-Subject: [PATCH net-next v4 3/8] bnxt_en: Refactor RSS table check logic
-Date: Thu, 15 Oct 2026 23:44:22 -0700
-Message-ID: <20261016064427.496944-4-michael.chan@broadcom.com>
+	andrew.gospodarek@broadcom.com
+Subject: [PATCH net-next v4 1/8] bnxt_en: Clear bp->total_irqs when disabling IRQs
+Date: Thu, 15 Oct 2026 23:44:20 -0700
+Message-ID: <20261016064427.496944-2-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261016064427.496944-1-michael.chan@broadcom.com>
 References: <20261016064427.496944-1-michael.chan@broadcom.com>
@@ -96,58 +95,152 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-We have logic to see if we need to reset the user configured RSS
-table for the default RSS context if the RX rings have changed
-in __bnxt_reserve_rings().  Refactor this code into a helper that
-will be used by other callers later in the patch series.  There is
-no change in behavior.
+bnxt_init_int_mode() and bnxt_clear_int_mode() will free bp->irq_tbl
+but bp->total_irqs retains the old value.  If a subsequent
+reinitialization happens, bnxt_reserve_rings() may see that
+bp->total_irqs does not match a new irqs_required.  It will then
+try to adjust if dynamic MSI-X is supported and call
+bnxt_change_msix().  It will then crash when dereferencing the NULL
+bp->irq_tbl.
 
+Fix it by clearing bp->total_irqs when freeing bp->irq_tbl.  Dynamic
+MSI-X adjustments should only proceed if bp->irq_tbl is valid which
+means that MSI-X has been initialized and can be adjusted.
+bnxt_ulp_irq_restart() also needs a similar check.
+
+Add a bp->irq_tbl_size to prevent OOB bp->irq_tbl[] array access in
+case MSI-X capabilities change during re-init.  For dynamic MSI-X,
+allocate the biggest bp->irq_tbl that FW supports without clamping it
+with maximum CP/NQ rings to allow dynamic MSI-X to grow to the max.
+
+In the AER path, if MSI-X capabilities change, bnxt_reserve_rings()
+will initialize MSI-X if BNXT_NEW_RM() is true.  Add a check in
+bnxt_io_resume() to skip doing it again later.
+
+Fixes: e68256c8a73c ("bnxt_en: Support dynamic MSIX")
+Fixes: c2d20a3814d1 ("bnxt_en: delay pci_alloc_irq_vectors() in the AER path")
 Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Reviewed-by: Joe Damato <joe@dama.to>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+v4:
+Clear bp->total_irqs in bnxt_clear_int_mode() to fix a possible NULL
+bp->irq_tbl issue reported by Sashiko and Gregory Price on patch #8.
+
+v3:
+Added an additional Fixes tag.
+
+https://lore.kernel.org/netdev/20261012220827.340998-2-michael.chan@broadcom.com/
+
+v2:
+https://lore.kernel.org/netdev/20260928041712.3467803-2-michael.chan@broadcom.com/
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 19 +++++++++++++++----
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c |  2 +-
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 2eb9fa21eae0..0556a9b60791 100644
+index c1d3fcc7ae84..19b4d3b92352 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8168,6 +8168,20 @@ static bool bnxt_rings_ok(struct bnxt *bp, struct bnxt_hw_rings *hwr)
- 	       hwr->stat && (hwr->cp_p5 || !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS));
+@@ -11510,6 +11510,12 @@ static int bnxt_change_msix(struct bnxt *bp, int total)
+ 	struct msi_map map;
+ 	int i;
+ 
++	if (!bp->irq_tbl)
++		return 0;
++
++	if (total > bp->irq_tbl_size)
++		return bp->total_irqs;
++
+ 	/* add MSIX to the end if needed */
+ 	for (i = bp->total_irqs; i < total; i++) {
+ 		map = pci_msix_alloc_irq_at(bp->pdev, i, NULL);
+@@ -11652,12 +11658,13 @@ static int bnxt_init_int_mode(struct bnxt *bp)
+ 
+ 	tbl_size = total_vecs;
+ 	if (pci_msix_can_alloc_dyn(bp->pdev))
+-		tbl_size = max;
++		tbl_size = bp->hw_resc.max_irqs;
+ 	bp->irq_tbl = kzalloc_objs(*bp->irq_tbl, tbl_size);
+ 	if (!bp->irq_tbl) {
+ 		rc = -ENOMEM;
+ 		goto msix_setup_exit;
+ 	}
++	bp->irq_tbl_size = tbl_size;
+ 
+ 	for (i = 0; i < total_vecs; i++)
+ 		bp->irq_tbl[i].vector = pci_irq_vector(bp->pdev, i);
+@@ -11680,6 +11687,8 @@ static int bnxt_init_int_mode(struct bnxt *bp)
+ 	netdev_err(bp->dev, "bnxt_init_int_mode err: %x\n", rc);
+ 	kfree(bp->irq_tbl);
+ 	bp->irq_tbl = NULL;
++	bp->total_irqs = 0;
++	bp->irq_tbl_size = 0;
+ 	pci_free_irq_vectors(bp->pdev);
+ 	return rc;
+ }
+@@ -11690,6 +11699,8 @@ static void bnxt_clear_int_mode(struct bnxt *bp)
+ 
+ 	kfree(bp->irq_tbl);
+ 	bp->irq_tbl = NULL;
++	bp->total_irqs = 0;
++	bp->irq_tbl_size = 0;
  }
  
-+/* Check to see if we need to reset the user configured RSS table
-+ * (default RSS context) because of change in RX rings from
-+ * old_rx to new_rx.
-+ */
-+static void bnxt_check_rss_tbl_lost(struct bnxt *bp, int old_rx, int new_rx)
-+{
-+	if (netif_is_rxfh_configured(bp->dev) &&
-+	    (bnxt_get_nr_rss_ctxs(bp, old_rx) !=
-+	     bnxt_get_nr_rss_ctxs(bp, new_rx) ||
-+	     bnxt_get_max_rss_ring(bp) >= new_rx)) {
-+		ethtool_rxfh_indir_lost(bp->dev);
-+	}
-+}
-+
- static int bnxt_get_avail_msix(struct bnxt *bp, int num);
+ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+@@ -11716,7 +11727,7 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
  
- static int __bnxt_reserve_rings(struct bnxt *bp)
-@@ -8257,12 +8271,7 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
- 	if (rx_rings != bp->rx_nr_rings) {
- 		netdev_warn(bp->dev, "Able to reserve only %d out of %d requested RX rings\n",
- 			    rx_rings, bp->rx_nr_rings);
--		if (netif_is_rxfh_configured(bp->dev) &&
--		    (bnxt_get_nr_rss_ctxs(bp, bp->rx_nr_rings) !=
--		     bnxt_get_nr_rss_ctxs(bp, rx_rings) ||
--		     bnxt_get_max_rss_ring(bp) >= rx_rings)) {
--			ethtool_rxfh_indir_lost(bp->dev);
--		}
-+		bnxt_check_rss_tbl_lost(bp, bp->rx_nr_rings, rx_rings);
+ 	if (irq_re_init && BNXT_NEW_RM(bp) && irqs_required != bp->total_irqs) {
+ 		irq_change = true;
+-		if (!pci_msix_can_alloc_dyn(bp->pdev)) {
++		if (!pci_msix_can_alloc_dyn(bp->pdev) || !bp->irq_tbl) {
+ 			bnxt_ulp_irq_stop(bp);
+ 			bnxt_clear_int_mode(bp);
+ 			irq_cleared = true;
+@@ -15080,7 +15091,7 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
+ 			hwr.cp += bnxt_get_ulp_msix_num(bp);
+ 			hwr.cp = min_t(int, hwr.cp, bnxt_get_max_func_irqs(bp));
+ 		}
+-		if (hwr.cp > bp->total_irqs) {
++		if (bp->irq_tbl && hwr.cp > bp->total_irqs) {
+ 			int total_msix = bnxt_change_msix(bp, hwr.cp);
+ 
+ 			if (total_msix < hwr.cp) {
+@@ -17743,7 +17754,7 @@ static void bnxt_io_resume(struct pci_dev *pdev)
+ 			err = bnxt_open(netdev);
+ 		} else {
+ 			err = bnxt_reserve_rings(bp, true);
+-			if (!err)
++			if (!err && !bp->irq_tbl)
+ 				err = bnxt_init_int_mode(bp);
+ 		}
  	}
- 	bp->rx_nr_rings = rx_rings;
- 	bp->cp_nr_rings = hwr.cp;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 41d05efd6307..75428a585577 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2489,6 +2489,7 @@ struct bnxt {
+ 	 */
+ 	unsigned long		*ring_affinity_set;
+ 	int			max_irqs;
++	int			irq_tbl_size;
+ 	int			total_irqs;
+ 	int			ulp_num_msix_want;
+ 	u8			mac_addr[ETH_ALEN];
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+index a515c368bac0..9b7bc508fae7 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+@@ -396,7 +396,7 @@ void bnxt_ulp_irq_restart(struct bnxt *bp, int err)
+ 		if (!ops || !ops->ulp_irq_restart)
+ 			return;
+ 
+-		if (!err) {
++		if (!err && bp->irq_tbl) {
+ 			ent = kzalloc_objs(*ent, ulp->msix_requested);
+ 			if (!ent)
+ 				return;
 -- 
 2.51.0
 
