@@ -1,277 +1,334 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E014550DAA;
-	Fri, 16 Oct 2026 17:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022C72D6E5A;
+	Fri, 16 Oct 2026 17:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792170648; cv=none; b=PUgziZgsdNud/SZM+qAN0RjX6lQbQIHm1zKRj+hIU8Fvsm3VJtJMvKNWbPgyBy6MeQBJpFwv+VkQrfN36D8kLLM6Y9KSAcA7mVPe+sIX/nOeIQ/GZ7AZRD6UPqMzN5IB1WR0N305C8FS2BEdpctQkGZ7l/DUagiqo6kyjo+/9nM=
+	t=1792170884; cv=none; b=X89jD/mqvLqtiBEeDFIQPL5vgPZ9f8TWWuaFjjANNqo6F+GcgB6A8OxTGYnDmCW3nesBVlzLcsfAykjugLl66C2uCUN4jXhhxZcyenposPFArKPYn4IQ8BbbEa9IBTkVHehnE6WZi5grBqIwvfiJqfkbWFRY6KkCndBF9g10wFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792170648; c=relaxed/simple;
-	bh=ClWatQNDLxiU3ylwVIvGAKjZ9bslSf25aw2Yg91ytsc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qv3bY1LR8Gg53B7WmYw2ccBzGGvFhkBcg+UeAocZxtLIfctPuJpc2cWtcqmKLHp/ZiU4AXvtwV7dp++UPbCY+1VuQTq3on4sBy7mWfntaMADEcwz45F87PkP9pIBIvm/4TFvbz1EdASYLSdD8zU9pq72KQtJ6tlgljmVvF1YUkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfrIXKL+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1792170884; c=relaxed/simple;
+	bh=oYjSgEgoTVkAqaic/eLXsthjcrJqD0NXBt9N8/nVNIQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UW8HD4FskXIh+xs+JCrgehh2jqUYQH41J7BbDPdCf6CHSxU4cfO/v+OfpHsn217s9BCp7ZVZqLVjW+GqOC8dS90G5UF/DwbS3g13KBGImQA+IY2c+LwFI5CzLJQ2uF48t3f+3TjOw8CU1dTaZyYll0c/6OZ8ziUoiryWs/+DfuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=J0Be9/kM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfrIXKL+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B2AA6C2BCF4;
-	Fri, 16 Oct 2026 17:10:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792170647;
-	bh=ClWatQNDLxiU3ylwVIvGAKjZ9bslSf25aw2Yg91ytsc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=jfrIXKL+oSsRQgoTLmCeJBgiFENWK3IivvN+1MoVxL1yPFErDwZLUqSu0W+mwoqUI
-	 CoZ0XkfN/teQkxmluWYZHawnug6+qmQaRihr6xxg7A5Ci7UsnpEEOgF1efE8E9K7Id
-	 hgh1yNz3SIfgxo3vuBCnYmhJ0bHa+XrxG/HzMgQlHFFBJHm/m8kGTHLQVK79GCJJUl
-	 8rkUwXcDnpw9p0u8i+w5oKVDGWRUeDMc6m5SkCsLsO9Nfd6DVzoP24VGHO4frX/BUB
-	 o9EoH6RlNhDxO9YIJtCX5A9BiQ+ZzEFYS3+bicAIZyDHz2Sg33KMwRyIa3Wl845PvT
-	 imJ3U/DN9w3zw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C04FCCA462;
-	Fri, 16 Oct 2026 17:10:47 +0000 (UTC)
-From: Pierre-Yves Le Borgne via B4 Relay <devnull+pylaterreur.gmail.com@kernel.org>
-Date: Fri, 16 Oct 2026 18:10:47 +0100
-Subject: [PATCH net] net: gso: complete partial checksums of fraglist
- segments
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="J0Be9/kM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=yk5QjouUMVgrI9mYSPXA66yoO1F4fmgDZyJqEKOQrG0=; b=J0Be9/kMLz0FNq2E1ciKmOdKrb
+	Mx0Vpin6IRwXunELqsTiZDE0aGwpioJ4kntiGTV6htzwJPyApzV8b483+vzB5HGn+KyjaQExyCu2h
+	X44SkfTrZ/1t5m9pOHxgW4QrE6bYdKywFVXJIaYRgiPss37nKvW6ZLsYk2UzH94Ffl+M=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xHlVg-00BBg8-KI; Fri, 16 Oct 2026 19:14:24 +0200
+Date: Fri, 16 Oct 2026 19:14:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Pufan Jin <cyan2254650260@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: Add JLSemi JL21xx Gigabit Ethernet
+ PHY driver
+Message-ID: <cdadd697-fc26-43eb-a427-07f557e3b6aa@lunn.ch>
+References: <20261016161543.444356-1-cyan2254650260@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-fraglist-csum-v1-1-93945be7bb5d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJZa0moC/yWMQQqDMBQFryJv3YCJNWivUlzY9Ed/sWnJjyKId
- 2+qyxmY2SAUmQS3YkOkhYU/IYO+FHBjHwZS/MwMUxqrS22Vj/0wsSTlZH6rtqm1r2rjbXVFbr6
- RPK/H745ACd0pZX68yKX/Cfv+A3VL7rV2AAAA
-X-Change-ID: 20261016-fraglist-csum-9851f352f634
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Steffen Klassert <steffen.klassert@secunet.com>, 
- Willem de Bruijn <willemb@google.com>, Felix Fietkau <nbd@nbd.name>, 
- David Ahern <dsahern@kernel.org>
-Cc: Alice Mikityanska <alice.kernel@fastmail.im>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Pierre-Yves Le Borgne <pylaterreur@gmail.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792170647; l=8691;
- i=pylaterreur@gmail.com; s=20261016; h=from:subject:message-id;
- bh=+6s2T+CDmwwAnHYG9GYCPGRzPJ9RBMWkgGA4q3senVk=;
- b=kZzQ4Q7JYQK/iQAX86QuOUaPz9n59cwbCQvw5z16j8UbmaSVTVaLDxCwzAcBN2BDJwUW0C3bn
- h+ruCMlV2a6BIR0Eh5Wb13xnichnsrpVhlyQ+5GOhXeZIE3t1VctYFW
-X-Developer-Key: i=pylaterreur@gmail.com; a=ed25519;
- pk=ji67AkgYQ74oEk6yXWqtaQNCkT8ZDb7Jmi6SF/Neu7g=
-X-Endpoint-Received: by B4 Relay for pylaterreur@gmail.com/20261016 with
- auth_id=1214
-X-Original-From: Pierre-Yves Le Borgne <pylaterreur@gmail.com>
-Reply-To: pylaterreur@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261016161543.444356-1-cyan2254650260@gmail.com>
 
-From: Pierre-Yves Le Borgne <pylaterreur@gmail.com>
+On Sat, Oct 17, 2026 at 12:15:43AM +0800, Pufan Jin wrote:
+> Add a new PHY driver for JLSemi (Jinglue Semiconductor (Shanghai)
+> Co., Ltd.) Gigabit Ethernet PHYs, specifically supporting the JL2101,
+> JL2121, and generic JL21xx models.
+> 
+> The driver implements:
+> - Paged register access via register 0x1f
+> - RGMII TX and RX internal delay configuration with Device Tree
+>   support via phy_get_internal_delay()
+> - Link downshift and resolved speed, duplex, and master/slave mode
+>   reporting from vendor-specific status registers
+> - Interrupt handling for link state change and PME wakeup events
+> - Hardware LED control via the Linux LED class / netdev triggers
+> - Wake-on-LAN (WoL) with magic packet matching
+> - Autonomous EEE disable to prevent interoperability packet drops
+> - Power management (suspend / resume)
+> 
+> Link: https://www.jlsemi.com/
+> Signed-off-by: Pufan Jin <cyan2254650260@gmail.com>
+> ---
+>  MAINTAINERS              |   6 +
+>  drivers/net/phy/Kconfig  |   9 +
+>  drivers/net/phy/Makefile |   1 +
+>  drivers/net/phy/jlsemi.c | 551 +++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 567 insertions(+)
+>  create mode 100644 drivers/net/phy/jlsemi.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f53047aa8..4f738a573 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13976,6 +13976,12 @@ T:	git https://github.com/kleikamp/linux-shaggy.git
+>  F:	Documentation/admin-guide/jfs.rst
+>  F:	fs/jfs/
+>  
+> +JLSEMI PHY DRIVER
+> +M:	Pufan Jin <cyan2254650260@gmail.com>
+> +L:	netdev@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/net/phy/jlsemi.c
+> +
+>  JME NETWORK DRIVER
+>  M:	Guo-Fu Tseng <cooldavid@cooldavid.org>
+>  L:	netdev@vger.kernel.org
+> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+> index b4ef927fd..535a48084 100644
+> --- a/drivers/net/phy/Kconfig
+> +++ b/drivers/net/phy/Kconfig
+> @@ -270,6 +270,15 @@ config INTEL_XWAY_PHY
+>  	  PEF 7061, PEF 7071 and PEF 7072 or integrated into the Intel
+>  	  SoCs xRX200, xRX300, xRX330, xRX350 and xRX550.
+>  
+> +config JLSEMI_PHY
+> +	tristate "JLSemi Ethernet PHYs"
+> +	help
+> +	  Supports the JLSemi Gigabit Ethernet PHYs, including the
+> +	  JL2121 and JL2101 models found on embedded system carrier boards
+> +	  and single-board computers.
+> +
+> +	  If unsure, say N.
+> +
+>  config LSI_ET1011C_PHY
+>  	tristate "LSI ET1011C PHY"
+>  	help
+> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+> index 25c4a3c24..2d7758e86 100644
+> --- a/drivers/net/phy/Makefile
+> +++ b/drivers/net/phy/Makefile
+> @@ -66,6 +66,7 @@ obj-$(CONFIG_DP83TG720_PHY)	+= dp83tg720.o
+>  obj-$(CONFIG_FIXED_PHY)		+= fixed_phy.o
+>  obj-$(CONFIG_ICPLUS_PHY)	+= icplus.o
+>  obj-$(CONFIG_INTEL_XWAY_PHY)	+= intel-xway.o
+> +obj-$(CONFIG_JLSEMI_PHY)	+= jlsemi.o
+>  obj-$(CONFIG_LSI_ET1011C_PHY)	+= et1011c.o
+>  obj-$(CONFIG_LXT_PHY)		+= lxt.o
+>  obj-$(CONFIG_MARVELL_10G_PHY)	+= marvell10g.o
+> diff --git a/drivers/net/phy/jlsemi.c b/drivers/net/phy/jlsemi.c
+> new file mode 100644
+> index 000000000..c3acff48d
+> --- /dev/null
+> +++ b/drivers/net/phy/jlsemi.c
+> @@ -0,0 +1,551 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Driver for JLSemi Gigabit Ethernet PHYs (JL2121 / JL2101)
+> + *
+> + * Copyright (C) 2026 Pufan Jin <cyan2254650260@gmail.com>
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/ethtool.h>
+> +#include <linux/ethtool_netlink.h>
+> +#include <linux/leds.h>
+> +#include <linux/module.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/phy.h>
+> +
+> +#define PHY_ID_JL2101			0x937c4032
+> +#define PHY_ID_JL2121			0x937c4030
+> +#define PHY_ID_JL21XX			0x937c0000
+> +#define JLSEMI_PHY_ID_MASK		0xffff0000
+> +
+> +#define JLSEMI_PAGE_SELECT		0x1f
+> +
+> +/* Status page and register */
+> +#define JLSEMI_STATUS_PAGE		0xa43
+> +#define JLSEMI_PHYSR			0x1a
+> +#define JLSEMI_PHYSR_DUPLEX		BIT(3)
+> +#define JLSEMI_PHYSR_SPEED_MASK		GENMASK(5, 4)
+> +#define JLSEMI_PHYSR_SPEED_1000		0x20
+> +#define JLSEMI_PHYSR_SPEED_100		0x10
+> +#define JLSEMI_PHYSR_SPEED_10		0x00
+> +#define JLSEMI_PHYSR_MASTER		BIT(11)
+> +
+> +/* RGMII delay page and registers */
+> +#define JLSEMI_RGMII_PAGE		0xd08
+> +#define JLSEMI_TXCR			0x11
+> +#define JLSEMI_TX_DELAY			BIT(8)
+> +#define JLSEMI_RXCR			0x15
+> +#define JLSEMI_RX_DELAY			BIT(3)
+> +
+> +/* Power and EEE configuration */
+> +#define JLSEMI_PHYCR2			0x19
+> +#define JLSEMI_PHYCR2_PHY_EEE_ENABLE	BIT(5)
+> +
+> +/* Interrupt page and registers */
+> +#define JLSEMI_INSR			0x1d
+> +#define JLSEMI_INER_PAGE		0xa42
+> +#define JLSEMI_INER			0x12
+> +#define JLSEMI_INER_LINK_STATUS		BIT(4)
+> +#define JLSEMI_INER_PME			BIT(7)
+> +
+> +/* Wake-on-LAN settings */
+> +#define JLSEMI_WOL_PAGE			0xd8a
+> +#define JLSEMI_WOL_SETTINGS_EVENTS	16
+> +#define JLSEMI_WOL_EVENT_MAGIC		BIT(12)
+> +#define JLSEMI_WOL_RST_RMSQ		17
+> +#define JLSEMI_WOL_RG_RSTB		BIT(15)
+> +#define JLSEMI_WOL_RMSQ			0x1fff
+> +
+> +/* Physical MAC address for WoL */
+> +#define JLSEMI_PHYSICAL_ADDR_PAGE	0xd8c
+> +#define JLSEMI_PHYSICAL_ADDR_WORD0	16
+> +#define JLSEMI_PHYSICAL_ADDR_WORD1	17
+> +#define JLSEMI_PHYSICAL_ADDR_WORD2	18
+> +
+> +/* LED control */
+> +#define JLSEMI_LED_COUNT		3
+> +#define JLSEMI_LEDCR_PAGE		0xd04
+> +#define JLSEMI_LEDCR			0x10
+> +#define JLSEMI_LEDCR_MODE		BIT(15)
+> +#define JLSEMI_LEDCR_ACT_TXRX		BIT(4)
+> +#define JLSEMI_LEDCR_LINK_1000		BIT(3)
+> +#define JLSEMI_LEDCR_LINK_100		BIT(1)
+> +#define JLSEMI_LEDCR_LINK_10		BIT(0)
+> +#define JLSEMI_LEDCR_MASK		GENMASK(4, 0)
+> +#define JLSEMI_LEDCR_SHIFT		5
+> +
+> +struct jlsemi_priv {
+> +	u16 iner;
+> +};
+> +
+> +static int jlsemi_read_page(struct phy_device *phydev)
+> +{
+> +	return __phy_read(phydev, JLSEMI_PAGE_SELECT);
+> +}
+> +
+> +static int jlsemi_write_page(struct phy_device *phydev, int page)
+> +{
+> +	return __phy_write(phydev, JLSEMI_PAGE_SELECT, page);
+> +}
+> +
+> +static int jlsemi_probe(struct phy_device *phydev)
+> +{
+> +	struct device *dev = &phydev->mdio.dev;
+> +	struct jlsemi_priv *priv;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	phydev->priv = priv;
+> +
+> +	return 0;
+> +}
+> +
+> +static int jlsemi_config_rgmii_delay(struct phy_device *phydev)
+> +{
+> +	u16 val_txdly = 0, val_rxdly = 0;
+> +	s32 rx_delay = -1, tx_delay = -1;
+> +	int ret;
+> +
+> +	if (!phy_interface_is_rgmii(phydev))
+> +		return 0;
 
-Since commit f0b8c3034556 ("udp: do not transition UDP GRO fraglist
-partial checksums to unnecessary"), fraglist GRO keeps CHECKSUM_PARTIAL
-on the packets it aggregates, and skb_segment_list() gives every segment
-the ip_summed of the head. Before it, UDP fraglist GRO turned them into
-CHECKSUM_UNNECESSARY, which left their checksums unfinished whatever the
-output device. Packets arrive with CHECKSUM_PARTIAL from veth, or from
-virtio-net when the host sets VIRTIO_NET_HDR_F_NEEDS_CSUM, which it does
-for packets that the host itself or another VM on the same bridge sent
-with checksum offload.
+...
 
-validate_xmit_skb() completes CHECKSUM_PARTIAL checksums only for packets
-that need no segmentation, and relies on the GSO callbacks for the
-others: skb_segment() computes the checksums of its segments when the
-device can't. The fraglist path doesn't, so when the output device has no
-checksum offload, e.g. a tun device without TUN_F_CSUM, the segments leave
-with only the pseudo-header sum in their TCP or UDP checksum field and are
-dropped by the receiver. Only the packets that GRO aggregated are hit, so
-sparse traffic gets through while bulk transfers stall.
+> +static int jlsemi_config_init(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	ret = jlsemi_disable_autonomous_eee(phydev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (phy_interface_is_rgmii(phydev)) {
+> +		ret = jlsemi_config_rgmii_delay(phydev);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
 
-This was seen with OpenWrt running as a VM, as OpenWrt turns rx-gro-list
-on by default: WireGuard packets from the host, which the VM routed into
-a VPN tun device, reached the VPN peer with unfinished UDP checksums, all
-with the same value. TCP is affected the same way.
+No need to test for RGMII twice.
 
-Complete the checksums of the segments once the protocol code has fixed
-their headers up, as validate_xmit_skb() does for unsegmented packets.
-skb_segment_list() itself is too early for UDP, as
-__udp_gso_segment_list() restores the length in the head's UDP header
-only after it. Segments that are GSO packets themselves, which TCP
-fraglist GRO can chain, are left as they were: skb_checksum_help()
-refuses GSO packets.
+> +static int jlsemi_read_status(struct phy_device *phydev)
+> +{
 
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/Ysurac/openmptcprouter/issues/4402
-Assisted-by: LLM
-Signed-off-by: Pierre-Yves Le Borgne <pylaterreur@gmail.com>
+> +	if (phydev->speed >= SPEED_1000) {
+
+The > can be dropped. It should not happen.
+
+Humm, actually. Should this be SPEED_100?
+
+> +static void jlsemi_get_wol(struct phy_device *phydev, struct ethtool_wolinfo *wol)
+> +{
+> +	int val;
+> +
+> +	wol->supported = WAKE_MAGIC;
+> +	wol->wolopts = 0;
+> +
+> +	val = phy_read_paged(phydev, JLSEMI_WOL_PAGE, JLSEMI_WOL_SETTINGS_EVENTS);
+> +	if (val < 0)
+> +		return;
+> +
+> +	if (val & JLSEMI_WOL_EVENT_MAGIC)
+> +		wol->wolopts |= WAKE_MAGIC;
+
+I think you need something like:
+
+        if (!device_can_wakeup(&dev->mdio.dev)) {
+                wol->supported = 0;
+                return;
+        }
+
+in order to determine if the PHY really can wake the system.
+
+Look at realtek_main.c and
+
+commit b826bf795564ddef6402cf2cb522ae035bd117ae
+Author: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Date:   Wed Aug 13 11:04:45 2025 +0100
+
+    net: phy: realtek: fix RTL8211F wake-on-lan support
+
+> +static struct phy_driver jlsemi_drivers[] = {
+> +	{
+> +		PHY_ID_MATCH_EXACT(PHY_ID_JL2101),
+> +		.name			= "JLSemi JL2101 Gigabit Ethernet",
+> +		.features		= PHY_GBIT_FEATURES,
+
+Should not be needed, if the device describes itself correctly.
+
+> +	{
+> +		.phy_id			= PHY_ID_JL21XX,
+> +		.phy_id_mask		= JLSEMI_PHY_ID_MASK,
+
+PHY_ID_MATCH_VENDOR()
+
+> +
+> +static const struct mdio_device_id __maybe_unused jlsemi_tbl[] = {
+> +	{ PHY_ID_MATCH_EXACT(PHY_ID_JL2101) },
+> +	{ PHY_ID_MATCH_MODEL(PHY_ID_JL2121) },
+> +	{ PHY_ID_JL21XX, JLSEMI_PHY_ID_MASK },
+> +	{ /* sentinel */ }
+
+PHY_ID_MATCH_VENDOR() should work here as well.
+
+
+    Andrew
+
 ---
-Tested on net/main 191aa41548b2 in UML: frames written with
-VIRTIO_NET_HDR_F_NEEDS_CSUM to a tap opened with IFF_NAPI | IFF_VNET_HDR
-(virtio_net_hdr_to_skb() and napi_gro_receive(), as on virtio-net RX),
-rx-gro-list on, routed with and without SNAT to a tun device read
-without vnet header. Packets that left the tun with the bare
-pseudo-header sum as checksum, with 2000 frames written per case:
-
-                    UDPv4  TCPv4  UDPv6  TCPv6
-  without, no NAT    1030    836   1106   1424
-  without, SNAT       250    721    683    196
-  with, either          0      0      0      0
-
-With rx-gro-list off, both kernels complete every checksum. TCP from a
-TSO veth sender through a router with rx-gro-list on, out of a veth with
-and without tx checksum offload, still works. The error path was
-exercised by injecting failures into 1 in 8 checksummed segments, under
-KASAN, kmemleak and lockdep. The same reproducer showed the problem, and
-an earlier version of this fix working, on an OpenWrt 6.18 kernel in a
-VM.
-
-Callers of skb_gso_segment() that pass no offload features (xfrm,
-nfnetlink_queue, wireguard, ovpn) now get completed checksums from the
-fraglist path too, as they already do from skb_segment().
-
-Not done: allyesconfig and full allmodconfig builds (not enough disk
-here); the changed objects build without new warnings on x86_64
-allmodconfig with W=1 and sparse (GCC 15). No selftest: the
-reproducer needs a NAPI tap fed with virtio_net_hdr frames and a tun
-reader that checks checksums, about 300 lines of C. I can turn it into
-one under tools/testing/selftests/net if that is wanted.
-
-This patch was developed with an LLM coding agent (Claude Code). It was
-asked to find out why forwarded WireGuard traffic got bad UDP checksums
-in the OpenMPTCProuter report linked above, then to fix that and test
-the fix; it did the analysis, wrote the fix and this changelog, and ran
-the tests above.
----
- include/linux/skbuff.h   |  2 ++
- net/core/skbuff.c        | 40 ++++++++++++++++++++++++++++++++++++++++
- net/ipv4/tcp_offload.c   |  4 +++-
- net/ipv4/udp_offload.c   |  6 ++++--
- net/ipv6/tcpv6_offload.c |  4 +++-
- 5 files changed, 52 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index a3ff380d43f0..9c3dbbeb1e6e 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -4288,6 +4288,8 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet);
- struct sk_buff *skb_segment(struct sk_buff *skb, netdev_features_t features);
- struct sk_buff *skb_segment_list(struct sk_buff *skb, netdev_features_t features,
- 				 unsigned int offset);
-+struct sk_buff *skb_segment_list_csum_help(struct sk_buff *segs,
-+					   netdev_features_t features);
- struct sk_buff *skb_vlan_untag(struct sk_buff *skb);
- int skb_ensure_writable(struct sk_buff *skb, unsigned int write_len);
- int skb_ensure_writable_head_tail(struct sk_buff *skb, struct net_device *dev);
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 41beaf625421..be3fa938e1da 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4782,6 +4782,46 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- }
- EXPORT_SYMBOL_GPL(skb_segment_list);
- 
-+/**
-+ * skb_segment_list_csum_help - finish the checksums of fraglist segments
-+ * @segs: segments built by skb_segment_list(), with their final headers
-+ * @features: features of the output path
-+ *
-+ * The segments built by skb_segment_list() all have the ip_summed of the
-+ * GRO head. If the aggregated packets were CHECKSUM_PARTIAL, e.g. received
-+ * from virtio-net or veth, compute the checksums that the output device
-+ * can't offload, as skb_segment() does for the segments it builds.
-+ * Segments that are GSO packets themselves (TCP fraglist GRO can chain
-+ * those) are left alone, as skb_checksum_help() can't handle them.
-+ *
-+ * Return: @segs, or an error pointer after freeing the segments.
-+ */
-+struct sk_buff *skb_segment_list_csum_help(struct sk_buff *segs,
-+					   netdev_features_t features)
-+{
-+	struct sk_buff *seg;
-+	int err;
-+
-+	if (segs->ip_summed != CHECKSUM_PARTIAL)
-+		return segs;
-+
-+	for (seg = segs; seg; seg = seg->next) {
-+		if (skb_is_gso(seg))
-+			continue;
-+
-+		err = skb_csum_hwoffload_help(seg, features);
-+		if (err) {
-+			kfree_skb_list(segs->next);
-+			segs->next = NULL;
-+			/* drop the extra reference skb_segment_list() took */
-+			kfree_skb(segs);
-+			return ERR_PTR(err);
-+		}
-+	}
-+
-+	return segs;
-+}
-+
- /**
-  *	skb_segment - Perform protocol segmentation on skb.
-  *	@head_skb: buffer to segment
-diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-index e74d99ca9fac..0bb73e7eeff0 100644
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -92,7 +92,9 @@ static struct sk_buff *__tcp4_gso_segment_list(struct sk_buff *skb,
- 	if (IS_ERR(skb))
- 		return skb;
- 
--	return __tcpv4_gso_segment_list_csum(skb);
-+	skb = __tcpv4_gso_segment_list_csum(skb);
-+
-+	return skb_segment_list_csum_help(skb, features);
- }
- 
- static struct sk_buff *tcp4_gso_segment(struct sk_buff *skb,
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index cf07c3c6611a..4a90cdb1a9eb 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -473,9 +473,11 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
- 	udp_set_len_short(udp_hdr(skb), sizeof(struct udphdr) + mss);
- 
- 	if (is_ipv6)
--		return __udpv6_gso_segment_list_csum(skb);
-+		skb = __udpv6_gso_segment_list_csum(skb);
- 	else
--		return __udpv4_gso_segment_list_csum(skb);
-+		skb = __udpv4_gso_segment_list_csum(skb);
-+
-+	return skb_segment_list_csum_help(skb, features);
- }
- 
- struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
-diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
-index eec3778855eb..e664904020e7 100644
---- a/net/ipv6/tcpv6_offload.c
-+++ b/net/ipv6/tcpv6_offload.c
-@@ -162,7 +162,9 @@ static struct sk_buff *__tcp6_gso_segment_list(struct sk_buff *skb,
- 	if (IS_ERR(skb))
- 		return skb;
- 
--	return __tcpv6_gso_segment_list_csum(skb);
-+	skb = __tcpv6_gso_segment_list_csum(skb);
-+
-+	return skb_segment_list_csum_help(skb, features);
- }
- 
- static struct sk_buff *tcp6_gso_segment(struct sk_buff *skb,
-
----
-base-commit: 191aa41548b2d2b6af534a6d5cf84a552435c74c
-change-id: 20261016-fraglist-csum-9851f352f634
-
-Best regards,
---  
-Pierre-Yves Le Borgne <pylaterreur@gmail.com>
-
-
+pw-bot: cr
+	
