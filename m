@@ -1,208 +1,236 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B03730CD89;
-	Fri, 16 Oct 2026 08:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792137772; cv=none; b=a4PyJzJ+mIqfTmj1tPM2EWb0lThJ94B+WWp68iNM8Fm8Jj5ndpG+0yPUhZKoMgYZK9NW3ThuXJWYng+FzS862xHa15chv98HYAth7ReZcnqpdDcNCSuX7w7+Zsk/0/WlBPyX+oC2zvMh3z8wh/AgyQVnfpwEkpzNSsVk+N4TT3o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792137772; c=relaxed/simple;
-	bh=pMIa+4jlDQ1BZ1RH0OIjMLub+XE/TmfCSI6K4unToXg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MmXqvZU2N2dTEXpDW6u1QeYH/u6gknGHg89rEdMjpxRH/66eGjdCT7yWvnsxpmTqdLEbnjYrJ9qJC2k1I0/UZhPQECZgJ7BoHera9USNkKZJ5azBpeH9gD+ximlqXqXP9nmgqxp9bEZVhEEjOYHg/gj4QcSJqRKcmplU7OcbItg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mLTrWFaL; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C960B26C385
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 08:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792138348; cv=pass; b=CVEf9DUQLwfHD1kYrU/jfzKK9twW2hGLP0OVD4JjweDFgxKF8MR0N6itXB7KVcJdVX16Wdk+8D4iOu6fXT7lPGTmLQIETvRbscP7tDfF1ht96R9ShPZC7i9jYXr2CLxH5Xp5GAWEvpudzsCRkfFj0Y3UOxJ4+Yq2UXj1ldU4apw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792138348; c=relaxed/simple;
+	bh=WxuziSkYi5UPMb7ZUMtI9i1smM4fxMt4RUkXbggiHKw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AUuxTHBxakodM1i9B5F1KSijuQDITPF/IKE2x1NQ62PjZpQoPfF1YnxG5OtDCmL5qxnhII5UMjqWc0AcYBclNyAQbvtzcSRFeUklyyWn9kuut4iDnPF9SuSuf4RobVU9IS/34hlw9OcZ/yIqM9OfaZW7ivE+5tZth8dqTOGtN9I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B6ouA4Qd; arc=pass smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mLTrWFaL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pMIa+4jlDQ1BZ1RH0OIjMLub+XE/TmfCSI6K4unToXg=; b=mLTrWFaLLdykn+mAxvhEUNz/SX
-	JSLNq3j1cyd0ui4eoSZjGqn5fJ5lHabVGBBff/xIkfjsSCQUoOJKd1LKfi6dSm9fyF68ThkJEo7Wa
-	X4a4S1Cc6VggJTOmKOBZG7LC/Kx+cTDUV8xerP8jR00CPbbt2dFXIs8SdBXM95K69xshHBP1QjXvS
-	T8Gb6EcrwzQwiuEwNCjbCs5Oxe0E2Ti46T+jrvGyLlm3UadHw41p2HJUm1C2DmoxR4IhhySHMqvHG
-	Hyp5EuFza9scLHON493EnsV1yrhOfz1cO89GENO8e+ZgCnwZSIiezdTYSA685p3I1Uzr7/lX5SKE1
-	bXgMqU8Q==;
-Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-cache-142.e-maa3.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHctp-00000001xED-0E2d;
-	Fri, 16 Oct 2026 08:02:45 +0000
-Message-ID: <b8914a523b4a6b80424c5001d3d8012c6a98fd04.camel@infradead.org>
-Subject: Re: [RFC net-next 0/6] net: configurable extra TX headroom for
- local egress
-From: David Woodhouse <dwmw2@infradead.org>
-To: David Keogh <dkeogh@amazon.com>, netdev@vger.kernel.org, Jakub Kicinski
-	 <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
-	 <edumazet@kernel.org>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, Nimrod Oren <noren@nvidia.com>, 
-	nh-open-source@amazon.com, linux-kernel@vger.kernel.org
-Date: Fri, 16 Oct 2026 09:02:44 +0100
-In-Reply-To: <20261015235335.4162993-1-dkeogh@amazon.com>
-References: <20261015235335.4162993-1-dkeogh@amazon.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-nknYH93h+bncM9sn6u5U"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B6ouA4Qd"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bcf21cfbdaso1380257e87.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 01:12:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792138345; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RPk3zRgBwemhWI60yVCF7YoUWAvl2C4qeJah0I/fK2azLfoEe/vtko0MMbAMlAx1yO
+         It26fm0T13s5yMwzP9zE3fQFFYEvfj7G18Mhb0wCoYb5A3rO7VctixkQHlo1VOWXAnn5
+         V1tR2TchvC7xJ0OuqsWR3tdYjqYF/ttOcW2/JanRoUapVPjFqUTbC8pwQVV2v1p1CqYL
+         oWVj15YNRFeL7Jw/gKMBJgW62nZa/09PE4u5gxfuTtEcZLyIqJNCf3uulHCqwd4cDUBH
+         poka5XSmupC5nIy4prhyemoAQBapPv6OMoq1YMznrDnGSrSbDKFIW7popZwnDL3L68Ug
+         yJNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8sW/Cx8Xj7p1FXHUG1g9UmSn6q7zYA66/GXPT4c8TOs=;
+        fh=/thiD/OH9iraE6Oja3Titmam2IPxt7HwTJBZPco4o+M=;
+        b=AUowFL9vSH4HDoQTya1Yl0LXekA+TQydQJXNLJvPRFjC7DihrDiCxXISc36nvxyVgu
+         AxazWvXDiFBdsH3pJ4bPm5yXxJk+2yOTlxYJqBIJRiHCKNv0xkJiu3k+R2D8B3rP+1dJ
+         S+jH/HkMJU7j0K+NKCNQPyJNRrJdrhYVNWIyMDDtm5g6oEqEycu0VqL/Imoil4WtPKg1
+         0DgY/sgey+cbvFCZpdezWWJ2q6MUkLBHGw4Z9J25V2AGbmydQt/bwEQySQ4oFTFf9IQW
+         MRhgq8oByxw7/5XSteIyrNkA/QM54KpMiT1eFNy0e09crTSZjpliHIWBvIAfxGBFTE0+
+         yecw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792138345; x=1792743145; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8sW/Cx8Xj7p1FXHUG1g9UmSn6q7zYA66/GXPT4c8TOs=;
+        b=B6ouA4QdZ3+1zSORpZ/R8T/IZGS+FUt7T//8Cu0ifZBJnVOJafo6fhzFs1iUPK/6um
+         OIVccgMt6PRUaGFG+WXVnjmPyyWuVU/pF83QOI+bdzo4gKrqcJWtX8w3CtV1NOVSAHXi
+         j8pJXfYreXthX4CyOfayvdTbPpFh3LS7MePfFZUkwOEb/ll3vaTM6Siua+V3//Eh1sI0
+         h1MTXr2h+PeVYwZi3ltoUi93r8ZdnfM97312Zp7qHeBFCOijnl6rcPRKvy3RH8TsKW0m
+         zsO0Dr29BXCpZlF2b7rOxanS0F3WT6Wxqnwlha67mD6hsP7pbHOCgKWqQq5qTLgOSHef
+         zIqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792138345; x=1792743145;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8sW/Cx8Xj7p1FXHUG1g9UmSn6q7zYA66/GXPT4c8TOs=;
+        b=Yr89BoyVn44B6GU3KOgeKoV2UAy/jznybxab4L41XRQeY8b5GzeKfrlGIdjFKlUzd/
+         rA/v0wi8PggzaDbWypBirmex5Bt7hG1m6DqwFKR4oTmadv70MjvK1cfRQWuJI5mcDyCV
+         2wOgnjNPbt432Aux22/l33iZWgsiJzTgiJlRcnVMiexrfEem4PT6TfPxnEyYlsN2y5a0
+         +L5822YfgEnMuWltC2x3y+E8o+c/QuRv6G6L0CypkUQ2ZO5xuNt8PqH+qnNz/A78HUMp
+         3fKFs6ZrVFjy5LQRfWJCDHm0d70q2QGvwrO1eSU7FKduawlThm5508zsseKGsFSVGdmx
+         iJJA==
+X-Forwarded-Encrypted: i=1; AKwUvBxexOKbh2t5tZDY7aqpg7355lMfQfQ23zUQWe+vsNoDG65AOzeSGqarr7hVri8XT0KgmQEcDFw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYItWjf2YP9RTlnysQ6X/HrQjUlJyJ/hPcB5D5XDF1AvTqfvCCUl
+	aeVa5K2MQchOTApIkDOZjY3x63+CSYus1gTzbyGjvXr/GfiQBTdjts66Vx8MCKCpuZ1MFAo8ASj
+	6jagTMZJkfMKnK65NhXnQ1wBlCcDolMk=
+X-Gm-Gg: AYBFou0YgCMdLo2Oe/xklDKtq9fycGMVD167EfDqgWDaw02W1Ee61Asq2CYjssCoqCN
+	92yeuOzgvRM1/QpOq6b6EA2NyqqlgYq13I8uJzU1llQjI9PMPCMiHz8ynZAyQpqiCFBz6MgPByV
+	VAa1c47fK22zfivNBJLWH100yla60Xx6V3LnkJCMrtTc6lUv69WgmbfDx+KDvPIZY6UjGuHgn+R
+	3ksxoEjzE1ZFzG1uuB9w7wG6lMueFwxnWBXDqKGHdiyu/gXPCqNBdMeJwuOeDJdZV8bW2OMkJz1
+	HSBTWYwp3ZjHShqKNOklI1LoKCoH03Hgiu3a+ozJz6Gesz0UB2ZXQU66tUrZDhVG5jlYpo7fa2/
+	4nqUnLShSjQfmJ8TGmYGzqCVpjQG6/BTCrcAoWKBchdCDz0/1f+0EnY3UErAd0wVjBp9jdg==
+X-Received: by 2002:a05:6512:661b:b0:5bc:e75a:ad0e with SMTP id
+ 2adb3069b0e04-5bce75aaee3mr6847097e87.34.1792138344385; Fri, 16 Oct 2026
+ 01:12:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-nknYH93h+bncM9sn6u5U
+References: <20261013155658.2196020-1-cjubran@nvidia.com>
+In-Reply-To: <20261013155658.2196020-1-cjubran@nvidia.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Fri, 16 Oct 2026 16:11:47 +0800
+X-Gm-Features: AclHuK_08bO7B8AupJ6RMIQbh6Nj3KnKYvBWqnQ0pvWBvdmWxJyLg91T1rBv4tk
+Message-ID: <CAL+tcoDJx+suVKWjuHDMVMNThK1SS_a=0t1FkUninHnsAkraGg@mail.gmail.com>
+Subject: Re: [PATCH v2 net] net: skbuff: don't copy alloc_cpu in skb header copies
+To: Carolina Jubran <cjubran@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Dragos Tatulea <dtatulea@nvidia.com>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2026-10-15 at 23:53 +0000, David Keogh wrote:
->=20
-> Measurements (net-next at commit 05b5019b0, veth, 500000 UDP datagrams, a
-> 20-byte ip-in-ip push attached at TC egress, only tx_extra_headroom varie=
-d):
->=20
-> =C2=A0 tx_extra_headroom=C2=A0=C2=A0 pskb_expand_head reallocs / 500k
-> =C2=A0 0 (off)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 500003=C2=A0=C2=A0 (~1 per packet)
-> =C2=A0 64=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 4=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 (background)
-> =C2=A0 128=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 (background)
+On Tue, Oct 13, 2026 at 11:59=E2=80=AFPM Carolina Jubran <cjubran@nvidia.co=
+m> wrote:
+>
+> Commit 68822bdf76f1 ("net: generalize skb freeing deferral to
+> per-cpu lists") added alloc_cpu to struct sk_buff and placed it in the
+> headers group copied by __copy_skb_header().
+>
+> This is wrong for newly allocated skbs. For example, skb_segment()
+> allocates a new skb and records the current CPU in alloc_cpu, but
+> __copy_skb_header() overwrites it with the value from the original skb.
+>
+> If the original skb was allocated on another CPU, the segment may later
+> be treated as remotely allocated and unnecessarily deferred there when
+> it is freed.
+>
+> Move alloc_cpu out of the headers group so it is preserved across
+> header copies. Initialize it explicitly in skb_clone(), which allocates
 
-I remember frowning at this years ago, in the context of PPPoE.
+nit: s/Initialize/Copying
 
-I have the same question I had back then: why, if *every* packet ends
-up having to call pskb_expand_head() because it didn't have enough
-headroom, does our kernel need to be *told* by userspace that it needs
-to expand the allocations?
+> the skb object directly instead of going through __alloc_skb().
+>
+> This was discovered while investigating a throughput regression with
+> software IPsec. The load used 512 IPsec tunnels carrying traffic over
+> VXLAN, with 512 parallel iperf3 flows and an MTU of 4500.
+>
+> Before the fix:
+>
+>   16.09%  queued_spin_lock_slowpath
+>              |
+>              --15.90%--_raw_spin_lock_irqsave
+>                        |
+>                        --9.37%--__slab_free
+>                                  kfree
+>                                  skb_release_data
+>                                  napi_consume_skb
+>                                  mlx5e_poll_tx_cq
+>
+> After the fix:
+>
+>    6.84%  queued_spin_lock_slowpath
+>              |
+>              --6.57%--_raw_spin_lock_irqsave
+>                       |
+>                       --5.00%--__slab_free
+>                                 kfree
+>                                 skb_release_data
+>                                 napi_consume_skb
+>                                 mlx5e_poll_tx_cq
+>
+> Fixes: 68822bdf76f1 ("net: generalize skb freeing deferral to per-cpu lis=
+ts")
+> Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
 
-We gained dev->needed_headroom and ip_tunnel_adj_headroom() since then,
-and the kernel doesn't actually need to be told.
+Thanks. Overall it looks good to me:
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-You explained why you don't want to use dev->needed_headroom; I don't
-have much of an opinion on that front. But if you do want to introduce
-a new tx_extra_headroom, could we try really hard to have it auto-
-tuning?
+> ---
+>  include/linux/skbuff.h | 2 +-
+>  net/core/skbuff.c      | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> ---
+> V2 log:
+> - Move alloc_cpu after the headers group and fix the indentation. (Eric D=
+umazet)
+> ---
+> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> index a3ff380d43f01..b3272d379409e 100644
+> --- a/include/linux/skbuff.h
+> +++ b/include/linux/skbuff.h
+> @@ -1036,7 +1036,6 @@ struct sk_buff {
+>         __u16                   tc_index;       /* traffic control index =
+*/
+>  #endif
+>
+> -       u16                     alloc_cpu;
+>
 
---=-nknYH93h+bncM9sn6u5U
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+nit: no blank line here after you remove it
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-LoPItWlS1Qdh5FbOabhAL68AAAAAAAA=
+>         union {
+>                 __wsum          csum;
+> @@ -1088,6 +1087,7 @@ struct sk_buff {
+>
+>         ); /* end headers group */
+>
+> +       u16                     alloc_cpu;
+>         /* These elements must be at the end, see alloc_skb() for details=
+.  */
+>         sk_buff_data_t          tail;
+>         sk_buff_data_t          end;
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 41beaf625421a..3d82eb87f4582 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -1593,7 +1593,6 @@ static void __copy_skb_header(struct sk_buff *new, =
+const struct sk_buff *old)
+>  #ifdef CONFIG_NET_RX_BUSY_POLL
+>         CHECK_SKB_FIELD(napi_id);
+>  #endif
+> -       CHECK_SKB_FIELD(alloc_cpu);
+>  #ifdef CONFIG_XPS
+>         CHECK_SKB_FIELD(sender_cpu);
+>  #endif
+> @@ -1618,6 +1617,7 @@ static struct sk_buff *__skb_clone(struct sk_buff *=
+n, struct sk_buff *skb)
+>         C(len);
+>         C(data_len);
+>         C(mac_len);
+> +       C(alloc_cpu);
 
+One minor question: does it affect the following two cases:
+1) skb_morph()
+2) else branch in skb_clone()
 
---=-nknYH93h+bncM9sn6u5U--
+Looking at the above logic, I think as to #2 point it seems the impact
+doesn't matter...
+
+And I'm a bit confused reading the allocation process because there
+are two possible split allocations for the skb structure itself and
+the head/data area. They might run on different cpus, which means it's
+hard for 'alloc_cpu" to choose appropriate one to free under this
+condition.
+
+Thanks,
+Jason
+
+>         n->hdr_len =3D skb->nohdr ? skb_headroom(skb) : skb->hdr_len;
+>         n->cloned =3D 1;
+>         n->nohdr =3D 0;
+> --
+> 2.38.1
+>
