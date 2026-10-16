@@ -1,138 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C293148B4;
-	Fri, 16 Oct 2026 14:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EB735675E
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 14:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792160702; cv=none; b=DGWqrajGSO2rUpEFxgWgk/VHzIL5OVCOgsWNxS7EV2SOAKkfAnkxWhZEuzpDsR4VPA4R393DLoEArya6r8aUAG3GwBxzji9l00x9aQEKVcENkzWq3DNyH4yiXWzKRs/yWStz+uQC3ZjfSIf0BST0FGbMMvHBT7b0znGUMo4HRQ8=
+	t=1792160782; cv=none; b=JnrHvGbQK5ShuJduN97MciJXSzGp5eMFEOdgtJcnymvF/butJKeYaCf6gvfcHlEQ5XjQv0DU9EPvex8KDMbUh+UMGwHG87QQac950/X2KB3nxSeNMwOBK3U3ciTw1jK6XVNo0BopZ194rN2T0t1gOUA0BUAWExSRrDFbFVaIW98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792160702; c=relaxed/simple;
-	bh=BjaG0A3KflZ2fnKglMM+nFKkPwxYCIsn9Y6W0gKdy5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K+dzT7Nv1GPYL+uWb5jtRSDonk3Fn0qPMBoCUHxT33MrmaBkRGIwBf6eHUyTDt8nsuvB0MlhkYpRQplTUfH1wmOCEaWu6Fl4MiBqFzbqkVCcRn5qBDPQJ5sycZaGQxTYzboWEvHn/Lg12E1juaRHEFLp/7BxDg5ayTIpjE8WM+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4rxLjkU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792160782; c=relaxed/simple;
+	bh=BA3ZOMsHyP2GTKp/rqwxW3xgiYBeA3bbd1xCYOxEnto=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pcqW0LzTsAdaYwb2ou8wYpRk8Tx12sUVcLt8lp2JsiGiFgox97sBzqoq9BqItVTWwfbzz0s/duKK+WI1v5EfOyqHT3vgQ2m/nodvS35ssfuJmQWC+GrV2EVz9a8VXjsP9S0rE7yL2EfRCloYJfJq5+rE8MbL3g73h32mT0UYaCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRUpRL1M; arc=none smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4rxLjkU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0F21F000C5;
-	Fri, 16 Oct 2026 14:24:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792160701;
-	bh=Bz+GxVr4dlEeQzhf+FUIQ3S+8z4o4wVUtyCodsJ/Q5Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=a4rxLjkURZIsI/Fd6D5pBcUhIqHG50MaciNasuiafr8h7qg2+b9L0G/YZktwVQzkD
-	 kLBVchM2FcOkvQjO/E1PbHMzLrCl4VlYlIse/uRL1JBmRuuoiTBp1nwa/qH7VMaFxi
-	 xhZWNUpPF/cxjsmMLUHpQOizWdtk8aJGG33dK1uyB6FUD/4l7iABQ12aGo9Q13oOJq
-	 wu7wqNC24hHrSiq+Bi7CpBu5BydYWxivMuqARUleFJRAaptHqRUEU2x03dV3kXj8JX
-	 xZVxOO5Ykm5wSiKdYpCNQUGm1BHV5EFjGv+KN9W157gYenDnTRtLJKD5TqTxxYSriN
-	 jOaSS5Kz4Gakw==
-Message-ID: <7d4d6870-7734-460a-8391-a41322d61e79@kernel.org>
-Date: Fri, 16 Oct 2026 15:24:56 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRUpRL1M"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3535bf8b3e0so5288645eec.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 07:26:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792160780; x=1792765580; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BMcQDGMpfF+Xt2i/WNjW/x8k2X+ctHzEstRfrAzmcvk=;
+        b=NRUpRL1MzMDAaRTXXFuHrqn4wko3xp/8JnOIn7pYQnxhCO99toCDQkZmTO/2bTJcnv
+         H27wEl9FegfrAHFdfBpSt9Yg3x5ZTbOiqmd1gsMZCczKn8TpsQ3iWwwuI50XfFtW3k5t
+         Rf+e2PaT7aVBSAL+fPosWssDsQo/R7fA+kfWTvK34LkN8M9S22wL9nbP5+NnwvxGVyqq
+         lPEQHlXLh36DzpNw6lokYGHVhIwzKehLN+PgmkUISoOyKg0o0TjZzoY+OLSDyNuRMze7
+         VwQ69ZsZRMMfvy6qwjuN7PWYzzWc2SXTVfU0OBrPlP8A2XRp1V89hx264PDzphYX6Z2G
+         41LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792160780; x=1792765580;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BMcQDGMpfF+Xt2i/WNjW/x8k2X+ctHzEstRfrAzmcvk=;
+        b=kSuhLSstLTOy7+nfA8YwQ2awTfrLQDj9Nab2TrVc941RRDijLdnP8vkFAYaGEZkN8z
+         RYJkjkzHcpIxBi2W2++FjgBKMWbhiEOvSR29BBRPsKr+Ihpx7FJsOGTQ3yyXBP9p6eBu
+         htuxSFB844ERzscHIZr561BUBdL/k2m3U5EFFTUwOeXbgdKPIuC4O7W9yYXw/wBAh/Jw
+         O8lpEwy4GnhCvKxayTg2Z7ZgajzWvyMmHAgpjQ1UmwKP0YNrWAhzxs7RXIKhIiQTxgs9
+         X/ducgySDNtTOcyxN16ypqokCbHAg1CmdwmnkIBiZvXIzXD/rDZlueYwbJeucYEnqF61
+         gmdw==
+X-Forwarded-Encrypted: i=1; AKwUvBzoUCA/Wk6rYuapV9QRnuOWbBAZjm17KYsLma74j+l9ub0TkDZh68qB17qitFTjQcgUHhdRPCE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJtJSHBt1V5gVj3+jf/RFnx6Gqtr0qbvPNtCj/YYHZJ8QjSgw//
+	rEJ+4yKLg24smWUANp0Kor9XiqqFHFaHsd4Z09K3l+p6LuEHcDfsPjI8
+X-Gm-Gg: AYBFou0GSpASJFaJdlxeyh1rFnEUOSNxLmA0YUg+teq2Txb4FupmkfTCVi4gH3v0pFz
+	gyhBN1uwMfZH1deHG0qtUfroF5lVhtFHFjLzeJ59QU7ZtyWEhp6s3hz6HfCflv/K6Fdin/AHEf3
+	71H8wruhkCimN1MeU0rLoI/9ATVjQKEibGmcUCFIjBeSPPX/dU8v8AomPuwMXf9nqtfpCpndmaV
+	erarDTbkS1Ia+TRpcihG3O4HORTSXvlLWZyYg27E86atkHpsEOBE8yozQSVGGbIh1P1zJHP/9Xh
+	9b2ZwWmoVfTPNnzKJqZE4cj5yxDgdle+ciJM5HAUyG7l0TEKWLBc0eY0lgZAQDgZBvgSEfTBm2K
+	4fCGpbxjR1D17LVRk6dMYsSHQFEdRRoP5tAzwxC8cf3i997W/jyScldMia0gpbABcTDf9N2uKfA
+	+dZ+RyQJOoGM+LEsOS8v+R0g9PHqlsiZrWUaUSapVbTY/MpAIFRs4q3l/I17+GhJA8LN/6gpkjo
+	I6yKiGw7CmOtLSWYuMoPx5WUofzQhwUyCnP3YosbYvukFprnHRwDZUsQNQeO1qBpMa2XNct1fqy
+	ikm4b7KgCV4+naYbuOGVND+mgli0SXU9IKVtEYs1G3EOK3rfLT9oDQnC
+X-Received: by 2002:a05:7022:28b:10b0:16f:c9db:c5af with SMTP id a92af1059eb24-185118eded7mr132172c88.11.1792160779405;
+        Fri, 16 Oct 2026 07:26:19 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2804:7f0:b100:ece0:b5:bb23:a54:ce61])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-18314ef8ed8sm6348059c88.3.2026.10.16.07.26.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 07:26:18 -0700 (PDT)
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Eric Dumazet <edumazet@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+ Alice Mikityanska <alice.kernel@fastmail.im>
+Subject:
+ Re: [PATCH net] calipso: update payload_len when removing the CALIPSO option
+Date: Fri, 16 Oct 2026 11:26:14 -0300
+Message-ID: <179216077404.22091.15636720633867774901@gmail.com>
+In-Reply-To:
+ <CAHC9VhT5w3K1MvmP=1Mxf6KKWZD5BbK14bVHJGYFN93080j5jg@mail.gmail.com>
+References: <179138670045.80227.16292613517250896744@gmail.com>
+ <CAL4WiirbJrQThGS4BUo=a=AV9ckJk2AyedO8AgJgozjHOwu5Vw@mail.gmail.com>
+ <CAHC9VhT5w3K1MvmP=1Mxf6KKWZD5BbK14bVHJGYFN93080j5jg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next] bpftool: Print verified instruction count in
- prog show
-To: chenyuan_fl@163.com, bpf@vger.kernel.org
-Cc: Yuan Chen <chenyuan@kylinos.cn>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Mykyta Yatsenko <yatsenko@meta.com>,
- Menglong Dong <menglong8.dong@gmail.com>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20261016071700.280539-1-chenyuan_fl@163.com>
-From: Quentin Monnet <qmo@kernel.org>
-Content-Language: en-GB
-In-Reply-To: <20261016071700.280539-1-chenyuan_fl@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-2026-10-16 15:16 UTC+0800 ~ chenyuan_fl@163.com
-> From: Yuan Chen <chenyuan@kylinos.cn>
-> 
-> The number of instructions processed by the verifier is available
-> through bpf_prog_info::verified_insns and the program's fdinfo since
-> commit aba64c7da983 ("bpf: Add verified_insns to bpf_prog_info and
-> fdinfo"), but bpftool does not display it, leaving no convenient way
-> to check a program's verifier cost.
-> 
-> Print the count in the plain and JSON output of bpftool prog show,
-> following the convention of the other conditional stats
-> (run_time_ns, run_cnt, recursion_misses): kernels that do not fill
-> the field leave it zeroed and nothing is printed.
+On Wed, Oct 14, 2026 at 9:39 AM Paul Moore wrote:
+> while basic CALIPSO labeling is tested via an automated test job, this
+> particular code path is not part of the automated testing.
+> Improvements to the tests are always welcome.
 
+Hi Paul,
 
-It's different from the other conditional stats though, unless you run
-bpftool on an old kernel verified_insns will show up every time. Can we
-move it to another line to avoid growing the first line too much,
-please? Maybe after loaded_at and uid?
+I opened a PR adding a forwarding test to tests/inet_socket:
 
+  https://github.com/SELinuxProject/selinux-testsuite/pull/106
 
-> 
-> Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-> ---
->  tools/bpf/bpftool/Documentation/bpftool-prog.rst | 3 ++-
->  tools/bpf/bpftool/prog.c                         | 4 ++++
->  2 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/bpf/bpftool/Documentation/bpftool-prog.rst b/tools/bpf/bpftool/Documentation/bpftool-prog.rst
-> index 8dbd34ef3d8b..d4a94e0737a9 100644
-> --- a/tools/bpf/bpftool/Documentation/bpftool-prog.rst
-> +++ b/tools/bpf/bpftool/Documentation/bpftool-prog.rst
-> @@ -285,7 +285,7 @@ EXAMPLES
->  
->  ::
->  
-> -    10: xdp  name some_prog  tag 005a3d2123620c8b  gpl run_time_ns 81632 run_cnt 10
-> +    10: xdp  name some_prog  tag 005a3d2123620c8b  gpl run_time_ns 81632 run_cnt 10 verified_insns 528
->              loaded_at 2017-09-29T20:11:00+0000  uid 0
->              xlated 528B  jited 370B  memlock 4096B  map_ids 10
->              pids systemd(1)
-> @@ -301,6 +301,7 @@ EXAMPLES
->              "gpl_compatible": true,
->              "run_time_ns": 81632,
->              "run_cnt": 10,
-> +            "verified_insns": 528,
->              "loaded_at": 1506715860,
->              "uid": 0,
->              "bytes_xlated": 528,
-> diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-> index eb077236d2ea..c77e871b8859 100644
-> --- a/tools/bpf/bpftool/prog.c
-> +++ b/tools/bpf/bpftool/prog.c
-> @@ -441,6 +441,8 @@ static void print_prog_header_json(struct bpf_prog_info *info, int fd)
->  	}
->  	if (info->recursion_misses)
->  		jsonw_uint_field(json_wtr, "recursion_misses", info->recursion_misses);
-> +	if (info->verified_insns)
-> +		jsonw_uint_field(json_wtr, "verified_insns", info->verified_insns);
->  }
->  
->  static void print_prog_json(struct bpf_prog_info *info, int fd, bool orphaned)
-> @@ -526,6 +528,8 @@ static void print_prog_header_plain(struct bpf_prog_info *info, int fd)
->  		       info->run_time_ns, info->run_cnt);
->  	if (info->recursion_misses)
->  		printf(" recursion_misses %llu", info->recursion_misses);
-> +	if (info->verified_insns)
-> +		printf(" verified_insns %u", info->verified_insns);
+It builds a client -- router -- server setup with network namespaces
+and checks both directions: the router removing the CALIPSO option and
+the router adding one.  On Fedora 44 (6.19.10, without the fix) only
+the removal subtest fails, with the forwarded packet dropped as
+truncated; with the fix all inet_socket and sctp tests pass, both as
+unconfined_t and sysadm_t.
 
-
-Note: Moving it to another line means you should use a double space
-(rather than single) at the beginning of the string.
-
-pw-bot: cr
+Until the fix reaches the kernel used by the CI, the removal subtest
+will fail there; I'm happy to gate it on a kernel version if you
+prefer.
 
 Thanks,
-Quentin
+Joas
