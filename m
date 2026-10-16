@@ -1,96 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A553D812D;
-	Fri, 16 Oct 2026 11:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84247415F1F;
+	Fri, 16 Oct 2026 11:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792149579; cv=none; b=V6isaUECN2eawckCSQFwl0olVajrF7ITQ/VOp+/AQjWcidfdaZggQEvOp2o9qOM+OqTuv9bItLZV8YrENMvUtawnK12OZSBJjv1EwX3+txSTc1BwdOOxb1Wt1uE1WrX9jyGyC9h4fwfRQVETkKfB5FeiC5ZhONs8awGhoXuubY4=
+	t=1792149621; cv=none; b=nndaKTqMUONdozQXwC8aPAeqVWf+6QgF+cH8VfaYhP7ciF2rT8KT1y0zIQ/1pmePVFVPrhPwbHE/C5IfIXIkZhyYMhE9itBqnOMdva2WfyZhWYXrdyVGeMgj/h+5q6ZQfCpxaBkH0LCRF9+G/Jno38ApirnBVmIR0q/d4aLSvNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792149579; c=relaxed/simple;
-	bh=bISYE32Keboph/NFLD7Q56AYqXzzo4A+4qsxWw0jSfc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EvcDhhNaJx81OPGUrAbUQ/5qZiWzvM6ConcaoIDrlhQ4gZlBPOOYSUYaW/thhSkDkzaD+OpKf4JmSrGJdBCNdYHiED4+SfWzOUoddNVvxbrWTz5X6pOXMNjac8tiTmsBDO9BBIDIV5G4YNoTT42QrZk/DWeM9tGv3nEwMiU4mD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSZ/aODB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792149621; c=relaxed/simple;
+	bh=yC7/op8iHdXpBtfOBlqmSIfSNyxQdVW5x8XqgtLiVeU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a7vpiXp+z+7WT+JYMIIQzPqmtkDuL2lDCNDq3pqolBazXUyRVbJTBY9uy8ny/DAlvKzXbquH0+7K6piANS3cIPfZ17kWW2q1k2gCmD6qpQar8y1ClGDY20Q5RadsBmgzLsaKcgTJa26SGat3iF/I3jGnLjLhEfxBexlTUkMkWWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=2kAsX4y/; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSZ/aODB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8141F000C4;
-	Fri, 16 Oct 2026 11:19:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792149578;
-	bh=miFPUobfnaeUFZw7U7GalciH9GRDPp4unu/aa9PhnKE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GSZ/aODBboUbiYkksQCGe0Lc331lPG6ylfhUjH9mf4IrJL7JL60l+wppkr1u2qCJF
-	 qkhd098NKAKFf7sIkiDnxofGPrRlVW8xwRJqE55NBaJlj+etNWiXeKoJNCdEORp9RA
-	 Vwo/m2xF6ZtjOLg7tseNh3oiIzJXkMh4KPWKGphgLFUhQs40E6VkjMpJ41SZE09xks
-	 sPwREe2sr+iJlnIP1V3f0j8fhCDnDMWR8riDM4+zYazw0VcEY51o33XgB9DB89Il8A
-	 b0nkcOwoAmYOgl9cDgGDDwiQbvoPvIu2euUH5RDVdTrjS4BLiuPCiS4sWzsuIrOlUo
-	 XzpAu+uQXplEw==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Clement Lecigne <clecigne@google.com>, aleksander.lobakin@intel.com,
- edumazet@google.com, netdev@vger.kernel.org, maciej.fijalkowski@intel.com
-Cc: clecigne@google.com, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- kuba@kernel.org, sdf@fomichev.me, horms@kernel.org,
- john.fastabend@gmail.com, ast@kernel.org, daniel@iogearbox.net
-Subject: Re: [PATCH v3] xsk: fix memory corruptions in net/core/xdp.c
-In-Reply-To: <20260629072300.1664622-1-clecigne@google.com>
-References: <20260629072300.1664622-1-clecigne@google.com>
-Date: Fri, 16 Oct 2026 13:19:35 +0200
-Message-ID: <87qzhp51vc.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="2kAsX4y/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=rhJI7F0zU+E/8xsIkBIN5MZPJE26Grg+5HNG9FQ1W7Q=; b=2kAsX4y/5GbY0reGuaB8BzWyQE
+	As/CswEbTraGIaIcVuHy6YLEFtKTdg2nXf7aHrJdoY0Wg2P6PgMeRtJHmcIE9LKy8mgEJ3ZMSTuDD
+	gEaJvL66/pUVTQiBSnr5DfEHYExnLgKdFMp5oJUQB1OUt0u96veNd5zZI2AV1Z4QKb1nhIfa6KRUx
+	5imqGV+rS6ZHyg9XovESgdDR9WIdIachTCkzINYniuXMT493bS2wNs9yEsKk11WfNHuzpph9DBVxN
+	JbD1bv1tZOwIUerHu2iGfvZF1xpalL0ZVUsPhop0tLT5box48EfWyFJ07nFXHhBRHlF2CC58aDFPo
+	FKZBqtSw==;
+Received: from [115.246.246.98] (port=28851 helo=bulbasuar.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <saivarun@couthit.com>)
+	id 1xHfZP-0000000FERK-27cF;
+	Fri, 16 Oct 2026 06:53:51 -0400
+From: Sai Varun Mudepally <saivarun@couthit.com>
+To: danishanwar@ti.com,
+	parvathi@couthit.com,
+	rogerq@kernel.org,
+	pmohan@couthit.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	afd@ti.com,
+	basharath@couthit.com,
+	horms@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pratheesh@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	j-rameshbabu@ti.com,
+	m-malladi@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com,
+	Sai Varun Mudepally <saivarun@couthit.com>
+Subject: [PATCH net-next] net: ti: icssm-prueth: use dev_close()/dev_open() in icssm_prueth_change_mode()
+Date: Fri, 16 Oct 2026 16:21:35 +0530
+Message-ID: <20261016105206.167094-1-saivarun@couthit.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: saivarun@couthit.com
+X-Authenticated-Sender: server.couthit.com: saivarun@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Waking a dead thread: RISE FROM YOUR GRAVE!
+In icssm_prueth_change_mode(), if ndev->netdev_ops->ndo_open(ndev) fails
+and returns an error, the function aborts without restoring the NAPI state.
+Later, when the interface is brought down, the kernel naturally invokes
+ndo_stop() again. A second napi_disable() call on an already disabled NAPI
+might trigger an infinite sleep waiting for NAPI_STATE_SCHED.
 
-Clement Lecigne <clecigne@google.com> writes:
+Use dev_close()/dev_open() so the core keeps IFF_UP consistent. If
+dev_open() fails, close the ports already reopened and fall back to
+EMAC mode.
 
-> From: Cl=C3=A9ment Lecigne <clecigne@google.com>
->
-> Commit 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
-> introduced a vulnerability in the handling of XDP_PASS for AF_XDP zero-co=
-py
-> frames.
+Also undo the br_members update in icssm_prueth_ndev_port_link() when
+icssm_prueth_port_offload_fwd_mark_update() fails.
 
-Hmm, I acually hit this in my WIP for UMEM page pool provider hack.
+Test Log:
+https://gist.github.com/SaiVarun754/688a21038f1b2bd2b89d2db65224edb0
 
-> Note: Currently, this specific AF_XDP zero-copy conversion path is only
-> reachable from the drivers/net/ethernet/intel/ice and
-> drivers/net/ethernet/intel/idpf drivers.
->
-> When building an skb, xdp_build_skb_from_zc() uses the chunk size
-> (xdp->frame_sz) for the allocation. However, napi_build_skb() automatical=
-ly
-> reserves space at the end of the allocation for the skb_shared_info
-> structure.=20
->
-> Most high performance UMEM applications use 4K chunks, where the
-> corruption cannot happen.
+Fixes: eca327ae9aa6 ("net: ti: icssm-prueth: Add support for ICSSM RSTP switch")
+Signed-off-by: Sai Varun Mudepally <saivarun@couthit.com>
+---
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c | 38 ++++++++++++++------
+ 1 file changed, 28 insertions(+), 10 deletions(-)
 
-I think this can also happen with 4K UMEM chunks.
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+index b42c98e861e0..d50aa0992c33 100644
+--- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+@@ -1100,7 +1100,7 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
+ 	bool portstatus[PRUETH_NUM_MACS];
+ 	struct prueth_emac *emac;
+ 	struct net_device *ndev;
+-	int i, ret;
++	int i, j, ret;
+ 
+ 	for (i = 0; i < PRUETH_NUM_MACS; i++) {
+ 		if (!prueth->emac[i]) {
+@@ -1115,11 +1115,7 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
+ 		if (!portstatus[i])
+ 			continue;
+ 
+-		ret = ndev->netdev_ops->ndo_stop(ndev);
+-		if (ret < 0) {
+-			netdev_err(ndev, "failed to stop: %d", ret);
+-			return ret;
+-		}
++		dev_close(ndev);
+ 	}
+ 
+ 	if (mode == PRUSS_ETHTYPE_EMAC || mode == PRUSS_ETHTYPE_SWITCH) {
+@@ -1141,14 +1137,25 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
+ 		if (!portstatus[i])
+ 			continue;
+ 
+-		ret = ndev->netdev_ops->ndo_open(ndev);
++		ret = dev_open(ndev, NULL);
+ 		if (ret < 0) {
+ 			netdev_err(ndev, "failed to start: %d", ret);
+-			return ret;
++			goto err_dev_open;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++err_dev_open:
++	for (j = 0; j < i; j++) {
++		if (portstatus[j])
++			dev_close(prueth->emac[j]->ndev);
++	}
++
++	/* Fall back to EMAC mode */
++	prueth->eth_type = PRUSS_ETHTYPE_EMAC;
++
++	return ret;
+ }
+ 
+ /* VLAN-tag PCP to priority queue map for EMAC/Switch/HSR/PRP used by driver
+@@ -1639,6 +1646,8 @@ bool icssm_prueth_sw_port_dev_check(const struct net_device *ndev)
+ 
+ static int icssm_prueth_port_offload_fwd_mark_update(struct prueth *prueth)
+ {
++	struct prueth_emac *emac;
++	unsigned long flags;
+ 	int set_val = 0;
+ 	int i, ret = 0;
+ 	u8 all_slaves;
+@@ -1661,11 +1670,20 @@ static int icssm_prueth_port_offload_fwd_mark_update(struct prueth *prueth)
+ 	 */
+ 	if (set_val && !PRUETH_IS_SWITCH(prueth)) {
+ 		ret = icssm_prueth_change_mode(prueth, PRUSS_ETHTYPE_SWITCH);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(prueth->dev, "Failed to enable Switch mode\n");
+-		else
++			emac = prueth->emac[0];
++			spin_lock_irqsave(&emac->addr_lock, flags);
++
++			prueth->br_members &= ~BIT(emac->port_id);
++			if (!prueth->br_members)
++				prueth->hw_bridge_dev = NULL;
++
++			spin_unlock_irqrestore(&emac->addr_lock, flags);
++		} else {
+ 			dev_info(prueth->dev,
+ 				 "TI PRU ethernet now in Switch mode\n");
++		}
+ 	}
+ 
+ 	/* Bridge is deleted, switch to Dual EMAC mode */
+-- 
+2.43.0
 
-For example, on ice, use MTU 3800, 4K chunks, and no extra UMEM
-headroom. Attach an xdp.frags program that returns XDP_PASS, and bind
-the socket without XDP_USE_SG.
-
-A 3814-byte Ethernet frame fits in the UMEM chunk:
-
-  256 headroom + 3814 packet =3D 4070 bytes
-
-But the copied skb also needs space for skb_shared_info. Using
-the 320-byte size from your example:
-
-  256 headroom + 3814 packet + 320 shared info =3D 4390 bytes
-
-The old code allocates only 4096 bytes, so the packet copy
-overwrites skb_shared_info.
-
-Am I missing something?
-
-
-Bj=C3=B6rn
