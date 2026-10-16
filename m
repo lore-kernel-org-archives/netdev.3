@@ -1,196 +1,135 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+Received: from mail-pg1-f232.google.com (mail-pg1-f232.google.com [209.85.215.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20C63033EC
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA8A367B72
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 02:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792118739; cv=none; b=sn4KsnESYI/ra/OJ68fkZ/wTE+zAsd4e+8j3rPuZFQ+hzNf/xQNr4xC3isDCYG8rbjrgQkMZe/xzBlfSMIsjqkbO+SpCZ3pty3X20KqU+Hb/OAHoCnDytHwlQyGv7gGtySVZ/Y2IsOlXrPeAAUsiMLHinpIono2z6bE0MmVH8Pc=
+	t=1792119078; cv=none; b=TJIyunUs7Ax5N9RSsqvstsyg3Tnt5BSOqer+4bnpHBZPo562gDfOEZuNvfI7gzhfWoK2SQVbbkAQ+I3JPgPzZ5n+kU1k60qezDgFGVwnbVcdECB072xKB4RGKS3Y0W1vSEz+q3i+v1L61fvOX1ifY1+dQE7d994Z5jIzVzqWaqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792118739; c=relaxed/simple;
-	bh=QqmRt76cw0feAYYdqgTzhiJexD1f/46qnCyzzSgGQOY=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=TRGR2GpvFqZB82HN5zbmJj1FljOz3nS2aGCv+rzwDryC4luUqHTKlv/uX/uF2tlqT6+l74+fjms6qfiDoDXIQJdNd2USvzaI+lRADkR9CrdNjYaRWY2zgI5P+xMdBYwbgIspOPtWGYxX2OwyLiOt783fNdXi7QE5xEj5cv/JI6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4e778acdbc6so9734551b6e.3
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 19:45:37 -0700 (PDT)
+	s=arc-20240116; t=1792119078; c=relaxed/simple;
+	bh=sAdtKLLaHnDWjzQ0GdP7Kvx1LBbkSwir1OD+oAgVBwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Puo7/3uFYixV/fik3zKQ5e4vUJUAHcQHEg+4JZVYwmknvwzdevxreMF1Irsph5mnqje0cdQWVXaFACeXK3yVGEjPif4kV1iiG0pwnaaU56zWHrMRin7okjvggz9lprjC8GMNqB4WOm7snP+U14Hd/x0ahUSfgPK1pxovv1emR7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=KfQJtct+; arc=none smtp.client-ip=209.85.215.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="KfQJtct+"
+Received: by mail-pg1-f232.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so1501055a12.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 19:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1792119075; x=1792723875; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z/AufVhG/q8v5xB27+Be+cyJ9kysBtXwzIEkpk9uqgA=;
+        b=KfQJtct+FtSODbculjk3+RBGd3dI9apktf5CBFoP28fKMCeL6d89R4vDwbjbtR/Cqb
+         Y6wbTed80JDq7C3Keb4sstY2NRB2ICLqN4b5a7RV5Au0aKnO9Ar5xAzV7FF7u65Eh6xi
+         J+uRCsBbsPj+rDiNqokttYFSsYqKKPUyqNQvvZGAN13Z+updUFOIXy15olpNC4nxlX0O
+         jTNby1reosZ/njyaV+XDD0RRK/NUJOYDtrZkrRAzEuxlQARYPNnFP0Vk56tQvdTTVbVv
+         PwT/OTOQrQtxsoKbwTd0WHxi96l1RiRxqLWTJyVxFj2g39w7oe+AER/6mldqsJOzsMJI
+         wQhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792118737; x=1792723537;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=seQXTxHTBDCS8PCf+EWgSHwzgEZlNkH5MH0J2kC2r+M=;
-        b=WcDWWU9g7paIsc5S46hoYXc6zeVZ5SSveb4QVSUAuUacjhKulFV8JzgbRpt73AZCmx
-         r21WaWHEH2gYSs9Nqki8/jc7SXNjHPIts13STiUIcsQNJ7lWYb5ShKdjplAkVvKrSgtB
-         5gp1NiKt35xQ3k3wzNlw6lzSzWcejdjuCd8Th+SIIGwbQ6+faEkFKx6BfmFvQeouNbbm
-         frEGu2YPaZQi7FfTmCO1LOmhFgpcxDE64Et00xXYjl1uz77MHRswY3dqU0t8MOFy+P96
-         gW0Ys+qApbW3wFsLTmPYqCS7XGocMYulAVP95vqsRG5//i0cZlBYv9ksaXboVNYdE64+
-         c41Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzAeuy80MuYFr0VXHj5btb7xdf5WwAfYfLVWcicYfjsZyX5qmHq6KWMGh0+9mz1WxV8cwMX4Vg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYInl3BfxFJ5CzL1CXrexPUrVwMxfBknhC1pvy7TX3Q8MzkhKga4
-	xZzWM2Dc4rezRphvc03bcX//PLsJyWyYWwrB55PB9kpvnx1GZFM2p9RQaZOfjpktjffvStwVE86
-	q61fUlodb2cFcDYjXptP/ZaXKN55cUr7o7xDN+1R//YYgjvjI3otJTsS3e/Q=
+        d=1e100.net; s=20260707; t=1792119075; x=1792723875;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Z/AufVhG/q8v5xB27+Be+cyJ9kysBtXwzIEkpk9uqgA=;
+        b=TmnYy/S4Avq8yq1mbl7ZSjokaL7XD+5IMF/ZSVwXia++AHRkI8hzvG9vXKgzkIbosl
+         Rjx/FROuv23JZ8nhjncNKzKCK2YcySE8efor4ua4jCtTMX7ldQEE1SxvlcOvV3+t1rBM
+         6QXoj2ukrFPI41Vre3jyjVJpqF60wqVIQRXXzS3VhnHJuIUNjl+7takCbxuHvQAjM4P1
+         VCM8wEoMsrcHC6AAVB+qiuXpCyDXgbBb2UkMSb6U/I3rrZgl8a1onPJAb6oHepDWsHYd
+         1J7JRWv+7zZjob3ZwqFePy9XDaph/4ioGuTPGuEk6jGNT3CL6FdBr/DsvTLP2tpO/X6A
+         7XJA==
+X-Gm-Message-State: AFq9FYKQ1PwL/+KTrVEloZ76IZvx7kZQ8p3VeXcKEnGpn2EMeu8w3Beh
+	fIcxdg5DdNYrYz/onaKOLVmqgKdMD8NBHbN9kYuWzkw5vfKzafjj19j0N1UW1MkvZFFvwVuGLjT
+	pkg2tkoPcMI02HEda2qZCdnaNApAbDQDf+lNJ
+X-Gm-Gg: AYBFou0xZBI3OKE/YaaHzDnXzP4MvTLHWMWGvPPJwkSnDfCoOj/oBox275E7FYDWFkY
+	58uHzX5LX+6G3WL2q/f/3FZ6mGiiczTBv0CTXyG0Dcq5ZTgTjKuqD+OCkDHsimEqvdOzv2dQenv
+	t01AWcVYmmTpo7sfo1JRlWy1WkkCvrm06yleFuF0N9eODDCxo0Jj3Uix9vFTUU8MhM2soYUq9+T
+	OXWaqj//ZILdA5Z5CdyOCqfaXi5W35EWy0GhSQLJ9Fu4MZJWHecKKEW0kjfNh/OlOqeJqH7c/9y
+	Xqf28En1LjvpRl8rv+FNI+xD7zq/SaD5kSQ7MiULSwo68pSTIvUSVkiXhLYouDkVEPdkHN1GBXk
+	NKFSMIZK5nqE/oySxjpwjaVHfUpGyMRGsT5o=
+X-Received: by 2002:a17:90b:55cb:b0:3ac:403d:6239 with SMTP id 98e67ed59e1d1-3ac403d6baamr8413098a91.43.1792119074901;
+        Thu, 15 Oct 2026 19:51:14 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.129])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ac947ba697sm2696076a91.7.2026.10.15.19.51.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 19:51:14 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [10.17.2.234])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 10D34400B8;
+	Thu, 15 Oct 2026 20:51:14 -0600 (MDT)
+Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
+	id 0B193DC12FA; Thu, 15 Oct 2026 20:51:14 -0600 (MDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Rishikesh Jethwani <rjethwani@purestorage.com>
+Subject: [PATCH net v2 0/2] kcm: don't sleep in softirq when the lower socket uses kTLS
+Date: Thu, 15 Oct 2026 20:44:52 -0600
+Message-ID: <20261016025059.289202-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4fdf:b0:4f5:6fff:3ac4 with SMTP id
- 5614622812f47-50c516e42b7mr22514191b6e.41.1792118736843; Thu, 15 Oct 2026
- 19:45:36 -0700 (PDT)
-Date: Thu, 15 Oct 2026 19:45:36 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ad18fd0.7514cce4.1ece07.011f.GAE@google.com>
-Subject: [syzbot] [rds?] WARNING in __rds_conn_create (2)
-From: syzbot <syzbot+c3741bb338b5c6d6a4aa@syzkaller.appspotmail.com>
-To: achender@kernel.org, allison.henderson@oracle.com, davem@davemloft.net, 
-	edumazet@kernel.org, horms@kernel.org, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, rds-devel@oss.oracle.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+When a TCP socket with software kTLS RX is attached to a KCM mux,
+psock_data_ready() calls strp_data_ready() from softirq, which calls the
+socket's read_sock(). For kTLS that is tls_sw_read_sock(), which can
+sleep, and CONFIG_DEBUG_ATOMIC_SLEEP reports it on every run of a
+loopback reproducer.
 
-syzbot found the following issue on:
+Patch 1 is the fix: KCM parses inline only when read_sock is
+tcp_read_sock() and otherwise defers to the strparser work, which runs
+under lock_sock(). It applies and builds on its own, including on
+stable kernels.
 
-HEAD commit:    0fcb05b72344 Merge tag 'libcrypto-fixes-for-linus' of git:..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11e64dd1580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4ccb65e03706547e
-dashboard link: https://syzkaller.appspot.com/bug?extid=c3741bb338b5c6d6a4aa
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14ef43c9580000
+Patch 2 addresses review feedback on v1 and is needed by patch 1.
+kstrp, the workqueue that deferred work runs on, is an ordered
+workqueue shared by every strparser user (KCM, sockmap, espintcp,
+ovpn). With patch 1 alone, a KCM psock decrypting kTLS records in
+software on kstrp would delay parsing and message timeouts for every
+other strparser socket on the system. Patch 2 makes kstrp per-CPU. It
+has no Fixes tag: the ordered workqueue is as old as strparser, and it
+only becomes a real problem for KCM over kTLS with patch 1.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-0fcb05b7.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d63a4093e9d7/vmlinux-0fcb05b7.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/238bf14f8b3f/bzImage-0fcb05b7.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/b883c5a2bb3e/mount_0.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=13f70fd1580000)
+Other strparser users are not affected by the bug fixed in patch 1:
+espintcp is itself a TCP ULP and cannot be combined with kTLS, ovpn
+installs its own ops built from inet_stream_ops, and sockmap reads
+through tcp_bpf_strp_read_sock() and is mutually exclusive with kTLS
+RX (do_tls_setsockopt_conf() rejects sockets with a psock).
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c3741bb338b5c6d6a4aa@syzkaller.appspotmail.com
+Testing: with patch 1, 5/5 runs of the reproducer produce no splat and
+full datagram delivery; without it every run hits "BUG: sleeping
+function called from invalid context" in strp_data_ready ->
+tls_sw_read_sock. Multi-record messages (>16 KiB each) also deliver
+completely with kTLS RX installed before the KCM attach and the whole
+stream queued before the reader starts. With patch 2, test_sockmap and the ovpn TCP selftests
+pass, strparser work runs concurrently across sockets, and dmesg shows
+no warnings.
 
-XFS (loop0): Quotacheck: Done.
-------------[ cut here ]------------
-raw_local_irq_restore() called with IRQs enabled
-WARNING: kernel/locking/irqflag-debug.c:10 at warn_bogus_irq_restore+0xc/0x20 kernel/locking/irqflag-debug.c:10, CPU#0: syz.0.18/5745
-Modules linked in:
-CPU: 0 UID: 0 PID: 5745 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:warn_bogus_irq_restore+0xc/0x20 kernel/locking/irqflag-debug.c:10
-Code: cc cc cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 90 48 8d 3d c4 18 93 05 <67> 48 0f b9 3a 90 e9 99 04 03 00 cc cc cc cc cc cc cc cc cc 90 90
-RSP: 0018:ffffc9000797f8c0 EFLAGS: 00010206
-RAX: 0000000000000202 RBX: 0000000000000287 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffffffff917dce80
-RBP: ffffc9000797fa40 R08: ffffffff914a10e3 R09: 1ffffffff229421c
-R10: dffffc0000000000 R11: fffffbfff229421d R12: ffffffff8b2acb15
-R13: ffff888051146318 R14: ffffffff914a10e0 R15: 0000000000000287
-FS:  00007f7afe2f56c0(0000) GS:ffff88808b0b4000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7afd3ebc40 CR3: 000000004db87000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:210 [inline]
- _raw_spin_unlock_irqrestore+0x67/0x80 kernel/locking/spinlock.c:221
- spin_unlock_irqrestore include/linux/spinlock.h:425 [inline]
- __rds_conn_create+0x1de5/0x2290 net/rds/connection.c:364
- rds_conn_create_outgoing+0x43/0x60 net/rds/connection.c:394
- rds_sendmsg+0xfca/0x20e0 net/rds/send.c:1348
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- __sys_sendto+0x408/0x5a0 net/socket.c:2281
- __do_sys_sendto net/socket.c:2288 [inline]
- __se_sys_sendto net/socket.c:2284 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2284
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7afd39e559
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f7afe2f5028 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f7afd625fa0 RCX: 00007f7afd39e559
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00007f7afd4358b0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f7afd626038 R14: 00007f7afd625fa0 R15: 00007ffd156f7018
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	cc                   	int3
-   1:	cc                   	int3
-   2:	cc                   	int3
-   3:	cc                   	int3
-   4:	cc                   	int3
-   5:	cc                   	int3
-   6:	cc                   	int3
-   7:	cc                   	int3
-   8:	cc                   	int3
-   9:	cc                   	int3
-   a:	cc                   	int3
-   b:	cc                   	int3
-   c:	cc                   	int3
-   d:	cc                   	int3
-   e:	90                   	nop
-   f:	90                   	nop
-  10:	90                   	nop
-  11:	90                   	nop
-  12:	90                   	nop
-  13:	90                   	nop
-  14:	90                   	nop
-  15:	90                   	nop
-  16:	90                   	nop
-  17:	90                   	nop
-  18:	90                   	nop
-  19:	90                   	nop
-  1a:	90                   	nop
-  1b:	90                   	nop
-  1c:	90                   	nop
-  1d:	90                   	nop
-  1e:	f3 0f 1e fa          	endbr64
-  22:	90                   	nop
-  23:	48 8d 3d c4 18 93 05 	lea    0x59318c4(%rip),%rdi        # 0x59318ee
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	90                   	nop
-  30:	e9 99 04 03 00       	jmp    0x304ce
-  35:	cc                   	int3
-  36:	cc                   	int3
-  37:	cc                   	int3
-  38:	cc                   	int3
-  39:	cc                   	int3
-  3a:	cc                   	int3
-  3b:	cc                   	int3
-  3c:	cc                   	int3
-  3d:	cc                   	int3
-  3e:	90                   	nop
-  3f:	90                   	nop
+v2:
+ - add patch 2 (kstrp per-CPU), per review
+ - read sock->ops with READ_ONCE(), pairing with update_sk_prot()
 
+v1: https://lore.kernel.org/netdev/20261013033920.2069285-1-rjethwani@purestorage.com/
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Rishikesh Jethwani (2):
+  kcm: defer receive parsing when the lower socket's read_sock may sleep
+  strparser: don't serialize all parser work on one ordered workqueue
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+ net/kcm/kcmsock.c         | 33 +++++++++++++++++++++++++++++++--
+ net/strparser/strparser.c |  2 +-
+ 2 files changed, 32 insertions(+), 3 deletions(-)
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+-- 
+2.50.1
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
