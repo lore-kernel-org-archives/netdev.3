@@ -1,35 +1,35 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6503C9EDD;
-	Fri, 16 Oct 2026 19:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CA73CB550;
+	Fri, 16 Oct 2026 19:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792179066; cv=none; b=XHE+bgtCsFgJ4rhyTAXXZc8k5hv7ksp7dA3jZChWTUK0Ra9mgPiccafGK+51j5dOZQaa+GCY1gIRbYW3RCzJQpGLuucc51ukJCu0U+3G7e1zJAStI0T/qUOkzj22PQdUDqQIEdQah5JonN6/gxn3cPLlhWXOCFRALgh6LjbZBPU=
+	t=1792179071; cv=none; b=cinFPTdsb1D/E1LJmPh0TRNnb2bqoMilZ6n/8IJe+adHEx7X3ILt4r+uLMOMb7mHBwsQov16wt+XGCDFrQxQRgljnrJJQxB749oRwICbPMZ55cBIS775MDtbH03gQGPmFGNR1brfBJPmams+aPRjsxIgL/8T09dGfR3pGIf17JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792179066; c=relaxed/simple;
-	bh=jSXmpReOEzXUc0JLxH//R7dvy92YyevKFQJHdUiv4Nw=;
+	s=arc-20240116; t=1792179071; c=relaxed/simple;
+	bh=yS3WAtbr3CH0Kc8j14aXvzqR3HkDhAguhlVl+RmKfdM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r6oxpONgXJRYxnFsY1GE4lnal/w/35Qk9ocHyqq/gtVX09y5Xooz98A1tL29/FP/DWVwZU+bif1/UW9X3r+M7azjLHexkuQVQXrQ+uZiUWcZdCdyQ3FbfwSqbMEpd/3Ra15ihlbBTgIgys4FKA0yVDWXV7D3w6Ue6YM2Y+SlGCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=T7Ztns9D; arc=none smtp.client-ip=178.251.229.89
+	 In-Reply-To:Content-Type; b=GlJR83K14cc7q4y2cCXw3KbyC31rQ9HBRI8IpQAJN2iLoebXZLhTbKd+gxc98bRMRbXIwA84EoFWHhGMTIZVihQshrnU4m6GviUBiqEGN5IgdU/DEYRwF1zqZsL91BaKCIU+xCub3da9yPM/V316Xq1aePd7xgbcD/e8mvfDoHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=JZ4yNV5V; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="T7Ztns9D"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9FF53106175;
-	Fri, 16 Oct 2026 21:31:00 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="JZ4yNV5V"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E749C1095A8;
+	Fri, 16 Oct 2026 21:31:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1792179061;
+	s=dkim; t=1792179062;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=yMIPWPPkArNb9QBk2Pp7fUcT9jQ4pAJbPTXYT4LYX0I=;
-	b=T7Ztns9DPAV83p6VQfRINYMKx3JnnbG/KKmRFAGl1TbX+2Al7o2Z7KLbkrOzNpb1cCSyWn
-	5IbNqAUuRoWSkvtziV39cvVFlcwvUD1dN+Krz9nbhN/76Wd+6hlFkglwRh6bLMxOIy2xl5
-	eWLGNn6f2cKA5l8r7clhU4WE7CSZzEoXrmwCRHcIyMiZQ2zp6Yg/92z7Kkf2/JQZWrS3iS
-	f+bSeUsgBKkYFmhAkIwLogegO+WbkMy9O0eESd5eQJPd/A+5F/HFUAb5+SLrLSUFqGkHks
-	JesplQMwRACEK2XcSe1cbktoP8ucSUmWiJscu9KmrMGWfT8ZZjOuG1td1YUfWQ==
-Message-ID: <39d85490-d6e4-4bd1-a539-94cb34c31cea@nabladev.com>
-Date: Fri, 16 Oct 2026 20:20:16 +0200
+	bh=cWKAp97uuwcOkyhGnwmcdV9GRcG/qs2w/Mc8xr3/noY=;
+	b=JZ4yNV5VoUXE+V0iYpmUVm99bVQtqRrIYZ0Mb0GiV8H8eSIq2m0Ao2V0WFign3sv72Cc+W
+	zEscgdkAciVY8/NHsUYK3yM3KLt2YPoX+UHbwuAYGqjUTtNrnX/GmNF/RWdVhOVtHhtqkT
+	nkjkLheiq1KYK23+ObxnabNCVN5i2yYQUtMnMz5pDrsvIn/qdsPSbeDHhdwcWEQ3l8DOnh
+	kYFoENJ8x9kT/yimVEeApLYVpcCg2DbY/CnjgHqxahP+loOBt/HO1hPCt/GeLs5Eh/jAXa
+	OScMNH8sVpiLQhRzHiXqw2dffG6xBh+qpAjHJRMPodxbO0p0ZVqguEwwjKBQkQ==
+Message-ID: <df4212fa-2fb8-40ab-872a-40bd8a35ba0b@nabladev.com>
+Date: Fri, 16 Oct 2026 21:09:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,50 +37,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH] enetc: Set eMDIO MDC rate to 2.5 MHz only on
- i.MX95
-To: Wei Fang <wei.fang@nxp.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Eric Dumazet <edumazet@google.com>,
+Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
  "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20261001223947.60189-1-marex@nabladev.com>
- <AS4PR04MB93382E107F5799E9FAB9010988932@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20260924180607.60932-1-marex@nabladev.com>
+ <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
+ <20261013152559.cnh2i7i36hak6z3t@skbuf>
 Content-Language: en-US
 From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <AS4PR04MB93382E107F5799E9FAB9010988932@AS4PR04MB9338.eurprd04.prod.outlook.com>
+In-Reply-To: <20261013152559.cnh2i7i36hak6z3t@skbuf>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/8/26 5:24 AM, Wei Fang wrote:
->>   static const struct pci_device_id enetc_pci_mdio_id_table[] = {
->> -	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID) },
->> -	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) },
->> +	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID), 0, 0,
->> 258 },
->> +	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID), 0, 0, 66 },
->>   	{ 0, } /* End of table. */
->>   };
+On 10/13/26 5:25 PM, Vladimir Oltean wrote:
+> On Wed, Sep 30, 2026 at 06:19:04AM +0200, Marek Vasut wrote:
+>> Are those clock which feed MDC clock available via clock framework on LS ?
+>> If so, we could calculate the divider based on those clock.
 > 
-> No, please do not add the divisor to the driver_data. All NETC v4 devices
-> use the same vendor ID and device ID, but their system clock may be
-> different. So the divisor is different as well.
+> Yes.
 > 
-> In addition to EMDIO, the ENETC port and NETC switch port also support
-> virtual MDIO, which uses their own MDIO registers to access the external
-> PHY. Therefore, the modifications go far beyond this.
+> On LS1028A, the ENETC clock selection is made by a mux called HWA_CGA_M4_CLK_SEL
+> (Hardware Accelerator Block Cluster Group A Mux 4 Clock Select).
 > 
-> If you don't mind, I can add a patch set to address this issue later. You can
-> simply revert the commit 587acb86d646 "enetc: Increase eMDIO MDC rate
-> to 2.5 MHz".
-I am tempted to do that at this point, but the MX95 would then be 
-incompatible with TJA1120 which does not work for me.
+> You can describe that in ls1028a.dtsi like this (note that in the RM,
+> the mux numbering is one-based, while in the device tree it is 0-based,
+> so 3 is actually "MUX 4"):
+> 
+>   			enetc_mdio_pf3: mdio@0,3 {
+>   				compatible = "pci1957,ee01", "fsl,enetc-mdio";
+>   				reg = <0x000300 0 0 0 0>;
+> +				clocks = <&clockgen QORIQ_CLK_HWACCEL 3>;
+>   				#address-cells = <1>;
+>   				#size-cells = <0>;
+>   			};
+> 
+> Upon clk_get_rate(), the qoriq clockgen driver will use the device tree
+> definition to index the hwaccel[] array and find the ls1028a_hwa4 structure.
+> This defines what values the HWA4CSR register can legally take, and what
+> each means. It will read HWA4CSR[HWACLKSEL] as 0011 (meaning Cluster PLL2
+> divide-by-3). Then to calculate this clock rate, it knows it must read
+> CGA_PLL2 and to divide by PLL_DIV3 (1200 / 3 = 400 MHz).
+> 
+> Note the ENETC PTP device already has this property defined (which is
+> OK, all ENETC devices share the same clock).
+> 
+> Without a 'clocks' and/or 'clock-frequency' property, we have to figure
+> out a default that works for everyone, or if that fails.
+> 
+> For example, with 400 MHz enet_clk on LS1028A, the original
+> MDIO_CFG_CLKDIV value of 258 used to produce an MDC frequency of
+> 400000000÷((258×2)+1)=773 KHz.
+> 
+> Your new MDIO_CFG_CLKDIV value of 66 produces 400000000÷((66)+1)=3 MHz,
+> which is too high to be a default value. So from LS perspective, this
+> patch needs to be reverted.
+> 
+> Generally it is assumed that low MDIO clock frequencies are not a
+> problem. Otherwise, drivers/net/mdio/mdio-bitbang.c could never work.
+> It seems TJA1120 is the odd one for requiring a maximum MDC clock
+> period of 1000 ns.
+> 
+> Please use xgmac_mdio_set_mdc_freq() as model, since it exists to
+> solve a very similar issue as you are trying to do.
 
-But isn't the PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) 
-compatible ONLY with the MX95, so this would restore the behavior on 
-non-MX95 and fix up MX95 only ?
+All right, let's revert the original broken patch (already posted) and 
+lemme prepare something similar to xgmac_mdio_set_mdc_freq(). Thanks !
