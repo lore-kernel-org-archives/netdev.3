@@ -1,50 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B804F399D08;
-	Fri, 16 Oct 2026 04:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E22E38B12F;
+	Fri, 16 Oct 2026 04:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792124091; cv=none; b=d9Sst7HPTeQfzXWcLFic9hubelJBTXisfNaSRVG//3HlJh2c41ndLH2+5qAqSuCKgNi6/SB/vW2wWgoQDUnGGeRQ1LtQeN1SLtHd7g/s5ffQweSk1X07AxWmTeC7oz7QPydwUzs3QF7wwZbD3MO+dq+ScsCakLocABUJ7Ja3Fio=
+	t=1792124097; cv=none; b=oSkJSrux4imUrsVJWIL5zWha8eg/aJh/ipZMdQhu2FRqyiABBxRyN4PrtmYtBXYHMzE2jDkCBGy53oatksvE2vdjU9ma4vYdSJSyrzCCu1si2nmZdYRe/iCEZHReFMdbn2tVdLGqjP4ixIvWg5NSCjhgkfdrUYGWqbeO3DhVJJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792124091; c=relaxed/simple;
+	s=arc-20240116; t=1792124097; c=relaxed/simple;
 	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BejXm+nUJCmQ31DMNsYdQ8WXLfjvmXgZcu5Lsp1xTZVIj2HFcGnmhWtrSdWCbdvRG18ueKRlrQPtWqPy3x0uNODZ+jEo8/fEf8oxtqIfXa2dB3I9b50D64+IwjuQUVIPhANaKJ2W+1W2Y9wXigqRBMTyhiCWlmdJUcAVJoZ7vd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNLmKgTN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=FSLFk9hQ/oIfjJTfzoKGBCLUgtIMXUgsmXmWvF0Fmo7uC8nBCpM+tNdl9FTpHKEBIRJAGMDrDWidQlMgDQen026EoSMO41Hj78u0y0rWBkmfbzLCF69+3sXNSVgaOsSrX6qz0qgi3Ff+/eaOG08BnlStRLr/upcuYOZTjkspVV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDKzJwlm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNLmKgTN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663FA1F000C4;
-	Fri, 16 Oct 2026 04:14:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDKzJwlm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABC11F000C4;
+	Fri, 16 Oct 2026 04:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792124089;
+	s=k20260515; t=1792124095;
 	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gNLmKgTNXe37Ju6OkYo0KlfVWQaaqVp3YmD/RFWSmVlt8mV2MBcIBtgQ6X3KAL1b1
-	 G5sfUkO2x4CHEh9XD7946MCU2UGNR4La0D5ZZ0qyDFeNGSU/cXCjflFogQfwUMp6FO
-	 EoVQ4XAq0q/ZybpfWcu7PiBEwA6zEuCDnyfidRwQjJ3t2a0bW/vaLLpqIeqhkFA7Ts
-	 qs6VUCtT1I9GsCW7xQkid+gjWFsv4nKYCWvJrFKsIKM5BeOf6l1HcngarTmya0/H1i
-	 Nulv7fWWniIHwzFRBJcgnQnPtWHthU8wLpu+DI7CvSkWJH/yUqa4u+r+13EgnM2GBD
-	 CanD2O/rvOTPQ==
+	b=SDKzJwlm8kfWLQ3R+EOWe8r0DtoHGrtMg0/8E3L3Z6SQmxl6F40vaQ48ShcTFCOFG
+	 tCcChcs9WE7Psnxk6HPAJ5ZaVAbkZ4GyXaTUZNLWK9y4oASTlB5PJcMO5cok9pIM8K
+	 n0iGbgdFl6jILTqTt/FRW1BPiqnlCap3e8he4stKnRrTK2RE4F18LDhUKfLCztrRYd
+	 6+NO59oaT4XWZH0dKjqI8XYAVTj5LRDjhxIHJeFRcWF2+uuYybrIIhMyAzTd23eJMO
+	 4dF45T0dpKmi4bn0iGVXynEjlJk83fobdkhAezWQJv8F/j8en+7eLOjGdBBCnbdJrA
+	 nkt4vG1gpclzQ==
 From: netdev-bot+sinfo@kernel.org
 To: Liu Chao <liuc63@xiaopeng.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
- Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+Cc: "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>,
- Liu Haijun <haijun.liu@mediatek.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>, Paolo Abeni <pabeni@redhat.com>,
- Ricardo Martinez <ricardo.martinez@linux.intel.com>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH] net: wwan: t7xx: fix tx buffer release loop on invalid skb
-Date: Fri, 16 Oct 2026 04:14:47 +0000
-Message-ID: <179212408791.408196.9351925971039548466@kernel.org>
-In-Reply-To: <20261016041156.2295670-1-liuc63@xiaopeng.com>
-References: <20261016041156.2295670-1-liuc63@xiaopeng.com>
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: ipv4: ipconfig: fix OOB read in DHCP option parsing
+Date: Fri, 16 Oct 2026 04:14:54 +0000
+Message-ID: <179212409440.408196.7891381020957974753@kernel.org>
+In-Reply-To: <20261016041152.2294843-1-liuc63@xiaopeng.com>
+References: <20261016041152.2294843-1-liuc63@xiaopeng.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
