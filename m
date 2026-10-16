@@ -1,133 +1,125 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B0E421EF8;
-	Fri, 16 Oct 2026 07:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B9B265623;
+	Fri, 16 Oct 2026 07:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792135129; cv=none; b=KzbJEsjS+/6cnaIjg3oJgEB8Kt9BBQzzsWm05QEaApoqjNrSaH407d23LQtm+h3X7rVsNgQAy7nA4mHlBCHxeKVYjQvYBc1MLCj7djHqXJ3rEznEW138L6Jlq2ZUWWEEwlLpWeU+vn+WDKB6HXH/mA0VxnZvYogXyEgQ0cfCY7I=
+	t=1792135788; cv=none; b=fiWoaWsY55epIUNiCofJrIbFZzwlojanev41XHvVzvYnrqIs/3o0r02xfRxVUUbQg2AzTgwNH/CDLiWSOTE9ll95XLmBrRehjy5BKcl1uOADuEJHuNEhHFhC8ehqHXoKAUeieBhoZlN5gye3pmjW7tCOfiThpGXx2gx1Q+K/VpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792135129; c=relaxed/simple;
-	bh=fx08jF1lGfBNxGHEObrn2q0urJVBldjrOMSeT87Twr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M29D7n84roA28fTtm2+VcZyBu17qwBMW91zeC/XMRwbqboBhhHebwX0DIhodw9NdkRhbptOzNe+yWoG5zHxpZ6KAtAx+PZvfMPVzNURbAkieioxjh/oIy+rdr/R+Ouajc8AIyzmSQyosilCxGiYYUeTg7D2HnX0csT6rZSKXUOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UeyY4PYD; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1792135788; c=relaxed/simple;
+	bh=gmV+GbP2VEl5VU13HkRril9s1wl4NEpe5TWY5aTceAg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4TbccONgowDsg6DbzwDHYDdjfOwRPAJg9MfvzFW/kALL6EM7ePbx4QwbLGAlo6rCxF17DlxqrFMG0A3ss1XaxHFhhF28QwZLBHfVu0YLgTiTFpMAcr+nNGAhMkoXHk5VIewNnjelXfZQCfQUihF2UAlm/0rNJLBk3r3NXd9jFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqpNx+Hj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UeyY4PYD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=JP
-	QpWeMISzrIunZ01qWhJTq/db8MK1NfPuxvC7OhWBo=; b=UeyY4PYDwnv6JCDgC1
-	0kVwaZxiIA1QKKcYpxJc29SBQmAwoLzzXVUAT57wOPO24u514YiAP2RRxlveUAdF
-	oe0QamVdR6Rw2JzalM4asbKQ7TMN+RGaKJkBGln5iE8rPwAw9KJzXKlqVZERbYKQ
-	T3TYwCp9h2koLFriKxCzYpRic=
-Received: from nec8-i7 (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3jyaFz9FqVrDQAQ--.5020S2;
-	Fri, 16 Oct 2026 15:17:29 +0800 (CST)
-From: chenyuan_fl@163.com
-To: bpf@vger.kernel.org
-Cc: Yuan Chen <chenyuan@kylinos.cn>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH bpf-next] bpftool: Print verified instruction count in prog show
-Date: Fri, 16 Oct 2026 15:16:57 +0800
-Message-ID: <20261016071700.280539-1-chenyuan_fl@163.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqpNx+Hj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947EB1F000C4;
+	Fri, 16 Oct 2026 07:29:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792135787;
+	bh=k9n7YXXh/4p8cv6sga3JFDGjo9ZmIZeY5cQUzxvZfwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AqpNx+HjnUmXVZkNrUGL7lqQDAWLO8RwttV7lMcj9654og8/qd7dd/+SorEXqC6Uu
+	 fSnqiXYu3yf2/2DsyUe3KdoXvXqWFQvaod8XHmIxkaE3V7UxyhWQQ9PF/jBhxhRaFC
+	 tk/S92/EmbrqY9LZ5V+6rPxp52d0kE218RkUnBSwD2/HFJRC3sJUzcYi8f9H5UEAh7
+	 JJD3NExpWEalnbqFAHGA56qTC2AHFfDMakvZ4pRuZ8JBkCL75dDdkXrrb+TUvdkFB0
+	 DMoK6QhXilPlYw7GXgnHd58IfxSVhwjizlyA6trEWtFn0CB3jj3Ttxof0fPw/JNyXV
+	 MspwDeqeK+18w==
+Date: Fri, 16 Oct 2026 09:29:42 +0200
+From: Antoine Tenart <atenart@kernel.org>
+To: Jerry Jiang <kj2864@nyu.edu>
+Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, edumazet@google.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, co+71b6509cb791e531@bugs.sh, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: ipv4: add zero check for snd_cwnd_clamp
+Message-ID: <atHQupHr7_ocAJ_A@kwain>
+References: <20261014195640.430824-2-kj2864@nyu.edu>
+ <atCf_85Ei_J9CDtd@kwain>
+ <CAPqbLS2sM9JZ8VbrzWviV-6XNRniKib_L+seaKtnCfR3pwMMig@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3jyaFz9FqVrDQAQ--.5020S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZF48WrW8KFyDurWrtw4rGrg_yoW5Gry3pa
-	15JF97C3yUXw1rGw1kCFs5ZrW3Ga1Igwn7JF4xArW8XFn5Jrsaqry3KF4FvFn8XF1fta4r
-	Z3yS9rW5tF1xZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jShFxUUUUU=
-X-CM-SenderInfo: xfkh05pxdqswro6rljoofrz/xtbDAgkl4mrRz4kQFQAA30
+In-Reply-To: <CAPqbLS2sM9JZ8VbrzWviV-6XNRniKib_L+seaKtnCfR3pwMMig@mail.gmail.com>
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+On Thu, Oct 15, 2026 at 12:57:51PM -0400, Jerry Jiang wrote:
+> I have considered rejecting 0 in tcp_snd_cwnd_set but afaik patching
+> tcp_snd_cwnd only would just ignore the problem. My current patch
+> should completely reject the user from creating a socket if 0 is
+> passed for RTAX_CWND.
 
-The number of instructions processed by the verifier is available
-through bpf_prog_info::verified_insns and the program's fdinfo since
-commit aba64c7da983 ("bpf: Add verified_insns to bpf_prog_info and
-fdinfo"), but bpftool does not display it, leaving no convenient way
-to check a program's verifier cost.
+I'm not arguing against the current patch. My point is warning on 0
+values in tcp_snd_cwnd_set made sense before but since this is now known
+to cause oops there might be something better to do there.
 
-Print the count in the plain and JSON output of bpftool prog show,
-following the convention of the other conditional stats
-(run_time_ns, run_cnt, recursion_misses): kernels that do not fill
-the field leave it zeroed and nothing is printed.
-
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
----
- tools/bpf/bpftool/Documentation/bpftool-prog.rst | 3 ++-
- tools/bpf/bpftool/prog.c                         | 4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/tools/bpf/bpftool/Documentation/bpftool-prog.rst b/tools/bpf/bpftool/Documentation/bpftool-prog.rst
-index 8dbd34ef3d8b..d4a94e0737a9 100644
---- a/tools/bpf/bpftool/Documentation/bpftool-prog.rst
-+++ b/tools/bpf/bpftool/Documentation/bpftool-prog.rst
-@@ -285,7 +285,7 @@ EXAMPLES
- 
- ::
- 
--    10: xdp  name some_prog  tag 005a3d2123620c8b  gpl run_time_ns 81632 run_cnt 10
-+    10: xdp  name some_prog  tag 005a3d2123620c8b  gpl run_time_ns 81632 run_cnt 10 verified_insns 528
-             loaded_at 2017-09-29T20:11:00+0000  uid 0
-             xlated 528B  jited 370B  memlock 4096B  map_ids 10
-             pids systemd(1)
-@@ -301,6 +301,7 @@ EXAMPLES
-             "gpl_compatible": true,
-             "run_time_ns": 81632,
-             "run_cnt": 10,
-+            "verified_insns": 528,
-             "loaded_at": 1506715860,
-             "uid": 0,
-             "bytes_xlated": 528,
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index eb077236d2ea..c77e871b8859 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -441,6 +441,8 @@ static void print_prog_header_json(struct bpf_prog_info *info, int fd)
- 	}
- 	if (info->recursion_misses)
- 		jsonw_uint_field(json_wtr, "recursion_misses", info->recursion_misses);
-+	if (info->verified_insns)
-+		jsonw_uint_field(json_wtr, "verified_insns", info->verified_insns);
- }
- 
- static void print_prog_json(struct bpf_prog_info *info, int fd, bool orphaned)
-@@ -526,6 +528,8 @@ static void print_prog_header_plain(struct bpf_prog_info *info, int fd)
- 		       info->run_time_ns, info->run_cnt);
- 	if (info->recursion_misses)
- 		printf(" recursion_misses %llu", info->recursion_misses);
-+	if (info->verified_insns)
-+		printf(" verified_insns %u", info->verified_insns);
- 	printf("\n");
- }
- 
--- 
-2.54.0
-
+> On Thu, Oct 15, 2026 at 5:57 AM Antoine Tenart <atenart@kernel.org> wrote:
+> >
+> > On Wed, Oct 14, 2026 at 03:56:41PM -0400, Kaho Jiang wrote:
+> > > User can pass zero to snd_cwnd_clamp via RTAX_CWND type.
+> > > This could lead to division of zero error if not checked properly.
+> > >
+> > > Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+> > > Call Trace:
+> > >  <IRQ>
+> > >  tcp_reno_cong_avoid (net/ipv4/tcp_cong.c:510 (discriminator 1))
+> > >  tcp_ack (net/ipv4/tcp_input.c:3517 net/ipv4/tcp_input.c:3873 net/ipv4/tcp_input.c:4440)
+> > >  tcp_rcv_established (net/ipv4/tcp_input.c:6685)
+> > >  tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
+> > >  tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
+> > >  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207 (discriminator 1))
+> > >  ip_local_deliver_finish (net/ipv4/ip_input.c:241 (discriminator 1))
+> > >  ip_local_deliver (./include/linux/netfilter.h:325 ./include/linux/netfilter.h:319 net/ipv4/ip_input.c:262)
+> > >  ip_rcv (./include/net/dst.h:481 (discriminator 6) net/ipv4/ip_input.c:492 (discriminator 6) ./include/linux/netfilter.h:325 (discriminator 6) ./include/li)
+> > >  __netif_receive_skb_one_core (net/core/dev.c:6297 (discriminator 4))
+> > >  __netif_receive_skb (net/core/dev.c:6410)
+> > >  process_backlog (net/core/dev.c:6761)
+> > >  __napi_poll.constprop.0 (net/core/dev.c:7830)
+> > >  net_rx_action (net/core/dev.c:7893 net/core/dev.c:8050)
+> > >  handle_softirqs (kernel/softirq.c:645)
+> > >  __irq_exit_rcu (kernel/softirq.c:679 kernel/softirq.c:519 kernel/softirq.c:758)
+> > >  irq_exit_rcu (kernel/softirq.c:775)
+> > >  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1062 (discriminator 35) arch/x86/kernel/apic/apic.c:1062 (discriminator 35))
+> > > RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
+> > >
+> > > Fix by checking if user pass in zero as parameter,
+> > > if so reject the value zero.
+> > >
+> > > Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+> >
+> > This looks like a refactoring commit only, 814d488c6126 might be more
+> > appropriate but please check.
+> >
+> > > Cc: stable@vger.kernel.org
+> > > Reported-by: co+71b6509cb791e531@bugs.sh
+> > > Assisted-by: LLM
+> > > Signed-off-by: Kaho Jiang <kj2864@nyu.edu>
+> > > ---
+> > >  net/ipv4/metrics.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > >
+> > > diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
+> > > index ad40762a8b38..e83a129a25b6 100644
+> > > --- a/net/ipv4/metrics.c
+> > > +++ b/net/ipv4/metrics.c
+> > > @@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
+> > >                       NL_SET_ERR_MSG(extack, "Unknown flag set in feature mask in metrics attribute");
+> > >                       return -EINVAL;
+> > >               }
+> > > +             if (type == RTAX_CWND && val == 0) {
+> > > +                     NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero");
+> > > +                     return -EINVAL;
+> > > +             }
+> > >               metrics[type - 1] = val;
+> > >       }
+> >
+> > My understanding is tcp_snd_cwnd(tp) can return 0 and then the divide by
+> > 0 occurs in tcp_cong_avoid_ai. Have you also considered updating
+> > tcp_snd_cwnd_set to not only warn about invalid values but also reject
+> > them, preventing similar oops?
