@@ -1,137 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A652830CD89
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 05:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685681E98EF
+	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 06:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792130397; cv=none; b=jQafs9jJDp+8N9Z5xQ0JIVLCmnEUs6iFqFYvT57Yh0IFfan2QDU9eI22JjJ9xzUIvMAmUV0PHcOzeTeDjNNrcPGbtXu2ZdVBKzm4N2dT4aXNHFZPfpRVD/VBbTBiFNkksxaGPL4D1zXs6Ria1YFzhkenGezrJf7OlmJdEALfGKc=
+	t=1792131001; cv=none; b=FeAuNeHmncEFMO267hk1VF2hQ6b+1vblGZlL+jUVOSLi81vd1Da84d4iBGaWh0CRwlmKiBYWqI/VKI6a9TN2EQWEzaTjv6bEfOYvSiaYsUobAVs6UskF7EPH6MAPsZrt4BEnnC7UC9QEkQpvw8tgPkIVauUe91L1r7s43V2g6Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792130397; c=relaxed/simple;
-	bh=ffT1uC8Tx5LWXnu0ZHL17b8Pkk4WgBDhMPPfK8nul2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E2G85mVVRdI2/ASTw0+XxaZ8TFodgNyoMnuVn/hdwZ/n7yY/kTzMFJB/c0wgQxMSRCLF7IUQV6iiztx4HS/AdKcVOW4c9nJtSHFqAYAfS5UkJHxcxZTzA0/JTyZsqfzO9/TssqxwO9xbvvMHNDxE0ZAE5RUlXOwZRe9NbI4Uiqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J56dckrd; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792131001; c=relaxed/simple;
+	bh=DqG2AIGPL1uGXvBJhqSHPSDtvVR7TWwuzpI0OdCQ/xE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CojyPCWKUNAkAs6R1H/SN53tKa4jCBPv3ol1wsOqJkCYmSLehAdel5CgjPPFNXhfXYQnaW0tJYpAQPc0x1oIQkNOaUe2GWs9CxuM/jJ4e5PatG/ARW+4uezbmQRknkuQPvFDnADXpyRzpUoiEKGV77eYW4Tg8Crb7LjkI1sG4Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=omF1nW6M; arc=none smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J56dckrd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792130395; x=1823666395;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ffT1uC8Tx5LWXnu0ZHL17b8Pkk4WgBDhMPPfK8nul2M=;
-  b=J56dckrdL0WJ54Cmmoxx4ljIF+4p5CJMzlRGUZxpu5uyWYf9+4QYkVGh
-   OnsG4NAbef/81Sx6RR4BI/2zEH5/psUohSlq53p6NqShFrlehV75IiBY2
-   c2VqbhCAc4CGB0bPvEpSrsi4ZaXAw+uoAKVKZ86QwH+wv685z974VsUKU
-   BnE0qwi2X1BddbhhwT7ZculvXGGoWrIopKmVzppgdgirsIDNZwvIT33na
-   Gz4YfwCx+cwZQnvUBKn4UV/kAqxcMkAmniJxs8AtXbCrzWUem2swV0R5G
-   vm/xffaSOiMh8mRtuaCkn10ipsOYHUdNgAortze2Fo0Lq/R3KEMwxxi7z
-   w==;
-X-CSE-ConnectionGUID: 537kF1z1TqOqCPY41GSurw==
-X-CSE-MsgGUID: NbWWu1RYTuueZ4LfwT0Viw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="777886"
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="777886"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 22:59:54 -0700
-X-CSE-ConnectionGUID: s6K5pGUBTr+Dk4bRSngZrw==
-X-CSE-MsgGUID: 5Bg4tbOVRF6nQQ+UylFw9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="2239417"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 15 Oct 2026 22:59:52 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xHayr-00000000Hha-3SjE;
-	Fri, 16 Oct 2026 05:59:49 +0000
-Date: Fri, 16 Oct 2026 13:59:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>, dhowells@redhat.com,
-	davem@davemloft.net, marc.dionne@auristor.com
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: Re: [PATCH] net/rxrpc: Simplify rxrpcpeerseq_next()
-Message-ID: <202610161338.9QHAZ7bn-lkp@intel.com>
-References: <20261015200115.59571-1-chelsyratnawat2001@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="omF1nW6M"
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-17bc533fda3so3017117c88.1
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:10:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792130999; x=1792735799; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gwEs0x+XqCChaDuPK/8cuCgIucGP91NXK3xMck8OY0Y=;
+        b=omF1nW6Mb7kFmQb7/yrueN4kDQZIiqwvhrZNrPPLcJKDHlZHoqmNHyfnwuDuZkJoHy
+         BqNen+ojI+tkPuhTis7JYR6s0+W1TPjbHxcnh15HpO8qheuwMkQrFHC6f3q9i9babTDW
+         BbWCs6tghYxhovwctsfuB8JoUc70VwJr2X4X+ffC/cL0xfNbw5sr8ntZVvAhluMyJ0Mj
+         ZnehJuMq67gZ0jef2h4ZBzuW4VeBIP1M/CVKQJd30t8OyI041ykmvbjH5xoQ2oyF0YRD
+         4I9SHJbVpG0vrBK3PDvUroaSKzCU+HAxCRZADHPcsE/oOPxKP5cnAFIOw9Wq1qAd12iS
+         W75g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792130999; x=1792735799;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gwEs0x+XqCChaDuPK/8cuCgIucGP91NXK3xMck8OY0Y=;
+        b=TuTV8057se8BFR2VO14rSjmLo+Z9EVZX8CEqhvPK/eVm+P+z1/pxxiXfVXFi7JzYSS
+         pFIiNysF2UaoQ6KkFwe0It5I1OPmjLHvU/vwnjmK9e4LUV7TkKVFIvhCJFfJODZ9KY1k
+         GCJhr82szTbzVhv+HImmg8wGOeJoo06JlUI+9R0lAZGp8Tk07e1bCx5L+UxfRi3FBBNu
+         YP0YzxuYhKn4dxoqr7qnSE38vm8iGpAnqvgBy5ETNwNq9LILEdxWF8GLNHEXNftIiDNw
+         2krYGqS+Hzu4bcKj2ByiVdviyRpYx+F3X147tBbhP8I8CJiux/nHII+MRlsY9NTKijct
+         twOw==
+X-Forwarded-Encrypted: i=1; AKwUvBxCmAUzxOnpMlzfLQJaKLjwO6aHMDOCgKo0II1WIPMNDIG/nik58PzuZOOjOSm9KiMJFT4ACHA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLFHdwosgX36OqIMImWTqG/swmK/6KDWZ8I9KUDVgUTzfM5TtFb
+	8U2MeNcfgO1wt/IPsr5nLJk2P6uycFFq4B80gwuaRjwX/hfTr12bYubT
+X-Gm-Gg: AYBFou2YEccN79VaGgtJmKuADJP78oiLGG4qipYjYrLfTOPN288gseuDwjGoYJwkcR8
+	irpKdygFa9dUltUP3gEaJqyis6aB4XX2XxFpxH1WpT5KCUSwJadSk7clIGKwELvrfFNrHoxiqjk
+	XRLJX02SKrpu/hfkZd3mBXyRoKxIyEV0S1cfLh5SyxEse8mPRYXK9t94JlIyA55Wg48S0n21ooS
+	dPXa69Qjpk7DPasqI9E9Os9HOV6Tkxs/HFCtzdPgUwv3jtQcecQcunW94idA7YkSieiMdV+Huov
+	ME4FqdGeWlYcAH5tDDsoYrbHF6rKLgKzHJ2qX2/Z6iGZ1pfPHkporrwKy2cBaon8dJ4M2tX++yL
+	Ykojo/RPrT5A9hyWjp48/ht1zi323Gr28nyz3lOilm2XahwNHOBkzbg07xPjiSpsVWPXpaoLc61
+	95ggwhvUqgvJFAm0dkicqTaR5S8i45+1kYZygHhtBs4ikm0TWyqtMHzn6G+QtlHW8EEA==
+X-Received: by 2002:a05:701b:230c:b0:143:2967:c0b1 with SMTP id a92af1059eb24-16a5fc91121mr29007550c88.25.1792130999447;
+        Thu, 15 Oct 2026 23:09:59 -0700 (PDT)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa411sm3309068c88.4.2026.10.15.23.09.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 23:09:58 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Subject: [PATCH net-next 0/3] net: make moving a device to another netns
+ cheaper
+Date: Fri, 16 Oct 2026 14:09:52 +0800
+Message-Id: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015200115.59571-1-chelsyratnawat2001@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALC/0WoC/yWNQQ5AMBBFryKzNklLNOoqYkENZqFkikjE3RWLv
+ 3iL/94FgYQpQJVcIHRw4MVH0GkCbmr9SMh9ZMhUZrTSBrt9RE/bOx9wXg5CcTt2rUSPYG9t6Ux
+ uizJXECWr0MDnF6jh/50bNPf9AOPA0V56AAAA
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
+X-Mailer: b4 0.13.0
 
-Hi Chelsy,
+Moving a device to another netns waits in rcu_barrier() with RTNL held.
+Container and sandbox managers move one end of a veth pair for every
+new network namespace, so this barrier limits how fast such namespaces
+can be created on the whole system, to about 75 per second in a 16
+vCPU guest no matter how many threads create them.
 
-kernel test robot noticed the following build warnings:
+The barrier was added for NETDEV_UNREGISTER_FINAL, which is long gone,
+but it still keeps cached IPv4 routes through the moved device from
+being accepted in the old netns. Routes through nexthop objects are not
+covered by it: their cached dst entries are released by an RCU callback
+queued from another RCU callback, so a socket in the old netns can still
+send through a device that now belongs to another netns whenever the
+route generation numbers of the two netns happen to match.
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main linus/master dhowells-fs/fscache-next dhowells-fs/keys-next v7.3-rc7 next-20261012]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Patches 1 and 2 make the IPv4 rt_genid and the IPv6 fib6_sernum unique
+across netns, which fixes that leak for nexthop objects and leaves
+nothing that relies on the barrier. Patch 3 removes it. Patches 1 and 2
+fix bugs that exist today and can go to net on their own if preferred.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chelsy-Ratnawat/net-rxrpc-Simplify-rxrpcpeerseq_next/20261015-130115
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20261015200115.59571-1-chelsyratnawat2001%40gmail.com
-patch subject: [PATCH] net/rxrpc: Simplify rxrpcpeerseq_next()
-config: nios2-randconfig-1000-20261016 (https://download.01.org/0day-ci/archive/20261016/202610161338.9QHAZ7bn-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261016/202610161338.9QHAZ7bn-lkp@intel.com/reproduce)
+Creating 400 netns, each with a veth pair whose host end is moved back
+to the initial netns, a tap device, addresses and routes, median of 5
+runs:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610161338.9QHAZ7bn-lkp@intel.com/
+                   before      after
+  1 thread        67 /s      440 /s
+  4 threads       75 /s      409 /s
+  16 threads      76 /s      283 /s
 
-All warnings (new ones prefixed by >>):
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+---
+Qiliang Yuan (3):
+      ipv4: draw rt_genid from a sequence shared by all netns
+      ipv6: take fib6_sernum from a sequence shared by all netns
+      net: remove rcu_barrier() from __dev_change_net_namespace()
 
-   net/rxrpc/proc.c: In function 'rxrpc_peer_seq_next':
->> net/rxrpc/proc.c:355:30: warning: unused variable 'n' [-Wunused-variable]
-     355 |         unsigned int bucket, n;
-         |                              ^
+ include/net/net_namespace.h |  5 +----
+ net/core/dev.c              |  1 -
+ net/ipv4/route.c            | 16 +++++++++++++++-
+ net/ipv6/af_inet6.c         |  1 -
+ net/ipv6/ip6_fib.c          | 14 ++++++++++++--
+ 5 files changed, 28 insertions(+), 9 deletions(-)
+---
+base-commit: 6b3e73774815910a39d8ca75b9ad7df963f61d50
+change-id: 20261016-bug-net-netns-move-rcu-barrier-d998c6395830
 
+Best regards,
+-- 
+Qiliang Yuan <odys.yuan@gmail.com>
 
-vim +/n +355 net/rxrpc/proc.c
-
-bc0e7cf43370a8e David Howells   2018-10-15  351  
-bc0e7cf43370a8e David Howells   2018-10-15  352  static void *rxrpc_peer_seq_next(struct seq_file *seq, void *v, loff_t *_pos)
-bc0e7cf43370a8e David Howells   2018-10-15  353  {
-bc0e7cf43370a8e David Howells   2018-10-15  354  	struct rxrpc_net *rxnet = rxrpc_net(seq_file_net(seq));
-bc0e7cf43370a8e David Howells   2018-10-15 @355  	unsigned int bucket, n;
-bc0e7cf43370a8e David Howells   2018-10-15  356  	unsigned int shift = 32 - HASH_BITS(rxnet->peer_hash);
-bc0e7cf43370a8e David Howells   2018-10-15  357  	void *p;
-bc0e7cf43370a8e David Howells   2018-10-15  358  
-bc0e7cf43370a8e David Howells   2018-10-15  359  	if (*_pos >= UINT_MAX)
-bc0e7cf43370a8e David Howells   2018-10-15  360  		return NULL;
-bc0e7cf43370a8e David Howells   2018-10-15  361  
-bc0e7cf43370a8e David Howells   2018-10-15  362  	bucket = *_pos >> shift;
-bc0e7cf43370a8e David Howells   2018-10-15  363  
-bc0e7cf43370a8e David Howells   2018-10-15  364  	p = seq_hlist_next_rcu(v, &rxnet->peer_hash[bucket], _pos);
-bc0e7cf43370a8e David Howells   2018-10-15  365  	if (p)
-bc0e7cf43370a8e David Howells   2018-10-15  366  		return p;
-bc0e7cf43370a8e David Howells   2018-10-15  367  
-bc0e7cf43370a8e David Howells   2018-10-15  368  	for (;;) {
-bc0e7cf43370a8e David Howells   2018-10-15  369  		bucket++;
-da940c1bf91ae9e Chelsy Ratnawat 2026-10-15  370  		*_pos = (bucket << shift) | 1;
-bc0e7cf43370a8e David Howells   2018-10-15  371  
-bc0e7cf43370a8e David Howells   2018-10-15  372  		if (bucket >= HASH_SIZE(rxnet->peer_hash)) {
-bc0e7cf43370a8e David Howells   2018-10-15  373  			*_pos = UINT_MAX;
-bc0e7cf43370a8e David Howells   2018-10-15  374  			return NULL;
-bc0e7cf43370a8e David Howells   2018-10-15  375  		}
-bc0e7cf43370a8e David Howells   2018-10-15  376  
-da940c1bf91ae9e Chelsy Ratnawat 2026-10-15  377  		p = seq_hlist_start_rcu(&rxnet->peer_hash[bucket], 0);
-bc0e7cf43370a8e David Howells   2018-10-15  378  		if (p)
-bc0e7cf43370a8e David Howells   2018-10-15  379  			return p;
-bc0e7cf43370a8e David Howells   2018-10-15  380  	}
-bc0e7cf43370a8e David Howells   2018-10-15  381  }
-bc0e7cf43370a8e David Howells   2018-10-15  382  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
