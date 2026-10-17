@@ -1,108 +1,95 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C062737B018
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 04:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2C53B637E
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 05:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792212657; cv=none; b=SSfgTbGVT+rDDapCV2KBN1q7Fiju9XH2LpJLGs0rYmFtiA3OZ7SKMzsSQ77mJtaO0Rpe6auG/kUmNkUaZpq0cL+dj3ClURjqKsEBto3QKq5nGV3czBose/7Hryn0nCmxHaH9TpFzfo85KLE3krATRQqGrsfuMNVAMWDWjh1Kxss=
+	t=1792213452; cv=none; b=VlDpFxPLX/MJUAZ+U2PYtBKBV6JiwqNoTScfXZMjGTHsVOyuQTW9TdW/zEWei+Fo1yvr+dZiQ/rRFZe3o4xcQ7oJZNg+LAOql6IIDeVrqnOXd6M4QianLPhbRTV/flMLABVLCVljLlN+kSZfHO94k0Lf/hIq278wVf37oTr6FcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792212657; c=relaxed/simple;
-	bh=7Ir8gVL2LT4Hq/1oM42Dh+FUvuDYGifIxm+uHvXkIP8=;
+	s=arc-20240116; t=1792213452; c=relaxed/simple;
+	bh=8BLUOuobsXVPK0Hk4WClUwg69wNv/LObwP6VEuCQQpk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YP+vsr9XbUlJ7ON833zee0Xp7R1ve+x0I1LbA059vJaFT1Wlsk+kpn67XghFhvfGD7btEPolXievcYz/qH9CFiL3GCZSH1WMSAZcRWM9jBillxI8ug2yQfZhe3Rdhqg+T1HUDDxrmM/LlraPU5qOvwbirKFE4Qn09113pufSVVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hhMj9NNT; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=pdEsX8yrUGjTP3C5PI5Ry1qMEJQHSQg0cbFmiG8LbgS2tV2hpnxzgkbmRBBA+65Rqo0W/9+ijRofqyR+JhKJSquVG1tifp4qlpZFvHVdxTukZp47av9D1RwiZaNGyYZhzy4AIER0Ei5b8nxZ/icyRbsgaoHIoVGoiFPIwhv2Lac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RIdttMsh; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hhMj9NNT"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cca35cf9f77so346534a12.2
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 21:50:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RIdttMsh"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e8ad8c5f80so7070745ad.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 22:04:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792212656; x=1792817456; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792213450; x=1792818250; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mSyJBWDi4nx9CLru9f0Dqe09kF4d35e/bLqWVltauo8=;
-        b=hhMj9NNT0tdMvuCayHRm6fpmuzTfYh9glcqsC1VCNztLWbu4JotKm1/+XtoBw1+C3K
-         WxVsKU1fc23w4xmm/jo1qyaQ1CK+USqsVyZJloOxLd3XcZsyZeOwI3aF4d8eu+Gp465X
-         QpS+AZGaxehRzm5/rGczbWU1dM0hb6n6lUaWSJC2hgM11PCyDwcuDn5rcRiAc/qp40Gp
-         MRZA1+UhvJtSmNrA9tBsU7Imgy/0oEYrvawldhwHR0ul0/O9dVkWeBBjFEl8RmErSahb
-         rMGbwrGTXJoXKgUYlZhoglTAL3n31Xz/OSLBH3gdl+LzA09X08+yB3xWJLtn8GkORPNk
-         pFGQ==
+        bh=gV9/cHPnIlfRbaMaPitg64wMYECZnHJw7L0U4tqnfHE=;
+        b=RIdttMshU4J4gmETRCghZabF/+9HEAGQzMJMrrKJSNAopaWrtovO8CnwU3Es0LSgpj
+         Yczz/oHmEQ+AoTZqJ4fxFmNZc+tkmAnGzaUuOTwt+cEOfL/+6kAPfEc5tAmj5Mqd6nim
+         uxP2OeHQBl6zDMc1bYOEEwztkobBBZcpc1XFpSo435wyqSvChnuO91zdBCHQ+aN+zS4Q
+         UkgLq472hju2rMyXV/Cxx3YjafErKeOj6axNLkodedF+WrgyCDemjldnuAEe407xAfi5
+         Vtuwr6t6oc0bUJ1E/YivlDTW8ESGqe2mD5fEts5CPRKsIqJOBhIXyRVjzCV9aPcbRH0W
+         SZ+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792212656; x=1792817456;
+        d=1e100.net; s=20260707; t=1792213450; x=1792818250;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mSyJBWDi4nx9CLru9f0Dqe09kF4d35e/bLqWVltauo8=;
-        b=yYQLsLE1gLXMd/4TQu8Mjtg5SH4xeLiBClJdNp0qzl4m+SpkkmLEBjFQrUZ1C1yoyr
-         fJvIfPLkGo58eYfoE8BYUfFk8+nOSBAGY5eEWdrMeWRAPRcKmfe9HrKV/XSsmxiNxqsp
-         irW6PjGvnglQrLEXiwwVfthuzguRXi/8Mgw/IlLXbZedS8Upzg24mwRRzhhOGSIyL2CD
-         h6b5H19zWjpmpeQIwwZoAy74ygDHY2NuJS9krb9vmVBMfCeYeLWRsUCw3u7IFd/ON2XZ
-         2UPzFGiC47cQoqWiFDLeyxCGJm6FD8G4zPag5REVXjBgjFjWRmPN9Z28puqtkogLZ4PA
-         W3vg==
-X-Forwarded-Encrypted: i=1; AKwUvByXsX4gOMofHysyFRaEyhSLxI8DYx1s8jU/mA4d9yfB6Yb29rKWZWkM6btJEmxQ0X3V/iXMRwk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK5114yGlT8RVmIT4EuNm35Ao9X2YS2IirjgI7AQeU5F7vl/HRN
-	wybd6ldGeOC7uQZPaPwnzxEPOsDGcj5SP1RlBip95hSK8jdwQSFn+0TypxGrLiAiCTxiL++8v3c
-	wwCyqtw==
-X-Received: from pgbj24-n1.prod.google.com ([2002:a05:6a02:61d8:10b0:cc1:bda2:d0a3])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d705:b0:3dd:a195:dd5d
- with SMTP id adf61e73a8af0-3e226105ef9mr1057865637.63.1792212655907; Fri, 16
- Oct 2026 21:50:55 -0700 (PDT)
-Date: Sat, 17 Oct 2026 04:50:55 +0000
-In-Reply-To: <20261016-bug-net-netns-move-rcu-barrier-v1-3-4157d798658f@gmail.com>
+        bh=gV9/cHPnIlfRbaMaPitg64wMYECZnHJw7L0U4tqnfHE=;
+        b=O1Id4iidl4SUuWrB5ruWGazUvZjNfenWDTcCEDJuJacUqsuBW6E0nX0txt4cPoembR
+         uHYSlTz0JqJm2Dvv3ENophy5gopZBSeIiRUlS10L4A+kAEPOxf8ME/k/1DvrTUFqUkG/
+         OFue6wHBE86oM/1njNWpcHjbmiiSFEy/MmFDZhHSqyLTCKRp2qSmG1jVDd47bAs0QZj7
+         bSc1axhYM3EPCQ402jth8uU88FFkTILBSs1vKzZxk0EL8tNn56x4DIe6ylH2n7R264ba
+         cRIKccb/rom8zftPDKKM/pUY6r/86oQtqBMS3VfILecB15xPR6tE3m5ISjJqOz3b0A4x
+         GF+w==
+X-Gm-Message-State: AFq9FYIEHIuRStelvd4s8f2YJDAxup7voUn8Hp763IehNR0zuEfTXFLR
+	aKh2ab4DzZxv80sLZCGnhHIM1cGvI5l1EBGmjJhY3ndEqBSH+4SMbFYP/cH0zRBEi6WGRYirMIK
+	j2iy2bw==
+X-Received: from plbkm15.prod.google.com ([2002:a17:903:27cf:b0:2e9:5442:b91a])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c1:b0:2e9:6788:9372
+ with SMTP id d9443c01a7336-2e9a6d3668fmr18323965ad.62.1792213448706; Fri, 16
+ Oct 2026 22:04:08 -0700 (PDT)
+Date: Sat, 17 Oct 2026 05:04:08 +0000
+In-Reply-To: <tencent_A643419B56079E9A448D97922763FF069F08@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
- <20261016-bug-net-netns-move-rcu-barrier-v1-3-4157d798658f@gmail.com>
-Message-ID: <atL-iSu113pPS7zm@google.com>
-Subject: Re: [PATCH net-next 3/3] net: remove rcu_barrier() from __dev_change_net_namespace()
+References: <tencent_A643419B56079E9A448D97922763FF069F08@qq.com>
+Message-ID: <atMBc9DNAnFhsR9V@google.com>
+Subject: Re: [PATCH net v3] net: unix: reject negative max_dgram_qlen values
 From: kuniyu@google.com
-To: Qiliang Yuan <odys.yuan@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Yingjie Wang <1075151112@qq.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, stable@vger.kernel.org, skhan@linuxfoundation.org, 
+	rdunlap@infradead.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, 16 Oct 2026 14:09:55 +0800, Qiliang Yuan wrote:
-> Commit 6549dd43c043 ("net: dev: fix the incorrect hold of net
-> namespace's lo device") added rcu_barrier() before
-> NETDEV_UNREGISTER_FINAL in dev_change_net_namespace(), so that dst
-> entries released by RCU callbacks were on the dst garbage list before
-> dst_ifdown() moved them to the loopback device of the old netns.
-> Commit 070f2d7e264a ("net: Drop NETDEV_UNREGISTER_FINAL") removed the
-> event but kept the barrier, and dead dst entries now point to
-> blackhole_netdev instead of a loopback device.
+On Fri, 16 Oct 2026 11:02:58 +0800, Yingjie Wang wrote:
+> net.unix.max_dgram_qlen is parsed as a signed int and copied to the u32
+> sock::sk_max_ack_backlog when an AF_UNIX socket is created.  Consequently,
+> a negative value such as -1 is accepted and converted to UINT_MAX.  Since
+> the receive queue length is also u32, its fullness check cannot become true
+> for that limit.
 > 
-> The barrier waits for the RCU callbacks pending on every CPU while RTNL
-> is held, which takes a full grace period on each netns move. Container
-> and sandbox managers move one end of a veth pair for every new network
-> namespace, so this limits how fast such namespaces can be created on the
-> whole system, regardless of how many threads create them.
+> max_dgram_qlen has no documented negative sentinel.  Its existing signed
+> interface represents nonnegative values only through INT_MAX; negative bit
+> patterns are not a supported encoding for the upper half of the u32
+> consumer range.
 > 
-> Remove the barrier. The RCU callbacks queued by NETDEV_UNREGISTER
-> handlers free memory and drop device references, which the move does not
-> wait for. Cached IPv4 and IPv6 routes through the moved device are
-> rejected once its netns changes, since rt_genid and fib6_sernum are now
-> unique across netns.
+> Switch to proc_dointvec_minmax and make the established 0..INT_MAX input
+> range explicit.  This rejects negative values without adding new accepted
+> values or changing the default and zero-value behavior.  Very large valid
+> values can still make the queue limit impractical to reach; this change
+> corrects the input domain rather than imposing a new resource ceiling.
 > 
-> Creating 400 netns, each with a veth pair whose host end is moved back
-> to the initial netns, a tap device, addresses and routes, in a 16 vCPU
-> guest, median of 5 runs:
-> 
->                    before      after
->   1 thread        68 /s      440 /s
->   4 threads       74 /s      409 /s
->   16 threads      77 /s      283 /s
-> 
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Yingjie Wang <1075151112@qq.com>
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-
-Thanks !
