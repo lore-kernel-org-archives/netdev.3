@@ -1,106 +1,160 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D308377A9E;
-	Sat, 17 Oct 2026 11:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21045392828
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 12:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792238380; cv=none; b=gBYsuWoJAjqg0xExrX7llFyJ523i3QibOf49KibkzwytMkvR95dZneDzGLRDQ4zSuu6oY3o8qoKbv7bYMMyatBR70U7W7Lvk/ht/vrpclB2nB1raQkxvLxPtn0/2X772+jhAL9nzy3Os7pV7ABvGwBOI4diKo/7lqqm51ut5oSs=
+	t=1792238709; cv=none; b=BclIndKBFKBxoIgtbQr2UpfDQbu0OYdjXHzqlz2ThoqN+lLTO3fglInN8RdbifRYlmShLn5vwm7Q9DQG+oqg+YeaSFpSrjrQqHc+3fMFsySqMIepI/v/VHq15+2JdulW+ewz/2T5V+Vwarb3wAUgyHyeRZIJKNMycsANDWwEP4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792238380; c=relaxed/simple;
-	bh=Rg+O0whlHvGMEyxRlqyGPWW+7RU+DNt9faLEtVqLyeU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=k5DmSyB3Ib069zdcwhJpHTt8fK+Q2xYBMDSOP3k6jdOwc5WQFFQxF2l85o2+A3RBRGNasPT3ZF+J9UBGjVfCwwUEimd9ILTj7cXc/++Oy3IrTKKjrcQHaHG+eZMWqRGLYsSC3o2Dobm/jHd+hjSaQgw4nTR0F/H2HrCizabWByg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=cpZfCK97; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1792238709; c=relaxed/simple;
+	bh=Uhqf6kEDaVk5sdN1pEgcxFC260gFONWp77GIpmEdMVk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gDsddEEAH26wf+n0q6KTAUj5Gi/aiAdzJQ35xOLCgN4BdxWgJdrTRDjeDmaRgTevY8fOJxEDdpUafb/MqYKYZyO7szatJur+AGMCG3GK+CW7FeFRpOGgRJ2B4nhCLQxv1OySLBOnvjjXGzldwjmfsOezHuQpk4BssaizdFyiDUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WyYOGloR; arc=none smtp.client-ip=74.125.227.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="cpZfCK97"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 396BBA1568;
-	Sat, 17 Oct 2026 13:59:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792238373; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=7eOadjvXvNY8wRcWPVKDe9x8GwetLNjio5IA6aOhh3g=;
-	b=cpZfCK97PHNgLfl5/ThtZd0VN3afcBljc47pNB0iOTn8drPhtepkrkMojlstz/cLid7muT
-	p8QeR2MiReHVbfh/laDnYOwGCts5gu2cTPBTUVK4BqB2izqmzYjVP423aWlM+m12dyOqdE
-	kbjcOOjOQsW48QpQPiDpohzQAw+JhssRx8qAXJQlpI/jYy+BJfyhFawCCU6nXi0mPbKVnD
-	3GvIsDVf+jzQbJVShult3aIdA72BApp03SxaNr2r9qztwT6SMEvfJNhpM3O6+tSxN1RzSq
-	fq5qQY3x6TeEe/k1hUSDpsvnZw6iaHdQUH1jQf3p3olLEgbuUnVNjb8arA+RXQ==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net 0/4] net: bcmgenet: fixes for a failed resume and the
- ring rebuild
-Date: Sat, 17 Oct 2026 13:59:24 +0200
-Message-Id: <20261017-nb-genet-fini-dma-net-v1-0-47e7c57f6834@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WyYOGloR"
+Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3ac92391681so181614a91.1
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 05:05:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792238707; x=1792843507; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=shPj0JpAvHjJzhITuPzL8gL8dV599qsdcXL+y8yPBvI=;
+        b=WyYOGloRwlCMpBDiWpb5Qd86Y8koRZg67hGD3zmnd/L3BIeH783bcI9gq/4b4KMnOc
+         4LuuJ7d5htJPh+1XVuLf4sbfFBgn6tKydOfY0EPu/pRALdhK/3L8DqtEhf/Iks0atNt2
+         Ub152fpwtoG6JbBMT/KuEqsgu22TbFFFjhF4H8UVFVeJIGrhj7MKjlNRVe4OmsglDZJ2
+         kpgg8bVuTmq7MHn0G/mKAXVq6agfSvNWrxJrWfnOs//csMKHUI/DSkoAGxlsjWdFxdKY
+         x7DnkC37chLX4JtvBqNmSTYw7A/DRlb8L/1IUzcHjtfIm4cCCj7CCj9YTQAIEF/N0BmT
+         Hkwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792238707; x=1792843507;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=shPj0JpAvHjJzhITuPzL8gL8dV599qsdcXL+y8yPBvI=;
+        b=o7tqxu0FyKNvughLSptkrX+GZ6FbgPEatUHblbWseP9l+rC5Ta7PX8IR6K0tsiy9rr
+         bqPIQ+h4ot6SEf2gFuq9ZzFH0ImjI34CKdlCGx9tkhaDFS9czCQIqphnY+dxgyGDrVWG
+         /qQqyBShtVA8VfmivxHhhEJkaDysHK0jueG4ySMnPSQ1/W4xRdAQMDd7nD3KdZkIOkcZ
+         5jWzBnHsOw1PiuG0YxTGc5iHweKGvYP0avkITlhIgOfHV6yY3ylEgrQdWVF4sSI8W5+n
+         SZAErALnIOLaT51PbxWgR7bO8Mp1MlcRDOu4WauvvL4M6GMQ//pBDDFDY81luUVhJ67g
+         Ef5g==
+X-Gm-Message-State: AFq9FYIAQg8DVe2sRCu7BFxNLpKh3cObHUdWaGUMaBERgSBtHTXW9mqG
+	GEMchHtVCBG2IyV3HtgpbiAELoyJMt8uUsJNhJcocnDq3jY2uZKGuoRa
+X-Gm-Gg: AYBFou3FRIOD4fW2IqKgwDhoe0BBIBKz6Fc8wHbTOiBFUwI28L9lemeCg4fUjA9IZpC
+	80lPddO2SnNEJrv/3UrgMqYqtEhqg2xusjmW8TZ/Zv0mVrCqaMf599cpJOyyN6zhIGdDQl2muue
+	zmGQ6AQI43hyR87Gd87P2/UfklKmdjxs0BW9Vp39tYJy7K0NVj7Ro+xT2kDVDTXAw8JNWaalfPe
+	OMkZDsh0tORugAU9qZpEfdr0ITOCWvn0ojp8qqOpTAu7NT2qCT4gz3JOUdKqgBlBhmUC/uZczXR
+	P/qMX8ASKworS6Yl2Ekj7TQrqX9FrIyJKsFQE66ezmWcPy7QKfy3+FlAoaBsjFJuNqkBckoW837
+	UMCSC42qRBikuviQf2ydY94DgKpg1FzScn0EcMf+Nhs//3KmC/GXjQsUWVgH+5B8fF9K2vnDx/D
+	2d1P0FCllitOtwtZUJ+Ena2IU1DSmiwt2PnC9mQaj1Ijrfnirj4QLbpGt1yDvK11qMuINjp+xsK
+	IjnNDk2ZCW2IONUWWBa
+X-Received: by 2002:a17:90a:c110:b0:3ab:f38:2b43 with SMTP id 98e67ed59e1d1-3aceeeabd7dmr1791948a91.34.1792238707370;
+        Sat, 17 Oct 2026 05:05:07 -0700 (PDT)
+Received: from LAPTOP-QJLDGQ2L.localdomain ([112.224.225.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc48f4cadsm7815593a91.12.2026.10.17.05.05.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 05:05:06 -0700 (PDT)
+From: Boyan Liu <yymhvert@gmail.com>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	David Ahern <dsahern@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	co+98d7de09cd94fec5@bugs.sh
+Subject: [PATCH net v2] seg6: Fix unset mac header in SRv6 End.DT VRF decapsulation
+Date: Sat, 17 Oct 2026 20:01:44 +0800
+Message-ID: <20261017120144.3059-1-yymhvert@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QqCQBREf0XmuQvumgv1K9HDqqPdoFvsWgjiv
- 7fW4xnmnBWZSZlxrlYkfjTr0wq4Q4X+Fm2i6FAYvvbB1a4V62SicZZRTWV4RNkh+NicSHdkaFH
- cV+Koy697QTng+h/zu7uzn/citu0LbXjU2n4AAAA=
-X-Change-ID: 20261015-nb-genet-fini-dma-net-62a39ee14e65
-To: Doug Berger <opendmb@gmail.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Mostly findings sashiko raised during my recent review sessions.
+SRv6 End.DT4/End.DT6 VRF decapsulation unsets the mac header in
+end_dt_vrf_rcv() so that the VRF device can rebuild it for packet
+sniffers. The VRF rx handler only performs the rebuild when a
+sniffer is actually attached to the VRF device (ptype_all
+non-empty); otherwise the packet continues up the stack with
+mac_header == 0xffff.
 
-Patches 2 and 3 are the same failure, a resume that fails in
-bcmgenet_init_dma(). The interface stays up with the datapath gone, and
-the next ifdown hangs in napi_disable() with RTNL held. Patch 2 stops the
-second teardown, patch 3 gets the interface open again instead of leaving
-it detached with the clock released twice. Forcing the resume allocation
-to fail reproduces the hang, the box then needs sysrq-b.
+Every other receive path delivers packets with a valid mac header:
+NIC drivers set it in eth_type_trans(), and tunnels without an L2
+header (ipip, sit, gre, tun) reset it to the network header after
+decapsulation. skb_mac_header() even warns on the unset state with
+DEBUG_NET_WARN_ON_ONCE().
 
-Patch 1 comes first because patch 2 sends one more case down the WoL
-resume path, which calls phy_start() on a PHY the WoL suspend never
-stopped.
+If the decapsulated packet is an unexpected UDP GSO packet,
+udp_queue_rcv_skb() re-segments it after restoring skb->data to the
+mac header with __skb_push(skb, -skb_mac_offset(skb)). With the mac
+header unset, skb_mac_offset() returns a large positive value,
+which the unsigned __skb_push() argument turns into a huge length:
+skb->data moves far outside the buffer and skb->len is corrupted,
+so segmentation reads out of bounds:
 
-Patch 4 is about the ring rebuild itself. The Tx coalescing threshold goes
-back to the driver default whenever the rings are rebuilt, throwing away
-what was set through ethtool. "ethtool -C eth0 tx-frames 16" followed by a
-rebuild reports the default again.
+    BUG: KASAN: slab-out-of-bounds in inet_gso_segment (net/ipv4/af_inet.c:1383)
+    Read of size 1 at addr ffff88800da7ffff by task exploit/149
+    Call Trace:
+     inet_gso_segment (net/ipv4/af_inet.c:1383)
+     skb_mac_gso_segment (net/core/gso.c:53)
+     __skb_gso_segment (net/core/gso.c:124)
+     udp_queue_rcv_skb (net/ipv4/udp.c:2476 net/ipv4/udp.c:2466)
+     udp_unicast_rcv_skb (net/ipv4/udp.c:2620)
+     ip_local_deliver (net/ipv4/ip_input.c:262)
+     seg6_local_input_core (net/ipv6/seg6_local.c:1640)
+     lwtunnel_input (net/core/lwtunnel.c:465)
+     ipv6_rcv (net/ipv6/ip6_input.c:351)
 
-Patch 1 fixes the rebuild path, not the cause. bcmasp parks the PHY in its
-WoL suspend and has one deinit with a flag, which looks like the direction
-for genet too. But one step at a time :)
+Restore a valid mac header, pointing at the network header, once
+the VRF rx handler returns. The sniffer rebuild happens inside the
+handler while the header is still unset, so tap behavior is
+unchanged; when no rebuild happened, the packet now carries the
+same mac header state as any packet received on an L3 device.
 
-Patch 2 is also prep for the next version of my MTU series [1], which
-drops the "hallmark of a bad design" flag in favour of the ring pointers
-it clears.
-
-[1] https://patch.msgid.link/20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de
-
-Patches 2 to 4 were tested on BCM2711 (Raspberry Pi CM4) with the resume
-allocation forced to fail. The WoL paths in patches 1 and 2 are untested,
-the board has no wake source.
-
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
+Cc: stable@vger.kernel.org
+Reported-by: co+98d7de09cd94fec5@bugs.sh
+Signed-off-by: Boyan Liu <yymhvert@gmail.com>
 ---
-Nicolai Buchwitz (4):
-      net: bcmgenet: stop the PHY when a WoL resume rebuilds the datapath
-      net: bcmgenet: do not tear the datapath down twice after a failed resume
-      net: bcmgenet: let the interface be reopened after a failed resume
-      net: bcmgenet: restore the Tx coalescing setting when the rings are rebuilt
+v2:
+- Move the fix from the UDP GSO path to seg6local.
+- Restore the mac header after the VRF rx handler returns, preserving
+  the VRF sniffer behavior.
+- Verify the original reproducer, datagram delivery, and VRF sniffer
+  output under QEMU.
+v1: https://lore.kernel.org/netdev/20261010073015.7665-1-yymhvert@gmail.com/
 
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 49 ++++++++++++++++++++------
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |  1 +
- 2 files changed, 39 insertions(+), 11 deletions(-)
----
-base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
-change-id: 20261015-nb-genet-fini-dma-net-62a39ee14e65
+ net/ipv6/seg6_local.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Best regards,
---  
-Nicolai Buchwitz <nb@tipi-net.de>
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 7b5212220185..5232c9e2b7d7 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1113,6 +1113,14 @@ static struct sk_buff *end_dt_vrf_rcv(struct sk_buff *skb, u16 family,
+ 		/* the skb buffer was consumed by the handler */
+ 		return NULL;
+ 
++	/* the VRF device had its chance to rebuild the mac header for
++	 * sniffers; restore a valid one pointing at the network header,
++	 * like any L3 device without an L2 header, before the packet
++	 * continues up the stack.
++	 */
++	if (!skb_mac_header_was_set(skb))
++		skb_reset_mac_header(skb);
++
+ 	/* when a packet is received by a VRF or by one of its slaves, the
+ 	 * master device reference is set into the skb.
+ 	 */
+-- 
+2.43.0
 
