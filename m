@@ -1,36 +1,35 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB2E3EFD24;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D308377A9E;
 	Sat, 17 Oct 2026 11:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792238380; cv=none; b=mGegRxijucmBEa1YhK8GR7bFsE+hgTO/79rdDwz0CUBWNdIvURjo+2sFOfBi3q6AUa9WSpqJPkfjwTOFQTBZT2KBcQwaVnU+LYBALp3ztQjRdua8r303TDlGNKyzFF11/mfy38dPwGwc9+OQmINHPhoyA1KPwwviFhN79uoYksg=
+	t=1792238380; cv=none; b=gBYsuWoJAjqg0xExrX7llFyJ523i3QibOf49KibkzwytMkvR95dZneDzGLRDQ4zSuu6oY3o8qoKbv7bYMMyatBR70U7W7Lvk/ht/vrpclB2nB1raQkxvLxPtn0/2X772+jhAL9nzy3Os7pV7ABvGwBOI4diKo/7lqqm51ut5oSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792238380; c=relaxed/simple;
-	bh=GkuaJAdKLTlzIRSXrvrAZIs9RVPQ5+l5epy7umzJzKA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pyUkjwdBXbBMD8lQtQZbPjY+GntyXC6DqRu/cpoWVgnCv3l1qGTCfR06i6ePtCDtJ3bebahU1FDWPff/sfM3JJRjwPU5EnJ1tMdqWhu74I5hrMa7Z92D6i6tJYhC2FJfVl5doM/xJ50Ox5LwIp0kGnndZhUVwfesVYpQxZhXrRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=P4HexBQs; arc=none smtp.client-ip=194.13.80.246
+	bh=Rg+O0whlHvGMEyxRlqyGPWW+7RU+DNt9faLEtVqLyeU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=k5DmSyB3Ib069zdcwhJpHTt8fK+Q2xYBMDSOP3k6jdOwc5WQFFQxF2l85o2+A3RBRGNasPT3ZF+J9UBGjVfCwwUEimd9ILTj7cXc/++Oy3IrTKKjrcQHaHG+eZMWqRGLYsSC3o2Dobm/jHd+hjSaQgw4nTR0F/H2HrCizabWByg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=cpZfCK97; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="P4HexBQs"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A63C9A158D;
-	Sat, 17 Oct 2026 13:59:34 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="cpZfCK97"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 396BBA1568;
+	Sat, 17 Oct 2026 13:59:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792238375; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=9zreNu2GTEcKLgAuX+6IWZZKy6Tv+DsUt1N8j/NZ5oI=;
-	b=P4HexBQsG0KaXhjBn+wb1JwLaCiL7di65qXuR6ep2gN+ePeh6bGuAT4EN8PXFDJwjce2wK
-	ILfbmiMexaKa564GUNiTZCFtqz78NOAUD0t6NSGFm4P70dPO58Mpnj08cdRs5OD/dz2un8
-	q9FwPzHBGaglLtkGzt+DH5VHk10/8hDj14WkKOSOXzRCrCZB6eqvfIg5tdhBpZIEubTXVF
-	szTd8PA9Z2sLenNkfyebp8Co3cD7cOR14gyv0c+AldaTfLDE6ly4ZLbUFPEI+IwCqNC8Nr
-	Tzqf54PDtRxo4bhprQ7kBwsG25lIl2ATjhs5bZGW7r7lK2uxG9s/L7NMeAlMYg==
+	t=1792238373; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=7eOadjvXvNY8wRcWPVKDe9x8GwetLNjio5IA6aOhh3g=;
+	b=cpZfCK97PHNgLfl5/ThtZd0VN3afcBljc47pNB0iOTn8drPhtepkrkMojlstz/cLid7muT
+	p8QeR2MiReHVbfh/laDnYOwGCts5gu2cTPBTUVK4BqB2izqmzYjVP423aWlM+m12dyOqdE
+	kbjcOOjOQsW48QpQPiDpohzQAw+JhssRx8qAXJQlpI/jYy+BJfyhFawCCU6nXi0mPbKVnD
+	3GvIsDVf+jzQbJVShult3aIdA72BApp03SxaNr2r9qztwT6SMEvfJNhpM3O6+tSxN1RzSq
+	fq5qQY3x6TeEe/k1hUSDpsvnZw6iaHdQUH1jQf3p3olLEgbuUnVNjb8arA+RXQ==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Sat, 17 Oct 2026 13:59:26 +0200
-Subject: [PATCH net 2/4] net: bcmgenet: do not tear the datapath down twice
- after a failed resume
+Subject: [PATCH net 0/4] net: bcmgenet: fixes for a failed resume and the
+ ring rebuild
+Date: Sat, 17 Oct 2026 13:59:24 +0200
+Message-Id: <20261017-nb-genet-fini-dma-net-v1-0-47e7c57f6834@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,9 +38,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261017-nb-genet-fini-dma-net-v1-2-47e7c57f6834@tipi-net.de>
-References: <20261017-nb-genet-fini-dma-net-v1-0-47e7c57f6834@tipi-net.de>
-In-Reply-To: <20261017-nb-genet-fini-dma-net-v1-0-47e7c57f6834@tipi-net.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QqCQBREf0XmuQvumgv1K9HDqqPdoFvsWgjiv
+ 7fW4xnmnBWZSZlxrlYkfjTr0wq4Q4X+Fm2i6FAYvvbB1a4V62SicZZRTWV4RNkh+NicSHdkaFH
+ cV+Koy697QTng+h/zu7uzn/citu0LbXjU2n4AAAA=
+X-Change-ID: 20261015-nb-genet-fini-dma-net-62a39ee14e65
 To: Doug Berger <opendmb@gmail.com>, 
  Florian Fainelli <florian.fainelli@broadcom.com>, 
  Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
@@ -53,113 +53,54 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-If bcmgenet_resume() fails in bcmgenet_init_dma() it returns with the
-interface still IFF_UP. The suspend before it already deleted the NAPIs and
-freed rx_cbs and tx_cbs, so the next ifdown runs the whole teardown again
-and napi_disable() waits for a NAPI_STATE_SCHED bit that nothing will
-clear:
+Mostly findings sashiko raised during my recent review sessions.
 
-  task:ip  state:D
-    usleep_range_state+0xec/0x158
-    napi_disable_locked+0x254/0x318
-    napi_disable+0x3c/0x68
-    bcmgenet_netif_stop+0x1c8/0x318
-    bcmgenet_close+0x24/0xd0
-    __dev_close_many+0x18c/0x310
+Patches 2 and 3 are the same failure, a resume that fails in
+bcmgenet_init_dma(). The interface stays up with the datapath gone, and
+the next ifdown hangs in napi_disable() with RTNL held. Patch 2 stops the
+second teardown, patch 3 gets the interface open again instead of leaving
+it detached with the clock released twice. Forcing the resume allocation
+to fail reproduces the hang, the box then needs sysrq-b.
 
-RTNL is held across the wait, so every other rtnl_lock() user blocks behind
-it. A second suspend ends up in the same place.
+Patch 1 comes first because patch 2 sends one more case down the WoL
+resume path, which calls phy_start() on a PHY the WoL suspend never
+stopped.
 
-Flagged in a sashiko review, found plausible and then reproduced on a CM4.
+Patch 4 is about the ring rebuild itself. The Tx coalescing threshold goes
+back to the driver default whenever the rings are rebuilt, throwing away
+what was set through ethtool. "ethtool -C eth0 tx-frames 16" followed by a
+rebuild reports the default again.
 
-Clear rx_cbs and tx_cbs as they are freed, so close and suspend can tell
-there is nothing left to tear down.
+Patch 1 fixes the rebuild path, not the cause. bcmasp parks the PHY in its
+WoL suspend and has one deinit with a flag, which looks like the direction
+for genet too. But one step at a time :)
 
-The WoL resume path needs the same check. It reuses the rings when it sees
-the receiver enabled. But after a failed resume the MAC sits in software
-reset, and the next link event takes it out and enables it. Reusing rings
-that are gone reattaches the interface and the first transmit hits
-BUG_ON(!tx_cb_ptr), so check the rings too.
+Patch 2 is also prep for the next version of my MTU series [1], which
+drops the "hallmark of a bad design" flag in favour of the ring pointers
+it clears.
 
-Fixes: b6e978e50444 ("net: bcmgenet: add suspend/resume callbacks")
+[1] https://patch.msgid.link/20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de
+
+Patches 2 to 4 were tested on BCM2711 (Raspberry Pi CM4) with the resume
+allocation forced to fail. The WoL paths in patches 1 and 2 are untested,
+the board has no wake source.
+
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+Nicolai Buchwitz (4):
+      net: bcmgenet: stop the PHY when a WoL resume rebuilds the datapath
+      net: bcmgenet: do not tear the datapath down twice after a failed resume
+      net: bcmgenet: let the interface be reopened after a failed resume
+      net: bcmgenet: restore the Tx coalescing setting when the rings are rebuilt
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 308716cddc077..fe3338ba81980 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3107,7 +3107,9 @@ static void bcmgenet_fini_dma(struct bcmgenet_priv *priv)
- 	bcmgenet_free_rx_buffers(priv);
- 	bcmgenet_destroy_rx_page_pools(priv);
- 	kfree(priv->rx_cbs);
-+	priv->rx_cbs = NULL;
- 	kfree(priv->tx_cbs);
-+	priv->tx_cbs = NULL;
- }
- 
- /* init_edma: Initialize DMA control register */
-@@ -3165,6 +3167,7 @@ static int bcmgenet_init_dma(struct bcmgenet_priv *priv, bool flush_rx)
- 	priv->tx_cbs = kzalloc_objs(struct enet_cb, priv->num_tx_bds);
- 	if (!priv->tx_cbs) {
- 		kfree(priv->rx_cbs);
-+		priv->rx_cbs = NULL;
- 		return -ENOMEM;
- 	}
- 
-@@ -3184,7 +3187,9 @@ static int bcmgenet_init_dma(struct bcmgenet_priv *priv, bool flush_rx)
- 		bcmgenet_free_rx_buffers(priv);
- 		bcmgenet_destroy_rx_page_pools(priv);
- 		kfree(priv->rx_cbs);
-+		priv->rx_cbs = NULL;
- 		kfree(priv->tx_cbs);
-+		priv->tx_cbs = NULL;
- 		return ret;
- 	}
- 
-@@ -3493,7 +3498,9 @@ static int bcmgenet_close(struct net_device *dev)
- 
- 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
- 
--	bcmgenet_netif_stop(dev, false);
-+	/* A failed resume has torn the datapath down already */
-+	if (priv->tx_cbs)
-+		bcmgenet_netif_stop(dev, false);
- 
- 	/* Really kill the PHY state machine and disconnect from it */
- 	phy_disconnect(dev->phydev);
-@@ -4258,7 +4265,11 @@ static int bcmgenet_resume(struct device *d)
- 
- 	if (device_may_wakeup(d) && priv->wolopts) {
- 		reg = bcmgenet_umac_readl(priv, UMAC_CMD);
--		if (reg & CMD_RX_EN) {
-+
-+		/* A link event can enable the receiver after a failed
-+		 * resume, so check the rings too
-+		 */
-+		if (priv->tx_cbs && (reg & CMD_RX_EN)) {
- 			/* Successfully exited WoL, just resume data flows */
- 			list_for_each_entry(rule, &priv->rxnfc_list, list)
- 				if (rule->state == BCMGENET_RXNFC_STATE_ENABLED)
-@@ -4343,6 +4354,15 @@ static int bcmgenet_suspend(struct device *d)
- 	if (!netif_running(dev))
- 		return 0;
- 
-+	/* A failed resume has torn the datapath down already. Resume still
-+	 * enables irq1 on the WoL path, so it has to be disabled here.
-+	 */
-+	if (!priv->tx_cbs) {
-+		if (device_may_wakeup(d) && priv->wolopts)
-+			disable_irq(priv->irq1);
-+		return 0;
-+	}
-+
- 	netif_device_detach(dev);
- 
- 	if (device_may_wakeup(d) && priv->wolopts) {
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 49 ++++++++++++++++++++------
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h |  1 +
+ 2 files changed, 39 insertions(+), 11 deletions(-)
+---
+base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
+change-id: 20261015-nb-genet-fini-dma-net-62a39ee14e65
 
--- 
-2.53.0
+Best regards,
+--  
+Nicolai Buchwitz <nb@tipi-net.de>
 
