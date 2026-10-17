@@ -1,65 +1,65 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39096356751
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5BB2EEE8C
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200073; cv=none; b=qXlt220pZmwiOM+wxbzI3NPERG6ghke8SiDGLXEQ9ZJMiR6El8ibSUDCHJ8el+ZklqOHyQlt2DXEqXxXWW04xnr5nlmPU2WKM9N7xEo6MxPZY4AKLuJrHtjperWSJeO9fUMFORU0kloSNtVRgItdGcswUZYpQyzNDoPxMDVG0E8=
+	t=1792200075; cv=none; b=sbvICuTqqV1SUrOjq3ChWAPx4411uhHScDpeI/OTjZxnLAnGsTj2ERPs/UV0qZ3x3BiSRoRdTWWs4ql2+IonBASS1F32Y0jPkOcStZQnqfzB9v1jN36dqEYz1I66y2+LaFaLujt3DX4r2SH2eUOlVQb7+UMIvb8QNFUhzDvS+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200073; c=relaxed/simple;
-	bh=k1zvhGigGSPLpGn7I1t+Ecg+NgN2CKsqg5w0eDmK1Rw=;
+	s=arc-20240116; t=1792200075; c=relaxed/simple;
+	bh=8OJMvAA+dMrdbRbb0nwk/n3WT8wUSydojqhKaUFjjh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLKEUTr3ZyxTuuE/300F6GiKk5W2iSpBn0T7ek0LKjftdk2Or8e9Y0ck8ArzpwsPPl85qrOW1x8aTr1jmq9J1wnOWvuXxBg01QhTfAqmm8BfIAQLMZpwvFaxxVesYzwfyAOf4fHBDB9iQChLAOWAoJGdscEFHKQM8uyQgvedyvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IjwkqDun; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=YiU67MXh326AMEn9vwLgL/r7GOEj9jdYRDs2EibgK+84RjS5PutVeLFLQ1Iilnj1xplvLQbAheTthXJo3f16r37Cq4yitFg2K4LjK7u3aI2Yvx/LKpnNaDXQf/gY1uD0D10+0p3XZdBmqnJ+wPjBy2jHNUyxZTFd8PQoo0WtgEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlnvwCj0; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IjwkqDun"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so333562a91.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:21:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlnvwCj0"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3acd21ba21aso465951a91.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:21:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200070; x=1792804870; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792200073; x=1792804873; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XAh01Cpw5RBFWDmpEo9RzWyBEVqwYJhyHp2rXB7kBDg=;
-        b=IjwkqDun5eJK5IhgMg/zSNoJizi3cxprs4LModvaz/X1Fre8Ogh6Vw4OpPJB+ffTfF
-         +CDqGAHbeqpT2Wb9hCcm15f3HSBospXlXjkSJ7HRajnmHBL9uBzHH8x6fxypi84lxvB1
-         gwl9ZuaELiO61wbdy7EafPQ2CQP0GgrXUSTWMx1LJfok4ETqkIxWQi2cD0u5tS6Rmhiq
-         uCisBjLyqssY8FpPGiHQQ9COyNGh2jgV7EYCJKx9+gVpIaD5f9h05E0ljlKEbzeYJuHC
-         TR/sL9YYdga0W4PX2WHxHnmTIJJu6wMwhyF1eEMwq/y3/wSy1ybOCP3YC7m3auOn6/GX
-         0T3Q==
+        bh=3fBMoxBE26VqgxenoC2y2JHXlxXwVDO4reB28zK9D9c=;
+        b=YlnvwCj00UmPEadDDqKgPdjl/SK/hhwDidoVxEJI1Oalpju4FIrUn6fmM6K/yWk9zT
+         uiULKu0RLnwrUlNSGxRkUdBLQ7cKzApB2GLJk/VMDVDFn78GYKMl7Lytcqhe8x3IV9oP
+         vXHrun5N0jeS52LLtGuBMYtALId9pd+Wa86Kp0eXSMGRFuTomR86rxJHUYoPR9lkbkg0
+         exDem/NyX/brL1WX2XH0tEi1oapxuSGq0WCHgHIFbpuKYwW5jte2ezmOgjSJyILrRC6K
+         Ku3cX68vVtjMhamqd2Q9WTTNq+27twu+i1qJJ1mMtSBLSu+qCOBhKNnnZ5YhQq38spOw
+         5eaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200070; x=1792804870;
+        d=1e100.net; s=20260707; t=1792200073; x=1792804873;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XAh01Cpw5RBFWDmpEo9RzWyBEVqwYJhyHp2rXB7kBDg=;
-        b=L3h6xQnLLz9ty5qU6ruSzHwVbtM3p5NlG3qKbCTOvRpZx5WXg5zPk5HdiOUV6PupIb
-         dNbpqie9CEhBXdkAoILPR+gbM4yUrRCkEu8fGYbW86cm0taEvK7AU1cmJ15IPQqVxQ3f
-         4OsAbQkGD6BezB11m3EcSsVvNekqetRZeGUVXyxRekNnbtRk3VhElgmAl7EvGcoK4FN9
-         t5yxvs+sfsJw802aYJ+svAot3RUrubiVMJq6EkWO4JJpgbkl9vA8ggVQ4wJ5yzMyBsxR
-         PoItYQ/zjw2waLXwZMtFbapj87X8/JwmCcfFl9O2kiPYpEfSZcOlvDuqrZaZY2JpQHJu
-         Cx3A==
-X-Forwarded-Encrypted: i=1; AKwUvBw1JFWvQZmk9p2/pV2o5LhRwQkHPh/RcLjrx+BvdBW5i7orkmLEofvjmANd9mitQEpo+xl7lt4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ2aIC/FhFPiHdfY0A1YrN+5+xmo7gTL6nMr1w9j0FRxspRCckE
-	QO6WrNH8B8IJMNCxFmvrtibesiLgx9VW5Inr/c0vFXdp3mwLCiRHFt11
-X-Gm-Gg: AYBFou0nrxZ/8yh9eKove5LGlopaJyP4jUtKzUp00yaWADo75k28MkphJ8MFroyUTU0
-	4m5zkAr4sk4vivmV7g8T9yL+ldp0DPqnbPAEboKjzCFf3SI+f8WJhUIJ5gUDizJOlyfOAJqLSKh
-	hFdUyNcFihpYLNVUbxrIz+hUntZMG9ucyquz6YTKCqn77Ufl8osMdk2q9o+t7xbhhVEOkd01yD5
-	i+0TGiRate2SfDK61/z+M7CeCtwkFM3iYTy8dudaxpYThSPNEATyIkPo0Ex7/hpS+Uk2qr2/vnd
-	xb1BQQBWcsZNcLt3iL1U0h4Nf/hQnDGckVtKesdXzj+R4C2t2RO58EjOlIM+VGgf+r5PQXzyN3D
-	j7Cf34+zENvWVZWGryX7+l6lD6Va1FuwYifrlskKOVNBf7v1UDxa0iEkyZHUcogO5x6wn+qefeP
-	ADt5a5e3+6Fww5TjewAmPPVylleACMkWIsIVvlUMCnZb30+IKSVZiAWCcalmc044sdi9iKe/IIc
-	74udhCj4LYvY2NYjvPYfixob5AI81e0F1Ic+kvUkXpwYTqBzjuS2+7vLkRktpV7Yl6zJ2mcYb92
-	Oxxid0sqRLwkdDAs5sA2NjWRgMT33mzhEKu7QXWxCug=
-X-Received: by 2002:a17:90b:164b:b0:3a7:a6bc:9d58 with SMTP id 98e67ed59e1d1-3acef179290mr1109011a91.54.1792200070336;
-        Fri, 16 Oct 2026 18:21:10 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc98139ccsm3407339a91.0.2026.10.16.18.21.09
+        bh=3fBMoxBE26VqgxenoC2y2JHXlxXwVDO4reB28zK9D9c=;
+        b=UnD19SO+PtT6khLMrGFdwXNlTeDLw4tWV+RR0UslYP13x35xDJtoZeAr5jOnh4S0R+
+         4DhqCQycUu5h30YjqX1j8JHFlCuOkFTw+Czu8JrBQVvuEkaqik2xb2p9w0FebtH9p6FN
+         T0i2NqsDlt4/LHbvGBs03psW76aZmMQz7uVHMm4UtgrW5XnsdHRzXaP84vSpnuk2LL/z
+         7u17w1agoiovQa6dNaN3Mzml39TeRkVrUgDkrExVGkhWuFbppDlSz3kuB2mHdNWKEFmL
+         2oXrSzn5+BSO3xzyCiSIJezNLKOPCE2UwyqyIOQqt7hDfnMVyQBMORuXLW5hcyw3XUrL
+         0ewA==
+X-Forwarded-Encrypted: i=1; AKwUvBxp6GMDa6IJlpYJBAjYEEaHfUachrMZOOP5zJIu/R01jqkGwzoqNn3jWDwhctUQuQHxqVldrbg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKk2A0HlGjc875Zj/yXqAt2OPV6Lbjx0QmjZ1PC695OwOzVTm4g
+	VlbmHvL2cQt9h9a2ODL6ARNuS9ee7s7X58BPmdoY0i8j/AvSVVc24K0mFYG09gsc
+X-Gm-Gg: AYBFou0Qay+8/0UZ52TpXi/N9NjCakl/SZP7DptGuunk4Ju0nVEOK0z3QSOkW057vR6
+	Tq/AfBivO/VaREKhk9K6fbOsokoIRXBHEORiqC1mCxq/ihXY05Hn6WJjfADQjENhmoUDakLaGeK
+	2bX7VUMpjL6UNIaTPJVLf88hisMGjMkldyuuKKmFwUK55K0PpxOh3f525bYWH7FLC72o9i8EBRP
+	dGJEGy6GG5RtZGNd/FF1pTff5p3ifC7WTx346XefCg6eePLaG5Lut3c6bIgfC5WVIpMbK9qQ+JP
+	qUfaSdaIAEr7QfikzqGNdaQtlLZIhfmgtzH6aTY3ebkU/ems55LZh0aM6AtGxdLOhtsuHTHskmb
+	15Gn7hmpIkJ75mtQydb8vTkv00mWEi+mTf4qoj/wX11iiOj6ia6M3/FVZPydLQS6eo/bfeDvEHF
+	EfFDyauIQ8x4cWAv1oTkoz6o8aa6v7waXg86gUP8P6zquXZGVVf71RHs9mfPH+vrvIhFCLwrfbv
+	F/khOOn+0C1DF9w2eloMs8B7KRTytujwu3yJzg7PKsXAtjb+vfOPoGRJbib/sJbunetyu3L3Pj1
+	49Dv/99ncEgoCnQxy6htGm7hU3VuG8E6NU+U72AFOv4=
+X-Received: by 2002:a17:90b:55c4:b0:3aa:6b5d:a02e with SMTP id 98e67ed59e1d1-3acef5b0d70mr1232642a91.54.1792200073488;
+        Fri, 16 Oct 2026 18:21:13 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.245])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947dfa00sm11233950a91.17.2026.10.16.18.21.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:21:09 -0700 (PDT)
+        Fri, 16 Oct 2026 18:21:13 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next 03/38] bpf: don't leak the inode when token creation fails
-Date: Sat, 17 Oct 2026 01:20:23 +0000
-Message-ID: <20261017012058.355787-4-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 04/38] bpf: don't hand out a linked element as extra element
+Date: Sat, 17 Oct 2026 01:20:24 +0000
+Message-ID: <20261017012058.355787-5-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
 References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
@@ -85,45 +85,103 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-bpf_token_create() allocates a bpffs inode and hands it to
-alloc_file_pseudo().  The inode reference only moves to the new file when
-that call succeeds: alloc_file_pseudo() leaves the caller's reference alone
-on failure, and FD_PREPARE() does not even evaluate the file expression
-when it cannot get a descriptor.
+When htab_map_update_elem() replaces an element of a preallocated map,
+alloc_htab_elem() takes the spare element of this cpu and puts the old
+element into the per-cpu slot right away, long before the old element is
+unlinked from its bucket.  The bucket lock disables interrupts, but it
+does not keep out an NMI, or a tracing program on the return of
+alloc_htab_elem().  bpf_prog_active only helps if both programs are
+kprobe, tracepoint or perf_event programs.  A program that updates an
+existing key in another bucket of the same map gets to use the slot:
 
-Before the conversion to FD_PREPARE() the error path did iput(inode).  The
-conversion dropped it, so each BPF_TOKEN_CREATE that fails with -EMFILE,
--ENFILE or -ENOMEM at this point leaks an inode.  A task that is allowed to
-create tokens can hit this at will by lowering RLIMIT_NOFILE, and the
-leaked inodes make umount of that bpffs instance complain about busy
-inodes.
+  htab_map_update_elem(k1)              tc, xdp, fentry, raw_tp, ...
+    alloc_htab_elem()
+      l_new = *pl_new
+      *pl_new = l_old                   still linked in bucket 1
+      <NMI>
+        htab_map_update_elem(k2)        perf_event program
+          l_new = *pl_new               the l_old of the outer update
+          hlist_nulls_add_head_rcu(l_new, bucket 2)
+          hlist_nulls_del_rcu(k2's old element)
+      </NMI>
+    hlist_nulls_add_head_rcu(l_new, bucket 1)
+    hlist_nulls_del_rcu(l_old)
 
-Put the inode again if no file was created.
+If l_old was the first element of bucket 1, the outer add points its pprev
+at l_new, and the delete takes it out of bucket 1 only.  l_new->next now
+leads into bucket 2, where l_old stays with a poisoned pprev, on which a
+delete of k2 crashes.  If it was not the first, the delete takes it out of
+bucket 2: k2 is gone from the map, and the chain of bucket 1 still contains
+l_old, whose next pointer leads into bucket 2.
 
-Fixes: 981bec8f698b ("bpf: convert bpf_token_create() to FD_PREPARE()")
+Either way a walk of bucket 1 ends on the nulls value of bucket 2.
+lookup_nulls_elem_raw() restarts whenever that happens, so every lookup in
+bucket 1 which does not find its key spins forever:
+
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+   __htab_map_lookup_elem+0x354/0x4d0
+
+  BUG: KASAN: wild-memory-access in htab_map_delete_elem+0x30c/0x670
+  Write of size 8 at addr dead000000000122 by task extra/102
+
+An NMI between the load and the store of the slot makes both updates use
+the same element, with much the same result.
+
+Empty the slot when the spare element is taken, in a way that is atomic
+on this cpu, and put the old element in only after it has been unlinked.
+A nested update that finds the slot empty, which is the case that
+corrupted the map, fails with -EBUSY.
+
+Fixes: 8c290e60fa2a ("bpf: fix hashmap extra_elems logic")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- kernel/bpf/token.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/hashtab.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/token.c b/kernel/bpf/token.c
-index e85a179523f0..19660ef95ddb 100644
---- a/kernel/bpf/token.c
-+++ b/kernel/bpf/token.c
-@@ -169,8 +169,11 @@ int bpf_token_create(union bpf_attr *attr)
- 	FD_PREPARE(fdf, O_CLOEXEC,
- 		   alloc_file_pseudo(inode, path.mnt, BPF_TOKEN_INODE_NAME,
- 				     O_RDWR, &bpf_token_fops));
--	if (fdf.err)
-+	if (fdf.err) {
-+		/* no file took over the inode reference */
-+		iput(inode);
- 		return fdf.err;
-+	}
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 9d4791ee1741..923fec694747 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -1279,11 +1279,17 @@ static struct htab_elem *alloc_htab_elem(struct bpf_htab *htab, void *key,
+ 	if (prealloc) {
+ 		if (old_elem) {
+ 			/* if we're updating the existing element,
+-			 * use per-cpu extra elems to avoid freelist_pop/push
++			 * use per-cpu extra elems to avoid freelist_pop/push.
++			 * The caller puts old_elem into the slot once it is
++			 * unlinked. Until then the slot is empty for an NMI
++			 * or a kprobe that updates this map on this cpu.
+ 			 */
+ 			pl_new = this_cpu_ptr(htab->extra_elems);
+-			l_new = *pl_new;
+-			*pl_new = old_elem;
++			l_new = READ_ONCE(*pl_new);
++			do {
++				if (!l_new)
++					return ERR_PTR(-EBUSY);
++			} while (!try_cmpxchg_local(pl_new, &l_new, NULL));
+ 		} else {
+ 			struct pcpu_freelist_node *l;
  
- 	token = kzalloc_obj(*token, GFP_USER);
- 	if (!token)
+@@ -1459,11 +1465,14 @@ static long htab_map_update_elem(struct bpf_map *map, void *key, void *value,
+ 	if (l_old) {
+ 		hlist_nulls_del_rcu(&l_old->hash_node);
+ 
+-		/* l_old has already been stashed in htab->extra_elems, cancel
+-		 * its reusable special fields before it is available for reuse.
++		/* l_old replaces the extra element that alloc_htab_elem() took,
++		 * cancel its reusable special fields before the next update on
++		 * this cpu reuses it.
+ 		 */
+-		if (htab_is_prealloc(htab))
++		if (htab_is_prealloc(htab)) {
++			WRITE_ONCE(*this_cpu_ptr(htab->extra_elems), l_old);
+ 			check_and_cancel_fields(htab, l_old);
++		}
+ 	}
+ 	htab_unlock_bucket(b, flags);
+ 	if (l_old && !htab_is_prealloc(htab))
 -- 
 2.55.0
 
