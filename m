@@ -1,65 +1,65 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8C421CC59
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DEE2D0C7E
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200472; cv=none; b=qBa18US4AlJZI8bQeokbCtstDCGaDw1JBq9wMSgYNX2nVuCa6ecmfiTCtuoe1tChri4zkgAL1FmmUOusPrBl1IQTE6d4fZgjEcjrbSKJTrVTEYp3Qi7nFD7zZ4xYT3XsoBRw4+SJUPFg8mJ5zCifFn7fvXoDWVaOC5L+SwVojns=
+	t=1792200492; cv=none; b=ZP4ht49JS/vGGw4Xsv0osDXjFVqOv2MV/oBjQaj2DZ0J047I58niVyuK+x2gFqAJi0lpap0kJ1wkKonsu/CbZR6KVc2UwamLkojHUtjojhX7f9EeGYLN5QrXVRUK0N4QHYb8KC8NNxY+6Pnj7gl/zPbeN4k7vdIvcOSmYA5EHrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200472; c=relaxed/simple;
-	bh=jqT5Ab18KbkMPLG5nuVmKYwi9/htcEz1suyx38WJeRk=;
+	s=arc-20240116; t=1792200492; c=relaxed/simple;
+	bh=Wci1AUQRP0O6zqFQ6ZZ+EeXSWDbKK0xYZRP4naVP85E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9n4m0oyhZjm7AtLvmSRZYLRoQaPRIA6knemM/1lP1sP1uHUC1BjL5jftPaHeQClU/wvhEpT/2sbC5NL2N8fzZnKewej94q9LZM2L6UXKQK2dbs80LPKdEvmDG9Mm5XOzpChxWVs1Z8lJ0yJUmFqZZ9dlMM0S1kLKdYbVx6Cnog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kzXbxCNP; arc=none smtp.client-ip=209.85.216.42
+	 MIME-Version; b=lrGjZ+qypVuBvja0CVvzFZxAG6Ra8pO3M0u4m1CZZOVpDQzcmp/ul6z2bS6HG8fnlC7fYR1bOfiCxZZbf+1U5CKVB+qM2bPl64mFOVRgYwJnfeNtjyX5pOKd2RSc1SvK2ZSY7MEGvSe9oIus3RaEEKkkxSDPnj/WX5UzHedjVgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AGusVY7l; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kzXbxCNP"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so334663a91.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:27:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AGusVY7l"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cd5c9e52398so262192a12.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:28:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200469; x=1792805269; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792200490; x=1792805290; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nIpcC7WsRUsfob/M32I+w1LmmQqZv3hP9zFFPAjnTx0=;
-        b=kzXbxCNPf34WSlNfqlfLUj1nuQbgGCGNRw0+s4Bk32bA6KWXB0IXzqT3l6gdPacCGG
-         fNOR9FLRmakhstZKNSWL+Nah4gvsVrBh44v8Jpp5WdTZbrLfW+Sr0OaS5aGURnapK3Zj
-         gAvd0j4rZ4GOwQXXJMEo70xOxKXT38FAhdPkjPc6gIx/fCfZneBYve3S1j7tJKM7KM9M
-         HITBrW4n7jP9J0XIO1+b73rMFkNhgGFCjBrHk2jFY0lEUzUUOcNTap8l86xMbPPTTvnd
-         +hk9Tah8e2VYADqkg6PRc9BK6n8c6hdG+Q94Gv2gslt6bqKARfWVwxaEkDxOmNmHdiiU
-         D2lA==
+        bh=IHfvh1ufufjL6pvwM565xof/cBXe43GsfSLo8UXkYQY=;
+        b=AGusVY7lRk0MmeYDUPONK7N/1C20R38j1MxhtSRLQbN0SKEyGCsyQi+2p4V1thKCA2
+         Uxbeqxyg1KMc7y0DV3t/eLCELQeEMoMJoduvdG2I2Hfc1RWCH1BZ5ohk4MkDjcBMyWrS
+         0VICCiEDmnVpAuTvwuXh8EQ3H6j7I2yoGqKYHmartzCsU9bfZG+xmHGomsGBtVOsVy14
+         YUecXScDAlKo+IRiBKDt5f2hHqlIVdgMqSNiyRW3+vOcmfOEtSU08CXrh7HNGsp9oNlc
+         VNc3fCWbFP1t6Wa2NQqM2GneGFnjUGDQlod1B34GKFJal1voqKWJID6xSXhILI2AM0rc
+         aMEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200469; x=1792805269;
+        d=1e100.net; s=20260707; t=1792200490; x=1792805290;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nIpcC7WsRUsfob/M32I+w1LmmQqZv3hP9zFFPAjnTx0=;
-        b=gkUq/wARmJzCbpE1BUdXZP4C3inreqasRRuAvX7YlMQdGQI70daW0vmQmRSKsZLgGc
-         xP4Z2nYJVMDlwVdscKdE64NAl2SYvdBlbFbXADSFchSqdm8PyGlxtKWBnPocprH0EGcj
-         glllTfWZ2YNbQcpnJqBqVsIpDM5/hhXMrJkzDPfJmvS0bbtMgEe6NH4XjsZRt0fg8Qof
-         Pq5r2400zpU7fkDb986W1chD/dO4z7TvlzgZUzrImtjn6jC9SVuda1aIbAcLYhMwiB8T
-         rYwtUUwxAtY4YlE3FdZSYH2HWKwqOg0rWecDA5w085Zh/DvHCzmx6PJOheS0v27pxmdp
-         LEtw==
-X-Forwarded-Encrypted: i=1; AKwUvBwETrFCR2pUauPX+QbYxRcKWrX5zhr5e3Dk1re+H2ffIjr9hdLlt6b0gdWbhqvKAlYci6pGTdk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKsD8fp9XgHlQ6pBtRVMrCO5BTZaB+anq+m7KvxFq8FsWb/Q7Q2
-	PM7369K3Pu3lj1ZxJsVZndIcVKiwhU/D2nxxU2w6tjmoUjnvlG55BeWg
-X-Gm-Gg: AYBFou21IQtLXr2FEqNh2bsBcTWYvfiV+KmjQcEc1pujlPOmUnierCyLeIUAv30I0Y7
-	/IZ7QH53XhSEQITKyMGFRU34jrYKO+tAbM4RDB36jHeNCvM2CFwGFfkLxMC5uNAfUXVNztzJUqN
-	cK9ZZjXr8A/gvxInqlvXS0BPxccpGGtSI7DEBUQB55BkBi6FM+Y+oFSpnRNBgmMvQo9V5uQvKG+
-	vHECQCBaosiKxlbge0hi2g/6S9spLpUp8J/hd/y0ibBM32cItnMlyUVzh2NQ0da+lx2rJAaNypN
-	ME1HIGZpxTISnxQ/wXBC3k6SP6zCy/HhyD/hzc1wwVTg/hT/PCJO08Qx9BHZCC+HPMQ3pYNnGp1
-	jype11Yj+Nk5X1tPigZ31/NMzouTujsKB7lA075NIhJpiCx+l5F2O2FSt7wAfE2oQZMJL2YzDi/
-	+BzKU3CyrLepwiPYydYbAx7ta5+Ag0E+ItrnuY+U9gtdCoZH7bgZiyMwpdBnofsrE0I/EBO4uTy
-	qT8N8Oqvnb/g/fS5/QIRZ1Sb2QtoHeQfYWOP4QUbuptWjscd9b8gpbL8LSj2g2BotW8tDD5gkQG
-	wgjvnkTcxD4KorJxiK+THON27Ixcc8eUsmebDw6lyl2a
-X-Received: by 2002:a17:90b:39ad:b0:3ac:a7ee:678c with SMTP id 98e67ed59e1d1-3acee2796fdmr1139235a91.2.1792200468922;
-        Fri, 16 Oct 2026 18:27:48 -0700 (PDT)
+        bh=IHfvh1ufufjL6pvwM565xof/cBXe43GsfSLo8UXkYQY=;
+        b=2S+wAGa2h/kGlyB7TST3M98EXNGm2mvNjDrSpVi0BOHGmVQpdae3gDutg60zJrXjl0
+         cDh9o606vesuTqB6ia4bD+ZYG2pWQYEN5QxVsm7hDUpJ02SJECEDM4bFzGx/FwUyFWmQ
+         SFQIv4HODE02O4nNofjgpVo4HHksz1GzP2GfFfdPs2ziYWY8SRTsz/rZQf74nuNLMXry
+         4uoXX5CeuyP5cYWzOmhclqDLu1w5CR4rNRFKHxk2NpqzIF1/CLs4zoojr8Sn7zXwSKfz
+         ZA8ghAUgT517CSjC2FwhnoHua5K6nJwtJVQ7q3zgPAc0mmhzQwp66paO3SuzUExkG+I2
+         i4Uw==
+X-Forwarded-Encrypted: i=1; AKwUvBwTKzyEtay+rsVAXahSbKPL/MyYp2lzthiKRUJRZcptPvgMYmhASBzByeUpvxJT6eIrsEy/NKM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ6z3T3NHFqFyaBLbgfGKLiyGTz6UlUJixgxmXOGYpTha9b5TAm
+	SFRBOPmoWf8GDr3ryIDKDp/Nb0w3aHAWzn9YnL/PWOhlAwRm0k1Ky8hla8oggiDV
+X-Gm-Gg: AYBFou00fsVfR3oqwgmZorlyn5wwQwhHQHiPKJ0JAsAxRHfr0hQvmz6BdanQaMSYYpS
+	VX8nw0+8PLUgzT4uHl2jKBGwsF8ePgPFwC0Inamwb1iH8ZdsRG3pOmknVVJTuiS8aB838TWSvOs
+	Hz0Hpe2k7rLwc2/OFMpTFdYZ+WKYy3pjywXlu5EOcNFGUHjFPSoAVrnTYG8FUN05q/esBSzQUTK
+	oddbb3lBE4NgbITYffNpbjKo8+j8XW0S6I2cVnDo9f82VI8HXxzUVU1eWmHxNswV6nNDgrvm2cJ
+	DpP8FvGOYqA/j+e1vfEIIqQm56XmB1Y7mt8xg3LuSkcPAbNlm08NKrxARrlxwhL+eeiPn0x2+1r
+	HiDyXup+3rmxx/qTL+Izmo9Ilh+rfnjCh/80r+mRlrC+W6D2cY/PdFsD8RaXuEh7ZJNLQugthZy
+	AswnXYe7hwtjhV8bPiik6SJccP+L5oeMGHaGtrpuO7rtT20Opj1qS7bGOsIvAC428t5dTcofnWE
+	bTSp6mCA5azaC6oGoLqtJP+JUTHFkaUGb6+jbp9ZxYCh55bVGirnBOj+7O0sflOyKvoISYRVPFx
+	lh6UQAPFPd7954/pXX6ocEZRQqMs1hWg0udgM+z6yOBHErToaLiYxQ==
+X-Received: by 2002:a17:90a:e7c6:b0:39e:6c69:34da with SMTP id 98e67ed59e1d1-3acef589938mr1330275a91.62.1792200490320;
+        Fri, 16 Oct 2026 18:28:10 -0700 (PDT)
 Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.242])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac9461d71esm11282572a91.7.2026.10.16.18.27.47
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac9474b52fsm12736358a91.9.2026.10.16.18.28.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:27:48 -0700 (PDT)
+        Fri, 16 Oct 2026 18:28:09 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next 17/38] bpf: Bound the nesting that the BTF show code follows
-Date: Sat, 17 Oct 2026 01:24:30 +0000
-Message-ID: <20261017012451.364800-9-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 18/38] bpf: Check the new program of an iterator link update
+Date: Sat, 17 Oct 2026 01:24:31 +0000
+Message-ID: <20261017012451.364800-10-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
 References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
@@ -85,63 +85,246 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-btf_struct_show() and btf_array_show() recurse for every nested struct
-and array.  MAX_RESOLVE_DEPTH bounds one resolve walk when BTF is loaded,
-not the nesting: a member whose type is resolved already is not walked
-again, so BTF that defines its types from the inside out can nest them as
-deep as it has types.
+The bpf_map_elem, bpf_sk_storage_map and sockmap iterators hand the key
+and the value of an element to the program as buffers.  The verifier only
+records how far a program reaches into them, and ->attach_target()
+compares that with the key and value size of the map.
 
-Whoever may load BTF, with CAP_BPF or a BPF token, can give such a type
-to the value of a map.  Reading the file of that map in bpffs then
-overruns the kernel stack: with a few hundred levels the stack guard page
-is hit and the kernel panics.
+bpf_iter_link_replace() does not.  BPF_LINK_UPDATE installs a program that
+an attach refuses with -EACCES, and the program then reads, and for a
+value writes, behind every element that the iterator visits.  It takes
+CAP_BPF and CAP_PERFMON, or a BPF token.
 
-Stop at 32 levels.  That is MAX_RESOLVE_DEPTH, and __btf_show_indent()
-has as many columns.  Nothing is shown for a member that lies deeper, and
-the status becomes -E2BIG, which bpf_snprintf_btf() and
-bpf_seq_printf_btf() return.  The types of an x86_64 defconfig kernel nest
-14 deep.
+Split the test out of the three ->attach_target() and ask it, as
+->check_prog(), for the new program of an update as well.  Targets without
+such a test take every program of their kind, as before.
 
-Fixes: b00b8daec828 ("bpf: btf: Add pretty print capability for data with BTF type info")
+Fixes: d6c4503cc296 ("bpf: Implement bpf iterator for hash maps")
+Fixes: 5ce6e77c7edf ("bpf: Implement bpf iterator for sock local storage map")
+Fixes: 0365351524d7 ("net: Allow iterating sockmap and sockhash")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- kernel/bpf/btf.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ include/linux/bpf.h       |  4 +++
+ kernel/bpf/bpf_iter.c     |  7 ++++++
+ kernel/bpf/map_iter.c     | 51 ++++++++++++++++++++++-----------------
+ net/core/bpf_sk_storage.c | 17 ++++++++++---
+ net/core/sock_map.c       | 17 ++++++++++---
+ 5 files changed, 66 insertions(+), 30 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 64c78434fa05..a9bf4c3c0a27 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -1081,6 +1081,8 @@ static const struct btf_type *btf_type_skip_qualifiers(const struct btf *btf,
- }
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 46d325aa178e..3fb3c7d22d99 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -3128,6 +3128,8 @@ typedef int (*bpf_iter_attach_target_t)(struct bpf_prog *prog,
+ 					union bpf_iter_link_info *linfo,
+ 					struct bpf_iter_aux_info *aux);
+ typedef void (*bpf_iter_detach_target_t)(struct bpf_iter_aux_info *aux);
++typedef int (*bpf_iter_check_prog_t)(const struct bpf_prog *prog,
++				     const struct bpf_iter_aux_info *aux);
+ typedef void (*bpf_iter_show_fdinfo_t) (const struct bpf_iter_aux_info *aux,
+ 					struct seq_file *seq);
+ typedef int (*bpf_iter_fill_link_info_t)(const struct bpf_iter_aux_info *aux,
+@@ -3146,6 +3148,8 @@ struct bpf_iter_reg {
+ 	const char *target;
+ 	bpf_iter_attach_target_t attach_target;
+ 	bpf_iter_detach_target_t detach_target;
++	/* may the program run on what the link is attached to? */
++	bpf_iter_check_prog_t check_prog;
+ 	bpf_iter_show_fdinfo_t show_fdinfo;
+ 	bpf_iter_fill_link_info_t fill_link_info;
+ 	bpf_iter_get_func_proto_t get_func_proto;
+diff --git a/kernel/bpf/bpf_iter.c b/kernel/bpf/bpf_iter.c
+index fc3a75684ef7..4668c1696a08 100644
+--- a/kernel/bpf/bpf_iter.c
++++ b/kernel/bpf/bpf_iter.c
+@@ -436,6 +436,13 @@ static int bpf_iter_link_replace(struct bpf_link *link,
+ 		goto out_unlock;
+ 	}
  
- #define BTF_SHOW_MAX_ITER	10
-+/* nested structs and arrays shown; __btf_show_indent() has as many columns */
-+#define BTF_SHOW_MAX_DEPTH	32
- 
- #define BTF_KIND_BIT(kind)	(1ULL << kind)
- 
-@@ -1474,8 +1476,18 @@ static void *btf_show_start_aggr_type(struct btf_show *show,
- 				      const struct btf_type *t,
- 				      u32 type_id, void *data)
- {
--	void *safe_data = btf_show_start_type(show, t, type_id, data);
-+	void *safe_data;
- 
-+	/*
-+	 * Structs and arrays are shown by recursion.  BTF loading bounds the
-+	 * depth of one resolve walk, not how deep resolved types may nest.
-+	 */
-+	if (show->state.depth >= BTF_SHOW_MAX_DEPTH) {
-+		show->state.status = -E2BIG;
-+		return NULL;
++	if (iter_link->tinfo->reg_info->check_prog) {
++		ret = iter_link->tinfo->reg_info->check_prog(new_prog,
++							     &iter_link->aux);
++		if (ret)
++			goto out_unlock;
 +	}
 +
-+	safe_data = btf_show_start_type(show, t, type_id, data);
- 	if (!safe_data)
- 		return safe_data;
+ 	old_prog = xchg(&link->prog, new_prog);
+ 	bpf_prog_put(old_prog);
  
+diff --git a/kernel/bpf/map_iter.c b/kernel/bpf/map_iter.c
+index 2077d46d167c..16537356c1a2 100644
+--- a/kernel/bpf/map_iter.c
++++ b/kernel/bpf/map_iter.c
+@@ -97,13 +97,29 @@ static struct bpf_iter_reg bpf_map_reg_info = {
+ 	.seq_info		= &bpf_map_seq_info,
+ };
+ 
++static int bpf_iter_map_check_prog(const struct bpf_prog *prog,
++				   const struct bpf_iter_aux_info *aux)
++{
++	const struct bpf_map *map = aux->map;
++	u32 value_size = map->value_size;
++
++	if (map->map_type == BPF_MAP_TYPE_PERCPU_HASH ||
++	    map->map_type == BPF_MAP_TYPE_LRU_PERCPU_HASH ||
++	    map->map_type == BPF_MAP_TYPE_PERCPU_ARRAY)
++		value_size = round_up(value_size, 8) * num_possible_cpus();
++
++	if (prog->aux->max_rdonly_access > map->key_size ||
++	    prog->aux->max_rdwr_access > value_size)
++		return -EACCES;
++
++	return 0;
++}
++
+ static int bpf_iter_attach_map(struct bpf_prog *prog,
+ 			       union bpf_iter_link_info *linfo,
+ 			       struct bpf_iter_aux_info *aux)
+ {
+-	u32 key_acc_size, value_acc_size, key_size, value_size;
+ 	struct bpf_map *map;
+-	bool is_percpu = false;
+ 	int err = -EINVAL;
+ 
+ 	if (!linfo->map.map_fd)
+@@ -123,30 +139,20 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
+ 		goto put_map;
+ 	}
+ 
+-	if (map->map_type == BPF_MAP_TYPE_PERCPU_HASH ||
+-	    map->map_type == BPF_MAP_TYPE_LRU_PERCPU_HASH ||
+-	    map->map_type == BPF_MAP_TYPE_PERCPU_ARRAY)
+-		is_percpu = true;
+-	else if (map->map_type != BPF_MAP_TYPE_HASH &&
+-		 map->map_type != BPF_MAP_TYPE_LRU_HASH &&
+-		 map->map_type != BPF_MAP_TYPE_ARRAY &&
+-		 map->map_type != BPF_MAP_TYPE_RHASH)
++	if (map->map_type != BPF_MAP_TYPE_PERCPU_HASH &&
++	    map->map_type != BPF_MAP_TYPE_LRU_PERCPU_HASH &&
++	    map->map_type != BPF_MAP_TYPE_PERCPU_ARRAY &&
++	    map->map_type != BPF_MAP_TYPE_HASH &&
++	    map->map_type != BPF_MAP_TYPE_LRU_HASH &&
++	    map->map_type != BPF_MAP_TYPE_ARRAY &&
++	    map->map_type != BPF_MAP_TYPE_RHASH)
+ 		goto put_map;
+ 
+-	key_acc_size = prog->aux->max_rdonly_access;
+-	value_acc_size = prog->aux->max_rdwr_access;
+-	key_size = map->key_size;
+-	if (!is_percpu)
+-		value_size = map->value_size;
+-	else
+-		value_size = round_up(map->value_size, 8) * num_possible_cpus();
+-
+-	if (key_acc_size > key_size || value_acc_size > value_size) {
+-		err = -EACCES;
++	aux->map = map;
++	err = bpf_iter_map_check_prog(prog, aux);
++	if (err)
+ 		goto put_map;
+-	}
+ 
+-	aux->map = map;
+ 	return 0;
+ 
+ put_map:
+@@ -179,6 +185,7 @@ static const struct bpf_iter_reg bpf_map_elem_reg_info = {
+ 	.target			= "bpf_map_elem",
+ 	.attach_target		= bpf_iter_attach_map,
+ 	.detach_target		= bpf_iter_detach_map,
++	.check_prog		= bpf_iter_map_check_prog,
+ 	.show_fdinfo		= bpf_iter_map_show_fdinfo,
+ 	.fill_link_info		= bpf_iter_map_fill_link_info,
+ 	.ctx_arg_info_size	= 2,
+diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+index ea22ec5ef5b1..72b9ee4c98de 100644
+--- a/net/core/bpf_sk_storage.c
++++ b/net/core/bpf_sk_storage.c
+@@ -919,6 +919,15 @@ static void bpf_iter_fini_sk_storage_map(void *priv_data)
+ 	bpf_map_put_with_uref(seq_info->map);
+ }
+ 
++static int bpf_iter_map_check_prog(const struct bpf_prog *prog,
++				   const struct bpf_iter_aux_info *aux)
++{
++	if (prog->aux->max_rdwr_access > aux->map->value_size)
++		return -EACCES;
++
++	return 0;
++}
++
+ static int bpf_iter_attach_map(struct bpf_prog *prog,
+ 			       union bpf_iter_link_info *linfo,
+ 			       struct bpf_iter_aux_info *aux)
+@@ -936,12 +945,11 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
+ 	if (map->map_type != BPF_MAP_TYPE_SK_STORAGE)
+ 		goto put_map;
+ 
+-	if (prog->aux->max_rdwr_access > map->value_size) {
+-		err = -EACCES;
++	aux->map = map;
++	err = bpf_iter_map_check_prog(prog, aux);
++	if (err)
+ 		goto put_map;
+-	}
+ 
+-	aux->map = map;
+ 	return 0;
+ 
+ put_map:
+@@ -972,6 +980,7 @@ static struct bpf_iter_reg bpf_sk_storage_map_reg_info = {
+ 	.target			= "bpf_sk_storage_map",
+ 	.attach_target		= bpf_iter_attach_map,
+ 	.detach_target		= bpf_iter_detach_map,
++	.check_prog		= bpf_iter_map_check_prog,
+ 	.show_fdinfo		= bpf_iter_map_show_fdinfo,
+ 	.fill_link_info		= bpf_iter_map_fill_link_info,
+ 	.ctx_arg_info_size	= 2,
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 38df84284328..057e2f3c0265 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -1933,6 +1933,15 @@ int sock_map_link_create(const union bpf_attr *attr, struct bpf_prog *prog)
+ 	return ret;
+ }
+ 
++static int sock_map_iter_check_prog(const struct bpf_prog *prog,
++				    const struct bpf_iter_aux_info *aux)
++{
++	if (prog->aux->max_rdonly_access > aux->map->key_size)
++		return -EACCES;
++
++	return 0;
++}
++
+ static int sock_map_iter_attach_target(struct bpf_prog *prog,
+ 				       union bpf_iter_link_info *linfo,
+ 				       struct bpf_iter_aux_info *aux)
+@@ -1951,12 +1960,11 @@ static int sock_map_iter_attach_target(struct bpf_prog *prog,
+ 	    map->map_type != BPF_MAP_TYPE_SOCKHASH)
+ 		goto put_map;
+ 
+-	if (prog->aux->max_rdonly_access > map->key_size) {
+-		err = -EACCES;
++	aux->map = map;
++	err = sock_map_iter_check_prog(prog, aux);
++	if (err)
+ 		goto put_map;
+-	}
+ 
+-	aux->map = map;
+ 	return 0;
+ 
+ put_map:
+@@ -1973,6 +1981,7 @@ static struct bpf_iter_reg sock_map_iter_reg = {
+ 	.target			= "sockmap",
+ 	.attach_target		= sock_map_iter_attach_target,
+ 	.detach_target		= sock_map_iter_detach_target,
++	.check_prog		= sock_map_iter_check_prog,
+ 	.show_fdinfo		= bpf_iter_map_show_fdinfo,
+ 	.fill_link_info		= bpf_iter_map_fill_link_info,
+ 	.ctx_arg_info_size	= 2,
 -- 
 2.55.0
 
