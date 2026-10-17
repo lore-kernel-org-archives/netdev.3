@@ -1,80 +1,46 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DA736DA15
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C250D303A04;
+	Sat, 17 Oct 2026 01:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200319; cv=none; b=JanazElbikh1RxlojnuQH8Y0jJyUPA9qIvDrI8Hi3RJRXp14iVURkzGE8/47rZ2NCEzLxFsMlf09xD8fnZalIIt3lbNTnqIPD0ebMa3JqQsGcnGYDHN4p7i8JqMFK5OLOMiIdqWuH/NrBoJFvs9jIbPZ8p9BPyzF/GLxwb8Z5uk=
+	t=1792200337; cv=none; b=N2mp3ZBkBAPuWK5lLMNCLfvkhnQ+MFdgxmE5ugSwmrfhLq6+SC/qUC1z4dTKUhKheyUqsBMR6C/knbMMIoaVawoR66d4Nlr6SX71agcrERgcNPd0Yv71nJUV9A2oxgTKcQFcv4aq4Kv3SljopGusaOVJuWrdPsoHMJmJ9YHG1aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200319; c=relaxed/simple;
-	bh=Er/uTSUJqJwQFr/bT7JAFBRgV8FEqRpD4CpEtcK6xpI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWeaYfxdgoAfpKR/pUJ3gLZ/A2H2VX86Jdkv5kqoBWM62NMMuJyk3kL5W43lO1yFk/vX0WpY8AjpqcowS3Sz+KPfs1It+NuNTJPrGc5zUxxnVNS2/UluQ3fjsMoEOiNjF+NthZrIm/YFMW8fqFBqdhHU4WP9M4rKqmQagXJtpM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MjYBLN+I; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792200337; c=relaxed/simple;
+	bh=TuRConst3u34uVYtzmxrXcek7shQRM9RgoNxVMAJyBc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hsJMX9473O9i4MfoRer21KNtaO91DFJ88wjs46fmaBiUDC0FOitvlfslxLKS6eIs/BvErgfoY0tjJh0IUf4GSPjjw5LyA2Egkgp5sv+3GFB6AiQ3yyeYe88ZXPf3feMuUqVOC88JssxQ+NpziWebEqEjpAXO5Osx8AM0OC8W/Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=a/GoxIZQ; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MjYBLN+I"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e608cd460eso2159895ad.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:25:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200318; x=1792805118; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iELm3bTnzk4B+pnNJ4263DpWkNBrv9oDYGlQ98xR3Ik=;
-        b=MjYBLN+ITE+H5g6nxeJBu5ND9DRTEm4TnFJBw6FbqgdfGLFhBgfip3QQO30jUTi0KE
-         BoV86dqnENLcU/YC3gNHYZ0yv2pNdS4bNI0Vz2BE1UjaBvECrgcqFXMULtok8pZeEnmi
-         uxsGFKCiijrCGAIKrSSZL6jsKleBIe8L23Scoll6zaNb5rVZrFL+Jx2qeCj9clKjcEWp
-         WV+51rLTPNaQXptxJqR0VcqIhEUgrHSL3IPGCBHKplyPz8mlXAxPI93ou0vaNkKeSzuH
-         p5ppPs8MsF3wOyCUOENCqVuJIq/BHQ6sNlOMghticMhAjkAxszpUpd+m3BTFp4WdCgrv
-         Pjjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200318; x=1792805118;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iELm3bTnzk4B+pnNJ4263DpWkNBrv9oDYGlQ98xR3Ik=;
-        b=cQ1YcBSfw6fqcVhrA0nnDpAbIFhZzrQYPtRA5QV1bCO+/HI46487QJLU5GxzU+T84T
-         ND5tclQOlE7xVx9u1DWIGbFXq7/tJ0UJCs/BredW+kedTvbX5AE4jDbEgHsROlzgZJg/
-         5jMPk6f0K0js1Qnc/bOoD49iCYdJ+rmZvDY96IcA4YFGWrIT5swdHSJwKq0kKBbSXp0E
-         sDBD+K3nO76MoCa4ee9MPe86YDkHiJI0TJBClLxuPeTX7TWVVArfcuS2goAA4P3yjQaH
-         +X4fyuj0FWldUpE3MUnPZZgFf8xMobR6Il98diWLc4VU5wk8jg2uI0MSwpWt1tIPH+9/
-         MrNQ==
-X-Forwarded-Encrypted: i=1; AKwUvByIEkeCf6N/nITnGgEfvSX8gE+D2QVm5G5nsHnJW7Ntw7NFp9308ENLwGJVtSNxJsoo4M4HPZw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK1oBhcoMVjNX78H+OdaEEoRLAEk+23KYBB6uQ48PlVC3RLUG2s
-	HEE6ZNCbLGw7b+6thq4L1NgsSz1od9neEr48GM1xtaht/MORpPHuneTC
-X-Gm-Gg: AYBFou095wyUoKfv/ZZiYTHp6TClxd19I8RiqKWdE0mC0YhDBW0WwMCiNBqep1Jg1sT
-	Y2AFn1YPqsa1FrPoz3b/kTwYkhBKCt1eFjKefq+l5QULXqY/lVCyqFlM+K2Tzv5uP3YvOxAF1cA
-	dY8jhUmE3loiI/fXMmfqdc6FDc6JpQuxS0azPdZkJurVqASo1zFgH6Sbt1VFLfOhvWz3ULq16eP
-	i1EsSjrWpfsN93Q1fW8fQoAkCxZerde1hozzN0RzOcEpeheIDk7iaizXzd/t14AlrBIid+ntSL5
-	4oWkexUXgpfVp/Y//3ooyoSBDKVtvwTe3ut+rVKmjUZZSecQpySXiPQuWksWnvC/XnnoreWRiIX
-	Bcu7f2jpbmPDtu0zoOKnTEBoxlzPO8Gv2zZT4UMi23ozz2CvdfZPatB1hkmq3FWqacGoIFzO+TK
-	MUCP6Bd7xO9hz6uCEnCZslnQOAeK6iD2hNrl2V7RyIsCLLk2dFHOkIyXgBogABFesSx6jhCBKf2
-	6N4XsFPjDPwKwCp+Yz02dXFGoXvDRCPDzJYOzdiwbQZWsGhlrSP4G4m5w0lJ5bTAoJbxtmO5GFo
-	2DlZDg2ytTd+SKcIjvtS/4+ihdn4TNaE+eS1orTnHPs=
-X-Received: by 2002:a17:902:f70f:b0:2e9:5829:9b3b with SMTP id d9443c01a7336-2e9a6d36836mr13212965ad.35.1792200317544;
-        Fri, 16 Oct 2026 18:25:17 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e804ea9sm16928105ad.13.2026.10.16.18.25.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:25:16 -0700 (PDT)
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To: bpf@vger.kernel.org
-Cc: daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	netdev@vger.kernel.org,
-	josef@toxicpanda.com,
-	mason@kernel.org
-Subject: [PATCH bpf-next 10/38] bpf: Don't saturate owner_refcnt on the last unpin
-Date: Sat, 17 Oct 2026 01:24:23 +0000
-Message-ID: <20261017012451.364800-2-alexei.starovoitov@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
-References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="a/GoxIZQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Cs
+	XS74tJCjl+nJsx5qBuVjBDMdaQCN2uExL5gwwPBY8=; b=a/GoxIZQ2hLPWqImnd
+	Wgnkr1rj7jhn/p5fxoBbm2oE2fW9LV2qnyUJpNH2LcvC22FckVw/IUtsm8WKXK+b
+	fotvj6ANb4BLWtXmXoajkyDkS32X5wlwGTxnV+xaYgcBPSb2SwKXcbGeaWbkE1Vs
+	eC+VDXx4afEN/rbdk+tRz864E=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgD3Q3hRztJquyIXAQ--.51309S2;
+	Sat, 17 Oct 2026 09:24:35 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: sam@mendozajonas.com,
+	fercerpav@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	gwshan@linux.vnet.ibm.com,
+	joel@jms.id.au
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH net v1] net/ncsi: fix use-after-free of ncsi_package in ncsi_remove_package()
+Date: Sat, 17 Oct 2026 09:24:31 +0800
+Message-ID: <20261017012431.413648-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,76 +48,84 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgD3Q3hRztJquyIXAQ--.51309S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGF18JrW8Cr17CFy3AFy8AFb_yoW5AF1rpF
+	W3Jry5J34vyry0gFWkWrn8WF15Ars7uw1UG3sIgw4Sva45GryUZFySyayY9FyYkFZ7Canr
+	Zr4UW34Y9F4DJrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziMGQfUUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+xMX+mrSzlOztgAA3l
 
-From: Josef Bacik <josef@toxicpanda.com>
+ncsi_remove_package() unlinks the package from ndp->packages with
+list_del_rcu() and immediately kfree()s it, after having released all
+of its channels the same way.  As with the channels, the generic
+netlink package info walkers iterate ndp->packages with
+list_for_each_entry_rcu() and dereference the package in the loop body
+(nla_put_u8(NCSI_PKG_ATTR_ID, np->id), np->multi_channel,
+np->channels, ...), so an immediate kfree() turns a mid-walk reader
+into a use-after-free the moment a teardown overlaps it.
 
-bpf_local_storage_map_free() pins the owner with refcount_inc_not_zero()
-while it uncharges an element.  The pin counts when
-bpf_local_storage_destroy() could not get local_storage->lock: destroy()
-then goes on, drops the owner's reference and spins until the count is
-zero.  So the pin is the last reference whenever it is needed, and
-refcount_dec() takes that for a bug: it warns "decrement hit 0; leaking
-memory" and saturates the count.  Unless destroy() happens to read the
-count between the two stores it spins for ever, under rcu_read_lock().
+  writer: rmmod ftgmac100
+            -> ftgmac100_remove() -> ncsi_unregister_dev()
+            -> ncsi_remove_package() -> kfree(np)
+  reader: sendmsg(NETLINK_GENERIC, NCSI_CMD_PKG_INFO)
+            -> ncsi_pkg_info_nl() -> ncsi_write_package_info()
 
-Drop the pin with refcount_dec_and_test().
+Free the package with kfree_rcu() so that it survives the grace period
+the readers rely on.
 
-Fixes: 5d800f87d0a5 ("bpf: Support lockless unlink when freeing map or local storage")
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Tested on an arm multi_v7 kernel (KASAN + SLUB + PREEMPT) running as a
+QEMU ast2600-evb guest with a host-side NC-SI responder; the PoC
+hammers NCSI_CMD_PKG_INFO while cycling insmod/rmmod ftgmac100:
+
+  BUG: KASAN: slab-use-after-free in ncsi_write_package_info+0xe3c/0xf84
+  Read of size 1 at addr c69e2580 by task poc_dump/69
+   ncsi_write_package_info from ncsi_pkg_info_nl+0x320/0x63c
+   netlink_unicast from netlink_sendmsg+0x62c/0xb98
+  Freed by task 65:
+   which belongs to the cache kmalloc-64 of size 64
+  The buggy address is located 0 bytes inside of
+
+struct ncsi_package is 60 bytes and lands in kmalloc-64; a size-1 read
+at offset 0 of that cache can only be np->id in this walker (the
+u16 vids[] array reads show up as "Read of size 2"), pinning the report
+to the kfree() fixed here.
+
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by LLM-assisted (GLM-5.3) code inspection.
+
+Fixes: 2d283bdd079c ("net/ncsi: Resource management")
+Signed-off-by: Binbin Deng <18983559317@163.com>
 ---
- include/linux/bpf_local_storage.h | 13 +++++++++++++
- kernel/bpf/bpf_local_storage.c    |  6 +++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ net/ncsi/internal.h    | 1 +
+ net/ncsi/ncsi-manage.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_local_storage.h
-index 9e4f5c45c974..6c643ac51079 100644
---- a/include/linux/bpf_local_storage.h
-+++ b/include/linux/bpf_local_storage.h
-@@ -104,6 +104,19 @@ struct bpf_local_storage {
- 	refcount_t owner_refcnt;/* Used to pin owner when map_free is uncharging */
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index adee6dcabdc3..082862581ea6 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -253,6 +253,7 @@ struct ncsi_package {
+ 	bool                 multi_channel; /* Enable multiple channels  */
+ 	u32                  channel_whitelist; /* Channels to configure */
+ 	struct ncsi_channel  *preferred_channel; /* Primary channel      */
++	struct rcu_head      rcu;
  };
  
-+/*
-+ * Drop a reference got by refcount_inc_not_zero(&local_storage->owner_refcnt).
-+ * bpf_local_storage_destroy() may have dropped the owner's reference meanwhile
-+ * and wait for the count to reach zero, so this one can be the last.
-+ */
-+static inline void
-+bpf_local_storage_unpin_owner(struct bpf_local_storage *local_storage)
-+{
-+	bool last __maybe_unused;
-+
-+	last = refcount_dec_and_test(&local_storage->owner_refcnt);
-+}
-+
- /* U16_MAX is much more than enough for sk local storage
-  * considering a tcp_sock is ~2k.
-  */
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 4642da062f0f..7721834e4bff 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -199,7 +199,7 @@ static void bpf_selem_unlink_storage_nolock_misc(struct bpf_local_storage_elem *
- 	}
+ struct ncsi_request {
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 54d0df0a9efe..76b2cb9efe4f 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -326,7 +326,7 @@ void ncsi_remove_package(struct ncsi_package *np)
+ 	ndp->package_num--;
+ 	spin_unlock_irqrestore(&ndp->lock, flags);
  
- 	if (pin_owner)
--		refcount_dec(&local_storage->owner_refcnt);
-+		bpf_local_storage_unpin_owner(local_storage);
+-	kfree(np);
++	kfree_rcu(np, rcu);
  }
  
- /* local_storage->lock must be held and selem->local_storage == local_storage.
-@@ -753,8 +753,8 @@ u32 bpf_local_storage_destroy(struct bpf_local_storage *local_storage)
- 		while (refcount_read(&local_storage->owner_refcnt))
- 			cpu_relax();
- 		/*
--		 * Paired with refcount_dec() in bpf_selem_unlink_nofail()
--		 * to make sure destroy() sees the correct local_storage->mem_charge.
-+		 * Paired with bpf_local_storage_unpin_owner() to make sure
-+		 * destroy() sees the correct local_storage->mem_charge.
- 		 */
- 		smp_mb();
- 	}
+ void ncsi_find_package_and_channel(struct ncsi_dev_priv *ndp,
 -- 
-2.55.0
+2.43.0
 
