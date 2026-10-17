@@ -1,35 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81560361640;
-	Sat, 17 Oct 2026 01:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661FC13B293
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792199408; cv=none; b=Ns0IQKm9+YY8z2bR6u4OhDKQOKZ0z6e3OaeyHjGoIfV0DFbKCcjedtr+D/RaMqeCtv7bpFSaovQijncarHww3qp6R1S4qJGX3R58TnEmtPyZoCMP6w5DlwAZSP7xHDKaE7KLBHS7SOtW31DsdqLMSyMErAy/rBDmHBQOJEDqmic=
+	t=1792200063; cv=none; b=kAt1GKPMZ15JPFkNKN+OW6gTvAlgTBm9tPlVI5aD+ZuzfROjWuk0XM5y0SifpNCoYbdQl5AFDVWeKUJbRRq+OW9chpFfn5jZtmfMApiqkX5NOqEaZMGGmMQoofziFaf32yII6mGjevgUJjDOiGwaSTrwYZRWx8svm/VzltzlMkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792199408; c=relaxed/simple;
-	bh=kngYW9Acd5uFJOcKy1IwzHKHRk9hMCk2zWAmhmlip5Q=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QWE4mosUKzZpBBaAKS4dr77uuBHrp/0SATUGkfPpDqogrnI7uLOH8P1q5s2o+TJKYLw6atda0w/5375Db+JBY8WsLa4zBKNvSVjbbSlQTKPh5od1SwO0Bs0hNANdbT7hguBihuUqJ2CPeC6X8BXtCAJ38krMQXIjpjoyqntSNP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilSz8nWZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792200063; c=relaxed/simple;
+	bh=E6X7T8DiUZzpXiLmdwpOm09FZsi5UuxSuH+D2AqIvg4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=osKup6c5DhBtu6PqHVGg17KCyIZjUEI01tYNax7Qsc+cbdqQM53HpZTRAKoE9u4naOdIl5JxK3g8Uk8WjyR+TuCmZEmYYjAFA0OQGzAi/bZHCAzPJl8hHtWm2tJpAeBz7wRr4eTXciJX1gzfxf2Nf9dBOIv1/fFQwFq0XYMYDkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CwJhW5nH; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilSz8nWZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0820C1F000C4;
-	Sat, 17 Oct 2026 01:10:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792199407;
-	bh=K77WVRrV8TE28I8U0O85wc7MMLGGxqqZI5Zgidghy94=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ilSz8nWZPz5KloseSYEVNrGPM1nszelMp44oMQyst16A0OphwmUpVF7m7kzqdDKdX
-	 HJ91wJa62AuwM9mpFAyzB2Rq6wsH0Pb2w8R8G6E4zqAZJ5mO9vEfBPJA1c7oHifdyy
-	 i1V9UNgHHt5NRWqNbhqvrMFhPWH8ZbrkrZs2lYxgTzrgYyAos0neX5MtXzR+HSmccq
-	 XnHiIY0TytSjV9sRjuGf6oDarfb3h8z9Tk6bHMhN18wRxugAnvBCSw3XbNwHgTv6sx
-	 uhIDGMwBt/CkiJ5TsRBA5B6g+39dMQqUTBRDQFXbWStyirvuhJ0uLeY5cDKJ30sWJW
-	 5aubCa5TiAACw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F15A9380CED8;
-	Sat, 17 Oct 2026 01:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CwJhW5nH"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e8da6ef7ddso2074675ad.3
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:21:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792200062; x=1792804862; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=z+DNgBhwP4t+Jdnm8hXem+oWvC+sDLV2ygJ7M9AovjE=;
+        b=CwJhW5nH23ol78OXE+M4NOpR+FDDn28OagNtFi3AKG+uqpAs7d7pJDrCxzncRWc4Hg
+         wn8oGfk8TSEUQlvod6fvrdf9OceLC2qfVuyzrkSpLXPp1I0gpxGsZmHke4a4bQh3UGKm
+         RSeE+O36uQ9up1kqY923VU/lFhnZY3q28CQMsGfpuotI9+RlICWUJOgqCB92chndJTzJ
+         pVL/WXXoVFtCkzvIllzhZFapdGFT+mwU+Ty12QuasrB7MnrstSRzulOn78H9pCnC3Pfh
+         C3ZnqqcDnH9/viOpWbrPg8Qn6hSNp2XwHDJBu5749RDac3xVXC1aiA9MCZz3jXJetGOz
+         RPAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792200062; x=1792804862;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=z+DNgBhwP4t+Jdnm8hXem+oWvC+sDLV2ygJ7M9AovjE=;
+        b=u7sVem7tKdfcE/Gqp5z4sPvjJWRl21cN2vyXOENAFCN7CbPOxanTA4b+mqiFSU8REb
+         Z4GGg6NRshk+ki6xDAstSGZn/RWVUykg1AJuTWFmsKEe0D5yOwxTbWNv7X99S5PHankB
+         f66j5h3yTzPIqn12ex/ZQIZ52KObma4L6BGNCi8Cl85lOMrAGNtrApZ2pFlL2rLrDrO7
+         rUYFt8FbaB9S+KiIkjUZ+XocWrdcNJCCHK74CtsBgMfgwJLkXHmPb2mhNUhwjw3/wDpw
+         fZS1uAsjLldvCHnI83ezfjg+GjVjXGBHX9t0QX2FTKSDSPiRYdKZhYQEAyg/Za1vJLIS
+         hFRw==
+X-Forwarded-Encrypted: i=1; AKwUvBzoGKFPhfCmf885WDk95OOXh/Iwz5vZRlU7slmAV054138K2YI8k7zg3gDWJWPjoG3DR7MqNms=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKK28pKAqN8j/vxUzuuNE/Qtd95mVLoe8WhA8JxQNIonlZl+viy
+	QNJLIz09WiulObpHcbFuI/LVIgu38T7kXl0n4QJZd7JfoGC4kiF3rcwU
+X-Gm-Gg: AYBFou38Shv4dLLkvVsbrS54jJ2ghHQPQUyWBvLynjsY/7OJfZrfQ0rdXb2Fp8Q4iEa
+	YS1e9yWwEPUmibD4Nqxbe88JieavNOV1Kw0IYiYHsiiDsAbRXTIo6Ai6fXZ6TBDhPbofLNftYJi
+	kazVuQRxQzXZqrKq9lMj5SW59qNldg4Atvm3RZ7r/dZn34gV4xyFvVDt24XaipM5RizWHME8exH
+	bRrHujSCsIqaGEdL4hnzjIVdSot5A5EDxt9FSqNqe3/lzKsQRs07dVB0KOJDWJwdhOuMsll5Txp
+	uRqh0z72t1VwaKtaEjQri+BMsDpwgCIJil/3idBEK6CF/7OI2TWdMsSGTgxj5Pyvb/IKCcxXFxB
+	4dMFGmOU/Zf3xf/C6P6d2LGanr8nRU3RwgO+yCVoyYJtQ7/w4lv0LnrHXqNhY0Zhz4ezan3J7nU
+	iTPzqVT/uyNzw7wqcY5AlbQNwP11wHEAN73aTCTL5peaGCoLKzKJ5cimPlvhw1qa03krkfijBB6
+	siYEBNilSKzJXJp310Ii6Ox8hH/3+f2eGa21bG9Kc9z50TEMe+tGV7X/UEvnFJcnB3Gc6nggt31
+	f3JYOsGyXr5AVUfCJ0+yyMjDVpjO7LvBUKAP6R56xo9Nm2F8LCfEgg==
+X-Received: by 2002:a17:902:f546:b0:2e9:84f2:3738 with SMTP id d9443c01a7336-2e9a6834a2emr14938225ad.6.1792200061224;
+        Fri, 16 Oct 2026 18:21:01 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e804eb4sm17192065ad.20.2026.10.16.18.21.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 18:21:00 -0700 (PDT)
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	netdev@vger.kernel.org,
+	josef@toxicpanda.com,
+	mason@kernel.org
+Subject: [PATCH bpf-next 00/38] bpf: Memory safety, lifetime and locking fixes
+Date: Sat, 17 Oct 2026 01:20:20 +0000
+Message-ID: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,52 +78,170 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5 0/5] dpll: zl3073x: fix output pin frequency,
- esync and sibling notifications
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179219940577.1041032.9554002490347498296.git-patchwork-notify@kernel.org>
-Date: Sat, 17 Oct 2026 01:10:05 +0000
-References: <20261011061211.448373-1-ivecera@redhat.com>
-In-Reply-To: <20261011061211.448373-1-ivecera@redhat.com>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, min.li@microchip.com, vadim.fedorenko@linux.dev,
- arkadiusz.kubalewski@intel.com, jiri@resnulli.us, kuba@kernel.org,
- Prathosh.Satish@microchip.com, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
 
-Hello:
+From: Alexei Starovoitov <ast@kernel.org>
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series collects fixes for bugs in the BPF core, the verifier and the
+BPF side of the networking stack. All but patch 14 are from Josef.
 
-On Sun, 11 Oct 2026 08:12:06 +0200 you wrote:
-> This series fixes several issues in the zl3073x output pin handling:
-> 
-> 1. Do not offer 0 Hz as a supported frequency, it leads to a division
->    by zero.
-> 2. Reject N-divided output frequencies that cannot be set exactly.
-> 3. Reject output frequencies whose divisor is too small for the HW.
-> 4. Update the eSync period and width when the output frequency changes.
-> 5. Notify the sibling pin when a shared output setting changes.
-> 
-> [...]
+Every bug was reproduced in a VM on top of bpf-next, on the kernel right
+before and right after the patch that fixes it. The splats are in the
+commit logs.
 
-Here is the summary with links:
-  - [net,v5,1/5] dpll: zl3073x: do not offer 0 Hz as a supported pin frequency
-    https://git.kernel.org/netdev/net-next/c/23171065fb43
-  - [net,v5,2/5] dpll: zl3073x: reject inexact frequencies for N-divided outputs
-    https://git.kernel.org/netdev/net-next/c/f8993627d310
-  - [net,v5,3/5] dpll: zl3073x: reject output frequencies with too small divisor
-    https://git.kernel.org/netdev/net-next/c/456027325c9c
-  - [net,v5,4/5] dpll: zl3073x: make embedded sync follow the output carrier frequency
-    https://git.kernel.org/netdev/net-next/c/bf6f105f2cb6
-  - [net,v5,5/5] dpll: zl3073x: notify sibling pin when shared output config changes
-    https://git.kernel.org/netdev/net-next/c/0748e473b65a
+Sleeping, or doing without RCU, where that is not allowed:
+  02 hash map for_each callbacks of sleepable programs
+  05 sleepable programs on the task_vma iterator
+  06 bpf_find_vma() callbacks of sleepable programs
+  23 maps that rely on RCU in bpf_wq and bpf_task_work callbacks
 
-You are awesome, thank you!
+Buffers that iterators and writable tracepoints hand to programs:
+  18 BPF_LINK_UPDATE skips the size check of the attach
+  24 tail calls from an iterator program
+  25 extensions of an iterator program
+  26 tail calls from a writable raw tracepoint program
+  27 writes over bpf_timer, bpf_spin_lock, kptr in a live map value
+
+The sk_storage map iterator:
+  14 a socket that sk_clone() is still building can be found and used
+  15 NULL dereference if the socket goes away
+  16 the socket is not held while the program runs
+
+Lifetime of local storage, programs and maps:
+  10 owner_refcnt saturates on the last unpin
+  28 map_free() frees elements under sleepable readers
+  29 values of a dead owner are freed under sleepable programs
+  21 a program is freed under its bpf_wq callback
+  22 an inner map is freed under a sleepable callback
+  30 the exception table of a program that still runs is not found
+
+XDP and devices:
+  01 devmap egress programs free page_pool fragments as plain pages
+  19 stale offload->prog after bpf_prog_realloc()
+  20 a program is bound to a netdev that is being unregistered
+  32 cpumap uses the device of a queued frame after it is gone
+
+seg6local End.BPF and bpf_skb_adjust_room():
+  11 the SRH of the inner packet is not validated after End.DT6
+  12 the inner header is not pulled for End.DT6
+  13 stale SRH pointer if End.B6 fails late
+  08 gso_size can drop to 0 or wrap around
+
+skb dynptrs, where a write can reallocate the head of the skb:
+  33 kfuncs that write through a dynptr
+  34 bpf_dynptr_write() in a global function
+  35 a dynptr passed to a global function
+  36 the source of the write is a slice of the same skb
+  37 overlapping source and destination
+  38 slices as arguments of helpers that change the packet
+
+The rest:
+  03 inode leak if BPF_TOKEN_CREATE fails
+  04 preallocated hash map hands out an element that is still linked
+  07 BPF_JSET with a 64 bit mask, 32-bit kernels only
+  09 probe names of a perf event are read without event_mutex
+  17 unbounded recursion in the BTF show code
+  31 BPF_PROG_TEST_RUN of sk_lookup uses the socket outside of RCU
+
+Some of the fixes make the kernel refuse what it has accepted so far:
+
+ - 02, 06: helpers, kfuncs and global functions that may sleep are rejected
+   in these callbacks.
+ - 05: sleepable programs cannot be attached to the task_vma iterator.
+ - 23: in sleepable callbacks, and for inner maps in sleepable programs,
+   maps that rely on RCU need bpf_rcu_read_lock().
+ - 24, 26: a program with a tail call cannot be attached to a map element
+   iterator or to a writable tracepoint.
+ - 27: an iterator program that writes over a special field cannot be
+   attached to that map.
+ - 33-35, 38: packet pointers and slices are invalidated in more places.
+   That hits some programs which are harmless at run time. A program that
+   keeps a packet pointer across a global function which only writes to a
+   ringbuf dynptr is one example.
+ - 04: a nested update of a preallocated hash map on the same CPU can fail
+   with -EBUSY.
+ - 08: bpf_skb_adjust_room() returns -ENOTSUPP if gso_size would not stay
+   positive.
+
+test_progs in its three flavors, test_maps and test_verifier show no new
+failures. cpumask/test_insert_leave is flaky when the tests run in
+parallel, with and without the series: its program does not check
+is_test_task(), so any other fork in the system makes it fail.
+
+veristat sees no difference for the 5689 programs of the selftests: same
+verdicts, insns, states and stack depth.
+
+Alexei Starovoitov (1):
+  bpf: Clear sk_refcnt of a clone before its storage is linked
+
+Josef Bacik (37):
+  bpf: use the frame mem type in devmap egress XDP
+  bpf: forbid sleeping in hash map for_each callbacks
+  bpf: don't leak the inode when token creation fails
+  bpf: don't hand out a linked element as extra element
+  bpf: reject sleepable programs for task_vma iterator
+  bpf: forbid sleeping in bpf_find_vma() callbacks
+  bpf: look at all 64 bits of a BPF_JSET mask on 32-bit
+  bpf: don't let bpf_skb_adjust_room() use up the MSS
+  bpf: Read the probe of a perf event under event_mutex
+  bpf: Don't saturate owner_refcnt on the last unpin
+  bpf: Validate the SRH which End.DT6 uncovers in End.BPF
+  bpf: Pull the inner header for End.DT6 in End.BPF
+  bpf: Update the SRH state if End.B6 fails late
+  bpf: Fix NULL deref in the sk_storage map iterator
+  bpf: Hold the socket in the sk_storage map iterator
+  bpf: Bound the nesting that the BTF show code follows
+  bpf: Check the new program of an iterator link update
+  bpf: Fix stale offload->prog pointer after realloc
+  bpf: Don't bind a program to a netdev that goes away
+  bpf: Keep a program until its bpf_wq callback has ended
+  bpf: Count sleepable callbacks as sleepable map users
+  bpf: Check the maps that sleepable callbacks use
+  bpf: Assume no bounds for buffers behind a tail call
+  bpf: Don't take an extension for an iterator program
+  bpf: Assume no bounds for a writable tp with tail calls
+  bpf: Keep iterator programs off special map fields
+  bpf: Free what map_free() unlinks for sleepable readers
+  bpf: Keep values of a dead owner for sleepable programs
+  bpf: Keep the symbols of a program until it has ended
+  bpf: Use the socket of a sk_lookup test run under RCU
+  bpf, cpumap: Hold the device of frames in the queue
+  bpf: Drop packet pointers behind kfuncs writing an skb
+  bpf: Let bpf_dynptr_write() mark a global function
+  bpf: Don't take a dynptr argument for a local dynptr
+  bpf: Follow the head if an skb is written from a slice
+  bpf: Use memmove() to store bytes in an skb
+  bpf: Refuse packet slices for packet-changing helpers
+
+ include/linux/bpf.h               |  24 +++-
+ include/linux/bpf_local_storage.h |  13 ++
+ include/linux/bpf_verifier.h      |   7 ++
+ kernel/bpf/bpf_iter.c             |  31 ++++-
+ kernel/bpf/bpf_local_storage.c    |  21 +++-
+ kernel/bpf/btf.c                  |  14 ++-
+ kernel/bpf/cfg.c                  |   4 +-
+ kernel/bpf/core.c                 |  54 +++++---
+ kernel/bpf/cpumap.c               |  35 ++++--
+ kernel/bpf/devmap.c               |   1 +
+ kernel/bpf/fixups.c               |   4 +
+ kernel/bpf/hashtab.c              |  21 +++-
+ kernel/bpf/helpers.c              |   9 +-
+ kernel/bpf/map_in_map.c           |   7 +-
+ kernel/bpf/map_iter.c             |  79 ++++++++----
+ kernel/bpf/offload.c              |   9 +-
+ kernel/bpf/states.c               |   3 +
+ kernel/bpf/syscall.c              |  28 +++--
+ kernel/bpf/task_iter.c            |  12 +-
+ kernel/bpf/token.c                |   5 +-
+ kernel/bpf/verifier.c             | 203 ++++++++++++++++++++++++------
+ kernel/trace/bpf_trace.c          |  13 ++
+ net/bpf/test_run.c                |  19 ++-
+ net/core/bpf_sk_storage.c         |  96 ++++++++++++--
+ net/core/filter.c                 |  58 +++++++--
+ net/core/sock_map.c               |  17 ++-
+ 26 files changed, 631 insertions(+), 156 deletions(-)
+
+
+base-commit: 645f5fcf7a5582f5d6ed2322f41cb34076c63b2c
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.55.0
 
