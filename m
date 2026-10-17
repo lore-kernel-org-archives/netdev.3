@@ -1,100 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921C53A9879;
-	Sat, 17 Oct 2026 17:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792256674; cv=none; b=CZd1FTPHSHLmT4Xm3abvmtGi8i0VHIAn2WZDWfYAsix4JK/1YF1ntUDetfzESLYSD7dLlFtzVt0FEaSzIM6KL7OYpIMUtZ6tfHwU8rvlU/pQIW9uWRyqRdckhVCGkjfx9IGJdco5LSc0lr6U4wBu1VTYyXNOwIbReUtL7iWwwMI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792256674; c=relaxed/simple;
-	bh=TXrw2VOf8xfWYcCPVD0OFlSg0o6SxJV5hW4SlnzaEjI=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=AMTfsmfgve7qsIY8qNFYWzdGzEm5cYk+4bHDKw7QF6i5+nDHfj+3x/SZqpBl6zo3uYFQp6A93+F5cl+Ze/6uOUpj4ZO3FPedU4DIcK9iETgdw2Q4wvJ8lzYmiDmE6FOxT88OAIZEe8w/8sUR1bShDGkoLYzmGzJ6oIiswmcqI54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Knaiv/r/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C31E3B6BFE
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 17:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792257127; cv=pass; b=jg73TwwDFyIVu128V4CmuXMCGNxE741QakOx8BWxFHID09cz5R7Z6+dhZEm51N2Gny0/qBK9zkldv5UH43KsArvBHbPs35R8itmw9YRs48VhKyQeVdCRZd6m5dCWJvqaT7eiUnV/D/pObIEzU12sDorvRBOGiR2+oAk78zWB10o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792257127; c=relaxed/simple;
+	bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jf3IIQ2irDVm3RJpWgeBLdZACO0g3lqDDzwXSNAIzPXGSm70SdkLvZracX1Eet1UYH6MFNSICRat0D8nqyi3Cm5Zo1W82+Ie+VmVs/RRhJPaJZGlndr0mg2bT298KLNMqllP+zcgbUG38SrCE72oz1FGPmo3UlxXAWDnJ4qc/N4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MLWWHBXQ; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Knaiv/r/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191CC1F000C4;
-	Sat, 17 Oct 2026 17:04:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792256673;
-	bh=ZqCBzTbKVQvF3YoOddy0pVHhA0A8JpQLrYN6WgJdoRM=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Knaiv/r/gIhROK7ajHdWGUgP4kpYGq6ClwHFhWyij+2WWOSxkBg0YzZWPfgh9kwMi
-	 kAd8XW+8M+nqUamGzAZGanCIeUY+5tUCwmE00BERE8zQps3HMxTiXlgRfW5usUZ+9j
-	 lYAf3EDwxyRYAUxpbcIeaPAN06Ho2re+r2MoXDaWraV11TDq/gYBR32f3aFjCASOPr
-	 /6UHONDl3X3UIDCV/jG8cBeo8SyiGz2s3k0h73QQWYTCNUM4GRCquJ1MjcdmlKaDr3
-	 TxSb2RdCFTib623ylTtzcI649Dsaqk2lR0k686xvcfAEDvkmZaWS/pL9ms+vJTw6S9
-	 cSH4gTtP/RPtw==
-Content-Type: multipart/mixed; boundary="===============0146971734298480007=="
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MLWWHBXQ"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so24905ad.1
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 10:12:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792257126; cv=none;
+        d=google.com; s=arc-20260327;
+        b=j6VMsfhsemvOUrvWBZvtW9wrEVgmuq68ZN5b8eP0ER9x0yXdCeshL95n4qlxH/en7J
+         AQMX2giwsCrUMrd5UsDap8tvQQTb7PiM+H4RsfUlBkm8YImFH+eCSMAhhtp4cgc4/Hk1
+         eJp4Bajo0v81yBBUhmxPerCZnEBD0sW6kocusnmUHY+Q5n8M6tmJ3XhpWUilGx9YPGxz
+         1JMd1+IVZIB8b3mtf7+tIa45TFk9fmLlW4oIU8/hmIiqTvzc9rpNhYxc96jRjlsBLvgI
+         2DskyXiXAaMXD9WWfevLsVPc+SisY/2PEepOix5OFE0MDX88v3UBdQYNsHtP3iLSA7L7
+         v1Kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
+        fh=4gYjzoXcgj6uu2VlQIQoRVcP3vGRaigCY0uA6FKqUWM=;
+        b=kgraGcLQgz7WMHMPAZqsuy10Qjg/+S71hx+pJIjfDHzdS0Oos21LePFoOQ1nRtau6H
+         B2nYU4i5YtPv/jCqpjvJw7sEj5R4WG44gW9slRuvftVIB5RcrYzp9UFPA/xRXFmG2yA3
+         +Jnwfex0i9pHJ/bi+H2UGnkCzFJLOHSnawxg60Pya0xL5eFTUxHxOsIjtjh0gxqMnOdM
+         UE6ymMhq6AOd6thJ2pWpcnoaeFonCUb6l/SwPAXT7UL+NaUUl9YQHddrX7/gX0GIaTQl
+         iKO5wwPsMdGvdDrfvFXqwR04wFbyWT8EMQBv7bWBc1hckWIHTVYFEojuF9tIyx7kag0N
+         KXFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792257126; x=1792861926; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
+        b=MLWWHBXQq/y8RwIU84GS50PyppI7TkQc6XbV/NDzoY3yGuCiDuq4QBUWs5tAHTwhpN
+         QMRdv3VIw/a4fRAF3zmvmDzS7DmLiwK7NhAM3i10FCpVUfr92kia0GQ2l70/ijjOnp27
+         p1jtj3BqoNvRPFWjQK6LyTYVsokb+hhfwjI47OT21GRSQmJt62YnP24VmXoXbXKVZ/ls
+         hOHWX/OUFxcNyAgahr8COpMSnn/YkkkuOXUAH/UsFdP881sHySIXIrQdM9TRTygPTdR2
+         lWaU2+DlgxXyNz9oeHhd+wx3+Z6Bxb+0lk7fcbIVC+8x7eeS34QGVQ542jxGzXR7wsyA
+         hXMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792257126; x=1792861926;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
+        b=tS/BLDB19owFOnBDy6HjTStWyQO8ltlIRzOHEmj026YYgcGLoMouL1XAL3qcG5gulP
+         i7uBezYj5S3gJzL7NXMsmDIL2U1tatkelTc12hn/GBi0/1lqR/tcTsgscmysPkegUjUr
+         W1iA0Jl2jhgI+VLmB+XZewO0D2B/RT/2107AIr3xQ/PwudbDWUX/RGcBkkj7IOq9Wdka
+         GrfVgtmMjOcssHxbs8uDiSgRh++BM0zerl4r49sG5c3AwO2dC0mhOO14WInGkr1OshTz
+         +4Ihv9kNYc1FbxjCs2kPTmAs5mkZvrJyyOMrDoz8CH7AssFOfU4H3ZrqZ3MB+WVCYPAl
+         suZw==
+X-Forwarded-Encrypted: i=1; AKwUvByGOVCc4/pKa/rliFWgWPRJ2+BHIzYCX4+WzasPLvRLoj6+qLL60bd586rpQRDPndQGOGIna4E=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJDtr/U3EK5H5OtAWSpvGH/1n5aNJnde8kiJ8p4bk1E7/URbRm9
+	5P3zU+TrKFWptVIONfItZeSFALimeryiuXjs97qMwlwgbSqI7wULuNsGm4BIP8CbBJsWoB6o5Dv
+	xWV14CpNAwy0rddGngYqaUMY/RML3tjtwymwkRrue
+X-Gm-Gg: AYBFou0mVGOvKzV8IJEleJUB07+ICK47+6i1UR8WfPQoi6y3qajJ5TVSdZ/jnzgEP0k
+	/EarZCHPid0BI265aFb7a8XR0jmLzssoRwIoWOaqyRIYTbF+11E8w/9gW11kdyXvyJOiIEuHQ2e
+	ytI9IojxmQQSMl6tfNv6SNStd2QoZx0iePcJrWsqrMmLpql+Y0HJdUSy1ZeYEAW4WHXzL7qXrmD
+	nSbVYyhiJJRRKV2iVEhezK8V8DEsBjFf6ebFOPEPkeXOfEGEL+pgnqM68KON1mRebpDkt4e3CKs
+	6tFWI68p+WpFuYsSf1fYVDuUWhO7VH91VK7s9YFqjXzfwMGUZImnIPG+
+X-Received: by 2002:a17:903:144e:b0:2e3:981:4cc4 with SMTP id
+ d9443c01a7336-2e9b3252cdbmr3330175ad.9.1792257125060; Sat, 17 Oct 2026
+ 10:12:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <57062ef2e3459f43acb9f8797a5fcd14890fbe97c7e9e822a9f5043c08ec6cf2@mail.kernel.org>
-In-Reply-To: <20261017163745.3341787-38-alexei.starovoitov@gmail.com>
-References: <20261017163745.3341787-38-alexei.starovoitov@gmail.com>
-Subject: Re: [PATCH bpf-next v2 37/43] bpf: Let bpf_dynptr_write() mark a global function
-From: bot+bpf-ci@kernel.org
-To: alexei.starovoitov@gmail.com,bpf@vger.kernel.org
-Cc: daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,netdev@vger.kernel.org,josef@toxicpanda.com,mason@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sat, 17 Oct 2026 17:04:32 +0000 (UTC)
+References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com> <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+In-Reply-To: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Sat, 17 Oct 2026 19:11:28 +0200
+X-Gm-Features: AclHuK8222c3YwWa2EndazmJS8Umg9HTADwML-hsKq06OdSigMokkN9A-iBy5wE
+Message-ID: <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---===============0146971734298480007==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> bpf: Let bpf_dynptr_write() mark a global function
-
-TL;DR: Commit message only: the Fixes: tag may point at the wrong commit. It
-likely should be 51081a3f25c7 (changes_pkt_data tracking), not b5964b968ac6,
-which could mislead stable backports.
-
->     bpf: Let bpf_dynptr_write() mark a global function
+On Mon, Oct 12, 2026 at 9:44=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 >
->     The caller of a global function loses its packet pointers if the function
->     may change packet data. That is found out by a scan for calls of the
->     helpers which bpf_helper_changes_pkt_data() lists.
->     bpf_dynptr_write() is not on the list, because it depends on the type of
->     the dynptr: check_helper_call() looks at it. The scan cannot do that, and
->     so a global function which makes a dynptr from the skb, or gets one as an
->     argument, and writes through it counts as harmless. The write can
->     reallocate the head of the skb, and the caller goes on with pointers into
->     the old one, which has been freed.
->     Let every call of bpf_dynptr_write() mark the function, as a tail call
->     does. The same mark decides whether a program may replace a function.
->     Fixes: b5964b968ac6 ("bpf: Add skb dynptrs")
->     Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->     Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> On 10/12/26 16:45, Luigi Rizzo wrote:
+> > On Mon, Oct 12, 2026 at 3:51=E2=80=AFPM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 10/3/26 23:22, Luigi Rizzo wrote:
+> >>> Here is a subsystem called DMA_PMD on which I would like feedback on
+> >>> architecture, possible enhancements, or kernel components that could =
+be
+> >>> reused to avoid duplication.
+> >>
+> >> Here is a feedback to a subsystem called DMA_PMD ;)
+> >>
+> >> Why is basing this on PMDs (and embedding it in the name) the right ap=
+proach?
+> >>
+> >> On architctures with large PMDs (512 MiB on arm64 with 64k), would we =
+really
+> >> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) t=
+hat might
+> >> possibly also have TLB benefits (cont-pte)?
+> >
+> > I had to call it something... an earlier prototype used the name IOMMU_=
+2M,
+> > but I didn't want to suggest that the design was limited to 2M (it is n=
+ot).
+> >
+> > Aside from the name, the _current_ prototype restricts to 2M allocation=
+s,
+> > exactly because too large units are expensive and wasteful.
+> >
+> > In the code, decoupling the allocation size from the PMD size is trivia=
+l.
+>
+> Yeah, we should do that.
+>
+> We should probably just find a way to describe that this is a POOL that f=
+ocuses
+> on physical contiguity in some configured granularity.
 
-Is this Fixes: tag pointing at the right commit?
+Before embarking in a global renaming, I would like to get opinions on
+acceptable alternative names (possibly with a short prefix usable for
+identifiers in the code). I could think of the following
 
-The code being corrected here is the scan in visit_insn() (originally in
-check_cfg() in kernel/bpf/verifier.c) that sets
-bpf_subprog_info->changes_pkt_data from bpf_helper_changes_pkt_data().
-That scan was added by 51081a3f25c7 ("bpf: track changes_pkt_data property
-for global functions"), and that is the commit that left bpf_dynptr_write()
-out of it.
+DMA_PMAP (for PreMapped or Persistent Mapped)
+or, ahemm...
+DMA_PISA (Pooled IOMMU Superpage Allocator)
+both using dmap_ for internal name prefixes
 
-b5964b968ac6 already handled bpf_dynptr_write() on skb dynptrs correctly in
-check_helper_call() by setting changes_data = true.  At that commit no
-helper called from a global function invalidated the caller's packet
-pointers, so the omission fixed here did not exist yet.
+Other suggestions ?
 
-A stable backport driven by the b5964b968ac6 tag would also target kernels
-that have no changes_pkt_data tracking, where this patch cannot apply.
-
-Should the tag be:
-
-  Fixes: 51081a3f25c7 ("bpf: track changes_pkt_data property for global functions")
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39051545464
---===============0146971734298480007==--
+cheers
+luigi
