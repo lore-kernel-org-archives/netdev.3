@@ -1,135 +1,285 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62A1377A92
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792254957; cv=pass; b=RGqmsgDqHlojmx/WO1CMQs4EY4j4KkQ2z6RMTEZzSORCX0qYysI5SxV/ja9Ofl85uHscpLELEo+ZhdBkRbC02WZ+4g6QXlIfKlQqmK896pWaM6B/KXFX7MMyNXCKUdqP2qKBR7Abdq37DdfXRUkYwsewaA2kxBUHAQ5dGxKmBD0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792254957; c=relaxed/simple;
-	bh=K575d+X/T8zxf8IPb1Vxi4/BMBu6K4J9uKB9yZoQ32A=;
-	h=In-Reply-To:References:MIME-Version:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RzDRzWTZgla2OEYNic0FuegVqcrMs1APFcqa8PNw7tEkyOF9zNb1TJ9NORsHsO1oTQyYfBU1xnWEppmS2bH2Ui5qCtlhTQxu1PwebACSVSPSiPHg5YT/3XwzvI2pYHWJBzK28crw+BnKYJkAF3nFhUfOwWsr3QywcCU3Bq5y9sc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P0KGGKWV; arc=pass smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4F73A9DA5
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792255071; cv=none; b=XbNygB5NscXRhmnce/LAUBxIO2OxbcNIGGrFrGo+LAYNZsPuBT3kH8lx5ZFIw8peLF1RrzUXFXshfrvfqrBkWKYWplQz9S7VXrv382hnzdOvEuaa2V+jCdFtPs+xbxHsdLaVdyLkIpzpWOIXwC12sJLKtgDZi+/hlXvhrfhRlYc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792255071; c=relaxed/simple;
+	bh=lb0E7N6byN6udJ/zryYu7Oe6yCES4ZqzJ/IgFZ97/RM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KyRMsnJAQgg5RTcYAdbNArFTOdO/ozLQ2SIFSim+14dHSUcroFnIJldi4Bhkf7eH4TfZBSRDtae5xUdzSVFiMCmjStGFIQNyXhUCimYYKUqGQl/Pg9HhF7vTwZOhtLw2n9U1FnbhGsyyGrg12bMdcddxIPeGk4yiFiTeiRkU580=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qMcCYT/4; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P0KGGKWV"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-535179e995bso10314421cf.0
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:35:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792254955; cv=none;
-        d=google.com; s=arc-20260327;
-        b=R/hEGzRnGceoeA4CUjjQkPnwF2kloRtrsaYFeTANQ29kxALmJ6ISEsFuBwDgpE/AWC
-         1VnvuOAvtoxYVwBGICYiuPh61VB3V/cohI8Y6bUr0yJHEGDODF1UqyCEQZCOsfHBmUuy
-         v9xrdsQp3OADPUPhP7LoJtBBDs4XXN67zWjoS7SgzeWYU6MAYIrSP06qvAGI7E+HuGYZ
-         fSqbBmNP4kBoAqt2FWKpR45LpPdtjOxsWEISOPejaFHpWxUEHfgK0dZdn7HrGDcTQDRE
-         mDqzy7Q5Hjr36i7t4821k9+B+EmqSOx4DCxM7a7BD0sw+FGiK39DO6XbTEvvDVlo5CTt
-         DqHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:references
-         :in-reply-to:dkim-signature;
-        bh=K575d+X/T8zxf8IPb1Vxi4/BMBu6K4J9uKB9yZoQ32A=;
-        fh=j6hS4oky+3zPK1QZzfFI/wFYw4W+iwqjrtarZFPO59c=;
-        b=SaUJw+2U5nmtZdJJ3hMM+Sn3VcSetTE43dKUxt+01OmSi7wcie7r6NQuXJHdhgTkXB
-         HGwibhhMzReH9toF17VgXIYrcX0m6eLWurpk72lq8zKylDajZV4QB13Xw28FjS9AmMg5
-         uDj/a603OYYE1JV08s5IEET0oD300c9icmG9AUdMMJ+tRYxGssYgR6EkLEKMOUa0AiXo
-         IU8m1WXoj6u7xHgju0qvhx7tUJEnVE7zmvwV3x/riGX4Cp5yBa1WHlq6tGUpYBxLU4nY
-         UiAGCBhKIhAXdGe4G7cMIRBbTqXx3ItDmYUffNwiOj4CR1w/3iVzimJR4A6T9m45YPnm
-         GW0w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qMcCYT/4"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e95bd1c14cso6692725ad.2
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:37:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792254955; x=1792859755; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :references:in-reply-to:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K575d+X/T8zxf8IPb1Vxi4/BMBu6K4J9uKB9yZoQ32A=;
-        b=P0KGGKWVcEkW4KG9ENXfXln/1TL0YjJPQuXbApexWo6H9NStRdr1hOEfHo50t5S1+T
-         tzWfqQup2e2Gccu7ziPyIpNPRLt7MkZZHC0CRLC8+PfxP5OstguomdIxQbQhGKYzocZt
-         2wbAqdmztclQihFvYP8zN9PYwDGB1YRH1hobn7p/21X2/1nZZ9xT1zHcRMd5K5Zw85Sn
-         CcrpmuFZ5T5netF6CTw3k/baCOBHj1ipzo8GAUnrpURrX2+PYC66dKgz6e1OHCtBCXh9
-         TXyuR7RuFvcVOdjNJ/U3WuEbXwRnA355Q0/7FIKQJA/eNiuHKu65lEvdOPiIv636FOSs
-         yXIg==
+        d=gmail.com; s=20251104; t=1792255069; x=1792859869; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+POgER5o0/ZMTiHtgBJBIwU2HFeJNxjbMtGpX9jbXEY=;
+        b=qMcCYT/4Bw+b7wILfhWAEjQJsEtIzfYYWeAmE6C2UrPpnmyRT3AYdyuvdZONIrPJ3R
+         TWYe/LXB5U0KrggFazAKzGd0w7g9Q1f62qHELYimlLDED41rXJF3/qmOI081nkj80a3L
+         KLF08ryFqlegOOfMabn4E6IFjpZWGmswTOtwEvnwcIrU2DeO+1YWVrgHd8HNgNNqMClT
+         H5jdH1C6/1/xbAAsuwjH7j5U89O6JboOs+K/xZPzUVWgg30jNsrJD3k37D3cc13vUie4
+         3xFEDum1QFMfwoxCFICdeaqJpI0cISHsiCIWDqaq+yUuejoYpA7ig52WQNlEICMCA94X
+         arvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792254955; x=1792859755;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :references:in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=K575d+X/T8zxf8IPb1Vxi4/BMBu6K4J9uKB9yZoQ32A=;
-        b=P52Yxq+6wwtNF/7U5kJlDDasfIKfyKvnJA4Oq0nN7dO3NRPw5KlOHlzFAoNzjTXkfk
-         hwIWKTC94d481xKr88FeoBsnSQLdawuZ4UP089UegW9fE/fDnYtT7tBPuivCV3rpoYBc
-         3eoRWccaDVKEihQKBwYnboAc3b9bECTkrO+8jTtwWqCLXgP/gH0v9WQBfsJzcd39CldK
-         qKo+PgSHdl7TF6I+UdK/2sfh+s2lmoonYSe00bLmInWjwNBxhoXWgGNgT73DAAvvfAct
-         D3f++LBkXyzp8cXVdyDVM1EJ0ToZY5ASxo+mIy9uU1ybAZsl6YeJMRnldsYK04oTGkvF
-         lyyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy9PH6uZQ8mLXUb8svnqyCKUbAMaOpIn87bTnn7ZsEG8ODjbMEoY7szq1/WfPUN98tyvVvYC0o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKsLI9a8e8ckj17tWdheVD0vval2ZQzbJONkMNYQ7nxJeiAmHbi
-	SDZ9RTrrVT6KEDzYPq4j+CwvXFbQb6W6jxjppyGqbDOHYKZN2rWO3OeEx0Tlo9wsiWFhhCPU8Iz
-	Fo8teJrTxK0hgePqmd61ZcKhTC3WyJYE=
-X-Gm-Gg: AYBFou3qKa5+FKLGatdThZMI8xdv1+EIFwrM7Xd3clx712zT5kHW34Ejdn5tFN5hu9L
-	FAsSXRWpThvGLAEvCAgEY741yzmdlXN9/eGcmefE46zOHd1dS31cd1IPXHlipBeidn0NQ9ciCpU
-	UbW618aTWDYmzC8IqeJxVx5v7u1WAxYirBsqsNIyTyWezPrTur/96Tob+MbApunYXpIEpxTV1ro
-	C1HZhThE9QMxWbNb46wyJiaYQFN4v5Gzx2OSAaJww04cDalCbzcCRkG8Fe9FRqp63d2r0/cDLyL
-	b9o1k50jEHq6bip+mRhJskLHZxfkWBbwHCDTcg2kAnli+ccmgmRaHAkGu1+DwA0t61TWNbLE3fz
-	IGsxb2E1JuLu6UIEdRK6lxj2aRMm9LHXJElPqhXeD2kEDBijfEi1impDt55Kln6Q2vC1fKk00zR
-	V3Jqr+dwS1wtUW6hJg6rRDc6lhC8Sd+HAUylW4R9Sgg7IACzMZbOMkzgDjykGnhKG4KYteucMuJ
-	m2IWLqJRbQEX4LkwgJcM2n6
-X-Received: by 2002:a05:622a:1244:b0:536:4482:2c5d with SMTP id
- d75a77b69052e-53645e074dfmr47949901cf.19.1792254954694; Sat, 17 Oct 2026
- 09:35:54 -0700 (PDT)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Sat, 17 Oct 2026 11:35:54 -0500
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Sat, 17 Oct 2026 11:35:54 -0500
-In-Reply-To: <willemdebruijn.kernel.eb0f6ff37e8f@gmail.com>
-References: <CAJPVW+=XcHDV4aoXt5oAHYh49kX7m5wUxf7TucrcBy+q6MdXFA@mail.gmail.com>
- <CAJPVW+nstfbagm9GxQ=i-5J6Xi_aZ52-YiQZeYrzmPD3OmDNiw@mail.gmail.com> <willemdebruijn.kernel.eb0f6ff37e8f@gmail.com>
+        d=1e100.net; s=20260707; t=1792255069; x=1792859869;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+POgER5o0/ZMTiHtgBJBIwU2HFeJNxjbMtGpX9jbXEY=;
+        b=Ope0Sq/Z3sKXAz1CLkXPxyQYroBlqxU7Bj0o5Rq2mWoXM0C4vIrBmlgQ6MnmcBpdHC
+         LC6aaSGv0JsZEgmvDi8IvLii21l5sv6iuAMqb3ZSWLQfqOMfRFF59isstVfzspxIVSht
+         X1kAT+k5BNGM/bTXJ6a+BLAOkP/tntvRg5BV+5eydrv924H++1lukuxOsZlixNiD8LvI
+         7xtQLWBhNjv8p44p69mP0EotlJiluTdmiqsS+xoZ9BIoZ4dQYTS+7/68Z/MwuyskjVOB
+         mcZFc8tRY1HuS6Wgc7vFGRnVfIfq3H0i+T1KKdF7qhfLofdpGR9VahBDt2haXnw7MSY3
+         8Aag==
+X-Forwarded-Encrypted: i=1; AKwUvBxPp25wzEtth4j2qEWtIFSFlHCtWfI0Gw7lKAY3mKXAnPMrntQ5FfOQy+9DzNBoz9dsCwOM374=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKJI1R3V6OBFdGDrKLqGufV3Jl08tT7WhT0CgEaGAb4VfDP2UfT
+	uj8usiM0MaSC7GSt23LxHmfutR2AMRcnDStnT2rX9VW2umfGKcH/4iM+
+X-Gm-Gg: AYBFou28ttlqquTmCFMl3cdLmWdHAWQigBfjVRoy0N5z5PEpoIaYf9xk202b49eNKFK
+	h5vE0RpB+0w+mHRFkMR6GpDj2oKNFYNXZiKitCWwx62ORGeJt/Pp9SvADetyfCzHcNAR7uj6B2M
+	MImwUP1rpmdt9hw8pGJRHEL+umsyFcPTbTNDykutA35lf4bsl6E9qgcIj8qpLWNfkIW9Ii6hrZg
+	UnuiKIC93p67Xn8KOWEknzT0zXGCb3YkFW4HRxF5WIREEs1NBs/WKfwAgNrvS6Uqmo3q9wb11vT
+	sPpBZbEoalMst51QT2j+6/GsDRA4uJjOaFVWNKBElVnUmW8c3aYoiq+6bbPx9gC5kiMMdvk3P7c
+	j3ncJC5+bFbXdKx7hKzCFHATQeYc2Fcco//zRwHYo65y3u84Q+v6V2F6Q+puwDv7nhkzvxezOZY
+	U6hq6Iw8LbBjCoI52fWdhIZL29L3mnpx2DsLI94B/Sn/0OPvtsb5fuL836zB5oVz5akMFzJK52D
+	lwAI9cim3AJT3TqgnrM5767gYydQMRCdMaKmDW40n/BG77BAjf36tCorpKp0K40TJVWjaHtW7vk
+	Wu8lkUCeTBhxZv1tHRu6dVuVWGsTOGd7F5N0TDNVx8o=
+X-Received: by 2002:a17:90b:2e90:b0:3a8:2c7e:8986 with SMTP id 98e67ed59e1d1-3aceec73203mr2930547a91.17.1792255069262;
+        Sat, 17 Oct 2026 09:37:49 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.255])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc43a1e1esm8727883a91.1.2026.10.17.09.37.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 09:37:48 -0700 (PDT)
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	netdev@vger.kernel.org,
+	josef@toxicpanda.com,
+	mason@kernel.org
+Subject: [PATCH bpf-next v2 00/43] bpf: Memory safety, lifetime and locking fixes
+Date: Sat, 17 Oct 2026 16:37:02 +0000
+Message-ID: <20261017163745.3341787-1-alexei.starovoitov@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Megane Hebo <hebomegane@gmail.com>
-Date: Sat, 17 Oct 2026 11:35:54 -0500
-X-Gm-Features: AclHuK-g419mItqEZ0pdzSa8CH0A7yGLpafb0QAT-ug0oTfrYzft6MBGpXjOWuA
-Message-ID: <CAJPVW+mYavbi3q8eacV4=V8Be0-_5RV8MnksXPhiEvin8XfGrg@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next] selftests: net: exercise virtio checksum
- ingress outcomes
-To: willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, 
-	mst@redhat.com, virtualization@lists.linux.dev, habte.yibelo@gmail.com, 
-	jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Thanks, understood.
+From: Alexei Starovoitov <ast@kernel.org>
 
-I was optimizing for preserving the semantic contract, but I
-underweighted the permanent upstream maintenance cost. I'll keep these
-cases local unless a future regression shows they earn their place
-upstream.
+This series collects fixes for bugs in the BPF core, the verifier and the
+BPF side of the networking stack. Most of them are from Josef.
 
-I'll use git send-email next time.
+Every bug was reproduced in a VM on top of bpf-next, on the kernel right
+before and right after the patch that fixes it. The splats are in the
+commit logs. That goes for what the reviews of v1 have found as well.
 
-On Sat, 17 Oct 2026 11:55:26 -0400, Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
-> Megane Hebo wrote:
-> > Correction: Gmail Web rewrote tabs and wrapped some long lines in the
-> > inline diff I just sent, so that copy is not suitable for applying.
-> >
-> > The attached format-patch file is the authoritative byte-exact patch.
-> > Sorry for the transport noise.
-> >
-> > SHA256: cd11c3970f0a23ac039cdfcdc6338c20c79dbff3db8fdc93ea53b4b8996437b8
->
-> This is not the way to send patches
->
-> https://docs.kernel.org/process/submitting-patches.html
->
-> More in-depth: with AI it is easy to generate testcases. We now have
-> to consider which ones are important enough to submit. I think we all
-> have reproducers for these specific fixes offline. If we had thought
-> it worthwhile they would have been included in the feature series
-> itself.
+Sleeping, or doing without RCU, where that is not allowed:
+  02 hash map for_each callbacks of sleepable programs
+  05 sleepable programs on the task_vma iterator
+  06 bpf_find_vma() callbacks of sleepable programs
+  24 maps that rely on RCU in bpf_wq and bpf_task_work callbacks
+  32 extensions of functions that run sleepable
+
+Buffers that iterators and writable tracepoints hand to programs:
+  19 BPF_LINK_UPDATE skips the size check of the attach
+  25 tail calls from an iterator program
+  26 extensions of an iterator program
+  27 tail calls from a writable raw tracepoint program
+  28 extensions of a writable raw tracepoint program
+  29 writes over bpf_timer, bpf_spin_lock, kptr in a live map value
+
+The sk_storage map iterator:
+  14 a socket that sk_clone() is still building can be found and used
+  15 NULL dereference if the socket goes away
+  16 an element of a storage that was never published can be found
+  17 the socket is not held while the program runs
+
+Lifetime of local storage, programs and maps:
+  10 owner_refcnt saturates on the last unpin
+  30 map_free() frees elements under sleepable readers
+  31 values of a dead owner are freed under sleepable programs
+  22 a program is freed under its bpf_wq callback
+  23 an inner map is freed under a sleepable callback
+  33 the exception table of a program that still runs is not found
+
+XDP and devices:
+  01 devmap egress programs free page_pool fragments as plain pages
+  20 stale offload->prog after bpf_prog_realloc()
+  21 a program is bound to a netdev that is being unregistered
+  35 cpumap uses the device of a queued frame after it is gone
+
+seg6local End.BPF and bpf_skb_adjust_room():
+  11 the SRH of the inner packet is not validated after End.DT6
+  12 the inner header is not pulled for End.DT6
+  13 stale SRH pointer if End.B6 fails late
+  08 gso_size can drop to 0 or wrap around
+
+skb dynptrs, where a write can reallocate the head of the skb:
+  36 kfuncs that write through a dynptr
+  37 bpf_dynptr_write() in a global function
+  38 a dynptr passed to a global function
+  39 extensions get the unclone prologue without an skb in R1
+  40 kfuncs that write through a dynptr do not unclone the skb
+  41 the source of the write is a slice of the same skb
+  42 overlapping source and destination
+  43 slices as arguments of helpers that change the packet
+
+The rest:
+  03 inode leak if BPF_TOKEN_CREATE fails
+  04 preallocated hash map hands out an element that is still linked
+  07 BPF_JSET with a 64 bit mask, 32-bit kernels only
+  09 probe names of a perf event are read without event_mutex
+  18 unbounded recursion in the BTF show code
+  34 BPF_PROG_TEST_RUN of sk_lookup uses the socket outside of RCU
+
+Some of the fixes make the kernel refuse what it has accepted so far:
+
+ - 02, 06: helpers, kfuncs and global functions that may sleep are rejected
+   in these callbacks.
+ - 05: sleepable programs cannot be attached to the task_vma iterator.
+ - 24: in sleepable callbacks, and for inner maps in sleepable programs,
+   maps that rely on RCU need bpf_rcu_read_lock().
+ - 25, 27: a program with a tail call cannot be attached to a map element
+   iterator or to a writable tracepoint.
+ - 29: an iterator program that writes over a special field cannot be
+   attached to that map.
+ - 36-38, 43: packet pointers and slices are invalidated in more places.
+   That hits some programs which are harmless at run time. A program that
+   keeps a packet pointer across a global function which only writes to a
+   ringbuf dynptr is one example.
+ - 04: a nested update of a preallocated hash map on the same CPU can fail
+   with -EBUSY.
+ - 08: bpf_skb_adjust_room() returns -ENOTSUPP if gso_size would drop below
+   TCP_MIN_GSO_SIZE.
+ - 28: writable raw tracepoint programs cannot be extended.
+ - 32: the main function of a sleepable program, and a global function that
+   is called without the RCU read lock, cannot be extended. The
+   summarization selftest is adjusted.
+ - 39: an extension that writes to packet data has to get the context as
+   its first argument, and scalars beside it.
+
+test_progs in its three flavors, test_maps and test_verifier show no new
+failures. cpumask/test_insert_leave is flaky when the tests run in
+parallel, with and without the series: its program does not check
+is_test_task(), so any other fork in the system makes it fail.
+
+veristat sees no difference for the 5689 programs of the selftests, nor for
+the 466 programs of the sched_ext schedulers that BPF CI builds: same
+verdicts, insns, states and stack depth.
+
+v1 -> v2, all of it after the reviews by sashiko and the BPF CI bot:
+ - rebased
+ - 04: cancel the special fields before the element goes into the slot
+ - 08: leave at least TCP_MIN_GSO_SIZE
+ - 16: new. The check in 17 did not hold for a storage that lost the race
+   in bpf_local_storage_alloc().
+ - 20: update offload->prog under bpf_devs_lock, in
+   bpf_jit_prog_release_other() as well
+ - 24: a global function that is called with preemption or interrupts
+   disabled got around the check
+ - 28, 32: new. Extensions got around 27 and 31.
+ - 31: leave the special fields to the RCU Tasks Trace callback too
+ - 39, 40: new. The kfuncs of 36 wrote to cloned skbs. 39 is needed for
+   40 not to give the prologue to extensions that cannot take it.
+ - 41: make the skb writable once
+ - 18: no change. bpf_snprintf_btf() and bpf_seq_printf_btf() only take
+   vmlinux BTF, and the map read in bpffs is BTF_SHOW_UNSAFE.
+
+v1: https://lore.kernel.org/bpf/20261017012058.355787-1-alexei.starovoitov@gmail.com/
+
+Alexei Starovoitov (6):
+  bpf: Clear sk_refcnt of a clone before its storage is linked
+  bpf: Link the first element after its storage is published
+  bpf: Don't take an extension for a writable raw tracepoint program
+  bpf: Don't take an extension for a function that runs sleepable
+  bpf: Refuse the prologue for an extension that cannot take it
+  bpf: Unclone the skb for kfuncs that write through a dynptr
+
+Josef Bacik (37):
+  bpf: use the frame mem type in devmap egress XDP
+  bpf: forbid sleeping in hash map for_each callbacks
+  bpf: don't leak the inode when token creation fails
+  bpf: don't hand out a linked element as extra element
+  bpf: reject sleepable programs for task_vma iterator
+  bpf: forbid sleeping in bpf_find_vma() callbacks
+  bpf: look at all 64 bits of a BPF_JSET mask on 32-bit
+  bpf: don't let bpf_skb_adjust_room() use up the MSS
+  bpf: Read the probe of a perf event under event_mutex
+  bpf: Don't saturate owner_refcnt on the last unpin
+  bpf: Validate the SRH which End.DT6 uncovers in End.BPF
+  bpf: Pull the inner header for End.DT6 in End.BPF
+  bpf: Update the SRH state if End.B6 fails late
+  bpf: Fix NULL deref in the sk_storage map iterator
+  bpf: Hold the socket in the sk_storage map iterator
+  bpf: Bound the nesting that the BTF show code follows
+  bpf: Check the new program of an iterator link update
+  bpf: Fix stale offload->prog pointer after realloc
+  bpf: Don't bind a program to a netdev that goes away
+  bpf: Keep a program until its bpf_wq callback has ended
+  bpf: Count sleepable callbacks as sleepable map users
+  bpf: Check the maps that sleepable callbacks use
+  bpf: Assume no bounds for buffers behind a tail call
+  bpf: Don't take an extension for an iterator program
+  bpf: Assume no bounds for a writable tp with tail calls
+  bpf: Keep iterator programs off special map fields
+  bpf: Free what map_free() unlinks for sleepable readers
+  bpf: Keep values of a dead owner for sleepable programs
+  bpf: Keep the symbols of a program until it has ended
+  bpf: Use the socket of a sk_lookup test run under RCU
+  bpf, cpumap: Hold the device of frames in the queue
+  bpf: Drop packet pointers behind kfuncs writing an skb
+  bpf: Let bpf_dynptr_write() mark a global function
+  bpf: Don't take a dynptr argument for a local dynptr
+  bpf: Follow the head if an skb is written from a slice
+  bpf: Use memmove() to store bytes in an skb
+  bpf: Refuse packet slices for packet-changing helpers
+
+ include/linux/bpf.h                           |  43 ++-
+ include/linux/bpf_local_storage.h             |  13 +
+ include/linux/bpf_verifier.h                  |   9 +
+ kernel/bpf/bpf_iter.c                         |  31 +-
+ kernel/bpf/bpf_local_storage.c                |  50 +++-
+ kernel/bpf/btf.c                              |  14 +-
+ kernel/bpf/cfg.c                              |   4 +-
+ kernel/bpf/core.c                             |  56 ++--
+ kernel/bpf/cpumap.c                           |  35 ++-
+ kernel/bpf/devmap.c                           |   1 +
+ kernel/bpf/fixups.c                           |  30 ++
+ kernel/bpf/hashtab.c                          |  22 +-
+ kernel/bpf/helpers.c                          |   9 +-
+ kernel/bpf/map_in_map.c                       |   7 +-
+ kernel/bpf/map_iter.c                         |  79 +++--
+ kernel/bpf/offload.c                          |  25 +-
+ kernel/bpf/states.c                           |   3 +
+ kernel/bpf/syscall.c                          |  28 +-
+ kernel/bpf/task_iter.c                        |  12 +-
+ kernel/bpf/token.c                            |   5 +-
+ kernel/bpf/verifier.c                         | 269 +++++++++++++++---
+ kernel/trace/bpf_trace.c                      |  13 +
+ net/bpf/test_run.c                            |  19 +-
+ net/core/bpf_sk_storage.c                     |  96 ++++++-
+ net/core/filter.c                             |  58 +++-
+ net/core/sock_map.c                           |  17 +-
+ .../selftests/bpf/prog_tests/summarization.c  |  21 +-
+ 27 files changed, 781 insertions(+), 188 deletions(-)
+
+
+base-commit: 458575e1f2ddea944d679fe778c92e370a9b61a4
+-- 
+2.55.0
+
