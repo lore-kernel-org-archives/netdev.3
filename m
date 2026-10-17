@@ -1,65 +1,65 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB2C3AAF69
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D243AAF60
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792255126; cv=none; b=h+oh5I6XNRvopyCcJxYTcKwPqdVCECExGsU8bHTvvIqXf/EVqLpXFZ2to/4TQsCzZenM6yeVd4kY7TN3JYpzUQ+idr336wGSTwxXj0bKDA/ZdiKxFgEJyFq78v05zQ1bDPynfzexfbsS2egzGNysG4vqRSjgP7gM9oIVUoLeuf0=
+	t=1792255132; cv=none; b=X9xiuD9V7yZxU0AasxPzv9O1FfOlPoOzYgY+OR7sywWbJ+RCpfRgqbXIJnZr3fW/tegSxG8R6OCE3br43EHSNfEUOE9u8XU0XvCByQc+6+WK/9cT1j605o9VUKDJy1ad10w9bIgKSLrgCkTt1eDQ0MQWpuwuH1Yv9MSPFMuHxCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792255126; c=relaxed/simple;
-	bh=IP1aThnBSmQRykktz7NQABbJ8bl/Z3C5zEwVeI3o0So=;
+	s=arc-20240116; t=1792255132; c=relaxed/simple;
+	bh=Er/uTSUJqJwQFr/bT7JAFBRgV8FEqRpD4CpEtcK6xpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYEsOLZuxXUPaSXAFlW5dhRYgLWGuzrSMmC3qCBvMZ6bMSJcOEvuWzoni5MKQlY1ApcB/nb2TEs3iDzrxQX0+89A51lAa3LHQUEJg2vdCXDFFDwafc3pqZrvNKYRrHNuF6ck8wOj+v1UQ1H2T42Hdlcd6pfLp07cFjwJSBSZ1Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0mQB4Re; arc=none smtp.client-ip=209.85.214.169
+	 MIME-Version; b=dDQ+je3Mm8l3F6Sll4a7s5TNlIiFMw69n2969/zGs3N5k7/xWg2lRF5Wx9HJKHNFoz4YXVHGo7jiS+vxmYIXhKGvsAPqpIrKECVt8sPR7RC4KKZQVivicXjAnlQ13ywq2rLi4OCRO2JH4uYw68ceJxHCxSPDweKuxu+SSnbW81g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XlzZiVuw; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0mQB4Re"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e60f9af6e6so5669535ad.3
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:38:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XlzZiVuw"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e987a2ba0cso6129335ad.3
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792255124; x=1792859924; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792255130; x=1792859930; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FpttKUVHiqZ3qULCAgZCW27ALQfz3iY7DKYFVb6qa4k=;
-        b=I0mQB4ReL6eXhYUseMXMVHWIY04VRj7jlnzvwGhXwswBe6kt8f7JU6iTCAfaPTiyyO
-         OZxvBmptEQ6u/08jI7Flsih2j2ki9bEugSnmAF/U1ZUZJaMNI9wmsOfxvgiYlmI/Aqv1
-         NAe/lnPXkkMBtWEC8FOUxr5ZFsG3wUkVKmjN5XMvf+CuC/hCVjDLsX+iOroMthKX1Lml
-         HGZ8IRtnQb9U7cX4WvT/wkIQ819j8y0u+h/vcflKuOUaDBlF5tUbh1I3V16J/rdp3GMO
-         5J6MYmFs7dcUsUN3Wrrilu6pDcPPjQuzWzqitpeghf6nD1RGmP/eyGivC/5J6XkYzJyT
-         9JSQ==
+        bh=iELm3bTnzk4B+pnNJ4263DpWkNBrv9oDYGlQ98xR3Ik=;
+        b=XlzZiVuwot0pavBETp1r2opExtv1Fq2MrPL23kQTvocuqrGJa08Cp0FmLnUJru5Jps
+         Ht2iwYwKAqJE+0NBShaKeeAvSsQy/CE5cMNG6HycyfimTLaRtlVi1WYQpMVgpoc18WaT
+         nxhqrZCKPLsUCgBo9bvunlkDOu1xiYCH7x/FYBQPHXaejT7inafNm55KfzRbYoeukZiN
+         oOMnXd8c2y5HRGAQDtYgr+or5E19ZAF6O9Glvmn0ECq0ztq45I6Z+57P/lMx8YIOza6T
+         pdVXeuTocbPd3B2SWKzUlpjhzZnPpLdKjfdZhKRYLrhmY24SuGb+WAoQXl6uhIdIrO5a
+         9dsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792255124; x=1792859924;
+        d=1e100.net; s=20260707; t=1792255130; x=1792859930;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FpttKUVHiqZ3qULCAgZCW27ALQfz3iY7DKYFVb6qa4k=;
-        b=QVxDgiC5d5uBGRqYP95zNE0r4c0r9BuPkdJzVuO/74YkiKRYnJnMuzK5ETSHJniuwg
-         OenrBMOX4MDEn1JdDNyaVgXFFVlPdtDIRTyVKkdmb6xrbKjyfMvwT6K5wPmFa5xxGL51
-         5V2OIGs6InRivFiNruh8x71+l0kUDj8p33f2aei+uJ4RO/lP/mcZXZ/vyTi3aucAkOxk
-         w6twmt4c6RvrQ9YgFkENzW2rAPHhefv6wwWvuaf4WhFZGftBKmRUno4TJEDIam02YxHK
-         KC1hJ8kPpRlIsMVLIKp6s5A/JkTjhL1PkJjv+JZKtXMwOfR5Y42Hrq6Ov/bCd9Zdyp/N
-         8Khw==
-X-Forwarded-Encrypted: i=1; AKwUvBxLwPHCR8aA5PakR3W/XmLcXnOvBafBmC0doq5T2gn6gjyUK6m55UH2fuCyl8Wq/O0FKMa6kEc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLBzJB46MyXQUjSfpxRVwenArcB15EmB8+mWSBVQMzDK/9AhxDy
-	zGMsv3/SxbJ/QzaWrt0+WMGXY0pWDdCiIas1/m/6L6mq8LLmBHsoIuTd
-X-Gm-Gg: AYBFou0ZUQLjyjfoB66MzTg7fWaPeduNuWAANso7jqgncBGNGgnPjVvIWagaaWP69zz
-	9jjIMlZXvK5KtnFEiLQGJt4xNcS7OLMomCSMlXkFFcpAuH5OTmNUDqVpCCuF8XnaRhzXPOv2dob
-	cqIOqoVkShHuFAnZ3CQffmrDEjgoszh6uSzVmfwwSteOzRnVSl8Xi3hMRtdGC6tuamJFaSUFdy4
-	q6XjxyqVl9FHHIC7Q4afv5toWYQnxyjJUiZsya3zYJXKB3662WbCATzVOoxRENw9T7fcYd4hf+P
-	wmpjd7t8dFW5wrCJfDyQwbMWtFu4VB1mZyrWz4FUpm3WA6V9RgIstBstugzh+T9Jc7mEx7i9ol7
-	zAa+vpuhC77XGXTEma3pt2d0usz+rdibwWs8dcg4ZOlg6T6fAt95eLZYpU0m+ubroXRVFcSRLfq
-	JcxkxfdqVtq73h1RpVaIzJMcbPCZCRLNIMbXNqJN0yoo9+u7g/YLop/mViqDfTnHY+1rx6IfjpO
-	6AjOdtJKCLiJmbKb2GSpATjd0H9XqY9yaTw1FQ9hl8a+XX1AOigonyYRqOcnYpDK37z1sbkYzrs
-	I1HdgLp771VKkBY1nVRUYdynE2YDcXon7cw9KrDNWBQ=
-X-Received: by 2002:a17:90b:582d:b0:3a8:5d1f:59ad with SMTP id 98e67ed59e1d1-3acef14c8femr2726595a91.43.1792255124156;
-        Sat, 17 Oct 2026 09:38:44 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.240])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc487e509sm8692768a91.9.2026.10.17.09.38.43
+        bh=iELm3bTnzk4B+pnNJ4263DpWkNBrv9oDYGlQ98xR3Ik=;
+        b=OztjvAVjVi0G3jyVRlf2t4GaJRKq2l75lvDGEERNerJola07VfSG4PKgmaKjFngiL1
+         ycP22BJFvx0tJ/LYnc+2ztZtEjHl4ISSgJL52j6zEtqVysvL08ZpQN4VuPlyB74M9suf
+         qJGrBlDIH/iln7avOuhETCZb3gsMpW7asCa7gsvjGWZHxKNv25nwVqaez4923X8yekpN
+         70R+B3B5EX2vNBV7x8lXF46yFyaod3nEjJD98Lh9TMyrAkB7WnNaBuOFfh2KZzTeGjt6
+         Z99zDIqR90r+E3LG2Xg5U9lfPcLisEeK5t93XgIeT72A57bkLmVALvmNDLgUlQBX8C31
+         kk3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzW2m1yOfQ2WHYWx3aTLNqNarU0T0jWC1b1vTScmReX/yGPoD8niM56l+eNCVzCH+w07cfU3Lc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMx6eoQbYeV6l/s8DNQVg4k7Ff45Hz6muUEx6WFFbpynyOIqNM
+	GD4rpsUKbCF6hHIfgi6Oh5axv0XvTW08VYdOYr9HrOjeQOVvBaYDcOM2
+X-Gm-Gg: AYBFou1p6TEwhf4DiuBGPmkiVQ7snozp80vFXhdbfGfcKK/B2g/TINUIuxpFAMIbHd1
+	NfVitOH4vIp3qsl9RKqLzs2AkHwbpjCsaMy4oGT/hJhRA/iCINJ7SOkrVyNOPtQJBdIxHuN4Xbh
+	xzUAngLBunm+UMUJDmvMgOwReY+I2D73ffEg2i/AdDoI+R1kU3uwG9IzM+KKWmqHrQc/YaGA+nl
+	j4Z/uPJxNeLSDeVS+ySqOWXBz8qX7KCaxFaltI6cG7z26KxF6Z7D80pzh+79nskX/ECJQxDvgrL
+	GhDor54J4VJS2wfZYcR5lkJuBwkdHrRYe0vdW2gqN0Hnb5g+Gxg97AhHDzjm/BIAeblIWqXDu6O
+	xrVFXnK9PBfGa8XFuAU1JO3FAcEO/AsrMCXW+mf5uK/AKa87NU/hWSaOLYLUg1bNiSSVLYT+r8G
+	SV8AHQOgEzyUA8tDTU6XkJMxig7Y/COSktC27yo7Y+MTDsn1wdRq/R3O2De7EouSo4wshwSUANi
+	ln4jxFsTcQ/7x3q1tF3DeA+T0YeIIwC1YMisXxfxHyPo72+INlZdEkeXrevzN0aOUgWcp3EOtCw
+	pkoPOYT7iBnJ7ANnCcWBAKZ8Ei1KD6HboVNhbgjaAZCUU/rs/kbUpQ==
+X-Received: by 2002:a17:902:e5c8:b0:2e9:3395:cca8 with SMTP id d9443c01a7336-2e9a6d242f4mr28899175ad.46.1792255130228;
+        Sat, 17 Oct 2026 09:38:50 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e8997edsm22734595ad.63.2026.10.17.09.38.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 09:38:43 -0700 (PDT)
+        Sat, 17 Oct 2026 09:38:49 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next v2 09/43] bpf: Read the probe of a perf event under event_mutex
-Date: Sat, 17 Oct 2026 16:37:11 +0000
-Message-ID: <20261017163745.3341787-10-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next v2 10/43] bpf: Don't saturate owner_refcnt on the last unpin
+Date: Sat, 17 Oct 2026 16:37:12 +0000
+Message-ID: <20261017163745.3341787-11-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017163745.3341787-1-alexei.starovoitov@gmail.com>
 References: <20261017163745.3341787-1-alexei.starovoitov@gmail.com>
@@ -85,141 +85,73 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-For a perf event on a kprobe or uprobe event which was made in tracefs,
-bpf_get_kprobe_info() and bpf_get_uprobe_info() look the probe up by
-name in the list of dynamic events, and hand a pointer to its symbol or
-file name back to the caller. None of the callers holds event_mutex.
+bpf_local_storage_map_free() pins the owner with refcount_inc_not_zero()
+while it uncharges an element.  The pin counts when
+bpf_local_storage_destroy() could not get local_storage->lock: destroy()
+then goes on, drops the owner's reference and spins until the count is
+zero.  So the pin is the last reference whenever it is needed, and
+refcount_dec() takes that for a bug: it warns "decrement hit 0; leaking
+memory" and saturates the count.  Unless destroy() happens to read the
+count between the two stores it spins for ever, under rcu_read_lock().
 
-The perf event keeps its trace event alive, nothing else. Other dynamic
-events are removed from the list and freed during the walk. And a probe
-which shares its event with other probes can be deleted while the event
-is in use, so even the probe which is found can be freed, together with
-the string, before the caller has measured and copied it. The result is
-a use-after-free in the walk, in strlen() and in the copy to user space,
-or a NULL pointer dereference.
+Drop the pin with refcount_dec_and_test().
 
-The readers are BPF_OBJ_GET_INFO_BY_FD and fdinfo of a perf link, for
-whoever holds a descriptor of the link, and BPF_TASK_FD_QUERY. The other
-side is anybody who may write to dynamic_events, kprobe_events or
-uprobe_events.
-
-Take event_mutex in bpf_get_perf_event_info() and give the caller a copy
-of the name, which it has to free.
-
-Fixes: 41bdc4b40ed6 ("bpf: introduce bpf subcommand BPF_TASK_FD_QUERY")
+Fixes: 5d800f87d0a5 ("bpf: Support lockless unlink when freeing map or local storage")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- kernel/bpf/syscall.c     | 17 +++++++++++------
- kernel/trace/bpf_trace.c | 13 +++++++++++++
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ include/linux/bpf_local_storage.h | 13 +++++++++++++
+ kernel/bpf/bpf_local_storage.c    |  6 +++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 0f27604a54aa..0f5eb55d49d6 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -4020,19 +4020,19 @@ static int bpf_perf_link_fill_common(const struct perf_event *event,
- 		*ulenp = 1;
- 	}
- 	if (!uname)
--		return 0;
-+		goto out;
+diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_local_storage.h
+index 9e4f5c45c974..6c643ac51079 100644
+--- a/include/linux/bpf_local_storage.h
++++ b/include/linux/bpf_local_storage.h
+@@ -104,6 +104,19 @@ struct bpf_local_storage {
+ 	refcount_t owner_refcnt;/* Used to pin owner when map_free is uncharging */
+ };
  
- 	if (buf) {
- 		err = bpf_copy_to_user(uname, buf, ulen, len);
--		if (err)
--			return err;
- 	} else {
- 		char zero = '\0';
- 
- 		if (put_user(zero, uname))
--			return -EFAULT;
-+			err = -EFAULT;
- 	}
--	return 0;
-+out:
-+	kfree_const(buf);
-+	return err;
- }
- 
- #ifdef CONFIG_KPROBE_EVENTS
-@@ -4089,6 +4089,7 @@ static void bpf_perf_link_fdinfo_kprobe(const struct perf_event *event,
- 		   name, offset, missed, addr,
- 		   type == BPF_FD_TYPE_KRETPROBE ?  "kretprobe" : "kprobe",
- 		   event->bpf_cookie);
-+	kfree_const(name);
- }
- #endif
- 
-@@ -4142,6 +4143,7 @@ static void bpf_perf_link_fdinfo_uprobe(const struct perf_event *event,
- 		   name, offset, ref_ctr_offset,
- 		   type == BPF_FD_TYPE_URETPROBE ?  "uretprobe" : "uprobe",
- 		   event->bpf_cookie);
-+	kfree_const(name);
- }
- #endif
- 
-@@ -4240,6 +4242,7 @@ static void bpf_tracepoint_link_show_fdinfo(const struct perf_event *event,
- 		   "event_type:\t%s\n"
- 		   "cookie:\t%llu\n",
- 		   name, "tracepoint", event->bpf_cookie);
-+	kfree_const(name);
- }
- 
- static void bpf_probe_link_show_fdinfo(const struct perf_event *event,
-@@ -5767,11 +5770,13 @@ static int bpf_task_fd_query(const union bpf_attr *attr,
- 		err = bpf_get_perf_event_info(event, &prog_id, &fd_type,
- 					      &buf, &probe_offset,
- 					      &probe_addr, NULL);
--		if (!err)
-+		if (!err) {
- 			err = bpf_task_fd_query_copy(attr, uattr, prog_id,
- 						     fd_type, buf,
- 						     probe_offset,
- 						     probe_addr);
-+			kfree_const(buf);
-+		}
- 		goto put_file;
- 	}
- 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 5465e7eba238..304b426bd44d 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2209,6 +2209,7 @@ int bpf_probe_unregister(struct bpf_raw_event_map *btp, struct bpf_raw_tp_link *
- 	return tracepoint_probe_unregister(btp->tp, (void *)btp->bpf_func, link);
- }
- 
-+/* On success the caller releases *buf with kfree_const() */
- int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
- 			    u32 *fd_type, const char **buf,
- 			    u64 *probe_offset, u64 *probe_addr,
-@@ -2218,6 +2219,12 @@ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
- 	struct bpf_prog *prog;
- 	int flags, err = 0;
- 
-+	/*
-+	 * The list of dynamic events is walked, and a probe which has siblings
-+	 * can be deleted, with its strings, while its event is in use.
-+	 */
-+	guard(mutex)(&event_mutex);
++/*
++ * Drop a reference got by refcount_inc_not_zero(&local_storage->owner_refcnt).
++ * bpf_local_storage_destroy() may have dropped the owner's reference meanwhile
++ * and wait for the count to reach zero, so this one can be the last.
++ */
++static inline void
++bpf_local_storage_unpin_owner(struct bpf_local_storage *local_storage)
++{
++	bool last __maybe_unused;
 +
- 	prog = event->prog;
- 	if (!prog)
- 		return -ENOENT;
-@@ -2258,6 +2265,12 @@ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
- #endif
++	last = refcount_dec_and_test(&local_storage->owner_refcnt);
++}
++
+ /* U16_MAX is much more than enough for sk local storage
+  * considering a tcp_sock is ~2k.
+  */
+diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+index 4642da062f0f..7721834e4bff 100644
+--- a/kernel/bpf/bpf_local_storage.c
++++ b/kernel/bpf/bpf_local_storage.c
+@@ -199,7 +199,7 @@ static void bpf_selem_unlink_storage_nolock_misc(struct bpf_local_storage_elem *
  	}
  
-+	if (!err && *buf) {
-+		*buf = kstrdup_const(*buf, GFP_KERNEL);
-+		if (!*buf)
-+			err = -ENOMEM;
-+	}
-+
- 	return err;
+ 	if (pin_owner)
+-		refcount_dec(&local_storage->owner_refcnt);
++		bpf_local_storage_unpin_owner(local_storage);
  }
  
+ /* local_storage->lock must be held and selem->local_storage == local_storage.
+@@ -753,8 +753,8 @@ u32 bpf_local_storage_destroy(struct bpf_local_storage *local_storage)
+ 		while (refcount_read(&local_storage->owner_refcnt))
+ 			cpu_relax();
+ 		/*
+-		 * Paired with refcount_dec() in bpf_selem_unlink_nofail()
+-		 * to make sure destroy() sees the correct local_storage->mem_charge.
++		 * Paired with bpf_local_storage_unpin_owner() to make sure
++		 * destroy() sees the correct local_storage->mem_charge.
+ 		 */
+ 		smp_mb();
+ 	}
 -- 
 2.55.0
 
