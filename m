@@ -1,65 +1,65 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4C92D73A6
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E053ADBA4
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792255239; cv=none; b=Mryg240Rfc12j/gFbpOUVFJb8jKPwBhHGGgGCGDBFNOXJglDLNOr01DC3AV6Qphooka40+uncsHQDyk6BYqk0EfLmbCaSSI24VjFZrqwlX2iu7nk+Up/gRDXkkARqTSJxowQoloonOw1fF6Vqsj1VG0sodWW1tVyG3d8uBYADXI=
+	t=1792255247; cv=none; b=BqdAvI/ZkYoK9bkaCx59f9ZDz4dOt8fAXdOrOenn18slYJ/J1b5burXChitOT6ICvlqkPyhx19uMkUt7aqSIEiCWI1ffeujucLhdQUQW9TqPKjUkxBZHgaIakaMF/ythpss4TMs3cZ8rU3vvr05HRa+7Jl7h/5tnFhYO02ehlUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792255239; c=relaxed/simple;
-	bh=LInPVHvbYU0TGNIozpTFRcFgntOfFRp+YJGP5QIZIwE=;
+	s=arc-20240116; t=1792255247; c=relaxed/simple;
+	bh=um1/1t7n+I78zolH5NTwTJ2dVIX8lr94rL5OHG9OBdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KqwtAYClocwHNKsfG71fTBA6utLIzxPy8TsSFiiZsJk+yC3IKJsKcp5A2TkWBNFlxYW8TjAEs98WsksMAFV+lYXPgyvW9vhCBxPiyKaEJHbHHMU10OlvMXze6I0Tgyc9RHQwgX51kKWcaqWc0a4hSaWsJzi2u8EH8s7YY9TKuds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQSgQkPH; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=VqXQ87l7e/WbJ6jqI9PTTbcq3cYn78soRv75cQ+mnSI3cndLWyBP+ilphzKc7YA5oixyltwlCzGwlTZDf3B5KpscY1UBj7rLR0PekBEd7TQFOhgFWCgIJXt3/M2x8BTRKMtY7pumrP3fQcDAN5tDOt21cw0n9bGaeaZBFpco4AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TguTudZW; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQSgQkPH"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e831e86ebfso3578295ad.1
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:40:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TguTudZW"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8819033dbadso563759b3a.0
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:40:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792255238; x=1792860038; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792255246; x=1792860046; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ycFcAXAF2bqJk9ipDiEaIXiHZnKOU+kSnggBV2CR5LE=;
-        b=QQSgQkPHy0cm9fqE3+bJrU2wI53iQWZdFkzgGvF9cvblk9A1NV6OK+aJYrJitioyrW
-         NqwKGFY5OOgQjpcrZQwICp6M94CXa8IHzZzw4YbKVbCh5FGYpR8a5Qh+a23IlMCAZHWI
-         7Bl0EGOSxG617kmtV/vxxp2+N3lgVk1ZGp8HXe5Ypeqtt563b4YArSzXkEkFpRMYcu5y
-         mdUy4Ch7Cx0tkdCmbRHnmSPZweYQ4X8DJ177bd9wUpQMB5zRzxyh5Bx+98JQfZwGrWU5
-         9/dzkMsP0tji+QW8+9tGqB2HrKzDBD8RBFz9mJbk43hU6ti30tdA4E1uoblKHjANM9el
-         DRsQ==
+        bh=R4owM+4UIbkPlzeLvQJYBaaustOiqEzORXd5E7QETKs=;
+        b=TguTudZW9HvAwTMXnCh0VVGNCyC2rBv7lK9R40WpS4E3akBmOg4T72MOqhEg55FHa3
+         ikctbY7t1mQnoNSP1zY/a9Rmih2V7xUg+Rpkw22mZ4+FnHBOIuwtNbl3U+wPRZU1EsKb
+         0qErvwI5gyZwnTaAXhJagpBOWBQHeqpvb7AyrFzD7FUlzK7yUuidxml9sCZ1jOUql8vv
+         L0BIx/5AaYsM/18h/e5eQlROArTwCKrj32KZvu6peQQR1Hs7x9fL+HsaSY8CnWpSKLeG
+         AeoWchG8uhCtNQSzbClsHJHwK2t2qVtnZhi//B253PZqtseHKJ7JTCAWUoIemWPlUyWl
+         +ycQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792255238; x=1792860038;
+        d=1e100.net; s=20260707; t=1792255246; x=1792860046;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ycFcAXAF2bqJk9ipDiEaIXiHZnKOU+kSnggBV2CR5LE=;
-        b=a9g+mtJOhwCTE9Pckt8WECQs5fvd31an+7UdmStPvWkotcsmrfpqY1B3daeuoX/P/0
-         yzQsleVanH1/jji/ClP9YYfnhIj1EwsefwLROsuy95f1Y8olU3aSIHmBwdrMSDW+hBVj
-         rdqhWpUzEt5ZzuySWLP7UxzQ3Kn/vgqGkSBiVhYJ9LBB9CCJ99bTz21tH86FXSiMNVZD
-         vP0CRB6ASbNEvcqnZ3FssyID5JlDYoT630uNiUJiXslbqDs7ULmvy19Zhp0XIaCzPT4t
-         OA3KJ0LTiGCg+PGXs2mjzvdM7XLaoWccSwen1/vcrAXPPJ5Sk60e+CvF3CDWgqKRjPDL
-         hGuw==
-X-Forwarded-Encrypted: i=1; AKwUvBwqSN/OMv54YHTBXFuxnVHENgLqa8TSLMZbbtggCNtzpxYLwYm9YKQq+aUjp2mvX7rfM1tsZm8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLziKE55SkzfWqYzscgpkVf0t/hFFO6rYH5XgnoNAYyJFqpWItl
-	KYWfKOnaf/5tZ2PVWELZSB0mRvhS1KRVAnRpYEHqSahJmNi0Uux+K1X3
-X-Gm-Gg: AYBFou15a3Sqt24eseado6no2KCtiVKHu/1IHG9t71GAJsw/mVe/+tbGyCiCOLbZ7US
-	SlPBidaTL3firJonS805UTlBwIT8WjoMpm3kyKWVHZv+gxsLGYYhJ29Utr6GX0TJam40bT6OP6L
-	lPkqOpoJqphL4wKidDAmFfavAUEHg1aOR8iVa89yvMhi6BKw3Vp8ZPGq5eH12lieopv3nKAVWfw
-	Ulpju6KvlPnRHBSd70SDWKFzOgC5CRxInuU3c5QDJAkgPzR4ZJlP0jipYPMkr1gJA1HX3a8Gj3E
-	aw3GtEDdZnkIjUSkvhHty59G0IWGOSj6eGEY2fUvf8qc1cClOmVHVf9XDJR2R6PEENETXcjSZ8M
-	gRi6hincaXSeGu5HYhIVorI8uA4NK6qc/xqwh7dHr6jJmsT/ckHKtvaFqYw//B26lZ49citPvZo
-	j1ef/ZFjfDmLwIlZd/9GGdcw9/8rBa8rLOkxga8oVVAd04FLj+UJFUs/OQny7F2N3I/LusLUDSo
-	JtseFOAwKVSaZX99YmnRWyJy+fRHDmQX/BEAIlNJreA+ry57ckGUZx07HNgYpuGVRv1PZZQBbCT
-	+06JOw1k8aYXAUGw/llHgehNxClacA7mstZDp1ucfhY=
-X-Received: by 2002:a17:903:19ef:b0:2e2:bfe8:aa7e with SMTP id d9443c01a7336-2e9a68347e4mr29692205ad.7.1792255237949;
-        Sat, 17 Oct 2026 09:40:37 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.246])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e804becsm22336215ad.21.2026.10.17.09.40.37
+        bh=R4owM+4UIbkPlzeLvQJYBaaustOiqEzORXd5E7QETKs=;
+        b=A/bJUkb24gT4qkAauAxrwjfVw2I288Ah8cE+5QwbvsAoIdoKwMyuQw/fOho8DIX64N
+         VKqYPTd6UQYJgtvU6hZCxBeQV6TGmsn1UZwjKrkirVOoP6894NKMf4JwQQkog+9AV0oM
+         g4sPT1mArZ1JZLH/bec6FqlocJKMOKLA/8TTC+02cszBqHBoAiJdJJ7nAkXG/Ed2X4Gh
+         XtRvBAplnfoT3o3R+CyygQIVWe4ajvtPDG09TV/ha7L6GPFKdCReaBZZhGchdh4Q8TJC
+         RYgOfkTTsbI5RS+GpQzGTLW0qbrjrg3bKEt5dBAg6r7apN3Re0kUTCMo7VdyfXWI7lWQ
+         hdvw==
+X-Forwarded-Encrypted: i=1; AKwUvByv6hyhi4rqiQxUDsrE1pIdXRikzprpIq1GfkavLPfYY5Q2VsSTEdKZCnh9UC62Gfy6dzZ2+aI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI+PyLY69NiJ3gXhjVTl97Wwt5fwA2iILmmzObkeeoW2NLPTuq5
+	KW4Jsfm5GpGDhIOQzYjD8HhY3rnG1vuKZkR7CDhv3a69pL4Znht/C0kG
+X-Gm-Gg: AYBFou3PHkyTaDzkK7ChIeaOBwfuBq0YxOcGBju9Qz0EU9KjOnWECZ5xMyRC0SxfzpZ
+	vMKIBm2a15skjd45Br80DvAEzCsT6cip4W9jMTnjHJJ1Wnaj2Bv+LIysykQp0nETEKY9ehYNDLz
+	Js/VVtpE2EOWK8hfeigc4SyGSouKUfEuKVA8PFkpVhIviy1hE+ge/wpdAeEH1I2BCpIY6qi5Njn
+	cp8Rvi95gYnmobFAD1C39mpT/BbHStSLY+mSyrFo92EfmevjTqwMy8ZakRVMOJ/9BW3CJPZ7KzW
+	6sWxBJdULTP/7pghIRsyqahCPUUb8e1YKZPxdD+0TerGoDr4clkiO4sZmPdGiRfM7+qf6O+OYR3
+	/rxE+x2oNECTeeUeAHGPt4d0a6tZJBVT1BXWvWVdqaRxE/viQjkQf+42e0Iu/g2G9RPA8M+AqMZ
+	LeheZe9v5ZIVpVIGGUeC71LRhs7HXDH5lA/SpkYC3jsx9Dt6p0dpYPrQpVQN/wpP5V8B/v0Rfj2
+	otMk5243U9N/fwvdIo+NgQRy2EExEYz55b4lLyALcGNiw/QtxUrWKGFB9oRtvF4xdrL/pG57qMx
+	CRR8HHGEpkgHWb9KwUnJGUzLWmtr7sYfp0C9nqP9yOY=
+X-Received: by 2002:a05:6a20:c79b:b0:3dd:85a9:55ac with SMTP id adf61e73a8af0-3e226064b01mr2038186637.37.1792255245692;
+        Sat, 17 Oct 2026 09:40:45 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.247])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd654a0cf97sm2370232a12.24.2026.10.17.09.40.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 09:40:37 -0700 (PDT)
+        Sat, 17 Oct 2026 09:40:43 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next v2 28/43] bpf: Don't take an extension for a writable raw tracepoint program
-Date: Sat, 17 Oct 2026 16:37:30 +0000
-Message-ID: <20261017163745.3341787-29-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next v2 29/43] bpf: Keep iterator programs off special map fields
+Date: Sat, 17 Oct 2026 16:37:31 +0000
+Message-ID: <20261017163745.3341787-30-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017163745.3341787-1-alexei.starovoitov@gmail.com>
 References: <20261017163745.3341787-1-alexei.starovoitov@gmail.com>
@@ -83,46 +83,179 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-bpf_probe_register() compares max_tp_access of the program that is
-attached with the size of the buffer that the tracepoint lets programs
-write to.  An extension of that program, or of one of its global
-functions, gets the same context and the same pointer to the buffer.  What
-it accesses is noted in its own max_tp_access, which nobody looks at.  So
-it reads and writes behind the buffer, of a tracepoint that may have none:
+The bpf_map_elem iterator, for all but the per-cpu maps, and the
+bpf_sk_storage_map iterator hand the live value of an element to the
+program as a writable buffer.  The verifier does not know the map when it
+checks the program, so nothing keeps the program from writing over a
+bpf_spin_lock, a bpf_timer, a kptr or another special field, which neither
+a map update nor a pointer to a map value can touch.  With CAP_BPF and
+CAP_PERFMON, or a BPF token, a program can so make the kernel follow a
+pointer of its choice: after a write over a bpf_timer the kernel crashes
+on the written value when the element is removed.
 
-  BUG: KASAN: stack-out-of-bounds in bpf_prog_5843f2b820eb4929_tr26_ext_far+0xf4/0x10c
-  Write of size 4 at addr ffffc90000d8f894 by task wext/103
+Offsets into a buffer are constants.  Let the verifier record the range of
+bytes that a program may write through a read-write buffer, and refuse the
+program with -EACCES, at attach and at a link update, if a special field
+of the map lies in that range.
 
-Refuse such extensions.
+A program that only reads, or that writes beside the special fields, works
+as before.  One that writes on both sides of a special field is refused,
+since the range covers the field.
 
-Fixes: be8704ff07d2 ("bpf: Introduce dynamic program extensions")
+Fixes: d6c4503cc296 ("bpf: Implement bpf iterator for hash maps")
+Fixes: 5ce6e77c7edf ("bpf: Implement bpf iterator for sock local storage map")
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- kernel/bpf/verifier.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/bpf.h       |  5 +++++
+ kernel/bpf/map_iter.c     | 36 ++++++++++++++++++++++++++++++++----
+ kernel/bpf/verifier.c     | 12 +++++++++---
+ net/core/bpf_sk_storage.c |  2 +-
+ 4 files changed, 47 insertions(+), 8 deletions(-)
 
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 1823ca3a1d5e..22947fa192e4 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1866,6 +1866,9 @@ struct bpf_prog_aux {
+ 	u32 ctx_arg_info_size;
+ 	u32 max_rdonly_access;
+ 	u32 max_rdwr_access;
++	/* [min, max): the bytes of a rdwr buffer that may be written */
++	u32 min_rdwr_write;
++	u32 max_rdwr_write;
+ 	u32 subprog_start;
+ 	struct btf *attach_btf;
+ 	struct bpf_ctx_arg_aux *ctx_arg_info;
+@@ -3204,6 +3207,8 @@ void bpf_iter_map_show_fdinfo(const struct bpf_iter_aux_info *aux,
+ 			      struct seq_file *seq);
+ int bpf_iter_map_fill_link_info(const struct bpf_iter_aux_info *aux,
+ 				struct bpf_link_info *info);
++int bpf_iter_map_check_value_write(const struct bpf_prog *prog,
++				   const struct bpf_map *map);
+ 
+ int map_set_for_each_callback_args(struct bpf_verifier_env *env,
+ 				   struct bpf_func_state *caller,
+diff --git a/kernel/bpf/map_iter.c b/kernel/bpf/map_iter.c
+index 16537356c1a2..a58c148692e6 100644
+--- a/kernel/bpf/map_iter.c
++++ b/kernel/bpf/map_iter.c
+@@ -97,22 +97,50 @@ static struct bpf_iter_reg bpf_map_reg_info = {
+ 	.seq_info		= &bpf_map_seq_info,
+ };
+ 
++/*
++ * For an iterator that hands the live map value to the program as a writable
++ * buffer: the verifier knows nothing of the map, so the special fields of the
++ * value have to lie outside of what the program may write.
++ */
++int bpf_iter_map_check_value_write(const struct bpf_prog *prog,
++				   const struct bpf_map *map)
++{
++	const struct btf_record *rec = map->record;
++	const struct btf_field *field;
++	u32 i;
++
++	if (IS_ERR_OR_NULL(rec) || !prog->aux->max_rdwr_write)
++		return 0;
++
++	for (i = 0; i < rec->cnt; i++) {
++		field = &rec->fields[i];
++		if (field->offset < prog->aux->max_rdwr_write &&
++		    field->offset + field->size > prog->aux->min_rdwr_write)
++			return -EACCES;
++	}
++
++	return 0;
++}
++
+ static int bpf_iter_map_check_prog(const struct bpf_prog *prog,
+ 				   const struct bpf_iter_aux_info *aux)
+ {
+ 	const struct bpf_map *map = aux->map;
+ 	u32 value_size = map->value_size;
++	bool is_percpu;
+ 
+-	if (map->map_type == BPF_MAP_TYPE_PERCPU_HASH ||
+-	    map->map_type == BPF_MAP_TYPE_LRU_PERCPU_HASH ||
+-	    map->map_type == BPF_MAP_TYPE_PERCPU_ARRAY)
++	is_percpu = map->map_type == BPF_MAP_TYPE_PERCPU_HASH ||
++		    map->map_type == BPF_MAP_TYPE_LRU_PERCPU_HASH ||
++		    map->map_type == BPF_MAP_TYPE_PERCPU_ARRAY;
++	if (is_percpu)
+ 		value_size = round_up(value_size, 8) * num_possible_cpus();
+ 
+ 	if (prog->aux->max_rdonly_access > map->key_size ||
+ 	    prog->aux->max_rdwr_access > value_size)
+ 		return -EACCES;
+ 
+-	return 0;
++	/* the program gets a copy of a per-cpu value */
++	return is_percpu ? 0 : bpf_iter_map_check_value_write(prog, map);
+ }
+ 
+ static int bpf_iter_attach_map(struct bpf_prog *prog,
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 81660ffce99a..0d1b729989d6 100644
+index 0d1b729989d6..2c812a5f1da8 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -22232,6 +22232,15 @@ int bpf_check_attach_target(struct bpf_verifier_log *log,
- 					"Extension programs should be JITed\n");
- 				return -EINVAL;
- 			}
-+			/*
-+			 * How much of the buffer of the tracepoint is used
-+			 * is checked for the program that is attached to it.
-+			 */
-+			if (tgt_prog->type == BPF_PROG_TYPE_RAW_TRACEPOINT_WRITABLE) {
-+				bpf_log(log,
-+					"Cannot extend a writable raw tracepoint program\n");
-+				return -EINVAL;
-+			}
- 			tgt_changes_pkt_data = aux->func
- 					       ? aux->func[subprog]->aux->changes_pkt_data
- 					       : aux->changes_pkt_data;
+@@ -6053,9 +6053,10 @@ static int check_buffer_access(struct bpf_verifier_env *env,
+ 			       const struct bpf_reg_state *reg,
+ 			       argno_t argno, int off, int size,
+ 			       bool zero_size_allowed,
+-			       u32 *max_access)
++			       u32 *max_access, bool write)
+ {
+ 	const char *buf_info = type_is_rdonly_mem(reg->type) ? "rdonly" : "rdwr";
++	struct bpf_prog_aux *aux = env->prog->aux;
+ 	u32 access_end;
+ 	int err;
+ 
+@@ -6064,6 +6065,11 @@ static int check_buffer_access(struct bpf_verifier_env *env,
+ 		return err;
+ 
+ 	*max_access = max(access_end, *max_access);
++	if (write && size) {
++		if (!aux->max_rdwr_write || access_end - size < aux->min_rdwr_write)
++			aux->min_rdwr_write = access_end - size;
++		aux->max_rdwr_write = max(access_end, aux->max_rdwr_write);
++	}
+ 
+ 	return 0;
+ }
+@@ -7339,7 +7345,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, struct b
+ 		}
+ 
+ 		err = check_buffer_access(env, reg, argno, off, size, false,
+-					  max_access);
++					  max_access, t == BPF_WRITE);
+ 
+ 		if (!err && value_regno >= 0 && (rdonly_mem || t == BPF_READ))
+ 			mark_reg_unknown(env, regs, value_regno);
+@@ -7852,7 +7858,7 @@ static int check_helper_mem_access(struct bpf_verifier_env *env, struct bpf_reg_
+ 		}
+ 		return check_buffer_access(env, reg, argno, 0,
+ 					   access_size, zero_size_allowed,
+-					   max_access);
++					   max_access, access_type == BPF_WRITE);
+ 	case PTR_TO_STACK:
+ 		return check_stack_range_initialized(
+ 				env, reg,
+diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+index 72b9ee4c98de..1c59300af05c 100644
+--- a/net/core/bpf_sk_storage.c
++++ b/net/core/bpf_sk_storage.c
+@@ -925,7 +925,7 @@ static int bpf_iter_map_check_prog(const struct bpf_prog *prog,
+ 	if (prog->aux->max_rdwr_access > aux->map->value_size)
+ 		return -EACCES;
+ 
+-	return 0;
++	return bpf_iter_map_check_value_write(prog, aux->map);
+ }
+ 
+ static int bpf_iter_attach_map(struct bpf_prog *prog,
 -- 
 2.55.0
 
