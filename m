@@ -1,65 +1,65 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D243AAF60
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB28D3939A2
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 16:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792255132; cv=none; b=X9xiuD9V7yZxU0AasxPzv9O1FfOlPoOzYgY+OR7sywWbJ+RCpfRgqbXIJnZr3fW/tegSxG8R6OCE3br43EHSNfEUOE9u8XU0XvCByQc+6+WK/9cT1j605o9VUKDJy1ad10w9bIgKSLrgCkTt1eDQ0MQWpuwuH1Yv9MSPFMuHxCA=
+	t=1792255138; cv=none; b=bQt1zm/4eF1l3bOIr1pjsxRKABcInEqBlQ0i7+cHgSC974RJcDILtYkhMy0/ToWrF75xcSJyxEPMJTNBvi+tMYS/Kbq0X2FYHGhw2/tl/VCt6BTLmE4GulKK7SXy+l0ytg/FTDD9IvBO0DiCJ9Hn56oYfYrP5eApqZ6o4HGMR6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792255132; c=relaxed/simple;
-	bh=Er/uTSUJqJwQFr/bT7JAFBRgV8FEqRpD4CpEtcK6xpI=;
+	s=arc-20240116; t=1792255138; c=relaxed/simple;
+	bh=jmaWeyIveisSzZ7aCwrfiBdfaBQ6cxntCG0EieSF8SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDQ+je3Mm8l3F6Sll4a7s5TNlIiFMw69n2969/zGs3N5k7/xWg2lRF5Wx9HJKHNFoz4YXVHGo7jiS+vxmYIXhKGvsAPqpIrKECVt8sPR7RC4KKZQVivicXjAnlQ13ywq2rLi4OCRO2JH4uYw68ceJxHCxSPDweKuxu+SSnbW81g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XlzZiVuw; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=t8Za5K+GA7QQc/QAEAtOKg/pWmk1CsUCIGFtXEXrH3CxwglfSjQ4VPwtqqJhZlmlSuOSbs26ZFyCmMwW8+EbriTTT+iwPRgcBUM5WOIqXWOZuc5JlWKP+E/CJJu/6iBr0qpuJ7g++/WqEgsDG4Tmmyel+FkWTQ6pCUyW6s5mqs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBbgidyO; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XlzZiVuw"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e987a2ba0cso6129335ad.3
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:38:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBbgidyO"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e831e86ebfso3574845ad.1
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 09:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792255130; x=1792859930; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792255136; x=1792859936; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iELm3bTnzk4B+pnNJ4263DpWkNBrv9oDYGlQ98xR3Ik=;
-        b=XlzZiVuwot0pavBETp1r2opExtv1Fq2MrPL23kQTvocuqrGJa08Cp0FmLnUJru5Jps
-         Ht2iwYwKAqJE+0NBShaKeeAvSsQy/CE5cMNG6HycyfimTLaRtlVi1WYQpMVgpoc18WaT
-         nxhqrZCKPLsUCgBo9bvunlkDOu1xiYCH7x/FYBQPHXaejT7inafNm55KfzRbYoeukZiN
-         oOMnXd8c2y5HRGAQDtYgr+or5E19ZAF6O9Glvmn0ECq0ztq45I6Z+57P/lMx8YIOza6T
-         pdVXeuTocbPd3B2SWKzUlpjhzZnPpLdKjfdZhKRYLrhmY24SuGb+WAoQXl6uhIdIrO5a
-         9dsg==
+        bh=NoQnwU23qouoapgLxBv+Bhz2dTNvqCRZampt5Twechk=;
+        b=DBbgidyOSk2d9WrV+Z5GiFPvHDuBAaTfQqWyRcRdpl21/AUjRsIWPHy6YsQE8VN+JR
+         c4a7PQhBiIAhhoE9G7My6yDb+K/juQVg50WBMZvRp7GTLHHyAJuaM06swrA+vPQ/mhTN
+         7mhIUqEnN9cTDzMg6WQaiyMPlOZgKqT0uYBU82BSCsQnOttIaWtZZA9jQjdDgTsAcTwG
+         Q4mwUwo48qqxd1zudq6h3ZgWV3ydpAwfeILiNedBUs9Ey0M6Qk8BAQVzNgGTCtvrbjF5
+         xYjwvEjZkNBr20j6ZYlY8/7OF9I/eEjbsY3Nv6TVwRinmaTEglhuXq0pE545ZHV9/VK0
+         y9cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792255130; x=1792859930;
+        d=1e100.net; s=20260707; t=1792255136; x=1792859936;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iELm3bTnzk4B+pnNJ4263DpWkNBrv9oDYGlQ98xR3Ik=;
-        b=OztjvAVjVi0G3jyVRlf2t4GaJRKq2l75lvDGEERNerJola07VfSG4PKgmaKjFngiL1
-         ycP22BJFvx0tJ/LYnc+2ztZtEjHl4ISSgJL52j6zEtqVysvL08ZpQN4VuPlyB74M9suf
-         qJGrBlDIH/iln7avOuhETCZb3gsMpW7asCa7gsvjGWZHxKNv25nwVqaez4923X8yekpN
-         70R+B3B5EX2vNBV7x8lXF46yFyaod3nEjJD98Lh9TMyrAkB7WnNaBuOFfh2KZzTeGjt6
-         Z99zDIqR90r+E3LG2Xg5U9lfPcLisEeK5t93XgIeT72A57bkLmVALvmNDLgUlQBX8C31
-         kk3Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzW2m1yOfQ2WHYWx3aTLNqNarU0T0jWC1b1vTScmReX/yGPoD8niM56l+eNCVzCH+w07cfU3Lc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIMx6eoQbYeV6l/s8DNQVg4k7Ff45Hz6muUEx6WFFbpynyOIqNM
-	GD4rpsUKbCF6hHIfgi6Oh5axv0XvTW08VYdOYr9HrOjeQOVvBaYDcOM2
-X-Gm-Gg: AYBFou1p6TEwhf4DiuBGPmkiVQ7snozp80vFXhdbfGfcKK/B2g/TINUIuxpFAMIbHd1
-	NfVitOH4vIp3qsl9RKqLzs2AkHwbpjCsaMy4oGT/hJhRA/iCINJ7SOkrVyNOPtQJBdIxHuN4Xbh
-	xzUAngLBunm+UMUJDmvMgOwReY+I2D73ffEg2i/AdDoI+R1kU3uwG9IzM+KKWmqHrQc/YaGA+nl
-	j4Z/uPJxNeLSDeVS+ySqOWXBz8qX7KCaxFaltI6cG7z26KxF6Z7D80pzh+79nskX/ECJQxDvgrL
-	GhDor54J4VJS2wfZYcR5lkJuBwkdHrRYe0vdW2gqN0Hnb5g+Gxg97AhHDzjm/BIAeblIWqXDu6O
-	xrVFXnK9PBfGa8XFuAU1JO3FAcEO/AsrMCXW+mf5uK/AKa87NU/hWSaOLYLUg1bNiSSVLYT+r8G
-	SV8AHQOgEzyUA8tDTU6XkJMxig7Y/COSktC27yo7Y+MTDsn1wdRq/R3O2De7EouSo4wshwSUANi
-	ln4jxFsTcQ/7x3q1tF3DeA+T0YeIIwC1YMisXxfxHyPo72+INlZdEkeXrevzN0aOUgWcp3EOtCw
-	pkoPOYT7iBnJ7ANnCcWBAKZ8Ei1KD6HboVNhbgjaAZCUU/rs/kbUpQ==
-X-Received: by 2002:a17:902:e5c8:b0:2e9:3395:cca8 with SMTP id d9443c01a7336-2e9a6d242f4mr28899175ad.46.1792255130228;
-        Sat, 17 Oct 2026 09:38:50 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e8997edsm22734595ad.63.2026.10.17.09.38.49
+        bh=NoQnwU23qouoapgLxBv+Bhz2dTNvqCRZampt5Twechk=;
+        b=bTAmeBDi4+/FF24DkyvtBGEhvGTvuK0+a0H+7AGl3Zkp8kD8FnYBPRD+l6OE+fIb4u
+         nKsuF9ybWZddHH7RYMNwJwwvYsaVF1X8CPTexWW8aplv//y4SQIaSMrPNoEG9zy0B3vm
+         DwiHkHE6i1JiMNImlB+g4pvyPEW5xxdeXSiRp1zVvoonKP/WA4L2FW0Vysl9tFWN6Yxq
+         /iBYF5lNwHGg66PY5hjmyVE+jUtj8qyOrSC+bcp/opRH5Q49ffMAI/2rgl35TMhJdjOK
+         gayZgIS+BWfuL+PB+0drFRvD2F4qdxNhUx3o278L2D6+vK10cs3K7Uwri5RcTH7uuGeF
+         16IA==
+X-Forwarded-Encrypted: i=1; AKwUvBzeiVmeF+EeK2mwyg17AhLEAZy3BTP6md41h1fBA6IDYt2sQt1AkqnrP767VuEshzbRu7oHWvQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJSd4qsg1oOjZ0s2I5RS0tSkBwEnWfi/H/T8tEtI0opO5Va9g4w
+	NQrqDXZCoJ8q0L/AhAlRu92j3haxYfpBu+oLy4F2cJ++K6CPTxMPJZ3u
+X-Gm-Gg: AYBFou1lAN/pSZ2qmM7wuzs0xbahmBqQ6HhrxhYd4jiKz6WvRxhrpgBkc8krybbztwo
+	CRgCClrLW/BMyA/j4kXS+StPyTDY87yS5YZR5/XeWoCZ8rMI5joJFPLd7chaHT5ezXHx7w65x8H
+	3dY/ZCfQ1vVUHCaj7574uJzSRA9WXthCTr/J2nVfTYu6B0eJgR0rFrb8gR4c+1AuVWJ2b3w24Qe
+	a9cuW6sD0lgZ1PuSsC1dn+BVfmmkXaKHyKxyRj5Rrd4fzyrMGR4Hv+zzRxV++dSBZBMQjgrWveA
+	p7nr0TDH3/JP/GojEy2Nq82TIvxCtM06Z15ip8RQyzN1MZ80lHgGDO57u2zDrdJCjBqAt/JJ9QV
+	DHTmdnysfhuqiYZqPluARW4eJ8ATcyuUALgvZJV8dCOx+4ChMB3MU+Y4yFMYTtnd3YKZgyXOCm0
+	bX2talEtK/4LcSCg7YV5opXT7/hJbtL05XYVUnyxCEITEi0Q96eZtGrMnIPWWd26c7Qk7qvZICX
+	FKtBptzEV/urETManT1LxU+MjskN03P5eMskPfSdzCFq59Cg8iCtoSpNL9abbqNO3D3G/yz0Y7c
+	74aPdoWTv9g+bC45WWTmCu4HGDwTCi3KWWBZ7s4OXCU=
+X-Received: by 2002:a17:902:e547:b0:2e8:93b5:c555 with SMTP id d9443c01a7336-2e9a6e5296emr27675065ad.61.1792255136209;
+        Sat, 17 Oct 2026 09:38:56 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.252])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e8997edsm22735055ad.63.2026.10.17.09.38.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 09:38:49 -0700 (PDT)
+        Sat, 17 Oct 2026 09:38:55 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next v2 10/43] bpf: Don't saturate owner_refcnt on the last unpin
-Date: Sat, 17 Oct 2026 16:37:12 +0000
-Message-ID: <20261017163745.3341787-11-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next v2 11/43] bpf: Validate the SRH which End.DT6 uncovers in End.BPF
+Date: Sat, 17 Oct 2026 16:37:13 +0000
+Message-ID: <20261017163745.3341787-12-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017163745.3341787-1-alexei.starovoitov@gmail.com>
 References: <20261017163745.3341787-1-alexei.starovoitov@gmail.com>
@@ -85,73 +85,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-bpf_local_storage_map_free() pins the owner with refcount_inc_not_zero()
-while it uncharges an element.  The pin counts when
-bpf_local_storage_destroy() could not get local_storage->lock: destroy()
-then goes on, drops the owner's reference and spins until the count is
-zero.  So the pin is the last reference whenever it is needed, and
-refcount_dec() takes that for a bug: it warns "decrement hit 0; leaking
-memory" and saturates the count.  Unless destroy() happens to read the
-count between the two stores it spins for ever, under rcu_read_lock().
+input_action_end_bpf() validates the SRH of a packet and pulls it into the
+head before the program runs. If the program decapsulates the packet with
+bpf_lwt_seg6_action(SEG6_LOCAL_ACTION_END_DT6), bpf_update_srh_state()
+looks for a routing header in the inner packet and takes it for the new
+SRH as it is.
 
-Drop the pin with refcount_dec_and_test().
+Nobody has looked at that header, and whoever has sent the packet has
+written it. ipv6_find_hdr() finds it in a fragment of the skb as well, but
+hdrlen is then read at that offset from skb->data, past the end of the
+head. The header need not be an SRH, and its hdrlen need not fit into the
+packet, but it is marked as valid, and bpf_lwt_seg6_adjust_srh() and
+bpf_lwt_seg6_store_bytes() check their offsets against it.
 
-Fixes: 5d800f87d0a5 ("bpf: Support lockless unlink when freeing map or local storage")
+A program which then adds a TLV at the end of the SRH, where hdrlen has it,
+makes bpf_lwt_seg6_adjust_srh() move and write memory behind the head of
+the skb, as far as the sender likes within the 2 KB that hdrlen can say:
+
+  BUG: KASAN: slab-out-of-bounds in bpf_skb_net_hdr_push+0x185/0x240
+  Read of size 2088 at addr ffff888107d6f09e by task srh/102
+  BUG: KASAN: slab-out-of-bounds in bpf_skb_net_hdr_push+0x1b5/0x240
+  Write of size 8 at addr ffff888107d6f8be by task srh/102
+
+Use seg6_get_srh(), which pulls and validates the header. Without a valid
+SRH the state says that there is none, and the packet goes its way as
+before. The pull can move the head, so compute the data pointers behind
+it.
+
+Fixes: 486cdf21583e ("bpf: add End.DT6 action to bpf_lwt_seg6_action helper")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- include/linux/bpf_local_storage.h | 13 +++++++++++++
- kernel/bpf/bpf_local_storage.c    |  6 +++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ net/core/filter.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_local_storage.h
-index 9e4f5c45c974..6c643ac51079 100644
---- a/include/linux/bpf_local_storage.h
-+++ b/include/linux/bpf_local_storage.h
-@@ -104,6 +104,19 @@ struct bpf_local_storage {
- 	refcount_t owner_refcnt;/* Used to pin owner when map_free is uncharging */
- };
+diff --git a/net/core/filter.c b/net/core/filter.c
+index dc630fc9f3eb..a62f3decf1e2 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7025,15 +7025,15 @@ static void bpf_update_srh_state(struct sk_buff *skb)
+ {
+ 	struct seg6_bpf_srh_state *srh_state =
+ 		this_cpu_ptr(&seg6_bpf_srh_states);
+-	int srhoff = 0;
  
-+/*
-+ * Drop a reference got by refcount_inc_not_zero(&local_storage->owner_refcnt).
-+ * bpf_local_storage_destroy() may have dropped the owner's reference meanwhile
-+ * and wait for the count to reach zero, so this one can be the last.
-+ */
-+static inline void
-+bpf_local_storage_unpin_owner(struct bpf_local_storage *local_storage)
-+{
-+	bool last __maybe_unused;
-+
-+	last = refcount_dec_and_test(&local_storage->owner_refcnt);
-+}
-+
- /* U16_MAX is much more than enough for sk local storage
-  * considering a tcp_sock is ~2k.
-  */
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 4642da062f0f..7721834e4bff 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -199,7 +199,7 @@ static void bpf_selem_unlink_storage_nolock_misc(struct bpf_local_storage_elem *
+-	if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0) {
+-		srh_state->srh = NULL;
+-	} else {
+-		srh_state->srh = (struct ipv6_sr_hdr *)(skb->data + srhoff);
++	/* Behind a decapsulation this is a header that nobody has looked at */
++	srh_state->srh = seg6_get_srh(skb, 0);
++	if (srh_state->srh) {
+ 		srh_state->hdrlen = srh_state->srh->hdrlen << 3;
+ 		srh_state->valid = true;
  	}
- 
- 	if (pin_owner)
--		refcount_dec(&local_storage->owner_refcnt);
-+		bpf_local_storage_unpin_owner(local_storage);
++	/* it may have been pulled into the head */
++	bpf_compute_data_pointers(skb);
  }
  
- /* local_storage->lock must be held and selem->local_storage == local_storage.
-@@ -753,8 +753,8 @@ u32 bpf_local_storage_destroy(struct bpf_local_storage *local_storage)
- 		while (refcount_read(&local_storage->owner_refcnt))
- 			cpu_relax();
- 		/*
--		 * Paired with refcount_dec() in bpf_selem_unlink_nofail()
--		 * to make sure destroy() sees the correct local_storage->mem_charge.
-+		 * Paired with bpf_local_storage_unpin_owner() to make sure
-+		 * destroy() sees the correct local_storage->mem_charge.
- 		 */
- 		smp_mb();
- 	}
+ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
 -- 
 2.55.0
 
