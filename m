@@ -1,69 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85329381B1C;
-	Sat, 17 Oct 2026 01:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CFB81AA8
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792201443; cv=none; b=UI2m68emh+hRqOkUuAyYsC/6QErJw78/OzV9mkXNRuKS60c5ArZjpsfLzyEJRbYtIWogPCX9nwCncnh1jU0k878TD/SQyy2GPBz53r+A7ZyxQ0YzAieEs4u4kU92VYRe3dncnqjG9qFL+iuqIdwadxELLSPvUsKZiy9cs3UIpaY=
+	t=1792201811; cv=none; b=QR9LtYytCI1Zf5ZVPWCKCEM6zacGuDAxupIDW83qEPhEelfMrhWXXoRg6+A1blTJmbytRjlL6R0FhRoMYohmPACMomjFXvwr5lmKnIjUwzgO2F5NyPFNlxWTu9sYI4v70VSc6lXB2n6+9bCIvfcYg8gxPdkPZ1O4SFg/8mMFnVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792201443; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=g+yMMIEOf4DAxYiaRuwYvlLi2MhP/B9b1LBiAXGYyHkr/xQGb+1USB1JNu4+RzOtOu4O+JK4wais1FfdfIsOJ5D+lpPgLuKka31ofEJFKYUDpoxJJNeqjegtjZUoN1QfggKOCiPLn397GP3JzN+Xps58r5mLd6lCf6a+adXCv44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhGJBRgZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792201811; c=relaxed/simple;
+	bh=DmAEta7e5zRfo5sayPFskopdP9fCSgiMBZRlKBkRmJ4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=G8MqwlgVfc87j7dzi13CpAV4lonDJJv4TuDMifovdInBqFUaBsJEVbhAuTjdL0NTqNtjnjGAvx2jXXmF9esBxAEN4Ipd4AIxwyxzTlJUl3Z1+OSP8geeWSHSWiAAxu2YfBn9gLftzIeXKHqVfgfdm4vXrEgXT3d9ESk4YLDpyMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gisAuiqj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhGJBRgZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BA91F000C4;
-	Sat, 17 Oct 2026 01:44:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gisAuiqj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4BA1F000C4;
+	Sat, 17 Oct 2026 01:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792201442;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lhGJBRgZJScx0sbSR620wYrF7Cefz1OPLXm5lqbTPc4jlPlH4aweECXeNe60Es6yd
-	 mLlJCITDWNhCBaIJPnucbCQ9TpLtn3BzzZWwg0j/q2hq7AXVQXodP11Ub2eNRdY+Un
-	 4AfvUVVfJzOokmpQbQq36SqSaQOJ7TtptmucmCC2DEAqKSfFE+80H/qMVzN8o5E//1
-	 b86r/juqQkmxTgMVnwVJexVthlJ8gI8VFEaJxVSJYmjlxCwxSxzuHSbMLWHVilmjYz
-	 o71t9EGVK7TrKkmgKAhylSQ2Nhc/Df+plHI6oKw12T5vectgEQO1PusHzBHiRC3AbX
-	 bM/rxZ6inQaHw==
-From: netdev-bot+sinfo@kernel.org
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, josef@toxicpanda.com,
- mason@kernel.org, steffen.klassert@secunet.com, herbert@gondor.apana.org.au
-Subject: Re: [PATCH net] net: free the policies if a socket's clone fails late
-Date: Sat, 17 Oct 2026 01:44:01 +0000
-Message-ID: <179220144134.408196.12133972653281965693@kernel.org>
-In-Reply-To: <20261017013912.396296-1-alexei.starovoitov@gmail.com>
-References: <20261017013912.396296-1-alexei.starovoitov@gmail.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1792201809;
+	bh=pJUJ86Zh6NGHo6InFR8FHuJcZ9f+snsmTpR8YvNyMWQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=gisAuiqj+Ol9g0W4DFLzgH+zAmNXZlKV1wZmBTsQt/eg+x1U0+HOM7Wm40drgce4b
+	 yP9q6yF/M3iY+EfpK+jVZMIhpfeM1n4ekF4MYuZ/6PiMWDBF/QlGz2Ey5jM8RgFcxC
+	 xAGr7v8qlej35cZ+gG3i+LuvKmpypdEFNs1/YCkYdPP0h7jalScWwd1S0HK5IUMuix
+	 f3lucaPZR/0Nt5lNQuULjTcY13EVsfhG2BdmRhMw1imukopOGJeXn7hh6ayW0n4OC6
+	 MKCe8eSs14d/ishL/fk1A0wTJcVUwMlF2GwkN40dYlwZRYjfZ8kWJFBI3isb2DEiUH
+	 5xvpWKWoASWSA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44CC380CEDA;
+	Sat, 17 Oct 2026 01:50:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/1] net/sched: cls_flower: avoid stale mask
+ references
+ after delete
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179220180826.1055958.2315473037177977150.git-patchwork-notify@kernel.org>
+Date: Sat, 17 Oct 2026 01:50:08 +0000
+References: <20261012010720.2248662-1-n05ec@lzu.edu.cn>
+In-Reply-To: <20261012010720.2248662-1-n05ec@lzu.edu.cn>
+To: Ren Wei <n05ec@lzu.edu.cn>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net, edumazet@kernel.org,
+ horms@kernel.org, vladbu@mellanox.com, sbrivio@redhat.com, bird@lzu.edu.cn,
+ kanolyc@gmail.com, z1652074432@gmail.com
 
-Hi!
+Hello:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+On Mon, 12 Oct 2026 09:07:18 +0800 you wrote:
+> From: Yuhang Zheng <z1652074432@gmail.com>
+> 
+> Hi Linux kernel maintainers,
+> 
+> We found and validated an issue in net/sched/cls_flower.c. The bug is
+> reachable by an unprivileged user in a user and network namespace.
+> 
+> [...]
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Here is the summary with links:
+  - [net,v3,1/1] net/sched: cls_flower: avoid stale mask references after delete
+    https://git.kernel.org/netdev/net/c/58f7989da6e7
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+
