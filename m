@@ -1,232 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23C230C631
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 04:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D19A4F5E0
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 04:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792211913; cv=none; b=SSRUb8O4lvflY3LjMrOEuxtqxzr5Sbh1k4oh90Pkj9h2OqbqUo0Fbwn/kgPKKc3vNNngMD7T8e0tcVHLCvh+fDB6K7wol88MwHfwy/Ij4S8Es52455arXi05kX1WUDrrEUHUpkXUCcz4qNI8lRf+Lvpd4AeGwlq7vRCMMMfJh90=
+	t=1792212027; cv=none; b=DRqI/3tDpqOfGt8kWVoDLlJiXXlySvkapGUXJLCleu9+F3q8Lw5E1jGOHzEQSIbgs1DgZ34t6KA7WWRi2POdAdqd5HAGW+Rm6G2TkZNa7InmlyAn7KMqO52DP/7N3AD421IJO7icvwpMrx83ns9R2PhcUmd8+iHrpYFcyhargNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792211913; c=relaxed/simple;
-	bh=i7PLpxfEMC01qSXDVqKvEVCazBF+QnZNOmFYvwPNp78=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jRzdKH8fjiQnmhy02y1oMP7sngs6AR9hfK0CEVPOkChQiHjv6gktvY+6zweDuatFrs0mJz5Ov7qhoOf2ErSMOtNIJzf5CCI//cIbw8W99Rr+DpVJRd/Nr6JbXBo1wZnBnxSPv9fPA+okHCNT4uaLU700xPRn8KRsV3cEygHA7EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NC59GU9Q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792212027; c=relaxed/simple;
+	bh=dt6zKtsA2pImG2OzEQtTlAjxne9U81g0RsmV5/u1dCQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N67//eqdE7+Ie13vUsqzlHD9rsA7mZcZZE1iEfT1f74MZAR4CBWQPwK4zhEoYeBmqEh96vDLU05GRq8sdkfsmm65VjAQMKnp4pmWJ/pM6iesPVpwourtvZSxhmdoeH9664IVxRjj7lAQ5poIJ5/WnegqrwkS4GVfDhD5fK1hCes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eDj4IRrt; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NC59GU9Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9718D1F000C4;
-	Sat, 17 Oct 2026 04:38:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792211911;
-	bh=9m2hLJw9ccxVMuWezdwdsp1UFP8rcLF2WaRreure+gU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NC59GU9Q/+vp3Q7QQGUzElGMaWzn/dudfmAp3XW6usFa7F3pOZVdN7smui0vhKMJN
-	 9b2DUjEpuYhcKfTlyMz0bNhWNYLJD4getvFCTiNLqHTfgT41YMAWaHvWFrSRBzl8Zj
-	 Bx18tz34/70eLgc42c+2gZIw0MYcFiQ2NC5blyB6xw3ZmQHI+vLzEndqp7c2tsRjbp
-	 v2CnoQzDiq+sOvDTBlmsjlvidj5IvD9yWSZhq68AROHPbThsA3gr2jACC3ixugT6Rf
-	 ldWZwIJ3/12C3GkO5sapNyf32N3L3xozwSaurHmWzaShtWYV/lNq3yB7uCoI5J0p7z
-	 3IE0cj5Ro6hkA==
-Subject: Re: [PATCH 2/2 net-next] net: openvswitch: drop IP fragments on SCTP
- set action
-From: netdev-bot+sashiko@kernel.org
-To: fmancera@suse.de
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, jesse@nicira.com,
- aatteka@nicira.com, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@kernel.org, davem@davemloft.net, i.maximets@ovn.org,
- echaudro@redhat.com, aconole@redhat.com
-Date: Sat, 17 Oct 2026 04:38:30 +0000
-Message-ID: <179221191010.434549.8856124906041431590@kernel.org>
-In-Reply-To: <20261015124749.4694-2-fmancera@suse.de>
-References: <20261015124749.4694-2-fmancera@suse.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eDj4IRrt"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab9850456aso927202a91.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 21:40:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792212025; x=1792816825; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ujlqLNxMSLXVmuXc6H/r32h76Zwbh9xlAVzdBgdTBM0=;
+        b=eDj4IRrtxGnjtispzq2jp6bOhHIFeYrM5m2bonVqEAuljckbf0RCCOQKIajBL3ly6C
+         4+nfAeMYFvJalnruRewij7oHgyfYeAYdqeAohaqDb0sK1iqRNVh0/TxNBIaUfRyX0xaq
+         aR3BOl4FYsxFPeeA2oCREtB54y6Vi5NVPpCaNG6FB428IPJp6iN4MKH/jYf3cmf475/5
+         iB8BumDuiwxFS0T1nJJTq0sx1a+vXJkc5ohENXyC8nfQEZIgIG7NeG+qkTb2ytW+KRDL
+         tXXrjBLcOa1Af1NRSBR7yZ+2R3G0DYT6kgRSg3zR7AyrjqiiOFqdu7GzEN1U8+S23VEZ
+         BSCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792212025; x=1792816825;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ujlqLNxMSLXVmuXc6H/r32h76Zwbh9xlAVzdBgdTBM0=;
+        b=ybVOeuzLdiKsEq9c4hcTpafnzU+5MT/5P4LEWmwz5QhpDoBrh7xOw7toPV6WqBcoG3
+         vi0fv2f3CvCaTReMrkoflemfbGDT3pF2mfFsgQRiztE3GnLjS5cKDIhAq6z5Axf3YZhd
+         h/sS9ZyQGoHk2a1Msg5dVpzGKBFXMOU+sZ+oRd03rZ314TPm4HluKw+my+WGVB31Fhnc
+         kIz3MJKaVfnI90bjfF0umamH82cQyHHP/vyUJ6sgBCtTV20NLa0cLYwluAqBYKI7ZhTo
+         oOED7+KuqdcxIrt0aE/dJvGLXmYTZB453vgkRDr2eFyroVlr3QHXWvc/P6oY/E95exBL
+         u7dA==
+X-Forwarded-Encrypted: i=1; AKwUvBxtJ9IX+erPicbkoPH69Qgl6mB9y11Y2CwXcsEQpsVbklzpFY/Aebpc+OS5QygGzZecA5vdsX4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLtoL4Vi2f+Jlef01H8ESqVOmnRPt3N3gNm03+KEjs7yAPSEYX5
+	Gp/SbEZFauMzdrUY1ppsk3yGs3OGX/xujOjFpnznxQGlkmVyIwYktEuHj9DDgcAELHOgH6xW0yz
+	RUdaSAQ==
+X-Received: from pgnm1.prod.google.com ([2002:a63:7d41:0:b0:cc7:a825:732d])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:582d:b0:3a8:5d1f:59ad
+ with SMTP id 98e67ed59e1d1-3acef14c8femr1576985a91.43.1792212025461; Fri, 16
+ Oct 2026 21:40:25 -0700 (PDT)
+Date: Sat, 17 Oct 2026 04:40:25 +0000
+In-Reply-To: <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
+ <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
+Message-ID: <atL8JlUJlc3EBcbF@google.com>
+Subject: Re: [PATCH net-next 2/3] ipv6: take fib6_sernum from a sequence
+ shared by all netns
+From: kuniyu@google.com
+To: Qiliang Yuan <odys.yuan@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Fri, 16 Oct 2026 14:09:54 +0800, Qiliang Yuan wrote:
+> A per-cpu IPv6 route of a nexthop object records fib6_sernum of the
+> netns it was created in, and rt6_is_valid() compares it with fib6_sernum
+> of the netns its device belongs to when the route is checked. Every netns
+> starts its fib6_sernum at 1 and increments it on each tree change, so
+> different netns often hold the same value.
+> 
+> When a device moves to another netns, such a route remains usable until
+> nexthop_free_rcu() releases it, and fib6_info_destroy_rcu() queues that
+> callback from inside an RCU callback, after the device has moved. If the
+> fib6_sernum of the new netns matches the cached one in that window,
+> ip6_dst_check() accepts the route and a socket in the old netns keeps
+> sending through a device that now belongs to another netns.
+> 
+> Take every fib6_sernum, including the initial one, from one global
+> sequence, so that a cached route never matches the fib6_sernum of
+> another netns.
+> 
+> A connected UDP socket in netns A caches a route through an IPv6 nexthop
+> object on a veth. The veth is moved to netns B and brought up with one
+> RTM_NEWLINK, then the socket sends 200000 datagrams. A route is added
+> to and removed from B 0 to 20 times before the move, 63 trials:
+> 
+>                                 before     after
+>   trials sending after move          3         0
+>   datagrams sent after move       8187         0
+> 
+> Fixes: 8f34e53b60b3 ("ipv6: Use global sernum for dst validation with nexthop objects")
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] net/openvswitch: set_sctp corrupts SCTP checksum for padded
-  packets
-- [Medium] In net/openvswitch/actions.c, set_sctp() now returns -EINVAL
-  whenever `flow_key->ip.frag != OVS_FRAG_TYPE_NONE`.
-- [Low] The commit message says first and later fragments failed the same
-  way: the skb holds part of the SCTP packet and 'the CRC delta of a…
-- [Low] set_tcp() and set_udp() (actions.c:644-645, 598-599) skip
-  OVS_FRAG_TYPE_LATER packets: they return 0 and the action list…
-
---
-
-net: openvswitch: drop IP fragments on SCTP set action
-
-This patch makes set_sctp() return -EINVAL for any packet whose flow key
-has ip.frag set to anything other than OVS_FRAG_TYPE_NONE. The goal is to
-drop SCTP fragments with OVS_DROP_ACTION_ERROR instead of forwarding them
-with rewritten ports and an invalid CRC32c checksum.
-
-Link: https://lore.kernel.org/netdev/d4fc14f3-4308-4560-9012-43c09c1b3845@ovn.org/
-
-> For a first fragment, and for
-> a later fragment, it holds just a part of it, and the CRC delta of a
-> change at the start of the packet depends on how many bytes follow, so
-> the checksum written is wrong.
-
-[Severity: Low]
-Is this the right description of what happened to later fragments?
-
-An IPv4 later fragment has no SCTP header. key_extract() in
-net/openvswitch/flow.c sets OVS_FRAG_TYPE_LATER but leaves ip.proto as
-IPPROTO_SCTP:
-
-	offset = nh->frag_off & htons(IP_OFFSET);
-	if (offset) {
-		key->ip.frag = OVS_FRAG_TYPE_LATER;
-		memset(&key->tp, 0, sizeof(key->tp));
-		return 0;
-	}
-
-So validate_set() accepts the action. The old set_sctp() then wrote the
-"ports" over payload bytes 0-3, wrote a computed "checksum" over payload
-bytes 8-11, and copied payload bytes into flow_key->tp. That reads as
-silent payload corruption rather than just a wrong CRC. It is the same
-problem the earlier patch in this series ("net: openvswitch: skip IPv4
-later fragments on TCP/UDP set actions") describes for TCP/UDP.
-
-IPv6 later fragments never reach set_sctp(), because parse_ipv6hdr() sets
-ip.proto to NEXTHDR_FRAGMENT:
-
-		if (frag_off) {
-			key->ip.frag = OVS_FRAG_TYPE_LATER;
-			key->ip.proto = NEXTHDR_FRAGMENT;
-			return 0;
-		}
-
-validate_set() then rejects SCTP set actions on flows that could match
-them.
-
-> fail the action for packets that are IP fragments of either
-> family
-
-In practice this covers IPv4 first and later fragments plus IPv6 first
-fragments. The code does handle the IPv4 later fragment case. Could the
-commit message describe the old behaviour for each case, to help anyone
-judging impact or backporting?
-
-> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> index 4aade471afc45..12e339cbf7912 100644
-> --- a/net/openvswitch/actions.c
-> +++ b/net/openvswitch/actions.c
-> @@ -674,6 +674,9 @@ static int set_sctp(struct sk_buff *skb, struct sw_flow_key *flow_key,
->  	__le32 old_correct_csum, new_csum, old_csum;
->  	int err;
->  
-> +	if (flow_key->ip.frag != OVS_FRAG_TYPE_NONE)
-> +		return -EINVAL;
-
-[Severity: High]
-This patch doesn't introduce it, but does the same CRC delta problem
-also hit unfragmented packets that carry trailing link layer padding?
-
-sctp_compute_cksum() covers skb->len - sctphoff bytes. As far as I can
-see, nothing on the OVS receive path trims skb->len down to the IPv4
-total length or the IPv6 payload length before actions run. The only
-trim I can find is ovs_skb_network_trim() in
-net/openvswitch/conntrack.c, and that only runs for ct actions. So a
-small SCTP packet that was padded to the 60 byte Ethernet minimum
-reaches set_sctp() with the pad bytes still in the skb.
-
-In that case old_correct_csum and new_csum are both computed over the
-SCTP packet plus the padding. As the commit message says, the CRC delta
-of a change at the start of the packet depends on how many bytes follow
-it. That makes old_correct_csum ^ new_csum the wrong delta for the
-receiver, and old_correct_csum also no longer matches a correct
-old_csum. The value written to sh->checksum is wrong even for a packet
-that arrived with a valid checksum. ip_rcv() or ipv6_rcv() on the
-receiver trims the padding, sctp_rcv() then sees a CRC32c mismatch, and
-the packet is dropped.
-
-This looks easy to hit. Over IPv4, an SCTP packet that carries only a
-COOKIE ACK, SHUTDOWN ACK or SHUTDOWN COMPLETE chunk is 36 bytes of IP,
-well under the Ethernet minimum. A flow that rewrites SCTP ports, for
-example for NAT, would then corrupt those chunks. I think losing COOKIE
-ACK would keep an association from ever being established.
-
-Could set_sctp() limit the CRC computation to the length taken from the
-IP header? Another option would be to trim the skb first, the way
-ovs_skb_network_trim() does. Do you want to handle this in this series,
-or as a separate fix?
-
-[Severity: Medium]
-Does this also drop IPv6 atomic fragments? These are packets with a
-Fragment header whose offset is 0 and whose M bit is clear, so the skb
-holds the complete SCTP packet.
-
-parse_ipv6hdr() in net/openvswitch/flow.c marks any Fragment header with
-a zero offset as OVS_FRAG_TYPE_FIRST:
-
-	nexthdr = ipv6_find_hdr(skb, &payload_ofs, -1, &frag_off, &flags);
-	if (flags & IP6_FH_F_FRAG) {
-		if (frag_off) {
-			...
-		}
-		key->ip.frag = OVS_FRAG_TYPE_FIRST;
-
-ipv6_find_hdr() in net/ipv6/exthdrs_core.c sets IP6_FH_F_FRAG whenever a
-Fragment header is present, and it masks off the M bit:
-
-	_frag_off = ntohs(*fp) & ~0x7;
-
-As a result, set_sctp() cannot tell an atomic fragment from a real first
-fragment.
-
-Before this patch, sctp_compute_cksum() covered the whole SCTP packet in
-this case, so the old_csum ^ old_correct_csum ^ new_csum update was
-correct and the packet was forwarded with its ports rewritten. Now
-do_execute_actions() frees it with OVS_DROP_ACTION_ERROR and skips the
-rest of the action list.
-
-RFC 8021 deprecates generating atomic fragments, but RFC 6946 still says
-receivers must process them.
-
-Could the check look at the M bit, or confirm that the skb covers the
-full IPv6 payload, rather than rejecting every OVS_FRAG_TYPE_FIRST packet?
-IPv4 SCTP looks fine here, because key_extract() only sets
-OVS_FRAG_TYPE_FIRST for it when IP_MF is set.
-
-[Severity: Low]
-This isn't a bug, but should later fragments be handled the same way here
-as in set_tcp() and set_udp()? Both of those treat OVS_FRAG_TYPE_LATER as
-a successful no-op:
-
-	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
-		return 0;
-
-This check returns -EINVAL for both FIRST and LATER. Take a flow that
-wildcards ip.frag and rewrites L4 ports. IPv4 TCP/UDP later fragments are
-forwarded unchanged and the action list continues. IPv4 SCTP later
-fragments are dropped with OVS_DROP_ACTION_ERROR, and any actions after
-the set are skipped.
-
-The commit message says the drop is intended. The same flow drops the
-first fragment anyway, so the visible difference is mostly drop
-accounting and whether later actions run.
-
-The uAPI description of OVS_ACTION_ATTR_SET in
-include/uapi/linux/openvswitch.h also doesn't mention that a validated
-SCTP set can fail at runtime on fragments while TCP/UDP sets are skipped.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015124749.4694-1-fmancera%40suse.de
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
