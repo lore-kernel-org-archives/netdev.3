@@ -1,138 +1,327 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CCE38239C
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 05:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C352AD0C
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 06:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792216433; cv=pass; b=AzgLR6TU2Isxyvw/xk3I1XZwAVRMrGcYCgQrl7qjvnbJx7bjYsrBdqTlQMY+RDOxLdIAPPOQwEC0S8cjZbgNR7UNr/9NUjP0H9G57YglimDrZPSzNJvx5NCQgDlwQYM6nQT1ApSnN/h3zDWAKy690Nz6MDc5AEClWx/xKmEtLKc=
+	t=1792216816; cv=pass; b=YjetnHCxvkCfBGFtWmgFfwNWEpzMI+Nj9x15+WcOUuQcLbK++ISWCbSU/WHs/cNBvxLBZ9OkCi86h0qIu2fEL8Y1LLmMPQDKIc1yZGhIRdCIBHIYPrcYu8/mNJ43hG4UBP6Gg3Q+zeu67duuDoHlSOL6bTb3LfCgl8H+mcflOjQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792216433; c=relaxed/simple;
-	bh=tMjb1DN1c9NYMfTnFwIjU5/59o0CGTCnwIETYQ97m6E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CQTsYZESnJv8H/00+8rvA78munQoLztkO2evS86BYgUYEPUu1c4kKLXtXb/gTpn01IRtlJeWY+XTxOtBNZmG8DdjjMjTqZED/x7RV2jMs+VRZ4MA8OUhvCWnLOPYYC04NQqDQbTSnS+/lSaKJ1GDGamw3o9XXbGZRD6F6Emz6rs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HNNQwdeO; arc=pass smtp.client-ip=209.85.222.180
+	s=arc-20240116; t=1792216816; c=relaxed/simple;
+	bh=bkvh1i5FG37o5A9ttSAH20Uqm6CK5XS7/r4HenKlm/A=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ZEdjGPAVFc9HmQCtOHJ0Xq5x+22JRR3ZBbbvOWw5wqYmBY2DvOcMLPhhizHBCrlD7xP/oq7EEoCjWv9baXv7pW4GnUP1dcMvT0u1Gx8fd2D9lC2yuuaUgmMiRhKin/KVHr8IwgiYMcRieBlwbMSKHM84f9dXRTOwG4jk1LMXqJY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iwFZKsYJ; arc=pass smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HNNQwdeO"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93f2493c28bso53846885a.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 22:53:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792216431; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iwFZKsYJ"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-91bb5795792so24956d6.2
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 23:00:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792216814; cv=none;
         d=google.com; s=arc-20260327;
-        b=bcoDq+MCv54VhvdXPCtJ1Z3CezgCj2oTU68lcV1BzOmKhoRCOUHjWk1FqyzZFo4nT6
-         ohK+Mmmoo7y67Dq3p//H2TlVOolsgr7n16i/YDrWftQrOieqXzn4VeO/2yeZHLxxLHB3
-         popmM5AA86Zcmetvq9Wi9iqqJgO6n25GiudAeKf3y97ndXxsMDrI2h3L6mOAcIBTy+u0
-         6FsTleBJ6VJGKRJRD9j63oVS6ZeU7SqndphZMPkVfJt8zYFrwRD/V4WiwFIW2u4Tn+fz
-         Quivb8xbyBFGa2Bhx9lBVO5XXD3EkeL5d+oGBQbYUVur9r8hP9yu/zY2k3lkM90ndmMT
-         cIlQ==
+        b=BW+NZjZwmxGZrGaMvTn8vfzQzwf8qYJwAeENmEzpZib4mny6XWerfawjavcJ3x0mTY
+         d3HATan7aygkOOLn7VVWely0XqcnqQ08XLuSH3lF2hxWLTVw66MLUO8jh6QdqoIUdg7u
+         em3ereoNMnzpOIvI49ye5ddTqwbO5KlQyLPe1Hom0osPlW+B037kB/qLxU48UbMWvz03
+         L4GU+oXdesIyk1l1Y9ojMw0PcrC9yn5o5CZFEBWjLee9jXM9jJTJbyJDVTsAEI6vUfIo
+         xmFnhWD2GJYbLlRia/+JjgOsYeVI5KXOTQuEzwenvlut848JpzuOP91dYM9RGxU6Aijj
+         S8kA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tMjb1DN1c9NYMfTnFwIjU5/59o0CGTCnwIETYQ97m6E=;
-        fh=GyHbN2FbYqJ8neNRkfGW9Q83Zs1IllCIZPtZ22cSk0E=;
-        b=XMUSXy8JZGW7h6cFvosSXrKqUrkIfDEDZFGp4BzlkONoBY+6un1wfnjMDtE/rMd2RK
-         TPU/AJB0edtP0Xeh8/BJSRGVnFMMAEtN2TC1EUzOc1lLCHYlFw4VMF3fYliIXdN9vQr/
-         Fz/54MpfoKfmax3x2v/JGicfdYssCgUsgRjO15mmWoOv7KgMh25auN+bTe4k46qwxpmt
-         BqdXAyVl5bEGs2iLlcMwA4AJrHiP4HGfkqhePzFdlHWkiwfUi25Q8UytSi7JNI7plQIH
-         vDqQKnNDAaWDDyxM/9lNyNpKiomn3oYo4E1hQEph80UfOfIrygEZgI6eAKd4Ih5eo/GS
-         ykZg==;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=63A2I3xSyjrdJxbGENFhY9IuJPK1dZ8nnNSKYaZbcvw=;
+        fh=SjO9IQIv+ehXFUtiuCMlG2xwXNygVR0NBY1qGN3ajAg=;
+        b=Zh+eqSadj3ys8NI0jLed0gH8xUNWdgOPI6ufiBk6dffsHmtmYTW+W+GK0qLqOEtMh4
+         adKLLsL8v9W5oOQ9NfY3WP5xdo6n1XXRJu6MEctpZedIy1J5xvR3KyvmzAJH67lLnNx1
+         BZ+uZ0jYmg1VOzKiUTQSnarXjQ+9eaR/VLm4AiB9Zf8C9lXiiulqoUVPShs399DPYEbz
+         sy2Rsf/Dti5bNfy0ZJEp5/3x6x3jpOA5ydYO0aikSuIQ1aOfM9toZmuzvaWBV1neRjnn
+         kzEAAb8gL4DU4OZ5wiIv2TNNIl86fpp7+b60OFi+7sskngZsA4360Jnq/Tovmo12OeMc
+         aICw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792216431; x=1792821231; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tMjb1DN1c9NYMfTnFwIjU5/59o0CGTCnwIETYQ97m6E=;
-        b=HNNQwdeOAPPOEx38KwQJTr/ZjC/OcmmHdf7vXEcZN6XBLwMgC7kVcRMb6nIKssHKcK
-         gco+1zmfJQn35DtiOqisx4ni05Aw4ii+HALScjm/tPEAh2ExPwUTIjHf9KuWry2AITqu
-         88qj+zGR40yUIMINvbCdOQZ1CIeQYfwy6LBqm8UwgGLuH1ksteh8C5iOFthnWL37Gcwj
-         PMAt+fq9uvCJ8ERBuqcF90uwNem1RJCnJuNAulYc/Yoxe614y253EQzTtL+vrPs3PWLL
-         YCKAU2kLVKBnkB7lx3ksopMIlJqgM6VQQ9+eb4Nb898a3PlLqbIyxIXB3vCI7/RR0UfP
-         fELg==
+        d=gmail.com; s=20251104; t=1792216814; x=1792821614; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=63A2I3xSyjrdJxbGENFhY9IuJPK1dZ8nnNSKYaZbcvw=;
+        b=iwFZKsYJSqfa9yjYYaMqOh3X61zJiymVq108vbwUjBQ6HRvMtBX7trHNh9ana+yxjQ
+         QyTkADWb6SEMDnPqrdqHLfXTyElG+OG7ITvtrowp8944uzdeHhPPqYV0aW+BfdM/cx/V
+         LFVhR3eSQj/Gwtr1juXIcI7Z+1N7eltsxAhuvumaydmI7/REdbnoCCPrB1gvZDmRN/k2
+         jmtJpSys8ew/6u2BP5K27vJFLpXbqubv2gKisUlOMhg61TrJEst4kCNlaktWBalE1Ajj
+         d5gDFtHiPwSeIJWmJpIXjLs6snj7HZIclUbI9vT/vXlroxE83NDcwPqbwFR4tn8tRT2b
+         64yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792216431; x=1792821231;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tMjb1DN1c9NYMfTnFwIjU5/59o0CGTCnwIETYQ97m6E=;
-        b=mCB71Is/6N7P2VKIPS/I6J+uFLaL5Qq2P3Z2v5auEr+HDr+ytyLSJVo+BhGB1h80vE
-         dVduHsYFRltBELMmbQywRPtgdNW7AguKtPdP+f1SUW/LxP1DaZZuh2/WtkOqHhhm//6D
-         76OI2XKkEELQkRFe0bNl4mW7ZsvUzk5vMB5tQdivRI7V2k+UZSMNAr4UEi+WODmpmOh8
-         GI+O0GojXnr/3OncuO77NWM74f4+CShFMkmZdJPvot3HoDjFhK46Ljvu8GwRXN2FNWAO
-         LlYaT7krKXkUVawTP1Ewv8Fqt6PQ+x6bfweU2Nz0KY6Ews74Vk+pZzQV1gpy6/kCRVFt
-         elmg==
-X-Gm-Message-State: AFq9FYJVDDsk/1c2wtRrLH2v5bH4eZycM/1ieu07aAGfhDlDaJUCxRXb
-	4yIZz+KQX2ogPVVB5pgmgGOywuVAMxrCgIt9Zp4rgf3oVekd/y4Fo9Vd+mO+DUf98W5OvWOGrHo
-	3VdSBof3SeONSO5sAlKKle1wNgpUwLyk=
-X-Gm-Gg: AYBFou1+o2pUE08QTMD+7KdHtu0dUdrwqPi293dUk47O3QRSr94uR6Hxr+p8j7ci7DN
-	C8WNocXIowgauD4dyW3lTYt2yOfNG3ZYUWNpi0oW+g96lMRnhxL09s5in8X0WJBTqnQpL4ebIgZ
-	SiqCttzk2KK1G/MVQdGENIJ81Y+++34s/Vi5NEIDRqjxpqX8F7/kU0ylmLAJnwr091wcaAxjAbS
-	9SYMx1llFDyfMvluAwF372+zcGDbkcb8yG8NuADk9ZaOpZhx2ZjpwjbTtGNf2l96I+nKSkl6xi2
-	F3MyoH4e04Zv3GCXwl+LMm7GESo6PALVAfxJ4hT1xVlEfJ5yYt4JkhXWkA1WGNRWTsm073Njm4S
-	Ocnw7Zs1eidjpYkLTEl2tmV//lsySSCVuqvFaESMLQ1zh/yqq3cLyH5Mqld7OnL0rQdEEg2nLUN
-	qd4VgtGeOmPNn4OC1NIoo3Jwf+EkNF9fIrAx4vKKmychv6vn3MIqDUqhEscJ4RSGGuz5agSm8kw
-	b+ObX6lZRDjMYEGi68L9iWhzDrG7c1sxeLtc0Q=
-X-Received: by 2002:a05:620a:172c:b0:93e:4c1b:a06d with SMTP id
- af79cd13be357-93f29ceeee8mr338896485a.20.1792216430650; Fri, 16 Oct 2026
- 22:53:50 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792216814; x=1792821614;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=63A2I3xSyjrdJxbGENFhY9IuJPK1dZ8nnNSKYaZbcvw=;
+        b=20cMKm0c4Vd8ziiHL3lLqvcze+SIxO4QkMCv97/xb9Oog82B9lmwqnLIi3hNly7yoo
+         ipiUy3Shpfsji6vY/NYH/vsmVjRQmWdR3fMyr95MiN4uNExQxcxVS0jNO2/tHweIrGwf
+         lQtY13KD7LZDBinmUfaoC6yF9h+beiz37cCHTWcydgJ/Mf7T1wMEb25l+hgXnBGC+CB/
+         BsvgXXFkEIdVnm7+b8pDgO7uf49w4HiIkEpw6PBpn1W5UgQpqqFW7l0Fdr8MOQqqi77r
+         6yquUZc1SwS0T9jAfVm1Ig2m12oLrgdGMaJOTmyyZKCiu1tkVp29+Qc0xcJ77F5YvfEF
+         57vw==
+X-Gm-Message-State: AFq9FYItMXslbaLWQSGWTaooiP6jE/dKqBfXBGLYXKadqEawJig1fMcM
+	ZFgZ4b+oiE/trw2UAdefS0ucleSflaOs9DFfDaEP5A9YT2e2TAxh3woMb9i5a6bbcQCbrivifkh
+	h2FhibtYa3AUknWyXxKf/MFIUdoGhFGV1UqtNzTw=
+X-Gm-Gg: AYBFou21WRBZnOdxe5Mym5gOZ6l+Q2RLEZmTFe6pybetmDSbQZQTps5hTy/qzZzUBdj
+	DA7eS+/+wPNFzV8TavdOwhF3QfSZ+mAR50KFWHYsyZiyGFBrym0PbU40JPw9YIxSMvPXciWOBTR
+	K5TMKX+tyHYyLZRWyUeTUyzt+7g7hIqfBLT6OJTSTDHNnWuv0jTG2kjONnjbLnkWrpfJG5/MQIO
+	0edwcvwZnYVH/3JrXGchJIb1GCMrATcNewm00pKiMp42zmAr+bGPnMDb08gi8IkG3HszEs3pcQB
+	y2jMHSA+LEEAHjtoYHO5aVOQ5EAugCEY3EDnGrC18TkIqpDdAz22XbAnabSyb0aXkXVCAw9dBTB
+	6+TmI5/QqY8Qa1ejbP94+32JAcXKN9ubml0x2trA0uFeI7XsCNSjdjPgUEYQ8xoQRrgPgfa9+I0
+	r2bgWZpQqge1o/5PNCwc2pOmHcXg8IeqUuLjEQK5AO2RukTnHc8qAuyrv6t83Qi6dlQJW2V4dxt
+	qv/+aJ1VNgBDQCqnOZPWlSv
+X-Received: by 2002:a05:6214:b69:b0:91b:d948:c415 with SMTP id
+ 6a1803df08f44-91bdf17d414mr36514556d6.44.1792216813780; Fri, 16 Oct 2026
+ 23:00:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJPVW+=TP73rBavAGTJVqXVN4Uer6JwOi210+2V8nDsH=H=BcQ@mail.gmail.com>
- <20261016195543-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261016195543-mutt-send-email-mst@kernel.org>
 From: Megane Hebo <hebomegane@gmail.com>
-Date: Sat, 17 Oct 2026 14:53:39 +0900
-X-Gm-Features: AclHuK9NL3_LmZEX0uf5XgY1amfOyPlOtQf6woeYIGrlG47Kw2f7yV0Y8I__kFU
-Message-ID: <CAJPVW+kRtMJVtgd2r_1mX_ih5EDruNfYgY5U2j7eXAsrHkJj2Q@mail.gmail.com>
-Subject: Re: [PATCH net-next] virtio_net: validate csum_start before
- installing partial state
-To: mst@redhat.com
-Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com, 
-	willemdebruijn.kernel@gmail.com, habte.yibelo@gmail.com
+Date: Sat, 17 Oct 2026 15:00:02 +0900
+X-Gm-Features: AclHuK_sX1uqxVMBR6hp7esLRZ_VlhANEBWvmp_0y_cBfyPLvu2acqyIrbaKGgs
+Message-ID: <CAJPVW+=XcHDV4aoXt5oAHYh49kX7m5wUxf7TucrcBy+q6MdXFA@mail.gmail.com>
+Subject: [RFC PATCH net-next] selftests: net: exercise virtio checksum ingress outcomes
+To: netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, 
+	mst@redhat.com, virtualization@lists.linux.dev, 
+	willemdebruijn.kernel@gmail.com, habte.yibelo@gmail.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Your objection to my previous patch was right: since the packet was
-dropped, the reorder had no observable benefit. I dropped that
-approach.
+The virtio checksum hardening series gives virtio_net_hdr_to_skb()
+three outcomes for VIRTIO_NET_HDR_F_NEEDS_CSUM: known-good partial
+checksum metadata is retained, uncommon non-GSO metadata is resolved
+in software at ingress, and GSO metadata that cannot be resolved safely
+is rejected.
 
-Reading your v2 series, I think the stronger invariant is simpler:
-make packet semantics stable at ingress before later protocol
-processing can observe two meanings. I wrote a small kselftest
-follow-up for the three outcomes and will send it separately.
+Add focused TUN tests for these three outcomes. Keep the packet shape
+otherwise identical (IPv4/UDP, no encapsulation), so each test changes
+only the metadata needed to select a different branch.
 
-My broader side idea is just to make repeated reuse of an observed
-attack capability progressively more expensive. One speculative
-mechanism is a minimal ancestry "scar" that transformations cannot
-silently erase. I assume that is too stateful and out of scope here,
-so I am not proposing it for your series.
+For the software-resolution case, verify the rx_csum_sw ethtool counter
+added by the hardening series. A recognized partial checksum must not
+increment it. An uncommon non-GSO checksum must increment it once. A
+GSO/protocol mismatch must be rejected without incrementing it.
 
-I have also shared that broader defensive idea with a few relevant
-organizations because it may be useful beyond this bug; I do not claim
-to know the final architecture.Your objection to my previous patch was
-right: since the packet was dropped, the reorder had no observable
-benefit. I dropped that approach.
+These are contract tests for ingress normalization: packet semantics
+must be made consistent before later protocol processing observes the
+packet.
 
-Reading your v2 series, I think the stronger invariant is simpler:
-make packet semantics stable at ingress before later protocol
-processing can observe two meanings. I wrote a small kselftest
-follow-up for the three outcomes and will send it separately.
+This is intended as a follow-up to [PATCH net-next v2 0/7]
+"more virtio-net csum hardening".
 
-My broader side idea is just to make repeated reuse of an observed
-attack capability progressively more expensive. One speculative
-mechanism is a minimal ancestry =E2=80=9Cscar=E2=80=9D that transformations=
- cannot
-silently erase. I assume that is too stateful and out of scope here,
-so I am not proposing it for your series.
+Signed-off-by: Kiyotaka Tonegawa <hebomegane@gmail.com>
+---
+Testing:
+- applied on current upstream master after Michael's v2 0/7 series
+- built tools/testing/selftests/net/tun with the normal YNL dependencies
+- runtime against a kernel containing v2: not run
 
-I have also shared that broader defensive idea with a few relevant
-organizations because it may be useful beyond this bug; I do not claim
-to know the final architecture.
+ tools/testing/selftests/net/tun.c | 160 ++++++++++++++++++++++++++++++
+ 1 file changed, 160 insertions(+)
+
+diff --git a/tools/testing/selftests/net/tun.c
+b/tools/testing/selftests/net/tun.c
+index afaa81c..8775315 100644
+--- a/tools/testing/selftests/net/tun.c
++++ b/tools/testing/selftests/net/tun.c
+@@ -8,7 +8,9 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <linux/ethtool.h>
+ #include <linux/if_tun.h>
++#include <linux/sockios.h>
+ #include <netinet/tcp.h>
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
+@@ -543,6 +545,76 @@ TEST_F(tun, reattach_close_delete)
+        EXPECT_EQ(tun_delete(self->ifname), 0);
+ }
+
++static int tun_get_stat(const char *ifname, const char *name, uint64_t *value)
++{
++       struct ethtool_drvinfo drvinfo = { .cmd = ETHTOOL_GDRVINFO };
++       struct ethtool_gstrings *strings = NULL;
++       struct ethtool_stats *stats = NULL;
++       struct ifreq ifr = {};
++       unsigned int i;
++       int fd, ret;
++
++       fd = socket(AF_INET, SOCK_DGRAM, 0);
++       if (fd < 0)
++               return -errno;
++
++       strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
++       ifr.ifr_data = (void *)&drvinfo;
++       if (ioctl(fd, SIOCETHTOOL, &ifr) < 0) {
++               ret = -errno;
++               goto out;
++       }
++
++       if (!drvinfo.n_stats) {
++               ret = -ENOENT;
++               goto out;
++       }
++
++       strings = calloc(1, sizeof(*strings) +
++                        drvinfo.n_stats * ETH_GSTRING_LEN);
++       stats = calloc(1, sizeof(*stats) +
++                      drvinfo.n_stats * sizeof(stats->data[0]));
++       if (!strings || !stats) {
++               ret = -ENOMEM;
++               goto out;
++       }
++
++       strings->cmd = ETHTOOL_GSTRINGS;
++       strings->string_set = ETH_SS_STATS;
++       strings->len = drvinfo.n_stats;
++       ifr.ifr_data = (void *)strings;
++       if (ioctl(fd, SIOCETHTOOL, &ifr) < 0) {
++               ret = -errno;
++               goto out;
++       }
++
++       stats->cmd = ETHTOOL_GSTATS;
++       stats->n_stats = drvinfo.n_stats;
++       ifr.ifr_data = (void *)stats;
++       if (ioctl(fd, SIOCETHTOOL, &ifr) < 0) {
++               ret = -errno;
++               goto out;
++       }
++
++       ret = -ENOENT;
++       for (i = 0; i < drvinfo.n_stats; i++) {
++               const char *stat_name =
++                       (const char *)&strings->data[i * ETH_GSTRING_LEN];
++
++               if (!strncmp(stat_name, name, ETH_GSTRING_LEN)) {
++                       *value = stats->data[i];
++                       ret = 0;
++                       break;
++               }
++       }
++
++out:
++       free(stats);
++       free(strings);
++       close(fd);
++       return ret;
++}
++
+ FIXTURE(tun_vnet_gso)
+ {
+        char ifname[IFNAMSIZ];
+@@ -611,6 +683,35 @@ static int build_vlan_tcpv4_gso_packet(uint8_t
+*buf, int payload_len)
+        return cur - buf;
+ }
+
++static int build_ipv4_udp_partial_packet(uint8_t *buf, int payload_len,
++                                        uint8_t gso_type,
++                                        uint16_t csum_offset)
++{
++       uint8_t *cur = buf + sizeof(struct virtio_net_hdr);
++       struct virtio_net_hdr vh = { 0 };
++
++       cur += build_eth(cur, ETH_P_IP, param_hwaddr_outer_src,
++                        param_hwaddr_outer_dst);
++       cur += build_ipv4_header(cur, IPPROTO_UDP,
++                                sizeof(struct udphdr) + payload_len,
++                                &param_ipaddr4_outer_src,
++                                &param_ipaddr4_outer_dst);
++       cur += build_udp_packet(cur, UDP_SRC_PORT, UDP_DST_PORT,
++                               payload_len, AF_INET, true);
++
++       vh.flags = VIRTIO_NET_HDR_F_NEEDS_CSUM;
++       vh.hdr_len = ETH_HLEN + sizeof(struct iphdr) + sizeof(struct udphdr);
++       vh.csum_start = ETH_HLEN + sizeof(struct iphdr);
++       vh.csum_offset = csum_offset;
++       vh.gso_type = gso_type;
++       if (gso_type != VIRTIO_NET_HDR_GSO_NONE)
++               vh.gso_size = 64;
++
++       memcpy(buf, &vh, sizeof(vh));
++
++       return cur - buf;
++}
++
+ TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum)
+ {
+        struct virtio_net_hdr vh;
+@@ -678,6 +779,65 @@ TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum_64k)
+        ASSERT_EQ(ret, len);
+ }
+
++TEST_F(tun_vnet_gso, csum_partial_known_good)
++{
++       uint8_t pkt[512] = { 0 };
++       uint64_t before, after;
++       int len, ret;
++
++       ASSERT_EQ(tun_get_stat(self->ifname, "rx_csum_sw", &before), 0);
++
++       len = build_ipv4_udp_partial_packet(pkt, 128,
++                                           VIRTIO_NET_HDR_GSO_NONE,
++                                           __builtin_offsetof(struct
+udphdr, check));
++       ret = write(self->fd, pkt, len);
++       ASSERT_EQ(ret, len);
++
++       ASSERT_EQ(tun_get_stat(self->ifname, "rx_csum_sw", &after), 0);
++       EXPECT_EQ(after, before);
++}
++
++TEST_F(tun_vnet_gso, csum_partial_uncommon_resolved)
++{
++       uint8_t pkt[512] = { 0 };
++       uint64_t before, after;
++       int len, ret;
++
++       ASSERT_EQ(tun_get_stat(self->ifname, "rx_csum_sw", &before), 0);
++
++       len = build_ipv4_udp_partial_packet(pkt, 128,
++                                           VIRTIO_NET_HDR_GSO_NONE,
++                                           __builtin_offsetof(struct
+udphdr, source));
++       ret = write(self->fd, pkt, len);
++       ASSERT_EQ(ret, len);
++
++       ASSERT_EQ(tun_get_stat(self->ifname, "rx_csum_sw", &after), 0);
++       EXPECT_EQ(after, before + 1);
++}
++
++TEST_F(tun_vnet_gso, csum_partial_gso_protocol_mismatch_rejected)
++{
++       uint8_t pkt[512] = { 0 };
++       uint64_t before, after;
++       int len, ret;
++
++       ASSERT_EQ(tun_get_stat(self->ifname, "rx_csum_sw", &before), 0);
++
++       /* The checksum field is a valid UDP checksum field, but the
++        * virtio header claims TCPv4 GSO. GSO cannot be resolved as an
++        * arbitrary checksum write, so the ingress contract rejects it.
++        */
++       len = build_ipv4_udp_partial_packet(pkt, 256,
++                                           VIRTIO_NET_HDR_GSO_TCPV4,
++                                           __builtin_offsetof(struct
+udphdr, check));
++       ret = write(self->fd, pkt, len);
++       ASSERT_EQ(ret, -1);
++       ASSERT_EQ(errno, EINVAL);
++
++       ASSERT_EQ(tun_get_stat(self->ifname, "rx_csum_sw", &after), 0);
++       EXPECT_EQ(after, before);
++}
++
+ FIXTURE(tun_vnet_udptnl)
+ {
+        char ifname[IFNAMSIZ];
+--
+2.53.0
