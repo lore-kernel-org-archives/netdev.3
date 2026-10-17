@@ -1,160 +1,176 @@
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21045392828
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 12:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9696C4848BF
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 12:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792238709; cv=none; b=BclIndKBFKBxoIgtbQr2UpfDQbu0OYdjXHzqlz2ThoqN+lLTO3fglInN8RdbifRYlmShLn5vwm7Q9DQG+oqg+YeaSFpSrjrQqHc+3fMFsySqMIepI/v/VHq15+2JdulW+ewz/2T5V+Vwarb3wAUgyHyeRZIJKNMycsANDWwEP4E=
+	t=1792240389; cv=none; b=AHASO1OCH3G6F6NWdAvoJVBDJpY57A1YNPUTsReI49/thSmWfCQDis9SQW1GelGIlBsATOoBrZMQRoAaEqhzKfyKoSaRNx+9BibpZayW71WA1hcbclV14j1recJkHpkFcKyvL4hoRysJmtIzOcUa93fjBVQRHze08297VhMCf8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792238709; c=relaxed/simple;
-	bh=Uhqf6kEDaVk5sdN1pEgcxFC260gFONWp77GIpmEdMVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gDsddEEAH26wf+n0q6KTAUj5Gi/aiAdzJQ35xOLCgN4BdxWgJdrTRDjeDmaRgTevY8fOJxEDdpUafb/MqYKYZyO7szatJur+AGMCG3GK+CW7FeFRpOGgRJ2B4nhCLQxv1OySLBOnvjjXGzldwjmfsOezHuQpk4BssaizdFyiDUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WyYOGloR; arc=none smtp.client-ip=74.125.227.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792240389; c=relaxed/simple;
+	bh=GEeHk6S7mQb/+I4+xIWGQDGmZPW7/nBIQMpjecIG1nI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KDJpvJVfsYjGn5OmuhRVpY0ZYqdRfnpYsV7H1oOZKmPc1jzX+shLQyiB8OTJ3nlL4yu8wdphe7EHauwxyZdcxkG4voEXXRXFrnXkKZD6Z9P0Xpk+1BBKIZlh/6vK+sObdZJ5SGogrYrcxioEFUCZpPer9zMqfVLRogcmPv8d56o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CtUwy/bJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WyYOGloR"
-Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3ac92391681so181614a91.1
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 05:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792238707; x=1792843507; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=shPj0JpAvHjJzhITuPzL8gL8dV599qsdcXL+y8yPBvI=;
-        b=WyYOGloRwlCMpBDiWpb5Qd86Y8koRZg67hGD3zmnd/L3BIeH783bcI9gq/4b4KMnOc
-         4LuuJ7d5htJPh+1XVuLf4sbfFBgn6tKydOfY0EPu/pRALdhK/3L8DqtEhf/Iks0atNt2
-         Ub152fpwtoG6JbBMT/KuEqsgu22TbFFFjhF4H8UVFVeJIGrhj7MKjlNRVe4OmsglDZJ2
-         kpgg8bVuTmq7MHn0G/mKAXVq6agfSvNWrxJrWfnOs//csMKHUI/DSkoAGxlsjWdFxdKY
-         x7DnkC37chLX4JtvBqNmSTYw7A/DRlb8L/1IUzcHjtfIm4cCCj7CCj9YTQAIEF/N0BmT
-         Hkwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792238707; x=1792843507;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=shPj0JpAvHjJzhITuPzL8gL8dV599qsdcXL+y8yPBvI=;
-        b=o7tqxu0FyKNvughLSptkrX+GZ6FbgPEatUHblbWseP9l+rC5Ta7PX8IR6K0tsiy9rr
-         bqPIQ+h4ot6SEf2gFuq9ZzFH0ImjI34CKdlCGx9tkhaDFS9czCQIqphnY+dxgyGDrVWG
-         /qQqyBShtVA8VfmivxHhhEJkaDysHK0jueG4ySMnPSQ1/W4xRdAQMDd7nD3KdZkIOkcZ
-         5jWzBnHsOw1PiuG0YxTGc5iHweKGvYP0avkITlhIgOfHV6yY3ylEgrQdWVF4sSI8W5+n
-         SZAErALnIOLaT51PbxWgR7bO8Mp1MlcRDOu4WauvvL4M6GMQ//pBDDFDY81luUVhJ67g
-         Ef5g==
-X-Gm-Message-State: AFq9FYIAQg8DVe2sRCu7BFxNLpKh3cObHUdWaGUMaBERgSBtHTXW9mqG
-	GEMchHtVCBG2IyV3HtgpbiAELoyJMt8uUsJNhJcocnDq3jY2uZKGuoRa
-X-Gm-Gg: AYBFou3FRIOD4fW2IqKgwDhoe0BBIBKz6Fc8wHbTOiBFUwI28L9lemeCg4fUjA9IZpC
-	80lPddO2SnNEJrv/3UrgMqYqtEhqg2xusjmW8TZ/Zv0mVrCqaMf599cpJOyyN6zhIGdDQl2muue
-	zmGQ6AQI43hyR87Gd87P2/UfklKmdjxs0BW9Vp39tYJy7K0NVj7Ro+xT2kDVDTXAw8JNWaalfPe
-	OMkZDsh0tORugAU9qZpEfdr0ITOCWvn0ojp8qqOpTAu7NT2qCT4gz3JOUdKqgBlBhmUC/uZczXR
-	P/qMX8ASKworS6Yl2Ekj7TQrqX9FrIyJKsFQE66ezmWcPy7QKfy3+FlAoaBsjFJuNqkBckoW837
-	UMCSC42qRBikuviQf2ydY94DgKpg1FzScn0EcMf+Nhs//3KmC/GXjQsUWVgH+5B8fF9K2vnDx/D
-	2d1P0FCllitOtwtZUJ+Ena2IU1DSmiwt2PnC9mQaj1Ijrfnirj4QLbpGt1yDvK11qMuINjp+xsK
-	IjnNDk2ZCW2IONUWWBa
-X-Received: by 2002:a17:90a:c110:b0:3ab:f38:2b43 with SMTP id 98e67ed59e1d1-3aceeeabd7dmr1791948a91.34.1792238707370;
-        Sat, 17 Oct 2026 05:05:07 -0700 (PDT)
-Received: from LAPTOP-QJLDGQ2L.localdomain ([112.224.225.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc48f4cadsm7815593a91.12.2026.10.17.05.05.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 05:05:06 -0700 (PDT)
-From: Boyan Liu <yymhvert@gmail.com>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	David Ahern <dsahern@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	co+98d7de09cd94fec5@bugs.sh
-Subject: [PATCH net v2] seg6: Fix unset mac header in SRv6 End.DT VRF decapsulation
-Date: Sat, 17 Oct 2026 20:01:44 +0800
-Message-ID: <20261017120144.3059-1-yymhvert@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CtUwy/bJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4035D1F000C4
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 12:33:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792240388;
+	bh=AD9Fx2GvsncC5aqA7hFno7iSTFG1b3DaScJqKcrt40o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=CtUwy/bJ22zU73S38fnZ0qZ6FKqpY2u/WPDX0mrwuizmXdGL/BApJFqvJGSQrpKIF
+	 3PjKIzwSt9L7jpfQnHv7CuzPCiooE5s99VYOBztqDeKsE/Az0Kq5OUpV6gEaUWQr4I
+	 sM5HxmnWUhPisAa+6gfa5u5AepCpvXax9bPJh0ZXJZeKd0/VJn36qtkNMfg86J4v2l
+	 qB2k0Md8IYVmybLR3bIfNMU0i+UxTcH2jRYtRYnefjLK4BWtsHzgiF1sTzsdhdTdOS
+	 WmIvKpIRcK56T+LqabwdBrcExyHYBfJqwS501SISbGfrkLcb8Uuw4nIzEZqbea6ov+
+	 UziW2b+adhftQ==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-486f013db83so240377fac.0
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 05:33:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwLk0nNpFt147wi0UJHe/85luqZns0cEoraZgk/26y1H84162AKTyI0qvgkE/bm/uH/tNKDpds=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLSV4/13a1Yi1EQBrOMt60vZygHghwvxeHRVEoqY9k1nE1wWhje
+	bFKO4+dxGgw46ThwnBOnb/ScKYzF5QmNDePH62xHlx84zwT1WdfA4up4b8nld/LhPxihsZyC8HD
+	5+tjZCVALnr1NzcTfLmRcdsnwF5rmdHc=
+X-Received: by 2002:a05:6871:3407:b0:494:7af4:954b with SMTP id
+ 586e51a60fabf-4a757974186mr2003567fac.19.1792240387553; Sat, 17 Oct 2026
+ 05:33:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
+ <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
+In-Reply-To: <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sat, 17 Oct 2026 14:32:56 +0200
+X-Gmail-Original-Message-ID: <CAL4WiioL+wiv3jgqeT1qiZ2mGWQ+HV+mEQP2K0aFMCpjDvwYDg@mail.gmail.com>
+X-Gm-Features: AclHuK_Do3zKvqxvHgFKWUwKg_2z7PqPbuLYUX8rdBoTNRq6JgnmoDu_jAQFd-Y
+Message-ID: <CAL4WiioL+wiv3jgqeT1qiZ2mGWQ+HV+mEQP2K0aFMCpjDvwYDg@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/3] ipv6: take fib6_sernum from a sequence
+ shared by all netns
+To: Qiliang Yuan <odys.yuan@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SRv6 End.DT4/End.DT6 VRF decapsulation unsets the mac header in
-end_dt_vrf_rcv() so that the VRF device can rebuild it for packet
-sniffers. The VRF rx handler only performs the rebuild when a
-sniffer is actually attached to the VRF device (ptype_all
-non-empty); otherwise the packet continues up the stack with
-mac_header == 0xffff.
+Le ven. 16 oct. 2026 =C3=A0 08:10, Qiliang Yuan <odys.yuan@gmail.com> a =C3=
+=A9crit :
+>
+> A per-cpu IPv6 route of a nexthop object records fib6_sernum of the
+> netns it was created in, and rt6_is_valid() compares it with fib6_sernum
+> of the netns its device belongs to when the route is checked. Every netns
+> starts its fib6_sernum at 1 and increments it on each tree change, so
+> different netns often hold the same value.
+>
+> When a device moves to another netns, such a route remains usable until
+> nexthop_free_rcu() releases it, and fib6_info_destroy_rcu() queues that
+> callback from inside an RCU callback, after the device has moved. If the
+> fib6_sernum of the new netns matches the cached one in that window,
+> ip6_dst_check() accepts the route and a socket in the old netns keeps
+> sending through a device that now belongs to another netns.
+>
+> Take every fib6_sernum, including the initial one, from one global
+> sequence, so that a cached route never matches the fib6_sernum of
+> another netns.
+>
+> A connected UDP socket in netns A caches a route through an IPv6 nexthop
+> object on a veth. The veth is moved to netns B and brought up with one
+> RTM_NEWLINK, then the socket sends 200000 datagrams. A route is added
+> to and removed from B 0 to 20 times before the move, 63 trials:
+>
+>                                 before     after
+>   trials sending after move          3         0
+>   datagrams sent after move       8187         0
+>
+> Fixes: 8f34e53b60b3 ("ipv6: Use global sernum for dst validation with nex=
+thop objects")
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> ---
+>  net/ipv6/af_inet6.c |  1 -
+>  net/ipv6/ip6_fib.c  | 14 ++++++++++++--
+>  2 files changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+> index a9b8b4b42a1af..db4cccfdc565c 100644
+> --- a/net/ipv6/af_inet6.c
+> +++ b/net/ipv6/af_inet6.c
+> @@ -945,7 +945,6 @@ static int __net_init inet6_net_init(struct net *net)
+>         net->ipv6.sysctl.max_dst_opts_len =3D IP6_DEFAULT_MAX_DST_OPTS_LE=
+N;
+>         net->ipv6.sysctl.max_hbh_opts_len =3D IP6_DEFAULT_MAX_HBH_OPTS_LE=
+N;
+>         net->ipv6.sysctl.fib_notify_on_flag_change =3D 0;
+> -       atomic_set(&net->ipv6.fib6_sernum, 1);
+>
+>         net->ipv6.sysctl.ioam6_id =3D IOAM6_DEFAULT_ID;
+>         net->ipv6.sysctl.ioam6_id_wide =3D IOAM6_DEFAULT_ID_WIDE;
+> diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+> index 0dc6ebee6e568..c66466be64451 100644
+> --- a/net/ipv6/ip6_fib.c
+> +++ b/net/ipv6/ip6_fib.c
+> @@ -89,13 +89,21 @@ static void fib6_walker_unlink(struct net *net, struc=
+t fib6_walker *w)
+>         write_unlock_bh(&net->ipv6.fib6_walker_lock);
+>  }
+>
+> +/*
+> + * Draw every fib6_sernum from one sequence shared by all netns, so that=
+ a
+> + * route cached against one netns never matches the sernum of another on=
+e,
+> + * e.g. after its device moved.
+> + */
+> +static atomic_t fib6_sernum_seq;
+> +
+>  static int fib6_new_sernum(struct net *net)
+>  {
+> -       int new, old =3D atomic_read(&net->ipv6.fib6_sernum);
+> +       int new, old =3D atomic_read(&fib6_sernum_seq);
+>
+>         do {
+>                 new =3D old < INT_MAX ? old + 1 : 1;
+> -       } while (!atomic_try_cmpxchg(&net->ipv6.fib6_sernum, &old, new));
+> +       } while (!atomic_try_cmpxchg(&fib6_sernum_seq, &old, new));
+> +       atomic_set(&net->ipv6.fib6_sernum, new);
+>
 
-Every other receive path delivers packets with a valid mac header:
-NIC drivers set it in eth_type_trans(), and tunnels without an L2
-header (ipip, sit, gre, tun) reset it to the network header after
-decapsulation. skb_mac_header() even warns on the unset state with
-DEBUG_NET_WARN_ON_ONCE().
+The atomic_set() of net->ipv6.fib6_sernum after the cmpxchg()
+ is not ordered with other writers. fib6_new_sernum() callers only
+ hold the per-table tb6_lock, so two tables of the same netns can
+ race and leave the netns with the older of two values. Since values
+ are never reused, I think this only causes extra invalidations, but
+ the changelog should say so: fib6_sernum is no longer monotonic per
+ netns.
 
-If the decapsulated packet is an unexpected UDP GSO packet,
-udp_queue_rcv_skb() re-segments it after restoring skb->data to the
-mac header with __skb_push(skb, -skb_mac_offset(skb)). With the mac
-header unset, skb_mac_offset() returns a large positive value,
-which the unsigned __skb_push() argument turns into a huge length:
-skb->data moves far outside the buffer and skb->len is corrupted,
-so segmentation reads out of bounds:
+>         return new;
+>  }
+> @@ -2466,6 +2474,8 @@ static int __net_init fib6_net_init(struct net *net=
+)
+>         size_t size =3D sizeof(struct hlist_head) * FIB6_TABLE_HASHSZ;
+>         int err;
+>
+> +       fib6_new_sernum(net);
 
-    BUG: KASAN: slab-out-of-bounds in inet_gso_segment (net/ipv4/af_inet.c:1383)
-    Read of size 1 at addr ffff88800da7ffff by task exploit/149
-    Call Trace:
-     inet_gso_segment (net/ipv4/af_inet.c:1383)
-     skb_mac_gso_segment (net/core/gso.c:53)
-     __skb_gso_segment (net/core/gso.c:124)
-     udp_queue_rcv_skb (net/ipv4/udp.c:2476 net/ipv4/udp.c:2466)
-     udp_unicast_rcv_skb (net/ipv4/udp.c:2620)
-     ip_local_deliver (net/ipv4/ip_input.c:262)
-     seg6_local_input_core (net/ipv6/seg6_local.c:1640)
-     lwtunnel_input (net/core/lwtunnel.c:465)
-     ipv6_rcv (net/ipv6/ip6_input.c:351)
+There is no need to draw a value from the shared sequence at netns
+creation. Netns creation is exactly what you are trying to make
+cheaper, and the shared cacheline does not need to be written there.
 
-Restore a valid mac header, pointing at the network header, once
-the VRF rx handler returns. The sniffer rebuild happens inside the
-handler while the header is still unset, so tap behavior is
-unchanged; when no rebuild happened, the packet now carries the
-same mac header state as any packet received on an L3 device.
+You can instead keep per-netns initial values that the shared
+sequence never hands out:
 
-Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-Cc: stable@vger.kernel.org
-Reported-by: co+98d7de09cd94fec5@bugs.sh
-Signed-off-by: Boyan Liu <yymhvert@gmail.com>
----
-v2:
-- Move the fix from the UDP GSO path to seg6local.
-- Restore the mac header after the VRF rx handler returns, preserving
-  the VRF sniffer behavior.
-- Verify the original reproducer, datagram delivery, and VRF sniffer
-  output under QEMU.
-v1: https://lore.kernel.org/netdev/20261010073015.7665-1-yymhvert@gmail.com/
+keep atomic_set(&net->ipv6.fib6_sernum, 1) in
+inet6_net_init() (0 is not usable, rt->sernum =3D=3D 0 and
+FIB6_NO_SERNUM_CHANGE have their own meaning), and make the
+sequence never return 1 (restart at 2)
 
- net/ipv6/seg6_local.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 7b5212220185..5232c9e2b7d7 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1113,6 +1113,14 @@ static struct sk_buff *end_dt_vrf_rcv(struct sk_buff *skb, u16 family,
- 		/* the skb buffer was consumed by the handler */
- 		return NULL;
- 
-+	/* the VRF device had its chance to rebuild the mac header for
-+	 * sniffers; restore a valid one pointing at the network header,
-+	 * like any L3 device without an L2 header, before the packet
-+	 * continues up the stack.
-+	 */
-+	if (!skb_mac_header_was_set(skb))
-+		skb_reset_mac_header(skb);
-+
- 	/* when a packet is received by a VRF or by one of its slaves, the
- 	 * master device reference is set into the skb.
- 	 */
--- 
-2.43.0
-
+A netns that never bumped can then not match a value from the
+sequence. Also, the moved device is down after the move, and
+NETDEV_UP in the new netns bumps it (rt_cache_flush() for IPv4,
+the route inserted by addrconf_add_dev() for IPv6) before the
+device can transmit.
