@@ -1,57 +1,57 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D19A4F5E0
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 04:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C062737B018
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 04:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792212027; cv=none; b=DRqI/3tDpqOfGt8kWVoDLlJiXXlySvkapGUXJLCleu9+F3q8Lw5E1jGOHzEQSIbgs1DgZ34t6KA7WWRi2POdAdqd5HAGW+Rm6G2TkZNa7InmlyAn7KMqO52DP/7N3AD421IJO7icvwpMrx83ns9R2PhcUmd8+iHrpYFcyhargNE=
+	t=1792212657; cv=none; b=SSfgTbGVT+rDDapCV2KBN1q7Fiju9XH2LpJLGs0rYmFtiA3OZ7SKMzsSQ77mJtaO0Rpe6auG/kUmNkUaZpq0cL+dj3ClURjqKsEBto3QKq5nGV3czBose/7Hryn0nCmxHaH9TpFzfo85KLE3krATRQqGrsfuMNVAMWDWjh1Kxss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792212027; c=relaxed/simple;
-	bh=dt6zKtsA2pImG2OzEQtTlAjxne9U81g0RsmV5/u1dCQ=;
+	s=arc-20240116; t=1792212657; c=relaxed/simple;
+	bh=7Ir8gVL2LT4Hq/1oM42Dh+FUvuDYGifIxm+uHvXkIP8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N67//eqdE7+Ie13vUsqzlHD9rsA7mZcZZE1iEfT1f74MZAR4CBWQPwK4zhEoYeBmqEh96vDLU05GRq8sdkfsmm65VjAQMKnp4pmWJ/pM6iesPVpwourtvZSxhmdoeH9664IVxRjj7lAQ5poIJ5/WnegqrwkS4GVfDhD5fK1hCes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eDj4IRrt; arc=none smtp.client-ip=209.85.216.69
+	 To:Cc:Content-Type; b=YP+vsr9XbUlJ7ON833zee0Xp7R1ve+x0I1LbA059vJaFT1Wlsk+kpn67XghFhvfGD7btEPolXievcYz/qH9CFiL3GCZSH1WMSAZcRWM9jBillxI8ug2yQfZhe3Rdhqg+T1HUDDxrmM/LlraPU5qOvwbirKFE4Qn09113pufSVVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hhMj9NNT; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eDj4IRrt"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab9850456aso927202a91.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 21:40:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hhMj9NNT"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cca35cf9f77so346534a12.2
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 21:50:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792212025; x=1792816825; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792212656; x=1792817456; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ujlqLNxMSLXVmuXc6H/r32h76Zwbh9xlAVzdBgdTBM0=;
-        b=eDj4IRrtxGnjtispzq2jp6bOhHIFeYrM5m2bonVqEAuljckbf0RCCOQKIajBL3ly6C
-         4+nfAeMYFvJalnruRewij7oHgyfYeAYdqeAohaqDb0sK1iqRNVh0/TxNBIaUfRyX0xaq
-         aR3BOl4FYsxFPeeA2oCREtB54y6Vi5NVPpCaNG6FB428IPJp6iN4MKH/jYf3cmf475/5
-         iB8BumDuiwxFS0T1nJJTq0sx1a+vXJkc5ohENXyC8nfQEZIgIG7NeG+qkTb2ytW+KRDL
-         tXXrjBLcOa1Af1NRSBR7yZ+2R3G0DYT6kgRSg3zR7AyrjqiiOFqdu7GzEN1U8+S23VEZ
-         BSCw==
+        bh=mSyJBWDi4nx9CLru9f0Dqe09kF4d35e/bLqWVltauo8=;
+        b=hhMj9NNT0tdMvuCayHRm6fpmuzTfYh9glcqsC1VCNztLWbu4JotKm1/+XtoBw1+C3K
+         WxVsKU1fc23w4xmm/jo1qyaQ1CK+USqsVyZJloOxLd3XcZsyZeOwI3aF4d8eu+Gp465X
+         QpS+AZGaxehRzm5/rGczbWU1dM0hb6n6lUaWSJC2hgM11PCyDwcuDn5rcRiAc/qp40Gp
+         MRZA1+UhvJtSmNrA9tBsU7Imgy/0oEYrvawldhwHR0ul0/O9dVkWeBBjFEl8RmErSahb
+         rMGbwrGTXJoXKgUYlZhoglTAL3n31Xz/OSLBH3gdl+LzA09X08+yB3xWJLtn8GkORPNk
+         pFGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792212025; x=1792816825;
+        d=1e100.net; s=20260707; t=1792212656; x=1792817456;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ujlqLNxMSLXVmuXc6H/r32h76Zwbh9xlAVzdBgdTBM0=;
-        b=ybVOeuzLdiKsEq9c4hcTpafnzU+5MT/5P4LEWmwz5QhpDoBrh7xOw7toPV6WqBcoG3
-         vi0fv2f3CvCaTReMrkoflemfbGDT3pF2mfFsgQRiztE3GnLjS5cKDIhAq6z5Axf3YZhd
-         h/sS9ZyQGoHk2a1Msg5dVpzGKBFXMOU+sZ+oRd03rZ314TPm4HluKw+my+WGVB31Fhnc
-         kIz3MJKaVfnI90bjfF0umamH82cQyHHP/vyUJ6sgBCtTV20NLa0cLYwluAqBYKI7ZhTo
-         oOED7+KuqdcxIrt0aE/dJvGLXmYTZB453vgkRDr2eFyroVlr3QHXWvc/P6oY/E95exBL
-         u7dA==
-X-Forwarded-Encrypted: i=1; AKwUvBxtJ9IX+erPicbkoPH69Qgl6mB9y11Y2CwXcsEQpsVbklzpFY/Aebpc+OS5QygGzZecA5vdsX4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLtoL4Vi2f+Jlef01H8ESqVOmnRPt3N3gNm03+KEjs7yAPSEYX5
-	Gp/SbEZFauMzdrUY1ppsk3yGs3OGX/xujOjFpnznxQGlkmVyIwYktEuHj9DDgcAELHOgH6xW0yz
-	RUdaSAQ==
-X-Received: from pgnm1.prod.google.com ([2002:a63:7d41:0:b0:cc7:a825:732d])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:582d:b0:3a8:5d1f:59ad
- with SMTP id 98e67ed59e1d1-3acef14c8femr1576985a91.43.1792212025461; Fri, 16
- Oct 2026 21:40:25 -0700 (PDT)
-Date: Sat, 17 Oct 2026 04:40:25 +0000
-In-Reply-To: <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
+        bh=mSyJBWDi4nx9CLru9f0Dqe09kF4d35e/bLqWVltauo8=;
+        b=yYQLsLE1gLXMd/4TQu8Mjtg5SH4xeLiBClJdNp0qzl4m+SpkkmLEBjFQrUZ1C1yoyr
+         fJvIfPLkGo58eYfoE8BYUfFk8+nOSBAGY5eEWdrMeWRAPRcKmfe9HrKV/XSsmxiNxqsp
+         irW6PjGvnglQrLEXiwwVfthuzguRXi/8Mgw/IlLXbZedS8Upzg24mwRRzhhOGSIyL2CD
+         h6b5H19zWjpmpeQIwwZoAy74ygDHY2NuJS9krb9vmVBMfCeYeLWRsUCw3u7IFd/ON2XZ
+         2UPzFGiC47cQoqWiFDLeyxCGJm6FD8G4zPag5REVXjBgjFjWRmPN9Z28puqtkogLZ4PA
+         W3vg==
+X-Forwarded-Encrypted: i=1; AKwUvByXsX4gOMofHysyFRaEyhSLxI8DYx1s8jU/mA4d9yfB6Yb29rKWZWkM6btJEmxQ0X3V/iXMRwk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK5114yGlT8RVmIT4EuNm35Ao9X2YS2IirjgI7AQeU5F7vl/HRN
+	wybd6ldGeOC7uQZPaPwnzxEPOsDGcj5SP1RlBip95hSK8jdwQSFn+0TypxGrLiAiCTxiL++8v3c
+	wwCyqtw==
+X-Received: from pgbj24-n1.prod.google.com ([2002:a05:6a02:61d8:10b0:cc1:bda2:d0a3])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d705:b0:3dd:a195:dd5d
+ with SMTP id adf61e73a8af0-3e226105ef9mr1057865637.63.1792212655907; Fri, 16
+ Oct 2026 21:50:55 -0700 (PDT)
+Date: Sat, 17 Oct 2026 04:50:55 +0000
+In-Reply-To: <20261016-bug-net-netns-move-rcu-barrier-v1-3-4157d798658f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,10 +59,9 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f@gmail.com>
- <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
-Message-ID: <atL8JlUJlc3EBcbF@google.com>
-Subject: Re: [PATCH net-next 2/3] ipv6: take fib6_sernum from a sequence
- shared by all netns
+ <20261016-bug-net-netns-move-rcu-barrier-v1-3-4157d798658f@gmail.com>
+Message-ID: <atL-iSu113pPS7zm@google.com>
+Subject: Re: [PATCH net-next 3/3] net: remove rcu_barrier() from __dev_change_net_namespace()
 From: kuniyu@google.com
 To: Qiliang Yuan <odys.yuan@gmail.com>
 Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
@@ -71,34 +70,39 @@ Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
 	Nikolay Aleksandrov <razor@blackwall.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, 16 Oct 2026 14:09:54 +0800, Qiliang Yuan wrote:
-> A per-cpu IPv6 route of a nexthop object records fib6_sernum of the
-> netns it was created in, and rt6_is_valid() compares it with fib6_sernum
-> of the netns its device belongs to when the route is checked. Every netns
-> starts its fib6_sernum at 1 and increments it on each tree change, so
-> different netns often hold the same value.
+On Fri, 16 Oct 2026 14:09:55 +0800, Qiliang Yuan wrote:
+> Commit 6549dd43c043 ("net: dev: fix the incorrect hold of net
+> namespace's lo device") added rcu_barrier() before
+> NETDEV_UNREGISTER_FINAL in dev_change_net_namespace(), so that dst
+> entries released by RCU callbacks were on the dst garbage list before
+> dst_ifdown() moved them to the loopback device of the old netns.
+> Commit 070f2d7e264a ("net: Drop NETDEV_UNREGISTER_FINAL") removed the
+> event but kept the barrier, and dead dst entries now point to
+> blackhole_netdev instead of a loopback device.
 > 
-> When a device moves to another netns, such a route remains usable until
-> nexthop_free_rcu() releases it, and fib6_info_destroy_rcu() queues that
-> callback from inside an RCU callback, after the device has moved. If the
-> fib6_sernum of the new netns matches the cached one in that window,
-> ip6_dst_check() accepts the route and a socket in the old netns keeps
-> sending through a device that now belongs to another netns.
+> The barrier waits for the RCU callbacks pending on every CPU while RTNL
+> is held, which takes a full grace period on each netns move. Container
+> and sandbox managers move one end of a veth pair for every new network
+> namespace, so this limits how fast such namespaces can be created on the
+> whole system, regardless of how many threads create them.
 > 
-> Take every fib6_sernum, including the initial one, from one global
-> sequence, so that a cached route never matches the fib6_sernum of
-> another netns.
+> Remove the barrier. The RCU callbacks queued by NETDEV_UNREGISTER
+> handlers free memory and drop device references, which the move does not
+> wait for. Cached IPv4 and IPv6 routes through the moved device are
+> rejected once its netns changes, since rt_genid and fib6_sernum are now
+> unique across netns.
 > 
-> A connected UDP socket in netns A caches a route through an IPv6 nexthop
-> object on a veth. The veth is moved to netns B and brought up with one
-> RTM_NEWLINK, then the socket sends 200000 datagrams. A route is added
-> to and removed from B 0 to 20 times before the move, 63 trials:
+> Creating 400 netns, each with a veth pair whose host end is moved back
+> to the initial netns, a tap device, addresses and routes, in a 16 vCPU
+> guest, median of 5 runs:
 > 
->                                 before     after
->   trials sending after move          3         0
->   datagrams sent after move       8187         0
+>                    before      after
+>   1 thread        68 /s      440 /s
+>   4 threads       74 /s      409 /s
+>   16 threads      77 /s      283 /s
 > 
-> Fixes: 8f34e53b60b3 ("ipv6: Use global sernum for dst validation with nexthop objects")
 > Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+
+Thanks !
