@@ -1,128 +1,120 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327FA3B19BF
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 03:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792208505; cv=pass; b=FaghMN0NcKGvdlatSRhr8kslSl+Mhp97jso2jr3eF5iHCFT1CKCPs6BhiIPwxAaCOBUPwXk5aio1Ps0BynP66w8SiI4v4AoJ0y5o4qwYG+75Pn2g2JPc5vsgqQfcjLqty5BGzVVrmLwEfWZFAPNPZf4as145CwVkFGR5pfAaPrU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792208505; c=relaxed/simple;
-	bh=XzNP8y9P9XBRPn9q1Ye3+moIraqek8NEz8C1lEgoCBI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z6i6aHomKTInkhJj/atN+I62yfVv5NRI6rVQOJIvMpSBeD80aBW+4FMFAudUVMorOiAB7Wi1L35pe9ybrpTG2NnfFKi7EJKWAzraqTUOEUAbcjJo7lwuRP54Mn/IsItFCm0S8ALRD2IbVTi6Nh9VwGw27ISDo8V2F1PEwz3KESI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NBFfcICB; arc=pass smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF9429B795;
+	Sat, 17 Oct 2026 03:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792209303; cv=none; b=PDBVI6PdlwsmGl6/fyfaMOMfsopbP7LwZDIwv0cTNVUcwoaeTSM7jo/ISsnUibaSef37lMeGxKjIzdxOULWRrw84b0yO2aIpYB42rJzkLmBUego6VRW5W5kH0CRxD2pA4oveyZ/Nx9zk9Iw1rnUOXNgfF8wHuIt2Qr8c/VsHRl4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792209303; c=relaxed/simple;
+	bh=WQxIWjVKXq7oJufScal/3s5vd7daAbc5n5ip9vXLHBU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i34sLR9EWloHGji9dG0I0394G92HyJc+CBTViYJFLPY8A9udfbZqfAQy9xhPSC0bLmueicnFUt6rnLJwDFAyChv6kJ2Z+VHWtV6AvYUFWV7VB/GbODbS7EvF7ao0JsIacrGTK53utY8ZQ1JbTXfIRVR2S1ZSRfk0L47qATrk178=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIzmr8ur; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NBFfcICB"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3a9e87ba7f2so2986871fa.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 20:41:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792208502; cv=none;
-        d=google.com; s=arc-20260327;
-        b=S1i0++VFdjCiw6A+BZEYQTNVtpqUGFX4JFGkRP4uknfNzRlYwSJne3NYZI9fVrklDd
-         ZXwhs05FInGzNdRB5G6s0wYGx3bfohNBvc38/TgpkahIYgCA2mtA8kSIdFxhm3+mfSfw
-         EbvhPuj+KLrlCXgY5cqDsaBCwE8zO43c/eD4nFc6Lc6RDDCwhSqPB6BulW98+SSWcxtP
-         zP5SySQkRV/pv9Z0D0I5F5q4Kl6Y5BgC46NFAF4pR/Ut1g7iDHpv3t22nq/Uu0JvBfh9
-         9hNrHfg5tZ0/dGhiyfU+tDYiVuWnoEKAqUyUtk1PzHtE3/DPyuMjyDfdELc/wo2cC5Jn
-         HPig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/T8Wqe7w+zffENQg775/h8BcnuG43eGgkzjzMiS/JEg=;
-        fh=ndo03VC/6rDxaTqGlqm7XVGmVcLo/V9dSNWff0went8=;
-        b=BLxwdAJTvORCZF1AKAORZKvu1qG8AfzS+0EwhwfnKEBOUBloHdbeGQ+e5ABkv0PBLp
-         RnCYXGxya52c4YwnmAQaZm+tyoEGZjLg9utS0AgVrcZOUdy29t/1Gvx7sl2UYx7StiTD
-         HwIQ9AzSii+evhXj9dA+5jjUcZuOPFGhYkEDq8+j/SJzjQkrR8bETFj+yYwOLd26UE5V
-         k4k5AZAz6jy8GbkDLbfn0t5vbFrzyPupgl1QeAQWVBOjna8ObE/Hr9ULsfGC03bexs10
-         wcRWlCWDAzTAsbsAPawl2QqgZMkmOh3AUNlT74VNsW1MH/aDwAO5okdWO3PAYmoJ5xMm
-         ZPDw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792208502; x=1792813302; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/T8Wqe7w+zffENQg775/h8BcnuG43eGgkzjzMiS/JEg=;
-        b=NBFfcICBHVWC7fTm+w8/3B3h+RiwAta+9OHD5H8fYnrrgg45BnGsBut4QvEd+188yE
-         RiFM3nd61GcGyZhYJlpII+GBD4UTC10cYdTvc8heJnX1Ml4pEVbQ4Neigx+Ln17kgJeW
-         pJYneAKZn/IAKH5y9Q7NDKme+q769VQNtvbaiad+5KaIb+y+UEniaB5xZyZ0izzv+SfO
-         hoL7Jw0Q170Tt6bBcK07ar81WORQWc7iTLURc58lRKVPUn7gg1W/FIp/ZlhdJ+ZrdhTk
-         aUzPY318gvm+et/mfvDSzCOtjAMbGdMQZX4D7OUB2+jttz4nYe+OrRifsiCleitrvhm+
-         p6tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792208502; x=1792813302;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/T8Wqe7w+zffENQg775/h8BcnuG43eGgkzjzMiS/JEg=;
-        b=wGWH/q6O1OYIJGt9K7XDdaMHXsfjmeuhgFn3Pcts0a8vWijyXReZ542Al47xxwsKZd
-         za5a68uBlGm+tEG5sAi+CbK0caLNg2ugT5SoSRr9t68UjolYSPl8tQgi6sbmPynldDyo
-         lzloaH53+TOPALMNOAUpMQh5BqZMqQgX+wJCVqvxrEFelfd7AX0RqVJfulnnr3OOd8gD
-         9YCIktkxs/3EJXpGruvCnCOaSzGMCNwtJnNNWL4xmi3IBR+LdEnrkbACBo0zIOobZmBf
-         5DEn+YtPSz230xlF1CotfvZwb0DU28Fhbyhj9ktQdwS1GK+4xWRtprAdkws/7HA5FDhY
-         lElg==
-X-Forwarded-Encrypted: i=1; AKwUvBxhZa5uErIsXzF86Gzfr5TqC9sidO8cLbhMZDxMXP5UCkJ48IsH4U4LlsxUQQWkmvMyKxZGAXg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJv73j+8CozN3LxNgGXDDSEcuNPTFGNT9C/+wCkP1qivycwkttS
-	1nLqCKVRvjmZsqskn4F7P3FJzSCnxsCAVkfwZKaKm8spB5T5Ql4IuKzCM+kkAgVRSv2+cVIWfOb
-	UHsas79opu5HFvGlTIaCjqcqlK3Gq9KI=
-X-Gm-Gg: AYBFou26uN1qJck9D3+5jYy/2iI7xKx2zmuUoaesrygmZhfvux0H+opqlq5VU0oKAzh
-	djehn09iiqcDFhc/XTkX/ZOafk8P6NXVySdynlscP2WVIMgD+EvpbXw7wk8tJqdfhZ3TAhNm2/w
-	u35fkSpGSGwgEuCLvdMTy4L7KamB+q6s7DQXj+rxdQjdyZ9v+J4N16I1z4bFkEjRQWArY9N9nzx
-	xuEHRZJyJp5Q/OG/IBvUmx7lwyIbko5JtR53F7+lznHZGlSsSOzH3+e9H26LktwXXCzTxaEpLm3
-	bM/tHSZcuDsq7gxahJeD8XUJmvegIveqk+BgKNyXepTuBmxxS0MeKRd6QXKI7Tat242TaO4AFqh
-	lbozGZy7IIyFhDQLUJ1Ix1rD5Qwm3HhJLdhfB/98P/EOYfSbTWc46OoWDBkbdNhfhW69XUg==
-X-Received: by 2002:a05:6512:124a:b0:5bc:b4d0:df9b with SMTP id
- 2adb3069b0e04-5be50a737e7mr395267e87.25.1792208501874; Fri, 16 Oct 2026
- 20:41:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIzmr8ur"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C9E1F000C4;
+	Sat, 17 Oct 2026 03:54:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792209301;
+	bh=dYKqmfQOQ8r5Ld/7QkbmnQUf9ML++5Y7VJQOWpm16G8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NIzmr8uroyLTVOd5r5AYJ++HjeebF8iOPLBQVryhIXgDOGnPaD4ofgzuy+TVzsnlc
+	 vP4HTMhiekeOI3LDDr4YfXDebeEO4szjeN6Q3HqtUFE5g1+sxZz0vpQX7jisRRplYG
+	 yqY4/50chIVzl3vh4AwTkNmjK3m2w31p5Y3P696QEHIwTMJNjforU4PwruNcrspOIm
+	 xywgfzENWeyiAPHwPHpeD760Ccf5/abicisCRlfseMTjZwDh90nt0QlrrD5boDmutP
+	 3KS9B8l6lCslb3YLXK1j8J8l/zdmO67YyHZLWHulAa9uoDhJHpCrylRB91lJ3xtUls
+	 CNfC5Peatb6sQ==
+Date: Sat, 17 Oct 2026 09:24:38 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Joonhoe Kim <26rote@gmail.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, christopher.lew@oss.qualcomm.com, 
+	deepak.singh@oss.qualcomm.com, pranav.phansalkar@oss.qualcomm.com, andersson@kernel.org, 
+	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: qrtr: ns: retry service announcements on -EAGAIN
+Message-ID: <atLkH_D2JrYdzacx@debian>
+References: <20261016124600.31-1-26rote@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261016160351.3022939-1-edumazet@kernel.org>
-In-Reply-To: <20261016160351.3022939-1-edumazet@kernel.org>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Sat, 17 Oct 2026 11:41:02 +0800
-X-Gm-Features: AclHuK_4dlswbRxYkqJbaYJJLD-LTiYzIcMmAOU0DDHFvuv7MHjW4zi2zZYsVe4
-Message-ID: <CAL+tcoBoNePkUGHi=rC_mPx4YC=teoZqrQ=n=2LmCp7_YGftfg@mail.gmail.com>
-Subject: Re: [PATCH net-next] veth: use peer attributes to set peer real
- number of queues
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Qiliang Yuan <odys.yuan@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261016124600.31-1-26rote@gmail.com>
 
-On Sat, Oct 17, 2026 at 12:07=E2=80=AFAM Eric Dumazet <edumazet@kernel.org>=
- wrote:
->
-> veth_newlink() creates the peer from its own attributes (tbp), which
-> come from the nested VETH_INFO_PEER ifinfomsg when present, so the
-> peer num_tx_queues/num_rx_queues follow the peer IFLA_NUM_TX_QUEUES
-> and IFLA_NUM_RX_QUEUES.
->
-> veth_init_queues(peer, ...) is then called with the attributes of
-> the first device (tb) instead, so the decision to reduce the peer to
-> a single real queue is based on the wrong device:
->
->   ip link add va type veth peer vb numtxqueues 4
->         -> vb has 4 tx queues, but only 1 real tx queue.
->
->   ip link add va numtxqueues 4 type veth peer vb
->         -> vb keeps nr_possible_cpus real tx queues.
->
-> Pass tbp, which is tb when no peer attributes were given.
->
-> Fixes: 9d3684c24a52 ("veth: create by default nr_possible_cpus queues")
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> Cc: Qiliang Yuan <odys.yuan@gmail.com>
+On Fri, Oct 16, 2026 at 09:45:59PM +0900, Joonhoe Kim wrote:
+> Since commit 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint
+> register"), qrtr_node_enqueue() returns -EAGAIN for every packet but
+> HELLO until our HELLO has gone out to the node. The HELLO is retried,
+> but the NEW_SERVER announcements sent in reply to the remote's HELLO
+> are not, so a service registered before the remote came up is never
+> announced to it.
+> 
+> On Kaanapali the modem sends its HELLO before it accepts ours. With
+> rmtfs started first, the modem never learns about rmtfs and its
+> watchdog resets the SoC about 40 s later.
+> 
+> Retry each announcement for up to 10 s while it fails with -EAGAIN.
+> announce_servers() runs from the name service worker, which can sleep.
+> 
+> Fixes: 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint register")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joonhoe Kim <26rote@gmail.com>
 
-Tested-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Thanks for the fix!
 
-Thanks.
+> ---
+> Tested on a Lenovo Legion Tab Y700 Gen 5 (out-of-tree board support)
+> with rmtfs started before the modem: without this patch the SoC resets;
+> with it the announcement goes out on the first retry and the modem
+> stays up. Starting rmtfs after the modem avoids the problem, but
+> distribution units start rmtfs first and let it boot the modem.
+> 
+>  net/qrtr/ns.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+> index bcb090ee79d4..33a9c4449d6f 100644
+> --- a/net/qrtr/ns.c
+> +++ b/net/qrtr/ns.c
+> @@ -5,6 +5,7 @@
+>   * Copyright (c) 2020, Linaro Ltd.
+>   */
+>  
+> +#include <linux/delay.h>
+>  #include <linux/module.h>
+>  #include <linux/qrtr.h>
+>  #include <linux/workqueue.h>
+> @@ -226,7 +227,13 @@ static int announce_servers(struct sockaddr_qrtr *sq)
+>  
+>  	/* Announce the list of servers registered in this node */
+>  	xa_for_each(&node->servers, index, srv) {
+> +		unsigned long timeout = jiffies + 10 * HZ;
+> +
+>  		ret = service_announce_new(sq, srv);
+> +		while (ret == -EAGAIN && time_before(jiffies, timeout)) {
+> +			msleep(100);
+> +			ret = service_announce_new(sq, srv);
+> +		}
+
+This loop is going to block other nodes. announce_servers() is called from
+ordered workqueue which only executes atmost one work item at any point of time.
+So if any other node queues command while this loop is running, it will get
+blocked.
+
+What you can do is, ask your LLM to rework this code to schedule a new *delayed*
+work in the same qrts_ns.workqueue and just keep on rescheduling it until
+-EAGAIN is not received from announce_servers(). While the new work item gets
+scheduled on the same workqueue, the delayed work gives other node's a chance
+to execute and not just block. You can use a conservative delay of 100ms.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
