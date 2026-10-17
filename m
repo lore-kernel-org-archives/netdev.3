@@ -1,133 +1,87 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576643B8D48
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 05:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5522AF00
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 05:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792214494; cv=none; b=QK5GKaiP8JoSYjcJxjaKohhsKuuXadH8vWQAc7FeWw0SAqMzMNDj65Mm+gtPQYCbewc9UPukKWbYrxMAn3ebeQgGGMoESKkEOX4HNDJwpqEIax0uumIhx6ISHG/nzX2BQHBR1CQR2UYqoT0lbvgUWVNPbHh1VjD6DU1JIAIE5xA=
+	t=1792215405; cv=none; b=Yk7H8ee+9+pkUeAPg9WEd1UsW02pZcKouqDz1uc4lNTdsVyS+aGVr2pcKzGlOuK5mn9ardce86fWZy9OR3MHtTgRYtlSiqw+MqubDaC5IYJpZ0zTXIh/8/Xj3NtKNDyUsTE67TF/ckcUkUwFb9TCbXc92tICBq9mHtqOxjquhns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792214494; c=relaxed/simple;
-	bh=aC4Bvl+lsY8CU7Vvs//CHQEgxOBks6KfY7owryN0QbQ=;
+	s=arc-20240116; t=1792215405; c=relaxed/simple;
+	bh=CT0wh3KwPJovAUEvvTmUQApHxZpLs6H7xszDkTqLK6g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=irQPIwMgcmbmTr9EPpNRSCNHN0LneSvDm/5idmtAd5NoR6DiIky6JDn/1hRUKWairwRqaz8sSgMShwd56t2SoO/5CTDx1S4PPbEDjW1Ex+67GEJAQ01q5zudf0qldebxcETEGUS+qPDQS2t96rtREz+62Rg/Qi8qqje6YAvdY1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=idvv7AwR; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=tB6qA193FPBmK5vPllx2+90ya08cEjK2BbHDtvGimzZSR9kAFVJI9Eb1lcPSGLKpYRWpVYsODAeOYbxJmE41rM5u3mLSukEbvChJ3XybwEVyZpYbfuQhlL4p0NBtPOohyEzM/iYsoTlCmpkQ2yUBWfmdhMrTUcAhvhDAvceq7Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VUr87Xd6; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="idvv7AwR"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e97dda7346so3844785ad.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 22:21:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VUr87Xd6"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ab7f1efe5dso1190659a91.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 22:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792214493; x=1792819293; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792215404; x=1792820204; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4FrYQNLOC0ua6Y12Q7VcbQ5pmrylw5LYh/sMmd8pDQ8=;
-        b=idvv7AwRBqCjKS0p+o3BPgccAWAslq48nlSk9Uk6QP3NowhJgSJlhwM5j4BWTA1PM5
-         5lF/NmvOMwOE/LGj7wFRqyZOEVALMzazs/RQxgVu1J8BVH3efWjAXlXfoziAjqeruSLc
-         dpY9GPpWFBoO9OsCqvToKxZ30w9R/nwtfm2a+VCUD8WSZw4OoJxI6fi0PF8113MTkzlh
-         jFcjW1PMQKyOSvgT9+XvPNOWGs7g9n6006U262aQy0RLDWlQ5VgrCLL5qQKcCyN9Fxft
-         FqvzFRo2TH9gseuxBnmrhfINNYOCl0SLZMnOiY5/kStDqC4CEpOcydhkmK/4O0eFEMdl
-         Z8Gg==
+        bh=slLcWG1N2gT6IfvpJKBO52lrlc4iEipRoMwUKxC7sOk=;
+        b=VUr87Xd6OaSnmOiqaP9LaN1ITT8omdRwPBrbenL9T4Tvfa/EGGIuWWuFdsX9AtDsc4
+         pNWsvN1QZ/HzoAtsyH0A4NaW8FC2gJkW8n68CFBeh6NNuBdkWXSsxjbYdUQmGg7hqMW9
+         3P0B0VLag80ks4M9f9ZGkeUwFgaGiXK4H6gfNai7zqD1V0BqTG/HlQV1/2egmtOjNCud
+         S98aWb5XCCSmiIh28ZtfB0tRcuv7GgpiAVlYi8NJNZCI1ITqqtwoYfOlFHhK4O4wL/tN
+         +Pj7o1yM4zItbp6+GdPN1ycbJl36VjbgZMZkYUAw9o3uoPgl6sWizNxJRwrRY0RduO5F
+         eFGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792214493; x=1792819293;
+        d=1e100.net; s=20260707; t=1792215404; x=1792820204;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4FrYQNLOC0ua6Y12Q7VcbQ5pmrylw5LYh/sMmd8pDQ8=;
-        b=IAwZPtfXYpgp4JRBcKgtJEa4LAODkD4mGAnQoAOf6j5i5rH0TRPpd+4DDdyFn8X3XH
-         wPCvz6laEsN3cv65w35AShrTfOFUUl/ibVPUs/jK17OfINO0eNdU9Hd3d0EvEkg1GEpH
-         pE2JmeOBFKaDm8+7nvZ6FG8FpVYDGHFR2PiQ2Td4G7kZRDmnPEM6yj2KundaVydNlU4t
-         FeZmExlNjY2K0xwOZ7LlN1B6Y3kvXP2/2YjRDw9ywMCVHCgF6EIHbSjS0fft5+eNfMzL
-         Xj7alPTV4w98VLR5q3RAUftEOuVZQiNIVUsDx/xd1/mf+twCiJDWahJ+T+T8O9hWWP1O
-         ObIQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxJ8ODO/Ta89KfprKaTEtqe4auoZxV/ycc0mWJERJ4P26wSZi2ZW+oZ7/J74LS+suHpSA4ihk8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLU2AGtiCP5pf5cAXomm6O/SGi3uqH3FAO0iYPxvoB/6GUVe6nK
-	fKctAjT+diLP3d1IWv8RPeCh0V9vEhYsLfYKb/1a9VB3VqBhyKDe/Pu6EJJY6T2VaWW7+6anOcj
-	qpUOWJg==
-X-Received: from plxq15.prod.google.com ([2002:a17:902:dacf:b0:2e9:3d99:bb3f])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e943:b0:2e9:79db:449c
- with SMTP id d9443c01a7336-2e9a6f55653mr15650925ad.47.1792214492411; Fri, 16
- Oct 2026 22:21:32 -0700 (PDT)
-Date: Sat, 17 Oct 2026 05:21:31 +0000
-In-Reply-To: <20261015201549.4023-2-kj2864@nyu.edu>
+        bh=slLcWG1N2gT6IfvpJKBO52lrlc4iEipRoMwUKxC7sOk=;
+        b=2kqboXa3KXBGkbdx1HR9nmJjvEiAXHUq+lSZj3p9Tr+rmrtH9AVpREW7SRX6us7mmD
+         /wcehghANimP6BzpAMqHxw5TmDoxTR1e1q5m4XXqIPmGIYLQl3Tq9X+rqPg6Zjw+9ym8
+         Nz/sEDN54FhfteVMbdJGfyHTJnica5Dya5t22PXFQQvo/BQvB30izIi1i6l6ThFu3V2y
+         x+uA7kFCO4XgKUdSVXhmzNlAr44cW/47A7LiQp9pC/qcP+SjE7GLf+CzxeK/V6QUg2/x
+         /97zwed9i3jLcJzijiybmrmPFYUIDERy5qPRRyFV9JfmjHXo6JBdek+5GI1r9nySS5Oq
+         gb0Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxypc1Ubk9U1ABvy0BWAuOjUx4Q5BRIZcQQA4s1UwuboVCn7yXXKX6L86pXDO6r1/OhFT8Px6c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJdZV0nBOLv8PLPyLvKflsb8IJugPDrZCjjr1aNIeERaErE+O9K
+	sHCBV4WmicFBIsRT7aQIlNlgQ1i/mfaAGFHmEuJyhh6TyeoVCdvOPRxoHR0484TyLL4xYGf9CSj
+	WpU3ZFQ==
+X-Received: from pgde16.prod.google.com ([2002:a05:6a02:310:b0:cc7:d698:697a])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5745:b0:3ac:c03a:38b0
+ with SMTP id 98e67ed59e1d1-3acee27798dmr1827553a91.8.1792215403626; Fri, 16
+ Oct 2026 22:36:43 -0700 (PDT)
+Date: Sat, 17 Oct 2026 05:36:43 +0000
+In-Reply-To: <20261015081723.404990-1-parri.andrea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20261015201549.4023-2-kj2864@nyu.edu>
-Message-ID: <atMFPKhON1IK5cxc@google.com>
-Subject: Re: [PATCH net v3] net: ipv4: add zero check for snd_cwnd_clamp
+References: <20261015081723.404990-1-parri.andrea@gmail.com>
+Message-ID: <atMJYPanib4g-C4q@google.com>
+Subject: Re: [PATCH net-next v2] rtnetlink: comment the RCU waits in
+ unregister paths
 From: kuniyu@google.com
-To: Kaho Jiang <kj2864@nyu.edu>
-Cc: ncardwell@google.com, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, edumazet@google.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	co+71b6509cb791e531@bugs.sh, stable@vger.kernel.org
+To: Andrea Parri <parri.andrea@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 15 Oct 2026 16:15:50 -0400, Kaho Jiang wrote:
-> User can pass zero to snd_cwnd_clamp via RTAX_CWND type.
-> This could lead to division of zero error if not checked properly.
+On Thu, 15 Oct 2026 10:17:16 +0200, Andrea Parri wrote:
+> rtnl_unregister_all() and rtnl_af_unregister() wait for RCU readers
+> before tearing down what those readers use, but do not say which
+> readers they are waiting for.
 > 
-> Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-> Call Trace:
->  <IRQ>
->  tcp_reno_cong_avoid (net/ipv4/tcp_cong.c:510 (discriminator 1))
->  tcp_ack (net/ipv4/tcp_input.c:3517 net/ipv4/tcp_input.c:3873 net/ipv4/tcp_input.c:4440)
->  tcp_rcv_established (net/ipv4/tcp_input.c:6685)
->  tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
->  tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
->  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207 (discriminator 1))
->  ip_local_deliver_finish (net/ipv4/ip_input.c:241 (discriminator 1))
->  ip_local_deliver (./include/linux/netfilter.h:325 ./include/linux/netfilter.h:319 net/ipv4/ip_input.c:262)
->  ip_rcv (./include/net/dst.h:481 (discriminator 6) net/ipv4/ip_input.c:492 (discriminator 6) ./include/linux/netfilter.h:325 (discriminator 6) ./include/li)
->  __netif_receive_skb_one_core (net/core/dev.c:6297 (discriminator 4))
->  __netif_receive_skb (net/core/dev.c:6410)
->  process_backlog (net/core/dev.c:6761)
->  __napi_poll.constprop.0 (net/core/dev.c:7830)
->  net_rx_action (net/core/dev.c:7893 net/core/dev.c:8050)
->  handle_softirqs (kernel/softirq.c:645)
->  __irq_exit_rcu (kernel/softirq.c:679 kernel/softirq.c:519 kernel/softirq.c:758)
->  irq_exit_rcu (kernel/softirq.c:775)
->  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1062 (discriminator 35) arch/x86/kernel/apic/apic.c:1062 (discriminator 35))
-> RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
+> A missing wait is then easy to overlook: rtnl_link_unregister() lacked
+> its synchronize_rcu() until commit 3b70edea393d ("rtnetlink: wait for
+> RCU readers in rtnl_link_unregister()"). Add a comment to both waits,
+> naming the readers each one waits for.
 > 
-> Fix by checking if user pass in zero as parameter,
-> if so reject the value zero.
-> 
-> Fixes: 814d488c6126 ("tcp: fix the timid additive increase on stretch ACKs")
-> Cc: stable@vger.kernel.org
-> Reported-by: co+71b6509cb791e531@bugs.sh
+> Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> Link: https://lore.kernel.org/CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com
 > Assisted-by: LLM
-> Signed-off-by: Kaho Jiang <kj2864@nyu.edu>
-> ---
->  net/ipv4/metrics.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-> index ad40762a8b38..e83a129a25b6 100644
-> --- a/net/ipv4/metrics.c
-> +++ b/net/ipv4/metrics.c
-> @@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
->  			NL_SET_ERR_MSG(extack, "Unknown flag set in feature mask in metrics attribute");
->  			return -EINVAL;
->  		}
-> +		if (type == RTAX_CWND && val == 0) {
+> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
 
-While at it, please check RTAX_INITCWND too (although it is
-ignored and TCP_INIT_CWND is used), also use !val.
-
-
-> +			NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero");
-> +			return -EINVAL;
-> +		}
->  		metrics[type - 1] = val;
->  	}
->  
-> -- 
-> 2.43.0
-> 
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
