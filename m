@@ -1,304 +1,356 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010043.outbound.protection.outlook.com [52.101.84.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E9D3148D8;
-	Sat, 17 Oct 2026 02:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792203900; cv=fail; b=gSgyyK/v1YQ9gLHn3Z4bfmef+Z2Bc4sNU2KzaqN+k3uGc73xmYGFm0xodeegogtSdaI3QL9FZ2wdQnkXshtxHde0Xm4Zqv/WnDdmY0B+wfP+lWWn02XQaxlp3fjSGSdfyI2M/3tvunj6XvwA8T2y9YS2udbreJwNmyiVqIcFHug=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792203900; c=relaxed/simple;
-	bh=8nR67DFS0URoHs2xymz87UyZbXOHmjfLN4EY2zi3bSE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tPLhIGLaabW9VsvjDPId+LfMg6moSsQAlAALO3RJqmMRZHfsXr6ZFeCIBZCzgBGWHG+xjHWccRhRi4V7ASDrcELtwie8pr5qUUZdIHqVStQCW9q6qM7eHSgL4/01UIuAZARI6SfxFzjpGw3jv6TZCPnH14G1zcjOmx0FUrBrq68=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jSMcoIF7; arc=fail smtp.client-ip=52.101.84.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2021AAE28
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 02:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792204305; cv=none; b=iNoA/r1oFbu8KcdN6LcgnINM1TIUk0bBZnMgGhYI4MyVwue0mk4TGEhBb+FydjUcU3ELo0cM/kj3BvqdBwongpnizMuEX7fOpeCpmNSeIR0Dch21OLiDFyy2sHDZvLu8n1GgeyjaGDh6tWi/6NxzYWlFuucu1EohASGfbFz1bXo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792204305; c=relaxed/simple;
+	bh=r2rgRMSxOCwYCvb2cyG+bi9NBz53dSLQ691q9KtiQVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rUUcOZLtUteSXdlVwEywcPke/kQ6/hbL2hHrGkFL5no7C6gwVt1q5chGcq9xGk2D11Jb7msgjF/L4fh7wf3QayB7euYlZSyUm+sX3YhxJfBtmCIZiXMDuAQvoSPtKjnslLaTWivhUVOlQunnIs+hI1bQri3PkezUlwLOHAWqrx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DS6WFQ+X; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jSMcoIF7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fGRSqtPrGB1UWsIMBLXKAIEibVODe0iFB2TSq3/iRpqLPjDZeA46wmE6FnzE3PFr0Wlwqbz8mAZXogsvLSkIod5k4aMrcg1/QKfheqwWY8aKSbx7Hu3difETiVrfwQCWY6L4l4TSjjvF86gpN/m90GVCFdSsVWvYaihk9yFqTW4dkg9bKb4FSzlJJLobXI3Y932Vi5gi33ifZAvuCwHqKgb+4Gjbz9/ip1zEYICKCMbZ1lHHvgGZzQx/8P43Y11O/58+m+y6pzKbN8QAFaeaE0+69JeZ24ymQet3PaN+g6Pq4CI+5SQoT486vOaX4syoblp56hPBWLKY1rcCf0XwIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RlmdC/ZrC2wE8s5bUwcx60nsjLZEKFAjdQUiwuhb7TU=;
- b=EnnTZ7efK97Oa86yOnDGb5DG5W9SRY1gv5xlsJgA8mcqhw+HJXs26zGQce9vT+9X60SGAdl8GPYzwtT8LEZ6g3GX2FDoP4uvSPqrCuPqOZnlpwSmoRMBK1lDuLV22Y3vw+mrbREfX7ga6SLSLEhaO1jZA2WHXBVawIaJGe4uBea62fv7L9m/bJhvUBiGkizw15Y+l7zpGmUAFKbsfVK3lmsgJYOXnPMAsp2U+oRlvb0oeaJ82oNrmTu57Z3ASlsiGXajGUTgjuCjboeKEbfziYIQjYoUUSqT9xmNqcfT4WGZvlgZ/oPpaYfsdBZGd7bCZRPDUFvddPpjr20tTsb/XA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RlmdC/ZrC2wE8s5bUwcx60nsjLZEKFAjdQUiwuhb7TU=;
- b=jSMcoIF7eu67kLk7m2ZS/jG5rrVVp45RenXa+oaKDmpAWZP3g+nb5vT3UImcPB6xHorkDGedLnHZrpsrLM8afg0N8v/IeAxVOLWf8TJasj0UMwPEcTzOqcHoOHmKaC3gwP+M1hIK0dxtu4wT28I9L1uZpfPV8fsrykgC/7MQlWjHxEfZjbJ44cclBy9fdwBQMi3qeJDQ4SFaRXtnHRfHk/098FWwpB7qxRbNBJmYWVxghc2TVmhwgLlw5XkHJKmoc5HWOwrIrBQq+7QTsIEwizLn1REMl3cV8VFp4SZyPmH3LUEi5i9wqMnO6XyrihV3L//YttyAwR1D12wGtd4MBg==
-Received: from DB9PR04MB9332.eurprd04.prod.outlook.com (2603:10a6:10:36c::6)
- by GVXPR04MB10754.eurprd04.prod.outlook.com (2603:10a6:150:225::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Sat, 17 Oct
- 2026 02:24:50 +0000
-Received: from DB9PR04MB9332.eurprd04.prod.outlook.com
- ([fe80::75d8:3bd9:28df:cfdb]) by DB9PR04MB9332.eurprd04.prod.outlook.com
- ([fe80::75d8:3bd9:28df:cfdb%2]) with mapi id 15.21.0522.013; Sat, 17 Oct 2026
- 02:24:50 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "Frank Li (OSS)" <frank.li@oss.nxp.com>, Marek Vasut <marex@nabladev.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, "Christophe Leroy (CS GROUP)"
-	<chleroy@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>, Eric Dumazet
-	<edumazet@kernel.org>, Frank Li <frank.li@nxp.com>, Jakub Kicinski
-	<kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	"UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: RE: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
- DT
-Thread-Topic: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable
- from DT
-Thread-Index: AQHdXaVPTB8CJdKLoUewahs8NUD/ZLcAl7OAgABoBfA=
-Date: Sat, 17 Oct 2026 02:24:50 +0000
-Message-ID:
- <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
-References: <20261016193344.115518-1-marex@nabladev.com>
- <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
-In-Reply-To: <atKDNdxl0w65s8yQ@SMW015318>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR04MB9332:EE_|GVXPR04MB10754:EE_
-x-ms-office365-filtering-correlation-id: 886d8eae-da9c-4722-6146-08df2bf5d273
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|23010399003|376014|1800799024|7416014|366016|261009223027099003|6133799003|18002099003|10067099003|22082099003|4143699003|11063799006|38070700021|56012099006;
-x-microsoft-antispam-message-info:
- giYjXPglTBeQWDBLuEXOHODYW3VeC/AddZnYh2zykdTi3fxSKePv3mMOyUJCVq5onkFATkW4Gs79DDYPVOBL2FSZQqa7MnB9aCKf7ss8CNlmUZxExm/UouCGxRhTNDXXniGsRhHsSE5Kt9KK4UPvaSR+pjwEW6R66MAxgiKGm0bLHRyYMWQBJk+o43Zr5NJIvxb+tyoj8Kcg1C4GgeslSAE5uw+GMJjD0Bet03EGUcpEecz/KrivWkOIBqwHS4EC6Hm/74C8OenK10f8O5P9HijiPOka8AVrUDAhic2Ddhcc90kUHzlNfeBM4FJFXcPlxF1SVpbTwMvPHeybx+e5S679HSj8xRsAAZJO197OwxySixUbqqMdI37s/5afipTlAUVC8I5m5YIC2gHXF2C/UK5Dy3jejIvF+l7Toa9d30Fm9kM+rnvvxCwbMbNs61rZBTAzXKvUG/tGjQLVl7hMJ9Ut/HO5We1rNBSKoL/5mAoK+BXfJSgnKkA2+g/XwO3LwWZV4BH0i4tKzvSIT3WWWi5A1dNgAVL63aha7Dw0YIpoou89MTwfvhZMOJ5Hr2GlYfKMXO69RlBAAXVM8/LMMDAWVY3OJPAiOLpevdmTqmYVkGONX3gnH3vnRJ04ffmo+w+DOEaF55iaMEx5pMh//enOasg9W6ERI4dOaRJ/M8bpXCeQ+LPlSjMpfhiRimXJ6kH0gBrgHq65ZWwWcQL78w9siplbhWw+mfBq4gDRmiQ=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9332.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(376014)(1800799024)(7416014)(366016)(261009223027099003)(6133799003)(18002099003)(10067099003)(22082099003)(4143699003)(11063799006)(38070700021)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?TXoMRRWqcoF2V1IhUfs6nIOWYB5jWNG3KyaQjCVanuqwItF2ZeP5wFsTWTUc?=
- =?us-ascii?Q?52OxOxyx7RzCJeiHre4PqgpaUByfFmvq+hwi1o3gPdu7UsaoyoDbXFJGUQuo?=
- =?us-ascii?Q?JxXyondc5H3yDc4lZ9y7SMnuPQdksxpZVfrMlyfffoSedK4KtiM3VjDifiuJ?=
- =?us-ascii?Q?XPdPMRSkpGN+vRx0vtb+VtjyhJM5/AgNHEoEQzrV1+Un3F0B0IEBlAJ1mks3?=
- =?us-ascii?Q?bDLDlVKrHNTJEF0BJ+dpcXdIT8jluRhZqSn/uGqw7vh1MkOPiIkrA2nDfIOo?=
- =?us-ascii?Q?5WGWE5Sx5W0A5OQxcFBcXG6rC2sWb27N+6W3SI/0QMtogF3psCq4qniDJj4H?=
- =?us-ascii?Q?Ze+vBB9GZn5kORTPuGlYJL5WXW1+0R/qaj4731SLjg7s0oodQEDZuCRdM7Z8?=
- =?us-ascii?Q?EzUpExAp577SLvEvG+iYrShLJ7IVdT5W33Tx8GuzVEUhWqnz2J/c7qrKraVO?=
- =?us-ascii?Q?R20mNkMpCyUnoXnc4G0PGda0oyfUGKyou5rk+JyjaawHvLQZMPQYZzUL/kY7?=
- =?us-ascii?Q?Ay9BMraypVRIt7PMGNSj639h4kzHOiFn34+JuL74H+5wmjyofE203fvpdq2M?=
- =?us-ascii?Q?tiviGpwT9HVDwv7SEdRboNTREBopkROWPMjGgypn+TZsvPuA27kZyLcLL/li?=
- =?us-ascii?Q?whbPCn5rjV+RZM0sVsVeB+vFNu+ccvencAOXKc+3nVPPuVOuHPfFmOiCdO9a?=
- =?us-ascii?Q?KveOujJZ//LGsBVmrYRqFW0nBdwsQvJTuqubS8zZVeaiUzlIufz++a2rgYSG?=
- =?us-ascii?Q?pI9/QTSV7a9g9xFC+eJbVue/JCCT4UmLQpBfG/LXKVHFDov6GZ8mi70vlf4n?=
- =?us-ascii?Q?pM152kYMJfMr/Lz273GDSddJK3UsjIr/3mpH9TdACaVfl17HW7EFFwp/wmEg?=
- =?us-ascii?Q?H2KMPcheE0/lZFOFNfrD7Ny7sW0WPoHFPrCOXcZiRgVBlHrqBeFc+A/m7ZVy?=
- =?us-ascii?Q?QDZ9kpRPPJgrcI5YAOt87i5+A1/OEAgzFoisQoBRhFPzbdzuh0AxnO5/Pyx+?=
- =?us-ascii?Q?a9atvfLp3v0zxF5y2iBWcac1y5J+vtz9+a+x8/pLx+iNPUKhnMs/sDOu2vRm?=
- =?us-ascii?Q?aARCkEV8eQCMxg5tGE1CpAYfWIQI4fSmO1untf0Apua0ulfEWVVSLPa1B8lZ?=
- =?us-ascii?Q?JV8LxrR1tbV9tAZNCxFPLQNvNZ7cPZD5UIslrn4/2cElxdqfPnexRadAMkoY?=
- =?us-ascii?Q?DvO4vPyeIFWl64N5ONzN+oVI2XAF4ArRnrf4vnyQLMdM8YquYyfVRUb96UNO?=
- =?us-ascii?Q?415xX/yIPXX8y8XKtOzPQ8x6GOF3pQ+yTcWkps5jK9LHkcvYYVMBU2cGZBZN?=
- =?us-ascii?Q?+J+J0/SC0xN+TqKnEC9dLPkStE1Xy1jshNgKhMtDAMlltIc4H5ZI/1rImAUE?=
- =?us-ascii?Q?6IZRhrwKV8r2RTW2na8Ainth1J/V4ZTt8FGF8bliXMrY2ohia1PsMUNVBJ1/?=
- =?us-ascii?Q?iOaS1T79dX2bM2u0YpKHL4Bu+JM/4jZMYQFqZMo9PJvzoDoH4SQBebtLScor?=
- =?us-ascii?Q?PvGVBGOn++6UvEsHK2iVhVBHD6Py9hneWPBsBBdUJswPOADc9xqACboEPaoQ?=
- =?us-ascii?Q?G8sSe9uZiDAKus/GtIbbb7UAyWx8vlQ+FtXQnhZqMKuageU0FvA7CDgBJFCW?=
- =?us-ascii?Q?zHf83kj6Np4TYsZAjNwL4soqroybt8IP/q3Z7SSa6jPLfALLdzTCpDdjd3qO?=
- =?us-ascii?Q?HJZ+vw4Nq+ZXQWqinSKliXlW6k4WEjWAX3Yc3YDQNBg8h6dF?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DS6WFQ+X"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc50ad2d650so364168a12.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:31:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792204303; x=1792809103; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Qf0+8yxTfLNhsB75ahQTgX/QAqjUGdC45aMQHpNb6bE=;
+        b=DS6WFQ+X7WcuAh8Tf4RZE50jqL3v66EzsY95BHHWp7kmOEloH3K0lQEdVwikXqsAwn
+         Dja/rshAPNEkEw1L8e1IA6iWHnhTtHHdkhpWaBtn9VSu9Gy5Ze5t7WnxgT8825wVDv+g
+         +Tt5QNVDrIbJnHGyqZpTJBgUlmwgI6bVilvQ9//6iHjT/8JG1OammtS1SEdW/VJwv+/j
+         OyCrBZGdHbUuhhzHaQ4mEAy6488kVK8GpyG/QTuIXdqM51UZi+wBGR2Fx9WqsZVFHNq5
+         Cl6xJB58BpiA3e3PNSfYl90lADER8Kqzpnm/GEuoBJiN/hLroP6doDSyX+5DidIwl0YV
+         QQ1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792204303; x=1792809103;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Qf0+8yxTfLNhsB75ahQTgX/QAqjUGdC45aMQHpNb6bE=;
+        b=0jeAgaQGoPSxAichwkOHKGUA4k2/Uf0phfLOw6ReV81UHL+2sverX+O3MlNFa5qV3h
+         46ydZBI3AD7fgT7q3MFwbMHSkCAO2SLG2Mbn46qWj/RLmwLmOb56hRZdVv9HJ/0XrC58
+         RIZNbtsBULR6O5IEQNxfih1HlY7+04ySvEAt+ieSKr9pjmtwl6ecWUxjkfwdL0SLwojI
+         ZJpzMNGcrozFR9hCSSS6R0ym3bXJniRQnE6k1w54DGAr+kAY6OFXpxgSdg8pRtVTnJT2
+         M98Hl8AdNV6JLUxvlcK0Gvu0Bd+ffaKO8yT/9tSELm5qrZK83P/XOnKKt7lDtANrYgFa
+         jJQQ==
+X-Gm-Message-State: AFq9FYLM/m8kKGlNKCIqqPN4pv/ayC5Jh+mupV6kmy6M6HpGdCgqe94K
+	cZPfhpBoYYc+iqGuutggYgB2ahEN/+82cuoezUBhFmXIKWPyeHiWvAfnl7YjWuZmGZ0=
+X-Gm-Gg: AYBFou3pmKzVpzaCDVXHV2fhdM/iJ0/Ei/oBCmB2SWNSxiYUEfotXMdUqyAMwwaZ9pN
+	53SirAxRsA48gltfCdQ22ORXQ6QsqqojK/hbdRTpb8OdEEJPOKCrvvNw4iSgGxo9di71BExc2Ii
+	E1jI4AeQwGOhiDVTntl/Rx3WH6qr90Pcnks6KWvASZ730xbFbX95z3pWHUqyCALGTCR0JpoOQyZ
+	kcJzFtXtQS2PJNd1dvhshut0qxMQEr2/vfeIyL+B5yHW1Jc7H55rKB+cvumUixo+d0AE4mpp8pB
+	rdxozHlh+h86yvTSuGmviwNfm8UNxE5FDTXqWQ4yVMspMvQ9uyIqZLcKQOmBzYqeMnD9zJeZa5w
+	YJNtgsXoos06zQXtA1WGxOtUjbPn7K2vDd78rH0UixyLiSAU8dkYld7JsBKNLrRhcP7TCm0TQ6x
+	uNBWBL06h9QRsJ/GXKYxRjPsAP3xhb35fs27IMyxIa9TfQwBZJ7hInNexlIJaf7jkPzSnv36yA9
+	d/k5niIro1OwGyEtWvF6EgGwlQ=
+X-Received: by 2002:a17:90b:45:b0:3a4:b061:2765 with SMTP id 98e67ed59e1d1-3aceeb9272dmr1441087a91.15.1792204303254;
+        Fri, 16 Oct 2026 19:31:43 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661b:1250::1d3:d3])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd9c4b4eesm4189707a91.2.2026.10.16.19.31.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 19:31:42 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: dsa: motorcomm: Extend ACL with UDF
+Date: Sat, 17 Oct 2026 10:31:32 +0800
+Message-ID: <20261017023136.2961543-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9332.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 886d8eae-da9c-4722-6146-08df2bf5d273
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Oct 2026 02:24:50.7335
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MXpGZIatfbKKxUfTK3B59AUPDBD0FwoN+GRKqtDpf2qrirz8/lF6UOhxjFDOevHjG71kBL/Oq32ps08iehIp7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10754
+Content-Transfer-Encoding: 8bit
 
-> On Fri, Oct 16, 2026 at 09:32:01PM +0200, Marek Vasut wrote:
-> > The current eMDIO MDC rate is hard-coded in the drivers which use the
-> > eMDIO MDC, this is not flexible for various deployments of SoCs which
-> > use the eMDIO interface, for example i.MX95 B0 MDC clock is currently
-> > set to 644 kHz.
-> >
-> > Introduce enetc_mdio_priv .mdc_div field which contains the divider
-> > used for MDC clock and pass it around, including into functions which
-> > configure the MDC clock. This way, drivers which use the eMDIO can set
-> > the divider as needed. Introduce enetc_mdio_update_mdc_div() function
-> > which calculates the divider from upstream clock and clock-frequency
-> > DT property, both of which are optional to retain compatibility with
-> > older DTs. This is modeled according to xgmac_mdio_set_mdc_freq().
-> >
-> > Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> > Signed-off-by: Marek Vasut <marex@nabladev.com>
-> > ---
-> > Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-> > Cc: Clark Wang <xiaoning.wang@nxp.com>
-> > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
-> > Cc: Conor Dooley <conor+dt@kernel.org>
-> > Cc: Eric Dumazet <edumazet@kernel.org>
-> > Cc: Frank Li <Frank.Li@nxp.com>
-> > Cc: Jakub Kicinski <kuba@kernel.org>
-> > Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> > Cc: Paolo Abeni <pabeni@redhat.com>
-> > Cc: Rob Herring <robh@kernel.org>
-> > Cc: UNGLinuxDriver@microchip.com
-> > Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-> > Cc: Wei Fang <wei.fang@nxp.com>
-> > Cc: devicetree@vger.kernel.org
-> > Cc: imx@lists.linux.dev
-> > Cc: linux-arm-kernel@lists.infradead.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Cc: netdev@vger.kernel.org
-> > ---
-> > NOTE: I could only test i.MX95 , I could not test LS or Felix
-> > ---
-> >  drivers/net/dsa/ocelot/felix_vsc9959.c        |  5 +++
-> >  .../net/ethernet/freescale/enetc/enetc_mdio.c | 39 ++++++++++++++++---
-> >  .../ethernet/freescale/enetc/enetc_pci_mdio.c |  5 +++
-> >  .../freescale/enetc/enetc_pf_common.c         | 10 +++++
-> >  include/linux/fsl/enetc_mdio.h                |  6 +++
-> >  5 files changed, 59 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c
-> b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> > index 8387dd208adb9..dbeec1b229325 100644
-> > --- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-> > +++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> > @@ -1008,8 +1008,13 @@ static int vsc9959_mdio_bus_alloc(struct ocelot
-> *ocelot)
-> >  	 * starting with the proper offset.
-> >  	 */
-> >  	mdio_priv->mdio_base =3D 0;
-> > +	mdio_priv->mdc_div =3D ENETC_MDIO_DEFAULT_DIVIDER;
-> >  	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-imdio", dev_name(dev));
-> >
-> > +	rc =3D enetc_mdio_update_mdc_div(bus);
-> > +	if (rc)
-> > +		return rc;
-> > +
-> >  	/* Needed in order to initialize the bus mutex lock */
-> >  	rc =3D mdiobus_register(bus);
-> >  	if (rc < 0) {
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> > index 998aaa394e9c4..93d61c2f1464f 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> > @@ -1,6 +1,7 @@
-> >  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> >  /* Copyright 2019 NXP */
-> >
-> > +#include <linux/clk.h>
-> >  #include <linux/fsl/enetc_mdio.h>
-> >  #include <linux/mdio.h>
-> >  #include <linux/of_mdio.h>
-> > @@ -22,9 +23,9 @@
-> >   /* external MDIO only - driven on neg MDC edge */
-> >  #define MDIO_CFG_NEG		BIT(23)
-> >
-> > -#define ENETC_EMDIO_CFG \
-> > +#define ENETC_EMDIO_CFG(mdc_div) \
-> >  	(MDIO_CFG_HOLD(2) | \
-> > -	 MDIO_CFG_CLKDIV(258) | \
-> > +	 MDIO_CFG_CLKDIV(mdc_div) | \
-> >  	 MDIO_CFG_NEG)
-> >
-> >  #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
-> > @@ -63,7 +64,7 @@ int enetc_mdio_write_c22(struct mii_bus *bus, int
-> phy_id, int regnum,
-> >  	u16 dev_addr;
-> >  	int ret;
-> >
-> > -	mdio_cfg =3D ENETC_EMDIO_CFG;
-> > +	mdio_cfg =3D ENETC_EMDIO_CFG(mdio_priv->mdc_div);
-> >  	dev_addr =3D regnum & 0x1f;
-> >  	mdio_cfg &=3D ~MDIO_CFG_ENC45;
-> >
-> > @@ -95,7 +96,7 @@ int enetc_mdio_write_c45(struct mii_bus *bus, int
-> phy_id, int dev_addr,
-> >  	u32 mdio_ctl, mdio_cfg;
-> >  	int ret;
-> >
-> > -	mdio_cfg =3D ENETC_EMDIO_CFG;
-> > +	mdio_cfg =3D ENETC_EMDIO_CFG(mdio_priv->mdc_div);
-> >  	mdio_cfg |=3D MDIO_CFG_ENC45;
-> >
-> >  	enetc_mdio_wr(mdio_priv, ENETC_MDIO_CFG, mdio_cfg);
-> > @@ -133,7 +134,7 @@ int enetc_mdio_read_c22(struct mii_bus *bus, int
-> phy_id, int regnum)
-> >  	u16 dev_addr, value;
-> >  	int ret;
-> >
-> > -	mdio_cfg =3D ENETC_EMDIO_CFG;
-> > +	mdio_cfg =3D ENETC_EMDIO_CFG(mdio_priv->mdc_div);
-> >  	dev_addr =3D regnum & 0x1f;
-> >  	mdio_cfg &=3D ~MDIO_CFG_ENC45;
-> >
-> > @@ -176,7 +177,7 @@ int enetc_mdio_read_c45(struct mii_bus *bus, int
-> phy_id, int dev_addr,
-> >  	u16 value;
-> >  	int ret;
-> >
-> > -	mdio_cfg =3D ENETC_EMDIO_CFG;
-> > +	mdio_cfg =3D ENETC_EMDIO_CFG(mdio_priv->mdc_div);
-> >  	mdio_cfg |=3D MDIO_CFG_ENC45;
-> >
-> >  	enetc_mdio_wr(mdio_priv, ENETC_MDIO_CFG, mdio_cfg);
-> > @@ -231,6 +232,32 @@ struct enetc_hw *enetc_hw_alloc(struct device
-> *dev, void __iomem *port_regs)
-> >  }
-> >  EXPORT_SYMBOL_GPL(enetc_hw_alloc);
-> >
-> > +int enetc_mdio_update_mdc_div(struct mii_bus *bus)
-> > +{
-> > +	struct enetc_mdio_priv *mdio_priv =3D bus->priv;
-> > +	struct device *dev =3D bus->parent;
-> > +	struct clk *enet_clk;
-> > +	u32 div, mdc_freq;
-> > +
-> > +	if (device_property_read_u32(dev, "clock-frequency", &mdc_freq))
-> > +		return 0;
-> > +
-> > +	enet_clk =3D devm_clk_get(dev, NULL);
-> > +	if (IS_ERR(enet_clk))
-> > +		return dev_err_probe(dev, PTR_ERR(enet_clk),
-> > +				     "Input clock unknown, not changing MDC
-> frequency\n");
->=20
-> binding said clock is optional. If return failure here, it will block
-> existing dts, which have not clock property.
->=20
+The native ACL key set cannot express IP TTL or ICMP type/code. Use the
+User Defined Filter windows to match them in the tc flower offload.
 
-For EMDIO device, the clocks property is not added to
-fsl,enetc-mdio.yaml, I suppose this property should be added to the
-dt-binding doc if the clock is really needed here.
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+ drivers/net/dsa/motorcomm/chip.h |   2 +-
+ drivers/net/dsa/motorcomm/tc.c   | 140 +++++++++++++++++++++++++++++--
+ drivers/net/dsa/motorcomm/tc.h   |  12 ++-
+ 3 files changed, 144 insertions(+), 10 deletions(-)
 
-For ENETC device, we already have a 'ref' clock in the enetc node,
-so devm_clk_get(dev, NULL) may get the 'ref' clock rather than the
-system clock of NETC.
+diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
+index 7047ad98f431..fc315f1d8f87 100644
+--- a/drivers/net/dsa/motorcomm/chip.h
++++ b/drivers/net/dsa/motorcomm/chip.h
+@@ -440,7 +440,7 @@ enum yt921x_fdb_entry_status {
+ #define YT921X_TAG_LEN	8
+ 
+ #define YT921X_ACL_BLK_NUM	48
+-#define YT921X_UDF_NUM		8
++#define YT921X_UDF_NUM		16
+ 
+ #define YT921X_LED_GROUP_NUM	3
+ #define YT921X_LED_PORT_NUM	10
+diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
+index 3e0f80500f41..9dbd61e48fee 100644
+--- a/drivers/net/dsa/motorcomm/tc.c
++++ b/drivers/net/dsa/motorcomm/tc.c
+@@ -543,6 +543,24 @@ yt921x_acl_rule_set_ports(struct yt921x_acl_rule *aclrule, u16 ord,
+ 	}
+ }
+ 
++struct yt921x_udf_entry {
++	unsigned char type;
++	unsigned char offset;
++	u8 key;
++	u8 mask;
++};
++
++struct yt921x_udf_map {
++	unsigned char type;
++	unsigned char offset;
++};
++
++/* UDF windows are preselected - that's enough for now. */
++static struct yt921x_udf_map yt921x_udf_maps[] = {
++	{YT921X_UDF_TYPE_L3, 7},
++	{YT921X_UDF_TYPE_L4, 0},
++};
++
+ struct yt921x_acl_rule_ext {
+ 	struct yt921x_acl_rule r;
+ 
+@@ -556,9 +574,13 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 	const struct flow_rule *rule = flow_cls_offload_flow_rule(cls);
+ 	struct yt921x_acl_entry *entries = ruleext->r.entries;
+ 	struct netlink_ext_ack *extack = cls->common.extack;
++	struct yt921x_udf_entry udfs[YT921X_UDF_NUM];
+ 	const struct flow_dissector *dissector;
+ 	struct yt921x_acl_entry *entry;
++	unsigned int udfs_cnt = 0;
+ 	unsigned int size = 0;
++	__be16 n_proto = 0;
++	u8 ip_proto = 0;
+ 	bool use_dport;
+ 	bool use_sport;
+ 
+@@ -575,7 +597,8 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 	      BIT_ULL(FLOW_DISSECTOR_KEY_PORTS_RANGE) |
+ 	      BIT_ULL(FLOW_DISSECTOR_KEY_ETH_ADDRS) |
+ 	      BIT_ULL(FLOW_DISSECTOR_KEY_IP) |
+-	      BIT_ULL(FLOW_DISSECTOR_KEY_TCP))) {
++	      BIT_ULL(FLOW_DISSECTOR_KEY_TCP) |
++	      BIT_ULL(FLOW_DISSECTOR_KEY_ICMP))) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Unsupported keys used");
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -741,7 +764,9 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 		if (match.mask->n_proto) {
+ 			enum yt921x_l3_type l3type = YT921X_L3_TYPE_OTHER;
+ 
+-			if (match.mask->n_proto == htons(~0))
++			if (match.mask->n_proto == htons(~0)) {
++				n_proto = match.key->n_proto;
++
+ 				switch (match.key->n_proto) {
+ 				case htons(ETH_P_IP):
+ 					l3type = YT921X_L3_TYPE_IPV4;
+@@ -762,6 +787,7 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 					l3type = YT921X_L3_TYPE_ERP;
+ 					break;
+ 				}
++			}
+ 
+ 			if (l3type != YT921X_L3_TYPE_OTHER) {
+ 				size = yt921x_acl_entries_set_l3_type(entries,
+@@ -783,7 +809,9 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 		if (match.mask->ip_proto) {
+ 			enum yt921x_l4_type l4type = YT921X_L4_TYPE_OTHER;
+ 
+-			if (match.mask->ip_proto == (u8)~0)
++			if (match.mask->ip_proto == (u8)~0) {
++				ip_proto = match.key->ip_proto;
++
+ 				switch (match.key->ip_proto) {
+ 				case IPPROTO_TCP:
+ 					l4type = YT921X_L4_TYPE_TCP;
+@@ -801,6 +829,7 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 					l4type = YT921X_L4_TYPE_IGMP;
+ 					break;
+ 				}
++			}
+ 
+ 			if (l4type != YT921X_L4_TYPE_OTHER) {
+ 				size = yt921x_acl_entries_set_l4_type(entries,
+@@ -852,10 +881,25 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 		struct flow_match_ip match;
+ 
+ 		flow_rule_match_ip(rule, &match);
++
+ 		if (match.mask->ttl) {
+-			NL_SET_ERR_MSG_MOD(extack,
+-					   "Matching on TTL not supported");
+-			return -EOPNOTSUPP;
++			if (n_proto != htons(ETH_P_IP) &&
++			    n_proto != htons(ETH_P_IPV6)) {
++				NL_SET_ERR_MSG_MOD(extack,
++						   "Matching on TTL requires protocol ip or ipv6");
++				return -EOPNOTSUPP;
++			}
++
++			if (udfs_cnt >= YT921X_UDF_NUM)
++				goto err;
++
++			udfs[udfs_cnt] = (struct yt921x_udf_entry){
++				.type = YT921X_UDF_TYPE_L3,
++				.offset = n_proto == htons(ETH_P_IP) ? 8 : 7,
++				.key = match.key->ttl,
++				.mask = match.mask->ttl,
++			};
++			udfs_cnt++;
+ 		}
+ 
+ 		if (match.mask->tos) {
+@@ -889,6 +933,82 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+ 		}
+ 	}
+ 
++	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ICMP)) {
++		struct flow_match_icmp match;
++
++		flow_rule_match_icmp(rule, &match);
++
++		if (match.mask->type || match.mask->code) {
++			if (ip_proto != IPPROTO_ICMP &&
++			    ip_proto != IPPROTO_ICMPV6) {
++				NL_SET_ERR_MSG_MOD(extack,
++						   "Matching on ICMP type/code requires ip_proto icmp or icmpv6");
++				return -EOPNOTSUPP;
++			}
++
++			if (match.mask->type) {
++				if (udfs_cnt >= YT921X_UDF_NUM)
++					goto err;
++
++				udfs[udfs_cnt] = (struct yt921x_udf_entry){
++					.type = YT921X_UDF_TYPE_L4,
++					.offset = 0,
++					.key = match.key->type,
++					.mask = match.mask->type,
++				};
++				udfs_cnt++;
++			}
++
++			if (match.mask->code) {
++				if (udfs_cnt >= YT921X_UDF_NUM)
++					goto err;
++
++				udfs[udfs_cnt] = (struct yt921x_udf_entry){
++					.type = YT921X_UDF_TYPE_L4,
++					.offset = 1,
++					.key = match.key->code,
++					.mask = match.mask->code,
++				};
++				udfs_cnt++;
++			}
++		}
++	}
++
++	/* Compile UDFs */
++	for (unsigned int i = 0; i < udfs_cnt; i++) {
++		unsigned int o;
++		u32 mask;
++		u32 key;
++
++		for (o = 0; o < ARRAY_SIZE(yt921x_udf_maps); o++)
++			if (udfs[i].type == yt921x_udf_maps[o].type &&
++			    (udfs[i].offset == yt921x_udf_maps[o].offset ||
++			     udfs[i].offset == yt921x_udf_maps[o].offset + 1))
++				break;
++
++		if (WARN_ON(o == ARRAY_SIZE(yt921x_udf_maps)))
++			return -EOPNOTSUPP;
++
++		entry = yt921x_acl_entries_find(entries, &size,
++						YT921X_ACL_TYPE_UDF0 + o / 2);
++		if (!entry)
++			goto err;
++
++		key = udfs[i].key;
++		mask = udfs[i].mask;
++		if (udfs[i].offset == yt921x_udf_maps[o].offset) {
++			key <<= 8;
++			mask <<= 8;
++		}
++		if (!(o % 2)) {
++			key <<= 16;
++			mask <<= 16;
++		}
++
++		entry->key[0] |= key;
++		entry->mask[0] |= mask;
++	}
++
+ 	if (!size) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Empty rule generated, this should not happen");
+ 		return -EOPNOTSUPP;
+@@ -1579,5 +1699,13 @@ int yt921x_chip_setup_acl(struct yt921x_priv *priv)
+ 	if (res)
+ 		return res;
+ 
++	for (unsigned int o = 0; o < ARRAY_SIZE(yt921x_udf_maps); o++) {
++		ctrl = YT921X_UDF_CTRL_UDF_OFFSET(yt921x_udf_maps[o].offset) |
++		       YT921X_UDF_CTRL_UDF_TYPE(yt921x_udf_maps[o].type);
++		res = yt921x_reg_write(priv, YT921X_UDFn_CTRL(o), ctrl);
++		if (res)
++			return res;
++	}
++
+ 	return 0;
+ }
+diff --git a/drivers/net/dsa/motorcomm/tc.h b/drivers/net/dsa/motorcomm/tc.h
+index f11136a1c5e2..cc53f148d690 100644
+--- a/drivers/net/dsa/motorcomm/tc.h
++++ b/drivers/net/dsa/motorcomm/tc.h
+@@ -118,6 +118,9 @@ enum yt921x_acl_type {
+ 	YT921X_ACL_TYPE_IPV6_SA3,
+ 	YT921X_ACL_TYPE_MISC,
+ 	YT921X_ACL_TYPE_L4,
++	/* Each User Defined Filter entry contains 2 UDF windows (UDF_CTRL 2i
++	 * and 2i+1)
++	 */
+ 	YT921X_ACL_TYPE_UDF0,
+ 	YT921X_ACL_TYPE_UDF1,
+ 	YT921X_ACL_TYPE_UDF2,
+@@ -255,12 +258,15 @@ enum yt921x_l4_type {
+ #define YT921X_UDFn_CTRL(x)		(0x210094 + 4 * (x))
+ #define  YT921X_UDF_CTRL_UDF_TYPE_M		GENMASK(8, 7)
+ #define   YT921X_UDF_CTRL_UDF_TYPE(x)			FIELD_PREP(YT921X_UDF_CTRL_UDF_TYPE_M, (x))
+-#define   YT921X_UDF_CTRL_UDF_TYPE_ETH			YT921X_UDF_CTRL_UDF_TYPE(0)
+-#define   YT921X_UDF_CTRL_UDF_TYPE_L3			YT921X_UDF_CTRL_UDF_TYPE(1)
+-#define   YT921X_UDF_CTRL_UDF_TYPE_L4			YT921X_UDF_CTRL_UDF_TYPE(2)
+ #define  YT921X_UDF_CTRL_UDF_OFFSET_M		GENMASK(6, 0)
+ #define   YT921X_UDF_CTRL_UDF_OFFSET(x)			FIELD_PREP(YT921X_UDF_CTRL_UDF_OFFSET_M, (x))
+ 
++enum yt921x_udf_type {
++	YT921X_UDF_TYPE_L2,
++	YT921X_UDF_TYPE_L3,
++	YT921X_UDF_TYPE_L4,
++};
++
+ #define YT921X_PORTn_RATE(port)		(0x220000 + 4 * (port))
+ #define  YT921X_PORT_RATE_GAP_VALUE		GENMASK(4, 0)	/* default 20 */
+ #define YT921X_METER_SLOT		0x220104
+-- 
+2.53.0
 
