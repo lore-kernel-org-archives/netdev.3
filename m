@@ -1,81 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52AC388E76;
-	Sat, 17 Oct 2026 01:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F777384CCB
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792201223; cv=none; b=jAei3JqB2okb/B8iEAzc9zwptWBDoRhtq88v6MeFfeFmZNFe28/95GAETTySfGp3thweyYxmE5TkZTyC+t67gM+/QJqENz2g4Y36+x9U/BW+PFYGMd8qsCg/BvTllO+yK770Txhwcq2gu0WN12hRAd5cgpzvIuWKROpdvkLH7BU=
+	t=1792201298; cv=none; b=eMQwhbOwzkwQyPCV3/xpFhAIefwkEtotQfrs/Hu7434vHGvM//0DD2t4gQU8qy+FCQl7r5f03+qDOsMNCueuUNBqHemSEjOfJW1vyotXkC+j11zl+HJ73Q4uAPb61jesRYtT0RQU8NzvTqjj0SlcQx+HYsABPu3kps9GHXWiNSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792201223; c=relaxed/simple;
-	bh=rvSCcv2B7Q3hmBG6UdlHr2Ahf7694CAXsCjUoWI5Mis=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gPMnZsXm8a6mIFVnBmD2RN5t74bDk/nYuvFWAyNdvCJ68r19dlyEssyMWjPaF/Y85aRZKM+CrkHrTVMlBKGRxEbsGCtgmDfrPHSQQs7/46gG4OuGT53z8WkM2JEc4e7B1CMyuSiiV/3lQNrDQvyOsQe2AvG6ErsA3iGlygFqk9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNoNqe2W; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792201298; c=relaxed/simple;
+	bh=e6X+D5c/Tv+Ez0yFoodFngWklvLeykaCU8B+V7wc9tg=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=o7UG3KLbKPwUWXgqrvW7F8wWV+d69EtxhqauJEOckSF2fTq6abVVDXIDc1zihtV6j7FblpHLlnuwuGA0RZWy0hp9sJgCG/qDnMVUpPwfmJmre+4MV0gnj3bPlcmx4NOXlRvZseACo2J+jRqwDICr6+x5f5/U7OQaI5FkhHvumVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AsvPzqB2; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNoNqe2W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821B21F000C4;
-	Sat, 17 Oct 2026 01:40:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792201221;
-	bh=hRF1iwVdfPrpTun+FtTH9nio/HLqKk5fIzJM0j7xd2o=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PNoNqe2WFBrgkFZdOYdjvgHkMswCfIOHS0OzZKfyyNVqck4ixqglZ4yyxrLzUgzpf
-	 YrhON6ne3QZEXvaJWBbT5nC17IfCXxiZZ/Kq55r22fTL634z+LMIpjGcw8f87poXdK
-	 RZbwUH3wq58UoNPKMPGD0WAIFHGkl85AzTJ6PLbLZK9GZDVJa+C4HHd2AkQ34dtMOm
-	 iQ5lzPHiYIRvGKOy3b2SgL8sjB4Zl0HLjaezTEP+1JmAJ12SzIVJDeVWlbm50gw22p
-	 psHqqOF/v3G2Z+QZoAFeFi4MeTwG1NlJCpTJvAIYoQcItvdOhzKhQJFwkSghlyUAgA
-	 rpxx3c+Ede7fg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 77453380CED9;
-	Sat, 17 Oct 2026 01:40:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AsvPzqB2"
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5e9239c772cso390321e0c.2
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:41:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792201295; x=1792806095; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=yKsSek1QBLZx4VbISQM48zQ9ZZju16PuBgR+zu138+g=;
+        b=AsvPzqB2AMkAUnOgBySfx+Hw3l8yEXPYIW92JNpxIa+hu8PoWZZgLJd84RKbyoTOsX
+         dXc57wYZN9LWkOiMpj3KutBOgcxjqzwVq1a3V5jMH0lrnqImMdl0Sfp772LYYEjcObGL
+         ee5ZPCddT96Qnr7lVb1p98Qljv7TC1F9hDw+WyDhsYnAj0sGro10wFOCF4Br9+f1x++M
+         mVmBCMy87nrXJQFgB6BUh66flTlUvm9y/kbaRWUG/XLqHRhZ8iaNYFlcGBUKGfTNNlSc
+         OpIPntJ8baS7C5VtEPgkuUIcnYkDr/qTnOH9Qrrvvsrs0mgllEgvtVxNaVspwByeSELv
+         e/aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792201295; x=1792806095;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yKsSek1QBLZx4VbISQM48zQ9ZZju16PuBgR+zu138+g=;
+        b=Rf2x068/zBuS+4gjdK29xFSptjywh9X1D7F+KbMVhn09qV54hS2wS45Eta8ZfAI0x6
+         wc88z//Q5BCbvOQW1E+2hJOs4MIsviB6fea/+cyAmqZwV8Ct4I0PVjaaQf7xmgmDYpIq
+         MO/yYP3c457WM6Z0UHDqxQse16WAwwSL2ckpfW3GCI1KsfTmA84zvbho4XOIsW3B8irm
+         zgAZI80rd6RE5tQI981nSQqDpqjygnE/rKLjgc8yQabZF3Kf+exI4OjEvYNmntdhInS4
+         wHYQooVfR6KQbXudSDV7kkKkYnjPj7dh4vnHNZuDThkxrVkFS2cWHwzrZ2aFuzK8hqEV
+         Nl5w==
+X-Forwarded-Encrypted: i=1; AKwUvBzI2sfdMgQijFjEbZFaSiftOL+r3F+Vaw7Ml0sJsKvUtc1yo21wrcWJifuhfFH0O156IP0Ahcs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIYtecfArHuPb/+qppCQ+5lrb0PqxY6xSCAIvJTjCLPlUtL9aUN
+	tccUEDn+xzQSPFhA802Hw25A7vz9jpZfYHS2dojqVezeY6qwNzJGTBP2
+X-Gm-Gg: AYBFou1PKM7aMZQpX52zf1jqUU/OQtENRv24f6Qynw8RiTAlb0wzXDuP135iIsvCY59
+	DnjTQTnE0nTtm0Jrg4ZuQw8iv9LSOL/IRDj1TB2B718SMcuIxs5X13eoTgfwmR2aM9VvvdNLFPp
+	R3FSGKsvOMcmlp3kbjIhib3DcqgJ8bn4wZ70ktCa3IZEP4J5/av2pwgNSMYUfD94FHPAA0aJ+Fb
+	EwRdz90CcLsTJyD/Hp80zlA8vLX3JCNO8bKiw/wYl2Qq1j/GZdy6rZLAbrbmDjcd89rGjV7aztF
+	OSfIGYHQD9QDu3wsDU3IWmN5jbrHOhWBpR1D/sgVBIQOjBU3QGi4pSLY4IoNj4oSkSz6sFuwXmf
+	GOMsw+FMENCbmGE38tA2OnxXjcVqAf2jh3skWrnCP7Mh+0gVTAoYbiDCBG/049/bkRkLdsYcj+/
+	8mezomMI9PuPYF8Wuam3iRCLh1cBzT7+HFq8KGCh5KhG+vRd4qimQ2/1NFbJvafFdUB60Tk6wZr
+	NjAPHLPDfTkxT7kiON/T73SLjQBanORoRECPXtX9DIk09OMJ/b9dZa4leebPWG4kVCBgirrY8OI
+	ntcpicGqyXmqNz/y6CbJAiEYJ4jaU+lCXgpUBBn+qYoPPMXc
+X-Received: by 2002:a05:6102:1612:b0:7a6:b18e:6d24 with SMTP id ada2fe7eead31-7cc36a38330mr415620137.23.1792201295404;
+        Fri, 16 Oct 2026 18:41:35 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-990836389b0sm2847007241.11.2026.10.16.18.41.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 18:41:34 -0700 (PDT)
+Date: Fri, 16 Oct 2026 21:41:34 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Boyan Liu <yymhvert@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ co+98d7de09cd94fec5@bugs.sh, 
+ andrea.mayer@uniroma2.it, 
+ dsahern@kernel.org
+Message-ID: <willemdebruijn.kernel.ddaa3b8e2bca@gmail.com>
+In-Reply-To: <20261016090526.2497-1-yymhvert@gmail.com>
+References: <willemdebruijn.kernel.2a345d6bd54c5@gmail.com>
+ <20261016090526.2497-1-yymhvert@gmail.com>
+Subject: Re: [PATCH net] udp: Fix out-of-bounds read with unset mac header in
+ unexpected GSO path
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/2] bareudp: Enable BIG TCP packets
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179220122001.1050340.14067419361177757492.git-patchwork-notify@kernel.org>
-Date: Sat, 17 Oct 2026 01:40:20 +0000
-References: <20261011102023.1603595-1-yanhaishuang@cmss.chinamobile.com>
-In-Reply-To: <20261011102023.1603595-1-yanhaishuang@cmss.chinamobile.com>
-To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, alice.kernel@fastmail.im, daniel@iogearbox.net,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 11 Oct 2026 18:20:21 +0800 you wrote:
-> This series allows BIG TCP on bareudp, the same way as on vxlan and
-> geneve, and extends the big_tcp_tunnels.sh selftest to cover it.
+Boyan Liu wrote:
+> Hi Willem,
 > 
-> Patch 1 bumps tso_max_size of bareudp devices to GSO_MAX_SIZE.
+> On Thu, Oct 15, 2026 at 10:49 AM, Willem de Bruijn wrote:
+> > I wonder if the right fix here is to not call skb_unset_mac_header in
+> > the first place.
+> >
+> > There are plenty of L3 device type with no L2 header. They still have
+> > a valid skb_mac_header.
+> >
+> > This fix may be papering over a tunnel doing something non-standard.
 > 
-> Patch 2 adds bareudp to big_tcp_tunnels.sh. bareudp only works in
-> external mode, so the test attaches the tunnel metadata with a tc
-> tunnel_key action on egress.
+> You're right, and after digging into it I agree the seg6local side is
+> the real offender.
 > 
-> [...]
+> I checked every skb_unset_mac_header() call site in the tree. There
+> are exactly two: net/ipv6/seg6_local.c (end_dt_vrf_rcv) and
+> net/core/filter.c (BPF egress, unrelated to the rx path). Every other
+> receive path delivers packets with a valid mac header: NIC drivers set
+> it in eth_type_trans(), and L3 tunnels without an L2 header (ipip,
+> sit, gre, tun, loopback) reset it to the network header after
+> decapsulation. seg6local is the only producer that lets a packet
+> continue up the stack with mac_header unset, which is also the state
+> skb_mac_header() warns about with DEBUG_NET_WARN_ON_ONCE().
+> 
+> One complication: the unset in end_dt_vrf_rcv() is not gratuitous.
+> vrf_l3_rcv() -> vrf_add_mac_header_if_unset() relies on it to
+> synthesize a fake Ethernet header when a sniffer (e.g. tcpdump) is
+> attached to the VRF device. Dropping the unset entirely would change
+> what sniffers see on VRF devices.
+> 
+> So instead of removing it, I restore a valid mac header once the VRF
+> rx handler returns:
+> 
+>         if (!skb_mac_header_was_set(skb))
+>                 skb_reset_mac_header(skb);
+> 
+> The sniffer rebuild happens inside the handler while the header is
+> still unset, so tap behavior is unchanged; when no rebuild happened,
+> the packet now carries the same mac header state as any packet
+> received on an L3 device.
+> 
+> Tested under QEMU with the original reproducer:
+> - unpatched kernel: KASAN slab-out-of-bounds in inet_gso_segment,
+>   same stack as the original report;
+> - patched kernel: no crash, the re-segmented datagrams are delivered
+>   intact, and the unexpected GSO path is confirmed taken;
+> - with a sniffer attached to the VRF device, the fake Ethernet header
+>   presented to the tap is identical before and after the patch.
+> 
+> I'll send this as v2 with the fix moved to seg6_local.c. If you'd
+> rather drop the skb_unset_mac_header() altogether and accept the
+> sniffer behavior change, I'm happy to do that instead.
 
-Here is the summary with links:
-  - [net-next,v4,1/2] bareudp: Enable BIG TCP packets
-    https://git.kernel.org/netdev/net-next/c/1240de9e5120
-  - [net-next,v4,2/2] selftests: net: big_tcp_tunnels: Cover bareudp
-    https://git.kernel.org/netdev/net-next/c/3e3f209961b0
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Thanks Boyan. This sounds good to me too.
 
