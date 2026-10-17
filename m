@@ -1,233 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00256a01.pphosted.com (mx0b-00256a01.pphosted.com [67.231.153.242])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680E72F60B2;
-	Sat, 17 Oct 2026 21:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B5D29BDBF
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 21:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.242
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792273221; cv=none; b=jkapwEu+wIGEcAPImY3xaodvbyzk8Dq0y/pgeiozj8d6NEt7PUQTgISK3zVB69BhPlZxiKjPUAc5zZKt6TuawIo+YHYL3e5dG++a+OlELdsP1oAsTfLz9xaHazgCqox5T8RDmZDVprPf8PXzrOgdwitbjpEifAWqj0z9KLVi4UQ=
+	t=1792273750; cv=none; b=N/7vHok4UW70lIceTegDDc4j7wVxqrRbgJO3s34+qcQ/U5Xa6Q0e4aJttORQvUsnwfB7kC8ZIF9CM+5c5oyX68DYgkKGGbEumtI2DTEPNK9LuUaDWEbJPHNosY+d581VZRA17KXbTIhg0J2wJJ4HJb7D3mdRBjbORBIgD29qu4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792273221; c=relaxed/simple;
-	bh=ZPU+6pL9dSCS0lBdPECZAZr8Yj1+06Le9ECSNxvwusI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=R58/jaaSQs36MVLLaCffz/pz/vt4uinDJ2FeIE31FDJBqTWa4jd1i0rTmXK54b+g4lI/Q1kmtdLo7AYTI6XCweRwMf0+Cv1xDmN+dReT6qP2tzw9VYXq1/pQEq8mxzabke6TOu1QxlgUMXBnJZaZrBKMILJnfDf6yU103xVGrvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZuUnF5o; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792273750; c=relaxed/simple;
+	bh=VvmIiZsAQTuewLT4z+voMxu4lT+9AVGv01yAygNYMac=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IyJxuQQ50Sxjctyz4L/UARY1q87R8B/LtmNirPoyPq4HfDUziYUg0DJHqiUb3btaNwJ6Gje/6q29wQ4Zq6RMyR31cXqXY81yoxFXQZAtwQNBnr99zkDwGUEcYQCl/fR/aNpYNm1a2kFiOx8ywkv23moHVACdoNLdeeEkggHaCV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nyu.edu; spf=pass smtp.mailfrom=nyu.edu; dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b=jLnZAvYZ; dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b=Tc42URYe; arc=none smtp.client-ip=67.231.153.242
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nyu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nyu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZuUnF5o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8171F000C4;
-	Sat, 17 Oct 2026 21:40:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792273220;
-	bh=WEQoMZ2bChs4RLc/Ijgg2H/5omfdkYuVoREo4xEk6Bg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kZuUnF5oBvFkvzuXKzzquBs8Ath7mdmtPFX+TrzNHScgan2v17kwmtk/VkBw0IOZN
-	 eMkBo7vA7PgwUSpl4ZZExc/9Mb8FgwSsPfy5Unpm/8jkHjoMniOddjXe3ZFA8oUc5K
-	 +iDZmwKEDDAivN6A+6TZKUQz4ijCpQCyDLhVKtZXEw93ynEBPXDJAagg6qJx3zEPSu
-	 tqTDH6jYt9g2mg3hra6GNsnAgfkFKfmAkynBqb6TkK3F8WKOy+mdMqzCbSVuXSmTaZ
-	 MrmzP144Rj8oMyKpzbrwzTW3PxOvbZH8yul2T28E/OZ90yCVH81wvxfQCoWz+pAlFz
-	 murPH4a4JnNew==
-Subject:
- Re: [PATCH net v3] net: do not let defer_count outlive an empty defer_list
-From: netdev-bot+sashiko@kernel.org
-To: jkain@nuro.ai
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Date: Sat, 17 Oct 2026 21:40:18 +0000
-Message-ID: <179227321891.3135.3487538638002916061@kernel.org>
-In-Reply-To: <20261013205416.3417296-1-jkain@nuro.ai>
-References: <20261013205416.3417296-1-jkain@nuro.ai>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b="jLnZAvYZ";
+	dkim=pass (2048-bit key) header.d=nyu.edu header.i=@nyu.edu header.b="Tc42URYe"
+Received: from pps.filterd (m0119691.ppops.net [127.0.0.1])
+	by mx0b-00256a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69HL3JdK1977632
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 17:49:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyu.edu; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=20180315; bh=59Nz+2ykEAA6Qs8QLk2O+NtyFmD2Phjzm6kC
+	GW6XiFA=; b=jLnZAvYZp9rtfVnVUyLN91meiqStyzWbdQWlLZjK0Y6LaLQkOO+W
+	i9uYsgFKb6roGw4E522azubZMhvAwX+0uo3Z71CVE/fpJfeJphcXN8G3PR1DuaVI
+	0GznYoljJlNYFBN5rZx7RQ+jt4Xz68EAf1iouywij98H5YdE+Tr67cU+28um7uFR
+	rENd9BcumswoD3gDzp1oD3WgECTTKK6sesUAMkFLNsf9Ymemqw3Lnf34Plk0Du9B
+	Ym4MHefpFqbd4w1HfAzyBQn+tAedT8tE0isZ1+ypwgu6uNBJg1cY6ZH/2uxnHPB1
+	cZhXPnXqXmfXVIo+lyr4nmjOX3V8bdBydg==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0b-00256a01.pphosted.com (PPS) with ESMTPS id 4hcgkn0a43-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 17:49:06 -0400 (EDT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-535294e0f64so18981551cf.1
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 14:49:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nyu.edu; s=nyu-googleapps1; t=1792273746; x=1792878546; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=59Nz+2ykEAA6Qs8QLk2O+NtyFmD2Phjzm6kCGW6XiFA=;
+        b=Tc42URYezNqPFBn+5HejdFHwngGk6xdsVL9i/W8RbEMAnGaFGoP9eU29Hb5w/evDfu
+         5Aw66vvy3WnJrUBDmDh06VV1qRm7wvhtgjiD0nkAUENfpxtM9/C7ybPl6nJf+R2pXcfI
+         MUKe2VoF/Y/0T2atcGCRckW7LzINbbKzwpDyhC2nynqE5zWZeOgjUYnQOc3I7wTISnPw
+         oyhAjOpgvFacQgnSmVxz0kSavQGqLNQX5kfa+hXTgjCAAavjLsS9xvhEf3Q7Kl8URbWN
+         MSZ93eSYtDgn8PnYNkBBAJ0ZIY4Qybp2AClrS8AXrbRWwXdVtqVsYZcNgN3Vtk1bdKEq
+         lvOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792273746; x=1792878546;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=59Nz+2ykEAA6Qs8QLk2O+NtyFmD2Phjzm6kCGW6XiFA=;
+        b=HVwh7HivvDed+Z0K4A+Shtgsbyz4A3jhDRQtxz3OAzeXV2yP+acf9bpruIFSUNZaMS
+         4Swl96Twi228wiBpYr1SiBi7zbhdgjjQqwJEOZ6IV/rXym9lyDPthTASEH0NQHubIwDG
+         UDtIlL9df8RFJYbA0ct86RtPWVWL9TFkHoYGRP3MZPq3az8Y42VuYDZYefTqAnmDPCNp
+         aCrrkeun8xjCQkPMysycDTjdE8Wlj8zts0h61x9v34Ik+fK6Qa6CpSnkzXEbBl98aRCx
+         PEIzzh14GRQ6g3suB0svnU9bT6jQOBgJYTxjySp/6NuUJ8A3/8GPhiV7VTEZ833H6n4M
+         pcrg==
+X-Gm-Message-State: AFq9FYKuJhluc2+aRc9+vqqlxn0PwDit2vJOT+RaxJ/3rdLOlqymFckb
+	W7FwS5tejKJvu+lJt6eusJg2qvDtoOtT6cXyh6ynMqASDlHkWkFWPVsDjXY1VUK6DHQ7x9tCI/f
+	HfjamoH6cWnjDiLTOq29B0KV8SsP11ZQOIjL/iOIRg0yAMeNWM0g7lcY=
+X-Gm-Gg: AYBFou2AsKiSXu21A/O7OGLpSksWeOuKLJ+uqfuU4Z8HVMq/BpYEMTNhmr4Oiqq0koG
+	zAZL3MSWsyvTrDHSeHqOf9DcnohSQG3SlvBF9qXlFsSIH3cnTaThgYzwm7G81qZ4q5nCkk6nxTs
+	pi63Z+ra3hQ0Gqo+nxQQ2Nf33UiEwUvo8pVWMQ2zTG8oO5vbdC4chqFo3+aX+v8Ffb4qQ8r6/oZ
+	84OrnbemDPkWXZ1zf+1Uqh/8JO67brdAc3JjKJLWq5jbfdtyR1qfG9bxX0Vza2hAIEmlLzRP/0p
+	BtGegzhYXJUy1gqNUVaRPGr/nHrjvJE72FpD5tT4o3FNl2PobzwQQ08lyXKtY93mTR0HEi21Zn7
+	Kr1w5wG6jmZctiWHmTp+i36LhpWcqdhZAPnaK
+X-Received: by 2002:a05:622a:5ce:b0:536:5a10:5c4c with SMTP id d75a77b69052e-5365a1081d7mr25580361cf.13.1792273745916;
+        Sat, 17 Oct 2026 14:49:05 -0700 (PDT)
+X-Received: by 2002:a05:622a:5ce:b0:536:5a10:5c4c with SMTP id d75a77b69052e-5365a1081d7mr25580121cf.13.1792273745472;
+        Sat, 17 Oct 2026 14:49:05 -0700 (PDT)
+Received: from jerrythepro.nyu.edu (216-165-95-129.natpool.nyu.edu. [216.165.95.129])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcbb0b231sm56350806d6.31.2026.10.17.14.49.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 14:49:03 -0700 (PDT)
+From: Kaho Jiang <kj2864@nyu.edu>
+To: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
+        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+        edumazet@google.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        co+71b6509cb791e531@bugs.sh, Kaho Jiang <kj2864@nyu.edu>,
+        stable@vger.kernel.org
+Subject: [PATCH net v4] net: ipv4: add zero check for snd_cwnd_clamp
+Date: Sat, 17 Oct 2026 17:48:46 -0400
+Message-ID: <20261017214845.28769-2-kj2864@nyu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE3MDA4NyBTYWx0ZWRfX/O6mdXepe9SI
+ CabZVY/hBxLNfiQUae7IWH8pMfpeIjV2KiKAYcU3M+/B2Rrz3ETkDo5uKUUt2eDEk12VeKkIk/T
+ BSBRmgHEf3ml7AS1Y+duD0xhgwWSj2QVw0cKdFw/0eoUWDtUuEIZ8LPymiB6G3+j/zmRvdKeO+t
+ e0J74sw7xr5XXJ9D+IJC1QvPdTiKsGARTvJZb+SDtbhH2wbCKDI9wyKGtq4Ahp75mcsk8crbCjK
+ ZO2ZB6ozdgMEzEkUdflV1VMnjchE80ZZd6SxzuwlJ1oyuEybEpw6jAAkszXd35aaMQW+duTMlZk
+ GmeghEfaEP9dzUQ8ZsVTpm4GAHljZFRKfu/E2sGf8uvtOt7SDTiOpFJDG3rAvkrkYKKsRPMLTim
+ GExj2oIIPfQGnQ7YQSDUwr6WblxuSCNH5sB0SvtIeNqhPeNWtTYJiiGc2wvitE09rossn47fVFd
+ q9jVlicWbT2PaaGlPzw==
+X-Proofpoint-GUID: z5_HQG9HOKOhJPFtRAO_DU-TBGs9MUDi
+X-Authority-Analysis: v=2.4 cv=C+58WgP+ c=1 sm=1 tr=0 ts=6ad3ed52 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=k9NFnU9fOQnGI6ew/wxyRQ==:17
+ a=660iZSQnnn4A:10 a=x7bEGLp0ZPQA:10 a=S0S_EcBMpFAA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Se5WoFf3ZZRiLcel0nel:22 a=tr4woWNwjDflhTIOjkZU:22
+ a=VwQbUJbxAAAA:8 a=qtVHbROC6xTCA7o1MbIA:9 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-ORIG-GUID: z5_HQG9HOKOhJPFtRAO_DU-TBGs9MUDi
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE3MDA4NyBTYWx0ZWRfX0WbGUKXT5vtl
+ aJts/M2vey4KQcaL6OxU47rOGlgTFaIGCzovEucQU78nu+dH6bi6pMKuJeBmKaIZUBOulhxHdZn
+ Rued7/QcWOl7/SCBZ23WTAVdIcyXQp4=
+X-Orig-IP: 209.85.160.199
+X-Proofpoint-Spam-Details: rule=outbound_bp_notspam policy=outbound_bp score=0
+ clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ lowpriorityscore=0 impostorscore=0 spamscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610170087
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+User can pass zero to snd_cwnd_clamp via RTAX_CWND type.
+This could lead to division of zero error if not checked properly.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0 (1)
+Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+Call Trace:
+ <IRQ>
+ tcp_reno_cong_avoid (net/ipv4/tcp_cong.c:510 (discriminator 1))
+ tcp_ack (net/ipv4/tcp_input.c:3517 net/ipv4/tcp_input.c:3873 net/ipv4/tcp_input.c:4440)
+ tcp_rcv_established (net/ipv4/tcp_input.c:6685)
+ tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
+ tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
+ ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207 (discriminator 1))
+ ip_local_deliver_finish (net/ipv4/ip_input.c:241 (discriminator 1))
+ ip_local_deliver (./include/linux/netfilter.h:325 ./include/linux/netfilter.h:319 net/ipv4/ip_input.c:262)
+ ip_rcv (./include/net/dst.h:481 (discriminator 6) net/ipv4/ip_input.c:492 (discriminator 6) ./include/linux/netfilter.h:325 (discriminator 6) ./include/li)
+ __netif_receive_skb_one_core (net/core/dev.c:6297 (discriminator 4))
+ __netif_receive_skb (net/core/dev.c:6410)
+ process_backlog (net/core/dev.c:6761)
+ __napi_poll.constprop.0 (net/core/dev.c:7830)
+ net_rx_action (net/core/dev.c:7893 net/core/dev.c:8050)
+ handle_softirqs (kernel/softirq.c:645)
+ __irq_exit_rcu (kernel/softirq.c:679 kernel/softirq.c:519 kernel/softirq.c:758)
+ irq_exit_rcu (kernel/softirq.c:775)
+ sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1062 (discriminator 35) arch/x86/kernel/apic/apic.c:1062 (discriminator 35))
+RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fix by checking if user pass in zero as parameter,
+if so reject the value zero.
 
-- [High] The new reject-path undo in skb_attempt_defer_free()
-  (net/core/skbuff.c:7399) brings in a new absorbing state that leaves…
+Fixes: 814d488c6126 ("tcp: fix the timid additive increase on stretch ACKs")
+Cc: stable@vger.kernel.org
+Reported-by: co+71b6509cb791e531@bugs.sh
+Assisted-by: LLM
+Signed-off-by: Kaho Jiang <kj2864@nyu.edu>
+---
+ include/net/tcp.h  | 3 +--
+ net/ipv4/metrics.c | 4 ++++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-Pre-existing issues:
-- [Medium] In skb_attempt_defer_free() the reject path jumps to nodefer
-  without calling kick_defer_list_purge().
-- [Low] Documentation/admin-guide/sysctl/net.rst (line 365) describes
-  skb_defer_max as the "Max size (in skbs) of the per-cpu list".
-
---
-
-net: do not let defer_count outlive an empty defer_list
-
-When the skb_defer_max limit rejects an skb, skb_attempt_defer_free() now
-undoes its defer_count increment, so the counter only counts skbs that are
-actually queued. In __skb_defer_free_flush() the counter reset now comes
-after llist_del_all(), which avoids a transient over-count.
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index e76762e29360e..a5912b728ddd7 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -6940,8 +6940,11 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
->  
->  	if (llist_empty(&sdn->defer_list))
->  		return;
-> -	atomic_long_set(&sdn->defer_count, 0);
->  	free_list = llist_del_all(&sdn->defer_list);
-> +	/* Racy on purpose, as in __dev_xmit_skb(): a producer landing between
-> +	 * the del_all and this store stays queued but uncounted.
-> +	 */
-> +	atomic_long_set(&sdn->defer_count, 0);
-
-[ ... ]
-
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 41beaf625421a..e45e15506283b 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -7392,8 +7392,13 @@ nodefer:	kfree_skb_napi_cache(skb);
->  	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
->  	defer_count = atomic_long_inc_return(&sdn->defer_count);
->  
-> -	if (defer_count >= defer_max)
-> +	if (defer_count >= defer_max) {
-
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. The >=
-test means at most defer_max - 1 skbs are queued. However,
-Documentation/admin-guide/sysctl/net.rst describes skb_defer_max as:
-
-    Max size (in skbs) of the per-cpu list of skbs being freed
-    by the cpu which allocated them.
-
-With skb_defer_max=1, nothing is deferred at all. The list is also now per
-(cpu, node), not per-cpu.
-
-Should the documentation or the comparison be changed so they agree?
-
-> +		/* Undo, or the count outlives the skbs it was counting: the
-> +		 * reject path never reaches kick_defer_list_purge() below.
-> +		 */
-> +		atomic_long_dec(&sdn->defer_count);
-
-[Severity: High]
-Can this decrement push defer_count below zero if it races with the flush
-on the owner CPU?
-
-The increment and the undo are two separate atomic operations. The
-atomic_long_set() in __skb_defer_free_flush() can run between them. With
-defer_max = M and M-1 skbs queued:
-
-P1, P2 (remote producers)            owner CPU
-atomic_long_inc_return() -> M
-atomic_long_inc_return() -> M+1
-both take the reject branch
-                                     llist_del_all()
-                                     atomic_long_set(&sdn->defer_count, 0)
-atomic_long_dec() -> -1
-atomic_long_dec() -> -2
-
-This leaves the counter at -2 with an empty list.
-
-defer_count is an unsigned long, so the next producer's
-atomic_long_inc_return() returns -1, which reads as ULONG_MAX. The
-defer_count >= defer_max test is true, so that producer rejects and
-decrements back to -2. Every later producer that runs alone does the same.
-
-__skb_defer_free_flush() then returns early on the empty list and never
-resets the counter:
-
-    if (llist_empty(&sdn->defer_list))
-        return;
-
-dev_cpu_dead() and sysctl writes don't reset it either.
-
-Wouldn't this switch off deferral for that (cpu, node) slot indefinitely,
-even at the default skb_defer_max?
-
-Several things can widen the inc-to-dec window: hardirqs, preemption in
-process context (the TCP/UDP recvmsg paths), and softirq preemption on
-PREEMPT_RT. Meanwhile the flush runs from net_rx_action, busy poll and
-threaded NAPI on the owner CPU.
-
-This seems to contradict the commit message:
-
-    The counter then only accounts for skbs that are actually queued, so
-    it cannot outlive them, and the absorbing state is unreachable without
-    depending on a flush ever running on the owner CPU.
-
-The new comment in __skb_defer_free_flush() cites __dev_xmit_skb() as
-precedent. That path increments q->defer_count and drops without ever
-decrementing, so its reset can only under-count and can never go negative:
-
-    defer_count = atomic_long_inc_return(&q->defer_count);
-    if (unlikely(defer_count > READ_ONCE(net_hotdata.qdisc_max_burst))) {
-        kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_BURST_DROP);
-        return NET_XMIT_DROP;
-
-The new comment also only covers producers that get accepted. It does not
-cover rejected producers whose increment is erased by the store before
-their decrement runs.
-
-Would an approach that never increments past the limit avoid this? Some
-options:
-
-- atomic_long_add_unless() or a cmpxchg loop
-- a signed comparison, so a negative count heals
-- having the flush subtract the number of drained skbs instead of storing 0
-
->  		goto nodefer;
-> +	}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch. The reject path still jumps to
-nodefer without calling kick_defer_list_purge(). The kick further down in
-skb_attempt_defer_free() only fires on exact equality:
-
-    kick = (defer_count - 1) == (defer_max >> 1);
-
-Can that threshold become unreachable, even with an accurate counter?
-
-With skb_defer_max=2, the only accepted value is inc_return == 1, and
-(1 - 1) == 1 is false. Every later producer increments to 2, rejects, and
-decrements back to 1.
-
-The same happens if the limit is lowered below the current count before
-the old kick fired. For example, with 127 skbs queued under a limit of 256,
-set the limit to 128. Every producer then goes 127 -> 128, rejects, and goes
-back to 127. The new threshold of 65 has already been passed.
-
-proc_do_skb_defer_max() only toggles skb_defer_disable_key on changes to or
-from 0. It doesn't reset the counters or schedule a flush:
-
-    if (nval != oval) {
-        if (nval)
-            static_branch_enable(&skb_defer_disable_key);
-        else
-            static_branch_disable(&skb_defer_disable_key);
-    }
-
-Consider an owner CPU that never runs NET_RX, such as the TX-only
-application CPU from the commit message, whose skbs are completed with
-napi_consume_skb() on another CPU. Wouldn't up to defer_max - 1 skbs stay
-pinned on that list, with deferral off for that (cpu, node), for as long as
-the sysctl keeps that value?
-
-Before this patch, the counter also climbed past the threshold without
-kicking. With this patch, it can recover once the limit is raised again.
-
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 4416cdf9bf30..ad80b8fb8a52 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1521,8 +1521,7 @@ static inline u32 tcp_snd_cwnd(const struct tcp_sock *tp)
+ 
+ static inline void tcp_snd_cwnd_set(struct tcp_sock *tp, u32 val)
+ {
+-	WARN_ON_ONCE((int)val <= 0);
+-	WRITE_ONCE(tp->snd_cwnd, val);
++	WRITE_ONCE(tp->snd_cwnd, max(val, 1U));
+ }
+ 
+ static inline bool tcp_in_slow_start(const struct tcp_sock *tp)
+diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
+index ad40762a8b38..cb36686973e5 100644
+--- a/net/ipv4/metrics.c
++++ b/net/ipv4/metrics.c
+@@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
+ 			NL_SET_ERR_MSG(extack, "Unknown flag set in feature mask in metrics attribute");
+ 			return -EINVAL;
+ 		}
++		if (type == RTAX_CWND && !val) {
++			NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero");
++			return -EINVAL;
++		}
+ 		metrics[type - 1] = val;
+ 	}
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013205416.3417296-1-jkain%40nuro.ai
+2.43.0
+
