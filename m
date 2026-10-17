@@ -1,65 +1,65 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8E360EF2
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39096356751
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200070; cv=none; b=a5wtG9ytv19AuH+bytns6tEr9Yxi5fvurz4dK8nm/mfMQw+yiAdQ7GPrzzZghikPeKTwkzvOpdsYqJbrAjj2fvX2yMNfFDdEwDZ0NkrcywbyF6oUhPoR5lzfME7MH4LMiGIeemM0SCUoO+GN9FR+1H7pib9IxHKrfpgKRqJWh/o=
+	t=1792200073; cv=none; b=qXlt220pZmwiOM+wxbzI3NPERG6ghke8SiDGLXEQ9ZJMiR6El8ibSUDCHJ8el+ZklqOHyQlt2DXEqXxXWW04xnr5nlmPU2WKM9N7xEo6MxPZY4AKLuJrHtjperWSJeO9fUMFORU0kloSNtVRgItdGcswUZYpQyzNDoPxMDVG0E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200070; c=relaxed/simple;
-	bh=FKqteCSXO1CbRVOSlk9/EvC/7gM2fsr0/PRO0BW8AjQ=;
+	s=arc-20240116; t=1792200073; c=relaxed/simple;
+	bh=k1zvhGigGSPLpGn7I1t+Ecg+NgN2CKsqg5w0eDmK1Rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbHs3FRfStyP8CVOEYfQ7Ryhg0+1wiYfhckTE0DdU1YQ6fbsqHL0vSQDUR8KjJlX499SFtad8EvsdzNE4v4FikPmuP53A+Qak31MP4E0kXIS6zKBSZpyxYVTCNourOZZoN1vepwL0XvA/S5/cHaRkWj7ktZU21AY10Pn3ZFlbhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hTIEAFUp; arc=none smtp.client-ip=209.85.215.174
+	 MIME-Version; b=XLKEUTr3ZyxTuuE/300F6GiKk5W2iSpBn0T7ek0LKjftdk2Or8e9Y0ck8ArzpwsPPl85qrOW1x8aTr1jmq9J1wnOWvuXxBg01QhTfAqmm8BfIAQLMZpwvFaxxVesYzwfyAOf4fHBDB9iQChLAOWAoJGdscEFHKQM8uyQgvedyvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IjwkqDun; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hTIEAFUp"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cd623dfe420so428919a12.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:21:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IjwkqDun"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so333562a91.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200067; x=1792804867; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792200070; x=1792804870; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=zLOTcel4mG6H6gLmD7SemEC02pAxD8Wu1dMrbttEvSQ=;
-        b=hTIEAFUp6S1DOyCNO3Cuy4C16n5oS3Cnvwt9YpbHBScXeDVQDOIPkqPmZs7hHUxedm
-         AcOIjdzfGUpWJO+wNkjzVQk7+0oZ5qn1+d+62uU62+4NNf/U2VG2hMZw9dXLi7vgGr5h
-         GW78NBVHOEbOgwcKwLcPH3/UpwtTlAlmsGEGWTPDW/5e7d5145x7doJLC/zvrZo0e+EI
-         vugF7y4+E7xPZ5/S4Ag53hDvxhSE5HY7wMp+gL2uXp0uZiUiNaBhdRGyWUWcIOawXKoR
-         +SNBdqMnOdVsObvFUsjR7JzbaidB2rhW06OEwI4rmfLQ4bb76xcpKZX8ME6siV635uvn
-         E4Qg==
+        bh=XAh01Cpw5RBFWDmpEo9RzWyBEVqwYJhyHp2rXB7kBDg=;
+        b=IjwkqDun5eJK5IhgMg/zSNoJizi3cxprs4LModvaz/X1Fre8Ogh6Vw4OpPJB+ffTfF
+         +CDqGAHbeqpT2Wb9hCcm15f3HSBospXlXjkSJ7HRajnmHBL9uBzHH8x6fxypi84lxvB1
+         gwl9ZuaELiO61wbdy7EafPQ2CQP0GgrXUSTWMx1LJfok4ETqkIxWQi2cD0u5tS6Rmhiq
+         uCisBjLyqssY8FpPGiHQQ9COyNGh2jgV7EYCJKx9+gVpIaD5f9h05E0ljlKEbzeYJuHC
+         TR/sL9YYdga0W4PX2WHxHnmTIJJu6wMwhyF1eEMwq/y3/wSy1ybOCP3YC7m3auOn6/GX
+         0T3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200067; x=1792804867;
+        d=1e100.net; s=20260707; t=1792200070; x=1792804870;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zLOTcel4mG6H6gLmD7SemEC02pAxD8Wu1dMrbttEvSQ=;
-        b=IiZu8KmeIohy0IwGIeVXI0hX7CFh5qSaP+Ji3un9Ngd1PLcnHKvaGaSQwdroAWm9iv
-         CVbqNAKfaKy4UEIzWeyL/ScQuSC8WQSlqA0YbwRb6vS5+cBGuxeDBCu0jpynXbIONwdE
-         KZdbpGGvHbIaMB/bbn7SJt2EnV0PYMOfeYm2lvQcAlajme2IqyW9WBV9QiKr3+UyS2Lm
-         3XttQlAuZ8odrfMLjVqxI7WxKKLjnb6pWguOqd7Er2tduQnuU0e1GnkXSTGSCZKC/06f
-         AhW6nKjxBt8vQVUr+hAk5pQp1uC/GMAZgLqcod02Hp0oWzcqwyYLxz0M3GuS7kpFcBRe
-         if+Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwgBL3JHuUfZ2dxRviO+vSTRjgscje233eDfs/Csaxhmx+TNgs6lDIT1zpteZ4yFHa40gxGToE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJX7k77q+W0NOyw4SEU0ozHcXXaSDgD2wiAtfMwiDGOjeC4xwjw
-	YbvQPF1LvJm/M7S3/Jevw37xFLfGSUAhCugGXXwUvePuQbbf3IqmtIzk
-X-Gm-Gg: AYBFou3B5iXpgvVPFMRyNQh8v/R1PU2AO50PSlAjM2aEOrI56uCCSNFKTaGk6u1QRC9
-	9017AVXk1oW+Ryt6g1rK9lf6hdStFX+yg2XPGeTe9oMw1EMQ718h69r46vKFrqFMz0jUAihSZEY
-	hfbcTtcZ52QcOrbs2QnvExsJ1WAezXEKLCSwf/CrwFpg22HmMM6jKm2SH2/tBiGS+UEmMiYP7Fv
-	XTITgLkEJKrF8szmCduE2QorLqGiW0Rt4C3WfmHxbC1AYvRK1EwGWo6EhuLeKq4DTHBwOJW7BM1
-	+Gw5LxUQIsyH2tvjwzOc32EtTQFHLx4ivSYRBs/qUGCbPfskmvSugOPJR8RAF+nxtfWo2j57WZz
-	iwonICnOU4fqWJAuHjOTuUXbnviP/H5YkAKTabK39I0P5Jnh9pTnx7PU7UXNSQloO1/CZcnsPvx
-	a+yO52hMKJkdGZ1wP9SOOo3qv4LNOcZFcPdZzecv6yzkwnHypemA4ahgqj2FSDD069U349Jx6l9
-	K4MThvow6li2ZxjZje1aXCOmtfrync5TafLR0pjuN1Pjqgvlv2XdLVOqARqVDoFVcGyKlJ0FxDT
-	AQIOCL7UKGDzWtya1PNevqPhcCnpxF2PrUo22KCYDRI=
-X-Received: by 2002:a05:6a20:ac44:b0:3d3:ae50:97ce with SMTP id adf61e73a8af0-3e22629e2dbmr846324637.27.1792200067394;
-        Fri, 16 Oct 2026 18:21:07 -0700 (PDT)
+        bh=XAh01Cpw5RBFWDmpEo9RzWyBEVqwYJhyHp2rXB7kBDg=;
+        b=L3h6xQnLLz9ty5qU6ruSzHwVbtM3p5NlG3qKbCTOvRpZx5WXg5zPk5HdiOUV6PupIb
+         dNbpqie9CEhBXdkAoILPR+gbM4yUrRCkEu8fGYbW86cm0taEvK7AU1cmJ15IPQqVxQ3f
+         4OsAbQkGD6BezB11m3EcSsVvNekqetRZeGUVXyxRekNnbtRk3VhElgmAl7EvGcoK4FN9
+         t5yxvs+sfsJw802aYJ+svAot3RUrubiVMJq6EkWO4JJpgbkl9vA8ggVQ4wJ5yzMyBsxR
+         PoItYQ/zjw2waLXwZMtFbapj87X8/JwmCcfFl9O2kiPYpEfSZcOlvDuqrZaZY2JpQHJu
+         Cx3A==
+X-Forwarded-Encrypted: i=1; AKwUvBw1JFWvQZmk9p2/pV2o5LhRwQkHPh/RcLjrx+BvdBW5i7orkmLEofvjmANd9mitQEpo+xl7lt4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ2aIC/FhFPiHdfY0A1YrN+5+xmo7gTL6nMr1w9j0FRxspRCckE
+	QO6WrNH8B8IJMNCxFmvrtibesiLgx9VW5Inr/c0vFXdp3mwLCiRHFt11
+X-Gm-Gg: AYBFou0nrxZ/8yh9eKove5LGlopaJyP4jUtKzUp00yaWADo75k28MkphJ8MFroyUTU0
+	4m5zkAr4sk4vivmV7g8T9yL+ldp0DPqnbPAEboKjzCFf3SI+f8WJhUIJ5gUDizJOlyfOAJqLSKh
+	hFdUyNcFihpYLNVUbxrIz+hUntZMG9ucyquz6YTKCqn77Ufl8osMdk2q9o+t7xbhhVEOkd01yD5
+	i+0TGiRate2SfDK61/z+M7CeCtwkFM3iYTy8dudaxpYThSPNEATyIkPo0Ex7/hpS+Uk2qr2/vnd
+	xb1BQQBWcsZNcLt3iL1U0h4Nf/hQnDGckVtKesdXzj+R4C2t2RO58EjOlIM+VGgf+r5PQXzyN3D
+	j7Cf34+zENvWVZWGryX7+l6lD6Va1FuwYifrlskKOVNBf7v1UDxa0iEkyZHUcogO5x6wn+qefeP
+	ADt5a5e3+6Fww5TjewAmPPVylleACMkWIsIVvlUMCnZb30+IKSVZiAWCcalmc044sdi9iKe/IIc
+	74udhCj4LYvY2NYjvPYfixob5AI81e0F1Ic+kvUkXpwYTqBzjuS2+7vLkRktpV7Yl6zJ2mcYb92
+	Oxxid0sqRLwkdDAs5sA2NjWRgMT33mzhEKu7QXWxCug=
+X-Received: by 2002:a17:90b:164b:b0:3a7:a6bc:9d58 with SMTP id 98e67ed59e1d1-3acef179290mr1109011a91.54.1792200070336;
+        Fri, 16 Oct 2026 18:21:10 -0700 (PDT)
 Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.252])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd6549eea48sm1848788a12.19.2026.10.16.18.21.06
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc98139ccsm3407339a91.0.2026.10.16.18.21.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:21:07 -0700 (PDT)
+        Fri, 16 Oct 2026 18:21:09 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next 02/38] bpf: forbid sleeping in hash map for_each callbacks
-Date: Sat, 17 Oct 2026 01:20:22 +0000
-Message-ID: <20261017012058.355787-3-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 03/38] bpf: don't leak the inode when token creation fails
+Date: Sat, 17 Oct 2026 01:20:23 +0000
+Message-ID: <20261017012058.355787-4-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
 References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
@@ -85,146 +85,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-A sleepable program (e.g. SEC("syscall"), lsm.s, fentry.s) can pass a
-callback to bpf_for_each_map_elem() on a hash map and call a sleepable
-helper or kfunc such as bpf_copy_from_user() from it. The verifier
-accepts this, but at run time the callback is invoked from inside an RCU
-read-side critical section:
+bpf_token_create() allocates a bpffs inode and hands it to
+alloc_file_pseudo().  The inode reference only moves to the new file when
+that call succeeds: alloc_file_pseudo() leaves the caller's reference alone
+on failure, and FD_PREPARE() does not even evaluate the file expression
+when it cannot get a descriptor.
 
-    bpf_for_each_hash_elem()
-      rcu_read_lock();
-      callback_fn(map, key, val, ctx, 0);
-        bpf_copy_from_user()       <- may fault and sleep
-      rcu_read_unlock();
+Before the conversion to FD_PREPARE() the error path did iput(inode).  The
+conversion dropped it, so each BPF_TOKEN_CREATE that fails with -EMFILE,
+-ENFILE or -ENOMEM at this point leaks an inode.  A task that is allowed to
+create tokens can hit this at will by lowering RLIMIT_NOFILE, and the
+leaked inodes make umount of that bpffs instance complain about busy
+inodes.
 
-bpf_each_rhash_elem() does the same for BPF_MAP_TYPE_RHASH. Sleeping
-there triggers the "Voluntary context switch within RCU read-side
-critical section!" warning, delays grace periods, and with
-CONFIG_PREEMPT_RCU=n silently ends the read-side critical section that
-the bucket walk relies on.
+Put the inode again if no file was created.
 
-Synchronous callbacks are verified with the caller's state, so
-kernel/bpf/verifier.c:in_sleepable_context() only looks at the program's
-sleepability and the locks the program took itself, and does not know
-that the helper holds rcu_read_lock() around the callback.
-
-With a SEC("syscall") program whose callback reads a page that has to be
-read from disk first:
-
-  BUG: sleeping function called from invalid context at include/linux/uaccess.h:169
-  RCU nest depth: 1, expected: 0
-   __might_fault+0x29/0x80
-   _copy_from_user+0x26/0x90
-   bpf_copy_from_user+0x23/0x60
-   bpf_prog_17d44fa39eebd6cc_cb+0x35/0x46
-   bpf_for_each_hash_elem+0xdb/0x280
-
-Fix by marking the callback frame of hash map iteration as running under
-RCU and making in_sleepable_context() false while such a frame is on the
-call stack, so sleepable helpers, kfuncs and global functions are
-rejected there as inside bpf_rcu_read_lock(). The rules for trusting RCU
-protected pointers are left alone, which is conservative and keeps
-callbacks that verify today and do not sleep working. The flag is
-compared in func_states_equal() so that pruning never mixes the two
-contexts. Array map callbacks run without any lock and keep the caller's
-context.
-
-Fixes: 314ee05e2fc6 ("bpf: Add hashtab support for bpf_for_each_map_elem() helper")
-Fixes: 818e00848227 ("bpf: Implement iteration ops for resizable hashtab")
+Fixes: 981bec8f698b ("bpf: convert bpf_token_create() to FD_PREPARE()")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- include/linux/bpf_verifier.h |  5 +++++
- kernel/bpf/states.c          |  3 +++
- kernel/bpf/verifier.c        | 28 +++++++++++++++++++++++++++-
- 3 files changed, 35 insertions(+), 1 deletion(-)
+ kernel/bpf/token.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 112ca1511da4..816948df8fff 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -379,6 +379,11 @@ struct bpf_func_state {
- 	bool in_async_callback_fn;
- 	bool in_exception_callback_fn;
- 	bool no_stack_arg_load;
-+	/*
-+	 * The helper invokes this callback under rcu_read_lock(), so the
-+	 * callback and its callees run in an RCU read-side critical section.
-+	 */
-+	bool in_rcu_callback_fn;
- 	/* For callback calling functions that limit number of possible
- 	 * callback executions (e.g. bpf_loop) keeps track of current
- 	 * simulated iteration number.
-diff --git a/kernel/bpf/states.c b/kernel/bpf/states.c
-index 953700822fa7..b3d250caaaa6 100644
---- a/kernel/bpf/states.c
-+++ b/kernel/bpf/states.c
-@@ -995,6 +995,9 @@ static bool func_states_equal(struct bpf_verifier_env *env, struct bpf_func_stat
- 	if (!old->no_stack_arg_load && cur->no_stack_arg_load)
- 		return false;
- 
-+	if (old->in_rcu_callback_fn != cur->in_rcu_callback_fn)
-+		return false;
-+
- 	for (i = 0; i < MAX_BPF_REG; i++)
- 		if (((1 << i) & live_regs) &&
- 		    !regsafe(env, &old->regs[i], &cur->regs[i],
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index ddfa0c6d2755..883cf148235c 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -11530,6 +11530,19 @@ static int set_map_elem_callback_state(struct bpf_verifier_env *env,
- 	if (err)
- 		return err;
- 
-+	switch (map->map_type) {
-+	case BPF_MAP_TYPE_HASH:
-+	case BPF_MAP_TYPE_PERCPU_HASH:
-+	case BPF_MAP_TYPE_LRU_HASH:
-+	case BPF_MAP_TYPE_LRU_PERCPU_HASH:
-+	case BPF_MAP_TYPE_RHASH:
-+		/* Hash tables run the callback under rcu_read_lock(). */
-+		callee->in_rcu_callback_fn = true;
-+		break;
-+	default:
-+		break;
+diff --git a/kernel/bpf/token.c b/kernel/bpf/token.c
+index e85a179523f0..19660ef95ddb 100644
+--- a/kernel/bpf/token.c
++++ b/kernel/bpf/token.c
+@@ -169,8 +169,11 @@ int bpf_token_create(union bpf_attr *attr)
+ 	FD_PREPARE(fdf, O_CLOEXEC,
+ 		   alloc_file_pseudo(inode, path.mnt, BPF_TOKEN_INODE_NAME,
+ 				     O_RDWR, &bpf_token_fops));
+-	if (fdf.err)
++	if (fdf.err) {
++		/* no file took over the inode reference */
++		iput(inode);
+ 		return fdf.err;
 +	}
-+
- 	callee->in_callback_fn = true;
- 	callee->callback_ret_range = retval_range(0, 1);
- 	return 0;
-@@ -12273,10 +12286,22 @@ int bpf_get_helper_proto(struct bpf_verifier_env *env, int func_id,
- 	return *ptr && (*ptr)->func ? 0 : -EINVAL;
- }
  
-+/* Is any frame on the current path a callback that runs under RCU? */
-+static bool in_rcu_callback(struct bpf_verifier_env *env)
-+{
-+	struct bpf_verifier_state *state = env->cur_state;
-+	int i;
-+
-+	for (i = 0; i <= state->curframe; i++)
-+		if (state->frame[i]->in_rcu_callback_fn)
-+			return true;
-+	return false;
-+}
-+
- /* Check if we're in a sleepable context. */
- static inline bool in_sleepable_context(struct bpf_verifier_env *env)
- {
--	return !in_rcu_cs(env);
-+	return !in_rcu_cs(env) && !in_rcu_callback(env);
- }
- 
- static const char *non_sleepable_context_description(struct bpf_verifier_env *env)
-@@ -12290,6 +12315,7 @@ static const char *non_sleepable_context_description(struct bpf_verifier_env *en
- 			return "IRQ-disabled region";
- 		if (env->cur_state->active_locks)
- 			return "lock region";
-+		return "callback running under rcu_read_lock";
- 	}
- 	return "non-sleepable prog";
- }
+ 	token = kzalloc_obj(*token, GFP_USER);
+ 	if (!token)
 -- 
 2.55.0
 
