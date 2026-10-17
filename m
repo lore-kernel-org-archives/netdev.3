@@ -1,43 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600FE4A2076;
-	Sat, 17 Oct 2026 22:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0C14A2055;
+	Sat, 17 Oct 2026 22:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792277243; cv=none; b=jPvjvsYnqtX2Qp8HCUeYvOt5tvCAfZeeazIBLZEIstjeHU+/EJ90A6IgESydZiU51m1Vsj51KlPor4GtNtnp2irdyCrMcE+zGkpkmKQasHN+fpEa8jueW/Kw9YX8ciGljvbHfbJRF4JTYGhrzdlCIQ3cEbvk8XcG8W8LSHeAUx8=
+	t=1792277246; cv=none; b=N6vT9xw+9mP2GFirmv72SH8LAnXVVVy97TJXDBpEhvLbHReon8NRNkJhBUPvHwYgp+5jXkwh561ovu5Uuw8NlTm/VS4Et5KZM4KcONbEc/ds8YoazWRXoJyG+lg6POwRIrKjqcpKze94GknnkQFff7pd+frQLvaSHNm/aO4Pmmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792277243; c=relaxed/simple;
-	bh=bEFzKxXaWpKuuiBarHWmhQXj+7UB1mTnrblXUsCUvaI=;
+	s=arc-20240116; t=1792277246; c=relaxed/simple;
+	bh=yHpQplBB9+/T/A382r8r/FXKjdpjvqCElkH1YGfDn5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHELspOyDEecOa2ob4+wyenaqP9wLt7i6hPZr9bCqaoPFCAQNI/byE39V0UQfgw9FMSFPT2kQGRjNf6kRMI1mHkApXxrGPKNLtGux6a7rPOm0u7EfYhJDQKgs1oNXKkcxlE+X3ey3YaFafkS75YIhZtd4h/GiZkv7BctNiGPYRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=ffEEFpCS; arc=none smtp.client-ip=85.214.127.56
+	 MIME-Version; b=mPbfBGiLjAF4Hek4Swl3e8cUhbHReF4/kLCw3B0EZ9mKJ8TIJA6IGBq8xnFOTBYUdoTFcnpdFp/leD4d0dKNo3ZbYlQach3UzRAxf/s3wJ6zvVhqM0Pb+jX8pRdsws+VyY7ggQhX8WJ2P/jo4HZyc3dM2jhTpoILbvnGWa5Hq48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=I91M2PDc; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="ffEEFpCS"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="I91M2PDc"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id C2F15E83406;
-	Sun, 18 Oct 2026 00:47:17 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 7A679E83411;
+	Sun, 18 Oct 2026 00:47:20 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1792277237;
+	s=mail; t=1792277240;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bEFzKxXaWpKuuiBarHWmhQXj+7UB1mTnrblXUsCUvaI=;
-	b=ffEEFpCSyrlzdhqf7IHaJo68mwqr0pjuf+QdRGMkPYUwiLvcnGAONf2sDuKF7KtkjIwpuf
-	PoQgN7mcpEE3cLQQhHcuUOQPqxWUBtMwcDB/SCLqfj7BtDE7M5FfDwiGeq22z7IzwFfw2q
-	qGmhmhJ6R29p+fttvOHB34tAbCNMsPcpDJjZ3jHR5lrAbwPGGWLaD7ZEmyn1Em/kU5hAb4
-	S6yIwpKBu4SexBzVtkLArlnRn4R0Ut6Cl1FaKKaHb2GdpIrS0g0Evg0Y2fTYk/pKIXZYxA
-	OARlFtFs+Llg6mAC9NRVebHRQgW1A3tRiJVQkIJyUP3jI7vB7TKCiexMcj1e+Q==
+	bh=yHpQplBB9+/T/A382r8r/FXKjdpjvqCElkH1YGfDn5I=;
+	b=I91M2PDcPvFitEM+2UW+x54n1cbz50yBr9uYWzhr7NjE26AeMoMHsNdq8/F9PTs/EdG53X
+	JGjHrGwX3mtsknpLFcV3EJsHsXJ182d9+gV72jPIncsYwuKgndy8s8nwSpWvwncp3VKEMR
+	3lKneIzMr3LMB/W/3+tTCP9S+YOkw7GmZZVqO6WgHOXCMPvpIgkjK1OhfAJJYxtChJVFwN
+	pMJv4oElo6/ZLsjr3JPNIe31iYr0wAg267RBvSMO7Fth+kbACB6esE5ELbKvRghzmrv3EE
+	dHi/w8oSbb3whPo5m9wxBqlmr6qK+T4rZueMe+gZDlE1hR8kkgnDYJzIT2BFZQ==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id 5yJQ-yn1bl6y; Sun, 18 Oct 2026 00:47:17 +0200 (CEST)
+ id fn6lAaj1QyVI; Sun, 18 Oct 2026 00:47:20 +0200 (CEST)
 Received: from p14sgen5.netbird.selfhosted (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 18 Oct 2026 00:47:16 +0200 (CEST)
+	Sun, 18 Oct 2026 00:47:19 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -63,12 +63,12 @@ Cc: Corey Leavitt <corey@leavitt.info>,
 	Kyle Swenson <kyle.swenson@est.tech>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 5/7] net: pse-pd: check the PI vpwr supply before registering the controller
-Date: Sun, 18 Oct 2026 00:47:15 +0200
-Message-ID: <20261017224715.1527426-1-github@szelinsky.de>
+Subject: Re: [PATCH net-next v8 6/7] of: property: do not let "pses" block a consumer's probe
+Date: Sun, 18 Oct 2026 00:47:18 +0200
+Message-ID: <20261017224718.1527444-1-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179122160924.434549.13478805521146010203@kernel.org>
-References: <179122160924.434549.13478805521146010203@kernel.org>
+In-Reply-To: <179122161108.434549.4299749280069396742@kernel.org>
+References: <179122161108.434549.4299749280069396742@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,33 +77,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, 05 Oct 2026 17:33:29 +0000, netdev-bot+sashiko@kernel.org wrote:
+On Mon, 05 Oct 2026 17:33:31 +0000, netdev-bot+sashiko@kernel.org wrote:
 > [Severity: Low]
-> This isn't a bug, but the commit message only describes the future
-> phylib notifier case. It leaves out a change that applies today.
-...
-> Could the commit message mention this?
+> Is this description accurate at this point in the series?
 
-Agreed. The v9 commit message says so: a PI whose provider appears late
-now gets its power domain, which pse_register_pw_ds() used to skip.
+No, not at this commit: it describes the phy patch that comes later.
+v9 folds this change into that phy patch, so the description and the
+code now arrive together.
 
 > [Severity: Medium]
-> Can this check pass while the PI regulator registration still defers its
-> supply?
+> fwnode_mdio still does the PSE lookup at this point. Does that mean every
+> deferral of the MDIO bus owner now runs a full PHY driver probe and
+> remove, including the hardware setup done in probe?
 
-Yes. The check does not copy the regulator core exactly: a provider that
-is registered, but whose device is not bound yet, still passes. That PI
-then gets no power domain, and the v9 commit message says so. Closing
-this fully would need an event from the regulator core when the provider
-binds, which does not exist today. The window is small: the provider has
-to be registered but not yet bound while the PSE driver probes.
+Yes, with only this patch applied. Because v9 folds it into the phy
+patch, which removes the PSE lookup from fwnode_mdio, no commit has this
+probe and remove cycle any more.
 
 > [Severity: Medium]
-> Does this new -EPROBE_DEFER exit leak the pd692x0 power budget claimed on
-> the vmain regulator?
+> Can this also make deferred probing loop forever while the PSE controller
+> is absent?
 
-Yes. That is an older bug in pd692x0: it already leaks the budget on any
-probe failure after setup_pi_matrix(). Its fix goes to net: the budget
-is now released through devres.
+Yes, I could reproduce the hang with only this patch applied. The same
+fix applies: in v9 this change is part of the phy patch, and with that
+patch the PHY no longer waits for the PSE controller at all, so there is
+nothing to loop on. A boot test with a PSE controller that never binds
+now boots at every commit.
 
 Carlo
