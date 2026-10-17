@@ -1,313 +1,233 @@
-Received: from outbound.qs.icloud.com (qs-2001e-snip4-6.eps.apple.com [57.103.87.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9797D4195D0
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 21:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.87.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680E72F60B2;
+	Sat, 17 Oct 2026 21:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792271157; cv=none; b=cconpbKExpaxZKIst8Ru3rcNNRI/E0ll0YqYrJUUN06Feg3R62PM7y2YdC8hlfY2MamoxEdrHDsj4kzIFbkq1V3G2kAYyRukcFLVqzcDYJaRlNhhOXhzM+qVrPjr0qvQ5glyi5wfupbrJD3p4hTOUzG4q9rLcQgowB2E2hDauEo=
+	t=1792273221; cv=none; b=jkapwEu+wIGEcAPImY3xaodvbyzk8Dq0y/pgeiozj8d6NEt7PUQTgISK3zVB69BhPlZxiKjPUAc5zZKt6TuawIo+YHYL3e5dG++a+OlELdsP1oAsTfLz9xaHazgCqox5T8RDmZDVprPf8PXzrOgdwitbjpEifAWqj0z9KLVi4UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792271157; c=relaxed/simple;
-	bh=U73rza4Tey8bZdHSwdeA6BbhZAaWw0MwZBQiiZPetvU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/HnAu9+nAeRw9yp3PSuZuJcHtuPpwi9UxNV9r4+NUA0hJHZM8/o6gHyN6MmlBvBPc5/T+bApfxmgSX0it+zyT/HEeecWbmouS5bo5DxGkPrvolsYIuXXnPYPtf1Y3keNpaq176sL9b8vZz41SB/ov/wRtOb0DMiTD2O9ajWRoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg; spf=pass smtp.mailfrom=verdict.gg; dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b=fYh/XPdL; arc=none smtp.client-ip=57.103.87.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
+	s=arc-20240116; t=1792273221; c=relaxed/simple;
+	bh=ZPU+6pL9dSCS0lBdPECZAZr8Yj1+06Le9ECSNxvwusI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=R58/jaaSQs36MVLLaCffz/pz/vt4uinDJ2FeIE31FDJBqTWa4jd1i0rTmXK54b+g4lI/Q1kmtdLo7AYTI6XCweRwMf0+Cv1xDmN+dReT6qP2tzw9VYXq1/pQEq8mxzabke6TOu1QxlgUMXBnJZaZrBKMILJnfDf6yU103xVGrvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZuUnF5o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b="fYh/XPdL"
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPS id 70CAD18001D9;
-	Sat, 17 Oct 2026 21:05:52 +0000 (UTC)
-X-ICL-RepId: 01a14baf-74f6-7096-9275-ed6726ba399f
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQ1OHVwORQFEF0oBTVIPDxRcFFofVgVyBlwKVwRUHxwXXlhVCQodVwJdEVAZGQxVUEsbDlwFS1oVVRcOAkIfUB9MFldDRhgcGVoUXBhTRVEfVFhDGUVWaUELTx1dGVscQmRYVwkKHVcCXRFQGRkMVVBUEVdQC1kCQg9JA1wAWQNADEgLQwBaCkQAVQBAUw5eGUsZXS1BDkAUUBtHQ1AMDFBNAUMICghHA00XXjJTBF8RUBY=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1792271153; x=1823807153; bh=04Wvdso6J4G6jdyBCnDIpEQVxCfOfUQD28WYC3zRj6o=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=fYh/XPdL5wIJPBr6dKnQGo2BMLerX4H7gQLLi4O1lkqDzAYfqqkZaQkJTzJ47aM+5j4da72pa5UbjflE8aOVA8WMxe0pUPWJvonSF15RAx/goQmafUPapQ4A2dHsSUfNAEKTRbpz4GeoRRloJeAeElJVioLJBnJiFVKhyFmiw3SBxablQeck6yMOOMIo9PtfJl43UC36aGhJqO6HE8+GcTM9Okm0dcmaEIkI61Lr/TtZpr8oobnZ1GX7iCoLW+88/JWoWmBHXqrIeeCF/ZSY8qDgDsE1iq931gjOcpRaJALhtB6aCsKBbkXgDwY6QXTXY9GJPF7SX89y0jRbrcjVNg==
-mail-alias-created-date: 1621344842221
-Received: from DelNac.mail.msk (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPSA id EFC10180023D;
-	Sat, 17 Oct 2026 21:05:49 +0000 (UTC)
-From: Vladimir Vdovin <deliran@verdict.gg>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vladimir Vdovin <deliran@verdict.gg>
-Subject: [PATCH net-next 2/2] selftests: net: pmtu: Add IPv6 multipath exceptions test
-Date: Sun, 18 Oct 2026 00:05:08 +0300
-Message-ID: <20261017210508.71849-3-deliran@verdict.gg>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261017210508.71849-1-deliran@verdict.gg>
-References: <20261017210508.71849-1-deliran@verdict.gg>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZuUnF5o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8171F000C4;
+	Sat, 17 Oct 2026 21:40:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792273220;
+	bh=WEQoMZ2bChs4RLc/Ijgg2H/5omfdkYuVoREo4xEk6Bg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kZuUnF5oBvFkvzuXKzzquBs8Ath7mdmtPFX+TrzNHScgan2v17kwmtk/VkBw0IOZN
+	 eMkBo7vA7PgwUSpl4ZZExc/9Mb8FgwSsPfy5Unpm/8jkHjoMniOddjXe3ZFA8oUc5K
+	 +iDZmwKEDDAivN6A+6TZKUQz4ijCpQCyDLhVKtZXEw93ynEBPXDJAagg6qJx3zEPSu
+	 tqTDH6jYt9g2mg3hra6GNsnAgfkFKfmAkynBqb6TkK3F8WKOy+mdMqzCbSVuXSmTaZ
+	 MrmzP144Rj8oMyKpzbrwzTW3PxOvbZH8yul2T28E/OZ90yCVH81wvxfQCoWz+pAlFz
+	 murPH4a4JnNew==
+Subject:
+ Re: [PATCH net v3] net: do not let defer_count outlive an empty defer_list
+From: netdev-bot+sashiko@kernel.org
+To: jkain@nuro.ai
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Date: Sat, 17 Oct 2026 21:40:18 +0000
+Message-ID: <179227321891.3135.3487538638002916061@kernel.org>
+In-Reply-To: <20261013205416.3417296-1-jkain@nuro.ai>
+References: <20261013205416.3417296-1-jkain@nuro.ai>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE3MDA4NCBTYWx0ZWRfX3Cn1cEnuDDIY
- iBnc2DiF2NcT5fAYCHQ5bsMFm72mGmgdM37I0RZ5yqIPl/TjTOB9q3Sf6Ea/kJrjU01DWIzqN/f
- KYxwwITtPcpZ6/WRISJemnZ5a60QFs2E52cfUV3yjVc1iJ/rxOOuxlCFfdPFnipXiiMVx0atKHi
- UBkmd6w7f6jIsm4xhIHqcZyCWUiW4gomVz4CssMxwPGpwQy8iOACLgt4mSVTdDVO8XlbksGQ5VV
- 4H1LhF2222HCP/YL1kXr2EmcDC8lyMdagMPm0cDSubluF6K+tmwtcsv5TzlydwtRfyY2xMktJ7n
- 58VA500fJ0/mItG+ON21AgjRaHtf3UdJOKc63/AoNrGhWNCJwBumcaDUcAOz3o=
-X-Proofpoint-GUID: yJFYwdMa7BfxjUcKZQzuLBvzLyJEC7YS
-X-Proofpoint-ORIG-GUID: yJFYwdMa7BfxjUcKZQzuLBvzLyJEC7YS
-X-Authority-Info-Out: v=2.4 cv=NqjcssdJ c=1 sm=1 tr=0 ts=6ad3e331
- cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
- a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=c9wAbVb4WFjQg88ejdAA:9
-X-JNJ: AAAAAAABfdnfbYvpMqP6uj/YOi2rfYgrJLiIwtEEKXTvjOQGBO5cKU46IJusAg8/ebL34fW8kfqNJb3wKn9wv+uiRj3YpC1R47evkE0l62tKeWL2hA1ypu11cc0lw/BLev7nmhHnZ66Qx3sUCBrPMeeejGk+Kfod0ZGFz9WRWjE6+XEq7QOTeYo4KbTzBRhDeVTZNCt4Qel5ZNSwdvqxfel/p3L3dyIwtVa3JG/oHnFCR8Cc/N/ASqMCAeQh4WZyXLMUyLLOko/PNjaIG26QRGvfoJoNGEEAaWN7z9XNsDxzYGpSO0HV4TVibf+ILzJXvek58NeoK1xAuSnA/PmUhXFkTHd7hr6fvtbT0kU8pRofcsPLA56+0ctRsh/3GNRbnRNNvUgakFLUycOl5fbaXdGHgE5tLSB+gpLjW2XCuG1dC1IRDtP2BHddrqV6268lTACh6sEUOIAJUNjEELnUQIVCx3s7W+wICX/9txL/a6F4pu3PWHAIWiWSAVcvl3br7s1ZIJ9LSPy8WWLCCrTWH8XsMqvAEdA6g5dJKKO4KlmxDVsxbEYV4yW0JfNWQBoJJz9Mc670tSjMO3tIvZkCxDq/xbgmDMX3DVKzWMJKx2OIr0Y+jxHhDlmGDHKWr3+uUqpgynlk3+SE59zGDQ+SPhJHLaXWqzUOD61i8mgBgMVaTLW0pjLxIqsSJJJbrxFMtXB0D0rK6kvn5pvt77A+nHpWGyPzeBJtkF8DZiWyRjlRZ9O6SAmJ4oJvcGk3gt8fa4rIMpReSgu9D0e13lC6ohFxCbmpsE0CHm+rRhsLLKvgETk5LtgjsWcB+06Q
 
-Make pmtu_ipv4_mp_exceptions family agnostic and add
-pmtu_ipv6_mp_exceptions: one oversized ping over a multipath route
-must leave PMTU exceptions on both paths.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Without the preceding fix the IPv6 test fails with both legacy
-nexthops and nexthop objects:
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0 (1)
 
-  PMTU exception wasn't created after exceeding MTU (veth_A-R2)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
----
- tools/testing/selftests/net/pmtu.sh | 162 +++++++++++++++++++++-------
- 1 file changed, 124 insertions(+), 38 deletions(-)
+- [High] The new reject-path undo in skb_attempt_defer_free()
+  (net/core/skbuff.c:7399) brings in a new absorbing state that leaves…
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index c7cd271714ef..9ff46708fa03 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -203,6 +203,9 @@
- #	on host A and B on lo reachable via both routers. Host A and B
- #	addresses have multipath routes to each other, b_r1 mtu = 1500.
- #	Check that PMTU exceptions are created for both paths.
-+#
-+# - pmtu_ipv6_mp_exceptions
-+#	Same as above but with IPv6
- 
- source lib.sh
- 
-@@ -272,7 +275,8 @@ tests="
- 	list_flush_ipv6_exception	ipv6: list and flush cached exceptions	1
- 	pmtu_ipv4_route_change		ipv4: PMTU exception w/route replace	1
- 	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1
--	pmtu_ipv4_mp_exceptions		ipv4: PMTU multipath nh exceptions	1"
-+	pmtu_ipv4_mp_exceptions		ipv4: PMTU multipath nh exceptions	1
-+	pmtu_ipv6_mp_exceptions		ipv6: PMTU multipath nh exceptions	1"
- 
- # Addressing and routing for tests with routers: four network segments, with
- # index SEGMENT between 1 and 4, a common prefix (PREFIX4 or PREFIX6) and an
-@@ -352,6 +356,9 @@ tunnel6_mask="64"
- host4_a_addr="192.168.99.99"
- host4_b_addr="192.168.88.88"
- 
-+host6_a_addr="fc00:1000::a"
-+host6_b_addr="fc00:1001::b"
-+
- dummy6_0_prefix="fc00:1000::"
- dummy6_1_prefix="fc00:1001::"
- dummy6_mask="64"
-@@ -994,49 +1001,112 @@ setup_ovs_bridge() {
- }
- 
- setup_multipath_new() {
--	# Set up host A with multipath routes to host B host4_b_addr
--	run_cmd ${ns_a} ip addr add ${host4_a_addr} dev lo
--	run_cmd ${ns_a} ip nexthop add id 401 via ${prefix4}.${a_r1}.2 dev veth_A-R1
--	run_cmd ${ns_a} ip nexthop add id 402 via ${prefix4}.${a_r2}.2 dev veth_A-R2
--	run_cmd ${ns_a} ip nexthop add id 403 group 401/402
--	run_cmd ${ns_a} ip route add ${host4_b_addr} src ${host4_a_addr} nhid 403
-+	family=${1}
- 
--	# Set up host B with multipath routes to host A host4_a_addr
--	run_cmd ${ns_b} ip addr add ${host4_b_addr} dev lo
--	run_cmd ${ns_b} ip nexthop add id 401 via ${prefix4}.${b_r1}.2 dev veth_B-R1
--	run_cmd ${ns_b} ip nexthop add id 402 via ${prefix4}.${b_r2}.2 dev veth_B-R2
--	run_cmd ${ns_b} ip nexthop add id 403 group 401/402
--	run_cmd ${ns_b} ip route add ${host4_a_addr} src ${host4_b_addr} nhid 403
-+	if [ ${family} -eq 4 ]; then
-+		host_a_addr=${host4_a_addr}
-+		host_b_addr=${host4_b_addr}
-+		nh_a_r1=${prefix4}.${a_r1}.2
-+		nh_a_r2=${prefix4}.${a_r2}.2
-+		nh_b_r1=${prefix4}.${b_r1}.2
-+		nh_b_r2=${prefix4}.${b_r2}.2
-+	else
-+		host_a_addr=${host6_a_addr}
-+		host_b_addr=${host6_b_addr}
-+		nh_a_r1=${prefix6}:${a_r1}::2
-+		nh_a_r2=${prefix6}:${a_r2}::2
-+		nh_b_r1=${prefix6}:${b_r1}::2
-+		nh_b_r2=${prefix6}:${b_r2}::2
-+	fi
-+
-+	# Set up host A with multipath routes to host B host_b_addr
-+	run_cmd ${ns_a} ip addr add ${host_a_addr} dev lo
-+	run_cmd ${ns_a} ip nexthop add id ${family}01 via ${nh_a_r1} dev veth_A-R1
-+	run_cmd ${ns_a} ip nexthop add id ${family}02 via ${nh_a_r2} dev veth_A-R2
-+	run_cmd ${ns_a} ip nexthop add id ${family}03 group ${family}01/${family}02
-+	run_cmd ${ns_a} ip route add ${host_b_addr} src ${host_a_addr} nhid ${family}03
-+
-+	# Set up host B with multipath routes to host A host_a_addr
-+	run_cmd ${ns_b} ip addr add ${host_b_addr} dev lo
-+	run_cmd ${ns_b} ip nexthop add id ${family}01 via ${nh_b_r1} dev veth_B-R1
-+	run_cmd ${ns_b} ip nexthop add id ${family}02 via ${nh_b_r2} dev veth_B-R2
-+	run_cmd ${ns_b} ip nexthop add id ${family}03 group ${family}01/${family}02
-+	run_cmd ${ns_b} ip route add ${host_a_addr} src ${host_b_addr} nhid ${family}03
- }
- 
- setup_multipath_old() {
--	# Set up host A with multipath routes to host B host4_b_addr
--	run_cmd ${ns_a} ip addr add ${host4_a_addr} dev lo
--	run_cmd ${ns_a} ip route add ${host4_b_addr} \
--			src ${host4_a_addr} \
--			nexthop via ${prefix4}.${a_r1}.2 weight 1 \
--			nexthop via ${prefix4}.${a_r2}.2 weight 1
-+	family=${1}
- 
--	# Set up host B with multipath routes to host A host4_a_addr
--	run_cmd ${ns_b} ip addr add ${host4_b_addr} dev lo
--	run_cmd ${ns_b} ip route add ${host4_a_addr} \
--			src ${host4_b_addr} \
--			nexthop via ${prefix4}.${b_r1}.2 weight 1 \
--			nexthop via ${prefix4}.${b_r2}.2 weight 1
-+	if [ ${family} -eq 4 ]; then
-+		host_a_addr=${host4_a_addr}
-+		host_b_addr=${host4_b_addr}
-+		nh_a_r1=${prefix4}.${a_r1}.2
-+		nh_a_r2=${prefix4}.${a_r2}.2
-+		nh_b_r1=${prefix4}.${b_r1}.2
-+		nh_b_r2=${prefix4}.${b_r2}.2
-+	else
-+		host_a_addr=${host6_a_addr}
-+		host_b_addr=${host6_b_addr}
-+		nh_a_r1=${prefix6}:${a_r1}::2
-+		nh_a_r2=${prefix6}:${a_r2}::2
-+		nh_b_r1=${prefix6}:${b_r1}::2
-+		nh_b_r2=${prefix6}:${b_r2}::2
-+	fi
-+
-+	# Set up host A with multipath routes to host B host_b_addr
-+	run_cmd ${ns_a} ip addr add ${host_a_addr} dev lo
-+	run_cmd ${ns_a} ip route add ${host_b_addr} \
-+			src ${host_a_addr} \
-+			nexthop via ${nh_a_r1} weight 1 \
-+			nexthop via ${nh_a_r2} weight 1
-+
-+	# Set up host B with multipath routes to host A host_a_addr
-+	run_cmd ${ns_b} ip addr add ${host_b_addr} dev lo
-+	run_cmd ${ns_b} ip route add ${host_a_addr} \
-+			src ${host_b_addr} \
-+			nexthop via ${nh_b_r1} weight 1 \
-+			nexthop via ${nh_b_r2} weight 1
- }
- 
-+
- setup_multipath() {
-+	family="$1"
-+
-+	if [ ${family} -eq 4 ]; then
-+		host_a_addr=${host4_a_addr}
-+		host_b_addr=${host4_b_addr}
-+		nh_r1_a=${prefix4}.${a_r1}.1
-+		nh_r1_b=${prefix4}.${b_r1}.1
-+		nh_r2_a=${prefix4}.${a_r2}.1
-+		nh_r2_b=${prefix4}.${b_r2}.1
-+	else
-+		host_a_addr=${host6_a_addr}
-+		host_b_addr=${host6_b_addr}
-+		nh_r1_a=${prefix6}:${a_r1}::1
-+		nh_r1_b=${prefix6}:${b_r1}::1
-+		nh_r2_a=${prefix6}:${a_r2}::1
-+		nh_r2_b=${prefix6}:${b_r2}::1
-+	fi
-+
- 	if [ "$USE_NH" = "yes" ]; then
--		setup_multipath_new
-+		setup_multipath_new ${family}
- 	else
--		setup_multipath_old
-+		setup_multipath_old ${family}
- 	fi
- 
- 	# Set up routers with routes to dummies
--	run_cmd ${ns_r1} ip route add ${host4_a_addr} via ${prefix4}.${a_r1}.1
--	run_cmd ${ns_r2} ip route add ${host4_a_addr} via ${prefix4}.${a_r2}.1
--	run_cmd ${ns_r1} ip route add ${host4_b_addr} via ${prefix4}.${b_r1}.1
--	run_cmd ${ns_r2} ip route add ${host4_b_addr} via ${prefix4}.${b_r2}.1
-+	run_cmd ${ns_r1} ip route add ${host_a_addr} via ${nh_r1_a}
-+	run_cmd ${ns_r2} ip route add ${host_a_addr} via ${nh_r2_a}
-+	run_cmd ${ns_r1} ip route add ${host_b_addr} via ${nh_r1_b}
-+	run_cmd ${ns_r2} ip route add ${host_b_addr} via ${nh_r2_b}
-+}
-+
-+setup_multipath4() {
-+	setup_multipath 4
-+}
-+
-+setup_multipath6() {
-+	setup_multipath 6
- }
- 
- setup() {
-@@ -2377,8 +2447,18 @@ test_pmtu_ipv6_route_change() {
- 	test_pmtu_ipvX_route_change 6
- }
- 
--test_pmtu_ipv4_mp_exceptions() {
--	setup namespaces routing multipath || return $ksft_skip
-+test_pmtu_ipvX_mp_exceptions() {
-+	family=${1}
-+
-+	if [ ${family} -eq 4 ]; then
-+		ping=ping
-+		dst="${host4_b_addr}"
-+	else
-+		ping=${ping6}
-+		dst="${host6_b_addr}"
-+	fi
-+
-+	setup namespaces routing multipath${family} || return $ksft_skip
- 
- 	trace "${ns_a}"  veth_A-R1    "${ns_r1}" veth_R1-A \
- 	      "${ns_r1}" veth_R1-B    "${ns_b}"  veth_B-R1 \
-@@ -2395,18 +2475,24 @@ test_pmtu_ipv4_mp_exceptions() {
- 	mtu "${ns_r2}" veth_R2-A 2000
- 	mtu "${ns_r2}" veth_R2-B 1500
- 	mtu "${ns_b}"  veth_B-R2 1500
--
- 	# Ping and expect two nexthop exceptions for two routes
--	run_cmd ${ns_a} ping -q -M want -i 0.1 -c 1 -s 1800 "${host4_b_addr}"
-+	run_cmd ${ns_a} ${ping} -q -M want -i 0.1 -c 1 -s 1800 "${dst}"
- 
- 	# Check that exceptions have been created with the correct PMTU
--	pmtu_a_R1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R1)"
--	pmtu_a_R2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R2)"
--
-+	pmtu_a_R1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R1)"
-+	pmtu_a_R2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst}" oif veth_A-R2)"
- 	check_pmtu_value "1500" "${pmtu_a_R1}" "exceeding MTU (veth_A-R1)" || return 1
- 	check_pmtu_value "1500" "${pmtu_a_R2}" "exceeding MTU (veth_A-R2)" || return 1
- }
- 
-+test_pmtu_ipv4_mp_exceptions() {
-+	test_pmtu_ipvX_mp_exceptions 4
-+}
-+
-+test_pmtu_ipv6_mp_exceptions() {
-+	test_pmtu_ipvX_mp_exceptions 6
-+}
-+
- usage() {
- 	echo
- 	echo "$0 [OPTIONS] [TEST]..."
+Pre-existing issues:
+- [Medium] In skb_attempt_defer_free() the reject path jumps to nodefer
+  without calling kick_defer_list_purge().
+- [Low] Documentation/admin-guide/sysctl/net.rst (line 365) describes
+  skb_defer_max as the "Max size (in skbs) of the per-cpu list".
+
+--
+
+net: do not let defer_count outlive an empty defer_list
+
+When the skb_defer_max limit rejects an skb, skb_attempt_defer_free() now
+undoes its defer_count increment, so the counter only counts skbs that are
+actually queued. In __skb_defer_free_flush() the counter reset now comes
+after llist_del_all(), which avoids a transient over-count.
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index e76762e29360e..a5912b728ddd7 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -6940,8 +6940,11 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
+>  
+>  	if (llist_empty(&sdn->defer_list))
+>  		return;
+> -	atomic_long_set(&sdn->defer_count, 0);
+>  	free_list = llist_del_all(&sdn->defer_list);
+> +	/* Racy on purpose, as in __dev_xmit_skb(): a producer landing between
+> +	 * the del_all and this store stays queued but uncounted.
+> +	 */
+> +	atomic_long_set(&sdn->defer_count, 0);
+
+[ ... ]
+
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 41beaf625421a..e45e15506283b 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -7392,8 +7392,13 @@ nodefer:	kfree_skb_napi_cache(skb);
+>  	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
+>  	defer_count = atomic_long_inc_return(&sdn->defer_count);
+>  
+> -	if (defer_count >= defer_max)
+> +	if (defer_count >= defer_max) {
+
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch. The >=
+test means at most defer_max - 1 skbs are queued. However,
+Documentation/admin-guide/sysctl/net.rst describes skb_defer_max as:
+
+    Max size (in skbs) of the per-cpu list of skbs being freed
+    by the cpu which allocated them.
+
+With skb_defer_max=1, nothing is deferred at all. The list is also now per
+(cpu, node), not per-cpu.
+
+Should the documentation or the comparison be changed so they agree?
+
+> +		/* Undo, or the count outlives the skbs it was counting: the
+> +		 * reject path never reaches kick_defer_list_purge() below.
+> +		 */
+> +		atomic_long_dec(&sdn->defer_count);
+
+[Severity: High]
+Can this decrement push defer_count below zero if it races with the flush
+on the owner CPU?
+
+The increment and the undo are two separate atomic operations. The
+atomic_long_set() in __skb_defer_free_flush() can run between them. With
+defer_max = M and M-1 skbs queued:
+
+P1, P2 (remote producers)            owner CPU
+atomic_long_inc_return() -> M
+atomic_long_inc_return() -> M+1
+both take the reject branch
+                                     llist_del_all()
+                                     atomic_long_set(&sdn->defer_count, 0)
+atomic_long_dec() -> -1
+atomic_long_dec() -> -2
+
+This leaves the counter at -2 with an empty list.
+
+defer_count is an unsigned long, so the next producer's
+atomic_long_inc_return() returns -1, which reads as ULONG_MAX. The
+defer_count >= defer_max test is true, so that producer rejects and
+decrements back to -2. Every later producer that runs alone does the same.
+
+__skb_defer_free_flush() then returns early on the empty list and never
+resets the counter:
+
+    if (llist_empty(&sdn->defer_list))
+        return;
+
+dev_cpu_dead() and sysctl writes don't reset it either.
+
+Wouldn't this switch off deferral for that (cpu, node) slot indefinitely,
+even at the default skb_defer_max?
+
+Several things can widen the inc-to-dec window: hardirqs, preemption in
+process context (the TCP/UDP recvmsg paths), and softirq preemption on
+PREEMPT_RT. Meanwhile the flush runs from net_rx_action, busy poll and
+threaded NAPI on the owner CPU.
+
+This seems to contradict the commit message:
+
+    The counter then only accounts for skbs that are actually queued, so
+    it cannot outlive them, and the absorbing state is unreachable without
+    depending on a flush ever running on the owner CPU.
+
+The new comment in __skb_defer_free_flush() cites __dev_xmit_skb() as
+precedent. That path increments q->defer_count and drops without ever
+decrementing, so its reset can only under-count and can never go negative:
+
+    defer_count = atomic_long_inc_return(&q->defer_count);
+    if (unlikely(defer_count > READ_ONCE(net_hotdata.qdisc_max_burst))) {
+        kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_BURST_DROP);
+        return NET_XMIT_DROP;
+
+The new comment also only covers producers that get accepted. It does not
+cover rejected producers whose increment is erased by the store before
+their decrement runs.
+
+Would an approach that never increments past the limit avoid this? Some
+options:
+
+- atomic_long_add_unless() or a cmpxchg loop
+- a signed comparison, so a negative count heals
+- having the flush subtract the number of drained skbs instead of storing 0
+
+>  		goto nodefer;
+> +	}
+
+[Severity: Medium]
+This isn't a bug introduced by this patch. The reject path still jumps to
+nodefer without calling kick_defer_list_purge(). The kick further down in
+skb_attempt_defer_free() only fires on exact equality:
+
+    kick = (defer_count - 1) == (defer_max >> 1);
+
+Can that threshold become unreachable, even with an accurate counter?
+
+With skb_defer_max=2, the only accepted value is inc_return == 1, and
+(1 - 1) == 1 is false. Every later producer increments to 2, rejects, and
+decrements back to 1.
+
+The same happens if the limit is lowered below the current count before
+the old kick fired. For example, with 127 skbs queued under a limit of 256,
+set the limit to 128. Every producer then goes 127 -> 128, rejects, and goes
+back to 127. The new threshold of 65 has already been passed.
+
+proc_do_skb_defer_max() only toggles skb_defer_disable_key on changes to or
+from 0. It doesn't reset the counters or schedule a flush:
+
+    if (nval != oval) {
+        if (nval)
+            static_branch_enable(&skb_defer_disable_key);
+        else
+            static_branch_disable(&skb_defer_disable_key);
+    }
+
+Consider an owner CPU that never runs NET_RX, such as the TX-only
+application CPU from the commit message, whose skbs are completed with
+napi_consume_skb() on another CPU. Wouldn't up to defer_max - 1 skbs stay
+pinned on that list, with deferral off for that (cpu, node), for as long as
+the sysctl keeps that value?
+
+Before this patch, the counter also climbed past the threshold without
+kicking. With this patch, it can recover once the limit is raised again.
+
 -- 
-2.56.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013205416.3417296-1-jkain%40nuro.ai
