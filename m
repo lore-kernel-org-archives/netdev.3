@@ -1,63 +1,65 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661FC13B293
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485A0360EF2
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200063; cv=none; b=kAt1GKPMZ15JPFkNKN+OW6gTvAlgTBm9tPlVI5aD+ZuzfROjWuk0XM5y0SifpNCoYbdQl5AFDVWeKUJbRRq+OW9chpFfn5jZtmfMApiqkX5NOqEaZMGGmMQoofziFaf32yII6mGjevgUJjDOiGwaSTrwYZRWx8svm/VzltzlMkQ=
+	t=1792200066; cv=none; b=DDYppur6VOoWNSgfyHVWpd9oEKM/4pxjeB4yT0X+ybYKuNnVz7BgAoGSqOkz8KI4PZESmpCEDo4bth4UvXipcgKiZUOdnIceO4QNDNffmTXYSz6hxbpDV6yh0NDO/u4ctV/mETik2i4TOUY8Gm/jIjG5rs/SHesKIcrU+3DFwcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200063; c=relaxed/simple;
-	bh=E6X7T8DiUZzpXiLmdwpOm09FZsi5UuxSuH+D2AqIvg4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=osKup6c5DhBtu6PqHVGg17KCyIZjUEI01tYNax7Qsc+cbdqQM53HpZTRAKoE9u4naOdIl5JxK3g8Uk8WjyR+TuCmZEmYYjAFA0OQGzAi/bZHCAzPJl8hHtWm2tJpAeBz7wRr4eTXciJX1gzfxf2Nf9dBOIv1/fFQwFq0XYMYDkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CwJhW5nH; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1792200066; c=relaxed/simple;
+	bh=xr/G1io/jcMfHrR984t0P/qxqDapvYkztkruKBNwPW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mlWktriNRnI8b/fNZTaRgzPLetljGfrOvAbBFuPJywGR3U3JRDZiRVQhBrWzy+HYoPkJ7fLooFMIdE0sPGHcrBAea5kux/f/LArHFMgljxDER3kiwK1ayRDBkDt11+zjTKOAGRfGleuRlFtBL5d/g0WpUtcw4c0YyyrIJjQtYuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gD+Z0EdU; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CwJhW5nH"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e8da6ef7ddso2074675ad.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:21:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gD+Z0EdU"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8897e83332fso974670b3a.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:21:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200062; x=1792804862; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z+DNgBhwP4t+Jdnm8hXem+oWvC+sDLV2ygJ7M9AovjE=;
-        b=CwJhW5nH23ol78OXE+M4NOpR+FDDn28OagNtFi3AKG+uqpAs7d7pJDrCxzncRWc4Hg
-         wn8oGfk8TSEUQlvod6fvrdf9OceLC2qfVuyzrkSpLXPp1I0gpxGsZmHke4a4bQh3UGKm
-         RSeE+O36uQ9up1kqY923VU/lFhnZY3q28CQMsGfpuotI9+RlICWUJOgqCB92chndJTzJ
-         pVL/WXXoVFtCkzvIllzhZFapdGFT+mwU+Ty12QuasrB7MnrstSRzulOn78H9pCnC3Pfh
-         C3ZnqqcDnH9/viOpWbrPg8Qn6hSNp2XwHDJBu5749RDac3xVXC1aiA9MCZz3jXJetGOz
-         RPAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200062; x=1792804862;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792200064; x=1792804864; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=z+DNgBhwP4t+Jdnm8hXem+oWvC+sDLV2ygJ7M9AovjE=;
-        b=u7sVem7tKdfcE/Gqp5z4sPvjJWRl21cN2vyXOENAFCN7CbPOxanTA4b+mqiFSU8REb
-         Z4GGg6NRshk+ki6xDAstSGZn/RWVUykg1AJuTWFmsKEe0D5yOwxTbWNv7X99S5PHankB
-         f66j5h3yTzPIqn12ex/ZQIZ52KObma4L6BGNCi8Cl85lOMrAGNtrApZ2pFlL2rLrDrO7
-         rUYFt8FbaB9S+KiIkjUZ+XocWrdcNJCCHK74CtsBgMfgwJLkXHmPb2mhNUhwjw3/wDpw
-         fZS1uAsjLldvCHnI83ezfjg+GjVjXGBHX9t0QX2FTKSDSPiRYdKZhYQEAyg/Za1vJLIS
-         hFRw==
-X-Forwarded-Encrypted: i=1; AKwUvBzoGKFPhfCmf885WDk95OOXh/Iwz5vZRlU7slmAV054138K2YI8k7zg3gDWJWPjoG3DR7MqNms=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKK28pKAqN8j/vxUzuuNE/Qtd95mVLoe8WhA8JxQNIonlZl+viy
-	QNJLIz09WiulObpHcbFuI/LVIgu38T7kXl0n4QJZd7JfoGC4kiF3rcwU
-X-Gm-Gg: AYBFou38Shv4dLLkvVsbrS54jJ2ghHQPQUyWBvLynjsY/7OJfZrfQ0rdXb2Fp8Q4iEa
-	YS1e9yWwEPUmibD4Nqxbe88JieavNOV1Kw0IYiYHsiiDsAbRXTIo6Ai6fXZ6TBDhPbofLNftYJi
-	kazVuQRxQzXZqrKq9lMj5SW59qNldg4Atvm3RZ7r/dZn34gV4xyFvVDt24XaipM5RizWHME8exH
-	bRrHujSCsIqaGEdL4hnzjIVdSot5A5EDxt9FSqNqe3/lzKsQRs07dVB0KOJDWJwdhOuMsll5Txp
-	uRqh0z72t1VwaKtaEjQri+BMsDpwgCIJil/3idBEK6CF/7OI2TWdMsSGTgxj5Pyvb/IKCcxXFxB
-	4dMFGmOU/Zf3xf/C6P6d2LGanr8nRU3RwgO+yCVoyYJtQ7/w4lv0LnrHXqNhY0Zhz4ezan3J7nU
-	iTPzqVT/uyNzw7wqcY5AlbQNwP11wHEAN73aTCTL5peaGCoLKzKJ5cimPlvhw1qa03krkfijBB6
-	siYEBNilSKzJXJp310Ii6Ox8hH/3+f2eGa21bG9Kc9z50TEMe+tGV7X/UEvnFJcnB3Gc6nggt31
-	f3JYOsGyXr5AVUfCJ0+yyMjDVpjO7LvBUKAP6R56xo9Nm2F8LCfEgg==
-X-Received: by 2002:a17:902:f546:b0:2e9:84f2:3738 with SMTP id d9443c01a7336-2e9a6834a2emr14938225ad.6.1792200061224;
-        Fri, 16 Oct 2026 18:21:01 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e804eb4sm17192065ad.20.2026.10.16.18.21.00
+        bh=dvPXxhxftG/h1Xzj+1bIi+SrjJdEQHzmOQDpnqTY+d4=;
+        b=gD+Z0EdU6fpgg+8WlHmQfx1Arv9j82qmjQZvTcZY2R/3H0Clr3YpoppCxntA0w31EL
+         PMf8RbaziZhCkYjqrmS0rsrOzYCIMf5KbUircphdMEBO+7LntesK3xB30MG6dFuN5rZg
+         UONajiqAiYc5zUjJRq+wtzTUOV2M5Q/dwrSqst3/6GnHY7pIPG+3fxdTx4qb/uck9vd9
+         x7hW1PJjEuXPg25lQdt1NuC8sy9JGkA5XXZl9kHuF3jJW5xgrKeuebrzJaZ5dl7Z9sAU
+         IXvE+8iNrH8pYYTqnPcqyVc7Zj8dakwxxSDi1KazOgQU2vY4sXhJjRDcgRo5Q0Z/5XHF
+         rTcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792200064; x=1792804864;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dvPXxhxftG/h1Xzj+1bIi+SrjJdEQHzmOQDpnqTY+d4=;
+        b=AIlB0SEg7Uq9sPaWTeTf6owSsrW6wZbdaIG4GbQBuZWXeJ+rELwC/n/mPRmYxpNLIF
+         aWGdpBlPuwKkVuMyWEu80J97X0LGGIzYrYa7OFBdedMPcB9RIXnmoPRSSvozCFXXi9WC
+         VIlMpxRAYIX20yiYAr8f8X/1mxFdgcKhcMsj3eVBX6gvHmpHdLeC7O0QCLUiaJJKg17T
+         X1VHnkYMTOk5QwfM1O+oEdvU8F8IyLQghHac08QWf+Cq9k05RHkbu2O9RWXAZ5YpXSHT
+         r4aI/mJ+sxsJDhHGZrV/9eOapk4afnwzUEpz9Ex4R5mB834Qnhmhm+TIMx0D1z/BuLtf
+         VzAg==
+X-Forwarded-Encrypted: i=1; AKwUvBx5EXceC7qrlCvBiMrl7eyT/YZ1kImjuNDLskbe32r1luTosqFy/buWpNuDo1+C11xqMqthoQ8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMFbJTz+YjOHn0HIz4HOAzHQNcPoZPE/sKJlsokdwNcxLKrAIU
+	4MWa/jKrFqD012hSBRrILnhCPWvS/LZjDFofL+l52uLLyVCkMl9ifyAo
+X-Gm-Gg: AYBFou1DwVslYxTkCZCOaYOSph1jBlm4lYYJbhGo0VUwpUJ8DSDJJG6nmCuUK/Tp6PF
+	UzyGGb5yxXQJSTA22mPhMPj5aES3/S2dbioKR0bFCu7CVkVBViv+Uvtgx+Eobqvc08EezIJzCSk
+	MAU6afQCBu5hI1hey5ZRU4V7WsqPHznOk+OwR3ZKSqPscJItNSBNwov/mAjQ228/PGQNZGZdKYH
+	uSU+03PmXSw7L1F9qgphugvm4TTzH+hsjdPNqayFhoZe0WgdnpO+uYBx4nbu7b14RKRQLYxSQCU
+	yEWzXgUsFy8aC21slEfrwfAXYd1WckBQtq+fd0/vMTzcezzSaiQGjXaPQ4ftE4FhEsVS5ba9+ed
+	EwgUNNGj5oHIvsVqkiIOzaeD0DR9A6WZS9m4Cyi0lkjh5BQMjPu69Gw3HGmUKQ/q29qipK6euZq
+	F1lBpt6dJ93cYushpMWf2qS/P/IN4mXhYRo0dKM5/FoSNl2XqLx/Jvqs0S7E2frgmIdZ4ioiSXi
+	TK/NJjBMQCr6C4tENXpn3lSSXofbe0Q6Hfrkhf/pHLJo5yW3xg/UKV/3mutIKvBYQyixQMmlrr6
+	8MaK4/AcS+ymIp6VigaRMPXmnidJQ1pHzZ8QNlGr5qI=
+X-Received: by 2002:a05:6a00:7542:b0:886:ecc9:555e with SMTP id d2e1a72fcca58-89f208021a0mr2911530b3a.8.1792200064435;
+        Fri, 16 Oct 2026 18:21:04 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.240])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89febdc2209sm1301970b3a.33.2026.10.16.18.21.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:21:00 -0700 (PDT)
+        Fri, 16 Oct 2026 18:21:03 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -67,10 +69,12 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next 00/38] bpf: Memory safety, lifetime and locking fixes
-Date: Sat, 17 Oct 2026 01:20:20 +0000
-Message-ID: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 01/38] bpf: use the frame mem type in devmap egress XDP
+Date: Sat, 17 Oct 2026 01:20:21 +0000
+Message-ID: <20261017012058.355787-2-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
+References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,169 +83,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-This series collects fixes for bugs in the BPF core, the verifier and the
-BPF side of the networking stack. All but patch 14 are from Josef.
+A devmap egress program that removes a whole fragment of a redirected
+xdp_frame with bpf_xdp_adjust_tail() or bpf_xdp_pull_data() frees it
+with page_frag_free() whatever the frame's memory type is. For a
+MEM_TYPE_PAGE_POOL frame from a page_pool based driver this drops the
+page reference owned by the pool while the pool still accounts the
+fragment ("page_pool leak" bad page, leaked pp reference).
 
-Every bug was reproduced in a VM on top of bpf-next, on the kernel right
-before and right after the patch that fixes it. The splats are in the
-commit logs.
+kernel/bpf/devmap.c:dev_map_bpf_prog_run() points xdp.rxq at an
+on-stack
 
-Sleeping, or doing without RCU, where that is not allowed:
-  02 hash map for_each callbacks of sleepable programs
-  05 sleepable programs on the task_vma iterator
-  06 bpf_find_vma() callbacks of sleepable programs
-  23 maps that rely on RCU in bpf_wq and bpf_task_work callbacks
+    struct xdp_rxq_info rxq = { .dev = rx_dev };
 
-Buffers that iterators and writable tracepoints hand to programs:
-  18 BPF_LINK_UPDATE skips the size check of the attach
-  24 tail calls from an iterator program
-  25 extensions of an iterator program
-  26 tail calls from a writable raw tracepoint program
-  27 writes over bpf_timer, bpf_spin_lock, kptr in a live map value
+whose mem.type is 0, i.e. MEM_TYPE_PAGE_SHARED, and
+net/core/filter.c:bpf_xdp_shrink_data() releases frags according to
+rxq->mem.type. cpumap, which runs programs on xdp_frames the same way,
+already copies xdpf->mem_type into its private rxq for each frame.
 
-The sk_storage map iterator:
-  14 a socket that sk_clone() is still building can be found and used
-  15 NULL dereference if the socket goes away
-  16 the socket is not held while the program runs
+With 9000 byte frames from virtio_net and an egress program that cuts the
+fragments off:
 
-Lifetime of local storage, programs and maps:
-  10 owner_refcnt saturates on the last unpin
-  28 map_free() frees elements under sleepable readers
-  29 values of a dead owner are freed under sleepable programs
-  21 a program is freed under its bpf_wq callback
-  22 an inner map is freed under a sleepable callback
-  30 the exception table of a program that still runs is not found
+  BUG: Bad page state in process swapper/3  pfn:10660b
+  page dumped because: page_pool leak
+   bad_page+0xbd/0x190
+   __free_frozen_pages+0x5c7/0x900
+   bpf_xdp_adjust_tail+0x3be/0x480
+   bpf_prog_dad43f894a3faff7_egress+0x15c/0x1cd
+   dev_map_bpf_prog_run+0x288/0x610
 
-XDP and devices:
-  01 devmap egress programs free page_pool fragments as plain pages
-  19 stale offload->prog after bpf_prog_realloc()
-  20 a program is bound to a netdev that is being unregistered
-  32 cpumap uses the device of a queued frame after it is gone
+The pool waits for these pages for ever when its device is gone. That is
+the harmless case. A page of the pool can hold more than one fragment
+while its refcount is 1: the first page_frag_free() frees it under the
+fragment which is still in use, and the second one runs into
 
-seg6local End.BPF and bpf_skb_adjust_room():
-  11 the SRH of the inner packet is not validated after End.DT6
-  12 the inner header is not pulled for End.DT6
-  13 stale SRH pointer if End.B6 fails late
-  08 gso_size can drop to 0 or wrap around
+  page dumped because: VM_BUG_ON_PAGE(page_ref_count(page) == 0)
+  kernel BUG at include/linux/mm.h:1846!
 
-skb dynptrs, where a write can reallocate the head of the skb:
-  33 kfuncs that write through a dynptr
-  34 bpf_dynptr_write() in a global function
-  35 a dynptr passed to a global function
-  36 the source of the write is a slice of the same skb
-  37 overlapping source and destination
-  38 slices as arguments of helpers that change the packet
+veth is not affected. It takes references of its own on the pages and
+redirects the frame as MEM_TYPE_PAGE_SHARED.
 
-The rest:
-  03 inode leak if BPF_TOKEN_CREATE fails
-  04 preallocated hash map hands out an element that is still linked
-  07 BPF_JSET with a 64 bit mask, 32-bit kernels only
-  09 probe names of a perf event are read without event_mutex
-  17 unbounded recursion in the BTF show code
-  31 BPF_PROG_TEST_RUN of sk_lookup uses the socket outside of RCU
+Fix by setting rxq.mem.type from each frame before running the devmap
+program, as cpu_map_bpf_prog_run_xdp() does.
 
-Some of the fixes make the kernel refuse what it has accepted so far:
+Fixes: ca9984c5f0ab ("bpf: devmap: provide rxq after redirect")
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+---
+ kernel/bpf/devmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- - 02, 06: helpers, kfuncs and global functions that may sleep are rejected
-   in these callbacks.
- - 05: sleepable programs cannot be attached to the task_vma iterator.
- - 23: in sleepable callbacks, and for inner maps in sleepable programs,
-   maps that rely on RCU need bpf_rcu_read_lock().
- - 24, 26: a program with a tail call cannot be attached to a map element
-   iterator or to a writable tracepoint.
- - 27: an iterator program that writes over a special field cannot be
-   attached to that map.
- - 33-35, 38: packet pointers and slices are invalidated in more places.
-   That hits some programs which are harmless at run time. A program that
-   keeps a packet pointer across a global function which only writes to a
-   ringbuf dynptr is one example.
- - 04: a nested update of a preallocated hash map on the same CPU can fail
-   with -EBUSY.
- - 08: bpf_skb_adjust_room() returns -ENOTSUPP if gso_size would not stay
-   positive.
-
-test_progs in its three flavors, test_maps and test_verifier show no new
-failures. cpumask/test_insert_leave is flaky when the tests run in
-parallel, with and without the series: its program does not check
-is_test_task(), so any other fork in the system makes it fail.
-
-veristat sees no difference for the 5689 programs of the selftests: same
-verdicts, insns, states and stack depth.
-
-Alexei Starovoitov (1):
-  bpf: Clear sk_refcnt of a clone before its storage is linked
-
-Josef Bacik (37):
-  bpf: use the frame mem type in devmap egress XDP
-  bpf: forbid sleeping in hash map for_each callbacks
-  bpf: don't leak the inode when token creation fails
-  bpf: don't hand out a linked element as extra element
-  bpf: reject sleepable programs for task_vma iterator
-  bpf: forbid sleeping in bpf_find_vma() callbacks
-  bpf: look at all 64 bits of a BPF_JSET mask on 32-bit
-  bpf: don't let bpf_skb_adjust_room() use up the MSS
-  bpf: Read the probe of a perf event under event_mutex
-  bpf: Don't saturate owner_refcnt on the last unpin
-  bpf: Validate the SRH which End.DT6 uncovers in End.BPF
-  bpf: Pull the inner header for End.DT6 in End.BPF
-  bpf: Update the SRH state if End.B6 fails late
-  bpf: Fix NULL deref in the sk_storage map iterator
-  bpf: Hold the socket in the sk_storage map iterator
-  bpf: Bound the nesting that the BTF show code follows
-  bpf: Check the new program of an iterator link update
-  bpf: Fix stale offload->prog pointer after realloc
-  bpf: Don't bind a program to a netdev that goes away
-  bpf: Keep a program until its bpf_wq callback has ended
-  bpf: Count sleepable callbacks as sleepable map users
-  bpf: Check the maps that sleepable callbacks use
-  bpf: Assume no bounds for buffers behind a tail call
-  bpf: Don't take an extension for an iterator program
-  bpf: Assume no bounds for a writable tp with tail calls
-  bpf: Keep iterator programs off special map fields
-  bpf: Free what map_free() unlinks for sleepable readers
-  bpf: Keep values of a dead owner for sleepable programs
-  bpf: Keep the symbols of a program until it has ended
-  bpf: Use the socket of a sk_lookup test run under RCU
-  bpf, cpumap: Hold the device of frames in the queue
-  bpf: Drop packet pointers behind kfuncs writing an skb
-  bpf: Let bpf_dynptr_write() mark a global function
-  bpf: Don't take a dynptr argument for a local dynptr
-  bpf: Follow the head if an skb is written from a slice
-  bpf: Use memmove() to store bytes in an skb
-  bpf: Refuse packet slices for packet-changing helpers
-
- include/linux/bpf.h               |  24 +++-
- include/linux/bpf_local_storage.h |  13 ++
- include/linux/bpf_verifier.h      |   7 ++
- kernel/bpf/bpf_iter.c             |  31 ++++-
- kernel/bpf/bpf_local_storage.c    |  21 +++-
- kernel/bpf/btf.c                  |  14 ++-
- kernel/bpf/cfg.c                  |   4 +-
- kernel/bpf/core.c                 |  54 +++++---
- kernel/bpf/cpumap.c               |  35 ++++--
- kernel/bpf/devmap.c               |   1 +
- kernel/bpf/fixups.c               |   4 +
- kernel/bpf/hashtab.c              |  21 +++-
- kernel/bpf/helpers.c              |   9 +-
- kernel/bpf/map_in_map.c           |   7 +-
- kernel/bpf/map_iter.c             |  79 ++++++++----
- kernel/bpf/offload.c              |   9 +-
- kernel/bpf/states.c               |   3 +
- kernel/bpf/syscall.c              |  28 +++--
- kernel/bpf/task_iter.c            |  12 +-
- kernel/bpf/token.c                |   5 +-
- kernel/bpf/verifier.c             | 203 ++++++++++++++++++++++++------
- kernel/trace/bpf_trace.c          |  13 ++
- net/bpf/test_run.c                |  19 ++-
- net/core/bpf_sk_storage.c         |  96 ++++++++++++--
- net/core/filter.c                 |  58 +++++++--
- net/core/sock_map.c               |  17 ++-
- 26 files changed, 631 insertions(+), 156 deletions(-)
-
-
-base-commit: 645f5fcf7a5582f5d6ed2322f41cb34076c63b2c
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index dc7b859e8bbf..1b8f0d7f8455 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -350,6 +350,7 @@ static int dev_map_bpf_prog_run(struct bpf_prog *xdp_prog,
+ 
+ 		xdp_convert_frame_to_buff(xdpf, &xdp);
+ 		xdp.txq = &txq;
++		rxq.mem.type = xdpf->mem_type;
+ 		xdp.rxq = &rxq;
+ 
+ 		act = bpf_prog_run_xdp(xdp_prog, &xdp);
 -- 
 2.55.0
 
