@@ -1,141 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DA442AD9F
-	for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 23:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E3F29BDBB;
+	Sat, 17 Oct 2026 00:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792195066; cv=none; b=mY9Y7KTIKcj86d8OqKM0w2lMQl3+Y4Dr3wBb040UFOPIwWiECUm/2zm0Zyvh2JKYYrWYUr1F0QC+9KEkPLO7uPp0Y2FmI09mqQITYKDYDFna5ArNv7QNQCA5ZHzLW4AtXfnZHLHALip8PofllkT/2c1sH89zu9N6AZr/H9mddXc=
+	t=1792196720; cv=none; b=kYbtxQ90qIxCtYLjV8A6x9Z+sOuVjxAxLzFxQ4N5Fiw4XPdCdkjrkTVZ2sIl0nffCGemqwUp9f0xhof9cz3vrDzq7ly4lY7fKdkVD/NtF9gZbclztPlhYD36jI8Ax+rVVkNuOrKEhPY4bSlIyKWPCpzFLhmKzFwI82uF09lIxrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792195066; c=relaxed/simple;
-	bh=SYwBoc6lridL/+OSfqP6JQDDklUqd07zyUUHXQrJ4q0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gcr6Pw7mjuQJicwL8y4v489PyVYm5R/zJFNSptD/O35SnAeCX/6IBeivEVFmXR7AUJPhJJiTLKx71Inub2lnOIa37TPGZbw8m+UIE0sTRxyvSAkH8trmqoNTYg8MQVcY9ZrPwcUvP1s6nb16lIyYvKM2bB1MuRAGLCwGWbXKjRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bv945dHc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UNbttL5F; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792196720; c=relaxed/simple;
+	bh=X0xUC7IcQaElOFj2cS1wE2dixERmdc38wrS7CC00i+w=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Nl4f/377u2MpFNmhLUpLeIRJruRkNH8WdGgqGvxtD4ALy3w2I+4BOYXWZdP1/4V0t5CMac8j8uLOltZNsZ03pnfW2Gbv9TKiBg9henuMXb9wwTHiFcNRfVXljO51kOe+TIf7HUyby0L4Q7P+0jeTXRFn9M6U7NL5iPMf3Mdu5YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+kTzFfA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bv945dHc";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UNbttL5F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792195063;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qOKVAt0on4azaGyL+2yuKkrJq6J+UyxVY0ZXT9K1Dc0=;
-	b=bv945dHcP0ziwlUR9NGUI5jTCf9qWAJrzWpZgiA1OGD+/+ECwMCQcVeSMeNEW9Pm/wj/0V
-	F7PMoZoG4QYKDOuKpCPETcVBlBOdMqXYfQJPdN61xTNILT5M0hAldGEG9p4z11mpO/cpw9
-	6hF5ykPst8PQxT63gHPT1Vqk/phCI74=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-z4rX3p_hOSad7ZMBaASNzA-1; Fri, 16 Oct 2026 23:57:41 +0000
-X-MC-Unique: z4rX3p_hOSad7ZMBaASNzA-1
-X-Mimecast-MFC-AGG-ID: z4rX3p_hOSad7ZMBaASNzA_1792195061
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48b01a74792so186941f8f.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 16:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792195060; x=1792799860; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qOKVAt0on4azaGyL+2yuKkrJq6J+UyxVY0ZXT9K1Dc0=;
-        b=UNbttL5FQHriKrQxpc49B/yHqDT1QgnZemdxjgTAxKcycAroDiqkyIKbbzIuvHG2gJ
-         PofUuPrJ0onW/64bNyfGjJJSVWcLW0XRAGOu47KEq0gZgl5CL4nJpkQWYOnDO0zImOPA
-         gTwv7LziV7RS1T7s/OtlCRoE4UJR5cfltjKsuj/V7J+D2iqXjF6EBEH6TPCq5a1xCcQC
-         EKbGeeFyg85zmF4epD2Wa50FI2wahhb9xCHeD7TK1BgmNKGVwr+VsK/It+E+V2nE5O4Q
-         sS5EfMqnp3U0er9S7KkNm1j99ecHjYvFc0VBq9sZOnTlgY4uHxmtkz7zD5Tsd02K6d0D
-         kZpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792195060; x=1792799860;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qOKVAt0on4azaGyL+2yuKkrJq6J+UyxVY0ZXT9K1Dc0=;
-        b=nEjqAa1reSpljCwwdZpz6j+yLFPqJ+lNLl+pfs6Aae/gxNmN0jeZ2Yc515Rh4vlpVw
-         QzuF07tbtl6qNuG9lpOqgXuEevNKqaIz219D2vbXkXodqKEDjuQSX7By5G74M95p/+df
-         m+OvYyU4qXAWaDQRj6PD+naa7YgprhZPmyJT88g5H5PYoUwUTufETK9wo5JknW+V8xzU
-         +r/m47M6iSMLKQk/Bh6pHbPVeQYt4Vj9Ko84LUrNR9U9G1L5eJMnn6JnfJ9ral1++3jI
-         8L/AL7ulCNNSnuFCctPDxPO8jZFPuhSbca9KGqvfyPDwoxC4HOFRrfBPI9tLezCn061J
-         YOBQ==
-X-Gm-Message-State: AFq9FYINl8y1WQbUKDnyUVxGrta93QCX+FHHfjj8H5ezYKpytZrdgPjt
-	SfF0bUK96i+hogel562fFBsVPjqdktYLZaHsE2stE4zcK36RoXR5mTCgVxQvDOGdmSw1pouKWLz
-	GyiwWe6gQ4Mf6o6x5nueugnVf+Z9doT6YfCPO73JV8g/LZMSkM5sf3rObZg==
-X-Gm-Gg: AYBFou32GkIF3DBdWCqpyG5nyRFz2lPRg6uUE1yVwj1Z2r8/4wVjmHTos81iXCbGz49
-	sA7fksJ/cvWKXLD8950iCS8STl/Alm/zGRM4pVzzRN9FA3bdU4FNFpYtSuR4R650F6I2b08hC6a
-	OoSUVQJfk9Z0mNz9rE3FLUSw90I8DomQ7XLSNqS4BUg3RXXrIaiPlBGgxsKCFpVJOt61k+wn1jA
-	WAHRW4aWXnjuCDTXaM8fXQM78jq5j5wgXzsQDoQ9de4XeFjZze0l4e1ThL9gohddn0WeAYYcQ/Q
-	RGTQq2QdXMdo1FaHAdmUGPbay4nXF1a3OyHXM/3dAfWzlRU1GL+NsVKaEPeCm1EgXgYswMk=
-X-Received: by 2002:a05:6000:41cb:b0:48b:10c8:2181 with SMTP id ffacd0b85a97d-48e07f9a2b1mr2014691f8f.27.1792195060431;
-        Fri, 16 Oct 2026 16:57:40 -0700 (PDT)
-X-Received: by 2002:a05:6000:41cb:b0:48b:10c8:2181 with SMTP id ffacd0b85a97d-48e07f9a2b1mr2014659f8f.27.1792195059909;
-        Fri, 16 Oct 2026 16:57:39 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73fb:d100:601d:d7d4:d03f:527b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4d4dddsm8072055f8f.22.2026.10.16.16.57.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 16:57:38 -0700 (PDT)
-Date: Fri, 16 Oct 2026 19:57:36 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Megane Hebo <hebomegane@gmail.com>
-Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	jasowangio@gmail.com, eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com, willemdebruijn.kernel@gmail.com,
-	habte.yibelo@gmail.com
-Subject: Re: [PATCH net-next] virtio_net: validate csum_start before
- installing partial state
-Message-ID: <20261016195543-mutt-send-email-mst@kernel.org>
-References: <CAJPVW+=TP73rBavAGTJVqXVN4Uer6JwOi210+2V8nDsH=H=BcQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+kTzFfA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1271F000C5;
+	Sat, 17 Oct 2026 00:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792196718;
+	bh=VbX8Pc4dh/DxuookKffggUMjVK+IdZelOtr214MiSAc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=W+kTzFfAd2jIWjXWnVp26guFYJfZ+0QTT8NRtowfB6c3gKpwTkpfzmYBXO/crbypN
+	 PrLUKV3olffpS3yBMGJ+lSeeEFWJEAy6miuYYlvparxIA4/U7o4gqHOD4GbaqwP5EF
+	 rHznpzqS/DcbWOc11caBRWUZxwUW+CJZXf47uvkW9uPB9+a0jsFK3BR55Dkp3+qIiS
+	 PFB7eaSOoNXF4xil0TtrmiVhu270GsHx1+S8xD2wWH+CNZ/z+EZpo7tuxLTnoCDdPQ
+	 rXyMTtQf5gHcsOJOqCn1F7NUFn+Mr4ny5Xim5O0vUUBHoz6B9aBOmuoAmZlrmqNAyX
+	 I/KzjlYALYWHQ==
+Message-ID: <141aa388b13663b611520bdaa32376b67f886984.camel@kernel.org>
+Subject: Re: [PATCH net-next v9 00/13] net/rds: make connection lifetime
+ reference-counted
+From: Allison Henderson <achender@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com, 
+	edumazet@google.com, horms@kernel.org
+Date: Fri, 16 Oct 2026 17:25:17 -0700
+In-Reply-To: <20261016161504.1085ed5d@kernel.org>
+References: <20261008031333.1142174-1-achender@kernel.org>
+	 <20261016160503.1f1b807d@kernel.org>
+	 <d149a5b9f088994e5e98db7223b82040a302c0e9.camel@kernel.org>
+	 <20261016161504.1085ed5d@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJPVW+=TP73rBavAGTJVqXVN4Uer6JwOi210+2V8nDsH=H=BcQ@mail.gmail.com>
 
-On Fri, Oct 16, 2026 at 02:25:31PM -0700, Megane Hebo wrote:
-> __virtio_net_hdr_to_skb() currently installs untrusted NEEDS_CSUM
-> metadata into the skb with skb_partial_csum_set() and only then checks
-> that the resulting transport offset is beyond the minimum network
-> header length.
+On Fri, 2026-10-16 at 16:15 -0700, Jakub Kicinski wrote:
+> On Fri, 16 Oct 2026 16:07:55 -0700 Allison Henderson wrote:
+> > On Fri, 2026-10-16 at 16:05 -0700, Jakub Kicinski wrote:
+> > > On Wed,  7 Oct 2026 20:13:20 -0700 Allison Henderson wrote: =20
+> > > > This is v9 of the connection-lifetime set (v1 at [1], v2 at [2],
+> > > > v3 at [3], v4 at [6], v5 at [7], v6 at [8], v7 at [9], v8 at [10]),
+> > > > following
+> > > > "net/rds: own the fastpath locks across connection teardown" =20
+> > >=20
+> > > Patch 12 fails to apply now, sorry about the extra long processing
+> > > delay. =20
+> > No worries, I've been tied up with a lot of extra work myself. =C2=A0
+> > I'll come back and rebase tonight or tomorrow.  Thanks!=20
+>=20
+> I also dropped the small series for net.
+> Is the Medium severity concern there not worth worrying about?
+> If so - I'd apply that to net-next, LMK if you _really_ want
+> that in net.
+I'll circle back and address the medium review complaint here too.
+I think net-next is fine for it, nothing here has been seen in the
+field, so I'll tag v5 for net-next.
 
-and? why does it matter, the packet is dropped.
-
-> Validate the raw csum_start first. Successful packets are unchanged,
-> but malformed metadata is rejected before it can transition the skb to
-> CHECKSUM_PARTIAL state. This deliberately does not replace the broader
-> ingress validation being discussed for virtio checksum metadata; it only
-> narrows the state transition at the existing check.
-> 
-> Link: https://lore.kernel.org/netdev/20260922030310.8684-2-habte.yibelo@gmail.com/
-> Signed-off-by: tonegawa <kiyotaka.tonegawa@gmail.com>
-
-what is the point?
-
-> ---
->  include/linux/virtio_net.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index d6466f96cdd00c..c8180f1222f492 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-> @@ -102,9 +102,9 @@ static inline int __virtio_net_hdr_to_skb(struct
-> sk_buff *skb,
->  		if (!pskb_may_pull(skb, needed))
->  			return -EINVAL;
-> 
-> -		if (!skb_partial_csum_set(skb, start, off))
-> +		if (start < nh_min_len)
->  			return -EINVAL;
-> -		if (skb_transport_offset(skb) < nh_min_len)
-> +		if (!skb_partial_csum_set(skb, start, off))
->  			return -EINVAL;
-> 
->  		nh_min_len = skb_transport_offset(skb);
-> --
-> 2.51.0
-
+Thanks!
+Allison
