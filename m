@@ -1,167 +1,133 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C31E3B6BFE
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 17:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792257127; cv=pass; b=jg73TwwDFyIVu128V4CmuXMCGNxE741QakOx8BWxFHID09cz5R7Z6+dhZEm51N2Gny0/qBK9zkldv5UH43KsArvBHbPs35R8itmw9YRs48VhKyQeVdCRZd6m5dCWJvqaT7eiUnV/D/pObIEzU12sDorvRBOGiR2+oAk78zWB10o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792257127; c=relaxed/simple;
-	bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jf3IIQ2irDVm3RJpWgeBLdZACO0g3lqDDzwXSNAIzPXGSm70SdkLvZracX1Eet1UYH6MFNSICRat0D8nqyi3Cm5Zo1W82+Ie+VmVs/RRhJPaJZGlndr0mg2bT298KLNMqllP+zcgbUG38SrCE72oz1FGPmo3UlxXAWDnJ4qc/N4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MLWWHBXQ; arc=pass smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD78356A12;
+	Sat, 17 Oct 2026 17:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792257414; cv=none; b=Q8TJHgXSDwWn1pa27WIRftukCZ/Z0hSFtSkjYHfdjwXXRE2pFBO1ER4letv/fr3j26KNLzjQ33YTUbm+muQwA/P/E4a8RdvT+tXFcwhWSe7SlsvpzxPVcOd542pnhkuSxwQQ72yZRRYUjUwCZxca7jUch1mech38s6f9dbpSjSY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792257414; c=relaxed/simple;
+	bh=Q41Ybw1k4VKIjaRSUUV8F+/62zcRBThJnlOFy3KuaLA=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=Xm9pgfnWgN4Tt6NSb1o5wUKxP6AJFnawrdrLZt5lD3Z1Ugc84Chs5AH9DPyIKOKub/0Y+rr/ZNqsUKxA4jFmEVM44fl4I6IObyevq9S0z6I5SNQ14uoPdwt8VhwfXhoFNV0xA3/LPK7Xw1em0fI0o3WxryqOWCmLSWlVQGPT+04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRHvdlau; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MLWWHBXQ"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so24905ad.1
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 10:12:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792257126; cv=none;
-        d=google.com; s=arc-20260327;
-        b=j6VMsfhsemvOUrvWBZvtW9wrEVgmuq68ZN5b8eP0ER9x0yXdCeshL95n4qlxH/en7J
-         AQMX2giwsCrUMrd5UsDap8tvQQTb7PiM+H4RsfUlBkm8YImFH+eCSMAhhtp4cgc4/Hk1
-         eJp4Bajo0v81yBBUhmxPerCZnEBD0sW6kocusnmUHY+Q5n8M6tmJ3XhpWUilGx9YPGxz
-         1JMd1+IVZIB8b3mtf7+tIa45TFk9fmLlW4oIU8/hmIiqTvzc9rpNhYxc96jRjlsBLvgI
-         2DskyXiXAaMXD9WWfevLsVPc+SisY/2PEepOix5OFE0MDX88v3UBdQYNsHtP3iLSA7L7
-         v1Kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-        fh=4gYjzoXcgj6uu2VlQIQoRVcP3vGRaigCY0uA6FKqUWM=;
-        b=kgraGcLQgz7WMHMPAZqsuy10Qjg/+S71hx+pJIjfDHzdS0Oos21LePFoOQ1nRtau6H
-         B2nYU4i5YtPv/jCqpjvJw7sEj5R4WG44gW9slRuvftVIB5RcrYzp9UFPA/xRXFmG2yA3
-         +Jnwfex0i9pHJ/bi+H2UGnkCzFJLOHSnawxg60Pya0xL5eFTUxHxOsIjtjh0gxqMnOdM
-         UE6ymMhq6AOd6thJ2pWpcnoaeFonCUb6l/SwPAXT7UL+NaUUl9YQHddrX7/gX0GIaTQl
-         iKO5wwPsMdGvdDrfvFXqwR04wFbyWT8EMQBv7bWBc1hckWIHTVYFEojuF9tIyx7kag0N
-         KXFg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792257126; x=1792861926; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-        b=MLWWHBXQq/y8RwIU84GS50PyppI7TkQc6XbV/NDzoY3yGuCiDuq4QBUWs5tAHTwhpN
-         QMRdv3VIw/a4fRAF3zmvmDzS7DmLiwK7NhAM3i10FCpVUfr92kia0GQ2l70/ijjOnp27
-         p1jtj3BqoNvRPFWjQK6LyTYVsokb+hhfwjI47OT21GRSQmJt62YnP24VmXoXbXKVZ/ls
-         hOHWX/OUFxcNyAgahr8COpMSnn/YkkkuOXUAH/UsFdP881sHySIXIrQdM9TRTygPTdR2
-         lWaU2+DlgxXyNz9oeHhd+wx3+Z6Bxb+0lk7fcbIVC+8x7eeS34QGVQ542jxGzXR7wsyA
-         hXMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792257126; x=1792861926;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TQ0S3+GvPqkyCnzw3WaiERWE0gQzxysyRgtfYYbHNSY=;
-        b=tS/BLDB19owFOnBDy6HjTStWyQO8ltlIRzOHEmj026YYgcGLoMouL1XAL3qcG5gulP
-         i7uBezYj5S3gJzL7NXMsmDIL2U1tatkelTc12hn/GBi0/1lqR/tcTsgscmysPkegUjUr
-         W1iA0Jl2jhgI+VLmB+XZewO0D2B/RT/2107AIr3xQ/PwudbDWUX/RGcBkkj7IOq9Wdka
-         GrfVgtmMjOcssHxbs8uDiSgRh++BM0zerl4r49sG5c3AwO2dC0mhOO14WInGkr1OshTz
-         +4Ihv9kNYc1FbxjCs2kPTmAs5mkZvrJyyOMrDoz8CH7AssFOfU4H3ZrqZ3MB+WVCYPAl
-         suZw==
-X-Forwarded-Encrypted: i=1; AKwUvByGOVCc4/pKa/rliFWgWPRJ2+BHIzYCX4+WzasPLvRLoj6+qLL60bd586rpQRDPndQGOGIna4E=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJDtr/U3EK5H5OtAWSpvGH/1n5aNJnde8kiJ8p4bk1E7/URbRm9
-	5P3zU+TrKFWptVIONfItZeSFALimeryiuXjs97qMwlwgbSqI7wULuNsGm4BIP8CbBJsWoB6o5Dv
-	xWV14CpNAwy0rddGngYqaUMY/RML3tjtwymwkRrue
-X-Gm-Gg: AYBFou0mVGOvKzV8IJEleJUB07+ICK47+6i1UR8WfPQoi6y3qajJ5TVSdZ/jnzgEP0k
-	/EarZCHPid0BI265aFb7a8XR0jmLzssoRwIoWOaqyRIYTbF+11E8w/9gW11kdyXvyJOiIEuHQ2e
-	ytI9IojxmQQSMl6tfNv6SNStd2QoZx0iePcJrWsqrMmLpql+Y0HJdUSy1ZeYEAW4WHXzL7qXrmD
-	nSbVYyhiJJRRKV2iVEhezK8V8DEsBjFf6ebFOPEPkeXOfEGEL+pgnqM68KON1mRebpDkt4e3CKs
-	6tFWI68p+WpFuYsSf1fYVDuUWhO7VH91VK7s9YFqjXzfwMGUZImnIPG+
-X-Received: by 2002:a17:903:144e:b0:2e3:981:4cc4 with SMTP id
- d9443c01a7336-2e9b3252cdbmr3330175ad.9.1792257125060; Sat, 17 Oct 2026
- 10:12:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRHvdlau"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D30D1F000C5;
+	Sat, 17 Oct 2026 17:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792257412;
+	bh=7Mr89M+4c0Iy4BE/6gRRHnO0mKczHTgsXhS3+XlxzXU=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=bRHvdlaujDqJY9GNO7X+mT/zHcHSOk5R6Ht7RhKqfArVyj+qIIq++EjUXdSunKtoB
+	 5uC9PfpfgFTcI7IuugNi7Y0pvMhFtUK14kuqldMMwBMDzIehNhX5OXKXngnj2eyjGk
+	 BlTb9eY5HNKBSCAU3Lxo1H0Z8C3b4SN2VEyMX4fcD1FAhSQGeVWCcxaUjsv1+eRt4+
+	 dpY1UZE4lnbluwk5Etw3U10uvbKO09ymqbBiex60ZXym5uSwd2ej3XfNjStDx1zm/y
+	 d+plXwVNBmGU5IUPWEGgu+fiDWkl2r5HOuwaSkIlKAXNd//XkMdM0NiTj+DWiIlEdo
+	 5mdt+CCbKD53w==
+Content-Type: multipart/mixed; boundary="===============0799593762278955704=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com> <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
-In-Reply-To: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Sat, 17 Oct 2026 19:11:28 +0200
-X-Gm-Features: AclHuK8222c3YwWa2EndazmJS8Umg9HTADwML-hsKq06OdSigMokkN9A-iBy5wE
-Message-ID: <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <76cadfaba65da05d53bfa78e022e2032e74d5f9cbf0579ff67e06e0e49a93875@mail.kernel.org>
+In-Reply-To: <20261017163745.3341787-40-alexei.starovoitov@gmail.com>
+References: <20261017163745.3341787-40-alexei.starovoitov@gmail.com>
+Subject: Re: [PATCH bpf-next v2 39/43] bpf: Refuse the prologue for an extension that cannot take it
+From: bot+bpf-ci@kernel.org
+To: alexei.starovoitov@gmail.com,bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,netdev@vger.kernel.org,josef@toxicpanda.com,mason@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sat, 17 Oct 2026 17:16:51 +0000 (UTC)
 
-On Mon, Oct 12, 2026 at 9:44=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/12/26 16:45, Luigi Rizzo wrote:
-> > On Mon, Oct 12, 2026 at 3:51=E2=80=AFPM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 10/3/26 23:22, Luigi Rizzo wrote:
-> >>> Here is a subsystem called DMA_PMD on which I would like feedback on
-> >>> architecture, possible enhancements, or kernel components that could =
-be
-> >>> reused to avoid duplication.
-> >>
-> >> Here is a feedback to a subsystem called DMA_PMD ;)
-> >>
-> >> Why is basing this on PMDs (and embedding it in the name) the right ap=
-proach?
-> >>
-> >> On architctures with large PMDs (512 MiB on arm64 with 64k), would we =
-really
-> >> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) t=
-hat might
-> >> possibly also have TLB benefits (cont-pte)?
-> >
-> > I had to call it something... an earlier prototype used the name IOMMU_=
-2M,
-> > but I didn't want to suggest that the design was limited to 2M (it is n=
-ot).
-> >
-> > Aside from the name, the _current_ prototype restricts to 2M allocation=
-s,
-> > exactly because too large units are expensive and wasteful.
-> >
-> > In the code, decoupling the allocation size from the PMD size is trivia=
-l.
->
-> Yeah, we should do that.
->
-> We should probably just find a way to describe that this is a POOL that f=
-ocuses
-> on physical contiguity in some configured granularity.
+--===============0799593762278955704==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Before embarking in a global renaming, I would like to get opinions on
-acceptable alternative names (possibly with a short prefix usable for
-identifiers in the code). I could think of the following
+> bpf: Refuse the prologue for an extension that cannot take it
 
-DMA_PMAP (for PreMapped or Persistent Mapped)
-or, ahemm...
-DMA_PISA (Pooled IOMMU Superpage Allocator)
-both using dmap_ for internal name prefixes
+TL;DR: The new check may wrongly reject XDP, SK_MSG and CGROUP_SOCKOPT
+extensions that write packet data, since their prologues emit nothing.
+Programs that loaded before could fail with -EINVAL, including on stable.
 
-Other suggestions ?
+> diff --git a/kernel/bpf/fixups.c b/kernel/bpf/fixups.c
+> --- a/kernel/bpf/fixups.c
+> +++ b/kernel/bpf/fixups.c
 
-cheers
-luigi
+[ ... ]
+
+> @@ -909,6 +928,13 @@ int bpf_convert_ctx_accesses(struct bpf_verifier_env *env)
+>  			verifier_bug(env, "gen_prologue is null");
+>  			return -EFAULT;
+>  		}
+> +		if (env->seen_direct_write &&
+> +		    env->prog->type == BPF_PROG_TYPE_EXT &&
+> +		    !ext_prog_takes_prologue(env)) {
+> +			verbose(env,
+> +				"Extension writing packet data must take ctx and scalars only\n");
+> +			return -EINVAL;
+> +		}
+>  		cnt = ops->gen_prologue(insn_buf, env->seen_direct_write,
+>  					env->prog);
+>  		if (cnt >= INSN_BUF_SIZE) {
+
+Does this check reject extensions that never get a register-touching
+prologue?
+
+An extension inherits the verifier ops of its target, and
+may_access_direct_pkt_data() sets seen_direct_write for SCHED_CLS,
+SCHED_ACT, LWT_XMIT, SK_SKB, XDP, SK_MSG and CGROUP_SOCKOPT.  Only the
+first four end up in bpf_unclone_prologue(), through tc_cls_act_prologue()
+or sk_skb_prologue().
+
+XDP and SK_MSG use bpf_noop_prologue(), and CGROUP_SOCKOPT uses
+cg_sockopt_get_prologue().  Both return 0 and emit no instructions:
+
+    static int bpf_noop_prologue(struct bpf_insn *insn_buf, bool direct_write,
+                                 const struct bpf_prog *prog)
+    {
+            /* Neither direct read nor direct write requires any preliminary
+             * action.
+             */
+            return 0;
+    }
+
+The new check runs before gen_prologue() and never looks at what the
+prologue is, so for these types nothing is patched in front of the
+extension and no register is read or clobbered.
+
+An XDP extension that writes packet data is now refused with -EINVAL if its
+first argument is not the ctx, or if any other argument is not a scalar.
+For example, freplace of:
+
+    int f(__u32 idx, struct xdp_md *ctx)
+    int f(struct xdp_md *ctx, struct cfg *cfg)   (ARG_PTR_TO_MEM)
+
+or of any function taking a struct bpf_dynptr * argument.
+check_special_kfunc() also sets seen_direct_write for bpf_dynptr_slice_rdwr()
+on any dynptr type.
+
+These programs loaded and ran correctly before this patch.  Since the patch
+carries a Fixes: tag, the load failure would also reach stable kernels.
+
+The commit message says "A program that writes to packet data starts with
+bpf_unclone_prologue()".  Is that accurate for XDP, SK_MSG and
+CGROUP_SOCKOPT?
+
+Would it be better to run the check after ops->gen_prologue() and only
+when it returned a non-zero cnt, i.e. when a prologue that assumes R1 is
+the ctx is actually emitted?
+
+No later commit in the series (222dc092c64e..64e0b112d688) touches this
+check.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39051545464
+--===============0799593762278955704==--
