@@ -1,234 +1,271 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4183C09E2
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 11:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB06447DD7C
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 11:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792237381; cv=none; b=G3GMwBVZdMVUTshdD8BI/LHSDEm4oJBrPbPUFsQydn0m3tHFQjLS9ykKBQpADEAFp6dQ2MYYu1+ZEHwvF9Pdj4twCyC5ZOo7lF1sJNgDOLggLI5L6OhhoCyDCiDElzE98cUeHyRadjEvB5S+6eFzek8I046h5Bz4QLExq2HppxY=
+	t=1792238063; cv=none; b=Tx1MoQP7Ocs0WcK+xz1cgioPJOkDNn8pRQq9OX5rLOlgcSDTsp5akV56UbzHH/985hpwKpAcACBFbT17SsaHLpSbSG75/2mHIlhz1RJ+4OBbi9Zt/d5LeJPo/TGZ87jh4qSN6YQoa1sWPwqVRPCFz6PokUM3ONdnSsuveTLa6ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792237381; c=relaxed/simple;
-	bh=J8Cw60wlKHa0M+RZVGRfThuU+pMFQ4l3jfsZspjxnx4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=orKLUlVyrFvGk/LXSJ+ugsC3zNPoJ6OWIFTcKN1ogq/GiXK8j1zb77ex2r7n7RFqgCl3b795ZAMjpbdCh0l6KM3WN0snzZFeMHXXs82/e4WYvQgyoSrIu/h5t8GcOFXhD8kOQrJRDziDjXqG5Psx1LEhvOKFxhrJnqYXu5tCrvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LQ+FrjmR; arc=none smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LQ+FrjmR"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1517bda04a0so577802c88.0
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 04:42:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792237379; x=1792842179; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/NEtd/XspvBJIHQm0kcPRGhqlPpCGmhp+4zMFyvkec0=;
-        b=LQ+FrjmRiBrmkwZiew7tTvS0pohugggoXlUc6g9D1evS65lJehstBnMxP7pdl9BQ++
-         txdsfYNfJvnGOc4+q0vUBvR36RvPGAK75XYU8a7ku6s3wPOKJZ7cEJT5DM2LOIRCJblW
-         q7PXrrg/02n88Qpup77lPUbWZ1ZtBDIHO2dmxO/PSYwNArKDOQo3AMwROxhNu+tcz2Dg
-         3YnHPIVqkQ6slo9JzuouCP1yRvlqgwfP+EcV+OowXas/QSoCj7noII7i2v/MSlpjv2Jl
-         W3HirFlpnkKacLQdmDB+abp6Wm9bQvsvEEanIfg6O1lJVE7kWCLjVFfyO2fg2JGMbuYl
-         Z07w==
+	s=arc-20240116; t=1792238063; c=relaxed/simple;
+	bh=BuC2e5EtqSbLWbaOe397tITzYudOFjLLXQA2wIDOL8Q=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=sEOXY3kRKWDRLrsAaU9RlY0oXuOlbVmDe96yDPJ08EnExas1ge+VPHNG/z8HNhuONtLCmz//6lCP/zex8fmcgE6saKbCOqLDi612O4H/80/xRbjteuZwUOq0b+lBAgU1zRC9QMDoGZgl0JtsarXQ7Uv1I1D+8wt5G+F55F8rBnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-83f13919a61so1100354a34.3
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 04:54:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792237379; x=1792842179;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/NEtd/XspvBJIHQm0kcPRGhqlPpCGmhp+4zMFyvkec0=;
-        b=CtMFVly9WVGJQm8r714oZ6Z6gIPkw56eTN9ktsXU+TlJ2hCx2fkBg6hh0CfhiwMUAj
-         iP1r/XnWa7PK4z3QaPSp2iPTO5RcFF2VxOsxWULjseouUYiCJ5W9x10PvMU4P/zGiq9D
-         CYxTASbTr9Rb3vY8dt6dkfN+FhlSYP6hhA1H5P1Nemp5c+0o7DuBAXjUoTnXa1vvH8MN
-         y9BifUqhK9nXAyQFO516tiOPM2zxHPPbHIM8RtcQneKy4VF1TqS++GfcAITRmIr7qpXo
-         awCygRPHEhUmXOrMUpFoxH/+MGXB72tiJJDpaAlwRmnqbSlenZ58bwiIkxWoRHJLm5Ny
-         PIYA==
-X-Gm-Message-State: AFq9FYJzxwNpjAntKrYr+Ni5Wio5Oh31+JZO5QG3gyiU2DW9mnKY/yAC
-	KwQwS2YAPiglsOB1jdF68xk1n91HVSTUEE5uhGQ61z8SfcPANlW+Sz5D
-X-Gm-Gg: AYBFou2Wh8D7JE/OBIZNcvoyNNt6qoBWpPgaIScTwp5yNfuO5t4Pq0GSZbzCRo2YgFZ
-	XVA5Rks5Bb6mt4nqWqZ6ozyNhpbR3HRClMOl7RQWaqg4+XKYftqFl8xKTjjRshk9LjVw350s88O
-	iB78aDuGc3EG65fzVbytl4xb9Z/vBIz6yYh9Rk4y7peVY77yj9nx8q6MjtHMOQdvdVuaab97UHA
-	S0266Bh6xrTcF36Sv7c78fcYx6uU5xCr7LQP0FgwPLS00gvTHnQ3VYc701p6ioNjrUzbcw+k2rm
-	zIM5WGYVqF4YEXMSZMx/bIGg8SMrSaK3zqZ25xclQj+jCvbhtULU0j/CNY6VzX84hCwjtTNBXji
-	LsPgg7O+Y3XypVxdK97j8PhMnrVCDO7BeYXSw9xGA0MfohX3baB+A+Mbo/s9CepyHVM10Xxgtcm
-	xP8CpzJV0IcmZ6Rpk2Y7RLA2VJWxqAGC4/S3mZkx7lqgxQQssPeBYK5JJM6FHZQ7GqYmD1+MSQa
-	EWfJP6MyTv5rjOLo9azdO3ZEkCu0AtOZuFdVNj5kgmFwoY=
-X-Received: by 2002:a05:701b:4559:20b0:144:eb46:c31 with SMTP id a92af1059eb24-185120abebbmr3391009c88.17.1792237378928;
-        Sat, 17 Oct 2026 04:42:58 -0700 (PDT)
-Received: from Terra.tail0ac356.ts.net ([198.176.50.208])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831996071csm13759881c88.9.2026.10.17.04.42.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 04:42:57 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Shannon Nelson <sln@onemain.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	stable@vger.kernel.org,
-	co+d17c2bc750a9cbbb@bugs.sh
-Subject: [PATCH net] virtio_net: atomically disable rx mode work
-Date: Sat, 17 Oct 2026 04:42:38 -0700
-Message-ID: <20261017114237.2786302-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1792238060; x=1792842860;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=N64X2OcIzS9yPUZflO6NWWeuTGYK2vLbz/Wd34HgXaA=;
+        b=Z3tF1Wk8jSFbyFI1VOYSWwWBviKBTABhZnjrnNt/m2EVdKoHDWU5jTyETJhme9Go9n
+         Lxpd1Vjv+YT2BAbZoi0KHnD4CYtpsOMxefzxMz+h7zspAMhGfUnxWXyC2PDV9+xH9zE0
+         2ufFpEwxfPVRhed52jqvqQMC/H4cqviOUHopCcEJOxfUJd2fUurtdrlWyxTEn2ops0GB
+         OZBShlxf6pV42qRcIEpFJXTeYJJtuxrOSSF2a65pBLzthMYlrbZEw+PSDlRtIqts37Se
+         xZG1bBiLGLkOV4ByZmY/Qly1M4Sh38mLAazXRH4w7EV4y2EnAV811zZcbZ+Q3OHcBE2H
+         fCxw==
+X-Forwarded-Encrypted: i=1; AKwUvBxe+1/NWDlLN9vO+rYxSYaH3tVIE4R15LMJSLpUKtVCWP1bEpZoTQ04GWROKJAAq+c/LG9o3SE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIV416ePaVURcLgNrvnqgmtJ2TmsoivvY/oFO9XKkjuqYNwhgcS
+	ip11/mqXWpkAqLBoFSac2QEL4TBHl+SHt5dGoHXSLQC7Hsz9FZZF0upYZ+3Qww/7zqUnuwayDZ1
+	nj31oNwNeBOInM36jr2wzOxWSxN7xWpPHe3YvyCg2ffKSJkEHb1UswQ+tJ0k=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:11c5:b0:539:a2c2:aba3 with SMTP id
+ 5614622812f47-53cd7b4bca6mr2040286b6e.52.1792238060691; Sat, 17 Oct 2026
+ 04:54:20 -0700 (PDT)
+Date: Sat, 17 Oct 2026 04:54:20 -0700
+In-Reply-To: <6a2c6f6a.be3f099c.2836ae.0004.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ad361ec.7952420f.283480.0361.GAE@google.com>
+Subject: Re: [syzbot] [mm?] KASAN: invalid-free in rcu_free_sheaf
+From: syzbot <syzbot+60332fd095f8bb2946ad@syzkaller.appspotmail.com>
+To: alex.aring@gmail.com, alhouseenyousef@gmail.com, andrew@lunn.ch, 
+	davem@davemloft.net, devnexen@gmail.com, edumazet@google.com, 
+	gregkh@linuxfoundation.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-wpan@vger.kernel.org, malayarout91@gmail.com, 
+	miquel.raynal@bootlin.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	patches@lists.linux.dev, peterz@infradead.org, sashal@kernel.org, 
+	stable-commits@vger.kernel.org, stable@vger.kernel.org, 
+	stefan@datenfreihafen.org, syzkaller-bugs@googlegroups.com, tglx@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-virtio-net uses a boolean to gate rx_mode_work during device teardown.
-The flag is changed under RTNL, but ndo_set_rx_mode checks it under the
-address-list lock. A callback can therefore pass the check and enqueue work
-after teardown has flushed it. The work is also enabled before late
-probe operations that can fail, allowing probe unwind to free the netdev
-with work still queued.
+syzbot has found a reproducer for the following issue on:
 
-KASAN reports the worker using a virtqueue that probe unwind already freed:
+HEAD commit:    00accbd9d502 calipso: update payload_len when removing the..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=159a8121580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c4b098695335c89f
+dashboard link: https://syzkaller.appspot.com/bug?extid=60332fd095f8bb2946ad
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1599960d580000
 
-  BUG: KASAN: slab-use-after-free in virtqueue_add_split
-  Workqueue: events virtnet_rx_mode_work
-  Call Trace:
-   virtqueue_add_split (drivers/virtio/virtio_ring.c:706)
-   virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2839)
-   virtnet_send_command_reply (drivers/net/virtio_net.c:3565)
-   virtnet_rx_mode_work (drivers/net/virtio_net.c:3833)
-   process_one_work (kernel/workqueue.c:3322)
-   worker_thread (kernel/workqueue.c:3405)
-  Freed by task 119:
-   kfree (mm/slub.c:6625)
-   vp_del_vq.isra.0 (drivers/virtio/virtio_pci_common.c:259)
-   vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
-   virtnet_probe (drivers/net/virtio_net.c:7129)
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+60332fd095f8bb2946ad@syzkaller.appspotmail.com
 
-Use the workqueue disable mechanism to atomically reject new queue attempts
-and drain running work. Keep work disabled until probe succeeds or restore
-has reattached the netdev, then enable it and replay receive-mode state for
-a running interface. Disable it before resource teardown in freeze and
-remove.
+==================================================================
+BUG: KASAN: double-free in rcu_free_sheaf+0x31/0x200 mm/slub.c:6061
+Free of addr ffff88803149d500 by task swapper/0/0
 
-Fixes: b9f7425239a0 ("virtio-net: convert rx mode setting to use workqueue")
-Cc: stable@vger.kernel.org
-Reported-by: <co+d17c2bc750a9cbbb@bugs.sh>
-Assisted-by: LLM
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report_invalid_free+0xea/0x110 mm/kasan/report.c:557
+ check_slab_allocation mm/kasan/common.c:-1 [inline]
+ __kasan_slab_pre_free+0x104/0x120 mm/kasan/common.c:272
+ kasan_slab_pre_free include/linux/kasan.h:199 [inline]
+ slab_free_hook mm/slub.c:2693 [inline]
+ __rcu_free_sheaf_prepare+0x10a/0x2a0 mm/slub.c:3009
+ rcu_free_sheaf+0x31/0x200 mm/slub.c:6061
+ rcu_do_batch kernel/rcu/tree.c:2650 [inline]
+ rcu_core+0x926/0x1260 kernel/rcu/tree.c:2919
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ __do_softirq kernel/softirq.c:679 [inline]
+ invoke_softirq kernel/softirq.c:519 [inline]
+ __irq_exit_rcu+0xcb/0x220 kernel/softirq.c:758
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:775
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:64
+Code: 0b 8b 02 c3 cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 33 c5 20 00 fb f4 <e9> 8c 08 03 00 cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90
+RSP: 0018:ffffffff8fa07ca0 EFLAGS: 00000246
+RAX: 00000000000a9303 RBX: ffffffff819bed20 RCX: 8000000000000001
+RDX: 0000000000000001 RSI: ffffffff8e469bdf RDI: ffffffff8c6ddb80
+RBP: ffffffff8fa07d78 R08: ffff8880b8433a1b R09: 1ffff11017086743
+R10: dffffc0000000000 R11: ffffed1017086744 R12: 0000000000000000
+R13: 1ffffffff1f51e00 R14: 1ffffffff1f40f9c R15: dffffc0000000000
+ arch_safe_halt arch/x86/kernel/process.c:767 [inline]
+ default_idle+0x9/0x20 arch/x86/kernel/process.c:768
+ default_idle_call+0x72/0xb0 kernel/sched/idle.c:122
+ cpuidle_idle_call kernel/sched/idle.c:199 [inline]
+ do_idle+0x2e0/0x540 kernel/sched/idle.c:355
+ cpu_startup_entry+0x43/0x60 kernel/sched/idle.c:454
+ rest_init+0x378/0x3a0 init/main.c:732
+ start_kernel+0x392/0x3e0 init/main.c:1190
+ x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
+ x86_64_start_kernel+0x137/0x1b0 arch/x86/kernel/head64.c:291
+ common_startup_64+0x13e/0x157
+ </TASK>
+
+Allocated by task 977:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:409 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:426
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __kmalloc_cache_noprof+0x321/0x600 mm/slub.c:5563
+ _kmalloc_noprof include/linux/slab.h:991 [inline]
+ _kzalloc_noprof include/linux/slab.h:1312 [inline]
+ hwsim_update_pib+0x7e/0x400 drivers/net/ieee802154/mac802154_hwsim.c:103
+ hwsim_set_promiscuous_mode+0x196/0x2e0 drivers/net/ieee802154/mac802154_hwsim.c:326
+ drv_set_promiscuous_mode+0x159/0x2e0 net/mac802154/driver-ops.h:127
+ drv_start+0x4ea/0x1010 net/mac802154/driver-ops.h:167
+ mac802154_scan_worker+0x8e6/0xe60 net/mac802154/scan.c:248
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Freed by task 0:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:264 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:296
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2748 [inline]
+ __rcu_free_sheaf_prepare+0x12d/0x2a0 mm/slub.c:3009
+ rcu_free_sheaf+0x31/0x200 mm/slub.c:6061
+ rcu_do_batch kernel/rcu/tree.c:2650 [inline]
+ rcu_core+0x926/0x1260 kernel/rcu/tree.c:2919
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ __do_softirq kernel/softirq.c:679 [inline]
+ invoke_softirq kernel/softirq.c:519 [inline]
+ __irq_exit_rcu+0xcb/0x220 kernel/softirq.c:758
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:775
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+
+The buggy address belongs to the object at ffff88803149d500
+ which belongs to the cache kmalloc-64 of size 64
+The buggy address is located 0 bytes inside of
+ 64-byte region [ffff88803149d500, ffff88803149d540)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3149d
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000000 ffff88801c0418c0 dead000000000100 dead000000000122
+raw: 0000000000000000 0000000000200020 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 977, tgid 977 (kworker/u8:7), ts 26471963378
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1871
+ prep_new_page mm/page_alloc.c:1879 [inline]
+ get_page_from_freelist+0x2209/0x2280 mm/page_alloc.c:3943
+ __alloc_frozen_pages_noprof+0x217/0x5a0 mm/page_alloc.c:5436
+ alloc_slab_page mm/slub.c:3347 [inline]
+ allocate_slab+0x7d/0x620 mm/slub.c:3462
+ new_slab mm/slub.c:3513 [inline]
+ refill_objects+0x2d5/0x350 mm/slub.c:7418
+ refill_sheaf mm/slub.c:2885 [inline]
+ __pcs_replace_empty_main+0x2c8/0x6c0 mm/slub.c:4774
+ alloc_from_pcs mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:4984 [inline]
+ __do_kmalloc_node mm/slub.c:5413 [inline]
+ __kmalloc_node_noprof+0x54d/0x720 mm/slub.c:5426
+ _kmalloc_node_noprof include/linux/slab.h:1200 [inline]
+ __vmalloc_area_node mm/vmalloc.c:3893 [inline]
+ __vmalloc_node_range_noprof+0x5b4/0x1540 mm/vmalloc.c:4104
+ __vmalloc_node_noprof+0xc2/0x100 mm/vmalloc.c:4165
+ alloc_thread_stack_node kernel/fork.c:359 [inline]
+ dup_task_struct+0x2c6/0xa00 kernel/fork.c:930
+ copy_process+0x7e0/0x4400 kernel/fork.c:2134
+ kernel_clone+0x2d7/0x940 kernel/fork.c:2771
+ user_mode_thread+0x115/0x180 kernel/fork.c:2848
+ call_usermodehelper_exec_work+0x5c/0x230 kernel/umh.c:169
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff88803149d400: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+ ffff88803149d480: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
+>ffff88803149d500: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+                   ^
+ ffff88803149d580: 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc
+ ffff88803149d600: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+==================================================================
+----------------
+Code disassembly (best guess):
+   0:	0b 8b 02 c3 cc cc    	or     -0x33333cfe(%rbx),%ecx
+   6:	cc                   	int3
+   7:	cc                   	int3
+   8:	cc                   	int3
+   9:	cc                   	int3
+   a:	cc                   	int3
+   b:	90                   	nop
+   c:	90                   	nop
+   d:	90                   	nop
+   e:	90                   	nop
+   f:	90                   	nop
+  10:	90                   	nop
+  11:	90                   	nop
+  12:	90                   	nop
+  13:	90                   	nop
+  14:	90                   	nop
+  15:	90                   	nop
+  16:	90                   	nop
+  17:	90                   	nop
+  18:	90                   	nop
+  19:	90                   	nop
+  1a:	90                   	nop
+  1b:	f3 0f 1e fa          	endbr64
+  1f:	66 90                	xchg   %ax,%ax
+  21:	0f 00 2d 33 c5 20 00 	verw   0x20c533(%rip)        # 0x20c55b
+  28:	fb                   	sti
+  29:	f4                   	hlt
+* 2a:	e9 8c 08 03 00       	jmp    0x308bb <-- trapping instruction
+  2f:	cc                   	int3
+  30:	cc                   	int3
+  31:	cc                   	int3
+  32:	cc                   	int3
+  33:	cc                   	int3
+  34:	cc                   	int3
+  35:	cc                   	int3
+  36:	cc                   	int3
+  37:	cc                   	int3
+  38:	cc                   	int3
+  39:	cc                   	int3
+  3a:	cc                   	int3
+  3b:	90                   	nop
+  3c:	90                   	nop
+  3d:	90                   	nop
+  3e:	90                   	nop
+  3f:	90                   	nop
+
+
 ---
- drivers/net/virtio_net.c | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 7d2eeb9b122667..6fa4b7219aa5ac 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -441,9 +441,6 @@ struct virtnet_info {
- 	/* Work struct for setting rx mode */
- 	struct work_struct rx_mode_work;
- 
--	/* OK to queue work setting RX mode? */
--	bool rx_mode_work_enabled;
--
- 	/* Does the affinity hint is set for virtqueues? */
- 	bool affinity_hint_set;
- 
-@@ -710,16 +707,13 @@ static void virtnet_rq_free_buf(struct virtnet_info *vi,
- 
- static void enable_rx_mode_work(struct virtnet_info *vi)
- {
--	rtnl_lock();
--	vi->rx_mode_work_enabled = true;
--	rtnl_unlock();
-+	if (enable_work(&vi->rx_mode_work) && netif_running(vi->dev))
-+		schedule_work(&vi->rx_mode_work);
- }
- 
- static void disable_rx_mode_work(struct virtnet_info *vi)
- {
--	rtnl_lock();
--	vi->rx_mode_work_enabled = false;
--	rtnl_unlock();
-+	disable_work_sync(&vi->rx_mode_work);
- }
- 
- static void virtqueue_napi_schedule(struct napi_struct *napi,
-@@ -3894,8 +3888,7 @@ static void virtnet_set_rx_mode(struct net_device *dev)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
- 
--	if (vi->rx_mode_work_enabled)
--		schedule_work(&vi->rx_mode_work);
-+	schedule_work(&vi->rx_mode_work);
- }
- 
- static int virtnet_vlan_rx_add_vid(struct net_device *dev,
-@@ -5711,7 +5704,6 @@ static void virtnet_freeze_down(struct virtio_device *vdev)
- 	/* Make sure no work handler is accessing the device */
- 	flush_work(&vi->config_work);
- 	disable_rx_mode_work(vi);
--	flush_work(&vi->rx_mode_work);
- 
- 	if (netif_running(vi->dev)) {
- 		rtnl_lock();
-@@ -5741,8 +5733,6 @@ static int virtnet_restore_up(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
--	enable_rx_mode_work(vi);
--
- 	if (netif_running(vi->dev)) {
- 		rtnl_lock();
- 		err = virtnet_open(vi->dev);
-@@ -5754,6 +5744,8 @@ static int virtnet_restore_up(struct virtio_device *vdev)
- 	netif_tx_lock_bh(vi->dev);
- 	netif_device_attach(vi->dev);
- 	netif_tx_unlock_bh(vi->dev);
-+
-+	enable_rx_mode_work(vi);
- 	return 0;
- 
- err_destroy_pools:
-@@ -6849,6 +6841,7 @@ static int virtnet_probe(struct virtio_device *vdev)
- 
- 	INIT_WORK(&vi->config_work, virtnet_config_changed_work);
- 	INIT_WORK(&vi->rx_mode_work, virtnet_rx_mode_work);
-+	disable_work(&vi->rx_mode_work);
- 
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_MRG_RXBUF)) {
- 		vi->mergeable_rx_bufs = true;
-@@ -7007,8 +7000,6 @@ static int virtnet_probe(struct virtio_device *vdev)
- 	if (vi->has_rss || vi->has_rss_hash_report)
- 		virtnet_init_default_rss(vi);
- 
--	enable_rx_mode_work(vi);
--
- 	for (i = 0; i < ARRAY_SIZE(guest_offloads); i++) {
- 		unsigned int fbit;
- 
-@@ -7112,6 +7103,8 @@ static int virtnet_probe(struct virtio_device *vdev)
- 		goto free_unregister_netdev;
- 	}
- 
-+	enable_rx_mode_work(vi);
-+
- 	pr_debug("virtnet: registered device %s with %d RX and TX vq's\n",
- 		 dev->name, max_queue_pairs);
- 
-@@ -7164,7 +7157,6 @@ static void virtnet_remove(struct virtio_device *vdev)
- 	/* Make sure no work handler is accessing the device. */
- 	flush_work(&vi->config_work);
- 	disable_rx_mode_work(vi);
--	flush_work(&vi->rx_mode_work);
- 
- 	virtnet_free_irq_moder(vi);
- 
--- 
-2.55.0
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
