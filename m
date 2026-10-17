@@ -1,36 +1,36 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EDE47FB1A;
-	Sat, 17 Oct 2026 11:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3883B4E8C;
+	Sat, 17 Oct 2026 11:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792238380; cv=none; b=ds/qo7cLpMd2G0//HgRdrrnBD5bVZDdxADbgwX4HxMMZYC0FROmewszW92rg9p6rCVxq0SQ+8geICM9F9CfklFNNuM5L7yn2rsbP5OAIYek4xv0lDtXOS3y0hl0c0qum+bqhSL6nF9+LHFc/1PUZJCoYp+GzSUpiTLs8N7LMnkA=
+	t=1792238380; cv=none; b=XNK8MlICOcUWbEdbjGd1DFCc3KnBoaTlawmndKe+ZDRrkMKDHGTxoHs3Pe1VhKe/S0rNKGqOXE9XoZDCNTfp6bI6NT7ov8ijLyHAOYfE5iB0T0vxZPG82GochKc1T7FpMYaMwDkMrMpMslTQBEwTiwb4VS17zPJU7Xz4pcO0vLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792238380; c=relaxed/simple;
-	bh=hqZfTNjbiBw1bIaSk8YNjHZ4zV//TUy8UafwfVO/qW8=;
+	bh=CtsMB7FWCtidKPIcmtxMdzGpu62AoNs2Ar4YSgY7vm8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VO82Dn3yX0tyczreLelg8+xKY5lmcItepHeTVCqjjmIaIQaxaF0Cf6em9JVtZzwnMwW0wAyKHl0idUwLWLRY/3vKkJrc3ljiMrdKlASGsBIqED6quFbHt1Kz4dI4jsrMsKoGW2B4Kz4rzX21AWaP1n7J9N584nP5gekoGutbfas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=ZkNPUv+n; arc=none smtp.client-ip=194.13.80.246
+	 In-Reply-To:To:Cc; b=gBPo0MzPeFUmHsLgQPtUejXD7Cx58V1CZ6EvNbYXp+Aq8O+12F6pk29EE0/4P/LnSMTDJyh0SUe5+ZIyFGPyHzJhxtwY8SGjwC8pYfQMTh/2eE4OMx2K03VpX05XxF6gMcDamO4eRj7oxCRqZiBCPJN5tuFHyGCdb8CKrSBGXGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=yRVtlU8R; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="ZkNPUv+n"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C6FA2A1597;
-	Sat, 17 Oct 2026 13:59:35 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="yRVtlU8R"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1BCB4A1579;
+	Sat, 17 Oct 2026 13:59:34 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792238376; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1792238374; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=9U1ictPQUq7jBYhYK3hZAIbrREH4nEUjc1MkHa3E2is=;
-	b=ZkNPUv+n3F+rx9ISj5yXvkO0lS/8LqjN7cnNoovW6qQEkv7xRfSWbocd3pwQRoO/Jc3MAT
-	WTpwrGEP7fbssl2J9rUiGqrNef5XfnbF1LOA/MJlTtsMroO5CK5yCtUMzGPmiGAFbNLoKS
-	DZr8IuHCwzc5jvPFW5pW9tT4vFQVAJnIB3rP72pTkjy27MQSpQRkgCB2on0anYiLahauBK
-	mmSi5Bzg/PWd9/hT0eytnIuz1kH8p/tYGa7xpWi1tE1q02sxrwyyQhag5eWlT/VEXvPY0u
-	Db2pqlhl/KGt4NiH9zsXS1i+82KBqKDymvSj4MV+J7cawDc/Vc50EYWZXqdiQw==
+	bh=b6sFBxn4QFnrimYWFzdabU/AP8VL+VKqrieNhJhjvwY=;
+	b=yRVtlU8R8nNr7amiu3JCMUoFX6309/PlRKhlAgKv5aD0fWUdDtclHlaMdMwIGuc+AcoQBL
+	+NVeZ0uax3IHW1DcZXP/QIs5bk7N7v3VONCAFHOU0NgbNTUGHlw5qDsiHZDG4XRbe3kaWe
+	ai/7upPYLJoZoNWUtoCL+QWUBDDTE7Uegt8BHOqshMj4uBsgNg/fpfRrMQ0z8/dI61mvxm
+	1g8shibapLwhEf0n7HY3KweGiuj5MbnuX+4Ps1qZ6mWLoGPsOigiNt+k18BhIHu/qpXqrM
+	2OUk0QphlF5H2UIHAYn9QvHg0mfEEG75ImPIw4DgicSADcJVCUYVOg0Ci1BB2g==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Sat, 17 Oct 2026 13:59:28 +0200
-Subject: [PATCH net 4/4] net: bcmgenet: restore the Tx coalescing setting
- when the rings are rebuilt
+Date: Sat, 17 Oct 2026 13:59:25 +0200
+Subject: [PATCH net 1/4] net: bcmgenet: stop the PHY when a WoL resume
+ rebuilds the datapath
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261017-nb-genet-fini-dma-net-v1-4-47e7c57f6834@tipi-net.de>
+Message-Id: <20261017-nb-genet-fini-dma-net-v1-1-47e7c57f6834@tipi-net.de>
 References: <20261017-nb-genet-fini-dma-net-v1-0-47e7c57f6834@tipi-net.de>
 In-Reply-To: <20261017-nb-genet-fini-dma-net-v1-0-47e7c57f6834@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>, 
@@ -53,69 +53,33 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-bcmgenet_set_coalesce() writes tx_max_coalesced_frames straight into
-DMA_MBUF_DONE_THRESH and keeps no copy of it, while
-bcmgenet_init_tx_ring() programs a fixed 1. An ifdown and ifup or a resume
-then puts the Tx coalescing back to one frame per interrupt.
+A WoL suspend leaves the PHY running. If the resume then finds the MAC
+was reset it tears the rest down and rebuilds, which ends in phy_start().
+That warns and does nothing unless the PHY is PHY_READY or PHY_HALTED.
 
-Rx keeps its value per ring and reapplies it on init. Do the same for Tx.
+Stop the PHY with the rest of the teardown, but only while it is still
+running. A rebuild that failed can have stopped it already, and
+phy_stop() warns about that too.
 
-Fixes: 2f9130709d2c ("net: bcmgenet: Implement TX coalescing control knobs")
+Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 10 ++++++++--
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |  1 +
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index cb9951d6036fb..d4de88bbbfbad 100644
+index e8908916558b1..308716cddc077 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -931,10 +931,13 @@ static int bcmgenet_set_coalesce(struct net_device *dev,
- 	/* Program all TX queues with the same values, as there is no
- 	 * ethtool knob to do coalescing on a per-queue basis
- 	 */
--	for (i = 0; i <= priv->hw_params->tx_queues; i++)
-+	for (i = 0; i <= priv->hw_params->tx_queues; i++) {
-+		priv->tx_rings[i].tx_max_coalesced_frames =
-+			ec->tx_max_coalesced_frames;
- 		bcmgenet_tdma_ring_writel(priv, i,
- 					  ec->tx_max_coalesced_frames,
- 					  DMA_MBUF_DONE_THRESH);
-+	}
- 
- 	for (i = 0; i <= priv->hw_params->rx_queues; i++)
- 		bcmgenet_set_ring_rx_coalesce(&priv->rx_rings[i], ec);
-@@ -2748,7 +2751,8 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
- 
- 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
- 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
--	bcmgenet_tdma_ring_writel(priv, index, 1, DMA_MBUF_DONE_THRESH);
-+	bcmgenet_tdma_ring_writel(priv, index, ring->tx_max_coalesced_frames,
-+				  DMA_MBUF_DONE_THRESH);
- 	/* Disable rate control for now */
- 	bcmgenet_tdma_ring_writel(priv, index, flow_period_val,
- 				  TDMA_FLOW_PERIOD);
-@@ -4166,6 +4170,8 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 		priv->rx_rings[i].index = i;
- 		priv->rx_rings[i].rx_max_coalesced_frames = 1;
+@@ -4288,6 +4288,9 @@ static int bcmgenet_resume(struct device *d)
+ 		bcmgenet_rdma_disable(priv);
+ 		bcmgenet_intr_disable(priv);
+ 		bcmgenet_fini_dma(priv);
++		/* An earlier rebuild of this datapath may have stopped it */
++		if (phy_is_started(dev->phydev))
++			phy_stop(dev->phydev);
+ 		enable_irq(priv->irq1);
  	}
-+	for (i = 0; i <= priv->hw_params->tx_queues; i++)
-+		priv->tx_rings[i].tx_max_coalesced_frames = 1;
- 
- 	/* Initialize u64 stats seq counter for 32bit machines */
- 	for (i = 0; i <= GENET_MAX_MQ_CNT; i++) {
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 86f2aed20dbe8..e48ce39d3e7c8 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -553,6 +553,7 @@ struct bcmgenet_tx_ring {
- 	unsigned int	prod_index;	/* Tx ring producer index SW copy */
- 	unsigned int	cb_ptr;		/* Tx ring initial CB ptr */
- 	unsigned int	end_ptr;	/* Tx ring end CB ptr */
-+	unsigned int	tx_max_coalesced_frames;
- 	struct bcmgenet_priv *priv;
- };
  
 
 -- 
