@@ -1,103 +1,71 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1CD3B6C06;
-	Sat, 17 Oct 2026 17:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24D33B2FCA;
+	Sat, 17 Oct 2026 17:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792258447; cv=none; b=Ps2w2vE8VKYa1fc2/HtkgLcPjZKZR078DthbOj+SvMR7Mhz2SMWpIBWDKYfbyxn7EFktRav5tmuOrkR//2IEjrpeQaOJm+VZuk66o44wIxvdJJvX30uQcmVjc+5eUFrQK2+z6w8Yvc/DUVCNWthBH6JABuViu4TcAM1PpYEVEuw=
+	t=1792258790; cv=none; b=ecK5aY0YMuoLRGEMekn2EzpwwbLHv2OJNYnP2Pqwaxzz7JGocDEMKL7wa/2VFNXM/CpQbi87CFml8qP9Fhl/s5EBY8iTLuZ7zaboVaGTSM8SDukZFXMforGV1CDQcCnqtWVRB+PWQQlVKIIzpDdbRL4w1dYIFQtbRpAUs2rToJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792258447; c=relaxed/simple;
-	bh=+8pAPjRjaGWejxcu/xOh57SE4snp5QPNrEHd+xkPGVU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jx7pOGtudtKncvgSzAkJLrlqBsoelSmYg0apmiwbq0s8WbqM9Ls6U29cR/yAoKLM+Fjo9aAklEDqLI73N3NzPYSd83Y7agtRedjCsBdnRTTe8DXyJQmZmfrtdlW2OeHKMrEaZhg08ZQhgxVS3P0dWCDSKnHH2922Sq+WS8wq2fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=JUi7yPBl; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1792258790; c=relaxed/simple;
+	bh=BKW9ieMLcQJ9Ko3+eSZK8W4qLz2GntiOycxJB1eDVUw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YDZnuyrAgvAe/ZQ4mddLvyOR01udMlKKPn940uaSwWR83jIWYIr8C2ZPmhpsIxMLccx7jBtzKXyrUxDc77nzEbc54OAfCWBlqbnOSo61xDhQzQNFP2TcE54da7sFUwrqJUN58XXkuGTrNMKOcMOyASKlUlB/6/A5/+ZSATvasC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=E0hKo2Fy; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="JUi7yPBl"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D57DB105FB3;
-	Sat, 17 Oct 2026 19:34:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1792258444;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=7ZMZTPvh9tMJLNdO7mYMSY3WuW2Rj56qTgdyt1nrogg=;
-	b=JUi7yPBlYsym0othMpS5J+dTlNByXsPSEu0yY4K0tzee4Mt9vKkHtjALk4Ja3quKrwHpRh
-	RgJqSt5ELaOBgXRZRS0gPjFgRJF1KwXPCRMzrVv0zXYULmKVTka5wtOtbm3aFb9p1SThEa
-	4IBTpweRBmkOciJT6N8lDjHSoxwuthk1O3O8yfEBQs4Z1O1+uf1wucrSW58ruCmicU0k2J
-	Wf+yJTTG0evga8/qKX6V02dmTc7LgNUVNjEMo9iS7vB3ukx+ClYxZkXpKevehAxUfujOMV
-	ELmsH9+znF2F2K3wsV9+j63Rwlo9faZGEv7X0Dd7ewh9APWWWIKnN+52fUyByA==
-Message-ID: <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
-Date: Sat, 17 Oct 2026 19:30:37 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="E0hKo2Fy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=/3wyvCgF7xvp0uGxR/dqJ+LvnFcAl8T7SfLqaAeJ9Rc=; b=E0hKo2Fyr9kBeq4dGcwbVc5YSE
+	6briuCcRfeFiHCB07U89czZciGFAhsWpSB1M4TKmpxHfdWuk8n8L+nfoafbdM6OMCNY/SHwozuKSy
+	h/m2jy1RCJ8aYzFoWZa7i6nheTrzusNZflefORJuyWhQ+ywTHMAXbM0iJSLwMEnFiAhQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xI8NR-00BMvD-PW; Sat, 17 Oct 2026 19:39:25 +0200
+Date: Sat, 17 Oct 2026 19:39:25 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Marek Vasut <marex@nabladev.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+	UNGLinuxDriver@microchip.com, Wei Fang <wei.fang@nxp.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable
+ from DT
+Message-ID: <84dec379-cfcf-4b95-95a7-e86b312c52ac@lunn.ch>
+References: <20261016193344.115518-1-marex@nabladev.com>
+ <20261016193344.115518-2-marex@nabladev.com>
+ <725fe351-bdd0-4b53-b551-0f638d02f98a@lunn.ch>
+ <32239c97-e1dc-416d-8570-f681f91df0c8@nabladev.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
- DT
-To: Wei Fang <wei.fang@nxp.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
- Eric Dumazet <edumazet@kernel.org>, Frank Li <frank.li@nxp.com>,
- Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20261016193344.115518-1-marex@nabladev.com>
- <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
- <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <32239c97-e1dc-416d-8570-f681f91df0c8@nabladev.com>
 
-On 10/17/26 4:24 AM, Wei Fang wrote:
+> The clock would be way too fast, on MX95 that would be over 33 MHz.
 
-[...]
+O.K. I've run systems at ~ 12Mhz. The steps where quiet big, and it
+was unreliable at the next possible speed. I guess you start needing
+careful design, balanced lines, termination etc for really high speed.
 
->>> +int enetc_mdio_update_mdc_div(struct mii_bus *bus)
->>> +{
->>> +	struct enetc_mdio_priv *mdio_priv = bus->priv;
->>> +	struct device *dev = bus->parent;
->>> +	struct clk *enet_clk;
->>> +	u32 div, mdc_freq;
->>> +
->>> +	if (device_property_read_u32(dev, "clock-frequency", &mdc_freq))
->>> +		return 0;
->>> +
->>> +	enet_clk = devm_clk_get(dev, NULL);
->>> +	if (IS_ERR(enet_clk))
->>> +		return dev_err_probe(dev, PTR_ERR(enet_clk),
->>> +				     "Input clock unknown, not changing MDC
->> frequency\n");
->>
->> binding said clock is optional. If return failure here, it will block
->> existing dts, which have not clock property.
->>
-> 
-> For EMDIO device, the clocks property is not added to
-> fsl,enetc-mdio.yaml, I suppose this property should be added to the
-> dt-binding doc if the clock is really needed here.
-
-Isn't this what 1/2 in this series does ? (maybe I misunderstood this 
-paragraph)
-
-> For ENETC device, we already have a 'ref' clock in the enetc node,
-> so devm_clk_get(dev, NULL) may get the 'ref' clock rather than the
-> system clock of NETC.
-Shouldn't the clock be described in the MDIO DT node ?
+	Andrew
