@@ -1,65 +1,65 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1CC37B41F
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27D537BE98
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200513; cv=none; b=XpHFNtxCsh8qvC/hrJYpnLyk7ZkeKFWKTnRlVRV7ZUuPt6LQpTnMRbK3Y1VQ/7E1xFKes1PsOPANP3GRCSdlum1d9XwQowMUjLDN5p3WkqXUV25mQHLP/ldoVwOgNjsjXa1bQmNBsk9/LRq2c432MCfODDZayukZO0erOHsWHvU=
+	t=1792200536; cv=none; b=n7vGJiAOqsAAdllylrGLeeicIr3XyJFw6CtSHav/iaUiXHpWoYtLxPzOEdjYvW6dv1Gec4XimEcz62gXJ/WEONQfy+TLr6LtY915wbamf54PZ96k2rO5ey0jrOw08mt2t4Rx8N16Z/5IflfCRSbfrteh6x1Usbq1e/PKsZUT3tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200513; c=relaxed/simple;
-	bh=pMesjCa/gOkBIsk6vgDz145mredVUwi7QE/iBRjmDPk=;
+	s=arc-20240116; t=1792200536; c=relaxed/simple;
+	bh=nyPIuzYY4HX7cCgGgV60+lH4n+Qs1hMhO1xZzcbNp6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6vA4pTWsZQlx1LysgNzhIsfVWMTuL/PMYiW8+jZCpokAtVJGUvMM39fZRrCNGg67AcbNvQsKahQ8CbXejM78mLUnWBvdtmYq/Ru4foPIIoDvhOyxg0WVPL7odbn8TYY5E/LfxGpNuFFBDMqeqPDadN2b1mM2Yw6uDc46SHvVdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RKmzgBe1; arc=none smtp.client-ip=209.85.216.42
+	 MIME-Version; b=eZIAsc6lzNV5d1QQ9WJoGksTgTXOkpqIfmkSF7B9cfueSia1bQK3YOv5OrtWSaoD4TV3FJrWPND3JvIsBz/6Ne1BW0k59LiyRNQYlUnErlapsqemb9s4AGw9zZcsezd/fFi31TrEF6iA8q1HNxGQb3pyn8hgoFU2/fuSpkJ5zAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X4VCzRNE; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKmzgBe1"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38759bcd877so360206a91.2
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:28:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X4VCzRNE"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso271448a91.1
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:28:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200512; x=1792805312; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792200533; x=1792805333; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=52tfald6BXy/mbUymb59GMIOFzcDzqbQQ+kKvj8rcFA=;
-        b=RKmzgBe1A7URYboNrjONXBj5df4I64Iua/i5nxm1lTynV721gBlAItu5Crsy9HO0Rg
-         qINLAafxMyDdq+ovAqhGBkTvSUcp5L5dHDeMTG5JvEsi8AndeDdtp8z0O9ehPbcLHZnk
-         znuvKQ9lnhVAu2nOsBqHsA2s2itspxkRUXMFQe8rgutGzjI0nDFF95Y7ikMu1JYIsrzk
-         7eT886DpZAzbQeMYg/H3F68BbwzBHWIqLILphj5/eKXSV89Z6VP4nllOdwhac9KwSwSP
-         ZLuX8MnGcNDPZ/LSPdUrwcrtfSE9NTgUxKA/IKgsMhvc5H0CbCb4i2az1S7mbMPmxQWa
-         BEGg==
+        bh=kD74tsJicQZulq5fwatX78W1q/HZeNsaDprLwtjhhBo=;
+        b=X4VCzRNE9M7D+8TJOV6Ehxcb3uCNuMXfAl+PtC899BislIcOKrTFw6CWta9PC+3TM0
+         5aJrUHXJp6g15a0c7MFAueLCiShpwUKrX7nFnEPeYaSzVQkVTuf/nfK0p+4ED+xEz6wb
+         89rxcGVRRye0vOcjdbvSu7NoyhJYngCIHbgBAVS5CQLWd8WJH2wgMlLI8Pzkj/43jkzo
+         fp0h0HXXDoa91D8ZC81c/4Kmf/R22k9RDzAyPgtNaKlZhG2rU/B2cGSAmfeoHO2HKTfs
+         1MvjjhCTDWuuGn3J2P1MYxzftlu4nakLk3+8Zg4HsjtAXfTw7wiZA9jpCx5cEv583fwa
+         D5AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200512; x=1792805312;
+        d=1e100.net; s=20260707; t=1792200533; x=1792805333;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=52tfald6BXy/mbUymb59GMIOFzcDzqbQQ+kKvj8rcFA=;
-        b=UchzYCp+n4Pin9JdwVM0j2JURHKsLR6dM4etubhESrKmQNsWid0/DmIhnDJH4usRoy
-         2SQxLu2ENUjRS5tbb1ZwqxqmOW70wHEJ2O2joxQtLgvuL0QoCleVuLvncrE0UitatTrM
-         jCz38uax/DDM84jSflnncGgnAhGzX7Xw18DEgdm6YNEPq6kGtzkXU4AeNj91+IjlMxCv
-         uBD/aHcwPIUT1D9QVBcjXRqu8w6y4DSBi0YaYyPWfYynDW8vWT8yXeG7miQL2Ge8Dywy
-         heCfwJ9WQYsNUt5rhcw4w/fWoe2rxJTBkkt/3ZNlG97yeI0g7qg58ahRS8q7ckwqM3St
-         iVfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxA39WU2T+jupgCxTDI3AMX10u6nM7fc7J/xnzcH4akw2lABlyxr80CKhYqupl4m6YPf4Nkooo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLX3VW037GvSWqSrIUHZ5UE+ldahKNJb1FarPdrMQQQ/HSz7opp
-	V9G6Ph+yb55CG7SboczAG3wepRGeBhzB7R2e5byuD0QK+WpgWwD5JDXC
-X-Gm-Gg: AYBFou2FXxkuwhgwaf7WhA7UfN+J9913AbMOKUge1d1wH8TDH7jVlPIUqSIh66aH5RT
-	NFS84KpwYxKzjOI52ahWhTjNiqm1BkxN+Dt1zW4wkKHO6iESP+kC4oddVSN6KhWObnFWwKuKk4q
-	bHNbubhzfYBHS8QjsmUnzQWLPFNgMY1P2yacKH8YFL72MsZYKwtpPNeeuR9/2dsRRtQAZYa1qfi
-	XRWDwz/rTgl6i0STamgn8MPUCyUztL9SpFbK7d99W/iUP8VQ6BQ3b3X4HXMTeBBt3qcHw6tI9yF
-	KkG4sYFc/F7MBHtNOlHCBq0MLD88EtTXx1hlfKhwKYpWS2ACMcLmJvO0XIcY7X9pd5LRifX/0X9
-	gyr4fNLpoIRK/Na8DPC57B2DDbiQVQ/PksdZP3tc6J3Uh90EEHkP3sXQoM8Tmp0lHNZ9ez0QIof
-	hhKjJmfz4+VRFN3MU6LJqsE/3ffhbUDuHcCLk4Lmzp6VqkcGOcQAXLH34bwj1rNLcl5oJ/zemYH
-	kdCjEMZxUVQFrZTe8zSNMqZAaiMYekhuvArQ1oe80T8SQg2XBll3aKZttzHARScmqqSHBkVeZ6m
-	mcYYi4uQjei9JRYt+D+avMJ3+3W8MCjfI9+qJWAVl7I=
-X-Received: by 2002:a17:90b:4a03:b0:3ac:7e3a:1033 with SMTP id 98e67ed59e1d1-3acef5c1a8fmr1303422a91.59.1792200511625;
-        Fri, 16 Oct 2026 18:28:31 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac94627250sm11176361a91.8.2026.10.16.18.28.30
+        bh=kD74tsJicQZulq5fwatX78W1q/HZeNsaDprLwtjhhBo=;
+        b=Fu4AWcIf5qGd8NpRTzuYHa35FqyzdHHNyXFisp4scxMfDvX/2OV816KGXDMC5H2PnQ
+         cZ2b2ZUyh2WPI1r+jDPLTr0gZPvnArqjku2RbP5Hoy6aGzsSEaUaOnjFQg+dXusd3b8e
+         BAEHisVVfz8dKDlXxXTH9+pJrhE6VtwJL+jD6+s7gBspgkWCKK5J4KB4SoZRnhmqxrkf
+         xNpDmLEc56UHfaR3IgE/cUj8gNJbnpvWpWtV4YGnFUDdkIsg4qcsFTG6gxlRns/UucXW
+         rkXJn/Wy8DRPrCa//GGj1E+R/vimrjofaHICruLQeZHmMRqwFUIqdV5LK7Duepr4EdPg
+         o2nA==
+X-Forwarded-Encrypted: i=1; AKwUvBxxomuVe1NJQGI6PUclIUypbOIBPBH0ZRa9Mw7mT99nyR6EVS9PBwRqXW387iTZL6B5e7bu1yo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK7vo/17MwDQ4QQcM9cRkFyXtulWK3C22HjUA/7EO84AWoOsdlJ
+	2ZVw82KLCDHIUll2qwWBL/UJ8qoHlUtZN3wVuwKT0+/FVoGH3Y3OjvjI
+X-Gm-Gg: AYBFou3Y6jJLtZCnN52RqbyPtTxUAUyc34T38oZHH8RAQ+2dljTR7ViG2XJpWRX4EJI
+	BnVIQGxTOSRi4wsItUCwdt5uGTRnWVszpoG53bErPw5JjUl6sAfXcWWI6UnDAwBU2nNy5z5ZnQH
+	ltBXhcyXR1nNNF3ihbFvn5UTbu0Dn9/5aon7Yvq7af2Cfi5Tpk8wD2vQqNFc/10VNTOsMSbCLoq
+	sCyeYR8ISNA7L1ZivnJClzKwRR5ow81qsTkYhZKGc8UyWLBfjY+vG+dkusFJuYbd2K3ekgJTleg
+	jJydvb+yaMgqBMuho0mkm8hCD3pbIgQRT/niOt6ynn22k1NWElTj1QORbSzFn4iYyevRr5/+EGH
+	Lt1UsqtjuINotJwW5hUFj/40A1BeuWf+eO3M1w37GgPJoYWUYscd63gyPPw6kJwi+n4DAAYMa7N
+	GG9WpmJ6XCW7buJuRcWMQVk6Kd9Ph7T/11EkzPSVyHBcd2oo5Azz1n2l9XJPpwJHDyMbO9Bp+h/
+	d3B9jqWQlgaWRymtArfqy5nKwgG97YX26+6jPe/FTHGEc2I6gv9Gp5zP/8fSpMevz3GQ4UtgxOS
+	rSDD2MdeKV/xtpDd2Ey07tALEOEVG9CBuBm40evrakKDtKQhGL2R1w==
+X-Received: by 2002:a17:90b:28cb:b0:3ac:aa8d:19e0 with SMTP id 98e67ed59e1d1-3acee28021bmr1271220a91.9.1792200533028;
+        Fri, 16 Oct 2026 18:28:53 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.241])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc43a1981sm6233805a91.2.2026.10.16.18.28.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:28:30 -0700 (PDT)
+        Fri, 16 Oct 2026 18:28:52 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next 19/38] bpf: Fix stale offload->prog pointer after realloc
-Date: Sat, 17 Oct 2026 01:24:32 +0000
-Message-ID: <20261017012451.364800-11-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 20/38] bpf: Don't bind a program to a netdev that goes away
+Date: Sat, 17 Oct 2026 01:24:33 +0000
+Message-ID: <20261017012451.364800-12-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
 References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
@@ -85,43 +85,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-bpf_prog_realloc() moves a program that the rewrites of the verifier make
-outgrow its pages.  It updates aux->prog, but not the offload->prog of a
-device-bound program.  When the device is unregistered,
-__bpf_offload_dev_netdev_unregister() hands the stale pointer to
-__bpf_prog_offload_destroy(), which faults on the freed program:
+bpf_prog_dev_bound_init() looks the device up, takes bpf_devs_lock and
+registers the device for the program.  The reference it holds does not
+keep the device registered.  If bpf_dev_bound_netdev_unregister() has run
+by the time the lock is taken, nobody takes the program off the device any
+more: the bpf_offload_netdev and offload->netdev point to a net_device
+that is freed as soon as the reference is dropped.
+bpf_dev_bound_resolve_kfunc() dereferences it while the program is
+verified, and a new device at the same address finds the old entry.
 
-  BUG: unable to handle page fault for address: ffffc90000071050
-  RIP: 0010:__bpf_prog_offload_destroy+0x3f/0x310
+unregister_netdevice_many_notify() leaves NETREG_REGISTERED before it
+calls bpf_dev_bound_netdev_unregister(), which takes bpf_devs_lock.  Look
+at reg_state under that lock, and treat a device that goes like one that
+is not there.
 
-It takes the right to load a device-bound XDP program, CAP_BPF and
-CAP_NET_ADMIN or a BPF token, and a device that can be removed.
-
-Commit a1aa9ef47c29 ("bpf: Fix stale offload->prog pointer after constant
-blinding") repaired the other place that replaces a program.  Do the same
-here.
-
-Fixes: ab3f0063c48c ("bpf: offload: add infrastructure for loading programs for a specific netdev")
 Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- kernel/bpf/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/offload.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 642f0ab8eb2d..2154c18a5a4d 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -269,6 +269,8 @@ struct bpf_prog *bpf_prog_realloc(struct bpf_prog *fp_old, unsigned int size,
- 		memcpy(fp, fp_old, fp_old->pages * PAGE_SIZE);
- 		fp->pages = pages;
- 		fp->aux->prog = fp;
-+		if (fp->aux->offload)
-+			fp->aux->offload->prog = fp;
+diff --git a/kernel/bpf/offload.c b/kernel/bpf/offload.c
+index d855399812ee..c615ed46f629 100644
+--- a/kernel/bpf/offload.c
++++ b/kernel/bpf/offload.c
+@@ -250,7 +250,14 @@ int bpf_prog_dev_bound_init(struct bpf_prog *prog, union bpf_attr *attr)
+ 	prog->aux->offload_requested = !(attr->prog_flags & BPF_F_XDP_DEV_BOUND_ONLY);
  
- 		/* We keep fp->aux from fp_old around in the new
- 		 * reallocated structure.
+ 	down_write(&bpf_devs_lock);
+-	err = __bpf_prog_dev_bound_init(prog, netdev);
++	/*
++	 * Behind bpf_dev_bound_netdev_unregister() nobody would take the
++	 * program off the device, which goes once the reference is dropped.
++	 */
++	if (READ_ONCE(netdev->reg_state) == NETREG_REGISTERED)
++		err = __bpf_prog_dev_bound_init(prog, netdev);
++	else
++		err = -EINVAL;
+ 	up_write(&bpf_devs_lock);
+ 
+ out:
 -- 
 2.55.0
 
