@@ -1,65 +1,65 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E1B21CC59
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA5719B5A3
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200643; cv=none; b=j/qNx6p0vQKVJevLgAibPzi/VWqfpQYZnFffa0Q20DVTfG5ySAfe8EH6uNlJB/jFDK1XYMRkjt1ywPlb8q4AjTucGiREimqR+RTmsrJ8YCXRqb4S0F4NvJUeBKAf3ZivaQJmi8qVY3RytPV/mjx/RBSeT32taugotmMvT4ibLFI=
+	t=1792200663; cv=none; b=tNuahxoVotRpePDcSTa0vlgUJEZ5moACjeTqZB0T6tr9+HN80eQ+C65wSrbdwNNANnOjDN2mqzwQ6xxRcpdCEUxPXHJ7LBlCdEcgmCE3EpzZQLIB7cjiFfsD9D47Lm+amFVLhkMaVikLgRf1VcqxIar4wcDCIHJMamXhs47nzAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200643; c=relaxed/simple;
-	bh=1vipa/BUWLt7FxSSWIAQxQD1mC5GvojWAIA5QQzic0o=;
+	s=arc-20240116; t=1792200663; c=relaxed/simple;
+	bh=4CNEN7wC8Pe/7XrtPhrG7zkTQrJox5iMYzUoLmJvEaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUJSBw9CdpDQf8n9rEZ0i20rhooY8KlgfCVhJiF6V4XXLwEM2TTNg+c7azI3aSyPp/h5IQFoIF3HFmm8Srk5yQ6MHsYKf6Z9/I2pnbJs7UiM/iBrMNJr4U8qdVTyEgROPQ2PsgyJGA0z0BGuDi8KZ9xDIsng38LgXb52bacDyX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THQ80jbx; arc=none smtp.client-ip=209.85.216.41
+	 MIME-Version; b=lkJ8n7714LK6XNvSrzlywLgF3KBJoB8Hi/utXg+bSPrLSmo4ngCR0G+hoCBT+PQAK/3BURS7Rk6YWN1yIqM+LLve2u+BHko7ca/+X0iv/+/MnaJzgIH+Jmo3ujDuohGEmWKTUYviaq+onJPKlDavasL84NHnLZGaNsQX3suxNqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SQwdeTSQ; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THQ80jbx"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ac7842c17dso352075a91.3
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:30:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SQwdeTSQ"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e934449bb0so3520375ad.0
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200641; x=1792805441; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792200662; x=1792805462; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GmpNB1WJ0gNH4EFaRbOnrMQM/lEdyqJ32Z6JUH8YZaE=;
-        b=THQ80jbxmrWQUGABHabjqzQfQUYGVWZBO6zpHYB2QHSMA7TStkIWAAFP8G2gS6JCQX
-         x9Y/u/HsHNHNSDoOqiD8UJw1fhU4xEpdvHKIjpsBHofYeRHHOIARCT/2Z2T3oReATIj0
-         +kG4/wo0xp440UnVwR7nlWGv7exHcRP4VHrANUr5EU8gslbdiccVUCn6TkEeL2xW593g
-         zryTGDxe8rpwSfXDfb0Fuj+w8JalrH9cjM6rHnMjC9LAyFplhGyepRzBjf4mzlf+nHmR
-         kGhqG6D0KEh6MllYo5IqudwCBQ4arZx7Nk+HiQ8mvr31qkcfPXs1pzzxp9B4MfhuLVbi
-         FR4g==
+        bh=GNgrelxi6eEq7P7hlNUFtYxqdxmASU5JrfOLjioF/SE=;
+        b=SQwdeTSQzRA22heA2SuxGQuMGMV+Jd66s4pBifNQbzYreWo70GJkixVzD7oc7Uycwu
+         ogYmLgpu0D58vL24Q7Wi6wfZlYDfH2c0jMIRscG7do3NzAxsIixu6YHagt2x1I01G7QJ
+         A5AcWlbyu2iEKXc4LnPyWhTDiLe8O8dNmNty3TttQVKFzQmrjQ33dBoSzVNxRL+qjfyD
+         xmdD6KWjLotO8LCdche/8EZpckGhDohvezIazqINx42x/exTRoy9iQ8+iNe53Tn4t7/6
+         k6qCF/GbW5YyHksAVr/LU3QTJi45beWcYN1fpJHYoKcTaXcbrtnLDDM4b0HMY7X6IwQr
+         MxXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200641; x=1792805441;
+        d=1e100.net; s=20260707; t=1792200662; x=1792805462;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GmpNB1WJ0gNH4EFaRbOnrMQM/lEdyqJ32Z6JUH8YZaE=;
-        b=CGr0dmLDF2E39gqiLo6VdEkAEzo/aQW2zZrviBOwXlri1EzlVedfV4ep+AzDYr36rh
-         ZbZ488D8m5VfRQNXNcFPZ4Jzcp3Q8z8zQiL5UMrjg9D/cwsc5n4TzAtscNu2AOEXX+cR
-         cNQSmmKZg+F6FIa11cGDHeg1CEZeqPr1gEDeU5Fb/HyTXtKOM98vOq4UY6ZqyipTqax6
-         Eg6GnHYV4yhFKEHof5LfdB/FB4uDhSlTDZ7hP64H1HcHfJZMEfrqolBfn8UMN7ln0o8/
-         T0qXXWtEnBAlF5TTy9NuktJHFtGORLtneAiPFyOU6hXBReOG6NezXTODHQD1zEHCiFgx
-         g2LQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxlpXeuiW/14K7CDqcFt5YcogrCMxevDqTt8vssjDk1g6A34Qj3ExuPN819enZvEYS/E9n+Y+w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKeEeAxaIoA2Pnm9TGPjzzRmShU/PWxjRQsR5ANHE6ro20Ee0Rm
-	yiWNDuX85Fb4MSszU5zdbpqJIOIHSp7gQtsUwHUZuay8QQPha1mF6TYf
-X-Gm-Gg: AYBFou3U2cqXsI1ouy19Y0zINfsk26PuLjZaOJQw+4WCMynxZHA+GBqoXseNs24q/ss
-	CKmOXss07pD9JIXHRSsI0LOQdkNsC2MgipiXvVK9EahqPnc5Afxnz8HKqa33coSy5xgeyMJ4H/r
-	Ku8FDApKITiEM8MVNMLmSCn3F+D95kiMm5QYyrBJ0KpRJHk56vYRbFnBQyRsXruRjuEzm18rduV
-	Kjk4Of1bI4dU+mDZdb8B6iFWIjQUJJGEQR4ZMON7TEJdrgXWRZvdBXcAfyCPP/nUfDKERo4a3Km
-	1+dz5p5HErAruTcZFTo1hygUTQA9nKajxHAIGDtdN/Zc7Qxh9eF67qXLJJyLTbFFbH0p2qQEAy7
-	TCFqrQTyMQwjqHb+Rj7ZuktoebW+XrJBnyj7TJFAZG2NR7ilHqo9UTTTvbFQEjduQ0psbDEWTEy
-	Ukb63/jWIDDgwbUm083GbwzynbOUkD2txd5GD0rMTW6ooXOfAj72HRxqw41QvHU1xBqU5bsTzvP
-	AhubQ/H6IEy64ZsRpP0C3UF9uLP8oaNxgRcAB0SCaEJIxpPQIbqc1CaW0LM4rwuqFiqnejGVjq6
-	2HwFMFcvUAmoexy+O19oWh5ixIUf3pQSsQRRpfDEtvs=
-X-Received: by 2002:a17:90b:264a:b0:3ab:5758:3757 with SMTP id 98e67ed59e1d1-3acef578121mr1187337a91.61.1792200640519;
-        Fri, 16 Oct 2026 18:30:40 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.240])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc43a1e1esm6264686a91.1.2026.10.16.18.30.39
+        bh=GNgrelxi6eEq7P7hlNUFtYxqdxmASU5JrfOLjioF/SE=;
+        b=lWxIfN7yjV7LUNKZes/gMjkHpRUY79UsVHcrCKxlKyWkCaTLHBpqgsaP9o8l29aqKD
+         kWIiBuXbS3jPofccvhNAbYj6tBRMZA7WWkPXLiSuU0CGkFJgboHR++wbZXXTqQaePLl4
+         5tfPR3J1qP2x9Xf3tuqbXNggp3VjF9HthlnwHJ/Gn9TRZI+301KPzvZNpfIWSVEMv9hF
+         TIUDSZpItQzHRWo3VhmojbV/RQtKxWyCp32J2hB2qI4akNB16mravchAtmyoYas5H9e6
+         hKRfNG3Kr9DxuqaBONyu61Wen6eWe9dOFA8+Mrk4Ptc/AoxECzKq0oij4euxwmZw6nWC
+         s7Nw==
+X-Forwarded-Encrypted: i=1; AKwUvBxyXpa7Z7ouMnuJXKIdN09K+4Xob4IZlTVZjbqjyF0awWMZ+eACZklxJ66HBLKJi5+j6lUT7Yw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJrEFQsslgrPxj3ag9V+hm70knntIHzF7bmwuoS4QhL0nQEApr4
+	RKv8OmHxPust4VWEE3BJ4SGxpwL9IxqxlagiGwTHB5Op3dxyeo5R/bvv
+X-Gm-Gg: AYBFou0OGrfTzansCCBsWeK6XCKhfdMW0G0r8Fb80ykeN9usp4YMuyp8q6GzEZ6mO4j
+	nGkhKeiQ0DwCPPOSPxCrN1BYw0a7bBTzTq/yneE2Ubvk3Arn4wQSmAm35K8z9eJ5+6ZMazU3z1+
+	XxIpMs8WcYyHq/JD7hCfCeIQMVCLNypD78DGifGBuBAdhALVBXleW1wNKTHuG+xZ6TlQcSHRDcx
+	n5y6u3dc180VunnzZ+58lu1XpTB89EDhgDKpg7vcHGe/VOgDAGwk0cZMD7GJvZxvpzya/oq6SW5
+	Hx8iPx5DpIBBYYW0rXy7jXk82+N31FjkGaeiW+JSt5VLnseCQ1L3c8R4FnLaYhU/Gk3RKbd7w6J
+	ef60iBHaFaZ510/8i4Jq7ny0rl0eUJFS8S17llkdWTvxzOTFRDrrCsc7qkui6e7ZhoEx4fQYlBF
+	l7CazmpmT9Y+kxedt1vsBBFcPMnZ8MuuGbxetougcUh+rXka0hYe6O04f5du9VhmaDjBJWU3dKs
+	1gpvA0+vo2CGu4IWa1O0bhFhzER+coqwvNtRb4M+JhYvD5OPIDfZJ2A0OuCUm+FwURNkAGROc7i
+	6XE/ov7XWVorPjDfb1L78s7uDJpVEGd8XZGOGxgYOns=
+X-Received: by 2002:a17:903:22c3:b0:2e9:9846:2da7 with SMTP id d9443c01a7336-2e9a68437f0mr16777425ad.5.1792200661870;
+        Fri, 16 Oct 2026 18:31:01 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e87993esm17107195ad.59.2026.10.16.18.31.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:30:39 -0700 (PDT)
+        Fri, 16 Oct 2026 18:31:01 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next 25/38] bpf: Don't take an extension for an iterator program
-Date: Sat, 17 Oct 2026 01:24:38 +0000
-Message-ID: <20261017012451.364800-17-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 26/38] bpf: Assume no bounds for a writable tp with tail calls
+Date: Sat, 17 Oct 2026 01:24:39 +0000
+Message-ID: <20261017012451.364800-18-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
 References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
@@ -85,48 +85,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-An extension inherits the expected_attach_type of the program it extends.
-If that is BPF_TRACE_ITER, check_attach_btf_id() hands the extension to
-bpf_iter_prog_supported(), which goes by the name of the attach function.
-For an extension that is the name of the subprogram it replaces, so the
-load fails with -EINVAL, unless that subprogram is called like the function
-of a target, bpf_iter_bpf_map_elem for example.
+A writable raw tracepoint hands a buffer to the program.  The verifier
+notes how far the program reaches into it, and bpf_probe_register() refuses
+a program that reaches further than the tracepoint allows.  A program that
+does not touch the buffer passes, and can tail-call one of its type that
+reads and writes behind it.
 
-Then the extension gets the context of that target.  If the subprogram
-has as many arguments, it can use the key and the value as buffers, but
-how far it reaches is noted in the extension, where the test of the
-iterator link does not look: it reads and writes behind the elements of
-the map.  And the id of the subprogram in the BTF of the program is cached
-as the id of the target, so that programs of that target which are loaded
-already cannot be attached.
+Take a BPF_PROG_TYPE_RAW_TRACEPOINT_WRITABLE program with a tail call to
+reach as far as can be, as for the stack, the packet and the buffers of
+iterators.  It cannot be attached any more.  Plain raw tracepoint programs,
+for which the limit is zero, cannot get at the buffer, and a tail call
+stays within one type: they are left alone.
 
-Refuse all extensions here.
-
-Fixes: 15d83c4d7cef ("bpf: Allow loading of a bpf_iter program")
+Fixes: 9df1c28bb752 ("bpf: add writable context for raw tracepoints")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- kernel/bpf/bpf_iter.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/bpf/fixups.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/bpf/bpf_iter.c b/kernel/bpf/bpf_iter.c
-index 4668c1696a08..5fd376bd210b 100644
---- a/kernel/bpf/bpf_iter.c
-+++ b/kernel/bpf/bpf_iter.c
-@@ -351,6 +351,13 @@ int bpf_iter_prog_supported(struct bpf_prog *prog)
- 	const char *prefix = BPF_ITER_FUNC_PREFIX;
- 	int prefix_len = strlen(prefix);
+diff --git a/kernel/bpf/fixups.c b/kernel/bpf/fixups.c
+index 002c3935a8eb..fe59e3114d82 100644
+--- a/kernel/bpf/fixups.c
++++ b/kernel/bpf/fixups.c
+@@ -2153,6 +2153,8 @@ int bpf_do_misc_fixups(struct bpf_verifier_env *env)
+ 			prog->aux->max_pkt_offset = MAX_PACKET_OFF;
+ 			prog->aux->max_rdonly_access = U32_MAX;
+ 			prog->aux->max_rdwr_access = U32_MAX;
++			if (prog->type == BPF_PROG_TYPE_RAW_TRACEPOINT_WRITABLE)
++				prog->aux->max_tp_access = U32_MAX;
  
-+	/*
-+	 * The attach function of an extension is a subprogram of the iterator
-+	 * program that it extends, whatever its name is.
-+	 */
-+	if (prog->type == BPF_PROG_TYPE_EXT)
-+		return -EINVAL;
-+
- 	if (strncmp(attach_fname, prefix, prefix_len))
- 		return -EINVAL;
- 
+ 			/* mark bpf_tail_call as different opcode to avoid
+ 			 * conditional branch in the interpreter for every normal
 -- 
 2.55.0
 
