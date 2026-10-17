@@ -1,75 +1,46 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2021AAE28
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 02:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3109033F36D;
+	Sat, 17 Oct 2026 02:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792204305; cv=none; b=iNoA/r1oFbu8KcdN6LcgnINM1TIUk0bBZnMgGhYI4MyVwue0mk4TGEhBb+FydjUcU3ELo0cM/kj3BvqdBwongpnizMuEX7fOpeCpmNSeIR0Dch21OLiDFyy2sHDZvLu8n1GgeyjaGDh6tWi/6NxzYWlFuucu1EohASGfbFz1bXo=
+	t=1792204845; cv=none; b=ABvKwNiQoWyPNBmsPhNl5QrKz6uGi76qFyjcil4oEucDDn5p4om2GB6jZK937gb/RzxDDIEbWGct+A6fBssvQRs0qeavr1H+No0WqE0a22nZB8U+esHgh4d4rNRXR6uXqg8P/HImFftsC32zwQVCZ8TA1PKdjUlGUEQhhSYll8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792204305; c=relaxed/simple;
-	bh=r2rgRMSxOCwYCvb2cyG+bi9NBz53dSLQ691q9KtiQVQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rUUcOZLtUteSXdlVwEywcPke/kQ6/hbL2hHrGkFL5no7C6gwVt1q5chGcq9xGk2D11Jb7msgjF/L4fh7wf3QayB7euYlZSyUm+sX3YhxJfBtmCIZiXMDuAQvoSPtKjnslLaTWivhUVOlQunnIs+hI1bQri3PkezUlwLOHAWqrx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DS6WFQ+X; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792204845; c=relaxed/simple;
+	bh=Fz8Iw++VQj073Cvs2zK5d5NuF86pnYFu3w6uncW1Mhc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q5+ALlQnaePGVKgiBVYd3CzIrc9VFY7SNAsRWxlHb/akINpBrG85/EbYYeZso9uhiW8zFsU0cZIsQGyzGyBuqrgAwTH0b8eyVc2cmLw/o9Au4PFogRC40POjAm0yJHdcID9i/HzztUnQT39nTwzb92uLgeW9QaoBRrGgWbTc62I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KNijxf27; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DS6WFQ+X"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc50ad2d650so364168a12.1
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 19:31:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792204303; x=1792809103; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Qf0+8yxTfLNhsB75ahQTgX/QAqjUGdC45aMQHpNb6bE=;
-        b=DS6WFQ+X7WcuAh8Tf4RZE50jqL3v66EzsY95BHHWp7kmOEloH3K0lQEdVwikXqsAwn
-         Dja/rshAPNEkEw1L8e1IA6iWHnhTtHHdkhpWaBtn9VSu9Gy5Ze5t7WnxgT8825wVDv+g
-         +Tt5QNVDrIbJnHGyqZpTJBgUlmwgI6bVilvQ9//6iHjT/8JG1OammtS1SEdW/VJwv+/j
-         OyCrBZGdHbUuhhzHaQ4mEAy6488kVK8GpyG/QTuIXdqM51UZi+wBGR2Fx9WqsZVFHNq5
-         Cl6xJB58BpiA3e3PNSfYl90lADER8Kqzpnm/GEuoBJiN/hLroP6doDSyX+5DidIwl0YV
-         QQ1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792204303; x=1792809103;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Qf0+8yxTfLNhsB75ahQTgX/QAqjUGdC45aMQHpNb6bE=;
-        b=0jeAgaQGoPSxAichwkOHKGUA4k2/Uf0phfLOw6ReV81UHL+2sverX+O3MlNFa5qV3h
-         46ydZBI3AD7fgT7q3MFwbMHSkCAO2SLG2Mbn46qWj/RLmwLmOb56hRZdVv9HJ/0XrC58
-         RIZNbtsBULR6O5IEQNxfih1HlY7+04ySvEAt+ieSKr9pjmtwl6ecWUxjkfwdL0SLwojI
-         ZJpzMNGcrozFR9hCSSS6R0ym3bXJniRQnE6k1w54DGAr+kAY6OFXpxgSdg8pRtVTnJT2
-         M98Hl8AdNV6JLUxvlcK0Gvu0Bd+ffaKO8yT/9tSELm5qrZK83P/XOnKKt7lDtANrYgFa
-         jJQQ==
-X-Gm-Message-State: AFq9FYLM/m8kKGlNKCIqqPN4pv/ayC5Jh+mupV6kmy6M6HpGdCgqe94K
-	cZPfhpBoYYc+iqGuutggYgB2ahEN/+82cuoezUBhFmXIKWPyeHiWvAfnl7YjWuZmGZ0=
-X-Gm-Gg: AYBFou3pmKzVpzaCDVXHV2fhdM/iJ0/Ei/oBCmB2SWNSxiYUEfotXMdUqyAMwwaZ9pN
-	53SirAxRsA48gltfCdQ22ORXQ6QsqqojK/hbdRTpb8OdEEJPOKCrvvNw4iSgGxo9di71BExc2Ii
-	E1jI4AeQwGOhiDVTntl/Rx3WH6qr90Pcnks6KWvASZ730xbFbX95z3pWHUqyCALGTCR0JpoOQyZ
-	kcJzFtXtQS2PJNd1dvhshut0qxMQEr2/vfeIyL+B5yHW1Jc7H55rKB+cvumUixo+d0AE4mpp8pB
-	rdxozHlh+h86yvTSuGmviwNfm8UNxE5FDTXqWQ4yVMspMvQ9uyIqZLcKQOmBzYqeMnD9zJeZa5w
-	YJNtgsXoos06zQXtA1WGxOtUjbPn7K2vDd78rH0UixyLiSAU8dkYld7JsBKNLrRhcP7TCm0TQ6x
-	uNBWBL06h9QRsJ/GXKYxRjPsAP3xhb35fs27IMyxIa9TfQwBZJ7hInNexlIJaf7jkPzSnv36yA9
-	d/k5niIro1OwGyEtWvF6EgGwlQ=
-X-Received: by 2002:a17:90b:45:b0:3a4:b061:2765 with SMTP id 98e67ed59e1d1-3aceeb9272dmr1441087a91.15.1792204303254;
-        Fri, 16 Oct 2026 19:31:43 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:661b:1250::1d3:d3])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd9c4b4eesm4189707a91.2.2026.10.16.19.31.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 19:31:42 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: dsa: motorcomm: Extend ACL with UDF
-Date: Sat, 17 Oct 2026 10:31:32 +0800
-Message-ID: <20261017023136.2961543-1-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KNijxf27"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Im
+	8iPBUo+PtVh6yAZi2pUTxsJ/mWjuwm0TEOAcFEags=; b=KNijxf27D3TAedEkaL
+	wNZMO/FlUnuIIc6aS9hcMDU0TxIj6ugBaQk0FEhPKKmcZbRMTzFaMm+GRtGqcTHc
+	7/F+qaCu2D5Q4P6K8uf0ysfNdgvsxYPVKIyHt9PO+FONtsvcU8E/AaC4LK9xYmkf
+	eiq0XBh2D4I/KYJotFEeIY3rk=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3_3To39Jq_QGUAQ--.2811S2;
+	Sat, 17 Oct 2026 10:39:38 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: sam@mendozajonas.com,
+	fercerpav@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	gwshan@linux.vnet.ibm.com,
+	joel@jms.id.au
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH net v1] net/ncsi: fix use-after-free of ncsi_channel in ncsi_remove_channel()
+Date: Sat, 17 Oct 2026 10:39:34 +0800
+Message-ID: <20261017023934.419611-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,280 +48,227 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_3To39Jq_QGUAQ--.2811S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtw48tw17tr4DKw13JF1xAFb_yoW3WFW3pF
+	W3try5Jw4jyryrur9aka15Wr13Ar4rX3yUKwnrKw4fAa45GryUuFyxAay0vF15CrZ7uw4a
+	yw4Ygr4Y9rs5JrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziMGQfUUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC-AqBZWrS3+qyXQAA3w
 
-The native ACL key set cannot express IP TTL or ICMP type/code. Use the
-User Defined Filter windows to match them in the tc flower offload.
+The NCSI generic netlink package information paths walk the global
+ncsi_dev_list (ndp_from_ifindex() -> ncsi_find_dev()) and the
+ndp->packages / np->channels lists through the list_for_each_entry_rcu()
+based NCSI_FOR_EACH_* macros, but they never enter an RCU read-side
+critical section.  Everything these walkers touch is only unlinked with
+list_del_rcu(), so the lifetime contract of the objects is "alive for an
+RCU grace period after unlink"; a walker that does not hold
+rcu_read_lock() has no protection at all once it is preempted mid-walk,
+no matter what the free side does.
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+The teardown side breaks the other half of that contract for the
+channels: ncsi_remove_channel() unlinks the channel from its package's
+channel list with list_del_rcu() and then frees the channel's mac/vlan
+filter arrays and the channel object itself immediately.  The netlink
+walkers dereference deep into the channel --
+ncsi_write_channel_info() reads nc->version.fw_name with nla_put_string()
+(strlen) and iterates the nc->vlan_filter.vids[] entries -- so a reader
+mid-walk reads freed memory when a teardown overlaps it.
+
+Either half alone leaves the race, so fix both sides:
+
+  * Enter the read-side critical section in the NCSI_CMD_PKG_INFO doit
+    (ncsi_pkg_info_nl()) and dump (ncsi_pkg_info_all_nl()) handlers and
+    keep it held across every dereference of ndp, np and nc.  The doit
+    response skb is allocated before the lock is taken so that the
+    GFP_KERNEL allocation does not run under rcu_read_lock(); the dump
+    handler only appends to the callback skb it is given and can hold
+    the lock across its whole walk.
+
+  * Move the frees of nc->mac_filter.addrs, nc->vlan_filter.vids and nc
+    into an RCU callback.  The two arrays are only reachable through
+    the channel object, so they have to share its grace period.
+
+The race needs no real NC hardware:
+
+  writer: rmmod ftgmac100
+            -> ftgmac100_remove() -> ncsi_unregister_dev()
+            -> ncsi_remove_package() -> ncsi_remove_channel() -> kfree()
+  reader: sendmsg(NETLINK_GENERIC, NCSI_CMD_PKG_INFO)
+            -> ncsi_pkg_info_nl() -> ncsi_write_package_info()
+            -> ncsi_write_channel_info()
+
+(freeing happens before unregister_netdev(), so the netdev, and with it
+the genl entry point, stays reachable during the whole window).
+
+Tested on an arm multi_v7 kernel (KASAN + SLUB + PREEMPT) running as a
+QEMU ast2600-evb guest with a host-side NC-SI responder; the PoC hammers
+NCSI_CMD_PKG_INFO from four threads while cycling insmod/rmmod
+ftgmac100 (doit and dump variants in parallel).  KASAN fires at the
+first teardown of every boot:
+
+  BUG: KASAN: slab-use-after-free in ncsi_write_package_info+0xa5c/0xf84
+  Read of size 1 at addr c69019e0 by task poc_dump/68
+  CPU: 0 UID: 0 PID: 68 Comm: poc_dump Not tainted 7.2.6 #1 PREEMPT
+  Hardware name: Generic DT based system
+  Call trace:
+   ...
+   kasan_report from ncsi_write_package_info+0xa5c/0xf84
+   ncsi_write_package_info from ncsi_pkg_info_nl+0x320/0x63c
+   ncsi_pkg_info_nl from genl_family_rcv_msg_doit+0x218/0x2d8
+   genl_family_rcv_msg_doit from genl_rcv_msg+0x578/0xb24
+   genl_rcv_msg from netlink_rcv_skb+0x134/0x3c4
+   netlink_rcv_skb from genl_rcv+0x24/0x34
+   genl_rcv from netlink_unicast+0x884/0xac0
+   netlink_unicast from netlink_sendmsg+0x62c/0xb98
+   netlink_sendmsg from __sys_sendto+0x290/0x3e0
+   __sys_sendto from sys_send+0x18/0x20
+   sys_send from ret_fast_syscall+0x0/0x5c
+
+Fixes: 2d283bdd079c ("net/ncsi: Resource management")
+Fixes: 955dc68cb9b2 ("net/ncsi: Add generic netlink family")
+Signed-off-by: Binbin Deng <18983559317@163.com>
 ---
- drivers/net/dsa/motorcomm/chip.h |   2 +-
- drivers/net/dsa/motorcomm/tc.c   | 140 +++++++++++++++++++++++++++++--
- drivers/net/dsa/motorcomm/tc.h   |  12 ++-
- 3 files changed, 144 insertions(+), 10 deletions(-)
+ net/ncsi/internal.h     |  1 +
+ net/ncsi/ncsi-manage.c  | 20 ++++++++++++++------
+ net/ncsi/ncsi-netlink.c | 36 ++++++++++++++++++++++++++----------
+ 3 files changed, 41 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index 7047ad98f431..fc315f1d8f87 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -440,7 +440,7 @@ enum yt921x_fdb_entry_status {
- #define YT921X_TAG_LEN	8
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index adee6dcabdc3..530834d8caa7 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -239,6 +239,7 @@ struct ncsi_channel {
+ 	} monitor;
+ 	struct list_head            node;
+ 	struct list_head            link;
++	struct rcu_head             rcu;
+ };
  
- #define YT921X_ACL_BLK_NUM	48
--#define YT921X_UDF_NUM		8
-+#define YT921X_UDF_NUM		16
- 
- #define YT921X_LED_GROUP_NUM	3
- #define YT921X_LED_PORT_NUM	10
-diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-index 3e0f80500f41..9dbd61e48fee 100644
---- a/drivers/net/dsa/motorcomm/tc.c
-+++ b/drivers/net/dsa/motorcomm/tc.c
-@@ -543,6 +543,24 @@ yt921x_acl_rule_set_ports(struct yt921x_acl_rule *aclrule, u16 ord,
- 	}
+ struct ncsi_package {
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 54d0df0a9efe..c16047dee3f8 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -242,17 +242,21 @@ struct ncsi_channel *ncsi_add_channel(struct ncsi_package *np, unsigned char id)
+ 	return nc;
  }
  
-+struct yt921x_udf_entry {
-+	unsigned char type;
-+	unsigned char offset;
-+	u8 key;
-+	u8 mask;
-+};
++static void ncsi_channel_release(struct rcu_head *rcu)
++{
++	struct ncsi_channel *nc = container_of(rcu, struct ncsi_channel, rcu);
 +
-+struct yt921x_udf_map {
-+	unsigned char type;
-+	unsigned char offset;
-+};
++	kfree(nc->mac_filter.addrs);
++	kfree(nc->vlan_filter.vids);
++	kfree(nc);
++}
 +
-+/* UDF windows are preselected - that's enough for now. */
-+static struct yt921x_udf_map yt921x_udf_maps[] = {
-+	{YT921X_UDF_TYPE_L3, 7},
-+	{YT921X_UDF_TYPE_L4, 0},
-+};
-+
- struct yt921x_acl_rule_ext {
- 	struct yt921x_acl_rule r;
+ static void ncsi_remove_channel(struct ncsi_channel *nc)
+ {
+ 	struct ncsi_package *np = nc->package;
+ 	unsigned long flags;
  
-@@ -556,9 +574,13 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 	const struct flow_rule *rule = flow_cls_offload_flow_rule(cls);
- 	struct yt921x_acl_entry *entries = ruleext->r.entries;
- 	struct netlink_ext_ack *extack = cls->common.extack;
-+	struct yt921x_udf_entry udfs[YT921X_UDF_NUM];
- 	const struct flow_dissector *dissector;
- 	struct yt921x_acl_entry *entry;
-+	unsigned int udfs_cnt = 0;
- 	unsigned int size = 0;
-+	__be16 n_proto = 0;
-+	u8 ip_proto = 0;
- 	bool use_dport;
- 	bool use_sport;
+ 	spin_lock_irqsave(&nc->lock, flags);
+-
+-	/* Release filters */
+-	kfree(nc->mac_filter.addrs);
+-	kfree(nc->vlan_filter.vids);
+-
+ 	nc->state = NCSI_CHANNEL_INACTIVE;
+ 	spin_unlock_irqrestore(&nc->lock, flags);
+ 	ncsi_stop_channel_monitor(nc);
+@@ -263,7 +267,11 @@ static void ncsi_remove_channel(struct ncsi_channel *nc)
+ 	np->channel_num--;
+ 	spin_unlock_irqrestore(&np->lock, flags);
  
-@@ -575,7 +597,8 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 	      BIT_ULL(FLOW_DISSECTOR_KEY_PORTS_RANGE) |
- 	      BIT_ULL(FLOW_DISSECTOR_KEY_ETH_ADDRS) |
- 	      BIT_ULL(FLOW_DISSECTOR_KEY_IP) |
--	      BIT_ULL(FLOW_DISSECTOR_KEY_TCP))) {
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_TCP) |
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_ICMP))) {
- 		NL_SET_ERR_MSG_MOD(extack, "Unsupported keys used");
- 		return -EOPNOTSUPP;
- 	}
-@@ -741,7 +764,9 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 		if (match.mask->n_proto) {
- 			enum yt921x_l3_type l3type = YT921X_L3_TYPE_OTHER;
- 
--			if (match.mask->n_proto == htons(~0))
-+			if (match.mask->n_proto == htons(~0)) {
-+				n_proto = match.key->n_proto;
-+
- 				switch (match.key->n_proto) {
- 				case htons(ETH_P_IP):
- 					l3type = YT921X_L3_TYPE_IPV4;
-@@ -762,6 +787,7 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 					l3type = YT921X_L3_TYPE_ERP;
- 					break;
- 				}
-+			}
- 
- 			if (l3type != YT921X_L3_TYPE_OTHER) {
- 				size = yt921x_acl_entries_set_l3_type(entries,
-@@ -783,7 +809,9 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 		if (match.mask->ip_proto) {
- 			enum yt921x_l4_type l4type = YT921X_L4_TYPE_OTHER;
- 
--			if (match.mask->ip_proto == (u8)~0)
-+			if (match.mask->ip_proto == (u8)~0) {
-+				ip_proto = match.key->ip_proto;
-+
- 				switch (match.key->ip_proto) {
- 				case IPPROTO_TCP:
- 					l4type = YT921X_L4_TYPE_TCP;
-@@ -801,6 +829,7 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 					l4type = YT921X_L4_TYPE_IGMP;
- 					break;
- 				}
-+			}
- 
- 			if (l4type != YT921X_L4_TYPE_OTHER) {
- 				size = yt921x_acl_entries_set_l4_type(entries,
-@@ -852,10 +881,25 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 		struct flow_match_ip match;
- 
- 		flow_rule_match_ip(rule, &match);
-+
- 		if (match.mask->ttl) {
--			NL_SET_ERR_MSG_MOD(extack,
--					   "Matching on TTL not supported");
--			return -EOPNOTSUPP;
-+			if (n_proto != htons(ETH_P_IP) &&
-+			    n_proto != htons(ETH_P_IPV6)) {
-+				NL_SET_ERR_MSG_MOD(extack,
-+						   "Matching on TTL requires protocol ip or ipv6");
-+				return -EOPNOTSUPP;
-+			}
-+
-+			if (udfs_cnt >= YT921X_UDF_NUM)
-+				goto err;
-+
-+			udfs[udfs_cnt] = (struct yt921x_udf_entry){
-+				.type = YT921X_UDF_TYPE_L3,
-+				.offset = n_proto == htons(ETH_P_IP) ? 8 : 7,
-+				.key = match.key->ttl,
-+				.mask = match.mask->ttl,
-+			};
-+			udfs_cnt++;
- 		}
- 
- 		if (match.mask->tos) {
-@@ -889,6 +933,82 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 		}
- 	}
- 
-+	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ICMP)) {
-+		struct flow_match_icmp match;
-+
-+		flow_rule_match_icmp(rule, &match);
-+
-+		if (match.mask->type || match.mask->code) {
-+			if (ip_proto != IPPROTO_ICMP &&
-+			    ip_proto != IPPROTO_ICMPV6) {
-+				NL_SET_ERR_MSG_MOD(extack,
-+						   "Matching on ICMP type/code requires ip_proto icmp or icmpv6");
-+				return -EOPNOTSUPP;
-+			}
-+
-+			if (match.mask->type) {
-+				if (udfs_cnt >= YT921X_UDF_NUM)
-+					goto err;
-+
-+				udfs[udfs_cnt] = (struct yt921x_udf_entry){
-+					.type = YT921X_UDF_TYPE_L4,
-+					.offset = 0,
-+					.key = match.key->type,
-+					.mask = match.mask->type,
-+				};
-+				udfs_cnt++;
-+			}
-+
-+			if (match.mask->code) {
-+				if (udfs_cnt >= YT921X_UDF_NUM)
-+					goto err;
-+
-+				udfs[udfs_cnt] = (struct yt921x_udf_entry){
-+					.type = YT921X_UDF_TYPE_L4,
-+					.offset = 1,
-+					.key = match.key->code,
-+					.mask = match.mask->code,
-+				};
-+				udfs_cnt++;
-+			}
-+		}
-+	}
-+
-+	/* Compile UDFs */
-+	for (unsigned int i = 0; i < udfs_cnt; i++) {
-+		unsigned int o;
-+		u32 mask;
-+		u32 key;
-+
-+		for (o = 0; o < ARRAY_SIZE(yt921x_udf_maps); o++)
-+			if (udfs[i].type == yt921x_udf_maps[o].type &&
-+			    (udfs[i].offset == yt921x_udf_maps[o].offset ||
-+			     udfs[i].offset == yt921x_udf_maps[o].offset + 1))
-+				break;
-+
-+		if (WARN_ON(o == ARRAY_SIZE(yt921x_udf_maps)))
-+			return -EOPNOTSUPP;
-+
-+		entry = yt921x_acl_entries_find(entries, &size,
-+						YT921X_ACL_TYPE_UDF0 + o / 2);
-+		if (!entry)
-+			goto err;
-+
-+		key = udfs[i].key;
-+		mask = udfs[i].mask;
-+		if (udfs[i].offset == yt921x_udf_maps[o].offset) {
-+			key <<= 8;
-+			mask <<= 8;
-+		}
-+		if (!(o % 2)) {
-+			key <<= 16;
-+			mask <<= 16;
-+		}
-+
-+		entry->key[0] |= key;
-+		entry->mask[0] |= mask;
-+	}
-+
- 	if (!size) {
- 		NL_SET_ERR_MSG_MOD(extack, "Empty rule generated, this should not happen");
- 		return -EOPNOTSUPP;
-@@ -1579,5 +1699,13 @@ int yt921x_chip_setup_acl(struct yt921x_priv *priv)
- 	if (res)
- 		return res;
- 
-+	for (unsigned int o = 0; o < ARRAY_SIZE(yt921x_udf_maps); o++) {
-+		ctrl = YT921X_UDF_CTRL_UDF_OFFSET(yt921x_udf_maps[o].offset) |
-+		       YT921X_UDF_CTRL_UDF_TYPE(yt921x_udf_maps[o].type);
-+		res = yt921x_reg_write(priv, YT921X_UDFn_CTRL(o), ctrl);
-+		if (res)
-+			return res;
-+	}
-+
- 	return 0;
- }
-diff --git a/drivers/net/dsa/motorcomm/tc.h b/drivers/net/dsa/motorcomm/tc.h
-index f11136a1c5e2..cc53f148d690 100644
---- a/drivers/net/dsa/motorcomm/tc.h
-+++ b/drivers/net/dsa/motorcomm/tc.h
-@@ -118,6 +118,9 @@ enum yt921x_acl_type {
- 	YT921X_ACL_TYPE_IPV6_SA3,
- 	YT921X_ACL_TYPE_MISC,
- 	YT921X_ACL_TYPE_L4,
-+	/* Each User Defined Filter entry contains 2 UDF windows (UDF_CTRL 2i
-+	 * and 2i+1)
+-	kfree(nc);
++	/* Readers (netlink package info walkers, channel configuration
++	 * worker) may still hold the channel or its filter arrays;
++	 * release everything after a grace period.
 +	 */
- 	YT921X_ACL_TYPE_UDF0,
- 	YT921X_ACL_TYPE_UDF1,
- 	YT921X_ACL_TYPE_UDF2,
-@@ -255,12 +258,15 @@ enum yt921x_l4_type {
- #define YT921X_UDFn_CTRL(x)		(0x210094 + 4 * (x))
- #define  YT921X_UDF_CTRL_UDF_TYPE_M		GENMASK(8, 7)
- #define   YT921X_UDF_CTRL_UDF_TYPE(x)			FIELD_PREP(YT921X_UDF_CTRL_UDF_TYPE_M, (x))
--#define   YT921X_UDF_CTRL_UDF_TYPE_ETH			YT921X_UDF_CTRL_UDF_TYPE(0)
--#define   YT921X_UDF_CTRL_UDF_TYPE_L3			YT921X_UDF_CTRL_UDF_TYPE(1)
--#define   YT921X_UDF_CTRL_UDF_TYPE_L4			YT921X_UDF_CTRL_UDF_TYPE(2)
- #define  YT921X_UDF_CTRL_UDF_OFFSET_M		GENMASK(6, 0)
- #define   YT921X_UDF_CTRL_UDF_OFFSET(x)			FIELD_PREP(YT921X_UDF_CTRL_UDF_OFFSET_M, (x))
++	call_rcu(&nc->rcu, ncsi_channel_release);
+ }
  
-+enum yt921x_udf_type {
-+	YT921X_UDF_TYPE_L2,
-+	YT921X_UDF_TYPE_L3,
-+	YT921X_UDF_TYPE_L4,
-+};
+ struct ncsi_package *ncsi_find_package(struct ncsi_dev_priv *ndp,
+diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
+index 8cc538358f6a..3de607f6982c 100644
+--- a/net/ncsi/ncsi-netlink.c
++++ b/net/ncsi/ncsi-netlink.c
+@@ -169,11 +169,6 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
+ 	if (!info->attrs[NCSI_ATTR_PACKAGE_ID])
+ 		return -EINVAL;
+ 
+-	ndp = ndp_from_ifindex(genl_info_net(info),
+-			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+-	if (!ndp)
+-		return -ENODEV;
+-
+ 	skb = genlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOMEM;
+@@ -192,7 +187,21 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
+ 		kfree_skb(skb);
+ 		return -EMSGSIZE;
+ 	}
++	/* The device is resolved and the lists are walked inside an RCU
++	 * read-side critical section: the teardown path only unlinks these
++	 * objects and frees them after a grace period.
++	 */
++	rcu_read_lock();
++	ndp = ndp_from_ifindex(genl_info_net(info),
++			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
++	if (!ndp) {
++		rcu_read_unlock();
++		kfree_skb(skb);
++		return -ENODEV;
++	}
 +
- #define YT921X_PORTn_RATE(port)		(0x220000 + 4 * (port))
- #define  YT921X_PORT_RATE_GAP_VALUE		GENMASK(4, 0)	/* default 20 */
- #define YT921X_METER_SLOT		0x220104
+ 	rc = ncsi_write_package_info(skb, ndp, package_id);
++	rcu_read_unlock();
+ 
+ 	if (rc) {
+ 		nla_nest_cancel(skb, attr);
+@@ -228,20 +237,26 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
+ 	if (!attrs[NCSI_ATTR_IFINDEX])
+ 		return -EINVAL;
+ 
++	package_id = cb->args[0];
++
++	rcu_read_lock();
+ 	ndp = ndp_from_ifindex(get_net(sock_net(skb->sk)),
+ 			       nla_get_u32(attrs[NCSI_ATTR_IFINDEX]));
+ 
+-	if (!ndp)
++	if (!ndp) {
++		rcu_read_unlock();
+ 		return -ENODEV;
++	}
+ 
+-	package_id = cb->args[0];
+ 	package = NULL;
+ 	NCSI_FOR_EACH_PACKAGE(ndp, np)
+ 		if (np->id == package_id)
+ 			package = np;
+ 
+-	if (!package)
++	if (!package) {
++		rcu_read_unlock();
+ 		return 0; /* done */
++	}
+ 
+ 	hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid, cb->nlh->nlmsg_seq,
+ 			  &ncsi_genl_family, NLM_F_MULTI,  NCSI_CMD_PKG_INFO);
+@@ -265,9 +280,10 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
+ 	genlmsg_end(skb, hdr);
+ 
+ 	cb->args[0] = package_id + 1;
+-
++	rcu_read_unlock();
+ 	return skb->len;
+ err:
++	rcu_read_unlock();
+ 	genlmsg_cancel(skb, hdr);
+ 	return rc;
+ }
 -- 
-2.53.0
+2.43.0
 
