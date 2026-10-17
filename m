@@ -1,143 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D34C303A04;
-	Sat, 17 Oct 2026 01:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB1B214812;
+	Sat, 17 Oct 2026 01:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792201968; cv=none; b=HGX32hZyFF2tQk3YWC7+upvRYSj/JkIyClRJeoUIDIyCdO69nT46Cj/LvjGy4fRLDWCAF8KsT5rHlUXgLSoG8W9zBusQ/tIqDHJhtiQlTM4dSuksdMfolhMseUbhpqnVBnrhHldrBLW/EpO1OX07lJ75s2L9jtVbyxkPILfiYdw=
+	t=1792202071; cv=none; b=t80RKxKdzgZhc3FInyc+cyZpy1BWvzAvbGxO1W6Hd5420TD4ub0KZh77yjizI0F9RqlEJ41r3TBX5AL6iM+k4og1aEfJ032fB4SKxeqYN1T5BmdWPgY+8wxyMBxv/j5P8WEEzmFMPWsYxyz9IahW/YH6YIK2i1ejFBHqVVITBYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792201968; c=relaxed/simple;
-	bh=+bZI8wly5eDGayryvsGqobJTAS+537SL6h1SyJlRTIE=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=LHg6uabnaKNsLmbp/wHQNyxgi3AFU6OVD0rLGSRxUY5vEna48dqVoMnEYCQZT+s+9n5y5JCXJMBG2hXqXYKstNUjipUpW7qqQfcXECGNYXF0r1sdumSepESZ88ZTqH+m4nYXntXLR9EnsQ3+W9dxw0JD30T/FfUT88C4jjZdDHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4X/eiZB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792202071; c=relaxed/simple;
+	bh=4EY5UqDQoVP28I8PxoGRhWu4pfs/TwbwsXLAgwGqbH0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dRxL8DeR3Pcuj149baiM1GHEKNRKNL+U90CYZ1LaGiFB/ao8Ql7W82+dUfrPBOnWIp7i6uIGh0vTJdrsV9vQ0xOWq2F3fwG8cutD2RtJn3Guc1pNq/sUplFEqWByXDD+GD5VQeGmBn10EpDKYA0QgRfg2xWbNyaCEluWF2qM9Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QZvHHeit; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4X/eiZB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5131F000C4;
-	Sat, 17 Oct 2026 01:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792201966;
-	bh=NPwlg68vom/2k1L+SuKMG8v4a0E3d3PLIOOfY4gmI/c=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=e4X/eiZBdsTNlRz0aeltuH2MfViOeRX9D3vOX+4SFXm0C35Lu3T72YWtdl40wdlDu
-	 aCR1WbOQh6H9PNgBjyhKCnBxb9x4jAox6FxuGuMsCcwsTAAWyNEEyZOp6AkGrBPErl
-	 YtTwlr8zitHAbylSkjMYTXniJoXQZtPhPdSdVgqRjZTsglu1WYHM2ItQlXQns9MPn2
-	 pqfSt5uNpozj98vkCvKZ3hOoCZ4TyqbQW5RTJSQgA1Uz2pLnUPQiUeQckHMPFeXxto
-	 gfLawOwxoOTBrpgPiFeglpb7QsywHj8MmjYEuaLQrRAg0OkVrFj/k3AL5CpdiW+BYJ
-	 2xu1x86RSYV8A==
-Content-Type: multipart/mixed; boundary="===============0001666948501514510=="
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QZvHHeit"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=A6
+	yIrZq7tAk7cxdJ8XQZYPAxPVb5CEzRWJ+W0DjJyro=; b=QZvHHeitpCFvAHyz4g
+	qbLQKM4Afii0+mGXN+KYF2bW8QtTjb1OjcUCmyB77lxT1I3SH3AJXFIhC7Zuz4kD
+	+P2gMYx7YejCFyZhfkHH82vVe9/QpWtgkiH0tKMtLLztFWgTEWP1FOgflfvamP0B
+	xWksZfW9dQonPIFxtmXISGvKk=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3_+IM1dJqNLmHAg--.49298S2;
+	Sat, 17 Oct 2026 09:53:18 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: sam@mendozajonas.com,
+	fercerpav@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	gwshan@linux.vnet.ibm.com,
+	joel@jms.id.au
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH net v1] net/ncsi: fix use-after-free of ncsi_dev_priv in ncsi_unregister_dev()
+Date: Sat, 17 Oct 2026 09:53:15 +0800
+Message-ID: <20261017015315.415794-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <c6e3cf4c8e650803377f900f18c4ffc183e5883781dcd2015c0898d598928f53@mail.kernel.org>
-In-Reply-To: <20261017012058.355787-5-alexei.starovoitov@gmail.com>
-References: <20261017012058.355787-5-alexei.starovoitov@gmail.com>
-Subject: Re: [PATCH bpf-next 04/38] bpf: don't hand out a linked element as extra element
-From: bot+bpf-ci@kernel.org
-To: alexei.starovoitov@gmail.com,bpf@vger.kernel.org
-Cc: daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,netdev@vger.kernel.org,josef@toxicpanda.com,mason@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sat, 17 Oct 2026 01:52:45 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_+IM1dJqNLmHAg--.49298S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuw15Xw4rCw17JF15Zr43Wrg_yoWxAr1DpF
+	W3KFy3J3yktryUWrWv9a1rWFy8Zr4DW3W7Wwnxt3ya9a15CryjqFyxtFWruF15ArZ7Ca42
+	vay5WFWYvrs8Aw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi_-B_UUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC-A7Hq2rS1Q4WzAAA3n
 
---===============0001666948501514510==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ncsi_unregister_dev() releases every package (which releases every
+channel), unlinks the ncsi_dev_priv from the global ncsi_dev_list with
+list_del_rcu(), disables the configuration work and frees the device
+itself -- in that order.  Two defects:
 
-> bpf: don't hand out a linked element as extra element
+  * kfree(ndp) runs immediately after list_del_rcu().  The netlink
+    reporting paths resolve the device through ncsi_dev_list
+    (ndp_from_ifindex()) and keep dereferencing it, starting with the
+    ndp->package_num check at the entry of ncsi_write_package_info(),
+    so a reader can be inside the freed allocation.
 
-TL;DR:
-- htab_map_update_elem() fills the extra-elem slot before cancelling l_old's
-  fields; a nested update may reuse it, so a live element's timer could be
-  cancelled (not memory-unsafe)
-- comment style nit
+  * The packages and channels are freed before
+    disable_work_sync(&ndp->work); the configuration worker
+    (ncsi_dev_work, including set_one_vid()/clear_one_vid()) can be
+    walking the very objects being freed, and the teardown has to
+    race it instead of quiescing it first.
 
-> diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-> index 9d4791ee1741..923fec694747 100644
-> --- a/kernel/bpf/hashtab.c
-> +++ b/kernel/bpf/hashtab.c
+  writer: rmmod ftgmac100 -> ftgmac100_remove() -> ncsi_unregister_dev()
+            -> ncsi_remove_package() ... -> kfree(ndp)
+  reader: sendmsg(NETLINK_GENERIC, NCSI_CMD_PKG_INFO)
+            -> ncsi_pkg_info_nl() -> ncsi_write_package_info()
 
-[ ... ]
+Quiesce the work first, then release the packages, and defer the free
+of the ncsi_dev_priv with kfree_rcu().  A corollary of the old
+ordering: the ftgmac100 driver calls ncsi_stop_dev() right after
+ncsi_unregister_dev() and used to read the already freed device.
 
-> @@ -1459,11 +1465,14 @@ static long htab_map_update_elem(struct bpf_map *map, void *key, void *value,
->  	if (l_old) {
->  		hlist_nulls_del_rcu(&l_old->hash_node);
->  
-> -		/* l_old has already been stashed in htab->extra_elems, cancel
-> -		 * its reusable special fields before it is available for reuse.
-> +		/* l_old replaces the extra element that alloc_htab_elem() took,
-> +		 * cancel its reusable special fields before the next update on
-> +		 * this cpu reuses it.
->  		 */
+Commit a0ffa68c70b3 ("net/ncsi: Disable the ncsi work before freeing
+the associated structure") already added a disable_work_sync() before
+the kfree(ndp), but its placement still releases the packages and
+channels first, so the worker can walk those while they are being
+freed, and it does nothing for the netlink readers.
 
-this isn't a bug, but this comment is rewritten completely and still keeps
-its text on the opening line.  Could the opening /* go on its own line, as
-is preferred in kernel/bpf/?
+Both defects are visible in KASAN.  The netlink reader, on the
+ndp->package_num entry check of ncsi_write_package_info() -- a read of
+size 4 at ndp+160; struct ncsi_dev_priv is 17700 bytes on arm32, hence
+kmalloc-32k:
 
-  /*
-   * l_old replaces the extra element that alloc_htab_elem() took,
-   * cancel its reusable special fields before the next update on
-   * this cpu reuses it.
-   */
+  BUG: KASAN: use-after-free in ncsi_write_package_info+0xf50/0xf84
+  Read of size 4 at addr c9f100a0 by task poc_dump/62
+  Call trace:
+   ...
+   kasan_report from ncsi_write_package_info+0xf50/0xf84
+   ncsi_write_package_info from ncsi_pkg_info_nl+0x320/0x63c
+   ncsi_pkg_info_nl from genl_family_rcv_msg_doit+0x218/0x2d8
+   genl_family_rcv_msg_doit from genl_rcv_msg+0x578/0xb24
+   genl_rcv_msg from netlink_rcv_skb+0x134/0x3c4
+   netlink_rcv_skb from genl_rcv+0x24/0x34
+   genl_rcv from netlink_unicast+0x884/0xac0
+   netlink_unicast from netlink_sendmsg+0x62c/0xb98
+   netlink_sendmsg from __sys_sendto+0x290/0x3e0
+   __sys_sendto from sys_send+0x18/0x20
+   sys_send from ret_fast_syscall+0x0/0x5c
+  The buggy address belongs to the physical page:
 
-> -		if (htab_is_prealloc(htab))
-> +		if (htab_is_prealloc(htab)) {
-> +			WRITE_ONCE(*this_cpu_ptr(htab->extra_elems), l_old);
->  			check_and_cancel_fields(htab, l_old);
+(a page-level report: the freed pages had already been returned to the
+buddy allocator, so no cache or object lines are printed).  The same
+reader site also surfaces once the page has been recycled into another
+cache -- the same free at a different stage of the page lifecycle:
 
-The new comment says l_old's special fields are cancelled before the next
-update on this cpu reuses it.  Is that what this code does?  The slot is
-filled first and the fields are cancelled afterwards:
+  BUG: KASAN: slab-out-of-bounds in ncsi_write_package_info+0xf50/0xf84
+  Read of size 4 at addr c9d700a0 by task poc_dump/70
+  Call trace:
+   ...
+   kasan_report from ncsi_write_package_info+0xf50/0xf84
+   ncsi_write_package_info from ncsi_pkg_info_nl+0x320/0x63c
+   ...
+   netlink_unicast from netlink_sendmsg+0x62c/0xb98
+  The buggy address belongs to the object at c9d70000
+   which belongs to the cache kmalloc-8k of size 8192
+  The buggy address is located 160 bytes inside of
+   allocated 8192-byte region [c9d70000, c9d72000)
 
-    WRITE_ONCE(*this_cpu_ptr(htab->extra_elems), l_old);
-    check_and_cancel_fields(htab, l_old);
+And the corollary, in the rmmod task itself -- its stack documents the
+very ordering this patch changes (ncsi_unregister_dev() has already
+freed the device when unregister_netdev() closes it):
 
-Can a nested update on this cpu run between these two calls?  That could be
-an NMI (perf_event program), or an fentry program on bpf_obj_cancel_fields(),
-which check_and_cancel_fields() calls after the slot is filled and which
-tools/testing/selftests/bpf/progs/htab_update.c already attaches an updating
-program to.
+  BUG: KASAN: use-after-free in ncsi_stop_dev+0x398/0x3a0
+  Read of size 4 at addr c9d480a8 by task poc_dump/55
+  Call trace:
+   ...
+   kasan_report from ncsi_stop_dev+0x398/0x3a0
+   ncsi_stop_dev from ftgmac100_stop+0x2dc/0x364 [ftgmac100]
+   ftgmac100_stop [ftgmac100] from __dev_close_many+0x2d8/0x57c
+   __dev_close_many from netif_close_many+0x264/0x5a4
+   netif_close_many from unregister_netdevice_many_notify+0x87c/0x1f0c
+   unregister_netdevice_many_notify from
+    unregister_netdevice_queue+0x290/0x328
+   unregister_netdevice_queue from unregister_netdev+0x18/0x68
+   unregister_netdev from ftgmac100_remove+0x74/0x9c [ftgmac100]
+   ftgmac100_remove [ftgmac100] from
+    device_release_driver_internal+0x41c/0x5e0
+   ...
+   bus_remove_driver from sys_delete_module+0x308/0x438
+   sys_delete_module from ret_fast_syscall+0x0/0x5c
 
-If that nested htab_map_update_elem() updates an existing key k2 in another
-bucket, alloc_htab_elem() takes l_old from the slot.  copy_map_value() skips
-the special fields, so the new element still carries the bpf_timer/bpf_wq/
-task_work state of k1's replaced value.
+Tested on an arm multi_v7 kernel (KASAN + SLUB + PREEMPT) running as a
+QEMU ast2600-evb guest with a host-side NC-SI responder; with the
+series applied the same rmmod hammering completes without KASAN
+reports.
 
-The nested update then links l_old into k2's bucket.  When the outer update
-resumes, check_and_cancel_fields(htab, l_old) runs:
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by LLM-assisted (GLM-5.3) code inspection.
 
-    bpf_obj_free_timer() -> bpf_async_cancel_and_free()
-
-on what is now k2's live element.
-
-Timers are allowed in hash maps used by tracing/perf_event/fentry programs
-(check_map_prog_compatibility() only restricts spin_lock and graph roots), so
-this looks reachable.  In that window bpf_timer_init() on k2 returns -EBUSY
-(__bpf_async_init() finds the stale async->cb), and any timer armed through
-k2 is cancelled and freed right after.  This doesn't look memory-unsafe, and
-it is narrower than before the patch, where the slot was filled in
-alloc_htab_elem().
-
-The order is also the reverse of free_htab_elem(), which cancels before
-pcpu_freelist_push().  Would swapping the two statements (cancel first, then
-WRITE_ONCE) make the comment true?  A nested update in that window would then
-fail with -EBUSY, like the rest of the window this patch closes.
-
-If the current order is intended, to keep the -EBUSY window short, should the
-comment say that cancellation can happen after a nested reuse?
-
-> +		}
->  	}
->  	htab_unlock_bucket(b, flags);
->  	if (l_old && !htab_is_prealloc(htab))
-
-
+Fixes: 2d283bdd079c ("net/ncsi: Resource management")
+Signed-off-by: Binbin Deng <18983559317@163.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ net/ncsi/internal.h    | 1 +
+ net/ncsi/ncsi-manage.c | 9 ++++++---
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/38991548713
---===============0001666948501514510==--
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index adee6dcabdc3..5d315768409a 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -316,6 +316,7 @@ struct vlan_vid {
+ 
+ struct ncsi_dev_priv {
+ 	struct ncsi_dev     ndev;            /* Associated NCSI device     */
++	struct rcu_head     rcu;             /* Deferred free (kfree_rcu)  */
+ 	unsigned int        flags;           /* NCSI device flags          */
+ #define NCSI_DEV_PROBED		1            /* Finalized NCSI topology    */
+ #define NCSI_DEV_HWA		2            /* Enabled HW arbitration     */
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 54d0df0a9efe..35e9dd85e044 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1960,6 +1960,11 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ 
+ 	dev_remove_pack(&ndp->ptype);
+ 
++	/* Quiesce the configuration worker before releasing the packages
++	 * and channels it walks.
++	 */
++	disable_work_sync(&ndp->work);
++
+ 	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+ 		ncsi_remove_package(np);
+ 
+@@ -1967,8 +1972,6 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ 	list_del_rcu(&ndp->node);
+ 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
+ 
+-	disable_work_sync(&ndp->work);
+-
+-	kfree(ndp);
++	kfree_rcu(ndp, rcu);
+ }
+ EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
+-- 
+2.43.0
+
