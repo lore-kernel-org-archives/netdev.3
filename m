@@ -1,65 +1,65 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EFF377AB3
-	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E87363C6F
+	for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 01:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792200341; cv=none; b=liKioVikwbeKn/SZEMUbFrIqD3ir8GDP3PS8MXJooid2bJHuDBO6AyFuxACQGEqrngOOogSwoCLheVUCKdi2bZq178DtY+JqMv9i4RhkGYZwpvUg5dPWy9yhVLJeaM82LT1RD425ILp+DeFUgEKKXov4dNFRa/LJ5q52NW5x7Sc=
+	t=1792200362; cv=none; b=XMF7UB5/rhOnEVLJM+BPT+v+0NXgUIbJBo82adp3qfFmaO5WmrkIhZvejlsWgaqFlke/d8uX3xHKNtH78xmGk/y+c8OaW4AXIDSgwWVaIm8wSN9Ade+kzPuMdTFvhIvgKUtNJ41Uk2O5VynmhaZuxsv854b+wJTLR9t2yC5W2io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792200341; c=relaxed/simple;
-	bh=UlbqOc6/7t4Q3Rv1OI56jrgQ8C6d+UlCYrOZt47zjcI=;
+	s=arc-20240116; t=1792200362; c=relaxed/simple;
+	bh=zk6wACFbhggEWceOYKisJFBuimFSjZGpAGx3520e3h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d05R0mxHymECagUGd1BFe99h4z2+8DBvMclxgJ4VF34blzY0O4jqpWJ7gYubXbRp+LqjyA7X5/d427k1pAokD9fZFwkDLEwt5tSoAYU6WcGzKLYvhZNwmkUr2O12dY9JbPOS6528PEfSedbMCIiI2I38+5tjKogTHzqnyyPOqBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBUE8Uer; arc=none smtp.client-ip=209.85.215.182
+	 MIME-Version; b=pj4QZPcZcUQh1dPNLjq1EvzxI97+15ydmkmiICV2SKCUG4uXJY1mg5AkHFu2x4osy/vn/zGr6/wcr7/odSUv8/19/kcVf2xIt3DvWxV6Oi3gnLzbt1994gLwyOHgLzf5HuPNsxzTytHt43PX7eqbG2lUnS+cyzAinmDF3FDtnhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e1/s49YH; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBUE8Uer"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc4be0e5351so245868a12.0
-        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:25:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e1/s49YH"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3ac7842c17dso351009a91.3
+        for <netdev@vger.kernel.org>; Fri, 16 Oct 2026 18:26:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792200339; x=1792805139; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792200361; x=1792805161; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KnvXl0R2ZaP6oESQKq/Jn4JVsvE5tAcrzA9epQ1+wnY=;
-        b=KBUE8UerP0YWZP0jc7flDtPcHLtXuumyeKUwzgd61oS7Zh0eeVHujWVXb66SGQGfFK
-         VN6DhbWBzUsUQyJNkm5xO3Hp4FyVcts1XBFLm3PXT27bBWdTM1Rn78RlTFAVaIdCaCm9
-         wwGDxvSvvul8y2Nj2PO2P/CGd98hOhLBaPCoxSvqTWr5JOwvrnlonEoaELZsQsilHi8X
-         biZfNv11GjVBIEYGZJQF+iIhl4LuyXoeNxuzX4dWZ/HRdkBaJUKudvM4OxO15He2r9HK
-         BghvLxBxwRD8IMc9GUa6MO9g3ENwYT5ShT6YROW7K9MpHGgyb/Fazu0MQ01XV6fyMUka
-         BPMQ==
+        bh=q5v0KPjUnY8OHlqXROvc59T8STwvIgaO5MHNNL/si3g=;
+        b=e1/s49YHlHoIGUGFYpFPBJQllsvMub09qMBPbpbDTC30Dv8rmO3PhYoLmFiWC6xMd0
+         5eUiGH+mWwHw+RDpyV8nSWd14eCkosEUyoNkoPWwye6bnGgVUIZ245+avbwPJ0Y9qD/g
+         EPikrOaXVjASqde3jqc7mrhH5Nu62GQqGlSHA/UPhmV2z/k0hGGLEfJ5E/61mdZGgU+M
+         29YTsxeDDid2vLDAQOitU/MTmWk1tQf6+oYiWdH3dv4YgRWMzKxVKo4K/1r7crUcaXWv
+         9n1tHtyOY7jLS9WPvU6GoD8npazzszzbZy2VMyx7/94dF+TeCrWxnxpawO7w5BhTnPql
+         NLOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792200339; x=1792805139;
+        d=1e100.net; s=20260707; t=1792200361; x=1792805161;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KnvXl0R2ZaP6oESQKq/Jn4JVsvE5tAcrzA9epQ1+wnY=;
-        b=RBWuwOvrn80Is2+bzN6Z4tS9Dtkech7EKY5kNppw+P630JcqwWyjyFX3QCZ7JaOZvp
-         sM9MxptATlp3HNC3I7pHX8WpdRvBX3ub62iWripi/dh7LAFzkWvN5GV+2YPy1LnyJXIL
-         Hg5kMTO7cs3Z6NyJLDIuFSwLDQL0LnJM3xS8uuWmZv6CD/77tO6A1KexLN2O3ESO+kE3
-         y8i/TN3hW/8pwye0bRHSPeUSuQx1ySfmuPOkkqKvPqmZ6EjbMTcmSrfgQW+5CwjVH8rn
-         e4TP9Q4OLSRtYp+OjVGwQWHoL1ubMox5YVmRMfiIv+r9qPaU7jphNQTg5VXm1Mi2TTSN
-         ZDbw==
-X-Forwarded-Encrypted: i=1; AKwUvBxKZeOAZm6D5Gf4i221PwgemwSIVxE2KoAH7JjzXvH2ftfjn6fglj51TcAhM1xEYt3dXkMnHvA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJL3/v3q7t/UanI8O+laMhvdslEejxcg/nMCHiL44JLtdOEivjf
-	64HXrtKhF1FiEIyoqsJW3zH9GIeuirz+rzgRiaorEDPwokh+wRO5O4Zd
-X-Gm-Gg: AYBFou2Y0r8OnwMcvq0tZu7WUvDVDXHu3s9zFGDD2nDzWz6+LsT9W1OsvRmam1Hk1oi
-	m6N685WHwPRicxRf69dgCgMn9yChWTpWWa6CgRVNhz/CIQ5dV3fSz1X355mTIABYNxWk6do5fs/
-	xXoZ74MZq/AJ1+ZYuMzPH0Dpi3Lsnd1eLp+rxo+mnm2s3gSW6IWdN2vrUodo6bUQQNjFBgNmaAb
-	4RsDbWHrDldlpPbBS0LiPcoktrk1zp6zpOEZZ5OxZNvkkKlSBn1Y3dJL/Z22YR0RP5rEKU/KRtz
-	WibR3v5JXKbYVb0M5ANBVY8/QyzIOD39ocU0tYDdfohUHFSmwB/R39hP81xAv9F1uMr8EvPfgqU
-	ve/mAzSGKqLLc3sF1hbJ4nOp4bJYuheAgXhUyQgu3XeuYMg4yEfBHaRXEezdFoT9CRr4n5PFd6Q
-	BKGBcUHGspBt5sf0jidN96ZTVIivCTEY8nL2yLFQgkyEBbrt5/yzVu6StrfSfl+4N7vYWvhOk0H
-	aB7wArHeY5Zs48DKCK+qopV/S4yItPxYYsOacD4I+elmCj98NAAP6tyHChejZ+crYg+a0t3mzO+
-	bnpa57agijeE4+nhUDTSHyrulvboDh2n5ujVYuW1DpQ=
-X-Received: by 2002:a17:90b:5111:b0:3a8:7096:9b48 with SMTP id 98e67ed59e1d1-3acee293889mr1411278a91.1.1792200338938;
-        Fri, 16 Oct 2026 18:25:38 -0700 (PDT)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.242])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc4872861sm6792933a91.7.2026.10.16.18.25.37
+        bh=q5v0KPjUnY8OHlqXROvc59T8STwvIgaO5MHNNL/si3g=;
+        b=vY4yDSzByMUah1wBMh7J2WhJfSaDcqJxX0HaHaAedlycaCvt4O8EaIt2dLJRGe+Rjb
+         l15C4PNDFNFDuI/wy7+N/1rOsL8S28shmF3RGcAl8oJ1xyHP+U6+svkYhxDcjpsZO9ai
+         U3YYqjLbXihldIxiCZ5CpIUt0pr1p2YWlBEaMbmqEFKRMDS2rGM+/yqXMYf8ZlPMCbg/
+         8sVu1lQJVHvqFgfqYTgjp9MeCK67AYybypfR47a/FLHe23Nwizv05y+KPHxGxmtmQxgo
+         mdzhN/0Ce+dpTbPkE1ykRQViKaAP00W7izWewKGOWFpfnQX+1Ql7B/ExmU8r5tciZ1hK
+         /6LA==
+X-Forwarded-Encrypted: i=1; AKwUvBwJVhqMIQcSk5HVWPmqZJpmeg+sPYvf419wwzW4J58+sDybSgpL1fBvE8nn87Z7JaSNU0JBA6U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIawFO6qy2NMAUy4BLhRTPY046r7Bru6ZbZfjb0Tvql318w3GDd
+	oXiH2qHWaP5uEBdqDoPJEiAAFzws7MIIJPo9OVK0Q+bV9yhkmmxMajIw
+X-Gm-Gg: AYBFou0ARfhgfml6dYNCaWmjm4XhmFeG/DSi3/vkfmDNAC4ghy8EMgb/+0CFPZGMEty
+	1jW5ENR3UlYzA+H2FH9j2YCsWGYuodkH9AbanG9lgwsTn2days3DoTONAym6PaVDbkPw2f/Xm72
+	EZ7pPE5uYxpReRpHJ17HRr63y8SCzw9Z/QAGSvkHRfdAVxfaM2yLoUz09aIcyXJ93MOjUNYXKN7
+	JCLWfEBQEoRx9k7LwdvdLdCoEQV0dJA++mAznUZ9JTkp39NqrJ/+3sDqY8hO2JAl6AMiiMrlnto
+	qIu+lavVP8ZdfI1/AWluQ8CoCTTvgoCn3kv5bK8Zhk1C6hDCL1T964tOTXPviXjhI0piPwJUUWQ
+	paxx2ViMkk+hnWXcswxghFFwIxahseP4Nfgmg3RR4gJi3GDGvNEeowXeKdhC9WXOYc5RaT2LuqR
+	K2xX3hN5Ud08njXJ4OrkBPMNRDQl1KOl5V7n0W36il7jZ35cA8jifZVem0IS0wVi5RZIZ1wsjHD
+	bwKTKS5xAHpMs+wb1vAOa6k2kSOCGdmnxhXKFDGsOHXLWuGC2ypmxKHBal0NKCECmYFeRS0RjSw
+	zFgT8FgiMRJ90S+vT1HQgSAD+96BMWxs2XP1fzPXP5/x8uu4I729KQ==
+X-Received: by 2002:a17:90b:5112:b0:3ac:83c1:2c0 with SMTP id 98e67ed59e1d1-3acef58e42cmr1338007a91.64.1792200360790;
+        Fri, 16 Oct 2026 18:26:00 -0700 (PDT)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.253])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947d2706sm11311997a91.16.2026.10.16.18.25.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 18:25:38 -0700 (PDT)
+        Fri, 16 Oct 2026 18:25:59 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -69,9 +69,9 @@ Cc: daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	josef@toxicpanda.com,
 	mason@kernel.org
-Subject: [PATCH bpf-next 11/38] bpf: Validate the SRH which End.DT6 uncovers in End.BPF
-Date: Sat, 17 Oct 2026 01:24:24 +0000
-Message-ID: <20261017012451.364800-3-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 12/38] bpf: Pull the inner header for End.DT6 in End.BPF
+Date: Sat, 17 Oct 2026 01:24:25 +0000
+Message-ID: <20261017012451.364800-4-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
 References: <20261017012058.355787-1-alexei.starovoitov@gmail.com>
@@ -85,65 +85,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-input_action_end_bpf() validates the SRH of a packet and pulls it into the
-head before the program runs. If the program decapsulates the packet with
-bpf_lwt_seg6_action(SEG6_LOCAL_ACTION_END_DT6), bpf_update_srh_state()
-looks for a routing header in the inner packet and takes it for the new
-SRH as it is.
+bpf_lwt_seg6_action(SEG6_LOCAL_ACTION_END_DT6) pulls the outer headers off
+the packet and hands it to seg6_lookup_nexthop(), which reads the inner
+IPv6 header at skb->data. Nothing says that this header is in the head of
+the skb, or that there is one. If the head ends with the outer headers,
+the route is looked up for whatever lies behind the head, and the packet
+is dropped or leaves by the wrong route. If the program then pushes an SRH
+with SEG6_LOCAL_ACTION_END_B6, seg6_do_srh_inline() pulls an IPv6 header
+off a head which has none, and __skb_pull() hits its BUG(): the kernel
+panics on a packet from the network.
 
-Nobody has looked at that header, and whoever has sent the packet has
-written it. ipv6_find_hdr() finds it in a fragment of the skb as well, but
-hdrlen is then read at that offset from skb->data, past the end of the
-head. The header need not be an SRH, and its hdrlen need not fit into the
-packet, but it is marked as valid, and bpf_lwt_seg6_adjust_srh() and
-bpf_lwt_seg6_store_bytes() check their offsets against it.
+GRO pulls the inner header of a plain IPv6 in IPv6 packet into the head. It
+takes a packet which GRO does not look into that far, one with a fragment
+header in front of the inner header for example, or a device without GRO,
+and a driver which leaves the inner header in a fragment.
 
-A program which then adds a TLV at the end of the SRH, where hdrlen has it,
-makes bpf_lwt_seg6_adjust_srh() move and write memory behind the head of
-the skb, as far as the sender likes within the 2 KB that hdrlen can say:
-
-  BUG: KASAN: slab-out-of-bounds in bpf_skb_net_hdr_push+0x185/0x240
-  Read of size 2088 at addr ffff888107d6f09e by task srh/102
-  BUG: KASAN: slab-out-of-bounds in bpf_skb_net_hdr_push+0x1b5/0x240
-  Write of size 8 at addr ffff888107d6f8be by task srh/102
-
-Use seg6_get_srh(), which pulls and validates the header. Without a valid
-SRH the state says that there is none, and the packet goes its way as
-before. The pull can move the head, so compute the data pointers behind
-it.
+Make sure of the inner header together with the outer ones. The program
+goes on behind an error of the helper, so do it before the packet is
+changed. A pull which fails can still have moved the head, so look for the
+SRH again.
 
 Fixes: 486cdf21583e ("bpf: add End.DT6 action to bpf_lwt_seg6_action helper")
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- net/core/filter.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/core/filter.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/net/core/filter.c b/net/core/filter.c
-index a18702f89feb..6ac386dea4e8 100644
+index 6ac386dea4e8..be792b160e18 100644
 --- a/net/core/filter.c
 +++ b/net/core/filter.c
-@@ -7022,15 +7022,15 @@ static void bpf_update_srh_state(struct sk_buff *skb)
- {
- 	struct seg6_bpf_srh_state *srh_state =
- 		this_cpu_ptr(&seg6_bpf_srh_states);
--	int srhoff = 0;
+@@ -7063,9 +7063,14 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
  
--	if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0) {
--		srh_state->srh = NULL;
--	} else {
--		srh_state->srh = (struct ipv6_sr_hdr *)(skb->data + srhoff);
-+	/* Behind a decapsulation this is a header that nobody has looked at */
-+	srh_state->srh = seg6_get_srh(skb, 0);
-+	if (srh_state->srh) {
- 		srh_state->hdrlen = srh_state->srh->hdrlen << 3;
- 		srh_state->valid = true;
- 	}
-+	/* it may have been pulled into the head */
-+	bpf_compute_data_pointers(skb);
- }
+ 		if (ipv6_find_hdr(skb, &hdroff, IPPROTO_IPV6, NULL, NULL) < 0)
+ 			return -EBADMSG;
+-		if (!pskb_pull(skb, hdroff))
++		/* As long as nothing has been changed, the program goes on */
++		if (!pskb_may_pull(skb, hdroff + sizeof(struct ipv6hdr))) {
++			/* but the head may have moved */
++			bpf_update_srh_state(skb);
+ 			return -EBADMSG;
++		}
  
- BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
++		__skb_pull(skb, hdroff);
+ 		skb_postpull_rcsum(skb, skb_network_header(skb), hdroff);
+ 		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
 -- 
 2.55.0
 
