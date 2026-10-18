@@ -1,140 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599264B95D2;
-	Sun, 18 Oct 2026 14:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E562AD0C
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 14:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792334089; cv=none; b=bfeiToogMkTP1dMZhBJBTDhYnxl2D8rRCYkZbQiyTAgcwDf0vcrx+PsK3bwG8sFedcmrmfQjWA1KbWD1t80VDznmk/nQAjJRgFRg/P7t9LxdrUY6BfknBKaGw3VVk1EWVUDHPQzr2vgzekWwXNVHkpWC66Vyty8MJ7N6vbGqrbU=
+	t=1792335578; cv=none; b=q4nJz3XJButatURYhakLd8QUV6Xgq/bIDfeLZTkkTitbAM0ipCF3YzU8KyVklWBZkSjLyscX3VtCbPvQCTg5NqLL7hS/GkqSbehGJdr8FI2OV/5CGrZ+47M+p6j4YiUbBwtenUVKiZNJVdqR/ZRtmDra/HveNsSZPDO+INFD5uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792334089; c=relaxed/simple;
-	bh=3jEfgEGRdHxD+SJ57/dOp099u0keoRLZbQO5y87PRVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=guk0wIR7Uq3plucSNe/FDRIZixQkmZk1HSWCUkAXr5AEt7qftt5PQ9R4kbg8PZvvW4mMxqsdaGiIlCOiYCo80Oczk+BSvddOZqMhpoM5EUfevf630l4+Q48q/hMjxg0XdQ9y3SWsg0Pct0SngsuAKB6mQygT0xgaO1Cb7A0MbZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fHCEctUr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792335578; c=relaxed/simple;
+	bh=eAePSMguL6EqnK6uLPXhTD4oc8nXCafCbmC72gKkFhI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qtAQL5bXYFYKxssEkchVn6DnMbmE5L/XcCd/ToN3tN6gsvZxEk7p+tZMcVvWu0lQdEA4GrnJSCK6egEOA3x6qZiYJVOapymm/ir1ztkd9icLW1m276w5EnsQveoLFM3log/WNgCyOspQnfVkzfDbrUdMXPhmSnKCEubzv2kl/No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bbwm2+Rc; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fHCEctUr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15BFD1F000C4;
-	Sun, 18 Oct 2026 14:34:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792334087;
-	bh=Z8QttljgIo65jFz6uVQolqSpmyy8ZQ72s0nS5NA9PSQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fHCEctUr7U+pvDaF8wrcDDHeb9zqfd3wgjCcXnLDgtaftMor9vffC9sB2XnTwJ2IN
-	 tf+eBBnUI8Ak2Y2hVJ8GIkWmyGBktr6k+e4L7Ca+qZaiznVBUR1ytSYLKYGNijllPv
-	 +oKoLzsH9mbCsk1QoIdU6dNu7/pgcZQ4LxZWvyzu5cSUL/pNt2FKLzk0vrd8xwrKLU
-	 SbZD6URPm0hCEktMtCaGA3HuCZQX9O9SBN8dgetO0n3l3rMKuraJmDGenrVMk88nf+
-	 x3zU3JVbRyWzQNWhkuBNrr8FsBohvyqe7TWyuka8uKPRbhei+LjIbqF8CgTpDpKP5J
-	 coyyA1MBD/gDg==
-Date: Sun, 18 Oct 2026 15:34:42 +0100
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: marco.crivellari@suse.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, tj@kernel.org, jiangshanlai@gmail.com,
-	frederic@kernel.org, bigeasy@linutronix.de, mhocko@suse.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, enelsonmoore@gmail.com,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH net-next v4 2/6] net: ti: icssg-stats: Move long delayed
- work on system_dfl_long_wq
-Message-ID: <20261018143442.GM503057@horms.kernel.org>
-References: <20261012095452.135828-3-marco.crivellari@suse.com>
- <179188543192.434549.4257004266357227847@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bbwm2+Rc"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cd633ef819bso418514a12.2
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 07:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792335575; x=1792940375; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f6pyy7nH+NFSMHTDEazkO6g8qtUhCZCbtKhuHMJcuO4=;
+        b=bbwm2+RcdVwwfpw5dk22GVPjbO9YwRSW0Q8XpSzJaTW7Sn/Vbh6llKlDy+wQgvkjMb
+         ltrJUITxZ4QPvyY+UssiE3m8npL0xLPfgu+oqom3l4jvTA7e4YCQyURTxHaJ3IQCYdwq
+         //26yCN3fEgwWmkD3UX7STc4XEA1p59zjSp7jZqAN+tHiPYO84A2SEum55ib8bZVcCy9
+         8mnVhUQsbun54h/qLr58d+Jbl83BYwk3oik+393m4QZL5LoC1IftWoKPTXMgZORV/Gcc
+         +VWanwWB5gyEvQUwQ8fOFqhnBiG5gSfozdps/0xsP2t1b3vg1bw9mUXTwCceGsSG+ltU
+         hjzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792335575; x=1792940375;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f6pyy7nH+NFSMHTDEazkO6g8qtUhCZCbtKhuHMJcuO4=;
+        b=rxTSyrwP8u5yi5EzWSQ7bh+dkrtPTAIxzc6WSAxrnI2q/dCnbb8plq+4k9SFqyZoj3
+         F9z1PKks69+8bJP3fNJfEE5VKauygVS0QBSehOupOtUgG1F8Z+rNeD8ZABLM+sw1CiMv
+         ASmWVos+/P+wGaiHhPGNPxKJ7JuX1PHqWOLnLkATAIn+YcOOF+OxXgTgnuTwjNooQRZb
+         tFjlZg40rQv5diKaSrjHBZGizrAb/UuT8qYIoMDu6G9ajhY0hHLHr0BNGLLHZg7cP8w7
+         oyJaBrkWrg+ug77Ei/fTkZa+b8/DdRHCoMeGVfdlQ/N2Az7CNjx/Ln4icSRA0SI3UF+6
+         h25A==
+X-Forwarded-Encrypted: i=1; AKwUvBzfVM/CF0MedGvh4jNGFguA3Ipu/EaveJM7OOkzylT+5S9kTh4azYleBVe5stNjbxBuWum8uXM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI1Uq0mzUc/J2GX9eG1emhgR35nxgQ7SRuxNFVXTuS8rgbCFrjK
+	qL0D5a9REfX1w3iFaPbE1AqmmaifYbHxQpzqwyRp6TllZxmRKcOWETLg
+X-Gm-Gg: AYBFou0bKgweH7MdC/AJ+WrRGJ6q/TgKi200FWjIxkoE5ChJDTfKj5T8Dcn3TkLNCX5
+	JhAxQTPYf5en/CcAAyAJfvCoU0POYmlFUTDtgl9XLHi2eRlKjQhJWpdLjitT7AkTpT73UBidj/v
+	DkUgyWbFz7vdk2tZOOS2QPGhNQ+roq/SWy7xzKZID6s+TZH/Ow5hqwXgaS0lqO8gBSqJ+3r1afS
+	E9749pn3tFVYBSP4CtRMV4DmwlI3NyIVU0Ri3Wcf0IHc6yLZnr9u03cr616+9GQVeOA+2evsfD/
+	AkSyVjq/DGDUhFJPEUuCqDrC6EHDtt7fU/CaKDER5pzycTAnURag+n4gWAM7Be8/qiF2Tq6iwG3
+	cX+vsw1TnZfAntLlBrtB05H/DuFnPmN2/lUFr680lpskRgHUE8mZtIlNI2LbxfEvLU2K+MyKBmP
+	W26ZIpMdRC1v/KAUa+8s8z4/zdzKjPzSB8flOKmdMcsio3w7jK7PIxuJeg6GuMKLt+QgVAYK4f7
+	CHIRTBb
+X-Received: by 2002:a17:90a:d00f:b0:3ab:b39f:41cd with SMTP id 98e67ed59e1d1-3acef543057mr4181119a91.60.1792335574786;
+        Sun, 18 Oct 2026 07:59:34 -0700 (PDT)
+Received: from thangnn-ASUS.. ([2a09:bac1:7aa0:50::245:a2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc487cccdsm12001698a91.8.2026.10.18.07.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 07:59:34 -0700 (PDT)
+From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+To: jmaloy@redhat.com,
+	tung.quang.nguyen@est.tech,
+	netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+0017742620a9d06f06ef@syzkaller.appspotmail.com
+Subject: [PATCH] tipc: unshare skb in tipc_l2_rcv_msg() before decrypting
+Date: Sun, 18 Oct 2026 21:59:28 +0700
+Message-ID: <20261018145928.58317-1-ngocthang2710.1999@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179188543192.434549.4257004266357227847@kernel.org>
 
-On Tue, Oct 13, 2026 at 09:57:11AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The conversion is incomplete, so one delayed_work is queued on
->   two different workqueues.
-> 
-> --
-> 
-> net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq
-> 
-> This commit changes the self-requeue in icssg_stats_work_handler() from
-> the per-cpu system_long_wq to the unbound system_dfl_long_wq. The goal is
-> to let the periodic stats work benefit from scheduler task placement.
-> 
-> > diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.c b/drivers/net/ethernet/ti/icssg/icssg_stats.c
-> > index 7159baa0155cf..7d6d6692d8192 100644
-> > --- a/drivers/net/ethernet/ti/icssg/icssg_stats.c
-> > +++ b/drivers/net/ethernet/ti/icssg/icssg_stats.c
-> > @@ -69,7 +69,7 @@ void icssg_stats_work_handler(struct work_struct *work)
-> >  						stats_work.work);
-> >  	emac_update_hardware_stats(emac);
-> >  
-> > -	queue_delayed_work(system_long_wq, &emac->stats_work,
-> > +	queue_delayed_work(system_dfl_long_wq, &emac->stats_work,
-> >  			   msecs_to_jiffies((STATS_TIME_LIMIT_1G_MS * 1000) / emac->speed));
-> >  }
-> 
-> [Severity: Medium]
-> Is this conversion complete?
-> 
-> Both ICSSG drivers use icssg_stats_work_handler() for the same
-> emac->stats_work. Both prueth_netdev_init() functions, in icssg_prueth.c
-> and icssg_prueth_sr1.c, do this:
-> 
->     INIT_DELAYED_WORK(&emac->stats_work, icssg_stats_work_handler);
-> 
-> However, the first run is still queued on the per-cpu workqueue from
-> the ndo_open path:
-> 
-> drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c:emac_ndo_open() {
->     ...
-> 	queue_work(system_long_wq, &emac->stats_work.work);
->     ...
-> }
-> 
-> The follow-up patch "net: ti: icssg-prueth: Move long delayed work on
-> system_dfl_long_wq" converts the matching call in icssg_prueth.c. No
-> patch in the series seems to change icssg_prueth_sr1.c.
-> 
-> On SR1.0 hardware, the first stats run after each open would still go to
-> a per-cpu worker. Every later run would go to system_dfl_long_wq.
-> 
-> Could mixing the two workqueues also bypass the non-reentrancy check in
-> __queue_work()?
-> 
-> kernel/workqueue.c:__queue_work() {
->     ...
-> 		if (worker && worker->current_pwq->wq == wq) {
->     ...
-> }
-> 
-> The instance running on system_long_wq re-arms onto system_dfl_long_wq,
-> so this check fails. If the timer expires before the first worker
-> returns, a second instance could start at the same time on another
-> worker.
-> 
-> Today this looks harmless. The handler does nothing after
-> queue_delayed_work(), and emac_update_hardware_stats() takes
-> prueth->stats_lock.
-> 
-> Should emac_ndo_open() in icssg_prueth_sr1.c also switch to
-> system_dfl_long_wq, so stats_work is only ever queued on one workqueue?
+Packet taps such as AF_PACKET sockets bound to ETH_P_TIPC take an extra
+reference on the skb before handing it to the TIPC packet handler.
+tipc_l2_rcv_msg() passes it on as is, and for an encrypted message
+tipc_aead_decrypt() calls skb_cow_data(), which may end up in
+pskb_expand_head() and hit BUG_ON(skb_shared(skb)):
 
-It seem to me that it would be worth getting this right upfront.
+  kernel BUG at net/core/skbuff.c:2308!
+  pskb_expand_head
+  __pskb_pull_tail
+  skb_cow_data
+  tipc_aead_decrypt
+  tipc_crypto_rcv
+  tipc_rcv
+  tipc_l2_rcv_msg
+  __netif_receive_skb_core
 
+A packet_type handler must not modify a shared skb. Use
+skb_share_check() on entry, which clones a shared skb and frees the
+original reference.
+
+Reported-by: syzbot+0017742620a9d06f06ef@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0017742620a9d06f06ef
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+---
+ net/tipc/bearer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 05dcd2f9e887..5e7e220fa7f5 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -659,6 +659,10 @@ static int tipc_l2_rcv_msg(struct sk_buff *skb, struct net_device *dev,
+ {
+ 	struct tipc_bearer *b;
+ 
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (!skb)
++		return NET_RX_DROP;
++
+ 	rcu_read_lock();
+ 	b = rcu_dereference(dev->tipc_ptr) ?:
+ 		rcu_dereference(orig_dev->tipc_ptr);
 -- 
-pw-bot: changes-requested
+2.43.0
 
