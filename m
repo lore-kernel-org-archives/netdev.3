@@ -1,60 +1,61 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50E93E49C0
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 06:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1427E43DEA4
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 06:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792304673; cv=none; b=PQdHz2xaXJDW7W1fCFQzLcss83TpKxC3+pY9sD5XnH1frw70b2nRNPX/XZAwkEGMljUdxR1Ny2z+GjXTyPDMG8m7imFkRejMD4N/jHTmA/4m4q4qBRSuwnltWjDa98gKH/xXmfjFvJJ6QmhrJ6fW10yfPLQ5eCVEjau/QztyHuo=
+	t=1792304679; cv=none; b=QUCeLgqu55zI3u8co5ntSukeANy4Coz1DPcWePDr9uGnVLgSqxKGR2l9Q9AuIBxErIKcsBI6oDplVWIxMzAbcA06/fL3YUARXp50tpceNaTKjKCeLkZ2eP7HMIhwrkD6RIcQADM1JPXyKEDEh2Ji5rhIZ4DGeK5fYLhv66iycx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792304673; c=relaxed/simple;
-	bh=u60/h86UtCV0RHUmtNCYmhLRPiuBkicoYzvb6oTOgXk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P3tswWMCOVZGtjqaxhR3XV8JL/ebnfxlA5pm6xyOdMNUHPmXCfJCfBhmMbd6ts6pC/rqpFum1skWg/fIUB40+3C+gtzLZoyZS6CtUDu7EyoXyfgeL+8bL6yUom3Pk9QjbvhRiFIcoTTosYaWieUXADlV8hMfZMeMgMUZuZU4X5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gt.tech.gov.sg; spf=pass smtp.mailfrom=gt.tech.gov.sg; dkim=pass (1024-bit key) header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.b=sP5FjZ6A; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1792304679; c=relaxed/simple;
+	bh=fBON41rkWJm+Nr5IP0+q0DD6zo5hPQEiHIFcCKvNNZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iou/suiMXgHyG1UNjteULUfIqoD0Sn99vcgy5m/e+vZYXZYUaJCpbQtPF+vd4apEB49b8UMR8ZDCJ1hWK2R7wt9hZ7W+yfjBl+fH8li8teRQ+ertkpo56gEJHgediBuLoPMtVivKWm2/PfzV8ht+WMZRa6j/R4Wyh/9tX2NneyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gt.tech.gov.sg; spf=pass smtp.mailfrom=gt.tech.gov.sg; dkim=pass (1024-bit key) header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.b=oVd0RvdH; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gt.tech.gov.sg
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gt.tech.gov.sg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.b="sP5FjZ6A"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3ac451e128cso741726a91.1
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 23:24:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.b="oVd0RvdH"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e5d0ee1951so7450365ad.0
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 23:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gt.tech.gov.sg; s=google; t=1792304671; x=1792909471; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q5RPMRI/Z07lJ0xDImPcnvLDgkc0YFq5cW2OslfyXR0=;
-        b=sP5FjZ6AP55RaaNfHtG6IPu9Tot9po2x6OnJDLU7+n2LhOFxC6CejgUGRboE/Vq6fB
-         CPg+LjHXPxuofU3UVQR3jgaIa77V9ff/9Ldo8+JWqRofhOxltttDU2X25nEG2MYrNIBb
-         0EANDKv/mmwxP6qIFPcmxij4ll5w1EnvCGDBw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792304671; x=1792909471;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gt.tech.gov.sg; s=google; t=1792304675; x=1792909475; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Q5RPMRI/Z07lJ0xDImPcnvLDgkc0YFq5cW2OslfyXR0=;
-        b=yBOEXGnaGsxcjqgWgYdD3QMK0j6Y9mJFVKTRCIeOr4Z6mBEOVW4zDaqsc6UmfboVQu
-         B4xnqdspSrWKJe6CDf2MfVbwjCX/3RjaFh+pnYXdNrrCgDGiru5NJuqoEY9npD2YV2P8
-         qtbNQ6BQbMGLaY29qs0CEx9mN8B6aAcZCrpY4uTKy1dqU2AOlHirRU0EnAw57izGbaqe
-         XFniv3+qeNPBW9F8k7LbEuYF++O5sgQiX4/5bXYOHPJ8azZHndyhizi5mTqUP6VFt4/3
-         BYeodgZ5raangzcByqNYv+7cyojjR/tRnqHdjJLzy+DUULmgA2scKW/V6nnRK0ToeQdW
-         y27w==
-X-Forwarded-Encrypted: i=1; AKwUvBzNgEcxzDuBnEGVqiZexXUL91TG32bNJrbpXp+CfiCFDrz2VrL6qi2Boz5yOkJL/eM9PTecMEU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI7M8qb6Zp0YQBV58Tla+kjuSoLy3b7jVBTbtXhPBVNPk6cKchd
-	V4mbKofC9ESlwtHWQvR4HbGn0ymD+qPfu5z0Bf0SN8RH2YNJZINP18cg7sFNMp06REi1ChVu9n+
-	PSAA0
-X-Gm-Gg: AYBFou2vsLSK0b2RjkQ3o1G/lQ7doObfguTy/nffpI3z51Tf3H1/etmMxp3R/CFtKAc
-	Mvk6pORDof3A5TaWutKkiYMK55kby8grcIZrW9yzE2baGFVZfXYTU3sRuUt1dx5hAfrKe/0uN9l
-	6kSERA0xJQCREvNH5h8enqVcVjdtblnXP+CisoIsDsSlFAdt4mJhYq684bSKvByOor57jbvczSr
-	JoDLis7bjo4oQNNO0oWXoPkZFCoIy6/3sPyT0b1pD6nWgZ9OPPLh9eGjROf3YzThBN580e9rEk2
-	PhTaS7q2Vb7JBGMQBcAIy8TsoRpPCrpUIeVv5oeU1axkQW/cTjg2CKx9qYtUkff5SYG5JQK2GLA
-	fpCNUPNiHrVtiNdujupmXPHj1ZE76yrgnn19LDBg4pYiL/TKZK4wpzxVV04DrdRaviM7fysuZqX
-	G4lJvfarQZrPxMlgKvqpbdjQnkZ+HDP4q7FWi5DDHotLMcDQjE43r/Ycv3su6lNAdb+VLrGI9PN
-	lrRa4fculNe6QNVRGjQGl9WWi0gz7GiNm2PeDpAoAd/pwlgr/DJsAg=
-X-Received: by 2002:a17:90b:2708:b0:3ac:80dc:f409 with SMTP id 98e67ed59e1d1-3acef5dcbe4mr3210265a91.61.1792304671066;
-        Sat, 17 Oct 2026 23:24:31 -0700 (PDT)
+        bh=PhtM3DINTPwMgq788UyncE7FKN56YRahvoDja7jwel0=;
+        b=oVd0RvdHSq64KyeFs1iLG4eTFH8OLdu4gWJ5w8y+79BPq+xg1l9KZvzlj/PrNzfnfb
+         zvFjmCi3gPHUIjVenkw+vveiB289G/mOD567chisUkm9/8uvM5yUOrhCdOYLC2MLhq+0
+         NuyapCx/jcvcIRdUi3CetNdmDeVeZnEtiTH0g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792304675; x=1792909475;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PhtM3DINTPwMgq788UyncE7FKN56YRahvoDja7jwel0=;
+        b=kIm1XlJwKqRpyIacA/MntmrQroiapiEIW+ZZCJEFkvYSY7E4DJOwoLwgYggbM5Ai+3
+         1Fo256o1SKcJSrrDxsvn4IB/FfGK2afvngOvf6V9mwFuF9Olss5ALN0K7U8hSkJLqnFq
+         L4POsDB6xQ4bMffmlD+DTDH1GqmKfN74pSdDCqwsvwQ55vIU60VFlncYOA/YOFdrycIS
+         h5tVyqMu5SdwMLXBX3fohb2qmjhobXsH4kcgPAqIUkhvdophZJ+gyJ/U6lH5939r5g0q
+         dD+wG2IyaQXcSDcSMs68YK1FDkNDinSqa9/72Nu9yMOWvn9qdY6FSWs7+anOmq42y/lA
+         AqRg==
+X-Forwarded-Encrypted: i=1; AKwUvBwPlUleyqg3YA4HKHui80kG8pCl+GEZOhnu1flgs9WpM3QhqDZydjXqzJmko4rKdDiVyslVRXc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLAVfr6SBKPGrwbw+0VPHJao7AlDNw/iaROOXllKG6SQKepnvaJ
+	SSeg+wtghKc2rCO+46LXubiieoT6nn6JcnW27Knp9kgmg+Se7s6TvIvpjlXpoJSANS8=
+X-Gm-Gg: AYBFou1FS9YugpYtowAhvNwnQUJn4Mxwa2GVq6vld03j8FcgYOBMxEB8QPiFERTtKaU
+	x9cis0ReSe9B7JUr5ld/yy8gLALZoI0XieCvAaB0Ufn+XKfCvDxIyeBo1T/6+rZ5pbGCpFtPrE0
+	IBRajKSzBr21/m1pbH5FA645lJP6HR11JZI2+jrwHoU0BVtNSuV+cR8iMrU+xvalQvg5Kx4aIr3
+	PMtWB4v0TUFaH9CY+f3/6A6niXJdZeRcpmXHCvyVLDf3XidYfXVh4JfS6NO1QZfjL/kftIN1xHQ
+	Tmfv+qdod0u/FDVtOG/Lmes9IB5hvUS10KPL0APdPaGlzRm0ZHkWoAElU/KykiypOo0Y83exNz0
+	Sa3t3dpJ5hcaH4Ty8Zvm562X/TGtq+UA+K63e3HKtKrxjmEAJQ7zDU0JjHuMRcIGr7dkwf2eXjk
+	RVET0pHqPEWjfWIEc3bbiEdBas1lNx+MAxaN8SrQ+Sn8s6gH6QhvfmDgnuSBrueoPiwesl4xrDF
+	V4T5MIz0CyTC0P5bTb46WGQmMOCw54vg8kvHWlNPagAdEIne4zqyEJKvScQRWUcuw==
+X-Received: by 2002:a17:90b:4cd0:b0:3ac:a203:e0a5 with SMTP id 98e67ed59e1d1-3acef104296mr3845305a91.11.1792304675254;
+        Sat, 17 Oct 2026 23:24:35 -0700 (PDT)
 Received: from LAPTOP-UUUVNN1I.localdomain (bb119-74-6-224.singnet.com.sg. [119.74.6.224])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc46ee274sm10513293a91.4.2026.10.17.23.24.27
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc46ee274sm10513293a91.4.2026.10.17.23.24.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 23:24:30 -0700 (PDT)
+        Sat, 17 Oct 2026 23:24:34 -0700 (PDT)
 From: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
 To: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
 	UNGLinuxDriver@microchip.com,
@@ -67,11 +68,14 @@ Cc: Woojung Huh <woojung.huh@microchip.com>,
 	netdev@vger.kernel.org,
 	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wei Jie Law <98lawweijie@gmail.com>
-Subject: [PATCH net v3 0/2] net: usb: lan78xx: do not use uninitialized data after short reads
-Date: Sun, 18 Oct 2026 14:24:17 +0800
-Message-ID: <20261018062419.21921-1-law.wei.jie@gt.tech.gov.sg>
+	Wei Jie Law <98lawweijie@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3 1/2] net: usb: lan78xx: do not update statistics after a failed read
+Date: Sun, 18 Oct 2026 14:24:18 +0800
+Message-ID: <20261018062419.21921-2-law.wei.jie@gt.tech.gov.sg>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261018062419.21921-1-law.wei.jie@gt.tech.gov.sg>
+References: <20261018062419.21921-1-law.wei.jie@gt.tech.gov.sg>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,64 +84,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-lan78xx_read_reg() and lan78xx_read_stats() accept a control transfer
-that returns fewer bytes than requested and then use the uninitialized
-rest of their kmalloc()ed buffers. A device that sends short replies can
-get stale heap contents used as the MAC address of the interface, and makes
-ethtool -S report them to unprivileged users, including kernel text and
-direct map pointers.
+lan78xx_update_stats() reads the hardware counters into an on-stack
+struct lan78xx_statstage. If lan78xx_read_stats() fails, only the
+rollover check is skipped: the counters are still recomputed from the
+uninitialized stack buffer and stored in dev->stats.curr_stat, which is
+then reported to user space by ethtool -S.
 
-Patch 2 makes both helpers fail on short reads. Patch 1 comes first so
-that a failing statistics read does not report uninitialized stack data
-instead.
+Keep the previous values when the read fails.
 
-The bugs need a malicious or emulated USB device, which
-Documentation/process/threat-model.rst treats as a regular bug rather
-than a vulnerability, so they are posted publicly.
+Found by code review with LLM assistance. Tested together with the next
+patch, which makes short reads fail: with an emulated device, ethtool -S
+then keeps reporting the previous counters.
 
-Testing: the series builds without warnings (W=1) on net and passes
-checkpatch --strict. It applies unchanged to v6.12.105, where it was
-tested with a LAN7800 emulated by raw-gadget + dummy_hcd, booted with
-init_on_alloc=0:
+Fixes: 20ff55655a93 ("lan78xx: handle statistics counter rollover")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
+---
+ drivers/net/usb/lan78xx.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-- Zero-length statistics replies. Before: 40 to 88 of the 235 ethtool -S
-  counters are non-zero, including usb_api_blocking_completion() and
-  direct map pointers. After: every read fails with -EIO and all
-  counters stay zero.
-
-- 100 byte statistics replies. Before: 110 of the 235 counters are
-  non-zero. With patch 1 only: 29 are, so the stale tail of the buffer
-  still gets through. With both patches: the read fails with -EIO and
-  all counters stay zero.
-
-- Zero-length RX_ADDRL/RX_ADDRH replies. Before: the MAC address
-  differs on every probe, is programmed into the MAC filter and is
-  used as the address of the interface. After: the
-  probe fails with -EIO.
-
-Both bugs were found, and the patches written, with LLM assistance,
-hence the Assisted-by tags.
-
-Changes in v3:
-- add the missing Signed-off-by; no other changes
-Changes in v2 (review by Sashiko):
-- 2/2: the commit message now says that with patch 1 only a partial
-  statistics reply (1 to 187 bytes) still leaks, and that patch 2 depends on
-  patch 1; the MAC address paragraph no longer claims a write-back to
-  RX_ADDRL/RX_ADDRH, which happens only for an invalid address. The cover
-  letter gains a partial-reply test. No code change.
-- v2: https://lore.kernel.org/all/20261018061734.19488-1-law.wei.jie@gt.tech.gov.sg/
-- v1: https://lore.kernel.org/all/20261014025602.26334-1-law.wei.jie@gt.tech.gov.sg/
-
-Wei Jie Law (2):
-  net: usb: lan78xx: do not update statistics after a failed read
-  net: usb: lan78xx: reject short register and statistics reads
-
- drivers/net/usb/lan78xx.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
-
-
-base-commit: 7ec48f396a1d89532c0537bc38b408b8c31ee37f
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 5655941f1478..cb8204371f5c 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -789,11 +789,13 @@ static void lan78xx_update_stats(struct lan78xx_net *dev)
+ 
+ 	mutex_lock(&dev->stats.access_lock);
+ 
+-	if (lan78xx_read_stats(dev, &lan78xx_stats) > 0)
++	if (lan78xx_read_stats(dev, &lan78xx_stats) > 0) {
+ 		lan78xx_check_stat_rollover(dev, &lan78xx_stats);
+ 
+-	for (i = 0; i < (sizeof(lan78xx_stats) / (sizeof(u32))); i++)
+-		data[i] = (u64)p[i] + ((u64)count[i] * ((u64)max[i] + 1));
++		for (i = 0; i < (sizeof(lan78xx_stats) / (sizeof(u32))); i++)
++			data[i] = (u64)p[i] +
++				  ((u64)count[i] * ((u64)max[i] + 1));
++	}
+ 
+ 	mutex_unlock(&dev->stats.access_lock);
+ 
 -- 
 2.43.0
 
