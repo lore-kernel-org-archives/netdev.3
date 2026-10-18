@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654C44B9221;
-	Sun, 18 Oct 2026 13:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4B74B922B;
+	Sun, 18 Oct 2026 13:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792329397; cv=none; b=ifxpRr3m9k6ira1aj11v5IZ0fyqltVRe76TeoS61ka8YvbFa6ekK528fHyU4MurMUv0fdQtPoLZ15sxBFghe0y7pTW5xEz7gmYBACk1wIqctG3zLY64vRCoALj+EysSOny5WY4+h0hGuNN/5KtiNNTFc/2OpiWDuXejHblxK1Ig=
+	t=1792329766; cv=none; b=tSX173ry4c2H5EA25hij4PiEqJr7JFaP1SL7fOfidi5CV5i8IWJ+dfa9ogwSaK+VCkKYBJyAeuzh858gLApB8ENhC2TiQLNH2345Y/2VfeLEGJVIpEgc+Uc/Zv+qIGYJYemcDvbT1Ii7tr8DxA1bK0TxgP8xI6SsQSjRf1Esg0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792329397; c=relaxed/simple;
-	bh=7SONenFz0VX6VfgFhhgS6ItUrvfAMVhNTv7y80LrKbE=;
+	s=arc-20240116; t=1792329766; c=relaxed/simple;
+	bh=gunYXhMgXi7MLNMHlFRFz2mnouvhmJrc0MgovruqE1I=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C9vv6WcSJZ0UyTNRP/pZ/9qXxy2X4G/AihGvEaBIeyRBBuQDuJiuBbJuGiuSUOOSlyxH6uZ1sGO9lcp65xXaFCQpeZYkTl0jiLXCrgalA4Ntkt78kEcHzttVKretbafdmIeOzosMjuNNG1j2iIKkh2t6FwOyGEkpQ0L5hfWchtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evTqrPOu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=tZumpXmaTJYz+Nna/HSml1gBUWEsZ8kphnf456U7i3+Yvl5FQrFgSynSxiDdAxJYk9hy5XOvuClievOqu0rb4oyUDpgvTce5Q+MtZJjYYo7z6PaGK9jKtWk8YdgutKTK0GmiMb/zGWpNVFDg6pt9tpTCxjus6rAhanjtDOEaBYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YlT9KRSo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evTqrPOu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8935A1F000C5;
-	Sun, 18 Oct 2026 13:16:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YlT9KRSo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A8A1F000C5;
+	Sun, 18 Oct 2026 13:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792329396;
-	bh=yPfxwYavMEPqVnPZXTuepLeeedqkC9HKHNpd77Ks81Y=;
+	s=k20260515; t=1792329765;
+	bh=bIhmGgP6JX0siOj43IOXZbqUl5ehqxSn567CsQnQ89k=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=evTqrPOujd5dB94DzqLRaoi0n5Yb3Ia9tOY9B+b8Qj1KCDXWfDuJ/niJQIpHk0Mbk
-	 YQ6xiBwXfe26gM8URgvQx9VGk4rZPZesd42rJLHMBbs/Zfpi+Am1+XtCclrWUmlq06
-	 QM+cCH1lA0Gw9CG+zkrWPdKCkIu5grZ+1aS5A1o6+eUwKkANy9RElDBmG4FFZ6trv+
-	 gQxsLwd8C86j9tuH7wxZKn2sEzUXMKd1J948tA/ZtEJsYrXV6Tg+XiVYLuW5Y+mVn9
-	 KQdgbrthtNfOjNvCHCOGMdN4En5Yv6o5cm0YDfU2Slt5CYLC14NsuGEU+2SBLt1C2g
-	 M/OPiLJrSRdig==
-Subject: Re: [PATCH net-next v4 7/7] selftests: net: test the vxlan vnifilter
- request limit and dump replay
+	b=YlT9KRSo9Zg5akI9fzhj4zleDgVq7S0MOwhufb1dzp73NPwsqGoZmJsP/wyrMyIrL
+	 CUAYI2UvF/gqA9szQqp3cCTwfJz/CZypkQuHH4vbx/0TxNFkKO3MQrmQCh/av11ldU
+	 YNKVG874alDAbp9CMkZ6kqNI2B8EeOOd0QDAumBKyRPwJrogfxW4C8D82hszABDzRp
+	 8T3+awUuMwXvVPscQA3XvBvM0wi5JXKWMM6Dih7gQSjt3QrJ5lKqrUWZR7EBrjXtYD
+	 vd36KwwBPpuXkR3KM/yOjUHfGJHb+dN0eHvnIlp1EdP/SaDDkBO608qENtr/yaCD2Y
+	 OfBqQyIsjdmlQ==
+Subject: Re: [PATCH net 1/2] net: ti: icssg-prueth: fix missing port config on
+ second interface open
 From: netdev-bot+sashiko@kernel.org
-To: alishmery18@gmail.com
-Cc: netdev@vger.kernel.org, idosch@nvidia.com, kuba@kernel.org,
- pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
- andrew+netdev@lunn.ch, horms@kernel.org, razor@blackwall.org,
- roopa@nvidia.com, shuah@kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 13:16:35 +0000
-Message-ID: <179232939511.3135.8638231822029471558@kernel.org>
-In-Reply-To: <20261014123814.388557-8-alishmery18@gmail.com>
-References: <20261014123814.388557-8-alishmery18@gmail.com>
+To: r-kumar12@ti.com
+Cc: netdev@vger.kernel.org, danishanwar@ti.com, rogerq@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, jacob.e.keller@intel.com,
+ m-malladi@ti.com, vadim.fedorenko@linux.dev, haokexin@gmail.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ j-rameshbabu@ti.com, aaron.richard@ti.com, l-chinnannavar@ti.com,
+ m-santhoshkadavan@ti.com, k-tiwari1@ti.com, a-dev@ti.com, pratheesh@ti.com
+Date: Sun, 18 Oct 2026 13:22:43 +0000
+Message-ID: <179232976393.3135.17319859444858468389@kernel.org>
+In-Reply-To: <20261014125948.230571-2-r-kumar12@ti.com>
+References: <20261014125948.230571-2-r-kumar12@ti.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +51,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 4 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,257 +62,178 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In vxlan_vnifilter_dump_replay()
-  (tools/testing/selftests/net/test_vxlan_vnifiltering.sh), the exit…
-- [Low] Each new 'absent before' / 'installed nothing' probe in
-  vxlan_vnifilter_api() runs `bridge -netns $testns vni show dev vxlan-…
-- [Low] vxlan_vnifilter_dump_replay() replays the dump one range at a
-  time, each in its own `bridge vni add` (lines 457-460), using ranges…
-- [Low] The 24-bit bound cases in vxlan_vnifilter_api() do not isolate
-  the START half of vni_filter_entry_policy, and one case cannot tell…
-- [Low] In vxlan_vnifilter_dump_replay(), the replay result variable `rc`
-  is overwritten by run_cmd() before the replay loop.
+- [Medium] Reopening one port while its sibling stays up now resets that
+  port's live VLAN configuration to the driver defaults.
 
 Pre-existing issues:
-- [Low] The comment on VXLAN_VNI_FILTER_MSG_MAX in
-  drivers/net/vxlan/vxlan_vnifilter.c (lines 20-24) still says 'A later…
+- [Low] The two join paths set emac->port_vlan differently.
 
 --
 
-selftests: net: test the vxlan vnifilter request limit and dump replay
+net: ti: icssg-prueth: fix missing port config on second interface open
 
-This extends test_vxlan_vnifiltering.sh to cover the per-request VNI cap
-on add and delete and the 24-bit VNI bound. It also adds a dump/replay
-test that builds a contiguous run twice the limit and replays the dumped
-ranges into a second device. The cleanup() handler now also removes
-veth-host and the test netns.
+This commit moves the per-port FDB, VLAN table, PVID and VLAN-aware setup
+out of icssg_enable_fw_offload() into a new icssg_enable_fw_offload_emac().
+It also moves the HSR Rx offload setup into icssg_update_hsr_rx_offload().
+emac_ndo_open() now calls both helpers unconditionally for the opening
+port, and icssg_enable_fw_offload() is kept for icssg_change_mode().
 
-> diff --git a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-> index 6fb5af013dacf..bb35e89d2d036 100755
-> --- a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-> +++ b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-
-[ ... ]
-
-> @@ -347,6 +349,121 @@ vxlan_vnifilter_api()
->  	# change vxlan vnifilter flag
->  	run_cmd "ip -netns $testns link set dev vxlan-ext1 type vxlan external novnifilter"
->  	log_test $? 2 "Cannot unset vnifilter flag on a device"
-> +
-> +	# A single request may add at most 4096 VNIs. bridge(8) puts one
-> +	# VXLAN_VNIFILTER_ENTRY per comma-separated item into a single message,
-> +	# so both the single-entry and the multi-entry paths are reachable here.
-
-[Severity: Low]
-This problem was not introduced by this patch, but the comment on
-VXLAN_VNI_FILTER_MSG_MAX in drivers/net/vxlan/vxlan_vnifilter.c still
-describes the request cap as future work:
-
-drivers/net/vxlan/vxlan_vnifilter.c:
- * dump emits stays within what the input path will accept on replay. A later
- * patch bounds a single RTM_NEWTUNNEL/RTM_DELTUNNEL request to the same number.
- */
-#define VXLAN_VNI_FILTER_MSG_MAX	4096
-
-That cap is already in the tree. vxlan_vnifilter_process() calls
-vxlan_vnifilter_check_msg() before it applies any entry:
-
-	err = vxlan_vnifilter_check_msg(nlh, extack);
-	if (err)
-		return err;
-
-Could the "A later patch" sentence be updated, since this selftest is
-exercising that cap?
-
-> +
-> +	# The largest accepted add, and one VNI more rejected.
-> +	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 10000-14095"
-> +	log_test $? 0 "Add a request of the maximum VNI count"
-> +
-> +	# The rejected oversized add must install nothing. Assert the range is
-> +	# absent first: vxlan_vni_add() folds an already-present VNI into the
-> +	# update path and returns 0, so a later probe cannot tell "installed
-> +	# nothing" from "installed part" unless it started absent.
-> +	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 20000"
-> +	log_test $? 1 "VNI 20000 absent before the oversized add"
-
-[Severity: Low]
-Can this probe pass when bridge vni show itself fails?
-
-run_cmd() evaluates the whole pipeline and returns its status:
-
-	out=$(eval $cmd $stderr)
-	rc=$?
-
-That status comes from grep. Neither this script nor lib.sh sets
-pipefail. If bridge vni show fails, grep reads no input and exits 1, which
-is the value log_test expects.
-
-The same pattern is used for each of the "absent before" and "installed
-nothing" probes for 20000, 30000 and 55000. That means these probes cannot
-tell a VNI that is absent from a show that failed.
-
-The src_ranges and dst_ranges captures in vxlan_vnifilter_dump_replay() also
-drop the exit status of bridge.
-
-Would it make sense to check the exit status of bridge vni show on its own,
-or to set pipefail for these probes?
-
-> +	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 20000-24096"
-> +	log_test $? 255 "Cannot add a request over the maximum VNI count"
+> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> index 591be5c8056b4..cd4c918fe2b89 100644
+> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> @@ -206,6 +206,44 @@ static void prueth_emac_stop(struct prueth *prueth)
 
 [ ... ]
 
-> +	# The VXLAN header carries 24 bits. The bound is on both endpoints, so a
-> +	# range whose END alone leaves the space is rejected too.
-> +	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 16777215"
-> +	log_test $? 0 "Add the highest VNI the header can carry"
-> +	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 16777215"
-> +	log_test $? 0 "Delete the highest VNI the header can carry"
-> +	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 16777215-16777216"
-> +	log_test $? 255 "Cannot add a range whose END leaves the 24-bit space"
-> +	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 100-4294967295"
-> +	log_test $? 255 "Cannot add a range whose END wraps past the 24-bit space"
-
-[Severity: Low]
-Does the 100-4294967295 case depend on the END range policy? Its span is
-4294967196 VNIs, so vxlan_vnifilter_check_msg() would reject it with
--EINVAL even if the END bound in vni_filter_entry_policy were removed:
-
-	vnis += vni_end - vni_start + 1;
-	if (vnis > VXLAN_VNI_FILTER_MSG_MAX) {
-
-The test comment ("The bound is on both endpoints") and the commit message
-("exercised through END, not only START") suggest that an out-of-range
-START is tested. No such case exists here or elsewhere under
-tools/testing/selftests.
-
-A single VNI such as 16777216 has no END attribute. That gives a span of
-one, so check_msg accepts it, and only the START policy keeps it out of
-vxlan_vni_add_del():
-
-	[VXLAN_VNIFILTER_ENTRY_START] = NLA_POLICY_FULL_RANGE(NLA_U32,
-							      &vni_filter_vni_range),
-
-If START=END=0xffffffff ever got past that policy, this loop would wrap
-under rtnl_lock:
-
-	for (v = start_vni; v <= end_vni; v++) {
-
-Could a case like "vni add ... vni 16777216" be added so a regression in
-the START bound is caught?
-
-> +}
-> +
-> +# A device may hold a contiguous run longer than one request's limit, built
-> +# from several requests. The dump coalesces it, so the dump must break the run
-> +# into entries each no larger than the limit, or the configuration it reports
-> +# cannot be replayed. Install such a run, then feed every range the dump
-> +# reports back into a second device and require all to be accepted.
-> +vxlan_vnifilter_dump_replay()
+> +static void icssg_enable_fw_offload_emac(struct prueth_emac *emac)
 > +{
-> +	local opts="external vnifilter local 172.16.0.1 dev veth-testns"
-> +	local range rc=0 src_ranges dst_ranges
-
-[ ... ]
-
-> +	# 8192 contiguous VNIs sharing the default remote: one run, twice the
-> +	# limit, installed in two accepted requests.
-> +	run_cmd "bridge -netns $testns vni add dev vxlan-src vni 10000-14095"
-> +	run_cmd "bridge -netns $testns vni add dev vxlan-src vni 14096-18191"
-> +	log_test $? 0 "dump/replay: populate a run larger than the limit"
-
-[Severity: Medium]
-Is the status of the first populate command lost here? The $? passed to
-log_test is only the status of the 14096-18191 add.
-
-If the 10000-14095 add fails, vxlan-src holds exactly 4096 VNIs. In that
-case vxlan_vnifilter_dump_dev() never reaches the clamp:
-
-	if (!dump_stats && vnirange(vend, v) == 1 &&
-	    vnirange(vbegin, v) < VXLAN_VNI_FILTER_MSG_MAX &&
-
-The dump is then a single limit-sized entry. The non-empty check, the
-replay loop and the src/dst comparison all pass, whether or not the dump
-clamp exists.
-
-The v4 note says the non-empty check was added so the replay case cannot
-pass vacuously, but this path still does.
-
-There is a related gap. src_ranges is never compared against the expected
-split (10000-14095 and 14096-18191). Both the replay input and the expected
-result come from the same source dump.
-
-A resume regression in vxlan_vnifilter_dump_dev() could drop or repeat VNIs
-at the 4096 boundary, or lose the second message:
-
-	if (!err && vbegin) {
-		if (vnis + vnirange(vbegin, vend) + 1 > VXLAN_VNI_FILTER_MSG_MAX)
-			err = -EMSGSIZE;
-
-Wouldn't that produce the same wrong ranges on both devices and still
-pass?
-
-Could each populate command get its own log_test, and could src_ranges be
-checked against the literal expected ranges?
-
+> +	struct prueth *prueth = emac->prueth;
 > +
-> +	# Assert the dump is non-empty before replaying it, so an empty or
-> +	# failed dump cannot let the replay check below pass without testing
-> +	# anything.
-> +	src_ranges=$(bridge -netns $testns vni show dev vxlan-src | \
-> +		     grep -oE '[0-9]+-[0-9]+|[0-9]{2,}' | sort)
-> +	test -n "$src_ranges"
-> +	log_test $? 0 "dump/replay: source dump is non-empty"
-> +
-> +	for range in $src_ranges; do
-> +		bridge -netns $testns vni add dev vxlan-dst vni "$range" \
-> +			2>/dev/null || rc=$?
-> +	done
+> +	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode) {
+> +		icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
+> +				  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
+> +				  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
+> +				  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
+> +				  ICSSG_FDB_ENTRY_BLOCK,
+> +				  true);
+> +		icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
+> +				  BIT(emac->port_id) | DEFAULT_PORT_MASK,
+> +				  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
+> +				  true);
+> +		if (prueth->is_hsr_offload_mode)
+> +			icssg_vtbl_modify(emac, DEFAULT_VID,
+> +					  DEFAULT_PORT_MASK,
+> +					  DEFAULT_UNTAG_MASK, true);
+> +		icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
 
 [Severity: Low]
-This loop replays one range per bridge vni add, using ranges parsed from
-the text output of bridge vni show. That output loses netlink message
-boundaries, so the per-message VNI budget in vxlan_vnifilter_dump_dev() is
-never tested:
+This isn't a bug introduced by this patch, but is emac->port_vlan set
+for both ports in switch mode?
 
-	if (vnis + sz > VXLAN_VNI_FILTER_MSG_MAX) {
-		err = -EMSGSIZE;
-		break;
+In prueth_netdevice_port_link(), only the port whose join completes
+br_members gets port_vlan set:
+
+	if (!prueth->is_switch_mode) {
+		if (prueth->br_members & BIT(PRUETH_PORT_MII0) &&
+		    prueth->br_members & BIT(PRUETH_PORT_MII1)) {
+			prueth->is_switch_mode = true;
+			prueth->default_vlan = PRUETH_DFLT_VLAN_SW;
+			emac->port_vlan = prueth->default_vlan;
+			icssg_change_mode(prueth);
+		}
 	}
 
-vxlan_vnifilter_check_msg() caps the sum across all entries in a request.
-Suppose that budget were removed and the merge clamp kept. The 8192-VNI
-run would be dumped as 10000-14095 and 14096-18191 in one message, and that
-message would be rejected if replayed as a single request.
+prueth_hsr_port_link() sets it on both emac0 and emac1.
 
-Each range would still replay on its own here, the dumps would match, and
-the test would pass. Is the per-message half of the dump guarantee meant
-to be covered by this test?
+This means the port that joined the bridge first keeps port_vlan == 0.
+icssg_set_pvid() here then programs PVID 0 for that port and PVID 1 for
+the other one. Both ports still get VID 1 table membership, because
+0 | DEFAULT_VID == 1.
 
-> +	log_test $rc 0 "dump/replay: every dumped entry is accepted on replay"
+The unlink paths have the same asymmetry. The switch unlink path resets
+port_vlan on one emac, while the HSR unlink path resets both.
 
-[Severity: Low]
-Can rc be non-zero here even when every replay add succeeded?
+icssg_change_mode()->icssg_enable_fw_offload() already behaved this way
+before this patch. This patch adds another call site that applies the
+value.
 
-run_cmd() assigns rc=$? without declaring it local. Because bash scoping is
-dynamic, that assignment writes to the local rc in
-vxlan_vnifilter_dump_replay(). After the 14096-18191 populate run_cmd, rc
-holds that command's exit status.
+A concrete forwarding failure from this hasn't been shown. With 8021q
+loaded, NETDEV_UP already sets PVID 0 via ndo_vlan_rx_add_vid(0). How the
+firmware handles PVID 0 is not known.
 
-The replay loop only assigns rc when an add fails. So if the populate
-failed, this line also reports FAIL even when all replays succeeded, and
-the rc=0 initializer has no effect.
+Should prueth_netdevice_port_link() set port_vlan on both ports, the
+same way the HSR path does?
 
-Would resetting rc=0 just before the loop, or using a separate variable,
-avoid this?
+> +		if (prueth->is_switch_mode)
+> +			icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
+> +	}
+> +}
 
-> +
-> +	dst_ranges=$(bridge -netns $testns vni show dev vxlan-dst | \
-> +		     grep -oE '[0-9]+-[0-9]+|[0-9]{2,}' | sort)
-> +	[ "$src_ranges" = "$dst_ranges" ]
-> +	log_test $? 0 "dump/replay: source and destination dump the same ranges"
->  }
+[ ... ]
+
+> @@ -1067,8 +1082,9 @@ static int emac_ndo_open(struct net_device *ndev)
+>  		ret = prueth_emac_common_start(prueth);
+>  		if (ret)
+>  			goto free_rx_irq;
+> -		icssg_enable_fw_offload(prueth);
+>  	}
+> +	icssg_update_hsr_rx_offload(emac);
+> +	icssg_enable_fw_offload_emac(emac);
+
+[Severity: Medium]
+Can this reset a port's live VLAN configuration when the port is
+reopened while its sibling stays up?
+
+When the sibling is up, emac_ndo_stop() does not stop the firmware and
+does not remove any FDB, VLAN or PVID state:
+
+	/* stop PRUs */
+	if (prueth->emacs_initialized == 1)
+		prueth_emac_common_stop(prueth);
+
+The next open also skips prueth_emac_common_start(). So the shared-RAM
+VLAN table and the per-port PVID word still hold whatever the bridge or
+8021q programmed. icssg_enable_fw_offload_emac() then runs:
+
+	icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
+			  BIT(emac->port_id) | DEFAULT_PORT_MASK,
+			  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
+			  true);
+	...
+	icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
+
+This adds the port back to VID 1 with untagged egress, and overwrites the
+PVID with emac->port_vlan.
+
+emac->port_vlan is only ever 0 or the mode default. The runtime VLAN
+paths write the hardware directly and never update it:
+
+prueth_switchdev_vlan_add()
+	icssg_vtbl_modify(emac, vid, port_mask, untag_mask, true);
+	icssg_set_pvid(emac->prueth, vid, emac->port_id);
+
+prueth_switchdev_vlan_del()
+	icssg_vtbl_modify(emac, vid, port_mask, 0, false);
+
+emac_ndo_vlan_rx_add_vid()
+	icssg_set_pvid(emac->prueth, vid, emac->port_id);
+
+For example, on an offloaded bridge, the admin runs "bridge vlan del dev
+eth1 vid 1" or makes VID 1 tagged on eth1. Then "ip link set eth1 down;
+ip link set eth1 up" runs while eth2 is still up. In hardware, eth1 ends
+up as an untagged member of VID 1 again. The software bridge still shows
+the old configuration, and nothing replays the switchdev VLAN objects on
+NETDEV_UP.
+
+Without 8021q, a bridge-configured PVID such as "bridge vlan add dev eth1
+vid 10 pvid untagged" is also replaced, with 1 or with 0 for the port
+that joined the bridge first. With 8021q loaded, its NETDEV_UP handler
+already sets PVID 0 through ndo_vlan_rx_add_vid(0) on every up, both
+before and after this patch.
+
+Before this patch, none of this ran on a single-port reopen, so VLAN
+membership and tagging survived it. The later commit in the series, "net:
+ti: icssg-prueth: re-apply rx_mode state after firmware reboot", only
+adds rx_mode_work scheduling in prueth_emac_common_start(). It does not
+change icssg_enable_fw_offload_emac() or the open path.
+
+The commit message also says:
+
+    If one port is later brought down and up while the sibling stays up,
+    emacs_initialized is still non-zero, so the function never runs again
+    and the port is left unconfigured, depending on bring-up order.
+
+Is that accurate? emac_ndo_stop() never removes the port's FDB, VLAN or
+PVID state, so a port configured at first open stays configured. Only
+the port opened second seems to have been missing its configuration.
+
+Should the open path avoid overwriting state that the firmware still
+holds while the sibling port is running?
+
+>  
+>  	flow_cfg = emac->dram.va + ICSSG_CONFIG_OFFSET + PSI_L_REGULAR_FLOW_ID_BASE_OFFSET;
+>  	writew(emac->rx_flow_id_base, &flow_cfg->rx_base_flow);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014123814.388557-1-alishmery18%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014125948.230571-1-r-kumar12%40ti.com
