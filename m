@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88BB3AF664
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 15:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8814C3B42C3
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 15:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792338705; cv=none; b=A490dkRMyTNBLwE8ByZacjng7ThipOiAPhoRpTFVrSZfEWnIjrP2W4u2gBZOS0fmzHq8dk6kiKhOWuX7X/Dz8LmU7oCl01pc/9JTHCQuh1CT+g5lu2UF8UV21kMjgGAi3RbhsQ/Bnz6aLch/9XuPZOQMVH4gDwCL+uAEpigkJpA=
+	t=1792338707; cv=none; b=Nk/p9bd/ctvS36Vp0jQn2B5QHFsHoreUYw2z/S/FCv6bb+TQHx7HuwcJJ80ZF6cD5nxETZL0ThIc8hX6azyKCQPg9xZSb48f9JfhZJPzFK3r3/XixMG/djeTrp3XiSYLRqOJppKUW6BqAuhKzfIxxHFqy2UggM5kq0QiN9l7UtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792338705; c=relaxed/simple;
-	bh=hCH1ilAJXykfj9wyewD+OBQUdkfcsObGt76xhFZT/Do=;
+	s=arc-20240116; t=1792338707; c=relaxed/simple;
+	bh=6R/BuFhfGcO1oRj2v36lrBKm+fzAB4xKrCJt26Y4wYc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q57jAb8IrrnAmY2o5Zs2pTleqjh8v3ooAU6tnLyQaY1bHnDqF6hPUlZ56NieMzvZBM8b1j4we7BNWVtuhpQvARG/Zcr+6K8VyjMWTNj+buadNUmslkAQZfVb/p6bY+x5RJad0iZlTWY+6uGLyyzYkD8giFoAq5rKRH+NliZm0Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQbEgz5q; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=qbt91UiwS6Rfld4HDS8BFSciwKJnqqEGHwHEHTqC38pMMbiR3JQSIDzOlfGx8xI5OxtjjBkImJwQYlmNL62lNebJBUyUlv/tyVpM36xrtLF4uzi1zysAVIdVf4PkoEcX/X3XSKp2WtXZ26zdoqvvlULJ4DSPrgZXPn0+/vBxGzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idDCcNcR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQbEgz5q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575DD1F000C5;
-	Sun, 18 Oct 2026 15:51:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idDCcNcR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0349B1F000C6;
+	Sun, 18 Oct 2026 15:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792338701;
-	bh=62k0NWfEI4ZcNTKqzdabdskkNTfNI6c69tsOJjVCmQo=;
+	s=k20260515; t=1792338703;
+	bh=I09pRrm2WPrQgGhtNYl0tBj38mh2IxMbEVkcFORZBaI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VQbEgz5qE68lDYxodJwadxnsKvcBtjnJZZuiBdZVM6KL3ivZshUNeyPs/jpYsVsro
-	 IM0Z9DGUaie9nDGsF9lFAG/vHluLSE7zH/XhtnvgpKKZ2Zc8fBQZfQLZ12z/TyJNBG
-	 QSqqmf3nzRS/dcrReqw88qDM3yeFqqTojWpflCw6a0UrG2oTj0z59FBUrOl8QniGC1
-	 IERRxK9FVldxQ5z1d/whA7ODaEmxLOETvvt8NeZt+CCPmcsR8Kld61Uh3oAM/+yLh6
-	 cXyZw5F9qn2NPC/T/4oaQTGxG+9sw1d6tAYCLYTNt8TBrSsvzqiNImC40e2mJ7yRxV
-	 f0cUeuBZPaM/Q==
-Subject:
- Re: [PATCH net-next v9 3/8] hsr: Add a magic header for sending PTP packets
+	b=idDCcNcR4JRXD3YW/fCoKHG8UQLEPlsvE4JcAdojsc9uQTDutnrtG3+I4G9BAnQQ1
+	 u2LbvLdnVONGypzWiXwcuxWT3MLuBpg5jjG8ZiDnJejMicAgwgc935R7iZ3w3rG4cg
+	 J+Vk2x0KAZqOjRA5covZ4vc+DBJuvXql1Sj6BCu45vT9/JPt3It/+HK1Jt2fjuYVJM
+	 ZSHaNGLh6IIEIMuUm3FYAt3v+0bW1l28ZGsL3tzXjIYje/gbEbEuKGesK4YA5dqM7z
+	 +KUNk1EvTSg0iiGZMUmgOWF/4gTbCG8NGuteeoW5RqZBclutpw9sZb1lnPsJAjwfdu
+	 wDe3AVEGKhd3g==
+Subject: Re: [PATCH net-next v9 4/8] hsr: Drop received PTP packets
 From: netdev-bot+sashiko@kernel.org
 To: bigeasy@linutronix.de
 Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
@@ -36,11 +35,11 @@ Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
  praneeth@ti.com, pratheesh@ti.com, richardcochran@gmail.com, horms@kernel.org,
  vigneshr@ti.com, willemdebruijn.kernel@gmail.com, daniel.machon@microchip.com,
  edumazet@kernel.org
-Date: Sun, 18 Oct 2026 15:51:39 +0000
-Message-ID: <179233869990.3135.8968590846653304827@kernel.org>
-In-Reply-To: <20261014-hsr_ptp-v9-3-2d20a2a0f816@linutronix.de>
-References: <20261014-hsr_ptp-v9-3-2d20a2a0f816@linutronix.de>
-X-sashiko-severity: High
+Date: Sun, 18 Oct 2026 15:51:41 +0000
+Message-ID: <179233870158.3135.22211323415720778@kernel.org>
+In-Reply-To: <20261014-hsr_ptp-v9-4-2d20a2a0f816@linutronix.de>
+References: <20261014-hsr_ptp-v9-4-2d20a2a0f816@linutronix.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,168 +60,132 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] net/hsr: OOB read due to mac_header vs skb->data mismatch
-- [Low] At this commit, hsr_forward_skb() (net/hsr/hsr_forward.c:774)
-  takes the new tx_port and has_hsr_header arguments but ignores them.
-- [Low] The new UAPI struct hsr_inline_header
-  (include/uapi/linux/hsr_ptp.h) cannot be safely extended later.
+- [Medium] The commit message says "VLAN tagged packets are not
+  considered", but the code does drop VLAN-tagged PTP frames.
+- [Low] Every received PTP frame goes to finish_free_consume, which calls
+  kfree_skb(skb) and returns RX_HANDLER_CONSUMED (hsr_slave.c:101-103).
 
 --
 
-hsr: Add a magic header for sending PTP packets
+hsr: Drop received PTP packets
 
-This commit adds a UAPI struct hsr_inline_header. Userspace must prepend
-it to ETH_P_1588 frames sent through the HSR master device, and it
-carries the requested tx port and whether an HSR header is already
-present. hsr_dev_xmit() checks the magic and the port, strips the inline
-header, passes both values to hsr_forward_skb() and drops PTP frames that
-lack the header.
+With this patch, hsr_handle_frame() drops PTP frames that arrive on HSR/PRP
+slave ports instead of forwarding them. For HSR/PRP tagged frames it checks
+the encapsulated protocol, and for other frames it checks the ethertype.
+The existing kfree_skb() error paths are merged into a new
+finish_free_consume label.
 
-> diff --git a/include/uapi/linux/hsr_ptp.h b/include/uapi/linux/hsr_ptp.h
-> new file mode 100644
-> index 0000000000000..a0b104a3df569
-> --- /dev/null
-> +++ b/include/uapi/linux/hsr_ptp.h
-> @@ -0,0 +1,20 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-> +#ifndef __UAPI_HSR_PTP_H
-> +#define __UAPI_HSR_PTP_H
-> +
-> +#include <linux/types.h>
-> +
-> +#define HSR_INLINE_HDR  0xaf485352
-> +#define HSR_INLINE_HDR_PORT_A	1
-> +#define HSR_INLINE_HDR_PORT_B	2
-> +
-> +struct hsr_inline_header {
-> +	__u8 tx_port;
-> +	__u8 hsr_hdr;
-> +	__u8 __pad0[4];
-> +	__be32 magic;
-> +	__u8 __pad1[2];
-> +	__be16 eth_type;
-> +} __attribute__ ((packed));
+> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+> index 5274ba6dd36e6..a5b47f016abd7 100644
+> --- a/net/hsr/hsr_slave.c
+> +++ b/net/hsr/hsr_slave.c
 
 [ ... ]
 
-> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-> index 59df647d2fd45..72347477f4f21 100644
-> --- a/net/hsr/hsr_device.c
-> +++ b/net/hsr/hsr_device.c
-> @@ -223,24 +223,66 @@ static netdev_features_t hsr_fix_features(struct net_device *dev,
+> @@ -64,15 +64,28 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
 
 [ ... ]
 
-> +	skb->dev = master->dev;
-> +	if (skb->protocol == htons(ETH_P_1588)) {
+>  	skb_reset_mac_len(skb);
+>  
+> +	/* PTP packets are not supposed to be forwarded via HSR as-is. The
+> +	 * latency introduced by forwarding renders the time information
+> +	 * useless. Userland needs to capture the packet on the original
+> +	 * interface instead of hsr.
+> +	 */
+> +	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
+> +	    protocol == htons(ETH_P_HSR)) {
+> +		hsr_ethhdr = (struct hsr_ethhdr *)skb_mac_header(skb);
+> +		if (hsr_ethhdr->hsr_tag.encap_proto == htons(ETH_P_1588))
+> +			goto finish_free_consume;
+> +	} else {
+> +		if (protocol == htons(ETH_P_1588))
+> +			goto finish_free_consume;
+> +	}
 
-[ ... ]
+[Severity: Medium]
+The commit message says:
 
-> +		hsr_opt = (struct hsr_inline_header *)skb_mac_header(skb);
-> +		if (hsr_opt->magic != htonl(HSR_INLINE_HDR))
-> +			goto drop;
+  VLAN tagged packets are not considered.
+
+Does that match what this code does? Before the rx_handler runs,
+__netif_receive_skb_core() has already moved a single 802.1Q tag into
+skb->vlan_tci. NIC rx-VLAN offload does this in hardware. Without offload,
+the software path does it:
+
+net/core/dev.c:__netif_receive_skb_core() {
+    ...
+	if (eth_type_vlan(skb->protocol)) {
+		skb = skb_vlan_untag(skb);
+    ...
+}
+
+As a result, protocol = eth_hdr(skb)->h_proto in hsr_handle_frame() holds
+the inner ethertype:
+
+- A VLAN-tagged PTP frame on a PRP slave matches
+  protocol == htons(ETH_P_1588).
+- A VLAN-tagged HSR frame matches
+  hsr_tag.encap_proto == htons(ETH_P_1588).
+
+Both frames take the finish_free_consume path.
+
+The only exception seems to be a VLAN upper device on the slave that
+matches the VID. In that case vlan_do_receive() moves the skb to that
+device before hsr_handle_frame() is called.
+
+Since VLAN-tagged PTP frames are dropped whether offload is on or off,
+should the commit message say so? Or should these frames keep being
+forwarded as before?
+
 > +
-> +		has_header = hsr_opt->hsr_hdr;
-> +		tx_port = hsr_opt->tx_port;
-> +		if (tx_port != HSR_PT_SLAVE_A && tx_port != HSR_PT_SLAVE_B)
-> +			goto drop;
-
-[Severity: High]
-Can hsr_dev_xmit() rely on skb_mac_header() here?
-
-The pskb_may_pull() just above only guarantees that
-sizeof(struct hsr_inline_header) bytes are linear starting at
-skb->data. The skb_pull() further down also strips the inline header
-from skb->data. The magic, tx_port and hsr_hdr fields, however, are
-read through skb_mac_header(), which assumes the caller left
-mac_header pointing at skb->data.
-
-That holds for frames that come through __dev_queue_xmit(), since it
-calls skb_reset_mac_header() before invoking the driver. But
-ndo_start_xmit() can also be reached via __dev_direct_xmit(), which
-does no such reset. AF_XDP generic TX goes xsk_build_skb() ->
-__dev_direct_xmit() -> netdev_start_xmit() without ever setting the MAC
-header, so mac_header is still ~0U when we get here.
-
-skb_mac_header() then returns skb->head + 0xffff. The hsr_opt->magic
-load reads far outside the buffer, which can oops the machine.
-
-Before this patch hsr_dev_xmit() did not depend on the incoming
-mac_header at all, because it called skb_reset_mac_header() first. Even
-when mac_header is valid but not equal to skb->data, the bytes that get
-validated are not the bytes that skb_pull() removes.
-
-Would reading the inline header from skb->data be enough here? So would
-resetting the MAC header before the ETH_P_1588 check. Either way, the
-check, the parse and the pull would all refer to the same bytes.
+>  	/* Only the frames received over the interlink port will assign a
+>  	 * sequence number and require synchronisation vs other sender.
+>  	 */
+> @@ -84,7 +97,10 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
+>  		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
+>  	}
+>  
+> -finish_consume:
+> +	return RX_HANDLER_CONSUMED;
+> +
+> +finish_free_consume:
+> +	kfree_skb(skb);
+>  	return RX_HANDLER_CONSUMED;
 
 [Severity: Low]
-struct hsr_inline_header becomes permanent ABI with this patch. Will it be
-possible to extend it later?
+I have two questions about the PTP frames that now take this exit path.
 
-hsr_dev_xmit() accepts any value in __pad0[] and __pad1[]. Once senders
-can put anything there, those bytes cannot be given a meaning later.
-Could non-zero reserved bytes be rejected now?
+First, RX_HANDLER_CONSUMED makes __netif_receive_skb_core() jump straight
+to out:
 
-hsr_hdr is similar. It has no defined values, and any non-zero byte
-counts as true:
+	case RX_HANDLER_CONSUMED:
+		ret = NET_RX_SUCCESS;
+		goto out;
 
-    has_header = hsr_opt->hsr_hdr;
+That skips ptype_base and ptype_specific delivery. Only ETH_P_ALL taps see
+the frame, because they are delivered before the rx_handler. A packet
+socket bound to ETH_P_1588 on the slave never receives it.
 
-eth_type is never checked at all.
+The commit message says a PTP stack "needs to retrieve the PTP packet on
+the original slave interface where it was received". That works with
+ETH_P_ALL plus a filter, which is what linuxptp's raw transport uses. It
+does not work for a socket bound to ETH_P_1588. Could the commit message
+mention this?
 
-The tx_port check uses the internal enum hsr_port_type instead of the
-exported HSR_INLINE_HDR_PORT_A and HSR_INLINE_HDR_PORT_B. The values match
-today (HSR_PT_SLAVE_A is 1 and HSR_PT_SLAVE_B is 2), but nothing ties
-them together at build time.
+Alternatively, on PRP the frame is a plain ETH_P_1588 frame. Could it be
+returned with RX_HANDLER_PASS after undoing the skb_push(), so that normal
+protocol delivery takes place?
 
-If enum hsr_port_type in include/linux/if_hsr.h is ever reordered, would
-the ABI change silently? Comparing against the UAPI constants and mapping
-them explicitly, or adding a BUILD_BUG_ON(), would prevent that.
+This isn't a new loss. Before this patch, ETH_P_1588-bound sockets on the
+slave didn't get these frames either, because the frames were consumed for
+forwarding.
 
-A smaller point: include/linux/if_hsr.h includes the new header as:
-
-    #include <uapi/linux/hsr_ptp.h>
-
-instead of the usual <linux/hsr_ptp.h>.
-
-[ ... ]
-
-> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> index 6cc1812be15ad..14d793f00344f 100644
-> --- a/net/hsr/hsr_forward.c
-> +++ b/net/hsr/hsr_forward.c
-> @@ -771,7 +771,8 @@ static int fill_frame_info(struct hsr_frame_info *frame,
->  }
->  
->  /* Must be called holding rcu read lock (because of the port parameter) */
-> -void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port)
-> +void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port,
-> +		     enum hsr_port_type tx_port, bool has_hsr_header)
->  {
->  	struct hsr_frame_info frame;
->  
-
-[Severity: Low]
-At this commit, hsr_forward_skb() accepts tx_port and has_hsr_header but
-does not use them. It still calls:
-
-    if (fill_frame_info(&frame, skb, port) < 0)
-
-and struct hsr_frame_info has no fields to hold them yet.
-
-hsr_dev_xmit(), on the other hand, already drops ETH_P_1588 frames that
-lack the inline header. So a bisect that stops here sees PTP frames with
-the header still sent on both slaves with normal tagging, while PTP
-frames without it are dropped.
-
-The commit message says the values "will be used later". A later patch
-in the series, "hsr: Use the port and header information in
-hsr_forward_skb()", passes them to fill_frame_info() and uses them in
-hsr_forward_do().
-
-Could the two patches be squashed, so the new header only takes effect
-once the kernel actually uses it?
+Second, kfree_skb() reports SKB_DROP_REASON_NOT_SPECIFIED. Every PTP frame
+filtered on purpose (sync, follow-up, announce, pdelay, on each slave port)
+will show up in the kfree_skb tracepoint and drop_monitor as a drop with
+no reason given. Would a dedicated drop reason, or consume_skb() since ETH_P_ALL
+taps have already received the frame, fit better here?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014-hsr_ptp-v9-0-2d20a2a0f816%40linutronix.de
