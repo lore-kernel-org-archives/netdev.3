@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6BF397B1C;
-	Sun, 18 Oct 2026 03:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6573A344DB7;
+	Sun, 18 Oct 2026 03:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792294028; cv=none; b=CA/ucnkS7tjzP3/xP8VnAM4WNIGOBBjluEWY/2sQln2bggEY33tfPIVAcCTEy1Ge8CK2//ZBcgfzeSnHX2Kbb1LfOtLyBPZj/pt7UafROKIxH/mYb5ZupnR8mZR/iauAbFLvBHaAhJB5crLZwtNvBVf/Kw/WuG3BArk453dUF9E=
+	t=1792294583; cv=none; b=QePXaGgJ7KI+sqmGQUIdzKBR0u/0sXhrJigSHludPDe3aYrhi7iaFpv/WwO/1vFNTrBgtd0BevFnrvUneVsPiT9ubovAF/877aV8YP4hXwFmcT3wfoHX/gP9ZpXITgEXkHtmh5g/7PVvuVbxZLPoL3K30xl4jiKVl4VclytkQUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792294028; c=relaxed/simple;
-	bh=4qBW/eAhXI8S9EJJ+INb/Wstzy0FXar2ojgqHZFgLbo=;
+	s=arc-20240116; t=1792294583; c=relaxed/simple;
+	bh=ACHZxWmCN37RgbSYYmrHE4/NBiIMOBnNNpsYI2qE6mw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=r4SppcczQeW4vJ+j38bcGpG4r2MH7xtrnKaPuSd38NQAbzZWeTuLGnhFAMUrqbVlk0ek5X7prwG9G22OdjppOD8tdzSBsUAWlnlgjXvW33bJgZXgpgT8QYKMMIWLsYP8ZpU79qbcS70kVgqHa0rvyw1HYvdVVH16Lx3GRznkukQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSjqTc20; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=lTh4xo/azONysh+HHhKD7CqqHinHfObaBU43iwgpdusfan8GUu9DyVxkUYjDbH+CiGxt/0gMXvpjOtHdgHodfBbUOXQyoV+Rz/KoduKyZmaM+T7KefvnsVpDHDqHFcXIN4ztFBsBU1RHe1KG7d/4Mh8OqhvnAYKNa7yNBGo/zjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hHM2n2P7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSjqTc20"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E891F000C4;
-	Sun, 18 Oct 2026 03:27:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hHM2n2P7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6038D1F000C4;
+	Sun, 18 Oct 2026 03:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792294021;
-	bh=zmyBVvu4JiIs0y0s2xwxCb22u3J0cPb2ljZdZxuuBgo=;
+	s=k20260515; t=1792294582;
+	bh=QnWEPJayxPpyyDWH+a39Kmem0X6xb1GKVFGOHNM64yM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iSjqTc20OpvEYtTiK7gXee4G38ZXQOlvS9HgrDiULki7FmUgJEuurCr7dbqQ7Tn+u
-	 jkhy8uhndc7br816/7aCsENrZC7q7JtlnkMZJfFecr/Zs4tYEyYpKCCPKdxhenQY9T
-	 tnN9w4SSqsKJJDPAyOjtdcsYuCga26VzECQhzGoMoNVP1+z0o5JKlrv4OCopwcVYOd
-	 QXw0QZPPVYJ1cSdtlHQ6ikiB2S/u4BhnfqXtLHbN2Qqi9T1FnEOhYBsR6PVrdTambi
-	 c9AXNNnqxHyik7dXtPC7r1j2nsPopI37l2Z+uu74jev2AMSxmULBAZHP1IaBaKrlrn
-	 CutSzP8QpmTUg==
-Subject: Re: [PATCH net-next v5 1/2] net/rds: keep the connected peer's scope
- id apart from the bound one
+	b=hHM2n2P7wf4oiU9im9pCQdT2I8Vl1yvT9SCA0DxHeYCmC5RoEaam6MGPfhiOOVtDc
+	 rWsGad9IATUPWVuj2PmzGJ96QKclLFJxgmTxo9eqGwfnSOxyfPuN7yy0u4FR0NM/2t
+	 PnISVvOgyPjE/16BBwEfdFa3Lq+q4YhMLqtVO1AvFA8LfMQaHxHqi0jHcH9likUw8M
+	 Cro2pnu1e3c6uY75R5hlU0m0MfI2qlvbb+qtQ5sntf59E+gRYGbV7oNYUsgT3AqYnY
+	 FN88v/UuxWLWv5qCb750be1008lmr54AqRV0kCYE3wA3vF9VXoQ5SpnsHFp7FlwyU6
+	 H4UI0jV0j7mBQ==
+Subject: Re: [PATCH net v2] net/ncsi: fix use-after-free of ncsi_channel in
+ ncsi_remove_channel()
 From: netdev-bot+sashiko@kernel.org
-To: achender@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Date: Sun, 18 Oct 2026 03:27:00 +0000
-Message-ID: <179229402073.3135.15507555061447027446@kernel.org>
-In-Reply-To: <20261017032358.2563121-2-achender@kernel.org>
-References: <20261017032358.2563121-2-achender@kernel.org>
-X-sashiko-severity: Medium
+To: 18983559317@163.com
+Cc: sam@mendozajonas.com, fercerpav@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ gwshan@linux.vnet.ibm.com, joel@jms.id.au, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 18 Oct 2026 03:36:20 +0000
+Message-ID: <179229458091.3135.8180877668637139297@kernel.org>
+In-Reply-To: <20261017024947.420683-1-18983559317@163.com>
+References: <20261017024947.420683-1-18983559317@163.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
+Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -57,146 +59,221 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In rds_sendmsg() (net/rds/send.c), the rs_conn cache-hit test
-  at this commit compares only c_faddr and c_tos.
-- [Low] rds_recvmsg() (net/rds/recv.c:792-799) now reports a link-local
-  sender's sin6_scope_id as inc->i_conn->c_dev_if, with the comment 'A…
+- [High] The fix is incomplete, and the race the commit message targets
+  (rmmod ftgmac100 vs. NCSI_CMD_PKG_INFO) can still cause a use-after-…
+- [Medium] The patch adds the RCU reader protocol only to the
+  NCSI_CMD_PKG_INFO handlers.
+- [Medium] The comment the patch adds in ncsi_remove_channel() (ncsi-
+  manage.c:270-273) says the call_rcu() deferral protects the 'channel…
 
 Pre-existing issues:
-- [Medium] rds_sendmsg() (net/rds/send.c:1256-1264) reads the scope for a
-  send with no destination in one lock_sock() section and checks that…
+- [Medium] This problem wasn't introduced by this patch, but
+  ncsi_pkg_info_all_nl() passes get_net(sock_net(skb->sk)) to…
 
 --
 
-net/rds: keep the connected peer's scope id apart from the bound one
+net/ncsi: fix use-after-free of ncsi_channel in ncsi_remove_channel()
 
-This patch adds rs_conn_scope_id to struct rds_sock. With it,
-rds_connect() no longer stores a link-local peer's scope in
-rs_bound_scope_id. A send without a destination, getpeername() and the
-connected-socket check in rds_bind() now use the connected peer's scope,
-and recvmsg() takes a link-local sender's scope from the incoming
-connection's c_dev_if.
+This patch wraps the NCSI_CMD_PKG_INFO doit and dump handlers in
+rcu_read_lock(). It also moves the freeing of ncsi_channel and its filter
+arrays into an RCU callback. The goal is to close a use-after-free between
+netlink package info readers and ftgmac100 teardown through
+ncsi_unregister_dev().
+
+> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+> index 54d0df0a9efe6..c16047dee3f8a 100644
+> --- a/net/ncsi/ncsi-manage.c
+> +++ b/net/ncsi/ncsi-manage.c
 
 [ ... ]
 
-> diff --git a/net/rds/recv.c b/net/rds/recv.c
-> index 6204e577a90ae..a036162539e5e 100644
-> --- a/net/rds/recv.c
-> +++ b/net/rds/recv.c
-> @@ -789,7 +789,14 @@ int rds_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
->  				sin6->sin6_port = inc->i_hdr.h_sport;
->  				sin6->sin6_addr = inc->i_saddr;
->  				sin6->sin6_flowinfo = 0;
-> -				sin6->sin6_scope_id = rs->rs_bound_scope_id;
-> +				/* A link-local sender is reached through the
-> +				 * interface its connection came in on; any
-> +				 * other sender has no scope.
-> +				 */
-> +				sin6->sin6_scope_id =
-> +					(ipv6_addr_type(&inc->i_saddr) &
-> +					 IPV6_ADDR_LINKLOCAL) ?
-> +					inc->i_conn->c_dev_if : 0;
+> @@ -263,7 +267,11 @@ static void ncsi_remove_channel(struct ncsi_channel *nc)
+>  	np->channel_num--;
+>  	spin_unlock_irqrestore(&np->lock, flags);
+>  
+> -	kfree(nc);
+> +	/* Readers (netlink package info walkers, channel configuration
+> +	 * worker) may still hold the channel or its filter arrays;
+> +	 * release everything after a grace period.
+> +	 */
+> +	call_rcu(&nc->rcu, ncsi_channel_release);
 
-[Severity: Low]
-Is c_dev_if always the interface the connection came in on? For RDS/TCP it
-is, because the accept path takes it from the accepted socket's
-sk_bound_dev_if. For RDS/IB it looks more like a guess.
+[Severity: Medium]
 
-In rds_ib_cm_handle_connect(), when the peer address is link-local and our
-local address is global, the ifindex is looked up from our own address:
+Does this grace period really cover the channel configuration worker?
+ncsi_dev_work() -> ncsi_process_next_channel() / ncsi_configure_channel() /
+ncsi_suspend_channel() does not run under rcu_read_lock(), so call_rcu()
+does not wait for it.
 
-net/rds/ib_cm.c:rds_ib_cm_handle_connect() {
-    ...
-	} else if (ipv6_addr_type(saddr6) & IPV6_ADDR_LINKLOCAL) {
-		/* Use our address to find the correct index. */
-		ifindex = __rds_find_ifindex(&init_net, daddr6);
-    ...
+ncsi_unregister_dev() stops the worker only after every channel has already
+been passed to call_rcu():
+
+ncsi_unregister_dev() {
+	...
+	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+		ncsi_remove_package(np);
+	...
+	disable_work_sync(&ndp->work);
+	...
 }
 
-__rds_find_ifindex() returns the first netdev that carries that address.
-The comment above it says the incoming interface of an RDMA connect
-request cannot be determined.
+ncsi_remove_channel() does not unlink nc->link from ndp->channel_queue. It
+also does not clear ndp->active_channel, ndp->hot_channel or
+np->preferred_channel.
 
-So on the IB transport, can recvmsg() on a globally bound socket return
-fe80::peer%ifX where ifX is not the peer's link?
+A worker that is running or preempted could still dereference nc after
+ncsi_channel_release() has freed it. It could also list_del_init() a stale
+nc->link in ncsi_process_next_channel().
 
-Replies sent through RDS still look fine. A sendto() to the reported
-address uses scope_id ifX, which matches the key of the incoming IB
-connection, so rds_conn_lookup() returns that same connection.
+It could also re-arm nc->monitor.timer through ncsi_start_channel_monitor()
+in ncsi_configure_channel() after ncsi_stop_channel_monitor() has already
+run timer_delete_sync(). The timer would then fire on freed memory.
 
-What's left is that the new comment and the commit message describe
-c_dev_if as the arrival interface. That only holds for TCP. Could the
-comment say that for IB this is a best-effort guess?
+The worker race itself predates this patch, because the old code called
+kfree() right away.
 
-> diff --git a/net/rds/send.c b/net/rds/send.c
-> index 1afa981e5c06d..7b525a6f7eac2 100644
-> --- a/net/rds/send.c
-> +++ b/net/rds/send.c
-> @@ -1256,7 +1256,11 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
->  		lock_sock(sk);
->  		daddr = rs->rs_conn_addr;
->  		dport = rs->rs_conn_port;
-> -		scope_id = rs->rs_bound_scope_id;
-> +		/* The connected peer's scope for a link-local peer, else
-> +		 * the bound scope, as an explicit send to that peer would
-> +		 * compute below.
-> +		 */
-> +		scope_id = rs->rs_conn_scope_id ?: rs->rs_bound_scope_id;
->  		release_sock(sk);
+Should the comment leave out the worker? Or should teardown call
+disable_work_sync() before releasing the channels, use timer_shutdown_sync()
+on the monitor timer, and unlink nc->link from channel_queue?
+
+>  }
+>  
+>  struct ncsi_package *ncsi_find_package(struct ncsi_dev_priv *ndp,
+> diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
+> index 8cc538358f6a3..8d1fe60beb22f 100644
+> --- a/net/ncsi/ncsi-netlink.c
+> +++ b/net/ncsi/ncsi-netlink.c
+
+[ ... ]
+
+> @@ -192,7 +187,21 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
+>  		kfree_skb(skb);
+>  		return -EMSGSIZE;
 >  	}
+> +	/* The device is resolved and the lists are walked inside an RCU
+> +	 * read-side critical section: the teardown path only unlinks these
+> +	 * objects and frees them after a grace period.
+> +	 */
 
-[Severity: Medium]
-At this commit, does the rs_conn cache in rds_sendmsg() respect this
-scope_id? Further down, the cache-hit test still compares only the peer
-address and tos:
+[Severity: High]
 
-	if (rs->rs_conn && ipv6_addr_equal(&rs->rs_conn->c_faddr, &daddr) &&
-	    rs->rs_tos == rs->rs_conn->c_tos) {
-		conn = rs->rs_conn;
+Is this comment accurate for ndp and np? Only the channel free moved to
+call_rcu(). The package and the device are still freed right after
+list_del_rcu():
 
-rds_conn_lookup(), on the other hand, treats c_dev_if as part of a
-connection's identity.
-
-This patch also makes a new sequence possible on a socket bound to a
-global address:
-
-  connect(fe80::1%ifA)
-  send()
-  connect(fe80::1%ifB)
-  send()
-
-Before this patch, the second connect() failed with -EINVAL, because the
-first one had stored ifA in rs_bound_scope_id and rds_connect() compared
-against it. Now the second connect() succeeds, and the second send() seems
-to reuse the cached ifA connection instead of one for ifB.
-
-The next patch in the series, "net/rds: include the scope id in the
-sendmsg connection cache check", adds rs->rs_conn->c_dev_if == scope_id to
-the cache test, so the final tree is fine. Could that patch go before this
-one, so this intermediate commit doesn't send on the wrong interface?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the scope is read here in
-one lock_sock() section, and the bound check is done in a second one:
-
-	lock_sock(sk);
-	if (ipv6_addr_any(&rs->rs_bound_addr) || ipv6_addr_any(&daddr)) {
+ncsi_remove_package() {
 	...
-	} else if (namelen != 0) {
+	spin_lock_irqsave(&ndp->lock, flags);
+	list_del_rcu(&np->node);
+	ndp->package_num--;
+	spin_unlock_irqrestore(&ndp->lock, flags);
 
-Could a concurrent bind() run between the two sections?
+	kfree(np);
+}
 
-Take a socket connected to a global peer. If rds_bind()->rds_add_bound()
-binds fe80::a%ifA after scope_id has already been read as 0, the send
-continues with scope_id 0 against a link-local bound address. The
-namelen == 0 path skips the scope reconciliation that sendto() gets.
+ncsi_unregister_dev() {
+	...
+	spin_lock_irqsave(&ncsi_dev_lock, flags);
+	list_del_rcu(&ndp->node);
+	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
 
-The result would be a connection with c_dev_if 0, which the TCP transport
-cannot bring up.
+	disable_work_sync(&ndp->work);
 
-The baseline had the same split, with scope_id = rs->rs_bound_scope_id
-read in the first section, so this patch changes neither the window nor
-the outcome.
+	kfree(ndp);
+}
+
+Inside the new rcu_read_lock() section, ncsi_write_package_info() still
+reads ndp->package_num, ndp->package_whitelist and np->id, and it follows
+the np->node and np->channels links.
+
+ncsi_write_channel_info() reaches the parent package through a channel
+that call_rcu() keeps alive:
+
+	if (nc == nc->package->preferred_channel)
+
+ncsi_pkg_info_all_nl() also holds on to package and reads package->id
+after the walk.
+
+ftgmac100_remove() calls ncsi_unregister_dev() before unregister_netdev().
+So it looks like the same rmmod vs NCSI_CMD_PKG_INFO race from the commit
+message can still cause a use-after-free, now on np or ndp instead of nc.
+
+Do np and ndp also need kfree_rcu() or call_rcu(), or a synchronize_rcu()
+before the kfree()?
+
+> +	rcu_read_lock();
+> +	ndp = ndp_from_ifindex(genl_info_net(info),
+> +			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+> +	if (!ndp) {
+> +		rcu_read_unlock();
+> +		kfree_skb(skb);
+> +		return -ENODEV;
+> +	}
+> +
+>  	rc = ncsi_write_package_info(skb, ndp, package_id);
+> +	rcu_read_unlock();
+
+[Severity: Medium]
+
+Do the other genl handlers in ncsi-netlink.c need the same change? These
+handlers still call ndp_from_ifindex() and walk NCSI_FOR_EACH_PACKAGE() /
+NCSI_FOR_EACH_CHANNEL() without rcu_read_lock():
+
+ncsi_set_interface_nl()
+ncsi_clear_interface_nl()
+ncsi_send_cmd_nl()
+ncsi_set_package_mask_nl()
+ncsi_set_channel_mask_nl()
+
+The commit message says "Either half alone leaves the race". On a
+preemptible kernel, one of these walkers can be preempted mid-walk during
+ncsi_unregister_dev(). The grace period can then end and
+ncsi_channel_release() can free nc while the walker still uses it.
+
+Several of these handlers also write through the pointers they find.
+ncsi_set_interface_nl() stores the channel into package->preferred_channel
+and updates package->channel_whitelist. ncsi_clear_interface_nl() takes
+np->lock and writes np fields for each package.
+
+Can these turn into use-after-free writes during teardown?
+
+These ops are GENL_ADMIN_PERM and the family only works in init_net, so a
+trigger needs CAP_NET_ADMIN. With CONFIG_PROVE_RCU_LIST these walks would
+also cause suspicious RCU usage warnings.
+
+>  
+>  	if (rc) {
+>  		nla_nest_cancel(skb, attr);
+> @@ -228,20 +237,26 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
+>  	if (!attrs[NCSI_ATTR_IFINDEX])
+>  		return -EINVAL;
+>  
+> +	package_id = cb->args[0];
+> +
+> +	rcu_read_lock();
+>  	ndp = ndp_from_ifindex(get_net(sock_net(skb->sk)),
+>  			       nla_get_u32(attrs[NCSI_ATTR_IFINDEX]));
+
+[Severity: Medium]
+
+This is a pre-existing issue and was not introduced by this patch, but does
+ncsi_pkg_info_all_nl() leak a netns reference here?
+
+get_net(sock_net(skb->sk)) takes a reference that ndp_from_ifindex() never
+drops, and there is no put_net() anywhere in net/ncsi/. get_net() runs
+before the lookup, so the reference leaks even when no NCSI device is
+found.
+
+The same pattern is in ncsi_set_interface_nl(), ncsi_clear_interface_nl(),
+ncsi_send_cmd_nl(), ncsi_set_package_mask_nl() and
+ncsi_set_channel_mask_nl().
+
+The family does not set netnsok, so only init_net is affected, and its
+refcount grows with every dump call.
+
+Would plain sock_net() be enough here?
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017032358.2563121-1-achender%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017024947.420683-1-18983559317%40163.com
