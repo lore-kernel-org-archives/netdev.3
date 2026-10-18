@@ -1,56 +1,78 @@
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58859346FA0;
-	Sun, 18 Oct 2026 09:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E81F3C10AD
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 09:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792314208; cv=none; b=bO9r1K+4ycnt7HkuG6Ab5Fi6GWiW/ggE1xqeTQFN5z+FcBYukUxiLnr/SckkNyyXpiXhzUyTfQplaOWNvEyCfRpOmkDAArnu8tyiYDaNiQQtD2MbZtSLmTdaeCH/kJtTLrzN1DNjJGXLlmFEN8Q3SdKKmzYS5zByJ89L3yyeBOY=
+	t=1792314408; cv=none; b=UKODYlg5HnL+WbLEsv1+qXTsKbNFEvo9CCx0RlKUwlh3XLL5GXCm7Q2w6U7of3VmkYzlLCzv9x4VrSUwCDRChdi314PtZoEuvXxhsF+IAvL0VU2eCHm8d5TsoXenP7IiwA31J2uSiwRbqhSeVZNR6ur9M1KLVieAEi4BpFT7W/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792314208; c=relaxed/simple;
-	bh=f3f5IHx0dcEAgHK3kzpdgbBZIaG5uTvotMrVX6H/r0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8OEM+AxBKRrZI9XRNt+hcDxWZkp6EfutOZCqq27wg8Tm0u0juq+tcB7iza3LWZkRqsZpjN9Ald0zwV0uJ7eyYKfnc0XgkC9y4WrMYSXp/Mtx6De9jdCiJtIPZY2cFN/Vv/ezPfwoTy0LpOx9h6p2cOLiiR6o/f/OTf435qmZ5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=nDRQufll; arc=none smtp.client-ip=111.22.67.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	s=arc-20240116; t=1792314408; c=relaxed/simple;
+	bh=S4WKD2aYHcIJH4cVj74AaLH+NGadEsqP/fj+C7Oow+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GAYxmdpGCHbNQ7khNyO/6l0fNOTbsXOV0m7i6Y53dN/9Ex5WHiTxjN7MpAauE/ocDz6YhyuzkYp0AsEspvGdxI6+ExRc/qVStHZ/+aEWnJUIX2XktKX4sroywkneoctF3sBHenbqQRzpKUWb7A16iA0JSOA5DgOeBrz3/LR+X6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TM7q8MQF; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="nDRQufll"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TM7q8MQF"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ab3f899c8aso248330a91.1
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=nDRQuflldMafCo46dZXtOoumY6p7RD/9It25a9ihLoLuat8MAEAMCYXIE9uq9wreeRyEpeAPSIQwJ
-	 vsPVb7Rt8F50Euiw+EF4slCyST5JWZCEQbJhRqIT+UsLXvxEQq4jz9kncFbG45Eo4T+9Q6kpyWDNPY
-	 Beg641DVXYE+go5o=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56ad48b508f8-05d3d;
-	Sun, 18 Oct 2026 17:03:17 +0800 (CST)
-X-RM-TRANSID:2ee56ad48b508f8-05d3d
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[112.22.251.201])
-	by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea6ad48b34aee-7c204;
-	Sun, 18 Oct 2026 17:03:17 +0800 (CST)
-X-RM-TRANSID:2eea6ad48b34aee-7c204
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+        d=gmail.com; s=20251104; t=1792314406; x=1792919206; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TVLHsdZOGUdB7hYzL6avssJ0uN7VSZZ15QHDi5kS+Rk=;
+        b=TM7q8MQFHllndXizixkC2jOrTqKshVMzuzIfmyOeB4TLgCmUuZ7gwIWUFcfPLBKjhu
+         noOUScekNgSfZna4hI9kFlv4Q4gGiJIgTt/V5wmGF+/k6lowLE6o7Ipbe7jUfLh3YfVb
+         tVQ0PjIsXx/xAXuvLaVyUsFw03UwuEHHRlxSHrKFVx60OGlSqv0mIgobqhBKn0RfDAqu
+         qC3NpHd0Pfe6ONHLrszDedxuzXLTMfXUvaUvaYh8PxfzFNBwkA0lml/7o2wf45gEKtYY
+         IC2hp0WMBytS5K5NKpkYDS/6xMp5rt1lAzjqvo18Yto4u0EBpensnfluptCMxUKyUbXG
+         NOsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792314406; x=1792919206;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TVLHsdZOGUdB7hYzL6avssJ0uN7VSZZ15QHDi5kS+Rk=;
+        b=1gGpiwppdxCuqu/lSpI+79nn0MjiHeSLX1Ya8w7Vhp1a2e3YVALYch/DnI+G2ilvno
+         d6IKnizhY53ImNH7eR7O2/5+oxY0viNG0xuEh9PiF6XexkyMYaZ0FmKhV6vMEZJOwpVL
+         2z89lonwDiZ/rAQ0nVPxraRsL0+DvGEmThrwofOFQgISh41gwc5JBeAm8tK9AEecsMLy
+         00EUwSQbycoSvGTfMM1yaezphAm6sCPqHtHNZcwIZknMPEWMW2EoQ2atkf8eDzaSnqF+
+         CY384gvwIU7npIBEpU/vwIb62IpPcRmBy/cRgpEUnOYFIeDHsU2ms7dBIBmzfJ+iRClz
+         8ubw==
+X-Gm-Message-State: AFq9FYLSeOTnG+sXSzpaNThvx4qWN/UwUFqE1VguG2C03Rj3aZKpvxuX
+	JWIDGekXvBqoEtU3XnHxLbCnlhtwLZirUDEtYXfJ+Bj2LUvPPOfcGXpcnJFPkQ==
+X-Gm-Gg: AYBFou2pdrXJ48FEHUn3/C+YyShCC6MJYXuLa25LlbSNAleV9RE78J0vCaVl8oLLNAo
+	4ARPdu9fZgclUr9GjAKDysHdFKrivckKCe19WXPK0gbl1YahdNMHbZQECaR5WtZ9XrNLdDkAl10
+	6umFwyGyNW6l4LcXLPKwbEOElEdG4Z2UIq5gs1lbKvj0jWbJtRshHb6KPnawTn1ESZmW68fozSW
+	xapor7nB7BbVxCsD5MpKUFAUz1rydim9NPVBxBH0AWmbWv1oQSo/0klHp8Q3YrJvut/Nqa8+Esi
+	/xIIJSr2A0hnXjaiD++HWvm7vneDxeV7BvVQ36yroObq3ZVGo4NrRI+s3EKiIdTv2ku6zGzihF9
+	IqlI1or7xnez0mCf/+gpqPIeXcV8UdX2uPQPssMLvWEp/vMjhsCCSZ3bdqoiWmqff7HTW4nPFGC
+	Hcaw0RkIOJIiR9eMNUHYi6koGUYZq2HonN7NODnXCocXkquGRQT27+njY3qLLcf4B3tMj0Ug1pr
+	Vk8BRHLvZXel4OpLTi12ykXnJc7pC5F7aFuKIzjsmUcX24A1TY+H/lT1K0HVygEfak=
+X-Received: by 2002:a17:90b:1a87:b0:3a6:e1d1:e511 with SMTP id 98e67ed59e1d1-3aceec3d0c4mr6800762a91.4.1792314405637;
+        Sun, 18 Oct 2026 02:06:45 -0700 (PDT)
+Received: from localhost.localdomain ([113.102.237.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947928b4sm15580675a91.11.2026.10.18.02.06.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 18 Oct 2026 02:06:45 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
 To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	William Tu <u9012063@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Subject: [PATCH net-next 2/2] erspan: skip the platform specific sub-header of ERSPAN type III
-Date: Sun, 18 Oct 2026 17:02:36 +0800
-Message-ID: <20261018090236.2487997-3-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261018090236.2487997-1-yanhaishuang@cmss.chinamobile.com>
-References: <20261018090236.2487997-1-yanhaishuang@cmss.chinamobile.com>
+Cc: steffen.klassert@secunet.com,
+	chopps@labn.net,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v4 0/3] xfrm: fix vti tunnel device use-after-free across async crypto resumption
+Date: Sun, 18 Oct 2026 17:06:35 +0800
+Message-ID: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,85 +81,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ERSPAN type III header has an O flag, which tells whether an
-optional platform specific sub-header of 8 octets follows it. The
-ERSPAN payload starts after that sub-header when the flag is set [1].
+This replaces the v1/v2 vti/vti6 series and the earlier reference-transfer
+rework.
 
-Linux never sets the flag on transmit, but it ignores it on receive
-too. When a peer sends the sub-header, its 8 bytes are passed up as the
-start of the mirrored Ethernet frame, so the frame is corrupted.
+vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
+control buffer without taking a reference.  With async crypto the
+receive callback runs from the crypto completion, after a possible
+device teardown, and dereferences the freed tunnel device.
 
-Pull the sub-header as well when the O flag is set. The collect_md
-metadata still only carries the fixed part of the type III header.
+The input hook takes a reference on the tunnel device when it caches
+the tunnel.  A successful receive callback leaves the cached tunnel in
+place; xfrm_input() releases the reference on every exit, including
+after delivery and on the drop paths.  The error callback only updates
+the counters, so the common drop path releases the reference after the
+skb has been freed.  IPTFS, which frees the outer skb itself, releases
+it through xfrm_input_drop()/xfrm_input_consume().
 
-[1] https://datatracker.ietf.org/doc/html/draft-foschiano-erspan-03
+Patch 3 depends on the first two: it releases the tunnel reference from
+the drop path, which needs the receive callback ordering and the address
+family set up by patches 1 and 2.
 
-Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
----
- include/net/erspan.h |  4 ++++
- net/ipv4/ip_gre.c    | 10 ++++++++++
- net/ipv6/ip6_gre.c   | 10 ++++++++++
- 3 files changed, 24 insertions(+)
+Changes since v3:
+- the cached pointer is always a tunnel; the address family selects its
+  type, and a non-NULL slot means one device reference is held, so a
+  nested or pre-installed tunnel device cannot leak it
+- xfrm_input() takes the device out of the skb before
+  gro_cells_receive()/transport_finish(), which may consume the skb
+- the device reference is dropped only after the skb has been freed,
+  including on the error path
+- IPTFS passes the state's address family explicitly instead of
+  inferring it from the secpath; the consumed skb keeps consume_skb()
+  semantics and the drop paths keep their skb drop reason
+- drop the xfrmi changes: it re-looks-up the interface and does not
+  take part in the reference transfer
+- merge the reference and IPTFS changes into one patch so the series
+  stays bisectable
+- the gro_cells NAPI window is pre-existing and is documented, not
+  changed
 
-diff --git a/include/net/erspan.h b/include/net/erspan.h
-index c6209e7b6c96..0ef4338588c4 100644
---- a/include/net/erspan.h
-+++ b/include/net/erspan.h
-@@ -94,6 +94,10 @@ enum erspan_encap_type {
- 
- #define ERSPAN_V1_MDSIZE	4
- #define ERSPAN_V2_MDSIZE	8
-+/* Optional platform specific sub-header of ERSPAN type III, which follows
-+ * the header when its O flag is set.
-+ */
-+#define ERSPAN_V2_SUBHDR_LEN	8
- 
- struct erspan_base_hdr {
- #if defined(__LITTLE_ENDIAN_BITFIELD)
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 2f112c1edf7c..b24ff0eca30b 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -311,6 +311,16 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 		if (unlikely(!pskb_may_pull(skb, len)))
- 			return PACKET_REJECT;
- 
-+		if (ver == ERSPAN_VERSION2) {
-+			md2 = (struct erspan_md2 *)(skb->data + gre_hdr_len +
-+						    sizeof(*ershdr));
-+			if (md2->o) {
-+				len += ERSPAN_V2_SUBHDR_LEN;
-+				if (unlikely(!pskb_may_pull(skb, len)))
-+					return PACKET_REJECT;
-+			}
-+		}
-+
- 		if (__iptunnel_pull_header(skb,
- 					   len,
- 					   htons(ETH_P_TEB),
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 3fe395ed92f9..c87a7198e5a8 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -513,6 +513,16 @@ static int ip6erspan_rcv(struct sk_buff *skb,
- 		if (unlikely(!pskb_may_pull(skb, len)))
- 			return PACKET_REJECT;
- 
-+		if (ver == ERSPAN_VERSION2) {
-+			md2 = (struct erspan_md2 *)(skb->data +
-+						    sizeof(*ershdr));
-+			if (md2->o) {
-+				len += ERSPAN_V2_SUBHDR_LEN;
-+				if (unlikely(!pskb_may_pull(skb, len)))
-+					return PACKET_REJECT;
-+			}
-+		}
-+
- 		if (__iptunnel_pull_header(skb, len,
- 					   htons(ETH_P_TEB),
- 					   false, false))
+Runtime evidence (KASAN, aarch64 QEMU):
+- VTI async success and error: RTM_DELLINK completes without a KASAN
+  report; the unfixed tree reports slab-use-after-free in vti_rcv_cb.
+- Async resume with the SA deleted in the crypto window: the reference
+  is released and the device is removed; with patch 2 reverted,
+  xfrm_input_take_tunnel_dev() warns and unregister_netdevice() waits
+  for vti0.
+- IPTFS outer-skb free: RTM_DELLINK completes; with the !first_skb
+  xfrm_input_drop() reverted to kfree_skb(), the reference leaks and
+  unregister_netdevice() waits for vti0.
+The IPTFS timer/reorder/state-teardown paths are covered by code audit,
+not by a runtime trigger.
+
+Previous versions:
+  https://lore.kernel.org/netdev/20261013074610.17808-1-q.h.hack.winter@gmail.com/ (v2)
+  https://lore.kernel.org/netdev/20260930090813.73901-1-q.h.hack.winter@gmail.com/ (v1)
+
+Qihang
+
+
+Qihang (3):
+  xfrm: run the receive callback before dropping the skb->dev reference
+  xfrm: set the address family before the early invalid-state drop
+  xfrm: hold the tunnel device reference across the input path
+
+ net/ipv4/ip_vti.c      |  3 ++
+ net/ipv6/ip6_vti.c     |  4 +++
+ net/ipv6/xfrm6_input.c |  3 ++
+ net/xfrm/xfrm_inout.h  |  4 +++
+ net/xfrm/xfrm_input.c  | 74 +++++++++++++++++++++++++++++++++++++++---
+ net/xfrm/xfrm_iptfs.c  | 25 +++++++++-----
+ 6 files changed, 99 insertions(+), 14 deletions(-)
+
 -- 
-2.43.0
-
-
+2.54.0 (Apple Git-157)
 
