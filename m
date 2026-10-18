@@ -1,42 +1,41 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740463D3498;
-	Sun, 18 Oct 2026 04:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53361E9919;
+	Sun, 18 Oct 2026 04:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792296446; cv=none; b=lcZFedKeiAeSefMPKkO/9OzmqKXP6RSYQxu+ujTD3nF4Jo9H68sTZwRLgbS+U+3sHlzTmV1QAT7HlRi7Z+7qn314KBEjULwNVpdx0QgYlcdpPibH+ugPVakeMeYDRyeiL1hOmEGoeR3EqRfYAC1l5xXwAhd9aX1tYjrmkRWevPE=
+	t=1792296454; cv=none; b=PS9W3kBo36cueYPSZ+edULNrdZzNRDng0v69Nnl84WIXf+J5q3sNWV3cyI4ApAPy2hFFtGlD4N8l5LvN1qxO3/2z5ywNVrfTNEZ6d7MwDFBTYTgVJFM3d16ucWLPTM4L7s6VlPOdhSQNFvilgsYj6f+hbrGbHcfXbhKHLOOnvrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792296446; c=relaxed/simple;
-	bh=V02QebQEHICC8E/12v8vbE2xk1/n++ep7v3y217CPqI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RDMS3/xSKJDfQb6WbufPmRP8qGXS+mY3GSwW1rtCxef+wHyElmJ3TMVnQw/N4xUeTGPltIMNRQzDK36kT7L+AO45fE1jQJwKB/2M6B6CaiXAv70mxacqiL//YtYDS7Stcolidz/eFP5iwAObhVX7oq5sontOlWptp1XGpY9diSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GeZ8x+vr; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1792296454; c=relaxed/simple;
+	bh=wZlx5MJONKTUFgsNo5CDSgSqQTh95YMTQ8TLOEUI/V0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W7ZVoNf3RgZwtp3cIX2P+hhDCG9jHcEV8QUgKdQ3rY+jVRjp9UoHvIFk5ITd7AF7APPoz8E4rXLeHHcuMDV95XfTG7sik9mybi6LLp4fEsFKIqAW9xfXkixZveFT2uZXrLlS9qMV+U9prVEjia/vqFkTysjDNvBFJ7gQHvGoORU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GhsH+GYe; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GeZ8x+vr"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GhsH+GYe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=kb
-	nVAWjJPxIQx9LhwxOpcLtEsxnx7yNsZEXcLXTFR6w=; b=GeZ8x+vrWPteEDuW4+
-	Mi6MxzkvbSFvScJphvYzDMeB2RLNjuOMJ3r23HVSz+mvTLlTL0Fzxz28DR0c2QIs
-	hbJHEMOJTDaLeeJSGei4sg4/mtq99fohzSchDglvUQjvJSDH1UdE2vWZX3tioN1k
-	xu97+snC71AgQsW9Pu/noFuKM=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=z0
+	PGUK16GCy4F9K3jHBuozWKl9+jrqvzut+dg8bfz3E=; b=GhsH+GYetX2QaUz8e+
+	FqTi0wvkhOXx0D5mD8g6C3Gs2YKJwkh5sH2XAHOphdUKhBCDCosKh7RhBgu9T98g
+	t2KU83Xd0j79E7EIOZIgC3WzOUhW3esO5Ee+gqqjgLMlq40xPufsV0KNAKehiurQ
+	B81+/fcVLWoo8QVHJhjY6iE90=
 Received: from pc.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3VxrSRdRq42uQAw--.5404S2;
-	Sun, 18 Oct 2026 12:06:44 +0800 (CST)
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3PyjuRdRqZzyGAw--.56687S2;
+	Sun, 18 Oct 2026 12:07:11 +0800 (CST)
 From: Jiale Yao <yaojiale02@163.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	David Daney <ddaney@caviumnetworks.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Jiale Yao <yaojiale02@163.com>
-Subject: [PATCH] net: octeon: mgmt: drain TX cleanup tasklet on stop
-Date: Sun, 18 Oct 2026 12:06:34 +0800
-Message-Id: <20261018040634.533757-1-yaojiale02@163.com>
+Subject: [PATCH] net: ns83820: drain RX tasklet when stopping the device
+Date: Sun, 18 Oct 2026 12:07:07 +0800
+Message-Id: <20261018040708.534335-1-yaojiale02@163.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -45,39 +44,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3VxrSRdRq42uQAw--.5404S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKr43Zw4fArWrJFWUJF18Zrb_yoWkCFcE9r
-	sF93ZxZa17GwsYka15Kw4avw4FkaykXrs7Wrs2qrW3tFW7urn8Z39rWr9rKw4kWrW7ZFyD
-	Cr43KryxC3y2gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNtCzDUUUUU==
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzhRWkGrURdQkrQAA36
+X-CM-TRANSID:_____wD3PyjuRdRqZzyGAw--.56687S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKFWfKFW8Zw4furWkAFyrZwb_yoWkZFg_uw
+	1v9a45Ww45Grs3Kw15KrsxXrZ0ya4q9rn5uayqgrZYqwnrJrs3GFZ7uF1UKr1DWa1ayFWD
+	Xr13KFWfA340gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRZR6wUUUUUU==
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC8A9clmrURe-JbQAA3F
 
-The management port IRQ schedules tx_clean_tasklet after disabling TX
-interrupts. free_irq() stops the hard IRQ, but a tasklet queued before
-that point can still access the TX queue, ring and device registers
-while ndo_stop releases them.
+The receive interrupt handler schedules rx_tasklet after masking RX
+completion interrupts. synchronize_irq() waits for the hard IRQ, but it
+does not drain a tasklet that was already queued.
 
-Kill the tasklet after freeing the IRQ and before purging the queues and
-freeing the rings.
+The stop path then cleans the RX descriptors, and device removal later
+frees the rings and netdev. Kill the tasklet after resetting the device
+and synchronizing the IRQ, before cleaning the descriptor state.
 
-Fixes: d6aa60a10b2f ("NET: Add Ethernet driver for Octeon MGMT devices.")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Jiale Yao <yaojiale02@163.com>
 ---
- drivers/net/ethernet/cavium/octeon/octeon_mgmt.c | 1 +
+ drivers/net/ethernet/natsemi/ns83820.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c b/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-index c190fc6538d4..2cf3365b9636 100644
---- a/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-+++ b/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-@@ -1254,6 +1254,7 @@ static int octeon_mgmt_stop(struct net_device *netdev)
- 	octeon_mgmt_reset_hw(p);
+diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
+index cdbf82affa7b..f31c15cb2f51 100644
+--- a/drivers/net/ethernet/natsemi/ns83820.c
++++ b/drivers/net/ethernet/natsemi/ns83820.c
+@@ -1536,6 +1536,7 @@ static int ns83820_stop(struct net_device *ndev)
+ 	ns83820_do_reset(dev, CR_RST);
  
- 	free_irq(p->irq, netdev);
-+	tasklet_kill(&p->tx_clean_tasklet);
+ 	synchronize_irq(dev->pci_dev->irq);
++	tasklet_kill(&dev->rx_tasklet);
  
- 	/* dma_unmap is a nop on Octeon, so just free everything.  */
- 	skb_queue_purge(&p->tx_list);
+ 	spin_lock_irq(&dev->misc_lock);
+ 	dev->IMR_cache &= ~(ISR_TXURN | ISR_TXIDLE | ISR_TXERR | ISR_TXDESC | ISR_TXOK);
 -- 
 2.34.1
 
