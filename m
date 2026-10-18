@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDB63630B2;
-	Sun, 18 Oct 2026 09:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE1E336884;
+	Sun, 18 Oct 2026 09:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792314584; cv=none; b=p8fHPYFSAYgA1ZHPh57xltMjXAmsblOw4SukE7ykwv1Xd6b51KjGiOvYGO4nmvidekZZjIaPBC9TFNWzlNtOY60U450QhFH6ywddkwvb4PvKY8cre1+pG4HtMXfYsZRWqkDrqlJWRnxxOhVSgsjcBVH5KWP26D436EJMg67HkQg=
+	t=1792314825; cv=none; b=DImwBZoXT++gryhArR4TXQidmoRSeqHfVCGTbY3c38gSGPIPumEEoAhnAWuSx3aFAZ8MyzB2lbqsNjL4ZL4L/E91wSKiP/feYL745KacFkg3SsMoIOmXJR1UsCo2wbR4AuPG/odKz/pgZEinJ0IixwOx+7JoRsCDDLUwz1pgtKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792314584; c=relaxed/simple;
+	s=arc-20240116; t=1792314825; c=relaxed/simple;
 	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hkg9mehxS5Irone0IfLLiv2uKoM0VEyNw4KQdsJd9TnjFhyh5lzBdGAcoba+S3OI9PU+obqgm21OGvT4p1a9qq2CHTXLdxRuyiFcMgStrztsH50ayMFiOH+F2uFnVTE4wRcrz3ch+T2zU6NxEf8ayUs6U8Tug31JvJiB+/5s+F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T90bL/+n; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=BwccVs0JYlLwChcXsKNcQkxJkp8y72iJlLc5DXSH+EbiIDL0/eTp6vdR2S0bHOQCFpdGN49jKSnw17n4lDLCMyy/gwxX+cZKsNrKSrUCv/yHAHvQoegxNeDo+h9XxEHNCK8eH+oxcjKAfrLaI0yuE6WPWKXYEhQGu0CjFCTmDFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcC/CRMl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T90bL/+n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11541F000C4;
-	Sun, 18 Oct 2026 09:09:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcC/CRMl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9401F000C4;
+	Sun, 18 Oct 2026 09:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792314583;
+	s=k20260515; t=1792314823;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T90bL/+nrwFKf8pB0h+LQ2W57W7PvDY1t00AMcGAEABukoYrSRkkhzRpVMaIe9h3W
-	 BCQJnme/N5RJSXdTsG2/hzhI8iEAnD2wamtFXBVgznArJtGzffcIcG7sk5s2m0IaMw
-	 trAnrlKSdsh7kA/0ZixcFWk3vn24MvpZLdGrwEsSN7dRIxZh02PHIfVZVEsWlN3dMJ
-	 8hp4YslX2KvPM+ZizgNmuTxMJvnFSluu3VvKlO2SlysClyeCOFBv8D8qfQEb7jd+s+
-	 35q/PQmNuv/hlgaRWRNgNQzFDM56UDQWbvzwiOA7l6T+G58jpLF8zmhtOfDgtCxFAN
-	 UQCyC/Ii8z70A==
+	b=YcC/CRMlbdrNoBOsxWMROWN7nQZulnTydm8z3uPTfzRVyF30s6D5C1OtQQQip/Alt
+	 Jatov2JKcw/KYkBcD+kLOjaV5k/JoT4aqGVmwuNskI5K1B4LLRq7BcuvfwlN4VO8WU
+	 9cR+S/RmSpHT5cZPHn6InzT6gqUKcbHM67vTukf2gRG0wmQGkVHRvjHrHYpth6CgAb
+	 u2F2QqsvmW5K42FJPwg0NBrfOVraPCsFFCJvu4yVmwERmGViV3zBZ99gi181EmxGER
+	 2Wu0R9bjcfUnGOVg6DnfYcmKp3PvFVtLzWN/iXd66rCrGZGwqHx5Jp0ke7/p3Nw+E0
+	 toUoZb338Jsww==
 From: netdev-bot+sinfo@kernel.org
-To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- William Tu <u9012063@gmail.com>, linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net-next 0/2] erspan: fix two header parsing issues on receive
-Date: Sun, 18 Oct 2026 09:09:42 +0000
-Message-ID: <179231458223.3290.4475639659000401117@kernel.org>
-In-Reply-To: <20261018090236.2487997-1-yanhaishuang@cmss.chinamobile.com>
-References: <20261018090236.2487997-1-yanhaishuang@cmss.chinamobile.com>
+To: Qihang <q.h.hack.winter@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
+ herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4 0/3] xfrm: fix vti tunnel device use-after-free
+ across async crypto resumption
+Date: Sun, 18 Oct 2026 09:13:42 +0000
+Message-ID: <179231482261.3290.7078045556661069694@kernel.org>
+In-Reply-To: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
+References: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
