@@ -1,153 +1,291 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B992F39448F
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 03:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9A330C630
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 03:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792295252; cv=none; b=guznBL2Zyx/UIaF0OSU4H8eumu5/F9m/W2FnDiDpTnf6f3IkyWhyHx7XXMv+Pv4F8cdIf+orN+YyMGWtacd6av6Qmx54rq/dFyDrA7QHpxeOr0oPqaK2O9LcKB8n+MkdYhm9jNA87DsnMlE6aXmLFuHvQ1w84xUhTGkE1IfzVfg=
+	t=1792295495; cv=none; b=NCrllOYMqaXJgn8hgy94UsZp8zxcLfF+xBwRzQGeGOYDNwklHd8uZqCDeM2sK+UXApM72WpKlNunJ6MJqsv5116tRmKwgdA04RHFOjivx9ofXgMi0fFSeT5BwofegdaKId+A3tL/R2rpGL4fJiNowu0iL7m/2LsrTxsvRnElvh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792295252; c=relaxed/simple;
-	bh=vIWIxpdpuQlriXmpXA2oXlhyae4Bl6gOBf5gcdiv+SI=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=gFwgQg6g3Cdh1Ofwi4O5G/tvKzQu8lWSIGwTREZK9wWPQ4F2pXWLkqcpQXUL2fniegcjRm0l8BBWkzs/N4S+ayELitEzgas5F5JM7fOSwRjQkwWkXcMyN14OpSY7ahSF0ecxDLCfTURY+unbh0MiJz6NV4Q9FqM5p3OFLBHxaKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZX/fAxC; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZX/fAxC"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93f2493c28bso101097685a.0
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 20:47:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792295249; x=1792900049; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:content-type:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iyn+0emapJRMFzmJ+yA4KQX+FkaLwrtKwIvJ6VKAF2o=;
-        b=JZX/fAxCwyykSJwNz1yUMfrQWkQFD645Oy0UGjKUCVavnltz7uojMPhbNMocD4A3VO
-         nsUK4KZx5w4psWj2XDCNamz50R1caflcNwqyQD1n7Zfks9+O3UhCUes4mY4keIpdfm/t
-         IQrLYVNnLm12xIO8nOKdUZ0qVI0u+ebsXxoWqAx7dgyS/RNUt7bZVpplLi78hN+Rs/b9
-         15Ly/YbAgruLBqMcTgfK84nuoi9Rijv2r4dZhDy29hb/rUsvsKNe8lHXekhwcByiGXD/
-         2A4kYTu76bPEPCyoJGKiuebgRkNV/sndNEvSDM9g1HSPoztIVeyckJIx718CpbRIykGQ
-         GTYg==
+	s=arc-20240116; t=1792295495; c=relaxed/simple;
+	bh=Muw+RHg1wjXS9SBgZ2Ry+LC17JJDMHuSsx+60erN1U0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=lBHrLqAflAXMocPZJgZaTqmqb7fcHflFqzxSVeB0BtyIB+UI82WncWISoVVDauZZRlvXFgpOGAqqJnbsXU+n6NOenJf9EdtviSeOxpb4ya6z8iSXMOb5PC99YBVxyaRF4iMvh02TOR/6fFVzl9FYapu9BvDZcjuD9CTGD3beuLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a41f46d629so2196245b6e.3
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 20:51:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792295249; x=1792900049;
-        h=content-transfer-encoding:mime-version:content-type:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iyn+0emapJRMFzmJ+yA4KQX+FkaLwrtKwIvJ6VKAF2o=;
-        b=l48bnEMFQYqbzBu/sMkmO7nMPvf6l0hjc5E2/fVDALT5LjsSp2ENOqSMnrCY42ThG5
-         q8PwapuVupuyNlqLLR7Qq04UqR2PGKUTuNjS0kz8wptsLjf1pNPzukbdvLw3tiTn5ire
-         6aCcg9I0ypzeqjzMbtXAaFUV2Zym2hIJlJdXilnEYJ0IcN1TSE3mmT9pa5mg7t239cLp
-         0qfSttCPcvciuUtzwhIgN0WX5FL3frR8gHAe2r1WJY9/rvegnqZR2BXnMnbOlewQ8bv6
-         7SJhKxleppl8ITJol6l4j0FdbSudCkGvb0uZorXiOuHWrXwy1hzi8we+3yZS/TGkiXBH
-         GxHA==
-X-Gm-Message-State: AFq9FYKqEOywzIObO7Gbx4A34IT7OQKCwAJET0ScD75p4AbBTtxfeei3
-	RwxopsXGB3fnnj7bzgn2RgB2rkTddYxPKeUz1bXT0Ofhk+PfmrVSagc=
-X-Gm-Gg: AYBFou1Jn9TOgXTBr0W+ozBkkKfWTiV1PEJogylN++uJV4H7+lptlnICsD58N6HbBg2
-	LaH2ZQn9qxKQHmsxi6VpKP4mW+GGdY3DWpkb1fBB9IrM38A1hf0Fe3wKOzOJjjRNMEplpG3mnNM
-	mJoZywnNn680k77APwJwaDCEC1pq3JQj0HNuQi1ntkndL0sL0aeK2FLM2leMk6XnnAGIAh+W1Jq
-	0+Lgj1DX1Uk2ReVmALiNVpYt8ChT9u5RgYsplpb+wsPkyjnAmreAD0KvfmO8z5oCvqamTdPiOfZ
-	jAu5lCe64BVcbV9seHEqb5TzqCiLNeVxcAVOoe4rgysuOTb+ovZUS4CR5LgmiByx1fa8uRp+3gf
-	PXL6mfBdq1Xk9NPyJEVAlkxr+7ROVqNyPNS/2TpBSA5bP/jivYRWHUMBGDy4dwkaXW+eac7nZ2a
-	R6LttxrwlwvLBTSPf0XZUrxvujbKrsawbl6VnXYI+kgvaruVEsZUIJfy/OCKRH1BItg+Qtn9dn6
-	YHHmqwML9eGtEUZKiRDJcGJanZ/77JE/Na9TIVv8Y4AeZ5bUDYLHHumMqSISSmPbt1KLzKtki95
-	bvlb+iznJiwqteZXKnv/4HFUWkoPFg==
-X-Received: by 2002:a05:620a:408a:b0:93e:c12c:9b6b with SMTP id af79cd13be357-93f29dc678bmr715284285a.70.1792295249474;
-        Sat, 17 Oct 2026 20:47:29 -0700 (PDT)
-Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f1a16c21esm611054285a.16.2026.10.17.20.47.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 20:47:28 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH net] net: pxa168_eth: quiesce the interface before releasing resources
-Date: Sat, 17 Oct 2026 23:47:26 -0400
-Message-ID: <179229523656.3967907.9986872484125740449.pxa168-eth@gmail.com>
-X-Mailer: git-send-email 2.53.0
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20260707; t=1792295492; x=1792900292;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wEkTcMvHp/qYXQqFO/6DZl3RBJMXuTcnmz1AQzeCtG0=;
+        b=mDCyGPWz5ir1GDD6ZQY28PC84YrYdqogrx3v1FFPo/8hCXes4iigYreFr+ifIa58XJ
+         JzvQo0BgTMKWTkMRyA4QqYYWH1+60mTM8csox2YyVxf+VZgHrSB/bj/wyuDgw3dyGhLF
+         h+ZQ+LFGn9g0yOci0Zbcwuo1xNC+U3WA+6z4rLKcrgOPGyiuhMBgsTY8bngTp/uryJ6B
+         T9KGjsQnq5JSimFVRn+NB1iGUU3PWhF7CAjv/JRfUXUqFL5lLKLiJwBy6veSqydIOdTo
+         gTY59VW1K3ac4/koMK/tBLK783lVfykYszriaLLCDx21n9msBDZKPgQo7c/QstGgP89H
+         efeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxwrNWXCGB4ZPmjkZo2czXcnZ2xyLs2WYccBIhWOWNTfZKxh0twLfJTc1y1U5iCwqR2c+7KcuQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJySk6PLrMxG64Z3Tox1OeaYNA7Yd0lfPGr4pyzjHWMQGolSDZv
+	NRdTyqqwIIasZQ36EjlvLqZq2rliB6WFavs/fvgEqzJEbrm2bcfrsw5nY1ZJfF/a+9mOZjy0YPX
+	lr+qv91Zga8aE75HRutaDpu+MZT9JA/gsrpKWLVN/CLK21YNljQrvxGfaon4=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:1206:b0:4f0:1b0b:4dae with SMTP id
+ 5614622812f47-53ccb4ea805mr3155325b6e.20.1792295492629; Sat, 17 Oct 2026
+ 20:51:32 -0700 (PDT)
+Date: Sat, 17 Oct 2026 20:51:32 -0700
+In-Reply-To: <6ad2e6e0.6814cce4.34c49f.0026.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ad44244.7f4e89eb.3d59aa.00ac.GAE@google.com>
+Subject: Re: [syzbot] [x25?] possible deadlock in lapb_connect_request
+From: syzbot <syzbot+8328573e4d0514392471@syzkaller.appspotmail.com>
+To: andrew@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, ms@dev.tdt.de, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Canceling tx_timeout_task at the start of remove does not prevent the
-still-live netdev watchdog from queuing it again. The recovery worker
-can then stop and reopen the interface while remove releases its
-resources.
+syzbot has found a reproducer for the following issue on:
 
-For an up interface, phy_disconnect() clears dev->phydev before
-unregister_netdev() invokes ndo_stop(), which then calls phy_stop()
-with a NULL pointer.
+HEAD commit:    58161ead29e5 Merge tag 'drm-fixes-2026-10-17' of https://g..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=1212098e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=129d675874dbf896
+dashboard link: https://syzkaller.appspot.com/bug?extid=8328573e4d0514392471
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1612098e580000
 
-Disable and drain the recovery work first so subsequent watchdog queue
-attempts are rejected. Close the interface while holding RTNL and before
-disconnecting the PHY: ndo_stop calls phy_stop() and must stop DMA
-before the coherent hash table is freed. Keep RTNL through
-unregistration so the interface cannot be reopened in between.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8328573e4d0514392471@syzkaller.appspotmail.com
 
-Disconnect the PHY before unregistering the netdev, while both devices'
-sysfs directories still exist. Release the MDIO bus and hash table only
-after the interface has been unregistered.
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz-executor333/5939 is trying to acquire lock:
+ffffffff91f49b18 (lapb_list_lock){++..}-{3:3}, at: lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
+ffffffff91f49b18 (lapb_list_lock){++..}-{3:3}, at: lapb_connect_request+0x26/0x1a0 net/lapb/lapb_iface.c:287
 
-This issue was identified as part of our ongoing research while
-reviewing kernel code.
+but task is already holding lock:
+ffff88807a54cf00 (&lapbeth->up_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:353 [inline]
+ffff88807a54cf00 (&lapbeth->up_lock){+...}-{3:3}, at: lapbeth_xmit+0x24/0x250 drivers/net/wan/lapbether.c:191
 
-Fixes: bd70957438f0 ("net: pxa168_eth: Fix a potential data race in pxa168_eth_remove")
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #3 (&lapbeth->up_lock){+...}-{3:3}:
+       lock_acquire kernel/locking/lockdep.c:5942 [inline]
+       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:182 [inline]
+       _raw_spin_lock_bh+0x33/0x40 kernel/locking/spinlock.c:205
+       spin_lock_bh include/linux/spinlock.h:353 [inline]
+       lapbeth_xmit+0x24/0x250 drivers/net/wan/lapbether.c:191
+       __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
+       netdev_start_xmit include/linux/netdevice.h:5441 [inline]
+       xmit_one net/core/dev.c:3953 [inline]
+       dev_hard_start_xmit+0x121/0x760 net/core/dev.c:3969
+       __dev_queue_xmit+0x1c25/0x4a40 net/core/dev.c:4958
+       dev_queue_xmit include/linux/netdevice.h:3464 [inline]
+       tx+0xc4/0x130 drivers/block/aoe/aoenet.c:62
+       kthread+0x1d8/0x3c0 drivers/block/aoe/aoecmd.c:1241
+       kthread+0x373/0x450 kernel/kthread.c:436
+       ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #2 (_xmit_X25#2){+...}-{3:3}:
+       lock_acquire kernel/locking/lockdep.c:5942 [inline]
+       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+       __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
+       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
+       spin_lock include/linux/spinlock.h:347 [inline]
+       __netif_tx_lock include/linux/netdevice.h:4841 [inline]
+       __dev_queue_xmit+0x1ac6/0x4a40 net/core/dev.c:4952
+       neigh_output include/net/neighbour.h:560 [inline]
+       ip_finish_output2+0x851/0x2400 net/ipv4/ip_output.c:236
+       __ip_finish_output.part.0+0x444/0x6f0 net/ipv4/ip_output.c:314
+       __ip_finish_output net/ipv4/ip_output.c:302 [inline]
+       ip_finish_output net/ipv4/ip_output.c:324 [inline]
+       NF_HOOK_COND include/linux/netfilter.h:314 [inline]
+       ip_output+0x39b/0xc10 net/ipv4/ip_output.c:437
+       dst_output include/net/dst.h:471 [inline]
+       ip_local_out+0x193/0x1f0 net/ipv4/ip_output.c:131
+       iptunnel_xmit+0x722/0xd30 net/ipv4/ip_tunnel_core.c:97
+       ip_tunnel_xmit+0x1b91/0x3210 net/ipv4/ip_tunnel.c:848
+       __gre_xmit+0x91a/0xc90 net/ipv4/ip_gre.c:488
+       gre_tap_xmit+0x44e/0x700 net/ipv4/ip_gre.c:783
+       __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
+       netdev_start_xmit include/linux/netdevice.h:5441 [inline]
+       xmit_one net/core/dev.c:3953 [inline]
+       dev_hard_start_xmit+0x121/0x760 net/core/dev.c:3969
+       sch_direct_xmit+0x1b2/0xc70 net/sched/sch_generic.c:372
+       __dev_xmit_skb net/core/dev.c:4277 [inline]
+       __dev_queue_xmit+0x2812/0x4a40 net/core/dev.c:4916
+       lapb_data_transmit+0x96/0xc0 net/lapb/lapb_iface.c:447
+       lapb_transmit_buffer+0xce/0x3a0 net/lapb/lapb_out.c:149
+       lapb_send_control+0x1ce/0x330 net/lapb/lapb_subr.c:251
+       lapb_establish_data_link+0xeb/0x110 net/lapb/lapb_out.c:163
+       lapb_device_event+0x315/0x580 net/lapb/lapb_iface.c:512
+       notifier_call_chain+0x99/0x3f0 kernel/notifier.c:85
+       call_netdevice_notifiers_info+0xbe/0x110 net/core/dev.c:2275
+       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
+       call_netdevice_notifiers net/core/dev.c:2327 [inline]
+       __dev_notify_flags+0x22c/0x4b0 net/core/dev.c:9896
+       netif_change_flags+0x108/0x160 net/core/dev.c:9925
+       dev_change_flags+0xba/0x260 net/core/dev_api.c:68
+       devinet_ioctl+0x110b/0x1f10 net/ipv4/devinet.c:1199
+       inet_ioctl+0x3aa/0x3f0 net/ipv4/af_inet.c:1009
+       sock_do_ioctl+0x118/0x280 net/socket.c:1325
+       sock_ioctl+0x599/0x6b0 net/socket.c:1446
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl fs/ioctl.c:583 [inline]
+       __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #1 (&lapb->lock){+.-.}-{3:3}:
+       lock_acquire kernel/locking/lockdep.c:5942 [inline]
+       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:182 [inline]
+       _raw_spin_lock_bh+0x33/0x40 kernel/locking/spinlock.c:205
+       spin_lock_bh include/linux/spinlock.h:353 [inline]
+       lapb_unregister+0x112/0x400 net/lapb/lapb_iface.c:187
+       lapbeth_close+0x56/0x90 drivers/net/wan/lapbether.c:350
+       __dev_close_many+0x312/0x710 net/core/dev.c:1798
+       __dev_close net/core/dev.c:1811 [inline]
+       __dev_change_flags+0x307/0x850 net/core/dev.c:9853
+       netif_change_flags+0x8d/0x160 net/core/dev.c:9920
+       dev_change_flags+0xba/0x260 net/core/dev_api.c:68
+       devinet_ioctl+0x110b/0x1f10 net/ipv4/devinet.c:1199
+       inet_ioctl+0x3aa/0x3f0 net/ipv4/af_inet.c:1009
+       sock_do_ioctl+0x118/0x280 net/socket.c:1325
+       sock_ioctl+0x599/0x6b0 net/socket.c:1446
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl fs/ioctl.c:583 [inline]
+       __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (lapb_list_lock){++..}-{3:3}:
+       check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3209
+       check_prevs_add kernel/locking/lockdep.c:3328 [inline]
+       validate_chain kernel/locking/lockdep.c:3952 [inline]
+       __lock_acquire+0x1528/0x1f40 kernel/locking/lockdep.c:5288
+       lock_acquire kernel/locking/lockdep.c:5942 [inline]
+       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+       __raw_read_lock_bh include/linux/rwlock_api_smp.h:192 [inline]
+       _raw_read_lock_bh+0x3f/0x70 kernel/locking/spinlock.c:287
+       lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
+       lapb_connect_request+0x26/0x1a0 net/lapb/lapb_iface.c:287
+       lapbeth_xmit+0x1cb/0x250 drivers/net/wan/lapbether.c:205
+       __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
+       netdev_start_xmit include/linux/netdevice.h:5441 [inline]
+       xmit_one net/core/dev.c:3953 [inline]
+       dev_hard_start_xmit+0x121/0x760 net/core/dev.c:3969
+       __dev_queue_xmit+0x1c25/0x4a40 net/core/dev.c:4958
+       dev_queue_xmit include/linux/netdevice.h:3464 [inline]
+       packet_xmit+0x243/0x310 net/packet/af_packet.c:277
+       packet_snd net/packet/af_packet.c:3149 [inline]
+       packet_sendmsg+0x32ee/0x5040 net/packet/af_packet.c:3181
+       sock_sendmsg_nosec net/socket.c:800 [inline]
+       __sock_sendmsg net/socket.c:815 [inline]
+       __sys_sendto+0x48b/0x4e0 net/socket.c:2281
+       __do_sys_sendto net/socket.c:2288 [inline]
+       __se_sys_sendto net/socket.c:2284 [inline]
+       __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2284
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  lapb_list_lock --> _xmit_X25#2 --> &lapbeth->up_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&lapbeth->up_lock);
+                               lock(_xmit_X25#2);
+                               lock(&lapbeth->up_lock);
+  rlock(lapb_list_lock);
+
+ *** DEADLOCK ***
+
+locks held by syz-executor333/5939: 3, last CPU#0:
+ #0: ffffffff8fdec580 (rcu_read_lock_bh){....}-{1:3}, at: local_bh_disable include/linux/bottom_half.h:20 [inline]
+ #0: ffffffff8fdec580 (rcu_read_lock_bh){....}-{1:3}, at: rcu_read_lock_bh include/linux/rcupdate.h:902 [inline]
+ #0: ffffffff8fdec580 (rcu_read_lock_bh){....}-{1:3}, at: __dev_queue_xmit+0x296/0x4a40 net/core/dev.c:4872
+ #1: ffff888023beb558 (_xmit_X25#2){+...}-{3:3}, at: spin_lock include/linux/spinlock.h:347 [inline]
+ #1: ffff888023beb558 (_xmit_X25#2){+...}-{3:3}, at: __netif_tx_lock include/linux/netdevice.h:4841 [inline]
+ #1: ffff888023beb558 (_xmit_X25#2){+...}-{3:3}, at: __dev_queue_xmit+0x1ac6/0x4a40 net/core/dev.c:4952
+ #2: ffff88807a54cf00 (&lapbeth->up_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:353 [inline]
+ #2: ffff88807a54cf00 (&lapbeth->up_lock){+...}-{3:3}, at: lapbeth_xmit+0x24/0x250 drivers/net/wan/lapbether.c:191
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 5939 Comm: syz-executor333 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/05/2026
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_circular_bug.cold+0x178/0x1be kernel/locking/lockdep.c:2087
+ check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2219
+ check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3209
+ check_prevs_add kernel/locking/lockdep.c:3328 [inline]
+ validate_chain kernel/locking/lockdep.c:3952 [inline]
+ __lock_acquire+0x1528/0x1f40 kernel/locking/lockdep.c:5288
+ lock_acquire kernel/locking/lockdep.c:5942 [inline]
+ lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+ __raw_read_lock_bh include/linux/rwlock_api_smp.h:192 [inline]
+ _raw_read_lock_bh+0x3f/0x70 kernel/locking/spinlock.c:287
+ lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
+ lapb_connect_request+0x26/0x1a0 net/lapb/lapb_iface.c:287
+ lapbeth_xmit+0x1cb/0x250 drivers/net/wan/lapbether.c:205
+ __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5441 [inline]
+ xmit_one net/core/dev.c:3953 [inline]
+ dev_hard_start_xmit+0x121/0x760 net/core/dev.c:3969
+ __dev_queue_xmit+0x1c25/0x4a40 net/core/dev.c:4958
+ dev_queue_xmit include/linux/netdevice.h:3464 [inline]
+ packet_xmit+0x243/0x310 net/packet/af_packet.c:277
+ packet_snd net/packet/af_packet.c:3149 [inline]
+ packet_sendmsg+0x32ee/0x5040 net/packet/af_packet.c:3181
+ sock_sendmsg_nosec net/socket.c:800 [inline]
+ __sock_sendmsg net/socket.c:815 [inline]
+ __sys_sendto+0x48b/0x4e0 net/socket.c:2281
+ __do_sys_sendto net/socket.c:2288 [inline]
+ __se_sys_sendto net/socket.c:2284 [inline]
+ __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2284
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff79ae040b7
+Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+RSP: 002b:00007ffe8b1e5860 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000555590b13400 RCX: 00007ff79ae040b7
+RDX: 0000000000000001 RSI: 00007ffe8b1e58bf RDI: 0000000000000005
+RBP: 0000000000000004 R08: 00007ffe8b1e58c0 R09: 0000000000000014
+R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000003
+R13: 0000000000000005 R14: 00007ff79ae3d059 R15: 00007ff79ae3d044
+ </TASK>
+
 
 ---
-Compile-tested with Clang, W=1. No hardware runtime testing.
-
-Based on mainline 0fcb05b72344f40806cbe810de8872f1698bf053.
-
-diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
-index bbbbbba..2d59491 100644
---- a/drivers/net/ethernet/marvell/pxa168_eth.c
-+++ b/drivers/net/ethernet/marvell/pxa168_eth.c
-@@ -27,6 +27,7 @@
- #include <linux/phy.h>
- #include <linux/platform_device.h>
- #include <linux/pxa168_eth.h>
-+#include <linux/rtnetlink.h>
- #include <linux/tcp.h>
- #include <linux/types.h>
- #include <linux/udp.h>
-@@ -1528,18 +1529,21 @@ static void pxa168_eth_remove(struct platform_device *pdev)
- 	struct net_device *dev = platform_get_drvdata(pdev);
- 	struct pxa168_eth_private *pep = netdev_priv(dev);
- 
--	cancel_work_sync(&pep->tx_timeout_task);
-+	disable_work_sync(&pep->tx_timeout_task);
-+	rtnl_lock();
-+	dev_close(dev);
-+	if (dev->phydev)
-+		phy_disconnect(dev->phydev);
-+	unregister_netdevice(dev);
-+	rtnl_unlock();
-+
- 	if (pep->htpr) {
- 		dma_free_coherent(pep->dev->dev.parent, HASH_ADDR_TABLE_SIZE,
- 				  pep->htpr, pep->htpr_dma);
- 		pep->htpr = NULL;
- 	}
--	if (dev->phydev)
--		phy_disconnect(dev->phydev);
--
- 	mdiobus_unregister(pep->smi_bus);
- 	mdiobus_free(pep->smi_bus);
--	unregister_netdev(dev);
- 	free_netdev(dev);
- }
- 
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
