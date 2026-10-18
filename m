@@ -1,61 +1,63 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E81F3C10AD
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 09:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DF12E8DE3
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 09:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792314408; cv=none; b=UKODYlg5HnL+WbLEsv1+qXTsKbNFEvo9CCx0RlKUwlh3XLL5GXCm7Q2w6U7of3VmkYzlLCzv9x4VrSUwCDRChdi314PtZoEuvXxhsF+IAvL0VU2eCHm8d5TsoXenP7IiwA31J2uSiwRbqhSeVZNR6ur9M1KLVieAEi4BpFT7W/A=
+	t=1792314412; cv=none; b=msEMm/IS014rv+Df15wk+yH0SUZkiB5p61IkZEPF51xC3IzUJCC/dVxosFtJITg0ej0cLkih9u815MEONhcfNtaWyww89HxlbG9GX0sV+iKJj/cXZv1AWkJQjTuM8p5kkhCRu/Z7+sFqJ2C5ltjbwYn5ySvci/e4eS2ZfOPMaSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792314408; c=relaxed/simple;
-	bh=S4WKD2aYHcIJH4cVj74AaLH+NGadEsqP/fj+C7Oow+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GAYxmdpGCHbNQ7khNyO/6l0fNOTbsXOV0m7i6Y53dN/9Ex5WHiTxjN7MpAauE/ocDz6YhyuzkYp0AsEspvGdxI6+ExRc/qVStHZ/+aEWnJUIX2XktKX4sroywkneoctF3sBHenbqQRzpKUWb7A16iA0JSOA5DgOeBrz3/LR+X6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TM7q8MQF; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1792314412; c=relaxed/simple;
+	bh=WFtv6Y5pDmp33PeCK7vkQ2vxvhssR4O8VZV0BT2pZd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=K40nZUqu9d48ynhxK3+f61ALEr0Q9NUPSRo52jkVEzwJLLqWxCnOA4/ljxHvKr3PXZ9lZZGxRriYEsCPN9JyzxRmGySkZgorEGsymspxCj2y2v0b2oj83EZ8764Kuc0wJMClYIXbcUgtaK4bDY0i1BOb/itCPF7Exv5FGszosBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VEW2UUWk; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TM7q8MQF"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ab3f899c8aso248330a91.1
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:06:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VEW2UUWk"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3a4c78ee4d6so221732a91.1
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:06:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792314406; x=1792919206; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TVLHsdZOGUdB7hYzL6avssJ0uN7VSZZ15QHDi5kS+Rk=;
-        b=TM7q8MQFHllndXizixkC2jOrTqKshVMzuzIfmyOeB4TLgCmUuZ7gwIWUFcfPLBKjhu
-         noOUScekNgSfZna4hI9kFlv4Q4gGiJIgTt/V5wmGF+/k6lowLE6o7Ipbe7jUfLh3YfVb
-         tVQ0PjIsXx/xAXuvLaVyUsFw03UwuEHHRlxSHrKFVx60OGlSqv0mIgobqhBKn0RfDAqu
-         qC3NpHd0Pfe6ONHLrszDedxuzXLTMfXUvaUvaYh8PxfzFNBwkA0lml/7o2wf45gEKtYY
-         IC2hp0WMBytS5K5NKpkYDS/6xMp5rt1lAzjqvo18Yto4u0EBpensnfluptCMxUKyUbXG
-         NOsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792314406; x=1792919206;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792314410; x=1792919210; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TVLHsdZOGUdB7hYzL6avssJ0uN7VSZZ15QHDi5kS+Rk=;
-        b=1gGpiwppdxCuqu/lSpI+79nn0MjiHeSLX1Ya8w7Vhp1a2e3YVALYch/DnI+G2ilvno
-         d6IKnizhY53ImNH7eR7O2/5+oxY0viNG0xuEh9PiF6XexkyMYaZ0FmKhV6vMEZJOwpVL
-         2z89lonwDiZ/rAQ0nVPxraRsL0+DvGEmThrwofOFQgISh41gwc5JBeAm8tK9AEecsMLy
-         00EUwSQbycoSvGTfMM1yaezphAm6sCPqHtHNZcwIZknMPEWMW2EoQ2atkf8eDzaSnqF+
-         CY384gvwIU7npIBEpU/vwIb62IpPcRmBy/cRgpEUnOYFIeDHsU2ms7dBIBmzfJ+iRClz
-         8ubw==
-X-Gm-Message-State: AFq9FYLSeOTnG+sXSzpaNThvx4qWN/UwUFqE1VguG2C03Rj3aZKpvxuX
-	JWIDGekXvBqoEtU3XnHxLbCnlhtwLZirUDEtYXfJ+Bj2LUvPPOfcGXpcnJFPkQ==
-X-Gm-Gg: AYBFou2pdrXJ48FEHUn3/C+YyShCC6MJYXuLa25LlbSNAleV9RE78J0vCaVl8oLLNAo
-	4ARPdu9fZgclUr9GjAKDysHdFKrivckKCe19WXPK0gbl1YahdNMHbZQECaR5WtZ9XrNLdDkAl10
-	6umFwyGyNW6l4LcXLPKwbEOElEdG4Z2UIq5gs1lbKvj0jWbJtRshHb6KPnawTn1ESZmW68fozSW
-	xapor7nB7BbVxCsD5MpKUFAUz1rydim9NPVBxBH0AWmbWv1oQSo/0klHp8Q3YrJvut/Nqa8+Esi
-	/xIIJSr2A0hnXjaiD++HWvm7vneDxeV7BvVQ36yroObq3ZVGo4NrRI+s3EKiIdTv2ku6zGzihF9
-	IqlI1or7xnez0mCf/+gpqPIeXcV8UdX2uPQPssMLvWEp/vMjhsCCSZ3bdqoiWmqff7HTW4nPFGC
-	Hcaw0RkIOJIiR9eMNUHYi6koGUYZq2HonN7NODnXCocXkquGRQT27+njY3qLLcf4B3tMj0Ug1pr
-	Vk8BRHLvZXel4OpLTi12ykXnJc7pC5F7aFuKIzjsmUcX24A1TY+H/lT1K0HVygEfak=
-X-Received: by 2002:a17:90b:1a87:b0:3a6:e1d1:e511 with SMTP id 98e67ed59e1d1-3aceec3d0c4mr6800762a91.4.1792314405637;
-        Sun, 18 Oct 2026 02:06:45 -0700 (PDT)
+        bh=RTU0GqXO0v09/wvq3q/okf4+AOCgqZ21ovd0A51lLqA=;
+        b=VEW2UUWk7P8P2gRfxyT7x2h7mDiqzK8qaXjBy88J0agAjDk/skx200dZzgyFU61XXo
+         A/hMHH1NE5I/p0hVSikGoFsHbguMuNA0+K5r5AB5AWLgErcBqeerQiN/kx6dPX2rtjlw
+         izrkz9/rz/r3UpzVXS8u46INoaBacch5dl7aM7WMi1mf28IgaNAdwR5Mx25LAZUGezhV
+         eAdoIWpp6tL8d0ATxscrxnP0x4pLKM0V+RJ4n83EWSgVFTvh3/ht9xMF9ex7g1bvAZAZ
+         h2GNmIpx6lxC1MEhL3CJjmZ6Wbyc4IovHG6BBzrFAVy9jtTVhvAhvpVyqwBQPxJK/0gE
+         YojA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792314410; x=1792919210;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RTU0GqXO0v09/wvq3q/okf4+AOCgqZ21ovd0A51lLqA=;
+        b=gWL4r6G5lITqAxgECP7C0HXqVYBpS0lun1D10mAPoH5n1hdQyVxdI13ncS+G6U37y5
+         zKw0V7lE2GzJfBeZaTNKkghK6aLdKoqpNZ2ewfyHJO5xEFw7U9QWEaM+Va+BzlnNqeiD
+         Wn2ZG3qmEqm4gSp+QomSsDF4TymWPCB/hVI53fXKRD373fe1q5FJKHcajpDs+O27wEMA
+         O9btXHJoFRAflVvURK8D6kMEEJEBKsEtQidTgKr2Ng/rzLD6OO29kZeBF8q9v9J8qu8P
+         4GJ0uggt7jdBXre5EF2HWJGHHU+6FvRcj1s6pGeN1YGYsV12Q3aAhrEX/ZhnB8E4hErK
+         fa/w==
+X-Gm-Message-State: AFq9FYIar1c0XO3EvQPfv5w4m7/BNVtVqiyu9l5k6xPqZUUdXukD3/YZ
+	hkP7N9cXhUn24esJFnBa7V+jtr6nXPBrs0v97FrHRDrwqPOfq79PQI/UrPo1JQ==
+X-Gm-Gg: AYBFou114doBfDRa3REpWyJmAGH1zVaqPy3c95pONM9RZPMivktFuuQT/pk1iTfnGCg
+	zUNt9ltf0b5pf8qrbGqx54IbJwheihTMTA2FbOEa6kmRy82WaEexepwPahjPjbpNIebTt6iHq8A
+	n0ZL2boAX81pQDUOuFKxw+M0J8xCroiGIrttzextCchsLW1ubhxq+yu93pMyadMs2Nt3TNswUrz
+	Wzkk2Mz6+6P34LGTt/haSmPsioXqvIh0YK/AFnTs18xqSVyCY3QgTV32pFJCs4xZv+4yyAyvCnq
+	xKczuVgd/wqVe6jes4kbr93+GUm3NlHqlZKksQdogWBQYs3jQMNZ1VDL1a2hjjCSKi5M0f0byk4
+	27mH9iaJUFjdMfwVQocV8qBPkT+GOSj0ak32tN6XEB22UEzVMa7pX6GrT2g4oMkyDospqOuTcS5
+	HROSsP2myMRH6naPI85FMZ0gg0MLPtU8pwcOP4B7Lhur8HAgtVyNUiOfKaOU9A9l6UpdBkfKo1o
+	HDvzBacDAgkl7tUz51ZcagJHdW4fcF+k4MlrbioffmhJEmMjDp2wlgjbgDdbLfneIE=
+X-Received: by 2002:a17:90b:5146:b0:3a0:c162:51af with SMTP id 98e67ed59e1d1-3aced868018mr6487427a91.0.1792314410375;
+        Sun, 18 Oct 2026 02:06:50 -0700 (PDT)
 Received: from localhost.localdomain ([113.102.237.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947928b4sm15580675a91.11.2026.10.18.02.06.42
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947928b4sm15580675a91.11.2026.10.18.02.06.45
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 18 Oct 2026 02:06:45 -0700 (PDT)
+        Sun, 18 Oct 2026 02:06:50 -0700 (PDT)
 From: Qihang <q.h.hack.winter@gmail.com>
 To: netdev@vger.kernel.org
 Cc: steffen.klassert@secunet.com,
@@ -69,10 +71,12 @@ Cc: steffen.klassert@secunet.com,
 	dsahern@kernel.org,
 	idosch@nvidia.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 0/3] xfrm: fix vti tunnel device use-after-free across async crypto resumption
-Date: Sun, 18 Oct 2026 17:06:35 +0800
-Message-ID: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
+Subject: [PATCH net v4 1/3] xfrm: run the receive callback before dropping the skb->dev reference
+Date: Sun, 18 Oct 2026 17:06:36 +0800
+Message-ID: <20261018090638.55686-2-q.h.hack.winter@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
+References: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,77 +85,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This replaces the v1/v2 vti/vti6 series and the earlier reference-transfer
-rework.
+The drop path in xfrm_input() releases the skb->dev reference that is
+held across an async resumption before it runs the receive callbacks.
+The callbacks may still dereference skb->dev, xfrmi_rcv_cb() reads
+skb->dev->ifindex, so they can race a concurrent teardown of the
+device.  Run the callbacks first and drop the reference afterwards,
+like the success path does.
 
-vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
-control buffer without taking a reference.  With async crypto the
-receive callback runs from the crypto completion, after a possible
-device teardown, and dereferences the freed tunnel device.
+The early drop for a state that is no longer valid releases the
+reference on its own; let the drop label handle that reference too.
 
-The input hook takes a reference on the tunnel device when it caches
-the tunnel.  A successful receive callback leaves the cached tunnel in
-place; xfrm_input() releases the reference on every exit, including
-after delivery and on the drop paths.  The error callback only updates
-the counters, so the common drop path releases the reference after the
-skb has been freed.  IPTFS, which frees the outer skb itself, releases
-it through xfrm_input_drop()/xfrm_input_consume().
+Fixes: 1c428b038400 ("xfrm: hold dev ref until after transport_finish NF_HOOK")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
+---
+ net/xfrm/xfrm_input.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Patch 3 depends on the first two: it releases the tunnel reference from
-the drop path, which needs the receive callback ordering and the address
-family set up by patches 1 and 2.
-
-Changes since v3:
-- the cached pointer is always a tunnel; the address family selects its
-  type, and a non-NULL slot means one device reference is held, so a
-  nested or pre-installed tunnel device cannot leak it
-- xfrm_input() takes the device out of the skb before
-  gro_cells_receive()/transport_finish(), which may consume the skb
-- the device reference is dropped only after the skb has been freed,
-  including on the error path
-- IPTFS passes the state's address family explicitly instead of
-  inferring it from the secpath; the consumed skb keeps consume_skb()
-  semantics and the drop paths keep their skb drop reason
-- drop the xfrmi changes: it re-looks-up the interface and does not
-  take part in the reference transfer
-- merge the reference and IPTFS changes into one patch so the series
-  stays bisectable
-- the gro_cells NAPI window is pre-existing and is documented, not
-  changed
-
-Runtime evidence (KASAN, aarch64 QEMU):
-- VTI async success and error: RTM_DELLINK completes without a KASAN
-  report; the unfixed tree reports slab-use-after-free in vti_rcv_cb.
-- Async resume with the SA deleted in the crypto window: the reference
-  is released and the device is removed; with patch 2 reverted,
-  xfrm_input_take_tunnel_dev() warns and unregister_netdevice() waits
-  for vti0.
-- IPTFS outer-skb free: RTM_DELLINK completes; with the !first_skb
-  xfrm_input_drop() reverted to kfree_skb(), the reference leaks and
-  unregister_netdevice() waits for vti0.
-The IPTFS timer/reorder/state-teardown paths are covered by code audit,
-not by a runtime trigger.
-
-Previous versions:
-  https://lore.kernel.org/netdev/20261013074610.17808-1-q.h.hack.winter@gmail.com/ (v2)
-  https://lore.kernel.org/netdev/20260930090813.73901-1-q.h.hack.winter@gmail.com/ (v1)
-
-Qihang
-
-
-Qihang (3):
-  xfrm: run the receive callback before dropping the skb->dev reference
-  xfrm: set the address family before the early invalid-state drop
-  xfrm: hold the tunnel device reference across the input path
-
- net/ipv4/ip_vti.c      |  3 ++
- net/ipv6/ip6_vti.c     |  4 +++
- net/ipv6/xfrm6_input.c |  3 ++
- net/xfrm/xfrm_inout.h  |  4 +++
- net/xfrm/xfrm_input.c  | 74 +++++++++++++++++++++++++++++++++++++++---
- net/xfrm/xfrm_iptfs.c  | 25 +++++++++-----
- 6 files changed, 99 insertions(+), 14 deletions(-)
-
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 5ed87d51392a..94de4f698c33 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -496,7 +496,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 					       LINUX_MIB_XFRMINSTATEINVALID);
+ 
+ 			if (encap_type == -1)
+-				dev_put(dev);
++				async = 1;
+ 			goto drop;
+ 		}
+ 
+@@ -779,9 +779,9 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ drop_unlock:
+ 	spin_unlock(&x->lock);
+ drop:
++	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+ 	if (async)
+ 		dev_put(dev);
+-	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+ 	kfree_skb(skb);
+ 	return 0;
+ }
 -- 
 2.54.0 (Apple Git-157)
 
