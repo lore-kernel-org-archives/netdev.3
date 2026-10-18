@@ -1,78 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-2uec-a118.jellyfish.systems (out-2uec-a118.jellyfish.systems [63.250.43.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10723DB33F;
-	Sun, 18 Oct 2026 23:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED0A3DA5B7
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 23:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792365510; cv=none; b=ATtTPcNhqScq86aWKETS75Im2dvG1GzEMMoaJY4QG4T2aohlA5jXSPEzJsXA7Cq42r7Qyno/CNJvg6LWNFZufhgNxMWS5r0HPxI+mtZx59TEhFUCUfkDuAcbdGs74+sen9pYTNW0g8xJK0NW5ShCT3auurqrXqucgKVUHgsLbVk=
+	t=1792365640; cv=none; b=LLk7D9wrgbhvENhgOkyB9HhOJhd4GHzOSy7cdf75G/qVUpyxPD0zx4GkxQdEDUELr3blr78C6YdtYJwa3vv4fbXxhT+PvElUIbK60cnNLcrhgxpK4WJt1yvsd3FdhomE4WPkFlgoSLlN6zKmE3D2UzlpfCywldT9bqu/xMB9dwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792365510; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
+	s=arc-20240116; t=1792365640; c=relaxed/simple;
+	bh=k/i3Nsiw4H9TRxL0j87EVx9jYyettyuwElHn7x2/IBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VWree8Mj/rFmKriQYaCM0mDjJ2KCZhE3Y5D2CF3PJjXKV7/lw837nd/sWiI6DLs+ud6uBSIOs86jjl9R5eBNv9y2+TtVJUkDJxZMOPsWJE2YXaQ2yhunlEmxmEnNBamFaeOLvacIZ9NY4HjmpsX77pe/AtaCrHZwhqAnBEHExls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBJ9+S49; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=SccNBS9Qc6vfbF3Zqmt7/39GApsVWZiWtI1+x6DF254cqV15ZeSJw2XDZX2H+jwZKCWT0rLnwESN58QDMdxpv+vHHOWmRQqqqM58AQpFFLldWxIV34Lo+wM3xqn9mR6+Vi77yJWr0v2XOor8R1uQ0zIxJKfGPz8Ov/KBduIPDKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca; spf=pass smtp.mailfrom=r-sc.ca; dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b=E5j+KawY; arc=none smtp.client-ip=63.250.43.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r-sc.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBJ9+S49"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CBE1F000C4;
-	Sun, 18 Oct 2026 23:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792365509;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TBJ9+S49PC1xLpxMAM7add17/ZqegNnZVuugKzzTGx1eYHFmXA91cRCm3ginTJOPL
-	 GyUgAzcED54XrNGfgfvAp0jKmERyqq509+fnmQpSwfFXMrrWy0H9GvquuNvZ/oO44w
-	 zyGlIbqx5YxVJjERXmbdZOLSr2pzdKwlKLC2YsluQQ+OtZUTkcMDry5ijQ2J1LiYLn
-	 tydraczmOUeNt0CbZPgMSRemPcWkjAdbga/mEJqSi6mmio0L7JDmh5ofa8kxkI+oAo
-	 VfQjdE2Ey5qxDYX8KQa0HHnOvfpq7pUaaiLeSQBLOzU+LRwonYA0e03oYDrMskceFG
-	 W6MEnrKOyoRLQ==
-From: netdev-bot+sinfo@kernel.org
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org,
- =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@openwrt.org>,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net] net: bgmac: fix TX DMA unmapping on fragment mapping failure
-Date: Sun, 18 Oct 2026 23:18:28 +0000
-Message-ID: <179236550812.3290.9443229332836486177@kernel.org>
-In-Reply-To: <20261018231348.36884-1-rosenp@gmail.com>
-References: <20261018231348.36884-1-rosenp@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b="E5j+KawY"
+Received: from DESKTOP-290OH2S (d207-6-150-133.bchsia.telus.net [207.6.150.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4j7F5f5FkZz8sWQ;
+	Sun, 18 Oct 2026 23:20:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r-sc.ca;
+	s=spacemail; t=1792365623;
+	bh=k/i3Nsiw4H9TRxL0j87EVx9jYyettyuwElHn7x2/IBQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=E5j+KawYgqYYcTobdqa3Y7Ldaa+3FTZw7GAJhzxHXjOcx03vb2+se1rs90BESlczf
+	 7emm0ugBi2Faozym1+OEMK9n7naGEf+8BvN4oz5jGTPPtLkY28rYQWNMezJpc9fNSk
+	 i87MHcF+xamwqWyEIHA89tYSrolGSLFkpbsQ/udMlSsTjgT2sPihiS4btvwmQ7tZUX
+	 5M2jo0RM5N8kMqhuTa1CeDSdYxegdYKVGxJN9H54SZWW/5uRkrtvm7Y86o+3hDJDeJ
+	 M6TnBfLRm3H7OxMDWF6/e24/JNbu1k18dzhqPgr/GJ9qI7XxCUCejEzpJqrty7F1R5
+	 yqe3m3vSXBGvw==
+From: Ross Cawston <ross@r-sc.ca>
+To: andrew@lunn.ch
+Cc: lee@kernel.org,
+	pavel@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	chris.packham@alliedtelesis.co.nz,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ross Cawston <ross@r-sc.ca>
+Subject: Re: [PATCH 0/3] leds: add Realtek RTL9300 port LEDs under software control
+Date: Sun, 18 Oct 2026 16:20:14 -0700
+Message-ID: <20261018232015.527-1-ross@r-sc.ca>
+X-Mailer: git-send-email 2.55.0.windows.5
+In-Reply-To: <59f75e7d-9b56-441d-a4b5-58ad3862267e@lunn.ch>
+References: <20261018194339.132-1-ross@r-sc.ca> <59f75e7d-9b56-441d-a4b5-58ad3862267e@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: ross@r-sc.ca
 
-Hi!
+On Sun, Oct 18, 2026 at 10:36 PM UTC, Andrew Lunn wrote:
+> Port LEDs should be within the port node of the switch in DT. Ideally
+> you want all LEDs for a port to start the with basics, on/off control.
+[...]
+> So please don't make these LEDs special.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+That makes sense. The catch is that RTL9300 has no switch driver
+upstream yet, so there is no port node with a driver behind it to put
+them in: mainline only has drivers for the switch's I2C and MDIO
+controllers.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Unless you see a place they could go in the meantime, I'll withdraw
+this series until there is one.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Chris, do you know of anyone working on an RTL9300 switch driver? If
+so, I'd be glad to help with the port LEDs there.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Ross
