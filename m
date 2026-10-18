@@ -1,130 +1,88 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DBD3822B7;
-	Sun, 18 Oct 2026 19:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62F2388895;
+	Sun, 18 Oct 2026 19:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792350849; cv=none; b=Fqqq6zEllXcx75rTvj6IbNTcPOaQYRnKQyuGk7snN+bbs1GdoHStRkTiH4kul8CaHb9V+WRqfxt1JpipQvHEcU57XoWgHVTS8w79oI/V94uBnzy5DwLEgSbmT6+QYVZ59kgQnlOSUC5tq5A1eRG2g/dOK61GsLl0HYC5YGwkClg=
+	t=1792351230; cv=none; b=ftvKvp2zJoaEDqdLeEE/RYa4OREzA34ufHMfl8EhTRqh4Xw1Jh1bVoecaFwtSfrzMdrkT1Cfze80dZaHLU8Rvq/JveyQ18rQB0E8CM0lvDNVtKaRBR0OMtkiHdfyLebjxm/T+MorPALN8hG7MwNOewCM9bJpPNPazOllROB+A9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792350849; c=relaxed/simple;
-	bh=ZZ4Jr6igQloVs1kOy3pHxivzGlidTY6Iphg3SZY0OEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DX6BtsXmBd7i10MSuyqMuaG6R3R8yJSfUfEXtM1DO/uHmRaJ6ayT0wtyFW5pbSXPRKXBUV9Kl7hNKCQkwwMCrELOwbO49sUKRrEd7GHCDea+DFZ19LsPH17EeG7dHu3SYtpaC+XVr7foMauTP5ywV5VArIzpjc+8f2gX3irv34c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yPYY2r0i; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1792351230; c=relaxed/simple;
+	bh=7wpD6rrtVCuVPSDOYFWT3aDtybXWFIN02kCudrQI1ls=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=h/Wt6HUj8He/iAiT8rpIJU0D9VQLCV/6GWtvH4FyVV1xM8gIIx43hib1+bKrpBS0GYjmJol00go5X0W7nLWLSYelXF9MPenh0JLDI8uFQZmcjsqqaVwQQ9Cq2yWOTjha6TRBqIn7PO7ig10xDK6N26kFYbX1+K/8PI/BxoorshY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kMLqpt2J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yPYY2r0i"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=qHbV8LAtUSWSGGDa0h86rBDpCNFJieHVVQNqm9YZ5qo=; b=yPYY2r0i/4SBAk3Wp2l0SNL8ht
-	UhECU/Z+YTPeuUAGG4bK05uHGVaL9zmDZqEXfQpSxbMN8xQ53XZ/VsSLCh/3gbNaBOqCucVd18NNh
-	Odoib4cVuTRL0P2imPCAQ79rahZeX1PMcn30hXj9SuRp/KcfqjRUCi8YpdJmjnXyFHsA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xIWKI-00BWKf-O9; Sun, 18 Oct 2026 21:13:46 +0200
-Date: Sun, 18 Oct 2026 21:13:46 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Aleksei Sviridkin <f@lex.la>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Woudstra <ericwouds@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: air_en8811h: use firmware loaded by
- the bootloader
-Message-ID: <2d6df47b-2cc3-4003-85db-f72b878427d9@lunn.ch>
-References: <20261017180251.3618606-1-f@lex.la>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kMLqpt2J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096DB1F000C4;
+	Sun, 18 Oct 2026 19:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792351229;
+	bh=7wpD6rrtVCuVPSDOYFWT3aDtybXWFIN02kCudrQI1ls=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=kMLqpt2JoswwT0eqfe1u6vzdu0dGB+DvKVxAapgg3bonlAWk0ezBwaY+5bBGzTljP
+	 51qzrwBFhcE1CmPvIG4ynCR61azMq4yxvd5PJ92n6YKozl8iy05/s6HCoRlYvPrFRi
+	 IWseUDIgImi4eXRDYK5Z4/77qjvBX2u6H/1kgcYKk/86o50aFAcTbVvSmP61J0sY42
+	 pP7UrWZBQjfIloVRY0isWhzz7K/gB/s/AXSMBpOPpIKgfgkQeG3S9YjGYmHJTQms89
+	 WXxxJ0HYPDcFCdC1yjCbOfLEgxdoisN9sGc6USmw+lhWWJvVNmAgzy/q8hxb2EUPZC
+	 J6nIq+InnnVjQ==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
+ kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
+ kerneljasonxing@gmail.com, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>
+Subject: Re: [PATCH v4 net-next 00/15] selftests: net: migrate AF_XDP test
+ suite over to net
+In-Reply-To: <20261016174338.787135-1-maciej.fijalkowski@intel.com>
+References: <20261016174338.787135-1-maciej.fijalkowski@intel.com>
+Date: Sun, 18 Oct 2026 21:20:26 +0200
+Message-ID: <87pkx63jet.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261017180251.3618606-1-f@lex.la>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 17, 2026 at 09:02:51PM +0300, Aleksei Sviridkin wrote:
-> On a Keenetic KN-1012 (MT7981) the EN8811H sits behind a port of an
-> MT7531 switch. The driver has to be built in there: as a module it loads
-> after DSA has validated the port against the generic PHY driver and
-> failed to set it up. Built in, it probes when the Ethernet MDIO bus is
-> registered, before the root filesystem is mounted, so
-> request_firmware_direct() fails with -ENOENT, the PHY stays without a
-> driver and the port never comes up, although the bootloader has already
-> loaded and started the MD32 firmware.
-> 
-> When the firmware files cannot be read and the MCU reports ready, keep
-> the running firmware and let the first .config_init() restart it, so the
-> PHY starts from a freshly started MCU as after a download rather than
-> from whatever state the bootloader left. Nothing changes when the files
-> are there. A board that relies on this must not give phylib a
-> reset-gpios line, as the pulse at registration stops the MCU. The
-> AN8811HB path is unchanged.
-> 
-> Tested on the KN-1012: with the bootloader load the PHY binds and links;
-> without it 0x8009 reads 0x0 and the probe fails as before; a rebind with
-> the files present downloads them as before.
-> 
-> Suggested-by: Andrew Lunn <andrew@lunn.ch>
-> Assisted-by: LLM
-> Signed-off-by: Aleksei Sviridkin <f@lex.la>
-> ---
-> This replaces "net: phylink: wait for a PHY that probes after the MAC"
-> https://lore.kernel.org/netdev/20261006124731.1528963-1-f@lex.la/
-> following Andrew's suggestion in
-> https://lore.kernel.org/netdev/b175c750-104a-4859-a137-09de78a6d8bb@lunn.ch/
-> 
->  drivers/net/phy/air_en8811h.c | 21 +++++++++++++++++----
->  1 file changed, 17 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-> index a03d63dd4ac9..efe4e64d213a 100644
-> --- a/drivers/net/phy/air_en8811h.c
-> +++ b/drivers/net/phy/air_en8811h.c
-> @@ -518,6 +518,17 @@ static int an8811hb_load_firmware(struct phy_device *phydev)
->  	return en8811h_wait_mcu_ready(phydev);
->  }
->  
-> +/* No firmware files, but the bootloader may have started the MCU */
-> +static int en8811h_use_running_fw(struct phy_device *phydev, int err)
-> +{
-> +	if (phy_read_mmd(phydev, MDIO_MMD_VEND1, EN8811H_PHY_FW_STATUS) !=
-> +	    EN8811H_PHY_READY)
-> +		return err;
-> +
-> +	en8811h_print_fw_version(phydev);
-> +	return 1;
-> +}
-> +
->  static int en8811h_load_firmware(struct phy_device *phydev)
->  {
->  	struct device *dev = &phydev->mdio.dev;
-> @@ -526,11 +537,13 @@ static int en8811h_load_firmware(struct phy_device *phydev)
->  
->  	ret = request_firmware_direct(&fw1, EN8811H_MD32_DM, dev);
->  	if (ret < 0)
-> -		return ret;
-> +		return en8811h_use_running_fw(phydev, ret);
->  
->  	ret = request_firmware_direct(&fw2, EN8811H_MD32_DSP, dev);
-> -	if (ret < 0)
-> +	if (ret < 0) {
-> +		ret = en8811h_use_running_fw(phydev, ret);
->  		goto en8811h_load_firmware_rel1;
-> +	}
+Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
 
-Is it possible to figure out from the firmware blob what version it
-is?
+> v3: https://lore.kernel.org/netdev/20261014184539.774708-1-maciej.fijalko=
+wski@intel.com/
+> v3 -> v4:
+> - add tags from Mr Bj=C3=B6rn
+> - Drop --hw in xskxceiver, align packet layout between hw/veth runners (B=
+j=C3=B6rn)
+> - drop parse_u32() in xskxceiver (Bj=C3=B6rn)
+> - move ethtool -G and ring sizing logic from C to python
+> - configurable --timeout (Bj=C3=B6rn)
+> - keep the HW_SW_MAX_RING_SIZE batch below the XSK TX ring size (Sashiko)
+> - restore hugepage count in veth runner on exception paths (Sashiko)
+> - use ExitStack in hw runner to cover setup unrolls (Bj=C3=B6rn, Sashiko)
+> - support IPv6 next to IPv4 (Bj=C3=B6rn)
+> - send to the next-hop MAC, the peer need not be on-link (Bj=C3=B6rn)
+> - make --listen work on its own rather than follow the TX role (Bj=C3=B6r=
+n)
+> - run XDP_SHARED_UMEM on HW, the socket is picked by UDP source port
+> - fail a case when one endpoint fails and the other skips (Bj=C3=B6rn)
+> - keep the TX half of the unaligned check in the xsk_caps conversion
+> - detach in cleanup_iface() with the flags of mode_to_xdp_flags()
+> - reserve 2 MiB huge pages, tolerate hosts without hugetlb or root (Sashi=
+ko)
+> - lower the veth case timeout to 20s, within the net timeout (Sashiko)
+> - guard pkts_in_flight against forged PROGRESS reports (Sashiko)
+> - log short fragments, fix the IPv4 fragment comment (Sashiko)
+> - keep the MIN_PKT_SIZE and PKT_HDR_SIZE names to cut churn
+> - read what a gone peer left at READY, drain after a SKIP (Sashiko)
+> - cap --max-frags, which sizes a packet array (Sashiko)
+> - skip the hw run when RSS or ntuple setup is refused (Sashiko)
+> - bound the gateway ping, fail clearly without its MAC (Sashiko)
+> - note in the README that RFS has to stay off on the DUT (Sashiko)
 
-There is no point spending time downloading firmware from the
-filesystem if it is the same or older than what is already in the
-device.
+I think this serves well as a baseline for the XSK HW driver tests. I
+think we'll surface a lot of bugs here! ;-)
 
-	Andrew
+For the series:
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
