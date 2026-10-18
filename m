@@ -1,149 +1,166 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98531F936
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDAB3DB64D;
+	Sun, 18 Oct 2026 20:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792354049; cv=none; b=HLcKerFjSE4lNUeDX1GOpL5IxpETTeR7T4uEYjjtb6joB7jRp+D8UOfNQELwbvbMmE6H3IT4DcbrOd1gxpxf04CythNv0hT3JxcwMOIEl7caHhRcxOLIAhcU1kk4iG34HRGxXfaMUr/zO4ZUMvucnixm2UCll31gcaNbAfPpSbE=
+	t=1792354728; cv=none; b=qoEs8zWCTMUaFn9CRmBqXpATA4oNXlIiMiIbP4rOtQNvyI6zuRUIEDwSWlT/7+hu84g3Ncho98tJuyeVJDSW3xjXXtspOPzJGXZDINB2TEpATyNS0/arMa2lrcSP/UurYjhNsjvWv9UmVeI+W4vEj1BX0GRINblRcx7FQ58D41c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792354049; c=relaxed/simple;
-	bh=18+99T1qUb2FpUIRC28pBQCVrHScTY8gtn0xr1S+eP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSjd3+wKMieQTEvxJMPbDy3hncPlWYSS3uPfZGQd58HzQ0OdEpgB7/Nx+7s7iRoLD99Re/jApI0S0UfrCvAatjROTQNCqmhaobPilqsk+VLNJG2WfKt28Ix0t+ZbeQ+udkhSlD2MfDsvhoFFFSjnbcmSnPrnson849avJfmWxrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsHu3VyE; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792354728; c=relaxed/simple;
+	bh=59OVdo2PjY95NdoYTMPvuuAFu/PyWOUVQ7pqOJbJx4Y=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uhuYLbK0iGMhR4iT+oEy/cWNx+asBKqbaMOFRGd8WfXmecuMMOlbhSVY+w7AfuGZhqb13e7Aohltkkv03/CqCri1Tt7gNTlyeTRBYtK9lKA60q/No8so5IrBxTHg1Qsql94cN+JYXf/8EI2MGfk2+nRnw5JeabYxzLzZIUV1UJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXlitjtr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsHu3VyE"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35a31bb9fb6so3549959eec.1
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 13:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792354048; x=1792958848; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Uv3MoYQpKa7w7+4Q5+kfm8SKN41PePsUtcz93EBelrw=;
-        b=WsHu3VyEFtRtOdIFehghML90MX3LzMYR/xur3yPYTgBrpj/IP9gzmaAL2qz0Eh/g8W
-         et75W6ORg3MobOZxlIM5ey1GIaitUI1InPHjESqBDzE7tMdDTtzNYmiC6ojFD+CfFl40
-         D+2nrfCFe9o3BT4U0+0VVsOptkLEEOBVFSS7wG+fdIwQXY4CX82re7DcQhJS01vnqPou
-         CczKZC82Df065oM5pa+3BVhZlD44YcwBol149LlNRHP0n60w+fLJC7CE6VzC+ljWMXwg
-         sUZcPUgCNFIfMZ8Uipn4qYpwSKe3rSchjsqR/dUS3HWhRVnWy9DbU0Jaj2KYckW3AsR0
-         5zAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792354048; x=1792958848;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Uv3MoYQpKa7w7+4Q5+kfm8SKN41PePsUtcz93EBelrw=;
-        b=NGv77IN/vfxqingK15bY0HcOpscD+jSc3opCJOtBnWnbwlVhtmUcXtO7NRFBAxucGu
-         QhU4VjlVui0Mi0F0oNAPWNJzuBXtc3yaxXrVZF7TiS0EdrghtlPFzcO4sQG2ikdZ6PVO
-         wPpuRqB5tL4S03sOKqalr4wuFrOEoG+igcbq7zePuu7uUg2uDICSWfAapPDy1XJt+1HH
-         nW2stt19jNuKaL/O0DSiYXkUojNCaulFDtYh02BGQ3Y0GyOsgYPfi11UJMEbPtaVe/oZ
-         I7LTCkmFOYu4RZ/terCdLCGacDEohj4Gqcr83Dax+NUAieCNjnwzd8OgRg5jVqSKBnxP
-         MIcA==
-X-Gm-Message-State: AFq9FYJ8FIbODnXs6Eu7E5PeBweCUxu/xOuQ93eh3rfJFJBBhXq3nq+S
-	NWFLxfPzeXb2nQkeV9XGwTAIlAgObkhtmecPdVXnJz8ZERsd+Lz/kEKF6uA9ZQ==
-X-Gm-Gg: AYBFou1VZAXEA7HQc60Hl7D6202eCVpYxqAJH1XAPp8zYIFUHDyqQan0fOLHeGUE+v5
-	QKOi1OaBG1QCGq116/RNklqx4Oais3DnX4z//BuQ4Lg0JXeKot+yDSMgcEX877dIpbbdg8SHXgw
-	W130NYiwQc5LZTTfIVy5OZNggYiccV3vjVDM37pjNZTsj1zk93nIFfejSizQv2IJryhIj0h48Up
-	eU3g9FfMUENN8F+Q32nndyqC2VqRZqs+UUuqAPCK7p/Lus4WDH6jNWhPCmPLDFQD+uIjt1eicG+
-	rvZfEOY+ES0prvXLDDlfSBqOxQoLBks+x3JrYdBRwLWzj6paeTJlidM426K8u4Xxt1JMDjlmYRL
-	EKXyxD5XXdlsbLKE/OLiiiFh9FTna7Mz6K3pExr1GPwCbbuwW4jG4TEN7NnWhnXYl8LequSi6Y8
-	GdCmKs11P/iEUcAfmoa9uUqWyTGFnW3QLlZ3551MlUZsjOjiyXUYKmQf7QmCi4Iw4YTEuKZekST
-	6AQmi4oy17T8jIC0C/z/Wgl0MWxutY=
-X-Received: by 2002:a05:701b:2903:b0:177:9a5b:a89 with SMTP id a92af1059eb24-185134ddbd3mr9352797c88.29.1792354047613;
-        Sun, 18 Oct 2026 13:07:27 -0700 (PDT)
-Received: from LAPTOP-KD1TH5BD.tail375eb4.ts.net ([49.36.88.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa411sm26036273c88.4.2026.10.18.13.07.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 13:07:27 -0700 (PDT)
-From: Gopal Malaviya <gopalmalaviya53@gmail.com>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org
-Subject: Re: [RFC iproute2-next] ss: remove /proc fallback paths
-Date: Sun, 18 Oct 2026 20:07:12 +0000
-Message-ID: <20261018200712.389-1-gopalmalaviya53@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260901144034.437569-1-stephen@networkplumber.org>
-References: <20260901144034.437569-1-stephen@networkplumber.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXlitjtr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F32B1F000C4;
+	Sun, 18 Oct 2026 20:18:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792354727;
+	bh=KT5XCWY4ZCcqX5OOgQs37cKX0hdmIu5lGuJWPTgP6cE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=CXlitjtrVyMbUHK+u3UkeRlE1jNibOC1Ibn/kJ8guxq/qAPjH7SMsNlC2O1rb352d
+	 XfIFjKBoUo1uplZVoXql+6PjokdiZruqQMY3iuTL2DkAO8ZYklbh1WXFP/dPUnF3RV
+	 DcoPbpW6WfyAvEPkOvr9tr0zSgDkRwRqu+4rh9O7E0aeX2M5d9bajcRkryThkTwlTB
+	 Rty01y1oVTvcrflBSTUHeB/9xjyA4/c/crTX9s9bsF0GYqT68LsrQxWk73b1+XOMMn
+	 G7lXGONpMqvDFv/BZVJk7DluuLfUkc7Xo0rMPyclygLMDKclkVPvc2YAwxkXtCEU/C
+	 SVMYA6J4cgWMQ==
+Subject: Re: [PATCH net v2] net: ipv4: add zero check for snd_cwnd_clamp
+From: netdev-bot+sashiko@kernel.org
+To: kj2864@nyu.edu
+Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, edumazet@google.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ co+71b6509cb791e531@bugs.sh, stable@vger.kernel.org
+Date: Sun, 18 Oct 2026 20:18:46 +0000
+Message-ID: <179235472615.3135.13817965744546885405@kernel.org>
+In-Reply-To: <20261014195640.430824-2-kj2864@nyu.edu>
+References: <20261014195640.430824-2-kj2864@nyu.edu>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Tue, 1 Sep 2026 14:38 UTC, Stephen Hemminger wrote:
-> This patch removes the old /proc/net fallback code in ss command.
-> The sock_diag netlink interfaces were all in 3.10, over 13 years ago.
-> No longer need to carry all the additional text parsing code.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-I tested this on top of iproute2-next (204a7210). It builds with no new
-warnings, testsuite/tests/ss/ssfilter.t passes, and on a WSL2 6.18
-kernel the output of ss -tan, -uan, -xan, -s and -tanpie is identical
-with and without the patch (ss -a -A netlink too, apart from the line
-for ss's own netlink socket).
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-One concern: the diag interfaces are in the kernel, but each one is a
-separate Kconfig option. INET_DIAG defaults to y, while UNIX_DIAG,
-PACKET_DIAG, NETLINK_DIAG, INET_UDP_DIAG and INET_RAW_DIAG are all
-"default n", and common configs leave some of them off:
-x86_64_defconfig has "# CONFIG_INET_DIAG is not set", arm64 defconfig
-sets none of the five, and Android's gki_defconfig enables only
-INET_UDP_DIAG among them.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-When the interface for a socket type is missing, ss currently falls
-back to /proc/net/*. With this patch it prints only the header and
-exits 0, so those sockets silently disappear. I reproduced this for
-raw, unix and packet sockets (ss_before/ss_after are ss built
-without/with this patch). Raw sockets, on a kernel without
-INET_RAW_DIAG (the stock WSL2 kernel), with one ICMP and one ICMPv6 raw
-socket open:
+- [High] The fix is incomplete, so the divide-by-zero it claims to fix
+  can still be triggered.
+- [Low] The new check in ip_metrics_convert() (net/ipv4/metrics.c:57)
+  returns -EINVAL for RTAX_CWND == 0 whether or not the metric is locked.
 
-  # uname -r
-  6.18.54.1-microsoft-standard-WSL2
-  # zcat /proc/config.gz | grep INET_RAW_DIAG
-  # CONFIG_INET_RAW_DIAG is not set
-  # ss_before -wa
-  State  Recv-Q Send-Q Local Address:Port      Peer Address:Port
-  UNCONN 0      0            0.0.0.0:icmp           0.0.0.0:*
-  UNCONN 0      0                  *:ipv6-icmp            *:*
-  # ss_after -wa
-  State Recv-Q Send-Q Local Address:Port Peer Address:Port
-  # echo $?
-  0
+--
 
-Unix and packet sockets, on a kernel where unix_diag and packet_diag
-are modules that cannot be loaded (a WSL 6.6 kernel booted without its
-modules), with one packet socket open:
+net: ipv4: add zero check for snd_cwnd_clamp
 
-  # zcat /proc/config.gz | grep -E 'CONFIG_(UNIX_DIAG|PACKET_DIAG)='
-  CONFIG_PACKET_DIAG=m
-  CONFIG_UNIX_DIAG=m
-  # modprobe unix_diag
-  modprobe: FATAL: Module unix_diag not found in directory /lib/modules/6.6.114.1-microsoft-standard-WSL2-destroy+
-  # tail -n +2 /proc/net/unix | wc -l
-  171
-  # ss_before -xa | tail -n +2 | wc -l
-  171
-  # ss_after -xa | tail -n +2 | wc -l
-  0
-  # ss_before -0a
-  Netid State  Recv-Q Send-Q Local Address:Port Peer Address:Port
-  p_raw UNCONN 896    0                  *:*                *
-  # ss_after -0a
-  Netid State Recv-Q Send-Q Local Address:Port Peer Address:Port
+This commit adds a check in ip_metrics_convert() that rejects an RTAX_CWND
+route metric of zero with -EINVAL. It is meant to stop snd_cwnd_clamp from
+being set to zero, which causes a divide error in tcp_cong_avoid_ai().
 
-Distribution kernels such as Ubuntu's 6.8.0-147-generic and Arch's
-linux package build all of them as modules, so they are not affected.
-I did not boot an x86_64_defconfig kernel; I would expect ss -t to
-show nothing there for the same reason, since INET_DIAG is off.
+> diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
+> index ad40762a8b383..e83a129a25b68 100644
+> --- a/net/ipv4/metrics.c
+> +++ b/net/ipv4/metrics.c
+> @@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
+>  			NL_SET_ERR_MSG(extack, "Unknown flag set in feature mask in metrics attribute");
+>  			return -EINVAL;
+>  		}
+> +		if (type == RTAX_CWND && val == 0) {
+> +			NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero");
+> +			return -EINVAL;
+> +		}
 
-I may be missing context on how much these configurations matter for
-ss, so please take this only as a data point. If it is useful, I would
-be glad to help test any further changes in this area.
+[Severity: High]
+Does this fully close the divide by zero? The new check runs only when an
+RTAX_CWND attribute is present in the RTA_METRICS nest.
 
-Thanks,
-Gopal Malaviya
+What happens if the nest has only RTAX_LOCK with (1 << RTAX_CWND) set and no
+RTAX_CWND attribute at all?
+
+ip_fib_metrics_init() allocates the metrics array zero-filled:
+
+net/ipv4/metrics.c:ip_fib_metrics_init() {
+    ...
+	fib_metrics = kzalloc_obj(*fib_metrics);
+    ...
+}
+
+This leaves metrics[RTAX_CWND - 1] at 0 while the CWND lock bit is set.
+tcpm_suck_dst() then copies the lock bit and the value separately:
+
+net/ipv4/tcp_metrics.c:tcpm_suck_dst() {
+    ...
+	if (dst_metric_locked(dst, RTAX_CWND))
+		val |= 1 << TCP_METRIC_CWND;
+    ...
+	tcp_metric_set(tm, TCP_METRIC_CWND,
+		       dst_metric_raw(dst, RTAX_CWND));
+    ...
+}
+
+tcp_init_metrics() checks only the lock bit:
+
+	if (tcp_metric_locked(tm, TCP_METRIC_CWND))
+		tp->snd_cwnd_clamp = tcp_metric_get(tm, TCP_METRIC_CWND);
+
+So snd_cwnd_clamp ends up as 0 and tcp_init_cwnd() returns min(cwnd, 0).
+Then tcp_reno_cong_avoid()->tcp_cong_avoid_ai() runs this with w == 0:
+
+	u32 delta = tp->snd_cwnd_cnt / w;
+
+That gives the same oops as the one in the commit message.
+
+A dump/restore cycle can also produce this input. rtnetlink_put_metrics()
+skips metrics that are zero:
+
+	for (i = 0; i < RTAX_MAX; i++) {
+		if (metrics[i]) {
+
+A route with a locked CWND of 0 is therefore dumped as RTAX_LOCK only.
+Replaying that dump recreates the same state without hitting the new check.
+
+Both IPv4 and IPv6 RTM_NEWROUTE reach this path through
+ip_fib_metrics_init(). The only privilege needed is CAP_NET_ADMIN in a netns
+owned by an unprivileged user namespace.
+
+Would it work better to check after the loop that a locked RTAX_CWND has a
+non-zero value? Another option is to guard tcp_init_metrics() so that a
+locked CWND of zero is never applied to snd_cwnd_clamp.
+
+[Severity: Low]
+This rejects RTAX_CWND == 0 whether or not the CWND bit is set in RTAX_LOCK.
+Is that intended?
+
+Before this patch, an unlocked CWND of 0 was accepted and had no effect.
+tcp_init_metrics() reads the metric only when it is locked, and for unlocked
+metrics tcp_update_metrics() overwrites the cached value anyway.
+
+With this change, RTM_NEWROUTE requests that carry an unlocked cwnd of 0 now
+fail with -EINVAL. The subject says net: ipv4, but this also affects IPv6
+routes, because ip6_route_info_create() calls the same ip_fib_metrics_init()
+path.
+
+A lock-aware check after the loop, or a guard in tcp_init_metrics(), would
+fix the crash without rejecting this harmless input. Would one of those be
+preferable?
+
+>  		metrics[type - 1] = val;
+>  	}
+>
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014195640.430824-2-kj2864%40nyu.edu
