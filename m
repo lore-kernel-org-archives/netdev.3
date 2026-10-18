@@ -1,37 +1,37 @@
-Received: from out-utut-a196.jellyfish.systems (out-utut-a196.jellyfish.systems [198.177.127.196])
+Received: from out-2uec-a118.jellyfish.systems (out-2uec-a118.jellyfish.systems [63.250.43.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFF540BCBB
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 19:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.177.127.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616964052D8
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 19:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792353382; cv=none; b=GQv6TjssI/i5xNhPYRNOLg/FxM6hdoph3hUaMLwbF6RkUpmX/63CN88/wA6VJrDf5Ag9Aac8ml7kzGyWqsILT8gMGAaacZdtmFoNQzKcttH/32mtOarRyJzrn3Hsz/dUfwNbKlwz0tTElSyCGzZgODaXcko85Kl/cRcDL3Ldv/g=
+	t=1792353398; cv=none; b=aP2BbA9XVHDHcegrhBza+L/wwg17+/06Up9LX+Khhg0oHWz3Gj/nDdVQYqRi8EVc9kZ9euj/tkx5P2AgJmOYteDrzGmaIHIbE+K2LYglVth5M+WHjozRCt0bnWP5A/jyMVFtZkS2fEZ6fuw/eBLMHQV3uF3WP4PK6Nho0raypIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792353382; c=relaxed/simple;
-	bh=K5tVx83eZko7Hl+sBbrVkmUzvN6AVp1ARz5pSHuClps=;
+	s=arc-20240116; t=1792353398; c=relaxed/simple;
+	bh=EwLwi1vy0+d8Qjb36rv/G5UkgmcFJkerenRwGDWil1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8RfgIS5B95Pw5yeO+bzMUL4NUcv0fkuploWubdnocaNWXBlu57hgvQUFA5j1PU+yebCYyhbKZZ5zWuRLKdL2PzDKOXBah8+Peqb+ypwf7INludqGcfbN1dMgWnE3L17eOgL6RGYVRLVk2gUKkI/RKy3fPOqp6sW7idamzYeIIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca; spf=pass smtp.mailfrom=r-sc.ca; dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b=PWEByqwy; arc=none smtp.client-ip=198.177.127.196
+	 MIME-Version; b=aIr2SvvKPn6vNSb6hbNWYYRJmODbdL3zfpcVQjK9lqdeOK1fuAe+tD/5HCmI5dnuTKgRC5yVWaBgBTPsJ4nQZCwQ3Uih1v2hN8xCCwJqUL1aHoSZsDLSXK6eN4MWiHFDtABJ+2yt9X8C7sIbipkWLrRPMcQHdrLik95mI4IGdgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca; spf=pass smtp.mailfrom=r-sc.ca; dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b=c3n16LqQ; arc=none smtp.client-ip=63.250.43.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r-sc.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b="PWEByqwy"
+	dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b="c3n16LqQ"
 Received: from DESKTOP-290OH2S (d207-6-150-133.bchsia.telus.net [207.6.150.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4j78Hm18rQz8sWR;
-	Sun, 18 Oct 2026 19:43:48 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4j78Hr5Z3xz8sWQ;
+	Sun, 18 Oct 2026 19:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r-sc.ca;
-	s=spacemail; t=1792352630;
-	bh=x1Jv6GO0wPuojhw9KPg5KMy9xKjoXPBBoSTMpj3/LZI=;
+	s=spacemail; t=1792352634;
+	bh=ODygMlVEDHZ8XOPkugE0UOt/7kwwt4imsdbKXKe2QjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWEByqwyOcIRB+puisOnF81Sa0mgfaAbahDN9ulzoYKHj5TwpCjam3fOmZ1Urecxq
-	 am4a2L7VkuC+rpSKiPX3jlNWjm/wL5DcYofqlwEKLMJI3wMGlZ06CpqlBeD8IFgEkM
-	 xrWxa/3GsCxFuhObAhm36HEAq8SCIsyVT+qUxjQgYfBoPDqghID3N1UB188Ul8HoQx
-	 wTl7848eyDbt05VVfgT6ZW7O7X91H8dbOIpSc1f9vte1/4oTqsT6OIVmujBawVCe/c
-	 ITCrtCVZJooqZ5twRfEEMUqrtU/PjWNRiWwOhrJncKBfrptrzx6xshFITvNn2c1Z9u
-	 olZo/gYDBnCKQ==
+	b=c3n16LqQnnUNpFB7g0oa/x6qG8SP1l+kmYUppySR0/ETHhbOB2iE5Eh0tF5i3Lakh
+	 G8W3LevlyXLdD/0CH0CDbtmbva83NZAuQe9E8AVJn8QN8KJ66LI293OU3Wr7IfJ/Bn
+	 PlOwzgGt5GOOw074ndD7Z0I4BFPWA8Fl1srwW0d5gbesALfHhGSs8ul3ORnMq7h9Vx
+	 MJ8cFuZo8JJFDqtckfkHCPcRMx4v1nudMrxC8CrBVH/3iPwPvB+SQ95u0cdVUCwDzd
+	 h9x2uSEUFIyzlSxlMDZQT1YVBpt0g1CtHxlxdbbESAEnjpL12B7GBW45fTCvuSzDnR
+	 lJ2nnjP/d7k9Q==
 From: Ross Cawston <ross@r-sc.ca>
 To: lee@kernel.org,
 	pavel@kernel.org
@@ -49,9 +49,9 @@ Cc: robh@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Ross Cawston <ross@r-sc.ca>
-Subject: [PATCH 1/3] dt-bindings: leds: add Realtek RTL9301 port LEDs
-Date: Sun, 18 Oct 2026 12:43:36 -0700
-Message-ID: <20261018194339.132-2-ross@r-sc.ca>
+Subject: [PATCH 3/3] leds: add Realtek RTL9300 port LED driver
+Date: Sun, 18 Oct 2026 12:43:38 -0700
+Message-ID: <20261018194339.132-4-ross@r-sc.ca>
 X-Mailer: git-send-email 2.55.0.windows.5
 In-Reply-To: <20261018194339.132-1-ross@r-sc.ca>
 References: <20261018194339.132-1-ross@r-sc.ca>
@@ -64,107 +64,290 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Envelope-From: ross@r-sc.ca
 
-Add a binding for RTL9300 switch port LEDs under software control. The
-node is a child of the switch and gives the offset of the software LED
-control registers; each LED child names its switch port and its place
-among the port's LEDs.
+The RTL9300 switch drives up to four LEDs per port over its LED
+interface, serial or scanned. Each normally shows a hardware function
+picked by the LED set of the port, but software can take it over: one
+enable bit per LED, a 3-bit mode per LED (off, on or one of six blink
+rates), kept separately for copper and fibre media, and a load strobe
+after which the LED controller applies the modes.
+
+Add a driver for LEDs that boards wire to the switch without a hardware
+function, such as PoE status LEDs. It takes the LEDs listed in the
+device tree under software control, sets both media alike, exposes them
+as LED class devices and hands them back to their hardware function
+when it is removed. The register offsets come from the reg of its node,
+within the switch's syscon register block.
 
 Signed-off-by: Ross Cawston <ross@r-sc.ca>
 ---
- .../leds/realtek,rtl9301-port-leds.yaml       | 84 +++++++++++++++++++
- 1 file changed, 84 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml
+ MAINTAINERS                      |   7 ++
+ drivers/leds/Kconfig             |  13 ++
+ drivers/leds/Makefile            |   1 +
+ drivers/leds/leds-rtl9300-port.c | 201 +++++++++++++++++++++++++++++++
+ 4 files changed, 222 insertions(+)
+ create mode 100644 drivers/leds/leds-rtl9300-port.c
 
-diff --git a/Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml b/Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a1eb0937238..1e099a4cf05 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23013,6 +23013,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/dsa/realtek.yaml
+ F:	drivers/net/dsa/realtek/*
+ 
++REALTEK RTL9300 PORT LED DRIVER
++M:	Ross Cawston <ross@r-sc.ca>
++L:	linux-leds@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml
++F:	drivers/leds/leds-rtl9300-port.c
++
+ REALTEK SPI-NAND
+ M:	Chris Packham <chris.packham@alliedtelesis.co.nz>
+ S:	Maintained
+diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+index 7ec2c8d7854..d9b2afca2a6 100644
+--- a/drivers/leds/Kconfig
++++ b/drivers/leds/Kconfig
+@@ -676,6 +676,19 @@ config LEDS_REGULATOR
+ 	help
+ 	  This option enables support for regulator driven LEDs.
+ 
++config LEDS_RTL9300_PORT
++	tristate "LED support for Realtek RTL9300 switch port LEDs"
++	depends on LEDS_CLASS
++	depends on MACH_REALTEK_RTL || COMPILE_TEST
++	select MFD_SYSCON
++	help
++	  This option enables software control of the port LEDs of the
++	  Realtek RTL9300 switch, for port LEDs that have no hardware
++	  function, such as the PoE status LEDs of PoE switches.
++
++	  To compile this driver as a module, choose M here: the module
++	  will be called leds-rtl9300-port.
++
+ config LEDS_BD2606MVV
+ 	tristate "LED driver for BD2606MVV"
+ 	depends on LEDS_CLASS
+diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
+index 4d4b089156e..e1295303738 100644
+--- a/drivers/leds/Makefile
++++ b/drivers/leds/Makefile
+@@ -87,6 +87,7 @@ obj-$(CONFIG_LEDS_POWERNV)		+= leds-powernv.o
+ obj-$(CONFIG_LEDS_PWM)			+= leds-pwm.o
+ obj-$(CONFIG_LEDS_QNAP_MCU)		+= leds-qnap-mcu.o
+ obj-$(CONFIG_LEDS_REGULATOR)		+= leds-regulator.o
++obj-$(CONFIG_LEDS_RTL9300_PORT)		+= leds-rtl9300-port.o
+ obj-$(CONFIG_LEDS_SC27XX_BLTC)		+= leds-sc27xx-bltc.o
+ obj-$(CONFIG_LEDS_ST1202)		+= leds-st1202.o
+ obj-$(CONFIG_LEDS_SUN50I_A100)		+= leds-sun50i-a100.o
+diff --git a/drivers/leds/leds-rtl9300-port.c b/drivers/leds/leds-rtl9300-port.c
 new file mode 100644
-index 00000000000..8d6b3552526
+index 00000000000..623932a2a41
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml
-@@ -0,0 +1,84 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/leds/realtek,rtl9301-port-leds.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/leds/leds-rtl9300-port.c
+@@ -0,0 +1,201 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Realtek RTL9300 switch port LEDs under software control
++ *
++ * The RTL9300 drives up to four LEDs per switch port over its LED interface,
++ * serial or scanned. Each one normally shows a hardware function (link,
++ * speed, activity) chosen by the LED set of the port, but software can take
++ * it over and switch it on or off instead. Boards use that for port LEDs
++ * that have no hardware function, such as the PoE status LED of a PoE
++ * switch.
++ *
++ * Software control has a mode per LED, kept separately for copper and fibre
++ * media, and the LED controller picks the new modes up when it is told to
++ * load them. Both media are set alike here. The registers are part of the
++ * switch register block; the node's reg gives their offset in it.
++ *
++ * Copyright (C) 2026 Ross Cawston <ross@r-sc.ca>
++ */
 +
-+title: Realtek RTL9300 switch port LEDs under software control
++#include <linux/bits.h>
++#include <linux/leds.h>
++#include <linux/mfd/syscon.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/regmap.h>
 +
-+maintainers:
-+  - Ross Cawston <ross@r-sc.ca>
++/* Offsets from reg, which is SW_LED_LOAD (0xcc48 on the RTL9301) */
++#define RTL9300_LED_SW_LOAD			0x00
++#define   RTL9300_LED_SW_LOAD_START		BIT(0)
++#define RTL9300_LED_PORT_SW_EN_CTRL(port)	(0x04 + ((port) / 8) * 4)
++#define   RTL9300_LED_PORT_SW_EN(port, led)	BIT(((port) % 8) * 4 + (led))
++#define RTL9300_LED_PORT_SW_CTRL(port)		(0x14 + (port) * 4)
++/* 3-bit mode per LED: 0 off, 7 on, copper LEDs from bit 0, fibre from 12 */
++#define   RTL9300_LED_SW_MODE(led)		((GENMASK(2, 0) | GENMASK(14, 12)) << (3 * (led)))
 +
-+description: |
-+  The RTL9300 switch drives up to four LEDs per port over its LED interface,
-+  serial or scanned, each normally showing a hardware function chosen by the
-+  LED set of the port. The LEDs listed here are taken over by software instead
-+  and switched on and off as LED class devices, for port LEDs that have no
-+  hardware function such as the PoE status LED of a PoE switch. The node is a
-+  child of the switch, whose registers it uses.
++#define RTL9300_LED_PORTS			28
++#define RTL9300_LED_PER_PORT			4
 +
-+properties:
-+  compatible:
-+    const: realtek,rtl9301-port-leds
++struct rtl9300_port_leds {
++	struct regmap *map;
++	u32 base;
++};
 +
-+  reg:
-+    description: The software LED control registers, from SW_LED_LOAD to the
-+      end of LED_PORT_SW_CTRL, as an offset into the switch registers.
-+    maxItems: 1
++struct rtl9300_port_led {
++	struct led_classdev cdev;
++	struct rtl9300_port_leds *ctrl;
++	u32 port;
++	u32 led;
++};
 +
-+  "#address-cells":
-+    const: 2
++static int rtl9300_port_led_load(struct rtl9300_port_leds *ctrl)
++{
++	return regmap_write(ctrl->map, ctrl->base + RTL9300_LED_SW_LOAD,
++			    RTL9300_LED_SW_LOAD_START);
++}
 +
-+  "#size-cells":
-+    const: 0
++static int rtl9300_port_led_set(struct led_classdev *cdev,
++				enum led_brightness brightness)
++{
++	struct rtl9300_port_led *pled = container_of(cdev, struct rtl9300_port_led, cdev);
++	struct rtl9300_port_leds *ctrl = pled->ctrl;
++	u32 mask = RTL9300_LED_SW_MODE(pled->led);
++	int ret;
 +
-+patternProperties:
-+  "^led@[0-9a-f]+,[0-3]$":
-+    $ref: /schemas/leds/common.yaml#
-+    unevaluatedProperties: false
++	ret = regmap_update_bits(ctrl->map, ctrl->base + RTL9300_LED_PORT_SW_CTRL(pled->port),
++				 mask, brightness ? mask : 0);
++	if (ret)
++		return ret;
 +
-+    properties:
-+      reg:
-+        items:
-+          - items:
-+              - description: Switch port
-+                maximum: 27
-+              - description: LED of the port, numbered as in the port's
-+                  LED set
-+                maximum: 3
++	return rtl9300_port_led_load(ctrl);
++}
 +
-+    required:
-+      - reg
++/* Hand the LED back to its hardware function */
++static void rtl9300_port_led_release(void *data)
++{
++	struct rtl9300_port_led *pled = data;
++	struct rtl9300_port_leds *ctrl = pled->ctrl;
 +
-+required:
-+  - compatible
-+  - reg
-+  - "#address-cells"
-+  - "#size-cells"
++	regmap_clear_bits(ctrl->map, ctrl->base + RTL9300_LED_PORT_SW_EN_CTRL(pled->port),
++			  RTL9300_LED_PORT_SW_EN(pled->port, pled->led));
++	rtl9300_port_led_load(ctrl);
++}
 +
-+additionalProperties: false
++static int rtl9300_port_led_add(struct device *dev, struct rtl9300_port_leds *ctrl,
++				struct fwnode_handle *fwnode)
++{
++	struct led_init_data init_data = { .fwnode = fwnode };
++	struct rtl9300_port_led *pled;
++	enum led_brightness brightness;
++	u32 reg[2], sw_en, val;
++	int ret;
 +
-+examples:
-+  - |
-+    #include <dt-bindings/leds/common.h>
++	ret = fwnode_property_read_u32_array(fwnode, "reg", reg, ARRAY_SIZE(reg));
++	if (ret)
++		return dev_err_probe(dev, ret, "%pfw: bad reg\n", fwnode);
++	if (reg[0] >= RTL9300_LED_PORTS || reg[1] >= RTL9300_LED_PER_PORT)
++		return dev_err_probe(dev, -EINVAL, "%pfw: no LED %u of port %u\n",
++				     fwnode, reg[1], reg[0]);
 +
-+    led-controller@cc48 {
-+        compatible = "realtek,rtl9301-port-leds";
-+        reg = <0xcc48 0x84>;
-+        #address-cells = <2>;
-+        #size-cells = <0>;
++	pled = devm_kzalloc(dev, sizeof(*pled), GFP_KERNEL);
++	if (!pled)
++		return -ENOMEM;
 +
-+        led@0,2 {
-+            reg = <0 2>;
-+            color = <LED_COLOR_ID_GREEN>;
-+            function = "poe";
-+            function-enumerator = <1>;
-+        };
++	pled->ctrl = ctrl;
++	pled->port = reg[0];
++	pled->led = reg[1];
++	sw_en = ctrl->base + RTL9300_LED_PORT_SW_EN_CTRL(pled->port);
 +
-+        led@8,2 {
-+            reg = <8 2>;
-+            color = <LED_COLOR_ID_GREEN>;
-+            function = "poe";
-+            function-enumerator = <2>;
-+        };
-+    };
++	switch (led_init_default_state_get(fwnode)) {
++	case LEDS_DEFSTATE_ON:
++		brightness = LED_ON;
++		break;
++	case LEDS_DEFSTATE_KEEP:
++		ret = regmap_read(ctrl->map, sw_en, &val);
++		if (ret)
++			return ret;
++		brightness = LED_OFF;
++		if (val & RTL9300_LED_PORT_SW_EN(pled->port, pled->led)) {
++			ret = regmap_read(ctrl->map,
++					  ctrl->base + RTL9300_LED_PORT_SW_CTRL(pled->port),
++					  &val);
++			if (ret)
++				return ret;
++			if (val & RTL9300_LED_SW_MODE(pled->led))
++				brightness = LED_ON;
++		}
++		break;
++	default:
++		brightness = LED_OFF;
++		break;
++	}
++
++	ret = rtl9300_port_led_set(&pled->cdev, brightness);
++	if (ret)
++		return ret;
++
++	ret = regmap_set_bits(ctrl->map, sw_en, RTL9300_LED_PORT_SW_EN(pled->port, pled->led));
++	if (ret)
++		return ret;
++
++	ret = devm_add_action_or_reset(dev, rtl9300_port_led_release, pled);
++	if (ret)
++		return ret;
++
++	ret = rtl9300_port_led_load(ctrl);
++	if (ret)
++		return ret;
++
++	pled->cdev.brightness = brightness;
++	pled->cdev.max_brightness = LED_ON;
++	pled->cdev.brightness_set_blocking = rtl9300_port_led_set;
++
++	return devm_led_classdev_register_ext(dev, &pled->cdev, &init_data);
++}
++
++static int rtl9300_port_leds_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct rtl9300_port_leds *ctrl;
++	int ret;
++
++	ctrl = devm_kzalloc(dev, sizeof(*ctrl), GFP_KERNEL);
++	if (!ctrl)
++		return -ENOMEM;
++
++	ctrl->map = syscon_node_to_regmap(dev_of_node(dev->parent));
++	if (IS_ERR(ctrl->map))
++		return dev_err_probe(dev, PTR_ERR(ctrl->map), "no switch regmap\n");
++
++	ret = device_property_read_u32(dev, "reg", &ctrl->base);
++	if (ret)
++		return dev_err_probe(dev, ret, "no reg\n");
++
++	device_for_each_child_node_scoped(dev, child) {
++		ret = rtl9300_port_led_add(dev, ctrl, child);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static const struct of_device_id rtl9300_port_leds_of_match[] = {
++	{ .compatible = "realtek,rtl9301-port-leds" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, rtl9300_port_leds_of_match);
++
++static struct platform_driver rtl9300_port_leds_driver = {
++	.probe = rtl9300_port_leds_probe,
++	.driver = {
++		.name = "leds-rtl9300-port",
++		.of_match_table = rtl9300_port_leds_of_match,
++	},
++};
++module_platform_driver(rtl9300_port_leds_driver);
++
++MODULE_DESCRIPTION("Realtek RTL9300 switch port LEDs under software control");
++MODULE_LICENSE("GPL");
 -- 
 2.55.0.windows.5
 
