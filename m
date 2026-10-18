@@ -1,279 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6573A344DB7;
-	Sun, 18 Oct 2026 03:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B992F39448F
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 03:47:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792294583; cv=none; b=QePXaGgJ7KI+sqmGQUIdzKBR0u/0sXhrJigSHludPDe3aYrhi7iaFpv/WwO/1vFNTrBgtd0BevFnrvUneVsPiT9ubovAF/877aV8YP4hXwFmcT3wfoHX/gP9ZpXITgEXkHtmh5g/7PVvuVbxZLPoL3K30xl4jiKVl4VclytkQUY=
+	t=1792295252; cv=none; b=guznBL2Zyx/UIaF0OSU4H8eumu5/F9m/W2FnDiDpTnf6f3IkyWhyHx7XXMv+Pv4F8cdIf+orN+YyMGWtacd6av6Qmx54rq/dFyDrA7QHpxeOr0oPqaK2O9LcKB8n+MkdYhm9jNA87DsnMlE6aXmLFuHvQ1w84xUhTGkE1IfzVfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792294583; c=relaxed/simple;
-	bh=ACHZxWmCN37RgbSYYmrHE4/NBiIMOBnNNpsYI2qE6mw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lTh4xo/azONysh+HHhKD7CqqHinHfObaBU43iwgpdusfan8GUu9DyVxkUYjDbH+CiGxt/0gMXvpjOtHdgHodfBbUOXQyoV+Rz/KoduKyZmaM+T7KefvnsVpDHDqHFcXIN4ztFBsBU1RHe1KG7d/4Mh8OqhvnAYKNa7yNBGo/zjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hHM2n2P7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792295252; c=relaxed/simple;
+	bh=vIWIxpdpuQlriXmpXA2oXlhyae4Bl6gOBf5gcdiv+SI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=gFwgQg6g3Cdh1Ofwi4O5G/tvKzQu8lWSIGwTREZK9wWPQ4F2pXWLkqcpQXUL2fniegcjRm0l8BBWkzs/N4S+ayELitEzgas5F5JM7fOSwRjQkwWkXcMyN14OpSY7ahSF0ecxDLCfTURY+unbh0MiJz6NV4Q9FqM5p3OFLBHxaKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZX/fAxC; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hHM2n2P7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6038D1F000C4;
-	Sun, 18 Oct 2026 03:36:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792294582;
-	bh=QnWEPJayxPpyyDWH+a39Kmem0X6xb1GKVFGOHNM64yM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hHM2n2P7wf4oiU9im9pCQdT2I8Vl1yvT9SCA0DxHeYCmC5RoEaam6MGPfhiOOVtDc
-	 rWsGad9IATUPWVuj2PmzGJ96QKclLFJxgmTxo9eqGwfnSOxyfPuN7yy0u4FR0NM/2t
-	 PnISVvOgyPjE/16BBwEfdFa3Lq+q4YhMLqtVO1AvFA8LfMQaHxHqi0jHcH9likUw8M
-	 Cro2pnu1e3c6uY75R5hlU0m0MfI2qlvbb+qtQ5sntf59E+gRYGbV7oNYUsgT3AqYnY
-	 FN88v/UuxWLWv5qCb750be1008lmr54AqRV0kCYE3wA3vF9VXoQ5SpnsHFp7FlwyU6
-	 H4UI0jV0j7mBQ==
-Subject: Re: [PATCH net v2] net/ncsi: fix use-after-free of ncsi_channel in
- ncsi_remove_channel()
-From: netdev-bot+sashiko@kernel.org
-To: 18983559317@163.com
-Cc: sam@mendozajonas.com, fercerpav@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- gwshan@linux.vnet.ibm.com, joel@jms.id.au, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 03:36:20 +0000
-Message-ID: <179229458091.3135.8180877668637139297@kernel.org>
-In-Reply-To: <20261017024947.420683-1-18983559317@163.com>
-References: <20261017024947.420683-1-18983559317@163.com>
-X-sashiko-severity: High
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZX/fAxC"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93f2493c28bso101097685a.0
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 20:47:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792295249; x=1792900049; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iyn+0emapJRMFzmJ+yA4KQX+FkaLwrtKwIvJ6VKAF2o=;
+        b=JZX/fAxCwyykSJwNz1yUMfrQWkQFD645Oy0UGjKUCVavnltz7uojMPhbNMocD4A3VO
+         nsUK4KZx5w4psWj2XDCNamz50R1caflcNwqyQD1n7Zfks9+O3UhCUes4mY4keIpdfm/t
+         IQrLYVNnLm12xIO8nOKdUZ0qVI0u+ebsXxoWqAx7dgyS/RNUt7bZVpplLi78hN+Rs/b9
+         15Ly/YbAgruLBqMcTgfK84nuoi9Rijv2r4dZhDy29hb/rUsvsKNe8lHXekhwcByiGXD/
+         2A4kYTu76bPEPCyoJGKiuebgRkNV/sndNEvSDM9g1HSPoztIVeyckJIx718CpbRIykGQ
+         GTYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792295249; x=1792900049;
+        h=content-transfer-encoding:mime-version:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=iyn+0emapJRMFzmJ+yA4KQX+FkaLwrtKwIvJ6VKAF2o=;
+        b=l48bnEMFQYqbzBu/sMkmO7nMPvf6l0hjc5E2/fVDALT5LjsSp2ENOqSMnrCY42ThG5
+         q8PwapuVupuyNlqLLR7Qq04UqR2PGKUTuNjS0kz8wptsLjf1pNPzukbdvLw3tiTn5ire
+         6aCcg9I0ypzeqjzMbtXAaFUV2Zym2hIJlJdXilnEYJ0IcN1TSE3mmT9pa5mg7t239cLp
+         0qfSttCPcvciuUtzwhIgN0WX5FL3frR8gHAe2r1WJY9/rvegnqZR2BXnMnbOlewQ8bv6
+         7SJhKxleppl8ITJol6l4j0FdbSudCkGvb0uZorXiOuHWrXwy1hzi8we+3yZS/TGkiXBH
+         GxHA==
+X-Gm-Message-State: AFq9FYKqEOywzIObO7Gbx4A34IT7OQKCwAJET0ScD75p4AbBTtxfeei3
+	RwxopsXGB3fnnj7bzgn2RgB2rkTddYxPKeUz1bXT0Ofhk+PfmrVSagc=
+X-Gm-Gg: AYBFou1Jn9TOgXTBr0W+ozBkkKfWTiV1PEJogylN++uJV4H7+lptlnICsD58N6HbBg2
+	LaH2ZQn9qxKQHmsxi6VpKP4mW+GGdY3DWpkb1fBB9IrM38A1hf0Fe3wKOzOJjjRNMEplpG3mnNM
+	mJoZywnNn680k77APwJwaDCEC1pq3JQj0HNuQi1ntkndL0sL0aeK2FLM2leMk6XnnAGIAh+W1Jq
+	0+Lgj1DX1Uk2ReVmALiNVpYt8ChT9u5RgYsplpb+wsPkyjnAmreAD0KvfmO8z5oCvqamTdPiOfZ
+	jAu5lCe64BVcbV9seHEqb5TzqCiLNeVxcAVOoe4rgysuOTb+ovZUS4CR5LgmiByx1fa8uRp+3gf
+	PXL6mfBdq1Xk9NPyJEVAlkxr+7ROVqNyPNS/2TpBSA5bP/jivYRWHUMBGDy4dwkaXW+eac7nZ2a
+	R6LttxrwlwvLBTSPf0XZUrxvujbKrsawbl6VnXYI+kgvaruVEsZUIJfy/OCKRH1BItg+Qtn9dn6
+	YHHmqwML9eGtEUZKiRDJcGJanZ/77JE/Na9TIVv8Y4AeZ5bUDYLHHumMqSISSmPbt1KLzKtki95
+	bvlb+iznJiwqteZXKnv/4HFUWkoPFg==
+X-Received: by 2002:a05:620a:408a:b0:93e:c12c:9b6b with SMTP id af79cd13be357-93f29dc678bmr715284285a.70.1792295249474;
+        Sat, 17 Oct 2026 20:47:29 -0700 (PDT)
+Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f1a16c21esm611054285a.16.2026.10.17.20.47.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 20:47:28 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH net] net: pxa168_eth: quiesce the interface before releasing resources
+Date: Sat, 17 Oct 2026 23:47:26 -0400
+Message-ID: <179229523656.3967907.9986872484125740449.pxa168-eth@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Canceling tx_timeout_task at the start of remove does not prevent the
+still-live netdev watchdog from queuing it again. The recovery worker
+can then stop and reopen the interface while remove releases its
+resources.
 
-Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0
+For an up interface, phy_disconnect() clears dev->phydev before
+unregister_netdev() invokes ndo_stop(), which then calls phy_stop()
+with a NULL pointer.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Disable and drain the recovery work first so subsequent watchdog queue
+attempts are rejected. Close the interface while holding RTNL and before
+disconnecting the PHY: ndo_stop calls phy_stop() and must stop DMA
+before the coherent hash table is freed. Keep RTNL through
+unregistration so the interface cannot be reopened in between.
 
-- [High] The fix is incomplete, and the race the commit message targets
-  (rmmod ftgmac100 vs. NCSI_CMD_PKG_INFO) can still cause a use-after-…
-- [Medium] The patch adds the RCU reader protocol only to the
-  NCSI_CMD_PKG_INFO handlers.
-- [Medium] The comment the patch adds in ncsi_remove_channel() (ncsi-
-  manage.c:270-273) says the call_rcu() deferral protects the 'channel…
+Disconnect the PHY before unregistering the netdev, while both devices'
+sysfs directories still exist. Release the MDIO bus and hash table only
+after the interface has been unregistered.
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  ncsi_pkg_info_all_nl() passes get_net(sock_net(skb->sk)) to…
+This issue was identified as part of our ongoing research while
+reviewing kernel code.
 
---
+Fixes: bd70957438f0 ("net: pxa168_eth: Fix a potential data race in pxa168_eth_remove")
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 
-net/ncsi: fix use-after-free of ncsi_channel in ncsi_remove_channel()
+---
+Compile-tested with Clang, W=1. No hardware runtime testing.
 
-This patch wraps the NCSI_CMD_PKG_INFO doit and dump handlers in
-rcu_read_lock(). It also moves the freeing of ncsi_channel and its filter
-arrays into an RCU callback. The goal is to close a use-after-free between
-netlink package info readers and ftgmac100 teardown through
-ncsi_unregister_dev().
+Based on mainline 0fcb05b72344f40806cbe810de8872f1698bf053.
 
-> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-> index 54d0df0a9efe6..c16047dee3f8a 100644
-> --- a/net/ncsi/ncsi-manage.c
-> +++ b/net/ncsi/ncsi-manage.c
-
-[ ... ]
-
-> @@ -263,7 +267,11 @@ static void ncsi_remove_channel(struct ncsi_channel *nc)
->  	np->channel_num--;
->  	spin_unlock_irqrestore(&np->lock, flags);
->  
-> -	kfree(nc);
-> +	/* Readers (netlink package info walkers, channel configuration
-> +	 * worker) may still hold the channel or its filter arrays;
-> +	 * release everything after a grace period.
-> +	 */
-> +	call_rcu(&nc->rcu, ncsi_channel_release);
-
-[Severity: Medium]
-
-Does this grace period really cover the channel configuration worker?
-ncsi_dev_work() -> ncsi_process_next_channel() / ncsi_configure_channel() /
-ncsi_suspend_channel() does not run under rcu_read_lock(), so call_rcu()
-does not wait for it.
-
-ncsi_unregister_dev() stops the worker only after every channel has already
-been passed to call_rcu():
-
-ncsi_unregister_dev() {
-	...
-	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
-		ncsi_remove_package(np);
-	...
-	disable_work_sync(&ndp->work);
-	...
-}
-
-ncsi_remove_channel() does not unlink nc->link from ndp->channel_queue. It
-also does not clear ndp->active_channel, ndp->hot_channel or
-np->preferred_channel.
-
-A worker that is running or preempted could still dereference nc after
-ncsi_channel_release() has freed it. It could also list_del_init() a stale
-nc->link in ncsi_process_next_channel().
-
-It could also re-arm nc->monitor.timer through ncsi_start_channel_monitor()
-in ncsi_configure_channel() after ncsi_stop_channel_monitor() has already
-run timer_delete_sync(). The timer would then fire on freed memory.
-
-The worker race itself predates this patch, because the old code called
-kfree() right away.
-
-Should the comment leave out the worker? Or should teardown call
-disable_work_sync() before releasing the channels, use timer_shutdown_sync()
-on the monitor timer, and unlink nc->link from channel_queue?
-
->  }
->  
->  struct ncsi_package *ncsi_find_package(struct ncsi_dev_priv *ndp,
-> diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
-> index 8cc538358f6a3..8d1fe60beb22f 100644
-> --- a/net/ncsi/ncsi-netlink.c
-> +++ b/net/ncsi/ncsi-netlink.c
-
-[ ... ]
-
-> @@ -192,7 +187,21 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
->  		kfree_skb(skb);
->  		return -EMSGSIZE;
->  	}
-> +	/* The device is resolved and the lists are walked inside an RCU
-> +	 * read-side critical section: the teardown path only unlinks these
-> +	 * objects and frees them after a grace period.
-> +	 */
-
-[Severity: High]
-
-Is this comment accurate for ndp and np? Only the channel free moved to
-call_rcu(). The package and the device are still freed right after
-list_del_rcu():
-
-ncsi_remove_package() {
-	...
-	spin_lock_irqsave(&ndp->lock, flags);
-	list_del_rcu(&np->node);
-	ndp->package_num--;
-	spin_unlock_irqrestore(&ndp->lock, flags);
-
-	kfree(np);
-}
-
-ncsi_unregister_dev() {
-	...
-	spin_lock_irqsave(&ncsi_dev_lock, flags);
-	list_del_rcu(&ndp->node);
-	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
-
-	disable_work_sync(&ndp->work);
-
-	kfree(ndp);
-}
-
-Inside the new rcu_read_lock() section, ncsi_write_package_info() still
-reads ndp->package_num, ndp->package_whitelist and np->id, and it follows
-the np->node and np->channels links.
-
-ncsi_write_channel_info() reaches the parent package through a channel
-that call_rcu() keeps alive:
-
-	if (nc == nc->package->preferred_channel)
-
-ncsi_pkg_info_all_nl() also holds on to package and reads package->id
-after the walk.
-
-ftgmac100_remove() calls ncsi_unregister_dev() before unregister_netdev().
-So it looks like the same rmmod vs NCSI_CMD_PKG_INFO race from the commit
-message can still cause a use-after-free, now on np or ndp instead of nc.
-
-Do np and ndp also need kfree_rcu() or call_rcu(), or a synchronize_rcu()
-before the kfree()?
-
-> +	rcu_read_lock();
-> +	ndp = ndp_from_ifindex(genl_info_net(info),
-> +			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
-> +	if (!ndp) {
-> +		rcu_read_unlock();
-> +		kfree_skb(skb);
-> +		return -ENODEV;
-> +	}
-> +
->  	rc = ncsi_write_package_info(skb, ndp, package_id);
-> +	rcu_read_unlock();
-
-[Severity: Medium]
-
-Do the other genl handlers in ncsi-netlink.c need the same change? These
-handlers still call ndp_from_ifindex() and walk NCSI_FOR_EACH_PACKAGE() /
-NCSI_FOR_EACH_CHANNEL() without rcu_read_lock():
-
-ncsi_set_interface_nl()
-ncsi_clear_interface_nl()
-ncsi_send_cmd_nl()
-ncsi_set_package_mask_nl()
-ncsi_set_channel_mask_nl()
-
-The commit message says "Either half alone leaves the race". On a
-preemptible kernel, one of these walkers can be preempted mid-walk during
-ncsi_unregister_dev(). The grace period can then end and
-ncsi_channel_release() can free nc while the walker still uses it.
-
-Several of these handlers also write through the pointers they find.
-ncsi_set_interface_nl() stores the channel into package->preferred_channel
-and updates package->channel_whitelist. ncsi_clear_interface_nl() takes
-np->lock and writes np fields for each package.
-
-Can these turn into use-after-free writes during teardown?
-
-These ops are GENL_ADMIN_PERM and the family only works in init_net, so a
-trigger needs CAP_NET_ADMIN. With CONFIG_PROVE_RCU_LIST these walks would
-also cause suspicious RCU usage warnings.
-
->  
->  	if (rc) {
->  		nla_nest_cancel(skb, attr);
-> @@ -228,20 +237,26 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
->  	if (!attrs[NCSI_ATTR_IFINDEX])
->  		return -EINVAL;
->  
-> +	package_id = cb->args[0];
-> +
-> +	rcu_read_lock();
->  	ndp = ndp_from_ifindex(get_net(sock_net(skb->sk)),
->  			       nla_get_u32(attrs[NCSI_ATTR_IFINDEX]));
-
-[Severity: Medium]
-
-This is a pre-existing issue and was not introduced by this patch, but does
-ncsi_pkg_info_all_nl() leak a netns reference here?
-
-get_net(sock_net(skb->sk)) takes a reference that ndp_from_ifindex() never
-drops, and there is no put_net() anywhere in net/ncsi/. get_net() runs
-before the lookup, so the reference leaks even when no NCSI device is
-found.
-
-The same pattern is in ncsi_set_interface_nl(), ncsi_clear_interface_nl(),
-ncsi_send_cmd_nl(), ncsi_set_package_mask_nl() and
-ncsi_set_channel_mask_nl().
-
-The family does not set netnsok, so only init_net is affected, and its
-refcount grows with every dump call.
-
-Would plain sock_net() be enough here?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017024947.420683-1-18983559317%40163.com
+diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
+index bbbbbba..2d59491 100644
+--- a/drivers/net/ethernet/marvell/pxa168_eth.c
++++ b/drivers/net/ethernet/marvell/pxa168_eth.c
+@@ -27,6 +27,7 @@
+ #include <linux/phy.h>
+ #include <linux/platform_device.h>
+ #include <linux/pxa168_eth.h>
++#include <linux/rtnetlink.h>
+ #include <linux/tcp.h>
+ #include <linux/types.h>
+ #include <linux/udp.h>
+@@ -1528,18 +1529,21 @@ static void pxa168_eth_remove(struct platform_device *pdev)
+ 	struct net_device *dev = platform_get_drvdata(pdev);
+ 	struct pxa168_eth_private *pep = netdev_priv(dev);
+ 
+-	cancel_work_sync(&pep->tx_timeout_task);
++	disable_work_sync(&pep->tx_timeout_task);
++	rtnl_lock();
++	dev_close(dev);
++	if (dev->phydev)
++		phy_disconnect(dev->phydev);
++	unregister_netdevice(dev);
++	rtnl_unlock();
++
+ 	if (pep->htpr) {
+ 		dma_free_coherent(pep->dev->dev.parent, HASH_ADDR_TABLE_SIZE,
+ 				  pep->htpr, pep->htpr_dma);
+ 		pep->htpr = NULL;
+ 	}
+-	if (dev->phydev)
+-		phy_disconnect(dev->phydev);
+-
+ 	mdiobus_unregister(pep->smi_bus);
+ 	mdiobus_free(pep->smi_bus);
+-	unregister_netdev(dev);
+ 	free_netdev(dev);
+ }
+ 
