@@ -1,372 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5D03C345C;
-	Sun, 18 Oct 2026 22:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A2834DCE3;
+	Sun, 18 Oct 2026 23:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792363853; cv=none; b=sNRP302H37It/uiuCKtdojziPKzYVK21JdxcPzsf3LywSukCKL5yO+Lo/1I55mptNhp2igXo+mYFQgqr+THtb+DP8CxY+sLkBoKVuad3nMY4dukzt81lAh1vzhhxq1TafIzxXB7E6+qnDP69sxn5lu5MhPk21Hij/HObYNSMBgg=
+	t=1792364675; cv=none; b=rVNdqYcmag8Cu8J5sJN9EifN6SA/o7wj7f6BJ6SPWWW9266YypU3ZtmgJ1vlOCUvn/zKETQ4TGMKmPSIetKgB44e1P5YNq4ECxH9YmpMqZfvzJZ1an9vIzLJSD/vgREFdGPGH8DLIO1N2TpkO4KWM/EEJUhvTD6I/HBooZ8/DJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792363853; c=relaxed/simple;
-	bh=56ph6YUmmDdJUJ4J4H27XwjPGATI/dmF9kemybCKWSs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m/5F/UlZ+JTdpDTMna18EcD4AhzyFmfYwrvw1YDp4PhMI3f4dt+jsGdRQliiXPSfgq3DHBei4B4SRJo2VxDWgQRbTYr1gjLVtCkNH8blhspmMmbM9CJEAi/gpYoxBXJ4caH81va/yYNQN8EOVfU4cdlfFN3iyrN1ArRaq8bdoPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABvenEW2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792364675; c=relaxed/simple;
+	bh=PAdYOJ6+VQUsob6n2jCgdqPzP2nwBnJ35YUBMcjrd2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LQXuRMji1QgNY99Kc9Nwq2GnNrCRmraenRjVuVZkwmKxAvRkJF3oUvE/+JYr9EvlH4a9hHF+LcXCKbUYnfKHSb+sqe6ckBIZf3uwafMw6ekSi2LyMTeif0ZFRK5Vj5s2whxly0/A+tMEMhZ16IBc24QOq+8wg3m3HqP2Hjt9wCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5hv9qdVc; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABvenEW2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB991F000C5;
-	Sun, 18 Oct 2026 22:50:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792363848;
-	bh=p332EuKxIA2IxEfH2iz9HPbsFb9O2w7VObiKnnHPMTM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ABvenEW27XHlrr3XGdaEOPoiweujbKXFUnnv4hbKuV1Ow1yMy+w8PBogPEOt3naQf
-	 mVs9JCHut0v7hl3D1NzfcrDjwHjRRwJ/unyrvCgEA6mrifsRB7rsu8X6pYzP+N+bCU
-	 iM2gLKqdsFI6mU6/rT9hfJiE57Bdzn/OgjvVMiooVSi3B28lYkPh/JI/0Wc7ND6Plh
-	 x3iePWzqyurWA+5gxsBIVk1zjbzXvP35iCU9Ajtly3CdN0LiSV/eJT1p2c0yedkiRq
-	 Jj+Si8qHcS9S2izDEEcCZwU9VeQGx5VtGVSTzhN/fyro2S+U0PDX2vTC6wKQJoye6z
-	 timg6mU906suw==
-Subject: Re: [PATCH net-next v4 5/6] eth: fbnic: report temperature and
- voltage alarms via hwmon
-From: netdev-bot+sashiko@kernel.org
-To: limzhineng2@gmail.com
-Cc: alexanderduyck@fb.com, kuba@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
- linux@roeck-us.net, horms@kernel.org, hmohsin@meta.com,
- mike.marciniszyn@gmail.com, kernel-team@meta.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, zinclim@meta.com
-Date: Sun, 18 Oct 2026 22:50:46 +0000
-Message-ID: <179236384686.3135.5949938608549155286@kernel.org>
-In-Reply-To: <20261014222225.2803660-6-limzhineng2@gmail.com>
-References: <20261014222225.2803660-6-limzhineng2@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5hv9qdVc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=saxxRacJ5hWTgsNIWolEJAGpb2rG2OONC5ywqM+ibRo=; b=5hv9qdVcTuXxc9z/5PoWMKTFcL
+	DO4v4BUWrRy86imNADS8X+LnvB9mX3G40kWVE8vOnUqgZUs+I+xD5qQIK7Gx1KmRyKV/k+uoBNqKk
+	yby9qzUgUb4S79ro2+htic2gjD1Oa80p0O7veT3S8N2YY+QP8rxJ40WjDsvkDLQLSnig=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xIZvQ-00BX8B-Kl; Mon, 19 Oct 2026 01:04:20 +0200
+Date: Mon, 19 Oct 2026 01:04:20 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: Mieczyslaw Nalewaj <namiltd@yahoo.com>, linusw@kernel.org,
+	olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk,
+	maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 3/9] net: dsa: realtek: rtl8365mb: set speed
+ for family D
+Message-ID: <2d26a270-fb06-4971-b9e1-3e3572a8b814@lunn.ch>
+References: <5a4715dd-89e0-4868-9ffb-c8fb73b18d04@yahoo.com>
+ <75829f0c-69d4-4c16-8300-142023f840d7@yahoo.com>
+ <CAJq09z5ZAxca0rRT0mSiU_3xp2wxEU4qahbDM3SBGpwe1vbMRw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJq09z5ZAxca0rRT0mSiU_3xp2wxEU4qahbDM3SBGpwe1vbMRw@mail.gmail.com>
+
+On Sun, Oct 18, 2026 at 07:40:47PM -0300, Luiz Angelo Daros de Luca wrote:
+> > diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> > index 840db5a..2dabc4d 100644
+> > --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> > +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> > @@ -344,6 +344,7 @@
+> >  #define RTL8365MB_PORT_SPEED_10M       0
+> >  #define RTL8365MB_PORT_SPEED_100M      1
+> >  #define RTL8365MB_PORT_SPEED_1000M     2
+> > +#define RTL8365MB_D_PORT_SPEED_2500M   5
+> 
+> I also used the same _<FAMILY>_ tag trick previously, but it gets
+> confusing quickly. Does RTL8365MB_D_xxx mean something exclusive to
+> family D, or family D and later? I hope a more seasoned reviewer can
+> weigh in on this.
+
+The Marvell switch driver does something similar. There are a few
+families of devices, and within each family, a few devices. Within a
+family, the devices are register compatible, but they either have
+different number of ports, or features are not present.
+
+The naming of functions and defines is based around the highest family
+member of the family which introduced the feature. A few examples:
+
+int mv88e6097_port_pause_limit(struct mv88e6xxx_chip *chip, int port, u8 in,
+                               u8 out);
+int mv88e6390_port_pause_limit(struct mv88e6xxx_chip *chip, int port, u8 in,
+                               u8 out);
+
+The feature was first introduced in mv88e6097, and this method is used
+in all families until the mv88e6390 came along, which required a
+different implementation because the registers changed.
+
+So i would say RTL8365MB_D_xxx means D and later. And if you need
+RTL8365MB_F_xxx, put it close by so other developers are aware it
+exists.
+
+What we also sometimes do is have a mv88e6xxx_foo function, which is
+generic, but it calls mv88e6352_foo, mv88e6189_foo, mv88e6393_foo as
+needed.
+
+	Andrew
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 4 · Low: 2
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message says that exposing the firmware range as
-  temp1_alarm/in0_alarm means "an excursion that starts and ends between…
-- [Medium] On firmware that does not report a range,
-  fbnic_hwmon_alarm_read() produces temp1_alarm/in0_alarm by comparing a…
-- [Medium] fbnic_hwmon_register() publishes the new hwmon device to the
-  mailbox IRQ thread with a plain WRITE_ONCE(fbd->hwmon, hwmon), which…
-- [Medium] hwmon_cache.temp_alarm/volt_alarm are reset to
-  FBNIC_FW_TSENE_ALARM_UNKNOWN only in fbnic_mbx_init().
-- [Low] fbnic_hwmon_is_visible() hides temp1_alarm unless
-  fw_cap.temp.min, max and crit are all reported, and hides in0_alarm…
-- [Low] The new synchronize_irq(fbd->fw_msix_vector) in
-  fbnic_hwmon_unregister() does not check that the FW mailbox vector is…
-
---
-
-eth: fbnic: report temperature and voltage alarms via hwmon
-
-This adds temp1_alarm and in0_alarm hwmon attributes to fbnic. They are
-backed by the range firmware reports on each threshold crossing. When
-nothing is cached, the driver falls back to a sensor read, or to
-comparing the reading against the thresholds.
-
-Pollers are woken through hwmon_notify_event() from the mailbox IRQ path.
-fbd->hwmon is now published with WRITE_ONCE() and torn down with
-synchronize_irq().
-
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-> index 4df808f850cf8..310a2c52bb4df 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-
-[ ... ]
-
-> @@ -120,6 +127,74 @@ static int fbnic_hwmon_read_threshold(long thr, long *val)
-
-[ ... ]
-
-> +static int fbnic_hwmon_alarm_read(struct fbnic_dev *fbd,
-> +				  enum hwmon_sensor_types type, long *val)
-> +{
-
-[ ... ]
-
-> +	/* Paired with WRITE_ONCE() on the mailbox thread. Firmware only
-> +	 * reports on a threshold crossing, so nothing is cached until the
-> +	 * first one. Read the sensor, whose response carries the range.
-> +	 */
-> +	alarm = READ_ONCE(*cached);
-> +	if (alarm == FBNIC_FW_TSENE_ALARM_UNKNOWN) {
-
-[Severity: Medium]
-Can this return a range that a previous firmware instance reported?
-
-temp_alarm and volt_alarm are only reset to FBNIC_FW_TSENE_ALARM_UNKNOWN in
-fbnic_mbx_init(). That only runs from fbnic_fw_request_mbx(), at probe and
-resume.
-
-A firmware reboot while the host mailbox stays up takes a different path:
-
-fbnic_fw_check_heartbeat()
-    fbd->firmware_time < fbd->prev_firmware_time
-    fw_heartbeat_enabled = false
-fbnic_health_check()
-    fbnic_fw_config_after_crash()
-
-fbnic_fw_config_after_crash() sends the ownership message and reprograms
-the RX filters. It does not touch hwmon_cache.
-
-The commit message says firmware only reports a range when it changes. This
-function only queries firmware while the cache is
-FBNIC_FW_TSENE_ALARM_UNKNOWN.
-
-After a firmware reboot, could temp1_alarm and in0_alarm keep showing an
-alarm that never clears? Or could a stale FBNIC_FW_TSENE_ALARM_NORMAL hide a
-sensor that was already out of range when the new firmware booted?
-
-On firmware that reports ranges, reading temp1_input or in0_input would
-refresh the cache through the TSENE read response. On old firmware, at the
-end of the series, the cache is written by fbnic_hwmon_old_notify_event()
-and read responses never refresh it. The stale value would then stay until
-the next threshold event.
-
-> +		err = fbnic_hwmon_sensor_read(fbd, id, &reading);
-> +		if (err)
-> +			return err;
-> +
-> +		alarm = READ_ONCE(*cached);
-> +
-> +		/* Firmware too old to report a range, derive it instead */
-> +		if (alarm == FBNIC_FW_TSENE_ALARM_UNKNOWN)
-> +			alarm = fbnic_hwmon_classify(thr, reading);
-
-[Severity: Medium]
-Is this fallback allowed by the hwmon ABI? Documentation/hwmon/sysfs-interface.rst
-says:
-
-    Alarms are direct indications read from the chips. The drivers do NOT
-    make comparisons of readings to thresholds. This allows violations
-    between readings to be caught and alarmed.
-
-On firmware that doesn't report a range, the cache stays at
-FBNIC_FW_TSENE_ALARM_UNKNOWN. fbnic_fw_parse_threshold_exceeded_resp() does
-not cache FBNIC_FW_TSENE_ALARM_DEPRECATED events, and the read response has
-no *_ALARM_STATE attribute. Every read of temp1_alarm or in0_alarm therefore
-ends up in fbnic_hwmon_classify().
-
-fbnic_hwmon_is_visible() still exposes the attribute whenever the thresholds
-are present. Userspace can't tell an alarm the hardware raised from one the
-driver computed. The value adds nothing over comparing temp1_input with
-temp1_min, temp1_max and temp1_crit.
-
-The last patch in the series, "eth: fbnic: derive the alarm range on older
-firmware", keeps this fallback. It also adds a second driver-side
-classification in fbnic_hwmon_old_notify_event().
-
-> +	}
-> +
-> +	*val = alarm != FBNIC_FW_TSENE_ALARM_NORMAL;
-
-[Severity: Medium]
-The commit message says:
-
-    Expose that as temp1_alarm and in0_alarm, so the alarm reflects a
-    condition the hardware raised and an excursion that starts and ends
-    between two sysfs reads is still caught.
-
-Does the code catch that case? Nothing latches the alarm, and reading it
-does not clear anything.
-
-fbnic_fw_parse_threshold_exceeded_resp() overwrites the cache with every
-range it receives, including the crossing back to normal:
-
-		if (alarm != FBNIC_FW_TSENE_ALARM_DEPRECATED) {
-			WRITE_ONCE(fbd->hwmon_cache.temp_alarm, alarm);
-			fbnic_hwmon_notify_event(fbd, FBNIC_SENSOR_TEMP);
-		}
-
-Take this sequence:
-
-    read of temp1_alarm returns 0
-    firmware sends FBNIC_FW_TSENE_ALARM_ABOVE_MAX
-    firmware sends FBNIC_FW_TSENE_ALARM_NORMAL
-    read of temp1_alarm
-
-The second read also returns 0.
-
-The hwmon_notify_event() wakeups don't close this gap either. If both events
-are handled before the woken poller reads the attribute, the poller still
-sees 0. The KOBJ_CHANGE uevent carries only the attribute name, not a value.
-
-The last patch in the series, "eth: fbnic: derive the alarm range on older
-firmware", does not add latching either.
-
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> @@ -186,25 +266,69 @@ static const struct hwmon_chip_info fbnic_chip_info = {
->  
->  void fbnic_hwmon_register(struct fbnic_dev *fbd)
->  {
-
-[ ... ]
-
-> +	hwmon = hwmon_device_register_with_info(fbd->dev, "fbnic",
-> +						fbd, &fbnic_chip_info,
-> +						NULL);
-> +	if (IS_ERR(hwmon)) {
->  		dev_notice(fbd->dev,
->  			   "Failed to register hwmon device %pe\n",
-> -			   fbd->hwmon);
-> -		fbd->hwmon = NULL;
-> +			   hwmon);
-> +		return;
->  	}
-> +
-> +	WRITE_ONCE(fbd->hwmon, hwmon);
->  }
-
-[Severity: Medium]
-Is WRITE_ONCE() enough to publish the device to the mailbox IRQ thread?
-
-fbnic_probe() enables the mailbox IRQ in fbnic_fw_request_mbx() before it
-calls fbnic_hwmon_register(). A threshold event can therefore reach
-fbnic_hwmon_notify_event() on another CPU while registration is still in
-progress.
-
-On this path, __hwmon_device_register() calls
-INIT_LIST_HEAD(&hwdev->tzdata) after device_register() and then returns.
-The HWMON_C_REGISTER_TZ block is skipped because chip->info[0]->type is
-hwmon_temp, not hwmon_chip.
-
-WRITE_ONCE() has no release semantics. Nothing orders the tzdata list head
-stores before the store to fbd->hwmon.
-
-On a weakly ordered CPU such as arm64, with CONFIG_THERMAL_OF enabled, could
-the reader see a non-NULL fbd->hwmon and still walk a list head that is
-zero from kzalloc()?
-
-fbnic_hwmon_notify_event()
-    hwmon_notify_event()
-        hwmon_thermal_notify()
-            list_for_each_entry(tzdata, &hwdev->tzdata, node)
-
-The window is very narrow, but the commit message relies on this pairing to
-make registration safe. Would smp_store_release() with smp_load_acquire(),
-or rcu_assign_pointer() with rcu_dereference(), give the ordering it
-describes? The code is unchanged at the end of the series.
-
->  
->  void fbnic_hwmon_unregister(struct fbnic_dev *fbd)
->  {
-> +	struct device *hwmon;
-> +
->  	if (!IS_REACHABLE(CONFIG_HWMON) || !fbd->hwmon)
->  		return;
->  
-> -	hwmon_device_unregister(fbd->hwmon);
-> -	fbd->hwmon = NULL;
-> +	hwmon = fbd->hwmon;
-> +	/* Pair with READ_ONCE() in fbnic_hwmon_notify_event(). Publish NULL
-> +	 * and wait for any in-flight FW mailbox IRQ handler to finish so it
-> +	 * cannot dereference the hwmon device after we unregister it.
-> +	 */
-> +	WRITE_ONCE(fbd->hwmon, NULL);
-> +	synchronize_irq(fbd->fw_msix_vector);
-
-[Severity: Low]
-Can fw_msix_vector be 0, or stale, by the time this runs?
-
-hwmon stays registered across suspend and resume. It is only unregistered
-from fbnic_remove(). If __fbnic_pm_resume() fails, a later remove can see
-one of two values.
-
-The first is 0. fbnic_pm_suspend() calls fbnic_fw_free_mbx(), which sets
-0. It stays 0 if fbnic_alloc_irqs() then fails during resume. The
-err_free_mbx path also leaves it at 0.
-
-The second is a stale vector, when __fbnic_fw_enable_mbx() fails.
-fbnic_fw_request_mbx() frees the IRQ and still stores the vector:
-
-	if (err)
-		free_irq(vector, fbd);
-
-	fbd->fw_msix_vector = vector;
-
-fbnic_free_irqs() then releases the PCI vectors.
-
-A later fbnic_remove()->fbnic_hwmon_unregister() would then call
-synchronize_irq(0), or synchronize_irq() on a virq that may since belong to
-another device.
-
-free_irq() has already drained the fbnic mailbox handler, so this does not
-look like a use-after-free, only a wait on an unrelated IRQ. Should the call
-be guarded with if (fbd->fw_msix_vector)?
-
-The stale assignment in fbnic_fw_request_mbx() itself predates this patch.
-
-> +
-> +	hwmon_device_unregister(hwmon);
-> +}
-> +
-> +void fbnic_hwmon_notify_event(struct fbnic_dev *fbd, int id)
-> +{
-
-[ ... ]
-
-> +	/* Pair with WRITE_ONCE() in fbnic_hwmon_unregister(). Skip the
-> +	 * notification if hwmon failed to register or has already been torn
-> +	 * down.
-> +	 */
-> +	hwmon = READ_ONCE(fbd->hwmon);
-> +	if (hwmon)
-> +		hwmon_notify_event(hwmon, type, attr, 0);
-
-[Severity: Low]
-Can this send a uevent for an attribute that does not exist?
-
-fbnic_hwmon_is_visible() hides temp1_alarm unless the temperature min, max
-and crit thresholds are all reported. It hides in0_alarm unless the voltage
-min and max are both reported.
-
-fbnic_fw_parse_cap_resp() parses each threshold as an optional TLV on its
-own:
-
-	fbd->fw_cap.temp.crit =
-		fbnic_tlv_attr_get_signed(results[FBNIC_FW_CAP_RESP_TEMP_CRIT],
-					  FBNIC_SENSOR_NO_DATA);
-
-fbnic_fw_parse_threshold_exceeded_resp() calls fbnic_hwmon_notify_event()
-for every range other than FBNIC_FW_TSENE_ALARM_DEPRECATED. It does not
-check visibility first.
-
-hwmon_notify_event() calls sysfs_notify(), which does nothing for a missing
-attribute. It then always emits KOBJ_CHANGE with NAME=temp1_alarm or
-NAME=in0_alarm.
-
-So firmware that reports ranges but omits, say, the TEMP_CRIT TLV would
-produce change uevents for a sysfs attribute that isn't there.
-
-The mismatch remains at the end of the series.
-fbnic_hwmon_old_notify_event() checks only min and max, while temp1_alarm
-visibility also requires crit.
-
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014222225.2803660-1-limzhineng2%40gmail.com
