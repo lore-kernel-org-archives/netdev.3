@@ -1,293 +1,357 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53025357CED;
-	Sun, 18 Oct 2026 04:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792298127; cv=none; b=QIVUyHFALMi1YoltJqr9wBWD67BMGGGmI0IgZ7W1AoOxWqe2Y1fegEDRjqvE1GqxGVfOGcLDnBRmyMH7mPYen3C/lO9mzZa1M0z5UOcWDiSRBZXKN1ZQKGPp9lD3aRIIkQP4WuWisvhNZGYRCR31VtfMLK8Bydp6eQHi+/pEBFw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792298127; c=relaxed/simple;
-	bh=fIIzO3YeQ89hHkR10kQq/oT7VhSRWJgqIhFbWPKhPV4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AVhW05Rc6KcLKTcNnlXCagQNbgo+d0dbnVpQES/NpKGl6A04t3rDid7SWRF6UtFXFe0+NV39gKZvQlp5hvBTBsEx9a4QRaNk0KY5EKgGe9nJiAotqHp1O4xCLk47T4mbyOym2749jV4OzjeQ0rxSqRHVFotdIB6ykKnIsAlLQb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXtI6rEf; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501403F824D
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 04:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792298595; cv=pass; b=XaeorUkWVehQydIrxyjEpw2AGsOb/tncNMCo5jMnIARdGRO5T3hYbG0cUqMmrui9sWO8bFS308FEeG8FEcrsKXz/AxBNKCUQdwmvgPoOe0uNKwyXyETnK93pnIwTtwdBG9Jrh7KXWRbYMfTlxOclEO/0AzvoTkD6jkwECYjCRxM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792298595; c=relaxed/simple;
+	bh=DHpt0emLBDEXhg01inCWP8u2BhRmbxlc7aC04HKyBeE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eWrHGQUO6400/UAsS6G1EuccB6CFQHhLZdbVdn7Rn3ItQogI7F8gGVDZniDPMBGnQS9Zra8gyEd5g8Tq2mmiHYNkJxQGq23b0kF94tgbr+qJ27F5eM4OTI8YG59U6bSYR+wtzJJWB9PdXFPNTHq7bBLAzBRtcnqqU/DQP7LfJtE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QazQzvUt; arc=pass smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXtI6rEf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5678F1F000C4;
-	Sun, 18 Oct 2026 04:35:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792298125;
-	bh=PRpTZJSpbXXgxWwOLofA5Y6mVk1ATVD63mzOc94TFVM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZXtI6rEfp1QOABC3VVWMBFS+Pg0XYpu2vUbXchMn+UZlgj3JuZaaXefIcbtrqnF1B
-	 WPU7ghCLPECMB9AkykZZQa6k5BdDi93ZjwR0+Rz5nUqFhrY0EFfNbuE5BV5LZih9T3
-	 x9e0tcBgYUjyfF7aSY6wLYocQjuGnUPJeft+1inG8IPM5T1uf1pAzdT0waOooSZPNQ
-	 X+Zd3+LzAXT6JVLDfpY86ttM6ZwtW03R5gATQ4vkCCzyJAQ6BGjxooPj/AwPFmJ2ke
-	 ltI54e53Se8cb0ARS25wAbQ6qx8kfcFCAvDAkO+wWiqvHMtRhddYoEOoUvC0TtuHSh
-	 L2YTVRvLXMxww==
-Subject: Re: [PATCH net v2] selftests/net: test network sysctl extremes
-From: netdev-bot+sashiko@kernel.org
-To: sahaj123.sc@gmail.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 04:35:24 +0000
-Message-ID: <179229812489.3135.14817248906900099268@kernel.org>
-In-Reply-To: <20261014041446.2821085-1-sahaj123.sc@gmail.com>
-References: <20261014041446.2821085-1-sahaj123.sc@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QazQzvUt"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91b83459526so14949116d6.2
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 21:43:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792298587; cv=none;
+        d=google.com; s=arc-20260327;
+        b=J2ZiD5kmLkGYo7hOMM5y2sIz4VVmfAKg7wD58PS0J7FiZlFQGLP02aS1wG/TzAeyj5
+         hfZH60sOcEe54CNRjJnRZ4qQjpJnRYD/NeT7yD8L64GfY6Pp7Gd6uYi9ITAZv+QiQejQ
+         gNZhbHg9qnc4SksHHDCPMbgrm00TsgGQ7t3T5V4i5RZqgSSbLJJm0vXFs09I49w2QQye
+         uKWZrkuAJqX/HpwbIrcMtcVQplA6H5dvyvlW7pk0jV0K0I49iyAyCUatb6ZbYVHbuVfi
+         uV9fhIcckibkR1X6cpYGzXuvFxDAWTNmkZ1uia1trQN14mRcxsaQa+4NaleSFYnWL3wR
+         qTxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=TCd4vJVysPs+rmx1m3RvczNkQ2iSpfMjw8JApMQr1io=;
+        fh=RSVrTET9mPHU4yEI7pKk/0e0nqikMFOv6PiG1Q9rpJ4=;
+        b=SeObuXsD18SB+3HJY53FXlA05ioiZcl0GITSva3ocDDgPHyGncpxK68mfIOJRbFVcO
+         MtocYjnD6v40SfhLIGfa1Mo9nQhOBAVOze5q5LFe+22RS9+ekKnenwdjCRQ3J0TODY6/
+         SP85VLX8Y3sCRs/M/Aa8BzTXU4SxCupwAXAHTdOWqEKEeRLwzaLp/0k2NniaiRZ2bnLD
+         MX138NTu/9AugexkErLO0X+ohIRqefNQ64PuA0xI4Wse9XIrMM/WmFon/Le4EhMWUrl+
+         zBynAj8/v3txpD0jP3B1qbBq4QhLh/rIhsMmmcYycmnZbZJRX1dEO53uc0p5TXSoTOTy
+         rN8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792298587; x=1792903387; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TCd4vJVysPs+rmx1m3RvczNkQ2iSpfMjw8JApMQr1io=;
+        b=QazQzvUtDkxjlnkXd7Dc4Q3ge6a0E9Pcu+129KI0o3/+btcboUKlA5M+F3R66tDPct
+         vjIr5eHi8LF8GQC+EY2834iNwUJ04ZhqapiuflLdS+eFnWma9oSqPwY+Iti2pDrIqyeN
+         p3Ukamag+aGoIHuVcKRjMS/DUi3d297CdwhomOiGoQ1gfZuYRO0KcpT+Yy1aH4WVjvK8
+         +YfwXfy8LUOAGcZ/o11Kc15e261H2tcNh+LGf96etmOkUrUIJSf3ek5jYyHgSQxVvSYh
+         Byq8qqDo/IT3s7Q8itFIdYR+G3VF9JMNCPIPBVEg+bN3EY7cx5rIRJ4xWSrHd78FzRNu
+         R43w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792298587; x=1792903387;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=TCd4vJVysPs+rmx1m3RvczNkQ2iSpfMjw8JApMQr1io=;
+        b=KwLcy2iQCsXKwfm5rQqqxzK6J19CQf/fa6udK66nEH39NP8oMRoXD4vwMwKvvYD9CR
+         smoGpGSFUMkhp3JMwIuD7HnSBwmEiv2rfodCFXXHFDphU33WeL/A+GK0pb0nE92oFC/a
+         2G4bqVBSf473HeY2wZe/YA4mLLOkCi1DxZds1NhD2MJHXVbpeou9M+tJElAj5N6quIZ+
+         lVQtVhRPO12cLcH1IgKN8TQNaS91yH73YaUnGHnbcYiBYay3nJtFGy8uLZ9vPQCpDuy2
+         inCwyQ8+HWp+uvNj7TFclNHHJr1hgPYhu1XFI3mBdelA6kEPfG/XuLgq+1pu5L657VG0
+         28nw==
+X-Forwarded-Encrypted: i=1; AKwUvBz2fTF1Emfe1NNYKZBF0y9fGcSrhpgBd4L/G0Trxsd+G931bmGTts4ihB/t7CeZk0SqWa5LVxU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIxLd5kkCc5IDvohxhn5hGWZYMYfEyDKuz2t11ys17jpLdsg6NH
+	GSCyH0LVMrE0pGg6du+emVUzPat2sLvdOxmtlSXFHcrjsQjLf32XBbVSsWGieEoaD1ZZFizTPcl
+	RYXEn+1x6k7hCNjNQtvO2OOZG5Nj+I4o=
+X-Gm-Gg: AYBFou2qWCy6AAVZldMBmsvs/iFGdqdjQz+NG/8zTqZJUDhOV/ABDzaw/hkbrLAupz3
+	gm/NgL2rwhCRaxuyHhmFonBoAwF00ny2trdI65YzW/CRv9PQdkrP73EiBx2vqog9Gr4+6zMPbyW
+	FPRoQHloE3Jd3WpuFCLIKuqKoJgyvfEAvz5+LJKEgKMcofvt4qn/Q9ll6VT3xgmU7GyfXx4m0T8
+	j6wqvGisPnnggoCHA2t7y9UBKR49lIgnZWh57HNxzaNzvh5GZcuFQFWTiTBt+XbTeAXfzlxspIj
+	XYg05DbGsKjJTZH0DsG7+PYikmmA2pexl6/gPAW6HcOIbG7S/5ofva4=
+X-Received: by 2002:a05:620a:260a:b0:93c:b6db:8c with SMTP id
+ af79cd13be357-93f299f3829mr676090985a.0.1792298586112; Sat, 17 Oct 2026
+ 21:43:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261014115640.184286-1-physicalmtea@gmail.com>
+ <20261014115640.184286-2-physicalmtea@gmail.com> <atImp74JbTbEb0d_@sgarzare-redhat>
+In-Reply-To: <atImp74JbTbEb0d_@sgarzare-redhat>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Sun, 18 Oct 2026 12:42:29 +0800
+X-Gm-Features: AclHuK8Ob-l6fq4mltZ_vIa4jBsMb_PwAPuMxfSzbBTGRIF1RfJPYptCeSCMlpA
+Message-ID: <CAJwVaML2F6vN5xGsmvd1PwD3ToLOeV_PfzJrArvan8gvbveKuA@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 1/4] vsock/virtio: split socket lookup from
+ locked RX processing
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bobbyeshleman@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+>
+> On Wed, Oct 14, 2026 at 07:56:37PM +0800, Jia Jia wrote:
+> >Split virtio_transport_recv_pkt() so socket lookup is separate from
+> >receive state machine processing under the socket lock. This prepares the
+> >receive path to keep a looked-up socket across multiple packets in a later
+> >change.
+> >
+> >Keep virtio_transport_recv_pkt() on its existing per-packet locking path.
+> >The locked helper obtains packet-specific addresses from the skb and uses
+> >the matched socket namespace for reset replies. Preserve source validation
+> >and failure handling.
+> >
+> >No functional change intended.
+> >
+> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> >---
+> > net/vmw_vsock/virtio_transport_common.c | 128 ++++++++++++++----------
+> > 1 file changed, 75 insertions(+), 53 deletions(-)
+> >
+> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> >index f225f53ed4bab..61ee3bc205d5d 100644
+> >--- a/net/vmw_vsock/virtio_transport_common.c
+> >+++ b/net/vmw_vsock/virtio_transport_common.c
+> >@@ -1774,81 +1774,60 @@ static bool virtio_transport_valid_type(u16 type)
+> >              (type == VIRTIO_VSOCK_TYPE_SEQPACKET);
+> > }
+> >
+> >-/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+> >- * lock.
+> >- */
+> >-void virtio_transport_recv_pkt(struct virtio_transport *t,
+> >-                             struct sk_buff *skb, struct net *net)
+> >+static struct sock *
+> >+virtio_transport_find_socket(struct sk_buff *skb, struct sockaddr_vm *src,
+> >+                           struct sockaddr_vm *dst, struct net *net)
+> > {
+> >       struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> >-      struct sockaddr_vm src, dst;
+> >-      struct vsock_sock *vsk;
+> >       struct sock *sk;
+> >-      bool space_available;
+> >-
+> >-      vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+> >-                      le32_to_cpu(hdr->src_port));
+> >-      vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
+> >-                      le32_to_cpu(hdr->dst_port));
+> >-
+> >-      trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
+> >-                                      dst.svm_cid, dst.svm_port,
+> >-                                      le32_to_cpu(hdr->len),
+> >-                                      le16_to_cpu(hdr->type),
+> >-                                      le16_to_cpu(hdr->op),
+> >-                                      le32_to_cpu(hdr->flags),
+> >-                                      le32_to_cpu(hdr->buf_alloc),
+> >-                                      le32_to_cpu(hdr->fwd_cnt));
+> >
+> >-      if (!virtio_transport_valid_type(le16_to_cpu(hdr->type))) {
+> >-              (void)virtio_transport_reset_no_sock(t, skb, net);
+> >-              goto free_pkt;
+> >-      }
+> >+      if (!virtio_transport_valid_type(le16_to_cpu(hdr->type)))
+> >+              return NULL;
+> >
+> >-      /* The socket must be in connected or bound table
+> >-       * otherwise send reset back
+> >-       */
+> >-      sk = vsock_find_connected_socket_net(&src, &dst, net);
+> >-      if (!sk) {
+> >-              sk = vsock_find_bound_socket_net(&dst, net);
+> >-              if (!sk) {
+> >-                      (void)virtio_transport_reset_no_sock(t, skb, net);
+> >-                      goto free_pkt;
+> >-              }
+> >-      }
+> >+      sk = vsock_find_connected_socket_net(src, dst, net);
+> >+      if (!sk)
+> >+              sk = vsock_find_bound_socket_net(dst, net);
+> >+      if (!sk)
+> >+              return NULL;
+> >
+> >       if (virtio_transport_get_type(sk) != le16_to_cpu(hdr->type)) {
+> >-              (void)virtio_transport_reset_no_sock(t, skb, net);
+> >               sock_put(sk);
+> >-              goto free_pkt;
+> >+              return NULL;
+> >       }
+> >
+> >-      if (!skb_set_owner_sk_safe(skb, sk)) {
+> >-              WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+> >-              goto free_pkt;
+> >-      }
+> >+      return sk;
+> >+}
+> >
+> >-      vsk = vsock_sk(sk);
+> >+/*
+> >+ * The caller holds sk's socket lock and must free skb if this returns true.
+>
+> Why the skb must be freed by the caller and not by this function itself?
+>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+You're right, it doesn't have to be. I originally left the skb cleanup
+to the caller so it could unwind either per-packet or batch state
+while preserving
+the existing error-path order (release_sock() -> drop the lookup
+reference -> kfree_skb()).
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+However, that distinction does not require skb ownership to escape the
+helper, and the resulting ownership contract is confusing since the
+other paths
+consume the skb internally. I'll make the helper consume it directly in v5.
 
-- [Medium] selftests/net: unhandled EPIPE when reading /dev/kmsg causes
-  spurious test failures
-- [Low] main() in tools/testing/selftests/net/sysctl_net_test.c uses the
-  kselftest.h API against its documented contract.
-- [Low] The UDP part of the test cannot exercise the documented effect of
-  the UDP sysctls it selects, so its 'UDP 16/16' result says nothing…
-- [Low] v2 adds a facility filter to check_kernel_log() (`prefix =
-  strtoul(record, NULL, 10); if (prefix >> 3 != 0) continue;`, lines…
 
---
+> >+ */
+> >+static bool
+> >+virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> >+                               struct sk_buff *skb, struct sock *sk)
+> >+{
+> >+      struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> >+      struct sockaddr_vm src;
+> >+      struct vsock_sock *vsk = vsock_sk(sk);
+> >+      bool space_available;
+>
+> Please, follow the netdev convection for ordering local variables:
+> https://www.kernel.org/doc/html/v7.2/process/maintainer-netdev.html#local-variable-ordering-reverse-xmas-tree-rcs
+>
 
-selftests/net: test network sysctl extremes
+Sorry about that. You had pointed me to this guideline before, and I
+missed this during the final preparation. That's entirely my
+oversight, and I will fix the declaration ordering throughout the
+series in v5.
 
-This adds a new net selftest, sysctl_net_test. It finds the accepted lower
-and upper bounds of four per-netns sysctls (tcp_rmem, tcp_wmem,
-udp_rmem_min, udp_wmem_min) and runs TCP and UDP loopback traffic at each
-bound. While it runs, it watches /dev/kmsg for kernel splats, and it
-restores the original values after each probe.
 
-Link: https://lore.kernel.org/r/20261007054508.1059927-1-sahaj123.sc@gmail.com
+> >
+> >-      lock_sock(sk);
+> >+      vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+> >+                      le32_to_cpu(hdr->src_port));
+> >
+> >-      /* Check if sk has been closed or assigned to another transport before
+> >-       * lock_sock (note: listener sockets are not assigned to any transport)
+> >+      /* Listener sockets accept packets from any source and are not assigned to
+> >+       * a transport.
+> >        */
+>
+> Why changing this comment in this commit?
+>
+> Oh because we moved out lock_sock, right?
+>
+> I think we should keep in some way the old info that was much more
+> informative that the current comment that just say what the check is
+> doing and not why.
+>
 
-> diff --git a/tools/testing/selftests/net/sysctl_net_test.c b/tools/testing/selftests/net/sysctl_net_test.c
-> new file mode 100644
-> index 0000000000000..6360616132c41
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/sysctl_net_test.c
-> @@ -0,0 +1,925 @@
+Yes, I changed it because lock_sock() moved to the caller, so the old
+wording no longer read clearly at that location. But I over-shortened
+it and dropped the important reason for the recheck. I'll restore that
+explanation:
 
-[ ... ]
 
-> +static bool check_kernel_log(void)
-> +{
+> >       if (sock_flag(sk, SOCK_DONE) ||
+> >           (sk->sk_state != TCP_LISTEN &&
+> >            !vsock_check_source(vsk, &t->transport, &src))) {
+> >-              (void)virtio_transport_reset_no_sock(t, skb, net);
+> >-              release_sock(sk);
+> >-              sock_put(sk);
+> >-              goto free_pkt;
+> >+              (void)virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+>
+> We need to be careful here, IIRC Bobby used the net from the caller for
+> a reason.
+>
+> Are you sure it's fine this change? Why not passing net as parameter and
+> minimize changes?
+>
 
-[ ... ]
+I assumed sock_net(sk) was interchangeable with the caller's net after
+a successful lookup, but I took that equivalence for granted. I'll
+change this in v5.
 
-> +		record[n] = '\0';
-> +		message = strchr(record, ';');
-> +		if (!message)
-> +			continue;
-> +		/* Ignore messages that userspace wrote to /dev/kmsg. */
-> +		prefix = strtoul(record, NULL, 10);
-> +		if (prefix >> 3 != 0)
-> +			continue;
-> +		message++;
-> +		for (i = 0; i < ARRAY_SIZE(splats); i++) {
-> +			if (!strstr(message, splats[i]))
-> +				continue;
-> +			set_failure("kernel splat detected: %.180s", message);
-> +			return false;
-> +		}
-> +	}
-> +}
-
-[Severity: Medium]
-What happens in check_kernel_log() when the printk ring buffer wraps
-past this reader between two calls?
-
-devkmsg_read() reports that case once as -EPIPE. It then moves the
-reader forward to the oldest record that is still available:
-
-kernel/printk/printk.c:devkmsg_read() {
-    ...
-	if (pmsg.dropped) {
-		/* our last seen message is gone, return error and reset */
-		atomic64_set(&user->seq, pmsg.seq);
-		ret = -EPIPE;
-		goto out;
-	}
-    ...
-}
-
-The loop here handles EINTR and EAGAIN/EWOULDBLOCK. Any other errno
-goes to set_failure() and returns false.
-
-So on a busy machine where something else logs heavily during the run,
-the test fails with "cannot read /dev/kmsg: Broken pipe". Nothing in
-the network stack went wrong in that case. probe_value(),
-prepare_sysctl() and exercise_value() all turn this into a failure.
-main() then stops testing the remaining sysctls. That makes the test
-flaky on noisy CI hosts.
-
-The next read() after -EPIPE succeeds, so could this case simply
-continue the loop? If you want the output to show that records were
-missed, and a splat could therefore have been lost, a "# " diagnostic
-line might be enough. Or do you prefer to treat lost records as a
-failure?
-
-[Severity: Low]
-The commit message says the test passed "also while userspace wrote
-WARNING:/BUG: lines to /dev/kmsg". This facility check covers that case,
-because devkmsg_write() forces LOG_USER on those records.
-
-Does it keep all user-controlled text out of the match, though? Records
-that the kernel itself generates still carry facility 0 even when they
-embed user strings. Also, strstr() matches anywhere in the message body.
-For example, on x86 show_signal_msg() puts the task comm at the start of
-the line:
-
-arch/x86/mm/fault.c:show_signal_msg() {
-    ...
-	printk("%s%s[%d]: segfault at %lx ip %px sp %px error %lx",
-		loglvl, tsk->comm, task_pid_nr(tsk), address,
-    ...
-}
-
-Suppose an unprivileged process calls prctl(PR_SET_NAME, "BUG:") and then
-segfaults while this test runs. The record "BUG:[1234]: segfault at ..."
-passes the prefix >> 3 check and matches "BUG:". The test then reports a
-kernel splat and fails.
-
-Would it help to match the markers only at the start of the message
-(for example "WARNING: CPU:", "------------[ cut here ]", or "BUG: " at
-offset 0)?
-
-[ ... ]
-
-> +static int udp_loopback(void)
-> +{
-
-[ ... ]
-
-> +	addr.sin_port = htons(server_port);
-> +	n = sendto(client, &data, sizeof(data), 0, (struct sockaddr *)&addr,
-> +		   sizeof(addr));
-
-[Severity: Low]
-How much does the "UDP 16/16" result say about udp_rmem_min and
-udp_wmem_min?
-
-udp_loopback() sends and receives a single byte, which normally stays
-below the protocol memory limit. In that case __sk_mem_raise_allocated()
-returns before it reads udp_rmem_min:
-
-net/core/sock.c:__sk_mem_raise_allocated() {
-    ...
-	/* Under limit. */
-	if (allocated <= sk_prot_mem_limits(sk, 0)) {
-		sk_leave_memory_pressure(sk);
-		return 1;
-	}
-    ...
-	if (kind == SK_MEM_RECV) {
-		if (atomic_read(&sk->sk_rmem_alloc) < sk_get_rmem0(sk, prot))
-			return 1;
-    ...
-}
-
-Documentation/networking/ip-sysctl.rst also says udp_rmem_min applies
-"even if total pages of UDP sockets exceed udp_mem pressure". For
-udp_wmem_min it says "this tunable has no effect".
-
-The test never creates UDP memory pressure. Unless the system is already
-under pressure, wouldn't both bounds of both UDP sysctls pass whether or
-not the minimum buffer handling works?
-
-> +	if (n != sizeof(data)) {
-> +		if (n >= 0)
-> +			errno = EIO;
-> +		goto out;
-> +	}
-
-[ ... ]
-
-> +int main(int argc, char **argv)
-> +{
-
-[ ... ]
-
-> +	ksft_print_header();
-> +	ksft_set_plan(1);
-> +
-> +	if (unshare(CLONE_NEWNET))
-> +		ksft_exit_skip("cannot create network namespace: %s\n",
-> +			       strerror(errno));
-> +
-> +	kmsg_fd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK | O_CLOEXEC);
-> +	if (kmsg_fd < 0)
-> +		ksft_exit_skip("cannot read /dev/kmsg: %s\n", strerror(errno));
-> +	if (lseek(kmsg_fd, 0, SEEK_END) < 0)
-> +		ksft_exit_skip("cannot seek /dev/kmsg: %s\n", strerror(errno));
-> +	if (set_loopback_up())
-> +		ksft_exit_skip("cannot bring loopback up: %s\n", strerror(errno));
-
-[ ... ]
-
-> +	if (!failure[0] && !tested_files)
-> +		ksft_exit_skip("no selected writable numeric network sysctls found\n");
-
-[ ... ]
-
-> +	ksft_test_result_pass("TCP %zu/%zu, UDP %zu/%zu deliveries succeeded\n",
-> +			      tcp_successes, tcp_attempts,
-> +			      udp_successes, udp_attempts);
-> +	ksft_finished();
-> +	close(kmsg_fd);
-> +	return KSFT_PASS;
-> +
-> +fail:
-> +	ksft_test_result_fail("%s\n", failure);
-> +	ksft_finished();
-> +	close(kmsg_fd);
-> +	return KSFT_FAIL;
-> +}
-
-[Severity: Low]
-Can the close(kmsg_fd) and return statements after ksft_finished() ever
-run? ksft_finished() expands to ksft_exit(), and that always calls either
-ksft_exit_pass() or ksft_exit_fail(). Both are __noreturn.
-
-So the exit status comes from the kselftest counters, not from the
-KSFT_PASS or KSFT_FAIL returned here. The same applies to the fail: path.
-
-Separately, ksft_exit_skip() is called after ksft_set_plan(1). This
-happens on the unshare(), /dev/kmsg open and seek, loopback, and "no
-selected writable numeric network sysctls" paths. kselftest.h calls this
-pattern a misuse:
-
-tools/testing/selftests/kselftest.h:ksft_exit_skip() {
-    ...
-	/*
-	 * FIXME: several tests misuse ksft_exit_skip so produce
-	 * something sensible if some tests have already been run
-	 * or a plan has been printed.  Those tests should use
-	 * ksft_test_result_skip or ksft_exit_fail_msg instead.
-	 */
-    ...
-}
-
-The header works around this today and prints "ok 1 # SKIP", so the TAP
-output is still valid. Would ksft_test_result_skip() followed by
-ksft_finished() be a better fit on these paths?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014041446.2821085-1-sahaj123.sc%40gmail.com
+> >+              return true;
+> >       }
+> >
+> >       space_available = virtio_transport_space_update(sk, skb);
+> >
+> >       /* Update CID in case it has changed after a transport reset event */
+> >       if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
+> >-              vsk->local_addr.svm_cid = dst.svm_cid;
+> >+              vsk->local_addr.svm_cid = le64_to_cpu(hdr->dst_cid);
+> >
+> >       if (space_available)
+> >               sk->sk_write_space(sk);
+> >@@ -1870,17 +1849,60 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> >               kfree_skb(skb);
+> >               break;
+> >       default:
+> >-              (void)virtio_transport_reset_no_sock(t, skb, net);
+> >+              (void)virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+> >               kfree_skb(skb);
+> >               break;
+> >       }
+> >
+> >+      return false;
+> >+}
+> >+
+> >+/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+> >+ * lock.
+> >+ */
+> >+void virtio_transport_recv_pkt(struct virtio_transport *t,
+> >+                             struct sk_buff *skb, struct net *net)
+> >+{
+> >+      struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> >+      struct sockaddr_vm src, dst;
+> >+      struct sock *sk;
+> >+      bool free_pkt;
+> >+
+> >+      vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+> >+                      le32_to_cpu(hdr->src_port));
+> >+      vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
+> >+                      le32_to_cpu(hdr->dst_port));
+> >+
+> >+      trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
+> >+                                      dst.svm_cid, dst.svm_port,
+> >+                                      le32_to_cpu(hdr->len),
+> >+                                      le16_to_cpu(hdr->type),
+> >+                                      le16_to_cpu(hdr->op),
+> >+                                      le32_to_cpu(hdr->flags),
+> >+                                      le32_to_cpu(hdr->buf_alloc),
+> >+                                      le32_to_cpu(hdr->fwd_cnt));
+> >+
+> >+      sk = virtio_transport_find_socket(skb, &src, &dst, net);
+> >+      if (!sk) {
+> >+              (void)virtio_transport_reset_no_sock(t, skb, net);
+> >+              goto free_pkt;
+> >+      }
+> >+
+> >+      if (!skb_set_owner_sk_safe(skb, sk)) {
+> >+              WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+> >+              goto free_pkt;
+> >+      }
+> >+
+> >+      lock_sock(sk);
+> >+      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk);
+> >       release_sock(sk);
+> >
+> >       /* Release refcnt obtained when we fetched this socket out of the
+> >        * bound or connected list.
+> >        */
+> >       sock_put(sk);
+> >+      if (free_pkt)
+> >+              kfree_skb(skb);
+> >       return;
+> >
+> > free_pkt:
+> >--
+> >2.53.0
+> >
+>
