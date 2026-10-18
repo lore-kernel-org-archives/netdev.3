@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08054A64CC;
-	Sun, 18 Oct 2026 13:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE27D49690C;
+	Sun, 18 Oct 2026 13:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792328459; cv=none; b=pVUTSKP8uLa0jnizgDp6zhhe0oHI6dzo4lTU6ujVfNeQjrPemAT/5APbHXkdud/epe+Oqjkle9rdUTBDjNpghZJ44GYNi/OIxCqRPrb5DLSrJD0J1EHAlO2cejre5LElNhga5CItzZCwJVcCantF3niBPmLQQmz2ikdJx5tboe0=
+	t=1792328461; cv=none; b=DPd4DlA861FT7yJphOSEoCrEL98B6QTjMr0tY9w7v9FseZ72WaJ6+f8NPqCl7+kKiZr8HEECHENmohQH1yy+b+UTdLW7PNf50fixwzPVpEIsA/ra5MdVXqXqTxBOqc5SgSj5ucjUhywBZTq+q3QVtSE0t8vVYezvtqN2h2I1tHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792328459; c=relaxed/simple;
-	bh=Hq5P//drtWzP13rnoFhV6usVgNxiwWM6U4ey0h4Ep6U=;
+	s=arc-20240116; t=1792328461; c=relaxed/simple;
+	bh=ToA5ZtK4cgNGSsDtAEncdf0du+2sZLUsiNz70+GIomI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M0ya3G9KQk0WSN2Y0SsTeJh8VWi8dRChmy+yrZ8LPsmlXYtRyGQoU6aBC2QctYfylxT/l/U/zmWAa1durh77Mx3fDfgMcHj86nEzllXtQ2lcVR3qHLoGXO5xHaS/gposIaizIwdAvODxzzFQ14MfBk3TGnginAE+UMEc8wIjoxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKulihZw; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=tv1k2a5IoFuhZAOYhdKewIi2bg1gx+6/D47eYyKG/BEtSmNhZQmITe/c1uoStP2oOSSHuPsEu7MA1wpeVquCKUbxFoQiBj3+Licxw5w/lxgoO1wy6OHdDnceVNK3PdIof6fdf+A6MbU/GPRMPO0v77DrjgR2nPlO7dy8T3Hmds4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaZf0WuL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKulihZw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DD61F000C5;
-	Sun, 18 Oct 2026 13:00:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaZf0WuL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E903D1F000C7;
+	Sun, 18 Oct 2026 13:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792328455;
-	bh=oWD1V8nFkOwdAoYmmdjJip/xy6ceeOUIH/AVoBi6FoI=;
+	s=k20260515; t=1792328456;
+	bh=IIKOQF9LS5h5U0CRuEN/5TQw7l+9xTTtmSTq3NLRyPc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RKulihZwsE/dxlwQ5NH8MdIdDtU7IYN9MWriXzySBhtrMxBgziuVXh46g9LbzsrpY
-	 BDjtQQBwG8TeWe44ZGTkZK/7vrYJSuBy/ArXOxMZw2ddujlrwfUVavKRUXrHhltNff
-	 oZFus0OLTVx+t4ktXpMjKB46qzs/b/LFZJtVhgrt9vb3qhwmXO3+SZ+6bLD3y2Z2k5
-	 mB+eAUUJz6ppeJVCJG7TyGVWoJbYkVRVQNnbVij128e75zJndpyyWUhZ3CrTCZO+15
-	 FHg2vcHMwJQNEzKGwHucjKbO50g8cu+TbYisHGarpLIwiaJw0TJt/IeRv6YaYghpDu
-	 xELREH+W63/SQ==
-Subject: Re: [PATCH net-next 1/2] net: pcs: xpcs: re-order xpcs_pre_config()
- to update after the reset
+	b=CaZf0WuL+hosWWPyqyO0yr0KB2FVfGZNOWvczDGukqPpsM6159wxZfebTkRR1fNa4
+	 /d/4xA6XFJakQJ84vEnQWirzOhg6IUuoCt9BV2wxP/CrAfpqeYT6W3yvqowcrYnaRf
+	 fm0BPayG1TjfiFaH6Rx72DDG0Its0E+pHFjoxkwsmvAD0zyhVHbbqMMIS+V6STM+ks
+	 zC63jv3OeKZsxUzav1cjYyyzJ+EB3h/2X4oQu9KLIuwsVeSlfNCZ5GozURhQ0rxuhW
+	 X42Q9IsChiZ82ZVsOU7RdVy1Wydy5lr3CYnB/wiFC3SK77vU5f8wmpVM1w6AymwONf
+	 6Tyh/nUrck38Q==
+Subject: Re: [PATCH net-next 2/2] net: pcs: xpcs: select operating mode for
+ 10G-baseR capable PCS
 From: netdev-bot+sashiko@kernel.org
 To: elder@riscstar.com
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  daniel@riscstar.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 13:00:54 +0000
-Message-ID: <179232845425.3135.8614802619087243641@kernel.org>
-In-Reply-To: <20261014223100.304486-2-elder@riscstar.com>
-References: <20261014223100.304486-2-elder@riscstar.com>
+Date: Sun, 18 Oct 2026 13:00:55 +0000
+Message-ID: <179232845549.3135.17087204849702140774@kernel.org>
+In-Reply-To: <20261014223100.304486-3-elder@riscstar.com>
+References: <20261014223100.304486-3-elder@riscstar.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,218 +58,150 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] This patch adds a generic XPCS soft reset on Wangxun TXGBE
-  parts every time SGMII is configured.
-- [Medium] The patch drops the interface-change check that gated the
-  SGMII reset, while the new comment still says the reset happens on a…
-- [Medium] The commit message describes a preparatory reorder that just
-  'hoist[s] the special case logic for SGMII into the parent function',…
-- [Low] The error handling in xpcs_pre_config() now behaves differently,
-  and the commit message does not mention it.
+- [Medium] The new 10GBASE-R check in xpcs_switch_interface_mode()
+  (drivers/net/pcs/pcs-xpcs.c:714-724) reads PCS MMD 3 register 3.8…
+- [Medium] When MDIO_STAT2 bit 0 is set, the default branch of
+  xpcs_switch_interface_mode() (pcs-xpcs.c:740-743) writes…
 
 --
 
-net: pcs: xpcs: re-order xpcs_pre_config() to update after the reset
+net: pcs: xpcs: select operating mode for 10G-baseR capable PCS
 
-This commit reorders xpcs_pre_config() so that the XPCS soft reset runs
-before xpcs_switch_interface_mode(). The SGMII reset trigger moves out of
-xpcs_switch_interface_mode() and into xpcs_pre_config().
-
-> Currently, on Wangxun platforms, the XPCS is configured during the call
-> to xpcs_switch_interface_mode() and, if the need_reset flag is set, the
-> XPCS is reset and the configuration will be lost. This is harmless at
-> present because need_reset will never actually be set on these platforms.
-
-[ ... ]
-
-> Reorder xpcs_pre_config() so the reset can happen before we switch
-> interface mode. To make this work we have to hoist the special case
-> logic for SGMII into the parent function.
-
-[Severity: Medium]
-Is this description complete? The patch seems to widen the reset policy,
-not just move it.
-
-The old SGMII branch ran only when xpcs->interface != interface. It also
-sat in the else branch of the WX_TXGBE_XPCS_PMA_10G_ID check.
-
-The new force_reset condition in xpcs_pre_config() keeps neither of those
-checks. Every SGMII pcs_pre_config() now does a real BMCR_RESET write and
-poll on every XPCS, Wangxun included (see the inline comments below).
-
-The commit message says Wangxun is safe because need_reset is never set
-there, but that doesn't cover the new force_reset path. The last patch in
-the series doesn't touch xpcs_pre_config(), so this is still the case at
-the end of the series.
-
-Could the commit message describe this change in runtime behaviour?
+This patch makes xpcs_switch_interface_mode() read the PCS MDIO_STAT2
+register. When the 10GBASE-R capability bit is set, it programs
+SR_XS_PCS_CTRL2:PCS_TYPE_SEL: SGMII, 1000BASE-X and 2500BASE-X get a
+reserved value, and every other interface gets the 10GBASE-R type. The
+aim is to make the TC9564 XPCS work with a QCA8081 PHY without adding
+another quirk.
 
 > diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
-> index b415b93d77c15..49abf5ea6f5cc 100644
+> index 49abf5ea6f5cc..5316cf9c31f19 100644
 > --- a/drivers/net/pcs/pcs-xpcs.c
 > +++ b/drivers/net/pcs/pcs-xpcs.c
-> @@ -705,46 +705,49 @@ static void xpcs_get_interfaces(struct dw_xpcs *xpcs, unsigned long *interfaces)
+> @@ -705,10 +705,47 @@ static void xpcs_get_interfaces(struct dw_xpcs *xpcs, unsigned long *interfaces)
 >  static int xpcs_switch_interface_mode(struct dw_xpcs *xpcs,
 >  				      phy_interface_t interface)
 >  {
-> -	int ret = 0;
-> +	/* Wangxun provides a full alternative implementation to handle quirks */
-> +	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID)
-> +		return txgbe_xpcs_switch_mode(xpcs, interface);
->  
-> -	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID) {
-> -		ret = txgbe_xpcs_switch_mode(xpcs, interface);
-> -	} else if (xpcs->interface != interface) {
-> -		if (interface == PHY_INTERFACE_MODE_SGMII)
-> -			xpcs->need_reset = true;
-> -		xpcs->interface = interface;
-> -	}
-> +	xpcs->interface = interface;
->  
-> -	return ret;
-> +	return 0;
->  }
->  
->  static void xpcs_pre_config(struct phylink_pcs *pcs, phy_interface_t interface)
->  {
-
-[ ... ]
-
-> -	ret = xpcs_switch_interface_mode(xpcs, interface);
-> -	if (ret)
-> -		dev_err(&xpcs->mdiodev->dev, "switch interface failed: %pe\n",
-> -			ERR_PTR(ret));
-> +	/*
-> +	 * According to the XPCS datasheet, a soft reset is required to initiate
-> +	 * Clause 37 auto-negotiation when the XPCS switches interface modes.
-> +	 */
-> +	force_reset = interface == PHY_INTERFACE_MODE_SGMII;
-
-[Severity: Medium]
-Does this now send a generic soft reset to Wangxun TXGBE parts every time
-SGMII is configured?
-
-Nothing here excludes WX_TXGBE_XPCS_PMA_10G_ID. Wangxun uses
-synopsys_xpcs_compat, so xpcs_find_compat() returns the DW_AN_C37_SGMII
-entry. xpcs_soft_reset() then writes BMCR_RESET to MDIO_MMD_VEND2 and
-polls in xpcs_poll_reset(), with a 50 ms initial sleep and a 600 ms
-timeout.
-
-Until now Wangxun was kept out of the generic reset. xpcs_create() never
-sets need_reset for it:
-
-	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID ||
-	    xpcs->info.pma == MP_FBNIC_XPCS_PMA_100G_ID)
-		xpcs->pcs.poll = false;
-	else
-		xpcs->need_reset = true;
-
-Wangxun also has its own sequence in txgbe_xpcs_switch_mode(). It first
-waits for power-up-good in txgbe_pcs_poll_power_up(), then programs the
-PCS type, PMA and MPLL. It ends with its own DW_VR_RST in
-txgbe_pma_init_done().
-
-The new reset now runs before that power-up-good wait. If it fails or
-times out, xpcs_pre_config() returns without calling
-txgbe_xpcs_switch_mode(). The SerDes could then keep its old
-programming, for example the 10GBASE-R PCS type and 10G MPLL values that
-txgbe_xpcs_mode_quirk() describes. phylink still goes on to pcs_config
-for SGMII.
-
-This path is reachable because txgbe_phylink_init() adds
-PHY_INTERFACE_MODE_SGMII to supported_interfaces for SFP media, for
-example with a copper SFP module:
-
-phylink_start()
-  phylink_mac_initial_config()
-    phylink_major_config()
-      phylink_pcs_pre_config()
-        xpcs_pre_config()
-          xpcs_soft_reset()
-
-Should force_reset exclude WX_TXGBE_XPCS_PMA_10G_ID? The final patch in
-the series ("select operating mode for 10G-baseR capable PCS") leaves
-xpcs_pre_config() unchanged, so this seems to remain at the end of the
-series.
-
-[Severity: Medium]
-The comment says the reset is needed when the XPCS switches interface
-modes. Does the code still check for an actual switch?
-
-Commit 065d3cef99a1 ("net: pcs: xpcs: re-initiate clause 37
-Auto-negotiation") set need_reset only inside this check:
-
-	} else if (xpcs->interface != interface) {
-
-After this patch, the generic path writes xpcs->interface but never
-compares it. Every phylink_major_config() that requests SGMII now does a
-VEND2 BMCR_RESET plus at least a 50 ms sleep in xpcs_poll_reset(), even
-when the interface hasn't changed.
-
-That covers phylink_start() and phylink_resume() through
-phylink_mac_initial_config(), and phylink_resolve() with
-force_major_config. Non-Wangxun SGMII users are affected, for example
-stmmac based Intel mGbE and SJA1105/SJA1110.
-
-Was this intended? If so, should the comment be updated? If not, should
-force_reset also check xpcs->interface != interface? The last patch in
-the series doesn't change this.
-
->  
-> -	if (!xpcs->need_reset)
-> -		return;
-> +	if (force_reset || xpcs->need_reset) {
-> +		compat = xpcs_find_compat(xpcs, interface);
-> +		if (!compat) {
-> +			dev_err(dev, "unsupported interface %s\n",
-> +				phy_modes(interface));
-> +			return;
-> +		}
->  
-> -	compat = xpcs_find_compat(xpcs, interface);
-> -	if (!compat) {
-> -		dev_err(&xpcs->mdiodev->dev, "unsupported interface %s\n",
-> -			phy_modes(interface));
-> -		return;
-> +		ret = xpcs_soft_reset(xpcs, compat);
-> +		if (ret) {
-> +			dev_err(dev, "soft reset failed: %pe\n", ERR_PTR(ret));
-> +			return;
-> +		}
-
-[Severity: Low]
-Is this early return intended? Before, xpcs_switch_interface_mode()
-always ran, and need_reset was cleared even when the reset failed.
-
-Now, if xpcs_find_compat() or xpcs_soft_reset() fails,
-xpcs_switch_interface_mode() is skipped and need_reset stays set.
-pcs_pre_config returns void, so phylink still continues into pcs_config.
-
-On Wangxun this means txgbe_xpcs_switch_mode() is skipped. By the end of
-the series ("net: pcs: xpcs: select operating mode for 10G-baseR capable
-PCS"), xpcs_switch_interface_mode() also writes the MDIO_CTRL2 PCS type.
-A failed reset would then leave a 10GBASE-R capable PCS in its default
-type.
-
-need_reset is no longer cleared on failure, so every later pre_config
-also retries the reset. Should the commit message mention this change in
-error handling?
-
+> +	int mdio_stat2, ret;
 > +
-> +		xpcs->need_reset = false;
->  	}
+>  	/* Wangxun provides a full alternative implementation to handle quirks */
+>  	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID)
+>  		return txgbe_xpcs_switch_mode(xpcs, interface);
 >  
-> -	ret = xpcs_soft_reset(xpcs, compat);
-> +	ret = xpcs_switch_interface_mode(xpcs, interface);
->  	if (ret)
-> -		dev_err(&xpcs->mdiodev->dev, "soft reset failed: %pe\n",
-> -			ERR_PTR(ret));
-> -
-> -	xpcs->need_reset = false;
-> +		dev_err(dev, "switch interface failed: %pe\n", ERR_PTR(ret));
->  }
+> +	mdio_stat2 = xpcs_read(xpcs, MDIO_MMD_PCS, MDIO_STAT2);
+> +	if (mdio_stat2 < 0)
+> +		return mdio_stat2;
+> +
+> +	/*
+> +	 * If this XPCS supports 10Gbase-R then that will be the default
+> +	 * operating mode. There are several interface modes where this default
+> +	 * is unhelpful. Change the operating mode for interfaces were we know
+> +	 * the default is wrong, and restore the default otherwise.
+> +	 */
+> +	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
+
+[Severity: Medium]
+Can a missing PCS MMD be treated as 10GBASE-R capable here? The code tests
+bit 0 of MDIO_STAT2 but does not check the device-present field in bits
+15:14. An absent MMD 3 that reads back as 0xffff would pass the test.
+
+The driver already expects MMD 3 to be absent on some parts.
+xpcs_read_ids() falls back to MMD 31 when the IDs read as all zeros or all
+ones:
+
+    if (!id || id == 0xffffffff) {
+
+On SJA1105R/S, the read side returns 0xffff for any MMD other than
+VEND1/VEND2:
+
+drivers/net/dsa/sja1105/sja1105_mdio.c:sja1105_pcs_mdio_read_c45() {
+    ...
+	if (mmd != MDIO_MMD_VEND1 && mmd != MDIO_MMD_VEND2)
+		return 0xffff;
+    ...
+}
+
+The write side rejects the new CTRL2 write:
+
+drivers/net/dsa/sja1105/sja1105_mdio.c:sja1105_pcs_mdio_write_c45() {
+    ...
+	if (mdio != MDIO_MMD_VEND1 && mmd != MDIO_MMD_VEND2)
+		return -EINVAL;
+    ...
+}
+
+So for an SGMII port on SJA1105R/S:
+
+xpcs_pre_config()
+  xpcs_switch_interface_mode()
+    xpcs_read(xpcs, MDIO_MMD_PCS, MDIO_STAT2)       -> 0xffff
+    xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2, 4)   -> -EINVAL
+
+xpcs_switch_interface_mode() then returns without setting
+xpcs->interface. xpcs_pre_config() would then log "switch interface
+failed: -EINVAL" on every major config.
+
+On SJA1110, sja1110_pcs_mdio_read_c45() and sja1110_pcs_mdio_write_c45()
+don't filter by MMD, so MMD 3 accesses go to bank 0x300 of the PCS
+window. If that location reads with bit 0 set, would 0x0004 be written
+into undocumented switch register space?
+
+Would it make sense to also require that
+(mdio_stat2 & MDIO_STAT2_DEVPRST) == MDIO_STAT2_DEVPRST_VAL? Another
+option is to run this only for descs whose compat tables include 10G
+modes.
+
+> +		switch (interface) {
+> +		case PHY_INTERFACE_MODE_SGMII:
+> +		case PHY_INTERFACE_MODE_1000BASEX:
+> +		case PHY_INTERFACE_MODE_2500BASEX:
 
 [ ... ]
+
+> +			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
+> +					 MDIO_PCS_CTRL2_TYPE + 1);
+> +			break;
+> +		default:
+> +			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
+> +					 MDIO_PCS_CTRL2_10GBR);
+> +			break;
+
+[Severity: Medium]
+Is 10GBASE-R the right PCS type for every interface that reaches this
+default branch? The comment says "restore the default otherwise".
+However, synopsys_xpcs_compat[] also lists 25GBASER, XLGMII, 50GBASER,
+LAUI and 100GBASEP for DW_XPCS_ID. All of those would end up here with
+PCS_TYPE_SEL set to 0 (10GBASE-R).
+
+Before this patch, the generic path never wrote PCS CTRL2. The only CTRL2
+writes were in the Wangxun code.
+
+Meta fbnic is an in-tree user that reaches this branch:
+
+- It doesn't use the Wangxun PMA ID.
+- fbnic_phylink.c only enables 100GBASEP, 50GBASER, LAUI and 25GBASER.
+- fbnic_mdio_read_pcs() doesn't intercept MDIO_STAT2, so the gating bit
+  comes from the real PCS register.
+
+fbnic_mdio_write_pcs() passes the CTRL2 write straight to hardware:
+
+drivers/net/ethernet/meta/fbnic/fbnic_mdio.c:fbnic_mdio_write_pcs() {
+    ...
+	fbnic_wr32(fbd, FBNIC_PCS_PAGE(addr) + regnum, val);
+}
+
+If the fbnic PCS reports the 10GBR bit in STAT2, would every major config
+force the PCS type to 10GBASE-R while the link runs at 25G, 50G or 100G?
+I couldn't confirm from the tree whether that bit reads as 1 on fbnic.
+
+> +		}
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+>  	xpcs->interface = interface;
+>  
+>  	return 0;
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014223100.304486-1-elder%40riscstar.com
