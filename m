@@ -1,150 +1,140 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164EC3F107E
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 19:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792352854; cv=pass; b=aCt5PkzoZvKTjiMsc6j3jKa1u3/XuFAb1nIU62VS/IimTSeQpPH5YzBr1F6o0vIkkQjxTjp1mnKFGeeVkSHncsWD2sfa0XkPMMDy6elgXt7RCuVryKF4KcxvVCXpKYtN8lvk4GqfHzIDh08eU9ico/RUxivLGcc2du1wPvv68tA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792352854; c=relaxed/simple;
-	bh=uSwsGj7z13o5NrJE21iC68UKNr7h5yOq6P5JpP5TNDM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G/bcSyPxt62NLdYBfJgzcN7Hs7joe6LqFodeTjNaqnt3EZInXyI1THVLOYPUr7biJJxJfcnjKV0Nj1MblfAU1JzvswmXCPVAon0TX29Bk3+iEV1XvNNPdjTi5L3Pry8zuEtjQimIhB6Qp1WXWQLMO0ejdy64I0y0/NaBhxTiDaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20251104.gappssmtp.com header.i=@amacapital-net.20251104.gappssmtp.com header.b=U61hr0Px; arc=pass smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591C0415F12
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 19:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792352923; cv=none; b=Lw3FJPMsC9cDMpVD/OU7rQoBCjsOmWa/q9VHsIRFafYB31FCAWVAlQJd91bvCy3SoVgbl6qjTQGjlaxDZXOJLei5yIPJ0llPtNgI+vqaXk+AyCoe3FEf48h1myvBFIpHBGU7qTkXe0gaZtzfm2A3ff9opGHaymjfhRRiVSZtn50=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792352923; c=relaxed/simple;
+	bh=z8+NKlZVaJg0D1viDndIi21e6QYlTGrfLeaOwjDv2Rk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s8H7qXQMUU2okjtCsL/xfSWWHdhRqK5ec8D0cjP79uo7Mu9cspv4lcC/UA79OhZkffVY0SywonkCqRrZjcwo0zoVQXSxZxsg/pGWxhcNgsICZWnX0J7ClTIg6S0AgQQIdt1DLJuF15+17eOa4nNab7QR9gFSGKRrGxhyaH3M9Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ETKAfiMW; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20251104.gappssmtp.com header.i=@amacapital-net.20251104.gappssmtp.com header.b="U61hr0Px"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3a9787a156eso10101751fa.3
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 12:47:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792352851; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CjYC/6/ZGgSTx/HNYg0uIcL549Cdn6BF4TRJSbLf/trH4BjKNhHKeUpBHQ7xGrbto8
-         9IETaMZ3/RN070HZYJanvT1+ZE0PRdDcnLKmAcVFIhZThXsUe09IOatRAkC/G9mgBxFQ
-         6q1OeN8PhCIh2XTEv5GcwsfVXa1/JA/0uAfFc9VfvGG6Hbx1eyjEmHEUtIepMn0U3ws1
-         DkHYYH+pDM5Q8BUbh7YWL+6Ig9utu77LFvLeYhin42+C77CX9BOKjO461oGsWpCVkc7d
-         O8XhJJyKUTaVWYdR2flSKEtZF+dD87YvKV788mhUyjpR6At3uUuRnbWfRykq/LlbEkM4
-         1evg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=C9PTaRCgfnWLejuxwMwgHezQmSpb/Q49pSzLQ94ksTk=;
-        fh=G/9PMRGLA1V0K6bOjBxQtcxBBNbOVSypMNpYiaHDPlY=;
-        b=ipTAacxXFzu4usFqJxDb5kTD0BJEe9b5fIeWDKee5DA3Pt/R+S//PqgyClKYhIEiUY
-         tS2UvozaNRwRAL6KnCyN/PDQsfeT8TOQWFrVmvz7B1vws2YiFJS3/AWPte3CnUYBA62z
-         AQent7JZFlfwUjuZCivaWuwV92pgsr9hUCwsG1ogisdOxOCMWbdE9JFrys6EHQAO0mxS
-         /6wI0uyIghzH89NI268+q/H+t/ReyLeBdlvAuRhlBm1wqbGiuBtTC5zwpfg+W2Y9q0/m
-         3VVxL+EovvWVMwIE9U/d2bmXvRh7LQM0PZRwn2atN5yciL/TzkCz5kT188wOzLBwlPnN
-         ZGhQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ETKAfiMW"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1e477fe16so3014825e9.1
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 12:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20251104.gappssmtp.com; s=20251104; t=1792352851; x=1792957651; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1792352920; x=1792957720; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=C9PTaRCgfnWLejuxwMwgHezQmSpb/Q49pSzLQ94ksTk=;
-        b=U61hr0PxGjsekFN/Peus8SSvsCkWL+X4cEShlWPsXJwFZsPSOlvUCsybYg9BgwgJRd
-         4XnxIJgNM2UxnPRJ7LJ9ePNZaMA3S+v2khZQd28a3QJuiBcuUaNEpSAyegrHLGxeAQOF
-         XWhhz9z4gvoj1jD71wUdmMg7TKUgBLlQEbfCfdSDreL0vc42Gwa+0w9MuT0mJeW9FjHk
-         InbXbqmJqWqFBCaE7bhMzpyoImihsnstJokhn5vCptf2p7cb0uxL1CtKsrsoOoa51lXm
-         tyklrtgAN7N7S853vG7iCSHElYqHLPGyLpCn9vrAZ76I1HHBL84qCv0LlLe1GVF1/qq2
-         6Adw==
+        bh=nT4NId0U2jiAqaCcS2HDGNFvu8HoNbnVXS9R3IhMNjk=;
+        b=ETKAfiMWGZMMjK7jvf+EaLF1zybUc4XOoUGXkkdzOT+59t/NrkQf6gawa07DV3ZO3I
+         titJE0Pr86WP9hXNUrXseD5dRyKG/JCU2T2Auzz/SdVKR11XM+Rtqeqse7uVZ441dMWW
+         2nO7O1Pv/jQF3jd5uyj73CIq3I7VmG9Uje8TcM+mDAYhpZ4Y+Mz0S6CDfOrCnFLT1wzb
+         WEwWqAiZM7DGBXwiyrnfa1zqwgDFgo/+muOr7p3zy8hkfm55HmSTagkrYGealGz7Xmh3
+         eCjWOKR4BZBk3KZnVlDN90n8H+I5rDwXnTa6laULzLc6pXGM7j2izhEefpar7jW0tfXn
+         Iaiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792352851; x=1792957651;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1792352920; x=1792957720;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C9PTaRCgfnWLejuxwMwgHezQmSpb/Q49pSzLQ94ksTk=;
-        b=qKlXfiUxvHnRztTlRW//aAU3M6atg4yIjrDxtc57Lx4rdaTyRQk2ihs5eumlrNpJuW
-         uW6vy6dIKm8GOc59z3gdsQlH6btQ/rvelyTxplrYHjR9mbE9VJl2ZNs3hBx61SMcd3WN
-         vzYDI0ZOQiZGV9hnJgmZYFdTivacl42OiTrrYmd77iO+4z7rkC0jCbZew9KNt4t8h/uu
-         eA7AX/7wCkhh1ZgD/2Zv0edGJ7Ulo5akLDj1QSi3k7mvTnFW5vn8deamjRulEIGH3KdI
-         LkDoG6Bln8sLJVLyNDUjARPty0mfWPzIN39rdSb1oQ/DnK6mjqNYR7mEQ1iGfXGDsvGV
-         8wyw==
-X-Forwarded-Encrypted: i=1; AKwUvBz2/UBHGHymCUnnPUGHxEnxTyqcnBPhBF5zVlNyY6NlsZttlIZMEUjt0aJXfZbetnkUbRqswyo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLPD9Dro5nNQX6t1KLILC9Atk8LXaU07x84VvWFNGaKlxgYtge6
-	OQRXiGeV3n+SjzMduy6KuN8/XIL8aTqEUe4762xSU7YQSEaoCBXkNUicyHBm+j4DcRxmScE9wkQ
-	aVzJ9pgj4MpmjgGLnJz12VLqkPdZYREIHqLC4G4pN
-X-Gm-Gg: AYBFou17J5eAT+C1kmofaVw9aF2RS2Qbafn1eHY5EFlIbBKK+k71MeERj4k9RouVaeW
-	tekx6asb6UB/YzjH0PJRqhlxJoOzhLs7+h8mlMglyHYvHJVxr4W/PVGB8bwtB28oWxpfNsdaq47
-	/wxiKOBlhub1wb0XNn8EkkzZsFCOc1dTvvf49X6Gqakt12HqNkivUylnRDqfk2fjCMdmhMNb4ZC
-	IOG+3ZJMsE2cTsNmjZt4dc3w0oYvZPLCJd9SE1GO4J4bKgCikp9sbLChgDaeX+9OZPn+vhA/cuS
-	hAByjEQDBSmEtqPSWeVg4IGS1DwR/XSnUIsS6fl/MiGY/D9YJ901
-X-Received: by 2002:a05:651c:3614:b0:3ab:1639:9a79 with SMTP id
- 38308e7fff4ca-3ab292b7375mr9897881fa.15.1792352851051; Sun, 18 Oct 2026
- 12:47:31 -0700 (PDT)
+        bh=nT4NId0U2jiAqaCcS2HDGNFvu8HoNbnVXS9R3IhMNjk=;
+        b=0wJk8cJb2yg6GfiQPieqOLz9PmJ4CUAU8KgeG8wOz5rKuIVdmmyQ38Xg1/rYHyeObn
+         Pl8cxrVjjZ07D9ldigNF7pAGi+Cmy/NrAzaf+UTahSKzKkXJy7pMBhfVcUx6bD7fVH/G
+         uapUbMtkX8M2Dnlr3UqqP6AG77VadFwFoP4lURLzfnsbqg81FcejlPWv4NpSR/mPjNoz
+         4+x9Tn7juRwNQFdqTSCOdOHNZE2MYLn5bFw6kJauP+0i01byW9VL/729Ch48+JpXo95u
+         XDYxIaUyvbfDq6yT8FHmxliH3anqTZUjj7uhNJrW1eJGpjIkBruf3m+cPZ+hBny0ZjdT
+         yohw==
+X-Forwarded-Encrypted: i=1; AKwUvBxEp4osmVN7hYKSSBA4yVeTA0rAj3Ek26MVnkqNsqbCr7Y7FUsjbSIX0a1nZXH6kOVfUBMrBqQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKfqrdHJ+/a/JmmeZHV4nnqC5ljl6UgZOYcKw9f9OxYIyK3ExUn
+	bs2QtnIw8fe3RmeZLk88ZSw2vWD3wrf8EuhaeRmzjUXFyr+oUF0JvAMD
+X-Gm-Gg: AYBFou05qD8Oy1Uz5zetEv7XW66swxLNM+KCtkhX10tCzap6/JtIcmfh0pJR1k4pwAp
+	QnAZVXnWb89kU1AN5xyjKyKHfETJsqewUbF5ibVhltavLY7OHJvcEx69O0mjR97zWqfV61dYnjM
+	XUSUskduo7y99AiJFTbkrQlwa5Htt3UY1sRe5Q70sKvZ1mDHG0+LHCeGmzw8BLly1aGt3cpA49M
+	XPDt4C/TZjgq+LFMJw2F4QfTzFya81Ampekk19ylnEhA2JxdR+b6Rj0TLXZ6dVmC56nyJOYfbeb
+	Z7c0Zf72/Cb7NyxTkOChUxqCE2lGa3WacTWMt691m20pryQuByttwkvgrRE2QHl8pbzI+sct7vz
+	coKTYcFCn+4sgJhXr1jXCvpxa3ldP29HcwemgUmaoCFoL0rK7XAI1An+SvnIdxGFSae3GjP9TAD
+	sbcTw/+g08I77hi12a55P+J5lzTurTb0Bg0dzmSKMXM16f2aGelTpgcg4OVGiwqEgyVlZ9W8RF5
+	cqmII74odGAxe37D5PGcLu9/M8/Kyzs8H4=
+X-Received: by 2002:a05:600d:8488:20b0:4a1:e3e2:93e0 with SMTP id 5b1f17b1804b1-4a1e3e2967dmr30105055e9.32.1792352920294;
+        Sun, 18 Oct 2026 12:48:40 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd50d1bcsm18886835f8f.54.2026.10.18.12.48.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 12:48:39 -0700 (PDT)
+Date: Sun, 18 Oct 2026 20:48:38 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Haoran Wang <haoranwangsec@gmail.com>, jasowangio@gmail.com,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, eperezma@redhat.com, linux-kernel@vger.kernel.org,
+ security@kernel.org
+Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
+ memory via vDPA passthrough
+Message-ID: <20261018204838.4080b238@pumpkin>
+In-Reply-To: <20261018152358-mutt-send-email-mst@kernel.org>
+References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
+	<20261018152358-mutt-send-email-mst@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1792346472.git.jan.koester@gmx.net> <9c17a1f7f82b953e6f4d9e17f4ca19d5220d7f2b.1792346472.git.jan.koester@gmx.net>
-In-Reply-To: <9c17a1f7f82b953e6f4d9e17f4ca19d5220d7f2b.1792346472.git.jan.koester@gmx.net>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Sun, 18 Oct 2026 12:47:19 -0700
-X-Gm-Features: AclHuK_TjVvADO7YV_Of3nNvklGJn7yisT4mnRNh7189wUPwvl6Zlkl0ZNpg8pA
-Message-ID: <CALCETrUjRpHSTBzO65uU-YaEj4espqnwDSaSLcXu653xJyooHg@mail.gmail.com>
-Subject: Re: [RFC PATCH 09/41] uidgid: let kuid_t and kgid_t hold a UUID or a GUID
-To: Jan Koester <jan.koester@gmx.net>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Jan Kara <jack@suse.cz>, "Theodore Y. Ts'o" <tytso@mit.edu>, 
-	Paul Moore <paul@paul-moore.com>, Arnd Bergmann <arnd@arndb.de>, linux-fsdevel@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, netdev@vger.kernel.org, 
-	audit@vger.kernel.org, keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 18, 2026 at 11:10=E2=80=AFAM Jan Koester <jan.koester@gmx.net> =
-wrote:
->
-> Make kuid_t and kgid_t (and vfsuid_t and vfsgid_t, which share their
-> layout) tagged unions: a classic 32 bit id, an RFC 9562 UUID, or a
-> Microsoft GUID. KID_LEGACY is 0, so zeroed memory still holds the root
-> ids, and KUIDT_INIT()/KGIDT_INIT() keep building classic ids, so the
-> bulk of the kernel needs no change. The member is renamed from val to
-> legacy so the compiler finds code that peeks at it directly.
->
-> Semantics of the new ids:
->
-> - They are not in any uid_map or gid_map: they exist in the initial
->   user namespace only. kuid_has_mapping() is false for them in every
->   other namespace, so no capability in a child namespace gives
->   privilege over them, and from_kuid() and friends give -1 (the
->   overflow id when munged), exactly as for any other id without a
->   mapping. Anything that can only store or report a 32 bit id thereby
->   already treats them safely.
+On Sun, 18 Oct 2026 15:24:41 -0400
+"Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-Why?
+> On Thu, Oct 15, 2026 at 03:23:45PM +0800, Haoran Wang wrote:
+> > I'd like to report an issue in drivers/vhost/vringh.c:1216 (function
+> > getu16_iotlb), found via static analysis of Linux 7.0.11 and verified
+> > against the 7.2.10 source tree. I have reproduced the leak on an
+> > unmodified 7.2.10 kernel.  
+> 
+> 
+> This should fix it I think? Can you confirm pls?
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>  drivers/vhost/vringh.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+> index 9066f9f12ba1..4b097170bd36 100644
+> --- a/drivers/vhost/vringh.c
+> +++ b/drivers/vhost/vringh.c
+> @@ -1213,7 +1213,11 @@ static inline int getu16_iotlb(const struct vringh *vrh,
+>  		return ret;
+>  
+>  	if (vrh->use_va) {
+> -		ret = __get_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
+> +		__virtio16 __user *uaddr = ivec.iov.iovec[0].iov_base;
+> +
+> +		if (!access_ok(uaddr, sizeof(*p)))
+> +			return -EFAULT;
+> +		ret = __get_user(tmp, uaddr);
 
->
-> - Idmapped mounts map classic ids; UUIDs and GUIDs pass through them
->   unchanged, as long as the filesystem itself is in the initial user
->   namespace.
+Can't that be a normal get_user() call?
 
-Okay, so they pass through but don't work.  Sounds unfortunate.
+David
 
-> +/* Like kuid_t and kgid_t: a classic id, a UUID or a GUID */
->  typedef struct {
-> -       uid_t val;
-> +       u32 type;
-> +       union {
-> +               uid_t legacy;
+>  		if (ret)
+>  			return ret;
+>  	} else {
+> @@ -1251,7 +1255,11 @@ static inline int putu16_iotlb(const struct vringh *vrh,
+>  	tmp = cpu_to_vringh16(vrh, val);
+>  
+>  	if (vrh->use_va) {
+> -		ret = __put_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
+> +		__virtio16 __user *uaddr = ivec.iov.iovec[0].iov_base;
+> +
+> +		if (!access_ok(uaddr, sizeof(*p)))
+> +			return -EFAULT;
+> +		ret = __put_user(tmp, uaddr);
+>  		if (ret)
+>  			return ret;
+>  	} else {
+> 
+> 
 
-Linux is Linux.  small numerical uids are not "legacy".
-
-> +               uuid_t uuid;
-> +               guid_t guid;
-
-I'm at a complete loss.  Is guid is only unique on Earth but uuid
-unique in the entire universe?  Even Microsoft admits that GUID and
-UUID are two names for the same thing.
-
-I realize that Microsoft colossally screwed up years ago with their
-little endian uuid idea, and I sincerely hope that this is not some
-endian thing.
