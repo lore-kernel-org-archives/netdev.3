@@ -1,43 +1,42 @@
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18785414439;
-	Sun, 18 Oct 2026 18:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AD64AA01B;
+	Sun, 18 Oct 2026 18:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792346519; cv=none; b=kZnlVRgPOWyLE2ZcEKH5dOb6iQqsQMaTyG+1ggPIV2WXnrGYFzy1itj6h8KgrlrphjRPb5xs0UbtmQ28tX/3YB6jhYHzTysUHsbBhFbkTGOVOeStS8BJPwViLjYGNdb7Xe133jXvqJoknV4rvwjzWIad/0NVBPE1NRRgcTWDE9Q=
+	t=1792346524; cv=none; b=ihrpcU4RdkEmK2Qph6squK3Elt6eExB/Yipjofove0TzEsvbBin+EZCalbgQgJqe1zlXlyed3YRGZYMXBMXTKW+D5gutRVHmSbuZ0E2gjS+VYeQkrSDcIniemnGEnsI0a3VBwBfw3W0eEQ62ulXYPLsB6HMceGcSTJ6S0oK0Dc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792346519; c=relaxed/simple;
-	bh=TmCy/Q+V7uYkoDxDRfdhyd1/buspw/Q37Xfki9esTTk=;
-	h=Message-ID:In-Reply-To:References:From:Subject:To:Cc:Date; b=OqgXhO1/tyNvIhSbDIB9aehzU2ds2P5pWTjkwh2OvBP2dwFLwJP1ggdua04HlXxuURTwsZ/Zvqvs2jG7YMwJUlHWvq7JQji3G+PEmbQm1/mIM8aUzPIGvCEclSNFGO2rQ/KxgzJDDlPI+TslCE8unqn3kEnWlV1EPES6W5yC0SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b=mfo7gZ58; arc=none smtp.client-ip=212.227.15.18
+	s=arc-20240116; t=1792346524; c=relaxed/simple;
+	bh=TWVrAVBoy7wsmsIUbgT16bIcR3+toUuI7FS8sDSs+X8=;
+	h=Message-ID:In-Reply-To:References:From:Subject:To:Cc:Date; b=aQEmOFQ4tVqJ4nWu/qgjM/37fGR+2Hau8kEFtJJnyFUQEY0vlOp9paG1hFCMrXPpLb2Lt+5djf3muyAJvqckMZLmxta7/kHgL+JtXTTVbOkNQCBpCSaRVHi0Qguap1SmW3BrMj7DFNn9HmvyTbPisF/vGc4zYAanUeM/Eoj0ymo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b=iHR9/WiJ; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b="mfo7gZ58"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b="iHR9/WiJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1792346502; x=1792951302; i=jan.koester@gmx.net;
-	bh=Uhr0WE0qAUviSvaVEh4Q64OqRPDHfgQaX+yEPhQNp7o=;
+	s=s31663417; t=1792346508; x=1792951308; i=jan.koester@gmx.net;
+	bh=BOoqqodapKpc4JEmvY9l9NqcTNd58APvVYJyJT2XvII=;
 	h=X-UI-Sender-Class:Message-ID:In-Reply-To:References:From:Subject:
 	 To:Cc:Date:Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=mfo7gZ58ycjWhlv14DinLHTadbOtXRZHWcx3wIYhN1KpUUFT9gj66p12MIWvpEYZ
-	 HXECmvpSHunnUwL4a4IMb82XXniCm8BflmeA4GH9HYeTJ3vqcyqQzcFgpyT8qmh9P
-	 lK2C1oovQFl8b6Y4O7wg1JmtozO+qmi5RTe4poWTWNChBZJdvDtXPyQxA7Xld9WDq
-	 JDUoYiPA62TNQ92q/4B8QWp5XVnbetChtlxf+c1G/qArxQmE/hF7PxFC9Jbsf/2qu
-	 sAtPqjZ1kfi7tED8sM1/Z0f5I81T+d6BXlghGqBzhcrpE0ZY0H9FFJBa+F6pT/GH8
-	 TJ/xsYccMFc9XLYzBw==
+	b=iHR9/WiJpovvl2fBpR1LiQpADCQ/iRPkffp8PLWdQZJ2dgIEj5+dGAzA40Iy9JYJ
+	 FfncFWmDpZBMw4nf1Ga7LQ8IVr5MSEGTJWeCWXx8tClAwtJH2+3S6ZsKmUS3MgCa+
+	 Wrz8FOzQvE9yj3UBR6Tb+C63W1mFIyZMLIzvGJEVmX0ZUXGyMHF+BNK+mKz5n8cpc
+	 s/sV7B9C65a4yFbdyXF9M5GDRimBhYswECRfMsBkLyUum5moLLuRFglaSpD2l4JEi
+	 EaULmrkcNRlHmdsfNHCTY8FiZy9hkB6QT6t/62+7ZLJast4ypkzjv9qZ/d+EMaZk4
+	 l7K5glogv4V8mh2vBw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N1wq3-1wcf1w3XlR-00tMmo; Sun, 18
- Oct 2026 20:01:41 +0200
-Message-ID: <69bd72874419c45adbe80c98c815bb2f00af88cf.1792346472.git.jan.koester@gmx.net>
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N2DxE-1wcORe2Hyo-00ukK8; Sun, 18
+ Oct 2026 20:01:48 +0200
+Message-ID: <0f39fe49a1362d2555513e375f4a81b05374c985.1792346472.git.jan.koester@gmx.net>
 In-Reply-To: <cover.1792346472.git.jan.koester@gmx.net>
 References: <cover.1792346472.git.jan.koester@gmx.net>
 From: Jan Koester <jan.koester@gmx.net>
-Subject: [RFC PATCH 05/41] af_unix: keep sender ids in skb->cb only when they
- are classic ids
+Subject: [RFC PATCH 07/41] Bluetooth: keep classic sender ids in skb->cb
 To: Christian Brauner <brauner@kernel.org>,
     Alexander Viro <viro@zeniv.linux.org.uk>,
     "Serge E. Hallyn" <serge@hallyn.com>
@@ -56,106 +55,106 @@ Cc: Jan Kara <jack@suse.cz>,
     audit@vger.kernel.org,
     keyrings@vger.kernel.org,
     linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 20:01:26 +0200
-X-Provags-ID: V03:K1:vH1gyIst4zVShFGkuH2A28Kg8CuX9IIXpVu6l/mwfT3HWtDnQ+g
- /4MSl6F3/29nNBf5ieIfkmkGUUZSnPWxI8shfjbhwzVZ3sYO3UFyCVwAJq78/A/U3y8WPMK
- 0Z8KSlaCAWsbaQgDIMbewir2dE7aZYDVtNtfG519tvGyzF6eD5cH9tq/EeaNYTspRIP9gNF
- aRdkzhiUpox7tgerYxXTg==
+Date: Sun, 18 Oct 2026 20:01:28 +0200
+X-Provags-ID: V03:K1:WFuBGJMvWe1NyhGWh2NsiZj68JgosP6rSb6wtglMlzaCzt/5uzc
+ fFGMDdKQ3umzIgeoLLJCYdb/ObUuYn1+qRSr9IKqLRyQ7gIoczosn4fzn2pha8T1Jj58b4+
+ eJwuUeiXg+GzUHz0dLuuCmhapjdO15N0osujFRZDvyhhkFbwSW6Dx3JGrCBSEhBY5k3EpfG
+ owaVxei80iQ0zR10vfESQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:/Hnz5AT+cc0=;Vz4O1YH6wEj4QgRmaWXM4QSNKRW
- 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
+UI-OutboundReport: notjunk:1;M01:P0:ctiJFo5A9jI=;JagAi2IJkxHYt6l6m09GTzigE/9
+ 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
+ 0tMpTypwD4mYY9Cppq+E=
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -163,153 +162,69 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-unix_skb_parms has to fit into the 48 bytes of skb->cb. With kuid_t and
-kgid_t growing to hold UUIDs and GUIDs the two of them alone would take
-40 bytes.
-
-Store classic ids as 32 bit values as before, and only for a UUID or
-GUID allocate a small struct unix_skb_ids for both, freed together with
-the pid reference in unix_destruct_scm(). AF_UNIX skbs carrying a pid
-reference are never cloned, so the pointer has a single owner.
-Senders with classic ids see no change and no allocation.
+struct bt_skb_cb holds the sender's struct scm_creds for HCI sockets,
+which no longer fits into skb->cb now that kuid_t and kgid_t can hold
+UUIDs and GUIDs. Like netlink, keep them as struct scm_creds_classic:
+classic ids as before, the overflow id for UUID and GUID senders.
 
 Assisted-by: Claude:claude-opus-5-5
 
 Signed-off-by: Jan Koester <jan.koester@gmx.net>
 =2D--
- net/unix/af_unix.c | 50 +++++++++++++++++++++++++++++++++++++++-------
- net/unix/af_unix.h | 11 ++++++++--
- 2 files changed, 52 insertions(+), 9 deletions(-)
+ include/net/bluetooth/bluetooth.h | 2 +-
+ net/bluetooth/hci_sock.c          | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 42cffeafc8..2b17310534 100644
-=2D-- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1969,11 +1969,46 @@ static void unix_peek_fds(struct scm_cookie *scm, =
-struct sk_buff *skb)
- 	unix_peek_fpl(scm->fp);
- }
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/blu=
+etooth.h
+index b624da5026..2c8fe50f4d 100644
+=2D-- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -497,7 +497,7 @@ struct bt_skb_cb {
+ 		struct l2cap_ctrl l2cap;
+ 		struct hci_ctrl hci;
+ 		struct mgmt_ctrl mgmt;
+-		struct scm_creds creds;
++		struct scm_creds_classic creds;
+ 	};
+ };
+ #define bt_cb(skb) ((struct bt_skb_cb *)((skb)->cb))
+diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
+index 81068b5857..9f422ae5fd 100644
+=2D-- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -276,7 +276,7 @@ void hci_send_to_sock(struct hci_dev *hdev, struct sk_=
+buff *skb)
 =20
-+/*
-+ * The sender's ids, in the skb itself for legacy ids; UUIDs and GUIDs do=
-n't
-+ * fit in skb->cb and come from an allocation, freed with the pid referen=
-ce
-+ * in unix_destruct_scm().
-+ */
-+static int unix_skb_set_ids(struct sk_buff *skb, kuid_t uid, kgid_t gid)
-+{
-+	struct unix_skb_ids *ids =3D NULL;
-+
-+	if (!uid_is_legacy(uid) || !gid_is_legacy(gid)) {
-+		ids =3D kmalloc_obj(*ids, GFP_KERNEL_ACCOUNT);
-+		if (!ids)
-+			return -ENOMEM;
-+		ids->uid =3D uid;
-+		ids->gid =3D gid;
-+	}
-+	kfree(UNIXCB(skb).ids);
-+	UNIXCB(skb).ids =3D ids;
-+	UNIXCB(skb).uid =3D __kuid_val(uid);
-+	UNIXCB(skb).gid =3D __kgid_val(gid);
-+	return 0;
-+}
-+
-+static kuid_t unix_skb_uid(const struct sk_buff *skb)
-+{
-+	return UNIXCB(skb).ids ? UNIXCB(skb).ids->uid : KUIDT_INIT(UNIXCB(skb).u=
-id);
-+}
-+
-+static kgid_t unix_skb_gid(const struct sk_buff *skb)
-+{
-+	return UNIXCB(skb).ids ? UNIXCB(skb).ids->gid : KGIDT_INIT(UNIXCB(skb).g=
-id);
-+}
-+
- static void unix_destruct_scm(struct sk_buff *skb)
+ static void hci_sock_copy_creds(struct sock *sk, struct sk_buff *skb)
  {
- 	struct scm_cookie scm =3D {};
+-	struct scm_creds *creds;
++	struct scm_creds_classic *creds;
 =20
- 	swap(scm.pid, UNIXCB(skb).pid);
-+	kfree(UNIXCB(skb).ids);
-+	UNIXCB(skb).ids =3D NULL;
+ 	if (!sk || WARN_ON(!skb))
+ 		return;
+@@ -300,8 +300,8 @@ static void hci_sock_copy_creds(struct sock *sk, struc=
+t sk_buff *skb)
 =20
- 	if (UNIXCB(skb).fp)
- 		unix_detach_fds(&scm, skb);
-@@ -1992,20 +2027,21 @@ static int unix_scm_to_skb(struct scm_cookie *scm,=
- struct sk_buff *skb, bool sen
- 	int err =3D 0;
-=20
- 	UNIXCB(skb).pid =3D get_pid(scm->pid);
--	UNIXCB(skb).uid =3D scm->creds.uid;
--	UNIXCB(skb).gid =3D scm->creds.gid;
- 	UNIXCB(skb).fp =3D NULL;
-+	skb->destructor =3D unix_wfree;
-+	err =3D unix_skb_set_ids(skb, scm->creds.uid, scm->creds.gid);
-+	if (err)
-+		return err;
- 	unix_get_secdata(scm, skb);
- 	if (scm->fp && send_fds)
- 		err =3D unix_attach_fds(scm, skb);
-=20
--	skb->destructor =3D unix_wfree;
- 	return err;
+ 	creds->pid =3D pid_vnr(sk->sk_peer_pid);
+ 	if (sk->sk_peer_cred) {
+-		creds->uid =3D sk->sk_peer_cred->uid;
+-		creds->gid =3D sk->sk_peer_cred->gid;
++		creds->uid =3D __kuid_val(sk->sk_peer_cred->uid);
++		creds->gid =3D __kgid_val(sk->sk_peer_cred->gid);
+ 	}
  }
 =20
- static void unix_skb_to_scm(struct sk_buff *skb, struct scm_cookie *scm)
- {
--	scm_set_cred(scm, UNIXCB(skb).pid, UNIXCB(skb).uid, UNIXCB(skb).gid);
-+	scm_set_cred(scm, UNIXCB(skb).pid, unix_skb_uid(skb), unix_skb_gid(skb))=
-;
- 	unix_set_secdata(scm, skb);
- }
-=20
-@@ -2039,7 +2075,7 @@ static int unix_maybe_add_creds(struct sk_buff *skb,=
- const struct sock *sk,
- 			return err;
-=20
- 		UNIXCB(skb).pid =3D get_pid(pid);
--		current_uid_gid(&UNIXCB(skb).uid, &UNIXCB(skb).gid);
-+		return unix_skb_set_ids(skb, current_uid(), current_gid());
+@@ -1615,7 +1615,7 @@ static int hci_sock_recvmsg(struct socket *sock, str=
+uct msghdr *msg,
  	}
 =20
- 	return 0;
-@@ -2049,8 +2085,8 @@ static bool unix_skb_scm_eq(struct sk_buff *skb,
- 			    struct scm_cookie *scm)
- {
- 	return UNIXCB(skb).pid =3D=3D scm->pid &&
--	       uid_eq(UNIXCB(skb).uid, scm->creds.uid) &&
--	       gid_eq(UNIXCB(skb).gid, scm->creds.gid) &&
-+	       uid_eq(unix_skb_uid(skb), scm->creds.uid) &&
-+	       gid_eq(unix_skb_gid(skb), scm->creds.gid) &&
- 	       unix_secdata_eq(scm, skb);
- }
+ 	memset(&scm, 0, sizeof(scm));
+-	scm.creds =3D bt_cb(skb)->creds;
++	scm_creds_from_classic(&scm.creds, &bt_cb(skb)->creds);
 =20
-diff --git a/net/unix/af_unix.h b/net/unix/af_unix.h
-index 8119dbeef3..e861a430cf 100644
-=2D-- a/net/unix/af_unix.h
-+++ b/net/unix/af_unix.h
-@@ -10,10 +10,17 @@
+ 	skb_free_datagram(sk, skb);
 =20
- struct sock *unix_peer_get(struct sock *sk);
-=20
--struct unix_skb_parms {
--	struct pid		*pid;		/* skb credentials	*/
-+/* The sender's ids, when either is a UUID or GUID */
-+struct unix_skb_ids {
- 	kuid_t			uid;
- 	kgid_t			gid;
-+};
-+
-+struct unix_skb_parms {
-+	struct pid		*pid;		/* skb credentials	*/
-+	struct unix_skb_ids	*ids;		/* uid and gid, or NULL	*/
-+	uid_t			uid;		/* for ids NULL: legacy	*/
-+	gid_t			gid;		/* uid and gid		*/
- 	struct scm_fp_list	*fp;		/* Passed files		*/
- #ifdef CONFIG_SECURITY_NETWORK
- 	u32			secid;		/* Security ID		*/
 =2D-=20
 2.56.0
 
