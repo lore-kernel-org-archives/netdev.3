@@ -1,42 +1,42 @@
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8A6414421;
-	Sun, 18 Oct 2026 18:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888E415B6A;
+	Sun, 18 Oct 2026 18:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792346517; cv=none; b=Q4JqGRQWSskZjveHEG/tYWV3AJLVtF7zTK437/PZbOfsRP9LDt2MSJ1JehVjcrRjiQy7zjV9t3U42mHHL0PN9/S02ym1hwE4YAOGnWpEBr075vEfwApPvjfzk/awiL+atzNmY8IfM+pzjQTWkNRN03uPoU8BLGGTlaRJbHTHobo=
+	t=1792346519; cv=none; b=WTwfgtKau2oK2y6ImoDnQlXey/l75MfAxft63InNJmt9Z+xi2lsp/k21Z34fkeqETkXBpMRxTBePixR+lmpfka0RVUO2UvdPokMLvPr4cDyPum1j2zRh3nSqvFM5b7DzxzKDr4z1bCIAlIC9+cdbiDtSploix83lq03IEM+3cN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792346517; c=relaxed/simple;
-	bh=MwTYH8APUnPWxegDk375Gu5imkjmzFUQwIhYFxw8VdU=;
-	h=Message-ID:In-Reply-To:References:From:Subject:To:Cc:Date; b=WQ2MEdqDxIqjN7kqIwHtEs/2kFh5hCi44qTp8tMSzts6o12RoWcDGRI4NLMOs8LJE0kyBteVbPlaBNf8eCIWQzg1o60rFgzndVYK48lF0rENX5nC8V8w8S9SPfIoe7+DlTcA0X9o5pbWI0JQe2au3DOyFWE8KKzXKlRqnnA8pxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b=OEdjB67M; arc=none smtp.client-ip=212.227.15.18
+	s=arc-20240116; t=1792346519; c=relaxed/simple;
+	bh=+LqNvCiyIrE34FwVutQU9BdJKgrFsxhLFySkGmwBjTY=;
+	h=Message-ID:In-Reply-To:References:From:Subject:To:Cc:Date; b=FhbQKEkZirBgk+456wYh1tUY5hJex32KXzwwrxNEwL3mEzWupSHaN6fFkioEueoM1//+G/UiDOYooP0pluHbeXLlA1pdPSBzWy3a0R01aWrvHlL3yfGpqPfnbDaaY3mU+E11VmYZILJNA2ISXIWTxzT5N0tBCbJ/47xPjjvcw+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b=DA9gz/AJ; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b="OEdjB67M"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=jan.koester@gmx.net header.b="DA9gz/AJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1792346498; x=1792951298; i=jan.koester@gmx.net;
-	bh=iQ5SKr0/akUjeFw7s72giaEKU1jtCvJu1iRtZQ10RtM=;
+	s=s31663417; t=1792346505; x=1792951305; i=jan.koester@gmx.net;
+	bh=vfL22L8nz81DGlmNq7eC1I0KAVMX3Gaf7qlzS+8oY3M=;
 	h=X-UI-Sender-Class:Message-ID:In-Reply-To:References:From:Subject:
 	 To:Cc:Date:Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=OEdjB67MXvYr8EP5ZhVmr+4F58hYW56iFRUYvfGpNPohuRAP6RNq0wtWo/TbV9FJ
-	 z0ZiQzeIxvRxpGFuvJhBZBpb24Faz5ZbFXARDl6zqcKy5bL3/QxspWKtZRwAvEfWu
-	 yrUobQFuoh0RVPXvXO+mJ19GPKzaCpTxjnb+xQJEUKQow4UZYFE5dsfDkuhwHR/re
-	 Fzp8sxq2QQCWkawNq0bcEkSdV1aEnWxSatkhIegkAsqNsDnEAvNzySRdOTDp9mzMD
-	 8LFkF60up3F3tN2k5AO4kEw456/rqgrLXyU1hAu/yBNyasG23QnyJ2bha/v3uzmZb
-	 MzxthfXcA/ipK4paeQ==
+	b=DA9gz/AJyq5KtpSAXfUgTYnwmZxeuvBYlHADVztQVLfge7kIRui00EOPjO6rduyD
+	 ENVfCm++Q/cuedi0yJY6Ft8sorseNoOeKAS3iQysQSHAiPuGbRLTEBZhG1NwRuRf+
+	 a81wxldxG7Tg+xdbDinKbIjBqTxAnCCcImfe87sFoL8uLa9/78Xas554aJkGmxqW/
+	 RigwZ+md6FjfGFfF85JzmB6XcnBeQj5qcEuEbgpOULkwp1KSPvTyLlWdOLF9z42ZY
+	 RSWhz07oc1AzRIZbyJnQYaL0hn6L2YypA9n9NXNsCofAeE1nhxIQ/IFUtVdOtfSz/
+	 C1WUjvSNWoq8ZrVjbA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Ml6mE-1wtN4I2ZTg-00cWj1; Sun, 18
- Oct 2026 20:01:38 +0200
-Message-ID: <17d972a9d3d72e492c700c6efe6ba4eaf80149b0.1792346472.git.jan.koester@gmx.net>
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mz9Yv-1wNnz80i0Z-014vKv; Sun, 18
+ Oct 2026 20:01:45 +0200
+Message-ID: <b07482283efd6069338674425b523a8947e49a28.1792346472.git.jan.koester@gmx.net>
 In-Reply-To: <cover.1792346472.git.jan.koester@gmx.net>
 References: <cover.1792346472.git.jan.koester@gmx.net>
 From: Jan Koester <jan.koester@gmx.net>
-Subject: [RFC PATCH 04/41] net: sock: read sk_uid through a seqcount
+Subject: [RFC PATCH 06/41] netlink: keep classic sender ids in skb->cb
 To: Christian Brauner <brauner@kernel.org>,
     Alexander Viro <viro@zeniv.linux.org.uk>,
     "Serge E. Hallyn" <serge@hallyn.com>
@@ -55,106 +55,106 @@ Cc: Jan Kara <jack@suse.cz>,
     audit@vger.kernel.org,
     keyrings@vger.kernel.org,
     linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 20:01:25 +0200
-X-Provags-ID: V03:K1:K8dllvfU0DoPI/jHeKDAww9njvvhAGjXSAzELFiQGNAURdemZPq
- o+wrJuzL/YWoVOku0ZK5ONh/5hpUHK/55OW72EBRYDfYIGLVT6lmlsaUwIUzce2MZ33hyg4
- DbaLbg1NLCOnmWCCnFgnlP+/FM2M1nt3B6594kjTAWiXc9ga6e/YLXfxiAlU9i3YudTLBxT
- E0OY/eBeY6B6/BOrxuBIw==
+Date: Sun, 18 Oct 2026 20:01:27 +0200
+X-Provags-ID: V03:K1:k9TN29SdzDpdfX7HJPawdq1u6FNYgJLu+cSrumALb2Hixxnkjp/
+ cPh5zoHsrobEZpDDMeqql2FXv7eWP/pNRaljlR3jWYt055LH4BAA7UYtcESY1IAFeUbj2r2
+ UMuMHJI+9B0o6Xsj3f68Dbkcfkf13InR3iN9g93QxdYPK9/4ISW2wvc0L6a4epNKr7Rjj8i
+ inm+d8Qil1R28n6DyHdzw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:HLs7DWkmcYw=;skM7hgNbRE5K0txJYFVB9GDX+Rt
- 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
- YAmedZKKBOqnVsc9UeMI=
+UI-OutboundReport: notjunk:1;M01:P0:9Aasgl+HSGo=;L8bD+C2xqMpTEo7acr8I+BNB3yh
+ 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
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -162,150 +162,136 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-sk_uid is read without a lock, with READ_ONCE(), by the routing lookups
-and the reuseport checks, while sockfs_setattr() may change it. That
-only works for as long as a kuid_t is a single word, which it won't be
-once ids can be UUIDs and GUIDs.
+netlink_skb_parms has to fit into skb->cb, and netlink skbs are cloned
+together with it for broadcasts, so there is neither room for kuid_t
+and kgid_t holding UUIDs nor a single owner for an allocation.
 
-Add sk_uid_seq next to it: writers bump it around the store and hold
-sk_callback_lock (sock_graft(), sockfs_setattr()) or own the socket
-alone (sock_init_data_uid()); sk_uid() retries until it sees a whole
-id. sk_clone() reads the parent's id the same way rather than relying
-on the copy made by sock_copy().
+Store the sender ids as classic kernel ids: a UUID or GUID becomes -1,
+which reaches the receiver of SCM_CREDENTIALS as the overflow id. The
+kernel's own permission checks on netlink messages use the socket's
+file credentials, not these.
 
 Assisted-by: Claude:claude-opus-5-5
 
 Signed-off-by: Jan Koester <jan.koester@gmx.net>
 =2D--
- include/net/sock.h | 28 +++++++++++++++++++++++++---
- net/core/sock.c    |  6 +++++-
- net/socket.c       |  5 +++--
- 3 files changed, 33 insertions(+), 6 deletions(-)
+ include/linux/netlink.h  |  2 +-
+ include/net/scm.h        | 28 ++++++++++++++++++++++++++++
+ lib/kobject_uevent.c     |  8 ++++----
+ net/netlink/af_netlink.c |  4 ++--
+ 4 files changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 60ea55dc18..0986d94665 100644
-=2D-- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -294,6 +294,8 @@ struct sk_filter;
-   *	@sk_ack_backlog: current listen backlog
-   *	@sk_max_ack_backlog: listen backlog set in listen()
-   *	@sk_uid: user id of owner
-+  *	@sk_uid_seq: makes lockless reads of @sk_uid see a whole id; writers
-+  *		     hold @sk_callback_lock
-   *	@sk_ino: inode number (zero if orphaned)
-   *	@sk_prefer_busy_poll: prefer busypolling over softirq processing
-   *	@sk_busy_poll_budget: napi processing budget when busypolling
-@@ -509,6 +511,7 @@ struct sock {
- 	u32			sk_priority;
- 	u32			sk_mark;
- 	kuid_t			sk_uid;
-+	seqcount_t		sk_uid_seq;
- 	u16			sk_protocol;
- 	u16			sk_type;
- 	struct dst_entry __rcu	*sk_dst_cache;
-@@ -2109,11 +2112,23 @@ static inline int sk_rx_queue_get(const struct soc=
-k *sk)
- 	return -1;
- }
+diff --git a/include/linux/netlink.h b/include/linux/netlink.h
+index 882e9c1b6c..999c7a352e 100644
+=2D-- a/include/linux/netlink.h
++++ b/include/linux/netlink.h
+@@ -23,7 +23,7 @@ enum netlink_skb_flags {
+ };
+=20
+ struct netlink_skb_parms {
+-	struct scm_creds	creds;		/* Skb credentials	*/
++	struct scm_creds_classic creds;		/* Skb credentials	*/
+ 	__u32			portid;
+ 	__u32			dst_group;
+ 	__u32			flags;
+diff --git a/include/net/scm.h b/include/net/scm.h
+index 86ae6bc109..daa52e3d44 100644
+=2D-- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -23,6 +23,34 @@ struct scm_creds {
+ 	kgid_t	gid;
+ };
 =20
 +/*
-+ * sk_uid is too big for WRITE_ONCE(): writers hold sk_callback_lock (or =
-own
-+ * the socket alone, before it is published) and bump sk_uid_seq around t=
-he
-+ * store, so sk_uid() can read it without a lock.
++ * Sender credentials for skb->cb of skbs that get cloned along with it
++ * (netlink, bluetooth): no room for kuid_t and kgid_t, and no single own=
+er
++ * for an allocation. The ids are classic kernel ids; a UUID or GUID beco=
+mes
++ * -1, which the receiver of SCM_CREDENTIALS sees as the overflow id.
 + */
-+static inline void __sk_set_uid(struct sock *sk, kuid_t uid)
++struct scm_creds_classic {
++	u32	pid;
++	uid_t	uid;
++	gid_t	gid;
++};
++
++static inline void scm_creds_to_classic(struct scm_creds_classic *classic=
+,
++					const struct scm_creds *creds)
 +{
-+	write_seqcount_begin(&sk->sk_uid_seq);
-+	sk->sk_uid =3D uid;
-+	write_seqcount_end(&sk->sk_uid_seq);
++	classic->pid =3D creds->pid;
++	classic->uid =3D __kuid_val(creds->uid);
++	classic->gid =3D __kgid_val(creds->gid);
 +}
 +
- static inline void sk_set_socket(struct sock *sk, struct socket *sock)
- {
- 	WRITE_ONCE(sk->sk_socket, sock);
- 	if (sock) {
--		WRITE_ONCE(sk->sk_uid, SOCK_INODE(sock)->i_uid);
-+		__sk_set_uid(sk, SOCK_INODE(sock)->i_uid);
- 		WRITE_ONCE(sk->sk_ino, SOCK_INODE(sock)->i_ino);
- 	} else {
- 		/* Note: sk_uid is unchanged. */
-@@ -2161,8 +2176,15 @@ static inline u64 sock_i_ino(const struct sock *sk)
-=20
- static inline kuid_t sk_uid(const struct sock *sk)
- {
--	/* Paired with WRITE_ONCE() in sockfs_setattr() */
--	return READ_ONCE(sk->sk_uid);
-+	unsigned int seq;
-+	kuid_t uid;
++static inline void scm_creds_from_classic(struct scm_creds *creds,
++					  const struct scm_creds_classic *classic)
++{
++	creds->pid =3D classic->pid;
++	creds->uid =3D KUIDT_INIT(classic->uid);
++	creds->gid =3D KGIDT_INIT(classic->gid);
++}
 +
-+	/* Paired with __sk_set_uid() */
-+	do {
-+		seq =3D read_seqcount_begin(&sk->sk_uid_seq);
-+		uid =3D sk->sk_uid;
-+	} while (read_seqcount_retry(&sk->sk_uid_seq, seq));
-+	return uid;
- }
+ #ifdef CONFIG_UNIX
+ struct unix_edge;
+ #endif
+diff --git a/lib/kobject_uevent.c b/lib/kobject_uevent.c
+index ddbc4d7482..8b63044881 100644
+=2D-- a/lib/kobject_uevent.c
++++ b/lib/kobject_uevent.c
+@@ -297,8 +297,8 @@ static struct sk_buff *alloc_uevent_skb(struct kobj_ue=
+vent_env *env,
+ 	skb_put_data(skb, env->buf, env->buflen);
 =20
- static inline kuid_t sock_net_uid(const struct net *net, const struct soc=
-k *sk)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e8551df833..300bc75ce1 100644
-=2D-- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2449,6 +2449,7 @@ static void sk_init_common(struct sock *sk)
- 	skb_queue_head_init(&sk->sk_error_queue);
+ 	parms =3D &NETLINK_CB(skb);
+-	parms->creds.uid =3D GLOBAL_ROOT_UID;
+-	parms->creds.gid =3D GLOBAL_ROOT_GID;
++	parms->creds.uid =3D __kuid_val(GLOBAL_ROOT_UID);
++	parms->creds.gid =3D __kgid_val(GLOBAL_ROOT_GID);
+ 	parms->dst_group =3D 1;
+ 	parms->portid =3D 0;
 =20
- 	rwlock_init(&sk->sk_callback_lock);
-+	seqcount_init(&sk->sk_uid_seq);
- 	lockdep_set_class_and_name(&sk->sk_receive_queue.lock,
- 			af_rlock_keys + sk->sk_family,
- 			af_family_rlock_key_strings[sk->sk_family]);
-@@ -2529,6 +2530,8 @@ struct sock *sk_clone(const struct sock *sk, const g=
-fp_t priority,
+@@ -362,12 +362,12 @@ static int uevent_net_broadcast_tagged(struct sock *=
+usk,
+ 		/* fix uid */
+ 		root_uid =3D make_kuid(owning_user_ns, 0);
+ 		if (uid_valid(root_uid))
+-			parms->creds.uid =3D root_uid;
++			parms->creds.uid =3D __kuid_val(root_uid);
 =20
- 	atomic_set(&newsk->sk_omem_alloc, 0);
- 	sk_init_common(newsk);
-+	/* sock_copy() may have caught a half written sk_uid */
-+	newsk->sk_uid =3D sk_uid(sk);
-=20
- 	newsk->sk_dst_cache	=3D NULL;
- 	newsk->sk_dst_pending_confirm =3D 0;
-@@ -3773,7 +3776,7 @@ void sock_init_data_uid(struct socket *sock, struct =
-sock *sk, kuid_t uid)
- 	} else {
- 		RCU_INIT_POINTER(sk->sk_wq, NULL);
+ 		/* fix gid */
+ 		root_gid =3D make_kgid(owning_user_ns, 0);
+ 		if (gid_valid(root_gid))
+-			parms->creds.gid =3D root_gid;
++			parms->creds.gid =3D __kgid_val(root_gid);
  	}
--	sk->sk_uid	=3D	uid;
-+	__sk_set_uid(sk, uid);
 =20
- 	sk->sk_state_change	=3D	sock_def_wakeup;
- 	sk->sk_data_ready	=3D	sock_def_readable;
-@@ -4614,6 +4617,7 @@ static int __init sock_struct_check(void)
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_tx, sk_priority);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_tx, sk_mark);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_tx, sk_uid);
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_tx, sk_uid_seq);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_tx, sk_protocol);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_tx, sk_dst_cache);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_tx, sk_route_caps);
-diff --git a/net/socket.c b/net/socket.c
-index c05d86e63a..09658f3958 100644
-=2D-- a/net/socket.c
-+++ b/net/socket.c
-@@ -679,8 +679,9 @@ static int sockfs_setattr(struct mnt_idmap *idmap,
- 		struct socket *sock =3D SOCKET_I(d_inode(dentry));
+ 	ret =3D netlink_broadcast(usk, skb, 0, 1, GFP_KERNEL);
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 3029894eda..282a5d0da4 100644
+=2D-- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1901,7 +1901,7 @@ static int netlink_sendmsg(struct socket *sock, stru=
+ct msghdr *msg, size_t len)
 =20
- 		if (sock->sk) {
--			/* Paired with READ_ONCE() in sk_uid() */
--			WRITE_ONCE(sock->sk->sk_uid, iattr->ia_uid);
-+			write_lock_bh(&sock->sk->sk_callback_lock);
-+			__sk_set_uid(sock->sk, iattr->ia_uid);
-+			write_unlock_bh(&sock->sk->sk_callback_lock);
- 		} else {
- 			err =3D -ENOENT;
- 		}
+ 	NETLINK_CB(skb).portid	=3D nlk->portid;
+ 	NETLINK_CB(skb).dst_group =3D dst_group;
+-	NETLINK_CB(skb).creds	=3D scm.creds;
++	scm_creds_to_classic(&NETLINK_CB(skb).creds, &scm.creds);
+ 	NETLINK_CB(skb).flags	=3D netlink_skb_flags;
+=20
+ 	err =3D -EFAULT;
+@@ -1994,7 +1994,7 @@ static int netlink_recvmsg(struct socket *sock, stru=
+ct msghdr *msg, size_t len,
+ 		netlink_cmsg_listen_all_nsid(sk, msg, skb);
+=20
+ 	memset(&scm, 0, sizeof(scm));
+-	scm.creds =3D *NETLINK_CREDS(skb);
++	scm_creds_from_classic(&scm.creds, NETLINK_CREDS(skb));
+ 	if (flags & MSG_TRUNC)
+ 		copied =3D data_skb->len;
+=20
 =2D-=20
 2.56.0
 
