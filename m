@@ -1,155 +1,116 @@
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B980A1E1E16
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546A726B742
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792289250; cv=none; b=u2B5lFjmkgUEphmAdy9Gv1DP5LLjUmTm0ExYlGmnYNv7cb4dAtci2Y/X7PT6J0/UdO+0H++ArfKamUXcK2sVpbs7jVYTGlrWg8qEOb7W0HLoBPvTQWMpT+U/kKZ2okYgjiRVdunOcPjYZXirVcufNTSi0Iw0IRAfDM7Ma3X1PDM=
+	t=1792289328; cv=none; b=GoHzN6qJMCpDmOu0UhizZdQ9IGINesqSl8UdJeQdTs4I0oOWCfATXHDo0Ul6hM0R0QPXRfekTRC9ZEn6v+Op68Kix5Bfi/DEV7ouj3gQpzIZgb3QUxRjCQGQWsr1VKMM9VpXc1cPN/HPfExKnjE31rRLD5aE2fAu30yIBwGa+1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792289250; c=relaxed/simple;
-	bh=h64g/b0720y2ZRKty+R1YMO5NWwggUNzbsyMCGCOtwM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lwNqEmVRQU19kWyzrR9TnedU4gEhSbbp483ELWuCRolMF/uMgZ2Rx70c6C1VmmgX8xnu/Bl7weeQP5vpQ7d3nLUghc5Qc31vyoFty/Y/7FHZtHl0JV9lYE3R1t9pYrR4EsX3NAu6MylFW6kkSrfAWSRvlmGEbL/6zlzAXs0aENk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4cc89e86e9eso1795823b6e.3
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 19:07:27 -0700 (PDT)
+	s=arc-20240116; t=1792289328; c=relaxed/simple;
+	bh=ow69sVINNaVvr2Z0q+1YVQzqsCXceAWHPGehvygUFA0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d6CsCFHLNly8Xfe18LrjMUx5AhCkTFXpVoEpQIpSJjpzVKo7VScLkw76biQD0cDgfjAfsB0wlJGqEn9yAlE/SSPvAIj18YQcgr4V7o7EOgxzFRq8orsg1DvhSAinHVi++l/09S+OhWqI/7xxN2TANJEdSOHsUukXGW9PpOPdtlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPlWBOVk; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPlWBOVk"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-53391022dc0so12471421cf.2
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 19:08:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792289326; x=1792894126; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RaGAAGiU7kTJl217HSqn7DxbRR+6QeuVGQHPa0XU5iw=;
+        b=mPlWBOVkqSoa40MfIhSXJRka9r5QpJvEQmzcBu2AoExSX0cGEbXGeGmYxDv/zFZYZ9
+         0U+IQidBjkH4nt2igg+bZt0MSOnKYocUpLsUmQDJdH6z1ewtuVUaeFzoHHnjSLea6zEx
+         7U6C/nRvb/6NZk4qc+LC+sHcfVrCwN26o+1lnXrXhpHuAqXg0lmeUdT82mb8uHpS4n7x
+         LJsTE6r4uesd5RPCFrA4A8n0VdQg4Ww1ItWiCMFgPL3ytmQtRVnZqN0vjoX8ZT5+R5cN
+         AJPtnNtK15OsRAUDFWlnugLaI9xR57hBUB0Z+ryV7eFWasHlrie1sKmEEFGPGB+victL
+         FvSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792289246; x=1792894046;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OSIzwYp+kpSkd3JrVxUdpyc6DkTq2zzJU/4smuBmDK8=;
-        b=gx7Z+RXuJfBANztN9u8+sTsAO5z9E8/xdqSIZwvlFTJ9JJgVVJl+6oXykfPqQjA8im
-         lRciHoz1zSkCbkJSGuSoMeP/EJup4JyqWK02BIOdblBilew1M02kizF/wrp8cVBAfBKg
-         8Y5c8NDmjq4fYTkhs5LNO48jKHMKZGvR26YMcN6lemppyEMe3uzdbK8auVlDTRaqK02H
-         ZqVswzVslRMabr5YNltmgEoS0kJijH9T9psZ9YFGFXmM/qM3n3ihZHQUfxKikoiwdPbC
-         t/wpEX+FLDpoTU/pervUf562D/DYVbvE7SyTqqA4znNfDxgQ3QIhNdsOCyzvMOW4do+/
-         6u7Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzd7jxjuaoRXY3ZwQcQzwz2s1coB91nZdLU585ZPHAnVTAfBvN0fsTYaCOpONNparCsiVb3+6U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKWm7Lr4+yYLiN/RmP7zSclbF6uO0BRgu7H6tmFaYTJam0xbnhR
-	sasZMT9uTbAQ8wb6DiBxfpjY+7snKs9bqYIunfR0nBH8B3QJuck6nhb9+J/Rm9008qYR4urGLd/
-	Huj5XSzrPTZSOAxG2Ptpahd0MB1d4/49Kwf1O2HcJoBePiixt8JPo4C8gIMk=
+        d=1e100.net; s=20260707; t=1792289326; x=1792894126;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RaGAAGiU7kTJl217HSqn7DxbRR+6QeuVGQHPa0XU5iw=;
+        b=EdlaeJ/YPHijw4gN2RCCDGzWs8nBlzA7uOfA3NACP1LxK5LAr1G+5zQfWJ/MXmhG9G
+         lnSGq4k3zAgLcAe3b1Z69kSDWUtrUvthE9aj9/m7XLY+RiMuFTeLHoViwOkGhiUkU2ha
+         C8gKPtYl7hPGq00ZMsVv4AbJRr7GXYYf5TskRbvg+w6TUk6z2Px+YexaZWY84jUgXTak
+         uK43oBtXGn9wKl7XCKGvLGlWgTFcQZFcRSJMNK/w8WKJVnqVzpDMK7NiFMH+T1YKcL7s
+         /D2SVQ/XXboKr9Jmvoc8QHaMCLkFh4wJ9np8rqliSL1cupkCuamxFohwnyAbhBIXLiBd
+         OLbw==
+X-Gm-Message-State: AFq9FYKqahiqMghm1JgH+JxOTqQE59Hw0wsAKR9MKmhG8rrYAV3g0TwX
+	2d6fAbH1pxTPJAmK3/+krywPlmobQ70LXhAk1XtUU0eCc/nllQvxWTL29J5AtDg=
+X-Gm-Gg: AYBFou10lLgK5H3xWiP6oVG8LYNYLjdPg/HfsEucJkPYyo9fbJKZ4xVuFrXDtorKDCg
+	H64HEBnhjdTqpd+UmodMbW59dY5t1KB9jJmjzoPrGcMyI7fb/f2kCmu+O1/OjST4qESfD3N8jpB
+	cZUxeT62WkcRBENNBCBu3WKIaqkiS4DEY10cIo2Cpg+Di6FkYcNCmvVmB8AN/k2LlacmEL5MY1A
+	/ljHS9jvFYiPzMXjFTrWqoIMT3mu//45uHUdwnIZRnPvRII+fsnPzgF7gbxJ9koSwdAqAdPP463
+	e1XGw+D0NSGob2x9XwDIa1kLhcwED0DBZMfbWUMzzHvnvqgcXeP5t2S8wqzg+dfuX5Z/qoxlFSW
+	xN6vObzxQwJSpcg313Y6E9JFOdAAUv8qKz+P8WRbxz1CS6rfHECssWvO8QXXaEbXJMA7nye49jo
+	NS1ykxrkDyb25K8j70OWHegnRTc20AFhb7Qu+oFY20hG6mpqPq+NAS7W/a0va58n3xw11kER+Wy
+	ubE82pGQ4clC/MNshjplC0mMLfdyYNOWcxZOmwkmoBNV/BYJHBcGyA0C+BNricNV7G+0E1JRrKR
+	sCFeOKZaXjsU9hLBimn74sUAE9MC
+X-Received: by 2002:a05:622a:48b:b0:536:575b:8dd6 with SMTP id d75a77b69052e-536575bbc1dmr35825921cf.0.1792289325861;
+        Sat, 17 Oct 2026 19:08:45 -0700 (PDT)
+Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362aa68f8esm61731291cf.29.2026.10.17.19.08.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 19:08:44 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	ae878000@gmail.com,
+	daniel.machon@microchip.com
+Subject: [PATCH net v3 0/2] net: nixge: fix tasklet and DMA teardown
+Date: Sat, 17 Oct 2026 22:08:38 -0400
+Message-ID: <20261018020840.3851552-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:f8f:b0:4d5:2b09:a6a7 with SMTP id
- 5614622812f47-53cd93a4abcmr2967907b6e.65.1792289246563; Sat, 17 Oct 2026
- 19:07:26 -0700 (PDT)
-Date: Sat, 17 Oct 2026 19:07:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ad429de.7f4e89eb.3d59aa.00aa.GAE@google.com>
-Subject: [syzbot] [net?] BUG: unable to handle kernel paging request in ndisc_alloc_skb
-From: syzbot <syzbot+7b5c2544e5ff37a729cb@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@kernel.org, 
-	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Separate the IRQ/tasklet ordering fix and the DMA shutdown fix from
+v2, as requested by Daniel Machon.
 
-syzbot found the following issue on:
+Patch 1 releases both IRQ handlers before draining dma_err_tasklet.
+Patch 2 masks channel interrupts after recovery has stopped and waits
+for DMA reset completion before releasing the buffers. On reset timeout,
+it retains those buffers and prevents a later open from replacing them.
 
-HEAD commit:    7a19f0cc94ad Merge branch 'for-next/core' into for-kernelci
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=16df313e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=26d6221a572842ac
-dashboard link: https://syzkaller.appspot.com/bug?extid=7b5c2544e5ff37a729cb
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-userspace arch: arm64
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1555fda9580000
+Changes in v3:
+- Split the IRQ/tasklet ordering fix and DMA shutdown fix into two patches.
+- Give each fix its own subject and commit message.
+- Order the nixge_stop() local declarations longest to shortest (RXT).
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/296cd4b77dbf/disk-7a19f0cc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e57669ed895f/vmlinux-7a19f0cc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c679c1ad76d4/Image-7a19f0cc.gz.xz
+Changes in v2:
+- Wait for DMA reset completion; retain buffers and reject reopen on timeout.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+7b5c2544e5ff37a729cb@syzkaller.appspotmail.com
+v2: https://lore.kernel.org/netdev/20261004042702.1130389-1-mhun512@gmail.com/
+Review: https://lore.kernel.org/netdev/20261007104833.4ukkys7rnmv7ki5i@DEN-DL-M70577.microsemi.net/
 
-Unable to handle kernel paging request at virtual address dfff80000000020c
-KASAN: probably user-memory-access in range [0x0000000000001060-0x0000000000001067]
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0
-[dfff80000000020c] address between user and kernel address ranges
-Internal error: Oops: 0000000096000005 [#1]  SMP
-Modules linked in:
-CPU: 0 UID: 0 PID: 12 Comm: kworker/u8:0 Tainted: G   M                syzkaller #0 PREEMPT 
-Tainted: [M]=MACHINE_CHECK
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/23/2026
-Workqueue: ipv6_addrconf addrconf_dad_work
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : ndisc_alloc_skb+0x284/0x460 net/ipv6/ndisc.c:435
-lr : read_pnet_rcu include/net/net_namespace.h:431 [inline]
-lr : dev_net_rcu include/linux/netdevice.h:2816 [inline]
-lr : ndisc_alloc_skb+0x270/0x460 net/ipv6/ndisc.c:435
-sp : ffff80008f9178c0
-x29: ffff80008f9178c0 x28: 1fffe00019eaa40d x27: 0000000000000001
-x26: ffff80008f917900 x25: 1ffff00011f22f20 x24: ffff0000d5973990
-x23: ffff0000d5973976 x22: dfff800000000000 x21: 0000000000000000
-x20: 0000000000001060 x19: ffff0000d59738c0 x18: 00000000d557e235
-x17: 0000000006512135 x16: dfff800000000000 x15: 0000000000000001
-x14: 00000000001cb30b x13: 0000000000000009 x12: 0000000000000009
-x11: 00000000f2fb2cc2 x10: 0000000000000003 x9 : 0000000000000000
-x8 : 000000000000020c x7 : ffff80008579a0c0 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffff80008579a1a4
-x2 : 0000000000000001 x1 : ffff0000c1a00000 x0 : 0000000000000000
-Call trace:
- ndisc_alloc_skb+0x284/0x460 net/ipv6/ndisc.c:435 (P)
- ndisc_ns_create+0x1f4/0x54c net/ipv6/ndisc.c:627
- ndisc_send_ns+0xbc/0x168 net/ipv6/ndisc.c:669
- addrconf_dad_work+0x77c/0xfe8 net/ipv6/addrconf.c:4318
- process_one_work kernel/workqueue.c:3396 [inline]
- process_scheduled_works+0x91c/0x1250 kernel/workqueue.c:3479
- worker_thread+0x798/0xbd0 kernel/workqueue.c:3560
- kthread+0x304/0x3d4 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:854
-Code: 96ba87a4 52820c08 8b0802b4 d343fe88 (38766908) 
----[ end trace 0000000000000000 ]---
-----------------
-Code disassembly (best guess):
-   0:	96ba87a4 	bl	0xfffffffffaea1e90
-   4:	52820c08 	mov	w8, #0x1060                	// #4192
-   8:	8b0802b4 	add	x20, x21, x8
-   c:	d343fe88 	lsr	x8, x20, #3
-* 10:	38766908 	ldrb	w8, [x8, x22] <-- trapping instruction
+Based on net commit 6dc989ea46b96ce170840174b4a38c4a387fb005.
+Found by code inspection. No hardware testing.
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Myeonghun Pak (2):
+  net: nixge: free IRQs before killing the DMA error tasklet
+  net: nixge: wait for DMA reset before releasing buffers
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+ drivers/net/ethernet/ni/nixge.c | 33 ++++++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
+-- 
+2.53.0
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
