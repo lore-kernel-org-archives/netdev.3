@@ -1,226 +1,155 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B623DD875
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 22:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792363263; cv=pass; b=FuTBJiyP7ocqi0XfzbpB3hSlFXxFBEsQf2ft1WClu+RjmnEkKqUXgZZ2/UHyOCNs5pUQfVsf7vaa/qeIZBfHtow76c1GuNsqwWACbg3jRxshD/xbZzPsDKAOVN3zEhjD1c56bdgLW6en6+fLTbIQA9r1pxgpWsHtCfwZZEdONAc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792363263; c=relaxed/simple;
-	bh=p++ZSyJFCuxLqjeASFcIbsbXuay+O3EngKkGXMu53oA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dUH+XMhwQkItbkOToQFG1qHX8TaCSXwDzGcuLdRsXwSh14Nd9QhgbMKpsGZ9porndDXzHamToU47rPGwYFQNU2u7S96wVbKhfPSD5ump0+T/BtZqkM9Ts7a/LJQHVl2pCvED9hFixQHaalA/2ZQ2PGm1nyZSw+TeZBHNkewgmyg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jPsCo8XW; arc=pass smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318BC3C2782;
+	Sun, 18 Oct 2026 22:50:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792363845; cv=none; b=BRRROPglTBnbnv3CMUjvhOeB021P7zVUOnBUOgpcA7ahcUXt0KAuI6AgjkXFfOW5IvLLYZy/Peja2zeZfCrJGExOI5kLsHDy0FG+27Z2rt+t3uOxpWYc9cS/h+At7LdXL395TicExY13C2YuJ2JH78FumSUSWTER051/Ry93Ync=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792363845; c=relaxed/simple;
+	bh=BsnodO9bUqcXqBPqHsLiIGUph5X+v/Dtrr+3+iwEpOc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MzawEEMVxQv06vgwtBZgWmlm5RlzrfpibYY8/oHf2nZr46y9oC6jpkBBcp9Wvb2EKhS41gx9xKl4kF0pbijoHp9O/iE8XT0prELQbAaTYhBgSy+n268u37T3W6Q0WHHiMea+rmOPcgPtudgriFXvQiZsffs+IpwCZQXLKyf/RTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivcZII2J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jPsCo8XW"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c40e30c26a4so339066266b.0
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 15:41:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792363260; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Oifs6QD8AkDwe4d+95757z9UATXj66ne5/2XWw3WDOO2z2MhIQsW5JnLaJ8uzl9yv9
-         IZ94m/Oq0X6IxYR6PZIPYV8qQt08IzR1pOIg8O8SSMz8vqq5kRRlaknxexTjbBsuV2Tp
-         wlursmfD2KXVws5oRJCi1oDNAk4oym6lfc9noYS1gTXZlWGxEqLU6RhJ+ZBUl5BWwCRg
-         ko2L+NJtq0ir9MOkI+G8Q90Yax6XISdCMCR028rPhlVJQ0W6FRvltOfIWcPojBBx7DVn
-         5KL34jVfBscx89KjQpL+uQB+Otav+wRiLaAeTA3pWiUaanQ8Rs7tXCh6OV2/zWtrEm+O
-         5ZDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=UXdVaZ0BdL2p1RhzEOoM8EGu2ZUXiAFHTy0xisS2uiQ=;
-        fh=YAzGysVCi72nJRe2lQw4J0o3Ldj5Xgy8/mRjYhW605s=;
-        b=Kofy39g+rRZbpeM3KzCDTvrCh9VpuVQXOqdN733VojrTPmTOunnkg4ipEK8ZWqRjU1
-         dvA+76LbC1djh2UkOKR/qBIyWp848J17tITNx98ymVDWPvyaIRSxN7DM6IKQ/yGv+HTD
-         0H62KdPdYjscyFHyl9z8u5HAfUPeQAOndA3jfh/jUM4DI/SljBnVtfQZpWTySGSnHBtP
-         pC3U0eoJJEYK4yOHVzMGfCs5sv9hW0MWRtr9b5VGDsAEH9mlD769aVlLRxk9/inMhjLf
-         799oY47KqNwLJVLBiSkltMQLQvkg3wVSYXcaRqmljw9oZYVxU+mqa0iggLGEHjR2NOuk
-         g2IQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792363260; x=1792968060; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UXdVaZ0BdL2p1RhzEOoM8EGu2ZUXiAFHTy0xisS2uiQ=;
-        b=jPsCo8XW+wvKpLS9nBsIw6+rkUGeQluqYEw8DePGqY0Y5jAcuT/TdulMB/U45i3BXI
-         1CRsJQmpTDJxS0tQlito624pT3dzG+Gfpy8KK4N7M02DWmDTzRw7bCCNzrQu7ZCjZ8AP
-         pU+BgIBh8zFB59HmjienrYMLWsjcgbCzi/X+qNI/NKKrYwm3sJW9eLsEjVgkXZYIAr9T
-         fsoUNcfeTXEN3sq6a10kqfkANfs9y6OTDn8Tcc7NizYDSZVbyeoP5tPb7j3tNp0yLqXr
-         tRSI5PUIQlEsG3TwrfnlyyADNNlJ4DypVoLR1gwQH/B81asgKrDGNDKavVxF09y0G5Iq
-         SN/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792363260; x=1792968060;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UXdVaZ0BdL2p1RhzEOoM8EGu2ZUXiAFHTy0xisS2uiQ=;
-        b=qfo6ZQUx3dLa46qo35GT2I1HtEtdZMDoiwG2s6QePHx3mU1Ed9pG8opKHwjHfEoop+
-         yf//lou85cewmon9s/kZeMdd9I8fEfJVazUUkbTkdtuQlqEFIyUyqvUXcV6D7judLMIS
-         6egFvPmtlDJIQ57m8N4eNFIzXPx9YAeZ6M3jzmq0GfZZ5kkGk5AdZq0K1r4qcCsuF4/x
-         WRq2Jn6j411sWnsBIULtibui2qHaniolotrfCyw+KdTm8CPJnHffuQW5MAiX6aSOf/CE
-         lF0e7CygQ+n/cNKVASbbWMfcEgcsL/bJ7HOYtLa1oU5y9Uy6hAMwtM6lb/Hos1t6JnsC
-         X73A==
-X-Forwarded-Encrypted: i=1; AKwUvBwrcJqgOrpK3XS2tiI10EROH1sgFz72qZWWn1tdmZoCXfN38YT/2tLpm6JhasIQWG9i+jXQfwU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLWLhjLih5KoZDQA3+T34xbNyk362EDa6boXQQ9D82yovWAKnX/
-	ZyqU3vjJE5sCg/MImxPHCnpi2MMiwcdaK+ITV7b3KlV2NBgVI/Cc0yO7ZXRC5wGshHG1fwYebo4
-	/eyqxlaEvpXUsmWikEejZAoTGezDdWhELfXP8D7g=
-X-Gm-Gg: AYBFou2Y6srzM1BbRQim6Utuq+hFBZrG5LhzRQPZ3CmEoc6dV62+VPfvvlcC9dr+PHD
-	ebrKavTp2Jd5JPr4GO0BF0JO0MDUPytGtOJGP0YELO9rWvpHHoGp0QWz4RU22P36zwtd4ORUn/E
-	6bSaLW/y60voJID3O3t9hBV3O0cfbm5WkGG5NGIlV+l1k3kPERNFdnOgNAyPyF6tA4mgZ1lx3MW
-	f0p3pRL2tz/xcuqcFQFh3uQNa9q1uE+Z8/jR3j3hAbGS3EZIKw082Ee0/mJrsOWXTn07HPBBxQg
-	VFE4S9ysJFE+Ed7bM5uUZ3QimcV1dWMS68GmDre9vJ8yevBnSLAj4TOedEH7TMl5uyIGdJmkN0K
-	2kzoAtz6JvFI=
-X-Received: by 2002:a17:906:9f8e:b0:c31:7a83:bd78 with SMTP id
- a640c23a62f3a-c40226d038bmr717199866b.27.1792363259952; Sun, 18 Oct 2026
- 15:40:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivcZII2J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1876F1F000C4;
+	Sun, 18 Oct 2026 22:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792363843;
+	bh=PiRVxH4R2qsJog4P9NbvU7dE8sn7+0Hca2L4IHl67VU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ivcZII2JXUjMRfsvfGgSGiSY7bA5fgHAvZhN7rZ+7szCSmtFyyxHlv0t93IzcHaUZ
+	 7v8qlIVxqOg+sxTCsFCDHXckYzYKBICW7q83WjN7RsiU5cs7CLbq7d706S7Jkv39W+
+	 O1Ehz6HXOn3OHTZvzNlNU3U6BBq4mHMCVVHTc1EiGrnhRFNz1E9pvMwhb5HnnoJb8C
+	 Ve3KLFn0VoGu05YjICgquupilzq5WjFntKDDuK2T3TweGTzVcT3hFWdmDhSZpQI9p0
+	 QNW8eqN+7B+kQ6Wm1OvNFEgE6dXF1m/Lszd7OHfeplRRPKhJvyhI/rQAZJevsuWAqA
+	 saEN4bHkTjGJA==
+Subject: Re: [PATCH net-next v4 2/6] eth: fbnic: cache hwmon sensor readings
+From: netdev-bot+sashiko@kernel.org
+To: limzhineng2@gmail.com
+Cc: alexanderduyck@fb.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
+ linux@roeck-us.net, horms@kernel.org, hmohsin@meta.com,
+ mike.marciniszyn@gmail.com, kernel-team@meta.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, zinclim@meta.com
+Date: Sun, 18 Oct 2026 22:50:42 +0000
+Message-ID: <179236384262.3135.12215729347519460836@kernel.org>
+In-Reply-To: <20261014222225.2803660-3-limzhineng2@gmail.com>
+References: <20261014222225.2803660-3-limzhineng2@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5a4715dd-89e0-4868-9ffb-c8fb73b18d04@yahoo.com> <75829f0c-69d4-4c16-8300-142023f840d7@yahoo.com>
-In-Reply-To: <75829f0c-69d4-4c16-8300-142023f840d7@yahoo.com>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Sun, 18 Oct 2026 19:40:47 -0300
-X-Gm-Features: AclHuK8japrQSasiuuB5p9BbdGCAzRqaG209BBF3f-flurqGY0prkkCGGbMOCzE
-Message-ID: <CAJq09z5ZAxca0rRT0mSiU_3xp2wxEU4qahbDM3SBGpwe1vbMRw@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 3/9] net: dsa: realtek: rtl8365mb: set speed
- for family D
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, 
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	linux@armlinux.org.uk, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index 840db5a..2dabc4d 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> @@ -344,6 +344,7 @@
->  #define RTL8365MB_PORT_SPEED_10M       0
->  #define RTL8365MB_PORT_SPEED_100M      1
->  #define RTL8365MB_PORT_SPEED_1000M     2
-> +#define RTL8365MB_D_PORT_SPEED_2500M   5
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-I also used the same _<FAMILY>_ tag trick previously, but it gets
-confusing quickly. Does RTL8365MB_D_xxx mean something exclusive to
-family D, or family D and later? I hope a more seasoned reviewer can
-weigh in on this.
+Low priority / nit picks for your consideration:
 
-When I implemented support for the RTL8367R (pre-family B), I ran into
-this exact problem of macro definitions (and code conditions) turning
-into unmaintainable spaghetti.
+- [Low] fbnic_mbx_init()
+  (drivers/net/ethernet/meta/fbnic/fbnic_fw.c:112-113) resets…
 
-In this particular case, as 5 does not exist in Family C and the
-semantics of the existing values still hold, you can omit the _D_. A
-simple comment will be enough if the semantics change for a future
-family.
+--
 
->  /* External interface force configuration registers 0~2 */
->  #define RTL8365MB_DIGITAL_INTERFACE_FORCE_REG0         0x1310 /* EXT0 */
-> @@ -361,6 +362,28 @@
->  #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK          BIT(4)
->  #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK                BIT(2)
->  #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK         GENMASK(1, 0)
-> +/* Width of the FORCE_SPEED field, bits[1:0] */
-> +#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_WIDTH                2
+eth: fbnic: cache hwmon sensor readings
 
-This is what bitfield masks/macros are for; there is no need for an
-explicit WIDTH define. More comments below on the code using it.
+This commit caches the last TSENE temperature and voltage readings in
+struct fbnic_dev. Hwmon reads are served from that cache for the rest of
+the current jiffy. The cache is seeded with the FBNIC_SENSOR_NO_DATA
+sentinel in fbnic_mbx_init(), so the first read always goes to firmware.
 
-> +/* bits[13:12]; bit 13 reserved, no defined speed value uses it yet */
-> +#define   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK      GENMASK(13, 12)
-> +
-> +#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE           0x12c0
-> +#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(_port) \
-> +               (RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE + (_port))
-> +
-> +#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE            0x12c8
-> +#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_EN(_port) \
-> +               (RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE + (_port))
-> +
-> +/* Per-port force-mode enable. The vendor RTL8367D API
-> + * (dal_rtl8367d_port_macForceLink_set()) treats it as an on/off switch for
-> + * the whole forced configuration: all bits set when the MAC is forced, zero
-> + * when it is not. The meaning of the individual bits is not documented.
-> + * This driver always forces the MAC, as on family C, so all bits are set
-> + * on every call, including link down.
-> + */
-> +#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_ALL_MASK        GENMASK(15, 0)
->
->  /* CPU port mask register - controls which ports are treated as CPU ports */
->  #define RTL8365MB_CPU_PORT_MASK_REG    0x1219
-> @@ -1646,23 +1669,32 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
->         u32 r_duplex;
->         u32 r_speed;
->         u32 r_link;
-> +       bool is_d;
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> index 49b8813a35643..82307f212f583 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> @@ -105,6 +105,13 @@ void fbnic_mbx_init(struct fbnic_dev *fbd)
+>  	/* Reset FW Capabilities */
+>  	memset(&fbd->fw_cap, 0, sizeof(fbd->fw_cap));
+>  
+> +	/* Seed cache with sentinel so the first read always refreshes. The
+> +	 * cache mirrors what firmware reported, so drop it when the mailbox
+> +	 * restarts.
+> +	 */
+> +	fbd->hwmon_cache.temp_mdeg = FBNIC_SENSOR_NO_DATA;
+> +	fbd->hwmon_cache.volt_mv = FBNIC_SENSOR_NO_DATA;
 
-Thinking about future families like E, F, G..., a boolean flag like
-is_d might not scale well.
-You can still keep the family id in a variable to keep lines short and clean:
+[Severity: Low]
 
-        enum rtl8365mb_family family;
+Can these stores race with a sysfs read in fbnic_hwmon_sensor_read()?
 
->         int val;
->         int ret;
+The hwmon device stays registered during PCI error recovery.
+fbnic_hwmon_unregister() is only called from fbnic_remove(). The mailbox
+is restarted on that path:
 
-[...]
+fbnic_err_slot_reset()
+  __fbnic_pm_resume()
+    fbnic_fw_request_mbx()
+      __fbnic_fw_enable_mbx()
+        fbnic_mbx_init()
 
->               FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK, r_link) |
->               FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK,
->                          r_duplex) |
-> -             FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK, r_speed);
-> -       ret = regmap_write(priv->map,
-> -                          RTL8365MB_DIGITAL_INTERFACE_FORCE_REG(extint->id),
-> -                          val);
-> -       if (ret)
-> -               return ret;
-> +             FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK,
-> +                        r_speed &
-> +                        RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK);
+This path runs under devl_lock(). The hwmon read callbacks are only
+serialized by the hwmon core lock, so nothing orders the two.
 
-Isn't the point of FIELD_GET/FIELD_PREP to avoid bitwise operations
-like this? For fields split between bit ranges, you can use the same
-trick as in RTL8365MB_CVLAN_MBR_LO_MASK, RTL8365MB_CVLAN_MBR_HI_MASK.
+Suppose a reader has already received a successful TSENE completion and is
+preempted just before this code in fbnic_hwmon_sensor_read():
+
+	cache->temp_mdeg = fw_cmpl->u.tsene.millidegrees;
+	cache->volt_mv = fw_cmpl->u.tsene.millivolts;
+	cache->last_read = jiffies;
+
+fbnic_mbx_init() can then store FBNIC_SENSOR_NO_DATA. When the reader
+resumes, it writes back the pre-reset readings with a fresh last_read.
+
+Wouldn't that undo the "drop it when the mailbox restarts" invalidation?
+KCSAN would also flag these plain concurrent loads and stores.
+
+The practical effect is small. FBNIC depends on 64BIT, so the s32 stores
+can't tear, and a stale value would only be served for the rest of one
+jiffy.
+
+Could the invalidation be done under hwmon_lock(fbd->hwmon) when
+fbd->hwmon is set? Another option is READ_ONCE()/WRITE_ONCE() with a
+validity scheme.
+
+The same unlocked pattern appears to remain later in the series, where
+temp_alarm and volt_alarm are also seeded in fbnic_mbx_init() without the
+lock.
 
 > +
-> +       if (is_d) {
+>  	/* Reinitialize mailbox memory */
+>  	for (i = 0; i < FBNIC_IPC_MBX_INDICES; i++)
+>  		memset(&fbd->mbx[i], 0, sizeof(struct fbnic_fw_mbx));
 
-For multiple/bigger differences, we will need to have different
-functions for each family. In this case, for small differences, I
-think is_d, is_e, is_f... are better handled by a switch statement
-with the same indentation cost as an if:
+[ ... ]
 
-            switch (family) {
-            case RTL8365MB_FAMILY_D:
-                 ...
-                break;
-            case RTL8365MB_FAMILY_C:
-                 ...
-            }
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
+> index 6c8c66ab86c13..0c3fe2a372275 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
 
-And, by omitting the default clause, when we add a future FAMILY_E and
-forget to add a case for it, the compiler will warn us of the missing
-check. You can even use a (commented) fallthrough when a family
-incrementally expands a feature.
+[ ... ]
 
-> +               /* Speed is 3 bits on family D: bits[1:0] go into FORCE_SPEED,
-> +                * bit[2] goes into FORCE_SPEED2 (bit 12); only 2500M sets it,
-> +                * bit 13 of the field is unused.
-> +                */
-> +               val |= FIELD_PREP(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK,
-> +                                 r_speed >>
-> +                                 RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_WIDTH);
+> @@ -72,7 +78,12 @@ static int fbnic_hwmon_sensor_read(struct fbnic_dev *fbd, int id, long *val)
+>  		goto exit_cleanup;
+>  	}
+>  
+> -	*val = *sensor;
+> +	/* FW returns both readings in one response, cache both. */
+> +	cache->temp_mdeg = fw_cmpl->u.tsene.millidegrees;
+> +	cache->volt_mv = fw_cmpl->u.tsene.millivolts;
+> +	cache->last_read = jiffies;
+> +
+> +	*val = *cached;
 
-Here is where FIELD_GET() with a HI/LO mask avoids the manual shift
-and makes the WIDTH definition unnecessary.
+[ ... ]
 
-Best regards,
-
-Luiz
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014222225.2803660-1-limzhineng2%40gmail.com
