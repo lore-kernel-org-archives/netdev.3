@@ -1,101 +1,133 @@
-Received: from out28-217.mail.aliyun.com (out28-217.mail.aliyun.com [115.124.28.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADD83905EF;
-	Sun, 18 Oct 2026 10:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58C23BFE3C
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 10:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792318901; cv=none; b=K5E48NwtbwO/qaBAjVlcGWN8a+JGxcKotUv16mT25N500HbkGVNNKqd4nkq/AmzwcxPzpDjNESpElEfmYubC2o4jgL+XhTTRDWkWiKl1RbFG9DlwEjx0OygU6PZi8PftIRb01BIpdu1Pbgo0M6b1raSV8LVjUJ9/euQsJdR/1GA=
+	t=1792319330; cv=none; b=Pb5B1k0fefE6JgfbZSeAMRWqXWTV7D0k9JRxF7vUncbe2IIvsI89pmcaPzYWjP2QTkmPs+94tYsMJ+9gfKhCI207oNLq811HzMH/ONMh+MfNVw33GbvEweNKG8byvvgcnlmiSvMtWfKO/CXmZ0fLGxDvYlJo25xlkEnXfbvw1+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792318901; c=relaxed/simple;
-	bh=MqIop+Ry5uHGldSb9XPw77eJyDNc2sII9hGClB09mQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YyNgJGNMSozUQAw/FbMVi7Q8ns+bOcQLQNzCdZbh9rCQOrRKS410hcFe5Tw1+WNy3nFnhUMaWyQwJgU/Z3hC7tnosjLDYOR0tDXquLjhXnw3OgMJ2DyZs2w97dO2KOqOpebT47idfVlkCeHqVkzP/iz3BQT4qpnS5TCHDvQkjnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht; spf=pass smtp.mailfrom=yinhe.ht; dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b=JjcZSRpD; arc=none smtp.client-ip=115.124.28.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	s=arc-20240116; t=1792319330; c=relaxed/simple;
+	bh=VMEPrd02TV1lYzXH1MXddssILsVUbeo2zp0j77mkZOY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mkmhwRLD7qp1ediDJh3ICq1yGZ63AkOiIWEa3rYZ9ZFKHoDQP2Gj85XgBGDH6j2EbJrEgHHDqDSIo+GRGdXtblx5kmhwazCwFJy07EQeEvYzaqdBciJQU5P8Uq6hESZb2o6NlhMMKeYypaY+fX7tkzM5UzGSud48VrMzN3P2H/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmVm+dZc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b="JjcZSRpD"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1792318889; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=oPcpo3LDbQ/rlNvHeFnmd3lUFBVjp8gt26UuGxzknmc=;
-	b=JjcZSRpDg6jjBbke8IR/NJYHugk5fUm4hQ1ZxMtp/KEElxFFawxcxtzE2HpzcJDNQo1lAvtmhNxMcAnaTPW30Qhqq3ezioLZiIuzGE21OOe5u0nibiV/v0oR2NxxxZiX90G2OfSI5OUXagSo/5r6CRlW7a3+5YGrzONUnYUJkUFtMBqGJ4G3N0el6NL8u2m+zgpuu6EBEZRPtAvZNtXWMZ8faT6hkBmG0fw8gcEzFg5Y8NH9tsCqwpgWaF9EDBLi5napfU1TuHA66ITXltvhOHB85uyPPp9IifBotxhvIz5Fy6nqBa+EOs5eX5zyTkwgdVP5aOhqyxC14Rti7yrhFg==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07668728|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0457954-0.00438278-0.949822;FP=5349324788030295733|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jiygvZo_1792318888;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.jiygvZo_1792318888 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 18 Oct 2026 18:21:29 +0800
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: netdev@vger.kernel.org
-Cc: linux-can@vger.kernel.org,
-	mkl@pengutronix.de,
-	kernel@pengutronix.de,
-	haibo.chen@oss.nxp.com,
-	shawnguo@kernel.org,
-	imx@lists.linux.dev,
-	ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Subject: [PATCH net v4] can: dev: can_fill_info(): don't wake up controller if interface is down
-Date: Sun, 18 Oct 2026 18:17:44 +0800
-Message-ID: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmVm+dZc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A2A1F000C4;
+	Sun, 18 Oct 2026 10:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792319329;
+	bh=qUGlVEGEXGO27eMqITS9PPkEN93N02+nAAGDjrJQSHA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RmVm+dZc20MkjgeMbwvmGLjyvwDOVdr4nWwUy/wzfT4PoZwE3RO9IxiV9SOw1e8gp
+	 dw0XH1w3vVTW5j3qc2pGF5clmmVLWJ8/qT4jqP7dj2JgRpYbYfKnMrtZ27OZgD1iZj
+	 MUOu9ntCuTSuWWGs8oAU1sf4dFS+PraQehMDiBIDd5C/Th1KqWqA4KTsNqrJRGrPmI
+	 UNCnq/QhGuZIArXieRrSDHNBbirmemo05B0gPfOWbVADozjnwwVkVItwrAGm9Lcf9K
+	 +kK+/8I707Qa1EWh2wXAtms57Gi1SWfJjhok6VYsSqGtySH3YdhPptqDRHjLruldlG
+	 2DpLfyppsp3OQ==
+Subject: Re: [PATCH net-next v6 1/4] net/sched: cake, fq_codel: return the
+ classifier result to the caller
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, toke@toke.dk, sashiko-bot@kernel.org
+Date: Sun, 18 Oct 2026 10:28:48 +0000
+Message-ID: <179231932829.3135.5746553688919070963@kernel.org>
+In-Reply-To: <QDISC-BA27.v6.r0.20261014054826-1@mojatatu.com>
+References: <QDISC-BA27.v6.r0.20261014054826-1@mojatatu.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-If the interface is down, the CAN controller might be powered down, the
-clock disabled, and/or its external reset asserted.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Don't call do_get_berr_counter() to read the CAN bus error counters if
-the interface is down. This fixes a generic logic problem that exists
-on all platforms.
+Low priority / nit picks for your consideration:
 
-Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
-Cc: stable@vger.kernel.org
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
----
-v1 -> v2:
-  - Reword the commit message to drop the MDIS reasoning.
-  - Add Fixes: tag.
+- [Low] The new comment above fq_codel_classify() in
+  net/sched/sch_fq_codel.c gives two reasons the function returns true…
 
-v2 -> v3:
-  - Use the title and commit message suggested by Bough Chen.
-  - Drop the i.MX8QXP-specific crash dump and erratum explanation.
-  - Drop the m_can reference.
-  - Drop the Link: tag.
+--
 
-v3 -> v4:
-  - Move the netif_running() check from the flexcan driver to
-    can_fill_info() and can_get_size() in the CAN core, as suggested by
-    Marc Kleine-Budde. This covers all CAN drivers, not just flexcan.
+net/sched: cake, fq_codel: return the classifier result to the caller
 
- drivers/net/can/dev/netlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This patch changes the classifier helpers in cake and fq_codel so they no
+longer compute the flow hash. The cake helper now returns the filter's
+flow/host overrides. The fq_codel helper now returns either a 1-based flow
+index or a request to hash, so the caller picks the flow. It is preparation
+for later accounting changes, and classification behaviour should stay the
+same.
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 6f83b87d54fc..d17f4e9cc144 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -584,7 +584,7 @@ static size_t can_get_size(const struct net_device *dev)
- 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_STATE */
- 	size += nla_total_size(sizeof(struct can_ctrlmode));	/* IFLA_CAN_CTRLMODE */
- 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_RESTART_MS */
--	if (priv->do_get_berr_counter)				/* IFLA_CAN_BERR_COUNTER */
-+	if (priv->do_get_berr_counter && netif_running(dev))	/* IFLA_CAN_BERR_COUNTER */
- 		size += nla_total_size(sizeof(struct can_berr_counter));
- 	if (priv->termination_const) {
- 		size += nla_total_size(sizeof(priv->termination));		/* IFLA_CAN_TERMINATION */
-@@ -735,7 +735,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	    nla_put(skb, IFLA_CAN_CTRLMODE, sizeof(cm), &cm) ||
- 	    nla_put_u32(skb, IFLA_CAN_RESTART_MS, priv->restart_ms) ||
- 
--	    (priv->do_get_berr_counter &&
-+	    (priv->do_get_berr_counter && netif_running(dev) &&
- 	     !priv->do_get_berr_counter(dev, &bec) &&
- 	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
- 
+> diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+> index e6c87a32950f9..4cf3d379b8e95 100644
+> --- a/net/sched/sch_fq_codel.c
+> +++ b/net/sched/sch_fq_codel.c
+> @@ -73,22 +73,35 @@ static unsigned int fq_codel_hash(const struct fq_codel_sched_data *q,
+>  	return reciprocal_scale(skb_get_hash(skb), q->flows_cnt);
+>  }
+>
+> -static unsigned int fq_codel_classify(struct sk_buff *skb, struct Qdisc *sch,
+> -				      int *qerr)
+> +/* Run the qdisc's optional external classifier. Returns true when the
+> + * caller must drop the packet (a terminal TC action consumed it, or the
+> + * result carried no class ID); the reason is then in *qerr. Otherwise *idx
+> + * is the 1-based flow index, or *do_hash asks the caller to use
+> + * fq_codel_hash().
+> + */
+
+[Severity: Low]
+This isn't a bug, but the comment above fq_codel_classify() lists only two
+cases where it returns true. The code returns true in two more cases.
+
+First, if no filter in the chain matches, tcf_classify_qdisc() returns a
+negative value. The if (result >= 0) block is skipped and the function hits
+the final return true.
+
+Second, a filter can return a class ID whose minor is above q->flows_cnt.
+One example is classid 1:2000 with the default 1024 flows. That fails this
+check and also falls through to return true:
+
+	if (TC_H_MIN(res.classid) > 0 &&
+	    TC_H_MIN(res.classid) <= q->flows_cnt) {
+
+Neither case is a terminal action, and the second one does carry a class
+ID. The behaviour matches the old helper, which returned 0 in both cases.
+Only the new comment is incomplete.
+
+The commit message says follow-up accounting patches build on this helper.
+Could the comment say that true is returned whenever no valid class in
+1..flows_cnt was selected (no match, minor 0, or minor above flows_cnt)?
+Otherwise a reader may assume these packets fall back to hashing, as they
+do in cake_tcf_classify(), when fq_codel drops them as BYPASS drops.
+
+> +static bool fq_codel_classify(struct sk_buff *skb, struct Qdisc *sch,
+> +			      unsigned int *idx, bool *do_hash, int *qerr)
+>  {
+
+[ ... ]
+
+> -		if (TC_H_MIN(res.classid) <= q->flows_cnt)
+> -			return TC_H_MIN(res.classid);
+> +		if (TC_H_MIN(res.classid) > 0 &&
+> +		    TC_H_MIN(res.classid) <= q->flows_cnt) {
+> +			*idx = TC_H_MIN(res.classid);
+> +			return false;
+> +		}
+>  	}
+> -	return 0;
+> +	return true;
+>  }
+
+[ ... ]
+
 -- 
-2.47.3
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-BA27.v6.r0.20261014054826%40mojatatu.com
