@@ -1,180 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-99.mail.aliyun.com (out28-99.mail.aliyun.com [115.124.28.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E475A1A6811;
-	Sun, 18 Oct 2026 03:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C53F26ED46;
+	Sun, 18 Oct 2026 03:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792292905; cv=none; b=tMu3TPXuky71W2ZhDA2ldB41v+nUAcTZ1nRPdQ+++7c9dierphrSj5LiIp/MsYxVUy6ORprai8M6VznGrD4c8VmhZZn2BVrwI2y8NdPopg/TmVEQRg87nzbuenti/nTXAKxI2rhHncF45rtaEVSNT/jeZ84JWZqthT+Q5eu9wE8=
+	t=1792293072; cv=none; b=Dw6eKs0CBWsOfHs5QuT/fRgmBNriaz5leoU4vHhrK5L7X+q1dsyXYDx1X39WV3QBVkUk1GZSmYrpgIoOzDohAhWXn6Z+V9OTWxUqz5YwL9z+2wC/8PbbDyDVcrY5OTuVLEAJrD48D5jR3XWD+1DKbwl2cG57vYngu3ZhG1IDSgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792292905; c=relaxed/simple;
-	bh=UuqHB8YycYlMyC4ByQ8d+u1wEcHNzqY0naURvnSVgXY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aCu5ccdJH9PL9hL+BBkw4kL4unec8PEuNZ3pzfkS1qaOF7lPdLwg0dZALenqdKQCF2v3CNKs+/86cCiUahKS/fNWZz9QolHfJL49KJ4MU4pieQslcslR0Tra+Lx6RzDp204PiCTG7/CiXGdaGqG0TTQn1odhv2Eg0HLb9KAizEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJ+GDlHR; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJ+GDlHR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033721F000C4;
-	Sun, 18 Oct 2026 03:08:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792292903;
-	bh=JWPLR7A/LavbAJgY1uxDZajSqVtX9m0op6i0B4HJO00=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jJ+GDlHREjzVsREtr0tNOV9ThWTme8FYgzi6a9mD/VZUPuvBXyACNWMs8QVDWCc3q
-	 Fe6B9TX1R2zpFBtDpZdxRjvCt9GoMDa2p5/+Nz5wW1SSwcWVQyWq/5lVupfedTdaJG
-	 ysLyweJecdUdD1YMNfKP5l2YbxK8hTGNOx3ucbwZqITN/dpSiLsqrJMeCMO4nBysi7
-	 qKR8Ly0H/HnkFttACKdlkipY3n676jqZSmXiixjLrslmdNOWATBmCa+CX0rIuCsgTF
-	 zZV0gPt6uci8qdWM7etUI5mZFdl7Z3w8xowwRYgMdqm6mddGyttz6kbNt5mSYWzNQ1
-	 OODr5q6cFHShQ==
-Subject: Re: [PATCH net 2/2] net: usb: pegasus: check rx pkt_len against the
- received length
-From: netdev-bot+sashiko@kernel.org
-To: law.wei.jie@gt.tech.gov.sg
-Cc: petkan@nucleusys.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, 98lawweijie@gmail.com, stable@vger.kernel.org
-Date: Sun, 18 Oct 2026 03:08:22 +0000
-Message-ID: <179229290253.3135.18168766657798775955@kernel.org>
-In-Reply-To: <20261014025307.25233-3-law.wei.jie@gt.tech.gov.sg>
-References: <20261014025307.25233-3-law.wei.jie@gt.tech.gov.sg>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1792293072; c=relaxed/simple;
+	bh=c3dMSeY6NkPwVb1KgPnj6xDwxPaqTPAV1JowATUGAPE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EXMUAyDD8dgf8s5ZnLmhtNrFDj121tjiKyDIQNeDhp758/Wso6ZR8WxL471wc6w8+0ppREXm7toV/cAU/DXnj2QJJRuUEqGzasR8P+uHQX+D8XJvoqFMTDR2MojYY8aUDsSkLkoG3PO4SIhtXBsFFBxCmRHqmvVZfA2ew4arteQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07439663|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00751529-0.00102491-0.99146;FP=14571262836432657470|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jicrdg8_1792293055;
+Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jicrdg8_1792293055 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sun, 18 Oct 2026 11:11:05 +0800
+Message-ID: <0ce7a944-4a12-47be-a413-4706f8eb8258@motor-comm.com>
+Date: Sun, 18 Oct 2026 11:10:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v14 5/5] net: dsa: motorcomm: Add support for
+ Motorcomm YT922x
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com, horms@kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
+References: <20261013011122.1889766-1-kyle.switch@motor-comm.com>
+ <20261013011122.1889766-6-kyle.switch@motor-comm.com>
+ <bc293fd1-4414-4d0e-9247-a5a91db90f15@lunn.ch>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <bc293fd1-4414-4d0e-9247-a5a91db90f15@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+On 10/13/26 09:51, Andrew Lunn wrote:
+>> +++ b/drivers/net/dsa/motorcomm/mdio_bus.c
+>> @@ -299,3 +299,42 @@ int yt921x_mbus_ext_init(struct yt921x_priv *priv, struct device_node *mnp)
+>>   
+>>   	return 0;
+>>   }
+>> +
+>> +/* intif extend register read/write api */
+>> +int
+>> +yt921x_intif_ext_write(struct yt921x_priv *priv, int port, int reg, u16 val)
+>> +{
+>> +	int res;
+>> +
+>> +	if (port > priv->series->max_ports)
+>> +		return -ENODEV;
+>> +
+>> +	res = yt921x_intif_write(priv, port, YT92XX_PAGE_SELECT, reg);
+>> +	if (res)
+>> +		return res;
+>> +
+>> +	res = yt921x_intif_write(priv, port, YT92XX_PAGE, val);
+>> +	if (res)
+>> +		return res;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +int
+>> +yt921x_intif_ext_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
+>> +{
+>> +	int res;
+>> +
+>> +	if (port > priv->series->max_ports)
+>> +		return -ENODEV;
+>> +
+>> +	res = yt921x_intif_write(priv, port, YT92XX_PAGE_SELECT, reg);
+>> +	if (res)
+>> +		return res;
+>> +
+>> +	res = yt921x_intif_read(priv, port, YT92XX_PAGE, valp);
+>> +	if (res)
+>> +		return res;
+>> +
+>> +	return 0;
+>> +}
+> Why are these in mdio_bus? They don't have anything to do with MDIO.
+>
+> Since they build on yt921x_intif_read they seem to fit in yt921x.c
+> better? Or am i missing something?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+These two interfaces access the extend registers of the Phy/serdes.
 
-- [High] In read_bulk_callback() (drivers/net/usb/pegasus.c), the new
-  check `if (pkt_len + rx_offset > count) goto goon;` only sets an upper…
-- [Medium] net: usb: pegasus: uninitialized memory read in eth_type_trans
-  on short packets
+Following the existing code style-where the PHY/SerDes MII registers
 
---
+were placed in the mdio_bus.c,these two interfaces are also placed
 
-net: usb: pegasus: check rx pkt_len against the received length
+in the mdio_bus.c.
 
-This patch changes the rx length check in read_bulk_callback(). Frames
-whose device-reported length, plus the 0x8513 header, does not fit in
-urb->actual_length are now dropped. Before, the length was only checked
-against PEGASUS_MTU.
+>> +static void yt922x_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+>> +				 struct phylink_link_state *state)
+>> +{
+>> +	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
+>> +	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
+>> +	int port = pp->index;
+>> +	int res = 0;
+>> +	u16 data;
+>> +	int addr;
+>> +	u16 lp;
+>> +
+>> +	addr = yt922x_sds_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII);
+>> +	if (addr < 0) {
+>> +		state->link = false;
+>> +		return;
+>> +	}
+>> +
+>> +	mutex_lock(&priv->reg_lock);
+>> +	switch (state->interface) {
+>> +	case PHY_INTERFACE_MODE_SGMII:
+>> +	case PHY_INTERFACE_MODE_1000BASEX:
+>> +	case PHY_INTERFACE_MODE_2500BASEX:
+>> +		res = yt921x_intif_read(priv, addr, MII_BMSR, &data);
+>> +		if (res)
+>> +			goto err;
+>> +		res = yt921x_intif_read(priv, addr, MII_LPA, &lp);
+>> +		if (res)
+>> +			goto err;
+>> +		phylink_mii_c22_pcs_decode_state(state, neg_mode, data, lp);
+>
+> Rather than data, call it bmsr. It then fits:
+>
+> void phylink_mii_c22_pcs_decode_state(struct phylink_link_state *state,
+> 				      unsigned int neg_mode, u16 bmsr, u16 lpa)
+Okay.
+>
+>> +static void yt922x_pcs_an_restart(struct phylink_pcs *pcs)
+>> +{
+>> +	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
+>> +	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
+>> +	struct device *dev = to_device(priv);
+>> +	int port = pp->index;
+>> +	u16 data;
+>> +	int addr;
+>> +	int res;
+>> +
+>> +	mutex_lock(&priv->reg_lock);
+>> +	addr = yt922x_sds_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII);
+>> +	if (addr < 0) {
+>> +		res = addr;
+>> +		goto err;
+>> +	}
+>> +	res = yt921x_intif_read(priv, addr, MII_BMCR, &data);
+>> +	if (res)
+>> +		goto err;
+>> +	data |= BMCR_ANRESTART;
+>> +	res = yt921x_intif_write(priv, addr, MII_BMCR, data);
+> Again, bmcr. It then looks a lot like
+> phylink_mii_c22_pcs_an_restart().
+Okay.
+>> +	if (res)
+>> +		goto err;
+>> +	mutex_unlock(&priv->reg_lock);
+>> +	return;
+>> +
+>> +err:
+>> +	mutex_unlock(&priv->reg_lock);
+>> +	if (res)
+>> +		dev_err(dev, "Failed to %s PCS port %d: %i\n", "an restart",
+>> +			port, res);
+>> +}
+>> +
+>> +static int yt922x_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+>> +			     phy_interface_t interface,
+>> +			     const unsigned long *advertising,
+>> +			     bool permit_pause_to_mac)
+>> +{
+> advertising does not appear to be used here. Does this pcs not support
+> it? That would be odd, because you looked at lpa in earlier functions.
 
-> diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
-> index 7c7d6b69998f2..7bc9312eaa9ec 100644
-> --- a/drivers/net/usb/pegasus.c
-> +++ b/drivers/net/usb/pegasus.c
-> @@ -520,10 +520,11 @@ static void read_bulk_callback(struct urb *urb)
->  	}
->  
->  	/*
-> -	 * If the packet is unreasonably long, quietly drop it rather than
-> -	 * kernel panicing by calling skb_put.
-> +	 * If the packet is longer than what was actually received, quietly
-> +	 * drop it rather than kernel panicing by calling skb_put or passing
-> +	 * up stale buffer contents. count is at most PEGASUS_MTU.
->  	 */
-> -	if (pkt_len > PEGASUS_MTU - rx_offset)
-> +	if (pkt_len + rx_offset > count)
->  		goto goon;
+advertising and neg_mode will been handled in next patch version.
 
-[Severity: Medium]
-This check bounds pkt_len from above, but is anything stopping a
-pkt_len smaller than ETH_HLEN from reaching eth_type_trans()?
-
-On a 0x8513 chip, a 4-byte transfer with buf[0..2] = 0 decodes to
-pkt_len = 0 with rx_offset = 2. rx_status is buf[2], so the 0x1c
-error bits are clear. 0 + 2 > 4 is false, so the frame is accepted.
-The non-0x8513 path gets the same result from a trailer that decodes
-to 4, since pkt_len -= 4 brings it to 0.
-
-read_bulk_callback() then does skb_reserve(pegasus->rx_skb, 2) and
-skb_put(pegasus->rx_skb, 0), and calls eth_type_trans().
-
-eth_type_trans() reads the full 14-byte Ethernet header regardless of
-skb->len. eth_skb_pkt_type() looks at h_dest, and h_proto is used to
-pick skb->protocol. Only 2 of those 14 bytes came from the device.
-
-The other 12 lie past urb->actual_length. They are either left over
-from an earlier transfer, when the skb was reused on the goon path, or
-uninitialized memory from __netdev_alloc_skb_ip_align().
-
-KMSAN would report this as an uninit read. skb->pkt_type and
-skb->protocol are then derived from whatever was in the buffer before
-netif_rx() hands the skb to the stack.
-
-The old PEGASUS_MTU check had the same hole. However, the new comment
-says this check prevents passing up stale buffer contents. Would it
-make sense to also drop frames with pkt_len < ETH_HLEN here, perhaps
-counting them in rx_length_errors?
-
-[Severity: High]
-This sets an upper limit on pkt_len. Does it also need a lower limit?
-
-Nothing checks that pkt_len is at least ETH_HLEN, so a short transfer that
-claims a runt frame still gets through. For example, on a non-0x8513 chip a
-4-byte transfer of 04 00 00 00 gives:
-
-	pkt_len = buf[count - 3] << 8;    /* 0 */
-	pkt_len += buf[count - 4];        /* 4 */
-	pkt_len &= 0xfff;
-	pkt_len -= 4;                     /* 0 */
-
-rx_status is buf[2] = 0, and 0 + 0 > 4 is false, so the frame is accepted.
-
-On 0x8513, a 4-byte transfer with buf[0..1] = 0 gives pkt_len = 0 and
-rx_offset = 2, which also passes. Any pkt_len below 14 that fits in count
-gets through the same way.
-
-After skb_put(pegasus->rx_skb, pkt_len), eth_type_trans() calls
-eth_skb_pull_mac():
-
-include/linux/etherdevice.h:eth_skb_pull_mac() {
-	struct ethhdr *eth = (struct ethhdr *)skb->data;
-
-	skb_pull_inline(skb, ETH_HLEN);
-	return eth;
-}
-
-skb_pull_inline() returns NULL because ETH_HLEN > skb->len, but nothing
-checks the return value. eth_type_trans() then reads h_dest and h_proto from
-the header anyway.
-
-Those bytes lie past urb->actual_length. They are either left over from an
-earlier transfer, when the skb is reused on the goon path, or uninitialized
-memory from __netdev_alloc_skb_ip_align().
-
-Those bytes set skb->pkt_type and skb->protocol, and netif_rx() then
-delivers the skb. For an ETH_P_ALL packet socket the chain continues:
-
-packet_rcv()
-  dev_parse_header()
-    eth_header_parse()
-      memcpy(haddr, eth->h_source, ETH_ALEN);
-
-packet_recvmsg() then copies sll_addr back to userspace. Can that expose up
-to 6 bytes of stale rx buffer contents through sockaddr_ll?
-
-The new comment says this check stops "passing up stale buffer contents".
-Should this check also drop frames with pkt_len < ETH_HLEN?
-
->  
->  	/*
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014025307.25233-1-law.wei.jie%40gt.tech.gov.sg
+>
+> 	Andrew
