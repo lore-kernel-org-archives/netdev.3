@@ -1,119 +1,166 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E3C303A04
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E40314B8F;
+	Sun, 18 Oct 2026 02:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792289512; cv=none; b=KTA2edUDnQpY7bsNt9GxUSSp9FT3U0+1BcKXsCjqiZp1uy4MSr7OjKe6sZ4pc5CF25DabQPZCaISqzyCQEW1dgZ4ronPU5PwdsSl8HB/N+xgaB/7ITBnm/a0mdKesymGZCiHKNdE3ni7GCF06mIxrt4Mhof1d/NhbveCvMmgfVM=
+	t=1792289717; cv=none; b=Ku3gdoiTcQ8VgM+/1TR4afRRx7PDQC/vsbRPBp01JkDuILhozo6kjpeOMJ5SLmneZtCWHKKGn6uzZWcpO++vgLxS3wbWdi7Mz+9pAGuQ2MYbnMTsnJUpO9347RqWNZ5UE6o3vty7mpnoTcuoWx+guEU/cMb+T4Pqxw46JxxWEeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792289512; c=relaxed/simple;
-	bh=quR7zaG5HvFKkoAcyflM6P6NFsJA2yI0PSyMysQvzs4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPljZHcZGU8dYUAt7utcMewQYMtJHGWqbH7BclyinzkK9KG7T+yhTIdg8uinIfbcYtPeawpUIa/TdrSelEKhXLf1LoP0gRAwIAi30fnenqj2wXuNSDrp81zj2VXSAZle41hUcfuL/x993HshG1S0mBZXHqJ4LZjFX3KuXM+oqMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=QQIw8NTp; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	s=arc-20240116; t=1792289717; c=relaxed/simple;
+	bh=UTTezgF4LXlO9HHrXSCy1QrmrcPJCVNMUoH+grdDgNo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H/Qz5UEmXAw3hp9x3gym38TCAMdXuv+cVpA5uRZ/q0RizJB7BO5I0k3VO9EwzaLvARRmGxBkdtGN8ye0puExlmFQv9rxjsTRoh9JuJ30PIy4B1JpAqyyjCHtVwrmV5XhOhjS4AmVNtTfKUPMnHHzXASrcomxCpSs2yjCP513hSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZ9XztHt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="QQIw8NTp"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6ae27f06c2fso1771729a12.3
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 19:11:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1792289510; x=1792894310; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=quR7zaG5HvFKkoAcyflM6P6NFsJA2yI0PSyMysQvzs4=;
-        b=QQIw8NTpx0NQVnPaElOZevzSeEGsEd1HNJUlehuDS2MEursrdpPIEapiL/nlrwPAE/
-         vq1GtTOJLBBFzsy2D0eKUgVaMXkXNnlc9hM9pcp+OFhy1Qqea/tzUdKQb4PA1t6akFN/
-         cHtMznWJFCw4lQ27SP+Fn0vLmmQnDzceYS703/4CVpDi+IOwlQpwy+l/6eu2+UseMIPO
-         ag5rkYqKZqUJYwHjnvtlCMlqbB16c80fXFZqqfGFY+Fc8LCAzS1UAKU7KONBsC0sLibl
-         4CEkkS5xkd1WiCOa1QExUiKXoKCDozL1d7rLPQHNqv3/HHW6ctYc2n7SAyJEMueDqmDm
-         DxxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792289510; x=1792894310;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=quR7zaG5HvFKkoAcyflM6P6NFsJA2yI0PSyMysQvzs4=;
-        b=OxYnE4/hA9hfSRHtJSafxr/NNSgd0komp8GGIhkhixSNyum/Td05K+m7Zru5QDcA4T
-         pbLc6uso2pDAhm/r5HCmPFRfGmRA7JLw66ddbY4vYLxkERcMsbbaUm4eQveU7uNqRWn/
-         LLXXqKXe0AGFHEAe5/andFcZUDS4lOJ+ESVws9olopaDUbgf1LpBT4h8LWO2zvbp1pON
-         dZGoO4u8SecDHLxFKs7Cn/xgljIr73wE6p1Xf3U9zMAzWbvbLsc3pi1X3qp471rR6DYw
-         8vFfjESIPTJPk6O+ckbsQmPyG849mkOUzApGWeH66NSN+nFBmaF+tDkcLSmg9NdmeY6y
-         Jfbw==
-X-Forwarded-Encrypted: i=1; AKwUvBx2kzbYvqHjiA8q2+iSjwXrk8h+C+ODyvlDJ+vICnYr4MGnPMVf2nc5AGntjKDpQLO1Dz6T01Y=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIdKVwH1PMbCzbbACIDtI9ggdicZ5UcnEYJORmjnbhEYEWS18e/
-	Bw68LShnmBctoypcQbGP5wxw9NwhNqz17XTP3/7+Sep1G80sFyLfs6O3IasLMF6vQg==
-X-Gm-Gg: AYBFou1tRlPe3yJnIz3+vtjPsRGar2dNTozTQh2R18ITj48Ms9+kwui08lxBOG9gVuk
-	RdEL9RQVFXDzywwzn91RaZwPnnLSPzaT8op8E7KBIpicQMsIOalbFhwd85u1gIkWggXE1zOZQVk
-	H1Pv0kqdBqc73/qN8sI5R9A9pzY3u/ktDtbvw7K07nrJzTB8qgkrHw20ApJHaHHlT5YlPQFt/To
-	YwdNVjG3qZLAiyTnn1yMu2pf/HRYzZ2Rp7+sBuuXA17hPlHIF3chM9UlPCaes+fX7SEogYzwow6
-	CtVoZ6axQv3kLJJWkh4t1lu20DyE9+v1h/BnDhF4rcxkLo2f3ezi5OygJnpLI0OvN8Zn8YJrjg8
-	X1UlTbk4OP8pQ6mDRFWYtaLMoGvGTsK8tVlWND48srLoLInakp+zt+HuFZz/Mnq1SaDj/OBV4+E
-	qNzbPEG16Gi6FBDWk+ie0fii9bYFPUESzh7jXm7g/12McDMHiuVht2INqWNT9RJDkHltB5v81JZ
-	ndnn4oYjKjYgD4aA70Za7HgChup42m7N21ENT+8NDhkHryimgOFtrxsnFXHUWIQSslD5gzqk3Y0
-	LiAh7xlj7by1xrOE5SuW488sO8diCz0lfpoh69fmtEb2geFRtLDKVUrmucMu5RpM4vaVF3ICQd6
-	rRVwOCKd5xdO/pebPpRBf9wGr46RSkJ5zemynS0usX3IXDCjf2h/Zk5lyPCuivcPBE3larX3SSo
-	PkRvWpZbnBRPaAdVbz5gRARv/BrICJzaZMtva4yj41cZmesb4eG4vTxA7ZyrfVuMvUu/AzMjDIC
-	T5MuA96
-X-Received: by 2002:a17:907:c48b:b0:c35:d50a:1356 with SMTP id a640c23a62f3a-c41a08dc5fcmr283934966b.42.1792289509761;
-        Sat, 17 Oct 2026 19:11:49 -0700 (PDT)
-Received: from Desktop.fritz.box (p200300f247424f103187cc9af620d661.dip0.t-ipconnect.de. [2003:f2:4742:4f10:3187:cc9a:f620:d661])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4091eb1835sm224698366b.79.2026.10.17.19.11.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2026 19:11:48 -0700 (PDT)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: pablo@netfilter.org
-Cc: fw@strlen.de,
-	phil@nwl.cc,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	lorenzo@kernel.org,
-	nbd@nbd.name,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	corbet@lwn.net,
-	rdunlap@infradead.org,
-	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH nf-next v3 2/3] netfilter: flowtable: carry a priority into the offload
-Date: Sun, 18 Oct 2026 04:11:45 +0200
-Message-ID: <20261018021145.3769432-1-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <atQkUoH3aa-J5-vf@chamomile>
-References: <atQkUoH3aa-J5-vf@chamomile>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZ9XztHt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955C91F000C4;
+	Sun, 18 Oct 2026 02:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792289716;
+	bh=jIls5dj8bj5rcyIbQF57sPPAlBcqB4l0T418yM/KJcA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GZ9XztHteo0ZY8UttEy8ClFfPFsp0UgzcPMDV1I4B61qcJ9D9mVtKHlZ7U2SmCy//
+	 dxJk1IInWnXwzPtCz29ngoLSgBTiipHqy9Qd+LgcQVVPAi/jNaDBo9Kdrb40/iRqp6
+	 6Un1xvF3AWZOzX3T9q2TSojLMecSdEqo5K03GvY1oRfTXaVqLTjMbSjnFmJ87fbF9f
+	 O1Y/EKt8vGQ4LgHumScOKisEXbqtqcA3OBftJVRJJt/xEMgW8j0vJDbTJc2tASGS9y
+	 NKXLN9fbZJJvGi9DXdUiw8AKUZE0qz7X690SlP1r5PLAtUvVqsmIjPrG21i6fVPcyu
+	 3SLCa1mi+AxNQ==
+Subject: Re: [PATCH net] net: free the policies if a socket's clone fails late
+From: netdev-bot+sashiko@kernel.org
+To: alexei.starovoitov@gmail.com
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, josef@toxicpanda.com,
+ mason@kernel.org, steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ kuba@kernel.org
+Date: Sun, 18 Oct 2026 02:15:15 +0000
+Message-ID: <179228971515.3135.11305942271655228187@kernel.org>
+In-Reply-To: <20261017013912.396296-1-alexei.starovoitov@gmail.com>
+References: <20261017013912.396296-1-alexei.starovoitov@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 18, 2026 at 03:43:46AM +0200, Pablo Neira Ayuso wrote:
-> I think we already mentioned this only works for hardware, this is a
-> no-go.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-It works in software too. nf_flow_offload_forward() and
-nf_flow_offload_ipv6_forward() set skb->priority from the flow, see the
-nf_flow_table_ip.c hunks. The selftest checks it on veth, without
-hardware offload.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-Julius
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch is incomplete.
+
+--
+
+net: free the policies if a socket's clone fails late
+
+This patch makes sk_clone() call xfrm_sk_free_policy() on the new socket
+when bpf_sk_storage_clone() fails. Without it, the cloned IPsec policies
+are lost and stay on the netns policy list. The other user of the free
+label is left alone, because sk_policy[] may still hold the parent's
+pointers there.
+
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 1302c1e848b2a..cdbd49ff71b0a 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -2578,8 +2578,10 @@ struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
+>  		goto free;
+>  	}
+>
+> -	if (bpf_sk_storage_clone(sk, newsk))
+> +	if (bpf_sk_storage_clone(sk, newsk)) {
+> +		xfrm_sk_free_policy(newsk);
+>  		goto free;
+> +	}
+
+[Severity: High]
+Can the same policy leak still happen through the branch just above this,
+when xfrm_sk_clone_policy() itself fails partway?
+
+The "goto free" in the context above comes from this branch in sk_clone():
+
+net/core/sock.c:sk_clone() {
+    ...
+	if (unlikely(!is_charged || xfrm_sk_clone_policy(newsk, sk))) {
+		if (!is_charged)
+			RCU_INIT_POINTER(newsk->sk_filter, NULL);
+
+		goto free;
+	}
+    ...
+}
+
+xfrm_sk_clone_policy() clears both newsk->sk_policy[] slots and then calls
+__xfrm_sk_clone_policy(). That loops over both directions:
+
+net/xfrm/xfrm_policy.c:__xfrm_sk_clone_policy() {
+    ...
+	for (i = 0; i < 2; i++) {
+		p = rcu_dereference(osk->sk_policy[i]);
+		if (p) {
+			np = clone_policy(p, i);
+			if (unlikely(!np)) {
+				ret = -ENOMEM;
+				break;
+			}
+			rcu_assign_pointer(sk->sk_policy[i], np);
+		}
+	}
+    ...
+}
+
+Suppose clone_policy() succeeds for i == 0. The clone is then linked into
+net->xfrm.policy_all through xfrm_sk_policy_link() and counted in
+policy_count.
+
+Now suppose it fails for i == 1, either because xfrm_policy_alloc() with
+GFP_ATOMIC fails or because security_xfrm_policy_clone() fails. The
+function returns -ENOMEM and leaves sk_policy[0] attached to newsk.
+
+In that case is_charged is true, so sk_clone() jumps straight to free:.
+That path clears sk_destruct and calls sk_free(), and nothing releases
+sk_policy[0]. Wouldn't this leave the policy[0] clone on policy_all? That
+is the situation the commit message describes for the
+bpf_sk_storage_clone() failure.
+
+xfrm_policy_flush() skips socket policies (dir >= XFRM_POLICY_MAX), so the
+entry looks like it would still be there at netns teardown and trigger the
+WARN_ON(!list_empty(&net->xfrm.policy_all)) in xfrm_policy_fini().
+
+The commit message gives this reason for not freeing on the other user of
+the label:
+
+    Free the policies before leaving. This can't be done for all users of the
+    label: if the socket filter could not be charged, sk_policy[] still holds
+    the pointers of the parent.
+
+This seems to hold only when !is_charged short-circuits the condition, so
+that xfrm_sk_clone_policy() never runs. Once xfrm_sk_clone_policy() has
+run, sk_policy[] holds only fresh clones or NULL.
+
+Would it be safe to call xfrm_sk_free_policy(newsk) in that sub-case, for
+example in an else branch of the !is_charged check? Alternatively,
+__xfrm_sk_clone_policy() could roll back the already cloned policy on
+partial failure.
+
+For comparison, tcp_v4_send_reset() always calls
+xfrm_sk_free_policy(ctl_sk) after xfrm_sk_clone_policy(ctl_sk, sk),
+whatever the clone returned.
+
+>
+>  	/* Clear sk_user_data if parent had the pointer tagged
+>  	 * as not suitable for copying when cloning.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017013912.396296-1-alexei.starovoitov%40gmail.com
