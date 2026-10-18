@@ -1,42 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5CA42C4F0
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 10:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3E018D62A;
+	Sun, 18 Oct 2026 10:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792319333; cv=none; b=s1JxQ/UgI3hmXqi+MRRBqUPo0e1RyWRNJiPa2SUyZr5T2Y1VfeGcZ55OIZmUQof/XEwqsfZBD0vkWgdfNQiMglYZ0Lj+rhV2LDIHb6Uo2z28C3neQwXQT7NB1J0RMYRLBnvBvl1c4ipWtSJa6coP9DutE2w3qZ+YEgjxvaqeoKg=
+	t=1792320454; cv=none; b=YaS+LYXvWTYitZE7PQ+XbXvkvlVEDStJfHH1ADolBrELgjwG9XON6udSjHTkjicWMFIfnvzlsiFxNbWg8DrRK+g1Gl+WbEQ3EpSTdyUbvTz4uh9TGgC1ijCAxnC2nUzuV1mrVfMq+HZoTzA92lp/64TGFkJs0tzYtrf5HpyDGa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792319333; c=relaxed/simple;
-	bh=1lSDj+91DdSxQs2Y6WUUwuf8CIreeQgSrlDMbzyyn68=;
+	s=arc-20240116; t=1792320454; c=relaxed/simple;
+	bh=kYYvf1iNkXfeGZJSST92UoYl1vNxC3SbCyPO7Iqtmn4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QgRMriEdsCxt8r0T1ZyIramfb2g2HcfHDkpu8paAvuau5h+55jBhW+O5wSFw1wS1qkMXF5IbJdnyvfr1pJBDeOK8xb79NHpThc10k24vo/wjTmzPX35cMy7qZm2d3s0sazlOGIej/YyC9zWiV+Oo6ah6zX0IvfvIXz7z3piaDI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYWVRptr; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ctdpg1lg42AhzGIuEb7hvLvbMVQ98y1CdlK3uPMe9iwORG+5RquLgjGh1CtjjiDjOrG4L9VRs7yIQlPqk8hUkv70TBAF2jXm1aSzhY0gp9hGcXUkHYhpVER+1wxLlfJPsvvGe4bo9xEpSa9p7TKzCCgUis+naixkMcIYKTbGR8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDoA6NUD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYWVRptr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2001F000C4;
-	Sun, 18 Oct 2026 10:28:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDoA6NUD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C881F000C4;
+	Sun, 18 Oct 2026 10:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792319331;
-	bh=kckZEZpDQkMS3IcBuTgcy1aba2Yzz4sDujjLB6UR7ko=;
+	s=k20260515; t=1792320452;
+	bh=DnhWGak6th3C+r8+ASfIM/FXpoFd0Su7Yr8FNkAqU4I=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lYWVRptrgWVBEs+2uoCJK02RUXw/eqo+aIInYi/nTNLS7JBYLWgmMTgX0sb3jMnkZ
-	 i1Kyr6RjOBsfMHND7+VJ3pbhWyP9lvZLbUmhUj4iV2GVnCurQui5en78RYUmvkSbfp
-	 ISK8uehdYsBaKPlBcWqyvAyT+Z63b+FVlsBWxFOYJCXlQNOxNBXQkimmjMW+ylPcs+
-	 omHu2B3nSX03gSZP2F5e6EUUSY8JRKcHZd4aGmEAIvQcNPBQnDkg5ioyWqRDG9p9+H
-	 nVC71bxsu9sCIkeVa1KCdjaIecRuTSQiozwueDMKZxzrEDDt44QZtsyJm+QiK7xpt7
-	 y/LmUgdfcVWGg==
-Subject: Re: [PATCH net-next v6 4/4] net/sched: cake: hash before segmenting
- and reject an overlong split
+	b=BDoA6NUDTLdOU19yijEuglWTG3E3F+wT0dc0VQSfJCxz1LQq3AWvO7DBkixZkh8XW
+	 gLfl9JSc7mr6L1xsWMjUNCbwi8eCxNAetMoExTO4Z19kzURB4QlzMsxvW7qTNdha4h
+	 MEMRv10X5mN7hcT8YxhYAnwKbnGthNSWfZwNH/J1ZhYt6DVFsAnbhEp38ugaplAcXg
+	 hoKNPbQPcBtdsL70IhLHjs0wLSuanc56vByiLbgy7zVrdEQNgpu7sfOW59gjTyGkdS
+	 FZxx3zPlrmJRVJh5AoFACr20gpBtN2Y/BK3VA3KwG1y/rZhaWQuKAgX1i55EY+VxZH
+	 htszzNA5ILegg==
+Subject: Re: [PATCH net-next v3 1/9] net: phy: dp83867: add regulator supply
+ management
 From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- victor@mojatatu.com, toke@toke.dk, sashiko-bot@kernel.org
-Date: Sun, 18 Oct 2026 10:28:50 +0000
-Message-ID: <179231933068.3135.80340792633077986@kernel.org>
-In-Reply-To: <QDISC-BA27.v6.r0.20261014054826-4@mojatatu.com>
-References: <QDISC-BA27.v6.r0.20261014054826-4@mojatatu.com>
+To: mohd.anwar@oss.qualcomm.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, afd@ti.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, richardcochran@gmail.com, andersson@kernel.org,
+ konradybcio@kernel.org, alexandre.torgue@foss.st.com, peppe.cavallaro@st.com,
+ joabreu@synopsys.com, maxime.chevallier@bootlin.com,
+ mcoquelin.stm32@gmail.com, lorenzo.bianconi@oss.qualcomm.com,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Sun, 18 Oct 2026 10:47:30 +0000
+Message-ID: <179232045050.3135.12351240759088487913@kernel.org>
+In-Reply-To: <20261017-shikra_ethernet-v3-1-26a8beb44b8f@oss.qualcomm.com>
+References: <20261017-shikra_ethernet-v3-1-26a8beb44b8f@oss.qualcomm.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,7 +58,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,180 +66,163 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In the new overlimit rejection branch of cake_enqueue()
-  (net/sched/sch_cake.c), only one skb gets the QDISC_DROP_OVERLIMIT…
-- [Low] Before this patch, cake_enqueue() read q->config->flow_mode once
-  and passed that one value to cake_hash(), so key extraction and set-…
-- [Low] The commit message calls itself a bug fix ('The Fix:') for two
-  defects that go back to when split-GSO support was added to cake.
+- [Medium] With CONFIG_REGULATOR=n, dp83867_power_on()
+  (drivers/net/phy/dp83867.c) sleeps 200 ms on every probe, even when…
+- [Medium] The patch makes the driver read four new DT properties
+  (vdda-2p5-supply, vdd-1p0-supply, vdda-1p8-supply, vddio-supply)…
+- [Low] The commit message says the driver sleeps 200 ms "when any supply
+  is newly enabled".
 
 --
 
-net/sched: cake: hash before segmenting and reject an overlong split
+net: phy: dp83867: add regulator supply management
 
-This commit splits cake_hash() into two parts. cake_hash_keys() has no
-side effects and runs on the unsegmented skb. cake_hash_resolve() commits
-the set-associative state, and only runs once the packet is admitted.
+This commit adds dp83867_power_on(), which enables up to four optional
+supplies (vdda-2p5, vdd-1p0, vdda-1p8, vddio) at the start of
+dp83867_probe(). If any supply is present, the driver sleeps for 200 ms
+to meet the datasheet's post power-up stabilization requirement.
 
-It also moves split-GSO segmentation ahead of the resolution. The summed
-segment length is checked against QDISC_MAX_BACKLOG, and the whole list
-is rejected before any state is committed.
-
-> The Fix:
-> with CAKE_FLAG_SPLIT_GSO, cake computes the flow/host hash keys, then
-> splits a GSO skb into segments it accounts individually.
+> diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+> index a3cd5cb11ea0a..092bc68bb9bc6 100644
+> --- a/drivers/net/phy/dp83867.c
+> +++ b/drivers/net/phy/dp83867.c
 
 [ ... ]
 
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-
-[Severity: Low]
-This isn't a bug, but should this have a Fixes: tag?
-
-The commit message calls this a fix. Both problems it addresses go back
-to when split-GSO support was added to cake:
-
-With CAKE_FLAG_SPLIT_GSO, slen was added to the 32-bit
-sch->qstats.backlog without any ceiling check. slen can be larger than
-the headroom that qdisc_backlog_at_max() reserves.
-
-A GSO skb whose skb_gso_segment() failed was dropped after cake_hash()
-and the shaper state update had already committed state.
-
-The new check also depends on QDISC_MAX_BACKLOG, which comes from the
-preceding patch in the series ("net/sched: cap the accounted backlog
-before it can wrap"). Any backport would need both patches.
-
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index adfe11737c66d..c67db1c61a90b 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-
-[ ... ]
-
-> @@ -1787,12 +1814,55 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  					 QDISC_DROP_OVERLIMIT);
->  	}
+> @@ -730,11 +731,42 @@ static int dp83867_resume(struct phy_device *phydev)
+>  	return 0;
+>  }
 >  
-> -	/* choose flow to insert into */
-> +	/* Tin selection and key extraction run on the unsegmented skb:
-> +	 * skb_gso_segment() rewrites an encapsulated GSO packet's headers to
-> +	 * the inner ones, changing the keys. Neither commits state.
-> +	 */
->  	b = cake_select_tin(sch, skb);
-> -	idx = cake_hash(b, skb, q->config->flow_mode, flow_override,
-> -			host_override) + 1;
-> +	cake_hash_keys(skb, q->config->flow_mode, flow_override,
-> +		       host_override, &keys);
-> +
-> +	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
-> +		struct sk_buff *nskb, *seg;
-> +		netdev_features_t features = netif_skb_features(skb);
-> +
-> +		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
-> +		if (IS_ERR_OR_NULL(segs))
-> +			return qdisc_drop(skb, sch, to_free);
-> +
-> +		/* The split path accounts the segment sum, not the
-> +		 * stab-adjusted qdisc_pkt_len(), so the top check does not
-> +		 * bound it. Sum the list and reject it whole.
-> +		 */
-> +		skb_list_walk_safe(segs, seg, nskb)
-> +			slen += seg->len;
-> +
-> +		if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG)) {
-> +			qdisc_qstats_overlimit(sch);
-
-[ ... ]
-
-> +			if (unlikely(segs == skb)) {
-> +				tcf_set_qdisc_drop_reason(skb,
-> +							  QDISC_DROP_OVERLIMIT);
-> +				consume_skb(skb);
-> +				return qdisc_drop_all(segs, sch, to_free);
-> +			}
-> +			__qdisc_drop_all(segs, to_free);
-> +			return qdisc_drop_reason(skb, sch, to_free,
-> +						 QDISC_DROP_OVERLIMIT);
-> +		}
-> +	}
+> +static int dp83867_power_on(struct phy_device *phydev)
+> +{
+> +	static const char * const supply_names[] = {
+> +		"vdda-2p5", "vdd-1p0", "vdda-1p8", "vddio",
+> +	};
 
 [Severity: Medium]
-Do the segments placed on to_free here get a valid drop reason?
+These names become four new DT properties: vdda-2p5-supply,
+vdd-1p0-supply, vdda-1p8-supply and vddio-supply. Should
+Documentation/devicetree/bindings/net/ti,dp83867.yaml document them in
+the same series?
 
-When segs != skb, qdisc_drop_reason() tags only the original skb. When
-segs == skb, tcf_set_qdisc_drop_reason() tags only the head. Every other
-segment keeps whatever value is in tc_skb_cb(seg)->drop_reason.
+Right now the binding lists no *-supply properties and ends with:
 
-That field is at cb offset 32, right after the 32-byte struct
-qdisc_skb_cb. SKB_GSO_CB_OFFSET is also 32, and __skb_gso_segment()
-writes to that location:
+  unevaluatedProperties: false
 
-net/core/gso.c:__skb_gso_segment() {
+The only schema it references, ethernet-controller.yaml, has no supply
+properties either. A node that uses the new properties won't validate
+against this schema.
+
+ti,dp83867.yaml has no select, so dtbs_check may never apply it to board
+DTs. Even so, the properties would still be undocumented ABI.
+
+A related question: should the binding also say that an
+ethernet-phy-idXXXX.XXXX compatible is required when these rails are
+switched? fwnode_mdiobus_register_phy() only skips the MDIO ID read when
+that compatible is present:
+
+drivers/net/mdio/fwnode_mdio.c:fwnode_mdiobus_register_phy() {
     ...
-	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
-    ...
-}
-
-This overwrites the QDISC_DROP_GENERIC value set by __dev_xmit_skb().
-__copy_skb_header() then copies the cb into every segment.
-
-__tcf_kfree_skb_list() reads the reason separately for each skb:
-
-net/sched/sch_generic.c:__tcf_kfree_skb_list() {
-    ...
-		u32 reason = tc_skb_cb(skb)->drop_reason;
-    ...
-		if ((reason & SKB_DROP_REASON_SUBSYS_MASK) == __QDISC_DROP_REASON) {
-			trace_qdisc_drop(q, txq, dev, skb, (enum qdisc_drop_reason)reason);
-			skb_reason = SKB_DROP_REASON_QDISC_DROP;
-		} else {
-			skb_reason = (enum skb_drop_reason)reason;
-		}
-		kfree_skb_reason(skb, skb_reason);
+	if (is_c45 || fwnode_get_phy_id(child, &phy_id))
+		phy = get_phy_device(bus, addr, is_c45);
+	else
+		phy = phy_device_create(bus, addr, phy_id, 0, NULL);
     ...
 }
 
-A headroom-sized value has no qdisc subsystem bits. For those segments,
-trace_qdisc_drop would be skipped, and kfree_skb_reason() would report an
-unrelated core drop reason. A value of 1 would show up as SKB_CONSUMED,
-and a value of 0 would hit the DEBUG_NET_WARN_ON_ONCE in
-__sk_skb_reason_drop().
+Without that compatible, get_phy_device() reads the ID from a PHY that
+is not powered yet. The phy_device is then never created, so
+dp83867_probe() never runs to turn the rails on.
 
-The qdisc_backlog_at_max() rejection at the top of cake_enqueue() tags
-its drop correctly.
-
-Could the existing slen-summing skb_list_walk_safe() loop call
-tcf_set_qdisc_drop_reason(seg, QDISC_DROP_OVERLIMIT) on each segment?
-
+> +	struct device *dev = &phydev->mdio.dev;
+> +	bool supplies_enabled = false;
+> +	int i, ret;
 > +
-> +	/* Admitted: resolve the keys and commit flow/shaper state. */
-> +	idx = cake_hash_resolve(b, &keys, q->config->flow_mode);
+> +	for (i = 0; i < ARRAY_SIZE(supply_names); i++) {
+> +		ret = devm_regulator_get_enable_optional(dev, supply_names[i]);
+> +		if (ret == -ENODEV)
+> +			continue;
+
+[Severity: Medium]
+What happens here with CONFIG_REGULATOR=n? The stub returns 0, not
+-ENODEV:
+
+include/linux/regulator/consumer.h:
+static inline int devm_regulator_get_enable_optional(struct device *dev,
+						     const char *id)
+{
+	return 0;
+}
+
+In that case the -ENODEV check never matches and supplies_enabled is set
+on the first iteration. fsleep(200000) then runs on every probe, even
+when the board describes no supplies.
+
+DP83867_PHY in drivers/net/phy/Kconfig doesn't depend on REGULATOR, so
+this config is valid. Each probe attempt, including -EPROBE_DEFER
+retries, would add 200 ms per PHY.
+
+This doesn't match the commit message:
+
+    Absent supplies are silently skipped, so boards
+    that do not describe them are unaffected.
+
+Would an IS_ENABLED(CONFIG_REGULATOR) check work here? Another option is
+devm_regulator_get_optional() followed by an explicit enable, so the
+sleep only runs when a real regulator was found.
+
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "failed to enable %s supply\n",
+> +					     supply_names[i]);
+> +		supplies_enabled = true;
 
 [Severity: Low]
-Can the two reads of q->config->flow_mode see different values?
+The commit message says:
 
-Before this patch, cake_hash() got a single flow_mode value, so key
-extraction and resolution always used the same mode. Now
-cake_hash_keys() and cake_hash_resolve() each do their own plain load.
-On the split-GSO path, skb_gso_segment() and the slen walk run between
-the two loads.
+    When any supply is newly enabled the driver sleeps for 200 ms before
+    returning.
 
-cake_change() calls cake_config_change(), which does
-WRITE_ONCE(q->flow_mode, flow_mode) before sch_tree_lock() is taken. That
-write is not serialised against cake_enqueue().
+Is "newly enabled" accurate? _devm_regulator_get_enable() returns the
+result of regulator_enable():
 
-For example, keys built in a flows-only mode have srchost_hash and
-dsthost_hash set to 0. If cake_hash_resolve() then runs in a dual-srchost
-or dual-dsthost mode, allocate_src or allocate_dst is set and the flow is
-tied to the host slot for hash 0. Later packets take the tags-match fast
-path, so this assignment stays until the flow drains.
+drivers/regulator/devres.c:_devm_regulator_get_enable() {
+    ...
+	ret = regulator_enable(r);
+	if (!ret)
+		ret = devm_add_action_or_reset(dev, &regulator_action_disable, r);
+    ...
+}
 
-Would it be better to read the mode once with
-READ_ONCE(q->config->flow_mode) and pass that value to both helpers?
+That result is also 0 when the rail was already on. This covers
+regulator-always-on, regulator-boot-on, a rail enabled by the
+bootloader, or a rail shared with another consumer. So the 200 ms delay
+runs whenever any supply is described, whatever its earlier state.
+
+The rails are also enabled before dp83867_of_init(), which can fail with
+-EPROBE_DEFER:
+
+dp83867_probe()
+  dp83867_of_init()
+    dp83867_of_init_io_impedance()
+      of_nvmem_cell_get() -> -EPROBE_DEFER
+
+On that failure, devres runs regulator_action_disable for each enabled
+supply and the PHY loses power.
+
+Does each deferral then power-cycle the PHY and add another 200 ms on
+the retry?
+
+> +	}
+> +
+> +	/* Datasheet section 6.6 suggests a 200ms post power-up stabilization */
+> +	if (supplies_enabled)
+> +		fsleep(200000);
+> +
+> +	return 0;
+> +}
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-BA27.v6.r0.20261014054826%40mojatatu.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017-shikra_ethernet-v3-0-26a8beb44b8f%40oss.qualcomm.com
