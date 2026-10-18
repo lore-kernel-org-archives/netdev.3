@@ -1,272 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A0618859B;
-	Sun, 18 Oct 2026 02:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1719E33B961
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792289139; cv=none; b=Gq31sQ85SMIZJV5IQTeyPdyn6h/hb8xUXB5KkzzWG/9CYRNDiUc1LqdS2VzQEoATm0VMEttijmHrfGVHM0XR7b5vr9NM2cXU9kgROe/hLI7wHPbnGkcfffxY6UVQYPBifU87Epf2/xAbwguwz9kea7njMNGchn3KILl1KkSgs3c=
+	t=1792289250; cv=none; b=BDU0mJ+A5nrwmf7ZDZKkCP1WNFm4bi+X2sJWsrPO8CPe4q91xsFOufV+G3qxXEJGuVC+nMpDBSWbu3Bwisnw62/enOgbhPmVDqaBTG2j0/jVQWU7p1ZFhVyRwkkEbC5IiN92Eqjes3hvOtKgG7+YrcyVCQ0zsml87xAlMysartI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792289139; c=relaxed/simple;
-	bh=gJtMRRn6kUCo0qsvTSD5G8hd8iqHkT+V2XNuQqER60E=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dKcIUvQH8r7BfrQDPySZK+yOn1/T2lFcaWPBFuD1UAC9Gqfjd+2UrHFtC6XWmNQ0kQwJ2rUQ8xRvCaXnzSuuTB8GQvxDiYXt/iqCEPm0v45vT+31PWieLE3ZY185E5c5Nn1swYSGLLCEm2c8UfBKciKR0Ti1mhlWp0EwLPTw970=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xkk8ziho; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xkk8ziho"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1D81F000C4;
-	Sun, 18 Oct 2026 02:05:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792289138;
-	bh=AwH/qJEEpOKdNZ/3RrGAFOIbCIy4tdi4JbgbAzbvt5U=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Xkk8zihoAbHxCOWcJyr32o0N+MJud5Y/H//NoLr+73B7G/wyuJaxbcFI4swtrUDqw
-	 cdRBxgQJ4iJvYjFQzZmoMW+CsJcW7MN2x4cxRtN0i2hFZ6e09I/MZpDwuW33+z4QpT
-	 Mp5yPSpMmb3EU0NZWHyv7Mv4s+64do572mkHMNBZWzS5QfGTY5hEF7zM23DUuDuqpX
-	 oDei0NUzFzFTGEx257nzSwFNsd4lHXNAB0FgCobHwN1MF462zo2XBYztAnKv7t/VmG
-	 1syvUlnY9lyKgVE48BTiyseAQT3wVj1udmthpcgtXZoFKMINhR6Nj4nKtFKLwX2UW0
-	 3/0Tv4J5W+SYg==
-Subject: Re: [PATCH net v1] net/ncsi: fix use-after-free of ncsi_package in
- ncsi_remove_package()
-From: netdev-bot+sashiko@kernel.org
-To: 18983559317@163.com
-Cc: sam@mendozajonas.com, fercerpav@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- gwshan@linux.vnet.ibm.com, joel@jms.id.au, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 02:05:36 +0000
-Message-ID: <179228913696.3135.535763886243394814@kernel.org>
-In-Reply-To: <20261017012431.413648-1-18983559317@163.com>
-References: <20261017012431.413648-1-18983559317@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1792289250; c=relaxed/simple;
+	bh=ouG0aROo23jJT+b2EJuNYxdAFVWVj46OHqNHv8ixEIo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=gVbYeZtfJ9DXPt1lGk2QTGXIkrgUC1GRPLwyN4f5eQ+5HafeGTYrGHe1YElwBy2DSS1ruLdk7S7sRC36qZgo+N9uaRsFVnW+2wnvuuVx/jtafPz8ZY25lr56DQ6OL2+cmqAa7hVkiJr4HKqc4TAqFEqdKWuif42d7Lhdmngt4aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4c307941971so1950656b6e.1
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 19:07:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792289246; x=1792894046;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J+ubYti4JhivmOi5yI812OU6maljYefXbpcBPFcPR84=;
+        b=ee4L6sRon4putINYz8bOeaQyZ8XN3W8RgwqR7Zntthn6yo8wcm4wjmPkc5rgSey2c1
+         Qo47IT+K2gwcaAZ7dvmK/QIZv7XZUDBoxQbh4hPIxAIYvcapGPycNIDB02ocwBbCH3ri
+         DfowQtnZQSS3duVYORvBtmlmyC0nmKgahxKieamzHzoJTFcYTPRH5JPsiN71YxsutS9g
+         6580WR9X9xNMJCT4lWnl1laISjdhP+kaQQkaGnKXMcn+YzE3dA8Lx8WsySDyM+dC/Qba
+         taO7vbOllowRNyItzFKPAEUnKtWMd+mHjBYP4uzZG5/jmjlcys7+tEC9q4MQRMDgMSgJ
+         g3mQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzwtNm8vu65mXujonyZuwNC15KGtVneXkLLZILnTYzaKYUeEX9xKZA7iuj5j9kKZ8dMQNqf9m0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJkQH04KHbKo9xUlWWlbuaTe6khbstdW92hewfKaodIfyWQPPlb
+	MY0cu4FQZvgThMuXdq2mUV0Vwvy2rsU8t6riu5N5by6PuQiuIe3gpYob+0gw3SK4GTT4lwCFpQM
+	TAcDH5XFISG3Me8TSuVcQZI7e3/zM+6x69U4hEhtZtLxRBvKTHwLw9wrjI3w=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Received: by 2002:a05:6808:3384:b0:4fc:5e91:5377 with SMTP id
+ 5614622812f47-53cd7d48d45mr3830438b6e.59.1792289246089; Sat, 17 Oct 2026
+ 19:07:26 -0700 (PDT)
+Date: Sat, 17 Oct 2026 19:07:26 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ad429de.7f4e89eb.3d59aa.00a8.GAE@google.com>
+Subject: [syzbot] [tipc?] kernel BUG in pskb_expand_head (6)
+From: syzbot <syzbot+0017742620a9d06f06ef@syzkaller.appspotmail.com>
+To: jmaloy@redhat.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, tipc-discussion@lists.sourceforge.net
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+Hello,
 
-Critical: 0 · High: 3 (1) · Medium: 0 · Low: 1
+syzbot found the following issue on:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+HEAD commit:    2f2f7eeef8b0 Merge tag 'soc-fixes-7.3-3' of git://git.kern..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=141aa69c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c4b098695335c89f
+dashboard link: https://syzkaller.appspot.com/bug?extid=0017742620a9d06f06ef
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1250efd1580000
 
-- [High] kfree_rcu() only delays the free of np until existing RCU read-
-  side critical sections end, and none of the NCSI netlink walkers of…
-- [High] The child channels of the package this patch keeps alive are
-  still freed with no grace period.
-- [High] The netlink readers hold no reference to the parent struct
-  ncsi_dev_priv, and the same teardown frees it immediately.
-- [Low] The commit message describes the reader code inaccurately: - It
-  says the walker does 'nla_put_u8(NCSI_PKG_ATTR_ID, np->id)'.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0017742620a9d06f06ef@syzkaller.appspotmail.com
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  ncsi_unregister_dev() frees every package and channel (net/ncsi/ncsi-…
+------------[ cut here ]------------
+kernel BUG at net/core/skbuff.c:2308!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 5940 Comm: syz-executor216 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
+RIP: 0010:pskb_expand_head+0x135a/0x13a0 net/core/skbuff.c:2308
+Code: e9 10 f3 ff ff e8 76 06 1b f8 4c 89 e7 48 c7 c6 80 0c 23 8d e8 97 19 7b f7 90 0f 0b e8 5f 06 1b f8 90 0f 0b e8 57 06 1b f8 90 <0f> 0b 89 d1 80 e1 07 80 c1 03 38 c1 0f 8c d8 fa ff ff 48 8b 3c 24
+RSP: 0018:ffffc90000007520 EFLAGS: 00010246
+RAX: ffffffff89ad0a29 RBX: dffffc0000000000 RCX: ffff88802a490000
+RDX: 8000000000000100 RSI: 0000000000000100 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000100 R09: 1ffff1100e875c3a
+R10: dffffc0000000000 R11: ffffed100e875c3b R12: 0000000000000820
+R13: 0000000000000000 R14: 0000000000000002 R15: ffff8880743ae0f0
+FS:  000055557b02f400(0000) GS:ffff888123abf000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fff61507fa8 CR3: 000000007506a000 CR4: 00000000003526f0
+Call Trace:
+ <IRQ>
+ __pskb_pull_tail+0x111/0x1870 net/core/skbuff.c:2890
+ skb_cow_data+0x2ed/0xc50 net/core/skbuff.c:5398
+ tipc_aead_decrypt net/tipc/crypto.c:892 [inline]
+ tipc_crypto_rcv+0x346/0x23d0 net/tipc/crypto.c:1843
+ tipc_rcv+0x4b7/0x1040 net/tipc/node.c:2119
+ tipc_l2_rcv_msg+0x2d9/0x470 net/tipc/bearer.c:669
+ deliver_ptype_list_skb net/core/dev.c:2533 [inline]
+ __netif_receive_skb_core+0x2988/0x30c0 net/core/dev.c:6254
+ __netif_receive_skb_one_core net/core/dev.c:6295 [inline]
+ __netif_receive_skb net/core/dev.c:6410 [inline]
+ process_backlog+0x727/0x18b0 net/core/dev.c:6761
+ __napi_poll+0xaa/0x330 net/core/dev.c:7830
+ napi_poll net/core/dev.c:7893 [inline]
+ net_rx_action+0x61d/0xf50 net/core/dev.c:8050
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ do_softirq+0x77/0xd0 kernel/softirq.c:546
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0x100/0x140 kernel/softirq.c:473
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:923 [inline]
+ __dev_queue_xmit+0x1efb/0x3920 net/core/dev.c:4993
+ dev_queue_xmit include/linux/netdevice.h:3464 [inline]
+ tipc_l2_send_msg+0x331/0x400 net/tipc/bearer.c:517
+ tipc_bearer_xmit_skb+0x2b3/0x400 net/tipc/bearer.c:576
+ tipc_enable_bearer net/tipc/bearer.c:366 [inline]
+ __tipc_nl_bearer_enable+0x10ec/0x1480 net/tipc/bearer.c:1048
+ tipc_nl_bearer_enable+0x22/0x40 net/tipc/bearer.c:1057
+ genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2579
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1338 [inline]
+ netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1364
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1923
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ __sys_sendto+0x408/0x5a0 net/socket.c:2281
+ __do_sys_sendto net/socket.c:2288 [inline]
+ __se_sys_sendto net/socket.c:2284 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2284
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f091b73dcf7
+Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+RSP: 002b:00007fff615088d0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 000055557b02f400 RCX: 00007f091b73dcf7
+RDX: 0000000000000028 RSI: 00007fff61509950 RDI: 0000000000000005
+RBP: 0000000000000005 R08: 00007fff61508924 R09: 000000000000000c
+R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000005
+R13: 00007f091b77b018 R14: 00007f091b7a2cc0 R15: 0000000000000002
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:pskb_expand_head+0x135a/0x13a0 net/core/skbuff.c:2308
+Code: e9 10 f3 ff ff e8 76 06 1b f8 4c 89 e7 48 c7 c6 80 0c 23 8d e8 97 19 7b f7 90 0f 0b e8 5f 06 1b f8 90 0f 0b e8 57 06 1b f8 90 <0f> 0b 89 d1 80 e1 07 80 c1 03 38 c1 0f 8c d8 fa ff ff 48 8b 3c 24
+RSP: 0018:ffffc90000007520 EFLAGS: 00010246
+RAX: ffffffff89ad0a29 RBX: dffffc0000000000 RCX: ffff88802a490000
+RDX: 8000000000000100 RSI: 0000000000000100 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000100 R09: 1ffff1100e875c3a
+R10: dffffc0000000000 R11: ffffed100e875c3b R12: 0000000000000820
+R13: 0000000000000000 R14: 0000000000000002 R15: ffff8880743ae0f0
+FS:  000055557b02f400(0000) GS:ffff888123abf000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fff61507fa8 CR3: 000000007506a000 CR4: 00000000003526f0
 
---
 
-net/ncsi: fix use-after-free of ncsi_package in ncsi_remove_package()
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-This patch adds an rcu_head to struct ncsi_package. It also changes
-ncsi_remove_package() to free the package with kfree_rcu() instead of
-kfree(). The aim is to stop the generic netlink package info walkers
-from reading a freed package when they race with device teardown.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-> ncsi_remove_package() unlinks the package from ndp->packages with
-> list_del_rcu() and immediately kfree()s it, after having released all
-> of its channels the same way.  As with the channels, the generic
-> netlink package info walkers iterate ndp->packages with
-> list_for_each_entry_rcu() and dereference the package in the loop body
-> (nla_put_u8(NCSI_PKG_ATTR_ID, np->id), np->multi_channel,
-> np->channels, ...), so an immediate kfree() turns a mid-walk reader
-> into a use-after-free the moment a teardown overlaps it.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-[Severity: Low]
-Is this description of the reader accurate? ncsi_write_package_info() in
-net/ncsi/ncsi-netlink.c writes the package ID with nla_put_u32():
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-	rc = nla_put_u32(skb, NCSI_PKG_ATTR_ID, np->id);
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-It also never reads np->multi_channel. Only the set/clear interface
-handlers write that field.
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-> Free the package with kfree_rcu() so that it survives the grace period
-> the readers rely on.
-
-None of the NCSI netlink readers hold rcu_read_lock(), so do they rely on
-a grace period at all? Could the commit message be updated to match the
-code?
-
-> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-> index 54d0df0a9efe6..76b2cb9efe4f7 100644
-> --- a/net/ncsi/ncsi-manage.c
-> +++ b/net/ncsi/ncsi-manage.c
-> @@ -326,7 +326,7 @@ void ncsi_remove_package(struct ncsi_package *np)
->  	ndp->package_num--;
->  	spin_unlock_irqrestore(&ndp->lock, flags);
->  
-> -	kfree(np);
-> +	kfree_rcu(np, rcu);
-
-[Severity: High]
-Does kfree_rcu() actually protect the netlink readers here? It only waits
-for RCU read-side critical sections that already exist. The walkers in
-net/ncsi/ncsi-netlink.c don't seem to enter one:
-
-ncsi_pkg_info_nl()
-  ncsi_write_package_info()
-    NCSI_FOR_EACH_PACKAGE(ndp, np) {
-        if (np->id != id)
-        ...
-        NCSI_FOR_EACH_CHANNEL(np, nc) {
-
-NCSI_FOR_EACH_PACKAGE() expands to list_for_each_entry_rcu(), but nothing
-calls rcu_read_lock() around it. Genl doit and dumpit handlers run under
-genl_mutex or cb_mutex, not RCU, and ncsi_unregister_dev() takes neither.
-
-The same pattern shows up in other handlers:
-
-  - ncsi_pkg_info_all_nl() keeps package after the walk and dereferences
-    package->id later.
-  - ncsi_set_interface_nl(), ncsi_clear_interface_nl() and
-    ncsi_set_channel_mask_nl() write multi_channel, channel_whitelist and
-    preferred_channel on the package they find.
-
-The testing used a CONFIG_PREEMPT kernel. On such a kernel, a reader that
-is preempted mid-walk outside rcu_read_lock() reports a quiescent state.
-Can the grace period then finish and kfree(np) run while the reader is
-still using np->id and np->channels?
-
-The NCSI_CMD_PKG_INFO op has no GENL_ADMIN_PERM. An unprivileged user can
-therefore run the reader while root runs rmmod ftgmac100.
-
-Do the walkers need rcu_read_lock(), or some other serialization against
-ncsi_unregister_dev(), to close this race?
-
-[Severity: High]
-The package now gets a grace period, but what about its channels? Before
-it gets here, ncsi_remove_package() calls ncsi_remove_channel() on each
-channel, and that still frees everything immediately:
-
-net/ncsi/ncsi-manage.c:ncsi_remove_channel() {
-	spin_lock_irqsave(&nc->lock, flags);
-
-	/* Release filters */
-	kfree(nc->mac_filter.addrs);
-	kfree(nc->vlan_filter.vids);
-	...
-	list_del_rcu(&nc->node);
-	np->channel_num--;
-	spin_unlock_irqrestore(&np->lock, flags);
-
-	kfree(nc);
-}
-
-The filter arrays are freed while nc is still linked on np->channels.
-nc itself is then freed with no grace period.
-
-The walker named in the commit message reads both without nc->lock or
-RCU:
-
-net/ncsi/ncsi-netlink.c:ncsi_write_channel_info() {
-	...
-	nla_put_u32(skb, NCSI_CHANNEL_ATTR_ID, nc->id);
-	...
-	if (nc == nc->package->preferred_channel)
-	...
-		if (ncf->vids[i])
-			nla_put_u16(skb, NCSI_CHANNEL_ATTR_VLAN_ID,
-				    ncf->vids[i]);
-	...
-}
-
-Say a PKG_INFO reader on one CPU is inside NCSI_FOR_EACH_CHANNEL(np, nc).
-At the same time another CPU runs
-ncsi_unregister_dev()->ncsi_remove_package()->ncsi_remove_channel().
-
-Can the reader then access the freed vids[] array, or the freed nc and
-nc->node.next? This doesn't depend on preemption, because channels get no
-grace period at all.
-
-struct ncsi_channel has no rcu_head. Also, switching nc to kfree_rcu()
-alone would still leave the vids and addrs arrays freed immediately.
-
-[Severity: High]
-Is the parent struct ncsi_dev_priv open to the same race? The readers get
-ndp from ndp_from_ifindex(), which drops the netdev reference and returns
-ndp without pinning it:
-
-net/ncsi/ncsi-netlink.c:ndp_from_ifindex() {
-	...
-	nd = ncsi_find_dev(dev);
-	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
-
-	dev_put(dev);
-	return ndp;
-}
-
-The same teardown then frees ndp with no grace period:
-
-net/ncsi/ncsi-manage.c:ncsi_unregister_dev() {
-	...
-	list_del_rcu(&ndp->node);
-	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
-
-	disable_work_sync(&ndp->work);
-
-	kfree(ndp);
-}
-
-ftgmac100_remove() calls ncsi_unregister_dev() before unregister_netdev(),
-so dev_get_by_index() keeps succeeding during teardown.
-
-In ncsi_pkg_info_nl(), the call to genlmsg_new(NLMSG_DEFAULT_SIZE,
-GFP_KERNEL) sits between ndp_from_ifindex() and ncsi_write_package_info(),
-and it can sleep.
-
-Could ndp be freed during that window? ncsi_write_package_info() would
-then read ndp->package_num, walk ndp->packages and read
-ndp->package_whitelist from freed memory. This window exists even on
-non-preemptible kernels.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but ncsi_unregister_dev()
-frees all packages and channels before it stops the work item:
-
-net/ncsi/ncsi-manage.c:ncsi_unregister_dev() {
-	...
-	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
-		ncsi_remove_package(np);
-	...
-	disable_work_sync(&ndp->work);
-	...
-}
-
-ncsi_dev_work() can still be queued or running at that point. Response
-handlers, request timeout timers and ncsi_reset_dev() all schedule it.
-ftgmac100_remove() can also call ncsi_unregister_dev() while the interface
-is still up.
-
-The work dispatches to ncsi_configure_channel() and ncsi_suspend_channel().
-Both load the active package and channel:
-
-	np = ndp->active_package;
-	nc = ndp->active_channel;
-
-They then use np->id, nc->id and other channel state.
-
-The work item isn't an RCU reader, and nothing serializes it against
-ncsi_remove_package() or ncsi_remove_channel(). Can it use a package or
-channel that was just freed? kfree_rcu(np) wouldn't help here.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017012431.413648-1-18983559317%40163.com
+If you want to undo deduplication, reply with:
+#syz undup
