@@ -1,276 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2832149553B;
-	Sun, 18 Oct 2026 12:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD102E8DE3;
+	Sun, 18 Oct 2026 12:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792324940; cv=none; b=ZejgY+bqPqzVXel9xUlq2LfJjMMCIZqayEN2VaH06SlgvvSaEZBrP4IyLL9dGFSo7TI660kG71kqYYRWlNaUbeHCbrgpJ7XqmYQ591mqkCOYSJn6nei7oT4juCkiGziC/ilg6mrPU2rM7y0ciGHHlJoHGZ3CKw/Y0VawnkmqzuA=
+	t=1792325278; cv=none; b=iNpLm7UA30ibyR3xLOCsGJV8DboOr6UvFQAZcsDDNyl93vrWQR20LI2JTXeXDzqQlpK8RrKQnxQeGOnBiLVhzO0g6xNRDW04XkgotZJcWArmhfKTM7iESM1DudtoWoVV2PxbujjgOO6jg1UzHla0z9pNtF6AC2CVou/Y4PBRAS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792324940; c=relaxed/simple;
-	bh=zoo3eiL2glYtdPJ2Y3aeYG37KgEUvBsw/IaOCFE9QHs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iYR9B7KKFxHCydMKwn/6dpeREAAqQe9lqePJCOOQj5LsnzlHGfGAeyMQdtNa6ycfWl6JKSsTjyK9h6H6meZDgxmNu/1pBwwkqdGMHP72aPxa1/CPHij+bCYsFDVZO1YhqoxU/dv7R5qjTYK3QgvyY7Ucz8J6TkTp5F7DO7uF6IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YuuQeKb6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792325278; c=relaxed/simple;
+	bh=Nbo19b7G3oNxBbB32F5vfOWulsJT5KJmK1ShCi/27xg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VeVPFo96FaeNdYAwl/F8HqTT5CRgqceDy8YIQlgoVlrE6J0Zy1oRcsyZvCA6O/y5EYVgr6ADC/eVDfkFIqh6nQyOwu9RPbfbJUln8J812GEEwu1KiwGwrkzlKGSNPwiRp/bLdbqlI6zndZuClzscR/6gi0nKVRoU1FDURYjp2ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvKPRaAE; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuuQeKb6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC491F000C5;
-	Sun, 18 Oct 2026 12:02:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792324932;
-	bh=uNrI+WN4CqntUAuiZlLiynnJmLlgbrAhDMwt8sD+5ac=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YuuQeKb6/JmHsIl8LCjO6QDe6ZVS4S8E+lUoXMFxhTNVn/ZxSwZoEMn0XDCjavjA4
-	 FFWhK56fI1MtnR3hQARkonQG/8kCh3PvoUGHCf0sx5UdybcLAc4oXIwEoR3wMCqyP6
-	 gxNCu522oiaaFUdasjl6PW9a0BjrZq6yJWVHX0UE1kRspoZ77n6OHntFaYfFvprzUP
-	 rYp+WgOgp/lPwn5QWEO75rWgQgoCWwfQEmfOaL1rmECyPuZPxoUF7Nr+t0fIPUtuVD
-	 mGtaqT+yqT0bLUi2SOgfxueQtfNz88VYzXys6UE1HsgcUwCQb3RVdIzZ22R7XlhmRA
-	 wAdikLFZ555Yw==
-Subject: Re: [PATCH net 2/4] net: bcmgenet: do not tear the datapath down
- twice after a failed resume
-From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- f.fainelli@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 12:02:11 +0000
-Message-ID: <179232493108.3135.9703046589792155223@kernel.org>
-In-Reply-To: <20261017-nb-genet-fini-dma-net-v1-2-47e7c57f6834@tipi-net.de>
-References: <20261017-nb-genet-fini-dma-net-v1-2-47e7c57f6834@tipi-net.de>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvKPRaAE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792325277; x=1823861277;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Nbo19b7G3oNxBbB32F5vfOWulsJT5KJmK1ShCi/27xg=;
+  b=lvKPRaAEV+f9bsTj4E9gFuWtTNFtTakIJ8Be/0w9CuYhQ0ZTQMSUx/Vx
+   u9JxCEZzO4vGrOCMhXdnpVasa4OxhH0Uf//jnjcA4s13acVH9eRtpXC0y
+   XVlay36KriyXD3Hc37Nwx9qV+XNPrWhYIpK+rga3x58713TudtKk0EPuo
+   HL29egrMHR9AML3d4hGwP+JTyQW9zIuJG3HNQPVokFpxHdruzwaiuus7H
+   d8qfEV/XDHZ6K4DCMe41896JdtmxJaWsqnkD+M/RcXEnIQI31Imnvosmf
+   H19vtCAcmV+wDudBOcx9BcHBLaXhbVLeD3E8CxE8MRpSxp+dEX2lUhIMA
+   Q==;
+X-CSE-ConnectionGUID: 58n/fiX/Rty/vlWlaK79xw==
+X-CSE-MsgGUID: 0s0SiAEPRjKSQoPjmTqu+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11938"; a="931700"
+X-IronPort-AV: E=Sophos;i="6.27,165,1787036400"; 
+   d="scan'208";a="931700"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2026 05:07:57 -0700
+X-CSE-ConnectionGUID: C2O++14kShWBevqM8q8YNw==
+X-CSE-MsgGUID: LWkPYdNFRryIksqKkb0Lsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,165,1787036400"; 
+   d="scan'208";a="2611520"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 18 Oct 2026 05:07:53 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xIPg6-00000000KOO-3Pyn;
+	Sun, 18 Oct 2026 12:07:50 +0000
+Date: Sun, 18 Oct 2026 20:06:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, daniel@iogearbox.net, andrii@kernel.org,
+	eddyz87@gmail.com, memxor@gmail.com, netdev@vger.kernel.org,
+	josef@toxicpanda.com, mason@kernel.org
+Subject: Re: [PATCH bpf-next v2 04/43] bpf: don't hand out a linked element
+ as extra element
+Message-ID: <202610182013.abPmS8oP-lkp@intel.com>
+References: <20261017163745.3341787-5-alexei.starovoitov@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261017163745.3341787-5-alexei.starovoitov@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+Hi Alexei,
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 2
+kernel test robot noticed the following build errors:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+[auto build test ERROR on 458575e1f2ddea944d679fe778c92e370a9b61a4]
 
-- [Medium] With this patch alone, bcmgenet_resume() still drops the
-  priv->clk reference in out_clk_disable when bcmgenet_init_dma() fails,…
-- [Medium] With this patch alone, after a failed resume the netdev stays
-  detached.
-- [Medium] Before calling bcmgenet_init_dma(), bcmgenet_resume() always
-  calls bcmgenet_hfb_restore(), which goes through bcmgenet_hfb_clear().
-- [Low] The patch fixes two bugs from different origins but carries only
-  one Fixes tag.
-- [Low] The commit message and the new comment in bcmgenet_resume() (`/*
-  A link event can enable the receiver after a failed resume, so check…
+url:    https://github.com/intel-lab-lkp/linux/commits/Alexei-Starovoitov/bpf-use-the-frame-mem-type-in-devmap-egress-XDP/20261017-163703
+base:   458575e1f2ddea944d679fe778c92e370a9b61a4
+patch link:    https://lore.kernel.org/r/20261017163745.3341787-5-alexei.starovoitov%40gmail.com
+patch subject: [PATCH bpf-next v2 04/43] bpf: don't hand out a linked element as extra element
+config: arc-randconfig-1000-20261018 (https://download.01.org/0day-ci/archive/20261018/202610182013.abPmS8oP-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261018/202610182013.abPmS8oP-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610182013.abPmS8oP-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/atomic.h:80,
+                    from include/asm-generic/bitops/lock.h:5,
+                    from arch/arc/include/asm/bitops.h:190,
+                    from include/linux/bitops.h:67,
+                    from include/linux/log2.h:12,
+                    from include/asm-generic/div64.h:55,
+                    from ./arch/arc/include/generated/asm/div64.h:1,
+                    from include/linux/math.h:6,
+                    from include/linux/math64.h:6,
+                    from include/linux/time64.h:5,
+                    from include/linux/restart_block.h:9,
+                    from include/linux/thread_info.h:14,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/arc/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:107,
+                    from include/linux/alloc_tag.h:11,
+                    from include/linux/workqueue.h:9,
+                    from include/linux/bpf.h:12,
+                    from kernel/bpf/hashtab.c:5:
+   kernel/bpf/hashtab.c: In function 'alloc_htab_elem':
+>> include/linux/atomic/atomic-arch-fallback.h:384:27: error: implicit declaration of function 'arch_cmpxchg_local'; did you mean 'raw_cmpxchg_local'? [-Werror=implicit-function-declaration]
+     384 | #define raw_cmpxchg_local arch_cmpxchg_local
+         |                           ^~~~~~~~~~~~~~~~~~
+   include/linux/atomic/atomic-arch-fallback.h:392:16: note: in expansion of macro 'raw_cmpxchg_local'
+     392 |         ___r = raw_cmpxchg_local((_ptr), ___o, (_new)); \
+         |                ^~~~~~~~~~~~~~~~~
+   include/linux/atomic/atomic-instrumented.h:5022:9: note: in expansion of macro 'raw_try_cmpxchg_local'
+    5022 |         raw_try_cmpxchg_local(__ai_ptr, __ai_oldp, __VA_ARGS__); \
+         |         ^~~~~~~~~~~~~~~~~~~~~
+   kernel/bpf/hashtab.c:1292:35: note: in expansion of macro 'try_cmpxchg_local'
+    1292 |                         } while (!try_cmpxchg_local(pl_new, &l_new, NULL));
+         |                                   ^~~~~~~~~~~~~~~~~
+   include/linux/atomic/atomic-arch-fallback.h:392:14: warning: assignment to 'struct htab_elem *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     392 |         ___r = raw_cmpxchg_local((_ptr), ___o, (_new)); \
+         |              ^
+   include/linux/atomic/atomic-instrumented.h:5022:9: note: in expansion of macro 'raw_try_cmpxchg_local'
+    5022 |         raw_try_cmpxchg_local(__ai_ptr, __ai_oldp, __VA_ARGS__); \
+         |         ^~~~~~~~~~~~~~~~~~~~~
+   kernel/bpf/hashtab.c:1292:35: note: in expansion of macro 'try_cmpxchg_local'
+    1292 |                         } while (!try_cmpxchg_local(pl_new, &l_new, NULL));
+         |                                   ^~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +384 include/linux/atomic/atomic-arch-fallback.h
+
+8c8b096a23d12f Peter Zijlstra 2023-05-31  383  
+9257959a6e5b4f Mark Rutland   2023-06-05 @384  #define raw_cmpxchg_local arch_cmpxchg_local
+8c8b096a23d12f Peter Zijlstra 2023-05-31  385  
 
 --
-
-net: bcmgenet: do not tear the datapath down twice after a failed resume
-
-This patch sets priv->rx_cbs and priv->tx_cbs to NULL when they are freed.
-bcmgenet_close() and bcmgenet_suspend() then check priv->tx_cbs and skip the
-datapath teardown after a failed bcmgenet_resume(). The WoL resume path also
-stops reusing rings that are gone when it sees CMD_RX_EN set.
-
-> Fixes: b6e978e50444 ("net: bcmgenet: add suspend/resume callbacks")
-
-[Severity: Low]
-
-This isn't a bug, but should the WoL hunk have a second Fixes tag?
-
-The priv->tx_cbs check added to the CMD_RX_EN test in bcmgenet_resume()
-guards the "Successfully exited WoL, just resume data flows" branch, which
-reuses the rings. That branch came from 254f3239dd07 ("net: bcmgenet: revise
-suspend/resume"), not b6e978e50444. The previous patch in this series, "net:
-bcmgenet: stop the PHY when a WoL resume rebuilds the datapath", already uses
-Fixes: 254f3239dd07 for the same block.
-
-A Fixes: 254f3239dd07 tag would record where the WoL hunk comes from. It
-would also show that the hunk only applies to trees that contain that commit.
-
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 308716cddc077..fe3338ba81980 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-
-[ ... ]
-
-> @@ -3493,7 +3498,9 @@ static int bcmgenet_close(struct net_device *dev)
->  
->  	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
->  
-> -	bcmgenet_netif_stop(dev, false);
-> +	/* A failed resume has torn the datapath down already */
-> +	if (priv->tx_cbs)
-> +		bcmgenet_netif_stop(dev, false);
->  
->  	/* Really kill the PHY state machine and disconnect from it */
->  	phy_disconnect(dev->phydev);
-
-[Severity: Medium]
-
-Now that this check lets close go further, can priv->clk be released twice
-after a failed resume?
-
-When bcmgenet_init_dma() fails, bcmgenet_resume() still goes through
-out_clk_disable, and the interface stays netif_running():
-
-out_clk_disable:
-	if (priv->internal_phy)
-		bcmgenet_power_down(priv, GENET_POWER_PASSIVE);
-	clk_disable_unprepare(priv->clk);
-	return ret;
-
-Before this patch, the next ifdown hung in napi_disable(). Now
-bcmgenet_close() gets past the check and reaches this code again:
-
-	if (priv->internal_phy)
-		ret = bcmgenet_power_down(priv, GENET_POWER_PASSIVE);
-
-	clk_disable_unprepare(priv->clk);
-
-A second suspend has the same problem. The new early return in
-bcmgenet_suspend() returns 0, so bcmgenet_suspend_noirq() calls
-bcmgenet_power_down() and clk_disable_unprepare(priv->clk) once more.
-
-Would this underflow the clk enable/prepare counts? And would the power-down
-register writes (EXT_EXT_PWR_MGMT, or the WoL MPD/HFB/UMAC_CMD sequence) hit
-a block that has no clock?
-
-The next patch in the series, "net: bcmgenet: let the interface be reopened
-after a failed resume", removes out_clk_disable and keeps the clock enabled
-on this failure path. So this only affects this intermediate commit. Could
-that change be folded in here or moved before this patch?
-
-[Severity: Medium]
-
-Is the netdev still detached once bcmgenet_close() completes after a failed
-resume?
-
-bcmgenet_suspend() called netif_device_detach(dev). The init_dma failure path
-in bcmgenet_resume() returns without calling netif_device_attach(), and
-bcmgenet_close() does not re-attach either. On the next ifup, __dev_open()
-sees that the device is not present and returns -ENODEV.
-
-The next patch in the series, "net: bcmgenet: let the interface be reopened
-after a failed resume", adds netif_device_attach(dev) to bcmgenet_close()
-after free_irq(). So this also only affects this intermediate commit.
-
-[ ... ]
-
-> @@ -4258,7 +4265,11 @@ static int bcmgenet_resume(struct device *d)
->  
->  	if (device_may_wakeup(d) && priv->wolopts) {
->  		reg = bcmgenet_umac_readl(priv, UMAC_CMD);
-> -		if (reg & CMD_RX_EN) {
-> +
-> +		/* A link event can enable the receiver after a failed
-> +		 * resume, so check the rings too
-> +		 */
-
-[Severity: Low]
-
-Is a link event really what sets CMD_RX_EN here? The commit message gives
-the same cause:
-
-  But after a failed resume the MAC sits in software reset, and the
-  next link event takes it out and enables it.
-
-After a failed resume, the PHY state machine is not handling link changes:
-
-- On the non-WoL path, bcmgenet_netif_stop(dev, true) in suspend already
-  called phy_stop().
-- On the WoL path, the fallback calls phy_stop() if the PHY was started.
-  Otherwise bcmgenet_wol_power_down_cfg() leaves phydev->state = PHY_READY.
-
-Either way, bcmgenet_mii_setup()->bcmgenet_mac_config() is not reached. That
-is the code that clears CMD_SW_RESET and sets CMD_TX_EN | CMD_RX_EN on link
-up.
-
-The bit seems to come from the next WoL suspend instead. It takes the new
-early return in bcmgenet_suspend(), and then runs
-bcmgenet_suspend_noirq()->bcmgenet_power_down()->bcmgenet_wol_power_down_cfg():
-
-	/* Can't suspend with WoL if MAC is still in reset */
-	if (reg & CMD_SW_RESET)
-		reg &= ~CMD_SW_RESET;
-
-	/* Receiver must be enabled for WOL MP detection */
-	reg |= CMD_RX_EN;
-
-bcmgenet_wol_power_up_cfg() leaves RX_EN set when it puts the MAC back into
-SW_RESET. bcmgenet_resume() then sees CMD_RX_EN with no rings.
-
-The added priv->tx_cbs check covers this case anyway. Could the comment and
-the commit message describe this path instead?
-
-> +		if (priv->tx_cbs && (reg & CMD_RX_EN)) {
->  			/* Successfully exited WoL, just resume data flows */
->  			list_for_each_entry(rule, &priv->rxnfc_list, list)
->  				if (rule->state == BCMGENET_RXNFC_STATE_ENABLED)
-
-[ ... ]
-
-> @@ -4343,6 +4354,15 @@ static int bcmgenet_suspend(struct device *d)
->  	if (!netif_running(dev))
->  		return 0;
->  
-> +	/* A failed resume has torn the datapath down already. Resume still
-> +	 * enables irq1 on the WoL path, so it has to be disabled here.
-> +	 */
-> +	if (!priv->tx_cbs) {
-> +		if (device_may_wakeup(d) && priv->wolopts)
-> +			disable_irq(priv->irq1);
-> +		return 0;
-> +	}
-
-[Severity: Medium]
-
-With WoL enabled, can this early return arm the default filter and the
-non-wake HFB filters as wake sources?
-
-bcmgenet_resume() calls bcmgenet_hfb_restore() before the
-bcmgenet_init_dma() call that can fail. That goes through
-bcmgenet_hfb_clear(), which enables the catch-all filter 0 and sets
-RBUF_HFB_EN. It then restores every runtime rxnfc filter. Nothing undoes
-this when init_dma fails.
-
-On the next suspend, this return skips the "Suspend non-wake Rx data flows"
-block further down. That block normally keeps only the RX_CLS_FLOW_WAKE
-rules enabled and clears RBUF_HFB_EN when there are none:
-
-		} else {
-			bcmgenet_hfb_reg_writel(priv, hfb_enable << 1,
-						HFB_FLT_ENABLE_V3PLUS + 4);
-		}
-		if (!hfb_enable)
-			reg &= ~RBUF_HFB_EN;
-
-bcmgenet_suspend_noirq() still calls
-bcmgenet_power_down(GENET_POWER_WOL_MAGIC), and
-bcmgenet_wol_power_down_cfg() then does:
-
-	reg = UMAC_IRQ_MPD_R;
-	if (hfb_ctrl_reg & RBUF_HFB_EN)
-		reg |=  UMAC_IRQ_HFB_SM | UMAC_IRQ_HFB_MM;
-
-Could ordinary received traffic that matches filter 0 then wake the system,
-even when only magic-packet wake was requested?
-
-This looks like it is still there at the end of the series. The later
-patches keep the clock on after a failed resume, so these register writes
-take effect.
-
->  	netif_device_detach(dev);
->  
->  	if (device_may_wakeup(d) && priv->wolopts) {
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017-nb-genet-fini-dma-net-v1-0-47e7c57f6834%40tipi-net.de
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
