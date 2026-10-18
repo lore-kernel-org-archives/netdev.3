@@ -1,63 +1,63 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DF12E8DE3
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 09:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D83445AFE
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 09:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792314412; cv=none; b=msEMm/IS014rv+Df15wk+yH0SUZkiB5p61IkZEPF51xC3IzUJCC/dVxosFtJITg0ej0cLkih9u815MEONhcfNtaWyww89HxlbG9GX0sV+iKJj/cXZv1AWkJQjTuM8p5kkhCRu/Z7+sFqJ2C5ltjbwYn5ySvci/e4eS2ZfOPMaSA=
+	t=1792314419; cv=none; b=Uy1fI6Hyiyfjsee7ZnnviAjKKOapY8GadgUXftVWwWkL0pmPWYh4BXlZSaBGjMymRgVheCPGyASk3XwD2q8bXkbnxfg6qv5Q1xatQglRJNmRlin7aJoKxCMg6/a7qd3oCzz+R/R322reTH64PtnUjg00TytXcxAIM7Y35Ffyey8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792314412; c=relaxed/simple;
-	bh=WFtv6Y5pDmp33PeCK7vkQ2vxvhssR4O8VZV0BT2pZd0=;
+	s=arc-20240116; t=1792314419; c=relaxed/simple;
+	bh=5xsFvYC6ZccMND/DkkmxFEIShpZpqmArxia9I0EJPL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K40nZUqu9d48ynhxK3+f61ALEr0Q9NUPSRo52jkVEzwJLLqWxCnOA4/ljxHvKr3PXZ9lZZGxRriYEsCPN9JyzxRmGySkZgorEGsymspxCj2y2v0b2oj83EZ8764Kuc0wJMClYIXbcUgtaK4bDY0i1BOb/itCPF7Exv5FGszosBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VEW2UUWk; arc=none smtp.client-ip=209.85.216.41
+	 MIME-Version; b=rcYRw6DcNeJKGPpk8P8FWU0+zlklj4aAgCBG7Cjmdt14zL3u3FI1nCfpvpUnx4KKt/fUp+qdXvILLUQx4nePWVpdflRoC/ph4nrNZMKwbW7iT2uuRnHAeopVlx2jLpiqipoJJ6mM9kTOeVYjR/qLYPWLeo48Zq3w4+p8PD8lEfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cupt4/6T; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VEW2UUWk"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3a4c78ee4d6so221732a91.1
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:06:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cupt4/6T"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3ab866b377aso131079a91.2
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:06:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792314410; x=1792919210; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792314416; x=1792919216; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RTU0GqXO0v09/wvq3q/okf4+AOCgqZ21ovd0A51lLqA=;
-        b=VEW2UUWk7P8P2gRfxyT7x2h7mDiqzK8qaXjBy88J0agAjDk/skx200dZzgyFU61XXo
-         A/hMHH1NE5I/p0hVSikGoFsHbguMuNA0+K5r5AB5AWLgErcBqeerQiN/kx6dPX2rtjlw
-         izrkz9/rz/r3UpzVXS8u46INoaBacch5dl7aM7WMi1mf28IgaNAdwR5Mx25LAZUGezhV
-         eAdoIWpp6tL8d0ATxscrxnP0x4pLKM0V+RJ4n83EWSgVFTvh3/ht9xMF9ex7g1bvAZAZ
-         h2GNmIpx6lxC1MEhL3CJjmZ6Wbyc4IovHG6BBzrFAVy9jtTVhvAhvpVyqwBQPxJK/0gE
-         YojA==
+        bh=BwvEsrwytKYnczWN73dPkfnDgfTOzBu/1wqCOjQUI1Q=;
+        b=Cupt4/6TG4jsLLZamRD7BMz6QT+k3Xow8C+ahYJ6v80i8tpcL9CVvPpS4BCvLro5cj
+         Khh5/2uXfB1Iu6/Da5J3FWIVW0u+QsRw2saVn9EXJ+UmWkghMIBHyWOGImp6AQof9QFG
+         +WKKRZg2HXFcgJJafvFdGZUMf1zhg4CLB32hnwSNnXRbh0U3kjSYKVJHIABMJRS6EgYp
+         CYkY0hXEbuctFDoQT5VR4APVIOaNbhKUDOEQixZG40f0+d4TRagp24Vaka998AtWBSQe
+         kQhEuDzyJp8eV3ueCCGT4X8evUuH0S+ReyqJNJdrB97wDU1t4xRhar3OuADxrEIkAo8N
+         xXAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792314410; x=1792919210;
+        d=1e100.net; s=20260707; t=1792314416; x=1792919216;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RTU0GqXO0v09/wvq3q/okf4+AOCgqZ21ovd0A51lLqA=;
-        b=gWL4r6G5lITqAxgECP7C0HXqVYBpS0lun1D10mAPoH5n1hdQyVxdI13ncS+G6U37y5
-         zKw0V7lE2GzJfBeZaTNKkghK6aLdKoqpNZ2ewfyHJO5xEFw7U9QWEaM+Va+BzlnNqeiD
-         Wn2ZG3qmEqm4gSp+QomSsDF4TymWPCB/hVI53fXKRD373fe1q5FJKHcajpDs+O27wEMA
-         O9btXHJoFRAflVvURK8D6kMEEJEBKsEtQidTgKr2Ng/rzLD6OO29kZeBF8q9v9J8qu8P
-         4GJ0uggt7jdBXre5EF2HWJGHHU+6FvRcj1s6pGeN1YGYsV12Q3aAhrEX/ZhnB8E4hErK
-         fa/w==
-X-Gm-Message-State: AFq9FYIar1c0XO3EvQPfv5w4m7/BNVtVqiyu9l5k6xPqZUUdXukD3/YZ
-	hkP7N9cXhUn24esJFnBa7V+jtr6nXPBrs0v97FrHRDrwqPOfq79PQI/UrPo1JQ==
-X-Gm-Gg: AYBFou114doBfDRa3REpWyJmAGH1zVaqPy3c95pONM9RZPMivktFuuQT/pk1iTfnGCg
-	zUNt9ltf0b5pf8qrbGqx54IbJwheihTMTA2FbOEa6kmRy82WaEexepwPahjPjbpNIebTt6iHq8A
-	n0ZL2boAX81pQDUOuFKxw+M0J8xCroiGIrttzextCchsLW1ubhxq+yu93pMyadMs2Nt3TNswUrz
-	Wzkk2Mz6+6P34LGTt/haSmPsioXqvIh0YK/AFnTs18xqSVyCY3QgTV32pFJCs4xZv+4yyAyvCnq
-	xKczuVgd/wqVe6jes4kbr93+GUm3NlHqlZKksQdogWBQYs3jQMNZ1VDL1a2hjjCSKi5M0f0byk4
-	27mH9iaJUFjdMfwVQocV8qBPkT+GOSj0ak32tN6XEB22UEzVMa7pX6GrT2g4oMkyDospqOuTcS5
-	HROSsP2myMRH6naPI85FMZ0gg0MLPtU8pwcOP4B7Lhur8HAgtVyNUiOfKaOU9A9l6UpdBkfKo1o
-	HDvzBacDAgkl7tUz51ZcagJHdW4fcF+k4MlrbioffmhJEmMjDp2wlgjbgDdbLfneIE=
-X-Received: by 2002:a17:90b:5146:b0:3a0:c162:51af with SMTP id 98e67ed59e1d1-3aced868018mr6487427a91.0.1792314410375;
-        Sun, 18 Oct 2026 02:06:50 -0700 (PDT)
+        bh=BwvEsrwytKYnczWN73dPkfnDgfTOzBu/1wqCOjQUI1Q=;
+        b=vKGdsstTPZaUeRIXlRBj/FWSGWYeeHgz8QFoFPAEc9E8SXOjGGrMG+eqOSaZfYxaTL
+         ytaCTFtKDzyliVsxergS1v4OWBm6APpyGAhyUguoSM8UxDwAITtuFCrj8tLn1jUTQxoR
+         VqiO3NriSCwZS6DvabrtvlnMBoXzUME5xF2B1SzWXEZQKu3kuVxBdvToO7uUJ1ozjjp4
+         i37tkcNRcHxB06YH2MuFkH78yGIRhoB4NFUb2mAuVAKaS6hiK8HvNe3BZJFTJEqMFHJ8
+         y2wNNQqNk/kAOYHsUL9rL6PgLiNS9rdOh/SsBg5TzLo1YGOBvMMBqWctUVYGTpylhn27
+         Bn8A==
+X-Gm-Message-State: AFq9FYIEE5bbSvO37XkxaRoGIWXyHfs1XDWo72x2hSCwMxR/OEzZKEdU
+	ctfve27XMK2Rid1+ZvSIpk+4IZFD+/OrsuscEsQX2KrvPYvYLnSXNOvW4YSwog==
+X-Gm-Gg: AYBFou22edM51PPqJPlxb40RZpmiLvKz83Hw2qcafdQ3fsjn7O9XgsVFChENb1orSjD
+	FQIQAsMOGZzYQ8TW0ByHbTI0mNQJOeheI7eP2Dvd+H/9OF+SOjFyCprQdwyspvIQOECqsp6LEg4
+	t9m7IqTjD92Mwfj/IKMfytDPAAcQU31dteuzMOIS7NQZ2Udi/vJx5y1qxBDCd96TO3n+4yrpS1b
+	J2eBk466rjZSq04ZDtS+I1riuDV7zzcjRa7OEuemJauRYCKcsfSxbX96GIrH5AueCYsMLb+vX3E
+	/oOgr459Kv2bpz+VYONvXvKqtUuAneW1qQzBNNtLakA4s1N4Q65Lr2CPtVHILcw5zGCAGHHurL9
+	mP7FwjvlukHKf9elyEsqJRErEPG6JiRbEwvU8wTOdwDKSe3cjB1/LxDqIRVW8J0TgLoQCyWMvcf
+	QSnIf2ubX3PNGrJgdJu68TFG/hoEd5YKAfQGnZfWc1y3kzc43HSgEKbAqYoeTGeonlI9gjrH1TZ
+	ai99ejZFOBXWNrFY1vhlDfpiSx3eJpoczgJ3y7d7YPTzV8Qeg0HCNqljOITOD0MLus/
+X-Received: by 2002:a17:90b:55c6:b0:398:bad2:c10 with SMTP id 98e67ed59e1d1-3acef1351f3mr6411270a91.6.1792314416632;
+        Sun, 18 Oct 2026 02:06:56 -0700 (PDT)
 Received: from localhost.localdomain ([113.102.237.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947928b4sm15580675a91.11.2026.10.18.02.06.45
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac947928b4sm15580675a91.11.2026.10.18.02.06.50
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 18 Oct 2026 02:06:50 -0700 (PDT)
+        Sun, 18 Oct 2026 02:06:56 -0700 (PDT)
 From: Qihang <q.h.hack.winter@gmail.com>
 To: netdev@vger.kernel.org
 Cc: steffen.klassert@secunet.com,
@@ -71,9 +71,9 @@ Cc: steffen.klassert@secunet.com,
 	dsahern@kernel.org,
 	idosch@nvidia.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 1/3] xfrm: run the receive callback before dropping the skb->dev reference
-Date: Sun, 18 Oct 2026 17:06:36 +0800
-Message-ID: <20261018090638.55686-2-q.h.hack.winter@gmail.com>
+Subject: [PATCH net v4 2/3] xfrm: set the address family before the early invalid-state drop
+Date: Sun, 18 Oct 2026 17:06:37 +0800
+Message-ID: <20261018090638.55686-3-q.h.hack.winter@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
 References: <20261018090638.55686-1-q.h.hack.winter@gmail.com>
@@ -85,47 +85,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The drop path in xfrm_input() releases the skb->dev reference that is
-held across an async resumption before it runs the receive callbacks.
-The callbacks may still dereference skb->dev, xfrmi_rcv_cb() reads
-skb->dev->ifindex, so they can race a concurrent teardown of the
-device.  Run the callbacks first and drop the reference afterwards,
-like the success path does.
+The early drop in xfrm_input() for a state that is no longer valid runs
+while family is still AF_UNSPEC, so xfrm_rcv_cb() cannot find the
+afinfo and the receive callback is never invoked for such a packet.
+Set the family from the state before the check so that the drop path
+dispatches the callback like every other drop does.
 
-The early drop for a state that is no longer valid releases the
-reference on its own; let the drop label handle that reference too.
+This is also a prerequisite for releasing the tunnel device reference
+on that drop path in the next patch: without a family, the release
+cannot tell an ip_tunnel from an ip6_tnl.
 
-Fixes: 1c428b038400 ("xfrm: hold dev ref until after transport_finish NF_HOOK")
+Fixes: 4ce3dbe397d7 ("xfrm: Fix xfrm_input() to verify state is valid when (encap_type < 0)")
 Cc: stable@vger.kernel.org
 Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
 ---
- net/xfrm/xfrm_input.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_input.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 5ed87d51392a..94de4f698c33 100644
+index 94de4f698c33..517369ba9efe 100644
 --- a/net/xfrm/xfrm_input.c
 +++ b/net/xfrm/xfrm_input.c
-@@ -496,7 +496,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 					       LINUX_MIB_XFRMINSTATEINVALID);
+@@ -487,6 +487,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 				      encap_type == UDP_ENCAP_ESPINUDP))) {
+ 		x = xfrm_input_state(skb);
+ 		xfrm_proto = x->type ? x->type->proto : nexthdr;
++		family = x->props.family;
  
- 			if (encap_type == -1)
--				dev_put(dev);
-+				async = 1;
+ 		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
+ 			if (x->km.state == XFRM_STATE_ACQ)
+@@ -500,8 +501,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  			goto drop;
  		}
  
-@@ -779,9 +779,9 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- drop_unlock:
- 	spin_unlock(&x->lock);
- drop:
-+	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
- 	if (async)
- 		dev_put(dev);
--	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
- 	kfree_skb(skb);
- 	return 0;
- }
+-		family = x->props.family;
+-
+ 		/* An encap_type of -2 indicates reconstructed inner packet */
+ 		if (encap_type == -2)
+ 			goto resume_decapped;
 -- 
 2.54.0 (Apple Git-157)
 
