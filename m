@@ -1,140 +1,170 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from out-utut-a196.jellyfish.systems (out-utut-a196.jellyfish.systems [198.177.127.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591C0415F12
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 19:48:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFF540BCBB
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 19:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.177.127.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792352923; cv=none; b=Lw3FJPMsC9cDMpVD/OU7rQoBCjsOmWa/q9VHsIRFafYB31FCAWVAlQJd91bvCy3SoVgbl6qjTQGjlaxDZXOJLei5yIPJ0llPtNgI+vqaXk+AyCoe3FEf48h1myvBFIpHBGU7qTkXe0gaZtzfm2A3ff9opGHaymjfhRRiVSZtn50=
+	t=1792353382; cv=none; b=GQv6TjssI/i5xNhPYRNOLg/FxM6hdoph3hUaMLwbF6RkUpmX/63CN88/wA6VJrDf5Ag9Aac8ml7kzGyWqsILT8gMGAaacZdtmFoNQzKcttH/32mtOarRyJzrn3Hsz/dUfwNbKlwz0tTElSyCGzZgODaXcko85Kl/cRcDL3Ldv/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792352923; c=relaxed/simple;
-	bh=z8+NKlZVaJg0D1viDndIi21e6QYlTGrfLeaOwjDv2Rk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s8H7qXQMUU2okjtCsL/xfSWWHdhRqK5ec8D0cjP79uo7Mu9cspv4lcC/UA79OhZkffVY0SywonkCqRrZjcwo0zoVQXSxZxsg/pGWxhcNgsICZWnX0J7ClTIg6S0AgQQIdt1DLJuF15+17eOa4nNab7QR9gFSGKRrGxhyaH3M9Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ETKAfiMW; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792353382; c=relaxed/simple;
+	bh=K5tVx83eZko7Hl+sBbrVkmUzvN6AVp1ARz5pSHuClps=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t8RfgIS5B95Pw5yeO+bzMUL4NUcv0fkuploWubdnocaNWXBlu57hgvQUFA5j1PU+yebCYyhbKZZ5zWuRLKdL2PzDKOXBah8+Peqb+ypwf7INludqGcfbN1dMgWnE3L17eOgL6RGYVRLVk2gUKkI/RKy3fPOqp6sW7idamzYeIIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca; spf=pass smtp.mailfrom=r-sc.ca; dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b=PWEByqwy; arc=none smtp.client-ip=198.177.127.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r-sc.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ETKAfiMW"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1e477fe16so3014825e9.1
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 12:48:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792352920; x=1792957720; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nT4NId0U2jiAqaCcS2HDGNFvu8HoNbnVXS9R3IhMNjk=;
-        b=ETKAfiMWGZMMjK7jvf+EaLF1zybUc4XOoUGXkkdzOT+59t/NrkQf6gawa07DV3ZO3I
-         titJE0Pr86WP9hXNUrXseD5dRyKG/JCU2T2Auzz/SdVKR11XM+Rtqeqse7uVZ441dMWW
-         2nO7O1Pv/jQF3jd5uyj73CIq3I7VmG9Uje8TcM+mDAYhpZ4Y+Mz0S6CDfOrCnFLT1wzb
-         WEwWqAiZM7DGBXwiyrnfa1zqwgDFgo/+muOr7p3zy8hkfm55HmSTagkrYGealGz7Xmh3
-         eCjWOKR4BZBk3KZnVlDN90n8H+I5rDwXnTa6laULzLc6pXGM7j2izhEefpar7jW0tfXn
-         Iaiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792352920; x=1792957720;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nT4NId0U2jiAqaCcS2HDGNFvu8HoNbnVXS9R3IhMNjk=;
-        b=0wJk8cJb2yg6GfiQPieqOLz9PmJ4CUAU8KgeG8wOz5rKuIVdmmyQ38Xg1/rYHyeObn
-         Pl8cxrVjjZ07D9ldigNF7pAGi+Cmy/NrAzaf+UTahSKzKkXJy7pMBhfVcUx6bD7fVH/G
-         uapUbMtkX8M2Dnlr3UqqP6AG77VadFwFoP4lURLzfnsbqg81FcejlPWv4NpSR/mPjNoz
-         4+x9Tn7juRwNQFdqTSCOdOHNZE2MYLn5bFw6kJauP+0i01byW9VL/729Ch48+JpXo95u
-         XDYxIaUyvbfDq6yT8FHmxliH3anqTZUjj7uhNJrW1eJGpjIkBruf3m+cPZ+hBny0ZjdT
-         yohw==
-X-Forwarded-Encrypted: i=1; AKwUvBxEp4osmVN7hYKSSBA4yVeTA0rAj3Ek26MVnkqNsqbCr7Y7FUsjbSIX0a1nZXH6kOVfUBMrBqQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKfqrdHJ+/a/JmmeZHV4nnqC5ljl6UgZOYcKw9f9OxYIyK3ExUn
-	bs2QtnIw8fe3RmeZLk88ZSw2vWD3wrf8EuhaeRmzjUXFyr+oUF0JvAMD
-X-Gm-Gg: AYBFou05qD8Oy1Uz5zetEv7XW66swxLNM+KCtkhX10tCzap6/JtIcmfh0pJR1k4pwAp
-	QnAZVXnWb89kU1AN5xyjKyKHfETJsqewUbF5ibVhltavLY7OHJvcEx69O0mjR97zWqfV61dYnjM
-	XUSUskduo7y99AiJFTbkrQlwa5Htt3UY1sRe5Q70sKvZ1mDHG0+LHCeGmzw8BLly1aGt3cpA49M
-	XPDt4C/TZjgq+LFMJw2F4QfTzFya81Ampekk19ylnEhA2JxdR+b6Rj0TLXZ6dVmC56nyJOYfbeb
-	Z7c0Zf72/Cb7NyxTkOChUxqCE2lGa3WacTWMt691m20pryQuByttwkvgrRE2QHl8pbzI+sct7vz
-	coKTYcFCn+4sgJhXr1jXCvpxa3ldP29HcwemgUmaoCFoL0rK7XAI1An+SvnIdxGFSae3GjP9TAD
-	sbcTw/+g08I77hi12a55P+J5lzTurTb0Bg0dzmSKMXM16f2aGelTpgcg4OVGiwqEgyVlZ9W8RF5
-	cqmII74odGAxe37D5PGcLu9/M8/Kyzs8H4=
-X-Received: by 2002:a05:600d:8488:20b0:4a1:e3e2:93e0 with SMTP id 5b1f17b1804b1-4a1e3e2967dmr30105055e9.32.1792352920294;
-        Sun, 18 Oct 2026 12:48:40 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd50d1bcsm18886835f8f.54.2026.10.18.12.48.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 12:48:39 -0700 (PDT)
-Date: Sun, 18 Oct 2026 20:48:38 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Haoran Wang <haoranwangsec@gmail.com>, jasowangio@gmail.com,
- kvm@vger.kernel.org, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, eperezma@redhat.com, linux-kernel@vger.kernel.org,
- security@kernel.org
-Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
- memory via vDPA passthrough
-Message-ID: <20261018204838.4080b238@pumpkin>
-In-Reply-To: <20261018152358-mutt-send-email-mst@kernel.org>
-References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
-	<20261018152358-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b="PWEByqwy"
+Received: from DESKTOP-290OH2S (d207-6-150-133.bchsia.telus.net [207.6.150.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4j78Hm18rQz8sWR;
+	Sun, 18 Oct 2026 19:43:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r-sc.ca;
+	s=spacemail; t=1792352630;
+	bh=x1Jv6GO0wPuojhw9KPg5KMy9xKjoXPBBoSTMpj3/LZI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PWEByqwyOcIRB+puisOnF81Sa0mgfaAbahDN9ulzoYKHj5TwpCjam3fOmZ1Urecxq
+	 am4a2L7VkuC+rpSKiPX3jlNWjm/wL5DcYofqlwEKLMJI3wMGlZ06CpqlBeD8IFgEkM
+	 xrWxa/3GsCxFuhObAhm36HEAq8SCIsyVT+qUxjQgYfBoPDqghID3N1UB188Ul8HoQx
+	 wTl7848eyDbt05VVfgT6ZW7O7X91H8dbOIpSc1f9vte1/4oTqsT6OIVmujBawVCe/c
+	 ITCrtCVZJooqZ5twRfEEMUqrtU/PjWNRiWwOhrJncKBfrptrzx6xshFITvNn2c1Z9u
+	 olZo/gYDBnCKQ==
+From: Ross Cawston <ross@r-sc.ca>
+To: lee@kernel.org,
+	pavel@kernel.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	chris.packham@alliedtelesis.co.nz,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ross Cawston <ross@r-sc.ca>
+Subject: [PATCH 1/3] dt-bindings: leds: add Realtek RTL9301 port LEDs
+Date: Sun, 18 Oct 2026 12:43:36 -0700
+Message-ID: <20261018194339.132-2-ross@r-sc.ca>
+X-Mailer: git-send-email 2.55.0.windows.5
+In-Reply-To: <20261018194339.132-1-ross@r-sc.ca>
+References: <20261018194339.132-1-ross@r-sc.ca>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: ross@r-sc.ca
 
-On Sun, 18 Oct 2026 15:24:41 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+Add a binding for RTL9300 switch port LEDs under software control. The
+node is a child of the switch and gives the offset of the software LED
+control registers; each LED child names its switch port and its place
+among the port's LEDs.
 
-> On Thu, Oct 15, 2026 at 03:23:45PM +0800, Haoran Wang wrote:
-> > I'd like to report an issue in drivers/vhost/vringh.c:1216 (function
-> > getu16_iotlb), found via static analysis of Linux 7.0.11 and verified
-> > against the 7.2.10 source tree. I have reproduced the leak on an
-> > unmodified 7.2.10 kernel.  
-> 
-> 
-> This should fix it I think? Can you confirm pls?
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->  drivers/vhost/vringh.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-> index 9066f9f12ba1..4b097170bd36 100644
-> --- a/drivers/vhost/vringh.c
-> +++ b/drivers/vhost/vringh.c
-> @@ -1213,7 +1213,11 @@ static inline int getu16_iotlb(const struct vringh *vrh,
->  		return ret;
->  
->  	if (vrh->use_va) {
-> -		ret = __get_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-> +		__virtio16 __user *uaddr = ivec.iov.iovec[0].iov_base;
-> +
-> +		if (!access_ok(uaddr, sizeof(*p)))
-> +			return -EFAULT;
-> +		ret = __get_user(tmp, uaddr);
+Signed-off-by: Ross Cawston <ross@r-sc.ca>
+---
+ .../leds/realtek,rtl9301-port-leds.yaml       | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml
 
-Can't that be a normal get_user() call?
-
-David
-
->  		if (ret)
->  			return ret;
->  	} else {
-> @@ -1251,7 +1255,11 @@ static inline int putu16_iotlb(const struct vringh *vrh,
->  	tmp = cpu_to_vringh16(vrh, val);
->  
->  	if (vrh->use_va) {
-> -		ret = __put_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-> +		__virtio16 __user *uaddr = ivec.iov.iovec[0].iov_base;
-> +
-> +		if (!access_ok(uaddr, sizeof(*p)))
-> +			return -EFAULT;
-> +		ret = __put_user(tmp, uaddr);
->  		if (ret)
->  			return ret;
->  	} else {
-> 
-> 
+diff --git a/Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml b/Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml
+new file mode 100644
+index 00000000000..8d6b3552526
+--- /dev/null
++++ b/Documentation/devicetree/bindings/leds/realtek,rtl9301-port-leds.yaml
+@@ -0,0 +1,84 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/leds/realtek,rtl9301-port-leds.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Realtek RTL9300 switch port LEDs under software control
++
++maintainers:
++  - Ross Cawston <ross@r-sc.ca>
++
++description: |
++  The RTL9300 switch drives up to four LEDs per port over its LED interface,
++  serial or scanned, each normally showing a hardware function chosen by the
++  LED set of the port. The LEDs listed here are taken over by software instead
++  and switched on and off as LED class devices, for port LEDs that have no
++  hardware function such as the PoE status LED of a PoE switch. The node is a
++  child of the switch, whose registers it uses.
++
++properties:
++  compatible:
++    const: realtek,rtl9301-port-leds
++
++  reg:
++    description: The software LED control registers, from SW_LED_LOAD to the
++      end of LED_PORT_SW_CTRL, as an offset into the switch registers.
++    maxItems: 1
++
++  "#address-cells":
++    const: 2
++
++  "#size-cells":
++    const: 0
++
++patternProperties:
++  "^led@[0-9a-f]+,[0-3]$":
++    $ref: /schemas/leds/common.yaml#
++    unevaluatedProperties: false
++
++    properties:
++      reg:
++        items:
++          - items:
++              - description: Switch port
++                maximum: 27
++              - description: LED of the port, numbered as in the port's
++                  LED set
++                maximum: 3
++
++    required:
++      - reg
++
++required:
++  - compatible
++  - reg
++  - "#address-cells"
++  - "#size-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/leds/common.h>
++
++    led-controller@cc48 {
++        compatible = "realtek,rtl9301-port-leds";
++        reg = <0xcc48 0x84>;
++        #address-cells = <2>;
++        #size-cells = <0>;
++
++        led@0,2 {
++            reg = <0 2>;
++            color = <LED_COLOR_ID_GREEN>;
++            function = "poe";
++            function-enumerator = <1>;
++        };
++
++        led@8,2 {
++            reg = <8 2>;
++            color = <LED_COLOR_ID_GREEN>;
++            function = "poe";
++            function-enumerator = <2>;
++        };
++    };
+-- 
+2.55.0.windows.5
 
