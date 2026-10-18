@@ -1,41 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BD02D7D3A;
-	Sun, 18 Oct 2026 08:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3244499A4;
+	Sun, 18 Oct 2026 08:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792311559; cv=none; b=TV7+fMbY2Wq7aKhZsKCk6op1CEtqVNCwgsf5S29UUR+PNuKt7LrmxRnNhsZomin3I4uxmrHnWUwZl5N5A9eVYeFC3UlcB0gpco3pFqqryqWnI1wnT2aCXx4sfQnbX+RaL6QDs/5NQn0ukXWhZj5uFXSPJMXArLo7tp7kUhG1IjA=
+	t=1792311561; cv=none; b=au/umyTGplyfcdfUrlHZQvE/41+R7tH7dUfyqv2mMckBnllPTjhmwOnbjruZa77kID3Vs7HvxMhGB0ZhTmFGCGx5CG1yH7zIvG5HYObjuJ+XHdNp8l24ly/gU+tiLQSdgyZxlptyGSRHzfXoqIJvWm/hLsn3/DSUMmXbcuxSk8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792311559; c=relaxed/simple;
-	bh=AcTJDpBORWj5VtW4qCVsH2NiGHRLll8OJRfHyNmGvUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ceZbmci2bT0qSD7UhAi5vf8ukB3BLbjBBJqSGcbagMbniV3nZvAx+PuaEnpP9DgEQLQF3462pStqwHcyJCFEQqaj3jPD/uyOuwOH/0H9YeNrARDOrT7T7/qfSkTYJmSGi3mu0FyRamB7PzGrKkwaiJnDqIqJ9I7HVR7Vbt4xMSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=A2ExJJ4H; arc=none smtp.client-ip=85.214.127.56
+	s=arc-20240116; t=1792311561; c=relaxed/simple;
+	bh=82Pk5DrSgjQFbdEOH1hzPi6x+5rLQhPf6ejBMUb+9+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cFaKD1sosNw4XArZ7YGjhJU6TRl71gOzeG456hL/94EaO+DNXuUMPr8qhHPvolojfvC2wLshjLQ8kxAH+8efUPcwtyYltZxX5b+m3ASaHctbxYPGirZIVDXrx175Pw4RL8H0IkDSYIpB67UttnBZWecG4xCQttEWnCUd2cyEPVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=GV+WAMCY; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="A2ExJJ4H"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="GV+WAMCY"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 96891E837CF;
-	Sun, 18 Oct 2026 10:19:13 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id C796FE8392B;
+	Sun, 18 Oct 2026 10:19:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1792311553;
+	s=mail; t=1792311557;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oSa85OIU8s8xC52cWOnXHEuigvzsLY2qbqfV+53tJes=;
-	b=A2ExJJ4HeJbb/lkJ7HmXxSLFiALmn0DM4jOUEKhjL6NcdIqYM+4+oGiMFmD3zj6Cposjqa
-	OxGyF6N33CfmQ+eAfWN3Q3jK2gCD/XrNjiJ8yN5J0rSUFWnnH3CQmZ2h2ZF0JseLPxhfNA
-	edbJbv2cKp8003xKu4up7DxuxWE/ScZbSF/SovJsGBZPsoy0iMG2H3uClpOzoLIF35HHDy
-	/Y94/G6pkzz+tTPer6zZzWYxJiIbv4SiJ2+f6k27yzPZlqZGMbAfhgeySk1Il25Noj1jzj
-	KwUMxcqj+dThMonnmOMmKaTie7iRic1JVgPkB7/g3C+zuHduP9fKA58biRcjAw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mkrT5xyWGkoi5cJcKe5Ef8dp2X+VGkc1/2gcCl/kCJc=;
+	b=GV+WAMCYg+hzGLU2dMSFJHW1WQi6uydcd+bKvaXLPv+rcDZ91xoAq1vTHK7YSQY+/yJi37
+	sMECFHMVmtk5PVJTS8NMJAwR5S4mMW/cMtVTg87UEKGYg4OAoh7jE0zoeRUnTZSWfwVRTm
+	7tcWyPvJppHlm97P8Ee6a483vauK/fcpnqiew/FMhH5DOsp72ubVL/98MrpOd1FQTyrEE4
+	9ZywsRczF5iDtMupRWVMpQCb9LOE/kPA/+OXC7ZdJuJVajb32TIG7UqgMwRHwNNzpAzweb
+	nzIhZ0MWtUg6/DBDtj0Y6TeNK+MqjqR4EplhUGxsn35Y2qFCzZI+pgv7rCz4kw==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id 7cACpadZ9Dux; Sun, 18 Oct 2026 10:19:13 +0200 (CEST)
+ id 5oVvWvFSAIT9; Sun, 18 Oct 2026 10:19:17 +0200 (CEST)
 Received: from p14sgen5.netbird.selfhosted (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 18 Oct 2026 10:19:12 +0200 (CEST)
+	Sun, 18 Oct 2026 10:19:17 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -53,10 +55,12 @@ Cc: Mark Brown <broonie@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next 0/4] net: pse-pd: core fixes ahead of the controller notifier
-Date: Sun, 18 Oct 2026 10:18:49 +0200
-Message-ID: <20261018081853.47484-1-github@szelinsky.de>
+Subject: [PATCH net-next 1/4] net: pse-pd: unlink the controller before freeing its PI data
+Date: Sun, 18 Oct 2026 10:18:50 +0200
+Message-ID: <20261018081853.47484-2-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261018081853.47484-1-github@szelinsky.de>
+References: <20261018081853.47484-1-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,48 +69,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-These four PSE core fixes were part of the "decouple controller lookup
-from MDIO probe" series [1]; Oleksij asked to split them out. They do
-not need phylib, and each one fixes a problem on its own:
+pse_controller_unregister() frees the PI array before it takes the
+controller off pse_controller_list. In that window of_pse_control_get()
+can still find the controller and read the freed array, and so can
+pse_isr() and the notification worker.
 
- 1. Unregister frees the PI data while the controller can still be
-    found. Take it off the list and stop the IRQ and the worker first.
- 2. A failed registration leaks memory, and can leave freed power
-    domains in the global map. Clean up on the error paths.
- 3. si3474: use dev_err_probe(), so the deferral from 4 is not logged
-    as an error.
- 4. Defer the PSE driver's probe until every PI's vpwr supply is there.
+Disable the IRQ, take the controller off the list and stop the worker
+first. Only then free the PI data.
 
-Patch 1 conflicts with the pending net series [2]; keep the order from
-patch 1. Patch 2 conflicts with two of the net fixes posted alongside
-[3]; the note below its --- explains how to merge them.
+Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+---
+ drivers/net/pse-pd/pse_core.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Tested in QEMU on arm64 with KASAN, lockdep and kmemleak: controllers
-whose supply never appears defer, and an injected pse_register_pw_ds()
-failure is cleaned up and retried. The only KASAN reports are the known
-stale-handle bug at MDIO bus unbind, the same without this series; the
-decouple series fixes it. This series, the decouple series and the net
-fixes together also run on a Hasivo S600WP (hs104), with 200 controller
-unbind/bind cycles and no warnings or leaks. Every patch builds with
-W=1, and PHYLIB=m, PHYLIB=n and PSE_CONTROLLER=n link.
-
-[1] https://lore.kernel.org/netdev/20261004164219.1161294-1-github@szelinsky.de/
-[2] https://lore.kernel.org/netdev/20260813200653.980170-1-github@szelinsky.de/
-[3] "net: pse-pd: assorted lifetime and error-path fixes", for net
-
-Carlo Szelinsky (4):
-  net: pse-pd: unlink the controller before freeing its PI data
-  net: pse-pd: unwind allocations when controller registration fails
-  net: pse-pd: si3474: use dev_err_probe() for controller registration
-  net: pse-pd: check the PI vpwr supply before registering the
-    controller
-
- drivers/net/pse-pd/pse_core.c | 175 ++++++++++++++++++++++++++++++----
- drivers/net/pse-pd/si3474.c   |   7 +-
- 2 files changed, 158 insertions(+), 24 deletions(-)
-
-
-base-commit: 98c2ad4f5d805dbc1ea436a334ee59311806a48c
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index a5e6d7b26b9f..364acc025097 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -1114,15 +1114,19 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
+  */
+ void pse_controller_unregister(struct pse_controller_dev *pcdev)
+ {
+-	pse_flush_pw_ds(pcdev);
+-	pse_release_pis(pcdev);
++	/* Stop the IRQ, new lookups and the worker before freeing pcdev->pi. */
+ 	if (pcdev->irq)
+ 		disable_irq(pcdev->irq);
+-	cancel_work_sync(&pcdev->ntf_work);
+-	kfifo_free(&pcdev->ntf_fifo);
++
+ 	mutex_lock(&pse_list_mutex);
+ 	list_del(&pcdev->list);
+ 	mutex_unlock(&pse_list_mutex);
++
++	cancel_work_sync(&pcdev->ntf_work);
++
++	pse_flush_pw_ds(pcdev);
++	pse_release_pis(pcdev);
++	kfifo_free(&pcdev->ntf_fifo);
+ }
+ EXPORT_SYMBOL_GPL(pse_controller_unregister);
+ 
 -- 
 2.43.0
 
