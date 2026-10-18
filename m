@@ -1,88 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62F2388895;
-	Sun, 18 Oct 2026 19:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D9D3932DC;
+	Sun, 18 Oct 2026 19:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792351230; cv=none; b=ftvKvp2zJoaEDqdLeEE/RYa4OREzA34ufHMfl8EhTRqh4Xw1Jh1bVoecaFwtSfrzMdrkT1Cfze80dZaHLU8Rvq/JveyQ18rQB0E8CM0lvDNVtKaRBR0OMtkiHdfyLebjxm/T+MorPALN8hG7MwNOewCM9bJpPNPazOllROB+A9o=
+	t=1792351338; cv=none; b=vC6YjTa+Hx48SEJ9YIXIJIV/HzoQ96cy8YmlQ5UCdb+sNyvnOx1qZecux0+jWggqrm0npz/ZHF4oPKJkOxPXnPttkS/nEaBMTF+Stze8xSnEHoEYjx9gzbAcWS84Pud+jAu3Z1l7WP9gEsQd59KlG28uE2tdSoJuFkb4Tkvppbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792351230; c=relaxed/simple;
-	bh=7wpD6rrtVCuVPSDOYFWT3aDtybXWFIN02kCudrQI1ls=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=h/Wt6HUj8He/iAiT8rpIJU0D9VQLCV/6GWtvH4FyVV1xM8gIIx43hib1+bKrpBS0GYjmJol00go5X0W7nLWLSYelXF9MPenh0JLDI8uFQZmcjsqqaVwQQ9Cq2yWOTjha6TRBqIn7PO7ig10xDK6N26kFYbX1+K/8PI/BxoorshY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kMLqpt2J; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792351338; c=relaxed/simple;
+	bh=HROzpZDx/9mqgR/5soR1hb0Crk0RLbo/zNA1oFPbphM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tIj0vWOtevBlEsZHLvVMJQ0A8XrqU3geO24Vk9Jd4fwy+oh5RZZuOcyUk3AdfN3mmAY7kIjbVd1aE3RBZG8TmcqLD22iGm8e6m26qBqC92USapFgTNgpsDIZ9mvgXQjQUTO2dcgkGqKXZxRSwGzStibMqIKDFScrmQTho1pEqfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SB8Ctd/G; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kMLqpt2J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096DB1F000C4;
-	Sun, 18 Oct 2026 19:20:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792351229;
-	bh=7wpD6rrtVCuVPSDOYFWT3aDtybXWFIN02kCudrQI1ls=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=kMLqpt2JoswwT0eqfe1u6vzdu0dGB+DvKVxAapgg3bonlAWk0ezBwaY+5bBGzTljP
-	 51qzrwBFhcE1CmPvIG4ynCR61azMq4yxvd5PJ92n6YKozl8iy05/s6HCoRlYvPrFRi
-	 IWseUDIgImi4eXRDYK5Z4/77qjvBX2u6H/1kgcYKk/86o50aFAcTbVvSmP61J0sY42
-	 pP7UrWZBQjfIloVRY0isWhzz7K/gB/s/AXSMBpOPpIKgfgkQeG3S9YjGYmHJTQms89
-	 WXxxJ0HYPDcFCdC1yjCbOfLEgxdoisN9sGc6USmw+lhWWJvVNmAgzy/q8hxb2EUPZC
-	 J6nIq+InnnVjQ==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
- kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
- kerneljasonxing@gmail.com, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>
-Subject: Re: [PATCH v4 net-next 00/15] selftests: net: migrate AF_XDP test
- suite over to net
-In-Reply-To: <20261016174338.787135-1-maciej.fijalkowski@intel.com>
-References: <20261016174338.787135-1-maciej.fijalkowski@intel.com>
-Date: Sun, 18 Oct 2026 21:20:26 +0200
-Message-ID: <87pkx63jet.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SB8Ctd/G"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=6xyR3TFbtCZTEsIcrD0uhG7nsXMg8JWVx1j3NCjbApU=; b=SB8Ctd/Gzn42zoAwCQw2l0QQUO
+	EF3CF5aZ/ymjsFOKXM70oJtkNxhhx0ah+FBZq9alW1YpHFsnFw+7CYKbiKFtE51mUsVPG2+slqDF8
+	kYL5UfAGy4CNGbuuIWhGWMovS7u2ZGmOQUs9bnNjjvI1csCMecpMVqlFTywr9hmRct6U=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xIWSQ-00BWMb-Jh; Sun, 18 Oct 2026 21:22:10 +0200
+Date: Sun, 18 Oct 2026 21:22:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: Re: [PATCH net] net: pxa168_eth: quiesce the interface before
+ releasing resources
+Message-ID: <213a4f8d-2473-4973-b203-1c0998256539@lunn.ch>
+References: <179229523656.3967907.9986872484125740449.pxa168-eth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179229523656.3967907.9986872484125740449.pxa168-eth@gmail.com>
 
-Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
+> @@ -1528,18 +1529,21 @@ static void pxa168_eth_remove(struct platform_device *pdev)
+>  	struct net_device *dev = platform_get_drvdata(pdev);
+>  	struct pxa168_eth_private *pep = netdev_priv(dev);
+>  
+> -	cancel_work_sync(&pep->tx_timeout_task);
+> +	disable_work_sync(&pep->tx_timeout_task);
+> +	rtnl_lock();
+> +	dev_close(dev);
+> +	if (dev->phydev)
+> +		phy_disconnect(dev->phydev);
+> +	unregister_netdevice(dev);
+> +	rtnl_unlock();
+> +
 
-> v3: https://lore.kernel.org/netdev/20261014184539.774708-1-maciej.fijalko=
-wski@intel.com/
-> v3 -> v4:
-> - add tags from Mr Bj=C3=B6rn
-> - Drop --hw in xskxceiver, align packet layout between hw/veth runners (B=
-j=C3=B6rn)
-> - drop parse_u32() in xskxceiver (Bj=C3=B6rn)
-> - move ethtool -G and ring sizing logic from C to python
-> - configurable --timeout (Bj=C3=B6rn)
-> - keep the HW_SW_MAX_RING_SIZE batch below the XSK TX ring size (Sashiko)
-> - restore hugepage count in veth runner on exception paths (Sashiko)
-> - use ExitStack in hw runner to cover setup unrolls (Bj=C3=B6rn, Sashiko)
-> - support IPv6 next to IPv4 (Bj=C3=B6rn)
-> - send to the next-hop MAC, the peer need not be on-link (Bj=C3=B6rn)
-> - make --listen work on its own rather than follow the TX role (Bj=C3=B6r=
-n)
-> - run XDP_SHARED_UMEM on HW, the socket is picked by UDP source port
-> - fail a case when one endpoint fails and the other skips (Bj=C3=B6rn)
-> - keep the TX half of the unaligned check in the xsk_caps conversion
-> - detach in cleanup_iface() with the flags of mode_to_xdp_flags()
-> - reserve 2 MiB huge pages, tolerate hosts without hugetlb or root (Sashi=
-ko)
-> - lower the veth case timeout to 20s, within the net timeout (Sashiko)
-> - guard pkts_in_flight against forged PROGRESS reports (Sashiko)
-> - log short fragments, fix the IPv4 fragment comment (Sashiko)
-> - keep the MIN_PKT_SIZE and PKT_HDR_SIZE names to cut churn
-> - read what a gone peer left at READY, drain after a SKIP (Sashiko)
-> - cap --max-frags, which sizes a packet array (Sashiko)
-> - skip the hw run when RSS or ntuple setup is refused (Sashiko)
-> - bound the gateway ping, fail clearly without its MAC (Sashiko)
-> - note in the README that RFS has to stay off on the DUT (Sashiko)
+pxa168_eth_remove() should be the opposite of pxa168_eth_probe.
 
-I think this serves well as a baseline for the XSK HW driver tests. I
-think we'll surface a lot of bugs here! ;-)
+phy_connect_direct() is not called in probe, so phy_diconnect() should
+not be called in remove.
 
-For the series:
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+Please fix this correctly, not make the code worse. Look at the
+architecture, and fix the broken architecture.
+
+    Andrew
+
+---
+pw-bot: cr
