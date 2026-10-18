@@ -1,44 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF76EEC3;
-	Sun, 18 Oct 2026 00:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10C31F30BB
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 00:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792283671; cv=none; b=RDhtFFDLmLbpesPo3vMsZq34mGCNIkIxWl4iqQH/2lIC1NAY+YYMOC9JgzV7BO0NDM6uUj5RhnEg6/YvFaAXYGKCAGPDvnbC/mO+V3EqHpoCGxUreouqviGSb9NVp9a8vbsuJsk7hwc+JkFjcqLUDYAr9/dqASBdYfozM9btWfA=
+	t=1792283978; cv=none; b=RXn82doQoTLv3SeETWetNnLrT3HYDD8845WQrf4ztbJmCWAYSX7nwxOIUK3TI75D9Iy5UR4MtPYp9sBZ1zdWSuXpfyCtgBOPPUq1Xyosqt9lASW5/NCWIw9gFv6TEPW/2K4DWln7M2aBYutVV8q+Cb174AHX5cRK8F8A25wXOk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792283671; c=relaxed/simple;
-	bh=UYPpbP4nFK6ceslGDzIqrAT8MFcO7eO3JD0xuvgBleI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Vt3bPECJfYxMGCHwFw6mv+nTppoiDn5d1MLHby/qXY7vStFhr/y6DujHiN3wJj/4dBTQZLZIjd1mvV9Ave8e7IB2VbqQbcUoydkD53Q/IB9J+9vu9tF0Ppy3RLznxQ396pi7bp5D0rfwzhi+yDZjGPH/bapAeRlzwIdnA/fceck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ecd/pnKc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792283978; c=relaxed/simple;
+	bh=17jvRmZBNnCl47JZ4PPW7VGtVpPr+tXsZAopNeXWy8g=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:MIME-Version; b=LBx2TnzBub4A9uFu748VGn5v+8wcH21+jpsrZZJPZipl70WR1Ax1n/JscWulFNqXOx6NUZroe5geqZgB8gVH7u2jvWkACsxW+j9nJH0tkoJ5jBcL6CRzBRmGGPIihMbRKevxqUk7oT2cqz6LcPGS/BndXT+I7jtlsIw/HfZAapU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cmo4Dn19; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ecd/pnKc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1620C1F000C4;
-	Sun, 18 Oct 2026 00:34:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792283669;
-	bh=bX9gSNnUKh5XRvA9DSlfPu+q4h3qCfDbS72aOLJfGFI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ecd/pnKczMRBCfFbTkJNAJyB2Ra9GuTFlhq+YLC3EY69CegYrx//Ol6lOfY1oFAdA
-	 mIxnOeVoXNvM7HPqozYoAwmnYZAkSMHv7RjDO+gqoGpweINsPR27aWTFWeawnWqd0n
-	 rvQ6K5ROqyi+zF8Fxde/ODN7CLG32m3LwLtWHJ3OwSqhS0Esv2Y0QzXeiNPEIf4lWk
-	 c7cW4A7X0p5p7/+KF6cLJ5mRIldBfvL1/f+64880uY05i0L88amhZmwp786v25ga9A
-	 rjI93tm7KXpQK/epxlTDCylRA7V4ZacEXyOJUmN3ijzoX+5MtJjsrYSu+P+GhHP5dB
-	 ixcKMoBgAHc0w==
-Subject: Re: [PATCH net] net: bgmac: don't process RX with a zero NAPI budget
-From: netdev-bot+sashiko@kernel.org
-To: rosenp@gmail.com
-Cc: netdev@vger.kernel.org, rafal@milecki.pl,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Sun, 18 Oct 2026 00:34:28 +0000
-Message-ID: <179228366859.3135.9158616222630607774@kernel.org>
-In-Reply-To: <20261014001912.141532-1-rosenp@gmail.com>
-References: <20261014001912.141532-1-rosenp@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cmo4Dn19"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ab98332238so806247a91.3
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 17:39:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792283976; x=1792888776; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=17jvRmZBNnCl47JZ4PPW7VGtVpPr+tXsZAopNeXWy8g=;
+        b=Cmo4Dn19cytcEOaH2PSu9aPIrniI50UyM0l3T4WYI4uQBMNvvPI3CFHAAU4sgRtJBT
+         yI5YG8XnAdAp9YYU40VD5k1J9N7SxZh9WkHXRfY9FmQ6lAlemIj+Gr9IDuHyqbGcI4g4
+         dOz1PlM108kLuKMAnjByl4gJuG7fbO+ZK0YYScp5280SrcwZHJ8/VKLikRPTBHQ7UxKd
+         aZyuUCPfRlJq2sJQpsHvxakZIVn26Ped0mCCssPvsygnUK2h7aGI/iqxcx17851qxlxU
+         wrBnAD6LOP22dWwVPm/biXexSkablRTbajb+MFAYLpkp0JKOZFVPI3gGcqfPm1L80wL8
+         Y8rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792283976; x=1792888776;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=17jvRmZBNnCl47JZ4PPW7VGtVpPr+tXsZAopNeXWy8g=;
+        b=uW8MgwgJAKtKzA04LV7RCZKWydgTEBbm0tZFVua6hndxNw2vqMggDR1o8S8tCZUPzP
+         Vjr+zkRZxLmpAQXpkBBKaJpH8lsAMSHw9+rGQwPiHvs7AH92Lc3jZgvuRnX7+rOg91tr
+         QleipPCSsUBzOj3kWIarS70r0pbLMH+YM5NJ1Q9RnkofNZsl7yg1ehHXLYJUVII5jE/J
+         kR1qlal4TG/nxCaoJk35fHVwl3KgmuLPtyQd8R3HMfY4p8bqIPHFrE2q2OvGJNXvl/kw
+         bUDhYONPfX2CSKiS4pkH18JINHYpDnF1CG4LVzjN1PxKdu/Z+aLi9kIJF7ZW9wcolWfD
+         eNEA==
+X-Forwarded-Encrypted: i=1; AKwUvBw/4/3UOYaEsKWkKKJaGi+/1MTvn90xW2ClRTStIodRFH9aSBpPGiOwLlUdKlFHj8pT4oDuHIM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK0wvXdECu+DQ5A1CVP5HG3wpX36/9tyKeyWLBe+NKlm5KhcgWE
+	mZe9Jzo8MK+3Xw9lfq1dXmKSscAYbp2jS2iqbTB7u0OPVOkpedEr8YL4
+X-Gm-Gg: AYBFou3muNBUSYLAY+doLvUo7VzRJEqJSxPj6PmfbfSSOYlqriwc5Hw3JJvKUfugreE
+	8vcAyPRYWosBhHsqFuabO4vWmHAJ/LcBgKDC3dSAn7zfIKXpo38avyBy9VRaxckS0F6pKgyaQGB
+	po3ehyptC8K1HsU2bmcd0L1c2MHB0+HJYtoCjpkaJZV+gbfFruWWiUrmw1HNEJD8Qq1fSOlAdSO
+	ppKnLhda28OnYkcdluQGPOdYFLsJtHQg+Rd1cIHw2cwGOXZntBu7SJukOSOse5/QvP7c8FBYz4y
+	+GR+MBUhhwBLitPjDU1wlfMbJffyjQ+kMJKwId9tmNxY9tCJvaJDIWZoJM8MkKQ6FS/piKyRpaf
+	h2r7pbUsJqxi2+yP9E0Ns0ls45FtgS7d1q7UFQkWVjrzcy1B0Lgb2Lyax0vM4Qakgp78C8+o+bF
+	TbQfomSDJxzMjIUZ4pzjQ7WAzmSOo3Hea+KEMo0oufJeSppdfXZ8PmIJKJnLVf4OhKugIDfpxbj
+	OiJMmV+PH9i5Nszd061PEwfflTuZ+GKdnwWLE30QhdxuEwJWspQmlQZnEDvFBgYDf3EUowlGatQ
+	AUY=
+X-Received: by 2002:a17:90b:1cc5:b0:3a4:acde:1e3b with SMTP id 98e67ed59e1d1-3aceefc6164mr3175867a91.13.1792283976186;
+        Sat, 17 Oct 2026 17:39:36 -0700 (PDT)
+Received: from localhost ([153.61.198.245])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac94627250sm14753771a91.8.2026.10.17.17.39.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Oct 2026 17:39:35 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 18 Oct 2026 00:39:35 +0000
+Message-Id: <DM7JN7JVMJFG.18LKSE7N5TVFR@gmail.com>
+Cc: <andrii@kernel.org>, <bpf@vger.kernel.org>, <daniel@iogearbox.net>,
+ <eddyz87@gmail.com>, <josef@toxicpanda.com>, <mason@kernel.org>,
+ <memxor@gmail.com>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH bpf-next v2 26/43] bpf: Don't take an extension for an
+ iterator program
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Tyrone Wu" <tkwu@pm.me>
+In-Reply-To: <20261017220550.1661-1-tkwu@pm.me>
+References: <20261017220550.1661-1-tkwu@pm.me>
+X-Mailer: mkdraft (claude review draft; edit before sending)
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -47,102 +82,26 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sat, Oct 17, 2026 at 03:06 PM Tyrone Wu <tkwu@pm.me> wrote:
+> Hi, I originally reported this issue a few weeks ago
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Sorry, I missed that report. Both issues in there are real.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> I'm hoping for EXT to still support ITER progs for my
+> usecase, so rejecting all extensions seems extreme.
 
-- [Medium] In drivers/net/ethernet/broadcom/bgmac.c, bgmac_poll() still
-  acknowledges every interrupt source, including BGMAC_IS_RX, with…
+It never worked though. As you found the load fails unless the func
+is named bpf_iter_<target>, and then it's taken for the function of
+that target. The patch only closes that hole.
 
---
+> Could `bpf_iter_prog_supported()` instead have the `tinfo` search loop be
+> applied on the `prog->aux->dst_prog`/`tgt_prog`, and
+> `bpf_prog_ctx_arg_info_init` on the original `prog`?
 
-net: bgmac: don't process RX with a zero NAPI budget
+That's a start, but not enough.
+bpf_iter_get_func_proto() goes by attach_btf_id as well.
+The iter link checks max_rdonly_access and max_rdwr_access of the iter prog
+against the map. The extension has its own and nobody looks at them.
 
-When bgmac_poll() is called with a zero budget, this patch makes it
-return right after TX completion cleanup. The goal is to stop netpoll
-from processing an RX frame and tripping the "exceeded budget in poll"
-WARN_ONCE() in poll_one_napi().
-
-> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-> index 3e9c57196a397..a545c0cc25977 100644
-> --- a/drivers/net/ethernet/broadcom/bgmac.c
-> +++ b/drivers/net/ethernet/broadcom/bgmac.c
-> @@ -1154,6 +1154,11 @@ static int bgmac_poll(struct napi_struct *napi, int weight)
->  	bgmac_write(bgmac, BGMAC_INT_STATUS, ~0);
->  
->  	bgmac_dma_tx_free(bgmac, &bgmac->tx_ring[0]);
-> +
-> +	/* A zero budget (netpoll) means only TX may be cleaned */
-> +	if (unlikely(!weight))
-> +		return 0;
-
-[Severity: Medium]
-Can this leave received frames stuck in the RX ring?
-
-Before it reaches the new zero budget return, bgmac_poll() still clears
-every interrupt status bit, including BGMAC_IS_RX, with a write-1-clear:
-
-    bgmac_write(bgmac, BGMAC_INT_STATUS, ~0);
-
-The commit message says:
-
-    NAPI stays scheduled, so the pending RX frames are picked up by the
-    next regular poll.
-
-Is that guaranteed?
-
-poll_napi() calls poll_one_napi() for every NAPI on dev->napi_list
-whose poll_owner it can take. poll_one_napi() then calls
-napi->poll(napi, 0) without checking NAPI_STATE_SCHED.
-
-bgmac_netdev_ops has no ndo_poll_controller, so bgmac_interrupt() is not
-run first. As a result, bgmac_poll(napi, 0) can run while the NAPI is
-idle and chip interrupts are on.
-
-Suppose a frame arrives while netpoll is transmitting. One example is
-__netpoll_send_skb() running with IRQs disabled while the TX queue is
-stopped. The sequence would be:
-
-netpoll_poll_dev()->poll_napi()->poll_one_napi()->bgmac_poll(napi, 0)
-    bgmac_write(bgmac, BGMAC_INT_STATUS, ~0);   /* clears BGMAC_IS_RX */
-    bgmac_dma_tx_free(bgmac, &bgmac->tx_ring[0]);
-    return 0;                                   /* NAPI not scheduled */
-
-After that, bgmac_interrupt() finds nothing pending:
-
-    u32 int_status = bgmac_read(bgmac, BGMAC_INT_STATUS);
-    int_status &= bgmac->int_mask;
-
-    if (!int_status)
-        return IRQ_NONE;
-
-bgmac_interrupt() is the only caller of napi_schedule() here. Frames
-already in the RX ring would sit there until another frame raises
-BGMAC_IS_RX. On a quiet link, for example after a single ARP or ping
-reply, that wait has no upper bound.
-
-The unconditional ack existed before this patch. However, one RX slot
-used to be processed in this window, and now none are.
-
-Would it work to ack only BGMAC_IS_TX0 when the budget is 0? That would
-leave BGMAC_IS_RX set, so the interrupt handler still schedules NAPI.
-
-The new comment says "only TX may be cleaned". The NAPI documentation
-says a zero budget means processing "only skb Tx completions and no Rx".
-This path still consumes RX interrupt state, which doesn't match either
-statement.
-
-> +
->  	handled += bgmac_dma_rx_read(bgmac, &bgmac->rx_ring[0], weight);
->  
->  	/* Poll again if more events arrived in the meantime */
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014001912.141532-1-rosenp%40gmail.com
+At the end it's a feature, not a fix.
+Send a patch and please explain the use case.
