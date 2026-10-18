@@ -1,215 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3558A46D0AC;
-	Sun, 18 Oct 2026 16:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D69A4AEBE5;
+	Sun, 18 Oct 2026 16:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792339274; cv=none; b=RCowuGlduaMFYaS8QFwzPZUMdZYfVP2nEn25aHCvN7JtVJENeR+RacOKIgN/R/QrcRwiumfvVCPCtZW/KyLVBNhJI/N43qIBAO11ALqKEKcuTCsRn+iJEPLCh4y/rIr4VinXKWcCUHzMZMlUYFuX/1HUf+l3ZllgUPhD4DP7AdQ=
+	t=1792339811; cv=none; b=sctjulFqe8C8YEfl3+pLZ874/TIMwynyi7xNzee+p/L3kUc2Fq1w6rKMfpekLoYDMqzf9qEbAv4q6/wgCbl9Wdpq8zPWiGOT0lhMA7pHkg+Lw5ejg9YJ8SDukF8F6j7Ivd7twxc/t7siDed8HhlAunu79KbxlIptyJSq5N5HlHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792339274; c=relaxed/simple;
-	bh=//X/wiwmt+Im6yHVEXxiJnHvXhCwAM0skc53aOjteRE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m4O7+8lW2f6hjK8W7L3WR04zYlw6MRMCFYWhwNRZcVpGVyjMb3QxgGKiHEJxK6S+xkrym127WeVZH6Uj9Pc6r07Bq3gsk4V3nM6ESuKHR28s+2D6Zf++2rs3xwgqVIgln9rkpSRzkQoltr4cevDA9vtwTQWeWsNBtZeJG+2N964=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MyocOagE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792339811; c=relaxed/simple;
+	bh=EUp9OxghaaUbdXshNZklnsyS1ZQXBQUqAg/PcxvKuy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pZw/C2+KVrMmxRFObFHoPwCdrF9raOb4S049CypIOjIiHD9H5YgPxP/vGvncznAgBHOO+tiD/fo5OVgA5HaFNwxSoNfRWeMp1GvibPvmvo+s9iyJ3UdPOBC6/BNXv1xraofwRCBGeUPhYVMZGhGXkWJILS+fo3MlpPENMdQ1zDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XP2LyJ/y; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyocOagE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571411F000C4;
-	Sun, 18 Oct 2026 16:01:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792339273;
-	bh=AvBfaI1A7Wm4thY0Q9puG6a7Zmf5trkowv5N01h1M4o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MyocOagElc7aW/wWF57cMnrelxPqQcdbFQtdiB3TlvHxKRBRxbf9qY1uyzyQT5tN8
-	 bCna15wB76ZAFF0ZO6iDqUE87oU1TU1QTZF6Jm579ZZDjMrI5RlQVe70c7ctkwsbvr
-	 yzJfPPYkefq8t+Tkcg0HdCTO7XQecPAJ6YkRMzcBCv/kZjGpueSSmYB/Tkc5f5bWSL
-	 /yGl2PIV9pXlkFwFdUv+AMs5LPAOxUhPA5r46OLBpxqNnJr/qlIjqBu3bigwDgHG0j
-	 pqSJ6aZoerBfq6sReYBLZe+Bys8yWS0zltFctTqeDduH0/1je/oOKmuSSeS7aPb+YH
-	 gudtNovyqlx/w==
-Subject: Re: [PATCH net v4 3/4] netdevsim: support devmem RX and TX bindings
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: kuba@kernel.org, asml.silence@gmail.com, dw@davidwei.uk, sdf@fomichev.me,
- ap420073@gmail.com, pabeni@redhat.com, kaiyuanz@google.com,
- bobbyeshleman@meta.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, hawk@kernel.org, ilias.apalodimas@linaro.org,
- horms@kernel.org, shuah@kernel.org, sumit.semwal@linaro.org,
- christian.koenig@amd.com, dtatulea@nvidia.com, razor@blackwall.org,
- daniel@iogearbox.net, tariqt@nvidia.com, kaifengw@google.com
-Date: Sun, 18 Oct 2026 16:01:10 +0000
-Message-ID: <179233927086.3135.6123492094489915156@kernel.org>
-In-Reply-To: <20261015163915.1166043-4-almasrymina@google.com>
-References: <20261015163915.1166043-4-almasrymina@google.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XP2LyJ/y"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=jKuRvw62P9dZ3Ihr2ZfFrRv3XWzvYUb5KNEn9SgslhI=; b=XP2LyJ/ysnRd6uv1HcntXTyNAp
+	BACtgbM6mFXZ7v0RrMv9TYUZBuJ4op96kaIXGEXsep+gpO+G3midWtfIGprJI2yUm+9abeh0QmT0Y
+	CvYTNIKC0StauovEQkmtje257qOTRBUpeLwl5uvI+DirhCQwx+FhWn8sqK1qvIoK73F4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xITSQ-00BVTr-8q; Sun, 18 Oct 2026 18:09:58 +0200
+Date: Sun, 18 Oct 2026 18:09:58 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
+Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Woojung Huh <woojung.huh@microchip.com>, netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Wei Jie Law <98lawweijie@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] net: usb: lan78xx: reject short register and
+ statistics reads
+Message-ID: <ce3a8add-3bf2-4507-b778-a0f8a10370c7@lunn.ch>
+References: <20261018061734.19488-1-law.wei.jie@gt.tech.gov.sg>
+ <20261018061734.19488-3-law.wei.jie@gt.tech.gov.sg>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261018061734.19488-3-law.wei.jie@gt.tech.gov.sg>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sun, Oct 18, 2026 at 02:17:34PM +0800, Wei Jie Law wrote:
+> From: Wei Jie Law <98lawweijie@gmail.com>
+> 
+> lan78xx_read_reg() and lan78xx_read_stats() read from the device into
+> a freshly kmalloc()ed buffer, but only treat a negative return value
+> from usb_control_msg() as an error. A device that answers with fewer
+> bytes than requested leaves part or all of the buffer uninitialized,
+> and those bytes are then used as the register value or the counters.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+You are assuming reading registers can fail with sort reads. To be
+symmetric, don't you have to assume writes can also fail in the same
+way? Should lan78xx_write_reg() have a similar test?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> With an emulated device on a kernel booted with init_on_alloc=0:
+> 
+> - A reply to the statistics request that is shorter than the 188 byte
+>   counter block leaves the rest of the kmalloc-192 buffer stale, and
+>   ethtool -S, which needs no privileges, reports it. Before the
+>   previous patch, a zero-length reply was enough: one counter pair read
+>   back as 0xffffffff8a427800, the address of
+>   usb_api_blocking_completion(), next to several direct map pointers.
+>   With the previous patch a zero-length reply is already harmless, but
+>   a reply of 1 to 187 bytes still gets through.
+> 
+> - A zero-length reply to the RX_ADDRL/RX_ADDRH reads in
+>   lan78xx_init_mac_address() turns uninitialized heap memory into the
+>   MAC address (12:85:1f:dc:2e:bd and e6:93:44:41:9b:9f on two probes).
+>   Both of those are valid unicast addresses, so they are used as they
+>   are: written to MAF_LO(0)/MAF_HI(0) and set as the address of the
+>   net device, where anyone can read it.
 
-- [High] On builds where PP_DMA_INDEX_BITS is 0, this patch leads to a
-  use-after-free of the netdevsim bus device.
+If short reads can happen, bad things are expected to happen. No need
+for examples.
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but writing true
-  to the pp_hold debugfs file of a running netdevsim VF port…
+> This patch needs the previous one. Without it, a failed statistics read
+> would make lan78xx_update_stats() compute the counters from its
+> uninitialized on-stack buffer, so the leak would move from the heap to
+> the stack. Both patches are Cc: stable and should be backported
+> together.
 
---
+This belongs below the --- so that is it not part of the commit
+message.
 
-netdevsim: support devmem RX and TX bindings
+    Andrew
 
-This commit sets a 64-bit DMA mask on the netdevsim bus device, enables
-NETMEM_TX_DMA, and creates netdevsim page pools with
-PP_FLAG_ALLOW_UNREADABLE_NETMEM and queue_idx, plus DMA mapping when
-CONFIG_HAS_DMA is set, so devmem bind-rx and bind-tx can be tested. It
-also refuses pp_hold on memory-provider-backed pools under the netdev
-instance lock, and drops unreadable skbs in the software PSP checksum
-path.
-
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-> index b4a99f3ceac60..357ea9e5623b3 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-> @@ -414,19 +414,27 @@ static int nsim_poll(struct napi_struct *napi, int budget)
->  	return done;
->  }
->  
-> -static int nsim_create_page_pool(struct page_pool **p, struct napi_struct *napi)
-> +static int nsim_create_page_pool(struct net_device *dev, struct page_pool **p,
-> +				 struct napi_struct *napi, int idx)
->  {
-> +	struct netdevsim *ns = netdev_priv(dev);
->  	struct page_pool_params params = {
->  		.order = 0,
->  		.pool_size = NSIM_RING_SIZE,
-> +		.flags = PP_FLAG_ALLOW_UNREADABLE_NETMEM,
-> +		.max_len = PAGE_SIZE,
->  		.nid = NUMA_NO_NODE,
-> -		.dev = &napi->dev->dev,
-> +		.dev = &ns->nsim_bus_dev->dev,
->  		.napi = napi,
->  		.dma_dir = DMA_BIDIRECTIONAL,
-> -		.netdev = napi->dev,
-> +		.netdev = dev,
-> +		.queue_idx = idx,
->  	};
->  	struct page_pool *pool;
->  
-> +	if (IS_ENABLED(CONFIG_HAS_DMA))
-> +		params.flags |= PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
-> +
-
-[Severity: High]
-
-Can this cause a use-after-free of the nsim_bus_dev struct device on
-builds where PP_DMA_INDEX_BITS is 0?
-
-The page pool doesn't take a reference on pool->p.dev. With
-PP_FLAG_DMA_MAP now set, pages from these pools carry a DMA mapping
-against &ns->nsim_bus_dev->dev.
-
-PP_DMA_INDEX_BITS is 0 when POISON_POINTER_DELTA is 0 and PAGE_OFFSET is
-not a suitably aligned compile-time constant. Some 32-bit and nommu
-builds hit this, riscv nommu for example, where PAGE_OFFSET is
-phys_ram_base. In that case the mapping is never recorded:
-
-net/core/page_pool.c:page_pool_register_dma_index() {
-    ...
-	if (unlikely(!PP_DMA_INDEX_BITS))
-		goto out;
-    ...
-}
-
-so page_pool_scrub() can't unmap outstanding pages while the device is
-still alive.
-
-Suppose a page is held via pp_hold and the device is then deleted.
-nsim_destroy() returns ns->page late on purpose ("Put this intentionally
-late to exercise the orphaning path"), and the sequence looks like this:
-
-nsim_destroy()
-  nsim_queue_uninit()
-    page_pool_destroy()
-      page_pool_release()
-        page_pool_scrub()     <- held page not tracked, stays mapped
-      inflight == 1, release_dw scheduled
-  page_pool_put_full_page(pp, ns->page, false)  <- page lands in pool->ring
-nsim_bus_dev_del()
-  device_unregister()
-    nsim_bus_dev_release()    <- struct device freed
-
-page_pool_release_retry()
-  page_pool_release()
-    ...
-      page_pool_empty_ring()
-        page_pool_return_netmem()
-          __page_pool_release_netmem_dma()
-            __page_pool_unmap_netmem_dma()
-              dma_unmap_page_attrs(pool->p.dev, ...)  <- freed device
-
-The existing nl_netdev.py page_pool test, which holds a page and then
-removes the device, follows this sequence. Before this patch the pools
-did no DMA mapping, so the late put never touched the device.
-
->  	pool = page_pool_create(&params);
->  	if (IS_ERR(pool))
->  		return PTR_ERR(pool);
-
-[ ... ]
-
-> @@ -929,12 +939,15 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
->  		return ret;
->  
->  	rtnl_lock();
-> +	netdev_lock(ns->netdev);
->  	ret = count;
->  	if (val == !!ns->page)
->  		goto exit;
->  
->  	if (!netif_running(ns->netdev) && val) {
->  		ret = -ENETDOWN;
-> +	} else if (val && page_pool_is_unreadable(ns->rq[0]->page_pool)) {
-
-[Severity: Medium]
-
-This isn't a bug introduced by this patch, but can this dereference a
-NULL ns->rq on VF ports?
-
-nsim_create() creates the pp_hold file for both PF and VF ports. However,
-nsim_init_netdevsim_vf() only sets nsim_vf_netdev_ops and registers the
-netdev, so ns->rq stays NULL.
-
-nsim_vf_netdev_ops has no ndo_open. __dev_open() still sets
-__LINK_STATE_START, so after "ip link set up" on the VF the
-netif_running() check above passes.
-
-Writing 1 to pp_hold on a running VF port with no page held would then
-evaluate ns->rq[0] with ns->rq == NULL. The previous
-page_pool_dev_alloc_pages(ns->rq[0]->page_pool) call had the same
-dereference.
-
-> +		ret = -EOPNOTSUPP;
->  	} else if (val) {
->  		ns->page = page_pool_dev_alloc_pages(ns->rq[0]->page_pool);
->  		if (!ns->page)
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015163915.1166043-1-almasrymina%40google.com
+---
+pw-bot: cr
