@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8814C3B42C3
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 15:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0442B3AFD1D
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 15:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792338707; cv=none; b=Nk/p9bd/ctvS36Vp0jQn2B5QHFsHoreUYw2z/S/FCv6bb+TQHx7HuwcJJ80ZF6cD5nxETZL0ThIc8hX6azyKCQPg9xZSb48f9JfhZJPzFK3r3/XixMG/djeTrp3XiSYLRqOJppKUW6BqAuhKzfIxxHFqy2UggM5kq0QiN9l7UtU=
+	t=1792338708; cv=none; b=Dg9x7l7T2rz6QjAf7r3rm/IFPinPlGLV89ypjok6GPxUcQE9eiUx/ZCTT7gmEk4NhRzM7wQawMAvXtwltBfrb3/3KmJuGaM8NUC3MMDSlMWqCvefu1dJuSUaApDMtFsmJOxd0DE7EASWTvtL5rJVNl0Rykwqwq69Gr2frUxIy3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792338707; c=relaxed/simple;
-	bh=6R/BuFhfGcO1oRj2v36lrBKm+fzAB4xKrCJt26Y4wYc=;
+	s=arc-20240116; t=1792338708; c=relaxed/simple;
+	bh=x7xyrecPHgznzsY41gZAa2pCFpLn54CvquHMb3Jynwg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qbt91UiwS6Rfld4HDS8BFSciwKJnqqEGHwHEHTqC38pMMbiR3JQSIDzOlfGx8xI5OxtjjBkImJwQYlmNL62lNebJBUyUlv/tyVpM36xrtLF4uzi1zysAVIdVf4PkoEcX/X3XSKp2WtXZ26zdoqvvlULJ4DSPrgZXPn0+/vBxGzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idDCcNcR; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=kujnxj8AoDXgf+qm+ZweF+8GAGhuK8o7vAvn+Wo4ISfP0VQahxIl7ETkDjkBxPj/XmeDrgAlyCG1nd8IgUmGzIL71s5vyi1hzmWoCtGnXNcESKRox+5CxjaB9C13QlZKiELiX6e3VBrLTnQH9e8xBh5xIUKKDbWg0jF7Wt4MykE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctuFhzwe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idDCcNcR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0349B1F000C6;
-	Sun, 18 Oct 2026 15:51:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctuFhzwe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ADA1F000C8;
+	Sun, 18 Oct 2026 15:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792338703;
-	bh=I09pRrm2WPrQgGhtNYl0tBj38mh2IxMbEVkcFORZBaI=;
+	s=k20260515; t=1792338704;
+	bh=uU9jjvxOlWreYS+cEB7FIls6zHtCzog3WjEwcb7R8i0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=idDCcNcR4JRXD3YW/fCoKHG8UQLEPlsvE4JcAdojsc9uQTDutnrtG3+I4G9BAnQQ1
-	 u2LbvLdnVONGypzWiXwcuxWT3MLuBpg5jjG8ZiDnJejMicAgwgc935R7iZ3w3rG4cg
-	 J+Vk2x0KAZqOjRA5covZ4vc+DBJuvXql1Sj6BCu45vT9/JPt3It/+HK1Jt2fjuYVJM
-	 ZSHaNGLh6IIEIMuUm3FYAt3v+0bW1l28ZGsL3tzXjIYje/gbEbEuKGesK4YA5dqM7z
-	 +KUNk1EvTSg0iiGZMUmgOWF/4gTbCG8NGuteeoW5RqZBclutpw9sZb1lnPsJAjwfdu
-	 wDe3AVEGKhd3g==
-Subject: Re: [PATCH net-next v9 4/8] hsr: Drop received PTP packets
+	b=ctuFhzweguTxdzpWDU0zD9ZEnklpjmpPBw0GNkkDJGPk++OcdY5LEEYytvrVAVtRl
+	 /S9OBrNS/yk4BCBUFmqEZQ3X1TGkklJ2B0frcvQFO+lTgTm7THJ6ohGyaFQLO5GNhF
+	 jh2qEiMP0S9dbIb7qQk6MzjYDaWS9wTK70/IsRa6VTwzx10mGpZShn9ISZSrlKNm7C
+	 4Yv6pIuo+r5ypu9hoNV2bJ4CcmBIJk1G+3/FtZVqP+t6/eAFP1tgB4kkWEdJXe+TEb
+	 0O2xf4eRkEGsTcH6hX8309TRrXnNUgXTlDFl83+H5KOOq6r/CYFUsAjQqQqWaMlzyo
+	 WHIx/eWBw5JhQ==
+Subject: Re: [PATCH net-next v9 5/8] hsr: Use the port and header information
+ in hsr_forward_skb()
 From: netdev-bot+sashiko@kernel.org
 To: bigeasy@linutronix.de
 Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
@@ -35,10 +36,10 @@ Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
  praneeth@ti.com, pratheesh@ti.com, richardcochran@gmail.com, horms@kernel.org,
  vigneshr@ti.com, willemdebruijn.kernel@gmail.com, daniel.machon@microchip.com,
  edumazet@kernel.org
-Date: Sun, 18 Oct 2026 15:51:41 +0000
-Message-ID: <179233870158.3135.22211323415720778@kernel.org>
-In-Reply-To: <20261014-hsr_ptp-v9-4-2d20a2a0f816@linutronix.de>
-References: <20261014-hsr_ptp-v9-4-2d20a2a0f816@linutronix.de>
+Date: Sun, 18 Oct 2026 15:51:43 +0000
+Message-ID: <179233870314.3135.16408273084496136138@kernel.org>
+In-Reply-To: <20261014-hsr_ptp-v9-5-2d20a2a0f816@linutronix.de>
+References: <20261014-hsr_ptp-v9-5-2d20a2a0f816@linutronix.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,132 +61,151 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message says "VLAN tagged packets are not
-  considered", but the code does drop VLAN-tagged PTP frames.
-- [Low] Every received PTP frame goes to finish_free_consume, which calls
-  kfree_skb(skb) and returns RX_HANDLER_CONSUMED (hsr_slave.c:101-103).
+- [Medium] The per-port TX request (frame->req_tx_port) added by this
+  patch does not take effect on slave devices with NETIF_F_HW_HSR_DUP.
+- [Low] On PRP devices the has_foreign_header flag is only half honoured.
+- [Low] Baseline decision: discard.
 
 --
 
-hsr: Drop received PTP packets
+hsr: Use the port and header information in hsr_forward_skb()
 
-With this patch, hsr_handle_frame() drops PTP frames that arrive on HSR/PRP
-slave ports instead of forwarding them. For HSR/PRP tagged frames it checks
-the encapsulated protocol, and for other frames it checks the ethertype.
-The existing kfree_skb() error paths are merged into a new
-finish_free_consume label.
+This commit makes hsr_forward_skb() use the tx port and header
+information passed down from the upper layer. A frame with a requested
+port is sent only on that port.
 
-> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-> index 5274ba6dd36e6..a5b47f016abd7 100644
-> --- a/net/hsr/hsr_slave.c
-> +++ b/net/hsr/hsr_slave.c
+A frame that already carries an HSR header is sent as a clone of the
+original skb. It is not given a sequence number, its h_source is not
+replaced and no source node lookup is done.
 
-[ ... ]
-
-> @@ -64,15 +64,28 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
+> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> index 14d793f00344f..a76bd02fe25f1 100644
+> --- a/net/hsr/hsr_forward.c
+> +++ b/net/hsr/hsr_forward.c
 
 [ ... ]
 
->  	skb_reset_mac_len(skb);
+> @@ -570,6 +571,17 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
+>  		if ((port->dev->features & NETIF_F_HW_HSR_DUP) && sent)
+>  			continue;
 >  
-> +	/* PTP packets are not supposed to be forwarded via HSR as-is. The
-> +	 * latency introduced by forwarding renders the time information
-> +	 * useless. Userland needs to capture the packet on the original
-> +	 * interface instead of hsr.
-> +	 */
-> +	if ((!hsr->prot_version && protocol == htons(ETH_P_PRP)) ||
-> +	    protocol == htons(ETH_P_HSR)) {
-> +		hsr_ethhdr = (struct hsr_ethhdr *)skb_mac_header(skb);
-> +		if (hsr_ethhdr->hsr_tag.encap_proto == htons(ETH_P_1588))
-> +			goto finish_free_consume;
-> +	} else {
-> +		if (protocol == htons(ETH_P_1588))
-> +			goto finish_free_consume;
-> +	}
+> +		/* PTP TX packets have an outgoing port specified */
+> +		if (frame->req_tx_port != HSR_PT_NONE && frame->req_tx_port != port->type)
+> +			continue;
 
 [Severity: Medium]
-The commit message says:
+Does the per-port request still work when the slave devices have
+NETIF_F_HW_HSR_DUP set?
 
-  VLAN tagged packets are not considered.
+hsr_forward_do() passes the frame only to the requested slave netdev.
+Nothing tells the lower driver not to duplicate it.
 
-Does that match what this code does? Before the rx_handler runs,
-__netif_receive_skb_core() has already moved a single 802.1Q tag into
-skb->vlan_tci. NIC rx-VLAN offload does this in hardware. Without offload,
-the software path does it:
+For DSA, dsa_xmit_port_mask() in net/dsa/tag.h adds every HSR ring port
+to the egress mask:
 
-net/core/dev.c:__netif_receive_skb_core() {
+    unlikely(dev->features & NETIF_F_HW_HSR_DUP)) {
     ...
-	if (eth_type_vlan(skb->protocol)) {
-		skb = skb_vlan_untag(skb);
-    ...
-}
+        dsa_hsr_foreach_port(other_dp, dp->ds, hsr_dev)
+            mask |= BIT(other_dp->index);
 
-As a result, protocol = eth_hdr(skb)->h_proto in hsr_handle_frame() holds
-the inner ethertype:
+This covers ksz9477, xrs700x and the switches that use
+dsa_port_simple_hsr_join().
 
-- A VLAN-tagged PTP frame on a PRP slave matches
-  protocol == htons(ETH_P_1588).
-- A VLAN-tagged HSR frame matches
-  hsr_tag.encap_proto == htons(ETH_P_1588).
+For TI ICSSG, icssg_ndo_start_xmit() replaces the directed port:
 
-Both frames take the finish_free_consume path.
+    if (prueth->is_hsr_offload_mode &&
+        (ndev->features & NETIF_F_HW_HSR_DUP))
+        dst_tag_id = PRUETH_UNDIRECTED_PKT_DST_TAG;
 
-The only exception seems to be a VLAN upper device on the slave that
-matches the VID. In that case vlan_do_receive() moves the skb to that
-device before hsr_handle_frame() is called.
+So a PTP frame requested for SLAVE_A, such as a per-link peer delay
+message, would also go out on SLAVE_B. That doesn't match "If the port
+set, deliver it only on the requested port" in the commit message.
 
-Since VLAN-tagged PTP frames are dropped whether offload is on or off,
-should the commit message say so? Or should these frames keep being
-forwarded as before?
+The later commit "hsr: Move struct hsr_ethhdr to a global header" says
+offloading drivers need to inspect PTP packets and suppress offloading.
+No driver is changed in the series, though.
 
-> +
->  	/* Only the frames received over the interlink port will assign a
->  	 * sequence number and require synchronisation vs other sender.
->  	 */
-> @@ -84,7 +97,10 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
->  		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
->  	}
->  
-> -finish_consume:
-> +	return RX_HANDLER_CONSUMED;
-> +
-> +finish_free_consume:
-> +	kfree_skb(skb);
->  	return RX_HANDLER_CONSUMED;
+Should the directed case be handled here, or in the drivers, before this
+is enabled?
+
+> +		/* PTP TX packets may already have a HSR header which needs to
+> +		 * be preserved
+> +		 */
+> +		if (frame->has_foreign_header && frame->skb_std) {
+> +			skb = skb_clone(frame->skb_std, GFP_ATOMIC);
+> +			goto inject_into_stack;
+> +		}
 
 [Severity: Low]
-I have two questions about the PTP frames that now take this exit path.
+Should the clone take over the socket ownership here?
 
-First, RX_HANDLER_CONSUMED makes __netif_receive_skb_core() jump straight
-to out:
+__skb_clone() leaves sk as NULL on the clone. The slave driver takes the
+TX hardware timestamp on the clone, so the timestamp can't be delivered
+to the sending PTP socket. The original skb, which owns the socket, is
+freed in hsr_forward_skb() without being sent.
 
-	case RX_HANDLER_CONSUMED:
-		ret = NET_RX_SUCCESS;
-		goto out;
+The next commit in the series, "hsr: Assign a socket for cloned skbs",
+fixes this by adding skb_set_owner_w() to this branch. So this only
+affects this intermediate commit. TX timestamps through hsr were not
+delivered before the series either.
 
-That skips ptype_base and ptype_specific delivery. Only ETH_P_ALL taps see
-the frame, because they are delivered before the rx_handler. A packet
-socket bound to ETH_P_1588 on the slave never receives it.
+> +
+>  		/* Don't send frame over port where it has been sent before.
 
-The commit message says a PTP stack "needs to retrieve the PTP packet on
-the original slave interface where it was received". That works with
-ETH_P_ALL plus a filter, which is what linuxptp's raw transport uses. It
-does not work for a socket bound to ETH_P_1588. Could the commit message
-mention this?
+[ ... ]
 
-Alternatively, on PRP the frame is a plain ETH_P_1588 frame. Could it be
-returned with RX_HANDLER_PASS after undoing the skb_push(), so that normal
-protocol delivery takes place?
+> @@ -661,6 +674,13 @@ int hsr_fill_frame_info(__be16 proto, struct sk_buff *skb,
+>  	struct hsr_port *port = frame->port_rcv;
+>  	struct hsr_priv *hsr = port->hsr;
+>  
+> +	if (frame->has_foreign_header) {
+> +		frame->skb_std = skb;
+> +
+> +		WARN_ON_ONCE(port->type != HSR_PT_MASTER);
+> +		WARN_ON_ONCE(skb->mac_len < sizeof(struct hsr_ethhdr));
+> +		return 0;
+> +	}
 
-This isn't a new loss. Before this patch, ETH_P_1588-bound sockets on the
-slave didn't get these frames either, because the frames were consumed for
-forwarding.
+[Severity: Low]
+This early return is only added to hsr_fill_frame_info(), the hsr_ops
+callback. What happens on a PRP device, where proto_ops->fill_frame_info
+is prp_fill_frame_info()?
 
-Second, kfree_skb() reports SKB_DROP_REASON_NOT_SPECIFIED. Every PTP frame
-filtered on purpose (sync, follow-up, announce, pdelay, on each slave port)
-will show up in the kfree_skb tracepoint and drop_monitor as a drop with
-no reason given. Would a dedicated drop reason, or consume_skb() since ETH_P_ALL
-taps have already received the frame, fit better here?
+hsr_dev_xmit() accepts hsr_hdr for any prot_version. fill_frame_info()
+then sets has_foreign_header and skips hsr_get_node(), and
+prp_fill_frame_info() runs its normal logic.
+
+If the frame has no valid RCT, handle_std_frame() still uses up a
+sequence number:
+
+    frame->sequence_nr = hsr->sequence_nr;
+    WRITE_ONCE(hsr->sequence_nr, hsr->sequence_nr + 1);
+
+The commit message says no sequence number is assigned when a header is
+already present.
+
+If the frame has a valid RCT, skb_prp is set and skb_std stays NULL. The
+"has_foreign_header && frame->skb_std" bypass in hsr_forward_do() is then
+skipped. The frame goes through prp_create_tagged_frame(), which calls
+prp_set_lan_id() and rewrites the trailer the user supplied.
+
+At the end of the series, that skb_prp clone also gets no socket owner,
+so its TX timestamp is lost.
+
+hsr_dev_xmit() also always adds HSR_HLEN when hsr_hdr is set:
+
+    if (has_header)
+        hdr_len = ETH_HLEN + HSR_HLEN;
+
+PRP uses a trailer, not a front tag. On PRP this places network_header
+and mac_len 6 bytes too far into the frame.
+
+The later commit "hsr: Assign a socket for cloned skbs" says "This does
+not consider PRP part of the stack". Would it be better to reject the
+inline header on PRP devices, or to handle has_foreign_header in
+prp_fill_frame_info() as well?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014-hsr_ptp-v9-0-2d20a2a0f816%40linutronix.de
