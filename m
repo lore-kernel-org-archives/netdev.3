@@ -1,183 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03BB4A2E1F;
-	Sun, 18 Oct 2026 13:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD924ACC6A;
+	Sun, 18 Oct 2026 13:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792328648; cv=none; b=e9GczNiibYHO92AGriGDjd1wAH49DkzO4Bp7CsaX6UFzHfE7Sui58MlNM6GpxQM40V8CC6xvLulOyJO+MikPY/G8qfuUkOgbBcMqtninVXpGYvGk3Hhne40qUZyJTlvSy7C7zI2dYwSyDrwa89+91O92L7WCL5VPNbaqSMEdPqs=
+	t=1792328868; cv=none; b=QyRMa4Rb3Z8Pq3oYWSbbfEZkEErzlsxKlnyGLXkoclV7H6kZHqPYRbnI+H8LYeZ2+9eA8y1EIBP3NoPn3KC95PFd+PW3jL2H6YDlLtphsaDCVSZY3d/JdiFphHm5NTu49mWbnlwcfemhrroI7P5Gt/1A4rMSlV4Al9EvSBivAMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792328648; c=relaxed/simple;
-	bh=CTBZjPe5YoOg6Sl3T4WvyA9RXgJmWOuttfpvu3HaBeE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jNr1z+gos7D7qXbrBkSSSauG6qk1Emx6YoFCb5TdEKgdW8SWarOvzLt0Ol0kM+5xUK2PLlY3kzWXIbe/dPdf70DGlbpsNpdUxMWqOKjfr/abdJvVRxzzeYKmKCdr0B5ZaS8PxbwL63uaW/XvudZk2NRGc+ULAdDFzTupDP8l928=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FuymPHg2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792328868; c=relaxed/simple;
+	bh=8fvsV3EdUe4o9S9dwFPakZAm+8DuUBd0HU9GdQZt398=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IS6LJkro3292sPmBY/6NPzITd6BOOFxM7zWic0nQBJw+T9OszU3jexqakrLDAmlV/0WZYHqNQl7lh/51JH8DtOGZY76ccPveAa5bK1ZinlUwi3G26YULEoiIoE4w3ABec1BNHUeuMcCd6u6LogMtJVR3VeUzv5M39Xo1cRAQFks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=fNVwazYx; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FuymPHg2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA831F000C5;
-	Sun, 18 Oct 2026 13:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792328647;
-	bh=bNYaS60Hmvjj2uS9tm3yDAErMARRLjvnPsq/1nR9cIo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FuymPHg2X+uJjK3uDDh7LVvKs+ob4003AnLOAUg0tkMJZ/dj9mz2z3IJfT/d0+0gH
-	 MkpmGJP/Q8s53tuO6gIW4SBYO+3PYVdISM74yRWfrvjGb5mhf/J7Ihhv+fUWrfqLY+
-	 EZtr/6ZWrKctBXp1rTAOv5+lnBLFlMLtypKA4yMeoLykZFDMv7PrXaaj+6RjXhdSf7
-	 wU3Ey6/E2Fq6Rpnw9rUPgosbUSp48lmPEl9tdYIfvcj3F+yZGBGrd0QEQGFvAzeRdT
-	 jmtYCHtDyQw05ncY0QPvLTGgBdhlTaNM6zo7/FTjxruK4s1cuqgjQyczwuRHmyrP0x
-	 2kyl+d7K1nOnA==
-Subject: Re: [PATCH net v2] seg6: Fix unset mac header in SRv6 End.DT VRF
- decapsulation
-From: netdev-bot+sashiko@kernel.org
-To: yymhvert@gmail.com
-Cc: andrea.mayer@uniroma2.it, dsahern@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, co+98d7de09cd94fec5@bugs.sh
-Date: Sun, 18 Oct 2026 13:04:06 +0000
-Message-ID: <179232864641.3135.3823569541245857805@kernel.org>
-In-Reply-To: <20261017120144.3059-1-yymhvert@gmail.com>
-References: <20261017120144.3059-1-yymhvert@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="fNVwazYx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=+Gzpq1l6pKCs17WMz6bfBuoemMm27hA7D/+U5mMg/A0=;
+	b=fNVwazYxeJEJD/IOwoHxmWI3o0B3s8NsJ525CLmDDsK9weKZxu+71EgSh1cECL
+	9wM3XsqVpK+kYxaRL5zcgzO6Inq+RaI1/IUH9O0Kh+khx7f8Yqkh2ZWklMEcVUx0
+	YPHMfd8sN17dgNTk7dQZMhPXqxG+/RKMrhEY/6WmTaT7Y=
+Received: from 4CV529F122.company.local (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgC33z4TxNRq1VFhAg--.9618S2;
+	Sun, 18 Oct 2026 21:05:38 +0800 (CST)
+From: Ding Hui <dinghui1111@163.com>
+To: maxime.chevallier@bootlin.com
+Cc: alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	dinghui1111@163.com,
+	dinghui@lixiang.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	liuxuanjun@lixiang.com,
+	mcoquelin.stm32@gmail.com,
+	netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	xiasanbo@lixiang.com,
+	yangchen11@lixiang.com
+Subject: Re:Re: [PATCH net v5] net: stmmac: fix error path cleanup in DMA descriptor ring allocation
+Date: Sun, 18 Oct 2026 21:05:23 +0800
+Message-Id: <20261018130523.1935638-1-dinghui1111@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <12b18559-3e8e-4a09-94a1-0d303ad7c2c6@bootlin.com>
+References: <12b18559-3e8e-4a09-94a1-0d303ad7c2c6@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgC33z4TxNRq1VFhAg--.9618S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF15try5Jr17ZFWfCw1rWFg_yoWrCr4xpr
+	WfKws8KrWDXryxAr4DXa18W3WfC3ySkr45Wr4fKr17ursxZFySgF9IyrW5WFW8CrWvya1Y
+	9rZ8ua4xAF4DAFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_Xo7JUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0QIJNWrUxCJK5gAA3b
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi,
+Thanks for the review.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+At 2026-10-16 22:44:35, "Maxime Chevallier" <maxime.chevallier@bootlin.com> wrote:
+>Hi,
+>
+>On 10/12/26 16:24, Ding Hui wrote:
+>> From: Ding Hui <dinghui@lixiang.com>
+>> 
+>> __alloc_dma_rx_desc_resources() and __alloc_dma_tx_desc_resources()
+>> allocate resources in multiple steps but return early on failure
+>> without cleaning up what they have already allocated. The outer
+>> error paths then call the free helpers on partially-initialized
+>> queues, which dereference pointers that were never allocated:
+>> 
+>>   - dma_free_rx_skbufs() and dma_free_rx_xskbufs() dereference
+>>     rx_q->buf_pool[i] via stmmac_free_rx_buffer(), but buf_pool
+>>     may be NULL if its kzalloc_objs() failed.
+>> 
+>>   - dma_free_tx_skbufs() dereferences tx_q->tx_skbuff_dma[i] via
+>>     stmmac_free_tx_buffer(), but tx_skbuff_dma may be NULL if its
+>>     kzalloc_objs() failed.
+>> 
+>>   - stmmac_free_tx_buffer() dereferences tx_q->xdpf[i] and
+>>     tx_q->tx_skbuff[i] (aliased through a union), but tx_skbuff
+>>     may be NULL if its allocation failed while tx_skbuff_dma
+>>     succeeded.
+>> 
+>> Fix this by making each allocation function responsible for undoing
+>> its own allocations on error, following the standard kernel error
+>> handling pattern of cleaning up in reverse order. Also add NULL
+>> checks in the free helpers as a defensive measure, since they may
+>> be called on partially-initialized queues.
+>> Additionally, make __free_dma_rx_desc_resources() and
+>> __free_dma_tx_desc_resources() clear the pointers they free, so that
+>> the NULL guards in the free helpers hold reliably when the long-lived
+>> priv->dma_conf is reused across XDP open/release cycles.
+>> Free the RX resources in alloc_dma_desc_resources() when the TX
+>> allocation fails, as the callers only free dma_conf itself on
+>> that path.
+>> After __stmmac_open() copies a temporary dma_conf into priv->dma_conf,
+>> release the descriptor resources through priv->dma_conf on an open
+>> failure. This keeps the long-lived configuration consistent with the
+>> resource cleanup while callers only free the temporary container.
+>> Finally, hold RTNL while descriptors_status inspects the descriptor
+>> rings. This serializes the debugfs reader with control-plane resource
+>> teardown paths and allows it to safely report queues whose descriptor
+>> rings are not allocated. Skip queues whose descriptor rings are not
+>> allocated in stmmac_rings_status_show() to avoid dereferencing a NULL
+>> pointer.
+>> 
+>> Signed-off-by: Ding Hui <dinghui@lixiang.com>
+>
+>In V1 Andrew requested that this targets net-next yet this series kept
+>targetting the "net" tree since then.
+>
+>I think this is an omission on your side as you replied to the bots that
+>you removed the Fixes: tag on purpose :) You need to have "net-next" in
+>the patch topic : [PATCH net-next v5]
+>
+The "net" prefix is indeed an omission on my side. Andrew asked for
+net-next targeting back in v1, and I kept the wrong subject prefix
+when respinning. The next revision will be sent as [PATCH net-next v6].
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+>This is starting to look good, but as you need to respin, is it possible
+>that you split that patch down into simpler patches ? There are multiple
+>classes of problems being addressed here :
+> - Error paths being reworked
+> - Null checks being added
+> - Some pointers being Nulled
+>
+>It would make it easier to digest during review.
+>
+Agreed. Here is the plan — 4 patches, ordered as follows:
 
-- [Medium] In end_dt_vrf_rcv() (net/ipv6/seg6_local.c), the new code
-  restores only skb->mac_header.
+  1/4: add NULL guards in the free helpers and clear the pointers
+       they free, so that a NULL pointer reliably means "not
+       allocated";
 
---
+  2/4: rework the allocation error paths, making
+       __alloc_dma_rx_desc_resources() and
+       __alloc_dma_tx_desc_resources() undo their own allocations on
+       error, and free the RX resources when the TX allocation
+       fails;
 
-seg6: Fix unset mac header in SRv6 End.DT VRF decapsulation
+  3/4: release the descriptor resources through priv->dma_conf when
+       __stmmac_open() fails after copying the temporary dma_conf,
+       adjusting the callers accordingly;
 
-After the VRF rx handler returns, this patch makes end_dt_vrf_rcv()
-restore a valid mac header that points at the network header. It only
-does this when the VRF has not rebuilt one for sniffers. This fixes an
-out of bounds read during UDP GSO re-segmentation: skb_mac_offset() on an
-unset mac header gave a huge __skb_push() length.
+  4/4: hold RTNL while the descriptors_status debugfs entry inspects
+       the rings, and skip queues whose rings are not allocated.
 
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 53f7b24525759..8bc13420f9942 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -1200,6 +1200,14 @@ static struct sk_buff *end_dt_vrf_rcv(struct sk_buff *skb, u16 family,
->  		/* the skb buffer was consumed by the handler */
->  		return NULL;
->  
-> +	/* the VRF device had its chance to rebuild the mac header for
-> +	 * sniffers; restore a valid one pointing at the network header,
-> +	 * like any L3 device without an L2 header, before the packet
-> +	 * continues up the stack.
-> +	 */
-> +	if (!skb_mac_header_was_set(skb))
-> +		skb_reset_mac_header(skb);
+Does this split and ordering look reasonable? If so, I'll
+send v6 shortly.
 
-[Severity: Medium]
-Should this also call skb_reset_mac_len()?
+Best regards,
+Ding Hui
 
-As far as I can tell, skb->mac_len still holds the outer frame's L2
-length at this point. On Ethernet ingress, __netif_receive_skb_core() set
-it to ETH_HLEN for the outer SRv6 packet. decap_and_validate() only
-resets the network and transport headers:
-
-    skb_reset_network_header(skb);
-    skb_reset_transport_header(skb);
-
-On the VRF side, mac_len is only fixed in vrf_prepare_mac_header(), which
-always does both resets together:
-
-drivers/net/vrf.c:vrf_prepare_mac_header() {
-    ...
-	skb_reset_mac_header(skb);
-	skb_reset_mac_len(skb);
-    ...
-}
-
-That helper only runs when a sniffer is attached to the VRF
-(!list_empty(&vrf_dev->ptype_all)). It is also skipped on the IPv4
-multicast, PACKET_LOOPBACK and IPv6 strict/link-local paths.
-
-Without a sniffer, the packet leaves end_dt_vrf_rcv() with mac_header
-equal to network_header but mac_len still 14. It then goes through
-ip_route_input() / ip6_route_input() and dst_input(). It never passes
-through __netif_receive_skb_core() again, so mac_len is never recomputed.
-
-skb_mac_header_was_set() now returns true, so helpers that rebuild an L2
-header from mac_len use the stale value. For example, in
-xfrm4_remove_tunnel_encap() and xfrm6_remove_tunnel_encap():
-
-	skb_reset_network_header(skb);
-	skb_mac_header_rebuild(skb);
-	if (skb->mac_len)
-		eth_hdr(skb)->h_proto = skb->protocol;
-
-Would this copy 14 bytes of the ESP packet's outer IP header into a fake
-Ethernet header and then write h_proto into it? The skb is then
-re-injected via gro_cells/netif_rx, where GRO and taps can see that
-header. The BEET and iptfs rebuild paths look similar.
-
-Also, seg6_do_srh() used to reject these skbs for L2ENCAP and
-L2ENCAP_RED:
-
-	case SEG6_IPTUN_MODE_L2ENCAP:
-	case SEG6_IPTUN_MODE_L2ENCAP_RED:
-		if (!skb_mac_header_was_set(skb))
-			return -EINVAL;
-
-		if (pskb_expand_head(skb, skb->mac_len, 0, GFP_ATOMIC) < 0)
-			return -ENOMEM;
-
-		skb_mac_header_rebuild(skb);
-		skb_push(skb, skb->mac_len);
-
-That check now passes. Would 14 bytes of the inner IP header then be
-pushed as the destination MAC, source MAC and ethertype, and the result
-encapsulated and transmitted? The __seg6_do_srh_encap() and inline encap
-paths look like they build a fake L2 header in the headroom the same way.
-
-I didn't find an out-of-bounds access from this, because the stripped
-outer headers leave enough headroom. Before this patch, the xfrm path
-wrote h_proto at head + 0xffff + 12, so the patch does remove that write.
-
-The UDP GSO crash from the changelog is also fixed, because
-__skb_gso_segment() resets both mac_header and mac_len before calling
-skb_mac_gso_segment().
-
-The new comment doesn't seem to hold, and neither does this part of the
-commit message:
-
-    when no rebuild happened, the packet now carries the
-    same mac header state as any packet received on an L3 device.
-
-A packet received on an L3 device has mac_len == 0. Would doing both
-resets, the way vrf_prepare_mac_header() does, make the code match the
-description?
-
-	if (!skb_mac_header_was_set(skb)) {
-		skb_reset_mac_header(skb);
-		skb_reset_mac_len(skb);
-	}
-
-> +
->  	/* when a packet is received by a VRF or by one of its slaves, the
->  	 * master device reference is set into the skb.
->  	 */
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017120144.3059-1-yymhvert%40gmail.com
