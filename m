@@ -1,86 +1,76 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773E73ACEE0
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 11:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D84B476059
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 11:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792322655; cv=none; b=BRW0ZhQzsoPY7YJGYBPxmapIf18cDga8M08DuUEnBD6EGJQk7T3Jej/06jd+nuZrYK25X0xUB/olO0toggPVdAUawb6C13o6qdx5H/q3lqspFluUPVyyUuVYyESVFgeqQGhP0flPMshn7Et5IkWWJqAz6oXGb2kJ2NTuJKb82wQ=
+	t=1792323006; cv=none; b=Lb3lCQhfL0aB/+r4jZbzRtCYlvyKTesbaBmgl+4Kzn8Bdq0t7R97CJMCB1zOKKBodDK5vLkNMclmW5jrZci0efWNNcKdtbtNqFstQrtaqQnaLZvLiPIvaw2EfMl6/v2Fkc8Rky/mS9HnuJAYw3D59GISE4nKezMPPplsidLs8A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792322655; c=relaxed/simple;
-	bh=+7p3xwRNtCx4HdpJlQfvshSN4t2hw/+vLxkAWi01ZAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhymd42XYnF6jgzO4LDGvVqsFv4t2j7rTKDU9Hs0E6PkmNPshaR2MVEsUbKwZNdIe2kzwnrkXWUqh+0RBLqr4bJnqQPoT0soqgCaWX+cPnxDBUPj7AE3YKfJdhMsde+/IP9OHD06G0V7pXQfCQTDx4zbkPKO4yvoJ20F8p+3vKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=r29YhBIJ; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	s=arc-20240116; t=1792323006; c=relaxed/simple;
+	bh=z9mZ1nkUPH//WXspdQ7uPbIwDfgZdqWERRmaO6Hli4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P4qmvmtvB02OoTFGYCEZqdseSqkWxm322rjDNrOr/Tp6elsXN82hxR4DIioxdXjnPQcX/uCMg25+Mhdkw5BSZpz7ffkif5zTMuyxPhOW0x1KZSTE8MuE77OG/ADDBwJGQ1EHklFam4Z+fTxtj+usXEc4m95PcRLT8A2to13jXeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PjjZIECs; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="r29YhBIJ"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c40e02b2ebaso176962866b.1
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 04:24:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PjjZIECs"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-89dfec5132dso26928b3a.2
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 04:30:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1792322653; x=1792927453; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+7p3xwRNtCx4HdpJlQfvshSN4t2hw/+vLxkAWi01ZAQ=;
-        b=r29YhBIJ5kulnDAxXvlytJq9FSuRdUL6HubyancxWQ0cGFtgVvy2etvgtS//31Auki
-         q3xZS1sRuXhpTzFVOxBlSHqv4QKlTd2+y6/HpS8VsFpwT1ZxzIED65bCn/cWpuT7oNun
-         8IVwddZikt0gBee5RXFp+GWQLOVFnzKsSYPrOCKKbQNar8zYzAyV8LOJuXTs2TjMBUYD
-         o2RPL2UrmNFFAywZIwmiZwmhChcCUPydD0ZAQFqScinekOOqdiChB+4XtKow+5FSvsag
-         +opxWHhu8yYOX8uXnSN+FUKI+PMIDg3QlBxy6Q3r+IWQcifCJ4fZUwM+cQEmWcIygLZV
-         Wy8w==
+        d=gmail.com; s=20251104; t=1792323004; x=1792927804; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iv8yp98/kiK12Je0YsBkzTzUev6Y+uj8yzE4h7Pr6dI=;
+        b=PjjZIECscdpymnIA8mlSUDvnOisC/CEzSRhDuh4PSFSuxAydCiDWzWNU7OUw/9vmuR
+         3RvFPYbWyLVexONIdOUMPF99MjfqYDr0xw0YXW89kYtrthnVfzHvwtvbwp1w9RLJujd9
+         oc384QEgZWLwZ9bxIpOhJpVFs8wPJSveGfrlWUY0UeUk08gZiMXW/tZN80+s7IZQxnD8
+         vyXm0Mno8/D1jRAIlHrdY7r2EuKxbViXYRBINYETj1mMHL+03jGg5OCn501IV61HonFq
+         X4s5g8Z2NdtLlE0wFGvVfzWqX9B9Sl/WRNLTT0gwu7VMEpO/jsj7/y+KCEE8ctr7rZGk
+         +31Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792322653; x=1792927453;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+7p3xwRNtCx4HdpJlQfvshSN4t2hw/+vLxkAWi01ZAQ=;
-        b=H9tH1+Gy3ekUkfPL8Rr5RT6Bsryy0+n/o5oG2Kp/AoGYbp9sLk/BzLvHNl2LSZwAzJ
-         gftrQtG8/oZig+DcMPteZiiGtwEwjooRpp3wq+J8CETUlZARUdY2ZAovUO6qkPrQ1NOR
-         bOMLVkLaWQjtZRdiS/DgjfQFjKBz+IMndDscL2W4eku3umc6tDSptyyOqqLjIvzRDcr6
-         /I/6df/ExUik9IPv5y+c5/NX9MXYlhyi56KwXis82pRdTdUlLJ9YDQXnCUpJMWaLLddI
-         +REtX5urx5Qex7plc63oHRrbyavnU1048vAPh+0YFFkkmO145ymumd8KWfcDyo2IUvV5
-         Mmzw==
-X-Gm-Message-State: AFq9FYJkDdleIktkpH0B6Xj14fiwfhjTotdUVe/2AsxvV6xFikqZ/ofq
-	LxTLOtapoEecombpuwrvOpcq7e4Lyr9ji/eeMRQK/yOpfr/VkHhQECmZfqc5ID14t2TZW43C5wT
-	sft/r/KmTAGY=
-X-Gm-Gg: AYBFou3tuta5lNOz1yo7pYQRkWORDtX9HF5XcMSqAHUBdg4Fg/I/iALDGd7Z/rlfvP7
-	JgunWn0s9emr8nUz5WRYiKjVn/J8k7YUbgUUuCasCA8gph5XrCRWwESTVtC3BpRxXGHR21t0jGl
-	Vet6x9T/RtE3p7F4ONnawZlebYR5mNBtPQZU0r8AaClWqB/19Y2Phvg4BYJH6ifK3/l+rzcdWaU
-	m6mHzEVy9uLsaC9Aehm+iImyuMlkBpUsCrOeJojnPkjeXx7HYyMb8sx18BHbkrZzzCnLa/6DlJo
-	cXHkN26+rzoYrBvOw/yYJuhPULcBIIALUwElglIWvg3YVi3uptBadZ2AqpTscSjDnQsZtYc0YIB
-	VATzn+rukhSBd5L7EFKc56CBm1G2BexBTrXZAv14yZ3CdsQGi5dWOl1x8YtgzTWq6IfoVGes7JR
-	Nnsq/NFO2eIUYozGunz/J2Kt24VkyMGyzXJuo7dMuTXwzotx00Bv0unvPCGWRh0UVxClKrgRyU5
-	lOCbg3UcojkUL7FKzfcyfMGI/gfv9zIQd9l9mV/yYdVzVCTIyrLsOJZUL8E4XcjmZ8xlJyLV8hr
-	uUrJ74Dv+vxq1I7BEBzJ1PPDw7KYo6oQSUh6NrCZsOxMePbnuG9UnI2sodZepHlFl01dJQwC3ia
-	qZfrGXbvW0fpAfKNelsMuDuIgmAPt8S6pOTK/wRh8o0U2esLsZaLM7rUmIHfc6hqXUolFgY+L1s
-	ivq41feuDNDw==
-X-Received: by 2002:a17:907:c819:b0:c3e:d0ca:d2fd with SMTP id a640c23a62f3a-c419d8387c9mr321040266b.12.1792322652341;
-        Sun, 18 Oct 2026 04:24:12 -0700 (PDT)
-Received: from Desktop.fritz.box ([185.181.130.213])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40919c1282sm256561466b.63.2026.10.18.04.24.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 04:24:11 -0700 (PDT)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: netdev-bot+sashiko@kernel.org
+        d=1e100.net; s=20260707; t=1792323004; x=1792927804;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iv8yp98/kiK12Je0YsBkzTzUev6Y+uj8yzE4h7Pr6dI=;
+        b=TvxMrQSIqEz+t2lukx1X6OoJEFZJcyVe24oVmX87AIiumO6kw8E8iOCBzBL9p1osrw
+         RwNMkMZ2lvML7go3x9RQvAR1bfpV7aXpXTPrUrvuL5/LKgZAVIRWr+XRpj12zjyUy8Hr
+         jXAoOQMYOYBdbg5oocJJZDWSLv0B1Ny2Yueee0Rpiof8rUG7wQ25uyZgVISHqOGAes1I
+         iJlauTEOTnYWn6kT37k7CC9uNkfDFMPB3jgvHpWsJObHU/N9Xi5b6mIc/H+d/b0+o2rc
+         eP2lZDeCltBsFemZupYoKCkxJWHPJLK9evGADiPbsHnZaT4mBmT+ZcqBvxQ4YI8JvFp5
+         NkDQ==
+X-Gm-Message-State: AFq9FYJg0pQty6x6nPncaSQeWavxuufI0QehVNZzMBFhMM0uWt2UnxaR
+	sTDL5ug+6t4cfetsEVYkgSFyuluJOzXXzfHnNnEx4wJrSW0SknSMf0w6
+X-Gm-Gg: AYBFou002KttFGafU9LV4etxMKNp7qnwf8RlzgmFMF2jnFozHa1Vncmh6MjP+IDlhV3
+	bNI0dEVb2MojqxQpOavQpsbTj2a3JQOdBI+PHUPFHXJqLhqW/S8C0AwiGkCrZPymIHyQyja6n/n
+	iDYta/9PN3cNaH73XhWRjDaOP7bGEMpqp6tZPz3cOWyIsy3OeZacLfCtTsKXpXD5CRyIiS8dfBq
+	zZj4jfZWlenH7eOb4uhzQJGGc5jSVIfBejzHMPBKmYxUK3fa4nitGep1L0v2OjQNfb5/gzh7/7m
+	v5BXZP8ozKzs/tiql3i709uRr2iALGKbjWRbp0DsgV9ynVdD0OR6wtjnjv+D9iYs41U1ja9Qqz4
+	czmgQqBen4396VZc7+nA1vWrLmlTyjvcB+ThMCJ+ups7FRgLOPnVgelQe93ZnuRk0NgMBq/pDTg
+	ikqgf3gqHNSmj2LCAJdqisyoZvHCzBAlEYFOhMGa8TMy7/5Ws5IEHO7QN/wp/4Pd4rVVXkcjedU
+	Tcpp5Cgam+xj88U/Q6GQafDfn0nOq4khqrmF7vmOyf2uDzDM0mwkz+bOf9fxhw+l6A=
+X-Received: by 2002:a17:90b:48cf:b0:3ac:e6a:1af5 with SMTP id 98e67ed59e1d1-3acee6f12famr6963832a91.2.1792323004381;
+        Sun, 18 Oct 2026 04:30:04 -0700 (PDT)
+Received: from localhost.localdomain ([113.102.237.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd9c4b4eesm9195365a91.2.2026.10.18.04.30.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 18 Oct 2026 04:30:04 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: jhs@mojatatu.com,
+	jiri@resnulli.us
 Cc: netdev@vger.kernel.org,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	steffen.klassert@secunet.com,
-	willemb@google.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ipmr: do not drop GSO packets that fit the MTU after segmentation
-Date: Sun, 18 Oct 2026 13:22:07 +0200
-Message-ID: <20261018112207.15005-1-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <179172627842.434549.17722584347227331391@kernel.org>
-References: <20261010131842.2157365-1-julius@bairaktaris.de> <179172627842.434549.17722584347227331391@kernel.org>
+	pablo@netfilter.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net/sched: cls_api: unlink indr cb on a failed bind
+Date: Sun, 18 Oct 2026 19:29:55 +0800
+Message-ID: <20261018112955.61470-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,7 +79,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Superseded by v2:
-https://lore.kernel.org/netdev/20261011162957.1328474-1-julius@bairaktaris.de/
+When a device is bound to a shared block through the indirect flow-block
+path, flow_indr_block_cb_alloc() links the driver callback on
+flow_block_indr_list.  If tcf_block_bind() then fails, its error path
+removes the callback from driver_list and frees it, but leaves it linked
+on flow_block_indr_list, so the next flow_indr_dev_unregister() of that
+driver walks the freed callback.
 
-pw-bot: cr
+Remove the callback from flow_block_indr_list before freeing it.  That
+list is protected by flow_indr_block_lock, so do the unlink under the
+lock through a new flow_indr_block_cb_unlink() helper.
+
+commit da94a7781fc3 ("net/sched: cls_api: remove block_cb from driver_list
+before freeing") fixed this same error path for driver_list; indr.list is
+the link that change still misses.
+
+flow_block_cb_alloc() initialises indr.list, so the helper is a no-op for
+the direct (non-indirect) callbacks that are never on the list.
+
+Fixes: 1fac52da5942c ("net: flow_offload: consolidate indirect flow_block infrastructure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
+---
+v2:
+ - unlink the callback under flow_indr_block_lock with a new
+   flow_indr_block_cb_unlink() helper; v1 called list_del_init() without
+   holding the lock, which races a concurrent flow_indr_dev_unregister()
+   walking flow_block_indr_list.
+ - initialise indr.list in flow_block_cb_alloc() so the helper is a no-op
+   for direct (non-indirect) callbacks.
+
+v1: https://lore.kernel.org/netdev/20261013162949.25622-1-q.h.hack.winter@gmail.com/
+
+ include/net/flow_offload.h | 1 +
+ net/core/flow_offload.c    | 9 +++++++++
+ net/sched/cls_api.c        | 1 +
+ 3 files changed, 11 insertions(+)
+
+diff --git a/include/net/flow_offload.h b/include/net/flow_offload.h
+index 70a02ee14308..b8ca8cc0a241 100644
+--- a/include/net/flow_offload.h
++++ b/include/net/flow_offload.h
+@@ -640,6 +640,7 @@ struct flow_block_cb *flow_indr_block_cb_alloc(flow_setup_cb_t *cb,
+ 					       void *indr_cb_priv,
+ 					       void (*cleanup)(struct flow_block_cb *block_cb));
+ void flow_block_cb_free(struct flow_block_cb *block_cb);
++void flow_indr_block_cb_unlink(struct flow_block_cb *block_cb);
+ 
+ struct flow_block_cb *flow_block_cb_lookup(struct flow_block *block,
+ 					   flow_setup_cb_t *cb, void *cb_ident);
+diff --git a/net/core/flow_offload.c b/net/core/flow_offload.c
+index 5071d7fe6ce2..62bc2eb6e0da 100644
+--- a/net/core/flow_offload.c
++++ b/net/core/flow_offload.c
+@@ -266,6 +266,8 @@ struct flow_block_cb *flow_block_cb_alloc(flow_setup_cb_t *cb,
+ 	if (!block_cb)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	INIT_LIST_HEAD(&block_cb->indr.list);
++
+ 	block_cb->cb = cb;
+ 	block_cb->cb_ident = cb_ident;
+ 	block_cb->cb_priv = cb_priv;
+@@ -525,6 +527,13 @@ static void flow_block_indr_init(struct flow_block_cb *flow_block,
+ 	flow_block->indr.cleanup = cleanup;
+ }
+ 
++void flow_indr_block_cb_unlink(struct flow_block_cb *block_cb)
++{
++	mutex_lock(&flow_indr_block_lock);
++	list_del_init(&block_cb->indr.list);
++	mutex_unlock(&flow_indr_block_lock);
++}
++
+ struct flow_block_cb *flow_indr_block_cb_alloc(flow_setup_cb_t *cb,
+ 					       void *cb_ident, void *cb_priv,
+ 					       void (*release)(void *cb_priv),
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index a9f54988561f..9e4ea3715419 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -1665,6 +1665,7 @@ static int tcf_block_bind(struct tcf_block *block,
+ err_unroll:
+ 	list_for_each_entry_safe(block_cb, next, &bo->cb_list, list) {
+ 		list_del(&block_cb->driver_list);
++		flow_indr_block_cb_unlink(block_cb);
+ 		if (i-- > 0) {
+ 			list_del(&block_cb->list);
+ 			tcf_block_playback_offloads(block, block_cb->cb,
+-- 
+2.54.0 (Apple Git-157)
+
