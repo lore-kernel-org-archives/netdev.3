@@ -1,34 +1,34 @@
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E1322E3F0;
-	Sun, 18 Oct 2026 00:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F854308F26;
+	Sun, 18 Oct 2026 00:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792285025; cv=none; b=ksQAzD1naqXxPEBsN8YG/m11535ZYToPzQ6BzbZ0f6gbEapUjcSVPUlp0igjPDNvF8Zm9/87nphmSl6JLnuDYs7Nv74zkaOlAoWMXhpuuB6lQA2LYM2pgGaPyX89VPp+b/toz5dIx/as9IQwsGlXqBGPj4sLjFwu+e0CrKIuUbw=
+	t=1792285028; cv=none; b=cqHQzioNvov9v081CbqWRyIzVjjZPN63kRA0v+LdpfWuPZhi4bHViTx/VVzQ2yoYX4aOx+SeCmjYJzRzG1U4HHSJmL8KVgbjKXLpkbdgnfsyW0u7ExPNKUM5cCCKmY/2yBYtuUhSHUQ/v3pegpvfHuV0e0kI/R4VP9an1pKiL/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792285025; c=relaxed/simple;
-	bh=vHfG6ek6mmDWQMA7fvWDOb2KANKCq0g3xL0RWRaZcUY=;
+	s=arc-20240116; t=1792285028; c=relaxed/simple;
+	bh=M8EiWmnZPblM9PRYIkf275JcEMCI/XIBLaF9VyXMPSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCXn2KODvlzKLy3PI9ZAycuCqPfnXcFfgTp/O+ra8r6Y6qjwiRNYwLMu19qYMn//Ezh01klz3vMXF9mC11kKtKkVtQdxdNjniLWLg3qPbgoJo8TNrYELZlVVdbelh542LPTiRKVs91SZm783dtZBIboxzbuVvJmgcRMROJ8tUBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=T/hWyl4S; arc=none smtp.client-ip=217.70.190.124
+	 MIME-Version; b=uSkVDxuUFN0FVGdGaOu65pnikfAw9fFENaefmLo1VPMJswCVsiLBr4rUcpo6HxiodQd0dyfjnnWKqqDXrOlPYsLJLajHA6zaK45ngl1cUfnFE/RX8MmxzHnHPOMAIWuohPPFg81AK5jOT/IlYaTYVeNFA1pmIVn+H3a5qabwyYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=XnAq4c5j; arc=none smtp.client-ip=217.70.190.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="T/hWyl4S"
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="XnAq4c5j"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1792285020;
-	bh=UoQnxMcgyfhOtRq5FX6exxduFWSTRKmypUdpnnBwlC8=;
+	s=2025; t=1792285023;
+	bh=Br3P5vkq2nYPAa+oveIQfLLzQmD/uC7QmebOvbDBymE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/hWyl4SUHD2YF3f42Djesm7qI5lyFHSLKXfssAMesOhHO3Kn2uS7Oqz3Edkfq4OC
-	 /3HseTbi0uy8EGyqfEDj74qmvyf5HfsHNAPxm5AthG1+mY4qzw4+V9yQlvAQh+O2+r
-	 89ecxsAFv54zrFrPrsa8nrUlGHJzYVQMxWKRc06BO6n3GqsE81z48xVVGBpQiF31kH
-	 MQl1Len0ou770cWppWU2Ec5Tf67whAJl0GTLvvDuRMRgiGDUCjsUPkleeU6j1gvP9B
-	 fwnuFmIWI0HQeKBQLSQo8DROoHUFdT8jLWaATkpsJ1XNN5ryuLA/DOVbhvxD4LUKN+
-	 xr5Z9Rxwdkz0A==
+	b=XnAq4c5jm6JC7QWWABpmhHzWb/Dkw/XewCAhkPC3ZO5E1ATMkhUaiu+Sgx0Pw6TKz
+	 BatbDwwz+fFeyjqvQsET1J4y2ElZ6Nzz3mzy13CmmbreFdyh4Cyiqui6O6BXKImFZ1
+	 0F6Mw/i/bTrq7ALeOFB2Zl46aE377nJ9a/FA2oI/Mz+TKILzODFMuJ7rHNbyT4pPw/
+	 sxJAoYADyqCwAEMcJpyHQ5erTXlgKbU5SFis0ZqhaiyFGrKSwNeRwYTp1hROmc3Tqb
+	 mqu4IUuNR3ytWo96oZbMW19pXTn2r2NWoJiqiYLKCwJX6e+NSR0xrgvTVb9vFpRG/l
+	 sUDRgi7H2skdg==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 2554160077;
-	Sun, 18 Oct 2026 02:57:00 +0200 (CEST)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 2335260081;
+	Sun, 18 Oct 2026 02:57:03 +0200 (CEST)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -39,9 +39,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net-next 10/15] selftests: netfilter: fix return value in zone subtest
-Date: Sun, 18 Oct 2026 02:56:33 +0200
-Message-ID: <20261018005638.1776148-11-pablo@netfilter.org>
+Subject: [PATCH net-next 12/15] netfilter: flowtable: set inner protocol when popping tunnel header
+Date: Sun, 18 Oct 2026 02:56:35 +0200
+Message-ID: <20261018005638.1776148-13-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261018005638.1776148-1-pablo@netfilter.org>
 References: <20261018005638.1776148-1-pablo@netfilter.org>
@@ -53,102 +53,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-zone subtest prints FAIL, but did not set 'ret=1', so kselftest
-framework reports success.
+Pop the outer tunnel header and set skb->protocol to the inner protocol
+derived from ctx->tun.inner_proto in nf_flow_ip_tunnel_pop(), instead of
+bailing out unless the tunnel carries IP-in-IP or IPv6-in-IPv6.
+This is a preliminary patch to support IPv4 over IPv6 and SIT tunnel
+flowtable offload.
 
-While at it, also fail when "nft -f" returns an error.
-
-Noticed thanks to a (broken) local patch that should have caused this
-selftest (resp. the kselftest framework) to report a failure.
-
-Fixes: 33b8aad21ac1 ("selftests: netfilter: add a vrf+conntrack testcase")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- .../selftests/net/netfilter/conntrack_vrf.sh  | 25 ++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ net/netfilter/nf_flow_table_ip.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/net/netfilter/conntrack_vrf.sh b/tools/testing/selftests/net/netfilter/conntrack_vrf.sh
-index 207b79932d91..2dbfabaadf4b 100755
---- a/tools/testing/selftests/net/netfilter/conntrack_vrf.sh
-+++ b/tools/testing/selftests/net/netfilter/conntrack_vrf.sh
-@@ -84,7 +84,7 @@ busywait $BUSYWAIT_TIMEOUT listener_ready "$ns1"
- # as decided by the first iteration of the ruleset.
- test_ct_zone_in()
- {
--ip netns exec "$ns0" nft -f - <<EOF
-+if ! ip netns exec "$ns0" nft -f - <<EOF
- table testct {
- 	chain rawpre {
- 		type filter hook prerouting priority raw;
-@@ -105,6 +105,12 @@ table testct {
- 	}
- }
- EOF
-+	then
-+		echo "FAIL: cannot load testct nft ruleset"
-+		ret=1
-+		return
-+	fi
-+
- 	ip netns exec "$ns1" ping -W 1 -c 1 -I veth0 "$IP0" > /dev/null
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index c8c29a9a1684..29d1a9f4a362 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -372,6 +372,11 @@ static void nf_flow_ip_tunnel_pop(struct nf_flowtable_ctx *ctx,
  
- 	# should be in zone 1, not zone 2
-@@ -113,6 +119,7 @@ EOF
- 		echo "PASS: entry found in conntrack zone 1"
- 	else
- 		echo "FAIL: entry not found in conntrack zone 1"
-+		ret=1
- 		count=$(ip netns exec "$ns0" conntrack -L -s $IP1 -d $IP0 -p icmp --zone 2 2> /dev/null | wc -l)
- 		if [ "$count" -eq 1 ]; then
- 			echo "FAIL: entry found in zone 2 instead"
-@@ -137,7 +144,7 @@ test_masquerade_vrf()
- 
- 	ip netns exec "$ns0" conntrack -F 2>/dev/null
- 
--ip netns exec "$ns0" nft -f - <<EOF
-+if ! ip netns exec "$ns0" nft -f - <<EOF
- flush ruleset
- table ip nat {
- 	chain rawout {
-@@ -158,6 +165,12 @@ table ip nat {
- 	}
- }
- EOF
-+	then
-+		echo "FAIL: cannot load ip nat nft ruleset"
-+		ret=1
-+		return
-+	fi
+ 	skb_pull(skb, ctx->tun.hdr_size);
+ 	skb_reset_network_header(skb);
 +
- 	if ! ip netns exec "$ns0" ip vrf exec tvrf socat -u -4 STDIN TCP:"$IP1":55555 < /dev/null > /dev/null;then
- 		echo "FAIL: connect failure with masquerade + sport rewrite on vrf device"
- 		ret=1
-@@ -184,7 +197,7 @@ EOF
- test_masquerade_veth()
- {
- 	ip netns exec "$ns0" conntrack -F 2>/dev/null
--ip netns exec "$ns0" nft -f - <<EOF
-+if ! ip netns exec "$ns0" nft -f - <<EOF
- flush ruleset
- table ip nat {
- 	chain postrouting {
-@@ -193,6 +206,12 @@ table ip nat {
- 	}
++	if (ctx->tun.inner_proto == IPPROTO_IPIP)
++		skb->protocol = htons(ETH_P_IP);
++	else
++		skb->protocol = htons(ETH_P_IPV6);
  }
- EOF
-+	then
-+		echo "FAIL: cannot load ip nat postrouting ruleset"
-+		ret=1
-+		return
-+	fi
-+
- 	if ! ip netns exec "$ns0" ip vrf exec tvrf socat -u -4 STDIN TCP:"$IP1":55555 < /dev/null > /dev/null;then
- 		echo "FAIL: connect failure with masquerade + sport rewrite on veth device"
- 		ret=1
+ 
+ static bool nf_flow_skb_encap_protocol(struct nf_flowtable_ctx *ctx,
 -- 
 2.47.3
 
