@@ -1,240 +1,419 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011028.outbound.protection.outlook.com [40.107.208.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F80361952;
-	Sun, 18 Oct 2026 21:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792359827; cv=fail; b=p8dzukNme8v5voj5CgI8aZvCx3tMguQ6COZcEkjaGgVTrgdjzEx4bPotTkKzlR6BmLfGAT804fw9CYSlkldN7BMuD6m5AqJCzypR6V0wijytZTZiKM7CHpY2TNykQEq2VWB7Ln0TOXiRwgHnzr+WGgZDk/sNg6dz5w+8UYIsBBE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792359827; c=relaxed/simple;
-	bh=HWuWm9SFgFFtJUjyNY2hoT9aMm0liNYu672wSr8a8/A=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=mK8qnW/+hldkBcwZb6dWj+yWktaHw55eWnEVEEF4FRUBteLntidyK8TBuD2FFA1wiGI4BG5E/YngwLgYeHozKaXHYvzPWktkJqXGEz+V5YBIDoFCEtXCsehufyfxkk1H1Ya6onKkaLL7wRSfjx2Fu5rVXYv8WaasVIXmRu8sdf0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MhOCjrLb; arc=fail smtp.client-ip=40.107.208.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2381D3B3C0A
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 21:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792360548; cv=none; b=ro1WYrjrkGJ2tKmTnQfoGNFASomsJZVUJ2uA4xzvWmuWYNyjUQpmCeGuQjt9bnAfPCyMEy0XIqUHBoc3Vms10z9tTP0b2OIMKQV4rCqLwL2TdnZYqnBVf5Zoe5OvhH0tuROzkTbamR96/XyvUr5TE3bL2g8cVguIH8Eh5x9eLUI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792360548; c=relaxed/simple;
+	bh=/81qyDB2ZTDWuhk8Dbjw7F0rpwlTXhCjHBMyPIqZqPY=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZMzIr0CQlMLJ/BG86+p3XBVRb9tk5KoKpmh2KvoU5/N3x1Hh+seX+Kuu2EYCbwcEQYWKz8JXAWPk0PGkLO/6pPzkl0/SAu16ONCR7yEHbmQB9LwAXSSMs9qsgndwWZATheZOevRiEFMnNq82PE9pwUa5uBhxSXFzL6Q0kMtBYfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j1g05Qn7; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MhOCjrLb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qSzspg8O6eBzpAbo+/U+4yHLoxGNbJAYVAGk6PfWOKJi9m45P3tkQ5QoUxSbxk8xXaiuur9Jop9M79JwKH909quZrEzEM/ySMrlDd2RrnWK5N1dQxTH+ACAL1NbN1V61cI3Oqtu6S3PnRfX1ljzxnyke+Z3F1NQ6THsf953O101OY5+rYqrUUZEhqhh7ZUeT87iNId7pbU2xZaJlnJMgTmRpsX6ca8Ljt6mTMZL7/tkhlqo58jwEFuqgQaX3BfwHtjhkRcoqWOfvc87WW12cZC0BGRIi5aVspOk4Qln5f0+/OjAES2DgJCp7mcFKn1tDdCDxv6VgHlttKDq0XuuSNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cHjS9f1zRMASDHliwAaEAVNXH1wT/KSRmHgXTYKCO1U=;
- b=epuFsOZ2+y/hl8Nk78Nz3gIs1NZQhJN33w/a1RFTzqmuXqLvQYkJsKjQWX3sgYVar0Yxc+mEdYA7v/mxLFFEc+AK6fTPNbyGuUOctZS1/Pp+sjpOEd5YsYw/iDn4UA77a55ZkAY7Hr5jqqKJ+elMrx/eBfg4XyPZ4T4IrPrU17llQJ+Fxw3yv/B/DplHTPty9i9QcC7W6F06GZAyk2Zrw+geo6FQGnHhzi7PA2RUwA3zIczEPtsRN/hvBN9hV6xEobeIurXbKHAKjiFy5lV1TZBuRsTL444C3rBf3F/WPD/lFe58JBv5Dzaim3q0VTPzQVbgbsCHPwIivmTF3LqnOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cHjS9f1zRMASDHliwAaEAVNXH1wT/KSRmHgXTYKCO1U=;
- b=MhOCjrLbNVopUQOEx0S5gh1vmL7M8ewRgb9L06isxFX/3GfKtyJvZpUfP9fXLsEPS+OGA8WhEcZKfOtYiVHn31XedOaXZkB9fCqZxgMbgg0XULERHh2ZSLeFjHVeb05jNgJhOms1qfdkH713OGMaValufsKMvY84JAK9vSpKpCmuIo6cK/Lr1TyMs82/vT3IVB7NwXovt0GY1LTHx4hs/Eksljl1iv2zMuDK+0UjlOy1G9DtJoYgkttV4cQm9aOvmumkqf3pdgGy9GlBAeQ+bhRM9uBwHzojfY+xXI7ZyWhry1GRHMhN/THu7dgRWtcsHY2QYvFAyfEA5SvkfcwT0g==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL1PR12MB5873.namprd12.prod.outlook.com (2603:10b6:208:395::20)
- by DM3PR12MB9391.namprd12.prod.outlook.com (2603:10b6:0:3d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.15; Sun, 18 Oct
- 2026 21:43:40 +0000
-Received: from BL1PR12MB5873.namprd12.prod.outlook.com
- ([fe80::e8aa:dc7d:992f:93df]) by BL1PR12MB5873.namprd12.prod.outlook.com
- ([fe80::e8aa:dc7d:992f:93df%4]) with mapi id 15.21.0522.017; Sun, 18 Oct 2026
- 21:43:40 +0000
-Message-ID: <b3e5ce46-b6a7-4b90-b92e-2ee737ae79cb@nvidia.com>
-Date: Mon, 19 Oct 2026 00:43:27 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] net/mlx5: HWS, fix modify header pool match
- for copy actions
-To: Alexandre Cassen <acassen@corp.free.fr>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Moshe Shemesh <moshe@nvidia.com>, Hamdan Agbariya <hamdani@nvidia.com>,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20261012101937.1335231-1-acassen@corp.free.fr>
- <20261012101937.1335231-3-acassen@corp.free.fr>
-Content-Language: en-US
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
-In-Reply-To: <20261012101937.1335231-3-acassen@corp.free.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN1PEPF000067F2.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c04::31) To BL1PR12MB5873.namprd12.prod.outlook.com
- (2603:10b6:208:395::20)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j1g05Qn7"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49e73611928so14849655e9.1
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 14:55:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792360545; x=1792965345; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mO8z2rdDr7jvYldNhIWGcld34J+7H1AXGt8+f2Y4wRM=;
+        b=j1g05Qn7bQT/vTqcmRC2e5bdVnoa+bPRbcOY2Qjci7DZ1SwH58WL61IONwyEebvg//
+         tJlUE+1WjGqvFcE/QT0wI4U9RloCEn7b3J35y/Ilsezo1caFMMwnJJYbFAs5jJqkH1zt
+         A5IBToL6JhEMVmTwI18gR64fV2qvWPAs3sXP+WIjHjoqwX9OI4kNTpRKykDiQErIW4Om
+         n3RUrzzcu8pRlbZORxlj5T/fxanZGoV7UnTH0TRD5nVr9DvMM9kSpx3uSj2yeSCyksqb
+         MxcXZdpfA3pv8prfeFcw5HdfJNqw9hCNRFea9Mf0kmWehx512hbexSM/+vUhoXB1J7JW
+         2Tjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792360545; x=1792965345;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mO8z2rdDr7jvYldNhIWGcld34J+7H1AXGt8+f2Y4wRM=;
+        b=LqcRlsve7bAwOoWudrM5VV7lhzy0JbjSt53Pt+pSoIiUbENizDPieQXi5kA/OUKdOR
+         mYwm1AwzJULK4ucaUKZ1q30hOdMhFyzlGcCG4XqfGe/TA00PECiLlm8m2AKX2GQj+Lp5
+         rbkKXSf2yqBNVTudkGvLzpP3XwbDaRBZLsj1DCeJKGmQV6vKTnr7v1UjI/OzW8x3HqBy
+         +3aBriP4vgJ4KXctWuF8J5UFumB+edxAdx9X1NXjDlqGM7XrSDRzo/Kqmjj35SDEEWyr
+         bv8LK6P38Lbpcr8LIYHw6F+MR6OLx813oEQMIuy+TzxUGLKt/Kyo9wuEmnfNimrWiPY8
+         Qfdg==
+X-Forwarded-Encrypted: i=1; AKwUvBxLKgbHARv3tgIWs7INpEFhm61yOuhaxKkoGhjLKGX6vk5kzJpua1JWUIEJZaxWYvFcQQaMNOw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIepwLit5wEfu15zYJtOgX863dPDVpbxRx2a+6fv7VKAGWVw/Xn
+	hJVmGcATotx7Vg1FR0c1STVHjfsh86KG/eij44m3nsUW84F3xnLYNKPi
+X-Gm-Gg: AYBFou1c/JmlBYupLHwo44IUPtfbGjo//YIdhYgHjzauAjC8qilmvE6e35ZBfDYT+NV
+	sdNvF+l54wr2+dZPMP1ZWQby2gv8Ir87vNhPXGdxzmtsS6gY5eDTtwisssMOJy0xifWT20h5a2V
+	Bnbx/HH/RauxMEVoW1E7oYvc7lQLsdxYIMmzJcn2z4fB7Swa8pIkDXmI/V5KaZekjxmdUhSQCy6
+	pT0D+SCfR4QxohdakntRAmHBYb0Td5rpZn5oDI6b5ms6p+q4L4VitnmlMcQX1kEYAuqQ/kPCKt+
+	s3S/+bpw8INJ9XGXxnYje+zCvnAGEX93IoxzDeil0+Sq9GXbkMrKuzboDjrwXhL+g8Xl66Fwy8g
+	NJ4vfYpRt+i158R7zl56qVm2DiaKv2oQoJuJfilU943qCP2ZOTK1rxwOnvNIje2VyuVXRzXkuJx
+	O2IPxwFmKGY6oGiYoJ6IyN2ne9EJ7Cuinch6jcXIls5eVg5TZcYeSXyMtm63O+3jrVUEkTqWf7D
+	5M8RKqfjLIxe16rkc/8qaLRz68jouMVgV6f7noAgbNrLWJI5pqLqZkIW9/iOw==
+X-Received: by 2002:a05:600c:5254:b0:4a1:e57b:667e with SMTP id 5b1f17b1804b1-4a1e57b68c7mr44096785e9.4.1792360545025;
+        Sun, 18 Oct 2026 14:55:45 -0700 (PDT)
+Received: from Ansuel-XPS. (93-34-92-187.ip49.fastwebnet.it. [93.34.92.187])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1d3e2e602sm233945255e9.5.2026.10.18.14.55.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 14:55:44 -0700 (PDT)
+Message-ID: <6ad54060.58e5e2d3.9d5ca.ba8b@mx.google.com>
+X-Google-Original-Message-ID: <atVAXtsBXdMec-Jo@Ansuel-XPS.>
+Date: Sun, 18 Oct 2026 23:55:42 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Stanislaw Pal <kuncy7@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: dsa: qca8k: report port statistics from
+ the MIB
+References: <20261018153658.209999-1-kuncy7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5873:EE_|DM3PR12MB9391:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85116aa5-3b3d-46e5-1dd2-08df2d60df75
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|18002099003|22082099003|5023799004|4143699003|11063799006|10067099003|261009223027099003|56012099006|41080700001|15866825006;
-X-Microsoft-Antispam-Message-Info:
-	76GPMbF9TsENltZfs4rJklXMXhxpCDoGAakXc5767A+/tBXEwxDcTanVGo4wCvcc8JoWlu/2I+T7ro6CoUwantIPXmdZHLlBY+sfcEEx4Eg+yMRQshWNwvZMi5eZri05F/1nxMmFF/hW2ulT1NzfnGSr1TwOB1EjQiITtcemf/zKz4saXmZcReU357PEg88M7bvqVUh18/5NCTNfaP7anbHcIJoLxA8B5ASnwjx3V6FtTASJzDM6a6tZHNOG7wpZ5a1KM7VQ+4aAtXivunMCrpxMdOyOdveM5Ykrxl49xAz/yFULohjxEbN+EXVnnFlTe6KDWyHk6ZiZ/aBYB0aNd7HQyVPuo2mbY0qaeMwwU2YLrP2A9U+L0G60vLnlK7xZAvOea70pcTcfVzMR0Jo1kaMiZ1DvrwOCFNbNW5Es9MuVlc85jtfeCxUNs9IA0gbRhGQERBbecR1IlZ/Y09sBt1nk0vLD1iu42neXP6FM4Pve+H/04gJisQs3iP7NKjJ36y+McVr7mQ0J1WNGs4gkTvzyvtdzRrNHgz00/Hu0Goske/uL0t0Qu92VKW3XS9wMTUvN+Ydn+fxdZgdLO/zqRCDTa2sYfVNuEdflOIpHFSXFU43dBYKbWHtoqb1kyc+3Is9G/0IU/LJcPFvsbWuRq+fNd9XIFiftSQeFhPBv7Fqll3qpmTpyG40zt3h8ZLBLrt7tQuIt1S66BVh0Yn1mxutkEFWmmGIYdteJHhCuhMiSlpEKvnBQDDpASyw5N8ux
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(18002099003)(22082099003)(5023799004)(4143699003)(11063799006)(10067099003)(261009223027099003)(56012099006)(41080700001)(15866825006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?THh1VFFiRHJiRXpnd1c0bnVCYWp5OXdsMUJsSGp3cFpyRkh6SG9tcWJFNzFw?=
- =?utf-8?B?V2c0YkpuQ3Z1WWl0TGtyVHFuTXVxNTcxL2VVRWRGaXlQendTejlJclNjajJj?=
- =?utf-8?B?MzNPSE43L3M2aitTWXlLWHVKTjNWa2FSc2sraEVNUVJLZnlKSW9XRXQvNDNV?=
- =?utf-8?B?QkVtTEd5QmpYVnNQV2ZUSjBSSk16WHVNbUo1T25qSzk2Uy9Sd0VrMlFOUVhN?=
- =?utf-8?B?eWd2Zzl1YmhLN2VEVHhoOUlMQng3RXY2blVEdm8wVGtIL2Fvdm5uQk1XeE0r?=
- =?utf-8?B?S25acHNESjJyM21NeHYyb0NNbDIxT1A0M1J3VGVTWTJROVhWemxXS0kyazll?=
- =?utf-8?B?QjRVa1JZTlhMWVV4dWN3TkNRdmZFRHBEQW5FK0tIM2JMOXpoaC9mdkVTVHlU?=
- =?utf-8?B?ektDVGkxN0ZWcEpxOVRUY21PTUZ0MGVhaHRSdkJaOHR3eVhVTEhkTnRpbisy?=
- =?utf-8?B?eVdxRTMxOTB4Q01WYXdIa3I1bVJOdFRlR2hIM28wbjVrTFVHeURoU2xQNFpD?=
- =?utf-8?B?clZzRStFcG1Ya2tRTlZ3UDVtNGxsbDkxeFlxME1zYnZ3dEwrUzJqT3ZYbk1K?=
- =?utf-8?B?ZWN4VUVmSm5DVE5HQWczajhOd2lrUVY3czgvQ1FreXdYc2oyZVQ2bytuS09m?=
- =?utf-8?B?dmhmYk9JQ2w1M0RiQWZ0UVJZQWV4QUpyTGYra0tzMWVyRW1ob1NtVlpZT2Y2?=
- =?utf-8?B?MmU5aFI4V2RBU3B6VE8wUnBJejRPTGdnTFVoWnhLQ1gxc3A5eEZPakltZWJS?=
- =?utf-8?B?MG8rbWxMbjhHL0RaQUVPYzh0SWVZNXF1V1ErWmlKNHN2SkcvVzIycTdja3RV?=
- =?utf-8?B?dFV5OEpaY0NJdFBqWXhyeTI4c2JzczgyeldqMVpNK3hTUnpLUmNicTRtdzND?=
- =?utf-8?B?aG1hSHlielcxWlN4U2V1dUNFY2FkcTVZMDlQRkFhT1VyUkE5Q1hqdUI5QjFR?=
- =?utf-8?B?eHJETnY4VWpYeUhPT1lVVXZiMUViWXZFVU45aWdMeTRad3JkbU1QMUMwcHdw?=
- =?utf-8?B?RjRXR0JKU3VLaEdFZ2FKZnZ6TE1pYlh0eDlxR0h6SUVwbU12UFpRZGNoYVEv?=
- =?utf-8?B?V3Q1SDkvNTZldUV0dzVyLzU0eGZZRk8vMDBZc0dDTm1Uc1g3QS8vVExzbUVo?=
- =?utf-8?B?ZngzeVM4eWw1dlgyVTNkMDhSb2VMSmZnZXMvQ3I1M0M1bXlNNVZiS1NvVmIr?=
- =?utf-8?B?L095YWRla1EyV1I3SC9hVXVFYWZhYUdvd0UrS3htL29jRC9BWlhNQ3RFdmVC?=
- =?utf-8?B?Tk1tM2JHN3JzRUV0ZGhGOTgxYURtWU9VWXBKN0hReE9ub3FiTkdaV2k1VExP?=
- =?utf-8?B?QmpzSVRxK0Nqb3lqcmNNT2w1OUdndm4rVjFiM1d2Yld3NjFnZDJrZ0VCK2Fv?=
- =?utf-8?B?ZnBuelJkc2V5Kys1Wi9uYTVlaHVnUEVTUTk5RDE3bStvbzdaUVBCZkp1VVY0?=
- =?utf-8?B?c2dVdW5OMkpGTmtvbW54anlUQ3psZ3hDUnV3dTlyZUxGLzRaQWIyckJaV3Zo?=
- =?utf-8?B?RjRwNlZPVmNhVmhFM0xhSW01cVhHcVBpbWgxRjZPejc0NmJOVEluOVVoSmJG?=
- =?utf-8?B?d0hlS0RPUUNsendKT3FCN1JPZ2lCelVxczFLM1hlbzFsbnhMN3FBeW1jNEdn?=
- =?utf-8?B?aGJqK2E4WGpxZGFwVjN2ZU5SS202VEw3dDV6OU9iREo2bWlxd1BqRE44S0tP?=
- =?utf-8?B?ZkZvVStYazBOWFMwUFcwMFlGVHo2elNmaEQrOS9Rb2k5dmwxek1Eem9kMldr?=
- =?utf-8?B?VURIV0pYMzN1SGphVFMvVEY1cU5UOGZrOXFneVd2UXNkcWs0K3JmeFpzSnh5?=
- =?utf-8?B?cS9FSHFSTzZ0MmtQN2RJM041MFpWaUpSVk5GVlFTM2V2TEhNNkowM0hRMnha?=
- =?utf-8?B?b05rNUJTVFBXdnREcmVvSmY0MENSWm1RZmFSbzMyLy9xeFdUdUNqajVhWE1t?=
- =?utf-8?B?R3NuNkVSQkJGVFNwVVZ2Q3RqRWdRWGFHUjYxTWZvQkNiK2pKd1N1Qnc0WitX?=
- =?utf-8?B?V1RBcS9RK2xOS0RPaG5vV3YxWjJkYzhCenpwbEZIM2JFeGJ5LzVNZjUrbVNx?=
- =?utf-8?B?bFhzMmRWRnZsSC9QVlF1MkJoVTNBa1BJVlhVS2Jrd1JKT1FFOTJMYzBDanc2?=
- =?utf-8?B?RHh6eENZWGs5N1Y4R3ptdTgvUUt3d0ZSL2JMZndMRWNDYTVRSWhvWTJ1NG5L?=
- =?utf-8?B?ZTFEVWJhNWxxUVJidHUvcUt1YlVZTjZVRUE4emhycVRHWmw3d0tCdTg0cThH?=
- =?utf-8?B?Y3FVSkZuOU5SM2NESU5zczF4ekM2cktSQllKcElITGJsaDRlNzVrMXRHUEky?=
- =?utf-8?B?R0JnWm5kQzJxeEhKU1U3NU1RNlNuL21RdzBFRHdEUGZXWEVTaGFsUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85116aa5-3b3d-46e5-1dd2-08df2d60df75
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2026 21:43:40.0238
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ztk53NYwWz58l0VCpwbnJh/MRzpJfguzkOkAsD2QenzkJCroS1I0RFipX5V346kpIPAmQ6deKFGgB6qa3H1Xsg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9391
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261018153658.209999-1-kuncy7@gmail.com>
 
-On 12-Oct-26 13:19, Alexandre Cassen wrote:
-> mlx5_fs_hws_mh_pool_match() compares a single dword of each action
-> since rules pass their values as arguments. Copy and add_field actions
-> keep their destination in the second dword and HWS reads them from the
-> pattern alone. Two modify headers whose copies differ only in
-> destination then share a pool and the second rule writes to the wrong
-> field.
+On Sun, Oct 18, 2026 at 05:36:58PM +0200, Stanislaw Pal wrote:
+> qca8k has no .get_stats64, so a user port's netdev counts only the
+> frames that cross the CPU port, through the DSA user netdev's own
+> tstats. Whatever the switch forwards between its own ports in a
+> hardware-offloaded bridge never reaches the CPU and never shows up in
+> the counters of either port. The same goes for a conduit that forwards
+> in hardware past the host: on a GL.iNet GL-B3000 (IPQ5018 with a
+> QCA8337 on SGMII) with the conduit offloaded, a 482 MB upload over the
+> WAN port moved the wan netdev's TX bytes by 0.74 MB, while the switch's
+> own TxByte counter for that port grew by 503 MB.
 > 
-> Use the HWS core comparison that checks these actions in full.
+> The switch counts every frame in its per-port MIB. .get_stats64 may be
+> called in atomic context and the MIB sits behind MDIO (or the Ethernet
+> management frames), so read it from a delayed work every 3 s, as ar9331
+> and rtl8365mb do, and hand out the cached result. The counters keep
+> their value across reads (QCA8K_MIB_CPU_KEEP); only the difference since
+> the previous read is added, so a 32-bit counter wrapping between two
+> reads does not corrupt the total.
+
+If we really want we can reset after each read but that is problematic for
+the ethtool OPs unless we also update that function to store local u64 MIB
+for everything.
+
+Up to you... I would start with keeping and updating all the below things
+and then evaluate the needed changes to reset at every read.
+
 > 
-> Found while checking a Sashiko AI review report and confirmed against
-> the HWS pattern code. Not reproduced. No in-kernel user puts such
-> actions on the FDB but RDMA flow actions can.
-> 
-> Fixes: b36315ca69cb ("net/mlx5: fs, add HWS modify header API function")
-> Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
+> With the change, on the same board and setup, a 732 MB upload moved the
+> wan netdev's TX bytes by 764.9 MB, the same as the switch's TxByte.
+>
+
+This really seems a task for the MIB from mgmt frame... May I ask why those
+are not used here?
+ 
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Stanislaw Pal <kuncy7@gmail.com>
 > ---
->   .../mlx5/core/steering/hws/fs_hws_pools.c         | 10 +++-------
->   .../mellanox/mlx5/core/steering/hws/mlx5hws.h     | 15 +++++++++++++++
->   .../mellanox/mlx5/core/steering/hws/pat_arg.c     |  8 ++++----
->   3 files changed, 22 insertions(+), 11 deletions(-)
+> Tested on a GL.iNet GL-B3000 with the patch on OpenWrt's 6.18 kernel,
+> where it differs only in the context of struct qca8k_priv. Built for
+> arm64 on net-next with W=1; checkpatch --strict is clean.
 > 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c
-> index 86828e329187..cd888756e942 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c
-> @@ -389,7 +389,7 @@ bool mlx5_fs_hws_mh_pool_match(struct mlx5_fs_pool *mh_pool,
->   			       struct mlx5hws_action_mh_pattern *pattern)
->   {
->   	struct mlx5hws_action_mh_pattern *pool_pattern;
-> -	int num_actions, i;
-> +	int num_actions;
->   
->   	pool_pattern = mh_pool->pool_ctx;
->   	if (WARN_ON_ONCE(!pool_pattern))
-> @@ -398,12 +398,8 @@ bool mlx5_fs_hws_mh_pool_match(struct mlx5_fs_pool *mh_pool,
->   	if (pattern->sz != pool_pattern->sz)
->   		return false;
->   	num_actions = pattern->sz / MLX5_UN_SZ_BYTES(set_add_copy_action_in_auto);
-> -	for (i = 0; i < num_actions; i++) {
-> -		if ((__force __be32)pattern->data[i] !=
-> -		    (__force __be32)pool_pattern->data[i])
-> -			return false;
-> -	}
-> -	return true;
-> +	return mlx5hws_pat_compare_pattern(num_actions, pool_pattern->data,
-> +					   num_actions, pattern->data);
->   }
->   
->   struct mlx5hws_action *mlx5_fc_get_hws_action(struct mlx5hws_context *ctx,
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h
-> index 1ad7a50d938b..13e9cdbc5d47 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h
-> @@ -688,6 +688,21 @@ mlx5hws_action_create_modify_header(struct mlx5hws_context *ctx,
->   				    u32 log_bulk_size,
->   				    u32 flags);
->   
-> +/**
-> + * mlx5hws_pat_compare_pattern - Compare two modify header patterns.
-> + *
-> + * @cur_num_of_actions: Number of actions in "cur_actions" array.
-> + * @cur_actions: First pattern actions.
-> + * @num_of_actions: Number of actions in "actions" array.
-> + * @actions: Second pattern actions.
-> + *
-> + * Return: true if the patterns differ only in values, false otherwise.
+>  drivers/net/dsa/qca/qca8k-8xxx.c | 157 +++++++++++++++++++++++++++++++
+>  drivers/net/dsa/qca/qca8k.h      |  47 +++++++++
+>  2 files changed, 204 insertions(+)
+> 
+> diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+> index 07227ae8b..9fef54a88 100644
+> --- a/drivers/net/dsa/qca/qca8k-8xxx.c
+> +++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+> @@ -1851,6 +1851,156 @@ static void qca8k_setup_hol_fixup(struct qca8k_priv *priv, int port)
+>  			   mask);
+>  }
+>  
+> +/* Without .get_stats64 a DSA user port counts only what crosses the CPU
+> + * port, which is nothing of the traffic the switch forwards between its own
+> + * ports. Report the switch's own port counters instead.
 > + */
-> +bool mlx5hws_pat_compare_pattern(int cur_num_of_actions,
-> +				 __be64 cur_actions[],
-> +				 int num_of_actions,
-> +				 __be64 actions[]);
+> +#define QCA8K_STATS_INTERVAL	(3 * HZ)
 > +
 
-Please move this to pat_arg.h instead - this is not really a part of HWS API,
-but an internal helper function.
+I would like to see define in the header file, not in the middle of
+functions and declaration.
 
--- YK
+> +static const u8 qca8k_stats_mib[QCA8K_STATS_MIB_COUNT] = {
+> +	[QCA8K_STATS_RX_MULTI]		= 0x08,
+> +	[QCA8K_STATS_RX_FCS_ERR]	= 0x0c,
+> +	[QCA8K_STATS_RX_ALIGN_ERR]	= 0x10,
+> +	[QCA8K_STATS_RX_RUNT]		= 0x14,
+> +	[QCA8K_STATS_RX_FRAGMENT]	= 0x18,
+> +	[QCA8K_STATS_RX_64]		= 0x1c,
+> +	[QCA8K_STATS_RX_128]		= 0x20,
+> +	[QCA8K_STATS_RX_256]		= 0x24,
+> +	[QCA8K_STATS_RX_512]		= 0x28,
+> +	[QCA8K_STATS_RX_1024]		= 0x2c,
+> +	[QCA8K_STATS_RX_1518]		= 0x30,
+> +	[QCA8K_STATS_RX_MAX]		= 0x34,
+> +	[QCA8K_STATS_RX_TOO_LONG]	= 0x38,
+> +	[QCA8K_STATS_RX_OVERFLOW]	= 0x4c,
+> +	[QCA8K_STATS_FILTERED]		= 0x50,
+> +	[QCA8K_STATS_TX_UNDERRUN]	= 0x60,
+> +	[QCA8K_STATS_TX_64]		= 0x64,
+> +	[QCA8K_STATS_TX_128]		= 0x68,
+> +	[QCA8K_STATS_TX_256]		= 0x6c,
+> +	[QCA8K_STATS_TX_512]		= 0x70,
+> +	[QCA8K_STATS_TX_1024]		= 0x74,
+> +	[QCA8K_STATS_TX_1518]		= 0x78,
+> +	[QCA8K_STATS_TX_MAX]		= 0x7c,
+> +	[QCA8K_STATS_TX_OVERSIZE]	= 0x80,
+> +	[QCA8K_STATS_TX_COLLISION]	= 0x8c,
+> +	[QCA8K_STATS_TX_ABORT_COL]	= 0x90,
+> +	[QCA8K_STATS_TX_LATE_COL]	= 0xa4,
+> +};
 
+Why STATS and not MIB? Also I would like to have all these register
+converted to define if really needed and update the ar8327_mib struct.
 
->   /**
->    * mlx5hws_action_create_aso_meter - Create direct rule ASO flow meter action.
->    *
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c
-> index 512299b59fd0..a49115f04025 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c
-> @@ -96,10 +96,10 @@ void mlx5hws_pat_uninit_pattern_cache(struct mlx5hws_pattern_cache *cache)
->   	kfree(cache);
->   }
->   
-> -static bool mlx5hws_pat_compare_pattern(int cur_num_of_actions,
-> -					__be64 cur_actions[],
-> -					int num_of_actions,
-> -					__be64 actions[])
-> +bool mlx5hws_pat_compare_pattern(int cur_num_of_actions,
-> +				 __be64 cur_actions[],
-> +				 int num_of_actions,
-> +				 __be64 actions[])
->   {
->   	int i;
->   
+Also Also why not use that directly?
 
+> +
+> +#define QCA8K_MIB_RX_GOOD_BYTE	0x3c
+> +#define QCA8K_MIB_TX_BYTE	0x84
+> +
+
+Why this? For 64 bit?
+
+> +static int qca8k_stats_read64(struct qca8k_priv *priv, u32 reg, u64 *val)
+> +{
+> +	u32 lo, hi;
+> +	int ret;
+> +
+> +	ret = qca8k_read(priv, reg, &lo);
+> +	if (!ret)
+> +		ret = qca8k_read(priv, reg + 4, &hi);
+> +	if (!ret)
+> +		*val = ((u64)hi << 32) | lo;
+> +
+> +	return ret;
+> +}
+> +
+
+Maybe generalize the logic in get_ethtool_stats?
+
+> +static u64 qca8k_stats_delta64(u64 now, u64 *last)
+> +{
+> +	/* a flushed MIB starts again from zero */
+> +	u64 delta = now >= *last ? now - *last : now;
+> +
+> +	*last = now;
+> +	return delta;
+> +}
+> +
+> +static void qca8k_stats_read_port(struct qca8k_priv *priv, int port)
+> +{
+> +	struct qca8k_port_stats *ps = &priv->port_stats[port];
+> +	u32 raw[QCA8K_STATS_MIB_COUNT], d[QCA8K_STATS_MIB_COUNT];
+> +	u32 base = QCA8K_PORT_MIB_COUNTER(port);
+> +	struct rtnl_link_stats64 *s = &ps->stats;
+> +	u64 rx_bytes, tx_bytes;
+> +	int i;
+> +
+> +	/* all of the slow MDIO reads before the lock */
+> +	if (qca8k_stats_read64(priv, base + QCA8K_MIB_RX_GOOD_BYTE, &rx_bytes) ||
+> +	    qca8k_stats_read64(priv, base + QCA8K_MIB_TX_BYTE, &tx_bytes))
+> +		return;
+> +
+> +	for (i = 0; i < QCA8K_STATS_MIB_COUNT; i++)
+> +		if (qca8k_read(priv, base + qca8k_stats_mib[i], &raw[i]))
+> +			return;
+> +
+
+As said MDIO here is extra slow especially for MIB every x seconds...
+
+Autocast MIB is a MUCH BETTER WAY.
+
+> +	spin_lock_bh(&ps->lock);
+> +
+> +	for (i = 0; i < QCA8K_STATS_MIB_COUNT; i++) {
+> +		d[i] = raw[i] - ps->last[i];
+> +		ps->last[i] = raw[i];
+> +	}
+> +
+> +	s->rx_bytes += qca8k_stats_delta64(rx_bytes, &ps->last_rx_bytes);
+> +	s->tx_bytes += qca8k_stats_delta64(tx_bytes, &ps->last_tx_bytes);
+> +	s->rx_packets += (u64)d[QCA8K_STATS_RX_64] + d[QCA8K_STATS_RX_128] +
+> +			 d[QCA8K_STATS_RX_256] + d[QCA8K_STATS_RX_512] +
+> +			 d[QCA8K_STATS_RX_1024] + d[QCA8K_STATS_RX_1518] +
+> +			 d[QCA8K_STATS_RX_MAX];
+> +	s->tx_packets += (u64)d[QCA8K_STATS_TX_64] + d[QCA8K_STATS_TX_128] +
+> +			 d[QCA8K_STATS_TX_256] + d[QCA8K_STATS_TX_512] +
+> +			 d[QCA8K_STATS_TX_1024] + d[QCA8K_STATS_TX_1518] +
+> +			 d[QCA8K_STATS_TX_MAX];
+> +	s->multicast += d[QCA8K_STATS_RX_MULTI];
+> +	s->rx_length_errors += (u64)d[QCA8K_STATS_RX_RUNT] +
+> +			       d[QCA8K_STATS_RX_FRAGMENT] +
+> +			       d[QCA8K_STATS_RX_TOO_LONG];
+> +	s->rx_crc_errors += d[QCA8K_STATS_RX_FCS_ERR];
+> +	s->rx_frame_errors += d[QCA8K_STATS_RX_ALIGN_ERR];
+> +	s->rx_missed_errors += d[QCA8K_STATS_RX_OVERFLOW];
+> +	s->rx_dropped += d[QCA8K_STATS_FILTERED];
+> +	s->rx_errors += (u64)d[QCA8K_STATS_RX_FCS_ERR] +
+> +			d[QCA8K_STATS_RX_ALIGN_ERR] + d[QCA8K_STATS_RX_RUNT] +
+> +			d[QCA8K_STATS_RX_FRAGMENT] + d[QCA8K_STATS_RX_OVERFLOW] +
+> +			d[QCA8K_STATS_RX_TOO_LONG];
+> +	s->tx_fifo_errors += d[QCA8K_STATS_TX_UNDERRUN];
+> +	s->tx_aborted_errors += d[QCA8K_STATS_TX_ABORT_COL];
+> +	s->tx_window_errors += d[QCA8K_STATS_TX_LATE_COL];
+
+Is it correct to give window_errors to TX late collision?
+
+> +	s->tx_errors += (u64)d[QCA8K_STATS_TX_OVERSIZE] +
+> +			d[QCA8K_STATS_TX_ABORT_COL] + d[QCA8K_STATS_TX_UNDERRUN] +
+> +			d[QCA8K_STATS_TX_LATE_COL];
+> +	s->collisions += d[QCA8K_STATS_TX_COLLISION];
+> +
+> +	spin_unlock_bh(&ps->lock);
+> +}
+> +
+> +static void qca8k_stats_poll(struct work_struct *work)
+> +{
+> +	struct qca8k_priv *priv = container_of(work, struct qca8k_priv,
+> +					       stats_work.work);
+> +	struct dsa_port *dp;
+> +
+> +	dsa_switch_for_each_user_port(dp, priv->ds)
+> +		qca8k_stats_read_port(priv, dp->index);
+> +
+
+No reason to scan for a port that is disabled or not connected...
+
+> +	schedule_delayed_work(&priv->stats_work, QCA8K_STATS_INTERVAL);
+> +}
+> +
+> +static void qca8k_get_stats64(struct dsa_switch *ds, int port,
+> +			      struct rtnl_link_stats64 *s)
+> +{
+> +	struct qca8k_priv *priv = ds->priv;
+> +	struct qca8k_port_stats *ps = &priv->port_stats[port];
+> +
+> +	spin_lock_bh(&ps->lock);
+> +	memcpy(s, &ps->stats, sizeof(*s));
+> +	spin_unlock_bh(&ps->lock);
+> +}
+> +
+> +static void qca8k_teardown(struct dsa_switch *ds)
+> +{
+> +	struct qca8k_priv *priv = ds->priv;
+> +
+> +	cancel_delayed_work_sync(&priv->stats_work);
+> +}
+> +
+>  static int
+>  qca8k_setup(struct dsa_switch *ds)
+>  {
+> @@ -2020,6 +2170,11 @@ qca8k_setup(struct dsa_switch *ds)
+>  	/* Set max number of LAGs supported */
+>  	ds->num_lag_ids = QCA8K_NUM_LAGS;
+>  
+> +	for (int port = 0; port < QCA8K_NUM_PORTS; port++)
+> +		spin_lock_init(&priv->port_stats[port].lock);
+
+Considering everything is run under the same delayed work, does it make
+sense to have a spinlock for each port?
+
+Either have a delayed work for each port or a global spinlock for the task.
+
+> +	INIT_DELAYED_WORK(&priv->stats_work, qca8k_stats_poll);
+> +	schedule_delayed_work(&priv->stats_work, 0);
+> +
+>  	return 0;
+>  }
+>  
+> @@ -2033,9 +2188,11 @@ static const struct phylink_mac_ops qca8k_phylink_mac_ops = {
+>  static const struct dsa_switch_ops qca8k_switch_ops = {
+>  	.get_tag_protocol	= qca8k_get_tag_protocol,
+>  	.setup			= qca8k_setup,
+> +	.teardown		= qca8k_teardown,
+>  	.get_strings		= qca8k_get_strings,
+>  	.get_ethtool_stats	= qca8k_get_ethtool_stats,
+>  	.get_sset_count		= qca8k_get_sset_count,
+> +	.get_stats64		= qca8k_get_stats64,
+>  	.set_ageing_time	= qca8k_set_ageing_time,
+>  	.support_eee		= dsa_supports_eee,
+>  	.set_mac_eee		= qca8k_set_mac_eee,
+> diff --git a/drivers/net/dsa/qca/qca8k.h b/drivers/net/dsa/qca/qca8k.h
+> index 956338893..47e9e5631 100644
+> --- a/drivers/net/dsa/qca/qca8k.h
+> +++ b/drivers/net/dsa/qca/qca8k.h
+> @@ -442,6 +442,51 @@ struct qca8k_led {
+>  	struct led_classdev cdev;
+>  };
+>  
+> +/* MIB counters behind .get_stats64, in the order qca8k_stats_mib[] reads them */
+> +enum qca8k_stats_mib_idx {
+> +	QCA8K_STATS_RX_MULTI,
+> +	QCA8K_STATS_RX_FCS_ERR,
+> +	QCA8K_STATS_RX_ALIGN_ERR,
+> +	QCA8K_STATS_RX_RUNT,
+> +	QCA8K_STATS_RX_FRAGMENT,
+> +	QCA8K_STATS_RX_64,
+> +	QCA8K_STATS_RX_128,
+> +	QCA8K_STATS_RX_256,
+> +	QCA8K_STATS_RX_512,
+> +	QCA8K_STATS_RX_1024,
+> +	QCA8K_STATS_RX_1518,
+> +	QCA8K_STATS_RX_MAX,
+> +	QCA8K_STATS_RX_TOO_LONG,
+> +	QCA8K_STATS_RX_OVERFLOW,
+> +	QCA8K_STATS_FILTERED,
+> +	QCA8K_STATS_TX_UNDERRUN,
+> +	QCA8K_STATS_TX_64,
+> +	QCA8K_STATS_TX_128,
+> +	QCA8K_STATS_TX_256,
+> +	QCA8K_STATS_TX_512,
+> +	QCA8K_STATS_TX_1024,
+> +	QCA8K_STATS_TX_1518,
+> +	QCA8K_STATS_TX_MAX,
+> +	QCA8K_STATS_TX_OVERSIZE,
+> +	QCA8K_STATS_TX_COLLISION,
+> +	QCA8K_STATS_TX_ABORT_COL,
+> +	QCA8K_STATS_TX_LATE_COL,
+> +	QCA8K_STATS_MIB_COUNT
+> +};
+> +
+> +/* Port counters for .get_stats64. That callback runs in atomic context and
+> + * the MIB sits behind MDIO, so a worker reads it and this holds the result.
+> + * The MIB counters are cumulative; last[] keeps the previous raw values so
+> + * only the difference is added and a 32-bit counter may wrap between reads.
+> + */
+> +struct qca8k_port_stats {
+> +	spinlock_t lock; /* protects stats against the worker */
+> +	struct rtnl_link_stats64 stats;
+> +	u32 last[QCA8K_STATS_MIB_COUNT];
+> +	u64 last_rx_bytes;
+> +	u64 last_tx_bytes;
+> +};
+> +
+>  struct qca8k_priv {
+>  	u8 switch_id;
+>  	u8 switch_revision;
+> @@ -469,6 +514,8 @@ struct qca8k_priv {
+>  	struct qca8k_pcs pcs_port_6;
+>  	const struct qca8k_match_data *info;
+>  	struct qca8k_led ports_led[QCA8K_LED_COUNT];
+> +	struct qca8k_port_stats port_stats[QCA8K_NUM_PORTS];
+> +	struct delayed_work stats_work;
+>  };
+>  
+>  struct qca8k_mib_desc {
+> -- 
+> 2.43.0
+> 
+
+-- 
+	Ansuel
