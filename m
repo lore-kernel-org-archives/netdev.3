@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4B74B922B;
-	Sun, 18 Oct 2026 13:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3324F4B9239;
+	Sun, 18 Oct 2026 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792329766; cv=none; b=tSX173ry4c2H5EA25hij4PiEqJr7JFaP1SL7fOfidi5CV5i8IWJ+dfa9ogwSaK+VCkKYBJyAeuzh858gLApB8ENhC2TiQLNH2345Y/2VfeLEGJVIpEgc+Uc/Zv+qIGYJYemcDvbT1Ii7tr8DxA1bK0TxgP8xI6SsQSjRf1Esg0A=
+	t=1792329768; cv=none; b=llr8E6V7V0LVlts9NpevGTSQFt5SBGsHbn0j6N330w/ePirPj0Mw7GqoqAiLeiEj4seL68WCAYyJNMUzCMEQJ84pWXDNhMsB7CoHJra07l/vSxPBCrpFmPq2vFl37XEC5BeUNHpQeIeZvT/YxVObizTcmAY5tOvCCAGiOFpK9wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792329766; c=relaxed/simple;
-	bh=gunYXhMgXi7MLNMHlFRFz2mnouvhmJrc0MgovruqE1I=;
+	s=arc-20240116; t=1792329768; c=relaxed/simple;
+	bh=jCqs8rq44IOqSU98wbZn3BPmnG9X1o94hWqm5pLzD18=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tZumpXmaTJYz+Nna/HSml1gBUWEsZ8kphnf456U7i3+Yvl5FQrFgSynSxiDdAxJYk9hy5XOvuClievOqu0rb4oyUDpgvTce5Q+MtZJjYYo7z6PaGK9jKtWk8YdgutKTK0GmiMb/zGWpNVFDg6pt9tpTCxjus6rAhanjtDOEaBYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YlT9KRSo; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=MrgHnUAnC8qrlXwoR92JFxC3bOZYB0x5DbUlP42pTyZDOdhhYAkVdLfew5MEMq0KY5B+bMzIurO8JY0JqKZrGP6QPBIBuHojaRP1fgsRYJ3um2jdLUQ/+ISSjq7S8ITW1VppMiEECjbwB9x6PP8lM4u1YE1aY2qPb6SeKiz56fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKALa8ak; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YlT9KRSo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A8A1F000C5;
-	Sun, 18 Oct 2026 13:22:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKALa8ak"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2EC1F000C4;
+	Sun, 18 Oct 2026 13:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792329765;
-	bh=bIhmGgP6JX0siOj43IOXZbqUl5ehqxSn567CsQnQ89k=;
+	s=k20260515; t=1792329767;
+	bh=W0RBrDfHQYswJR4a7Thh6gsX6kswQM270GGcj7BYWGg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YlT9KRSo9Zg5akI9fzhj4zleDgVq7S0MOwhufb1dzp73NPwsqGoZmJsP/wyrMyIrL
-	 CUAYI2UvF/gqA9szQqp3cCTwfJz/CZypkQuHH4vbx/0TxNFkKO3MQrmQCh/av11ldU
-	 YNKVG874alDAbp9CMkZ6kqNI2B8EeOOd0QDAumBKyRPwJrogfxW4C8D82hszABDzRp
-	 8T3+awUuMwXvVPscQA3XvBvM0wi5JXKWMM6Dih7gQSjt3QrJ5lKqrUWZR7EBrjXtYD
-	 vd36KwwBPpuXkR3KM/yOjUHfGJHb+dN0eHvnIlp1EdP/SaDDkBO608qENtr/yaCD2Y
-	 OfBqQyIsjdmlQ==
-Subject: Re: [PATCH net 1/2] net: ti: icssg-prueth: fix missing port config on
- second interface open
+	b=AKALa8aktSL3RUnE0w7l9ucGi2bN8Ga8flYPZp4CDwjaU69vbdtwTmHjf3NXMKf9C
+	 UQSfBb3K/91DKBX9fZI9SMAxfnvzJdgXhTMZrtZc/XwrlJGQMfafnSbEglEOoKyilw
+	 kaG/PudIHWsFHEMUrD6R9Gy8BOW+o1nCEX+mkIEhAFnJuD2TyzMcYDKBEbyKMGikiy
+	 +oAPNndphc6e9yRSjk9mBpCv7LutB7NBPcORnu3/iYAVj0q70VOZt1aF5kPBCwzSmh
+	 R7y0HvUGNE7mYrSw2jZzSzbdbBrSrUlrzNUsAhXD0aowcFA2B/ndPrVJZKYfg+NosQ
+	 zZXWcPT2A1rqA==
+Subject: Re: [PATCH net 2/2] net: ti: icssg-prueth: re-apply rx_mode state
+ after firmware reboot
 From: netdev-bot+sashiko@kernel.org
 To: r-kumar12@ti.com
 Cc: netdev@vger.kernel.org, danishanwar@ti.com, rogerq@kernel.org,
@@ -37,11 +37,11 @@ Cc: netdev@vger.kernel.org, danishanwar@ti.com, rogerq@kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  j-rameshbabu@ti.com, aaron.richard@ti.com, l-chinnannavar@ti.com,
  m-santhoshkadavan@ti.com, k-tiwari1@ti.com, a-dev@ti.com, pratheesh@ti.com
-Date: Sun, 18 Oct 2026 13:22:43 +0000
-Message-ID: <179232976393.3135.17319859444858468389@kernel.org>
-In-Reply-To: <20261014125948.230571-2-r-kumar12@ti.com>
-References: <20261014125948.230571-2-r-kumar12@ti.com>
-X-sashiko-severity: Medium
+Date: Sun, 18 Oct 2026 13:22:45 +0000
+Message-ID: <179232976562.3135.6465502761786922552@kernel.org>
+In-Reply-To: <20261014125948.230571-3-r-kumar12@ti.com>
+References: <20261014125948.230571-3-r-kumar12@ti.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,10 +51,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -62,178 +62,211 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Reopening one port while its sibling stays up now resets that
-  port's live VLAN configuration to the driver defaults.
-
-Pre-existing issues:
-- [Low] The two join paths set emac->port_vlan differently.
+- [High] net: silent hardware state loss due to rtnl_trylock failure in
+  rx_mode_work
+- [Medium] prueth_emac_common_start() now queues rx_mode_work for every
+  running port before returning success.
+- [Medium] The new schedule_work() loop in prueth_emac_common_start()
+  lets the opening port's rx_mode_work run while emac_ndo_open() is…
 
 --
 
-net: ti: icssg-prueth: fix missing port config on second interface open
+net: ti: icssg-prueth: re-apply rx_mode state after firmware reboot
 
-This commit moves the per-port FDB, VLAN table, PVID and VLAN-aware setup
-out of icssg_enable_fw_offload() into a new icssg_enable_fw_offload_emac().
-It also moves the HSR Rx offload setup into icssg_update_hsr_rx_offload().
-emac_ndo_open() now calls both helpers unconditionally for the opening
-port, and icssg_enable_fw_offload() is kept for icssg_change_mode().
+At the end of prueth_emac_common_start(), this commit re-queues
+rx_mode_work for every running port. The aim is to re-apply the
+IFF_PROMISC/IFF_ALLMULTI flood state after the PRU/RTU/txPRU firmware
+reboots. It also cancels the pending work in the stop_pruss error path.
 
 > diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> index 591be5c8056b4..cd4c918fe2b89 100644
+> index cd4c918fe2b89..9d38cbbdaf27f 100644
 > --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
 > +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> @@ -206,6 +206,44 @@ static void prueth_emac_stop(struct prueth *prueth)
+> @@ -311,6 +311,18 @@ static int prueth_emac_common_start(struct prueth *prueth)
+>  	if (ret)
+>  		goto disable_class;
+>  
+> +	/* PRU/RTU/txPRU are up now: re-sync any port
+> +	 * config (e.g. flood/promisc flags) that may have been
+> +	 * dropped while firmware was still rebooting above.
+> +	 */
+> +	for (slice = 0; slice < PRUETH_NUM_MACS; slice++) {
+> +		emac = prueth->emac[slice];
+> +		if (!emac)
+> +			continue;
+> +		if (netif_running(emac->ndev))
+> +			schedule_work(&emac->rx_mode_work);
+> +	}
 
-[ ... ]
+[Severity: High]
+Does the VLAN multicast part of the re-sync actually happen when the
+work is queued from here?
 
-> +static void icssg_enable_fw_offload_emac(struct prueth_emac *emac)
-> +{
-> +	struct prueth *prueth = emac->prueth;
-> +
-> +	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode) {
-> +		icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
-> +				  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
-> +				  ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
-> +				  ICSSG_FDB_ENTRY_P2_MEMBERSHIP |
-> +				  ICSSG_FDB_ENTRY_BLOCK,
-> +				  true);
-> +		icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
-> +				  BIT(emac->port_id) | DEFAULT_PORT_MASK,
-> +				  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
-> +				  true);
-> +		if (prueth->is_hsr_offload_mode)
-> +			icssg_vtbl_modify(emac, DEFAULT_VID,
-> +					  DEFAULT_PORT_MASK,
-> +					  DEFAULT_UNTAG_MASK, true);
-> +		icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
+prueth_emac_common_start() is called with rtnl_lock held in both
+paths. It is called from emac_ndo_open() via __dev_open(), and from
+icssg_change_mode() via the NETDEV_CHANGEUPPER notifier. The caller
+still holds rtnl while it runs icss_iep_init() and the rest of
+ndo_open or the mode change.
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but is emac->port_vlan set
-for both ports in switch mode?
+The work queued here will usually run inside that window. The worker
+first sends its icssg_set_port_state() commands, which wait for a
+firmware ack. In the non-promisc, non-allmulti case,
+emac_ndo_set_rx_mode_work() then ends with:
 
-In prueth_netdevice_port_link(), only the port whose join completes
-br_members gets port_vlan set:
-
-	if (!prueth->is_switch_mode) {
-		if (prueth->br_members & BIT(PRUETH_PORT_MII0) &&
-		    prueth->br_members & BIT(PRUETH_PORT_MII1)) {
-			prueth->is_switch_mode = true;
-			prueth->default_vlan = PRUETH_DFLT_VLAN_SW;
-			emac->port_vlan = prueth->default_vlan;
-			icssg_change_mode(prueth);
-		}
+	if (rtnl_trylock()) {
+		vlan_for_each(ndev, icssg_update_vlan_mcast, emac);
+		rtnl_unlock();
 	}
 
-prueth_hsr_port_link() sets it on both emac0 and emac1.
+HSR offload mode does the same with prueth->hsr_dev. If the trylock
+fails, the vlan_for_each() call is skipped silently. The work does
+not requeue itself, and nothing records that the update was skipped.
 
-This means the port that joined the bridge first keeps port_vlan == 0.
-icssg_set_pvid() here then programs PVID 0 for that port and PVID 1 for
-the other one. Both ports still get VID 1 table membership, because
-0 | DEFAULT_VID == 1.
+The firmware restart has just cleared SHRAM, MSMC and the VLAN table.
+The per-VLAN multicast entries tracked in emac->vlan_mcast_list are
+exactly the state that needs to be reprogrammed.
 
-The unlink paths have the same asymmetry. The switch unlink path resets
-port_vlan on one emac, while the HSR unlink path resets both.
+In the icssg_change_mode() path, this loop is the only thing that
+queues rx_mode_work for a port that is already running. For the
+opening port, the ndo_set_rx_mode call that __dev_open() makes later
+also runs under rtnl. If the trylock loses in these cases, are the
+VLAN multicast groups left unprogrammed in the firmware FDB, so that
+multicast reception on those VLANs breaks?
 
-icssg_change_mode()->icssg_enable_fw_offload() already behaved this way
-before this patch. This patch adds another call site that applies the
-value.
+The rtnl_trylock() skip existed before this patch. However, the patch
+now uses this work as the re-sync mechanism and queues it from
+contexts that are known to hold rtnl. That turns the skip from a rare
+race into the likely outcome.
 
-A concrete forwarding failure from this hasn't been shown. With 8021q
-loaded, NETDEV_UP already sets PVID 0 via ndo_vlan_rx_add_vid(0). How the
-firmware handles PVID 0 is not known.
-
-Should prueth_netdevice_port_link() set port_vlan on both ports, the
-same way the HSR path does?
-
-> +		if (prueth->is_switch_mode)
-> +			icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
-> +	}
-> +}
-
-[ ... ]
-
-> @@ -1067,8 +1082,9 @@ static int emac_ndo_open(struct net_device *ndev)
->  		ret = prueth_emac_common_start(prueth);
->  		if (ret)
->  			goto free_rx_irq;
-> -		icssg_enable_fw_offload(prueth);
->  	}
-> +	icssg_update_hsr_rx_offload(emac);
-> +	icssg_enable_fw_offload_emac(emac);
+Should the worker reschedule itself when rtnl_trylock() fails? Or
+could the VLAN multicast re-sync be done directly from the start
+path, which already holds rtnl?
 
 [Severity: Medium]
-Can this reset a port's live VLAN configuration when the port is
-reopened while its sibling stays up?
+Can the opening port's rx_mode_work now run while emac_ndo_open() is
+still sending its own HWQ commands on the same slice?
 
-When the sibling is up, emac_ndo_stop() does not stop the firmware and
-does not remove any FDB, VLAN or PVID state:
+Before this patch, the work could not run for a port still inside
+ndo_open, because __dev_set_rx_mode() requires IFF_UP.
 
-	/* stop PRUs */
-	if (prueth->emacs_initialized == 1)
+With this loop, take a first open in non-promisc, non-allmulti mode
+with pending multicast entries. For example, IPv6 adds 33:33:00:00:00:01
+at NETDEV_REGISTER. The work then does:
+
+emac_ndo_set_rx_mode_work()
+  __dev_mc_sync()
+    icssg_prueth_add_mcast()
+      icssg_fdb_lookup()
+      icssg_fdb_add_del()
+
+Meanwhile emac_ndo_open() continues with:
+
+	icssg_enable_fw_offload_emac(emac);
+	...
+	ret = emac_fdb_flow_id_updated(emac);
+
+In switch/HSR mode the first of these sends FDB add commands. The second
+always runs. Both paths end up in icssg_send_fdb_msg(), which takes no
+lock:
+
+- It pops a command buffer, pushes the command, then polls the response
+  queue and takes whichever response comes out first.
+- icssg_fdb_lookup() reads its result from the single per-slice
+  FDB_CMD_BUFFER in DRAM.
+- prueth->icssg_hwcmdseq is incremented non-atomically.
+
+Only icssg_set_port_state() is serialized, by cmd_lock.
+
+With two commands in flight, could the responses get swapped? That
+could lead to:
+
+- the seqnum mismatch WARN_ON in emac_fdb_flow_id_updated();
+- ndo_open failing because it got another command's status;
+- a wrong port_mask written into the FDB/VLAN table from another
+  command's lookup data.
+
+The flood commands could also reach the firmware before the RX flow ID
+base is configured.
+
+The restart path seems to have a similar window. After
+prueth_emac_restart(), icssg_change_mode() calls
+icssg_enable_fw_offload(), and the work queued here for both ports may
+be running at that point.
+
+> +
+>  	emac = prueth->emac[ICSS_SLICE0] ? prueth->emac[ICSS_SLICE0] :
+>  	       prueth->emac[ICSS_SLICE1];
+>  	ret = icss_iep_init(emac->iep, &prueth_iep_clockops,
+> @@ -323,6 +335,11 @@ static int prueth_emac_common_start(struct prueth *prueth)
+>  	return 0;
+>  
+>  stop_pruss:
+> +	for (slice = 0; slice < PRUETH_NUM_MACS; slice++) {
+> +		emac = prueth->emac[slice];
+> +		if (emac)
+> +			cancel_work_sync(&emac->rx_mode_work);
+> +	}
+>  	prueth_emac_stop(prueth);
+
+[Severity: Medium]
+The commit message says the cancel is there "so it cannot run after
+the cores are stopped again". However, this label is reached only when
+icss_iep_init() fails.
+
+Is the newly queued work also cancelled when emac_ndo_open() fails
+after prueth_emac_common_start() has already succeeded?
+
+__dev_open() sets __LINK_STATE_START before calling ndo_open. So
+netif_running() is already true for the port being opened, and its
+rx_mode_work is queued by the loop above.
+
+A later step in emac_ndo_open() can still fail. Examples are
+request_threaded_irq() for tx_ts_irq, prueth_create_rxq(),
+prueth_create_txq(), or:
+
+	ret = emac_fdb_flow_id_updated(emac);
+
+The error path then ends at:
+
+stop:
+	if (!prueth->emacs_initialized)
 		prueth_emac_common_stop(prueth);
 
-The next open also skips prueth_emac_common_start(). So the shared-RAM
-VLAN table and the per-port PVID word still hold whatever the bridge or
-8021q programmed. icssg_enable_fw_offload_emac() then runs:
+This shuts down the PRU/RTU/txPRU cores without cancelling
+rx_mode_work.
 
-	icssg_vtbl_modify(emac, emac->port_vlan | DEFAULT_VID,
-			  BIT(emac->port_id) | DEFAULT_PORT_MASK,
-			  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
-			  true);
-	...
-	icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
+emac_ndo_stop() does call cancel_work_sync(&emac->rx_mode_work) before
+prueth_emac_common_stop(). But ndo_stop is not called after a failed
+open.
 
-This adds the port back to VID 1 with untagged egress, and overwrites the
-PVID with emac->port_vlan.
+A work item that is still pending or running would then send commands
+to halted cores:
 
-emac->port_vlan is only ever 0 or the mode default. The runtime VLAN
-paths write the hardware directly and never update it:
+- icssg_set_port_state() commands, each timing out with "timeout
+  waiting for command done";
+- in the non-promisc case, icssg_send_fdb_msg() commands that can poll
+  for up to 20 seconds.
 
-prueth_switchdev_vlan_add()
-	icssg_vtbl_modify(emac, vid, port_mask, untag_mask, true);
-	icssg_set_pvid(emac->prueth, vid, emac->port_id);
+The multicast list may also be affected after the failure.
+icssg_prueth_add_mcast() always returns 0, so __dev_mc_sync() marks the
+addresses as synced.
 
-prueth_switchdev_vlan_del()
-	icssg_vtbl_modify(emac, vid, port_mask, 0, false);
+After a failed open, nothing calls __dev_mc_unsync(). That includes
+the stop_pruss path, where cancel_work_sync() cannot undo a sync that
+has already completed.
 
-emac_ndo_vlan_rx_add_vid()
-	icssg_set_pvid(emac->prueth, vid, emac->port_id);
+The next successful open clears SHRAM, MSMC and the VLAN table and
+reboots the firmware. Its __dev_mc_sync() would then skip the addresses
+that are still marked synced.
 
-For example, on an offloaded bridge, the admin runs "bridge vlan del dev
-eth1 vid 1" or makes VID 1 tagged on eth1. Then "ip link set eth1 down;
-ip link set eth1 up" runs while eth2 is still up. In hardware, eth1 ends
-up as an untagged member of VID 1 again. The software bridge still shows
-the old configuration, and nothing replays the switchdev VLAN objects on
-NETDEV_UP.
+Could this leave those multicast groups unprogrammed in the firmware
+FDB?
 
-Without 8021q, a bridge-configured PVID such as "bridge vlan add dev eth1
-vid 10 pvid untagged" is also replaced, with 1 or with 0 for the port
-that joined the bridge first. With 8021q loaded, its NETDEV_UP handler
-already sets PVID 0 through ndo_vlan_rx_add_vid(0) on every up, both
-before and after this patch.
-
-Before this patch, none of this ran on a single-port reopen, so VLAN
-membership and tagging survived it. The later commit in the series, "net:
-ti: icssg-prueth: re-apply rx_mode state after firmware reboot", only
-adds rx_mode_work scheduling in prueth_emac_common_start(). It does not
-change icssg_enable_fw_offload_emac() or the open path.
-
-The commit message also says:
-
-    If one port is later brought down and up while the sibling stays up,
-    emacs_initialized is still non-zero, so the function never runs again
-    and the port is left unconfigured, depending on bring-up order.
-
-Is that accurate? emac_ndo_stop() never removes the port's FDB, VLAN or
-PVID state, so a port configured at first open stays configured. Only
-the port opened second seems to have been missing its configuration.
-
-Should the open path avoid overwriting state that the firmware still
-holds while the sibling port is running?
+Before this patch, the opening port's rx_mode_work could not run during
+its own ndo_open, so this problem appears to be new.
 
 >  
->  	flow_cfg = emac->dram.va + ICSSG_CONFIG_OFFSET + PSI_L_REGULAR_FLOW_ID_BASE_OFFSET;
->  	writew(emac->rx_flow_id_base, &flow_cfg->rx_base_flow);
+>  disable_class:
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014125948.230571-1-r-kumar12%40ti.com
