@@ -1,40 +1,38 @@
 Received: from polaris.svanheule.net (polaris.svanheule.net [84.16.241.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402404D0A1D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC474AD4CD
 	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.241.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792340553; cv=none; b=Ub4T+7cySrjg69uJERWxx0BClLNgPKVJdPj0KxYx302ZabtThFL57z5aWgPztqN/+S7H19LBLVUUTyAkIEsg7eVvHORNCRhg7Vf2b4r3E5t7ugh76/2oUAcg1Roq4hVkYhrhnQa79cv2/3u8pPTH9A0EnIGdU2HeKBtBtJ6ocT8=
+	t=1792340553; cv=none; b=METFWHVJFMceQam3+cg8Z9yBr2vDmrKjysCOB0zsfHC9ycY585wm3YF6xuVnf0n0JWiXSPT/lszl3qjQgDjhAramQoDlBFBGUFKH3RF5/tox+MsolTutdn7eU7t+zvsPm7rqMf2Z2ZBHhfTZiQ6z2UBjGHG2KVThFUn/8ceDnjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792340553; c=relaxed/simple;
-	bh=td5+03OzHbTI03GKtAD9pk36sOBQN8LIJH3ZHfBBvaQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTIwUxC+SHgpgfYgHtpB37JVpi0g/YsinTnudGRYsaNxJDmUUt820RnBUyksWmVg6HQy8IqcsZ+i+adEXInjm9gNQllNgnCWl8q6nwhcxXT5AibYvwqXgaurQnrKvi03VxFsdHOHMPPDzVzL3KBFUj6u8DnF0eeMyLAYMJpAkiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net; spf=pass smtp.mailfrom=svanheule.net; dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b=q2MaYdvQ; arc=none smtp.client-ip=84.16.241.116
+	bh=3H4IscU/TXX2mp9uO9toIfgWvRJ0vS30N+G82TUQx/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p2g8A7BJa0Aw0gR6EtJv1w8U7cfe+KL/roa4Qukbup0Gl4MjMIFK/GbZVRKbX+8Op1XkcHiJhrN+aerYFMkB4bWgDkqhbeueonP+cZJlw/dXsh8IyGvAgrxHfzVnluZbrqU5xzVFGz4I1SeskeZqIyapOSIP8ajAGuHmHSdTqEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net; spf=pass smtp.mailfrom=svanheule.net; dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b=1YFhKwGi; arc=none smtp.client-ip=84.16.241.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svanheule.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b="q2MaYdvQ"
+	dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b="1YFhKwGi"
 Received: from terra.vega.svanheule.net (2a02-1812-1620-5d00-3535-4149-dfc3-da80.ip6.access.telenet.be [IPv6:2a02:1812:1620:5d00:3535:4149:dfc3:da80])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: sander@svanheule.net)
-	by polaris.svanheule.net (Postfix) with ESMTPSA id 4DD01955C9F;
-	Sun, 18 Oct 2026 18:13:06 +0200 (CEST)
+	by polaris.svanheule.net (Postfix) with ESMTPSA id 9DFE7955C9E;
+	Sun, 18 Oct 2026 18:13:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svanheule.net;
 	s=mail1707; t=1792339986;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XAW1p1GPxKNfBVYIG/Y9yC+5L7hEJx2FZQ0m8ROd75g=;
-	b=q2MaYdvQ9H4iVj/2Y+yIu7q8jiMnAbmMOhjskMYq/xU3s29j3Sf2MqMiTR4G4c772JTo5B
-	T67ES758BemD3//+ppVlZUxlKoEJIAisLpUkZJ13PazII0KtHPy2Eko3EKvMbNqtN/SoXp
-	pFHbeyY4slhmDLBUvYpaDBdItsOPxuFx22izjrD2vEY+WSvOsgZUgUS/FNuHMPdr2tK+Py
-	D3LTYWwJDPjH9yYum5DkDTdsZOlI+DJRAwqQPCX0UaZoHyA6UZrxYBtETnZDADc2wtewhO
-	YDxF0CIkmwKGMUKmOta8pCeWWH+cVWTpeMnpiLC8k5Ww7mrMfZ/EcRcy/q/g9A==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bd8yAyBoc0oE9NlFGWjwmYkR6VMH6Mg95VbMEB+tYYM=;
+	b=1YFhKwGiX3DcFJ3rfLm6nvaX4lO2OO086pYIqV/GFrWOga+QeO4q3SAq9RVAr8HeuWuEM7
+	J895FIdJwuO8blXNXv4QS+k8BsFbvkWoHKt5Gn66KWHDRqNEX/FIARimlsM5zoqvvI9fXF
+	+piJzG0/yMLpEGR9HsLPZ9yTxRKiu44ldNzfs4xHmhqgJcTcUgKK6NhibH+3onVf/O3PSb
+	w5rav2FuBI1jNWMNjdL6ejMIL+Sxaa+Bf93KPfHZ4CJARVsILh/3cO1CHzP2CQ6qUpLcZp
+	nQuUVs1i1pufA00E0vwY2g8Qvk3N1YhBm6YngVcanQLoYXmHBKIVksIC1wsopA==
 From: Sander Vanheule <sander@svanheule.net>
 To: Jonas Jelonek <jelonek.jonas@gmail.com>,
 	Oleksij Rempel <o.rempel@pengutronix.de>,
@@ -51,12 +49,10 @@ Cc: netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sander Vanheule <sander@svanheule.net>
-Subject: [PATCH net-next 1/2] dt-bindings: net: pse-pd: realtek,pse: add gen1 I2C transport
-Date: Sun, 18 Oct 2026 18:12:47 +0200
-Message-ID: <20261018161248.376205-2-sander@svanheule.net>
+Subject: [PATCH net-next 0/2] net: pse-pd: Plain I2C transport for Realtek Gen1
+Date: Sun, 18 Oct 2026 18:12:46 +0200
+Message-ID: <20261018161248.376205-1-sander@svanheule.net>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261018161248.376205-1-sander@svanheule.net>
-References: <20261018161248.376205-1-sander@svanheule.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,41 +61,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Like the gen2 protocol, the gen1 protocol can also be used over both a
-raw I2C transport and an SMBUs transport. Add a compatible for the
-former and the compatible for the Ubiquiti Unifi Switch Lite 16 PoE
-device that uses it.
+While for the Gen2 protocol both a plain I2C transport and an SMBus
+transport were provided, Gen1 only got SMBus. The Unifi Switch Lite 16
+PoE uses the Gen1 protocol to manage a single BCM59121, but does to
+using plain I2C.
 
-Signed-off-by: Sander Vanheule <sander@svanheule.net>
----
- .../bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml          | 7 +++++++
- 1 file changed, 7 insertions(+)
+These patches simply add a new compatible for the plain I2C transport
+and the associated match data. This is sufficient to let the existing
+code talk to the management MCU.
 
-diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-index 3bb32349c28c..526f8525bb4d 100644
---- a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-+++ b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-@@ -54,6 +54,12 @@ properties:
-               - zyxel,gs1920-24hp-v2-pse
-           - const: realtek,pse-mcu-gen1-smbus
- 
-+      # I2C, raw framing
-+      - items:
-+          - enum:
-+              - ubnt,usw-lite-16-poe-pse
-+          - const: realtek,pse-mcu-gen1-i2c
-+
-       # UART
-       - items:
-           - enum:
-@@ -100,6 +106,7 @@ allOf:
-           contains:
-             enum:
-               - realtek,pse-mcu-gen1-smbus
-+              - realtek,pse-mcu-gen1-i2c
-               - realtek,pse-mcu-gen2-smbus
-               - realtek,pse-mcu-gen2-i2c
-     then:
+Sander Vanheule (2):
+  dt-bindings: net: pse-pd: realtek,pse: add gen1 I2C transport
+  net: pse-pd: realtek-pse-mcu: add gen1 I2C transport
+
+ .../bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml         | 7 +++++++
+ drivers/net/pse-pd/realtek-pse-mcu-core.c                 | 8 +++++++-
+ drivers/net/pse-pd/realtek-pse-mcu-i2c.c                  | 1 +
+ drivers/net/pse-pd/realtek-pse-mcu.h                      | 1 +
+ 4 files changed, 16 insertions(+), 1 deletion(-)
+
 -- 
 2.56.0
 
