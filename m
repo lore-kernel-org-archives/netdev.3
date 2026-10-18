@@ -1,43 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888BD44C65C;
-	Sun, 18 Oct 2026 08:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67975455182;
+	Sun, 18 Oct 2026 08:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792311812; cv=none; b=a/NKvTeY7TijCMohi6nmm7FUWHLa0nQVdHQyJi4hvif7hhro1l6cXd1eTf4HRdmlkYerhbA6OtGmdEOjdUhcogZlbrCaTAS+T2zJamSlFjJ9xL+KgjFGv48aSnPgAEnf5h9R7M7wDQUI6YxjCy8mwzvjOR0fhf2cc2dADRijdmw=
+	t=1792311813; cv=none; b=l8lnIKcRwbS8Gm6xh26zePlVk/HQZSd88WdKVkKRapXrU7ae7AJxQN4t8CMcBZz0UC8HnScOkOTyC3r8Ou4fowMomR7VOFY8LQvmmrZUBOniE7JqsUvgGdkXpUiG9K21RCbSYv+iuq9pFQwDPfXD5moKh8QiKZiQuAeJRHZn+NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792311812; c=relaxed/simple;
-	bh=vpFRz9H9DErjcP/Ow9slPCX9jKa1X1nWSAqsvJW1AsM=;
+	s=arc-20240116; t=1792311813; c=relaxed/simple;
+	bh=QOII+y85ixHBCVoY/RuBEKLnZzzHYTRfPpQAu2NE6TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuAkn8otIVZB9H+0IQe0dTgPdLMgOAbXy1JCdcGiN/bVBkaTK0esgg/s6y2j5yiyeIl7NdLnuMT+Zt1j9zx8XaYhxRDEtn8Z3auRrkA1Wc3YM8SgFNcDkjNPfBLH5vFh+yIViR0gvy0PjmdHRu73rSP1+isj8wrrG8iPX86kun0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=HiJkquQO; arc=none smtp.client-ip=85.214.127.56
+	 MIME-Version; b=CZ5cXhVTjICk2WfCubJsRvvHExmf9+6sWYgGSxQ8uNhAVaO8D9XsyM6zXPOKWGSSmXWuwLLJxYJ9RT0p1dSF1hF4WuUtd2PNZnzm7UBWSWkjfZuzx6NK4usK8pfG7/efRXbFv55xhGcjKoqGyuWHiaW2iEo5MTUcfpq68Pd/r94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=TsY7wPP2; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="HiJkquQO"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="TsY7wPP2"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 3BA96E83961;
-	Sun, 18 Oct 2026 10:23:28 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 8E45DE83969;
+	Sun, 18 Oct 2026 10:23:29 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1792311808;
+	s=mail; t=1792311809;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oH80DEF1KRqV74bKoPbKxH4F/ryu9Wa5A7nbGrLtt0c=;
-	b=HiJkquQO3F9BcYCJ2d7XTF48aV0IrpCuLsoeTjoBQBFLdjxAcpsS3pdC/vRqY82Fpx6505
-	kQUtzF061juh1Tn0L9DJKzVoh5CAFhu3312zk9J9sNsFaw8tiA/ZviGr1XI03WqHrhd9/B
-	SdIZWMvz2OenO0p5wcN2ResuT1dtIb1f4Qp6XJvnpbjrZZPCRzeltqVH5O8OE/T4hGkuGl
-	8jdenmPbKtB29N36O1AbzSV+tDj58UxYSPvK1Q3M+YALkNiL9rK/HA6ard6zKyitLGcIVQ
-	lwQxM9HXWiPUHSuVVc88fNlnM6Y2chupKgv/Mbl3jAgUz0aYGuOsiBAWcAxoQg==
+	bh=NZ9hY9K1REuLJZqLsBtNJlIn/SEiHET4Vc/YADNGixg=;
+	b=TsY7wPP26e4ssxE7TvJTWFgfmBcM+0O1gLstp1EmGTD7LN0+spPgqX7ekwKqaTbdGg+JwD
+	A3XvHCDkbk1A1bEdUflN7Zte/4BouPSLzeFqfJ426CSeh5eIYMNcCCAa5NctI4CtCDPrMH
+	hozITfQZjdKyZJqv27iZlX0DhmTPZNyLBZ2GU5xLfjdPunduXlHgIzoM79TUZo23GLakvf
+	7YTZxzLbQwGVVl7LkNobw6kI2+XRvOk1pTAHNr0rNNDdE0Q3VZ7Svr6pK5lK+tlNl8GgwP
+	2B2Ko0/xzHVzPirBm1BsHvS4ZejOmyMyMmAelbWJc/N58j8qRPjYUsQmcOV6Ig==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id SHM9o0tbKkJX; Sun, 18 Oct 2026 10:23:28 +0200 (CEST)
+ id S88pM3RqlEbN; Sun, 18 Oct 2026 10:23:29 +0200 (CEST)
 Received: from p14sgen5.netbird.selfhosted (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 18 Oct 2026 10:23:27 +0200 (CEST)
+	Sun, 18 Oct 2026 10:23:29 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -54,9 +54,9 @@ Cc: Piotr Kubik <piotr.kubik@adtran.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net 04/10] net: pse-pd: do not reach a freed PHY from the notification worker
-Date: Sun, 18 Oct 2026 10:23:07 +0200
-Message-ID: <20261018082314.48950-5-github@szelinsky.de>
+Subject: [PATCH net 05/10] net: pse-pd: check the PI state under the lock when setting a power limit
+Date: Sun, 18 Oct 2026 10:23:08 +0200
+Message-ID: <20261018082314.48950-6-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261018082314.48950-1-github@szelinsky.de>
 References: <20261018082314.48950-1-github@szelinsky.de>
@@ -68,117 +68,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The notification worker holds a reference on the pse_control, but not
-on the PHY that psec->attached_phydev points to. If the PHY is removed
-while the worker runs, the pse_control survives and the worker reads the
-freed PHY. The same happens without a race when two PHYs share one PI:
-attached_phydev keeps pointing at the first PHY after it is removed.
+pse_ethtool_set_pw_limit() checks whether the PI is powered without
+pcdev->lock. pse_isr() changes that state under the lock, so if the PD
+disconnects in between, budget is reserved for a port that is no longer
+powered.
 
-pse_control_put() unlinks and frees a pse_control under pse_list_mutex,
-and phy_device_remove() calls it before the PHY is freed. So instead of
-taking a reference, let the worker look the pse_control up and use
-attached_phydev under pse_list_mutex. This nests pse_list_mutex inside
-rtnl; nothing under pse_list_mutex takes rtnl.
+Do the check in pse_pi_update_pw_budget() under the lock, and report
+whether the budget was changed, so the rollback after a failed
+regulator_set_current_limit() runs only then. This also rolls back a
+budget that started from zero, which the old code skipped.
 
-For a PI shared by two PHYs there is no single netdev to report to, so
-clear attached_phydev when a second PHY takes the pse_control, and warn.
-Events for that PI are then no longer reported, even after one PHY goes
-away. Failing the second PHY instead would fail its whole MDIO bus.
-
-Fixes: fa2f0454174c ("net: pse-pd: Introduce attached_phydev to pse control")
+Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 ---
- drivers/net/pse-pd/pse_core.c | 42 ++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 11 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 65a41c517b35..336f00d82b5f 100644
+index 336f00d82b5f..d5f863834179 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -238,24 +238,22 @@ static int of_load_pse_pis(struct pse_controller_dev *pcdev)
-  * @pcdev: a pointer to the PSE
-  * @id: index of the PSE control
+@@ -1829,22 +1829,32 @@ EXPORT_SYMBOL_GPL(pse_ethtool_set_config);
+  * @pcdev: a pointer to the PSE controller device
+  * @id: index of the PSE PI
+  * @pw_req: power requested
++ * @updated: set to true if the budget was changed
+  * @extack: extack for reporting useful error messages
   *
-- * Return: pse_control pointer or NULL. The device returned has had a
-- *	   reference added and the pointer is safe until the user calls
-- *	   pse_control_put() to indicate they have finished with it.
-+ * Must be called with pse_list_mutex held. No reference is taken: the
-+ * pointer is only valid until pse_list_mutex is released.
-+ *
-+ * Return: pse_control pointer or NULL.
+  * Return: Previous power allocated on success and failure value on error
   */
- static struct pse_control *
- pse_control_find_by_id(struct pse_controller_dev *pcdev, int id)
+ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
+-				   const unsigned int pw_req,
++				   const unsigned int pw_req, bool *updated,
+ 				   struct netlink_ext_ack *extack)
  {
- 	struct pse_control *psec;
+ 	struct pse_pi *pi = &pcdev->pi[id];
+ 	int previous_pw_allocated;
+ 	int pw_diff, ret = 0;
  
--	mutex_lock(&pse_list_mutex);
-+	lockdep_assert_held(&pse_list_mutex);
++	*updated = false;
 +
- 	list_for_each_entry(psec, &pcdev->pse_control_head, list) {
--		if (psec->id == id) {
--			kref_get(&psec->refcnt);
--			mutex_unlock(&pse_list_mutex);
-+		if (psec->id == id)
- 			return psec;
--		}
+ 	/* We don't want pw_allocated_mW value change in the middle of an
+ 	 * power budget update
+ 	 */
+ 	mutex_lock(&pcdev->lock);
++	/* Only a powered PI under software power control holds a budget.
++	 * Check it here, as pse_isr() changes it under the same lock.
++	 */
++	if (!pse_pw_d_is_sw_pw_control(pcdev, pi->pw_d) ||
++	    !pi->admin_state_enabled || !pi->isr_pd_detected)
++		goto out;
++
+ 	previous_pw_allocated = pi->pw_allocated_mW;
+ 	pw_diff = pw_req - previous_pw_allocated;
+ 	if (!pw_diff) {
+@@ -1862,6 +1872,7 @@ static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
+ 		regulator_free_power_budget(pi->pw_d->supply, -pw_diff);
  	}
--	mutex_unlock(&pse_list_mutex);
- 	return NULL;
- }
+ 	pi->pw_allocated_mW = pw_req;
++	*updated = true;
+ 	ret = previous_pw_allocated;
  
-@@ -268,6 +266,7 @@ pse_control_find_by_id(struct pse_controller_dev *pcdev, int id)
- static struct net_device *pse_control_get_netdev(struct pse_control *psec)
+ out:
+@@ -1882,6 +1893,7 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 			     const unsigned int pw_limit)
  {
- 	ASSERT_RTNL();
-+	lockdep_assert_held(&pse_list_mutex);
+ 	int uV, uA, ret, previous_pw_allocated = 0;
++	bool updated;
+ 	s64 tmp_64;
  
- 	if (!psec || !psec->attached_phydev)
- 		return NULL;
-@@ -1020,13 +1019,21 @@ static void pse_send_ntf_worker(struct work_struct *work)
- 		struct net_device *netdev;
- 		struct pse_control *psec;
+ 	if (pw_limit > MAX_PI_PW)
+@@ -1908,21 +1920,17 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 	/* Update power budget only in software power control case and
+ 	 * if a Power Device is powered.
+ 	 */
+-	if (pse_pw_d_is_sw_pw_control(psec->pcdev,
+-				      psec->pcdev->pi[psec->id].pw_d) &&
+-	    psec->pcdev->pi[psec->id].admin_state_enabled &&
+-	    psec->pcdev->pi[psec->id].isr_pd_detected) {
+-		ret = pse_pi_update_pw_budget(psec->pcdev, psec->id,
+-					      pw_limit, extack);
+-		if (ret < 0)
+-			return ret;
+-		previous_pw_allocated = ret;
+-	}
++	ret = pse_pi_update_pw_budget(psec->pcdev, psec->id, pw_limit,
++				      &updated, extack);
++	if (ret < 0)
++		return ret;
++	previous_pw_allocated = ret;
  
--		psec = pse_control_find_by_id(pcdev, ntf.id);
-+		/* A pse_control is only on the list while the PHY it was
-+		 * handed to holds it: the PHY's pse_control_put() unlinks
-+		 * and frees it under pse_list_mutex before the PHY itself
-+		 * can be freed. Holding the mutex across the lookup and the
-+		 * attached_phydev dereference therefore keeps the PHY alive,
-+		 * which a reference on the pse_control alone would not.
-+		 */
- 		rtnl_lock();
-+		mutex_lock(&pse_list_mutex);
-+		psec = pse_control_find_by_id(pcdev, ntf.id);
- 		netdev = pse_control_get_netdev(psec);
- 		if (netdev)
- 			ethnl_pse_send_ntf(netdev, ntf.notifs);
-+		mutex_unlock(&pse_list_mutex);
- 		rtnl_unlock();
--		pse_control_put(psec);
+ 	ret = regulator_set_current_limit(psec->ps, 0, uA);
+-	if (ret < 0 && previous_pw_allocated) {
++	if (ret < 0 && updated) {
+ 		pse_pi_update_pw_budget(psec->pcdev, psec->id,
+-					previous_pw_allocated, extack);
++					previous_pw_allocated, &updated,
++					extack);
  	}
- }
  
-@@ -1417,6 +1424,19 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
- 
- 	list_for_each_entry(psec, &pcdev->pse_control_head, list) {
- 		if (psec->id == index) {
-+			/* attached_phydev can only name one PHY. If a second
-+			 * one shares the PI, either may be removed first and
-+			 * leave it pointing at a freed phy_device, so stop
-+			 * reporting events for this PI instead.
-+			 */
-+			if (psec->attached_phydev &&
-+			    psec->attached_phydev != phydev) {
-+				dev_warn(pcdev->dev,
-+					 "PI %u shared by several PHYs, not reporting its events\n",
-+					 index);
-+				psec->attached_phydev = NULL;
-+			}
-+
- 			kref_get(&psec->refcnt);
- 			return psec;
- 		}
+ 	return ret;
 -- 
 2.43.0
 
