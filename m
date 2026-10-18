@@ -1,215 +1,233 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013028.outbound.protection.outlook.com [52.101.72.28])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E83E4DE735;
-	Sun, 18 Oct 2026 21:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792358137; cv=fail; b=TnKnxXR9Qt/fX5qb6mno7EzqfrhIM0DO360qEBwcgNEF87G8aaPcHYH6pX5894pfgnJYkUUql9dbJ/9UrVey6wYP5CtxmVeqcl5Hs/a5fhvtP2DCYPD95VqZmIDVID1x2Lp10EKHtsOZU9cW6cdI874AP+H3yylo+XGA94bLdi8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792358137; c=relaxed/simple;
-	bh=bqp0j/4DrKEYJxKvS/GBuerMJRhtthuMa307fFVHC80=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nVs3+04xakV0xemMCYtb5A5EhVP8vfiIx8I4ReJlvXuPeUbeY/ZU9i5y4pttXgyrvTWU3KEeZM4EjKBnMln12sbEwclFykTfcc6F3mZQOVlD4CS9xYFIIqqOi246jIBnsLqmQX7hPs3yUqJWAnGdWgz2+bCxOY0YGcc3lCUTmPE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=h5LBQfwo; arc=fail smtp.client-ip=52.101.72.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F8835F5E3
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 21:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792359704; cv=none; b=rQYEgWjBEj2m4HlPZ1DmdRrhleMotjbQqJJdCf5mgoerEqDo1lZLaUqDwkT5pXiLdvSM7U/c+zNr0JpGXu7wIejjR0L64bYg7qVOYgweGsVinPR9rcbSsRTy/eYb/f289EN34nv91/5C//UWkU/NhnIkLWP0iq/YNGNRXDlE32I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792359704; c=relaxed/simple;
+	bh=QpgY1mHMPAh+BF52MMdR/jItFN7LZuBUhKsHUTs7ZxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CwD+gXh7FZeHui71OffKvVsWH1Ti3ZManQmtYMrCSjN5NeScCHIjQ2JVxqC7bV4y6eukAFXUPzxpXJEdUdQNqDMoCsg7Kt5tDefNnrjF4fPQcwB+mEZ08eqU5xDyywkX3u5RI8D7lAA+2Wkz+Z9kMl94YJ32/bnHYmzebDFtVZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q9rqkEOi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=okZBJI/E; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="h5LBQfwo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BuuT84+e7BKa7yHQXtXfz2lhMbzpaOHczp6wNtPvRlGE1AbPoezUY+BWPgp5ykEv2dLYBbOvReKMUA0mu5vjigoevTEgoxFs4w3XOLpw97OE0yMHSDFiG4+E+brJEBMs9bWB/201/tUCf+2xapCy7nkDPVhJjYG1IaFLf6r8g86n7IDpvoP6KU9cLpbWqpHHO9ZbtQf4aX6g393NVEipt7SPuoTmGG31zzZE9iNPlN/rZ+LlStXOM/fPCHl3c+E0joAgzNxeAEpK8NsM7aqj+Os8O77RmI+Ux5hdBl9lbwWOEv6ogpLViyh1EtEGFexr7pcHARXJbjtCeEWYur4oLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cBghBmgst/t/7ZM7m2kptd4ZiPwXn8CksvKtH5IMzT8=;
- b=vt+E7EDkymEtzca1sIRTx07Wr/jSl+NmavfQjlEU/w83m3ae674ghLk70tpU5H7+f78ffSYGn0XphI+E6W2Ke0G0psvx4NAyyiLr0m7ICO9FT5ybRVIlhqgRA+Ug7goqMiYp8WaOxSVUfnIrx9UoD2wjDEgyftWteOgZYiarMx+wsP5x5olGllmdprtZKJ+zLbJQzcPpf0yAvGdIADTbDy4DGqu5cxwrGJh3wVI3siu22IvexkUSB/p/Gob+8mFJxwVOgV0WnsZQuaDC91yZtBcCkmrrh6vK3SBrpDnvfqwRe6+hA/YjbKAeytzb3phMvKFiSYtg9qpwrOojLJAryA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.2.1) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cBghBmgst/t/7ZM7m2kptd4ZiPwXn8CksvKtH5IMzT8=;
- b=h5LBQfworK66bhAmfLgjwEDGkb2sGiQfkcWLwlviZDlUG4GVyM68ToyWHJQGJwt1D3iVr64YIVsoqr44JY42Ey2iRF5jmQC7zLKRwdn/ppbA/uhZ5dlBuz4P1Z1jZq9eaF8RNJos5c87DAi085Wb8VzfIqoZOEUYDVKjmNv+0ZCSL8mJ66LKQg++o2ab2dsgjA86BezSC/jhzc1hNxSdBMVq/8pnMDg5IBPpHoZhDzKQNNWrAug8mNCd+aybPlvjqMv6MlWPNhy3oLfIMlxLuFW7+kxeYxhsY0pQC5GB/+/yW5Lh4gvf0S0ImdFKw9jCdffvxMOjca7bnFACCAzLFw==
-Received: from DUZPR01CA0332.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b8::18) by AS4PR07MB9629.eurprd07.prod.outlook.com
- (2603:10a6:20b:4fa::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Sun, 18 Oct
- 2026 21:15:27 +0000
-Received: from DB1PEPF000509F1.eurprd03.prod.outlook.com
- (2603:10a6:10:4b8:cafe::42) by DUZPR01CA0332.outlook.office365.com
- (2603:10a6:10:4b8::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.21 via Frontend Transport; Sun,
- 18 Oct 2026 21:15:27 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 131.228.2.1) smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not
- signed) header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
- designates 131.228.2.1 as permitted sender) receiver=protection.outlook.com;
- client-ip=131.228.2.1; helo=fihe02smtplvp01.emea.nsn-net.net; pr=C
-Received: from fihe02smtplvp01.emea.nsn-net.net (131.228.2.1) by
- DB1PEPF000509F1.mail.protection.outlook.com (10.167.242.75) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.6
- via Frontend Transport; Sun, 18 Oct 2026 21:15:27 +0000
-Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
-	by fihe02smtplvp01.emea.nsn-net.net (Postfix) with ESMTP id 85C24800008E;
-	Mon, 19 Oct 2026 00:15:25 +0300 (EEST)
-From: chia-yu.chang@nokia-bell-labs.com
-To: ihor.solodrai@linux.dev,
-	john.fastabend@gmail.com,
-	jakub@cloudflare.com,
-	jiayuan.chen@linux.dev,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	horms@kernel.org,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	stephen@networkplumber.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	donald.hunter@gmail.com,
-	kuniyu@google.com,
-	ij@kernel.org,
-	ncardwell@google.com,
-	koen.de_schepper@nokia-bell-labs.com,
-	g.white@cablelabs.com,
-	ingemar.s.johansson@ericsson.com,
-	mirja.kuehlewind@ericsson.com,
-	cheshire@apple.com,
-	rs.ietf@gmx.at,
-	Jason_Livingood@comcast.com,
-	vidhi_goel@apple.com,
-	Mike_Rudolph@comcast.com,
-	Jeff_Howe@comcast.com,
-	srichard@netapp.com
-Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH net-next v2 3/3] tcp: Add mss_cache_set_by_cca for CC algorithm to set MSS
-Date: Sun, 18 Oct 2026 23:15:14 +0200
-Message-Id: <20261018211514.2817293-4-chia-yu.chang@nokia-bell-labs.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261018211514.2817293-1-chia-yu.chang@nokia-bell-labs.com>
-References: <20261018211514.2817293-1-chia-yu.chang@nokia-bell-labs.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q9rqkEOi";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="okZBJI/E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792359701;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R2sM3UmHiQ62epsC/FE3R8schNmhPjjNgAmVVqxJiF8=;
+	b=Q9rqkEOicmke1USFq2SC8SiG3etUwMkfXp2AFV3Gj1L2V4FbCKvTaYj744wOrHoWfMXbrM
+	fiuRje/90szZxI40jNFr9hpd+EcC66yLFgqJupMNy70qQnMYRfwq5mRag9Gf3PhyDSl+ZC
+	GaedyEnj7CciBYMyXvIT4btEPplblDw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-503-3mx9FHKEO1O63crUeuz8vQ-1; Sun, 18 Oct 2026 21:41:39 +0000
+X-MC-Unique: 3mx9FHKEO1O63crUeuz8vQ-1
+X-Mimecast-MFC-AGG-ID: 3mx9FHKEO1O63crUeuz8vQ_1792359698
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1df6c2937so10214095e9.0
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 14:41:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792359698; x=1792964498; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R2sM3UmHiQ62epsC/FE3R8schNmhPjjNgAmVVqxJiF8=;
+        b=okZBJI/Es/jSsi48kQOtMvp+hrjgpPCUuLiqAZg2lI8YZnCRcpJOc69w5k7FI0sMWx
+         cpil5UJKPTGaY9mNLgqs2RJpxWLjOk7p0juNQFK7cwstRrIxSeqmeF+zEVpTQM/V+xqB
+         Z+ZdfhTzIbEtxCpuBKHDV0rM2f/8zAdff/ltUuUgAdQ0QuZime02I2RdzsOHTgmCKEsQ
+         n7/PqsVU4WpF2GoXhg9Fio+lYK4O2ykbeZ37ug5p8g4d0PLIjrYhDBLDay2xdPfSPWSp
+         zlyrwrv6j2PVqZYOkNQA/DubKuM/Ls3+6Eb2/e1xOSCYOB7fp77ofOb6Vl1wLtYLIsEP
+         MIkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792359698; x=1792964498;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R2sM3UmHiQ62epsC/FE3R8schNmhPjjNgAmVVqxJiF8=;
+        b=W/68jMRQgeVH6yILvTYaOUxTTbfgRJkpFVyGeizovRXy6tJ/U7NU+fbGg/rlV8Nscg
+         QG3kwj3MuiDkytGuCqyDFd0e7btViojNmgIXwEAgnJ94TEMtVBRSFmW4QDXLiMn25ZsA
+         Qbkjb/YcYkPwvSjUqK6diFAs82+H2rGoVe0hESTigpmPIeLcW0q+6oiGdpMPCkl/jF1x
+         ATjodppVz7ZYWXz9XYHBqjJPzIFxhEe/a1kwkqLYwy9L5QK1taQwXgVCBlF3MnYXOkGR
+         khEoakqdJ9ulD/KypHwK6JSqyXhedyc3mmXT4qXSRr54Hwaj5dW5KZdDiN44eM9cKZlB
+         EImw==
+X-Forwarded-Encrypted: i=1; AKwUvBzV8YTxOMt8R4E3z1kxWGkHoxQAm+9lFCjrDcvsr4gTSW0PoFEtaDhtD3xWWfpL1lKZ0wYrESE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIXacmIJJC7nHahSWixg2o9day+a/sGtngUe2rEggEgtz62LAzE
+	LstV2oLKVqnrTMvCjJsmNEJkuIt18RSWY6NHy1hTi6zA4Jy4/4rzqtG9udLCFxf15LSvelzFilw
+	WYIfLWiz1yaVxJFs5VLtWDT2Sz7f0oZ0rDMRgXGEeHOEdyeETc5UXoGUw6w==
+X-Gm-Gg: AYBFou1RFrFybopPoJLtmf8twn9qfeEEVZ03fGvsM9SBeuRgQi6Z0ctcBLLANY/GZgf
+	fNAooyzce3hjOWv6FNoay/MLWhDX1UEOx+UViaLaGQ+G+fHaWyexPx43MXQsiEVaa6HX56dLypJ
+	bJCjRfV6zZkwPYUIbNI/cEzFLxKdxhnWXwrab93iDmzXSuUTSjCRjr04J9kedqlG6R4cu5kn4Er
+	TWwhPRonXqIeZ6SiFQKjpSSethg0H3bMQi4Ol1Hfj6MmLM5acxdpuIbyBLwTVspqjGnMfnVDy2O
+	gXpHYv4wfXdhDj3NtQg0+W/Nc6zKaAewOvjkPAGKGrvt0gQ9iaMx1ugslvzmy4Nj+Jam1Q==
+X-Received: by 2002:a05:600c:8709:b0:4a1:88df:8a2a with SMTP id 5b1f17b1804b1-4a1d760536cmr116501175e9.13.1792359698233;
+        Sun, 18 Oct 2026 14:41:38 -0700 (PDT)
+X-Received: by 2002:a05:600c:8709:b0:4a1:88df:8a2a with SMTP id 5b1f17b1804b1-4a1d760536cmr116500815e9.13.1792359697712;
+        Sun, 18 Oct 2026 14:41:37 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1e9423f20sm12734705e9.7.2026.10.18.14.41.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 14:41:37 -0700 (PDT)
+Date: Sun, 18 Oct 2026 17:41:34 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: Haoran Wang <haoranwangsec@gmail.com>, jasowangio@gmail.com,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, eperezma@redhat.com,
+	linux-kernel@vger.kernel.org, security@kernel.org
+Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
+ memory via vDPA passthrough
+Message-ID: <20261018174010-mutt-send-email-mst@kernel.org>
+References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
+ <20261018152358-mutt-send-email-mst@kernel.org>
+ <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
+ <CAHk-=wjxOy24XQnSSGimnHbp9mVjUETBE5HrS+W9E8mRrtxBLw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509F1:EE_|AS4PR07MB9629:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 1842089d-f093-497c-dda8-08df2d5ceead
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|23010399003|36860700016|921020|11063799006|56012099006|261009223027099003|10067099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	8n2zzVya/jD2X/Zv1Nko1oxRKjCskoofqe1G6vy/0QODLOStElR5V5RuG2jhGg2k6sCoK5A035XN2ypU1RHjPxzDBGrzZqevQ8vLCZAmIqg47zsuKl+ytObO2WTGjcrJ/iTiNkdTPOUIDOefpwnJcAqVyi9SiBte19Ir7wD8/Wla4v7M9CQO9Km5+QKWxYWVxOLtizEJZVobYDDDV6dRQVvCPWPU42/0A8+4yr+KWtYQ8PA94BuP/tZawyTpb8OTfr3n7CfAm+UfrCGxYt/5WssOQTtRKm+j4BExbB1uofy8n2Ixj+J0zIPkVWO0PwXMkMpRIs8CZr5lhfQwxNVxY0XDsuM631NzbwXHBU7+CsyG32KECt5A4rCDj6lmQL2fXIjfgQyWEgIjRc5L+idoSnKSkWN45SWOZNWWQShQaoXF/GdymhF6/wQ+F9P0oniXa3Vx7rHuLntRr8XiJtWO9NFHbG7QAzfMSegrWR3Fhrj/+VhIsyx1IZHIgo7KjhUbgzyKX6G0GLflRjHHIEJk7gjD2tgiYw5ZwriYxqkSgANn93u4RkpWc3jcs/jbvvb88tnsVddAuTUrEaWVhCT5q2KgavYQxQd9YzJyr+6Q1XaC8aUn56D/6oY4Q8lcMf6iKA114udHk0eHqU5JkvDqBnpvXGqwUQgAaU73qcXA32/u/v8BYVpQraQxGAV11Wsfrth0cX0GRcDxJWwI6LvDM5ibrAOeaRSOXJn8Tl/WSb9xuEGgM2+wFKr3ZiTR125D
-X-Forefront-Antispam-Report:
-	CIP:131.228.2.1;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe02smtplvp01.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(921020)(11063799006)(56012099006)(261009223027099003)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	zAE9RRXMUXgHeLLEG2YmIZ1XroFWcHIJ6XE0ErzMY6byAjpcLe4+YAK7wQT8h2cWVViosSBKFwjY6MsU8VU0YY4/yREMoG68T1NokBUbu4imSpHO8IjmvpdsePlk6In67U7Ob6Rg1a8uV2anesbK5X3gfPbho7QfNG3jzF8zvy9jQgBRMm0XQAIwJGpxdakoINghSNwVxyD+e96y67RaRBG7cEOOl77DrLeKo0XA25hFQ3z0D+t4WLniQ7NVWIc+uLmzrVkUL4mTgC0GAogxZTJj9LJYw+zldyhEWg92f646W3pAYHsfgxVOawpXGRMqJAWuXdiZofhukiM923mG4L1bdqp0F4dAW1QGKyIIFSDIAumHUIJMESnTkPBCjogYdn291S9H2NhE7/qurU7xKLpwXvVJ0XDTim59GpK167+y5q4Xs9E4/d3yIVwIfSwk
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2026 21:15:27.3648
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1842089d-f093-497c-dda8-08df2d5ceead
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.1];Helo=[fihe02smtplvp01.emea.nsn-net.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-DB1PEPF000509F1.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR07MB9629
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjxOy24XQnSSGimnHbp9mVjUETBE5HrS+W9E8mRrtxBLw@mail.gmail.com>
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+On Sun, Oct 18, 2026 at 11:11:44AM -1000, Linus Torvalds wrote:
+> On Sun, 18 Oct 2026 at 10:34, Linus Torvalds
+> <torvalds@linuxfoundation.org> wrote:
+> >
+> > And __get_user() together with access_ok() is actively wrong and
+> > stupid. It's slower, bigger, and more bug-prone than just using
+> > "get_user()".
+> 
+> Btw, if you have *multiple* accesses to the same structure, that was a
+> historical reason to use access_ok() with multiple __get_user() calls.
+> 
+> But it's not a useful pattern today - and hasn't been for years -
+> because the real cost is not the access_ok(), but the stac/clac that
+> surrounds __get_user() on modern hardware.
+> 
+> If performance is really crticial, the new "unsafe_get_user()" model
+> is the way to go.
 
-Make the CC module set the mss_cache smaller than path mtu. This is useful
-for a CC module that maintains an internal fractional cwnd less than 2 at
-very low speed (<100kbps) and very low RTT (<1ms). In this case, the
-minimum snd_cwnd for the stack remains at 2, but the CC module will limit
-the pacing rate to ensure that its internal fractional cwnd takes effect.
-Therefore, the CC algorithm can enable fine-grained control without
-causing big rate saw-tooth and delay jitter.
+Thanks! I'll try to find the time to look into converting vhost to that.
+The flood of ai found bugs I am dealing with will abate any day now.
+Any... day... now...
 
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
----
- include/linux/tcp.h   | 3 ++-
- net/ipv4/tcp.c        | 1 +
- net/ipv4/tcp_output.c | 5 +++--
- 3 files changed, 6 insertions(+), 3 deletions(-)
+> Here's an UNTESTED example patch of how to do a conversion. It
+> generates much better code than __get_user() ever did. That patch
+> looks good to me, but again: I didn't actually *test* it (and the
+> reason this signal.c code has never been updated to the modern pattern
+> is that it really doesn't matter for performance - I decided to use it
+> as an example not because it matters, but because it's a good example
+> code-sequence for the legacy model conversion).
+> 
+> Somebody should test it.
+> 
+>                      Linus
 
-diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-index e4d1720f49f0..428d63e46206 100644
---- a/include/linux/tcp.h
-+++ b/include/linux/tcp.h
-@@ -232,7 +232,8 @@ struct tcp_sock {
- 		tcp_usec_ts : 1, /* TSval values in usec */
- 		is_sack_reneg:1,    /* in recovery from loss with SACK reneg? */
- 		is_cwnd_limited:1,/* forward progress limited by snd_cwnd? */
--		recvmsg_inq : 1;/* Indicate # of bytes in queue upon recvmsg */
-+		recvmsg_inq : 1,/* Indicate # of bytes in queue upon recvmsg */
-+		mss_cache_set_by_cca:1;/* mss_cache set by CCA */
- 	__cacheline_group_end(tcp_sock_read_txrx);
- 
- 	/* RX read-mostly hotpath cache lines */
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index f4c9101e5996..708e1830227b 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -457,6 +457,7 @@ void tcp_init_sock(struct sock *sk)
- 	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
- 	tp->snd_cwnd_clamp = ~0;
- 	tp->mss_cache = TCP_MSS_DEFAULT;
-+	tp->mss_cache_set_by_cca = false;
- 
- 	tp->reordering = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_reordering);
- 	tcp_assign_congestion_control(sk);
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 3248f3895b15..c53d70718830 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2082,7 +2082,7 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu)
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	int mss_now;
- 
--	if (icsk->icsk_mtup.search_high > pmtu)
-+	if (icsk->icsk_mtup.search_high > pmtu && !tp->mss_cache_set_by_cca)
- 		icsk->icsk_mtup.search_high = pmtu;
- 
- 	mss_now = tcp_mtu_to_mss(sk, pmtu);
-@@ -2096,6 +2096,7 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu)
- 
- 	return mss_now;
- }
-+EXPORT_SYMBOL(tcp_sync_mss);
- 
- /* Compute the current effective MSS, taking SACKs and IP options,
-  * and even PMTU discovery events into account.
-@@ -2111,7 +2112,7 @@ unsigned int tcp_current_mss(struct sock *sk)
- 
- 	mss_now = tp->mss_cache;
- 
--	if (dst) {
-+	if (dst && !tp->mss_cache_set_by_cca) {
- 		u32 mtu = dst_mtu(dst);
- 		if (mtu != inet_csk(sk)->icsk_pmtu_cookie)
- 			mss_now = tcp_sync_mss(sk, mtu);
--- 
-2.34.1
+>  kernel/signal.c | 56 ++++++++++++++++++++++++++++++--------------------------
+>  1 file changed, 30 insertions(+), 26 deletions(-)
+> 
+> diff --git a/kernel/signal.c b/kernel/signal.c
+> index d31ebcb6ed4d..0fd1296e912b 100644
+> --- a/kernel/signal.c
+> +++ b/kernel/signal.c
+> @@ -4776,12 +4776,12 @@ SYSCALL_DEFINE3(sigaction, int, sig,
+>  
+>  	if (act) {
+>  		old_sigset_t mask;
+> -		if (!access_ok(act, sizeof(*act)) ||
+> -		    __get_user(new_ka.sa.sa_handler, &act->sa_handler) ||
+> -		    __get_user(new_ka.sa.sa_restorer, &act->sa_restorer) ||
+> -		    __get_user(new_ka.sa.sa_flags, &act->sa_flags) ||
+> -		    __get_user(mask, &act->sa_mask))
+> -			return -EFAULT;
+> +		scoped_user_read_access(act, Efault) {
+> +			unsafe_get_user(new_ka.sa.sa_handler, &act->sa_handler, Efault);
+> +			unsafe_get_user(new_ka.sa.sa_restorer, &act->sa_restorer, Efault);
+> +			unsafe_get_user(new_ka.sa.sa_flags, &act->sa_flags, Efault);
+> +			unsafe_get_user(mask, &act->sa_mask, Efault);
+> +		}
+>  #ifdef __ARCH_HAS_KA_RESTORER
+>  		new_ka.ka_restorer = NULL;
+>  #endif
+> @@ -4791,15 +4791,18 @@ SYSCALL_DEFINE3(sigaction, int, sig,
+>  	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+>  
+>  	if (!ret && oact) {
+> -		if (!access_ok(oact, sizeof(*oact)) ||
+> -		    __put_user(old_ka.sa.sa_handler, &oact->sa_handler) ||
+> -		    __put_user(old_ka.sa.sa_restorer, &oact->sa_restorer) ||
+> -		    __put_user(old_ka.sa.sa_flags, &oact->sa_flags) ||
+> -		    __put_user(old_ka.sa.sa_mask.sig[0], &oact->sa_mask))
+> -			return -EFAULT;
+> +		scoped_user_write_access(act, Efault) {
+> +			unsafe_put_user(old_ka.sa.sa_handler, &oact->sa_handler, Efault);
+> +			unsafe_put_user(old_ka.sa.sa_restorer, &oact->sa_restorer, Efault);
+> +			unsafe_put_user(old_ka.sa.sa_flags, &oact->sa_flags, Efault);
+> +			unsafe_put_user(old_ka.sa.sa_mask.sig[0], &oact->sa_mask, Efault);
+> +		}
+>  	}
+>  
+>  	return ret;
+> +
+> +Efault:
+> +	return -EFAULT;
+>  }
+>  #endif
+>  #ifdef CONFIG_COMPAT_OLD_SIGACTION
+> @@ -4813,12 +4816,12 @@ COMPAT_SYSCALL_DEFINE3(sigaction, int, sig,
+>  	compat_uptr_t handler, restorer;
+>  
+>  	if (act) {
+> -		if (!access_ok(act, sizeof(*act)) ||
+> -		    __get_user(handler, &act->sa_handler) ||
+> -		    __get_user(restorer, &act->sa_restorer) ||
+> -		    __get_user(new_ka.sa.sa_flags, &act->sa_flags) ||
+> -		    __get_user(mask, &act->sa_mask))
+> -			return -EFAULT;
+> +		scoped_user_read_access(act, Efault) {
+> +			unsafe_get_user(handler, &act->sa_handler, Efault);
+> +			unsafe_get_user(restorer, &act->sa_restorer, Efault);
+> +			unsafe_get_user(new_ka.sa.sa_flags, &act->sa_flags, Efault);
+> +			unsafe_get_user(mask, &act->sa_mask, Efault);
+> +		}
+>  
+>  #ifdef __ARCH_HAS_KA_RESTORER
+>  		new_ka.ka_restorer = NULL;
+> @@ -4831,16 +4834,17 @@ COMPAT_SYSCALL_DEFINE3(sigaction, int, sig,
+>  	ret = do_sigaction(sig, act ? &new_ka : NULL, oact ? &old_ka : NULL);
+>  
+>  	if (!ret && oact) {
+> -		if (!access_ok(oact, sizeof(*oact)) ||
+> -		    __put_user(ptr_to_compat(old_ka.sa.sa_handler),
+> -			       &oact->sa_handler) ||
+> -		    __put_user(ptr_to_compat(old_ka.sa.sa_restorer),
+> -			       &oact->sa_restorer) ||
+> -		    __put_user(old_ka.sa.sa_flags, &oact->sa_flags) ||
+> -		    __put_user(old_ka.sa.sa_mask.sig[0], &oact->sa_mask))
+> -			return -EFAULT;
+> +		scoped_user_write_access(act, Efault) {
+> +			unsafe_put_user(ptr_to_compat(old_ka.sa.sa_handler), &oact->sa_handler, Efault);
+> +			unsafe_put_user(ptr_to_compat(old_ka.sa.sa_restorer), &oact->sa_restorer, Efault);
+> +			unsafe_put_user(old_ka.sa.sa_flags, &oact->sa_flags, Efault);
+> +			unsafe_put_user(old_ka.sa.sa_mask.sig[0], &oact->sa_mask, Efault);
+> +		}
+>  	}
+>  	return ret;
+> +
+> +Efault:
+> +	return -EFAULT;
+>  }
+>  #endif
+>  
 
