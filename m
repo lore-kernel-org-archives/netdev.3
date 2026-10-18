@@ -1,322 +1,282 @@
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D026F3DA5B0
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 17:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C437E317
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 17:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792344044; cv=none; b=fXas3AuqFQYkIGnOvBvY9Z5eCKnf8pqa/EDsEGwu6b6wo9e+633PU2lCHncKRjpvYeN/6cKqzCJnHGmDY0KNtEewSwJcq8FBiXOJl7akXjsyFz+EkWRgrHklAXeshNAIVFG8CUomjkcE0vpHa8XZFm5UbizJhmvKU6YcsbKM/wg=
+	t=1792344506; cv=none; b=riH+4qAh/KG21+iGhDMGViv3WISeb+ovNQBk3HM91qq2c/saPvcodoV1gFkCTk3HnR+b/3cdLbEEAyZEKxygbjdeH6dxV9mJ81Iu7y+4WLT08mfEvFzyuAqYiYfM8RMJJ/q7iOHT+9ehE9KBPFmTazQwUO0jhYNrMfnj6My/fdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792344044; c=relaxed/simple;
-	bh=57/LsaGWAyQYm98rirCYZsIEqXkC8AOCrC47QwystGs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DVlnSUKmxdd5k/Nv4F6K/1dkdBnyoIHbOl6rLMfcvIp6jW8H4NLfbk7Yz9DTFNoWX3Aioj2pXQxDFN2PQyowCOSkR5cyytqRRN1CjqzCKGmwZyhEjEc8cKw+qYo5KqXok+hQgeomdNJmf+HFef4X+G6aWPR4cQUOI8ZMGFNU+sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZNvAW/BH; arc=none smtp.client-ip=209.85.216.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1792344506; c=relaxed/simple;
+	bh=m07A85t0RxQykd1GV2UDBz87g6YaE7Rw8AbQ06LCXqA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XVFqfMj9LJxYfoX6kRFxSfxvSKOT81jUSu0qaHqu1KJXB3QEiv43jU3LxaEEiN4gGutw0lmU55tlXbB0VINi23GX8PhCTrXe/NVtuoRBEzQA1C4rT6dpvgVULZuimiA17ghtLg13Zv9zn1PWyiRba8DAYYr4xo/zkjMruGsWWzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byHHKuND; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZNvAW/BH"
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so934716a91.2
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 10:20:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792344041; x=1792948841;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SfBxy7fkRpA3vozl5rzNEcBDJSneGM5Ixf32aBiJswc=;
-        b=bpQ4hduaAieViZcUKytOIOCvNVH1ycinTBsDfeeDgXwt+Fp95JSUR3UtgpMdAU3URQ
-         dMh1+NeN6/C4hWOIFDyt1YZPLj09/9/ZlBlurmmOsSGKHltZ1HWM34NCLjt+/a6ONFHT
-         fbrkM1YuOBdXTqi3zc0SHMKWQe3W30CpVt9EocPl5D08ga6A0rdqexLApCdVIyZS+5BU
-         jh7I0XScT9XvQJDPOySPmF8hhpPs7v9KV+1DcV4IQ1IjlrttmO0HUFo6jJ86UOHpCw2y
-         wwnCvmRyCef1XxvF3Jmo6hdvgbCXpvTsqdjZecl7qMe8XlbsCnD3wbXqXLGiSRq0SBIp
-         Utlw==
-X-Gm-Message-State: AFq9FYIi853ZN5AjY61neHmGW+1SbBmSlzzSbaB4OHy54pdyqvNfg1mQ
-	vpHTs2YuYGVUsur3tDLZmcpnMoGNYK6pwmtL2YGXW1dw2xvUBS8Q3V0wcPBo64GNxQDVt9sBLKc
-	ZIZ4rlR1pHeJ+4w2GTNBkgCVX/wJ7vFrY3pmujm6yepC4sSQDA9/+eiF4IVN0x6BBuzGM/9Mp2I
-	lS0mAbz6O56z7z2oll6+sfHx5sQ5VpdTwT9mQesSAy9qg1P0W/QUp3zDsSmY8NHhBhqXdEc63RJ
-	4Dm94c9hH4O4HLTrwL6
-X-Gm-Gg: AYBFou0h0zXzUABIZF0qJaMWfRl3nUUITxmcUPRWv4utMYdz3bJxIkLqGTlOTcsdb3G
-	Wu8tl0eF6QDN7tBtilnzTXlsL7SLrla8Kzrm8045VBFkBySQqBH4bH3S/h/CvNhMCAzp8m7Dhbh
-	jtfRTb/L6V+UZYgQuj21XmSMQbzdmNPwHwNhqSbr9FS35gjAffCJ7k5+gMYUt7hqv2KlWZBftwE
-	VXKxU5OEx+NshGU0A46rc1TFTGNZ/6Q6qaeMgEZt95qsFK5Ypl0eVktFgt4jxh/jZjTvsKnqdwR
-	/IVO/YtMFLdXkKs3dUXczGlpXALw6egF7f0QuU5/cyI2FCxQARSrhZMgrMJORVNPyZa2khnUdKK
-	KJE5ajNSse6r6mfU2fGlq6UXxZshvje/ojRx72JRWNZDuOM8bFlnEymKAtggiUHH3vu9EJ551M8
-	QqDN8tY/qMo0nOediRv24X4IfpHfIQxEGYT/mYTLBtxg==
-X-Received: by 2002:a17:90b:1d05:b0:3ac:9ed8:f319 with SMTP id 98e67ed59e1d1-3acee98e7f4mr4274820a91.2.1792344040966;
-        Sun, 18 Oct 2026 10:20:40 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-20.dlp.protect.broadcom.com. [144.49.247.20])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3acd3d2b819sm1723257a91.3.2026.10.18.10.20.40
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 18 Oct 2026 10:20:40 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-35fb6be0f9fso4003516eec.0
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 10:20:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1792344039; x=1792948839; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SfBxy7fkRpA3vozl5rzNEcBDJSneGM5Ixf32aBiJswc=;
-        b=ZNvAW/BHE4KALP1nf+9M7BzAzxPC+g0HsI+TspUEZQmmDW4nVgSFLU+nYVCGrKJ06c
-         rVYvDEYBZum1K/s5MEusXeBoAqzb9lwEkvvJVt1GGKB9k3qhh8ktHplXcoIspgvQrrUT
-         gqdVckDoENs9sXBl0+/gAkuohiobziQNpxLBc=
-X-Received: by 2002:a05:693c:415a:20b0:361:aca0:522b with SMTP id 5a478bee46e88-361aca053bcmr8353120eec.11.1792344038854;
-        Sun, 18 Oct 2026 10:20:38 -0700 (PDT)
-X-Received: by 2002:a05:693c:415a:20b0:361:aca0:522b with SMTP id
- 5a478bee46e88-361aca053bcmr8353085eec.11.1792344038206; Sun, 18 Oct 2026
- 10:20:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byHHKuND"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0901F000C4;
+	Sun, 18 Oct 2026 17:28:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792344504;
+	bh=aypCdVKNV+X6nyLG+TGJBWfsAqOpjTL5s79NzVhGa9Q=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=byHHKuNDOS1o7og0l5+mI2x+hZAVLAAtzJwonuciJjdfRw9/rN/iICnSyC6IUwO4a
+	 bQTrcXNLQQ2hmKSotb1UXk6RqNFK65dxEj+wgCLZUrUu7QErXtqG0jr4Ft9qcaSJlq
+	 7TQ0/wZcRhXDMuJPaXJpdhvDaZbdacYXHIIAg4rsXaRhJZ42xz8RwtDNkVkGu4O4Bd
+	 y8WWY554i2w6s+SFlrtP4AzW6Iit4IzhtxcXzfxtQ9sd+nn5MyJEBIQgDOpfnfB1tj
+	 5DqFtiKe03OEJbdQhgmthil9uvbcUVMeezfBLE1M+wSuc+iivbHaIG7SzN+RTC4G5G
+	 WEh66SJgjQdBA==
+Subject: Re: [PATCH net v9 2/3] rxrpc: bound connection and OOB receive queues
+From: netdev-bot+sashiko@kernel.org
+To: zihanx@nebusec.ai
+Cc: linux-afs@lists.infradead.org, netdev@vger.kernel.org, dhowells@redhat.com,
+ marc.dionne@auristor.com, davem@davemloft.net, edumazet@kernel.org,
+ pabeni@kernel.org, horms@kernel.org, vega@nebusec.ai, root@tr0jan.top,
+ kuba@kernel.org
+Date: Sun, 18 Oct 2026 17:28:23 +0000
+Message-ID: <179234450334.3135.15301834891389267819@kernel.org>
+In-Reply-To:
+ <7fcebf53a6ccaec41de4acc52465b2937297071a.1791994058.git.zihanx@nebusec.ai>
+References:
+ <7fcebf53a6ccaec41de4acc52465b2937297071a.1791994058.git.zihanx@nebusec.ai>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261013200645.1346299-1-bhargava.marreddy@broadcom.com>
- <20261013200645.1346299-6-bhargava.marreddy@broadcom.com> <CANXQDtYRVg10b+kNyrNTmwXy-Dre7ZhSW_XsJK8Y1SqUR2128A@mail.gmail.com>
-In-Reply-To: <CANXQDtYRVg10b+kNyrNTmwXy-Dre7ZhSW_XsJK8Y1SqUR2128A@mail.gmail.com>
-From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Date: Sun, 18 Oct 2026 22:50:24 +0530
-X-Gm-Features: AclHuK-ybOay08gJRLMP4GvlzGgmZKLyBotvihyhhRL8MA2xQdDW1yKJ8IKP614
-Message-ID: <CANXQDtbXy=e6a5_3sv6o6P6S88GvCYC8eb1K1TatKsArVW_P4Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 5/5] bnge: make NQ0 persistent across
- open/stop cycles
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
-	vsrama-krishna.nemani@broadcom.com, vikas.gupta@broadcom.com, 
-	Dharmender Garg <dharmender.garg@broadcom.com>, 
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>, 
-	Ramakrishna Koduri <ramakrishna.koduri@broadcom.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000c8fb3f065e209d5a"
 
---000000000000c8fb3f065e209d5a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-On Sun, Oct 18, 2026 at 9:02=E2=80=AFPM Bhargava Chenna Marreddy
-<bhargava.marreddy@broadcom.com> wrote:
->
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
->
-> Source: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026101320064=
-5.1346299-1-bhargava.marreddy@broadcom.com
->
-> On Wed, Oct 14, 2026 at 1:38=E2=80=AFAM Bhargava Marreddy
-> <bhargava.marreddy@broadcom.com> wrote:
-> > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers=
-/net/ethernet/broadcom/bnge/bnge_netdev.c
-> > index dc6cf3525034..c6649a2c5876 100644
-> > --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> > @@ -1209,10 +1209,20 @@ static int bnge_init_ring_grps(struct bnge_net =
-*bn)
-> >                 bn->grp_info[i].agg_fw_ring_id =3D INVALID_HW_RING_ID;
-> >                 bn->grp_info[i].nq_fw_ring_id =3D INVALID_HW_RING_ID;
-> >         }
-> > +       /* NQ0 stays allocated in FW across open/close */
-> > +       bn->grp_info[0].nq_fw_ring_id =3D
-> > +               (u16)bn->nq0->nq_ring.ring_struct.fw_ring_id;
->
-> Discovered by: gpt-6-astra, opus-5-5 =C2=B7 Ranked Medium by: gpt-6-astra
->
-> bnge_nq0_init() now allocates NQ0 in firmware and sets it as the async
-> event completion ring only once. After that, every open reuses the
-> probe-time fw_ring_id here, and bnge_nq0_resume() re-arms the cached NQ0
-> doorbell.
->
-> On the way back up, bnge_hwrm_if_change(bd, true) returns only rc and
-> does not check any response flags:
->
->     if (up)
->         req->flags =3D cpu_to_le32(FUNC_DRV_IF_CHANGE_REQ_FLAGS_UP);
->     return bnge_hwrm_req_send(bd, req);
->
-> Suppose firmware resets or reclaims the function's NQ while the
-> interface is down. Would queue 0's completion ring then be allocated
-> against a stale nq_fw_ring_id? NQ0 doorbell writes would target a ring
-> firmware no longer owns, and async events would stop with no error.
->
-> The commit message acknowledges this ("Recreating NQ0 after a firmware
-> reset is not handled here"). Other probe-only firmware state would also
-> be stale in that case, such as the context memory from
-> bnge_alloc_ctx_mem() and the registration from
-> bnge_hwrm_func_drv_rgtr(). So the driver does not handle a firmware
-> reset while down today either.
->
-> Does firmware guarantee that it keeps NQ0 and the async event CR
-> configuration across FUNC_DRV_IF_CHANGE down/up?
+Critical: 0 · High: 1 (1) · Medium: 1 · Low: 1
 
-Yes. Firmware does not touch NQ0 or async event support across
-FUNC_DRV_IF_CHANGE down/up transitions, so the fw_ring_id cached during pro=
-be
-remains valid across open/stop cycles.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-A full firmware reset is a different case. NQ0, context memory, and driver
-registration would all need to be recreated=E2=80=94which the driver does n=
-ot support
-today, with or without this patch. That recovery path is out of scope for t=
-his
-series, as noted in the commit message.
+- [High] rxrpc: connection reference leak on aborted connection
+- [Medium] The new receive budget is shared by everything on the
+  endpoint, so one socket or peer can starve the others.
+- [Low] The patch includes a refcount fix that the commit message does
+  not mention.
 
->
-> > +
-> > +       rc =3D bnge_hwrm_set_async_event_cr(bd, nqr->ring_struct.fw_rin=
-g_id);
-> > +       if (rc) {
-> > +               bnge_err(bd, "Failed to set async event completion ring=
-: %d\n",
-> > +                        rc);
-> > +               goto err_free_irq;
-> > +       }
->
-> The commit message says probe will "configure it as the async event
-> completion ring (a failure is only warned about, as before)". Does that
-> still match the code?
->
-> Here, if bnge_hwrm_set_async_event_cr() fails, the error is logged with
-> bnge_err() and the code jumps to err_free_irq. That tears NQ0 down and
-> returns rc. bnge_netdev_alloc() then treats the error as fatal:
->
->     rc =3D bnge_nq0_init(bn);
->     if (rc) {
->         dev_err(bd->dev, "NQ0 init failed rc: %d\n", rc);
->         goto err_free_port_stats;
->     }
->
-> So register_netdev() is never called and probe fails.
->
-> Before this patch, bnge_hwrm_ring_alloc() only warned and kept going:
->
->     if (!i) {
->         rc =3D bnge_hwrm_set_async_event_cr(bd, ring->fw_ring_id);
->         if (rc)
->             netdev_warn(bn->netdev, "Failed to set async event
-> completion ring.\n");
->     }
->
-> Before, a firmware rejection of this FUNC_CFG request still left a
-> working interface, just without async events. Now the port gets no
-> netdev at all.
->
-> Should this failure stay warn-only, as the commit message says? If it
-> is meant to be fatal at probe, could the commit message say so?
+Pre-existing issues:
+- [High] A CHALLENGE skb queued on conn->rx_queue leaks its connection
+  reference if the connection is aborted before the connection work…
 
-The failing probe is intentional. Without async event support, the driver
-cannot receive firmware async events, so a netdev coming up without it woul=
-d be
-only partially functional. The current commit message is inaccurate on this
-point, which I can fix in a future revision.
+--
 
-Thanks,
-Bhargava, Marreddy
+rxrpc: bound connection and OOB receive queues
 
---000000000000c8fb3f065e209d5a
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+This patch adds a per-local byte budget, rx_async_queue_bytes, capped by
+the UDP socket's sk_rcvbuf. It covers skbs queued on conn->rx_queue and
+managed RxGK CHALLENGEs held on the socket OOB queues. The charge is
+released when a packet is processed, answered, freed or purged.
 
-MIIVdAYJKoZIhvcNAQcCoIIVZTCCFWECAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ghLhMIIGqDCCBJCgAwIBAgIQfofDCS7XZu8vIeKo0KeY9DANBgkqhkiG9w0BAQwFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNTNaFw0yOTA0MTkwMDAwMDBaMFIxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBS
-NiBTTUlNRSBDQSAyMDIzMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwjAEbSkPcSyn
-26Zn9VtoE/xBvzYmNW29bW1pJZ7jrzKwPJm/GakCvy0IIgObMsx9bpFaq30X1kEJZnLUzuE1/hlc
-hatYqyORVBeHlv5V0QRSXY4faR0dCkIhXhoGknZ2O0bUJithcN1IsEADNizZ1AJIaWsWbQ4tYEYj
-ytEdvfkxz1WtX3SjtecZR+9wLJLt6HNa4sC//QKdjyfr/NhDCzYrdIzAssoXFnp4t+HcMyQTrj0r
-pD8KkPj96sy9axzegLbzte7wgTHbWBeJGp0sKg7BAu+G0Rk6teO1yPd75arbCvfY/NaRRQHk6tmG
-71gpLdB1ZhP9IcNYyeTKXIgfMh2tVK9DnXGaksYCyi6WisJa1Oa+poUroX2ESXO6o03lVxiA1xyf
-G8lUzpUNZonGVrUjhG5+MdY16/6b0uKejZCLbgu6HLPvIyqdTb9XqF4XWWKu+OMDs/rWyQ64v3mv
-Sa0te5Q5tchm4m9K0Pe9LlIKBk/gsgfaOHJDp4hYx4wocDr8DeCZe5d5wCFkxoGc1ckM8ZoMgpUc
-4pgkQE5ShxYMmKbPvNRPa5YFzbFtcFn5RMr1Mju8gt8J0c+dxYco2hi7dEW391KKxGhv7MJBcc+0
-x3FFTnmhU+5t6+CnkKMlrmzyaoeVryRTvOiH4FnTNHtVKUYDsCM0CLDdMNgoxgkCAwEAAaOCAX4w
-ggF6MA4GA1UdDwEB/wQEAwIBhjBMBgNVHSUERTBDBggrBgEFBQcDAgYIKwYBBQUHAwQGCisGAQQB
-gjcUAgIGCisGAQQBgjcKAwwGCisGAQQBgjcKAwQGCSsGAQQBgjcVBjASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBQAKTaeXHq6D68tUC3boCOFGLCgkjAfBgNVHSMEGDAWgBSubAWjkxPioufi
-1xzWx/B/yGdToDB7BggrBgEFBQcBAQRvMG0wLgYIKwYBBQUHMAGGImh0dHA6Ly9vY3NwMi5nbG9i
-YWxzaWduLmNvbS9yb290cjYwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
-b20vY2FjZXJ0L3Jvb3QtcjYuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vcm9vdC1yNi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUAA4IC
-AQCRkUdr1aIDRmkNI5jx5ggapGUThq0KcM2dzpMu314mJne8yKVXwzfKBtqbBjbUNMODnBkhvZcn
-bHUStur2/nt1tP3ee8KyNhYxzv4DkI0NbV93JChXipfsan7YjdfEk5vI2Fq+wpbGALyyWBgfy79Y
-IgbYWATB158tvEh5UO8kpGpjY95xv+070X3FYuGyeZyIvao26mN872FuxRxYhNLwGHIy38N9ASa1
-Q3BTNKSrHrZngadofHglG5W3TMFR11JOEOAUHhUgpbVVvgCYgGA6dSX0y5z7k3rXVyjFOs7KBSXr
-dJPKadpl4vqYphH7+P40nzBRcxJHrv5FeXlTrb+drjyXNjZSCmzfkOuCqPspBuJ7vab0/9oeNERg
-nz6SLCjLKcDXbMbKcRXgNhFBlzN4OUBqieSBXk80w2Nzx12KvNj758WavxOsXIbX0Zxwo1h3uw75
-AI2v8qwFWXNclO8qW2VXoq6kihWpeiuvDmFfSAwRLxwwIjgUuzG9SaQ+pOomuaC7QTKWMI0hL0b4
-mEPq9GsPPQq1UmwkcYFJ/Z4I93DZuKcXmKMmuANTS6wxwIEw8Q5MQ6y9fbJxGEOgOgYL4QIqNULb
-5CYPnt2LeiIiEnh8Uuh8tawqSjnR0h7Bv5q4mgo3L1Z9QQuexUntWD96t4o0q1jXWLyrpgP7Zcnu
-CzCCBYMwggNroAMCAQICDkXmuwODM8OFZUjm/0VRMA0GCSqGSIb3DQEBDAUAMEwxIDAeBgNVBAsT
-F0dsb2JhbFNpZ24gUm9vdCBDQSAtIFI2MRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpH
-bG9iYWxTaWduMB4XDTE0MTIxMDAwMDAwMFoXDTM0MTIxMDAwMDAwMFowTDEgMB4GA1UECxMXR2xv
-YmFsU2lnbiBSb290IENBIC0gUjYxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2Jh
-bFNpZ24wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCVB+hzymb57BTKezz3DQjxtEUL
-LIK0SMbrWzyug7hBkjMUpG9/6SrMxrCIa8W2idHGsv8UzlEUIexK3RtaxtaH7k06FQbtZGYLkoDK
-RN5zlE7zp4l/T3hjCMgSUG1CZi9NuXkoTVIaihqAtxmBDn7EirxkTCEcQ2jXPTyKxbJm1ZCatzEG
-xb7ibTIGph75ueuqo7i/voJjUNDwGInf5A959eqiHyrScC5757yTu21T4kh8jBAHOP9msndhfuDq
-jDyqtKT285VKEgdt/Yyyic/QoGF3yFh0sNQjOvddOsqi250J3l1ELZDxgc1Xkvp+vFAEYzTfa5MY
-vms2sjnkrCQ2t/DvthwTV5O23rL44oW3c6K4NapF8uCdNqFvVIrxclZuLojFUUJEFZTuo8U4lptO
-TloLR/MGNkl3MLxxN+Wm7CEIdfzmYRY/d9XZkZeECmzUAk10wBTt/Tn7g/JeFKEEsAvp/u6P4W4L
-sgizYWYJarEGOmWWWcDwNf3J2iiNGhGHcIEKqJp1HZ46hgUAntuA1iX53AWeJ1lMdjlb6vmlodiD
-D9H/3zAR+YXPM0j1ym1kFCx6WE/TSwhJxZVkGmMOeT31s4zKWK2cQkV5bg6HGVxUsWW2v4yb3BPp
-DW+4LtxnbsmLEbWEFIoAGXCDeZGXkdQaJ783HjIH2BRjPChMrwIDAQABo2MwYTAOBgNVHQ8BAf8E
-BAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUrmwFo5MT4qLn4tcc1sfwf8hnU6AwHwYD
-VR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwDQYJKoZIhvcNAQEMBQADggIBAIMl7ejR/ZVS
-zZ7ABKCRaeZc0ITe3K2iT+hHeNZlmKlbqDyHfAKK0W63FnPmX8BUmNV0vsHN4hGRrSMYPd3hckSW
-tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
-2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
-phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
-a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
-ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
-07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
-SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
-rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGqjCCBJKg
-AwIBAgIMFJTEEB7G+bRSFHogMA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
-ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
-MDIzMB4XDTI1MDYyMDEzNTI1NVoXDTI3MDYyMTEzNTI1NVowge0xCzAJBgNVBAYTAlVTMRMwEQYD
-VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
-MDExNzERMA8GA1UEBBMITWFycmVkZHkxGDAWBgNVBCoTD0JoYXJnYXZhIENoZW5uYTEWMBQGA1UE
-ChMNQlJPQURDT00gSU5DLjEnMCUGA1UEAwweYmhhcmdhdmEubWFycmVkZHlAYnJvYWRjb20uY29t
-MS0wKwYJKoZIhvcNAQkBFh5iaGFyZ2F2YS5tYXJyZWRkeUBicm9hZGNvbS5jb20wggEiMA0GCSqG
-SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCq1sbXItt9Z31lzjb1WqEEegmLi72l7kDsxOJCWBCSkART
-C/LTHOEoELrltkLJnRJiEujzwxS1/cV0LQse38GKog0UmiG5Jsq4YbNxmC7s3BhuuZYSoyCQ7Jg+
-BzqQDU+k9ESjiD/R/11eODWJOxHipYabn/b+qYM+7CTSlVAy7vlJ+z1E/LnygVYHkWFN+IJSuY26
-OWgSyvM8/+TPOrECYbo+kLcjqZfLS9/8EDThXQgg9oCeQOD8pwExycHc9w6ohJLoK7mVWrDol6cl
-vW0XPONZARkdcZ69nJIHt/aMhihlyTUEqD0R8yRHfBp9nQwoSs8z+8xZ+cczX/XvtCVJAgMBAAGj
-ggHiMIIB3jAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH/BAIwADCBkwYIKwYBBQUHAQEEgYYwgYMw
-RgYIKwYBBQUHMAKGOmh0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjZz
-bWltZWNhMjAyMy5jcnQwOQYIKwYBBQUHMAGGLWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dz
-Z2NjcjZzbWltZWNhMjAyMzBlBgNVHSAEXjBcMAkGB2eBDAEFAwMwCwYJKwYBBAGgMgEoMEIGCisG
-AQQBoDIKAwIwNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3Np
-dG9yeS8wQQYDVR0fBDowODA2oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2
-c21pbWVjYTIwMjMuY3JsMCkGA1UdEQQiMCCBHmJoYXJnYXZhLm1hcnJlZGR5QGJyb2FkY29tLmNv
-bTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAd
-BgNVHQ4EFgQUkiPQZ5IKnCUHj3xJyO85n4OdVl4wDQYJKoZIhvcNAQELBQADggIBALtu8uco00Hh
-dGp+c7lMOYHnFquYd6CXMYL1sBTi51PmiOKDO2xgfVvR7XI/kkqK5Iut0PYzv7kvUJUpG7zmL+XW
-ABC2V9jvp5rUPlGSfP9Ugwx7yoGYEO+x42LeSKypUNV0UbBO8p32C1C/OkqikHlrQGuy8oUMNvOl
-rrSoYMXdlZEravXgTAGO1PLgwVHEpXKy+D523j8B7GfDKHG7M7FjuqqyuxiDvFSoo3iEjYVzKZO9
-NkcawmbO73W8o/5QE6GiIIvXyc+YUfVSNmX5/XpZFqbJ/uFhmiMmBhsT7xJA+L0NHTR7m09xCfZd
-+XauyU42jyqUrgRWA36o20SMf1IURZYWgH4V7gWF2f95BiJs0uV1ddjo5ND4pejlKGkCGBfXSAWP
-Ye5wAfgaC3LLKUnpYc3o6q5rUrhp9JlPey7HcnY9yJzQsw++DgKprh9TM/9jwlek8Kw1SIIiaFry
-iriecfkPEiR9HVip63lbWsOrBFyroVEsNmmWQYKaDM4DLIDItDZNDw0FgM1b6R/E2M0ME1Dibn8P
-alTJmpepLqlS2uwywOFZMLeiiVfTYSHwV/Gikq70KjVLNF59BWZMtRvyD5EoPHQavcOQTr7I/5Gc
-GboBOYvJvkYzugiHmztSchEvGtPA10eDOxR1voXJlPH95MB73ZQwqQNpRPq04ElwMYICVzCCAlMC
-AQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMf
-R2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0EgMjAyMwIMFJTEEB7G+bRSFHogMA0GCWCGSAFlAwQC
-AQUAoIHHMC8GCSqGSIb3DQEJBDEiBCAApofUop+/UHkrN6XsujuypmU5TcliKv9ri6x/89Mj8TAY
-BgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yNjEwMTgxNzIwMzlaMFwG
-CSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYI
-KoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAMUMG2
-lZuNQCXadkZvKo4ldIOEU8TFdTnbMsifAZR48R/Z3o/xforzNYndL8r1O2AZ23tBWerKVNDfC2xJ
-Y399rF2Tt8ZsOd3BdPdDJLbNzWx9gK8zntB+FlyNBeqHk0RUxcH/uYkJaCo+VY9GQPg4xlhjhK/r
-BFi1uRJnDzkicWwu5OGnxw8p9Z9b96p5wkP+/HnT7NHF6D1Wv+6oM740CH/CAHhSrRcpwAccKqG7
-si1wMIKKWNYkn8EWfKUbfpYfx3kiLRY8uqzCqe6H3erK5vsaimg09Ptv2b/AFAPHlw9pedgE7BM3
-RimfLrPxhVU5MGyg9POdup0nSfxS6HFP
---000000000000c8fb3f065e209d5a--
+Link: https://lore.kernel.org/all/cover.1791428529.git.zihanx@nebusec.ai/
+
+> diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+> index 611c790bc6d0c..4baddd178cfa5 100644
+> --- a/net/rxrpc/conn_event.c
+> +++ b/net/rxrpc/conn_event.c
+> @@ -393,6 +393,8 @@ static void rxrpc_do_process_connection(struct rxrpc_connection *conn)
+>  	while ((skb = skb_dequeue(&conn->rx_queue))) {
+>  		rxrpc_see_skb(skb, rxrpc_skb_see_conn_work);
+>  		rxrpc_process_event(conn, skb);
+> +		if (skb->mark != RXRPC_SKB_MARK_SERVICE_CONN_SECURED)
+> +			rxrpc_uncharge_async_queue(conn->local, skb);
+>  		rxrpc_free_skb(skb, rxrpc_skb_put_conn_work);
+>  	}
+>  }
+
+[Severity: High]
+This is a pre-existing problem rather than something this patch
+introduces, but the patch is touching this loop and adding the
+uncharge right here. Can a queued CHALLENGE leak its connection
+reference when the connection gets aborted first?
+
+rxrpc_post_challenge() pins the connection in the skb before queueing
+it:
+
+	sp->chall.conn =
+		rxrpc_get_connection(conn, rxrpc_conn_get_challenge_input);
+
+For rxkad, and for RxGK when no socket manages responses, the skb then
+goes to conn->rx_queue via rxrpc_post_packet_to_conn(). The only place
+that ref is dropped on this path is the RXRPC_PACKET_TYPE_CHALLENGE
+case in rxrpc_process_event().
+
+If the I/O thread marks the connection RXRPC_CONN_ABORTED before
+conn->processor gets to run, for instance because the peer sends an
+ABORT right behind the CHALLENGE, rxrpc_process_event() bails out
+before the switch:
+
+	if (conn->state == RXRPC_CONN_ABORTED)
+		return -ECONNABORTED;
+
+The loop here then uncharges the budget and frees the skb, but nothing
+puts sp->chall.conn. With that ref outstanding, conn->ref never reaches
+zero, rxrpc_clean_up_connection() never runs, and the connection keeps
+its local, peer, bundle and key pinned. A remote peer can repeat this
+to leak connections without bound, and on netns teardown
+rxrpc_destroy_all_connections() would be left waiting on
+rxnet->nr_conns.
+
+Would it be better to drop the ref in this loop when sp->hdr.type is
+RXRPC_PACKET_TYPE_CHALLENGE and sp->chall.conn is still set, or to
+handle it in the early-return path of rxrpc_process_event()? Note that
+sp->chall.conn shares the union with poke_conn and resp, so the check
+would need to be keyed on the packet type, not on the pointer alone.
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch, but
+this loop is being changed anyway. Can a CHALLENGE skb on conn->rx_queue
+leak its connection reference here?
+
+rxrpc_post_challenge() takes a ref and stores it in the skb:
+
+	sp->chall.conn =
+		rxrpc_get_connection(conn, rxrpc_conn_get_challenge_input);
+
+For rxkad (no challenge_to_recvmsg), or for RxGK with no managing socket,
+the skb is then queued on conn->rx_queue. On this path the ref is only
+dropped in the CHALLENGE case of rxrpc_process_event().
+
+The I/O thread can mark the connection aborted before conn->processor
+runs. This happens via rxrpc_input_conn_abort() for a remote ABORT, or
+via rxrpc_abort_conn() when a second, short CHALLENGE fails
+validate_challenge. If it does, rxrpc_process_event() returns early:
+
+	if (conn->state == RXRPC_CONN_ABORTED)
+		return -ECONNABORTED;
+
+The loop above then uncharges and frees the skb without putting
+sp->chall.conn.
+
+Wouldn't conn->ref then never reach zero? rxrpc_clean_up_connection()
+would never run, and the conn would keep its local, peer, bundle and key
+pinned. On netns exit, rxrpc_destroy_all_connections() would then hit
+ASSERT(list_empty(&rxnet->conn_proc_list)), or wait on rxnet->nr_conns
+forever.
+
+A remote server could trigger this by sending a valid CHALLENGE followed
+right away by an ABORT or a malformed CHALLENGE. The I/O thread would
+handle both in the same batch, before the work item runs.
+
+[ ... ]
+
+> diff --git a/net/rxrpc/oob.c b/net/rxrpc/oob.c
+> index c80ee2487d094..5ab4ec5ad8c31 100644
+> --- a/net/rxrpc/oob.c
+> +++ b/net/rxrpc/oob.c
+> @@ -46,7 +46,8 @@ bool rxrpc_notify_socket_oob(struct rxrpc_call *call, struct sk_buff *skb)
+>  		sk = &rx->sk;
+>  		spin_lock_irq(&rx->recvmsg_lock);
+>  
+> -		if (sk->sk_state < RXRPC_CLOSE) {
+> +		if (sk->sk_state < RXRPC_CLOSE &&
+> +		    rxrpc_charge_async_queue(sp->chall.conn->local, skb)) {
+>  			skb->skb_mstamp_ns = rx->oob_id_counter++;
+>  			rxrpc_get_skb(skb, rxrpc_skb_get_post_oob);
+>  			skb_queue_tail(&rx->recvmsg_oobq, skb);
+
+[Severity: Medium]
+Could one socket starve every other user of the endpoint through this
+shared budget?
+
+rxrpc_charge_async_queue() checks a single per-local counter against
+the UDP socket's sk_rcvbuf. There is no per-socket, per-connection or
+per-peer limit.
+
+The same counter covers two kinds of queue:
+
+- conn->rx_queue, which the kernel drains promptly.
+- These managed RxGK CHALLENGEs, which rxrpc_recvmsg_oob() moves to
+  rx->pending_oobq without releasing the charge:
+
+	skb_unlink(skb, &rx->recvmsg_oobq);
+	if (need_response)
+		rxrpc_add_pending_oob(rx, skb);
+
+The charge is only released by rxrpc_respond_to_oob(),
+rxrpc_kernel_free_oob() or socket teardown, so userspace decides how
+long it is held. rxgk_validate_challenge() doesn't de-duplicate, so a
+peer can push many CHALLENGEs into a managing socket that never
+responds.
+
+rxrpc_lookup_local() only refuses to share an endpoint when srx_service
+is set. Client sockets on the same transport address can therefore
+attach to an existing rxrpc_local, including one owned by a service.
+
+Once the counter is full, rxrpc_post_packet_to_conn() and
+rxrpc_notify_socket_oob() drop CHALLENGE and RESPONSE packets for every
+other connection on that endpoint. Only sk_drops_inc() records the drop.
+
+A service issues its CHALLENGE only once, on the UNSECURED->CHALLENGING
+transition in rxrpc_new_incoming_call(). Wouldn't each dropped
+handshake packet leave that connection stuck until its calls time out?
+
+Would charging OOB entries to the owning socket, or reserving headroom
+per connection, avoid this? The commit message also doesn't mention
+this new drop behaviour.
+
+[ ... ]
+
+> diff --git a/net/rxrpc/skbuff.c b/net/rxrpc/skbuff.c
+> index e2169d1a14b5f..a5113a284456e 100644
+> --- a/net/rxrpc/skbuff.c
+> +++ b/net/rxrpc/skbuff.c
+
+[ ... ]
+
+> @@ -66,7 +99,15 @@ void rxrpc_purge_queue(struct sk_buff_head *list)
+>  	struct sk_buff *skb;
+>  
+>  	while ((skb = skb_dequeue((list))) != NULL) {
+> -		int n = atomic_dec_return(select_skb_count(skb));
+> +		int n;
+> +
+> +		if (skb->mark == RXRPC_SKB_MARK_SERVICE_CONN_SECURED) {
+> +			struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+> +
+> +			rxrpc_uncharge_async_queue(sp->poke_conn->local, skb);
+> +			rxrpc_put_connection(sp->poke_conn, rxrpc_conn_put_poke);
+> +		}
+
+[Severity: Low]
+This isn't a bug, but the commit message doesn't mention the connection
+refcount change here.
+
+Before this patch, rxrpc_purge_queue() only consumed the skb. A SECURED
+skb still on local->rx_queue when rxrpc_destroy_local() purged it never
+put the ref taken in rxrpc_process_event():
+
+	sp->poke_conn = rxrpc_get_connection(
+		conn, rxrpc_conn_get_poke_secured);
+
+The new rxrpc_put_connection() fixes that.
+
+The patch also moves rxrpc_put_local() in rxrpc_clean_up_connection() to
+after the second rxrpc_purge_conn_queue(), because the purge now
+dereferences conn->local:
+
+	rxrpc_purge_conn_queue(conn);
+
+	page_frag_cache_drain(&conn->tx_data_alloc);
+	rxrpc_put_local(conn->local, rxrpc_local_put_kill_conn);
+
+The patch is tagged for stable. Could the commit message describe both
+of these changes?
+
+>  		trace_rxrpc_skb(skb, refcount_read(&skb->users), n,
+>  				rxrpc_skb_put_purge);
+>  		consume_skb(skb);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1791994057.git.zihanx%40nebusec.ai
