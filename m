@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C437E317
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 17:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681D53D88FA
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 17:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792344506; cv=none; b=riH+4qAh/KG21+iGhDMGViv3WISeb+ovNQBk3HM91qq2c/saPvcodoV1gFkCTk3HnR+b/3cdLbEEAyZEKxygbjdeH6dxV9mJ81Iu7y+4WLT08mfEvFzyuAqYiYfM8RMJJ/q7iOHT+9ehE9KBPFmTazQwUO0jhYNrMfnj6My/fdQ=
+	t=1792344507; cv=none; b=tBkq/friCauNyCGk31UzdcmdFcjs7J8hyyp11e4XmQQo3lIRkHAZZww+mQPN/xnIIfG+txnG7GxdDOgJjhpNbUO4GWpJDp91e8KDAf1pjoEqhe98Aleh41Bin2COiAMmpiWjxPnk7K24mZn99L7NdvFCojZXNdzxzQ1NO5NAFcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792344506; c=relaxed/simple;
-	bh=m07A85t0RxQykd1GV2UDBz87g6YaE7Rw8AbQ06LCXqA=;
+	s=arc-20240116; t=1792344507; c=relaxed/simple;
+	bh=+bg8PiPlQ5jlDaWyUS6huXkZOO9fRIDednHzaLFdmhc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XVFqfMj9LJxYfoX6kRFxSfxvSKOT81jUSu0qaHqu1KJXB3QEiv43jU3LxaEEiN4gGutw0lmU55tlXbB0VINi23GX8PhCTrXe/NVtuoRBEzQA1C4rT6dpvgVULZuimiA17ghtLg13Zv9zn1PWyiRba8DAYYr4xo/zkjMruGsWWzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byHHKuND; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ag3E8t/s7QDUjiXKyuauWlVxjcJEyAuTf/ZIheTIhO7+fMCTX59TJckfT/kHwkwxFpoeIJ4GfL0KB+SS5IIe0JGKSJQJn+J5z3uxNFKrOsr9YfqihwKnqrj6Yxjg4OHyBsPNQo6nNEk1/JVp4LM4vGgjlQUahItTh9O4SrrhFoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+HOe+Py; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byHHKuND"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0901F000C4;
-	Sun, 18 Oct 2026 17:28:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+HOe+Py"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217271F000C5;
+	Sun, 18 Oct 2026 17:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792344504;
-	bh=aypCdVKNV+X6nyLG+TGJBWfsAqOpjTL5s79NzVhGa9Q=;
+	s=k20260515; t=1792344505;
+	bh=LAx4IS5FvXsfDlN64QVlhPzRk3O1v1Am6c3hoUonSOQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=byHHKuNDOS1o7og0l5+mI2x+hZAVLAAtzJwonuciJjdfRw9/rN/iICnSyC6IUwO4a
-	 bQTrcXNLQQ2hmKSotb1UXk6RqNFK65dxEj+wgCLZUrUu7QErXtqG0jr4Ft9qcaSJlq
-	 7TQ0/wZcRhXDMuJPaXJpdhvDaZbdacYXHIIAg4rsXaRhJZ42xz8RwtDNkVkGu4O4Bd
-	 y8WWY554i2w6s+SFlrtP4AzW6Iit4IzhtxcXzfxtQ9sd+nn5MyJEBIQgDOpfnfB1tj
-	 5DqFtiKe03OEJbdQhgmthil9uvbcUVMeezfBLE1M+wSuc+iivbHaIG7SzN+RTC4G5G
-	 WEh66SJgjQdBA==
-Subject: Re: [PATCH net v9 2/3] rxrpc: bound connection and OOB receive queues
+	b=N+HOe+PywDBwB3f1ghKro0HBL9iX0HYlAYnPiyxDjlpX7GfTAwAovZcNTv9H3WIMH
+	 HPGjKe0/4iqz2TWcF6asXiFyJ1DTGY2c3REo08jmyBn0GVuWuSAZRuxH784C7iqICz
+	 FMdSXSv438VhMxy36jdHFnvDQXMXiKO+U68TfCeshOxgYES6hfOZE60wyjoXMxyCpa
+	 y816zOHLg73R4MLjAfYKZj76ooVsMMSAy1Ucpz2kGSAfHOk7D5Ec1Z7WOEOcn1puwf
+	 866VqwUKyzaaFECiSmdUeQ0CGaMOjd2x2XAkmIpWc7PV/IdVJwQqj64yx4wd/I3PIo
+	 SEiwfZM7qHJRw==
+Subject: Re: [PATCH net v9 3/3] rxrpc: bound DATA receive queues
 From: netdev-bot+sashiko@kernel.org
 To: zihanx@nebusec.ai
 Cc: linux-afs@lists.infradead.org, netdev@vger.kernel.org, dhowells@redhat.com,
  marc.dionne@auristor.com, davem@davemloft.net, edumazet@kernel.org,
  pabeni@kernel.org, horms@kernel.org, vega@nebusec.ai, root@tr0jan.top,
  kuba@kernel.org
-Date: Sun, 18 Oct 2026 17:28:23 +0000
-Message-ID: <179234450334.3135.15301834891389267819@kernel.org>
+Date: Sun, 18 Oct 2026 17:28:24 +0000
+Message-ID: <179234450466.3135.14125243945410659468@kernel.org>
 In-Reply-To:
- <7fcebf53a6ccaec41de4acc52465b2937297071a.1791994058.git.zihanx@nebusec.ai>
+ <4528cb16accabf1dfddb1762c8f7f5977a9383f8.1791994058.git.zihanx@nebusec.ai>
 References:
- <7fcebf53a6ccaec41de4acc52465b2937297071a.1791994058.git.zihanx@nebusec.ai>
+ <4528cb16accabf1dfddb1762c8f7f5977a9383f8.1791994058.git.zihanx@nebusec.ai>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 1
+Critical: 0 · High: 2 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,223 +60,291 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] rxrpc: connection reference leak on aborted connection
-- [Medium] The new receive budget is shared by everything on the
-  endpoint, so one socket or peer can starve the others.
-- [Low] The patch includes a refcount fix that the commit message does
-  not mention.
-
-Pre-existing issues:
-- [High] A CHALLENGE skb queued on conn->rx_queue leaks its connection
-  reference if the connection is aborted before the connection work…
+- [High] The single per-local budget can be held indefinitely, which
+  stalls the call that holds it and starves every other user of the…
+- [High] Unauthenticated DATA can starve the connection security
+  handshake on the whole local endpoint.
+- [Medium] Out-of-sequence DATA on a completed call keeps its share of
+  the per-local budget until final call destruction.
+- [Medium] The patch makes every call on a local endpoint share one DATA
+  budget: local->rx_async_queue_bytes against the UDP socket's sk_rcvbuf.
+- [Low] The commit message leaves out two behavioural changes.
 
 --
 
-rxrpc: bound connection and OOB receive queues
+rxrpc: bound DATA receive queues
 
-This patch adds a per-local byte budget, rx_async_queue_bytes, capped by
-the UDP socket's sk_rcvbuf. It covers skbs queued on conn->rx_queue and
-managed RxGK CHALLENGEs held on the socket OOB queues. The charge is
-released when a packet is processed, answered, freed or purged.
+This patch charges accepted DATA packets to the per-local asynchronous
+receive budget (local->rx_async_queue_bytes). It also bases the per-call
+receive window limit on rx_consumed instead of ackr_window. Split jumbo
+subpackets share a refcounted charge object, and the charge is released
+when packets are rotated out by recvmsg or purged.
 
 Link: https://lore.kernel.org/all/cover.1791428529.git.zihanx@nebusec.ai/
 
-> diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-> index 611c790bc6d0c..4baddd178cfa5 100644
-> --- a/net/rxrpc/conn_event.c
-> +++ b/net/rxrpc/conn_event.c
-> @@ -393,6 +393,8 @@ static void rxrpc_do_process_connection(struct rxrpc_connection *conn)
->  	while ((skb = skb_dequeue(&conn->rx_queue))) {
->  		rxrpc_see_skb(skb, rxrpc_skb_see_conn_work);
->  		rxrpc_process_event(conn, skb);
-> +		if (skb->mark != RXRPC_SKB_MARK_SERVICE_CONN_SECURED)
-> +			rxrpc_uncharge_async_queue(conn->local, skb);
->  		rxrpc_free_skb(skb, rxrpc_skb_put_conn_work);
->  	}
->  }
-
-[Severity: High]
-This is a pre-existing problem rather than something this patch
-introduces, but the patch is touching this loop and adding the
-uncharge right here. Can a queued CHALLENGE leak its connection
-reference when the connection gets aborted first?
-
-rxrpc_post_challenge() pins the connection in the skb before queueing
-it:
-
-	sp->chall.conn =
-		rxrpc_get_connection(conn, rxrpc_conn_get_challenge_input);
-
-For rxkad, and for RxGK when no socket manages responses, the skb then
-goes to conn->rx_queue via rxrpc_post_packet_to_conn(). The only place
-that ref is dropped on this path is the RXRPC_PACKET_TYPE_CHALLENGE
-case in rxrpc_process_event().
-
-If the I/O thread marks the connection RXRPC_CONN_ABORTED before
-conn->processor gets to run, for instance because the peer sends an
-ABORT right behind the CHALLENGE, rxrpc_process_event() bails out
-before the switch:
-
-	if (conn->state == RXRPC_CONN_ABORTED)
-		return -ECONNABORTED;
-
-The loop here then uncharges the budget and frees the skb, but nothing
-puts sp->chall.conn. With that ref outstanding, conn->ref never reaches
-zero, rxrpc_clean_up_connection() never runs, and the connection keeps
-its local, peer, bundle and key pinned. A remote peer can repeat this
-to leak connections without bound, and on netns teardown
-rxrpc_destroy_all_connections() would be left waiting on
-rxnet->nr_conns.
-
-Would it be better to drop the ref in this loop when sp->hdr.type is
-RXRPC_PACKET_TYPE_CHALLENGE and sp->chall.conn is still set, or to
-handle it in the early-return path of rxrpc_process_event()? Note that
-sp->chall.conn shares the union with poke_conn and resp, so the check
-would need to be keyed on the packet type, not on the pointer alone.
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch, but
-this loop is being changed anyway. Can a CHALLENGE skb on conn->rx_queue
-leak its connection reference here?
-
-rxrpc_post_challenge() takes a ref and stores it in the skb:
-
-	sp->chall.conn =
-		rxrpc_get_connection(conn, rxrpc_conn_get_challenge_input);
-
-For rxkad (no challenge_to_recvmsg), or for RxGK with no managing socket,
-the skb is then queued on conn->rx_queue. On this path the ref is only
-dropped in the CHALLENGE case of rxrpc_process_event().
-
-The I/O thread can mark the connection aborted before conn->processor
-runs. This happens via rxrpc_input_conn_abort() for a remote ABORT, or
-via rxrpc_abort_conn() when a second, short CHALLENGE fails
-validate_challenge. If it does, rxrpc_process_event() returns early:
-
-	if (conn->state == RXRPC_CONN_ABORTED)
-		return -ECONNABORTED;
-
-The loop above then uncharges and frees the skb without putting
-sp->chall.conn.
-
-Wouldn't conn->ref then never reach zero? rxrpc_clean_up_connection()
-would never run, and the conn would keep its local, peer, bundle and key
-pinned. On netns exit, rxrpc_destroy_all_connections() would then hit
-ASSERT(list_empty(&rxnet->conn_proc_list)), or wait on rxnet->nr_conns
-forever.
-
-A remote server could trigger this by sending a valid CHALLENGE followed
-right away by an ABORT or a malformed CHALLENGE. The I/O thread would
-handle both in the same batch, before the work item runs.
-
-[ ... ]
-
-> diff --git a/net/rxrpc/oob.c b/net/rxrpc/oob.c
-> index c80ee2487d094..5ab4ec5ad8c31 100644
-> --- a/net/rxrpc/oob.c
-> +++ b/net/rxrpc/oob.c
-> @@ -46,7 +46,8 @@ bool rxrpc_notify_socket_oob(struct rxrpc_call *call, struct sk_buff *skb)
->  		sk = &rx->sk;
->  		spin_lock_irq(&rx->recvmsg_lock);
->  
-> -		if (sk->sk_state < RXRPC_CLOSE) {
-> +		if (sk->sk_state < RXRPC_CLOSE &&
-> +		    rxrpc_charge_async_queue(sp->chall.conn->local, skb)) {
->  			skb->skb_mstamp_ns = rx->oob_id_counter++;
->  			rxrpc_get_skb(skb, rxrpc_skb_get_post_oob);
->  			skb_queue_tail(&rx->recvmsg_oobq, skb);
+> diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
+> index 21be9c86d7a74..9360852604645 100644
+> --- a/net/rxrpc/call_event.c
+> +++ b/net/rxrpc/call_event.c
+> @@ -473,6 +473,7 @@ bool rxrpc_input_call_event(struct rxrpc_call *call)
+>  out:
+>  	if (__rxrpc_call_is_complete(call)) {
+>  		timer_delete_sync(&call->timer);
+> +		rxrpc_purge_queue(&call->rx_queue);
 
 [Severity: Medium]
-Could one socket starve every other user of the endpoint through this
-shared budget?
 
-rxrpc_charge_async_queue() checks a single per-local counter against
-the UDP socket's sk_rcvbuf. There is no per-socket, per-connection or
-per-peer limit.
+rxrpc_queue_rx_call_packet() adds skbs to call->rx_queue without charging
+them through rxrpc_charge_async_queue(). Does this purge release any of the
+new per-local budget?
 
-The same counter covers two kinds of queue:
+The queue that does hold charged DATA, and that can't be delivered once the
+call is complete, is call->rx_oos_queue. Its only purge seems to be in
+rxrpc_cleanup_rx_buffers(), which rxrpc_destroy_call() reaches after the
+last call ref is dropped:
 
-- conn->rx_queue, which the kernel drains promptly.
-- These managed RxGK CHALLENGEs, which rxrpc_recvmsg_oob() moves to
-  rx->pending_oobq without releasing the charge:
+    rxrpc_purge_data_queue(call, &call->rx_oos_queue);
 
-	skb_unlink(skb, &rx->recvmsg_oobq);
-	if (need_response)
-		rxrpc_add_pending_oob(rx, skb);
+The recvmsg call_failed path only purges recvmsg_queue, and
+rxrpc_release_call() doesn't touch the rx queues.
 
-The charge is only released by rxrpc_respond_to_oob(),
-rxrpc_kernel_free_oob() or socket teardown, so userspace decides how
-long it is held. rxgk_validate_challenge() doesn't de-duplicate, so a
-peer can push many CHALLENGEs into a managing socket that never
-responds.
+Could an aborted or timed-out call then keep up to rx_winsize charged
+out-of-sequence skbs in local->rx_async_queue_bytes? They would stay there
+until a userspace reader collects the terminal state, or until a kernel
+service releases the call.
 
-rxrpc_lookup_local() only refuses to share an endpoint when srx_service
-is set. Client sockets on the same transport address can therefore
-attach to an existing rxrpc_local, including one owned by a service.
+Should rx_oos_queue be purged here with rxrpc_purge_data_queue() instead?
 
-Once the counter is full, rxrpc_post_packet_to_conn() and
-rxrpc_notify_socket_oob() drop CHALLENGE and RESPONSE packets for every
-other connection on that endpoint. Only sk_drops_inc() records the drop.
-
-A service issues its CHALLENGE only once, on the UNSECURED->CHALLENGING
-transition in rxrpc_new_incoming_call(). Wouldn't each dropped
-handshake packet leave that connection stuck until its calls time out?
-
-Would charging OOB entries to the owning socket, or reserving headroom
-per connection, avoid this? The commit message also doesn't mention
-this new drop behaviour.
+> diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+> index 73cafe6bfa9f5..6f0ba50097390 100644
+> --- a/net/rxrpc/input.c
+> +++ b/net/rxrpc/input.c
 
 [ ... ]
 
+> @@ -487,9 +489,13 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
+>  	unsigned int sack = call->ackr_sack_base;
+>  	rxrpc_seq_t window = call->ackr_window;
+>  	rxrpc_seq_t wtop = call->ackr_wtop;
+> -	rxrpc_seq_t wlimit = window + call->rx_winsize - 1;
+> +	/* Bound queued DATA by the application's receive window. */
+> +	rxrpc_seq_t wlimit = smp_load_acquire(&call->rx_consumed) +
+> +		call->rx_winsize;
+>  	rxrpc_seq_t seq = sp->hdr.seq;
+
+[ ... ]
+
+> @@ -498,10 +504,24 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
+>  	if (sp->hdr.flags & RXRPC_JUMBO_PACKET)
+>  		rxrpc_inc_stat(call->rxnet, stat_rx_data_jumbo);
+>  
+> +	if (after(seq, call->rx_highest_seq))
+> +		call->rx_highest_seq = seq;
+> +
+> +	trace_rxrpc_rx_data(call->debug_id, seq, serial, sp->hdr.flags);
+> +
+> +	if (after(seq, wlimit)) {
+> +		ack_reason = RXRPC_ACK_EXCEEDS_WINDOW;
+> +		goto send_ack;
+> +	}
+> +
+>  	if (last) {
+> -		if (test_and_set_bit(RXRPC_CALL_RX_LAST, &call->flags) &&
+> -		    seq + 1 != wtop)
+> -			return rxrpc_proto_abort(call, seq, rxrpc_eproto_different_last);
+> +		if (test_and_set_bit(RXRPC_CALL_RX_LAST, &call->flags)) {
+> +			if (seq + 1 != wtop)
+> +				return rxrpc_proto_abort(call, seq,
+> +							rxrpc_eproto_different_last);
+> +		} else {
+> +			set_last = true;
+> +		}
+>  	} else {
+
+[Severity: Low]
+
+This isn't a bug, but the commit message doesn't mention two behavioural
+changes, and this patch is tagged Cc: stable.
+
+The after(seq, wlimit) check now runs before the RXRPC_LAST_PACKET
+handling. A LAST packet beyond the window therefore no longer sets
+RXRPC_CALL_RX_LAST, so it can't lead to rxrpc_eproto_different_last or
+rxrpc_eproto_data_after_last aborts on later packets.
+
+The new ordering looks necessary with the rx_consumed based wlimit, but it
+does change how protocol errors are handled.
+
+The commit message also doesn't describe the rxrpc_purge_queue(&call->rx_queue)
+added to the completion path of rxrpc_input_call_event(). Before this
+patch, those skbs were freed one per poke or in rxrpc_cleanup_rx_buffers().
+
+Could the commit message cover both changes?
+
+[ ... ]
+
+> @@ -511,17 +531,33 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
+
+[ ... ]
+
+> +	sp->data.charge = NULL;
+> +	if (sp->offset != sizeof(struct rxrpc_wire_header) ||
+> +	    (sp->hdr.flags & RXRPC_JUMBO_PACKET)) {
+> +		if (!*_charge)
+> +			*_charge = rxrpc_alloc_async_queue_charge(skb);
+> +		sp->data.charge = *_charge;
+> +	}
+> +	if (!rxrpc_charge_async_queue(call->local, skb)) {
+> +		sp->data.charge = NULL;
+> +		if (set_last)
+> +			clear_bit(RXRPC_CALL_RX_LAST, &call->flags);
+> +		ack_reason = RXRPC_ACK_NOSPACE;
+>  		goto send_ack;
+>  	}
+
+[Severity: High]
+
+Once out-of-sequence DATA has used up the budget, can this deadlock the
+call and starve the rest of the endpoint?
+
+Every DATA packet that passes the window and duplicate checks is now
+charged here. That includes out-of-sequence packets parked on
+call->rx_oos_queue and the hole-filling packet with seq == window.
+
+The rx_oos_queue skbs only give back their charge in two cases. One is when
+the hole is filled and rxrpc_rotate_rx_window() consumes them. The other is
+when the call is destroyed.
+
+No room is reserved for the head-of-window packet. Suppose a peer sends seq
+N+1..N+k and holds back seq N, or seq N is simply lost during a large
+transfer. Each retransmission of seq N would then fail this check in
+rxrpc_charge_async_queue_bytes():
+
+    if (queued &&
+        (queued >= rcvbuf || size >= rcvbuf - queued)) {
+        sk_drops_inc(sk);
+        return false;
+    }
+
+and get RXRPC_ACK_NOSPACE. Wouldn't the call be unable to make progress
+after that?
+
+rxrpc_post_packet_to_conn() and rxrpc_notify_socket_oob() charge the same
+counter. So DATA for every other call on the same rxrpc_local would be
+dropped too, along with CHALLENGE and RESPONSE packets.
+
+The call also doesn't seem to time out while the peer keeps sending.
+rxrpc_input_call_packet() refreshes expect_rx_by on every received packet,
+including NOSPACE-dropped ones:
+
+    call->expect_rx_by = ktime_add(ktime_get_real(), delay);
+
+and rxrpc_input_data() refreshes expect_req_by in
+RXRPC_CALL_SERVER_RECV_REQUEST.
+
+For scale, rxrpc_adjust_rcvbuf() sets the budget to:
+
+    rcvbuf = READ_ONCE(rxrpc_rx_window_size) *
+        SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
+    rcvbuf += rcvbuf / 4;
+
+On x86-64 that is about 1.28MB, or roughly 2.5 full 255-packet windows at
+idealised truesize. With wlimit = rx_consumed + rx_winsize, one call can
+hold up to 255 skbs. With larger NIC truesizes a single call could exhaust
+the budget by itself. Otherwise a few calls with concurrent losses could.
+
+A remote peer can open service calls on a shared endpoint to do this. For
+example, the AFS cache manager service shares the socket used for
+fileserver calls.
+
+Should the head-of-window packet be exempt or have reserved space? Or
+should DATA have a budget separate from connection-level traffic?
+
+[ ... ]
+
+> @@ -681,9 +710,11 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
+>  		trace_rxrpc_notify_socket(call->debug_id, sp->hdr.serial);
+>  		rxrpc_notify_socket(call);
+>  	}
+> +	rxrpc_put_async_queue_charge(call->local, charge);
+>  	return true;
+
+[Severity: High]
+
+Can unauthenticated DATA starve the connection security handshake for the
+whole local endpoint?
+
+rxrpc_incoming_call() sets RXRPC_CALL_CONN_CHALLENGING when a service call
+is created on a connection in RXRPC_CONN_SERVICE_UNSECURED or
+RXRPC_CONN_SERVICE_CHALLENGING state. rxrpc_input_data_one() still queues
+that call's DATA, and now charges it to local->rx_async_queue_bytes.
+However, the notification just above is suppressed:
+
+    if (notify && !test_bit(RXRPC_CALL_CONN_CHALLENGING, &call->flags)) {
+
+So a userspace server isn't told about the data and can't consume it, and
+rx_consumed doesn't advance.
+
+A peer that never answers the CHALLENGE could open a few calls and fill
+each with up to rx_winsize packets, saturating the shared budget. It could
+keep those calls alive by resending.
+
+After that, rxrpc_post_packet_to_conn() would silently drop RESPONSE
+packets from legitimate peers:
+
+    if (!rxrpc_charge_async_queue(local, skb))
+        return false;
+
+rxrpc_input_conn_packet() would still return true, and those handshakes
+would never complete. CHALLENGE packets for client connections would be
+dropped the same way via rxrpc_notify_socket_oob().
+
+Should DATA on calls whose connection isn't secured yet be bounded
+separately? Alternatively, should connection-level packets have reserved
+headroom?
+
 > diff --git a/net/rxrpc/skbuff.c b/net/rxrpc/skbuff.c
-> index e2169d1a14b5f..a5113a284456e 100644
+> index a5113a284456e..3b999200b6fc6 100644
 > --- a/net/rxrpc/skbuff.c
 > +++ b/net/rxrpc/skbuff.c
 
 [ ... ]
 
-> @@ -66,7 +99,15 @@ void rxrpc_purge_queue(struct sk_buff_head *list)
->  	struct sk_buff *skb;
->  
->  	while ((skb = skb_dequeue((list))) != NULL) {
-> -		int n = atomic_dec_return(select_skb_count(skb));
-> +		int n;
-> +
-> +		if (skb->mark == RXRPC_SKB_MARK_SERVICE_CONN_SECURED) {
-> +			struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-> +
-> +			rxrpc_uncharge_async_queue(sp->poke_conn->local, skb);
-> +			rxrpc_put_connection(sp->poke_conn, rxrpc_conn_put_poke);
-> +		}
+> @@ -72,25 +70,105 @@ bool rxrpc_charge_async_queue(struct rxrpc_local *local, struct sk_buff *skb)
+>  	for (;;) {
+>  		queued = atomic_long_read(&local->rx_async_queue_bytes);
+>  		if (queued &&
+> -		    (queued >= rcvbuf ||
+> -		     (long)skb->truesize >= rcvbuf - queued)) {
+> +		    (queued >= rcvbuf || size >= rcvbuf - queued)) {
+>  			sk_drops_inc(sk);
+>  			return false;
+>  		}
 
-[Severity: Low]
-This isn't a bug, but the commit message doesn't mention the connection
-refcount change here.
+[Severity: Medium]
 
-Before this patch, rxrpc_purge_queue() only consumed the skb. A SECURED
-skb still on local->rx_queue when rxrpc_destroy_local() purged it never
-put the ref taken in rxrpc_process_event():
+Now that DATA is charged here, all calls on a local endpoint share one
+budget bounded by the UDP socket's sk_rcvbuf. rxrpc_adjust_rcvbuf() sized
+that budget for the transient UDP to I/O thread queue, at about 2.5
+idealised 255-packet windows.
 
-	sp->poke_conn = rxrpc_get_connection(
-		conn, rxrpc_conn_get_poke_secured);
+Each call still advertises a full receive window, which rxrpc_fill_out_ack()
+computes from that call's own state only:
 
-The new rxrpc_put_connection() fixes that.
+    qsize = (window - 1) - call->rx_consumed;
+    rsize = max_t(int, call->rx_winsize - qsize, 0);
 
-The patch also moves rxrpc_put_local() in rxrpc_clean_up_connection() to
-after the second rxrpc_purge_conn_queue(), because the purge now
-dereferences conn->local:
+Suppose two or three calls with slow readers hold unconsumed in-order DATA
+on recvmsg_queue. Won't rxrpc_input_data_one() then drop in-window DATA
+for every unrelated call on the endpoint with RXRPC_ACK_NOSPACE? Those
+packets were invited by the advertised rwind, so senders would see the
+drops as loss and react with cwnd reduction and retransmits.
 
-	rxrpc_purge_conn_queue(conn);
+This recovers once the readers drain. However, the commit message presents
+the change only as closing an accounting gap.
 
-	page_frag_cache_drain(&conn->tx_data_alloc);
-	rxrpc_put_local(conn->local, rxrpc_local_put_kill_conn);
-
-The patch is tagged for stable. Could the commit message describe both
-of these changes?
-
->  		trace_rxrpc_skb(skb, refcount_read(&skb->users), n,
->  				rxrpc_skb_put_purge);
->  		consume_skb(skb);
+Could the commit message describe the shared budget across calls, how it
+compares with the per-call windows, and why the advertised window is left
+unchanged?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1791994057.git.zihanx%40nebusec.ai
