@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3993C09EE;
-	Sun, 18 Oct 2026 19:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1D93F410E;
+	Sun, 18 Oct 2026 19:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792350081; cv=none; b=BONEW6D0cfrh5Fb/31T1reYN9R6K5J7nkFC+xa5xTQWzt37qTwDAILpAFZrUzbCHoa5WFtDO2sJycqTUUI9r07hPvsNPz5oXncmCJxrv7tDegpRv2pi9ny1Ed6AodkvHZcJRQ5XU4Ey2br14v/oWsjyAY6sIPwtT9kW0m99U93w=
+	t=1792350082; cv=none; b=VAWYsB9M1W/7nI97XS/Z4An5JzhwxbElk0yz/BzZErVveBsjdWTXiSxbws8gVNCTxUGPWKDSiOS+X4KLBbytMF8/n4L4LE4ogaLivIC+p8dupRHW6mODpEJk03luAL9rXIjlEU5Rbd2zFZgDvAecHdG9VsBBykVmVphK67p35x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792350081; c=relaxed/simple;
-	bh=3CIO2HJLWXrH7r8jIWPmMCgbV7jrBfRDyzv+HKsH5sU=;
+	s=arc-20240116; t=1792350082; c=relaxed/simple;
+	bh=DajREmf6gnxnZz2P6DQGY1B3eHVlpZSD5AGRvYgYrPI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=npVLZss4OhDRjGGQKJy2109+KEXF7GHxd4Mp+VfNLFs4IYDvefcQIeGFf0MlNuEsnEQAYgQlaL+MBsmD6d5Wpp/uBbt7fGT0UoFVjH1OMgEdfSoOWXM7fyWWKS8n4bVR/t+BplIOo2Jpd4TSIRvIq6afxiaJ6iwB6FlgHEKyFIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oh1ywyRk; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=L/yJHETA8/vki/CT3WWRkCOS/HRLzh5+UmzvFghAq7J5rOqx8/On7JP4i+ljlQXbKHhXKrtI3kobBrpD/gSWBM+ctQi2BWrufAkU08twdngMVhhtHFtiZomu//12g7QfV7vPcFw9AGbIISBpqWEQX0Jgfx4I71VDxYGx1gJVkt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVRjMM+o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oh1ywyRk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750751F000C4;
-	Sun, 18 Oct 2026 19:01:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVRjMM+o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193211F000C7;
+	Sun, 18 Oct 2026 19:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792350079;
-	bh=ZnREktjNHOLgpx05svV6/r/fQZfjWxSx5lslANF3cZE=;
+	s=k20260515; t=1792350081;
+	bh=RngNa/7A0yrotjKseWwu5SRNO2yG0Y+0quB9mkU/wR4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oh1ywyRk/ajNvn8yE3rwD26+JnZkJMBtOr6gc0EsbgT030YtyYIZ4gsnULcpmJjuq
-	 T3mwYw51L4hL7dUdwJLnBD+kYIrY60mEPzTtXFmKSs48bYy8LQFiyHfNF93VIn1tpG
-	 1cqjJsi9AN9uM4JY5MbyAc9Mci69ZpHrQGiuDIwxTZ6QetKpakTBVy27P7Txpz4QYX
-	 OqcQpAfx2xML1ojeRIHAwYIiG+GJN+a4Bsgy9AvndB+eppLSP2MA8A3klO8c0+eBXU
-	 Yztjgffj6fn3DFAZMQEA/DV9T7nEW8rHmTCtp1+wCay/4mUKujW+v0R51FDOV3lLBI
-	 0s8cm/wYWcx/g==
-Subject: Re: [PATCH net-next v3 1/3] selftests: drv-net: Introduce a selftest
- for ethtool flow control
+	b=BVRjMM+okMs3ihSu6DLHyrT1VuCxv+h/iy2VPpruy0bGRYrf+ugTmjv0mGuxBXRzb
+	 k9G5reqCHka92x70Nz1dYAYyKCGAp0KcnfukcZS44ipwO/XzCDiUF4ML+ND977NFlI
+	 1Ypx3OEIHHHOEkBM1pgyQs3oWlovym2A68C2BLMDd9wKK0d0+j5mm2N1CJ1mZtNokO
+	 fi/clNkgo8RWvMqf5KZPtOsDTqXY+E5Am84qNlrMJynVtJGd0DsyHFFmi0S2te0q7o
+	 37wihaTGpUVuu1OC2cXkNLb25BDlw0QcxTlntziyGR5mP5nUaF4+tHYbL9etFcj4vX
+	 Fh/XVZeFE6ETg==
+Subject: Re: [PATCH net-next v3 2/3] selftests: drv-net: pause: Validate the
+ pause autonegotiation with a partner
 From: netdev-bot+sashiko@kernel.org
 To: maxime.chevallier@bootlin.com
 Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
@@ -36,10 +36,10 @@ Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
  o.rempel@pengutronix.de, vladimir.oltean@nxp.com, f.fainelli@gmail.com,
  thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Date: Sun, 18 Oct 2026 19:01:17 +0000
-Message-ID: <179235007797.3135.5270356581388570027@kernel.org>
-In-Reply-To: <20261015134350.629593-2-maxime.chevallier@bootlin.com>
-References: <20261015134350.629593-2-maxime.chevallier@bootlin.com>
+Date: Sun, 18 Oct 2026 19:01:19 +0000
+Message-ID: <179235007968.3135.3196549965949091381@kernel.org>
+In-Reply-To: <20261015134350.629593-3-maxime.chevallier@bootlin.com>
+References: <20261015134350.629593-3-maxime.chevallier@bootlin.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 10 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 5 · Low: 5
+Critical: 0 · High: 0 · Medium: 4 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,404 +61,248 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In tools/testing/selftests/drivers/net/hw/pause.py,
-  expect_pauseparams_set() takes an `aneg` argument but only uses it to…
-- [Medium] expect_pauseparams_set() decides acceptance by checking
-  whether the 802.3 advertisement encoding of a request (Pause = rx,…
-- [Medium] expect_pauseparams_set() checks the 'noop' case first (lines
-  182-183): requested rx/tx/autoneg equals what `ethtool -a` reports.
-- [Medium] pause_setup() queues restore commands with defer(cmd, ...),
-  using cmd's default fail=True, whenever the GET succeeds.
-- [Medium] pause_test_support() treats phylink fixed-links as having
-  writable pause settings whenever their supported mask contains Pause…
-- [Low] In this patch, pause_advertising_test's docstring (lines 327-328)
-  says validation uses "the advertised modes locally, as well as what…
-- [Low] pause_test_support's docstring (lines 262-264) says drivers must
-  refuse unsupported pauseparams "with a -EOPNOTSUPP return value".
-- [Low] pause_test_support() can return normally without making a single
-  assertion, and is then reported as PASS.
-- [Low] pause_setup()'s docstring says the starting conditions are
-  "restored on exit".
-- [Low] wait_for_aneg() with link_drop=False (the default, used by
-  pause_advertising_test at line 348) waits a hard-coded 2 s for carrier…
+- [Medium] In pause_aneg_resolution()
+  (tools/testing/selftests/drivers/net/hw/pause.py), the '# Check…
+- [Medium] This patch makes the existing pause_advertising_test() depend
+  on a link-partner probe.
+- [Medium] controllable_lp() decides whether the remote is the direct
+  link partner from one timing-sensitive sample.
+- [Medium] pause_advertising_test() (new remote lp_adv check, line 490)
+  and pause_aneg_resolution() (remote lp_adv check at line 651, remote…
+- [Low] The docstring of require_peer_pause_supported_allof()
+  (tools/testing/selftests/drivers/net/hw/pause.py, line 282) says 'Skip…
 
 --
 
-selftests: drv-net: Introduce a selftest for ethtool flow control
+selftests: drv-net: pause: Validate the pause autonegotiation with a partner
 
-This adds a pause.py driver selftest. It checks that the Pause and
-Asym_Pause bits in the supported link modes match the rx/tx combinations
-that "ethtool -A" accepts. It also checks that setting pause parameters
-with autoneg on is reflected in the locally advertised pause modes.
+This adds a pause_aneg_resolution test to the drv-net pause selftest. It
+runs all 16 combinations of local and link-partner rx/tx pause settings
+and checks the advertised, lp_advertised and negotiated pause state. It
+also adds a controllable_lp() probe to detect whether the remote is
+directly connected, and extends pause_advertising_test() to check the
+peer's lp_advertising.
 
 > diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
-> new file mode 100755
-> index 0000000000000..854428e19f55f
-> --- /dev/null
+> index 854428e19f55f..cd117296be333 100755
+> --- a/tools/testing/selftests/drivers/net/hw/pause.py
 > +++ b/tools/testing/selftests/drivers/net/hw/pause.py
-> @@ -0,0 +1,369 @@
+> @@ -84,6 +84,41 @@ def wait_for_aneg(cfg, link_drop=False, timeout=15):
+>  
+>      wait_for_link(cfg, timeout)
+>  
+> +def controllable_lp(cfg):
 
 [ ... ]
 
-> +def wait_for_aneg(cfg, link_drop=False, timeout=15):
-> +    """ Wait for a renegotiation to complete
+> +    controllable = getattr(cfg, "lp_controllable", None)
+> +    if controllable is not None:
+> +        return controllable
 > +
-> +    :param link_drop: Set to true if the link HAS to flap.
-> +    """
-> +    try:
-> +        wait_file(f"/sys/class/net/{cfg.ifname}/carrier",
-> +                  lambda x: x.strip() == "0",
-> +                  deadline=timeout if link_drop else 2)
-> +    except TimeoutError:
-> +        if link_drop:
-> +            raise
+> +    before = int(cmd(f"cat /sys/class/net/{cfg.remote_ifname}/carrier_changes",
+> +                     host=cfg.remote).stdout)
 > +
-> +    wait_for_link(cfg, timeout)
+> +    ret, _ = ethtool_ret(f"-r {cfg.ifname}", is_get=False)
+> +    if ret != 0:
+> +        raise KsftSkipEx(f"ethtool -r {cfg.ifname} failed: {errno.errorcode.get(ret, ret)}")
+> +
+> +    wait_for_aneg(cfg, link_drop=True)
+> +
+> +    cfg.lp_controllable = int(cmd(f"cat /sys/class/net/{cfg.remote_ifname}/carrier_changes",
+> +                                  host=cfg.remote).stdout) > before
+> +    return cfg.lp_controllable
+
+[Severity: Medium]
+Is a single read of the remote carrier_changes reliable enough here?
+
+wait_for_aneg() only watches the local carrier, and nothing waits for the
+remote to notice the flap. A polled phylib/phylink remote only sees
+link-down on its next state machine poll (PHY_STATE_TIME, 1 s).
+
+If the AN restart is fast (in-band SGMII/1000BASE-X) and the local link is
+interrupt-driven, the local carrier can be back up before the remote has
+counted the flap. In that case carrier_changes hasn't moved and the remote
+is classified as not directly connected.
+
+That False is then cached in cfg.lp_controllable. Wouldn't every
+pause_aneg_resolution variant then skip with "not directly connected", and
+the peer checks in pause_advertising_test() be skipped for the rest of the
+run?
+
+Would retrying, or polling the remote carrier_changes for a short time,
+help? Later patches in the series don't seem to change controllable_lp().
+
+[ ... ]
+
+> @@ -163,6 +278,18 @@ def require_pause_supported_allof(cfg, linkmodes):
+>          if lm not in pause_support:
+>              raise KsftSkipEx(f"Local device doesn't support {lm}")
+>  
+> +def require_peer_pause_supported_allof(cfg, linkmodes):
+> +    """ Skip if local device doesn't support all of the passed modes """
 
 [Severity: Low]
-pause_advertising_test() calls this with link_drop=False. In that case the
-carrier is only watched for 2 seconds and the TimeoutError is swallowed.
-
-The PHY or firmware may report link loss later than that, for example
-with polled phylib PHYs or firmware-managed links that report
-asynchronously. Carrier then still reads the stale "1", and
-wait_for_link() returns right away.
-
-If so, is the "It must come back up" condition in pause_advertising_test()
-actually verified? Could the next test case also start while
-autonegotiation is still running, so a failure is blamed on the wrong
-case?
+This isn't a bug, but the docstring looks copied from
+require_pause_supported_allof(). This helper checks the remote device, not
+the local one.
 
 [ ... ]
 
-> +def expect_pauseparams_set(cfg, pauseparams, aneg, supported, note):
-> +    """ ethtool -A must work or be refused depending on what the local
-> +        device supports
+> @@ -330,6 +457,7 @@ def pause_advertising_test(cfg, pauseparams):
+>  
+>      require_pause_supported_allof(cfg, pauseparams["linkmodes"])
+>      pause_setup(cfg)
+> +    lp = controllable_lp(cfg)
+
+[Severity: Medium]
+Doesn't this make the existing local advertising checks in
+pause_advertising_test() depend on the link partner probe?
+
+controllable_lp() raises KsftSkipEx when ethtool -r fails:
+
+    ret, _ = ethtool_ret(f"-r {cfg.ifname}", is_get=False)
+    if ret != 0:
+        raise KsftSkipEx(...)
+
+On a driver without .nway_reset (-EOPNOTSUPP), or where
+phy_ethtool_nway_reset() returns -ENODEV, every variant would now skip its
+local ksft_in/ksft_not_in checks. Those checks don't need a partner.
+
+ethtool -r can also succeed without the local carrier ever dropping. One
+example is phylink_ethtool_nway_reset() with no phydev and a PCS that
+doesn't restart AN. In that case wait_for_aneg(cfg, link_drop=True) lets
+the TimeoutError from wait_file() escape. ksft_run() records that as a
+failure, so a test that used to pass would now fail.
+
+In both cases cfg.lp_controllable is never set. The probe, with its link
+flap or 15 second timeout, then repeats for every pause_advertising_test
+variant and all 16 pause_aneg_resolution variants.
+
+In pause_aneg_resolution(), the same TimeoutError turns what should be a
+"not directly connected" skip into a failure.
+
+Could controllable_lp() return False, and cache it, in these cases? Later
+patches in the series don't seem to change this.
+
+[ ... ]
+
+> @@ -356,11 +484,191 @@ def pause_advertising_test(cfg, pauseparams):
+>          ksft_not_in(mode, linkmodes,
+>                      f"rx {rx} tx {tx} aneg on must not advertise {not_adv}")
+>  
+> +    if not lp:
+> +        return
+> +
+> +    returncode, remote_linkmodes = get_peer_pause_lp_advertising(cfg)
+> +    if returncode == errno.EOPNOTSUPP:
+> +        return
+> +
+> +    for mode in adv:
+> +        ksft_in(mode, remote_linkmodes, f"PHY does not advertise {adv}")
+
+[Severity: Medium]
+Could the remote's lp_advertising still be stale at this point?
+
+wait_for_aneg() only polls /sys/class/net/{cfg.ifname}/carrier. The
+remote's phylib state machine runs on its own schedule. In polled mode it
+only updates phydev->lp_advertising on its 1 s poll, and while AN is
+incomplete genphy_read_lpa() clears the bits:
+
+    if (!phydev->autoneg_complete) {
+        mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
+        mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
+        return 0;
+    }
+
+Right after the local carrier comes up, the remote may still report the
+previous variant's lp bits. The ksft_in/ksft_not_in checks below would
+then fail intermittently.
+
+If the bits are cleared instead, linkmodes.c omits
+ETHTOOL_A_LINKMODES_PEER. get_peer_pause_lp_advertising() then returns
+EOPNOTSUPP and the remote checks are silently skipped.
+
+pause_aneg_resolution() has the same problem. After set_peer_pauseparams()
+it waits only on the local carrier before checking the remote lp_adv and
+negotiated values.
+
+Would waiting for /sys/class/net/{cfg.remote_ifname}/carrier on
+cfg.remote help? Later patches in the series don't seem to add such a
+wait.
+
+[ ... ]
+
+> +@ksft_disruptive
+> +def pause_aneg_resolution(cfg, settings):
+> +    """ Verify that rx and tx pause parameters are negotiated according to 802.3
+
+[ ... ]
+
+> +    Failing this test can happen if :
+> +     - The MAC accepts the pause parameters but doesn't trigger a link
+> +       renegotiation
+> +     - that the PHY driver manually overwrites the Pause negotiation result
+> +     - that the MAC driver ignores the Pause resolution and sets its own
+> +       pause parameters regardless
 > +    """
-> +    rx = pauseparams["rx"]
-> +    tx = pauseparams["tx"]
+
+[ ... ]
+
+> +    # check lp_adv if available
+> +    _, linkmodes = get_local_pause_lp_advertising(cfg)
+> +    ksft_eq(linkmodes, required_remote_linkmodes,
+> +            f"local lp_adv must show the remote's {required_remote_linkmodes}")
 > +
-> +    # Measure current pauseparams, re-setting the same params as the current
-> +    # ones returns 0 even if unsupported.
-> +    _, cur = get_local_pauseparams(cfg)
-> +    noop = cur and (cur["rx"], cur["tx"], cur["autonegotiate"]) == \
-> +           (bool(rx), bool(tx), aneg)
-> +
-> +    ret, _ = ethtool_ret(f"-A {cfg.ifname} rx {onoff(rx)} tx {onoff(tx)}"
-> +                         f" autoneg {onoff(aneg)}", is_get = False)
-> +
-> +    if noop:
-> +        ksft_eq(ret, 0, note)
-
-[Severity: Medium]
-Is the comment about re-setting the same parameters accurate for drivers
-that implement get_pauseparam but not set_pauseparam?
-
-The validate step runs before the no-op shortcut in ops->set:
-
-net/ethtool/pause.c:ethnl_set_pause_validate() {
-    ...
-	return ops->get_pauseparam && ops->set_pauseparam ? 1 : -EOPNOTSUPP;
-}
-
-net/ethtool/netlink.c:ethnl_default_set_doit() {
-    ...
-		ret = ops->set_validate(req_info, info);
-		/* 0 means nothing to do */
-		if (ret <= 0)
-			goto out_dev;
-    ...
-}
-
-Take a get-only driver such as mlxbf_gige. It reports rx on, tx on and
-autoneg off, and has no .set_pauseparam. The variant that matches its
-current state gets noop=True, and then ksft_eq(EOPNOTSUPP, 0) fails.
-
-The noop branch is also checked before "elif not supported". A get-only
-driver with an empty supported mask fails here, even though the test's
-own expectation for that case is EOPNOTSUPP.
-
-Should the noop case only apply when the driver can actually set pause
-parameters, or be checked after the "not supported" case?
-
-> +    elif not supported:
-> +        ksft_eq(ret, errno.EOPNOTSUPP, note)
-> +    elif set(pauseparams["linkmodes"]).issubset(set(supported)):
-> +        ksft_eq(ret, 0, note)
-
-[Severity: Medium]
-The aneg argument is only used to detect the no-op case. Here ret == 0 is
-required whatever the pause autoneg request and the link autoneg state.
-
-The struct ethtool_pauseparam documentation in
-include/uapi/linux/ethtool.h says:
-
- * Drivers should reject a non-zero setting of @autoneg when
- * autoneogotiation is disabled (or not supported) for the link.
-
-pause_test_support() calls this with aneg=True after forcing the link
-with "autoneg off speed X duplex Y". Several in-tree drivers reject that,
-as the uAPI documentation says they should:
-
-  xgbe_set_pauseparam() returns -EINVAL when pause->autoneg is set and
-  link autoneg is off.
-
-  bnxt_set_pauseparam() returns -EINVAL when BNXT_AUTONEG_SPEED is clear.
-
-Some drivers also reject combinations with link autoneg on:
-
-  mlx5e_ethtool_set_pauseparam() always returns -EINVAL for pause
-  autoneg, but always reports Pause as supported.
-
-  i40e_set_pauseparam() returns -EOPNOTSUPP whenever pause->autoneg
-  differs from the link autoneg state, so aneg=False with link autoneg on
-  is rejected.
-
-Won't these drivers be reported as failing pause_test_support()?
-
-pause_advertising_test() has the same issue. It hardcodes aneg=True:
-
-    ret = set_local_pauseparams(cfg, rx, tx, True)
-
-and set_local_pauseparams() turns anything other than EOPNOTSUPP into a
-hard failure:
-
-    if ret != 0 and ret != errno.EOPNOTSUPP:
-        raise KsftFailEx(f"ethtool -A {cfg.ifname} failed: {ret}")
-
-On mlx5, the RX off/TX off and RX on/TX on variants would then fail with
-"ethtool -A ... failed: 22".
-
-The commit message describes only the Pause/Asym to rx/tx mapping. It
-doesn't mention a requirement to support pause autoneg. The last commit
-of the series says "Pause can't be negotiated if the link autoneg isn't
-enabled", but expect_pauseparams_set() is still unchanged at the end of
-the series.
-
-Should the expected result take into account the requested pause autoneg
-value and the link autoneg state?
-
-> +    else:
-> +        ksft_in(ret, (errno.EOPNOTSUPP, errno.EINVAL), note)
-
-[Severity: Medium]
-Does this match the rule phylink applies? This branch decides acceptance
-by whether the 802.3 advertisement encoding of the request is a subset of
-the supported bits. phylink_ethtool_set_pauseparam() checks something
-different:
-
-	if (!phylink_test(pl->supported, Pause) &&
-	    !phylink_test(pl->supported, Asym_Pause))
-		return -EOPNOTSUPP;
-
-	if (!phylink_test(pl->supported, Asym_Pause) &&
-	    pause->rx_pause != pause->tx_pause)
-		return -EINVAL;
-
-include/linux/phylink.h also documents:
-
- * If you set MAC_ASYM_PAUSE, the user may request any combination of
- * tx_pause and rx_pause. You do not have to support these
- * combinations.
-
-Consider a phylink device whose supported set is only Asym_Pause
-("Transmit-only"). The RX on/TX on (["Pause"]) and RX on/TX off
-(["Pause", "Asym_Pause"]) variants are not subsets, so this branch
-expects EOPNOTSUPP or EINVAL. phylink returns 0 for both.
-
-I couldn't find an in-tree phylink MAC that implements set_pauseparam and
-ends up with an Asym-only supported mask. macb uses MAC_ASYM_PAUSE without
-MAC_SYM_PAUSE, but it has no pauseparam ops.
-
-The pause_test_support() docstring cites phylink mac_capabilities as the
-reference. Should the expectation follow phylink's rule?
-
-> +
-> +def pause_setup(cfg):
-> +    """ The starting conditions every test counts on, restored on exit:
-> +        - both ports admin up
-> +        - link autoneg on on both sides ifsupported
-> +        - carrier on
-> +    """
-> +
-> +    # Get init pause parameters
-> +    ret, params = ethtool_ret(f"-a {cfg.ifname}")
+> +    # check lp_adv on remote
+> +    ret, linkmodes = get_peer_pause_lp_advertising(cfg)
 > +    if ret == 0:
-> +        defer(cmd, f"ethtool -A {cfg.ifname} rx {onoff(params['rx'])} "
-> +                   f"tx {onoff(params['tx'])} "
-> +                   f"autoneg {onoff(params['autonegotiate'])}")
+> +        ksft_eq(linkmodes, required_local_linkmodes,
+> +                f"remote lp_adv must show our {required_local_linkmodes}")
 > +
-> +    # Get init link parameters
-> +    link = ethtool(f"{cfg.ifname}", json=True)[0]
-> +    if "auto-negotiation" not in link:
-> +        raise KsftSkipEx(f"{cfg.ifname} doesn't report its link modes")
+> +    # Check resolution
+> +    _, local_pauseparams = get_local_pauseparams(cfg)
+> +    ksft_eq(local_pauseparams["negotiated"]["rx"], expected_local_rx)
+> +    ksft_eq(local_pauseparams["negotiated"]["tx"], expected_local_tx)
 > +
-> +    if link["auto-negotiation"]:
-> +        defer(cmd, f"ethtool -s {cfg.ifname} autoneg on")
-> +    elif "speed" in link and "duplex" in link:
-> +        defer(cmd, f"ethtool -s {cfg.ifname} autoneg off speed {link['speed']} "
-> +                   f"duplex {link['duplex'].lower()}")
+> +    ret, remote_pauseparams = get_peer_pauseparams(cfg)
+> +    if ret == 0 and "negotiated" in remote_pauseparams:
+> +        ksft_eq(remote_pauseparams["negotiated"]["rx"], expected_lp_rx)
+> +        ksft_eq(remote_pauseparams["negotiated"]["tx"], expected_lp_tx)
 
 [Severity: Medium]
-These restores are queued with cmd()'s default fail=True whenever the GET
-succeeds, even if the device has no matching setter.
+Do these resolution checks test what the kernel actually resolved?
 
-A restore to identical values still fails when the setter op is missing:
+The kernel's PAUSE_GET reply has no resolved pause attribute.
+pause_fill_reply() only puts ETHTOOL_A_PAUSE_AUTONEG, RX and TX, and
+phylink_ethtool_get_pauseparam() reports the configured
+pl->link_config.pause.
 
-net/ethtool/linkmodes.c:ethnl_set_linkmodes_validate() {
-    ...
-	if (!ops->get_link_ksettings || !ops->set_link_ksettings)
-		return -EOPNOTSUPP;
-    ...
-}
+The "negotiated" object in the ethtool -a JSON output is computed in
+userspace by the ethtool tool. It comes from LINKMODES_OURS and
+LINKMODES_PEER, the same advertised and lp_advertised bits that the
+"# check adv" and "# check lp_adv" blocks above already compare with
+ksft_eq(). Once those pass, these asserts can only fail if ethtool itself
+is buggy.
 
-ethnl_set_pause_validate() does the same when set_pauseparam is missing.
+With that in mind, can the test catch the PHY overwrite and MAC override
+cases listed in the docstring above?
 
-The failing cmd() raises inside ksft_flush_defer(), which sets
-KSFT_RESULT = False, and the case is reported as "not ok".
+Nothing here reads the tx_pause/rx_pause passed to mac_link_up() or
+phydev->pause/asym_pause. Pause frame stats and traffic aren't checked
+either.
 
-For example, iavf has get_link_ksettings, reports AUTONEG_DISABLE and has
-no set_link_ksettings. Wouldn't every pause_test_support variant fail on
-iavf, even when no assertion ran?
+The ethtool userspace resolution also ignores duplex. A half-duplex link,
+where phylink disables pause, would still pass.
 
-The remote side follows the same pattern. The remote "ethtool -A" restore
-is deferred even though no test in this patch changes the remote pause
-parameters. A remote that only has get_pauseparam would make every case
-that reaches pause_setup() fail.
+The commit message says:
 
-Could these restores be registered only when the setting is actually
-changed, or not be treated as fatal?
+    Introduce a test that validates we're correctly resolving pause
+    parameters according to 802.3.
 
-> +
-> +    # Local interface admin up, link aneg on
-> +    ip(f"link set {cfg.ifname} up")
-> +    if link["supports-auto-negotiation"] and not link["auto-negotiation"]:
-> +        ethtool(f"-s {cfg.ifname} autoneg on")
-
-[Severity: Low]
-The docstring says the starting conditions are "restored on exit". Is the
-admin state restored? No defer brings the interface back down if it
-started admin-down. The remote "ip link set ... up" works the same way.
-
-Autoneg is also turned on here whenever it is supported and currently
-off. A restore was only registered above when the original state was
-autoneg on, or autoneg off with both speed and duplex reported.
-
-If the interface started with autoneg off and no speed/duplex (for
-example with the link down), would autoneg be left on after the test? The
-remote side has the same pattern.
-
-[ ... ]
-
-> +    The expectation is for drivers to refuse setting pauseparams that don't
-> +    match the Pause and Asym_Pause bits in the supported linkmodes with a
-> +    -EOPNOTSUPP return value. Unsupported pause params must be rejected.
-
-[Severity: Low]
-This isn't a bug, but the docstring requires -EOPNOTSUPP, while
-expect_pauseparams_set() also accepts EINVAL:
-
-        ksft_in(ret, (errno.EOPNOTSUPP, errno.EINVAL), note)
-
-phylink_ethtool_set_pauseparam(), which this docstring refers to, also
-returns -EINVAL for rx != tx when Asym_Pause is not supported. Could the
-docstring mention EINVAL too?
-
-[ ... ]
-
-> +    pause_setup(cfg)
-> +
-> +    forced = forced_link_settings(cfg)
-> +    _, supported = get_local_pause_supported(cfg)
-> +
-> +    # We check that what we can configure in the pause params matches what we
-> +    # support under various contditions : Link aneg on/off, pause aneg on/off
-> +    ret, _ = ethtool_ret(f"-s {cfg.ifname} autoneg on", is_get = False)
-> +    if ret != 0:
-> +        ksft_pr("link autoneg on refused, not tested")
-> +    else:
-> +        expect_pauseparams_set(cfg, pauseparams, False, supported,
-> +                               "link autoneg on")
-> +        expect_pauseparams_set(cfg, pauseparams, True, supported,
-> +                               "link autoneg on")
-
-[Severity: Medium]
-How does this behave on a phylink fixed-link DUT?
-
-phylink_parse_fixedlink() keeps the MAC pause capabilities in
-pl->supported:
-
-	linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, mask);
-	linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, mask);
-	linkmode_set_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, mask);
-	linkmode_and(pl->supported, pl->supported, mask);
-
-so ethtool reports pause as supported. However,
-phylink_ethtool_set_pauseparam() refuses every change on fixed links:
-
-	if (pl->req_link_an_mode == MLO_AN_FIXED)
-		return -EOPNOTSUPP;
-
-Re-applying the current link settings, either here or through the forced
-"autoneg off speed X duplex Y" below, succeeds without reaching the
-driver, because ethnl_set_linkmodes() returns early:
-
-	if (!mod)
-		return 0;
-
-The test then reaches expect_pauseparams_set(). Every supported-subset
-variant that differs from the current state expects 0 there, but gets
--EOPNOTSUPP.
-
-The commit message presents phylink as the path that "deals with the
-complexity". Would a phylink fixed-link interface be reported as a driver
-bug here?
-
-> +
-> +    if not forced:
-> +        ksft_pr("link speed unknown, the forced link is not tested")
-> +        return
-> +
-> +    ret, _ = ethtool_ret(f"-s {cfg.ifname} autoneg off {forced}", is_get = False)
-> +    if ret != 0:
-> +        ksft_pr(f"link autoneg off {forced} refused, not tested")
-> +        return
-
-[Severity: Low]
-Suppose "ethtool -s autoneg on" was refused above and one of these returns
-is taken. The function then returns without running a single assertion.
-
-ksft_run() counts a normal return without a failed ksft_* check as a pass,
-and ksft_pr() doesn't mark a skip:
-
-        if not cnt_key:
-            cnt_key = 'pass' if KSFT_RESULT else 'fail'
-
-If the device started with autoneg off and no speed/duplex, pause_setup()
-registers no link restore, so a defer failure doesn't turn this into a
-fail either.
-
-Should this raise KsftSkipEx when neither configuration was exercised?
-
-[ ... ]
-
-> +    The validation is made by looking at the advertised modes locally, as well
-> +    as what the peer's 'lp_advertising' values report.
-> +    """
-
-[Severity: Low]
-The docstring mentions checking the peer's lp_advertising values. The body
-of pause_advertising_test() in this patch only checks the local
-advertised-pause-frame-use:
-
-    _, linkmodes = get_local_pause_advertising(cfg)
-
-The later commit in this series, "selftests: drv-net: pause: Validate the
-pause autonegotiation with a partner", adds the
-get_peer_pause_lp_advertising() check, so the docstring matches the code
-by the end of the series. Could this sentence move to that patch?
-
-[ ... ]
+Should the commit message and docstring be narrowed to what is actually
+checked? Alternatively, could the test look at the pause state actually
+programmed into the MAC? Later patches in the series leave this code
+unchanged.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015134350.629593-1-maxime.chevallier%40bootlin.com
