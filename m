@@ -1,259 +1,198 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-2uec-a123.jellyfish.systems (out-2uec-a123.jellyfish.systems [63.250.43.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FC3413786;
-	Sun, 18 Oct 2026 18:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792348686; cv=pass; b=HLaD8PNV+1x4mGJMU6h6HYqgcxY6tD1gnufiIgGqt8c0N5URWrcSeVG0ueLR8L02dECxpWP+OM08zxsQSsNgATUUk2XR1MZvpYGAUNTRPAjAaFVV2LzeIQoHrBagnmz8Jz1hZrhwakxMJujKzMKoWEFhEdtphsE+z2gHxsjrFAo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792348686; c=relaxed/simple;
-	bh=FGIVEt/9qthgGJHC6e+UlQXfofGpRRSjNyYMhdZpaZk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HPLbMSBwYbkag1TnYHHF3BM4iXK2CkpAknjqGB4Tsup0oB5uW13Jb71bJxyqTh6sAFyh3IlenPmL/Y+j3zh17YA7gYXA/WIZoZUGlLGSGg6vtfGbQsInIod1KSVEjV496urWeS4h5wjRou4inStYl77b62k9wanP4X+5qlz78Ko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=b2EFU9kD; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=sB+z3IEG; arc=pass smtp.client-ip=85.215.255.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B80415B8B
+	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 18:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.123
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792348919; cv=none; b=rkoOIbnZ5wwFSScfmb2M992VNq/A9Ur5StRdgcFa8F9rtTkzHovhNQdYAdMQELC3bjAXD2qgy8dw5uRRki3mzkXpg35Sj0WuMcno+ltG4CRiZRyoTV+IVuvfssG5/Cma0dpkZDkaT2xZ3xDKcMWf5om+ncsdaLlEbx/bRT08x3k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792348919; c=relaxed/simple;
+	bh=mMK4tLG8AXUJVkPzZBKZ2dl6GSCVDxsdDhKNGqxqbWA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cnd1AbCshw9ar1iND7BkhUMcxIXhZ7XRqBkBa7X6R5opKsI9HGQbHF1mE78yLQBA25zEXjE/gr2VyZ+ss0nMJbFaVjjfCPyQXJ9w/K7dd2SZlzETgc+z66okRuaNPeGk5gkvtyjeaa1lefrJScVJvOVAcWiow5OEGdxKY0dEMYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca; spf=pass smtp.mailfrom=r-sc.ca; dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b=JljUaImh; arc=none smtp.client-ip=63.250.43.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r-sc.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="b2EFU9kD";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="sB+z3IEG"
-ARC-Seal: i=1; a=rsa-sha256; t=1792348668; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=YfsUkwxNHA+VWb5UXaaSDydT9hD4cHLjH30Dl4ekfhVYFvMnIwm1elAnUZIswpHARl
-    JhSmaECA2qMPd7EodFvBo+eL0Gl7fdctk5iuBs1TKmhMsf6fHPTy8hKghw0PgLDgvnsF
-    o26vF+cYomK/CBFJSoyRjAh5VZnI9bc08QIjurRS+AZI5q53buvzQ+9PuF25Gq+NTOL+
-    1LcrDTUgtOVU6tsBxJWDvf3N9kiA5UgTLXCxO4yp4itIeycUK5doZZBb23csPriOyTdM
-    ua9+Vnn+mAT/Q4pikyT+Jdh+Pd8PY6jy5KzeRuSJgrwXYNkU3AGJJYmc9MH6O4e/MvgX
-    WaXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792348668;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=5xIq3oj8bC0jMcqyuVy3xjDqqQHdsrX9uoFsUgJ3a4Q=;
-    b=mi+XU4YtYnKnC1HcgMaVmruZmOC6T7BB84WeI14NmG3bNE6fLftfh/FPr4Eb5V6HpT
-    75trH7UiW1vND49iA25OFbNuajg5fEaJdibCxhevG/p4ag9dREu/HB9op3WsFYPaMsJv
-    3Y/GLUkz/MUjIweomt2MJK54x4zwlbwM5w4V1hvB9TcjT3Ppw5oj0l6RBAcvYhwk0X6B
-    RLV7qRgoimIF8HYt7bJPYTjBe2WAhFJkPhNFuEh1iabKzYdhzF4kwvkjEknRJKY/goRA
-    /embgxCToMfTO8Nolxu85+2xhhy3KPnxeSktQisBwIKd0yf8RmMhWs20RG5/NNa/H+e0
-    zBMQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792348668;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=5xIq3oj8bC0jMcqyuVy3xjDqqQHdsrX9uoFsUgJ3a4Q=;
-    b=b2EFU9kDHZn//2fRL/+W8DBzV8C1ijl7oBjgl6DFHrquoIz+ylEsC+ckBiBtpBV50k
-    R4Cb99K0QGnAg3KoZU4oPju8MXbGpvS3QRGsNtMpPALic+x8oAliSegV9G0Xu+BEgZao
-    XTZoTyDKkrcBSCdy4x/rQ6f7xXaymE8NNEhyYul93Db99V/X8ezVCFSxi7xy6G0Aqqv/
-    vjwkxtUC+naXAaX6pjAX/O/AUE/O3ekIm5rceMQE2f8wMNhmW5f+0bkwst6YyuFrVkol
-    r1O5X8Wl1bZl7WQV8Sj9ql7DKRpTlEUfFN9+OC1g3Onr48kokLgnSGf0LRPFunhiEthn
-    8Kfw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792348668;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=5xIq3oj8bC0jMcqyuVy3xjDqqQHdsrX9uoFsUgJ3a4Q=;
-    b=sB+z3IEGxe3cvpj5AYCH1Fh7jlZx7y+XjxtrkScMGlVTQOb1WCTClewSc177gw+wOB
-    jlDxhGxMfmTkZynMS+Cw==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a29IIbmTEg
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sun, 18 Oct 2026 20:37:48 +0200 (CEST)
-Message-ID: <088cfba9-f0c7-4f51-a9a5-4e1b28b8e90b@hartkopp.net>
-Date: Sun, 18 Oct 2026 20:37:41 +0200
+	dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b="JljUaImh"
+Received: from DESKTOP-290OH2S (d207-6-150-133.bchsia.telus.net [207.6.150.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4j76S66yPtz2x99;
+	Sun, 18 Oct 2026 18:20:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r-sc.ca;
+	s=spacemail; t=1792347656;
+	bh=ucpIWshOnDVtoREAA0gEPeno03hiXuXiUZO0nTBdeFU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JljUaImhqyDCxQCb6KqlG1P4Pv74oVf2fiukLKZjwFm46kWCGgbff4MH00xkYiEct
+	 xXTp3+Q9nQivnvN+weIF3vuTqufUFrBWitqd1qv7kGp8Sa/8jv+ZGRdwXY6do9n1Cc
+	 P3F1t9lj9/hwLXs9NldjbT6u3YiEFWB1o1Tl9z2ecgBVfSfXCJrcnevLYrU98E6uhZ
+	 BUAzVMuXsfP1gaPzMzJ3o3Z3ejSA1+wQ9OfoTzFQrZu/rMSBxbsmi6spzImzo1vlrz
+	 CQiMTe0PjLPu+e5ZSLcgdVzPIKTObcahFNwKB6u24SxqeXo769H4V8Md5M3AELU4Sb
+	 ZqU6iwU7oqWdA==
+From: Ross Cawston <ross@r-sc.ca>
+To: netdev@vger.kernel.org
+Cc: o.rempel@pengutronix.de,
+	kory.maincent@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Ross Cawston <ross@r-sc.ca>
+Subject: [PATCH net] net: pse-pd: don't enable a PI again while disabling it
+Date: Sun, 18 Oct 2026 11:20:05 -0700
+Message-ID: <20261018182005.1193-1-ross@r-sc.ca>
+X-Mailer: git-send-email 2.55.0.windows.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 06/12] can: bcm: fix filter removal race between
- release and netns change
-To: Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
- kernel@pengutronix.de, Norbert Szetei <norbert@doyensec.com>,
- stable@vger.kernel.org
-References: <20261018164417.1540449-1-mkl@pengutronix.de>
- <20261018164417.1540449-7-mkl@pengutronix.de>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20261018164417.1540449-7-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: ross@r-sc.ca
 
-Hello Marc,
+With software power control, _pse_pi_disable() frees the power budget
+of the PI and then retries the power delivery of the PIs waiting for
+power in its power domain: those that are admin enabled, have a PD
+detected, and are not enabled in hardware. The PI being disabled is one
+of them, as its admin state and PD detection are only cleared after
+_pse_pi_disable() returns, so it is enabled again right away:
 
-sashiko-bot complained about problems with the rtnl_lock() usage in this 
-bcm patch here:
+- an admin disable of a port with a PD keeps the port powered, and the
+  next admin enable allocates its budget a second time
+- a disconnection enables the now empty port again, with a new budget
+  allocation that is never freed: when the port reports the
+  disconnection again, its PD detection is already cleared
+- a PI disabled to free budget for a PI of higher priority is enabled
+  again with the budget it just freed, so priorities never take effect
 
-https://lore.kernel.org/linux-can/99fed91f-dbc5-4029-8a34-7e0113acfe13@hartkopp.net/
+Clear the admin state and the PD detection before disabling the PI,
+and don't retry the power domain in pse_disable_pi_pol(), whose freed
+budget is meant for the PI being allocated. That PI stays waiting for
+power and is retried when budget is freed later.
 
-This problem applies to all of these fixes:
+The problem was found, and this fix written, with an AI coding
+assistant, while testing the budget on a switch with two Realtek RTL8239
+PSE controllers, whose driver (not in mainline yet) uses the static
+budget strategy like the TPS23881. Before this change, "ethtool
+--set-pse <port> c33-pse-admin-control disable" left a port with a PD
+powered, and the budget allocated in the power domain grew with every
+disable and every unplug. With it, the port stays off, and the allocated
+budget is back to 0 after a disable and after an unplug. Tested on that
+switch with OpenWrt's 6.18 kernel; the change for mainline is the same
+apart from context and is build-tested.
 
-[PATCH net-next 04/12] can: isotp: fix filter removal race between 
-release and netns change
-https://lore.kernel.org/linux-can/20261018164417.1540449-5-mkl@pengutronix.de/
+Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
+Signed-off-by: Ross Cawston <ross@r-sc.ca>
+---
+ drivers/net/pse-pd/pse_core.c | 50 ++++++++++++++++++++++++++++-------
+ 1 file changed, 41 insertions(+), 9 deletions(-)
 
-[PATCH net-next 06/12] can: bcm: fix filter removal race between release 
-and netns change
-https://lore.kernel.org/linux-can/20261018164417.1540449-7-mkl@pengutronix.de/
-
-[PATCH net-next 08/12] can: raw: take rtnl_lock() before leaving the 
-notifier list
-https://lore.kernel.org/linux-can/20261018164417.1540449-9-mkl@pengutronix.de/
-
-They all correctly fix the race when moving CAN devices to other 
-namespaces when releasing sockets - BUT with the cost of rtnl locks that 
-can be triggered by unprivileged users.
-
-"Taking RTNL in these release paths is no option: raw_bind(),
-raw_setsockopt() and raw_release() already hold RTNL while adding and
-removing up to CAN_RAW_FILTER_MAX filters per socket, which unprivileged
-users can trigger repeatedly and which makes RTNL a global bottleneck."
-
-This patch
-
-[RFC PATCH can-next v2] can: protect the receive lists with a per-device 
-lock
-https://lore.kernel.org/linux-can/20261018180739.689750-1-socketcan@hartkopp.net/
-
-replaces those three patches and removes the formerly required increased 
-usage of rtnl_lock() by adding a new can_dev_rcv_lists::lock that is 
-placed in ml_priv and is device specific (independently from namespaces).
-
-I've worked on this patch the entire weekend and tested it extensively.
-
-I would suggest to replace the three patches with that single one for an 
-updated PR and let sashiko-bot take a final look at it.
-
-Best regards,
-Oliver
-
-ps. I did your requested instrumentation and found a missing glitch 
-which is the reason for the v2 patch. The v1 will get its sashiko review 
-today at ~10pm due to the 24h embargo :-/
-
-On 18.10.26 18:41, Marc Kleine-Budde wrote:
-> From: Oliver Hartkopp <socketcan@hartkopp.net>
-> 
-> bcm_release() removes the socket from bcm_notifier_list before it takes
-> any lock that serializes against the netdev notifier chain, which runs
-> under RTNL. A socket that leaves the list in this window is skipped by
-> bcm_notify() and has to remove its CAN filters itself.
-> 
-> This fails when the bound device is moved to another network namespace
-> in this window: bcm_rx_unreg() reads dev_net(dev) without holding RTNL,
-> and can_rx_unregister() silently returns when this namespace does not
-> match dev_net(dev) anymore. The op is freed anyway and the remaining
-> receiver leads to a use-after-free in bcm_rx_handler().
-> 
-> Take rtnl_lock() before removing the socket from the notifier list, so
-> that bcm_release() and bcm_notify() can not both skip the removal and
-> dev_net(dev) is stable while the device specific filters are removed.
-> As the notifier chain is always invoked under RTNL, bcm_busy_notifier
-> can not point to the released socket anymore. Replace the now dead
-> busy-wait loop with a WARN_ON_ONCE().
-> 
-> RTNL is only held for the notifier list removal and the removal of the
-> device specific filters. Once the socket has left the notifier list,
-> bcm_notify() can not access it anymore. So the procfs entry, the tx_ops
-> and the filters for 'any' CAN device, which live in the socket's
-> namespace, are removed after RTNL has been released. This way a stalled
-> reader of the world-readable procfs entry can not hold up RTNL, and the
-> removal of the 'any' CAN device filters does not delay RTNL anymore.
-> 
-> Fixes: 8e8cda6d737d ("can: initial support for network namespaces")
-> Link: https://lore.kernel.org/linux-can/CEA6A38A-2646-4ADA-95B4-CBAE2F301A8E@doyensec.com/
-> Cc: Norbert Szetei <norbert@doyensec.com>
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-> Link: https://patch.msgid.link/20261016091128.325332-3-socketcan@hartkopp.net
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->   net/can/bcm.c | 47 +++++++++++++++++++++--------------------------
->   1 file changed, 21 insertions(+), 26 deletions(-)
-> 
-> diff --git a/net/can/bcm.c b/net/can/bcm.c
-> index 6759662e024c..fbc79da4e4fc 100644
-> --- a/net/can/bcm.c
-> +++ b/net/can/bcm.c
-> @@ -1926,17 +1926,30 @@ static int bcm_release(struct socket *sock)
->   
->   	/* remove bcm_ops, timer, rx_unregister(), etc. */
->   
-> +	rtnl_lock();
-> +
-> +	/* The netdev notifier chain runs under RTNL, so bcm_notifier() can't
-> +	 * be walking bcm_notifier_list and point to this socket. The spinlock
-> +	 * is still needed as bcm_init() adds sockets without holding RTNL.
-> +	 */
->   	spin_lock(&bcm_notifier_lock);
-> -	while (bcm_busy_notifier == bo) {
-> -		spin_unlock(&bcm_notifier_lock);
-> -		schedule_timeout_uninterruptible(1);
-> -		spin_lock(&bcm_notifier_lock);
-> -	}
-> +	WARN_ON_ONCE(bcm_busy_notifier == bo);
->   	list_del(&bo->notifier);
->   	spin_unlock(&bcm_notifier_lock);
->   
->   	lock_sock(sk);
->   
-> +	/* Remove the device specific subscriptions under RTNL */
-> +	list_for_each_entry(op, &bo->rx_ops, list)
-> +		if (op->ifindex && op->rx_reg_dev)
-> +			bcm_rx_unreg(op->rx_reg_dev, op);
-> +
-> +	rtnl_unlock();
-> +
-> +	/* bcm_notify() can not access this socket anymore. Release the other
-> +	 * resources without holding RTNL, e.g. remove_proc_entry() waits for
-> +	 * concurrent readers of the procfs entry.
-> +	 */
->   #if IS_ENABLED(CONFIG_PROC_FS)
->   	/* remove procfs entry */
->   	if (net->can.bcmproc_dir && bo->bcm_proc_read)
-> @@ -1948,31 +1961,13 @@ static int bcm_release(struct socket *sock)
->   		bcm_remove_op(op);
->   	}
->   
-> -	list_for_each_entry_safe(op, next, &bo->rx_ops, list) {
-> -		/*
-> -		 * Don't care if we're bound or not (due to netdev problems)
-> -		 * can_rx_unregister() is always a save thing to do here.
-> -		 */
-> -		if (op->ifindex) {
-> -			/*
-> -			 * Only remove subscriptions that had not
-> -			 * been removed due to NETDEV_UNREGISTER
-> -			 * in bcm_notifier()
-> -			 *
-> -			 * op->rx_reg_dev is a tracked reference taken
-> -			 * when the subscription was registered, so it
-> -			 * stays valid here even if a concurrent
-> -			 * NETDEV_UNREGISTER already unlisted the device.
-> -			 */
-> -			if (op->rx_reg_dev)
-> -				bcm_rx_unreg(op->rx_reg_dev, op);
-> -		} else
-> +	/* 'any' CAN device subscriptions live in the socket's namespace */
-> +	list_for_each_entry(op, &bo->rx_ops, list)
-> +		if (!op->ifindex)
->   			can_rx_unregister(net, NULL, op->can_id,
->   					  REGMASK(op->can_id),
->   					  bcm_rx_handler, op);
->   
-> -	}
-> -
->   	synchronize_rcu();
->   
->   	list_for_each_entry_safe(op, next, &bo->rx_ops, list) {
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index a5e6d7b26b9..b46e3a13a31 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -448,14 +448,14 @@ static void pse_pi_deallocate_pw_budget(struct pse_pi *pi)
+ }
+ 
+ /**
+- * _pse_pi_disable - Call disable operation. Assumes the PSE lock has been
+- *		     acquired.
++ * __pse_pi_disable - Call disable operation and free the power budget of the
++ *		      PI. Assumes the PSE lock has been acquired.
+  * @pcdev: a pointer to the PSE
+  * @id: index of the PSE control
+  *
+  * Return: 0 on success and failure value on error
+  */
+-static int _pse_pi_disable(struct pse_controller_dev *pcdev, int id)
++static int __pse_pi_disable(struct pse_controller_dev *pcdev, int id)
+ {
+ 	const struct pse_controller_ops *ops = pcdev->ops;
+ 	int ret;
+@@ -469,6 +469,29 @@ static int _pse_pi_disable(struct pse_controller_dev *pcdev, int id)
+ 
+ 	pse_pi_deallocate_pw_budget(&pcdev->pi[id]);
+ 
++	return 0;
++}
++
++/**
++ * _pse_pi_disable - Disable a PI, then retry the power delivery of the PIs
++ *		     waiting for power in its power domain. Assumes the PSE
++ *		     lock has been acquired.
++ * @pcdev: a pointer to the PSE
++ * @id: index of the PSE control
++ *
++ * The caller must have cleared the admin state or the PD detection of the
++ * PI first, or the retry enables the PI again.
++ *
++ * Return: 0 on success and failure value on error
++ */
++static int _pse_pi_disable(struct pse_controller_dev *pcdev, int id)
++{
++	int ret;
++
++	ret = __pse_pi_disable(pcdev, id);
++	if (ret)
++		return ret;
++
+ 	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d))
+ 		pse_pw_d_retry_power_delivery(pcdev, pcdev->pi[id].pw_d);
+ 
+@@ -490,7 +513,10 @@ static int pse_disable_pi_pol(struct pse_controller_dev *pcdev, int id)
+ 
+ 	dev_dbg(pcdev->dev, "Disabling PI %d to free power budget\n", id);
+ 
+-	ret = _pse_pi_disable(pcdev, id);
++	/* The power freed is for the PI being allocated, and this PI waits
++	 * for power again: no retry of the power domain here.
++	 */
++	ret = __pse_pi_disable(pcdev, id);
+ 	if (ret)
+ 		notifs |= ETHTOOL_PSE_EVENT_SW_PW_CONTROL_ERROR;
+ 
+@@ -703,14 +729,18 @@ static int pse_pi_disable(struct regulator_dev *rdev)
+ {
+ 	struct pse_controller_dev *pcdev = rdev_get_drvdata(rdev);
+ 	struct pse_pi *pi;
++	bool enabled;
+ 	int id, ret;
+ 
+ 	id = rdev_get_id(rdev);
+ 	pi = &pcdev->pi[id];
+ 	mutex_lock(&pcdev->lock);
++	/* Disabled before _pse_pi_disable() retries the power domain */
++	enabled = pi->admin_state_enabled;
++	pi->admin_state_enabled = 0;
+ 	ret = _pse_pi_disable(pcdev, id);
+-	if (!ret)
+-		pi->admin_state_enabled = 0;
++	if (ret)
++		pi->admin_state_enabled = enabled;
+ 
+ 	mutex_unlock(&pcdev->lock);
+ 	return 0;
+@@ -1229,10 +1259,12 @@ static int pse_set_config_isr(struct pse_controller_dev *pcdev, int id,
+ 				ret = 0;
+ 		}
+ 	} else if (notifs & ETHTOOL_C33_PSE_EVENT_DISCONNECTION) {
+-		if (pcdev->pi[id].admin_state_enabled &&
+-		    pcdev->pi[id].isr_pd_detected)
+-			ret = _pse_pi_disable(pcdev, id);
++		bool pd_detected = pcdev->pi[id].isr_pd_detected;
++
++		/* Gone before _pse_pi_disable() retries the power domain */
+ 		pcdev->pi[id].isr_pd_detected = false;
++		if (pcdev->pi[id].admin_state_enabled && pd_detected)
++			ret = _pse_pi_disable(pcdev, id);
+ 	}
+ 
+ 	return ret;
+-- 
+2.55.0.windows.5
 
