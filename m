@@ -1,108 +1,272 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71306347C6
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 02:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792289009; cv=pass; b=Np5Kl77hBwwNeN/y3CvwY1gN8PLc/UtguROMT+9sGRx/CNQBfkJQlqZKZaAgj97CbMgRwUgW+oM94xIEhqrMu6PbJr3s2AH1/J7/OJ693sojbIJMHj1DH7zrkQStjmlR38LCOb0KxQnEEpmvWpOryQtBJrt9rHvEwu4hcxD5onA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792289009; c=relaxed/simple;
-	bh=OFvFUXE9xCFsK6/kBrpheywoSYe93LHItZLxp7xrWHk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aysHINSqO2AKjDULQOKgEn3HI3NcJx40wgSRIP2iodl/vxQo12uSs1hwUv/rzeJ//oU87ltuSTCiHLsz4ZeyoMA51HUsZtP3Y+UGDqCecd0GoNNxRYC+9fqucW7KRlVDnlr4HUZekR1W7yJFG4VXT49PrEHAi1GPVhe4uaVY0oU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=Nr0pP7vV; arc=pass smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A0618859B;
+	Sun, 18 Oct 2026 02:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792289139; cv=none; b=Gq31sQ85SMIZJV5IQTeyPdyn6h/hb8xUXB5KkzzWG/9CYRNDiUc1LqdS2VzQEoATm0VMEttijmHrfGVHM0XR7b5vr9NM2cXU9kgROe/hLI7wHPbnGkcfffxY6UVQYPBifU87Epf2/xAbwguwz9kea7njMNGchn3KILl1KkSgs3c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792289139; c=relaxed/simple;
+	bh=gJtMRRn6kUCo0qsvTSD5G8hd8iqHkT+V2XNuQqER60E=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dKcIUvQH8r7BfrQDPySZK+yOn1/T2lFcaWPBFuD1UAC9Gqfjd+2UrHFtC6XWmNQ0kQwJ2rUQ8xRvCaXnzSuuTB8GQvxDiYXt/iqCEPm0v45vT+31PWieLE3ZY185E5c5Nn1swYSGLLCEm2c8UfBKciKR0Ti1mhlWp0EwLPTw970=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xkk8ziho; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="Nr0pP7vV"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8b056d58f2aso7839187b3.2
-        for <netdev@vger.kernel.org>; Sat, 17 Oct 2026 19:03:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792289007; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Q6dUxPA4bwqjkedNjmyZsdyBGdY2ThwZHI0OLtAusGKdPtIYwNHFMaaYVm7TgPFPv4
-         rPA91vSP2EuvsyLY3Ut5q06U07gOfvyEvtNK+UckIhY/BsFAwov4Sxtd6OGSsCy0ZzxB
-         WZ49ebzeg96Xy/zLoCdN5+wOrdH1riXH3HlxJCNy+vZv4orvwSsqJVq2tqjRkdqgkWcZ
-         95Ch9wnuUg5PTzag0O0xVQONEEMyJnn30ON5Eh3jM219EAgVoHOV3CDtb/fdn2wqxMkJ
-         bCO26uGrtuI1U+qM/i2MreiqBlfXSUpX27Yrhwryil1weYKztT6uJa+6bkgVXzR9gw0E
-         lHFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=OFvFUXE9xCFsK6/kBrpheywoSYe93LHItZLxp7xrWHk=;
-        fh=XbDDdsyV8SRUF9GQ4My+3UbCL8dGPTFiKH5ArMe/QPM=;
-        b=nvLWplWnWSZ7ZqQqMxI2/bX/wE41ja9ZwBw2FSt/w041wEKIoNp15rP0bqdgzR4fZy
-         cjrkUzJjQWKOhFEQORFIVQinXvmU/5ixwL/LQZpnXpDcOwvxZZexoG2gU9chmQ74oCBz
-         /n7kZZp24TeAAoKJkFwAHXfxS4IEBGaN3GMO3dDzjmhn1/uLuCtss5+ImvVQ8Li/hAsr
-         7UGqwPbkaRFXZ0n9xM/RiooYInIyjD0SGDDsRSLYS23PUvIilj/snqZZaU/G2vPA4EQi
-         4jfro2mZ9QNgkt8ruLs1h/gEtOStpWGvlM+z3QE6ZwrNMFUbeJSngOWU7EGeZ6JiEVF3
-         BXbQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1792289007; x=1792893807; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OFvFUXE9xCFsK6/kBrpheywoSYe93LHItZLxp7xrWHk=;
-        b=Nr0pP7vVL4KeAR6PNJUeqzMXTnHsB97OF6gWi7jtNwt0qBvNOE0UvtQk1UniP2sCJg
-         5M/VJIGIjHq+HPOlyRCYGgFq4+hcpvO/Gh7ouWmtqrJ8cOL5UppFYGMlGuMVnyz1Snlw
-         JBLVKi3sWjDJ5dn9+KjaPSyVf1n8233GRJLMELG8kbFMKdotnD+w9Bt+04wTuA+d4t8A
-         NRkR4oB9cTTtFiV1C3NDR9W40SApTrVU9m6y/4wWZMiNOOTTd3y+aJ/lOH4Z6k2+WrMr
-         NsNwbLmjdsJ+PBiQl+QLvuUd2q63FglcqUflYsp2CgrbeXe5k3TQDgUUSxzMjniDk+xl
-         XfRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792289007; x=1792893807;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OFvFUXE9xCFsK6/kBrpheywoSYe93LHItZLxp7xrWHk=;
-        b=oMuUa6SiIS4mbu8nsISMJ7pMNk55nTohf9vP5i6HzwwZyvHobv6lNR/oiMLY8c9MMW
-         jn0Lt6PrxPcwVjL0vLyfA6UW+67MerQmN9etdA0APzlI7fg1PR9rzZ2LeWKhi4KB24/X
-         TD8HKXHl27eBpVVt/9U5VeW9GWUsIEj32+qbGZLMcV/B50ekucTH6+qwN+KizP5Pz35b
-         ca+lXSGuVTbrGz0Fw3ZUBixkAAE5fEiqhGtwyTizFNbu+Nkq6pCvbIXkyUsdFjlRqPyU
-         6qlOtrFVnTVn+gSe1YsVcE0dKcCg7n1WJNYCcuQ1Y6ORrqpMlHkEhp7kGEQgDsDN9G1u
-         COhQ==
-X-Forwarded-Encrypted: i=1; AKwUvByN5Y2IaAnPHqe9LT9FaGfki22x09UyQk5VW2xdPmpO8IxnRxFREErantkDA76xR3Lc3pw0z5c=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIi/OezlTs73u+/nuuujTLCLc+xX/ct7kDlhlqczhq7BzKox8vy
-	RvpeGLlZFrY878CIaJg2NSLJxnNRqVlxr+vYFYH59Z/daUfttDS7cFNEoPpO1oBO/Xl0y5uUVWR
-	OQjRHIMceIP3BGPb9/A224O5lKhqmlyP+LIGQTwCX
-X-Gm-Gg: AYBFou1rHUVz7Sj/oUugBPOp5Ea/KWDu4MylAs59LHHZYmo+8njY0bCjWYJQIEZfh9U
-	VwnsdOGn053D7QNSyk1DAy1c7o/yvCXDvBnBtW9jPqnvRc41DKWPZDGYCzTIT4Jz6aJzL4w4a/M
-	+TBk4pkzoqCA7gBij0maHfFImysoDvIBXjYSWWB5S1u0wCD4OoVZgr65/oOiWW5DQc5CNT/SvN+
-	4j+lsPbbuu57e3izGX+gkCsvbZWsXNtGsxbUeKr/1wRmf2xq3m9frxa9YIe+mkPjwBBOh5u0bEn
-	EVu79aSM1l79VP5cZC+LLULVFuRI9we+AG8vJ7pkbuDEqlu1pYFCYT+8yH90WBLrmngHhoxb1+q
-	GJkUiEvIcO0QK7wlB2Wdq8QsjG/sOnu3rlGqW+c/D3Hceu13JuGbnvg/rW6KahhHWgoLX7t0FBP
-	zpSH4WYttRHQxDAxMJOA/T8GlO4IsRTJ+hfFsO/kYGfD1OuW9rsB2x/qIcgCg5hhKGV0otdj5PR
-	fhZzwtvpxd25Lw6PZ7aXvdr6ZNVYiAWsnAo9O+ls4XwAwjkPTOZaTcyhKSfZ0JI/L+tbrtKMvzd
-	1Qd3ju7z4sK4Zw==
-X-Received: by 2002:a05:690c:c4e9:b0:8b0:f04a:3132 with SMTP id
- 00721157ae682-8b0f2163601mr11361017b3.27.1792289007350; Sat, 17 Oct 2026
- 19:03:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xkk8ziho"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1D81F000C4;
+	Sun, 18 Oct 2026 02:05:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792289138;
+	bh=AwH/qJEEpOKdNZ/3RrGAFOIbCIy4tdi4JbgbAzbvt5U=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Xkk8zihoAbHxCOWcJyr32o0N+MJud5Y/H//NoLr+73B7G/wyuJaxbcFI4swtrUDqw
+	 cdRBxgQJ4iJvYjFQzZmoMW+CsJcW7MN2x4cxRtN0i2hFZ6e09I/MZpDwuW33+z4QpT
+	 Mp5yPSpMmb3EU0NZWHyv7Mv4s+64do572mkHMNBZWzS5QfGTY5hEF7zM23DUuDuqpX
+	 oDei0NUzFzFTGEx257nzSwFNsd4lHXNAB0FgCobHwN1MF462zo2XBYztAnKv7t/VmG
+	 1syvUlnY9lyKgVE48BTiyseAQT3wVj1udmthpcgtXZoFKMINhR6Nj4nKtFKLwX2UW0
+	 3/0Tv4J5W+SYg==
+Subject: Re: [PATCH net v1] net/ncsi: fix use-after-free of ncsi_package in
+ ncsi_remove_package()
+From: netdev-bot+sashiko@kernel.org
+To: 18983559317@163.com
+Cc: sam@mendozajonas.com, fercerpav@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ gwshan@linux.vnet.ibm.com, joel@jms.id.au, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 18 Oct 2026 02:05:36 +0000
+Message-ID: <179228913696.3135.535763886243394814@kernel.org>
+In-Reply-To: <20261017012431.413648-1-18983559317@163.com>
+References: <20261017012431.413648-1-18983559317@163.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261004171628.3544978-1-julius@bairaktaris.de>
- <20261018015434.3326758-1-julius@bairaktaris.de> <atQoL7WUM3BvDwbI@chamomile>
-In-Reply-To: <atQoL7WUM3BvDwbI@chamomile>
-From: Julius Bairaktaris <julius@bairaktaris.de>
-Date: Sun, 18 Oct 2026 02:02:49 +0000
-X-Gm-Features: AclHuK8LcA_x4fXjqJQJo4qGB6xwiKVubMehR2hBrYfUz8uLAdhaaMXVC05SGRY
-Message-ID: <CAC1t37JX5HnbU4gPxAE-PkNz=6e_pr2p6ujgEB-3gRi0HjXybg@mail.gmail.com>
-Subject: Re: [PATCH nf-next v2 0/4] netfilter: offload a TCP flow whose reply
- is never seen
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, kadlec@netfilter.org, fw@strlen.de, 
-	coreteam@netfilter.org, netdev@vger.kernel.org, geldot@protonmail.com, 
-	shuah@kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-That would be awesome.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-I will continue the development downstream and send the items upstream
-after a merge one by one.
+Critical: 0 · High: 3 (1) · Medium: 0 · Low: 1
 
-Thanks for your time!
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] kfree_rcu() only delays the free of np until existing RCU read-
+  side critical sections end, and none of the NCSI netlink walkers of…
+- [High] The child channels of the package this patch keeps alive are
+  still freed with no grace period.
+- [High] The netlink readers hold no reference to the parent struct
+  ncsi_dev_priv, and the same teardown frees it immediately.
+- [Low] The commit message describes the reader code inaccurately: - It
+  says the walker does 'nla_put_u8(NCSI_PKG_ATTR_ID, np->id)'.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  ncsi_unregister_dev() frees every package and channel (net/ncsi/ncsi-…
+
+--
+
+net/ncsi: fix use-after-free of ncsi_package in ncsi_remove_package()
+
+This patch adds an rcu_head to struct ncsi_package. It also changes
+ncsi_remove_package() to free the package with kfree_rcu() instead of
+kfree(). The aim is to stop the generic netlink package info walkers
+from reading a freed package when they race with device teardown.
+
+> ncsi_remove_package() unlinks the package from ndp->packages with
+> list_del_rcu() and immediately kfree()s it, after having released all
+> of its channels the same way.  As with the channels, the generic
+> netlink package info walkers iterate ndp->packages with
+> list_for_each_entry_rcu() and dereference the package in the loop body
+> (nla_put_u8(NCSI_PKG_ATTR_ID, np->id), np->multi_channel,
+> np->channels, ...), so an immediate kfree() turns a mid-walk reader
+> into a use-after-free the moment a teardown overlaps it.
+
+[Severity: Low]
+Is this description of the reader accurate? ncsi_write_package_info() in
+net/ncsi/ncsi-netlink.c writes the package ID with nla_put_u32():
+
+	rc = nla_put_u32(skb, NCSI_PKG_ATTR_ID, np->id);
+
+It also never reads np->multi_channel. Only the set/clear interface
+handlers write that field.
+
+> Free the package with kfree_rcu() so that it survives the grace period
+> the readers rely on.
+
+None of the NCSI netlink readers hold rcu_read_lock(), so do they rely on
+a grace period at all? Could the commit message be updated to match the
+code?
+
+> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+> index 54d0df0a9efe6..76b2cb9efe4f7 100644
+> --- a/net/ncsi/ncsi-manage.c
+> +++ b/net/ncsi/ncsi-manage.c
+> @@ -326,7 +326,7 @@ void ncsi_remove_package(struct ncsi_package *np)
+>  	ndp->package_num--;
+>  	spin_unlock_irqrestore(&ndp->lock, flags);
+>  
+> -	kfree(np);
+> +	kfree_rcu(np, rcu);
+
+[Severity: High]
+Does kfree_rcu() actually protect the netlink readers here? It only waits
+for RCU read-side critical sections that already exist. The walkers in
+net/ncsi/ncsi-netlink.c don't seem to enter one:
+
+ncsi_pkg_info_nl()
+  ncsi_write_package_info()
+    NCSI_FOR_EACH_PACKAGE(ndp, np) {
+        if (np->id != id)
+        ...
+        NCSI_FOR_EACH_CHANNEL(np, nc) {
+
+NCSI_FOR_EACH_PACKAGE() expands to list_for_each_entry_rcu(), but nothing
+calls rcu_read_lock() around it. Genl doit and dumpit handlers run under
+genl_mutex or cb_mutex, not RCU, and ncsi_unregister_dev() takes neither.
+
+The same pattern shows up in other handlers:
+
+  - ncsi_pkg_info_all_nl() keeps package after the walk and dereferences
+    package->id later.
+  - ncsi_set_interface_nl(), ncsi_clear_interface_nl() and
+    ncsi_set_channel_mask_nl() write multi_channel, channel_whitelist and
+    preferred_channel on the package they find.
+
+The testing used a CONFIG_PREEMPT kernel. On such a kernel, a reader that
+is preempted mid-walk outside rcu_read_lock() reports a quiescent state.
+Can the grace period then finish and kfree(np) run while the reader is
+still using np->id and np->channels?
+
+The NCSI_CMD_PKG_INFO op has no GENL_ADMIN_PERM. An unprivileged user can
+therefore run the reader while root runs rmmod ftgmac100.
+
+Do the walkers need rcu_read_lock(), or some other serialization against
+ncsi_unregister_dev(), to close this race?
+
+[Severity: High]
+The package now gets a grace period, but what about its channels? Before
+it gets here, ncsi_remove_package() calls ncsi_remove_channel() on each
+channel, and that still frees everything immediately:
+
+net/ncsi/ncsi-manage.c:ncsi_remove_channel() {
+	spin_lock_irqsave(&nc->lock, flags);
+
+	/* Release filters */
+	kfree(nc->mac_filter.addrs);
+	kfree(nc->vlan_filter.vids);
+	...
+	list_del_rcu(&nc->node);
+	np->channel_num--;
+	spin_unlock_irqrestore(&np->lock, flags);
+
+	kfree(nc);
+}
+
+The filter arrays are freed while nc is still linked on np->channels.
+nc itself is then freed with no grace period.
+
+The walker named in the commit message reads both without nc->lock or
+RCU:
+
+net/ncsi/ncsi-netlink.c:ncsi_write_channel_info() {
+	...
+	nla_put_u32(skb, NCSI_CHANNEL_ATTR_ID, nc->id);
+	...
+	if (nc == nc->package->preferred_channel)
+	...
+		if (ncf->vids[i])
+			nla_put_u16(skb, NCSI_CHANNEL_ATTR_VLAN_ID,
+				    ncf->vids[i]);
+	...
+}
+
+Say a PKG_INFO reader on one CPU is inside NCSI_FOR_EACH_CHANNEL(np, nc).
+At the same time another CPU runs
+ncsi_unregister_dev()->ncsi_remove_package()->ncsi_remove_channel().
+
+Can the reader then access the freed vids[] array, or the freed nc and
+nc->node.next? This doesn't depend on preemption, because channels get no
+grace period at all.
+
+struct ncsi_channel has no rcu_head. Also, switching nc to kfree_rcu()
+alone would still leave the vids and addrs arrays freed immediately.
+
+[Severity: High]
+Is the parent struct ncsi_dev_priv open to the same race? The readers get
+ndp from ndp_from_ifindex(), which drops the netdev reference and returns
+ndp without pinning it:
+
+net/ncsi/ncsi-netlink.c:ndp_from_ifindex() {
+	...
+	nd = ncsi_find_dev(dev);
+	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+
+	dev_put(dev);
+	return ndp;
+}
+
+The same teardown then frees ndp with no grace period:
+
+net/ncsi/ncsi-manage.c:ncsi_unregister_dev() {
+	...
+	list_del_rcu(&ndp->node);
+	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
+
+	disable_work_sync(&ndp->work);
+
+	kfree(ndp);
+}
+
+ftgmac100_remove() calls ncsi_unregister_dev() before unregister_netdev(),
+so dev_get_by_index() keeps succeeding during teardown.
+
+In ncsi_pkg_info_nl(), the call to genlmsg_new(NLMSG_DEFAULT_SIZE,
+GFP_KERNEL) sits between ndp_from_ifindex() and ncsi_write_package_info(),
+and it can sleep.
+
+Could ndp be freed during that window? ncsi_write_package_info() would
+then read ndp->package_num, walk ndp->packages and read
+ndp->package_whitelist from freed memory. This window exists even on
+non-preemptible kernels.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but ncsi_unregister_dev()
+frees all packages and channels before it stops the work item:
+
+net/ncsi/ncsi-manage.c:ncsi_unregister_dev() {
+	...
+	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+		ncsi_remove_package(np);
+	...
+	disable_work_sync(&ndp->work);
+	...
+}
+
+ncsi_dev_work() can still be queued or running at that point. Response
+handlers, request timeout timers and ncsi_reset_dev() all schedule it.
+ftgmac100_remove() can also call ncsi_unregister_dev() while the interface
+is still up.
+
+The work dispatches to ncsi_configure_channel() and ncsi_suspend_channel().
+Both load the active package and channel:
+
+	np = ndp->active_package;
+	nc = ndp->active_channel;
+
+They then use np->id, nc->id and other channel state.
+
+The work item isn't an RCU reader, and nothing serializes it against
+ncsi_remove_package() or ncsi_remove_channel(). Can it use a package or
+channel that was just freed? kfree_rcu(np) wouldn't help here.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017012431.413648-1-18983559317%40163.com
