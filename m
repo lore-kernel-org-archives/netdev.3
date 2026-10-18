@@ -1,109 +1,73 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A61340EB80
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DBB41BA69;
+	Sun, 18 Oct 2026 21:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792355673; cv=none; b=ABAbnKxWiOXPgC6ySYd30enEsv+9qOdS7zqdqMRaExsA3QGIlG3UU2kCxGo1ZjJj1Sw+1dV5ZgooMQ60Wi1DRzPj8oSQFjbSrVi5WgoR8wemW48ILYGo/V/SNFyKLXHZnbt8vKschC+pMVanbCMT3ORW3p+Z1IKNGl0XP2A07Ts=
+	t=1792357349; cv=none; b=uq8QTgDfEYv8Kp6iwOrfRMn2DJjVBNgCSanoA+nDcVmG8+LUA7Payxb69sT3pu+0OGt0oKqqo2oqtZmAOjSb870tOgLxl54OH3kKmuJpEUEnotR/DTRmII9ZJ77mORavRC7Pv4WwI278V+RRLRoxUNVXp2cyyXixflxDGHl6pho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792355673; c=relaxed/simple;
-	bh=mGtMxGvGMAPxZX+KuCd0vFb++3GQYItv+c8z4egM++c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e48ZA6U2QTt7VKNpOHAJXhsbTDDsJtEmGl4RCOysYu79/VoES4Zl41REL6DR/eD5/GDImXEwtFucJsiE8/jE6pYfRe7YHMD0W05lIJ8P60pzNgJQEMHpe5PR59bZP2RkUy+IiuM4EeZnfD6yCSKfnQpADDiGmbIqKQhTcYifdLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqwLDKu5; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1792357349; c=relaxed/simple;
+	bh=+LAnEU6qsVNyQhYvAmAyc4CEOpHcSxtjMfXcgVED7n8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DUVN60JR2DYiCHO6ckLhssgdH4rr/Mxzr5oJ24MXSXjppbWsfvbrAyC89lHLRcqve5NaEg+cGRKmMciE0HkJ0VApFb6PkZhUxVF1/uFz/2siPYk9thsLvLxOPlNmc2p/F+kBrj0NvLNG8SWtkqzGJJmmvBxHRI/0phpXxZyFjjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EQFtakhb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqwLDKu5"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c40447e25e6so160289066b.1
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 13:34:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1792355669; x=1792960469; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LcZudtVZGXqPCpJjVd+PjoGGou1YwE9FLeXdn5NeRV4=;
-        b=gqwLDKu5s9gordUFCi6XC70nosY/hZjBZv6Qb8r48rLLHMiDWFg/swEdylGSGbWspM
-         uU+2cPaD8Ciz9MwAuWxhkoE1LjLgrtgsp5EGEtw5FFerYl1WGfU5WBn2tvDkb8QkSGs5
-         FjQRhQrl5cEPlT327Je2O5ZAphnx0itGXUk3s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792355669; x=1792960469;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LcZudtVZGXqPCpJjVd+PjoGGou1YwE9FLeXdn5NeRV4=;
-        b=u7hqEbv35lHNUDl5IagVTNOjpshE55zO+cpZhqXDgSWPZr4J9+A2kZDfywfKG/Jd+A
-         ns3PEL6y+G0T7C5rRk9kMZ785WLgQCMZHVaQ/g0E0l717wdHYz1pGfxiY5HcVqBSimcD
-         1g+HX5OeXIjCElqQ9iySyXydFJ8FAfe9/8N8LdQSkZmcgkATYKUlFLTxO9RjIWPSDz95
-         DReaRifFkS5XtKicG28NZe1MleeXJrmJ4gidCijvHPfN94xzz/WZ6Zn95r+NtLNos6BV
-         ABbe15GEofAD1NmRevZQeU7iD4AxkSOTkp5eHirUbbmz+bpVYceL2AfCcGj9Fo1T31BN
-         ZB0A==
-X-Forwarded-Encrypted: i=1; AKwUvBz+c/uC+JxggZh+Gw7NbfncdouhlW+XKqizKUZuh5K9TGmF8AHEo6kxd1+x7kxku+hxrSs0Tf8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL6J6QhO6mmXoNhyW09YLHh3EzJPPw0WGK4B4e0WiYjcpWJAb0b
-	6sG5qUdRAdaK6sUH6iZPA7ChRl6MUNe4cycJBGbAu7tBxs4i9JUaUrVs5KS8Qb/xVeaW618RbbJ
-	dDwFgHvA=
-X-Gm-Gg: AYBFou2Jy8p0L0pTAOECNHTSf2yN34uX7Gwj2SywHrJ6HOwZOCmB3c6Z8JRiF1yX2Xs
-	oTvIH2YNrgqr0Gs4lrs1J7s7Hujqo6JQZOH+BLdvOYsGb6etO7wOkecziZnrzI/cn141LQaJrNO
-	8f6HDA/2hdXaa38tuRKct489FEQSpss8sUCZi+WiAL2r6VoO+11acn/Fs4l9+/KiJzIlTFEuoMo
-	JG4eou0aQ4iEEqVnSBkv1VCqGSCcfbxrgq7ju/CWS8+in1ExJ6EnGRiTUD//Vd5wYhTebyba76v
-	3X/7/53XIuEgW9PzjETdV/pHiqPmccFHxgqlo3wmyUN3CxbnPPlHbVp/QyLMk7VLWLAV5IbJR9A
-	TyiB3+hqSvTJD0BP4Ro/EN6gILgU+3/2Imj0T9JIkY1BdR+hmO5ojMUfpDtHMOwS7FBvcpuiTIi
-	qN9CMwr3fTmxl38JBtVXZxWz5smR64cq4LrNV1Va6mub4UszwmlvswK8IdaGMgu5uwX3i1LzTjp
-	ESQ/H0mdijSS7FFDYa8S/ebHb9Pb7l/5ixYCruq3/UWDXk=
-X-Received: by 2002:a17:907:94d0:b0:c41:285a:46a9 with SMTP id a640c23a62f3a-c41a08d9fc4mr376931866b.46.1792355669577;
-        Sun, 18 Oct 2026 13:34:29 -0700 (PDT)
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com. [209.85.218.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4091eb1835sm290343466b.79.2026.10.18.13.34.28
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Oct 2026 13:34:29 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c40447e25e6so160288066b.1
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 13:34:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxrwy9ODjW0ASJ0cABfJ493ZCwF3JhBzThXnE5xU8Jnrbs/JIfXh3gqjk9OgDk/Xr6qw5c0lqs=@vger.kernel.org
-X-Received: by 2002:a17:907:6d0b:b0:c26:1649:47ad with SMTP id
- a640c23a62f3a-c419faf81bemr359351966b.35.1792355668398; Sun, 18 Oct 2026
- 13:34:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQFtakhb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21B31F000C5;
+	Sun, 18 Oct 2026 21:02:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792357348;
+	bh=H7Y9ThppzfrV33D7sGdW6+UwLbobaDsHQokLbYYwjPU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EQFtakhbCUEHbwvCm8U+Gf6OW+ckGwdIoDky03Cetc90gPjOr6UgR2pavGx/KVnby
+	 renSiQ5mbKU0XzqxWuAe8OVUQgL4Q8VxvT+zuvFPPm1ZR4Ehi3fdY7jWv3zBMC127p
+	 XtS09V7CNzkiFRT3pS5VhGsWPvv0lVqdxaVuqm+tB3s5wrY9LeNQOBGS+F6jiU5Kgq
+	 aXpNVAgxC9DjrRwW9X549KgTC/aU1jH6Zqz2f/fasOoCkhvrBXhq+7pU7HYZY2z8R+
+	 E7WJAIuT8wYl0l5e/lmWN4vxTF0FDTTQ5yGo7XhemWV7CroA4Gmfh11ldlUmVL5ZmF
+	 Yb2+siOXm+0Iw==
+Date: Sun, 18 Oct 2026 14:02:22 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Jan Koester <jan.koester@gmx.net>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	"Serge E. Hallyn" <serge@hallyn.com>, Jan Kara <jack@suse.cz>,
+	"Theodore Y. Ts'o" <tytso@mit.edu>,
+	Paul Moore <paul@paul-moore.com>, Arnd Bergmann <arnd@arndb.de>,
+	linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org, netdev@vger.kernel.org,
+	audit@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 09/41] uidgid: let kuid_t and kgid_t hold a UUID or a
+ GUID
+Message-ID: <20261018210222.GA9623@quark>
+References: <cover.1792346472.git.jan.koester@gmx.net>
+ <9c17a1f7f82b953e6f4d9e17f4ca19d5220d7f2b.1792346472.git.jan.koester@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261018152358-mutt-send-email-mst@kernel.org>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Sun, 18 Oct 2026 10:34:12 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
-X-Gm-Features: AclHuK98aalKW5kTezoePJe0elXfnFi_e6X010Sl6ShLR7WlXp_TWSCo1UYtPLA
-Message-ID: <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
-Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
- memory via vDPA passthrough
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Haoran Wang <haoranwangsec@gmail.com>, jasowangio@gmail.com, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, eperezma@redhat.com, 
-	linux-kernel@vger.kernel.org, security@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9c17a1f7f82b953e6f4d9e17f4ca19d5220d7f2b.1792346472.git.jan.koester@gmx.net>
 
-On Sun, 18 Oct 2026 at 09:26, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> +               __virtio16 __user *uaddr = ivec.iov.iovec[0].iov_base;
-> +
-> +               if (!access_ok(uaddr, sizeof(*p)))
-> +                       return -EFAULT;
-> +               ret = __get_user(tmp, uaddr);
+On Sun, Oct 18, 2026 at 08:01:30PM +0200, Jan Koester wrote:
+> Make kuid_t and kgid_t (and vfsuid_t and vfsgid_t, which share their
+> layout) tagged unions: a classic 32 bit id, an RFC 9562 UUID, or a
+> Microsoft GUID. KID_LEGACY is 0, so zeroed memory still holds the root
+> ids, and KUIDT_INIT()/KGIDT_INIT() keep building classic ids, so the
+> bulk of the kernel needs no change. The member is renamed from val to
+> legacy so the compiler finds code that peeks at it directly.
 
-You should never use __get_user() in the first place. It is almost
-always just a bug.
+Most Linux systems aren't going to want this bloat to the core uid and
+gid types.  So if this is supported at all (unclear it's worth it...),
+it will need to be controlled by a default-off kconfig option.
 
-And __get_user() together with access_ok() is actively wrong and
-stupid. It's slower, bigger, and more bug-prone than just using
-"get_user()".
+Side note: the subject line says the series contains 41 patches, but it
+seems only 11 were actually sent.
 
-The *only* reason ever to use __get_user() is in very very iffy code
-that might use a kernel pointer and doesn't want the access_ok() code.
-
-Or old legacy code from the last century when __get_user() was faster
-and was inlined.
-
-               Linus
+- Eric
