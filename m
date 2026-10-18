@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30201343893;
-	Sun, 18 Oct 2026 10:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102A247043B;
+	Sun, 18 Oct 2026 10:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792320459; cv=none; b=sZz9/oW2azMHdF4t4J7iLykXRoAiScUZbHIzEkf+tPwP4drcaGLQoQRaaixBQgf2Q9GhB4rgQVnUJe3bcT3CvEAT7MG9RyVV1Ez8UB40GEZH5v78upq026iW/53SqQkqVfqr4SIZhN+L1MBV8Vlnqz/LYYSiKbNyTvkZ7qENjYs=
+	t=1792320460; cv=none; b=agHQIphQV7J4zJDFylUpAH5xmCvpr4EzNZSG+2rdRWhEekVAOrS9pPcSjPjyyu0wa/3iD9aQxNZS4cb3KcT6GyegiiyQy8aissfmnPt4vQ5RJoJcsRO4ANrZl8l4LVsn26mVapw1zVLOM4gKZ1UwSSwWA5yYfumyL8D3NNM87do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792320459; c=relaxed/simple;
-	bh=jVh3kMTXEuLejXZd68s7RGU8yjBRB0wCVzZRQ0q94ao=;
+	s=arc-20240116; t=1792320460; c=relaxed/simple;
+	bh=+zm1vzm8k0xDjh4VC612BoJ1oT7cc7MZohgAtfWsV+k=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nokUztuPV/SF+SyIO7Lr6pMmD+u2rzGTF1wFCgKAUwxay7Klrjm7EScaq3Eel+76Feyz8qpu5owvZn4cVwFTOKV5NP5YqP3ZfhUMroXtMh5wB3CGp/LL5k9PQV0d7KV3oMTNjPC5vKBgz0hIdc1G9wRzNiC/29lAgxJs7A9uoQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zw1YrLIB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=o9JXgTQQWcS+A+I1DWrS4UzIvZviBezD3RYseBL62GpDrwiFMY1JEMulWVhw8Zs4yeDHzDmAd8c+dL2tbrOUGLoWLksvKU+1qVVmJ8KMolsiwLUhqE98Rd24A6TsqjXuyRUp4jATK0Psuk5RvRinc5hg2ot9pF1ItgClw0F1bfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iEGF7Hd7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zw1YrLIB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1A21F000C4;
-	Sun, 18 Oct 2026 10:47:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iEGF7Hd7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F871F000CB;
+	Sun, 18 Oct 2026 10:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792320456;
-	bh=zQq5x4BuVgqNJxwt+zusD+7dTAQnaf9g8c8aBwQ/NUc=;
+	s=k20260515; t=1792320458;
+	bh=SkZXiG1h3Fqd9FSyy/k/L6UQ3EgZGcMJZVDgN+k19A0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Zw1YrLIBD8PWqTCWUkyjzHz9t7igQwO0NVU4OCDEIoQx5Mxe1BiQkz5nT9J0C4fxl
-	 kAOkMi8osveoEya9xtKzEgVdeCNP1zHPzXOCSSHcllnrbLz11/PtZsSvawFXiZqIp1
-	 +4s+OSXwgVZMrLp1tHSfYkGhVdTT1U3Trlts8trjrfpNyUg9hknQWAy2KtOktQEI7y
-	 7pvZqg+SY//7dzYg0iMqT+FVsNOtL+6KpYt0njHeNaNSQCv/evqDFGIA8Q43/DrydL
-	 O+8M7+8kcQD/YQ1tAnuVS6bTa75xKlnn6U5yAaUEwuAsiiq92QM7uQWqjEtTDek9pq
-	 fj2BXbmPiWa8A==
-Subject: Re: [PATCH net-next v3 4/9] net: stmmac: qcom-ethqos: fix RGMII_ID
- mode to use DLL bypass
+	b=iEGF7Hd7iGU5n2JR6YujAwA7khIGa4mbnwAw3mmnN9x8gBBEb2/tOiuJQp7Ju7Sh1
+	 yRwGP6pS/oswxRYu5ZV0cIVts4dJsjTAKHuqRU7YqzvdIjgahXVk9oquuhyWLuU1sT
+	 fZNpxIyOAWnwOkH+3YXAtPm4e6jIwO2+TIfwk1g3jtYfmbw1Z9Fig/9iRNYpxc06RW
+	 3LyDAllfBONt1LqulwzSD9Xse8GqT2A5vLdMexZutYO3wx7edBJNMBkl3yxGFdm6b4
+	 ZJhzHnmKvbQxoMScyW3kjpjivAh0GyU4kB9Qh026uQmLCA+Cxg3o5MwUIuxkPaL+3a
+	 RCR+78lj3J97A==
+Subject: Re: [PATCH net-next v3 5/9] net: stmmac: qcom-ethqos: warn about
+ legacy RGMII PHY modes
 From: netdev-bot+sashiko@kernel.org
 To: mohd.anwar@oss.qualcomm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -41,10 +41,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org
-Date: Sun, 18 Oct 2026 10:47:34 +0000
-Message-ID: <179232045490.3135.14337314664378256554@kernel.org>
-In-Reply-To: <20261017-shikra_ethernet-v3-4-26a8beb44b8f@oss.qualcomm.com>
-References: <20261017-shikra_ethernet-v3-4-26a8beb44b8f@oss.qualcomm.com>
+Date: Sun, 18 Oct 2026 10:47:36 +0000
+Message-ID: <179232045684.3135.7391017635736760910@kernel.org>
+In-Reply-To: <20261017-shikra_ethernet-v3-5-26a8beb44b8f@oss.qualcomm.com>
+References: <20261017-shikra_ethernet-v3-5-26a8beb44b8f@oss.qualcomm.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -58,7 +58,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -66,191 +66,114 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In rgmii-id mode at 100M and 10M, ethqos_set_clk_tx_rate() now
-  calls clk_set_rate(link_clk, 25000000) or clk_set_rate(link_clk,…
-- [Medium] net: stmmac: qcom-ethqos: rgmii_setmask() on multi-bit
-  RGMII_CONFIG2_RSVD_CONFIG15
-- [Low] The commit is titled and described as a fix for a defect in the
-  current tree, but it has no Fixes: tag.
+- [Medium] The new dev_warn() in qcom_ethqos_probe() calls "rgmii",
+  "rgmii-rxid" and "rgmii-txid" legacy and tells the user to "consider…
+- [Low] The commit message and the code disagree on which modes get the
+  warning.
+- [Low] In qcom_ethqos_probe() the legacy-mode dev_warn() runs early
+  (line 769), before several steps that can return -EPROBE_DEFER: -…
 
 --
 
-net: stmmac: qcom-ethqos: fix RGMII_ID mode to use DLL bypass
+net: stmmac: qcom-ethqos: warn about legacy RGMII PHY modes
 
-In rgmii-id mode, this commit powers down the DLL, sets DDR bypass and
-programs the IO_MACRO through a new ethqos_rgmii_id_macro_init() helper,
-so the MAC adds no delay of its own. It also stops ethqos_set_clk_tx_rate()
-from doubling the link clock at 100M/10M in rgmii-id mode.
+This patch makes qcom_ethqos_probe() print a warning when the device tree
+uses "rgmii", "rgmii-rxid" or "rgmii-txid". The aim is to move boards over
+to "rgmii-id" with PHY-provided delays. The RGMII_ID case is moved below
+the warning, so it still gets the same fix_mac_speed setup but does not
+warn.
 
-> net: stmmac: qcom-ethqos: fix RGMII_ID mode to use DLL bypass
+> The qcom-ethqos driver is moving towards using "rgmii-id" together
+> with PHY-provided delays. However, existing DTBs use "rgmii" and
+> "rgmii-txid" and must remain supported for backwards compatibility.
 >
-> When "rgmii-id" is selected the PHY supplies both TX and RX delays, so
-> the MAC must not add its own. The driver currently falls through to the
-> generic DLL initialisation path which programs it to add a delay.
-
-[ ... ]
-
-> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+> Warn when either of these legacy PHY modes is used to encourage users
+> to migrate to updated DTBs using "rgmii-id".
 
 [Severity: Low]
-Should this have a Fixes: tag?
+This isn't a bug, but the commit message names two legacy modes and the
+code warns for three. In qcom_ethqos_probe(), PHY_INTERFACE_MODE_RGMII_RXID
+is still in the same case group as RGMII and RGMII_TXID, so "rgmii-rxid"
+prints the warning too.
 
-Before this patch, rgmii-id went through the generic DLL path in
-ethqos_fix_mac_speed_rgmii() and then ethqos_rgmii_macro_init(). Only the
-TX phase shift was suppressed there.
+No in-tree qcom DTS uses "rgmii-rxid", so the "existing DTBs" reason does
+not cover it.
 
-The MAC RX delay was still programmed:
-
-  - at 1G: PRG_RCLK_DLY of 57 or 115, plus PRG_DLY_EN
-  - at 10/100: EXT_PRG_RCLK_DLY_CODE of 5, plus EXT_PRG_RCLK_DLY and
-    EXT_PRG_RCLK_DLY_EN
-
-The PHY adds its own RX delay in this mode, so the RX delay was applied
-twice.
-
-A likely candidate is:
-
-Fixes: 164a9ebe9742 ("net: stmmac: dwmac-qcom-ethqos: Respect phy-mode and TX delay")
-
-That commit made rgmii-id handling cover the TX delay only and left the
-MAC RX delay in place.
+Could the commit message mention rgmii-rxid and say why it counts as
+legacy?
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 44270c25d874f..53fb9de4d92c7 100644
+> index 53fb9de4d92c7..a92bf4a6a2dbd 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-
-[ ... ]
-
-> @@ -183,7 +186,15 @@ static int ethqos_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
->  	if (rate < 0)
->  		return rate;
->  
-> -	return clk_set_rate(ethqos->link_clk, rate * 2);
-> +	/* Clock Rate Requirements:
-> +	 * MAC added delay: 250/50/5 Mhz for 1G/100M/10M
-> +	 * No MAC delay (DLL bypass): 250/25/2.5 Mhz for 1G/100M/10M
-> +	 */
-> +	if (ethqos->phy_mode != PHY_INTERFACE_MODE_RGMII_ID ||
-> +	    speed == SPEED_1000)
-> +		rate *= 2;
-> +
-> +	return clk_set_rate(ethqos->link_clk, rate);
+> @@ -764,9 +764,11 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+>  	ethqos->phy_mode = plat_dat->phy_interface;
+>  	switch (ethqos->phy_mode) {
+>  	case PHY_INTERFACE_MODE_RGMII:
+> -	case PHY_INTERFACE_MODE_RGMII_ID:
+>  	case PHY_INTERFACE_MODE_RGMII_RXID:
+>  	case PHY_INTERFACE_MODE_RGMII_TXID:
+> +		dev_warn(dev, "legacy RGMII phy-mode detected; consider upgrading to a newer DTB\n");
 
 [Severity: Medium]
-Can qcs404 and sc8280xp actually produce 25 MHz and 2.5 MHz on the link
-clock?
+Is there a newer DTB for users to upgrade to? Every in-tree RGMII user of
+this driver still uses one of the modes that now warn:
 
-On qcs404 the "rgmii" link clock is GCC_ETH_RGMII_CLK. Its parent's
-frequency table only has these entries:
+  arch/arm64/boot/dts/qcom/qcs404-evb-4000.dts:  phy-mode = "rgmii";
+  arch/arm64/boot/dts/qcom/sa8155p-adp.dts:      phy-mode = "rgmii";
+  arch/arm64/boot/dts/qcom/sa8540p-ride.dts:     phy-mode = "rgmii-txid";
+                                                 (on both ports)
 
-drivers/clk/qcom/gcc-qcs404.c:ftbl_emac_clk_src
-    5 MHz, 50 MHz, 125 MHz, 250 MHz
+The example in Documentation/devicetree/bindings/net/qcom,ethqos.yaml
+also uses phy-mode = "rgmii".
 
-On sc8280xp it is GCC_EMAC0_RGMII_CLK, and the lowest entry is 50 MHz:
+The series, up to and including "net: stmmac: qcom-ethqos: add Shikra
+EMAC support", does not convert any of these files. The current mainline
+DTBs would therefore hit this warning on every probe, and twice on
+sa8540p-ride.
 
-drivers/clk/qcom/gcc-sc8280xp.c:ftbl_gcc_emac0_rgmii_clk_src
-    50 MHz, 125 MHz, 250 MHz
+Should the DTS files and the binding example be converted first, or
+should the warning wait until they are?
 
-Both branch clocks have CLK_SET_RATE_PARENT. The parent RCGs round up
-rather than fail:
+The text also does not name the recommended mode. Could the message
+mention "rgmii-id"?
 
-drivers/clk/qcom/clk-rcg2.c:clk_rcg2_determine_rate() {
-	...
-	return _freq_tbl_determine_rate(hw, rcg->freq_tbl, req, CEIL);
+Moving to rgmii-id also takes more than a DT edit. In this driver,
+RGMII_ID takes a different MAC path:
+
+ethqos_fix_mac_speed_rgmii() {
+    ...
+	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID) {
+		rgmii_setmask(ethqos, SDCC_DLL_CONFIG_PDN, SDCC_HC_REG_DLL_CONFIG);
+		rgmii_setmask(ethqos, SDCC_USR_CTL_DDR_BYPASS, SDCC_USR_CTL);
+
+		ethqos_rgmii_id_macro_init(ethqos, speed);
+
+		return;
+	}
+    ...
 }
 
-So in rgmii-id mode at 100M/10M, the request would silently become 50 MHz
-or 5 MHz on qcs404, and 50 MHz on sc8280xp. clk_set_rate() would still
-return 0.
+ethqos_set_clk_tx_rate() also uses a different link clock rate at
+10/100M in this mode. No delay is added on the MAC side, so the PHY has to
+add both the RX and TX delays.
 
-Below 1G, ethqos_rgmii_id_macro_init() clears DDR_MODE and
-TX_CLK_PHASE_SHIFT_EN and sets RSVD_CONFIG15, which assumes the 1x clock.
-That gives a link clock at 2x the required rate at 100M on both SoCs and at
-10M on qcs404. At 10M on sc8280xp it is 20x. No error is reported in any
-of these cases.
+If a board's PHY or PHY driver does not apply internal delays, could
+following this warning break its RGMII link?
 
-A later patch in this series, "net: stmmac: qcom-ethqos: warn about legacy
-RGMII PHY modes", tells users of these boards (qcs404-evb-4000 and
-sa8540p-ride) to move to rgmii-id DTs, which puts them on this path.
-Shikra, sm8150, sc8180x and qcs615 do have 25 MHz and 2.5 MHz entries.
+[Severity: Low]
+Will this message repeat on deferred probe? The dev_warn() runs before
+several steps in qcom_ethqos_probe() that can return -EPROBE_DEFER:
 
-Should the rate actually applied be checked here, for example with
-clk_get_rate() after clk_set_rate()? Or does rgmii-id below 1G need
-different handling on these SoCs?
+	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
+	...
+	ethqos->serdes_phy = devm_phy_optional_get(dev, "serdes");
+	...
+	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
 
-[ ... ]
-
-> @@ -475,6 +485,42 @@ static void ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
->  		      RGMII_IO_MACRO_CONFIG);
->  }
->  
-> +static void ethqos_rgmii_id_macro_init(struct qcom_ethqos *ethqos, int speed)
-> +{
-> +	rgmii_clrmask(ethqos, RGMII_CONFIG2_TX_TO_RX_LOOPBACK_EN,
-> +		      RGMII_IO_MACRO_CONFIG2);
-> +
-> +	if (speed == SPEED_1000)
-> +		rgmii_setmask(ethqos, RGMII_CONFIG_DDR_MODE, RGMII_IO_MACRO_CONFIG);
-> +	else
-> +		rgmii_clrmask(ethqos, RGMII_CONFIG_DDR_MODE, RGMII_IO_MACRO_CONFIG);
-> +	rgmii_setmask(ethqos, RGMII_CONFIG_BYPASS_TX_ID_EN, RGMII_IO_MACRO_CONFIG);
-> +	rgmii_clrmask(ethqos, RGMII_CONFIG_POS_NEG_DATA_SEL, RGMII_IO_MACRO_CONFIG);
-> +	rgmii_clrmask(ethqos, RGMII_CONFIG_PROG_SWAP, RGMII_IO_MACRO_CONFIG);
-> +
-> +	if (ethqos->has_emac_ge_3)
-> +		rgmii_clrmask(ethqos, RGMII_CONFIG2_DATA_DIVIDE_CLK_SEL,
-> +			      RGMII_IO_MACRO_CONFIG2);
-> +	else
-> +		rgmii_setmask(ethqos, RGMII_CONFIG2_DATA_DIVIDE_CLK_SEL,
-> +			      RGMII_IO_MACRO_CONFIG2);
-> +
-> +	rgmii_clrmask(ethqos, RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN,
-> +		      RGMII_IO_MACRO_CONFIG2);
-> +
-> +	if (speed == SPEED_1000)
-> +		rgmii_clrmask(ethqos, RGMII_CONFIG2_RSVD_CONFIG15, RGMII_IO_MACRO_CONFIG2);
-> +	else
-> +		rgmii_setmask(ethqos, RGMII_CONFIG2_RSVD_CONFIG15, RGMII_IO_MACRO_CONFIG2);
-> +
-> +	if (ethqos->rgmii_config_loopback_en)
-> +		rgmii_setmask(ethqos, RGMII_CONFIG_LOOPBACK_EN, RGMII_IO_MACRO_CONFIG);
-> +	else
-> +		rgmii_clrmask(ethqos, RGMII_CONFIG_LOOPBACK_EN, RGMII_IO_MACRO_CONFIG);
-> +
-> +	rgmii_setmask(ethqos, RGMII_CONFIG2_RX_PROG_SWAP, RGMII_IO_MACRO_CONFIG2);
-> +}
-> +
->  static void ethqos_fix_mac_speed_rgmii(void *bsp_priv,
->  				       phy_interface_t interface, int speed,
->  				       unsigned int mode)
-
-[Severity: Medium]
-Does the programming guide really expect all of bits 31:17 in
-RGMII_IO_MACRO_CONFIG2 to be set at 100M and 10M?
-
-RGMII_CONFIG2_RSVD_CONFIG15 is GENMASK(31, 17), which is a 15-bit
-field. The suffix looks like the field width, as it is for
-RGMII_CONFIG_MAX_SPD_PRG_9 (GENMASK(16, 8)) and
-RGMII_CONFIG_MAX_SPD_PRG_2 (GENMASK(7, 6)).
-
-rgmii_setmask() is just rgmii_updatel(ethqos, mask, mask, offset). So
-below 1G, ethqos_rgmii_id_macro_init() writes 0x7fff into this field,
-which is 0xfffe0000 in RGMII_IO_MACRO_CONFIG2.
-
-The existing ethqos_rgmii_macro_init() path only ever clears this
-field, so this is the first place a non-zero value is written to it.
-
-If the hardware expects a specific value there, for example 1, then
-10M/100M links in rgmii-id mode would run with every reserved bit in
-that range set. The effect of that is unknown, and it could break
-those link speeds.
-
-Should this be rgmii_updatel() with
-FIELD_PREP(RGMII_CONFIG2_RSVD_CONFIG15, val) for the value the guide
-gives? If all ones really is what the guide asks for, could you add a
-comment saying so? Otherwise it reads like a single-bit setmask applied
-to a multi-bit field by mistake.
+Each deferral runs qcom_ethqos_probe() again and prints the same warning
+again. Could the warning move later in probe, after the steps that can
+defer?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261017-shikra_ethernet-v3-0-26a8beb44b8f%40oss.qualcomm.com
