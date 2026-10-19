@@ -1,303 +1,255 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EAB44AB9A;
-	Mon, 19 Oct 2026 03:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC0F364934;
+	Mon, 19 Oct 2026 03:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792381728; cv=none; b=F4pk2qk+9dREM1tycRupts29fSwybjFgsFQjkLBczZbOx6kDZrKDmIYE/SJSX38BTXsUXclxACrwG1TRI4BUeAe4ntqmsGIFrnyEmpLgkcNuEPKbbC5QKc/oZGLz63L6i2fjIIy1BVRSEP7/sCMX7serOXD6Sq5madMfkbmW3x0=
+	t=1792381832; cv=none; b=B45+gfPLHbAf3yUsEk/EBLOU3QnArBkS1yb9NN83b6Gg6e4aPElb4guAyoASUXUjrMXtsJhRYZuwj55Ff3cjv8+nRaAUk57pJOuHNtYGTlXa0QNVGSWGgx7oNG8xeLjgsUicuT7XI+6GBYmx/7RZuZp8XNzxOG0NS3OXA50ue/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792381728; c=relaxed/simple;
-	bh=bL5GpubsC2SsCav4OzLno2QMjb+WhCTA22WdiGZIma0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rX63hAs3U+jk2qvFQuors6y3NwvZMDf+bMRgsK4FFAXrb7B331Z3d15MUnh9edJlYCY/g9PlT+N1Rtv0ugxF+Ws+3Sxu8Qd9H3lgQRT6TbZhTMQ15XOY8aNxSaD1I3LarnGit7NsFP4a2JVxcNIUT3f5NjCa4uKCuDF87P4naVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=J549ceGP; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1792381832; c=relaxed/simple;
+	bh=qSeegf8NEZ7pE6we0K9CHOzDvlKVU++pLnONGpjoMkQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rjTVYzS2U82W+DyQnoxr/RjfUDBNSCIAeG2PKQxjIRaTt2HP6lzUAd4MBSiHeKJqo29+xyeuQCmTjG0iYcH3lZ51qq56jvbqfHg2v8WJzirgu89vJNAVilL5MbvNOXlJ4xJ9j5DSplVO1I1sa8ILkhoJGacAlgnrf+PClveh/jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NGNfXvpi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="J549ceGP"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=PL0JEFbpJLhFl/bIHa9gZmoBTG9za841mtk4/A8/zo0=;
-	b=J549ceGPS21jdYl+jfrW74bxaL4iV+yqkE6Mq4Asr7pwSlLlgEKBv/c8O/EVekfeCCOFnfNqb
-	yjq+LOh6EMmXXteUyoPC84vIQJ/MBdkah87R7VxkwOtkNEN2b8o5jkiTwWD6Q0eBtm5YNGRAYMp
-	mcxHU64eAP0gBEoBq92u8mU=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4j7M353qJCzmV7R;
-	Mon, 19 Oct 2026 11:48:33 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 75E5440561;
-	Mon, 19 Oct 2026 11:48:36 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.38) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 19 Oct 2026 11:48:35 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
-	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>, Dimitri Daskalakis
-	<dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
-	<hramamurthy@google.com>, Larysa Zaremba <larysa.zaremba@intel.com>, Vadim
- Fedorenko <vadim.fedorenko@linux.dev>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Zhou Shuai
-	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>
-Subject: [PATCH net-next v17 2/2] hinic3: Add ethtool statistic ops part2
-Date: Mon, 19 Oct 2026 11:45:38 +0800
-Message-ID: <abc78c964dec55e440f8023db505632186d53d89.1792378301.git.gongfan1@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <cover.1792378301.git.gongfan1@huawei.com>
-References: <cover.1792378301.git.gongfan1@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NGNfXvpi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4AF1F000C4;
+	Mon, 19 Oct 2026 03:50:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792381830;
+	bh=ggM4ukaiu3o/QTb4f//d4T2wt9h9pAoM47LHlCXnduE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NGNfXvpiOcY0ZcLhrnWcf2lC0HXZYTJmVNtVdp7XOrRNmRVPwUx/fXC2pKIokDtH9
+	 5d50W5kAkfMiDwBHRZgmrVvDCt/PT9JC5zjW+2cLKk5spZ2tCgOPVIMfM9GOUHgJ1P
+	 tTj22bHg9sFhmfnWVWcK+AmM0dywfofJKpqtb9Cac41djRl3QaOsaXuEDe7VoDNPM0
+	 j0w+K3TzL4UT+ZIs0V6sbaQSrYeqOIkkcCB+RzLoiWBkPQauN4zgJ67TVH9xJaloU4
+	 V2U5+zgjkbz148ScGfOEXxObxzopxV2TS0AYsrgKdrc239P11vkLyZcpf15ZEQDRGZ
+	 hbVmQGkR+sUng==
+Subject: Re: [PATCH net] net: sungem: shut down the link timer before freeing
+ device state
+From: netdev-bot+sashiko@kernel.org
+To: mhun512@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ae878000@gmail.com
+Date: Mon, 19 Oct 2026 03:50:29 +0000
+Message-ID: <179238182949.3135.11312717950838694999@kernel.org>
+In-Reply-To: <179229264512.3933686.6151403340581004321.sungem@gmail.com>
+References: <179229264512.3933686.6151403340581004321.sungem@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemf100013.china.huawei.com (7.202.181.12)
 
-This commit adds five standard ethtool statistics callbacks to the hinic3
-driver: get_eth_phy_stats, get_eth_mac_stats, get_eth_ctrl_stats,
-get_rmon_stats and get_pause_stats. Each callback reads the physical port
-counters from firmware via hinic3_get_phy_port_stats() and copies them
-into the standard ethtool structures.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Co-developed-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Wu Di <wudi234@huawei.com>
-Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
----
- .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 202 ++++++++++++++++++
- 1 file changed, 202 insertions(+)
+Critical: 0 · High: 3 · Medium: 0 · Low: 0
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-index 64c862052f1e..2ae4d5afe90d 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-@@ -696,6 +696,203 @@ static void hinic3_get_ethtool_stats(struct net_device *netdev,
- 	hinic3_get_drv_queue_stats(netdev, data + i);
- }
- 
-+static void hinic3_get_eth_phy_stats(struct net_device *netdev,
-+				     struct ethtool_eth_phy_stats *phy_stats)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct mag_cmd_port_stats *ps;
-+	int err;
-+
-+	if (HINIC3_IS_VF(nic_dev->hwdev))
-+		return;
-+
-+	ps = kmalloc_obj(*ps);
-+	if (!ps)
-+		return;
-+
-+	err = hinic3_get_phy_port_stats(nic_dev->hwdev, ps);
-+	if (err) {
-+		kfree(ps);
-+		netdev_err(netdev, "Failed to get eth phy stats from fw\n");
-+		return;
-+	}
-+
-+	phy_stats->SymbolErrorDuringCarrier =
-+		le64_to_cpu(ps->mac_rx_sym_err_pkts);
-+
-+	kfree(ps);
-+}
-+
-+static void hinic3_get_eth_mac_stats(struct net_device *netdev,
-+				     struct ethtool_eth_mac_stats *mac_stats)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct mag_cmd_port_stats *ps;
-+	int err;
-+
-+	if (HINIC3_IS_VF(nic_dev->hwdev))
-+		return;
-+
-+	ps = kmalloc_obj(*ps);
-+	if (!ps)
-+		return;
-+
-+	err = hinic3_get_phy_port_stats(nic_dev->hwdev, ps);
-+	if (err) {
-+		kfree(ps);
-+		netdev_err(netdev, "Failed to get eth mac stats from fw\n");
-+		return;
-+	}
-+
-+	mac_stats->FramesTransmittedOK =
-+		le64_to_cpu(ps->mac_tx_good_pkts);
-+	mac_stats->FramesReceivedOK =
-+		le64_to_cpu(ps->mac_rx_good_pkts);
-+	mac_stats->FrameCheckSequenceErrors =
-+		le64_to_cpu(ps->mac_rx_fcs_err_pkts);
-+	mac_stats->OctetsTransmittedOK =
-+		le64_to_cpu(ps->mac_tx_good_octs);
-+	mac_stats->OctetsReceivedOK =
-+		le64_to_cpu(ps->mac_rx_good_octs);
-+	mac_stats->MulticastFramesXmittedOK =
-+		le64_to_cpu(ps->mac_tx_multi_pkts);
-+	mac_stats->BroadcastFramesXmittedOK =
-+		le64_to_cpu(ps->mac_tx_broad_pkts);
-+	mac_stats->MulticastFramesReceivedOK =
-+		le64_to_cpu(ps->mac_rx_multi_pkts);
-+	mac_stats->BroadcastFramesReceivedOK =
-+		le64_to_cpu(ps->mac_rx_broad_pkts);
-+
-+	kfree(ps);
-+}
-+
-+static void hinic3_get_eth_ctrl_stats(struct net_device *netdev,
-+				      struct ethtool_eth_ctrl_stats *ctrl_stats)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct mag_cmd_port_stats *ps;
-+	int err;
-+
-+	if (HINIC3_IS_VF(nic_dev->hwdev))
-+		return;
-+
-+	ps = kmalloc_obj(*ps);
-+	if (!ps)
-+		return;
-+
-+	err = hinic3_get_phy_port_stats(nic_dev->hwdev, ps);
-+	if (err) {
-+		kfree(ps);
-+		netdev_err(netdev, "Failed to get eth ctrl stats from fw\n");
-+		return;
-+	}
-+
-+	ctrl_stats->MACControlFramesTransmitted =
-+		le64_to_cpu(ps->mac_tx_control_pkts);
-+	ctrl_stats->MACControlFramesReceived =
-+		le64_to_cpu(ps->mac_rx_control_pkts);
-+
-+	kfree(ps);
-+}
-+
-+static const struct ethtool_rmon_hist_range hinic3_rmon_ranges[] = {
-+	{     0,    64 },
-+	{    65,   127 },
-+	{   128,   255 },
-+	{   256,   511 },
-+	{   512,  1023 },
-+	{  1024,  1518 },
-+	{  1519,  2047 },
-+	{  2048,  4095 },
-+	{  4096,  8191 },
-+	{  8192,  9216 },
-+	{  9217, 12287 },
-+	{}
-+};
-+
-+static void hinic3_get_rmon_stats(struct net_device *netdev,
-+				  struct ethtool_rmon_stats *rmon_stats,
-+				  const struct ethtool_rmon_hist_range **ranges)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct mag_cmd_port_stats *ps;
-+	int err;
-+
-+	if (HINIC3_IS_VF(nic_dev->hwdev))
-+		return;
-+
-+	ps = kmalloc_obj(*ps);
-+	if (!ps)
-+		return;
-+
-+	err = hinic3_get_phy_port_stats(nic_dev->hwdev, ps);
-+	if (err) {
-+		kfree(ps);
-+		netdev_err(netdev, "Failed to get eth rmon stats from fw\n");
-+		return;
-+	}
-+
-+	rmon_stats->undersize_pkts = le64_to_cpu(ps->mac_rx_undersize_pkts);
-+	rmon_stats->oversize_pkts  = le64_to_cpu(ps->mac_rx_oversize_pkts);
-+	rmon_stats->fragments      = le64_to_cpu(ps->mac_rx_fragment_pkts);
-+	rmon_stats->jabbers        = le64_to_cpu(ps->mac_rx_jabber_pkts);
-+
-+	rmon_stats->hist[0]  = le64_to_cpu(ps->mac_rx_64_oct_pkts);
-+	rmon_stats->hist[1]  = le64_to_cpu(ps->mac_rx_65_127_oct_pkts);
-+	rmon_stats->hist[2]  = le64_to_cpu(ps->mac_rx_128_255_oct_pkts);
-+	rmon_stats->hist[3]  = le64_to_cpu(ps->mac_rx_256_511_oct_pkts);
-+	rmon_stats->hist[4]  = le64_to_cpu(ps->mac_rx_512_1023_oct_pkts);
-+	rmon_stats->hist[5]  = le64_to_cpu(ps->mac_rx_1024_1518_oct_pkts);
-+	rmon_stats->hist[6]  = le64_to_cpu(ps->mac_rx_1519_2047_oct_pkts);
-+	rmon_stats->hist[7]  = le64_to_cpu(ps->mac_rx_2048_4095_oct_pkts);
-+	rmon_stats->hist[8]  = le64_to_cpu(ps->mac_rx_4096_8191_oct_pkts);
-+	rmon_stats->hist[9]  = le64_to_cpu(ps->mac_rx_8192_9216_oct_pkts);
-+	rmon_stats->hist[10] = le64_to_cpu(ps->mac_rx_9217_12287_oct_pkts);
-+
-+	rmon_stats->hist_tx[0]  = le64_to_cpu(ps->mac_tx_64_oct_pkts);
-+	rmon_stats->hist_tx[1]  = le64_to_cpu(ps->mac_tx_65_127_oct_pkts);
-+	rmon_stats->hist_tx[2]  = le64_to_cpu(ps->mac_tx_128_255_oct_pkts);
-+	rmon_stats->hist_tx[3]  = le64_to_cpu(ps->mac_tx_256_511_oct_pkts);
-+	rmon_stats->hist_tx[4]  = le64_to_cpu(ps->mac_tx_512_1023_oct_pkts);
-+	rmon_stats->hist_tx[5]  = le64_to_cpu(ps->mac_tx_1024_1518_oct_pkts);
-+	rmon_stats->hist_tx[6]  = le64_to_cpu(ps->mac_tx_1519_2047_oct_pkts);
-+	rmon_stats->hist_tx[7]  = le64_to_cpu(ps->mac_tx_2048_4095_oct_pkts);
-+	rmon_stats->hist_tx[8]  = le64_to_cpu(ps->mac_tx_4096_8191_oct_pkts);
-+	rmon_stats->hist_tx[9]  = le64_to_cpu(ps->mac_tx_8192_9216_oct_pkts);
-+	rmon_stats->hist_tx[10] = le64_to_cpu(ps->mac_tx_9217_12287_oct_pkts);
-+
-+	*ranges = hinic3_rmon_ranges;
-+
-+	kfree(ps);
-+}
-+
-+static void hinic3_get_pause_stats(struct net_device *netdev,
-+				   struct ethtool_pause_stats *pause_stats)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct mag_cmd_port_stats *ps;
-+	int err;
-+
-+	if (HINIC3_IS_VF(nic_dev->hwdev))
-+		return;
-+
-+	ps = kmalloc_obj(*ps);
-+	if (!ps)
-+		return;
-+
-+	err = hinic3_get_phy_port_stats(nic_dev->hwdev, ps);
-+	if (err) {
-+		kfree(ps);
-+		netdev_err(netdev, "Failed to get eth pause stats from fw\n");
-+		return;
-+	}
-+
-+	pause_stats->tx_pause_frames = le64_to_cpu(ps->mac_tx_pause_pkts);
-+	pause_stats->rx_pause_frames = le64_to_cpu(ps->mac_rx_pause_pkts);
-+
-+	kfree(ps);
-+}
-+
- static const struct ethtool_ops hinic3_ethtool_ops = {
- 	.supported_coalesce_params      = ETHTOOL_COALESCE_USECS |
- 					  ETHTOOL_COALESCE_PKT_RATE_RX_USECS,
-@@ -707,6 +904,11 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
- 	.get_strings                    = hinic3_get_strings,
- 	.get_sset_count                 = hinic3_get_sset_count,
- 	.get_ethtool_stats              = hinic3_get_ethtool_stats,
-+	.get_eth_phy_stats              = hinic3_get_eth_phy_stats,
-+	.get_eth_mac_stats              = hinic3_get_eth_mac_stats,
-+	.get_eth_ctrl_stats             = hinic3_get_eth_ctrl_stats,
-+	.get_rmon_stats                 = hinic3_get_rmon_stats,
-+	.get_pause_stats                = hinic3_get_pause_stats,
- };
- 
- void hinic3_set_ethtool_ops(struct net_device *netdev)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch leaves the root cause named in its own commit message
+  in place, and the new comment in gem_remove_one() records it as…
+- [High] In gem_remove_one()
+  (drivers/net/ethernet/sun/sungem.c:2798-2811)…
+- [High] net: sungem: incomplete fix leaves link_timer active when
+  interface is down
+
+--
+
+net: sungem: shut down the link timer before freeing device state
+
+The ethtool link-settings and nway-reset callbacks can arm link_timer
+while the interface is administratively down. On removal,
+unregister_netdev() skips ndo_stop(), so the timer could outlive the
+private data. This patch adds timer_shutdown_sync() in gem_remove_one()
+after unregister_netdev() and before cancel_work_sync() on reset_task.
+
+> diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
+> index dc5638d105dbb..e8d3ac7b17962 100644
+> --- a/drivers/net/ethernet/sun/sungem.c
+> +++ b/drivers/net/ethernet/sun/sungem.c
+> @@ -2797,6 +2797,9 @@ static void gem_remove_one(struct pci_dev *pdev)
+>  
+>  		unregister_netdev(dev);
+>  
+> +		/* Link settings can restart the timer while the interface is down. */
+> +		timer_shutdown_sync(&gp->link_timer);
+> +
+
+[Severity: High]
+This only stops link_timer on the removal path. The timer can still be
+armed on a down interface, and the damage it does there does not
+require the device to be removed.
+
+gem_set_link_ksettings() and gem_nway_reset() check only
+netif_device_present(). gem_begin_auto_negotiation() takes its
+"store the settings and return" shortcut only when the device is not
+present. So with the interface down, either before the first
+gem_open() or after gem_close(), ethtool -s or ethtool -r still
+accesses the PHY over MDIO with gp->cell_enabled == 0. It then calls
+mod_timer() on link_timer.
+
+When gem_link_timer() later sees the link come up, the chain is:
+
+gem_link_timer()
+  netif_carrier_on(dev)
+  gem_set_link_modes()
+    gem_start_dma()
+      enable TX/RX DMA and MAC, gem_enable_ints(), RXDMA_KICK
+
+At that point the descriptor rings were either never programmed,
+because gem_do_start() has not run yet, or have already been released
+by gem_clean_rings() in gem_do_stop(). No IRQ handler is registered
+either.
+
+Is bus mastering guaranteed to be off in both of those states? If not,
+kicking RX DMA here looks like memory corruption rather than just a
+stray register write. Even with bus mastering off, unmasking
+interrupts with no handler can get a shared INTx line disabled for its
+other users.
+
+It may not take a real link to get there. After gem_close(),
+gem_stop_phy() has put the MIF into bit-bang mode. A frame-mode read
+in __sungem_phy_read() can then time out and return 0xffff, and
+genmii_poll_link() would read that as BMSR_LSTATUS and
+BMSR_ANEGCOMPLETE both set.
+
+The suspend path has the same hole. For !netif_running(dev),
+gem_suspend() calls netif_device_detach() and returns without touching
+link_timer. A timer armed this way keeps re-arming every 1.2 seconds
+and accessing MMIO and MDIO across system suspend. The commit message
+says "Keep ordinary close and suspend timer cancellation restartable",
+but for a down interface the suspend path never cancels the timer.
+
+Would it be better for gem_set_link_ksettings() and gem_nway_reset(),
+or gem_begin_auto_negotiation() itself, to treat !netif_running() the
+same way as !netif_device_present()? They would only store
+gp->want_autoneg and gp->phy_mii.speed/duplex, and gem_init_phy()
+would apply them on the next open. Then link_timer could never be
+armed on a closed device, and this timer_shutdown_sync() in
+gem_remove_one() would no longer be needed for that case.
+
+[Severity: High]
+This comment records the root cause from the commit message as expected
+behaviour. Should gem_set_link_ksettings() and gem_nway_reset() check
+netif_running() instead?
+
+Both callbacks check only device presence:
+
+drivers/net/ethernet/sun/sungem.c:gem_set_link_ksettings() {
+    ...
+	/* Apply settings and restart link process. */
+	if (netif_device_present(gp->dev)) {
+		timer_delete_sync(&gp->link_timer);
+		gem_begin_auto_negotiation(gp, cmd);
+	}
+    ...
+}
+
+gem_begin_auto_negotiation() takes its "just store the settings" shortcut
+only when !netif_device_present(gp->dev). On a closed interface it goes on
+to program the PHY through setup_aneg()/setup_forced() and then calls
+mod_timer() on link_timer.
+
+By that point gem_close() has already run gem_do_stop() (gem_stop_dma(),
+gem_reset(), gem_clean_rings(), free_irq()), then pci_disable_device()
+and gem_put_cell(). On CONFIG_PPC_PMAC, gem_put_cell() gates the GMAC
+clock.
+
+gem_link_timer() checks neither the running state nor the present state.
+On link-up the call chain is:
+
+ethtool -s / ethtool -r on a down interface
+  gem_set_link_ksettings() / gem_nway_reset()
+    gem_begin_auto_negotiation()
+      mod_timer(&gp->link_timer, ...)
+gem_link_timer()
+  netif_carrier_on(dev)
+  gem_set_link_modes()
+    gem_start_dma()
+      enables TX/RX DMA and the MAC, gem_enable_ints(), writes RXDMA_KICK
+
+Can this re-enable DMA and unmask interrupts on a chip that has been reset
+and whose IRQ handler has already been freed? On a shared INTx line, an
+interrupt that nobody handles could get the line disabled for the other
+devices on it. The timer also re-arms itself every 1.2 seconds.
+
+gem_suspend() only calls netif_device_detach() when !netif_running(dev),
+so would this timer keep touching MMIO and MDIO across system suspend? The
+commit message says "Keep ordinary close and suspend timer cancellation
+restartable", but the suspend path for a down interface never cancels the
+timer.
+
+The sibling callbacks already follow this convention, for example
+gem_set_mac_address():
+
+	/* We'll just catch it later when the device is up'd or resumed */
+	if (!netif_running(dev) || !netif_device_present(dev))
+		return 0;
+
+	/* Better safe than sorry... */
+	if (WARN_ON(!gp->cell_enabled))
+		return 0;
+
+If the two link callbacks only stored the settings while the interface is
+down, as the !present path already does, link_timer could never be armed
+on a closed device. That would cover the removal case, the DMA re-enable
+after close, the suspend case and the linkwatch window below. The
+timer_shutdown_sync() added here would then not be needed.
+
+[Severity: High]
+Is it safe to shut the timer down only after unregister_netdev() has
+returned?
+
+A link_timer armed while the interface was down may still be running when
+unregister_netdev() returns, for example inside poll_link(). It may also
+fire before timer_shutdown_sync() runs. If the callback sees a link
+transition, it calls netif_carrier_on() or netif_carrier_off(). Those
+helpers bail out only for NETREG_UNINITIALIZED:
+
+net/sched/sch_generic.c:netif_carrier_on() {
+    ...
+	if (test_and_clear_bit(__LINK_STATE_NOCARRIER, &dev->state)) {
+		if (dev->reg_state == NETREG_UNINITIALIZED)
+			return;
+		atomic_inc(&dev->carrier_up_count);
+		linkwatch_fire_event(dev);
+	}
+}
+
+linkwatch_add_event() then puts dev on lweventlist and takes
+netdev_hold().
+
+However, unregister_netdev()->netdev_run_todo() has already called
+linkwatch_sync_dev() and waited for the device references to drop. After
+that, nothing drains this device's entry. timer_shutdown_sync() waits for
+the callback but does not remove the queued event, and free_netdev() then
+frees dev and gp along with it.
+
+Can linkwatch_event()->__linkwatch_run_queue() later dereference the freed
+net_device through the leftover entry on lweventlist?
+
+The window is narrow. Would calling timer_shutdown_sync() before
+unregister_netdev() close it? That order looks safe: once the timer is shut
+down, timer_delete_sync() in gem_do_stop() and mod_timer() in
+gem_reset_task() and gem_begin_auto_negotiation() do nothing. Checking
+netif_running() in the ethtool callbacks, as suggested above, would also
+close this window.
+
+>  		/* Ensure reset task is truly gone */
+>  		cancel_work_sync(&gp->reset_task);
+>
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179229264512.3933686.6151403340581004321.sungem%40gmail.com
