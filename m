@@ -1,54 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792437621;
-	b=2Yq/xdx9CEvjKCrHZMRI+bvojgz0ESfrxEUueSFDsdUdBmThkdrecLSftLJoYduIs4Si
-	 UAUM/Tc8ZG4+4t7/Nd3uKyfib8uR2drVLbPLYpuhQ7n/FEbLed/ElF7YC135NO35CrDl3
-	 e9QnkA8JzAT8DZGWyg2rXu+P3aMsNbvHaTVi6i0ti9zdx/p/i9XwSyBDvaeVESypEqnvY
-	 RKfg4x5B3+sbFN+nIInLHNIMEDiQF0iFWnYDxP064oQfn1mq9Eqg+ZQF80rAJ+jMfup0E
-	 2rbYOoiw8UHkPTrv7E1P16aHuqBnKGgK+YuItDFdExNQXaOfNC1FU0cx97DU5kcM9gw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792437621;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=2cwznlz+EdWN+doPcioMiDQlvM6SENL3VPQBjPnsKVs=;
-	b=S6uOWk6eWY1rTNBVcfBxDsPMZyHQ0T49Ivkcy4Qdfs9ZSsO84znrBLvrpimF9AKobUxI
-	 kfLL3jzx8D8puiSjDCvLXlLFe24kYLQcZ9Yz973Jk76vBp/vl2HBIqBTJgaE8dszJmSMP
-	 5tPXEPMjKHxwPO+KEy2mFw7cSiEhZaz81S/4nwsooX4IT9bqttuUCBJLqx/6yXXYQIQfN
-	 qtJwyPExKK4AY6kwA1nZVRTMUfiKsNPBXUtF+gpyTBNkiAZDWGC3ujm7SKK9mQSHa+P6Z
-	 /lFcxHfLX4DnYPiDHe5ojHrDwcVPcyX1RpYqmZR7UI8ByhWnrsbMc09wLGPrgpQ8CRg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.197
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=85.215.255.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792437648;
+	b=jrhO9sSdjroBSD6V/BFuF+UjtVxDMmMVXd6GpBBNt8vQ+FoYjXSAwTVegcUuS3BV4Xe8
+	 WNL6xFw5YHeYKaG1oMQamUTlM/gUfS5EDE+Of+j11G4RqvHyrjmjpM6Wc9bW2d2SZrVLq
+	 2noVQcsvALg3Zl8TBNdmDQQJfvs8wq1VS3QTNCzDlMzPfm1AMbFZwa475zENFIAdsOzb5
+	 eqaVEuSIRtR15HjvGrwMgNglvU/vSmSRMKspxFlzFcLjfUX8U+PQYA+zW6yCHkRosWOv3
+	 n/K1OxUA3LIikDsb227wZFeW2pWxAVK22KfntOGGJjcsZW9S/1azSOHqTC1ywAJSASA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792437648;
+	h=DMARC-Filter:X-RZG-CLASS-ID:DKIM-Signature:DKIM-Signature:X-RZG-AUTH:
+	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
+	b=ODHt8aB0WSa2phm+/DuNWPVSZCGSQTMCoZr31SSloqny6iSVE+ZgL2+JckXXYu69MzgF
+	 m9RPHI1RN2bG83PHDd6iRAoplZ7LDValTKup1toB0bdYqEUvbk3EmDxfdBylH+V9xB0dG
+	 yhy9FGMoZpJ+CPXN5PlTYgYJmX8N9epyX6fJDZRjAnrPeNVt1B1gqR1Ld4DWyWPkEwoaa
+	 LwqHyUVFewdMVF37rx1t2U5clzO/1rGBaV1NEm/84MR1wBf0XWraLEiJsYw08tKtN4CBQ
+	 zREJqMiQrIsab/kgnvdWSpXCojsQ4Jt51y40OOIKQhHcJKzMZ/g1NPcFdddMZFDcpgw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=hartkopp.net;
+	spf=fail smtp.mailfrom=hartkopp.net;
+	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=cRM+RAni;
+	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=zhWz3ZHO;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=85.215.255.54
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77C0606A321
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 19:20:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E77C0606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-5384e381fbbso2526951b6e.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 12:20:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792437620; x=1793042420;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2cwznlz+EdWN+doPcioMiDQlvM6SENL3VPQBjPnsKVs=;
-        b=DMquGU98xWjiNWrv8upU2NJ4N9yoI398yZqZTlXG+ue5jEeb0cjz/ssgejY3S3X88K
-         aBmz0W7E/vzb05r+ckdxy5gMKvOQkHfrzQdBEX2zmom6eI3b4ajNrByxU2gWYmdDxN+F
-         Qv+wNeN3ZGaEM3d8LLigbCNTZBD3yI3LdRiNB4GZM9rREeP1qpAdzYSlxqxIzurMIZhL
-         oh9K7jNB39ckW77E/rdDT8SbqZXjT6d0jjm3zlINpdh3ZV65Tdbdp/MECNqiTXsxXnNs
-         4GrTHq5ys82VUgKaqy2nSW9CihLYSZEdMB768KtihA5nxJHgqACeQRi3Xk+hclLtJtwk
-         O2ZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwgvyZl2IWWn6x0Cf4FGoWCG6jCtXuaLh02c4NZpncqg6IbAPsLJpDzJ5xf3VxWoUJObvgrpjU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIqzT2Uv/iBrI4ULeE6e29lduE+gowtzHEfPJmk+78kGyXklcdX
-	vkMnG17/oE3A347OuESSmC31nCB4AJ9lKOl0WGREcIH0v0vc6CAOqDX1z3PBQFTedID656ac8Xn
-	vIIDhvP0CnL3Qgv/l6EwBsfs49SYHl9MbyhqbB4lPR+53RbKJiUvS53azrxw=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F855606A31C;
+	Mon, 19 Oct 2026 19:20:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F855606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=cRM+RAni;
+	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=zhWz3ZHO
+ARC-Seal: i=1; a=rsa-sha256; t=1792437636; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=if6DU+iZ2Ry+qo46YquFSVNr1is4lNSxN1BTmDDQ/HV/C0QAtfH2p336iuD+xiv8qc
+    948zc6NEbX/UPLZez1NTdSDM0d2Qh2mk1fcmS/i3LRGWg0yIcekTDdjMYMAXBdEn08ql
+    K4DnHIg66irTr1Qym4jeuQbb1bnaAH7DMAczoCmSMIG+EQ4vB+hJEtGjwhDZhtzFm/nt
+    klhxBgLLW4vnmsaazlueG6MfS511DOt/aWxpotynAor3dCIXYNTp4/+8aAoNwT5KLYab
+    MDeAdeynlxBmXSZ4GXjX0HpGvfAM7BgXe65hO7LsWTjcHGfFazE3ikqZv7ONgwDdgrbs
+    Xehg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792437636;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
+    b=tsnKwy1BNvJ6YGonGKsDRP2l0ahhLzGFZC6p1ZTDBHOk8QDUjghhjbcOYgUVvq1w7B
+    BxRQoyMxCcm6uVEF7gmI7cV2rzxB5Hjly/14ybvnuXujSYWhZdHqe99kMovOlA/vswmx
+    b2H/iXcY0J1os5AI+oNqeOeFaWok07WFkUSBbE+vu9L827JzyHGuccKjgBaT+/z8dUCU
+    tWDDtdcndWUqP5cZCVMFrcFj+LSRLkcnHYUC05tRAp7FutN5D2fATB9ZekoOLMTl1QQQ
+    x5iAqf2lAAbNPFOWE1LgYawDhG4rBoar3pJ3FDCNRVKx/CAycudkALLhGPT2q91Eoir0
+    fwDA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792437636;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
+    b=cRM+RAniKaYRZvk8KnZX9lsRzl7xM60p2x/takW7Ert3rj+0cKRfy9CDmjZTJtWr/T
+    It9zKwVUm1sf+7WryD57xGktVGW3M//a8GDd1QF9N5IxO4NW8i3wdb8oxx9TReQ8LMHo
+    mz62Qrah6/NlDQlh26x0WD+wPaTRM8ids0tN+/1TUnvokmIxKNAWXl/ksolgHwP5EdYu
+    wQ+eA59KFLJAAeRBaj2t7iPTdN5rZNdgWJhV1jVwzWndMwB+LrdGDOvabH3X0cLIcEMM
+    tzYSRF+uXiD4x94gcXpmYkAtYQGm2poezhde7SuoABxnmwMll3sDocpp98wb2u/F3iM8
+    VoBw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792437636;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
+    b=zhWz3ZHO6cd8gfuAx/l/nZMUku4GmSFvH2PfmSjUCAUJVD3ssuhCvwZGYkvfiBNaTp
+    YeyKJ1jqhSTFDkA5QoCw==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from [IPV6:2a00:6020:4a38:6810::989]
+    by smtp.strato.de (RZmta 55.6.3 AUTH)
+    with ESMTPSA id Kfdf2a29JJKZY85
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 19 Oct 2026 21:20:35 +0200 (CEST)
+Message-ID: <b75fe782-85dc-4364-8a99-f3b153ae2f1e@hartkopp.net>
+Date: Mon, 19 Oct 2026 21:20:35 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,248 +95,184 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4f62:b0:4f4:b5ba:a236 with SMTP id
- 5614622812f47-53ccaf299bdmr8642635b6e.10.1792437619938; Mon, 19 Oct 2026
- 12:20:19 -0700 (PDT)
-Date: Mon, 19 Oct 2026 12:20:19 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ad66d73.2431563d.3b88b.0026.GAE@google.com>
-Subject: [syzbot] [x25?] possible deadlock in lapb_data_received
-From: syzbot <syzbot+059a2795ad4cff2a2695@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, ms@dev.tdt.de, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    2c7935600733 Merge branch 'bpf-zero-extend-the-index-in-in..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=13598f01580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=964a8fc052e56fe5
-dashboard link: https://syzkaller.appspot.com/bug?extid=059a2795ad4cff2a2695
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=117c5031580000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+059a2795ad4cff2a2695@syzkaller.appspotmail.com
-
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz-executor220/6011 is trying to acquire lock:
-ffffffff913da7b8 (lapb_list_lock){++..}-{3:3}, at: lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
-ffffffff913da7b8 (lapb_list_lock){++..}-{3:3}, at: lapb_data_received+0x2f/0x1c0 net/lapb/lapb_iface.c:394
-
-but task is already holding lock:
-ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:353 [inline]
-ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: lapbeth_rcv+0x24e/0x640 drivers/net/wan/lapbether.c:131
-
-which lock already depends on the new lock.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 06/12] can: bcm: fix filter removal race between
+ release and netns change
+To: netdev-bot+sashiko@kernel.org, mkl@pengutronix.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de
+References: <20261018164417.1540449-7-mkl@pengutronix.de>
+ <179243324213.3135.7191257485543672135@kernel.org>
+Content-Language: en-US
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <179243324213.3135.7191257485543672135@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-the existing dependency chain (in reverse order) is:
 
--> #3 (&lapbeth->up_lock){+...}-{3:3}:
-       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:182 [inline]
-       _raw_spin_lock_bh+0x36/0x50 kernel/locking/spinlock.c:205
-       spin_lock_bh include/linux/spinlock.h:353 [inline]
-       lapbeth_xmit+0x32/0x260 drivers/net/wan/lapbether.c:191
-       __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
-       netdev_start_xmit include/linux/netdevice.h:5441 [inline]
-       xmit_one net/core/dev.c:3953 [inline]
-       dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3969
-       __dev_queue_xmit+0x14d1/0x3920 net/core/dev.c:4958
-       dev_queue_xmit include/linux/netdevice.h:3464 [inline]
-       tx+0x6b/0x190 drivers/block/aoe/aoenet.c:62
-       kthread+0x1ed/0x420 drivers/block/aoe/aoecmd.c:1241
-       kthread+0x38b/0x480 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+On 19.10.26 20:07, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] bcm_release() now holds the global RTNL mutex while it walks
+>    every device-specific rx_op of the closing socket and calls…
+> 
+> Pre-existing issues:
+> - [High] bcm_notify() in net/can/bcm.c still calls remove_proc_entry()
+>    for the socket's procfs entry when the bound device sends…
+> 
 
--> #2 (_xmit_X25#2){+...}-{3:3}:
-       __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
-       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
-       spin_lock include/linux/spinlock.h:347 [inline]
-       __netif_tx_lock include/linux/netdevice.h:4841 [inline]
-       __dev_queue_xmit+0xe9d/0x3920 net/core/dev.c:4952
-       neigh_output include/net/neighbour.h:560 [inline]
-       ip_finish_output2+0xc4b/0x10b0 net/ipv4/ip_output.c:236
-       NF_HOOK_COND include/linux/netfilter.h:314 [inline]
-       ip_output+0x29f/0x450 net/ipv4/ip_output.c:437
-       iptunnel_xmit+0x626/0xd10 net/ipv4/ip_tunnel_core.c:97
-       udp_tunnel_xmit_skb+0x29b/0x3e0 net/ipv4/udp_tunnel_core.c:187
-       vxlan_xmit_one+0x21f6/0x2eb0 drivers/net/vxlan/vxlan_core.c:2571
-       vxlan_xmit+0x1e19/0x33b0 drivers/net/vxlan/vxlan_core.c:2860
-       __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
-       netdev_start_xmit include/linux/netdevice.h:5441 [inline]
-       xmit_one net/core/dev.c:3953 [inline]
-       dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3969
-       __dev_queue_xmit+0x14d1/0x3920 net/core/dev.c:4958
-       lapb_data_transmit+0x90/0xb0 net/lapb/lapb_iface.c:447
-       lapb_transmit_buffer+0x163/0x200 net/lapb/lapb_out.c:149
-       lapb_establish_data_link+0x89/0xe0 net/lapb/lapb_out.c:-1
-       lapb_device_event+0x4eb/0x680 net/lapb/lapb_iface.c:-1
-       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
-       call_netdevice_notifiers net/core/dev.c:2327 [inline]
-       __dev_notify_flags+0x31e/0x510 net/core/dev.c:9896
-       netif_change_flags+0xde/0x1b0 net/core/dev.c:9925
-       dev_change_flags+0x128/0x260 net/core/dev_api.c:68
-       devinet_ioctl+0x966/0x1c50 net/ipv4/devinet.c:1199
-       inet_ioctl+0x42a/0x560 net/ipv4/af_inet.c:1010
-       sock_do_ioctl+0x101/0x320 net/socket.c:1325
-       sock_ioctl+0x57a/0x7e0 net/socket.c:1446
-       vfs_ioctl fs/ioctl.c:51 [inline]
-       __do_sys_ioctl fs/ioctl.c:597 [inline]
-       __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This PR can-next 2026-10-18 is obsolete.
 
--> #1 (&lapb->lock){+.-.}-{3:3}:
-       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:182 [inline]
-       _raw_spin_lock_bh+0x36/0x50 kernel/locking/spinlock.c:205
-       spin_lock_bh include/linux/spinlock.h:353 [inline]
-       lapb_unregister+0x1e1/0x450 net/lapb/lapb_iface.c:187
-       lapbeth_close+0x56/0xb0 drivers/net/wan/lapbether.c:350
-       __dev_close_many+0x366/0x6e0 net/core/dev.c:1798
-       __dev_close net/core/dev.c:1811 [inline]
-       __dev_change_flags+0x3f5/0x820 net/core/dev.c:9853
-       netif_change_flags+0x7c/0x1b0 net/core/dev.c:9920
-       dev_change_flags+0x128/0x260 net/core/dev_api.c:68
-       devinet_ioctl+0x966/0x1c50 net/ipv4/devinet.c:1199
-       inet_ioctl+0x42a/0x560 net/ipv4/af_inet.c:1010
-       sock_do_ioctl+0x101/0x320 net/socket.c:1325
-       sock_ioctl+0x57a/0x7e0 net/socket.c:1446
-       vfs_ioctl fs/ioctl.c:51 [inline]
-       __do_sys_ioctl fs/ioctl.c:597 [inline]
-       __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Updated PR can-next 2026-10-19 at
 
--> #0 (lapb_list_lock){++..}-{3:3}:
-       check_prev_add kernel/locking/lockdep.c:3209 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3328 [inline]
-       validate_chain kernel/locking/lockdep.c:3952 [inline]
-       __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
-       lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
-       __raw_read_lock_bh include/linux/rwlock_api_smp.h:192 [inline]
-       _raw_read_lock_bh+0x3e/0x50 kernel/locking/spinlock.c:287
-       lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
-       lapb_data_received+0x2f/0x1c0 net/lapb/lapb_iface.c:394
-       lapbeth_rcv+0x34d/0x640 drivers/net/wan/lapbether.c:142
-       __netif_receive_skb_one_core net/core/dev.c:6297 [inline]
-       __netif_receive_skb net/core/dev.c:6410 [inline]
-       netif_receive_skb_internal net/core/dev.c:6496 [inline]
-       netif_receive_skb+0x4af/0xbf0 net/core/dev.c:6555
-       tun_rx_batched+0x1de/0x790 drivers/net/tun.c:1571
-       tun_get_user+0x2be0/0x44d0 drivers/net/tun.c:2045
-       tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
-       new_sync_write fs/read_write.c:595 [inline]
-       vfs_write+0x612/0xba0 fs/read_write.c:687
-       ksys_write+0x150/0x270 fs/read_write.c:739
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+https://lore.kernel.org/linux-can/20261019170834.1727150-1-mkl@pengutronix.de/
 
-other info that might help us debug this:
+which solves the remarked problems with a new per-device lock:
 
-Chain exists of:
-  lapb_list_lock --> _xmit_X25#2 --> &lapbeth->up_lock
+https://lore.kernel.org/linux-can/20261019170834.1727150-12-mkl@pengutronix.de/
 
- Possible unsafe locking scenario:
+Best regards,
+Oliver
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(&lapbeth->up_lock);
-                               lock(_xmit_X25#2);
-                               lock(&lapbeth->up_lock);
-  rlock(lapb_list_lock);
+pw-bot: cr
 
- *** DEADLOCK ***
+> --
+> 
+> can: bcm: fix filter removal race between release and netns change
+> 
+> This patch takes rtnl_lock() in bcm_release() before the socket is
+> removed from bcm_notifier_list. The device specific CAN filters are
+> then removed while RTNL is held, and the busy-wait on bcm_busy_notifier
+> becomes a WARN_ON_ONCE(). The procfs entry, the tx_ops and the 'any'
+> device filters are released after RTNL has been dropped.
+> 
+> Link: https://lore.kernel.org/linux-can/CEA6A38A-2646-4ADA-95B4-CBAE2F301A8E@doyensec.com/
+> Link: https://patch.msgid.link/20261016091128.325332-3-socketcan@hartkopp.net
+> 
+>> diff --git a/net/can/bcm.c b/net/can/bcm.c
+>> index 60406439a13f7..37babc3218e47 100644
+>> --- a/net/can/bcm.c
+>> +++ b/net/can/bcm.c
+>> @@ -1927,17 +1927,30 @@ static int bcm_release(struct socket *sock)
+>>   
+>>   	/* remove bcm_ops, timer, rx_unregister(), etc. */
+>>   
+>> +	rtnl_lock();
+>> +
+> 
+> [ ... ]
+> 
+>>   	lock_sock(sk);
+>>   
+>> +	/* Remove the device specific subscriptions under RTNL */
+>> +	list_for_each_entry(op, &bo->rx_ops, list)
+>> +		if (op->ifindex && op->rx_reg_dev)
+>> +			bcm_rx_unreg(op->rx_reg_dev, op);
+>> +
+>> +	rtnl_unlock();
+> 
+> [Severity: Medium]
+> Can an unprivileged user make this loop hold RTNL for a long time?
+> 
+> Only memory limits how many rx_ops a socket can have. bcm_rx_setup()
+> allocates a new op for each distinct can_id/ifindex and adds it with
+> list_add_rcu(&op->list, &bo->rx_ops).
+> 
+> Each bcm_rx_unreg() then calls can_rx_unregister(), which searches the
+> per-device bucket linearly:
+> 
+> net/can/af_can.c:can_rx_unregister() {
+>      ...
+> 	hlist_for_each_entry_rcu(rcv, rcv_list, list) {
+> 		if (rcv->can_id == can_id && rcv->mask == mask &&
+> 		    rcv->func == func && rcv->data == data)
+> 			break;
+> 	}
+>      ...
+> }
+> 
+> Exact-mask EFF ids go into rx_eff[effhash(id)], which has only 1024
+> buckets, so it is easy to pick colliding ids. can_rx_register() inserts
+> at the head of the bucket. Entries that a second socket registers later
+> (BCM, or CAN_RAW with exact EFF filters) therefore sit in front of every
+> entry of the socket being closed.
+> 
+> With n ops on socket A and m colliding entries from socket B, close(A)
+> does O(n * m) list traversal while RTNL is held:
+> 
+> close(A)
+>    bcm_release()
+>      rtnl_lock()
+>      n x bcm_rx_unreg()->can_rx_unregister()   /* each walks m entries */
+>      rtnl_unlock()
+> 
+> Before this patch, bcm_release() ran this loop without RTNL. It only ran
+> under RTNL from bcm_notify(), which needs a NETDEV_UNREGISTER. Creating
+> a CAN_BCM socket needs no capability.
+> 
+> The commit message keeps the RTNL section short by moving the 'any'
+> device filter removal out of it. Could the device specific part also be
+> bounded, or done without holding RTNL across a loop whose length the
+> user controls?
+> 
+>> +
+>> +	/* bcm_notify() can not access this socket anymore. Release the other
+>> +	 * resources without holding RTNL, e.g. remove_proc_entry() waits for
+>> +	 * concurrent readers of the procfs entry.
+>> +	 */
+> 
+> [Severity: High]
+> This is a pre-existing issue and was not introduced by this patch. Still,
+> bcm_notify() removes the same procfs entry with RTNL held, and the
+> commit message says:
+> 
+>      This way a stalled reader of the world-readable procfs entry can not
+>      hold up RTNL
+> 
+> When the bound device sends NETDEV_UNREGISTER, bcm_notify() runs from
+> the netdev notifier chain under RTNL, with lock_sock(sk) held:
+> 
+> net/can/bcm.c:bcm_notify() {
+>      ...
+> 		if (bo->bound && bo->ifindex == dev->ifindex) {
+> #if IS_ENABLED(CONFIG_PROC_FS)
+> 			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read) {
+> 				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
+> 				bo->bcm_proc_read = NULL;
+> 			}
+> #endif
+>      ...
+> }
+> 
+> remove_proc_entry() calls proc_entry_rundown(), which waits
+> uninterruptibly in wait_for_completion() until in-flight readers are
+> done. proc_reg_read_iter() holds use_pde() across seq_read_iter(), and
+> that includes the copy to the user buffer.
+> 
+> A reader of /proc/net/can-bcm/<ino> can stall in that copy, for example
+> when its buffer is backed by a FUSE mapping whose daemon never answers.
+> Can the device unregister then hold RTNL indefinitely?
+> 
+> Unprivileged FUSE is available through fusermount or a user namespace.
+> With vcan in a user namespace, the same user can also trigger the
+> unregister with ip link del.
+> 
+> This code came in with commit 76fe372ccb81 ("can: bcm: Remove proc entry
+> when dev is unregistered."). No later patch in this series changes
+> bcm_notify().
+> 
+> Should the remove_proc_entry() in bcm_notify() also move out of the RTNL
+> section, so the goal stated in the commit message holds for both
+> removal sites?
+> 
 
-locks held by syz-executor220/6011: 4, last CPU#0:
- #0: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
- #0: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #0: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: tun_get_user+0x27b0/0x44d0 drivers/net/tun.c:1986
- #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
- #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb_internal net/core/dev.c:6483 [inline]
- #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb+0x102/0xbf0 net/core/dev.c:6555
- #2: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
- #2: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #2: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: lapbeth_rcv+0x12f/0x640 drivers/net/wan/lapbether.c:127
- #3: ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:353 [inline]
- #3: ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: lapbeth_rcv+0x24e/0x640 drivers/net/wan/lapbether.c:131
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 6011 Comm: syz-executor220 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e2/0x300 kernel/locking/lockdep.c:2087
- check_noncircular+0x12f/0x150 kernel/locking/lockdep.c:2219
- check_prev_add kernel/locking/lockdep.c:3209 [inline]
- check_prevs_add kernel/locking/lockdep.c:3328 [inline]
- validate_chain kernel/locking/lockdep.c:3952 [inline]
- __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
- lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
- __raw_read_lock_bh include/linux/rwlock_api_smp.h:192 [inline]
- _raw_read_lock_bh+0x3e/0x50 kernel/locking/spinlock.c:287
- lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
- lapb_data_received+0x2f/0x1c0 net/lapb/lapb_iface.c:394
- lapbeth_rcv+0x34d/0x640 drivers/net/wan/lapbether.c:142
- __netif_receive_skb_one_core net/core/dev.c:6297 [inline]
- __netif_receive_skb net/core/dev.c:6410 [inline]
- netif_receive_skb_internal net/core/dev.c:6496 [inline]
- netif_receive_skb+0x4af/0xbf0 net/core/dev.c:6555
- tun_rx_batched+0x1de/0x790 drivers/net/tun.c:1571
- tun_get_user+0x2be0/0x44d0 drivers/net/tun.c:2045
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x612/0xba0 fs/read_write.c:687
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f523ead1137
-Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP: 002b:00007ffcbef91f00 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00005555890c4400 RCX: 00007f523ead1137
-RDX: 0000000000000010 RSI: 00007ffcbef91fb0 RDI: 0000000000000006
-RBP: 0000000000000006 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 000000000000000a
-R13: 00007ffcbef91fb0 R14: 00007ffcbef91fa0 R15: 000000000000002c
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
