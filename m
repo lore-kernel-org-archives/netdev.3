@@ -1,91 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=85.215.255.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792437648;
-	b=jrhO9sSdjroBSD6V/BFuF+UjtVxDMmMVXd6GpBBNt8vQ+FoYjXSAwTVegcUuS3BV4Xe8
-	 WNL6xFw5YHeYKaG1oMQamUTlM/gUfS5EDE+Of+j11G4RqvHyrjmjpM6Wc9bW2d2SZrVLq
-	 2noVQcsvALg3Zl8TBNdmDQQJfvs8wq1VS3QTNCzDlMzPfm1AMbFZwa475zENFIAdsOzb5
-	 eqaVEuSIRtR15HjvGrwMgNglvU/vSmSRMKspxFlzFcLjfUX8U+PQYA+zW6yCHkRosWOv3
-	 n/K1OxUA3LIikDsb227wZFeW2pWxAVK22KfntOGGJjcsZW9S/1azSOHqTC1ywAJSASA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792437648;
-	h=DMARC-Filter:X-RZG-CLASS-ID:DKIM-Signature:DKIM-Signature:X-RZG-AUTH:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
-	b=ODHt8aB0WSa2phm+/DuNWPVSZCGSQTMCoZr31SSloqny6iSVE+ZgL2+JckXXYu69MzgF
-	 m9RPHI1RN2bG83PHDd6iRAoplZ7LDValTKup1toB0bdYqEUvbk3EmDxfdBylH+V9xB0dG
-	 yhy9FGMoZpJ+CPXN5PlTYgYJmX8N9epyX6fJDZRjAnrPeNVt1B1gqR1Ld4DWyWPkEwoaa
-	 LwqHyUVFewdMVF37rx1t2U5clzO/1rGBaV1NEm/84MR1wBf0XWraLEiJsYw08tKtN4CBQ
-	 zREJqMiQrIsab/kgnvdWSpXCojsQ4Jt51y40OOIKQhHcJKzMZ/g1NPcFdddMZFDcpgw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hartkopp.net;
-	spf=fail smtp.mailfrom=hartkopp.net;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=cRM+RAni;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=zhWz3ZHO;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=85.215.255.54
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792437955;
+	b=hJJt96y/Jh7bY+XLOlibgj769/0Of/vHLsHrMFUrf5NbxNHGjKLY1aRVagDtM3bFZFzE
+	 Gk7Tq16wtntuTCASdomlto6bVmZfT7Wkop3Vx849jgRG5AzG8V803YrHXPIjeY+4QntBw
+	 v/xH3LVl89u1v7O6gwqXGiyLEvGNA5O+vdQ10PDebABqbVCUwaZPzKWXb+en45JjFw1k+
+	 zsHtdyhFmuhteeJeV02/N5UQGQewbii6ugkCXX2zx4Xev/m0kdOV3FXQneLtUPCZ+KtUs
+	 TjL+gacF8/rzz/qkMm/gMwJc6XkpC/hGGrFv2g+bGT3IcG9DLg41kUUrx6jJ5FlAIzQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792437955;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:X-Mailer:Content-Transfer-Encoding:MIME-Version;
+	bh=Gl+QuejblNFV3uEkIxOgOsS4jX0GlJs/ROUNx5zrPn4=;
+	b=XUwTmHJDgWuKa9bqa5+r3n4/OblJhCS8rY/A03k+psEl8SC+Zze5vhNTW0NciyY1RTve
+	 9FfDh9l2OHeZgHlUXLCQXXKPFDCOW6eO6GYbQlp2QUHlRm2sWCApGQRLx4W9EJpPvxXgR
+	 ju9L5CsAjRQKXGvrGOAhaw6xHFNWbXo+4Zh5cgrcA9b6UbaS8Sg38IZIGJcnQUmPoZccZ
+	 pGbXLgx4f9TrxZwV8Z9GUYUIKOOcLsOws/4eI3rdBh6Pa1YYBeyksgyYOp03TgljIohQG
+	 KrBPlMiv5odQR5b634OxhLCsmqALTNsIpQZPok0CXjLUTqvSEJ1qJ792MFECdZsYrtQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gYnQr9al;
+	arc=none smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F855606A31C;
-	Mon, 19 Oct 2026 19:20:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F855606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B37E606A329
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 19:25:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B37E606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=cRM+RAni;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=zhWz3ZHO
-ARC-Seal: i=1; a=rsa-sha256; t=1792437636; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=if6DU+iZ2Ry+qo46YquFSVNr1is4lNSxN1BTmDDQ/HV/C0QAtfH2p336iuD+xiv8qc
-    948zc6NEbX/UPLZez1NTdSDM0d2Qh2mk1fcmS/i3LRGWg0yIcekTDdjMYMAXBdEn08ql
-    K4DnHIg66irTr1Qym4jeuQbb1bnaAH7DMAczoCmSMIG+EQ4vB+hJEtGjwhDZhtzFm/nt
-    klhxBgLLW4vnmsaazlueG6MfS511DOt/aWxpotynAor3dCIXYNTp4/+8aAoNwT5KLYab
-    MDeAdeynlxBmXSZ4GXjX0HpGvfAM7BgXe65hO7LsWTjcHGfFazE3ikqZv7ONgwDdgrbs
-    Xehg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792437636;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
-    b=tsnKwy1BNvJ6YGonGKsDRP2l0ahhLzGFZC6p1ZTDBHOk8QDUjghhjbcOYgUVvq1w7B
-    BxRQoyMxCcm6uVEF7gmI7cV2rzxB5Hjly/14ybvnuXujSYWhZdHqe99kMovOlA/vswmx
-    b2H/iXcY0J1os5AI+oNqeOeFaWok07WFkUSBbE+vu9L827JzyHGuccKjgBaT+/z8dUCU
-    tWDDtdcndWUqP5cZCVMFrcFj+LSRLkcnHYUC05tRAp7FutN5D2fATB9ZekoOLMTl1QQQ
-    x5iAqf2lAAbNPFOWE1LgYawDhG4rBoar3pJ3FDCNRVKx/CAycudkALLhGPT2q91Eoir0
-    fwDA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792437636;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
-    b=cRM+RAniKaYRZvk8KnZX9lsRzl7xM60p2x/takW7Ert3rj+0cKRfy9CDmjZTJtWr/T
-    It9zKwVUm1sf+7WryD57xGktVGW3M//a8GDd1QF9N5IxO4NW8i3wdb8oxx9TReQ8LMHo
-    mz62Qrah6/NlDQlh26x0WD+wPaTRM8ids0tN+/1TUnvokmIxKNAWXl/ksolgHwP5EdYu
-    wQ+eA59KFLJAAeRBaj2t7iPTdN5rZNdgWJhV1jVwzWndMwB+LrdGDOvabH3X0cLIcEMM
-    tzYSRF+uXiD4x94gcXpmYkAtYQGm2poezhde7SuoABxnmwMll3sDocpp98wb2u/F3iM8
-    VoBw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792437636;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=nai0BSIGWOpgnQlmI8Rcw5c9Fi7ECJW8ivW+ajF8SgQ=;
-    b=zhWz3ZHO6cd8gfuAx/l/nZMUku4GmSFvH2PfmSjUCAUJVD3ssuhCvwZGYkvfiBNaTp
-    YeyKJ1jqhSTFDkA5QoCw==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a29JJKZY85
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 19 Oct 2026 21:20:35 +0200 (CEST)
-Message-ID: <b75fe782-85dc-4364-8a99-f3b153ae2f1e@hartkopp.net>
-Date: Mon, 19 Oct 2026 21:20:35 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gYnQr9al
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ab4178ee33so1893837a91.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 12:25:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792437954; x=1793042754; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Gl+QuejblNFV3uEkIxOgOsS4jX0GlJs/ROUNx5zrPn4=;
+        b=gYnQr9alcw+J9ojP/SdeDo47GsqS10jIYNdvilfzW9uVyvOFI724RKT1A9EsWtQ3bQ
+         OgXWmiBiwDCiu/gWReT46D/Rk9VHkHgUrKHIxf0YStCBAljm0BIHRVvWPUYzKX908eUt
+         iCuSA6FUQ3dcvqmycwRt4gjLfOklT6OAGxuKl5xqbY72BqpfGdxLXGUQIuf+OJ5g7fu5
+         g/W82eNWWUviKy78jCy3BJRjKeND6NWnWoTU9lAqh7g7bOgPK8d9buk+6bjXfb3EBJwv
+         ck0cedd6WPJoOke0xDGXsTBf/906L8PkyCNeMlUttfM6CF3DCo/JPd8cengfq/sPfTmR
+         TcnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792437954; x=1793042754;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Gl+QuejblNFV3uEkIxOgOsS4jX0GlJs/ROUNx5zrPn4=;
+        b=Zp7cp4KNlVlk+VRTsDTYpBWPsHX98YzRzRxmJ7DzV6CdIiIDPdzlo7B3ceDul9+hZO
+         4RhZdDx2lfBSfisn2lwXIF5AmRUH1/Onu3Ic4q1SCmNA6Ze0idS8gM2PQ/MrPGq5vTnU
+         VWImEm4mzLXTf8ssj/x0mvwo4yQBVLZDGmbE3rBFBCECn2PHyRazAIZu/QwEvy+C/mmD
+         8kBjDc6Do3wRA1DVrsPpuVIE9vJurWLyW6qjoaV2X0fLe3q1prg3XinTnx9BUb5vjta8
+         i9GuI+L/cBrWGnikiWPn5fc59/EjNjhhf17EySNvW9mkFJVyqYKeZUCfEXBKf6JnZUWo
+         I05w==
+X-Forwarded-Encrypted: i=1; AKwUvBwktbexaSQANPaAwbwhTglsxozsXg3hdyWD7q4M4ducRemseeo4JjbaClcq6BI57zOdQ+SokZk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEXNgO/UMxlcaH5hUIQ+SFYgOjX7CaBhCA583mo6Rt7EPmeAq+
+	BqhaB/hZtBrb+a3P5H8Z97fvDWMYZ6nDV7b+WcIGQogJG3LLPy35uOKE
+X-Gm-Gg: AYBFou10gCLRN07vI6wYz1PEwLMYvuoWO/SESzQ13FOEv3Ayr9IfQNktS95DP2E8gbg
+	QFBMJJgOCsxwMD4SBKAq7FJjFtl94JKkvPEo+bVpXBelIFbL9cUYg09rv1weBzLeAiAikbKTbQ5
+	LXkvhEFCIyoqCxUN1XM3BgpTvI8CBsOCKbZgwS5bpIQUJTx9q/T6J0S2yfT9mEuNOwSTeetjZec
+	Ck4At5yDFZXG0derTd/goZXw7eiMi1o5jvPhQOMQD5RZdxErz5Xt3+HvkitlQIW9Lgdgc7FrwaM
+	DsIJ/kcUw22tHP7ZVTtVArr/Een/XKkYgF3juXt36iufor6xdhtscLxURZBuDThHK0mP6CFPwCD
+	Y8dXkaL8Swgc7xX8a1C7w6DFLMsY4hNA9WQrVQnmBRyLnBTE0ys0GxrMHQP6ElJs9/fQ3Pq/eUP
+	Q8vJCx4Iy3PU5OuhtwB70gVpJv4OJ5kx4pD54ueXfe33tim+/JFXnGvI0u+kgtLYpzme31CcyIq
+	QNgA8l7D+3KajxGw46TewGsXEddBcXSqOy+4qhaeKUyQ+znBYULOHPDruZaTYA0GnOs2q7oHqHY
+	5Tw=
+X-Received: by 2002:a17:90b:280e:b0:3ab:be66:ddbf with SMTP id 98e67ed59e1d1-3acef58d853mr6802869a91.54.1792437953584;
+        Mon, 19 Oct 2026 12:25:53 -0700 (PDT)
+Received: from localhost ([153.61.198.245])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd05c9255sm8977238a91.2.2026.10.19.12.25.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2026 12:25:52 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Oct 2026 19:25:50 +0000
+Message-Id: <DM9282PWYQD9.21LDVIJ8824AL@gmail.com>
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
+ Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "Ihor Solodrai"
+ <ihor.solodrai@linux.dev>, "Jesper Dangaard Brouer" <hawk@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Stanislav Fomichev"
+ <sdf@fomichev.me>, "Steven Rostedt" <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, "Mathieu Desnoyers"
+ <mathieu.desnoyers@efficios.com>, "Shuah Khan" <shuah@kernel.org>,
+ "Kuniyuki Iwashima" <kuniyu@google.com>, "Hangbin Liu"
+ <liuhangbin@gmail.com>, "Martin Karsten" <mkarsten@uwaterloo.ca>, "Masashi
+ Honma" <masashi.honma@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH bpf-next v2 1/6] bpf: Add syscall common attrs support
+ for link_create
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Leon Hwang" <leon.hwang@linux.dev>, <bpf@vger.kernel.org>
+In-Reply-To: <20261019153628.15912-2-leon.hwang@linux.dev>
+References: <20261019153628.15912-1-leon.hwang@linux.dev> <20261019153628.15912-2-leon.hwang@linux.dev>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,184 +118,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 06/12] can: bcm: fix filter removal race between
- release and netns change
-To: netdev-bot+sashiko@kernel.org, mkl@pengutronix.de
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de
-References: <20261018164417.1540449-7-mkl@pengutronix.de>
- <179243324213.3135.7191257485543672135@kernel.org>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <179243324213.3135.7191257485543672135@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
+On Mon, Oct 19, 2026 at 08:36 AM Leon Hwang <leon.hwang@linux.dev> wrote:
+> +	ret = bpf_log_attr_report_size(&attr_log, 0);
+> +	if (ret)
+> +		goto put_prog;
 
+can we drop bpf_log_attr_report_size() ?
+Nothing is logged when the attach succeeds, so there is no size to
+report, and libbpf zeroes attr_common, so log_true_size reads 0 anyway.
+Finalizing only when ret < 0 already keeps -EFAULT away from a live link.
+Then no need for the 2nd write, the log.c refactoring and the put_prog
+label.
 
-On 19.10.26 20:07, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] bcm_release() now holds the global RTNL mutex while it walks
->    every device-specific rx_op of the closing socket and calls…
-> 
-> Pre-existing issues:
-> - [High] bcm_notify() in net/can/bcm.c still calls remove_proc_entry()
->    for the socket's procfs entry when the bound device sends…
-> 
+Something like this (compile tested only):
 
-This PR can-next 2026-10-18 is obsolete.
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 849bc91..61d100e 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -5856,8 +5856,11 @@ err_put:
+ }
 
-Updated PR can-next 2026-10-19 at
+ #define BPF_LINK_CREATE_LAST_FIELD link_create.uprobe_multi.path_fd
+-static int link_create(union bpf_attr *attr, bpfptr_t uattr)
++static int link_create(union bpf_attr *attr, bpfptr_t uattr, struct bpf_common_attr *attr_common,
++		       bpfptr_t uattr_common, u32 size_common)
+ {
++	struct bpf_verifier_log *log;
++	struct bpf_log_attr attr_log;
+ 	struct bpf_prog *prog;
+ 	int ret;
 
-https://lore.kernel.org/linux-can/20261019170834.1727150-1-mkl@pengutronix.de/
+@@ -5867,14 +5870,24 @@ static int link_create(union bpf_attr *attr, bpfptr_t uattr)
+ 	if (attr->link_create.attach_type == BPF_STRUCT_OPS)
+ 		return bpf_struct_ops_link_create(attr);
 
-which solves the remarked problems with a new per-device lock:
++	log = bpf_log_attr_create_vlog(&attr_log, attr_common, uattr_common, size_common);
++	if (IS_ERR(log))
++		return PTR_ERR(log);
++
+ 	prog = bpf_prog_get(attr->link_create.prog_fd);
+-	if (IS_ERR(prog))
+-		return PTR_ERR(prog);
++	if (IS_ERR(prog)) {
++		bpf_log(log, "Invalid prog_fd.\n");
++		ret = PTR_ERR(prog);
++		prog = NULL;
++		goto out;
++	}
 
-https://lore.kernel.org/linux-can/20261019170834.1727150-12-mkl@pengutronix.de/
+ 	ret = bpf_prog_attach_check_attach_type(prog,
+ 						attr->link_create.attach_type);
+-	if (ret)
++	if (ret) {
++		bpf_log(log, "Invalid attach_type.\n");
+ 		goto out;
++	}
 
-Best regards,
-Oliver
+ 	switch (prog->type) {
+ 	case BPF_PROG_TYPE_CGROUP_SKB:
+@@ -5953,12 +5966,19 @@ static int link_create(union bpf_attr *attr, bpfptr_t uattr)
+ 			ret = bpf_uprobe_multi_link_attach(attr, prog);
+ 		break;
+ 	default:
++		bpf_log(log, "Invalid prog type.\n");
+ 		ret = -EINVAL;
+ 	}
+
+ out:
+-	if (ret < 0)
+-		bpf_prog_put(prog);
++	if (ret < 0) {
++		int err = bpf_log_attr_finalize(&attr_log, log);
++
++		ret = err ? err : ret;
++		if (prog)
++			bpf_prog_put(prog);
++	}
++	kfree(log);
+ 	return ret;
+ }
+
+@@ -6530,7 +6550,7 @@ static int __sys_bpf(enum bpf_cmd cmd, bpfptr_t uattr, unsigned int size,
+ 		err = bpf_map_do_batch(&attr, uattr.user, BPF_MAP_DELETE_BATCH);
+ 		break;
+ 	case BPF_LINK_CREATE:
+-		err = link_create(&attr, uattr);
++		err = link_create(&attr, uattr, &attr_common, uattr_common, size_common);
+ 		break;
+ 	case BPF_LINK_UPDATE:
+ 		err = link_update(&attr);
 
 pw-bot: cr
-
-> --
-> 
-> can: bcm: fix filter removal race between release and netns change
-> 
-> This patch takes rtnl_lock() in bcm_release() before the socket is
-> removed from bcm_notifier_list. The device specific CAN filters are
-> then removed while RTNL is held, and the busy-wait on bcm_busy_notifier
-> becomes a WARN_ON_ONCE(). The procfs entry, the tx_ops and the 'any'
-> device filters are released after RTNL has been dropped.
-> 
-> Link: https://lore.kernel.org/linux-can/CEA6A38A-2646-4ADA-95B4-CBAE2F301A8E@doyensec.com/
-> Link: https://patch.msgid.link/20261016091128.325332-3-socketcan@hartkopp.net
-> 
->> diff --git a/net/can/bcm.c b/net/can/bcm.c
->> index 60406439a13f7..37babc3218e47 100644
->> --- a/net/can/bcm.c
->> +++ b/net/can/bcm.c
->> @@ -1927,17 +1927,30 @@ static int bcm_release(struct socket *sock)
->>   
->>   	/* remove bcm_ops, timer, rx_unregister(), etc. */
->>   
->> +	rtnl_lock();
->> +
-> 
-> [ ... ]
-> 
->>   	lock_sock(sk);
->>   
->> +	/* Remove the device specific subscriptions under RTNL */
->> +	list_for_each_entry(op, &bo->rx_ops, list)
->> +		if (op->ifindex && op->rx_reg_dev)
->> +			bcm_rx_unreg(op->rx_reg_dev, op);
->> +
->> +	rtnl_unlock();
-> 
-> [Severity: Medium]
-> Can an unprivileged user make this loop hold RTNL for a long time?
-> 
-> Only memory limits how many rx_ops a socket can have. bcm_rx_setup()
-> allocates a new op for each distinct can_id/ifindex and adds it with
-> list_add_rcu(&op->list, &bo->rx_ops).
-> 
-> Each bcm_rx_unreg() then calls can_rx_unregister(), which searches the
-> per-device bucket linearly:
-> 
-> net/can/af_can.c:can_rx_unregister() {
->      ...
-> 	hlist_for_each_entry_rcu(rcv, rcv_list, list) {
-> 		if (rcv->can_id == can_id && rcv->mask == mask &&
-> 		    rcv->func == func && rcv->data == data)
-> 			break;
-> 	}
->      ...
-> }
-> 
-> Exact-mask EFF ids go into rx_eff[effhash(id)], which has only 1024
-> buckets, so it is easy to pick colliding ids. can_rx_register() inserts
-> at the head of the bucket. Entries that a second socket registers later
-> (BCM, or CAN_RAW with exact EFF filters) therefore sit in front of every
-> entry of the socket being closed.
-> 
-> With n ops on socket A and m colliding entries from socket B, close(A)
-> does O(n * m) list traversal while RTNL is held:
-> 
-> close(A)
->    bcm_release()
->      rtnl_lock()
->      n x bcm_rx_unreg()->can_rx_unregister()   /* each walks m entries */
->      rtnl_unlock()
-> 
-> Before this patch, bcm_release() ran this loop without RTNL. It only ran
-> under RTNL from bcm_notify(), which needs a NETDEV_UNREGISTER. Creating
-> a CAN_BCM socket needs no capability.
-> 
-> The commit message keeps the RTNL section short by moving the 'any'
-> device filter removal out of it. Could the device specific part also be
-> bounded, or done without holding RTNL across a loop whose length the
-> user controls?
-> 
->> +
->> +	/* bcm_notify() can not access this socket anymore. Release the other
->> +	 * resources without holding RTNL, e.g. remove_proc_entry() waits for
->> +	 * concurrent readers of the procfs entry.
->> +	 */
-> 
-> [Severity: High]
-> This is a pre-existing issue and was not introduced by this patch. Still,
-> bcm_notify() removes the same procfs entry with RTNL held, and the
-> commit message says:
-> 
->      This way a stalled reader of the world-readable procfs entry can not
->      hold up RTNL
-> 
-> When the bound device sends NETDEV_UNREGISTER, bcm_notify() runs from
-> the netdev notifier chain under RTNL, with lock_sock(sk) held:
-> 
-> net/can/bcm.c:bcm_notify() {
->      ...
-> 		if (bo->bound && bo->ifindex == dev->ifindex) {
-> #if IS_ENABLED(CONFIG_PROC_FS)
-> 			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read) {
-> 				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
-> 				bo->bcm_proc_read = NULL;
-> 			}
-> #endif
->      ...
-> }
-> 
-> remove_proc_entry() calls proc_entry_rundown(), which waits
-> uninterruptibly in wait_for_completion() until in-flight readers are
-> done. proc_reg_read_iter() holds use_pde() across seq_read_iter(), and
-> that includes the copy to the user buffer.
-> 
-> A reader of /proc/net/can-bcm/<ino> can stall in that copy, for example
-> when its buffer is backed by a FUSE mapping whose daemon never answers.
-> Can the device unregister then hold RTNL indefinitely?
-> 
-> Unprivileged FUSE is available through fusermount or a user namespace.
-> With vcan in a user namespace, the same user can also trigger the
-> unregister with ip link del.
-> 
-> This code came in with commit 76fe372ccb81 ("can: bcm: Remove proc entry
-> when dev is unregistered."). No later patch in this series changes
-> bcm_notify().
-> 
-> Should the remove_proc_entry() in bcm_notify() also move out of the RTNL
-> section, so the goal stated in the commit message holds for both
-> removal sites?
-> 
-
