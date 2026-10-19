@@ -1,67 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792453370;
-	b=mkhbPn9fGOtg9VMHwdmBecRCD+9d8ko3Cl74wg4bOFxRO6BdAkS+TiOaVz2BHhRajY1r
-	 O5exFDQ2DHs3Epz4h3qG7fAiPyHQXnNMHqhkl4f5m61LlbVAHRPcKmnIs81RCTLvRafYt
-	 hdbimi1QvW4WxDqZT8XAB5piSp+wnhCx456DMHsYxnTHYI7zYCwD+69UUpFJrfBMe23WC
-	 xLBCMdXB6ZgffmbSWCI0dGPlknG01KgMOR/sc3AxzyRSuMzBp+CBW4MQh/4DeLJqERKe5
-	 dvggYhsA2BnYW+Iwu4wHDPqoUQLjDf03XDNZQgaqJfW6hkXDF92luywnvgM2Rly3KJw==
+	t=1792453455;
+	b=QjeXZEG7N0B3+xoyRuD8W66eBSJlA4QnzACJEarM9Uimow4fBY27LOUMMzMBe9Yz+3+j
+	 +FnWN+kMfem88L6ECsuSMgOAFs1CNnxNA/xlZZWsZ5N5cNf3eLyt0YgHP3NEGlxK5hiyH
+	 rt8QRBcaHn7Z2Uh+DIu5FBJ2CEap+khrHFZE0cSZvla5ZTCt2OBH5MpPb06+3O30Mz0X9
+	 IpNI9yQSEuNoZrMIG6PIolv9WPTRzijFr9GzFNzXjDG1iLtB7fkjrtEO/mjkMRBuFubMV
+	 RQyniTe/FE6FWEBS7M6xRCIcOVUnlE+su9SHrC1g/umBUM5yiGkEAsOK04MqzsOfoIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792453370;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792453455;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=FYa8dnTvUVmkNxFv7StTWYj3kgHUq3JoGbZV2fZG/0o=;
-	b=WTpqmNJYfR8LFxUl8usq1KXXfb6jBSx/bP/HrSeA35sw+kmGaY5tUKe1V2XiG9wM2H/R
-	 RCnaHRiCfFD/0N034LUcouHoIG56voRt2TjZDWbFD3JfVPeUbRhhXA2UE9CnJ0gd1VKd2
-	 4d7IIHsAPkULobfkv/reiAkCnOXs8eIbdO1VStwN+o7XaV8jmScgGn9suS35XIT4FD38h
-	 PHDsR+o1+8DYXFcB7+NQM0zWtM6gZprSb2WQEG0nPeliXW5DUyjefj4TZHeo1xCaN3SQQ
-	 Bnrw67Gz4OV29Hrkq2KflE/Sn1Hg/OvZbMhPrNb/NrpO+tNepBulM4AFxkQNQzL85IA==
+	bh=iWaneoGvSevT2qLDl/RQQ7ikbJCjiV85eIMPbZ/YnAs=;
+	b=QojQBg4QNnKWsWEiYTMEdG1lbXOYjhU6PNYcZOylAGYItaRQuiCcl1hrclviYCWudBL5
+	 d7SbQQyQefBPvtK0lXyzzxQrsF0idddjVqgCTu8er8wwX9Uj6dVSbuGDHXu7I18864y6o
+	 Hj8n7eW3gaA5/rUyyqxZl7iMBLnAP8DodhZSMvPsODB4Rcy5+o646s89vg5fcXDU/3hgI
+	 eOMKQ8YkacHJPskIzTkscuXmzgEigIgR3WyQYdhN6BTGZl0u45ZP1rhMR4GVd2+4HmLf5
+	 WK3mdHxC7pp4pG/wiKoS0BmuQunPEExgZjvI0DAkpICS8o2sI65eQBusODjumR05/uQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FD861fDb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I+yuYn1H;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C29F606A319;
-	Mon, 19 Oct 2026 23:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A700606A31A;
+	Mon, 19 Oct 2026 23:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FD861fDb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581C81F000C6;
-	Mon, 19 Oct 2026 23:42:49 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I+yuYn1H
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86951F000C4;
+	Mon, 19 Oct 2026 23:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792453370;
-	bh=FYa8dnTvUVmkNxFv7StTWYj3kgHUq3JoGbZV2fZG/0o=;
+	s=k20260515; t=1792453454;
+	bh=iWaneoGvSevT2qLDl/RQQ7ikbJCjiV85eIMPbZ/YnAs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FD861fDbm8GtaxjHtgQ5PMUOMr0YwWlb/t/5/S/OJfxB1zoGoLnAOCSdf2VnLyN0i
-	 oparZiRwQHeuDBkTg9qh7DJBucW1pK2jk/Y6yHptT2FBLiWRkE+30t6Y3bbecYI0U7
-	 2q76LTQGsJzDLloZ4LlmamzH5ftVhdiklYJvyp9A4nxStdHqgzInDItodWnDNU4iBi
-	 cNsnQ9qnfxgvzJjQjDJn0sGiSlZzvZqFcqBmtonx9CVxCf8o0tY1sXV9UOIVe0ittp
-	 VIVDG3cwaXFvM2TaS0xe2MM2PhSyxGcAEAlLghSCuUmXaVCanYNjJGIEbJ1PitP5Id
-	 HtwOfdN3Tt52A==
-Date: Mon, 19 Oct 2026 16:42:48 -0700
+	b=I+yuYn1HdQwYwdD2TVn9uHXgbvRSznVKJFHK8A8UNpYSvcY2i26SC5Jofx9/x1GDr
+	 HvMR1uFZftJcPQpIL0VzcDlnS7cVF55kJ9p3tllY8DS1QiyMsb6DvzqKdyur4tFmNT
+	 jb2nRzYHWe12wLaHWsTDGVJHHt8zNRh7NWf1KYyXBXSn5FMXXOcIA3T9ESmRCw7L1f
+	 3+rwdnFYRvEAYLE6ataCS9hTgo6S7P/mJ2VsHx42JCPPOJFHT8vtnamSgoaVa2sE0K
+	 htrrHsRNUfAUctKh8dViHOrFq6lrCkC2K7EArXPx+46iitgtlI8wFINzEbw46c8dhQ
+	 TnofILXUyff2Q==
+Date: Mon, 19 Oct 2026 16:44:13 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vladimir
- Oltean <olteanv@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>, Daniel Golle
- <daniel@makrotopia.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell
- King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>, Joris
- Vaisvila <joey@tinyisr.com>, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
- mfd@lists.linux.dev, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v25 04/10] mfd: an8855: Add support for Airoha
- AN8855 Switch
-Message-ID: <20261019164248.037971c8@kernel.org>
-In-Reply-To: <20261009161102.38961-5-ansuelsmth@gmail.com>
-References: <20261009161102.38961-1-ansuelsmth@gmail.com>
-	<20261009161102.38961-5-ansuelsmth@gmail.com>
+To: Selvamani Rajagopal via B4 Relay
+ <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Cc: Selvamani.Rajagopal@onsemi.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Parthiban Veerasooran
+ <parthiban.veerasooran@microchip.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Richard Cochran
+ <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Eric Dumazet
+ <edumazet@kernel.org>, Piergiorgio Beruto <piergiorgio.beruto@gmail.com>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Jerry Ray
+ <jerry.ray@microchip.com>, Ciprian Regus <ciprian.regus@analog.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH net-next v9 00/11] Support for onsemi's S2500 10Base-T1S
+ MAC-PHY
+Message-ID: <20261019164413.5d4c6eed@kernel.org>
+In-Reply-To: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
+References: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,14 +75,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  9 Oct 2026 18:10:49 +0200 Christian Marangi wrote:
->  drivers/mfd/Kconfig         |  14 +
->  drivers/mfd/Makefile        |   1 +
->  drivers/mfd/airoha-an8855.c | 579 ++++++++++++++++++++++++++++++++++++
+On Fri, 09 Oct 2026 10:12:20 -0700 Selvamani Rajagopal via B4 Relay
+wrote:
+> This patch series brings support for onsemi's S2500 that iss
+> IEEE 802.3cg compliant Ethernet transceiver with an integrated
+> Media Access Controller (MAC-PHY)
 
-You didn't explain why the MFD is needed and more importantly what
-merging path you expect. We need an ack from Lee, at the very least.
-Given the merge window has already started I don't think we can
-do the necessary dance in time.
+You are expected to reply to the AI feedback, if all of it is invalid
+(in your opinion) one reply to the cover letter saying so is enough.
+Given lack of reply and the 10+ Medium severity issues I'll assume
+this needs a respin
 -- 
-pw-bot: defer
+pw-bot: cr
