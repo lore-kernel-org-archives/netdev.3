@@ -1,71 +1,118 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6185739FCE;
-	Mon, 19 Oct 2026 00:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12F913DDAE
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 00:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792368169; cv=none; b=oYGYiF5zAg3XvKMbEB9Qnxki6ZmjGkzwLBeyYCq/83QrYXx5wCHXlUkL4rkA2g7GD/RLAMcM6yJvSpYS0b8saw4mqy+lm0uNk+Vya2dODvY/dN5/YcA90YljsdDVNp/xv0SC/M54AXMjy0je7KaLMAvY5IiRxBHVoOpjShl56JY=
+	t=1792368655; cv=none; b=qQAUyxvXEmJnluqnNrrjXwfNcSDqc7Fur2micu79RS5xegshbh55Y9JNMrqSeKBv8OIRzMV88t+nvp6lrKMV7XZ1vnAsFsOb47E7uvUXdec33Dzvjer7FMb7HIrLjPcmlwYX1z/DcURIcIcgWNt+kuZ3dM5HfI63elP9y++J8T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792368169; c=relaxed/simple;
-	bh=kiRmWbIigttbPI0W84RnZLioWzJTfvGGdwoHwvS28Gk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dCFCYONU5yLlUaXA7JM2w7eHffE530lKe/rYFaU7n1DRhw0kvWUYtIJY/tXoRF+bmiksFtm/w3ju7hVu0wI3fShHWVIkwqrTmvNoJs+0G+znwB7BfizcVzgXUa+xAnCnPtYxf86al9s2HOhtusWWLaRnYYRfV6EGpO5mwOTRxo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dx5ufkko; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1792368655; c=relaxed/simple;
+	bh=oQR1f1RasNwAug4NFhDAjr+2ufczJr8XLJFbnI5V+T4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Azf3TwWOeIdhXrTwKb9nbOHlhNNlKiG7KtThj4AQaignypkltbvESZRdKAIcirMb6DVkjH1z0rmItaYOv2XsnHSox2U/9XYaE2ch0K8RAt29chNngn5r+qp9up5V6DhfwgLYnzJLTc/6BU7+j5YKhE5T2NcZmCOhdPaz59g+vv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=ZUwvwRE4; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dx5ufkko"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=8ET68I96kFH7mW1zapDe0LJP2HJVVap3gTcE6h7LnlA=; b=dx5ufkko67FlnqlX+OOn1XbcGU
-	bYebHX8uIcCLRGyO6xUzhVU/86qZ0JXSKcUqGh6rgJAD8m+jm1yCQ0FngjsDf6n1MCHekC4O0miMR
-	QUr8fvjNjZF8knxYBYWXYiSgyzP/aWPa9yKfouYi3bOAYYPnF8pZbvcXLl+kXzQ6wbR8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xIapi-00BXLf-53; Mon, 19 Oct 2026 02:02:30 +0200
-Date: Mon, 19 Oct 2026 02:02:30 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ross Cawston <ross@r-sc.ca>
-Cc: lee@kernel.org, pavel@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, chris.packham@alliedtelesis.co.nz,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, linux-leds@vger.kernel.org,
-	devicetree@vger.kernel.org, netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="ZUwvwRE4"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc751eddf25so807546a12.3
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 17:10:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1792368653; x=1792973453; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oQR1f1RasNwAug4NFhDAjr+2ufczJr8XLJFbnI5V+T4=;
+        b=ZUwvwRE4huz7g3TAb3YokAiF7pX+g9Mn8AlR+jVJFa0Aqzk92oHDAg6Al8PgRqigq+
+         1EUd6OeXPKSV3hwmfDRYup+KG6FIiNiEKejP4sKvNXhPGVXTVldAyTOdUyywEYz8EHLf
+         wolImaXuV5E8DVS03K+GCrN88BH0/giAemGP/UdYNycEfJdkFtmbaWWLxItE8G6qjn4b
+         YLb2BGZEMU2iJa3o18G24x3AwNmn9Y+o4qEMdmeHkuRuFqdTVj9sLIqp9U/zMflaEvtR
+         WuuGd5QGoAunkRnCMnQy/NkC0SlnTOCmb4BeUqmPhK9qqd3hZPTpBO6UC1UA/uCu9Srt
+         41zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792368653; x=1792973453;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oQR1f1RasNwAug4NFhDAjr+2ufczJr8XLJFbnI5V+T4=;
+        b=PjWSfMRBygY2GpICASxjV0I1QwNdcIg0Fskkz5qJFzlx+ZlLsKiAIZo759O7FbabTb
+         H6Lw56EDLK145xsd1JvbYzgqXmY1lbl1ij+uNKDdfHK8QLsXK24Ig7g3we+1XOiBdMvW
+         P5XMpRQs+ifgvefzSrFD/V/LluIbX9MAzd3Tx3A8gUCRWoXFKnpI6PYxlTT/LuaBK3MB
+         oSVdScZXZPFSA3uyOzK9pL0T6anLMwG2idRGp+u5u+vh/1x4vwqUN8IwjGj5+so/tN+H
+         sdVKVkNurmNoFr6j5YuJRd2MUczU5wWjEoQ2z8DaMrmW7+wNhBGfLT4jxP0tYWgO72e7
+         Ws2w==
+X-Forwarded-Encrypted: i=1; AKwUvBynD/JBB/qe8MmxA9lW5nL1YULGTREB7aasn7NBnUS7PqI2+L+zvqP2hjUuetXLH0Fo30C74NA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIpUMoYMjqD3XYLtkxSAF2yLFQBMc8fL9UKFoTQCazWC17J0UaK
+	dldPSDg77K/ABz2/1rfrDytYmPRFA3BMmFgBJIHGibOB6rzlbfmhpHxyYMh/wIsAESY=
+X-Gm-Gg: AYBFou19wKe6wZfYq2DGBAsTxclC54Tk58IQaf1tl6T7J/SzTZyi4R7yfFVYXWL7beE
+	LxonvBitkWV6uQwQcgpdD1dfQeZem9n9wn6Bf8UUYIEdgtyIj4eox97iwy++FxSzIIkdWcv/lVl
+	d/VJl3D5YwCXCgpZBoCe/FKwGkhJ6JGantAcqRbL15w6m7Ay0/6NMcAVI95zh8OSxNWuun5xwjQ
+	vAf6P0Y0K56P5vYGx4v05kmjL5o16j/3FQPfNmCovNY41ZHc4HDpEoRbXNa6pCCZIZxLZOpMKOD
+	XdRw5RefW5zaqUjyJeTJkrD6mJq9jjOVSTWNuNk8ZOjG6DofeCGFJ52VQTR/kXOIrwg7Pd77jg6
+	59Jduyp8GuuE2vZ1DfqssGFnCn3rKnQadBSVyRJT5nWrUn/S732s5ximrJwLOD62TSuozbRd2+3
+	QzKxsOA60VRxnzqjnBIhGCN3YQJhouMgAv8ICNLa4bOL/RisMx+f7u9gKOvni8UvmsTC9zOB5J+
+	HxrOg==
+X-Received: by 2002:a17:90b:4cd0:b0:3ac:a203:e0a5 with SMTP id 98e67ed59e1d1-3acef104296mr5267670a91.11.1792368652920;
+        Sun, 18 Oct 2026 17:10:52 -0700 (PDT)
+Received: from yhlee-960QFG.. ([125.131.91.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac945e74bcsm18750297a91.3.2026.10.18.17.10.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 17:10:52 -0700 (PDT)
+From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Fan Gong <gongfan1@huawei.com>,
+	netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xin Guo <guoxin09@huawei.com>,
+	Gur Stavi <gur.stavi@huawei.com>,
+	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] leds: add Realtek RTL9300 port LEDs under software
- control
-Message-ID: <38ca5375-ecea-4361-ab26-c044f38ceadb@lunn.ch>
-References: <20261018194339.132-1-ross@r-sc.ca>
- <59f75e7d-9b56-441d-a4b5-58ad3862267e@lunn.ch>
- <20261018232015.527-1-ross@r-sc.ca>
+Subject: Re: [PATCH net] hinic3: bound the Rx fragment count to MAX_SKB_FRAGS
+Date: Mon, 19 Oct 2026 09:10:37 +0900
+Message-ID: <20261019001037.3496843-1-yhlee@isslab.korea.ac.kr>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261018170531.bILLh5Zw@linutronix.de>
+References: <20261010030901.1712792-1-yhlee@isslab.korea.ac.kr> <20261018170531.bILLh5Zw@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261018232015.527-1-ross@r-sc.ca>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 18, 2026 at 04:20:14PM -0700, Ross Cawston wrote:
-> On Sun, Oct 18, 2026 at 10:36 PM UTC, Andrew Lunn wrote:
-> > Port LEDs should be within the port node of the switch in DT. Ideally
-> > you want all LEDs for a port to start the with basics, on/off control.
-> [...]
-> > So please don't make these LEDs special.
-> 
-> That makes sense. The catch is that RTL9300 has no switch driver
-> upstream yet, so there is no port node with a driver behind it to put
-> them in: mainline only has drivers for the switch's I2C and MDIO
-> controllers.
+Thanks for the review.
 
-Markus Stockhausen <markus.stockhausen@gmx.de> did a lot of work on
-the MDIO driver, based on what is in OpenWRT. Maybe he plans to work
-on the switch driver?
+A well-behaved device can't reach it. rx_buf_len is fixed at 2048
+regardless of MTU, so the frag count is ceil(pkt_len / 2048): a max-MTU
+frame (9600) is 5 frags, and LRO -- off by default, capped at 32K when
+enabled -- is at most 16, both below the 17 the array holds. Only the
+16-bit length field in the completion descriptor (RQ_CQE_SGE_LEN_MASK)
+lets a device claim up to 65535 bytes, i.e. 32 frags. So it takes a
+device reporting a bogus length, i.e. broken or malicious firmware,
+which is why I treated it as a robustness fix -- I should have said so
+in the changelog.
 
-   Andrew
+I found it by code inspection, not in the field, and I don't have a
+hinic3 card, so it's untested on real hardware; I reproduced it by
+injecting an out-of-range length to get the KASAN splat in the
+changelog. The netdev bot asked for these same two things, so this
+answers it as well.
+
+You're right that the bare drop is unhelpful. It only surfaces as
+rx_dropped via ndo_get_stats64, not in ethtool -S -- hinic3 has no
+get_ethtool_stats, and the stats series in net-next doesn't export
+dropped either. I'm happy to add a net_warn_ratelimited() on the
+discard path in v2; it only fires for a misbehaving device, so it won't
+spam a healthy system. Let me know if you'd like that.
+
+For reference, eea does the same thing -- it drops once nr_frags
+reaches MAX_SKB_FRAGS.
+
+Thanks,
+Yehyeong
