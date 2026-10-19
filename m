@@ -1,78 +1,78 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7154E4DA9A1
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90824D9915
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792407170; cv=none; b=e0FyzoDSZPzm2BjFmpItoF+yv0Wi2mvcZV7EbgO7ij0g9S48J99Q3iAxfGxOhoT+H7kWTlVFhXNpPdce5dot3AI8RSTV8dPKivd1+TgskRe4mRv4gbnNfyuL+BiH3adD0TQx5+FGNdAfWQ7OmXm7dYcaxgmxAjTchZS/m/3ARmY=
+	t=1792407181; cv=none; b=LRrqWJWDSHm+StGG66Ye6x3hkS7XsgjPkW++RUC2OtCkV25nvlkpgQgPSh8K2JMHyfreRqoENgw8ofTRnd//3g0xTvNG6AnIAp2WP30szj5wOt5RgQjJnWaIb+FmKdDmnMCo+JbVajxnbIp/lWa9BpTvkIyZEhg6A8SolUafplE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792407170; c=relaxed/simple;
-	bh=21H+oiuRQhr1bTwN5k5fm68vZAo/wIv/vUXUABGcE/s=;
+	s=arc-20240116; t=1792407181; c=relaxed/simple;
+	bh=ty/ThgYQR+8E9umk7wcNM3Hc/S/Eq8NHm/I1pGnl+Pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHkRkNXVjRm2luWbVWLnUUB2taGNzitXfY+M1eL1M9ZLKAazGRvyRXhBYkaRe1liac0KKanNYVkFMw0ADg23PV4D32+Pwqr2dO9c72RnO4F1stUxK6Iqq8yPz+tEDfkrAPvrn0n5Y7hYYMgH+AwrYY8ECD/5RRHZX2WjT4I4BSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=LjiEw6VQ; arc=none smtp.client-ip=185.125.188.123
+	 MIME-Version; b=OceTd1Ocew4AiEbtHeDLhoxKHymYYfj0cjUKL3ixFX8J2Osdoq3jVk426sPQN2WqCu9pnNGf3oeI5VPWYiTxKEPxd94lLSiJR/WhvLQxg19ov16Dg48MhcYtfick6AZ8H5+jpND0RykGc35StaeGfS5JZxvIHy6f5S2wmwW9UpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=fZ8m06GV; arc=none smtp.client-ip=185.125.188.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="LjiEw6VQ"
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="fZ8m06GV"
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 7DE483F2DC
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:52:42 +0000 (UTC)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 757DF3F342
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1792407162;
-	bh=FCCK4lukVu46UX8q/+nvsePnhoGpz0IH4czbYBTEba0=;
+	s=20251003; t=1792407170;
+	bh=dmQ8DG056mR1G4V+Df41oNaFy9WQpehuB2fwvz+jBwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version;
-	b=LjiEw6VQ38GVAI1qWjT4BFpQcwsd3O4jiuaGVgp5/ZgFqG38qQoiLKb1Dnmz+myCH
-	 7dtIekLq3JlmdT69m3yVG+/qCK3vcf6qp7zVuPZeroLQ7qrWBCzGlQkQ3vMa0YCMg/
-	 lPCyYX3T1JKoW0Bl4hbmlojTgAwTyycL33OivJHpfQ6uBFtAtFnOyCPBFxN/Q9lof3
-	 cfa3KieV8sfklpOSdoHYxRCfxmiCmhrIpYFYBmhs3yhSjjrnuERqnbWB3DRWC5JllP
-	 Z4CJCspHJVpnVSZ4AW0WIwZXHPXUfl5kmrQgdWW3xi4RrlP89ZW8dZe2bNVJiSpx2s
-	 YMKn28lBu+5nf8Qc2gKL9hXWG/z5hJzJGrfTU1aEPJSx1v2a6LVc7oHbws0XVckh2C
-	 HyRtLlslQLaCUNGUqLo60ACk9wUHWKTCGsJxehIlEcvILtNZ2ImkGTne2dcK2VUBIq
-	 s5WpTC+h6wmZMTL5/u5nzTVtWkbUcjmbqCLrukGfmQLDDrl9wMU+FtHnQSJtwLE6yx
-	 nP7ReKLom7JvKV4eQI/LoRvh1WZk9QQVGTERjd9XCJNXjpDqE9VDv4S5ViLMjoYy1s
-	 5Mj+uXx7OfWZWH8KgyG3+orriTnSejWtSHEgghkG1OXZfLXtIOC3xGO1OyHW36dF4E
-	 8ZtLFKfzKOYlqs5j0j3qAkh8=
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1bfd5516bso19998095e9.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:52:42 -0700 (PDT)
+	b=fZ8m06GV1ZuiW7JMEa3DweI+p1KXneKFN6IQfbtmuMn+RbA5evOd7jxR9SMnPO9mG
+	 3sqRWn6tUFwIpmH3eqcZXU1G1Fp/t3xCwefvGoTv+u8Bm5oPrykSgX6Zi7hZ5hg1uS
+	 Tp2UnQPTcp61/RZymmrpQTtbw59zfbb/rxGN4j+bhMl6vK3D5xgGKyf6EBB3rJE5cu
+	 GjdyoR4sdM6Y1fEpw0Zx55q0uh1E1LT28KM0mNMBV7x2Ksi7FCh7XzfmdiTuWlCAej
+	 abgCHMQ4PzvWFDUdP3Agwt68SeCPOHGuBgGQcrT3qkFNRdeMoPQi1Ml8QJbexIjtxw
+	 4WCz47U3++WgtX6FEO2xnCxWvl29AfdQCbivpJC28D17JfcvoQvqwS1PchpshJWcJ2
+	 8Lxtad8aySkna9OrLpfIbvWWc2rGH2KwFQJTY24sgjUs8XWzdkyHHuu/jt+VWlE0qy
+	 w3bSFdn4BbtleNOkNnrGvBIAslLF/pC4J0maDO+FOKEAQq8njMTk+bs2w3c+o2qMeh
+	 6pZF5EX3Qmq52EqZ/x6GTbFlSr32z+6eyuEexB1qLICbmtdiOHWMYrbZi/MLbfpQN1
+	 59R2OWwNUOtzX3fbn+3MxGrHe+BMwoZZ1JtBtSjG5ALBzsPcE34FKAo+RSCuhPXfax
+	 mExhmxu7zXsO045AvhbZdb0U=
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48c430f0f01so1665700f8f.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:52:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792407162; x=1793011962;
+        d=1e100.net; s=20260707; t=1792407170; x=1793011970;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FCCK4lukVu46UX8q/+nvsePnhoGpz0IH4czbYBTEba0=;
-        b=UeMAejdnlH0OB6ppmozM1omT5WwAMIXBx3cLU4Kzz5ppJV/Qmq41jNc186TR4Wuctm
-         RrK3KMUETwzql5dEOlM8Gm8KqMeg52i9S4dI40ZViHH3KGAx33wnfVR0z+uevdHcseiV
-         gWFkSQI9XZxffWDxWZ+mgajG9a/mPyR1MgumInCR+vTJwjZU07c6/tkNqQWlJsB+chf5
-         tumEaH72G93WlpAiUpeb27Qt1fb4vYhrExLcoBMRsH2YypwJT4QvrS4pRhG7Ew0cE7H0
-         oTONMQzQPf6uL00sCAt5OizfAXQaFgYkFlD6c8FR4qqusYb+9ZP0wzWAwLJ4KdvN3SwP
-         hdSg==
-X-Forwarded-Encrypted: i=1; AKwUvByY90ioATZRPBwapTZ0DiEYygvqzeJgK7ZUpOJLfweDD3hIQRCXjHdkuZJEEIvFZUYBv0/SBKM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIryC2BzLbAHNUAzYI4waHf4wirpzJJoUxgH/LSZ8r/sMBs3QxY
-	ksExLd2WuL5OISIouZXXVR1od7qw/5dQBr42oGZglNJCEoCtdTi0sVHt4JkzlM0a2NPV05zfnqG
-	uKrXdCM9UZc/owdKBe0LfHV2NRUWX2BzcgxnoD4lRrTvtvh55GzODbBxVgB3xsXY6Iq1n+OfFX3
-	a8Hh6xMHw4
-X-Gm-Gg: AYBFou2fjoYuVp/Pdz9Orh0kZxlU+L4uPMNsqKyUanoPPfvrQx/8GaWzJyW6bPBBnI2
-	IbXQJtiDhGtus70EbaaITMco1fCQqydvi2Ys2WxCpb5vVPhwUfMV22ofhZIvMtSnhE84QBNoWml
-	bq265msnD7xHVGdPi9SFfi4SDmFTRcZy170l9O7sIePcWTBN42lyosKeUrmvM/i4iwjEhf8cxBJ
-	+j+WzdVbrRzDYeCvHv13BSjzSyGjg7R0iX1thuvT8wS1ItozszvqTyTtp4YS556OgOdrV/AJz4l
-	/Y/G8Y/G3CiJLGV/43oEWTcPH/G1hyxiiqLdh8HhU3J6Tx25O3OdVBXwz2uZcXzNLIyEyt75EHu
-	G424QJbiq6i5tKOTWj6h/adSJMTauiYKKfDVV3kfAW2g3l+naoo+WInJHthzz/+ThEHeCNvOIKR
-	CeEMNay3LodfxbnK3LW5NBEeEC71bA5/yWDN7iQdTl8WcWfNH3vFHbDGHsNz6vNUF+47hSIi7El
-	1YLyxvzg5lzvZr3K8mjDl37uL+IGnh96CsKQx5/
-X-Received: by 2002:a05:600c:b99:b0:49d:10d6:fd55 with SMTP id 5b1f17b1804b1-4a1d75a9828mr140136025e9.1.1792407161988;
-        Mon, 19 Oct 2026 03:52:41 -0700 (PDT)
-X-Received: by 2002:a05:600c:b99:b0:49d:10d6:fd55 with SMTP id 5b1f17b1804b1-4a1d75a9828mr140135825e9.1.1792407161618;
-        Mon, 19 Oct 2026 03:52:41 -0700 (PDT)
+        bh=dmQ8DG056mR1G4V+Df41oNaFy9WQpehuB2fwvz+jBwo=;
+        b=ZNYv9qFp52TPyC1eB1vcvqcves8U8D8gIP/fLA83+p5MaX0iFF7/J9hvhjFWiysc50
+         pf+mCfExyvUZvNO+05amZzo7cNHvorAOI6/5+/3vGdaa1Fqxp0aqf8MaAWwepqcUOsO4
+         QYy9Wvsv1ZXnU2Tfzkz+rz0g04Mue2Ygy/0Gvgw+4+XKEBBxJitrV0+8CWXrwUWKthlm
+         ZwSVCnc0uyaPKuFCBZ07tCPy+AZANeqTnL9JoFgBQolCV7eeLwh56OVFRi1J2iazgdvA
+         RdbATvREl0ozH+EU5U065MeA2rI/E0AIm0P2uLNeag8trGIfvXpVJg4HkKpDNepxzNBL
+         v8PA==
+X-Forwarded-Encrypted: i=1; AKwUvBzv04XyYZTv9IU/W/obYurTnI6mFc/hIMufjyeILdmG7OkXZSjCyNEuKan+lFTFj+ikSeYg/+E=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL8LvcBqcQTtBpBpBAQP8SR92IE1z8weuEW729g72Eq5ZuiZmD/
+	w2a2Xh0/91M0assBFXwpREWS18e8jwrs5HBYiEJeSzkwAEb262Ipu+UNozA085hqn+WYzRmbr1e
+	cHhizeMJ+t+VhV2FxM3nOXkz/FiQtcPMXNApmt8ibndzAoeQvyi4hVOl3XOV5Cz7ImAkKZ/1dbQ
+	==
+X-Gm-Gg: AYBFou3iKsgm0W4Ps55028HDUiz6T7zaT1pagmaOf9mHOM26nUPZvvxVbKlOSBZX1Wm
+	AVKS0vaZ52R6LW2VS9chcuZIHJsRpMiE95sDprQepdYE3Y4bLxSUo6rLjL5XdhP3XOc8G0qP3Xi
+	uBJyYgABTJymzdbY7i243e6m3ZYHLimJBh70D6csxtsptsaAksp0yfs0TXMGf2O5zVf50AziJFW
+	YH4CWY63LkSADmpwP2fr/Z46nOuyrNgNZmzfALS/vHgewg8/zJVUUDQzX9iC8TzBpNGSZbQRFcx
+	gRmLXI5z8fg1qbV5eZyGZgYqs+nklC9HMULKrDRHJzR3HuTXSdiPhJmrrECMeHxD+cA4yUtzVTv
+	MeDaatUAhD1dHsZTqeiseay7o6P+VWBoWiLj2Aidw9fRxZDP7rliF+A3Ed8b0xeMin/Dk86c91W
+	sgairycf2k7KpbyynPO+kGaJteA8hYvtSWH7k4TUbHdntGfAwZnh/2Njv54VCJnZTRVRXlAQHoa
+	9aqbSZd777Qz9eW8H0W1BzjYXVUgeS2YpVHmhzl
+X-Received: by 2002:a05:6000:20c3:b0:48a:eeb7:5e5c with SMTP id ffacd0b85a97d-48e07f99f3fmr9466574f8f.32.1792407170064;
+        Mon, 19 Oct 2026 03:52:50 -0700 (PDT)
+X-Received: by 2002:a05:6000:20c3:b0:48a:eeb7:5e5c with SMTP id ffacd0b85a97d-48e07f99f3fmr9466543f8f.32.1792407169681;
+        Mon, 19 Oct 2026 03:52:49 -0700 (PDT)
 Received: from u-ThinkPad-X1-Extreme-Gen-4i ([103.155.100.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd510201sm23238930f8f.55.2026.10.19.03.52.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd510201sm23238930f8f.55.2026.10.19.03.52.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 03:52:40 -0700 (PDT)
+        Mon, 19 Oct 2026 03:52:48 -0700 (PDT)
 From: Aaron Ma <aaron.ma@canonical.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
@@ -89,9 +89,9 @@ Cc: Dan Nowlin <dan.nowlin@intel.com>,
 	Brett Creeley <brett.creeley@intel.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	intel-wired-lan@lists.osuosl.org (moderated list:INTEL ETHERNET DRIVERS)
-Subject: [PATCH 1/5] ice: check the full PF reset polling limit
-Date: Mon, 19 Oct 2026 18:51:51 +0800
-Message-ID: <20261019105155.3793063-2-aaron.ma@canonical.com>
+Subject: [PATCH 2/5] ice: retain the adapter throughout hardware initialization and teardown
+Date: Mon, 19 Oct 2026 18:51:52 +0800
+Message-ID: <20261019105155.3793063-3-aaron.ma@canonical.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019105155.3793063-1-aaron.ma@canonical.com>
 References: <20261019105155.3793063-1-aaron.ma@canonical.com>
@@ -103,36 +103,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The PF reset polling loop includes the Global Configuration Lock timeout
-in addition to the normal PF reset wait. Its timeout check still compares
-the iteration count against only the normal PF reset wait.
+Adapter-scoped synchronization must be available to Admin Queue users
+from initial queue creation through the last teardown command. Probe
+currently obtains its adapter reference only after hardware and package
+initialization, and error cleanup and removal drop it before hardware
+teardown.
 
-Consequently, exhausting the extended loop reports success while PFSWR
-is still set. A reset completing exactly at the old limit can instead
-report a false failure. Subsequent initialization must not proceed on
-the assumption that an unfinished reset succeeded.
+Acquire the reference before either normal hardware initialization or
+firmware recovery-mode initialization. Release it after hardware and
+device cleanup, balancing recovery-mode probe failures and removal too.
 
-Compare the count against the same bound used by the polling loop.
+This establishes the lifetime prerequisite for moving package ownership
+exclusion from a module-global mutex to the shared adapter.
 
-Fixes: c9a12d6d2091 ("ice: Increase timeout after PFR")
 Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 31 +++++++++++++----------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 04633103e3e61..82b803e74aac0 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1291,7 +1291,7 @@ static int ice_pf_reset(struct ice_hw *hw)
- 		mdelay(1);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 164428ba116a0..ddebb28b2454f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5242,27 +5242,29 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
+ 		hw->debug_mask = debug;
+ #endif
+ 
+-	if (ice_is_recovery_mode(hw))
+-		return ice_probe_recovery_mode(pf);
++	adapter = ice_adapter_get(pdev);
++	if (IS_ERR(adapter))
++		return PTR_ERR(adapter);
++	pf->adapter = adapter;
++
++	if (ice_is_recovery_mode(hw)) {
++		err = ice_probe_recovery_mode(pf);
++		if (err)
++			ice_adapter_put(pdev);
++		return err;
++	}
+ 
+ 	err = ice_init_hw(hw);
+ 	if (err) {
+ 		dev_err(dev, "ice_init_hw failed: %d\n", err);
+-		return err;
++		goto unroll_adapter;
  	}
  
--	if (cnt == ICE_PF_RESET_WAIT_COUNT) {
-+	if (cnt == ICE_GLOBAL_CFG_LOCK_TIMEOUT + ICE_PF_RESET_WAIT_COUNT) {
- 		ice_debug(hw, ICE_DBG_INIT, "PF reset polling failed to complete.\n");
- 		return -EIO;
+ 	ice_init_dev_hw(pf);
+ 
+-	adapter = ice_adapter_get(pdev);
+-	if (IS_ERR(adapter)) {
+-		err = PTR_ERR(adapter);
+-		goto unroll_hw_init;
+-	}
+-	pf->adapter = adapter;
+-
+ 	err = ice_init_dev(pf);
+ 	if (err)
+-		goto unroll_adapter;
++		goto unroll_hw_init;
+ 
+ 	err = ice_init(pf);
+ 	if (err)
+@@ -5287,12 +5289,12 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
+ 	ice_deinit(pf);
+ unroll_dev_init:
+ 	need_dev_deinit = true;
+-unroll_adapter:
+-	ice_adapter_put(pdev);
+ unroll_hw_init:
+ 	ice_deinit_hw(hw);
+ 	if (need_dev_deinit)
+ 		ice_deinit_dev(pf);
++unroll_adapter:
++	ice_adapter_put(pdev);
+ 	return err;
+ }
+ 
+@@ -5377,6 +5379,7 @@ static void ice_remove(struct pci_dev *pdev)
+ 		scoped_guard(devl, priv_to_devlink(pf)) {
+ 			ice_deinit_devlink(pf);
+ 		}
++		ice_adapter_put(pdev);
+ 		return;
  	}
+ 
+@@ -5403,11 +5406,11 @@ static void ice_remove(struct pci_dev *pdev)
+ 	ice_setup_mc_magic_wake(pf);
+ 	ice_set_wake(pf);
+ 
+-	ice_adapter_put(pdev);
+ 	ice_deinit_hw(&pf->hw);
+ 
+ 	ice_deinit_dev(pf);
+ 	ice_aq_cancel_waiting_tasks(pf);
++	ice_adapter_put(pdev);
+ 	set_bit(ICE_DOWN, pf->state);
+ }
+ 
 -- 
 2.53.0
 
