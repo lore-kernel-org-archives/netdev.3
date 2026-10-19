@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792425343;
-	b=tIUsy6oFBcrj3vYEbYIvcUpWRigbxB2WmpafRAonEoMwXyQ7LR8g73sKK6RmgVbnGQ6P
-	 CBMCZHNTf/1Vn+22+G2j+1Q3X5cExl3fmIQPxGN66q/40WQFI/gIXjsEAQirlC6yL0koJ
-	 DisFk8+DVPMB2oQNYuNDKXrIg116xUTQ0ljEbof5RprnRQoPJG4MPE71retBMUMTjL4Ur
-	 9CF39u/WpW+Df6qGFX4e3rjWC8xKKsrk3NsQTlgMVilpmTNrwlHSn5yd16QPiduaq3M5V
-	 ggZaaesC5rS8PEHe/RrYzL5wPvaKub0KxdCSMR/nWzZ2myBU89HT5qC/Jp9nQKiGqKw==
+	t=1792425361;
+	b=URUjgakXmNMUiRolOrgYSz6rn8MYjM4UauISNJMv4N20mS2QgbcmBvDxMDA7iG9mciVa
+	 6Pynqw2sDBarXWBzQLls9sia7Dy+v7sUZhgRuIesAuy1LelxxpFjv0pLBot3s2/yRK7Cn
+	 +1QsRR9+Aiwi5OXnRnWHPiAgkffOvmnv9R0j8WKx+/lAxSId57MjtZk4TlQwUvVz3gJQe
+	 d2G2Yu8Si615Cwxs8Epf7jQ31kV00KosX1aMDobYryEyg8tL7m4lmQ5LBSpP0QHT4fFye
+	 2iNY8guwT/WFD2f/oq+cWfUVgC7GdfC2QyVB1t1l9HYdPqgCS9PDZtqu99N604vPIbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792425343;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792425361;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=BA9zoqXOo/u1x2NpKUaBSGpkeU42OJi0fUHglu0fhGGFcqv5igRFimf01C7plC6/EkM7
-	 971SueuE0+hI+pBPQYI8ZwPkA3p+w1IxUVxbGN19dQe7rloGDNOjwmajlqEY1HIUab0K/
-	 nF6OJjlMvKDY/KyxqdjWtmUpDT+xaBreZ2FMeyDRzY3MbMxYJS6fbRp2Cxm2IhZDJOscB
-	 RvAe3tPAs4pgttFrAi3ItdnbUPVaP9Ph3cB4vXhCblLDWcws6lHoHQ/7ygNzbLptbn0Z5
-	 EIIL7I4wPPLlrax6gwp5GSu+6rXOppZ9px7JlhL7Ynm7EHjqjgSUJaKV3F8NRMC7jHQ==
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=uvFQ5aOTv0UtOOvuySazoAE5JzqAjGM3dkc+voj9yMO5GlJoV4JLkTK0NMW6oTaN1byQ
+	 4r4MimbU/Fu2NWfiyyH/Ticfc6R4JaAV1sYJSyArf4cCjrfywGpJ4P7ul0L1DBco4BZSN
+	 BtDv89pXDnoZPqZz0ABsNQPg1KL1+QGLG2oc7V6CAG/qmAOLHvh9KChViEp9KMJA90WDc
+	 CF3SFAJOWFf5CApRTqf+dpuxORMaYr0AMr/HEPAaUmd3LoQ+ilsVw8fPPisnJt7egV35M
+	 j2Hj6VFxOLJv6l3coVP8wvdVXQdlRP3Lpst8X0HI3ZRzXB56+eO16xNLDQCTx9EztDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PT3bTU1L;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HKJDx3ed;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A078606C158;
-	Mon, 19 Oct 2026 15:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB59E606A336;
+	Mon, 19 Oct 2026 15:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PT3bTU1L
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0288D1F000C4;
-	Mon, 19 Oct 2026 15:55:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HKJDx3ed
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1685A1F000C4;
+	Mon, 19 Oct 2026 15:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792425342;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	s=k20260515; t=1792425360;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PT3bTU1LF3kvkeZfpU/17oVGDFJU+mvPHPE8xSHnWvvlJMv8PRmawiPhYpEv2xah2
-	 zzmhh+rkAVFlyZ4D6Q/0rJeph7myDtuaUDA6PPUvKmZPolmARRluIgbJaEN7qNFe+2
-	 J0TT50RslHVfmGsWJ3FJzYy7HSUAnWvDrucbdERHYOUYNzinMWOiqC9DRw9zgmvlxI
-	 LRblNkTdnP9qI037SRTKOhR/K2/OJcQb0GP4yfREQAjhzmS6+E+wBR37OF2uACdZoB
-	 wiUiV3UlX5DyQ5AoFi1DQ0hz2snyXgPV/GaDUWk6zsZwxUET/HBhUrxx2AdhflnOAN
-	 C99T4hmaWBPfg==
+	b=HKJDx3ed5vw6eUKKRjh5bV2rSH6K1oZ/DXU8oe1/gYf/B0Ox+yNgynrxsuzoY+rPy
+	 iFSekAsNwbx9Uc5mQstQindUE1VR+qKKm5GMygT6fAoWWqYGLohoQ8EmeXJTmfGubA
+	 1lVNvl5llzEKYYkK0FX0X/NydOCu+tXzahLSeP5qjX3P0zXAujiKk9Hqm9x2Z572rd
+	 YpWGnDNj/N+S8Y7Xg6ATtbmLXCSmL61RKw2SdYLori1PG1oBnPzbijeaxzk4Ykqvto
+	 9yN7yeKQQ3+3SWCzGpTkBEkSlCrTYwwk0biHBWvBrrhzOEhpxK73/2EvW5qnEq+D1Z
+	 uyGCTJxicqFEg==
 From: netdev-bot+sinfo@kernel.org
-To: Qihang <q.h.hack.winter@gmail.com>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
- herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v5 0/3] xfrm: fix vti tunnel device use-after-free
- across async crypto resumption
-Date: Mon, 19 Oct 2026 15:55:41 +0000
-Message-ID: <179242534145.3290.3021737362277964895@kernel.org>
-In-Reply-To: <20261019153247.89957-1-q.h.hack.winter@gmail.com>
-References: <20261019153247.89957-1-q.h.hack.winter@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 01/10] netfilter: nf_conntrack: avoid truncating IPv6
+ nexthdr offset
+Date: Mon, 19 Oct 2026 15:55:59 +0000
+Message-ID: <179242535961.3290.8970179296932068352@kernel.org>
+In-Reply-To: <20261019150249.1879516-2-pablo@netfilter.org>
+References: <20261019150249.1879516-1-pablo@netfilter.org>
+ <20261019150249.1879516-2-pablo@netfilter.org>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -73,6 +73,10 @@ commit messages seem to be missing some information:
  - How the issue was discovered, e.g. hit in production, hit during
    development, syzbot report, manual code inspection, LLM or static
    analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
