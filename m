@@ -1,77 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792421716;
-	b=23bMFOgtnP64xFTrYT8fOzfq87Td+tQ2Cq4MZhTDk/n5cy6b5II6e4bmx3E+D1eAs/iJ
-	 h33MExCQ9rKBxLYHBdqcKMBNZLQTNahlQXPD8jLd+428KPBiCeftTA3u+X6pZoKD7thXk
-	 hZaMc6m7r7Wz3Uq8xVr7yE18xUJT6WS8D5TQMdJ8xMJ1wHaBMGXMKE57Ufe99SjXK/1/p
-	 3C7AZii7emSkwPyVkqmus1WNGYLqZi+opCPHZgdVDVVH80rxJTtGgGepjP+PHtHKZEHsy
-	 Ig7gOsQWh2bAuaTBLZeKqGQprcn2O23MPJz2b7WWLvEyy3EDZ9OWkw0L+A+AJH3BhiQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792421716;
-	h=Received:Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=GGQDu3KpUoZE/p1c8fjAoWeH2M3H1CvP9vTMz0v9H0c=;
-	b=cairlKnInfMpwvWqEp0ue+FxJCQOVF/y5AftyvCMXrQPHFAkcdH+2GihOH8KpYDTEgCI
-	 GXVig5TJlusxPNtN1Luc1/Aceea+/ePKJM+8h3a5YRpfT4iXYYD/pYjWI0aFQDMHS8K1l
-	 OUpoZp8Z0GqojnUsfxRBN7Mq8hweJkZwUJq/cZVcuHywaP9pgl+uG/X6ZwD/mMdncdky0
-	 W2pMUTGfymw7UmZpc79KSMKlrnXGa4wUOWnFsdxaII3JviyP9PWOka5W6x6GAFNyNcXq4
-	 0a9OX6HdQwuKh6SoWQ1NDy6i+xf0tZBTklgtxWmiYi00NhT43iWIvsvwX75SIQHcpKw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="J/WZxcGZ";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-Received: from aws-us-west-2-korg-listserv-1.web.codeaurora.org (ip-10-30-226-211.us-west-2.compute.internal [10.30.226.211])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A9D606EFF9;
-	Mon, 19 Oct 2026 14:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J/WZxcGZ
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792422188;
+	b=BCt26keuyrOJ6+kh3773vLp8doBYspgVG0CDiivI9tbogK5Y6PQnON2xB4RCNI7/RZki
+	 3cuiuuf1nAstJ9KrUXw4Yp71wysUaZ7gZvLqcw4HwAXo4PQek3JEnZXHydCaUEsbDulMu
+	 nLeBThGAkvarFcB89UejBOoFsI2kAJKXDt7ryuzAzUM/+ZZy+AAH9cojNYojjuLRbFnNq
+	 s1RLI1iZ4S5hPCAkoZ13Po8SfyLjkiPXjw79oa5X1b31h3Y7Q6kLD7TaSCmfm57pfk0dF
+	 bH0EiSeuivGao6hXYMrGwPB515p9yqM6o3lmyg6Ywz51h3AGbpW9nHfKNE62d27yMgQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792422188;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=NO/QAgPEr2LWUU2Z1qiLNJpJIA4pu0lHFz79MIU/6To=;
+	b=bk7u+rVJreWDxSSJ2+8e+1l0llRM7Rkp15qoafsQQvG/NbdQTrYeqxJsP6N87yJPI/4l
+	 wjD0EqoZu6bqkQ7mRem+9m09sWqrZW0QgH//eEsyPIcUjUfZwlmwLR32QGg5zOrNPlPml
+	 Zs/srzRA9Ir0HOLmT3mlFILrhXULRf7YR6n7uHdTJVIHyiZ3ketAFUTtoY3803m4J5w27
+	 BZ1WFKkUnlQRjPmxwdiPSfIW6DJsJ6ZHddtaWBqGD/A6PGn4cHdSFQfQViPkB4ZhLZvut
+	 Clxnm8SMj5HpIS+G5W7eIFl9K7XyNg3ErbV9vyODyJDKXpmx3w6mA3iH08jafqgzLPw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=vKcvGQ4r;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01866513FF;
-	Mon, 19 Oct 2026 14:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792421716; cv=none; b=PTmwy4xYTvIrLUb+zxZKAY5M0EDZu7rtd4myqWdCyaEVGS/40CAnhhqs8G+3sjK+KIzekM6ooQ/Z1BlewUcVJwcvRwV+NCd7uMWcFR5FvjoQRmNl+YPuYT7ltcXtZFt3ywlU+WH1ic2BTqq57ayvCIsCPMTqMhptyOfYBRM35yE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792421716; c=relaxed/simple;
-	bh=yeJUiVE364TkyBT9KxNNYFIJYnduRzkfoILBp0l6keM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MUEzAgiC/7qqJGN9msphzwb4GSSh6Sn5Qmk/4/hZRkGdU5pBfNLtmuTxmS/V+2lpc0QDxLYc0jx/ocQgngmp/vgB2rAK5JLA1YDZkLFumVZNbXJlkiSEKbuQOUGua7T+ePubZM7/+Yu4zcFcrc0Hq0lEwBFLcd40fJmQ3y8kjCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/WZxcGZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE9B1F000C4;
-	Mon, 19 Oct 2026 14:55:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792421714;
-	bh=GGQDu3KpUoZE/p1c8fjAoWeH2M3H1CvP9vTMz0v9H0c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J/WZxcGZYXXM8Jg9S0jNEMAq/kdsDaU3s4HerB9xq/QAxe9LKLbN8RVpqlzIceM1x
-	 x2pu4hX+wS8EwUUC9/57B7m4jyuM3/4GW5NsqReaV+162rJwDMRLjcZosTdHuZDzu4
-	 psqYno6Rcb6zfHY7yoSfVzEFixfYGLO8/bcrDogPJ6GrCWd5R+VGnyncnWaZ5Qygup
-	 rV2L5WKKgYKo1JDJuStx9JLzDBjWi+xodMTIgXG+x5cE/VU21KCJ2XtrvFvsBd9w7c
-	 M120u8A26Eq/BIVjVjGQ9bCGDogpAdmlZ8TDb1qnMttEn/CirDw3rmyfRR1Zwi7E0Q
-	 s/V3+aBAkHXCA==
-Subject: Re: [PATCH net-next v6 5/5] selftests/net: Move the XDP feature test
- to drivers/net/hw
-From: netdev-bot+sashiko@kernel.org
-To: bochaolucky@gmail.com
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, shuah@kernel.org, davem@davemloft.net,
- kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- andrew+netdev@lunn.ch, edumazet@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
- alexis.lothore@bootlin.com, lorenzo@kernel.org, tiozhang@didiglobal.com,
- willemdebruijn.kernel@gmail.com, petrm@nvidia.com
-Date: Mon, 19 Oct 2026 14:55:12 +0000
-Message-ID: <179242171266.3135.15973309239973345340@kernel.org>
-In-Reply-To: <20261018-xdp-v5-send-20261008-v6-5-7336e1282ca3@gmail.com>
-References: <20261018-xdp-v5-send-20261008-v6-5-7336e1282ca3@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0A8607D34E;
+	Mon, 19 Oct 2026 15:03:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F0A8607D34E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=vKcvGQ4r
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792422179;
+	bh=NO/QAgPEr2LWUU2Z1qiLNJpJIA4pu0lHFz79MIU/6To=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vKcvGQ4rceH0yefPHBJMeACMGW89fPb15Z/YI+xO4zyYYg8Zxq1fXUzJg55TsNhD3
+	 SJ1fSOgXnD1LUX6HFU/rtGEa3Mx4xp9v335dD8jHQ1FrK5qXP+uUbCdiUwcZ1TvVZT
+	 0znyXylC128naJ1kIBBWN6OHZqxtg8MXEdurtMwUrhTGfwhNqCHDhQpPo7IuJPDHOk
+	 iw3Zuvg8UbhhCTeY9udyPXlpYKayLSaOek/Oi9bQyMujVnTM5dLfAGf6mVat59bVUN
+	 8zUKQIPb5RNPVI/HAwsGKP7VGN2/vXYTXbSHTHoX1xxLFAw3hBVlysPWB+C1lAJhCE
+	 CX0HZqM/aEUKQ==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 4E82C6005E;
+	Mon, 19 Oct 2026 17:02:59 +0200 (CEST)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 02/10] netfilter: nft_payload: restrict checksum offsets to known values
+Date: Mon, 19 Oct 2026 17:02:41 +0200
+Message-ID: <20261019150249.1879516-3-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261019150249.1879516-1-pablo@netfilter.org>
+References: <20261019150249.1879516-1-pablo@netfilter.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,98 +71,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+From: Florian Westphal <fw@strlen.de>
 
-Low priority / nit picks for your consideration:
+We need to prevent userspace from corrupting e.g. tcp->doff, because
+many locations in conntrack and conntrack helpers rely on
+nf_conntrack_in() having validated the packet headers.
+nft_payload allows to alter headers later which invalidates this
+assumption.
 
-- [Low] The patch changes Remote.deploy() in
-  tools/testing/selftests/drivers/net/lib/py/remote_ssh.py from…
-- [Low] In dut_run()
-  (tools/testing/selftests/drivers/net/hw/xdp_features.c line 490), the…
+The 'Fixes' commit restricts writes to safe fields, but there is
+another side channel: the checksum location.
 
---
+Restrict this too.  Reported via sashiko/gemini.
 
-selftests/net: Move the XDP feature test to drivers/net/hw
+Fixes: 112e447d17f7 ("netfilter: validate L4 headers after userspace packet writes")
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/netfilter/nft_payload.c | 40 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 7 deletions(-)
 
-This commit replaces the veth-based test_xdp_features.sh script in
-selftests/bpf with a NetDrvEpEnv Python test under drivers/net/hw. The
-xdp_features helper is now built there with the shared BPF rules. The
-commit also changes Remote.deploy() to pass scp arguments as a list.
-
-> diff --git a/tools/testing/selftests/bpf/xdp_features.c b/tools/testing/selftests/drivers/net/hw/xdp_features.c
-> similarity index 99%
-> rename from tools/testing/selftests/bpf/xdp_features.c
-> rename to tools/testing/selftests/drivers/net/hw/xdp_features.c
-> index be4acb768e0a2..a0ec7000e444b 100644
-> --- a/tools/testing/selftests/bpf/xdp_features.c
-> +++ b/tools/testing/selftests/drivers/net/hw/xdp_features.c
-
-[ ... ]
-
-> @@ -484,6 +485,7 @@ static int dut_run(struct xdp_features *skel)
->  			"Failed creating control socket on device %s\n", env.ifname);
->  		return -errno;
->  	}
-> +	ksft_ready();
->  
->  	/* Allow remote startup and BPF loading on slow test machines. */
-
-[Severity: Low]
-This isn't a bug, but is this comment above the accept() retry loop in
-dut_run() still accurate?
-
-Nothing loads BPF while this loop waits. tester_run() on the remote side
-only uses TCP, UDP and AF_PACKET sockets. On the DUT, main() already runs
-xdp_features__open(), xdp_features__load() and xdp_features__attach()
-before it calls dut_run().
-
-The README added by this patch also says the remote helper "does not load
-BPF".
-
-The comment came in with the earlier series patch "selftests/bpf: Send XDP
-feature probes with AF_PACKET". That patch took BPF out of the tester, so
-the comment was already stale when it was added, and it stays stale here.
-
->  	ctrl_sockfd = -1;
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/drivers/net/lib/py/remote_ssh.py b/tools/testing/selftests/drivers/net/lib/py/remote_ssh.py
-> index 924addde19a3e..5e2950a7c95fa 100644
-> --- a/tools/testing/selftests/drivers/net/lib/py/remote_ssh.py
-> +++ b/tools/testing/selftests/drivers/net/lib/py/remote_ssh.py
-> @@ -35,5 +35,5 @@ class Remote:
->          if not os.path.isabs(what):
->              what = os.path.abspath(self.dir_path + "/" + what)
->  
-> -        cmd(f"scp {what} {self.name}:{file_name}")
-> +        cmd(["scp", what, f"{self.name}:{file_name}"])
-
-[Severity: Low]
-This change looks like a standalone fix for the shared Remote.deploy()
-helper. It isn't really part of moving the XDP feature test.
-
-When cmd() gets a string with spaces, it splits it in
-net/lib/py/utils.py:
-
-    if shell is None and isinstance(comm, str) and ' ' in comm:
-        comm = comm.split()
-
-So a local path that contains spaces reaches scp as several arguments.
-Existing callers already hit this, for example main() in
-drivers/net/hw/csum.py:
-
-    cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
-
-Would it make sense to split this out into its own patch with a Fixes: tag
-for commit 1a20a9a0ddef ("selftests: drv-net: define endpoint structures"),
-where the scp string was introduced? That would make the fix easier to find
-and backport.
-
->          return file_name
-
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index e315d35f73d4..5b76af68b704 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -20,6 +20,7 @@
+ #include <linux/tcp.h>
+ #include <linux/udp.h>
+ #include <net/gre.h>
++#include <linux/icmp.h>
+ #include <linux/icmpv6.h>
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
+@@ -1008,11 +1009,14 @@ static bool nft_payload_validate_inet_csum_offset(const struct nft_ctx *ctx,
+ 		if (priv->csum_flags) /* makes no sense, asks for "re-update" of L4 checksum */
+ 			return false;
+ 
+-		/* no further check here; offset can't be negative so bogus
+-		 * offsets can corrupt L4 or payload but not l3 headers.
+-		 * We already allow arbitrary l4/inner payload writes.
+-		 */
+-		return true;
++		/* Validate csum_offset is one of the supported transport header checksums */
++		if (priv->csum_offset == offsetof(struct tcphdr, check) ||
++		    priv->csum_offset == offsetof(struct udphdr, check) ||
++		    priv->csum_offset == offsetof(struct icmphdr, checksum) ||
++		    priv->csum_offset == offsetof(struct icmp6hdr, icmp6_cksum))
++			return true;
++
++		return false;
+ 	case NFT_PAYLOAD_INNER_HEADER:
+ 		return true;
+ 	case NFT_PAYLOAD_TUN_HEADER:
+@@ -1046,6 +1050,27 @@ static bool nft_payload_csum_nh_write_ok(const struct nft_payload_set *priv,
+ 	return false;
+ }
+ 
++static bool nft_payload_csum_th_write_ok(const struct nft_payload_set *priv,
++					 const struct nft_pktinfo *pkt)
++{
++	if (!(pkt->flags & NFT_PKTINFO_L4PROTO))
++		return false;
++
++	switch (pkt->tprot) {
++	case IPPROTO_TCP:
++		return priv->csum_offset == offsetof(struct tcphdr, check);
++	case IPPROTO_UDP:
++	case IPPROTO_UDPLITE:
++		return priv->csum_offset == offsetof(struct udphdr, check);
++	case IPPROTO_ICMPV6:
++		return priv->csum_offset == offsetof(struct icmp6hdr, icmp6_cksum);
++	case IPPROTO_ICMP:
++		return priv->csum_offset == offsetof(struct icmphdr, checksum);
++	}
++
++	return false;
++}
++
+ static bool nft_payload_csum_write_ok(const struct nft_pktinfo *pkt,
+ 				      const struct nft_payload_set *priv)
+ {
+@@ -1055,9 +1080,10 @@ static bool nft_payload_csum_write_ok(const struct nft_pktinfo *pkt,
+ 	case NFT_PAYLOAD_NETWORK_HEADER:
+ 		return nft_payload_csum_nh_write_ok(priv, pkt);
+ 	case NFT_PAYLOAD_TRANSPORT_HEADER:
++		return nft_payload_csum_th_write_ok(priv, pkt);
+ 	case NFT_PAYLOAD_INNER_HEADER:
+-		/* neither offsets are validated, offsets cannot be
+-		 * negative so real l3 headers cannot be mangled.
++		/* offset is not validated, offset cannot be
++		 * negative so real l3/l4 headers cannot be mangled.
+ 		 */
+ 		return true;
+ 	case NFT_PAYLOAD_TUN_HEADER:
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018-xdp-v5-send-20261008-v6-0-7336e1282ca3%40gmail.com
+2.47.3
+
