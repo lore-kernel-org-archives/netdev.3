@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792427646;
-	b=pouNwORuUDtTbSjyVGeNz/o60/zZ33qXqKoPFFSsW/H/2Pxi1Mi1ctAI8+d/ZjvHIy7s
-	 oaDjCZaXmopqw0HBcCrdVPQJQTRZOtkVsQkI4XneYUbpw5VXzC7HYdRinhGe9B9ucNppt
-	 be4GZc5k3IkyNTso4IJx696MIZqjhyjb5vWMyyueNI2m/hzyoTJa7f3W1Sh3jQq40dHw5
-	 GkhPyxSoVEtD6s7SLi2vLNVopzn36thOr8J2i5mTYZn9z7aiiHa4QQHBLLAH403K75HLD
-	 xU24IydaRexTAJI314aMdpXLbhos/Dlpp8A+cajg/524MAaRleL7pTyEyh1joz/9jYA==
+	t=1792427649;
+	b=wp2BKqiX7NXIOZ1OnadKm95UczH23OPXafiOPK1oU2aSd1v9RqB1LdX41cRR7rXe0nHW
+	 q9p/ceg/KNM8gvYAJQmlP5bLFbHp5qgqpmfEcw8kMGI8+DoygpuREk/AEGuhBZ++ZqFd5
+	 RZAo5eJpFSLzIR8Wwnedxuh5QrQIHVUQl8OdeElvxTPUO52hNxBr1JJC5488VuA4XjSsY
+	 M+LEe/GFVbHuCOjVeHtG9ubxaKb6LIQAWRzt2m1FB9VjtRD0N4jx0XpB/foGFTraxbp2U
+	 1ExUgNcgDvgt2pxF6YRt+DjOVtIfWy/BW18laYr28Bt9AzE6JWnIODRAsT40pjLf8Bg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792427646;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792427649;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=PS6ZQS8kXTgxRqgfxQ1kJS2QfBiBG2NGPCiekUyrwzs=;
-	b=RMqtPOxMgsanPcz9hoQR/h7ZHY8h5hl12P9gn9CTM0K4xdLIKfB45W1jRpYiIYnwioSb
-	 UzyfZ7Stiq/XYxRcp59QMq1zHfX8OrnFaws7Al4cPlhP1e/IKj7SmtjKBG3a2A9XampRq
-	 1eu8jB5tS/MWDW2bjqt9mOM4sH5wgoVaY59pLizl8DbaT0Nsyx7R2esHxM7wjs7QePn8s
-	 U3ZtdDhYxS5UIwAPwdMvDySFXWP+SriRSj54uEEqc5hNQ9msywx/QoZ1v3+LGNHcapjOK
-	 IIfuF6sRSksEnQASpd54GROjUNIBOI3GM0hcw7N5g2YMisCOoerJ8rnMr9s0vO1YJyA==
+	bh=038d+CtBGQcERvUEocIEX4/8hI0OmAJh33SghjiJ4eY=;
+	b=fZU4o0ooCnpCTxLvGNP3h7U1VSo7G8x0N21gsI9U1tkajDJsCx1NOyPhzoUoXjOX3AeV
+	 o9V/xSCY2D74HCiDXUKpjSnvC9pNDxA1icVG1gtwEj+xNWoh34cmLBuiNU78Mj+K9wdaG
+	 8F9+Wg57h74OHSl4nz8jNig0WXClDYjwatibd5H64J4qt3vBt6zDYClUE1/jWi2ajTHot
+	 NgM3+34hdEH1ng4RBs25XoYSu+fMvQSD2Wr3YGmNRVY99C4H/3itWcCynPYy8UWaz+pH6
+	 jGMgQo1iw+cf+Tt9XYPaIV1PlLKVPxYxI8CXwlwJXY91p7l2IacWjgz+ko9rmDKMIRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bqRCxpsL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=faqDeLNx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23B0606A31C;
-	Mon, 19 Oct 2026 16:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074CC606A333;
+	Mon, 19 Oct 2026 16:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bqRCxpsL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB26C1F000C4;
-	Mon, 19 Oct 2026 16:34:04 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=faqDeLNx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5841F000C6;
+	Mon, 19 Oct 2026 16:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792427645;
-	bh=PS6ZQS8kXTgxRqgfxQ1kJS2QfBiBG2NGPCiekUyrwzs=;
+	s=k20260515; t=1792427648;
+	bh=038d+CtBGQcERvUEocIEX4/8hI0OmAJh33SghjiJ4eY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bqRCxpsLrEiIqKqTY7s/oTtiPNI0ZYzHKXQ4FQVT5c/H1IH0hCexrBCDqWGyoiAeZ
-	 NnkVgdReceQ9GSt+xDWmN6RJFBphOgDgqGDv6HZnBM0L2EiMcjUfO+bcJHfRQ2nZ3J
-	 od/3za1SuJM886ZQooxrx+wJE09fs/iMLGc4HPExEOe3/iS1csPFhAhbPjA6LOqTmm
-	 NQVtj1mPN6CoCQqUeACwsAvRzSYMVEwaYXrtz9L15aKlX2Sg0vwxMyJpFCIqvYoEmL
-	 2yxGc/Gp74xB4/dG2ihc9bhxPpYtpx8MHgZ6xuCttRM6DvzrwIwVXHzNeIXxbJ9DAf
-	 K2hjsAYypAZxw==
-Subject: Re: [PATCH net-next v1 1/5] net: lan743x: reset DMA channels that
- fail to stop
+	b=faqDeLNx4PY/DVWXymFr9gKLWzxkTjZW/YfvXDLMVy93ayn57O2cjC7EMhyhmSdRH
+	 OFM4KyxrRAUTWFYSb6XHuH+JG8Gi8wTvLN3WkpVeAh0LFZhIgM+bmnnPx18yXP5fJn
+	 eSrY5budS19skQLltYzafFdcaUkNej/MhjDm9eZLXShMFQRSX6QgFTanOLxcyZbnoW
+	 PdRAErcHRyq5fMclhP23hF1rHoRCtuUeCIX7e9AZciNWfXiWiE4oZ3fuKQDdjq7zX0
+	 rVU7lafc1Hl0Y3w0tySN5FEAml0vimNWJIFiajdS7PIyfZ8bXQsM5fOsS0lzCjC/DD
+	 uFJpeQ5UqmjjA==
+Subject:
+ Re: [PATCH net-next v1 4/5] net: lan743x: reset the device on TX timeout
 From: netdev-bot+sashiko@kernel.org
 To: cbabroski@nvidia.com
 Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
@@ -50,13 +50,13 @@ Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
  linux-kernel@vger.kernel.org, richardcochran@gmail.com, linux@armlinux.org.uk,
  maxime.chevallier@bootlin.com, Raju.Lakkaraju@microchip.com,
  davthompson@nvidia.com
-Date: Mon, 19 Oct 2026 16:34:04 +0000
-Message-ID: <179242764415.3135.15367182924729818631@kernel.org>
-In-Reply-To: =?utf-8?q?=3Cbf487e5d01fe6352069d4314087f680fea717cc5=2E1792008?=
+Date: Mon, 19 Oct 2026 16:34:07 +0000
+Message-ID: <179242764729.3135.6473581413465367257@kernel.org>
+In-Reply-To: =?utf-8?q?=3C784a571839d5dd83c2c3e8ea38844159f353de77=2E1792008?=
  =?utf-8?q?404=2Egit=2Ecbabroski=40nvidia=2Ecom=3E?=
-References: =?utf-8?q?=3Cbf487e5d01fe6352069d4314087f680fea717cc5=2E17920084?=
+References: =?utf-8?q?=3C784a571839d5dd83c2c3e8ea38844159f353de77=2E17920084?=
  =?utf-8?q?04=2Egit=2Ecbabroski=40nvidia=2Ecom=3E?=
-X-sashiko-severity: High
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,10 +69,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Critical: 0 · High: 0 · Medium: 5 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -80,134 +80,262 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch does not fully close the bug it targets.
+- [Medium] The commit message says lan743x_dmac_init() now returns the
+  soft-reset poll error so that the work cannot reopen a controller…
+- [Medium] Before this patch, lan743x_hardware_init() could never fail.
+- [Medium] On boards that use the driver's fixed-link fallback (LAN7431
+  or PCI11x1x with no DT node and no PHY on the MDIO bus), the reopen…
+- [Medium] lan743x_reset_work() holds rtnl and keeps the device detached
+  from netif_device_detach() until netif_device_attach().
+- [Medium] lan743x_reset_work() runs the full lan743x_netdev_close() on a
+  controller it already treats as wedged.
 
 Pre-existing issues:
-- [Medium] lan743x_tx_open() and lan743x_rx_open() now use the new
-  lan743x_dmac_{tx,rx}_reset() helpers, but on -ETIMEDOUT they only call…
+- [Medium] After the automatic TX-timeout reset, tx->ts_flags still
+  contains TX_TS_FLAG_ONE_STEP_SYNC.
 
 --
 
-net: lan743x: reset DMA channels that fail to stop
+net: lan743x: reset the device on TX timeout
 
-This patch makes lan743x_tx_close() and lan743x_rx_close() check the
-result of waiting for the DMA channel to stop. If the channel is still
-stop-pending or still started, they now issue a channel soft reset. The
-reset sequence is moved into lan743x_dmac_tx_reset() and
-lan743x_dmac_rx_reset(), and the open paths use these helpers and log a
-message if the reset times out.
+This adds an ndo_tx_timeout handler. The handler schedules a work item
+that, under rtnl, detaches the netdev, closes it, soft-resets the DMA
+controller, reopens it and reattaches it. It also makes
+lan743x_dmac_init() return the soft-reset poll error, and routes
+ndo_stop through a wrapper that skips the hardware close while the device
+is detached.
 
 > diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-> index 82d3ec20ba259..9e1276cf313c8 100644
+> index 8d256a80dac64..2545a846478d6 100644
 > --- a/drivers/net/ethernet/microchip/lan743x_main.c
 > +++ b/drivers/net/ethernet/microchip/lan743x_main.c
-
-[ ... ]
-
-> @@ -2221,11 +2239,22 @@ static int lan743x_tx_ring_init(struct lan743x_tx *tx)
->  static void lan743x_tx_close(struct lan743x_tx *tx)
+> @@ -1516,10 +1516,14 @@ static void lan743x_rfe_set_multicast(struct lan743x_adapter *adapter)
+>  static int lan743x_dmac_init(struct lan743x_adapter *adapter)
 >  {
->  	struct lan743x_adapter *adapter = tx->adapter;
+>  	u32 data = 0;
 > +	int ret;
 >  
->  	lan743x_csr_write(adapter,
->  			  DMAC_CMD,
->  			  DMAC_CMD_STOP_T_(tx->channel_number));
-> -	lan743x_dmac_tx_wait_till_stopped(adapter, tx->channel_number);
-> +	ret = lan743x_dmac_tx_wait_till_stopped(adapter, tx->channel_number);
-> +	if (ret < 0 || ret == DMAC_CHANNEL_STATE_STARTED) {
-> +		netdev_warn(adapter->netdev,
-> +			    "TX channel %d failed to stop, resetting it\n",
-> +			    tx->channel_number);
-> +		ret = lan743x_dmac_tx_reset(adapter, tx->channel_number);
-> +		if (ret)
-> +			netdev_err(adapter->netdev,
-> +				   "TX channel %d reset timed out\n",
-> +				   tx->channel_number);
-> +	}
+>  	lan743x_csr_write(adapter, DMAC_CMD, DMAC_CMD_SWR_);
+> -	lan743x_csr_wait_for_bit(adapter, DMAC_CMD, DMAC_CMD_SWR_,
+> -				 0, 1000, 20000, 100);
+> +	ret = lan743x_csr_wait_for_bit(adapter, DMAC_CMD, DMAC_CMD_SWR_,
+> +				       0, 1000, 20000, 100);
+> +	if (ret)
+> +		return ret;
 
-[Severity: High]
-What happens if this channel reset also times out?
+[Severity: Medium]
+The commit message only talks about probe here. However,
+lan743x_hardware_init() is also called from lan743x_pm_resume().
 
-The commit message says the soft reset is issued "and wait for it before
-anything is freed". However, if lan743x_dmac_tx_reset() returns -ETIMEDOUT,
-the code only logs it, and lan743x_tx_close() goes on with the normal
-teardown:
+Before this change lan743x_hardware_init() could not fail in practice,
+so the resume error branch was dead code. Does this new return make that
+branch reachable?
 
-lan743x_tx_close()
+lan743x_pm_resume() {
     ...
-    lan743x_tx_release_all_descriptors(tx);  /* unmap and free skbs */
+	ret = lan743x_hardware_init(adapter, pdev);
+	if (ret) {
+		netif_err(adapter, probe, adapter->netdev,
+			  "lan743x_hardware_init returned %d\n", ret);
+		lan743x_pci_cleanup(adapter);
+		return ret;
+	}
     ...
-    lan743x_tx_ring_cleanup(tx);  /* dma_free_coherent() ring and head */
+}
 
-The commit message describes a wedged channel that may not honour the stop
-request. Could that channel ignore the soft reset as well? It would then
-keep fetching descriptors from, or writing the head index into, memory that
-has already been freed and reused.
+If that branch runs, the netdev stays registered and detached. A later
+unbind then runs:
 
-lan743x_rx_close() has the same pattern. After a timed-out RX reset,
-lan743x_rx_ring_cleanup() unmaps and frees every RX skb, even though their
-descriptors still have OWN set. It then frees the descriptor ring and the
-head write-back buffer. On RX, the device could write packet data into
-freed pages.
+lan743x_pcidev_remove()
+  lan743x_full_cleanup()
+    lan743x_hardware_cleanup()   <- INT_EN_CLR write to a disabled device
+    lan743x_pci_cleanup()        <- second region release and disable
 
-Later in the series, "net: lan743x: reset the device on TX timeout" does not
-change this. It runs the global DMAC reset (DMAC_CMD_SWR_) from
-lan743x_reset_work() only after lan743x_netdev_close() has already freed the
-rings. A plain ifdown never reaches that reset at all.
+Would that release the PCI regions twice and trigger the "disabling
+already-disabled device" warning?
 
-Could the close paths act on the reset failure before freeing anything?
-One option is to escalate to the global DMAC_CMD_SWR_ reset or clear PCI
-bus mastering. Another is to leak the ring, the head buffer and the mapped
-buffers when the channel can't be shown to be quiesced.
+> +
+>  	switch (DEFAULT_DMA_DESCRIPTOR_SPACING) {
+>  	case DMA_DESCRIPTOR_SPACING_16:
+>  		data = DMAC_CFG_MAX_DSPACE_16_;
 
 [ ... ]
 
-> @@ -2271,11 +2300,11 @@ static int lan743x_tx_open(struct lan743x_tx *tx)
->  			  FCT_TX_CTL_EN_(tx->channel_number));
->  
->  	/* reset tx channel */
-> -	lan743x_csr_write(adapter, DMAC_CMD,
-> -			  DMAC_CMD_TX_SWR_(tx->channel_number));
-> -	lan743x_csr_wait_for_bit(adapter, DMAC_CMD,
-> -				 DMAC_CMD_TX_SWR_(tx->channel_number),
-> -				 0, 1000, 20000, 100);
-> +	ret = lan743x_dmac_tx_reset(adapter, tx->channel_number);
-> +	if (ret)
-> +		netdev_err(adapter->netdev,
-> +			   "TX channel %d reset timed out\n",
-> +			   tx->channel_number);
+> @@ -3431,6 +3441,61 @@ static int lan743x_netdev_open(struct net_device *netdev)
+
+[ ... ]
+
+> +static void lan743x_reset_work(struct work_struct *work)
+> +{
+> +	struct lan743x_adapter *adapter =
+> +		container_of(work, struct lan743x_adapter, reset_work);
+> +	struct net_device *netdev = adapter->netdev;
+> +	int ret;
+> +
+> +	rtnl_lock();
+> +
+> +	if (!netif_running(netdev) || !netif_device_present(netdev))
+> +		goto unlock;
+> +
+> +	netdev_warn(netdev, "resetting after TX timeout\n");
+> +
+> +	netif_device_detach(netdev);
+> +	lan743x_netdev_close(netdev);
 
 [Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. The old
-code also discarded the return value of lan743x_csr_wait_for_bit(), and
-this change only adds a log message.
+Here lan743x_netdev_close() runs on a controller that is already assumed
+to be wedged. The controller-wide DMAC_CMD_SWR_ reset only happens later,
+in lan743x_dmac_init().
 
-After a failed reset, lan743x_tx_open() still programs TX_BASE_ADDR,
-TX_HEAD_WRITEBACK_ADDR, TX_CFG_A/B/C and TX_TAIL. It then writes
-DMAC_CMD_START_T_ and returns 0.
+In lan743x_tx_close(), suppose the channel does not stop and the
+per-channel reset also times out. The error is only logged, and the ring
+is freed anyway:
 
-Can the interface come up on a channel whose soft reset never finished?
-If the reset completes late, the register writes made while it was pending
-may be lost or wiped.
+lan743x_tx_close() {
+    ...
+		ret = lan743x_dmac_tx_reset(adapter, tx->channel_number);
+		if (ret)
+			netdev_err(adapter->netdev,
+				   "TX channel %d reset timed out\n",
+				   tx->channel_number);
+    ...
+	lan743x_tx_release_all_descriptors(tx);
+    ...
+	lan743x_tx_ring_cleanup(tx);
+}
 
-lan743x_rx_open() handles the reset the same way. There, if RX_HEAD is
-non-zero after a failed RX reset, the code takes this path:
+lan743x_rx_close() does the same for the RX ring, the head write-back
+buffer and the RX skbs.
 
-	rx->last_head = lan743x_csr_read(adapter, RX_HEAD(rx->channel_number));
-	if (rx->last_head) {
-		ret = -EIO;
-		goto napi_delete;
-	}
+If the engine is still running at that point, could it write head indices
+or received frames into memory that was already freed and maybe reused?
+Should the DMAC soft reset happen before the rings are torn down?
 
-That reaches lan743x_rx_ring_cleanup() without the stop and reset handling
-that this patch adds to lan743x_rx_close().
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch. The same
+close/open sequence leaves the TX one-step state inconsistent, and with
+this patch the watchdog can trigger that sequence automatically.
 
-Should the open paths return an error when the channel reset times out?
+lan743x_ptp_open() calls lan743x_ptp_reset() and sets the RX filter back
+to HWTSTAMP_FILTER_NONE. However, tx->ts_flags still has
+TX_TS_FLAG_ONE_STEP_SYNC, and nothing turns one-step Sync insertion back
+on in the hardware.
 
->  
->  	/* Write TX_BASE_ADDR */
->  	lan743x_csr_write(adapter,
+After the reset, lan743x_ptp_hwtstamp_get() still reports:
+
+	if (tx->ts_flags & TX_TS_FLAG_ONE_STEP_SYNC)
+		config->tx_type = HWTSTAMP_TX_ONESTEP_SYNC;
+
+and lan743x_tx_xmit_frame() still sets ignore_sync for Sync frames:
+
+		if (tx->ts_flags & TX_TS_FLAG_ONE_STEP_SYNC)
+			ignore_sync = true;
+
+Can Sync frames go out without a hardware-inserted origin timestamp until
+the application sets up timestamping again?
+
+Admin down/up and suspend/resume already have the same mismatch. The
+commit message also documents it ("one-step sync insertion is disabled,
+while the driver keeps its TX timestamping flags"). The PHC is
+unregistered and registered again, so applications have to reconfigure.
+Reconfiguring applies one-step mode again through
+lan743x_ptp_hwtstamp_set().
+
+> +
+> +	ret = lan743x_dmac_init(adapter);
+> +	if (ret) {
+> +		netdev_err(netdev, "DMA controller reset failed: %d\n", ret);
+> +		goto close;
+> +	}
+
+[Severity: Medium]
+According to the commit message, lan743x_dmac_init() now returns the poll
+error so the work does not reopen a controller whose reset timed out. It
+also says the interface is taken down "so it can be brought back up
+later".
+
+lan743x_netdev_open() never calls lan743x_dmac_init(). That function is
+only called from lan743x_hardware_init() (probe and resume) and from this
+work.
+
+So if the user runs "ip link set up" after this failure, does
+lan743x_netdev_open() reopen the same controller that never came out of
+reset?
+
+The early return in lan743x_dmac_init() also skips the DMAC_CFG,
+DMAC_COAL_CFG and DMAC_OBFF_CFG writes. Nothing on the open path writes
+them again.
+
+Should the open path retry the DMAC reset, or should the device be kept
+from coming back up in this case?
+
+> +
+> +	ret = lan743x_netdev_open(netdev);
+> +	if (ret) {
+> +		netdev_err(netdev, "failed to reopen after reset: %d\n", ret);
+> +		goto close;
+> +	}
+
+[Severity: Medium]
+Some boards use the fixed-link fallback in lan743x_phylink_connect():
+LAN7431 or PCI11x1x with no DT node and no PHY on the MDIO bus. Can this
+reopen ever succeed on those boards?
+
+On the first open, phylink_set_fixed_link() sets
+pl->cfg_link_an_mode = MLO_AN_FIXED. Neither phylink_stop() nor
+phylink_disconnect_phy() resets it. So on the reopen:
+
+phylink_set_fixed_link() {
+	if (pl->cfg_link_an_mode != MLO_AN_PHY || !state ||
+	    !test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state))
+		return -EINVAL;
+    ...
+}
+
+lan743x_phylink_connect() then logs "Could not set fixed link" and
+lan743x_netdev_open() fails. The work jumps to close: and calls
+dev_close(). Every later attempt to bring the interface up fails the same
+way.
+
+The fixed-link handling is existing code. On these boards, though, the
+new recovery turns a stalled TX queue into an interface that cannot come
+back up until the driver is probed again.
+
+> +
+> +	goto attach;
+> +
+> +close:
+> +	dev_close(netdev);
+> +attach:
+> +	netif_device_attach(netdev);
+
+[Severity: Medium]
+While the device is detached under rtnl here, multicast list writers that
+do not take rtnl can still change dev->mc. The IPv6 socket join path is
+one example:
+
+ipv6_sock_mc_join()
+  igmp6_group_added()
+    dev_mc_add()
+      __dev_set_rx_mode()
+	if (!netif_device_present(dev))
+		return;
+
+These changes never reach the hardware. After netif_device_attach(),
+nothing reprograms the filter. lan743x_rfe_open() only programs RSS, and
+lan743x_rfe_set_multicast() is only called from ndo_set_rx_mode.
+
+The normal open path resyncs because __dev_open() calls dev_set_rx_mode()
+after ndo_open. This path has nothing equivalent.
+
+Can the RFE filter get out of sync with dev->mc? Groups joined during the
+reset would not be received, and groups left would stay in the filter,
+until the next rx_mode change. Would a call to dev_set_rx_mode() after
+the reopen fix this?
+
+> +unlock:
+> +	rtnl_unlock();
+> +}
 
 [ ... ]
 
