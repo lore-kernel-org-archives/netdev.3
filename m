@@ -1,244 +1,183 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280294EC653;
-	Mon, 19 Oct 2026 12:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0639E4F405D;
+	Mon, 19 Oct 2026 12:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792413055; cv=none; b=Czd+budnWm7UmulWRbZjsSD+ANhizstTqHeZtPUoWQNRy/T5W/8lrJbmjW+5kVS3eSRW/2m6u+5/xKGOgcQ0s6ZbPNPBemxtqpX9ezOryH10hqYCsPgKoR2bBLPwVua3COddtlEqq+rw9PdAMzVxPChirZlrzmc52R7ObVIDLzI=
+	t=1792413066; cv=none; b=HH+Vo9SHTDlXaLFGimDl5xIBnFC/LQgkgNqSWI50DJRg/9jNA7iW1AFDt/7NdvbB0zItJd+uNrROrxVmpk0kChZhz7JZ0yT6dEmNOVKk1u1oVzIunquS1sOwfAhCVhJsALrhU9jRswnNfHuYH6xYQ5Z9o5ZWRtMSsynlBP8g8OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792413055; c=relaxed/simple;
-	bh=zSf4aXy8T9THsYKKiop3NtLaYmSnRT+Q+AiZBZpzG2Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MZk/zDHbh+Ls9oqar6cXcPbhEcw+K/KuT/UJ4NB1f92mb3cNVEAhs69qSQMJ9zdp/EjpvbajVF4f2m6OfxgLBa3979LElenA3A/2mAk6ROd230Aq1WDJqMs/tIUF/Fu6L5zOZOUUGcd21ULM/5u3Nto/FlNkbH66fsz42t5TBYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SBqQ4hDM; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1792413066; c=relaxed/simple;
+	bh=YmBNLpGwEJ5g2wzB992hE03maLroJhYJZLMXy+jysJE=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=MDkW5P5Im+dGemmaK4T3VmV5lgMKqJRgqw5SSY/J7sQXxbu2TtB0RpKj/RcC5chptHBGCqEOXwnVtVPTRlmf2eAI8GQsQnVYA6nAVLvpDzenxbRD6xV2M0hebENgcKA6C48QpYNK+p3brZde0WUOHPI/n/rZ6UqY3vYQ1Z273Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=JT7G+fFQ; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SBqQ4hDM"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 0B8EA4E4127B;
-	Mon, 19 Oct 2026 12:30:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D1B0560582;
-	Mon, 19 Oct 2026 12:30:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41C3010328A96;
-	Mon, 19 Oct 2026 14:30:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792413031; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Logan3gn6C/KU3n5Q3xCq0kz6xJTn36NU41NqOjNh2E=;
-	b=SBqQ4hDMhIVyg7hDwTgClDvVzXR1QrwSevbck8neNch1NkNEU8m693eiC82ayamRPt5wMk
-	KrlIDMW2gZeFt+MHAwbqMhinVt1JPlmr8zOo86Tr1oS9QDCZoH/0bgSsdGKqcCxVUvDSFM
-	hFKOhd+J+7I8P/pBw2v0/eKXgHy0s5PMuC97e2jGI8Bd3iKVnyC+jB9RMQAl7Ks+Z9/1YP
-	5haA4bB2jWIs6QDE/dAQk+/8nqNNuOBLYyUokA/RtRj7T0pl+EHtPWe+9COfh5iXWJx2pN
-	0UtYNV3tAfVf90W5oZ8pqEj4/JtB0870/oQGQDL8DRUdkWA0VhSIwfLwHTsJRw==
-Message-ID: <bb8eaf92-2b5b-46a1-b39d-a29ae273a3b5@bootlin.com>
-Date: Mon, 19 Oct 2026 14:30:24 +0200
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="JT7G+fFQ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E2831A15A5;
+	Mon, 19 Oct 2026 14:30:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792413046; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5YPK5QrD2Biz8WIt271WspbuAzVZVpswCa9MB98GM1c=;
+	b=JT7G+fFQL8UZU1tGRwhUPlEeeGyOPklh3lTZgt6QBqhkNKQ39YJWB2imB+euV3PKNylpXg
+	8hmMFIebrSnkz0uxql1S/azwpbuV/4afb+FnCR4lSQBQEQc/WZij0O6tayPU0iz9Esa9G9
+	gUaVR2o/Va51J13fFMSpzfnZsmBm+/geEvAXAngzKopeKTh+Uo1I0VRX9w6dmHM5O3Wjte
+	nMdWFTFoEId761r9qoxQhjLP/g2dv1t7EfmwBz3MkqgBD8Zanl888bkv9qBjXhxRxhd4MF
+	6RH30UV+a8QK98WkGlAVaOTxOZCGfvUWlnW+ulM3DM0NCwe4s0YyEGWfzcxSjQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net 05/10] net: pse-pd: check the PI state under the lock
- when setting a power limit
-To: netdev-bot+sashiko@kernel.org, github@szelinsky.de,
- o.rempel@pengutronix.de
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, piotr.kubik@adtran.com,
- saikrishnag@marvell.com, horms@kernel.org, kyle.swenson@est.tech,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261018082314.48950-6-github@szelinsky.de>
- <179239987339.3135.11130245905103238734@kernel.org>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <179239987339.3135.11130245905103238734@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date: Mon, 19 Oct 2026 14:30:41 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
+ Fomichev <sdf@fomichev.me>, Jose Abreu <Jose.Abreu@synopsys.com>, Ong Boon
+ Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next v8 2/5] net: stmmac: drop split frames on AF_XDP
+ zero-copy RX
+In-Reply-To: <atYKPgSrad4jAsJM@lore-desk>
+References: <20261018-stmmac-rx-mb-v8-0-5f58c0b25849@oss.qualcomm.com>
+ <20261018-stmmac-rx-mb-v8-2-5f58c0b25849@oss.qualcomm.com>
+ <8c9e47e535ecc8190fa1c93ad5b5e32a@tipi-net.de> <atYKPgSrad4jAsJM@lore-desk>
+Message-ID: <f4009020a12df8e97fe87f03050839e2@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
+On 19.10.2026 14:17, Lorenzo Bianconi wrote:
+>> Hi Lorenzo
+>> 
+>> On 18.10.2026 19:07, Lorenzo Bianconi wrote:
+>> > stmmac_rx_zc() assumes a 1:1 mapping between a received frame and an
+>> > XSK pool buffer and drops any frame that spans more than one RX
+>> > descriptor:
+>> >
+>> >         /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
+>> >         if (likely(status & rx_not_ls)) {
+>> >                 xsk_buff_free(buf->xdp);
+>> >                 buf->xdp = NULL;
+>> >                 dirty++;
+>> >                 count++;
+>> >                 goto read_again;
+>> >         }
+>> >
+>> > The non-last descriptors are freed and dropped, but the frame is not
+>> > marked as errored. When the poll reaches the last descriptor of the
+>> > same frame, error is still 0, so the fragment is handled as a complete
+>> > frame: it is passed to the XDP program, copied into an skb on XDP_PASS,
+>> > or converted for XDP_TX. The tail starts in the middle of the original
+>> > payload at a predictable offset and, parsed as a fresh frame (len == 0),
+>> > stmmac_rx_buf1_len() reports the full dma_buf_sz length for it even
+>> > though the DMA engine only wrote the tail remainder into that buffer, so
+>> > the reads extend past the received bytes and can reach beyond the end of
+>> > the XSK pool buffer. GMAC4 always enables jumbo frames (GMAC_CONFIG_JE
+>> > in GMAC_CORE_INIT), so an on-link peer can trigger such a split even
+>> > when the interface MTU is left at 1500.
+>> >
+>> > Set error when the 1:1 mapping check drops a descriptor, so the
+>> > remaining descriptors of the frame - including the last one - are
+>> > drained and released with xsk_buff_free() instead of being processed as
+>> > a new frame. Account every freed buffer with dirty and count the
+>> > dropped frame once in the poll budget / rx_pkt_n. The direct 1:1
+>> > mapping drop also increments rx_dropped.
+>> >
+>> > Normalize the legacy normal and enhanced descriptor callbacks to report
+>> > rx_not_ls together with discard_frame for non-last descriptors. This
+>> > allows both stmmac_rx_zc() and stmmac_rx() to drain split frames on
+>> > dwmac100 and dwmac1000 instead of reparsing the final fragment as a new
+>> > packet.
+>> >
+>> > Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
+>> > Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+>> 
+>> This grew quite a bit since v6 (legacy desc changes, stmmac_rx() etc),
+>> so my R-b should have been dropped. I had another look and two small
+>> notes below.
+> 
+> Hi Nicolai,
+> 
+> ack, right.
+> 
+>> 
+>> > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+>> > ---
+>> 
+>> > [...]
+>> 
+>> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> > @@ -5695,18 +5695,21 @@ static int stmmac_rx_zc(struct stmmac_priv
+>> > *priv, int limit, u32 queue)
+>> >  		if (priv->extend_desc)
+>> >  			stmmac_rx_extended_status(priv, &priv->xstats,
+>> >  						  rx_q->dma_erx + entry);
+>> > -		if (unlikely(status == discard_frame)) {
+>> > -			xsk_buff_free(buf->xdp);
+>> > -			buf->xdp = NULL;
+>> > -			dirty++;
+>> > +
+>> > +		if (unlikely(status & discard_frame)) {
+>> >  			error = 1;
+>> >  			if (!priv->hwts_rx_en)
+>> >  				rx_errors++;
+>> >  		}
+>> 
+>> There's no !error check here, so on the legacy descriptors a split
+>> frame now counts once per descriptor in rx_errors. stmmac_rx() in 3/5
+>> counts it once. Could you add the !error check here too?
+> 
+> ack, I agree we should align stmmac_rx() and stmmac_rx_zc(). In order 
+> to avoid
+> reposting the full series for this change, do you agree to address it 
+> as a
+> follow-up patch?
 
-On 10/19/26 10:51, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The patch puts the PD-state check and the budget change in one
->    pcdev->lock critical section inside pse_pi_update_pw_budget().
-> - [Low] The kernel-doc for pse_pi_update_pw_budget() (drivers/net/pse-
->    pd/pse_core.c:1835) still says "Return: Previous power allocated on…
-> 
-> --
-> 
-> net: pse-pd: check the PI state under the lock when setting a power limit
-> 
-> This moves the software power control, admin state and PD detected checks
-> from pse_ethtool_set_pw_limit() into pse_pi_update_pw_budget(), so they now
-> run under pcdev->lock. A new updated output parameter reports whether the
-> budget changed. The rollback after a failed regulator_set_current_limit()
-> now runs only when updated is true.
-> 
->> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
->> index 336f00d82b5f8..d5f863834179c 100644
->> --- a/drivers/net/pse-pd/pse_core.c
->> +++ b/drivers/net/pse-pd/pse_core.c
->> @@ -1829,22 +1829,32 @@ EXPORT_SYMBOL_GPL(pse_ethtool_set_config);
->>    * @pcdev: a pointer to the PSE controller device
->>    * @id: index of the PSE PI
->>    * @pw_req: power requested
->> + * @updated: set to true if the budget was changed
->>    * @extack: extack for reporting useful error messages
->>    *
->>    * Return: Previous power allocated on success and failure value on error
->>    */
->>   static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
->> -				   const unsigned int pw_req,
->> +				   const unsigned int pw_req, bool *updated,
->>   				   struct netlink_ext_ack *extack)
->>   {
-> 
-> [ ... ]
-> 
->>   	mutex_lock(&pcdev->lock);
->> +	/* Only a powered PI under software power control holds a budget.
->> +	 * Check it here, as pse_isr() changes it under the same lock.
->> +	 */
->> +	if (!pse_pw_d_is_sw_pw_control(pcdev, pi->pw_d) ||
->> +	    !pi->admin_state_enabled || !pi->isr_pd_detected)
->> +		goto out;
->> +
-> 
-> [Severity: Low]
-> This isn't a bug, but the kernel-doc for pse_pi_update_pw_budget() still
-> says:
-> 
->   * Return: Previous power allocated on success and failure value on error
-> 
-> This new early exit returns 0 with *updated = false, whatever
-> pi->pw_allocated_mW holds. The existing !pw_diff exit also returns 0.
-> 
-> pw_allocated_mW can be non-zero when this check fails. For example,
-> _pse_pi_disable() returns before pse_pi_deallocate_pw_budget() if
-> ops->pi_disable() fails, but pse_set_config_isr() still clears
-> isr_pd_detected on disconnection.
-> 
-> Could the Return description say that 0 can also mean no change was made?
-> It could also say that callers should check *updated, not the return
-> value, before rolling back.
-> 
->>   	previous_pw_allocated = pi->pw_allocated_mW;
->>   	pw_diff = pw_req - previous_pw_allocated;
->>   	if (!pw_diff) {
-> 
-> [ ... ]
-> 
->> @@ -1908,21 +1920,17 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
->>   	/* Update power budget only in software power control case and
->>   	 * if a Power Device is powered.
->>   	 */
->> -	if (pse_pw_d_is_sw_pw_control(psec->pcdev,
->> -				      psec->pcdev->pi[psec->id].pw_d) &&
->> -	    psec->pcdev->pi[psec->id].admin_state_enabled &&
->> -	    psec->pcdev->pi[psec->id].isr_pd_detected) {
->> -		ret = pse_pi_update_pw_budget(psec->pcdev, psec->id,
->> -					      pw_limit, extack);
->> -		if (ret < 0)
->> -			return ret;
->> -		previous_pw_allocated = ret;
->> -	}
->> +	ret = pse_pi_update_pw_budget(psec->pcdev, psec->id, pw_limit,
->> +				      &updated, extack);
->> +	if (ret < 0)
->> +		return ret;
->> +	previous_pw_allocated = ret;
->>   
->>   	ret = regulator_set_current_limit(psec->ps, 0, uA);
-> 
-> [Severity: Medium]
-> The scenario in the commit message, where budget is reserved for a port
-> that is no longer powered, looks closed now. But can the budget and the
-> hardware limit still drift apart in the other direction?
-> 
-> The state check and the budget change now share one pcdev->lock critical
-> section. The hardware limit is still written in a separate one:
-> 
-> pse_ethtool_set_pw_limit()
->    pse_pi_update_pw_budget()        <- takes and drops pcdev->lock
->    regulator_set_current_limit()
->      pse_pi_set_current_limit()     <- takes pcdev->lock again
->        ops->pi_set_pw_limit()
-> 
-> The threaded pse_isr() only needs pcdev->lock, so it can run in between:
-> 
-> CPU0 (ethtool set_pw_limit)
-> pse_pi_update_pw_budget()
->    sees isr_pd_detected == false
->    *updated = false, nothing reserved
->    mutex_unlock(&pcdev->lock)
-> 
-> CPU1 (pse_isr, classification event)
-> pse_set_config_isr()
->    isr_pd_detected = true
->    _pse_pi_delivery_power_sw_pw_ctrl()
->      pw_req = min(pi_get_pw_req(), pi_get_pw_limit())  <- old hw limit
->      pse_pi_allocate_pw_budget(pcdev, id, pw_req, extack)
->      ops->pi_enable()
-> 
-> CPU0
-> regulator_set_current_limit()
->    pse_pi_set_current_limit()
->      ops->pi_set_pw_limit()         <- new, higher limit
+Would be ok for me if nothing else is flagged in this version. In the 
+end it will
+be Maxime's / the net dev maintainers decision :)
 
-@Oleksij, Here is another example of an issue related to the PSE PI 
-being a regulator provider.
-
-@Carlo, Kyle is working on a series that remove the support for a PSE PI 
-being a regulator provider. We will see where it goes.
-I think you can ignore this sashiko point as for now.
-
-> The port would then be powered with a hardware limit above its reserved
-> budget, and nothing later corrects pi->pw_allocated_mW. Could that
-> over-subscribe the power domain?
 > 
-> A disconnect followed by a reconnect between the two sections seems to end
-> the same way. If regulator_set_current_limit() then fails, this rollback
-> writes back the previous_pw_allocated value that was read before the
-> reconnect:
+> Regards,
+> Lorenzo
 > 
-> 	if (ret < 0 && updated) {
-> 		pse_pi_update_pw_budget(psec->pcdev, psec->id,
-> 					previous_pw_allocated, &updated,
-> 					extack);
-> 
-> Would a full fix need the state check, the budget update and
-> ops->pi_set_pw_limit() in a single pcdev->lock critical section?
-> pse_pi_set_current_limit() takes pcdev->lock itself, so that looks like it
-> needs a different structure from calling regulator_set_current_limit()
-> after pse_pi_update_pw_budget().
-> 
->> -	if (ret < 0 && previous_pw_allocated) {
->> +	if (ret < 0 && updated) {
->>   		pse_pi_update_pw_budget(psec->pcdev, psec->id,
->> -					previous_pw_allocated, extack);
->> +					previous_pw_allocated, &updated,
->> +					extack);
->>   	}
->>   
->>   	return ret;
-
-With the change ask by sashiko on the kdoc you can add my Reviewed-by tag.
-
--- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
+>> 
+>> > [...]
+>> 
+>> > @@ -5883,7 +5887,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int
+>> > limit, u32 queue)
+>> >
+>> >  		if (priv->extend_desc)
+>> >  			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx +
+>> > entry);
+>> > -		if (unlikely(status == discard_frame)) {
+>> > +
+>> > +		if (unlikely(status & discard_frame)) {
+>> 
+>> AFAIU this also changes GMAC4: a frame with an error plus an IP header
+>> error returns discard_frame | csum_none, which the old "==" let
+>> through. Dropping it is right, but maybe worth a line in the commit
+>> message?
+>> 
+>> > [...]
+>> 
+>> With the !error check added:
+>> 
+>> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+>> 
+>> Thanks,
+>> Nicolai
