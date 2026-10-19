@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF05C4CCDF8;
-	Mon, 19 Oct 2026 10:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98AA4B26F6;
+	Mon, 19 Oct 2026 10:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792404528; cv=none; b=KOuvw3wLvoiWydZCji0SZZXMa3K8VZhpk2yaB08C4MQgOvTKV3Wgs2MZagvb6Xc3Cic8/B4jzhdCB3J3+i8Y/LK66pnDG4MC+vdIi//oPaw93jCAFMWSIlVTjaaUD4M1Wa6L3BoqRvT4L7mrxvOMItm6knH+5/L+4600HXOY+yQ=
+	t=1792404530; cv=none; b=HPjtYtSUwkQ1iRRj4JaACKXlbjUfIStUcao9zp81Us/OIAFSPHyTl53seMN5K2R5eb2r+fNuPxlSTYRzBrN6jZI645SNxtd7Y0DNb2hQb3UiR8b7wDlATpflMgRbgwZcEKOv6ELZv6I9tSy5QtlNkEVIiNI9EDVeWn2qt0lj+MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792404528; c=relaxed/simple;
-	bh=SW0h6/v8gnLyxdLNbv7/5TTRo3f5lXIJf6a1NdZtxIE=;
+	s=arc-20240116; t=1792404530; c=relaxed/simple;
+	bh=J5CuT262wdhTyv2qJkn7I/Q0mJ3cwAbPeQT1ZH80ZiQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BXcjMKo/tGwdZSh98PA6tz6kphgzbp0WDk2skLn73J7GRGyqElpGhN5L3FIe1jiCi06ELR3Yp0c06oKij0Mz39JXOLqLv16tZHQomvlVKmE1oOTBjo0lwDIMt9sGM5ErembLialQTXChTqwkfAJXifNZl1YtkQZgJ1zrDGbU/0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CvX70ETl; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=lLSevWjIc20hUnuRYytB+ybLgbR8MrqvYT+BzFTuLPGE449cRuTpGyamAH2RBdB/SetMVPHZ03FF5xMJwgX2Ud5Rn9WANkYJn41fJBJjYVJeSzKy/FJVTv7g3Y+uexnWTQmIBG+rPMx0xROOLZdP0O5jmodp7gkg49cjgaBgy5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K/7bvAKy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CvX70ETl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171F51F000C5;
-	Mon, 19 Oct 2026 10:08:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K/7bvAKy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B751F000C4;
+	Mon, 19 Oct 2026 10:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792404527;
-	bh=6Tyq2SzMp8vw0ux3JuZ51PYAfuwH2zXt7vQEJwLWoK4=;
+	s=k20260515; t=1792404529;
+	bh=jrY7PLvzpG83Z9GcuTQ77hZjYFKfUQp7trMgJxpok1E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CvX70ETlZzej2/Whp6C3ZFUXWiPi4JJVEClbS458jgO3+YoMakPRClMnQCLRK5KTS
-	 R1aAox9QPBUJNenhSmaSX1yt11dZiKquPMsje2aJr27nEjyhx201h/rc/MmHX0QRPz
-	 yTvGHB0ARN7YkcQXABRlZd0ccfXKI/MAZZXTg0BjFUMRLsQq3Nbe3SWX39tCc8oicu
-	 sPdUiADbDPbZfHFzbjEunFYE1MnfJHlVEuuZP+Ca+BU8Gcbb3Vb+78L1i7QgQj6z0m
-	 McQj/igWsnFy+UvMVfBByiPCFDT4hiNO9LJV4O2sH6Q3vshR6W39wADmZNGX6U4GJl
-	 GCKPvH4EVIQ4w==
-Subject: Re: [PATCH net-next v15 4/9] net: dsa: lan9645x: add basic dsa driver
- for LAN9645X
+	b=K/7bvAKyoGZj3bL3Uc5JZ6kFW/nb/8Vlv71Hm07HofmE/nmjEOW7i9o/bgktXRrt7
+	 /ZYvZznFBQDQlWRzeptKUVLgCJtJJ2WE0LeZBxFVKX6jGGW71t/FQwTdDN3X+n1PXO
+	 ckf6Tdu43v+6+a61CLGPElgpNF2KEARNcFKXheUM0/DY/T62UAj7phWF+DzD6+rKC+
+	 qk/DB263QKKUcY4FBpmwa8ErrAUjmtPt3tqoTaidx26QcO1jHmSrvDLoOgEz0Sgcyi
+	 DUPPCAKvdF8sJ6pdized3EsWr1tfzUes0uFrg1nJzRRUE0ImIRDbVoKs3Ka+xXNYXb
+	 bkMP4zWOqPjJw==
+Subject: Re: [PATCH net-next v15 5/9] net: dsa: lan9645x: add vlan support
 From: netdev-bot+sashiko@kernel.org
 To: jensemil.schulzostergaard@microchip.com
 Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
@@ -39,13 +38,13 @@ Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
  richardcochran@gmail.com, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-renesas-soc@vger.kernel.org
-Date: Mon, 19 Oct 2026 10:08:45 +0000
-Message-ID: <179240452564.3135.4025477777348146503@kernel.org>
+Date: Mon, 19 Oct 2026 10:08:47 +0000
+Message-ID: <179240452747.3135.18156695969280289846@kernel.org>
 In-Reply-To:
- <20261015-dsa_lan9645x_switch_driver_base-v15-4-562f316f78b9@microchip.com>
+ <20261015-dsa_lan9645x_switch_driver_base-v15-5-562f316f78b9@microchip.com>
 References:
- <20261015-dsa_lan9645x_switch_driver_base-v15-4-562f316f78b9@microchip.com>
-X-sashiko-severity: Medium
+ <20261015-dsa_lan9645x_switch_driver_base-v15-5-562f316f78b9@microchip.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -55,102 +54,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] Nothing in the tree can bind or exercise this driver.
+- [Low] In lan9645x_vlan.c, no runtime caller of lan9645x_vlan_hw_wr()
+  checks its return value.
+- [Low] Likely false positive.
 
 --
 
-net: dsa: lan9645x: add basic dsa driver for LAN9645X
+net: dsa: lan9645x: add vlan support
 
-This adds a basic DSA driver for the Microchip LAN9645x switch. It covers
-switch initialization, NPI, CPU and front port setup, and phylink MAC
-configuration for the internal CuPHYs and the RGMII ports. All register
-access goes through named regmaps requested from a parent device, which
-is meant to be an MFD driver submitted in a later series.
+This commit adds VLAN offload to the lan9645x DSA driver. VID 4095 is
+the internal pvid for standalone ports and VID 0 is the internal pvid
+for VLAN-unaware bridge ports. The commit adds .port_vlan_filtering,
+.port_vlan_add and .port_vlan_del, serializes the VLAN table with
+fwd_domain_lock, and offloads only 802.1Q bridges.
 
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> new file mode 100644
-> index 0000000000000..c7de3836e6967
-> --- /dev/null
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> @@ -0,0 +1,456 @@
+> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
+> index 3a4abedafa2c1..73a91087824a4 100644
+> --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
+> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
 
 [ ... ]
 
-> +static int lan9645x_reset_switch(struct lan9645x *lan9645x)
+> @@ -238,6 +255,19 @@ static inline struct lan9645x_port *lan9645x_to_port(struct lan9645x *lan9645x,
+>  	return lan9645x->ports[port];
+>  }
+>  
+> +static inline bool lan9645x_port_is_bridged(struct lan9645x_port *p)
 > +{
-> +	u32 val = 0;
-> +	int err;
-> +
-> +	/* The parent must reset the whole chip before instantiating its
-> +	 * children, so the switch core is disabled when we get here. The
-> +	 * sequence below must not run more than once: initializing the
-> +	 * memories on a running core corrupts pointers inside the queue
-> +	 * system, which eventually fills up and stops passing traffic. If the
-> +	 * core is already enabled the chip was not reset, so skip it.
-> +	 */
-> +	if (SYS_RESET_CFG_CORE_ENA_GET(lan_rd(lan9645x, SYS_RESET_CFG)))
-> +		return 0;
+> +	return p->lan9645x->bridge_mask & BIT(p->chip_port);
+> +}
 
-[ ... ]
-
-> +static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
-> +{
-> +	const char *resource_name;
-> +	struct regmap *tgt_map;
-> +
-> +	for (int i = 0; i < NUM_TARGETS; i++) {
-> +		resource_name = lan9645x_resource_names[i];
-> +		if (!resource_name)
-> +			continue;
-> +
-> +		tgt_map = dev_get_regmap(lan9645x->dev->parent, resource_name);
-> +		if (IS_ERR_OR_NULL(tgt_map)) {
-> +			dev_err(lan9645x->dev, "Failed to get regmap=%s\n",
-> +				resource_name);
-> +			return -ENODEV;
-> +		}
-
-[Severity: Medium]
-Does anything in the tree provide these regmaps?
-
-lan9645x_probe()->lan9645x_request_target_regmaps() asks the parent for 17
-named regmaps: gcb, qs, chip_top, rew, sys, hsio, dev0..dev8, qsys and ana.
-
-A search of drivers/mfd/ for lan9645x or lan96455s finds nothing. That is
-still true at the end of the series, through "net: dsa: lan9645x: add port
-statistics".
-
-The new microchip,lan96455s-switch binding requires reg and reg-names, but
-the driver never reads them. A DT node that follows the binding would
-therefore always fail probe with "Failed to get regmap=gcb".
-
-dev_get_regmap() returns NULL, not -EPROBE_DEFER, so the probe is not
-retried if a parent appears later.
-
-lan9645x_reset_switch() above relies on the same missing parent. When
-CORE_ENA is already set, it skips the RAM init without logging anything.
-That precondition also can't be checked without the parent driver.
-
+[Severity: Low]
 The commit message says:
 
-    The MFD driver will come in a later series, because there are
-    requirements on the number of child devices before a driver qualifies as
-    a MFD device.
+  Add VLAN support for VLAN-aware and VLAN-unaware bridges.
 
-Until that series lands, the driver can't be bound or tested on any in-tree
-configuration. Could this be merged together with the parent driver, or is
-there another way to bind it in the meantime?
+In this commit, nothing writes lan9645x->bridge_mask, and
+lan9645x_switch_ops has no .port_bridge_join. So
+lan9645x_port_is_bridged() always returns false.
+
+That means the bridged branches in lan9645x_vlan_port_apply_egress() and
+lan9645x_vlan_port_apply_ingress() can't run yet. They become reachable
+with the later "net: dsa: lan9645x: add bridge support" patch in the
+series, which adds lan9645x_port_bridge_join() and sets bridge_mask
+there.
+
+This looks like an intentional way of splitting the series, so it may be
+fine as is. Would it help to say in the commit message that the bridged
+VLAN paths only become active with the bridge support patch?
+
+[ ... ]
+
+> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c
+> new file mode 100644
+> index 0000000000000..effb0104a6027
+> --- /dev/null
+> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c
+> @@ -0,0 +1,402 @@
+
+[ ... ]
+
+> +int lan9645x_vlan_port_add_vlan(struct lan9645x_port *p, u16 vid, bool pvid,
+> +				bool untagged, struct netlink_ext_ack *extack)
+> +{
+
+[ ... ]
+
+> +	old_vlan = lan9645x->vlans[vid];
+> +	old_pvid = p->pvid;
+> +
+> +	v = lan9645x_vlan_port_modify(p, vid, pvid, untagged);
+> +	v->portmask |= BIT(p->chip_port);
+> +
+> +	lan9645x_vlan_port_get_info(lan9645x, p->chip_port, &info);
+> +
+> +	if (info.untagged > 1 && info.tagged) {
+> +		*v = old_vlan;
+> +		p->pvid = old_pvid;
+
+[ ... ]
+
+> +		return -EBUSY;
+> +	}
+> +
+> +	lan9645x_vlan_hw_wr(lan9645x, vid);
+> +	lan9645x_vlan_port_apply_ingress(p);
+> +	lan9645x_vlan_port_apply_egress(p, &info);
+> +
+> +	return 0;
+> +}
+
+[Severity: Low]
+Is it intended that the return value of lan9645x_vlan_hw_wr() is
+dropped here?
+
+When this call runs, lan9645x->vlans[vid] and p->pvid already hold the
+new values. If the VLAN access engine poll times out, or the regmap read
+in the poll fails, lan9645x_vlan_port_apply_ingress() and
+lan9645x_vlan_port_apply_egress() still program the port from the new
+state. 0 is then returned to DSA through lan9645x_port_vlan_add(), and
+the port may classify frames to a pvid it is not a hardware member of.
+
+lan9645x_vlan_port_del_vlan(), lan9645x_vlan_cpu_add(),
+lan9645x_vlan_cpu_del() and lan9645x_vlan_set_hostmode() follow the same
+pattern.
+
+On a failed delete, the port stays a hardware member of a VLAN the
+bridge thinks was removed. The same applies to the CPU port module
+through VLAN_PGID_CPU_DIS.
+
+For the CPU port, dsa_port_do_vlan_add() records the VLAN once this
+returns success. Later adds only bump the refcount, so the hardware
+write is never retried.
+
+The comment in lan9645x_vlan_hw_wr() says "There is no meaningful
+recovery at runtime". However, ocelot_vlan_member_add() and
+ocelot_vlan_member_del() return the ocelot_vlant_set_mask() error and
+only update the software portmask when the write succeeds.
+
+This probably only matters once the register bus is already
+misbehaving. Still, could the -EBUSY rollback above
+(*v = old_vlan; p->pvid = old_pvid;) be reused here, so the shadow state
+is restored and the error is returned to the caller?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015-dsa_lan9645x_switch_driver_base-v15-0-562f316f78b9%40microchip.com
