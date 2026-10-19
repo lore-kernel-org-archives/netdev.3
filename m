@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9874DF4D5;
-	Mon, 19 Oct 2026 11:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B884E73B7;
+	Mon, 19 Oct 2026 11:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792410195; cv=none; b=jRLIwuIYdFi+6cIEiG3nsTQiJsSpyvLYsKBz+SlssO2QXQ6L7I3aZRdC5wwCS104su4lyrRjqzgo6IsGboGHSyjYL7IsHz4WQr+AI2klo+UuPGENmIp6WSaP5NU8QWb/phvgIeUYOk5TSdxCIoew/+V0a5IB7u91RDPYVU2+LyY=
+	t=1792410196; cv=none; b=qFB2kMBAUpKk7mHQMNDti9tDe/rbZtjhvPWiBuTvu9bZqffApspFQaE/heMC2ckfbiwld6rhTssYmAVl9SD5F4mK3b53mlH4wPyW7HyMxt1IrmD8g2jefwO+3mjx0njbpmL7co80efnRbmegbptlpBfx1tKe6DCJY2TYD1l5jWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792410195; c=relaxed/simple;
-	bh=/Xbu+ycz2JjYMtJDkwxaSg+xLpAP5LBjiPV0yI3yJVE=;
+	s=arc-20240116; t=1792410196; c=relaxed/simple;
+	bh=+3r96WgvaLZ51mkYfUtue7nreKIDjPHuZYIvt5AP5dQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XCQOh0utlWO/ceulH6JKmqCqjO4V4dBpV0YmFy6kbEJUGo4z/4Elcyn3nF13r88JUDeILegwgcRtk5xjoYdjp9Uo47jpq5QNpt50RlxC6ud00+5ErKfOkjbbQMlrHWAhd3rHMSB1ZXi97UuHQA997yjmvCGO7Pko8y4Dlvd7WwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diAD5lSV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=hlQNNVNgu563/1QobuOvNfWUTZKn3RCD8OVvcUwei9J9mMLuoUBrpZbe0bX4K85/BrKaFvD+uHc4SrfyOodp7WCzBMooW9115BX5kHxnPiVHS9/Bl51xNby8skXVoqbq9+BSisDJVQ8fz6s8HDO0vCvO4ZcJdGMi3ScZZrKwHhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJADmtGT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diAD5lSV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADDF1F000C6;
-	Mon, 19 Oct 2026 11:43:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJADmtGT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCEF1F000C8;
+	Mon, 19 Oct 2026 11:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792410189;
-	bh=kqCPPaXx7ihLfSRFIOsYKJ20fbN5TYqL3C2TVzoMXAo=;
+	s=k20260515; t=1792410192;
+	bh=meEGW/GS3/XRT3foeZLouvqwfWIt69ajcD2dNzgktWU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=diAD5lSVSad4DeZsb/2DHTQwgqolsTsEdWLFFbDNHG1vdAd/PTM7hSGt8E7Ss6paf
-	 Qp3WBVN21nUK1OS6jq4ZpBPv3Md1mqhld8dtxGQ3+/LsV4xTnV8zdumMKKWozBl0JB
-	 Hmyh+giMCgOymElJB8HrVGPtvf1kt4DGTXM0CaksuzHjGSq3v0ykLyfdrcj+SvjYKp
-	 7M1JcUBoiAGRlKhXQeNCFmZoO83SlmmCLq8vkgDwsNDDcrqEe3XvKU2Cvf72G+Zqm3
-	 NukwerFhYV9ajfdpZHQjET9lLTjISTg1nq1pGOqVrbmGLyfXREXrowy0o/ltfv/fT8
-	 /NHCdCH7tYOEw==
-Subject: Re: [PATCH v4 net 6/8] net: enetc: pad short XDP frames in software
+	b=aJADmtGTCzDVNXW2PAtON20bThik6+ooDjIxlG69gMAO8Oe2N94jox5/vL+e02Ov1
+	 y/DzQV8ofCC841ZTXpafZTJzfTlvmqM2QQJyzssKdKU00ZUrZVbXuZGNXRnB91i05n
+	 MDVrj7KKyWR+RPZ3NrGZtNQ5kIbVn8PgkHlIT0Ozs9cVhijZ27bw0zgagbXrBB7uAf
+	 wBpWoIOmwFCZ45/iik4O3kdrVOvyIEbehNWR2f/V+CYYcDcli2rcTfCu4lNl/TQg75
+	 kZDoIpzjdH5SIchIstgA00odtazP6z5QIUSC+xPjwNgeI4BLZ3EsUiC1h3lWHWHVsp
+	 Z7KD1lAKQ/UCQ==
+Subject: Re: [PATCH v4 net 8/8] net: enetc: ensure enetc_xdp_xmit() calls
+ enetc_update_tx_ring_tail()
 From: netdev-bot+sashiko@kernel.org
 To: vladimir.oltean@nxp.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -34,10 +35,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  xiaoning.wang@nxp.com, ioana.ciornei@nxp.com, zefir.kurtisi@westermo.com,
  zefir.kurtisi@gmail.com, david.laight.linux@gmail.com, netdev@vger.kernel.org,
  imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 11:43:08 +0000
-Message-ID: <179241018821.3135.3963057243622029038@kernel.org>
-In-Reply-To: <20261015105536.1692348-7-vladimir.oltean@nxp.com>
-References: <20261015105536.1692348-7-vladimir.oltean@nxp.com>
+Date: Mon, 19 Oct 2026 11:43:10 +0000
+Message-ID: <179241019093.3135.3031150554563643199@kernel.org>
+In-Reply-To: <20261015105536.1692348-9-vladimir.oltean@nxp.com>
+References: <20261015105536.1692348-9-vladimir.oltean@nxp.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,196 +60,189 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new XDP pad BD in enetc_xdp_tx() is only partly initialised.
-- [Medium] In enetc_xdp_tx()
-  (drivers/net/ethernet/freescale/enetc/enetc.c), the new early `return…
+- [High] In enetc_xdp_xmit()
+  (drivers/net/ethernet/freescale/enetc/enetc.c), the doorbell condition…
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the XDP_TX
-  path in enetc_clean_rx_ring_xdp() ignores changes the BPF program…
+- [High] This problem wasn't introduced by this patch, but it comes from
+  the earlier commit in the same series, 'net: enetc: serialize access…
 
 --
 
-net: enetc: pad short XDP frames in software
+net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
 
-When an XDP frame is shorter than ETH_ZLEN, enetc_xdp_tx() now appends a
-BD that points to the shared tx_pad zero buffer. The F flag, is_eof and
-xdp_frame move onto that pad BD. Frames whose head buffer is shorter than
-ENETC_MIN_BUFF_SIZE are dropped, because both callers treat a false return
-as a drop.
+This commit changes the doorbell condition in enetc_xdp_xmit(). The TX ring
+tail is now updated only when at least one frame was sent and either
+XDP_XMIT_FLUSH was requested or the frames array could not be fully
+enqueued. The redundant xdp_tx_frm_cnt variable is removed in favour of k.
 
 > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 89b47accbac84..d456b9b488acf 100644
+> index 218065b9a3777..3003a415418ba 100644
 > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
 > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -1750,8 +1750,11 @@ static bool enetc_xdp_tx(struct enetc_bdr *tx_ring,
->  {
->  	struct enetc_tx_swbd *tmp_tx_swbd = xdp_tx_arr;
->  	int i, k, frm_len = tmp_tx_swbd->len;
-> +	struct enetc_tx_swbd *last_swbd;
-> +	int pad_len;
+
+[ ... ]
+
+> @@ -1928,22 +1928,20 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
+>  						    &xdp_redirect_arr[i]);
+>  			break;
+>  		}
+> -
+> -		xdp_tx_frm_cnt++;
+>  	}
 >  
-> -	if (unlikely(enetc_bd_unused(tx_ring) < ENETC_TXBDS_NEEDED(num_tx_swbd)))
-> +	/* Hardware does not support a first buffer size of less than 16 bytes */
-> +	if (unlikely(xdp_tx_arr[0].len < ENETC_MIN_BUFF_SIZE))
->  		return false;
+> -	if (unlikely((flags & XDP_XMIT_FLUSH) || k != xdp_tx_frm_cnt))
+> +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
+>  		enetc_update_tx_ring_tail(tx_ring);
 
-[Severity: Medium]
-Before this patch, enetc_xdp_tx() returned false only when the TX ring
-was full. With this check it can also return false because of what is in
-the frame.
+[Severity: High]
 
-enetc_xdp_xmit() still treats every false return as a full ring and stops
-processing the bulk:
+Does the new k && term skip the doorbell when an XDP_XMIT_FLUSH call
+enqueues zero frames?
 
-drivers/net/ethernet/freescale/enetc/enetc.c:enetc_xdp_xmit() {
+The old condition rang on every FLUSH call, because k != xdp_tx_frm_cnt was
+always false. XDP_XMIT_FLUSH asks the driver to publish everything queued so
+far. That includes frames from earlier ndo_xdp_xmit() calls made with
+flags == 0.
+
+devmap makes calls like that when the bulk queue fills up:
+
+kernel/bpf/devmap.c:bq_enqueue() {
     ...
-		if (unlikely(!enetc_xdp_tx(tx_ring, xdp_redirect_arr,
-					   xdp_tx_bd_cnt))) {
-			for (i = 0; i < xdp_tx_bd_cnt; i++)
-				enetc_unmap_tx_buff(tx_ring,
-						    &xdp_redirect_arr[i]);
-			break;
-		}
+	if (unlikely(bq->count == DEV_MAP_BULK_SIZE))
+		bq_xmit_all(bq, 0);
     ...
 }
 
-Then bq_xmit_all() in kernel/bpf/devmap.c frees every frame from the
-returned count onward:
+Only the later __dev_flush() passes XDP_XMIT_FLUSH:
 
-	for (i = sent; unlikely(i < to_send); i++)
-		xdp_return_frame_rx_napi(bq->q[i]);
+kernel/bpf/devmap.c:__dev_flush() {
+    ...
+		bq_xmit_all(bq, XDP_XMIT_FLUSH);
+    ...
+}
 
-Take a redirected frame with a 14 or 15 byte head. One example is a
-14-byte AF_PACKET frame sent on a veth peer and redirected through a
-devmap. Another is a frame trimmed to ETH_HLEN with bpf_xdp_adjust_tail().
+The flags == 0 call advances tx_ring->next_to_use without writing TPIR. If
+the first frame of the next FLUSH batch fails, k is 0 and
+enetc_update_tx_ring_tail() is never called.
 
-In that case, are the valid frames after it in the same ndo_xdp_xmit()
-bulk dropped and counted in xdp_tx_drops too, even though the ring has
-room?
+The first frame can fail in these cases:
+
+  - enetc_xdp_tx() finds too few free BDs. This is likely right after the
+    previous batch used up the ring.
+  - The head buffer is shorter than ENETC_MIN_BUFF_SIZE.
+  - The frame fails the ENETC_MAX_SKB_FRAGS check.
+  - DMA mapping fails.
+
+On a ring reserved for XDP, the only other TPIR writer is the XDP_TX tail
+update in enetc_clean_rx_ring_xdp(). It rings only when it has enqueued
+XDP_TX frames itself:
+
+	if (xdp_tx_frm_cnt) {
+		spin_lock(&tx_ring->xdp_lock);
+		enetc_update_tx_ring_tail(tx_ring);
+		spin_unlock(&tx_ring->xdp_lock);
+	}
+
+So the stranded BDs stay unpublished until a later call both succeeds and
+flushes. If traffic stops, they never go out.
+
+If they fill the ring, every later enqueue fails on its first frame. TX
+completion cannot reclaim BDs the hardware never saw. Can the XDP TX queue
+then stall permanently, with the xdp_frames and pages still pinned?
+
+Other drivers ring the tail on XDP_XMIT_FLUSH no matter how many frames
+that call sent. For example, i40e_xdp_xmit():
+
+	if (unlikely(flags & XDP_XMIT_FLUSH))
+		i40e_xdp_ring_update_tail(xdp_ring);
+
+Would something like this be closer to the intent?
+
+	if (unlikely((flags & XDP_XMIT_FLUSH) || (k && k < num_frames)))
 
 The commit message says:
 
-    Both callers already treat a false return code from enetc_xdp_tx() as
-    a drop.
+    The correct condition on which we should ring the doorbell is when at
+    least one frame was sent, and either the caller required us to flush, or
+    we couldn't enqueue the entire passed array.
 
-It doesn't mention that the rest of the bulk is dropped as well, and the
-later patches in the series don't change this.
+The subject says the patch ensures the tail update happens, and the patch
+has a Fixes: tag. Even so, FLUSH calls with k == 0 no longer ring the
+doorbell, and the commit message does not mention this change.
 
-Could enetc_xdp_xmit() check the head length before the DMA mapping, and
-drop only that frame instead of breaking out of the loop?
-
->  	while (unlikely(!tmp_tx_swbd->is_eof)) {
-> @@ -1759,15 +1762,24 @@ static bool enetc_xdp_tx(struct enetc_bdr *tx_ring,
->  		frm_len += tmp_tx_swbd->len;
->  	}
 >  
-> +	/* Pad frames below ETH_ZLEN so the mEMAC does not pad them. */
-> +	pad_len = max_t(int, ETH_ZLEN - frm_len, 0);
-
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch. On the
-XDP_TX path, frm_len is built from lengths that leave out any changes the
-BPF program made. enetc_clean_rx_ring_xdp() fills xdp_tx_arr through
-enetc_rx_swbd_to_xdp_tx_swbd():
-
-	tx_swbd->dma = rx_swbd->dma;
-	...
-	tx_swbd->page_offset = rx_swbd->page_offset;
-	tx_swbd->len = rx_swbd->len;
-
-rx_swbd->len is set in enetc_map_rx_buff_to_xdp() and
-enetc_add_rx_buff_to_xdp() before bpf_prog_run_xdp() runs. The driver
-never reads back xdp_buff.data/data_end or any frag sizes the program
-changed.
-
-If a program calls bpf_xdp_adjust_head() or bpf_xdp_adjust_tail() and
-returns XDP_TX, does it still send the original byte range and length?
-
-The commit message mentions this ("once the driver honours
-bpf_xdp_adjust_tail() and bpf_xdp_adjust_head() for XDP_TX"), and no patch
-in the series fixes it. The padding added here uses the same stale
-lengths, which do match what is actually sent.
-
-> +
-> +	if (unlikely(enetc_bd_unused(tx_ring) <
-> +		     ENETC_TXBDS_NEEDED(num_tx_swbd + !!pad_len)))
-> +		return false;
-> +
->  	i = tx_ring->next_to_use;
-
-[ ... ]
-
-> @@ -1776,6 +1788,22 @@ static bool enetc_xdp_tx(struct enetc_bdr *tx_ring,
->  		enetc_bdr_idx_inc(tx_ring, &i);
->  	}
+>  	enetc_unlock_mdio();
 >  
-> +	/* The pad BD becomes the last one, so it takes over the xdp_frame
-> +	 * (if any) from the last data BD. The pad BD has no DMA mapping of
-> +	 * its own, and it is not an XDP_TX buffer to be recycled.
-> +	 */
-> +	if (unlikely(pad_len)) {
-> +		struct enetc_tx_swbd *pad_swbd = &tx_ring->tx_swbd[i];
-> +
-> +		enetc_map_tx_pad(tx_ring, i, pad_len);
-> +		pad_swbd->is_xdp_redirect = last_swbd->is_xdp_redirect;
-> +		pad_swbd->xdp_frame = last_swbd->xdp_frame;
+>  out:
+> -	tx_ring->stats.xdp_tx += xdp_tx_frm_cnt;
+> -	tx_ring->stats.xdp_tx_drops += num_frames - xdp_tx_frm_cnt;
+> +	tx_ring->stats.xdp_tx += k;
+> +	tx_ring->stats.xdp_tx_drops += num_frames - k;
+>  
+>  	spin_unlock(&tx_ring->xdp_lock);
 
 [Severity: High]
-Is pad_swbd fully initialized here? enetc_map_tx_pad() sets only these
-swbd fields:
 
-	tx_swbd->len = pad_len;
-	tx_swbd->is_eof = 1;
-	tx_swbd->do_twostep_tstamp = false;
-	tx_swbd->check_wb = false;
+This isn't a bug introduced by this patch. It comes from the earlier patch
+in this series, "net: enetc: serialize access to the same TX ring from NAPI
+XDP_TX and ndo_xdp_xmit()".
 
-This block then adds is_xdp_redirect and xdp_frame. The other fields
-(is_xdp_tx, page, page_offset, dma, is_dma_page, dir and qbv_en) keep
-whatever the slot held before. The data BDs are fine, because
-enetc_xdp_map_tx_buff() memcpy()s the whole swbd.
+Can tx_ring->xdp_lock and enetc_mdio_lock deadlock on PREEMPT_RT when the
+ERR050089 workaround (enetc_has_err050089) is enabled?
 
-enetc_clean_tx_ring() normally memsets each slot it cleans, but slots can
-be left stale. enetc_stop() doesn't clean BDs that have already completed.
-After that, enetc_free_tx_frame() only does:
+enetc_xdp_xmit() takes xdp_lock first and then the MDIO read lock:
 
-	if (tx_swbd->dma)
-		enetc_unmap_tx_buff(tx_ring, tx_swbd);
+	spin_lock(&tx_ring->xdp_lock);
+	...
+	enetc_lock_mdio();
 
-That clears dma but leaves is_xdp_tx and page set.
+enetc_clean_rx_ring_xdp() drops xdp_lock at the out: label but keeps the
+MDIO read lock. It then takes xdp_lock again, so the order is reversed:
 
-Now suppose enetc_reconfigure_xdp_cb() fails, for example when
-netif_set_real_num_tx_queues() returns -ENOMEM on XDP detach.
-enetc_reconfigure() then restarts the same tx_swbd arrays without
-scrubbing them:
+out:
+	spin_unlock(&tx_ring->xdp_lock);
+	...
+	if (xdp_tx_frm_cnt) {
+		spin_lock(&tx_ring->xdp_lock);
+		enetc_update_tx_ring_tail(tx_ring);
+		spin_unlock(&tx_ring->xdp_lock);
+	}
+	...
+	enetc_unlock_mdio();
 
-out_restart:
-	enetc_setup_bdrs(priv, extended);
-	enetc_start(priv->ndev);
+On PREEMPT_RT, rwbase_write_lock() takes the rtmutex and removes
+READER_BIAS. New readers then block behind a pending writer. That would
+allow this cycle:
 
-enetc_setup_txbdr() reloads next_to_clean and next_to_use from the
-hardware, so these uncleaned slots end up in the free part of the ring.
+T1 (RX NAPI, enetc_clean_rx_ring_xdp())
+  holds the MDIO read lock after out:
 
-Later, a short XDP frame may put its pad BD in one of those slots. At
-completion, enetc_clean_tx_ring() would then run:
+T3 (_enetc_rd_mdio_reg_wa())
+  write_lock_irqsave(&enetc_mdio_lock, flags);
+  waits for T1 to drop the read lock
 
-		if (tx_swbd->is_xdp_tx)
-			enetc_recycle_xdp_tx_buff(tx_ring, tx_swbd);
+T2 (enetc_xdp_xmit() on another CPU, targeting the same XDP TX ring,
+    e.g. after an IRQ affinity change)
+  spin_lock(&tx_ring->xdp_lock);
+  enetc_lock_mdio();          <- blocks behind T3
 
-on the pad BD. Couldn't this put the stale page back into the RX ring
-with dma == 0, or unmap and free a page that was already freed? Either
-way, xdp_tx_in_flight would be decremented for a BD that never
-incremented it.
+T1
+  spin_lock(&tx_ring->xdp_lock);  <- blocks behind T2
 
-The later patch "fix leak of pending XDP_TX frames when going down"
-seems to make this worse. It frees the page but still leaves is_xdp_tx
-and page set.
+Non-RT testing would not catch this. On non-RT, qrwlock readers in
+interrupt context ignore a waiting writer, and lockdep treats this
+read_lock as recursive.
 
-Would it help to clear the pad swbd fully, for example with a memset
-before enetc_map_tx_pad(), or by clearing is_xdp_tx, page, is_dma_page
-and dma explicitly?
+Would it help to use one lock order in the RX tail update path? For
+example, the MDIO read lock could be dropped before re-taking xdp_lock and
+then taken again inside it.
 
-[ ... ]
+>  
+> -	return err ?: xdp_tx_frm_cnt;
+> +	return err ?: k;
+>  }
+>  EXPORT_SYMBOL_GPL(enetc_xdp_xmit);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015105536.1692348-1-vladimir.oltean%40nxp.com
