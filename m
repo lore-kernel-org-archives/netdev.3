@@ -1,50 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B939555E45C;
-	Mon, 19 Oct 2026 13:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A4051DB03;
+	Mon, 19 Oct 2026 13:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418243; cv=none; b=C+EprV2881Fs2XsNBqxJq8LKhNUh+9p5NdM3jdufnmgTyo2HbgVwnTwYicue6RUDYooMlMwdIq6+SO6iwctp0u+5r1YMCi7iGNIs8pYCEmJlqC2rPjYSteVggQ4qyaMVromvMFjNWENRfkt5Qxt9UU2EiWkELadPxW7ixzxf36s=
+	t=1792418274; cv=none; b=Fvo9feuSNJyGN1asAREFYLZpXDIDAAXegxbKcJWDNCYoe3pFADeM4itPf9xOtTBfUXDD6ztOHYqnw63AXPP7oapCxYJfKCLgMiDNH7RvtNcG1oQWzqF2ln6qdhGTvWA9JlauOMiNhcSqaTm8BudsD1//PlUERf4VuDvqV6mvte4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418243; c=relaxed/simple;
-	bh=LGNognZZSPk5KxXtYXwvKz/Sv6yIv8jF7CMptWLrPHs=;
+	s=arc-20240116; t=1792418274; c=relaxed/simple;
+	bh=oipH0fkPpp6h9xLNpimbUPkFvsscbiMNxy0i7qVIpJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MNbbp5oXxf9TGnz2Q2Lc8lphl9nYO/oWLISYeHseRtrCCBmAIMK7sQpMr8hMKbSXsyv+Vf5Nft5/MbpIdhmsF+AGyUDCU9xVaGmKWMtxIWPZhD6yNmjhupMUl0Zo9BZSHSO2x6Qn521PPEq7tJ0m+tyCqaOT1cgDfHseYb8Abx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3ULxGUZ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Dni7sfZJMC4Nmx7MMp8/9lI8SuU/wBxVA6cuyMrUa4r2odDQAl4WoroH3M+9QfY65ME48PXlUGH5Z3DU7rg1GDbywRFgKIzkF2oNqhUNtiiI3d2SxVge/PB30QIi/kZ9ET4A1UghN2tsrnp5NedPc8Yguro/IFae+T8hUBA9jxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLPjSU4H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3ULxGUZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2531F000C7;
-	Mon, 19 Oct 2026 13:57:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLPjSU4H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AAC1F000C8;
+	Mon, 19 Oct 2026 13:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418240;
-	bh=xQwHrwplptV7+b5NgWL9BkfxeUoS4UgcnIR4cVBDzdw=;
+	s=k20260515; t=1792418272;
+	bh=O4hRn3SQYZZrHAsz7o5XGYnMoS2dA97NZLEhgQkHGkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F3ULxGUZD7Tok/Ty8AujFedYtqZn9aO/FKQSw/gHBRaaU2Ga2FiaE36szDy0G3TM9
-	 PWtw4/9Si85KoYTdRfJ14VWwfnkLTU3MvJuFHw524MyRwSceg2WbxfdxskSfO3PJ1H
-	 wnf8GkD8KpzhjTUlA83KBnF8UDNtJ9CpfGSG41TLBbfI9tH1N2xLRW7n25niXzoe6p
-	 5zpI6Z3FZERNK2LYgX55QKzvyvNuM1rMBt7nlzTeVnu9TO2pfgMeOeVKiO3lpr79Pj
-	 zgSE+VcxyRVm/7m/4A5BBC56ClFL+9VgjuTeUws5UO0itAItoc4iiqxTXlJchJQk3v
-	 MF4/q8kZk5DJA==
+	b=CLPjSU4H6G8N/SADFhc1hqKj2RvtF0qJlUBfrBqtiDakWuXZ05Bkeri/u+67xjG7R
+	 peokyLtp3/znOhAnJLwvCMdIpkD0zB8zG4TLUPuFPJ5oF1Wudn7Upg1ochGbzkBVnZ
+	 wcGVH71CCYSUj+t94P9zEskwqO/Mk8DQ/fTBk1l43ZCRCy5b7hwjvNpdGEJaG5Z3Kl
+	 7tP59xI9spi3at4emhy6Q2ANKNgwUS1vMwqK5elg7UsMdu5HZPX3UD/KjY/CfO8UcZ
+	 fD6AV5wKZ+B3x1ZzykfF3UZO/iaDKQqiqq5Ivr4fJML5+wDQtJjwDJfiN04TgMixJW
+	 WpZK8MPLEkF2g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Yousef Alhouseen <alhouseenyousef@gmail.com>,
-	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com,
-	Petko Manolov <petkan@nucleusys.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Yuyang Huang <yuyanghuang@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	enachman@marvell.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	kuba@kernel.org,
-	linux-usb@vger.kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] net: usb: rtl8150: handle link status read failures
-Date: Mon, 19 Oct 2026 09:46:43 -0400
-Message-ID: <20261019135441.1420968-112-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.1] net: prestera: ignore duplicate RIF destruction events
+Date: Mon, 19 Oct 2026 09:47:01 -0400
+Message-ID: <20261019135441.1420968-130-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -60,320 +59,361 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+From: Yuyang Huang <yuyanghuang@google.com>
 
-[ Upstream commit 8c9c5b9a689612dcb92a04a4218c975cd19f19d8 ]
+[ Upstream commit 3cbbc9fa33382d03f2813118e672eb318eba9cde ]
 
-set_carrier() ignores the result of the USB control transfer and tests
-the stack variable supplied as its receive buffer. If the device rejects
-or aborts the request, that variable remains uninitialized and the driver
-chooses an arbitrary carrier state.
+During address teardown, the inetaddr notifier may be called multiple
+times for the same interface. Ignore NETDEV_DOWN events if the RIF has
+already been destroyed, rather than returning -EEXIST, which aborts the
+notifier chain.
 
-Leave the existing carrier state unchanged when the link status cannot be
-read. A transient USB error should not be treated as link loss.
-
-Reported-by: syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9db6c624635564ad813c
-Suggested-by: Petko Manolov <petkan@nucleusys.com>
-Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260630101216.10365-1-alhouseenyousef@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
+Link: https://patch.msgid.link/20260711005405.2861680-2-yuyanghuang@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase 1: Commit message forensics
+I have enough to decide: this tree already has the IPv4 teardown change
+that makes prestera abort the inetaddr chain, so the two-line companion
+fix belongs here.
+
+## Local tree
+
+This checkout is **v7.3-rc4-27** (`7.3.0-rc4`, `VERSION=7 PATCHLEVEL=3
+SUBLEVEL=0`). The candidate is `3cbbc9fa33382` (“net: prestera: ignore
+duplicate RIF destruction events”), already an ancestor of HEAD (merged
+for 7.3-rc1). The verdict is whether this tree’s code needs that fix on
+technical merit, not whether a pipeline already picked it.
+
+---
+
+### PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1 — Subject**
-Record: `[net: usb: rtl8150] [handle] ignore USB register-read errors in
-set_carrier() so an uninitialized stack value is not used as link
-status`
+Record: **[net: prestera]** **[ignore]** duplicate RIF destruction
+events. “Ignore” here means treat a second destroy as success instead of
+failing.
 
 **Step 1.2 — Tags**
 Record:
-- `Reported-by: syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com`
-  (KMSAN, reproducible)
-- `Closes: https://syzkaller.appspot.com/bug?extid=9db6c624635564ad813c`
-- `Suggested-by: Petko Manolov <petkan@nucleusys.com>` (original rtl8150
-  author)
-- `Reviewed-by: Andrew Lunn <andrew@lunn.ch>`
-- `Link: https://patch.msgid.link/20260630101216.10365-1-
-  alhouseenyousef@gmail.com`
-- `Signed-off-by: Yousef Alhouseen` (author), `Paolo Abeni` (netdev)
-- No `Fixes:` on the committed form (dropped in v4 at reviewer request;
-  v1/v2 had `Fixes: 1da177e4c3f4` and `Cc: stable`)
-- Sasha Levin SOB ignored as pipeline noise
+- `Cc: Ido Schimmel <idosch@nvidia.com>`
+- `Cc: Kuniyuki Iwashima <kuniyu@google.com>`
+- `Signed-off-by: Yuyang Huang <yuyanghuang@google.com>` (author)
+- `Link: https://patch.msgid.link/20260711005405.2861680-2-
+  yuyanghuang@google.com`
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev maintainer)
+- No `Fixes:`, no `Reported-by:`, no `Cc: stable` (expected for this
+  review)
+- Ignore any Sasha Levin SOB (none on the real commit)
+
+Later trailers (mbox): `Acked-by: Elad Nachman <enachman@marvell.com>`
+(Marvell prestera).
 
 **Step 1.3 — Body**
-Record: `set_carrier()` ignores `get_registers()` and then tests stack
-`tmp`. On USB reject/abort, `tmp` is uninitialized, so carrier is chosen
-from garbage. Failure mode: arbitrary `netif_carrier_on/off`. Fix: keep
-the current carrier if the CSCR read fails. No version range given.
+Record: During address teardown the inetaddr notifier can run more than
+once for the same interface. Returning `-EEXIST` when the RIF is already
+gone **aborts the notifier chain**. Symptom: later `inetaddr` listeners
+miss `NETDEV_DOWN`. Root cause: destroy is not idempotent.
 
 **Step 1.4 — Hidden bug fix?**
-Record: Not hidden. This is an explicit uninitialized-use / ignored-
-error fix, confirmed by KMSAN.
+Record: Not hidden. It is a real error-path fix: missing RIF on
+`NETDEV_DOWN` was treated as a hard error.
 
-## Phase 2: Diff analysis
+---
+
+### PHASE 2: DIFF ANALYSIS
 
 **Step 2.1 — Inventory**
-Record: one file, `drivers/net/usb/rtl8150.c`; `set_carrier()` only; +3
-/ −1; surgical single-function change.
+Record: `drivers/net/ethernet/marvell/prestera/prestera_router.c` — **+2
+/ −4** (6 lines net). Function: `__prestera_inetaddr_port_event()`.
+Surgical, single-file.
 
 **Step 2.2 — Flow**
-Record: Before: always `get_registers(dev, CSCR, 2, &tmp)` then `tmp &
-CSCR_LINK_STATUS` → carrier on/off. After: non-zero return from
-`get_registers()` returns immediately; carrier is unchanged. Path:
-`rtl8150_open()` (interface up).
+Before (`NETDEV_DOWN`, RIF already gone): set extack `"Can't find RIF"`,
+return `-EEXIST`.
+After: `if (!re) return 0;` then only destroy/put when the RIF still
+exists.
 
-**Step 2.3 — Bug mechanism**
-Record: **uninitialized data** (KMSAN). `usb_control_msg_recv()` only
-`memcpy`s into the caller buffer on a full successful transfer
-(`drivers/usb/core/message.c`); on error it returns negative and leaves
-`tmp` untouched. `short tmp` is uninitialized, then used as a bit test.
+**Step 2.3 — Bug category**
+Record: **Logic / correctness** (idempotent teardown). Secondary:
+**notifier-chain abort**. Not UAF/leak/lock.
+
+Mechanism: `__prestera_inetaddr_cb` uses `notifier_from_errno(err)`.
+Non-zero errno becomes `NOTIFY_STOP_MASK`, so
+`blocking_notifier_call_chain()` stops. Confirmed in
+`include/linux/notifier.h`.
 
 **Step 2.4 — Fix quality**
-Record: Obviously correct. Three lines. No API/lock/refcount change.
-Regression risk is low: a failed CSCR read no longer flips carrier. That
-matches the original author’s review (transient USB errors should not
-look like link loss).
+Record: Obviously correct: destroy should be idempotent. No new
+locks/APIs. Regression risk is low: a true “RIF missing on first DOWN”
+is now silent success instead of `-EEXIST`. That matches mlxsw-style
+handling Ido sketched on v1.
 
-## Phase 3: Git history
+---
+
+### PHASE 3: GIT HISTORY
 
 **Step 3.1 — Blame**
-Record: Unchecked `get_registers()` + `tmp & CSCR_LINK_STATUS` dates to
-`1da177e4c3f4` (Linux 2.6.12-rc2, 2005). The uninit became hard after
-`b2a0f274e3f7e` (“Use the new usb control message API”, in `v5.10-rc1`):
-`usb_control_msg_recv()` does not fill the buffer on failure.
+Record: Buggy `-EEXIST` on missing RIF came from `15fa9e8c5ffbe0`
+(“Implement initial inetaddr notifiers”, 2021-12-27) / `32d098bb2e494c`
+(refactor, 2022-01-11). Prestera router dates to `da3c16398602a` /
+`69204174cc5cb` (~v5.17). Long-lived driver code.
 
-**Step 3.2 — Fixes tag**
-Record: Committed patch has no `Fixes:`. v1/v2 used `Fixes:
-1da177e4c3f4`. That SHA is in this tree. The USB API switch
-`b2a0f274e3f7e` is also in this tree (`v5.10-rc1`).
+**Step 3.2 — Fixes: tag**
+Record: None. Trigger is **not** that old RIF code alone; it is
+companion series patch 3:
 
-**Step 3.3 — Related file history**
-Record: Same driver already has `fba383985354e` (“fix unintiatilzed
-variables in rtl8150_get_link_ksettings”), a sibling KMSAN
-ignored-`get_registers()` fix, present in `v6.18.53`. Other recent
-rtl8150 work is UAF/leak/padding, not a substitute for this carrier
-check. Standalone, not patch X/Y.
+`aa22336b76b73` — `net: ipv4: clear dev->ip_ptr before destroying
+inetdev`
+
+That commit **is in this tree** (`git merge-base --is-ancestor`
+succeeded). It moves `RCU_INIT_POINTER(dev->ip_ptr, NULL)` **before**
+the `ifa_list` teardown loop in `inetdev_destroy()`.
+
+**Step 3.3 — File history**
+Record: Recent prestera_router.c churn is unrelated (kmalloc_obj, IPv4
+nhid, NULL vs IS_ERR). Standalone vs the series: this is **patch 1/3**,
+ordered so drivers are fixed **before** the core IPv4 change for
+bisectability.
 
 **Step 3.4 — Author**
-Record: Yousef Alhouseen; this is their only rtl8150 commit here.
-Suggested-by Petko Manolov (driver author). Reviewed-by Andrew Lunn.
+Record: Yuyang Huang (Google); two commits in this series. Not the
+prestera maintainer. Elad Nachman (Marvell) acked patch 1. Ido Schimmel
+**wrote the exact diff** in v1 review.
 
 **Step 3.5 — Dependencies**
-Record: None. Uses existing `get_registers()` return value. `git diff
-v6.18.53 6a6d945b860b3^ -- drivers/net/usb/rtl8150.c` is empty —
-preimage matches 6.18.y.
+Record: Applies standalone on the 2022 RIF code. **Semantically
+required** once `aa22336b76b73` is present. Patch 2 (`e5b14e9ae82b`,
+mac80211) is a sibling, not a prereq for prestera.
 
-## Phase 4: Mailing list / external
+Without patch 3, `__prestera_inetaddr_cb` still uses
+`__in_dev_get_rtnl(dev)` and skips unless `ifa_list` is empty, so
+duplicate destroy on inetdev teardown does not happen. **This tree has
+patch 3**, so the duplicate path is live.
 
-**Step 4.1 — Discussion**
-Record: `b4 dig` → https://patch.msgid.link/20260628165033.17842-1-
-alhouseenyousef@gmail.com
-Revisions: v1 (carrier-off on error) → v2 (return on error) → net-next
-v4 (applied).
-Petko: do not force carrier off; USB messages can be lost while the
-device still works.
-Andrew Lunn (v2): pointed at stable-kernel-rules, asked “Does this issue
-bother people?”, asked for net-next, Suggested-by, and no version
-threading.
-v4 changelog: “Target net-next and drop the Fixes tag as requested.”
-Andrew Reviewed-by v4. Applied to netdev/net-next as `8c9c5b9a6896`. No
-NAK of the code.
+---
 
-**Step 4.2 — Recipients**
-Record: Petko, Lunn, davem, Dumazet, Kicinski, Abeni, linux-usb, netdev,
-syzbot. Right lists and maintainers.
+### PHASE 4: MAILING LIST
+
+**Step 4.1 — Original thread**
+Record: `b4 dig -c 3cbbc9fa33382` →
+https://patch.msgid.link/20260711005405.2861680-2-yuyanghuang@google.com
+v1: single net-next patch only moving `ip_ptr` clear.
+v2: `[PATCH net-next v2 0/3] align IPv4 teardown with IPv6 and fix
+driver regressions`.
+
+Ido (v1): sashiko was right; prestera must ignore missing-RIF
+`NETDEV_DOWN`; he pasted this exact hunk; mlxsw already OK; audit other
+listeners.
+
+Cover letter: clearing `ip_ptr` early makes `__in_dev_get_rtnl()` NULL
+in the destroy loop → prestera/mac80211 regressions. Drivers first, then
+core, for bisectability.
+
+No NAKs. Applied to net-next by Kicinski (2026-07-21). Elad Acked-by
+after merge.
+
+**Step 4.2 — Recipients (`b4 dig -w`)**
+Record: davem, kuba, pabeni, dsahern, horms, edumazet, Ido, Elad
+Nachman, Johannes Berg, netdev, linux-wireless. Right lists/maintainers.
 
 **Step 4.3 — Bug report**
-Record: syzbot “KMSAN: uninit-value in rtl8150_open (2)”, prio:high.
-Stack: `set_carrier` ← `rtl8150_open` ← `__dev_open` ← ioctl (dhcpcd).
-Local `tmp`. Console: `usb 2-1: device reset failed`. First crash ~186d
-before the report page, last ~113d. Security workflow: PeripheralTrigger
-yes; DoS/exploitable/unprivileged no. Five KMSAN crashes on dummy USB.
+Record: No syzbot/bugzilla. Found in review of the IPv4 teardown change.
 
 **Step 4.4 — Series**
-Record: Single patch. Not part of a multi-patch series.
+1. This prestera fix
+2. mac80211: use `ifa->ifa_dev`
+3. IPv4 `ip_ptr` clear
 
-**Step 4.5 — Stable list**
-Record: lore.kernel.org HTTP 403; no extra stable-list thread retrieved.
-v1/v2 were Cc: stable; Andrew redirected to net-next. That is process,
-not a technical NAK.
+All three are in this tree.
 
-## Phase 5: Semantics / call graph
+**Step 4.5 — stable@**
+Record: lore.kernel.org returned 403 via HTTP; `b4` did get the netdev
+thread. No `Cc: stable` in the series (sent to **net-next**, not
+**net**). No evidence it was rejected for stable.
 
-**Step 5.1**
-Record: `set_carrier()` only.
+---
 
-**Step 5.2**
-Record: Only caller is `rtl8150_open()` (`drivers/net/usb/rtl8150.c`).
-Link is also updated later from `intr_callback()` via `MSR_LINK`
-(independent path, 100 ms interrupt URB).
+### PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.3**
-Record: `get_registers()` → `usb_control_msg_recv()`; then
-`netif_carrier_on` / `netif_carrier_off`.
+**Step 5.1 — Functions**
+Record: `__prestera_inetaddr_port_event()` only.
 
-**Step 5.4**
-Record: Reachable from userspace bringing the iface up (`SIOCSIFFLAGS` /
-`dev_change_flags` / `__dev_open`). Needs the USB device (or a gadget).
-Typically `CAP_NET_ADMIN`. Syzbot hit it via dhcpcd on a dummy device.
+**Step 5.2 — Callers**
+`__prestera_inetaddr_event()` → `__prestera_inetaddr_cb` (`NETDEV_DOWN`,
+last-address intent) and `__prestera_inetaddr_valid_cb` (`NETDEV_UP`
+only). Registered via `register_inetaddr_notifier()` in
+`prestera_router_init()`.
 
-**Step 5.5**
-Record: Same ignored-return pattern exists elsewhere in this file
-(`read_mii_word`, `rtl8150_reset`, `enable_net_traffic`,
-`get_link_ksettings`). `get_link_ksettings` was already hardened by
-initializing locals (`fba383985354e`). This commit only fixes
-`set_carrier()`.
+**Step 5.3 — Callees**
+`prestera_rif_entry_find/create/destroy`, `dev_hold`/`dev_put`.
 
-## Phase 6: This tree (6.18.y)
+**Step 5.4 — Reachability**
+Yes, from normal IPv4 teardown: `inetdev_destroy()` (`NETDEV_UNREGISTER`
+or invalid MTU) → `inet_del_ifa()` → `inetaddr_chain` `NETDEV_DOWN`.
 
-**Step 6.1**
-Record: Local tree is **6.18.53** (`git describe HEAD` →
-`v6.18.53-5049-g0f0bdc2b0dffb`, `VERSION=6 PATCHLEVEL=18 SUBLEVEL=53`).
-`v6.18.53:drivers/net/usb/rtl8150.c` still has the unchecked
-`get_registers(dev, CSCR, 2, &tmp)`. Bug is present. Introduced in
-practice with `usb_control_msg_recv` in v5.10; the ignore-return pattern
-is ancient.
+After patch 3, `__in_dev_get_rtnl(dev)` is NULL, so the “not last
+address” skip is false and **every** remaining address generates a
+destroy attempt. First succeeds; later ones hit missing RIF.
 
-**Step 6.2**
-Record: Clean apply. Parent of the candidate matches `v6.18.53` for this
-file (0-line diff).
+`inetaddr_chain` also includes `fib_inetaddr_event`, SCTP, nf_nat
+masquerade, nfsd, lockd, mac80211, RDMA GID, ipvlan, etc. Default
+notifier priority 0: boot-time FIB typically runs before prestera;
+later-registered listeners after prestera **do not run** if prestera
+returns `-EEXIST`.
 
-**Step 6.3**
-Record: No other commit in 6.18.y checks `set_carrier()`’s CSCR read.
-`fba383985354e` is related but only ethtool ksettings.
+**Step 5.5 — Similar patterns**
+mlxsw already treats missing RIF as “no config”
+(`mlxsw_sp_rif_should_config`). Ido: “mlxsw is OK.” No remaining `"Can't
+find RIF"` in prestera.
 
-## Phase 7: Subsystem
+---
+
+### PHASE 6: THIS TREE
+
+**Step 6.1 — Buggy code**
+The pre-fix `return -EEXIST` is in `3cbbc9fa33382^`. Trigger
+`aa22336b76b73` is in HEAD. Without this patch, 7.3-rc4 prestera would
+abort the chain. Current HEAD already has the idempotent `return 0`.
+
+**Step 6.2 — Backport difficulty**
+Clean: same function shape since 2022. This tree already contains the
+result.
+
+**Step 6.3 — Other fixes**
+No earlier equivalent. This is the fix.
+
+---
+
+### PHASE 7: SUBSYSTEM CONTEXT
 
 **Step 7.1**
-Record: USB net driver `CONFIG_USB_RTL8150`. Criticality: **PERIPHERAL**
-(legacy Realtek USB 10/100 dongle; not core mm/net). Still a supported
-in-tree driver, not staging.
+Record: Marvell Prestera switchdev Ethernet (`CONFIG_PRESTERA`).
+**PERIPHERAL** hardware, but the failure is on the **global inetaddr
+chain** (IMPORTANT impact surface).
 
-**Step mar 7.2**
-Record: Low-churn mature driver. Occasional syzbot fixes. Stable-
-relevant bugs do still land here.
+**Step 7.2**
+Record: Mature driver (v5.17+). This change is a companion to 7.3 IPv4
+teardown, not random refactor.
 
-## Phase 8: Impact / risk
+---
 
-**Step 8.1**
-Record: Users of `CONFIG_USB_RTL8150` only, plus KMSAN/syzbot coverage.
+### PHASE 8: IMPACT AND RISK
 
-**Step 8.2**
-Record: Trigger: CSCR USB control read fails during `rtl8150_open()`
-(device reset failure, disconnect, bus noise). Uncommon on working
-hardware; easy with a dummy/failing USB device. Not a general
-unprivileged attack path.
+**Step 8.1 — Who**
+Prestera switch users with IPv4 on ports, especially **multiple
+addresses**, during unregister / inetdev destroy. Other `inetaddr`
+listeners on those events.
 
-**Step 8.3**
-Record: Production: wrong carrier (link up/down from stack garbage). Not
-a panic/UAF. Under KMSAN: `BUG: KMSAN: uninit-value`. Interrupt path can
-correct carrier within ~100 ms if the device still works. Severity:
-**HIGH** as uninitialized memory (KMSAN); **MEDIUM** as user-visible
-wrong link state on USB error.
+**Step 8.2 — Trigger**
+`inetdev_destroy()` after `ip_ptr` is cleared, more than one IPv4
+address. Unprivileged users typically cannot unload the switch; admin
+teardown/unregister can. Not a race; deterministic.
 
-**Step 8.4**
-Record: Benefit: stops UB and random carrier on open failure; matches a
-prior stable fix in the same file. Risk: very low (3 lines, error path
-only, no locking). Ratio favors backport.
+**Step 8.3 — Failure mode**
+Not an oops/UAF. `-EEXIST` → notifier stop → later listeners miss
+`NETDEV_DOWN` (SCTP local addrs, nfsd/lockd, RDMA GIDs, etc.).
+`inet_del_ifa()` ignores the chain return, so teardown continues, but
+**sidecar state can go stale**. Severity: **HIGH** for correctness of
+address teardown, not CRITICAL crash.
 
-## Phase 9: Synthesis
+**Step 8.4 — Risk/benefit**
+Benefit: high for this tree (trigger commit is present). Risk: very low
+(2 lines, maintainer-supplied, Acked). Ratio: strongly in favor.
+
+---
+
+### PHASE 9: SYNTHESIS
 
 **For backporting**
-- Real ignored-error / uninitialized-stack bug, not cleanup.
-- Syzbot + KMSAN, reproducible from iface open.
-- Same class as `fba383985354e`, already in this 6.18.y tree.
-- Three-line, reviewed, Suggested-by the driver author.
-- Buggy code is in `v6.18.53`; applies cleanly; no prerequisites.
-- Wrong carrier on `ifup` is user-visible if the control read fails.
+- Real bug once `aa22336b76b73` is present (this tree).
+- Aborts `inetaddr_chain`; not cosmetic.
+- 2-line, obviously correct, Ido-authored hunk, Elad ack, Kicinski
+  merge.
+- Applies cleanly; no new API.
+- Patch 2 is not required for this file.
 
 **Against**
-- Andrew Lunn asked whether it “bothers people” and sent it to net-next,
-  not `net`.
-- Not a production oops, deadlock, or security hole (syzbot: not
-  exploitable/DoS).
-- Legacy USB adapter; trigger is a failed control transfer.
-- Interrupt callback often repairs carrier shortly after.
+- Niche `CONFIG_PRESTERA`.
+- net-next companion, not a crash/CVE.
+- No production `Reported-by`.
+- Independent value is weak **without** the IPv4 `ip_ptr` move — but
+  that move **is here**.
 
 **Unresolved**
-- Could not fetch lore.kernel.org/stable (HTTP 403). Discussion is taken
-  from `b4` mboxes instead.
+- HTTP 403 on lore/stable search; thread recovered via `b4`. No sign of
+  a stable NAK.
 
-**Stable-rules checklist**
-1. Obviously correct and tested? **PASS** — 3 lines, Reviewed-by Lunn,
-   Suggested-by Petko, syzbot-confirmed.
-2. Real bug affecting users? **PASS** — uninit `tmp` used for carrier;
-   KMSAN + ioctl path.
-3. Important (crash/security/corruption/deadlock)? **PASS** — KMSAN
-   uninitialized use is a real memory-safety bug; production symptom is
-   incorrect carrier, not a panic. Bar is met for sanitizer-class fixes
-   this pipeline treats as backport-worthy.
-4. Small and contained? **PASS** — one function, +3/−1.
-5. No new features/APIs? **PASS**.
-6. Applies to this tree? **PASS** — 6.18.y has the bug and matching
-   preimage.
+**Stable rules**
+1. Obviously correct and tested? **PASS** (Ido diff + Elad ack + net-
+   next)
+2. Real user-visible bug? **PASS** (notifier abort on port teardown)
+3. Important? **PASS** (broken global `NETDEV_DOWN` delivery; not a
+   panic)
+4. Small/contained? **PASS** (+2/−4, one function)
+5. No new features/APIs? **PASS**
+6. Applies to this tree? **PASS** (same code; trigger present)
 
-**Exception category:** none (not an ID/quirk/DT/build/doc exception).
-It is a normal small bugfix.
+Exception category: none (not an ID/quirk/DT/build/doc add). Still a
+contained correctness fix.
 
-The net-next routing only dropped tags for netdev process. It does not
-remove the bug from 6.18.y. The patch is self-contained, applies
-cleanly, and is the same error-check this driver already needed in
-ethtool.
+This tree is 7.3-rc4 **with** the IPv4 teardown change. Without this
+patch, prestera turns duplicate RIF destroy into `-EEXIST` and stops the
+inetaddr chain. The fix is minimal and already reviewed. It should be in
+this tree.
 
 Verification:
-- [Phase 1] Tags: syzbot Reported-by, Closes syzkaller URL, Suggested-by
-  Petko, Reviewed-by Andrew Lunn, Paolo Abeni SOB.
-- [Phase 2] Diff: `set_carrier()` adds `if (get_registers(...))
-  return;`.
-- [Phase 2] `usb_control_msg_recv()` in `drivers/usb/core/message.c`
-  only copies into the caller buffer when `ret == size`; errors skip
-  that copy.
-- [Phase 3] Blame: logic since `1da177e4c3f4`; `usb_control_msg_recv`
-  since `b2a0f274e3f7e` (`v5.10-rc1`).
-- [Phase 3] `git diff v6.18.53 6a6d945b860b3^ --
-  drivers/net/usb/rtl8150.c` is empty.
-- [Phase 3] Sibling KMSAN fix `fba383985354e` is in `v6.18.53`.
-- [Phase 4] `b4 dig -c 8c9c5b9a6896`: v1–v4; Petko requested leave-
-  carrier-unchanged; Lunn asked for net-next; v4 applied to net-next.
-- [Phase 4] Syzkaller: KMSAN uninit-value in `rtl8150_open`, prio:high,
-  dhcpcd ioctl, `device reset failed`.
-- [Phase 5] Only caller: `rtl8150_open`; `intr_callback` updates carrier
-  separately.
-- [Phase 6] `git describe HEAD` = `v6.18.53-5049-g0f0bdc2b0dffb`; `make
-  kernelversion` = 6.18.53; buggy code present at `v6.18.53`.
-- [Phase 6] `git merge-base --is-ancestor 6a6d945b860b3 v6.18.53` → not
-  in the release tag (candidate only).
-- [Phase 8] Failure: uninitialized stack → arbitrary carrier; KMSAN BUG
-  under sanitizer.
-- UNVERIFIED: lore.kernel.org WebFetch 403; stable@ archive not searched
-  via HTTP.
+- [Phase 1] Tags: Cc Ido/Kuniyuki, Link msgid `...2861680-2`, SOB Huang
+  + Kicinski; no Fixes/syzbot
+- [Phase 2] Diff: `NETDEV_DOWN` `!re` path `-EEXIST` → `return 0` in
+  `__prestera_inetaddr_port_event`
+- [Phase 3] Blame: RIF notifier from `15fa9e8c5ffbe0` / `32d098bb2e494c`
+  (~v5.17)
+- [Phase 3] `git merge-base --is-ancestor aa22336b76b73 HEAD` → trigger
+  **in tree**; same for `e5b14e9ae82b` and `3cbbc9fa33382`
+- [Phase 3] `git describe HEAD` → `v7.3-rc4-27-gf0100363d8c37`; `make
+  kernelversion` → `7.3.0-rc4`
+- [Phase 3] `git show aa22336b76b73`: `ip_ptr` cleared **before** `ifa`
+  loop
+- [Phase 4] `b4 dig -c 3cbbc9fa33382`: v2 1/3 net-next; v1 was core-only
+- [Phase 4] Ido v1: exact prestera hunk; Elad Acked-by
+- [Phase 4] lore HTTP 403; mbox via b4 succeeded
+- [Phase 5] Callers: `__prestera_inetaddr_cb` → `notifier_from_errno`;
+  chain includes fib, sctp, nfsd, rdma, mac80211
+- [Phase 5] `notifier_from_errno` sets `NOTIFY_STOP_MASK` on any errno
+- [Phase 6] Pre-image at `3cbbc9fa33382^` still has `-EEXIST`; HEAD has
+  `return 0`
+- [Phase 8] Failure: notifier abort, not oops; trigger = inetdev_destroy
+  + multiple IPv4 addrs after `ip_ptr` clear
+- UNVERIFIED: whether anyone asked for this on stable@ (lore 403)
 
 **YES**
 
- drivers/net/usb/rtl8150.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/prestera/prestera_router.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 647f28b367b99..8c739d898e57d 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -734,7 +734,9 @@ static void set_carrier(struct net_device *netdev)
- 	rtl8150_t *dev = netdev_priv(netdev);
- 	short tmp;
- 
--	get_registers(dev, CSCR, 2, &tmp);
-+	if (get_registers(dev, CSCR, 2, &tmp))
-+		return;
-+
- 	if (tmp & CSCR_LINK_STATUS)
- 		netif_carrier_on(netdev);
- 	else
+diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router.c b/drivers/net/ethernet/marvell/prestera/prestera_router.c
+index de317179a7dcc..e36d023fe9c30 100644
+--- a/drivers/net/ethernet/marvell/prestera/prestera_router.c
++++ b/drivers/net/ethernet/marvell/prestera/prestera_router.c
+@@ -1302,10 +1302,8 @@ static int __prestera_inetaddr_port_event(struct net_device *port_dev,
+ 		dev_hold(port_dev);
+ 		break;
+ 	case NETDEV_DOWN:
+-		if (!re) {
+-			NL_SET_ERR_MSG_MOD(extack, "Can't find RIF");
+-			return -EEXIST;
+-		}
++		if (!re)
++			return 0;
+ 		prestera_rif_entry_destroy(port->sw, re);
+ 		dev_put(port_dev);
+ 		break;
 -- 
 2.53.0
 
