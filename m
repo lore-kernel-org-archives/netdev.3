@@ -1,73 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792422548;
-	b=uAFplqN4j/p4NPxIGvcXGVjDOo1jmqQt/HJAFj520eVUEsS8p2O43/RI4haqQpJjLUfY
-	 MxwbrH44qqRM79gQboKJCy3cqYzXK17XRaM6ZiQK6+GB8xWl6KtpGZE5ol16GQilRk4nQ
-	 0VIJG6XRT6oKb0ypLTs9a7NtebW/ChbSXEYKTVbvryeB5rrzna880VLJ0CZ6TFIcXFrev
-	 gs8fga/usATdaAfBRf7Crf1TCxaJ8qNrseuLfTj/vcB7WqpCWV+lXmnfAiGT0CNMKbiQj
-	 BZ0hTKgl3RRAXz9gFX5Nbhs30vBSrh/8sPDsJ0Sx/5FvmtX78qlypill+Hmsv23lavA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792422548;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type:Content-Transfer-Encoding;
-	bh=eJEkBIhXXAf3FhdflPiK5NHoR3jA0xDuLAOre8wI7t0=;
-	b=bgX59YKUG+H/Hh23wzwMWgZ5F6/ggjqP9bZFvYJi1NWuRnNwJ5nAr4n20bQKZFsqi3+X
-	 SRqVIl8pGAVPP8XhhEIQrKPYiEAkE2P34SAVas+Qb7dtbSI+ZipeoO8u0J/O9475qEkNI
-	 5g58IbqHlAJP8sIXTnhOOxp6z9RgG0ttMkZ+9n1t5BqLEp6pM9Bp7tivpQU2PUf6QNwEx
-	 cQN46PfUqrpLVROifdtnTCt+VcgDXCPzPTecL//QrjdYUnSwohurX0UhlzqRjC5Q2Elt7
-	 T4sfuiuy+V6UR0mZl241gxokyzq03BGr47Q6q3ET7x7Lh44nDr6xDUcgeui52vt49Ig==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="i3/UFB6f";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECC8608606F
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792421618;
+	b=BiPTDbqHbLs8YQKs5d/MonEFBDhz6wwQRUcxUWW8ajje6qXuodIfCI9smkMnQdSrIKyp
+	 tGxCY4kv4Z91ERJUrLcl/aHDB9f8dNVtsF2CJWpVPYI7ud9A5Xg0z+bamJMV+1jACi6Hi
+	 XB1xDGzV077baLp0jmIqVtcxh6SVUAcYZZAlObszzlMGwgA1gdndHVQUMcnPRbjs2Q5hc
+	 C4lQXVT65TcxNDvwTWZWq4bNaOJqjx6wG6t8qugYDoexueOk/FNzkSZJ5/q6nKPztNzKo
+	 uR6uUXrTdufbc6eu7AfaYDcNrTD5jT1N0/BGjyhxFJ3i9tVo+4W0N135vWPPWU6t4SQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792421618;
+	h=Received:Received:DKIM-Signature:Received:X-Gm-Message-State:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=S+Ym8tXJWpZWXVR5/0qvx3lNlnmmr/1Btzux3EG85GU=;
+	b=lm0wSmyW8Z9Eayy5RycbahAeOGF5UqLGfPU6KRkBsh1ei7EIP4rFf7xlJU58gv9N/h7S
+	 MmTv7v3ysCdnOg4u+4LK36H4iPPOmemNAV4MaXCXLmBRKH2H90OdPTTF4uzq7hrkdNi7/
+	 yx6bKm+R9aH1C4AJpjtkgEXhmW/1YjfqBsrQJQzw+DDWH89xEyTco9CJNVhZZZtPEnt1t
+	 Tx3W1u5WCLkc+LeXHtIuGmYevvZ83mCj8o+tftV0AnAg1CjYWY6kUNujoGSeUNAblWT1D
+	 cP+Lax5V2s6NvqnFfZZVrfRAAGCdpJZhzAkuPipewAQ4EJLjX5TAEiQGFjByvdUwzJQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GyyKma8D;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
+Received: from aws-us-west-2-korg-listserv-1.web.codeaurora.org (ip-10-30-226-211.us-west-2.compute.internal [10.30.226.211])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1453D606C14F
+	for <netdev.vger.kernel.org@localhost.mlmmj>; Mon, 19 Oct 2026 14:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i3/UFB6f
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF501F000C4;
-	Mon, 19 Oct 2026 15:09:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GyyKma8D
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD003451CE
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792421618; cv=none; b=GdPlZX+TAtSfT0qtcTOpI1a3+dNk6oWjz+sE1sE7Nv/L7yiA4F0BEnSn8FaZU23q25YXEgRgPLd9PwcjHJGFZhZcz+hWuMIhtYLu5UJFGg/NH/FxaVzZYuLe86L7O0DmcLTzM8sECd4V1UcqBVAFC9SA1hS/QS7FyzQrHo+UGEQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792421618; c=relaxed/simple;
+	bh=LmeF4ALpaW1uFDGTp5MCHyGcJJoqUOpGzB3A8h5qd4I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E84tsLw6g8tEmMMXXAew4b9sgfr0mJv+oe1v0EcHk/UiG47OgSJOkaO+0puut+LFy4H1/GBwHvMMKH/fCyE0GDJf/QkAtBsSdkJRdkQ81W9PrremUoVr227latFZEa1qw9lQ3j7JUbTdv3CndfcZ2Ww5SbrCfcWww0PU4XEvXLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GyyKma8D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFD51F000CA
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792422547;
-	bh=eJEkBIhXXAf3FhdflPiK5NHoR3jA0xDuLAOre8wI7t0=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=i3/UFB6fLpIqo4E7EfvhU8Wuk0kTmnCV/UPFd+dPlAnqiDRok7tdGbz+aBYTloQK2
-	 UGSTtGxyfaSCMIvIJHVGGZF0L9yRDdC9MrPHusLwDO0zElia+xI3I1nNucFykg2c6q
-	 eRTpMijuUBGOIUFTzSGJzpl9WAAWidiUou1R6Ke8mB0oWGOhiyCDBf/v9YXyRbHbVi
-	 KKJ6lRmqcT/ercVVS2B+cQHjwgtmy3TGHzgCD2gg4qFyCAitXiBT2ZJjLXx4LJ0z/8
-	 NoFSl9/ywq5eiJAZ0cvQ+eYGEBvPtB+kz3vq11L680UViuGTLt9e7W9CJVKdo5h/bT
-	 sCXR/ADJWPeAw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5288EF40066;
-	Mon, 19 Oct 2026 11:09:06 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Mon, 19 Oct 2026 11:09:06 -0400
-X-ME-Sender: <xms:kjLWak0kWU0SFkq2k6oD0B4jiLwI8Rp9MGhwShFTh40KOfOfqKgfNQ>
-    <xme:kjLWap52HB496PPEff-ZEib_qN8-iA0AGHPK5O-ab6EgHwCutoyvaOHywx6EYAGBU
-    QPQarApiBhpcZzLB_QatAqCTHKG4rtWn5uuCVjADbjTRhgWBdkP0jEX>
-X-ME-Proxy-Cause: dmFkZTE4B3Z2Yr93NlxKmJefPp/N7QvXesMFrxkNDmnsi069KzAsm9FfolxF6Kp17vU320
-    aa7K/tZ1hdSyrTKuAMtUES4zdtv402iMV/ySjOP1d1NssSax3hZaErmE5iU+ZXHJEFTSSb
-    OFNJ/X2Zc7mnjSfW7etGuvlNRrdN/RJxvqzWbhl18wv4JEcXOJp7aQiXijsPV3DqMYDc36
-    0byw0i4ZPstb4C1QnPGA4xipM/OQ3aitxKndLlDrv1srZ6pSpfQ2YRqqRYwfnsl2C6bEZW
-    Um2ydHQDhcLIpBrjBHFum+T4KCSkTMZGd+dG/0Vb4f0QgUcIBmeQ6LmJc6ffJ2N4xilaCN
-    424AZ/SE3ZQC4ko5aKu6+vJaFYgQ5HDxBQmGLN2Ny8ZoiXCdyyLNphvgzG+kPaUsMOQOlv
-    Yb/v85+h//ATnmwdLsKobzwf7VnFyYJoR3TOSFiCZeMTNECCcDkEfWawBwQ87X39Mr5nJ5
-    TgFvQL2aMWda66YwZ9bGlU5K4WY8vDAKsogHJjwdbFt4t/gRFQEbO4JSpdD1VycUGWTkIO
-    eL/OmD6h13QuGkq1DWBT4PxRYzJZT5E3TYSRntcUtqfstppDZSSqLeqWVrgY4LDWgBRKi6
-    XoJB/vMXgTBWV+h3B99u/82SjS/6T4/X2aOswloONSiQ6LUSWdYNPE3T+6xw
-X-ME-Proxy: <xmx:kjLWampcWR5VGJdpKfQydfBdtEQ2IyfC9np7xfMSkf7yn-4tohshaw>
-    <xmx:kjLWahXhdWAY60ZR3kuzNvhM2dBo-lqolKIPC4YygyqBS6caHBcnNA>
-    <xmx:kjLWavGWsyn-0x1pEnnEUxAywncFC1KBVqyIWiM2sqH0nBNITTjL4Q>
-    <xmx:kjLWagC-Bd1tZBcgkQU_iTjrlxNgvPtfpYKFbcHs4K2nu1JUIe3spw>
-    <xmx:kjLWapwznTPMmfgCe1K-hjUAtCfW0exw6uOYa5SHv-khgBDFPTR1GRBB>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2C01E782738; Mon, 19 Oct 2026 11:09:06 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1792421616;
+	bh=S+Ym8tXJWpZWXVR5/0qvx3lNlnmmr/1Btzux3EG85GU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GyyKma8DEU8LSTI4xyIJlBMuM+HXHkGaNJeSbmUgefuKybsGpD1Oz3fL/0N77Lnu3
+	 H5IcY7wSRBUaMST+xRC8fj110MbaTlz3hInidel759VJhyqt6GEq58hav0GWR2ttj2
+	 0xtHAh5nS+49iqvgzvFtzk95WDcGlKeYC8MvHuMXMT1/hechZLKrqoYOyq95+5ssxV
+	 u49V/SNquRCLfT2H9ZYWIW/YXQiq/+vZkYIdiXZriAHtPzsOpZSdf9ew0qDrg6O0bl
+	 X8FEWZ0XjyMkC+wMW42hCfeCgDiim1FnjBXrRsXvnqCNmV3DihemtbbijjY7Ogiyhh
+	 BioEpKqzOmACg==
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91beb36fcc6so14325046d6.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 07:53:36 -0700 (PDT)
+X-Gm-Message-State: AFq9FYLBdbYs97AubKtnG5ggj4ZoxIha7GbEt12O2VRRJmcjBO87RMI1
+	HqzX90SvDua/5V3hV7VJd3cq1MztkDQ0XhFXlwrfVq3LO1jksXT9KQGZpbuYmbVm1k0NJeM+lMN
+	5P/puAvPcweSC/KBylGHyuOWoYiFRveE=
+X-Received: by 2002:a05:620a:17a2:b0:92e:bc28:5479 with SMTP id
+ af79cd13be357-93f29b7fa33mr1291629285a.2.1792421615693; Mon, 19 Oct 2026
+ 07:53:35 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,50 +69,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 19 Oct 2026 11:05:49 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
- davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
- shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Message-Id: <8e161133-9663-4610-84de-56cdfdfeadbc@slotpi15m67>
-In-Reply-To: <179235137390.3135.8037803967508250404@kernel.org>
-References: <20261014-tls-follow-on-v5-1-e76c301d4f05@kernel.org>
- <179235137390.3135.8037803967508250404@kernel.org>
-Subject: Re: [PATCH net-next v5 01/10] tls: Bound consecutive no-data records in
- tls_sw_read_sock()
-Content-Type: text/plain; charset=utf-8
+References: <QDISC-5RTM.v2.r0.20261015051735@mojatatu.com> <QDISC-5RTM.v2.r0.20261015051735-1@mojatatu.com>
+ <87ld7t3kl3.fsf@all.your.base.are.belong.to.us> <CAM0EoMmL1Yjo67wOmOwWtfYLNrVFH7zSbgDtx2Rg+k3-Nu4QOQ@mail.gmail.com>
+In-Reply-To: <CAM0EoMmL1Yjo67wOmOwWtfYLNrVFH7zSbgDtx2Rg+k3-Nu4QOQ@mail.gmail.com>
+From: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Date: Mon, 19 Oct 2026 16:53:23 +0200
+X-Gmail-Original-Message-ID: <CAJ+HfNigAQTJ37tx_74jqPcCCwsk1XR5-reOo7i-u0xCKqF--Q@mail.gmail.com>
+X-Gm-Features: AclHuK8qzzgheaqrj_7NZPjxMNt7VBnt0bxhEsZWkBPMHkeW-T9XNuxRdU9gNI0
+Message-ID: <CAJ+HfNigAQTJ37tx_74jqPcCCwsk1XR5-reOo7i-u0xCKqF--Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/4] net/sched/sch_cake: serialize
+ reconfiguration with the datapath
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, cake@lists.bufferbloat.net, 
+	Victor Nogueira <victor@mojatatu.com>, Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 18, 2026, at 3:22 PM, netdev-bot+sashiko@kernel.org wrote:
-> - [High] The new limit only counts consecutive empty records, so a peer
->   can get around it by mixing in small records.
+Jamal!
 
-A record that delivers bytes runs the read_actor, and the consumer
-can stop there. The cap bounds the run during which the read_actor
-is never called and the consumer cannot act. v6 will make that the
-argument in the description and drop the sentence about
-desc->count, which invites the reading above.
+On Mon, 19 Oct 2026 at 15:47, Jamal Hadi Salim <jhs@mojatatu.com> wrote:
+>
+> Hey Bj=C3=B6rn,
+>
+> On Mon, Oct 19, 2026 at 9:07=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kern=
+el.org> wrote:
+> >
+> > Jamal Hadi Salim <jhs@mojatatu.com> writes:
+> >
+> > > This is a follow-up to commit 7cbfb180945c ("net/sched: sch_cake: fix
+> > > autorate reconfiguration throttling").  That change only stored
+> > > last_reconfig_time; it did not address the concurrency between the
+> > > autorate rate update in cake_enqueue() and the netlink reconfiguratio=
+n
+> > > path, which the original review flagged.
+> > >
+>
+> You are reviewing a very old version - the last one was a v6[1], most
+> of these fixes are in the "no good deed goes unpunished" from sashiko
+> ;->
+> I am about to post a v7. Maybe review that one?
 
-> - [Medium] When tls_sw_read_sock() stops at TLS_RX_NODATA_LIMIT, it
->   queues data_ready_work only if tls_strp_msg_ready(ctx) is true=E2=80=A6
+OMG... sorry for the noise.
 
-Confirmed, but not specific to the cap. Any parse that strp->work
-completes on an nvme-tcp socket announces through saved_data_ready,
-which nvme-tcp never replaced. Before this patch the loop retried
-tls_strp_check_rcv() once more, so the stall needed two allocation
-failures instead of one. The announce path needs its own fix; v6
-leaves it alone.
 
-> - [Low] (Baseline: not confirmed after checking the end of the series.)
->   At this commit, the wake condition at the new TLS_RX_NODATA_LIMIT ex=
-it=E2=80=A6
-
-Agreed. Patch 5 keeps empty records off rx_list, which closes this
-at the end of the series.
-
-pw-bot: cr
-
---=20
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Bj=C3=B6rn
