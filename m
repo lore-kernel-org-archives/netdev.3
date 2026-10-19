@@ -1,75 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6164D0CF0;
-	Mon, 19 Oct 2026 10:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31596489FB1;
+	Mon, 19 Oct 2026 10:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792405149; cv=none; b=md+avOpsdOLVNqUlnbu1ot+63l7he6kpnvt5VVBYnWCM5Prd6a7MTqmUOfZuZ7FzQv+rbBpfmj3DK+6KXKRWXolbe0cY0I58mc9bS+i1BKrhNTC1D5jv6zDXeerACGHf3ynbFyCnvI+wkk8Oi4sfpdxvx41QXuRl8O48HrPrm5o=
+	t=1792405403; cv=none; b=AphMbYCZSm5jFdH2EmOmwBIZz42UAKIWpzNs+fFX/ktlmi8EO12OWhokBcoFarALdR9Dj4VZW+tRavKtToiR2dhm0QqPhgXP93bOmmTkYVfypDRis9sTqiiEzCOSOOxxP4Va9UtMLMWygPkWi+9U2febFEXaEuR35ttDJYKzzu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792405149; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jWwbvTqMGMQMxl0Q/dTze2IryKUYkNUKcUDH89PhXdMKCke43H0sAy8wHAqEQ5sdqFmiIBx0HHIlCXtZHhuaBbRZFHWXZvm7XYvEqOs+r4elSvtUZfenJvx05wYZgrPgCvLoIAewXQguVn4Y/USnxG5xD4ENh+zGHNT6afOR3Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDqtJOa4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792405403; c=relaxed/simple;
+	bh=D2DpqXHKr2BB5k/h0wRiqWbQTtMgZbmFnDLlZNR9ykk=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=rnOdIpO2rwZSTNZkgMGRTULus24ZNMisELHX4nH0at0Y/FlfZOvSEoMXAMWJ1Ve1fiO/Jz/zGwQ0DkgYs8lYbM7UOwSd3CylwQbPTggPzt1GrXkFVjb3GuN0ELvmY0czhTgpMFLuehKN9k8uEsEimUrst4SUlORQe3V+0Syhsjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=kuR5vTRt; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDqtJOa4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979071F000C4;
-	Mon, 19 Oct 2026 10:19:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792405148;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gDqtJOa40huUfpKtl741HXiQB77syEjAPzxtCeTX0E5vm95hGkrlBUuQb/O8iC9Je
-	 PU1RToah0r3Gl3nHu3REveLZss+xI1lD+gYtY/fOYxC97Lu3mamy4yNdKz/n9TmHRl
-	 50JhYQwU2WtMApg7tG4jCPZ2s6zGhuNp84Nmyf3BRwkc8fUH4AhSvQROkK7FRuomp6
-	 4/NDQdOwCsHzus8G8x25beg+xLN9lombEc3E1im1f6psc0oQHjFo374xA06mu0Kzfu
-	 s9WQRQA0tRGmSAMgRofJzWAOgLGAkBG2t9FC12PAOOf5V9jCP6DdHsgbAoGswkepSA
-	 lR1W256OU6WSQ==
-From: netdev-bot+sinfo@kernel.org
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: flowtable: fix pmtu discovery in
- nf_flow_tunnel_ip6ip6_push()
-Date: Mon, 19 Oct 2026 10:19:07 +0000
-Message-ID: <179240514712.3290.6021443998153366667@kernel.org>
-In-Reply-To: =?utf-8?q?=3C20261019-nf=5Fflow=5Ftunnel=5Fip6ip6=5Fpush-fix-pm?=
- =?utf-8?q?tu-v1-1-324979b15484=40oss=2Equalcomm=2Ecom=3E?=
-References: =?utf-8?q?=3C20261019-nf=5Fflow=5Ftunnel=5Fip6ip6=5Fpush-fix-pmt?=
- =?utf-8?q?u-v1-1-324979b15484=40oss=2Equalcomm=2Ecom=3E?=
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="kuR5vTRt"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1A108A0E36;
+	Mon, 19 Oct 2026 12:23:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792405399; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=8qk2GDfQQQsZBsDDJ4QXyfH1jnkv+9Y903FV15Heg0g=;
+	b=kuR5vTRtyssQXI9xQU2DPD5Xv3Y6FiDW00xYnLU/ujJvaFJxLRb9TDRxevqhwMbQ2T5eoQ
+	XAZGwmV/yMRrxVZ9vC/Q7qN6fKZbvkds2QwDsKTphI+nAka1FcaQNpLzMhzN7cFLS1tvZS
+	ki3DBpgFKl7ifI+1kFYEcMKMwlByw6qRZLGVKlZP2tdV9XRGS3nGD6gqqAnmBeMQS9fGK2
+	gfjBZ1jQAHsbVvGQqu91wTjI/xZjQcxqazEHBPlBsp82+GdaQ0S3wzHmWlLqBrzAbjoJbx
+	+/mBv1rOtRvf0sLPH4iOF0vzcyLFBs/E651OflD6dAJpuWXGMIoDyrl0liunyQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Mon, 19 Oct 2026 12:23:19 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Chris Babroski <cbabroski@nvidia.com>
+Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, richardcochran@gmail.com,
+ linux@armlinux.org.uk, maxime.chevallier@bootlin.com,
+ Raju.Lakkaraju@microchip.com, davthompson@nvidia.com
+Subject: Re: [PATCH net-next v1 4/5] net: lan743x: reset the device on TX
+ timeout
+In-Reply-To: <784a571839d5dd83c2c3e8ea38844159f353de77.1792008404.git.cbabroski@nvidia.com>
+References: <cover.1792008404.git.cbabroski@nvidia.com>
+ <784a571839d5dd83c2c3e8ea38844159f353de77.1792008404.git.cbabroski@nvidia.com>
+Message-ID: <5cabe797885011ea204a793557d8639a@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi!
+Hi Chris
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On 15.10.2026 17:00, Chris Babroski wrote:
+> The driver does not implement ndo_tx_timeout, so the core TX watchdog 
+> is
+> never started. If a TX DMA channel stops completing descriptors, its
+> queue stays stopped and the interface cannot transmit again until it is
+> brought down and back up.
+> 
+> Add an ndo_tx_timeout handler that schedules a work item to reset the
+> device. Under rtnl_lock(), the work detaches the netdev, closes it,
+> soft-resets the DMA controller, opens it again and reattaches it. This
+> is the sequence suspend and resume already use, with the DMA controller
+> reset taking the place of the full hardware init.
+> 
+> Because everything is reopened, the RX path, PTP and the PHY link are
+> restarted along with TX. For PTP, the reset has the same effect as
+> bringing the interface down and up. As on suspend and resume, the PTP
+> clock is unregistered and registered again, and its time is reset to 
+> the
+> system time. The hardware timestamping state is also reset, so the RX
+> filter returns to none and one-step sync insertion is disabled, while
+> the driver keeps its TX timestamping flags. PTP applications have to 
+> set
+> up timestamping again.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Is it ok to re-register the PTP clock on a reset the driver starts by 
+itself?
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+ptp_clock_unregister() makes the open /dev/ptpN return -ENODEV, and
+since the old index stays taken while ptp4l holds it, the reopen comes
+back as a different /dev/ptpN. So ptp4l has to be restarted, which is
+more than "set up timestamping again"...
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+How about moving clock registration to probe instead, so it survives
+the reset? Then only the hw timestamping config would need to be put
+back.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+> 
+> lan743x_dmac_init() did not check that the DMA controller soft reset
+> completed, so the work could reopen a controller whose reset timed out.
+> Return the error from the poll so the work can tell. Probe already 
+> fails
+> when lan743x_dmac_init() returns an error, so a controller that does 
+> not
+> come out of reset now also fails probe.
+> 
+> If lan743x_dmac_init() or the reopen returns an error, the interface is
+> taken down with dev_close() so it can be brought back up later. The
+> hardware is already closed at that point, so route ndo_stop through a
+> wrapper that skips the hardware close while the device is detached.
+> 
+> ndo_stop is called with rtnl held and cannot wait for the work, so it
+> only cancels a pending one. A work that is already waiting for rtnl
+> returns if the device is still down when it gets the lock. If the 
+> device
+> was opened again in the meantime, it is reset once more, which only
+> costs an extra link flap. On remove, the work is cancelled 
+> synchronously
+> after the netdev is unregistered.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Chris Babroski <cbabroski@nvidia.com>
+> ---
+>  drivers/net/ethernet/microchip/lan743x_main.c | 74 ++++++++++++++++++-
+>  drivers/net/ethernet/microchip/lan743x_main.h |  2 +
+>  2 files changed, 73 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c 
+> b/drivers/net/ethernet/microchip/lan743x_main.c
+> index 8d256a80dac6..2545a846478d 100644
+
+> [...]
+
+> +static void lan743x_reset_work(struct work_struct *work)
+> +{
+> +	struct lan743x_adapter *adapter =
+> +		container_of(work, struct lan743x_adapter, reset_work);
+> +	struct net_device *netdev = adapter->netdev;
+> +	int ret;
+> +
+> +	rtnl_lock();
+> +
+> +	if (!netif_running(netdev) || !netif_device_present(netdev))
+> +		goto unlock;
+> +
+> +	netdev_warn(netdev, "resetting after TX timeout\n");
+> +
+> +	netif_device_detach(netdev);
+> +	lan743x_netdev_close(netdev);
+> +
+> +	ret = lan743x_dmac_init(adapter);
+> +	if (ret) {
+> +		netdev_err(netdev, "DMA controller reset failed: %d\n", ret);
+> +		goto close;
+> +	}
+> +
+> +	ret = lan743x_netdev_open(netdev);
+> +	if (ret) {
+> +		netdev_err(netdev, "failed to reopen after reset: %d\n", ret);
+> +		goto close;
+> +	}
+
+Unrelated to this series, but lan743x_pm_resume() seems to ignore this
+return value.
+
+> [...]
+
+Thanks,
+Nicolai
