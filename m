@@ -1,59 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.119
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792442924;
-	b=S7hM2ex4mbEVfnwqqbUJj5gZ8tuo3M3OCvAg3dpyzlHrJKRZUNcJGuO3za6tNloEOl8m
-	 dvMmCZr4I6J50hSY20Qryga5NLSI5raRsMiNfYsOmLQg/7/3pSxJ/10quCgo9LPpAE89n
-	 JIE/KySC3Wt5fpgGVmWZjn5rCc5OBjn5UbL7Sts9BTi1M5XHxgj1Nb25BEK6iJTMXoHe4
-	 U3eXNy03jXuqRsb9OQAaPmMetoS4z8DQpTqrSr93Hy52OHk+Mq8RoVu1MNcF+Hv0Ts8qz
-	 gC5xnezyUM/oFMhUYw0vmaADW6BGRNMvnKqpwE18s6y33XeRh6v+F3tQ6aqwMmmPR2A==
+	t=1792443056;
+	b=P8HVbV+ickCFAUPpLG5xUmfR8OQViAOM/K2cNFRU6sPVIA4oxNoMIT1ne30wRs5mvQfl
+	 Z+MJxihqYwxby2gZKQtehvGuAmT9M71aF90THSHq2Y2yW7VpFS9OxEJ59tutX1oq1U+AT
+	 pEmSYqQQdero1JSAqht6n6kQB8zGvgdBTPV+qzAXoe4urlbav86pPlOuvv+xEwJ5zynij
+	 9nbWB4aKs/FbwIIxQZCU4OUobm4jrNML5RHVkhl8thtn0fDh/aa1MUPLaYlTktVAkW8/n
+	 o0wCUY8q3oUBMSkwFqAsyBCk8+zfG+kuQSi7cwsysmWA4ra9kv+t7Zk7TgSFZURMXZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792442924;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=znHKFW5DZ1DFTZiPSdRamz8km2jluecigHe2x27tyX4=;
-	b=PIZScdS4TOZ2Cbq/F/xMSV09p6e2h7o0wZ+i3+j+uo9LsKr1wGzitSLsJXcgDyi65EtE
-	 l0PJKJy7pdzNh3qf8p9/uhsbT9m1C1ErbKFgYq/xnND3g667bOrGTNPg3RJZ1tBDmo2wO
-	 Wh3nwSLBtM2Wf92Iocw6v8Xsn88a8MXhVDD0wF7pk3lx24BvtM4q20lu6LNspwIEfZQp5
-	 UY01M+TYzCMGR7R2kOMpnMlLGUeH8pkgyv1F1xlgUDMkzpTrpXG9JayyUuMqSS6J0ELRu
-	 mRLD7bYEwb6HIacHKdWQf2UORxbnQ45dmlt448DPy3wGpVzTcYDX4aEG/4J9zxIE/kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792443056;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=AGvBQBicbIv2jeda8cVh1Ap+IgzyI6DV6T4+iQwGOpU=;
+	b=s9sUKwrmcmlDOy79gSs6S6ZqQnOymmpNBXTCaJueSNgkU6tfXiY3hYRVObydvVYaNIA/
+	 tSlxK1/UUoLPoQ4uCnBnElZcFV2IFpL8QW1y2pnDHt/5LsU4zZ6tIPnURi6aQr1YG6aor
+	 sGKvhbpr9EtgZYs5gqpfbbvRs/JvwjjmM7WVYSmEkC0CxzmDK0/7mEOGSOM2lHfW5TrRy
+	 VsLK3H8vwJfNBQhdzk/n6/79Br3AADneHjHPC+fmhowuJwOI3x0/spfy6EJ8rCKWLgSHL
+	 ouumpL1XJUyKi7gsHOiPgYUMr+3vUsPlttkPkoX2sSbGHczuFt9E6ganT4j3P41V9CA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oniOVljK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lbrg.dk;
+	spf=pass smtp.mailfrom=lbrg.dk;
+	dkim=pass header.d=lbrg.dk header.i=@lbrg.dk header.a=rsa-sha256 header.s=protonmail header.b="RsO/W9o/";
+	arc=none smtp.remote-ip=109.224.244.119
+Received: from mail-244119.protonmail.ch (mail-244119.protonmail.ch [109.224.244.119])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0A9606A31D;
-	Mon, 19 Oct 2026 20:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92276606A31F
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:50:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92276606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lbrg.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lbrg.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oniOVljK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5B01F000C4;
-	Mon, 19 Oct 2026 20:48:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792442923;
-	bh=znHKFW5DZ1DFTZiPSdRamz8km2jluecigHe2x27tyX4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oniOVljKooIW2lqCf7/qMu1/csgI97HBwSQv84eCIHogk/qwVx/o3c98KMHIiNe6r
-	 17/2HvDy5qYtW186SRUGm0cYKk5NXuzvKOe5hTZw+cIB0F3sm+KBQho9Tty5QfhD0u
-	 EoLg3rLmjLkLlJhgqyw+dJcAJqksh/9SbyASLVeolARzy6+48KqScqpTX6YGvn8spj
-	 rew9irxFes56ef49+eJFlcvtQsD0JIWRSz+RROFwQXSkwLzS2JlZtmIyS4uqRn7RIR
-	 yRoGjMeUdyQg/8hRD76RlhNdZU5QqEzUNGhe5ofDemGMffRKId2n89t/m+v0k4J18C
-	 mFKtMyBvwgBtw==
-Subject: Re: [PATCH net v3] net: ipv4: add zero check for snd_cwnd_clamp
-From: netdev-bot+sashiko@kernel.org
-To: kj2864@nyu.edu
-Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, edumazet@google.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- co+71b6509cb791e531@bugs.sh, stable@vger.kernel.org
-Date: Mon, 19 Oct 2026 20:48:42 +0000
-Message-ID: <179244292273.3135.7259079039663290152@kernel.org>
-In-Reply-To: <20261015201549.4023-2-kj2864@nyu.edu>
-References: <20261015201549.4023-2-kj2864@nyu.edu>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=lbrg.dk header.i=@lbrg.dk header.a=rsa-sha256 header.s=protonmail header.b=RsO/W9o/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lbrg.dk;
+	s=protonmail; t=1792443052; x=1792702252;
+	bh=AGvBQBicbIv2jeda8cVh1Ap+IgzyI6DV6T4+iQwGOpU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=RsO/W9o/d2JX+bNACg8+2YE1S2IcUV7MhW2C1hdeJr1upTq6Tixmuit3/b2c0Kbxn
+	 TPErDn+LuBylacIKa2W6CHIIgkTdApWskC+xY+gsMf1aDPv1MknQGQ7QwrN5We5VD7
+	 a7q7JVzjW6X23vSLxDFBf9fl8jpDByqlRlDx77W0DuE/3z30+wKMpu3K9RWDXFosFS
+	 K27HnecJW7cAKxOXvP1nZxgjaYlDiI/156Xwkg70MX3JD41vSBEopSfcmaKpbkqL+S
+	 pprA4jkh3VsxZvtP4LwE1f2pYm7lGidkrwjSrmaAwXGojDrdsOmoMF9A9SGWosboTx
+	 cv84eAM7UQ/jA==
+Date: Mon, 19 Oct 2026 20:50:47 +0000
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+From: =?utf-8?Q?Jonas_L=C3=A6borg?= <hi@lbrg.dk>
+Cc: "sukhdeeps@marvell.com" <sukhdeeps@marvell.com>
+Subject: [BUG] atlantic: AQC113 napi_disable() hangs in aq_nic_stop() after resume from S3, wedging rtnl
+Message-ID: <7h2n69cgEFundmU0BuCCIu20vBfYmFWUvB65gq-YqePn0ZSAY8vfoRF7ec5l8fu6yUr4l7x8BKaKmwURUsIfZMdMs3apMF7oKVuUCRXWiw8=@lbrg.dk>
+Feedback-ID: 76324849:user:proton
+X-Pm-Message-ID: 18e504eeffde65a914a9ba53dd9c9362e4bab07d
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,136 +61,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
+On an AQC113 (Antigua) card the atlantic driver intermittently fails to
+bring the link back after resume from S3. The next time the interface is
+closed, aq_nic_stop() blocks forever in napi_disable() while holding rtnl.
+Every following netlink user then blocks too, suspend fails ("Freezing user
+space processes failed", 6-23 tasks in D state), and the machine eventually
+becomes unusable and needs a hard reset.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Hardware / software
+  NIC:      Aquantia AQC113 [1d6a:04c0] rev 03, subsystem ASUS [1043:889a]
+            (ASUS XG-C100C V2 add-in card), firmware 1.3.31 (ATL2FW 103001f=
+)
+  Link:     5000 Mb/s full duplex
+  Board:    ASUS TUF GAMING B650-PLUS WIFI, BIOS 3222 (2025-03-05), AMD
+  Kernel:   7.2.9-300.fc45.x86_64 (Fedora 45), also seen on 7.2.8-300.fc45
+  Setup:    enp7s0 is the primary slave of an active-backup bond0 managed b=
+y
+            NetworkManager; backup slave is the onboard RTL8125 (r8169)
 
-- [High] The fix is incomplete: the divide-by-zero it targets can still
-  be triggered.
-- [Medium] The new check rejects every RTM_NEWROUTE with RTAX_CWND == 0
-  with -EINVAL, whether or not RTAX_CWND is locked in RTAX_LOCK.
-- [Low] The new error path in ip_metrics_convert() uses plain
-  NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero") and does…
-- [Low] In the commit message, 'Reported-by: co+71b6509cb791e531@bugs.sh'
-  is followed directly by 'Assisted-by: LLM' instead of a Closes: or…
+Sequence (boot of 2026-10-19)
+  18:38  resume from S3: enp7s0 comes back fine ("link change old 0 new 500=
+0")
+  19:16  suspend (deep) succeeds; NM releases eno1 only
+  19:45  resume: bond0 reports enp7s0 "link status definitely down,
+         disabling slave"; eno1 takes over. Unlike every good resume, there
+         is no "atlantic: link change old 0 new 5000" afterwards, the link
+         never comes back
+  21:54  idle suspend: NM releases eno1, then enp7s0 from the bond
+         (__bond_release_one -> dev_close). aq_ndev_close() never returns
+  21:55  suspend: freezing fails, NetworkManager stuck in D state
+         (trace below), PM falls back to s2idle, which fails the same way
+  22:12, 22:29  same again; network unusable (DNS timeouts), hard reset at =
+22:30
 
---
+The same pattern occurred on 2026-10-08, 2026-10-10 and 2026-10-15 (6-52
+failed-suspend traces per boot once it starts). Most suspend/resume cycles
+are fine; I have no deterministic reproducer yet.
 
-net: ipv4: add zero check for snd_cwnd_clamp
+Hung task (first failed freeze, identical on every retry):
 
-This commit adds a check in ip_metrics_convert() that rejects an RTAX_CWND
-route metric with a value of zero. The goal is to stop snd_cwnd_clamp from
-being set to zero, which causes a divide error in tcp_cong_avoid_ai().
+task:NetworkManager  state:D stack:0     pid:1239  tgid:1239  ppid:1      t=
+ask_flags:0x400100 flags:0x00080803
+Call Trace:
+ <TASK>
+ __schedule+0x2c0/0x6e0
+ schedule+0x27/0xa0
+ schedule_hrtimeout_range_clock+0x10a/0x160
+ usleep_range_state+0x6c/0xa0
+ napi_disable_locked+0xdd/0xf0
+ napi_disable+0x25/0x40
+ aq_nic_stop+0x15c/0x1c0 [atlantic]
+ aq_ndev_close+0x1d/0x40 [atlantic]
+ __dev_close_many+0xbc/0x210
+ netif_close_many+0xb5/0x190
+ netif_close+0xa5/0xe0
+ dev_close+0x2a/0x80
+ __bond_release_one.cold+0x26a/0x3d8 [bonding]
+ do_set_master+0x79/0x1d0
+ do_setlink.isra.0+0x37d/0xea0
+ rtnl_newlink+0x446/0x940
+ rtnetlink_rcv_msg+0x3d5/0x4d0
+ netlink_rcv_skb+0xcd/0x150
+ netlink_unicast+0x29e/0x3d0
+ netlink_sendmsg+0x21f/0x470
+ ____sys_sendmsg+0x39c/0x3d0
+ ___sys_sendmsg+0xe1/0x130
+ __sys_sendmsg+0xa4/0x100
+ do_syscall_64+0xe2/0x570
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ </TASK>
 
-> Reported-by: co+71b6509cb791e531@bugs.sh
-> Assisted-by: LLM
+Other tasks stuck at the same time are blocked on rtnl (DNS resolver
+threads, Chromium/Electron network threads, rtnl_getlink callers).
 
-[Severity: Low]
-This isn't a bug, but checkpatch.pl warns that Reported-by: should be
-immediately followed by a Closes: or Link: tag with a URL to the report.
-Could the link to the original report be added?
+Other kernel messages around resume:
+  ptp ptp0: PM: parent enp7s0 should not be sleeping
 
-> diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-> index ad40762a8b383..e83a129a25b68 100644
-> --- a/net/ipv4/metrics.c
-> +++ b/net/ipv4/metrics.c
-> @@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
->  			NL_SET_ERR_MSG(extack, "Unknown flag set in feature mask in metrics attribute");
->  			return -EINVAL;
->  		}
-> +		if (type == RTAX_CWND && val == 0) {
+It looks as if a NAPI instance is left scheduled (or never re-armed) when
+the resume path fails to restore the link, so napi_disable() in
+aq_nic_stop() waits for a poll that never completes.
 
-[Severity: High]
-Does this fully close the divide-by-zero? The check only runs when
-RTA_METRICS actually contains an RTAX_CWND attribute.
+Happy to test patches or collect more data (full dmesg, ethtool -d /
+register dumps, or a dynamic-debug run) on the next occurrence.
 
-Suppose RTA_METRICS contains only RTAX_LOCK = (1 << RTAX_CWND) and has no
-RTAX_CWND attribute. Then this loop never sees type == RTAX_CWND.
 
-ip_fib_metrics_init() allocates the array with kzalloc_obj(), so
-metrics[RTAX_CWND - 1] stays 0, and the lock bit is stored unchanged. That
-leaves the same state as the locked "cwnd 0" configuration this patch is
-meant to reject.
-
->From there, the path in the oops looks the same as before:
-
-tcpm_suck_dst()
-    if (dst_metric_locked(dst, RTAX_CWND))
-        val |= 1 << TCP_METRIC_CWND;
-    ...
-    tcp_metric_set(tm, TCP_METRIC_CWND,
-                   dst_metric_raw(dst, RTAX_CWND));
-
-tcp_init_metrics()
-    if (tcp_metric_locked(tm, TCP_METRIC_CWND))
-        tp->snd_cwnd_clamp = tcp_metric_get(tm, TCP_METRIC_CWND);
-
-tcp_slow_start()
-    tcp_snd_cwnd_set(tp, min(cwnd, tp->snd_cwnd_clamp));
-
-tcp_reno_cong_avoid()->tcp_cong_avoid_ai(tp, 0, acked)
-    u32 delta = tp->snd_cwnd_cnt / w;
-
-Both fib_create_info() and ip6_route_info_create() go through
-ip_fib_metrics_init(), so IPv4 and IPv6 routes would both still be exposed.
-
-Could this per-attribute check be replaced? One option is to check after
-the loop that a locked RTAX_CWND has a non-zero value:
-
-    if ((metrics[RTAX_LOCK - 1] & (1 << RTAX_CWND)) &&
-        !metrics[RTAX_CWND - 1])
-
-Another is a guard in tcp_init_metrics() that only applies the clamp when
-the cached value is non-zero.
-
-[Severity: Medium]
-This check rejects every route with RTAX_CWND == 0, whether or not
-RTAX_CWND is locked in RTAX_LOCK. Is that intended?
-
-As far as I can tell, the value only reaches socket state through
-tcp_init_metrics(), and only when it is locked:
-
-    if (tcp_metric_locked(tm, TCP_METRIC_CWND))
-        tp->snd_cwnd_clamp = tcp_metric_get(tm, TCP_METRIC_CWND);
-
-The other uses in tcp_metrics.c only update the cache for unlocked entries.
-
-So a route such as "ip route add ... cwnd 0" without lock used to be
-accepted and was harmless. It now fails with -EINVAL. This applies to IPv6
-routes too, because ip6_route_info_create() uses the same
-ip_fib_metrics_init() path. With Cc: stable, the same change would reach
-stable kernels.
-
-The commit message also says:
-
-    User can pass zero to snd_cwnd_clamp via RTAX_CWND type.
-
-However, the value only reaches snd_cwnd_clamp when it is locked. The
-"net: ipv4:" subject also doesn't mention that IPv6 route installation is
-affected.
-
-Would a lock-aware check after the attribute loop, or a guard in
-tcp_init_metrics(), avoid rejecting the harmless unlocked case?
-
-> +			NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero");
-
-[Severity: Low]
-This isn't a bug, but could this use NL_SET_ERR_MSG_ATTR(extack, nla, ...)
-so the offending attribute is reported? The nla_len check earlier in
-ip_metrics_convert() already does this, and nla is in scope here.
-
-> +			return -EINVAL;
-> +		}
->  		metrics[type - 1] = val;
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015201549.4023-2-kj2864%40nyu.edu
+Thanks,
+Jonas
