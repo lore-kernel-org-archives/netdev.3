@@ -1,157 +1,917 @@
-Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE142357D11;
-	Mon, 19 Oct 2026 06:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7797A3515F0
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792390367; cv=none; b=ZPqaGQuv76TJBJ30bBiU6bZcnSLmsUgl2Sd+bDpbc1vZw3vnJPjQB5ikOiT0riPPj3zzGYEArFqWewG+TxGNgBPf0u1h9Nh6SK/02f6IYe+iStXJbic2fhVJJNOptyUA1P8jRzFwUus2M7bTRPme/Q+y2RLrbQDg3+2AyQ9TgW0=
+	t=1792391815; cv=none; b=EoaTjzvXNQGtC1J1LbUwPg/gmxWlLRodDldrM6j32+uVqcRUcAE8UI/Su4WxMeMSZ+YnakzzSlSAuxB0HB2lCJ7tgIW3I4cFO4zQ4jJVo8kEBRTb0tNMCMpCuLIArKt8Qcw7mlj7X32NlUAzHJitwekdhMIzfUmIJr9Lz07qXT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792390367; c=relaxed/simple;
-	bh=Y8atOi4iW6zMgCfQEc6MXoNFIPIJqJDfUcwTymYLk20=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lWWTM3SM7Kd6uctZgoRs+ISR5Nlj7tepI5+K5MXCtI5UPGDwY7hRsUzYlwf5KZDgxYOvNb1RbwbMTaLG1rTuP4c553N6mFvGuNlD5lJzlEIoPXnjs02t1qAmxx++0gV1hwRH7a3AN4OIvH7juxCO5bLYww9NtubUEIT52XxOa1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Pz+LwG0i; arc=none smtp.client-ip=44.246.77.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1792391815; c=relaxed/simple;
+	bh=BAR5o80T95VESoSJF4+HporOMkkJolKN68Pa4OXC74c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JKxlSupY1G7j3H5pLsuMMd5ndGmbw0wV0x8zSqrPtCxjgf9a1iHeU3Pf1UYUgL1mFLkadH1qzppdVpsqxBG/DKhS/fr26NpQBRup/M45uHkIwfdFXJ7kVmeWjQMzbCWXI0MlY0Ou9nZZMSIFLIYViL8gHkAqPA8PdzyZ9crGDO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtENN6D8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Pz+LwG0i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1792390365; x=1823926365;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+ZuEBREPnjQP0ocHOy7sJ9kz3pJPEhTb65hzCV4dBzI=;
-  b=Pz+LwG0iw4J8DOl7V8VwEXRI0q+a+PT28YJG5zfuSnyH8D/sEVqtygOb
-   eyrR06Wub7eUoD1CGKR1LA2VRX1YtMRJt31vU3xiPJBt6Zgiy5vBPNGCu
-   pU9/wucwVPSFyuc6uYfRhKpoU7ldUpUdbiOxJdEBHQMlKYIKqV23z/4gC
-   ihaw7CZr4xrmGPxSYTrnHSwzLLvfnDxAamy8/fy3EZS6O9xIDibVRcyNS
-   LeP3zUEFA/orZ13wGXTpYioWfmMcZc+zPQc5qF86pr6Rt2foTcoOo7BGc
-   NsDeFyU0gbWbfzQ4/iy/vBJRjuwWY+aUinysy1GzsnBLgadaUtU/i6Sim
-   A==;
-X-CSE-ConnectionGUID: nfnNkhEWTgmQzFq1TE3Vqw==
-X-CSE-MsgGUID: JUQb/GKhSIebNguxg5Qnkg==
-X-IronPort-AV: E=Sophos;i="6.27,167,1787011200"; 
-   d="scan'208";a="31611543"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 06:12:42 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:26038]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.38:2525] with esmtp (Farcaster)
- id d42a3cbc-0f46-4544-ba96-583eb45a9e09; Mon, 19 Oct 2026 06:12:42 +0000 (UTC)
-X-Farcaster-Flow-ID: d42a3cbc-0f46-4544-ba96-583eb45a9e09
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Mon, 19 Oct 2026 06:12:42 +0000
-Received: from dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com
- (172.19.55.127) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53; Mon, 19 Oct 2026
- 06:12:41 +0000
-Date: Mon, 19 Oct 2026 06:12:33 +0000
-From: David Keogh <dkeogh@amazon.com>
-To: Daniel Borkmann <daniel@iogearbox.net>, Dragos Tatulea
-	<dtatulea@nvidia.com>, David Woodhouse <dwmw2@infradead.org>,
-	<netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, Alasdair McWilliam
-	<alasdair@mcwilliam.dev>, "open list:BPF [RINGBUF]" <bpf@vger.kernel.org>
-CC: Nimrod Oren <noren@nvidia.com>, <nh-open-source@amazon.com>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [RFC net-next 0/6] net: configurable extra TX headroom for local
- egress
-Message-ID: <atW00dwVpYS4WO5a@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
-References: <20261015235335.4162993-1-dkeogh@amazon.com>
- <b8914a523b4a6b80424c5001d3d8012c6a98fd04.camel@infradead.org>
- <bba453eb-769e-458b-88f7-8cc9bcafc1db@nvidia.com>
- <a8f2f84e-7dc0-473d-afb1-af710d621f69@iogearbox.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtENN6D8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 02D4CC2BCF4;
+	Mon, 19 Oct 2026 06:36:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1792391815;
+	bh=BAR5o80T95VESoSJF4+HporOMkkJolKN68Pa4OXC74c=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=dtENN6D8EefK7/UjMDVxZQi6fL3EgfymYOZ5HQ7ukANQ30ELLu/NCUpom9Tg48hkQ
+	 5imID9F0eEuli0vLNL4/pf36VS1m7ZB/YYdhJMxcm4vG8d/SToV7NcURVo5FZ1Ts02
+	 Lyv8zr9z/nKzcDkih2zPwhR7rvewq+puqyqpa4UYJgH+pqy8mRFzoc6WqjGqlDOYja
+	 QfUDfF76n18KuyQN9XcIFd3PLkdJR2WWuIhAt0A3Wc6OvPx/yKDNOcOy/XbHHZndHQ
+	 eVANR6RG3Yuy3KK7KpQrZdK0bl6I3FdX3TN2qfrgrmHbsVXol6eDedOCsd42tkKE+Y
+	 VHuTw9RYjLLaQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4140CCF2DB;
+	Mon, 19 Oct 2026 06:36:54 +0000 (UTC)
+From: Demos Ra via B4 Relay <devnull+demosthenes.ra.gmail.com@kernel.org>
+Date: Mon, 19 Oct 2026 13:35:51 +0700
+Subject: [PATCH net-next] netlink: specs: Add a spec for nexthops in
+ rtnetlink
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <a8f2f84e-7dc0-473d-afb1-af710d621f69@iogearbox.net>
-X-ClientProxiedBy: EX19D031UWC001.ant.amazon.com (10.13.139.241) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261019-rt-nexthop-spec-v1-1-9c586edf86ab@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywqAIBAAf0X23IIPCuxXokPYWnsxUQkh/Pekj
+ gMz80CmxJRhFg8kujnzFTqoQYA7t3AQ8t4ZtNSTkspiKhiolvOKmCM5lN5Js2lnrRmhVzGR5/o
+ dFwj027C29gKo4Nx/awAAAA==
+X-Change-ID: 20261019-rt-nexthop-spec-0fc03a2c9935
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>, 
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+ Demos Ra <demosthenes.ra@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792391812; l=19503;
+ i=demosthenes.ra@gmail.com; s=20261019; h=from:subject:message-id;
+ bh=AgOHI97g4P+nb3cL7huyP7l7Zh+C9X8g6L/mUOvUcVw=;
+ b=otjehsogbyBd5Ub3TTOYDJGBbjWSEUkpqYe6/1HoiarMkFQJBfAiugnb3ISa7weaHfxjrmmFZ
+ ZA4K43wGbAdBJTJdZm1LQx0XhgYuU0D/t+iF8hcJTdlh8j3kx3CwGHP
+X-Developer-Key: i=demosthenes.ra@gmail.com; a=ed25519;
+ pk=sDKS9AI9zxhWgOqkhc9EOIo6cky+anqccB3VGtDvzCc=
+X-Endpoint-Received: by B4 Relay for demosthenes.ra@gmail.com/20261019 with
+ auth_id=1235
+X-Original-From: Demos Ra <demosthenes.ra@gmail.com>
+Reply-To: demosthenes.ra@gmail.com
 
-Thanks David, Dragos and Daniel for the feedback, and for the pointers to
-prior art. There are really two questions in your replies: can the kernel
-derive the reservation instead of an operator setting it, and is a new value
-even needed given what already exists. Let me take both, and correct one thing
-in my own cover letter while I am at it.
+From: Demos Ra <demosthenes.ra@gmail.com>
 
-First, one correction to my cover letter: I overstated the TCP case. TCP already
-reserves MAX_TCP_HEADER of headroom, so raising needed_headroom only reallocates
-a TCP segment if the push would exceed that existing room, which a modest bump
-does not. The packets that actually lose are the low-headroom ones the program
-does not encapsulate (forwarded and received skbs) and stacked devices that
-snapshot the value.
+Add a YNL spec for nexthop objects and nexthop buckets in rtnetlink.
 
-David (Woodhouse):
+./tools/net/ynl/pyynl/cli.py \
+    --spec Documentation/netlink/specs/rt-nexthop.yaml \
+    --dump getnexthop
 
-> could we try really hard to have it auto-tuning?
+Exclude newnexthopbucket-ntf from the C code generation. ynl_gen_c.py
+looks up a classic notification by the request of the same message
+type, and no request uses RTM_NEWNEXTHOPBUCKET. The spec keeps the
+notification, so the Python tools can still subscribe to it.
 
-Auto-tuning is a reasonable generalisation and I want to be honest about why I
-have not gone there. It is tractable in principle: the push helper, skb_cow_head()
-in the encap path, knows the exact bytes it adds and whether it reallocated, so a
-per-device high-water mark learned there would be attributable, roughly the
-monotonic-raise shape of ip_tunnel_adj_headroom(). But making that correct brings
-in bounding, decay when a map-driven push depth shrinks, per-program attribution
-when several programs are attached, and a chunk of runtime state to get wrong, and
-it still eats one reallocation on the first packet of every new depth.
+Signed-off-by: Demos Ra <demosthenes.ra@gmail.com>
+---
+Tested with tools/net/ynl/pyynl/cli.py on a 7.0 kernel: each
+operation's replies match ip nexthop, and the create and delete
+notifications are received. rt-nexthop-user.o builds with no warnings.
 
-That is a lot of machinery for what I actually need, which is narrow: reserve a
-small fixed amount of egress headroom, on the order of 128 bytes, so a UDP encap
-push stops reallocating every packet. It is set once for performance and never
-touched at runtime. A static reservation matches that: no learning, no per-packet
-state, nothing to converge, and it is trivially observable because the value is
-exactly what the operator set. I would rather keep the mechanism that simple than
-build an adaptive one to avoid configuring a constant. If the consensus is that
-only an auto-tuning version is acceptable upstream I will take that on board, but
-I think the static reserve is the proportionate fix for this problem and I would
-like to make that case before reaching for a learning loop.
+newnexthopbucket-ntf is left out of the C generation with
+--exclude-op, as ethtool does for stats-get. If you would rather
+have ynl_gen_c.py handle a notification with no matching request,
+I can do that instead.
+---
+ Documentation/netlink/specs/rt-nexthop.yaml | 761 ++++++++++++++++++++++++++++
+ MAINTAINERS                                 |   1 +
+ tools/net/ynl/Makefile.deps                 |   9 +
+ tools/net/ynl/generated/Makefile            |   1 +
+ 4 files changed, 772 insertions(+)
 
-Dragos:
+diff --git a/Documentation/netlink/specs/rt-nexthop.yaml b/Documentation/netlink/specs/rt-nexthop.yaml
+new file mode 100644
+index 000000000..06c28fa7d
+--- /dev/null
++++ b/Documentation/netlink/specs/rt-nexthop.yaml
+@@ -0,0 +1,761 @@
++# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++---
++name: rt-nexthop
++protocol: netlink-raw
++uapi-header: linux/nexthop.h
++protonum: 0
++
++doc: >-
++  Nexthop object management over rtnetlink.
++
++definitions:
++  -
++    name: nhmsg
++    type: struct
++    members:
++      -
++        name: nh-family
++        type: u8
++      -
++        name: nh-scope
++        type: u8
++      -
++        name: nh-protocol
++        type: u8
++      -
++        name: resvd
++        type: pad
++        len: 1
++      -
++        name: nh-flags
++        type: u32
++        enum: rtnh-f
++  -
++    name: rtnh-f
++    type: flags
++    name-prefix: rtnh-f-
++    enum-name:
++    entries:
++      - dead
++      - pervasive
++      - onlink
++      - offload
++      - linkdown
++      - unresolved
++      - trap
++  -
++    name: nexthop-grp
++    type: struct
++    members:
++      -
++        name: id
++        type: u32
++      -
++        name: weight
++        type: u8
++      -
++        name: weight-high
++        type: u8
++      -
++        name: resvd2
++        type: pad
++        len: 2
++  -
++    name: nexthop-grp-type
++    type: enum
++    name-prefix: nexthop-grp-type-
++    enum-name:
++    entries:
++      - mpath
++      - res
++  -
++    name: encap-type
++    type: enum
++    name-prefix: lwtunnel-encap-
++    enum-name:
++    entries:
++      - none
++      - mpls
++      - ip
++      - ila
++      - ip6
++      - seg6
++      - bpf
++      - seg6-local
++      - rpl
++      - ioam6
++      - xfrm
++  -
++    name: seg6-local-actions
++    type: enum
++    name-prefix: seg6-local-action-
++    enum-name:
++    entries:
++      - unspec
++      - end
++      - end-x
++      - end-t
++      - end-dx2
++      - end-dx6
++      - end-dx4
++      - end-dt6
++      - end-dt4
++      - end-b6
++      - end-b6-encap
++      - end-bm
++      - end-s
++      - end-as
++      - end-am
++      - end-bpf
++      - end-dt46
++  -
++    name: seg6-local-flv-ops
++    type: enum
++    name-prefix: seg6-local-flv-op-
++    enum-name:
++    entries:
++      -
++        name: unspec
++      -
++        name: psp
++      -
++        name: usp
++      -
++        name: usd
++      -
++        name: next-csid
++  -
++    name: nha-op-flag
++    type: flags
++    name-prefix: nha-op-flag-
++    enum-name:
++    entries:
++      - dump-stats
++      - dump-hw-stats
++  -
++    name: nha-op-flag-resp-grp-resvd-0
++    type: const
++    value: 2147483648
++
++sub-messages:
++  -
++    name: encap-data
++    formats:
++      -
++        value: mpls
++        attribute-set: mpls-iptunnel
++      -
++        value: ip
++        attribute-set: lwtunnel-ip
++      -
++        value: ila
++        attribute-set: ila-attrs
++      -
++        value: ip6
++        attribute-set: lwtunnel-ip6
++      -
++        value: seg6
++        attribute-set: seg6-iptunnel
++      -
++        value: bpf
++        attribute-set: lwt-bpf
++      -
++        value: seg6-local
++        attribute-set: seg6-local
++      -
++        value: rpl
++        attribute-set: rpl-iptunnel
++      -
++        value: ioam6
++        attribute-set: ioam6-iptunnel
++      -
++        value: xfrm
++        attribute-set: lwt-xfrm
++
++attribute-sets:
++  -
++    name: nexthop-attrs
++    name-prefix: nha-
++    attributes:
++      -
++        name: id
++        type: u32
++      -
++        name: group
++        type: binary  # array of struct: nexthop-grp
++      -
++        name: group-type
++        type: u16
++        enum: nexthop-grp-type
++      -
++        name: blackhole
++        type: flag
++      -
++        name: oif
++        type: u32
++      -
++        name: gateway
++        type: binary
++        display-hint: ipv4-or-v6
++      -
++        name: encap-type
++        type: u16
++        enum: encap-type
++      -
++        name: encap
++        type: sub-message
++        sub-message: encap-data
++        selector: encap-type
++      -
++        name: groups
++        type: flag
++      -
++        name: master
++        type: u32
++      -
++        name: fdb
++        type: flag
++      -
++        name: res-group
++        type: nest
++        nested-attributes: res-group-attrs
++      -
++        name: res-bucket
++        type: nest
++        nested-attributes: res-bucket-attrs
++      -
++        name: op-flags
++        type: u32
++        checks:
++          flags-mask: nha-op-flag
++      -
++        name: group-stats
++        type: nest
++        nested-attributes: group-stats-attrs
++      -
++        name: hw-stats-enable
++        type: u32
++        checks:
++          max: 1
++      -
++        name: hw-stats-used
++        type: u32
++      -
++        name: dst-port
++        type: u16
++        byte-order: big-endian
++        checks:
++          min: 1
++  -
++    name: mpls-iptunnel
++    name-prefix: mpls-iptunnel-
++    header: linux/mpls_iptunnel.h
++    attributes:
++      -
++        name: dst
++        type: binary
++      -
++        name: ttl
++        type: u8
++  -
++    name: lwtunnel-ip
++    name-prefix: lwtunnel-ip-
++    header: linux/lwtunnel.h
++    attributes:
++      -
++        name: id
++        type: u64
++        byte-order: big-endian
++      -
++        name: dst
++        type: u32
++        byte-order: big-endian
++        display-hint: ipv4
++      -
++        name: src
++        type: u32
++        byte-order: big-endian
++        display-hint: ipv4
++      -
++        name: ttl
++        type: u8
++      -
++        name: tos
++        type: u8
++      -
++        name: flags
++        type: u16
++        byte-order: big-endian
++      -
++        name: pad
++        type: pad
++      -
++        name: opts
++        type: nest
++        nested-attributes: lwtunnel-ip-opts
++  -
++    name: ila-attrs
++    name-prefix: ila-attr-
++    header: linux/ila.h
++    attributes:
++      -
++        name: locator
++        type: u64
++        byte-order: big-endian
++      -
++        name: identifier
++        type: u64
++      -
++        name: locator-match
++        type: u64
++        byte-order: big-endian
++      -
++        name: ifindex
++        type: s32
++      -
++        name: dir
++        type: u32
++      -
++        name: pad
++        type: pad
++      -
++        name: csum-mode
++        type: u8
++      -
++        name: ident-type
++        type: u8
++      -
++        name: hook-type
++        type: u8
++  -
++    name: lwtunnel-ip6
++    name-prefix: lwtunnel-ip6-
++    header: linux/lwtunnel.h
++    attributes:
++      -
++        name: id
++        type: u64
++        byte-order: big-endian
++      -
++        name: dst
++        type: binary
++        display-hint: ipv6
++      -
++        name: src
++        type: binary
++        display-hint: ipv6
++      -
++        name: hoplimit
++        type: u8
++      -
++        name: tc
++        type: u8
++      -
++        name: flags
++        type: u16
++        byte-order: big-endian
++      -
++        name: pad
++        type: pad
++      -
++        name: opts
++        type: nest
++        nested-attributes: lwtunnel-ip-opts
++  -
++    name: seg6-iptunnel
++    name-prefix: seg6-iptunnel-
++    header: linux/seg6_iptunnel.h
++    attributes:
++      -
++        name: srh
++        type: binary
++      -
++        name: src
++        type: binary
++        display-hint: ipv6
++      -
++        name: table
++        type: u32
++  -
++    name: lwt-bpf
++    name-prefix: lwt-bpf-
++    header: linux/lwtunnel.h
++    attributes:
++      -
++        name: in
++        type: nest
++        nested-attributes: lwt-bpf-prog
++      -
++        name: out
++        type: nest
++        nested-attributes: lwt-bpf-prog
++      -
++        name: xmit
++        type: nest
++        nested-attributes: lwt-bpf-prog
++      -
++        name: xmit-headroom
++        type: u32
++  -
++    name: seg6-local
++    name-prefix: seg6-local-
++    header: linux/seg6_local.h
++    attributes:
++      -
++        name: action
++        type: u32
++        enum: seg6-local-actions
++      -
++        name: srh
++        type: binary
++      -
++        name: table
++        type: u32
++      -
++        name: nh4
++        type: u32
++        byte-order: big-endian
++        display-hint: ipv4
++      -
++        name: nh6
++        type: binary
++        display-hint: ipv6
++      -
++        name: iif
++        type: u32
++      -
++        name: oif
++        type: u32
++      -
++        name: bpf
++        type: nest
++        nested-attributes: seg6-local-bpf
++      -
++        name: vrftable
++        type: u32
++      -
++        name: counters
++        type: nest
++        nested-attributes: seg6-local-cnt
++      -
++        name: flavors
++        type: nest
++        nested-attributes: seg6-local-flv
++  -
++    name: rpl-iptunnel
++    name-prefix: rpl-iptunnel-
++    header: linux/rpl_iptunnel.h
++    attributes:
++      -
++        name: srh
++        type: binary
++  -
++    name: ioam6-iptunnel
++    name-prefix: ioam6-iptunnel-
++    header: linux/ioam6_iptunnel.h
++    attributes:
++      -
++        name: mode
++        type: u8
++      -
++        name: dst
++        type: binary
++        display-hint: ipv6
++      -
++        name: trace
++        type: binary
++      -
++        name: freq-k
++        type: u32
++      -
++        name: freq-n
++        type: u32
++      -
++        name: src
++        type: binary
++        display-hint: ipv6
++  -
++    name: lwt-xfrm
++    name-prefix: lwt-xfrm-
++    header: linux/lwtunnel.h
++    attributes:
++      -
++        name: if-id
++        type: u32
++      -
++        name: link
++        type: u32
++  -
++    name: lwtunnel-ip-opts
++    name-prefix: lwtunnel-ip-opts-
++    attributes:
++      -
++        name: geneve
++        type: binary
++      -
++        name: vxlan
++        type: nest
++        nested-attributes: lwtunnel-ip-opt-vxlan
++      -
++        name: erspan
++        type: nest
++        nested-attributes: lwtunnel-ip-opt-erspan
++  -
++    name: lwtunnel-ip-opt-vxlan
++    name-prefix: lwtunnel-ip-opt-vxlan-
++    attributes:
++      -
++        name: gbp
++        type: u32
++  -
++    name: lwtunnel-ip-opt-erspan
++    name-prefix: lwtunnel-ip-opt-erspan-
++    attributes:
++      -
++        name: ver
++        type: u8
++      -
++        name: index
++        type: u32
++        byte-order: big-endian
++      -
++        name: dir
++        type: u8
++      -
++        name: hwid
++        type: u8
++  -
++    name: lwt-bpf-prog
++    name-prefix: lwt-bpf-prog-
++    attributes:
++      -
++        name: fd
++        type: u32
++      -
++        name: name
++        type: string
++        checks:
++          max-len: 256
++  -
++    name: seg6-local-bpf
++    name-prefix: seg6-local-bpf-
++    attr-max-name: seg6-local-bpf-prog-max
++    attributes:
++      -
++        name: prog
++        type: u32
++      -
++        name: prog-name
++        type: string
++        checks:
++          max-len: 256
++  -
++    name: seg6-local-cnt
++    name-prefix: seg6-local-cnt-
++    attributes:
++      -
++        name: pad
++        type: pad
++      -
++        name: packets
++        type: u64
++      -
++        name: bytes
++        type: u64
++      -
++        name: errors
++        type: u64
++  -
++    name: seg6-local-flv
++    name-prefix: seg6-local-flv-
++    attributes:
++      -
++        name: operation
++        type: u32
++        enum: seg6-local-flv-ops
++        enum-as-flags: true
++      -
++        name: lcblock-bits
++        type: u8
++      -
++        name: lcnode-fn-bits
++        type: u8
++  -
++    name: res-group-attrs
++    name-prefix: nha-res-group-
++    attributes:
++      -
++        name: pad
++        type: pad
++        value: 0
++      -
++        name: buckets
++        type: u16
++      -
++        name: idle-timer
++        type: u32
++      -
++        name: unbalanced-timer
++        type: u32
++      -
++        name: unbalanced-time
++        type: u64
++  -
++    name: res-bucket-attrs
++    name-prefix: nha-res-bucket-
++    attributes:
++      -
++        name: pad
++        type: pad
++        value: 0
++      -
++        name: index
++        type: u16
++      -
++        name: idle-time
++        type: u64
++      -
++        name: nh-id
++        type: u32
++  -
++    name: group-stats-attrs
++    name-prefix: nha-group-stats-
++    attributes:
++      -
++        name: entry
++        type: nest
++        nested-attributes: group-stats-entry-attrs
++        multi-attr: true
++  -
++    name: group-stats-entry-attrs
++    name-prefix: nha-group-stats-entry-
++    attributes:
++      -
++        name: id
++        type: u32
++      -
++        name: packets
++        type: uint
++      -
++        name: packets-hw
++        type: uint
++
++operations:
++  enum-model: directional
++  fixed-header: nhmsg
++  name-prefix: rtm-
++  list:
++    -
++      name: newnexthop
++      doc: Add new nexthop entry
++      attribute-set: nexthop-attrs
++      do:
++        request:
++          value: 104
++          attributes:
++            - id
++            - group
++            - group-type
++            - blackhole
++            - oif
++            - gateway
++            - encap-type
++            - encap
++            - fdb
++            - res-group
++            - hw-stats-enable
++            - dst-port
++    -
++      name: delnexthop
++      doc: Delete nexthop with given id.
++      attribute-set: nexthop-attrs
++      do:
++        request:
++          value: 105
++          attributes:
++            - id
++    -
++      name: getnexthop
++      doc: Get or dump nexthop entries
++      attribute-set: nexthop-attrs
++      do:
++        request:
++          value: 106
++          attributes:
++            - id
++            - op-flags
++        reply:
++          value: 104
++          attributes: &nexthop-all-attrs
++            - id
++            - group
++            - group-type
++            - blackhole
++            - oif
++            - gateway
++            - encap-type
++            - encap
++            - fdb
++            - res-group
++            - op-flags
++            - group-stats
++            - hw-stats-enable
++            - hw-stats-used
++            - dst-port
++      dump:
++        request:
++          value: 106
++          attributes:
++            - oif
++            - groups
++            - master
++            - fdb
++            - op-flags
++        reply:
++          value: 104
++          attributes: *nexthop-all-attrs
++    -
++      name: newnexthop-ntf
++      doc: Notification about a created nexthop.
++      value: 104
++      notify: getnexthop
++    -
++      name: delnexthop-ntf
++      doc: Notification about a deleted nexthop.
++      value: 105
++      notify: getnexthop
++    -
++      name: getnexthopbucket
++      doc: Get or dump nexthop buckets
++      attribute-set: nexthop-attrs
++      do:
++        request:
++          value: 118
++          attributes: &nexthop-bucket-all-attrs
++            - id
++            - res-bucket
++        reply:
++          value: 116
++          attributes: *nexthop-bucket-all-attrs
++      dump:
++        request:
++          value: 118
++          attributes:
++            - id
++            - oif
++            - master
++            - res-bucket
++        reply:
++          value: 116
++          attributes: *nexthop-bucket-all-attrs
++    -
++      name: newnexthopbucket-ntf
++      doc: Notification about a created nexthop bucket.
++      value: 116
++      notify: getnexthopbucket
++
++mcast-groups:
++  list:
++    -
++      name: rtnlgrp-nexthop
++      value: 32
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 23e919448..6a5062f02 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19144,6 +19144,7 @@ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/netlink/specs/rt-addr.yaml
+ F:	Documentation/netlink/specs/rt-neigh.yaml
++F:	Documentation/netlink/specs/rt-nexthop.yaml
+ F:	Documentation/netlink/specs/rt-route.yaml
+ F:	Documentation/netlink/specs/rt-rule.yaml
+ F:	include/linux/inetdevice.h
+diff --git a/tools/net/ynl/Makefile.deps b/tools/net/ynl/Makefile.deps
+index 3eee34e0e..9389f3752 100644
+--- a/tools/net/ynl/Makefile.deps
++++ b/tools/net/ynl/Makefile.deps
+@@ -45,6 +45,15 @@ CFLAGS_rt-link:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h) \
+ 	$(call get_hdr_inc,_LINUX_IF_LINK_H,if_link.h)
+ CFLAGS_rt-neigh:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h) \
+ 	$(call get_hdr_inc,__LINUX_NEIGHBOUR_H,neighbour.h)
++CFLAGS_rt-nexthop:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h) \
++	$(call get_hdr_inc,_LINUX_NEXTHOP_H,nexthop.h) \
++	$(call get_hdr_inc,_LINUX_ILA_H,ila.h) \
++	$(call get_hdr_inc,_LINUX_IOAM6_IPTUNNEL_H,ioam6_iptunnel.h) \
++	$(call get_hdr_inc,_LINUX_MPLS_IPTUNNEL_H,mpls_iptunnel.h) \
++	$(call get_hdr_inc,_LINUX_RPL_IPTUNNEL_H,rpl_iptunnel.h) \
++	$(call get_hdr_inc,_LINUX_SEG6_IPTUNNEL_H,seg6_iptunnel.h) \
++	$(call get_hdr_inc,_LINUX_SEG6_LOCAL_H,seg6_local.h) \
++	$(call get_hdr_inc,_LWTUNNEL_H_,lwtunnel.h)
+ CFLAGS_rt-route:=$(call get_hdr_inc,_LINUX_ILA_H,ila.h) \
+ 	$(call get_hdr_inc,_LINUX_IOAM6_IPTUNNEL_H,ioam6_iptunnel.h) \
+ 	$(call get_hdr_inc,_LINUX_MPLS_IPTUNNEL_H,mpls_iptunnel.h) \
+diff --git a/tools/net/ynl/generated/Makefile b/tools/net/ynl/generated/Makefile
+index 5a186349b..d76d4ca94 100644
+--- a/tools/net/ynl/generated/Makefile
++++ b/tools/net/ynl/generated/Makefile
+@@ -18,6 +18,7 @@ include ../Makefile.deps
+ 
+ YNL_GEN_ARG_ethtool:=--user-header linux/ethtool_netlink.h \
+ 	--exclude-op stats-get
++YNL_GEN_ARG_rt-nexthop:=--exclude-op newnexthopbucket-ntf
+ 
+ TOOL:=../pyynl/ynl_gen_c.py
+ TOOL_RST:=../pyynl/ynl_gen_rst.py
 
-> Maybe this tx_extra_headroom could be declared as a BTF decl tag in the
-> program. If this is the only usecase there's no need for a rtnetlink uAPI.
+---
+base-commit: 98c2ad4f5d805dbc1ea436a334ee59311806a48c
+change-id: 20261019-rt-nexthop-spec-0fc03a2c9935
 
-A BTF tag is an interesting way to attach the value to the program, and for a
-purely BPF deployment it may be enough. The one caveat I would flag is the one
-you raise yourself: a decl tag is static per program, while a program's push
-depth can depend on map state at runtime, so the tag is really an upper bound
-rather than an exact figure. For my case that is fine, since I want a single
-fixed reservation rather than a per-program one, but it is worth bearing in mind
-if the tag is meant to be tight. Whether a device-level attribute still earns its
-place for non-BPF egress transforms is really a question for you and the other
-maintainers; I do not have a stake in those paths myself.
+Best regards,
+-- 
+Demos Ra <demosthenes.ra@gmail.com>
 
-Daniel:
 
-> there was some work in this area here in the past ...
->   - b9ed315d3c4c ("netkit: Allow for configuring needed_{head,tail}room")
->   - b73b8146d7ff ("rtnetlink: add needed_{head,tail}room attributes")
-
-Thanks, these are the right references and I had not connected them. For traffic
-generated inside a Pod on netkit, the creation-time needed_headroom already feeds
-LL_RESERVED_SPACE() at the allocation sites, so Cilium setting it from the control
-plane does solve that case today. The gap I am trying to close is the same value
-on an ordinary egress device (a physical NIC, plain veth) without raising the
-expand-on-demand threshold for traffic that is not being encapsulated. Do you see
-needed_headroom as sufficient for that too, or is a separate allocation-only
-reserve worth it there?
-
-On scope: the core patches (the field and the allocation-site macros) have no
-in-tree consumer without a setter, so they do not stand alone for net-next, and I
-will repost them together with whatever configuration surface we land on rather
-than ahead of it. What I want to avoid is turning a fixed performance reservation
-into an adaptive subsystem it does not need. If a static per-device value is
-acceptable, the open question is only how it is set (the rtnetlink attribute as
-posted, a BPF-side declaration for the BPF case, or reusing a control-plane path
-like Cilium's), and I am happy to follow the list on that.
-
-Thanks again, this was useful.
-
-David
