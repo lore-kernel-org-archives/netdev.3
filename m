@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15964A2A75;
-	Mon, 19 Oct 2026 08:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D658E49E5ED;
+	Mon, 19 Oct 2026 08:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792399875; cv=none; b=ljCHSKajDLcp23WzMXDbYYHP1++s0mvz3Dymf0NyJJcrxiNkox7uiaqV7ptE6KSFFZsOpIGgUNZ9Dsefwv/WZDJfT8m5JWQ9sHUeKktA7PslSQ+omTS1zMpf3h/80eGvp2ryhuewb5flFpCqKxw2TPOdpJSCCq4Q7znxYGtroQg=
+	t=1792399876; cv=none; b=cQJmR3/tDA8QFxrpNworDKti64ybbhjlmwIP6rQo4o2PZYckNX3DaGIWRjM8IuELhsvcDVKhCbOY4TdaviAjo1y9dZTTkd/dVAEa7RJ6YF4W4JqmsPEMORzKS8vhky/daksXNNoJg6O3SeVPlBTnoCpWCQzyamp9m23ZmoIJskQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792399875; c=relaxed/simple;
-	bh=Asb+h8bKamHyyIqCPskXAxBTaMoNR5mlUu/M1GxSLuk=;
+	s=arc-20240116; t=1792399876; c=relaxed/simple;
+	bh=yRgOBFy+C4uubMACqMsY2X2MvN2h2hsDnJ/97y/CgI0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Cy2U+tNz1R2RigbVG2ZFfOFFpWyV4vyPse2O9ehXbMSQ7Epzz6KP0BTD4y3L8eW16FRiEPsJhdmkvcS7sMUrzxagwv1iNT+YUDrD9MtgEOkSds3AHVtrFH4+cH4QpQngt5UZGw+P7uLhlD3iIKorAeANMJrr1QLAMRpQ1wNSI84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgQejHtI; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=e4nW8ydflESbRqrMKUkQSqDHlq4/TsqP8vYekRPqTHmYfK8tBHBjHhwE2+wIwNkOmD2p2llGLQ8c7ePWAqlzbH6e8+KXwsVMygYoMNg/rhpxO3I6yZL2nOuc7asoyJberhrQhWbdoH0079hXNjhkkrlRZrZl/prMDEzvVAJreKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TlVjn1EK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgQejHtI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784461F000C6;
-	Mon, 19 Oct 2026 08:51:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TlVjn1EK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B841F000C4;
+	Mon, 19 Oct 2026 08:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792399873;
-	bh=7C+XIg1Nh5v55mp+ZHlfr+JOF1pd97so8IrLiGCUNRI=;
+	s=k20260515; t=1792399874;
+	bh=dEEd7H/7kkXmUvradk6puKO4yMY6sZvcHlBFoHhJaSQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FgQejHtIzIf2ZlclI6AwlVOe1pAkOs4hR7I9nqDJQquYsx28ZMXGszVeGsOlrrCbj
-	 sY8YfDhDNyaCSG9FVXLyLpAj/NBZ29JLzBBp5T7G8+/W2XBDNlQicgkpM83OKH4t6h
-	 Ol7Ac3QxiIMiIioSZ56iolPCWBHmk0WSxKvA1iAtjqWmSnY1I3s7VXT5Regy27cG1R
-	 1dmFOP+9UdaXq6cgVkAtu97Mdw4h6vPKmvUwZ2WS5txtIeQARi7mqrFTJNxC9yG+71
-	 UTX0R3vPOANyh9l3Duk5om4QBsI/ZTsMrBrAMf4qXY2iPh7LdT4WhMnjbaYaMcSRVB
-	 GllVK6PnWQgag==
-Subject: Re: [PATCH net 04/10] net: pse-pd: do not reach a freed PHY from the
- notification worker
+	b=TlVjn1EKSEDeUkmSnT9W8pcFM6crnhDlHMpGRl3bPOqPL/FA3FjGJrwRyGQgXBuuE
+	 Evv4At+/1L5E12wUyZ/J5UI5X1ANs3vWF6JO2DIrbTd6XR5ZMc1ndoiN88PxD+serW
+	 1zerS671tM7FguwwgKg5Vhe5lJDPKIxXwT9AROQ5OMgrngKNFqU3NtFbSO42YUxbtL
+	 k/CwlfrrhC6D1AOZN0YkvsJ2UzXAnBP9W1+Vf0LDNoLVbZ49dtfpHVCgDKgpR2TDeN
+	 tNAx1Jua52JBd9s/E97GzS3G5u3Q3OyegFOVS67cwVFELkhEgpbXN80wBLS4WfcZp8
+	 rUraj8VZkNmFw==
+Subject: Re: [PATCH net 05/10] net: pse-pd: check the PI state under the lock
+ when setting a power limit
 From: netdev-bot+sashiko@kernel.org
 To: github@szelinsky.de
 Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
@@ -35,11 +35,11 @@ Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
  piotr.kubik@adtran.com, saikrishnag@marvell.com, horms@kernel.org,
  kyle.swenson@est.tech, netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 08:51:12 +0000
-Message-ID: <179239987207.3135.17141454695480717442@kernel.org>
-In-Reply-To: <20261018082314.48950-5-github@szelinsky.de>
-References: <20261018082314.48950-5-github@szelinsky.de>
-X-sashiko-severity: Low
+Date: Mon, 19 Oct 2026 08:51:13 +0000
+Message-ID: <179239987339.3135.11130245905103238734@kernel.org>
+In-Reply-To: <20261018082314.48950-6-github@szelinsky.de>
+References: <20261018082314.48950-6-github@szelinsky.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,152 +49,172 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] The comment this patch adds to pse_send_ntf_worker()
-  (drivers/net/pse-pd/pse_core.c, lines 1022-1028) says: "A pse_control…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  phy_device_remove() (drivers/net/phy/phy_device.c:1155) calls…
+- [Medium] The patch puts the PD-state check and the budget change in one
+  pcdev->lock critical section inside pse_pi_update_pw_budget().
+- [Low] The kernel-doc for pse_pi_update_pw_budget() (drivers/net/pse-
+  pd/pse_core.c:1835) still says "Return: Previous power allocated on…
 
 --
 
-net: pse-pd: do not reach a freed PHY from the notification worker
+net: pse-pd: check the PI state under the lock when setting a power limit
 
-The notification worker used to take a reference on the pse_control. It
-now looks up the pse_control under pse_list_mutex and uses
-attached_phydev under that mutex, so a removed PHY cannot be reached. If
-a second PHY takes a pse_control for a shared PI, attached_phydev is
-cleared and a warning is printed.
+This moves the software power control, admin state and PD detected checks
+from pse_ethtool_set_pw_limit() into pse_pi_update_pw_budget(), so they now
+run under pcdev->lock. A new updated output parameter reports whether the
+budget changed. The rollback after a failed regulator_set_current_limit()
+now runs only when updated is true.
 
 > diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-> index 65a41c517b359..336f00d82b5f8 100644
+> index 336f00d82b5f8..d5f863834179c 100644
 > --- a/drivers/net/pse-pd/pse_core.c
 > +++ b/drivers/net/pse-pd/pse_core.c
+> @@ -1829,22 +1829,32 @@ EXPORT_SYMBOL_GPL(pse_ethtool_set_config);
+>   * @pcdev: a pointer to the PSE controller device
+>   * @id: index of the PSE PI
+>   * @pw_req: power requested
+> + * @updated: set to true if the budget was changed
+>   * @extack: extack for reporting useful error messages
+>   *
+>   * Return: Previous power allocated on success and failure value on error
+>   */
+>  static int pse_pi_update_pw_budget(struct pse_controller_dev *pcdev, int id,
+> -				   const unsigned int pw_req,
+> +				   const unsigned int pw_req, bool *updated,
+>  				   struct netlink_ext_ack *extack)
+>  {
 
 [ ... ]
 
-> @@ -1020,13 +1019,21 @@ static void pse_send_ntf_worker(struct work_struct *work)
->  		struct net_device *netdev;
->  		struct pse_control *psec;
->  
-> -		psec = pse_control_find_by_id(pcdev, ntf.id);
-> +		/* A pse_control is only on the list while the PHY it was
-> +		 * handed to holds it: the PHY's pse_control_put() unlinks
-> +		 * and frees it under pse_list_mutex before the PHY itself
-> +		 * can be freed. Holding the mutex across the lookup and the
-> +		 * attached_phydev dereference therefore keeps the PHY alive,
-> +		 * which a reference on the pse_control alone would not.
-> +		 */
+>  	mutex_lock(&pcdev->lock);
+> +	/* Only a powered PI under software power control holds a budget.
+> +	 * Check it here, as pse_isr() changes it under the same lock.
+> +	 */
+> +	if (!pse_pw_d_is_sw_pw_control(pcdev, pi->pw_d) ||
+> +	    !pi->admin_state_enabled || !pi->isr_pd_detected)
+> +		goto out;
+> +
 
 [Severity: Low]
-This comment says a pse_control is only on the list while the PHY it was
-handed to holds it, and that the PHY's pse_control_put() unlinks and frees
-it. Does that hold when two PHYs share a PI?
+This isn't a bug, but the kernel-doc for pse_pi_update_pw_budget() still
+says:
 
-In that case pse_control_get_internal() returns the existing psec after
-kref_get(). The unlink and free only happen on the last put:
+ * Return: Previous power allocated on success and failure value on error
 
-drivers/net/pse-pd/pse_core.c:__pse_control_release() {
-    ...
-	list_del(&psec->list);
-	kfree(psec);
-}
+This new early exit returns 0 with *updated = false, whatever
+pi->pw_allocated_mW holds. The existing !pw_diff exit also returns 0.
 
-So the first PHY's phy_device_remove()->pse_control_put() only drops the
-refcount. The psec stays on pcdev->pse_control_head after that PHY can be
-freed.
+pw_allocated_mW can be non-zero when this check fails. For example,
+_pse_pi_disable() returns before pse_pi_deallocate_pw_budget() if
+ops->pi_disable() fails, but pse_set_config_isr() still clears
+isr_pd_detected on disconnection.
 
-The worker is still safe today, but only because
-pse_control_get_internal() clears psec->attached_phydev when a different
-PHY takes the psec. The comment gives list membership as the reason and
-does not mention that dependency.
+Could the Return description say that 0 can also mean no change was made?
+It could also say that callers should check *updated, not the return
+value, before rolling back.
 
-Could the comment say that it relies on attached_phydev being cleared in
-the shared-PI case? Later patches in the series leave this comment
-unchanged.
+>  	previous_pw_allocated = pi->pw_allocated_mW;
+>  	pw_diff = pw_req - previous_pw_allocated;
+>  	if (!pw_diff) {
 
 [ ... ]
 
-> @@ -1417,6 +1424,19 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
+> @@ -1908,21 +1920,17 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
+>  	/* Update power budget only in software power control case and
+>  	 * if a Power Device is powered.
+>  	 */
+> -	if (pse_pw_d_is_sw_pw_control(psec->pcdev,
+> -				      psec->pcdev->pi[psec->id].pw_d) &&
+> -	    psec->pcdev->pi[psec->id].admin_state_enabled &&
+> -	    psec->pcdev->pi[psec->id].isr_pd_detected) {
+> -		ret = pse_pi_update_pw_budget(psec->pcdev, psec->id,
+> -					      pw_limit, extack);
+> -		if (ret < 0)
+> -			return ret;
+> -		previous_pw_allocated = ret;
+> -	}
+> +	ret = pse_pi_update_pw_budget(psec->pcdev, psec->id, pw_limit,
+> +				      &updated, extack);
+> +	if (ret < 0)
+> +		return ret;
+> +	previous_pw_allocated = ret;
 >  
->  	list_for_each_entry(psec, &pcdev->pse_control_head, list) {
->  		if (psec->id == index) {
-> +			/* attached_phydev can only name one PHY. If a second
-> +			 * one shares the PI, either may be removed first and
-> +			 * leave it pointing at a freed phy_device, so stop
-> +			 * reporting events for this PI instead.
-> +			 */
-> +			if (psec->attached_phydev &&
-> +			    psec->attached_phydev != phydev) {
-> +				dev_warn(pcdev->dev,
-> +					 "PI %u shared by several PHYs, not reporting its events\n",
-> +					 index);
-> +				psec->attached_phydev = NULL;
-> +			}
-> +
->  			kref_get(&psec->refcnt);
->  			return psec;
->  		}
+>  	ret = regulator_set_current_limit(psec->ps, 0, uA);
 
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. This
-patch relies on the pse_control_put() in phy_device_remove(). Does that
-call leave phydev->psec dangling?
+[Severity: Medium]
+The scenario in the commit message, where budget is reserved for a port
+that is no longer powered, looks closed now. But can the budget and the
+hardware limit still drift apart in the other direction?
 
-drivers/net/phy/phy_device.c:phy_device_remove() {
-	unregister_mii_timestamper(phydev->mii_ts);
-	pse_control_put(phydev->psec);
+The state check and the budget change now share one pcdev->lock critical
+section. The hardware limit is still written in a separate one:
 
-	device_del(&phydev->mdio.dev);
-    ...
-}
+pse_ethtool_set_pw_limit()
+  pse_pi_update_pw_budget()        <- takes and drops pcdev->lock
+  regulator_set_current_limit()
+    pse_pi_set_current_limit()     <- takes pcdev->lock again
+      ops->pi_set_pw_limit()
 
-With the usual one PHY per PI, this put drops the last reference and
-__pse_control_release() does list_del() and kfree(psec). phydev->psec is
-never set to NULL.
+The threaded pse_isr() only needs pcdev->lock, so it can run in between:
 
-The phy_device can outlive phy_device_remove(), because
-phy_attach_direct() holds get_device() on it. The MAC<->PHY device_link
-is DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS, so the MAC is not unbound.
-phy_remove() also does not detach the netdev. After the MDIO bus is
-unregistered or unbound under an attached MAC, netdev->phydev still
-points at a phy_device whose psec has been freed.
+CPU0 (ethtool set_pw_limit)
+pse_pi_update_pw_budget()
+  sees isr_pd_detected == false
+  *updated = false, nothing reserved
+  mutex_unlock(&pcdev->lock)
 
-ETHTOOL_MSG_PSE_GET does not need admin permissions, and it reaches:
+CPU1 (pse_isr, classification event)
+pse_set_config_isr()
+  isr_pd_detected = true
+  _pse_pi_delivery_power_sw_pw_ctrl()
+    pw_req = min(pi_get_pw_req(), pi_get_pw_limit())  <- old hw limit
+    pse_pi_allocate_pw_budget(pcdev, id, pw_req, extack)
+    ops->pi_enable()
 
-pse_prepare_data()
-  pse_get_pse_attributes()
-    pse_ethtool_get_status(phydev->psec, ...)
+CPU0
+regulator_set_current_limit()
+  pse_pi_set_current_limit()
+    ops->pi_set_pw_limit()         <- new, higher limit
 
-net/ethtool/pse-pd.c:pse_get_pse_attributes() {
-    ...
-	if (!phydev->psec) {
-		NL_SET_ERR_MSG(extack, "No PSE is attached");
-		return -EOPNOTSUPP;
-	}
-    ...
-	return pse_ethtool_get_status(phydev->psec, extack, &data->status);
-}
+The port would then be powered with a hardware limit above its reserved
+budget, and nothing later corrects pi->pw_allocated_mW. Could that
+over-subscribe the power domain?
 
-Can this dereference the freed pse_control? The PSE SET handlers in
-net/ethtool/pse-pd.c appear to follow the same pattern.
+A disconnect followed by a reconnect between the two sections seems to end
+the same way. If regulator_set_current_limit() then fails, this rollback
+writes back the previous_pw_allocated value that was read before the
+reconnect:
 
-There may also be a race during removal. pse_control_put() in
-phy_device_remove() runs without rtnl, but the ethtool handlers read
-phydev->psec under rtnl. Could a concurrent PSE_GET or PSE_SET use the
-psec while it is being freed?
+	if (ret < 0 && updated) {
+		pse_pi_update_pw_budget(psec->pcdev, psec->id,
+					previous_pw_allocated, &updated,
+					extack);
 
-Would clearing phydev->psec after the put, synchronized with the
-rtnl-protected readers, address both cases? The pse_control_put() call in
-phy_device_remove() dates back to commit 5e82147de1cbd7 in 2022. No later
-patch in this series touches phy_device_remove() or the ethtool PSE
-handlers.
+Would a full fix need the state check, the budget update and
+ops->pi_set_pw_limit() in a single pcdev->lock critical section?
+pse_pi_set_current_limit() takes pcdev->lock itself, so that looks like it
+needs a different structure from calling regulator_set_current_limit()
+after pse_pi_update_pw_budget().
+
+> -	if (ret < 0 && previous_pw_allocated) {
+> +	if (ret < 0 && updated) {
+>  		pse_pi_update_pw_budget(psec->pcdev, psec->id,
+> -					previous_pw_allocated, extack);
+> +					previous_pw_allocated, &updated,
+> +					extack);
+>  	}
+>  
+>  	return ret;
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018082314.48950-1-github%40szelinsky.de
