@@ -1,39 +1,67 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807264F6474
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6804F68AA
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792416934; cv=none; b=SHbHVHyVOg0clUVoRZvTIeCvK8a5mhYieA6s67zJQl2R2wGwvylNh7aDk5ruUAZiYQCLjhQ9yu1JNaNDzSCHkkW0UinNoQ/D1KXTMZhqssicCcezvEQl02odSyfWdRx8hKdxhv95eh1CyZ/j+GLP77RUbroTHxJoTetEwiGfK3Y=
+	t=1792417096; cv=none; b=RdrwA9YNzlnlb4hzRULTnPEehmOOkylH+FqDCzCz73nTuWLHvjtM+NhyqRzS9JUtcyEGIZBuqbiE6Tp6R9B5onreS1wYDclGe6wyPwV7NN3F9Y/wzWOJTenT2E2+NyhoxaTCM7D8ayyW3/y8Jfy9HZwXdnK11+mafHDHyuqyFuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792416934; c=relaxed/simple;
-	bh=wUJV2ZmUE/Gy93CuZ08Ep8TqNPPYJUF+uAKMnE3MRLU=;
+	s=arc-20240116; t=1792417096; c=relaxed/simple;
+	bh=mWHEiduWCdoe6oHOOZuNhdfgFF0aV6NZSx6eqvqdovQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uZrXhDwSqnDQjAMiAQbFoERIzPXYCHJGAkxWaGIH9lDx8Jxeu20yvjsblSU280RF0VQlgCYfLYdqKSG/s4A1j9EcwsO8MBmYA+8E3gBhtHWurtj78PxbIpIrOl3KftHSZzOa3G0f0UDcYWCR63tIuE6bCnmSM/G21hpaF1LWqKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=me7BnNtS; arc=none smtp.client-ip=149.28.215.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
+	 In-Reply-To:Content-Type; b=QVytWVwx6Az6o9cpG2+YbEzicrEca885VGV5uehuegS1YNEj/GZiZvBnQBNbUKDPLUl7ifgQmOBabTh3LZE9IDYbc8iGk24cPQbcgLOjswxltqM8U4OF8xSoL6f8SDt0MnPiIYC4xsUUoRjJ3gDQd8MvHfTCMaElGuAYEjpXKJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JF0pp6sL; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="me7BnNtS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1792416926;
- bh=HYXPpdc7BTq4sm2sl2AX0mkUr94SZtztsRa0z639SDo=;
- b=me7BnNtSw0ZGV2+XGHZO+oq62bSH7dUgKNWOMlbqOQ5JYGs/D4QIGN7lv9GlQQWf617/uqlkM
- 7jxlXIAwPm/GNCrOJMi6Y6/zfMnnBBAaKGI7vywIqv2CcvBoJl86KBw9zY57xruGjv61xLVjaSD
- pcjPrfZXWc6/m1KOcUotkgc=
-X-Forward-Email-ID: 6ad61c9a54539d264d693a3e
-X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 149.28.215.223
-X-Forward-Email-Version: 2.18.6
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <33ecc4e5-7634-401d-bbbb-b71454720132@ovn.org>
-Date: Mon, 19 Oct 2026 15:35:17 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JF0pp6sL"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4395d31228so152951966b.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:38:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792417094; x=1793021894; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UH5Ra2iLtsN9dIdCSOuhdt13W7AxYmxe3vEMuRCu76o=;
+        b=JF0pp6sLLnIguaazsiO+D8KHOn2VSyhx3XQp9L/8CxwIBorhcD7hJ5msByWjr32d1r
+         CBvAm1F8tU/FcL/VGbXul5epCiHxk3nr1WOdaZL66xycPHGOdsOlWB/OWj4yqb+GIqwG
+         77VLVIFiwRTpCp0+xTt0UaNgn6dL3NZbFkDDvy6GNhei30COhknJTu+FiRYaG1s7YRFA
+         9XnG1FVKopyXS3DzL1rG0T33ay3Orzr90KwXgJhb38QFAxvevbvEEPZRVJrYK7Lvd6+X
+         0b697rjFYdCPSXHkONOBAFIZd+l8U+AjxD3n+AkSMYsBTUvRPD7/ORBSIAIS/kyEX7UQ
+         K7DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792417094; x=1793021894;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UH5Ra2iLtsN9dIdCSOuhdt13W7AxYmxe3vEMuRCu76o=;
+        b=lfAflcOl+rlz4WnzjmbvE62fyDSDaqSFEMCHOw7PbGy+9gzsGXmkFN5wWXCy8QU+X4
+         rFtPTFdwxlDOvwk3eGxNM1pIcxt+OBtonqVrLWyE5TvzUAluBCBufx+5Wy4nqCj0Tdv2
+         A7hsBD4weU962Nw/orA6LXsn87bY2NNL4Vviddy2U16cuf7mz65ZYMaCqhbgv0SYdI7o
+         u1Q4slXLdjpE422+i/k4YCkuIkPlHwJVlFh5EVKHEpA3+Y/j6N7jokNZm6uK4xA5wWgP
+         Dx3WPz0fMWHP7hkRExs+KsMKPjZN1HIdJbylft2Pjlh8AOVttI9UcPoc4h6EbZrxFCtl
+         E7hg==
+X-Gm-Message-State: AFq9FYISoRvHx288853nn93nAcnkLhHIQUWDTPFEuLyQ6vv4QFbnCf7y
+	eYujZYVVvrs+gU9lid61y6CnIhLEhekITIE/ATuw07AzWFpGZGMoPExV
+X-Gm-Gg: AYBFou30wsKRSUGYsFvCU7yzH3weIpOwCJUPOaKWwgi34wQLyX0BPwdIMIJ6OHZwoIr
+	s3UJNPlsvcdetPRn3t+B9hZZpQ/rFerbAWbTvE29IWEXMb8QYaYm/jo6WwtEf+bEzl172NNRfly
+	xMpLMxL0SML/DG++Eg6SCqgi8uD809ke0L4a2jbvBhS7lzrS6wbqd5mojV4C1dhYITaHSWOaVqx
+	DWomcNTmCY8R039vIMa6KclpB49RyYjF796W9XEOh7c0jk68azGAGALUdDaOmYb0QWU6jEPQaNW
+	YcyuOnfUILBlznravliEnN6sAJSvaXH9Amn4dd9/1dvD84HSU60kbooUNuxdGfKUX98ejZl3Xjc
+	9d7f9OpaXn5YsTGXZ1MBLQo/173zYe5lyEorJAtC99fd0kf7diGpyNkcAEzMff183bWdJlrZbo2
+	UAz5v7+IWOaj3i3k5sP4jb3KhBbJlPH9CCWgposJnb9TZEshfZtoCUu0Yz9/yyFteC1kovPp0dz
+	0kXjhRj98TnleT2PySl4/hO4UWkNF2iPMqnIEMLI05gWWs9zEh5Vr/E4ihJ
+X-Received: by 2002:a17:907:d86:b0:c2e:49b4:ab8b with SMTP id a640c23a62f3a-c419e0388d0mr490983266b.8.1792417093328;
+        Mon, 19 Oct 2026 06:38:13 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd503862sm23131553f8f.46.2026.10.19.06.38.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2026 06:38:11 -0700 (PDT)
+Message-ID: <e6e5a292-0512-47d0-964b-249ff35074ac@gmail.com>
+Date: Mon, 19 Oct 2026 14:38:09 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,220 +69,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2 net-next] net: openvswitch: drop IP fragments on SCTP
- set action
-To: Fernando Fernandez Mancera <fmancera@suse.de>,
- netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, horms@kernel.org,
- pabeni@redhat.com, kuba@kernel.org, edumazet@kernel.org,
- davem@davemloft.net, i.maximets@ovn.org, echaudro@redhat.com,
- aconole@redhat.com
-References: <20261015124749.4694-2-fmancera@suse.de>
- <179221191010.434549.8856124906041431590@kernel.org>
- <7171b266-fbc7-478d-ba73-754be3b6b32c@suse.de>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <7171b266-fbc7-478d-ba73-754be3b6b32c@suse.de>
+Subject: Re: [PATCH] net: sfc: run hardware-classified UDP packets through GRO
+To: manpacket@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-net-drivers@amd.com,
+ linux-kernel@vger.kernel.org
+References: <20261018-sfc-gro-udp-v1-1-f7bf378178f8@gmail.com>
+Content-Language: en-GB
+From: Edward Cree <ecree.xilinx@gmail.com>
+In-Reply-To: <20261018-sfc-gro-udp-v1-1-f7bf378178f8@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 10/18/26 7:15 PM, Fernando Fernandez Mancera wrote:
-> On 10/17/26 6:38 AM, netdev-bot+sashiko@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 4 potential
->> issue(s) to consider.
->>
->> Critical: 0 · High: 1 · Medium: 1 · Low: 2
->>
->> If you believe none of the issues are legitimate, please reply to each
->> issue of Medium severity or higher and explain why the AI is wrong.
->> If any of them are legitimate and you plan to respin, please let patchwork
->> know by including "pw-bot: cr" as a separate line at the end of your reply
->> (one such reply per series is enough).
->>
->> - [High] net/openvswitch: set_sctp corrupts SCTP checksum for padded
->>    packets
->> - [Medium] In net/openvswitch/actions.c, set_sctp() now returns -EINVAL
->>    whenever `flow_key->ip.frag != OVS_FRAG_TYPE_NONE`.
->> - [Low] The commit message says first and later fragments failed the same
->>    way: the skb holds part of the SCTP packet and 'the CRC delta of a…
->> - [Low] set_tcp() and set_udp() (actions.c:644-645, 598-599) skip
->>    OVS_FRAG_TYPE_LATER packets: they return 0 and the action list…
->>
->> --
->>
->> net: openvswitch: drop IP fragments on SCTP set action
->>
->> This patch makes set_sctp() return -EINVAL for any packet whose flow key
->> has ip.frag set to anything other than OVS_FRAG_TYPE_NONE. The goal is to
->> drop SCTP fragments with OVS_DROP_ACTION_ERROR instead of forwarding them
->> with rewritten ports and an invalid CRC32c checksum.
->>
->> Link: https://lore.kernel.org/netdev/d4fc14f3-4308-4560-9012-43c09c1b3845@ovn.org/
->>
->>> For a first fragment, and for
->>> a later fragment, it holds just a part of it, and the CRC delta of a
->>> change at the start of the packet depends on how many bytes follow, so
->>> the checksum written is wrong.
->>
-> [...]>
->> [Severity: High]
->> This patch doesn't introduce it, but does the same CRC delta problem
->> also hit unfragmented packets that carry trailing link layer padding?
->>
->> sctp_compute_cksum() covers skb->len - sctphoff bytes. As far as I can
->> see, nothing on the OVS receive path trims skb->len down to the IPv4
->> total length or the IPv6 payload length before actions run. The only
->> trim I can find is ovs_skb_network_trim() in
->> net/openvswitch/conntrack.c, and that only runs for ct actions. So a
->> small SCTP packet that was padded to the 60 byte Ethernet minimum
->> reaches set_sctp() with the pad bytes still in the skb.
->>
->> In that case old_correct_csum and new_csum are both computed over the
->> SCTP packet plus the padding. As the commit message says, the CRC delta
->> of a change at the start of the packet depends on how many bytes follow
->> it. That makes old_correct_csum ^ new_csum the wrong delta for the
->> receiver, and old_correct_csum also no longer matches a correct
->> old_csum. The value written to sh->checksum is wrong even for a packet
->> that arrived with a valid checksum. ip_rcv() or ipv6_rcv() on the
->> receiver trims the padding, sctp_rcv() then sees a CRC32c mismatch, and
->> the packet is dropped.
->>
->> This looks easy to hit. Over IPv4, an SCTP packet that carries only a
->> COOKIE ACK, SHUTDOWN ACK or SHUTDOWN COMPLETE chunk is 36 bytes of IP,
->> well under the Ethernet minimum. A flow that rewrites SCTP ports, for
->> example for NAT, would then corrupt those chunks. I think losing COOKIE
->> ACK would keep an association from ever being established.
->>
->> Could set_sctp() limit the CRC computation to the length taken from the
->> IP header? Another option would be to trim the skb first, the way
->> ovs_skb_network_trim() does. Do you want to handle this in this series,
->> or as a separate fix?
->>
+On 18/10/2026 22:05, Michael Baikov via B4 Relay wrote:
+> From: Michael Baikov <manpacket@gmail.com>
 > 
-> This might be right. I need to look better into SCTP and openvswitch 
-> flows, I will write this down and look into it later. I think it should 
-> be a separated patch
-
-+1
-
+> This commit partially undoes changes made by the commit e79255de8581
+> ("sfc: Do not pass non-TCP packets into GRO code"). Those changes made
+> sense back then, but now GRO can help with more message types. Instead
+> of passing just TCP packets driver to GRO now also pass UDP packets.
 > 
->> [Severity: Medium]
->> Does this also drop IPv6 atomic fragments? These are packets with a
->> Fragment header whose offset is 0 and whose M bit is clear, so the skb
->> holds the complete SCTP packet.
->>
->> parse_ipv6hdr() in net/openvswitch/flow.c marks any Fragment header with
->> a zero offset as OVS_FRAG_TYPE_FIRST:
->>
->> 	nexthdr = ipv6_find_hdr(skb, &payload_ofs, -1, &frag_off, &flags);
->> 	if (flags & IP6_FH_F_FRAG) {
->> 		if (frag_off) {
->> 			...
->> 		}
->> 		key->ip.frag = OVS_FRAG_TYPE_FIRST;
->>
->> ipv6_find_hdr() in net/ipv6/exthdrs_core.c sets IP6_FH_F_FRAG whenever a
->> Fragment header is present, and it masks off the M bit:
->>
->> 	_frag_off = ntohs(*fp) & ~0x7;
->>
->> As a result, set_sctp() cannot tell an atomic fragment from a real first
->> fragment.
->>
->> Before this patch, sctp_compute_cksum() covered the whole SCTP packet in
->> this case, so the old_csum ^ old_correct_csum ^ new_csum update was
->> correct and the packet was forwarded with its ports rewritten. Now
->> do_execute_actions() frees it with OVS_DROP_ACTION_ERROR and skips the
->> rest of the action list.
->>
->> RFC 8021 deprecates generating atomic fragments, but RFC 6946 still says
->> receivers must process them.
->>
->> Could the check look at the M bit, or confirm that the skb covers the
->> full IPv6 payload, rather than rejecting every OVS_FRAG_TYPE_FIRST packet?
->> IPv4 SCTP looks fine here, because key_extract() only sets
->> OVS_FRAG_TYPE_FIRST for it when IP_MF is set.
->>
+> Tested on SFC9250 with a UDP_GRO socket.
 > 
-> Yes, it does that and AFAIU, we do not care about it. Indeed, the next 
-> step is to reject the flow directly for fragments.
+> Signed-off-by: Michael Baikov <manpacket@gmail.com>
 
-Atomic fragments are not actually fragments, so we could handle them
-more gracefully, e.g. by not setting ip.frag in parse_ipv6hdr() when
-there are no more fragments.  But that would be a separate change and
-it should not be necessary in real world cases.
+This seems sensible enough, but I wonder whether, instead of doing GRO
+ on TCP|UDP, it would be better at this point to just pass all protocols
+ to GRO and not try to be clever about it in the driver.  I don't know
+ how likely other ipprotos are to grow GRO support in the future, or
+ whether the front-end check in the driver (potentially adding cycles to
+ every RX) is more expensive than having random IP go partway up the GRO
+ stack to then be kicked out onto the non-GRO RX path, given that
+ there's not likely to be much high-rate traffic that's neither TCP nor
+ UDP (whereas when we wanted to separate those two there was potentially
+ much more value in doing so early).
+So on those grounds I think there's a case for a straight revert of
+ e79255de8581, but I'm also okay with the approach taken here, so
+Acked-by: Edward Cree <ecree.xilinx@gmail.com>
+ if you want to proceed with this version.
 
+> ---
+> Problem I'm trying to solve: I'm dealing with high data rate, small
+> message size multicast UDP traffic - uniform size, addresses - a perfect
+> candidate for UDP Generic Receive Offload (GRO). Made a prototype - it
+> worked as expected on the desktop during development, but wasn't
+> producing any GRO coalesced messages on the server.
 > 
->> [Severity: Low]
->> This isn't a bug, but should later fragments be handled the same way here
->> as in set_tcp() and set_udp()? Both of those treat OVS_FRAG_TYPE_LATER as
->> a successful no-op:
->>
->> 	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
->> 		return 0;
->>
->> This check returns -EINVAL for both FIRST and LATER. Take a flow that
->> wildcards ip.frag and rewrites L4 ports. IPv4 TCP/UDP later fragments are
->> forwarded unchanged and the action list continues. IPv4 SCTP later
->> fragments are dropped with OVS_DROP_ACTION_ERROR, and any actions after
->> the set are skipped.
->>
->> The commit message says the drop is intended. The same flow drops the
->> first fragment anyway, so the visible difference is mostly drop
->> accounting and whether later actions run.
->>
->> The uAPI description of OVS_ACTION_ATTR_SET in
->> include/uapi/linux/openvswitch.h also doesn't mention that a validated
->> SCTP set can fail at runtime on fragments while TCP/UDP sets are skipped.
->>
+> The server uses SFC9250 and turns out its driver only allows GRO for TCP
+> packets. Change was made back in 2013.
 > 
-> Based on the discussions with the maintainers, we do not care about it 
-> and in the future we are rejecting it directly.
+> Expected user impact:
+> 
+> 1. GRO will start working for UDP
+> 2. It might add a slight overhead for UDP traffic for e10 drivers.
+>    (this bypass only exists for e10 drivers, for e100 (ef100_rx.c:140)
+>    packets are passed to GRO unconditionally
+> ---
+>  drivers/net/ethernet/sfc/ef10.c       | 2 ++
+>  drivers/net/ethernet/sfc/net_driver.h | 1 +
+>  drivers/net/ethernet/sfc/rx.c         | 3 ++-
+>  3 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
+> index 73bc064929f6..ab0f5e8aae6e 100644
+> --- a/drivers/net/ethernet/sfc/ef10.c
+> +++ b/drivers/net/ethernet/sfc/ef10.c
+> @@ -2955,6 +2955,8 @@ static int efx_ef10_handle_rx_event(struct efx_channel *channel,
+>  
+>  	if (rx_l4_class == ESE_FZ_L4_CLASS_TCP)
+>  		flags |= EFX_RX_PKT_TCP;
+> +	else if (rx_l4_class == ESE_FZ_L4_CLASS_UDP)
+> +		flags |= EFX_RX_PKT_UDP;
+>  
+>  	channel->irq_mod_score += 2 * n_packets;
+>  
+> diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
+> index 71144bb4c6c8..57cb508d82fa 100644
+> --- a/drivers/net/ethernet/sfc/net_driver.h
+> +++ b/drivers/net/ethernet/sfc/net_driver.h
+> @@ -341,6 +341,7 @@ struct efx_rx_buffer {
+>  #define EFX_RX_BUF_LAST_IN_PAGE	0x0001
+>  #define EFX_RX_PKT_CSUMMED	0x0002
+>  #define EFX_RX_PKT_DISCARD	0x0004
+> +#define EFX_RX_PKT_UDP		0x0020
+>  #define EFX_RX_PKT_TCP		0x0040
+>  #define EFX_RX_PKT_PREFIX_LEN	0x0080	/* length is in prefix only */
+>  #define EFX_RX_PKT_CSUM_LEVEL	0x0200
+> diff --git a/drivers/net/ethernet/sfc/rx.c b/drivers/net/ethernet/sfc/rx.c
+> index ffca82207e47..929ecb539b64 100644
+> --- a/drivers/net/ethernet/sfc/rx.c
+> +++ b/drivers/net/ethernet/sfc/rx.c
+> @@ -401,7 +401,8 @@ void __efx_rx_packet(struct efx_channel *channel)
+>  	if (unlikely(!(efx->net_dev->features & NETIF_F_RXCSUM)))
+>  		rx_buf->flags &= ~EFX_RX_PKT_CSUMMED;
+>  
+> -	if ((rx_buf->flags & EFX_RX_PKT_TCP) && !channel->type->receive_skb)
+> +	if ((rx_buf->flags & (EFX_RX_PKT_TCP | EFX_RX_PKT_UDP)) &&
+> +	    !channel->type->receive_skb)
+>  		efx_rx_packet_gro(channel, rx_buf, channel->rx_pkt_n_frags, eh, 0);
+>  	else
+>  		efx_rx_deliver(channel, eh, rx_buf, channel->rx_pkt_n_frags);
+> 
+> ---
+> base-commit: 98c2ad4f5d805dbc1ea436a334ee59311806a48c
+> change-id: 20261018-sfc-gro-udp-5d3e9a3b2b54
+> 
+> Best regards,
 
-Also, if we're dropping the first fragment it doesn't make much sense
-to allow the later ones through.
-
-Best regards, Ilya Maximets.
