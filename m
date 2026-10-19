@@ -1,98 +1,104 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249674B7A21;
-	Mon, 19 Oct 2026 09:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C6E4B9201;
+	Mon, 19 Oct 2026 09:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792403238; cv=none; b=FE4vBwd3aDfCe/N/qTmt575PPR6UzPey9ZOkghAys5Vyd58KgRi68em9dY/Cd4ifVxXa9idO47hw5ymFz9mj2oJGwIE09WjbAt6R8IlrQCnKOKcMbULjSQgEsRB79ZtIMeaiNSj182d31qF8dGYJz6Cw0mkgNXs4iqQO7KUwtVY=
+	t=1792403398; cv=none; b=rykb2tftwi/5SIvrj9hPvo4xyxVVPE21zc4fMfDpJ8nJb845lUGC/cC3GLfD5/H345LhNqqJr7ae92DIFFRl0Qo21q9UFQYKBBzSICZTvkrid/eAXHlRHP8SI4JFapc0/NwzDbrf+qsEkgIoav/Q0HhaXyrCjYo5LUcxe14pfvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792403238; c=relaxed/simple;
-	bh=goyLzvYOqssRp0+BpiXM1BokD87KkSw3vymP7GKwegs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=IQBEmlQyfKfRalotNhU6Z9crZ47OhZW1Kv6plJJN9kZ9ULQolBlk2fNSFLWM0AAeIN5kpkbbBaTBExC8e2aQqSB8+g0i/e3HmzwVrbiVwpvA7uLs0be8d3lvUeZPUIYgRCiXz4fTOn/1HXQUgUgjxpRD0m5YeUZ6ptCR4SfoOf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=VU8RIu3O; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1792403398; c=relaxed/simple;
+	bh=4T8X+mnirwDXrJzYavy3/QN/Xx0CmFgmoKtciO5afpM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o0hjtLzv8Ot9UVc+VXTKWP3TnLmeNjFDcRrQEdnNVP+leWXpn7efNQDngcjpnkUxsMEkWBgy05PDIEkTG4EwxO+2ENeBgirogJArbIMC8ChMX3nY5Sx3YExkPVIIoJgnP8N+PD9s60iZddq+auprYxOe/BYksQvJxdpsyzpCkrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=CZSYLcy+; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="VU8RIu3O"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5CE7FA15A5;
-	Mon, 19 Oct 2026 11:47:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792403234; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=7nW1HUg12OjktfsDmpAE0SRcq69jSs3Spx8UTAosGwo=;
-	b=VU8RIu3OHgoFHz0jRNnvzVFLShA3unGa27EMWO3E317aLed2Gf0oYoZM3W+y2GL3APn3gQ
-	+LX8F5KAZDBbf/d3Xfz9NToBjq2R3d2M+/1PIaYnm0Fa/nZLLqxg1dHF4EQApXeInzE68S
-	wrMEBxURGmct835tXBKJXByqJV3z3r4kLGcrXcJVtoK8/j2p8ded1/BVbLsFsLzQ/uijE+
-	6LQTVLfsBxfdpBnriD8bk1EfV4IE38j1FFbnUQDNZluP2PCzVES8odDcWE9HtneSLl4m7e
-	VNGdyReayq9RZJG+ldynWmUAAS5NJbZS/dpXBp/U2gOzFCoV9OLLwVvEPO9SiQ==
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="CZSYLcy+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792403393; x=1823939393;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4T8X+mnirwDXrJzYavy3/QN/Xx0CmFgmoKtciO5afpM=;
+  b=CZSYLcy+3EuUOv2tLBbOLxm1msliAcgCc0iv/GAnTl3zM7CZjkfC2Zcr
+   ietVLs2DD+L77l+Xv5v4XeNJQXBfxij7STOFTGYd9qqOFzwhux77Hy81/
+   ywpyFSzoZtWEMzjnlE4ztS7z2Pqk4tnJjGdCa+eunHFKLgu1BiE0tzf3n
+   D4DTxBiorDAK+qDSFblndna5+uFeWUiLvH/PyqavcBOwqLP9WYbZP5St4
+   vMVI9bi++PZCljpWA2JR7OJwE5vwZ98xqBicGdhJhurHdqI6COmATrbWi
+   aFFzLckWhK2u/VH9rmTR124DW69kHlY8jbkRslkIKf75pbVtRC3sAf2fo
+   g==;
+X-CSE-ConnectionGUID: Bjc3CSJCRReGvAr2uSyZ1w==
+X-CSE-MsgGUID: tO8BcGNTTvWkJw7Wrzmxgg==
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="75656201"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 02:49:52 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Mon, 19 Oct 2026 02:49:52 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 19 Oct 2026 02:49:49 -0700
+Date: Mon, 19 Oct 2026 11:49:48 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Rosen Penev <rosenp@gmail.com>
+CC: <netdev@vger.kernel.org>, Chris Snook <chris.snook@gmail.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Oleksij Rempel <o.rempel@pengutronix.de>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2] net: ag71xx: re-enable TX interrupts on RX OOM
+Message-ID: <20261019094948.q7kis563ir7zxb4s@DEN-DL-M70577>
+References: <20261019020147.213746-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 19 Oct 2026 11:47:12 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Chris Babroski <cbabroski@nvidia.com>
-Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, richardcochran@gmail.com,
- linux@armlinux.org.uk, maxime.chevallier@bootlin.com,
- Raju.Lakkaraju@microchip.com, davthompson@nvidia.com
-Subject: Re: [PATCH net-next v1 0/5] net: lan743x: automatically recover from
- TX hang
-In-Reply-To: <cover.1792008404.git.cbabroski@nvidia.com>
-References: <cover.1792008404.git.cbabroski@nvidia.com>
-Message-ID: <c2a65a9425d8a5dbac493a2b4ad3005e@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261019020147.213746-1-rosenp@gmail.com>
 
-Hi Chris
+> When the RX ring runs out of buffers the OOM path calls
+> napi_complete() but does not re-enable interrupts.  Because
+> INT_POLL masks both RX and TX events, TX completions are
+> blocked until the OOM timer fires (~100 ms), which can cause
+> TX ring exhaustion and dropped packets.
 
-On 15.10.2026 17:00, Chris Babroski wrote:
-> Background
-> ----------
-> On a custom HW platform that uses the LAN7430 NIC we have been able to
-> reproduce a scenario where the SoC stops receiving TX completion
-> interrupts, appearing as a TX hang. After dumping and decoding the
-> LAN7430 registers we see that the TX channel reports that it is in
-> started state with no error, but TX_HEAD stops advancing. TX MSI-X 
-> stops
-> incrementing while RX interrupts continue to increment.
+Is that not exactly what the OOM timer is for? It schedules napi and tx buffers
+will eventually be freed. I mean, it seems like it was designed to work like
+this.
+
 > 
-> This scenario has most often been reproduced in large server cluster
-> environments, but it's also been seen locally during repeated SCP and
-> iperf testing.
+> Restore TX interrupt delivery so the engine can drain completed
+> descriptors while NAPI waits for RX buffer memory.
 > 
-> The root cause of this issue is still unknown and we are continuing
-> debug. It was found that bringing the interface down and up recovers 
-> the
-> network. This issue has not been reproduced with the LAN7430 EVB
-> connected to a standard Linux server.
+> Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  v2: add Fixes: . 
+>  drivers/net/ethernet/atheros/ag71xx.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+> index d93fd91ff884..5a33759be3cf 100644
+> --- a/drivers/net/ethernet/atheros/ag71xx.c
+> +++ b/drivers/net/ethernet/atheros/ag71xx.c
+> @@ -1746,6 +1746,7 @@ static int ag71xx_poll(struct napi_struct *napi, int limit)
+>  
+>  	mod_timer(&ag->oom_timer, jiffies + AG71XX_OOM_REFILL);
+>  	napi_complete(napi);
+> +	ag71xx_int_enable(ag, AG71XX_INT_TX);
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.56.0
+> 
 
-A TX channel that says started, no error, with TX_HEAD not moving is
-also what you see when the MAC stops draining the TX FIFO. When it
-hangs, is the FCT TX FIFO full? Is the MAC in LPI, or paused by the
-link partner? Does it still happen with EEE and rx pause turned off?
-
-The other place to look is the PCIe link. We had a LAN7430 stall on a
-BCM2712 root complex that was also platform specific. The RC driver
-cleared an undocumented bit in its CLKREQ#/L1 control register. That
-one took the whole MMIO window down, so it is probably a different
-failure, but it took days of uptime to show up too. Do the Device Status
-or AER registers on the hung device show anything (UnsupReq, CmpltTO)?
-Is the link running with ASPM L1 or L1 substates on that platform?
-
-> [...]
-
-I will have a look at the actual patches later today and test with
-our devices.
-
-Regards
-Nicolai
+/Daniel
