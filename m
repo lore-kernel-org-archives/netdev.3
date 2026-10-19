@@ -1,114 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792437955;
-	b=hJJt96y/Jh7bY+XLOlibgj769/0Of/vHLsHrMFUrf5NbxNHGjKLY1aRVagDtM3bFZFzE
-	 Gk7Tq16wtntuTCASdomlto6bVmZfT7Wkop3Vx849jgRG5AzG8V803YrHXPIjeY+4QntBw
-	 v/xH3LVl89u1v7O6gwqXGiyLEvGNA5O+vdQ10PDebABqbVCUwaZPzKWXb+en45JjFw1k+
-	 zsHtdyhFmuhteeJeV02/N5UQGQewbii6ugkCXX2zx4Xev/m0kdOV3FXQneLtUPCZ+KtUs
-	 TjL+gacF8/rzz/qkMm/gMwJc6XkpC/hGGrFv2g+bGT3IcG9DLg41kUUrx6jJ5FlAIzQ==
+	t=1792438598;
+	b=oZ8BVb173pDDEDGb8QUjmCUBhPrMAUo6VtoYtQQql8Ae0eSVoFGHk/+uKetStuHv7NRJ
+	 2yt8lHvj+8yEv2cGSzywMTxkOhgiRChTmDQCdqmDGXNCK0V6RNKcKO7zl1wVSVOhfwYvP
+	 PBojDKin5Lq5HVPrlTK8TRvbdbyM8VZGr0nSnQdtoMgOn34DixBjjccbdKWFmfqgrMbDC
+	 18kP3FLYtV0SFjWiqKJXFnFjn/tDo+7vsJR5r5eYmCOG0UQ1n1VJ6cZcI94/cr5VFjhsc
+	 ltMmPiam9z3rsnnp73p1+DZGn3J5DEgpIWjZVBUQcAJpWv2hxn7TNeuUqawsaBC7b1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792437955;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792438598;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:X-Mailer:Content-Transfer-Encoding:MIME-Version;
-	bh=Gl+QuejblNFV3uEkIxOgOsS4jX0GlJs/ROUNx5zrPn4=;
-	b=XUwTmHJDgWuKa9bqa5+r3n4/OblJhCS8rY/A03k+psEl8SC+Zze5vhNTW0NciyY1RTve
-	 9FfDh9l2OHeZgHlUXLCQXXKPFDCOW6eO6GYbQlp2QUHlRm2sWCApGQRLx4W9EJpPvxXgR
-	 ju9L5CsAjRQKXGvrGOAhaw6xHFNWbXo+4Zh5cgrcA9b6UbaS8Sg38IZIGJcnQUmPoZccZ
-	 pGbXLgx4f9TrxZwV8Z9GUYUIKOOcLsOws/4eI3rdBh6Pa1YYBeyksgyYOp03TgljIohQG
-	 KrBPlMiv5odQR5b634OxhLCsmqALTNsIpQZPok0CXjLUTqvSEJ1qJ792MFECdZsYrtQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=lf4sMTZrdesRxg1xBJVdHHtuRLabPGu8I9i65QyzjrY=;
+	b=GAeeqLMMLqLm+WQtWSfrKEVvChM4XKNKXO2FrCyOxXh8/uQ8Xhd/b3iBAsxYC4P9RFA2
+	 wKBBa8hTmelwHGXbBzj04BK4K35BdvJ2F2JxAWWw4J6W0x9fx61Y0fi6Sg/4iP7Gv4yt2
+	 4Zzqcnez5gGdPkQEPdqxGC6EROlYYjBTXhVdpbpivhlalU7S2LeORDiYhI9ikJSRymI6X
+	 4kWGRmdjJQCt9YxaQc08/V19YvKqw4wTlFBVS5eAyWJpO/FhZAyLBkVtnPmqOb+UzHDg1
+	 S/vVt6TwlwhgGb2Myppo6Wetcqdf+q95zX0fbzixBdmVHcuNIkxJf24obWwjpqytb2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gYnQr9al;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="U/HBN0Bv";
+	arc=none smtp.remote-ip=74.125.82.51
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B37E606A329
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 19:25:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B37E606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CE4606A31B
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 19:36:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3CE4606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gYnQr9al
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ab4178ee33so1893837a91.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 12:25:54 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=U/HBN0Bv
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-16079d54c17so5386725c88.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 12:36:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792437954; x=1793042754; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Gl+QuejblNFV3uEkIxOgOsS4jX0GlJs/ROUNx5zrPn4=;
-        b=gYnQr9alcw+J9ojP/SdeDo47GsqS10jIYNdvilfzW9uVyvOFI724RKT1A9EsWtQ3bQ
-         OgXWmiBiwDCiu/gWReT46D/Rk9VHkHgUrKHIxf0YStCBAljm0BIHRVvWPUYzKX908eUt
-         iCuSA6FUQ3dcvqmycwRt4gjLfOklT6OAGxuKl5xqbY72BqpfGdxLXGUQIuf+OJ5g7fu5
-         g/W82eNWWUviKy78jCy3BJRjKeND6NWnWoTU9lAqh7g7bOgPK8d9buk+6bjXfb3EBJwv
-         ck0cedd6WPJoOke0xDGXsTBf/906L8PkyCNeMlUttfM6CF3DCo/JPd8cengfq/sPfTmR
-         TcnQ==
+        d=gmail.com; s=20251104; t=1792438597; x=1793043397; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lf4sMTZrdesRxg1xBJVdHHtuRLabPGu8I9i65QyzjrY=;
+        b=U/HBN0BvWaU1F04M4ZB7fuHGeLstE3cH6i0i5Aff7kz0wTWGyy5VcjCxVeN+FcVwY/
+         0a9Uoum5pqXCy3XtG25YcaRgjpn4mgzCfrAglTlaaw7Pd2Dt7Mwxz4FXuhiFnO3S9rZz
+         SJiCOuxfJSKtYvUw7VgdGfuLJnENtR4Rtw4pDs4XRbiiUBEgcggE7tnK+TAOx7xiZM6n
+         40nyE2ib7dk5POoxMsllDkb1JTihXAYzaHEMv941n8uLrsLkMuM+lWDq49eRUvkfGKrJ
+         vAvp7fkVntt2Ds1JE67qoPTdV2HtZPWKsUi7m3fqQVueaDo4fLxqQ4l6dTpK/0keyFHT
+         PMaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792437954; x=1793042754;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Gl+QuejblNFV3uEkIxOgOsS4jX0GlJs/ROUNx5zrPn4=;
-        b=Zp7cp4KNlVlk+VRTsDTYpBWPsHX98YzRzRxmJ7DzV6CdIiIDPdzlo7B3ceDul9+hZO
-         4RhZdDx2lfBSfisn2lwXIF5AmRUH1/Onu3Ic4q1SCmNA6Ze0idS8gM2PQ/MrPGq5vTnU
-         VWImEm4mzLXTf8ssj/x0mvwo4yQBVLZDGmbE3rBFBCECn2PHyRazAIZu/QwEvy+C/mmD
-         8kBjDc6Do3wRA1DVrsPpuVIE9vJurWLyW6qjoaV2X0fLe3q1prg3XinTnx9BUb5vjta8
-         i9GuI+L/cBrWGnikiWPn5fc59/EjNjhhf17EySNvW9mkFJVyqYKeZUCfEXBKf6JnZUWo
-         I05w==
-X-Forwarded-Encrypted: i=1; AKwUvBwktbexaSQANPaAwbwhTglsxozsXg3hdyWD7q4M4ducRemseeo4JjbaClcq6BI57zOdQ+SokZk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKEXNgO/UMxlcaH5hUIQ+SFYgOjX7CaBhCA583mo6Rt7EPmeAq+
-	BqhaB/hZtBrb+a3P5H8Z97fvDWMYZ6nDV7b+WcIGQogJG3LLPy35uOKE
-X-Gm-Gg: AYBFou10gCLRN07vI6wYz1PEwLMYvuoWO/SESzQ13FOEv3Ayr9IfQNktS95DP2E8gbg
-	QFBMJJgOCsxwMD4SBKAq7FJjFtl94JKkvPEo+bVpXBelIFbL9cUYg09rv1weBzLeAiAikbKTbQ5
-	LXkvhEFCIyoqCxUN1XM3BgpTvI8CBsOCKbZgwS5bpIQUJTx9q/T6J0S2yfT9mEuNOwSTeetjZec
-	Ck4At5yDFZXG0derTd/goZXw7eiMi1o5jvPhQOMQD5RZdxErz5Xt3+HvkitlQIW9Lgdgc7FrwaM
-	DsIJ/kcUw22tHP7ZVTtVArr/Een/XKkYgF3juXt36iufor6xdhtscLxURZBuDThHK0mP6CFPwCD
-	Y8dXkaL8Swgc7xX8a1C7w6DFLMsY4hNA9WQrVQnmBRyLnBTE0ys0GxrMHQP6ElJs9/fQ3Pq/eUP
-	Q8vJCx4Iy3PU5OuhtwB70gVpJv4OJ5kx4pD54ueXfe33tim+/JFXnGvI0u+kgtLYpzme31CcyIq
-	QNgA8l7D+3KajxGw46TewGsXEddBcXSqOy+4qhaeKUyQ+znBYULOHPDruZaTYA0GnOs2q7oHqHY
-	5Tw=
-X-Received: by 2002:a17:90b:280e:b0:3ab:be66:ddbf with SMTP id 98e67ed59e1d1-3acef58d853mr6802869a91.54.1792437953584;
-        Mon, 19 Oct 2026 12:25:53 -0700 (PDT)
-Received: from localhost ([153.61.198.245])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd05c9255sm8977238a91.2.2026.10.19.12.25.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Oct 2026 12:25:52 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Oct 2026 19:25:50 +0000
-Message-Id: <DM9282PWYQD9.21LDVIJ8824AL@gmail.com>
-Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
- Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "Ihor Solodrai"
- <ihor.solodrai@linux.dev>, "Jesper Dangaard Brouer" <hawk@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>, "Stanislav Fomichev"
- <sdf@fomichev.me>, "Steven Rostedt" <rostedt@goodmis.org>, "Masami
- Hiramatsu" <mhiramat@kernel.org>, "Mathieu Desnoyers"
- <mathieu.desnoyers@efficios.com>, "Shuah Khan" <shuah@kernel.org>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, "Hangbin Liu"
- <liuhangbin@gmail.com>, "Martin Karsten" <mkarsten@uwaterloo.ca>, "Masashi
- Honma" <masashi.honma@gmail.com>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH bpf-next v2 1/6] bpf: Add syscall common attrs support
- for link_create
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Leon Hwang" <leon.hwang@linux.dev>, <bpf@vger.kernel.org>
-In-Reply-To: <20261019153628.15912-2-leon.hwang@linux.dev>
-References: <20261019153628.15912-1-leon.hwang@linux.dev> <20261019153628.15912-2-leon.hwang@linux.dev>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20260707; t=1792438597; x=1793043397;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lf4sMTZrdesRxg1xBJVdHHtuRLabPGu8I9i65QyzjrY=;
+        b=1pJwIj37ASI0nyMg01HcDjOrIi+2FFW129fJ7z+mYWn21lZFP+mags7EmxauL0N52z
+         p2y899FJALj5GAuD7gp8i8GZB2DKdeKdAWk0J45mJl/RWMFUmokQKtrnUDFlJHYt5o/N
+         QVNeDxyMtONRBza+3Yteivu4uvHvoxUXQCrPcso4lQWfAxAN8SiLYtJYWU8H7+Itynig
+         mtodFYcH7rbbu4Od4K1f5G++UweC99wyZsOo3IkKmuPRWJyKmYsLNv68JlmTod6JdrHb
+         7PklhvWmt9E5Tq5kuaKTtPMj6KW0YHjsLltxUp8Cgh09kvpR6OI/pwtSxkDgdmZ3Dpmi
+         7CMQ==
+X-Gm-Message-State: AFq9FYId50/z7tsGGEOd/WODtJgddsL46q1ZMI7sNATIPDOMvsPkmdR1
+	kUnGR8UUlE7rycBa5YPWuhgxL+Ka3Zl77rq2n0Mi/JGRbzhRC0KDco8tKBv5iKK1
+X-Gm-Gg: AYBFou0gPCvnPtKHtSyD9mhe0ApyXAzNIRc5KFqNujLRGyRKa2iD6mJuW79WTEWtlgy
+	lmNFV5QlxcFKNZ6rTKBRouJso8AWzpThqb+UCqOFAF47soBE8SrND+H8PyMPVEDwK6MjZ7aoCPz
+	tRGeQ2QoKDbT5IhJbNzKn8SeFpJxgb+6CwgyAWAmMhxY2OQWKNyMnQONcUUJyIUxALBmKn6gmc6
+	+ZfGuidXPXzyH3zpvL3MaUqoPHL7w9DyuZLc+H61zrE+FahLgvfbNq+oP3L6/kgIOJ5Tt1LRnud
+	5EEgNje+vyWK01WHURH+wb+K1lIWeAMAkLjm67wkOn/T8sjD26gnxsSwNDi3yetr1dKl1zeyD8Z
+	pQrcxky0G31ilYyz0dvFyhGAEl4X+sVuatCwbr5QDiEGVXgq9b24S/yH4Hj5/+gM/VchGpmTEXi
+	Gbdreim1thpaPoZ3B2X/5Dyi9vYSkzHyxhAlnC/Tliv795Am5QrKfx1QBxrA/mlJZ5NFbrMMTP8
+	teQeZHJftiPPAWTKUrfEVU=
+X-Received: by 2002:a05:7022:b051:20b0:147:9ad0:cf10 with SMTP id a92af1059eb24-18514cf32d5mr13380836c88.47.1792438596542;
+        Mon, 19 Oct 2026 12:36:36 -0700 (PDT)
+Received: from arch.localdomain ([2401:4900:add5:70b2:7032:342a:ce70:6aba])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831a6f58c2sm47260509c88.11.2026.10.19.12.36.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 12:36:35 -0700 (PDT)
+From: Prashant Sengar <prashantsengar25031@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	andrew+netdev@lunn.ch,
+	linux-usb@vger.kernel.org
+Subject: [PATCH net v2] net: usb: lan78xx: avoid NULL PHY dereference in WoL setup
+Date: Tue, 20 Oct 2026 01:01:48 +0530
+Message-ID: <20261019193148.1381545-1-prashantsengar25031@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,96 +93,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 19, 2026 at 08:36 AM Leon Hwang <leon.hwang@linux.dev> wrote:
-> +	ret = bpf_log_attr_report_size(&attr_log, 0);
-> +	if (ret)
-> +		goto put_prog;
+LAN7801 supports fixed-link configurations without an attached PHY.
+However, lan78xx_set_wol() unconditionally passes netdev->phydev
+to phy_ethtool_set_wol(), causing a NULL pointer dereference when
+a userspace WoL request reaches this path.
 
-can we drop bpf_log_attr_report_size() ?
-Nothing is logged when the attach succeeds, so there is no size to
-report, and libbpf zeroes attr_common, so log_true_size reads 0 anyway.
-Finalizing only when ret < 0 already keeps -EFAULT away from a live link.
-Then no need for the 2nd write, the log.c refactoring and the put_prog
-label.
+Use phylink_expects_phy() to skip PHY WoL configuration for fixed
+links, and use phylink_ethtool_set_wol() for configurations that
+expect a PHY. This avoids the NULL dereference while keeping PHY
+operations within the phylink API.
 
-Something like this (compile tested only):
+The issue was reproduced using USB Raw Gadget and dummy_hcd in QEMU.
+An ETHTOOL_SWOL ioctl triggered a kernel Oops with the original
+driver. With this change, the same request completes successfully.
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 849bc91..61d100e 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -5856,8 +5856,11 @@ err_put:
- }
+Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
+Signed-off-by: Prashant Sengar <prashantsengar25031@gmail.com>
+---
+v2:
+  - Use phylink_expects_phy() to avoid PHY WoL operations for
+    fixed-link configurations.
+  - Use phylink_ethtool_set_wol() instead of the direct PHY
+    helper, addressing Andrew Lunn's review.
+  - Preserve the existing controller WoL configuration order.
+v1: https://lore.kernel.org/netdev/20261018151830.643511-1-prashantsengar25031@gmail.com/
+ drivers/net/usb/lan78xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- #define BPF_LINK_CREATE_LAST_FIELD link_create.uprobe_multi.path_fd
--static int link_create(union bpf_attr *attr, bpfptr_t uattr)
-+static int link_create(union bpf_attr *attr, bpfptr_t uattr, struct bpf_common_attr *attr_common,
-+		       bpfptr_t uattr_common, u32 size_common)
- {
-+	struct bpf_verifier_log *log;
-+	struct bpf_log_attr attr_log;
- 	struct bpf_prog *prog;
- 	int ret;
-
-@@ -5867,14 +5870,24 @@ static int link_create(union bpf_attr *attr, bpfptr_t uattr)
- 	if (attr->link_create.attach_type == BPF_STRUCT_OPS)
- 		return bpf_struct_ops_link_create(attr);
-
-+	log = bpf_log_attr_create_vlog(&attr_log, attr_common, uattr_common, size_common);
-+	if (IS_ERR(log))
-+		return PTR_ERR(log);
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 5655941f1478..1702f633d42e 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1805,7 +1805,9 @@ static int lan78xx_set_wol(struct net_device *netdev,
+ 	if (ret < 0)
+ 		goto exit_pm_put;
+ 
+-	ret = phy_ethtool_set_wol(netdev->phydev, wol);
++	if (phylink_expects_phy(dev->phylink))
++		ret = phylink_ethtool_set_wol(dev->phylink, wol);
 +
- 	prog = bpf_prog_get(attr->link_create.prog_fd);
--	if (IS_ERR(prog))
--		return PTR_ERR(prog);
-+	if (IS_ERR(prog)) {
-+		bpf_log(log, "Invalid prog_fd.\n");
-+		ret = PTR_ERR(prog);
-+		prog = NULL;
-+		goto out;
-+	}
+ 
+ exit_pm_put:
+ 	usb_autopm_put_interface(dev->intf);
+-- 
+2.55.0
 
- 	ret = bpf_prog_attach_check_attach_type(prog,
- 						attr->link_create.attach_type);
--	if (ret)
-+	if (ret) {
-+		bpf_log(log, "Invalid attach_type.\n");
- 		goto out;
-+	}
-
- 	switch (prog->type) {
- 	case BPF_PROG_TYPE_CGROUP_SKB:
-@@ -5953,12 +5966,19 @@ static int link_create(union bpf_attr *attr, bpfptr_t uattr)
- 			ret = bpf_uprobe_multi_link_attach(attr, prog);
- 		break;
- 	default:
-+		bpf_log(log, "Invalid prog type.\n");
- 		ret = -EINVAL;
- 	}
-
- out:
--	if (ret < 0)
--		bpf_prog_put(prog);
-+	if (ret < 0) {
-+		int err = bpf_log_attr_finalize(&attr_log, log);
-+
-+		ret = err ? err : ret;
-+		if (prog)
-+			bpf_prog_put(prog);
-+	}
-+	kfree(log);
- 	return ret;
- }
-
-@@ -6530,7 +6550,7 @@ static int __sys_bpf(enum bpf_cmd cmd, bpfptr_t uattr, unsigned int size,
- 		err = bpf_map_do_batch(&attr, uattr.user, BPF_MAP_DELETE_BATCH);
- 		break;
- 	case BPF_LINK_CREATE:
--		err = link_create(&attr, uattr);
-+		err = link_create(&attr, uattr, &attr_common, uattr_common, size_common);
- 		break;
- 	case BPF_LINK_UPDATE:
- 		err = link_update(&attr);
-
-pw-bot: cr
