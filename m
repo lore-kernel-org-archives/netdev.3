@@ -1,124 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1E44F4750
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91AA4EA38C
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792415006; cv=none; b=a6yW0MzfHuWtt1GgdnB+di9dlgftkqhi/x02VB58JrmNHw0xzqkGIkq+tvbZm+CqaQLLf91eiG4uU3ko0bjSn2tnIbU70ECjB/9R4783A6Wy5OqIbxL1WsdYkPRAYW3Fofsoj3dL6G+uQ8jmrA04NIA3gtaqp1Jk154QD0mMoZY=
+	t=1792415082; cv=none; b=Ag5OfIBebOI7XLiW4dIrxhZ6HeVYDzJcekj9VM4I3DvffM67lOJMaviLYX9C01vWmvnPL2xoQJeQVP4ZNYL26YFjOqLRoQiqUHx2y0ngGO4g8TAPsNxExGRbuZREhDpkY+/OjZVnWbFWFwdvdHVOog+KNGO/XYFKVB7z2hnHteY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792415006; c=relaxed/simple;
-	bh=QNrIDKsvgeRp/5paQVQcPIJk7NtUHcicaHd6IPX9Vh0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pS87oSRnQoEii6nWC84joxFkUc/my9FlL2KD1LS1qcB8a6nXAWOIvtR749h8pMqk2OSc3/wVV3tnXmBq8EUaOlyjDAS4OaPpJ4ssvVR9wHKmEWiCWQjgfzjz0MF6/UBVMACPGk3htBkCFed7kYbC5HJUS5nRdWIGuZIMja4R0Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BDC2cjrH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QSQbeXMZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792415082; c=relaxed/simple;
+	bh=ypi3osWI8gP8xyKWXAity7kWnhHwA/VpXlB9i/wvPi4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=PwB1MAFMSrWZOeisqkWEsB/dR2WMHMq2nTdrYHEdmdjV5Po/+03V1BHxbSEv8T9T18faIO6sJEQFFOiglq9kFtQaufYNSoj4B0g0g1InCl584a+vJmhQgYTUx5MFWVj+7f6YU6Q7/hMip5hMyhdwD9de11TWrMyk67RM92sUO0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zw2Ro5NT; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BDC2cjrH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QSQbeXMZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792415004;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QNrIDKsvgeRp/5paQVQcPIJk7NtUHcicaHd6IPX9Vh0=;
-	b=BDC2cjrHwdzrEqh9gPz9NK1mDPDe0ddeXpmWFZxyEBDCOTi7t3/lRcwMdgjQx2F54adDsK
-	kxJHOG9P5NP+kJhSoDbOedJUJKS1t777A5qX1cTwRzdYMKt6wxy56xbBKSltOv6MGlKzbk
-	E/Aib8GPr8MdUWA4wSHJF4hjLgVu7ks=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-711-oa3S0VHsMO-jkFUSIcVyMg-1; Mon, 19 Oct 2026 13:03:22 +0000
-X-MC-Unique: oa3S0VHsMO-jkFUSIcVyMg-1
-X-Mimecast-MFC-AGG-ID: oa3S0VHsMO-jkFUSIcVyMg_1792415002
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48b00febba3so1901418f8f.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:03:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zw2Ro5NT"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-930c0f9c1b1so207376085a.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:04:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792415001; x=1793019801; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QNrIDKsvgeRp/5paQVQcPIJk7NtUHcicaHd6IPX9Vh0=;
-        b=QSQbeXMZOL5183Y+WAlt+m6vDI+s5P8c5s8XI5GaZR8dl1YROpEQJg+li1FdU9DUy5
-         HD2cRk4QGkbulVlcEZmkCnJSYhDxJ5GDHXMU9OkXpDywfy6vVPQnelB48i2cb6BssC1n
-         vILt6WEjhqeNXG1m4f6acOQORifl5LddQhfCoB+VkwrHUOAso9zWKX9ihl0hnnyKmqO0
-         xNtjj+4w1+0Q+kcW8m6/GDE6GDtKwhdr1xOcF2bwxvtzAwKZstx7PrKRM25Q7ENZTCCb
-         AD3G3q/5x6cvsS8CNJNPZQqJ2O7TNJAuMfqxV1n3RacaWZ47o7vqKcE4i46LFkKiu4bS
-         wLGg==
+        d=gmail.com; s=20251104; t=1792415080; x=1793019880; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ypi3osWI8gP8xyKWXAity7kWnhHwA/VpXlB9i/wvPi4=;
+        b=Zw2Ro5NTFeqeRpPaUDiAoqDBBEVA4vrR/egIYDXbODNDfzxRKXaLD1RJK11z0W2Nfo
+         v4ChuE6+1Sfi4K+VMqUl/ZYJB0btqAXli5pJHKqFcJ5+/uVwztEMPyj+J7yGeSc02FBk
+         C6CLlRLhQJl0jM8HTwn917o5vL1wfF9ZSDi+dhXi+InmnwfjUMcBIiA70sapE8VxKTcE
+         fF9GSx6VUK6IsUY0dHiKY4mYq2w+na9GwH3Hpjy1mWZGcO69wec5JKb27RNOnTs3sqsM
+         01rhQF+lRKg5rrHh7r063fn0ukbU+Iv3/sufzKGp/PEF1gaM6y90GfQ/oOuPO+W+XT/y
+         jCvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792415001; x=1793019801;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QNrIDKsvgeRp/5paQVQcPIJk7NtUHcicaHd6IPX9Vh0=;
-        b=EGlLjEiSowbKu0UweBAaDJe8/tDVXDHUpUW7QXSAgUvq3LaPDaL6kFk3DipxPpd9U6
-         CG2L3cbgn2SazRNBOpMebwjpnhnNC5kz8+SUoTgcT8HvPFJqK4d2lkh5J7ZsXp8tZKS3
-         tYpd9KEC1uUuTQ9ZYI5/if1i3/6hsB0fhhkaHC0OKbXnwTH8hFnYyvjl23FJS3kLaYx0
-         29l5dJQAxZl2Z5lUgMiMX65ZwGqFs9l4fjfZ4m4xPN5igD+L9DsVK8j9NQ26BQI8VyhJ
-         JLk0D1a6uHOy6zz3RF9IChF5DvnayJf3/HTQiYraplOOvr/sQ+qI5uucKpM7GKcK2NHo
-         veSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxxKXzzkL9ZNBdYx75nl2vbOiJ9jydXfVz++Hs5if6d3MNOmUBtkmf3C5FN4LWPLGSuVj3rT/M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL2wB7tYQ/thJLUlDtq9vE17M7hafiQuDlhTowbyjQM4l/FdBLj
-	u21rR5n0A8OKZpqEfnO7dWI/yn/oesWvEW7MeQENJYB7VwqpbMTUZRQW1WwHdkbJ7nGHvZVx2io
-	6FiiEtByP9M4dM+h6LwmAC+o5sNQ9TdaCB5td4jMtI02nCJjSFCqkcXh5jA==
-X-Gm-Gg: AYBFou2UDAy22rfc0nHIXtn4z1toBSW4bvpSI53Y3oV6c4BZs0nwfGnk2+D8h2icYGP
-	LCg26KDpAS2u+FhozZhCsBoRJietW7emwinl/pYDQP0Ahj0NVk8Nn0reFFp16cJYAOyHAhm44ay
-	priRwfJXN2eh58f69yshZlkF+svw1rfEMz5kBDIvaWH5Ap7t9UdPJzg6M1wci7Knwb1u2RMqvQB
-	5ypXfnsQWc9faoGzjqGhhDEBUjSj21BTIzPGHXPoyIV+2FeBmGFR4dShQeT0R+1VChaaHXMtVVE
-	pnZpiMArX5vnCDXGb/zbdZYFgSmIlxGhl80475PF5j9HuPTmx4SICnHkHD0gYNUiljIMUBzf+9C
-	+0ksVATm4YFdbNW0EcO0GwC1RK1huDwv9fV14/aad1Aq2LHSKkKXBXsDdjC8hh7PJZtlRBBeINA
-	==
-X-Received: by 2002:a05:6000:290f:b0:48e:740:c945 with SMTP id ffacd0b85a97d-48e07f9eb4bmr15189661f8f.32.1792415001427;
-        Mon, 19 Oct 2026 06:03:21 -0700 (PDT)
-X-Received: by 2002:a05:6000:290f:b0:48e:740:c945 with SMTP id ffacd0b85a97d-48e07f9eb4bmr15189570f8f.32.1792415000735;
-        Mon, 19 Oct 2026 06:03:20 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfdc4eecasm22733073f8f.13.2026.10.19.06.03.17
+        d=1e100.net; s=20260707; t=1792415080; x=1793019880;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ypi3osWI8gP8xyKWXAity7kWnhHwA/VpXlB9i/wvPi4=;
+        b=jMQnOSKRlObeEfJtGNxDZDU40Z8WcsH3ItTaMnQP2rwcQ23ZMNhpkksNUaEIJna1my
+         JkAw/GNZQ3MGc0DLFI2gAKIw7b2IOPs6X95qR4gjXW6FZ/oBhAKElLhG+d1hcFnEhgyn
+         NwApnWIlqAlrtBnc+sY+HoMketC9k89BKyZJQgwFEfTHWsBTvr+Zo26zEeZva6RaRKez
+         dFxhyeVaJkRdBW9lK2DGofsY4dlseSluy/DXguO+8j4ZG5QeQtj56O3mfuxJzD9Vc0mS
+         95NO3d44E3YnC1UE//xk6s9DUEouHDWH9Ck/ppVuLM64KnljiM37iioDDgLa/B84TGQ8
+         J6QA==
+X-Forwarded-Encrypted: i=1; AKwUvByRqnO3KZkIJunR/FsFHbEsPqJ6giLKNvS50ndxNJuTs8XSde90deMD3cp42EBx/AGMGLuzxwc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLza26FZ2lzIlEZGvlrRFEYRWkBY/RoUiQt4egy5T3ey06SiBnT
+	2MG7GJSKyjJfuEoPjRLYt/LAwyu5sxvsumfHD/mmsPj+kabLnTIDaRcf
+X-Gm-Gg: AYBFou1I+e7JGOf8nmDzhzsBpcpSWNyCC1Cd8VM1Y07rIMZBZpA1rVFWSbT6rvyDtNi
+	m4xyZgix5GVcRJH3aSztYrQ6Ki0WtZ963XSODYOY7Q8+Kg4KKh8FH2v00MmjHLNYYhTrzouY/VW
+	A8M/bo9cJIHD9XVgoWn/WWUEnldyX4GCaVcgVsouqIB9gPixtn/FG/f/zYslCaFnuASoIUHClLv
+	+EYgkOpJf+66IjLxHJVB2CEtEm8GoU9tRgbJdfZnGr3kfpYYR+VVW5KIzKESFAnoKOMyT4YEH0a
+	3pw5f6Z8L2UejsoiEV8uyog3m3TLKPl4AFLvN0Se/FUKJhJkmZotpaofyrVVBT30fBQdtx0zkLT
+	SUHcCuYoSk5zrycv2WJccfWUWHjc087MExfEWrgHSrBCI9WrNMOzUQ9tCqH63E++4TLzue8k+Ns
+	v8f63TPnCjdgK440PWQ1oi+m7cjWfUvTSIAJaqvSBfjG0ir9IHHPPSNmybd1+lVUMTdWeLPd5JC
+	qs=
+X-Received: by 2002:a05:620a:7119:b0:93e:fc4e:c490 with SMTP id af79cd13be357-93f29cf1c9bmr1378673385a.15.1792415079619;
+        Mon, 19 Oct 2026 06:04:39 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f3cb855a0sm328418385a.4.2026.10.19.06.04.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Oct 2026 06:03:18 -0700 (PDT)
-Message-ID: <5f01c934-990a-4fac-92e7-17d1e4949aec@redhat.com>
-Date: Mon, 19 Oct 2026 15:03:14 +0200
+        Mon, 19 Oct 2026 06:04:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: korina: fix dma_unmap_single() length in
- korina_rx()
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20261013132319.22253-2-fourier.thomas@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261013132319.22253-2-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Oct 2026 09:04:38 -0400
+Message-Id: <DM8U47F4MNK3.2V54CCQ9YTNBY@gmail.com>
+To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>
+Cc: "Alexander Duyck" <alexanderduyck@fb.com>, "Jakub Kicinski"
+ <kuba@kernel.org>, <kernel-team@meta.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Alexei Starovoitov" <ast@kernel.org>, "Daniel
+ Borkmann" <daniel@iogearbox.net>, "Jesper Dangaard Brouer"
+ <hawk@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>, "Stanislav
+ Fomichev" <sdf@fomichev.me>, "Eric Dumazet" <edumazet@kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 1/4] eth: mpnic: count packets, bytes, and
+ drops per ring
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261012-mpnic-counters3-v2-0-8afba81c2d5a@gmail.com>
+ <20261012-mpnic-counters3-v2-1-8afba81c2d5a@gmail.com>
+ <20261016220930.i32JEcqe@linutronix.de>
+In-Reply-To: <20261016220930.i32JEcqe@linutronix.de>
 
-On 10/13/26 15:23, Thomas Fourier wrote:
-> dma_map_single() is called with size KORINA_RBSIZE and
-> dma_unmap_single() is called with size pkt_len which might be smaller.
-> Therefore, parts of the buffer may stay mapped after dma_unmap_single()
-> is called, which leaks a resource and might leave exposed mapped memory
-> that might be eventually freed.
+On Fri Oct 16, 2026 at 6:09 PM EDT, Sebastian Andrzej Siewior wrote:
+> On 2026-10-12 05:04:34 [-0700], Daniel Zahka wrote:
+>> Keep packet, byte and drop counters on each Tx work, Tx completion, and
+>> Rx completion queue. Report them to the core via the rtnl_link_stats64
+>> interface.
+>>=20
+>> Rx completion queues also count errors. Frames the device marked with an
+>> uncorrectable error are counted as errors, and frames that fail for any
+>> other reason are counted as drops.
+>>=20
+>> All packets cleaned from the TWQ during mpnic_flush() are counted as
+>> drops, though completions for some of them may have been DMA'd into
+>> the completion ring between the time mpnic_poll() last ran and before
+>> mpnic_wait_all_queues_idle() returns. This is done for code simplicity.
+>>=20
+>> An RCU approach is used because ndo_get_stats64 is not called with the
+>> instance lock.
+>
+> Why do you have the two mpnic_base_stats and fold the stats into into
+> it? My guess would be that on stop the counters are reset and you want
+> to preserve the stats.
+>
 
-Sashiko noted this is actually a cleanup and not a fix:
+Not sure I understand. I think you are asking about two things:
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013132319.22253-2-fourier.thomas@gmail.com
+1. Why have two mpnic_base_stats?
 
-and IMHO with very little value.
+To avoid a separate heap allocation that can fail. Handling an
+allocation failure in the ndo_stop path when doing the aggregation into
+the base stats is tricky.
 
-Dropping this patch.
+2. Why split stats into base stats and per queue stats, and why reset
+the per queue counts when the device transitions down?
 
-/P
+This is the way the stats in netdev.yaml are exposed depending on the
+'scope' request attribute. My reading of the relevant kernel docs is
+that the per queue counters are counting events for the current live
+queue, so it makes sense to reset them and fold those counts into the
+base stats when the interface is transitioned down.
+
+>> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+>
+> Sebastian
 
