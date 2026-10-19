@@ -1,52 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841314FB9B3;
-	Mon, 19 Oct 2026 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F07501280;
+	Mon, 19 Oct 2026 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418087; cv=none; b=EpjhU0MEx4ZmE1Y5iUbM0MIzz5lhnnXYwDibeTrTFYfIBHGDz8WF8SWw8LJAkwwu4U+XpxwFg7UBizvNxWcJOhY1jQ+UR3HmAsmu+Tl9klH7OCNkysaDPwYF+M4psioxgM4FvqWIUFDKOhSD9/JwUwsMAHUs4yOEFdPO3D77hbg=
+	t=1792418097; cv=none; b=daB1e/70p1KhjGhIQALF7Fsik0Vcm9BChSW9aqiIbxuCaL6SJIxliL4tIVPeBArcMFWdU1BbB7GqvWpI+l7QjKdPR37PiErUDIaE2ExRtfYt5WQHxrwsD1YeKbuZwyD3imDMcgUyOUNMWT77qpxN+HLGA41aMcgXcB6ytxiu5MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418087; c=relaxed/simple;
-	bh=mn5hukJcRtbyeAxIN4fIXF2f2sf5d9hrj7E/AZtdEkA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qrTEz9wl2/ccD81LIRRw+UGaxEzrx6V7aSTaE+svEbhspLgcAJ+GAQq94+ZZ7FJc747vBMiA4J8L/Zg8JISdi7wnkiYd8n1zD5ETG6g7as8KRgGm/5+dA5Jr5VgLyQfdYutqYw1qTs1gjcRaNoNk+n81xeYgg3FSglgtMHpb5kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfEUdrgf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792418097; c=relaxed/simple;
+	bh=4xpDEzR+herJSaTFJhvNkc7qSxNr1lO2IVupfeYRmQ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oJGp03CDA6KQndfRCgo+GOBjddYlTYMFEmwbI3Cxj892ciOYaCpPV5QHVczIRVOT6KRplOw8YlPIlmkL2uMV/8attU+aT30SoK6cKQ55oMaBuatxLssbCPxglCnwrjgemZGGEE2xFN5JhwrLolT/rTBKCIZcK9KV8XV5m6RSQVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kdnqzlks; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfEUdrgf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A381F000C5;
-	Mon, 19 Oct 2026 13:54:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kdnqzlks"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E032E1F000CB;
+	Mon, 19 Oct 2026 13:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418084;
-	bh=+rMuxlEzta/xwXzh9GPR/CubwMf9s0sAxRcpqXWWx8M=;
-	h=From:To:Cc:Subject:Date;
-	b=WfEUdrgfwgbrC9/23O5Nbaey4oT1D1nSaA9w/0Z22Nh+9PYIX4hDk/z3+I4zagQoE
-	 73DJAxYXXPVxhygfubRJ5YpPDtvlGyQSE1xHylG6agT3TTT7Hkppl+IWlEdmCPqS32
-	 aysGmuhkqryms/zDxuJf6PVZXZ+StAmU9+WDJ2DKgEdUyjvad4xO0j3hwphw4ZaHc8
-	 Z1ep0klBKA3rgVA+n6nT903PGhtLOyi0Qz82IjcW4uh9sCK7O0CURZT8g/7naOoubN
-	 AEruD50qqmeRMfd82wxkdxqdN47ivlkPRw0dtg+CaQpF6zVkXkUrys4lJQd12ENlTy
-	 wfXr0PeRqFAGA==
+	s=k20260515; t=1792418094;
+	bh=Y5SNz+ZXGnbVUXe0Sdp8UmdiSoEuaWhQmv+y0m0tAq4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Kdnqzlks9LYHhpvhl4oL+3GsStBQdzjLVPLpYKT4Gs1oDgAfSwRjihEGeDFjgzyQU
+	 E6DAaOxGZbk7so2az0RY/aZlXyKetJ/Tpoz7UKCbGa+rhV5prFEN0/B84AfFj2FVbg
+	 ObpsBNJYAu2cVnedOxghiFmQ8tuMIBx6rBY/80xA9IxJTay9R+b80zsZjbQqaT81x4
+	 tzf/4Qhe7sTfQglcfvgQMPAa7Ch2fV4xenAOvmVRbnWGhtxNOniOIYod1I3J36zbR/
+	 dvFhT2SZPJ+uZXsuetNurZI3BkR9c0aIwB1hNoA111Ow5AC5LjO1mPnCC+f09qG97r
+	 5Qv2NKyo+gkQA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Daniel Golle <daniel@makrotopia.org>,
+Cc: Allison Henderson <achender@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	chester.a.unal@arinc9.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	pabeni@redhat.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.18-6.12] net: dsa: mt7530: check CORE_PLL_GROUP4 access in mt7531_setup()
-Date: Mon, 19 Oct 2026 09:44:52 -0400
-Message-ID: <20261019135441.1420968-1-sashal@kernel.org>
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-5.10] net/rds: don't use unpin_user_pages_dirty_lock() from atomic context
+Date: Mon, 19 Oct 2026 09:44:59 -0400
+Message-ID: <20261019135441.1420968-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
+References: <20261019135441.1420968-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,408 +57,590 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Allison Henderson <achender@kernel.org>
 
-[ Upstream commit 1ae63b018d3d70e96d420b59a1334860cf232bc6 ]
+[ Upstream commit d100966325f782aa7775e5f0e8fb04f66f56308e ]
 
-mt7531_setup() reads CORE_PLL_GROUP4 through the MT7531 indirect c45
-PHY access, modifies it and writes it back to enable the PHY core
-PLL, but checks neither the read nor the write. Now that the indirect
-access functions propagate command-write failures, a failed read
-returns a negative errno that would be bit-modified and written back
-into the PLL register, and a failed write-back would go unnoticed.
-Check both and bail out. The adjacent EEE advertisement writes push a
-constant value and cannot corrupt state, so they are left as is.
+rds_rdma_free_op() and rds_atomic_free_op() are reached from the IB
+send completion path via
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/a7dfe3b66ea6ac1ae7915034de0527060e6ddcd4.1785811140.git.daniel@makrotopia.org
+  rds_ib_tasklet_fn_send()
+    rds_ib_send_cqe_handler()
+      rds_message_put()
+        rds_message_purge()
+          rds_rdma_free_op() / rds_atomic_free_op()
+
+which runs in tasklet (softirq) context.  Both functions unpin the
+user pages of the op with unpin_user_pages_dirty_lock(), which uses
+set_page_dirty_lock() and thus may take the folio lock and sleep.
+Sleeping in softirq context is not allowed and can deadlock or crash.
+
+Dirtying the pages with the non-sleeping set_page_dirty() instead
+would just trade one bug for another, as pointed out during review:
+the pinned range can be file-backed.  rds_pin_pages() pins with
+FOLL_LONGTERM, which refuses fs-dax but takes the page-cache pages
+of a MAP_SHARED file mapping just fine, and RDS does not restrict
+what memory the caller registers as an RDMA destination.
+
+For a file-backed page, set_page_dirty() from a tasklet can take
+non-irq-safe filesystem locks (e.g. mapping->i_private_lock and
+inode->i_lock in block_dirty_folio()) and deadlock against the task
+it interrupted.  Without the folio lock, it races with truncation
+clearing folio->mapping, which is the race set_page_dirty_lock()
+exists to close.  The pre-pin_user_pages() version of this code
+dirtied pages that way from the tasklet, so that bug is older than
+the sleeping unpin.
+
+The page dirtying therefore has to move to process context, not
+merely avoid the folio lock.  When the final rds_message_put() runs
+in atomic context, rds_rdma_free_op() and rds_atomic_free_op() now
+leave the op's pages pinned and flag the op. Later, rds_message_put()
+hands the message to a work item that unpins the flagged ops' pages
+and frees the message from process context. Here,
+unpin_user_pages_dirty_lock() is safe outside the atomic context.
+Everything else keeps running in the caller's context exactly as
+before: the rest of the purge - the zerocopy completion, the socket
+put and the MR reference drops - as well as RDMA writes, whose pages
+the remote side only reads and which unpin without dirtying,
+everything on rds_tcp, and final puts that already happen in process
+context (socket close, connection teardown).
+
+Deferring only the unpin means the work item touches nothing but the
+pinned pages and the rds module's own memory: it cannot call back
+into a transport module, so it changes nothing about the transports'
+shutdown and unload ordering.  rds_exit() drains any pending unpin
+work via destroy_workqueue(rds_wq) before the module goes away.
+
+The Oracle UEK kernel avoids the sleeping unpin by calling
+set_page_dirty() directly from the tasklet, which is subject to the
+file-backed page problem above, so this deliberately does not follow
+UEK here.
+
+Signed-off-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260730041629.3512480-2-achender@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This is a real, small error-path fix for this 6.12 tree: an unchecked
-CORE_PLL_GROUP4 RMW can write a negative errno into the MT7531 PHY PLL.
-The buggy code is present here, and a related callee change already
-landed.
+This is a real sleep-in-softirq bug on the RDS IB completion path, and
+the buggy code is present in this 5.10.270 tree. The fix is self-
+contained and should be backported.
 
-## Phase 1: Commit message forensics
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
 
-**Step 1.1 — Subject**
-Record: `[net: dsa: mt7530]` `[check]` Check CORE_PLL_GROUP4 read/write
-results in `mt7531_setup()`. “check” is used as a missing-return-value
-fix, not a feature add.
+Step 1.1: PARSE THE SUBJECT LINE
+Record: [net/rds] [don't use] don't call `unpin_user_pages_dirty_lock()`
+from atomic/softirq context. "don't use" is a prevent/avoid-style fix.
 
-**Step 1.2 — Tags (from the candidate message)**
+Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
 Record:
-- `Signed-off-by: Daniel Golle <daniel@makrotopia.org>` (author)
-- `Link: https://patch.msgid.link/a7dfe3b66ea6ac1ae7915034de0527060e6ddc
-  d4.1785811140.git.daniel@makrotopia.org`
-- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev maintainer
-  applied it)
+- Signed-off-by: Allison Henderson `<achender@kernel.org>` (author;
+  ignore pipeline SOB)
+- Signed-off-by: Jakub Kicinski `<kuba@kernel.org>` (netdev maintainer)
+- Link: `https://patch.msgid.link/20260730041629.3512480-2-
+  achender@kernel.org`
+- No Reported-by, Tested-by, Reviewed-by, Acked-by, or Cc: stable in the
+  provided message
+- Mailing-list v4 **did** include `Fixes: 0d4597c8c5ab ("net/rds: Track
+  user mapped pages through special API")`; that tag is in this tree
+  (verified with `git merge-base --is-ancestor`)
+- Message-ID `-2` is patch 1/4 of `[PATCH net v4 0/4] net/rds: Bug fix
+  ports` (cover letter is `-1`)
+- Assisted-by Claude appears on the lore submission only
 
-Ignored per instructions: any pipeline “already selected” markers.
-
-Original mailing-list version (openwall/lkml, same msgid) also had:
-- `Fixes: c288575f7810 ("net: dsa: mt7530: Add the support of MT7531
-  switch")`
-- No `Cc: stable`, no `Reported-by`, no `Reviewed-by` on this patch
-  itself
-
-Cover letter for the series: Andrew Lunn’s `Reviewed-by` was collected
-on patches 1–3 and 6, not on this one (it was new in v2).
-
-**Step 1.3 — Body**
+Step 1.3: ANALYZE THE COMMIT BODY TEXT
 Record:
-- Bug: `mt7531_setup()` RMW of `CORE_PLL_GROUP4` via
-  `mt7531_ind_c45_phy_read/write` does not check either result.
-- Failure mode: a failed read returns a negative errno that is bit-
-  modified and written into the PHY core PLL; a failed write is ignored.
-- Author’s framing: this became acute once the indirect helpers
-  propagate command-write failures.
-- Adjacent EEE advertisement writes are constant `0`, so they cannot
-  corrupt RMW state and are left alone.
+- Bug: `rds_rdma_free_op()` / `rds_atomic_free_op()` run from the IB
+  send tasklet and call `unpin_user_pages_dirty_lock()`, which uses
+  `set_page_dirty_lock()` → `lock_page()`, which may sleep.
+- Symptom: sleep in softirq → deadlock or crash.
+- Switching to `set_page_dirty()` from the tasklet is also wrong for
+  file-backed pins (`FOLL_LONGTERM` MAP_SHARED): non-irq-safe fs locks
+  and truncation races.
+- Fix: if the final put is atomic and pages need dirtying, leave them
+  pinned, set `op_unpin_deferred`, and finish unpin+free on `rds_wq`.
+- Author notes this is older than the pin API (pre-pin code already
+  dirtied from the tasklet) and that UEK’s `set_page_dirty()`-from-
+  tasklet approach is intentionally not followed.
 
-**Step 1.4 — Hidden bug fix?**
-Record: Not hidden. It is an explicit missing-error-check fix. The “now
-that …” wording is series context (patch 3/6), not a cleanup-only
-change.
+Step 1.4: DETECT HIDDEN BUG FIXES
+Record: Not hidden. Explicit sleep-in-atomic / deadlock fix.
 
-## Phase 2: Diff analysis
+===============================================================
+PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
 
-**Step 2.1 — Inventory**
+Step 2.1: INVENTORY THE CHANGES
 Record:
-- File: `drivers/net/dsa/mt7530.c` only
-- Function: `mt7531_setup()`
-- ~10 insertions, ~4 deletions (candidate hunk); net +6 lines of checks
-- Scope: single-file surgical caller fix
+- `net/rds/message.c`: add `rds_message_unpin_worker()`, defer `kfree`
+  from `rds_message_put()` when unpin was deferred
+- `net/rds/rdma.c`: split unpin helpers; `rds_rdma_free_op()` /
+  `rds_atomic_free_op()` unpin inline only when safe (`in_task()` or
+  RDMA write)
+- `net/rds/rds.h`: `m_unpin_work`, `op_unpin_deferred` bitfields, helper
+  prototypes
+- Scope: ~74 insertions / 11 deletions, three RDS files, surgical
 
-**Step 2.2 — Flow**
-Record: Before, `u32 val = mt7531_ind_c45_phy_read(...)` then OR/AND
-bits and write back, ignoring errors. After, store the `int` in `ret`,
-return if `ret < 0`, copy into `val` only on success, check the write,
-return on write failure. Probe/`sw_setup` fails instead of programming
-PLL from an errno.
-
-**Step 2.3 — Bug mechanism**
-Record: **Logic / error-path correctness**, specifically “treat errno as
-register data.”
-- `mt7531_ind_c45_phy_read()` returns `int` (PHY data or negative
-  errno).
-- Assigned to `u32 val`, then modified (`MT7531_RG_SYSPLL_DMY2 |
-  MT7531_PHY_PLL_BYPASS_MODE`, clear `MT7531_PHY_PLL_OFF`).
-- Written through `mt7531_ind_c45_phy_write(..., u16 data)`, so a value
-  such as `(u32)-ETIMEDOUT` (`0xFFFFFF92`) truncates to
-  `0xFF92`/`0xFFD2` and is programmed into the PHY PLL.
-- Write errors (already returned on poll timeout in this tree) are
-  ignored.
-
-**Step 2.4 — Fix quality**
-Record: Obviously correct. `ret` is already declared in
-`mt7531_setup()`. No API/locking/data-structure change. Regression risk
-is that a failing MDIO access now fails switch setup instead of
-continuing with a bogus PLL; that is the intended behavior. Risk of the
-fix itself is very low.
-
-## Phase 3: Git history
-
-**Step 3.1 — Blame**
+Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
 Record:
-- Unchecked RMW originates in `c288575f7810` (Landen Chao, 2020-09-14):
-  “Add the support of MT7531 switch”.
-- Helper names/`MT753X_CTRL_PHY_ADDR` from later Arınç ÜNAL refactors
-  (`868ff5f4944aa9`, `06dfcd4098cfdc`, 2024).
-- Poll path in this tree already uses `regmap_read_poll_timeout()` from
-  `96e0f5184af69` (Daniel Golle, applied 2026-08-09): “error out on
-  failed reads in MT7531 PHY polling”.
+- Before: final `rds_message_put()` always purges and unpins (possibly
+  dirtying) in the caller’s context, including the send CQ tasklet.
+- After: purge still runs in the caller (zerocopy, sock_put, MR krefs).
+  Dirtying unpin is deferred to process context. RDMA writes still unpin
+  immediately (no dirty). Process-context final puts still unpin
+  immediately.
+- Error path `rds_cmsg_rdma_args()` → `rds_rdma_free_op()` is
+  sendmsg/process context, so `in_task()` is true and pages are not
+  leaked.
 
-**Step 3.2 — Fixes: target**
-Record: `c288575f7810` **is** an ancestor of this tree. The original
-MT7531 support (and this RMW) has been here since well before 6.12.
+Step 2.3: IDENTIFY THE BUG MECHANISM
+Record: [Deadlock / sleep-in-atomic] `lock_page()` from tasklet/softirq.
+Workqueue deferral is the correct class of fix; dirtying cannot stay in
+the tasklet.
 
-**Step 3.3 — Related file history**
+Step 2.4: ASSESS THE FIX QUALITY
+Record: v4 is the review-hardened design (v1 used `set_page_dirty()` in
+the tasklet; v2/v3 deferred the whole purge and needed extra IB-module
+flushes). Risk is the usual workqueue lifetime issues; mitigated because
+the worker only unpins pages and `kfree`s the message, and `rds_exit()`
+→ `rds_threads_exit()` → `destroy_workqueue(rds_wq)` drains it. Messages
+are `kzalloc`’d, so new flags/work_struct start zeroed.
+
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
+
+Step 3.1: BLAME THE CHANGED LINES
 Record:
-- `96e0f5184af69` — already in this tree. Makes poll/read failures
-  return negative errno instead of continuing with garbage “success”
-  data.
-- `93d46870c5440` — already in this tree. Same class: do not treat
-  `bus->read()` errno as register data.
-- This candidate is the missing **caller** check for the one in-driver
-  RMW of `mt7531_ind_c45_phy_read()`.
+- Sleeping unpin: `0d4597c8c5abd` ("net/rds: Track user mapped pages
+  through special API", Leon Romanovsky, 2020) — **in this tree**
+- Call from tasklet: `rds_rdma_free_op` / `rds_message_put` date to
+  2009–2010 (Andy Grover)
+- Pre-pin code already dirtied from this path
 
-**Step 3.4 — Author**
-Record: Daniel Golle is a regular MT7530 contributor (PLL/PHY access,
-MT7988, MT7531BE). Same author as the already-backported poll-error fix.
+Step 3.2: FOLLOW THE FIXES: TAG
+Record: `0d4597c8c5ab` is an ancestor of HEAD (`git merge-base --is-
+ancestor` exit 0). No later in-tree substitute for this unpin-from-
+tasklet bug. `338a3ba30c5ef` ("net:rds: Fix possible deadlock in
+rds_message_put") is a different lock-order bug in `recv.c`.
 
-**Step 3.5 — Prerequisites**
-Record: This is patch **4/6** of “fix remaining swallowed MDIO access
-errors”. Patch 3 (`error out on failed PHY_IAC command writes`, upstream
-`1c95dcb7e923`) is **not** in this tree. It is not required to compile
-or to apply this hunk: the helpers already return `int`, and
-`mt7531_ind_c45_phy_read/write` already return negative errno on
-`regmap_read_poll_timeout()` failure. Patch 3 only adds extra error
-returns from discarded `mt7530_mii_write()` of `MT7531_PHY_IAC`.
-Standalone apply: **yes**.
+Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
+Record: Recent `net/rds/` work here is unrelated (zerocopy, MR cleanup,
+tcp corruption). This is standalone, not patch 2-of-N that needs earlier
+series members.
 
-## Phase 4: Mailing list / external
+Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Record: Allison Henderson is a long-time RDS contributor; this tree
+already has several of her RDS fixes. Author is the right subsystem
+person.
 
-**Step 4.1 — Original discussion**
+Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+Record: Series mates (socket ref on MR, send_xmit leak, MR teardown
+unpin) are independent bugs. Needed APIs exist here: `in_task()`,
+`unpin_user_pages_dirty_lock()`, `rds_wq`, `pin_user_pages_fast()` +
+`FOLL_LONGTERM`. No missing helpers.
+
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
+
+Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
 Record:
-- `b4 dig` on the msgid failed (`Cannot find a commit matching …`).
-- lore.kernel.org fetches returned 403.
-- Fallback: openwall + lkml + cover letter.
-- Lore/openwall URL: msgid `a7dfe3b66ea6ac1ae7915034de0527060e6ddcd4.178
-  5811140.git.daniel@makrotopia.org` (Tue 4 Aug 2026).
-- Cover: https://lists.openwall.net/netdev/2026/08/04/90
-- This patch was **new in v2**, flagged by Sashiko AI review of v1 as
-  another swallowed MDIO error.
-- Cover letter: “the call site exposed once patch 3 makes the MT7531
-  indirect c45 access propagate command-write failures.”
-- Applied by Jakub Kicinski; patchwork bot lists upstream as
-  `1ae63b018d3d`.
-- No NAK found in the material that could be retrieved.
+- `b4 mbox` on msgid `20260730041629.3512480-2-achender@kernel.org`:
+  8-message thread
+- Lore/WebFetch of lore.kernel.org and patch.msgid.link returned 403;
+  discussion recovered via b4 + openwall
+- Revisions: v1 2026-07-11, v2 2026-07-25, v3 2026-07-26, v4 2026-07-29
+  (applied)
+- v1 NAK’d conceptually: `set_page_dirty()` from softirq can deadlock on
+  fs locks and race truncation
+- v3 extra `rds_ib_exit()` flushes dropped in v4 by deferring only unpin
+- Applied to netdev/net-next as `d100966325f7` (not this tree)
 
-**Step 4.2 — Recipients**
-Record: To/Cc included Andrew Lunn, Vladimir Oltean, netdev maintainers,
-MediaTek/DSA people, `netdev@`, `linux-mediatek@`. Appropriate audience.
-Andrew reviewed 1–3 and 6; this patch 4 had no `Reviewed-by` in the
-submission.
+Step 4.2: CHECK WHO REVIEWED THE PATCH
+Record: To/Cc included netdev, linux-rdma, Kicinski, Abeni, Dumazet,
+Horms. No subsystem Reviewed-by on v4. Kicinski: “I don't have much
+confidence in my ability to review this, so let's queue this for -next.”
+Author agreed they are old, non-simple bugs.
 
-**Step 4.3 — Bug report**
-Record: No syzbot/bugzilla. Found by AI review of the MDIO-error series,
-not a user crash report.
+Step 4.3: SEARCH FOR THE BUG REPORT
+Record: No syzbot/bugzilla in the thread. Motivation is code analysis +
+UEK carrying a related (weaker) fix. Oracle RDS/IB users are the
+affected population.
 
-**Step 4.4 — Series**
-Record: v2 6-patch series. Patches 1, 2, 3, 5, 6 are **not** in this
-tree. This patch is self-contained at the `mt7531_setup()` call site.
+Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
+Record: 4-patch “Bug fix ports” series. This patch is 1/4 and does not
+depend on 2–4. Patch 4 is a separate pin-vs-put_page leak in
+`__rds_ib_teardown_mr()`.
 
-**Step 4.5 — Stable list**
-Record: No stable-specific discussion found (lore.kernel.org/stable
-search did not return this subject). UNVERIFIED: whether anyone later
-nominated it on stable@.
+Step 4.5: CHECK STABLE MAILING LIST HISTORY
+Record: No useful hit on lore.kernel.org/stable for this subject (search
+was noisy/unrelated). Originally aimed at `net` because of Fixes:; moved
+to net-next. Absence of stable-list discussion is not a NAK.
 
-## Phase 5: Code semantic analysis
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
 
-**Step 5.1 — Functions**
-Record: `mt7531_setup()` only. Helpers `mt7531_ind_c45_phy_read/write`
-are not modified.
+Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
+Record: `rds_message_unpin_worker` (new), `rds_message_put`,
+`rds_rdma_op_unpin_pages` (new), `rds_rdma_free_op`,
+`rds_atomic_op_unpin_page` (new), `rds_atomic_free_op`
 
-**Step 5.2 — Callers**
+Step 5.2: TRACE CALLERS
 Record:
-- `mt7531_setup` is `.sw_setup` for `ID_MT7531` only (`mt753x_table`).
-- `mt753x_setup()` calls `priv->info->sw_setup(ds)` and aborts on error.
-- `mt753x_setup` is `.setup` in `mt7530_switch_ops` → DSA switch setup /
-  probe.
-- MT7988/EN7581 use `mt7988_setup()` → `mt7531_setup_common()`; they do
-  **not** run this PLL RMW.
+- `rds_message_put()`: send.c, ib_send.c, ib_cm.c, message.c, loop.c,
+  connection.c
+- Confirmed atomic path: `rds_ib_tasklet_fn_send()` → `poll_scq()` →
+  `rds_ib_send_cqe_handler()` → `rds_message_put()` (`net/rds/ib_cm.c`,
+  `ib_send.c`)
+- `rds_rdma_free_op()`: `rds_message_purge()` and `rds_cmsg_rdma_args()`
+  error path (process context)
+- `rds_atomic_free_op()`: only `rds_message_purge()`
 
-**Step 5.3 — Callees**
-Record: `mt7531_ind_c45_phy_read/write` lock the MDIO mutex, write
-`MT7531_PHY_IAC`, poll `MT7531_PHY_ACS_ST`. On poll/read failure they
-`goto out` and return negative `ret`. `mt7530_mii_write()` already
-returns `regmap_write` errors, but those returns are still discarded in
-this tree (patch 3).
+Step 5.3: TRACE CALLEES
+Record: `unpin_user_pages_dirty_lock()` → `set_page_dirty_lock()` →
+`lock_page()` (sleeping). Non-dirty path uses `unpin_user_pages()` only.
+Worker uses `queue_work(rds_wq)` / `kfree`.
 
-**Step 5.4 — Reachability**
-Record: Probe-time only, when an MT7531 DSA switch is instantiated
-(`CONFIG_NET_DSA_MT7530`). Not a syscall hot path. Userspace cannot
-trigger it except by causing device probe. Trigger is MDIO/regmap
-failure or IAC poll timeout during setup.
+Step 5.4: FOLLOW THE CALL CHAIN
+Record: Userspace `sendmsg` with `RDS_CMSG_RDMA_ARGS` / atomic cmsg → IB
+RDMA READ or atomic WR → CQ completion in tasklet → final put. Reachable
+from sockets if `CONFIG_RDS_RDMA`. Not a theoretical path.
 
-**Step 5.5 — Similar patterns**
-Record: The only in-driver `mt7531_ind_c45_phy_read()` call site is this
-PLL RMW. Other `mt7531_ind_c45_phy_write()` uses in the same function
-are constant EEE-adv `0`. Phylib also uses these as `.phy_read_c45` /
-`.phy_write_c45`.
+Step 5.5: SEARCH FOR SIMILAR PATTERNS
+Record: Local `__rds_ib_teardown_mr()` still does `set_page_dirty()` +
+`put_page()` (series patch 4). `rds_info.c` unpins from getsockopt
+(process context) — OK. Same class of bug is already treated as
+backport-worthy in this tree (`88fdf5948f538` Don't sleep inside
+`rds_ib_conn_path_shutdown`).
 
-## Phase 6: Local tree (6.12.111 / `pending-6.12`)
+===============================================================
+PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
 
-**Step 6.1 — Buggy code present?**
-Record: **Yes.** `drivers/net/dsa/mt7530.c` `mt7531_setup()` still does:
+Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
+Record: Yes. This checkout is **5.10.270** (`pending-5.10`, `git
+describe` `p-5.10-1-gce56b7a73b64b`).
+- `net/rds/rdma.c:500` and `:517` call `unpin_user_pages_dirty_lock()`
+- `rds_ib_tasklet_fn_send` still a tasklet
+- `rds_pin_pages()` uses `FOLL_LONGTERM`
+- Introduced by `0d4597c8c5ab` (v5.7-era), present on this branch
 
-```2665:2672:drivers/net/dsa/mt7530.c
-        val = mt7531_ind_c45_phy_read(priv,
-MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
-                                      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
-        val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
-        val &= ~MT7531_PHY_PLL_OFF;
-        mt7531_ind_c45_phy_write(priv,
-MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
-                                 MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
-```
+Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
+Record: Semantic apply is straightforward. `rdma.c` / `rds.h` match the
+old side of the diff. `message.c` context after `rds_message_put()`
+still assigns `hdr->h_exthdr[0]` instead of `memset` of the ext header —
+**minor context conflict**, not a rework. `work_struct` / `queue_work` /
+`in_task()` are available (`rds.h` → `sock.h` → `netdevice.h` →
+`workqueue.h`; `hardirq.h` → `preempt.h`). `rds_wq` is destroyed on
+module exit.
 
-Bug introduced with MT7531 support (`c288575f7810`, v5.10-era). Present
-in 6.12.
+Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
+Record: No equivalent deferred-unpin fix. `338a3ba30c5ef` is a different
+deadlock.
 
-**Step 6.2 — Backport difficulty**
-Record: **Clean apply** aside from line-number offset (2665 here vs 2764
-in the candidate diff). Surrounding comments and EEE loop match. `ret`
-is already in scope.
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
 
-**Step 6.3 — Related fixes already here**
-Record: `96e0f5184af69` already backported. That change makes failed IAC
-polls/reads return errno into this unchecked caller, so this tree
-already has the callee half of the fix without the caller half. No
-equivalent caller check exists yet.
+Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
+Record: [net/rds] IMPORTANT for RDS-over-IB (Oracle RAC / HPC). Not core
+networking; production users of 5.10 LTS do run this.
 
-## Phase 7: Subsystem context
+Step 7.2: ASSESS SUBSYSTEM ACTIVITY
+Record: Mature. Core free/put path has been stable for years; this is a
+long-standing latent bug, not churn on new code.
 
-**Step 7.1**
-Record: `drivers/net/dsa/mt7530.c` — MediaTek MT7530/MT7531 DSA.
-**IMPORTANT** for MediaTek routers/SBCs (MT7621/MT7622/MT7531), not core
-mm/vfs. `CONFIG_NET_DSA_MT7530`.
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
 
-**Step 7.2**
-Record: File is actively maintained; recent 6.12 backports already
-include two MDIO-error fixes from the same author.
+Step 8.1: DETERMINE WHO IS AFFECTED
+Record: Config-specific / driver-specific: `CONFIG_RDS` +
+`CONFIG_RDS_RDMA`, IB completions of RDMA READ / atomic ops against
+pinned user memory (including MAP_SHARED file pages).
 
-## Phase 8: Impact and risk
+Step 8.2: DETERMINE THE TRIGGER CONDITIONS
+Record: Common on RDS RDMA READ completion. Timing-dependent on folio
+already locked (writeback). Unprivileged user with an RDS socket and
+registered memory can hit it. Not every boot.
 
-**Step 8.1 — Who is affected**
-Record: Driver-specific: MT7531 switch users (common on MediaTek ARM
-routers). Not MT7988/EN7581 setup (`mt7988_setup`).
+Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
+Record: Sleep in softirq / `lock_page()` from tasklet → deadlock or
+crash. **CRITICAL**. File-backed `set_page_dirty()` alternative would
+also be CRITICAL (fs lock deadlock / mapping UAF).
 
-**Step 8.2 — Trigger**
-Record: MDIO/regmap failure or PHY_IAC poll timeout during `dsa_switch`
-setup. Uncommon on healthy hardware. Not an unprivileged syscall
-trigger. After `96e0f5184af69`, a failed bus read during poll is a
-**negative errno**, not silent garbage success — so this caller bug is
-easier to hit than before that backport.
-
-**Step 8.3 — Failure mode**
-Record: Hardware misconfiguration: PHY core PLL programmed from a
-truncated errno instead of a real `CORE_PLL_GROUP4` value, then setup
-continues. Switch can probe “successfully” with PHYs/PLL in a bad state.
-Not a KASAN crash. Severity: **HIGH** for that hardware (silent wrong
-PLL), not a generic kernel panic. Failing probe is the correct outcome.
-
-**Step 8.4 — Risk/benefit**
+Step 8.4: CALCULATE RISK-BENEFIT RATIO
 Record:
-- Benefit: medium-high for MT7531 — closes a hole opened/worsened by the
-  already-applied poll-error backport; avoids writing errno into PLL.
-- Risk: very low (6 lines of `if (ret < 0) return ret`).
-- Ratio: favorable.
+- Benefit: high for RDS/IB users (prevents deadlock/oops on a real
+  completion path)
+- Risk: low–medium (workqueue deferral, ~70 lines, one subsystem; worker
+  does not call into the IB module)
+- Ratio: benefit outweighs risk. Larger than a 5-line NULL check, but
+  the pattern is standard and v4 was specifically reduced to avoid
+  unload races.
 
-## Phase 9: Synthesis
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
 
-**Evidence FOR**
-- Real bug: negative errno used as PLL register data, then written back.
-- Buggy RMW is in this 6.12 tree; `Fixes:` target `c288575f7810` is
-  here.
-- Companion to `96e0f5184af69`, already in this tree: that commit made
-  failed reads return errno; this caller still treats the result as PHY
-  data.
-- Small, obviously correct, no new API, applies cleanly.
-- Same class as other swallowed-MDIO fixes already accepted here
-  (`93d46870c5440`, `96e0f5184af69`).
-- Author intended it as a bug fix (`Fixes: c288575f7810` on the list).
-- Applied to mainline by Jakub Kicinski (`1ae63b018d3d`).
+Step 9.1: COMPILE THE EVIDENCE
+FOR:
+- Sleep in softirq is a real, important bug
+- Path exists on this 5.10 tree and is userspace-reachable via RDS RDMA
+- Fixes target `0d4597c8c5ab` is in the tree
+- Small, RDS-only, no new uAPI
+- Needed kernel APIs exist
+- v4 design addresses earlier review NAKs
+- `destroy_workqueue(rds_wq)` drains deferred work
+- RDS maintainer-authored; netdev applied it upstream
 
-**Evidence AGAINST**
-- Error path only; no syzbot/user crash report.
-- Driver-specific, probe-time, not a UAF/panic/CVE.
-- Series patch 4/6; Andrew Lunn did not `Reviewed-by` this specific
-  patch.
-- Patch 3 (PHY_IAC command-write checks) is not in this tree; the
-  author’s “now that writes propagate” story is only fully true after
-  patch 3.
+AGAINST:
+- ~70 lines and a new work item (not a one-liner)
+- Queued to net-next; Kicinski was uneasy reviewing it
+- No syzbot/Tested-by on the committed message
+- Trivial `message.c` context tweak for `rds_message_populate_header()`
 
-**Unresolved / UNVERIFIED**
-- Full lore thread (403); no individual review replies beyond cover
-  letter and patchwork apply notice.
-- Whether patch 3 will be evaluated separately for this tree (not
-  required for this hunk).
+UNRESOLVED:
+- Could not fetch lore.kernel.org in-browser (403); used b4 mbox instead
+- No evidence of a later revert or follow-up for `d100966325f7` (search
+  did not turn one up)
 
-**Stable rules**
-1. Obviously correct and tested? **PASS** — trivial return-value checks;
-   merged to net by Kicinski.
-2. Real bug affecting users? **PASS** — MT7531 setup can program PHY PLL
-   from errno on MDIO/poll failure.
-3. Important? **PASS** — hardware PLL corruption and silent “success”
-   after a failed access; worsened by an already-backported callee fix.
-   Not a generic oops, but it is serious for this switch.
-4. Small and contained? **PASS** — one function, ~6 net lines.
-5. No new features/APIs? **PASS**.
-6. Can apply to this tree? **PASS**.
+Step 9.2: APPLY THE STABLE RULES CHECKLIST
+1. Obviously correct and tested? **PASS** — v4 is the review-fixed
+   design; mechanism matches the bug. (Confidence is “good”, not
+   “trivial one-liner”.)
+2. Fixes a real bug that affects users? **PASS**
+3. Important issue? **PASS** — deadlock/crash, CRITICAL
+4. Small and contained? **PASS** — 3 files, RDS only
+5. No new features or APIs? **PASS**
+6. Can apply to the local tree? **PASS** — code present; at most a minor
+   context adjustment
 
-**Exception category:** none (not a device ID/quirk/DT/build/docs
-exception). It qualifies on ordinary bug-fix rules.
+Step 9.3: CHECK FOR EXCEPTION CATEGORIES
+Record: None (not a device ID/quirk/DT/build/docs exception). Qualifies
+as a normal important bugfix.
 
-The missing patch 3 does not make this a NO: poll timeout and failed
-`regmap_read_poll_timeout()` already return errno here, and those values
-are what get written into `CORE_PLL_GROUP4` today.
+Step 9.4: MAKE YOUR DECISION
+This tree still unpins and dirties RDMA/atomic pages in the IB send
+tasklet. That can sleep. Deferring only that unpin onto existing
+`rds_wq` is the right fix here and does not need the rest of the v4
+series.
 
-### What it solves for this tree
-On MT7531 probe, a failed indirect C45 read of `CORE_PLL_GROUP4` is
-currently folded into the PLL enable RMW and written back. This tree
-already backported the helper change that returns those failures as
-errno. Without this caller check, 6.12 can program the PHY core PLL from
-that errno and keep going. The fix fails setup instead. It is small,
-matches local code, and does not need the rest of the series.
+What it solves for 5.10 users: RDS-over-InfiniBand RDMA READ/atomic
+completion can call `lock_page()` in softirq, which can deadlock or
+crash. That is exactly the class of bug stable is for.
+
+Risk vs benefit: contained RDS change, process-context unpin, workqueue
+drained on unload. Benefit is preventing a serious completion-path
+failure.
+
+Concerns: expect a small `message.c` context edit around
+`rds_message_populate_header()`; do not pull series patches 2–4 as
+prerequisites.
 
 Verification:
-- [Phase 1] Parsed subject/tags/body; list version has `Fixes:
-  c288575f7810`; candidate message has Link + Golle/Kicinski SOBs
-- [Phase 2] Diff: `mt7531_setup()` only; check read and write; `ret`
-  already declared
-- [Phase 3] `git blame` on 2660–2686: RMW from `c288575f7810`; helpers
-  renamed later; poll uses `96e0f5184af69`
-- [Phase 3] `git merge-base --is-ancestor c288575f7810 HEAD` → yes
-- [Phase 3] `git merge-base --is-ancestor 96e0f5184af69 HEAD` → yes
-  (callee error propagation already here)
-- [Phase 3] `git log --grep="PHY_IAC command writes"` → patch 3 **not**
-  in this tree
-- [Phase 3] `git show 96e0f5184af69` confirms
-  `regmap_read_poll_timeout()` returns negative on failed reads
-- [Phase 4] `b4 dig` on msgid failed; lore 403; used openwall/lkml/cover
-  letter; upstream SHA `1ae63b018d3d`; v2 new patch; Andrew reviewed 1–3
-  and 6 only
-- [Phase 4] UNVERIFIED: full review-reply text; stable@ thread
-- [Phase 5] grep: only in-driver `mt7531_ind_c45_phy_read` call is this
-  RMW; `.sw_setup = mt7531_setup` for `ID_MT7531`; `mt753x_setup()`
-  returns that error
-- [Phase 6] `git describe HEAD` → `p-6.12-4-gbf6fcdf761abd`; `make
-  kernelversion` → 6.12.111; buggy code at mt7530.c:2665–2672
-- [Phase 6] Pre-image matches the candidate hunk; clean apply expected
-- [Phase 8] Failure mode: PHY PLL programmed from truncated errno on
-  probe MDIO failure; severity HIGH for MT7531, trigger uncommon but
-  real after `96e0f5184af69`
+- [Phase 1] Tags: SOB Henderson/Kicinski; Link msgid; lore v4 had Fixes:
+  0d4597c8c5ab
+- [Phase 2] Diff: defer dirtying unpin via work item; RDMA write still
+  unpins in caller
+- [Phase 3] `git describe` / Makefile: 5.10.270; blame unpin lines →
+  0d4597c8c5ab; ancestor check exit 0
+- [Phase 3] `338a3ba30c5ef` is a different recv.c deadlock
+- [Phase 4] `b4 mbox`: 8 msgs, v1–v4, applied as d100966325f7; Kicinski
+  queued net-next
+- [Phase 4] WebFetch lore/msgid.link: 403; discussion from b4 + openwall
+- [Phase 5] Call chain verified in ib_cm.c / ib_send.c;
+  `set_page_dirty_lock()` uses `lock_page()` in mm/page-writeback.c
+- [Phase 5] Other `rds_rdma_free_op()` caller is process-context error
+  path in rdma.c:796
+- [Phase 6] Local rdma.c still has sleeping unpin; `in_task()` and
+  `rds_wq` exist; messages kzalloc’d
+- [Phase 6] Header context differs (`h_exthdr[0]` vs memset) — minor
+  backport
+- [Phase 8] Failure mode: sleep-in-softirq / deadlock, CRITICAL
+- UNVERIFIED: live lore HTML; no later revert found
 
 **YES**
 
- drivers/net/dsa/mt7530.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ net/rds/message.c | 26 +++++++++++++++++++++++++
+ net/rds/rdma.c    | 49 ++++++++++++++++++++++++++++++++++++-----------
+ net/rds/rds.h     | 10 ++++++++++
+ 3 files changed, 74 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index d2dcc2f1522f4..4f391ef797ea3 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2758,14 +2758,20 @@ mt7531_setup(struct dsa_switch *ds)
- 	 * phy_[read,write]_mmd_indirect is called, we provide our own
- 	 * mt7531_ind_mmd_phy_[read,write] to complete this function.
- 	 */
--	val = mt7531_ind_c45_phy_read(priv,
-+	ret = mt7531_ind_c45_phy_read(priv,
- 				      MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
- 				      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
-+	if (ret < 0)
-+		return ret;
-+
-+	val = ret;
- 	val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
- 	val &= ~MT7531_PHY_PLL_OFF;
--	mt7531_ind_c45_phy_write(priv,
--				 MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
--				 MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
-+	ret = mt7531_ind_c45_phy_write(priv,
-+				       MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
-+				       MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
-+	if (ret < 0)
-+		return ret;
+diff --git a/net/rds/message.c b/net/rds/message.c
+index 19202aa33f6f4..bdd340f4cce65 100644
+--- a/net/rds/message.c
++++ b/net/rds/message.c
+@@ -180,6 +180,19 @@ static void rds_message_purge(struct rds_message *rm)
+ 		kref_put(&rm->atomic.op_rdma_mr->r_kref, __rds_put_mr_final);
+ }
  
- 	/* Disable EEE advertisement on the switch PHYs. */
- 	for (i = MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr);
++static void rds_message_unpin_worker(struct work_struct *work)
++{
++	struct rds_message *rm = container_of(work, struct rds_message,
++					      m_unpin_work);
++
++	if (rm->rdma.op_unpin_deferred)
++		rds_rdma_op_unpin_pages(&rm->rdma);
++	if (rm->atomic.op_unpin_deferred)
++		rds_atomic_op_unpin_page(&rm->atomic);
++
++	kfree(rm);
++}
++
+ void rds_message_put(struct rds_message *rm)
+ {
+ 	rdsdebug("put rm %p ref %d\n", rm, refcount_read(&rm->m_refcount));
+@@ -187,8 +200,21 @@ void rds_message_put(struct rds_message *rm)
+ 	if (refcount_dec_and_test(&rm->m_refcount)) {
+ 		BUG_ON(!list_empty(&rm->m_sock_item));
+ 		BUG_ON(!list_empty(&rm->m_conn_item));
++
+ 		rds_message_purge(rm);
+ 
++		/* A final put in atomic context cannot dirty the ops'
++		 * user pages on unpin, so rds_rdma_free_op() and
++		 * rds_atomic_free_op() deferred it.  Finish the unpin,
++		 * and the free, from process context.
++		 */
++		if (rm->rdma.op_unpin_deferred ||
++		    rm->atomic.op_unpin_deferred) {
++			INIT_WORK(&rm->m_unpin_work, rds_message_unpin_worker);
++			queue_work(rds_wq, &rm->m_unpin_work);
++			return;
++		}
++
+ 		kfree(rm);
+ 	}
+ }
+diff --git a/net/rds/rdma.c b/net/rds/rdma.c
+index 34d9333e4229f..37695056756be 100644
+--- a/net/rds/rdma.c
++++ b/net/rds/rdma.c
+@@ -483,22 +483,36 @@ void rds_rdma_unuse(struct rds_sock *rs, u32 r_key, int force)
+ 		kref_put(&mr->r_kref, __rds_put_mr_final);
+ }
+ 
+-void rds_rdma_free_op(struct rm_rdma_op *ro)
++void rds_rdma_op_unpin_pages(struct rm_rdma_op *ro)
+ {
+ 	unsigned int i;
+ 
++	for (i = 0; i < ro->op_nents; i++) {
++		struct page *page = sg_page(&ro->op_sg[i]);
++
++		/* Mark page dirty if it was possibly modified, which
++		 * is the case for a RDMA_READ which copies from remote
++		 * to local memory
++		 */
++		unpin_user_pages_dirty_lock(&page, 1, !ro->op_write);
++	}
++}
++
++void rds_rdma_free_op(struct rm_rdma_op *ro)
++{
+ 	if (ro->op_odp_mr) {
+ 		kref_put(&ro->op_odp_mr->r_kref, __rds_put_mr_final);
++	} else if (in_task() || ro->op_write) {
++		/* An RDMA write's pages are only read by the remote
++		 * side; unpinning without dirtying does not sleep.
++		 */
++		rds_rdma_op_unpin_pages(ro);
+ 	} else {
+-		for (i = 0; i < ro->op_nents; i++) {
+-			struct page *page = sg_page(&ro->op_sg[i]);
+-
+-			/* Mark page dirty if it was possibly modified, which
+-			 * is the case for a RDMA_READ which copies from remote
+-			 * to local memory
+-			 */
+-			unpin_user_pages_dirty_lock(&page, 1, !ro->op_write);
+-		}
++		/* Dirtying the pages on unpin can sleep; leave them
++		 * pinned and have rds_message_put() finish the unpin
++		 * from process context.
++		 */
++		ro->op_unpin_deferred = 1;
+ 	}
+ 
+ 	kfree(ro->op_notifier);
+@@ -507,7 +521,7 @@ void rds_rdma_free_op(struct rm_rdma_op *ro)
+ 	ro->op_odp_mr = NULL;
+ }
+ 
+-void rds_atomic_free_op(struct rm_atomic_op *ao)
++void rds_atomic_op_unpin_page(struct rm_atomic_op *ao)
+ {
+ 	struct page *page = sg_page(ao->op_sg);
+ 
+@@ -515,6 +529,19 @@ void rds_atomic_free_op(struct rm_atomic_op *ao)
+ 	 * is the case for a RDMA_READ which copies from remote
+ 	 * to local memory */
+ 	unpin_user_pages_dirty_lock(&page, 1, true);
++}
++
++void rds_atomic_free_op(struct rm_atomic_op *ao)
++{
++	if (in_task()) {
++		rds_atomic_op_unpin_page(ao);
++	} else {
++		/* Dirtying the page on unpin can sleep; leave it
++		 * pinned and have rds_message_put() finish the unpin
++		 * from process context.
++		 */
++		ao->op_unpin_deferred = 1;
++	}
+ 
+ 	kfree(ao->op_notifier);
+ 	ao->op_notifier = NULL;
+diff --git a/net/rds/rds.h b/net/rds/rds.h
+index a029e5fcdea72..a4816da162930 100644
+--- a/net/rds/rds.h
++++ b/net/rds/rds.h
+@@ -424,6 +424,12 @@ struct rds_message {
+ 
+ 	void			*m_final_op;
+ 
++	/* Unpins the ops' user pages and frees the message from
++	 * process context when the final put happens in atomic
++	 * context: dirtying the pages on unpin can sleep.
++	 */
++	struct work_struct	m_unpin_work;
++
+ 	struct {
+ 		struct rm_atomic_op {
+ 			int			op_type;
+@@ -447,6 +453,7 @@ struct rds_message {
+ 			unsigned int		op_mapped:1;
+ 			unsigned int		op_silent:1;
+ 			unsigned int		op_active:1;
++			unsigned int		op_unpin_deferred:1;
+ 			struct scatterlist	*op_sg;
+ 			struct rds_notifier	*op_notifier;
+ 
+@@ -462,6 +469,7 @@ struct rds_message {
+ 			unsigned int		op_mapped:1;
+ 			unsigned int		op_silent:1;
+ 			unsigned int		op_active:1;
++			unsigned int		op_unpin_deferred:1;
+ 			unsigned int		op_bytes;
+ 			unsigned int		op_nents;
+ 			unsigned int		op_count;
+@@ -938,6 +946,8 @@ int rds_cmsg_rdma_map(struct rds_sock *rs, struct rds_message *rm,
+ 			  struct cmsghdr *cmsg);
+ void rds_rdma_free_op(struct rm_rdma_op *ro);
+ void rds_atomic_free_op(struct rm_atomic_op *ao);
++void rds_rdma_op_unpin_pages(struct rm_rdma_op *ro);
++void rds_atomic_op_unpin_page(struct rm_atomic_op *ao);
+ void rds_rdma_send_complete(struct rds_message *rm, int wc_status);
+ void rds_atomic_send_complete(struct rds_message *rm, int wc_status);
+ int rds_cmsg_atomic(struct rds_sock *rs, struct rds_message *rm,
 -- 
 2.53.0
 
