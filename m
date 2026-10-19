@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B884E73B7;
-	Mon, 19 Oct 2026 11:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524B84E8DF2
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 11:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792410196; cv=none; b=qFB2kMBAUpKk7mHQMNDti9tDe/rbZtjhvPWiBuTvu9bZqffApspFQaE/heMC2ckfbiwld6rhTssYmAVl9SD5F4mK3b53mlH4wPyW7HyMxt1IrmD8g2jefwO+3mjx0njbpmL7co80efnRbmegbptlpBfx1tKe6DCJY2TYD1l5jWM=
+	t=1792410201; cv=none; b=E5kgNhlHB0h5bVjMb2kOBqXlm0FgDbHmZQ/AlmR1Ug7bGow6QX3UA7/hqK/Wel3eRBMP2WSMoB3Jk1XT7lWoOGbJ886S9knvwsTD3PFiXxSGlgeeQMZstchOWs7+WhOg55GFT1ARkZNfDam0AsOfxQmt9iuFuJLrXSEnOeKs7mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792410196; c=relaxed/simple;
-	bh=+3r96WgvaLZ51mkYfUtue7nreKIDjPHuZYIvt5AP5dQ=;
+	s=arc-20240116; t=1792410201; c=relaxed/simple;
+	bh=IJq3oe026Ch/NagbToM44x+lPwduVJbz5KUxBGV5slU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hlQNNVNgu563/1QobuOvNfWUTZKn3RCD8OVvcUwei9J9mMLuoUBrpZbe0bX4K85/BrKaFvD+uHc4SrfyOodp7WCzBMooW9115BX5kHxnPiVHS9/Bl51xNby8skXVoqbq9+BSisDJVQ8fz6s8HDO0vCvO4ZcJdGMi3ScZZrKwHhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJADmtGT; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DjyI3Bf2U6ag7aZMS4BCdJpxJT8L3/kMh7jbHbFeuW43H5yW7rbSVTdJ+HJ3Oaq3MwMiuMrvERZ39FNFNgkOObLM2B5+QCGXw3z7PemkSPtbFOlpBOY/KaGXUID4GLR3jZX7+zbk8Ma8SNXmdT/tdAmCZNAkqOPl9B2VHdMkJ0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHr3iv6C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJADmtGT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCEF1F000C8;
-	Mon, 19 Oct 2026 11:43:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHr3iv6C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439891F000C4;
+	Mon, 19 Oct 2026 11:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792410192;
-	bh=meEGW/GS3/XRT3foeZLouvqwfWIt69ajcD2dNzgktWU=;
+	s=k20260515; t=1792410193;
+	bh=hASnv+sShbpSN84lIK0vwzCccQ7DGFNvDbQRK1Twa1E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aJADmtGTCzDVNXW2PAtON20bThik6+ooDjIxlG69gMAO8Oe2N94jox5/vL+e02Ov1
-	 y/DzQV8ofCC841ZTXpafZTJzfTlvmqM2QQJyzssKdKU00ZUrZVbXuZGNXRnB91i05n
-	 MDVrj7KKyWR+RPZ3NrGZtNQ5kIbVn8PgkHlIT0Ozs9cVhijZ27bw0zgagbXrBB7uAf
-	 wBpWoIOmwFCZ45/iik4O3kdrVOvyIEbehNWR2f/V+CYYcDcli2rcTfCu4lNl/TQg75
-	 kZDoIpzjdH5SIchIstgA00odtazP6z5QIUSC+xPjwNgeI4BLZ3EsUiC1h3lWHWHVsp
-	 Z7KD1lAKQ/UCQ==
-Subject: Re: [PATCH v4 net 8/8] net: enetc: ensure enetc_xdp_xmit() calls
- enetc_update_tx_ring_tail()
+	b=gHr3iv6CinGvRkRBuYrfe0QaAgH6mesatPs+ujwnE3VoJm/pdD+RxcNReTK1GJfPb
+	 uHSe4BGdl/C+3cWW37GvSB9/iYq1qBBtjMPTiXL4HM0/epWdc86S5ag7UvAceYxqzz
+	 y+kziKBI1yrL7eLJy8Poey0rW4rY50gCqd2CmTIZYa4h7hch1OMpOjMD7QH9vuRpCH
+	 nqBrUp7afUy7HtFSSTUWM3/E9UrvNN/i0cyTV5DpdBVjmwLM4OTQFGiSKFJ/9Vd2/F
+	 tBQul50vkCrz8pAnF/5tzvSiKHmyIjRtKl6nucDSf1Dt4VNbYYj4U9wlDnU44GdwIZ
+	 B7IdNxgwtQsyg==
+Subject: Re: [PATCH] net: stmmac: remove STMMAC_DOWN check to avoid irq storm
 From: netdev-bot+sashiko@kernel.org
-To: vladimir.oltean@nxp.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, claudiu.manoil@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, ioana.ciornei@nxp.com, zefir.kurtisi@westermo.com,
- zefir.kurtisi@gmail.com, david.laight.linux@gmail.com, netdev@vger.kernel.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 11:43:10 +0000
-Message-ID: <179241019093.3135.3031150554563643199@kernel.org>
-In-Reply-To: <20261015105536.1692348-9-vladimir.oltean@nxp.com>
-References: <20261015105536.1692348-9-vladimir.oltean@nxp.com>
+To: chuanx2070@163.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Mon, 19 Oct 2026 11:43:12 +0000
+Message-ID: <179241019282.3135.17755153635935720256@kernel.org>
+In-Reply-To: <20261015112415.437900-1-chuanx2070@163.com>
+References: <20261015112415.437900-1-chuanx2070@163.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,189 +59,143 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In enetc_xdp_xmit()
-  (drivers/net/ethernet/freescale/enetc/enetc.c), the doorbell condition…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it comes from
-  the earlier commit in the same series, 'net: enetc: serialize access…
+- [High] The patch moves the STMMAC_DOWN check so it runs after the
+  hardware interrupt status has been read and cleared.
+- [Low] The commit fixes a user-visible bug: an interrupt storm (a hard-
+  IRQ livelock on UP, or on the CPU running the stmmac_wq reset worker)…
 
 --
 
-net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
+net: stmmac: remove STMMAC_DOWN check to avoid irq storm
 
-This commit changes the doorbell condition in enetc_xdp_xmit(). The TX ring
-tail is now updated only when at least one frame was sent and either
-XDP_XMIT_FLUSH was requested or the frames array could not be fully
-enqueued. The redundant xdp_tx_frm_cnt variable is removed in favour of k.
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 218065b9a3777..3003a415418ba 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+This patch removes the early STMMAC_DOWN return from the stmmac interrupt
+handlers, so the device status registers are always read and cleared. The
+STMMAC_DOWN check now sits inside stmmac_safety_feat_interrupt() and
+stmmac_napi_check(), after the status has been read, and events are dropped
+while the bit is set. The goal is to avoid an interrupt storm on
+level-triggered IRQ lines during an adapter reset.
 
 [ ... ]
 
-> @@ -1928,22 +1928,20 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
->  						    &xdp_redirect_arr[i]);
->  			break;
->  		}
-> -
-> -		xdp_tx_frm_cnt++;
->  	}
+> is re-entered forever. Since the handler returns IRQ_HANDLED,
+> note_interrupt() never flags the IRQ as spurious and never disables it,
+> resulting in an interrupt storm.
+>
+> Signed-off-by: Xiaochuan Li <chuanx2070@163.com>
+
+[Severity: Low]
+Should this have a Fixes: tag? The STMMAC_DOWN early return in
+stmmac_interrupt() was added by:
+
+34877a15f787 ("net: stmmac: Rework and fix TX Timeout code")
+
+The same check was later copied into stmmac_mac_interrupt(),
+stmmac_safety_interrupt(), stmmac_msi_intr_tx() and stmmac_msi_intr_rx() by:
+
+8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
+
+Without a Fixes: tag, or a Cc: stable, stable maintainers can't easily tell
+that this is a fix or which trees need it.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b837e8e27a352..ec7ca45a9ba61 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -3063,6 +3063,13 @@ static bool stmmac_safety_feat_interrupt(struct stmmac_priv *priv)
 >  
-> -	if (unlikely((flags & XDP_XMIT_FLUSH) || k != xdp_tx_frm_cnt))
-> +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
->  		enetc_update_tx_ring_tail(tx_ring);
+>  	ret = stmmac_safety_feat_irq_status(priv, priv->dev,
+>  			priv->ioaddr, priv->dma_cap.asp, &priv->sstats);
+> +
+> +	/* Status is read/cleared; do not escalate to a global error reset
+> +	 * while the interface is going down.
+> +	 */
+> +	if (test_bit(STMMAC_DOWN, &priv->state))
+> +		return false;
+> +
+>  	if (ret && (ret != -EINVAL)) {
+>  		stmmac_global_err(priv);
+>  		return true;
+> @@ -3085,6 +3092,12 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
+>  	rx_napi = rx_q->xsk_pool ? &ch->rxtx_napi : &ch->rx_napi;
+>  	tx_napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
+>  
+> +	/* Status was already read (and clear) above, so the irq line is
+> +	 * deasserted, Drop the event while the interface is going down.
+> +	 */
+> +	if (test_bit(STMMAC_DOWN, &priv->state))
+> +		return 0;
+> +
 
 [Severity: High]
+Is "while the interface is going down" accurate here? STMMAC_DOWN is set and
+cleared only in stmmac_reset_subtask(), and it stays set across dev_open()
+as well as dev_close():
 
-Does the new k && term skip the doorbell when an XDP_XMIT_FLUSH call
-enqueues zero frames?
-
-The old condition rang on every FLUSH call, because k != xdp_tx_frm_cnt was
-always false. XDP_XMIT_FLUSH asks the driver to publish everything queued so
-far. That includes frames from earlier ndo_xdp_xmit() calls made with
-flags == 0.
-
-devmap makes calls like that when the bulk queue fills up:
-
-kernel/bpf/devmap.c:bq_enqueue() {
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_reset_subtask() {
     ...
-	if (unlikely(bq->count == DEV_MAP_BULK_SIZE))
-		bq_xmit_all(bq, 0);
+	set_bit(STMMAC_DOWN, &priv->state);
+	dev_close(priv->dev);
+	dev_open(priv->dev, NULL);
+	clear_bit(STMMAC_DOWN, &priv->state);
     ...
 }
 
-Only the later __dev_flush() passes XDP_XMIT_FLUSH:
+By the time dev_open() returns, __stmmac_open() has already set up DMA,
+called phylink_start(), requested the IRQs, enabled NAPI and the TX queues,
+and called stmmac_enable_all_dma_irq(). The NETDEV_UP notifiers also run
+before clear_bit().
 
-kernel/bpf/devmap.c:__dev_flush() {
-    ...
-		bq_xmit_all(bq, XDP_XMIT_FLUSH);
-    ...
-}
+Can interrupts from the reopened, running hardware in that window be
+acknowledged and then lost? stmmac_dma_interrupt_status() has already
+written the W1C status, for example in dwmac4_dma_interrupt():
 
-The flags == 0 call advances tx_ring->next_to_use without writing TPIR. If
-the first frame of the next FLUSH batch fails, k is 0 and
-enetc_update_tx_ring_tail() is never called.
+	writel(intr_status & intr_en,
+	       ioaddr + DMA_CHAN_STATUS(dwmac4_addrs, chan));
 
-The first frame can fail in these cases:
+Then stmmac_napi_check() returns 0 without scheduling NAPI. Before this
+patch, the status stayed latched and was serviced once STMMAC_DOWN was
+cleared.
 
-  - enetc_xdp_tx() finds too few free BDs. This is likely right after the
-    previous batch used up the ring.
-  - The head buffer is shorter than ENETC_MIN_BUFF_SIZE.
-  - The frame fails the ENETC_MAX_SKB_FRAGS check.
-  - DMA mapping fails.
+Here are some of the cases.
 
-On a ring reserved for XDP, the only other TPIR writer is the XDP_TX tail
-update in enetc_clean_rx_ring_xdp(). It rings only when it has enqueued
-XDP_TX frames itself:
+If RI is dropped and the RX ring fills inside the window, RX DMA suspends
+with RBU. dwmac4_dma_interrupt() only counts RBU in rx_buf_unav_irq and
+never returns handle_rx. Does RX then stay stalled, because
+stmmac_rx_refill() never runs, until the next ifdown/up or reset?
 
-	if (xdp_tx_frm_cnt) {
-		spin_lock(&tx_ring->xdp_lock);
-		enetc_update_tx_ring_tail(tx_ring);
-		spin_unlock(&tx_ring->xdp_lock);
-	}
+If TI is dropped and tx_coal_timer is 0, stmmac_tx_timer_arm() returns
+early. What reclaims those TX descriptors in that case?
 
-So the stranded BDs stay unpublished until a later call both succeeds and
-flushes. If traffic stops, they never go out.
+Because the status is 0, stmmac_dma_interrupt() and stmmac_msi_intr_tx()
+also skip this for a stopped TX DMA channel:
 
-If they fill the ring, every later enqueue fails on its first frame. TX
-completion cannot reclaim BDs the hardware never saw. Can the XDP TX queue
-then stall permanently, with the xdp_frames and pages still pinned?
+	if (unlikely(status[chan] & tx_hard_error_bump_tc)) {
+		stmmac_bump_dma_threshold(priv, chan);
+	} else if (unlikely(status[chan] == tx_hard_error)) {
+		stmmac_tx_err(priv, chan);
 
-Other drivers ring the tail on XDP_XMIT_FLUSH no matter how many frames
-that call sent. For example, i40e_xdp_xmit():
+That leaves recovery to the netdev watchdog.
 
-	if (unlikely(flags & XDP_XMIT_FLUSH))
-		i40e_xdp_ring_update_tail(xdp_ring);
+In stmmac_safety_feat_interrupt(), an uncorrectable ASP error reported by
+the reinitialised hardware never reaches stmmac_global_err(). In
+stmmac_interrupt(), the false return also falls through into
+stmmac_common_interrupt() and stmmac_dma_interrupt() on hardware that has
+just reported a fatal error.
 
-Would something like this be closer to the intent?
+On the close side, __stmmac_release() calls stmmac_disable_all_queues()
+(napi_disable) before stmmac_free_irq(), so napi_schedule_prep() already
+fails there. That suggests the new check only changes behaviour during the
+reopen half of the reset.
 
-	if (unlikely((flags & XDP_XMIT_FLUSH) || (k && k < num_frames)))
+Would it work to clear STMMAC_DOWN, or use a separate close-only state,
+before the DMA IRQs are re-enabled? Or to keep handling events normally and
+rely on napi_disable() during close?
 
-The commit message says:
+>  	if ((status & handle_rx) && (chan < priv->plat->rx_queues_to_use)) {
+>  		if (napi_schedule_prep(rx_napi)) {
+>  			spin_lock_irqsave(&ch->lock, flags);
 
-    The correct condition on which we should ring the doorbell is when at
-    least one frame was sent, and either the caller required us to flush, or
-    we couldn't enqueue the entire passed array.
-
-The subject says the patch ensures the tail update happens, and the patch
-has a Fixes: tag. Even so, FLUSH calls with k == 0 no longer ring the
-doorbell, and the commit message does not mention this change.
-
->  
->  	enetc_unlock_mdio();
->  
->  out:
-> -	tx_ring->stats.xdp_tx += xdp_tx_frm_cnt;
-> -	tx_ring->stats.xdp_tx_drops += num_frames - xdp_tx_frm_cnt;
-> +	tx_ring->stats.xdp_tx += k;
-> +	tx_ring->stats.xdp_tx_drops += num_frames - k;
->  
->  	spin_unlock(&tx_ring->xdp_lock);
-
-[Severity: High]
-
-This isn't a bug introduced by this patch. It comes from the earlier patch
-in this series, "net: enetc: serialize access to the same TX ring from NAPI
-XDP_TX and ndo_xdp_xmit()".
-
-Can tx_ring->xdp_lock and enetc_mdio_lock deadlock on PREEMPT_RT when the
-ERR050089 workaround (enetc_has_err050089) is enabled?
-
-enetc_xdp_xmit() takes xdp_lock first and then the MDIO read lock:
-
-	spin_lock(&tx_ring->xdp_lock);
-	...
-	enetc_lock_mdio();
-
-enetc_clean_rx_ring_xdp() drops xdp_lock at the out: label but keeps the
-MDIO read lock. It then takes xdp_lock again, so the order is reversed:
-
-out:
-	spin_unlock(&tx_ring->xdp_lock);
-	...
-	if (xdp_tx_frm_cnt) {
-		spin_lock(&tx_ring->xdp_lock);
-		enetc_update_tx_ring_tail(tx_ring);
-		spin_unlock(&tx_ring->xdp_lock);
-	}
-	...
-	enetc_unlock_mdio();
-
-On PREEMPT_RT, rwbase_write_lock() takes the rtmutex and removes
-READER_BIAS. New readers then block behind a pending writer. That would
-allow this cycle:
-
-T1 (RX NAPI, enetc_clean_rx_ring_xdp())
-  holds the MDIO read lock after out:
-
-T3 (_enetc_rd_mdio_reg_wa())
-  write_lock_irqsave(&enetc_mdio_lock, flags);
-  waits for T1 to drop the read lock
-
-T2 (enetc_xdp_xmit() on another CPU, targeting the same XDP TX ring,
-    e.g. after an IRQ affinity change)
-  spin_lock(&tx_ring->xdp_lock);
-  enetc_lock_mdio();          <- blocks behind T3
-
-T1
-  spin_lock(&tx_ring->xdp_lock);  <- blocks behind T2
-
-Non-RT testing would not catch this. On non-RT, qrwlock readers in
-interrupt context ignore a waiting writer, and lockdep treats this
-read_lock as recursive.
-
-Would it help to use one lock order in the RX tail update path? For
-example, the MDIO read lock could be dropped before re-taking xdp_lock and
-then taken again inside it.
-
->  
-> -	return err ?: xdp_tx_frm_cnt;
-> +	return err ?: k;
->  }
->  EXPORT_SYMBOL_GPL(enetc_xdp_xmit);
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015105536.1692348-1-vladimir.oltean%40nxp.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015112415.437900-1-chuanx2070%40163.com
