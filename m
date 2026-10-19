@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792440849;
-	b=KicLNsLxJJMb3YEtO7UyIGfwZBaNVJ9OqmWuV0wJMZwj9rJo+VnLLdHowZ6w6YsqcxoK
-	 ikR2h87236T33gKJDTingot9FygD+1XtRZCvR44qit0/My1LZWeoueE5z8n/EzuxovdQc
-	 kOAqKiCSgpBnBKSlEuGvTbr+IeNE4PKTM79LntIfb6W8G+NEOnBcOHcV1JcCj7L3Aa4y0
-	 mRnJfj8q+FbnUm/EQ7DZkfb1uIV89cpyqYTwDuk8OBRlUZ0pJikliz5qMb87CQ4CFv/lY
-	 EvTzoNwtNI6glUmTLaG8h82wcaLlhrmBWqQq+8J80xmvHohCwYBFu0M1vh1DIQQVSxQ==
+	t=1792440853;
+	b=W/AGSvDggGgKg43zMW4DHEFuLpzMdSGf/W4ze/ZjKxNg1tAAwFm7tyFEh473VdpL7LlN
+	 RRdnCSEnFEmQPrIwhlVEZpTbUYuM71aidb3ZP1jmrxSm0Q6I3WJQ5wmF+vdWUr1wKh4Yt
+	 NeIlpeak4rJtnF1R2oR6BUR6oyV/fAFA6eGjuVvMzZ8h+fx8fs+DnETOdj5gN9IQUTp4D
+	 DPRkijA4Cucl7mOjQzteeyt4KR9fd/G1Aq9D2bszx4qJD7bYCpgnc3+W/vhLIjSNuw19r
+	 ecnEfkG2v1ZZPIrQ6TawEyRiwpejExRThO/rCqBKbJTd7EQR7c2owY/VkQbcmjrjuHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792440849;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792440853;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=PdajFz9tIyMN81nMLwdSVSPFGILmaYyCCnOQcFuAxWc=;
-	b=AfjcawXs4axt4oCIL0pzgPatXSmI96QCfWuLoSk1Gm46mOnnSSN//CVPWYSz77EiKqty
-	 Axjd5wW7MsZiwfYvn9aaT9WsJd6hWhPCZJa2SWsUx/6QU8OT3TWxwj91F3Nea4NXf73TX
-	 KR5swSZ5HG4QkfeqeMXUrcRuwOuk1Fpw7mW7z4+tBN3rgVl2PJrcWSU65wbhP2JoLLPZf
-	 ZbgwOwCIX77qggG4SenbflVEEvA3LBbfjBGLaS6hxiP8ksX6iS3CJyu2Pps7Yfs+as6RG
-	 SWhv3DL4z3rzZjkKsiwzkSEsyYqpQW6Zp0/TDXDp6pbWnTm8c0j42HVvnPsa9ZzhqRA==
+	bh=ekmpdg82+9MfQueR1NWhEXLcPmxlAvluZqQXb/y7mS8=;
+	b=IqT5LSDUmFAcF43owUVNSrmM7Cbojz2KO/VKpFBrWzUr7u8v7gU51yylXmUbAXiM5x9x
+	 ORvPVs7GW+XDh+RbbKdP9YbXWWQIlsNB+NV8t7nI/gnJEJpAXgkq0Q3f6jXBjt/cVhvmM
+	 TVzVHnSkh0MIgyMhhWQcpRcSSKd9vcD5kXiYjrZbX0ND92x8J4b+LMII/59tTMUt9+DVg
+	 tasc1qR1jvveQ5/Ej8KLqBQSytNmPog2S7fTKRcnDFJcfE2rj7YYwkR2UXIu0eRhJUHDR
+	 Ama9Ix3EoqPABrMdMOnGjL+N7xdaGmSM9GaCt2YIJUcyb3K3CxzLQHYbojbTQipcUQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A2N96dTD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b6c0QaH7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FF4606A32F
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607F7606A33B
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A2N96dTD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993741F000C5;
-	Mon, 19 Oct 2026 20:14:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b6c0QaH7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0691F000C7;
+	Mon, 19 Oct 2026 20:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792440848;
-	bh=PdajFz9tIyMN81nMLwdSVSPFGILmaYyCCnOQcFuAxWc=;
+	s=k20260515; t=1792440853;
+	bh=ekmpdg82+9MfQueR1NWhEXLcPmxlAvluZqQXb/y7mS8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=A2N96dTDxmowfkhSMe748/WanynbvBpJnY3TEFev/WeCR71r1Ie9Iuf+8eSNSkANj
-	 LhomUEIygwoS1q33SVerNG/Jq3/HeOkbo7ReHecEbGT+PZHkhow0Sva39TTC33VlG5
-	 5HJGJyS2Nv/hMRYey9Sb+eTQjxe0Ln8t4gXqovJcXWx+PMc7oXun4jLGLEDzGUcJbD
-	 AoGutcZlVZxttKrV+f6GCe0VcaSjzS4/FgTlLhqYfX9tbL8GTkMmGHBuvHaCfLM2+5
-	 jcmon8Uo2RWByath4+d3GBeHuzTIMmLpnmxGKi9rOvF09yNdTf9nXymGtpSUENkAkM
-	 XIpKVM4iQTzAA==
-Subject: Re: [PATCH net v3 06/14] ice: E822: keep Tx timestamps disabled
- during offset calibration
+	b=b6c0QaH7Fz3QpVl1sRsI4F43BoytMVt8XMyILh2Qp20LifpGgQZQTvxyQHNPnkIWP
+	 oCDgf0B9FWTpAtmxxsAjA8DTJd11qxDUarxTmC1HamycxtrWDxS1ffLWzWejLWeA2T
+	 WHAxwUE1tNwcNL+SRgV2q2twLn9o7WaZ3kttEuTmZ9doN6FJFqCb1MVH93vBp94smH
+	 ClGtJgLFYYAJAFt3jtU73O3OxgxqHP8zc94X5FEf9U8fpaayy12bKRXItgsAGefONE
+	 d88mX59M6eI09hU9t6KnSA34CzTd6v5NeM4kC5FBBclHqJNg27HmitALBvCQ1FWzyt
+	 hbmcf/bjnQpwQ==
+Subject: Re: [PATCH net v3 09/14] ice: E825: clear PHY_TSTAMP memory prior to
+ soft reset
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -50,10 +50,10 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  przemyslaw.korba@intel.com, grzegorz.nitka@intel.com,
  sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com,
  richardcochran@gmail.com, horms@kernel.org
-Date: Mon, 19 Oct 2026 20:14:07 +0000
-Message-ID: <179244084713.3135.15270894261694265167@kernel.org>
-In-Reply-To: <20261015191102.1174111-7-anthony.l.nguyen@intel.com>
-References: <20261015191102.1174111-7-anthony.l.nguyen@intel.com>
+Date: Mon, 19 Oct 2026 20:14:11 +0000
+Message-ID: <179244085178.3135.3380160340565302392@kernel.org>
+In-Reply-To: <20261015191102.1174111-10-anthony.l.nguyen@intel.com>
+References: <20261015191102.1174111-10-anthony.l.nguyen@intel.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -73,142 +73,123 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The kernel-doc for ice_ptp_tx::calibrating (ice_ptp.h:109-110)
-  still says "if true, the PHY is calibrating the Tx offset".
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  ice_ptp_settime64() leaves the E82x PHY offset-ready bits cleared with…
+- [Low] In ice_ptp_phy_soft_reset_eth56g()
+  (drivers/net/ethernet/intel/ice/ice_ptp_hw.c), the patch puts the read…
+- [Low] The concern is that the kernel-doc of ice_ptp_reset_ts_memory()
+  ('Reset timestamp memory for all blocks') no longer matches the code,…
 
 --
 
-ice: E822: keep Tx timestamps disabled during offset calibration
+ice: E825: clear PHY_TSTAMP memory prior to soft reset
 
-ice_ptp_port_phy_restart() no longer clears tx.calibrating right after
-ice_start_phy_timer_e82x() succeeds. The flag is now cleared in
-ice_ptp_wait_for_offsets(), once ice_phy_cfg_tx_offset_e82x() has
-succeeded. The patch also adds debug messages for pending and completed
-offset calibration.
+This patch replaces the E825 timestamp memory reset, which wrote
+PHY_REG_TX_MEMORY_STATUS and had no effect, with a sweep that reads every
+PHY_TSTAMP index on the port. The sweep now runs at the start of
+ice_ptp_phy_soft_reset_eth56g(), so the soft reset that follows resets the
+internal counter. ice_ptp_reset_ts_memory() no longer does anything for
+E825.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 776f211290eca..828d46a73f292 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> index 07b55fbb88dde..38d0ded1d0cc0 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
 
 [ ... ]
 
-> @@ -1283,11 +1301,10 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
->  		if (err)
->  			break;
+> @@ -2311,6 +2312,8 @@ int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
+>  	u32 global_val;
+>  	int err;
 >  
-> -		/* Enable Tx timestamps right away */
-> -		spin_lock_irqsave(&ptp_port->tx.lock, flags);
-> -		ptp_port->tx.calibrating = false;
-> -		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
-> -
-> +		/* Do not clear calibrating flag here. Tx timestamp requests
-> +		 * remain disabled until ice_ptp_wait_for_offsets() has
-> +		 * verified that the Tx offset calibration has completed.
-> +		 */
->  		kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
->  					   0);
->  		break;
-
-[Severity: Medium]
-This is a pre-existing issue, and this patch did not introduce it. ov_work
-is the only thing that re-arms the E82x PHY offsets. Can
-ice_ptp_settime64() leave Tx and Rx timestamps invalid on every port if
-ice_ptp_lock() fails?
-
-ice_ptp_settime64() clears the offset-ready bits first. It can then bail
-out before the PHYs are restarted:
-
-drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_settime64() {
-    ...
-	if (hw->mac_type == ICE_MAC_GENERIC) {
-		err = ice_ptp_clear_phy_offset_ready_e82x(hw);
-		...
-	}
-
-	if (!ice_ptp_lock(hw)) {
-		err = -EBUSY;
-		goto exit;
-	}
-    ...
-	if (hw->mac_type == ICE_MAC_GENERIC)
-		ice_ptp_restart_all_phy(pf);
-exit:
-    ...
-}
-
-ice_ptp_clear_phy_offset_ready_e82x() writes 0 to P_REG_TX_OR and
-P_REG_RX_OR on every port. ice_ptp_lock() polls the shared PFTSYN_SEM up
-to MAX_TRIES times, with usleep_range(5000, 6000) between polls, and then
-gives up. So this path can be hit if another function holds the semaphore
-for that long.
-
-The goto skips ice_ptp_restart_all_phy(). That is the only route to
-ice_ptp_port_phy_restart(), and so the only way ov_work gets queued. If
-ov_work had already finished, nothing calls
-ice_phy_cfg_tx_offset_e82x() or ice_phy_cfg_rx_offset_e82x() again.
-
-Would every Tx and Rx timestamp then be marked invalid and dropped by the
-ICE_PTP_TS_VALID checks? That would last until a link flap, a reset, or a
-later successful settime. tx.calibrating stays false the whole time, so
-Tx timestamp requests are still accepted.
-
-Could the offset-ready clear move after the lock is taken, or could the
-error path still restart the PHYs? This still looks present at the end of
-the series.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-> index 27ea502b75768..029ee4612d765 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-> @@ -107,7 +107,7 @@ enum ice_tx_tstamp_work {
->   * @len: length of the tstamps and in_use fields.
->   * @init: if true, the tracker is initialized;
->   * @calibrating: if true, the PHY is calibrating the Tx offset. During this
-> - *               window, timestamps are temporarily disabled.
-> + *               window, timestamp requests are disabled.
+> +	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
+> +
+>  	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
+>  	if (err) {
+>  		ice_debug(hw, ICE_DBG_PTP, "Failed to read PHY_REG_GLOBAL for port %d, err %d\n",
 
 [Severity: Low]
-This isn't a bug, but is the first half of this kernel-doc still accurate
-after this patch?
+The sweep runs before any of the PHY_REG_GLOBAL accesses that can fail.
+What happens to the internal counter if one of those later steps fails?
 
-On E822, ice_ptp_wait_for_offsets() is now the only place that clears the
-flag, so it can stay true while nothing is calibrating. Say link goes down
-before ice_phy_cfg_tx_offset_e82x() has succeeded. ice_ptp_port_phy_stop()
-then cancels ov_work and stops the PHY timer without touching the flag:
+ice_ptp_clear_tx_memory_status_eth56g() returns void and always reads
+every index. After it runs, ice_ptp_phy_soft_reset_eth56g() can still
+return early. That can happen at the PHY_REG_GLOBAL read or at any of the
+three PHY_REG_GLOBAL writes:
 
-	case ICE_MAC_GENERIC:
-		kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
+	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
+	if (err) {
+		...
+		return err;
+	}
+	...
+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, global_val);
+	if (err) {
+		...
+		return err;
+	}
 
-		err = ice_stop_phy_timer_e82x(hw, port, true);
-		break;
+The commit message says reading a garbage entry after a cold power-on can
+underflow the counter, and only the soft reset sets it back to zero. If
+the reset pulse is never issued, or only partly issued, is the port then
+left in the state that the new kernel-doc of
+ice_ptp_clear_tx_memory_status_eth56g() warns about?
 
-Before this patch that could not happen, because the flag was cleared
-right after a successful start. The same is true when
-ice_start_phy_timer_e82x() fails: ice_ptp_port_phy_restart() breaks out
-with calibrating still set and no ov_work queued.
+    this *must* only be called as part of the
+    ice_ptp_phy_soft_reset_eth56g() procedure. Otherwise, the internal
+    counter may become out of sync and prevent new timestamp interrupts.
 
-Later in the series, the E825 ice_ptp_port_phy_stop() path also sets
-calibrating to true on link-down. That moves the meaning further from
-this description.
+ice_ptp_init_phc_e825c() then stops at the first port that fails:
 
-This has no functional effect. The next ice_ptp_port_phy_restart() sets
-the flag again and requeues ov_work.
+	for (int port = 0; port < hw->ptp.num_lports; port++) {
+		err = ice_ptp_phy_soft_reset_eth56g(hw, port);
+		if (err) {
+			...
+			return err;
+		}
+	}
 
-The flag now reads more like "Tx timestamp requests are blocked until the
-Tx offset has been configured" than "the PHY is calibrating". The
-"temporarily disable Tx timestamps while calibrating PHY offset" comment
-in ice_ptp_port_phy_restart() has the same mismatch.
+That port stays swept but not reset, and ice_ptp_init_owner() and
+ice_ptp_rebuild_owner() only return the error. Before this patch, a failed
+soft reset could not cause this desync, because nothing destructive ran
+before it.
 
-Could both comments be updated to match the new behaviour?
+Later in the series, ice_start_phy_timer_eth56g() also calls
+ice_ptp_phy_soft_reset_eth56g() every time the PHY timer starts, so this
+path runs more often.
 
->   * @has_ready_bitmap: if true, the hardware has a valid Tx timestamp ready
->   *                    bitmap register. If false, fall back to verifying new
->   *                    timestamp values against previously cached copy.
+Could the PHY_REG_GLOBAL read be done before the sweep? Alternatively,
+could the reset be completed or retried once the sweep has run?
+
+[ ... ]
+
+> @@ -5802,8 +5805,9 @@ void ice_ptp_reset_ts_memory(struct ice_hw *hw)
+>  		ice_ptp_reset_ts_memory_e82x(hw);
+>  		break;
+>  	case ICE_MAC_GENERIC_3K_E825:
+> -		ice_ptp_reset_ts_memory_eth56g(hw);
+> -		break;
+> +		/* E825 hardware must only reset timestamp memory as part of
+> +		 * the soft reset procedure.
+> +		 */
+>  	case ICE_MAC_E810:
+>  	default:
+>  		return;
+
+[Severity: Low]
+This isn't a bug, but the kernel-doc for ice_ptp_reset_ts_memory() still
+reads:
+
+ * ice_ptp_reset_ts_memory - Reset timestamp memory for all blocks
+
+E825 is now a no-op here, like the E810 and default (E830) branches. The
+only explanation is the inline comment.
+
+Could the kernel-doc list which MAC types are skipped? It could also say
+that E825 clears its memory through ice_ptp_phy_soft_reset_eth56g()
+instead.
+
+This doesn't change how ice_ptp_cfg_phy_interrupt() behaves. Both
+ice_ptp_init_owner() and ice_ptp_rebuild_owner() call ice_ptp_init_phc()
+before it.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015191102.1174111-1-anthony.l.nguyen%40intel.com
