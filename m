@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792444214;
-	b=tX4cyqy0f/JSvti0gQTIiuL3ilrEMqaAEv1AayMR57og6BJf/m/ex6psJxjzrQlRV/BC
-	 JasCmFzU8Aa24zRiSQA2UBvpDnm8LpKKkwAUa5yyx/fAm6dBf6o0WLjdbzNv/4+vmOmpY
-	 SnOPUyJjOUR78RSfIstz/Gzowq2TMY+cS0eI3knckx4zRjTtIDirPTwlL580Mf78AcZ0v
-	 AGO0oPn0Wh21YbF3Niu+4yCH4Z3Ggk4aqUoPK6uQYrkQNG+5uKkZED8tjGrZSOmvcAbUQ
-	 Yjj4Jf210vXR4+FhIJCHS4NE9tlenFfBEoSG23sqxRWrVV4yspMQUfv5057taM3frTw==
+	t=1792444217;
+	b=4Q2oYogUAcN49iEaV1PV6eXVWgd7N+5jYyn5rVn+/3c6NbnYPl/66vn7a+rKh2D3xTxE
+	 MRegQ/U6sIii3I7MXhr4IoX6eh2RhabAOjdDbyIyfDF6RppPPfGMcfp63nvW5lbb7bAV2
+	 V3qXEPvLO2/2RFs+8G73HCgNEEOEp4BpeG8fZeGwpVoR/IxbCjSKHBdAwmZlM4jMKo0I5
+	 0un5p26Cf9UdegYgDTd+GfRYiU7mc2MoeCD/i4peLxIf37a4TOFw7NleoN/h5xopuTWak
+	 ZLUhk7gjGGK4VcecOz3RAqoY/2GIC8t+HPHoR3ft9Ofui3xj45IJ/lPp0w8JhVQUf7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792444214;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792444217;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=80NgnfNG04biR+Qo1AtgFMLB1GwXNU8ARboCn9v6q3s=;
-	b=MWCEFVW7GJ18X9WUSWnlQB0OWNXnE49HbZNYb0sRga39AO925LIL4NIY5xCY4iRHj5+T
-	 GOOSC4iY41MNV2sXi3gHZVGtYbAslpBMC6vYb+C3qcOsPaL8pzZV7rWNeUtrNhr0q9/ul
-	 HJITRNG+GCWoiXrAZ7xXhS0H7n0ASzN9KXrvg3oBvkmZA+7520ModysRg+MdlfDqMSJem
-	 l3w9U8X1Zfy6jxradX5b9x/tHjTiYIk2DEnhoPrGgM7DzsKFb0HLkNuX6OY9QTLjhfAln
-	 rOulSLGi6rRUd4+F7uGLfF373LXX2FiSjricbozO7m07JtqpcIyzcg62zuLf2mFtQGw==
+	bh=YhI+AK81XLCtdL59lTKeYo77+ymjLGfVFWvDZPKBf20=;
+	b=l2GqnaWTfRFiYUzONcPyGubiSTNMBDm04xxNyURnwBKKRZcMks7OzMQlitKE/bQcn9kh
+	 xFHszqvGKF9HWl4Ft84UDwmkhWJdP4Uh+QFN+f144tcQjRzAeS7TM5yj1WL1ffWCX8UHA
+	 aqsZdPTvG+P+WRTs8bgU7vqACO3r4/OHtxNzFYbfhQlMuN2l5U/aUC5L8rZVyd3k4OpF6
+	 PP38l2ARWsY6Kxg6/EZDiWu9Vwz+2xhb7IUJtFtTlWdiJmeyGjq1cJykxIm/erxJFV/9k
+	 BtrqZQPThwDNCpdZ7YYawDPYkH+nM3Z9NZntppbNuhfRNKSOMi+5DmuOzkEnEBOeMxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n0pIR+Xu;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="nM/SRvyV";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E901C606A31C;
-	Mon, 19 Oct 2026 21:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145D8606A323;
+	Mon, 19 Oct 2026 21:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n0pIR+Xu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A83F1F000C5;
-	Mon, 19 Oct 2026 21:10:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nM/SRvyV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB8C1F000C4;
+	Mon, 19 Oct 2026 21:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792444213;
-	bh=80NgnfNG04biR+Qo1AtgFMLB1GwXNU8ARboCn9v6q3s=;
+	s=k20260515; t=1792444216;
+	bh=YhI+AK81XLCtdL59lTKeYo77+ymjLGfVFWvDZPKBf20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n0pIR+XuktZH/nh8Q05TRP6NOhEBlS6dKnYDnTogxvCHhCSvyCVxrFdF0wp7rPyHW
-	 Fnt61zvh1sL86JFBbBPwSYoqtdC/Qrk9hmhGDbaleGbVN25SXXretNBLXgRWD77CFF
-	 q+2ATQAR7c614fp5OwJvTVBk/k2lb65cjIFsWt8uUPzf7kCf9tMEepmpLmf1LG5DW9
-	 EeeUYs0T10jmZuvl8A3W66edym7pX5SNiDVqDqnOn6LP2So2QolXQD9LGsst2Z3yK3
-	 8lZj5XJSd9BqdWFmfMSRgjYD33wLQ5fSQAXflk0JDqzKvxTWz0eLkxLUbsL9z4TjtW
-	 W9s0y1PEfmdnw==
+	b=nM/SRvyVZ0Gv8bi/pylE2bHe1ifDVtvl4k47e5rRHluJ8VOQLN3jt+ABrt38eQ33M
+	 FXDF8sYE1K3r+b4ZR8nU8K7kuQ5w01I+F0jvSHdBU53NUxe/QeoAoqvQ4ZbuNQn+x5
+	 Q/lvGGQFBjlUsr4ZSrHG5CbJpQZVwYwNJITvdhS90rgk9HSMKU1yQglMCx66M//xUE
+	 8AsGNQ7BK0biQfnpLVRv7E/RTy3yGgKDiX6kdB5FDZ2zhQ7UFXyxXwnhBmjFhPTqdy
+	 gLSXPteD5SbW7ja0Z1JSN5nX4G1x/h3NEhUqx10LVxzfNSG92kse3HSavti3qBw1Sd
+	 LfuAIcIl8xhmw==
 From: Sasha Levin <sashal@kernel.org>
 To: bpf@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
@@ -70,9 +70,9 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	netdev@vger.kernel.org,
 	Petr Pavlu <petr.pavlu@suse.com>,
 	Leon Hwang <leon.hwang@linux.dev>
-Subject: [PATCH bpf-next 1/3] bpf: Drop unused entries from special_kfunc_list again
-Date: Mon, 19 Oct 2026 17:10:04 -0400
-Message-ID: <20261019211006.2574350-2-sashal@kernel.org>
+Subject: [PATCH bpf-next 2/3] bpf: Don't reference arena kfuncs when arena isn't built
+Date: Mon, 19 Oct 2026 17:10:05 -0400
+Message-ID: <20261019211006.2574350-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019211006.2574350-1-sashal@kernel.org>
 References: <20261019211006.2574350-1-sashal@kernel.org>
@@ -87,59 +87,51 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 6f033615ef8f ("bpf: Trim special_kfunc_list in verifier") dropped
-bpf_arena_reserve_pages, bpf_stream_vprintk and bpf_stream_print_stack
-from special_kfunc_list once nothing used them anymore, but commit
-ab7fff217fd1 ("bpf: Check helper and kfunc arguments in one path")
-brought all three back without adding any users.
+kernel/bpf/Makefile builds arena.o only for CONFIG_MMU && CONFIG_64BIT,
+but special_kfunc_list references bpf_arena_alloc_pages() and
+bpf_arena_free_pages() unconditionally, so on 32-bit and !MMU kernels
+resolve_btfids can't resolve them:
 
-Besides being dead, the bpf_arena_reserve_pages entry can't be resolved
-on 32-bit and !MMU kernels, which don't build arena.o, and since commit
-201a454df948 ("resolve_btfids: Fix the --fatal_warnings exit status")
-the resulting resolve_btfids warning fails the build with
-CONFIG_WERROR=y:
+  WARN: resolve_btfids: unresolved symbol bpf_arena_free_pages
+  WARN: resolve_btfids: unresolved symbol bpf_arena_alloc_pages
 
-  WARN: resolve_btfids: unresolved symbol bpf_arena_reserve_pages
+Since commit 201a454df948 ("resolve_btfids: Fix the --fatal_warnings
+exit status") these warnings fail the build with CONFIG_WERROR=y, which
+breaks i386 builds with CONFIG_DEBUG_INFO_BTF=y:
 
-Drop the three entries again.
+  Failed to generate BTF for vmlinux
+  Try to disable CONFIG_DEBUG_INFO_BTF
 
-Fixes: ab7fff217fd1 ("bpf: Check helper and kfunc arguments in one path")
+Only reference them under the condition arena.o is built with, and use
+BTF_ID_UNUSED otherwise to keep the list in sync with enum
+special_kfunc_type. An unresolved ID is zero, like BTF_ID_UNUSED, so the
+contents of the list don't change.
+
+Fixes: b8467290edab ("bpf: arena: make arena kfuncs any context safe")
 Assisted-by: LLM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 6 ------
- 1 file changed, 6 deletions(-)
+ kernel/bpf/verifier.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index d138688468236..22f095b9dca2d 100644
+index 22f095b9dca2d..12229713a4528 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -13549,10 +13549,7 @@ enum special_kfunc_type {
- 	KF_bpf_call_rcu_tasks_trace,
- 	KF_bpf_arena_alloc_pages,
- 	KF_bpf_arena_free_pages,
--	KF_bpf_arena_reserve_pages,
- 	KF_bpf_session_is_return,
--	KF_bpf_stream_vprintk,
--	KF_bpf_stream_print_stack,
- };
- 
- BTF_ID_LIST(special_kfunc_list)
-@@ -13644,14 +13641,11 @@ BTF_ID(func, bpf_call_rcu)
+@@ -13639,8 +13639,13 @@ BTF_ID(func, bpf_task_work_schedule_signal)
+ BTF_ID(func, bpf_task_work_schedule_resume)
+ BTF_ID(func, bpf_call_rcu)
  BTF_ID(func, bpf_call_rcu_tasks_trace)
++#if defined(CONFIG_MMU) && defined(CONFIG_64BIT)
  BTF_ID(func, bpf_arena_alloc_pages)
  BTF_ID(func, bpf_arena_free_pages)
--BTF_ID(func, bpf_arena_reserve_pages)
++#else
++BTF_ID_UNUSED
++BTF_ID_UNUSED
++#endif
  #ifdef CONFIG_BPF_EVENTS
  BTF_ID(func, bpf_session_is_return)
  #else
- BTF_ID_UNUSED
- #endif
--BTF_ID(func, bpf_stream_vprintk)
--BTF_ID(func, bpf_stream_print_stack)
- 
- static bool is_bpf_cast_to_kern_ctx_kfunc(const struct bpf_call_arg_meta *meta)
- {
 -- 
 2.53.0
 
