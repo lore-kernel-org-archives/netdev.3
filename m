@@ -1,49 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CC55BA3AF;
-	Mon, 19 Oct 2026 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D6E5BE69A;
+	Mon, 19 Oct 2026 14:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418454; cv=none; b=lzembIa0bsrIqoHPfw6a+BWsIDqf3tbyqkorImTis2P3VjTC+oF+o/CACn7Z6EwVziL4msoAy4X3ffvzmgzsXfx7SvBvLSN76sOBslYQMOft3IcCaWHLnzyhXRRcKGnEBmgBRDi+8PrPl5eTJEn9ghwI+ZQ1xI343nLlyO1lda8=
+	t=1792418469; cv=none; b=g7Yo4G1CoeawGCx7dX9OJlINl0fC9Uz0cCaifq2MHzJwnYHl7hZXgDfdKphYHI06KT4ziSVPQJjk6I9JcvOFPX7MlkkV+ROtCeBN28FZceQ9wg9T/gjoVwKfnHXCIcXL6Yl6RcT/aEniQFRZk8tacPi8+Y3sOqU4mypjMTHCrQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418454; c=relaxed/simple;
-	bh=5no7e+H7WYHDdz+1w0HDK0z71uH03BSsEBrRvk1I8AE=;
+	s=arc-20240116; t=1792418469; c=relaxed/simple;
+	bh=pWdHP9LHEKz+sABbungOTDUeh0Z4zqzoeeY4zbHYH+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VYqIOMjvHdDp5JLqxVntBRc5H3D2lLZtUHIKe18EPh/Q3F4NLmjGyRDqwb1UBaD3476Uv7+p42Nt61q+WhPnLOwdmVAqdgadi32La9TIZKz9E5C3FRnRyjqrEuFf15F6NqYttoB6ghOkK/hqT0GPpv+VzDqama1RudHYLwlBj6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5W85yyf; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=DS4YwJP8qfGRGpOQmXI4218IZfTPEk5DE5A96tvZNPYa6k/HAIm5Tr2PbXuVRJQvfKctOT/odpgZMih8UAtVP92eEWDgchJ/wxJOpTd23hlDqfrMm/Xl4C2WCZqFFrVoLe2w6hhDmT5GciR6Jb8hJ1VnA0a+9VSOdNHcn+QOloY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZb2M6IK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5W85yyf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CD01F000C7;
-	Mon, 19 Oct 2026 14:00:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZb2M6IK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F95A1F000CA;
+	Mon, 19 Oct 2026 14:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418451;
-	bh=SJFwWmYUbL4dju6SdY/KrJstjd8qjA4jgvDPm2aNnm8=;
+	s=k20260515; t=1792418467;
+	bh=lJlw6GhXp1L1rVQ4RJd14E3+3JJvpD0/PFLiCS+TtDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R5W85yyfyXZE1M73pqOgM+2vlmi93yNA87LHD4FJCxkzTYdR1aTF6RUlSk7D0DSYe
-	 8x65Pz//Yf6FiLS9BJmyURpOPAHH+7ocdGYPQjNdi15WWrYAbcIYv+/bn1twPhHuAp
-	 QJJ2GOdv9OFJobnXXqCQFQdX03UtIrS6fdE7wadaItrr9Z+ZdIH0lYb9wsYQpvHp81
-	 MPrw72skq+8Ht/Y/iPH2IC5/gkGMuJAaJxQYbNFwkhQXJ7p5h8OdctXTyuGomlUwUJ
-	 DLe68ClmaROMgRGTb0wHmUEIAiRV0O9tKgXg6RoOxyWJ0HQvJnMDIZ1mQLsluEZ+Si
-	 8JYIn73l2VinA==
+	b=iZb2M6IKha4110qa8pjwQOWKVKtq4azzbl/EltGrYAFX6d/rjwfb4L9d71RGIno6k
+	 eqwTHI2+IkPL7eWwLRrGUiLOTqtmqK68l9rd47jHpSMP31nYAuOo3LCAIAs3pBep9m
+	 aBFGw9NnOAe2qdFF3RoHiw1JtMbJSCdyvAuR+u/YKkrm5uw35FKG9GLCW1oQS8giEQ
+	 OlzoTozmmd9S0ue7MuS4DC5PhPh0IytA6XdS29m8nXiP4UaL+y/jrWjj7oDH4/O9Kv
+	 ioxmUmH+NMSU5BiMRmkg3jI7Sk793HQCZoovdyAjj7KA8EbH42pZF8G+xXA35EG5P9
+	 dr9nVMCB+IVdw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Gerd Rausch <gerd.rausch@oracle.com>,
-	Allison Henderson <achender@kernel.org>,
+Cc: Brian Grech <bgrech@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	pabeni@redhat.com,
+	shuah@kernel.org,
 	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] net/rds: fix rds_message leak in the rds_send_xmit() drop path
-Date: Mon, 19 Oct 2026 09:49:09 -0400
-Message-ID: <20261019135441.1420968-258-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] selftests/net: fin_ack_lat: fix latency threshold typo
+Date: Mon, 19 Oct 2026 09:49:20 -0400
+Message-ID: <20261019135441.1420968-269-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -59,471 +58,381 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+From: Brian Grech <bgrech@redhat.com>
 
-[ Upstream commit eb8a59a17f4a8b6f2afb4a8063e99dd96cc3fab0 ]
+[ Upstream commit 2373107782a98ba15931a37bbd9dd46d7213e5aa ]
 
-When rds_send_xmit() picks the next message off cp_send_queue it takes
-its own reference with rds_message_addref().  If the message then hits
-the never-retransmit check (RDS_MSG_FLUSH, or an RDMA op that was
-already retransmitted), it is moved to the local to_be_dropped list and
-that reference is dropped after the batch.
+The commit message for af8c8a450bf4 ("selftests: net: Add FIN_ACK
+processing order related latency spike test") states: "if the latency
+is larger than 1 second (spike), print a message". However the code
+uses a threshold of 100000 us (100 ms), not 1000000 us (1 s).
 
-However, if RDS_MSG_ON_CONN has already been cleared, the message is
-not added to to_be_dropped and the reference taken above is never
-dropped: cp_xmit_rm has not been set at this point, so the loop simply
-abandons rm and the rds_message (and everything it pins: pages, MRs,
-notifiers) leaks after an RDMA error.
+The lower threshold causes false positives on slower hardware where
+normal connection latency occasionally exceeds 100 ms but never
+approaches the 1 s spike that indicates the actual FIN/ACK race bug.
 
-The only other places that clear RDS_MSG_ON_CONN are
-rds_send_path_drop_acked() and rds_send_drop_to(), and both can run
-while rds_send_xmit() has dropped cp_lock between moving the message
-to cp_retrans and re-taking the lock in the never-retransmit check:
-rds_send_path_drop_acked() can ack away a message that already sat on
-cp_retrans - the RDS_MSG_RETRANSMITTED case above - and
-rds_send_drop_to() runs on socket close.  Both unlink the message
-under cp_lock and put their own reference, leaving the xmit-path
-reference stranded.
+Fix the threshold to match the documented intent.
 
-Drop the reference directly in that case.
-
-This mirrors Oracle UEK commit "net/rds: fix rds_message memleak in
-rds_send_xmit".
-
-Signed-off-by: Gerd Rausch <gerd.rausch@oracle.com>
-Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-[achender: port to net-next; update commit message, checkpatch nits]
-Signed-off-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260730041629.3512480-4-achender@kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Brian Grech <bgrech@redhat.com>
+Link: https://patch.msgid.link/20260806151645.4172900-1-bgrech@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This is a real, long-standing `rds_message` leak in `rds_send_xmit()`
-that exists in this 5.10.270 tree. The fix is small, matches the local
-code, and does not need the rest of its series.
+I have the local 6.12 tree, the one-line typo, mailing-list review, and
+a clean apply. Compiling the nine-phase analysis next.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: PARSE THE SUBJECT LINE**
-Record: **[net/rds] [fix] [rds_message leak in rds_send_xmit() drop
-path]**
+- Record: `[selftests/net] [fix] latency threshold typo in fin_ack_lat`
 
-**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
-
-From the candidate message:
-- `Signed-off-by: Gerd Rausch <gerd.rausch@oracle.com>` (original
-  author)
-- `Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>`
-  (UEK/port author)
-- `[achender: port to net-next; update commit message, checkpatch nits]`
-- `Signed-off-by: Allison Henderson <achender@kernel.org>` (RDS
-  maintainer-side porter)
+**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS** (from the presented message
+and from `git show 2373107782a9`)
+- `Reviewed-by: Simon Horman <horms@kernel.org>`
+- `Signed-off-by: Brian Grech <bgrech@redhat.com>` (author)
 - `Link:
-  https://patch.msgid.link/20260730041629.3512480-4-achender@kernel.org`
-- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev merge)
-
-No `Reported-by`, `Tested-by`, `Reviewed-by`, or `Acked-by` in the
-candidate text. Absence of `Fixes:` / `Cc: stable` is expected here.
-
-Mailing-list v4 (same msgid) **did** carry:
-- `Fixes: 2ad8099b58f2 ("RDS: rds_send_xmit() locking/irq fixes")`
-
-Oracle UEK source (`94549e4732d8`) carried:
-- `Fixes: fbbe0610d057 ("RDS: add support for atomic messages over the
-  wire")` — that SHA is **not** in this tree
-- `Reviewed-by: William Kucharski <william.kucharski@oracle.com>`
-- `Orabug: 38923495` (internal production bug)
+  https://patch.msgid.link/20260806151645.4172900-1-bgrech@redhat.com`
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev maintainer,
+  applied it)
+- No `Reported-by`, `Tested-by`, `Acked-by` in the committed message
+- Committed message has no `Fixes:` / `Cc: stable` (those tags were on
+  mailing-list v3; they are not treated as “already selected”)
+- Record: Reviewed by a netdev reviewer; applied by the net maintainer.
+  Author is Red Hat.
 
 **Step 1.3: ANALYZE THE COMMIT BODY TEXT**
-Record:
-- **Bug:** `rds_send_xmit()` takes an extra `rds_message_addref()` when
-  dequeuing. On the never-retransmit path (`RDS_MSG_FLUSH` or already-
-  retransmitted RDMA), that ref is only dropped if the message is moved
-  onto `to_be_dropped`. If `RDS_MSG_ON_CONN` was already cleared, the
-  extra ref is abandoned.
-- **Symptom:** leak of `rds_message` plus pinned pages, MRs, and
-  notifiers after an RDMA error / reconnect / socket close.
-- **Root cause:** `rds_send_path_drop_acked()` (ACK of a message already
-  on `cp_retrans`) and `rds_send_drop_to()` (socket close) can clear
-  `RDS_MSG_ON_CONN` and put **their** refs in the window where xmit has
-  dropped `cp_lock`. They do not put the xmit-path extra ref.
-  `cp_xmit_rm` is not set yet, so the success-path put never runs.
-- **Version info:** bug traces to 2010 locking change; present in this
-  5.10 tree.
+- Record: [Bug] `fin_ack_lat` treats latency ≥ 100000 µs (100 ms) as a
+  spike, while the original test commit says the spike is **1 second**.
+  [Symptom] false FAIL printouts on slower/loaded hardware when normal
+  localhost connect latency is 100 ms–1 s. [Version] original test is
+  `af8c8a450bf4` (2020). [Root cause] missing zero: 100000 vs 1000000.
 
 **Step 1.4: DETECT HIDDEN BUG FIXES**
-Record: **Not hidden.** Subject and body are an explicit leak/refcount
-fix.
+- Record: Not hidden. Explicit typo/threshold bug in a kselftest. “fix”
+  is accurate.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: INVENTORY THE CHANGES**
-Record:
-- File: `net/rds/send.c` only (~+12/−3 in `rds_send_xmit()`)
-- Scope: **single-file surgical fix**
+- Record: `tools/testing/selftests/net/fin_ack_lat.c` — 1 line changed
+  (`100000` → `1000000`). Function: `client()`. Scope: single-file, one-
+  line surgical fix. `git show --stat`: `1 file changed, 1 insertion(+),
+  1 deletion(-)`.
 
 **Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
-Record:
-- **Before:** `test_and_clear_bit(RDS_MSG_ON_CONN)` → if set,
-  `list_move` to `to_be_dropped`; always unlock; `continue`. If the bit
-  was already clear, no put.
-- **After:** same if the bit is set; **else** unlock then
-  `rds_message_put(rm)` for the extra xmit ref.
+- Record: After `connect`/`send`/`read`, `timediff()` returns
+  microseconds (`tv_sec * 1000000 + tv_usec`). If `lat < threshold`,
+  skip the printf and close. Before: print (and the wrapper script
+  counts a FAIL) at ≥ 100 ms. After: only at ≥ 1 s.
 
 **Step 2.3: IDENTIFY THE BUG MECHANISM**
-Record: **Reference-counting / resource leak.** Extra
-`rds_message_addref()` at dequeue (local tree `net/rds/send.c:265`) is
-not balanced when `RDS_MSG_ON_CONN` is already clear. Verified in this
-tree: only `rds_send_path_drop_acked()` (`clear_bit` at line 707) and
-`rds_send_drop_to()` (`test_and_clear_bit` at line 774) plus this drop
-path itself clear that bit. `rds_send_path_reset()` does **not** (v4
-commit message correction vs v1–v3).
+- Record: [Category] logic/correctness (wrong constant). [Mechanism]
+  threshold was 10× too low vs documented 1 s spike that matches
+  `TCP_TIMEOUT_INIT` (1×HZ). Wrapper `fin_ack_lat.sh` fails if any spike
+  line is printed.
 
 **Step 2.4: ASSESS THE FIX QUALITY**
-Record:
-- **Obviously correct.** Queueing takes a conn-list ref
-  (`rds_send_queue_rm` addref + `RDS_MSG_ON_CONN`). Xmit takes a second
-  ref. Concurrent drop/ack puts the conn-list ref. Xmit must put its
-  own.
-- `rds_send_remove_from_sock()` documents that it puts the list-position
-  ref; drop_acked uses that. Xmit’s extra ref is separate.
-- After `continue`, the next loop iteration does `rm = cp->cp_xmit_rm`
-  (still NULL), so the local pointer is not used after put.
-- Put happens after `spin_unlock_irqrestore`, same as the existing
-  success-path put at line 423. The “irqs on here, so we can put()”
-  comment is about not putting **under** `cp_lock`.
-- **Regression risk: low.** Does not change locking order or APIs.
-  Follow-up `reinitialize to_be_dropped on restart` is documented
-  hardening with **no known user-visible bug**; this else-path does not
-  even enqueue on `to_be_dropped`.
+- Record: Obviously correct vs the original commit text and vs
+  `timediff()` units. Minimal. Regression risk is that 100 ms–1 s events
+  would no longer FAIL; that is intended, because those are not the
+  FIN/ACK race (which waits a full initial RTO of 1 s). No
+  API/locking/kernel-runtime change.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 **Step 3.1: BLAME THE CHANGED LINES**
-Record:
-- Drop-path structure from `5c11559046c4b3` (“RDS: send.c”, 2009).
-- Leak introduced by `2ad8099b58f27` (“RDS: rds_send_xmit() locking/irq
-  fixes”, 2010): that commit **removed** an unconditional
-  `rds_message_put(rm)` on this path and only put messages that made it
-  onto `to_be_dropped`.
-- FLUSH clause: `905dd4184e0732` (2016). Multipath `cp_` conversion:
-  `1f9ecd7eacfd9e` (2016).
-- Buggy pattern has been in-tree for ~16 years; first appeared long
-  before 5.10.
+- Record: Line 72 (`if (lat < 100000)`) blamed to `af8c8a450bf469`
+  (SeongJae Park, 2020-02-02). Introduced with the test; never changed
+  since.
 
 **Step 3.2: FOLLOW THE FIXES: TAG**
-Record:
-- Mailing-list `Fixes: 2ad8099b58f2` — **is an ancestor of this HEAD**
-  (`git merge-base --is-ancestor` exit 0).
-- `git show 2ad8099b58f27` confirms the put was moved to the batch-end
-  `to_be_dropped` walk only.
-- UEK `Fixes: fbbe0610d057` is **not** in this tree (exit 128); that tag
-  is a red herring for 5.10. The real introducer here is `2ad8099b58f2`.
+- Committed message has no `Fixes:` tag. Mailing-list v3 cited `Fixes:
+  af8c8a450bf4`.
+- `git merge-base --is-ancestor af8c8a450bf4 HEAD` → yes (exit 0).
+- Original test message: “if the latency is larger than 1 second
+  (spike), print a message.”
+- Related kernel fix `9603d47bad464` (“tcp: Reduce SYN resend delay if a
+  suspicous ACK is received”) is also an ancestor; it describes the 1 s
+  `TIMEOUT_INIT` reconnection spike this test is for.
 
 **Step 3.3: CHECK FILE HISTORY**
-Record: Recent `net/rds/send.c` work in this tree is locking/xmit
-serialization (`acquire_in_xmit`, shutdown races), not this drop path.
-No prior fix for this leak (`rg` for “already off the conn list” is
-empty). **Standalone**, not a refactor prerequisite.
+- Record: Only one commit on this file in this tree: `af8c8a450bf46`. No
+  later refactor. Standalone, not patch X/Y.
 
 **Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
-Record: Gerd Rausch / Sharath Srinivasan / Allison Henderson are
-established RDS contributors. Henderson has many RDS stable backports in
-this tree. This is a UEK→upstream port of a production Orabug.
+- Record: `git log --author="Brian Grech" --
+  tools/testing/selftests/net/` is empty in this tree (author is not a
+  6.12 net-selftest regular). Reviewer Horman and committer Kicinski are
+  netdev maintainers/reviewers.
 
 **Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
-Record: v4 series is four **independent** bugs (sleep-in-atomic unpin,
-MR socket UAF, **this leak**, IB MR pin leak). This hunk only needs
-existing `rds_message_put()` / `RDS_MSG_ON_CONN` / `to_be_dropped`, all
-present. **Applies standalone.**
+- Record: None. Only changes a numeric constant. `git apply --check` of
+  `2373107782a9` succeeds on this tree.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
 **Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
-Record:
-- `b4 dig -c` on the candidate SHA was not possible (commit is not in
-  this checkout). `b4 dig -c 5c11559046c4b3` only found the 2009
-  original.
-- lore.kernel.org fetches returned **403**. Used openwall mirrors.
-- Thread: https://lists.openwall.net/netdev/2026/07/30/65 (v4 3/4),
-  cover https://lists.openwall.net/netdev/2026/07/30/62
-- Revisions: v1 (2026-07-11) → v3 → v4 (2026-07-30). **Code of this
-  patch unchanged after v3**; v4 only corrected the commit message to
-  name `drop_acked`/`drop_to` instead of `rds_send_path_reset()`.
-- Merged by Jakub Kicinski. No NAK found.
-- v1–v3 incorrectly named `rds_send_path_reset()` as a clearer of
-  `RDS_MSG_ON_CONN`; verified **false** in this tree
-  (`rds_send_path_reset` only sets `RDS_MSG_RETRANSMITTED` and splices
-  queues).
+- Record: `b4 dig -c 2373107782a9` →
+  https://patch.msgid.link/20260806151645.4172900-1-bgrech@redhat.com
+- Revisions (`b4 dig -a`):
+  - v1: 2026-07-31,
+    https://patch.msgid.link/20260731145914.4014912-1-bgrech@redhat.com
+  - v2: 2026-08-04 (added maintainer CCs)
+  - v3: 2026-08-06 (applied)
+- Horman (2026-08-06): looks good; “might be nice” to explain why 1 s;
+  “if this is a fix to be backported (I am unsure)” then add `Fixes:`
+  and target `net`. **Reviewed-by** given; no NAK.
+- Author replied and sent v3 with original-commit wording, `Fixes:`, and
+  `Cc: stable`.
+- Applied to netdev/net-next by Jakub Kicinski (`2373107782a9`). No NAKs
+  in the saved thread.
 
 **Step 4.2: CHECK WHO REVIEWED THE PATCH**
-Record: Sent to netdev, linux-rdma, Kicinski, Dumazet, Abeni, Horms. RDS
-lists historically include `rds-devel@oss.oracle.com`. No extra
-`Reviewed-by` on the upstream version; UEK had William Kucharski.
-Maintainer-side porter is Allison Henderson.
+- Record (`b4 dig -w`): netdev, linux-kselftest, Shuah Khan, Eric
+  Dumazet, Paolo Abeni, Simon Horman, Jakub Kicinski. Right lists and
+  maintainers.
 
 **Step 4.3: SEARCH FOR THE BUG REPORT**
-Record: Oracle UEK Orabug 38923495; no public syzbot/bugzilla report
-found. Production bug inside Oracle RDS, not theoretical.
+- Record: No syzbot/bugzilla. Evidence is the commit text plus a Red Hat
+  author describing loaded/slower-hardware false positives. Severity:
+  incorrect kselftest FAIL, not a kernel oops.
 
 **Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
-Record: Independent of series 1/4, 2/4, 4/4. Later “reinitialize
-`to_be_dropped` on restart” is **hardening only** (“no user-visible bug
-is known”).
+- Record: Standalone 1-patch series. No sibling patches required.
 
 **Step 4.5: CHECK STABLE MAILING LIST HISTORY**
-Record: lore.kernel.org/stable search **403**; web search found **no**
-stable-list discussion of this leak. UNVERIFIED whether anyone already
-requested/rejected it for 5.10.y.
+- Record: lore.kernel.org/stable search via WebFetch returned 403. Web
+  search did not find a stable-list rejection or discussion of this fix.
+  UNVERIFIED: no confirmed stable@ thread beyond v3 CCing stable.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-semcode MCP is **not** available; used read/grep.
-
 **Step 5.1: KEY FUNCTIONS**
-Record: `rds_send_xmit()` only.
+- Record: `client()` only.
 
 **Step 5.2: TRACE CALLERS**
-Record (this tree):
-- `rds_sendmsg()` → `rds_send_xmit()` (`send.c:1385`) — syscall
-- `rds_send_worker()` (`threads.c:200`) — `rds_wq` work
-- `rds_ib_tasklet_fn_send()` (`ib_cm.c:334`) — IB send tasklet
+- Record: `main()` forks and the child calls `client(port)`. Userspace-
+  only. `fin_ack_lat.sh` runs `./fin_ack_lat` for 30s and FAILs if any
+  stdout spike line appears. Makefile: `TEST_PROGS += fin_ack_lat.sh`,
+  `TEST_GEN_FILES += fin_ack_lat` — part of default net selftests.
 
 **Step 5.3: TRACE CALLEES**
-Record: `rds_message_addref` / `rds_message_put` (`message.c`); last put
-runs `rds_message_purge()` (pages, `rds_rdma_free_op`, MR krefs).
+- Record: socket/connect/send/read, `timediff()`, `printf` on spike. No
+  kernel helpers.
 
 **Step 5.4: FOLLOW THE CALL CHAIN**
-Record: **Userspace-reachable** via RDS `sendmsg`. Also on IB completion
-and reconnect. Race: xmit drops `cp_lock` after moving to `cp_retrans`;
-recv/ACK path (`rds_send_path_drop_acked`) or
-`close`/`RDS_CANCEL_SENT_TO` (`rds_send_drop_to`) can run then.
+- Record: Reachable by running the net kselftest (localhost TCP). Not a
+  syscall bug; it is the test harness for the 2020 FIN/ACK race.
 
 **Step 5.5: SEARCH FOR SIMILAR PATTERNS**
-Record: Same file already balances other refs carefully (`drop_to` skips
-if `ON_CONN` already clear). This path is the missing counterpart. No
-duplicate of this exact leak elsewhere in `net/rds/`.
+- Record: Only this one comparison. `timediff()` already uses `*
+  1000000` (µs), which confirms 1000000 = 1 s.
 
 ---
 
 ## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 
 **Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
-Record: **Yes.** `pending-5.10`, `make kernelversion` = **5.10.270**,
-`git describe` = `p-5.10-1-gce56b7a73b64b`.
-
-```287:294:net/rds/send.c
-                        if (test_bit(RDS_MSG_FLUSH, &rm->m_flags) ||
-                            (rm->rdma.op_active &&
-                            test_bit(RDS_MSG_RETRANSMITTED,
-&rm->m_flags))) {
-                                spin_lock_irqsave(&cp->cp_lock, flags);
-                                if (test_and_clear_bit(RDS_MSG_ON_CONN,
-&rm->m_flags))
-                                        list_move(&rm->m_conn_item,
-&to_be_dropped);
-                                spin_unlock_irqrestore(&cp->cp_lock,
-flags);
-                                continue;
-                        }
-```
-
-Introduced in 2010 (`2ad8099b58f2`); present for the entire 5.10
-lifetime.
+- Record: Yes. This checkout is **6.12.111** (`pending-6.12`,
+  `p-6.12-3-gc504cf0baa3d8`). `fin_ack_lat.c:72` is still `if (lat <
+  100000)`. Introduced 2020-02 (`af8c8a450bf4`); present throughout
+  6.12. Candidate `2373107782a9` is **not** an ancestor of HEAD.
 
 **Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
-Record: **Clean apply** (trivial fuzz at most). Local drop-path text
-matches the hunk exactly. Nearby comment still has the old “We cold
-possibly” typo; that line is context only.
+- Record: `git diff af8c8a450bf4 HEAD --
+  tools/testing/selftests/net/fin_ack_lat.c` is empty. `git apply
+  --check` of the candidate succeeds. Expected: **clean apply**.
 
 **Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
-Record: Fix **not** present. No other send.c commit in this tree plugs
-this hole.
+- Record: `git log --grep="fin_ack_lat: fix latency"` and
+  `--grep="latency threshold typo"` on that path: empty. No alternate
+  fix.
 
 ---
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
 **Step 7.1: SUBSYSTEM AND CRITICALITY**
-Record: **net/rds** — Reliable Datagram Sockets (Oracle RAC / InfiniBand
-and TCP). MAINTAINERS: Supported (Santosh Shilimkar / Oracle).
-**IMPORTANT** (not core mm/VFS; not staging). `CONFIG_RDS` depends on
-`INET`; RDMA ops need `CONFIG_RDS_RDMA`.
+- Record: `tools/testing/selftests/net/` — kselftest, not kernel
+  runtime. Criticality: **PERIPHERAL** for production machines;
+  **IMPORTANT** for people who run net selftests on 6.12 (distro CI, LTS
+  validation).
 
 **Step 7.2: SUBSYSTEM ACTIVITY**
-Record: Actively maintained in this 5.10 tree (recent shutdown/xmit
-locking, TCP corruption, NULL-deref fixes). Mature send path; this leak
-is old, not a new-feature bug.
+- Record: Net selftests are active in 6.12; this **file** is untouched
+  since 2020 (mature, long-standing typo).
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
 **Step 8.1: WHO IS AFFECTED**
-Record: **Config/driver-specific** — `CONFIG_RDS` users, especially
-RDMA/IB reconnect and TCP peer-generation flush (`RDS_MSG_FLUSH` in
-`recv.c`). Enterprise RDS/RAC deployments.
+- Record: Anyone running `tools/testing/selftests/net`
+  (`fin_ack_lat.sh`). Not production TCP. Config: standard net
+  kselftests.
 
 **Step 8.2: TRIGGER CONDITIONS**
-Record:
-1. Xmit dequeues a message (addref, move to `cp_retrans`, drop
-   `cp_lock`).
-2. Never-retransmit: `RDS_MSG_FLUSH` (peer gen change) or RDMA +
-   `RDS_MSG_RETRANSMITTED` (after `rds_send_path_reset`).
-3. Concurrent ACK (`drop_acked`) or socket close (`drop_to`) already
-   cleared `ON_CONN`.
-
-Not every packet; **error/reconnect/close**. Unprivileged RDS sockets
-can drive send/close; RDMA/reconnect is the realistic production case
-(Orabug).
+- Record: 30 s of localhost connect/send/read. False FAIL when a loop
+  exceeds 100 ms (loaded CI, slow VM, embedded). Unprivileged users can
+  run the test; this is not a security trigger.
 
 **Step 8.3: FAILURE MODE SEVERITY**
-Record: **Memory/resource leak** of message, pages, MRs, notifiers. Not
-a panic. Repeated reconnects accumulate pinned memory → **HIGH** for RDS
-users, not a universal crash.
+- Record: Incorrect kselftest FAIL (script: `FAIL: N spikes detected`).
+  No oops, hang, or corruption. Severity: **MEDIUM** for testers/CI,
+  **LOW** for production runtime. The kernel bug the test is meant to
+  catch is a ~1 s SYN retry (`TCP_TIMEOUT_INIT` = `1*HZ` in
+  `include/net/tcp.h`).
 
 **Step 8.4: RISK-BENEFIT RATIO**
-Record:
-- **Benefit:** high for RDS/RDMA users; stops leaking pinned pages/MRs
-  after errors that already happen in production.
-- **Risk:** very low (~12 lines, one else-put, same pattern as existing
-  puts).
-- **Ratio:** favor backport.
+- Record: Benefit: stops false FAILs on 6.12 net selftests; restores the
+  1 s meaning the test was written for. Risk: one constant in userspace;
+  no kernel change. Ratio: **high benefit for testers / very low risk**.
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Step 9.1: COMPILE THE EVIDENCE**
+**Step 9.1: EVIDENCE**
 
-**FOR:**
-- Real refcount leak; objects pin pages/MRs/notifiers
-- Present in this 5.10 tree since 2010 (`2ad8099b58f2`)
-- Small, obviously correct, one function
-- Clean apply; no prerequisites
-- RDS maintainer port; netdev merge; Oracle production Orabug
-- Userspace-reachable via RDS send + close/reconnect
+FOR:
+- Real, documented mismatch: commit `af8c8a450bf4` says 1 s; code uses
+  100 ms.
+- `timediff()` is in microseconds; 1000000 µs is 1 s.
+- Kernel symptom being tested is a 1 s initial RTO (`TCP_TIMEOUT_INIT`),
+  not 100 ms.
+- Wrapper treats any printed spike as FAIL, so the typo causes false
+  failures.
+- File and bug exist in this 6.12 tree unchanged since 2020.
+- One-line, applies cleanly, userspace-only.
+- Reviewed-by Horman; applied by Kicinski.
+- Author (Red Hat) describes slower/loaded-system false positives — a
+  real “bothers people” case for LTS testing.
 
-**AGAINST:**
-- RDS is not universal
-- Error-path race, not every send
-- Not a crash/CVE
-- No public syzbot report
+AGAINST:
+- Not a kernel crash, UAF, deadlock, or CVE.
+- Horman was unsure about backport before v3.
+- Applied via net-next; committed message dropped `Fixes:`/`Cc: stable`.
+- Only testers are affected.
 
-**UNRESOLVED:**
-- Stable-list history (lore 403)
-- Whether last-ref `rds_message_put()` from IB **tasklet** can sleep via
-  `unpin_user_pages_dirty_lock()` — **already true** for the success-
-  path and `to_be_dropped` puts in this tree; this patch does not create
-  that class of bug (series 1/4 is a separate sleep-in-atomic fix)
+UNRESOLVED:
+- Could not read lore.kernel.org/stable (403). No evidence of a stable
+  rejection.
 
 **Step 9.2: STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — refcount math checks out;
-   UEK + netdev merge
-2. Real bug affecting users? **PASS** — Orabug 38923495; leak is in this
-   tree
-3. Important (crash/security/corruption/deadlock)? **PASS** — leak of
-   pinned pages/MRs after RDMA error/reconnect; severity HIGH for RDS
-4. Small and contained? **PASS** — ~12 lines, one file
-5. No new features/APIs? **PASS**
-6. Can apply to this tree? **PASS**
+1. Obviously correct and tested? **PASS** — units, original docs, and
+   TCP_TIMEOUT_INIT all agree; reviewed.
+2. Fixes a real bug that affects users? **PASS** — false kselftest FAILs
+   on slower/loaded hardware; Red Hat author.
+3. Important issue? **PASS** (as “oh, that's not good” / broken default
+   net selftest), not as a production crash. Official `stable-kernel-
+   rules.rst` allows a real bug that bothers people, not only
+   oops/hang/CVE.
+4. Small and contained? **PASS** — 1 line, 1 file.
+5. No new features or APIs? **PASS**.
+6. Can apply to this tree? **PASS** — clean apply; buggy code present.
 
 **Step 9.3: EXCEPTION CATEGORIES**
-Record: None (not an ID/quirk/DT/build/docs exception). Qualifies as a
-normal leak/refcount fix.
+- Record: Not a device-ID/quirk/DT/build/docs exception. Closest
+  analogue: **test/tooling correctness** (same spirit as a build fix:
+  helps people who build and test this kernel).
 
 **Step 9.4: DECISION**
-Backport to **this** 5.10.270 tree. The buggy code is here, the fix is
-surgical, and there is no missing prerequisite.
 
-What it fixes for 5.10 users: after RDMA QP error / reconnect
-(`RDS_MSG_RETRANSMITTED`) or peer generation flush (`RDS_MSG_FLUSH`),
-racing ACK or socket close can clear `RDS_MSG_ON_CONN` in the xmit lock
-gap. The extra `rds_message_addref()` is then never dropped, leaking the
-message and everything it pins. Adding `rds_message_put(rm)` in that
-else branch restores the balance `2ad8099b58f2` broke.
+This tree is **6.12.111**. The typo is in-tree, the 1 s threshold is
+what the test and the TCP bug both mean, and the patch is a one-line
+userspace correction with no kernel regression surface. That is
+appropriate for 6.12 stable: it stops false net-selftest failures
+without changing runtime behavior.
+
+---
+
+## What the commit solves for stable users
+
+On 6.12, `fin_ack_lat` is a default net selftest. It is supposed to flag
+the ~1 s reconnect spike from FIN/ACK processing order
+(`TCP_TIMEOUT_INIT`). A missing zero makes it flag ≥100 ms instead, so
+loaded or slow machines can FAIL without the actual TCP bug. Distros and
+anyone running kselftests on 6.12 get noisy, wrong results.
+
+## Stable rules / risk vs benefit
+
+It is obviously correct, tiny, already reviewed, and applies cleanly.
+Benefit is reliable tests; risk is negligible. It does not fix a
+production crash, but it does fix a real, user-visible test bug in this
+tree.
+
+## Concerns
+
+None that block a backport: no missing prerequisites, no file drift, no
+kernel ABI change. Raising the threshold will ignore 100 ms–1 s events;
+that matches the original design.
 
 ---
 
 ## Verification
-
-- **[Phase 1]** Tags: SOBs Rausch/Srinivasan/Henderson/Kicinski; Link
-  msgid `3512480-4`; ML `Fixes: 2ad8099b58f2`; UEK Orabug 38923495
-- **[Phase 2]** Diff: else-branch `rds_message_put(rm)` in
-  `rds_send_xmit()` never-retransmit path
-- **[Phase 2]** Confirmed `rds_send_remove_from_sock()` puts the conn-
-  list ref; xmit extra ref is separate (`send.c:605-674`)
-- **[Phase 2]** Confirmed only drop_acked (707) and drop_to (774) plus
-  this path clear `RDS_MSG_ON_CONN`
-- **[Phase 3]** `git blame`: leak from `2ad8099b58f27` (2010), which
-  removed unconditional put
-- **[Phase 3]** `git merge-base --is-ancestor 2ad8099b58f2 HEAD` → yes;
-  `fbbe0610d057` → no
-- **[Phase 3]** `git show 2ad8099b58f27`: put moved to `to_be_dropped`
-  only
-- **[Phase 4]** openwall v4 0/4 and 3/4; v4 commit-message correction;
-  Kicinski merge
-- **[Phase 4]** Follow-up `to_be_dropped` reinit is hardening only, not
-  required
-- **[Phase 4]** UNVERIFIED: lore.kernel.org 403; `b4 dig` could not
-  target the 2026 SHA (not in this tree)
-- **[Phase 5]** Callers: sendmsg, `rds_send_worker`,
-  `rds_ib_tasklet_fn_send`
-- **[Phase 5]** No semcode MCP
-- **[Phase 6]** `git describe HEAD` = `p-5.10-1-gce56b7a73b64b`; `make
-  kernelversion` = 5.10.270
-- **[Phase 6]** Buggy hunk present at `send.c:287-294`; fix text absent
-- **[Phase 8]** Failure mode: leak of message + pages + MRs; HIGH for
-  RDS, not a panic
-- **UNVERIFIED:** stable@ discussion of this specific backport
+- [Phase 1] Parsed committed tags on `2373107782a9`; Horman Reviewed-by;
+  Kicinski SOB; no Fixes in committed text
+- [Phase 1] Original test commit `af8c8a450bf4` text: “larger than 1
+  second (spike)”
+- [Phase 2] Diff: one comparison in `client()`, 100000 → 1000000
+- [Phase 2] `timediff()` uses `tv_sec * 1000000` (microseconds) —
+  verified in `fin_ack_lat.c`
+- [Phase 2] `fin_ack_lat.sh` FAILs if any spike line is printed —
+  verified
+- [Phase 3] `git blame` line 72 → `af8c8a450bf469` (2020-02-02)
+- [Phase 3] `git merge-base --is-ancestor af8c8a450bf4 HEAD` → yes;
+  `2373107782a9` → no
+- [Phase 3] `9603d47bad464` (TCP SYN resend / 1 s spike) is an ancestor
+- [Phase 3] File unmodified after introduction (`git diff af8c8a450bf4
+  HEAD -- fin_ack_lat.c` empty)
+- [Phase 3] `git apply --check` of candidate → success
+- [Phase 4] `b4 dig -c 2373107782a9` → lore msgid
+  `20260806151645.4172900-1-bgrech@redhat.com`
+- [Phase 4] `b4 dig -a`: v1 (2026-07-31), v3 (2026-08-06, applied)
+- [Phase 4] `b4 dig -m`: Horman Reviewed-by; unsure about backport; no
+  NAK; v3 added Fixes + Cc: stable on the list
+- [Phase 4] Patchwork: applied to net-next as `2373107782a9`
+- [Phase 4] UNVERIFIED: stable@ archive (lore 403)
+- [Phase 5] `client()` called only from forked `main()`; Makefile lists
+  the test in `TEST_PROGS`
+- [Phase 5] `TCP_TIMEOUT_INIT` is `1*HZ` in `include/net/tcp.h`
+- [Phase 6] `git describe HEAD` → `p-6.12-3-gc504cf0baa3d8`; `make
+  kernelversion` → 6.12.111; line 72 still `100000`
+- [Phase 8] Failure mode: kselftest false FAIL, not kernel oops;
+  severity MEDIUM for testers
 
 **YES**
 
- net/rds/send.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/fin_ack_lat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rds/send.c b/net/rds/send.c
-index 5d09c7654f136..0a541cfc90185 100644
---- a/net/rds/send.c
-+++ b/net/rds/send.c
-@@ -288,9 +288,21 @@ int rds_send_xmit(struct rds_conn_path *cp)
- 			    (rm->rdma.op_active &&
- 			    test_bit(RDS_MSG_RETRANSMITTED, &rm->m_flags))) {
- 				spin_lock_irqsave(&cp->cp_lock, flags);
--				if (test_and_clear_bit(RDS_MSG_ON_CONN, &rm->m_flags))
--					list_move(&rm->m_conn_item, &to_be_dropped);
--				spin_unlock_irqrestore(&cp->cp_lock, flags);
-+				if (test_and_clear_bit(RDS_MSG_ON_CONN,
-+						       &rm->m_flags)) {
-+					/* our ref is put after the batch */
-+					list_move(&rm->m_conn_item,
-+						  &to_be_dropped);
-+					spin_unlock_irqrestore(&cp->cp_lock,
-+							       flags);
-+				} else {
-+					/* already off the conn list; drop
-+					 * the ref taken above ourselves
-+					 */
-+					spin_unlock_irqrestore(&cp->cp_lock,
-+							       flags);
-+					rds_message_put(rm);
-+				}
- 				continue;
- 			}
+diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
+index 70187494b57af..4117332eb1a9c 100644
+--- a/tools/testing/selftests/net/fin_ack_lat.c
++++ b/tools/testing/selftests/net/fin_ack_lat.c
+@@ -69,7 +69,7 @@ static void client(int port)
+ 		lat = timediff(start, end);
+ 		sum_lat += lat;
+ 		nr_lat++;
+-		if (lat < 100000)
++		if (lat < 1000000)
+ 			goto close;
  
+ 		if (getsockname(sock, (struct sockaddr *)&laddr, &len) == -1)
 -- 
 2.53.0
 
