@@ -1,207 +1,385 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A994950B8CC
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5978750F155
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418952; cv=none; b=OspGRDnHIsQBKYFU4yxcuS7dPAdVvdlt0viEE75YgbTG/Wl9CRZtXsNCtqLspEVrxysmMAyZzc2XoWdYBHIsvGujd/sb+f8wEC1gvsgxfTESaZToafVFT7bO6AlJkj/dNIF+24ib9SY5KgAViShvPI+Hq/bnDPGAY27hxNPcSr0=
+	t=1792419063; cv=none; b=J0vUat9/hyc9bVz/gFzppfQ05h5o0XxGSciqTNuELkSHaR5W5/3rjB3E3c6wB1Ihl2jOp7podmWQmU5U19zqRstW/NTB8ryI8cT6hRDK+hNn7e5vHxMRY0MGl60kyQz1VEcJ1EJaPOD6rU3aXTp5ln9g4ZVgPiLHHfDUPn4KHZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418952; c=relaxed/simple;
-	bh=Bb1oQJJb8bBWJ50lmw1B7ERzmHGFObf98zGv2XjADM4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hgzxUHWI1huTpxDyCoPfgVYhcf59pmw4KcmaffWxUsFndfKS579T0pP957aSdeJH8uIbdltZa9AzC8bXfS2pr1wisyUVDChx5TZzFaJrMclYofRefB8unfw9IuIsCeiQpVuedkCL1iammRK/0xFrA/B313uvC6tuv92rU6A+Nd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GHNV5Iot; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U880YE9c; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1792419063; c=relaxed/simple;
+	bh=Zj3kUlx08QelHnXt2PsIv3sn/GVI7uVy5Muk9eGsATI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bkKD27Dkk3GjZY5bZgmCh9K7CIYOUZ1KpC7GDpqjmTfYJZugnMp12Yp7B4N/1qqNInHe0Szru/4J9MjdPqpYXwYjb36KMHz26DsNZTmKWgIDkBkx5mSy4phfmVfSF8rCNB8d23t5bh2UzHM2qzjhyAwN3Vs7inWOQS+7w27hRaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L08t3zvT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LsOrJ0gN; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GHNV5Iot";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U880YE9c"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L08t3zvT";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LsOrJ0gN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792418949;
+	s=mimecast20190719; t=1792419060;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZRK1BzG8yA6E0e6lr2UnuvkDmeyhqnlz73tj/pxCJpU=;
-	b=GHNV5IotV6lRYajcLNGOZzHF2rsu+QcGVpusAG458LO2dTYMcHFIQbXmksc7M87J7oLm57
-	KfGfkUXoYM20yxYV3tBc/qyoLJeaJq7i1LYnHfbYs8vC2/Prz28hutgwR/B3EPRuA7t8Ym
-	GJgxl0m8mkxOuNDv/6cXLcv8TL0JqYw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=TgOW7Zlj1K/20x014o5My5tLoawxtT2jFwJJdENYGW0=;
+	b=L08t3zvT5BWVpoyVjLXsqh8jbaGLlZx0ToopWZyxs23GYpLuLjvyX8Eo9VbkG9LAYRCXdD
+	OIk2Cv5So2ipONgDxva3HBowC2WM6itwZJ3hjfv/Ez5yWKHMslj0u1LAtckeTTQ+ICu+Sc
+	Ucrz5T9FpTQw0H3oPlBq8NcFM6uPvcI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-in-3KJMlMoOQEKJBe3mr7w-1; Mon, 19 Oct 2026 14:09:02 +0000
-X-MC-Unique: in-3KJMlMoOQEKJBe3mr7w-1
-X-Mimecast-MFC-AGG-ID: in-3KJMlMoOQEKJBe3mr7w_1792418941
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a0284121c6so16644675e9.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 07:09:02 -0700 (PDT)
+ us-mta-137-d6edMxWNOG2kQ6VLYRfQxQ-1; Mon, 19 Oct 2026 14:10:58 +0000
+X-MC-Unique: d6edMxWNOG2kQ6VLYRfQxQ-1
+X-Mimecast-MFC-AGG-ID: d6edMxWNOG2kQ6VLYRfQxQ_1792419057
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so1463654f8f.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 07:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792418941; x=1793023741; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZRK1BzG8yA6E0e6lr2UnuvkDmeyhqnlz73tj/pxCJpU=;
-        b=U880YE9cNEgLsv1io2MgYfbdDp01nkckTeHKw7tYZ+fQOGodlAnJFYEY4xu82k2+BT
-         mqEn5wyvMnS2jK77hMsZFKy7dI0jQbj7hJECK3rSV3oI5srXkxBUOENAPSmh60bF2J5X
-         2/JuHoJk8pKH0HLWRAc5cSBmT8O0TQZK0OzqA5yxHrJMOB7VqZYQysXiLm6Ivplr3Iae
-         0b7UUfKwadTwyErOaSvP2u3+eddIEg63Jv3Xql3+gsceK/iux0Hpntey1DXqhn70rTeD
-         DACKcMyG/YuBI5UeFIskD/nTVzqiE3M06hUIsnEjm4YX5lnyrVpVZAtrJn5GDcDwrl4F
-         kqdA==
+        d=redhat.com; s=google; t=1792419057; x=1793023857; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TgOW7Zlj1K/20x014o5My5tLoawxtT2jFwJJdENYGW0=;
+        b=LsOrJ0gNFw0D1x0TJVLaVqqorpjASWasiLt/Qr0JD18lZ9xw0UCuSHGeF1RRfKArjE
+         lNAp31hyQYpCDHsmFxemvVA0o0M/uJRHK+CcD+j7fkO24XOSV28uVSeZ+sT2dph601uE
+         PvXzdw98tDrkRTHk5N0J/jdn84E4bOshoUnDShiBFPK82lBwqCOoEZZDFXPVBesfvu9Z
+         kxDY7nYmzP7c3+nVZL2DOtEKdpTV27fd708dvMEoyFXXaoM/c7qFAcAjVIRxMZ8YMANw
+         Byrgd2IY5XFuPFss/Gsi4DL810H4r3EYl8IKWX9k9s1grcccC4veq8379Jx+lxEIeGJw
+         mvxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792418941; x=1793023741;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZRK1BzG8yA6E0e6lr2UnuvkDmeyhqnlz73tj/pxCJpU=;
-        b=qggYGBwmaQlX/o5egzkZL2Y00KfHq/UBCLckqX0Rcc/OifZvZHy+d0ZBU7j9a3vs7/
-         PoSlbDo1Ma/wybkocpp8HRhEfgXd14uLZcQq/wLRdv5XVBavddM14cQtEjVp8R3zN3Ag
-         PdssxFShK+Lk5v5oM3jucqmSMAhFnVfZfe4Tgzk9JAlk8QEcBjUsK9PrrphwNnbuURAL
-         iFa6CNhZhyZF4fr3J0yQXcnkqSI+cOmmISl9/BAbhMGGKTtuEOTVfGe7ZR1GsxDrJTy9
-         qmcs7y6YHqIv4keGwJo5gOSLLlHAbLlO3FEZFhUZl8Bd+bDh8VbdGdeyTIOWEoxIy94M
-         DdSA==
-X-Forwarded-Encrypted: i=1; AKwUvBwMcwm7IGaF9HkiCYcpLQRAezib3X7k/wQvOMKOhHAEGB5Qq5x+W3Y7Y1ko2y5xAs95kwJTX8Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJaWLhhhKEGCZ3U6jgVjtGdZ2iB3W9ilw9YtHmyFwiK40pXjenJ
-	SP6vmDFnutvHXAdmrVEfFvDtLLTI581i7WgYQvqZwTH6sP0SZoAG2iQ1o/ieXwN6FaIQ2aDa+XR
-	CzTCSN38UpP83LuHS3u1HtEU2BIC8krTdzuaSi3qnyXaRI2TDrB2clzMzog==
-X-Gm-Gg: AYBFou2MXWaEP1l9JnjkqAv+14qJ8SrZfKZuVxe5zYAJrA2PpVHfBybe5Ad9xOHXFCT
-	5Z+ZOZLwNPkZwq+Asuw5BHwn1sf7qeiL4TXD0jNgfNQ3M8ZwUleVhZ6qLMowgf8jpfgmePTfpUA
-	xK4qGy2ulrpf7wrQl74TxKzZAluCJ9eeg5EbnbbjrCH5ifnL2/+q18PbzuLZt290fMfAZhl9DrQ
-	HFn+eGZwlqk4WVLHf5A4mw5UZ/vuSOKWj/Jc77VHET0uLAWFlE0Of0koNAs37nij1M+oOboN/X6
-	E/eKJruq4QioUYpD69Xkb4OsrTWkpIBcq4+f8J9CC+huW2DGWmc2b/yV+VzdU7QQC5i4sqCCsgt
-	HJg/3C5ve7LrNq8XCZD/qYPLc3cUeX6AFE1/uu9d6f3NKHPrlIVfcYtuwFupPhdsugSxOPIHH1g
-	==
-X-Received: by 2002:a05:600c:314f:b0:4a1:e6c5:e44c with SMTP id 5b1f17b1804b1-4a1e6c5e47amr69109505e9.10.1792418940816;
-        Mon, 19 Oct 2026 07:09:00 -0700 (PDT)
-X-Received: by 2002:a05:600c:314f:b0:4a1:e6c5:e44c with SMTP id 5b1f17b1804b1-4a1e6c5e47amr69108755e9.10.1792418940267;
-        Mon, 19 Oct 2026 07:09:00 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1df164777sm193091345e9.5.2026.10.19.07.08.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Oct 2026 07:08:59 -0700 (PDT)
-Message-ID: <8696d555-0428-49f3-ab03-e052a7d51213@redhat.com>
-Date: Mon, 19 Oct 2026 16:08:57 +0200
+        d=1e100.net; s=20260707; t=1792419057; x=1793023857;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=TgOW7Zlj1K/20x014o5My5tLoawxtT2jFwJJdENYGW0=;
+        b=JKGDk6STNbsPM6wKBtXT0/fWW0zVCAd26LWQshgPvZGR6FU/6WLsX+BfbWBoqT210H
+         3QZ8xoXe1iVuW86b9f5yj8JlWC5VXATZ5HF6CXDq/vK34eAGBEPtle3aPut+NFRCXWbH
+         zG5CGam81DodDnLmpl98aZt6DRqvHcSLypflI1CY3OC9vCrM3d2nKw/Qh5fK5iw//a0y
+         PnYuRwsfz/Dfd5GOIkIZdngIZxupu/YwXKGV16EakZviDrNcy4lITJ8K4Li8kBjXCDTG
+         MAfdiodbj5fH/eyg6eTeVI1vzDGjuFNy6NZQTWAH3YIQPS4XeuTpsDQinNyBnz1YjRth
+         IJMA==
+X-Forwarded-Encrypted: i=1; AKwUvBzpKzG0Nny8fYFAr9R6wA9urcpIg/V5f8B9EOI6xF6gzd96Bf4orMgxb3S0ajIgE8l+0M6mzw8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIChnRj+iNuqk6jFtlSL2PYoJ5YU0SqUePl8ERxGUPTgh68/Vew
+	FQr+sftugjRzuc4AbWPEDJJykru9LnsPPiWd3ajhquEY82VtZNpjQxVLTLN27tvFWYJNFgy2JBB
+	gNamYI8ccL3k3s0yNyLh193WwLPTzTCblSf1qzfo9L7yFjusYkX7aIIS+0SxLWNuT1Q==
+X-Gm-Gg: AYBFou28wN1f8xIiV0HyQSZiatolMcwpdSet6rGs3QWUPMDEAbbiTWHr7VKkCdFJaX8
+	mkaU12FE0vQlIfJzhF1yOAtxfRuLX1JXmWp/JTE4/tT+GCgcna1GTkq4sLcfSZAcSdeBF3XMwNX
+	EcrUG/2wrk2FvdLoNM4Ck+qWzqIi3qxImeZqR5LrlJo0jTsNFqUyaDDJxrPNX1TftNg1Ynbkl85
+	aAlKXw6HKJQVt6TxY757Umm8Rd97y0p6ese7NavoLtyjVJN3toCuVH3gmmTZbSpsbgyIC75tcqG
+	fPbmPXhUAaB06SwdubRYRbUpDIGicrDdOiQaqQ2NawihRk5kI9ysUnQ3QpQRu7MrKwyQPkti8U9
+	YHu24
+X-Received: by 2002:a05:6000:1ac9:b0:488:8bc1:a2eb with SMTP id ffacd0b85a97d-48e07f99197mr16192196f8f.39.1792419055324;
+        Mon, 19 Oct 2026 07:10:55 -0700 (PDT)
+X-Received: by 2002:a05:6000:1ac9:b0:488:8bc1:a2eb with SMTP id ffacd0b85a97d-48e07f99197mr16192044f8f.39.1792419054278;
+        Mon, 19 Oct 2026 07:10:54 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.74.151])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4fe9d9sm22231972f8f.40.2026.10.19.07.10.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 07:10:53 -0700 (PDT)
+Date: Mon, 19 Oct 2026 16:10:47 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bobbyeshleman@gmail.com
+Subject: Re: [PATCH net-next v4 3/4] vsock/virtio: coalesce RX write-space
+ notifications in lock batches
+Message-ID: <atYj6RxulTke6TJG@sgarzare-redhat>
+References: <20261014115640.184286-1-physicalmtea@gmail.com>
+ <20261014115640.184286-4-physicalmtea@gmail.com>
+ <atI1-_FAri2x-k2p@sgarzare-redhat>
+ <CAJwVaM+syOjuJ-Vk3dfvZv7WLJ=s2ne3WaFf+jHY1JQY0mc+2Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] ip_tunnel: reserve headroom for the encap header
- before pushing it
-To: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, Christian Ehrig <cehrig@cloudflare.com>,
- Alexei Starovoitov <ast@kernel.org>, Tom Herbert <tom@herbertland.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261010223601.1193655-1-theodorlarionov@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261010223601.1193655-1-theodorlarionov@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJwVaM+syOjuJ-Vk3dfvZv7WLJ=s2ne3WaFf+jHY1JQY0mc+2Q@mail.gmail.com>
 
-On 10/11/26 00:36, Theodor Arsenij Larionov Trichkine wrote:
-> ip_tunnel_xmit() and ip_md_tunnel_xmit() push the FOU/GUE header in
-> ip_tunnel_encap() before skb_cow_head() reserves headroom and unshares
-> the header. A packet redirected into the tunnel by tc mirred or an nft
-> netdev fwd only has the headroom of the device it came from, and
-> fou_build_udp() hits skb_under_panic(). With a mirred mirror, the push
-> overwrites the Ethernet header of the original packet instead.
-> 
-> Reproducer, run in an unprivileged user and network namespace:
-> 
->    ip link add dummy0 type dummy
->    ip addr add 10.2.2.1/24 dev dummy0
->    ip link set dummy0 up
->    ip link add ipip0 type ipip local 10.1.1.1 remote 10.1.1.2 \
->            encap gue encap-sport auto encap-dport 5555 encap-remcsum
->    ip link set ipip0 up
->    tc qdisc add dev dummy0 clsact
->    tc filter add dev dummy0 egress matchall \
->            action mirred egress redirect dev ipip0
->    # send a UDP packet to 10.2.2.2
-> 
-> skbuff: skb_under_panic: text:ffffffffad28b5cf len:49 put:8 head:ffff888010217740 data:ffff88801021773c tail:0x2d end:0x180 dev:ipip0
-> kernel BUG at net/core/skbuff.c:214!
-> Call Trace:
->   <TASK>
->   skb_push+0xcc/0xf0
->   fou_build_udp+0x2f/0x380
->   gue_build_header+0xfa/0x150
->   ip_tunnel_xmit+0x87f/0x21c0
->   ipip_tunnel_xmit+0x472/0x4f0
->   dev_hard_start_xmit+0x139/0x680
->   __dev_queue_xmit+0x11e4/0x3520
->   sch_frag_xmit_hook+0x10a/0x190
->   tcf_dev_queue_xmit+0x44/0x60
->   tcf_mirred_to_dev+0xbf8/0x1060
->   tcf_mirred_act+0x612/0x11b0
->   tcf_action_exec+0x1d9/0x8b0
->   mall_classify+0x16d/0x1e0
->   __tcf_classify.constprop.0+0x121/0x710
->   tcf_classify+0x8d/0xc0
->   tc_run+0x342/0x590
->   __dev_queue_xmit+0x9a7/0x3520
->   neigh_resolve_output+0x44c/0x780
->   ip_finish_output2+0x6e8/0x16f0
->   __ip_finish_output.part.0+0x1bb/0x350
->   ip_output+0x2ad/0x4a0
->   ip_send_skb+0x195/0x1f0
->   udp_send_skb+0x758/0xcc0
->   udp_sendmsg+0x1634/0x2050
->   </TASK>
-> 
-> Call skb_cow_head() for the encap length at the start of both
-> functions. ip_tunnel_xmit() reads tunnel->encap once, so a concurrent
-> changelink cannot change the length between the reservation and the
-> push. The GRE callers and ip6_tunnel already reserve this headroom.
-> 
-> Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp encapsulation")
-> Fixes: ac931d4cdec3 ("ipip,ip_tunnel,sit: Add FOU support for externally controlled ipip devices")
-> Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
-> ---
-> Found with a syzkaller-based fuzzer.
-> 
-> syzbot has an older report with the same title, fixed by c88f8d5cd95f
-> ("sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()"). This
-> is a different path: redirected packets do not get needed_headroom.
-> 
-> Tested on net af32da41b032: the reproducer above and an nft netdev
-> egress fwd variant no longer crash, and a GUE ipip tunnel between two
-> namespaces still passes traffic.
-> 
->   net/ipv4/ip_tunnel.c | 23 +++++++++++++++++++++--
->   1 file changed, 21 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> index e6bcf01411d0..38ab3c3bf5c9 100644
-> --- a/net/ipv4/ip_tunnel.c
-> +++ b/net/ipv4/ip_tunnel.c
-> @@ -579,6 +579,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
->   	struct rtable *rt = NULL;
->   	struct flowi4 fl4;
->   	__be16 df = 0;
-> +	int encap_hlen;
->   	u8 tos, ttl;
->   	bool use_cache;
->   
-> @@ -587,6 +588,11 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
->   		     ip_tunnel_info_af(tun_info) != AF_INET))
->   		goto tx_error;
->   	key = &tun_info->key;
-> +	encap_hlen = ip_encap_hlen(&tun_info->encap);
-> +	if (encap_hlen < 0)
-> +		goto tx_error;
-> +	if (skb_cow_head(skb, encap_hlen))
-> +		goto tx_dropped;
+On Sun, Oct 18, 2026 at 12:54:50PM +0800, Jia Jia wrote:
+>>
+>> On Wed, Oct 14, 2026 at 07:56:39PM +0800, Jia Jia wrote:
+>> >Each received packet updates peer credit and may call sk_write_space().
+>> >A writer cannot use that credit until the batch releases the socket lock,
+>> >so one notification at batch finish is sufficient.
+>> >
+>> >Save the initial sk_write_space callback when the AF_VSOCK socket is
+>> >created and require it to remain installed for batching. This lets the
+>> >transport module deliver the deferred notification without referring to
+>> >the unexported default callback. Sockets with replaced callbacks retain
+>> >their per-packet behavior.
+>> >
+>> >Record the batch socket before processing its first packet so a batch that
+>> >ends on that packet cannot lose the pending notification.
+>>
+>> mmm, is this a fix of the previous patch?
+>>
+>
+>No. Patch 2 preserves the existing per-packet sk_write_space()
+>behavior, so Patch 3 is not a correctness fix for it. Patch 3 only
+>coalesces the native/ default notifications.
+>
+>Moving batch->sk earlier is required only after the deferred state is
+>introduced here: the socket must already be recorded before the first
+>packet can set write_space_pending, so the notification can still be
+>delivered if that packet immediately ends the batch. Sorry, the commit
+>message did not make this distinction clear.
 
-This looks like the wrong solution?!? I suggest instead adding the needed
-skb_cow_head() in {fou,gue}_build_header().
+Yeah, please, make reviewers life easier explaining these kind of info, 
+dependency. Also, incremental performance numbers would be nice to be 
+included also in singe patches.
 
-/P
+>
+>> >
+>> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+>> >---
+>> > include/linux/virtio_vsock.h            |  1 +
+>> > include/net/af_vsock.h                  |  5 +++
+>> > net/vmw_vsock/af_vsock.c                |  1 +
+>> > net/vmw_vsock/virtio_transport_common.c | 53 +++++++++++++++++--------
+>> > 4 files changed, 44 insertions(+), 16 deletions(-)
+>> >
+>> >diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+>> >index 26dde6909c4ed..bf077ee0ded88 100644
+>> >--- a/include/linux/virtio_vsock.h
+>> >+++ b/include/linux/virtio_vsock.h
+>> >@@ -287,6 +287,7 @@ struct virtio_transport_rx_batch {
+>> >       struct sock *sk;
+>> >       unsigned int pkts;
+>> >       size_t bytes;
+>> >+      bool write_space_pending;
+>> > };
+>> >
+>> > void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+>> >diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+>> >index 5549298c1ec6b..9a40960d10cbe 100644
+>> >--- a/include/net/af_vsock.h
+>> >+++ b/include/net/af_vsock.h
+>> >@@ -63,6 +63,11 @@ struct vsock_sock {
+>> >       u32 peer_shutdown;
+>> >       bool sent_request;
+>> >       bool ignore_connecting_rst;
+>> >+      /*
+>> >+       * Initial callback, used to identify replacements and deliver deferred
+>> >+       * write-space notifications.
+>> >+       */
+>> >+      void (*default_write_space)(struct sock *sk);
+>>
+>> This is kind of virtio-vsock specific, why need to be here?
+>>
+>
+>I stored this state here because __vsock_create() can capture the
+>native callback before the socket is exposed or any callback
+>replacement occurs, and the transport cannot directly reference the
+>unexported default callback. However, I agree that exposing this
+>virtio-specific state directly in struct vsock_sock is not ideal. I'll
+>look at hiding it behind an AF_VSOCK helper in v5 while preserving the
+>capture point and the lifetime required by deferred callbacks.
+>
+>
+>> >
+>> >       /* Protected by lock_sock(sk) */
+>> >       u64 buffer_size;
+>> >diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>> >index 44cee74519555..fe7f49da6c4bc 100644
+>> >--- a/net/vmw_vsock/af_vsock.c
+>> >+++ b/net/vmw_vsock/af_vsock.c
+>> >@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
+>> >               sk->sk_type = type;
+>> >
+>> >       vsk = vsock_sk(sk);
+>> >+      vsk->default_write_space = sk->sk_write_space;
+>> >       vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
+>> >       vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
+>> >
+>> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>> >index ff74e805527a5..f4b5f0230493e 100644
+>> >--- a/net/vmw_vsock/virtio_transport_common.c
+>> >+++ b/net/vmw_vsock/virtio_transport_common.c
+>> >@@ -1820,6 +1820,7 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
+>> >       return sk->sk_state == TCP_ESTABLISHED &&
+>> >              sk->sk_type == SOCK_STREAM &&
+>> >              READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
+>> >+             READ_ONCE(sk->sk_write_space) == vsk->default_write_space &&
+>>
+>> Why?
+>>
+>
+>I believe this check is necessary because notification coalescing is
+>only safe for the original native sk_write_space callback. Sockmap can
+>replace this callback under sk_callback_lock, which is independent of
+>the socket lock held across the batch, and the replacement may require
+>per-packet handling. Comparing it with the callback captured at socket
+>creation lets us fall back to the existing per-packet behavior when it
+>has been replaced. I'll add a comment explaining this.
+>
+>
+>> >              !sock_flag(sk, SOCK_DONE) &&
+>> >              vsk->transport == &t->transport &&
+>> >              vvs && virtio_transport_rx_skb_has_headroom(vvs) &&
+>> >@@ -1828,13 +1829,15 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
+>> >
+>> > /*
+>> >  * The caller holds sk's socket lock.  Set @batchable if the socket can remain
+>> >- * locked for another ordinary STREAM/RW packet.  Return true if the caller
+>> >- * must free @skb.
+>> >+ * locked for another ordinary STREAM/RW packet.  When @batch is non-NULL,
+>> >+ * record a default write-space notification for batch finish instead of
+>> >+ * delivering it immediately.  Return true if the caller must free @skb.
+>> >  */
+>> > static bool
+>> > virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+>> >                                struct sk_buff *skb, struct sock *sk,
+>> >-                               bool *batchable)
+>> >+                               bool *batchable,
+>> >+                               struct virtio_transport_rx_batch *batch)
+>> > {
+>> >       struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+>> >       struct sockaddr_vm src;
+>> >@@ -1863,8 +1866,12 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+>> >       if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
+>> >               vsk->local_addr.svm_cid = le64_to_cpu(hdr->dst_cid);
+>> >
+>> >-      if (space_available)
+>> >-              sk->sk_write_space(sk);
+>> >+      if (space_available) {
+>> >+              if (batch)
+>> >+                      batch->write_space_pending = true;
+>> >+              else
+>> >+                      sk->sk_write_space(sk);
+>> >+      }
+>> >
+>> >       switch (sk->sk_state) {
+>> >       case TCP_LISTEN:
+>> >@@ -1931,7 +1938,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+>> >       }
+>> >
+>> >       lock_sock(sk);
+>> >-      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, NULL);
+>> >+      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, NULL, NULL);
+>> >       release_sock(sk);
+>> >
+>> >       /* Release refcnt obtained when we fetched this socket out of the
+>> >@@ -1949,22 +1956,27 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
+>> >
+>> > /*
+>> >  * Finish the RX batch.
+>> >- * For a non-empty batch, the caller must hold the socket lock acquired with
+>> >- * lock_sock(). This function releases the lock and the batch's lookup
+>> >- * reference.
+>> >+ * For a non-empty batch, the caller holds the socket lock acquired with
+>> >+ * lock_sock(). Deliver any deferred write-space notification while the lock
+>> >+ * is held, then release the lock and the batch's lookup reference.
+>> >  * An empty batch is a no-op.
+>> >  */
+>> > void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
+>> > {
+>> >+      bool write_space_pending = batch->write_space_pending;
+>> >       struct sock *sk = batch->sk;
+>> >
+>> >       batch->sk = NULL;
+>> >       batch->pkts = 0;
+>> >       batch->bytes = 0;
+>> >+      batch->write_space_pending = false;
+>> >
+>> >       if (!sk)
+>> >               return;
+>> >
+>> >+      if (write_space_pending)
+>> >+              vsock_sk(sk)->default_write_space(sk);
+>> >+
+>> >       release_sock(sk);
+>> >       sock_put(sk);
+>> > }
+>> >@@ -2019,7 +2031,8 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+>> >                       }
+>> >
+>> >                       free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk,
+>> >-                                                                  &batchable);
+>> >+                                                                  &batchable,
+>> >+                                                                  batch);
+>> >                       if (!batchable)
+>> >                               virtio_transport_rx_batch_finish(batch);
+>> >                       if (free_pkt)
+>> >@@ -2059,23 +2072,31 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+>> >
+>> >       lock_sock(sk);
+>> >       /*
+>> >-       * Sockmap removal restores the native protocol under sk_callback_lock.
+>> >-       * Serialize this initial eligibility check with that update.
+>> >+       * Sockmap teardown restores callbacks under sk_callback_lock. Keep the
+>> >+       * initial eligibility check consistent with that update.
+>> >        */
+>>
+>> Unrelated change?
+>>
+>
+>This is related to the new callback eligibility check, but I agree
+>that the original rewrite was unnecessary. I’ll keep the original
+>serialization wording and only extend the comment to mention both the
+>native protocol and callbacks.
+>
+>> BTW if you are assisted by AI, please read https://docs.kernel.org/process/coding-assistants.html
+>>
+>
+>Thanks for the reminder. I read the document when you mentioned it
+>previously.  take responsibility for every change in it. As this
+>review has shown, I missed some netdev conventions, and the patch
+>organization can also be improved; those are my mistakes, and I’ll
+>address them in v5.
+>
+>I used an LLM to help set up the test environment, translate and
+>polish the English text, and review the series. I ran and verified the
+>tests myself. I’ll
+>disclose that assistance in v5 as described in the documentation.
+
+Okay, this is a great use of LLMs IMO and maybe don't need the tag.
+
+Thanks,
+Stefano
+
+>
+>
+>> >       read_lock_bh(&sk->sk_callback_lock);
+>> >       start_batch = virtio_transport_recv_pkt_batchable(t, sk);
+>> >       read_unlock_bh(&sk->sk_callback_lock);
+>> >
+>> >+      if (start_batch)
+>> >+              batch->sk = sk;
+>> >+
+>> >       free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk,
+>> >-                                                  start_batch ? &batchable : NULL);
+>> >+                                                  start_batch ? &batchable : NULL,
+>> >+                                                  start_batch ? batch : NULL);
+>> >       if (start_batch && batchable) {
+>> >               /* Keep the lookup reference until the batch is released. */
+>> >-              batch->sk = sk;
+>> >               return;
+>> >       }
+>> >
+>> >-      release_sock(sk);
+>> >-      sock_put(sk);
+>> >+      if (start_batch) {
+>> >+              virtio_transport_rx_batch_finish(batch);
+>> >+      } else {
+>> >+              release_sock(sk);
+>> >+              sock_put(sk);
+>> >+      }
+>> >+
+>> >       if (free_pkt)
+>> >               kfree_skb(skb);
+>> > }
+>> >--
+>> >2.53.0
+>> >
+>>
+>
 
