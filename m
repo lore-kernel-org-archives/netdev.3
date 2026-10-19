@@ -1,145 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.135
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792431459;
-	b=Ggo6gO50zCqFQK408xCfK8SJCiKWutLLyQ9GjuWyat1f/oVWobYuEjtxklSL8zQU9mV4
-	 q8tSfW7Tj0kxmN6WstImFxisqm2hb/uZNAmM3hPe/TlkbNZG8IX0BQpZlMezBEMRtY6nI
-	 +cD8SK3pDHB31FDw4QzSCOnyPbiE6TJZCKYW/JAUvSuyjUvQ+lmwUrvQaGgzr2yyUUa6p
-	 rc7cP+ToeaHGF1qIttGNmtnpU5coouvJSTDxplT1CQptYcjI85HMUc0XlsYqYSWmZSoXX
-	 COANP2cW4BoDgAM1OqjRKuxPlj74t7YXA1wxerqM/Z2Kqr0kxSJGa2kipdWuGmfNLtA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792431459;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:
-	 x-ms-exchange-atpmessageproperties:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=e8ZtILKRZSohbCEmNEOQaS40KTDa+QMuBBjF5upVqjU=;
-	b=ljPtg2jv3cOdRwO6ddnOCTCv31S+jisBuzQp9hOlwaTPM5ZmUUbco8FW4ggk4n8GZ1/P
-	 XEEj9WmQGb4wmGojtSlhTdMlcZ3ER8Qw3YcQSmd8+tO75fGrbBE14sOwcNjRF1ujKlx1N
-	 xot0VCGNkULMknabRT9F/yiJpbmjvX8H3cLtT/Tzkh0k1HDfmI7ciELgGZTVFXhVQF32F
-	 OZfMokem3HoeK6Yqs5J5EVQYRzxtRuif5gVMiz20SBx/jEmdjqvZyb2slRBXZmaWTgtNI
-	 pUMdIK9QqI2C2pW1CUkTFHq2ySJwhFNmIlS0ugaUXZMjMGsTnaf1+k13YflMw2fvJLw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=visotia.com;
-	spf=pass smtp.mailfrom=visotia.com;
-	dkim=pass header.d=visotia.com header.i=@visotia.com header.a=rsa-sha256 header.s=selector1 header.b="T/JbZQ5Q";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.69.135
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020135.outbound.protection.outlook.com [52.101.69.135])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792431515;
+	b=t4CrTza14dXU4yC7wwSuc7uaOaFd8HCip/Qj+qvgkrHLNrXz8EK4wNdNJ75j7xYpuwSD
+	 S++kfoaeaYh4X6k7Cxm+bHOJ3euRlFaAqrEC/Wb7hMDWLz6bhRtakOpNLDToYx2TV4skz
+	 1u2JpWssa4Y0DF+/CGhYgBQwPOlPcDjmIdipYwjADDw5qurfIUiFQ0LS0xJl8gCNPFBCo
+	 cEkUzxI+fJ8lVqAxiYDrCgzCO1glK+LeQwv2EkLPvSY7/7jvAWWyyFak5GX34ecmzb1Ra
+	 EGy9fjJMYBTZJ4ivm74Q9zgykajEmZpVUPpxUEzW38yHlwh+KC4K/mHyRN9zuPXvazQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792431515;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=s6W52NLboX/AFrON+F4OTdfp/qkLqq0IjDzO/k4MGLA=;
+	b=wdse8cKeeKSgsWOMzg5CIBTj5AueDHP0ivPvpcOBucXd9gM5Q4tnWmmS2m+g+IM2AJpt
+	 0XY2PbPeEEUJmJF/BJLt+NGVhdZ8x0grSa0j3IBXSAyd0USLuCI5WPV5t2WG4AJNdeA2J
+	 kQny65RnSmRgSS65Uqe4SGWnB+w6pNAH3JrU2RwQsvKpnw9SxEtUo1OWWBLX+FGU0JxjN
+	 TIU/RANdFB7E8BMJOttzVWwCOvjkHbex9HsXFYKxVzWVd+GSJra+HAhLEd6t7jnYHrIFk
+	 h6qYN33kPrHyOO4RSfMr8PkeykSNdpmdYYc5P5HTogacn/N65YXLOXH9Z1yyBzyFwzg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FbsDr3kV;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661FE606A319;
-	Mon, 19 Oct 2026 17:37:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 661FE606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=visotia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=visotia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C38D606A331
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=visotia.com header.i=@visotia.com header.a=rsa-sha256 header.s=selector1 header.b=T/JbZQ5Q
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BrDowKrtFiFH8r9XxUo5X4yrGwqYlU0TUHjpqJC49Sg+oWSbF44JtKVdF72flz61QbYI/Wn4lZ5IqwxTQ9GJyfEzX3IoJ0qq8OStSPKpHZ6GppXtgEIxc6Bk/pkRjn0w3Wc0vJtimkwu8KwXA/QmYfcVtjM5evZ7lYyqBTmTQLl77FPTCYEF4PBr4BbQdYzvCFhbo2PwaSInuTtxcLSCRDiIZ73Eqmijrr/X1f7IsoZCMG2uuoWd8h5L4rgvNVNBKrXsl81VKF5wUpSD9lnboFk3Ck/k54MTCTfFmsgdcJ+JUYN/3Ei9KkbPv7I1VruzFb4/a9HgddswvxX1CNzX8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e8ZtILKRZSohbCEmNEOQaS40KTDa+QMuBBjF5upVqjU=;
- b=B/3idElTg966H242L5t2SLyruxwqIYthE+6JmeJMEalo+OuY/AOghFseKNk7TTs+JIqVc1L3evtM8CgT3aUzC+tgpRo46ijx8i0RFx1Fq4+CNd8LYnfT3EzawPRErHcxjmLZJljEGYmN8s8BOrSWDgnxrBDNAcENgYCgEpiUq9VKMtWeWIj0lWzCRsCesaJ0LY/qYs4iGPV+R0Xz4+5NUUcpdr78GsfLASYweQTBSyownrkfym1d7BBxmEd3TLangULeSASz5OZ4TN9q0GtFsauYTItiFWNIa9sT1iWohL5HSQPS8xRlkRCzATOqSbUQAx0zb4gfaw1aruwH/9SrdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=visotia.com; dmarc=pass action=none header.from=visotia.com;
- dkim=pass header.d=visotia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=visotia.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e8ZtILKRZSohbCEmNEOQaS40KTDa+QMuBBjF5upVqjU=;
- b=T/JbZQ5QbbItNO8gq4q1b8W5qZm/e7dq+LiAKSgP4QTaYxk6loGOt0yB29aKSD/Qw7g9yYpCZtPMPMp/NFr03UlNPkZ899vMPQBSOyLpGjpOi6pqBqG8X26MjU30wu3dlj9Ha1Ul1KTNCzA7sY19TmT4eqnQstx1xJNKkXvGQ2OxVsxJ4nKdDEnCXwlzwV5sZCUmcmHHBTwtGgSp9+6+0Q4e1RyVlEfjX7lKxj22RNsT5csZdksLnG01+WKrknLQAlkjjrxHq95K4aWjhJMUxk9gAESieBZhUOvHAAKLrI6fVQK1ei0i8oV+zvA1C5reoWmyr4dIv2uo3uV3JnRhYQ==
-Received: from PRAP189MB1850.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:27b::14)
- by DU7PPFD4DF0A467.EURP189.PROD.OUTLOOK.COM (2603:10a6:18:3::ae5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 17:37:34 +0000
-Received: from PRAP189MB1850.EURP189.PROD.OUTLOOK.COM
- ([fe80::5cce:ff09:8d2f:9cad]) by PRAP189MB1850.EURP189.PROD.OUTLOOK.COM
- ([fe80::5cce:ff09:8d2f:9cad%4]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 17:37:34 +0000
-From: Mikkel Eskildsen <mke@visotia.com>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-CC: Oliver Neukum <oneukum@suse.com>, Breno Leitao <leitao@debian.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: Re: [BUG] cdc_ncm: soft lockup with netconsole over an AX88179B dock
-Thread-Topic: [BUG] cdc_ncm: soft lockup with netconsole over an AX88179B dock
-Thread-Index: AQHdX9CKh0EMeyYVbkas70+IWBbMn7cE8GAAgAAxAa8=
-Date: Mon, 19 Oct 2026 17:37:34 +0000
-Message-ID:
- <PRAP189MB1850A57ACC325B53755381FBA9982@PRAP189MB1850.EURP189.PROD.OUTLOOK.COM>
-References:
- <PRAP189MB185019A5A8D411482BB6E0CDA9982@PRAP189MB1850.EURP189.PROD.OUTLOOK.COM>
- <6aaea20ede0bd16a5138bc126f3ec897@tipi-net.de>
-In-Reply-To: <6aaea20ede0bd16a5138bc126f3ec897@tipi-net.de>
-Accept-Language: en-US, en-DK
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=visotia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PRAP189MB1850:EE_|DU7PPFD4DF0A467:EE_
-x-ms-office365-filtering-correlation-id: 0d7eab84-4aec-4bd3-e17d-08df2e07a8d9
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|55112099003|22082099003|18002099003|38070700021|4143699003|10067099003|56012099006;
-x-microsoft-antispam-message-info:
- v94sPoMHQdKf87dis8F+FrlU6PWpkdAxPXKsPSFvaA7u5wjdkR/YA25wg2bcchHRnGClF+Azx89PGSA79tY481puV0ZG4F84sk1H2Cg61MCxRTrxJNrRfv13xbDpEGUXws4xNvYThjy6GN5PQTUUnZKXtRZ1KRY7t6mK4Lg7h4MHt3W5+7b/OaC8b4aeZlORmR9PCs5gIp/kZNCHEZqDCj5CFiOt/BZc5bcxqhgc3+S0RDUSP8VeDkUufmMaEwCKLDGoZ1e+LpHo79+NzSWR0SQhqIPAQSPmNV4kM47p0qT1eNsZwluqSrpO6L0HdOTzLZTxT3fow7QZeXZFO/J9SbYWVSFacD+nWfay32tqAF6mPfPjlQeB9rRrIXjNJDvnx3VHRqy1cTP/7EXVAI5RvkDKgHLZvkqM9JmvMnCxjBNZpcrcrPMQGD/pCerflavAS9XVCAZky7uVV6AAZIq8/nQdAX7LAVgCDvU5h+ZWzjpXbXYNV9LUdNpO1EbAMOnI8PGO9X+iR3u42k32UHhXO4DCm5ofggsOMQw7TR3hOYVJQTmIR6S7SMOc9xBrWFJ0aI33IVHIt0af6ziXlvBFYPi1e+rDK387BfAf2qiK9ZKg7UQ5FWsqj93NHe9fyRo91xWosXT11VDVtsNrOr89tz5kr6kvlTqmOfyKbcPD0sTkynQj+rzN2ide9V5kmqO7WHWCSpT8oJINmmcu6flkRg==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PRAP189MB1850.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(55112099003)(22082099003)(18002099003)(38070700021)(4143699003)(10067099003)(56012099006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?R7QhmQgeTyqi6Gv9DaLTEZkZCxwO5hohpunCVcTXU69dW8WQgZ0nmzxY1Ez8?=
- =?us-ascii?Q?hCfvsyNXSPb/H22qMuwGsvezWiluzRjHBTo1E/7ONfZJQ9y98neL7YLAyH4a?=
- =?us-ascii?Q?k4zdEBl4p/lkjpAAwMLxVD/ZJSI9kHlX3erJyU6Pj5zzBvJ/PO0c/9XDkTVu?=
- =?us-ascii?Q?a+IttXcQ3N/sgw+7d303YPIVRs3EHS6LRnqkrxNFibJgfejeeJ0lXccJ6J4X?=
- =?us-ascii?Q?gX25WPF2N/UdxOM+s8TyjeWrHwNL6V01Zxqjqamiuv5BdLupxHP+ablkMTBT?=
- =?us-ascii?Q?m51YP9lUUyxEyMSoO88cytIx7K0UAR9bDFQWGsjL3tlQF21HqecbcqPRKMbs?=
- =?us-ascii?Q?TRWfKuQ7+u4m2oih47SYjah9v4VMM2xI+nuTxBfYL3nB9OWQyet1mKsIn5nH?=
- =?us-ascii?Q?RV7J4ZFSvozH/TrpfoR5lIeE5wSl48S5bpVnsSr0TmoKD5deaLzl5btSlRGR?=
- =?us-ascii?Q?aJeazAOp6acDYZiJJE1x9Fluzl3qViGx7xYHB9LJ/fquVhKZnI6kwisFbWZF?=
- =?us-ascii?Q?u6sskgHKf43k4hbQ3d3cPZcN+qKsQrXDlC5AV2ponDQM/4EQWXkxUOKmB+2c?=
- =?us-ascii?Q?GfGEpVW+tfYImfZ5x3N4Grl/CmVKbbO5DSimOwPXl1qdwEK1Sultgfy5a4tC?=
- =?us-ascii?Q?5qHYcDLN8TQVNYCwrIQ/oKUa2g31dDWeR/W/sDbXMsqrJ3ZBrlDq5Qa2X/K2?=
- =?us-ascii?Q?wdxpwTLBWQOlVPmkwLY81tdCqGfEflGMfQT2OZ03LrYeHFtbaPhgvdpTlCvu?=
- =?us-ascii?Q?ClKMVxTyrO8gwIM/9w/EPM+8jYc6PaFEY/dSQUmqogjdFQhFvPwoKiVe15io?=
- =?us-ascii?Q?ybKz62ZkrhaeyOXkxUxBvb1pM+K5k8wSlheCNf9XMEJv4M32qpR5hUMytL9P?=
- =?us-ascii?Q?9Nr9cINEMozlAWHzOJTnlJEbxzXMdHsx82k4zfIPVV6xEiTw5H0FgpGSHl21?=
- =?us-ascii?Q?o0Vcg2v46S0hmrgrAjnZ9LvKmH2X0kCCjGFU+3mTG5HqlJJJpXopS2KacgUj?=
- =?us-ascii?Q?dPHFl4TurJuVjmLsDqMq+tOLVNgupIDoQ2RQVnpr5NyO2QllvWmRVMzVd29W?=
- =?us-ascii?Q?2glUACVs20L0COy8SLt/iKcr07a4++38mtWaS3ajlaTTUpzptigSAzpIF2tq?=
- =?us-ascii?Q?FrA153U0ige47Sg5vp0EnvuxelwXLKD2mwmbOpiToU6LUgKlPXnWAPoViQz0?=
- =?us-ascii?Q?vIPYZH/UH9c7j6y7wlToRTkzBzxWDJHjFAnqfIFhNfM7DbZesgjVd6ZbhjfW?=
- =?us-ascii?Q?ygGs1Dkc4g6OFjueNuLXV+jzGjPoB5g9Ukd8c9opSth7Xaho+2Ys2fbp2QnD?=
- =?us-ascii?Q?gmyMug+xt0bRIExYeNmnxuiFFPJ4FeNyBu6AycSXEzY3Bnni87HjnPMooX+q?=
- =?us-ascii?Q?hiMtMN7fbW7yUMH33CVvC5HbQQKVFgpwnyXL0ZzR7nw006lbhdsjUk/6ofqB?=
- =?us-ascii?Q?9BMtAaJzc7ghRJ0JNI/fM0QnxdJaxnjtwmz3dTrV3DXVuzDVNCaM0jfIK4Cb?=
- =?us-ascii?Q?fTpg7wK6blhlsOBZ56lfaT7C1kuzJO7AB9G+eG2ll1FQCQQnRoqTKM3y+Qfy?=
- =?us-ascii?Q?nHe/LolDzZpIb9bsw1HDsmqYtneKNEMroD7ofV+zI1s9zQr1eyxAA1zktgRN?=
- =?us-ascii?Q?bxb2h6Hf04pUdH7aWxYBkeMXRf+vkggr7coWsJcQqH7p0BHvkIKBV1Pjgo+q?=
- =?us-ascii?Q?MW2UVqEpjama0dv4EwUwHZgkmgX6TIhBVAULzNaVqSSqPcpq?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FbsDr3kV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21D81F01573
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:38:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792431514;
+	bh=s6W52NLboX/AFrON+F4OTdfp/qkLqq0IjDzO/k4MGLA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=FbsDr3kVT9I0w6k9SF5ZxWq2MbBiWKCgI4YoK0iErcif68QqUS7X3h/x5FiwrI3Ca
+	 MdC5DZpHQPvhAQn/aLdexPKQLOj1pWdfroyQPogJUIIUeUmYAwo3Xg53EXaHMF+W9P
+	 FMK/NaBBY9u9YieM0lT26TBDNz40+nGJTRfMCZarwcxLlZARhycl9tAlOSSMA5rthB
+	 m4Li99yORqeciCLayBPkE8NLE/PbRhXrqLfNuW9S+Z/EqQlLHBH5/FLAQOLGHBTA/x
+	 vMH/QR2+bZh89JWGXb2TUGx6HCht4GNYEzPMeBEggYLJmNl/J5V1Kbe8rl4Ojv1q9S
+	 MaFyMP+gh9fww==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-48e9476e26aso669772fac.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:38:34 -0700 (PDT)
+X-Gm-Message-State: AFq9FYJlgWMgaN4nEqaHJ6C/zkjx//tk0GRCNHMCbc1fg08UYsBUuZIm
+	JZk5Wyyk1pwdXy1tK/nIOU+jEeK/EpNuI2LztwfBQiv/rl3vMvTrFSxZGib8Ek4PuOpBchmhuEI
+	wQn3Wq0u4AsRQCu7viC0r5GPM9brwvio=
+X-Received: by 2002:a05:6871:385a:b0:49e:670d:78a9 with SMTP id
+ 586e51a60fabf-4a757b9621bmr6971161fac.57.1792431514134; Mon, 19 Oct 2026
+ 10:38:34 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -149,40 +58,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: visotia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PRAP189MB1850.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d7eab84-4aec-4bd3-e17d-08df2e07a8d9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2026 17:37:34.1773
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0398e9f1-d93e-448d-9e92-963c448c9a01
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: kU6BOur+GlDfaZzIzFP0hNzbFVomx3BIq3zR+Yzst5UwDF5dKY5L3YBCZXbWSPsY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PPFD4DF0A467
+References: <20261019170225.729789-1-vlad.wing@gmail.com> <20261019170225.729789-2-vlad.wing@gmail.com>
+In-Reply-To: <20261019170225.729789-2-vlad.wing@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Mon, 19 Oct 2026 19:38:22 +0200
+X-Gmail-Original-Message-ID: <CAL4WiioPv0k+MKGwtX9B1TGPmKv66rvGsYn1hKBxQG9Rie9qoA@mail.gmail.com>
+X-Gm-Features: AclHuK82pczAE9KFR8j9a3CaRLQliaZrf66et_YIl0AKM8Sjxsa0n1iyw5RxUvw
+Message-ID: <CAL4WiioPv0k+MKGwtX9B1TGPmKv66rvGsYn1hKBxQG9Rie9qoA@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] lockdep: Introduce lockdep_unregister_key_nosync()
+To: Vlad Poenaru <vlad.wing@gmail.com>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Bart Van Assche <bvanassche@acm.org>, Davide Caratti <dcaratti@redhat.com>, 
+	Breno Leitao <leitao@debian.org>, Nilay Shroff <nilay@linux.ibm.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Nicolai,=0A=
-=0A=
-On 19.10.2026 16:42, Nicolai Buchwitz wrote:=0A=
-> Below is a patch which hopefully fixes the issue.=0A=
-=0A=
-Thanks, that was fast.=0A=
-=0A=
-I tested it in a VM on the same laptop with the dock NIC passed through (AX=
-88179B, 0b95:1790, cdc_ncm), kernel 7.2.9-1-cachyos. netconsole on that NIC=
-, a printk flood from /dev/kmsg and 4 TCP downloads on the same NIC.=0A=
-=0A=
-Without the patch it locked up 3 out of 3 times, within 30 to 100 seconds. =
-Same trace as on the laptop:=0A=
-=0A=
-  pr/netcon0 -> netpoll_send_skb -> usbnet_start_xmit -> cdc_ncm_tx_fixup -=
-> __local_bh_enable_ip -> ... -> sch_direct_xmit -> _raw_spin_lock=0A=
-=0A=
-With the patch it ran for 20 minutes under the same load (about 14 GB recei=
-ved) with no lockup and no warnings in dmesg.=0A=
-=0A=
-Tested-by: Mikkel Eskildsen <mke@visotia.com>=0A=
-=0A=
-I only tested cdc_ncm, the cdc_mbim part is not exercised here.=0A=
-=0A=
-Mikkel=0A=
+Le lun. 19 oct. 2026 =C3=A0 19:02, Vlad Poenaru <vlad.wing@gmail.com> a =C3=
+=A9crit :
+>
+> From: Bart Van Assche <bvanassche@acm.org>
+>
+> Add a variant of lockdep_unregister_key() that neither sleeps nor waits
+> for an RCU grace period. Instead the caller must make sure that a grace
+> period elapses after the call before the memory holding the key is
+> freed or reused.
+>
+> That lets callers that already free the key's memory with call_rcu() or
+> kfree_rcu() avoid waiting for a second grace period. The qdisc code is
+> such a caller: all qdiscs except ingress, clsact and noqueue embed a
+> dynamic lockdep key and are freed with call_rcu(), and replacing an mq
+> root on a multi-queue NIC destroys one qdisc per TX queue under RTNL,
+> each currently waiting for its own expedited grace period.
+>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Waiman Long <longman@redhat.com>
+> Cc: Boqun Feng <boqun@kernel.org>
+> Link: https://lore.kernel.org/all/20250203175939.3133477-2-bvanassche@acm=
+.org/
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> [vlad: rebase onto synchronize_rcu_expedited(), spell out the grace
+>  period requirement in the comments and changelog, describe the qdisc
+>  use case]
+> Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+
+Acked-by: Eric Dumazet <edumazet@kenel.org>
+
+Thanks.
