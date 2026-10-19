@@ -1,47 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5E460CDBE;
-	Mon, 19 Oct 2026 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E408160C107;
+	Mon, 19 Oct 2026 14:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418617; cv=none; b=V8UNsNL3yvucQX37F8f/14ddkCRH7YTRMfkIa9Vjamy4+zxNYhjyfbWrgsCHhuaj3x7sW82eYB/wM2wXoSMrHbiyV5THW2zxew0uaMCdAN/PzkhvVrCzrRsg1SeHeMB/i02I7xFEObdmL5aIAfACKLEUif2ZiWWOiNjwEVjRGbc=
+	t=1792418623; cv=none; b=J78e/Xp44vktYAXp02Gv0+/YtuBPGDhSnVWqBw/CUTZDxrKDTsml37MBOUNcjSPmBojqJ4ITJmTuJ8lLenkmlrOdnfC7M8rF+xTTvl9Us5k2JcyPF7k10GHbfdaRjsD/pxEp2ZHC0MvgtwfP358HW7zV5G5T1AQe1sxBlC1tb5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418617; c=relaxed/simple;
-	bh=fCUTEl0b1W8KLxi4E4CkZep17k0SiVhk41S214XJOs0=;
+	s=arc-20240116; t=1792418623; c=relaxed/simple;
+	bh=2c82SetbSEqyygDALnnoMxFEdB6ansr0CWIlBjhAMAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iy4/ZxRH0713duHzoKT7GaiS0c/ucfdQpA9Bw95ghST7nFeCU3EOqSGrg8Rbm5e444OlYuK3iGNRUNqo+gjNQtiQcrNvWLeJ27N0UUipZ0/dgj9u4Ip+pLD2kHDsuCKKEjnEzwyoVkTR3J4IsiQyy8YKE968351cXm8b+T3GwRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEqNycs6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bOp+hiNMKT3XwjU3Z9rqnAcS1C15FbYje8u2P92Roef6krMrYC5PtoD62HXUgzAgNr7Ta2bHMPYLPiTTw26dFzhE0QN3G8Dm2ajleXbhqDGvgyLYkil3Hes91/boYRQdWuTUmUUgMdMTfC+h7JtU/Zstco636+7NyPBfWONjjys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsgMMs8F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEqNycs6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA211F000CC;
-	Mon, 19 Oct 2026 14:03:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsgMMs8F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9A11F000C4;
+	Mon, 19 Oct 2026 14:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418613;
-	bh=NCXnOb/Qt6E1FqyI644FJZPlqfJtKu2NgUfugrMeSWg=;
+	s=k20260515; t=1792418620;
+	bh=lMhrqwPw+FGLBnkvsxlHHRpMLzpmVg0Nh8ecw1O7ps0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dEqNycs65360LlXzW/yYv+CCsfOGXluyNNhuZ8wGkIELQ08Y0rsfFjiGUZJA/+vLl
-	 3xWf4NAQEM0IP/Cn0vtoZoH/0a8Cs17dyP1HYNr/rlTVPTNgf8pDLN2pZnWnUwmPoJ
-	 kxQs+K1ro1c+DLdrboULgqkJMbeBwyVXxqNZ5h2+K6E8BxLaPgm2A6pXfV/EBTARmH
-	 N4fKnO3N868tuaEPz7bXp3oq3GGHgtKEG49B41oJj/wESjxjN72yPI2sOLsdGsawGg
-	 D8GZ8GA0ZxzISpQyA9aD1j7RfPOQWKPt6XhiK7BcDP/PLLiqHJM3vMs4q28qkq5sMt
-	 IskYIubG8arMg==
+	b=XsgMMs8FB2vgr/NRKG6OEJ8dHqCcFsr+TPQLKYgcuNSWpMy+LOS6WbsQ7ei8A+p+n
+	 98PKobukXDaNxo0PGIdAdZOhJPcX/J+AeImpf94FrVST/UPm/bhEtC4SWJAuBlGR75
+	 4xBtlUxraJ6Cg1AsXybKVo8aH+njZeLgo83Lrqk7atrCXWALkQK2uYijP7UbOyjMng
+	 1R9SiGqL38G4DYtzE9qfq0xNRNS07ZFh5CZUY2KNsebaTGDexhyirfFmbdbRvlzXEt
+	 dR9exrYm7tYtKeq/Krf0ZsQDWapGf40zUrPohkyLHUiVu5VIoBSRDCU8LNQuZfv1JI
+	 aCUn6wJ0x6tAw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Yun Zhou <yun.zhou@windriver.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Alex Elder <elder@riscstar.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	marcin.s.wojtas@gmail.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
 	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] net: mvneta_bm: add suspend/resume support to prevent crash after resume
-Date: Mon, 19 Oct 2026 09:51:04 -0400
-Message-ID: <20261019135441.1420968-373-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: stmmac: use dma_addr_t for DMA addresses
+Date: Mon, 19 Oct 2026 09:51:09 -0400
+Message-ID: <20261019135441.1420968-378-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -57,630 +62,453 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Yun Zhou <yun.zhou@windriver.com>
+From: Alex Elder <elder@riscstar.com>
 
-[ Upstream commit 140be217df577961bea1ca36240439a463026cbd ]
+[ Upstream commit 0c1f9020d2ada55aed8a2e055903ad9cd5d49dab ]
 
-The mvneta driver uses the hardware Buffer Manager (BM) for RX buffer
-allocation. During suspend, mvneta disables its clock, causing BM to
-lose all buffer address state. On resume, mvneta_bm_port_init() re-
-attaches the BM pool to the NIC, but BM hardware returns stale/garbage
-buffer addresses. When NAPI poll processes these buffers, DMA cache
-sync hits an invalid virtual address causing a kernel panic:
+In jumbo_frm() (implemented in both "chain_mode.c" and "ring_mode.c"),
+an unsigned integer local variable is used to hold the value returned
+by dma_map_single().  On systems where a dma_addr_t is 64 bits, the
+subsequent dma_mapping_error() check of the returned value operates
+only on the low 32 bits (whose high bit won't be sign-extended).  In
+this case, dma_mapping_error() would return 0 (no error) even if there
+were one.
 
- Unable to handle kernel paging request at virtual address b0000080
- PC is at v7_dma_inv_range
- Call trace:
-  v7_dma_inv_range from arch_sync_dma_for_cpu+0x94/0x158
-  arch_sync_dma_for_cpu from __dma_sync_single_for_cpu+0xc4/0x15c
-  __dma_sync_single_for_cpu from mvneta_rx_swbm+0x6c8/0xf48
-  mvneta_rx_swbm from mvneta_poll+0x6fc/0x70c
-  mvneta_poll from __napi_poll.constprop.0+0x2c/0x1e0
-  __napi_poll.constprop.0 from net_rx_action+0x160/0x2c4
-  net_rx_action from handle_softirqs+0xd8/0x2b8
-  handle_softirqs from run_ksoftirqd+0x30/0x94
-  run_ksoftirqd from smpboot_thread_fn+0x100/0x204
-  smpboot_thread_fn from kthread+0xf4/0x110
-  kthread from ret_from_fork+0x14/0x28
+Fix this in both spots by using a dma_addr_t for the local variable.
 
-Fix by adding suspend/resume callbacks to the BM driver:
-
-- suspend: drain all buffers (with DMA unmapping), free the BPPE
-  regions, and reset pool state to FREE before stopping BM and gating
-  the clock.
-
-- resume: enable the clock, reinitialize BM defaults, and restore pool
-  read/write pointers and size registers. Pool allocation and buffer
-  refill are handled by mvneta_resume() through the normal
-  mvneta_bm_port_init() path, which sees pools as FREE and performs
-  full initialization identical to probe.
-
-Add a device_link (DL_FLAG_AUTOREMOVE_CONSUMER) in mvneta_probe to
-guarantee BM resumes before mvneta and suspends after mvneta. If the
-link cannot be created, fall back to SW buffer management to avoid a
-potential crash on resume due to unordered PM transitions.
-
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
-Link: https://patch.msgid.link/20260630060311.4072140-1-yun.zhou@windriver.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/linux-devicetree/20260606010122.21A211F00899@smtp.kernel.org/
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Alex Elder <elder@riscstar.com>
+Link: https://patch.msgid.link/20260812163832.271742-2-elder@riscstar.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This is a real resume panic in an existing driver, and the local 7.3-rc4
-tree already has the affected `mvneta`/`mvneta_bm` code. The patch is a
-contained PM completion, not a new API.
+The local tree is **6.12.111** (`pending-6.12`). The buggy `unsigned int
+des2` path is present here, and this type-correctness fix should be
+backported.
 
-===============================================================
-PHASE 1: COMMIT MESSAGE FORENSICS
-===============================================================
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: PARSE THE SUBJECT LINE**
-Record: `[net/mvneta_bm] [add] add suspend/resume support to prevent
-crash after resume`
-
-Subsystem prefix is `net: mvneta_bm`. The verb is “add”, but the rest of
-the subject names a crash after resume. That is a bug fix framed as
-adding the missing PM callbacks.
+Record: `[net: stmmac] [use] [store dma_map_single() results as
+dma_addr_t in jumbo_frm()]`
 
 **Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
 Record:
-- `Signed-off-by: Yun Zhou <yun.zhou@windriver.com>` (author)
-- `Link: https://patch.msgid.link/20260630060311.4072140-1-
-  yun.zhou@windriver.com`
-- `Signed-off-by: Paolo Abeni <pabeni@redhat.com>` (netdev maintainer,
-  applied it)
-- No `Fixes:` tag (expected for this review)
-- No `Cc: stable@vger.kernel.org` (expected)
-- No `Reported-by:`, `Tested-by:`, `Reviewed-by:`, or `Acked-by:`
-- Notable: author is Wind River, so this came from a commercial embedded
-  product, not a theoretical cleanup
+- `Reported-by: Sashiko <sashiko-bot@kernel.org>` — static-analysis bot,
+  not a user crash
+- `Link: https://lore.kernel.org/linux-
+  devicetree/20260606010122.21A211F00899@smtp.kernel.org/` — Sashiko
+  report
+- `Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>` —
+  stmmac/netdev reviewer
+- `Signed-off-by: Alex Elder <elder@riscstar.com>` — author
+- `Link:
+  https://patch.msgid.link/20260812163832.271742-2-elder@riscstar.com` —
+  v2 1/2 of a net-next series
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` — net maintainer
+- No `Fixes:` tag (expected)
+- No `Cc: stable` (expected)
+- Ignore pipeline `Signed-off-by: Sasha Levin` / `[Upstream commit ...]`
+  if present on a candidate wrapper
 
 **Step 1.3: ANALYZE THE COMMIT BODY TEXT**
 Record:
-- **Bug:** Marvell NETA hardware Buffer Manager (BM) has no
-  suspend/resume. `mvneta_suspend()` gates the NETA clock; BM loses
-  buffer-address state. On resume, `mvneta_bm_port_init()` reattaches
-  pools while BM still returns stale/garbage addresses.
-- **Symptom:** kernel panic: `Unable to handle kernel paging request at
-  virtual address b0000080` in `v7_dma_inv_range` ←
-  `arch_sync_dma_for_cpu` ← `__dma_sync_single_for_cpu` ←
-  `mvneta_rx_swbm` ← `mvneta_poll`.
-- **Version info:** none in the message. BM exists since v4.6; `mvneta`
-  PM exists since v4.12.
-- **Root cause (author):** clock gating drops BM register/pool state;
-  resume reuses that garbage in NAPI RX DMA sync.
-- **Fix:** BM suspend drains/unmaps/frees pools and sets type `FREE`; BM
-  resume re-clocks and restores registers; `mvneta_resume()` then re-
-  inits pools via the existing `mvneta_bm_port_init()` path. A
-  `device_link` orders BM before `mvneta` on resume.
+- **Bug:** `jumbo_frm()` in `chain_mode.c` and `ring_mode.c` stores
+  `dma_map_single()` in `unsigned int des2`. On 64-bit `dma_addr_t`,
+  `dma_mapping_error()` only sees the low 32 bits.
+- **Symptom:** a failed mapping is treated as success
+  (`dma_mapping_error()` returns 0).
+- **Root cause:** `DMA_MAPPING_ERROR` is `~(dma_addr_t)0`
+  (`0xFFFFFFFFFFFFFFFF` on 64-bit). Truncating to `unsigned int` yields
+  `0xFFFFFFFF`, which promotes to `0x00000000FFFFFFFF` and does not
+  match all-ones.
+- **Version info:** none in the message. The pattern dates to at least
+  2016 (`f8be0d78be6e7`).
 
 **Step 1.4: DETECT HIDDEN BUG FIXES**
-Record: Not a hidden fix. The subject says “add … support”, but the body
-is an oops-on-resume report with a full ARM stack. Adding PM callbacks
-here is completing missing power-management, which is an allowed stable
-class (hardware/PM workaround), not a new userspace feature.
+Record: Not disguised. It is an explicit correctness fix for a truncated
+DMA error check. Changing `des2` to `dma_addr_t` also stops truncating
+the address stored in `tx_skbuff_dma[].buf` (`dma_addr_t`) used for
+later unmap.
 
-===============================================================
-PHASE 2: DIFF ANALYSIS - LINE BY LINE
-===============================================================
+## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: INVENTORY THE CHANGES**
 Record:
-- `drivers/net/ethernet/marvell/mvneta.c`: +18 (probe only)
-- `drivers/net/ethernet/marvell/mvneta_bm.c`: +72
-- Total: **90 insertions, 0 deletions** (under the stable ~100-line
-  guideline)
-- Functions: `mvneta_probe`; new `mvneta_bm_suspend`,
-  `mvneta_bm_resume`; `mvneta_bm_pool_create` error paths;
-  `mvneta_bm_driver.driver.pm`
-- Scope: single-subsystem surgical change (Marvell NETA + its BM
-  companion)
+- `drivers/net/ethernet/stmicro/stmmac/chain_mode.c`: +2/−1
+- `drivers/net/ethernet/stmicro/stmmac/ring_mode.c`: +2/−1
+- Functions: `jumbo_frm()` in both files
+- Scope: single-function surgical type change in two parallel
+  implementations (4 insertions, 2 deletions)
 
 **Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
 Record:
-1. **`mvneta_probe` BM attach:** after successful
-   `mvneta_bm_port_init()`, add `device_link_add(mvneta, BM,
-   DL_FLAG_AUTOREMOVE_CONSUMER)`. On failure, destroy long/short pools,
-   `mvneta_bm_put()`, clear `pp->bm_priv` and fall back to SW BM.
-   Before: HW BM could be used with unordered PM vs BM.
-2. **`mvneta_bm_pool_create` error paths:** after `dma_free_coherent()`,
-   set `bm_pool->virt_addr = NULL`. Before: dangling pointer; suspend’s
-   `dma_free_coherent()` could double-free.
-3. **New `mvneta_bm_suspend`:** for each non-FREE pool,
-   `mvneta_bm_bufs_free()`, disable pool, free BPPE,
-   `mutex_destroy(&buf_lock)`, set type `FREE`; then
-   `MVNETA_BM_STOP_MASK` and `clk_disable_unprepare()`. Before: BM had
-   no suspend; clock/state left live or stale.
-4. **New `mvneta_bm_resume`:** `clk_prepare_enable()`,
-   `mvneta_bm_default_set()`, restore per-pool read/write pointers and
-   size, `MVNETA_BM_START_MASK`. Pool refill stays in existing
-   `mvneta_resume()` → `mvneta_bm_port_init()`.
-5. **Driver `.pm`:** `DEFINE_SIMPLE_DEV_PM_OPS` + `pm_sleep_ptr()`.
-   Before: no PM ops on the BM platform driver.
+- **Before:** `unsigned int des2 = dma_map_single(...)`; then
+  `cpu_to_le32(des2)`, `dma_mapping_error(..., des2)`,
+  `tx_skbuff_dma[entry].buf = des2`.
+- **After:** `dma_addr_t des2` so the error check and `buf` store use
+  the full DMA address.
+- Path: jumbo TX mapping in `stmmac_xmit()` when `enh_desc` is set and
+  the frame is large enough (`>= 4KiB` ring / `> 8KiB` chain).
+- Same local is reused for later `dma_map_single()` calls in those
+  functions, so all mapping sites in `jumbo_frm()` are fixed.
 
 **Step 2.3: IDENTIFY THE BUG MECHANISM**
-Record: `[Hardware PM / stale DMA addresses after resume]` plus a small
-`[double-free hardening]` on `virt_addr`.
+Record:
+- **Category:** type / width bug that breaks error detection (and
+  truncates unmap addresses).
+- **Mechanism:** 32-bit truncation of a 64-bit `dma_addr_t` so
+  `dma_mapping_error()` never sees `DMA_MAPPING_ERROR`.
+- Verified in this tree:
 
-Mechanism: BM hardware state does not survive clock/power loss. Resume
-still programmed the NIC to consume BM buffers, so NAPI DMA-synced
-garbage (`b0000080`) and oopsed. Suspend now tears pools down to `FREE`;
-resume brings BM up first (device_link); `mvneta_bm_pool_use()` sees
-`FREE` and does full probe-style alloc/fill.
+```92:98:include/linux/dma-mapping.h
+static inline int dma_mapping_error(struct device *dev, dma_addr_t
+dma_addr)
+{
+        debug_dma_mapping_error(dev, dma_addr);
+
+        if (unlikely(dma_addr == DMA_MAPPING_ERROR))
+                return -ENOMEM;
+        return 0;
+}
+```
+
+`DMA_MAPPING_ERROR` is `~(dma_addr_t)0`. The current buggy locals:
+
+```23:41:drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+        unsigned int bmax, buf_len, des2;
+        ...
+        des2 = dma_map_single(priv->device, skb->data,
+                              buf_len, DMA_TO_DEVICE);
+        desc->des2 = cpu_to_le32(des2);
+        if (dma_mapping_error(priv->device, des2))
+                return -1;
+        tx_q->tx_skbuff_dma[entry].buf = des2;
+```
 
 **Step 2.4: ASSESS THE FIX QUALITY**
-Record: Quality is good after v2–v6. Drain + unmap, BPPE free, type
-reset, clock error check, register restore, device_link with SW-BM
-fallback, `mutex_destroy` paired with `mutex_init` in
-`mvneta_bm_pool_use()`, and `virt_addr` NULL on alloc failure are all
-consistent with existing `mvneta_bm_pool_destroy()` / probe paths.
+Record:
+- Obviously correct: use the type `dma_map_single()` actually returns.
+- Minimal; no API or behavior change on the success path with a 32-bit
+  DMA mask.
+- Regression risk is low. `desc->des2` is still `__le32`, so hardware
+  still gets the low 32 bits (same as before). Maxime asked to make that
+  truncation explicit; that is the follow-up `c11c497af866c`
+  (`lower_32_bits()`), not required for this fix to be correct.
+- `cpu_to_le32()` already casts to `__u32` on little-endian; standalone
+  apply should not break the build.
 
-Regression risk is **low–medium**: new PM callbacks can leak if drain is
-incomplete (`dev_warn` if `buf_num` remains), and `mutex_destroy`
-assumes no concurrent `hwbm_pool_add()` (the device_link is what makes
-that true). No public API or core-kernel change. Paolo applied it; no
-NAK in the thread.
-
-Verified call order with the link (consumer=`mvneta`, supplier=`BM`):
-mvneta suspends first, BM suspends second; BM resumes first, mvneta
-resumes second. That matches the code: `mvneta_suspend()` does **not**
-destroy BM pools; `mvneta_bm_suspend()` does; `mvneta_resume()` calls
-`mvneta_bm_port_init()` only after BM resume.
-
-===============================================================
-PHASE 3: GIT HISTORY INVESTIGATION
-===============================================================
+## PHASE 3: GIT HISTORY INVESTIGATION
 
 **Step 3.1: BLAME THE CHANGED LINES**
 Record:
-- BM attach in probe: `dc35a10f68d37` (Marcin Wojtas, 2016-03-14) “net:
-  mvneta: bm: add support for hardware buffer management”, **v4.6-rc1**
-- Probe BM get/init structure: `965cbbec7f207` (Gregory CLEMENT,
-  2018-07-18)
-- `mvneta` suspend/resume: `9768b45ceb0bc` “net: mvneta: support suspend
-  and resume”, **v4.12-rc1**
-- Buggy situation (PM on neta, none on BM) has been in tree since
-  **v4.12** (~2017)
+- `unsigned int ... des2` in ring_mode: `f8be0d78be6e7` (2016-11-15,
+  “change dma descriptors to `__le32`”).
+- chain_mode declaration last touched by `2c91b39912278` (already in
+  this tree: “fix integer underflow in chain mode”); that commit kept
+  `unsigned int des2`.
+- `jumbo_frm()` itself: `286a837217204` (2011).
+- Bug is long-standing, not new in 6.12.
 
 **Step 3.2: FOLLOW THE FIXES: TAG**
-Record: No `Fixes:` tag. The missing BM PM has been there since
-`9768b45ceb0bc` (v4.12) against BM from `dc35a10f68d37` (v4.6). Both are
-ancestors of this checkout (`git merge-base --is-ancestor` not needed
-for those; they are in file history here).
+Record: No `Fixes:` tag. Introducer is the 2011/2016 DMA-descriptor
+code, present in this tree.
 
 **Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
-Record:
-- Same author, nearby: `fd398d6480987` “net: mvneta: re-enable percpu
-  interrupt on resume” (independent resume IRQ bug, already in this
-  tree)
-- After this commit: `ede0f99cef53a` “net: mvneta: bm: fix device
-  reference leak on failed lookup” — different `mvneta_bm_get()` leak,
-  not a revert/fix of this PM code
-- No “patch X/Y” on this commit. Standalone.
+Record (this tree):
+- `2c91b39912278` net: stmmac: fix integer underflow in chain mode
+  (already here)
+- `133160135a6d7` STMMAC_GET_ENTRY rename
+- Mainline follow-up: `c11c497af866c` net: stmmac: convert DMA address
+  to lower 32 before assignment (clarity; not in this tree; not a
+  functional prerequisite)
+- This is standalone 1/2 of “DMA address handling fixes”; 2/2 is
+  style/clarity.
 
 **Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
-Record: Yun Zhou is not the mvneta maintainer; two recent mvneta resume
-fixes in this tree. Original BM author Marcin Wojtas was on Cc. Applied
-by Paolo Abeni.
+Record: Alex Elder is not the stmmac maintainer; two origin stmmac
+commits are this pair. Reviewed by Maxime Chevallier; applied by Jakub
+Kicinski.
 
 **Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
-Record:
-- `mutex_destroy` on `hwbm_pool.buf_lock` needs the mutex conversion
-  `6dcdd884e2a4b` (**v5.3-rc1**). Present here (`include/net/hwbm.h` has
-  `struct mutex buf_lock`).
-- `DEFINE_SIMPLE_DEV_PM_OPS` / `pm_sleep_ptr`: `1a3c7bb088266`
-  (**v5.17**). Present here.
-- `DL_FLAG_AUTOREMOVE_CONSUMER`: renamed in **v4.19**. Present here.
-- `priv->pdev` is set in `mvneta_bm_probe()` before drvdata is
-  published, so `pp->bm_priv->pdev->dev` in `device_link_add` is valid.
-- Can apply standalone **in this tree**. No missing helpers.
+Record: No new helpers. `dma_addr_t` and `dma_mapping_error()` exist
+here. `git apply --check` of `0c1f9020d2ada` succeeded on this tree.
+Parent-tree vs this tree only differs in `is_jumbo_frm()` (untouched).
+Standalone apply: yes.
 
-===============================================================
-PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-===============================================================
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
 **Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
 Record:
-- `b4 dig -c 140be217df577`: https://patch.msgid.link/20260630060311.407
-  2140-1-yun.zhou@windriver.com
-- Series: **v2 → v6** (no v1 in b4’s match list)
-  - v2 2026-06-14, v3 06-16, v4 06-18, v5 06-25, v6 06-30
-- Changelog (from v6 mbox): v2 added drain/device_link; v3 restored pool
-  registers and `DEFINE_SIMPLE_DEV_PM_OPS`; v4 SW-BM fallback if link
-  fails; v5 disable-before-free; v6 `mutex_destroy` + `virt_addr = NULL`
-- Applied to **netdev/net-next.git**, not `net` (feature-sized PM
-  addition, but still a crash fix)
-- No NAK. Paolo’s only follow-up: sashiko flagged **pre-existing**
-  issues, asked for a later follow-up — not a NAK of this patch
-- No reviewer `Cc: stable` in the v6 thread
+- `b4 dig -c 0c1f9020d2ada` →
+  https://patch.msgid.link/20260812163832.271742-2-elder@riscstar.com
+- Series: v1 2026-08-11; v2 2026-08-12 `[PATCH net-next v2 0/2] net:
+  stmmac: DMA address handling fixes`
+- Applied to **net-next** (not `net`) by Jakub on 2026-08-17
+- Cover: “ensure DMA errors don't get lost due to casting the result to
+  an integer of the wrong size”
+- No NAKs. Maxime: “I think this is good as-is” + `Reviewed-by`
+- Maxime noted `cpu_to_le32(des2)` still truncates into `__le32` and
+  doubted jumbo on true 64-bit descriptor addresses; that is pre-
+  existing hardware-descriptor width, not a regression from this patch
+- No reviewer `Cc: stable`
 
 **Step 4.2: CHECK WHO REVIEWED THE PATCH**
-Record (`b4 dig -w`): Yun Zhou; Marcin Wojtas; Andrew Lunn; Dave Miller;
-Eric Dumazet; Jakub Kicinski; Paolo Abeni; netdev; linux-kernel. Right
-lists/maintainers. Human review of earlier versions was mostly sashiko
-notes forwarded by Simon Horman (v2) and Jakub Kicinski (v5) as
-“plausible”. Paolo applied v6.
+Record (`b4 dig -w`): netdev maintainers (Kicinski, Dal, Pabeni, Lunn),
+STM32/stmmac (Torgue, Coquelin), Maxime Chevallier. Appropriate
+audience.
 
 **Step 4.3: SEARCH FOR THE BUG REPORT**
-Record: No bugzilla/syzbot link. Evidence is the ARM oops in the commit
-and Wind River authorship. lore.kernel.org HTTP fetch returned 403;
-thread was recovered via `b4 dig -m`.
+Record: Sashiko static analysis, not syzbot and not a user oops. The
+lore `linux-devicetree` link is a bot dump; no independent user
+reproduction was found. The bug is still visible in the code.
 
 **Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
-Record: Single-patch series. Related but independent: `fd398d6480987`
-(percpu IRQ on resume). Not a prerequisite for this diff.
+Record: Companion 2/2 (`c11c497af866c`) only wraps
+`cpu_to_le32(lower_32_bits(des2))`. This commit is the actual fix.
 
 **Step 4.5: CHECK STABLE MAILING LIST HISTORY**
-Record: lore.kernel.org/stable HTTP 403. Local `git log` on these files
-shows no stable-list discussion of this subject. UNVERIFIED whether
-anyone already requested/rejected it on stable@.
+Record: lore.kernel.org returned HTTP 403 via WebFetch. `b4` thread has
+no stable discussion. UNVERIFIED: whether this hash was already
+requested on stable@; that does not change the technical verdict.
 
-===============================================================
-PHASE 5: CODE SEMANTIC ANALYSIS
-===============================================================
+## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF**
-Record: `mvneta_probe`, `mvneta_bm_pool_create`, `mvneta_bm_suspend`
-(new), `mvneta_bm_resume` (new), `mvneta_bm_driver` pm pointer.
+**Step 5.1: IDENTIFY KEY FUNCTIONS**
+Record: `jumbo_frm()` in `chain_mode.c` and `ring_mode.c`.
 
 **Step 5.2: TRACE CALLERS**
 Record:
-- `mvneta_bm_suspend`/`resume`: platform PM via `dev_pm_ops` (system
-  suspend/hibernate)
-- `mvneta_bm_port_init` ← `mvneta_probe` and `mvneta_resume` (verified
-  in `mvneta.c`)
-- `mvneta_bm_pool_use` ← only `mvneta_bm_port_init` (long and short
-  pools)
-- `mvneta_poll` ← NAPI; chooses `mvneta_rx_hwbm` if `pp->bm_priv` else
-  `mvneta_rx_swbm`
+- `stmmac_jumbo_frm()` macro → `hw->mode->jumbo_frm`
+- Only call site: `stmmac_xmit()` when `priv->plat->enh_desc` and
+  `is_jumbo_frm(skb->len)`
+- Context: process / NAPI TX, not IRQ
+- `dwmac4_ring_mode_ops` (DWMAC ≥ 4.00) has no `jumbo_frm`; those chips
+  do not use this path
+- Affected: DWMAC100 / DWMAC1000 (and early DWMAC4 that still install
+  `ring_mode_ops`/`chain_mode_ops`) with enhanced descriptors
 
 **Step 5.3: TRACE CALLEES**
-Record: suspend uses `mvneta_bm_bufs_free` (DMA unmap +
-`hwbm_buf_free`), `mvneta_bm_pool_disable`, `dma_free_coherent`,
-`mutex_destroy`, `clk_disable_unprepare`. Resume uses
-`clk_prepare_enable`, `mvneta_bm_default_set`, register writes, BM
-START.
+Record: `dma_map_single()`, `dma_mapping_error()`, `cpu_to_le32()`,
+`stmmac_prepare_tx_desc()`. On error, `return -1` → `stmmac_xmit` `goto
+dma_map_err`.
 
 **Step 5.4: FOLLOW THE CALL CHAIN**
-Record: Userspace/system suspend on Armada 38x/XP with
-`CONFIG_MVNETA_BM` and a DT `buffer-manager` phandle. Reachable on real
-HW (Wind River). Not a syscall fuzz path; it is a common S2R path on
-those boards.
-
-Note on the stack naming: `mvneta_poll` uses `mvneta_rx_hwbm` when
-`bm_priv` is set. The oops shows `mvneta_rx_swbm`. Verified that
-`mvneta_swbm_rx_frame()` does `dma_sync_single_for_cpu(...,
-rx_desc->buf_phys_addr, ...)` and can be inlined into `mvneta_rx_swbm`.
-That matches DMA-sync-of-garbage if resume fell back to SW BM
-(`mvneta_resume` clears `bm_priv` when `mvneta_bm_port_init` fails)
-while RX descriptors still held stale phys addrs, or if the reporter’s
-kernel named the RX path differently. The BM clock-loss story is still
-consistent with “invalid address in DMA sync after resume”.
+Record: userspace send / jumbo MTU → `ndo_start_xmit` = `stmmac_xmit` →
+`jumbo_frm`. TSO/GSO with `priv->tso` uses `stmmac_tso_xmit` instead.
+Reachable from userspace on jumbo MTU. Mapping failure is an error path
+(IOMMU / swiotlb pressure).
 
 **Step 5.5: SEARCH FOR SIMILAR PATTERNS**
-Record: `mvneta` already had `SIMPLE_DEV_PM_OPS(mvneta_pm_ops, ...)`. BM
-was the missing half. No sibling Marvell BM driver in this path.
-`device_link_add` is used only in this probe site under
-`drivers/net/ethernet/marvell/`.
+Record: non-jumbo TX in `stmmac_xmit` already uses `dma_addr_t des`.
+This is leftover jumbo-path width mismatch. Historical related fix in-
+tree: `06a80a7d09cc3` (descriptor addresses >32-bit).
 
-===============================================================
-PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
-===============================================================
+## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 
 **Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
-Record: Yes. Tree is **v7.3-rc4** (`git describe HEAD` =
-`v7.3-rc4-27-gf0100363d8c37`, `VERSION=7 PATCHLEVEL=3 SUBLEVEL=0
-EXTRAVERSION=-rc4`).
-- `140be217df577` **is** an ancestor of HEAD (`git merge-base --is-
-  ancestor` succeeded).
-- Files `drivers/net/ethernet/marvell/mvneta.c` and `mvneta_bm.c` exist;
-  BM probe/remove, `mvneta_suspend`/`mvneta_resume`, and
-  `mvneta_bm_port_init` are present.
-- Bug class (BM without PM while neta has PM) dates to v4.12.
+Record: Yes. Local tree is **6.12.111** (`p-6.12-3-gc504cf0baa3d8`).
+Both files still have `unsigned int ... des2`. Introduced no later than
+2016; present since this series branched. `git merge-base --is-ancestor
+0c1f9020d2ada HEAD` is false (fix not here).
 
 **Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
-Record: **Clean in this tree** — the commit is already applied. Probe BM
-block has been stable in shape since 2018. Helpers used by the patch
-exist here.
+Record: Expected **clean apply**. `git show 0c1f9020d2ada | git apply
+--check` succeeded. Only unrelated `is_jumbo_frm()` signature drift vs
+mainline parent.
 
 **Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
-Record: This fix is already on HEAD. No alternate older fix for BM
-resume. Follow-up `ede0f99cef53a` is a different `mvneta_bm_get()` ref
-leak, not a replacement for this change.
+Record: No `dma_addr_t` jumbo_frm fix in this tree. `2c91b39912278` is a
+different jumbo underflow fix and left `des2` as `unsigned int`.
 
-===============================================================
-PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-===============================================================
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
 **Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
-Record: `[net/ethernet/marvell mvneta + mvneta_bm] [IMPORTANT]` — not
-core mm/VFS, but the onboard NIC on Armada 370/38x/XP/3700. BM is
-**32-bit only** (`depends on !64BIT`), Armada 38x/XP. Crash takes down
-networking after resume on those SoCs.
+Record: `drivers/net/ethernet/stmicro/stmmac` — Synopsys DWMAC, used on
+STM32, Rockchip, Allwinner, i.MX, Qualcomm, Intel, etc. Criticality:
+**IMPORTANT** (common Ethernet), this path **PERIPHERAL-to-IMPORTANT**
+(older GMAC + jumbo).
 
 **Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
-Record: Mature driver (2016 BM, 2017 PM). Recent churn is resume fixes
-(`fd398d6480987`, this commit), not a rewrite. Long-present bug, not a
-brand-new subsystem.
+Record: Actively maintained, but `chain_mode.c`/`ring_mode.c` jumbo
+logic is mature (2011). This is an old bug, not churn from new code.
 
-===============================================================
-PHASE 8: IMPACT AND RISK ASSESSMENT
-===============================================================
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
 **Step 8.1: DETERMINE WHO IS AFFECTED**
-Record: **driver-specific / config-specific / platform-specific** —
-`CONFIG_MVNETA` + `CONFIG_MVNETA_BM` on 32-bit Armada 38x/XP with DT
-`buffer-manager`. That is exactly Wind River / NAS / router class
-hardware. SW-BM-only boards are unaffected except for the new
-device_link failure path (falls back to SW BM).
+Record: Driver-specific, config `CONFIG_STMMAC_ETH`, older DWMAC with
+`enh_desc`, jumbo frames, **and** 64-bit `dma_addr_t` (typical
+arm64/x86_64). 32-bit `dma_addr_t` already compared equal to
+`DMA_MAPPING_ERROR`.
 
 **Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
-Record: System suspend/resume with HW BM in use. Common on embedded
-devices that sleep. Not unprivileged-syscall; still a production resume
-path. Not a tiny race window.
+Record: Jumbo TX (`skb->len >= 4KiB` ring / `> 8KiB` chain) plus
+`dma_map_single()` failure. Not every packet. Unprivileged users can
+send jumbo frames if MTU allows; they cannot force IOMMU exhaustion
+easily. Mapping failure is uncommon but real.
 
 **Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
-Record: `[Kernel paging request / panic in NAPI RX] [CRITICAL]`
+Record:
+- Failed mapping treated as success
+- Descriptor programmed with `0xFFFFFFFF`
+- NIC DMAs from that address (wrong memory / bus error / possible leak
+  of physical memory onto the wire)
+- `tx_skbuff_dma[].buf` also truncated, so unmap can be wrong
+- Severity: **HIGH** (wrong DMA address / potential corruption). Not a
+  guaranteed panic on every jumbo packet.
 
 **Step 8.4: CALCULATE RISK-BENEFIT RATIO**
 Record:
-- **Benefit: high** — prevents oops and dead NIC after resume on
-  affected Marvell SoCs.
-- **Risk: low–medium** — 90 lines, two files, new PM callbacks but they
-  mirror existing destroy/probe; device_link fallback is fail-safe (SW
-  BM).
-- **Ratio:** benefit outweighs risk. Fits “oops / hardware PM” stable
-  policy.
+- **Benefit:** medium-high for affected 64-bit DWMAC jumbo users; closes
+  a real DMA error-handling hole
+- **Risk:** very low (2-line type change per file, no locking/API
+  change)
+- **Ratio:** favorable
 
-===============================================================
-PHASE 9: FINAL SYNTHESIS
-===============================================================
+## PHASE 9: FINAL SYNTHESIS
 
 **Step 9.1: COMPILE THE EVIDENCE**
 
 FOR:
-- Documented kernel panic with stack after resume
-- Real product kernel (Wind River)
-- Bug present since v4.12; code is in this tree
-- 90 lines, two files, no new UAPI
-- Completes PM that `mvneta` already had; allowed hardware/PM class
-- v6 addressed drain, ordering, mutex, dangling `virt_addr`
-- Accepted by Paolo Abeni; no NAK
-- Under the documented ~100-line stable size cap
+- Real, verifiable type bug: truncated `dma_mapping_error()` on 64-bit
+  `dma_addr_t`
+- Failure can program the NIC with a bogus DMA address
+- Also stores a full address in `tx_skbuff_dma[].buf`
+- ~6 lines, obviously correct, reviewed, applied by net maintainer
+- Buggy code is in this 6.12 tree and has been for years
+- Patch applies cleanly
+- Same driver already uses `dma_addr_t` on the normal TX path
 
 AGAINST:
-- Landed in **net-next**, not `net` (looks feature-sized)
-- “add support” wording; new callbacks rather than a 5-line tweak
-- Six revisions; not trivial at v1
-- No `Tested-by` besides the author
-- Oops symbol is `mvneta_rx_swbm` while HW BM poll uses `mvneta_rx_hwbm`
-  (explained above, not a reason to drop a panic fix)
-- Sashiko noted other pre-existing issues (not shown to break this
-  patch)
+- Submitted to **net-next**, not `net` (not treated as an urgent
+  regression)
+- Sashiko/static analysis, no user oops
+- Jumbo + older GMAC + mapping failure is a narrow trigger
+- Reviewer noted 32-bit descriptors cannot represent full 64-bit
+  addresses (pre-existing)
+- Companion `lower_32_bits()` patch is not included (optional clarity)
 
 UNRESOLVED:
-- Could not read lore.kernel.org/stable (HTTP 403)
-- Could not open sashiko’s full pre-existing-issue list (Paolo linked
-  it; described as pre-existing)
+- Stable@ archives not readable via WebFetch (403)
+- Exact Sashiko warning text in the large 47-message dump was not
+  isolated beyond the type issue this patch names
 
 **Step 9.2: APPLY THE STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — v6 matches existing
-   destroy/probe; author hit the panic; maintainer applied it.
-2. Fixes a real bug that affects users? **PASS** — resume oops on Armada
-   + BM.
-3. Important issue? **PASS** — kernel panic / paging request (CRITICAL).
-4. Small and contained? **PASS** — 90 insertions, 2 files, one driver
-   pair.
-5. No new features or APIs? **PASS** — no UAPI; PM ops are the missing
-   half of existing suspend/resume (hardware/PM workaround exception).
-6. Can apply to the local tree? **PASS** — already in v7.3-rc4; helpers
-   exist.
+1. Obviously correct and tested? **PASS** — type matches DMA API;
+   reviewed; in mainline since 2026-08-17
+2. Fixes a real bug that affects users? **PASS** — missed DMA mapping
+   errors on 64-bit `dma_addr_t`
+3. Important issue? **PASS** — wrong DMA address on mapping failure
+   (corruption / crash / possible leak), even if the window is uncommon
+4. Small and contained? **PASS** — 6 lines, two files, one function
+5. No new features or APIs? **PASS**
+6. Can apply to the local tree? **PASS** — `git apply --check` clean on
+   6.12.111
 
 **Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
-Record: Hardware/PM workaround (missing suspend/resume causing a crash).
-Not a new driver, not a new userspace API.
+Record: None (not a device ID/quirk/DT/build/docs exception). Qualifies
+as a normal small bugfix.
 
 **Step 9.4: MAKE YOUR DECISION**
-This tree is v7.3-rc4 and already contains the mvneta BM driver, mvneta
-PM, and this commit’s helpers. The change fixes a user-visible panic on
-resume, is contained, and is the correct completion of PM for a driver
-that already suspends. It should be backported.
+The local 6.12 tree still truncates `dma_map_single()` to `unsigned int`
+in `jumbo_frm()`, so `dma_mapping_error()` cannot see
+`DMA_MAPPING_ERROR` on 64-bit `dma_addr_t`. That is a real DMA
+correctness bug, the fix is surgical, and it applies here without
+prerequisites. Narrow trigger does not outweigh the severity of
+programming a failed mapping into the NIC.
 
-------------------------------------------------
-What problem it solves for stable users
-------------------------------------------------
-On 32-bit Marvell Armada boards that use hardware buffer management,
-suspend gates clocks and the BM forgets buffer addresses. Resume
-reattaches the NIC to that hardware and NAPI DMA-syncs garbage,
-panicking in `v7_dma_inv_range`. After resume, Ethernet is dead and the
-kernel has oopsed. Stable users of these SoCs (embedded, NAS, Wind
-River-style products) hit this on ordinary S2R.
+### What the commit solves and why it matters to stable users
+On 64-bit `dma_addr_t` platforms, a failed jumbo TX mapping is
+misclassified as success, and the MAC may DMA using `0xFFFFFFFF`. 6.12
+users of DWMAC1000-class stmmac with jumbo MTU on arm64/x86_64 are
+exposed.
 
-------------------------------------------------
-Risk vs benefit
-------------------------------------------------
-Benefit is a panic fix on a real resume path. Risk is a modest amount of
-new PM code, already iterated through v6 and aligned with
-`mvneta_bm_pool_destroy()` / `mvneta_bm_pool_use()`. Device-link failure
-falls back to SW BM instead of leaving a crashy configuration.
+### Stable rules / risk
+Meets the stable bar: real bug, small, no new API, clean apply. Risk is
+a type change of a local. Benefit is correct mapping-error handling and
+a full-width unmap address.
 
-------------------------------------------------
-Verification
-------------------------------------------------
-- [Phase 1] Parsed tags: Yun Zhou SOB, Paolo Abeni SOB, msgid.link; no
-  Fixes/Cc-stable/Reported-by
-- [Phase 1] Body: ARM paging oops in DMA sync during `mvneta_poll` after
-  resume
-- [Phase 2] Diff: +18 `mvneta.c` (device_link + SW BM fallback), +72
-  `mvneta_bm.c` (PM ops + virt_addr NULL)
-- [Phase 2] `mvneta_poll` HW vs SW split and `dma_sync_single_for_cpu`
-  in `mvneta_swbm_rx_frame` verified in source
-- [Phase 3] BM introduced `dc35a10f68d37` (v4.6-rc1); mvneta PM
-  `9768b45ceb0bc` (v4.12-rc1)
-- [Phase 3] `git merge-base --is-ancestor 140be217df577 HEAD` → IS
-  ancestor
-- [Phase 3] hwbm mutex: `6dcdd884e2a4b` (v5.3);
-  DEFINE_SIMPLE_DEV_PM_OPS: `1a3c7bb088266` (v5.17)
-- [Phase 3] Follow-up `ede0f99cef53a` is a different leak, not a
-  fix/revert of this patch
-- [Phase 4] `b4 dig -c 140be217df577`: v2–v6, applied to net-next; no
-  NAK; Paolo asked about pre-existing sashiko issues
-- [Phase 4] `b4 dig -w`: netdev maintainers on To/Cc
-- [Phase 4] `b4 dig -m`: v6 changelog + Paolo reply parsed from mbox
-- [Phase 4] lore HTTP 403; stable@ search UNVERIFIED via WebFetch
-- [Phase 5] Callers: `mvneta_bm_port_init` from probe and
-  `mvneta_resume` only
-- [Phase 6] `git describe HEAD` = v7.3-rc4-27-gf0100363d8c37; `make
-  kernelversion` = 7.3.0-rc4
-- [Phase 6] BM and mvneta PM files present; commit already on this
-  branch
-- [Phase 7] Kconfig: `MVNETA_BM` depends on `!64BIT`; Armada 38x/XP
-- [Phase 8] Failure mode: kernel paging request in RX NAPI after resume,
-  CRITICAL
-- UNVERIFIED: full sashiko finding list; whether stable@ already
-  discussed this patch
+### Concerns
+Optional follow-up `c11c497af866c` only makes 32-bit descriptor
+truncation explicit; not required. No need to wait for other series
+patches.
+
+## Verification
+- [Phase 1] Parsed tags: Sashiko Reported-by, Maxime Reviewed-by, Jakub
+  SOB; no Fixes/Cc stable
+- [Phase 1] Body: truncated `dma_mapping_error()` on 64-bit `dma_addr_t`
+- [Phase 2] Diff: `unsigned int des2` → `dma_addr_t des2` in both
+  `jumbo_frm()` implementations (+4/−2)
+- [Phase 2] `include/linux/dma-mapping.h`: `dma_mapping_error()`
+  compares to `DMA_MAPPING_ERROR` (`~(dma_addr_t)0`)
+- [Phase 2] Local `chain_mode.c`/`ring_mode.c` still use `unsigned int
+  des2`; `tx_skbuff_dma[].buf` is `dma_addr_t`
+- [Phase 3] Blame: `f8be0d78be6e7` (2016) / `286a837217204` (2011); in
+  this tree
+- [Phase 3] Mainline SHA `0c1f9020d2ada`; follow-up `c11c497af866c` is
+  clarity-only
+- [Phase 3] `git merge-base --is-ancestor 0c1f9020d2ada HEAD` → not in
+  this tree
+- [Phase 4] `b4 dig -c 0c1f9020d2ada`: lore/msgid v2 1/2 net-next
+  series; applied to netdev/net-next
+- [Phase 4] `b4 dig -a`: v1 then v2; Maxime suggested `lower_32_bits()`,
+  still Reviewed-by on the type fix
+- [Phase 4] `b4 dig -w`: netdev + STM32/stmmac CCs
+- [Phase 4] mbox cover: “DMA errors don't get lost due to casting”
+- [Phase 4] UNVERIFIED: stable@ mailing list (lore 403)
+- [Phase 5] Callers: `stmmac_xmit()` → `stmmac_jumbo_frm()`; DWMAC4 ≥
+  4.00 ops have no `jumbo_frm`
+- [Phase 5] Non-jumbo TX already uses `dma_addr_t des`
+- [Phase 6] `git describe HEAD` / `make kernelversion`: 6.12.111
+- [Phase 6] `git apply --check` of `0c1f9020d2ada`: success
+- [Phase 6] `git diff 0c1f9020d2ada^ -- chain_mode.c ring_mode.c`: only
+  `is_jumbo_frm()` drift
+- [Phase 8] Failure mode: missed mapping error → NIC DMA at
+  `0xFFFFFFFF`; severity HIGH
+- UNVERIFIED: isolated full text of the original Sashiko diagnostic line
 
 **YES**
 
- drivers/net/ethernet/marvell/mvneta.c    | 18 ++++++
- drivers/net/ethernet/marvell/mvneta_bm.c | 72 ++++++++++++++++++++++++
- 2 files changed, 90 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c | 3 ++-
+ drivers/net/ethernet/stmicro/stmmac/ring_mode.c  | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index 71ace291a8bff..2cb6723fe801c 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -5684,6 +5684,24 @@ static int mvneta_probe(struct platform_device *pdev)
- 					 "use SW buffer management\n");
- 				mvneta_bm_put(pp->bm_priv);
- 				pp->bm_priv = NULL;
-+			} else if (!device_link_add(&pdev->dev,
-+						    &pp->bm_priv->pdev->dev,
-+						    DL_FLAG_AUTOREMOVE_CONSUMER)) {
-+				/*
-+				 * Link guarantees BM resumes before mvneta.
-+				 * Without it, BM may not be ready when
-+				 * mvneta_bm_port_init() runs on resume,
-+				 * causing stale buffer addresses and a crash.
-+				 * Fall back to SW management to be safe.
-+				 */
-+				dev_warn(&pdev->dev,
-+					 "failed to link to BM, use SW buffer management\n");
-+				mvneta_bm_pool_destroy(pp->bm_priv,
-+						       pp->pool_long, 1 << pp->id);
-+				mvneta_bm_pool_destroy(pp->bm_priv,
-+						       pp->pool_short, 1 << pp->id);
-+				mvneta_bm_put(pp->bm_priv);
-+				pp->bm_priv = NULL;
- 			}
- 		}
- 		/* Set RX packet offset correction for platforms, whose
-diff --git a/drivers/net/ethernet/marvell/mvneta_bm.c b/drivers/net/ethernet/marvell/mvneta_bm.c
-index 6bb3804949190..e0c693c0a9106 100644
---- a/drivers/net/ethernet/marvell/mvneta_bm.c
-+++ b/drivers/net/ethernet/marvell/mvneta_bm.c
-@@ -129,6 +129,7 @@ static int mvneta_bm_pool_create(struct mvneta_bm *priv,
- 	if (!IS_ALIGNED((u32)bm_pool->virt_addr, MVNETA_BM_POOL_PTR_ALIGN)) {
- 		dma_free_coherent(&pdev->dev, size_bytes, bm_pool->virt_addr,
- 				  bm_pool->phys_addr);
-+		bm_pool->virt_addr = NULL;
- 		dev_err(&pdev->dev, "BM pool %d is not %d bytes aligned\n",
- 			bm_pool->id, MVNETA_BM_POOL_PTR_ALIGN);
- 		return -ENOMEM;
-@@ -139,6 +140,7 @@ static int mvneta_bm_pool_create(struct mvneta_bm *priv,
- 	if (err < 0) {
- 		dma_free_coherent(&pdev->dev, size_bytes, bm_pool->virt_addr,
- 				  bm_pool->phys_addr);
-+		bm_pool->virt_addr = NULL;
- 		return err;
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+index 2515608878235..5b0bab33ce4b6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+@@ -20,9 +20,10 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
+ 	unsigned int nopaged_len = skb_headlen(skb);
+ 	struct stmmac_priv *priv = tx_q->priv_data;
+ 	unsigned int entry = tx_q->cur_tx;
+-	unsigned int bmax, buf_len, des2;
++	unsigned int bmax, buf_len;
+ 	unsigned int i = 1, len;
+ 	struct dma_desc *desc;
++	dma_addr_t des2;
  
-@@ -477,6 +479,75 @@ static void mvneta_bm_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(priv->clk);
- }
+ 	desc = tx_q->dma_tx + entry;
  
-+static int mvneta_bm_suspend(struct device *dev)
-+{
-+	struct mvneta_bm *priv = dev_get_drvdata(dev);
-+	int i;
-+
-+	/* Drain buffers and free pool resources while BM is still clocked */
-+	for (i = 0; i < MVNETA_BM_POOLS_NUM; i++) {
-+		struct mvneta_bm_pool *bm_pool = &priv->bm_pools[i];
-+		int size_bytes;
-+
-+		if (bm_pool->type == MVNETA_BM_FREE)
-+			continue;
-+
-+		mvneta_bm_bufs_free(priv, bm_pool, bm_pool->port_map);
-+		if (bm_pool->hwbm_pool.buf_num)
-+			dev_warn(&priv->pdev->dev,
-+				 "pool %d: %d buffers not freed\n",
-+				 bm_pool->id, bm_pool->hwbm_pool.buf_num);
-+
-+		mvneta_bm_pool_disable(priv, bm_pool->id);
-+
-+		if (bm_pool->virt_addr) {
-+			size_bytes = sizeof(u32) * bm_pool->hwbm_pool.size;
-+			dma_free_coherent(&priv->pdev->dev, size_bytes,
-+					  bm_pool->virt_addr,
-+					  bm_pool->phys_addr);
-+			bm_pool->virt_addr = NULL;
-+		}
-+		/*
-+		 * Safe to destroy: device_link guarantees all mvneta ports
-+		 * have already suspended, so no hwbm_pool_add() can be in
-+		 * progress holding buf_lock.  Pairs with mutex_init() in
-+		 * mvneta_bm_pool_use() on resume.
-+		 */
-+		mutex_destroy(&bm_pool->hwbm_pool.buf_lock);
-+		bm_pool->type = MVNETA_BM_FREE;
-+	}
-+
-+	mvneta_bm_write(priv, MVNETA_BM_COMMAND_REG, MVNETA_BM_STOP_MASK);
-+	clk_disable_unprepare(priv->clk);
-+	return 0;
-+}
-+
-+static int mvneta_bm_resume(struct device *dev)
-+{
-+	struct mvneta_bm *priv = dev_get_drvdata(dev);
-+	int i, err;
-+
-+	err = clk_prepare_enable(priv->clk);
-+	if (err)
-+		return err;
-+
-+	/* Reinitialize BM hardware; pools are refilled by mvneta_resume() */
-+	mvneta_bm_default_set(priv);
-+
-+	/* Restore pool registers lost during clock gating */
-+	for (i = 0; i < MVNETA_BM_POOLS_NUM; i++) {
-+		mvneta_bm_write(priv, MVNETA_BM_POOL_READ_PTR_REG(i), 0);
-+		mvneta_bm_write(priv, MVNETA_BM_POOL_WRITE_PTR_REG(i), 0);
-+		mvneta_bm_write(priv, MVNETA_BM_POOL_SIZE_REG(i),
-+				priv->bm_pools[i].hwbm_pool.size);
-+	}
-+
-+	mvneta_bm_write(priv, MVNETA_BM_COMMAND_REG, MVNETA_BM_START_MASK);
-+	return 0;
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(mvneta_bm_pm_ops, mvneta_bm_suspend, mvneta_bm_resume);
-+
- static const struct of_device_id mvneta_bm_match[] = {
- 	{ .compatible = "marvell,armada-380-neta-bm" },
- 	{ }
-@@ -489,6 +560,7 @@ static struct platform_driver mvneta_bm_driver = {
- 	.driver = {
- 		.name = MVNETA_BM_DRIVER_NAME,
- 		.of_match_table = mvneta_bm_match,
-+		.pm = pm_sleep_ptr(&mvneta_bm_pm_ops),
- 	},
- };
+diff --git a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
+index 88a8d22812f5d..1e6541937cb27 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
+@@ -20,8 +20,9 @@ static int jumbo_frm(struct stmmac_tx_queue *tx_q, struct sk_buff *skb,
+ 	unsigned int nopaged_len = skb_headlen(skb);
+ 	struct stmmac_priv *priv = tx_q->priv_data;
+ 	unsigned int entry = tx_q->cur_tx;
+-	unsigned int bmax, len, des2;
++	unsigned int bmax, len;
+ 	struct dma_desc *desc;
++	dma_addr_t des2;
  
+ 	if (priv->extend_desc)
+ 		desc = (struct dma_desc *)(tx_q->dma_etx + entry);
 -- 
 2.53.0
 
