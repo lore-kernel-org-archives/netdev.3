@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040AE49B456;
-	Mon, 19 Oct 2026 08:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15964A2A75;
+	Mon, 19 Oct 2026 08:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792399873; cv=none; b=OT3t81gqkg3whVPZnbmwnmnMeXvPMbR4pbYElBELkfHQOyrEUBXrwSBzxanjdTK6td7JevZKFSHIk26UQzWfSOrpxKrFFSoLRiOGS7/Org+pLrC24ITXZ3l/rgxsqTSylS9ux1Pyr1TN0sYXxcSiODAxWSnaEMZYzsxkGdxd4zI=
+	t=1792399875; cv=none; b=ljCHSKajDLcp23WzMXDbYYHP1++s0mvz3Dymf0NyJJcrxiNkox7uiaqV7ptE6KSFFZsOpIGgUNZ9Dsefwv/WZDJfT8m5JWQ9sHUeKktA7PslSQ+omTS1zMpf3h/80eGvp2ryhuewb5flFpCqKxw2TPOdpJSCCq4Q7znxYGtroQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792399873; c=relaxed/simple;
-	bh=Fi01WHNqoV/1h5bUGA4B6J1XVsUJVKVGizvKyil5C+w=;
+	s=arc-20240116; t=1792399875; c=relaxed/simple;
+	bh=Asb+h8bKamHyyIqCPskXAxBTaMoNR5mlUu/M1GxSLuk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oNVMYGiAGllM8Z/on3mz1FaIc+mhfYvp2ueGXqHFiFY+chiRXhNzUL+k0MlqiFGDGvXvEpCqDtugI2l/fjXi67a+sBxB9CTVicikW7yIzhqiO7cHaIb043/JI0bkq2e+icH7pmAzkPNfJCY48YtZvKFUphcbBayg8KlfNjRISPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Km5g/Lz0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Cy2U+tNz1R2RigbVG2ZFfOFFpWyV4vyPse2O9ehXbMSQ7Epzz6KP0BTD4y3L8eW16FRiEPsJhdmkvcS7sMUrzxagwv1iNT+YUDrD9MtgEOkSds3AHVtrFH4+cH4QpQngt5UZGw+P7uLhlD3iIKorAeANMJrr1QLAMRpQ1wNSI84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgQejHtI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Km5g/Lz0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BF41F000C4;
-	Mon, 19 Oct 2026 08:51:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgQejHtI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784461F000C6;
+	Mon, 19 Oct 2026 08:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792399871;
-	bh=JjDsyiSq61fxlzHtdfeDMyg6sTFpEeaG4+KOHuzM24E=;
+	s=k20260515; t=1792399873;
+	bh=7C+XIg1Nh5v55mp+ZHlfr+JOF1pd97so8IrLiGCUNRI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Km5g/Lz0GHRamXVV0yMHiHgCM8vbroh/qtDsp87nAiKAq13xliPYFkKNc6gXU4ysm
-	 5HRaAMZiiz0HKN3E1qKlHRZSY64TGUqRwYTCow7i1ClRMvRnehAeDWc7TW1p+6FYeM
-	 P5OwsvgQiHfiZCBpquRJ3HpfcXRivHvOu9n7kO2Qyni4eKLnhcWr589gb9QeY6dSW8
-	 Ja6tevLaCs3vF+aVaC9kMlFLBCW0IZ7MA1OpEFUB/FY79rQRlvgJQkAAJCCrRjcaZi
-	 GElHVDewtSnbeQR6QYNZC7R2+h0buVAUHKe0hb6lKTvPfSnPv6ojR+x2Vf0rIqNjFT
-	 j3tuFiuTLI40A==
-Subject: Re: [PATCH net 02/10] net: pse-pd: fix module refcount leak in
- pse_control_get_internal()
+	b=FgQejHtIzIf2ZlclI6AwlVOe1pAkOs4hR7I9nqDJQquYsx28ZMXGszVeGsOlrrCbj
+	 sY8YfDhDNyaCSG9FVXLyLpAj/NBZ29JLzBBp5T7G8+/W2XBDNlQicgkpM83OKH4t6h
+	 Ol7Ac3QxiIMiIioSZ56iolPCWBHmk0WSxKvA1iAtjqWmSnY1I3s7VXT5Regy27cG1R
+	 1dmFOP+9UdaXq6cgVkAtu97Mdw4h6vPKmvUwZ2WS5txtIeQARi7mqrFTJNxC9yG+71
+	 UTX0R3vPOANyh9l3Duk5om4QBsI/ZTsMrBrAMf4qXY2iPh7LdT4WhMnjbaYaMcSRVB
+	 GllVK6PnWQgag==
+Subject: Re: [PATCH net 04/10] net: pse-pd: do not reach a freed PHY from the
+ notification worker
 From: netdev-bot+sashiko@kernel.org
 To: github@szelinsky.de
 Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
@@ -35,10 +35,10 @@ Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
  piotr.kubik@adtran.com, saikrishnag@marvell.com, horms@kernel.org,
  kyle.swenson@est.tech, netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 08:51:10 +0000
-Message-ID: <179239987068.3135.2768821007598612150@kernel.org>
-In-Reply-To: <20261018082314.48950-3-github@szelinsky.de>
-References: <20261018082314.48950-3-github@szelinsky.de>
+Date: Mon, 19 Oct 2026 08:51:12 +0000
+Message-ID: <179239987207.3135.17141454695480717442@kernel.org>
+In-Reply-To: <20261018082314.48950-5-github@szelinsky.de>
+References: <20261018082314.48950-5-github@szelinsky.de>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,69 +55,146 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message names two leaking error paths in
-  pse_control_get_internal() (drivers/net/pse-pd/pse_core.c): a…
+- [Low] The comment this patch adds to pse_send_ntf_worker()
+  (drivers/net/pse-pd/pse_core.c, lines 1022-1028) says: "A pse_control…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  phy_device_remove() (drivers/net/phy/phy_device.c:1155) calls…
 
 --
 
-net: pse-pd: fix module refcount leak in pse_control_get_internal()
+net: pse-pd: do not reach a freed PHY from the notification worker
 
-This patch changes two error paths in pse_control_get_internal() to jump
-to put_module instead of free_psec. Without it, the module reference
-taken by try_module_get() is not dropped. One path is a controller
-without pi_get_admin_state(). The other is a failing
-pse_pi_is_hw_enabled().
+The notification worker used to take a reference on the pse_control. It
+now looks up the pse_control under pse_list_mutex and uses
+attached_phydev under that mutex, so a removed PHY cannot be reached. If
+a second PHY takes a pse_control for a shared PI, attached_phydev is
+cleared and a warning is printed.
 
-> pse_control_get_internal() takes a module reference and then has two
-> error paths that skip module_put(): a controller without
-> pi_get_admin_state(), and a failing pse_pi_is_hw_enabled(). The second
-> one happens on any I2C or UART error. Each time, one more reference
-> leaks, and the PSE driver can no longer be unloaded.
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index 65a41c517b359..336f00d82b5f8 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
+
+[ ... ]
+
+> @@ -1020,13 +1019,21 @@ static void pse_send_ntf_worker(struct work_struct *work)
+>  		struct net_device *netdev;
+>  		struct pse_control *psec;
+>  
+> -		psec = pse_control_find_by_id(pcdev, ntf.id);
+> +		/* A pse_control is only on the list while the PHY it was
+> +		 * handed to holds it: the PHY's pse_control_put() unlinks
+> +		 * and frees it under pse_list_mutex before the PHY itself
+> +		 * can be freed. Holding the mutex across the lookup and the
+> +		 * attached_phydev dereference therefore keeps the PHY alive,
+> +		 * which a reference on the pse_control alone would not.
+> +		 */
 
 [Severity: Low]
-The code change looks correct. Is the first path in this description
-actually reachable, though?
+This comment says a pse_control is only on the list while the PHY it was
+handed to holds it, and that the PHY's pse_control_put() unlinks and frees
+it. Does that hold when two PHYs share a PI?
 
-pse_controller_register() rejects a controller that has no
-pi_get_admin_state(), and it does so before the controller is added to
-pse_controller_list:
+In that case pse_control_get_internal() returns the existing psec after
+kref_get(). The unlink and free only happen on the last put:
 
-drivers/net/pse-pd/pse_core.c:pse_controller_register() {
+drivers/net/pse-pd/pse_core.c:__pse_control_release() {
     ...
-	if (!pcdev->ops->pi_get_admin_state ||
-	    !pcdev->ops->pi_get_pw_status) {
-		dev_err(pcdev->dev,
-			"Mandatory status report callbacks are missing");
-		return -EINVAL;
-	}
-    ...
-	mutex_lock(&pse_list_mutex);
-	list_add(&pcdev->list, &pse_controller_list);
-	mutex_unlock(&pse_list_mutex);
+	list_del(&psec->list);
+	kfree(psec);
+}
+
+So the first PHY's phy_device_remove()->pse_control_put() only drops the
+refcount. The psec stays on pcdev->pse_control_head after that PHY can be
+freed.
+
+The worker is still safe today, but only because
+pse_control_get_internal() clears psec->attached_phydev when a different
+PHY takes the psec. The comment gives list membership as the reason and
+does not mention that dependency.
+
+Could the comment say that it relies on attached_phydev being cleared in
+the shared-PI case? Later patches in the series leave this comment
+unchanged.
+
+[ ... ]
+
+> @@ -1417,6 +1424,19 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
+>  
+>  	list_for_each_entry(psec, &pcdev->pse_control_head, list) {
+>  		if (psec->id == index) {
+> +			/* attached_phydev can only name one PHY. If a second
+> +			 * one shares the PI, either may be removed first and
+> +			 * leave it pointing at a freed phy_device, so stop
+> +			 * reporting events for this PI instead.
+> +			 */
+> +			if (psec->attached_phydev &&
+> +			    psec->attached_phydev != phydev) {
+> +				dev_warn(pcdev->dev,
+> +					 "PI %u shared by several PHYs, not reporting its events\n",
+> +					 index);
+> +				psec->attached_phydev = NULL;
+> +			}
+> +
+>  			kref_get(&psec->refcnt);
+>  			return psec;
+>  		}
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch. This
+patch relies on the pse_control_put() in phy_device_remove(). Does that
+call leave phydev->psec dangling?
+
+drivers/net/phy/phy_device.c:phy_device_remove() {
+	unregister_mii_timestamper(phydev->mii_ts);
+	pse_control_put(phydev->psec);
+
+	device_del(&phydev->mdio.dev);
     ...
 }
 
-The only caller of pse_control_get_internal() is of_pse_control_get().
-It takes pcdev from that list:
+With the usual one PHY per PI, this put drops the last reference and
+__pse_control_release() does list_del() and kfree(psec). phydev->psec is
+never set to NULL.
 
-	list_for_each_entry(r, &pse_controller_list, list) {
+The phy_device can outlive phy_device_remove(), because
+phy_attach_direct() holds get_device() on it. The MAC<->PHY device_link
+is DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS, so the MAC is not unbound.
+phy_remove() also does not detach the netdev. After the MDIO bus is
+unregistered or unbound under an attached MAC, netdev->phydev still
+points at a phy_device whose psec has been freed.
 
-So every pcdev that reaches pse_control_get_internal() has
-pi_get_admin_state set. That means this check cannot fire:
+ETHTOOL_MSG_PSE_GET does not need admin permissions, and it reaches:
 
-	if (!pcdev->ops->pi_get_admin_state) {
-		ret = -EOPNOTSUPP;
-		goto put_module;
+pse_prepare_data()
+  pse_get_pse_attributes()
+    pse_ethtool_get_status(phydev->psec, ...)
+
+net/ethtool/pse-pd.c:pse_get_pse_attributes() {
+    ...
+	if (!phydev->psec) {
+		NL_SET_ERR_MSG(extack, "No PSE is attached");
+		return -EOPNOTSUPP;
 	}
+    ...
+	return pse_ethtool_get_status(phydev->psec, extack, &data->status);
+}
 
-Changing its goto keeps the unwind consistent, but it does not fix a
-leak that can be hit. The leak that can be hit is the
-pse_pi_is_hw_enabled() failure path. It returns the driver's
-pi_get_admin_state() error, for example an I2C or UART failure.
+Can this dereference the freed pse_control? The PSE SET handlers in
+net/ethtool/pse-pd.c appear to follow the same pattern.
 
-Could the commit message say that the first branch is a defensive check
-and cannot be reached today? Then anyone judging the fix for stable
-would see that only the pse_pi_is_hw_enabled() path really leaks.
+There may also be a race during removal. pse_control_put() in
+phy_device_remove() runs without rtnl, but the ethtool handlers read
+phydev->psec under rtnl. Could a concurrent PSE_GET or PSE_SET use the
+psec while it is being freed?
+
+Would clearing phydev->psec after the put, synchronized with the
+rtnl-protected readers, address both cases? The pse_control_put() call in
+phy_device_remove() dates back to commit 5e82147de1cbd7 in 2022. No later
+patch in this series touches phy_device_remove() or the ethtool PSE
+handlers.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018082314.48950-1-github%40szelinsky.de
