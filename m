@@ -1,114 +1,136 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792451805;
-	b=OaQ3jNrWK1hVIU58YnRvjEcxCmlaPFyBBC0CHgFdcKcCQDDnPDvRGjR4zmrEQJc+ISJS
-	 4AzDB2MMEtVfMPnslOlPNFLYkLpVbH3NB+2kHmZCzLWnwA3gNAic18O1XAhFQMPPzI4LC
-	 ot9B6vYJnDUY0ZInfAsuulvs/apvOAf8ZE3xyyDv9mvAz12dk4VVCleVZvneg/p6pkh/m
-	 2WU6XOq5fUACdUSu/AcInBZQ1pS5ybqjUshu+zkIfEagoiwXJJOgQu+QEnYxoRcwq3/Dh
-	 nM/hxdjHt986qdWCBAwlop2uYV/Cl9Tup12WdBv0c5o/5evm4srA94XeiGqnlI2QN4g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792451805;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=It+ck8nd35giJ9f/s5woVqaK2BP0dqpDizWPCzMcFLo=;
-	b=Igf8YRV6ZgcxBZDpcpVkYZrkBLXjlPeahJITzF1387PEATC6PWvL/pciWhPivHY+rg0M
-	 taY3gmtt1xoBDD7jvrhFInDZO8TslB3HifjYEOqmG/4/ke+VfLv1rmukijnXgqd4znJl8
-	 eMkYxbSkeKe5TNbwYpiVLuz5n3qez0trz8G+WL3HbM88EJgNQ3Uz0u9z3FFNqr6XFSDlO
-	 FuFl1gy4C0wA/PJ0l07cRTYBWIQrpPA1oCx69RnIHLmtyZJFlO6/55rCwSDEBAQqfefqP
-	 WNfhUv5d6hIdVSl8HyhcobCPu6GZmnYhiYh6bzNel0/jSQMNdGuscNJsvXQKC0Dxntg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AVksGCyC;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792451806;
+	b=eWJPcodVo469zyW5DHCfk5HHEb4GgurbS3HeSWx18uVX9S01Q9okCbA4GyXQGht7/UKV
+	 iRSWiWjGJXpiNC5jeDmyaMOn0EedxMUQAsF3rI5Yx4WXpSt01vsABVEh9tFCbsTgSErpK
+	 dfML17fCQMZhiNv4RefpQosvYPiVUZ+L/Y2dEIv8TSV2WK3/FuEKK5CTf5lJo05wl8SNW
+	 vvwVwuSnkoRWrrynAPrPSW367PAHaHoYOCsdETH9Msjwc4tNCS4ucWGGP5nBczbps/uQP
+	 +rMmMwN1waRrqK8k/ka8md1cymTudwBikm558TmbZ979zU71JvTsF2koMmxLgwS71QQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792451806;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=h+aojrvulFdOjW7DAQIRs915KSBqRMdCXuYbQfrmaEk=;
+	b=eSBBl4hv2jn8Yfr46/ZsYjvErCoatt0+UUSr/cn45BJP9aO18JOZ5KYuxrthUXxcmF4J
+	 jHU/FwZtWNVYfdDKn0WaCNNZhXIHk/XDWDRxkQYyG40TCM3TOdq9Xqmk7FuMK+aVBbQ0p
+	 yTWhEor8vfgiD8RhMaFjih3VKkucFm/tGwqscwW48W9q6TyfRot5HP1548yjh9kTh+BEu
+	 2FYB9PqpePxx+sRwaD97m4116h6ZWQ9Fd+QdWhuNXeVcTKSlraqLZeaUyJCJIlFAnRXS8
+	 N0qwCULRIBNPwLUqMOQmYiLR+5xpeKnb0kNKxSz81st2INqfXtcd9ZXkIjC4zojst3g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cAiKQV3C;
+	arc=fail smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E319606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAF1606A319
 	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:16:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E319606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BAF1606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AVksGCyC
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1e34ecb02so12777875e9.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:16:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792451803; x=1793056603; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=It+ck8nd35giJ9f/s5woVqaK2BP0dqpDizWPCzMcFLo=;
-        b=AVksGCyCTJpVQwQYlBtACBlni6R/2km4VkXUbpuS5HMnMzcp2+QblpS8GSkwayTo+3
-         eJsZ6LWx3b7vmNBbL6ce/E1nmRdP5R9GwAmwKaM7gT+LyKI8i79oZhamElbcYptEhqHW
-         P1VBk2Z9OH38d1PiM8olJPEdexYY7psHF/TEIE8H5eQStvtD4EMRiyyN3Uw7Vh8lg7NO
-         HLLNztMyK/T6nHsytQzKwZVWAaxFlW5NVGujK9CxHZGCbNu0LNlHcdcPGxg+xm6wQxoW
-         Oe0klOUBEAIyXMSFxQjxVwYDsYKxT6647UpGyAUst2bYYbEPwZeOHYhQFKt8kP/4i6YE
-         1m8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792451803; x=1793056603;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=It+ck8nd35giJ9f/s5woVqaK2BP0dqpDizWPCzMcFLo=;
-        b=FeZXDoA1EdbXdVu5iPwb9tGRcGN3WdeZrDr0DFeVtXaB0eW1lxzBjPJ5Qg4Fq725hB
-         h4jFpOxPwap6cgmzPCDfbvWKsOTDFsI6X9bVFM9E6KhNagl1/EwsEpBQ+GkTFd0mfNl6
-         TjBl9601QUz1+FBSedp59kUPG6VFtHMfbXX2OV3bH3kx10J6o+VnTj6t1noFc57wnDPy
-         xK70J55qAiY2ZKAs2KYSRsNS6cPhj13CypMjS6P8OJU0+D8rr+EXh9EApWLeS+i9PyZA
-         QWD7V5mffM4j1FFFTehVLGojOpsjsc8uQQb7Dr1/oNhN7uBKqQDbVchpdDenqRsRtou8
-         Hs1A==
-X-Forwarded-Encrypted: i=1; AKwUvBwy5CjYMPbgDzTW8Duahb46MvXl3LVufE4OCvEn6UOo3l3q5b6d9HSmCtNC9nW8S5QXMe1ksCU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL4nWLvn985Vg566Zb1VaA2HLQfENmcUZw8rDJiK9xOE42b8k22
-	abF7EVMH8mICsWXRHrvll8wj/WTUZep14rGPZR0xcgXLjmWGN0rRndb5
-X-Gm-Gg: AYBFou3wC2MRcxpMslA9m4KcUOvjCnHZvTAKAEDAsF8Qn55nyCBotpubm/a8VqBAv2S
-	Xp27dPBUQVUIQxvjWBfH46XQf6Du+H7NE7szQKkkadlGvqdcEnwoyRqqsm86rmxbGsrmHEswsBb
-	/M/sgwYCozM6FwtWxolgmLhQFhdboiciG6AI4lLr6K2UQMPDY7fkyL9w4pb3W1SskwbUj9Dw1Rw
-	nomys+nO0w2e7cEEf4cXbOQDFH0WBX6Jw73oPDsF47/5bFNLmu4kZHcQd4XJpicvphk1J0/suBU
-	VG7G0w4f7t1qsNbiReT3vWHTZYjn2o69HyDTk8A1rmDwehNUmvB3Yo4CXtMdvgowyCgOGl3irAP
-	kDKqJae6mAxZ3eD2b3ebBtnfF+3D72XlKJzpAKPZ72/ZmNSKZ01BVqJ2NelE37pDm+x4bErwcoq
-	Q/nNJPnCRWV5eduZG2H5aRrbDOaaUaP42u0SSkRRHYFKHkf+ftly1MgguIOftk+d49Llw0ESOCQ
-	GhzuuaGFD+c3nj3c4M7
-X-Received: by 2002:a05:600c:6290:b0:4a1:6af4:c6be with SMTP id 5b1f17b1804b1-4a1d7622364mr193940515e9.34.1792451802906;
-        Mon, 19 Oct 2026 16:16:42 -0700 (PDT)
-Received: from gmail.com ([2a01:e0a:bc7:8550:7c78:34d9:2b13:9a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2c1e0e6sm31068045e9.0.2026.10.19.16.16.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 16:16:42 -0700 (PDT)
-Date: Tue, 20 Oct 2026 01:16:39 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Amery Hung <ameryhung@gmail.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>,
-	Leon Hwang <leon.hwang@linux.dev>
-Subject: Re: [PATCH bpf-next 3/3] bpf: Fix ksock build with BPF_LSM=y and
- SECURITY_NETWORK=n
-Message-ID: <atak1wakfuKz3ZYi@gmail.com>
-References: <20261019211006.2574350-1-sashal@kernel.org>
- <20261019211006.2574350-4-sashal@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cAiKQV3C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792451805; x=1823987805;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=PngKseVCBHpG93FafoBlUv9BxCMjwuJaBEV9Qv/0BnE=;
+  b=cAiKQV3Ck+pbdUmoc33/92aS4V5wAt5IGOlUAfpwytq1VsZifD6zZsu9
+   nVkJUlLCGILiHJ2YoB3RKay9Ude34d8vDfENx99f9oe7r4kYGi/EkH/zT
+   1l6nBJzFSpJz2xz/EMKZOh3RkMyroW+5gkWBgfCugDbrkXwkCP6OhhIad
+   uSfovRz3nQCH7y8iITxBwR2nKmqhBtHwE6+B5AHMUwvCxjvFx/MspmM/0
+   9VEhFK05Ykz5DxuvKg1wbabGYdnsEOItC1BrcnYE1LB1xpEujPDwAbf0P
+   ldbKTQcUmiWHWKwnrXEjTvrYdBBsaIzEkPvzJKYi+a857CmXQjakdCYJ/
+   A==;
+X-CSE-ConnectionGUID: czezxfyBQ4eE1nzFNPAJwg==
+X-CSE-MsgGUID: wbVhw76hRAW6WxWllBl/4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1249613"
+X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
+   d="scan'208";a="1249613"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 16:16:44 -0700
+X-CSE-ConnectionGUID: 5LYIu3CmQKiqEI3LAdm3nw==
+X-CSE-MsgGUID: XMI9upRITdmxrPcW9FDzBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
+   d="scan'208";a="2990952"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 16:16:44 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 19 Oct 2026 16:16:43 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Mon, 19 Oct 2026 16:16:43 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.37) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 19 Oct 2026 16:16:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MO2qLJqhF7iSbHRP22Yz7zzkxBdn+Qm4w/U2XUici9o8DMrSeogmZvert/SGuNmAkwbyX6p6gY5PfKTRKJGWUGyLv+nNY1IHGRa4z7H/cLDfitd0y30aoxxUzY+ls5X+Ifej9dtnSnNwIyXJEtu4BSIY6xK4HrhnXXl7DfDz+n6brvzwAHYcRxtR1ZMA6RWmIKJL32GS9pv2fr+EjGbzJxGjhz0IHRHP6Duj8+LGedkWGPYEQ6QoCmF5TVZN/nw62z6xCqstTQspkVv4oLAd4WXZJaVXlNCyIuqCYCuQCSMowEqK8zJ9y8eedoagrJPFytKsACEpwNeP1EFyxe3s4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h+aojrvulFdOjW7DAQIRs915KSBqRMdCXuYbQfrmaEk=;
+ b=WTEDI0dAJbhbzovbWDPv0aO9lJHNRaVbwtYo4CIyPJ7MUeAVTPKDGOtjaIi8VWUev/ElZxzgWhabpdSrjC9lubSzGRqMVBECFOWjtwUMLNqEFxQm6fkrQBMDD91wUh1qtVfmZc3bg64PA96Qnq3gXkkD5zsXZSYlzaFMDod3N+ugb/PdUELOS1CEEM7K05d0zZMruyjCVaxE/V6t0ommacqv+PI6eozC6KxlFzSTzbQ8vFk6oz2S21yZzEsl5t1jK7b2HWZFSD+QoVo/atUunoWtIv1aC8JhpMpj28aHxyTS4T0o+vnFViNwHoHMbR7yISHtkdiaj3Qu5BpaC5xfdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY8PR11MB7364.namprd11.prod.outlook.com (2603:10b6:930:87::14)
+ by CH0PR11MB8214.namprd11.prod.outlook.com (2603:10b6:610:18e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
+ 2026 23:16:40 +0000
+Received: from CY8PR11MB7364.namprd11.prod.outlook.com
+ ([fe80::1b92:4856:eb86:f7e3]) by CY8PR11MB7364.namprd11.prod.outlook.com
+ ([fe80::1b92:4856:eb86:f7e3%5]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 23:16:39 +0000
+Message-ID: <cadf7730-3d9e-4d45-acf3-ee235fa64fd4@intel.com>
+Date: Mon, 19 Oct 2026 16:16:37 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 02/14] ice: use reference counting and SRCU for PTP
+ port access
+To: <netdev-bot+sashiko@kernel.org>, <anthony.l.nguyen@intel.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	<poros@redhat.com>, <maciej.machnikowski@intel.com>,
+	<przemyslaw.korba@intel.com>, <grzegorz.nitka@intel.com>,
+	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
+	<richardcochran@gmail.com>, <horms@kernel.org>
+References: <20261015191102.1174111-3-anthony.l.nguyen@intel.com>
+ <179244084232.3135.1622859924790214166@kernel.org>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <179244084232.3135.1622859924790214166@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4P222CA0019.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:303:114::24) To CY8PR11MB7364.namprd11.prod.outlook.com
+ (2603:10b6:930:87::14)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,56 +140,225 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019211006.2574350-4-sashal@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR11MB7364:EE_|CH0PR11MB8214:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3597bf64-ce64-4b2e-ebc3-08df2e370782
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|23010399003|7416014|1800799024|261009223027099003|10067099003|56012099006|22082099003|18002099003|5023799004|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info: 2DSzOXkmcDsuqoNwZM+GkQk1Js1YWJuLEi0n7MPqt5ucPUp6QWmd3jpktw4+U/dsyT3ZXM2LeVl0Es4A+toctKlC9LfSe8A1tfWi5Pbnq/LOSNqtYyqpSb8QHkt/duEfuTADN8phG/n1J9NmJ9SbaS7tCpURJTBeSPfOk+h21gswoxp546R5fKplxgc0M7j1ZT1mRtaW9tJeGyQY0fO0ORsUY5s6teI27mFqxTNcxndiSzu5nelvqITTek+kQJM3lTUWFDPNOpy60hptS0o0UjkjuMx2eaTya7AcMHcFRQkjdHWJhlf7SzaM09gOODX3MN+hC+IOqoXcanyBLMrqL3sDYi7XoMaF16TcB0YT5PgSiefscxf6Rrd7fTUEarcVsy0Yxn1Xn7DIsByVyAw5AYp96wRAXAYQRzJx7SEca5uyUPKi5ulAh2hGnnXt/X0/Y69igO5J2aX9/teUMBrIG+FTo3MEBYnghK14idVF5FDRWBe+J3/NOcbjzPbQzUNq6EdVeP6SQTsqOsqvd5Jf7iVen4Skq4HY0atVSzdqYhQAlFXynTH/Cakd9AgCW7cTRtM3IwcqiQxsjyPG2lcJXC0z4ETtE3GImoyAn2tclPd+bIHuHOMI9lkq46bhOsO3Xcb8YaLzXHWAPFrrQkoBSWWUkEC5HKvKSpYzMRqsicA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7364.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(1800799024)(261009223027099003)(10067099003)(56012099006)(22082099003)(18002099003)(5023799004)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cjFUS0ZsKzdINVAvY2ljak5UdDFNZzBoempzcWVDc3U1TElvakhtbVJ0WkZy?=
+ =?utf-8?B?R2lFSjZLQ24ybGFsb1lhazREOGRXVDltK3NMZVJKOStGWk1wbzhUVVRBQ3Zu?=
+ =?utf-8?B?dVJrSDBUYk9GUGI2Qm9Na1RBZFAwNDZXb0tsYk1ZNXljc2svWWpnMFNTT1pE?=
+ =?utf-8?B?RVAweUVGa2JBb2RkOUY0RmZ3NmloUjlVVUtsMTdUMWEwdmZ5SzlLNFY4V1pZ?=
+ =?utf-8?B?aEN3T3hjRUNXdXloOHRPaUk4QjUxZ3pqM1pxcytNSEIvdGhrSnRNMytwc04w?=
+ =?utf-8?B?TlJudmpmT21zS2ZBeXAxZmNqSEczay9mWlZKR0QvWlh5WFliUUw0eVNRbjlB?=
+ =?utf-8?B?c25qNU5UYTA3QnNOdW1NQ2dKVVVVNTk4d3E5bndkRW9qcWplOEZUaXZxWXFT?=
+ =?utf-8?B?T3ViUERZbEg5ejc2YmtPb3IzdVozVTdnekFremtENGdqeUluNzVkNW42MjlE?=
+ =?utf-8?B?NTJDM29lVGwrcC9hU1dwKzhJRlhZMTBvRk1UbStRbWRkM0xVZHVRRmFWbzFy?=
+ =?utf-8?B?NVVSV0dCc1pkbnBMU0pUYTNUM0w0N25RT29jejVESlpkaXFyaFJLTlJoSEdl?=
+ =?utf-8?B?OHh5MFRmd1c0VmZYNkRYVjZxV1VBdkVJMXJXRWcvWTN1WTdqMzdNZjRyZUUv?=
+ =?utf-8?B?cy85YWVHZWxYNkt1dGdPY3NTZGlsOHBEYVFVZEorQ0hzNkNnSWEvb0xQYWlS?=
+ =?utf-8?B?UVRBYnlUdHNKMS9aUTg5dm5PNDZDNyszK3BWZTR2aW1YMlM2T2dpd0lqVTl6?=
+ =?utf-8?B?QlFWRHMybEIwcExWVnVIeC9hcDc1c1doSTA1d2NQWU5Md2xwR3Qyb0ZjS0lD?=
+ =?utf-8?B?eXl4TnJoaTk2N0xlWWVUazA5cEVzL3hUcGNqSHp6VEtwOFBFMzlnS1hGT2pl?=
+ =?utf-8?B?ZlVhcWlOQ1MvYTJEVFJOMit1Q05Ud3llZlRSalVML0pVcG5GckdNRnV2SHNW?=
+ =?utf-8?B?b0NCSDF2dm1tYTY5RnBPQTZVUFhKR0c2NHJ6SitmcWprQmhiOXVXZkNoYWZO?=
+ =?utf-8?B?S0I0bVV2VXhrdWhRSjJoZ0kxOWJVVXp1NUhvUk9obG83NWlCOHdmYmNFS0Q2?=
+ =?utf-8?B?MUxoRDl1azVxL014Tnh6cE5kZmJuK21xa09Kb3lteDl2YjJLb3RPK2hKT1Ix?=
+ =?utf-8?B?YUthUmttdWx4N0FLTy9kMUZrYnVtMHpRYkJUTFJhalV1ZkE5YUJUa1FTQXk5?=
+ =?utf-8?B?ZXU4b1lnSGZjTHl2SGhvT1JKRHJJenlLSVZ4NWxLcy9OZmZvQXNYUStIVlFM?=
+ =?utf-8?B?NngwdVR1WnhtVDg0VHQ2NHQyS1VuSUZZSEZPRC82UWJqN0ptNi9OTEdPSlo5?=
+ =?utf-8?B?Y0pqd0J3aklyQWE4ZUdhM1hSeEgxTUJncXdtYWU3ai9tV1VRdHV0R3dqRFRT?=
+ =?utf-8?B?ZVE5aWIyZG53Y3B1TDdhUlVKcGhYaVBTS0RNYjEraUNOU2s5dVFMM0hzbldE?=
+ =?utf-8?B?cWhYOGwyWi85YnQ1TnF6SWxRNlBEUDhHdklQNE1zWHZoSlVJV21KUmk0aFpi?=
+ =?utf-8?B?MWFrZHkzWUtmN3BYcExwR0dvbGE0Wnl3R0VLc1dzVTZDdUpNdFg3bFVWZmxm?=
+ =?utf-8?B?M0ptSk5PTlN2anZVUURJLzIyeDRtSUMzZ2pHeHdvbUtxdTE1ZUx0ZnhaUGpC?=
+ =?utf-8?B?UzhrbGN0WlIrK1BLUXpGRGJvOXQzRmRLZUF2citISDlNT20yM2t4VWR5SStk?=
+ =?utf-8?B?a09ucG1EVk9ZSkVxMWY5M3pQQ1B1em9RRm4xSHM3ajRuV0c5S0dRbkIzKzVa?=
+ =?utf-8?B?WTlPZVFETUV0cXRRSFNGcTB2bElhWHRUUldiR2k4bGZYTlhIbllNd1dvNnh3?=
+ =?utf-8?B?bXFiWElCU3pmMHV1RDdYczg3TmE1cHBlMmhMZWw4WWtINUMzUlJzUTZ0bnlC?=
+ =?utf-8?B?ZnNXVFcxaGhiWDVYQ1dMVFFUbnlhbGU5d2w3emJJTFdVMEZxZjlQYVB1Vndo?=
+ =?utf-8?B?cDl5bll1RTVWS3BvUXJSazQ1SUtnVm1IOTMrM2dVUkMxZXdOb3ZDUWRYbTM0?=
+ =?utf-8?B?NG1uUlQ1V0g5cTZ2dlpqcVY1MXZTQWJvNGxBZHVSdFFkbUo3MjlPaDlJZnVx?=
+ =?utf-8?B?dG9YelI4MXhjbDZ2VUg1SDc5djBUNjl0SzBzSUZRMnlJbklWb2o2dUZheGtQ?=
+ =?utf-8?B?aFZVNFMwUnBhZDZDa0l4WCtJTXhqWTE4NW5uZy9ZcE0xTitrcXNBQVBWQko1?=
+ =?utf-8?B?Q00vemRoNVFJOXQyRFVJd1FORUZnTDUzc2VlVHh1TmUrT2YzTzg1Zzl4VGhm?=
+ =?utf-8?B?RGlabTgraXpBNXlMcVJVeG1LZHlXalBvaU1YQ2lUVnFwdWdUdmVPNUU2Qkpw?=
+ =?utf-8?B?TnBZZ1JxWFF6ZGFiZGl3aWRkSVhjNGRYTitLRm81SDA5RURWT0JGdz09?=
+X-Exchange-RoutingPolicyChecked: dTTaoVnwQehy1P2FO4JvqcLxvRTOWOi6evgdbQX/+awgcuvrhsLQN5zGrB3I6fv1GfkNswo0QdlKNHkPQ6cf5gKzsKi4TjoMEiJ4Nw4sguxDX6izVp+zRY0D2nb+TB/tG9oj1xXNLcradHfrZu6VBdQ/kvDSUVg+s+gRey2B976SvSQIm67Hnyui86Bt56OV1bKmZRoiA+vNeoRLHxcqE996+I2qoLBfxenBKr+65zpoRVQEKcn4TTy9WaA6MlYdiYT60dmDiYcr5BmJmQJovZCg02umPqddyBb/QeHqavURtzerkFXA4JE7kZtlsG/fXacsIxtLx/J6NxnK97RRiw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3597bf64-ce64-4b2e-ebc3-08df2e370782
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7364.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:16:39.5798
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xKw8suh346Md6ePS4rP3CeyUvaUS9oyCZXa5qZnSFLCGAc/j+j9/gcSULAv8KOzoiBJuHoRMVGKboag5rKQwxTxvkYJjlGRcsLXzZdOQSNA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB8214
+X-OriginatorOrg: intel.com
 
-On Mon, Oct 19, 2026 at 05:10:06PM -0400, Sasha Levin wrote:
-> bpf_ksock.c references bpf_lsm_socket_sendmsg() whenever
-> CONFIG_BPF_LSM=y, but the socket LSM hooks, and with them the BPF LSM
-> socket_sendmsg hook, only exist with CONFIG_SECURITY_NETWORK=y. Without
-> it resolve_btfids warns:
+On 10/19/2026 1:14 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
 > 
->   WARN: resolve_btfids: unresolved symbol bpf_lsm_socket_sendmsg
+> Low priority / nit picks for your consideration:
 > 
-> and since commit 201a454df948 ("resolve_btfids: Fix the --fatal_warnings
-> exit status") that fails the build with CONFIG_WERROR=y.
+> - [Low] drivers/net/ethernet/intel/ice/ice_adapter.h now embeds `struct
+>   srcu_struct srcu` by value in `struct ice_port_list` (line 32).
 > 
-> Only reference the hook with CONFIG_SECURITY_NETWORK=y, and use
-> BTF_ID_UNUSED otherwise. The ID stays zero, as it was when unresolved,
-> so bpf_ksock_kfunc_filter() keeps allowing LSM programs: none can be
-> attached to socket_sendmsg without CONFIG_SECURITY_NETWORK.
+> Pre-existing issues:
+> - [Medium] ice_ptp_prepare_rebuild_sec() (E825C owner reset path) holds
+>   only an SRCU read section and a kref on the peer port when it calls…
 > 
-> Fixes: 7ae4eb14c5f9 ("bpf: Add ksock kfuncs")
-> Assisted-by: LLM
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> --
+> 
+> ice: use reference counting and SRCU for PTP port access
+> 
+> This commit replaces the mutex-protected adapter port list with an SRCU
+> protected list plus a spinlock for writers. It also adds a kref to each
+> ice_ptp_port. Readers take the kref with kref_get_unless_zero(), and
+> ice_ptp_cleanup_pf() waits for the last reference to drop before it calls
+> synchronize_srcu().
+> 
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> index 4f695f32da3d8..0b01c7f5cf0da 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> +++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> @@ -17,15 +17,19 @@ struct ice_pf;
+> 
+> [ ... ]
+> 
+>>  struct ice_port_list {
+>> -	struct list_head ports;
+>> -	/* To synchronize the ports list operations */
+>> -	struct mutex lock;
+>> +	struct list_head list;
+>> +	/* To synchronize write operations on the port list */
+>> +	spinlock_t lock;
+>> +	struct srcu_struct srcu;
+> 
+> [Severity: Low]
+> Should ice_adapter.h include <linux/srcu.h> itself? struct ice_port_list
+> now embeds struct srcu_struct by value, so it needs the complete type. The
+> header only pulls in:
+> 
+> #include <linux/types.h>
+> #include <linux/mutex.h>
+> #include <linux/spinlock_types.h>
+> #include <linux/refcount_types.h>
+> 
+> #include "ice_type.h"
+> 
+> The patch adds <linux/srcu.h> to ice_adapter.c and ice_ptp.c instead. The
+> header seems to build today only through a transitive chain:
+> 
+> ice_type.h -> ice_osdep.h -> <net/udp_tunnel.h> -> ... -> <linux/notifier.h>
+> 
+> and notifier.h is what includes <linux/srcu.h>.
+> 
+> In the same patch, ice_ptp.h does get <linux/kref.h> for its new struct
+> kref member.
+> 
 
-Acked-by: Mahe Tardy <mahe.tardy@gmail.com>
+If we need a respin I can fix this, otherwise I would prefer to follow
+up with a cleanup, as this series has already taken a long time :/
 
-Makes sense, thanks for fixing this warning.
+>>  };
+>>  
+>>  /**
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> index e1c66cd0f94ff..55241802d17ae 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> 
+> [ ... ]
+> 
+>> @@ -2890,14 +2934,18 @@ void ice_ptp_queue_work(struct ice_pf *pf)
+>>  static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+>>  					enum ice_reset_req reset_type)
+>>  {
+> 
+> [ ... ]
+> 
+>> +	srcu_idx = srcu_read_lock(&ports->srcu);
+>> +	list_for_each_entry_srcu(port, &ports->list, list_node,
+>> +				 srcu_read_lock_held(&ports->srcu)) {
+>>  		struct ice_pf *peer_pf = ptp_port_to_pf(port);
+>>  
+>> +		if (!kref_get_unless_zero(&port->ref))
+>> +			continue;
+>> +
+>>  		if (!ice_is_primary(&peer_pf->hw)) {
+>>  			if (rebuild) {
+>>  				/* TODO: When implementing rebuild=true:
+>> @@ -2909,7 +2957,10 @@ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+>>  				ice_ptp_prepare_for_reset(peer_pf, reset_type);
+> 
+> [Severity: Medium]
+> This is a pre-existing issue, not one introduced by this patch. Can this
+> call to ice_ptp_prepare_for_reset(peer_pf) race with the peer PF's own
+> ice_ptp_release()?
+> 
+> Here the owner holds only an SRCU read section and a kref on the peer
+> port. ice_ptp_prepare_for_reset() then reads and writes peer_pf->ptp.state
+> with no lock held:
+> 
+> 	if (ptp->state != ICE_PTP_READY)
+> 		return;
+> 
+> 	ptp->state = ICE_PTP_RESETTING;
+> 
+> 	/* Disable timestamping for both Tx and Rx */
+> 	ice_ptp_disable_timestamp_mode(pf);
+> 
+> 	kthread_cancel_delayed_work_sync(&ptp->work);
+> 
+> At the same time, the peer can be in the READY path of ice_ptp_release().
+> That path does the following before it reaches ice_ptp_cleanup_pf():
+> 
+> 	pf->ptp.state = ICE_PTP_UNINIT;
+> 
+> 	/* Disable timestamping for both Tx and Rx */
+> 	ice_ptp_disable_timestamp_mode(pf);
+> 
+> 	ice_ptp_cleanup_pf(pf);
+> 
+> One possible interleaving:
+> 
+> owner (E825C reset)                    peer PF (unbind/remove)
+> ice_ptp_prepare_rebuild_sec()
+>   kref_get_unless_zero() succeeds
+>   ice_ptp_prepare_for_reset(peer_pf)
+>     sees state == ICE_PTP_READY
+>                                        ice_ptp_release()
+>                                          state = ICE_PTP_UNINIT
+>                                          ice_ptp_disable_timestamp_mode()
+>     state = ICE_PTP_RESETTING
+>     ice_ptp_disable_timestamp_mode()
+> 
+> Could the peer then be torn down with ptp.state left at ICE_PTP_RESETTING
+> instead of ICE_PTP_UNINIT? Both sides would also run
+> ice_ptp_disable_timestamp_mode() with nothing ordering them.
+> 
+> The new kref wait in ice_ptp_cleanup_pf() keeps the peer's kworker and Tx
+> tracker alive until the owner drops its reference, so the earlier
+> use-after-free window looks closed.
+> 
+> Before this patch, the same call ran with no locking at all. The commit
+> message also limits its scope to the port list.
+> 
 
-> ---
->  net/core/bpf_ksock.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+This whole peer_pf stuff needs some investigation. I think its partly
+being addressed by the work on ctrl_ptp/ctrl_pf being done, but I'm not
+sure. Either way I don't believe it makes sense to address it in this
+series.
+
+> ^ permalink raw reply
 > 
-> diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-> index 7bf796193ab61..48a2e2327acef 100644
-> --- a/net/core/bpf_ksock.c
-> +++ b/net/core/bpf_ksock.c
-> @@ -258,7 +258,12 @@ BTF_ID_FLAGS(func, bpf_ksock_send, KF_SLEEPABLE)
->  BTF_KFUNCS_END(ksock_kfunc_btf_ids)
->  
->  #ifdef CONFIG_BPF_LSM
-> -BTF_ID_LIST_SINGLE(bpf_lsm_socket_sendmsg_id, func, bpf_lsm_socket_sendmsg)
-> +BTF_ID_LIST(bpf_lsm_socket_sendmsg_id)
-> +#ifdef CONFIG_SECURITY_NETWORK
-> +BTF_ID(func, bpf_lsm_socket_sendmsg)
-> +#else
-> +BTF_ID_UNUSED
-> +#endif
->  #endif
->  
->  static int bpf_ksock_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
-> -- 
-> 2.53.0
-> 
+
