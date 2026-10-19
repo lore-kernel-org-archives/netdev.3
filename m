@@ -1,122 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.150.240
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792448825;
-	b=Ni3bNHshNA7tnZvQRxHGfNn1ZSAYYq5wtO0YMyND/1cO9kbkOzbccKCS7EN9PZCs9HCH
-	 +GDMoUlRnjDWX09GhdWFXjZ8Spmenmb5NPd71YVx1RgRhecOFXygIoPwviiW11WiPL9vL
-	 BNAbigkknVBYoNnnsxWOyV+cPrtCC2tb0eslrQmVgQsu418pWsCBx0J4NEJXe1hKyoRtk
-	 i7tWl0nQPrrriYQONF+I7Qf00Ghw99/rERhD9+EgProFajitrijJJT/ED93Z1IKT7fdsu
-	 Bz7+4BctaEJ9bYpRN5e1AFJdTX6nCMt+cPC8az26eYr2orF8+IlrD26dkwcU7nmfScA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792448825;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Orig-IP:X-Proofpoint-Spam-Details;
-	bh=7W0BmcepB6Aeqg3by+8VUO80cva2C9MnIOBEI/kRUkM=;
-	b=iYVK6W4qrVPwaEgOlSWtzixoE6d6aLzz4SiVWC/l/RbCKfnllSBLWEd2755FCkTTdXIn
-	 xnqFWXLSDyTHMPyxaoS9Im94rQEe994nJP3573Iz+wonHlWtyn1mWdU8Z4MIwevrmLCeV
-	 o+rsD0sQ9+og97COwmzCJDqvVH7flTNpssD44yW/0hnqoFvZUCcTqN02jfQiiE/fJFSOq
-	 hsS87s5aICiVBK+1NHUym0OoRxrXPKhVLill76h7PcFgUuSaDOJMQKW4oqAKMcKPUdQtV
-	 F1hGvMX60M0rmVWp5cfK0XOiNGnyEAVM0A0SDRTHAvDlM7bXaxlgfvVtKfJXTKjnfrQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nyu.edu;
-	spf=pass smtp.mailfrom=nyu.edu;
-	dkim=pass header.d=nyu.edu header.i=@nyu.edu header.a=rsa-sha256 header.s=20180315 header.b=Ik8aelSe;
-	dkim=pass header.d=nyu.edu header.i=@nyu.edu header.a=rsa-sha256 header.s=nyu-googleapps1 header.b=nf9o7U+C;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.150.240
-Received: from mx0a-00256a01.pphosted.com (mx0a-00256a01.pphosted.com [148.163.150.240])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792448992;
+	b=I7UvYnj9LbYyPHYt+QCc6H/krIJ86GX4TXkjHV/t26zhf7XWUd5q8pR/T7pETK3XQh1u
+	 nfmo0oJ8DlzpHhfQF09CJ0YfrMg9sg99pBAM4Ld20Yl7H8Jkymmv6j9l9F7QoA4SNBEQt
+	 U48mJmzOVzfplCOyGTFLCKIyP1PoBpyvoScHL+s+1Eqtjk0OKijAAmi26Q3jLKs0bDPfq
+	 A095LJNGPcdeNKGHNXEmWJ7hfQNLrSrrDD0xEOkmQO980gxy29O9Den2X83jJag/B7q4K
+	 u4D6D7mmF2qJBX9arE9R3gzRnVdiWuytV0nV6X+ez7/qELwYdWt4oEM4Eeysd+0xNLw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792448992;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=bn0LUV8nV0X9AL2Oe4mZF4R4gBNcAcDh87LSeEPK0aQ=;
+	b=wOJBytxu6qIeGFTqjw09ACZmjtvUR7fOD5Vu86+W1W9U/v6WYFXGat2A3+ol3dWoBLpD
+	 rX8UheofdpssNmS3oZJUvDYa7Mqx6n5ozdxabjS00wkdufA++euaJT1XRfuaYbQGpFXCT
+	 1l6frqhvju4QzgNZoD0WmjnM/JD02BhwyOYr8i8RwljlWwegWVdeSOCaBvlhMNpmJvoze
+	 3hb0cFEjjKGw5T1ACDmSb12gTDQxwGenoNMCQzXOQA2pj46VYC6LNMW5lfoW9F6u2C6Ht
+	 kQGvdtdf0/uFVfr6uJGVlmPGneA52fSQ+AW2sEDRG3V0Mby+RvkuCB9PLZNcmCyDIWQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oYpjPcO4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE01606A31A
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 22:27:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABE01606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nyu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nyu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E026606A31B;
+	Mon, 19 Oct 2026 22:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nyu.edu header.i=@nyu.edu header.a=rsa-sha256 header.s=20180315 header.b=Ik8aelSe;
-	dkim=pass (2048-bit key, unprotected) header.d=nyu.edu header.i=@nyu.edu header.a=rsa-sha256 header.s=nyu-googleapps1 header.b=nf9o7U+C
-Received: from pps.filterd (m0380321.ppops.net [127.0.0.1])
-	by mx0b-00256a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69JLcPHd320168
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 18:27:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyu.edu; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=20180315; bh=7
-	W0BmcepB6Aeqg3by+8VUO80cva2C9MnIOBEI/kRUkM=; b=Ik8aelSen+0yPt9sa
-	EocafKhobDXbKGKRRviMN6sAcOIuxKAj5l9lAdqzxQe8Kt/1ps6w2LkiPA1OLDFa
-	lcRgEKIG0hiEgsV8PwrEQXlRmhPFB2Jkyi2eYBt4RERzLswy3Vmw5HYeT6d0addK
-	D1FlUbITAR3x8hg8S9ckM4Z+QA4ebhPOXzyQeSk5GReME2Ua9j+MpLfkE0I3jILR
-	JYuihYXTP6C1VVbJ23jV4kI8wVTHEKr1f+/eVq6pw7kDbbxwfSkFckQktuZpBKx6
-	qO7EYqiTD4NzfHm3nxB2Xfme353iVlvZS85Jw53Q1I8X9fRG0QBOe67+IjCmwqin
-	YZCGg==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0b-00256a01.pphosted.com (PPS) with ESMTPS id 4hdua30kgd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 18:27:02 -0400 (EDT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-35a04491c56so157832eec.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:27:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792448822; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OkkcxgHlENTn0Cp6LRQ46sr8GAl9PAPudELNQaO/tt88XRh/uh2DESzLEfOoyuMZYv
-         ahvaVzldS3xeife0czZVC3KzyU22SOz9McrptOngKL8OYTXA49fGLL3TkpJ5mhGm+0X/
-         B1m0tlQw84cieQ5RBkTlgPtMY8gz45O2KhO/keq284jMmDSk1OXyYfmmnqRVuFmzxBHj
-         sOV1dUy4YnekefPK9mN+aBlnnmYGJua2G/azV+yXIqVoklDbY87kU/sN1yZShGVt1WlV
-         zb9TAKKdEi/Jh9b2EdVxRImwIgh7O1gwuO7UxqfFS7yjsulM0GOhYNi6Kyl6LFoZbQPV
-         2ddg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7W0BmcepB6Aeqg3by+8VUO80cva2C9MnIOBEI/kRUkM=;
-        fh=hfLLs5tdCXkQG/KUXE0/bfyuqWPQktOQvKopd8pdP8k=;
-        b=m+FdLKS9fX1F+1qN6TiHvfqio9Dlrau76pQ+faIt3CRgt31vZ6V06nLVQA4Rz4Wrxc
-         n6Sv1CVLKikT4F6cPyBpsQnfc8xNLRo31CxlT/hGOtCb7SsPigezQfiwzGRTN+4CXt9B
-         zpm00UHO6Z13VCXbrkc//3jLiKd3vMaI63XL4GJ9q+796A4nWqG5NCL/L4gpF5OADJg2
-         A8Musf3hL1sdWgoPr9+DTjOhK42J1u284JGEOhuCCdEDOChFH7nkhA+shEevVcBpOfRI
-         2AaM+QqgyelIj8LEPbNiCHtdffhhD+mLtYst5dQ0EZrDCVFRZStgbgV5ixgTOEmIrbRO
-         YGsg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nyu.edu; s=nyu-googleapps1; t=1792448822; x=1793053622; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7W0BmcepB6Aeqg3by+8VUO80cva2C9MnIOBEI/kRUkM=;
-        b=nf9o7U+CdVmNSA8SypncHM+YKDlJKnoP6jBDVVYI5lhlc9p3KaU6f9RGOk4JVolzlh
-         kgo9KHZ9+1DnWHtHbKOZb5gmVdQobCb+jpQZBqva8haMFlhvws3VJm4l0Mf4x2HhYfcR
-         74MqhWecZjGCVCBFJ4YTAImmvUW9jG7or0pcimmfMWYTT+aloWHcG9xaOQTeaVISOKgI
-         ZfEpC8F+VFBPOJBvlB3crO93GfVAu37GQ5X/PfIk/cuxLHXB7WLKWXnbCRJkP/TpeMF8
-         YtSQ0Klh2ydpBNhV7KUMppTGPl4JfCj6p+26OlSvA9R1XKxf0/UlPk8YZyH5e3fQ3FmQ
-         4G6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792448822; x=1793053622;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7W0BmcepB6Aeqg3by+8VUO80cva2C9MnIOBEI/kRUkM=;
-        b=oJFGbxTdhCKAczpXtmfIBRah3i0vZRa/P5Nrw0GYlGyKWvoHWFLmo8BFJV61AtLYLb
-         XGnTOc+dpPbNwKtkjH8rZEScetMphxWrjfcCAM6JmASkxvNCl9nwSpLlruN2lRksQGMs
-         WgIhrb83IY2OiNefoBP01wUUW42RawgeSKEKYSYKqI8l8w/97vlAyxyXJOLCiBO1Bezt
-         I+RWaSJmOkSARUsrWrGtG/RLKUI4HNw1sWtfAH3J2jR2r1YHlFZ92S/xMv8b5yS3FzRm
-         9ofaAnjAnhGnUYV9xDGjpW7DH12pgTc/jL9fAbNhJHferpbV/3WxX8bHD/RFkpvUqZet
-         4tyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxRDF1STjhTfiTDoCI0l86uJn5uMBlN6291bbP3HamgfoMcJUFjbzkCCyKDIacqcuJohzsHaT4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKeYf7N5rpr1lyg1zKV/sb4MK310uEjmyrVkcQzg8mkc6CWTUPf
-	GEHcnT+wZdg9GnEmSt4Mi+reFEDB4I9XZOwHCnaouJf6vMKRJDtFKny6aA9huGxQTi0oS4accBp
-	hGe+wTMzgdO5spiGwrGsjhhpAqLIJtNQ8Uvzih6pcDkBV/Mq8eOsDHMAAwF9TQRRxY2wvOiiVJ7
-	RbXrqR0YSdKH8fYflLXj5wtoUV8zVRbA==
-X-Gm-Gg: AYBFou3z9SN6Mko+reDmrLXcj9dzUrgX69P4MHmFf9SENwbQrd18fZ61SUMhrJ+NZER
-	4zPea3phiVa9uf+JTBkXsxFQeJWalAlSTevGj5J1X+oidgDa6x//57+aIy/VaSuevV5oib9vwCa
-	E6YWHjtm/JcxntCSnO+MwyIDRntiy3no1rXj/Oucpx1EINyy5sC3Zi0JEjSg==
-X-Received: by 2002:a05:7300:fe8c:b0:33e:61ab:8309 with SMTP id 5a478bee46e88-365fbe702e6mr513080eec.23.1792448821926;
-        Mon, 19 Oct 2026 15:27:01 -0700 (PDT)
-X-Received: by 2002:a05:7300:fe8c:b0:33e:61ab:8309 with SMTP id
- 5a478bee46e88-365fbe702e6mr513046eec.23.1792448821208; Mon, 19 Oct 2026
- 15:27:01 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oYpjPcO4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3FE1F000C4;
+	Mon, 19 Oct 2026 22:29:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792448991;
+	bh=bn0LUV8nV0X9AL2Oe4mZF4R4gBNcAcDh87LSeEPK0aQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=oYpjPcO4+qyVgDvU0SXTwuY03Cd2EM9GgCLwi1KJycLvfsoISiFgeC+/vCtrHS6XR
+	 WwUhW/XFyuaRVUFj3NDGImX7TebArRQIIRgpbiMqQi1CKZbOs5FOYy8ovxKjJC+mQA
+	 Q0H59J9WpJ6lbBRizcyO2B1xnIGHmo5eGZOKjPL/JRuxXDhbQ/M+9u/m0YbZpdkOgz
+	 aglhJjgWCro1GTi7eqZpbYGPMQJMxMCOsGvR9q+PZ9WAQcd97d/zMaKSIvmFS/+ZjJ
+	 hSvgRSVWV5eLah25O2qz/oO0LyVuwyT814urBfaEYZyU2Y8gDWyELU4tdOqKNXj8Qy
+	 q7tJkkGi/z8/Q==
+Subject:
+ Re: [PATCH net-next v4] net: stmmac: dwxgmac2: enable L2 split header support
+From: netdev-bot+sashiko@kernel.org
+To: sagar.cheluvegowda@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ lorenzo.bianconi@oss.qualcomm.com, hongmei.xu@oss.qualcomm.com,
+ abhishek.chauhan@oss.qualcomm.com, sarosh.hasan@oss.qualcomm.com
+Date: Mon, 19 Oct 2026 22:29:49 +0000
+Message-ID: <179244898962.3135.12890405028818098249@kernel.org>
+In-Reply-To: <20261015221215.1714047-1-sagar.cheluvegowda@oss.qualcomm.com>
+References: <20261015221215.1714047-1-sagar.cheluvegowda@oss.qualcomm.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -126,136 +68,212 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261017214845.28769-2-kj2864@nyu.edu> <atXVqZDUhE9Z8InH@kwain>
-In-Reply-To: <atXVqZDUhE9Z8InH@kwain>
-From: Jerry Jiang <kj2864@nyu.edu>
-Date: Mon, 19 Oct 2026 18:26:50 -0400
-X-Gm-Features: AclHuK_OizrKzXhjvZJbJnNHqcKl2cJmdxnoqVFQ_oSZGq_xEOdyc5Kt-heihiY
-Message-ID: <CAPqbLS3wzSQTJJRoBGjJ-C-2GZ95qn6GLAwYBYOt3o75uRiW8Q@mail.gmail.com>
-Subject: Re: [PATCH net v4] net: ipv4: add zero check for snd_cwnd_clamp
-To: Antoine Tenart <atenart@kernel.org>
-Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        edumazet@google.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, co+71b6509cb791e531@bugs.sh,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE5MDA4OSBTYWx0ZWRfX3BgRd5LxsA2y
- rPpdaNp2EL8SV+6N00Jj0sml0Sgw/YvtIK08+BC0PZyQTCXYDD4xn50jw8nYSIPdRycfDonU4lB
- FhRyJ1bYaV3og66T/cQ9t4eoiRHjq/E=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE5MDA4OSBTYWx0ZWRfX/ji9TVONeOt5
- ggMTJ1SWYDJYVTNH17VA9oHDwL405S+n+Z17I8QhYnwaLqwcN/BXUGAISTfWIZmKxSeJDr1pyq4
- X96CS/FPaVM/WooAZVkRdjzop8Wo/+nCHpHoIbuKsVYOYiREii/AzfP4GHzKf4v8w4a4l7iFVpJ
- /PnyqvdRAsbDuq4Vj/PCNJBID2XNeSHRLut3EGz+h8tiwnYszy3A1pDcEr0LPHMCtboGewuaVo/
- NcPJYjFnqurV0X7595n2fUFd6Trg4ixSz73YoyqKcMHO2WKaRXD+5CouhlUGfaIizD/XEjkPLOg
- EPkGhMN35I0nd6/k69lLENKVC7kELyQ60uazEYeaxTe1qO0wK+/5Qbm31ZmKJacDr1FcylRjfS7
- yfsx4R1wD9CBV+iZ2pocawzFgN4ZNMVFujtqagp69U6bWkWOogw1Dx+Kk1IK5z1ceijSDQYtJk1
- 7tfumnaNj4DDT0wHYLw==
-X-Authority-Analysis: v=2.4 cv=FdqiV5+6 c=1 sm=1 tr=0 ts=6ad69936 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=x7bEGLp0ZPQA:10 a=S0S_EcBMpFAA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Se5WoFf3ZZRiLcel0nel:22 a=Vu6uP2Wp0I46Sktgawq-:22 a=VwQbUJbxAAAA:8
- a=hKX_YmtgrgkOCiSBCTgA:9 a=QEXdDO2ut3YA:10 a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-GUID: xteXiQpJZV2gkZLceC973rS5LZHqXtLU
-X-Proofpoint-ORIG-GUID: xteXiQpJZV2gkZLceC973rS5LZHqXtLU
-X-Orig-IP: 74.125.82.198
-X-Proofpoint-Spam-Details: rule=outbound_bp_notspam policy=outbound_bp score=0
- malwarescore=0 impostorscore=0 adultscore=0 suspectscore=0 bulkscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610190089
 
-I apologize for deleting the warning.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-v5 is proposed:
-https://lore.kernel.org/all/20261019222531.1073-1-kj2864@nyu.edu/
+Critical: 0 · High: 1 · Medium: 1 (1) · Low: 2
 
-On Mon, Oct 19, 2026 at 4:33=E2=80=AFAM Antoine Tenart <atenart@kernel.org>=
- wrote:
->
-> On Sat, Oct 17, 2026 at 05:48:46PM -0400, Kaho Jiang wrote:
-> > User can pass zero to snd_cwnd_clamp via RTAX_CWND type.
-> > This could lead to division of zero error if not checked properly.
-> >
-> > Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-> > Call Trace:
-> >  <IRQ>
-> >  tcp_reno_cong_avoid (net/ipv4/tcp_cong.c:510 (discriminator 1))
-> >  tcp_ack (net/ipv4/tcp_input.c:3517 net/ipv4/tcp_input.c:3873 net/ipv4/=
-tcp_input.c:4440)
-> >  tcp_rcv_established (net/ipv4/tcp_input.c:6685)
-> >  tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
-> >  tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
-> >  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207 (discriminator 1))
-> >  ip_local_deliver_finish (net/ipv4/ip_input.c:241 (discriminator 1))
-> >  ip_local_deliver (./include/linux/netfilter.h:325 ./include/linux/netf=
-ilter.h:319 net/ipv4/ip_input.c:262)
-> >  ip_rcv (./include/net/dst.h:481 (discriminator 6) net/ipv4/ip_input.c:=
-492 (discriminator 6) ./include/linux/netfilter.h:325 (discriminator 6) ./i=
-nclude/li)
-> >  __netif_receive_skb_one_core (net/core/dev.c:6297 (discriminator 4))
-> >  __netif_receive_skb (net/core/dev.c:6410)
-> >  process_backlog (net/core/dev.c:6761)
-> >  __napi_poll.constprop.0 (net/core/dev.c:7830)
-> >  net_rx_action (net/core/dev.c:7893 net/core/dev.c:8050)
-> >  handle_softirqs (kernel/softirq.c:645)
-> >  __irq_exit_rcu (kernel/softirq.c:679 kernel/softirq.c:519 kernel/softi=
-rq.c:758)
-> >  irq_exit_rcu (kernel/softirq.c:775)
-> >  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1062 (discrim=
-inator 35) arch/x86/kernel/apic/apic.c:1062 (discriminator 35))
-> > RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
-> >
-> > Fix by checking if user pass in zero as parameter,
-> > if so reject the value zero.
-> >
-> > Fixes: 814d488c6126 ("tcp: fix the timid additive increase on stretch A=
-CKs")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: co+71b6509cb791e531@bugs.sh
-> > Assisted-by: LLM
-> > Signed-off-by: Kaho Jiang <kj2864@nyu.edu>
-> > ---
-> >  include/net/tcp.h  | 3 +--
-> >  net/ipv4/metrics.c | 4 ++++
-> >  2 files changed, 5 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/net/tcp.h b/include/net/tcp.h
-> > index 4416cdf9bf30..ad80b8fb8a52 100644
-> > --- a/include/net/tcp.h
-> > +++ b/include/net/tcp.h
-> > @@ -1521,8 +1521,7 @@ static inline u32 tcp_snd_cwnd(const struct tcp_s=
-ock *tp)
-> >
-> >  static inline void tcp_snd_cwnd_set(struct tcp_sock *tp, u32 val)
-> >  {
-> > -     WARN_ON_ONCE((int)val <=3D 0);
-> > -     WRITE_ONCE(tp->snd_cwnd, val);
-> > +     WRITE_ONCE(tp->snd_cwnd, max(val, 1U));
->
-> Please keep the warning (it's not only about 0).
->
-> >  }
-> >
-> >  static inline bool tcp_in_slow_start(const struct tcp_sock *tp)
-> > diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-> > index ad40762a8b38..cb36686973e5 100644
-> > --- a/net/ipv4/metrics.c
-> > +++ b/net/ipv4/metrics.c
-> > @@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
-> >                       NL_SET_ERR_MSG(extack, "Unknown flag set in featu=
-re mask in metrics attribute");
-> >                       return -EINVAL;
-> >               }
-> > +             if (type =3D=3D RTAX_CWND && !val) {
-> > +                     NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater=
- than zero");
-> > +                     return -EINVAL;
-> > +             }
-> >               metrics[type - 1] =3D val;
-> >       }
-> >
-> > --
-> > 2.43.0
-> >
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] On XLGMAC cores, dwxgmac2_enable_sph() now corrupts the RX queue
+  enable register.
+- [Medium] dwxgmac2_enable_sph() programs MAC-global split and preamble
+  settings regardless of `en`.
+- [Low] The patch includes a fix for an existing XGMAC split-header bug
+  inside a feature patch, with no Fixes: tag.
+- [Low] dwxgmac2_enable_sph() sets the 2-bit SPLM field
+  (XGMAC_CONFIG1_SPLM_MASK = GENMASK(9,8)) with `value |=…
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the stmmac
+  RX path has no dma_rmb() between seeing RDES3.OWN cleared and reading…
+
+--
+
+net: stmmac: dwxgmac2: enable L2 split header support
+
+This patch makes dwxgmac2_enable_sph() program SPLM and SAVE_EN in
+XGMAC_EXT_CFG1 and clear the variable preamble bit in XGMAC_EXT_CFG0. It
+also changes dwxgmac2_get_rx_header_len() so the header length is read
+only on the first descriptor. For non-IP (L2T) packets on the last
+descriptor, the length comes from RDES2[9:2].
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+> index 6719ac6e395bc..b28aa39f99472 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+> @@ -292,8 +292,22 @@ static int dwxgmac2_get_rx_hash(struct dma_desc *p, u32 *hash,
+>  
+>  static void dwxgmac2_get_rx_header_len(struct dma_desc *p, unsigned int *len)
+>  {
+> -	if (le32_to_cpu(p->des3) & XGMAC_RDES3_L34T)
+> +	u32 rdes3 = le32_to_cpu(p->des3);
+> +
+> +	/* HL is only defined on the first descriptor */
+> +	if (!(rdes3 & XGMAC_RDES3_FD))
+> +		return;
+> +
+> +	/* when FD=1 and LD=0, HL is RDES2[9:0] */
+> +	if (!(rdes3 & XGMAC_RDES3_LD)) {
+> +		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+> +		return;
+> +	}
+
+[Severity: Low]
+Should this FD/LD handling go in its own patch with a Fixes: tag?
+
+The commit message says L34T can hold stale data on a non-last
+descriptor. If so, the old code:
+
+	if (le32_to_cpu(p->des3) & XGMAC_RDES3_L34T)
+		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+
+could return hlen == 0 for the first descriptor of a multi-descriptor IP
+frame with SPH active. stmmac_rx_buf1_len() would then take this path:
+
+	/* Not last descriptor and not split header: buffer1 is fully filled */
+	if (status & rx_not_ls)
+		return priv->dma_conf.dma_buf_sz;
+
+even though buffer 1 only holds the header.
+
+That looks like an existing XGMAC split-header bug in the code from
+commit 96147375d49f ("net: stmmac: xgmac: Only get SPH header len if
+available"). With the fix bundled into this feature patch, stable trees
+would also need the new EXT_CFG0/EXT_CFG1 programming to pick it up.
+
+> +
+> +	if (rdes3 & XGMAC_RDES3_L34T)
+>  		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+> +	else if (rdes3 & XGMAC_RDES3_L2T)
+> +		*len = (le32_to_cpu(p->des2) & XGMAC_RDES2_NONIPHL) >> 2;
+>  }
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch, but
+is a dma_rmb() missing between the OWN check and the read of des2 here?
+
+dwxgmac2_get_rx_status() loads des3 and des2, then checks OWN:
+
+	u32 rdes3 = le32_to_cpu(p->des3);
+	u32 rdes2 = le32_to_cpu(p->des2);
+
+	if (unlikely(rdes3 & XGMAC_RDES3_OWN))
+		return dma_own;
+
+stmmac_rx() then calls stmmac_rx_buf1_len()->dwxgmac2_get_rx_header_len()
+with no barrier in between. The TX completion path in stmmac_main.c calls
+dma_rmb() after its own check, and dwxgmac2_rx_check_timestamp() also
+uses one.
+
+On weakly ordered CPUs, could the RDES2 load complete before OWN is seen
+as cleared? That would give a stale HL and a wrong buf1_len.
+
+The new FD/LD logic doesn't depend on this ordering.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> index ff83858ebc1f3..0a9c787305a4e 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> @@ -561,6 +561,16 @@ static void dwxgmac2_enable_sph(struct stmmac_priv *priv, void __iomem *ioaddr,
+>  	value |= XGMAC_CONFIG_HDSMS_256; /* Segment max 256 bytes */
+>  	writel(value, ioaddr + XGMAC_RX_CONFIG);
+>  
+> +	value = readl(ioaddr + XGMAC_EXT_CFG1);
+> +	value |= XGMAC_CONFIG1_SPLM(1);
+
+[Severity: Low]
+SPLM is a two-bit field (GENMASK(9, 8)). Should it be cleared with
+XGMAC_CONFIG1_SPLM_MASK before the OR, the way HDSMS is handled just
+above?
+
+	value &= ~XGMAC_CONFIG_HDSMS;
+	value |= XGMAC_CONFIG_HDSMS_256;
+
+If bit 9 were already set, the field would end up as 3 instead of mode 1.
+
+In stmmac_hw_setup(), the SWR from stmmac_init_dma_engine()->
+stmmac_reset() runs before this. So in practice the result depends on
+the register's reset value.
+
+> +	value |= XGMAC_CONFIG1_SAVE_EN;
+> +	writel(value, ioaddr + XGMAC_EXT_CFG1);
+> +
+> +	/* Disable variable preambles to keep the L2 split offset deterministic. */
+> +	value = readl(ioaddr + XGMAC_EXT_CFG0);
+> +	value &= ~XGMAC_EXT_CFG0_VPRE;
+> +	writel(value, ioaddr + XGMAC_EXT_CFG0);
+
+[Severity: High]
+Can this corrupt the RX queue enable register on XLGMAC cores?
+
+The DWXLGMAC_CORE_2_00 entry in hwif.c uses the same DMA ops as XGMAC:
+
+	.desc = &dwxgmac210_desc_ops,
+	.dma = &dwxgmac210_dma_ops,
+	.mac = &dwxlgmac2_ops,
+
+so dwxgmac2_enable_sph() runs there too. On XLGMAC, dwxlgmac2.h defines
+offset 0x140 as:
+
+	#define XLGMAC_RXQ_ENABLE_CTRL0		0x00000140
+
+and dwxlgmac2_rx_queue_enable() programs it like this:
+
+	value = readl(ioaddr + XLGMAC_RXQ_ENABLE_CTRL0) & ~XGMAC_RXQEN(queue);
+	if (mode == MTL_QUEUE_AVB)
+		value |= 0x1 << XGMAC_RXQEN_SHIFT(queue);
+
+BIT(8) is therefore the AVB enable for RX queue 4. Clearing
+XGMAC_EXT_CFG0_VPRE would disable that queue.
+
+The write to 0x144 also sets BIT(8) and BIT(24) in an XLGMAC register
+that the driver doesn't describe.
+
+stmmac_hw_setup() enables the MTL queues through
+stmmac_mtl_configuration() first. Later it runs:
+
+	sph_en = (priv->hw->rx_csum > 0) && priv->sph_active;
+	for (chan = 0; chan < rx_cnt; chan++)
+		stmmac_enable_sph(priv, priv->ioaddr, sph_en, chan);
+
+There is no sph_capable or core check, so this would happen on every
+XLGMAC open, whether or not split header is supported. Should this be
+gated on the core type, or moved into a per-core MAC op?
+
+> +
+>  	value = readl(ioaddr + XGMAC_DMA_CH_CONTROL(chan));
+>  	if (en)
+>  		value |= XGMAC_SPH;
+
+[Severity: Medium]
+Only the per-channel XGMAC_SPH bit depends on en here. SPLM/SAVE_EN are
+set and VPRE is cleared on every call, and nothing restores them.
+
+stmmac_hw_setup() calls stmmac_enable_sph() for every RX channel, even
+when sph_en is false or the core has no SPH support.
+stmmac_set_features() calls it with sph_en == false when NETIF_F_RXCSUM
+is cleared, and stmmac_xdp_open() also calls it.
+
+Doesn't that leave the variable preamble disabled on every XGMAC device
+after hw_setup? It would also stay disabled after split header is turned
+off with ethtool.
+
+The commit message says:
+
+    Finally, disable the variable-length preamble when L2 splitting
+    is enabled.
+
+which doesn't seem to match this behavior.
+
+Also, dwmac4_enable_sph(), which this extends, doesn't change the
+preamble configuration. And these MAC-global read-modify-writes are
+repeated once per RX channel.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015221215.1714047-1-sagar.cheluvegowda%40oss.qualcomm.com
