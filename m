@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649705827B6;
-	Mon, 19 Oct 2026 14:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD23B5AAA58;
+	Mon, 19 Oct 2026 14:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418417; cv=none; b=Eb/c1EQViFVky5D8jp7QJ4R0VZ102II/oDqppaQnPsbR6lVBuZi73Aduw4KJTGUo0F2YnzhWv8uaeurlHhD8xPET+FjXdHXsfjgvD/urflLRsmyMs5saLPxFcfxZp9HSqcFwwooc3h+ZIgDWghRHMKBosffMcbhvAYvjH5iAVdI=
+	t=1792418438; cv=none; b=IsA7FqEn7z93/oDY9UVyqRWpoaqwKDJDtCL4E5t9EeKBE7szUvp3pYctx9jeqyx3l/eAUDqFw+MT8hzwF7+7bDvoQhjfPiHubXk8C+vtY87WI7HfBsXp9Dd7wEQcCZRY4iqCI83tyt9qOQChfZwkd+szlARS24T9LNZwfiDbnGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418417; c=relaxed/simple;
-	bh=+xOolqVHTIjUNje/NBlWqngZewdY5WPe7Cv7eyrJaHo=;
+	s=arc-20240116; t=1792418438; c=relaxed/simple;
+	bh=ykslW100lOSqo/UUJsC+LI0VyjBgFKk9wc+1qs9RvQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g4cYwBns3s8ZW5wnDPi7JSiHklQBAUs0gvsSW6FguptNsPcMCKjU2WyB7J67haHKcEdiqe376hq3YSgIZPJ2jYkgv3RKs3fkyjJiHw+cOpSjNxXiR0cFaB46gyBGIKPVfihf95b7GOZZ63v8RDfxSW963af8AavnlIyEaH8zI8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olOeDOjT; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=WUjtpYpYPRG/EhWOHwTEJOkYNEJ9x820ubJTSRzZbTNvp9eRdDdmaOgDZ1O7H5bUO7FA80XWO8M5dKoYDb2nZRNK+Ghlp7RBjoEo6hsLgvU8T3BaRymRaHLoVLaAj9WIBoaba/xOM+FGtCZSVlBXkXrw9yP8kSY6KwjF5gzaFdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZ97VlBK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olOeDOjT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179181F000CB;
-	Mon, 19 Oct 2026 14:00:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZ97VlBK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEFE1F000C7;
+	Mon, 19 Oct 2026 14:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418414;
-	bh=ZBGxOJXU7HjBVpyfzOXs9dH+Zt09Hx8bIDlSjJjZIfU=;
+	s=k20260515; t=1792418435;
+	bh=Yjbc0LAnj7QlsZQtLoEmr1Zb0PtvOYs17wYrifYf6O8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=olOeDOjTLuRm4sKwbNu0/Rcpa7GSsMFZTmi2jhIKuEuwf8qC9/FtzeCYUK9PxXZNv
-	 hly3hf2uXpxmvtLzM1G/Xbq4ZSndpum6fEsRO+vkjd3lb+IjCsyo5BN3sUh/gmIuER
-	 QK9bXf+Ohuslhe/bKz3ygChK+lDQzeG3UXdIlOVESsGblOte11MbmSFO613D9L567u
-	 8lencfBzirbJYhHd3nK58hBLlIv+lFe3UxdN1RDDcCY8kbsXjr7WjNed/0wlZtP7cq
-	 hGb1OALT8gfNvmmyZVWDYWkzk7KU6bC6evEhNSAm8i9wW3ESvtIfIKSgGsdHZeLJSa
-	 NhDXAwXgHtZwA==
+	b=KZ97VlBKKbNCT/WjUlIHQ24RTyR5Ae0QZgZusoduw+z05KqicNVaPWjYXy7cqO/ex
+	 LJl3b9YVh2BpfPBT7XXlvU/j7n/e29ULGPShcWgd2Wd1kl6TcP4YY/k0O5VJRL1sR8
+	 eTB2zGIcuWAbCo6EqwARq+uV8lMxLpONq0dq4zjzVVfArlaQtmwiV8RPeLneSdXusy
+	 bPu6QQtkhjck2R852zUbWjieZrlDtnTZY3biALNig/BW5iyCG9H7ELYxCDqAkP4NTU
+	 n2kR6o0ScMtaAo7awLHvPSMpn5qN/2+gDV/6ft1nKTjbLK0Ao3dQ/BxnevnY7AALUl
+	 iD31QmqjNJ/NQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
+Cc: Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mengyuanlou@net-swift.com,
-	andrew+netdev@lunn.ch,
+	linux@armlinux.org.uk,
+	hkallweit1@gmail.com,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] net: libwx: disable TX VLAN offload for packets with >2 VLAN tags
-Date: Mon, 19 Oct 2026 09:48:43 -0400
-Message-ID: <20261019135441.1420968-232-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.6] net: sfp: add quirk for HORACO copper SFP+ module
+Date: Mon, 19 Oct 2026 09:48:58 -0400
+Message-ID: <20261019135441.1420968-247-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -57,435 +58,415 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit f5cfb576ce39ba5647024c6d6eeb5b7a822fab6e ]
+[ Upstream commit 1bb028baab541900d3603d4f93c1c0fb5aba5401 ]
 
-The current hardware does not support TX VLAN offload for packets with
-three or more VLAN tags. When such packets are transmitted with hardware
-VLAN offload enabled, the hardware may malfunction or produce corrupted
-frames.
+Add quirk for a copper SFP+ module that identifies itself as "OEM"
+"HC-10GE-113C". It uses RollBall protocol to talk to the PHY.
 
-Add a check in wx_features_check() to parse the VLAN depth of the
-skb. If more than two VLAN tags are detected (including both the
-hardware tag and in-band tags), strip NETIF_F_HW_VLAN_CTAG_TX and
-NETIF_F_HW_VLAN_STAG_TX from the feature set. This forces the
-kernel networking stack to handle VLAN insertion in software for
-these specific packets, ensuring correct transmission.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/069DF89AA8029189+20260713060441.276612-1-jiawenwu@trustnetic.com
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260719100158.874882-1-olek2@wp.pl
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-The candidate is a hardware-limitation workaround in Wangxun `libwx`: TX
-VLAN offload is unsafe for more than two tags and can corrupt frames.
-This 7.3-rc4 tree already has `wx_features_check` and the VLAN TX path,
-so the rest of the write-up is whether that fix belongs here as a stable
-backport.
+Local tree is **v7.3-rc4** (mainline `7.3.0-rc4`). The candidate is
+`1bb028baab541` (`net: sfp: add quirk for HORACO copper SFP+ module`).
+The SFP quirk table and `sfp_fixup_rollball()` are present here, so this
+is evaluated as a hardware-quirk backport on technical merit.
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
 
 **Step 1.1: PARSE THE SUBJECT LINE**
-- Record: `[net/libwx] [disable] disable TX VLAN offload for packets
-  with >2 VLAN tags`
-- Subsystem: `net: libwx` (Wangxun shared NIC library used by
-  txgbe/ngbe)
-- Verb `disable` is a hardware-workaround action, not a feature or
-  cleanup
+Record: **[net: sfp:] [add] [quirk for HORACO copper SFP+ module]**
+- Subsystem: `net: sfp` (SFP cage / phylink)
+- Verb: **add** — here it is a hardware quirk table entry, not a new
+  driver or API
 
 **Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
-- Record:
-  - `Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>` (author;
-    Wangxun maintainer)
-  - `Link: https://patch.msgid.link/069DF89AA8029189+20260713060441.2766
-    12-1-jiawenwu@trustnetic.com`
-  - `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev
-    maintainer, applied)
-  - No `Fixes:` tag (expected for this review pipeline)
-  - No `Cc: stable@vger.kernel.org`
-  - No `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-by:`
-  - Ignore any pipeline `Signed-off-by: Sasha Levin` / `[Upstream commit
-    ...]` (none in the real commit)
+Record:
+- **Fixes:** none (expected; this is not a regression from a prior
+  kernel commit)
+- **Reported-by:** none
+- **Tested-by:** none
+- **Reviewed-by:** Andrew Lunn `<andrew@lunn.ch>` (PHY/SFP reviewer)
+- **Acked-by:** none
+- **Link:**
+  `https://patch.msgid.link/20260719100158.874882-1-olek2@wp.pl`
+- **Cc: stable:** none (expected)
+- **Signed-off-by:** Aleksander Jan Bajkowski `<olek2@wp.pl>` (author);
+  Jakub Kicinski `<kuba@kernel.org>` (netdev maintainer)
+- Ignored: any pipeline “Upstream commit” / Sasha Levin SOB (none on
+  this commit)
+
+Notable: reviewed by Lunn, applied by Kicinski. No syzbot, no multi-user
+reports.
 
 **Step 1.3: ANALYZE THE COMMIT BODY TEXT**
-- Record:
-  - **Bug:** Wangxun TX VLAN offload does not support three or more VLAN
-    tags
-  - **Symptom / failure mode:** hardware may malfunction or produce
-    **corrupted frames**
-  - **Root cause (author):** HW offload still used on >2-tag packets
-  - **Fix:** in `wx_features_check()`, count hwaccel + in-band VLAN
-    tags; if `vlan_num > 2`, drop `NETIF_F_HW_VLAN_CTAG_TX` and
-    `NETIF_F_HW_VLAN_STAG_TX` so the stack inserts in software
-  - **Version info in message:** none
+Record:
+- **Bug:** copper SFP+ identifying as vendor `"OEM"` / part
+  `"HC-10GE-113C"` talks to its PHY with the RollBall I2C-to-MDIO
+  protocol, which the EEPROM does not describe in a way the generic path
+  understands.
+- **Symptom:** PHY probe uses the wrong MDIO protocol (typically
+  `MDIO_I2C_NONE` or C45), so the copper PHY is not found and the link
+  does not come up.
+- **Version info:** none in the message. Patch was sent as `[PATCH net-
+  next]` on 2026-07-19; applied 2026-07-21; `git describe --contains` →
+  **v7.3-rc1**.
+- **Root cause (author):** module uses RollBall; needs an `sfp_quirks[]`
+  match so `sfp_fixup_rollball()` runs.
 
 **Step 1.4: DETECT HIDDEN BUG FIXES**
-- Record: Not a disguised cleanup. This is an explicit hardware
-  workaround for incorrect TX offload. Intel reviewer Jacob Keller
-  treated it as a bug fix that should have gone to `net` with a `Fixes:`
-  tag (see Phase 4).
+Record: **Not a hidden cleanup.** It is an explicit hardware quirk. That
+is an allowed stable class (SFP_QUIRK_* / `stable-kernel-rules.rst`
+“hardware quirk”), not a disguised leak/race.
 
-## PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
+PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
 
 **Step 2.1: INVENTORY THE CHANGES**
-- Record:
-  - File: `drivers/net/ethernet/wangxun/libwx/wx_lib.c` — **+24 / -0**
-  - Function: `wx_features_check()`
-  - Scope: single-file surgical addition inside an existing
-    `ndo_features_check` hook
+Record:
+- File: `drivers/net/phy/sfp.c` — **+3 / −0**
+- Data only: `sfp_quirks[]` (static const table)
+- Scope: **single-file surgical quirk addition** (one `SFP_QUIRK_F` +
+  comment)
 
 **Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
-- Record:
-  - **Before:** `wx_features_check()` only restricted checksum/GSO for
-    encapsulated packets; VLAN TX offload was left on for every packet
-  - **After:** count `skb_vlan_tag_present()` plus in-band
-    `eth_type_vlan()` headers via `skb_header_pointer()`. If more than
-    two tags, clear HW VLAN TX features and break
-  - Path: per-packet TX feature check (`netif_skb_features()` →
-    `ndo_features_check`). Normal TX path, not probe/error-only
+Record:
+- **Before:** EEPROM vendor `"OEM"` + PN `"HC-10GE-113C"` does not match
+  any quirk. `sfp_sm_mod_probe()` sets `mdio_protocol` from EEPROM
+  (`MDIO_I2C_C45` if 10GBASE-T ECC, else `MDIO_I2C_NONE` for a module
+  that does not identify as copper). `sfp_sm_probe_for_phy()` then
+  either skips PHY probe or probes at the wrong address/protocol.
+- **After:** `sfp_lookup_quirk()` matches exact vendor+part,
+  `sfp_fixup_rollball()` sets `sfp->mdio_protocol = MDIO_I2C_ROLLBALL`
+  and `phy_t_retry` to 1s. Probe uses `SFP_PHY_ADDR_ROLLBALL` and
+  C45-over-RollBall.
+- Path: **module insert / probe** (normal path for this SKU only).
 
 **Step 2.3: IDENTIFY THE BUG MECHANISM**
-- Record:
-  - Category: **hardware workaround / logic correctness** (not
-    UAF/leak/race)
-  - Mechanism: HW can insert/offload at most two VLAN tags. With a third
-    tag and HW VLAN TX still enabled, the NIC may emit corrupted frames
-    or malfunction
-  - How the fix works: `validate_xmit_vlan()` in `net/core/dev.c` sees
-    VLAN TX offload cleared and calls `__vlan_hwaccel_push_inside()`, so
-    the extra tag is inserted in software
+Record:
+- **Category:** **(h) Hardware workaround** — SFP quirk
+- **Mechanism:** broken/non-standard EEPROM vs actual RollBall PHY
+  access. Fix is vendor/PN table entry calling existing
+  `sfp_fixup_rollball()`.
 
 **Step 2.4: ASSESS THE FIX QUALITY**
-- Record:
-  - Obviously correct: this is the standard `ndo_features_check`
-    pattern; `skb_header_pointer()` is NULL-safe; loop stops at >2 tags
-  - v1 skipped the in-band walk when no hwaccel tag; v2 (applied) always
-    walks in-band tags — better
-  - Minimal, no API/data-structure change
-  - Regression risk: **low**. Extra work only while
-    `eth_type_vlan(skb->protocol)` is true. Worst case is extra software
-    VLAN insertion, not a new crash path
-  - Residual gap (not a reason to reject): VF drivers
-    (`txgbevf`/`ngbevf`) use `wx_xmit_frame` but do **not** set
-    `ndo_features_check`, so VFs are not covered
+Record:
+- **Quality:** obviously correct. Same pattern as FLYPRO `SFP-10GT-
+  CS-30M`, Turris RTSFP-*, OEM SFP-10G-T. Match is exact (`sfp_match`
+  requires equal length; this entry is not `SFP_QUIRK_F_PREFIX`).
+- **Minimal:** 3 lines, no unrelated edits.
+- **Regression risk:** very low. Only this vendor+PN pair.
+  `sfp_fixup_rollball()` only sets protocol + retry interval.
+- **Caveat (verified, not blocking):** some other OEM 10G copper entries
+  use `sfp_fixup_rollball_cc` (also patches `extended_cc`). Author chose
+  plain `sfp_fixup_rollball`; Lunn reviewed. If this SKU already has a
+  valid ECC, CC extra is unnecessary.
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
 
 **Step 3.1: BLAME THE CHANGED LINES**
-- Record:
-  - New lines are entirely from `f5cfb576ce39b` (this commit)
-  - Surrounding `wx_features_check()` introduced by `3b05aa997c491`
-    (“net: wangxun: restrict feature flags for tunnel packets”,
-    2025-04-22)
-  - TX VLAN offload itself: `3403960cdf86c` (“net: wangxun: libwx add tx
-    offload functions”, 2023-05-31, in v6.5-rc1)
+Record:
+- New lines authored in **1bb028baab541** (2026-07-19).
+- Neighbors: YV XGSPON quirk (`dfec1c14aecee`, 2025) and OEM SFP-GE-T
+  (`0805d67bc0ef95`, 2024).
+- **Infrastructure:** `sfp_fixup_rollball()` introduced in
+  **324e88cbe3b7b** (“net: sfp: add support for multigig RollBall
+  transceivers”, 2022-10-03) — **v6.1-rc1**. Present in this tree.
 
 **Step 3.2: FOLLOW THE FIXES: TAG**
-- Record: No `Fixes:` tag. Author told Jacob Keller they could not
-  identify one. The limitation dates to original TX VLAN offload
-  (`3403960cdf86c`), not a later regression. That commit **is** an
-  ancestor of this tree.
+Record: **No Fixes: tag.** Not a regression from a specific prior
+commit. The module never worked without the quirk.
 
 **Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
-- Record:
-  - Immediate follow-up: `732ed8f75ce58` “net: libwx: fix FDIR ATR queue
-    mismatch for software VLAN packets” — sets `WX_TX_FLAGS_SW_VLAN`
-    when VLAN is in-band; has its own `Fixes: b501d261a5b3`. Related
-    when more packets take the SW VLAN path, but standalone
-  - Not labeled patch X/Y. Standalone 24-line addition
-  - Prerequisite in this tree: `wx_features_check()` exists
-    (`3b05aa997c491` is an ancestor)
+Record:
+- Same author, same pattern: `ddbf0e78a8b20` “net: sfp: add quirk for
+  FLYPRO copper SFP+ module” (v6.17-rc5).
+- Later on same file: hwmon leak fix; prefix-match for *other* OEM PNs
+  (`f53167e29b8e9`); more ONT quirks. **None change the HORACO entry.**
+- **Standalone**, not patch X/Y.
 
 **Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
-- Record: Jiawen Wu is the Wangxun maintainer (`MAINTAINERS`: `M: Jiawen
-  Wu <jiawenwu@trustnetic.com>`). Regular libwx/txgbe/ngbe fixes around
-  the same time.
+Record: Aleksander Jan Bajkowski is a regular PHY/SFP contributor
+(FLYPRO quirk, intel-xway, realtek, mediatek). Not the SFP maintainer;
+Lunn’s Reviewed-by covers that.
 
 **Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
-- Record: Depends on `wx_features_check()` / `ndo_features_check`
-  (`3b05aa997c491`). Both exist here. Helpers used (`eth_type_vlan`,
-  `skb_header_pointer`, `skb_vlan_tag_present`) are long-standing core
-  APIs. Can apply standalone on this tree.
+Record:
+- Needs: `SFP_QUIRK_F`, `sfp_fixup_rollball()`, `MDIO_I2C_ROLLBALL` —
+  all in this tree (`sfp.c`, `include/linux/mdio/mdio-i2c.h`).
+- **Applies standalone.** No new helpers.
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
 
 **Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
-- Record:
-  - `b4 dig -c f5cfb576ce39b`: [PATCH net-next v2] https://patch.msgid.l
-    ink/069DF89AA8029189+20260713060441.276612-1-jiawenwu@trustnetic.com
-  - `b4 dig -a`: v1 (2026-07-10) → v2 (2026-07-13, applied)
-  - v1 review (Przemek Kitszel): style/logic nits — don’t skip the loop
-    when no hwaccel tag; don’t use a dummy parse depth of 8; move the
-    `vlan_num > 2` test inside the loop. All addressed in v2
-  - v2 review (Jacob Keller): **asked why this went to net-next instead
-    of net with a Fixes: tag to the commit that introduced VLAN
-    tagging**
-  - Author reply: “Probably because I couldn't find a Fixes tag for
-    it...”
-  - Applied to **netdev/net-next.git** by Jakub Kicinski (patchwork bot,
-    2026-07-22)
-  - No NAKs; no reviewer objection to the fix itself
-  - No explicit `Cc: stable` in the thread (Jacob’s question is the
-    stable-relevant signal)
+Record:
+- `b4 dig -c 1bb028baab541`:
+  **https://patch.msgid.link/20260719100158.874882-1-olek2@wp.pl**
+- `b4 dig -a`: **v1 only** (`[PATCH net-next]`), 2026-07-19
+- Thread (mbox): (1) patch, (2) Lunn **Reviewed-by**, (3) patchwork-bot
+  applied to **netdev/net-next.git** as `1bb028baab54`
+- **No NAK**, no requested respin, **no Cc: stable** in review
 
 **Step 4.2: CHECK WHO REVIEWED THE PATCH**
-- Record (`b4 dig -w`): netdev maintainers (Kicinski, Abeni, Dumazet,
-  Miller, Horman, Lunn), Wangxun (Jiawen Wu, Duanqiang Wen, Mengyuan
-  Lou), Intel NIC reviewers (Jacob Keller, Przemek Kitszel). Right
-  audience.
+Record (`b4 dig -w`): To/Cc included Russell King
+(`linux@armlinux.org.uk`), Andrew Lunn, Heiner Kallweit, netdev
+maintainers (David, Edumazet, Kicinski, Pabeni),
+`netdev@vger.kernel.org`. Right people; Lunn reviewed.
 
 **Step 4.3: SEARCH FOR THE BUG REPORT**
-- Record: No `Reported-by`, syzbot, or bugzilla. Vendor/maintainer
-  hardware-limitation report. Severity from message: corrupted frames /
-  hardware malfunction.
+Record: no Reported-by, bugzilla, or syzbot. Author describes a real
+module SKU. Severity from reporter: **module does not work** (PHY
+protocol). User count: **unverified beyond the author**.
 
 **Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
-- Record: Standalone v1/v2 of one patch, not a multi-patch series.
-  Follow-up ATR SW-VLAN fix is separate and already in this tree.
+Record: **standalone**, not a series. Related only as the same quirk
+pattern as FLYPRO.
 
 **Step 4.5: CHECK STABLE MAILING LIST HISTORY**
-- Record: **UNVERIFIED** — lore.kernel.org HTTP 403; no local stable@
-  discussion found. No evidence it was rejected for stable.
+Record: lore.kernel.org search returned **403**. Web search for “HORACO
+… stable” found the net-next thread (LKML, Patchew, spinics), **not** a
+stable-list NAK. **UNVERIFIED:** no stable@ thread found; no evidence it
+was rejected.
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
 
 **Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF**
-- Record: `wx_features_check()` only (exported)
+Record: **No function bodies changed.** New table entry consumed by
+`sfp_lookup_quirk()` → `sfp_fixup_rollball()`.
 
 **Step 5.2: TRACE CALLERS**
-- Record:
-  - `txgbe_netdev_ops.ndo_features_check = wx_features_check`
-    (`txgbe_main.c`)
-  - `ngbe_netdev_ops.ndo_features_check = wx_features_check`
-    (`ngbe_main.c`)
-  - Core: `netif_skb_features()` → `dev->netdev_ops->ndo_features_check`
-    (`net/core/dev.c`)
-  - Called from the generic TX validation path (`validate_xmit_skb` /
-    `xmit_one`) — userspace-reachable on every transmit for those NICs
-  - VF ops use `wx_xmit_frame` but **no** `ndo_features_check` (coverage
-    gap)
+Record (from `sfp.c`):
+- `sfp_lookup_quirk()` called from module-ID setup (~line 2677)
+- If `quirk->fixup`, called under `st_mutex` (~2686–2687)
+- `sfp_sm_probe_for_phy()` switches on `mdio_protocol`;
+  `MDIO_I2C_ROLLBALL` probes `SFP_PHY_ADDR_ROLLBALL`
+- Context: **SFP insert**, process/workqueue, not IRQ. Userspace-visible
+  as “plug copper SFP+, no link”
 
 **Step 5.3: TRACE CALLEES**
-- Record: `skb_vlan_tag_present`, `eth_type_vlan`, `skb_header_pointer`
-  — read-only skb inspection; no alloc/lock/I/O
+Record: `sfp_fixup_rollball()` assigns `MDIO_I2C_ROLLBALL` and
+`phy_t_retry = 1s`. No alloc/lock.
 
 **Step 5.4: FOLLOW THE CALL CHAIN**
-- Record: syscall/send path → qdisc → `validate_xmit_skb()` →
-  `netif_skb_features()` → `wx_features_check()` → if VLAN TX bits
-  dropped, `validate_xmit_vlan()` software-inserts the tag →
-  `wx_xmit_frame()`. Reachable from userspace on Wangxun PF devices.
-  Triple-tag is uncommon (QinQ + extra tag) but real.
+Record: SFP cage driver (`CONFIG_SFP`, depends on I2C+PHYLINK) → EEPROM
+read → quirk → PHY probe. **Reachable** when this module is inserted.
+Not a syscall fuzzer path; **hardware + SFP cage**.
 
 **Step 5.5: SEARCH FOR SIMILAR PATTERNS**
-- Record: Many NICs call `vlan_features_check()`, which **keeps** HW
-  VLAN TX on multi-tag skbs and only tightens csum features. Wangxun’s
-  extra restriction is device-specific (max two tags). Same idea as
-  other `ndo_features_check` HW-limit hooks, not a copy of
-  `vlan_features_check()`.
+Record: many RollBall quirks already: FLYPRO, FS, Walsun, OEM SFP-10G-T
+/ RTSFP-*, Turris. Same bug class; this SKU was missing.
 
-## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
+PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
 
 **Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
-- Record:
-  - Local tree: **v7.3-rc4-27-gf0100363d8c37**, `make kernelversion` =
-    **7.3.0-rc4**
-  - `wx_features_check()` exists; pre-patch body had no VLAN-depth check
-    (`git show f5cfb576ce39b^:...`)
-  - TX VLAN flags (`WX_TXD_VLE`, `skb_vlan_tag_present` in
-    `wx_xmit_frame`) exist since `3403960cdf86c`
-  - Candidate **is** already an ancestor of HEAD (already merged here).
-    Evaluation is still whether the fix has stable merit for this
-    codebase; the pre-fix function is the buggy code
+Record:
+- `git describe HEAD`: **v7.3-rc4-27-gf0100363d8c37**
+- `make kernelversion`: **7.3.0-rc4**
+- `drivers/net/phy/sfp.c` exists; `sfp_quirks[]` exists;
+  `sfp_fixup_rollball()` exists (since v6.1).
+- Without this entry, this SKU would not match. `git merge-base --is-
+  ancestor 1bb028baab541 HEAD` → **yes** (already in 7.3-rc1+).
+  Evaluation is still: would this tree *need* the quirk for the hardware
+  — **yes, the driver is here**.
 
 **Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
-- Record: **Clean apply** on this tree. Context is the existing
-  `wx_features_check()`; no conflicting refactor of that function
-  besides this commit and later unrelated wangxun work
+Record: **clean apply** on this tree (already applied as a 3-line insert
+next to other OEM entries). No conflicting refactor of the table around
+that site beyond later prefix-match macros unused by this entry.
 
 **Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
-- Record: This fix is in the tree. Related ATR SW-VLAN fix
-  `732ed8f75ce58` is also here. No alternate fix of the >2-tag HW limit.
+Record: this exact quirk is the fix. No alternate HORACO workaround.
+Follow-ups do not replace it.
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
 
 **Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
-- Record: `drivers/net/ethernet/wangxun/libwx` — **IMPORTANT** for
-  Wangxun NIC users (txgbe/ngbe PFs), **PERIPHERAL** vs core mm/net. Not
-  staging.
+Record:
+- Subsystem: **drivers/net/phy** — SFP cage (`CONFIG_SFP`)
+- Criticality: **IMPORTANT** for machines with SFP cages (routers, NICs,
+  embedded); **PERIPHERAL** as a single OEM copper module SKU. Not
+  mm/VFS/core.
 
 **Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
-- Record: Actively developed (2026 wangxun commits: Tx timeout, PCIe
-  AER, FDIR, PTP). Author is the maintainer.
+Record: active (many 2025–2026 quirk and RollBall commits). Quirk table
+is the long-standing way to handle broken modules.
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
 
 **Step 8.1: DETERMINE WHO IS AFFECTED**
-- Record: **driver-specific** — CONFIG_TXGBE / CONFIG_NGBE Wangxun PF
-  users. Not universal. VFs not covered by this hook.
+Record: **driver-specific + hardware-specific** — users of HORACO
+HC-10GE-113C (EEPROM `OEM` / `HC-10GE-113C`) in an SFP cage. No effect
+on other modules.
 
 **Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
-- Record: TX of a frame with **three or more** VLAN tags (hwaccel + in-
-  band) while HW VLAN TX is on. Uncommon vs plain Ethernet; used in
-  QinQ/provider/NFV setups. Unprivileged users can send tagged frames if
-  the interface/bridge allows it. Not a pure timing race.
+Record: insert/probe that module. Common for owners of that SKU,
+**never** otherwise. Unprivileged users cannot trigger it without the
+hardware. Not a race.
 
 **Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
-- Record: Corrupted TX frames and possible hardware malfunction.
-  **HIGH** (data corruption on the wire; possible device misbehavior).
-  Not a kernel oops, but not cosmetic.
+Record:
+- Failure: PHY not probed / no copper link
+- Not oops/UAF/corruption
+- **Severity: MEDIUM** for that hardware (link dead), **LOW** globally
+- Still matches the documented **hardware quirk** stable exception
 
 **Step 8.4: CALCULATE RISK-BENEFIT RATIO**
-- Record:
-  - **Benefit:** high for affected Wangxun users (correct frames; avoid
-    HW malfunction)
-  - **Risk:** very low (24 lines, feature-bit clear, standard stack
-    fallback)
-  - **Ratio:** favors backporting
+Record:
+- **Benefit:** module works on stable kernels that already have
+  SFP+RollBall (this tree does)
+- **Risk:** very low (3 lines, exact match, existing fixup)
+- **Ratio:** favorable — classic stable quirk
 
-## PHASE 9: FINAL SYNTHESIS
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
 
 **Step 9.1: COMPILE THE EVIDENCE**
 
-**FOR:**
-- Real HW limit: >2 VLAN tags + HW VLAN TX → corrupted frames /
-  malfunction
-- Jacob Keller explicitly framed it as a `net` bugfix that needed
-  `Fixes:`
-- Author is the Wangxun maintainer; netdev maintainers applied it
-- Small (+24), contained, no new APIs
-- Uses the intended `ndo_features_check` mechanism
-- Hardware quirk/workaround class (stable exception)
-- `wx_features_check` and VLAN TX offload exist in this tree
-- v2 addressed review nits; no NAKs
+FOR:
+- `Documentation/process/stable-kernel-rules.rst` explicitly allows
+  **hardware quirks**
+- Prompt class: **SFP_QUIRK_*** — “YES for stable”
+- Real hardware: RollBall PHY, wrong/missing EEPROM description
+- 3-line table add, existing `sfp_fixup_rollball()`
+- Reviewed by Andrew Lunn; applied by Kicinski
+- RollBall stack in this tree since v6.1
+- Exact vendor+PN match; no new API/feature surface
+- Same pattern as FLYPRO and other OEM 10G copper quirks
 
-**AGAINST:**
-- Sent to net-next, not `net` (author could not pick a `Fixes:` SHA)
-- No public reproducer, crash log, or extra `Reported-by`
-- Triple-tag TX is a relatively rare path
-- VF devices sharing `wx_xmit_frame` still lack this hook
+AGAINST:
+- net-next, not `net`; no Cc: stable / Fixes (expected for new IDs)
+- No public crash/CVE; only this SKU
+- Submitted as “add quirk”, not a core bugfix
+- Whether every OEM HC-10GE-113C also needs `rollball_cc` was not
+  independently tested here (Lunn review is the available evidence)
 
-**UNRESOLVED:**
-- No stable@ lore search (HTTP 403)
-- “Malfunction” not independently characterized beyond the vendor commit
-  message
+UNRESOLVED:
+- lore.kernel.org HTTP 403; stable@ history only via web search (no hit)
+- No independent Tested-by besides implied author testing
+- How many users have this module: unverified
 
 **Step 9.2: APPLY THE STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — v2 after review; applied by
-   Kicinski; logic matches core `validate_xmit_vlan()`
-2. Fixes a real bug that affects users? **PASS** — HW TX of >2 VLAN tags
-   is wrong and user-triggerable
-3. Important issue? **PASS** — on-wire corruption / HW malfunction
-   (HIGH, not a core oops)
-4. Small and contained? **PASS** — +24 lines, one function
-5. No new features or APIs? **PASS** — disables an unsafe offload for
-   specific packets
-6. Can apply to the local tree? **PASS** — `wx_features_check()`
-   present; patch is a clean addition
+1. Obviously correct and tested? **PASS** — table entry + Lunn Reviewed-
+   by; applied to net-next
+2. Fixes a real bug that affects users? **PASS** — module cannot talk to
+   PHY / no link
+3. Important issue? **PASS** under the **hardware quirk** exception (not
+   a kernel oops)
+4. Small and contained? **PASS** — +3 lines, one file
+5. No new features or APIs? **PASS** — existing quirk hook only
+6. Can apply to the local tree? **PASS** — SFP + `sfp_fixup_rollball`
+   present; applies cleanly
 
 **Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
-- Record: **Hardware quirk/workaround** — disable an offload the NIC
-  cannot perform. Same class as USB/PCI/codec quirks.
+Record: **Hardware quirk / SFP quirk** (and analogous to device-ID
+addition on an existing driver). Qualifies automatically.
 
-**Step 9.4: DECISION**
+**Step 9.4: MAKE YOUR DECISION**
+This tree has the SFP driver and RollBall fixup. The patch is a 3-line
+SKU quirk so that copper module gets `MDIO_I2C_ROLLBALL`. That is the
+stable exception, low risk, self-contained. Backport **yes**.
 
-This tree is 7.3.0-rc4 and already contains the Wangxun TX offload path
-and `wx_features_check()`. The patch is a small, reviewed workaround for
-a vendor-confirmed HW limit that otherwise yields corrupted frames.
-Missing `Fixes:`/`Cc: stable` is why it needs manual review, not a
-reason to drop it. Jacob Keller’s net-vs-net-next question is the right
-classification: this is a bugfix, not a feature.
+------------------------------------------------
+What it solves for stable users
+------------------------------------------------
+Without the quirk, a HORACO HC-10GE-113C (`OEM` / `HC-10GE-113C`) never
+uses RollBall, so the PHY is not probed and the 10G copper link stays
+down. With it, insert matches the table and uses the existing RollBall
+path (protocol + 1s PHY retry).
 
-### What the commit solves for stable users
-Wangxun PFs will no longer ask the NIC to hardware-insert/offload a
-third VLAN tag. Those packets fall back to software VLAN insertion,
-which avoids bad frames and possible device malfunction.
+Risk vs benefit
+------------------------------------------------
+Benefit is that specific module working. Risk is negligible: exact
+string match, no locking/API change. Later prefix-match work does not
+apply to this exact PN.
 
-### Risk vs benefit
-Benefit is correctness on a real (if uncommon) TX path. Risk is a few
-extra header walks and software VLAN push only when tags are already
-present.
-
-### Concerns
-- Needs `wx_features_check()` (present here)
-- Optional companion `732ed8f75ce58` for FDIR ATR on SW-VLAN packets is
-  already in this tree
-- VFs still omit `ndo_features_check`; that is a remaining gap, not a
-  regression from this patch
+Concerns
+------------------------------------------------
+None that block backport: no series, no missing helpers on this tree, no
+review objections. Optional `rollball_cc` is unused; reviewers accepted
+`sfp_fixup_rollball`.
 
 Verification:
-- [Phase 1] Parsed subject/tags/body from `git log -1` / `git show
-  f5cfb576ce39b`; no Fixes/Reported-by/Cc: stable
-- [Phase 2] Diff: +24 in `wx_features_check()` only; confirmed current
-  file at wx_lib.c:3265-3313
-- [Phase 2] Confirmed stack fallback: `validate_xmit_vlan()` in
-  net/core/dev.c:3971-3977
-- [Phase 3] `git blame` on wx_features_check: body from 3b05aa997c491;
-  new VLAN loop from f5cfb576ce39b
-- [Phase 3] TX offload intro `3403960cdf86c` (v6.5-rc1); `git merge-base
-  --is-ancestor` both 3b05aa997c491 and 3403960cdf86c vs HEAD: yes
-- [Phase 3] Follow-up 732ed8f75ce58 exists; not a required prereq for
-  this hunk
-- [Phase 3] Author Jiawen Wu listed as Wangxun maintainer in MAINTAINERS
-- [Phase 4] `b4 dig -c/-a/-w/-m`: v1→v2, lore msgid
-  069DF89AA8029189+...; Przemek nits on v1; Jacob Keller asked why not
-  net+Fixes; author said no Fixes SHA; applied to net-next
-- [Phase 4] lore WebFetch 403; v1 retrieved via `b4 mbox`
-- [Phase 5] Callers: txgbe_main.c:705, ngbe_main.c:681;
-  netif_skb_features in net/core/dev.c:3895-3924
-- [Phase 5] VF netdev_ops: ndo_start_xmit=wx_xmit_frame, no
-  ndo_features_check
-- [Phase 6] `git describe HEAD` = v7.3-rc4-27-gf0100363d8c37; `make
-  kernelversion` = 7.3.0-rc4; pre-patch function confirmed via `git show
-  f5cfb576ce39b^`
-- [Phase 8] Failure mode from commit text + HW offload path: corrupted
-  frames / malfunction, severity HIGH
-- UNVERIFIED: stable@ mailing-list history (lore 403); independent
-  crash/reproducer beyond vendor description
+- [Phase 1] Tags: Reviewed-by Andrew Lunn; Link msgid
+  `20260719100158.874882-1-olek2@wp.pl`; SOB Bajkowski + Kicinski; no
+  Fixes/Reported-by/Cc:stable
+- [Phase 1] Subject `[PATCH net-next]`; body states OEM HC-10GE-113C
+  uses RollBall
+- [Phase 2] Diff: +3 lines in `sfp_quirks[]`; `SFP_QUIRK_F("OEM",
+  "HC-10GE-113C", sfp_fixup_rollball)`
+- [Phase 2] `sfp_fixup_rollball()` sets `MDIO_I2C_ROLLBALL` and 1s
+  `phy_t_retry` (sfp.c:412–421)
+- [Phase 2] `sfp_sm_probe_for_phy()` uses `SFP_PHY_ADDR_ROLLBALL` for
+  that protocol (sfp.c:2244–2246)
+- [Phase 2] `sfp_lookup_quirk()` exact vendor+part match
+  (sfp.c:668–684); fixup at 2686–2687
+- [Phase 3] `git describe HEAD` = v7.3-rc4-27-gf0100363d8c37;
+  kernelversion 7.3.0-rc4
+- [Phase 3] Commit `1bb028baab541`; `git describe --contains` =
+  v7.3-rc1~133^2~221
+- [Phase 3] `git merge-base --is-ancestor 1bb028baab541 HEAD` succeeded
+- [Phase 3] `sfp_fixup_rollball` from `324e88cbe3b7b` (v6.1-rc1)
+- [Phase 3] Similar FLYPRO quirk `ddbf0e78a8b20` (v6.17-rc5); author has
+  two sfp.c quirk commits
+- [Phase 3] No later commit edits the HORACO lines (`git blame` 613–615
+  = 1bb028baab541)
+- [Phase 4] `b4 dig -c/-a/-w/-m`: v1 only; Lunn Reviewed-by; applied to
+  net-next; CC list includes RMK, Lunn, Kallweit, netdev
+- [Phase 4] lore.kernel.org WebFetch 403; mbox from b4 used instead
+- [Phase 4] Web search: LKML/Patchew/spinics confirm review; no stable-
+  list discussion found
+- [Phase 5] Call path: module probe → lookup_quirk → fixup →
+  sm_probe_for_phy; CONFIG_SFP (I2C+PHYLINK)
+- [Phase 6] Quirk present in this checkout at sfp.c:613–614; RollBall
+  enum in mdio-i2c.h
+- [Phase 7] `stable-kernel-rules.rst` line 19: hardware quirk is in-
+  scope
+- [Phase 8] Failure mode: no PHY/no link for that SKU; not an oops
+- UNVERIFIED: stable@ mailing list archives (HTTP 403); number of field
+  users; whether this SKU also needs `sfp_fixup_rollball_cc`
 
 **YES**
 
- drivers/net/ethernet/wangxun/libwx/wx_lib.c | 24 +++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/net/phy/sfp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 4a6851612368d..9be339965a683 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -3193,6 +3193,30 @@ netdev_features_t wx_features_check(struct sk_buff *skb,
- 				    netdev_features_t features)
- {
- 	struct wx *wx = netdev_priv(netdev);
-+	__be16 type = skb->protocol;
-+	u16 vlan_depth = ETH_HLEN;
-+	u32 vlan_num = 0;
-+
-+	if (skb_vlan_tag_present(skb))
-+		vlan_num++;
-+
-+	while (eth_type_vlan(type)) {
-+		struct vlan_hdr vhdr, *vh;
-+
-+		vh = skb_header_pointer(skb, vlan_depth, sizeof(vhdr), &vhdr);
-+		if (unlikely(!vh))
-+			break;
-+
-+		type = vh->h_vlan_encapsulated_proto;
-+		vlan_depth += VLAN_HLEN;
-+		vlan_num++;
-+
-+		if (vlan_num > 2) {
-+			features &= ~(NETIF_F_HW_VLAN_CTAG_TX |
-+				      NETIF_F_HW_VLAN_STAG_TX);
-+			break;
-+		}
-+	}
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index af43530ffb2c3..195468bde2f29 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -576,6 +576,9 @@ static const struct sfp_quirk sfp_quirks[] = {
  
- 	if (!skb->encapsulation)
- 		return features;
+ 	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
+ 
++	// HORACO HC-10GE-113C uses Rollball protocol to talk to the PHY.
++	SFP_QUIRK_F("OEM", "HC-10GE-113C", sfp_fixup_rollball),
++
+ 	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
+ 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
+ 
 -- 
 2.53.0
 
