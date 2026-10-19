@@ -1,21 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.239.133.38
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792427177;
-	b=sK92xvUK5oyCbRhkDZ203W4yhSUKds2jpIcSBEn/oX5wrXfnzBL251j8oLvbqWKAW5mZ
-	 +j621poIHo/hDpqfzBknnaPAWi/0wFHwOHluXrcDUqMdJibCDFi0k+enYZvZvb2wEfTvJ
-	 Z5P6s83F7c5Ev/A6JK7PM5ZYsHghM+FoPYD/7iyqR2UJQpeO1eCBcovdBjKdB056toY95
-	 0PWglw46X610jbZKSdFdTuU0GV8RbZaICmbW2RJCoQR7atjGCYzvQHhKhLxbhoYpKcaE0
-	 C30VdUrPrVQOUh4/8O8ZF8hX6EjDv5QXZ9CTEPMSmsY6IyvF2qgwjXgSn8kbwA52iFw==
+	t=1792427201;
+	b=amTKbkhE3x0L55h6UmTJaexQ8ks3zrqcEJjz4rGc3TA6KCzWjYoGoKk0SwcMGAQ4ePcR
+	 sXNW2mxzzZEg1cJYcgtA35B5M9MtWKk9V+qBmOr95rbGPMjNgBXLWKjaMrBWRb9OJ7I22
+	 iLe3lgj9elTR7eVINbmir8QTrCuj+3Zy8Vh+grJodJ4MvsAcqA7suegNCaHbfN50lsTP7
+	 XH9vbt7RtD7QrG8wCPKYZgB3VmnM6WzxwL2GUwH9fuLq64sAmxTOST14aejcGsTg/Kwak
+	 JDHSa9kBrTiQof73rTT29n9ucKu+lSyyqk3xSmjiWJniXO9hSjyUSqJl/Xzyco5SxDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792427177;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792427201;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:X-Authenticated-Id;
-	bh=1kdG8GQ5F1yW/RvBshLO/ATOMmsru7igsd0wbeattQg=;
-	b=H/vvjs7xvALS3VWWxY1AZuSHuVs4I5Px8VVS5hz/i2ZjmnETjM9dk9uRj7tOm4Dvenl0
-	 s/+b1Eeh42DYQStHLR8MlUodgzzgDHPXZcKQYjNLx8oAJ0OyVLc1wdejiPVeizHkmVJrT
-	 0HvjBnNRSELxozhrqYEAPfEM8QQjQrdUUbs9Egza1z4NKrQ7iBxw6aWRucw0D4HnoD6Y1
-	 pm2tcuK9ofdm3InSNOayOogEuBWuPa+Qn9lfuCrtjOmf/j8nVaCpVPZDdKJ2o4k3uYncx
-	 wc4zd2ZAPzQ2y4EX6s2hyhYJTPfzbVHl8ilZZ7RFCMsKRRU5TAc34dULW7aIU97qEAg==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 X-Authenticated-Id;
+	bh=qoRXbK04cNKi6SEza1JnC/GwWIFm6k81kwXvhP8i5e4=;
+	b=ym541d6LNqgEwma51iawLtmf94KUXd3QpAoydO6rVIJuwsmyVFcUk6ORWbnDy53Un5e0
+	 khwgN/yJHZjEc1uv55xtd0dOb4/RiUL2ndsN1PPk6fMa0w5aoGZd9LHm0G8ydRheHX0Nb
+	 zuURln0sPnEacN/yxWRBStgXAA07ZDYPNxCeOQ0FZdzpXWTAQFz3ilkNWeldjtnQc8oIP
+	 p0irl0qiqf/wKAZWcUC/7BncAV9wl5XhJYGXeJzg4QkjPVPKyyadKMqwpM+Vx10IR111m
+	 Pfo/gCAQPMeH0a5+o8iGvlMsrrTEFVZN7geMhQk9BDswUZ4u1E2kYd1eoB3t+dIQCAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=kubik.pl;
 	spf=pass smtp.mailfrom=kubik.pl;
@@ -24,17 +25,17 @@ Received: from mail-e677.seohost-mail.eu (mail-e677.seohost-mail.eu [213.239.133
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D860A4ADA;
-	Mon, 19 Oct 2026 16:26:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 169D860A4ADA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA6F606A339;
+	Mon, 19 Oct 2026 16:26:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECA6F606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kubik.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kubik.pl
 Received: from static-46-238-236-132.awacom.net ([46.238.236.132] helo=localhost)
 	by h84.seohost.pl with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <piotr@kubik.pl>)
-	id 1xIqBg-0000000346r-26XC;
-	Mon, 19 Oct 2026 18:26:12 +0200
+	id 1xIqC5-000000036tN-3UMR;
+	Mon, 19 Oct 2026 18:26:37 +0200
 From: Piotr Kubik <piotr@kubik.pl>
 To: netdev@vger.kernel.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
@@ -47,10 +48,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>,
 	Piotr Kubik <piotr@kubik.pl>
-Subject: [PATCH net 0/2] net: pse-pd: si3474: two driver fixes
-Date: Mon, 19 Oct 2026 18:24:51 +0200
-Message-ID: <20261019162453.1244120-1-piotr@kubik.pl>
+Subject: [PATCH net 1/2] net: pse-pd: si3474: keep detection enabled on the other PIs
+Date: Mon, 19 Oct 2026 18:24:52 +0200
+Message-ID: <20261019162453.1244120-2-piotr@kubik.pl>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261019162453.1244120-1-piotr@kubik.pl>
+References: <20261019162453.1244120-1-piotr@kubik.pl>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,33 +66,53 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: piotr@kubik.pl
 
-Two fixes for the Si3474 PSE driver, found while preparing 2-pair and
-semi-auto support for it.
+DETECT_CLASS_ENABLE holds the detection and classification bits of
+all four channels of a quad. si3474_pi_enable() wrote the register
+with the bits of its own PI only, so it cleared them for the other PI
+of the quad. In AUTO mode that PI keeps its admin state and a PD that
+already has power keeps it, but the port runs no new detection: a PD
+plugged in later, or one waiting for detection when the other PI is
+enabled, gets no power.
 
-Patch 1 stops si3474_pi_enable() from clearing detection and
-classification of the other PI in the same quad. Without it, a PD on
-that PI gets no power after a later plug-in.
+Read the register and set the PI bits, as the PORT_MODE update above
+already does.
 
-Patch 2 rejects a channel number of 8 and a 4-pair PI whose channels
-are not one channel pair of a quad.
+Discovered by an AI code review agent. Confirmed on an SDG-9000 board
+(MediaTek MT7988A, two Si3474 in AUTO pin mode) with Linux 6.18:
+with both PIs of one quad disabled, enabling PI A and then PI B left
+DETECT_CLASS_ENABLE with the bits of PI B only, and a PD on PI A never
+got power. No kernel change was needed to reproduce it.
 
-Both were tested on an SDG-9000 board (MediaTek MT7988A, two Si3474)
-with a Linux 6.18 kernel that carries the same patches, and build-tested
-on the net tree.
+Tested on the same board with the same sequence in both orders:
+DETECT_CLASS_ENABLE keeps the bits of both PIs, and the PD gets power.
+No kernel selftest covers PSE hardware.
 
-Carlo Szelinsky's "net: pse-pd" series [1] also touches si3474.c, in
-si3474_i2c_probe(). The two series change different hunks, and his
-patch 9 applies on top of this series.
+Fixes: a2317231df4b ("net: pse-pd: Add Si3474 PSE controller driver")
+Signed-off-by: Piotr Kubik <piotr@kubik.pl>
+---
+ drivers/net/pse-pd/si3474.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-[1] https://lore.kernel.org/all/20261018082314.48950-1-github@szelinsky.de/
-
-Piotr Kubik (2):
-  net: pse-pd: si3474: keep detection enabled on the other PIs
-  net: pse-pd: si3474: validate the channels of a PI
-
- drivers/net/pse-pd/si3474.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/net/pse-pd/si3474.c b/drivers/net/pse-pd/si3474.c
+index 1845b9c51cf7..99e96f6bdefc 100644
+--- a/drivers/net/pse-pd/si3474.c
++++ b/drivers/net/pse-pd/si3474.c
+@@ -312,8 +312,13 @@ static int si3474_pi_enable(struct pse_controller_dev *pcdev, int id)
+ 	/* DETECT_CLASS_ENABLE must be set when using AUTO mode,
+ 	 * otherwise PI does not power up - datasheet section 2.10.2
+ 	 */
+-	val = CHAN_BIT(chan0) | CHAN_UPPER_BIT(chan0) |
+-	      CHAN_BIT(chan1) | CHAN_UPPER_BIT(chan1);
++	ret = i2c_smbus_read_byte_data(client, DETECT_CLASS_ENABLE_REG);
++	if (ret < 0)
++		return ret;
++
++	val = (u8)ret;
++	val |= CHAN_BIT(chan0) | CHAN_UPPER_BIT(chan0) |
++	       CHAN_BIT(chan1) | CHAN_UPPER_BIT(chan1);
+ 
+ 	ret = i2c_smbus_write_byte_data(client, DETECT_CLASS_ENABLE_REG, val);
+ 	if (ret)
 -- 
 2.55.0
 
