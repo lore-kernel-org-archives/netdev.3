@@ -1,84 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792451117;
-	b=Z4LVgAbNSA5GPSiuA84iigcSR0lt3ov1q4XHEJS6oVNLtxJcYrkeHMbuq2cJCs91mRj4
-	 hVjLxsZtFuweCWwMpxsuE7IydQMSXh2AUfIazhV2X1c+uDHZnISJfoFaUrA8s/GTlqTpP
-	 qWvW2JPz/JBjLc0R3EAZ3Qc5W32ZS4mYGHg4U9Ws9n/tKFSAIxSNyLBdTt4xAGffeuAMn
-	 0k/jgnN34kIIP0PSUd9xINHSMOx5AvHRreHtvh7714pyAdrqU80BNe4jK6efEqs35cSmt
-	 YaNs/R5ie8yp3f3uP5MAXPldOeP6W9x97TDTaonipfKgxlx0GP2WCLon9++3gekafRQ==
+	t=1792451296;
+	b=bqo0VN9UrLuc84bf0dOasU5X7HSaRubxurtBfChRwK+JK7GWBQ2czyGxZS4VvS6kLS47
+	 7zFd2owQ9HAPcOpw61XS6KosJ3itHSRh7MNwMrZuttC7ZVElJX896a0wAyzI+eBQFEtUN
+	 BebwVZGQD6Rh4e9W+C/IMWoMfpjUIDe3JFX22OT+ShSPw+oeb5VeSc1Zev+gc1PDbMiOm
+	 xBflugMqZsJdnszGmVPPu8RDzkBdpQ+Q8+RrvxIEsTf9+8QHOmbg5ztWE5BLUs5Y+WRPo
+	 eErLSYJ2JpuxE8kEcWBe9T494GxIcR50zBi9HJJ9DEjXeXCuLblqeGanyS+GncBWmcg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792451117;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=4ZrW2XDhJ1ZSsjZ8zayT53/LSqDZun16ck0JO1KEWzA=;
-	b=pKbeWLDJfgoHf8/cEVrw41xd2mmKHd00LjpU79TLgmDEI9zVdE3R8GWxfCtwXFcKfZKV
-	 6bN9mfdFOdUKjoAQegEz55tLgfEat/uCXiTjWy+rKuvHHkUJ99y0aWy8/bFzrHdMo7Rpu
-	 IiQr2QFMnP0IJxBHC89RlgPRhDHLbQtDdutS0EBCP9eHdQA38wsVFWKaxwPm/NZy7HBt4
-	 zEOFg8L9I86umz8FhBHMCAfr8Bq9aLj57EpfK7uc4i9gAcTXt8Sf1RBGXXN35dz/FGdTx
-	 6YWn6qK/QXNpOHSPj5OWJd65OqR1TfJQhjC4xIifHQYQ6i6jfiRJgFSkPENV3hHKnIA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792451296;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=+PtAsIRbau25qBKYDkRQgKy/IsvMiPdbk5+WMW7RL5M=;
+	b=2wKE7wY8/v5605MItYjYRy2LhUjJwWp+fK5MW0Fr3+r8l0q4l+fOCoCD5bMH6Yy4YS5h
+	 trb7k3cgi9l2mWz8gpk7En8ExrWmtySlyJgJq4VP5G07f+/87LCeK6jIIc6hZxAi6Zdij
+	 UvCpTG3wusOkwfrgbp3lUS1B1eJBUvzA5kyos2aDaIRSgnwOE81b1r8tQ6UMbcD3ScvOn
+	 QMWYPRBdzn4u6B7jYt447mLbi3rwOQ3Z0suRxphPokBqogJeckFTv1bNxyIfPXb6rUcXO
+	 c9aG7KsimL+i4JM+6gmHo9yJdlBA2QBAEJP8SNzkSiX+rUW9mo4D/lofWGWr+knFoFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=BQXXBn08;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=mDptg2QS;
-	arc=none smtp.remote-ip=160.80.4.37
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A683606A31A;
-	Mon, 19 Oct 2026 23:05:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A683606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--joshdon.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=CHsdIqTf;
+	arc=none smtp.remote-ip=74.125.82.199
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE617606A319
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:08:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE617606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshdon.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=BQXXBn08;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=mDptg2QS
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69JN4Zcu002830;
-	Tue, 20 Oct 2026 01:04:40 +0200
-Received: from lubuntu-18.04 (host-79-32-222-240.retail.telecomitalia.it [79.32.222.240])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 1F7A51228F2;
-	Tue, 20 Oct 2026 01:04:29 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1792451070; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ZrW2XDhJ1ZSsjZ8zayT53/LSqDZun16ck0JO1KEWzA=;
-	b=BQXXBn08cWJ6LYVhQiP5a7WodtxyDFokJES7fatk1PdARsJu8KDIAVmpRffwy2EvuO8F1M
-	FCpYIZk9TGG+m1Ag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1792451070; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ZrW2XDhJ1ZSsjZ8zayT53/LSqDZun16ck0JO1KEWzA=;
-	b=mDptg2QSjG3RCKHR1TS6GScTC/24vLpuPn3Q985dUpvsmG1D59VdDh6f7EB6iHtqduw7Sp
-	JbFnOAIwS3INjIKxfOy+Yf9LafO/iXBo2qYZIQ2qGcRfaiNbMTsiLJ8ncPX/VWYIsBs24K
-	3m3OS+0aaFrHRA8zlzyxqIx6956IVn3BTzGT0bPjwJQ5abEXppJnYqoEskv6TGizjXXMa6
-	Xjtr5N7dLxUm4ICPoWi/1IC3tQVDdPvh+RXcXX6p5v0ZXtePWgoLx/hMWtPriQbsZEhtlw
-	iIqEE1ypKgbjFPaHmBkH9zZrjKg4JkQX9Z4FGhsf/INGvtV6PCe79A45ZK5+NA==
-Date: Tue, 20 Oct 2026 01:04:29 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gabriel Goller
- <g.goller@proxmox.com>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net-next v3 1/2] seg6: skip the route refcount in
- seg6local IPv6 lookups
-Message-Id: <20261020010429.eeffd6f140ec6157609c310a@uniroma2.it>
-In-Reply-To: <20261015-seg6-lookup-noref-v3-1-6d51a60a67d3@gmail.com>
-References: <20261015-seg6-lookup-noref-v3-0-6d51a60a67d3@gmail.com>
-	<20261015-seg6-lookup-noref-v3-1-6d51a60a67d3@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=CHsdIqTf
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-351788121cfso7969943eec.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792451295; x=1793056095; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+PtAsIRbau25qBKYDkRQgKy/IsvMiPdbk5+WMW7RL5M=;
+        b=CHsdIqTfH9k2/oPDg2BvKrKDQRc5i9Sw21tVz1mW9yNtzIKEJ4/uDLs/HOKIexcUS2
+         6LPHoEjjfJIZjCCHdrK+v2/vIC/Ys8dVPhZZTz677a2bLk850+eBUcxcBFBUby2mRdvK
+         Z7TujMxJUTRs8conMmmlQYokjWSjYw+KA7hC0yjYobBPccV4XDAVT2YKfUg5m3kWDglv
+         rJWu7i4RuLLYxneA/KxlwJ+UsZ+s5AUhUiBNBKOHu7nE0PUZPW9lk8X5QzID9Duxv7nF
+         U0h3k55bE34Fejwb7b6IvsQf+s3mMDzTbiIwsY0xTtswHhomn6x4hy+m5KMlOm02NKIy
+         UfzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792451295; x=1793056095;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+PtAsIRbau25qBKYDkRQgKy/IsvMiPdbk5+WMW7RL5M=;
+        b=eFNdQYiDpdOMcj2Gh/+tKiVbC9GMliGvz/5jiCbKHCyG/+/rGH33Eg+5uCZ7qWrv9L
+         lzPfWadDtpaWfD4bgKTFs6JXyqN8E/C+M4UUWekddJKiERS7mPTD51vmLdrkvFWHyOcG
+         8EoF0xFsncUPpUkUsytp4BepZRYEJyFABEjhJXgs+gknP1QXBWxUs3DvGqKbCK0JGyvk
+         m7usDdYElDx1+DDreJsXLd09q2MYU4MnEtEaovDdpayDlrxmiImYt4fFqGiAVl2G5XXv
+         w/Ae75s85CmMRDDJE1ToyMRipxg+PLfE/JNrHCtPJQPGJdCuuZ++SMSJkNN5MiEWHLkA
+         ELLw==
+X-Forwarded-Encrypted: i=1; AKwUvBxvThCj9PodDVW22pdYOKHel54BwuPapNN1e6jssjCzrW7M84jQ9Mwz5HhI9xPQGB8phpQNGJ4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8K5VF3PCjck7rW8thN+AJdmYcWfknRvb6iYd5U4tqKhYGGtAG
+	3KqwXmEHDdaJoiLp5JZUSjipK4uc8V/aRSCedCOgeRerweOJj38L7znGBzqJFbu00prrh5WbsmP
+	Rws/IXarmMQ==
+X-Received: from dybmw16.prod.google.com ([2002:a05:7300:cd90:b0:358:1869:85c7])
+ (user=joshdon job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:fd82:b0:35f:f0:8edf
+ with SMTP id 5a478bee46e88-361a126b111mr12745955eec.13.1792451294318; Mon, 19
+ Oct 2026 16:08:14 -0700 (PDT)
+Date: Mon, 19 Oct 2026 23:07:58 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,86 +76,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+Message-ID: <20261019230758.2960779-1-joshdon@google.com>
+Subject: [PATCH] udp: Add noinline_for_tracing annotation for udp{,_v6}_send_skb()
+From: Josh Don <joshdon@google.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Josh Don <joshdon@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 15 Oct 2026 23:39:27 +0900
-Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
+We hook udp_send_skb() and udp_v6_send_skb() using BPF fentry programs
+to monitor UDP transmits. Both functions are static and have two
+callers: udp{,v6}_sendmsg() and udp{,_v6}_push_pending_frames().
 
-Hi Yuya,
+After an FDO profile update, udp_v6_send_skb() is now inlined into
+udpv6_sendmsg(), while an out-of-line copy remains for
+udp_v6_push_pending_frames(). The fentry program still attaches
+successfully, but it is silently bypassed for all uncorked sends.
 
-Thanks for v3 and considering my comments.
+To address this, make both functions noinline explicitly for tracing,
+as was done for tcp_drop_reason() in commit dbd5e2e79ed8 ("net: tcp:
+Add noinline_for_tracing annotation for tcp_drop_reason()").
 
-> [snip]
->  		if (!table)
->  			goto out;
->  
-> +		if (noref)
-> +			flags |= RT6_LOOKUP_F_DST_NOREF;
+Assisted-by: LLM
+Signed-off-by: Josh Don <joshdon@google.com>
+---
+ net/ipv4/udp.c | 4 ++--
+ net/ipv6/udp.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Even with the change below, the "out:" branch still takes a reference when
-fib6_get_table() returns NULL, because RT6_LOOKUP_F_DST_NOREF is set only
-after that call. Setting RT6_LOOKUP_F_DST_NOREF before fib6_get_table(),
-inside the table branch, would avoid that reference too. The oif branch
-needs the flag clear, because ip6_route_output() returns the dst with a
-reference.
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index b090bd1f59e86..487c8cc8ab206 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1110,8 +1110,8 @@ void udp_set_csum(bool nocheck, struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL(udp_set_csum);
+ 
+-static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
+-			struct inet_cork *cork)
++noinline_for_tracing static int
++udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4, struct inet_cork *cork)
+ {
+ 	struct sock *sk = skb->sk;
+ 	int offset, len, datalen;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 93478d1ad5769..fe92538835176 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1366,8 +1366,8 @@ static void udp6_hwcsum_outgoing(struct sock *sk, struct sk_buff *skb,
+  *	Sending
+  */
+ 
+-static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
+-			   struct inet_cork *cork)
++noinline_for_tracing static int
++udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6, struct inet_cork *cork)
+ {
+ 	struct sock *sk = skb->sk;
+ 	int offset, len, datalen;
+-- 
+2.56.0.212.g129ede20d9-goog
 
-> [snip]
->  		rt = net->ipv6.ip6_blk_hole_entry;
->  		dst = &rt->dst;
->  		dst_hold(dst);
-> +		flags &= ~RT6_LOOKUP_F_DST_NOREF;
->  	}
-
-With this patch applied, the end of seg6_lookup_any_nexthop() reads:
-
-out:
-	if (!dst) {
-		rt = net->ipv6.ip6_blk_hole_entry;
-		dst = &rt->dst;
-		dst_hold(dst);
-		flags &= ~RT6_LOOKUP_F_DST_NOREF;
-	}
-
-	skb_dst_drop(skb);
-	if ((flags & RT6_LOOKUP_F_DST_NOREF) && !dst->rt_uncached_list)
-		skb_dst_set_noref(skb, dst);
-	else
-		skb_dst_set(skb, dst);
-	return dst->error;
-
-After a noref lookup, the "out:" branch still takes a reference on
-ip6_blk_hole_entry and then clears RT6_LOOKUP_F_DST_NOREF.
-
-This branch can be taken at steady state. The noref lookups, except the
-ones in input_action_end_dt6(), run with local_delivery false. For example,
-with End and a next segment that is a local address of the node, the lookup
-returns a local route, seg6_lookup_any_nexthop() discards it, and every
-packet takes and drops a reference on ip6_blk_hole_entry in the "out:"
-branch. The commit message describes the same pattern for ip6_null_entry.
-
-For a blackhole rule, __fib6_rule_action() picks ip6_blk_hole_entry and
-takes no reference on it when the lookup has RT6_LOOKUP_F_DST_NOREF. The
-"out:" branch could do the same, for example:
-
-	if (!dst) {
-		dst = &net->ipv6.ip6_blk_hole_entry->dst;
-		if (!(flags & RT6_LOOKUP_F_DST_NOREF))
-			dst_hold(dst);
-	}
-
-RT6_LOOKUP_F_DST_NOREF then stays set, and the skb_dst_set_noref() at the
-end of the function attaches ip6_blk_hole_entry without a reference. The
-line that clears RT6_LOOKUP_F_DST_NOREF is removed as well.
-
-What do you think?
-
-Nit: seg6_lookup_any_nexthop_noref() and seg6_lookup_nexthop_noref() can
-attach the dst without a reference. They rely on being called under RCU. A
-one line comment about this, like the one ip6_route_input() has, could help
-the next reader.
-
-Ciao,
-Andrea
