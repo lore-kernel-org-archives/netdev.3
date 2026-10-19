@@ -1,136 +1,180 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91AA4EA38C
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7653F211A
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792415082; cv=none; b=Ag5OfIBebOI7XLiW4dIrxhZ6HeVYDzJcekj9VM4I3DvffM67lOJMaviLYX9C01vWmvnPL2xoQJeQVP4ZNYL26YFjOqLRoQiqUHx2y0ngGO4g8TAPsNxExGRbuZREhDpkY+/OjZVnWbFWFwdvdHVOog+KNGO/XYFKVB7z2hnHteY=
+	t=1792415245; cv=none; b=aSt9GZ9XZlpB2NUzZKojdOqVeiUQn/vpMEUo+Npie28V4h1Sqaz+sORxK2YXK0x73LS7TnZM3PupKfV67rV/ThCi0l3dxL/hEl02pPfeZ7LznvoKKzYpwj/1/HR2ovz1tBYm6fSqxtxxPIgzNl7SpHbEDGWqX4Vw3OYe21Nf+dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792415082; c=relaxed/simple;
-	bh=ypi3osWI8gP8xyKWXAity7kWnhHwA/VpXlB9i/wvPi4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=PwB1MAFMSrWZOeisqkWEsB/dR2WMHMq2nTdrYHEdmdjV5Po/+03V1BHxbSEv8T9T18faIO6sJEQFFOiglq9kFtQaufYNSoj4B0g0g1InCl584a+vJmhQgYTUx5MFWVj+7f6YU6Q7/hMip5hMyhdwD9de11TWrMyk67RM92sUO0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zw2Ro5NT; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792415245; c=relaxed/simple;
+	bh=girE4eB9jc+UMlprl9avn4w2td3J0bcuABlQ1YcSCAE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Oq9ehbjdqAPKmT7x7ExyA4+Ermcpt+gWVo43Z9w89QL03aVEERPjvB2LjBSu13HaSB+KTbsf/KRvOjeWmsZ700DOO2H32iElZWISv1tBODzf2MIUOhAqC46rKRiqjGb/Njx1lrzKDfM2pl0g5YTKGaFztUo2Gd3J+aokJFTv7Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NE+LqfSp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zw2Ro5NT"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-930c0f9c1b1so207376085a.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:04:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792415080; x=1793019880; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ypi3osWI8gP8xyKWXAity7kWnhHwA/VpXlB9i/wvPi4=;
-        b=Zw2Ro5NTFeqeRpPaUDiAoqDBBEVA4vrR/egIYDXbODNDfzxRKXaLD1RJK11z0W2Nfo
-         v4ChuE6+1Sfi4K+VMqUl/ZYJB0btqAXli5pJHKqFcJ5+/uVwztEMPyj+J7yGeSc02FBk
-         C6CLlRLhQJl0jM8HTwn917o5vL1wfF9ZSDi+dhXi+InmnwfjUMcBIiA70sapE8VxKTcE
-         fF9GSx6VUK6IsUY0dHiKY4mYq2w+na9GwH3Hpjy1mWZGcO69wec5JKb27RNOnTs3sqsM
-         01rhQF+lRKg5rrHh7r063fn0ukbU+Iv3/sufzKGp/PEF1gaM6y90GfQ/oOuPO+W+XT/y
-         jCvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792415080; x=1793019880;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ypi3osWI8gP8xyKWXAity7kWnhHwA/VpXlB9i/wvPi4=;
-        b=jMQnOSKRlObeEfJtGNxDZDU40Z8WcsH3ItTaMnQP2rwcQ23ZMNhpkksNUaEIJna1my
-         JkAw/GNZQ3MGc0DLFI2gAKIw7b2IOPs6X95qR4gjXW6FZ/oBhAKElLhG+d1hcFnEhgyn
-         NwApnWIlqAlrtBnc+sY+HoMketC9k89BKyZJQgwFEfTHWsBTvr+Zo26zEeZva6RaRKez
-         dFxhyeVaJkRdBW9lK2DGofsY4dlseSluy/DXguO+8j4ZG5QeQtj56O3mfuxJzD9Vc0mS
-         95NO3d44E3YnC1UE//xk6s9DUEouHDWH9Ck/ppVuLM64KnljiM37iioDDgLa/B84TGQ8
-         J6QA==
-X-Forwarded-Encrypted: i=1; AKwUvByRqnO3KZkIJunR/FsFHbEsPqJ6giLKNvS50ndxNJuTs8XSde90deMD3cp42EBx/AGMGLuzxwc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLza26FZ2lzIlEZGvlrRFEYRWkBY/RoUiQt4egy5T3ey06SiBnT
-	2MG7GJSKyjJfuEoPjRLYt/LAwyu5sxvsumfHD/mmsPj+kabLnTIDaRcf
-X-Gm-Gg: AYBFou1I+e7JGOf8nmDzhzsBpcpSWNyCC1Cd8VM1Y07rIMZBZpA1rVFWSbT6rvyDtNi
-	m4xyZgix5GVcRJH3aSztYrQ6Ki0WtZ963XSODYOY7Q8+Kg4KKh8FH2v00MmjHLNYYhTrzouY/VW
-	A8M/bo9cJIHD9XVgoWn/WWUEnldyX4GCaVcgVsouqIB9gPixtn/FG/f/zYslCaFnuASoIUHClLv
-	+EYgkOpJf+66IjLxHJVB2CEtEm8GoU9tRgbJdfZnGr3kfpYYR+VVW5KIzKESFAnoKOMyT4YEH0a
-	3pw5f6Z8L2UejsoiEV8uyog3m3TLKPl4AFLvN0Se/FUKJhJkmZotpaofyrVVBT30fBQdtx0zkLT
-	SUHcCuYoSk5zrycv2WJccfWUWHjc087MExfEWrgHSrBCI9WrNMOzUQ9tCqH63E++4TLzue8k+Ns
-	v8f63TPnCjdgK440PWQ1oi+m7cjWfUvTSIAJaqvSBfjG0ir9IHHPPSNmybd1+lVUMTdWeLPd5JC
-	qs=
-X-Received: by 2002:a05:620a:7119:b0:93e:fc4e:c490 with SMTP id af79cd13be357-93f29cf1c9bmr1378673385a.15.1792415079619;
-        Mon, 19 Oct 2026 06:04:39 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f3cb855a0sm328418385a.4.2026.10.19.06.04.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Oct 2026 06:04:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NE+LqfSp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36E21F000C4;
+	Mon, 19 Oct 2026 13:07:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792415244;
+	bh=zOZ/+u7vpmO0B2bFLnoT2X1xYfa0Bwt6zvCREsn7wCE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=NE+LqfSpKiif9lz8yshJHciN3IvqkNplfNYZc0Q8sO1T6emgH+4lerxtV5qNS+5WL
+	 9SZRNDGNHOq9MI1cEXM+1YrIBXjKyBIco8pZuCpDS9Frzg97+YvnxS9CwKgbY9FumR
+	 +1+5u7oJeGqs2sdL2dFcCHH3JgeQxC2CT56U5Mir2gJ+n4KbroEvMqYQcByiCte9cV
+	 kZfu99PQvQ4gynadNHrBQIeygzxwNshUbvxDDrMld4Z1bNvqEkvZ5DsZF7gf76QERY
+	 03DlPeZtybNUsHItdfzuEJdmT3oUOpWPZanPGtpqeRdf96Erqhf4A8kNDkuWqWpuNH
+	 PQHt74EfvcAcg==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Toke =?utf-8?Q?H=C3=B8iland-J?=
+ =?utf-8?Q?=C3=B8rgensen?=
+ <toke@toke.dk>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, cake@lists.bufferbloat.net, Victor Nogueira
+ <victor@mojatatu.com>, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net-next v2 1/4] net/sched/sch_cake: serialize
+ reconfiguration with the datapath
+In-Reply-To: <QDISC-5RTM.v2.r0.20261015051735-1@mojatatu.com>
+References: <QDISC-5RTM.v2.r0.20261015051735@mojatatu.com>
+ <QDISC-5RTM.v2.r0.20261015051735-1@mojatatu.com>
+Date: Mon, 19 Oct 2026 15:07:20 +0200
+Message-ID: <87ld7t3kl3.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Oct 2026 09:04:38 -0400
-Message-Id: <DM8U47F4MNK3.2V54CCQ9YTNBY@gmail.com>
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>, "Daniel Zahka"
- <daniel.zahka@gmail.com>
-Cc: "Alexander Duyck" <alexanderduyck@fb.com>, "Jakub Kicinski"
- <kuba@kernel.org>, <kernel-team@meta.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Paolo
- Abeni" <pabeni@redhat.com>, "Alexei Starovoitov" <ast@kernel.org>, "Daniel
- Borkmann" <daniel@iogearbox.net>, "Jesper Dangaard Brouer"
- <hawk@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>, "Stanislav
- Fomichev" <sdf@fomichev.me>, "Eric Dumazet" <edumazet@kernel.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 1/4] eth: mpnic: count packets, bytes, and
- drops per ring
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261012-mpnic-counters3-v2-0-8afba81c2d5a@gmail.com>
- <20261012-mpnic-counters3-v2-1-8afba81c2d5a@gmail.com>
- <20261016220930.i32JEcqe@linutronix.de>
-In-Reply-To: <20261016220930.i32JEcqe@linutronix.de>
 
-On Fri Oct 16, 2026 at 6:09 PM EDT, Sebastian Andrzej Siewior wrote:
-> On 2026-10-12 05:04:34 [-0700], Daniel Zahka wrote:
->> Keep packet, byte and drop counters on each Tx work, Tx completion, and
->> Rx completion queue. Report them to the core via the rtnl_link_stats64
->> interface.
->>=20
->> Rx completion queues also count errors. Frames the device marked with an
->> uncorrectable error are counted as errors, and frames that fail for any
->> other reason are counted as drops.
->>=20
->> All packets cleaned from the TWQ during mpnic_flush() are counted as
->> drops, though completions for some of them may have been DMA'd into
->> the completion ring between the time mpnic_poll() last ran and before
->> mpnic_wait_all_queues_idle() returns. This is done for code simplicity.
->>=20
->> An RCU approach is used because ndo_get_stats64 is not called with the
->> instance lock.
+Jamal Hadi Salim <jhs@mojatatu.com> writes:
+
+> This is a follow-up to commit 7cbfb180945c ("net/sched: sch_cake: fix
+> autorate reconfiguration throttling").  That change only stored
+> last_reconfig_time; it did not address the concurrency between the
+> autorate rate update in cake_enqueue() and the netlink reconfiguration
+> path, which the original review flagged.
 >
-> Why do you have the two mpnic_base_stats and fold the stats into into
-> it? My guess would be that on stop the counters are reset and you want
-> to preserve the stats.
+> The issue:
 >
-
-Not sure I understand. I think you are asking about two things:
-
-1. Why have two mpnic_base_stats?
-
-To avoid a separate heap allocation that can fail. Handling an
-allocation failure in the ndo_stop path when doing the aggregation into
-the base stats is tricky.
-
-2. Why split stats into base stats and per queue stats, and why reset
-the per queue counts when the device transitions down?
-
-This is the way the stats in netdev.yaml are exposed depending on the
-'scope' request attribute. My reading of the relevant kernel docs is
-that the per queue counters are counting events for the current live
-queue, so it makes sense to reset them and fold those counts into the
-base stats when the interface is transitioned down.
-
->> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+> cake_change() -> cake_config_change() updates the fields of the shared
+> struct cake_sched_config under RTNL but not under the qdisc lock: it only
+> took sch_tree_lock() later, around cake_reconfigure().  The datapath in
+> turn serializes cake_enqueue() with itself under the qdisc lock, and its
+> autorate-ingress path stores the estimated rate into
+> q->config->rate_bps.  Two writers therefore update the same rate with no
+> common lock:
 >
-> Sebastian
+>   CPU0: cake_enqueue() sees CAKE_FLAG_AUTORATE_INGRESS, computes an
+>         estimate, and is about to store it.
+>   CPU1: 'tc qdisc change ... bandwidth X' clears autorate in its local
+>         rate_flags, writes rate_bps =3D X, publishes the cleared flag, and
+>         waits in sch_tree_lock().
+>   CPU0: stores the estimate, calls cake_reconfigure(), and unlocks.
+>   CPU1: reconfigures from the estimate and returns.
+>
+> The qdisc is left with autorate disabled but with the estimate installed
+> instead of X.
+>
+> The fix:
+>
+> Commit the parsed configuration and reconfigure while holding the same
+> qdisc lock that serializes the datapath, so the netlink writer and the
+> autorate writer can no longer interleave.  rate_bps needs no atomic: it is
+> only ever loaded and stored, so plain READ_ONCE()/WRITE_ONCE() annotations
+> cover the readers that run outside the lock (cake_config_dump(), which is
+> not serialized, and the cake_mq shared config, observed under different
+> child locks).
+>
+> Conditions to recreate the bug: build with CONFIG_KCSAN=3Dy.  Two distinct
+> effects are reachable.  (a) The lost update of the installed rate is
+> reproducible without a sanitizer: put cake in autorate-ingress on a
+> device, drive bursty traffic with gaps so the 250ms autorate
+> reconfiguration fires, and concurrently loop 'tc qdisc change dev ...
+> cake bandwidth <N>kbit autorate-ingress', then read the installed rate
+> back and observe the estimate instead of the configured rate.  (b) The
+> non-atomic 64-bit store that KCSAN reports needs a 32-bit machine, where
+> the torn store of rate_bps is observable; on 64-bit the value is written
+> atomically and KCSAN flags only the unsynchronized access.
+>
+> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+> Link: https://sashiko.dev/#/patchset/20260816012109.2865223-1-ooonea@gmai=
+l.com
+> Link: https://lore.kernel.org/netdev/20260816012109.2865223-1-ooonea@gmai=
+l.com/
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> ---
+>  net/sched/sch_cake.c | 31 ++++++++++++++++++++-----------
+>  1 file changed, 20 insertions(+), 11 deletions(-)
+>
+> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+> index dc93267029e7..a05da73b5f84 100644
+> --- a/net/sched/sch_cake.c
+> +++ b/net/sched/sch_cake.c
+> @@ -1906,7 +1906,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct=
+ Qdisc *sch,
+>  			if (ktime_after(now,
+>  					ktime_add_ms(q->last_reconfig_time,
+>  						     250))) {
+> -				q->config->rate_bps =3D (q->avg_peak_bandwidth * 15) >> 4;
+> +				WRITE_ONCE(q->config->rate_bps,
+> +					   (q->avg_peak_bandwidth * 15) >> 4);
+>  				q->last_reconfig_time =3D now;
+>  				cake_reconfigure(sch);
+>  			}
+> @@ -2021,7 +2022,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *s=
+ch)
+>  	    now - q->last_checked_active >=3D q->config->sync_time) {
+>  		struct net_device *dev =3D qdisc_dev(sch);
+>  		struct cake_sched_data *other_priv;
+> -		u64 new_rate =3D q->config->rate_bps;
+> +		u64 new_rate =3D READ_ONCE(q->config->rate_bps);
 
+Messing up reverse xmas tree.
+
+>  		u64 other_qlen, other_last_active;
+>  		struct Qdisc *other_sch;
+>  		u32 num_active_qs =3D 1;
+> @@ -2042,7 +2043,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *s=
+ch)
+>  		}
+>=20=20
+>  		if (num_active_qs > 1)
+> -			new_rate =3D div64_u64(q->config->rate_bps, num_active_qs);
+> +			new_rate =3D div64_u64(READ_ONCE(q->config->rate_bps),
+> +					     num_active_qs);
+
+Just use new_rate, instead of a new READ_ONCE().
+
+>=20=20
+>  		cake_configure_rates(sch, new_rate, true);
+>  		q->last_checked_active =3D now;
+> @@ -2626,12 +2628,12 @@ static void cake_reconfigure(struct Qdisc *sch)
+>  	struct cake_sched_config *q =3D qd->config;
+>  	u32 buffer_limit;
+>=20=20
+> -	cake_configure_rates(sch, qd->config->rate_bps, false);
+> +	cake_configure_rates(sch, READ_ONCE(qd->config->rate_bps),
+> false);
+
+Maybe just introduce a u64 rate_bps =3D READ_ONCE(...), and use here...=20
+>=20=20
+>  	if (q->buffer_config_limit) {
+>  		buffer_limit =3D q->buffer_config_limit;
+> -	} else if (q->rate_bps) {
+> -		u64 t =3D q->rate_bps * q->interval;
+> +	} else if (READ_ONCE(q->rate_bps)) {
+
+...and here...
+
+> +		u64 t =3D READ_ONCE(q->rate_bps) * q->interval;
+
+and here.
+
+
+Bj=C3=B6rn
