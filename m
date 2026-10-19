@@ -1,94 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792437606;
-	b=29tWy7WsqzzH0DYQ7fxFRm+anE6Df3BPzmnUwftkNvqPl3FROu2ZlUpG3ZF9UoEWx1zD
-	 vh1A0mvp0czPEclXa9egRX2ftEjV4jZcaUC/7eySLo7cglcDoRtX6i6LCCgB/KkXKUb/N
-	 0BPs162lP0bIaWyk29Rc4IU7OdAU2w3WHKmtdLGeeJwgYJcmj3PIEnD81rQ38izxBFUtC
-	 5JgQdH767wNs6IJK2bFY585wa7cbtGfv1xZS/tgOLZzmozFwl0k2tPBMQe05erc4je2TK
-	 QMadWDrgtI2MxHRY9N7OgOAtpUYlUhgFzegzRw6OWLrMImcdJxtu+ZYguaLVgrLesJw==
+	t=1792437621;
+	b=2Yq/xdx9CEvjKCrHZMRI+bvojgz0ESfrxEUueSFDsdUdBmThkdrecLSftLJoYduIs4Si
+	 UAUM/Tc8ZG4+4t7/Nd3uKyfib8uR2drVLbPLYpuhQ7n/FEbLed/ElF7YC135NO35CrDl3
+	 e9QnkA8JzAT8DZGWyg2rXu+P3aMsNbvHaTVi6i0ti9zdx/p/i9XwSyBDvaeVESypEqnvY
+	 RKfg4x5B3+sbFN+nIInLHNIMEDiQF0iFWnYDxP064oQfn1mq9Eqg+ZQF80rAJ+jMfup0E
+	 2rbYOoiw8UHkPTrv7E1P16aHuqBnKGgK+YuItDFdExNQXaOfNC1FU0cx97DU5kcM9gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792437606;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=zO+gnA/zH3TgtnnSvhjEEejhW5sMVUoWa55IAHxXUOM=;
-	b=DdIJwp+oZVOyxnukqcjBaTJTCnx0z/sTYImMUIdxRZoQJI1rXuKacaCcE1iO4EoFm+x0
-	 o22YQPFczCbmFAj63etsxstLM13mjC/ESosqCM7YVagmx6GzQSO9UCgOh9JeXdPxpjGf6
-	 5FbPQGri/NCjghckc4HrNO9nmIinR1xvSFLStXhbpJDXG1/pqy/DA0tY0In6uDeyUL4cN
-	 PACB0RE/xk0EFXAKToURIo/e0cH92dqtV4is1lziUbobTtQJak5sJf/KfSWMtb/Up4KE8
-	 /J3/r79lcwRIGxRb5qkL2ITqWxiw+hW6ToFFe+1vvgXfWzt2HWcaPg6DZuR+oMZbHgw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792437621;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=2cwznlz+EdWN+doPcioMiDQlvM6SENL3VPQBjPnsKVs=;
+	b=S6uOWk6eWY1rTNBVcfBxDsPMZyHQ0T49Ivkcy4Qdfs9ZSsO84znrBLvrpimF9AKobUxI
+	 kfLL3jzx8D8puiSjDCvLXlLFe24kYLQcZ9Yz973Jk76vBp/vl2HBIqBTJgaE8dszJmSMP
+	 5tPXEPMjKHxwPO+KEy2mFw7cSiEhZaz81S/4nwsooX4IT9bqttuUCBJLqx/6yXXYQIQfN
+	 qtJwyPExKK4AY6kwA1nZVRTMUfiKsNPBXUtF+gpyTBNkiAZDWGC3ujm7SKK9mQSHa+P6Z
+	 /lFcxHfLX4DnYPiDHe5ojHrDwcVPcyX1RpYqmZR7UI8ByhWnrsbMc09wLGPrgpQ8CRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Axu28bPF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.197
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19717606A319;
-	Mon, 19 Oct 2026 19:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Axu28bPF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81271F000C4;
-	Mon, 19 Oct 2026 19:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792437605;
-	bh=zO+gnA/zH3TgtnnSvhjEEejhW5sMVUoWa55IAHxXUOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Axu28bPFgYP2BRLtkMkrlQclgdkZE8vKmByQnwwpQBmtRFIR3BJmVDZuaI740N5tf
-	 0yIEgVAwIm098IRoqVlu5Dw19ymejiwz2eFev+qTm8oqBNkBjbyHgDmOa1LBiVQnDj
-	 WiqSWhFwvpx4oXqGjh58H7m+JDWIDKBbglJojm4z2wUsLE4buyirH14OLv+gfb8pTN
-	 nyXaHhFvHaXB9epTW4pXLV63mXk218f/tKIdDYAFtFs4i1bNMV5Qy+FPtm8U3O5aW+
-	 7hBz5LBZFM89ueRitbp5G0rDWYR/qT+0WcbqkJCf0/76lZ4kU4KjFh+QabbuSdZ1pc
-	 vUH/2tq3whk/A==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 16B65F4006B;
-	Mon, 19 Oct 2026 15:20:04 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Mon, 19 Oct 2026 15:20:04 -0400
-X-ME-Sender: <xms:ZG3Wak_BGNshMp7GWjR7g9zm24EHSCF6u-Z4URA1DI0-fKX6LAZTNg>
-    <xme:ZG3WaomXDhppFgOC3tA2IjvLbWdfvbxIhzk1Z_qTgb3GmdU6oV3Fn6Sc-Ua0jfwN9
-    Mqv2CrnwxewrHib5vEdM7Pz-X0iBB1pZyKX0iEpkLT8YrgCBrglog>
-X-ME-Received: <xmr:ZG3WaliCu71KmFemc6e0yQyMirHqxDdhTOhZpiTDDyi3GRR2ZKgVVrIy37LtZIolCsioK4z3uqbdduugzoGYjIA5ZZYlKfth>
-X-ME-Proxy-Cause: dmFkZTF8ZTFf3UNlRjGNClkfsXVnsNgWaE3Gr11Yn0/q3LURBvd+276ZeQs+jq7SKTRgNa
-    ZgkrU8gV7YQPAHXwqUQ2G/RZURbmt9w7KJEgTdhQ92o+WqkksKV4qbZxkkEm1TrgePSoaI
-    AJHhyq+/KiPQABrS6NMsV29tRs25KgXkTDz8kdEKAn4BUnDFL0HILHv1s0XCQi2cdgMBum
-    ZIcWLHJcsYspJcjg/utM221MZpKWbCn3qs9R3fTfnlR7GJfb+Kx62wMVEr/piW9kJHzC8i
-    FoGyU7iJbXKbETNUOtV1AQPXu/d2I25eRii3ySVguvn8jMarrQGzmvKFY/d+QCxZnhXVlf
-    Khp9rcDWYeSOi3AKJAaIooJ3Et3NWFzCrnlDVuPIpxUojH++3J9jCZXISUHwziGPQ9yf6X
-    Ce/YZAaREiV85avI4zQZAZGhkEB+d63Q2lBnAkmLhMP/Vsys9+NesVkBlo7L4jkEzF5/Bs
-    QHk2UUInNF9o4II6DYQ7jXMqMsLbXdKnemzoc1WNTvoMfbVC3e936mn1XsQQhsHktzMvHq
-    ZFGlB/XAA6rWrVkt5S+soavGjaQMzLzoqqmfKogtVPQD/GstR/rxiSa/3AN2CjCcEw7E6C
-    1kD8kUKZhYxNvNAhf5Y1l/k1nLJC54iUe57Z6JE979oPECaPSTNnPGCWSOlw
-X-ME-Proxy: <xmx:ZG3WaoZ5hAy0VswBfdHGx9-QhgfQv9xbR63jMsivfha43OVIDMWi-w>
-    <xmx:ZG3WahHbiRB-eTBIcPikbF3oPFRI_D0LeWMUBsFSodso1UvHEtTugQ>
-    <xmx:ZG3WatYii1fN2T7IKFugiW8TQgt_xbnaQfhL1HdXC5X4ImZoxuawaw>
-    <xmx:ZG3Waq06nAIsRP959KK5v54PSZZ0HN3K0QTk5Z6dPK0qDhKc9n7r8A>
-    <xmx:ZG3Watcdx2ByTHn7rW3h546cY5XE3lbG31I794aCEynvq0qEkva9SjFz>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Oct 2026 15:20:03 -0400 (EDT)
-Date: Mon, 19 Oct 2026 12:20:02 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Vlad Poenaru <vlad.wing@gmail.com>
-Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Nilay Shroff <nilay@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	Vlad Poenaru <thevlad@meta.com>
-Subject: Re: [PATCH net-next 0/2] net/sched: don't wait for RCU when
- destroying qdisc lockdep keys
-Message-ID: <atZtYi_Xnz27O8Bp@tardis.local>
-References: <20261019170225.729789-1-vlad.wing@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77C0606A321
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 19:20:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E77C0606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-5384e381fbbso2526951b6e.2
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 12:20:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792437620; x=1793042420;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2cwznlz+EdWN+doPcioMiDQlvM6SENL3VPQBjPnsKVs=;
+        b=DMquGU98xWjiNWrv8upU2NJ4N9yoI398yZqZTlXG+ue5jEeb0cjz/ssgejY3S3X88K
+         aBmz0W7E/vzb05r+ckdxy5gMKvOQkHfrzQdBEX2zmom6eI3b4ajNrByxU2gWYmdDxN+F
+         Qv+wNeN3ZGaEM3d8LLigbCNTZBD3yI3LdRiNB4GZM9rREeP1qpAdzYSlxqxIzurMIZhL
+         oh9K7jNB39ckW77E/rdDT8SbqZXjT6d0jjm3zlINpdh3ZV65Tdbdp/MECNqiTXsxXnNs
+         4GrTHq5ys82VUgKaqy2nSW9CihLYSZEdMB768KtihA5nxJHgqACeQRi3Xk+hclLtJtwk
+         O2ZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwgvyZl2IWWn6x0Cf4FGoWCG6jCtXuaLh02c4NZpncqg6IbAPsLJpDzJ5xf3VxWoUJObvgrpjU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIqzT2Uv/iBrI4ULeE6e29lduE+gowtzHEfPJmk+78kGyXklcdX
+	vkMnG17/oE3A347OuESSmC31nCB4AJ9lKOl0WGREcIH0v0vc6CAOqDX1z3PBQFTedID656ac8Xn
+	vIIDhvP0CnL3Qgv/l6EwBsfs49SYHl9MbyhqbB4lPR+53RbKJiUvS53azrxw=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,82 +58,248 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019170225.729789-1-vlad.wing@gmail.com>
+X-Received: by 2002:a05:6808:4f62:b0:4f4:b5ba:a236 with SMTP id
+ 5614622812f47-53ccaf299bdmr8642635b6e.10.1792437619938; Mon, 19 Oct 2026
+ 12:20:19 -0700 (PDT)
+Date: Mon, 19 Oct 2026 12:20:19 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ad66d73.2431563d.3b88b.0026.GAE@google.com>
+Subject: [syzbot] [x25?] possible deadlock in lapb_data_received
+From: syzbot <syzbot+059a2795ad4cff2a2695@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, ms@dev.tdt.de, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 19, 2026 at 10:02:23AM -0700, Vlad Poenaru wrote:
-> From: Vlad Poenaru <thevlad@meta.com>
-> 
-> On kernels with CONFIG_PROVE_LOCKING, every qdisc except ingress, clsact
-> and noqueue has a dynamic lockdep key, and destroying the qdisc calls
-> lockdep_unregister_key(), which waits for an expedited RCU grace period.
-> Replacing an mq root destroys one qdisc per TX queue under RTNL, so a
-> single "tc qdisc replace dev eth0 root mq" waits for that many grace
-> periods. Commit 7a3cedafccf8 ("lockdep: Speed up lockdep_unregister_key()
-> with expedited RCU synchronization") made each wait shorter as a
-> temporary workaround until hazard pointers are available.
-> 
-> The wait is redundant for qdiscs: the qdisc is freed with call_rcu()
-> after its key is unregistered, so the key's memory already outlives an
-> RCU grace period. Patch 1 revives Bart Van Assche's
-> lockdep_unregister_key_nosync() [1], with the grace-period requirement
-> spelled out, and patch 2 uses it for qdisc keys, as Eric suggested [2].
-> 
-> Boqun was concerned that a nosync variant is hard to enforce and review,
-> since a later refactor could move the free [3]. For qdiscs the RCU-deferred
-> free is not optional: datapath readers find the qdisc under RCU, so
-> freeing it synchronously would already be a use-after-free regardless of
-> lockdep. Patch 2 also documents the requirement at qdisc_lock_uninit().
+Hello,
 
-I think my concern is still valid: for lockdep PoV,
-lockdep_unregister_key_nosync() is an API that users have to use it
-carefully, because it leaves the unregistration process in a stage that
-you need to guarantee that the lockdep key reclamation is delayed by an
-RCU grace period. Or in other words, do you have a way to prevent a user
-from doing lockdep_unregister_key_nosync() but kfree(key), or some sort
-of debugging to find a mis-use?
+syzbot found the following issue on:
 
-Regards,
-Boqun
+HEAD commit:    2c7935600733 Merge branch 'bpf-zero-extend-the-index-in-in..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=13598f01580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=964a8fc052e56fe5
+dashboard link: https://syzkaller.appspot.com/bug?extid=059a2795ad4cff2a2695
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=117c5031580000
 
-> The hazptr-based replacement for the wait is still under discussion [4];
-> if it lands, the nosync variant can stay as the no-wait path or be
-> dropped.
-> 
-> On an x86_64 KASAN + PROVE_LOCKING kernel (64 vCPU KVM guest, 64-queue
-> netdevsim device, 214K lock chains) this removes 5.3 ms of grace-period
-> wait from each of the 65 qdisc destroys in "tc qdisc replace dev eth0
-> root handle 1: mq".
-> 
-> A separate lockdep patch, sent to tip, makes the zap_class() part of
-> lockdep_unregister_key() cheaper [5]; the two are independent. Nilay
-> Shroff's pending "lockdep: Fix subclass resource leak in
-> lockdep_unregister_key()" [6] touches the same function as patch 1;
-> whichever lands second needs a trivial rebase.
-> 
-> Peter, Boqun, Waiman: if patch 1 looks fine, an Ack for taking it
-> through net-next with its user would be appreciated.
-> 
-> [1] https://lore.kernel.org/all/20250203175939.3133477-2-bvanassche@acm.org/
-> [2] https://lore.kernel.org/all/CANn89iLvu_ijSV+FnrZ6qei_Ty2c9V-RjwLMk24+oOS91bNjaQ@mail.gmail.com/
-> [3] https://lore.kernel.org/all/Z-OPya5HoqbKmMGj@Mac.home/
-> [4] https://lore.kernel.org/all/20261005171529.1378809-9-kunwu.chan@gmail.com/
-> [5] https://lore.kernel.org/all/20261019170018.699298-1-vlad.wing@gmail.com/
-> [6] https://lore.kernel.org/all/20260727182312.3750145-1-nilay@linux.ibm.com/
-> 
-> Bart Van Assche (1):
->   lockdep: Introduce lockdep_unregister_key_nosync()
-> 
-> Vlad Poenaru (1):
->   net/sched: Don't wait for RCU when unregistering the qdisc lockdep key
-> 
->  include/linux/lockdep.h  |  5 +++++
->  include/net/pkt_sched.h  |  3 ++-
->  kernel/locking/lockdep.c | 36 +++++++++++++++++++++++++-----------
->  net/sched/sch_generic.c  |  2 +-
->  4 files changed, 33 insertions(+), 13 deletions(-)
-> 
-> -- 
-> 2.53.0-Meta
-> 
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+059a2795ad4cff2a2695@syzkaller.appspotmail.com
+
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz-executor220/6011 is trying to acquire lock:
+ffffffff913da7b8 (lapb_list_lock){++..}-{3:3}, at: lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
+ffffffff913da7b8 (lapb_list_lock){++..}-{3:3}, at: lapb_data_received+0x2f/0x1c0 net/lapb/lapb_iface.c:394
+
+but task is already holding lock:
+ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:353 [inline]
+ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: lapbeth_rcv+0x24e/0x640 drivers/net/wan/lapbether.c:131
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #3 (&lapbeth->up_lock){+...}-{3:3}:
+       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:182 [inline]
+       _raw_spin_lock_bh+0x36/0x50 kernel/locking/spinlock.c:205
+       spin_lock_bh include/linux/spinlock.h:353 [inline]
+       lapbeth_xmit+0x32/0x260 drivers/net/wan/lapbether.c:191
+       __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
+       netdev_start_xmit include/linux/netdevice.h:5441 [inline]
+       xmit_one net/core/dev.c:3953 [inline]
+       dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3969
+       __dev_queue_xmit+0x14d1/0x3920 net/core/dev.c:4958
+       dev_queue_xmit include/linux/netdevice.h:3464 [inline]
+       tx+0x6b/0x190 drivers/block/aoe/aoenet.c:62
+       kthread+0x1ed/0x420 drivers/block/aoe/aoecmd.c:1241
+       kthread+0x38b/0x480 kernel/kthread.c:436
+       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #2 (_xmit_X25#2){+...}-{3:3}:
+       __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
+       _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
+       spin_lock include/linux/spinlock.h:347 [inline]
+       __netif_tx_lock include/linux/netdevice.h:4841 [inline]
+       __dev_queue_xmit+0xe9d/0x3920 net/core/dev.c:4952
+       neigh_output include/net/neighbour.h:560 [inline]
+       ip_finish_output2+0xc4b/0x10b0 net/ipv4/ip_output.c:236
+       NF_HOOK_COND include/linux/netfilter.h:314 [inline]
+       ip_output+0x29f/0x450 net/ipv4/ip_output.c:437
+       iptunnel_xmit+0x626/0xd10 net/ipv4/ip_tunnel_core.c:97
+       udp_tunnel_xmit_skb+0x29b/0x3e0 net/ipv4/udp_tunnel_core.c:187
+       vxlan_xmit_one+0x21f6/0x2eb0 drivers/net/vxlan/vxlan_core.c:2571
+       vxlan_xmit+0x1e19/0x33b0 drivers/net/vxlan/vxlan_core.c:2860
+       __netdev_start_xmit include/linux/netdevice.h:5432 [inline]
+       netdev_start_xmit include/linux/netdevice.h:5441 [inline]
+       xmit_one net/core/dev.c:3953 [inline]
+       dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3969
+       __dev_queue_xmit+0x14d1/0x3920 net/core/dev.c:4958
+       lapb_data_transmit+0x90/0xb0 net/lapb/lapb_iface.c:447
+       lapb_transmit_buffer+0x163/0x200 net/lapb/lapb_out.c:149
+       lapb_establish_data_link+0x89/0xe0 net/lapb/lapb_out.c:-1
+       lapb_device_event+0x4eb/0x680 net/lapb/lapb_iface.c:-1
+       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
+       call_netdevice_notifiers net/core/dev.c:2327 [inline]
+       __dev_notify_flags+0x31e/0x510 net/core/dev.c:9896
+       netif_change_flags+0xde/0x1b0 net/core/dev.c:9925
+       dev_change_flags+0x128/0x260 net/core/dev_api.c:68
+       devinet_ioctl+0x966/0x1c50 net/ipv4/devinet.c:1199
+       inet_ioctl+0x42a/0x560 net/ipv4/af_inet.c:1010
+       sock_do_ioctl+0x101/0x320 net/socket.c:1325
+       sock_ioctl+0x57a/0x7e0 net/socket.c:1446
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #1 (&lapb->lock){+.-.}-{3:3}:
+       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:182 [inline]
+       _raw_spin_lock_bh+0x36/0x50 kernel/locking/spinlock.c:205
+       spin_lock_bh include/linux/spinlock.h:353 [inline]
+       lapb_unregister+0x1e1/0x450 net/lapb/lapb_iface.c:187
+       lapbeth_close+0x56/0xb0 drivers/net/wan/lapbether.c:350
+       __dev_close_many+0x366/0x6e0 net/core/dev.c:1798
+       __dev_close net/core/dev.c:1811 [inline]
+       __dev_change_flags+0x3f5/0x820 net/core/dev.c:9853
+       netif_change_flags+0x7c/0x1b0 net/core/dev.c:9920
+       dev_change_flags+0x128/0x260 net/core/dev_api.c:68
+       devinet_ioctl+0x966/0x1c50 net/ipv4/devinet.c:1199
+       inet_ioctl+0x42a/0x560 net/ipv4/af_inet.c:1010
+       sock_do_ioctl+0x101/0x320 net/socket.c:1325
+       sock_ioctl+0x57a/0x7e0 net/socket.c:1446
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (lapb_list_lock){++..}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:3209 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3328 [inline]
+       validate_chain kernel/locking/lockdep.c:3952 [inline]
+       __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
+       lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
+       __raw_read_lock_bh include/linux/rwlock_api_smp.h:192 [inline]
+       _raw_read_lock_bh+0x3e/0x50 kernel/locking/spinlock.c:287
+       lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
+       lapb_data_received+0x2f/0x1c0 net/lapb/lapb_iface.c:394
+       lapbeth_rcv+0x34d/0x640 drivers/net/wan/lapbether.c:142
+       __netif_receive_skb_one_core net/core/dev.c:6297 [inline]
+       __netif_receive_skb net/core/dev.c:6410 [inline]
+       netif_receive_skb_internal net/core/dev.c:6496 [inline]
+       netif_receive_skb+0x4af/0xbf0 net/core/dev.c:6555
+       tun_rx_batched+0x1de/0x790 drivers/net/tun.c:1571
+       tun_get_user+0x2be0/0x44d0 drivers/net/tun.c:2045
+       tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
+       new_sync_write fs/read_write.c:595 [inline]
+       vfs_write+0x612/0xba0 fs/read_write.c:687
+       ksys_write+0x150/0x270 fs/read_write.c:739
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  lapb_list_lock --> _xmit_X25#2 --> &lapbeth->up_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&lapbeth->up_lock);
+                               lock(_xmit_X25#2);
+                               lock(&lapbeth->up_lock);
+  rlock(lapb_list_lock);
+
+ *** DEADLOCK ***
+
+locks held by syz-executor220/6011: 4, last CPU#0:
+ #0: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
+ #0: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
+ #0: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: tun_get_user+0x27b0/0x44d0 drivers/net/tun.c:1986
+ #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
+ #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
+ #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb_internal net/core/dev.c:6483 [inline]
+ #1: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb+0x102/0xbf0 net/core/dev.c:6555
+ #2: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
+ #2: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
+ #2: ffffffff8fd5ce60 (rcu_read_lock){....}-{1:3}, at: lapbeth_rcv+0x12f/0x640 drivers/net/wan/lapbether.c:127
+ #3: ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:353 [inline]
+ #3: ffff88802af94f00 (&lapbeth->up_lock){+...}-{3:3}, at: lapbeth_rcv+0x24e/0x640 drivers/net/wan/lapbether.c:131
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 6011 Comm: syz-executor220 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_circular_bug+0x2e2/0x300 kernel/locking/lockdep.c:2087
+ check_noncircular+0x12f/0x150 kernel/locking/lockdep.c:2219
+ check_prev_add kernel/locking/lockdep.c:3209 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3328 [inline]
+ validate_chain kernel/locking/lockdep.c:3952 [inline]
+ __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
+ lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
+ __raw_read_lock_bh include/linux/rwlock_api_smp.h:192 [inline]
+ _raw_read_lock_bh+0x3e/0x50 kernel/locking/spinlock.c:287
+ lapb_devtostruct net/lapb/lapb_iface.c:102 [inline]
+ lapb_data_received+0x2f/0x1c0 net/lapb/lapb_iface.c:394
+ lapbeth_rcv+0x34d/0x640 drivers/net/wan/lapbether.c:142
+ __netif_receive_skb_one_core net/core/dev.c:6297 [inline]
+ __netif_receive_skb net/core/dev.c:6410 [inline]
+ netif_receive_skb_internal net/core/dev.c:6496 [inline]
+ netif_receive_skb+0x4af/0xbf0 net/core/dev.c:6555
+ tun_rx_batched+0x1de/0x790 drivers/net/tun.c:1571
+ tun_get_user+0x2be0/0x44d0 drivers/net/tun.c:2045
+ tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f523ead1137
+Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+RSP: 002b:00007ffcbef91f00 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00005555890c4400 RCX: 00007f523ead1137
+RDX: 0000000000000010 RSI: 00007ffcbef91fb0 RDI: 0000000000000006
+RBP: 0000000000000006 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 000000000000000a
+R13: 00007ffcbef91fb0 R14: 00007ffcbef91fa0 R15: 000000000000002c
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
