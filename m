@@ -1,54 +1,53 @@
-Received: from CP3P284CU006.outbound.protection.outlook.com (mail-brazilsouthazolkn19012051.outbound.protection.outlook.com [52.103.21.51])
+Received: from CP5P284CU019.outbound.protection.outlook.com (mail-brazilsouthazolkn19010000.outbound.protection.outlook.com [52.103.21.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334B33D9DAD
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 04:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.21.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E0C3AEB49
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 04:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.21.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792382503; cv=fail; b=RfJVwmxpNh35428DJgml8qgPi2YUsfVXRi60vzeDsV6l5n5tUTOvhztaj1ic7Rh/uG1rLtaolMCXXN79w1NOlqGbFJb/QIA66zQ7lgMKuesKBd6kWEMg4yhdlXS7eBCdTuzUb1w/8R3R+ZJXkBkkXAFESjQfDY//2JDhS+byJ1M=
+	t=1792382585; cv=fail; b=RzIMrsuo3FmAHwTOhYxQ3J8OifUh57jzULfmYD3bQqZEn1EhZS1UfYydY3AC3HAVF6aCoZKtCv6Uc27mqsMa/JcZwai4y7BpG9odBdGezgCmzzQzIjNBlM1/euHZ9lKrIBEUaAvhWjTRBqBo1wTXOqt/CxYo7KzPuX3xyGmCywY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792382503; c=relaxed/simple;
-	bh=ZNkpI6nCzAk/apN+KI5VVwgQzpcg5KbKpW5ZVAGlI0Q=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=vBMNeWcxy7zwXSBLX1nYUcrQgHOvKDHwnKSm1g93nv7n+SfMuHou/bOkq/GN/k7GUvJWckqHVOT+S5djkAAMi/RyiHVzTiEGsE8DqkugrXaR46aNIWyMAhkOrKv3tCE2cufdUu3WMb2M3d6B8GkqlD6Dy5dhyJkqbbhbZuD5XhI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=jGXbDSf4; arc=fail smtp.client-ip=52.103.21.51
+	s=arc-20240116; t=1792382585; c=relaxed/simple;
+	bh=Ubl/b26J36bxdAlcoTPgyUegvlTpuRLoTFp5RnxUYZ4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dfzVkMmAh6iS1zjaFCtKp14Th1+alqUbq+ogV84+82Ux2I6zQCfsYVbHR403KjEG/cwzSqXuPvjVPdxz6Vb4r6vHgU/1NIT+pPwl14OKOEPGXnXx4V+8bTE0PRoW+e2ldonFLHIXnUS/vgHQkv8Ds/bI8/SHyCcOtpxj74IfcLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ZLS7fu1/; arc=fail smtp.client-ip=52.103.21.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="jGXbDSf4"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ZLS7fu1/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xPN3Qm4QEmdnZDrDFIlznHgdoEABZohYNj3SI711BtMLwgnHChHGF98mUNvWCCTvelHPShTd11TGIQ+e6Lb4JGqy6uysz7i2s/uXevKKet7A7z0A7A9M8h32oVkqT3G8SdvlbpJdyiU9MKNi62IfacLH0zG0bIAepFrUn4wn4dRqAr6jszDL0vjYRzwuGHxb9yarjBLimWUdpqGbXuAbVorEr4kH3BPuIc97VcfhyP3Zm7c7TFOBvY8V5sJXOTaRVWLdGod/O4zQOQTM/mhaVXiavJCapHiYUJuCLB3W4Rg8JUaxOtTV0OFFCBj2gX2LUMdQbU70PRZ6nB4FANCVUw==
+ b=uxUH6Fok1a2ddAh7xlrhAdnRRdSbeH8gz2ofVUDUZ/UzlCuP04kN3rwiIZ4WBVYDV85Pzkpz1cVb7X0bXorbxZZJEAwiuR9pV9UpK3RfdqeHVSUJoQKlj78SJ3NAlII2XyJRZMvdPTqVV1yqo4nVIjcZTKIDPEZoL+is4VViVFdXEZjmKrSj8gwyey13YEjjsChPIIM0LULTYjPJZTiWxDtKTwJKQ0uLQg78bv3+2SvJ3WVavL0X0MygAYQ7uI5awhUgASkWtatk9T7cphfADq//bta1VediO/skjrJqQIFYwEHcrtg+c05YtV4aE5Or8okum84bU90CXp/7srYmVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c7LRmj1FOfX0lloPQQ8AFt9SUOHLBIRMR0Zzv9Io/Xo=;
- b=dUHug4owUsZyx/L1rs92sXiPbley7raXDXKh/ZoMDS6XADjlVkoBVgfTKxwkEM2AxAr8uLe3C8V89AdSALWAXCWY1b8Yb0h+DIcGzc3TC0YAdC3TQEgZc5QL8dYW/+tyc7d3YOsUWqWRFyN/7sd+HY0pC+bwM5Y2+lGzVXdeKobdVagWEPAmS87ag9sFW22fV0YiZlfu5sMa+vPY8zsW4jxWEdXGykHPjzHfJwtWwjg8AkI4pGsTiLySFLdCtUGBYCqUpiE/+fM4lr9jxYvkdtOb87doqldR9BbKzEiaNd06K0cDTb0rYw8HYbwZuSxWOe/doLOZl0blh4lA+krrQQ==
+ bh=19slpFONuwUajdKBZGFvYn+8jXhn0cyQxkqqgXLKum0=;
+ b=rEpkQH65Ekr2OzAI1HZhpWJOUYUYyLBU32iz+/CmGWX7pXSAlUe9EujqziyEz4fT3P/HyEVItGL9+6rCzifSvXHpNW+SdDAefqOjxTHruX38F1zDO1Db7Hu23Y/1UqloZUpQz7Oue4NMvJw7vbfwF8ITaVymItotaMicw84zrM6K5pYjhjQAa5ELahAbkZ5/iTCwMNrh0uE2AN7VrrrcOScwhMWLRq5JPC/tWtVwrMaHElYoy8oEUkPeWkalSZOwaS27uipTPnRhGhDZhJbrH8o3vQUsg5V84P/oUdoyVWW1nE5jfgro8o5LhF2N54Tdx+MLZfL8h6UPAP4XMlnE4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c7LRmj1FOfX0lloPQQ8AFt9SUOHLBIRMR0Zzv9Io/Xo=;
- b=jGXbDSf4Y9HZdSDpaOW+L7YxxEszvr4vQzbzB+0QQ3sGWZDL4rCdDCPYmHckfybdMjPQcbcYkBl1qa++GRgxaOUXzKzbtYpstonDrFgDzoybqsCf8miDDs4G1fINKSSVDVvpHa5TNWI82JogCo2Hy0sgsfwO/yti0orzMVho1A6dZEz/1ERcW2sKg5D0MpppmyRhKsMnRWKzPww2AYX3QSIgqeimOyBT2sZQTNu8od6rrrER7uxfgBmCIWLuLo3QW/F7dwNmIpeWu8IDHx+9msrAkwOoyX/7rMLyYdhkXFUIDHVDY4Kcn+2SFsuJmywukJKlSYHUutvUlClAzzCuCQ==
+ bh=19slpFONuwUajdKBZGFvYn+8jXhn0cyQxkqqgXLKum0=;
+ b=ZLS7fu1/QVbJxB56j0IQe63h+BZ22LIYWpdaisUvLXOKMQ9VEgmY3cBerrQ9MDzuXgu8mGkW3dkkALj11U+ocqx6m1Pg3bNR8eK1mYhH64Jam3DrsL1xjMwFbpMDh0weNHx0/r8sWR5joJ06O6+hBousWsLgC35Scz7FmBNO82rDg4ksJMOJBqBl3dRh2xpAvPFkoy90IZ7iHXds9uZDOvzVyeWlupDRAtlAOHE2aCK1xBP4evYhN/jFntK1d0dDEqgGICOrfpYGBDqhDIh19Fms5i9w1uE50L+oBkO+imq3eV8ig1JocHyCfEC1M/4DrOsrwUnRuMzvm5XJ4+58oQ==
 Received: from ROAP284MB1627.BRAP284.PROD.OUTLOOK.COM (2603:10d6:10:92::8) by
  CP5P284MB1600.BRAP284.PROD.OUTLOOK.COM (2603:10d6:103:f1::13) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.19; Mon, 19 Oct 2026 04:01:36 +0000
+ 15.21.522.19; Mon, 19 Oct 2026 04:03:00 +0000
 Received: from ROAP284MB1627.BRAP284.PROD.OUTLOOK.COM
  ([fe80::d40b:6372:7b2a:8e83]) by ROAP284MB1627.BRAP284.PROD.OUTLOOK.COM
  ([fe80::d40b:6372:7b2a:8e83%4]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 04:01:36 +0000
+ 04:02:59 +0000
 From: Leonardo Souza Silva <Capleonardo12@outlook.com>
 To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "mptcp@lists.linux.dev" <mptcp@lists.linux.dev>, "mattbe@kernel.org"
-	<mattbe@kernel.org>
-Subject: mptcp: poll(POLLIN) on a listening MPTCP socket never wakes when a
- connection is queued
-Thread-Topic: mptcp: poll(POLLIN) on a listening MPTCP socket never wakes when
- a connection is queued
-Thread-Index: AQHdX35pMfv/6CeS2kmGBVk+wgNO3A==
-Date: Mon, 19 Oct 2026 04:01:36 +0000
+CC: "edumazet@google.com" <edumazet@google.com>
+Subject: net/ipv6: tcp_v6_reqsk_destructor() frees ipv6_opt without RCU grace
+ (v6 sibling of e3f33b0a1d89, deferred in your own commit message)
+Thread-Topic: net/ipv6: tcp_v6_reqsk_destructor() frees ipv6_opt without RCU
+ grace (v6 sibling of e3f33b0a1d89, deferred in your own commit message)
+Thread-Index: AQHdX36n5MRQv0hNJkOHODGB7aSnuQ==
+Date: Mon, 19 Oct 2026 04:02:59 +0000
 Message-ID:
- <ROAP284MB16279B4CA8731943D0006042BD982@ROAP284MB1627.BRAP284.PROD.OUTLOOK.COM>
+ <ROAP284MB1627D435EE8D0DD76EC11D06BD982@ROAP284MB1627.BRAP284.PROD.OUTLOOK.COM>
 Accept-Language: pt-BR, en-US
 Content-Language: pt-BR
 X-MS-Has-Attach: yes
@@ -56,61 +55,61 @@ X-MS-TNEF-Correlator:
 msip_labels:
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: ROAP284MB1627:EE_|CP5P284MB1600:EE_
-x-ms-office365-filtering-correlation-id: c4bad809-8b4d-42c9-08ae-08df2d95abd4
+x-ms-office365-filtering-correlation-id: 1eaeee6b-19b3-47b7-5633-08df2d95dd7e
 x-ms-exchange-slblob-mailprops:
- laRBL560oLSPhlJ95/U7v6W/AahuugGaTKmQmbVKSB1uDapfhwwhjKAMh5JsIJLyk9WYJv2u/WQGQyFepKLML9wp013/uCeSnYv3jACUQ5IsH3kYd9Y7+113nhfo9q7FPPAcL6brGkXdu5FcEA8c95L7/AGYVXgyJTzVVau2D0VXABvhX3pJG/3OhV3fIIW1S8GD7ILFm6dGuBIjxGBcYK2SK4N+TiPNpQAds6T/EM2mTWY1xSS9zkFffseZvLn2tZVOHZyzcj2sfTi8Xy+Sms4oNDM/mp982g9UheYxceOniGKLZNOXbBoVq9C2qaHSMBWzaE1wNGVVqaqMs3PcKS9LpE+B9WruBgrZvPkAIYoi5Agm8/+OKIHC1CK6tDXmEjLLz5J+Fv9sQEI4ffcMxJGmPmrt7qPg7mryh7JJdy4KQzWLnBfF1evW5aRy8sq2jobNBxiHOgHsCN8hmUDladl4UgB+naUBsgbqh6RQQWy+LU7CGHFSF7fGWG+lQZ5cRkdMXZHdgGPf4jybXOAwLrN9gERZMfL+pRWE+9tdoaAS6ZBpH/wBZQ4oMj92qPlhbtcWrjAeVGBwJLM4vC/AH+3vN/5hKo7qRbsMNWRHdPhi+UPBWrigAwEjxWMvxBXGn/LAiMJFH8u0Kyw1miHqO+gBSUKWoT5eCiL7Cj/2/JYOEiUCK53SMO64OgQAUBR/P+jTtfKQxOys4pyxLFtbfCh6JBO8fsz8fQPDRhQW2QACJHP2Hmg0+uWsFgVlOXg6WcHEzn/zWMOw1BGGHNCV/Z5mzbgqkY6y
+ laRBL560oLSPhlJ95/U7v6W/AahuugGaTKmQmbVKSB08qRU3mi18UmGjDwr95MZxmK6Hs7ig0pDy3wPx4odZdLoOq8VcGG4DyPgjQENT7AtyjV8/BOAMFXtOl9IW3sWrnDUnGxFUlVsCNfCaMnVPbDoSwtDnR62DsXIVS2LDtx59RnWAZMPFwEqO4vTvO6SlS3Vqf4gqbauvHNfSFErxI+JSPfTq71L+9fVHAK0htFqAJaOQSFGH4efNcy1DaLbXJTr1ti4O0sJ4HcVvIqSpxHUN6e0VWqjKVaxt4rQinqGHw9dvhDhe798RtykJXP1ZgUEIYMymMUFaaBeGT3gBHtTH9WpBWMJKPQOqcYiV1QP4D6DveHsflfW/zjXCH+PPYGZi76cW/BS2baO8DncF/CM4czDMdjGpNpjLXnghY30QZ6KzowX5QU4/MHelcgx0P/ihxjCU6nElDgEXjv5bocdb47Pcka0xhNh0/FKbwDqtA92wzMvO3QoS5V6TW+CP/R2VVoS2iEz9Q1cLqgqFeKqVk4c9PjXt5dmzwkl4dNyrpRd/SZ2MjNXWMhJ+C11shj1erPfu1TKo1O5xVRX3fGmSUXr20a09DZkCJQf7k+DlsdE6vCu7s/GFdrAsXgEc5rKvozS6T1uOT+/dR0NcD4HqwWP+/PcnyRcugh3tV9+DOc3a65MKJ20l7fQvA3RLVHXlpxzuwzlqgRC14kzFVfYtOx633+LWzdo1f0Q1RipONaoxHPD/QSsmwQRsmY9ADNJXlCdXNCqG+E+h1I+xiS+7fatJppFl
 x-microsoft-antispam:
- BCL:0;ARA:14566002|8062599012|8060799015|31061999003|19110799012|25010399006|24021099003|4140399003|6092099016|15030799006|15080799012|5062599005|16041099003|25031999004|53005399003|40105399003|102099032|3412199025|440099028;
+ BCL:0;ARA:14566002|8062599012|8060799015|31061999003|19110799012|25010399006|24021099003|4140399003|6092099016|15030799006|15080799012|5062599005|25031999004|40105399003|52005399003|12091999003|102099032|3412199025|440099028;
 x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?p+K/pFuV+mi8UDvf7VcqVLtqgxnM+pRR0B/CC1+xRKP54/i9QAtcts43lM?=
- =?iso-8859-1?Q?ubcNBVk+KND03+rM6nvPt3TFYXfbvTlHK9JDT5I6Rd5vKu85XqbgXC5jNn?=
- =?iso-8859-1?Q?gHPyZXr/5JMiZOzkLJ9sx8eJqSjrrRug4up3RQ00059CkQ6V+U3K0rPTfj?=
- =?iso-8859-1?Q?EBwsaTkfwrWoxqZ2dIeQDhFATHhK4S7iqGR0+oitZ14SvEopDy7OHRhnfB?=
- =?iso-8859-1?Q?GodmpxCpF23OOWmcjvaMOgfs5DtnLwz0w9830z3gdce3CeS5PRFPHYHjxU?=
- =?iso-8859-1?Q?PGl1WzW595JWHZYFwH2oI6VdBEpGttGI4ldjjJ9YiGXzVGuOw+o/CufCQR?=
- =?iso-8859-1?Q?JrVn7zIBQq6nr/6WO/dZ0hfNbqj1apF9wihFVOlJ7HdhbUvE8L8plpUCE9?=
- =?iso-8859-1?Q?VQeVXK4vp33SYbQgXQmZ0LwoGDxZ+CcgC7Fv/3YLViOZcNJI3Ybf8Dmn5H?=
- =?iso-8859-1?Q?zjTFmuypx5OoOcOiknWDMzkGB0K41r8leG7QWeb5wls3MdqRdjv1kg3IXw?=
- =?iso-8859-1?Q?jFrtpawbU38yDA3N7Pcez7PWxI7DbbQSZPjvHvDZNZDPdkfD7LifO5bU7F?=
- =?iso-8859-1?Q?Xcgy8CIQ83jAXDTPrDfv6vnpi0imD00Dmj5kcH9bHzAjQoF49+Ol54FuQl?=
- =?iso-8859-1?Q?LoiQKf80rgSZdt+jGMte8F4RhfK8nWGgjVtjdq3WHcjGG+HDaRa59/UwtL?=
- =?iso-8859-1?Q?cOk6Qi1XcLLZZTnYdmejp7hxG6ughTl7kKINMHNYtRESJ3G/n6DdKqGoNG?=
- =?iso-8859-1?Q?RUCp23OBd14FLRTjEyRPrFjr5usRigrt+MDg3WhTurAuyaaGqEsYDMfPor?=
- =?iso-8859-1?Q?Dhy6zmOTtzrGGtIj5jtH99q/qnHXwTTk0X/zvRS9ZbfTlMfyfRPHuqsnw0?=
- =?iso-8859-1?Q?mJDi0+EfJpBI92xvnfq1zKf6I7xROnQwwX0Pq5Xqd9UMT2Js7SBWj56QRw?=
- =?iso-8859-1?Q?KDxQszMSG1Kw2t56d6e9BM3nW6zWZI/tsUzYfcfdXaGTmdBJSZgDSPUo17?=
- =?iso-8859-1?Q?dYihCqf+0MVDieKyYiOvjkYS2iQwKvcd9sJGfJKtlwFjC8NLTo9OB867lx?=
- =?iso-8859-1?Q?W9sQ0+Txd9TJPAcRJbCgCS0PkRSnzdkeyWv/iHqwo+X5a3tJEzzhViSyPh?=
- =?iso-8859-1?Q?NL4IBM5EEEU+qFLhFC5AI0KCp6XcM=3D?=
+ =?iso-8859-1?Q?u/Xo1I7gkH2VgpVTCjrypWNyBVvVDIVq4yjPYLu90iRaPPK/JpdXSYtJtK?=
+ =?iso-8859-1?Q?lYezZ7avyUWwNjwOT14aTr31gJ4W/5nYjJ8MxPq81vgUNizmcqACC62sZg?=
+ =?iso-8859-1?Q?5+7Vw4zfLBoN549no03RhZE5lXa0ZPzTJWiiPNIYOaxplSn0Ldxkkk9YrL?=
+ =?iso-8859-1?Q?aBn8L/iXZouWwFhVMzPQdKbu+RmFyO7RBeg6FVJo5oZEPvV7MK6xylmLs4?=
+ =?iso-8859-1?Q?jTicBMmPGagipMQYJtzWKpn1lemZ0eJ0+JJ7JuKCJMqmyzPcduqhvW6Moa?=
+ =?iso-8859-1?Q?t6l6Ih5j0jivEqQXQgIQLoUaf9CQJAMiBbVvXC2HRob2NUlz6jGsmOCj7F?=
+ =?iso-8859-1?Q?Z74gLkkxP0KubxYBmMCvTzAtS9epsw874A2Tib2KeNDMdDAnxN4/6eT6Ow?=
+ =?iso-8859-1?Q?mczQsR7mLqz5zJ4apeyFTzuw0ha+0RmEjrIazJCUGBpljhq+Am5OqnQLl0?=
+ =?iso-8859-1?Q?EX5/EtaHxaIvI5nuUu6pt8B98U2U47lUMhMjJXkp2TfolLIUr6Df3tCU5F?=
+ =?iso-8859-1?Q?6s9g2oj2zHSwSbXibZCXAMpSuOCt4EYHL9S9u4xnUZv423vEuZmkYwXQ7o?=
+ =?iso-8859-1?Q?MtD2wqnuOUSrEBHrzN/MHV0PQZgYIrem6HjVKOtXxLRbdnwWh9JznkLn1m?=
+ =?iso-8859-1?Q?Z9jb/Fo069akFKYEGeqYv0grevK9JBoOG59HzT5JbMnDeHrnaLurd34VCk?=
+ =?iso-8859-1?Q?psI7nFWhlI0LI61w1YBEIQnfafq2v48rZQLqvQjaujoh9j+rwzYooM0+FJ?=
+ =?iso-8859-1?Q?kjfVIhK0LPamtMuiGrj0fAO4QxqzC7UlFJgyb23Q8fiER1wOMdM9V8ujvg?=
+ =?iso-8859-1?Q?fbaFTsEU8GlOuFEB2Onvya1vW76iDIqU5o/BKyNUuNisRfeOcZemk2hlcA?=
+ =?iso-8859-1?Q?2Sr4bytvEwUoRUOonqv1fcZmS/jmXweXMhmJK6ZuVKqpUq+fmnlme/3/Ue?=
+ =?iso-8859-1?Q?1YJJG4ZW5iMdmrRvtw6nLiK3G0CcAeEKYZ6GtJr9pzzkEnmdAWoNS+6XZF?=
+ =?iso-8859-1?Q?vmuUVLQy1t2YJifLFWPiOe2miS7yLM21llIES1pwB8t7NbcvxXLUC8RVWL?=
+ =?iso-8859-1?Q?C8ceJajXSUYzj83JVshJiENYN6b1Nv7tVhoeIbL3WmDiTUid0x/oqyMtk0?=
+ =?iso-8859-1?Q?GevLzRow=3D=3D?=
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?+WftTvOF9HXXLPumWxP9wOGlx9NSKXfpYv6N2yT3VCVgT8TZ5qiam710js?=
- =?iso-8859-1?Q?k72Nn8gU2HKDjZHNQ9wfrKTjzeskLvsnSsTt0kYzGMiqH1YRReEMhdI6Lm?=
- =?iso-8859-1?Q?eHfJrNP+DlJygE24Tob6V85X9Z9j3S9Jb+xVVxJ4jf1Quzg+r9ASiex/Sm?=
- =?iso-8859-1?Q?juuPwyAYZjtO/T8WnjJyQX4Lw04vJjv1WXFI/UHNIciY83EUcH3QIJ60OK?=
- =?iso-8859-1?Q?ZSJTSFz/IMaJeIXZRckNCgBOIRhmJkFtDp5XeDfAKXrJRomx8WZcuIPSH3?=
- =?iso-8859-1?Q?5nYx2dZbIR5Ox7lfgI5zN5hXv5gbeHkpwiNZozskxCg4d4s3A9RaDxmX13?=
- =?iso-8859-1?Q?gU5tHSWuBKlKE4gtLR+QYixR1EsTEhhkvLSlS+iRUjuYLKVzsXPsHOz7Dg?=
- =?iso-8859-1?Q?WmJ/JejEvknsTA12C7au+SZljfWNEmmNOFxSmpjNX9f7wXJtlEzq9lT6Bo?=
- =?iso-8859-1?Q?awe/eS96AUhKMvFKsPBQq2KBOIk6uQPq+E4VADwWzvXigFvXyWJrgXN5YZ?=
- =?iso-8859-1?Q?XRQBtOPzWt8hRd2ZMHitcQyl9/xKhWxKKWI2LG3+bzlMYziOGR6s3T69hQ?=
- =?iso-8859-1?Q?rmAkjoMwok+V+eUiLKAwcy0i9ZNSwuULff59q1BbrBbDu2HLbqCMTircS9?=
- =?iso-8859-1?Q?EDrbGQXdzRt4pq3Bj5gpIuL19SQf/93l4va2Pa9eeox7kexHIZeF/ylcrf?=
- =?iso-8859-1?Q?KmD7yrRMAmRJV15UdxSnvS+krSadx7YXipH3meJreND7PQp2KuOfhkvPO3?=
- =?iso-8859-1?Q?W6fhk7Sxbh/D4np/kff5BoyVf/jR8zUC9vtz2FbNFBvXjp7Iqz9nAlJbLL?=
- =?iso-8859-1?Q?Qqxe+Y8aXQu2cMajqEE7MkR1tF1tQmF4F7jhsCxM1ZorhinKawo/XAgmVE?=
- =?iso-8859-1?Q?bBOKxnIgCbLrmB0Yugqs9uTzPGiVf4lmEoQeP+17RvzC+2AzPv4/4X5plS?=
- =?iso-8859-1?Q?2z9O/avsOj/jHKfDFjtuYE56MG0o6j/Ws6EfwOrbBwgPxTeMx6Q1GHrBYl?=
- =?iso-8859-1?Q?sCyUd8VCtLWVLxzEDGB/FMi684b47nJjxNAkEIy3a1W1DPKe/XFP7lISqu?=
- =?iso-8859-1?Q?B51usc/XquEprfsf3efBOe1qCG1lPkiBtINxqU6cBVfj4YRWfXPbAUkSt6?=
- =?iso-8859-1?Q?3LHgpLsKx/z25jneuM4Iy3ukdO0DDU+m/FoRP6VXsxpKbfx4b0A59IdHIJ?=
- =?iso-8859-1?Q?3bex2eg1CeWjYB0Y7Rpk1JRPq3Uv+56Z+KVndZCz/oC5M9xRNyzmD51oRF?=
- =?iso-8859-1?Q?PCn+lkujCNQpEEmdQ59L0S9F4/BAnActfej73Ch6mpIWR6cXaeYuM1ZLW9?=
- =?iso-8859-1?Q?Je7EeAOz6IO+zS5fYvx6Q2+Hspb0XgcvSKcde+T9GPrtVOM227GLA3h6y/?=
- =?iso-8859-1?Q?DuLf+LAzjs0dQbcR36XA7qJ27gNfj8XpJDyI8XLWvb52VMFcrIJuFKRzFI?=
- =?iso-8859-1?Q?PAJ6sxpPx1b1s7bO?=
+ =?iso-8859-1?Q?2Rd0BTbDX4GuyxqEJQAdQliQWE7lDIIZQQYQfaAwJBSUs3ySXqsA6LFYWf?=
+ =?iso-8859-1?Q?snZIer16VLNg+YWWEQMrNpjghn7q+RhXJJJDd+ZA2hFyB+eylMR+VE6co+?=
+ =?iso-8859-1?Q?xjWSQ26CHYne3rcqbnk36714mwb/lVX5eWOlLIl/HWthoWPiemiHFpi7LB?=
+ =?iso-8859-1?Q?+ZzW24LooAaBDRVh05OL997gw07+5w2UN8sswrcfOUXow9VQR0IadjHvmc?=
+ =?iso-8859-1?Q?GPeb9+zlnDGi25NkfePebSO3i7tdcK3MSHHgkdxJS3FZc2znJjOO471j29?=
+ =?iso-8859-1?Q?w7IyxNuzrDgaqwsFqBRMPYsgcfI9lb7AtvxADL5VlN5I0cqcejVqpsFCmA?=
+ =?iso-8859-1?Q?/Fzb9agfrRKjFUHnnb2hQ7ySwlrWN6plgdDEfiPNbLKBk11RioU5dh+Lg3?=
+ =?iso-8859-1?Q?6ZOteInSZHCwsdLFjXvDs0DtKN4js4NbNS5p8CZZtqrfv+1rRQa+ONj4RB?=
+ =?iso-8859-1?Q?Giuy/kHbi/WCMSLWru1hwft15eCRLWzenux5WIv9USizD811DpjaNfrnmQ?=
+ =?iso-8859-1?Q?7ca6TzwsCbVoWZt5MPfwXUHtzfrFIQ3xa8mBHlOinbHeMfD/mzgg8PSv7k?=
+ =?iso-8859-1?Q?48x90u6LzppHmQDEPFeJkPvtWBvoCozxPiTi2Qrd3FJNa0fno+b7UdWroM?=
+ =?iso-8859-1?Q?lQ2xY7fKUbbG1LHW4iQ25jqqTogbCsatcI7N/3PwzYVgV1Mw2mC85CM+W9?=
+ =?iso-8859-1?Q?cHQwjQftnjgz9F/pPcknnL8hvrFd8rtQPpZ5myCkmH8FZRjZPjPMebdijx?=
+ =?iso-8859-1?Q?GvPVrBCUieBboCANG4db2iQRj6c20edWGgbBcSO3JyGUCqHfr+aDXtY80u?=
+ =?iso-8859-1?Q?mOv0rk7hA16JDd/BBYM0nbZ0hVvTSnNxysYKVB9pIMpPKfnCEWhZdjSJ1l?=
+ =?iso-8859-1?Q?iz9d+d4M4dSkOHYVt5CBYUDn2qvppIF7LrNFp+Ufb3qYGqNuwhPvFReq6H?=
+ =?iso-8859-1?Q?dzjdBCuBW2sJO971WPTobqQs5Ips922w/r0G80jVki9GQfebAl3+N7JYjZ?=
+ =?iso-8859-1?Q?6t+EPSDYVtEemFFvQLYT16het/d4VNoa67PrUNNMmxFnMS54cZ0TexmUjP?=
+ =?iso-8859-1?Q?lGYErLr/URShr0qcUFYEfz1uK/pE8LPaw5ITgYB0YHclxsVa/7lE4fPC/a?=
+ =?iso-8859-1?Q?Pc90a7jvRRNyi8p4RD6hTu4dd+UIssRPktwLhw5zewdqGAAwqHSnEyPHPh?=
+ =?iso-8859-1?Q?V4pwPfwBUOusneBN/zvkQafvOgcG5Nbc1DPyqH3cGNF+PvVm+ZkUlClF/z?=
+ =?iso-8859-1?Q?IXgxTQE+DqPIbrnb0btZy/UHWphIlp459y/rqiL9cO3mo6VEf6eLQMUzCW?=
+ =?iso-8859-1?Q?q4GVBo9lMs6eM3lCE31vujaDV0jPCGwKVMHh0qLl3kqGNF6o1w2844EJMJ?=
+ =?iso-8859-1?Q?FyvtS8s/x8Iy5Ub1ZE8stmPsiF7bdT7RewseQdvm23YxRnuCQT4bXX+a5o?=
+ =?iso-8859-1?Q?Cwf9WNg4S7aKTolX?=
 Content-Type: multipart/mixed;
-	boundary="_004_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_"
+	boundary="_004_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -121,52 +120,53 @@ X-OriginatorOrg: outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: ROAP284MB1627.BRAP284.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4bad809-8b4d-42c9-08ae-08df2d95abd4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2026 04:01:36.5615
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1eaeee6b-19b3-47b7-5633-08df2d95dd7e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2026 04:02:59.8959
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CP5P284MB1600
 
---_004_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_
+--_004_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_
 Content-Type: multipart/alternative;
-	boundary="_000_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_"
+	boundary="_000_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_"
 
---_000_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_
+--_000_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-While stress-testing MPTCP on v6.12.113 (KASAN lab), we measured that poll(=
-POLLIN) on a LISTENING MPTCP socket sleeps its FULL timeout even when a com=
-pleted connection sits in the accept queue: 100/100 connections each incurr=
-ed exactly one 100 ms poll timeout; a subsequent poll returns POLLIN immedi=
-ately, so the mask computed by mptcp_poll() (net/mptcp/protocol.c:4229 hand=
-les TCP_LISTEN via inet_csk_listen_poll(ssk)) is correct, but a task alread=
-y asleep on the MPTCP listener socket is never woken when the connection is=
- queued. Plain TCP listeners wake correctly in the same setup.
+Commit e3f33b0a1d89 ("net: do not delay ip reservations... free inet_opt/ir=
+eq_opt after RCU grace") fixed two v4 UAF sites by switching to kfree_rcu, =
+and its commit message states about the v6 side: "This will be addressed in=
+ a separate patch." As of mainline 58161ead2 that patch has not landed; net=
+/ipv6/tcp_ipv6.c:605-609 still reads:
 
-Impact: any poll/epoll-based accept loop on an MPTCP listener degrades to i=
-ts timeout latency per connection (100 ms in our harness; the workaround is=
- a nonblocking accept spin, which is what our fuzzer now does).
+static void tcp_v6_reqsk_destructor(struct request_sock *req)
+{
+ kfree(inet_rsk(req)->ipv6_opt);
+ consume_skb(inet_rsk(req)->pktopts);
+}
 
-Reproducer shape (kernel-to-kernel loopback, MPTCP over 127.0.0.1):
-  listener =3D socket(AF_INET, SOCK_STREAM, IPPROTO_MPTCP); bind; listen;
-  fcntl(O_NONBLOCK) on listener;
-  thread A: poll([{listener, POLLIN}], 1, 100) -> always full 100ms with a =
-queued conn
-  thread B: socket(IPPROTO_MPTCP); connect(); send();
-  compare: same code with IPPROTO_TCP returns immediately.
+i.e. plain kfree of a clone-shared ipv6_opt (req-migration clone via c905de=
+e62232) against RCU readers (tcp_v6_send_synack at tcp_ipv6.c:591 reads ipv=
+6_txoptions under RCU) - the identical pattern e3f33b0a1d89 fixed for v4.
 
-Verified on 6.12.113; the same mptcp_poll structure is present at mainline =
-58161ead2 (protocol.c:4229). Happy to share the full harness.
+Reachability today is gated: ipv6_opt on a request sock is only populated v=
+ia calipso_req_setattr (NetLabel/CALIPSO), which requires an administrator-=
+configured CALIPSO engine - so this is a hardening note for the deferred fi=
+x rather than an unprivileged report. Verified the site is unchanged in bot=
+h 7.2-rc5-era mainline and linux-6.12.y.
+
+Suggested fix (mirroring the v4 side): kfree_rcu(inet_rsk(req)->ipv6_opt) i=
+n tcp_v6_reqsk_destructor.
 
 Leonardo Souza <capleonardo12@outlook.com>
 
 
---_000_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_
+--_000_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_
 Content-Type: text/html; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
@@ -187,56 +187,61 @@ Hello,</div>
 </div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
-While stress-testing MPTCP on v6.12.113 (KASAN lab), we measured that poll(=
-POLLIN) on a LISTENING MPTCP socket sleeps its FULL timeout even when a com=
-pleted connection sits in the accept queue: 100/100 connections each incurr=
-ed exactly one 100 ms poll timeout;
- a subsequent poll returns POLLIN immediately, so the mask computed by mptc=
-p_poll() (net/mptcp/protocol.c:4229 handles TCP_LISTEN via inet_csk_listen_=
-poll(ssk)) is correct, but a task already asleep on the MPTCP listener sock=
-et is never woken when the connection
- is queued. Plain TCP listeners wake correctly in the same setup.</div>
+Commit e3f33b0a1d89 (&quot;net: do not delay ip reservations... free inet_o=
+pt/ireq_opt after RCU grace&quot;) fixed two v4 UAF sites by switching to k=
+free_rcu, and its commit message states about the v6 side: &quot;This will =
+be addressed in a separate patch.&quot; As of mainline
+ 58161ead2 that patch has not landed; net/ipv6/tcp_ipv6.c:605-609 still rea=
+ds:</div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
 <br>
 </div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
-Impact: any poll/epoll-based accept loop on an MPTCP listener degrades to i=
-ts timeout latency per connection (100 ms in our harness; the workaround is=
- a nonblocking accept spin, which is what our fuzzer now does).</div>
+static void tcp_v6_reqsk_destructor(struct request_sock *req)</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+{</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+&nbsp;kfree(inet_rsk(req)-&gt;ipv6_opt);</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+&nbsp;consume_skb(inet_rsk(req)-&gt;pktopts);</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+}</div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
 <br>
 </div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
-Reproducer shape (kernel-to-kernel loopback, MPTCP over 127.0.0.1):</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-&nbsp; listener =3D socket(AF_INET, SOCK_STREAM, IPPROTO_MPTCP); bind; list=
-en;</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-&nbsp; fcntl(O_NONBLOCK) on listener;</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-&nbsp; thread A: poll([{listener, POLLIN}], 1, 100) -&gt; always full 100ms=
- with a queued conn</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-&nbsp; thread B: socket(IPPROTO_MPTCP); connect(); send();</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-&nbsp; compare: same code with IPPROTO_TCP returns immediately.</div>
+i.e. plain kfree of a clone-shared ipv6_opt (req-migration clone via c905de=
+e62232) against RCU readers (tcp_v6_send_synack at tcp_ipv6.c:591 reads ipv=
+6_txoptions under RCU) - the identical pattern e3f33b0a1d89 fixed for v4.</=
+div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
 <br>
 </div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
-Verified on 6.12.113; the same mptcp_poll structure is present at mainline =
-58161ead2 (protocol.c:4229). Happy to share the full harness.</div>
+Reachability today is gated: ipv6_opt on a request sock is only populated v=
+ia calipso_req_setattr (NetLabel/CALIPSO), which requires an administrator-=
+configured CALIPSO engine - so this is a hardening note for the deferred fi=
+x rather than an unprivileged report.
+ Verified the site is unchanged in both 7.2-rc5-era mainline and linux-6.12=
+.y.</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+Suggested fix (mirroring the v4 side): kfree_rcu(inet_rsk(req)-&gt;ipv6_opt=
+) in tcp_v6_reqsk_destructor.</div>
 <div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
  color: rgb(0, 0, 0);" class=3D"elementToProof">
 <br>
@@ -251,55 +256,40 @@ Leonardo Souza &lt;capleonardo12@outlook.com&gt;</div>
 </body>
 </html>
 
---_000_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_--
+--_000_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_--
 
---_004_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_
-Content-Type: text/x-c; name="attach2-mptcp_poll_repro.c"
-Content-Description: attach2-mptcp_poll_repro.c
-Content-Disposition: attachment; filename="attach2-mptcp_poll_repro.c";
-	size=2233; creation-date="Mon, 19 Oct 2026 04:01:19 GMT";
-	modification-date="Mon, 19 Oct 2026 04:01:35 GMT"
+--_004_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_
+Content-Type: application/octet-stream;
+	name="attach3-0001-ipv6-reqsk-destructor-kfree_rcu.patch"
+Content-Description: attach3-0001-ipv6-reqsk-destructor-kfree_rcu.patch
+Content-Disposition: attachment;
+	filename="attach3-0001-ipv6-reqsk-destructor-kfree_rcu.patch"; size=1305;
+	creation-date="Mon, 19 Oct 2026 04:02:44 GMT";
+	modification-date="Mon, 19 Oct 2026 04:02:59 GMT"
 Content-Transfer-Encoding: base64
 
-LyogbXB0Y3BfcG9sbF9yZXByby5jIC0gbWluaW1hbCByZXByb2R1Y2VyIGZvcjoKICogInBvbGwo
-UE9MTElOKSBvbiBhIGxpc3RlbmluZyBNUFRDUCBzb2NrZXQgbmV2ZXIgd2FrZXMgd2hlbiBhCiAq
-ICBjb25uZWN0aW9uIGlzIHF1ZXVlZCIgICh2Ni4xMi4xMTMsIEtBU0FOIGxhYjsgc2FtZSBzaGFw
-ZSBhdCBtYWlubGluZSkKICoKICogRXhwZWN0ZWQgYmVoYXZpb3I6IHBvbGwgcmV0dXJucyBpbW1l
-ZGlhdGVseSB3aXRoIFBPTExJTiBvbmNlIHRoZQogKiBjbGllbnQncyBjb25uZWN0aW9uIGNvbXBs
-ZXRlcyBhbmQgc2l0cyBpbiB0aGUgYWNjZXB0IHF1ZXVlLgogKiBPYnNlcnZlZDogcG9sbCBzbGVl
-cHMgdGhlIEZVTEwgdGltZW91dCBldmVyeSB0aW1lICgxMDAvMTAwIGluIG91cgogKiBoYXJuZXNz
-KSwgd2hpbGUgYSBzdWJzZXF1ZW50IHBvbGwgcmV0dXJucyBQT0xMSU4gaW5zdGFudGx5IC0gaS5l
-LiB0aGUKICogY29tcHV0ZWQgbWFzayBpcyByaWdodCwgdGhlIHdha2V1cCBmb3IgYW4gYWxyZWFk
-eS1zbGVlcGluZyBwb2xsZXIKICogbmV2ZXIgYXJyaXZlcy4gUGxhaW4gVENQIChJUFBST1RPX1RD
-UCkgY29udHJvbCByZXR1cm5zIGltbWVkaWF0ZWx5LgogKgogKiBCdWlsZDogZ2NjIC1zdGF0aWMg
-LU8yIC1vIG1wdGNwX3BvbGxfcmVwcm8gbXB0Y3BfcG9sbF9yZXByby5jCiAqIChJUFBST1RPX01Q
-VENQID0gMjYyIG9uIGtlcm5lbHMgd2l0aG91dCB0aGUgdWFwaSBndWFyZCkKICovCiNkZWZpbmUg
-X0dOVV9TT1VSQ0UKI2luY2x1ZGUgPGVycm5vLmg+CiNpbmNsdWRlIDxmY250bC5oPgojaW5jbHVk
-ZSA8cG9sbC5oPgojaW5jbHVkZSA8c3RkaW8uaD4KI2luY2x1ZGUgPHN0cmluZy5oPgojaW5jbHVk
-ZSA8dGltZS5oPgojaW5jbHVkZSA8YXJwYS9pbmV0Lmg+CiNpbmNsdWRlIDxuZXRpbmV0L2luLmg+
-CiNpbmNsdWRlIDxzeXMvc29ja2V0Lmg+CgojaWZuZGVmIElQUFJPVE9fTVBUQ1AKI2RlZmluZSBJ
-UFBST1RPX01QVENQIDI2MgojZW5kaWYKCnN0YXRpYyBkb3VibGUgbm93X3Modm9pZCkKewoJc3Ry
-dWN0IHRpbWVzcGVjIHRzOwoJY2xvY2tfZ2V0dGltZShDTE9DS19NT05PVE9OSUMsICZ0cyk7Cgly
-ZXR1cm4gdHMudHZfc2VjICsgdHMudHZfbnNlYyAvIDFlOTsKfQoKaW50IG1haW4odm9pZCkKewoJ
-c3RydWN0IHNvY2thZGRyX2luIGEgPSB7IC5zaW5fZmFtaWx5ID0gQUZfSU5FVCwKCQkJCS5zaW5f
-cG9ydCA9IGh0b25zKDQyNDI0KSwKCQkJCS5zaW5fYWRkci5zX2FkZHIgPSBodG9ubChJTkFERFJf
-TE9PUEJBQ0spIH07CglpbnQgTCwgQywgcmMsIG5zbG93ID0gMCwgbmZhc3QgPSAwLCBpdDsKCglm
-b3IgKGl0ID0gMDsgaXQgPCAxMDsgaXQrKykgewoJCXN0cnVjdCBwb2xsZmQgcDsKCQlkb3VibGUg
-dDAsIGR0OwoKCQlMID0gc29ja2V0KEFGX0lORVQsIFNPQ0tfU1RSRUFNLCBJUFBST1RPX01QVENQ
-KTsKCQlpZiAoTCA8IDApIHsgcHJpbnRmKCJNUFRDUCB1bmF2YWlsYWJsZTogJXNcbiIsIHN0cmVy
-cm9yKGVycm5vKSk7IHJldHVybiAxOyB9CgkJYmluZChMLCAoc3RydWN0IHNvY2thZGRyICopJmEs
-IHNpemVvZihhKSk7CgkJbGlzdGVuKEwsIDgpOwoJCWZjbnRsKEwsIEZfU0VURkwsIGZjbnRsKEws
-IEZfR0VURkwsIDApIHwgT19OT05CTE9DSyk7CgoJCUMgPSBzb2NrZXQoQUZfSU5FVCwgU09DS19T
-VFJFQU0sIElQUFJPVE9fTVBUQ1ApOwoJCWNvbm5lY3QoQywgKHN0cnVjdCBzb2NrYWRkciAqKSZh
-LCBzaXplb2YoYSkpOyAvKiBjb21wbGV0ZXMgaW50byBiYWNrbG9nICovCgoJCXAuZmQgPSBMOyBw
-LmV2ZW50cyA9IFBPTExJTjsKCQl0MCA9IG5vd19zKCk7CgkJcmMgPSBwb2xsKCZwLCAxLCAxMDAp
-OwoJCWR0ID0gbm93X3MoKSAtIHQwOwoJCWlmIChkdCA+IDAuMDkpIG5zbG93Kys7IGVsc2UgbmZh
-c3QrKzsKCQlwcmludGYoIml0ZXIgJWQ6IHBvbGwgcmM9JWQgcmV2ZW50cz0lMDR4IHRvb2sgJS4x
-ZiBtcyVzXG4iLAoJCSAgICAgICBpdCwgcmMsIHAucmV2ZW50cywgZHQgKiAxZTMsCgkJICAgICAg
-IGR0ID4gMC4wOSA/ICIgIDwtLSBTTEVQVCBGVUxMIFRJTUVPVVQiIDogIiIpOwoJCWNsb3NlKEMp
-OyBjbG9zZShMKTsKCX0KCXByaW50ZigiXG5NUFRDUDogJWQgZnVsbC10aW1lb3V0IHBvbGxzLCAl
-ZCBpbW1lZGlhdGUgKG9mIDEwKVxuIiwgbnNsb3csIG5mYXN0KTsKCXByaW50ZigiY29udHJvbDog
-cnVuIHdpdGggSVBQUk9UT19UQ1Agc3Vic3RpdHV0ZWQgLSBhbGwgaW1tZWRpYXRlXG4iKTsKCXJl
-dHVybiAwOwp9Cg==
+RnJvbTogTGVvbmFyZG8gU291emEgPGNhcGxlb25hcmRvMTJAb3V0bG9vay5jb20+ClN1YmplY3Q6
+IFtQQVRDSF0gaXB2NjogdGNwX3Y2X3JlcXNrX2Rlc3RydWN0b3I6IGZyZWUgaXB2Nl9vcHQgYWZ0
+ZXIgYW4gUkNVIGdyYWNlIHBlcmlvZApUbzogbmV0ZGV2QHZnZXIua2VybmVsLm9yZwoKVGhlIHY2
+IHR3aW4gb2YgZTNmMzNiMGExZDg5ICgibmV0OiBmcmVlIGluZXRfb3B0L2lyZXFfb3B0IGFmdGVy
+IFJDVQpncmFjZSBwZXJpb2QiKSwgd2hvc2UgY29tbWl0IG1lc3NhZ2UgZGVmZXJzIHRoaXMgc2l0
+ZSB0byAiYSBzZXBhcmF0ZQpwYXRjaCIgdGhhdCBoYXMgbm90IGxhbmRlZCBhcyBvZiA1ODE2MWVh
+ZDIuIENsb25lLXNoYXJlZCBpcHY2X29wdAoocmVxIG1pZ3JhdGlvbiB2aWEgYzkwNWRlZTYyMjMy
+KSBpcyBmcmVlZCB3aXRoIHBsYWluIGtmcmVlIHdoaWxlCnRjcF92Nl9zZW5kX3N5bmFjayAobmV0
+L2lwdjYvdGNwX2lwdjYuYzo1OTEpIHN0aWxsIHJlYWRzIGl0IHVuZGVyClJDVSAtIHRoZSBpZGVu
+dGljYWwgcGF0dGVybiB0aGUgdjQgZml4IGNsb3NlZC4KClJlYWNoYWJpbGl0eSBpcyBnYXRlZCAo
+aXB2Nl9vcHQgb24gYSByZXF1ZXN0IHNvY2sgaXMgb25seSB3cml0dGVuIHZpYQpjYWxpcHNvX3Jl
+cV9zZXRhdHRyIDwtIE5ldExhYmVsL0NBTElQU08gPC0gYWRtaW4tY29uZmlndXJlZCBlbmdpbmUp
+LApzbyB0aGlzIGlzIGhhcmRlbmluZyBvZiB0aGUgZGVmZXJyZWQgZml4IHJhdGhlciB0aGFuIGFu
+IHVucHJpdmlsZWdlZApyZXBvcnQuIE5vIGZ1bmN0aW9uYWwgY2hhbmdlIGZvciBub24tY2xvbmUg
+bGlmZXRpbWVzLgoKU2lnbmVkLW9mZi1ieTogTGVvbmFyZG8gU291emEgPGNhcGxlb25hcmRvMTJA
+b3V0bG9vay5jb20+Ci0tLQogbmV0L2lwdjYvdGNwX2lwdjYuYyB8IDIgKy0KIDEgZmlsZSBjaGFu
+Z2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL25ldC9pcHY2
+L3RjcF9pcHY2LmMgYi9uZXQvaXB2Ni90Y3BfaXB2Ni5jCmluZGV4IDAwMDAwMDAwMDAwMC4uMDAw
+MDAwMDAwMDAwIDEwMDY0NAotLS0gYS9uZXQvaXB2Ni90Y3BfaXB2Ni5jCisrKyBiL25ldC9pcHY2
+L3RjcF9pcHY2LmMKQEAgLTYwNSw3ICs2MDUsNyBAQCBzdGF0aWMgdm9pZCB0Y3BfdjZfcmVxc2tf
+ZGVzdHJ1Y3RvcihzdHJ1Y3QgcmVxdWVzdF9zb2NrICpyZXEpCiB7Ci0Ja2ZyZWUoaW5ldF9yc2so
+cmVxKS0+aXB2Nl9vcHQpOworCWtmcmVlX3JjdShpbmV0X3JzayhyZXEpLT5pcHY2X29wdCk7CiAJ
+Y29uc3VtZV9za2IoaW5ldF9yc2socmVxKS0+cGt0b3B0cyk7CiB9Ci0tIAoyLjQzLjAK
 
---_004_ROAP284MB16279B4CA8731943D0006042BD982ROAP284MB1627BRAP_--
+--_004_ROAP284MB1627D435EE8D0DD76EC11D06BD982ROAP284MB1627BRAP_--
