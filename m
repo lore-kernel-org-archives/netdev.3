@@ -1,54 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792431515;
-	b=t4CrTza14dXU4yC7wwSuc7uaOaFd8HCip/Qj+qvgkrHLNrXz8EK4wNdNJ75j7xYpuwSD
-	 S++kfoaeaYh4X6k7Cxm+bHOJ3euRlFaAqrEC/Wb7hMDWLz6bhRtakOpNLDToYx2TV4skz
-	 1u2JpWssa4Y0DF+/CGhYgBQwPOlPcDjmIdipYwjADDw5qurfIUiFQ0LS0xJl8gCNPFBCo
-	 cEkUzxI+fJ8lVqAxiYDrCgzCO1glK+LeQwv2EkLPvSY7/7jvAWWyyFak5GX34ecmzb1Ra
-	 EGy9fjJMYBTZJ4ivm74Q9zgykajEmZpVUPpxUEzW38yHlwh+KC4K/mHyRN9zuPXvazQ==
+	b=MRyQ+oZES4okm1xK7A3wHPf90hvbIJkD2GwVDXrb+SnOU0eJLTL0sXvhXHmLr6rx5pBj
+	 zz/fF4+3dsXnCfufBa6qrZ0atWwUoP5MVKW8W+NMk69mMazDp+me3+Zja/6W5ccQPrScZ
+	 Ex+thrcpD6NCoPV8JTC9vbnV2cpVIqTBke3HbRp9ON77++gMZPdqxzNo1m8xyyL/+RA9y
+	 yEMiBup++d5sGf7oUiobY9WRubA7Rdo9vBbuipMdVKQSTmWrsEB1ysBA+axL/I6SLDqyx
+	 c/qAB9Ng2s80y4zNGvpx6ITK94cR6GzhIAMwjjBhH8x7lMXX0QIQqIzDLDXijhDcNWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792431515;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=s6W52NLboX/AFrON+F4OTdfp/qkLqq0IjDzO/k4MGLA=;
-	b=wdse8cKeeKSgsWOMzg5CIBTj5AueDHP0ivPvpcOBucXd9gM5Q4tnWmmS2m+g+IM2AJpt
-	 0XY2PbPeEEUJmJF/BJLt+NGVhdZ8x0grSa0j3IBXSAyd0USLuCI5WPV5t2WG4AJNdeA2J
-	 kQny65RnSmRgSS65Uqe4SGWnB+w6pNAH3JrU2RwQsvKpnw9SxEtUo1OWWBLX+FGU0JxjN
-	 TIU/RANdFB7E8BMJOttzVWwCOvjkHbex9HsXFYKxVzWVd+GSJra+HAhLEd6t7jnYHrIFk
-	 h6qYN33kPrHyOO4RSfMr8PkeykSNdpmdYYc5P5HTogacn/N65YXLOXH9Z1yyBzyFwzg==
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=OhYDrX64R6g4NIIcUmBdVZ5TPioNZZovMeTZXST8PaY=;
+	b=RMVXkjdpa+Nveh8CJQwMSA/pHMzBQhpvYTaYwPPR4tGR/3+IVZ6RMIqTuEf2QwXmADPC
+	 U0x7AqePacNIvKiP8j/CxddC4QV9+N1ypqQV/YeatKUhTFoQl9UB6QBFfGIgelAZgk1IZ
+	 JdJajUiDOoL9BsvcvIccsaLUpLP770jy8hirF3REFKviwN247zeefD3rJtaw5/a6fjtxl
+	 vooWE3GXT+p/qxCip3EUTk4qufJySfxTsq52n3S7scL4KFCVzZmcfgRGUvHxq4HjgZIzv
+	 GiGKP6yiKS/7gDWvo4fFonc9c7toph3M117U/lRzgmWdULo/yMbLOSNsSZdLLMUb51g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FbsDr3kV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KLxwrvaA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C38D606A331
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3A6606A332;
+	Mon, 19 Oct 2026 17:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FbsDr3kV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21D81F01573
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:38:34 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KLxwrvaA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FBF1F000C6;
+	Mon, 19 Oct 2026 17:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1792431514;
-	bh=s6W52NLboX/AFrON+F4OTdfp/qkLqq0IjDzO/k4MGLA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FbsDr3kVT9I0w6k9SF5ZxWq2MbBiWKCgI4YoK0iErcif68QqUS7X3h/x5FiwrI3Ca
-	 MdC5DZpHQPvhAQn/aLdexPKQLOj1pWdfroyQPogJUIIUeUmYAwo3Xg53EXaHMF+W9P
-	 FMK/NaBBY9u9YieM0lT26TBDNz40+nGJTRfMCZarwcxLlZARhycl9tAlOSSMA5rthB
-	 m4Li99yORqeciCLayBPkE8NLE/PbRhXrqLfNuW9S+Z/EqQlLHBH5/FLAQOLGHBTA/x
-	 vMH/QR2+bZh89JWGXb2TUGx6HCht4GNYEzPMeBEggYLJmNl/J5V1Kbe8rl4Ojv1q9S
-	 MaFyMP+gh9fww==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-48e9476e26aso669772fac.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:38:34 -0700 (PDT)
-X-Gm-Message-State: AFq9FYJlgWMgaN4nEqaHJ6C/zkjx//tk0GRCNHMCbc1fg08UYsBUuZIm
-	JZk5Wyyk1pwdXy1tK/nIOU+jEeK/EpNuI2LztwfBQiv/rl3vMvTrFSxZGib8Ek4PuOpBchmhuEI
-	wQn3Wq0u4AsRQCu7viC0r5GPM9brwvio=
-X-Received: by 2002:a05:6871:385a:b0:49e:670d:78a9 with SMTP id
- 586e51a60fabf-4a757b9621bmr6971161fac.57.1792431514134; Mon, 19 Oct 2026
- 10:38:34 -0700 (PDT)
+	bh=OhYDrX64R6g4NIIcUmBdVZ5TPioNZZovMeTZXST8PaY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KLxwrvaA/6JqtvkzyPD62LRueq9U06zH6SLQPLcJlwxWipwfTi4c21FsVPgskv9Vd
+	 FtKWGNSFJMYlON/T0yUFBCakXmsJVbolPfxGMitXwloWJ+hB5N36QTub7/gmQ+tiVG
+	 gHGW+cimBUZwCVuTR/mEousnLGNpTHA1M1FjiP8O2m8N6dyjilhNGr5PChbb+UAI+Q
+	 e2Sewrcz/mcmXqjDPF4ZcoOUUq1S9i9bPUG03gnce6rmpJTQMjnkCQOWVYc954e4q5
+	 cKTO1c67kKsZtmWt7NJ6aZcZTA+Yfe8Yh30XzglmdhB9DZZSJ37b2J+n3+GMJZes/V
+	 YFsW0xUaSRK6Q==
+Subject: Re: [PATCH net-next v8 1/5] net: stmmac: take ownership of saved RX
+ state at poll entry
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ bpf@vger.kernel.org
+Date: Mon, 19 Oct 2026 17:38:33 +0000
+Message-ID: <179243151310.3135.16032115262445521338@kernel.org>
+In-Reply-To: <20261018-stmmac-rx-mb-v8-1-5f58c0b25849@oss.qualcomm.com>
+References: <20261018-stmmac-rx-mb-v8-1-5f58c0b25849@oss.qualcomm.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,54 +67,169 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019170225.729789-1-vlad.wing@gmail.com> <20261019170225.729789-2-vlad.wing@gmail.com>
-In-Reply-To: <20261019170225.729789-2-vlad.wing@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 19 Oct 2026 19:38:22 +0200
-X-Gmail-Original-Message-ID: <CAL4WiioPv0k+MKGwtX9B1TGPmKv66rvGsYn1hKBxQG9Rie9qoA@mail.gmail.com>
-X-Gm-Features: AclHuK82pczAE9KFR8j9a3CaRLQliaZrf66et_YIl0AKM8Sjxsa0n1iyw5RxUvw
-Message-ID: <CAL4WiioPv0k+MKGwtX9B1TGPmKv66rvGsYn1hKBxQG9Rie9qoA@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] lockdep: Introduce lockdep_unregister_key_nosync()
-To: Vlad Poenaru <vlad.wing@gmail.com>
-Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Bart Van Assche <bvanassche@acm.org>, Davide Caratti <dcaratti@redhat.com>, 
-	Breno Leitao <leitao@debian.org>, Nilay Shroff <nilay@linux.ibm.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le lun. 19 oct. 2026 =C3=A0 19:02, Vlad Poenaru <vlad.wing@gmail.com> a =C3=
-=A9crit :
->
-> From: Bart Van Assche <bvanassche@acm.org>
->
-> Add a variant of lockdep_unregister_key() that neither sleeps nor waits
-> for an RCU grace period. Instead the caller must make sure that a grace
-> period elapses after the call before the memory holding the key is
-> freed or reused.
->
-> That lets callers that already free the key's memory with call_rcu() or
-> kfree_rcu() avoid waiting for a second grace period. The qdisc code is
-> such a caller: all qdiscs except ingress, clsact and noqueue embed a
-> dynamic lockdep key and are freed with call_rcu(), and replacing an mq
-> root on a multi-queue NIC destroys one qdisc per TX queue under RTNL,
-> each currently waiting for its own expedited grace period.
->
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: Boqun Feng <boqun@kernel.org>
-> Link: https://lore.kernel.org/all/20250203175939.3133477-2-bvanassche@acm=
-.org/
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> [vlad: rebase onto synchronize_rcu_expedited(), spell out the grace
->  period requirement in the comments and changelog, describe the qdisc
->  use case]
-> Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Acked-by: Eric Dumazet <edumazet@kenel.org>
+Low priority / nit picks for your consideration:
 
-Thanks.
+- [Low] The authorship and Signed-off-by chain disagree.
+
+Pre-existing issues:
+- [High] At this commit, stmmac_rx() still uses `skb == NULL` to decide
+  that a descriptor starts a new frame.
+- [High] This problem wasn't introduced by this patch, but the commit
+  message relies on it being absent.
+
+--
+
+net: stmmac: take ownership of saved RX state at poll entry
+
+This commit makes stmmac_rx() and stmmac_rx_zc() take the saved
+partial-frame state at poll entry. A new in_progress flag tracks whether
+a frame is still incomplete, and the state is saved again only in that
+case. It also frees the saved skb in stmmac_reset_rx_queue() and in
+__free_dma_rx_desc_resources().
+
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+
+[Severity: Low]
+This isn't a bug, but the author field and the Signed-off-by chain don't
+match. The commit author is Lorenzo Bianconi. The first Signed-off-by is
+James Hilliard, and there is no Co-developed-by tag.
+
+If James wrote the patch, should it carry a "From: James Hilliard
+<james.hilliard1@gmail.com>" line so git credits him as the author? If
+Lorenzo is the author, does James's sign-off need a matching
+Co-developed-by tag?
+
+The other patches in the series carry only Lorenzo's sign-off. That
+suggests this patch was written by James and picked into the series.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 53782ab55e125..8fd2acb25fb60 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+[ ... ]
+
+> @@ -5958,9 +5970,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  						      STMMAC_XDP_REDIRECT)) {
+>  					xdp_status |= xdp_res;
+>  					buf->page = NULL;
+> -					skb = NULL;
+> -					count++;
+> -					continue;
+> +					goto next;
+>  				}
+>  			}
+>  		}
+
+[Severity: High]
+This is a pre-existing issue, and this patch doesn't change how it
+behaves. What happens here when the XDP verdict is taken on a descriptor
+that still has rx_not_ls set?
+
+stmmac_rx() uses skb == NULL to mean a new frame is starting. The goto
+next now also clears in_progress, and error stays 0. The remaining
+descriptors of the same hardware frame would then each be handled as the
+first descriptor of a new frame.
+
+The XDP_CONSUMED branch just above has the same shape:
+
+	skb = NULL;
+
+	if (unlikely((status & rx_not_ls)))
+		goto read_again;
+
+So does the napi_build_skb() failure path:
+
+	if (!skb) {
+		page_pool_recycle_direct(rx_q->page_pool,
+					 buf->page);
+		buf->page = NULL;
+		rx_dropped++;
+		count++;
+		goto drain_data;
+	}
+
+In each of these three cases, could the middle and tail descriptors be
+passed to XDP and built into an skb with a stale or zero len? Could
+buf1_len then underflow and produce an skb length near 4G?
+
+An on-link peer can reach this by sending a frame that spans several
+descriptors while an XDP program returns a non-PASS verdict. A
+napi_build_skb() failure on such a frame reaches it too.
+
+Later patches in this series seem to fix it. "net: stmmac: drop
+multi-buffer frames in XDP mode" sets error on non-last descriptors when
+XDP is attached. "net: stmmac: rework stmmac_rx to support XDP rx
+multi-buff" runs XDP and stmmac_build_skb() only on the last descriptor
+and sends build failures to error_free_frag.
+
+[ ... ]
+
+> @@ -8399,6 +8408,9 @@ static void stmmac_reset_rx_queue(struct stmmac_priv *priv, u32 queue)
+>  {
+>  	struct stmmac_rx_queue *rx_q = &priv->dma_conf.rx_queue[queue];
+>  
+> +	dev_kfree_skb_any(rx_q->state.skb);
+> +	rx_q->state.skb = NULL;
+> +	rx_q->state_saved = false;
+>  	rx_q->cur_rx = 0;
+>  	rx_q->dirty_rx = 0;
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the commit message says
+that, without this change, the first poll "resumes that stale skb with
+descriptors from the freshly initialized ring". Is the ring actually
+re-initialized on the stmmac_resume() path?
+
+stmmac_resume() does:
+
+	stmmac_reset_queues_param(priv);
+
+	stmmac_free_tx_skbufs(priv);
+	stmmac_clear_descriptors(priv, &priv->dma_conf);
+
+	ret = stmmac_hw_setup(ndev);
+
+None of these calls refills buf_pool or rewrites the descriptor buffer
+addresses. stmmac_clear_rx_descriptors() calls stmmac_init_rx_desc() on
+every entry. On dwmac4 that only sets the owner bits:
+
+static void dwmac4_rd_init_rx_desc(struct dma_desc *p, int disable_rx_ic,
+				   u8 descriptor_mode, int end, int bfsize)
+{
+	dwmac4_set_rx_owner(p, disable_rx_ic);
+}
+
+Suppose stmmac_rx_refill() hit a page_pool allocation failure before
+suspend:
+
+		if (!buf->page) {
+			buf->page = page_pool_alloc_pages(rx_q->page_pool, gfp);
+			if (!buf->page)
+				break;
+		}
+
+Then the entries between dirty_rx and cur_rx still have buf->page ==
+NULL. On resume, cur_rx and dirty_rx are reset to 0 and every descriptor
+goes back to the DMA. When one of those entries completes, can
+stmmac_rx() call page_address(buf->page) and napi_build_skb() on a NULL
+page?
+
+There is a similar problem on dwmac4/xgmac. Descriptors that the hardware
+writes back between napi_disable() in stmmac_suspend() and
+stmmac_stop_all_dma() have RDES0/RDES1 overwritten with status words.
+If those descriptors are given back to the DMA, would it write to a
+bogus buffer address?
+
+The resume sequence is the same at the end of the series.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018-stmmac-rx-mb-v8-0-5f58c0b25849%40oss.qualcomm.com
