@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792445396;
-	b=j/e38DJZOSUkFF9M/wf1JrnF7D4o2dI7aAGI0TnGVqDWMRo7vG0h+CjEd3oUKT4yRUQ0
-	 uwlzFCCZtr2WUr+MLxy7Juvw/jAmFBq4QXNIJDzbxPyi4V//mr3udJ1uif7QY9esYJW7n
-	 FuCuVp+JTi/NjLDdR4ol9B3fG0JZpQVYL3hFfMlGKRObazbiQlBiVREaVqfJMPX5/kkVd
-	 rroaHPJBzIgsGBxnBUHwrOh++w5mWUHEWLZZycnhBl3ta/CwN9XhjVshW6rdeaA4lMeiq
-	 js3M8P75Pw8GRwkW9nrBVYhuJ+L3aMOncyiPA6n8PuaItQacdzfby+0hqHoxuR//+pg==
+	t=1792445402;
+	b=gNWpx5m3HcT4Kz4QbYOfBwx1+ncU3QUnk7lnXh6qnO9HsTDyjHVDV2YnQlpyfxkWoj79
+	 HO0/BsPU/BbuyxZ/YsQXRhYpj4U2afIMdFV24y+vpm90kbz37zwbGpzOPNiQOpdWgy0L5
+	 FpNOF4OxJ1RTN6ZimRet4oj7lVl/EqSve/TELZfAIMuPdJcSUsz/DWe0VIk/MSusjRLDN
+	 FrSNQnwZcxFCR52sH6F5VHZhNXlKzk+Pa+/9ozxz+ILGBr/f2soW0+sfDzlyT6KfTQaRy
+	 5zEF7Bb8amgrKdwMPCYNMUODI+3cwZb+t+VD/aATJz4kyPudIrOmcAnhw/Bqur05jbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792445396;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792445402;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=V1SKqgXsrplLlDz06eFww2PKsFDxp6WP2CMViFGG9y4=;
-	b=kHaGJGF60ZeqP+pXT8IX0qXMzEalXAg/4+6aooENz6B5Z0Vsl4kD+7xrUOjR+HqfhCkY
-	 glcxvpsIj+UFseKbJdsWocDpIzUyS0dPyGFBNtsdPcy3DDXqCl0I4wHg+kAuPVoQzFxgh
-	 vcMYoQRNfXa5gsFF3dgTezVQcQ+cgtAfSdEee+wlOWdzLXVY0ZZbGItRz95Sx10MmPgfC
-	 JgrBithD/kzkC6+mDQLYRYn3pmJp4VHrp/RoJMoJDgKRahUHWJiNbFWjYymqwRmau7VBS
-	 oAfCCZo5dKygEYN7LUuDFde6dmUgy7ikS8jFoWYS9RxM+eeij99GUNMqpKKsdwrRCXw==
+	bh=zYWrixPm+QMNkzjCpnwk9/Rk+hqbPSVNxVQvHcB89o8=;
+	b=d6uUkQRuQkeEllRtdpoxvtM8y19NLQGkH4Aan7z/RNDyebl1+jJOoIrxmYqLHOw+xkWF
+	 j5Gy06JQQnVeTwc1zXWGEjC7PI6IMfrYtT74cEiTqJbcFGaekIwCMqKAqUSRd2U1s5g/U
+	 VXs++ytZqvCmmdKxL701hX2njugl5VZFV9tJKRNNsYDx5xrA7wxRsvTIpydTELU3jIgFC
+	 oWId676hfMiwbMh9MUby+sC5O23pAhxDqrcx1CWvWdq5DMJPu98iXmIOd14ztK+kjXy1V
+	 WH+35WvPz0rph3G88k/UbiAOdn/Hhsbdvbyjyg6Mti1ISZlSG6clBDAFKThrJZw0wtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=heJgehEC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B6VIF6hs;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3DB606A31D;
-	Mon, 19 Oct 2026 21:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A07606A322;
+	Mon, 19 Oct 2026 21:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=heJgehEC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9701F000C5;
-	Mon, 19 Oct 2026 21:29:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B6VIF6hs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170291F000C7;
+	Mon, 19 Oct 2026 21:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792445395;
-	bh=V1SKqgXsrplLlDz06eFww2PKsFDxp6WP2CMViFGG9y4=;
+	s=k20260515; t=1792445401;
+	bh=zYWrixPm+QMNkzjCpnwk9/Rk+hqbPSVNxVQvHcB89o8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=heJgehECDE3wC00XKNuh5KTLi5FNL+/+u55oMozDqmzbiDw8JL4kE/qUYScpZ5MaI
-	 nr1GlwXZWZcIFuNSmxRItuKfXeAzDwtuwldJu/P7VzKxviODYWA/mZ6jAQsKz/Lsm2
-	 0TCG2pLvxboVLyGhEefw6GRpB1wYacFecLa1WHBBdA0wJC9HRzJm9Ypn1h0MWH5MEN
-	 6kHQlnKswpT903Ah9hbeulO7c8W+K2yZp5LY3m0xeb245oFMNjueFc7Ci6Zg7zXJmX
-	 4iJ8GKyN571/N6L/uxltwC2khpv4XQ2EyH+DVB+vaBXHHt1A7jaDm3JnKbnCBp/C0G
-	 dFISMWb/NlqRw==
-Subject: Re: [PATCH net-next v17 06/15] quic: add stream management
+	b=B6VIF6hseZ0ecdud3CbCjOez+ciHl0bolWQvLE/QgZNzvzJsedt+DSroOLl2EbKiq
+	 WEzbVtRvFTD4ONxSJJ1lvoItgJFaZJkd/U9ntcHjQBJ6FOQ/l5Dbf9cLKMFNMhh+2a
+	 Mr3SMT11wrJ0FqYQzk9whntkqf3orlpzSo2g8TC8aRsN85wxQQ/kXJz8B4A2Tvol6B
+	 9EZhOIOq/5Uj4lL8bWElRQc7cm3ywekFjkLo+VfP17rDn6gQ1mIuU5E5wItP0FZ9ge
+	 sF0NvNbpd2Fyw6/DEfqzHmcfdQi+vioshGAxXx877Z78Y076TMoZY3oXWOLzvp1V8B
+	 pc/zG9cIV5crA==
+Subject: Re: [PATCH net-next v17 08/15] quic: add path management
 From: netdev-bot+sashiko@kernel.org
 To: lucien.xin@gmail.com
 Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net,
@@ -54,13 +54,13 @@ Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net,
  jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net,
  marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com,
  mef@scarletmail.rutgers.edu, paul@jakma.org, kuniyu@google.com
-Date: Mon, 19 Oct 2026 21:29:53 +0000
-Message-ID: <179244539310.3135.8921542260670507924@kernel.org>
-In-Reply-To: =?utf-8?q?=3Ca92cd8233a031c412bf8b709ba98ed8e9477b74d=2E1792164?=
+Date: Mon, 19 Oct 2026 21:29:58 +0000
+Message-ID: <179244539859.3135.15973054396060254186@kernel.org>
+In-Reply-To: =?utf-8?q?=3Cae36949f7685ef74318d3c742f02e1398db3b454=2E1792164?=
  =?utf-8?q?438=2Egit=2Elucien=2Exin=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3Ca92cd8233a031c412bf8b709ba98ed8e9477b74d=2E17921644?=
+References: =?utf-8?q?=3Cae36949f7685ef74318d3c742f02e1398db3b454=2E17921644?=
  =?utf-8?q?38=2Egit=2Elucien=2Exin=40gmail=2Ecom=3E?=
-X-sashiko-severity: Low
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -73,80 +73,141 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-- [Low] The comment above quic_stream_max_streams_update()
-  (net/quic/stream.c:313-319) says it "Recalculates the max_uni and…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] quic_udp_sock_create() in net/quic/path.c zero-initializes
+  udp_conf and fills it with quic_udp_conf_init() ->…
+- [Medium] IP_FREEBIND (and the IPv6 equivalent) set on a QUIC socket has
+  no effect when a new UDP tunnel socket is created.
 
 --
 
-quic: add stream management
+quic: add path management
 
-This patch adds struct quic_stream_table and struct quic_stream to manage
-QUIC streams per socket. It adds quic_stream_get() and quic_stream_put() to
-acquire and release send and receive streams. It also adds
-quic_stream_id_exceeds() and quic_stream_max_streams_update() to track
-stream limits.
+This adds struct quic_path_group and struct quic_path to manage the
+active and alternate paths of a QUIC connection. Each path is bound to a
+kernel UDP tunnel socket, which can be shared and is tracked in a
+per-port hash table. The patch also adds bind, unbind and swap helpers,
+alternate path detection for migration, and basic PLPMTUD state handling.
 
-> diff --git a/net/quic/stream.c b/net/quic/stream.c
+> diff --git a/net/quic/path.c b/net/quic/path.c
 > new file mode 100644
-> index 0000000000000..29c9f3568b287
+> index 0000000000000..ba7e2c952a36a
 > --- /dev/null
-> +++ b/net/quic/stream.c
-> @@ -0,0 +1,427 @@
+> +++ b/net/quic/path.c
+> @@ -0,0 +1,596 @@
 
 [ ... ]
 
-> +/* Updates the maximum allowed incoming stream IDs if any streams were recently
-> + * closed.  Recalculates the max_uni and max_bidi stream ID limits based on the
-> + * number of open streams and whether any were marked for deletion.
-> + *
-> + * Returns true if either max_uni or max_bidi was updated, indicating that a
-> + * MAX_STREAMS_UNI or MAX_STREAMS_BIDI frame should be sent to the peer.
-> + */
-> +bool quic_stream_max_streams_update(struct quic_stream_table *streams,
-> +				    s64 *max_uni, s64 *max_bidi)
+> +static struct quic_udp_sock *quic_udp_sock_create(struct sock *sk,
+> +						  union quic_addr *a)
 > +{
-> +	s64 max, rem;
+> +	struct udp_tunnel_sock_cfg tuncfg = {};
+> +	struct udp_port_cfg udp_conf = {};
+> +	struct net *net = sock_net(sk);
+> +	struct quic_uhash_head *head;
+> +	struct quic_udp_sock *us;
+> +	struct socket *sock;
+> +	int err;
 > +
-> +	*max_uni = 0;
-> +	*max_bidi = 0;
-> +	if (streams->recv.uni_pending) {
-> +		rem = streams->recv.max_streams_uni - streams->recv.streams_uni;
-> +		max = streams->recv.next_uni_stream_id - QUIC_STREAM_ID_STEP +
-> +		      (rem << QUIC_STREAM_TYPE_BITS);
+> +	us = kmalloc_obj(*us);
+> +	if (!us)
+> +		return ERR_PTR(-ENOMEM);
 > +
-> +		streams->recv.max_uni_stream_id = max;
-> +		*max_uni = quic_stream_id_to_streams(max);
+> +	quic_udp_conf_init(sk, &udp_conf, a);
 
-[Severity: Low]
-This isn't a bug, but does the comment above
-quic_stream_max_streams_update() describe max_uni and max_bidi correctly?
+[Severity: Medium]
+Should the tunnel socket take its IPV6_V6ONLY setting from the QUIC
+socket that owns it?
 
-The comment says the function "Recalculates the max_uni and max_bidi stream
-ID limits". max_uni and max_bidi are the names of the output parameters, but
-those parameters receive stream counts:
+quic_udp_conf_init()->quic_v6_udp_conf_init() fills in the family,
+address, port, checksum flags and bind_ifindex. It never sets
+conf->ipv6_v6only:
 
-    *max_uni = quic_stream_id_to_streams(max);
+net/quic/family.c:quic_v6_udp_conf_init() {
+	conf->family = AF_INET6;
+	conf->local_ip6 = a->v6.sin6_addr;
+	conf->local_udp_port = a->v6.sin6_port;
+	conf->use_udp6_rx_checksums = true;
+	conf->use_udp6_tx_checksums = true;
+	conf->bind_ifindex = quic_get_dev_if(sk, a);
+}
+
+udp_sock_create6() applies v6only only when the config asks for it:
+
+net/ipv6/ip6_udp_tunnel.c:udp_sock_create6() {
     ...
-    *max_bidi = quic_stream_id_to_streams(max);
+	if (cfg->ipv6_v6only) {
+		err = ip6_sock_set_v6only(sock->sk);
+    ...
+}
 
-Here quic_stream_id_to_streams() returns (stream_id >> 2) + 1. The stream ID
-limits are only stored in streams->recv.max_uni_stream_id and
-streams->recv.max_bidi_stream_id.
+As a result, the kernel UDP socket always gets the net.ipv6.bindv6only
+default. An IPV6_V6ONLY value set on the QUIC socket through
+quic_setsockopt()->ipv6_setsockopt() is ignored. A zero cfg value also
+can't clear an inherited bindv6only=1.
 
-The code itself is correct, because MAX_STREAMS frames carry a count. Nothing
-in the series calls this function yet. A future caller that follows the
-comment and encodes *max_uni and *max_bidi as stream IDs would advertise the
-wrong MAX_STREAMS value.
+With bindv6only=0, could an IPV6_V6ONLY QUIC socket bound to [::]:P get a
+dual-stack tunnel? That tunnel would also hold IPv4 port P and could
+cause unexpected EADDRINUSE for IPv4 binds.
 
-Could the comment say that the output parameters are stream counts?
+With bindv6only=1, a QUIC socket that cleared IPV6_V6ONLY gets a v6-only
+tunnel, and IPv4 UDP lookup skips ipv6_only sockets. Would IPv4 packets
+for that dual-stack QUIC socket ever be delivered?
 
-> +		streams->recv.uni_pending = 0;
+quic_udp_sock_lookup() also decides sharing through
+quic_cmp_sk_addr(us->sk, ...), which checks ipv6_only_sock() on the
+tunnel socket. A wrong v6only state would therefore also change which
+QUIC sockets end up sharing a tunnel.
+
+quic_path_bind() has no caller yet in this series, so this would only
+show up once quic_bind() is wired in by the next patchset.
+
+> +	err = udp_sock_create(net, &udp_conf, &sock);
+
+[Severity: Medium]
+Is IP_FREEBIND (or its IPv6 equivalent) on the QUIC socket honoured
+when a new tunnel socket is created here?
+
+struct udp_port_cfg has no freebind or transparent field.
+udp_sock_create4() and udp_sock_create6() call kernel_bind() right after
+sock_create_kern(), so FREEBIND can never be set on the new socket
+before it is bound:
+
+net/ipv6/ip6_udp_tunnel.c:udp_sock_create6() {
+	err = sock_create_kern(net, AF_INET6, SOCK_DGRAM, 0, &sock);
+    ...
+	err = kernel_bind(sock, (struct sockaddr_unsized *)&udp6_addr,
+			  sizeof(udp6_addr));
+    ...
+}
+
+The bind path then calls inet_addr_valid_or_nonlocal() on the new tunnel
+socket. That socket doesn't have FREEBIND set, so a nonlocal source
+address would fail with -EADDRNOTAVAIL.
+
+The QUIC socket accepts IP_FREEBIND through
+quic_common_setsockopt()->ip_setsockopt(). quic_get_user_addr() in the
+next patchset is described as honouring FREEBIND. Could bind validation
+then accept the address, only for
+quic_path_bind()->quic_udp_sock_create() to reject it?
+
+It looks like only the netns-wide ip_nonlocal_bind sysctl would make a
+nonlocal bind work here.
+
+> +	if (err) {
+> +		pr_debug("%s: failed to create udp sock\n", __func__);
+> +		kfree(us);
+> +		return ERR_PTR(err);
 > +	}
 
 [ ... ]
