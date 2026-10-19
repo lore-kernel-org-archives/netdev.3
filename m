@@ -1,82 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792439789;
-	b=TCeh1Qa9kjLCcUJG2/d7kOT7lWIFKZ5rNOuxHp2cRnql8esjqQOnfGfupocc+ezJfCKC
-	 bfB8tD6+ZpyCV/712cNacKSEwxD7Y9aTcMpjmApfAXZUfM0uTb+1a5eT0BgQt1W730XsU
-	 iKtZl+ukntXNC4qSWRln1XSZ8+aRPsL3D/RL1dsUW6kmTbihjIjdpt8NdXMtN1aZVHihZ
-	 NthKsO5OsWmsptPtTjFbJSicCQH/yuQV/xkDj6ruCkW+J5JM/ef0TE9ppkoo0gLUKCId8
-	 r19HaO5s6SSY9ATRCHmL89KUxlBZGtN28xbrD+Kx7s/iTTkpySppqxnfNEBdTHpOveg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792439789;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=KVEJtPz8xVzKOd3zloro+LuQB61UUpq0vlCwWFBY5H0=;
-	b=VnFSEeHj+Io3YrqhIRMxqXQoXf5vvo9CYiTgndihqDRl9IyeoBOuRv6K1jVFVHwR9vD5
-	 qk4oZjcbbCNjrlyNN2UwHqeLUqz12hm3iIZXz77XtwyXiTPczTwa0pA8egk5hqEATDRoH
-	 fP5TBz07HqzG6njsELT+Bcq+hHg0iUQilMksKhCsom/Af9K9KTKcvc7z8MvlRuRdIqMz/
-	 jR14yy+Tg8hbvYuPB3izqHPzPhbJEmkrq7BJ3V/1hEGDoLcO5GfQOt+dCb0JN15lcnM4G
-	 OksOYoDNNWlrlQLrciN2EfMuIwfqHL3LYm4D5q6qRUUgQcQbylfKMqhAkFtssblCk+A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=szelinsky.de;
-	spf=pass smtp.mailfrom=szelinsky.de;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=dupV63m0;
-	arc=none smtp.remote-ip=85.214.127.56
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792440212;
+	b=Z60BpvDofxoAmMMyML5xMX9sybcWuXqpQVAFx5eaSbSAOYx4ncq+s5g5M1jqyq+cVS0L
+	 gHLL65UQDNbVN64bBFAmePoaLpzIxPRw1xDxstP8U1u+vlnEBdN6Asgt5jLB9r+xLfXTt
+	 siENI+bGRhFkFblNb7fF96lwyheKjV6RXZAwvc+9WZaEbfK3rp/IzfTVjIJrPjug9HKgg
+	 BphmGAkovQNPxOiKqzF51T/TDsx3d4LT10wfy0SPHH6LMgkya/LYRkR63WrWKX/73mpS7
+	 IRlBILUZHPtTfqOT8kG0e3QHt4/+fQVFe+jj96FbIcIHCzCnU6I+aqtfvvW9vZt0xHQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792440212;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=i8MNxol060O6EW3B3WyFVJdha1qRJwS9VM/FovGS3EM=;
+	b=r+MmdR1kCwuMherM7bjFqmRrNHWex816bHYe5o030b+nlhXmfN0n3ilevsop3y75fKFF
+	 09pY17fHhgsYLhC+9Ijr/M2gZ5EqrrF22n4Yzep1f3y7X65H+ai0jwi/uS0TpHx2Bk2+e
+	 MbEMTDYEhLxxQBrX/x0zEU/dA1GitcRs3+WoyNkj9PmK4shmlMLiN6GA4imErK1xDIMsI
+	 M9LjclXhxyMRJrkO//UhS1aG4WR8/geEOYtiVU+zDN4wQWLeYOiAeAKesx87DGpCol7eO
+	 /MPgl5VUCRTwJyrg87JCXxy5gjUaFjz/OVZmRVwlVmCv3n1RfPhnHAqdTDx36+WqxQw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V8sWZu4l;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21253606A338;
-	Mon, 19 Oct 2026 19:56:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21253606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4406606A31A;
+	Mon, 19 Oct 2026 20:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=dupV63m0
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 48CC0E83AA7;
-	Mon, 19 Oct 2026 21:56:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1792439787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KVEJtPz8xVzKOd3zloro+LuQB61UUpq0vlCwWFBY5H0=;
-	b=dupV63m098oHK2pf1A1sX30DDVDh4P9MsLsOVryN/+vTbqFLjQp9s2AQnsAaf6+xS+89e2
-	KI+6nF4gVhKvDX3A7mF1q9UJ690Gt1GOEwjYiwcik5yDlbe61LxujZR1M70KOtkV4txKRP
-	7ivKBvA9DJP4oZcaFJkV5PbM7znYCTpmcbceCIzxSwjZmg/mcI1uUGX0qP9VQCGTxFal88
-	zPva8aVTUpAkOkHRGLH0rISYsPSZqItgxGFH613/P/QistAoQlJ/exo6cCAeU/5WWDdMGu
-	+PKG7TiKmajUeIJRkfr+nreBXrOAzcMDekaJ4b4HHoMpHgyLw5o4bZQ0g6SiVQ==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id zA6Oi85ZBx9w; Mon, 19 Oct 2026 21:56:27 +0200 (CEST)
-Received: from p14sgen5.. (unknown [91.25.97.186])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Mon, 19 Oct 2026 21:56:27 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: o.rempel@pengutronix.de,
-	kory.maincent@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	piotr.kubik@adtran.com,
-	saikrishnag@marvell.com,
-	horms@kernel.org,
-	kyle.swenson@est.tech,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sashiko-reviews@lists.linux.dev
-Subject: Re: [PATCH net 06/10] net: pse-pd: do not tie a shared power domain to its creator's devres
-Date: Mon, 19 Oct 2026 21:56:25 +0200
-Message-ID: <20261019195625.308047-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179239987471.3135.11859262024217714390@kernel.org>
-References: <179239987471.3135.11859262024217714390@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V8sWZu4l
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792440211;
+	b=buWFXOVBRqN52T5/OzeBqg+g9RUXkkS7WuxfQHL8VQV3emQf3PbKo9SnBPO5Kat0C5YQ
+	 Wqvjjhv+SuMlVolAn1BEa0xRNvsarexGLH7FPwjd16JtIxoRUpY8gNfBDxQ48eFN2JTsb
+	 N36tiQlSmBW1qwcnZVLp45NGlL4BO3Ll4W8EO2zduOXN4hWVJ68Usc83gJH8AKaR/FUYb
+	 n/3YmDG6N3eHgStUYhqkTFYhaB3s/MRrMr+XxasoUMkwHSmlPaSGTuvFI9rEHdTyq3fGw
+	 R3Y8w+zqEVnc6QRZbJcLjTC5s0P24EYPXKgaAZwrte/mzEwqM6M0AdC1Tsd3mqWWfOQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792440211;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=i8MNxol060O6EW3B3WyFVJdha1qRJwS9VM/FovGS3EM=;
+	b=0AzWiSbjbZEN3uI2S3WX48UH+50l7D1WNR76Uhoe5hLg00gR25ZGYu5zCWf24esDohIW
+	 5Y9xMC7kH7U+0g6B65RT/Kn2p84y6EkwNEtuuGKTVuKw/0ymynK2/9vZYYuh0sipfmTbb
+	 Fqri9TwfKuW/GA+ggF/06NOKBPr8I6NOnaT8LAlQFatI+j44+Qr+Ag6N/1mKGUQsQ/TOn
+	 EujNbiPYPnOWMKinj4ybTjHXAChtrz7lTTGK3IA1EGjaVs7j2LOkDMsoCGFQxC4di/c2M
+	 YoARsLekuF7lVJvL/CKwJ1hkr8lqAxank04w/xuoMaW5zIV/bSAkC+OfCR1UyPATV/g==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id BF7BD1F000C4;
+	Mon, 19 Oct 2026 20:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792440211;
+	bh=i8MNxol060O6EW3B3WyFVJdha1qRJwS9VM/FovGS3EM=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=V8sWZu4lAwFcg6J5u7cVBbe+vuiGLEV77Q4tDgu1x30K93qo3uE0fuonzrZXuEX0G
+	 kWDSAbNcgo5ZB63yItcJIz2jatqtAafBF/m8L8JEMHo1KUoanpClUr9Q8lPnJsMyFb
+	 AN3vK8LqED85ZdJHmEOvMQypjqaCtb/ccHdl3k47U9vPUZ08+35zO8AmUUch4BoeIW
+	 9XfVFjdhRJLy9i7Ld6wiGzQlivnyuBActp/sMcovPFIdDwZzJcLD0GZ+jRBFwSktOh
+	 nvYRK8ox9I7yqswndWG6F9e8iqffFfhG8mnM3SV4SabC1mIb3WMAEe9ZyQgc2ShQD8
+	 klp7eagakAofQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 5018B400AB;
+	Mon, 19 Oct 2026 20:03:30 +0000 (UTC)
+From: Travis Howard via B4 Relay <devnull+thoward.lafayetteinstrument.com@kernel.org>
+Date: Mon, 19 Oct 2026 20:03:10 +0000
+Subject: [PATCH net] tg3: Add Datto SIRIS 5 1U Server to restart AER quirk
+ table
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,32 +83,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261019-tg3-datto-aer-quirk-v1-1-f0eccfb2ab5d@lafayetteinstrument.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBG4avIrB1IDEjtVUoXIfm1QyHqJEohe
+ PcGl9/ivUoZKsj07CopTsmypgbbdxQ+Pi1gic00mGG0xk5cFsfRl7Kyh/J+iH7ZBvcwcJNDGKm
+ Vm2KW3319UUKh93X9AT5jtKFqAAAA
+X-Change-ID: 20261019-tg3-datto-aer-quirk-1c380e393ec6
+To: Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+ Michael Chan <mchan@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Lenny Szubowicz <lszubowi@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Travis Howard <thoward@lafayetteinstrument.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792440210; l=1864;
+ i=thoward@lafayetteinstrument.com; s=20261019; h=from:subject:message-id;
+ bh=FQAa09JcOMIFgEiW9Oki1Yij0dC7wNyid9KU2wn2HgE=;
+ b=kwubS8wgB9x8wOWlt3wML8AyxENUtJiqe2UyVQnlXbOrY99ByBcGu4WttrdIZ+yg0sKqXNGYI
+ VHordkMzvsNCM2L7ye3M719/4m6Svo+lIqNrBAuESWBWz8/CxWsqvcY
+X-Developer-Key: i=thoward@lafayetteinstrument.com; a=ed25519;
+ pk=rtL9URAe9ViV6WvIEtBEMb/2i9C1CKXa5RwTxC6I6Vw=
+X-Endpoint-Received: by B4 Relay for
+ thoward@lafayetteinstrument.com/20261019 with auth_id=1243
+X-Original-From: Travis Howard <thoward@lafayetteinstrument.com>
+Reply-To: thoward@lafayetteinstrument.com
+Content-Transfer-Encoding: 7bit
 
-On Mon, 19 Oct 2026 08:51:14 +0000, netdev-bot+sashiko@kernel.org wrote:
-> [Severity: High]
-> Is the shared domain still tied to its creator through this supply handle?
+From: Travis Howard <thoward@lafayetteinstrument.com>
 
-Yes. That is an older bug, and the cover letter lists it as not fixed
-here. It needs a supply handle whose consumer device the creator does
-not own. I will look at that as a follow-up.
+The Datto SIRIS 5 1U Server is a Dell OEMR XL R640 (Dell's OEM-ready
+variant of the PowerEdge R640) sold under Datto's identity. Its DMI
+strings report sys_vendor "datto" and product_name "SIRIS 5 1U Server",
+so it does not match the existing "PowerEdge R640" entry in
+tg3_restart_aer_quirk_table.
 
-> [Severity: Medium]
-> What happens to the PIs handled before the failing one?
+As on the PowerEdge R640, a system restart triggers a fatal PCIe AER
+on the BCM5720 during ACPI _PTS for S5, which the iDRAC logs as
+PCI1318 and which hangs the reboot. Power off is unaffected.
 
-Right, this patch alone does not undo them. "net: pse-pd: unwind
-allocations when controller registration fails" does: it undoes them
-inside pse_register_pw_ds(), while it holds pse_pw_d_mutex. That patch
-moves to this series in the next version.
+Clearing the same PCI_EXP_DEVCTL error-reporting bits on both BCM5720
+functions from userspace immediately before restart allows the system
+to reboot normally, confirming the quirk applies to this platform.
 
-> [Severity: Medium]
-> Can the PI regulator ops still run here and see pw_d == NULL?
+Fixes: e0efe83ed325 ("tg3: Disable tg3 PCIe AER on system reboot")
+Signed-off-by: Travis Howard <thoward@lafayetteinstrument.com>
+---
+Tested on the affected system (Ubuntu 26.04, 7.0.0-38-generic) with
+this change applied to tg3: reboot completes and no PCI1318 is logged.
+Without it, every restart hangs with PCI1318 logged against the BCM5720.
+---
+ drivers/net/ethernet/broadcom/tg3.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Yes, in the short window before the PI array is freed. That is the
-same older bug as the freed PI array. I will rework the second patch
-of [1] and fold it into this series: it stops the PI regulator ops at
-the start of unregister, before this flush.
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 8b6806a79edf..b6aa10f2bdf7 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -18229,6 +18229,12 @@ static const struct dmi_system_id tg3_restart_aer_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "PowerEdge R750"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "datto"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "SIRIS 5 1U Server"),
++		},
++	},
+ 	{}
+ };
+ 
 
-[1] https://lore.kernel.org/netdev/20260813200653.980170-1-github@szelinsky.de/
+---
+base-commit: 78731b46967e3e7102b5cd5062bef185f3404b5c
+change-id: 20261019-tg3-datto-aer-quirk-1c380e393ec6
 
-Carlo
+Best regards,
+-- 
+Travis Howard <thoward@lafayetteinstrument.com>
+
+
