@@ -1,99 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=81.169.146.170
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792425294;
-	b=qF0Ffq8aSYBvIA2elRczgY0Vt1gPxDkbaiE/fKuWE8KnHQSkUgPIwB10fH+vUCiRopQB
-	 /Y165bWfx1n8cHYMfNkSIUFZdOYZ2jK2wkq9AI+eWz8t88B0U4gnzV6jv75tDsF22tFMt
-	 6dvD/+/fSsMknnUj5ht0oXjSi0mzuKw1OUuwo6YqXxr+CiUQiAxB+XCd+PUzHur7e288U
-	 IQxkg8IGuwzFzVuIXddswhTgFClXiP1vxib023XWppN1VU3xKpnJwhj6FREQFqHuOLehR
-	 mHOpOvwDr8Sc0y/iCtmi/SS8V+ufj/i8r2SLnlPpyFNRfGEbn5M+djcGUUJdBO7LidQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792425294;
-	h=DMARC-Filter:X-RZG-CLASS-ID:DKIM-Signature:DKIM-Signature:X-RZG-AUTH:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
-	b=MaYrOgp78zP2Iyt6UOk6jD45GB8XBsl+qhUamIeM04DuhWMk94spgaPBdmQdGdeljY41
-	 co24kFgrSE2tDnwCybU4yVznN68ZZkZ1HkbdnkSHFPtevhcugPTRdgBR/PC0JMnSSiStd
-	 DYt3reMepLuWG1G8m2fw9v1bv6Pt6EnbgsR7S396sM2YYjstrxxgDqgxsejMC7a46ZIKA
-	 jrNVjLppeBsbKfqdObnc3wAIY8ASkY3k3IViCtZc5VRQ8aCDP6hcVjJ9jOqEgNAslCryt
-	 R1BEoFWnxM1NgrqwFYIJqaHxbVf4yD96ypskFbgpwacYJGA/qT6X0oYIdyxSV6AiE9w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hartkopp.net;
-	spf=fail smtp.mailfrom=hartkopp.net;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jKrH84C4;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b="eSO1TWq/";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=81.169.146.170
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.170])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792425343;
+	b=tIUsy6oFBcrj3vYEbYIvcUpWRigbxB2WmpafRAonEoMwXyQ7LR8g73sKK6RmgVbnGQ6P
+	 CBMCZHNTf/1Vn+22+G2j+1Q3X5cExl3fmIQPxGN66q/40WQFI/gIXjsEAQirlC6yL0koJ
+	 DisFk8+DVPMB2oQNYuNDKXrIg116xUTQ0ljEbof5RprnRQoPJG4MPE71retBMUMTjL4Ur
+	 9CF39u/WpW+Df6qGFX4e3rjWC8xKKsrk3NsQTlgMVilpmTNrwlHSn5yd16QPiduaq3M5V
+	 ggZaaesC5rS8PEHe/RrYzL5wPvaKub0KxdCSMR/nWzZ2myBU89HT5qC/Jp9nQKiGqKw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792425343;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=BA9zoqXOo/u1x2NpKUaBSGpkeU42OJi0fUHglu0fhGGFcqv5igRFimf01C7plC6/EkM7
+	 971SueuE0+hI+pBPQYI8ZwPkA3p+w1IxUVxbGN19dQe7rloGDNOjwmajlqEY1HIUab0K/
+	 nF6OJjlMvKDY/KyxqdjWtmUpDT+xaBreZ2FMeyDRzY3MbMxYJS6fbRp2Cxm2IhZDJOscB
+	 RvAe3tPAs4pgttFrAi3ItdnbUPVaP9Ph3cB4vXhCblLDWcws6lHoHQ/7ygNzbLptbn0Z5
+	 EIIL7I4wPPLlrax6gwp5GSu+6rXOppZ9px7JlhL7Ynm7EHjqjgSUJaKV3F8NRMC7jHQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PT3bTU1L;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16692606C928
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:54:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16692606C928
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A078606C158;
+	Mon, 19 Oct 2026 15:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jKrH84C4;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=eSO1TWq/
-ARC-Seal: i=1; a=rsa-sha256; t=1792425253; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=bd1f9XOSrrFJxFAMQWPmm+/6zssnm3Q9JFp46hbhKMe/W0DtTmnTI9jxEqFcZ/buEU
-    wsfw6B8bEUPtVJWXGUAuCpO9bsNMCE+opPwaCOcIpCVRwailg8F7iYJLXweujTECvboR
-    q5IKw1flxNzv+EN1kQ1NY1QglkRv2/Q0YPaq0b99GDkmy++25KrpqUH/GPIbJBVcyYEl
-    MWyQo4lpaekQVb5o1kzisYf9lauli2lRsF8V4lc6lbqr3eWa5fCobGVV1qgsFKKQgWTL
-    AI5yK+/SVeUUuU2xi5EkxDP0G4+kD+fzpjbxMvsRWh9XDWH9ISm/oZjuwexelOm2Gx7d
-    7yqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792425253;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
-    b=exNwYQQ2DYnNiv6o6tAGl7n2zTpimaF4dnpgT5g6CZZyi2tlJiBcEj+t3MHJv5/s9W
-    MpawjRd6y/BFAfB0rDm7a6I110LclrPbftB6FQvX1FeMePeQwVeCL3rq8+S0CjC9xgKn
-    Ru2o2ohVFDgVGLMOZ6mPDtb58fA4mCu+RbCGU7oxNTFDOcd1nKfYINYuoK9g4ND/VjKP
-    VTFVTiorqa07dwn5usO/oFGlw8+mn0oGeLyHFus8p+EzdpBoq7hW7gfGFvhL4pgK6UdD
-    LbkYH/LO6h8SiQVR9ANqmcE67+kDbHblQTNq0gi5Vv8c0l8P7Bw3s6b3CLQt2hT84Bvk
-    oqgA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792425253;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
-    b=jKrH84C4ccKQ3CtaaLqdUfJeXMr92JeoeDMsrXue90BSy4kg1LTYFsc7fJAvvFAnRn
-    H1erBKvIYoaZWW6N/fF3ZtUJOlEoVF52n/rBTBCn5rHPMllYBnxyb7o4VPxPPkOP6u+P
-    IoyqJAVeDI44W1WIOL0mLAYXcTB1a/SkYzfD02dx64233QSB1VO+55pbgWZ2rj2t6XOz
-    XR/zZJQ7EaGQfFZj4deNM+9Qlifs3HoG9OzK34MbpsXLOHPRqB+ByZT5Y1lwhVNs+0Go
-    l0rM+VH+Ci1YQg2RKtu5H69JoRpV8XSyiNS4Q94RnATeHHO9MRo1XKDrbVlErS8aG08i
-    b/TQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792425253;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
-    b=eSO1TWq/7J9+R/vkrhomarv04DodKTFDRMa6ZR+Pv2nNpiGRvKGw8haQ+1tUIcGCEo
-    Om88i/FblMqz0dSdDXBQ==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from vivo.lan
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a29JFsDXe9
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 19 Oct 2026 17:54:13 +0200 (CEST)
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-To: Jiri Pirko <jiri@resnulli.us>,
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jiale Yao <yaojiale02@163.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH net v5] team: reject CAN, IEEE 802.15.4 and 6LoWPAN devices in team_port_add
-Date: Mon, 19 Oct 2026 17:54:07 +0200
-Message-ID: <20261019155407.61487-1-socketcan@hartkopp.net>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PT3bTU1L
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0288D1F000C4;
+	Mon, 19 Oct 2026 15:55:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792425342;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PT3bTU1LF3kvkeZfpU/17oVGDFJU+mvPHPE8xSHnWvvlJMv8PRmawiPhYpEv2xah2
+	 zzmhh+rkAVFlyZ4D6Q/0rJeph7myDtuaUDA6PPUvKmZPolmARRluIgbJaEN7qNFe+2
+	 J0TT50RslHVfmGsWJ3FJzYy7HSUAnWvDrucbdERHYOUYNzinMWOiqC9DRw9zgmvlxI
+	 LRblNkTdnP9qI037SRTKOhR/K2/OJcQb0GP4yfREQAjhzmS6+E+wBR37OF2uACdZoB
+	 wiUiV3UlX5DyQ5AoFi1DQ0hz2snyXgPV/GaDUWk6zsZwxUET/HBhUrxx2AdhflnOAN
+	 C99T4hmaWBPfg==
+From: netdev-bot+sinfo@kernel.org
+To: Qihang <q.h.hack.winter@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
+ herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v5 0/3] xfrm: fix vti tunnel device use-after-free
+ across async crypto resumption
+Date: Mon, 19 Oct 2026 15:55:41 +0000
+Message-ID: <179242534145.3290.3021737362277964895@kernel.org>
+In-Reply-To: <20261019153247.89957-1-q.h.hack.winter@gmail.com>
+References: <20261019153247.89957-1-q.h.hack.winter@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,74 +64,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
 
-From: Jiale Yao <yaojiale02@163.com>
+Hi!
 
-When the first port has a non-Ethernet type, team_setup_by_port()
-copies port_dev->type to the team device while netdev_priv() of the
-team device still holds a struct team. Several L2 stacks identify their
-devices by dev->type alone and then access type specific data that the
-team driver never sets up:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-- CAN protocols rely on the CAN mid-layer private data (ml_priv)
-- IEEE 802.15.4 code dereferences ieee802154_ptr and the mlme ops in
-  ml_priv
-- the 6LoWPAN netdev notifier writes through lowpan_dev(dev) on
-  NETDEV_DOWN and reads it on NETDEV_UP/NETDEV_CHANGE
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Enslaving such a device (e.g. vxcan, wpan0, lowpan0) therefore leads to
-NULL pointer dereferences or to writes into struct team.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-This is the same problem that syzbot reported for the bonding driver
-with a vxcan device enslaved to a bond master, which crashed in
-can_rx_unregister() and was fixed by commit 8ba68464e478 ("bonding:
-refuse to enslave CAN devices"). The team driver has the same gap.
-
-Reject ARPHRD_CAN, ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR and
-ARPHRD_6LOWPAN devices in team_port_add().
-
-Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5-c1c7e647ccca@hartkopp.net/
-Link: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95 # bonding splat
-Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
-Assisted-by: Claude:deepseek-v4-pro
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
----
-v5: [Hartkopp] reference the syzbot report of the identical bonding problem
-v4: [Hartkopp] also reject ARPHRD_6LOWPAN as reported by Sashiko AI
-    review, reworded commit message (bonding only rejects CAN)
-v3: [Hartkopp] fixed indention and compilation as reported by kernel test robot
----
- drivers/net/team/team_core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -1223,10 +1223,21 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
- 		netdev_err(dev, "Device %s is loopback device. Loopback devices can't be added as a team port\n",
- 			   portname);
- 		return -EINVAL;
- 	}
-
-+	if (port_dev->type == ARPHRD_CAN ||
-+	    port_dev->type == ARPHRD_IEEE802154 ||
-+	    port_dev->type == ARPHRD_IEEE802154_MONITOR ||
-+	    port_dev->type == ARPHRD_6LOWPAN) {
-+		NL_SET_ERR_MSG(extack,
-+			       "CAN, IEEE 802.15.4 and 6LoWPAN devices can't be added as a team port");
-+		netdev_err(dev, "Device %s is CAN, IEEE 802.15.4 or 6LoWPAN. These device types can't be added as a team port\n",
-+			   portname);
-+		return -EINVAL;
-+	}
-+
- 	if (netif_is_team_port(port_dev)) {
- 		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
- 		netdev_err(dev, "Device %s is already a port "
- 				"of a team device\n", portname);
- 		return -EBUSY;
---
-2.53.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
