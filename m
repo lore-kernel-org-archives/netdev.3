@@ -1,85 +1,71 @@
-Received: from out-utut-a195.jellyfish.systems (out-utut-a195.jellyfish.systems [198.177.127.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0923DAADB
-	for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 23:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.177.127.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6185739FCE;
+	Mon, 19 Oct 2026 00:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792366366; cv=none; b=EC+u1pQwV4cWZ7XwakB5xGGdWgd3drgScI6dMxSJKeZx/cJNwYBeX4YwG7lmj244uIGfuTYkyJsfFrk3qSUgmegXCZ58G2lFWU2nMsoOJ6MahIZtMMM7pBnX+vPm2t3ahez+czc/4fc+KeAaSEAiw+2ogRfUy0b/0vr5DjHsRTg=
+	t=1792368169; cv=none; b=oYGYiF5zAg3XvKMbEB9Qnxki6ZmjGkzwLBeyYCq/83QrYXx5wCHXlUkL4rkA2g7GD/RLAMcM6yJvSpYS0b8saw4mqy+lm0uNk+Vya2dODvY/dN5/YcA90YljsdDVNp/xv0SC/M54AXMjy0je7KaLMAvY5IiRxBHVoOpjShl56JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792366366; c=relaxed/simple;
-	bh=0M9AV0zKaYPxH33LexUfJwGQ/v3motOjDCDzZ36TrIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X89tc/WYprRuF9AZCslJQplcdZ4TesTGuG5cKVIbx2HDAp7VZ/u7tIaGKMcEnajjjpqc9R9hzYMGZpU0Q3sfzQEBThrWbdvXioVQpAzgk8IFIivViuYXjGzghkjSTeyMqXvCDKS2H0vSjITbUV1ZCUBwmnAnb/+y1SINFdBdWOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca; spf=pass smtp.mailfrom=r-sc.ca; dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b=CQtA2faO; arc=none smtp.client-ip=198.177.127.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r-sc.ca
+	s=arc-20240116; t=1792368169; c=relaxed/simple;
+	bh=kiRmWbIigttbPI0W84RnZLioWzJTfvGGdwoHwvS28Gk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dCFCYONU5yLlUaXA7JM2w7eHffE530lKe/rYFaU7n1DRhw0kvWUYtIJY/tXoRF+bmiksFtm/w3ju7hVu0wI3fShHWVIkwqrTmvNoJs+0G+znwB7BfizcVzgXUa+xAnCnPtYxf86al9s2HOhtusWWLaRnYYRfV6EGpO5mwOTRxo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dx5ufkko; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=r-sc.ca header.i=@r-sc.ca header.b="CQtA2faO"
-Received: from DESKTOP-290OH2S (d207-6-150-133.bchsia.telus.net [207.6.150.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4j7FMk4z8Zz6tkK;
-	Sun, 18 Oct 2026 23:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r-sc.ca;
-	s=spacemail; t=1792366355;
-	bh=0M9AV0zKaYPxH33LexUfJwGQ/v3motOjDCDzZ36TrIQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQtA2faOW4+Jhx0fsUk32/sNj1gtazQ7DxdH7eMFPVerk+UxI0o47BcPG4Ie9TBEP
-	 xFCugDB56xYNHBgG+qfshuQn+/TuCVOvlkce50BmJJUBXvr+e4kI1axZaBPxivv/dn
-	 Iq1B/DEsKS4U7NTiKNZnf0bc+PkOFMvJmBQeI72wEYoeTw9S3zBMOajhuoExKd8A9r
-	 DdW5QmrjOUDl7GKg07Tv4iAp1KTa5VTNOXaa9RcoS/elmIFlEnZFTKcGRIZw8BUHyz
-	 rFlvyjf5CN6mtz0QrAImITIH8DJT6xapVyURz3QDC1tq8kUE81zDsZqIPLS9VU+gM+
-	 q3TyJza+LmKDw==
-From: Ross Cawston <ross@r-sc.ca>
-To: github@szelinsky.de
-Cc: o.rempel@pengutronix.de,
-	kory.maincent@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	piotr.kubik@adtran.com,
-	saikrishnag@marvell.com,
-	horms@kernel.org,
-	kyle.swenson@est.tech,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ross Cawston <ross@r-sc.ca>
-Subject: Re: [PATCH net 00/10] net: pse-pd: assorted lifetime and error-path fixes
-Date: Sun, 18 Oct 2026 16:32:29 -0700
-Message-ID: <20261018233229.462-1-ross@r-sc.ca>
-X-Mailer: git-send-email 2.55.0.windows.5
-In-Reply-To: <20261018082314.48950-1-github@szelinsky.de>
-References: <20261018082314.48950-1-github@szelinsky.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dx5ufkko"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=8ET68I96kFH7mW1zapDe0LJP2HJVVap3gTcE6h7LnlA=; b=dx5ufkko67FlnqlX+OOn1XbcGU
+	bYebHX8uIcCLRGyO6xUzhVU/86qZ0JXSKcUqGh6rgJAD8m+jm1yCQ0FngjsDf6n1MCHekC4O0miMR
+	QUr8fvjNjZF8knxYBYWXYiSgyzP/aWPa9yKfouYi3bOAYYPnF8pZbvcXLl+kXzQ6wbR8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xIapi-00BXLf-53; Mon, 19 Oct 2026 02:02:30 +0200
+Date: Mon, 19 Oct 2026 02:02:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ross Cawston <ross@r-sc.ca>
+Cc: lee@kernel.org, pavel@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, chris.packham@alliedtelesis.co.nz,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] leds: add Realtek RTL9300 port LEDs under software
+ control
+Message-ID: <38ca5375-ecea-4361-ab26-c044f38ceadb@lunn.ch>
+References: <20261018194339.132-1-ross@r-sc.ca>
+ <59f75e7d-9b56-441d-a4b5-58ad3862267e@lunn.ch>
+ <20261018232015.527-1-ross@r-sc.ca>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: ross@r-sc.ca
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261018232015.527-1-ross@r-sc.ca>
 
-Hi Carlo,
+On Sun, Oct 18, 2026 at 04:20:14PM -0700, Ross Cawston wrote:
+> On Sun, Oct 18, 2026 at 10:36 PM UTC, Andrew Lunn wrote:
+> > Port LEDs should be within the port node of the switch in DT. Ideally
+> > you want all LEDs for a port to start the with basics, on/off control.
+> [...]
+> > So please don't make these LEDs special.
+> 
+> That makes sense. The catch is that RTL9300 has no switch driver
+> upstream yet, so there is no port node with a driver behind it to put
+> them in: mainline only has drivers for the switch's I2C and MDIO
+> controllers.
 
-I sent a fix to pse_core.c for net today as well, for the budget of PIs
-with software power control:
+Markus Stockhausen <markus.stockhausen@gmx.de> did a lot of work on
+the MDIO driver, based on what is in OpenWRT. Maybe he plans to work
+on the switch driver?
 
-https://lore.kernel.org/netdev/20261018182005.1193-1-ross@r-sc.ca/
-
-It changes _pse_pi_disable(), pse_disable_pi_pol(), pse_pi_disable()
-and pse_set_config_isr(), none of which your series touches, so I don't
-expect the two to get in each other's way. If they do, I'm happy to
-rebase mine on top of yours.
-
-Separately: I have a driver for the Realtek RTL8239, two of which a
-MokerLink POE-10G07110GSM switch drives directly with no PSE MCU, and it
-uses devm_pse_poll_helper() and the PSE LED triggers from your "poll
-path and LED trigger support" series. Is a v6 of that planned once these
-fixes are in? I can test it on that switch, and would post the RTL8239
-driver on top of it.
-
-Ross
+   Andrew
