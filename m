@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DB94F68BA;
-	Mon, 19 Oct 2026 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287754F85B2;
+	Mon, 19 Oct 2026 13:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792416785; cv=none; b=s55cRsSM4SffuWmXJvnYtEqfDcjhqXQ1XS7L+jalpQuRj+dtX43bKUyqu0sKD+Dx1BeXv8D6W5zMDvyenq+UKcThtRQE7/NvV4yFpkfZYZZ+jrgv15KBuJWdPbvshJWJvN624/whrd/N/mrYPYqfcH6+KGEvTmz84dXXN3XmH3Q=
+	t=1792416787; cv=none; b=EUo0XgIsJvcPo+pIoYgSjYjT5PK6/MAKp8ieRcB6E9RYGNymNI9igXSk0oVNrbTaV29TxoJBhGcmyYbUImttwS72ELvhV1oYg97gJnkmgw1Uz0HTID4Fw0VIReXSQdsQzFwv9LYdMY5xwNEwyCwrbFqwn/+4qWKCCtDLoEeS3XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792416785; c=relaxed/simple;
-	bh=5Gi9N8m0e09GPfPK02Aye7+6mFMg1lfI2ESI1R6KLuA=;
+	s=arc-20240116; t=1792416787; c=relaxed/simple;
+	bh=oCnc+4YPFzPrKNYhGZA2Y25UUUEDGrScuQdE5lpNg5I=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lUoyYzFFj5CmbPbjj58hClDITvSbEFOajiJQTVKQM33KGHko2tWY38XmsNbNPkF2jU/V/CF02MeTqaBkXwrXCSTgpTJWV3a9olLtRkWPtkRFnXmBro8YfdnuFYQ0c46HbvraBwUUlS4GxmYQ7RKGxAcRbqWce1gaFIWI1tMftp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhqFur2z; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ep6gHNFPcY7wJzgZNzwbOwt+QktpyaVnZzZZkvGOyTV2Ugdcp2p+SJLFu0g8neGoiX+DmxbT6rJigXh1wo58bDtgPZTdet92wb3hFS2CAqzIrowvtxO6SNiOYCdCToTbamYMB+941FGlaKw/Uj4UJENsuHxxhIQgA/5z+yVSbBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fAECk1tK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhqFur2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552F21F000C5;
-	Mon, 19 Oct 2026 13:33:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fAECk1tK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45ACF1F000C4;
+	Mon, 19 Oct 2026 13:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792416783;
-	bh=MLiVOZniV9CY4lZ/vw6p2W9udZKkobj5rSzenn8hAPM=;
+	s=k20260515; t=1792416785;
+	bh=KVudN3R5hZ5GHsJWzPbxZs/oNeMhhj12/yQpYaNk0g8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lhqFur2zzYNVsc4jrfM5NrPsNx45F12iwFsU42anHX3XUyKWxucKooCbA1eEqV/hN
-	 mmtf/7sNVLgD/EWBR9p+R8+Ji+5GjQwEugNsjbUsIuT7Nue+JPGxtAW0yBFrx8alb3
-	 6ZeDaQHhA5wdp8eObyLyiUtBvGIjhQ7o02a5UwyHhTkdZBddbgPTKkRSL407MM+Yyr
-	 BM4hD6WWGZEbQmvO4ee8DerqBeLjVXfDC6LBg4BWXHYvg6LujhwhwNa1KP6ImfOZiG
-	 jWv2aLGIwO6iGZLEO3e18IyqhIYI3Wfv+rcwA9gmRX09and4wtcIQOgv+frE8WNCMv
-	 cldw8GfVefYWA==
-Subject: Re: [PATCH net-next v19 03/10] net: phylink: Register a phy_port for
- MAC-driven SFP cages
+	b=fAECk1tKwgI8+NWb2IDM2y+F/rP53NFxzruT3q126KsWXaxqdnxnAFWZfRx5FWHga
+	 sBc0ceUCuks/5DBqc5+kHDzk0elI+Uvy8Na7UTQ80J0hxEjVFDxDKE1E7m+U/2XsbB
+	 LcgKSPpTgkCgIvuZJ00gAk+Qk0y5Jk7U6P2ODZsjYqllYrzgsuz6DgxSRkhSZosJse
+	 G8sC8Xj7htK6ZTFeZJxPVjpg6LapbiVUru39yOMeQ1GaujM21jgjS8/kbA1k5TFeSv
+	 Q+ywd2JnxBqIGX2ht1PqhTUXhLDWjXLd2c/RpbeOQojzS7NPP+LYlqEhBoLCtiNrwY
+	 0y7h34mcC2zKg==
+Subject: Re: [PATCH net-next v19 04/10] net: phy: Create SFP phy_port before
+ registering upstream
 From: netdev-bot+sashiko@kernel.org
 To: maxime.chevallier@bootlin.com
 Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
@@ -40,11 +40,11 @@ Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
  romain.gantois@bootlin.com, daniel@makrotopia.org,
  dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
  f@lex.la, chleroy@kernel.org
-Date: Mon, 19 Oct 2026 13:33:01 +0000
-Message-ID: <179241678192.3135.3853788668273794644@kernel.org>
-In-Reply-To: <20261016133107.54054-4-maxime.chevallier@bootlin.com>
-References: <20261016133107.54054-4-maxime.chevallier@bootlin.com>
-X-sashiko-severity: Low
+Date: Mon, 19 Oct 2026 13:33:03 +0000
+Message-ID: <179241678386.3135.10167013424951855849@kernel.org>
+In-Reply-To: <20261016133107.54054-5-maxime.chevallier@bootlin.com>
+References: <20261016133107.54054-5-maxime.chevallier@bootlin.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,143 +54,206 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-- [Low] phylink_create_sfp_cage_port() in drivers/net/phy/phylink.c
-  allocates the MAC/phylink-driven SFP cage port with phy_port_alloc()…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [Medium] mtk_eth_soc creates a NETDEV phylink in mtk_add_mac() with
-  phylink_create(&mac->phylink_config, of_fwnode_handle(mac->of_node),…
+- [Medium] The commit message presents the reorder in
+  phy_sfp_probe()/phy_setup_ports() as pure preparation.
+- [Low] The patch opens a new window in phy_setup_ports().
+- [Low] In phy_setup_ports() (lines 3534-3542), the comment says the `if
+  (!phydev->is_genphy_driven)` guard exists because genphy binding runs…
 
 --
 
-net: phylink: Register a phy_port for MAC-driven SFP cages
+net: phy: Create SFP phy_port before registering upstream
 
-This commit makes phylink allocate a phy_port for an SFP cage driven by
-the MAC and add it to the netdev's link topology. It does this only for
-NETDEV phylink instances. The port is created in phylink_register_sfp()
-and freed in phylink_destroy().
+This patch splits the SFP setup in phy_sfp_probe(). That function now
+looks up the SFP bus and creates the SFP phy_port without registering the
+upstream. Registration moves to a new phy_sfp_add_upstream() helper, which
+runs at the end of phy_setup_ports(). The stated goal is to let the
+phy_port be passed to the SFP bus together with the upstream information.
 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index a7d086cdc9b25..971f8961dcf1a 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-
-[ ... ]
-
-> @@ -1767,6 +1770,52 @@ static void phylink_fixed_poll(struct timer_list *t)
->  
->  static const struct sfp_upstream_ops sfp_phylink_ops;
->  
-> +static int phylink_create_sfp_cage_port(struct phylink *pl)
-> +{
-> +	struct phy_port *port;
-> +	int ret = 0;
-> +
-> +	if (!pl->netdev || !pl->sfp_bus)
-> +		return 0;
-> +
-> +	port = phy_port_alloc();
-> +	if (!port)
-> +		return -ENOMEM;
-> +
-> +	port->is_sfp = true;
-> +	port->is_mii = true;
-> +	port->active = true;
-
-[Severity: Low]
-Should parent_type and phy be set here? phy_port_alloc() uses kzalloc, so
-this port ends up with parent_type == PHY_PORT_PHY (the zero value) and
-port->phy == NULL. It is then published through phy_link_topo_add_port().
-
-include/linux/phy_port.h describes PHY_PORT_PHY as the port being driven
-by a PHY device, with @phy as the controlling PHY:
-
-enum phy_port_parent {
-	PHY_PORT_PHY,
-};
-
-The PHY-driven cage port in phy_setup_sfp_port() sets both fields
-together:
-
-	port->parent_type = PHY_PORT_PHY;
-	port->phy = phydev;
-
-There is currently no enum value that can describe a port owned by the
-MAC or by phylink.
-
-Nothing reads parent_type today. port_phydev() is only called from PHY
-drivers' own port->ops callbacks, and this port has ops == NULL. However,
-port_phydev() returns port->phy without checking it. A future consumer
-that trusts parent_type and calls port_phydev() would then get NULL for
-this port.
-
-The same pattern appears later in the series. In "net: phy: Represent
-PHY-less SFP modules with phy_port", phylink_add_sfp_mod_port() and
-phy_add_sfp_mod_port() also publish ports with the default parent_type
-and phy == NULL.
-
-Would it make sense to add a parent type for MAC/phylink-driven ports and
-set it here?
-
-> +
-> +	phy_interface_and(port->interfaces, pl->config->supported_interfaces,
-> +			  phylink_sfp_interfaces);
-> +	phy_port_update_supported(port);
-> +
-> +	rtnl_lock();
-> +	ret = phy_link_topo_add_port(pl->netdev, port);
-> +	rtnl_unlock();
-
-[ ... ]
-
-> @@ -2069,6 +2127,7 @@ EXPORT_SYMBOL_GPL(phylink_create);
->  void phylink_destroy(struct phylink *pl)
->  {
->  	sfp_bus_del_upstream(pl->sfp_bus);
-> +	phylink_destroy_sfp_cage_port(pl);
+> We can move the port creation before registering the sfp upstream ops,
+> as long as we know the SFP bus is there. This will allow passing the
+> phy_port along with the upstream information to the SFP bus.
 
 [Severity: Medium]
-This is a pre-existing issue, but it now also leaks the new phy_port.
-phylink_destroy() is the only path that frees sfp_cage_port, and some
-drivers never call it.
+This describes the reorder as preparation only. Does it also fix a
+cold-plug problem that should be described, possibly with a Fixes: tag?
 
-For example, drivers/net/ethernet/mediatek/mtk_eth_soc.c creates a NETDEV
-phylink in mtk_add_mac():
+Before this patch, phy_sfp_probe() called sfp_bus_add_upstream() before
+phy_setup_sfp_port(). If the SFP socket had already probed and read the
+module EEPROM (sm_mod_state == SFP_MOD_WAITDEV), the module insert ran
+synchronously:
 
-	phylink = phylink_create(&mac->phylink_config,
-				 of_fwnode_handle(mac->of_node),
-				 phy_mode, mac_ops);
+sfp_bus_add_upstream()
+  sfp_register_bus()
+    sfp_attach()
+      sfp_sm_event(SFP_E_DEV_ATTACH)
+        sfp_sm_module()
+          sfp_module_insert()
+            phy_sfp_module_insert()
 
-No phylink_destroy() call exists anywhere in that driver. Both
-mtk_free_dev() and the mtk_add_mac() error path call free_netdev()
-directly.
+The is_sfp port did not exist yet at that point, so
+phy_sfp_module_insert() returned early:
 
-If the MAC node has an SFP cage, this call chain allocates the port:
+	port = phy_get_sfp_port(phydev);
+	if (!port)
+		return -EINVAL;
 
-mtk_add_mac()->phylink_create()->phylink_register_sfp()
-  ->phylink_create_sfp_cage_port()->phy_port_alloc()
+sfp_sm_module() then moved the module to SFP_MOD_ERROR:
 
-Teardown then follows this chain:
+		err = sfp_module_insert(sfp->sfp_bus, &sfp->id,
+					sfp->quirk);
+		if (err < 0) {
+			sfp_sm_mod_next(sfp, SFP_MOD_ERROR, 0);
 
-mtk_free_dev()->free_netdev()->netdev_free_phy_link_topology()
-  ->xa_destroy(&topo->ports)
+SFP_MOD_ERROR is below SFP_MOD_WAITDEV, so no later DEV_UP or attach event
+retries the insert. The module stays rejected until it is physically
+re-plugged. This can happen on boards where the SFP socket probes before
+a media-converter PHY such as 88e1512 or 88x2222.
 
-xa_destroy() frees only the xarray's internal nodes, not the stored
-entries. Is the phy_port leaked on every unbind or failed probe here?
+After this patch the SFP port already exists when phy_sfp_add_upstream()
+runs, so the insert succeeds. The old ordering seems to come from
+07f3ca9e092cb8 ("net: phy: Create a phy_port for PHY-driven SFPs") and
+d7c6082f7e7771 ("net: phy: Introduce generic SFP handling for PHY
+drivers"). Without a Fixes: tag, stable trees that contain those commits
+would not pick this up.
 
-The missing phylink_destroy() in mtk_eth_soc predates this patch. It
-already leaks the struct phylink and leaves the SFP upstream registered.
-This patch adds one more object to that leak.
+There is a related behaviour change too. The cold-plug
+phy_sfp_module_insert() now runs after phy_setup_ports() has computed
+phydev->supported and phydev->port. As a result, this assignment now
+persists, while before the cold-plug path never reached it:
 
->  	if (pl->link_gpio)
->  		gpiod_put(pl->link_gpio);
->
+	if (phydev->n_ports == 1)
+		phydev->port = caps->port;
+
+Could the commit message mention this as well?
+
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index ab1aa8981c00c..7713418a6734e 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+
+[ ... ]
+
+> @@ -1619,32 +1621,48 @@ static int phy_setup_sfp_port(struct phy_device *phydev)
+>   */
+>  static int phy_sfp_probe(struct phy_device *phydev)
+>  {
+
+[ ... ]
+
+> -		ret = sfp_bus_add_upstream(bus, phydev, &sfp_phydev_ops);
+> -		sfp_bus_put(bus);
+> +	phydev->sfp_bus = bus;
+>  
+> -		if (ret)
+> +	if (bus) {
+> +		port = phy_setup_sfp_port(phydev);
+> +		if (IS_ERR(port)) {
+> +			sfp_bus_put(bus);
+>  			phydev->sfp_bus = NULL;
+> +			return PTR_ERR(port);
+> +		}
+>  	}
+>  
+> -	if (!ret && phydev->sfp_bus) {
+> -		ret = phy_setup_sfp_port(phydev);
+> -		if (ret) {
+> -			sfp_bus_del_upstream(phydev->sfp_bus);
+> -			phydev->sfp_bus = NULL;
+> -		}
+> +	return 0;
+> +}
+
+[Severity: Low]
+On success, phy_sfp_probe() now returns with phydev->sfp_bus holding only
+the sfp_bus_find_fwnode() reference, and no upstream registered yet.
+
+What happens if phy_default_setup_single_port() fails in phy_setup_ports()
+before phy_sfp_add_upstream() runs?
+
+phy_setup_ports()
+    if (phydev->n_ports < phydev->max_n_ports) {
+        ret = phy_default_setup_single_port(phydev);
+        if (ret)
+            goto err_sfp;
+    }
+    ...
+err_sfp:
+    phy_sfp_release(phydev);
+
+phy_sfp_release() then calls sfp_bus_del_upstream() on a bus that was
+never passed to sfp_bus_add_upstream(). The documented precondition of
+sfp_bus_del_upstream() is "@bus should have been added by
+sfp_bus_add_upstream()".
+
+This only works today by coincidence. bus->registered is false, so
+sfp_unregister_bus() does nothing. upstream_ops and upstream are already
+NULL. The final sfp_bus_put() drops the find_fwnode reference, not the
+add_upstream reference it was written to release.
+
+The kernel-doc of phy_sfp_release() is also out of date. It still says it
+releases what "a successful phy_sfp_probe()" set up and that it
+unregisters the upstream. phy_sfp_probe() no longer registers an upstream;
+phy_sfp_add_upstream() does that now.
+
+Could sfp_bus_del_upstream() be called only after the upstream has been
+added, with a plain sfp_bus_put() otherwise? The kernel-doc should then
+be updated to match.
+
+The end of the series ("Documentation: networking: Update the phy_port
+infrastructure description") still has the same err_sfp path and the
+same kernel-doc.
+
+> +
+> +static int phy_sfp_add_upstream(struct phy_device *phydev)
+> +{
+
+[ ... ]
+
+> @@ -3551,6 +3569,10 @@ static int phy_setup_ports(struct phy_device *phydev)
+>  			break;
+>  		}
+>  
+> +	ret = phy_sfp_add_upstream(phydev);
+> +	if (ret)
+> +		goto err_sfp;
+> +
+
+[Severity: Low]
+Is the comment above the genphy check in phy_setup_ports() still
+accurate?
+
+	/* We don't support SFP with genphy drivers. Also, genphy driver
+	 * binding occurs with RTNL help, which will deadlock the call to
+	 * sfp_bus_add_upstream().
+	 */
+	if (!phydev->is_genphy_driven) {
+		ret = phy_sfp_probe(phydev);
+		...
+	}
+
+sfp_bus_add_upstream() is no longer inside that guard. It is now reached
+through phy_sfp_add_upstream() for every PHY, including genphy-driven
+ones.
+
+This is safe today only because phydev->sfp_bus stays NULL for genphy,
+and sfp_bus_add_upstream(NULL) returns 0 before taking rtnl_lock().
+Nothing near the new call states that dependency.
+
+Could the call go under the same is_genphy_driven check, or could the
+comment be updated to describe this? The end of the series has the same
+code.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016133107.54054-1-maxime.chevallier%40bootlin.com
