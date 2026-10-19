@@ -1,67 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792422189;
-	b=MgVyFFLwve1eqfAJ6gRb2atNoYRpL/hiPnqpsYUBamJKgNMx/XXBIy0phwmEj4SNZ/fz
-	 TWC99Q58uhm9haAEb5mRijECozMpi32kCwVkJNvWc1DWp06vBzyJuYjTm0IMDSM/d3YBQ
-	 qe+8w8gbAlDXxQU9muYZm4WhLL3lJV7YKjZ5/TxSvxLwTswwM00uLu+AldnYx61tG1OrZ
-	 GcEzMCdRe81/uixS0KQ/0HRQdLT9uw754eg8zIvSeMwiokHA8B2FHLsEmoGMphl/NMib7
-	 OnAZCQtcO4m3DweBPXXAozc6aoLvHbciGBew6oAHdfkfIRBMqu6jXqS3Gd09A1ulzOQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792422189;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=c5/ToZfD4LQ3CMw/UKyWzuZvE6sEZcZAHHntN38m0WA=;
-	b=ChlA+FtwRt0iPXV40aZYjAergGEojJT1gfAgylECsHH1tZdz9TSIqZlb2VMEyzqhd7K2
-	 hcaT++sTg4vOyw0sxm0cHFo7z+EIOHUn8a7STiOtYUhASHutLLHnFgdwwULNmmKqpGaSC
-	 U8XDzmSCsiZ01MEoFEIZ5C8sCTw24ClMRSE6ZvpNUfEZsCWnyu7h5lTRuV+36MBS0kjo3
-	 eRbgK6vkxaZwUAIOtnuxo0n23IcG56yFXcduFkmqGttx+E/w6VjAOfRW/7bX8D66b0c2q
-	 Vxuk4a+69IXMTvBXJHTHp1Dk59yGDhQMMQNFdyPErR/5lnmbTrIlqm/zVvEznctxnug==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b="cHon/KjN";
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5616C607D355;
-	Mon, 19 Oct 2026 15:03:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5616C607D355
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792421674;
+	b=V6D11IVyIjUXIlmFaPjLTOfnKtwhAQcAFbxiGatCPqyGipHWUZvHas6wahilaRMce56m
+	 N252G6ReVDxfjza0JE32fqRs5l71C8JwvPH6vWZxtNg0cimYW5J8wlesaepSj51AjBBJV
+	 DvKRTyjYep419syBaOcTmzRkFry+7dBsg5W+O3FQOC7/QgXUmIPb8lHttThiuoPEhdlTF
+	 of4v1w0NybbhvKgvhk66jcvIkE95fNzKJrvq2Yci55tBSTMJB4CsDlUKRxW9XKm8NFIup
+	 Eqs+tQOKr+vkhMV+4Di4nglmDaAH1PpJs0KYPw94JPwKXGJdC620fqXBEcK3RQoDDyA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792421674;
+	h=Received:Received:DKIM-Filter:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=pLtXWGlAP6785wBBieTrTxHzSzJh4HhsM6hJJ7PEjp8=;
+	b=kbaG4jCwttG+6vggUY9CENS4ccRII/KftBrSpM/yVQZW1Eak/Ggb/+PYeR/D0YE/TG7R
+	 TDLWjCfD8jJhyFcqUQgzm1NvlJvkG52ceEOuOjaayiYrX6JeUeWpTfgSMPrw4pCR+Ac7E
+	 ZYeQGw5CtppLPfnd1sMd1TA7Kaov2kwvEnltSg2E0tv1dm3Fj8Z9r9jB4i9HK0ZfwjMgV
+	 iUiKrr2j8QI7Eysj6WRzZAhHgRCJrhYy++cYecY1N/Q86WLsu7U7qzYAVLQPIL19vm96Q
+	 TpbwkeBUVauRxzVv4GJRB9/j5zQGkWP6gO7Yzm2Zi+yU6tbV61/AtaCzvhXEVR/t7Hg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=ispras.ru header.i=@ispras.ru header.a=rsa-sha256 header.s=default header.b=nIJ8RI1h;
+	dmarc=pass header.from=ispras.ru;
+	spf=pass smtp.mailfrom=ispras.ru;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
+Received: from aws-us-west-2-korg-listserv-1.web.codeaurora.org (ip-10-30-226-211.us-west-2.compute.internal [10.30.226.211])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F9F606DA6C;
+	Mon, 19 Oct 2026 14:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=cHon/KjN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1792422186;
-	bh=c5/ToZfD4LQ3CMw/UKyWzuZvE6sEZcZAHHntN38m0WA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHon/KjNKCRlfcO6PzWmnwvquPNdLNPJV16BWf5IWyGGaa6cNbsKy05dU5/hrFN4j
-	 KLoKa9paVT62GDBqJTrWDddldc5ow4eVa0iYcw3dJ9RAyoYnBuSWcSs7jD/2wq7Tf/
-	 7O4eDqfYsoMYPWnXysy/DeI1kCY4Loz1YH0M70wna3HjY/40lpUnIQlrvMjmkf3XO3
-	 Hd29zwSSsCEs9MF8RIoeo390zSY3zqQuPlOgXQG6jE+mS+p+okr8lKTeKfWH5/LCol
-	 vFHVZpd4rCuvw2r2PXP9lO08DeQ431U8/fFZpTN5g9jA4PGJx0AGROJ7hl4PEUe8T9
-	 JYvXPlekaJN3A==
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 0041560076;
-	Mon, 19 Oct 2026 17:03:05 +0200 (CEST)
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: [PATCH net 06/10] netfilter: nf_reject: initialize IPCB at inet ingress
-Date: Mon, 19 Oct 2026 17:02:45 +0200
-Message-ID: <20261019150249.1879516-7-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261019150249.1879516-1-pablo@netfilter.org>
-References: <20261019150249.1879516-1-pablo@netfilter.org>
+	dkim=pass (1024-bit key, unprotected) header.d=ispras.ru header.i=@ispras.ru header.a=rsa-sha256 header.s=default header.b=nIJ8RI1h
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9319353A72;
+	Mon, 19 Oct 2026 14:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792421674; cv=none; b=GAfR8qt6w5hYvpTdcf1dxj406mwI63+eK7JxEfpplen2Fm9zAOmgt1smerNu4HEmbbu+0TIdoMAI9wc/5VEaazkGUykHUVb/L0AiProxkdS5JxAmCZY1XBG89730kPZNkQtyjynQ3s2kh8VMlPp77KB3YakAecvtP9vtQpJt8O0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792421674; c=relaxed/simple;
+	bh=LM1zuW0/sF9KudJhepQZV11i0V1W2FAt5hhXmWJVX2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IjeOk8sODb7uS+CLMHYiJgj3VSwGCDzO9qVWOxb0/9n3urKdOGIcjCre4/O8GBgLh8JP/yCTrIS3PO696BqIHNgh2r/viWiRtRxznOOIqUyOBMRhndkcpAtkBLN5WM0w+dg+am8yYgtKRqV++Eh1CVV/kFfEo7zyL3jlAOJfxfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=nIJ8RI1h; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [10.10.165.11])
+	by mail.ispras.ru (Postfix) with ESMTPSA id D0552406E9BE;
+	Mon, 19 Oct 2026 14:46:23 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru D0552406E9BE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1792421183;
+	bh=pLtXWGlAP6785wBBieTrTxHzSzJh4HhsM6hJJ7PEjp8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nIJ8RI1hOhWHG/aBK2gZginkmEg3SsEMwaS8mbNlE0UqniEVA/HhZC0jJYCrXPvxO
+	 Efxl2MCFN0IUCQacpjizJd1Aszn7EOHFlVpFM6aRvxiTG4hF1xOnYsHey/iP6A1WdF
+	 5s/p5DUSo3PUzA/6ws7jBdS9Kf7BxLMMu9VWYG6Q=
+Date: Mon, 19 Oct 2026 17:46:23 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
+	=?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, Denis Benato <benato.denis96@gmail.com>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Jijie Shao <shaojijie@huawei.com>, 
+	Eric Dumazet <edumazet@google.com>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Michael Grzeschik <mgr@kernel.org>
+Subject: Re: [PATCH net v3 3/3] net: fealnx: bound card_idx to prevent
+ out-of-bounds access
+Message-ID: <atYrfvH_e1GLnfa9@fedora>
+References: <20261019134136.104932-1-r.zhambakiev@prosoftsystems.ru>
+ <20261019134136.104932-4-r.zhambakiev@prosoftsystems.ru>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,77 +81,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261019134136.104932-4-r.zhambakiev@prosoftsystems.ru>
 
-From: Kyle Zeng <kylebot@openai.com>
+On Mon, 19. Oct 13:43, Жамбакиев Радий Рикардинович wrote:
+> diff --git a/drivers/net/ethernet/fealnx.c b/drivers/net/ethernet/fealnx.c
+> index b5e96c7037f3..d5931c0314fc 100644
+> --- a/drivers/net/ethernet/fealnx.c
+> +++ b/drivers/net/ethernet/fealnx.c
+> @@ -41,6 +41,7 @@ static int rx_copybreak;
+>  /* interoperability.                                            */
+>  /* The media type is usually passed in 'options[]'.             */
+>  #define MAX_UNITS 8		/* More are supported, limit only on options */
+> +#define MAX_CARD_IDX		99999
+>  static int options[MAX_UNITS] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+>  static int full_duplex[MAX_UNITS] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+>  
+> @@ -489,6 +490,10 @@ static int fealnx_init_one(struct pci_dev *pdev,
+>  	int bar = 1;
+>  #endif
+>  
+> +	if (card_idx >= MAX_CARD_IDX) {
+> +		dev_err(&pdev->dev, "card_idx is too big %d, aborting", card_idx);
+> +		return -ENODEV;
+> +	}
+>  	card_idx++;
+>  	sprintf(boardname, "fealnx%d", card_idx);
 
-The inet ingress hook runs before ip_rcv_core() and ip6_rcv_core(), so
-neither IPCB nor IP6CB has been initialized when nft_reject_inet passes
-a packet to nf_send_unreach() or nf_send_unreach6(). skb->cb can
-therefore retain metadata from an earlier protocol layer.
+There is a compiler warning with a W=1 build the testing bots will
+soon complain about:
 
-For IPv4, icmp_send() treats IPCB(skb)->opt as parsed IPv4 options.
-Stale option offsets can make __ip_options_echo() copy an
-attacker-controlled length into its 40-byte reply option buffer and
-overflow the stack. On an unpatched v7.2-rc5 kernel, the IPv4
-reproducer produced:
-
-  BUG: KASAN: stack-out-of-bounds in __ip_options_echo()
-  Write of size 255
-
-For IPv6, icmpv6_send() consumes IP6CB(skb) as parsed IPv6 metadata. It
-always uses iif for source selection and, when MIP6 is enabled, uses
-dsthao as an extension-header offset. These fields must not be stale.
-
-For NF_INET_INGRESS, clear the address-family-specific control block and
-restore its input interface before constructing the ICMP error.  This
-matches similar initialization normally performed by ip_rcv_core() and
-ip6_rcv_core().
-
-Fixes: 117ca1f8920c ("netfilter: nft_reject_inet: allow to use reject from inet ingress")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Co-developed-by: David Lee <david.lee@trailofbits.com>
-Signed-off-by: David Lee <david.lee@trailofbits.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/ipv4/netfilter/nf_reject_ipv4.c | 5 +++++
- net/ipv6/netfilter/nf_reject_ipv6.c | 5 +++++
- 2 files changed, 10 insertions(+)
-
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 59ec465a9df9..7cb33af671e2 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -357,6 +357,11 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
- 	if (!skb_valid_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
- 		return;
- 
-+	if (hook == NF_INET_INGRESS) {
-+		memset(IPCB(skb_in), 0, sizeof(*IPCB(skb_in)));
-+		IPCB(skb_in)->iif = skb_in->skb_iif;
-+	}
-+
- 	if (skb_csum_unnecessary(skb_in) ||
- 	    !nf_reject_verify_csum(skb_in, dataoff, proto)) {
- 		icmp_send(skb_in, ICMP_DEST_UNREACH, code, 0);
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 07cdaa10da0d..5e08d8529cc8 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -444,6 +444,11 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
- 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
- 		skb_in->dev = net->loopback_dev;
- 
-+	if (hooknum == NF_INET_INGRESS) {
-+		memset(IP6CB(skb_in), 0, sizeof(*IP6CB(skb_in)));
-+		IP6CB(skb_in)->iif = skb_in->skb_iif;
-+	}
-+
- 	if (!skb_valid_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
- 		return;
- 
--- 
-2.47.3
+drivers/net/ethernet/fealnx.c:498:35: warning: '%d' directive writing between 1 and 11 bytes into a region of size 6 [-Wformat-overflow=]
+  498 |         sprintf(boardname, "fealnx%d", card_idx);
+      |                                   ^~
+drivers/net/ethernet/fealnx.c:498:28: note: directive argument in the range [-2147483647, 99999]
+  498 |         sprintf(boardname, "fealnx%d", card_idx);
+      |                            ^~~~~~~~~~
+drivers/net/ethernet/fealnx.c:498:9: note: 'sprintf' output between 8 and 18 bytes into a destination of size 12
+  498 |         sprintf(boardname, "fealnx%d", card_idx);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
