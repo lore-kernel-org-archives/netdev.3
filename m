@@ -1,83 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792439771;
-	b=ybhwX3AbYq953Jya7CupvyB4vRdud3Qh2rawfo0Nch2/yKpVQa/XSPjcG6pVl1GXfSV4
-	 LdCeVb9l8gk9HPn2VCHaNpAW7j04ntfd2F7/LoRfHMFtZnJQVA6XVHAhVBzHsfTYALtLC
-	 L8UZ8HiTA0MpLt638ol/lTyT3tgGyLAaCZAK7wwmu/htPrVXJddw/cij4gK/3rLJVCY+U
-	 6gz4isESH7BZc1tcaClZWNRL37jKXA07NIPt/NL/3uGcw4aAocPBgSfrcvmtQzqlEGnw8
-	 geXlPNWPhrjTz7ISuAlyBnwBgumUFH0CxQk5yaWM6yCWWnjh+Zv/oNZXn1e0F9GHaVw==
+	t=1792439768;
+	b=EYGt5ZBRb5UaMApxcd8GadsW2jF6ydfWkBvotiydRxMO1EEiAlq363+oDFXHpCPkd4CN
+	 jMU5uU/3etu7lPB8Kb+zPrnHlqdCeZqFZNtllRmW4r85EA/hUShDEnWxp07wWcChLS9/v
+	 Dytt8MMo+qeGX2tqHb+MtUsg6hXjJZ3a6ouwOLtFF0Gb9nIhCq5mJfLO/3wR0vrOlYvZs
+	 2ltDVivICKTc262ixRzrWUfnWXICwkgLBSaJskxlvu+0nEzRqyvCH3Ru1Xp+3egLfS3uQ
+	 G3MMQ0yXHNnvxxsJKRsz0773jMfilYoUT6QbPPzXRRGtb/NeEPVU9ms18XMQo5S42eQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792439771;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792439768;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=qULPWZzIsEM9YC7t8HZ+nATvnx0VppFSAZ2KI41+wsk=;
-	b=HjBKBrW6iaO4vjyAhWfLagkGLDbNc7dGlqwbB75PWj62zy9uaLQmugN5bupD4kVAY8iT
-	 Gh6G8uPih1pqKJKicDbOohSkS/yZGcGTiAH1TeWBFHV1BDvUjh9mReYpSBtt6g4nriqAR
-	 fo1iHk6aT9N5PZPvJwZU/v6TmYTgrX8iL4/QDWMVljZsmuYh35EKYtO3a3YGdRG+xvcXj
-	 04CmjffMneF86KDHV7mBnuo5srSkRVVuM7ckczCJMfbd1xbodC5Jb8Hv0UhmGq5vhswYj
-	 y4YoZ23h7GpB6iqR5e1OVmUYFK7oE1WYsHESfRCz6LvuVN1AKsKg9JoAQ+CPwKmQVLQ==
+	bh=JXdnIyvrKDz0KNBIWo1vxPO91lly1xbG10WPNnPQ3DA=;
+	b=2VxnM3/5p9GqI5i7U/kDHRIaTJO/ovFLK7mJQ9iQZjYkRoRfOLkg9QkFe7sBNonMlK5b
+	 vDDnvVoyNXdcIYIfbkGJtItXZh9AYpXWJzlStjLIoa9X+XX1MfLmGzj5gX4PdjPW/Dw2k
+	 0nhNGUS9nd08JbAEtaXcaZSkJXHcxwDsrePc72sFF+WECfURmbIbddO8xgy30Rz3JkwXq
+	 RLB7C0fpSMXPgWCoSCbS/NABHfEG3h1hlCMBBbeUjvSOwAfzrPX4wfXT9osorER6PaJ3A
+	 lfuINrwWArHXJt2bj1/o4D2sxAc0tTEmisyV5DTYzUTCODIoohjfNNdiBxfwOtMWZQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=szelinsky.de;
 	spf=pass smtp.mailfrom=szelinsky.de;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=kBxnjd7t;
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=UtY+sJD5;
 	arc=none smtp.remote-ip=85.214.127.56
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCCA606A330;
-	Mon, 19 Oct 2026 19:56:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2DCCA606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD442606A31C;
+	Mon, 19 Oct 2026 19:56:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD442606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=kBxnjd7t
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=UtY+sJD5
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 6DDA3E83A99;
-	Mon, 19 Oct 2026 21:56:09 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 95219E83A99;
+	Mon, 19 Oct 2026 21:55:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1792439769;
+	s=mail; t=1792439759;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qULPWZzIsEM9YC7t8HZ+nATvnx0VppFSAZ2KI41+wsk=;
-	b=kBxnjd7tDEfXepBJWwz5tQf+tphbRdlZhDRelia6FrIwYsvBglQYzKtctmABQjwzNFLAHx
-	dXutw5ycsZ1fM+UHq5Wn7O0Gd0MDtd1R1NBxhoMxRQTsjsOY12yMrDi94AtJOrRZU4eKo6
-	Ep45VcVYwotX6JMqUXcwQQZST8R1o2eqsQrJxTVg0FZFj+5SMl0FXRGFudikQJtYi7y2BO
-	c8mXU1NkXkK5EGHjsuL3GZdJJhc+ZruRULglPphKDA7Cqyvhbz14zmhc4a+kOm4CMbiSzJ
-	CEZZfVXtwOJggUn7GFEinGU+wjIC2GwDuCh4AFBH80umUb6xpe1CbDinH8QapA==
+	bh=JXdnIyvrKDz0KNBIWo1vxPO91lly1xbG10WPNnPQ3DA=;
+	b=UtY+sJD5ZZqeEpJdC1qvpLTqW1CVEKOeQcc7QAm5dmd+3XmRghtEMTU/mfog/p0ZQa1X+0
+	PxGp49yF5qad/P4ro2Rek8ZCHRlXzNSz9iwhYfguUVs6dwwvsQPNExvG0bokfdWEsn60P7
+	2yyKjzsptwvnlnSQOQbfEQRB/fFNy/qVcOs5/LJ7x+Yn89NY6siGGBQZRpAtnY1I6fwVF1
+	XYR2eSjp7PXKpleJCvuQFp+Px/eN0Eiss38LTED1piogBTBw0A0xARVSkWzCGNArz+M055
+	IKGLlBXU9weEiGpN/jPOWVhXh/NPtXORgZTAkgp8/MqHn04I2wXS5xxMy31evQ==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id 3NtrYxtOi0Ys; Mon, 19 Oct 2026 21:56:09 +0200 (CEST)
+ id AwQoPrqbJoi0; Mon, 19 Oct 2026 21:55:59 +0200 (CEST)
 Received: from p14sgen5.. (unknown [91.25.97.186])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Mon, 19 Oct 2026 21:56:09 +0200 (CEST)
+	Mon, 19 Oct 2026 21:55:59 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: o.rempel@pengutronix.de,
-	kory.maincent@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	broonie@kernel.org,
-	lgirdwood@gmail.com,
-	corey@leavitt.info,
-	kyle.swenson@est.tech,
-	horms@kernel.org,
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Corey Leavitt <corey@leavitt.info>,
+	Kyle Swenson <kyle.swenson@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	netdev-bot+sashiko@kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sashiko-reviews@lists.linux.dev
-Subject: Re: [PATCH net-next 1/4] net: pse-pd: unlink the controller before freeing its PI data
-Date: Mon, 19 Oct 2026 21:56:06 +0200
-Message-ID: <20261019195606.307851-1-github@szelinsky.de>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/4] net: pse-pd: core fixes ahead of the controller notifier
+Date: Mon, 19 Oct 2026 21:55:43 +0200
+Message-ID: <20261019195543.307784-1-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179239893644.3135.4909831916521856844@kernel.org>
-References: <179239893644.3135.4909831916521856844@kernel.org>
+In-Reply-To: <c652ce20-a3c7-432b-8bd1-dac902f04149@bootlin.com>
+References: <c652ce20-a3c7-432b-8bd1-dac902f04149@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,43 +88,25 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Oct 2026 08:35:36 +0000, netdev-bot+sashiko@kernel.org wrote:
-> [Severity: Low]
-> Should this have a Fixes: tag?
+On Mon, 19 Oct 2026 14:54:12 +0200, Kory Maincent wrote:
+> These are fixes, please send them to net instead.
 
-Yes. The patch moves to net, where it gets Fixes tags.
+Hi Kory,
 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but is the IRQ passed to
-> disable_irq() here always one the controller owns?
+Thanks. I will move 1/4 and 2/4 to net, into the next version of the
+net fixes series.
 
-No. That is an older bug, fixed in net by "net: pse-pd: do not keep a
-failed IRQ in pcdev->irq".
+1/4 does almost the same as two patches of my older net series [1],
+which already have your Reviewed-by. So I will use those two instead
+of 1/4, with list_del() moved first as in 1/4, and fold the rest of
+[1] into the net series too.
 
-> [Severity: High]
-> Unlinking from pse_controller_list blocks new of_pse_control_get()
-> lookups. What about the pse_control handles that consumers already hold?
-
-Right, that is an older bug, and this commit message claims too much.
-The PSE notifier series fixes it: there, the PHYs drop their handles
-before the PI data is freed. In net, this patch is replaced by two
-patches of [1]; the cover letter of [1] says that this case is not
-fixed there.
-
-> [Severity: High]
-> Can ntf_work be queued again after this cancel_work_sync()?
-
-Yes, through a handle that a consumer still holds, so this is the same
-older bug as above. The notifier series cancels the work only after
-all handles are dropped.
-
-> [Severity: High]
-> Can the PI regulators still use pcdev->pi after pse_release_pis() frees
-> it here?
-
-Yes, an older bug. It is fixed by the second patch of [1], which I
-will rework and fold into the net series.
+3/4 and 4/4 are not fixes. They prepare the PSE notifier series, so I
+will keep them in net-next and post them together with it, once the
+net fixes are merged.
 
 [1] https://lore.kernel.org/netdev/20260813200653.980170-1-github@szelinsky.de/
+
+pw-bot: cr
 
 Carlo
