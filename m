@@ -1,40 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DD746C851;
-	Mon, 19 Oct 2026 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E9A35E937;
+	Mon, 19 Oct 2026 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792416329; cv=none; b=iIEX3b94fD8S0h20G45QWiynZAeSmniGHkhJHYpiXgC0Gq/scWraZivqQr9ZumBWnNRX8nuLONhfGPAwhh6rgwMsoqNWxlNSnDHbM5ijHatRnL50WPfDaIg/secuBXQeDnXmqhl61+mzOZeFmQ6xk+x/On1OPfYG7KEJyX5qUY0=
+	t=1792416561; cv=none; b=LrzuK4lr5B9Yf9xsNw0VRAdMPXWdmHydvPlejBTxa3pOREzjh0DP0XQURcUQvkgYKNjWkABNWwFOYN2V3thX0jr4t7fg8Zx2VzijFuKQLaiOwyStD7TtYEi/Kdd1a4hATjfoAnRXzxpscWZvygKCgvYfp5xEftQhAaVgVbxfkVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792416329; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	s=arc-20240116; t=1792416561; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SbN7J5/Gj8+krW8mJprve2Qyq1Xi37LtVA55AO1qB663edLldwAt2oTNntgGnR5Hnz1kW/B0csj/1UqI9lBR02R/U76rndt49rTmU7XxuPrAk9yXu3gWZBO6D5zOna0harActL9+38lwxePLck2LOppa+/cQICS+vBD/9rQCfxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GpLvKrhO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=MSlG9Puwvxok4Iw7he8VraXQnfwg2BEpyi9hd9E0XnvPy0nwR4In76rOmJbrVDfzg6P3jqfyefeKP1V0mkovtLNhyAfftDPbG1RHQdpiwwc4I+lkClZ/X8L4EyLqYO+pgOqVq8S2qhYk4h6kZN6VJD6NUOqlkeJ+DdSThQ7dcXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cg8kmesW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GpLvKrhO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5CF1F000C4;
-	Mon, 19 Oct 2026 13:25:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cg8kmesW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC541F000C5;
+	Mon, 19 Oct 2026 13:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792416328;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	s=k20260515; t=1792416559;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GpLvKrhOLqw+7zF6BLJWXqKJXiPpNfz31vlEfZVxyet8RuFmREqzVEGM01sGEAzfN
-	 oeWNiL3yAeYcPrTSIzxGhOvuPstgGMnjS3n9BFCI1dMmXGFIrClPmVH6nCIRNA5I06
-	 8OsUUCT/cEFgG6K13JCE1KjhCVGPO+YLWyG6yaP1UclgCPeG/S5oOVve2dvIjBZCnn
-	 VD/YIshzD7HiU8cZBdWqI43jB+LvVFbyQ1pp1I76LIpCZVjXldXOtdeaiGEUYOtKBd
-	 7HLi8zWlz7d+z0GwgngjIUv4I3yhqBx69QN85RgVVbPQo3TxYm3glS7nYcpwZOkiZm
-	 7cHPgXQdPcC2g==
+	b=Cg8kmesWN57mHmnl0en3kWYMO2yX0BgIRJzmq3FgiPIVkBHJCehyWohK/DQhrOEJy
+	 zJ545bTFLn74AXk4TK9iv4KqYQvZj/aULQzo3I9xAoccx+xnbNmrrny1YSqoudqAqC
+	 3t5pUrZqPQlIPOy7v9hANSTAMWsvK/nWshybXQj4HrMlb82PZDOAptKJ80fJhrkkTX
+	 wNbWypmgc1cWREAxmVJ4bDCxM4fm1RUbYpgiRmnELaMwuxy7BMgsE5pKMipz6Se2Nd
+	 irGKYFbN7VB6z/DugXCGWjA/4SWQSWoiCRXgiwnDkvgj8pO4A7CkPIUrUiPolEqqpY
+	 XI/4AyHot2C3w==
 From: netdev-bot+sinfo@kernel.org
 To: Haoran Wang <haoranwangsec@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+Cc: Varun Prakash <varun@chelsio.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-rt-devel@lists.linux.dev, linux-scsi@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ipv4: icmp: use skb_dst_dev_net_rcu() in icmp_build_probe
-Date: Mon, 19 Oct 2026 13:25:27 +0000
-Message-ID: <179241632780.3290.8009042306781577182@kernel.org>
-In-Reply-To: <179241614083.5916.6651154069510905781@whr>
-References: <179241614083.5916.6651154069510905781@whr>
+Subject: Re: [PATCH] libcxgb: use raw_cpu_ptr() in ppm_get_cpu_entries()
+Date: Mon, 19 Oct 2026 13:29:18 +0000
+Message-ID: <179241655890.3290.16297373218443125626@kernel.org>
+In-Reply-To: <179241614797.5916.13928836073297916808@whr>
+References: <179241614797.5916.13928836073297916808@whr>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -57,6 +60,10 @@ commit messages seem to be missing some information:
  - Whether the issue was actually triggered, or is only theoretical
    (e.g. found by code inspection). If it was triggered please include
    the symptoms, like the stack trace or error messages.
+
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
