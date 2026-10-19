@@ -1,67 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792422188;
-	b=BCt26keuyrOJ6+kh3773vLp8doBYspgVG0CDiivI9tbogK5Y6PQnON2xB4RCNI7/RZki
-	 3cuiuuf1nAstJ9KrUXw4Yp71wysUaZ7gZvLqcw4HwAXo4PQek3JEnZXHydCaUEsbDulMu
-	 nLeBThGAkvarFcB89UejBOoFsI2kAJKXDt7ryuzAzUM/+ZZy+AAH9cojNYojjuLRbFnNq
-	 s1RLI1iZ4S5hPCAkoZ13Po8SfyLjkiPXjw79oa5X1b31h3Y7Q6kLD7TaSCmfm57pfk0dF
-	 bH0EiSeuivGao6hXYMrGwPB515p9yqM6o3lmyg6Ywz51h3AGbpW9nHfKNE62d27yMgQ==
+	t=1792423223;
+	b=yC2S2tHjmXlnAamYAWl/AzRndN8zDo6iwx/9GStMxq16nAGahx/f9z/TzImOq4E6ak4M
+	 wfATbuT4mPLNqlbI/CCbI7zHpeps/NZrTJ4TyMECmK9vgdGMZ/xsCFNxwm2J0cYsG2LeD
+	 Fb7uakHz8MwQ8GcafgH3j7R/d17usOidLG4RwgmrPWS6EEnMKUJlaAwEE8ArTuEBxZoDl
+	 Fu/fCsQ/SMb5IjzNP+Rf/Nz0m+oIzaUG2TGlk0R5M49Agn/VIt9ayPSfKi5GbgYD/3CcX
+	 cLMEYZRp3dVxduo+Ywt2RtQWm7gjQZGU+Tb02lcQiPJxl2Z61CIvHApJztfAO3Dgn0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792422188;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=NO/QAgPEr2LWUU2Z1qiLNJpJIA4pu0lHFz79MIU/6To=;
-	b=bk7u+rVJreWDxSSJ2+8e+1l0llRM7Rkp15qoafsQQvG/NbdQTrYeqxJsP6N87yJPI/4l
-	 wjD0EqoZu6bqkQ7mRem+9m09sWqrZW0QgH//eEsyPIcUjUfZwlmwLR32QGg5zOrNPlPml
-	 Zs/srzRA9Ir0HOLmT3mlFILrhXULRf7YR6n7uHdTJVIHyiZ3ketAFUTtoY3803m4J5w27
-	 BZ1WFKkUnlQRjPmxwdiPSfIW6DJsJ6ZHddtaWBqGD/A6PGn4cHdSFQfQViPkB4ZhLZvut
-	 Clxnm8SMj5HpIS+G5W7eIFl9K7XyNg3ErbV9vyODyJDKXpmx3w6mA3iH08jafqgzLPw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792423223;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=XhBCp7Nh6s4BiEKxr65ce1IMZRfLAF9oc7NrWukG/aM=;
+	b=bRqkI0MjYu5eP0LTF9Xk/7GOgFSXQO0EW1ifJoKCeDsXW/LdWqH17vsVLwCD2rdVDsbQ
+	 AJ0XxGumkQzar/8eWukQWtVy5jmSbqoBhs8Mx9FmankjHA9W/ZsKrDue+5aFdt3cGmEA0
+	 VLZsROSoBAQ5MW5b+4k9E6npIL+CQV4uHrU8Wlab16EjHl05cR4ThAQiuSYc6YG8Ih77C
+	 ZeZN+BuRLWY7TGmOgZX3CKmXJtiyvHWp4kqPxqd1qZqQLZlHywy6T1NweF+aHqxWUXmUf
+	 lwIA3V80qh9J4nBpjcVmMuIOTmjC+E6htsbWc/3iOjfrmzcoLaSS9oaoq8MlXN9y7tg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=vKcvGQ4r;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GPVAgI10;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0A8607D34E;
-	Mon, 19 Oct 2026 15:03:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F0A8607D34E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298A160A6F59;
+	Mon, 19 Oct 2026 15:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=vKcvGQ4r
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1792422179;
-	bh=NO/QAgPEr2LWUU2Z1qiLNJpJIA4pu0lHFz79MIU/6To=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKcvGQ4rceH0yefPHBJMeACMGW89fPb15Z/YI+xO4zyYYg8Zxq1fXUzJg55TsNhD3
-	 SJ1fSOgXnD1LUX6HFU/rtGEa3Mx4xp9v335dD8jHQ1FrK5qXP+uUbCdiUwcZ1TvVZT
-	 0znyXylC128naJ1kIBBWN6OHZqxtg8MXEdurtMwUrhTGfwhNqCHDhQpPo7IuJPDHOk
-	 iw3Zuvg8UbhhCTeY9udyPXlpYKayLSaOek/Oi9bQyMujVnTM5dLfAGf6mVat59bVUN
-	 8zUKQIPb5RNPVI/HAwsGKP7VGN2/vXYTXbSHTHoX1xxLFAw3hBVlysPWB+C1lAJhCE
-	 CX0HZqM/aEUKQ==
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 4E82C6005E;
-	Mon, 19 Oct 2026 17:02:59 +0200 (CEST)
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: [PATCH net 02/10] netfilter: nft_payload: restrict checksum offsets to known values
-Date: Mon, 19 Oct 2026 17:02:41 +0200
-Message-ID: <20261019150249.1879516-3-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261019150249.1879516-1-pablo@netfilter.org>
-References: <20261019150249.1879516-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GPVAgI10
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B8C1F000C5;
+	Mon, 19 Oct 2026 15:20:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792423222;
+	bh=XhBCp7Nh6s4BiEKxr65ce1IMZRfLAF9oc7NrWukG/aM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GPVAgI10CSfpJSpDXpybjj/pLY2f1EVax6aPNGZDJ+KFVXaPHg4CMZBYqSTAJEf8K
+	 tjc21bDDsLkBaw7ja/rwTITh59Bmw5+YiNV5HiVQD8RAAGNWUctLnVTTP5/uw8v1V2
+	 +nTbz5vogViT8iETdkvfRQhsGgy1QfHAz0Lx0atSVybaGVaYec32UsQG4tQcefqJ3a
+	 ycd/3yuyBO8I3AGrlc0VdptVmUN4bjhi4h0JsTnJH5jpQcgGEZDRK/emREttM8LSKs
+	 zZUh1t4SIygW/J0+yZN78RfMOnpnVG/lxjBtDoAP72ifOqzIkitNxIW+N49FZezl2L
+	 6jLy7X4XfFk2w==
+Subject:
+ Re: [PATCH net] net: usb: lan78xx: avoid NULL PHY dereference in WoL setup
+From: netdev-bot+sashiko@kernel.org
+To: prashantsengar25031@gmail.com
+Cc: netdev@vger.kernel.org, Thangaraj.S@microchip.com,
+ UNGLinuxDriver@microchip.com, linux-usb@vger.kernel.org, kuba@kernel.org
+Date: Mon, 19 Oct 2026 15:20:21 +0000
+Message-ID: <179242322195.3135.13620860446079084379@kernel.org>
+In-Reply-To: <20261018151830.643511-1-prashantsengar25031@gmail.com>
+References: <20261018151830.643511-1-prashantsengar25031@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,102 +62,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-We need to prevent userspace from corrupting e.g. tcp->doff, because
-many locations in conntrack and conntrack helpers rely on
-nf_conntrack_in() having validated the packet headers.
-nft_payload allows to alter headers later which invalidates this
-assumption.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-The 'Fixes' commit restricts writes to safe fields, but there is
-another side channel: the checksum location.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Restrict this too.  Reported via sashiko/gemini.
+- [Medium] On a LAN7801 in fixed-link mode with no PHY, lan78xx_set_wol()
+  (drivers/net/usb/lan78xx.c) now accepts WAKE_PHY and returns success,…
 
-Fixes: 112e447d17f7 ("netfilter: validate L4 headers after userspace packet writes")
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/netfilter/nft_payload.c | 40 ++++++++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 7 deletions(-)
+--
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index e315d35f73d4..5b76af68b704 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -20,6 +20,7 @@
- #include <linux/tcp.h>
- #include <linux/udp.h>
- #include <net/gre.h>
-+#include <linux/icmp.h>
- #include <linux/icmpv6.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
-@@ -1008,11 +1009,14 @@ static bool nft_payload_validate_inet_csum_offset(const struct nft_ctx *ctx,
- 		if (priv->csum_flags) /* makes no sense, asks for "re-update" of L4 checksum */
- 			return false;
- 
--		/* no further check here; offset can't be negative so bogus
--		 * offsets can corrupt L4 or payload but not l3 headers.
--		 * We already allow arbitrary l4/inner payload writes.
--		 */
--		return true;
-+		/* Validate csum_offset is one of the supported transport header checksums */
-+		if (priv->csum_offset == offsetof(struct tcphdr, check) ||
-+		    priv->csum_offset == offsetof(struct udphdr, check) ||
-+		    priv->csum_offset == offsetof(struct icmphdr, checksum) ||
-+		    priv->csum_offset == offsetof(struct icmp6hdr, icmp6_cksum))
-+			return true;
-+
-+		return false;
- 	case NFT_PAYLOAD_INNER_HEADER:
- 		return true;
- 	case NFT_PAYLOAD_TUN_HEADER:
-@@ -1046,6 +1050,27 @@ static bool nft_payload_csum_nh_write_ok(const struct nft_payload_set *priv,
- 	return false;
- }
- 
-+static bool nft_payload_csum_th_write_ok(const struct nft_payload_set *priv,
-+					 const struct nft_pktinfo *pkt)
-+{
-+	if (!(pkt->flags & NFT_PKTINFO_L4PROTO))
-+		return false;
-+
-+	switch (pkt->tprot) {
-+	case IPPROTO_TCP:
-+		return priv->csum_offset == offsetof(struct tcphdr, check);
-+	case IPPROTO_UDP:
-+	case IPPROTO_UDPLITE:
-+		return priv->csum_offset == offsetof(struct udphdr, check);
-+	case IPPROTO_ICMPV6:
-+		return priv->csum_offset == offsetof(struct icmp6hdr, icmp6_cksum);
-+	case IPPROTO_ICMP:
-+		return priv->csum_offset == offsetof(struct icmphdr, checksum);
-+	}
-+
-+	return false;
-+}
-+
- static bool nft_payload_csum_write_ok(const struct nft_pktinfo *pkt,
- 				      const struct nft_payload_set *priv)
- {
-@@ -1055,9 +1080,10 @@ static bool nft_payload_csum_write_ok(const struct nft_pktinfo *pkt,
- 	case NFT_PAYLOAD_NETWORK_HEADER:
- 		return nft_payload_csum_nh_write_ok(priv, pkt);
- 	case NFT_PAYLOAD_TRANSPORT_HEADER:
-+		return nft_payload_csum_th_write_ok(priv, pkt);
- 	case NFT_PAYLOAD_INNER_HEADER:
--		/* neither offsets are validated, offsets cannot be
--		 * negative so real l3 headers cannot be mangled.
-+		/* offset is not validated, offset cannot be
-+		 * negative so real l3/l4 headers cannot be mangled.
- 		 */
- 		return true;
- 	case NFT_PAYLOAD_TUN_HEADER:
+net: usb: lan78xx: avoid NULL PHY dereference in WoL setup
+
+This commit adds a check in lan78xx_set_wol() so that
+phy_ethtool_set_wol() is only called when netdev->phydev is non-NULL.
+This avoids a NULL pointer dereference on LAN7801 fixed-link setups
+that have no PHY attached.
+
+> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+> index 5655941f14783..0c19a84623523 100644
+> --- a/drivers/net/usb/lan78xx.c
+> +++ b/drivers/net/usb/lan78xx.c
+> @@ -1804,8 +1804,8 @@ static int lan78xx_set_wol(struct net_device *netdev,
+>  	ret = device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
+>  	if (ret < 0)
+>  		goto exit_pm_put;
+> -
+> -	ret = phy_ethtool_set_wol(netdev->phydev, wol);
+> +	if (netdev->phydev)
+> +		ret = phy_ethtool_set_wol(netdev->phydev, wol);
+
+[Severity: Medium]
+With no PHY attached, does this now accept WAKE_PHY and return success,
+even though nothing can raise a PHY wake event?
+
+In the fixed-link case, lan78xx_phy_init() returns early and leaves
+netdev->phydev NULL:
+
+	/* No PHY found, so set up a fixed link and return early.
+	 * No need to configure PHY IRQ or attach to phylink.
+	 */
+	return 0;
+
+In lan78xx_set_wol(), the wol->wolopts & ~WAKE_ALL check lets WAKE_PHY
+through. Then pdata->wol = wol->wolopts is stored and
+device_set_wakeup_enable() succeeds. With the new guard the PHY call is
+skipped, so ret stays 0.
+
+On the next system suspend, lan78xx_suspend() calls
+lan78xx_set_suspend(dev, pdata->wol). That arms a PHY wake source that
+has no PHY behind it:
+
+lan78xx_set_suspend() {
+    ...
+	if (wol & WAKE_PHY) {
+		temp_pmt_ctl |= PMT_CTL_PHY_WAKE_EN_;
+
+		temp_pmt_ctl |= PMT_CTL_WOL_EN_;
+    ...
+}
+
+lan78xx_get_wol() also keeps reporting wol->supported = WAKE_ALL, which
+includes WAKE_PHY, so userspace is told the mode is supported and
+active.
+
+Before e110bc825897, this configuration used a registered fixed PHY
+with the generic driver. That driver has no .set_wol, so
+phy_ethtool_set_wol() returned -EOPNOTSUPP.
+
+When netdev->phydev is NULL, should lan78xx_set_wol() reject WAKE_PHY,
+and should lan78xx_get_wol() drop it from the supported mask?
+
+>  
+>  exit_pm_put:
+>  	usb_autopm_put_interface(dev->intf);
+
 -- 
-2.47.3
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018151830.643511-1-prashantsengar25031%40gmail.com
