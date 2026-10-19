@@ -1,72 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194961E5714;
-	Mon, 19 Oct 2026 08:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E67148594C
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 08:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792399142; cv=none; b=otImXDlVMYc9QcIeM8tfsyfuUgaxx5po2VMibiPsq7vap9NiUwzwjYFOMUZWLWsC7qErtyZE6rYPpzj27OsG+oXjGw7bHbtRvxcJTlxay/9G71WMNMO59sLrRELvgmlM0rqRwmpaWvUzO8KVS8D6ychNboUhGDv+eZ9Ym55NUfc=
+	t=1792399239; cv=none; b=Itq8v3/eLjDET+NiJNhG7X3vCatiY9AEE14zJKOKnPIyV5fJwQM21PCuZGZIB3FMnx3p542XuFIMyGiuX0NbXlXviRvg4EQnc5iwwD6/VofxQjCVwa3XG+Gl1PfGFPtYR4/bOHESsbCzPlfLLhRV7AvgWG+FRnuomeNC1+jZe3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792399142; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JQbw/J6dsNKV87kn7acz5irV2DmuZvTI6L4QNxLEKolVdscyjyTBzXe4qspLdS/uGsU0MfZo/UBg770q8rLHAoahTV4LgsqR2A4N4AArON4F/jGiJUpALinNVC5VtglnlxlOyBDkz4KHawWEvAeK5qLmd5qzB4+pgSHzAul08pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SgeeQBJA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792399239; c=relaxed/simple;
+	bh=+RJy4/1CZWMGpIomq9rRX3FDlzjAyxgqndFyH/8QQ34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=heXBXIDZkWRPO5Oawnk6DWg10mHV721370/a3WSv/HdwQIf3m+dxJ+at78mdHSuTkrydBohrbXT4plRR5HaVg2S25o2L9f/rehqLc3L0rTQe+qu1nfdJvoGigQ1gCLY29UVrIjkpq5/6BNAYFs9vssYp1+O+RP7us2Sxu485YS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z23BVL9+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgeeQBJA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81A81F000C4;
-	Mon, 19 Oct 2026 08:38:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z23BVL9+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97001F000C9
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 08:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792399140;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SgeeQBJAhEL/RUosp9h+EW/ABgRi7/SGciqMzVHWcPmN5TD/KPYLHYiofOr0Jvflx
-	 j7S/CBLlezdgyjqpiQuGxVZpU7r6LePIuyZZkPHTFIsXjc8i3UOSLgkQUwhjidi5A+
-	 YYiqWsYkG1UjkuYmuhCLEq/8b1NLzTCeVU1EmweKbLukPC2IVH0IhOT3YIYlXCoV7Y
-	 o7PolMxtcTd5lHZS5Zl2lIi6BRJHqZScelJiyxr+rsSGLuHGE7hVtKlGvB1LnTDZfR
-	 Lq2SFmcxFsUOqJ49cit4OdDDzjbw/biDAfLJUetHcXlBmhRbBfbKpDlnveAqTnlmVN
-	 Ah6XnEI870E7g==
-From: netdev-bot+sinfo@kernel.org
-To: lirongqing <lirongqing@baidu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH] team: fix promisc/allmulti leak in team_port_add error path
-Date: Mon, 19 Oct 2026 08:38:59 +0000
-Message-ID: <179239913930.3290.4555356210564894333@kernel.org>
-In-Reply-To: <20261019083122.1841-1-lirongqing@baidu.com>
-References: <20261019083122.1841-1-lirongqing@baidu.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1792399238;
+	bh=kbbc18Cvxb0ZkFfeTiQznolGy8+ESv8PHDFn19DRekQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Z23BVL9+ELjt+cKdusMKRhHFw8UBL9KR8FYcUNDvyzrLivRHweMGuL5rmtKdbvPQu
+	 f/yYYG5NhbzDDceo+y27yBntC4eYR8MUbHmiZUdur0to5Ej5AyIRltY7b0FYcA8NV0
+	 u2b+Pz5peAan7aAptJNCUnsUQxNvhbxf5AT0aYYz71gWEn69viMfhyoaWKUIO5Ua7y
+	 DsS8HzQJCVy4vkY/PDbHKrgZ/08QssIA+nv0XYOvUyD7ABwEXNchLdJ/KuySQ/1/aD
+	 slRgE8WTCB3WiGY0pa0jUngeWCdtgsEzD+KQL+UALPt2Y0NeJQcy2GTxXqyAlKeE9/
+	 bUDhfx5bi6UFA==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3ab3b29a210so7028041fa.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 01:40:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz7JZwdzAsOMYNa+83dX7BucDRBkHd8YS4ggqfYbU4lZRRh6nfkU34+Oik03iAnnVkU1cTHAtA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLWl+5JJxtXFxlmonG70jjb8SvQtIuig6Kf0q9DlhxIGAY6Ppo+
+	JOm3ad+MfmGTm5QesLLvSZJiqu4uKgC4altDiSm2Qpourc68jukeFSgm5XVwFtWFRdG4pg44zqy
+	3aJPAMJ9ir2bt4ApJcM6xyN9IXmoKKEI=
+X-Received: by 2002:a05:651c:43c1:20b0:3a9:a07b:7448 with SMTP id
+ 38308e7fff4ca-3ab14800861mr14136711fa.19.1792399236671; Mon, 19 Oct 2026
+ 01:40:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261002115850.962676-1-o.rempel@pengutronix.de>
+ <20261002115850.962676-7-o.rempel@pengutronix.de> <CAJq09z7rAtikR+AZ93zjruhrhTEC6GbFJEXbQsbN_OVDgk29pQ@mail.gmail.com>
+In-Reply-To: <CAJq09z7rAtikR+AZ93zjruhrhTEC6GbFJEXbQsbN_OVDgk29pQ@mail.gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Mon, 19 Oct 2026 10:40:23 +0200
+X-Gmail-Original-Message-ID: <CAD++jLknmkndMJQuDGMnXohvf=X7Lw-dmCjOKo4Adb6V4mXO6Q@mail.gmail.com>
+X-Gm-Features: AclHuK8StAfiXPzzA-5_qpgPJKTDai8MFFCshc2OP8TDipUlYSr8l6jA-xmTMpo
+Message-ID: <CAD++jLknmkndMJQuDGMnXohvf=X7Lw-dmCjOKo4Adb6V4mXO6Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 6/8] net: dsa: realtek: rtl8365mb: add QoS
+ baseline and DCB default priority
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
+	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	OpenWrt Development List <openwrt-devel@lists.openwrt.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+[CC OpenWrt-devel to get some real-world usecase inputs]
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On Mon, Oct 19, 2026 at 6:01=E2=80=AFAM Luiz Angelo Daros de Luca
+<luizluca@gmail.com> wrote:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+> > +       select NET_IEEE8021Q_HELPERS
+> > +       select DCB
+>
+> Is 'select DCB' really desired here? Drivers generally avoid
+> unconditionally selecting DCB because it pulls in a non-negligible
+> amount of netlink and QoS machinery into the kernel,
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+I'm not saying you're wrong, but the Microchip DSA switches
+do select DCB for them all despite not all chips have this feature.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+The argument to select it would be if the features are useful
+for everyone.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+I had an AI describe to me how the DCB features can be useful
+for simple home routers running OpenWrt but I got a very
+muddy answer :D I do not think a default OpenWrt
+router userspace even uses the DCB features.
+
+If this is just for datacenters and fancypants set-ups maybe
+it would make sense to have it compile-out optional?
+
+Arguably it is something OpenWrts default userspace
+*should* be doing, even by default, since it's a well-known
+and old feature present in many routers. I think they/we might
+not have gotten there because we barely even embraced
+DSA, such fancy stuff could be on the TODO list. In that
+case, it may be helpful to have it default-enabled in the
+DSA chips that support it so it can be rolled out.
+
+Yours,
+Linus Walleij
