@@ -1,172 +1,279 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2674FD291
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792417904; cv=none; b=hMLN57CJISSAPq038DvVA9bvznQWnibS9lexgnVHDBwojgnfASbfnA3A4frBjGahkjd0K/V5QyeXjJ6Q8/opoMQ3xd3tCesea9CAEW1rVK/aovsjpYwjOEihTCLAXdW51pOdqYcfPl35nnhJ1j+wUNG5Ua7Phk71Tk8n/gYzFYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792417904; c=relaxed/simple;
-	bh=bVkQYPRV5cmZpoQgzwHTIPv/OeC1BGK6SJq4klyY24s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R1MGmrWqHUWXbDtoloxEiz++hXEjv2oa8SaYhknIbMXMFJbS8gnHr1dY0COq6kljwdGECSKJE/NZ6cQKBkYZX/nOe/SYXnbWz6EWNiPn02nKL5u4wjvZIOOkOrEvIn6u9N/4invVpi92bkbZ9WQ69InhQomJ0eMLXdiPyIPG5wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=GY17h3ow; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC6B4F6486
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792418077; cv=pass; b=bKUdpdasJtKp1t/NNkyXj+9f/Rn+7wlfWTZZ954PGSWk+J8oVgStyWn5IS/PjYxso7ChLV0dvNGUeawJ4XrjEtknWl+P62//b/prNXKx6rYxJHFWjo7QsmPG4t9sht/2QeRgj3meV0lpiBpNoz8ntRpZ9QIGe4KhIa9fbU63KVY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792418077; c=relaxed/simple;
+	bh=gvwoY48v8HtjEGBanR0EVPc+UxSyK5a07IZl2skoMZ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gmDaN37lp+pQejdaLFui/EWDjwiqfx8QnkZpfjlyhRTAudqXdEzacMqGKX6pZcBEU72kDNgG6lquWZQ59arsSHcD9vgAOnkSB4zrtpNR7AdMSzKPc3XUCJlPV+K0ytY7NuZy/kmEJT4ib8mzjvwcD2hSiY2Z1Yg7TqtC1gAdSaE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uNpXCGQP; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="GY17h3ow"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-91791ec1b83so18181256d6.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:51:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uNpXCGQP"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5337fa12431so402701cf.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:54:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792418074; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sQgNQNYWzbvlobCNf7DoavTxVs6UWUymCHvzZVPNzumcE6rnSxBV8mdWz4p1Kn89Ez
+         Rv6JWn9JLFjwk5RqZeABRY25mybwP9VsJjLASzeuyfa+rrgO8OfW7AZAf9zl2oZji/lb
+         bTBpAZt/FFI9w0+x+/OVhDufuqjub01FIANnf+9JdnVjm1DZtmSwWaSPX0MLbnQbC2J/
+         NPsMfSPQ1KzQEMJMSlaSj98pufmgYKaZCGX4O68mA4wWUKJQ7WEBbBo2znC7ju8WhE4n
+         ATJUwJKoPmPeqaoB74aGwvQqwQJgjx8wLlSdR57ORJAnxxTej7dLj8TIukgq3grH13DH
+         6EfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0kEytU5LeiM3vhSLHRfNg06oRQOFH8XdzJ+MdOl7cWw=;
+        fh=0Pr3NAAL3/ASf12Ysq73Kx4oGjHnLEgkwhEBmjtcBZE=;
+        b=gCoMfXlDCaK9+tUbNIdJUOETweRw/p5DzojssIIC+/o9uERBNKd44SIwLExqb598GM
+         1fhgokLqCgQDJ1/IpJ9C1er21rPd4U/L7MWmT1OBlFlyolRZZW8DvDenjQc0hD7xKvOy
+         EcAuSK1RcYUquE8EtLBs1a8gvE8ukulv0l4N98qXVX8d00VGXb9cnDP3vWRnmEm62lK1
+         vPXQQLOlQUd1FnApZEi52yjYqxGAYy7CPfOK1py/+SoIs40TiNvalOnYggZIkP1S+fqS
+         0dOtYlFq9RJgnlIvsq9FFJZJe6yMzRGk0/pzsw740dxHLyEw9cvlTeLDnq5hTrrNTesN
+         FL7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1792417902; x=1793022702; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Sz34K0Iw8+vtFq1WnWsYscgmIxwM3BOh5ri5FmDCCys=;
-        b=GY17h3owlGEscrFzB2QXAkJ/SZ5CYhTisVpbuvhjY7Tm9c7qwV8Rh2yGrn3+lk4Q1e
-         ywqhyNbDHwKGSPyFjE55O3h3IZZ9gytUUncjbbXGNyPSyf5x5OmIkShBB2jQhS/5wZUL
-         uZfd6oQQ4wKgiwOTc8SQMMxgp7XX45pLcisXwcgvTE8m2ElV9HNI+oCNUZoQAnJtZjlB
-         qzxJyDpvfhbaQ+oQ0YjLMTLQtBtjGtQeLsnpdk6Pr+1qiUc840K6kZTL79rZR173YE/3
-         QfG33V/65etehK2xOBaqF04/yTxPdHuyv6UGSS31yCJ83W/7PgUiDrIOHLLXUj5UOPx1
-         sWzw==
+        d=google.com; s=20251104; t=1792418074; x=1793022874; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0kEytU5LeiM3vhSLHRfNg06oRQOFH8XdzJ+MdOl7cWw=;
+        b=uNpXCGQPcR1FBHrB7LaE+WHjBB52uC8BjnVVPYEmtek8ERcmSeijJ9LBLLm3BTxAqr
+         aPAH3DCoH57rKYO2v9WsiafoGqkCwWxfh85xiwk/SzfB5nR7V9ZNVdQRB9d08PwdyJYz
+         YeqQhUu/UVlD/Cbdavi/XdKRN+hGNO91HLRAihExCMqkd9RhcWL29TXISP/KuI83Z7YE
+         k0U66OxR055W3AkvkRdfYmr1meUrsTDI1N1wTb7gd5MfJzteXs6T3i4yaL8DNRyOsMZm
+         SMY5kub6Zj+WrgsJ203Oafz3t4jeM+JWEF5bWZIAFcuOQktMCKCM2eJUR9tBEjSR1Pym
+         /aKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792417902; x=1793022702;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1792418074; x=1793022874;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Sz34K0Iw8+vtFq1WnWsYscgmIxwM3BOh5ri5FmDCCys=;
-        b=RIlR/zutYZRFFec23jSb35QEByUK1drgDhug/QUIB9DkJsFJlBUuwb8oswE4VHvcX/
-         hmtP9CZC7O8g8CpDqsBvSolZdMCyJXffLeppJtcVHBCTMq9HXB9hLL2AZs7z3n9vc8Qc
-         L8PWkqAePilf+AWVedXYsiGfGdmj4lwRbz6jLGXx0sot3U3hDbxCqh6s/V0aeMWCdiFu
-         gP0VAc9bqX2mDcvbOcDJ3gMGecZUFLiIEG4vVwmipkrMJ0TENv1joRq9Rk1E3p67u0iJ
-         5GAw/TWPxNMCtfn+KEhkj9LcE2cOG2nFErF4qVEhdvumK85pz52m3MxFm/h68ERq94l+
-         eT4g==
-X-Forwarded-Encrypted: i=1; AKwUvBwPIgATmQ/Vud7/OLKp09jij1ibXF2CiAtVCIZuPI+SuHJKo3sVXVgyniIq4rH6qVHr+0hRdkA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL3HKOrDsCslAG0GqhZWTF7xqaWglJWvV67fvVOnnp2Np1YZXY8
-	OFiE1DLkPcdstB23AwO0XOVZEl0vNz3Viz9DknihTB3tok9upGUMX+xvsCFdG5Sz0+I=
-X-Gm-Gg: AYBFou2sxvMpX/kgMPfsKtaiUZ6SEiRVQBtDoS+w0xw2gqM85HoPin1d9wAB851Znrj
-	WeF+ZLNocIJjxg8GBHru5Nbpx50JXXxebVY+MgohUiqsBMgZbnxkQ1T1w03HxNwbT8/f9IMl12i
-	bfYDtQ93w4/28m52fPUDrR/ZJSffZllUXTesCJUHvTcjpvUrOYcIBMALkCEgdcOF3wxbFruL4V+
-	OSOgzT1cN4snqqvfuFd85p873kW34wcI9+lf9gQx0RFROjzOw09r0QJQxA5rZUv78QNi1gHP2Uw
-	tWlssUY94s+ifehRq7N+mdQBkAaEId4PBuKEcVbUFwzH2U+QDseHk2JsXg9T7flF6QTkPCSMZ9K
-	52OfzAcSm8Eb0EUhkzHiI/BgDK5G6DTyLe4zfafVQOOg6woPh5xfuLdVrsDrJ0Ybm54cVcJAiR4
-	pP4joHKcI60OYSfAJCa49+sNUd3uK9LwulDbyn+uD6YpLuDR5dIYkyAwnm18ql1Z3rE+VgjPK8+
-	pvAMbjXyMCLOm0=
-X-Received: by 2002:a05:6214:29e2:b0:919:aba4:22e5 with SMTP id 6a1803df08f44-91bdf0aa97dmr130453586d6.18.1792417901621;
-        Mon, 19 Oct 2026 06:51:41 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.247])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91bcbb233d2sm98126806d6.32.2026.10.19.06.51.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 06:51:40 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Mon, 19 Oct 2026 13:50:49 +0000
-Subject: [PATCH net-next 15/15] net: update comments that still describe
- the skb BUG_ON()s
+        bh=0kEytU5LeiM3vhSLHRfNg06oRQOFH8XdzJ+MdOl7cWw=;
+        b=r+FzftVzs8/Xj7lormLx5tnYAUUrU6D1m0jLZY5XimIhYxE1roWjOUs23bP/c2Zxqi
+         YOM+uU2kzfd4DlKpxby/LPbFdcXwwOUVnm7jo9bOzj22zudrm47cJajq/ggmQ2wFq9ok
+         o99/vTr2Xid7EoPmA3s/yDpyFyopYy0GvwubUXb2wP1K4/FLFF+QPxToWwOmNIPNPrnx
+         Zcjc/FoLglnRwe9tm3bjoNLUDeLVrAkqq1QPBCo/RWzdlgRiRPiLNAEpTp5quHXqXMKR
+         ZUaswqkX4ao6X4RGu4mfNpjSxPXxcfPnKOcWfnZkfncoTKOUSUgyQIaHg0Ecw9k3YGIL
+         UINg==
+X-Forwarded-Encrypted: i=1; AKwUvBxjmCSDgpQeCt1H3joP3JzeYtLStao3lX7BXeeybimW9sqOiDcqZQUG35lWcycPZ4jOpBaV5rc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLpNUXybizKxOouvcCZ4FV0wUIJ7TLMOcHqJ+U5S9IklWIOjx24
+	6r3soZDjq6dKC4BnsHuTTj0dJTYfUKI3MMlrpkrUSAYOzUFwGkSbuNVsQoSNekAkZnaNNh8wV1D
+	q/PKV0D85qRYwetTj3CSK99KGVNYWX2aDQEliaYWv
+X-Gm-Gg: AYBFou19zLvydjQPK3KA/msLMhrE5NSLC9pjhYMliaZI/+3eDvQ+a5vpboh8eY1mapD
+	xTaQTpHflemKTIwtNjo38qzXUwZKsLraPp86VMPk7xkAHPRkER9ioACqmpKOb1f9M2wuwtPaXKj
+	TGkS8WOcIU5j/UPc0yg1LnbQtI8byZOt9ijjD8OtVN5g2OdZeUE2OcWUY2pX7O1/4tqZ+6yj0FI
+	gVEuRWIdsN63BSyN4qG7w27oaVXTtXxtgAxRFygsu1XhQ1AwcAU8L4B00Uv1pblnED08/o8quFq
+	9BZwlc2kqybKRzgILy9Av6UYxKfZ5AvYpZACkwvdngQyQHLozvVTdj2z+IfSM5wvzgGUnfq7GJX
+	yne21TFXvz+LYIPzD7/1YXLYC3y4U2nIF0LHfjmM2zGXvlDwQJ8QedOU=
+X-Received: by 2002:a05:622a:228b:b0:532:eff9:ca08 with SMTP id
+ d75a77b69052e-536465dfce9mr41062201cf.12.1792418073474; Mon, 19 Oct 2026
+ 06:54:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-b4-skbuff-bug-on-followups-v1-15-41dbef50b9f7@toxicpanda.com>
-References: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
-In-Reply-To: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Juergen Gross <jgross@suse.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Fernando Fernandez Mancera <fmancera@suse.de>, 
- Mina Almasry <almasrymina@google.com>, 
- David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
- xen-devel@lists.xenproject.org, Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1792417849; l=2874;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=bVkQYPRV5cmZpoQgzwHTIPv/OeC1BGK6SJq4klyY24s=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QGRgYXu9jiEH+o+P/X5XgMdqaIYdTCVgqXiXo+r1ZD/WK34+ps+wJnDs8hXR/0Hv/jB0pnLBW9g
- OlRZBGpF96AQ=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+References: <20261018211514.2817293-1-chia-yu.chang@nokia-bell-labs.com> <20261018211514.2817293-2-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20261018211514.2817293-2-chia-yu.chang@nokia-bell-labs.com>
+From: Neal Cardwell <ncardwell@google.com>
+Date: Mon, 19 Oct 2026 09:54:16 -0400
+X-Gm-Features: AclHuK-yKHKszrAvQ0DWznhcRsJCvVm21RfRVRcavHBDlb8PKd3FVpjc1os6wtY
+Message-ID: <CADVnQy=jqk0vZUsG6JKv44cBbnR5pG5+7Tvacohuz3tzFpF6pQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/3] tcp: accecn: Add ece_delta to rate_sample
+To: chia-yu.chang@nokia-bell-labs.com
+Cc: ihor.solodrai@linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com, 
+	jiayuan.chen@linux.dev, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
+	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
+	jolsa@kernel.org, emil@etsalapatis.com, linux-kselftest@vger.kernel.org, 
+	shuah@kernel.org, horms@kernel.org, dsahern@kernel.org, pabeni@redhat.com, 
+	jhs@mojatatu.com, stephen@networkplumber.org, davem@davemloft.net, 
+	edumazet@google.com, andrew+netdev@lunn.ch, donald.hunter@gmail.com, 
+	kuniyu@google.com, ij@kernel.org, koen.de_schepper@nokia-bell-labs.com, 
+	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
+	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
+	Jason_Livingood@comcast.com, vidhi_goel@apple.com, Mike_Rudolph@comcast.com, 
+	Jeff_Howe@comcast.com, srichard@netapp.com, 
+	Olivier Tilmans <olivier.tilmans@nokia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The skbuff BUG_ON() conversions left a few comments behind:
+On Sun, Oct 18, 2026 at 5:15=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
+ wrote:
+>
+> From: Ilpo J=C3=A4rvinen <ij@kernel.org>
 
- - bpf_skb_net_grow() says skb_segment() BUG()s on a frag_list with
-   head_frag set at the downgraded MSS.  It fails the segmentation and
-   the packet is dropped, which is still why the skb gets linearized.
- - The GSO KUnit test says the non-uniform frag_list case would hit
-   BUG_ON(i >= nfrags) with SG.  That check now fails with -EINVAL.
- - The skb_to_sgvec() kernel-doc doesn't list the -EINVAL that
-   __skb_to_sgvec() returns when @offset and @len run past the end of
-   the skb.
+Thanks for the patch. I agree this will be useful for congestion
+control modules using L4S ECN. For example, I see this field is used
+by Prague in https://github.com/L4STeam/linux/blob/testing/net/ipv4/tcp_pra=
+gue.c
+.... is that the current URL for the code?
 
-No functional change.
+> Include echoed CE count into rate_sample. Replace local ecn_count
+> variable with it.
 
-Assisted-by: LLM
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- net/core/filter.c   | 6 +++---
- net/core/net_test.c | 4 ++--
- net/core/skbuff.c   | 5 +++--
- 3 files changed, 8 insertions(+), 7 deletions(-)
+I'd suggest a clearer commit message, like:
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 3ee1a093337e..f5bce0dc43fe 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3696,9 +3696,9 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
- 		shinfo->gso_segs = 0;
- 
- 		/* Due to header growth, MSS needs to be downgraded.
--		 * There is a BUG_ON() when segmenting the frag_list with
--		 * head_frag true, so linearize the skb after downgrading
--		 * the MSS.
-+		 * Segmenting a frag_list with head_frag true at the new MSS
-+		 * fails and the packet gets dropped, so linearize the skb
-+		 * after downgrading the MSS.
- 		 */
- 		if (!(flags & BPF_F_ADJ_ROOM_FIXED_GSO)) {
- 			skb_decrease_gso_size(shinfo, len_diff);
-diff --git a/net/core/net_test.c b/net/core/net_test.c
-index 12a175268a01..d38dfeed163b 100644
---- a/net/core/net_test.c
-+++ b/net/core/net_test.c
-@@ -325,8 +325,8 @@ static void gso_test_func(struct kunit *test)
- 	if (tcase->id == GSO_TEST_GSO_PARTIAL)
- 		features |= NETIF_F_GSO_PARTIAL;
- 
--	/* TODO: this should also work with SG,
--	 * rather than hit BUG_ON(i >= nfrags)
-+	/* TODO: this should also work with SG, rather than fail the
-+	 * i >= nfrags check in skb_segment()
- 	 */
- 	if (tcase->id == GSO_TEST_FRAG_LIST_NON_UNIFORM)
- 		features &= ~NETIF_F_SG;
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index b6ada54ecc57..4822f96fc1c8 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5554,8 +5554,9 @@ __skb_to_sgvec(struct sk_buff *skb, struct scatterlist *sg, int offset, int len,
-  *
-  *	Fill the specified scatter-gather list with mappings/pointers into a
-  *	region of the buffer space attached to a socket buffer. Returns either
-- *	the number of scatterlist items used, or -EMSGSIZE if the contents
-- *	could not fit.
-+ *	the number of scatterlist items used, -EMSGSIZE if the contents
-+ *	could not fit, or -EINVAL if @offset and @len run past the end of
-+ *	the skb.
-  */
- int skb_to_sgvec(struct sk_buff *skb, struct scatterlist *sg, int offset, int len)
- {
+Include in rate_sample a count of the number of segments that were
+newly marked, on this ACK, as having been CE (congestion experienced).
+Replace local ecn_count variable with it. This signal will be useful,
+in upcoming patches, for congestion control modules, like Prague,
+which want to process AccECN-style ECN signals.
 
--- 
-2.55.0
+>
+> Co-developed-by: Olivier Tilmans <olivier.tilmans@nokia.com>
+> Signed-off-by: Olivier Tilmans <olivier.tilmans@nokia.com>
+> Signed-off-by: Ilpo J=C3=A4rvinen <ij@kernel.org>
+> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> ---
+>  include/net/tcp.h    |  1 +
+>  net/ipv4/tcp_input.c | 41 +++++++++++++++++++----------------------
+>  2 files changed, 20 insertions(+), 22 deletions(-)
+>
+> diff --git a/include/net/tcp.h b/include/net/tcp.h
+> index 0265c27a5fd7..1838389a9d8a 100644
+> --- a/include/net/tcp.h
+> +++ b/include/net/tcp.h
+> @@ -1346,6 +1346,7 @@ struct rate_sample {
+>         int  losses;            /* number of packets marked lost upon ACK=
+ */
+>         u32  acked_sacked;      /* number of packets newly (S)ACKed upon =
+ACK */
+>         u32  prior_in_flight;   /* in flight before this ACK */
+> +       u32  ece_delta;         /* is this ACK echoing some received CE? =
+*/
 
+
+This comment seems incorrect. It implies the value is a boolean, but
+it's a count.
+
+I'd suggest renaming the field for clarity, to something like
+acked_sacked_ece, since AFAIK it is the subset of the packets in
+acked_sacked that were marked as CE.
+
+So, for clarity/readability, I'd suggest renaming it, and placing the
+field immediately below acked_sacked, and reworking the comment to be
+like:
+
+        u32  acked_sacked;      /* number of packets newly (S)ACKed upon AC=
+K */
+        u32  acked_sacked_ece;  /* number of packets ECE-marked upon ACK */
+
+>         u32  last_end_seq;      /* end_seq of most recently ACKed packet =
+*/
+>         bool is_app_limited;    /* is sample from packet with bubble in p=
+ipe? */
+>         bool is_retrans;        /* is sample from retransmission? */
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 02ec0b0116d1..a5a7302050c4 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -588,9 +588,10 @@ static u32 __tcp_accecn_process(struct sock *sk, con=
+st struct sk_buff *skb,
+>         return safe_delta;
+>  }
+>
+> -static u32 tcp_accecn_process(struct sock *sk, const struct sk_buff *skb=
+,
+> -                             u32 delivered_pkts, u32 delivered_bytes,
+> -                             u64 prior_bytes_acked, int *flag)
+> +static void tcp_accecn_process(struct sock *sk, struct rate_sample *rs,
+> +                              const struct sk_buff *skb, u32 delivered_p=
+kts,
+> +                              u32 delivered_bytes, u64 prior_bytes_acked=
+,
+> +                              int *flag)
+>  {
+>         struct tcp_sock *tp =3D tcp_sk(sk);
+>         u32 delta;
+> @@ -600,11 +601,11 @@ static u32 tcp_accecn_process(struct sock *sk, cons=
+t struct sk_buff *skb,
+>         if (delta > 0) {
+>                 tcp_count_delivered_ce(tp, delta);
+>                 *flag |=3D FLAG_ECE;
+> +               rs->ece_delta =3D delta;
+>                 /* Recalculate header predictor */
+>                 if (tp->pred_flags)
+>                         tcp_fast_path_on(tp);
+>         }
+> -       return delta;
+>  }
+
+
+Does this compile? Did you try to compile this patch? This removes the
+only "return" statement from a function that returns a value. Looks
+like invalid C to me. :-)
+
+>
+>  /* Buffer size and advertised window tuning.
+> @@ -4220,8 +4221,8 @@ static void tcp_xmit_recovery(struct sock *sk, int =
+rexmit)
+>  }
+>
+>  /* Returns the number of packets newly acked or sacked by the current AC=
+K */
+> -static u32 tcp_newly_delivered(struct sock *sk, u32 prior_delivered,
+> -                              u32 ecn_count, int flag)
+> +static u32 tcp_newly_delivered(struct sock *sk, struct rate_sample *rs,
+> +                              u32 prior_delivered, int flag)
+>  {
+>         const struct net *net =3D sock_net(sk);
+>         struct tcp_sock *tp =3D tcp_sk(sk);
+> @@ -4232,8 +4233,8 @@ static u32 tcp_newly_delivered(struct sock *sk, u32=
+ prior_delivered,
+>
+>         if (flag & FLAG_ECE) {
+>                 if (tcp_ecn_mode_rfc3168(tp))
+
+
+This (tcp_ecn_mode_rfc3168(tp)) expression seems to suggest that the
+value will not be available for AccECN connections. How will Prague
+use this rs->ece_delta field if it's only available for rfc3168 ECN?
+
+I suggest addressing this so that the rs->ece_delta is updated if
+tcp_ecn_mode_any(), and putting that change in a new commit, placed
+before this commit in this patch series.
+
+>
+> -                       ecn_count =3D delivered;
+> -               NET_ADD_STATS(net, LINUX_MIB_TCPDELIVEREDCE, ecn_count);
+> +                       rs->ece_delta =3D delivered;
+> +               NET_ADD_STATS(net, LINUX_MIB_TCPDELIVEREDCE, rs->ece_delt=
+a);
+>         }
+>
+>         return delivered;
+> @@ -4288,7 +4289,7 @@ static int tcp_ack(struct sock *sk, const struct sk=
+_buff *skb, int flag)
+>         struct inet_connection_sock *icsk =3D inet_csk(sk);
+>         struct tcp_sock *tp =3D tcp_sk(sk);
+>         struct tcp_sacktag_state sack_state;
+> -       struct rate_sample rs =3D { .prior_delivered =3D 0 };
+> +       struct rate_sample rs =3D { .prior_delivered =3D 0, .ece_delta =
+=3D 0 };
+
+Adding the ece_delta field here in the initializer is redundant.
+
+According to the C99 standard (ISO/IEC 9899:1999, Section 6.7.9,
+paragraph 21), if an aggregate or union contains fewer initializers
+than there are members, the remaining fields are implicitly
+initialized the same as objects that have static storage duration.
+When you explicitly initialize even a single scalar field (whether to
+zero or any other value) using a designated initializer, you trigger
+the C language rule for partial initialization. Arithmetic/Scalar
+types (integers, floats) are initialized to 0.
+
+Thanks again for the patch.
+
+Best,
+neal
