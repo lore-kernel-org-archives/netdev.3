@@ -1,136 +1,184 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.21
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792452923;
-	b=whL6euV4zInBp4phXdKXQFuA7OkCJVppOt9VWYPERFrwDYYu8UbJHbeMg4u97+bitRRg
-	 tfAz58zGEjeE4kPg9qPNG4whhlP6GtK8Ru8qZp/Oz+1UvviHeS8653vWoBCd4r1mjxdXA
-	 u+ZTgHTJXCMJDwLmPICjGkQuYg+z+3H8yHCvhTaPXtMc7czmB4cceAEe3xVZ42hOLZ0gj
-	 rwhZEzWpKWTOB1dWvB8RZPhimUunddtdE4cSz3/uxCzHbq7cSyV9hzYRMifTiauVdCP0a
-	 UbPSKqtszJI4SgHOy5Qd45HP7htEeKlC/RJr2Yu2Mv/tTDlmW3YWqpLVaTocyI5VlWA==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=216.71.153.144
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792452933;
+	b=skzcsDNLhA28PWtBwBgMkie+XjjCJJ1EyaPUjZUnvMMuq00PYqzMmgITQXEQbZl0kNNv
+	 qaMzUCuOIOQ+lkEiX/7izKUeWdtAH95Elp+fshxViwZdefBops2cJJeG7bqFEAMWwZ1D1
+	 oZ4CXvibcp+P3kxNEt1NTpMdblToyKRO9SYusmm+L21eMSxFevszjIg3WOmiHLZBUUQnq
+	 xKNcncZIqZpiFGIL2RJeHpCsCbsEUwtc7WPvBgu1osZ849t4vcrxzaz4ToI3SV5QIHks2
+	 TmULVXia94BAEclx8mpG7+LwzuQxo/5cmY0me94uFM+w2CJpXtFBE3sV6ISEn+R3nig==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792452923;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792452933;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-IronPort-AV:Received:DKIM-Signature:Received:Received:From:To:CC:
+	 Subject:Thread-Topic:Thread-Index:Date:Message-ID:References:
+	 In-Reply-To:Accept-Language:Content-Language:X-MS-Has-Attach:
+	 X-MS-TNEF-Correlator:x-ms-publictraffictype:
+	 x-ms-traffictypediagnostic:x-ms-office365-filtering-correlation-id:
+	 wdcipoutbound:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:Content-ID:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=brMAgUK38iV49/hi0wR5GfOL153GSjwksppYnxy9fB4=;
-	b=GEd4WbiY0+g5VVum56wtv+puYsqCFGPp9WcjbUMTEaQGZ3xM0cMVM++oAudwV9Ide4rR
-	 cRq9bBaCvE4vNaRM4Wn1MetxT3he2Exw0hQKBKLzoZC4elodTmKAGpEGpqVtGN/F1PcYj
-	 EvxcCqEaS4/2JSsKBTKh6BCGKfWBlQKZOXHPgYy4tmCkigUoa/8/pzm5RrApCqZVNwRh6
-	 eqx4Udm8O8Qc1ee2vqwNxDhoI8koURQSw7WHrONWPk2KwTL+LjZu1uzA+pcR/5UKCt+l8
-	 5Ny5W5IImPZLwbXDYDMp/XIMDJUhRDqBD8pNeVRTIgBqDDYPGvq7p5ro8k/9rlb8B2Q==
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=IoHzmaT978E9zcV0tRR82U61pKkvnzqmz8tVXc2B0uk=;
+	b=XBMXpFyHVpQR1SHEoYWd46eorQfc1Q8Zh9w24KacuM1DXdyEtSirszaiqE67E7XjNiz/
+	 s4p8TfnLpuTwglHu3WRAlheeXetj8NTJSHBUgOtYbpjYvafsddUa3F9505hO6O9V8kUr0
+	 1SKxVD9T7nNNX/58g5fBsCMIng/pyAw1OefIpdhpnuwVt6vCZucSa8nw/+zKpbH7wqx7P
+	 obxj++9Pgj/f2KCI6tpCe68JumS8MdZt5KxNv6QgCf3TzEplP1Kr+4BugWaj2LLXIBQWG
+	 aGyhCwjJCFrX/HYXcbyfKtsFlheW0axExywNAt6IHRVZu0/kMOMXdlzgp/GyHeG+Y3A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LWoJPS8y;
-	arc=fail smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	dmarc=pass header.from=wdc.com;
+	spf=pass smtp.mailfrom=wdc.com;
+	dkim=pass header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256 header.s=dkim.wdc.com header.b=oHBxUcir;
+	dkim=pass header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-sharedspace-onmicrosoft-com header.b=DHmAHL70;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=216.71.153.144
+Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7636606A319
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:35:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7636606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D90606A319;
+	Mon, 19 Oct 2026 23:35:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9D90606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LWoJPS8y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792452922; x=1823988922;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=xW5yVtd9xH+0B+AVfpr7+FSWZt//YFL5jtdfBk+hjws=;
-  b=LWoJPS8yHlkUhT09aIE+EqbcoRFxxWt+3mOXiNFGTFejei0FxaCObwpg
-   Nrtm4I9E39lFhgiNBrD/LO/6AISCym5mBxtjUcrJn1fbgrr06GLQIwekb
-   Kuras9muxMZq/STgMwohiyK1ZUVgaz51iFJ5fOehthua8NhOn+lBq0i6Y
-   mRb8wu2K/tu4xn2eElnAVP/hMRZ8enmWQIaU53HgYD/cJVQmwTIfW32fW
-   3/3wjYV9eEsIuRbN/SlOKzCZJFIsVm4ujOypZUxyIgmRrDZ1lu6Mpu5/D
-   J1HI2EehQCZZi669NOHPdmIktNXyiEa9PPn1iwdXSU+FilaDPBO9NyA+X
-   w==;
-X-CSE-ConnectionGUID: 6EokPPo8RuCrWx0uHfj/DQ==
-X-CSE-MsgGUID: HCWBU/obTpa3LdbfYa7hXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1250927"
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="1250927"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 16:35:22 -0700
-X-CSE-ConnectionGUID: 9p2hNgOmQ7CnxN8QB/QNxw==
-X-CSE-MsgGUID: lXXsaXuTRZGFy1A5mNNz7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="2993486"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 16:35:21 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 16:35:20 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 19 Oct 2026 16:35:20 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.7) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 16:35:20 -0700
+	dkim=pass (2048-bit key, unprotected) header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256 header.s=dkim.wdc.com header.b=oHBxUcir;
+	dkim=pass (1024-bit key, unprotected) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-sharedspace-onmicrosoft-com header.b=DHmAHL70
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1792452932; x=1823988932;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=IoHzmaT978E9zcV0tRR82U61pKkvnzqmz8tVXc2B0uk=;
+  b=oHBxUcirgTJ0+4Sh/Hs9li5TvIdIdzZDjT7ygO8I3sN4c2k8dDH/ijBJ
+   TiGgcfEC/iH3tQgix7IDrnJA0BOzBz8rWZQzQJqASrNTqYnZ5712lMca4
+   hmrnJbYGznj/8gKFe5UycqHC5EppmTWqyqifeq+PfLwJavg73foxOj3cW
+   37MnOcqp1IwesOEP633JgeLoaFq4bi8vgfP5/5LtS+uO1b6BCiCUxADHO
+   5xtwG9jNZwfnjFPsknwVeg7/pdscPcyUhXoGG2CCswi1MpLukZJTB6c6j
+   LvqPgqCcpYvX4a6eFTu6YHjTZVNcVyx2w8h6vsrOvNlCvQnCYxFQEUkla
+   A==;
+X-CSE-ConnectionGUID: u6FX9M/IQyuc1f7tljurSA==
+X-CSE-MsgGUID: tQ2WaWC4SMqam970OsDrHw==
+X-IronPort-AV: E=Sophos;i="6.27,168,1786982400"; 
+   d="scan'208";a="157534420"
+Received: from mail-southcentralusazon11011025.outbound.protection.outlook.com (HELO SN4PR0501CU005.outbound.protection.outlook.com) ([40.93.194.25])
+  by ob1.hgst.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Oct 2026 07:35:25 +0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xM9k2xXnKDt9/Ibhz1jZEFleE/EnsQWW0wf+O45CkqwnbGmyJLFadSioAVfSRyyOYY9wPIyNPDoRnEXePYiaL7f0hnZuHDwiZtYxHJlJdRwiWSMC3YzlYxpgdjku+L5uMlmBRqD4pqetPJh+2Kau9vULhpQzRl46rS8AJMSOgc4eMskcJV4DEWAw8rPwhkwNHt6+op04fY4RHlhqLvr34Z24jgBsqI7vas86iD6H3Y438pjr0+K2I+p9zMHt1JsJcZqCswGbgfuSwY8JVM4MsBRJdQqhLq61TbOmeWQTH79UiPmaSGd1MZ6qjQUSOn/GyRtg7H+MTVC86ZZqkTbR5w==
+ b=xTYiILpmtWJBwfnoJ2JLJgbDWp49A4YexHDi9FXb8en0oLXQ1fsVcAdYr/4rESh6U9ShBqcZU2fmPTwxukVF/e4FivQakrkCWDGaX/YXQbcaScO0MK8JFitZF0afJqvgSjL1odOD8b98N6PDQhk4W4MSUwue5y/oLCcOhXtxQO0pujSKvw8n48FXH18Ii9v+SFAdKPvI6HcheWp4PT9Fn5jUw9ASqib717wU6u6XkC7xTbf3LBLfwCkBcRpAT/0bV0q/lDTmiL4Fe635hJ4ZcAS01GfHYTKb+uqgmJyYODuUL4Fku9RP492BWyTEelVMq9jBdD0WM1+fA4xRQ+HDjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=brMAgUK38iV49/hi0wR5GfOL153GSjwksppYnxy9fB4=;
- b=iKC3QeCc6ZHOWP8fJ5tGLpxYwf3jtm7+iQkQSQlabb1mL2P+rKKeqA3Q4G+557Tu2Qb3KvIB234iMj0S2wzDTOBwqGbf1ZAKXJJT0FCV99AXc3M4NznyKQ4VZ9903bYipfh4FAI8BeZsMS312SNq2gDA1K1bDuewPEFcrgAtXwlf3YGSohQ46HS0IOH2lFputxBSTKsRfdYdVwl8UNzEPYxVrraI0kNKTYFjqg2v8t1P9k7Vhe4QPeEcNXdyNcdfbka+k+z5E+sU6JRlOk/WTRM1yawAvJbygY1EARHJdv7iT4+QWH56yyDMK/kG8Jq8SUPQtAfvNEMuXrlx9l8gzQ==
+ bh=IoHzmaT978E9zcV0tRR82U61pKkvnzqmz8tVXc2B0uk=;
+ b=x9ChvCeDBKn84AywjIz6jfuhwtgPRM8NqFv9fAabrAB13Aes/pmF7LRqes0kGZqTBjHP0ET2H+4fcM82wa+qGAreaSZDgzOs9ej87qpz1G7+dnkf5kACrPUPMUoOabVVyMqfifKWcKlVh6GB0IzNwKS1uVBtQIHtqWjJUZgPojOW7yPX+5eveSAnaZeJMn5gX+0D6eImz9drGa9mEECjpmltznIYU3XJZwscz/p4qZ2X0KTRrWzwIGhGk4yiAvPl0k6HMQ10TeyCFDGFtAENZnJR8G1PGxo3zaRWMnvCrwahXLz865BxqKMVscTUEdxiLGN2czrJAOp6sXioTpp3TQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7364.namprd11.prod.outlook.com (2603:10b6:930:87::14)
- by MN0PR11MB6111.namprd11.prod.outlook.com (2603:10b6:208:3cd::11) with
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IoHzmaT978E9zcV0tRR82U61pKkvnzqmz8tVXc2B0uk=;
+ b=DHmAHL70818tTQvtT54//rHGyl6FSRLyI2JjDp/NkJzKYG85Jei+ErqVjLGkTs4LZ1rH24dRNp/t8G3Lb1wk0xT/viUstNta7iHeUe1R2TAD6PAGMgKqgfcey/+6EqgAyPyb5A6MvaQJH+gXKewokZCOTEzJQ6vmHmyU2C/hqWs=
+Received: from IA3PR04MB9680.namprd04.prod.outlook.com (2603:10b6:208:510::12)
+ by SA1PR04MB8285.namprd04.prod.outlook.com (2603:10b6:806:1f0::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 23:35:17 +0000
-Received: from CY8PR11MB7364.namprd11.prod.outlook.com
- ([fe80::1b92:4856:eb86:f7e3]) by CY8PR11MB7364.namprd11.prod.outlook.com
- ([fe80::1b92:4856:eb86:f7e3%5]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 23:35:17 +0000
-Message-ID: <e1408f22-686c-4cfb-9b75-c23741f0346e@intel.com>
-Date: Mon, 19 Oct 2026 16:35:15 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 05/14] ice: call PTP link change only from link
- events
-To: <netdev-bot+sashiko@kernel.org>, <anthony.l.nguyen@intel.com>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
-	<poros@redhat.com>, <maciej.machnikowski@intel.com>,
-	<przemyslaw.korba@intel.com>, <grzegorz.nitka@intel.com>,
-	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
-	<richardcochran@gmail.com>, <horms@kernel.org>
-References: <20261015191102.1174111-6-anthony.l.nguyen@intel.com>
- <179244084553.3135.12829466635546463271@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Mon, 19 Oct
+ 2026 23:35:22 +0000
+Received: from IA3PR04MB9680.namprd04.prod.outlook.com
+ ([fe80::380:1453:ea86:e64f]) by IA3PR04MB9680.namprd04.prod.outlook.com
+ ([fe80::380:1453:ea86:e64f%7]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 23:35:22 +0000
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+To: "rjethwani@purestorage.com" <rjethwani@purestorage.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "john.fastabend@gmail.com"
+	<john.fastabend@gmail.com>, "sd@queasysnail.net" <sd@queasysnail.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+	<horms@kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH net] tls: check the right open record in
+ TLS_TX_MAX_PAYLOAD_LEN
+Thread-Topic: [PATCH net] tls: check the right open record in
+ TLS_TX_MAX_PAYLOAD_LEN
+Thread-Index: AQHdYBjoafiTR5EB/EupLY8DEBoRabcFhNGA
+Date: Mon, 19 Oct 2026 23:35:22 +0000
+Message-ID: <ec0ff3dfe347fcac3350c945c432946f869d8b43.camel@wdc.com>
+References: <20261019222626.745408-1-rjethwani@purestorage.com>
+In-Reply-To: <20261019222626.745408-1-rjethwani@purestorage.com>
+Accept-Language: en-US
 Content-Language: en-US
-In-Reply-To: <179244084553.3135.12829466635546463271@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR03CA0003.namprd03.prod.outlook.com
- (2603:10b6:303:8f::8) To CY8PR11MB7364.namprd11.prod.outlook.com
- (2603:10b6:930:87::14)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wdc.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR04MB9680:EE_|SA1PR04MB8285:EE_
+x-ms-office365-filtering-correlation-id: 2683a70e-f307-490b-03a5-08df2e39a4db
+wdcipoutbound: EOP-TRUE
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|19092799006|366016|7416014|1800799024|23010399003|6133799003|18002099003|10067099003|22082099003|261009223027099003|11063799006|56012099006|38070700021;
+x-microsoft-antispam-message-info:
+ 5KuUstj2oL5qK5gieuvBbBY8cA3I5KmiQ3rliygCFBf1tWSAAYY+h9PskmKNWd675uanqCGGru5BqjyGDWzkAvkkrqn2vM3z9ckK/BCOdXWrxq6LyNZDm0bmALeGYsnLeTd92UnqxZiroQgUAmQWjLObISqktRpoRe4h4KAkErxDAJuIxu/L1ScXPzJ/cn0Hmk15QsBfHHIdz3vOg7lO0mNpa+EsuUfOBcI6OVuiXmLRgecTZlnr/SRxBT1FPopaFFvSe/iu4SDNT5P9f+HceWri4j28PbhavILqANlaVcdDFNXML/maXE2QvqVSYp/tB6YvFYzldi2R9Yrl5IoDOjvZ2JhRKSmIsPAVibSn30ADkkc2JezQLmeDsjhGYC55fK0TGGL8Ly4wA6kbAgNJ+p0gz2KF08MpjiaKlp657g8dZgQ6ITVA3wmk4brTTo4OIBFbH03eORaFPF0/V43l4kMEc98HLlziLpgHRXc0wlsjrEB669RH1ULV4nFej5Zub9z8KRDWnY1S5wXXGNVGxOkJEfC9bTRkxqOcyNSeMWrd2qnOj8g/BpPUcZlD7UuxR9WB3TQPZSz/3p5AJvcVj/e71Ta8xUFA/tLKw7dGg+X/RcOEaD4sFvqhCzKPUOD8/tD3rt8e5NKm2pk0Df4kRui62kGt5sx+osSZRgRUu22XTl9JAlmfApPH185se3n4nKkcVrC6Zv8ogpwA7oT3yA40/peDQxnms06DdxeVpn0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR04MB9680.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(366016)(7416014)(1800799024)(23010399003)(6133799003)(18002099003)(10067099003)(22082099003)(261009223027099003)(11063799006)(56012099006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?RStoMzN4V3A4SlZKNmZocVU5YXJWcTlxL1dBcklWQ2xlUHhCazhuZSs0bVVy?=
+ =?utf-8?B?MmhMUG12eEsvV1RpKzVjKy8yTzNuckc0THRyQ2xodTBpMjRqbWdQMnZrRWlq?=
+ =?utf-8?B?c1F0U3g4d0dxcElCRnN3R1hpM3NmOXZvYVNDNTN3M29WMEJSaUJESkxoRmJw?=
+ =?utf-8?B?a3ROTEM1Vk5KejFXQWpLZkFRTmgycWVHTUVXaFhzS0czQXBsN3RoSDlqQnFr?=
+ =?utf-8?B?L0Z5ZEJONjU3TVhkVjJISHhSV0dHMTlsMTdQZ25lMCsydW9hMDF6SzhxaUZ5?=
+ =?utf-8?B?WFpSNmJCODQ4NW91WHVuckw2UEZHeTNnbDdHelF2OFBxU254NlA0NHFmdlpF?=
+ =?utf-8?B?TFEvUW4yMzQyaEVWdmJzcUJLSVBMcXJYK0FGTFU3cjduT1BvbUw3YnkrN2Yx?=
+ =?utf-8?B?Y3g5TXRSdDRBUDJIcitaWlBYTTkxcG9UckxveWVySkxiaGhZdURXZnFteUsv?=
+ =?utf-8?B?QWd3VjdiWHBSb0p6amNoUzRRTktocjU4Wm44OTVtWXlSNDZ2OXF4L1lWdVhM?=
+ =?utf-8?B?WCtJZjJuTkMvbmlrQ1RMWmpjOGVsVWxlTDJKQkZIbUN6VmpOSzlvQ21acWZs?=
+ =?utf-8?B?VEFnZUlkSDFRVGNFUmJYRVR0anM5emVodS8xbGV6QW92Q055UllaNW5PV3hz?=
+ =?utf-8?B?RU93N0MxdmNiZVIzYmlrNi83WWxBTktkbHNtcExJN2d5NHVXaEYxbkovZVRG?=
+ =?utf-8?B?RTNyTXRkOHROaG1tOHdESXdTKzFFMzMwZjVxckxqbkJocWloUjhVY20vWnZv?=
+ =?utf-8?B?NUZRc3RJSHQ0YUFBazRvNTlIMHJwekFKRjlUNkl4eHVUL0hjWXJBdFRVQzN4?=
+ =?utf-8?B?SmVONThOejZkUEluMm12NmxSaHY3dFk3YVc0aVlOUkhPYWtZSDg0MGFyTkVS?=
+ =?utf-8?B?b2xjUjlBVUtzT01rbUtZd0Z1VkFpYTljdG1iVTJSbU1wSVVmQWljYlBKZ0Rl?=
+ =?utf-8?B?OVl3QTc3Z3d1TGpzRGFhaTZEbmltYzRJVGozb1NyUjZXRlFYLzF3WGtuTUJp?=
+ =?utf-8?B?eFE0YUNOcURpdFNIVjRBb0sxc285cXBEcUZ6b0ZlRVg3YSs5czhWakVTc0hq?=
+ =?utf-8?B?ZWhBWXY5cGpOdUw1b0xDSUNqOTlvMDZ5NmNKdlE1N1pyN1lWOC9xWm84dVRu?=
+ =?utf-8?B?Z2x4WWVoNHgvUHZyNUM3Nnkxcm9oM25XdGtOOWpmKzQrbldDeEExZ0tMUVoy?=
+ =?utf-8?B?anVjR2M1Ny9JYjl3bTBxUzMvRFFqd1VzT3kzVzljQ1h6RTJxaHAzdmJmdEpT?=
+ =?utf-8?B?QmpHbTZTNUpjUWRtZmJua3NUc3JaQUc2VW5OempPNm4rTnNqTUFCdWU0aFdw?=
+ =?utf-8?B?R05RZUN5NXF0SUYyNmxLdDhzaXdlclJUTmIwWEwweVhreWRQMXRwTlN2bmtT?=
+ =?utf-8?B?Rm9mNHl2WTEyUC93NUlNeUd5cm9ubkR3SnN1VUtleWc3RVQ1TGNVUnBiTnRx?=
+ =?utf-8?B?NGhTSnU1QW9SQ1JrMC83Sit5dUV5Y29FZ3FZVHgycnVhVHRzdXlXOFF6ZXkx?=
+ =?utf-8?B?NjZoa3FlZS9ZYkhDV2NZc2F5OWxsWnhxNzJTemcrKzlvdGxjTGFoN2xuNEVB?=
+ =?utf-8?B?Rlc4b2dZUFl4NVpncmo0dmxnNXZmR3FtdGt0Vi9KUGprYmk1WXhTNTQwYWJv?=
+ =?utf-8?B?QkJ0SktOSHZaRW9aamZRQVNXSmh3a2JWa0xhZ2NxdXZCMXFNcVhGUTJlaVk0?=
+ =?utf-8?B?TlNBRlA0QzIxT3FuakdZTUw2WVZZL2pWai9UWXVLRnpteHRmTjRLWFlZYlZz?=
+ =?utf-8?B?TE9xcno2N0Zid1FwcTlHZFB1SG45Q2J5Um05WDFJVG5QMGVFNFVyQWEwL2Zs?=
+ =?utf-8?B?RU9hT0FjSm5KTlpXNGZjK2w1dzhlN0ZxeU5UREVXRXhyU3JyWFRXelFLeVBs?=
+ =?utf-8?B?bHlWbFZDRDVocG1uNTJpZDhIeSsweksrSDZGaWNxZy9aaHhpUncyNTlFekVK?=
+ =?utf-8?B?NFNvekpGdFdkRUM3bTFhaHVjVUhML29UTHZJcXdJWUNvRnFiU1dtdFZpUGJV?=
+ =?utf-8?B?RVMzS0psSUpIVzhvSHhoQTl5by9mVE1ZVXkySThTUHpJemdpNHlqcUw0L25r?=
+ =?utf-8?B?UUNCdWpPOTBnQkZFdi9NYlRrOVJmeTBISGNmN2E4U1h3T0pPNHhmcmF6WGtC?=
+ =?utf-8?B?bjVzeVpiWTJNTjlWdkZvYmVuOUZUdDJqQVdGU1crSGZDUEUzVTd3cXRwNEJr?=
+ =?utf-8?B?cVN5NTlKaGhCbEZNUXhlNFlpellaZE5XT1RIYlZuK0hkMnR3MHRCQUkvaDRG?=
+ =?utf-8?B?ajhEQUpNVDRSajgxUE82QVcxajg2WWU0U0VKNW54M1RMVzFqVTRkb3Uvam9R?=
+ =?utf-8?B?b2krU2VXZzhzcUV0RHRLeDVDekF1aXAvdnZ3VjZ2bXJvTGhXdzFkVHRlVmQ0?=
+ =?utf-8?Q?KjcCuj81COSRhhss=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B9DD93D42244BA4E95C5620A15DB0E74@namprd04.prod.outlook.com>
+Content-Transfer-Encoding: base64
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -140,433 +188,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7364:EE_|MN0PR11MB6111:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ed7cef5-3f81-4fa3-f900-08df2e39a1f3
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|6133799003|22082099003|18002099003|3023799007|11063799006|4143699003|5023799004|10067099003|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info: pDFvccnFbQ0UP9X7VQNcgZVWXceziSQvHgX9gjhH5vR4dTVIRBlPEgST6nXN5F9FC78gUDqY2P9yVowakamFzt3NTfTQGcYFmyPVk+UQUvaUIP/v8lz5TzIBYNEbUd+1GGRR1H2+i7GOE9ZwDggaIeKsfQ1/lAOVDVJtxL/lrE75HHQ81QsF7KjpbXIydiVD6IkYH0ei7mmUUBYxNCJ3QClecCpcrGEkHSq1Q/u/raZkOp4wbfAHoB2oaeecWGm9vA2HaR9nOBGEcCyMRecuLAvRt2a7TCvDr8gF002cekjBL2jQlvKOKY4j3yVgG5jDz9+Jqwc4dwmplgSu5zUguWv/l5pp5Yd3VYfK4TKrVRCah8o+taM7TxlsWp4DgDrz7TanBitKmdGEOUrToHVN3fMVMxDZo9CZRt+yhaduyv7lDy7Ji/M+TfVlvRvzsTbPAvI2DbgjjQOmgECN+AFp7xXp08koPgIGieapuILzDzbj2JtKB+lR0STJF7iOCTzrA80ch4xM47p7BMSlW1t+RrKl2AmObt0kTdCnsgDWyjyTKGzRzOv2s2vVZp+0G6xDWHsGGuYMLBUBOWPGrkr0z33pbs1a9JCQ3L+SpkU8PVbkCxaPU8599/LzLKdggpKBOCCo7UQVKSb7TM/YwTx3pfeWzC+RUeztlc6OaIPnUPw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7364.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(6133799003)(22082099003)(18002099003)(3023799007)(11063799006)(4143699003)(5023799004)(10067099003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z2piV1lTZHl4Uy9lbHFzTDhNYUJsWU5qRUdnQzg4dk5VMzNQa1pyNkp6L0hK?=
- =?utf-8?B?V3RTSmRpOW9nd0VtYzBiM0IwZUF6S0NMSGt3YVJ2UkJyT0w0RTVmcTFSd2hS?=
- =?utf-8?B?aEdJR0l5MGNneVNzTTdVWVFkczM0em5wU2xEOGpHY2RDaklaV2ZHTGdjaWJt?=
- =?utf-8?B?akFtejU5NHpGREh4R3F4U1JYZUNSN1drTnBYZlNWUk01dU1YQVJJeERRWDZX?=
- =?utf-8?B?amJWcVJjS043MTBsd1pxZ1IrNitBOUdpUjNJcUV0OHlRNVVqQ21Jd2k4L0k5?=
- =?utf-8?B?U0RTV0pqTllBanBjOW9WY0d0QXQ3dGNxYVdmSHZRVExURHJwOVBtN0NPY2NY?=
- =?utf-8?B?V1M5bDRkY3hyU0hrcU1BNC8zUGE0S2VrcUU0QjBqd3h1dWw3eGxkamNqcFhU?=
- =?utf-8?B?UnVjekprMzN6QjdUTUMvck5OMlEyMDZpNkxRd2xzZ01vM01qZktKeVZwOXA0?=
- =?utf-8?B?TmY5YWxheER5cGNxT2drNGZlZFpBV3Fyb01NMXhpU3VveGNIR0xNQms4YjZM?=
- =?utf-8?B?dG9iK0Z4dEhYazBFbmZKU28rYkx3LzNHWG8zTzIydTBReGRkQmVSbXBCOFZK?=
- =?utf-8?B?S3FXTzhYMGlrdDdhMWtvdlJTK2lYVlplaGZ6ZnlGODdySzJqRUtrWncxWTV4?=
- =?utf-8?B?S0xDdWMrWm9NVUIyZGp0cEwwaWg2MExoQzBuQ3FyS01uN3crL012SHV4RDdF?=
- =?utf-8?B?ZjZ5b01ZOVoxaGtkUFl5ZTByUTY4NkdUTVUreUgxUUxHUUpDVmxsZkl6RUl6?=
- =?utf-8?B?cFovN0RuOW9lQ3ZTRmFtWGFWNmZtYUgwQ1hYV2JjMjdYZ3BjSXJsaXJRdjZn?=
- =?utf-8?B?N1ZERUJ4ZFg4bWVCRk1JMDJ0OHJjMjhyeGliUEt5RXBqcThIdVIwTGt6RHVE?=
- =?utf-8?B?UE5MRkhpb3JBY1p3QXA0WCtXdVFlZytKSGZVb1gvcXJ2dCtQWVFPcE9lUVEv?=
- =?utf-8?B?RWhyVnVLQ0lJNllNakpvbDdvTytrcDJpaWFtbkNsKzZ4U0hyUS95L2RyM1NQ?=
- =?utf-8?B?M2RrQ0tiWmpYcENuN2J3YWJHODJlZ2tWQlBFVHRROHZ2WUlvUFRyQXE0RTY0?=
- =?utf-8?B?VVY4UFluR3Z1MmV2NXBiNWVXRXBiNG55NkxhN1RiSFpDT1VJVTU1OWZyRWl5?=
- =?utf-8?B?UHhHVG1ienZwZlE1dW9VOFk2TGVTZENNNFFRYUtXdzdYQVgxWWowbVJ0N2lM?=
- =?utf-8?B?MndPaVFRMXJPa3l3TGR2bVBhbGwzZ3VrWXdpNVpjSkNqMXVxSzRpZEpZWmVy?=
- =?utf-8?B?Nm1wbUpoK25ySE1NZGJZZXBsSm1ESUpzYjJNYW5kL1l1eGxZS1hmb3ZEd01U?=
- =?utf-8?B?M1pRU0twWWNqNm1KUlczaENDQmxxZVUzbXltNXVCWEcyY3Zhb2RpY3hJMWJL?=
- =?utf-8?B?VXNPNDBFMHBVVENHbitadlUwdUNreVA3KzFrMU05WDVHTkY0NzBSWFNBL1li?=
- =?utf-8?B?TlhHbGdTelJyNVpaejk5SzZidDQrR0cvZVp6eTdoZXVjcGlMNDMxS1ZrU3ln?=
- =?utf-8?B?elR0WU1lWkJDbjh3dDF1Q0k0bmhFcHRLRFdrdjBPcjFTQW5lbzZZd1JBKyty?=
- =?utf-8?B?ZitNMnNyM2ZnVFhucytBSHp5TGUrWnFNZXY3enExSE5SWWVuMzNWU01wcjBF?=
- =?utf-8?B?dHJBbWxOZmpHQ2ZOTWFtQkV5WitwTE14dzZSMXhLY0k1UENoSENsTitrcEF5?=
- =?utf-8?B?MWhodXNyR3Q0UFdCS0lCT2Q2Q2JqMEU2a1NFcWdRdklWSkRSbzVxZVVVZGtv?=
- =?utf-8?B?Sk90NTNTUDhIU2JPQlFlSnoyOFNIbzlkbEpHenEydCtuVXVGdHlZUTBCWkFC?=
- =?utf-8?B?U2FaaFlscFp2K0N2RUpwbHVTWkJFNVB0dElFcVdVSEhNTlpSU0ozSG93UjY1?=
- =?utf-8?B?WnNsZ2pxWmdyNDlxNEUzbVBqN3UvT1ptOXgyQVg3Nk5FT0kyeWMwc1lLTVN1?=
- =?utf-8?B?SWdDRnVWRnMxZWJrMnFxNmd0Qyt0eVd3a1djWkdzU2NndXkwTWZoNHpQRjJC?=
- =?utf-8?B?SFdxVkJpKy9ySVk0VGxGOEQ0Y1JwaFhwczBKNGpQMTN5NnRRVEs3YU93bytQ?=
- =?utf-8?B?VVFPMWgzU3R2eTVaT1RwYzNyMkZHWUR2OHlJZWtNOWRzNkpOa0QyTnBHYXJk?=
- =?utf-8?B?NzZ4bXdkb1lXRGIwdWorS2NudDdrR2UyMk1nNUtBK2V5Z09lTERkVCtIWm5k?=
- =?utf-8?B?dHk0OU0vNTNsU0VUaVVpVjVOV0dETlkyWFpvdE9remJ5a2RTaXlBODM4TVc4?=
- =?utf-8?B?d3Y5UkpMNGNvVlJnVXg1RmtieDRjcFFzY3ZoVXUvbVhubUJYSmpJZVRyMUc1?=
- =?utf-8?B?cTVvQ2xOa1pNWTdDQ0kvVGZHemRMN01SZHhqUFdBQWFPRXdtNExiZz09?=
-X-Exchange-RoutingPolicyChecked: lfCE8QN+PTA5p0fyFQte69/7TnUKyFVpt+Tu4MFNXrlddRqyUUGewNdjFEAkb+tVdMdRujcxQdyF8gNjSnK/JxRHzT/pljp5mv0UJNbnMJcTs7u82R6q9YVC3f5h45LDXIG2M5yH1m9t6EalHB62ywE7ic9Qmy3M5GJ5AViD3DdNuw1btG2FnMZqYONVdayEFOJfrFvDpNcEYvvNEHbk21dLN0ilHvqUouG97u04t6t8RZm56xbAnunVv4+V7qlaw3jqu5fBBmxgaJRo3rR0t2OZdbhcnXsvdDPn5NIPJNwbgHVvfqB6TeIZb1ZQQkwITEZLVQSzYgRwy08Q07h8Rw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ed7cef5-3f81-4fa3-f900-08df2e39a1f3
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7364.namprd11.prod.outlook.com
+X-Exchange-RoutingPolicyChecked:
+	G+H2A+vzANSgQ+3kgvLwD8muYtIrvBFLSu/1zz3352gxj7zwc5nQyyndVwW7hXyLo3uyKBqVL00pn0rrKBuWAkhNxw+qiBtCjHwzxNy1kQTYtFWvNjBsT1qEEjgRTwBVrkABun8DjBLOppMSOF+cvnwebxFs58T+EgqOmAV/cWJlfxTQlrclhXPGtYS0k82V2Bzde3qImEZhD76fYvr9jagfNk4qoc/sm55GM9QQksWSsD/EixWvLkkSIrBFlJATusEMuTlat4e9XkbNEZypJeeFFlO287P/XmffkrR5OGaofpr+qVoJ6t122hEumzhfdKavwZKSXn6aTdxw8DwJOA==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	KDmMOYyTyMYJEIicYg8vcpeTCbpWG1dK4V16i2XHb3s72fJbpw0GOLhNTyBpE2XqY74IMuXZZ6iRbKFwBuED/+3FM0hHWImGsi/KQbemcFlOrDmDA9/+HFWcGGxjG0OlLH1UegiYtoIXb/1sR09YsPDhuUecfo6BzgKhZn3yGET6I5ly9tWcC5KfncFepwTjIxmZTXlie77vwMXR2Rao+td2Yze/r8K9IoNfbZrtLH6dD2XoSnlEkKPLqmJle/QyZf140ZIhkKftFMIxREwAwzDwmSbYHaT1PC2t97tg8AMMvIMe0Dzjj2aGPg8rFXK4oOIVfl0yBwxRbroDW9yaBvnGRTy4JJ8PPK3RbIrw+0Qvi5aSi0Up68n1VG7/XA8K4ZXgiC6e3eBcrfVLGBs+Ai2QshPFDum1GRIBCghu6D2YQSiHuhbLuoCgdC7jcWU180AjxXrIUExH6xnGUTaFUdRkf/kCjhomIWzsOjXztBavvBCPg4/B2oxDm8rqeGxiMufu3HqUc9CgvIdhMuTyJEh9j3jip0haXm5ttsbRjkV6TM4C4RLLe8eKWct6JsMKoBNpnILbAcSu+CzKw7rdq1sR6AgJaNWBLOwiE7o9m8Xtw5Xx3Fe/qzkIpWWtTlZo
+X-OriginatorOrg: wdc.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 23:35:17.6171
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR04MB9680.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2683a70e-f307-490b-03a5-08df2e39a4db
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2026 23:35:22.3341
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h+e+6433JJS9LgIy21Njg+lQs/7fmvzrlMrDtswBnDitYnK0PV7lOydIwspFa7EByCAGT123arhXdoYk/7IL/WreDBTKoG7RoJybFrcYdLY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6111
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4ePd+Xm1KXz5ujFjOhvRfhBJHqjAGmbe3UIx8XmLoziUgBJ0GoIwiDXe6/qp5il1yG17q3dr3+0TCH5w8PptFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR04MB8285
 
-On 10/19/2026 1:14 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 · Medium: 4 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The commit message says the new ice_ptp_link_change() call in
->   ice_rebuild() (ice_main.c:7803-7808) exists 'to reflect the current…
-> - [Medium] This patch removes ice_ptp_link_change(pf, true) from
->   ice_up_complete(), which leaves the PTP link state with no resync on…
-> - [Medium] The new PTP link_up seed is only in ice_init_link()
->   (ice_main.c:4817).
-> - [Medium] ice_ptp_link_change() used to start with `if (pf->ptp.state !=
->   ICE_PTP_READY) return;`.
-> - [Medium] ice_ptp_init() now sets `ptp->state = ICE_PTP_READY`
->   (ice_ptp.c:3425) before the PHY restart and before…
-> - [Low] The comment above ice_ptp_rebuild() in ice_rebuild() still says
->   'PTP init needs to happen before the VSI rebuild.
-> 
-> --
-> 
-> ice: call PTP link change only from link events
-> 
-> This patch stops calling ice_ptp_link_change() from ice_up_complete() and
-> ice_down(). Instead it seeds the PTP link_up field in ice_init_link() and
-> resyncs it from ice_rebuild(). ice_ptp_link_change() now records link_up
-> even when PTP is not ready, and ice_ptp_init() sets ICE_PTP_READY before
-> it restarts the PHY timestamping block.
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
->> index d88835482d3aa..b4ee2cf7cd704 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_main.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
->> @@ -4810,6 +4810,14 @@ static void ice_init_link(struct ice_pf *pf)
->>  
->>  	ice_init_link_dflt_override(pf->hw.port_info);
->>  
->> +	/* Seed PTP link status from current PHY status, since link may
->> +	 * already be up (e.g. after PXE boot) without a link-change edge to
->> +	 * catch it later.
->> +	 */
->> +	WRITE_ONCE(pf->ptp.port.link_up,
->> +		   !!(pf->hw.port_info->phy.link_info.link_info &
->> +		      ICE_AQ_LINK_UP));
->> +
-> 
-> [Severity: Medium]
-> Does the devlink reload path need this seed too?
-> 
-> ice_init_link() is only reached from ice_init() on probe. The reload path
-> skips it:
-> 
-> ice_devlink_reinit_up()
->   ice_init_hw()
->   ice_init_dev()
->   ice_init_pf()
->   ice_load()
->     ice_init_features()
->       ice_ptp_init()
->         ice_ptp_port_phy_restart()
-> 
-> ice_ptp_port_phy_restart() then uses whatever pf->ptp.port.link_up was
-> left from before the unload, because ice_ptp_release() does not reset it.
-> 
-> While the reload is in progress, the service task is stopped and the
-> control queues are shut down, so link events are lost. ice_init_hw() then
-> refreshes the link_info cache with ice_aq_get_link_info(), so no later
-> ice_link_event() sees a difference.
-> 
-> Before this patch, the ice_ptp_link_change(pf, true) call in
-> ice_up_complete() fixed a stale value on the next open. That call is now
-> gone. Say the link was down before devlink dev reload and came up during
-> the reload. Does PTP then stay at link_up == false until the next physical
-> link flap or reset? On E82x that means the PHY timer stays stopped and Tx
-> timestamps are dropped.
-> 
->> @@ -6745,7 +6753,6 @@ static int ice_up_complete(struct ice_vsi *vsi)
->>  		ice_print_link_msg(vsi, true);
->>  		netif_tx_start_all_queues(vsi->netdev);
->>  		netif_carrier_on(vsi->netdev);
->> -		ice_ptp_link_change(pf, true);
->>  	}
-> 
-> [Severity: Medium]
-> With this call removed, can PTP miss a link-up event that is still queued
-> when the interface is opened?
-> 
-> ice_open_internal() refreshes the cached link_info directly from firmware:
-> 
-> ice_open_internal() {
->     ...
-> 	pi = vsi->port_info;
-> 	err = ice_update_link_info(pi);
->     ...
-> }
-> 
-> ice_link_event() compares against that same cache. If nothing changed, it
-> returns before it reaches ice_ptp_link_change():
-> 
-> ice_link_event() {
->     ...
-> 	if (link_up == old_link && link_speed == old_link_speed)
-> 		return 0;
->     ...
-> 	ice_ptp_link_change(pf, link_up);
->     ...
-> }
-> 
-> Take an admin-down netdev whose PTP link_up is false from an earlier
-> link-down event. A link-up LSE has been posted to the ARQ but the service
-> task has not handled it yet:
-> 
-> ice_open()
->   ice_open_internal()
->     ice_update_link_info()     <- cache now says up
->     ice_up_complete()          <- carrier on, PTP not told
-> 
-> service task
->   ice_link_event()             <- up == up, returns early
-> 
-> Wouldn't pf->ptp.port.link_up stay false while the physical link is up?
-> 
-> On E82x, ice_ptp_port_phy_restart() would keep the PHY timer stopped.
-> ice_ptp_process_tx_tstamp() would drop Tx timestamps because link_up is
-> false. Later in the series the same link_up value gates Tx timestamp
-> requests, so those requests would be refused instead.
-> 
-> A later ifdown/ifup does not fix this either, because ice_down() and
-> ice_up_complete() no longer touch PTP. Only a link flap or a reset does.
-> This seems to contradict the commit message statement that "the link
-> status will reflect the current state of the physical link". Later
-> patches in the series leave ice_up_complete() unchanged.
-> 
-
-...
-
-It seems like there is just no way to get Sashiko to be happy with any
-of this mess and we need a completely different model for handling these
-link events...
-
-This is a very theoretical case which we haven't observed that would be
-blocking legitimate issues we have with customers (the fact that certain
-configuration changes like MTU were causing outage on startup of PTP).
-
-I have tried now ~5 different ways to make Sashiko happy and each time
-it spits out some pathway that looks like a link event is lost. As far
-as I can tell there isn't any ordering that works properly without going
-in and re-writing a bunch of other stuff that is even more problematic
-as a fix :\
-
-> [ ... ]
-> 
->> @@ -7794,6 +7800,14 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
->>  
->>  	ice_update_pf_netdev_link(pf);
->>  
->> +	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) && pf->hw.port_info) {
->> +		bool link_up;
->> +
->> +		link_up = !!(pf->hw.port_info->phy.link_info.link_info &
->> +			     ICE_AQ_LINK_UP);
->> +		ice_ptp_link_change(pf, link_up);
->> +	}
-> 
-> [Severity: High]
-> When the netdev is administratively down, is link_info re-read from
-> firmware anywhere before this read?
-> 
-> The commit message says this call is there "to reflect the current link
-> status in case it changed and an edge was missed during a reset". However,
-> ice_ena_vsi() only calls ice_open_internal(), and through it
-> ice_update_link_info(), when netif_running(vsi->netdev) is true.
-> 
-> ice_update_pf_netdev_link() -> ice_get_link_status() only queries firmware
-> when pi->phy.get_link_info is set. Only the ethtool set_link_ksettings path
-> sets that flag. Nothing else in ice_rebuild() issues Get Link Status.
-> 
-> If so, for an admin-down interface this call just replays the pre-reset
-> state:
-> 
-> - the link is down before the reset (PTP link_up == false, PHY stopped)
-> - the link comes up during the reset, and the LSE is lost while the
->   control queues are down
-> - the cache still says down, so this calls ice_ptp_link_change(pf, false)
-> - a later ice_open() refreshes the cache to up and turns the carrier on,
->   but ice_up_complete() no longer notifies PTP
-> 
-> Wouldn't PTP then stay at link_up == false while the carrier is up, until
-> another link flap or reset?
-> 
-> The reverse case also looks possible. A stale "up" value makes
-> ice_ptp_link_change(pf, true) start the PHY timer before the link has
-> retrained. The real link-up LSE is then suppressed by the unchanged-cache
-> check in ice_link_event().
-> 
-> The end of the series does not change this code. Would calling
-> ice_update_link_info(pf->hw.port_info) before computing link_up fix this?
-> 
-
-Same frustration from above. I need to be able to stop the
-ice_down/ice_up flow from causing an unnecessary PTP restart, but so far
-every solution has had some complaint and we've iterated the series
-multiple times now :\
-
-> [Severity: Low]
-> This isn't a bug, but the comment above ice_ptp_rebuild() earlier in
-> ice_rebuild() still reads:
-> 
-> 	/* If the PF previously had enabled PTP, PTP init needs to happen before
-> 	 * the VSI rebuild. If not, this causes the PTP link status events to
-> 	 * fail.
-> 	 */
-> 
-> After this patch the VSI rebuild no longer sends PTP link status updates,
-> because ice_ptp_link_change() was removed from ice_up_complete() and
-> ice_down(). The ordering that matters now is that this new
-> ice_ptp_link_change() call runs after ice_ptp_rebuild() has set
-> ICE_PTP_READY. Should the comment say that instead?
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> index 11416e23dadeb..776f211290eca 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> 
-> [ ... ]
-> 
->> @@ -1315,17 +1315,13 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
->>  	struct ice_ptp_port *ptp_port;
->>  	struct ice_hw *hw = &pf->hw;
->>  
->> -	if (pf->ptp.state != ICE_PTP_READY)
->> -		return;
->> -
->>  	ptp_port = &pf->ptp.port;
->>  
->>  	mutex_lock(&pf->adapter->ps_lock);
-> 
-> [Severity: Medium]
-> The state check now comes after mutex_lock(), so every call dereferences
-> pf->adapter, even after ice_ptp_release() has set ICE_PTP_UNINIT. Can
-> this touch a freed ice_adapter during removal?
-> 
-> In ice_remove(), the adapter reference is dropped before the service task
-> is drained:
-> 
-> ice_remove() {
->     ...
-> 	ice_adapter_put(pdev);
-> 	ice_deinit_hw(&pf->hw);
-> 
-> 	ice_deinit_dev(pf);    <- ice_service_task_stop() happens here
-
-This really should be done in a different order and only remove the
-adapter once we have finished removing stuff :\ I think this is a
-pre-existing issue.
-
->     ...
-> }
-> 
-> ice_deinit() only sets ICE_SERVICE_DIS. It does not wait for a service
-> task that is already running. For the last PF on an adapter,
-> ice_adapter_put() can free the adapter. A service task already inside
-> ice_link_event() past the ice_get_main_vsi() check could then reach
-> ice_ptp_link_change() and lock the freed adapter's ps_lock. For example,
-> the task could be stalled in ice_set_link() AQ traffic.
-> 
-> Before this patch, the early state check made this a no-op once
-> ice_ptp_release() had run.
-> 
-> The race itself is older: the same window already has a pre-existing use
-> of the freed VSI from the concurrent service task. What this change adds
-> is the adapter access. At the end of the series the lock is still taken
-> unconditionally.
-> 
-
-This needs to be fixed via a combination of flushing the service work,
-and then removing the adapter I think.
-
->>  
->> -	ptp_port->link_up = linkup;
->> +	WRITE_ONCE(ptp_port->link_up, linkup);
->>  
->> -	/* Skip HW writes if reset is in progress */
->> -	if (pf->hw.reset_ongoing)
->> +	if (pf->ptp.state != ICE_PTP_READY || pf->hw.reset_ongoing)
->>  		goto out_unlock;
-> 
-> [ ... ]
-> 
->> @@ -3426,7 +3422,9 @@ void ice_ptp_init(struct ice_pf *pf)
->>  	if (err)
->>  		goto err_release_tx_tracker;
->>  
->> -	/* Start the PHY timestamping block */
->> +	ptp->state = ICE_PTP_READY;
->> +
->> +	/* (Re)start the PHY timestamping block */
->>  	mutex_lock(&pf->adapter->ps_lock);
->>  	ice_ptp_port_phy_restart(&ptp->port);
->>  	mutex_unlock(&pf->adapter->ps_lock);
->> @@ -3434,8 +3432,6 @@ void ice_ptp_init(struct ice_pf *pf)
->>  	/* Configure initial Tx interrupt settings */
->>  	ice_ptp_cfg_tx_interrupt(pf);
->>  
->> -	ptp->state = ICE_PTP_READY;
->> -
-> 
-> [Severity: Medium]
-> Setting ICE_PTP_READY before ice_ptp_cfg_tx_interrupt() runs: can
-> ndo_hwtstamp_set now race with that call?
-> 
-> ice_ptp_init() runs from ice_load() -> ice_init_features() after
-> ice_register_netdev(), so the netdev is already visible. The only check in
-> ice_ptp_hwtstamp_set() is:
-> 
-> 	if (pf->ptp.state != ICE_PTP_READY)
-> 		return -EAGAIN;
-> 
-> Both paths end up in ice_ptp_cfg_tx_interrupt(). The user path gets there
-> through ice_ptp_set_timestamp_mode() -> ice_ptp_restore_timestamp_mode().
-> The function computes enable from pf->ptp.tstamp_config.tx_type and then
-> does an unlocked read-modify-write:
-> 
-> 	val = rd32(hw, PFINT_OICR_ENA);
-> 	if (enable)
-> 		val |= PFINT_OICR_TSYN_TX_M;
-> 	else
-> 		val &= ~PFINT_OICR_TSYN_TX_M;
-> 	wr32(hw, PFINT_OICR_ENA, val);
-> 
-> ice_ptp_init() runs under devl_lock and the ndo runs under rtnl/netdev
-> locking, so nothing keeps the two apart. In ICE_PTP_TX_INTERRUPT_SELF
-> mode:
-> 
-> ice_ptp_init()                        ice_ptp_hwtstamp_set()
->   enable = false (tx_type OFF)
->                                         tx_type = HWTSTAMP_TX_ON
->                                         sets PFINT_OICR_TSYN_TX_M
->   rd32(PFINT_OICR_ENA)
->   clears PFINT_OICR_TSYN_TX_M
->   wr32(PFINT_OICR_ENA)
-> 
-> Wouldn't the config then report HWTSTAMP_TX_ON while the Tx timestamp
-> interrupt is masked? Tx timestamps would then time out until the next
-> hwtstamp_set or reset.
-> 
-> Before this patch, hwtstamp_set returned -EAGAIN until init had finished
-> ice_ptp_cfg_tx_interrupt(). The end of the series keeps the new ordering.
-> 
-
-It is becoming increasingly frustrating that I cannot replicate a lot of
-these reports from the netdev sashiko on my own runs, (despite numerous
-re-runs of Sashiko). I don't know if this is because of different
-prompting or lack of model access.
-
-This particular issue partly falls under the situation that we shouldn't
-be registering the access methods before we've finished initialization...
-
-It might be safe to just move the ptp_cfg_tx_interrupt earlier... I
-can't remember exactly why I did this order. I guess the function got
-lumped in with starting the kthread that needs to go after marking the
-PTP as ready.
+T24gTW9uLCAyMDI2LTEwLTE5IGF0IDE2OjI2IC0wNjAwLCBSaXNoaWtlc2ggSmV0aHdhbmkgd3Jv
+dGU6DQo+IA0KPiDCoG5ldC90bHMvdGxzX21haW4uYyB8IDE3ICsrKysrKysrKysrKysrLS0tDQo+
+IMKgMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+IA0K
+PiBkaWZmIC0tZ2l0IGEvbmV0L3Rscy90bHNfbWFpbi5jIGIvbmV0L3Rscy90bHNfbWFpbi5jDQo+
+IGluZGV4IGZiYjI3NDI4N2FhNS4uOGYxMWI4NjI5NDkyIDEwMDY0NA0KPiAtLS0gYS9uZXQvdGxz
+L3Rsc19tYWluLmMNCj4gKysrIGIvbmV0L3Rscy90bHNfbWFpbi5jDQo+IEBAIC04MzcsMTIgKzgz
+NywyMyBAQCBzdGF0aWMgaW50DQo+IGRvX3Rsc19zZXRzb2Nrb3B0X3R4X3BheWxvYWRfbGVuKHN0
+cnVjdCBzb2NrICpzaywgc29ja3B0cl90IG9wdHZhbCwNCj4gwqAJCQkJCcKgwqDCoCB1bnNpZ25l
+ZCBpbnQgb3B0bGVuKQ0KPiDCoHsNCj4gwqAJc3RydWN0IHRsc19jb250ZXh0ICpjdHggPSB0bHNf
+Z2V0X2N0eChzayk7DQo+IC0Jc3RydWN0IHRsc19zd19jb250ZXh0X3R4ICpzd19jdHggPSB0bHNf
+c3dfY3R4X3R4KGN0eCk7DQo+IMKgCXUxNiB2YWx1ZTsNCj4gwqAJYm9vbCB0bHNfMTMgPSBjdHgt
+PnByb3RfaW5mby52ZXJzaW9uID09IFRMU18xXzNfVkVSU0lPTjsNCj4gwqANCj4gLQlpZiAoc3df
+Y3R4ICYmIHN3X2N0eC0+b3Blbl9yZWMpDQo+IC0JCXJldHVybiAtRUJVU1k7DQo+ICsJLyogQm90
+aCBUWCBwYXRocyBzaXplIHRoZSByZWNvcmQgdGhleSBhcmUgZmlsbGluZyBhZ2FpbnN0DQo+ICsJ
+ICogdHhfbWF4X3BheWxvYWRfbGVuLCBzbyByZWZ1c2UgdG8gY2hhbmdlIGl0IHVuZGVyIGFuIG9w
+ZW4NCj4gcmVjb3JkLg0KPiArCSAqIHByaXZfY3R4X3R4IGlzIGEgZGlmZmVyZW50IHN0cnVjdCBm
+b3IgZWFjaCBUWA0KPiBjb25maWd1cmF0aW9uLg0KPiArCSAqLw0KPiArCXN3aXRjaCAoY3R4LT50
+eF9jb25mKSB7DQo+ICsJY2FzZSBUTFNfU1c6DQo+ICsJCWlmICh0bHNfc3dfY3R4X3R4KGN0eCkt
+Pm9wZW5fcmVjKQ0KPiArCQkJcmV0dXJuIC1FQlVTWTsNCj4gKwkJYnJlYWs7DQo+ICsJY2FzZSBU
+TFNfSFc6DQo+ICsJCWlmICh0bHNfb2ZmbG9hZF9jdHhfdHgoY3R4KS0+b3Blbl9yZWNvcmQpDQo+
+ICsJCQlyZXR1cm4gLUVCVVNZOw0KPiArCQlicmVhazsNCj4gKwl9DQo+IMKgDQoNCkFoIGdvb2Qg
+Y2F0Y2ghDQoNClJldmlld2VkLWJ5OiBXaWxmcmVkIE1hbGxhd2EgPHdpbGZyZWQubWFsbGF3YUB3
+ZGMuY29tPg0K
