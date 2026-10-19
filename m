@@ -1,201 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524B84E8DF2
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 11:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792410201; cv=none; b=E5kgNhlHB0h5bVjMb2kOBqXlm0FgDbHmZQ/AlmR1Ug7bGow6QX3UA7/hqK/Wel3eRBMP2WSMoB3Jk1XT7lWoOGbJ886S9knvwsTD3PFiXxSGlgeeQMZstchOWs7+WhOg55GFT1ARkZNfDam0AsOfxQmt9iuFuJLrXSEnOeKs7mw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792410201; c=relaxed/simple;
-	bh=IJq3oe026Ch/NagbToM44x+lPwduVJbz5KUxBGV5slU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DjyI3Bf2U6ag7aZMS4BCdJpxJT8L3/kMh7jbHbFeuW43H5yW7rbSVTdJ+HJ3Oaq3MwMiuMrvERZ39FNFNgkOObLM2B5+QCGXw3z7PemkSPtbFOlpBOY/KaGXUID4GLR3jZX7+zbk8Ma8SNXmdT/tdAmCZNAkqOPl9B2VHdMkJ0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHr3iv6C; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B263E558D
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 11:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792410991; cv=fail; b=XocvA/Z7L/OCxA1HRtSVZ51W3DueRXk5Yxo4ptGeNtKMHOjYV58f+MwvCs+1EmbyIf7AXnuAMiSP/76QRcCSuB4XIqikanX+vgtfMCEMf8Z3gYPj5E4cSfF8Ys6NFwNjjkCwGY2q38woPwrNBtocqxVbYiMCvVuXAC5Wa1qbmxc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792410991; c=relaxed/simple;
+	bh=x2wk57Rz55gXkL4F8R5LMsAT/xDDEQS2GB+NEeB2Tug=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=eIidmNT2qqx5ZoGOlgATRZuJ7RLOvbgwvcUzDNt0zTQECvAVDMqCdJR5DkweFxeTisYkcErE2NbKwzGBAcqJYmxq58nX+Crj647t6TMhs+yemzhmICo9EkVQeoA+jhFwblJNhheurFlr+/9qqHcuUDS6Jt+mdYlSgmOTNQX8QI8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BQPN33yo; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHr3iv6C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439891F000C4;
-	Mon, 19 Oct 2026 11:43:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792410193;
-	bh=hASnv+sShbpSN84lIK0vwzCccQ7DGFNvDbQRK1Twa1E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gHr3iv6CinGvRkRBuYrfe0QaAgH6mesatPs+ujwnE3VoJm/pdD+RxcNReTK1GJfPb
-	 uHSe4BGdl/C+3cWW37GvSB9/iYq1qBBtjMPTiXL4HM0/epWdc86S5ag7UvAceYxqzz
-	 y+kziKBI1yrL7eLJy8Poey0rW4rY50gCqd2CmTIZYa4h7hch1OMpOjMD7QH9vuRpCH
-	 nqBrUp7afUy7HtFSSTUWM3/E9UrvNN/i0cyTV5DpdBVjmwLM4OTQFGiSKFJ/9Vd2/F
-	 tBQul50vkCrz8pAnF/5tzvSiKHmyIjRtKl6nucDSf1Dt4VNbYYj4U9wlDnU44GdwIZ
-	 B7IdNxgwtQsyg==
-Subject: Re: [PATCH] net: stmmac: remove STMMAC_DOWN check to avoid irq storm
-From: netdev-bot+sashiko@kernel.org
-To: chuanx2070@163.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Date: Mon, 19 Oct 2026 11:43:12 +0000
-Message-ID: <179241019282.3135.17755153635935720256@kernel.org>
-In-Reply-To: <20261015112415.437900-1-chuanx2070@163.com>
-References: <20261015112415.437900-1-chuanx2070@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BQPN33yo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792410989; x=1823946989;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=x2wk57Rz55gXkL4F8R5LMsAT/xDDEQS2GB+NEeB2Tug=;
+  b=BQPN33yoy30a7NgYjF3gxWtHC1LadfDDOiDvOXgeyHmjq7pSaZApIG3Z
+   lVynjE6HHcjI9IPNx8GjMp4XZhOgu/wEpTtVv381VNCVxZEREuwDj2l2t
+   MvwOV4ZUodEdejR1dvzL5KU40I/dJF1XPkMNLqqpgrvg+l8S7LmrCX+nd
+   B/euLi4j8Mn0fyLDdnr6fX6n7E/DWa9mOMDpPvs+clLXn8irCF55A6nno
+   2klYv3lBZCKBzgcUHAQ+Iy6HS8+VQGbl8AXBlfQIhoeBazTU2vEgxBZUx
+   JS0w9lCoKcRmtRIG6jL/ZoZSTmNOk22wLyfkfu+cdhf0wFopYnvK+XwvB
+   Q==;
+X-CSE-ConnectionGUID: LRiM+SWHTFKUaRuTnhUlyQ==
+X-CSE-MsgGUID: wOGFmpYtTLW3aOxlgMEpfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="993864"
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="993864"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 04:56:29 -0700
+X-CSE-ConnectionGUID: BCb1LphuT+Ca7fXDIHtz2A==
+X-CSE-MsgGUID: YkM8dlQIQOOv8+/hZFKicw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="2579361"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 04:56:27 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 19 Oct 2026 04:56:27 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Mon, 19 Oct 2026 04:56:27 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.59) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 19 Oct 2026 04:56:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uBJkTuZgN/ZQH49K05e/6RkOyvlLlxcFfvtOQQJh0iSeecKu3HeRPLQ4jME+GxWQJXMo/MfhtxFsZ6K4clY+1cqYzRl32ZbkZK2oaph4LBRP+nW686/rpe1V1e1FgtDNTAY/oKyCnpmD82E73+fw+rcQy+63iBnb3xRTAAp68fXaMwMbSslRr4fVIyvWC6newTCj5xoMVUqzsDHec5b4jYF3Q0KAwkiLBSX3ZGhPDpIb/0xZaSxiWnZ+yuKm5PdVrOo5ppGlJn7BomiCcn8OH/o7wx09rOPEBTQ/YfPgXSrYyJdk36YLqajM3fsueMDUbUcN6cfYrL81FAriH0W6rg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZV9dv7UmsFfpaw4VeAw5W7+5geJrEbHKzidQ4bmxf14=;
+ b=cXkePglqXIIpLY0RUVEMrGsJskBWfNJAezCXSQRMLNCX/1XzLndE+jIAJfBIbAl2kYh5G7pHezU4katTT7l9PfQN8u0SFlILHqykovslmQ+F6b/ynfLBAbqa60ZD4L2IYqut4tUvY8YkTX2Kz8zG7rlibD2BC5slKLcG4QkDDd0xA4Bx2mIvqoh6qnTFcvPctitjBurnmzxyCzXW6toAwC7tuaGQhEFJ6NlLmlqL1IXL4LpoJGIhy9NTiAGd14AKoAvsNlEF+zMXhdpDINK5uPMl4UeXzUS1ZzsAL8AHyxgm/U3Harpc9kewaEZ/tMyuI//ME9PYR5mCOtYBlPKVdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB7180.namprd11.prod.outlook.com (2603:10b6:610:148::5)
+ by IA3PR11MB8894.namprd11.prod.outlook.com (2603:10b6:208:574::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
+ 2026 11:56:23 +0000
+Received: from CH3PR11MB7180.namprd11.prod.outlook.com
+ ([fe80::70dc:90b2:50b4:31a8]) by CH3PR11MB7180.namprd11.prod.outlook.com
+ ([fe80::70dc:90b2:50b4:31a8%7]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 11:56:23 +0000
+Date: Mon, 19 Oct 2026 07:56:17 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
+	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<netdev@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+	<simona.vetter@ffwll.ch>, <airlied@gmail.com>, <tejas.upadhyay@intel.com>,
+	<himal.prasad.ghimiray@intel.com>, <riana.tauro@intel.com>,
+	<raag.jadav@intel.com>, <joshua.santosh.ranjan@intel.com>,
+	<ashwin.kumar.kulkarni@intel.com>, <pratik.bari@intel.com>,
+	<Hawking.Zhang@amd.com>, <tao.zhou1@amd.com>, <YiPeng.Chai@amd.com>,
+	<jinzhou.su@amd.com>, <cesun102@amd.com>, <lijo.lazar@amd.com>,
+	<alexander.deucher@amd.com>, <christian.koenig@amd.com>
+Subject: Re: [PATCH v2 1/2] drm/xe: Expose retired VRAM pages via drm-ras
+Message-ID: <atYFYbLXfSIPLTzA@intel.com>
+References: <20261007080354.3072751-1-aravind.iddamsetty@linux.intel.com>
+ <20261007080354.3072751-2-aravind.iddamsetty@linux.intel.com>
+ <20261016154913.1af64e88@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261016154913.1af64e88@kernel.org>
+X-ClientProxiedBy: SJ0PR13CA0130.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::15) To CH3PR11MB7180.namprd11.prod.outlook.com
+ (2603:10b6:610:148::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB7180:EE_|IA3PR11MB8894:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd265e95-8e6b-46ff-7d05-08df2dd7ff22
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|23010399003|7416014|1800799024|6133799003|18002099003|22082099003|10067099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: Hqc9frZCfGzlvwh0G3cYFHzulm6uv5aLzTqzrZx435ivwXBW0ZV22mUKa3P9Aas3hgwARiedd9gg8dDQy12UBsy2doMEmzEjo0eoCiPVkobEd12cWfYgPCoop6WuNx2U+oo75GdsfUkdvcFhIH/iE2lPhgYJHPQo+DLYeqLkEUWQhTG+IxbgH9CxmlE6A+ZvXAW4kTTs3nLss2NZKXsBbjzNp4oEZpM7wfEAjf2LptOs0LYF2K2vcBMccrXbN4l3QJeRmxcc+blooUzsdr9wyrOnOmcPG+prxAIz5wLqX4BOeRdEEM8j5ShAjUwP9UH+0lE26u3sG3QImyqH7ksyk8yyAKz7HGPoWfdm1dqkzUUUAPA/WTXsCdQCHAcagOMln4HAvG7I3pH2mXzPOQjzmaN7d8d3y6OYZ7PQ/yPskc76N7K1W2lV6hrc3XEBB44JFQOC05B9bcVYedqbDB1DQcs2FNZIq+6lmuuUxSuJ+eMULGPh63kINv2cYBDgrfOvtmE+Bwwl+G2JbGLD9wKRX0n0epPZzpdZp6/qT37nuFSwId6BLpFj6e8IQ2Hzv2uYh66yTHOPTkoAhejSJrAtbc4vbiZdmAXjew88r5FZmfVepkTCV/A5KXht5yTkoqZqOEANBWSWo26bcUZ1k3007+dfC90RY1aTxyMy/IXjFso=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB7180.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(1800799024)(6133799003)(18002099003)(22082099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?i8/ZQQuY312UgbiVUVKILMVqe+tDU3VntaokbnID+aEY/I8XhvfO8LHV9hml?=
+ =?us-ascii?Q?xuEJmHB9uWmqkIT77FrM5s/s7fAAb5y6ejEh7m3VwXB8H8RYYqG7/kO0MOGv?=
+ =?us-ascii?Q?F+C2Awsgx/YpFMbpoUHfu9wAqjgaR8k7R0dzIx/FBisfl0l6jDTyfGZ16a+E?=
+ =?us-ascii?Q?dk2S10rwdW3jU2fz4OzLZ8/fXzuUQHubImPAIJFYfjpveQ7WMGpp6bFjN8h1?=
+ =?us-ascii?Q?SyiUgxpVpKMMu0L5vqWh6t7eaSAtEwKr+gSBOuXZfUzm5BWEmuhwxszhNJ50?=
+ =?us-ascii?Q?JMszGiiTHEYnJXlOosPt+PqsTxSfQeCX+yFBcVaeMs9aaTHxa+83+28cFeYo?=
+ =?us-ascii?Q?TFejhcIp2J3mXKz2ppSPyu2WLeHefq2CK5seCzXlv8ESnFOf9PRzze/1HL34?=
+ =?us-ascii?Q?s7NNuF9F0/FUdPubLKO7np3VDAE6Fd5kolI97zLptOAscZoSI1zQnCdMJt5T?=
+ =?us-ascii?Q?8VBqdnflALPK9jx5XeFIAhBqEZuBkGBVcyFHVMkWqIDzQ9glzcFfE0+H41oa?=
+ =?us-ascii?Q?jdBXNIfHB4x941kh+ABsZXk5TprdeiPLrsqrwh3NFAmGUrCy1iij8aHgNaO2?=
+ =?us-ascii?Q?7qJcy8uVVG4hk6hhG+DS2jczi86uDPAhwygJ9PZVg7/9cmjknaXNiFUbvWig?=
+ =?us-ascii?Q?dMsrTKWQqa227HIKioeRj3N0jrP2j1UNGeJPyJ3y3z4o0pD00ZsFPjzKdu8a?=
+ =?us-ascii?Q?KAMW5k12qLFSvPyQh47cLeZJmKASpW+taNpJTgOIK2Uij2ml17K5C41dzJp1?=
+ =?us-ascii?Q?TD0XqrYoF0HxgPbeEt9y7lgb9quZbUeFRcqr+748vtBeUv+bJHPjywBnegSx?=
+ =?us-ascii?Q?j9LV+uX2XxnRBo66dvwjfY9VW9uxQtv4fMp9EeEafKg/uUfUjbmYOOYIMQfW?=
+ =?us-ascii?Q?wlzhW3uNntGfbn+oZmnwIm1AgDurzSIdHke1eXCXWMGlqGh28rGxn4cJD/sB?=
+ =?us-ascii?Q?b3LAAbmkakZbZfoWTN3v237unyFDdwGWAnHLsEX8lSwclEzmVpu6qh3ZjiXV?=
+ =?us-ascii?Q?C+GSy5clvjZ8+IhwewPKZ0hkSVnEuvg4bFtKS3DntQcGnwxRxCZPkK8udNl6?=
+ =?us-ascii?Q?Mxual31GKeAx0WnqlGcFybUonr1bkAIIx9HpeB/Wpnri+vNUOTwvqLNAWaAf?=
+ =?us-ascii?Q?v2pUlyP/ECf91Xfowvx9RkSXcLkI/XaW5kv0BqXBOQtjlgYdSm0vBN9j3tZL?=
+ =?us-ascii?Q?5xz75V+tqpO3TLq1/1Dh8Z59xJgQFGtm2Z83Jwx/VPYNLytrI+bM4tHVRZ49?=
+ =?us-ascii?Q?uaRSwGuqJwJe0iiRNN/63Ue7m84hZWz+hiiur6ayY7COQ3Gm0dn2qNolSFdB?=
+ =?us-ascii?Q?K3my6Ic5WwTbeiXc9h15wXbsgOgAugogUrbkjeoOqZzdmmpulMVokGekjgx3?=
+ =?us-ascii?Q?43eDvvu6J/UHo48DipBCpawOgQpgIOXcYfQfln8kYzCiheLy/TIvYAZ5+qkY?=
+ =?us-ascii?Q?/+Ej/ODkgIK5bPY6Vfc/RrnNm/PWKDVFtQ/XGVqIC48Rpry+LuP5t6YxLVt1?=
+ =?us-ascii?Q?LGsGISUEJQnKNssRYP97nJUVNbOTi5nBykcKxvZQGDvjJxq8foZkeqa34B9y?=
+ =?us-ascii?Q?hgbvHvSU1C/YT/EohrF1T9d7vAL5Z8IBVNu0hcM6EgFx3CtUn+lIBhdHzwGG?=
+ =?us-ascii?Q?udRxlynfc0IN+g0wE/TslbsSgQ1oP1Pu16i1SbhaLeWDYW/tXyGVbHTXDsGa?=
+ =?us-ascii?Q?tSnHSfFA4mhx0rGk5MISxWzrw6jcRPddFi55DpPPjgGmpibWZ6rWf5DD9qwS?=
+ =?us-ascii?Q?VnrT4H9q3Q=3D=3D?=
+X-Exchange-RoutingPolicyChecked: NRqvDctNWTbC0mAEtl6rggPZ2/Wsh4IAznA8laSRivTnzUWyy2LpC3LGOG1P8jVK/gwyrybneZR0GA9agFBchE3gTk2i2wyLmBMSk3+H5y4gRh71WAJ5C7D/RtnxPBqFeQx8xfj1BIBqnspn/R+7vYP0b47mvHXdmPFVVGACNT6t0nrToVkj+QhI0wgNtTvO8dngmemAgaD9K62H8NrDJpnuea6HnvzjoKOPScLorByb04V/s28bsTPO7WdpV2DM6yCzzgh+kv7R+GACse60AKoTqhbOgN2PKJnpus/hi5r1f7e6kMiFtNe7X1LQST7tyOgKXvYNTBEUZOOgC13QGg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd265e95-8e6b-46ff-7d05-08df2dd7ff22
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB7180.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 11:56:23.4835
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eGg1g93JHSD2tLcZis34x+TZT60Qj7Gdg0qmqmEbA0XAQxojLDl+iR/EihpQGB4xwDrIxhLpgSW6tAxHV7eUDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB8894
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Fri, Oct 16, 2026 at 03:49:13PM -0700, Jakub Kicinski wrote:
+> On Wed,  7 Oct 2026 13:33:53 +0530 Aravind Iddamsetty wrote:
+> > +  -
+> > +    name: retired-resource-attrs
+> > +    attributes:
+> > +      -
+> > +        name: node-id
+> > +        type: u32
+> > +        doc: Node ID targeted by this retired resource operation.
+> > +      -
+> > +        name: vram-page
+> > +        type: nest
+> > +        nested-attributes: vram-page-attrs
+> 
+> why wrap attrs in a nest? Are you planning to add other resource types
+> (than a page)? It's a common anti-pattern in Netlink to over-wrap stuff.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+we should indeed remove the wrap and have only the page info.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> 
+> > +        doc: >-
+> > +             Type-specific payload. The resource type is identified by the
+> > +             node (its node-name); each node reports a single resource type.
+> > +  -
+> > +    name: vram-page-attrs
+> > +    attributes:
+> > +      -
+> > +        name: address
+> > +        type: u64
+> > +        doc: Device address of the retired VRAM page (e.g. DPA).
+> > +      -
+> > +        name: size
+> > +        type: u64
+> 
+> prefer uint
+> 
+> > +        doc: Size of the retired VRAM page in bytes.
+> > +      -
+> > +        name: max-pages
+> > +        type: u32
+> > +        doc: >-
+> > +             Maximum VRAM pages that can be retired. Present only in the
+> > +             leading summary entry of the dump (no address/size/status).
+> > +      -
+> > +        name: status
+> > +        type: u32
+> > +        doc: Retirement status of the retired VRAM page.
+> > +        enum: retired-resource-status
+> > +      -
+> > +        name: pad
+> > +        type: pad
+> 
+> And then you won't need pad
 
-- [High] The patch moves the STMMAC_DOWN check so it runs after the
-  hardware interrupt status has been read and cleared.
-- [Low] The commit fixes a user-visible bug: an interrupt storm (a hard-
-  IRQ livelock on UP, or on the CPU running the stmmac_wq reset worker)…
-
---
-
-net: stmmac: remove STMMAC_DOWN check to avoid irq storm
-
-This patch removes the early STMMAC_DOWN return from the stmmac interrupt
-handlers, so the device status registers are always read and cleared. The
-STMMAC_DOWN check now sits inside stmmac_safety_feat_interrupt() and
-stmmac_napi_check(), after the status has been read, and events are dropped
-while the bit is set. The goal is to avoid an interrupt storm on
-level-triggered IRQ lines during an adapter reset.
-
-[ ... ]
-
-> is re-entered forever. Since the handler returns IRQ_HANDLED,
-> note_interrupt() never flags the IRQ as spurious and never disables it,
-> resulting in an interrupt storm.
->
-> Signed-off-by: Xiaochuan Li <chuanx2070@163.com>
-
-[Severity: Low]
-Should this have a Fixes: tag? The STMMAC_DOWN early return in
-stmmac_interrupt() was added by:
-
-34877a15f787 ("net: stmmac: Rework and fix TX Timeout code")
-
-The same check was later copied into stmmac_mac_interrupt(),
-stmmac_safety_interrupt(), stmmac_msi_intr_tx() and stmmac_msi_intr_rx() by:
-
-8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
-
-Without a Fixes: tag, or a Cc: stable, stable maintainers can't easily tell
-that this is a fix or which trees need it.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index b837e8e27a352..ec7ca45a9ba61 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -3063,6 +3063,13 @@ static bool stmmac_safety_feat_interrupt(struct stmmac_priv *priv)
->  
->  	ret = stmmac_safety_feat_irq_status(priv, priv->dev,
->  			priv->ioaddr, priv->dma_cap.asp, &priv->sstats);
-> +
-> +	/* Status is read/cleared; do not escalate to a global error reset
-> +	 * while the interface is going down.
-> +	 */
-> +	if (test_bit(STMMAC_DOWN, &priv->state))
-> +		return false;
-> +
->  	if (ret && (ret != -EINVAL)) {
->  		stmmac_global_err(priv);
->  		return true;
-> @@ -3085,6 +3092,12 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
->  	rx_napi = rx_q->xsk_pool ? &ch->rxtx_napi : &ch->rx_napi;
->  	tx_napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
->  
-> +	/* Status was already read (and clear) above, so the irq line is
-> +	 * deasserted, Drop the event while the interface is going down.
-> +	 */
-> +	if (test_bit(STMMAC_DOWN, &priv->state))
-> +		return 0;
-> +
-
-[Severity: High]
-Is "while the interface is going down" accurate here? STMMAC_DOWN is set and
-cleared only in stmmac_reset_subtask(), and it stays set across dev_open()
-as well as dev_close():
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_reset_subtask() {
-    ...
-	set_bit(STMMAC_DOWN, &priv->state);
-	dev_close(priv->dev);
-	dev_open(priv->dev, NULL);
-	clear_bit(STMMAC_DOWN, &priv->state);
-    ...
-}
-
-By the time dev_open() returns, __stmmac_open() has already set up DMA,
-called phylink_start(), requested the IRQs, enabled NAPI and the TX queues,
-and called stmmac_enable_all_dma_irq(). The NETDEV_UP notifiers also run
-before clear_bit().
-
-Can interrupts from the reopened, running hardware in that window be
-acknowledged and then lost? stmmac_dma_interrupt_status() has already
-written the W1C status, for example in dwmac4_dma_interrupt():
-
-	writel(intr_status & intr_en,
-	       ioaddr + DMA_CHAN_STATUS(dwmac4_addrs, chan));
-
-Then stmmac_napi_check() returns 0 without scheduling NAPI. Before this
-patch, the status stayed latched and was serviced once STMMAC_DOWN was
-cleared.
-
-Here are some of the cases.
-
-If RI is dropped and the RX ring fills inside the window, RX DMA suspends
-with RBU. dwmac4_dma_interrupt() only counts RBU in rx_buf_unav_irq and
-never returns handle_rx. Does RX then stay stalled, because
-stmmac_rx_refill() never runs, until the next ifdown/up or reset?
-
-If TI is dropped and tx_coal_timer is 0, stmmac_tx_timer_arm() returns
-early. What reclaims those TX descriptors in that case?
-
-Because the status is 0, stmmac_dma_interrupt() and stmmac_msi_intr_tx()
-also skip this for a stopped TX DMA channel:
-
-	if (unlikely(status[chan] & tx_hard_error_bump_tc)) {
-		stmmac_bump_dma_threshold(priv, chan);
-	} else if (unlikely(status[chan] == tx_hard_error)) {
-		stmmac_tx_err(priv, chan);
-
-That leaves recovery to the netdev watchdog.
-
-In stmmac_safety_feat_interrupt(), an uncorrectable ASP error reported by
-the reinitialised hardware never reaches stmmac_global_err(). In
-stmmac_interrupt(), the false return also falls through into
-stmmac_common_interrupt() and stmmac_dma_interrupt() on hardware that has
-just reported a fatal error.
-
-On the close side, __stmmac_release() calls stmmac_disable_all_queues()
-(napi_disable) before stmmac_free_irq(), so napi_schedule_prep() already
-fails there. That suggests the new check only changes behaviour during the
-reopen half of the reset.
-
-Would it work to clear STMMAC_DOWN, or use a separate close-only state,
-before the DMA IRQs are re-enabled? Or to keep handling events normally and
-rely on napi_disable() during close?
-
->  	if ((status & handle_rx) && (chan < priv->plat->rx_queues_to_use)) {
->  		if (napi_schedule_prep(rx_napi)) {
->  			spin_lock_irqsave(&ch->lock, flags);
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015112415.437900-1-chuanx2070%40163.com
+I noticed this in the review prompts, but I have some reservations here.
+We know for sure our value is always u64 because it is our hw definition.
+I don't see a good reason why not use the exact size that matches our hw.
