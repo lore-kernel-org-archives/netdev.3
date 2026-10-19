@@ -1,220 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5752D4A4828;
-	Mon, 19 Oct 2026 09:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF26496D40;
+	Mon, 19 Oct 2026 09:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792400434; cv=none; b=jVn4YnG4qx52MybJVQ4eCUFX7UOFfqOaHxhcu095jX2spcf1z3fSUpGvQLpDPcN7XQQKxyr89ozAiKYfJOL8uet7a/10GMSMvzXWR4C/yTdIn8yyBP3iopbolnbAAOXMXH1r8BjgyqC3mZMAZchq3vonMn81ZGC18MBl4ItVDRU=
+	t=1792401068; cv=none; b=e0HMf982ie0bAVHxu93KnIzorh4F7+xoWbugY9hk97umSasE/SrBnVwF3+6JjQWKx61S248U294w7YrhLIdicudPpCcTisz7DSFt/bkfW5IcB35G9siao1DXaY9IwperUET4/JHHF+gMmArIq9kEw6L1OnJnWp/Kue4BjR8x1wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792400434; c=relaxed/simple;
-	bh=BAwzcRi7vSkEAOcUWAZNU6P64l/jjXjj5WuPW4v82Mw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IZibU26ApsyCgkfIwGRl73nYw+/FCcGmKGJCUia5yQ2QtruT1so5tH5BaD7Qx6Bh2alnNwL2SV8BCf76ZAF4QJcCDiq46N4RAPa8Pzk3FxIJsd0QUpkMSgG4l6yAwUgqdh3T6zTqrFcCvA8rdcOmQFbyLjWhLYOmblmZj5L8+oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XbF2sNAd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792401068; c=relaxed/simple;
+	bh=p+jY3tmxwUt019LxwgmVwWOXI6oEZqEVc9D9I+PEr1M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E3yH9fhoKbPSWejzGx3PK7UZYBBuk5N2aiWVvWUE2rcfDMR3h3+Pytvb99V8IIYvNi6o73bsdKXkHOttJ70mvUOL5uoLDiAXknfGHeLbfB84ENE0cpmOkgPIswJwtP1L6xQUo5KOGA250xIX5uq/1ftpYAbhy6G1Zvd2MlaSIhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=OdkLtUQF; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XbF2sNAd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190DE1F000C4;
-	Mon, 19 Oct 2026 09:00:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792400432;
-	bh=3hSYYZxfXUj4tub1+H+H+fSNPGf3qpxBoVbL6tLJEdA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XbF2sNAdqr+c1OO5LrHqGA/JGS94z54W5+wyvYxuEfitleJKGbEzhIXg7w3cHW9yJ
-	 8+vBXnwzz2OBn8h0Cl69pJ0PkMHfU7miZ6TkZP+1UzP/8+71jA4mEFafwFSdnQE+/0
-	 3kTIekOGem/vZ9GsmwmQeS3yCY6fbEnGK7bsvq8znJnP0MYgD2nmxvrQ2C9t51PWDk
-	 PJcJh9A5sIg+1okdfxjdnCD38va0sbny13hzT3dgmdI5BMOsMUDwTkUYjBjyRs6ZmG
-	 M7izDwiyFpuC5Z9c0bDkhlfAPzdKf18nZgBJnursvCDCXqbzww1pP9D79rxJiMF+0v
-	 Dwfc2EL7jsnaQ==
-Subject: Re: [PATCH net] net/mlx5e: rep, Fix races between devcom PAIR event
- and uplink close
-From: netdev-bot+sashiko@kernel.org
-To: tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, gal@nvidia.com,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- mbloch@nvidia.com, moshe@nvidia.com, roid@nvidia.com, saeedm@nvidia.com,
- shayd@nvidia.com
-Date: Mon, 19 Oct 2026 09:00:31 +0000
-Message-ID: <179240043161.3135.7551017781405209816@kernel.org>
-In-Reply-To: <20261015085744.1109107-1-tariqt@nvidia.com>
-References: <20261015085744.1109107-1-tariqt@nvidia.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="OdkLtUQF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792401064;
+	bh=cooeJdd3ZOoKuDT3EFTXdUcEgO8JUE4TEpeg7owRSCU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OdkLtUQFuykNOsUNna630292JZB/GlsKYOHeaRxonMelcM4avycN8CGhYuazZDZQE
+	 68grN8FMDEQbZ865DblqvaiQjJ7oIUr6Bef5xLRidnP+AjNUtsZzvfzzq7tFrLStVp
+	 0nLcjDxDmHSvQc3rsAtGHkVokJP5EGJ2OEdXs4Lz8IRXJI4X8qs4gb/xfVoI7DP90y
+	 4ae5UOBmZpovfF3OH6XMuLnq1UFcmw2z+f7g7hfhumLvgJetfvy1HBFr+lmiqk1sg8
+	 XSjPjTMWKvAB+bC5SGGy47pNcLx/+7xm/wqEPwEZxxpX1C1KwRXfoOtOhqSpwOYIe7
+	 QZLIjsiTq1gvw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 322D060058;
+	Mon, 19 Oct 2026 11:11:04 +0200 (CEST)
+Date: Mon, 19 Oct 2026 11:11:01 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net-next 09/15] netfilter: nft_exthdr: avoid 60 bytes
+ stack buffer in TCP option mangling
+Message-ID: <atXepTQ9VUufeOAu@chamomile>
+References: <20261018005638.1776148-10-pablo@netfilter.org>
+ <179237288600.3135.15119152740392179853@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179237288600.3135.15119152740392179853@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Mon, Oct 19, 2026 at 01:21:26AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The commit message says "This patch also updates the logic to
+>   drop malformed packets, before this patch NFT_BREAK was used as a…
+> 
+> --
+> 
+> netfilter: nft_exthdr: avoid 60 bytes stack buffer in TCP option mangling
+> 
+> This commit changes nft_exthdr_tcp_set_eval() and
+> nft_exthdr_tcp_strip_eval() so they no longer call
+> nft_tcp_header_pointer(). Each function now reads only the 20 byte fixed
+> TCP header with skb_header_pointer(), validates doff, and leaves it to
+> skb_ensure_writable() to pull the options. This removes a 60 byte stack
+> buffer and a redundant second header copy from both functions.
+> 
+> > diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
+> > index 3492426dccf7f..861bab93f4352 100644
+> > --- a/net/netfilter/nft_exthdr.c
+> > +++ b/net/netfilter/nft_exthdr.c
+> > @@ -233,16 +233,23 @@ static void nft_exthdr_tcp_set_eval(const struct nft_expr *expr,
+> 
+> [ ... ]
+> 
+> > -	tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
+> > +	if (pkt->tprot != IPPROTO_TCP || pkt->fragoff)
+> > +		goto err;
+> > +
+> > +	tcph = skb_header_pointer(pkt->skb, nft_thoff(pkt), sizeof(_tcph), &_tcph);
+> >  	if (!tcph)
+> >  		goto err;
+> >  
+> > +	tcphdr_len = __tcp_hdrlen(tcph);
+> > +	if (tcphdr_len < sizeof(*tcph) ||
+> > +	    tcphdr_len > sizeof(*tcph) + MAX_TCP_OPTION_SPACE)
+> > +		goto err;
+> > +
+> >  	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
+> >  		goto err;
+> >  
+> > @@ -313,16 +320,23 @@ static void nft_exthdr_tcp_strip_eval(const struct nft_expr *expr,
+> 
+> [ ... ]
+> 
+> > -	tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
+> > +	if (pkt->tprot != IPPROTO_TCP || pkt->fragoff)
+> > +		goto err;
+> > +
+> > +	tcph = skb_header_pointer(pkt->skb, nft_thoff(pkt), sizeof(_tcph), &_tcph);
+> >  	if (!tcph)
+> >  		goto err;
+> >  
+> > +	tcphdr_len = __tcp_hdrlen(tcph);
+> > +	if (tcphdr_len < sizeof(*tcph) ||
+> > +	    tcphdr_len > sizeof(*tcph) + MAX_TCP_OPTION_SPACE)
+> > +		goto err;
+> > +
+> >  	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
+> >  		goto drop;
+> 
+> [Severity: Medium]
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+Nothing wrong in this patch.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> The commit message says:
+> 
+>   This patch also updates the logic to drop malformed packets, before this
+>   patch NFT_BREAK was used as a verdict instead.
 
-- [High] The fix is incomplete.
-- [High] The patch adds a lockless load and dereference of esw->devcom to
-  every rep channel deactivation.
+I added this comment to make this AI robot and it keeps complaining...
 
---
+> Does that match what the diff does? The diff does not touch any verdict
+> code. The change in behaviour only comes from removing the second,
+> full-length skb_header_pointer() call that nft_tcp_header_pointer() made:
+> 
+>   return skb_header_pointer(pkt->skb, nft_thoff(pkt), *tcphdr_len, buffer);
+> 
+> Before this patch, a truncated TCP packet (thoff + doff * 4 > skb->len)
+> made that call return NULL. Both functions then took goto err and
+> returned NFT_BREAK.
 
-net/mlx5e: rep, Fix races between devcom PAIR event and uplink close
-
-This commit wraps mlx5e_sqs2vport_stop() in mlx5e_remove_sqs_fwd_rules()
-with mlx5_devcom_for_each_peer_begin()/end(). The goal is to serialize
-rep_sq and sq_peer teardown against the devcom ESW_OFFLOADS PAIR/UNPAIR
-event handler, which follows the pattern already used on the add side.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-> index 88a170e40bd9..7211faaffd8d 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-> @@ -629,8 +629,12 @@ mlx5e_remove_sqs_fwd_rules(struct mlx5e_priv *priv)
->  	struct mlx5_eswitch *esw = priv->mdev->priv.eswitch;
->  	struct mlx5e_rep_priv *rpriv = priv->ppriv;
->  	struct mlx5_eswitch_rep *rep = rpriv->rep;
-> +	bool devcom_locked;
->  
-> +	devcom_locked = mlx5_devcom_for_each_peer_begin(esw->devcom);
-
-[Severity: High]
-Before this patch, the stop path never touched esw->devcom. Now every rep
-channel deactivation loads and dereferences it with no lock held, and does
-so before the esw->mode check in mlx5e_sqs2vport_stop(). Can esw->devcom
-be freed while this runs?
-
-esw_offloads_disable() cleans up devcom before it unloads the reps:
-
-	mlx5_esw_offloads_devcom_cleanup(esw);
-	mlx5_eswitch_disable_pf_vf_vports(esw);
-	mlx5_esw_offloads_rep_unload(esw, MLX5_VPORT_UPLINK);
-
-mlx5_esw_offloads_devcom_cleanup() frees the devcom before it clears the
-pointer:
-
-	mlx5_devcom_unregister_component(esw->devcom);
-	xa_destroy(&esw->paired);
-	xa_destroy(&esw->fdb_table.offloads.peer_miss_rules);
-	esw->devcom = NULL;
-
-The free happens in mlx5_devcom_unregister_component()->
-devcom_free_comp_dev(), which does kfree(devcom) and then
-kref_put(&comp->ref, mlx5_devcom_comp_release). That also frees comp if
-this was the last member.
-
-One possible interleaving:
-
-CPU0 (ip link set <rep> down)
-mlx5e_rep_deactivate_channels()->mlx5e_remove_sqs_fwd_rules()
-  mlx5_devcom_for_each_peer_begin(esw->devcom)   /* loads P */
-
-CPU1 (devlink eswitch mode set legacy)
-mlx5_devlink_eswitch_mode_set()->mlx5_eswitch_disable_locked()
-  ->esw_offloads_disable()->mlx5_esw_offloads_devcom_cleanup()
-    kfree(P), possibly frees P->comp as well
-
-CPU0
-  comp = devcom->comp;
-  down_read(&comp->sem);
-
-The ndo_stop path holds rtnl, the netdev lock and priv->state_lock. The
-devlink mode set path holds the devlink lock and reps_lock. Nothing
-appears to serialize the two.
-
-Could this become a use-after-free on the comp_dev and on comp->sem? The
-start path already has a similar unsynchronized use of esw->devcom, but
-this patch adds a new one on the close path.
-
->  	mlx5e_sqs2vport_stop(esw, rep);
-> +	if (devcom_locked)
-> +		mlx5_devcom_for_each_peer_end(esw->devcom);
->  }
-
-[Severity: High]
-Does this fully close the race with the PAIR event?
-mlx5_devcom_for_each_peer_begin() drops the semaphore and returns false
-when the component is not ready:
-
-lib/devcom.c:mlx5_devcom_for_each_peer_begin() {
-	...
-	down_read(&comp->sem);
-	if (!READ_ONCE(comp->ready)) {
-		up_read(&comp->sem);
-		return false;
-	}
-	...
-}
-
-In that case mlx5e_sqs2vport_stop() still runs, with no devcom exclusion.
-It calls list_del() and kfree() on each rep_sq, kfree() on each sq_peer,
-and xa_destroy(&rep_sq->sq_peer).
-
-The PAIR handler, though, does all of its rep work while ready is still
-false. mlx5_esw_offloads_devcom_event() sets ready only at the end:
-
-	err = mlx5_esw_offloads_pair(esw, peer_esw);
-	...
-	err = mlx5_esw_offloads_pair(peer_esw, esw);
-	...
-	mlx5_devcom_comp_set_ready(esw->devcom, true);
-
-UNPAIR sets ready back to false once the last peer is gone. With two
-ports, every first PAIR and every re-pair therefore runs with ready set
-to false.
-
-One possible interleaving:
-
-CPU0 (ip link set <rep> down on eswitch A)
-mlx5e_rep_close()->mlx5e_close_locked()->mlx5e_deactivate_priv_channels()
-  ->mlx5e_rep_deactivate_channels()->mlx5e_remove_sqs_fwd_rules()
-    mlx5_devcom_for_each_peer_begin() returns false
-    mlx5e_sqs2vport_stop()
-      list_del(&rep_sq->list);
-      kfree(rep_sq);
-
-CPU1 (peer eswitch B entering switchdev)
-mlx5_devcom_send_event(PAIR), which takes comp->sem for write
-  ->mlx5_esw_offloads_devcom_event()->mlx5_esw_offloads_pair()
-    ->mlx5e_vport_rep_event_pair()
-      list_for_each_entry(rep_sq, &rpriv->vport_sqs_list, list) {
-          sq_peer = xa_load(&rep_sq->sq_peer, i);
-          ...
-          err = xa_insert(&rep_sq->sq_peer, i, sq_peer, GFP_KERNEL);
-
-Can CPU1 then walk a freed rep_sq, or call xa_insert() on an xarray that
-has already been destroyed?
-
-If the insert lands between the xa_for_each() and the xa_destroy() in
-mlx5e_sqs2vport_stop(), the sq_peer and its peer FDB send-to-vport rule
-look like they would be leaked.
-
-The commit message says:
-
-  "The add side (mlx5e_sqs2vport_start) already guards the peer-rule work
-  with mlx5_devcom_for_each_peer_begin(), i.e. the devcom read semaphore,
-  which excludes the write-side event."
-
-mlx5e_sqs2vport_start() uses the same ready-gated check:
-
-	if (mlx5_devcom_comp_is_ready(esw->devcom) &&
-	    mlx5_devcom_for_each_peer_begin(esw->devcom))
-		devcom_locked = true;
-
-As a result, its list_add() into rpriv->vport_sqs_list can also run while
-a first-time PAIR is walking the list.
-
-Would both the start and stop paths need exclusion that does not depend
-on comp->ready? One option is to hold comp->sem for read whenever
-esw->devcom is non-NULL, which would need a new devcom helper. Another is
-a lock that the event handler also takes.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015085744.1109107-1-tariqt%40nvidia.com
+Yes, this is what the comment aims to say.
