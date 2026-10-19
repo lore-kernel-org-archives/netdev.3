@@ -1,52 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFB04D73B8;
-	Mon, 19 Oct 2026 14:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C725DD55A;
+	Mon, 19 Oct 2026 14:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418526; cv=none; b=GetcLJtOMoaYpl4cEa7reYjmQqqh5NXFUkCzSthPHkvfCL+mgpkXNrFV149Oex8HCnJwrXirKzG4S4ZbWClFKMYqnO7NUA9ih4kyUxiXdrXmppSv8NJWENznHw8S8aKLH9nTmkozNIdyvTJFRpFAKg0uAaDZw1ptG4a7HfHOo7I=
+	t=1792418548; cv=none; b=kim03SQQQ8CDv1PEIZ6MCrMzNOpGgWJ5S3xBya7y8mehdNi7Emiu/B+tYZkyt4Qv7X3NZw/qt4+OBESPWHoZIyWJgDBvMeSpdyzZSp3pORcMFtDCyGJgn1aIe6e3agV1LSzUiSdSVKKp/LZTyGMnvVz2R/TQEBgdtkJMgbmrxlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418526; c=relaxed/simple;
-	bh=Qb75CgYlwdM8XV9iRNoXRIk8ViIQgsrvj9Ml8WaJ+Ns=;
+	s=arc-20240116; t=1792418548; c=relaxed/simple;
+	bh=LE3Kv7Qns3rlZoneNgTeytOBAiXvMZHekS2Zx5AqkVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aMvkikubKQiUQC5boMck/3tvZQliWs/UBSV1Lfj3VVGatJAexDx4LBBgmm4m4aHXd4bE0uCHEBTXdqghU7IKi9dQsVcf9g9eIB4yUJGaCWA4d6iKk8apwkCg8PRGEKygl8k8czUoijPGzzSHD9mvE1kIlQL5ESIiW5Vg5KQ/SUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/39ILUj; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=duXsBSO4zYGoDpZrN/2lB8jhBTc9o0DsblUKoq1DiIWwRwdh68GjgWDhPVXhsV2xkC9OdmsQoOOV7I3mRFCAKTzwPHBPs1Eq0m7U+jJZcYpSBK21juEIDej1mXmstSZ1XndnNlb0bjoSJiwjAQpEQ07wlx8k1dAjZYh/UTVkuKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Am/QgtGB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/39ILUj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67381F000C6;
-	Mon, 19 Oct 2026 14:02:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Am/QgtGB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F1E1F000CA;
+	Mon, 19 Oct 2026 14:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418524;
-	bh=Ma8s4LVFQY649KjDepXzI1/wOG9UbmIpugztJsBFM5g=;
+	s=k20260515; t=1792418545;
+	bh=uAyfzSL+KBnTpm8lz6gbxfhV5Hr/gzCgN0IahSCbmUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a/39ILUjHHJR8izdvcINKSvGFnYZJzUU3Q7dbGNfu2S1hYFkNFHahDGvSFUZwG4ut
-	 LWVadlWxQVY8licl2LSyQHSgh6KybNnAxRIrmV/h1MaqknsCde57n/g1tHrnVwX5It
-	 GDuDLX1V+0nCveOzRCZi5w+DbRWLKc0/6KYNR64oXakGtAhVHt6aEQxYyGQuytyLfI
-	 CbiUxZLWtkUyvzXjqj6lcanZc+FinnDG/JmeNd6Id62rccqspj4f8Nk7E0f+P/omXi
-	 BK1tYVwST6HnHXXkqzFG+BIxJlJ9raMZHBDgDR/zxOSOdcpR4xQhS4lnuFCR7IlCFm
-	 XaLQss2dwDyBw==
+	b=Am/QgtGB90XDPD4NzcronxpUAEPSHHAA/XF6NfC9qsNBCJUK8dxSka7z1XfJ710UY
+	 1lv5Cx2z1wIroLGiNJ6DVeiq4oJ9LZoVKqvgskoLKDQFvB7ls0hUIFCSbVELG5b5jG
+	 wrRmEbVTNaL1LnCw71C5RAMJb+vN2gSX2VpBJy3nHntX3WmP1cALweXbonxDlkns/a
+	 nfWa9PLePEpCncXQ64QPtJcunjBiCwwcCADEnTTGnguxXtfOMQTtZkAnU3P3aNlw0L
+	 KEnHnG2Srdisjw0iqRzBcheV2+zJgEorx/4OnDa/4QUxid0tmZ52MZhMXp3BIOfFBi
+	 H3Yym/oW8qTNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Florian Westphal <fw@strlen.de>,
+Cc: Zihan Xi <zihanx@nebusec.ai>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	pablo@netfilter.org,
-	razor@blackwall.org,
-	idosch@nvidia.com,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] netfilter: ebtables: bound num_counters like nentries in do_replace()
-Date: Mon, 19 Oct 2026 09:50:00 -0400
-Message-ID: <20261019135441.1420968-309-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.6] xsk: account ring allocations to memcg
+Date: Mon, 19 Oct 2026 09:50:15 -0400
+Message-ID: <20261019135441.1420968-324-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -62,454 +59,601 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Zihan Xi <zihanx@nebusec.ai>
 
-[ Upstream commit 43ae85af154b27f9a0ff602f7a01e3a7583ffdab ]
+[ Upstream commit b0057c68df711bf6a62033c072ac61c4f9d3cbc1 ]
 
-do_replace_finish() allocates the counter buffer before it is validated:
+AF_XDP rings are allocated from setsockopt() and can be mapped into user
+space.  The shared xskq_create() helper allocates the ring backing memory,
+but the user-controlled and long-lived allocation is not charged as kmem
+to the allocating memory cgroup.
 
-   counterstmp = vmalloc_array(repl->num_counters, sizeof(*counterstmp));
+The current implementation uses vmalloc_user(), which allocates the
+backing pages with GFP_KERNEL | __GFP_ZERO.  Use the same VM_USERMAP
+vmalloc path, but pass GFP_KERNEL_ACCOUNT so the ring backing pages are
+attributed to memcg/kmem and can be constrained by existing cgroup memory
+limits.  This keeps the existing zeroing and mmap semantics while avoiding
+AF_XDP-specific optmem or RLIMIT_MEMLOCK accounting.
 
-do_replace() only checks num_counters against INT_MAX / sizeof(struct
-ebt_counter), so vmalloc_array() can be asked for up to 134217726 * 16 =
-2147483616 bytes (~2 GiB).
-
-num_counters must in fact equal nentries: do_replace_finish() later
-rejects the request when repl->num_counters != t->private->nentries.
-get_counters() folds the per-CPU counters back into one entry per rule,
-so what userspace gets is bounded by nentries, never by nentries *
-nr_cpus. Apply the same upper bound used for nentries (MAX_EBT_ENTRIES)
-to the incoming num_counters so the over-sized allocation can no longer
-be requested.
-
-The allocation is still kept outside the ebt_mutex, since vmalloc() may
-sleep and trigger reclaim; only the bound is tightened.
-
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20260731164623.4694-2-zihanx@nebusec.ai
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This is a real allocate-before-validate bound bug in legacy ebtables
-`do_replace()`. The local tree is **6.18.53**; the buggy checks are
-present here and the fix is small enough to apply cleanly.
+The local tree is **6.12.111** (`pending-6.12`). The AF_XDP ring path
+still uses unaccounted `vmalloc_user()`, so this is a real memcg/DoS
+hole in this checkout, not a no-op.
 
 ===============================================================
 PHASE 1: COMMIT MESSAGE FORENSICS
 ===============================================================
 
-Step 1.1: PARSE THE SUBJECT LINE
-- Subsystem: `netfilter: ebtables`
-- Action verb: **bound** (limit an existing userspace-controlled size)
-- Intent: cap `num_counters` with the same ceiling already used for
-  `nentries` in `do_replace()`
-Record: [netfilter/ebtables] [bound] [tighten `num_counters` so
-`do_replace()` cannot request a ~2 GiB counter `vmalloc`]
+**Step 1.1: PARSE THE SUBJECT LINE**
+- Subsystem: `xsk` (AF_XDP / `net/xdp`)
+- Action verb: **account** (resource-accounting fix, not a refactor)
+- Claimed intent: charge AF_XDP ring backing pages to memcg/kmem
 
-Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- Signed-off-by: Jiayuan Chen \<jiayuan.chen@linux.dev\> (author)
-- Signed-off-by: Florian Westphal \<fw@strlen.de\> (netfilter/ebtables
-  maintainer; applied the patch)
-- Signed-off-by: Sasha Levin — **ignored** (pipeline)
-- `[Upstream commit 43ae85af154b…]` — **ignored** (pipeline)
-- No Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, Link:,
-  or Cc: stable
-Record: Author SOB + maintainer SOB only. Absence of Fixes/Cc-stable is
-expected and not a negative.
+Record: `[xsk] [account] charge AF_XDP ring allocations to memcg`
 
-Step 1.3: ANALYZE THE COMMIT BODY TEXT
-Bug: `do_replace_finish()` does `vmalloc_array(repl->num_counters,
-sizeof(*counterstmp))` **before** checking `repl->num_counters !=
-t->private->nentries`. `do_replace()` only rejects `num_counters >=
-INT_MAX / sizeof(struct ebt_counter)`, so the allocation can be up to
-`134217726 * 16 = 2147483616` bytes (~2 GiB). Semantically
-`num_counters` must equal the current table’s `nentries`;
-`get_counters()` returns one summed entry per rule, not per-CPU.
-Symptom: a crafted `EBT_SO_SET_ENTRIES` sockopt can force a huge
-`vmalloc` and reclaim/OOM, then the request is rejected.
-Root cause: allocate-then-validate; the `nentries` overflow formula is
-much tighter than the `num_counters` formula.
-Record: [oversized counter vmalloc before validation] [memory exhaustion
-/ reclaim DoS] [bug present since the 2010 overflow checks] [same
-MAX_EBT_ENTRIES ceiling as nentries]
+**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
 
-Step 1.4: DETECT HIDDEN BUG FIXES
-Not disguised. Explicit bound-check fix for a userspace-controlled
-allocation. Extracting the existing `nentries` formula into
-`MAX_EBT_ENTRIES` is mechanical, not a hidden refactor.
-Record: [Direct bug fix, not a hidden cleanup]
+From the candidate message:
+- `Acked-by: Stanislav Fomichev <sdf@fomichev.me>`
+- `Link:
+  https://patch.msgid.link/20260731164623.4694-2-zihanx@nebusec.ai`
+- `Signed-off-by: Zihan Xi <zihanx@nebusec.ai>`
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>`
+- Ignore: any `Signed-off-by: Sasha Levin` (pipeline)
+
+From the original v3 submission (mailing list, not treated as “already
+selected”):
+- `Fixes: 423f38329d26 ("xsk: add umem fill queue support and mmap")`
+- `Cc: stable@vger.kernel.org`
+- `Reported-by: Vega <vega@nebusec.ai>`
+- `Assisted-by: Codex:gpt-5.4`
+
+No syzbot, no Tested-by. Absence of Fixes/Cc:stable on the candidate
+copy is expected and is not a NO signal.
+
+Record: Ack from XDP/BPF reviewer; original submission had Fixes +
+Cc:stable + Reported-by; applied by netdev maintainer.
+
+**Step 1.3: ANALYZE THE COMMIT BODY TEXT**
+
+Bug: `xskq_create()` allocates mmapable ring memory from `setsockopt()`
+with `vmalloc_user()` (`GFP_KERNEL | __GFP_ZERO`). That allocation is
+user-controlled, long-lived, and **not charged to memcg/kmem**.
+
+Symptom: a task with `CAP_NET_RAW` in a user+net namespace can request
+very large RX/TX/fill/completion rings **before bind or packet I/O**.
+Cover letter includes a PoC (`unshare -Urn ./poc`, 1<<25 entries) and an
+OOM panic on **6.12.95** with `panic_on_oom`.
+
+Root cause: missing `__GFP_ACCOUNT` on the VM_USERMAP vmalloc path.
+Author explicitly says panic_on_oom is environment-specific; the defect
+is missing kmem attribution.
+
+Record: `[Bug: unaccounted userspace-triggered vmalloc of AF_XDP rings]
+[Symptom: memcg-limit bypass / global OOM] [Version: repro on 6.12.95]
+[Cause: vmalloc_user uses GFP_KERNEL, not GFP_KERNEL_ACCOUNT]`
+
+**Step 1.4: DETECT HIDDEN BUG FIXES**
+
+Not disguised. It is a missing-accounting fix. Kernel policy in
+`Documentation/core-api/memory-allocation.rst` says untrusted userspace
+allocations **must** set `__GFP_ACCOUNT`.
+
+Record: `[Not hidden; explicit resource-accounting / isolation bug]`
 
 ===============================================================
 PHASE 2: DIFF ANALYSIS - LINE BY LINE
 ===============================================================
 
-Step 2.1: INVENTORY THE CHANGES
-File: `net/bridge/netfilter/ebtables.c` — 6 insertions, 6 deletions.
-Functions: file-scope `#define MAX_EBT_ENTRIES`; `do_replace()`;
-`compat_copy_ebt_replace_from_user()`.
-Record: [1 file, ±6 lines] [do_replace,
-compat_copy_ebt_replace_from_user] [single-file surgical fix]
+**Step 2.1: INVENTORY THE CHANGES**
 
-Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-Hunk 1: existing `nentries` overflow expression becomes
-`MAX_EBT_ENTRIES` (same formula).
-Hunk 2 (`do_replace`): `num_counters >= INT_MAX / sizeof(struct
-ebt_counter)` → `num_counters >= MAX_EBT_ENTRIES`.
-Hunk 3 (compat): same `num_counters` change.
-Normal sockopt replace path, before any allocation of `newinfo` /
-`counterstmp`.
-Record: [before: num_counters allowed up to ~134M; after: same ceiling
-as nentries]
+File: `net/xdp/xsk_queue.c` only (~+11 / -1)
 
-Step 2.3: IDENTIFY THE BUG MECHANISM
-Category: memory-safety / resource-exhaustion bound check (not UAF,
-leak, or race).
-Mechanism: `num_counters` is independent of sockopt `len` (`len` only
-covers `sizeof(ebt_replace) + entries_size`). A small blob plus a huge
-`num_counters` still reaches `vmalloc_array()`. `vmalloc_array()` uses
-`check_mul_overflow`, so this is not an integer-wrap heap overflow; it
-is a ~2 GiB allocation request. Later `do_replace_finish()` rejects
-mismatched `num_counters` and `vfree`s the buffer.
-Record: [resource exhaustion] [userspace size used for vmalloc before
-semantic validation]
+- Add `#include <asm/shmparam.h>`
+- Add `xskq_vmalloc_user()`
+- In `xskq_create()`: `vmalloc_user(size)` → `xskq_vmalloc_user(size)`
 
-Step 2.4: ASSESS THE FIX QUALITY
-Obviously correct: `num_counters` must equal current `nentries`, and
-`nentries` was already capped by this formula. Kernel-registered initial
-tables (`ebtable_filter` etc.) have a handful of entries. No API/ABI
-change; oversized requests now get `-ENOMEM` earlier instead of
-allocating then `-EINVAL`. Allocation stays outside `ebt_mutex` (vmalloc
-may sleep). Regression risk is very low.
-Record: [minimal, maintainer-applied] [very low regression risk]
+`xskq_destroy()` still `vfree()`s the ring (uncharge is automatic on
+page free).
+
+Record: `[1 file, ~12 lines] [xskq_vmalloc_user added; xskq_create
+modified] [single-file surgical]`
+
+**Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
+
+Before: `vmalloc_user()` → `__vmalloc_node_range(..., GFP_KERNEL |
+__GFP_ZERO, PAGE_KERNEL, VM_USERMAP, ...)`
+
+After: same VM_USERMAP/SHMLBA/zeroing/mmap path, GFP flag is
+`GFP_KERNEL_ACCOUNT | __GFP_ZERO`.
+
+Affected path: `setsockopt(SOL_XDP,
+XDP_{RX,TX,UMEM_FILL,UMEM_COMPLETION}_RING)` → `xsk_setsockopt` →
+`xsk_init_queue` → `xskq_create`. Normal allocation path, not an error-
+path-only change.
+
+Record: `[before: unaccounted vmalloc_user] [after: identical vmalloc,
+charged to memcg]`
+
+**Step 2.3: IDENTIFY THE BUG MECHANISM**
+
+Category: resource accounting / isolation (userspace-triggered kernel
+memory not charged to kmemcg). Secondary failure mode: OOM /
+panic_on_oom.
+
+Mechanism: `GFP_KERNEL` vs `GFP_KERNEL_ACCOUNT` (`GFP_KERNEL |
+__GFP_ACCOUNT`). In this tree, `__vmalloc_node_range_noprof()` honors
+`__GFP_ACCOUNT` (page alloc + `MEMCG_VMALLOC` stat).
+
+Not UAF, leak, race, or bounds check.
+
+Record: `[resource accounting] [uncharged mmapable ring pages; fix is
+GFP_KERNEL_ACCOUNT]`
+
+**Step 2.4: ASSESS THE FIX QUALITY**
+
+Obviously correct relative to `vmalloc_user()` in `mm/vmalloc.c` (same
+args except GFP). No new uAPI. `vfree()` already drops the pages, so no
+extra unaccount helper (unlike rejected v2 `mm_account_pinned_pages`).
+
+Regression risk: AF_XDP in a **tight memcg** can now get `-ENOMEM` where
+it previously escaped the limit. That is the intended isolation. No
+lock/API/lifetime change.
+
+Stanislav noted dislike of open-coding `__vmalloc_node_range`; same
+pattern already used for mmapable BPF maps after
+`vmalloc_user_node_flags` was removed. Acceptable.
+
+Record: `[minimal, matches vmalloc_user] [low regression risk; memcg
+ENOMEM is intended]`
 
 ===============================================================
 PHASE 3: GIT HISTORY INVESTIGATION
 ===============================================================
 
-Step 3.1: BLAME THE CHANGED LINES
-The pair of overflow checks was added in `e788759f44b2` (“netfilter:
-ebtables: split do_replace into two functions”, Florian Westphal,
-2010-02-04), first appearing around **v2.6.34-rc1**. The loose
-`num_counters` bound has been unchanged since then (aside from a 2015
-revert of an unrelated `num_counters == 0` check).
-Record: [e788759f44b2, v2.6.34-rc1] [bug ~16 years old; present in this
-6.18.y tree]
+**Step 3.1: BLAME THE CHANGED LINES**
 
-Step 3.2: FOLLOW THE FIXES: TAG
-No Fixes: tag. The introducing commit is an ancestor of HEAD and of
-`v6.18.53`.
-Record: [no Fixes tag] [introducing commit is in this tree] [no
-intermediate tightening of this bound]
+- Ring helper/mmap: `423f38329d267` (2018, Magnus Karlsson) — “xsk: add
+  umem fill queue support and mmap”
+- `vmalloc_user` switch: `9f78bf330a66c` (2023, Xuan Zhuo) — “xsk:
+  support use vaddr as ring”
+- Overflow guard: `a12bbb3cccf03` (2023)
 
-Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Nearby ebtables work (`terminate table name`, `zero chainstack`, `module
-names must be null-terminated`) is independent. This commit is not patch
-N/M.
-Record: [standalone] [no prerequisites beyond the 2010 overflow checks]
+Buggy missing accounting dates to the original mmapable queue (2018).
+`vmalloc_user` only changed the allocator.
 
-Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Jiayuan Chen is not the ebtables maintainer. Florian Westphal applied
-it. Same-period netfilter work from this author is unrelated (`nft_ct`).
-Record: [regular contributor; maintainer SOB] [no dependent series]
+Record: `[introduced conceptually in 423f38329d267 (v4.18-era);
+vmalloc_user since 9f78bf330a66c / v6.3]`
 
-Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-`MAX_EBT_ENTRIES` is introduced here from an in-tree formula.
-`vmalloc_array()` exists (`mm/util.c`). Compat path exists under
-`CONFIG_NETFILTER_XTABLES_COMPAT`. Applies standalone.
-Record: [none] [standalone apply]
+**Step 3.2: FOLLOW THE FIXES: TAG**
+
+`423f38329d267` **is an ancestor of this HEAD** (`git merge-base --is-
+ancestor` exit 0). Original code used `__get_free_pages`; accounting was
+missing then too.
+
+Record: `[Fixes target in this tree] [no later in-tree substitute for
+ring memcg charge]`
+
+**Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
+
+Recent `net/xdp/xsk_queue.c`: overflow check, vmalloc conversion, header
+moves. No existing memcg/optmem/RLIMIT charge on rings.
+
+Series history (mailing list): v1 optmem + socket lifetime coupling; v2
+RLIMIT_MEMLOCK; **v3 is standalone 1/1** memcg-only.
+
+Record: `[standalone v3; no in-tree prereq refactor]`
+
+**Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
+
+Zihan Xi is not an XDP maintainer. Reviewer Stanislav Fomichev is a
+regular XDP/BPF reviewer and Acked v3. Applied by Jakub Kicinski.
+
+Record: `[author: reporter/fixer; reviewer: subsystem regular;
+maintainer applied]`
+
+**Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
+
+Needs `__vmalloc_node_range`, `SHMLBA`, `VM_USERMAP`,
+`GFP_KERNEL_ACCOUNT`. All present in 6.12.
+
+Local `xskq_create` uses `kzalloc(sizeof(*q), GFP_KERNEL)` vs mainline
+`kzalloc_obj(*q)` — **not in the changed hunks**. Functional diff
+applies.
+
+Record: `[no functional dependencies] [applies standalone with trivial
+context]`
 
 ===============================================================
 PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 ===============================================================
 
-Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-`b4 dig -c 43ae85af154b` →
-https://patch.msgid.link/20260610030259.194456-1-jiayuan.chen@linux.dev
-Subject: `[PATCH nf-next] netfilter: ebtables: bound num_counters like
-nentries in do_replace()`
-v1 only (`b4 dig -a`). Mbox is the patch itself; **no replies, NAKs, or
-Cc: stable**. Applied as-is by Florian on 2026-07-02. Merged via `nf-
-next-26-07-02`; pull text: “Bound num_counters in ebtables: do_replace()
-by MAX_EBT_ENTRIES to prevent oversized vmalloc_array() allocations.”
-Record: [msgid 20260610030259.194456-1] [v1 only] [no review comments]
-[sent to nf-next, not nf] [no stable nomination in thread]
+**Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
 
-Step 4.2: CHECK WHO REVIEWED THE PATCH
-`b4 dig -w`: To netfilter-devel@vger.kernel.org and the author only.
-Florian’s SOB is the review.
-Record: [netfilter-devel + maintainer applied]
+`b4 dig -c <msgid>` could not match a local commit (patch not in this
+tree). `b4 mbox` retrieved the 4-message thread.
 
-Step 4.3: SEARCH FOR THE BUG REPORT
-No Reported-by, syzbot, bugzilla, or CVE in the commit or thread. Bug is
-derived from code analysis in the message (exact 2 GiB arithmetic).
-Record: [no external bug report] [mechanism documented in the patch]
+- Cover: https://lists.openwall.net/netdev/2026/07/31/395
+- Patch: https://lists.openwall.net/netdev/2026/07/31/392
+- Review: https://lists.openwall.net/netdev/2026/07/31/437
 
-Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-Standalone v1. iptables still uses `INT_MAX / sizeof(xt_counters)` plus
-`xt_counters_alloc()`’s extra `XT_MAX_TABLE_SIZE` (512 MiB) cap.
-ebtables had no equivalent extra cap before this patch.
-Record: [standalone] [iptables already had a tighter allocator cap]
+v1 optmem, v2 RLIMIT_MEMLOCK, v3 memcg. Applied version is v3 (latest).
+No NAK. Stanislav Acked. Patchwork-bot accepted it.
 
-Step 4.5: CHECK STABLE MAILING LIST HISTORY
-lore.kernel.org HTTP fetch returned 403. `b4 dig` mbox has no stable@
-traffic. No evidence it was rejected for stable.
-Record: [no stable-list discussion found; lore HTTP 403]
+Author nominated `Cc: stable` on v3. Reviewer did not object.
+
+Record: `[lore msgid 20260731164623.4694-2] [v1→v3, v3 applied] [Ack, no
+NAK] [author Cc:stable]`
+
+**Step 4.2: CHECK WHO REVIEWED THE PATCH**
+
+To/Cc: netdev, bpf, Magnus Karlsson, Maciej Fijalkowski, Stanislav
+Fomichev, davem, edumazet, pabeni, horms, ast, daniel, hawk,
+john.fastabend.
+
+Stanislav reviewed v2 (pushed memcg over RLIMIT_MEMLOCK) and Acked v3.
+
+Record: `[Stanislav Fomichev Ack; XDP maintainers were CC'd]`
+
+**Step 4.3: SEARCH FOR THE BUG REPORT**
+
+Internal report (`Reported-by: Vega`) plus full PoC and panic log on
+6.12.95. Trigger: `socket(AF_XDP)` + `setsockopt` with 2^25 entries,
+`unshare -Urn`. No syzbot/bugzilla.
+
+Record: `[reproducible OOM/panic on 6.12.95; userns+CAP_NET_RAW]`
+
+**Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
+
+v3 is 0/1 + 1/1. No extra patches required. v1/v2 approaches were
+dropped.
+
+Record: `[self-contained; earlier series versions superseded]`
+
+**Step 4.5: CHECK STABLE MAILING LIST HISTORY**
+
+No useful hit on lore.kernel.org/stable for this subject. No recorded
+rejection for 6.12.y.
+
+Record: `[no stable-list rejection found]`
 
 ===============================================================
 PHASE 5: CODE SEMANTIC ANALYSIS
 ===============================================================
 
-Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-Record: [`do_replace`, `compat_copy_ebt_replace_from_user`; allocation
-in `do_replace_finish`]
+**Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF**
 
-Step 5.2: TRACE CALLERS
-`do_ebt_set_ctl()` (CAP_NET_ADMIN via `ns_capable(net->user_ns,
-CAP_NET_ADMIN)`) → `EBT_SO_SET_ENTRIES` → `do_replace()` /
-`compat_do_replace()` → `compat_copy_ebt_replace_from_user()` then
-`do_replace_finish()`.
-Record: [privileged sockopt; user_ns capable] [not IRQ; process context]
+Record: `[xskq_vmalloc_user (new), xskq_create (modified)]`
 
-Step 5.3: TRACE CALLEES
-`vmalloc_array()` → overflow-checked `__vmalloc`. `get_counters()`
-memcpy/sum into `nentries` slots. `copy_to_user` of `num_counters`
-entries only after the match check.
-Record: [vmalloc_array, get_counters, copy_to_user]
+**Step 5.2: TRACE CALLERS**
 
-Step 5.4: FOLLOW THE CALL CHAIN
-Reachable from `setsockopt` with `EBT_SO_SET_ENTRIES`. `len` need not
-include the counter array. Unprivileged user namespaces that have
-CAP_NET_ADMIN in that netns can call it if
-`CONFIG_BRIDGE_NF_EBTABLES_LEGACY` is loaded. `find_table_lock` failure
-still happens **after** the `counterstmp` allocation.
-Record: [userspace sockopt] [reachable; userns-relevant]
+`xskq_create` is only called from `xsk_init_queue()` in `net/xdp/xsk.c`,
+from `xsk_setsockopt` for the four ring options. Process context,
+syscall.
 
-Step 5.5: SEARCH FOR SIMILAR PATTERNS
-`do_update_counters()` also `vmalloc_array(num_counters)` but `len` must
-equal `sizeof(hlp) + num_counters * sizeof(ebt_counter)`, so the sockopt
-size bounds it. `copy_counters_to_user()` allocates from validated
-`nentries`. Sibling not the same bug; this commit does not need to wait
-for a series.
-Record: [replace path is the unbounded one]
+`xsk_create()` requires `ns_capable(net->user_ns, CAP_NET_RAW)` —
+**available to an unprivileged user inside a user namespace**.
+
+Record: `[setsockopt path; userns CAP_NET_RAW]`
+
+**Step 5.3: TRACE CALLEES**
+
+`__vmalloc_node_range` → page alloc with GFP; `vfree` on destroy. No new
+locks.
+
+Record: `[vmalloc/vfree only]`
+
+**Step 5.4: FOLLOW THE CALL CHAIN**
+
+`socket(AF_XDP)` → `setsockopt(SOL_XDP, XDP_*_RING, &entries)` →
+`xskq_create`.
+
+`xsk_init_queue` only checks `entries != 0`, power of two, and queue not
+already set. **No upper bound.** `xdp_desc` is 16 bytes; 2^25 entries ≈
+512 MiB per RX/TX ring (fill/completion similar with `u64` descs). Eight
+sockets × four rings is multi-GB kernel vmalloc.
+
+Reachable from userspace: **yes**.
+
+Record: `[userspace-reachable unbounded vmalloc]`
+
+**Step 5.5: SEARCH FOR SIMILAR PATTERNS**
+
+UMEM pages are charged via `user->locked_vm`
+(`xdp_umem_unaccount_pages`). BPF mmapable maps use
+`__vmalloc_node_range` with accounting flags. Rings were the hole.
+
+`vmalloc_user()` elsewhere (kcov, perf, videobuf) is a separate
+question; this patch only fixes AF_XDP.
+
+Record: `[UMEM already bounded; rings were not; BPF already accounts
+mmapable vmalloc]`
 
 ===============================================================
 PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 ===============================================================
 
-Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
-Local tree: `git describe HEAD` = `v6.18.53-5049-g0f0bdc2b0dffb`; `make
-kernelversion` = **6.18.53**; Makefile VERSION/PATCHLEVEL/SUBLEVEL =
-6.18.53.
-At `v6.18.53`, `do_replace()` still has the old `INT_MAX / sizeof(struct
-ebt_counter)` check. `git merge-base --is-ancestor 43ae85af154b
-v6.18.53` fails (fix not in 6.18.53). Introducing commit **is** in
-6.18.53.
-Record: [yes, both native and compat replace] [introduced v2.6.34-rc1]
+**Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
 
-Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-The overflow-check lines at `v6.18.53` match the pre-image of this
-patch. `MAX_EBT_ENTRIES` is new here. Clean apply expected.
-Record: [clean apply]
+Yes. `net/xdp/xsk_queue.c:49` is `q->ring = vmalloc_user(size);`. `make
+kernelversion` = **6.12.111**. Repro log is 6.12.95. `423f38329d267` and
+`9f78bf330a66c` are ancestors. No `xskq_vmalloc_user` /
+`GFP_KERNEL_ACCOUNT` in `net/xdp`.
 
-Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
-No earlier equivalent bound on `num_counters`. Name-termination commits
-nearby do not fix this.
-Record: [no alternate fix in 6.18.y]
+Record: `[buggy code present; bug since 2018 / vmalloc path since ~6.3]`
+
+**Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
+
+Expected apply: **clean / trivial context**. Only surrounding difference
+is `kzalloc` vs `kzalloc_obj`. `asm/shmparam.h` exists
+(`arch/x86/include/asm/shmparam.h`, `include/asm-generic/shmparam.h`).
+`__vmalloc_node_range` macro exists in `include/linux/vmalloc.h`.
+
+Record: `[clean apply or one-hunk context tweak]`
+
+**Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
+
+No memcg/optmem/RLIMIT accounting on ring create in this tree.
+
+Record: `[no substitute fix present]`
 
 ===============================================================
 PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 ===============================================================
 
-Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-`net/bridge/netfilter/ebtables.c`, `CONFIG_BRIDGE_NF_EBTABLES_LEGACY`
-(default n). Still used by docker/libvirt/firewalld-style bridge
-filtering on distro kernels that enable it.
-Record: [netfilter/ebtables legacy] [IMPORTANT for those configs, not
-core mm/VFS]
+**Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
 
-Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-Mature (2002-era) with occasional correctness/security fixes. Not churny
-new code.
-Record: [mature/stable]
+`net/xdp` — AF_XDP. Config: `CONFIG_XDP_SOCKETS` (depends on
+`BPF_SYSCALL`, default n).
+
+Criticality: **IMPORTANT** (not core mm/VFS). Used for high-performance
+networking; also a userns attack surface when enabled.
+
+Record: `[net/xdp AF_XDP] [IMPORTANT]`
+
+**Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
+
+Mature since 2018; ongoing XDP work. This is an old hole, not a bug in
+brand-new code.
+
+Record: `[mature; hole is long-standing]`
 
 ===============================================================
 PHASE 8: IMPACT AND RISK ASSESSMENT
 ===============================================================
 
-Step 8.1: DETERMINE WHO IS AFFECTED
-Systems with legacy ebtables loaded. Trigger is a sockopt, not data-
-plane forwarding.
-Record: [config-specific / legacy-ebtables users]
+**Step 8.1: DETERMINE WHO IS AFFECTED**
 
-Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-Crafted `EBT_SO_SET_ENTRIES`: small `entries_size`, `num_counters` near
-`INT_MAX/16`. Cheap. Needs CAP_NET_ADMIN in the socket’s user_ns
-(`ns_capable`), so unprivileged userns can hit it when the module is
-present. Not every boot; attacker- or test-triggered.
-Record: [malicious/buggy replace] [easy if capable] [userns-capable, not
-world-unprivileged without userns]
+Config-specific (`CONFIG_XDP_SOCKETS`) plus anyone who can create AF_XDP
+sockets. Isolation impact is highest for **containers / memcg-limited
+workloads** on LTS kernels.
 
-Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-Success: ~2 GiB kernel vmalloc held through verify/translate, then freed
-— OOM/reclaim. Failure: `-ENOMEM`. Not UAF, not silent corruption, not a
-panic by itself. iptables caps similar allocations at 512 MiB; ebtables
-could request ~4× that.
-Record: [local memory-exhaustion DoS] [HIGH, not crash/corruption
-CRITICAL]
+Record: `[config-specific AF_XDP; high impact for cgroup/container
+hosts]`
 
-Step 8.4: CALCULATE RISK-BENEFIT RATIO
-Benefit: stops a documented ~2 GiB sockopt vmalloc on a long-lived path;
-high for hosts that ship legacy ebtables. Risk: 6-line bound change,
-same formula as `nentries`; very low.
-Record: [high benefit for ebtables users] [very low risk] [favorable]
+**Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
+
+`setsockopt` of a large power-of-two ring. No bind, no traffic.
+Unprivileged in a user ns with `CAP_NET_RAW`. Easy and deterministic.
+
+Caveat (verified from author): **without a memcg limit**,
+`GFP_KERNEL_ACCOUNT` does not stop global OOM (`CONSTRAINT_NONE` in
+their prototype). Enforcement is cgroup memory policy.
+
+Record: `[easy syscall trigger] [fix enforces memcg, not a global hard
+cap]`
+
+**Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
+
+- With memcg limits (typical k8s/LTS): bypass of memory.max / kmem →
+  **container isolation hole** (HIGH/CRITICAL for multi-tenant)
+- With panic_on_oom: **kernel panic** (CRITICAL in that config)
+- Without memcg limits: still global OOM killer after the patch
+
+Record: `[memcg bypass + OOM] [HIGH; CRITICAL under panic_on_oom /
+multi-tenant]`
+
+**Step 8.4: CALCULATE RISK-BENEFIT RATIO**
+
+Benefit: closes documented-required kmem accounting; lets existing
+cgroup limits constrain a userspace-triggered multi-hundred-MB vmalloc;
+matches BPF-style mmapable alloc policy.
+
+Risk: ~12 lines, GFP flag only, one file. Possible `-ENOMEM` for
+oversized rings inside a small memcg — correct.
+
+Record: `[benefit high for container/LTS] [risk very low] [favorable]`
 
 ===============================================================
 PHASE 9: FINAL SYNTHESIS
 ===============================================================
 
-Step 9.1: COMPILE THE EVIDENCE
+**Step 9.1: COMPILE THE EVIDENCE**
+
 FOR:
-- Real allocate-before-validate bug; commit shows the 2 GiB request
-- Small (6/6), obviously correct, maintainer-applied
-- Bug in this 6.18.y tree since v2.6.34; patch applies cleanly
-- Reachable from `setsockopt`; `ns_capable` makes userns relevant
-- Matches stable “oh, that’s not good” / security-DoS class
-- Does not add features or APIs
+- Real, documented policy violation: untrusted userspace alloc without
+  `__GFP_ACCOUNT`
+- Concrete PoC and panic on **6.12.95**, this series
+- Reachable via userns `CAP_NET_RAW` + `setsockopt`, no bind needed
+- Unbounded ring size (power-of-two only)
+- Small, obviously equivalent to `vmalloc_user` + account flag
+- APIs and buggy code exist in this 6.12.111 tree
+- Acked by Stanislav Fomichev; applied by Jakub Kicinski
+- Standalone (v3 dropped optmem/RLIMIT machinery)
+- UMEM already resource-bounded; rings were the gap
+- Author asked for stable; reviewer did not object
 
 AGAINST:
-- Sent to **nf-next**, not `nf` (not treated as an urgent -rc fix)
-- No user/syzbot/CVE report
-- Legacy ebtables, Kconfig default n
-- Requires CAP_NET_ADMIN in the netns user_ns
-- Transient allocation (freed on the later `-EINVAL` path), not a leak
+- Does **not** by itself stop global OOM if there is no memcg limit
+  (author confirmed)
+- `CONFIG_XDP_SOCKETS` is not default-on
+- Open-codes `__vmalloc_node_range` (reviewer accepted)
+- Can change success/failure of huge rings inside tight memcgs
 
 UNRESOLVED:
-- lore.kernel.org WebFetch 403; thread recovered via `b4 dig -m` (patch-
-  only)
-- No stable@ discussion found
+- Exact mainline SHA of the applied commit (not in this checkout; thread
+  was retrieved by msgid)
+- No stable-list discussion found
 
-Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. Obviously correct and tested? **PASS** — same ceiling as `nentries`;
-   maintainer applied v1
-2. Fixes a real bug that affects users? **PASS** — oversized vmalloc
-   from a sockopt field that is later rejected
-3. Important (crash/security/corruption/deadlock)? **PASS** — local DoS
-   / “oh, that’s not good” memory exhaustion, including userns
-   CAP_NET_ADMIN; not a panic
-4. Small and contained? **PASS** — 6 lines, one file
-5. No new features or APIs? **PASS**
-6. Can apply to the local tree? **PASS** — pre-image matches v6.18.53
+**Step 9.2: APPLY THE STABLE RULES CHECKLIST**
 
-Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Not a device ID, quirk, DT, build, or docs exception. Ordinary small
-bugfix.
+1. Obviously correct and tested? **PASS** — same vmalloc path as
+   `vmalloc_user`; PoC/discussion; maintainer Ack
+2. Fixes a real bug that affects users? **PASS** — missing kmem charge;
+   OOM/isolation on 6.12
+3. Important issue? **PASS** — memcg isolation hole and OOM
+   (panic_on_oom in the report)
+4. Small and contained? **PASS** — one file, ~12 lines
+5. No new features or APIs? **PASS** — GFP flag only, not a new uAPI
+6. Can apply to the local tree? **PASS** — code and helpers present
 
-Step 9.4: MAKE YOUR DECISION
-nf-next targeting and lack of a reporter argue it is hardening rather
-than an emergency, but the defect is concrete, old, reachable, and the
-patch is the lowest-risk way to close a ~2 GiB kernel allocation. That
-is appropriate for 6.18.y.
+**Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
 
-What the commit solves for stable users: a crafted ebtables replace can
-ask `vmalloc` for up to ~2 GiB of counter scratch space before the
-kernel checks that `num_counters` equals the table’s `nentries`.
-Tightening that field to `MAX_EBT_ENTRIES` stops the request without
-moving vmalloc under `ebt_mutex`.
+Not a device-ID/quirk/DT/docs exception. Ordinary resource-accounting
+bug fix.
 
-Risk vs benefit: benefit is preventing reclaim/OOM on a privileged (and
-userns-capable) sockopt; risk is a stricter `-ENOMEM` on values that
-could never succeed the later equality check.
+Record: `[no exception category; qualifies on primary rules]`
 
+**Step 9.4: MAKE YOUR DECISION**
+
+This is a small, correct fix for a userspace-reachable hole that this
+6.12 tree still has. LTS hosts that run AF_XDP and cgroups (containers)
+need the charge so memory.max actually applies. Incomplete as a *global*
+OOM cap is not a reason to keep rings unaccounted; kernel policy already
+requires `__GFP_ACCOUNT`, and that is exactly what this patch adds.
+
+===============================================================
+DETAILED EXPLANATION
+===============================================================
+
+**Problem:** `xskq_create()` backs AF_XDP rings with `vmalloc_user()`
+(`GFP_KERNEL`). `setsockopt()` can request an arbitrary power-of-two
+entry count with no memcg charge. In a user namespace that grant
+`CAP_NET_RAW`, that is a large, long-lived kernel allocation that
+bypasses cgroup kmem limits. The report includes a panic on 6.12.95
+under `panic_on_oom`.
+
+**Why it matters here:** This checkout is 6.12.111; the `vmalloc_user()`
+call is still present. 6.12.y is an LTS line used with cgroups. Charging
+the pages is what makes existing memory limits apply to this path.
+
+**Rules:** Surgical, no new API, no series prereq, applies with at most
+trivial `kzalloc` context. Reviewer-directed design (memcg, not
+optmem/RLIMIT).
+
+**Risk vs benefit:** Benefit is isolation/OOM under memcg; risk is a GFP
+flag on one alloc. `vfree()` already releases pages. The remaining gap
+(no memcg → still global OOM) is a property of memcg, not a reason to
+skip the charge.
+
+**Concerns:** Incomplete without cgroup limits; XDP sockets are
+optional. Neither outweighs backporting the accounting the kernel
+already requires for untrusted userspace allocations.
+
+===============================================================
 Verification:
-- [Phase 1] Parsed tags: author + Florian Westphal SOB only; no
-  Fixes/Reported-by/Cc-stable
-- [Phase 1] Body: 134217726 * 16 = 2147483616 documented; verified
-  `sizeof(struct ebt_counter)` is two `__u64` in `ebtables.h`
-- [Phase 2] Diff: 6/6 in `ebtables.c`; `do_replace` + compat copy;
-  `MAX_EBT_ENTRIES` is the old nentries formula
-- [Phase 2] Pre-fix at `c06e4b417f61^` and `v6.18.53`: `num_counters >=
-  INT_MAX / sizeof(struct ebt_counter)`
-- [Phase 2] `do_replace_finish()` still allocates then checks
-  `num_counters != t->private->nentries` (lines 1025–1056)
-- [Phase 2] `get_counters()` copies/sums `nentries` entries only (lines
-  992–1011)
-- [Phase 3] `git log -L` on the overflow checks: introduced
-  `e788759f44b2` (2010-02-04); `git describe --contains` → v2.6.34-rc1
-- [Phase 3] `git merge-base --is-ancestor e788759f44b2 v6.18.53` exit 0;
-  `43ae85af154b` not ancestor of v6.18.53
-- [Phase 3] No MAX_EBT_ENTRIES before this commit (`git log -S
-  MAX_EBT_ENTRIES`)
-- [Phase 4] `b4 dig -c 43ae85af154b`: msgid 20260610030259.194456-1; nf-
-  next; v1 only
-- [Phase 4] `b4 dig -w`: netfilter-devel only; `b4 dig -m`: 110-line
-  mbox, no replies
-- [Phase 4] Florian nf-next pull `b73bc9ca3686b` item 11 describes
-  oversized vmalloc_array prevention
-- [Phase 4] UNVERIFIED: stable@ lore search (HTTP 403)
-- [Phase 5] Callers: `do_ebt_set_ctl` requires `ns_capable(...,
-  CAP_NET_ADMIN)`; `EBT_SO_SET_ENTRIES`
-- [Phase 5] `vmalloc_array` uses `check_mul_overflow`
-  (`mm/util.c:656-662`) — overflow-safe, still ~2 GiB
-- [Phase 5] `xt_counters_alloc` extra cap `XT_MAX_TABLE_SIZE` 512 MiB;
-  ebtables lacked that
-- [Phase 6] `git describe HEAD` v6.18.53-5049; kernelversion 6.18.53
-- [Phase 6] `git show v6.18.53:net/bridge/netfilter/ebtables.c` still
-  has the loose num_counters checks at 1132 and 2275
-- [Phase 7] `obj-$(CONFIG_BRIDGE_NF_EBTABLES_LEGACY) += ebtables.o`;
-  Kconfig default n
-- [Phase 8] Failure mode: vmalloc/reclaim/OOM DoS, not oops/corruption
-- UNVERIFIED: whether a specific distro 6.18 config enables
-  BRIDGE_NF_EBTABLES_LEGACY
+===============================================================
+- [Phase 1] Parsed subject/body/tags from the candidate message;
+  mailing-list v3 also had Fixes: 423f38329d26, Cc: stable, Reported-by:
+  Vega
+- [Phase 2] Diff is one file: helper wrapping `__vmalloc_node_range`
+  with `GFP_KERNEL_ACCOUNT | __GFP_ZERO`, VM_USERMAP, SHMLBA — compared
+  to `vmalloc_user_noprof()` in mm/vmalloc.c:4063-4068
+- [Phase 2] Confirmed `GFP_KERNEL_ACCOUNT` is `GFP_KERNEL |
+  __GFP_ACCOUNT` in include/linux/gfp_types.h:379
+- [Phase 2] Confirmed vmalloc honors `__GFP_ACCOUNT` in
+  mm/vmalloc.c:3734-3738
+- [Phase 3] `git blame net/xdp/xsk_queue.c`: vmalloc_user from
+  9f78bf330a66c; helper from 423f38329d267
+- [Phase 3] `git merge-base --is-ancestor 423f38329d267 HEAD` → 0;
+  `9f78bf330a66c` → 0
+- [Phase 3] `git log --oneline -20 -- net/xdp/xsk_queue.c`: no memcg
+  accounting already present
+- [Phase 3] No `GFP_KERNEL_ACCOUNT` under net/xdp in this tree
+- [Phase 4] `b4 dig -c <msgid>`: no local commit match; `b4 mbox` saved
+  4-message thread
+- [Phase 4] Thread: v3 patch, Stanislav Ack, patchwork-bot, cover
+  letter; no NAK
+- [Phase 4] Openwall cover+review: PoC, 6.12.95 panic, memcg vs RLIMIT
+  debate
+- [Phase 4] WebSearch of lore.kernel.org/stable: no rejection thread
+  found (UNVERIFIED: lore search 403 on some URLs)
+- [Phase 5] Callers: only `xsk_init_queue` ← `xsk_setsockopt` for four
+  ring optnames
+- [Phase 5] `xsk_create`: `ns_capable(net->user_ns, CAP_NET_RAW)` at
+  net/xdp/xsk.c:1742
+- [Phase 5] `xsk_init_queue`: no max entries, only power-of-two
+  (net/xdp/xsk.c:1061-1062)
+- [Phase 5] `struct xdp_desc` is 16 bytes
+  (include/uapi/linux/if_xdp.h:155-159)
+- [Phase 6] `git describe HEAD` → p-6.12-2-gd38d58a4e0359; `make
+  kernelversion` → 6.12.111
+- [Phase 6] Current file still has `q->ring = vmalloc_user(size)` at
+  line 49
+- [Phase 6] `__vmalloc_node_range` and `asm/shmparam.h` exist in this
+  tree
+- [Phase 7] CONFIG_XDP_SOCKETS in net/xdp/Kconfig, default n, depends on
+  BPF_SYSCALL
+- [Phase 8] UMEM uses locked_vm in xdp_umem.c; rings do not
+- [Phase 8] Documentation/core-api/memory-allocation.rst:53-56 requires
+  __GFP_ACCOUNT for untrusted userspace allocs
+- UNVERIFIED: mainline commit SHA (patch not in this checkout)
+- UNVERIFIED: whether a later mainline follow-up added a hard ring-size
+  cap (not in this tree)
 
-The patch meets the stable rules for this 6.18.y tree: real, important,
-small, and it applies.
+The patch is a small, correct memcg charge for a userspace-reachable
+AF_XDP allocation that this 6.12 tree still leaves unaccounted.
 
 **YES**
 
- net/bridge/netfilter/ebtables.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/xdp/xsk_queue.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 96176aa881117..5266f4d021c6d 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -39,6 +39,8 @@
- #define COUNTER_OFFSET(n) (SMP_ALIGN(n * sizeof(struct ebt_counter)))
- #define COUNTER_BASE(c, n, cpu) ((struct ebt_counter *)(((char *)c) + \
- 				 COUNTER_OFFSET(n) * cpu))
-+#define MAX_EBT_ENTRIES (((INT_MAX - sizeof(struct ebt_table_info)) / \
-+			 NR_CPUS - SMP_CACHE_BYTES) / sizeof(struct ebt_counter))
+diff --git a/net/xdp/xsk_queue.c b/net/xdp/xsk_queue.c
+index d2c2640300171..7069830943ea8 100644
+--- a/net/xdp/xsk_queue.c
++++ b/net/xdp/xsk_queue.c
+@@ -9,6 +9,8 @@
+ #include <linux/vmalloc.h>
+ #include <net/xdp_sock_drv.h>
  
- struct ebt_pernet {
- 	struct list_head tables;
-@@ -1126,10 +1128,9 @@ static int do_replace(struct net *net, sockptr_t arg, unsigned int len)
- 		return -EINVAL;
++#include <asm/shmparam.h>
++
+ #include "xsk_queue.h"
  
- 	/* overflow check */
--	if (tmp.nentries >= ((INT_MAX - sizeof(struct ebt_table_info)) /
--			NR_CPUS - SMP_CACHE_BYTES) / sizeof(struct ebt_counter))
-+	if (tmp.nentries >= MAX_EBT_ENTRIES)
- 		return -ENOMEM;
--	if (tmp.num_counters >= INT_MAX / sizeof(struct ebt_counter))
-+	if (tmp.num_counters >= MAX_EBT_ENTRIES)
- 		return -ENOMEM;
+ static size_t xskq_get_ring_size(struct xsk_queue *q, bool umem_queue)
+@@ -21,6 +23,14 @@ static size_t xskq_get_ring_size(struct xsk_queue *q, bool umem_queue)
+ 	return struct_size(rxtx_ring, desc, q->nentries);
+ }
  
- 	tmp.name[sizeof(tmp.name) - 1] = 0;
-@@ -2269,10 +2270,9 @@ static int compat_copy_ebt_replace_from_user(struct ebt_replace *repl,
- 	if (tmp.entries_size == 0)
- 		return -EINVAL;
++static void *xskq_vmalloc_user(unsigned long size)
++{
++	return __vmalloc_node_range(size, SHMLBA, VMALLOC_START, VMALLOC_END,
++				     GFP_KERNEL_ACCOUNT | __GFP_ZERO, PAGE_KERNEL,
++				     VM_USERMAP, NUMA_NO_NODE,
++				     __builtin_return_address(0));
++}
++
+ struct xsk_queue *xskq_create(u32 nentries, bool umem_queue)
+ {
+ 	struct xsk_queue *q;
+@@ -46,7 +56,7 @@ struct xsk_queue *xskq_create(u32 nentries, bool umem_queue)
  
--	if (tmp.nentries >= ((INT_MAX - sizeof(struct ebt_table_info)) /
--			NR_CPUS - SMP_CACHE_BYTES) / sizeof(struct ebt_counter))
-+	if (tmp.nentries >= MAX_EBT_ENTRIES)
- 		return -ENOMEM;
--	if (tmp.num_counters >= INT_MAX / sizeof(struct ebt_counter))
-+	if (tmp.num_counters >= MAX_EBT_ENTRIES)
- 		return -ENOMEM;
+ 	size = PAGE_ALIGN(size);
  
- 	memcpy(repl, &tmp, offsetof(struct ebt_replace, hook_entry));
+-	q->ring = vmalloc_user(size);
++	q->ring = xskq_vmalloc_user(size);
+ 	if (!q->ring) {
+ 		kfree(q);
+ 		return NULL;
 -- 
 2.53.0
 
