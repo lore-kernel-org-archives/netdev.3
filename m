@@ -1,65 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792422187;
-	b=NtlkLZ+6B+g1+9vurwt+ujs84tSbQGM5U7hhgAVeQsg4jaDlIOWqsRn40syEDuYms46q
-	 6Ws+PqtH3T0r62qZyndAe0z6T/eg6v8DLnTp+Glm/hHt4u5KczL67ydYfT+5onDXSdOgz
-	 zf8w/VDa9hGwDJJZS3f/fl/tppqw6HRt53D8nNnt0/ZG4MTRsfbBG2RTe6Vail9PB2yL7
-	 RNNyWpV891wFzaqHvgUYAkdeFGbZAHBDvHQ016FkPZWsc/afMBl9zakLqSgXsYIEvGFdH
-	 v8wX1h2Mtg6sq3kt7WAf6c4aNLm0NCWc+hSMZQpem7Zo17W3ygZ9GnggHtMtTVYhQnQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792422187;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=v9cgZkzXfJum8LMGLQnaHUy+a1LoPyGxau8ueJsc2kE=;
-	b=Qk/YtQALe1vWg1QkHFIsPrOUK/F+iayjeHQz1yqvd7C5ADY1q9LeCFEu1LIM6xsWybDw
-	 YYUS4LMnn+VgZjRhXvZONWN6rR0o1d5G7yllYRxM/S5g9ZNrsDTNupAAUb83Hf8xFechE
-	 B6zYJbuTACHJ4o+rVKk3txWLqJMCxNaAy3VbPBfOZjDPWA6ziXPehw0MXEvZoPOj8Pv4J
-	 kYxPqG6rRUwtaDjwo5aCnd4ngtSH7ep1ZjBv+Y7xK6eIn+Soun5xfwK6EceNTG1HC0D6I
-	 4amhMmslk4BRA5q5vjr2g8TfeHaLuU61E0kQvL+BS593s7XQZz74sJFtDxLQl10jVEA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=TCLdCUCH;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DE6607D34C;
-	Mon, 19 Oct 2026 15:03:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35DE6607D34C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792421712;
+	b=iv5lj8JrmXhIkwciFKjdJKa3yyISttTqnQnRCfgiSZRouPiL+8gTwJZca9czLRyIi0+l
+	 JeM/aEV8UxuLxJ/uytbbW8rVFq2pKAB+QNmmmqHc3Ub3dLbNKvq6/+3o9hi2U9shrqwWy
+	 V/cCMSr46XjeHKknMdTI4v3IlFWboC2r5VR6TjdglpJn1on+R+FJEUhTTuYpncXT6f9u4
+	 vz6Ph1vgddNEKRPPYrwCYvPqzgfz7dHjlv7rWMBgqItmq3wyX2LgF+GiuG09mJ0JWfn++
+	 WScyRWsPj3GwpIw6ue29SCzeUI7ADybGOCCDg4QytlV60nlzckfvoWaGmbFxPZsEMAA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792421712;
+	h=Received:Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=WQrKvC0O7qmerhfnG9M3z27SqPcXxJWgtPiJ3mb6oJE=;
+	b=Pr11EhuxDk6k7p+5tCMX6PpfQg7XFHF5BgPMIuxcH8czsYGVg4nBY75VUvfosqFnEwLX
+	 jSK/bkXqZ43ywgfzqJOmDlwfibtTNqLxCxj3zoiarIo2az2mkOHVEWUG/6bDv9ChiBJHJ
+	 D+lTtpZ1JDTnwwNhCIhTavtXxeS/cdd3FyytW7xuownstiiuCpUKDVVAUJyPdoYsr2lYO
+	 0q79aGxQ7Qz5WehmF+s9asqL8DKrsRVk0/s+kxyP1jW2PSq/gk90urr1x/OsguF2W79iU
+	 SQMTOK18xrMB0z6osBa/1UkoHwR6Arywg1QLHbAxurmVD/MQXCobkRuu24z9uaGXfPg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J0PvmOnD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
+Received: from aws-us-west-2-korg-listserv-1.web.codeaurora.org (ip-10-30-226-211.us-west-2.compute.internal [10.30.226.211])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E799606EFEE;
+	Mon, 19 Oct 2026 14:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=TCLdCUCH
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1792422176;
-	bh=v9cgZkzXfJum8LMGLQnaHUy+a1LoPyGxau8ueJsc2kE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TCLdCUCHdXutnNUIejtrEhyORq2G2tiOPo6TztfkjoOx/M/F1xLlxwt9njHMxvvRB
-	 9uqzu8DD8qEF4bvZtFlBMHYYADn3ZStgsspP08hdopUVG+XI+qykNJVthTIjSKTP+t
-	 U+vtqzABe0Kb3aRpFz5SlyucVtlowm8SROD/OPSLItecwuarVB3AWNzi3Gmg6Xmg2p
-	 bh41XLFBE7zI9N9+ZdRWs9BCFCvu6B2nw7W+4KF2H7ElYzO3smmUEwh9ZlYtw5BjcI
-	 8zxpSgteAHemI7UHnHaltSHAiIX7I2uAw33svNcTbz8Oy9SfEBcJ7kyCL2y3ELoCWf
-	 R7C1LXWnK5W5w==
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id A58426005C;
-	Mon, 19 Oct 2026 17:02:55 +0200 (CEST)
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: [PATCH net 00/10] Netfilter/IPVS fixes for net
-Date: Mon, 19 Oct 2026 17:02:39 +0200
-Message-ID: <20261019150249.1879516-1-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J0PvmOnD
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F6F533D6;
+	Mon, 19 Oct 2026 14:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792421712; cv=none; b=m//qWIo4iGvRgXdICscJopzosP8/UCnjM/bAn7klrTVpQNnofTfULB5Ccfs5TE3YNEeu6JKTBiyPhOoIRfbmiD6APs36DY1LTVq6GT/Fj5/mDdbsh5n36wU7DE1OyGF2p1Bhs7pdhc2MjFkWADRGm4Yv3CpQcrQ2tEd2UDK3H70=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792421712; c=relaxed/simple;
+	bh=VivAJRvivSKrkuPz0VaDEUS9jDA46EwfrqY6W31PGFQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DF9uDU2T/drNSV4d2VGwMnZhgzlj+80J5PkQkaRuSi0XIdcPcL846B016bWirzUTD7UX81EMySPp5/jrqV5kDT1yZLR8GVIBRNCMcTUEA/5LTiDQYZbEBYZtsTWvSr7DjRUAIrFx/4fL7G7BCFMTBsgrVHYoXDizrHVlydKO+0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0PvmOnD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CF81F000C4;
+	Mon, 19 Oct 2026 14:55:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792421710;
+	bh=WQrKvC0O7qmerhfnG9M3z27SqPcXxJWgtPiJ3mb6oJE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=J0PvmOnDAo5flEbgEBdcb40YpvrJbbRjjWvSW/Pinv/I+iHZuPGuRiwmC2Lw/xj/j
+	 qGq0EQmOtuZUsIGSiQdUa3U8IPXD0bLzwwsdYTp1ljbnObhJZKIygsj7kBIKWhF0KD
+	 btzWRp3sWKK5eo+opls6Doclu3K1dLYx7LlmMBk37bPCK6oaD2trZI7Rk0JJw6EDqA
+	 6QPCvzWQXG9WK1mGCyzxUUaG1qeJbkUJM/c/1dmGOnRc7Qiu3ivb29GfR1biiAvNjV
+	 e5OcVCUuzUCfU4nUigBexE3DxiqHJJuQjcg2bytAUiwEUR7EZ+nCPoQ/KR7ksBH6K4
+	 rxe7RhusGxVGw==
+Subject: Re: [PATCH net-next v6 3/5] selftests/bpf: Send XDP feature probes
+ with AF_PACKET
+From: netdev-bot+sashiko@kernel.org
+To: bochaolucky@gmail.com
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ ihor.solodrai@linux.dev, shuah@kernel.org, davem@davemloft.net,
+ kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ andrew+netdev@lunn.ch, edumazet@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
+ alexis.lothore@bootlin.com, lorenzo@kernel.org, tiozhang@didiglobal.com,
+ willemdebruijn.kernel@gmail.com, petrm@nvidia.com
+Date: Mon, 19 Oct 2026 14:55:07 +0000
+Message-ID: <179242170743.3135.13335465558311529562@kernel.org>
+In-Reply-To: <20261018-xdp-v5-send-20261008-v6-3-7336e1282ca3@gmail.com>
+References: <20261018-xdp-v5-send-20261008-v6-3-7336e1282ca3@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,120 +81,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Hi,
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-The following patchset contains Netfilter/IPVS for net:
+Low priority / nit picks for your consideration:
 
-1) Fix IPv6 nexthdr offset truncation in fragment reassembly,
-   this has been uncovered by LLM, from Jeremy Jean.
+- [Low] The hand-written usage line in argp_program_doc still reads
+  `USAGE: ./xdp-features [-vt] [-f <xdp-feature>] ...` and does not…
 
-2) Restrict checksums in nfqueue to known protocols and offset,
-   after this patch the plan is to re-enable nfqueue in userns,
-   this came via LLM report. from Florian Westhphal.
+--
 
-3) Fix races when handling overload flag in IPVS, this patch
-   is not perfect but Julian considers this improves the situation.
-   This was uncovered by LLM. From Julian Anastasov.
+selftests/bpf: Send XDP feature probes with AF_PACKET
 
-4) Error handling for IPVS sync_threshold sysctl, from Joel Granados.
+The tester now uses AF_PACKET to send echo probes and count the replies,
+so it no longer needs XDP support. The DUT now attaches through an XDP
+link, and the patch adds a -q option that queries native XDP support.
+The network_helpers dependency is dropped and veth XDP_TX is skipped.
 
-5) Use skb_vlan_tag_get_id() to retrieve the VLAN id, discard tci
-   bits, when handling VLAN in the flowtable, from Shuangfeng He.
+> diff --git a/tools/testing/selftests/bpf/xdp_features.c b/tools/testing/selftests/bpf/xdp_features.c
+> index 97c0e871c5b65..be4acb768e0a2 100644
+> --- a/tools/testing/selftests/bpf/xdp_features.c
+> +++ b/tools/testing/selftests/bpf/xdp_features.c
 
-6) Initialize IPCB for inet/ingress reject, uncovered by LLM.
+[ ... ]
 
-7) Restrict completion of binary search array to anonymous set.
+> @@ -78,6 +156,7 @@ const char argp_program_doc[] =
+>  static const struct argp_option opts[] = {
+>  	{ "verbose", 'v', NULL, 0, "Verbose debug output" },
+>  	{ "tester", 't', NULL, 0, "Tester mode" },
+> +	{ "query", 'q', NULL, 0, "Check native XDP support without attaching" },
 
-8) Restrict DCCP option matching to avoid out-of-bound read,
-   from Sung Byeongchan.
+[Severity: Low]
+This isn't a bug, but should the usage line in argp_program_doc also
+list the new option? It still reads:
 
-9) Reset transport header offset in flowtable after tunnel
-   decapsulation to fix issue with qdisc xmit path,
-   from Lorenzo Bianconi.
+"USAGE: ./xdp-features [-vt] [-f <xdp-feature>] [-D <dut-data-ip>] [-T <tester-data-ip>] [-C <dut-ctrl-ip>] <iface-name>\n"
 
-10) Fix inverted matching in ctnetlink dump filtering,
-    from Liu Chao.
+The -q, --query entry shows up in the argp-generated option list, but
+the hand-written usage summary leaves it out. The usage line is still
+unchanged at the end of the series.
 
-Please, pull these changes from:
+>  	{ "feature", 'f', "XDP-FEATURE", 0, "XDP feature to test" },
+>  	{ "dut_data_ip", 'D', "DUT-DATA-IP", 0, "DUT IP data channel" },
+>  	{ "dut_ctrl_ip", 'C', "DUT-CTRL-IP", 0, "DUT IP control channel" },
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-10-19
+[ ... ]
 
-Thanks.
+> @@ -719,6 +969,20 @@ int main(int argc, char **argv)
+>  		return -ENODEV;
+>  	}
+>  
+> +	if (env.query_only) {
+> +		LIBBPF_OPTS(bpf_xdp_query_opts, opts);
+> +
+> +		err = bpf_xdp_query(env.ifindex, XDP_FLAGS_DRV_MODE, &opts);
+> +		if (err)
+> +			return 1;
+> +		return opts.feature_flags & NETDEV_XDP_ACT_BASIC ? 0 : 4;
+> +	}
 
-----------------------------------------------------------------
+[Severity: Low]
+Could the exit codes for query mode be documented somewhere, such as in
+argp_program_doc or the -q help text?
 
-The following changes since commit ab699d296e066eb64f51d2a8a1d42237a3b186c8:
+Here 0 means NETDEV_XDP_ACT_BASIC is advertised, 4 means it is not, and
+1 means bpf_xdp_query() failed. None of this is described in the tool.
 
-  Merge branch 'net-always-dissect-gso-packets-in-__virtio_net_hdr_to_skb' (2026-10-06 15:35:42 -0700)
+Later in the series, run_feature() in drivers/net/hw/xdp_features.py
+treats probe.ret == 4 as a skip, so the contract is already in use.
 
-are available in the Git repository at:
+[ ... ]
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-10-19
-
-for you to fetch changes up to cd37ab22a74e05aae5c16c67295cbf5188b16268:
-
-  netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter (2026-10-19 14:14:03 +0200)
-
-----------------------------------------------------------------
-netfilter pull request 26-10-19
-
-----------------------------------------------------------------
-Florian Westphal (1):
-      netfilter: nft_payload: restrict checksum offsets to known values
-
-Joel Granados (1):
-      ipvs: skip committing sync_threshold when proc_dointvec fails
-
-Julian Anastasov (1):
-      ipvs: fix more races around the overload flag
-
-Jérémy Jean (1):
-      netfilter: nf_conntrack: avoid truncating IPv6 nexthdr offset
-
-Kyle Zeng (1):
-      netfilter: nf_reject: initialize IPCB at inet ingress
-
-Liu Chao (1):
-      netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter
-
-Lorenzo Bianconi (1):
-      netfilter: flowtable: reset transport header after nf_flow_encap_pop()
-
-Pablo Neira Ayuso (1):
-      netfilter: nft_set_rbtree: narrow down range completion to anonymous sets
-
-Shuangfeng He (1):
-      netfilter: flowtable: use the vlan id, not the full tci, in the tuple key
-
-Sung Byeongchan (1):
-      netfilter: xt_dccp: handle reserved options as single-byte
-
- include/net/ip_vs.h                     | 50 +++++++++++++++++++++------------
- net/ipv4/netfilter/nf_reject_ipv4.c     |  5 ++++
- net/ipv6/netfilter/nf_conntrack_reasm.c |  2 +-
- net/ipv6/netfilter/nf_reject_ipv6.c     |  5 ++++
- net/netfilter/ipvs/ip_vs_conn.c         |  8 +++---
- net/netfilter/ipvs/ip_vs_ctl.c          | 41 ++++++++++++++-------------
- net/netfilter/ipvs/ip_vs_dh.c           | 16 ++---------
- net/netfilter/ipvs/ip_vs_fo.c           |  2 +-
- net/netfilter/ipvs/ip_vs_lblc.c         |  4 +--
- net/netfilter/ipvs/ip_vs_lblcr.c        |  8 +++---
- net/netfilter/ipvs/ip_vs_lc.c           |  2 +-
- net/netfilter/ipvs/ip_vs_mh.c           |  2 +-
- net/netfilter/ipvs/ip_vs_nq.c           |  2 +-
- net/netfilter/ipvs/ip_vs_ovf.c          |  2 +-
- net/netfilter/ipvs/ip_vs_rr.c           |  2 +-
- net/netfilter/ipvs/ip_vs_sed.c          |  4 +--
- net/netfilter/ipvs/ip_vs_sh.c           |  2 +-
- net/netfilter/ipvs/ip_vs_twos.c         |  4 +--
- net/netfilter/ipvs/ip_vs_wlc.c          |  4 +--
- net/netfilter/ipvs/ip_vs_wrr.c          |  2 +-
- net/netfilter/nf_conntrack_netlink.c    |  8 +++---
- net/netfilter/nf_flow_table_ip.c        |  6 ++--
- net/netfilter/nft_payload.c             | 40 +++++++++++++++++++++-----
- net/netfilter/nft_set_rbtree.c          |  3 +-
- net/netfilter/xt_dccp.c                 |  2 +-
- 25 files changed, 134 insertions(+), 92 deletions(-)
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018-xdp-v5-send-20261008-v6-0-7336e1282ca3%40gmail.com
