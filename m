@@ -1,669 +1,380 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFB853F9A1
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978864331E;
+	Mon, 19 Oct 2026 14:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418722; cv=none; b=fG3wgJZKNr03HmLJLBjMD3NQqAw7WqKiYI+7VOqlb5X2BKKOSeXYTVZGIey8FWHHOQxUQIY4AksSl4UJZpjHdYtGmrNZyo2eaz+Pp+uVHaBcoDrGmDT3xCb/TO8NAE4YAXfgtyEXaShqGXNO6aqKXJvQRdpPMd6IZ66oBMs15qA=
+	t=1792418782; cv=none; b=M8Q5K8BvqQj8VD5TwjvN8m1yYa8OtN1z8vY47I1jaAoiTdvkiqjRgHv5HV09474aRW8EKi4a2LGTibslN+LDx21naoxApsfg72DEUCOa4GGacHtstcQ8/rw0CGxhTd2lhg1tOAC0ejQVU8CD7l4mgvZZpcTEY72S8Xdx5af2I2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418722; c=relaxed/simple;
-	bh=tmEiYkXBJICbx9511/42bzdA+vfIAGw4IUISTCCAh4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XMnBooc9EyPienerPm3w24erQjel7FNqoLlk8IBr15j26uKUaFK0XytqR+/SHRbYrjfg68hq4CIr1cdGz1CKAvMSJ2VLVVQO+2YYjcK42DlgP69KMUuKGkiD0+xMb98WCMFTLYNVKdg1oOF4nHdGxpbLYKOLdpgmnwDhq7CDZrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MfoRWlwL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JdE61Q8c; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792418782; c=relaxed/simple;
+	bh=lcCkEv8Vk6O3kHUw9vVYnyOcA2IzqYKvR7/s8zziZhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BV3d16oVoOWlJwoiQUp0SrydniZxq+egGYliQHvIq6V9KXlS+7iTX9jRAHAo6PAT0L89X6Dm7lRWdMZ2EgxobPWv4rNY8F01XwJKfV8lYtS9iw7zk8bLwaqXgfClLiwlEZepOFEF3NMnlqa5RzAAd77g+HfXCLQeg5ZyFrvE0FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8NeMag4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MfoRWlwL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JdE61Q8c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792418717;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ezmLGOLVcnsCSf4Mk5iUqNISUf1eff4TWMy+ztjXUUY=;
-	b=MfoRWlwLkbY1bN6qfd4iYe7dkGXvT2Glmlc4p1MEymX7TS0ekNf0cxrEYUxklT+Bs3dyKy
-	V7RqJJ5V0bDpNsB/0f3VzNoMCewirYvcQ435qOovj3eD4PbgknA6+71DY2MZd3BA1XGAx7
-	Yjj1T2tYClXKao4OdSiosXNxUiyN7iM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-jw4hkwGVMCSSAlCtIM1acA-1; Mon, 19 Oct 2026 14:05:16 +0000
-X-MC-Unique: jw4hkwGVMCSSAlCtIM1acA-1
-X-Mimecast-MFC-AGG-ID: jw4hkwGVMCSSAlCtIM1acA_1792418715
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c415561aaso1481583f8f.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 07:05:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792418715; x=1793023515; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ezmLGOLVcnsCSf4Mk5iUqNISUf1eff4TWMy+ztjXUUY=;
-        b=JdE61Q8cznkIiHK9Qn0+NygujViOeIs7kISWUPXGF76MHFFF7BpFI85Kp/xcmZ5Suy
-         ebQyeVCWrefNkWRBnbQ+/w+kTWQ+CkCYth4WQIoiyZzXjXI3kGBUnyU1NtZZvxLwXU7W
-         2DEpI8cAf8Sie4RU367tPeRIKDby2PoleYTk1Kromg2Kw1k/A/4bPZs3dtMwtRcME2+2
-         XUjPyNgTLDMu9Altv2ycjWu5Bxwq/eR7WjGP/JmXvn4ojAbZB+KFHtEHEsMjJUxA4lIt
-         CcxxQ4j3OSlP0LlVnLAUGBVXnfGNz5VFONt5ZFsq1OPvpEo59dv3gJUu9x7qSxxY2FME
-         N4tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792418715; x=1793023515;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ezmLGOLVcnsCSf4Mk5iUqNISUf1eff4TWMy+ztjXUUY=;
-        b=xytDBmtpNgJdVsRWm8VighfAlYMV1dUmOXzwcMlEWutMiJXb4txdSEoI7DbbdVrgKb
-         mawVlaxrrjKB/Tl9EfA4nsMcZDFMGapMlVHbYU/G/9l/sYd7eSCkMB6I+/GPJfU3qlaC
-         d6flYpdqCMDQ/6m41tKmdrzODYLcV8/GnjP5eCVybbZOubb4KbSliFSqqnwONV9varaj
-         zZun7UgsIvTbeyWV7qhCSKfRSsSaejUbaqV2MzldroTDuV+pALG3Jm6kxoQFZTmctoeJ
-         3inPxzp9BtdGSLmZP8lKys0XkGk21RUEv+lX1GiNfED4xH0hp4CzsNd+42bnQsvsyjSP
-         RBsA==
-X-Forwarded-Encrypted: i=1; AKwUvBzGNy7KjU4VmENYwqfcYo8eiIE5CTV53GX0yK2UIJNTfeUHpG7OO9YwWo1nZAFJqAz7Z4aoXqo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL3hnKEDf5jvzqQ+wMViN3s03i645YcFcFU1BEfvf3vrLAUaN+5
-	ZYdKL8G8+alWHWCaIPvtudH0u8w5kxxYJChqFIxXBDoirV4Ef+hIMLE9N61bhO3Er1ujJY58fuy
-	U95F+5hRtLrsAFYJUknKNtpw5EAgWrm0vRRNKf0mZ2KYn7crkHtPe9x8W/g==
-X-Gm-Gg: AYBFou1HIuBOgA6mg1UZf0FVRwjclsmnvDkE012NtQ9mnDc/twSyc6nrAl0tmlDNzdH
-	MFOtXpqB92vSs3w05XVorFioSQ+JlUAuiw97rp433DqMIJZplHsZtAjKiTEbmZW7wz3TfBorC8G
-	9p00BpAbZ+W5tpVNeJ7tZpLvFGBiF6RKV+x0iLg95Rn2YahrNC9dgr9wRmys2I1oGHl58pBW1RB
-	ht3ohu80wVf9U3mLkXZpqUfnsSqUP8wuRLLKeov48F6tWcvNsORqeSxsnYMZF/1vAdByQoiu3N0
-	x9Wi3fsaMPzjpIFf/0hL1z8biPepWCtVFnrjZWAqqxJEo43gboUbvZtf3YLX83n3Z6nk7/UbhNB
-	po5zx
-X-Received: by 2002:a05:600c:4f92:b0:4a0:1b21:2628 with SMTP id 5b1f17b1804b1-4a1d76120c4mr175541505e9.23.1792418713146;
-        Mon, 19 Oct 2026 07:05:13 -0700 (PDT)
-X-Received: by 2002:a05:600c:4f92:b0:4a0:1b21:2628 with SMTP id 5b1f17b1804b1-4a1d76120c4mr175540065e9.23.1792418712391;
-        Mon, 19 Oct 2026 07:05:12 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.74.151])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1cbedb6f7sm306709635e9.2.2026.10.19.07.05.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 07:05:11 -0700 (PDT)
-Date: Mon, 19 Oct 2026 16:05:04 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bobbyeshleman@gmail.com
-Subject: Re: [PATCH net-next v4 2/4] vsock/virtio: amortize RX socket locking
- for stream packets
-Message-ID: <atYiS6jfctHKksVM@sgarzare-redhat>
-References: <20261014115640.184286-1-physicalmtea@gmail.com>
- <20261014115640.184286-3-physicalmtea@gmail.com>
- <atIrLeH8uOCHxsbv@sgarzare-redhat>
- <CAJwVaMJsBKZSVwaJqTEU_GCFrc2q7dEghMTykR5Jgrj+dv45=w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8NeMag4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080B21F000C7;
+	Mon, 19 Oct 2026 14:06:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792418779;
+	bh=lYU6BWVNUbVi7f+tvFt82iAZ3w46Qd4BFcdyIPaiWnA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=B8NeMag4T+m81bpxbZhihUYxJSzi53HdWTghI75ojKKAjSvVhyt2WJ9mVrvSxscqO
+	 sxebZL9qyPysb2g/L3uNsETzE6kdEG44d1XBHRaybXs49mNb+JL4gCkQdgCBjgEyhI
+	 se61j1OFVsWj0jhhq5CVq9XC06pCVgJYOxAYnTeetZEX96UJZxmJSFKzQbaxiEfvjk
+	 5//deUp2fFXOW1BWoDdCP68ATtwYbUhY7bmzD3trfNfnFq+OflYTumFp4Xdgac0PG3
+	 zLnimyN7oDm7EggsHr+EilvOcwcp8nxDgSMm3mG7vf0bspVUjDHeX92Gv/3DtAcwMv
+	 /6ZRAA9NQ0M5g==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Shiji Yang <yangshiji66@outlook.com>,
+	Simon Horman <horms@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	nbd@nbd.name,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.18-6.12] net: ethernet: mtk_wed: increase WED v2 WDMA RESV_BUFF to 0x80
+Date: Mon, 19 Oct 2026 09:53:01 -0400
+Message-ID: <20261019135441.1420968-490-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
+References: <20261019135441.1420968-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAJwVaMJsBKZSVwaJqTEU_GCFrc2q7dEghMTykR5Jgrj+dv45=w@mail.gmail.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.57
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 18, 2026 at 12:52:36PM +0800, Jia Jia wrote:
->>
->> On Wed, Oct 14, 2026 at 07:56:38PM +0800, Jia Jia wrote:
->> >The virtio-vsock RX worker currently looks up the socket and takes its
->> >lock for every packet. Keep the socket lock and lookup reference across a
->> >bounded run of STREAM/RW packets for the same established socket.
->> >
->> >Reuse the locked socket while packets continue to match the same flow.
->> >End the batch for a different flow, non-RW traffic, malformed packets, or
->> >a change in socket state, transport, protocol, or receive-buffer headroom.
->> >A connected-table miss uses the existing receive path.
->> >
->> >The reused path still traces every packet, takes an skb owner reference,
->> >validates the source and transport, updates credit, and runs the existing
->> >receive state machine.
->> >
->> >Sockmap can replace the protocol without taking the socket lock. Check the
->> >psock marker at each packet boundary and serialize initial admission with
->> >sk_callback_lock, so a concurrent attach ends batching at the next packet.
->> >
->> >Cap a batch at 64 packets and 64K of payload. The packet limit bounds
->>
->> Why this cap?
->>
->
->The 64 KiB limit was chosen to bound one uninterrupted socket-lock
->ownership interval to one VIRTIO_VSOCK_MAX_PKT_BUF_SIZE worth of
->payload. For small or zero-length packets, the byte limit alone would
->not bound the per-packet work, so a separate packet limit is needed. I
->chose 64 packets as an initial batch size, using VHOST_NET_BATCH as a
->reference. It is a policy choice rather than a protocol requirement.
->
->Beyond these limits, a larger batch would only further amortize the
->socket lookup and lock/unlock operations, while the virtqueue,
->validation, tracing, skb ownership, credit update, and queueing work
->remains per-packet. I therefore expect diminishing returns while the
->uninterrupted socket-lock interval continues to grow, but I have not
->measured larger limits yet.
+From: Shiji Yang <yangshiji66@outlook.com>
 
-A summary of this should be included in the commit message and where we 
-define the cap in the code.
+[ Upstream commit c0ef04232f9fac083c3d8a77ce58ba32243e6734 ]
 
->
->> >per-packet work, while the byte limit bounds how much data can queue before
->> >a reader acquires the socket lock. Batching remains in the process-context
->> >RX worker.
->>
->> IMHO this patch should carry performance results.
->>
->
->Sure, I'll include the relevant Patch 1 - Patch 2 cumulative
->performance results in this commit message in v5.
->
->> >
->> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
->> >---
->> > include/linux/virtio_vsock.h            |  11 ++
->> > net/vmw_vsock/virtio_transport.c        |  29 +++-
->>
->> Why no changes in vhost-vsock or vsock_loopback?
->>
->> I'm not asking to do that, I'd like to understand why only in the
->> driver.
->>
->
->I have not yet measured the corresponding worker and socket-lock
->overhead in vhost-vsock or vsock_loopback, and they have different
->worker and locking models, so I left those paths unchanged. I plan to
->evaluate vhost-vsock separately as follow-up work.
+Change WDMA RESV_BUFF from 0x40 to 0x80 to avoid CDM TX FIFO overflow.
+Without this patch mt7986 and mt7981 may have WDMA TX hang issue. This
+patch was pulled from mtk-openwrt-feeds GPL open source project.
 
-Please mention this in the commit.
+Link: https://github.com/mediatek/mtk-openwrt-feeds/commit/07c87502e854b68b48544d101b6fe17ec059b97b
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/OSZPR01MB779537889255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
->
->
->> > net/vmw_vsock/virtio_transport_common.c | 183 +++++++++++++++++++++++-
->> > 3 files changed, 216 insertions(+), 7 deletions(-)
->> >
->> >diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->> >index f91704731057e..26dde6909c4ed 100644
->> >--- a/include/linux/virtio_vsock.h
->> >+++ b/include/linux/virtio_vsock.h
->> >@@ -282,6 +282,17 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
->> >
->> > void virtio_transport_recv_pkt(struct virtio_transport *t,
->> >                              struct sk_buff *skb, struct net *net);
->> >+
->> >+struct virtio_transport_rx_batch {
->> >+      struct sock *sk;
->> >+      unsigned int pkts;
->> >+      size_t bytes;
->> >+};
->> >+
->> >+void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
->> >+                                   struct sk_buff *skb, struct net *net,
->> >+                                   struct virtio_transport_rx_batch *batch);
->> >+void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch);
->> > void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
->> > u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
->> > void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
->> >diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->> >index 4f9aa9c4c3aa5..ef076732158d4 100644
->> >--- a/net/vmw_vsock/virtio_transport.c
->> >+++ b/net/vmw_vsock/virtio_transport.c
->> >@@ -629,8 +629,16 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
->> >       return seqpacket_allow;
->> > }
->> >
->> >+/*
->> >+ * Keep a bounded run of packets for one socket under a single socket lock.
->> >+ * Limit packet count and payload size to bound the work done while locked.
->>
->> Here we should explain why we choose these values.
->>
->
->I'll update the comment here in v5 to explain why the 64-packet and 64
->KiB thresholds were chosen.
+LLM Generated explanations, may be completely bogus:
 
-Yeah, exactly, thanks!
+This 6.12.111 tree has the WED v2 DMA path without the RESV_BUFF bump.
+The change is a small MediaTek hardware workaround for a WDMA TX hang on
+mt7986/mt7981.
 
->
->> >+ */
->> >+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS    64
->> >+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES   (64 * 1024)
->> >+
->> > static void virtio_transport_rx_work(struct work_struct *work)
->> > {
->> >+      struct virtio_transport_rx_batch batch = {};
->> >       struct virtio_vsock *vsock =
->> >               container_of(work, struct virtio_vsock, rx_work);
->> >       struct virtqueue *vq;
->> >@@ -666,6 +674,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
->> >                       /* Drop short/long packets */
->> >                       if (unlikely(len < sizeof(*hdr) ||
->> >                                    len > virtio_vsock_skb_len(skb))) {
->> >+                              virtio_transport_rx_batch_finish(&batch);
->> >                               kfree_skb(skb);
->> >                               continue;
->> >                       }
->> >@@ -673,6 +682,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
->> >                       hdr = virtio_vsock_hdr(skb);
->> >                       payload_len = le32_to_cpu(hdr->len);
->> >                       if (unlikely(payload_len > len - sizeof(*hdr))) {
->> >+                              virtio_transport_rx_batch_finish(&batch);
->> >                               kfree_skb(skb);
->> >                               continue;
->> >                       }
->> >@@ -680,16 +690,33 @@ static void virtio_transport_rx_work(struct work_struct *work)
->> >                       if (payload_len)
->> >                               virtio_vsock_skb_put(skb, payload_len);
->> >
->> >+                      if (batch.sk &&
->> >+                          payload_len > VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES -
->> >+                                        batch.bytes) {
->>
->> Why this?
->>
->>
->
->This pre-check ends the current batch before admitting a packet whose
->payload would push it past the byte limit. The post-processing check
->can end the
->batch only after that packet has already been processed, so it cannot
->enforce the limit by itself. I'll encapsulate and document this in the
->common
->batching code.
+## Phase 1: Commit message forensics
 
-Yes, please.
+**Step 1.1 — Subject**
+Record: `[net: ethernet: mtk_wed:] [increase] [WED v2 WDMA RESV_BUFF
+0x40 -> 0x80]`
 
->
->> >+                              virtio_transport_rx_batch_finish(&batch);
->> >+                      }
->> >+
->> >                       virtio_transport_deliver_tap_pkt(skb);
->> >
->> >                       /* Force virtio-transport into global mode since it
->> >                        * does not yet support local-mode namespacing.
->> >                        */
->> >-                      virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
->> >+                      virtio_transport_recv_pkt_batch(&virtio_transport, skb, NULL,
->> >+                                                      &batch);
->> >+
->> >+                      if (batch.sk) {
->> >+                              batch.pkts++;
->> >+                              batch.bytes += payload_len;
->> >+                              if (batch.pkts >= VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS ||
->> >+                                  batch.bytes >= VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES) {
->> >+                                      virtio_transport_rx_batch_finish(&batch);
->> >+                              }
->> >+                      }
->>
->> Why this is not in the common part?
->>
->
->I put this in the driver because it owns the RX loop and its work
->budget. But I agree that having the caller manipulate the batch
->counters and active
->state makes the interface harder to follow. I'll move the accounting
->and limit checks into the common batching code in v5.
->
->> >               }
->> >       } while (!virtqueue_enable_cb(vq));
->> >
->> > out:
->> >+      virtio_transport_rx_batch_finish(&batch);
->> >       if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
->> >               virtio_vsock_rx_fill(vsock);
->> > out_nofill:
->> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> >index 61ee3bc205d5d..ff74e805527a5 100644
->> >--- a/net/vmw_vsock/virtio_transport_common.c
->> >+++ b/net/vmw_vsock/virtio_transport_common.c
->> >@@ -576,11 +576,16 @@ virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs,
->> >       skb_queue_splice(&new_queue, &vvs->rx_queue);
->> > }
->> >
->> >+static bool
->> >+virtio_transport_rx_skb_has_headroom(struct virtio_vsock_sock *vvs)
->> >+{
->> >+      return (u64)(skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0) <=
->> >+              vvs->buf_alloc;
->> >+}
->>
->> Please move this change in a separate patch.
->>
->> skb_has_headroom() is confusing IMO, maybe
->> virtio_transport_rx_buf_full(), but reversing the return value, so
->> keeping the same check as before.
->>
->
->Sure, I'll move this into a separate preparatory patch
->
->> >+
->> > static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->> >                                       u32 len)
->> > {
->> >-      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->> >-
->> >       /* Allow at most buf_alloc * 2 total budget (payload + overhead),
->> >        * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
->> >        * metadata. Check payload against buf_alloc to be sure the other
->> >@@ -588,7 +593,7 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->> >        * queue growth.
->> >        */
->> >       if ((u64)vvs->buf_used + len > vvs->buf_alloc ||
->> >-          skb_overhead > vvs->buf_alloc)
->> >+          !virtio_transport_rx_skb_has_headroom(vvs))
->> >               return false;
->> >
->> >       vvs->rx_bytes += len;
->> >@@ -1798,12 +1803,38 @@ virtio_transport_find_socket(struct sk_buff *skb, struct sockaddr_vm *src,
->> >       return sk;
->> > }
->> >
->> >+static bool
->> >+virtio_transport_sock_has_psock(const struct sock *sk)
->> >+{
->> >+      return (uintptr_t)rcu_access_pointer(__sk_user_data(sk)) &
->> >+             SK_USER_DATA_PSOCK;
->> >+}
->> >+
->> >+static bool
->> >+virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
->> >+                                  struct sock *sk)
->> >+{
->> >+      struct vsock_sock *vsk = vsock_sk(sk);
->> >+      struct virtio_vsock_sock *vvs = vsk->trans;
->> >+
->>
->> A comment here to explain why some checks like...
->>
->
->I'll add why-focused comments for the condition groups in v5.
->
->> >+      return sk->sk_state == TCP_ESTABLISHED &&
->> >+             sk->sk_type == SOCK_STREAM &&
->> >+             READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
->> ... this       ^
->>
->> I mean in general to explain better these conditions (I mean not a
->> description of what we are doing, but why we are doing these checks).
->>
->
->I'll add comments explaining these reasons.
->
->> >+             !sock_flag(sk, SOCK_DONE) &&
->> >+             vsk->transport == &t->transport &&
->> >+             vvs && virtio_transport_rx_skb_has_headroom(vvs) &&
->> >+             !virtio_transport_sock_has_psock(sk);
->> >+}
->> >+
->> > /*
->> >- * The caller holds sk's socket lock and must free skb if this returns true.
->> >+ * The caller holds sk's socket lock.  Set @batchable if the socket can remain
->> >+ * locked for another ordinary STREAM/RW packet.  Return true if the caller
->> >+ * must free @skb.
->> >  */
->> > static bool
->> > virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->> >-                               struct sk_buff *skb, struct sock *sk)
->> >+                               struct sk_buff *skb, struct sock *sk,
->> >+                               bool *batchable)
->> > {
->> >       struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
->> >       struct sockaddr_vm src;
->> >@@ -1813,6 +1844,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->> >       vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
->> >                       le32_to_cpu(hdr->src_port));
->> >
->> >+      if (batchable)
->> >+              *batchable = false;
->> >+
->> >       /* Listener sockets accept packets from any source and are not assigned to
->> >        * a transport.
->> >        */
->> >@@ -1854,6 +1888,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->> >               break;
->> >       }
->> >
->> >+      if (batchable)
->> >+              *batchable = virtio_transport_recv_pkt_batchable(t, sk);
->> >+
->> >       return false;
->> > }
->> >
->> >@@ -1894,7 +1931,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->> >       }
->> >
->> >       lock_sock(sk);
->> >-      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk);
->> >+      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, NULL);
->> >       release_sock(sk);
->> >
->> >       /* Release refcnt obtained when we fetched this socket out of the
->> >@@ -1910,6 +1947,140 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->> > }
->> > EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
->> >
->> >+/*
->> >+ * Finish the RX batch.
->> >+ * For a non-empty batch, the caller must hold the socket lock acquired with
->> >+ * lock_sock(). This function releases the lock and the batch's lookup
->> >+ * reference.
->> >+ * An empty batch is a no-op.
->>
->> What empty batch means, I mean how the caller can understand that a
->> batch is empty?
->>
->> Maybe we should provide a function for that...
->>
->
->I'll add virtio_transport_rx_batch_empty() and document the
->associated socket-lock and lookup-reference ownership.
->
->> >+ */
->> >+void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
->> >+{
->> >+      struct sock *sk = batch->sk;
->> >+
->> >+      batch->sk = NULL;
->> >+      batch->pkts = 0;
->> >+      batch->bytes = 0;
->> >+
->> >+      if (!sk)
->> >+              return;
->> >+
->> >+      release_sock(sk);
->> >+      sock_put(sk);
->> >+}
->> >+EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
->> >+
->> >+void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
->> >+                                   struct sk_buff *skb, struct net *net,
->> >+                                   struct virtio_transport_rx_batch *batch)
->> >+{
->> >+      struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
->> >+      struct sockaddr_vm src, dst;
->> >+      struct vsock_sock *vsk;
->> >+      bool batchable, start_batch;
->>
->> Ditto about declarations order, please check in the entire series.
->>
->
->Right, I missed this one too. I'll check and fix the declaration
->ordering throughout the entire series in v5.
->
->> >+      struct sock *sk;
->> >+      bool free_pkt;
->> >+
->> >+      /* Only STREAM/RW packets can share a socket lock. */
->>
->> Why?
->>
->> Should the caller holds the lock for the entire batch?
->> Should this be documented?
->>
->
->Yes. Once a batch is started, the receive helper returns with the
->socket lock and lookup reference held, and the same caller retains
->them until it calls the finish helper. That ownership contract is not
->clear enough in the current interface, and I'll document it in the
->public API in v5.
->
->
->> >+      if (le16_to_cpu(hdr->type) != VIRTIO_VSOCK_TYPE_STREAM ||
->> >+          le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW) {
->> >+              virtio_transport_rx_batch_finish(batch);
->> >+              virtio_transport_recv_pkt(t, skb, net);
->> >+              return;
->> >+      }
->> >+
->> >+      vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
->> >+                      le32_to_cpu(hdr->src_port));
->> >+      vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
->> >+                      le32_to_cpu(hdr->dst_port));
->> >+
->> >+      if (batch->sk) {
->> >+              vsk = vsock_sk(batch->sk);
->> >+              if (vsock_addr_equals_addr(&src, &vsk->remote_addr) &&
->> >+                  dst.svm_port == vsk->local_addr.svm_port &&
->> >+                  vsock_net_check_mode(sock_net(batch->sk), net) &&
->> >+                  virtio_transport_recv_pkt_batchable(t, batch->sk)) {
->> >+                      sk = batch->sk;
->> >+                      trace_virtio_transport_recv_pkt(src.svm_cid,
->> >+                                                      src.svm_port,
->> >+                                                      dst.svm_cid,
->> >+                                                      dst.svm_port,
->> >+                                                      le32_to_cpu(hdr->len),
->> >+                                                      le16_to_cpu(hdr->type),
->> >+                                                      le16_to_cpu(hdr->op),
->> >+                                                      le32_to_cpu(hdr->flags),
->> >+                                                      le32_to_cpu(hdr->buf_alloc),
->> >+                                                      le32_to_cpu(hdr->fwd_cnt));
->> >+                      if (!skb_set_owner_sk_safe(skb, sk)) {
->> >+                              WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
->> >+                              virtio_transport_rx_batch_finish(batch);
->> >+                              kfree_skb(skb);
->> >+                              return;
->> >+                      }
->> >+
->>
->> This code is unreadable TBH, there isn't a blank line till here...
->> and too much nested blocks.
->>
->> Maybe you should move this in a function, and use a bit more blank lines.
->>
->>
->
->I'll move the active-batch path into a helper, reduce the nesting with
->early returns, and add blank lines between the logical steps.
->
->
->> >+                      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk,
->> >+                                                                  &batchable);
->> >+                      if (!batchable)
->> >+                              virtio_transport_rx_batch_finish(batch);
->> >+                      if (free_pkt)
->> >+                              kfree_skb(skb);
->> >+                      return;
->> >+              }
->> >+
->> >+              virtio_transport_rx_batch_finish(batch);
->> >+      }
->> >+
->> >+      sk = vsock_find_connected_socket_net(&src, &dst, net);
->> >+      if (!sk) {
->> >+              virtio_transport_recv_pkt(t, skb, net);
->>
->> Why this?
->>
->
->If you mean the fallback to virtio_transport_recv_pkt(), my
->understanding of the lookup semantics is that it is needed because the
->batching fast path only
->looks in the connected table, as only an established connected socket
->is eligible for batching. A miss there can still match a bound socket,
->so the packet
->must follow the existing receive path rather than being treated as
->having no socket. Please correct me if I have misunderstood this.
+**Step 1.2 — Tags**
+Record:
+- `Link: https://github.com/mediatek/mtk-openwrt-
+  feeds/commit/07c87502e854b68b48544d101b6fe17ec059b97b` (vendor source)
+- `Signed-off-by: Shiji Yang <yangshiji66@outlook.com>` (author)
+- `Reviewed-by: Simon Horman <horms@kernel.org>`
+- `Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>` (mtk_wed maintainer)
+- `Link: https://patch.msgid.link/OSZPR01MB779...` (netdev submission)
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (applied to
+  netdev/net)
+- No `Fixes:` and no `Cc: stable` on the committed version (expected for
+  this pipeline)
+- No `Reported-by:` / `Tested-by:` / syzbot
 
-Looks okay to me, but I need to review again to make sure.
+**Step 1.3 — Body**
+Record:
+- Bug: default WDMA `RESV_BUFF` of `0x40` can overflow the CDM TX FIFO
+  on WED v2.
+- Symptom: WDMA TX hang on mt7986 and mt7981.
+- Root cause: reserved WDMA buffer too small for v2 hardware.
+- Source: MediaTek OpenWrt GPL feeds (`Fix WED 2.0 WDMA TX hang issue`).
+- Version info: v2 only (mt7986/mt7981). Rex Lu later said v3 dropped
+  this register.
 
-Please add a comment in these cases.
+**Step 1.4 — Hidden bug fix?**
+Record: Not hidden. Explicit hang fix / hardware workaround. Vendor
+subject was also a hang fix.
 
->
->> >+              return;
->> >+      }
->> >+
->> >+      if (virtio_transport_get_type(sk) != le16_to_cpu(hdr->type)) {
->> >+              sock_put(sk);
->> >+              virtio_transport_recv_pkt(t, skb, net);
->> >+              return;
->> >+      }
->> >+
->> >+      trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
->> >+                                      dst.svm_cid, dst.svm_port,
->> >+                                      le32_to_cpu(hdr->len),
->> >+                                      le16_to_cpu(hdr->type),
->> >+                                      le16_to_cpu(hdr->op),
->> >+                                      le32_to_cpu(hdr->flags),
->> >+                                      le32_to_cpu(hdr->buf_alloc),
->> >+                                      le32_to_cpu(hdr->fwd_cnt));
->> >+
->> >+      if (!skb_set_owner_sk_safe(skb, sk)) {
->> >+              WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
->> >+              kfree_skb(skb);
->> >+              return;
->> >+      }
->>
->> We have this code duplicated in several place now, can this be avoided?
->>
->
->Yes. I'll extract the trace and skb owner setup into a small shared helper.
->
->> >+
->> >+      lock_sock(sk);
->> >+      /*
->> >+       * Sockmap removal restores the native protocol under sk_callback_lock.
->> >+       * Serialize this initial eligibility check with that update.
->> >+       */
->> >+      read_lock_bh(&sk->sk_callback_lock);
->> >+      start_batch = virtio_transport_recv_pkt_batchable(t, sk);
->> >+      read_unlock_bh(&sk->sk_callback_lock);
->> >+
->> >+      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk,
->> >+                                                  start_batch ? &batchable : NULL);
->> >+      if (start_batch && batchable) {
->> >+              /* Keep the lookup reference until the batch is released. */
->> >+              batch->sk = sk;
->> >+              return;
->> >+      }
->>
->> Ah, this is for the first run, when the batch is empty, right?
->>
->> Can you merge in some way both branches?
->>
->> BTW please add some more useful comments (explaining why)
->>
->
->Yes. I'll merge the common parts of the two paths and add comments
->explaining the remaining differences and why they are necessary.
+## Phase 2: Diff analysis
 
-Yeah!
+**Step 2.1 — Inventory**
+Record:
+- `drivers/net/ethernet/mediatek/mtk_wed.c`: +5 in
+  `mtk_wed_dma_enable()`
+- `drivers/net/ethernet/mediatek/mtk_wed_regs.h`: +1
+  (`MTK_WDMA_GLO_CFG_RESV_BUFF` = `GENMASK(23, 16)`)
+- Scope: single-driver surgical change (~6 lines)
 
-Thanks,
-Stefano
+**Step 2.2 — Flow change**
+Record: After the existing v1/v2 vs v3 `MTK_WDMA_GLO_CFG` setup, and
+before enabling WED GLO DMA, v2 now RMWs bits 23:16 of
+`MTK_WDMA_GLO_CFG` to `0x80`. v1 and v3 are unchanged. Init/enable path
+only.
 
->
->
->> >+
->> >+      release_sock(sk);
->> >+      sock_put(sk);
->> >+      if (free_pkt)
->> >+              kfree_skb(skb);
->> >+}
->> >+EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt_batch);
->> >+
->> > /* Remove skbs found in a queue that have a vsk that matches.
->> >  *
->> >  * Each skb is freed.
->> >--
->> >2.53.0
->> >
->>
->
+**Step 2.3 — Bug mechanism**
+Record: Hardware workaround. Default `RESV_BUFF` is `0x40`; raising it
+to `0x80` leaves more WDMA reserved buffer so CDM TX FIFO does not
+overflow and stall TX. `wdma_m32()` already does `(read & ~mask) | val`.
+
+**Step 2.4 — Fix quality**
+Record: Minimal, gated by `mtk_wed_is_v2()`, uses existing helpers.
+Regression risk is low: only WED v2 register bits 23:16. MediaTek
+confirmed v3 must not get this write because the field was removed.
+
+## Phase 3: Git history
+
+**Step 3.1 — Blame**
+Record: `mtk_wed_dma_enable()` came from `cf26df8833cc` (2022-09-22,
+“add mtk_wed_configure_irq and mtk_wed_dma_{enable/disable}”).
+Surrounding v2/v3 split is `e2f64db13aa1d` (2023-09-18, MT7988 WED). The
+missing programming is a long-standing omission, not new 6.12 code.
+
+**Step 3.2 — Fixes: tag**
+Record: Committed patch has none. Simon Horman and Lorenzo Bianconi both
+named `cf26df8833cc`. That commit **is** an ancestor of this tree (`git
+merge-base --is-ancestor` succeeded).
+
+**Step 3.3 — File history**
+Record: Recent 6.12 `mtk_wed.c` work is leaks/UAF/reset, not RESV_BUFF.
+No competing local fix. Standalone, not patch N/M.
+
+**Step 3.4 — Author**
+Record: Shiji Yang has no other `drivers/net/ethernet/mediatek/` commits
+in this tree. Original vendor author is Rex Lu (MediaTek). Lorenzo
+(maintainer) acked.
+
+**Step 3.5 — Prerequisites**
+Record: Needs `mtk_wed_is_v2()`, `wdma_m32()`, `FIELD_PREP`,
+`MTK_WDMA_GLO_CFG`. All present. Upstream SHA `c0ef04232f9f` is **not**
+in this tree (ancestor check failed). Can apply standalone.
+
+## Phase 4: Mailing list / external
+
+**Step 4.1 — Original discussion**
+Record:
+- `b4 dig -c c0ef04232f9f` → https://patch.msgid.link/OSZPR01MB779537889
+  255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com
+- Single revision (v1). Applied as-is to netdev/net.git.
+- Simon: target `net`, **CC stable**, add Fixes; still `Reviewed-by`.
+- Jakub asked Lorenzo to review, including the Fixes suggestion.
+- Lorenzo asked if v3 needs it; Rex Lu: v2 only, v3 removed the
+  register.
+- Lorenzo: `Acked-by`.
+- No NAK.
+
+**Step 4.2 — Recipients (`b4 dig -w`)**
+Record: netdev, linux-mediatek, Lorenzo Bianconi, Felix Fietkau, Rex Lu,
+netdev maintainers. Right people.
+
+**Step 4.3 — Bug report**
+Record: Vendor feeds commit `07c87502e854`: “Fix WED 2.0 WDMA TX hang
+issue” / “without this patch mt7986 and mt7981 may have WDMA TX hang”.
+Same 6-line change. No public syzbot/bugzilla thread found.
+
+**Step 4.4 — Series**
+Record: Standalone 1/1. No companion patches.
+
+**Step 4.5 — Stable list**
+Record: UNVERIFIED for lore.kernel.org/stable (HTTP 403). Simon’s review
+is an explicit stable nomination. No evidence of a stable NAK.
+
+## Phase 5: Semantic / call graph
+
+**Step 5.1 — Functions**
+Record: `mtk_wed_dma_enable()` plus a register `#define`.
+
+**Step 5.2 — Callers**
+Record: Only `mtk_wed_start()` → `mtk_wed_dma_enable()`. That is
+`wed_ops.start`, invoked as `mtk_wed_device_start()` from mt76
+(`mt7915/dma.c`, `mt7996/dma.c`). mt7915 is the usual WiFi partner for
+mt7986/mt7981 (WED v2).
+
+**Step 5.3 — Callees**
+Record: `wdma_m32` → `wdma_r32`/`wdma_w32` (MMIO RMW). No alloc, no
+locks.
+
+**Step 5.4 — Reachability**
+Record: Yes. Bringing WiFi up with WED offload on Filogic 820/830 hits
+this. Not a rare debug path.
+
+**Step 5.5 — Similar patterns**
+Record: No other `RESV_BUFF` users. Nearby `wdma_set(MTK_WDMA_GLO_CFG,
+...)` already programs this register for TX enable / prerest bits.
+
+## Phase 6: This tree (6.12.111)
+
+**Step 6.1 — Buggy code present?**
+Record: Yes. `make kernelversion` / `git describe` → **6.12.111**
+(`p-6.12-3-gc504cf0baa3d8`). `mtk_wed_dma_enable()` has the v2/v3 split
+and does **not** set RESV_BUFF. `mt7981_data` / `mt7986_data` have
+`.version = 2`. `hw->version = eth->soc->version`. Bug dates to WED
+dma_enable (2022), well before 6.12.
+
+**Step 6.2 — Backport difficulty**
+Record: Clean apply. Insertion context around the v3 `else` branch and
+`MTK_WDMA_GLO_CFG` bit defines matches the upstream hunk.
+
+**Step 6.3 — Already fixed?**
+Record: No. `git log --grep=RESV_BUFF` / `WDMA TX hang` / `increase WED
+v2` on these files is empty. `c0ef04232f9f` is not an ancestor.
+
+## Phase 7: Subsystem
+
+**Step 7.1**
+Record: MediaTek ethernet WED (WiFi/Ethernet dispatch offload).
+**IMPORTANT** for Filogic routers, not core-mm/VFS. OpenWrt 6.12 devices
+(BPI-R3, GL-MT6000, many AX3000/AX6000 boards) use this.
+
+**Step 7.2**
+Record: Mature driver; v2 support is years old. This is a vendor hang
+workaround, not churn from a new API.
+
+## Phase 8: Impact / risk
+
+**Step 8.1 — Who**
+Record: Driver/SoC specific: `CONFIG_NET_MEDIATEK_SOC` + WED,
+mt7981/mt7986, WiFi WED offload.
+
+**Step 8.2 — Trigger**
+Record: WED DMA enable when WiFi starts. Can be common on those APs.
+Unprivileged users do not poke the register; they can trigger it by
+using the AP. Timing-dependent FIFO overflow under TX load is plausible.
+
+**Step 8.3 — Severity**
+Record: WDMA TX hang → WiFi/Ethernet TX stall. **HIGH** (hang / loss of
+forwarding). Not a KASAN UAF, but a real production hang on shipping
+routers.
+
+**Step 8.4 — Benefit vs risk**
+Record: Benefit high for Filogic v2 users (fixes hang). Risk very low (6
+lines, v2-only, maintainer + MediaTek + netdev review). Ratio strongly
+favors backport.
+
+## Phase 9: Synthesis
+
+**For backporting**
+- Real hang: CDM TX FIFO overflow → WDMA TX stall on mt7986/mt7981.
+- Hardware quirk/workaround (stable exception).
+- Tiny, obviously correct RMW of a documented field.
+- Code and helpers exist in 6.12; applies cleanly.
+- Simon Horman asked for `Cc: stable`; Lorenzo acked; MediaTek confirmed
+  v2-only.
+- Vendor already shipped the same change in OpenWrt feeds.
+
+**Against**
+- No kernel.org `Reported-by` / crash log (vendor description only).
+- Affects one SoC family, not all machines.
+- Committed patch omitted `Fixes:` / `Cc: stable` (Simon noted that; not
+  a technical reason to skip).
+
+**Unresolved**
+- Could not query lore.kernel.org/stable (403). No sign it was rejected.
+
+**Stable rules**
+1. Obviously correct and tested — **PASS** (review + vendor feeds +
+   MediaTek confirmation)
+2. Real user bug — **PASS** (TX hang)
+3. Important (hang) — **PASS** (HIGH)
+4. Small/contained — **PASS** (6 lines, two files)
+5. No new features/APIs — **PASS** (register programming)
+6. Applies to this tree — **PASS** (clean context on 6.12.111)
+
+**Exception:** hardware workaround / quirk.
+
+This should be backported to this 6.12.y tree.
+
+Verification:
+- [Phase 1] Parsed tags: vendor GitHub link, Reviewed-by Horman, Acked-
+  by Bianconi, applied by Kicinski; no Fixes/Cc: stable on the commit
+- [Phase 2] Diff: +5 in `mtk_wed_dma_enable()`, +1 GENMASK; v2-only
+  `wdma_m32` of bits 23:16 to 0x80
+- [Phase 2] `wdma_m32()` in this tree is `(read & ~mask) | val` at
+  `mtk_wed.c:111-114`
+- [Phase 3] Blame: `mtk_wed_dma_enable` from `cf26df8833cc`
+  (2022-09-22); v2/v3 split from `e2f64db13aa1d`
+- [Phase 3] `git merge-base --is-ancestor cf26df8833cc HEAD` succeeded;
+  `c0ef04232f9f` is not in this tree
+- [Phase 3] `mtk_wed_is_v2` from `d274d523c71c82` is in this tree
+- [Phase 4] `b4 dig -c c0ef04232f9f`: v1 only; lore msgid
+  OSZPR01MB7795...
+- [Phase 4] Horman review (openwall 2026/08/21/128): “Be CCed to
+  stable”, Fixes `cf26df8833cc`, Reviewed-by
+- [Phase 4] Rex Lu: v2 only; v3 removed RESV_BUFF
+- [Phase 4] Lorenzo Acked-by after that confirmation
+- [Phase 4] GitHub `07c87502e854`: same 6-line hang fix
+- [Phase 4] lore.kernel.org/stable: UNVERIFIED (403)
+- [Phase 5] Caller: `mtk_wed_start` → `mtk_wed_dma_enable`;
+  `mtk_wed_device_start` from mt76 mt7915/mt7996
+- [Phase 6] `git describe HEAD` / `make kernelversion`: 6.12.111;
+  RESV_BUFF define absent; insertion context matches
+- [Phase 6] `mt7981_data`/`mt7986_data`.version = 2; `hw->version =
+  eth->soc->version`
+- [Phase 8] Failure mode: WDMA TX hang, severity HIGH
+- UNVERIFIED: whether anyone already requested this on stable@ (lore
+  403)
+
+The hang is real on WED v2 hardware this tree supports, the fix is a
+six-line register quirk, and it applies cleanly here.
+
+**YES**
+
+ drivers/net/ethernet/mediatek/mtk_wed.c      | 5 +++++
+ drivers/net/ethernet/mediatek/mtk_wed_regs.h | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+index 1ed1f88dd7f8b..fdb487e5d46e1 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -2071,6 +2071,11 @@ mtk_wed_dma_enable(struct mtk_wed_device *dev)
+ 		wdma_set(dev, MTK_WDMA_GLO_CFG, MTK_WDMA_GLO_CFG_TX_DMA_EN);
+ 	}
+ 
++	if (mtk_wed_is_v2(dev->hw))
++		wdma_m32(dev, MTK_WDMA_GLO_CFG,
++			 MTK_WDMA_GLO_CFG_RESV_BUFF,
++			 FIELD_PREP(MTK_WDMA_GLO_CFG_RESV_BUFF, 0x80));
++
+ 	wed_set(dev, MTK_WED_GLO_CFG,
+ 		MTK_WED_GLO_CFG_TX_DMA_EN |
+ 		MTK_WED_GLO_CFG_RX_DMA_EN);
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed_regs.h b/drivers/net/ethernet/mediatek/mtk_wed_regs.h
+index c71190924816c..e5f83100ded52 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed_regs.h
++++ b/drivers/net/ethernet/mediatek/mtk_wed_regs.h
+@@ -433,6 +433,7 @@ struct mtk_wdma_desc {
+ #define MTK_WDMA_GLO_CFG_TX_DMA_BUSY			BIT(1)
+ #define MTK_WDMA_GLO_CFG_RX_DMA_EN			BIT(2)
+ #define MTK_WDMA_GLO_CFG_RX_DMA_BUSY			BIT(3)
++#define MTK_WDMA_GLO_CFG_RESV_BUFF			GENMASK(23, 16)
+ #define MTK_WDMA_GLO_CFG_RX_INFO3_PRERES		BIT(26)
+ #define MTK_WDMA_GLO_CFG_RX_INFO2_PRERES		BIT(27)
+ #define MTK_WDMA_GLO_CFG_RX_INFO1_PRERES		BIT(28)
+-- 
+2.53.0
 
