@@ -1,50 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959F6555470;
-	Mon, 19 Oct 2026 13:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F01556FE2;
+	Mon, 19 Oct 2026 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418225; cv=none; b=chqTz0yyhc9rG96hW58YkPPfsIDCjPyoeBYtrv0EORMyX5wliZgM71DebMgO0R3RwNnOBztUWcjls2anZXW4m0BEJ/OpttVN4R1/yx6IlBdp/lN1X2X+smVGtv+rGs94xaySm3b7Fa4lwUxcjlsC+3bIsNCXQEgIc/bUC41/kqs=
+	t=1792418228; cv=none; b=I6Yoh8koSkmCxUbL7Og8sIusq/E8nQ1/nTwlMsSnHA07Rfb6ITq5dejNs2opeJlqbFG/XFs7cgyrcnkDekGL07Le9vB03Y+2XHb5O4drpNpDZWeVJm8VAv7j48+4OzWZS/BpHz6zeg74E7LItH7I6Y9oOUVXv/wZDdT3X8ZncTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418225; c=relaxed/simple;
-	bh=cqRu7aTK5ekNPk/YqtTLqNnHQjvfyCr2SQsLYogN15U=;
+	s=arc-20240116; t=1792418228; c=relaxed/simple;
+	bh=yeCb1al2BCBgFbx6wfAyiaIkI8CN1Tuwop2o9ZU78Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HMeyx5pHA0X5fqdMJ7wCeBVXqW/h5yGmeWah6Am8vEYQsBF11zt7FmuxAeSuVK0XTCkGiIT5uSpNSAXK5AOVzy6JEw/RT0X7v/3TOfXXI2TOMEuJMoApSdUeb/JU8NWOdVpXFg1uxtVD3DWm4YVzQRn/34v22uCeSjO4OQF8Y4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3LE11jy; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=eP6nM0h8GOmAyvXv9OjSthPxQkOEG9eRkXBRkbkU8GCpCjDU+qGZceRKNhsulzUPntXIauytXsTHHKCleNdcfX070WRPIJWr7dLQIaNg+OKJ3aDNdxqHlNcoXqR3vz3WjSCuDRjPu2rOQuLh6JVOd4xWqEBBdUgbCmXVJLaNu1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PjybZ6Cv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3LE11jy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7341F000C5;
-	Mon, 19 Oct 2026 13:57:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PjybZ6Cv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651B01F000C4;
+	Mon, 19 Oct 2026 13:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418222;
-	bh=+yk4mejZsOHQ1PXvKPrh9FOXwfljT9MoJukQVJod748=;
+	s=k20260515; t=1792418225;
+	bh=q0WncpZ2lwOwyYBAfu9Lpl/1a+NyHwxI7yzZHen09Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d3LE11jyKD0BwdB5nGm4911vgNzfccxz6vAC2dgLxajYgExFjtXPi62GzeqkAKpFH
-	 p/aqmSMZ/CMZ4ab+aWFKMDZ5sn+YJkdHuRxUo+an2AX9uFyrsiRCPKXvOSNwn1x9Nm
-	 2vJIbBs9XOCO6nOe/fEOm1eJv3m2+Bj6Rueo83kZHOWgGkA/BdYdgKRq1O8H5g97Ye
-	 +T3PxxGodK2bduiCY7fiosdRgEjtHi/FlG0rEx0tULdwX2d7bpUx2tlnYokKTi0hZ2
-	 F3AeSntXe8eJjdq8/oORJsqhJaJ2VT/9tR2N4PusEGubW4+GZkwGLqS0rSvr3Lofqr
-	 ZyG6Q3Im7VfZQ==
+	b=PjybZ6CvNawJUeRhiHYI90tPzSGbshL8ZltmOmoHGn52OPqvqvDyAlFTX45wCjuTd
+	 ZKUymQ7JfBqvNEoJjtHg/X+2NwQQwplpT7w6iLk22XCv+OaTCzpOQwEAk45iWcSgEZ
+	 LJy8W/Yl3G9IhybWfik0eixwXZ3CZSdKKkPdAIWTxkzffOWHD2SydSxkN/o7xxPOZn
+	 CtRfLMwF74gE2UVf9RF7Z4kwRmXr0LKv2Wktyhcv++clRkk/GKU06W5etrlMMxQ3B2
+	 eJDj+tAYpFVHDwVFVUCuP6UGk8fl0TLvOY932KkFruFfku660fnrTUngJ23oxa35JE
+	 P96rgMXiwWxbw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Minghao Zhang <zhangmh25@mails.tsinghua.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Jianjun Chen <jianjun@tsinghua.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+Cc: Reinhard Speyerer <rspmn@arcor.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	bjorn@mork.no,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] netfilter: conntrack: tcp: use UNACK timeout for non-closing RST packets
-Date: Mon, 19 Oct 2026 09:46:30 -0400
-Message-ID: <20261019135441.1420968-99-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: usb: qmi_wwan: add Rolling Wireless RN947R
+Date: Mon, 19 Oct 2026 09:46:32 -0400
+Message-ID: <20261019135441.1420968-101-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -60,457 +58,406 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Minghao Zhang <zhangmh25@mails.tsinghua.edu.cn>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-[ Upstream commit bf80e6802273a900311b44e47c9b1a59c6d2473c ]
+[ Upstream commit 7375d38364a9aa66fb31716bcefef38aecad75d8 ]
 
-Commit be0502a3f2e9 ("netfilter: conntrack: tcp: only close if RST
-matches exact sequence") keeps an established conntrack entry in
-ESTABLISHED when an in-window RST does not match the expected sequence
-number exactly, so the endpoint can validate the RST with a challenge
-ACK.
+Add Rolling Wireless RN947R 0x9300 composition:
 
-The timeout selection nevertheless uses the CLOSE timeout for every RST
-packet.  The bug is that timeout selection is based on the packet type,
-not on the state transition result: even when RST validation keeps
-new_state in ESTABLISHED, the timeout is still forced to
-TCP_CONNTRACK_CLOSE.
+DIAG + ADB + NMEA + MODEM + RMNET + QDSS + ADPL
 
-Linux TCP independently rate limits challenge ACKs per socket.  A second
-non-exact RST can therefore arrive after the first challenge ACK has
-restored the timeout but before the rate limit expires.  The second RST
-lowers the timeout to 10 seconds again while the endpoint suppresses the
-second challenge ACK, allowing the conntrack entry to expire while both
-TCP endpoints remain established.
+T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=02 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=9300 Rev= 0.00
+S:  Manufacturer=Rolling Wireless
+S:  Product=RN947R
+S:  SerialNumber=xxxxxxxxxxx
+C:* #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#=21 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#=22 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Using the ESTABLISHED timeout for such RSTs would avoid this short
-expiration window, but it could also retain stale entries for the
-five-day default because conntrack cannot reliably match the endpoint's
-exact TCP state.
-
-Use the UNACK timeout for RST packets that leave the conntrack entry in
-TCP_CONNTRACK_ESTABLISHED.  Exact-match RSTs and accepted RST packet
-trains still fall through to timeouts[new_state], which preserves the
-CLOSE timeout when conntrack accepts the RST as closing the flow.
-
-This avoids the aggressive 10-second expiration window for non-exact
-RSTs while preserving the short timeout for RSTs that conntrack accepts
-as closing the flow.
-
-Suggested-by: Florian Westphal <fw@strlen.de>
-Reported-by: Minghao Zhang <zhangmh25@mails.tsinghua.edu.cn>
-Reported-by: Jianjun Chen <jianjun@tsinghua.edu.cn>
-Signed-off-by: Minghao Zhang <zhangmh25@mails.tsinghua.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Link: https://patch.msgid.link/arZzuOOvLUZtdOlv@arcor.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-The evaluation is for the **6.6.y** tree this session opened on
-(`pending-6.6` / 6.6.157). The bug is present there; the patch is a
-small, real conntrack timeout fix.
+This is a one-line USB ID addition to the existing `qmi_wwan` driver for
+Rolling Wireless RN947R (`33f8:9300`). That is a standard stable
+exception, and the ID table plus DTR quirk already exist in this 6.18.y
+tree.
 
----
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+Step 1.1: PARSE THE SUBJECT LINE
+Record: [net: usb: qmi_wwan] [add] [USB device ID for Rolling Wireless
+RN947R]
 
-**Step 1.1: PARSE THE SUBJECT LINE**
-- Record: **[netfilter/conntrack/tcp] [use] use UNACK timeout for non-
-  closing RST packets**
-- Subsystem: `netfilter: conntrack: tcp:`
-- Verb: “use” here is a timeout-policy correction after RST validation
-  already keeps the entry ESTABLISHED.
+Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+Record:
+- Link: https://patch.msgid.link/arZzuOOvLUZtdOlv@arcor.de
+- Signed-off-by: Reinhard Speyerer <rspmn@arcor.de> (author)
+- Signed-off-by: Jakub Kicinski <kuba@kernel.org> (netdev maintainer,
+  applied)
+- No Fixes: tag (expected)
+- No Reported-by / Tested-by / Reviewed-by / Acked-by
+- No Cc: stable (expected)
+- Ignored pipeline SOB / Upstream commit marker
 
-**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
-- Record:
-  - **Suggested-by:** Florian Westphal `<fw@strlen.de>` (conntrack
-    maintainer)
-  - **Reported-by:** Minghao Zhang `<zhangmh25@mails.tsinghua.edu.cn>`
-  - **Reported-by:** Jianjun Chen `<jianjun@tsinghua.edu.cn>` (two
-    reporters)
-  - **Signed-off-by:** Minghao Zhang; Pablo Neira Ayuso (netfilter
-    maintainer)
-  - **No Fixes: / Cc: stable in the committed text** (expected for this
-    review queue)
-  - **v1 and v2 on the list both had** `Fixes: be0502a3f2e9 ("netfilter:
-    conntrack: tcp: only close if RST matches exact sequence")`. That
-    tag was dropped when the patch was folded into an nf-next pull.
+Step 1.3: ANALYZE THE COMMIT BODY TEXT
+Record:
+- Bug description: RN947R USB WWAN modem (`Vendor=33f8 ProdID=9300`) is
+  not in `qmi_wwan`’s ID table, so the RMNET/QMI network function does
+  not bind.
+- Symptom: no `qmi_wwan` netdev for this modem; cellular data does not
+  come up out of the box.
+- Version information: none stated.
+- Root cause: missing USB ID / interface mapping. `lsusb -t`-style dump
+  shows If#=8 Cls=ff Sub=ff Prot=50 as the QMI/RMNET function.
+  Composition is DIAG + ADB + NMEA + MODEM + RMNET + QDSS + ADPL.
 
-**Step 1.3: ANALYZE THE COMMIT BODY TEXT**
-- Record:
-  - **Bug:** After `be0502a3f2e9`, an in-window RST that does not match
-    `td_maxack` leaves conntrack in ESTABLISHED so the peer can
-    challenge-ACK. Timeout selection still keys off packet type
-    (`TCP_RST_SET`) and always applies **CLOSE (10s)**.
-  - **Symptom:** A second non-exact RST can land after the first
-    challenge ACK restored the timer, but while Linux still rate-limits
-    challenge ACKs. The second RST drops the timer to 10s again; the
-    suppressed challenge ACK never refreshes it; the conntrack entry
-    expires while both TCP endpoints stay established. NAT/firewall then
-    drop a live flow.
-  - **Root cause:** Timeout is chosen from the RST flag, not from the
-    resulting state.
-  - **Fix:** RST that leaves `new_state == TCP_CONNTRACK_ESTABLISHED`
-    uses **UNACK (5 min)**. Exact-match / RST-train RSTs still fall
-    through to `timeouts[new_state]` (CLOSE).
-  - **Version info:** Tied to `be0502a3f2e9` (2019-03-01), which is in
-    this 6.6 tree.
+Step 1.4: DETECT HIDDEN BUG FIXES
+Record: Not a hidden crash/leak fix. It is an explicit device-ID
+enablement, which stable rules treat as a first-class exception.
 
-**Step 1.4: DETECT HIDDEN BUG FIXES**
-- Record: **Not hidden.** It is a real timeout/state mismatch. v1/v2
-  called the 10s window **“exploitable”**. Pablo’s nf-next cover letter
-  softened that to “more conservative timeout”; the failure mode is
-  still live-session teardown through conntrack/NAT.
+===============================================================
+PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
 
----
+Step 2.1: INVENTORY THE CHANGES
+Record:
+- File: `drivers/net/usb/qmi_wwan.c` (+1 / -0)
+- Function/table: `products[]` (`static const struct usb_device_id`)
+- Scope: single-file, one-line surgical ID addition
 
-## PHASE 2: DIFF ANALYSIS
+Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+Record:
+- Before: `33f8:9300` is unmatched; USB core does not probe `qmi_wwan`
+  for interface 8.
+- After: `QMI_QUIRK_SET_DTR(0x33f8, 0x9300, 8)` matches
+  vendor/product/interface 8 and sets `qmi_wwan_info_quirk_dtr`.
+- Path: USB enumeration / driver probe only. No error-path or hot-path
+  logic change.
 
-**Step 2.1: INVENTORY THE CHANGES**
-- Record: **one file**, `net/netfilter/nf_conntrack_proto_tcp.c`; **~3
-  lines** in `nf_conntrack_tcp_packet()`. Surgical single-file logic
-  fix.
+Step 2.3: IDENTIFY THE BUG MECHANISM
+Record:
+- Category: hardware enablement / USB device ID (stable exception 1).
+- Mechanism: `QMI_QUIRK_SET_DTR` expands to
+  `USB_DEVICE_INTERFACE_NUMBER` plus DTR quirk `driver_info`. Interface
+  8 matches the dump (`Prot=50`, QMI/RMNET). DTR quirk is the same
+  pattern as Rolling RW101 (`33f8:0104`) and other Qualcomm USB WWAN
+  entries.
 
-**Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
-- Record: After window validation, timeout selection:
-  - **Before:** any `index == TCP_RST_SET` →
-    `timeouts[TCP_CONNTRACK_CLOSE]` (10s), even if `new_state` was
-    forced back to ESTABLISHED (`new_state = old_state` at the non-exact
-    RST path).
-  - **After:** only RST **and** `new_state == TCP_CONNTRACK_ESTABLISHED`
-    → UNACK (5 min). Closing RSTs (`tcp_conntracks[][]` maps
-    ESTABLISHED+RST → CLOSE, exact-seq / RST-train `break` without
-    restoring ESTABLISHED) still get CLOSE.
+Step 2.4: ASSESS THE FIX QUALITY
+Record:
+- Obviously correct: VID/PID/interface taken from a real device dump;
+  match is interface-number-specific so DIAG/ADB/NMEA/MODEM/QDSS/ADPL
+  are not claimed.
+- Minimal: one table entry, no API or structure change.
+- Regression risk: very low; only `33f8:9300` is affected. Wrong
+  interface number would be the main risk, and the dump confirms If#=8.
 
-**Step 2.3: IDENTIFY THE BUG MECHANISM**
-- Record: **[Logic / correctness]** plus a **security-relevant NAT
-  teardown window**. Timeout no longer contradicts the RFC 5961 “stay
-  ESTABLISHED for challenge ACK” path from `be0502a3f2e9`.
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
 
-**Step 2.4: ASSESS THE FIX QUALITY**
-- Record: **Obviously correct** for defaults (ESTABLISHED=5 days,
-  UNACK=5 min, CLOSE=10s). Minimal. Regression risk is low:
-  - Dead flows after a bogus RST linger **5 min instead of 10s** (same
-    UNACK used for unacked data / out-of-window FIN|RST).
-  - If sysctl sets ESTABLISHED **below** UNACK (e.g. 120s NAT boxes),
-    this commit can **extend** the timer. Follow-up `73df81b38cb7f`
-    (`timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK]`) closes that.
-    Pablo: “Not a big deal… only affect timeout configurations where
-    unack timeout is longer than established.” Defaults on 6.6 are fine.
+Step 3.1: BLAME THE CHANGED LINES
+Record:
+- Insertion sits next to Rolling RW101: `d362046021ea12`
+  (“net:usb:qmi_wwan: support Rolling modules”, Vanillan Wang,
+  2024-04-16).
+- That RW101 ID is in this tree’s v6.18.57 base (`git merge-base --is-
+  ancestor d362046021ea1 v6.18.57` succeeded).
+- This is extending an existing vendor block, not introducing a new
+  driver.
 
----
+Step 3.2: FOLLOW THE FIXES: TAG
+Record: No Fixes: tag. Not applicable. This does not revert or repair a
+prior logic bug.
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
+Record:
+- Recent `qmi_wwan` history is dominated by the same class of ID
+  additions (Quectel, Telit, MeiG, Fibocom, SIMCom).
+- No prerequisite refactor is required; `products[]` and
+  `QMI_QUIRK_SET_DTR` are long-standing.
+- Standalone: subject is not “patch X/Y”. `b4 dig -a` shows a single v1
+  patch.
 
-**Step 3.1: BLAME THE CHANGED LINES**
-- Record: The unconditional RST→CLOSE timeout was added in
-  **`be0502a3f2e9`** (Florian Westphal, 2019-03-01, v5.1 era). It is an
-  ancestor of `pending-6.6`. Long-lived 6.6 code, not a new-mainline-
-  only bug.
+Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Record:
+- Reinhard Speyerer has prior `qmi_wwan` ID/work in this history (e.g.
+  Fibocom FG132 `64761c980cbf7`).
+- Not the listed maintainer; maintainer is Bjørn Mork (`MAINTAINERS`:
+  USB QMI WWAN NETWORK DRIVER). The patch was mailed to `bjorn@mork.no`.
 
-**Step 3.2: FOLLOW THE FIXES: TAG**
-- Record: Committed message has **no Fixes:**. Submissions targeted
-  **`be0502a3f2e9`**, which **is** in this tree (`git merge-base --is-
-  ancestor be0502a3f2e9 pending-6.6` → YES). That commit documented
-  CLOSE timeout for non-exact RSTs as intentional; this patch revises
-  that because challenge-ACK rate limiting makes the 10s window drop
-  live flows.
+Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+Record:
+- Depends only on `QMI_QUIRK_SET_DTR` / `USB_DEVICE_INTERFACE_NUMBER`,
+  both present.
+- No companion `option.c` change is in this series. Serial AT/NMEA/DIAG
+  auto-bind is separate; this patch alone still enables the WWAN netdev.
+  Can apply standalone.
 
-**Step 3.3: CHECK FILE HISTORY**
-- Record (on `pending-6.6`): related RST work includes `2bb6d82b586ea`
-  (invalid-seq RST direction check) and `628d694344a02` (UNACK for out-
-  of-window FIN/RST). **Standalone** timeout change; not patch 2/N.
-  Follow-up `73df81b38cb7f` is **not** in `pending-6.6` and should ride
-  along once this is applied (it has `Fixes: bf80e6802273`).
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
 
-**Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
-- Record: Minghao Zhang / Jianjun Chen (Tsinghua) —
-  reporters/researchers, not netfilter maintainers. Weight comes from
-  **Suggested-by Florian** and **SOB Pablo**. No other Minghao commits
-  on this file in 6.6.
+Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
+Record:
+- `b4 dig -c 7375d38364a9aa66fb31716bcefef38aecad75d8` matched
+  https://patch.msgid.link/arZzuOOvLUZtdOlv@arcor.de
+- `b4 dig -a`: only v1, 2026-09-25, `[PATCH net] net: usb: qmi_wwan: add
+  Rolling Wireless RN947R`
+- Thread (saved via `b4 dig -m`): submission, then patchwork-bot
+  “applied to netdev/net.git (main) by Jakub Kicinski”. No NAK, no
+  review objections, no later revision.
+- No reviewer Cc: stable in the thread.
 
-**Step 3.5: DEPENDENT/PREREQUISITE COMMITS**
-- Record: Needs the `be0502` non-exact-RST ESTABLISHED path (present).
-  Uses existing `TCP_CONNTRACK_UNACK`. **Applies standalone** on 6.6.
-  Optional follow-up for inverted sysctl timeouts.
+Step 4.2: CHECK WHO REVIEWED THE PATCH
+Record (`b4 dig -w`): To `bjorn@mork.no`, Cc `netdev@vger.kernel.org`.
+Subsystem maintainer was on To. Applied by netdev maintainer. No
+explicit Reviewed-by in the committed message.
 
----
+Step 4.3: SEARCH FOR THE BUG REPORT
+Record: No syzbot/bugzilla. Evidence of a real device is the author’s
+usb-devices dump (Manufacturer=Rolling Wireless, Product=RN947R,
+33f8:9300). User population is owners of that modem.
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
+Record: Single-patch series. No `option.c` RN947R commit in this tree
+(`git log --grep=RN947R -- drivers/` only finds this qmi_wwan change).
+Web search did not find a matching option serial patch.
 
-**Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
-- Record:
-  - `b4 dig -c bf80e6802273a` → v2: https://patch.msgid.link/20260729154
-    654.3599616-1-zhangmh25@mails.tsinghua.edu.cn
-  - **v1** (2026-07-29): explicit CLOSE branch + UNACK fallback;
-    **Fixes:** + “exploitable 10-second expiration window”
-  - **v2:** Pablo/Florian simplification; UNACK only if `new_state ==
-    ESTABLISHED`
-  - Florian (https://patch.msgid.link/amoXj6UGRW8SQXBT@strlen.de): asked
-    to drop redundant CLOSE assignment and test a narrower condition.
-    Author tested ESTABLISHED-only UNACK and sent v2.
-  - **No NAK.** Queued in Pablo’s nf-next pull (patch 9/9), 2026-07-31:
-    https://lists.openwall.net/netdev/2026/07/31/313
-  - Jakub forwarded an AI review
-    (https://lists.openwall.net/netdev/2026/08/05/12): should have
-    Fixes:; CLOSE-for-inexact-RST was intentional in 2019; missing “only
-    lower, never extend” guard; closing-RST CLOSE timeout not preserved
-    for some non-default sysctls. The **extend** issue is exactly what
-    `73df81b38cb7f` later fixed.
+Step 4.5: CHECK STABLE MAILING LIST HISTORY
+Record: UNVERIFIED. `WebFetch` of lore.kernel.org/stable/?q=RN947R
+returned 403. No local evidence this ID was rejected for stable.
 
-**Step 4.2: CHECK WHO REVIEWED THE PATCH**
-- Record (`b4 dig -w`): To/Cc **netfilter-devel**,
-  **pablo@netfilter.org**, **fw@strlen.de**, Jianjun Chen. Right
-  maintainers. Florian reviewed v1; Pablo merged.
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
 
-**Step 4.3: SEARCH FOR THE BUG REPORT**
-- Record: Dual Reported-by from Tsinghua. v1/v2 text: **exploitable**
-  10s window via RST + challenge-ACK rate limit. Concrete trigger, not
-  syzbot. Syzbot CI on the series: **passed**
-  (https://ci.syzbot.org/series/36445e46-2abc-4e64-93d2-bb558ec1f53b).
+Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
+Record: No function body edited. Data change in `products[]`, consumed
+as `qmi_wwan_driver.id_table`.
 
-**Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
-- Record: Standalone nf-next patch (not a 9-patch dependency; the other
-  8 were unrelated flowtable/conncount work). Follow-up: `73df81b38cb7f`
-  / https://lists.openwall.net/netdev/2026/08/10/387 — “Reported by
-  sashiko”.
+Step 5.2: TRACE CALLERS
+Record:
+- `products` -> `qmi_wwan_driver.id_table` -> USB core match ->
+  `qmi_wwan_probe()` -> `usbnet` bind path (`qmi_wwan_bind`).
+- Reachable on device plug-in / boot with the modem attached. Not
+  interrupt or syscall hot path for other devices.
 
-**Step 4.5: CHECK STABLE MAILING LIST HISTORY**
-- Record: **No useful stable-list discussion found** for this subject
-  (lore.kernel.org/stable search did not surface this patch). Not
-  previously rejected for 6.6.
+Step 5.3: TRACE CALLEES
+Record: Unchanged. Bind still uses existing `qmi_wwan_bind` / DTR
+handling (`qmi_wwan_change_dtr` when `QMI_WWAN_QUIRK_DTR` or `bcdUSB >=
+0x0201`). Dump has `Ver= 2.10`, so DTR would be set even with
+`QMI_FIXED_INTF`; `QMI_QUIRK_SET_DTR` matches sibling Rolling entries.
 
----
+Step 5.4: FOLLOW THE CALL CHAIN
+Record: Userspace-visible: plugging the modem should create a QMI WWAN
+netdev and cdc-wdm control node. Trigger is ordinary USB enumeration,
+not an obscure debug path.
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+Step 5.5: SEARCH FOR SIMILAR PATTERNS
+Record: Same `QMI_QUIRK_SET_DTR(vend, prod, intf)` pattern is used
+throughout `products[]`, including `33f8:0104` RW101. This is the
+established way to add Qualcomm RMNET compositions.
 
-**Step 5.1: KEY FUNCTIONS**
-- Record: **`nf_conntrack_tcp_packet()`** only.
+===============================================================
+PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
 
-**Step 5.2: TRACE CALLERS**
-- Record: `pending-6.6:net/netfilter/nf_conntrack_core.c:1897` — every
-  tracked TCP packet. Softirq/hook path, not init-only.
+Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
+Record:
+- Local tree: `git describe HEAD` / `make kernelversion` => **6.18.57**
+  (`VERSION=6 PATCHLEVEL=18 SUBLEVEL=57`).
+- `drivers/net/usb/qmi_wwan.c` exists; `CONFIG_USB_NET_QMI_WWAN` exists;
+  `QMI_QUIRK_SET_DTR` exists.
+- `git show v6.18.57:drivers/net/usb/qmi_wwan.c` has Rolling RW101
+  (`33f8:0104`) and **does not** have `33f8:9300` / RN947R. The missing-
+  ID problem exists on this 6.18.y base.
 
-**Step 5.3: TRACE CALLEES**
-- Record: `nf_ct_timeout_lookup()`, `tn->timeouts[]`, later
-  `nf_ct_refresh_acct()`. Writes entry expiry.
-
-**Step 5.4: FOLLOW THE CALL CHAIN**
-- Record: Userspace/network reachable whenever `CONFIG_NF_CONNTRACK`
-  tracks TCP (iptables/nftables/NAT, Docker, Kubernetes, firewalls).
-  **High impact.** An on-path or in-window RST injector can hit it.
-  Unprivileged remote: needs in-window (not exact) SEQ; that is the RFC
-  5961 threat model.
-
-**Step 5.5: SEARCH FOR SIMILAR PATTERNS**
-- Record: Sibling branches already only **lower** timeout
-  (RETRANS/UNACK/zero-window). This RST branch was the odd one-out.
-  `nf_tcp_handle_invalid()` also uses UNACK for out-of-window FIN/RST
-  (`628d694`).
-
----
-
-## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
-
-**Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
-- Record: **Yes on `pending-6.6` / 6.6.157:**
-
+Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
+Record: Clean apply. v6.18.57 context is identical around the insertion
+point:
 ```
-else if (unlikely(index == TCP_RST_SET))
-    timeout = timeouts[TCP_CONNTRACK_CLOSE];
+{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
+{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
 ```
+No refactor between mainline hunk and this tree.
 
-at `nf_conntrack_proto_tcp.c` ~1327–1328. Non-exact RST still does
-`new_state = old_state` (~1260). `be0502a3f2e9` is an ancestor.
-Candidate **`bf80e6802273a` is not** an ancestor of `pending-6.6`.
-Introduced with `be0502` (2019), present for the whole 6.6 lifetime.
+Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
+Record: No other RN947R ID in this tree’s `option.c` or `qmi_wwan.c` on
+the v6.18.57 base. No alternate fix for 33f8:9300.
 
-*(HEAD later detached at `v7.3-rc4-70` during this session; that
-mainline tree already contains the fix. The stable tree this review is
-for remains 6.6.157 / `pending-6.6`, where the bug is still open.)*
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
 
-**Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
-- Record: **Clean apply.** Exact before-image on `pending-6.6`. No
-  refactor of this hunk vs the candidate.
+Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
+Record: [drivers/net/usb/qmi_wwan] [IMPORTANT for WWAN users, peripheral
+for everyone else]. Mature, non-staging driver used by laptops and
+embedded LTE/5G modems.
 
-**Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
-- Record: `2bb6d82b586ea` is a **different** RST CLOSE issue (SYN/RST
-  direction). It does **not** change RST timeout selection. No earlier
-  UNACK-for-non-closing-RST fix in 6.6.
+Step 7.2: ASSESS SUBSYSTEM ACTIVITY
+Record: Actively maintained via ID-table additions. Maintainer Bjørn
+Mork; netdev applies these routinely. Mature ID-table design.
 
----
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+Step 8.1: DETERMINE WHO IS AFFECTED
+Record: Driver-specific / hardware-specific. Only Rolling Wireless
+RN947R (`33f8:9300`). Other USB devices unchanged.
 
-**Step 7.1: SUBSYSTEM AND CRITICALITY**
-- Record: **netfilter conntrack TCP** — **IMPORTANT**. Core firewall/NAT
-  path on virtually every router, distro firewall, and container host.
+Step 8.2: DETERMINE THE TRIGGER CONDITIONS
+Record: Plug in the modem or boot with it attached. Common for those
+users. Unprivileged users do not get a new attack surface; this is bind-
+table matching.
 
-**Step 7.2: SUBSYSTEM ACTIVITY**
-- Record: Mature tracker; this file still gets targeted RST/timeout
-  fixes. Bug is old (`be0502`), not churn from a new subsystem.
+Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
+Record: Without the ID, the RMNET function stays unbound; WWAN
+networking does not work. Not a panic/UAF. Severity MEDIUM as a
+functional hardware-support miss, and it still qualifies under the
+device-ID exception.
 
----
+Step 8.4: CALCULATE RISK-BENEFIT RATIO
+Record:
+- Benefit: HIGH for RN947R users (modem network interface works); zero
+  effect on others.
+- Risk: VERY LOW (1 line, existing macro, existing driver,
+  VID:PID:interface match).
+- Ratio: strongly favors backport.
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
 
-**Step 8.1: WHO IS AFFECTED**
-- Record: **Conntrack/NAT users** (`CONFIG_NF_CONNTRACK`) — default on
-  most distro kernels. Not arch-specific.
+Step 9.1: COMPILE THE EVIDENCE
+FOR:
+- Explicit stable exception: USB ID added to an existing driver.
+- One line, obviously correct, matches a real device dump (If#=8,
+  Prot=50).
+- Driver, macros, and Rolling vendor support already in 6.18.57.
+- Applies cleanly next to RW101.
+- Mailed to qmi_wwan maintainer, applied by netdev maintainer, v1 with
+  no NAK.
+- Same pattern as many other qmi_wwan ID additions.
 
-**Step 8.2: TRIGGER CONDITIONS**
-- Record: In-window, non-exact RST on an ESTABLISHED tracked flow. 6.6
-  still **per-socket** rate-limits challenge ACKs via
-  `__tcp_oow_rate_limited()` and `sysctl_tcp_invalid_ratelimit = HZ/2`
-  (500ms), even with global `tcp_challenge_ack_limit = INT_MAX`. A
-  second RST inside that window matches the commit’s scenario. Also:
-  single RST + lost/unseen challenge ACK (asymmetric routing) leaves a
-  10s expiry. **On-path attacker or sequence-in-window injection.**
+AGAINST:
+- Does not fix a crash, UAF, or corruption.
+- No Tested-by/Reviewed-by tags.
+- `option.c` still lacks `33f8:9300`, so serial ports may need a
+  separate ID or `new_id`; that does not block the netdev ID.
 
-**Step 8.3: FAILURE MODE SEVERITY**
-- Record: **Live TCP dropped through NAT/firewall** after ~10s;
-  endpoints stay ESTABLISHED. Not a panic. **HIGH** (session disruption
-  / DoS on middleboxes). Authors called it **exploitable**.
+UNRESOLVED:
+- lore.kernel.org WebFetch 403 for stable@ search.
+- Whether an option serial companion exists upstream later than this
+  tree.
 
-**Step 8.4: RISK-BENEFIT RATIO**
-- Record: **Benefit high** (stops silent NAT teardown of established
-  sessions). **Risk low** (3-line, default UNACK < ESTABLISHED).
-  Residual risk: short ESTABLISHED sysctl vs longer UNACK — mitigated by
-  a one-line follow-up, not a reason to skip this fix.
+Step 9.2: APPLY THE STABLE RULES CHECKLIST
+1. Obviously correct and tested? PASS — dump-backed ID, applied to
+   netdev/net.
+2. Fixes a real bug that affects users? PASS — modem otherwise has no
+   QMI netdev.
+3. Important issue? PASS under device-ID exception (hardware enablement
+   for existing driver).
+4. Small and contained? PASS — +1 line in one table.
+5. No new features or APIs? PASS — no new driver, syscall, or userspace
+   API; ID only.
+6. Can apply to the local tree? PASS — v6.18.57 has identical context.
 
----
+Step 9.3: CHECK FOR EXCEPTION CATEGORIES
+Record: Device ID addition to existing driver (USB ID in `qmi_wwan`).
 
-## PHASE 9: FINAL SYNTHESIS
+Step 9.4: MAKE YOUR DECISION
+This should be backported to this 6.18.y tree. It is the standard, low-
+risk USB ID pattern stable already takes for `qmi_wwan`.
 
-**Step 9.1: EVIDENCE**
+What problem it solves: RN947R owners on 6.18.y get a working QMI/RMNET
+interface instead of an unbound USB function.
 
-**FOR:**
-- Real, user-visible bug: conntrack expires while TCP stays up.
-- Security-relevant (in-window RST + challenge-ACK throttle); v1/v2 said
-  “exploitable”; had `Fixes: be0502a3f2e9`.
-- `be0502` and the buggy CLOSE timeout are in 6.6.
-- Challenge-ACK **per-socket** throttle exists in 6.6 (`HZ/2`).
-- Tiny, obviously correct for default timeouts; Florian suggested, Pablo
-  merged, author tested v2.
-- Applies cleanly to `pending-6.6`.
+Risk vs benefit: one matching table entry vs. a non-working WWAN modem.
+Benefit dominates.
 
-**AGAINST:**
-- Merged via **nf-next**, not nf; committed text dropped Fixes: and
-  “exploitable”.
-- `be0502` originally **meant** CLOSE timeout for non-exact RSTs (policy
-  shift 10s → 5 min).
-- Follow-up needed for ESTABLISHED < UNACK sysctl.
-- Not a crash/corruption/deadlock.
+Concerns: serial `option` binding is incomplete without a separate ID;
+that is independent and not a reason to drop this netdev ID.
 
-**UNRESOLVED:** Full lore.kernel.org HTML was 403 (used `b4` + openwall
-+ local mbox instead). No CVE number found.
-
-**Step 9.2: STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — v2 tested by author;
-   Florian/Pablo; syzbot CI passed.
-2. Fixes a real bug that affects users? **PASS** — NAT/firewall drop of
-   live TCP.
-3. Important (crash/security/corruption/deadlock)? **PASS** —
-   exploitable middlebox teardown / DoS, not a panic.
-4. Small and contained? **PASS** — ~3 lines, one function.
-5. No new features or APIs? **PASS** — existing UNACK timeout.
-6. Can apply to this tree? **PASS** — exact match on `pending-6.6`.
-
-**Step 9.3: EXCEPTION CATEGORIES**
-- Record: None (not a device ID/quirk/DT/build/doc exception). Ordinary
-  netfilter bugfix.
-
-**Step 9.4: DECISION**
-Backport. 6.6 has the 2019 RST-validation change **and** the 10s CLOSE
-timeout that undermines it. The 5-minute UNACK value is the same
-compromise already used for other “conntrack and endpoints disagree”
-cases. Take follow-up `73df81b38cb7f` with it when possible; this commit
-is still right on default 6.6 timeouts without it.
-
----
-
-## What the commit solves for stable users
-
-On 6.6 firewalls/NAT, an in-window RST that is **not** the exact next
-SEQ leaves conntrack ESTABLISHED (RFC 5961) but still arms a **10s**
-timer. Linux then rate-limits challenge ACKs (~500ms per socket). A
-second such RST re-arms 10s with no refresh ACK, so conntrack deletes a
-flow that both endpoints still consider established. That is a real
-production failure and a plausible DoS on NAT.
-
-## Stable rules / risk vs benefit
-
-Meets the rules: small, tested, no new API, applies cleanly, fixes an
-important conntrack bug. Benefit is high for a common config; regression
-risk is a slightly longer hold of *stale* entries (5 min vs 10s), which
-is acceptable.
-
-## Concerns
-
-- Pair with `73df81b38cb7f` so sysctl ESTABLISHED < UNACK cannot extend
-  lifetime.
-- Behavior change vs 2019 “intentional CLOSE timeout” is the point of
-  the fix, not a blocker.
-
----
-
-## Verification
-- **[Phase 1]** Tags: Suggested-by Florian, two Reported-by, Pablo SOB;
-  committed text has no Fixes:/Cc:stable; v1/v2 mbox **did** include
-  `Fixes: be0502a3f2e9` and “exploitable”.
-- **[Phase 2]** Diff: 3-line change in `nf_conntrack_tcp_packet()` RST
-  timeout arm; CLOSE preserved when `new_state != ESTABLISHED`.
-- **[Phase 3]** `be0502a3f2e9` is ancestor of `pending-6.6`; candidate
-  is not. Blame: CLOSE-on-every-RST from `be0502`. Follow-up
-  `73df81b38cb7f` not in 6.6.
-- **[Phase 3]** `git show
-  pending-6.6:net/netfilter/nf_conntrack_proto_tcp.c` lines 1327–1328:
-  buggy `index == TCP_RST_SET` → CLOSE.
-- **[Phase 4]** `b4 dig -c bf80e6802273a`: v1+v2; Florian review
-  `amoXj6UGRW8SQXBT@strlen.de`; Pablo nf-next 9/9; Jakub AI review
-  2026-08-05; follow-up 2026-08-10 “Reported by sashiko”.
-- **[Phase 4]** `b4 dig -w`: netfilter-devel, pablo, fw. `b4 dig -a`:
-  v1→v2 only.
-- **[Phase 4]** lore.kernel.org WebFetch: **403**; used b4 mbox +
-  openwall. Stable list: no hit on this subject.
-- **[Phase 5]** Caller: `nf_conntrack_core.c:1897` on every tracked TCP
-  packet.
-- **[Phase 6]** First probe: `pending-6.6`, `make kernelversion`
-  6.6.157. Later HEAD detached at `v7.3-rc4-70` (mainline already has
-  the fix). Re-checked **`pending-6.6`**: VERSION 6.6.157, buggy timeout
-  present, exact before-image, candidate not ancestor.
-- **[Phase 6]** 6.6 challenge ACK: `__tcp_oow_rate_limited` +
-  `sysctl_tcp_invalid_ratelimit = HZ/2`; global limit INT_MAX does
-  **not** disable per-socket limit.
-- **[Phase 6]** Defaults on 6.6: ESTABLISHED 5 days, UNACK 5 min, CLOSE
-  10s.
-- **[Phase 8]** Failure: NAT/conntrack drop of live TCP; severity HIGH /
-  security-relevant.
-- **UNVERIFIED:** CVE id (none found). Could not fetch lore HTML
-  directly.
+Verification:
+- [Phase 1] Parsed subject/tags/body: device-ID add; Link to
+  patch.msgid.link; SOB Speyerer + Kicinski; no Fixes/syzbot.
+- [Phase 2] Diff: +1 line in `products[]`; `QMI_QUIRK_SET_DTR(0x33f8,
+  0x9300, 8)` matches dump If#=8.
+- [Phase 2] Read `QMI_QUIRK_SET_DTR` / `qmi_wwan_info_quirk_dtr` / DTR
+  logic at bind (lines 804–825, 938–958).
+- [Phase 3] `git blame` around insertion: RW101 from `d362046021ea12`
+  (2024); ancestor of v6.18.57.
+- [Phase 3] `git log --oneline -20 -- drivers/net/usb/qmi_wwan.c`: many
+  similar ID adds; this is standalone.
+- [Phase 3] `git log --author='Reinhard Speyerer' -- drivers/net/usb/`:
+  prior qmi_wwan ID work.
+- [Phase 4] `b4 dig -c 7375d38364a9…`: lore URL found; `-a` v1 only;
+  `-w` To bjorn@mork.no Cc netdev; `-m` thread is submit + applied-bot,
+  no NAK.
+- [Phase 4] lore WebFetch 403; used b4 mbox instead.
+- [Phase 4] WebSearch: no option.c RN947R companion found.
+- [Phase 5] `products` -> `qmi_wwan_driver.id_table` ->
+  `qmi_wwan_probe`; `MODULE_DEVICE_TABLE(usb, products)`.
+- [Phase 5] `option.c` has other 33f8 IDs, not 0x9300.
+- [Phase 6] `git describe HEAD` / Makefile: 6.18.57. `git show
+  v6.18.57:drivers/net/usb/qmi_wwan.c` has RW101, lacks RN947R. Apply
+  context matches.
+- [Phase 6] `git merge-base --is-ancestor 7375d38364a9 HEAD` is false
+  (upstream SHA not this history); evaluate against local 6.18.y code,
+  not that SHA.
+- [Phase 7] MAINTAINERS: USB QMI WWAN NETWORK DRIVER, M: Bjørn Mork.
+- [Phase 8] Failure mode: unbound RMNET on this VID:PID only; risk
+  confined to that device.
+- UNVERIFIED: stable@ lore discussion (HTTP 403).
 
 **YES**
 
- net/netfilter/nf_conntrack_proto_tcp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
-index 91da35e2b0d8d..456721e40ed0c 100644
---- a/net/netfilter/nf_conntrack_proto_tcp.c
-+++ b/net/netfilter/nf_conntrack_proto_tcp.c
-@@ -1325,8 +1325,9 @@ int nf_conntrack_tcp_packet(struct nf_conn *ct,
- 	if (ct->proto.tcp.retrans >= tn->tcp_max_retrans &&
- 	    timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
- 		timeout = timeouts[TCP_CONNTRACK_RETRANS];
--	else if (unlikely(index == TCP_RST_SET))
--		timeout = timeouts[TCP_CONNTRACK_CLOSE];
-+	else if (unlikely(index == TCP_RST_SET &&
-+			  new_state == TCP_CONNTRACK_ESTABLISHED))
-+		timeout = timeouts[TCP_CONNTRACK_UNACK];
- 	else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
- 		 IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
- 		 timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index aa66a30e56cdc..85d2daae805fd 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1453,6 +1453,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1312, 4)},	/* u-blox LARA-R6 01B */
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
+ 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
++	{QMI_QUIRK_SET_DTR(0x33f8, 0x9300, 8)}, /* Rolling RN947R RMNET */
+ 	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
+ 	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d63, 0)}, /* MeiG SRM813Q w/ Modem(PPP) */
+ 	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d64, 0)}, /* MeiG SRM813Q w/ NMEA */
 -- 
 2.53.0
 
