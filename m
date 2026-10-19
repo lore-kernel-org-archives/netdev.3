@@ -1,48 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F01556FE2;
-	Mon, 19 Oct 2026 13:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B939555E45C;
+	Mon, 19 Oct 2026 13:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418228; cv=none; b=I6Yoh8koSkmCxUbL7Og8sIusq/E8nQ1/nTwlMsSnHA07Rfb6ITq5dejNs2opeJlqbFG/XFs7cgyrcnkDekGL07Le9vB03Y+2XHb5O4drpNpDZWeVJm8VAv7j48+4OzWZS/BpHz6zeg74E7LItH7I6Y9oOUVXv/wZDdT3X8ZncTc=
+	t=1792418243; cv=none; b=C+EprV2881Fs2XsNBqxJq8LKhNUh+9p5NdM3jdufnmgTyo2HbgVwnTwYicue6RUDYooMlMwdIq6+SO6iwctp0u+5r1YMCi7iGNIs8pYCEmJlqC2rPjYSteVggQ4qyaMVromvMFjNWENRfkt5Qxt9UU2EiWkELadPxW7ixzxf36s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418228; c=relaxed/simple;
-	bh=yeCb1al2BCBgFbx6wfAyiaIkI8CN1Tuwop2o9ZU78Tc=;
+	s=arc-20240116; t=1792418243; c=relaxed/simple;
+	bh=LGNognZZSPk5KxXtYXwvKz/Sv6yIv8jF7CMptWLrPHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eP6nM0h8GOmAyvXv9OjSthPxQkOEG9eRkXBRkbkU8GCpCjDU+qGZceRKNhsulzUPntXIauytXsTHHKCleNdcfX070WRPIJWr7dLQIaNg+OKJ3aDNdxqHlNcoXqR3vz3WjSCuDRjPu2rOQuLh6JVOd4xWqEBBdUgbCmXVJLaNu1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PjybZ6Cv; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=MNbbp5oXxf9TGnz2Q2Lc8lphl9nYO/oWLISYeHseRtrCCBmAIMK7sQpMr8hMKbSXsyv+Vf5Nft5/MbpIdhmsF+AGyUDCU9xVaGmKWMtxIWPZhD6yNmjhupMUl0Zo9BZSHSO2x6Qn521PPEq7tJ0m+tyCqaOT1cgDfHseYb8Abx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3ULxGUZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PjybZ6Cv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651B01F000C4;
-	Mon, 19 Oct 2026 13:57:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3ULxGUZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2531F000C7;
+	Mon, 19 Oct 2026 13:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418225;
-	bh=q0WncpZ2lwOwyYBAfu9Lpl/1a+NyHwxI7yzZHen09Mw=;
+	s=k20260515; t=1792418240;
+	bh=xQwHrwplptV7+b5NgWL9BkfxeUoS4UgcnIR4cVBDzdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PjybZ6CvNawJUeRhiHYI90tPzSGbshL8ZltmOmoHGn52OPqvqvDyAlFTX45wCjuTd
-	 ZKUymQ7JfBqvNEoJjtHg/X+2NwQQwplpT7w6iLk22XCv+OaTCzpOQwEAk45iWcSgEZ
-	 LJy8W/Yl3G9IhybWfik0eixwXZ3CZSdKKkPdAIWTxkzffOWHD2SydSxkN/o7xxPOZn
-	 CtRfLMwF74gE2UVf9RF7Z4kwRmXr0LKv2Wktyhcv++clRkk/GKU06W5etrlMMxQ3B2
-	 eJDj+tAYpFVHDwVFVUCuP6UGk8fl0TLvOY932KkFruFfku660fnrTUngJ23oxa35JE
-	 P96rgMXiwWxbw==
+	b=F3ULxGUZD7Tok/Ty8AujFedYtqZn9aO/FKQSw/gHBRaaU2Ga2FiaE36szDy0G3TM9
+	 PWtw4/9Si85KoYTdRfJ14VWwfnkLTU3MvJuFHw524MyRwSceg2WbxfdxskSfO3PJ1H
+	 wnf8GkD8KpzhjTUlA83KBnF8UDNtJ9CpfGSG41TLBbfI9tH1N2xLRW7n25niXzoe6p
+	 5zpI6Z3FZERNK2LYgX55QKzvyvNuM1rMBt7nlzTeVnu9TO2pfgMeOeVKiO3lpr79Pj
+	 zgSE+VcxyRVm/7m/4A5BBC56ClFL+9VgjuTeUws5UO0itAItoc4iiqxTXlJchJQk3v
+	 MF4/q8kZk5DJA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Reinhard Speyerer <rspmn@arcor.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Yousef Alhouseen <alhouseenyousef@gmail.com>,
+	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com,
+	Petko Manolov <petkan@nucleusys.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	bjorn@mork.no,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
+	kuba@kernel.org,
 	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] net: usb: qmi_wwan: add Rolling Wireless RN947R
-Date: Mon, 19 Oct 2026 09:46:32 -0400
-Message-ID: <20261019135441.1420968-101-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: usb: rtl8150: handle link status read failures
+Date: Mon, 19 Oct 2026 09:46:43 -0400
+Message-ID: <20261019135441.1420968-112-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -58,406 +60,320 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
 
-[ Upstream commit 7375d38364a9aa66fb31716bcefef38aecad75d8 ]
+[ Upstream commit 8c9c5b9a689612dcb92a04a4218c975cd19f19d8 ]
 
-Add Rolling Wireless RN947R 0x9300 composition:
+set_carrier() ignores the result of the USB control transfer and tests
+the stack variable supplied as its receive buffer. If the device rejects
+or aborts the request, that variable remains uninitialized and the driver
+chooses an arbitrary carrier state.
 
-DIAG + ADB + NMEA + MODEM + RMNET + QDSS + ADPL
+Leave the existing carrier state unchanged when the link status cannot be
+read. A transient USB error should not be treated as link loss.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=02 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=9300 Rev= 0.00
-S:  Manufacturer=Rolling Wireless
-S:  Product=RN947R
-S:  SerialNumber=xxxxxxxxxxx
-C:* #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#=21 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#=22 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
-Link: https://patch.msgid.link/arZzuOOvLUZtdOlv@arcor.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9db6c624635564ad813c
+Suggested-by: Petko Manolov <petkan@nucleusys.com>
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260630101216.10365-1-alhouseenyousef@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This is a one-line USB ID addition to the existing `qmi_wwan` driver for
-Rolling Wireless RN947R (`33f8:9300`). That is a standard stable
-exception, and the ID table plus DTR quirk already exist in this 6.18.y
-tree.
+## Phase 1: Commit message forensics
 
-===============================================================
-PHASE 1: COMMIT MESSAGE FORENSICS
-===============================================================
+**Step 1.1 — Subject**
+Record: `[net: usb: rtl8150] [handle] ignore USB register-read errors in
+set_carrier() so an uninitialized stack value is not used as link
+status`
 
-Step 1.1: PARSE THE SUBJECT LINE
-Record: [net: usb: qmi_wwan] [add] [USB device ID for Rolling Wireless
-RN947R]
-
-Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+**Step 1.2 — Tags**
 Record:
-- Link: https://patch.msgid.link/arZzuOOvLUZtdOlv@arcor.de
-- Signed-off-by: Reinhard Speyerer <rspmn@arcor.de> (author)
-- Signed-off-by: Jakub Kicinski <kuba@kernel.org> (netdev maintainer,
-  applied)
-- No Fixes: tag (expected)
-- No Reported-by / Tested-by / Reviewed-by / Acked-by
-- No Cc: stable (expected)
-- Ignored pipeline SOB / Upstream commit marker
+- `Reported-by: syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com`
+  (KMSAN, reproducible)
+- `Closes: https://syzkaller.appspot.com/bug?extid=9db6c624635564ad813c`
+- `Suggested-by: Petko Manolov <petkan@nucleusys.com>` (original rtl8150
+  author)
+- `Reviewed-by: Andrew Lunn <andrew@lunn.ch>`
+- `Link: https://patch.msgid.link/20260630101216.10365-1-
+  alhouseenyousef@gmail.com`
+- `Signed-off-by: Yousef Alhouseen` (author), `Paolo Abeni` (netdev)
+- No `Fixes:` on the committed form (dropped in v4 at reviewer request;
+  v1/v2 had `Fixes: 1da177e4c3f4` and `Cc: stable`)
+- Sasha Levin SOB ignored as pipeline noise
 
-Step 1.3: ANALYZE THE COMMIT BODY TEXT
-Record:
-- Bug description: RN947R USB WWAN modem (`Vendor=33f8 ProdID=9300`) is
-  not in `qmi_wwan`’s ID table, so the RMNET/QMI network function does
-  not bind.
-- Symptom: no `qmi_wwan` netdev for this modem; cellular data does not
-  come up out of the box.
-- Version information: none stated.
-- Root cause: missing USB ID / interface mapping. `lsusb -t`-style dump
-  shows If#=8 Cls=ff Sub=ff Prot=50 as the QMI/RMNET function.
-  Composition is DIAG + ADB + NMEA + MODEM + RMNET + QDSS + ADPL.
+**Step 1.3 — Body**
+Record: `set_carrier()` ignores `get_registers()` and then tests stack
+`tmp`. On USB reject/abort, `tmp` is uninitialized, so carrier is chosen
+from garbage. Failure mode: arbitrary `netif_carrier_on/off`. Fix: keep
+the current carrier if the CSCR read fails. No version range given.
 
-Step 1.4: DETECT HIDDEN BUG FIXES
-Record: Not a hidden crash/leak fix. It is an explicit device-ID
-enablement, which stable rules treat as a first-class exception.
+**Step 1.4 — Hidden bug fix?**
+Record: Not hidden. This is an explicit uninitialized-use / ignored-
+error fix, confirmed by KMSAN.
 
-===============================================================
-PHASE 2: DIFF ANALYSIS - LINE BY LINE
-===============================================================
+## Phase 2: Diff analysis
 
-Step 2.1: INVENTORY THE CHANGES
-Record:
-- File: `drivers/net/usb/qmi_wwan.c` (+1 / -0)
-- Function/table: `products[]` (`static const struct usb_device_id`)
-- Scope: single-file, one-line surgical ID addition
+**Step 2.1 — Inventory**
+Record: one file, `drivers/net/usb/rtl8150.c`; `set_carrier()` only; +3
+/ −1; surgical single-function change.
 
-Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-Record:
-- Before: `33f8:9300` is unmatched; USB core does not probe `qmi_wwan`
-  for interface 8.
-- After: `QMI_QUIRK_SET_DTR(0x33f8, 0x9300, 8)` matches
-  vendor/product/interface 8 and sets `qmi_wwan_info_quirk_dtr`.
-- Path: USB enumeration / driver probe only. No error-path or hot-path
-  logic change.
+**Step 2.2 — Flow**
+Record: Before: always `get_registers(dev, CSCR, 2, &tmp)` then `tmp &
+CSCR_LINK_STATUS` → carrier on/off. After: non-zero return from
+`get_registers()` returns immediately; carrier is unchanged. Path:
+`rtl8150_open()` (interface up).
 
-Step 2.3: IDENTIFY THE BUG MECHANISM
-Record:
-- Category: hardware enablement / USB device ID (stable exception 1).
-- Mechanism: `QMI_QUIRK_SET_DTR` expands to
-  `USB_DEVICE_INTERFACE_NUMBER` plus DTR quirk `driver_info`. Interface
-  8 matches the dump (`Prot=50`, QMI/RMNET). DTR quirk is the same
-  pattern as Rolling RW101 (`33f8:0104`) and other Qualcomm USB WWAN
-  entries.
+**Step 2.3 — Bug mechanism**
+Record: **uninitialized data** (KMSAN). `usb_control_msg_recv()` only
+`memcpy`s into the caller buffer on a full successful transfer
+(`drivers/usb/core/message.c`); on error it returns negative and leaves
+`tmp` untouched. `short tmp` is uninitialized, then used as a bit test.
 
-Step 2.4: ASSESS THE FIX QUALITY
-Record:
-- Obviously correct: VID/PID/interface taken from a real device dump;
-  match is interface-number-specific so DIAG/ADB/NMEA/MODEM/QDSS/ADPL
-  are not claimed.
-- Minimal: one table entry, no API or structure change.
-- Regression risk: very low; only `33f8:9300` is affected. Wrong
-  interface number would be the main risk, and the dump confirms If#=8.
+**Step 2.4 — Fix quality**
+Record: Obviously correct. Three lines. No API/lock/refcount change.
+Regression risk is low: a failed CSCR read no longer flips carrier. That
+matches the original author’s review (transient USB errors should not
+look like link loss).
 
-===============================================================
-PHASE 3: GIT HISTORY INVESTIGATION
-===============================================================
+## Phase 3: Git history
 
-Step 3.1: BLAME THE CHANGED LINES
-Record:
-- Insertion sits next to Rolling RW101: `d362046021ea12`
-  (“net:usb:qmi_wwan: support Rolling modules”, Vanillan Wang,
-  2024-04-16).
-- That RW101 ID is in this tree’s v6.18.57 base (`git merge-base --is-
-  ancestor d362046021ea1 v6.18.57` succeeded).
-- This is extending an existing vendor block, not introducing a new
-  driver.
+**Step 3.1 — Blame**
+Record: Unchecked `get_registers()` + `tmp & CSCR_LINK_STATUS` dates to
+`1da177e4c3f4` (Linux 2.6.12-rc2, 2005). The uninit became hard after
+`b2a0f274e3f7e` (“Use the new usb control message API”, in `v5.10-rc1`):
+`usb_control_msg_recv()` does not fill the buffer on failure.
 
-Step 3.2: FOLLOW THE FIXES: TAG
-Record: No Fixes: tag. Not applicable. This does not revert or repair a
-prior logic bug.
+**Step 3.2 — Fixes tag**
+Record: Committed patch has no `Fixes:`. v1/v2 used `Fixes:
+1da177e4c3f4`. That SHA is in this tree. The USB API switch
+`b2a0f274e3f7e` is also in this tree (`v5.10-rc1`).
 
-Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Record:
-- Recent `qmi_wwan` history is dominated by the same class of ID
-  additions (Quectel, Telit, MeiG, Fibocom, SIMCom).
-- No prerequisite refactor is required; `products[]` and
-  `QMI_QUIRK_SET_DTR` are long-standing.
-- Standalone: subject is not “patch X/Y”. `b4 dig -a` shows a single v1
-  patch.
+**Step 3.3 — Related file history**
+Record: Same driver already has `fba383985354e` (“fix unintiatilzed
+variables in rtl8150_get_link_ksettings”), a sibling KMSAN
+ignored-`get_registers()` fix, present in `v6.18.53`. Other recent
+rtl8150 work is UAF/leak/padding, not a substitute for this carrier
+check. Standalone, not patch X/Y.
 
-Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Record:
-- Reinhard Speyerer has prior `qmi_wwan` ID/work in this history (e.g.
-  Fibocom FG132 `64761c980cbf7`).
-- Not the listed maintainer; maintainer is Bjørn Mork (`MAINTAINERS`:
-  USB QMI WWAN NETWORK DRIVER). The patch was mailed to `bjorn@mork.no`.
+**Step 3.4 — Author**
+Record: Yousef Alhouseen; this is their only rtl8150 commit here.
+Suggested-by Petko Manolov (driver author). Reviewed-by Andrew Lunn.
 
-Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-Record:
-- Depends only on `QMI_QUIRK_SET_DTR` / `USB_DEVICE_INTERFACE_NUMBER`,
-  both present.
-- No companion `option.c` change is in this series. Serial AT/NMEA/DIAG
-  auto-bind is separate; this patch alone still enables the WWAN netdev.
-  Can apply standalone.
+**Step 3.5 — Dependencies**
+Record: None. Uses existing `get_registers()` return value. `git diff
+v6.18.53 6a6d945b860b3^ -- drivers/net/usb/rtl8150.c` is empty —
+preimage matches 6.18.y.
 
-===============================================================
-PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-===============================================================
+## Phase 4: Mailing list / external
 
-Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-Record:
-- `b4 dig -c 7375d38364a9aa66fb31716bcefef38aecad75d8` matched
-  https://patch.msgid.link/arZzuOOvLUZtdOlv@arcor.de
-- `b4 dig -a`: only v1, 2026-09-25, `[PATCH net] net: usb: qmi_wwan: add
-  Rolling Wireless RN947R`
-- Thread (saved via `b4 dig -m`): submission, then patchwork-bot
-  “applied to netdev/net.git (main) by Jakub Kicinski”. No NAK, no
-  review objections, no later revision.
-- No reviewer Cc: stable in the thread.
+**Step 4.1 — Discussion**
+Record: `b4 dig` → https://patch.msgid.link/20260628165033.17842-1-
+alhouseenyousef@gmail.com
+Revisions: v1 (carrier-off on error) → v2 (return on error) → net-next
+v4 (applied).
+Petko: do not force carrier off; USB messages can be lost while the
+device still works.
+Andrew Lunn (v2): pointed at stable-kernel-rules, asked “Does this issue
+bother people?”, asked for net-next, Suggested-by, and no version
+threading.
+v4 changelog: “Target net-next and drop the Fixes tag as requested.”
+Andrew Reviewed-by v4. Applied to netdev/net-next as `8c9c5b9a6896`. No
+NAK of the code.
 
-Step 4.2: CHECK WHO REVIEWED THE PATCH
-Record (`b4 dig -w`): To `bjorn@mork.no`, Cc `netdev@vger.kernel.org`.
-Subsystem maintainer was on To. Applied by netdev maintainer. No
-explicit Reviewed-by in the committed message.
+**Step 4.2 — Recipients**
+Record: Petko, Lunn, davem, Dumazet, Kicinski, Abeni, linux-usb, netdev,
+syzbot. Right lists and maintainers.
 
-Step 4.3: SEARCH FOR THE BUG REPORT
-Record: No syzbot/bugzilla. Evidence of a real device is the author’s
-usb-devices dump (Manufacturer=Rolling Wireless, Product=RN947R,
-33f8:9300). User population is owners of that modem.
+**Step 4.3 — Bug report**
+Record: syzbot “KMSAN: uninit-value in rtl8150_open (2)”, prio:high.
+Stack: `set_carrier` ← `rtl8150_open` ← `__dev_open` ← ioctl (dhcpcd).
+Local `tmp`. Console: `usb 2-1: device reset failed`. First crash ~186d
+before the report page, last ~113d. Security workflow: PeripheralTrigger
+yes; DoS/exploitable/unprivileged no. Five KMSAN crashes on dummy USB.
 
-Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-Record: Single-patch series. No `option.c` RN947R commit in this tree
-(`git log --grep=RN947R -- drivers/` only finds this qmi_wwan change).
-Web search did not find a matching option serial patch.
+**Step 4.4 — Series**
+Record: Single patch. Not part of a multi-patch series.
 
-Step 4.5: CHECK STABLE MAILING LIST HISTORY
-Record: UNVERIFIED. `WebFetch` of lore.kernel.org/stable/?q=RN947R
-returned 403. No local evidence this ID was rejected for stable.
+**Step 4.5 — Stable list**
+Record: lore.kernel.org HTTP 403; no extra stable-list thread retrieved.
+v1/v2 were Cc: stable; Andrew redirected to net-next. That is process,
+not a technical NAK.
 
-===============================================================
-PHASE 5: CODE SEMANTIC ANALYSIS
-===============================================================
+## Phase 5: Semantics / call graph
 
-Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-Record: No function body edited. Data change in `products[]`, consumed
-as `qmi_wwan_driver.id_table`.
+**Step 5.1**
+Record: `set_carrier()` only.
 
-Step 5.2: TRACE CALLERS
-Record:
-- `products` -> `qmi_wwan_driver.id_table` -> USB core match ->
-  `qmi_wwan_probe()` -> `usbnet` bind path (`qmi_wwan_bind`).
-- Reachable on device plug-in / boot with the modem attached. Not
-  interrupt or syscall hot path for other devices.
+**Step 5.2**
+Record: Only caller is `rtl8150_open()` (`drivers/net/usb/rtl8150.c`).
+Link is also updated later from `intr_callback()` via `MSR_LINK`
+(independent path, 100 ms interrupt URB).
 
-Step 5.3: TRACE CALLEES
-Record: Unchanged. Bind still uses existing `qmi_wwan_bind` / DTR
-handling (`qmi_wwan_change_dtr` when `QMI_WWAN_QUIRK_DTR` or `bcdUSB >=
-0x0201`). Dump has `Ver= 2.10`, so DTR would be set even with
-`QMI_FIXED_INTF`; `QMI_QUIRK_SET_DTR` matches sibling Rolling entries.
+**Step 5.3**
+Record: `get_registers()` → `usb_control_msg_recv()`; then
+`netif_carrier_on` / `netif_carrier_off`.
 
-Step 5.4: FOLLOW THE CALL CHAIN
-Record: Userspace-visible: plugging the modem should create a QMI WWAN
-netdev and cdc-wdm control node. Trigger is ordinary USB enumeration,
-not an obscure debug path.
+**Step 5.4**
+Record: Reachable from userspace bringing the iface up (`SIOCSIFFLAGS` /
+`dev_change_flags` / `__dev_open`). Needs the USB device (or a gadget).
+Typically `CAP_NET_ADMIN`. Syzbot hit it via dhcpcd on a dummy device.
 
-Step 5.5: SEARCH FOR SIMILAR PATTERNS
-Record: Same `QMI_QUIRK_SET_DTR(vend, prod, intf)` pattern is used
-throughout `products[]`, including `33f8:0104` RW101. This is the
-established way to add Qualcomm RMNET compositions.
+**Step 5.5**
+Record: Same ignored-return pattern exists elsewhere in this file
+(`read_mii_word`, `rtl8150_reset`, `enable_net_traffic`,
+`get_link_ksettings`). `get_link_ksettings` was already hardened by
+initializing locals (`fba383985354e`). This commit only fixes
+`set_carrier()`.
 
-===============================================================
-PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
-===============================================================
+## Phase 6: This tree (6.18.y)
 
-Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
-Record:
-- Local tree: `git describe HEAD` / `make kernelversion` => **6.18.57**
-  (`VERSION=6 PATCHLEVEL=18 SUBLEVEL=57`).
-- `drivers/net/usb/qmi_wwan.c` exists; `CONFIG_USB_NET_QMI_WWAN` exists;
-  `QMI_QUIRK_SET_DTR` exists.
-- `git show v6.18.57:drivers/net/usb/qmi_wwan.c` has Rolling RW101
-  (`33f8:0104`) and **does not** have `33f8:9300` / RN947R. The missing-
-  ID problem exists on this 6.18.y base.
+**Step 6.1**
+Record: Local tree is **6.18.53** (`git describe HEAD` →
+`v6.18.53-5049-g0f0bdc2b0dffb`, `VERSION=6 PATCHLEVEL=18 SUBLEVEL=53`).
+`v6.18.53:drivers/net/usb/rtl8150.c` still has the unchecked
+`get_registers(dev, CSCR, 2, &tmp)`. Bug is present. Introduced in
+practice with `usb_control_msg_recv` in v5.10; the ignore-return pattern
+is ancient.
 
-Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-Record: Clean apply. v6.18.57 context is identical around the insertion
-point:
-```
-{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
-{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
-```
-No refactor between mainline hunk and this tree.
+**Step 6.2**
+Record: Clean apply. Parent of the candidate matches `v6.18.53` for this
+file (0-line diff).
 
-Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
-Record: No other RN947R ID in this tree’s `option.c` or `qmi_wwan.c` on
-the v6.18.57 base. No alternate fix for 33f8:9300.
+**Step 6.3**
+Record: No other commit in 6.18.y checks `set_carrier()`’s CSCR read.
+`fba383985354e` is related but only ethtool ksettings.
 
-===============================================================
-PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-===============================================================
+## Phase 7: Subsystem
 
-Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-Record: [drivers/net/usb/qmi_wwan] [IMPORTANT for WWAN users, peripheral
-for everyone else]. Mature, non-staging driver used by laptops and
-embedded LTE/5G modems.
+**Step 7.1**
+Record: USB net driver `CONFIG_USB_RTL8150`. Criticality: **PERIPHERAL**
+(legacy Realtek USB 10/100 dongle; not core mm/net). Still a supported
+in-tree driver, not staging.
 
-Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-Record: Actively maintained via ID-table additions. Maintainer Bjørn
-Mork; netdev applies these routinely. Mature ID-table design.
+**Step mar 7.2**
+Record: Low-churn mature driver. Occasional syzbot fixes. Stable-
+relevant bugs do still land here.
 
-===============================================================
-PHASE 8: IMPACT AND RISK ASSESSMENT
-===============================================================
+## Phase 8: Impact / risk
 
-Step 8.1: DETERMINE WHO IS AFFECTED
-Record: Driver-specific / hardware-specific. Only Rolling Wireless
-RN947R (`33f8:9300`). Other USB devices unchanged.
+**Step 8.1**
+Record: Users of `CONFIG_USB_RTL8150` only, plus KMSAN/syzbot coverage.
 
-Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-Record: Plug in the modem or boot with it attached. Common for those
-users. Unprivileged users do not get a new attack surface; this is bind-
-table matching.
+**Step 8.2**
+Record: Trigger: CSCR USB control read fails during `rtl8150_open()`
+(device reset failure, disconnect, bus noise). Uncommon on working
+hardware; easy with a dummy/failing USB device. Not a general
+unprivileged attack path.
 
-Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-Record: Without the ID, the RMNET function stays unbound; WWAN
-networking does not work. Not a panic/UAF. Severity MEDIUM as a
-functional hardware-support miss, and it still qualifies under the
-device-ID exception.
+**Step 8.3**
+Record: Production: wrong carrier (link up/down from stack garbage). Not
+a panic/UAF. Under KMSAN: `BUG: KMSAN: uninit-value`. Interrupt path can
+correct carrier within ~100 ms if the device still works. Severity:
+**HIGH** as uninitialized memory (KMSAN); **MEDIUM** as user-visible
+wrong link state on USB error.
 
-Step 8.4: CALCULATE RISK-BENEFIT RATIO
-Record:
-- Benefit: HIGH for RN947R users (modem network interface works); zero
-  effect on others.
-- Risk: VERY LOW (1 line, existing macro, existing driver,
-  VID:PID:interface match).
-- Ratio: strongly favors backport.
+**Step 8.4**
+Record: Benefit: stops UB and random carrier on open failure; matches a
+prior stable fix in the same file. Risk: very low (3 lines, error path
+only, no locking). Ratio favors backport.
 
-===============================================================
-PHASE 9: FINAL SYNTHESIS
-===============================================================
+## Phase 9: Synthesis
 
-Step 9.1: COMPILE THE EVIDENCE
-FOR:
-- Explicit stable exception: USB ID added to an existing driver.
-- One line, obviously correct, matches a real device dump (If#=8,
-  Prot=50).
-- Driver, macros, and Rolling vendor support already in 6.18.57.
-- Applies cleanly next to RW101.
-- Mailed to qmi_wwan maintainer, applied by netdev maintainer, v1 with
-  no NAK.
-- Same pattern as many other qmi_wwan ID additions.
+**For backporting**
+- Real ignored-error / uninitialized-stack bug, not cleanup.
+- Syzbot + KMSAN, reproducible from iface open.
+- Same class as `fba383985354e`, already in this 6.18.y tree.
+- Three-line, reviewed, Suggested-by the driver author.
+- Buggy code is in `v6.18.53`; applies cleanly; no prerequisites.
+- Wrong carrier on `ifup` is user-visible if the control read fails.
 
-AGAINST:
-- Does not fix a crash, UAF, or corruption.
-- No Tested-by/Reviewed-by tags.
-- `option.c` still lacks `33f8:9300`, so serial ports may need a
-  separate ID or `new_id`; that does not block the netdev ID.
+**Against**
+- Andrew Lunn asked whether it “bothers people” and sent it to net-next,
+  not `net`.
+- Not a production oops, deadlock, or security hole (syzbot: not
+  exploitable/DoS).
+- Legacy USB adapter; trigger is a failed control transfer.
+- Interrupt callback often repairs carrier shortly after.
 
-UNRESOLVED:
-- lore.kernel.org WebFetch 403 for stable@ search.
-- Whether an option serial companion exists upstream later than this
-  tree.
+**Unresolved**
+- Could not fetch lore.kernel.org/stable (HTTP 403). Discussion is taken
+  from `b4` mboxes instead.
 
-Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. Obviously correct and tested? PASS — dump-backed ID, applied to
-   netdev/net.
-2. Fixes a real bug that affects users? PASS — modem otherwise has no
-   QMI netdev.
-3. Important issue? PASS under device-ID exception (hardware enablement
-   for existing driver).
-4. Small and contained? PASS — +1 line in one table.
-5. No new features or APIs? PASS — no new driver, syscall, or userspace
-   API; ID only.
-6. Can apply to the local tree? PASS — v6.18.57 has identical context.
+**Stable-rules checklist**
+1. Obviously correct and tested? **PASS** — 3 lines, Reviewed-by Lunn,
+   Suggested-by Petko, syzbot-confirmed.
+2. Real bug affecting users? **PASS** — uninit `tmp` used for carrier;
+   KMSAN + ioctl path.
+3. Important (crash/security/corruption/deadlock)? **PASS** — KMSAN
+   uninitialized use is a real memory-safety bug; production symptom is
+   incorrect carrier, not a panic. Bar is met for sanitizer-class fixes
+   this pipeline treats as backport-worthy.
+4. Small and contained? **PASS** — one function, +3/−1.
+5. No new features/APIs? **PASS**.
+6. Applies to this tree? **PASS** — 6.18.y has the bug and matching
+   preimage.
 
-Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Record: Device ID addition to existing driver (USB ID in `qmi_wwan`).
+**Exception category:** none (not an ID/quirk/DT/build/doc exception).
+It is a normal small bugfix.
 
-Step 9.4: MAKE YOUR DECISION
-This should be backported to this 6.18.y tree. It is the standard, low-
-risk USB ID pattern stable already takes for `qmi_wwan`.
-
-What problem it solves: RN947R owners on 6.18.y get a working QMI/RMNET
-interface instead of an unbound USB function.
-
-Risk vs benefit: one matching table entry vs. a non-working WWAN modem.
-Benefit dominates.
-
-Concerns: serial `option` binding is incomplete without a separate ID;
-that is independent and not a reason to drop this netdev ID.
+The net-next routing only dropped tags for netdev process. It does not
+remove the bug from 6.18.y. The patch is self-contained, applies
+cleanly, and is the same error-check this driver already needed in
+ethtool.
 
 Verification:
-- [Phase 1] Parsed subject/tags/body: device-ID add; Link to
-  patch.msgid.link; SOB Speyerer + Kicinski; no Fixes/syzbot.
-- [Phase 2] Diff: +1 line in `products[]`; `QMI_QUIRK_SET_DTR(0x33f8,
-  0x9300, 8)` matches dump If#=8.
-- [Phase 2] Read `QMI_QUIRK_SET_DTR` / `qmi_wwan_info_quirk_dtr` / DTR
-  logic at bind (lines 804–825, 938–958).
-- [Phase 3] `git blame` around insertion: RW101 from `d362046021ea12`
-  (2024); ancestor of v6.18.57.
-- [Phase 3] `git log --oneline -20 -- drivers/net/usb/qmi_wwan.c`: many
-  similar ID adds; this is standalone.
-- [Phase 3] `git log --author='Reinhard Speyerer' -- drivers/net/usb/`:
-  prior qmi_wwan ID work.
-- [Phase 4] `b4 dig -c 7375d38364a9…`: lore URL found; `-a` v1 only;
-  `-w` To bjorn@mork.no Cc netdev; `-m` thread is submit + applied-bot,
-  no NAK.
-- [Phase 4] lore WebFetch 403; used b4 mbox instead.
-- [Phase 4] WebSearch: no option.c RN947R companion found.
-- [Phase 5] `products` -> `qmi_wwan_driver.id_table` ->
-  `qmi_wwan_probe`; `MODULE_DEVICE_TABLE(usb, products)`.
-- [Phase 5] `option.c` has other 33f8 IDs, not 0x9300.
-- [Phase 6] `git describe HEAD` / Makefile: 6.18.57. `git show
-  v6.18.57:drivers/net/usb/qmi_wwan.c` has RW101, lacks RN947R. Apply
-  context matches.
-- [Phase 6] `git merge-base --is-ancestor 7375d38364a9 HEAD` is false
-  (upstream SHA not this history); evaluate against local 6.18.y code,
-  not that SHA.
-- [Phase 7] MAINTAINERS: USB QMI WWAN NETWORK DRIVER, M: Bjørn Mork.
-- [Phase 8] Failure mode: unbound RMNET on this VID:PID only; risk
-  confined to that device.
-- UNVERIFIED: stable@ lore discussion (HTTP 403).
+- [Phase 1] Tags: syzbot Reported-by, Closes syzkaller URL, Suggested-by
+  Petko, Reviewed-by Andrew Lunn, Paolo Abeni SOB.
+- [Phase 2] Diff: `set_carrier()` adds `if (get_registers(...))
+  return;`.
+- [Phase 2] `usb_control_msg_recv()` in `drivers/usb/core/message.c`
+  only copies into the caller buffer when `ret == size`; errors skip
+  that copy.
+- [Phase 3] Blame: logic since `1da177e4c3f4`; `usb_control_msg_recv`
+  since `b2a0f274e3f7e` (`v5.10-rc1`).
+- [Phase 3] `git diff v6.18.53 6a6d945b860b3^ --
+  drivers/net/usb/rtl8150.c` is empty.
+- [Phase 3] Sibling KMSAN fix `fba383985354e` is in `v6.18.53`.
+- [Phase 4] `b4 dig -c 8c9c5b9a6896`: v1–v4; Petko requested leave-
+  carrier-unchanged; Lunn asked for net-next; v4 applied to net-next.
+- [Phase 4] Syzkaller: KMSAN uninit-value in `rtl8150_open`, prio:high,
+  dhcpcd ioctl, `device reset failed`.
+- [Phase 5] Only caller: `rtl8150_open`; `intr_callback` updates carrier
+  separately.
+- [Phase 6] `git describe HEAD` = `v6.18.53-5049-g0f0bdc2b0dffb`; `make
+  kernelversion` = 6.18.53; buggy code present at `v6.18.53`.
+- [Phase 6] `git merge-base --is-ancestor 6a6d945b860b3 v6.18.53` → not
+  in the release tag (candidate only).
+- [Phase 8] Failure: uninitialized stack → arbitrary carrier; KMSAN BUG
+  under sanitizer.
+- UNVERIFIED: lore.kernel.org WebFetch 403; stable@ archive not searched
+  via HTTP.
 
 **YES**
 
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/rtl8150.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index aa66a30e56cdc..85d2daae805fd 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1453,6 +1453,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1312, 4)},	/* u-blox LARA-R6 01B */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
- 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
-+	{QMI_QUIRK_SET_DTR(0x33f8, 0x9300, 8)}, /* Rolling RN947R RMNET */
- 	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
- 	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d63, 0)}, /* MeiG SRM813Q w/ Modem(PPP) */
- 	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d64, 0)}, /* MeiG SRM813Q w/ NMEA */
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 647f28b367b99..8c739d898e57d 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -734,7 +734,9 @@ static void set_carrier(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	short tmp;
+ 
+-	get_registers(dev, CSCR, 2, &tmp);
++	if (get_registers(dev, CSCR, 2, &tmp))
++		return;
++
+ 	if (tmp & CSCR_LINK_STATUS)
+ 		netif_carrier_on(netdev);
+ 	else
 -- 
 2.53.0
 
