@@ -1,77 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792421706;
-	b=ei+L/tE3NSbTTcq1fTGCitQOJVuEHL/6P5sBV7nZdlIUV7HxrSFQqTCvM0Fl1aZbtP61
-	 kNAD8u4HF9xJO+3J3UHhb1/Vnu7E30ZyrWVZW9Gg0P3VA89kwSuDanZMxAIFhoQLIc4rM
-	 9NpV6WmV/6Vz9oAMo7AES3piS4HJR/SRjemckjJhHFO8DJPmeXlbvE7DgNFgY09QE3oau
-	 3OjBGOxqDKQtOxcyWRc1EI6pQr19XFpSXNv6ykygS7dVV1aUurabFZasVNfm2w2wVzVt+
-	 TeoMHDNsYYpo/w0fL8fVuZKz588IOCwhuBuHUyUEEVlHpGvIBJCm8d8HHEQJ45ad2wQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792421706;
-	h=Received:Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=mZLzRwRYboY/RmAU+vEf+KfhFzbpntUfPL9/1QMLPg4=;
-	b=GCgR7D6d9SfRaYV226T9vC8CNfHsflX5NSht0VUFHsOhrhQ+SkEXvDKrqRrgP6gqky2K
-	 xZ5VXgVjp7GljaUJ5lMPtReA6bjTwpCgHc1UOEOaIswy+DaBV+yHAl9MqirNZa26zTs4u
-	 PUV5cOauu4ELT9nT9xpMFdbYQbD86qou91BUoZKVU8uudgQJbx5BMUt062AzwENQhU9Er
-	 SZk12hg4aUKF5DQUwuLW62Dzvo3j7mcjwQscScTRCLh8A/63RaCl1WcBgKD0RK4uNN8qz
-	 2mF9QfBDlQd9HACVpostfQBImSKzBG1yoC9qWls7XYA/L1j40nWbe0dyg+tTPepun2w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kHHofU0r;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-Received: from aws-us-west-2-korg-listserv-1.web.codeaurora.org (ip-10-30-226-211.us-west-2.compute.internal [10.30.226.211])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B007B606EFE6;
-	Mon, 19 Oct 2026 14:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kHHofU0r
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792424169;
+	b=K4hJO8iR2glNwBdYd19h1fG7qxUKc2/omR0Sj+96BQsCocyP6MATDItg5ZVZ3Dmm3EZy
+	 Mp2dBZRYkNOYPTfEa7k55es14azP/r0p8E449FIKLHH0VILddIsaiO6gMMb2KBFLNx5Zk
+	 rRdPGDn7AupEtuh8zcffR1bWhhcRgehEsNWT/6V5hX+0NNYITQOYdehuoOr/EFkqyS0LM
+	 8Wm7Xyq2SJStJOIabsAAvwV2o6fKTFOREHUeKBTDS9TwZcTVBYb1Sh1TathRlLur3UhIY
+	 8i2z4iCs/KtUlTODgMJ1Hm5JefFrdyciRNviownhzIm4b3G0nMlEIzxBydN8X0Cpnyg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792424169;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Scanned-By;
+	bh=P/5dqfj7vTG/lINlWEYXcU+uCyfa82tRccYJR49wXCs=;
+	b=yhU/fC9ppTyb4fPSgrC9w+C4nFbFb06VdCU1hoEwaZKqnJ+yLjU1stcCb3U1wZQgTCyf
+	 hVn3zez+mnJpLI2P0AC7pYQnCBMqvFe9S32/3xwG5oXGGNonWaavpWQtxabohMz9WUnwu
+	 TW8NwakQmum2UFfW5MJdrlZ5Zq9RwPdWtbpbE0iqhX7C5HT30xmzEo2JzNIYtfYZZRurl
+	 4TKzC3xnTP9VfpRQsr6OCZ3hOIqptbZDlWh2qMQP6I5onlC99eM5yeqYyOzEIcklLkWVU
+	 p1Qj+g0sPC2Kqv8T6Na3w857fFf2HQh5P4+PpVzxcJUwri4o+uHEneHGg/bRNN4lvQg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQjQ2qX6;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABBE234964;
-	Mon, 19 Oct 2026 14:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792421706; cv=none; b=TCnLJuB3FaGM41lcTEq2aWDzCDHTl8TD8XX++TZc52MwHT7PhCag2sSFh7cx5nxv3yDN1QVDBLoX1jCiik56UfdtLt9awUXTXFPF1hkdVLFxV35fLn8kPAwnWLZk4v9/aNJOunDo6D7ilxchKBGqduKvrHdPd8ut3HOUNtnA5RM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792421706; c=relaxed/simple;
-	bh=rzZ8aVYHTbvvvHXdIbMH7BBTWk45dgc5mYEFN5NQOlM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m1fZLah0vPULlyLzU9lUVjC99sltZZjXQKpqaUIsfXtjFeC6ku308uJGdFLlGcLRvPmKjeVI0fcNdl0uzS6XYVvAxAMFSozDnQlPmTtfSgU6dD9Jnpethn14G5delDQT1Y45vYkgFtS1I4y5AXEJFsqe8X9wWrEIcL3dS3zGVu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHHofU0r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526C01F000C4;
-	Mon, 19 Oct 2026 14:55:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792421705;
-	bh=mZLzRwRYboY/RmAU+vEf+KfhFzbpntUfPL9/1QMLPg4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kHHofU0rYuCnhF24LmEHw4SnsG9PEmLBo2DwGVUs58j86P/0FdZ6XWeHDZVLvTErD
-	 x+nBzd9woAXRC3l15OeMB2SlHqkfUknr7620h8Qw4aOs5iK5MiNwO3y4ZITB91sqbf
-	 KFSL4LR8q+FXg/ttYU8yCEw4UF3zy4j1ho4b//W/OrxVJzexrr/Gl14YZI46TTMFYX
-	 5F/oYIRGQcdconbxeDYTqbmyc9ZBEUKlERt8NvM5jRfpq83cMG1JeKy6YVKoLKVbGm
-	 YD3+tckFU23CE+YxRzCrFnAFxDC8FNpacA+kHqx1WGrt7z22o7RoX6nmDYc1b6v3ip
-	 VFfur1KqMae5w==
-Subject: Re: [PATCH net-next v6 1/5] selftests/bpf: Fix XDP feature test setup
- and teardown
-From: netdev-bot+sashiko@kernel.org
-To: bochaolucky@gmail.com
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, shuah@kernel.org, davem@davemloft.net,
- kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- andrew+netdev@lunn.ch, edumazet@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
- alexis.lothore@bootlin.com, lorenzo@kernel.org, tiozhang@didiglobal.com,
- willemdebruijn.kernel@gmail.com, petrm@nvidia.com
-Date: Mon, 19 Oct 2026 14:55:02 +0000
-Message-ID: <179242170282.3135.3655485232785325877@kernel.org>
-In-Reply-To: <20261018-xdp-v5-send-20261008-v6-1-7336e1282ca3@gmail.com>
-References: <20261018-xdp-v5-send-20261008-v6-1-7336e1282ca3@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A481607BF3C
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:36:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A481607BF3C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQjQ2qX6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792424168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P/5dqfj7vTG/lINlWEYXcU+uCyfa82tRccYJR49wXCs=;
+	b=BQjQ2qX6CX3YOJU0XiQraBts3ue+smLic84W6zQXBaxKJZwwztid8d7tO7pDB8ieeEKuP0
+	A8hjPcTEF4kho6+wk5UKefZQEovmftdgDsgxbLBiCaIeM4Cd4fKpzoK6M1s3XGasO35395
+	YAc4NFdUF2b+Gxg0IgbhrEt9I0B23o4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-18dsTZefNZGqODH-NofnOQ-1; Mon,
+ 19 Oct 2026 15:36:02 +0000
+X-MC-Unique: 18dsTZefNZGqODH-NofnOQ-1
+X-Mimecast-MFC-AGG-ID: 18dsTZefNZGqODH-NofnOQ_1792424160
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 383941955F29;
+	Mon, 19 Oct 2026 15:36:00 +0000 (UTC)
+Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 4839230000E3;
+	Mon, 19 Oct 2026 15:35:55 +0000 (UTC)
+Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
+	oleg@redhat.com; Mon, 19 Oct 2026 17:35:59 +0200 (CEST)
+Date: Mon, 19 Oct 2026 17:35:54 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Joel Granados <joel.granados@kernel.org>,
+	Allison Henderson <achender@kernel.org>
+Cc: kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev,
+	lkp@intel.com, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+	wireguard@lists.zx2c4.com, rds-devel@oss.oracle.com
+Subject: Re: [linus:master] [sysctl]  8d75c338f0:
+ BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
+Message-ID: <atY42k00k0Waj6o4@redhat.com>
+References: <202610190310.9737b2e3-lkp@intel.com>
+ <atYB0bm9eEXp8A2g@redhat.com>
+ <atYW0K3t57puHeLW@hobbes>
+ <atYuE1xnVYe0BDG4@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,201 +86,142 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atYuE1xnVYe0BDG4@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On 10/19, Oleg Nesterov wrote:
+>
+> But. rds_init() can also fail even if CONFIG_SYSCTL=y, after
+> rds_sysctl_init(), so to me this looks like a bug in net/rds/.
+>
+>
+> In any case, I guess net/rds/ init paths should not fail if
+> CONFIG_SYSCTL=n ?
 
-Low priority / nit picks for your consideration:
+So I think that something like the uncompiled/untested patch below makes
+sense anyway even if doesn't fix all the potential problems with rds_wq.
 
-- [Low] The `xdp_attached` guard only records that an attach succeeded at
-  some point.
+What do you think?
 
-Pre-existing issues:
-- [Medium] test_xdp_features.sh uses only the tester's exit status, and
-  tester_run() returns 0 whether or not the capability is DETECTED or…
-- [Low] In tester_run(), the settimeo() and connect() failure paths
-  return directly without close(sockfd), which leaks the control socket.
-- [Low] recv_msg() accepts payloads shorter than val_size and copies only
-  the bytes it received.
+Oleg.
+---
 
---
+diff --git a/net/rds/ib_sysctl.c b/net/rds/ib_sysctl.c
+index 2af678e71e3c..bccdb5c4df1d 100644
+--- a/net/rds/ib_sysctl.c
++++ b/net/rds/ib_sysctl.c
+@@ -36,19 +36,10 @@
+ 
+ #include "ib.h"
+ 
+-static struct ctl_table_header *rds_ib_sysctl_hdr;
+-
+ unsigned long rds_ib_sysctl_max_send_wr = RDS_IB_DEFAULT_SEND_WR;
+ unsigned long rds_ib_sysctl_max_recv_wr = RDS_IB_DEFAULT_RECV_WR;
+ unsigned long rds_ib_sysctl_max_recv_allocation = (128 * 1024 * 1024) / RDS_FRAG_SIZE;
+-static unsigned long rds_ib_sysctl_max_wr_min = 1;
+-/* hardware will fail CQ creation long before this */
+-static unsigned long rds_ib_sysctl_max_wr_max = (u32)~0;
+-
+ unsigned long rds_ib_sysctl_max_unsig_wrs = 16;
+-static unsigned long rds_ib_sysctl_max_unsig_wr_min = 1;
+-static unsigned long rds_ib_sysctl_max_unsig_wr_max = 64;
+-
+ /*
+  * This sysctl does nothing.
+  *
+@@ -61,6 +52,14 @@ static unsigned long rds_ib_sysctl_max_unsig_wr_max = 64;
+  */
+ unsigned int rds_ib_sysctl_flow_control = 0;
+ 
++#ifdef CONFIG_SYSCTL
++static unsigned long rds_ib_sysctl_max_wr_min = 1;
++/* hardware will fail CQ creation long before this */
++static unsigned long rds_ib_sysctl_max_wr_max = (u32)~0;
++
++static unsigned long rds_ib_sysctl_max_unsig_wr_min = 1;
++static unsigned long rds_ib_sysctl_max_unsig_wr_max = 64;
++
+ static struct ctl_table rds_ib_sysctl_table[] = {
+ 	{
+ 		.procname       = "max_send_wr",
+@@ -105,6 +104,8 @@ static struct ctl_table rds_ib_sysctl_table[] = {
+ 	},
+ };
+ 
++static struct ctl_table_header *rds_ib_sysctl_hdr;
++
+ void rds_ib_sysctl_exit(void)
+ {
+ 	if (rds_ib_sysctl_hdr)
+@@ -118,3 +119,15 @@ int rds_ib_sysctl_init(void)
+ 		return -ENOMEM;
+ 	return 0;
+ }
++
++#else
++
++void rds_ib_sysctl_exit(void)
++{
++}
++
++int rds_ib_sysctl_init(void)
++{
++	return 0;
++}
++#endif
+diff --git a/net/rds/sysctl.c b/net/rds/sysctl.c
+index 025f518a4349..a0673a41633a 100644
+--- a/net/rds/sysctl.c
++++ b/net/rds/sysctl.c
+@@ -36,11 +36,6 @@
+ 
+ #include "rds.h"
+ 
+-static struct ctl_table_header *rds_sysctl_reg_table;
+-
+-static unsigned long rds_sysctl_reconnect_min = 1;
+-static unsigned long rds_sysctl_reconnect_max = ~0UL;
+-
+ unsigned long rds_sysctl_reconnect_min_jiffies;
+ unsigned long rds_sysctl_reconnect_max_jiffies = HZ;
+ 
+@@ -49,6 +44,10 @@ unsigned int  rds_sysctl_max_unacked_bytes = (16 << 20);
+ 
+ unsigned int rds_sysctl_ping_enable = 1;
+ 
++#ifdef CONFIG_SYSCTL
++static unsigned long rds_sysctl_reconnect_min = 1;
++static unsigned long rds_sysctl_reconnect_max = ~0UL;
++
+ static struct ctl_table rds_sysctl_rds_table[] = {
+ 	{
+ 		.procname       = "reconnect_min_delay_ms",
+@@ -91,6 +90,8 @@ static struct ctl_table rds_sysctl_rds_table[] = {
+ 	},
+ };
+ 
++static struct ctl_table_header *rds_sysctl_reg_table;
++
+ void rds_sysctl_exit(void)
+ {
+ 	unregister_net_sysctl_table(rds_sysctl_reg_table);
+@@ -107,3 +108,15 @@ int rds_sysctl_init(void)
+ 		return -ENOMEM;
+ 	return 0;
+ }
++
++#else
++
++void rds_sysctl_exit(void)
++{
++}
++
++int rds_sysctl_init(void)
++{
++	return 0;
++}
++#endif
 
-selftests/bpf: Fix XDP feature test setup and teardown
-
-This commit fixes several setup and teardown problems in the xdp_features
-selftest tool. It initializes the DUT state and socket address lengths,
-hands the echo socket back to the caller, and stops and joins the echo
-thread only if it was started. It also samples the tester counters before
-teardown, and it detaches XDP programs only after a successful attach.
-
-> diff --git a/tools/testing/selftests/bpf/xdp_features.c b/tools/testing/selftests/bpf/xdp_features.c
-> index a27ed663967c4..3076fdda61fa4 100644
-> --- a/tools/testing/selftests/bpf/xdp_features.c
-> +++ b/tools/testing/selftests/bpf/xdp_features.c
-
-[ ... ]
-
-> @@ -341,10 +343,14 @@ static int recv_msg(int sockfd, void *buf, size_t bufsize, void *val,
->  		    size_t val_size)
->  {
->  	struct tlv_hdr *tlv = (struct tlv_hdr *)buf;
-> -	size_t len;
-> +	ssize_t len;
->  
->  	len = recv(sockfd, buf, bufsize, 0);
-> -	if (len != ntohs(tlv->len) || len < sizeof(*tlv))
-> +	if (len < 0)
-> +		return -errno;
-> +	if (!len)
-> +		return -ECONNRESET;
-> +	if (len < sizeof(*tlv) || len != ntohs(tlv->len))
->  		return -EINVAL;
->  
->  	if (val) {
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but recv_msg() only rejects
-payloads that are larger than val_size:
-
-	if (val) {
-		len -= sizeof(*tlv);
-		if (len > val_size)
-			return -ENOMEM;
-
-		memcpy(val, tlv->data, len);
-	}
-
-Can a short payload leave part of the destination unwritten?
-
-In tester_run(), stats and advertised_feature are both declared without
-an initial value. Leftover stack bytes could then affect the feature
-result that gets printed.
-
-A later patch in this series changes the check to:
-
-	if (len != val_size)
-		return -ENOMEM;
-
-That rejects short payloads before the memcpy().
-
-[ ... ]
-
-> @@ -403,9 +412,12 @@ static int dut_run(struct xdp_features *skel)
->  			if (err)
->  				goto out;
->  
-> +			xdp_attached = true;
-> +
->  			err = dut_run_echo_thread(&dut_thread, &echo_sockfd);
-
-[ ... ]
-
-> @@ -422,6 +434,7 @@ static int dut_run(struct xdp_features *skel)
->  
->  			exiting = true;
->  			bpf_xdp_detach(env.ifindex, flags, NULL);
-> +			xdp_attached = false;
-
-[Severity: Low]
-The xdp_attached flag records that bpf_xdp_attach() succeeded at some
-point. However, bpf_xdp_detach(env.ifindex, flags, NULL) removes
-whatever program is attached to the device at the time it runs.
-
-If another privileged user replaces the program between the attach and
-the detach, would this still remove that other program?
-
-The out: label in tester_run() uses the same pattern:
-
-	if (xdp_attached)
-		bpf_xdp_detach(env.ifindex, flags, NULL);
-
-A later patch in this series appears to fix this. The DUT attaches with
-bpf_link_create() and cleans up with close(link_fd). The tester no
-longer attaches an XDP program at all, because it uses AF_PACKET.
-
->  
->  			tlv->type = htons(CMD_ACK);
->  			tlv->len = htons(sizeof(*tlv));
-
-[ ... ]
-
-> @@ -578,7 +596,7 @@ static int tester_run(struct xdp_features *skel)
->  	struct bpf_program *prog;
->  	unsigned int stats;
->  	int i, err, sockfd;
-> -	bool detected_cap;
-> +	bool detected_cap, xdp_attached = false;
->  
->  	sockfd = socket(AF_INET6, SOCK_STREAM, 0);
->  	if (sockfd < 0) {
-
-[Severity: Low]
-This is a pre-existing issue, but the settimeo() and connect() failure
-paths just below this return without closing sockfd:
-
-	if (settimeo(sockfd, 1000) < 0)
-		return -EINVAL;
-
-	err = connect(sockfd, (struct sockaddr *)&env.dut_ctrl_addr,
-		      sizeof(env.dut_ctrl_addr));
-	if (err) {
-		...
-		return -errno;
-	}
-
-Does this leak the control socket? Now that xdp_attached starts out
-false, could these paths go to the out: label instead?
-
-A later patch in this series changes them to "err = -errno; goto out;".
-
-[ ... ]
-
-> @@ -636,19 +655,21 @@ static int tester_run(struct xdp_features *skel)
->  	if (err)
->  		goto out;
->  
-> +	/* Sample before teardown, which can produce additional echo traffic. */
-> +	detected_cap = tester_collect_detected_cap(skel, ntohl(stats));
-> +
->  	/* stop the test */
-
-[ ... ]
-
->  	fprintf(stdout, "Feature %s: [%s][%s]\n", get_xdp_feature_str(),
->  		detected_cap ? GREEN("DETECTED") : RED("NOT DETECTED"),
->  		env.feature.drv_feature & advertised_feature ? GREEN("ADVERTISED")
->  							     : RED("NOT ADVERTISED"));
->  out:
-> -	bpf_xdp_detach(env.ifindex, flags, NULL);
-> +	if (xdp_attached)
-> +		bpf_xdp_detach(env.ifindex, flags, NULL);
->  	close(sockfd);
->  	return err < 0 ? err : 0;
->  }
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but detected_cap and
-advertised_feature are only printed here. tester_run() returns 0
-whatever their values are.
-
-test_xdp_features.sh checks only the exit status of the tester:
-
-	ip netns exec ${NS} ./xdp_features -t -f XDP_PASS \
-					   -D $V1_IP6 -C $V1_IP6 \
-					   -T $V0_IP6 v0
-	[ $? -ne 0 ] && exit
-
-Could a broken or unadvertised XDP action still pass the selftest?
-
-A later patch in this series ("selftests/bpf: Track XDP test processes
-and isolate namespaces") adds:
-
-	if (!err && detected_cap != !!(env.feature.drv_feature & advertised_feature))
-		err = -EINVAL;
-
-The same series also replaces the shell script with
-drivers/net/hw/xdp_features.py.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018-xdp-v5-send-20261008-v6-0-7336e1282ca3%40gmail.com
