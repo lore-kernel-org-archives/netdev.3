@@ -1,82 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792424169;
-	b=K4hJO8iR2glNwBdYd19h1fG7qxUKc2/omR0Sj+96BQsCocyP6MATDItg5ZVZ3Dmm3EZy
-	 Mp2dBZRYkNOYPTfEa7k55es14azP/r0p8E449FIKLHH0VILddIsaiO6gMMb2KBFLNx5Zk
-	 rRdPGDn7AupEtuh8zcffR1bWhhcRgehEsNWT/6V5hX+0NNYITQOYdehuoOr/EFkqyS0LM
-	 8Wm7Xyq2SJStJOIabsAAvwV2o6fKTFOREHUeKBTDS9TwZcTVBYb1Sh1TathRlLur3UhIY
-	 8i2z4iCs/KtUlTODgMJ1Hm5JefFrdyciRNviownhzIm4b3G0nMlEIzxBydN8X0Cpnyg==
+	t=1792422718;
+	b=05ub5uRIuOOezla7U1aGCu7oT83sCK23V/fYMfB0yMH/iHAfUZjnWrDiWGmw4Gz3oY5J
+	 lx5IbBnyUdxvKKa2RSy7SI0/d6wGl+1kgl8Ofm2eVESG2RHlvvYbt4W7ar3TyfcWY+02u
+	 uoeGgPwt7nL8dbXzRUlVw2JUDITV8bFansKUkVGFNi6Q6QRRhyDYFi3ZlTDynm/DA5X/v
+	 I8KrSi4aZEoK8hGa4Hrlrfy0KY+EgxH3YIhrYHcsRirR66MC0Mlue2T+85gnrpLjpSQqs
+	 F05CG+kZ45BLLRSEqpyHyeGQ21jR61LqwqtsYDlVGlkU+TcGgfE1GQPjQjluZNqSFCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792424169;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Scanned-By;
-	bh=P/5dqfj7vTG/lINlWEYXcU+uCyfa82tRccYJR49wXCs=;
-	b=yhU/fC9ppTyb4fPSgrC9w+C4nFbFb06VdCU1hoEwaZKqnJ+yLjU1stcCb3U1wZQgTCyf
-	 hVn3zez+mnJpLI2P0AC7pYQnCBMqvFe9S32/3xwG5oXGGNonWaavpWQtxabohMz9WUnwu
-	 TW8NwakQmum2UFfW5MJdrlZ5Zq9RwPdWtbpbE0iqhX7C5HT30xmzEo2JzNIYtfYZZRurl
-	 4TKzC3xnTP9VfpRQsr6OCZ3hOIqptbZDlWh2qMQP6I5onlC99eM5yeqYyOzEIcklLkWVU
-	 p1Qj+g0sPC2Kqv8T6Na3w857fFf2HQh5P4+PpVzxcJUwri4o+uHEneHGg/bRNN4lvQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792422718;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=IOr8tP9WaxFdfAOo39mHK4RggF7GLTDIwC8oUe4sANI=;
+	b=3kLu227NagnSV+1lFMKatmqekx1outgB8aYEP6/0seHHuf/X7z1CK7UgZILN65yQ0Rut
+	 ybQqCvGPMH6m4k22ihp9SQq6inRYUzu/lMdvMlQ3Wn2SVq55b33qj3njmZVGMnNO0pYMn
+	 K88nspY7mW8M9LunzV/TK3NYlwTKxmo5b91f5wnjczS7PcuvrlJNP+0skqeGW42L+MZk4
+	 4fNDTOP24hEPuOLbDD9pRq5qKotmiR6ofU4qyiMF4+Bb8TTIVTfMBKz0+HYWCgHjJrrro
+	 WjzTcsEEPZC8ebtxE9cP14uPo7MIRv6uaOojTgtBtxSd/l3PTbBIDcBsrP8+ByyBc8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQjQ2qX6;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aBrdbamH;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A481607BF3C
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:36:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A481607BF3C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3B0607D353;
+	Mon, 19 Oct 2026 15:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BQjQ2qX6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792424168;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P/5dqfj7vTG/lINlWEYXcU+uCyfa82tRccYJR49wXCs=;
-	b=BQjQ2qX6CX3YOJU0XiQraBts3ue+smLic84W6zQXBaxKJZwwztid8d7tO7pDB8ieeEKuP0
-	A8hjPcTEF4kho6+wk5UKefZQEovmftdgDsgxbLBiCaIeM4Cd4fKpzoK6M1s3XGasO35395
-	YAc4NFdUF2b+Gxg0IgbhrEt9I0B23o4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-18dsTZefNZGqODH-NofnOQ-1; Mon,
- 19 Oct 2026 15:36:02 +0000
-X-MC-Unique: 18dsTZefNZGqODH-NofnOQ-1
-X-Mimecast-MFC-AGG-ID: 18dsTZefNZGqODH-NofnOQ_1792424160
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 383941955F29;
-	Mon, 19 Oct 2026 15:36:00 +0000 (UTC)
-Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 4839230000E3;
-	Mon, 19 Oct 2026 15:35:55 +0000 (UTC)
-Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
-	oleg@redhat.com; Mon, 19 Oct 2026 17:35:59 +0200 (CEST)
-Date: Mon, 19 Oct 2026 17:35:54 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Joel Granados <joel.granados@kernel.org>,
-	Allison Henderson <achender@kernel.org>
-Cc: kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev,
-	lkp@intel.com, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
-	wireguard@lists.zx2c4.com, rds-devel@oss.oracle.com
-Subject: Re: [linus:master] [sysctl]  8d75c338f0:
- BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
-Message-ID: <atY42k00k0Waj6o4@redhat.com>
-References: <202610190310.9737b2e3-lkp@intel.com>
- <atYB0bm9eEXp8A2g@redhat.com>
- <atYW0K3t57puHeLW@hobbes>
- <atYuE1xnVYe0BDG4@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aBrdbamH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D10F1F000C5;
+	Mon, 19 Oct 2026 15:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792422718;
+	bh=IOr8tP9WaxFdfAOo39mHK4RggF7GLTDIwC8oUe4sANI=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=aBrdbamHwaFtp/In5WXudMm4Vq5z8FHialV2pOinYC3AYuPTgDGJzKbzIFkt1UqPq
+	 tF9bZxY6F7F9Onc+riLsDK2mHJWJ+nkqTCSJWXyzYOUImS4PBziAuBEqEeM8GpqZA2
+	 GOHDzay0H1dn3qWAAQjmEmlak11sy930d65MoXEnmS3qucNmfwezrM+CY9T9GhcRnz
+	 FcAueTLGw4RGHkoGMPgke1SdcPnMAxGsCOE83seRdtxzY8Mwx4B1lDXueHaafu30s8
+	 azAq9XkFMg8E8XMeraZTUHP4P6NuD7Svj4slMHiIWdfCi3VZ33YZBHV58TtNsYMFzG
+	 UOw1a6UD5gx4Q==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 83CA7F40066;
+	Mon, 19 Oct 2026 11:11:57 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Mon, 19 Oct 2026 11:11:57 -0400
+X-ME-Sender: <xms:PTPWapeOmsBnwwUL7qrLpFI7arNc1Cu1ST-sGo-e49qsi5jCmMB3CA>
+    <xme:PTPWaiA0rR4vwhUaqsSV2ZIVzINIAygntESl9KCWa2uspnme5a26Hk8zFaN1vhiTu
+    gPJmrxdUuUzBPMHqeNH3TQBEE5u_jNwHLPV95U8V_shv0w3aKCbETC5>
+X-ME-Proxy-Cause: dmFkZTEiFjWiUgOfIOMQ4EUMDdZLzvVgNNGnEgNHif7VXc9gPvezXknPkPZlst3zI6EuIC
+    hH61iiN8zp+X8xZLntXKBl5Ogl6RusltAHWU8VS4CbCGRthZP+zkKJCp8xynNLqCxDN+Qm
+    Olwbz5OEsbkmEMCHf619qD7bCR+iXTbyErrvuh0x9j6RLNPZt1OZP3XTEGVP6OVuF3Z4z3
+    5ciLOE8V3HgCwYvSXYUsYVWzl645p94HOqjV9xubvaK7NaLcBTcNSq9CokFuBjF4mIe8Ly
+    wloCm8bCCtk7CSNQvC8frMSC9tigY8VJkF/90vWYzIHi5xcDKUu82zQQ3CseLVIcmqEjWi
+    97gvaNg3IjnS+nbnAv4o4vCfRrX+LDa+C7xRGhp9RcHX8Zkgv4MP0AGQPREJJRSNW5vFj6
+    UjcWBzu+3FkL9d61iWTIoaDg5qDzpBqkgz4iStQ5lYnZeaveN3qVZyDWyydxaBNREO8rDQ
+    ZZhem6/95wwdNmsPv1mPXF/GhIzg7mCNzZXRSfErGMChor9pDxHs7IEDjHe0wfd1ihVVz/
+    5/LyiZeehxIXmr9/p47opxSTMZ/5i5AY+5DYHPot7tKd/UNv1w3XabvLAtBBv/tkVbyn1z
+    FojnVkwUn5ZbkionCj6JJV/Qp035oaOQP58CVFISXcPlrkhtZ/Ii4f59VDQg
+X-ME-Proxy: <xmx:PTPWatRp8Kp7eR8_IX2J7Ir9hAbvk1l3fx6DHuUfFRxmvoj-Tl9uyQ>
+    <xmx:PTPWajfTizz2ijEevews1SwqfS33IXbneEdQY8gEvwemJoDNBbjRnQ>
+    <xmx:PTPWams77km-I79pqW3zVj_iN49hfb_zeod_se1AvYCZwbbfnh3w3w>
+    <xmx:PTPWavJhO7JwRkR5S_KU-FXVkr1MQCW6Rt7Ezou1BcktDytPQfx7rg>
+    <xmx:PTPWaqZt1ysR_yHElxkgrhyFLGhlBzyvJTLvRdnkEjgEQoFb_qS1h8TX>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 638F5782738; Mon, 19 Oct 2026 11:11:57 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,142 +77,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atYuE1xnVYe0BDG4@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-ThreadId: AX_0bg9EglMV
+Date: Mon, 19 Oct 2026 11:11:37 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
+ shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Message-Id: <55df0a71-5ceb-49d8-9b7d-d9e584aec6a6@slotpi15m67>
+In-Reply-To: <179235137916.3135.16553916944020990232@kernel.org>
+References: <20261014-tls-follow-on-v5-5-e76c301d4f05@kernel.org>
+ <179235137916.3135.16553916944020990232@kernel.org>
+Subject: Re: [PATCH net-next v5 05/10] tls: Consume empty data records in
+ tls_sw_recvmsg()
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 10/19, Oleg Nesterov wrote:
->
-> But. rds_init() can also fail even if CONFIG_SYSCTL=y, after
-> rds_sysctl_init(), so to me this looks like a bug in net/rds/.
->
->
-> In any case, I guess net/rds/ init paths should not fail if
-> CONFIG_SYSCTL=n ?
+On Sun, Oct 18, 2026, at 3:23 PM, netdev-bot+sashiko@kernel.org wrote:
+> - [Low] The commit message gives a reason for the new MSG_EOR: "The new
+>   branch sets MSG_EOR itself, because the record no longer reaches the=
+=E2=80=A6
 
-So I think that something like the uncompiled/untested patch below makes
-sense anyway even if doesn't fix all the potential problems with rds_wq.
+v6 will note that a MSG_PEEK receive now reports MSG_EOR at an
+empty record where it did not before.
 
-What do you think?
 
-Oleg.
----
+> - [High] This problem wasn't introduced by this patch, but
+>   tls_sw_recvmsg() still has no limit on how many consecutive empty=E2=
+=80=A6
 
-diff --git a/net/rds/ib_sysctl.c b/net/rds/ib_sysctl.c
-index 2af678e71e3c..bccdb5c4df1d 100644
---- a/net/rds/ib_sysctl.c
-+++ b/net/rds/ib_sysctl.c
-@@ -36,19 +36,10 @@
- 
- #include "ib.h"
- 
--static struct ctl_table_header *rds_ib_sysctl_hdr;
--
- unsigned long rds_ib_sysctl_max_send_wr = RDS_IB_DEFAULT_SEND_WR;
- unsigned long rds_ib_sysctl_max_recv_wr = RDS_IB_DEFAULT_RECV_WR;
- unsigned long rds_ib_sysctl_max_recv_allocation = (128 * 1024 * 1024) / RDS_FRAG_SIZE;
--static unsigned long rds_ib_sysctl_max_wr_min = 1;
--/* hardware will fail CQ creation long before this */
--static unsigned long rds_ib_sysctl_max_wr_max = (u32)~0;
--
- unsigned long rds_ib_sysctl_max_unsig_wrs = 16;
--static unsigned long rds_ib_sysctl_max_unsig_wr_min = 1;
--static unsigned long rds_ib_sysctl_max_unsig_wr_max = 64;
--
- /*
-  * This sysctl does nothing.
-  *
-@@ -61,6 +52,14 @@ static unsigned long rds_ib_sysctl_max_unsig_wr_max = 64;
-  */
- unsigned int rds_ib_sysctl_flow_control = 0;
- 
-+#ifdef CONFIG_SYSCTL
-+static unsigned long rds_ib_sysctl_max_wr_min = 1;
-+/* hardware will fail CQ creation long before this */
-+static unsigned long rds_ib_sysctl_max_wr_max = (u32)~0;
-+
-+static unsigned long rds_ib_sysctl_max_unsig_wr_min = 1;
-+static unsigned long rds_ib_sysctl_max_unsig_wr_max = 64;
-+
- static struct ctl_table rds_ib_sysctl_table[] = {
- 	{
- 		.procname       = "max_send_wr",
-@@ -105,6 +104,8 @@ static struct ctl_table rds_ib_sysctl_table[] = {
- 	},
- };
- 
-+static struct ctl_table_header *rds_ib_sysctl_hdr;
-+
- void rds_ib_sysctl_exit(void)
- {
- 	if (rds_ib_sysctl_hdr)
-@@ -118,3 +119,15 @@ int rds_ib_sysctl_init(void)
- 		return -ENOMEM;
- 	return 0;
- }
-+
-+#else
-+
-+void rds_ib_sysctl_exit(void)
-+{
-+}
-+
-+int rds_ib_sysctl_init(void)
-+{
-+	return 0;
-+}
-+#endif
-diff --git a/net/rds/sysctl.c b/net/rds/sysctl.c
-index 025f518a4349..a0673a41633a 100644
---- a/net/rds/sysctl.c
-+++ b/net/rds/sysctl.c
-@@ -36,11 +36,6 @@
- 
- #include "rds.h"
- 
--static struct ctl_table_header *rds_sysctl_reg_table;
--
--static unsigned long rds_sysctl_reconnect_min = 1;
--static unsigned long rds_sysctl_reconnect_max = ~0UL;
--
- unsigned long rds_sysctl_reconnect_min_jiffies;
- unsigned long rds_sysctl_reconnect_max_jiffies = HZ;
- 
-@@ -49,6 +44,10 @@ unsigned int  rds_sysctl_max_unacked_bytes = (16 << 20);
- 
- unsigned int rds_sysctl_ping_enable = 1;
- 
-+#ifdef CONFIG_SYSCTL
-+static unsigned long rds_sysctl_reconnect_min = 1;
-+static unsigned long rds_sysctl_reconnect_max = ~0UL;
-+
- static struct ctl_table rds_sysctl_rds_table[] = {
- 	{
- 		.procname       = "reconnect_min_delay_ms",
-@@ -91,6 +90,8 @@ static struct ctl_table rds_sysctl_rds_table[] = {
- 	},
- };
- 
-+static struct ctl_table_header *rds_sysctl_reg_table;
-+
- void rds_sysctl_exit(void)
- {
- 	unregister_net_sysctl_table(rds_sysctl_reg_table);
-@@ -107,3 +108,15 @@ int rds_sysctl_init(void)
- 		return -ENOMEM;
- 	return 0;
- }
-+
-+#else
-+
-+void rds_sysctl_exit(void)
-+{
-+}
-+
-+int rds_sysctl_init(void)
-+{
-+	return 0;
-+}
-+#endif
+See my reply on patch 2. v6 keeps recvmsg() unbounded, and the
+description says so.
 
+
+> - [Medium] This problem wasn't introduced by this patch, but
+>   tls_sw_recvmsg() still returns 0 (read as EOF) when empty data recor=
+ds=E2=80=A6
+
+AFAICT, pre-existing. tls_record_content_type() latches the record
+type before the empty record is consumed, and the existing
+0data_0data_ctrl variant encodes the zero return. Changing that is
+out-of-scope for this series.
+
+
+--=20
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
