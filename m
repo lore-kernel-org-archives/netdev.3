@@ -1,98 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.22
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792437133;
-	b=1+zOY2kOVBkrEvKuJj0QWxA58wut4FCSyC5eo49sG9fIILrAVIY0inoaYqilElDDqBNB
-	 Hapa5r2pprXUE/qJzxoPolOVwSubMZYpjheqnWT3xlf+iDX4/hUt24NITaB2/GHBtcq0b
-	 Z+4HEJ2JUp1OLCHYeZi0fU+DzoG9kf8G8gkc60MI7B0i5IjxOiAGtW8MpgUHr9MfWNKhI
-	 EBmXtUTjmI3kejoV98DiK3qiYxSlTwrm+iGuqRsvbw4DBtjO7RkilL5igA8JvrEmtT/QN
-	 jpjrebDi1A1PgE5kABIwSd8z/eGWLvV7AQGKU6J/kcWJWSOTSyeKCO/BoKaBdHcpUgA==
+	t=1792437499;
+	b=BSeFFyTrji+nOYgrLjxIEffWNdREmnyGdt+jQScayA8W46MQUkPzr3iTP1xVTv5tGiut
+	 pwgwe68NbB/2PGdlv6H4tXkrIq5+UxPucqPIeDufsN3p5vSeOLHw6GO6mHkvPtCGOvfHM
+	 tEZA5hVXB0C7n5WJtqx2tfbUv8TsXQdpg5oBO9hnJpvbeRDXfG/YM9xxVsOvloGPE4UfI
+	 n0LXpCbDZCCwifeb8qimB1hBZjYgs/KZ7ejufST1nFXsW7xdUQ/nT21xZyzuo8x+yHQUc
+	 S+EIuu+SJ2+t6T2FpkZw9HEhY4kYqr9hd5VNgm/KvEtPwD9PJmZ+eWa+MW1nLCTQS7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792437133;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=gzfQZI1rm2VZmF1YeeoE1Ewgr47lTIJKShyG8VxE1jA=;
-	b=cZxh2GwChLcA1TC6dV9vCEP4Zf50MCnTpqGfK0KHrGtu3iXqn2KmEIlznz464p4+RPZ1
-	 W8H7uSUCWT3A24qA2M3pg21p0Ou/vE27hNAJt/eMVMZOEqVKtKasJrfsrHoUTdSrxSyFi
-	 agIUJWvY1jhDIPdeQctPei0cil9t+6Rw8mJUb+8IMsDGaGhz6B0HRFO+BGRLTcfA7OsjT
-	 ePokP6BOc4y8SeyV/osYVcX2gIK5qjFiuMM0eymyuOTPSBDCHYdEC9GNFk2PkAsHN0xpK
-	 ONiYGI6+W/nhjy/zQvXCh0eSpTZx9ZtOrMqO47oCvSL+YVLLEmo9H/6sFUjqD34n5vQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792437499;
+	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Content-Language:From:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding:X-Provags-ID:X-Spam-Flag:
+	 UI-OutboundReport;
+	bh=BUTIn5r4eoMH2MaHTZixGcFVAOua3PtHQ2DlH/jQniI=;
+	b=HDoKZN0y5cfCZcsQHgPhil/5Tf1FnJATt4YGF9Nv/x6jVM7bcD5OVMrxWsMYItHbB2Z8
+	 n2ZC0mgTBDIkoxva+dOhaGyIWCAePLhdSYQ8ecMPn6GZje0+jyxR6Ikcx+W/3MxLZxBPH
+	 XrFO1G6JouFku5KvUU132Zi3CKArlu5KQfBLPzvmQxZHyYaDdJmtpXb8rbPf+CKcV/2uF
+	 zDds90ain3Hdhupaf/r28BuotyV2IsIAwt74wHDtO8TlbEr078KWwSu1wB/6MnxIWoU6e
+	 cKhhiO1Ha+ldMYdXrOoeChA7n5I5mo1UeAuBzyUOjenu3y05VVKJiyTLH8tItGZDQhw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SjwIpUaD;
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmx.com;
+	spf=pass smtp.mailfrom=gmx.com;
+	dkim=pass header.d=gmx.com header.i=krause.markus@gmx.com header.a=rsa-sha256 header.s=s31663417 header.b=QkLLiFGg;
+	arc=none smtp.remote-ip=212.227.17.22
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B13D606A31A
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 19:12:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B13D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F64A606A31E;
+	Mon, 19 Oct 2026 19:18:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F64A606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SjwIpUaD
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a19cba5c14so25914895e9.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 12:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792437131; x=1793041931; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gzfQZI1rm2VZmF1YeeoE1Ewgr47lTIJKShyG8VxE1jA=;
-        b=SjwIpUaDG5WIxCUoTVhvxb20fpXwUf8ZyR4eA9Z6gdpLWdK5bMhG7ehfmlpa1MD9vU
-         1vEbsObBPiz7lBSUckmGQ+NhkSZqJE8i1iEw1KbdCGVgfNV3Wf63IS5hPB2/xNvAhLAH
-         tFkI0uTkVnWwtRHkbmGzRrRjL+nmDhBICPPPXjfSl5f5maEYLiPI4uBMbMVS+6GpVmKE
-         3usM8sI/atbXVJ1peTyPNg2ZLOaNzUw/2ZsDXGJmsafVMhAKm0r9rH/7wG8+9+LBB+/9
-         L4Oc4z+SscmSiPBEPflhgX9XEYmZSbzqUqpGUn7u9oiVxD2+4YxFWIkP5OdjQoxPISTr
-         JQKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792437131; x=1793041931;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gzfQZI1rm2VZmF1YeeoE1Ewgr47lTIJKShyG8VxE1jA=;
-        b=gCKYSNNWfGvKfJHupto9+/RVKloEK/PulGcWZlWKoFSAMaK/sjhTLVxy4pXlKyn7F6
-         42269wwIEyC3mPiPM4Oi3+W77ubtbR7cA9FOqosPkDM7w74UjK7/kfAYfBCACvduepYv
-         TIOLIXMi2qnsSSAbylT1CQYZBERLWFFcEnqup2hpta0WbQ3fwxo29e4DLJcerEP3hvX0
-         bRJwn3h3g8QS3dSFkNAfFnzcuN0PseZT5aceJE/C53U0M5NEo5hqqldkyYAH0ftWCLoN
-         sLaGhxn0M34Wu9ojUrZwYk3bASmroEQADn3ugDHbT7sWMEi7DMdsJBE0RCpgMvEJkNhx
-         xAfA==
-X-Forwarded-Encrypted: i=1; AKwUvByzk3xbt9jb4H5CT6d7LT3Dmxh8ZASW47nW7MgW0PW/YQpBRVkAUOez5SeEN7pZ5iebvqnV2/M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLMWQ+3YMrCo1Kz/oASGzfqWlmN5W153JJg/ngxqY2PnzepX7RL
-	gy9mckmFFaxiAIXPwCtuUl/X2h6ZgP/iGLV2lTFTKEIDZmARyJurATTN
-X-Gm-Gg: AYBFou0gR5gAKeWaQgheJwRRmBaZkbxH1gpayL5BZAx/PEXTQAzrdxj28wmFHwzbWXD
-	WDjVBDyIE19MOxpYoRaMWfTd1C2iKFEc3W1kd9ZWj8v3pkSH3KUoOIft9SI+yhlIa9/yH5UiwMJ
-	EIMyVX3ZRsPAIwA5d41DPb+4PfQOE1uYeuVonwPqgmHboCX/AaevvwVYrPwJPg6AQ2B37mqeB9i
-	GhvJWrFJM/vKhJFmk5sH1a2cAMvUjIaJq0bYqstPigHHlkrE6jF+zjLeDb6LQ0nU8WhsIlO2RSx
-	nFNNxUGoiwCmSwjMl9vzpVmrehF/CW1aUzfEWSv2G4XtZdtmGMvKkcOnlsqx2vUmceZbO2l9qZJ
-	1fGX6Nqvak9geCHbhMZK7dI6k56lnI36GB+ZYanmecG5IbkU2XQMvSx5HOiBBwMc+rreG59ajTa
-	V6HNjYez5nfzjTitAEOJz5G3ojBHiWzJME4AtMtaImSCGJqdiehJjcVy9HBorSQqrKlc4TTuMNU
-	NT3bFuPi24ZjsUI1Ytc
-X-Received: by 2002:a05:600c:19c6:b0:4a1:e01e:1927 with SMTP id 5b1f17b1804b1-4a1e01e1f69mr131227305e9.5.1792437131087;
-        Mon, 19 Oct 2026 12:12:11 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan ([2a00:f44:cd2:abb8:fed9:8342:c367:f022])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d818c89sm804977f8f.32.2026.10.19.12.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 12:12:10 -0700 (PDT)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 2/2] net: dsa: qca8k: report port statistics from the MIB
-Date: Mon, 19 Oct 2026 21:11:37 +0200
-Message-ID: <20261019191137.307514-3-kuncy7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261019191137.307514-1-kuncy7@gmail.com>
-References: <20261019191137.307514-1-kuncy7@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmx.com header.i=krause.markus@gmx.com header.a=rsa-sha256 header.s=s31663417 header.b=QkLLiFGg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1792437491; x=1793042291; i=krause.markus@gmx.com;
+	bh=BUTIn5r4eoMH2MaHTZixGcFVAOua3PtHQ2DlH/jQniI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=QkLLiFGgYQkEFA+Dprv7fwymTwAsTnUPmxQQbIYPw91J5wuNIoBtrpWACP8P/NJT
+	 alngMnmwOfRiCYDQH77K22DaKnysxZ+q//yi51REE3XU7BtqDPF8TDxxalRN2FiP7
+	 KMNYeFexApDragkI4Ids9WNUXT9xhy83mSQQwaeI0oAnPdNRPvGjaZ3QLZE4Cez9v
+	 bGklZyUfWpSPXMGxVqHgYWXJtrtPasqd+6f1YjezuQN2V731bG3lUV/d8zF8r5ilM
+	 FDBsKbEPoffxSVYKsJIQb3K67jxOwBESSaNbaR8Iil0v2EL/x5YUCYe2su2ESyfDR
+	 mlV4ZhGoiclO+7ydSQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MBUqF-1xSSqa2eAp-004nzs; Mon, 19
+ Oct 2026 21:18:11 +0200
+Message-ID: <eec6c986-3d59-4471-a867-9cf77db1fc27@gmx.com>
+Date: Mon, 19 Oct 2026 21:18:09 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,647 +62,192 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Markus Krause <krause.markus@gmx.com>
+Subject: [RFC] staging: octeon: upstream suitability of CN50xx forwarding
+ acceleration
+To: linux-staging@lists.linux.dev, netdev@vger.kernel.org
+Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org,
+ andrew+netdev@lunn.ch, gregkh@linuxfoundation.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8NS51a3XuiDrZr3MC/dLvFD1A0qghRSSRzKDM74H5fUglKjo2aS
+ eShw4vOSQt1EOmW8d/wNau2wbCN+4nGLZeFq6NnD1pwfb5jLgZXpA192IAOOVVC81xLLoxB
+ AAfeWNnrSQBekAWW3tV2gWLmf0EGzqE2TbUfBIVaE83rY0i7ohg7Bj/nxsHPXfNPzGiQmGd
+ eB7KEbKmJuPOqO4TNLMxA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:XwvMDXifAJQ=;z/AVZaJdmmyP5tTlOXkj5GGHIlf
+ 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
+ GI4j88HQ==
 
-qca8k has no .get_stats64, so a user port's netdev counts only the
-frames that cross the CPU port, through the DSA user netdev's own
-tstats. Whatever the switch forwards between its own ports in a
-hardware-offloaded bridge never reaches the CPU and never shows up in
-the counters of either port. The same goes for a conduit that forwards
-in hardware past the host: on a GL.iNet GL-B3000 (IPQ5018 with a
-QCA8337 on SGMII) with the conduit offloaded, a 482 MB upload over the
-WAN port moved the wan netdev's TX bytes by 0.74 MB, while the switch's
-own TxByte counter for that port grew by 503 MB.
+Hello all,
 
-The switch counts every frame in its per-port MIB. .get_stats64 may be
-called in atomic context, so a delayed work reads the MIB every 3 s and
-.get_stats64 hands out the cached result, as ar9331 and rtl8365mb do.
+I have worked on and privately tested packet forwarding acceleration for=
+=20
+the Cavium Octeon CN5020 SoC
+used in the Ubiquiti UniFi USG-3P and EdgeRouter Lite. The changes
+are currently submitted for OpenWRT review, where I was asked to probe=20
+the prospects
+of this being upstreamed into the Kernel.
+I was sceptical as this is essentially a discontinued SoC - but there=20
+are many devices
+with it out there and I felt this work might be useful to the community=20
+considering
+Unifi is dropping their controller support for them and otherwise they=20
+become e-waste.
 
-With the Ethernet management path up, one autocast request returns the
-MIB of every port: the autocast handler gets a mode that keeps one row
-per port instead of only the port that was asked for. Otherwise the
-work falls back to register reads, with the loop split out of
-qca8k_get_ethtool_stats(), only for the ports that have link, and with
-the high word of a 64-bit counter read around the low one.
+Main motivation is that without this hw offloading, achieving actual=20
+Gigabit line rate is impossible on these devices.
 
-The counters keep their value across reads (QCA8K_MIB_CPU_KEEP); only
-the difference since the previous read is added, so a 32-bit counter
-wrapping between two reads does not corrupt the total, and a 64-bit
-sample below the previous one is dropped as a bad read. The byte
-counters include the FCS, as the size buckets do, so ETH_FCS_LEN per
-frame comes off. If the MIB failed to come up, the user port keeps its
-own tstats. The work stops on teardown, shutdown and suspend.
+Before preparing an upstream patch series, I would appreciate
+guidance on whether the approach is suitable for the Linux Kernel and whic=
+h
+tree and review process should be used. (I have - ZERO - Kernel contributi=
+on
+experience and hence I am a bit intimidated by this^^)
 
-An index enum for ar8327_mib[] lets the stats code name the counters it
-uses.
+The routed path integrates with Netfilter hardware flowtable
+callbacks. It caches established TCP/UDP flows and performs the
+required header rewrites in the Octeon driver's receive path,
+reusing the receive buffer and existing hardware PKO transmit path.
 
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Stanislaw Pal <kuncy7@gmail.com>
----
- drivers/net/dsa/qca/qca8k-8xxx.c   | 186 +++++++++++++++++++++++++++--
- drivers/net/dsa/qca/qca8k-common.c | 137 ++++++++++++---------
- drivers/net/dsa/qca/qca8k.h        |  72 ++++++++++-
- 3 files changed, 327 insertions(+), 68 deletions(-)
+The CN5020 has no autonomous NAT engine: lookup and rewriting still
+run on the CPU. The implementation supports IPv4/IPv6, NAT, PPPoE
+and a single VLAN tag, with unsupported packets falling back to
+the normal stack. This should cover the most critical use-cases,
+especially also PPPoE with encapsulated VLAN which is something used
+by many ISPs (e.g. famously Telekom with VLAN7 for DSL).
 
-diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-index 9a8b9e34a..c95df2989 100644
---- a/drivers/net/dsa/qca/qca8k-8xxx.c
-+++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-@@ -1450,6 +1450,7 @@ qca8k_phylink_mac_link_down(struct phylink_config *config, unsigned int mode,
- 	struct dsa_port *dp = dsa_phylink_to_port(config);
- 	struct qca8k_priv *priv = dp->ds->priv;
- 
-+	clear_bit(dp->index, &priv->mib_stats.link_map);
- 	qca8k_port_set_status(priv, dp->index, 0);
- }
- 
-@@ -1495,6 +1496,7 @@ qca8k_phylink_mac_link_up(struct phylink_config *config,
- 	reg |= QCA8K_PORT_STATUS_TXMAC | QCA8K_PORT_STATUS_RXMAC;
- 
- 	qca8k_write(priv, QCA8K_REG_PORT_STATUS(port), reg);
-+	set_bit(port, &priv->mib_stats.link_map);
- }
- 
- static struct qca8k_pcs *pcs_to_qca8k_pcs(struct phylink_pcs *pcs)
-@@ -1669,17 +1671,23 @@ static void qca8k_mib_autocast_handler(struct dsa_switch *ds, struct sk_buff *sk
- 	const struct qca8k_mib_desc *mib;
- 	struct mib_ethhdr *mib_ethhdr;
- 	__le32 *data2;
-+	u64 *data;
- 	u8 port;
- 	int i;
- 
- 	mib_ethhdr = (struct mib_ethhdr *)skb_mac_header(skb);
- 	mib_eth_data = &priv->mib_eth_data;
- 
--	/* The switch autocast every port. Ignore other packet and
--	 * parse only the requested one.
-+	/* The switch autocast every port. Parse only the requested one, or
-+	 * every port into its own row for QCA8K_MIB_ALL_PORTS.
- 	 */
- 	port = FIELD_GET(QCA_HDR_RECV_SOURCE_PORT, ntohs(mib_ethhdr->hdr));
--	if (port != mib_eth_data->req_port)
-+	if (mib_eth_data->req_port == QCA8K_MIB_ALL_PORTS &&
-+	    port < QCA8K_NUM_PORTS)
-+		data = mib_eth_data->data + port * QCA8K_QCA833X_MIB_COUNT;
-+	else if (port == mib_eth_data->req_port)
-+		data = mib_eth_data->data;
-+	else
- 		goto exit;
- 
- 	data2 = (__le32 *)skb->data;
-@@ -1689,15 +1697,15 @@ static void qca8k_mib_autocast_handler(struct dsa_switch *ds, struct sk_buff *sk
- 
- 		/* First 3 mib are present in the skb head */
- 		if (i < 3) {
--			mib_eth_data->data[i] = get_unaligned_le32(mib_ethhdr->data + i);
-+			data[i] = get_unaligned_le32(mib_ethhdr->data + i);
- 			continue;
- 		}
- 
- 		/* Some mib are 64 bit wide */
- 		if (mib->size == 2)
--			mib_eth_data->data[i] = get_unaligned_le64((__le64 *)data2);
-+			data[i] = get_unaligned_le64((__le64 *)data2);
- 		else
--			mib_eth_data->data[i] = get_unaligned_le32(data2);
-+			data[i] = get_unaligned_le32(data2);
- 
- 		data2 += mib->size;
- 	}
-@@ -1708,12 +1716,9 @@ static void qca8k_mib_autocast_handler(struct dsa_switch *ds, struct sk_buff *sk
- 		complete(&mib_eth_data->rw_done);
- }
- 
--static int
--qca8k_get_ethtool_stats_eth(struct dsa_switch *ds, int port, u64 *data)
-+static int qca8k_mib_autocast(struct qca8k_priv *priv, u8 req_port, u64 *data)
- {
--	struct dsa_port *dp = dsa_to_port(ds, port);
- 	struct qca8k_mib_eth_data *mib_eth_data;
--	struct qca8k_priv *priv = ds->priv;
- 	int ret;
- 
- 	mib_eth_data = &priv->mib_eth_data;
-@@ -1722,7 +1727,7 @@ qca8k_get_ethtool_stats_eth(struct dsa_switch *ds, int port, u64 *data)
- 
- 	reinit_completion(&mib_eth_data->rw_done);
- 
--	mib_eth_data->req_port = dp->index;
-+	mib_eth_data->req_port = req_port;
- 	mib_eth_data->data = data;
- 	refcount_set(&mib_eth_data->port_parsed, QCA8K_NUM_PORTS);
- 
-@@ -1747,6 +1752,14 @@ qca8k_get_ethtool_stats_eth(struct dsa_switch *ds, int port, u64 *data)
- 	return ret;
- }
- 
-+static int
-+qca8k_get_ethtool_stats_eth(struct dsa_switch *ds, int port, u64 *data)
-+{
-+	struct dsa_port *dp = dsa_to_port(ds, port);
-+
-+	return qca8k_mib_autocast(ds->priv, dp->index, data);
-+}
-+
- static u32 qca8k_get_phy_flags(struct dsa_switch *ds, int port)
- {
- 	struct qca8k_priv *priv = ds->priv;
-@@ -1853,6 +1866,141 @@ static void qca8k_setup_hol_fixup(struct qca8k_priv *priv, int port)
- 			   mask);
- }
- 
-+static u64 qca8k_mib_delta(struct qca8k_priv *priv, int port, int i)
-+{
-+	struct qca8k_mib_stats *ms = &priv->mib_stats;
-+	u64 now = ms->raw[port][i];
-+	u64 last = ms->last[port][i];
-+
-+	/* A 32-bit counter may wrap between two reads. A 64-bit one does
-+	 * not, and nothing flushes the MIB after setup: a sample below the
-+	 * previous one is a bad read, keep the previous one.
-+	 */
-+	if (ar8327_mib[i].size == 2 && now < last)
-+		return 0;
-+
-+	ms->last[port][i] = now;
-+
-+	if (ar8327_mib[i].size == 1)
-+		return (u32)(now - last);
-+
-+	return now - last;
-+}
-+
-+/* The byte counters include the FCS, as the size buckets do */
-+static u64 qca8k_mib_bytes(u64 bytes, u64 packets)
-+{
-+	u64 fcs = packets * ETH_FCS_LEN;
-+
-+	/* bytes is 0 when its sample was dropped as a bad read */
-+	return bytes > fcs ? bytes - fcs : 0;
-+}
-+
-+static void qca8k_mib_stats_update(struct qca8k_priv *priv, int port)
-+{
-+	struct qca8k_mib_stats *ms = &priv->mib_stats;
-+	struct rtnl_link_stats64 *s = &ms->stats[port];
-+	u64 d[QCA8K_QCA833X_MIB_COUNT];
-+	u64 rx_packets, tx_packets;
-+	int i;
-+
-+	for (i = 0; i < priv->info->mib_count; i++)
-+		d[i] = qca8k_mib_delta(priv, port, i);
-+
-+	rx_packets = d[QCA8K_MIB_RX_64] + d[QCA8K_MIB_RX_128] +
-+		     d[QCA8K_MIB_RX_256] + d[QCA8K_MIB_RX_512] +
-+		     d[QCA8K_MIB_RX_1024] + d[QCA8K_MIB_RX_1518] +
-+		     d[QCA8K_MIB_RX_MAX];
-+	tx_packets = d[QCA8K_MIB_TX_64] + d[QCA8K_MIB_TX_128] +
-+		     d[QCA8K_MIB_TX_256] + d[QCA8K_MIB_TX_512] +
-+		     d[QCA8K_MIB_TX_1024] + d[QCA8K_MIB_TX_1518] +
-+		     d[QCA8K_MIB_TX_MAX];
-+
-+	spin_lock_bh(&ms->lock);
-+
-+	s->rx_bytes += qca8k_mib_bytes(d[QCA8K_MIB_RX_GOOD_BYTE], rx_packets);
-+	s->tx_bytes += qca8k_mib_bytes(d[QCA8K_MIB_TX_BYTE], tx_packets);
-+	s->rx_packets += rx_packets;
-+	s->tx_packets += tx_packets;
-+	s->multicast += d[QCA8K_MIB_RX_MULTI];
-+	s->rx_length_errors += d[QCA8K_MIB_RX_RUNT] +
-+			       d[QCA8K_MIB_RX_FRAGMENT] +
-+			       d[QCA8K_MIB_RX_TOO_LONG];
-+	s->rx_crc_errors += d[QCA8K_MIB_RX_FCS_ERR];
-+	s->rx_frame_errors += d[QCA8K_MIB_RX_ALIGN_ERR];
-+	s->rx_missed_errors += d[QCA8K_MIB_RX_OVERFLOW];
-+	s->rx_dropped += d[QCA8K_MIB_FILTERED];
-+	s->rx_errors += d[QCA8K_MIB_RX_FCS_ERR] + d[QCA8K_MIB_RX_ALIGN_ERR] +
-+			d[QCA8K_MIB_RX_RUNT] + d[QCA8K_MIB_RX_FRAGMENT] +
-+			d[QCA8K_MIB_RX_OVERFLOW] + d[QCA8K_MIB_RX_TOO_LONG];
-+	s->tx_fifo_errors += d[QCA8K_MIB_TX_UNDERRUN];
-+	s->tx_aborted_errors += d[QCA8K_MIB_TX_ABORT_COL];
-+	s->tx_window_errors += d[QCA8K_MIB_TX_LATE_COL];
-+	s->tx_errors += d[QCA8K_MIB_TX_OVERSIZE] + d[QCA8K_MIB_TX_ABORT_COL] +
-+			d[QCA8K_MIB_TX_UNDERRUN] + d[QCA8K_MIB_TX_LATE_COL];
-+	s->collisions += d[QCA8K_MIB_TX_COLLISION];
-+
-+	spin_unlock_bh(&ms->lock);
-+}
-+
-+static void qca8k_mib_stats_poll(struct work_struct *work)
-+{
-+	struct qca8k_priv *priv = container_of(work, struct qca8k_priv,
-+					       mib_stats.work.work);
-+	struct qca8k_mib_stats *ms = &priv->mib_stats;
-+	bool autocast = false;
-+	struct dsa_port *dp;
-+	int port;
-+
-+	/* One autocast request returns the MIB of every port */
-+	if (priv->mgmt_conduit)
-+		autocast = qca8k_mib_autocast(priv, QCA8K_MIB_ALL_PORTS,
-+					      &ms->raw[0][0]) > 0;
-+
-+	dsa_switch_for_each_user_port(dp, priv->ds) {
-+		port = dp->index;
-+
-+		if (!autocast) {
-+			/* Register reads are slow, skip ports without link.
-+			 * Their counters keep their value, so the next read
-+			 * still adds everything since the previous one.
-+			 */
-+			if (!test_bit(port, &ms->link_map))
-+				continue;
-+			if (qca8k_mib_read(priv, port, ms->raw[port]))
-+				continue;
-+		}
-+
-+		qca8k_mib_stats_update(priv, port);
-+	}
-+
-+	schedule_delayed_work(&ms->work, QCA8K_MIB_STATS_INTERVAL);
-+}
-+
-+static void qca8k_get_stats64(struct dsa_switch *ds, int port,
-+			      struct rtnl_link_stats64 *s)
-+{
-+	struct qca8k_priv *priv = ds->priv;
-+	struct qca8k_mib_stats *ms = &priv->mib_stats;
-+
-+	/* Without the MIB keep what the user port counts itself */
-+	if (!ms->enabled) {
-+		dev_get_tstats64(dsa_to_port(ds, port)->user, s);
-+		return;
-+	}
-+
-+	spin_lock_bh(&ms->lock);
-+	*s = ms->stats[port];
-+	spin_unlock_bh(&ms->lock);
-+}
-+
-+static void qca8k_teardown(struct dsa_switch *ds)
-+{
-+	struct qca8k_priv *priv = ds->priv;
-+
-+	cancel_delayed_work_sync(&priv->mib_stats.work);
-+}
-+
- static int
- qca8k_setup(struct dsa_switch *ds)
- {
-@@ -1911,6 +2059,7 @@ qca8k_setup(struct dsa_switch *ds)
- 	ret = qca8k_mib_init(priv);
- 	if (ret)
- 		dev_warn(priv->dev, "mib init failed");
-+	priv->mib_stats.enabled = !ret;
- 
- 	/* Initial setup of all ports */
- 	dsa_switch_for_each_port(dp, ds) {
-@@ -2022,6 +2171,10 @@ qca8k_setup(struct dsa_switch *ds)
- 	/* Set max number of LAGs supported */
- 	ds->num_lag_ids = QCA8K_NUM_LAGS;
- 
-+	if (priv->mib_stats.enabled)
-+		schedule_delayed_work(&priv->mib_stats.work,
-+				      QCA8K_MIB_STATS_INTERVAL);
-+
- 	return 0;
- }
- 
-@@ -2035,9 +2188,11 @@ static const struct phylink_mac_ops qca8k_phylink_mac_ops = {
- static const struct dsa_switch_ops qca8k_switch_ops = {
- 	.get_tag_protocol	= qca8k_get_tag_protocol,
- 	.setup			= qca8k_setup,
-+	.teardown		= qca8k_teardown,
- 	.get_strings		= qca8k_get_strings,
- 	.get_ethtool_stats	= qca8k_get_ethtool_stats,
- 	.get_sset_count		= qca8k_get_sset_count,
-+	.get_stats64		= qca8k_get_stats64,
- 	.set_ageing_time	= qca8k_set_ageing_time,
- 	.support_eee		= dsa_supports_eee,
- 	.set_mac_eee		= qca8k_set_mac_eee,
-@@ -2124,6 +2279,9 @@ qca8k_sw_probe(struct mdio_device *mdiodev)
- 	mutex_init(&priv->mib_eth_data.mutex);
- 	init_completion(&priv->mib_eth_data.rw_done);
- 
-+	spin_lock_init(&priv->mib_stats.lock);
-+	INIT_DELAYED_WORK(&priv->mib_stats.work, qca8k_mib_stats_poll);
-+
- 	priv->ds->dev = &mdiodev->dev;
- 	priv->ds->num_ports = QCA8K_NUM_PORTS;
- 	priv->ds->priv = priv;
-@@ -2157,6 +2315,8 @@ static void qca8k_sw_shutdown(struct mdio_device *mdiodev)
- 	if (!priv)
- 		return;
- 
-+	/* .teardown does not run on this path */
-+	cancel_delayed_work_sync(&priv->mib_stats.work);
- 	dsa_switch_shutdown(priv->ds);
- 
- 	dev_set_drvdata(&mdiodev->dev, NULL);
-@@ -2183,6 +2343,7 @@ static int qca8k_suspend(struct device *dev)
- {
- 	struct qca8k_priv *priv = dev_get_drvdata(dev);
- 
-+	cancel_delayed_work_sync(&priv->mib_stats.work);
- 	qca8k_set_pm(priv, 0);
- 
- 	return dsa_switch_suspend(priv->ds);
-@@ -2193,6 +2354,9 @@ static int qca8k_resume(struct device *dev)
- 	struct qca8k_priv *priv = dev_get_drvdata(dev);
- 
- 	qca8k_set_pm(priv, 1);
-+	if (priv->mib_stats.enabled)
-+		schedule_delayed_work(&priv->mib_stats.work,
-+				      QCA8K_MIB_STATS_INTERVAL);
- 
- 	return dsa_switch_resume(priv->ds);
- }
-diff --git a/drivers/net/dsa/qca/qca8k-common.c b/drivers/net/dsa/qca/qca8k-common.c
-index ab978cc83..232367892 100644
---- a/drivers/net/dsa/qca/qca8k-common.c
-+++ b/drivers/net/dsa/qca/qca8k-common.c
-@@ -20,49 +20,51 @@
- 	}
- 
- const struct qca8k_mib_desc ar8327_mib[] = {
--	MIB_DESC(1, 0x00, "RxBroad"),
--	MIB_DESC(1, 0x04, "RxPause"),
--	MIB_DESC(1, 0x08, "RxMulti"),
--	MIB_DESC(1, 0x0c, "RxFcsErr"),
--	MIB_DESC(1, 0x10, "RxAlignErr"),
--	MIB_DESC(1, 0x14, "RxRunt"),
--	MIB_DESC(1, 0x18, "RxFragment"),
--	MIB_DESC(1, 0x1c, "Rx64Byte"),
--	MIB_DESC(1, 0x20, "Rx128Byte"),
--	MIB_DESC(1, 0x24, "Rx256Byte"),
--	MIB_DESC(1, 0x28, "Rx512Byte"),
--	MIB_DESC(1, 0x2c, "Rx1024Byte"),
--	MIB_DESC(1, 0x30, "Rx1518Byte"),
--	MIB_DESC(1, 0x34, "RxMaxByte"),
--	MIB_DESC(1, 0x38, "RxTooLong"),
--	MIB_DESC(2, 0x3c, "RxGoodByte"),
--	MIB_DESC(2, 0x44, "RxBadByte"),
--	MIB_DESC(1, 0x4c, "RxOverFlow"),
--	MIB_DESC(1, 0x50, "Filtered"),
--	MIB_DESC(1, 0x54, "TxBroad"),
--	MIB_DESC(1, 0x58, "TxPause"),
--	MIB_DESC(1, 0x5c, "TxMulti"),
--	MIB_DESC(1, 0x60, "TxUnderRun"),
--	MIB_DESC(1, 0x64, "Tx64Byte"),
--	MIB_DESC(1, 0x68, "Tx128Byte"),
--	MIB_DESC(1, 0x6c, "Tx256Byte"),
--	MIB_DESC(1, 0x70, "Tx512Byte"),
--	MIB_DESC(1, 0x74, "Tx1024Byte"),
--	MIB_DESC(1, 0x78, "Tx1518Byte"),
--	MIB_DESC(1, 0x7c, "TxMaxByte"),
--	MIB_DESC(1, 0x80, "TxOverSize"),
--	MIB_DESC(2, 0x84, "TxByte"),
--	MIB_DESC(1, 0x8c, "TxCollision"),
--	MIB_DESC(1, 0x90, "TxAbortCol"),
--	MIB_DESC(1, 0x94, "TxMultiCol"),
--	MIB_DESC(1, 0x98, "TxSingleCol"),
--	MIB_DESC(1, 0x9c, "TxExcDefer"),
--	MIB_DESC(1, 0xa0, "TxDefer"),
--	MIB_DESC(1, 0xa4, "TxLateCol"),
--	MIB_DESC(1, 0xa8, "RXUnicast"),
--	MIB_DESC(1, 0xac, "TXUnicast"),
-+	[QCA8K_MIB_RX_BROAD]		= MIB_DESC(1, 0x00, "RxBroad"),
-+	[QCA8K_MIB_RX_PAUSE]		= MIB_DESC(1, 0x04, "RxPause"),
-+	[QCA8K_MIB_RX_MULTI]		= MIB_DESC(1, 0x08, "RxMulti"),
-+	[QCA8K_MIB_RX_FCS_ERR]		= MIB_DESC(1, 0x0c, "RxFcsErr"),
-+	[QCA8K_MIB_RX_ALIGN_ERR]	= MIB_DESC(1, 0x10, "RxAlignErr"),
-+	[QCA8K_MIB_RX_RUNT]		= MIB_DESC(1, 0x14, "RxRunt"),
-+	[QCA8K_MIB_RX_FRAGMENT]		= MIB_DESC(1, 0x18, "RxFragment"),
-+	[QCA8K_MIB_RX_64]		= MIB_DESC(1, 0x1c, "Rx64Byte"),
-+	[QCA8K_MIB_RX_128]		= MIB_DESC(1, 0x20, "Rx128Byte"),
-+	[QCA8K_MIB_RX_256]		= MIB_DESC(1, 0x24, "Rx256Byte"),
-+	[QCA8K_MIB_RX_512]		= MIB_DESC(1, 0x28, "Rx512Byte"),
-+	[QCA8K_MIB_RX_1024]		= MIB_DESC(1, 0x2c, "Rx1024Byte"),
-+	[QCA8K_MIB_RX_1518]		= MIB_DESC(1, 0x30, "Rx1518Byte"),
-+	[QCA8K_MIB_RX_MAX]		= MIB_DESC(1, 0x34, "RxMaxByte"),
-+	[QCA8K_MIB_RX_TOO_LONG]		= MIB_DESC(1, 0x38, "RxTooLong"),
-+	[QCA8K_MIB_RX_GOOD_BYTE]	= MIB_DESC(2, 0x3c, "RxGoodByte"),
-+	[QCA8K_MIB_RX_BAD_BYTE]		= MIB_DESC(2, 0x44, "RxBadByte"),
-+	[QCA8K_MIB_RX_OVERFLOW]		= MIB_DESC(1, 0x4c, "RxOverFlow"),
-+	[QCA8K_MIB_FILTERED]		= MIB_DESC(1, 0x50, "Filtered"),
-+	[QCA8K_MIB_TX_BROAD]		= MIB_DESC(1, 0x54, "TxBroad"),
-+	[QCA8K_MIB_TX_PAUSE]		= MIB_DESC(1, 0x58, "TxPause"),
-+	[QCA8K_MIB_TX_MULTI]		= MIB_DESC(1, 0x5c, "TxMulti"),
-+	[QCA8K_MIB_TX_UNDERRUN]		= MIB_DESC(1, 0x60, "TxUnderRun"),
-+	[QCA8K_MIB_TX_64]		= MIB_DESC(1, 0x64, "Tx64Byte"),
-+	[QCA8K_MIB_TX_128]		= MIB_DESC(1, 0x68, "Tx128Byte"),
-+	[QCA8K_MIB_TX_256]		= MIB_DESC(1, 0x6c, "Tx256Byte"),
-+	[QCA8K_MIB_TX_512]		= MIB_DESC(1, 0x70, "Tx512Byte"),
-+	[QCA8K_MIB_TX_1024]		= MIB_DESC(1, 0x74, "Tx1024Byte"),
-+	[QCA8K_MIB_TX_1518]		= MIB_DESC(1, 0x78, "Tx1518Byte"),
-+	[QCA8K_MIB_TX_MAX]		= MIB_DESC(1, 0x7c, "TxMaxByte"),
-+	[QCA8K_MIB_TX_OVERSIZE]		= MIB_DESC(1, 0x80, "TxOverSize"),
-+	[QCA8K_MIB_TX_BYTE]		= MIB_DESC(2, 0x84, "TxByte"),
-+	[QCA8K_MIB_TX_COLLISION]	= MIB_DESC(1, 0x8c, "TxCollision"),
-+	[QCA8K_MIB_TX_ABORT_COL]	= MIB_DESC(1, 0x90, "TxAbortCol"),
-+	[QCA8K_MIB_TX_MULTI_COL]	= MIB_DESC(1, 0x94, "TxMultiCol"),
-+	[QCA8K_MIB_TX_SINGLE_COL]	= MIB_DESC(1, 0x98, "TxSingleCol"),
-+	[QCA8K_MIB_TX_EXC_DEFER]	= MIB_DESC(1, 0x9c, "TxExcDefer"),
-+	[QCA8K_MIB_TX_DEFER]		= MIB_DESC(1, 0xa0, "TxDefer"),
-+	[QCA8K_MIB_TX_LATE_COL]		= MIB_DESC(1, 0xa4, "TxLateCol"),
-+	[QCA8K_MIB_RX_UNICAST]		= MIB_DESC(1, 0xa8, "RXUnicast"),
-+	[QCA8K_MIB_TX_UNICAST]		= MIB_DESC(1, 0xac, "TXUnicast"),
- };
- 
-+static_assert(ARRAY_SIZE(ar8327_mib) == QCA8K_QCA833X_MIB_COUNT);
-+
- int qca8k_read(struct qca8k_priv *priv, u32 reg, u32 *val)
- {
- 	return regmap_read(priv->regmap, reg, val);
-@@ -487,37 +489,62 @@ void qca8k_get_strings(struct dsa_switch *ds, int port, u32 stringset,
- 		ethtool_puts(&data, ar8327_mib[i].name);
- }
- 
--void qca8k_get_ethtool_stats(struct dsa_switch *ds, int port,
--			     uint64_t *data)
-+/* Read the MIB of one port with register reads, one value per ar8327_mib[]
-+ * entry. A counter that cannot be read keeps its old value in data[]; the
-+ * last error is returned.
-+ */
-+int qca8k_mib_read(struct qca8k_priv *priv, int port, u64 *data)
- {
--	struct qca8k_priv *priv = ds->priv;
- 	const struct qca8k_mib_desc *mib;
--	u32 reg, i, val;
-+	u32 reg, i, val, hi2;
-+	int err = 0;
- 	u32 hi = 0;
- 	int ret;
- 
--	if (priv->mgmt_conduit && priv->info->ops->autocast_mib &&
--	    priv->info->ops->autocast_mib(ds, port, data) > 0)
--		return;
--
- 	for (i = 0; i < priv->info->mib_count; i++) {
- 		mib = &ar8327_mib[i];
- 		reg = QCA8K_PORT_MIB_COUNTER(port) + mib->offset;
- 
--		ret = qca8k_read(priv, reg, &val);
--		if (ret < 0)
--			continue;
--
-+		/* The two halves of a 64-bit counter are separate reads: read
-+		 * the high word around the low one and take the low word
-+		 * again if a carry got in between.
-+		 */
- 		if (mib->size == 2) {
- 			ret = qca8k_read(priv, reg + 4, &hi);
--			if (ret < 0)
--				continue;
-+			if (!ret)
-+				ret = qca8k_read(priv, reg, &val);
-+			if (!ret)
-+				ret = qca8k_read(priv, reg + 4, &hi2);
-+			if (!ret && hi2 != hi) {
-+				hi = hi2;
-+				ret = qca8k_read(priv, reg, &val);
-+			}
-+		} else {
-+			ret = qca8k_read(priv, reg, &val);
-+		}
-+		if (ret < 0) {
-+			err = ret;
-+			continue;
- 		}
- 
- 		data[i] = val;
- 		if (mib->size == 2)
- 			data[i] |= (u64)hi << 32;
- 	}
-+
-+	return err;
-+}
-+
-+void qca8k_get_ethtool_stats(struct dsa_switch *ds, int port,
-+			     uint64_t *data)
-+{
-+	struct qca8k_priv *priv = ds->priv;
-+
-+	if (priv->mgmt_conduit && priv->info->ops->autocast_mib &&
-+	    priv->info->ops->autocast_mib(ds, port, data) > 0)
-+		return;
-+
-+	qca8k_mib_read(priv, port, data);
- }
- 
- int qca8k_get_sset_count(struct dsa_switch *ds, int port, int sset)
-diff --git a/drivers/net/dsa/qca/qca8k.h b/drivers/net/dsa/qca/qca8k.h
-index 956338893..5912117fc 100644
---- a/drivers/net/dsa/qca/qca8k.h
-+++ b/drivers/net/dsa/qca/qca8k.h
-@@ -31,6 +31,9 @@
- 
- #define QCA8K_QCA832X_MIB_COUNT				39
- #define QCA8K_QCA833X_MIB_COUNT				41
-+#define QCA8K_MIB_STATS_INTERVAL			(3 * HZ)
-+/* qca8k_mib_autocast() request for every port at once */
-+#define QCA8K_MIB_ALL_PORTS				0xff
- 
- #define QCA8K_BUSY_WAIT_TIMEOUT				2000
- 
-@@ -373,6 +376,52 @@ enum qca8k_mid_cmd {
- 	QCA8K_MIB_CAST = 3,
- };
- 
-+/* Index of each counter in ar8327_mib[] */
-+enum qca8k_mib_idx {
-+	QCA8K_MIB_RX_BROAD,
-+	QCA8K_MIB_RX_PAUSE,
-+	QCA8K_MIB_RX_MULTI,
-+	QCA8K_MIB_RX_FCS_ERR,
-+	QCA8K_MIB_RX_ALIGN_ERR,
-+	QCA8K_MIB_RX_RUNT,
-+	QCA8K_MIB_RX_FRAGMENT,
-+	QCA8K_MIB_RX_64,
-+	QCA8K_MIB_RX_128,
-+	QCA8K_MIB_RX_256,
-+	QCA8K_MIB_RX_512,
-+	QCA8K_MIB_RX_1024,
-+	QCA8K_MIB_RX_1518,
-+	QCA8K_MIB_RX_MAX,
-+	QCA8K_MIB_RX_TOO_LONG,
-+	QCA8K_MIB_RX_GOOD_BYTE,
-+	QCA8K_MIB_RX_BAD_BYTE,
-+	QCA8K_MIB_RX_OVERFLOW,
-+	QCA8K_MIB_FILTERED,
-+	QCA8K_MIB_TX_BROAD,
-+	QCA8K_MIB_TX_PAUSE,
-+	QCA8K_MIB_TX_MULTI,
-+	QCA8K_MIB_TX_UNDERRUN,
-+	QCA8K_MIB_TX_64,
-+	QCA8K_MIB_TX_128,
-+	QCA8K_MIB_TX_256,
-+	QCA8K_MIB_TX_512,
-+	QCA8K_MIB_TX_1024,
-+	QCA8K_MIB_TX_1518,
-+	QCA8K_MIB_TX_MAX,
-+	QCA8K_MIB_TX_OVERSIZE,
-+	QCA8K_MIB_TX_BYTE,
-+	QCA8K_MIB_TX_COLLISION,
-+	QCA8K_MIB_TX_ABORT_COL,
-+	QCA8K_MIB_TX_MULTI_COL,
-+	QCA8K_MIB_TX_SINGLE_COL,
-+	QCA8K_MIB_TX_EXC_DEFER,
-+	QCA8K_MIB_TX_DEFER,
-+	QCA8K_MIB_TX_LATE_COL,
-+	/* QCA833x only */
-+	QCA8K_MIB_RX_UNICAST,
-+	QCA8K_MIB_TX_UNICAST,
-+};
-+
- struct qca8k_priv;
- 
- struct qca8k_info_ops {
-@@ -403,8 +452,25 @@ struct qca8k_mib_eth_data {
- 	struct completion rw_done;
- 	struct mutex mutex; /* Process one command at time */
- 	refcount_t port_parsed; /* Counter to track parsed port */
--	u8 req_port;
--	u64 *data; /* pointer to ethtool data */
-+	u8 req_port; /* or QCA8K_MIB_ALL_PORTS */
-+	/* ethtool data, or one QCA8K_QCA833X_MIB_COUNT row per port */
-+	u64 *data;
-+};
-+
-+/* .get_stats64 is called in atomic context and the MIB sits behind MDIO or
-+ * the Ethernet management frames, so a delayed work reads it and keeps the
-+ * result. The MIB counters keep their value across reads; last[] holds the
-+ * previous raw values so only the difference is added, and a 32-bit counter
-+ * may wrap between two reads.
-+ */
-+struct qca8k_mib_stats {
-+	struct delayed_work work;
-+	spinlock_t lock; /* protects stats[] against the work */
-+	bool enabled; /* the MIB came up, the work runs */
-+	unsigned long link_map; /* ports with link up */
-+	struct rtnl_link_stats64 stats[QCA8K_NUM_PORTS];
-+	u64 last[QCA8K_NUM_PORTS][QCA8K_QCA833X_MIB_COUNT];
-+	u64 raw[QCA8K_NUM_PORTS][QCA8K_QCA833X_MIB_COUNT];
- };
- 
- struct qca8k_ports_config {
-@@ -469,6 +535,7 @@ struct qca8k_priv {
- 	struct qca8k_pcs pcs_port_6;
- 	const struct qca8k_match_data *info;
- 	struct qca8k_led ports_led[QCA8K_LED_COUNT];
-+	struct qca8k_mib_stats mib_stats;
- };
- 
- struct qca8k_mib_desc {
-@@ -514,6 +581,7 @@ int qca8k_rmw(struct qca8k_priv *priv, u32 reg, u32 mask, u32 write_val);
- void qca8k_fdb_flush(struct qca8k_priv *priv);
- 
- /* Common ethtool stats function */
-+int qca8k_mib_read(struct qca8k_priv *priv, int port, u64 *data);
- void qca8k_get_strings(struct dsa_switch *ds, int port, u32 stringset, uint8_t *data);
- void qca8k_get_ethtool_stats(struct dsa_switch *ds, int port,
- 			     uint64_t *data);
--- 
-2.43.0
+On the USG, single-stream plain-NAT throughput improved from
+approximately 560=E2=80=93600 Mbit/s with software flow offload to
+930=E2=80=93940 Mbit/s. PPPoE over VLAN 7 also reaches approximately
+930 Mbit/s. The implementation and benchmark details are here:
+
+https://github.com/openwrt/openwrt/pull/25645
+
+There is also a companion bridge forwarding shortcut using
+switchdev FDB notifications, which could be discussed here or separately:
+
+https://github.com/openwrt/openwrt/pull/25823
+
+This essentially takes care of same-subnet switching, e.g. on the USG=20
+that would
+be the case if the third port is used as a second LAN port. It also=20
+supports VLANs.
+(basically everything that does not terminate on the USG like a VPN=20
+connection and has
+no fw table entry)
+
+My main questions are:
+
+- Is this driver-local forwarding approach acceptable in principle,
+ =C2=A0 including its use of the hardware-flowtable interface?
+- Would you require a different integration or work toward moving
+ =C2=A0 the driver out of staging first?
+- Which tree should an RFC implementation target, and who else
+ =C2=A0 should be included in the review?
+
+I can provide the code as an inline RFC patch series if requested.
+Benchmarks are available at the linked Github PR.
+
+The bottom line is that this is what allows devices to operate at=20
+Gigabit line rate. Without
+making use of the SoCs hardware-accelerated buffers and transmit-paths
+it's essentially impossible to saturate the Link and maximum packet count =
+is
+also very limited.
+
+Thank you,
+Markus Krause
 
