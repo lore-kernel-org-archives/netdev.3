@@ -1,77 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792421709;
-	b=b4LkGYVvSsvx+SfANkO0I7+L9oa/sxz5EmKbhQu+Do1wBTDWBxC6XodULFGHrs8KOe04
-	 RlrEOGxp+EJVDb/YRrRC6trcKMVM7i8vhM3zSghRwjoirEGBtE9I98FrqyJoS66ymPf47
-	 BZEDGvuwrYcbvyDpo5EQItAG/XIhx4OuIJ9zASTMCqHVwP0LM9B3P0ouMdKcCVbvtM2vD
-	 WSn6L2F5YvfnlaxssDT/KxS7m9qICUmVz9m5CuxTAaFDvPFctS58cODOdfnRi8iNlOHS/
-	 zhMoMEDYYBsijSBDXiQ+BO4iUncxheazra7wI+qp8hPU+vngaJNOZ0xqthRh68/iScA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792421709;
-	h=Received:Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=+JUxYD7hsy9+873bVBb64U1eteVVDuAvUhFWgvJelD4=;
-	b=FrAWDstoOvfmlccm1mGNB/6jzN2JKvgtNANldHNtFYsrpMWwZ9SSwo7mujIMtb73vR3d
-	 Cdhy0fs3pGE9K/ucT3lf1W8isKEUeMWjQjRqIzaGa0nhapfnhtbeqI7g3xVc8VGXh/Hop
-	 0sVaaex3RbQgiiw0ns3AFYo4JYXX3e/opm6Jo1OrVyFtuZmcUTWQp7if3zjWsDqo5WbJc
-	 LYHl2zlKtw5WbbBO8Unwl9OlUqcl7NuXGKZ/OkZrNlU+BjdJitzo6RXsZukyBtMhXhmc4
-	 TXoLs564xQc81pfvVwQHst6WoQUpe1WpWUcxLOoK7y3Skrc3rRk78tgn5Z29mDhrPOg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TpoWiUhv;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-Received: from aws-us-west-2-korg-listserv-1.web.codeaurora.org (ip-10-30-226-211.us-west-2.compute.internal [10.30.226.211])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177E5606EFE9;
-	Mon, 19 Oct 2026 14:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TpoWiUhv
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792422189;
+	b=3uwyKDqA2eY7IZ+RD8ylzrAMnOPFKzDal+zmlotMVtVa7PapvJ5L6TV8HXlWUg9DVoiO
+	 J8JeBLHgccxpnI7d381A1rA8gUEeOueYMyN6NL253qPJ5m6QNOpepRzeL/ECK3sR2zjQ1
+	 xE9uzvOupR3HwLqYMkIGewRyC5mA5lJ3Ko3Xn80DSgfxGKAffeY3TRagjum4VsveVSBVv
+	 j+gxLzpFYhcB9OdqHJzGhJVFHkA/oRv1Ol88rAqvSTSIN7Mv5PcBW87CP4OlMKnqJQMAf
+	 AopjrXYaPEGoTW1UxDQLFScU95IjB4pp4C9IaMLOa/FWM5eaKHvYqywQDnUwRcsuQaQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792422189;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=CYNpmVXRLHMAAVus7/gfQUc1TWW6VTf4/aSf8Tlez+s=;
+	b=lbARv1J98BU+iKoNBXmtIh5KCiPO6D2gi6YTFW4km6pop2vdmGZP95kABbuy2gMdeDV6
+	 5aNUmQa4MkVFRKjTYDl9iszbRxpmA/g/28gyCmqyDHuaTxdn6N3g+iIiaSeJ+TOX+gYC1
+	 dvt66LLXJ/pSFZ7xZui2IrkbnH74irt2Z0Yyp/rQk1uhdly5WujntYYqh1nzzPC0dAeqR
+	 kEvboHUolvs4uZiay7WAGhzSF466yhI/Er74YNN3Lq1i9SHGI3TxM82j1tyhpjTxzhNUM
+	 Dgj6AAYklbUB4sbSE0Kx0Pvcljz2Nv/mAUSSJgvumFeNfDwnyB0002qCpJpV6An+rUA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Y803IFXS;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CC36513FF;
-	Mon, 19 Oct 2026 14:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792421709; cv=none; b=Kx5/sJm6PI9j5E86xXnZIrs+5rYpV6nQbp7hVgKoXvjcn2yieSY6aJx6d82tlKrAfQQmBhe+Jv7MlRpQeIhZiel27RQASaX/2rDovckt5uHP+WQCZyAPZPKHwR+A7an8ZpUyannl5/k0US1/eYymqjRMeGLuBKuc0+T1td1s13M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792421709; c=relaxed/simple;
-	bh=rypUYqt1WxoN40+ku5yahBFpXbOcWjQofkx/7yag5k8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RDhSZ+olmgcyrHGvJ2BbJTtY8eU9BKdNjs+RPfq2ptHG0sDuBY+FVCeuj23dlD4SmGq4fYxNuOhoxgK4nV/xAWDrx39XL/guT3SW4twlmBaFcqSDcv1vA/y0xINjP289ut/KCzhPnzm1bc1feM22uZAqsJpTVYcABKMoAH0GWoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpoWiUhv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA241F000C5;
-	Mon, 19 Oct 2026 14:55:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792421707;
-	bh=+JUxYD7hsy9+873bVBb64U1eteVVDuAvUhFWgvJelD4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TpoWiUhvlPWuiOAzwQ0+QYp1daD5dXruX/kR2AJHRWNdqmgRTyUwwWwa+sRV+2IrL
-	 qdMOqQJf/VKImZ2CmKFbRDxbSpf1mueNlPbW0S0A4JWDzEuu6gIvPdPBwXxAiMJvcS
-	 kiA6C8l9qYU76zsFXaLHbH28Rj+nDJXA4kqFjor8LjGmFwpPZBE27OTiVgGPbAOI5p
-	 XOmxC3hdmTfeaEkvfoOrttUR+AGgMExhSly0PcfHcVjOQtnPIWNfn9fJzru23dsa9V
-	 yqYN4frfKF+YRddnsrOMbfO9x9lyfBw/xJeRQu/KIbKmkHA+4G6Jdjl82mfELlJCgx
-	 smIVXBHc809cw==
-Subject: Re: [PATCH net-next v6 2/5] selftests/bpf: Track XDP test processes
- and isolate namespaces
-From: netdev-bot+sashiko@kernel.org
-To: bochaolucky@gmail.com
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, shuah@kernel.org, davem@davemloft.net,
- kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- andrew+netdev@lunn.ch, edumazet@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
- alexis.lothore@bootlin.com, lorenzo@kernel.org, tiozhang@didiglobal.com,
- willemdebruijn.kernel@gmail.com, petrm@nvidia.com
-Date: Mon, 19 Oct 2026 14:55:05 +0000
-Message-ID: <179242170518.3135.2037803545467217348@kernel.org>
-In-Reply-To: <20261018-xdp-v5-send-20261008-v6-2-7336e1282ca3@gmail.com>
-References: <20261018-xdp-v5-send-20261008-v6-2-7336e1282ca3@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5568B607D354;
+	Mon, 19 Oct 2026 15:03:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5568B607D354
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Y803IFXS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792422185;
+	bh=CYNpmVXRLHMAAVus7/gfQUc1TWW6VTf4/aSf8Tlez+s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y803IFXSYCm8RB3z09rcHdIHVTMeVP3SMwuGKtPSBGfBzloQfV45ZvyKESBo9zYwO
+	 kmZSjJBww3RCyhObeCJn3TgvCZC2JyBPIduosSZvPPa2kAiCHm+nJlVj6+N/XOg5xi
+	 xqKgmqkdFoZGMzjN++3w6PfOLxXe7fYHEwvG2sfwzKDSB/zGZ7Z25HnVuni6vn9kZ8
+	 TzdyraFDfQF/KtjZCbwGPFzAFZdTf9dNoLqFEkIauoI55bDn1DAXCTiJJB2LaupJWO
+	 IBh0rkqAUKGG4e8UwVYzUp28rPGCKH3Od5ZjxBvig1Xu/MtZ0fUBwTx2dtdD6V6FPT
+	 HVZ8HI/neLeMQ==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 80FF760074;
+	Mon, 19 Oct 2026 17:03:04 +0200 (CEST)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 05/10] netfilter: flowtable: use the vlan id, not the full tci, in the tuple key
+Date: Mon, 19 Oct 2026 17:02:44 +0200
+Message-ID: <20261019150249.1879516-6-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261019150249.1879516-1-pablo@netfilter.org>
+References: <20261019150249.1879516-1-pablo@netfilter.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,123 +71,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+From: Shuangfeng He <huangya90@gmail.com>
 
-Low priority / nit picks for your consideration:
+nf_flow_tuple_encap() stores the skb vlan tag in the encap tuple id
+using skb_vlan_tag_get(), which returns the unmasked TCI including
+the 3 PCP priority bits. The flowtable entry, however, is programmed
+by nf_dev_path_info() with vlan_dev_vlan_id(), a plain 12-bit VID.
 
-- [Low] Concern about a signal race in cleanup() and handle_signal() in
-  tools/testing/selftests/bpf/test_xdp_features.sh.
-- [Low] Concern about a check-then-create race (TOCTOU) on namespace
-  ownership in setup() of…
+When a NIC delivers RX vlan offload skbs with a non-zero priority
+(an RTL9617C EPON ONU was observed handing over vid 818 skbs with
+tci 0x6332, PCP 3), the runtime lookup key never matches the
+programmed entry, so every packet misses the flow table and
+software flow offload is silently defeated.
 
---
+Mask both parse sites to the 12-bit VID so the lookup key matches
+for any priority. The in-header variant has the same problem for
+frames received with PCP != 0 on a non-offload path.
 
-selftests/bpf: Track XDP test processes and isolate namespaces
+The egress side is unaffected: nf_flow_encap_push() restores tags
+from the programmed tuple id, which never carried priority bits.
 
-This commit reworks test_xdp_features.sh so each run gets its own DUT and
-tester namespaces. The DUT server is tracked as a shell job with a bounded
-readiness wait, and signals are handled during setup and cleanup. It also
-filters the tracepoint counters by this run's program and CPU map IDs, and
-makes the tester fail when detected and advertised features differ.
+Measured on an RTL9617C ONU (PPPoE over VLAN 818 WAN, NATed 6-flow
+download over a 1G EPON line), before -> after:
 
-> diff --git a/tools/testing/selftests/bpf/test_xdp_features.sh b/tools/testing/selftests/bpf/test_xdp_features.sh
-> index 0aa71c4455c05..5b68b20d94ac9 100755
-> --- a/tools/testing/selftests/bpf/test_xdp_features.sh
-> +++ b/tools/testing/selftests/bpf/test_xdp_features.sh
-> @@ -2,105 +2,179 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
->  readonly NS="ns1-$(mktemp -u XXXXXX)"
-> +readonly DUT_NS="dut-${NS}"
+  download throughput      377 Mbps -> 936 Mbps
+  CPU0 %soft at that rate    91.5%  ->  70.9%
 
-[ ... ]
+Fixes: 4cd91f7c290f ("netfilter: flowtable: add vlan support")
+Signed-off-by: Shuangfeng He <huangya90@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/netfilter/nf_flow_table_ip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->  setup() {
->  	{
-> -		ip netns add ${NS}
-> -
-> -		ip link add v1 type veth peer name v0 netns ${NS}
-> -
-> -		ip link set v1 up
-> -		ip addr add $V1_IP4/24 dev v1
-> -		ip addr add $V1_IP6/64 nodad dev v1
-> +		[ ! -e "/run/netns/${NS}" ]
-> +		peer_created=true
-> +		ip netns add "${NS}"
-> +		[ ! -e "/run/netns/${DUT_NS}" ]
-> +		dut_created=true
-> +		ip netns add "${DUT_NS}"
-
-[Severity: Low]
-Can cleanup() end up deleting a namespace that belongs to a different run?
-
-The existence check and the ip netns add are not atomic. The ownership
-flag is also set before the create succeeds.
-
-Suppose a concurrent run creates the same name after the [ ! -e ... ]
-check but before ip netns add. The add fails and set -e exits. cleanup()
-then sees peer_created=true (or dut_created=true):
-
-cleanup() {
-    ...
-	if "$peer_created"; then
-		ip netns del "$NS" 2> /dev/null || true
-	fi
-}
-
-and deletes the other run's namespace.
-
-This needs two runs to get the same suffix from mktemp -u XXXXXX and then
-hit the window, so it is unlikely. Would setting peer_created and
-dut_created only after each ip netns add succeeds close it?
-
-The later patch in this series, "selftests/net: Move the XDP feature test
-to drivers/net/hw", deletes test_xdp_features.sh entirely. So this only
-affects the intermediate state of the series.
-
-[ ... ]
-
->  cleanup() {
-> -	ip link del v1 2> /dev/null
-> -	ip netns del ${NS} 2> /dev/null
-> -	[ "$(pidof xdp_features)" = "" ] || kill $(pidof xdp_features) 2> /dev/null
-> +	trap '' HUP INT QUIT ABRT TERM
-> +	trap - EXIT
-> +	terminate_dut_server
-> +	if "$dut_created"; then
-> +		ip netns del "$DUT_NS" 2> /dev/null || true
-> +	fi
-> +	if "$peer_created"; then
-> +		ip netns del "$NS" 2> /dev/null || true
-> +	fi
->  }
-
-[Severity: Low]
-Is there a window where a second signal can cut cleanup() short?
-
-After the first HUP/INT/QUIT/ABRT/TERM, handle_signal() calls exit and
-cleanup() starts as the EXIT trap. If a second signal arrives before the
-trap '' HUP INT QUIT ABRT TERM line takes effect, handle_signal() still
-runs:
-
-handle_signal() {
-	if "$setup_in_progress"; then
-		pending_signal=$1
-	else
-		exit "$1"
-	fi
-}
-
-That exit would then run from inside the EXIT trap. In that case,
-terminate_dut_server() and both ip netns del calls would be skipped,
-leaving the DUT xdp_features process and both namespaces behind.
-
-The old script had no TERM or EXIT trap, so this is not worse than
-before. The later patch "selftests/net: Move the XDP feature test to
-drivers/net/hw" also removes this script.
-
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index c8c29a9a1684..2dec15d402ca 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -170,14 +170,14 @@ static void nf_flow_tuple_encap(struct nf_flowtable_ctx *ctx,
+ 	int i = 0;
+ 
+ 	if (skb_vlan_tag_present(skb)) {
+-		tuple->encap[i].id = skb_vlan_tag_get(skb);
++		tuple->encap[i].id = skb_vlan_tag_get_id(skb);
+ 		tuple->encap[i].proto = skb->vlan_proto;
+ 		i++;
+ 	}
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_8021Q):
+ 		veth = (struct vlan_ethhdr *)skb_mac_header(skb);
+-		tuple->encap[i].id = ntohs(veth->h_vlan_TCI);
++		tuple->encap[i].id = ntohs(veth->h_vlan_TCI) & VLAN_VID_MASK;
+ 		tuple->encap[i].proto = skb->protocol;
+ 		offset += VLAN_HLEN;
+ 		break;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018-xdp-v5-send-20261008-v6-0-7336e1282ca3%40gmail.com
+2.47.3
+
