@@ -1,68 +1,68 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13474F390B
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4A54F0527
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792416138; cv=none; b=UgH7HC0lYemkE42cuc8OdR/+UC9jaBQQf56wWFJU/+93C1oOa6V6LNo0CwuB+PrFDY4vKqVCtXNaUR4bJ6WE/T4MuMEt12iCLbYZAnXMK2Hr03jKXZlFJm/G7BX0pR13ymkXYSvBbiaSy2l096y1vDIlgiW26bumdNb5xWnQy5s=
+	t=1792416145; cv=none; b=HZORbUlkhvdwE7GV86MVYu5oV0eTJUm2AWZKFVj+bqOcN0ZirXfoMqT3PQWvcWPJoDEDHM1+6JiMYMe7du5J3UH1ZdAfmATIOa+UFNbPUoCftn/hUIHE1ocPPRbcFV+tU8sK9wxQvRKwc1UMKS1R/ULDsJvZS3o2nJxNlwKZ3zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792416138; c=relaxed/simple;
-	bh=Q2eussegMEXlMuB9XaZj3TGeoOrydpSZHsCEsqU8fDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a+haKzqr+mCXxzSlHd2ET5qZ3WO/+hnRpbP088UBiREYmdUzxwNZCbSa9+bemKuq3aIPY7/p9ANxxshewrYL0wW3Pqeda0XAFO5Eo6Mf7XsHUeqmrcP7BKLGgKP6IKuceABHFZSzuxTQ1q5iuVsbeh1iWIPkVobMxTf5DDeGRS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kX8kKHFh; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1792416145; c=relaxed/simple;
+	bh=Y3HX3g0lpxIxkV4ib/pssKJyE3f5VJM5KbpNGYoLHFY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uwHuhEZyhiJ/LNhuLO0bI9lnlHdSVHCLR2YL5BuPQIfbMUtklIS/fCJBbkS1Ko/LxBvZ+875zw1SPNb3p1CiNrhRTVmx7PeE7wug+m8MpDG8XdpnVEh45BCqwJ2JnJJ6eUUEqx5Zq7vWBVSRInXSLIPbqBl47PMbPkkCswo+llE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NGKlUdrL; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kX8kKHFh"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso10754395ad.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:22:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NGKlUdrL"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ab60ff4273so1871143a91.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:22:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792416136; x=1793020936; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792416143; x=1793020943; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0Uej8RaCixc8uhONaildvoqjFo40RXd4HoOuIpWKquA=;
-        b=kX8kKHFhXb6iyY7oJW0fCoS+ru6ZyQk2RZt3AD8vRAcVfE6wADfZ7RvkRlQk8GGvAM
-         uYavu57vUn3mstaWZXIZcPNENZv6EVPkYLxn4NsywM2UQhpC+VTIVoh8Cvs7jQ07zxp+
-         IJfPTdrLl7yFtVIePDmZ5grrwINeh3OwBUlBI+vg8rZOzYLa0k6L2G2PAnvlQQIgO6Jt
-         6XWgYkvOfp8S84ocpDi6hOT1qRDGwINAWarx4aJgRP1yogggkipgrv7432m6xceZLn/d
-         KagAcWuXCiEfosAW+2EmdhEqIBlgDPihq1mWOYzGolyvvo957pEI3FZx6adeXgnyapGh
-         qJjQ==
+        bh=88uXbX/jv9pcVoHDV2x+38VZZBZoNn3Hj1HsL+yQOPU=;
+        b=NGKlUdrLZJCq1PJff8YhIzV5SQ7qyIkWuVSnGpcIOe8sJiikFpWAfE7n6xaTDrA0QC
+         hLa2t7juvYx6ltqFvb94yjwxuWKF82V97VKVrAOy8D+zQhs+Yx/9g9zyC0Um+qtjqHqe
+         Cl5tTOYVBGwkyCMDy8rSsMvsRPKiQ+Z6MsOc2399IEiMKtyqHelfpYvo0OkkFt8rrLM1
+         1UBgvsV58h76+npdcLchDBy+Q0rDonjvUT7nQlpz7v02PK/4kGtFJSMdQGN5qxkjfQOD
+         6R5izCI4bk8CfkzXw3WHNf63K3SbOsnXKE+GeeZw9Fd5HZOuMQVKegupwVElmS51fKe9
+         MbXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792416136; x=1793020936;
+        d=1e100.net; s=20260707; t=1792416143; x=1793020943;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0Uej8RaCixc8uhONaildvoqjFo40RXd4HoOuIpWKquA=;
-        b=kBzDPZh6si7aNaNMrxcL3PM1t558CzT4XnJp6e0w5Za3I5z08tZa0g8j5HtyeqMN8D
-         VcB8y/icl4zZb5MNVy440bdmRhZNKXsIqK2hZtyAFnSC7rQ9nN0fV6ulXNDWnqXG/AUr
-         t8dvp7z9m5Dg2ptLfXywbWQoSIRCB6KJAJfAY+Q06traxrsTUi+VKkRzSNmWT5P0ujGv
-         ADLBiTESj2liuRERVJovPrHoIVPgj+o0sWC+IbBjciyOePUQriwdJjvZjBHKZicDYULB
-         IyQoCh/LDzbBDZyQglzis7RshFNzAcxLxUZBWt4Jo/XoqvdfLDeX+je189eLdJAvXg1y
-         RDFQ==
-X-Gm-Message-State: AFq9FYLkTql+EvbtukKi7O+/0yFMiNj5mNwpqImZtaMNs3aySkyTNRm2
-	iMwxbbzVl5krgnYTud+4QMGF3G2GcvQ/kpSiXDwrj7rwxC9vgnZEK1/4
-X-Gm-Gg: AYBFou3e+3lBf4lqqJeRYk+6JA4vhjpRqiKshP2Kq1GsuR2tuzG+wpc7A/OaNg3r/+h
-	Zxah9lgr8GM3Th9gBeW1AWapuY4byWbP7MrhPQJeOJqyqglpSmNnyoxNhm49j2FkaDMBnknHMSM
-	/wZ26AFv5I5qmjA91Kk9Ri6shraWB5jvckcqHV3/58QuTObgpKr5njsYwCqK5Mc7LHV9gddmCwf
-	w/i8p3hf8m9uaeNAUxMgppfLhJdP1Bvj7VtP7Xby4dozqXv/+IGj6eNoTFrJpEqwpmk1ngqdoWP
-	TTg+SOoHallQIvdnWppebqu4KcsdxykS2P95sTNxcDVC5IMZ/JgKWChC0eOmLc/0qco1SeDvg3m
-	rTXi9D5dTdXqzt2cLeKZsKtB9FTdNlEdGIIADNVavo1k1vLD72HWHrKPJV6OPNwC4qPSzhvEdp7
-	rt+nl1NGILrg/xbfacuEdABofqQOYtYjBUZ9Rce/sGJ/AYTYMKDEHtUYgco5um8w4TCv3Rv/XMS
-	Wj3nQ==
-X-Received: by 2002:a17:902:ce11:b0:2e9:4b65:369f with SMTP id d9443c01a7336-2e9a69f2585mr70292505ad.34.1792416136168;
-        Mon, 19 Oct 2026 06:22:16 -0700 (PDT)
+        bh=88uXbX/jv9pcVoHDV2x+38VZZBZoNn3Hj1HsL+yQOPU=;
+        b=NT94ZnHnxivKPIF8bCUIQGXyhybo+yHrPWDyZUVGEg6FaYXIPRCRGOyrfRETtiwLsW
+         sSfpSgoFDuDzH3hp7fmt8ywAxWIv9gm2ctBvBg0T6zLRQvcjf9UPjV9uW+6UVL4qIJXS
+         JbtlL3ZSWbdpKfp/tLXIJntYM8U6QltwaQSwRHFq/KGUpQuM7Jk6QfAynlHJ+Rh7aiLI
+         WjhpXp5svTBAeDscdO5tX3uY4xo0YmZebc4u0L/Jwt+SnLGf2dBuj96dxTaQimQalQNd
+         GLIibxzGLVHz55cBkvYcYnL9merOottOTtJavNA+YXhK4xZ4F3Syx7QBHeY5lyeDy+3C
+         6tAw==
+X-Gm-Message-State: AFq9FYLUuVRNIZrZc2BoIrFLg1ck3zGKtWl1lWDjGdsc9laVBnBBYKPj
+	zY0xd82lE6EgUpd2weSOjtmP3yPp2CXSUIeJWAStuOuOQ9uINeby2MDQ
+X-Gm-Gg: AYBFou27hdngaKgaxkRJikWqhf5wApGiphjldY7fC9wfy/I3f57JpBobFjM1vIjbtrg
+	r/pH0HMaRKQq4EPMCXiIs3gW7zGP37GbGzKdKX2GPvi2eeelFoHgkFQrVLKDxKUJ9tcMLwOuzcY
+	9m35aiit8P8gKe25QTqhMzUS8pgFIh4qqfjIxXAAaq9iNpOYbRYcktpSj9g059LbODM0EBGBTFf
+	X1q8RtCYnbeZj83rPDSUkVM6lYdd6jBCVAi0AvapGZnWTN+U+z7koGdzE5T38GsnlGmVsj3QB7+
+	DXFckSVU8MB9AM/ss6us4d1YDQinNxvcmuxQZGzpOt6luhppFEjHbFjXUX5+lj6Th7g7AHrruLn
+	3FXYX0MhmUZBwpGt4EBXd1K3nQ+l3+J1fhr2BZLzJnLOTaZI4Qdpz85QgVKiig1Vr6olC6OqueZ
+	l6qydhXhwRZ+FenVCr3bvWxpTGzEBKsf29TehC5Z4SNupkHZPELKqed1TLNddBbwAmCy3RYU0cG
+	7z2LQ==
+X-Received: by 2002:a17:90b:17c5:b0:3ab:4f1:4f76 with SMTP id 98e67ed59e1d1-3acef17909emr7226702a91.24.1792416143321;
+        Mon, 19 Oct 2026 06:22:23 -0700 (PDT)
 Received: from [58.206.202.11] ([104.28.215.70])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea14ca2496sm782745ad.14.2026.10.19.06.22.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd3c8e2c9sm6505875a91.2.2026.10.19.06.22.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 06:22:15 -0700 (PDT)
+        Mon, 19 Oct 2026 06:22:22 -0700 (PDT)
 From: Haoran Wang <haoranwangsec@gmail.com>
 To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, haoranwangsec@gmail.com
-Subject: [PATCH] ipv6: icmp: use skb_dst_dev_net_rcu() for echo reply and unreach
-Date: Mon, 19 Oct 2026 21:22:13 +0800
-Message-ID: <179241613335.5916.18191480036849517944@whr>
+Subject: [PATCH] ipv4: icmp: use skb_dst_dev_net_rcu() in icmp_build_probe
+Date: Mon, 19 Oct 2026 21:22:20 +0800
+Message-ID: <179241614083.5916.6651154069510905781@whr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,54 +72,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-ip6_err_gen_icmpv6_unreach() and icmpv6_echo_reply() derive the network
-namespace from the ingress device with dev_net_rcu(skb->dev).
+icmp_build_probe() derives the network namespace from the ingress device.
 
-    /* ip6_err_gen_icmpv6_unreach, net/ipv6/icmp.c:885 */
-    rt = rt6_lookup(dev_net_rcu(skb->dev), &ipv6_hdr(skb2)->saddr, ...);
-
-    /* icmpv6_echo_reply, net/ipv6/icmp.c:923 */
+    /* net/ipv4/icmp.c:1296 */
     struct net *net = dev_net_rcu(skb->dev);
 
-Under a VRF, skb->dev is the VRF master device, so dev_net_rcu(skb->dev)
-returns the netns of the master rather than the netns the packet is
-destined to.  The route lookup for the unreach and the send policy for
-the echo reply (ratelimit, IPsec, route) then run against the wrong
-namespace.  The rt6_lookup may miss the route to the source, leaving
-skb2->dev unset, and the echo reply is emitted/routed per the ingress
-netns instead of the destination netns.
+The ICMP Extended Echo (RFC 8335) PROBE replies identify the queried
+interface by name/index/address and should look it up and apply policy
+in the netns the packet is destined to, not the netns of the ingress
+device.  Under a VRF, skb->dev is the VRF master, so dev_net_rcu(skb->dev)
+returns the master's netns and the device lookup / reply policy run in
+the wrong namespace.
 
-The IPv4 ICMP echo path already uses the destination netns via
-skb_dst_dev_net_rcu(skb) (net/ipv4/icmp.c:1123 and :1267), and the IPv6
-echo path still uses dev_net_rcu(skb->dev).
+The rest of the IPv4 ICMP echo path already uses skb_dst_dev_net_rcu(skb)
+(net/ipv4/icmp.c:1123, :1267, :1437), while icmp_build_probe() is the
+exception.
 
-Use skb_dst_dev_net_rcu(skb) at both IPv6 sites so the namespace is
-taken from the skb destination, matching the IPv4 path.
 
 Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
 ---
- net/ipv6/icmp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/icmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index efb23807a..de4f39ca0 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -882,7 +882,7 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
- 	skb_pull(skb2, nhs);
- 	skb_reset_network_header(skb2);
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 90c0e22c2..a577dfc65 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -1293,7 +1293,7 @@ static enum skb_drop_reason icmp_echo(struct sk_buff *skb)
  
--	rt = rt6_lookup(dev_net_rcu(skb->dev), &ipv6_hdr(skb2)->saddr,
-+	rt = rt6_lookup(skb_dst_dev_net_rcu(skb), &ipv6_hdr(skb2)->saddr,
- 			NULL, 0, skb, 0);
- 
- 	if (rt && rt->dst.dev)
-@@ -920,7 +920,7 @@ EXPORT_SYMBOL(ip6_err_gen_icmpv6_unreach);
- 
- static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
+ bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
  {
 -	struct net *net = dev_net_rcu(skb->dev);
 +	struct net *net = skb_dst_dev_net_rcu(skb);
- 	struct sock *sk;
- 	struct inet6_dev *idev;
- 	struct ipv6_pinfo *np;
+ 	struct icmp_ext_hdr *ext_hdr, _ext_hdr;
+ 	struct icmp_ext_echo_iio *iio, _iio;
+ 	struct inet6_dev *in6_dev;
