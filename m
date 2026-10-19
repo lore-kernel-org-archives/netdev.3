@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792440389;
-	b=q+TmY/Htad6uH71H0+zGsYsVTgnHZeugzAtOixHVJo/fheuP5YWs8VdOEUg2C5bdgg+g
-	 LrSYoglI3TVHKfluQrst1u5i/Oxf7nEnAsjD/fiqxSRYnejqo211EGMOGg0O5qH1FM3wZ
-	 eu4BBDxhLkdynmas9QgUH8Ki6xG7G27HxUw1LK1wroMkjs5M9j85xARdsoaBZppJFHb3t
-	 EdfQv4EgKZJGf1XefQVgXeFKa0STwUjdyNDodijok4tenCP18Hd5LjzokUzqoicXXiSnE
-	 Cc0yu/g3SkFrA3t7a/TMzUdLfzGAu7I8v3emTqDB1sfgYJsiqTP26hxvqFz/3e4+0+g==
+	t=1792440392;
+	b=Sh+nVte0yp2X6zh32qaKSzdR72spJo5SSipBLhbhAE3u3+hk12fbmUcXYfr3vYNI+YGI
+	 QKbn/P4WdKPbMe1JlBtw+nOHH7mJfpfiacO9nzrBL+pkPWux+icajyiTWDuQRQ27IaBv2
+	 98xZ/S8pho19rbIDYE1/sCjyRFpppteX+H+8V85Fu2nnIiyuXfRAp3knAz25umNFUOmbx
+	 Aokr3ucnDH0IJScukiQIS2CCUPGoMmeNb6TF2+OjD60fQx7dceg4kK8Nd/1gLGvDYflFN
+	 EY6gnci1A2NJ1mRwNIfPJui21HUI86iA8JV2x0q0Df8ebS3R/h5Ktjw1EVO05TdQsXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792440389;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792440392;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=GKvFPIiWsPBqUlyXejunJjNEpXocLP020jmL4CYmeQI=;
-	b=c5pVcP8nRHUkcdjQuhp9a6fp+pGwlHpKWSJcCyKbdl9+DRhdgCnhJbCLU9xM66CT8KJa
-	 tyYoP0GxHgD5ru478IrvufHF9D30NeS/oYOsjsq2TIkl2Iegk3AjGCWRIG5plqAhBFK/x
-	 UDUur0aGN63Nax4rW973AxCJnYC1uXGnNzDJMa1ReNjFIFPzt3sXUtvbKx52lZSELOG6Y
-	 FEJo4ZIHSUbNA9+VmpNLLa6QlMIEXRt2XncI34amAMoZB1YxqKg2hi0h2tGjBE2Y2LxYN
-	 NZjQ+2xnmzoVTdds3lkoaJ8iPS7z2nj7QHYY9an/u62NwaXgeiKqxVrLlyODbmEypVQ==
+	bh=TYwt5+C9sVQEGhnNd3dOWEsZeOB/cpwbqYDBMVEcWJM=;
+	b=xPYfyNJaxYiHhYsXWDBXaf33Ji6VuIfjPW5JVwMmT0lOiMkYtJRcKgTBpLyEO26Uuoqv
+	 t/CrN9LKl+toWQYzXuj0RaTjHTWwmYXWCu4bGXxYV1D2FGTXhvXEjT0p469VNksnSHLFh
+	 TEnZOR1ZDee6sYccPn2gVNtBWZryQRu1Z/kdZt+lg5e3hlsmotvZQ89Qso6UGeu4HqYIM
+	 pie9LYFDWtXAZG9V7xo1b8p9teWg18eeJWNamVaVyj0MDdqAPfxqKrlT9GMqih4pLePR2
+	 azwg+2u8BmCeRLB6QYg6hUXatI5muZ8KEMQef0a6E9BZwWh6q9PKQyC/LxGRMv3ENig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=lusLDZlE;
-	arc=none smtp.remote-ip=209.85.215.178
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=x6bq0IV1;
+	arc=none smtp.remote-ip=209.85.215.182
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD1C606A31E
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:06:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FD1C606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC3D606A31E
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:06:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDC3D606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=lusLDZlE
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc758830601so1707185a12.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:06:28 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=x6bq0IV1
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cd60c5da24cso1504687a12.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:06:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792440388; x=1793045188; darn=vger.kernel.org;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792440391; x=1793045191; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GKvFPIiWsPBqUlyXejunJjNEpXocLP020jmL4CYmeQI=;
-        b=lusLDZlEjthEPNukUwOei0Qc/zMDhBp7We7Rx61T5Lun+w7iyjohx+5h/1C7ApDtr/
-         ghdksf879JWyMUj0nNqNgKNA1VSLNhnBe5cS7Z4gJoz4VlzgoVsyG7nKu+8RS0hUf1w0
-         QC8EDZJfQgyvgpd+MOGXxZ/Yh08P4KfuzUHx9VS0yfMgs/ceGsg6zXsWmGk1uVwstxlk
-         PAE5F3c/WuG7W2oDYP/O4BLm4+TmO8uzaKYscyZ3nid5f0+u426n6kUHDmqDVDieJiCO
-         JOWB6hE2N2Ts2aE/5+ivCLLy+RRmWHx5vl1BVHpSN6P6vxHQvfxug2QvGMQsqHs2l1JD
-         M+Kg==
+        bh=TYwt5+C9sVQEGhnNd3dOWEsZeOB/cpwbqYDBMVEcWJM=;
+        b=x6bq0IV1cmR5MmzbtK1HUb//7L8pJlCm3u0ogTgvAJyhPDaneA8nhAlvgUWIilfKj9
+         2hdYAN0mK3vN/PRe8orvnyg9VwkiCUGRezdtC6mAx7HmrA6Cen2+qFaul98bi3MRhgz6
+         NqZ2OTtDdMFaZJ+P7pjPzjvAFd6NoJ2gkUDBxEQwh/dcAb94xsWCwaKme0HHtZJvDifH
+         1DSjA94CPOoPlY9VDOh+Ouz3tGCu/MgSmtBD2EBEHvTNjONkmauEHmB4L/PMo352vTLP
+         fbTZQK7hbMcd+TdgSrt016LAsipiuSAEZCkg0E2A6dPY8g8upH/6ThstA2K2nm7J/Pl2
+         skog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792440388; x=1793045188;
+        d=1e100.net; s=20260707; t=1792440391; x=1793045191;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GKvFPIiWsPBqUlyXejunJjNEpXocLP020jmL4CYmeQI=;
-        b=h3XiMo03XAuZSLEvs+C1HP23qiLOaIU9aNo1f04rbvkx/RNxWUd2KgZuN+QiDwX7rC
-         0qdwBOUl2sO4j4fwa942QRYZZi8CkT7cdNtqLJBGFxTBuW4iGLQdSTUeS4/WN3FNF4wj
-         EZdbyEInbHO4KXJGH1fpZ0dcx68XIoQp4dhRITdWYr3ZXn7XQ9RGJSgAonbsWP1g/c0v
-         nOJjvSvAhw+ngZ4ObxNOzxOXr24I6Um83Da55MNdBG7WXe6wA3eKod1FkTnNc+gIw/hB
-         g8vuxAqk+Iq2TabJ3M1Bwq5naYRL5lw5puZbJCDIePIZDc1xiRbB24Gz4M18vmZpTZ6a
-         Zksg==
-X-Gm-Message-State: AFq9FYK/spSRQZdKpT8AmUH/Zm5dOxGKjPgdkdF3nQDxgUWlEfa8xJ/L
-	iXovWYXVF8YAhVtLtz51FWOMjozauhsrD2xEqQxCxyMh4HdpKy5lqvf8W66gz6yk3sYCfMNoXaP
-	WFElHutQ=
-X-Gm-Gg: AYBFou3nYCKeMlNWDUw4riYkp5lbC53GCxYXLZfs4T+LeMyWomA7cL4PJdb6RQ2Nqaj
-	IusYSwzMHG963bHgwt1lmIbY1EbGLGeRhRXABn0Aupfd8fK71qxQf6H04y9cpYA+MZ7392YM0UR
-	HZX029h27bHRK2De1hwJsfN98uTyX29mR0HHZYTA1CUX8cvPfQJLnKo4FDHGDpeKvAhq/Jhgyfc
-	ADGEHcw8GypvE93DWRJcS+Xmb5/0HJ/5bzGXsSi+II64RljIu5V7Q3ADgelyo77pH9Q9/CFz9Ox
-	UJWYA9NIcsNMc+55biqUYtH47inOm9rSpxAEsggvNIiw5yKo/oAa+bwkVkXLcPVKJ1E7HuhhHoG
-	+0zvdEDAQmMkqH6BsU918mskpS3eto4R5VtK10Ka2PUx/4G5yJh6aw2eRoGQ2G+604l5JiAwp2W
-	Ao+lXE2e0J+y4dnbektfuqJOfHWHEl9pdClYs6j9mFeITc4FZ5r/fEyNSLAb+OyOhubX31Md3ou
-	4Ps2zrzZancxedeX+KaGKHOlCQqLIEn2if07SI=
-X-Received: by 2002:a05:6a21:6b88:b0:3dd:a00a:1715 with SMTP id adf61e73a8af0-3e2263d5f61mr7548730637.48.1792440388374;
-        Mon, 19 Oct 2026 13:06:28 -0700 (PDT)
+        bh=TYwt5+C9sVQEGhnNd3dOWEsZeOB/cpwbqYDBMVEcWJM=;
+        b=gEuNmVMh6IqpVhLiOZnQ8Brmo4/N2w8k/zNiJ5tX6PTMLfsE3sJ242skU1A9DvfVi4
+         tNByswvn+Q4T6Rf0z2bkTJhshcgVLWr/MotClMLneVzTPSbrC0I2UtzDjsIZBhAW0QX5
+         vh3mkAMXCo2vtErycUd38YgQYvyx3DjoIEJBrexp361IARqaKSWlsyfoJFq3r2wT+pbs
+         zmFZPDUJsIcrpPT8j3BCN4ITE88RLj/B5xb/MElCZ/n1a7M44K0XPPxnlvMqnD2XS5rX
+         hYaqDXTfPfn/ecMmCncOs0ibpOX7XqzoDAnzgM3l5Z5cXzcw+LL4Hur14LAIMbJWveyM
+         VBlA==
+X-Gm-Message-State: AFq9FYKZvVXKpf/Kq5r+CFuEp5cJnYMugN1OrsxNUBWu3UhdRk8LO5YW
+	YmxyXC+HiSjZ5oyZ4dixBoTsyIqgEKZWRTbLxt/fczwXJklo9spqgHrAPQx4AUIoCK295Nx9gtx
+	tRgQzX+0=
+X-Gm-Gg: AYBFou0SoqSgKurDBtW71sU+SV6G74/LkEWKtEEFA1cRQuMA5bWidMQMjTo8/fwuBfe
+	qQE7zOe0Psc+wbcnPzvSyqkKXjf9cYXtDMdUrfXmXfP3TN9EPGeUN4R+tDrFO2LLzJOFtPwy89c
+	cmfCmtA+H5J6refErM21lzPu6Hlc+Vcm6cH+qnqOuAtTKTDismh84NmWCDjV/aPuBziiqDT7Ezc
+	QfKmH2p5OhYPXYBTC7qGHoChcr6d2NRam7pg+YwX79siaO8gMC3q5xV81ojtJFDR19eQ1anArEK
+	Ez/aqP+MOaxw+ULptXfoIdKZKLExW2zoIzRXKHJbAyGE7vm80TzxBgjVE0lNJnhQUfGOyHjWYqL
+	oP/RvLz9mdipfMuhRcSCAUf6eKasVN7tIYMjwuEybnxBDjTJjSf0Elklm1bYRwg+zBR2pGrL1oc
+	tsSYkPpMoIH5aqwbeTNIqjicMidL9womqzWSaMuRniOot+dBH8wia/uarl34LqIXe7fsty3uoBR
+	pKh3Z3OGwVB3/BwRwBxk357eB7bDajxAyiTGg==
+X-Received: by 2002:a17:90b:3d87:b0:3a4:b418:94ce with SMTP id 98e67ed59e1d1-3acee2779c0mr7505729a91.1.1792440391082;
+        Mon, 19 Oct 2026 13:06:31 -0700 (PDT)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd654850c61sm4492935a12.1.2026.10.19.13.06.27
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd654850c61sm4492935a12.1.2026.10.19.13.06.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 13:06:28 -0700 (PDT)
+        Mon, 19 Oct 2026 13:06:30 -0700 (PDT)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute 2/3] rdma: don't build printf formats out of keys
-Date: Mon, 19 Oct 2026 13:03:03 -0700
-Message-ID: <20261019200623.816470-3-stephen@networkplumber.org>
+Subject: [PATCH iproute 3/3] vdpa: don't build printf format out of vendor stats name
+Date: Mon, 19 Oct 2026 13:03:04 -0700
+Message-ID: <20261019200623.816470-4-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019200623.816470-1-stephen@networkplumber.org>
 References: <20261019200623.816470-1-stephen@networkplumber.org>
@@ -97,84 +97,69 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-print_key(), res_print_u32(), res_print_u64(), print_driver_string() and
-print_ipaddr() passed the attribute key as both the json key and the
-printf format, so a '%' in a kernel-supplied driver or hwcounter key was
-taken as a conversion. Pass the key as a string argument with a literal
-format; output is unchanged.
+pr_out_dev_net_vstats() appended " %lu " to the driver-supplied vendor
+attribute name and used it as the printf format, so a '%' in the name was
+taken as a conversion, and names over MAX_KEY_LEN aborted the rest of the
+dump. Pass the name as a string argument with a literal format, which
+drops the length limit, and use PRIu64 since uint64_t is not unsigned
+long on 32-bit.
 
-Fixes: 9b578bbaded6 ("rdma: use print_XXX instead of COLOR_NONE")
+Fixes: 6f97e9c9337b ("vdpa: Add support for reading vdpa device statistics")
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- rdma/res-cmid.c |  3 ++-
- rdma/res.c      | 10 +++++-----
- rdma/utils.c    |  4 ++--
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ vdpa/vdpa.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/rdma/res-cmid.c b/rdma/res-cmid.c
-index 17a89cc4..956253fe 100644
---- a/rdma/res-cmid.c
-+++ b/rdma/res-cmid.c
-@@ -53,7 +53,8 @@ static void print_ipaddr(const char *key, char *addrstr, uint16_t port)
- 	char json_name[name_size];
+diff --git a/vdpa/vdpa.c b/vdpa/vdpa.c
+index e2b0a5b1..8719a636 100644
+--- a/vdpa/vdpa.c
++++ b/vdpa/vdpa.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0+
  
- 	snprintf(json_name, name_size, "%s:%u", addrstr, port);
--	print_string(PRINT_ANY, key, key, json_name);
-+	print_string(PRINT_JSON, key, NULL, json_name);
-+	print_string(PRINT_FP, NULL, "%s", key);
- 	print_string(PRINT_FP, NULL, " %s:", addrstr);
- 	print_uint(PRINT_FP, NULL, "%u ", port);
+ #include <stdio.h>
++#include <inttypes.h>
+ #include <getopt.h>
+ #include <errno.h>
+ #include <sys/time.h>
+@@ -890,10 +891,6 @@ static int cmd_dev_config(struct vdpa *vdpa, int argc, char **argv)
+ 	return -ENOENT;
  }
-diff --git a/rdma/res.c b/rdma/res.c
-index 7efced8d..185612f7 100644
---- a/rdma/res.c
-+++ b/rdma/res.c
-@@ -222,7 +222,7 @@ void print_key(const char *name, uint64_t val, struct nlattr *nlattr)
+ 
+-#define MAX_KEY_LEN 200
+-/* 5 bytes for format */
+-#define MAX_FMT_LEN (MAX_KEY_LEN + 5 + 1)
+-
+ static void print_queue_type(struct nlattr *attr, uint16_t max_vqp, uint64_t features)
  {
- 	if (!nlattr)
- 		return;
--	print_string(PRINT_FP, NULL, name, NULL);
-+	print_string(PRINT_FP, NULL, "%s", name);
- 	print_hex(PRINT_ANY, name, " 0x%" PRIx64 " ", val);
- }
- 
-@@ -230,16 +230,16 @@ void res_print_u32(const char *name, uint32_t val, struct nlattr *nlattr)
+ 	bool is_ctrl = false;
+@@ -918,7 +915,6 @@ static void pr_out_dev_net_vstats(const struct nlmsghdr *nlh)
  {
- 	if (!nlattr)
- 		return;
--	print_uint(PRINT_ANY, name, name, val);
--	print_uint(PRINT_FP, NULL, " %" PRIu32 " ", val);
-+	print_string(PRINT_FP, NULL, "%s", name);
-+	print_uint(PRINT_ANY, name, " %" PRIu32 " ", val);
- }
- 
- void res_print_u64(const char *name, uint64_t val, struct nlattr *nlattr)
- {
- 	if (!nlattr)
- 		return;
--	print_u64(PRINT_ANY, name, name, val);
--	print_u64(PRINT_FP, NULL, " %" PRIu64 " ", val);
-+	print_string(PRINT_FP, NULL, "%s", name);
-+	print_u64(PRINT_ANY, name, " %" PRIu64 " ", val);
- }
- 
- RES_FUNC(res_no_args,	RDMA_NLDEV_CMD_RES_GET,	NULL, true, 0);
-diff --git a/rdma/utils.c b/rdma/utils.c
-index 90ea1c55..f6605eef 100644
---- a/rdma/utils.c
-+++ b/rdma/utils.c
-@@ -795,8 +795,8 @@ void newline_indent(void)
- 
- static int print_driver_string(const char *key_str, const char *val_str)
- {
--	print_string(PRINT_ANY, key_str, key_str, val_str);
--	print_string(PRINT_FP, NULL, " %s ", val_str);
-+	print_string(PRINT_FP, NULL, "%s", key_str);
-+	print_string(PRINT_ANY, key_str, " %s ", val_str);
- 	return 0;
- }
- 
+ 	const char *name = NULL;
+ 	uint64_t features = 0;
+-	char fmt[MAX_FMT_LEN];
+ 	uint16_t max_vqp = 0;
+ 	struct nlattr *attr;
+ 	uint64_t v64;
+@@ -936,15 +932,11 @@ static void pr_out_dev_net_vstats(const struct nlmsghdr *nlh)
+ 			break;
+ 		case VDPA_ATTR_DEV_VENDOR_ATTR_NAME:
+ 			name = mnl_attr_get_str(attr);
+-			if (strlen(name) > MAX_KEY_LEN)
+-				return;
+-
+-			strcpy(fmt, name);
+-			strcat(fmt, " %lu ");
+ 			break;
+ 		case VDPA_ATTR_DEV_VENDOR_ATTR_VALUE:
+ 			v64 = mnl_attr_get_u64(attr);
+-			print_u64(PRINT_ANY, name, fmt, v64);
++			print_string(PRINT_FP, NULL, "%s ", name);
++			print_u64(PRINT_ANY, name, "%" PRIu64 " ", v64);
+ 			break;
+ 		}
+ 	}
 -- 
 2.53.0
 
