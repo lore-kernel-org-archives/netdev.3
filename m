@@ -1,122 +1,208 @@
-Received: from smtp052.goneo.de (smtp052.goneo.de [85.220.129.60])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20174E0204;
-	Mon, 19 Oct 2026 11:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.129.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0B54848AC;
+	Mon, 19 Oct 2026 11:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792407636; cv=none; b=RIOpnY7hiM2lHfpJEuYSsuaJEHSULn9n0EAhAP9r5Wqz9xnx0y4acvxT+fwvMZauyeerYpJdS3NRUxwAtKYg3HkZBXx/8NPwUM5Yt86X/FzKh5ZRn34y3MsnYIZmwEmcmNWtBkp5v6rzZrdB9CUUHAKNrCl1bL9p/qxncnAFBdU=
+	t=1792407753; cv=none; b=d9UI5BNBmXA7I0lwFpu1qAKcgoxJ6dooQwgMm2y6Gu9N8bYCxhdj0r1r1HOJVkvSqckJtnD417WFgPfZJdBrSZPhKoVbCQPhVbYp8eOoilu9RpxIOhMBWIqK2nPbdBDTSjp9QvV158gxGB+vvg5N72GWtSWno2K99AF2KwewQ74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792407636; c=relaxed/simple;
-	bh=jYoztW5ZAzdHi8HfincA4CFV9xX3X9eAwegE7CacxUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTFgaBDD7F1HhfGVLgpo8WjydzaJiXMz1h+2wrGnBkmDIWVjym2OpaFAupakKr6f48ZVAfrbQ0+UnonVWkpzrMKybLdqFSlHnLxnp67RPzHW+bkMID4u/XhpOkyYPhAJdQs00uuUrJeJdyJpb3h3yLhc+/c0sM+7w04upniogN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=YZ7zWdrT; arc=none smtp.client-ip=85.220.129.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
+	s=arc-20240116; t=1792407753; c=relaxed/simple;
+	bh=VQWE5qSmq/PbzwcSQdiCohOFF8g0JMgi3k6teDvgVsc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nnEI7vV3kHWq7JdzrCYkR7twJnw+6iN43DYnZMstpeb9/AfS8Lhb65m9oa7muW8bmpkNM/BvxLgm/b0pJ5X6cHsG9bLKSZ3tybIuBRdHdJ39eZ8LIqGl3yX85iPqI860fsXRpcDMyEqkHqKSByelu35Ep0rsZpCmgCY6csNz28o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRVqusUG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="YZ7zWdrT"
-Received: from hub2.goneo.de (hub2.goneo.de [85.220.129.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by smtp5.goneo.de (Postfix) with ESMTPS id 0D198240A1A;
-	Mon, 19 Oct 2026 13:00:23 +0200 (CEST)
-Received: from hub2.goneo.de (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by hub2.goneo.de (Postfix) with ESMTPS id C817524045B;
-	Mon, 19 Oct 2026 13:00:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
-	t=1792407620;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q/FP0aSKPLpVvvZrQy0imcxS48xnjj4SOrgBH9s2RA0=;
-	b=YZ7zWdrTp2Inj1yTtWlYs2in9EnAZNjEwA+iFre8zhWwx94NUlhC5K5S5dtnSFMFYpOd+3
-	EQep8cYFCZ/PnAudrxDhMrE0SV/0EvRF4KNXIivpNqhCNQV5fICVcB5U+8O7hoTITTVTN8
-	opr7wLi0S0Ncn7tKIMbIG7rVnTIEQtTXWzo57ksFv1AHu71XhD+R9I1jQLCqPfBhWY5k4K
-	3C+XpP0YsCrKNCkRoSGe87zme7hUedIcoILOgszrxuUNm6fn3998xaqSaO6zy2AmajTAjW
-	/eAJX2YoET8DGzqR6THtAji1IaCq4Ezmxhqf1n8XJT4deLg0JwU+dmmxliX6qg==
-Received: from CASE (unknown [195.37.88.189])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hub2.goneo.de (Postfix) with ESMTPSA id 29AB1240061;
-	Mon, 19 Oct 2026 13:00:18 +0200 (CEST)
-From: Til Kaiser <mail@tk154.de>
-To: netdev@vger.kernel.org
-Cc: jie.luo@oss.qualcomm.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 1/1] net: ethernet: qualcomm: ppe: Fix multicast queue admission control access
-Date: Mon, 19 Oct 2026 12:59:50 +0200
-Message-ID: <20261019105950.3977665-2-mail@tk154.de>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261019105950.3977665-1-mail@tk154.de>
-References: <20261019105950.3977665-1-mail@tk154.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRVqusUG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376CA1F000C5;
+	Mon, 19 Oct 2026 11:02:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792407752;
+	bh=nmJ3Y0wL9KjB35FjrT6M/q1X1i7ns1JCug/N9Mv/0EA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kRVqusUGE7Mq+Mvfi9NjGt+uB8v+zMhAiH5J+dtkrTi+Ps0xfuYxmgNmaRv66osSB
+	 TPRrVHutR9O8UgDSfVaYsIk9qSo3mMWwDu8XqA0s1FLaavSdaa2//d210kC4JgWUIT
+	 /U90lRJh5cIXTlBIxwzGVy8Gcam7ZdvVXlGK8HEE8d0TtlZSv/8t8Vj3b9X+X6CbUs
+	 OwutD3uU78OWSkpWddgyIkdfwftPCCe1GMmm7wtwAoLaw9AtyWSFcN0lpBZ4Hd8L9w
+	 YO7wvLzLLwdFgDS5HpEwANTLANMlzBHaQp26eKbMGZQxYZeFzptNvzWx6kYBrcqiZU
+	 mlsOiibU4oVxA==
+Subject:
+ Re: [PATCH net v5] net: dsa: qca8k: preserve port state across MTU changes
+From: netdev-bot+sashiko@kernel.org
+To: yongzhao.derek@gmail.com
+Cc: netdev@vger.kernel.org, ansuelsmth@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux@armlinux.org.uk,
+ florian.fainelli@broadcom.com, linux-kernel@vger.kernel.org,
+ hzyitc@outlook.com
+Date: Mon, 19 Oct 2026 11:02:30 +0000
+Message-ID: <179240775070.3135.2434822808609533404@kernel.org>
+In-Reply-To: <20261015104550.43169-1-yongzhao.derek@gmail.com>
+References: <20261015104550.43169-1-yongzhao.derek@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-UID: 92cace
-X-Rspamd-UID: 454d19
 
-Multicast queues have global IDs 256 through 299, but their admission
-control table has 44 entries indexed from zero. Using the global queue
-ID accesses registers beyond that table, leaving the multicast
-thresholds unconfigured. Subtract the unicast queue count when
-addressing the multicast table. Keep the global IDs for enqueue and
-dequeue operations.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Each multicast admission control entry contains three words at a 16-byte
-stride. Limit the bulk accesses to those three words instead of
-accessing five words, which also reaches the next entry.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-The indexing issue was reported by Sashiko.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 806268dc7efd ("net: ethernet: qualcomm: Initialize PPE queue management for IPQ9574")
-Link: https://lore.kernel.org/netdev/179143027873.434549.15034517641240789690@kernel.org/
-Signed-off-by: Til Kaiser <mail@tk154.de>
----
- drivers/net/ethernet/qualcomm/ppe/ppe_config.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+- [Medium] When qca8k_port_change_mtu()
+  (drivers/net/dsa/qca/qca8k-common.c) fails partway, the hardware can…
 
-diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-index 125b73be92b1..95b29db45580 100644
---- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-+++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-@@ -1474,7 +1474,7 @@ static int ppe_config_qm(struct ppe_device *ppe_dev)
- {
- 	const struct ppe_qm_queue_config *queue_cfg;
- 	int ret, i, queue_id, queue_cfg_count;
--	u32 reg, multicast_queue_cfg[5];
-+	u32 reg, multicast_queue_cfg[3];
- 	u32 unicast_queue_cfg[4];
- 	u32 group_cfg[3];
- 
-@@ -1530,8 +1530,11 @@ static int ppe_config_qm(struct ppe_device *ppe_dev)
- 				if (ret)
- 					goto qm_config_fail;
- 			} else {
-+				int mc_queue_id = queue_id -
-+					PPE_AC_UNICAST_QUEUE_CFG_TBL_ENTRIES;
-+
- 				reg = PPE_AC_MULTICAST_QUEUE_CFG_TBL_ADDR +
--				      PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC * queue_id;
-+				      PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC * mc_queue_id;
- 
- 				ret = regmap_bulk_read(ppe_dev->regmap, reg,
- 						       multicast_queue_cfg,
+--
+
+net: dsa: qca8k: preserve port state across MTU changes
+
+This patch adds a port_status_lock mutex. The lock serializes the
+MTU update in qca8k_port_change_mtu() with the PORT_STATUS writers,
+including the phylink mac_link_up callback. The MTU path now saves the
+TXMAC/RXMAC bits of enabled ports 0 and 6 and restores them, where it
+used to force them back on. It also returns the first error it hits
+during the read, pause, write or restore steps.
+
+> diff --git a/drivers/net/dsa/qca/qca8k-common.c b/drivers/net/dsa/qca/qca8k-common.c
+> index 13005f10edb7d..084df92c53c40 100644
+> --- a/drivers/net/dsa/qca/qca8k-common.c
+> +++ b/drivers/net/dsa/qca/qca8k-common.c
+
+[ ... ]
+
+> @@ -782,27 +805,54 @@ int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+>  	if (!dsa_is_cpu_port(ds, port))
+>  		return 0;
+>  
+> -	/* To change the MAX_FRAME_SIZE the cpu ports must be off or
+> -	 * the switch panics.
+> -	 * Turn off both cpu ports before applying the new value to prevent
+> -	 * this.
+> +	/* To change MAX_FRAME_SIZE, pause enabled ports 0 and 6.
+> +	 * Serialize with phylink and restore the saved MAC state.
+>  	 */
+> -	if (priv->port_enabled_map & BIT(0))
+> -		qca8k_port_set_status(priv, 0, 0);
+> +	mutex_lock(&priv->port_status_lock);
+> +
+> +	ports = (BIT(0) | BIT(6)) & priv->port_enabled_map;
+>  
+> -	if (priv->port_enabled_map & BIT(6))
+> -		qca8k_port_set_status(priv, 6, 0);
+> +	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
+> +		ret = regmap_read(priv->regmap, QCA8K_REG_PORT_STATUS(i),
+> +				  &status[i]);
+> +		if (ret)
+> +			goto unlock;
+> +	}
+> +
+> +	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
+> +		u32 mask = qca8k_port_status_mask(i);
+> +
+> +		if (!(status[i] & mask))
+> +			continue;
+> +
+> +		__set_bit(i, &stopped);
+> +		ret = regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(i),
+> +					mask);
+> +		if (ret)
+> +			goto restore;
+> +	}
+>  
+>  	/* Include L2 header / FCS length */
+>  	ret = qca8k_write(priv, QCA8K_MAX_FRAME_SIZE, new_mtu +
+>  			  ETH_HLEN + ETH_FCS_LEN);
+>  
+> -	if (priv->port_enabled_map & BIT(0))
+> -		qca8k_port_set_status(priv, 0, 1);
+> -
+> -	if (priv->port_enabled_map & BIT(6))
+> -		qca8k_port_set_status(priv, 6, 1);
+> +restore:
+> +	for_each_set_bit(i, &stopped, QCA8K_NUM_PORTS) {
+> +		u32 mask = qca8k_port_status_mask(i);
+> +
+> +		restore_ret = regmap_update_bits(priv->regmap,
+> +						 QCA8K_REG_PORT_STATUS(i),
+> +						 mask, status[i] & mask);
+> +		if (restore_ret) {
+> +			dev_err(priv->dev, "failed to restore MAC state on port %d: %d\n",
+> +				i, restore_ret);
+> +			if (!ret)
+> +				ret = restore_ret;
+                                ^^^^
+
+[Severity: Medium]
+What happens when the qca8k_write() of QCA8K_MAX_FRAME_SIZE succeeds
+but the restore regmap_update_bits() fails for port 0 or 6?
+
+qca8k_regmap_update_bits() can fall back to
+qca8k_regmap_update_bits_mii(). That function returns an error if
+qca8k_set_page() or qca8k_mii_read32() fails. In that case, the
+successful frame-size change is reported to the caller as an error.
+
+The CPU-port call comes from:
+
+dsa_user_change_mtu()
+  dsa_port_mtu_change(cpu_dp, cpu_mtu)
+    dsa_tree_notify()
+      dsa_switch_mtu()
+        qca8k_port_change_mtu()
+
+On error, dsa_user_change_mtu() in net/dsa/user.c takes this path:
+
+	err = dsa_port_mtu_change(cpu_dp, cpu_mtu);
+	if (err)
+		goto out_cpu_failed;
+	...
+out_cpu_failed:
+	if (new_conduit_mtu != old_conduit_mtu)
+		dev_set_mtu(conduit, old_conduit_mtu);
+
+That path only reverts the conduit MTU. Does the switch-global
+MAX_FRAME_SIZE register then keep the new value, while DSA and the
+conduit keep the old MTU? Nothing seems to write the old frame size
+back.
+
+The same failure also leaves TXMAC/RXMAC cleared on the CPU port.
+port_enabled_map still has the bit set, and phylink still thinks the
+link is up. A fixed-link CPU port gets no further mac_link_up(), so
+nothing rewrites PORT_STATUS.
+
+Before this patch, the next MTU change called
+qca8k_port_set_status(priv, i, 1), which forced the MAC back on and
+recovered the port. With this patch, the next MTU change reads
+PORT_STATUS, sees the MAC bits as 0, and skips the port:
+
+		if (!(status[i] & mask))
+			continue;
+
+Can this leave the CPU port MAC off until a link flap or reboot? This
+check cannot tell "phylink turned the MAC off" apart from "an earlier
+restore failed".
+
+Two options: keep returning success once MAX_FRAME_SIZE has been
+written, or roll MAX_FRAME_SIZE back on failure. Either way, should a
+failed restore stop being treated as the saved state on later calls?
+
+> +		}
+> +	}
+>  
+> +unlock:
+> +	mutex_unlock(&priv->port_status_lock);
+>  	return ret;
+>  }
+
 -- 
-2.56.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015104550.43169-1-yongzhao.derek%40gmail.com
