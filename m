@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792440857;
-	b=nfESRjxEdBthFv/SnDElYR1cGHqYPEPAwxgFtLWfL+k6+tDAX3ARszk2T41z0XUv0/2l
-	 2QtP+O7ItUVYmd5xIbF2Z1PdVwSAY0YA+5YBgxqbfVV6UOAfZq1HkIpemgosmzAQH0K5S
-	 STufh5DHIABeH3kZFXmfTy5fN8h/TDrEMuhlI0WbJkmtuISz35/+tk5bCo66zQpt8wnEH
-	 04Z8eNqRClAaQmq1ekiIgMJeWBy+m5lIfJUOeT1f9hOYIeIhFyjFB/DZYp9pFgdOJjqNB
-	 XFXqQcry7x1hq4edaAMFFb+3IviCp43G5ml0rW6N3wno2RKXneH9fzGjaqIpT/kgxkw==
+	t=1792440852;
+	b=b9BpvjXBD31/F73s3QBqGaile0UV+QYukvL2U/ZOQmARogzlvt7ho+pxGR7DUSUGMQL5
+	 3pBFgSe2RXoO+XhZQPkVQ1GrX3yZmqJd3tZTUX9fGRPzFwSGEbGRvg22Kw5jJ5JdYWDEb
+	 Q9IxDYZwwaj5O9+PTGB//pD8QolzHdaRDwahLzrYckhDOS0UPfpGAAUBzPXb2BevywR5H
+	 DFyIt24Hng29NqDwFD7gQDsg1llbfSm/AvE0lS3fPYILiYi1sovmTvqnO31zMFH4zVfJK
+	 c2gVn8A2EaVQCwn9+X1aWKMqP4qq3tVZ7IeRkiBeG7dBxeNnQgZSb9ki5fd0/E2Zi4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792440857;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792440852;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=QA0VhwsFvdNMhItCXFdoNxRykx3D8rjnZAd279UTOjA=;
-	b=VKOmF+6VYW0+qZgdQzdJEIqjlY3Lu6UtgAMzAV3yQB1hETq7BaU5YXj0ZtJ2j01xLiYj
-	 61ypXwZ1UYLBWiUx+T/F3Pah63oTaY6TdPZbMtrJ0QvJ/WrcDxsim3M4nxJAtXLkCbjDY
-	 2nQ/3oBLSpZx7rbYySEVkR9U1dLKRY9EYesyusO3mBP8C98jvKUdb1ybtEVCv0/U9HVDh
-	 8435mGWyPfci99ZoH12UH5+0IhBH24QpFbbNCyOu9DCz2QvPmWLNbSd8t9svpAu8PVXnW
-	 juay/OWGI9ffDs0E5pZGyNOL/Yh8MaMPElAkPeQJ5Azwfl+anHYWblkR057v58Gxfjw==
+	bh=DzrcsOeLD3pI6O2YFZ/rfcIsT7DsrqTOKWvM27ebr0M=;
+	b=Sl/iI6KpNZyQGE7BtjUsf5gT2gS6H4SvWDo4FtQQpgsiK/SsjNGV40jNvtwLmMDIEXoe
+	 b12PLIi5eD0x1xtSThMHQQpUYfVtTxmsdqSccEhwjs+LTXEzyznu8wsWMoKeXFeBtChJI
+	 Rb3YAxRvMnr4xy2TGGbgu/UrpvR4hs0lmgVLtfFuIDQ087DU8bTDhwBKHcRnRDPgi8xfF
+	 WlY367V1dDhryGfViaQFmjQ+KiAAFp72ao4q1TvKfSsmzwc1XGFgYHjVCIadbXH3PrsUC
+	 4W46EvFNBDa0smu5hkznAbwbI9FWScTcRNStkv/uiuhi0JmyBEDpBZqlOTePHBlPwHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N6ny3C6U;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kHbbebwO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF15606A33A
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19E7606A31F
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N6ny3C6U
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6323B1F000C5;
-	Mon, 19 Oct 2026 20:14:15 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kHbbebwO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9AD1F000C6;
+	Mon, 19 Oct 2026 20:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792440856;
-	bh=QA0VhwsFvdNMhItCXFdoNxRykx3D8rjnZAd279UTOjA=;
+	s=k20260515; t=1792440851;
+	bh=DzrcsOeLD3pI6O2YFZ/rfcIsT7DsrqTOKWvM27ebr0M=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=N6ny3C6UZ9nRrFGZLPeNJhied5GMPQ+IC5fJdM2e328mGef5JJveB0l9A2SerU1Tf
-	 Cx+r4o3dkX9RASMf4l5HqCfREYGQC69T8mnYphwgMKIr0Lefq0pkZdh1vheqvpAom3
-	 B5ne3OolQU3xjjHsq7ADtNhhmip/BzJf/0WP+SLAK9Bkg+8GtRDTL/3/2G+LxoINAj
-	 A40KlGAR09Mysa/euGdyjrKQ2wTxsBz76ujrERLUSF6BFDiB0fwZX4h6Yfm21xnZ8s
-	 aRlJMAxaBWr68OrUqKwdvtPY6Pg/HDOtWMNAuWbimYQVVwUYYAb15mINwIE9EqzkEM
-	 5QXCPik3ZMK+w==
-Subject: Re: [PATCH net v3 11/14] ice: wait for in-flight Tx timestamps before
- removing the tracker
+	b=kHbbebwO1QWJFdD9xbP3TX28fc4RYGo2ZrcMmdCi6vjK63+HOhg+qguUZuvoEX6zx
+	 DLFRL9qAjO/zxZyGb8aabzqCgMsjk8P0fngtzdHcXlNLaUaCu0DFYEvOqb1zOis49N
+	 7aVJ9FQJQaIRKPAxSO+56YqoO48RiBnYjZtvQ+1wcAwbVfRs008xC10+3bs/eQLEGq
+	 GYpMz+9AizIeImnDk7iSD7Fwx/HoQNH7Jw+4NDay3bVV3jswtZoL7QUic1xvmDZ1gz
+	 7ZF7FxNdO+fm6tVRk/y1d2DuiOZo7qaQ8m339/6Z0b8PlgcjLYuDCCW8mGdoOeBboh
+	 /E6A/w7qkJdag==
+Subject:
+ Re: [PATCH net v3 08/14] ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -50,11 +50,11 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  przemyslaw.korba@intel.com, grzegorz.nitka@intel.com,
  sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com,
  richardcochran@gmail.com, horms@kernel.org
-Date: Mon, 19 Oct 2026 20:14:14 +0000
-Message-ID: <179244085491.3135.8474994286741014334@kernel.org>
-In-Reply-To: <20261015191102.1174111-12-anthony.l.nguyen@intel.com>
-References: <20261015191102.1174111-12-anthony.l.nguyen@intel.com>
-X-sashiko-severity: Medium
+Date: Mon, 19 Oct 2026 20:14:10 +0000
+Message-ID: <179244085024.3135.15051854897545383662@kernel.org>
+In-Reply-To: <20261015191102.1174111-9-anthony.l.nguyen@intel.com>
+References: <20261015191102.1174111-9-anthony.l.nguyen@intel.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,157 +67,145 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] On E830, the new drain wait runs, but the flush that follows
-  cannot clear the ready entries it waited for.
-- [Medium] The tracker is released while the PF's Tx path is still live,
-  and the new drain wait gives up after 10 ms.
+- [Low] The kernel-doc no longer matches how the code uses `struct
+  ice_ptp_tx::calibrating` and `ice_ptp_mark_tx_tracker_stale()`.
+- [Low] The new dev_err in `ice_ptp_port_phy_restart()`
+  (ice_ptp.c:1347-1349) says "Timestamping remains disabled", which is…
 
 --
 
-ice: wait for in-flight Tx timestamps before removing the tracker
+ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
 
-This patch adds ice_ptp_wait_for_tracker_drain(). It polls the PHY Tx
-timestamp ready bitmap for up to 10 ms, until every in-use tracker index
-reports ready. ice_ptp_release_tx_tracker() now calls it before
-ice_ptp_flush_tx_tracker(), so in-flight captures get cleared instead of
-being left as orphaned ready bits, and E810 is skipped via
-tx->has_ready_bitmap.
+On E825, ice_stop_phy_timer_eth56g() no longer clears
+PHY_REG_TX_OFFSET_READY, because clearing it puts the hardware Tx timestamp
+counter out of sync. Instead, the PHY stop and restart paths set
+tx.calibrating to block new Tx timestamp requests, and mark outstanding
+timestamps stale. The unused soft_reset parameter is removed and the
+restart failure message is reworded.
 
 > diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 32be908373c30..ca581490f3edb 100644
+> index 6297773806949..365cff9c10173 100644
 > --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 > +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -751,6 +751,68 @@ ice_ptp_alloc_tx_tracker(struct ice_ptp_tx *tx)
+> @@ -818,7 +818,8 @@ ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
+>  	unsigned long flags;
+>  
+>  	spin_lock_irqsave(&tx->lock, flags);
+> -	bitmap_or(tx->stale, tx->stale, tx->in_use, tx->len);
+> +	if (tx->init)
+> +		bitmap_or(tx->stale, tx->stale, tx->in_use, tx->len);
+>  	spin_unlock_irqrestore(&tx->lock, flags);
+>  }
+>  
 
 [ ... ]
 
-> +static void
-> +ice_ptp_wait_for_tracker_drain(struct ice_pf *pf, struct ice_ptp_tx *tx)
-> +{
-> +	bool drained;
-> +	int err;
+> @@ -1243,7 +1245,14 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
+>  		err = ice_stop_phy_timer_e82x(hw, port, true);
+>  		break;
+>  	case ICE_MAC_GENERIC_3K_E825:
+> -		err = ice_stop_phy_timer_eth56g(hw, port, true);
+> +		/* Disable new Tx timestamp requests */
+> +		spin_lock_irqsave(&ptp_port->tx.lock, flags);
+> +		ptp_port->tx.calibrating = true;
+> +		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
 > +
-> +	if (!tx->has_ready_bitmap)
-> +		return;
+> +		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
 
-[Severity: Medium]
-Does this wait do anything useful on E830? ice_ptp_init_tx() sets:
+[Severity: Low]
+This isn't a bug, but should the kernel-doc for the calibrating field be
+updated to match how E825 now uses it? In ice_ptp.h, struct ice_ptp_tx
+still says:
 
-	tx->has_ready_bitmap = pf->hw.mac_type != ICE_MAC_E810;
+ * @calibrating: if true, the PHY is calibrating the Tx offset. During this
+ *               window, timestamp requests are disabled.
 
-E830 passes this check. ice_ptp_is_tracker_drained() then polls the
-E830 valid bits through ice_get_phy_tx_tstamp_ready_e830() for up to
-10 ms.
+After this patch, E825 sets the bit in ice_ptp_port_phy_stop() on link
+down, where no calibration runs. The commit message also says E825 "does
+not perform vernier calibration".
 
-The flush that follows calls ice_clear_phy_tstamp() for each ready
-index, and that function has no E830 case:
+ice_ptp_port_phy_restart() leaves the bit set on failure, so it acts as a
+"timestamping disabled until link toggle" state. ice_ptp_release() also
+leaves the bit set after teardown.
 
-drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_clear_phy_tstamp() {
-	switch (hw->mac_type) {
-	case ICE_MAC_E810:
-		return ice_clear_phy_tstamp_e810(hw, block, idx);
-	case ICE_MAC_GENERIC:
-		return ice_clear_phy_tstamp_e82x(hw, block, idx);
-	case ICE_MAC_GENERIC_3K_E825:
-		return ice_clear_ptp_tstamp_eth56g(hw, block, idx);
-	default:
-		return -EOPNOTSUPP;
-	}
-}
+The kernel-doc for ice_ptp_mark_tx_tracker_stale() has the same problem. It
+still says:
 
-ice_ptp_flush_tx_tracker() ignores the return value, so the failure is
-silent.
+ * This should be called when the PTP clock is modified such as after a set
+ * time request.
 
-The commit message says:
+It doesn't mention the new PHY stop and restart callers. It also doesn't say
+that the helper now does nothing when tx->init is clear. The teardown order
+in ice_ptp_release() depends on that check, because the tracker bitmaps have
+already been freed:
 
-  Only later devices (E822, E825, E830) have the bitmap and potential
-  issues with internal tracking.
+ice_ptp_release()
+    ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+    ...
+    ice_ptp_port_phy_stop(&pf->ptp.port);
+        ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
 
-On E830, won't the valid bits this wait collected still be set after
-the flush? If so, the patch adds up to 10 ms of latency there without
-fixing the desync.
-
-ice_read_phy_tstamp() already has an E830 case that reads
-E830_PRTTSYN_TXTIME_H/L, but the clear path never uses it. Should
-ice_clear_phy_tstamp() get an E830 case, or should E830 skip the wait?
-The E830 case is still missing at the end of the series.
+Could both comments be updated to describe the new behavior?
 
 > +
-> +	err = read_poll_timeout(ice_ptp_is_tracker_drained,
-> +				drained, drained, 500, 10 * USEC_PER_MSEC, false,
-> +				pf, tx);
-> +	if (err) {
-> +		dev_dbg(ice_pf_to_dev(pf), "Timed out waiting for in-flight Tx timestamps on block %u\n",
-> +			tx->block);
-> +	}
-> +}
+> +		err = ice_stop_phy_timer_eth56g(hw, port);
+>  		break;
 
 [ ... ]
 
-> @@ -868,6 +930,8 @@ ice_ptp_release_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
->  	/* wait for potentially outstanding interrupt to complete */
->  	synchronize_irq(pf->oicr_irq.virq);
->  
-> +	ice_ptp_wait_for_tracker_drain(pf, tx);
+> @@ -1309,15 +1318,35 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
+
+[ ... ]
+
+>  		err = ice_start_phy_timer_eth56g(hw, port);
+> +		if (err)
+> +			break;
 > +
->  	ice_ptp_flush_tx_tracker(pf, tx);
+> +		spin_lock_irqsave(&ptp_port->tx.lock, flags);
+> +		ptp_port->tx.calibrating = false;
+> +		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
+> +
+>  		break;
+>  	default:
 
-[Severity: Medium]
-Is the Tx path still live when this runs? On the remove and devlink
-reload paths the order is:
+[ ... ]
 
-ice_unload()
-  ice_deinit_features()
-    ice_ptp_release()
-      ice_ptp_release_tx_tracker()
-        ice_ptp_wait_for_tracker_drain()
-        ice_ptp_flush_tx_tracker()
-  ...
-  ice_unregister_netdev()
+>  	if (err)
+> -		dev_err(ice_pf_to_dev(pf), "PTP failed to set PHY port %d up, err %d\n",
+> -			port, err);
+> +		dev_err(ice_pf_to_dev(pf), "PTP failed to restart PHY port %u with err %pe; Timestamping remains disabled; A link-toggle may recover.\n",
+> +			port, ERR_PTR(err));
 
-Nothing quiesces the Tx queues before the tracker is released.
-ice_ptp_release() masks PFINT_OICR_TSYN_TX and turns off Rx
-timestamping. Clearing tx->init only stops ice_ptp_request_ts() from
-handing out new indexes.
+[Severity: Low]
+Is "Timestamping remains disabled" accurate for Rx on E825 in every
+failure case?
 
-Two cases seem to slip past the 10 ms wait:
+Tx is now blocked only in software, through tx.calibrating. Rx is blocked
+only in hardware, through PHY_REG_RX_OFFSET_READY.
 
-  ice_tstamp() has already reserved an index through
-  ice_ptp_request_ts(), but the TSYN context descriptor has not been
-  posted yet.
+Suppose the first register write in ice_start_phy_timer_eth56g() fails:
 
-  A TSYN descriptor stays in the hardware Tx ring for more than 10 ms,
-  for example at low link speed, under PFC/pause backpressure, or with
-  rate limiting.
+ice_start_phy_timer_eth56g()
+    err = ice_stop_phy_timer_eth56g(hw, port);
+    if (err)
+        return err;
 
-In either case read_poll_timeout() times out with only a dev_dbg().
-ice_ptp_flush_tx_tracker() then sees the index as not ready, skips
-ice_clear_phy_tstamp(), and frees the entry. When the frame finally
-goes out, the PHY sets a ready bit (Q_REG_TX_MEMORY_STATUS on E82x)
-that no tracker owns.
+PHY_REG_RX_OFFSET_READY then keeps its previous value, for example 1 from
+an earlier successful start. The hardware may keep marking Rx descriptor
+timestamps valid, even though ice_sync_phy_timer_eth56g() never ran.
 
-On E82x that quad memory is shared with the other ports of the quad,
-possibly including ports owned by other PFs. ice_ptp_process_tx_tstamp()
-only walks in_use, so nothing ever reads the orphaned entry.
+If any later step fails, RX_OFFSET_READY has already been cleared and the
+message is accurate. The early return is not new; only the message's
+absolute claim is.
 
-Isn't that the same "delivery for the whole quad degrades to the
-periodic work" situation the commit message describes? Would it be more
-robust to flush after Tx has been stopped, instead of relying on a fixed
-timeout? The ordering is the same at the end of the series.
-
->  
->  	kfree(tx->tstamps);
+Could the message be more precise here, for example by saying that Tx
+timestamping remains disabled?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015191102.1174111-1-anthony.l.nguyen%40intel.com
