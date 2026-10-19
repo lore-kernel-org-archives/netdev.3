@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792430933;
-	b=4TG+1l9JOeT1+a/1ICn/bYcqDP+KJDnvl1RZM57Ox/JUszslMY+gP1G7bpn5qgUvT5vk
-	 q98e8q8xega4zMaHuW4KdfS1sPV43tLwS7YHeOdlUfHIQkTpTeZPoH0iI+sgNujZbFIox
-	 snaSOEjCzISEi4ud9V2CzR2eKz7AG5uxhUJ2k8XJ8VhcJPg1E/pATPI6FcDM/y3uyHzFA
-	 DLCSkMW49OZ6P67G8I09fzgTH4zt02jCeo6jAV0lYOVwplQaD34wkc6KFXShoCHe3PEY5
-	 dznP2n+OYC+bYEX2MyX0npV+l1v4ilZtagDj3NKL3BaSL1TKJvCXp7uP0Nm14/0Vzaw==
+	t=1792430935;
+	b=Llb2OvT6F6l8PvZEHi9r3nyXXqLlgEe3r5lDBsz5Zui/cNEbrZCuOX8vKibrkSJ48uS5
+	 VdlvRvTxeNPzV3624x+wReScAybZ/t7x0CktPvHXF4aMBwetLI4ksfJyMMMhog27n752I
+	 0VSTZqOqgLTrDyJ2dcuWClDvg4XEvzJZcqQpSsGPDHaPnGktJW4bVd46u71p4CVFVL7fa
+	 iXEi41Ekqjrl13A9wUY4q1cMfVARtL7zDY9Pv+FF56l5QBFFNX26FmhFVAdFIAERulkYa
+	 EdVv6yrirKNsVnO2szAv6rPlDossKNmlWyfVlDv9QT5EqVkKLkij2HItKsuYQn4k9ow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792430933;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792430935;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=dliaXstf3K3hpFahkZm0VAS+ySnc8omsj37vCzjs6yI=;
-	b=gErjG/Ih1RrWfHTldqoo9J30meQ7vLvX3XnakmhsIfGbkGCOYrdoz0y7vmtoJQG0D+AN
-	 zAt3xvuwkV0pIphOU61nlKJgxjeVjK2Jr3qn9xapVK/N6cDJ55Um7Dza2Tv+L9a1LW9w+
-	 iqcRh0hVJ79enfI3MvERxlLwCzxaXVXg3sFmyqa7ixJpb1m7eawLTRjkOX5pTsquPDu/D
-	 XeASXxhD8X6IFWme3hgBdaovJBDUq5UBXgFdN3JZ/yEGI9UM55lve0Dg+BLE1XM1fqLQg
-	 Pr4w8DcBJ4P9+b75Sww2Hcs9H8cHt/qgGmcr4fHsZxyDjXIlh22mtVXv0KhYviFV93Q==
+	bh=7Ao8kS4gryXgP23qAl5odrssCC/zglEvYzve79Xv7qY=;
+	b=Op+bBHG7i2BWKg5+zp8LP8OXmYzLbjV6sUlTOWHDshF5+bKYCKyt7lfTw28NR2AO2Oyt
+	 bQ+Wi7hCQFTTT0oLhwdU24ZeFj+1wQz8DpzPhCtq0DuX5VlNm7aU1M5xA5hCj0qQiCFkR
+	 m6ZRMGVuCoTjVsXm1vUkM5x0gedbjPK4k4LIrO1OH1ys4rBht8gXGObQRtrsJnrSjmGMq
+	 b6UclAdF9JfISYShkTQcGuBnOVN0gV5g8xiPnee4YCoMpDIUG3zq1L40IRy5iUQooqvMp
+	 R9wmPO/yWTtCKUHVqGmJGzJQh8CoikoL9GRklQDZ62JKw55yBzXhwKvDsQt/Hzk5sjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtzMmqux;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n8nuODjo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7DE60A261A
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1886760A262B
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtzMmqux
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1501F000D4;
-	Mon, 19 Oct 2026 17:28:52 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n8nuODjo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B6A1F000C4;
+	Mon, 19 Oct 2026 17:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792430933;
-	bh=dliaXstf3K3hpFahkZm0VAS+ySnc8omsj37vCzjs6yI=;
+	s=k20260515; t=1792430934;
+	bh=7Ao8kS4gryXgP23qAl5odrssCC/zglEvYzve79Xv7qY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GtzMmquxisJB08FAAog4nPAoTislfpPi2o1WD26xln1gDGEF4JalyrWbztkKobe9l
-	 8GlV+P/d8iQyScColHXR+hJGOyGZ02ppy9LP+GwCxcerA/Vnj3x1UKajvUehf8Nrcb
-	 jmGJulo8vkxqPmzxaccVGYog2KeJdxGAby4S90ygeA5+OT0sMG+IKT1crGmshkACvF
-	 PHco5+NIELAAtjlOgABVvi/zslBaZU9VkQj1cDmJyNVczpUhXNWlxFcT1pXZNNYqzT
-	 q1ErZgQj7Uon0jnmtA1tLSilgPBtVX+5m40rFWcGyjSMzb8eJxKQV5MrxdkM2wjFoV
-	 Ihh7rM/nXqNKQ==
-Subject: Re: [PATCH net-next v5 12/14] net: ethernet: cortina: Release partial
- RX frames on stop
+	b=n8nuODjobfJ0DI9CwFvyPfqYUsYdkct6Ynh7URuQG4nEuz9t52kNKPUYRoltcbJZx
+	 EGSO1U1/fAJmklTZ6YpgCxzobMQ3mdh6y05izhOVe7W42tOhFnnduK/ifgu5YjA43l
+	 BgFxMjoqqq9A9j6OU/3nf1TMejVYF4esiwczJdfiwbx75W4ib9y5N99imeagvEaGRX
+	 OZG+mKV2LKaZmJZ6xOiqb08xX6jCqUl78w+KGcTmcy+ewuspjPHlxYv1bFIKvV+XSv
+	 GblDPVoKE+97ursrFh73x45tKT7YKGBfyyiTdxBrerglBV0anPoEaKrzscMTmERxPC
+	 LJpw4aN3U0StA==
+Subject: Re: [PATCH net-next v5 14/14] net: ethernet: cortina: Scope RX
+ statistics updates
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
  mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Mon, 19 Oct 2026 17:28:52 +0000
-Message-ID: <179243093210.3135.6481358173986954956@kernel.org>
-In-Reply-To: <20261015-gemini-ethernet-fixes-3-v5-12-b5c9e2f7b8a3@kernel.org>
-References: <20261015-gemini-ethernet-fixes-3-v5-12-b5c9e2f7b8a3@kernel.org>
-X-sashiko-severity: Medium
+Date: Mon, 19 Oct 2026 17:28:53 +0000
+Message-ID: <179243093360.3135.17690101000649286927@kernel.org>
+In-Reply-To: <20261015-gemini-ethernet-fixes-3-v5-14-b5c9e2f7b8a3@kernel.org>
+References: <20261015-gemini-ethernet-fixes-3-v5-14-b5c9e2f7b8a3@kernel.org>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,158 +64,105 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit 'net: ethernet: cortina: Release partial RX frames
-  on stop' fixes a regression introduced by 06937db21ee3 ("net:…
-- [Low] The commit message describes the bug only as "leaking every page
-  already attached to the frame".
+- [Low] The patch fixes a real bug but its commit message has no Fixes:
+  trailer.
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but gmac_stop()
-  calls hrtimer_cancel(&port->rx_coalesce_timer) (line 2229) as its…
+- [Medium] This problem wasn't introduced by this patch, but
+  rx_stats_syncp (and tx_stats_syncp and ir_stats_syncp) in struct…
 
 --
 
-net: ethernet: cortina: Release partial RX frames on stop
+net: ethernet: cortina: Scope RX statistics updates
 
-This patch makes gmac_stop() free a partially assembled RX skb with
-napi_free_frags() before it clears port->rx_skb. The discarded frame is
-counted as rx_dropped under rx_stats_syncp, using the irqsave update
-helpers.
+This commit narrows the rx_stats_syncp writer sections in the Gemini
+ethernet driver so they cover only the counter updates. Before, the
+section in gmac_napi_poll() wrapped all of gmac_rx(). On 32-bit
+PREEMPT_RT, u64_stats_update_begin() disables preemption, so the old
+scope took spinlock_t locks with preemption disabled.
 
-> A NAPI poll can retain a partially assembled frame across invocations. The
-> stop path clears that pointer without releasing its fragment references,
-> leaking every page already attached to the frame.
-
-[Severity: Low]
-Is "leaking every page" an accurate description of the unfixed behaviour?
-gmac_stop() only clears port->rx_skb, so napi->skb still holds the partial
-skb. After a reopen, the first good SOF gets that same skb back:
-
-gmac_rx()
-  gmac_skb_if_good_frame()
-    skb = napi_get_frags(&port->napi);   <- stale napi->skb
-
-gmac_rx() then resets frag_nr to 0 and runs:
-
-    skb_fill_page_desc(skb, frag_nr, page, page_offs, frag_len);
-    skb->len += frag_len;
-    skb->data_len += frag_len;
-
-This overwrites frags[0] and sets nr_frags to 1, so the old page
-references are lost. Meanwhile len and data_len keep growing from their
-stale values.
-
-At EOF, this uses the stale length:
-
-    frag_len = frame_len - skb->len;
-
-When frame_len is at least the stale len, the skb reaches napi_gro_frags()
-with a data_len larger than the bytes actually in its frags. When the two
-are equal, it carries the old frame's payload.
-
-When frame_len is smaller, err_drop frees the skb with napi_free_frags()
-and nothing leaks. If the device is removed instead of reopened,
-free_netdev()->__netif_napi_del_locked() also frees napi->skb.
-
-Could the commit message say that a malformed skb could reach GRO, and not
-only that pages leak?
+> On 32-bit PREEMPT_RT systems u64_stats_update_begin() disables
+> preemption. The RX poll currently holds that writer section across
+> gmac_rx(), which takes spinlock_t locks and calls into GRO and fragment
+> handling. spinlock_t can sleep on PREEMPT_RT and must not be acquired
+> with preemption disabled.
 
 [ ... ]
 
->     Assisted-by: LLM
->     Signed-off-by: Linus Walleij <linusw@kernel.org>
+> Assisted-by: LLM
+> Signed-off-by: Linus Walleij <linusw@kernel.org>
 
-[Severity: Medium]
-Should this have a Fixes: tag? Commit 06937db21ee3 ("net: ethernet:
-cortina: Make RX SKB per-port") added port->rx_skb = NULL to gmac_stop()
-without a call to napi_free_frags().
+[Severity: Low]
+Should this have a Fixes: tag?
 
-Before that commit, the static assembly skb survived a stop/open cycle,
-and the next SOF in gmac_rx() called napi_free_frags() on it. Since that
-commit, a partial frame left over at stop stays in napi->skb, and
-napi_disable() does not touch it.
+The writer section in gmac_napi_poll() that spans gmac_rx() and
+geth_fill_freeq() looks like it has been there since the driver was
+added:
 
-06937db21ee3 has its own Fixes: 4d5ae32f5e1e tag, so it is probably in
-stable trees. The other fixes in this series also carry Fixes: tags.
-Perhaps:
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
 
-Fixes: 06937db21ee3 ("net: ethernet: cortina: Make RX SKB per-port")
+Other patches in this series carry that tag, for example "net: ethernet:
+cortina: Keep shared free queue parent-owned", "net: ethernet: cortina:
+Drain free queue IRQ before resize" and "net: ethernet: cortina: Preserve
+in-flight free queue pages".
+
+arch/arm/Kconfig selects ARCH_SUPPORTS_RT. Without the tag, this fix may
+not reach stable ARM PREEMPT_RT kernels.
 
 > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index d4e90aa97d220..843423187f8da 100644
+> index 0c6c7c938b2eb..7ecc8db9b7d3d 100644
 > --- a/drivers/net/ethernet/cortina/gemini.c
 > +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -2224,12 +2224,19 @@ static int gmac_open(struct net_device *netdev)
->  static int gmac_stop(struct net_device *netdev)
->  {
->  	struct gemini_ethernet_port *port = netdev_priv(netdev);
-> +	unsigned long flags;
+> @@ -1720,12 +1720,12 @@ static struct sk_buff *gmac_skb_if_good_frame(struct gemini_ethernet_port *port,
+>  	unsigned int rx_status = word0.bits.status;
+>  	struct sk_buff *skb = NULL;
 >  
->  	hrtimer_cancel(&port->rx_coalesce_timer);
+> -	port->rx_stats[rx_status]++;
+> -	port->rx_csum_stats[rx_csum]++;
+> -
+>  	if (word0.bits.derr || word0.bits.perr ||
+>  	    rx_status || frame_len < ETH_ZLEN ||
+>  	    rx_csum >= RX_CHKSUM_IP_ERR_UNKNOWN) {
+> +		u64_stats_update_begin(&port->rx_stats_syncp);
 
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. Can
-rx_coalesce_timer be re-armed after this cancel? The RX interrupt is still
-unmasked at this point. It is only masked later, by
-gmac_enable_irq(netdev, 0) and free_irq().
+[Severity: Medium]
+This isn't a bug introduced by this patch, but is rx_stats_syncp ever
+initialized with u64_stats_init()?
 
-An RX interrupt can land anywhere in that window, including while
-napi_disable() sleeps. gmac_irq() then does this, with no check for a
-stopping device:
+I couldn't find any u64_stats_init() calls in
+drivers/net/ethernet/cortina/ for rx_stats_syncp, tx_stats_syncp or
+ir_stats_syncp.
 
-	if (val & (DEFAULT_Q0_INT_BIT << netdev->dev_id)) {
-		gmac_enable_rx_irq(netdev, 0);
+The port lives in the netdev private area allocated in
+gemini_ethernet_port_probe():
 
-		if (!port->rx_coalesce_nsecs) {
-			napi_schedule(&port->napi);
-		} else {
-			...
-			hrtimer_start(&port->rx_coalesce_timer, ktime,
-				      HRTIMER_MODE_REL);
-		}
-	}
+	netdev = devm_alloc_etherdev_mqs(dev, sizeof(*port), TX_QUEUE_NUM, TX_QUEUE_NUM);
 
-gmac_set_coalesce() sets rx_coalesce_nsecs to ethtool rx_coalesce_usecs *
-1000 with no upper bound. The re-armed timer can therefore fire up to
-about 4.29 seconds after gmac_stop() returns.
+On 32-bit kernels with CONFIG_DEBUG_LOCK_ALLOC, the seqcount's dep_map
+therefore has no key. The first writer goes through:
 
-If the interface is reopened before then, gmac_open() calls
-hrtimer_setup() on a timer that is still queued in the clock base. Would
-that corrupt the hrtimer rbtree?
+gmac_skb_if_good_frame()
+  u64_stats_update_begin()
+    write_seqcount_begin()
+      do_write_seqcount_begin_nested()
+        seqcount_acquire(&s->dep_map, ...)
+          ...
+            assign_lock_key()
 
-If the netdev is unregistered and freed instead, would
-gmac_coalesce_delay_expired() then run container_of() on freed port
-memory and call napi_schedule() on it?
+The object is neither static nor per-CPU. Will assign_lock_key() then
+print "INFO: trying to register non-static key" and call
+debug_locks_off(), which turns off lockdep for the whole system?
 
-This ordering goes back to 4d5ae32f5e1e, and the rest of the series still
-calls hrtimer_cancel() first in gmac_stop(). Could the hrtimer be
-cancelled after the RX interrupt is masked or after free_irq(), or be
-cancelled a second time there?
+Non-debug builds are not affected, because the zeroed sequence starts at
+a valid 0.
 
->  	netif_tx_stop_all_queues(netdev);
->  	gmac_disable_tx_rx(netdev);
->  	gmac_stop_dma(port);
->  	napi_disable(&port->napi);
-> +	if (port->rx_skb) {
-> +		napi_free_frags(&port->napi);
-> +		flags = u64_stats_update_begin_irqsave(&port->rx_stats_syncp);
-> +		port->stats.rx_dropped++;
-> +		u64_stats_update_end_irqrestore(&port->rx_stats_syncp, flags);
-> +	}
->  	port->rx_skb = NULL;
->  	port->rx_frag_nr = 0;
->  	port->rx_dropping = false;
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015-gemini-ethernet-fixes-3-v5-0-b5c9e2f7b8a3%40kernel.org
