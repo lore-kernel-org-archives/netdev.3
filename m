@@ -1,67 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792422194;
-	b=NCfjTIVSpW0apKDgEtPndjpY2pBEIQlp5xbyE6XWE46CDj5rb0Oke5gpssosHE3A2jvM
-	 THcm8rdBFkoDMd5LVIsTapCIvwaTBB2xqllJvx9ILJjdWatwscSu8EfVIue4vlNCYvXel
-	 vro1Ni/b+7u+Pmup74YVz0RIAPv/g6p2Ere2kggyCMJwm/iWR84pHp9I328BqwOgAeQZ+
-	 Ejmpt22zoBRGGOg5ROHpAqGTDIDgCw4PyMYqzddaHHOxOpNRsLL5UsNr6KrNJQQQQZYPi
-	 EETsXVLfRmgBGCc3oBRdIixf6Gh0sSAzYsiVvd3P3cxo8tKV809hAMwXMHaeQAAKGDQ==
+	t=1792422604;
+	b=SjcGdIUGssyFMvUtwaY13716bgBVqt+QtDwMRvzTYr79WTPztulDqCH5sTBz83Z7EPTX
+	 gk6gu0dvEwzvHg+SPW8hbWpSSEANafCgnEdEibC/SMGr0MEYPGzgqrzlvPZSuOu/sMSyU
+	 GjLAk5rKgpwPQ+U7SMhmCuhrm4Ql913JbXuTTlpDN/L2HZkjHiO6JyCFYZQaiJdUFPk8n
+	 K1qoxLPb6jBs+vZoyyiXmCZial3xBE0+kAcY4xZPLg2fqfCetqUNWeolbcavyKbNWe3Ik
+	 wZDVYVD2H0t5zavMEsIXoYIOJUeDvQHaKMVU6wpli+lgSwVw6n0kjyUfNPBgBvnDjWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792422194;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=EYYBZweTFbgEHPbYMbybod7rnUu2C7irlTalCiIKRiY=;
-	b=W/cIreMqEsoyVxcqSniye/VFppBH6uie/zAn7mp0XHEJYhzCepVCsXZflddxuofJudfg
-	 19nEAqL431lJPUex5Pb1Cl2DxqiZDxJ67l7HoMkukJMKgC26lwsbQkV6bpaPaui2z6Uj6
-	 QYNfbd+N3V/cPVK4vZmmIXVBUTeV0ERFa+urwM6wxAwSfbv3LOnHBWuPR/oknSnDRHlaa
-	 DmLaLMQEn/EFCWC0Z+evLamiaYd7phSvRxAH/q71Tg1ZLmCZoKvNn1qxZyoRzj1MHTZ1m
-	 4I5Abq1ebZyICS++j/OEEaV7/2egb43xEhlkiy/XQDc5rTD/ibfh0kyTson95vwyLBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792422604;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=9BHC+NQh/WD7K9EOsj/r7yz7VJU3Uune/GkCWNdSWMM=;
+	b=AD0fGVzo/UyJP3faUop3Uc+Nh49H9oIxpT4Tcn52yBtCUJcVARrNNfVmpDbM9r9lslCV
+	 SuWx5uJcDNx0oGBIpgBjza7wGaiJ5d1LDm55APKhQBeVfSS29pd5EfuxeRWLfzumnffup
+	 8xV84fr7RAooqlrbKSoEYYotzr/LMEBwCLu9nda5P0XoeiNYC/B9/CLZHJXuBvjCpB1Cs
+	 k0mIM7DyPV6hT51fMeZW0kG4qnlUvdDAKbTwqrRHhegayusWFtSKcjBYAp8w80NimnyyJ
+	 0T6Y1EovXTRngBoK7UKJtiVbN31QEA63zPyJpBGvVDQonICn/TqF5Hz7YJX3CaMqZTA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=EyPKsr7Q;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bU6Q6Guu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAB6607D372;
-	Mon, 19 Oct 2026 15:03:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0BAB6607D372
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E1B6088286;
+	Mon, 19 Oct 2026 15:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=EyPKsr7Q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1792422192;
-	bh=EYYBZweTFbgEHPbYMbybod7rnUu2C7irlTalCiIKRiY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyPKsr7QxrpppeLpBD6bAo0WBFBXRM27ebYP9k8JpW9OHK/XNVsam3JhdP2Qk+cRg
-	 SsrzZFMf41b/JY5FBY1Shh5SkMWdsy0B2RXOXxC35sNbiXjjmObzZzcV0sZ4DxvXaC
-	 T9Q1mi0dIrBvOiiSgyob1Z8uDPPsusqcXB57p8jM6oa00nerr/ja5DlwCdJg59X7Om
-	 KxqcWv0+1Z/oLbQunElkeZb0xBLgWpSS5H0T6UqxlOiq+b2njmsoJNEqVespn9E2xd
-	 fx4UONQIzeLag+iqhrJXRYjyyn0yKWgL+23pWOxMt64gn6gtUlg9XEU5fhu784qSbQ
-	 Q+PLt9bH0DGLA==
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id ED0A660074;
-	Mon, 19 Oct 2026 17:03:11 +0200 (CEST)
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: [PATCH net 10/10] netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter
-Date: Mon, 19 Oct 2026 17:02:49 +0200
-Message-ID: <20261019150249.1879516-11-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261019150249.1879516-1-pablo@netfilter.org>
-References: <20261019150249.1879516-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bU6Q6Guu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FC61F000C6;
+	Mon, 19 Oct 2026 15:10:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792422603;
+	bh=9BHC+NQh/WD7K9EOsj/r7yz7VJU3Uune/GkCWNdSWMM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=bU6Q6GuutRLD8ykpAN9iHSc2qmou2CFy9R5ywXnmHr+nFTocbp8NKvpcgLCqhIVCt
+	 n3jWcRQJ53KMOuJQN5Mx1IUCvgjQRISCB6ne6ZbDgiz8qPrqTPY8Vl/xoPNnh+VX7D
+	 oLM/LonJ7hH9ftbzUx7gx1u+4wp08gnWDAzkmrNkTt2qGzl90jzcj4n92kuF014AcY
+	 58xNRTdjYuhAwmzTsOA5+kaCB2c6QBEvrOvHfaoz2jRa00+zpJN+ki/eSS+mrJaBWQ
+	 ExbdeagDFNaAJHZxRVSoXLdRxA5LAVuNcvAFvZdF9zo737E4+/yPzudKsKZp3nX7mi
+	 QGEsZDDGV7srw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CFFBAF40066;
+	Mon, 19 Oct 2026 11:10:02 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Mon, 19 Oct 2026 11:10:02 -0400
+X-ME-Sender: <xms:yjLWamDhRPRFMnT8_94AdXw-umFbtWbv-S8MZh6g73Na9fEeSBFCjw>
+    <xme:yjLWarUJ38MEI7mI3UjrD2h1bKzGM3mvHS_DYcBoPN4ECMQx6MiK7ZmO69lWHz9Sa
+    ehAw5GkpyNbn3omBPR_7jAiyPym2eoyFDljJYOXhht44Ev3Blav-ayJ>
+X-ME-Proxy-Cause: dmFkZTGG+W8+3PLYzPMF+RLo/6NQhLsTu4/fDUAl9cKy30x+SEDL0WXMSeTg2oI647LVN8
+    rPZJMexwaPLGEjhbYHKjcMpFmsJQa1+hprk1uYoABvQhwS2WzwLjC2GuCvcSiku9iFq4rh
+    /VconsYfDthAIMxyxAWLW/JoxKFutS/ie0B+ZMMDgrBqwP4XXaKJLYWHhHi1gAy0bhvuRR
+    MJabqVSA3awvC4bO+mrGJwFaav85hHFMe98SEb4f3Asz/f8iSDsz0iV4K3l+zERCtRE3PR
+    5cSx2m5ElqMp83Oh+pBWNf1NBd1NBBRMgfox/wFSGCu0sC3w0kyePzKKQ5zM/vxhqEUbs1
+    dtwvqFb9x8D61T85yXpreL62sBlc6nVbV3G0EFl1D3CHoukk3vwGQt7ItwRrs2C4b9bjYH
+    B4nh0oOcvj6LTpcu6PouLVz4nWQTx8mmI+IdJYDjjNQQMlYne+pAcEoCIXCmQ2+Tpv6u6/
+    uEkPnpYCXYduahlhPsUjA8JJQmWyjHtfhXhNoZtGx8jVrOGqdJ4zwNzzNshi4ev+h0W1fV
+    rFHH9jc1Ao8hD+YfsPAwVR0bfzGgyp9bq0oUSho6y6GGOuZtpHvitrWteWD4iVzRdGgXRS
+    lXSnSPNYy7JbWhKUtSXcPr31tavjd7uNkBllS/zuayNDSNEgEsOsM2fmzmaA
+X-ME-Proxy: <xmx:yjLWam2JJdEWMvBJnmyiz1SyezEgxhzX0w9jIZc9JtVt03Fmg6QslA>
+    <xmx:yjLWaly9mQos1ZStfjnaF7Sf24GO1mSeSs-ck9X0NaiJjFkQHmg9nQ>
+    <xmx:yjLWaiwrVHYaWBMSseiWptKbe4d7_SvP8tFvffQeNWyVO_1AP-L6yw>
+    <xmx:yjLWah_d9ZJnvPIp0zDOWZaiP15hKRpD3AD76I4WXvj5SesM-A-3ZQ>
+    <xmx:yjLWas9NZPlcrj8bE6pbyR9Y5FRwsHMJ_y2AMfi6m8va7QyU2BH3HXGX>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AD4AE782738; Mon, 19 Oct 2026 11:10:02 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,52 +77,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: AyRRy8L93003
+Date: Mon, 19 Oct 2026 11:09:41 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
+ shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Message-Id: <1f7fe58e-4be7-435b-aef2-177194b4dbb5@slotpi15m67>
+In-Reply-To: <179235137532.3135.15441856709185004990@kernel.org>
+References: <20261014-tls-follow-on-v5-2-e76c301d4f05@kernel.org>
+ <179235137532.3135.15441856709185004990@kernel.org>
+Subject: Re: [PATCH net-next v5 02/10] tls: Check for a pending signal after an empty
+ record
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Liu Chao <liuc63@xiaopeng.com>
+On Sun, Oct 18, 2026, at 3:22 PM, netdev-bot+sashiko@kernel.org wrote:
+> - [Medium] tls_sw_recvmsg() (net/tls/tls_sw.c) still has no bound on a
+>   run of zero-length application_data records for any caller that has =
+no=E2=80=A6
 
-ctnetlink_filter_match_tuple() returns 0 (no match) when the IPv6
-source or destination address differs from the filter, because the
-!ipv6_addr_cmp() test is inverted.  ipv6_addr_cmp() returns 0 when
-the addresses are equal, so the negation makes the branch trigger on
-a match instead of a mismatch, which is the opposite of the IPv4
-path above.
+The series bounds tls_sw_read_sock() because its consumer is never
+entered during a run of empty records and so cannot act. A
+recvmsg() caller runs in its own context and holds only its own
+socket's lock. The cover letter draws that line, and v6 will keep
+that behavior. A bound for an in-kernel sock_recvmsg() caller belongs
+in that caller.
 
-Drop the '!' so the IPv6 branch returns 0 only when the addresses
-differ, matching the IPv4 semantics and the caller's expectation.
+v6 will also drop the cap that v5 added to tls_sw_splice_read(),
+so the two system call paths behave the same way.
 
-Fixes: cb8aa9a3affb ("netfilter: ctnetlink: add kernel side filtering for dump")
-Cc: stable@vger.kernel.org
-Signed-off-by: Liu Chao <liuc63@xiaopeng.com>
-Reviewed-by: Weibin Liu <liuwb@xiaopeng.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/netfilter/nf_conntrack_netlink.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 4e5d7c701436..cc8695d5356d 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -1098,13 +1098,13 @@ static int ctnetlink_filter_match_tuple(struct nf_conntrack_tuple *filter_tuple,
- 		break;
- 	case NFPROTO_IPV6:
- 		if ((flags & CTA_FILTER_FLAG(CTA_IP_SRC)) &&
--		    !ipv6_addr_cmp(&filter_tuple->src.u3.in6,
--				   &ct_tuple->src.u3.in6))
-+		    ipv6_addr_cmp(&filter_tuple->src.u3.in6,
-+				  &ct_tuple->src.u3.in6))
- 			return 0;
- 
- 		if ((flags & CTA_FILTER_FLAG(CTA_IP_DST)) &&
--		    !ipv6_addr_cmp(&filter_tuple->dst.u3.in6,
--				   &ct_tuple->dst.u3.in6))
-+		    ipv6_addr_cmp(&filter_tuple->dst.u3.in6,
-+				  &ct_tuple->dst.u3.in6))
- 			return 0;
- 		break;
- 	}
--- 
-2.47.3
-
+--=20
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
