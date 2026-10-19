@@ -1,139 +1,89 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AE94DE72C;
-	Mon, 19 Oct 2026 10:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8FD3D0BE5;
+	Mon, 19 Oct 2026 10:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792406686; cv=none; b=MQh20UYuNddEwtHH7fWnJ26NoBQtG9nOXdEowOaUxDl7rsfOMlzpNExNkkujFmiTDhu/fmX3BmUpBnjuEPkbYNvy19PqhBtzpDPz/vZ8qxVD1xUaKGLjMXuD7tt+yuAy3R1j2SIb5GTgsPPDhyisGcWhfh9AY0SeUsMGPr7Rkm8=
+	t=1792406803; cv=none; b=Fp1g1bQCxaIjbXe/ASScqJodOqV9Z6JZBKggGzLSXkiEE0KvybeLWTk5Z0x1c7K11sbH7BGx/lcjheA56a4S7BZ0d8C+yJuIOXXnAYy/GUB1ANlJNL6m91sjVbGIsZV0sVvhzvnMMvkwtBIZBfRuvdTFCcw9mdw1kzKTmJ6QXro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792406686; c=relaxed/simple;
-	bh=fZ6tdMU+xDFlCKp6/g54mW+NehhUNiI5gX+j3jGmJ84=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QJB/unVy1Wf+uK98ThmsiuFTAqzY54aZ45BvJn63WjppChku+tSb6nGRk9O4Ln2ff3ToTJqllU4qvnj7SJTrYlXU4ZV+gTzOAFFbtj7T/H5CJedCKKJTEdh5ITEgfNVQaP0e8bFCa8zVITECOxZradv1LjaZn30pOGz6CaOga2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nro3wfJA; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1792406803; c=relaxed/simple;
+	bh=7EahbaIvSNoStgd3GuvS9Sej9J5K4CVxbTqbLWV91h0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C6OqNCEfoaSnCmIxdJswzqqLUBnxSOGeby2/MatqsC+XJm/ShgR4iMe/fN5aAfP/c3SN6en1T3MJD1TzL8vWhkDMQd6oOe+vk7KYl+Whsq03OqfNGuoIofXpMoK3wMQBG/11qBUBZ5WNYkV9Ulg73UV3qHRM7ttMuDdI5rGaugA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=EDQWET1g; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nro3wfJA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7H
-	sp2j1tf8cRBwXqGrTFpBRG70ae8Bpm1vq/0qeFeSY=; b=nro3wfJAcjOj2tUGCW
-	u9L2XP0KiEzsx4c4XRzztIjvPuMFYDXD3tagkN1XtUIRS+My5wCv2gTDkwclvjWM
-	RZFMC6GZe7KBUoHL5ugq7Xvi1lSbGd/lbE4hd7Lp2umyDRRh2gF40K1AQH1KYURV
-	BbmmQEWeMopboJ9nqOtPcKWRM=
-Received: from colol4bi5.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDnVxJq9NVqY0ncAw--.3185S2;
-	Mon, 19 Oct 2026 18:43:55 +0800 (CST)
-From: Binbin Deng <18983559317@163.com>
-To: jmaloy@redhat.com,
-	tung.quang.nguyen@est.tech,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Binbin Deng <18983559317@163.com>
-Subject: [PATCH net v2] tipc: fix use-after-free of broadcast reception link at node release
-Date: Mon, 19 Oct 2026 18:43:52 +0800
-Message-ID: <20261019104352.488347-1-18983559317@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="EDQWET1g"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id C8C9420B7168; Mon, 19 Oct 2026 03:46:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C8C9420B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1792406787;
+	bh=bpfPV1+6zKyTa71p4GD/3mudHiMgZCQ8hMtEVkuM3rA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EDQWET1go83y0F2TuyoKEV+PWWR1qrPlaoZwR+BxPnlYzhOrynZLRoaWy8sfsE9hC
+	 Dt/0Nl/UJg4dLxi+wHViSO08agRvKCzi6Ms5la4TO9c2RyDbgz2Wi0fg0McQLnTe8C
+	 h68UzJEBBi1kBkb2w4rqUyyUJkXvpoVnelB4Oll4=
+Date: Mon, 19 Oct 2026 03:46:27 -0700
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	Dexuan Cui <DECUI@microsoft.com>,
+	"longli@microsoft.com" <longli@microsoft.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"hawk@kernel.org" <hawk@kernel.org>,
+	"andriin@fb.com" <andriin@fb.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>
+Subject: Re: [EXTERNAL] [PATCH net-next 0/5] hv_netvsc: make XDP propagation
+ act more like bonding
+Message-ID: <atX1A9+2R251mM1m@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20261001014131.310771-1-kuba@kernel.org>
+ <LV5PR21MB4704E9960B2B82028F2FB51DCA892@LV5PR21MB4704.namprd21.prod.outlook.com>
+ <5636487a-31c7-43fb-8b27-a6a98b15200f@linux.microsoft.com>
+ <asgJo+PasN8D+C/p@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnVxJq9NVqY0ncAw--.3185S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGr1fCr18ZFyUtr13GFy8Krg_yoW5KF45pF
-	W3W39xAr4DXr4F9r4kt3yxGa409F43XFW3G3y09FsrZrs8tr4fXrn29Fy2gFyFkF4v9FW5
-	tF4UG347CFs8ArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U0385UUUUU=
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC-AtnS2rV9GtezgAA3r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <asgJo+PasN8D+C/p@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 
-When the last reference to a tipc_node is dropped, the node itself is
-deferred to the RCU callback tipc_node_free(), but the nested broadcast
-reception link, n->bc_entry.link, is kfree()d synchronously in
-tipc_node_kref_release(), before call_rcu(), and the pointer is never
-cleared.  Readers that obtained the node from node_list and then
-dereference bc_entry.link deep into the link (tipc_link_name() in
-tipc_nl_node_reset_link_stats(), bcl->name/stats in
-tipc_nl_add_bc_link() on the link dump path) therefore touch freed
-memory although the enclosing node stays alive for a full grace period.
-The sibling per-bearer links get "kfree + NULL" under the node write
-lock in tipc_node_clear_links(); the broadcast entry was missed.
-
-The race is reachable through the node cleanup timer: once a peer has
-been unreachable for NODE_CLEANUP_AFTER (300 s), tipc_node_timeout() ->
-tipc_node_cleanup() unlinks the node under the write lock, and the
-final tipc_node_put() at the caller runs outside node_list_lock, so the
-kfree executes in timer softirq context, concurrently with genl dump/
-reset walkers that hold only rcu_read_lock().  (A netlink "peer remove"
-cannot race those walkers itself: tipc_genl_family has no parallel_ops,
-so all doit/dumpit calls serialize on the global genl lock.)
-
-Reproduced in a QEMU/KVM guest running v7.3.0 with KASAN and
-PREEMPT(full): 10 TIPC peer namespaces on veth bearers, bearer removal
-staggered so the 300 s node cleanup timers expire while other tasks
-loop link dumps with the broadcast filter and reset-link-stats lookups.
-KASAN hit within two cleanup cycles:
-
-  BUG: KASAN: slab-use-after-free in strlen+0x85/0xa0
-  Read of size 1 at addr ffff88800b54a004 by task poc_eth/371
-   strlen+0x85/0xa0
-   tipc_nl_add_bc_link+0x2f9/0xd40
-   __tipc_nl_add_node_links+0x10c/0x140
-   tipc_nl_node_dump_link+0x8d5/0xd50
-  Freed by task 0:
-   kfree+0x121/0x380
-   tipc_node_timeout+0xa33/0xcf0
-   run_timer_softirq+0x144/0x250
-   sysvec_apic_timer_interrupt
-
-with the freed object being the kmalloc-1k tipc_link allocated by
-tipc_link_bc_create() during peer discovery.  The same defect fires in
-strcmp() called from tipc_nl_node_reset_link_stats().
-
-Move the kfree of n->bc_entry.link into the tipc_node_free() RCU
-callback so the broadcast link lives exactly as long as the enclosing
-node.  All readers are covered: the netlink walkers are inside
-rcu_read_lock(), and the packet reception path reaches the node via
-tipc_node_find(), whose kref defers kref_release itself.
-
-Found during a static-analysis-assisted audit: candidate sites were
-surfaced by a Coccinelle rule, and the reader/writer paths were
-confirmed by LLM-assisted (GLM-5.3) code inspection.
-
-Fixes: d25a01257e42 ("tipc: fix crash during node removal")
-Assisted-by: GLM-5.3 coccinelle
-Signed-off-by: Binbin Deng <18983559317@163.com>
----
- net/tipc/node.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index bd91378b7540..fdc679fe2d91 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -303,6 +303,7 @@ static void tipc_node_free(struct rcu_head *rp)
- #ifdef CONFIG_TIPC_CRYPTO
- 	tipc_crypto_stop(&n->crypto_rx);
- #endif
-+	kfree(n->bc_entry.link);
- 	kfree(n);
- }
+On Thu, Oct 08, 2026 at 02:22:43PM -0700, Erni Sri Satya Vennela wrote:
+> On Tue, Oct 06, 2026 at 01:59:05PM -0700, Kameron Carr wrote:
+> > On 10/2/2026 12:38 PM, Haiyang Zhang wrote:
+> > > 
  
-@@ -310,7 +311,6 @@ static void tipc_node_kref_release(struct kref *kref)
- {
- 	struct tipc_node *n = container_of(kref, struct tipc_node, kref);
- 
--	kfree(n->bc_entry.link);
- 	call_rcu(&n->rcu, tipc_node_free);
- }
- 
--- 
-2.43.0
+> I am continuing investigation of synthetic fallback with an
+> independently programmed MANA VF and rejected-replacement restoration.
+> 
+> Regards,
+> Vennela
+> 
+> Tested-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
+I tested an arriving VF with its own XDP program while netvsc already
+had a different program attached.
+
+On both MANA and mlx5, netvsc refused to join the VF and preserved
+both programs without overwriting the VF's program. With the
+unjoined VF independently brought UP, VF received traffic directly
+through it. Both drivers supported independent reception before this
+series and are unchanged by these patches. Ownership protection therefore
+passed on both, but refusal to join does not establish synthetic-only
+delivery for an independently UP VF.
+
+The commit message in [PATCH 3/5] says traffic stays on the synthetic
+path after refusal; does that assume the rejected VF remains down, or
+should it also hold when the VF is independently brought UP?
+
+- Vennela
