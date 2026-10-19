@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B15E5AAA79;
-	Mon, 19 Oct 2026 14:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9BF5B67BC;
+	Mon, 19 Oct 2026 14:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418440; cv=none; b=uqvl/7dxOOqddJHYlOGt0YJv3ac2uInbKK1yoGhI5wrylwQItc2yoqcH3oTdbhKjrPGqPMI48gxIDwnKQgUm/q8JiXv9N/kgkLZAi123rb/IrGTYF8YdcVDAuqfGPXzW6oMtPmzmW14ZVQdCwlPNYIGMK1CFb0e7LRGhscq/r3I=
+	t=1792418445; cv=none; b=OdLXZW7DtyggFIPxNaXhbXikDz1vkyShciP0zoPgG2tK2e55GW6xfqC59Oe6vWTbPSgN8P+OdYXeWeGoqwMi+7GUKxWpCN9Dz9nBf4DgUIZimZEIOxsKceQw46TxMDgGiHLl+FtVe6q4cH2CIf0hduEjsSxedTaO3veS9LDoblQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418440; c=relaxed/simple;
-	bh=Ehvru5+ldJBduoygYSuQdUwKqM8A7a0cDhK8j4//YYc=;
+	s=arc-20240116; t=1792418445; c=relaxed/simple;
+	bh=AJlwbBz5hu9qk6tcGpKoYI14lMBX3Ih9zAw/WqN8b9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vjgz37SZrDtJcbG2Nn08mrWa6POYSjllBxvWycWsHZKAV+JDCXLD8EC4kZ8qE3BwLp2OSk54uZ2q9ZxV8KvZ8mHijopIESm0OFLXCIPqG3tGbaO5wSMfohC3wvU39JG05KPY3MNzurdGztKZToz3xGZkrrcxikuG3pGqI8R/fqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ELLcva8r; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ftMznlZDejBi29TghaXqIk7pKG2IVCXN8nErPYEfIUgiYyc/Uc3Ei8tsX/gp6ulYaEl3dWQZ9j7m04XcA7ghJGM81/6KLAuOYnhftl5UaflHI4XAqK5tWqnU9IvHrwlF3JQo8cGW9xt+MwsJv6ABergeNeMzHStbGaUi4AWtj1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxLnJ/ej; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ELLcva8r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AA21F000C6;
-	Mon, 19 Oct 2026 14:00:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxLnJ/ej"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A441F000CA;
+	Mon, 19 Oct 2026 14:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418437;
-	bh=1PkHk1uLwav5pSsmfdAoI/HuuNXk14LCPIv1GCHnexA=;
+	s=k20260515; t=1792418442;
+	bh=xy3kLagWdTJP6ZfDbHny/OxnWXLKiOpy4Ok4SL2BMpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ELLcva8roZbsJD0gAuOVFxCGpYoELknoNocCUgO8bIzLGVSvk7yy+XnOAJgKUnrAT
-	 VRLZwhvUnfiuUqSEIPReh3cRuNrWFzgzlkAEX0ddaWJZ5gPvB96SbCiPxPatzegSPT
-	 Q1WXMTolO6bJGTCLhBoWvaXzCvjVF3g+GTa2xSrUhRgZax/1+9LSM7dRiuH12ck13c
-	 Kf8hL+DzFR4GNCRgW558GYYie8B4gbU9wgObK8TywmGUM5E0dZ1wN1FNwA9lxje3P0
-	 UriyAPAervYGUycLSXe9D9UTjP402q1pakjTgBsGXvUt3Cw2ygA0fIyIB6S/vKhk8/
-	 SLI2hDkXnWI7A==
+	b=PxLnJ/ej0mHR3ugRcGnN1bCZLaUIwFPQJCjO8GCcRh9jvH9mlEZ4iDvUt5meLJquk
+	 5k9OFVfJ2ikRyqqKTr7G7be5wGyOHNzm7FKcfgyl58zAoGsx3FNkapyZRs8ff1tWgV
+	 x/WVBJBdn/iHvO0EGLVpL34+qz1QWtEnjm2C0ZSYANpJ/rbQMz9uPNR0+RHJSDjz8W
+	 V++9h4WtwvY27VrKVw36HXFa/R2vnUR7ANFzm0HW2agZ95PpibBOY6octsMuVzhiTV
+	 pXlOUvWvybFnn6UVFYzUzB4UozKMSLJXYD9tt4jSzynvjOk/hRIGfoZ5CckIY+VO8B
+	 6I8cDbOEWjlfw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Qing Luo <luoqing@kylinos.cn>,
+	Xin Long <lucien.xin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	oliver@neukum.org,
-	andrew+netdev@lunn.ch,
+	marcelo.leitner@gmail.com,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
+	kuba@kernel.org,
+	linux-sctp@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.15] net: usb: cdc_ether: add quirk for AMI BMC stale link events
-Date: Mon, 19 Oct 2026 09:48:59 -0400
-Message-ID: <20261019135441.1420968-248-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] sctp: auth: propagate HMAC calculation errors to callers
+Date: Mon, 19 Oct 2026 09:49:03 -0400
+Message-ID: <20261019135441.1420968-252-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -52,469 +52,538 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.57
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: Qing Luo <luoqing@kylinos.cn>
 
-[ Upstream commit 089ca284afb0f3b2870a5ce41524cbc91ed350d4 ]
+[ Upstream commit 5d3ae80ecddeb82b492a2cf31ac3e44412b426f4 ]
 
-On AMD Genoa/Turin platforms the BMC-provided USB-Ethernet gadget
-(American Megatrends, VID 0x046b PID 0xffb0) intermittently fails to
-respond to ARP after AC cold boot.  usbmon captures a stale
-NETWORK_CONNECTION(off) immediately followed by
-NETWORK_CONNECTION(on) on the interrupt endpoint (~130us apart)
-after enumeration.  Because alloc_netdev() leaves
-__LINK_STATE_NOCARRIER cleared, netif_carrier_ok() returns true
-when the spurious OFF arrives, so usbnet_cdc_status() cannot
-recognise it as redundant and schedules EVENT_LINK_CHANGE.
-__handle_link_change() then calls unlink_urbs(), killing ~60 rx
-URBs whose payload has already been DMA'd into memory — xHCI trace
-confirms them completing as -ECONNRESET with non-zero residual
-length.  rx_complete() drops these unconditionally.  The following
-ON restores the carrier and re-submits URBs, but the ARP reply is
-already lost; the interface looks "up but silent" until ifdown/ifup.
+sctp_auth_calculate_hmac() can fail when building the association secret
+under memory pressure, but its void return silently leaves the HMAC digest
+zeroed.  On the receive path, sctp_sf_authenticate() compares this zeroed
+digest against the peer-supplied one using crypto_memneq(), potentially
+accepting an all-zero HMAC from the peer if the allocation failed.  On the
+send path, sctp_packet_pack() transmits a packet with a zeroed HMAC that
+the peer would reject.
 
-Fix this by adding a device-specific quirk with FLAG_LINK_INTR set,
-which makes usbnet_probe() call netif_carrier_off() after bind.
-With initial carrier == OFF, usbnet_cdc_status() recognises the
-spurious OFF as matching the current state and drops it; the
-subsequent ON is the first real event and brings the link up
-cleanly without ever tearing down the rx queue.  The scheduled
-link-change kevent is harmless because EVENT_DEV_OPEN is not yet
-set at probe time.
+Improve error handling by making sctp_auth_calculate_hmac() return int:
+- sctp_sf_authenticate() returns SCTP_IERROR_NOMEM instead of accepting
+  a zero HMAC.
+- sctp_packet_pack() drops the packet on failure instead of transmitting
+  a zeroed HMAC.
 
-This is applied as a device-specific quirk rather than a change to
-the shared cdc_info driver_info because some CDC devices never
-send NETWORK_CONNECTION notifications; forcing carrier off for
-them would leave the link permanently DOWN.  Restricting the change
-to this VID/PID keeps that class of device untouched.
+Update the declaration in auth.h accordingly.
 
-Tested on Genoa and Turin across 100+ AC cold boot cycles; ping
-first-packet success rate went from intermittent to 100%.
-
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Link: https://patch.msgid.link/20260730051341.24930-1-guojinhui.liam@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Assisted-by: LLM
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260807064314.500742-1-l1138897701@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Local tree is **6.12.111**. The buggy `cdc_ether` path is present here,
-and this is a device-specific hardware quirk for an existing driver.
+This is a real SCTP-AUTH fail-open under memory pressure, and the buggy
+`void` HMAC helper is present in this 6.12 tree. The fix is small,
+reviewer-acked, and backportable with a trivial `auth.c` context tweak.
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
 
-**Step 1.1 PARSE THE SUBJECT LINE**
-- Record: `[net: usb: cdc_ether] [add quirk] [AMI BMC VID 0x046b PID
-  0xffb0 stale NETWORK_CONNECTION events]`
+Step 1.1: PARSE THE SUBJECT LINE
+Record: `[sctp/auth] [propagate] HMAC calculation errors to callers` —
+turn `sctp_auth_calculate_hmac()` from `void` into an `int` so ENOMEM is
+not swallowed.
 
-**Step 1.2 PARSE ALL COMMIT MESSAGE TAGS**
-- Record:
-  - `Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>` (author)
-  - `Link: https://patch.msgid.link/20260730051341.24930-1-
-    guojinhui.liam@bytedance.com`
-  - `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev maintainer
-    applied it)
-  - No `Fixes:`, no `Cc: stable`, no `Reported-by`, no `Reviewed-by`, no
-    `Acked-by`, no `Tested-by` (absence of Fixes/Cc-stable is expected
-    for this review)
-  - Ignore pipeline `Signed-off-by: Sasha Levin` / `[Upstream commit
-    ...]` if present
+Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+Record:
+- `Assisted-by: LLM` (author used an LLM)
+- `Signed-off-by: Qing Luo <luoqing@kylinos.cn>` (author)
+- `Acked-by: Xin Long <lucien.xin@gmail.com>` (SCTP maintainer)
+- `Link:
+  https://patch.msgid.link/20260807064314.500742-1-l1138897701@163.com`
+- `Signed-off-by: Paolo Abeni <pabeni@redhat.com>` (netdev)
+- No `Reported-by`, `Tested-by`, `Reviewed-by` on the committed message
+- No `Fixes:` / `Cc: stable` on the committed v4 text (expected for this
+  review queue; see Phase 4 — they were present on v2/v3, and Xin Long
+  re-added `Fixes:` when acking v4)
 
-**Step 1.3 ANALYZE THE COMMIT BODY TEXT**
-- Record:
-  - **Bug:** AMI BMC USB-Ethernet gadget on AMD Genoa/Turin (VID
-    `0x046b` PID `0xffb0`) intermittently fails ARP after AC cold boot.
-  - **Symptom:** Interface looks “up but silent” until `ifdown`/`ifup`.
-  - **Root cause:** After enumeration, firmware emits stale
-    `NETWORK_CONNECTION(off)` then `(on)` ~130µs apart. `alloc_netdev()`
-    leaves `__LINK_STATE_NOCARRIER` clear, so `netif_carrier_ok()` is
-    true; `usbnet_cdc_status()` treats OFF as a real transition,
-    schedules `EVENT_LINK_CHANGE`, and `__handle_link_change()`
-    `unlink_urbs()`s ~60 RX URBs. Completions come back as `-ECONNRESET`
-    with payload already DMA’d; `rx_complete()` drops them, including
-    the ARP reply.
-  - **Fix:** Device-specific `driver_info` with `FLAG_LINK_INTR` so
-    probe starts carrier OFF; redundant OFF is dropped; ON is the first
-    real event.
-  - **Why not global:** Some CDC devices never send
-    `NETWORK_CONNECTION`; forcing carrier off would leave them
-    permanently DOWN.
-  - **Testing:** 100+ AC cold boots on Genoa and Turin; first-packet
-    ping went from intermittent to 100%.
+Step 1.3: ANALYZE THE COMMIT BODY TEXT
+Record:
+- Bug: `sctp_auth_calculate_hmac()` can fail while building the
+  association secret; it still returns void and leaves the HMAC field
+  zeroed.
+- Receive symptom: `sctp_sf_authenticate()` compares that zero digest to
+  the peer HMAC with `crypto_memneq()`, so an all-zero HMAC can be
+  accepted.
+- Send symptom: `sctp_packet_pack()` ships a packet with a zero HMAC,
+  which the peer rejects.
+- Root cause: silent early return on `sctp_auth_asoc_create_secret()`
+  failure.
+- No kernel-version range in the message.
 
-**Step 1.4 DETECT HIDDEN BUG FIXES**
-- Record: Not hidden. This is an explicit hardware quirk for a real
-  connectivity failure.
+Step 1.4: DETECT HIDDEN BUG FIXES
+Record: Not a disguised cleanup. It is an explicit error-propagation fix
+for a fail-open AUTH path. v1 understated it as “wrong error code
+(BAD_SIG vs NOMEM)”; later revisions correctly describe acceptance of a
+zero HMAC.
 
-## PHASE 2: DIFF ANALYSIS
+===============================================================
+PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
 
-**Step 2.1 INVENTORY THE CHANGES**
-- Record:
-  - File: `drivers/net/usb/cdc_ether.c` only (~+16 lines, 0 removed)
-  - Adds `ami_bmc_info` (clone of `cdc_info` plus `FLAG_LINK_INTR`)
-  - Adds `USB_DEVICE_AND_INTERFACE_INFO(0x046b, 0xffb0, ...)` **before**
-    the generic CDC Ethernet catch-all
-  - Scope: single-file surgical quirk / device ID
+Step 2.1: INVENTORY THE CHANGES
+Record:
+- `include/net/sctp/auth.h`: `void` → `int` for
+  `sctp_auth_calculate_hmac()`
+- `net/sctp/auth.c`: return `-ENOMEM` on secret allocation failure;
+  `return 0` on success
+- `net/sctp/output.c`: drop packed skb on HMAC failure; treat `pkt_count
+  <= 0` as transmit failure
+- `net/sctp/sm_statefuns.c`: on HMAC failure, `kfree(save_digest)` and
+  return `SCTP_IERROR_NOMEM`
+- Scope: ~24 insertions / 13 deletions, four files, surgical, SCTP-only
+- Functions: `sctp_auth_calculate_hmac`, `sctp_packet_pack`,
+  `sctp_packet_transmit`, `sctp_sf_authenticate`
 
-**Step 2.2 UNDERSTAND THE CODE FLOW CHANGE**
-- Record:
-  - **Before:** `046b:ffb0` matches `USB_INTERFACE_INFO(...,
-    USB_CDC_SUBCLASS_ETHERNET, ...)` → `cdc_info` (`FLAG_ETHER |
-    FLAG_POINTTOPOINT`, no `FLAG_LINK_INTR`). Carrier starts ON. Stale
-    OFF is a state change.
-  - **After:** Same bind/status/unbind/filter/power callbacks, plus
-    `FLAG_LINK_INTR`. `usbnet_probe()` calls `usbnet_link_change(dev, 0,
-    0)` → `netif_carrier_off()`. Stale OFF matches current state and is
-    ignored.
+Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+Record:
+- HMAC helper: allocation failure used to `return;` with digest
+  untouched → now `-ENOMEM`.
+- Receive: digest is `memset` to 0, then HMAC is computed into it. On
+  failure, compare is skipped; NOMEM is returned instead of comparing
+  against zeros.
+- Send: HMAC failure frees `packet->auth`, frees the GSO fragment if
+  needed, returns `-ENOMEM`. Non-GSO `nskb == head`, so `nskb` is not
+  freed there (avoids double-free); `sctp_packet_transmit` frees `head`
+  when `pkt_count <= 0`.
 
-**Step 2.3 IDENTIFY THE BUG MECHANISM**
-- Record: **Hardware workaround / logic correctness.** Stale firmware
-  notifications plus default carrier-ON cause a false link-down that
-  tears down RX URBs and drops in-flight frames (ARP).
+Step 2.3: IDENTIFY THE BUG MECHANISM
+Record:
+- Category: logic / correctness with security impact (AUTH fail-open),
+  plus missing error-path handling.
+- Mechanism: RFC 4895 requires the AUTH HMAC field to be zero during
+  computation. The receive path zeros it, then writes the computed MAC.
+  If computation is skipped, the field stays zero, so
+  `crypto_memneq(peer_hmac, zeros)` succeeds when the peer sent zeros.
+- Trigger: `key_id != asoc->active_key_id` (non-active configured shared
+  key) plus `sctp_auth_asoc_create_secret()` GFP_ATOMIC failure.
 
-**Step 2.4 ASSESS THE FIX QUALITY**
-- Record: Minimal and obviously correct. `FLAG_LINK_INTR` is the
-  established usbnet pattern (asix, smsc, dm9601, cdc_ncm, …).
-  Restricted to one VID/PID. Regression risk is confined to `046b:ffb0`:
-  initial carrier is OFF until the first ON notification. Author
-  captured that ON always follows. No public API / data-structure
-  change.
+Step 2.4: ASSESS THE FIX QUALITY
+Record:
+- Obviously correct: callers already have NOMEM handling
+  (`sctp_sf_eat_auth` → `SCTP_DISPOSITION_NOMEM`; transmit already drops
+  on pack failure).
+- Minimal: no API for userspace, no new features.
+- Regression risk: low. Send path drops the packet instead of emitting a
+  MAC the peer would reject. Receive path no longer accept-on-OOM.
+- Residual in this tree: `crypto_shash_setkey()` failure still `goto
+  free` without an error (mainline HMAC helpers no longer have that
+  path). That is preexisting and outside this commit.
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
 
-**Step 3.1 BLAME THE CHANGED LINES**
-- Record:
-  - Generic `cdc_info` has existed since early usbnet.
-  - `FLAG_LINK_INTR` added in `37e8273cd3059` (“usbnet: Set link down
-    initially for drivers that update link state”, 2009).
-  - Global FLAG on `cdc_ether` was removed in `71cc1fa9f2d71` (2010)
-    because CDC Ethernet notifications are optional; devices that never
-    send them stayed DOWN (`bugzilla.kernel.org/14791`). That is why
-    this must be device-specific.
-  - Carrier comparison in `usbnet_cdc_status()` added by `2d5c9dd2cde33`
-    (“net: usb: cdc_ether: don't spew notifications”, 2024-08-08). That
-    check is what lets a redundant OFF be dropped. Confirmed ancestor of
-    HEAD.
+Step 3.1: BLAME THE CHANGED LINES
+Record: Silent `return` on failed `sctp_auth_asoc_create_secret()` is
+from `1f485649f52929` (“[SCTP]: Implement SCTP-AUTH internals”, Vlad
+Yasevich, 2007-10-09), first in `v2.6.24-rc1`. Present for the entire
+life of SCTP-AUTH.
 
-**Step 3.2 FOLLOW THE FIXES: TAG**
-- Record: No `Fixes:` tag. Not applicable. The interaction is long-
-  standing default carrier-ON plus this BMC’s cold-boot notifications.
+Step 3.2: FOLLOW THE FIXES: TAG
+Record: Committed v4 has no `Fixes:` line. Xin Long added `Fixes:
+1f485649f529 ("[SCTP]: Implement SCTP-AUTH internals")` on ack. That
+commit **is** an ancestor of this tree (`git merge-base --is-ancestor
+1f485649f52929 HEAD` succeeded). Mainline fix `5d3ae80ecdde` is **not**
+in this tree.
 
-**Step 3.3 CHECK FILE HISTORY**
-- Record: Recent `cdc_ether.c` history is other device IDs/quirks
-  (`zte_cdc_info`, Cinterion WWAN IDs, ThinkPad dock). Same pattern.
-  Standalone, not `patch X/Y`.
+Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
+Record: Recent SCTP work here is unrelated (INIT leaks, ASCONF, TOCTOU,
+STALE_COOKIE). No prior attempt to propagate HMAC errors.
+`hmac_sha1_usingrawkey` is **not** in this tree; this tree still uses
+`crypto_shash`.
 
-**Step 3.4 CHECK THE AUTHOR'S OTHER COMMITS**
-- Record: `git log --author="Jinhui Guo" -- drivers/net/usb/` is empty
-  in this tree. Author is not the subsystem maintainer. Applied by Jakub
-  Kicinski. USB net maintainers were on To/Cc (Oliver Neukum, netdev).
+Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Record: Qing Luo is not the SCTP maintainer. Xin Long **is** (recent
+`net/sctp` commits, and he acked this). That ack is the quality signal.
 
-**Step 3.5 CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
-- Record: Can apply standalone. This tree already has:
-  - `FLAG_LINK_INTR` and `usbnet_probe()` handling
-  - `usbnet_cdc_status()` carrier filter (`2d5c9dd2cde33`)
-  - `usbnet_cdc_bind` / `unbind` / `usbnet_cdc_update_filter` /
-    `usbnet_manage_power`
-  - Products table with the same Cinterion-then-catch-all context
+Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+Record: No functional prerequisite. Mainline `auth.c` later switched to
+`hmac_sha*_usingrawkey`; this tree still has `crypto_shash`. The error-
+return change does not need that conversion. Standalone after a small
+context adapt in `auth.c`.
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
 
-**Step 4.1 FIND THE ORIGINAL PATCH DISCUSSION**
-- Record:
-  - `b4 dig -c 46651395...` failed (SHA not in this repo).
-  - Lore WebFetch returned 403 (Anubis bot-check).
-  - Openwall/Patchew/LKML recovered the thread:
-    - https://lists.openwall.net/linux-kernel/2026/07/30/380 (v1,
-      standalone `[PATCH]`)
-    - https://lists.openwall.net/linux-kernel/2026/07/30/387 (author
-      follow-up with usbmon + xHCI evidence)
-  - Single revision. No v2/v3 found. No NAK found.
+Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
+Record:
+- `b4 dig -c 5d3ae80ecdde` →
+  https://patch.msgid.link/20260807064314.500742-1-l1138897701@163.com
+- Series: v1 net-next (2026-07-30), v2 net (2026-08-04), v3 net
+  (2026-08-04), v4 net-next (2026-08-07, applied)
+- v1 changelog only mentioned BAD_SIG vs NOMEM.
+- Jakub Kicinski forwarded an AI review he treated as valid: the real
+  bug is **accepting an all-zero HMAC**, reachable from the wire via a
+  configured non-active key id, including delayed COOKIE-ECHO AUTH;
+  asked for `Fixes:` and `Cc: stable`.
+- v2/v3 retargeted to `net`, added security wording, `Fixes:`, `Cc:
+  stable`, and a `sctp_auth_chunk_verify()` refactor.
+- Xin Long on v3: “This patch is intended as a **fix**”; drop the
+  `sctp_auth_chunk_verify()` churn (send that kind of cleanup to net-
+  next). Returning `-ENOMEM` from pack is fine because transmit already
+  treats non-positive pack results as drop.
+- v4 dropped the verify refactor and was sent to net-next; Xin Long
+  acked and re-added `Fixes:`. Paolo applied it to net-next
+  (`5d3ae80ecdde`).
+- No NAKs. Applied version is v4 (latest).
 
-**Step 4.2 CHECK WHO REVIEWED THE PATCH**
-- Record: To: Oliver Neukum, Andrew Lunn, David Miller, Eric Dumazet,
-  Jakub Kicinski, Paolo Abeni. Cc: linux-usb, netdev. No `Reviewed-
-  by`/`Acked-by` in the recovered thread. Kicinski’s SOB is the apply
-  signal. Recipients were the right maintainers.
+Step 4.2: CHECK WHO REVIEWED THE PATCH
+Record (`b4 dig -w`): netdev maintainers (davem, edumazet, kuba, pabeni,
+horms), `linux-sctp@`, `lucien.xin@gmail.com`. Xin Long acked. Jakub’s
+review drove the security description.
 
-**Step 4.3 SEARCH FOR THE BUG REPORT**
-- Record: No syzbot/bugzilla. Author is the reporter, with usbmon, CDC
-  status traces, and xHCI Stop Ring / `-ECONNRESET` givebacks. Failure
-  is AC-cold-boot only; DC reboot preserves gadget state. 100+ cycle
-  test.
+Step 4.3: SEARCH FOR THE BUG REPORT
+Record: No syzbot/bugzilla/user crash report. Bug was found by code
+review (LLM-assisted, then confirmed on the list). Unverified: whether
+any production user has hit the zero-HMAC accept path.
 
-**Step 4.4 CHECK FOR RELATED PATCHES AND SERIES**
-- Record: Standalone 16-line patch. Author’s follow-up mentions not
-  changing shared `cdc_info` because a global `FLAG_LINK_INTR` attempt
-  was reverted (the 2010 revert `71cc1fa9f2d71` is in this tree; the
-  cited subject string does not match that commit — likely a
-  misremembered title — but the technical reason matches the 2010
-  revert).
+Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
+Record: Single patch, not 2/N. v3’s `sctp_auth_chunk_verify()` NOMEM vs
+BAD_SIG split was deliberately **not** merged. Without it, delayed
+COOKIE-ECHO treats HMAC-calc ENOMEM as auth failure
+(`sctp_auth_chunk_verify` still returns bool / false) and discards —
+fail-closed, which is the safe direction.
 
-**Step 4.5 CHECK STABLE MAILING LIST HISTORY**
-- Record: lore.kernel.org/stable search was blocked (403). Openwall/web
-  search found no stable-specific NAK or “do not backport” discussion.
-  UNVERIFIED: whether anyone already requested this on stable@.
+Step 4.5: CHECK STABLE MAILING LIST HISTORY
+Record: lore.kernel.org/stable search returned 403. From the netdev
+thread, v2/v3 carried `Cc: stable`; v4 dropped it only because the
+author retargeted after Xin Long asked to strip the verify refactor.
+Unverified: no separate stable@ thread found.
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
 
-**Step 5.1 KEY FUNCTIONS**
-- Record: No function bodies changed. New `ami_bmc_info`; new
-  `products[]` entry. Runtime path: `usbnet_probe()` → `FLAG_LINK_INTR`
-  → `usbnet_link_change()`; status path remains `usbnet_cdc_status()`.
+Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
+Record: `sctp_auth_calculate_hmac`, `sctp_packet_pack`,
+`sctp_packet_transmit`, `sctp_sf_authenticate`. (semcode MCP not
+available; used grep + reads.)
 
-**Step 5.2 TRACE CALLERS**
-- Record:
-  - `usbnet_probe` is `cdc_driver.probe` (USB enumeration).
-  - `usbnet_cdc_status` is the interrupt completion status callback.
-  - `usbnet_open` submits the interrupt URB and RX URBs
-    (`EVENT_DEV_OPEN`).
-  - `__handle_link_change` unlinks RX URBs if carrier is down **and**
-    `EVENT_DEV_OPEN` is set.
+Step 5.2: TRACE CALLERS
+Record: `sctp_auth_calculate_hmac` has exactly two call sites in this
+tree:
+- `sctp_sf_authenticate()` — receive AUTH, GFP_ATOMIC, reachable from
+  the wire
+- `sctp_packet_pack()` — transmit path
+`sctp_sf_authenticate` is used by `sctp_sf_eat_auth` and by
+`sctp_auth_chunk_verify` (delayed COOKIE-ECHO). Softirq/packet receive
+context.
 
-**Step 5.3 TRACE CALLEES**
-- Record: `usbnet_link_change(dev, 0, 0)` synchronously
-  `netif_carrier_off()` then defers `EVENT_LINK_CHANGE`. Probe-time
-  kevent is a no-op because `EVENT_DEV_OPEN` is clear
-  (`__handle_link_change` returns immediately).
+Step 5.3: TRACE CALLEES
+Record: `sctp_auth_asoc_create_secret()` allocates key vectors
+(`sctp_auth_make_local_vector` / `peer_vector` /
+`sctp_auth_asoc_set_secret`) with the caller’s `gfp`. Receive uses
+`GFP_ATOMIC`.
 
-**Step 5.4 FOLLOW THE CALL CHAIN**
-- Record: Reachable on any host with this BMC gadget and
-  `CONFIG_USB_NET_CDCETHER`. After boot, NetworkManager/`ip link set up`
-  opens the netdev; stale notifications then hit the status path.
-  Userspace-visible: lost ARP, silent interface.
+Step 5.4: FOLLOW THE CALL CHAIN
+Record: Userspace/peer can trigger this: enable SCTP AUTH
+(`net.sctp.auth_enable` is **0 by default**, but applications/sysctl can
+turn it on; ADD-IP needs AUTH), configure more than one shared key, send
+AUTH with a non-active key id and an all-zero HMAC while the host is
+under atomic-allocation pressure. Reachable from the network, not a
+local-only path.
 
-**Step 5.5 SEARCH FOR SIMILAR PATTERNS**
-- Record: Same file already has `zte_cdc_info` (device-specific
-  status/bind). Many usbnet drivers use `FLAG_LINK_INTR`.
-  `drivers/hid/hid-ids.h` defines `USB_VENDOR_ID_AMI 0x046b`;
-  `unusual_devs.h` has another AMI BMC ID `0x046b:0xff40`. Vendor ID is
-  consistent.
+Step 5.5: SEARCH FOR SIMILAR PATTERNS
+Record: No other `sctp_auth_calculate_hmac` copies. Same fail-open
+exists on both send and receive via the single helper.
 
-## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
+PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
 
-**Step 6.1 DOES THE BUGGY CODE EXIST IN THIS TREE?**
-- Record: Yes. Tree is `p-6.12-2-gd38d58a4e0359`, `make kernelversion` =
-  **6.12.111**.
-  - `cdc_info.flags = FLAG_ETHER | FLAG_POINTTOPOINT` (no
-    `FLAG_LINK_INTR`) at `cdc_ether.c:525`.
-  - Catch-all `USB_INTERFACE_INFO(USB_CLASS_COMM,
-    USB_CDC_SUBCLASS_ETHERNET, USB_CDC_PROTO_NONE)` at line 944.
-  - No `0x046b` / `0xffb0` / `ami_bmc` in this driver.
-  - `usbnet_cdc_status()` has the `netif_carrier_ok() !=
-    !!event->wValue` filter (`2d5c9dd2cde33`).
-  - `rx_complete()` drops `-ECONNRESET`/`-ESHUTDOWN` via `goto block`.
-  - `usbnet_probe()` applies `FLAG_LINK_INTR` after `register_netdev()`
-    (author said “before register_netdev”; in this tree it is after, but
-    `netif_carrier_off()` is still synchronous and status URBs start at
-    `usbnet_open`, so the quirk still works).
+Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
+Record: Yes. Tree is `pending-6.12` / `6.12.111`
+(`p-6.12-3-gc504cf0baa3d8`).
+```707:731:net/sctp/auth.c
+void sctp_auth_calculate_hmac(...)
+{
+        ...
+                asoc_key = sctp_auth_asoc_create_secret(asoc, ep_key,
+gfp);
+                if (!asoc_key)
+                        return;
+```
+Receive still zeros the digest then compares unconditionally
+(`net/sctp/sm_statefuns.c` ~4426–4433). Bug introduced in v2.6.24, long
+before 6.12.
 
-**Step 6.2 CHECK FOR BACKPORT COMPLICATIONS**
-- Record: Clean apply expected. Surrounding `cdc_info` / Cinterion
-  `0x1e2d:0x0069` / generic catch-all match the patch context. Line
-  numbers differ slightly (6.12 vs later mainline); context is
-  identical.
+Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
+Record: Mainline `auth.c` uses `hmac_sha1_usingrawkey` /
+`hmac_sha256_usingrawkey`; this tree uses `crypto_shash_setkey` +
+`crypto_shash_tfm_digest`. Exact mainline hunk context in `auth.c` will
+not match. The signature change, `-ENOMEM` return, `return 0`, and both
+caller sites match this tree. An adapted patch (`void`→`int`, `return
+-ENOMEM`, `return 0` after the existing `free:` label, plus the
+output/statefuns hunks) applies (`git apply --check` succeeded on that
+adaptation). Difficulty: **minor conflicts / trivial rework**, not a
+rewrite.
 
-**Step 6.3 CHECK IF RELATED FIXES ARE ALREADY HERE**
-- Record: No AMI BMC quirk. `2d5c9dd2cde33` is the prerequisite filter,
-  already present. No alternate fix for this VID/PID.
+Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
+Record: `git merge-base --is-ancestor 5d3ae80ecdde HEAD` failed. No
+“propagate HMAC” commit. `sctp_auth_calculate_hmac` is still `void`. No
+substitute fix.
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
 
-**Step 7.1 IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
-- Record: `drivers/net/usb/cdc_ether.c` — USB CDC Ethernet.
-  **IMPORTANT** for hosts using this gadget (AMD Genoa/Turin BMC USB
-  NIC), not core mm/VFS. Common on enterprise servers.
+Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
+Record: `net/sctp` — IMPORTANT (transport protocol; not mm/core). AUTH
+is optional but is the integrity mechanism for SCTP-AUTH / ADD-IP.
 
-**Step 7.2 ASSESS SUBSYSTEM ACTIVITY**
-- Record: Mature driver (2005). Ongoing ID/quirk additions. USB
-  NETWORKING DRIVERS in MAINTAINERS is “Odd Fixes”, `drivers/net/usb/`.
+Step 7.2: ASSESS SUBSYSTEM ACTIVITY
+Record: Actively maintained (Xin Long and others still landing SCTP
+fixes on this branch). Mature protocol; this bug is old, not a new-
+subsystem artifact.
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
 
-**Step 8.1 WHO IS AFFECTED**
-- Record: Driver-specific / config-specific: `CONFIG_USB_NET_CDCETHER`
-  and AMI BMC gadget `046b:ffb0` (AMD Genoa/Turin and similar AMI BMC
-  platforms). Other CDC devices unchanged.
+Step 8.1: DETERMINE WHO IS AFFECTED
+Record: Config/protocol-specific: `CONFIG_IP_SCTP` plus AUTH enabled
+(`net->sctp.auth_enable` defaults to 0 in `net/sctp/protocol.c`). Users
+who enable AUTH (telecom, WebRTC data-channel stacks, ADD-IP) are the
+population that matters.
 
-**Step 8.2 TRIGGER CONDITIONS**
-- Record: AC cold boot; firmware queues stale OFF/ON; interface already
-  open so RX URBs exist. Intermittent race with ARP DMA vs Stop Ring.
-  Unprivileged users do not trigger it; it is a boot/enumeration path.
-  Common on affected servers that use the BMC USB NIC.
+Step 8.2: DETERMINE THE TRIGGER CONDITIONS
+Record:
+- AUTH enabled and a non-active shared key configured
+- Peer uses that key id
+- `sctp_auth_asoc_create_secret()` fails (`GFP_ATOMIC` on receive)
+- Peer HMAC is all zeros
+Allocation failure is not attacker-controlled; key id and zero HMAC are.
+Unprivileged remote peer on an AUTH-enabled association can attempt
+this. Commonness: uncommon; severity if it hits: high.
 
-**Step 8.3 FAILURE MODE SEVERITY**
-- Record: Lost RX frames (ARP) → interface up but no L2 connectivity
-  until ifdown/ifup or peer re-ARP. Not a panic. **HIGH** operational
-  impact on affected hardware (host-BMC or provisioning network dead
-  after cold boot).
+Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
+Record:
+- Receive: AUTH bypass (`chunk->auth = 1`) for chunks that should have
+  been rejected — **HIGH** (security / integrity). Not a panic, but
+  fail-open authentication.
+- Send: packet with zero HMAC dropped by peer — **LOW/MEDIUM** (failed
+  send under OOM; already broken).
+Overall: **HIGH** because of the receive fail-open.
 
-**Step 8.4 RISK-BENEFIT RATIO**
-- Record:
-  - **Benefit:** High for AMI BMC USB-Ethernet users on 6.12; fixes a
-    real post-boot connectivity failure.
-  - **Risk:** Very low — 16 lines, one VID/PID, existing flag, no
-    locking/API change.
-  - **Ratio:** Strongly favors backport.
+Step 8.4: CALCULATE RISK-BENEFIT RATIO
+Record:
+- Benefit: high for AUTH users — stops accepting unauthenticated chunks
+  under OOM.
+- Risk: very low — ~20 lines, error paths only, existing NOMEM/drop
+  handling.
+- Ratio: strongly favors backport.
 
-## PHASE 9: FINAL SYNTHESIS
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
 
-**Step 9.1 COMPILE THE EVIDENCE**
-
+Step 9.1: COMPILE THE EVIDENCE
 FOR:
-- Real, reproduced connectivity bug with usbmon/xHCI evidence
-- Hardware quirk + device ID on an existing driver (stable exception)
-- 16-line contained change
-- `FLAG_LINK_INTR` is a long-standing, well-understood usbnet mechanism
-- Does not change generic `cdc_info` (avoids the 2010 permanent-DOWN
-  regression)
-- Prerequisite carrier filter already in 6.12
-- Tested 100+ AC cold boots; netdev maintainer applied it
-- Affects enterprise AMD server BMC networking
+- Real AUTH fail-open: zeroed digest compared to peer HMAC after silent
+  HMAC-calc failure (verified in `sctp_sf_authenticate`).
+- Present in this 6.12 tree since `1f485649f529` (v2.6.24).
+- Small, obviously correct; NOMEM already handled on the eat-AUTH path.
+- SCTP maintainer acked it as a fix and supplied `Fixes:`.
+- Jakub’s review explicitly called for stable.
+- Two call sites only; no new APIs.
 
 AGAINST:
-- Not a crash/security issue
-- No `Reviewed-by` in recovered mail (Kicinski still applied it)
-- Affects one VID/PID, not all users
-- Author slightly misstated probe vs `register_netdev` order (does not
-  break the fix here)
+- AUTH off by default; needs extra keys + atomic ENOMEM + zero HMAC.
+- No syzbot/user crash report.
+- Merged via net-next as v4 without `Cc: stable` in the commit text.
+- Exact mainline `auth.c` context differs (`crypto_shash` vs
+  `hmac_sha*`).
+- Delayed COOKIE-ECHO still maps NOMEM to “auth failed” (fail-closed;
+  acceptable, and what was merged).
 
 UNRESOLVED:
-- Could not use `b4 dig` (SHA absent) or lore.kernel.org (403)
-- Could not confirm stable@ discussion
-- Author’s other `71cc1fa9f2d7` subject string does not match this
-  tree’s commit of that SHA (2010 revert) — rationale still holds
+- No stable@ archive confirmation (lore 403).
+- No evidence of a real-world exploit/report.
 
-**Step 9.2 STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — standard flag, 100+ boot
-   test, maintainer SOB
-2. Fixes a real bug that affects users? **PASS** — silent NIC after AC
-   cold boot
-3. Important issue? **PASS** — connectivity loss / dropped RX (HIGH, not
-   panic)
-4. Small and contained? **PASS** — +16 lines, one file, one VID/PID
-5. No new features or APIs? **PASS** — quirk/ID only
-6. Can apply to the local tree? **PASS** — code and prerequisites
-   present; clean context
+Step 9.2: APPLY THE STABLE RULES CHECKLIST
+1. Obviously correct and tested? **PASS** — logic is local; acked by Xin
+   Long; applied to net-next.
+2. Fixes a real bug that affects users? **PASS** — fail-open AUTH on a
+   wire-reachable path when AUTH is enabled.
+3. Important issue? **PASS** — authentication bypass / integrity failure
+   (HIGH), not a crash. Narrow trigger, but security-class.
+4. Small and contained? **PASS** — four files, ~24 lines, one helper +
+   two callers.
+5. No new features or APIs? **PASS** — return type only, internal.
+6. Can apply to the local tree? **PASS** — buggy code is here; caller
+   hunks match; `auth.c` needs a 3-line adapt around `crypto_shash` (not
+   a missing subsystem).
 
-**Step 9.3 EXCEPTION CATEGORIES**
-- Record: **Hardware quirk/workaround** and **device ID addition to an
-  existing driver**.
+Step 9.3: CHECK FOR EXCEPTION CATEGORIES
+Record: None (not a device ID/quirk/DT/build/doc exception). It
+qualifies as a normal security/correctness fix.
 
-**Step 9.4 DECISION**
-This should be backported to this 6.12 tree. It is a small, device-
-scoped quirk that fixes a real post-boot network failure on AMI BMC USB-
-Ethernet, using infrastructure that already exists here.
+Step 9.4: MAKE YOUR DECISION
+Backport to this 6.12 tree. The bug exists here, the fix is surgical,
+and leaving AUTH fail-open under OOM is worse than dropping the packet /
+returning NOMEM.
 
-### What the commit solves
-On AMD Genoa/Turin, the AMI BMC USB CDC gadget emits a stale link-OFF
-then link-ON right after cold-boot enumeration. Because CDC Ethernet
-starts with carrier on, that OFF is treated as a real link-down, RX URBs
-are unlinked, and in-flight ARP is dropped. The interface stays up but
-silent. Starting carrier off for this VID/PID only makes the stale OFF a
-no-op.
-
-### Risk vs benefit
-Benefit is restoring first-packet connectivity after AC cold boot on
-affected servers. Risk is limited to `046b:ffb0` and is the intended
-`FLAG_LINK_INTR` behavior.
-
-### Concerns
-None material for 6.12. Apply should be clean. Do not change generic
-`cdc_info`.
-
-### Verification
-- [Phase 1] Parsed tags: author SOB, msgid Link, Kicinski SOB; no
-  Fixes/Cc-stable/Reported-by
-- [Phase 2] Diff: +16 lines in `cdc_ether.c`; `ami_bmc_info` with
-  `FLAG_LINK_INTR`; ID `0x046b:0xffb0` before catch-all
-- [Phase 3] `git describe HEAD` / `make kernelversion`:
-  `p-6.12-2-gd38d58a4e0359`, **6.12.111**
-- [Phase 3] `git merge-base --is-ancestor 46651395… HEAD`: commit not in
-  this repo
-- [Phase 3] `git merge-base --is-ancestor 2d5c9dd2cde33 HEAD`: yes
-  (carrier filter present)
-- [Phase 3] `git show 71cc1fa9f2d71`: 2010 partial revert removing
-  `FLAG_LINK_INTR` from `cdc_info`
-- [Phase 3] `git blame` `usbnet_cdc_status`: carrier check from
-  `2d5c9dd2cde33`
-- [Phase 3] `git log --oneline -20 -- drivers/net/usb/cdc_ether.c`:
-  ID/quirk history; no AMI entry
-- [Phase 3] `git log --author="Jinhui Guo" -- drivers/net/usb/`: empty
-  in this tree
-- [Phase 4] `b4 dig -c <sha>`: no match (SHA not local)
-- [Phase 4] lore WebFetch: 403; used Openwall + Patchew instead
-- [Phase 4] Author follow-up: usbmon OFF/ON ~130µs, xHCI `-ECONNRESET`
-  length 1514, AC vs DC explanation
-- [Phase 4] No NAK found; no v2 found
-- [Phase 5] `usbnet_probe` FLAG_LINK_INTR →
-  `usbnet_link_change(dev,0,0)` after `register_netdev` (lines
-  1861–1877)
-- [Phase 5] `__handle_link_change` returns if `!EVENT_DEV_OPEN`; else
-  `unlink_urbs` when carrier down
-- [Phase 5] `rx_complete` `-ECONNRESET`/`-ESHUTDOWN` → `goto block`
-- [Phase 5] `usbnet_open` starts interrupt URB then sets
-  `EVENT_DEV_OPEN`
-- [Phase 6] No `ami_bmc`/`0x046b`/`0xffb0` in `cdc_ether.c`; catch-all
-  still binds this device to `cdc_info`
-- [Phase 6] `FLAG_LINK_INTR` defined in `include/linux/usb/usbnet.h:122`
-- [Phase 6] `USB_DEVICE_AND_INTERFACE_INFO` exists in
-  `include/linux/usb.h`
-- [Phase 6] `CONFIG_USB_NET_CDCETHER` builds `cdc_ether.o`
-- [Phase 7] HID confirms `USB_VENDOR_ID_AMI 0x046b`
-- [Phase 8] Failure mode: dropped RX/ARP, silent interface — HIGH for
-  this hardware
-- UNVERIFIED: stable@ discussion (lore 403); exact mainline SHA not in
-  this checkout
-
-The patch is a textbook stable quirk: small, obviously correct, already
-tested, and the buggy code is in this tree.
+Verification:
+- [Phase 1] Tags parsed from the provided message and from the lore
+  mbox: Acked-by Xin Long; no Fixes on v4 commit text; v2/v3 had Fixes +
+  Cc: stable
+- [Phase 2] Diff: void→int, -ENOMEM on secret alloc, receive NOMEM +
+  kfree(save_digest), send drop + `pkt_count <= 0`
+- [Phase 2] Confirmed receive zeros digest then `crypto_memneq` in
+  `sm_statefuns.c` 4426–4433
+- [Phase 3] `git blame net/sctp/auth.c`: silent return from
+  `1f485649f52929` (2007); `git describe --contains` → v2.6.24-rc1
+- [Phase 3] `git merge-base --is-ancestor 1f485649f52929 HEAD`
+  succeeded; `5d3ae80ecdde` is not an ancestor
+- [Phase 3] `hmac_sha1_usingrawkey` absent in this tree; HMAC still via
+  `crypto_shash`
+- [Phase 4] `b4 dig -c 5d3ae80ecdde`: v1–v4; Jakub review identified
+  zero-HMAC accept and asked for stable; Xin Long: “intended as a fix”,
+  drop verify refactor; acked v4 with Fixes
+- [Phase 4] lore.kernel.org/stable WebFetch 403 — UNVERIFIED whether
+  stable@ discussed it separately
+- [Phase 5] grep: only two `sctp_auth_calculate_hmac` call sites;
+  `sctp_sf_eat_auth` already handles `SCTP_IERROR_NOMEM`
+- [Phase 5] `net->sctp.auth_enable = 0` by default (`protocol.c:1382`)
+- [Phase 6] `git describe HEAD` → `p-6.12-3-gc504cf0baa3d8`; `make
+  kernelversion` → 6.12.111
+- [Phase 6] Adapted patch `git apply --check` succeeded; exact mainline
+  `auth.c` context would conflict
+- [Phase 8] Failure mode: AUTH bypass under ENOMEM + zero HMAC + non-
+  active key — HIGH; send of zero HMAC — LOW
+- UNVERIFIED: real-world exploitation; whether `crypto_shash_setkey`
+  failure is practically reachable for HMAC-SHA1/256 (not required for
+  this verdict)
 
 **YES**
 
- drivers/net/usb/cdc_ether.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/net/sctp/auth.h |  6 +++---
+ net/sctp/auth.c         | 10 ++++++----
+ net/sctp/output.c       | 12 +++++++++---
+ net/sctp/sm_statefuns.c |  9 ++++++---
+ 4 files changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
-index a032c1ded4063..05e625a461b49 100644
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -532,6 +532,16 @@ static const struct driver_info	cdc_info = {
- 	.manage_power =	usbnet_manage_power,
- };
+diff --git a/include/net/sctp/auth.h b/include/net/sctp/auth.h
+index 3d5879e08e78a..27a098411e4cc 100644
+--- a/include/net/sctp/auth.h
++++ b/include/net/sctp/auth.h
+@@ -84,9 +84,9 @@ int sctp_auth_send_cid(enum sctp_cid chunk,
+ 		       const struct sctp_association *asoc);
+ int sctp_auth_recv_cid(enum sctp_cid chunk,
+ 		       const struct sctp_association *asoc);
+-void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+-			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
+-			      struct sctp_shared_key *ep_key, gfp_t gfp);
++int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
++			     struct sk_buff *skb, struct sctp_auth_chunk *auth,
++			     struct sctp_shared_key *ep_key, gfp_t gfp);
+ void sctp_auth_shkey_release(struct sctp_shared_key *sh_key);
+ void sctp_auth_shkey_hold(struct sctp_shared_key *sh_key);
  
-+static const struct driver_info ami_bmc_info = {
-+	.description =	"AMI BMC USB Ethernet",
-+	.flags =	FLAG_ETHER | FLAG_POINTTOPOINT | FLAG_LINK_INTR,
-+	.bind =		usbnet_cdc_bind,
-+	.unbind =	usbnet_cdc_unbind,
-+	.status =	usbnet_cdc_status,
-+	.set_rx_mode =	usbnet_cdc_update_filter,
-+	.manage_power =	usbnet_manage_power,
-+};
+diff --git a/net/sctp/auth.c b/net/sctp/auth.c
+index fbbfa0c279552..6971cb00f5e30 100644
+--- a/net/sctp/auth.c
++++ b/net/sctp/auth.c
+@@ -613,9 +613,9 @@ int sctp_auth_recv_cid(enum sctp_cid chunk, const struct sctp_association *asoc)
+  *    zero (as shown in Figure 6) followed by all chunks that are placed
+  *    after the AUTH chunk in the SCTP packet.
+  */
+-void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+-			      struct sk_buff *skb, struct sctp_auth_chunk *auth,
+-			      struct sctp_shared_key *ep_key, gfp_t gfp)
++int sctp_auth_calculate_hmac(const struct sctp_association *asoc,
++			     struct sk_buff *skb, struct sctp_auth_chunk *auth,
++			     struct sctp_shared_key *ep_key, gfp_t gfp)
+ {
+ 	struct sctp_auth_bytes *asoc_key;
+ 	__u16 key_id, hmac_id;
+@@ -636,7 +636,7 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+ 		/* ep_key can't be NULL here */
+ 		asoc_key = sctp_auth_asoc_create_secret(asoc, ep_key, gfp);
+ 		if (!asoc_key)
+-			return;
++			return -ENOMEM;
+ 
+ 		free_key = 1;
+ 	}
+@@ -654,6 +654,8 @@ void sctp_auth_calculate_hmac(const struct sctp_association *asoc,
+ 
+ 	if (free_key)
+ 		sctp_auth_key_put(asoc_key);
 +
- static const struct driver_info	zte_cdc_info = {
- 	.description =	"ZTE CDC Ethernet Device",
- 	.flags =	FLAG_ETHER | FLAG_POINTTOPOINT,
-@@ -940,6 +950,12 @@ static const struct usb_device_id	products[] = {
- 				      USB_CDC_SUBCLASS_ETHERNET,
- 				      USB_CDC_PROTO_NONE),
- 	.driver_info = (unsigned long)&wwan_info,
-+}, {
-+	/* AMI BMC gadget */
-+	USB_DEVICE_AND_INTERFACE_INFO(0x046b, 0xffb0, USB_CLASS_COMM,
-+				      USB_CDC_SUBCLASS_ETHERNET,
-+				      USB_CDC_PROTO_NONE),
-+	.driver_info = (unsigned long)&ami_bmc_info,
- }, {
- 	USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ETHERNET,
- 			USB_CDC_PROTO_NONE),
++	return 0;
+ }
+ 
+ /* API Helpers */
+diff --git a/net/sctp/output.c b/net/sctp/output.c
+index 23e96305cad7c..3d7ead9d40e19 100644
+--- a/net/sctp/output.c
++++ b/net/sctp/output.c
+@@ -517,8 +517,14 @@ static int sctp_packet_pack(struct sctp_packet *packet,
+ 		}
+ 
+ 		if (auth) {
+-			sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
+-						 packet->auth->shkey, gfp);
++			if (sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
++						     packet->auth->shkey, gfp)) {
++				sctp_chunk_free(packet->auth);
++				packet->auth = NULL;
++				if (gso)
++					kfree_skb(nskb);
++				return -ENOMEM;
++			}
+ 			/* free auth if no more chunks, or add it back */
+ 			if (list_empty(&packet->chunk_list))
+ 				sctp_chunk_free(packet->auth);
+@@ -619,7 +625,7 @@ int sctp_packet_transmit(struct sctp_packet *packet, gfp_t gfp)
+ 
+ 	/* pack up chunks */
+ 	pkt_count = sctp_packet_pack(packet, head, gso, gfp);
+-	if (!pkt_count) {
++	if (pkt_count <= 0) {
+ 		kfree_skb(head);
+ 		goto out;
+ 	}
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 86f26b8b39934..8dc65498763cc 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -4457,9 +4457,12 @@ static enum sctp_ierror sctp_sf_authenticate(
+ 
+ 	memset(digest, 0, sig_len);
+ 
+-	sctp_auth_calculate_hmac(asoc, chunk->skb,
+-				 (struct sctp_auth_chunk *)chunk->chunk_hdr,
+-				 sh_key, GFP_ATOMIC);
++	if (sctp_auth_calculate_hmac(asoc, chunk->skb,
++				     (struct sctp_auth_chunk *)chunk->chunk_hdr,
++				     sh_key, GFP_ATOMIC)) {
++		kfree(save_digest);
++		return SCTP_IERROR_NOMEM;
++	}
+ 
+ 	/* Discard the packet if the digests do not match */
+ 	if (crypto_memneq(save_digest, digest, sig_len)) {
 -- 
 2.53.0
 
