@@ -1,82 +1,46 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C8D234964
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 01:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B076213D8BD;
+	Mon, 19 Oct 2026 01:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792373593; cv=none; b=qcoRJ+EBBc7qs3pfKxLvacqYqtDCmrr/Wf9NDlL2AcdBv9t31T2iblu5olnucCxoeV44w9QfxR6JHnp67V6ZePz5N4HdJSbpRDV2WluzDowrmSg6PwgAErMY1SGRLK+72hZDm9CVnD7DfDWyywaD3pYJI+d+Tyfy+l0Yy8DVJF8=
+	t=1792373888; cv=none; b=IrxDCYUBJVOQpRFJMJ34u9rDvovpqfv3rbRcwc5tP/P9t7StP3M6KdpnfMglAuT4jEYNJ4TTRzSW5X0lTcCWti6yTWeYlkDmKxocRUcXBEOdfiO+WxptGm4F9mukUrZ/Fp772E92LnnDoyq++DUq8RnEGldFy4xwlWRZbj9GijU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792373593; c=relaxed/simple;
-	bh=9Kc6q9rTpzhwVJQBrjDXbF+l2p6vieI5c5NZJWnYEqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlogAplfZWsY9rCjlWJNM1MuqkR4P/kFlYfXU6ki3YWoHzcDoPPzhHzl7H3nVNgUFu2toVa+gzItyY0/e2AWqZZlYH59HlgzIhVJEn3sczdhFVD4G/6jI8Glc8iv+VbDna3qYoBJY17RAJ0WafDZ85tRG04I8X5Hrb6MxuyOJk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=T5LrC3a8; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1792373888; c=relaxed/simple;
+	bh=ljwi3zkBL0CWPJQETI88XsqWvddOmZlPW//n/XmLJVs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j9TKKtc+wtOyAOVwU7ZbPl600h/1M/plNp8lp/ZbUpCIRSWoRWZuRpqHrs1B3SQGJOPcUflgdDI/kPFNTFaGY1NMHhzqybwzD1U9NW5knKZERUslWP4p1g+F3S9v6/J8nE2QG3BAy1ZEqDOvrN7Ftn6H4Eiv99IHRJFTZ/+nqOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=D2YA+bL2; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="T5LrC3a8"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a171b677d2so8588235e9.0
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 18:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1792373590; x=1792978390; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9Kc6q9rTpzhwVJQBrjDXbF+l2p6vieI5c5NZJWnYEqo=;
-        b=T5LrC3a880ioyxH/Bon90h87LXrfZPcBFzTJtzDwKCZj/44vlkclIDk+IwGhnQRKw3
-         1tDqJXA82to0IoFMANb942HhE679CcKnfgV6ZC7Y+nzOnsvypQns2loTUmfODTfnQ3aC
-         xSHrqurXtZcVFAjmmUIR4olKxG1yXmwXPd2YyHXz8XolbA+Y5yjrx6uBgzZpEVcWosPa
-         VcgGVXxumOClC9d2qlI0M44FE2xO6Xdni/RrkeERQ88XrzUlN0ATHax11jglH0gwLyaY
-         15zXiHo/dImLIwF16MvJKUeaVswgekU9VgLtAZ0JaKYY7hrd2rzBscNjrQWjp2MYoAew
-         GKFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792373590; x=1792978390;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9Kc6q9rTpzhwVJQBrjDXbF+l2p6vieI5c5NZJWnYEqo=;
-        b=LllNX77MrPXiXVagansHUYxCgr7ZJ6wB3OXgw+R3NQLweedT8/R2t/szU7B2O39b8K
-         U50R5jz1bbsVIxl6RXqsm4B9r5vyF2A3jG6H+ReAiI1g7+K/jHHGL5OuG1TYK2no//R5
-         xH9RgYi7ZUl+A0VVH0IOmYF4/qaL6574S+UbDYqf5u7tw7N6DKMwySFaTf9miZORVPSQ
-         PMG2811K7i6CNpfhw0wuU9iQCMh2XLNbqiicmPeEaOsLx2dBsyY/QY729qqQZ/vSr1f5
-         ezb3z0yPS4E/rnM5PTgkIhafsgO+UsJAJatdgzhAD8G+ucOr71Q1vvRR5Z+1iToeoNXn
-         FnWQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJipjGBVWb+ZOZW6gdsLYlvm+ufsRNf71EZFoawOJG2VlB5U7aQJfnJzxvetKVozUWECTe+Qc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLmYJnIIK05/7JsLZEjZXjs16M3YTYwGTP5Qlzzc2uv2Rx9Phvw
-	uVZuTmClZnNvtbw29LVTLFuVC9x9IoD8MQuF8sH4B3zQ7K++liC1bQg6IS+1EbTIOrU=
-X-Gm-Gg: AYBFou1MFL7HaPlyMhZcrW5qJyikQ7gP05z0ck96v+ShfqJU6RaTropYFbCgjVq0dN8
-	gQ4UKMCYkhG/1ZmM9cKTW2lB0/Z9zYFRWY7xf631kaVqsS9F1WMHHjCXN4c44xd/jyMXSfEY7T1
-	NwNk3U4RfKps+HoChlkOE0xrjt19ZUC5kfG+53Qy0tqREdD0DuDrclDP1rykOap9QmMjFaEKPHR
-	uOvCW89qcBnppR1HcPJzsy17Dj38GMspjdz7BOgIvKVBPtB4nJ/n5jtqu5PoyFFjlQKegtHVQVA
-	I4wVz0nYathkeVK/idukKjugYOp2yK1+YSspTFp3mnV4yyjx9+1dZ1L/bKWSJqk6PfeLOog8BE4
-	h1Zmr/uYGQcXO/hCnw5O4KOw9IXkyzIt2EV6zgXj1cZ+G6tVCTwu5Cv+YEtF1ru3sKF5Dz+z5em
-	Yy0a3fMwnUebUFgY9txKE7JbuPDuRnbwsBXzI7evI4TeWawXOFoQ==
-X-Received: by 2002:a05:600c:1c0f:b0:4a1:e489:f89f with SMTP id 5b1f17b1804b1-4a1e489fa4bmr64348945e9.14.1792373589447;
-        Sun, 18 Oct 2026 18:33:09 -0700 (PDT)
-Received: from remote-01 ([84.17.55.226])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd9b303csm321116015e9.8.2026.10.18.18.33.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 18:33:09 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Lucien Jheng <lucienzx159@gmail.com>,
-	Albert-AL Lee <albert-al.lee@airoha.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: air_en8811h: use firmware loaded by the bootloader
-Date: Mon, 19 Oct 2026 04:33:04 +0300
-Message-ID: <20261019013304.1612468-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2d6df47b-2cc3-4003-85db-f72b878427d9@lunn.ch>
-References: <2d6df47b-2cc3-4003-85db-f72b878427d9@lunn.ch>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="D2YA+bL2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=dQ
+	Sy07/Z3KzGq8VBZfw5dQqUQm3UjIvOL14CUKMnEnI=; b=D2YA+bL2rdEcBKkilZ
+	v/fbjC7RaJxMPt9X6OBKptvoXApBEoFSHeADD9ybrl9eIuJnpXbhq06hWL7stx2/
+	dc2KwKbG/0cN1Nr5uY+m+SC1h8/76yE84OX0l0BYel3nMPXprVHUTBwVxwq2yJze
+	EcSGfPtUsBgNH6W9lSbIrQwTA=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgAXb0IsdNVqwsjJAg--.21603S2;
+	Mon, 19 Oct 2026 09:36:46 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: sam@mendozajonas.com,
+	fercerpav@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	gwshan@linux.vnet.ibm.com,
+	joel@jms.id.au
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH net v2] net/ncsi: fix use-after-free of ncsi_package in ncsi_remove_package()
+Date: Mon, 19 Oct 2026 09:36:40 +0800
+Message-ID: <20261019013640.449965-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,20 +48,106 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgAXb0IsdNVqwsjJAg--.21603S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWw1rCF47ZFy7AFykuw4DArb_yoWrWF1DpF
+	W3KFy5G3yvyryUWr97uFWruFy5Zr4fur1UK3sagw4Syas8Wry0qryIyayY9Fy5Krs7ua1a
+	vr4UW3yavFWUA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRjQ6LUUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC3w44HGrVdC4rgQAA36
 
-On Sun, Oct 18, 2026 at 09:13:46PM +0200, Andrew Lunn wrote:
-> Is it possible to figure out from the firmware blob what version it
-> is?
+ncsi_remove_package() unlinks the package from ndp->packages with
+list_del_rcu() and then frees it with kfree(), after having released
+all of its channels.  The generic netlink package info walkers iterate
+the same list with the list_for_each_entry_rcu() based
+NCSI_FOR_EACH_PACKAGE() and dereference the package in the loop body:
 
-Not reliably, as far as I can tell. The version the driver prints is
-written into DM by the running MCU; the file holds zeros at that
-address. In the DSP blob the halves 0x2506 and 0x2302 sit eight bytes
-apart, which looks like the code that builds the word, but that is a
-guess at an offset in vendor code.
+    rc = nla_put_u32(skb, NCSI_PKG_ATTR_ID, np->id);
 
-Lucien, Albert, does Airoha guarantee any field in EthMD32.dm.bin or
-EthMD32.DSP.bin as the firmware version, at a fixed place that will not
-move in later releases? Without such a guarantee I would rather not
-compare versions in the driver.
+None of the NCSI genl handlers enters an RCU read-side critical
+section: genl doit and dumpit callbacks run under genl_mutex and
+cb_mutex, not under rcu_read_lock(), and ncsi_unregister_dev() takes
+neither.  A reader that is preempted mid-walk -- or one that has
+resolved the device and then sleeps in the genlmsg_new(GFP_KERNEL)
+allocation of ncsi_pkg_info_nl() -- has no protection at all when the
+teardown frees the package under it.
 
-Aleksei
+The race needs no real NC-SI hardware and is reachable by an
+unprivileged user, as NCSI_CMD_PKG_INFO has no GENL_ADMIN_PERM:
+
+  writer: rmmod ftgmac100
+            -> ftgmac100_remove() -> ncsi_unregister_dev()
+            -> ncsi_remove_package() -> kfree(np)
+  reader: sendmsg(NETLINK_GENERIC, NCSI_CMD_PKG_INFO)
+            -> ncsi_pkg_info_nl() -> ncsi_write_package_info()
+
+ftgmac100_remove() calls ncsi_unregister_dev() before
+unregister_netdev(), so the netdev, and with it the genl entry point,
+stays reachable during the whole window.
+
+KASAN report (arm multi_v7, QEMU ast2600-evb, KASAN + SLUB + PREEMPT,
+four threads looping PKG_INFO doit/dump while cycling insmod/rmmod):
+
+  BUG: KASAN: slab-use-after-free in ncsi_write_package_info+0xe3c/0xf84
+  Read of size 1 at addr c69e2580 by task poc_dump/69
+  The buggy address belongs to the object at c69e2580
+   which belongs to the cache kmalloc-64 of size 64
+  The buggy address is located 0 bytes inside of
+   freed 64-byte region [c69e2580, c69e25c0)
+
+The read is the u8 np->id feeding the nla_put_u32() above;
+sizeof(struct ncsi_package) is 60 bytes, so it lands in kmalloc-64,
+and with no VLAN churn in this mode the only size-1 read at offset 0
+of that cache on this path is np->id.
+
+Free the package with kfree_rcu() so that it survives the grace
+period, and give struct ncsi_package an rcu_head.
+
+This is the free side of the fix for the package object.  The read
+side -- rcu_read_lock() around the device resolution and the list
+walks of all NCSI genl handlers -- is the companion series "net/ncsi:
+fix use-after-free of ncsi_channel in ncsi_remove_channel()"; the
+parent ncsi_dev_priv is deferred by the companion series "net/ncsi:
+fix use-after-free of ncsi_dev_priv in ncsi_unregister_dev()".  The
+race is closed by the three series together; each one keeps its own
+Fixes: tag so they can be backported independently.
+
+Found by a Coccinelle rule matching kfree() immediately after
+list_del_rcu(); the code inspection and the fix were LLM-assisted,
+and the race was confirmed at runtime with KASAN as above.
+
+Fixes: 2d283bdd079c ("net/ncsi: Resource management")
+Signed-off-by: Binbin Deng <18983559317@163.com>
+---
+ net/ncsi/internal.h    | 1 +
+ net/ncsi/ncsi-manage.c | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index adee6dc..cb41953 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -253,6 +253,7 @@ struct ncsi_package {
+ 	bool                 multi_channel; /* Enable multiple channels  */
+ 	u32                  channel_whitelist; /* Channels to configure */
+ 	struct ncsi_channel  *preferred_channel; /* Primary channel      */
++	struct rcu_head         rcu;
+ };
+ 
+ struct ncsi_request {
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 54d0df0..237e041 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -326,7 +326,8 @@ void ncsi_remove_package(struct ncsi_package *np)
+ 	ndp->package_num--;
+ 	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+-	kfree(np);
++	/* Netlink walkers may still hold the package */
++	kfree_rcu(np, rcu);
+ }
+ 
+ void ncsi_find_package_and_channel(struct ncsi_dev_priv *ndp,
+-- 
+2.43.0
+
