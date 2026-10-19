@@ -1,174 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEEF4D9F6A;
-	Mon, 19 Oct 2026 10:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C521B4A2A5F
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792404536; cv=none; b=SeGbYHL+TMpsTQed0bMsPM3L9oTg1qo6aAOeYEAMmAbieWkfwFXHohnqAVNDtlXH3uVSi4RFYMLFM3l2gmhkrUnGjdsLz50R9HQFtm9FTZziB90snD3jmuK0nZNbR4/6VyM9HBt97eYRpL0DOdrm3dfUXVX/rMlvUVcqd6QwqJs=
+	t=1792404550; cv=none; b=SLE900NlGTSgRFVhh2In0TSHV4Jr2KrlKF0vU+mVVCGSn1aGMfgihzjTGi2LaMoWE3Mu7BW50Lu0z28PpOYFhrmMsT9Rf1XGhyX0YlLR4h1ExyIPY7jpVYqc+vYB9JHmbeqoIPouGyerPi7cfJNuFmaWUdzPCBPYsslkjyAWu0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792404536; c=relaxed/simple;
-	bh=e4M5GIVHRKJleKxwEFL10u3DdioDxRxmWP8f9Ju2vLo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H/A5LJpBvulBIEFYkGevT7D6wm6kSl/vNxHlhDaWsGhji0dZuCE5RUObEU4NFwxcZBZhn17L4wGL5rVF/QPEiBD7rt0BW6heSVmQWUcnMYRQycn9JP3FAQO20z0VkynMzdsnaSgFk28caZ4jXt4Tx91g5URmy+6NQTb2+q68amg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8C4+uhv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792404550; c=relaxed/simple;
+	bh=QoQK/kdHldyPvMQ5dW8PaBXStij6P0wjcMNlvVILmvo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tr4h+xbYTtDmp2k95YtdmQNgNvZ5XnNmQKeFUJKOtP62M6p0JTfzplwKfQ1R2qyy+Q9jveCrp+oufeduS8UyYFf74J5PJAaKSt8qSKmCN67quszUSGbNSY9TD+IoK4GBIy1/ugRDR9+tNTAIuIbwWJ0aiCtIVhomAQ+pJHpz5oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=guDw5IHB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qCGs9qPw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8C4+uhv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794691F000C5;
-	Mon, 19 Oct 2026 10:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792404534;
-	bh=if/r576nCJveP9pEbWDHZQui6hukAF4UhYA2QYWeDXE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=S8C4+uhvJw0yvIP1nCu0HUXdFKmwKY+A1Zxvy9bSXOwszU9YzIn4ZzCc8T1irXaly
-	 2Aij6KHnms6nJ9YP6c9Sxn8OetPaY8bhueWvmDw9r1BKHP8+Ey/wxHeZTcBQzGyfV7
-	 rUF1lHEF57a90V9Jh3Ayg53tFQAleaipU04dNBO4fQxx6qh3TSvaNxHtTLo5QeI3r9
-	 jxUXWHt7yduz/e7ZgK3yDMoIDrcxR5EN3KGUCLBpjXlhUgFV96WI/r4D8qnKqBixFJ
-	 wxVrsLDTEyPfp11mJvbJ5xBUFdTyTtD0XgW28hJ2OpR+bqL++rfavIWpiIPyTjpFGl
-	 dUom/HUMVDOMg==
-Subject: Re: [PATCH net-next v15 9/9] net: dsa: lan9645x: add port statistics
-From: netdev-bot+sashiko@kernel.org
-To: jensemil.schulzostergaard@microchip.com
-Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- woojung.huh@microchip.com, linux@armlinux.org.uk,
- Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
- geert+renesas@glider.be, magnus.damm@gmail.com, edumazet@kernel.org,
- richardcochran@gmail.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org
-Date: Mon, 19 Oct 2026 10:08:53 +0000
-Message-ID: <179240453307.3135.2065386937763476332@kernel.org>
-In-Reply-To:
- <20261015-dsa_lan9645x_switch_driver_base-v15-9-562f316f78b9@microchip.com>
-References:
- <20261015-dsa_lan9645x_switch_driver_base-v15-9-562f316f78b9@microchip.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="guDw5IHB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qCGs9qPw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792404547;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S1kyYaAz8+24p19YS7FhB0fj4LUm2ZTPvS5HDwK3dJc=;
+	b=guDw5IHBDOskp8/QKuivtqVpTIEzEQwPlpQyp2coD9ysuxPrTvt7gSsjo5w0KdOG72Qv6j
+	ijZzq6nMWgSb4YQ/UM0OUMx6zZ7UuzM5Sx27BGEw5vF/nypRrZVTiZvICb8tqQNDVWd0iX
+	UH01rZWatfrQ7q8tdSCJDKyvEHiHPVM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-84-T8PBjhQiMCK5vv5qbT45Vw-1; Mon, 19 Oct 2026 10:09:06 +0000
+X-MC-Unique: T8PBjhQiMCK5vv5qbT45Vw-1
+X-Mimecast-MFC-AGG-ID: T8PBjhQiMCK5vv5qbT45Vw_1792404545
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48b0a199b20so1715796f8f.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:09:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792404545; x=1793009345; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=S1kyYaAz8+24p19YS7FhB0fj4LUm2ZTPvS5HDwK3dJc=;
+        b=qCGs9qPwT5aOOMdHzCpszP1Gi+dvR5FCtXmar8tLcfzi+uR4lSs/lnIQ4LeCT8/Lp9
+         8qs767VBtg3fF9fvdh4Eb1ywvgax3gYOIm3/3/RymyXRAWqnIxUd2jupQKc7UehXa6g2
+         KQeHbw2jaPtM5oGePSTkDtUXH2slfvNtm9MXkJ4+PpsLNFK/A0Dv/+xzrGLzA+RvUa/i
+         gpT7D1Gb7ZANj7jqS8RxLWDkGp1dedoz0EWUKg6+ZXz0XpP2UCR2KYj86Ct+ermftLQY
+         bTgFhEUccXhY2lRUUrhj55U5dF9lFhgg8koZX7gZGck98EWWfO/OMhRBnUYlZY8tUntp
+         0/BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792404545; x=1793009345;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=S1kyYaAz8+24p19YS7FhB0fj4LUm2ZTPvS5HDwK3dJc=;
+        b=2xIwIrTGlMsw6iQuSD18GkR0ebOFPdD7ybe7lAxTctG9JENH6Mt40JjZo0VeE8c3dG
+         SCGRmTpVH+mUFmohF4lHGTjO+njEHFCsR/AsJSum8DENWvzIwtpPrpQh17ZSQ7frtEW6
+         sqJcSq1l+p6ZaarByke/JG+cuswJQajSPkE9ICBPuTspwLMPgta6iyrNvGQOCbCBoKBc
+         hUXHF5DgtPldukt2I2m6vMYgYxMDjWcd8l8omn8RZYaSujAVGjh04GB3sxCyuogVWDRO
+         2/+0k7eouBxSey+Doo3Pz8/vfuHnN/yeKeY4nptlH0T9vqtcpxrrByNEiwpc9If+Wxgf
+         kagw==
+X-Forwarded-Encrypted: i=1; AKwUvBzdkW5meWyyEvI7P+adNLwtInba5uwlbvJbDKRH1RpHVYJ5zmILSv6SZ6UASCiisvgjYryqTWA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIRnMY0n54K/Y1h6yJhZyoF7MVV+bVdaSV82KTHFJfwGeF172mr
+	1vXNWippMwxng0xGQrwqqZwSoyz0FZmvgRP1sMkyBbCxWaXPLURWUYTtoEKHOsC+pUDndgpDuQ3
+	q2+vhgLep4JJSFHqUPFLs3J2ivCcjQmPosPVo5/nkZftQVkqu6FgBjhsAuw==
+X-Gm-Gg: AYBFou1KMyS6xFagYkv/9rvjHOeHefpqMdBaOwiTp+WKDm7nM64WJqhfXs5DZn9q5F7
+	q2BGfcB+FtTjazQdfSWrCgnJqlAjNg7Bu0U0pfQrD50qL6E2Y25fKkVCo/b/LcNA4AIW5l6J90q
+	vJVbRPYJbLCt/k2RVBZKJufFddbjkcj7nGoVkvbV9eJ6h5uRL0Bq9OatP7/ClsMQD2589L6NB5p
+	uQp5rOiCBS6BY+z6fjKIY2gYUshAHK1aEsWaoClnDyvM0iZZPWc1CUs3uzVsp6n6pmuYoV4461e
+	S2riD0owHKYLOZl2ab6vk74FkFnCwmQ5uy+atqIuFWsv223Ieh27bX3M0fZHIlzXdzQm9w==
+X-Received: by 2002:adf:e189:0:b0:487:27f9:842 with SMTP id ffacd0b85a97d-48e07fbeffcmr15398399f8f.55.1792404544895;
+        Mon, 19 Oct 2026 03:09:04 -0700 (PDT)
+X-Received: by 2002:adf:e189:0:b0:487:27f9:842 with SMTP id ffacd0b85a97d-48e07fbeffcmr15398333f8f.55.1792404544324;
+        Mon, 19 Oct 2026 03:09:04 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd503862sm21999178f8f.46.2026.10.19.03.09.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 03:09:03 -0700 (PDT)
+Date: Mon, 19 Oct 2026 06:09:00 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Pranjal Kumar Singh <pranjalksingh92@gmail.com>
+Cc: cve@kernel.org, netdev <netdev@vger.kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paulos Yibelo <habte.yibelo@gmail.com>,
+	openvswitch <dev@openvswitch.org>, stable@vger.kernel.org,
+	"fw@strlen.de" <fw@strlen.de>
+Subject: Re: Kernel bug report: unguarded deferred skb_checksum_help() writes
+ corrupt the previously-validated IPv6 fixed header (IPv6 counterpart of
+ commit 6785011f8b16, "ipv4: validate checksum_start before completing
+ checksum")
+Message-ID: <20261019060131-mutt-send-email-mst@kernel.org>
+References: <CA+UYBZDMpqq989aWq318+T2j4+PU7giVpO8ZffrkDFwqaoKjJw@mail.gmail.com>
+ <20261019044815-mutt-send-email-mst@kernel.org>
+ <CA+UYBZCEe3C2HuqgZSZ9Xa7MUxCNy=9ckBmA1Kyjmt882ZRQBA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+UYBZCEe3C2HuqgZSZ9Xa7MUxCNy=9ckBmA1Kyjmt882ZRQBA@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Mon, Oct 19, 2026 at 02:36:14PM +0530, Pranjal Kumar Singh wrote:
+> Yes. One 16-bit csum_fold() write at
+> csum_start + csum_offset, always within the packet's own linear data
+> (admission's pskb_may_pull(needed) bounds it), so no OOB, no memory
+> safety issue and no crash; just a previously-validated header field
+> changed after the stack committed to it.  With the IPv6 geometry I
+> reported (csum_start in [20, 40) slipping past nh_min_len == 20), the
+> write lands in the fixed IPv6 header only -- dst/src bytes; version,
+> payload length, nexthdr and hop limit (bytes 0-7) are unreachable from
+> that geometry -- and the written value is attacker-derivable
+> (precomputed csum_fold in the reproducer; wire value matched byte for
+> byte, control run intact).
+> 
+> I went through the full v2 series: with 4/7 my geometry is resolved at
+> ingress via the mismatch path (Routing-header parse -> csum_start !=
+> thoff -> completed before protocol processing), so the observed window
+> is closed on the virtio-hdr-tested flows and my sink-side patches are
+> superseded for that case.  I'll repost them (or thin them further out)
+> as a net-next follow-up to your v3 only for the sysctl opt-out case in
+> 5/7 (knob off = my geometry is admitted fully intact with
+> CHECKSUM_PARTIAL retained and the deferred write happens as before),
+> plus the xt_CHECKSUM v6 / nf_queue / xfrm_output family gates, which
+> 0/7 doesn't touch.
+> 
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+I don't get what this all means What sink side patches? 0/7 of the
+patches I posted touches what code? I don't think it makes sense to look
+at that sysctl deep in the net stack, if that is what you are saying.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [Medium] lan9645x_stats_get_stats64()
-  (drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c) counts error…
+> On Mon, Oct 19, 2026 at 2:20 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> 
+>     On Mon, Oct 19, 2026 at 02:13:04PM +0530, Pranjal Kumar Singh wrote:
+>     > Hello Security Team,
+>     >
+>     > The IPv4 part of this was fixed some time ago in commit 6785011f8b16
+>     > ("ipv4: validate checksum_start before completing checksum"): a packet
+>     > whose virtio_net_hdr csum metadata points its checksum start inside the
+>     > IP header makes skb_checksum_help() (the deferred csum completion)
+>     > rewrite the header the stack has already validated (fixed checksum
+>     > offset-width write at csum_start + csum_offset).  The IPv6 paths were
+>     > not covered, and they still are not: a 2-patch series mirroring that
+>     > commit for IPv4->IPv6, including its remaining not-yet-IPv6-guarded
+>     > sinks, is reproduced below and attached as patches/0001 and 0002.
+> 
+>     Thanks, I think this has been reported already. Just to clarify, the effect
+>     is just packet header corruption past validation, right?
+> 
+>     See [PATCH net-next v2 0/7] more virtio-net csum hardening
+>     for WIP fixes.
+> 
+>     --
+>     MST
+> 
+> 
 
---
-
-net: dsa: lan9645x: add port statistics
-
-This adds port statistics support to the lan9645x DSA driver. The 32 bit
-hardware counters are polled into a 64 bit software cache, and the pMAC
-counters are summed into the aggregate source. The cache is exposed through
-ethtool -S, the standard ethtool groups and ndo_get_stats64.
-
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-> new file mode 100644
-> index 0000000000000..a21afb4d98532
-> --- /dev/null
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-> @@ -0,0 +1,854 @@
-
-[ ... ]
-
-> +void lan9645x_stats_get_stats64(struct lan9645x *lan9645x, int port,
-> +				struct rtnl_link_stats64 *stats)
-> +{
-
-[ ... ]
-
-> +	stats->rx_packets = c[SCNT_RX_SHORT] +
-> +			    c[SCNT_RX_JABBER] +
-> +			    c[SCNT_RX_SZ_64] +
-> +			    c[SCNT_RX_SZ_65_127] +
-> +			    c[SCNT_RX_SZ_128_255] +
-> +			    c[SCNT_RX_SZ_256_511] +
-> +			    c[SCNT_RX_SZ_512_1023] +
-> +			    c[SCNT_RX_SZ_1024_1526] +
-> +			    c[SCNT_RX_SZ_JUMBO] +
-> +			    c[SCNT_RX_LONG] +
-> +			    c[SCNT_RX_PMAC_SHORT] +
-> +			    c[SCNT_RX_PMAC_FRAG] +
-> +			    c[SCNT_RX_PMAC_JABBER] +
-> +			    c[SCNT_RX_PMAC_SZ_64] +
-> +			    c[SCNT_RX_PMAC_SZ_65_127] +
-> +			    c[SCNT_RX_PMAC_SZ_128_255] +
-> +			    c[SCNT_RX_PMAC_SZ_256_511] +
-> +			    c[SCNT_RX_PMAC_SZ_512_1023] +
-> +			    c[SCNT_RX_PMAC_SZ_1024_1526] +
-> +			    c[SCNT_RX_PMAC_SZ_JUMBO] +
-> +			    c[SCNT_RX_PMAC_LONG];
-> +
-> +	stats->multicast = c[SCNT_RX_MC] + c[SCNT_RX_PMAC_MC];
-> +
-> +	stats->rx_errors = c[SCNT_RX_SHORT] +
-> +			   c[SCNT_RX_JABBER] +
-> +			   c[SCNT_RX_CRC] +
-> +			   c[SCNT_RX_LONG] +
-> +			   c[SCNT_RX_PMAC_SHORT] +
-> +			   c[SCNT_RX_PMAC_JABBER] +
-> +			   c[SCNT_RX_PMAC_CRC] +
-> +			   c[SCNT_RX_PMAC_LONG];
-
-[Severity: Medium]
-Should short, jabber and oversize frames be counted in rx_packets in
-lan9645x_stats_get_stats64()?
-
-rx_packets and rx_errors both add SCNT_RX_SHORT, SCNT_RX_JABBER and
-SCNT_RX_LONG, plus their pMAC versions. JABBER and LONG are also added to
-rx_length_errors. So every malformed frame received on a user port counts
-once as a good packet and once as an error.
-
-The rtnl_link_stats64 kernel-doc in include/uapi/linux/if_link.h says:
-
-  @rx_packets: Number of good packets received by the interface.
-
-The v5 changelog also says CRC and symbol error frames "are already counted
-in SZ_* buckets". Since those buckets feed rx_packets, frames with a bad CRC
-would be counted as good packets as well.
-
-This also gives a different answer from lan9645x_stats_get_eth_mac_stats(),
-which counts good received frames as UC + MC + BC only:
-
-	m->FramesReceivedOK = c[SCNT_RX_UC] +
-			      c[SCNT_RX_MC] +
-			      c[SCNT_RX_BC] +
-			      ...
-
-As a result, rx_packets is larger than FramesReceivedOK by the number of
-errored frames. ocelot_port_get_stats64() uses a similar rx_packets formula,
-but that does not match the uAPI description either.
-
-Could rx_packets be derived the same way as FramesReceivedOK?
-
-A separate point: c[SCNT_RX_PMAC_FRAG] is added to rx_packets but not to
-rx_errors. The comment in lan9645x_stats_get_rmon_stats() says:
-
-	/* ... Only SCNT_RX_PMAC_FRAG counts runts with an invalid
-	 * CRC, so fragments is left unset rather than reporting the pMAC alone.
-	 */
-
-Going by that comment, a pMAC runt with a bad CRC would be counted as a
-good packet and left out of the error total. Is that intended?
-
-v12 removed the eMAC SCNT_RX_FRAG from rx_packets, but the pMAC version is
-still there. Since the pMAC gets no traffic without MAC merge, this has
-little effect today.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015-dsa_lan9645x_switch_driver_base-v15-0-562f316f78b9%40microchip.com
