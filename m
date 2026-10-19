@@ -1,217 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA66596E8C;
-	Mon, 19 Oct 2026 14:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7C6491B12;
+	Mon, 19 Oct 2026 14:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792420733; cv=none; b=iCxmjTTZyQtiAWMr1QoW1suy5lFoaR1Z/1I4T+8RrT/h7/4Y6jYI2L7diFZenBJ5oiT/zIN8PZIja8CwQh5p3b3IS9oppanNg6Gi/ddLxO0TX0hYxWStMUNeG9sdIA3mcFlBYYQGFThoGE/sEYG5JGM2RertCchOf3DzUFl1Fik=
+	t=1792420930; cv=none; b=sK/FO4Ix6Hb9TCfe0ddqrynXFV7UzF0jZuhKWqJoh/w3yfHkxTP/sbaEJFFTSoDO2aoH9zKZ3lyNRay2F7AgELFB449lgtkD27bUNeXtHO3pIiSfqpgx/VbO6f+jMZpzI/wyBV6eQVC6R2KReclpeRtQufb80SP/H5a6TWyRvL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792420733; c=relaxed/simple;
-	bh=CW91CfKKKLjEmYD2B68vSnrHjVe/P+kBuocfc7jZ6mo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QdIuFBuv+VbrTqsgIzTugtWtCU6Sphia0uUcCxbD96puXp9V33xglk3/Jsh1+4ZzgmqpZHACDGhh/IdcVQyzengcr3LlL2mLgY7LR6JZl/jaBjdNpLpvskPGU7PMqK5O2UKFxTR9oJQUZSXXhYlCzoA+PkB/yz6esWmDWvsTCSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+HzM5X7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792420930; c=relaxed/simple;
+	bh=+CcE//8LwHV5giiOzprhXnBLjNfbqHe6aALXRB3Ow80=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=oZpm9DMUNqO38jmObRi41HdToJlxjB6rAl/cMTLbf5MLAxifPq7MWeeQXFI4bAgs2bPinU9WX+/96O2laSBB1ETlv0ZJIM+Z/JespVFNQpn/tSQa9UwWF/eOWx5NH6oWJpcvpmRn+PfEIuwQxIN7t/7e+B/eFFIuj5zcfMS7mRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=n8aGCNXm; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+HzM5X7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2414C1F000C4;
-	Mon, 19 Oct 2026 14:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792420732;
-	bh=hYKA0XJet1RnoiHtXKCkpjdYwSNS1IMXkGEHRvokRp0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=m+HzM5X7I7hbry1ukeBdsOCV71yoHnonw64VsG1jkOYQcSCNUU/OtV8P8ES+UtEDE
-	 1CYklcs8bsrQGf7np6Rug8XcXL6+ZQ8lvoT1f2pMBr2NJAALdNKr0scaMPRT25eJ0k
-	 jtX1jZXKMnI2KkmfQ7Drofs1jHo5yFp1qXAW6cuvd8xijJ9twwrBYI7zYAOVoAroeP
-	 UVZCfY4/lqhVZ5UBZt69TwmlCjgpPWVhrxSFTbGCRRyCDGgvZ0qwxJ6h/aFbdhL/KD
-	 OVsbfQs8Jy27jaGT0Mr94bt0sHc57kUUBXblQiuEUtSq7U667U544JRTHxjl9qVPmC
-	 qkjWtgJRy96+A==
-Subject:
- Re: [PATCH net-next v2 2/2] net: phy: qcom: qca808x: Add regulator management
-From: netdev-bot+sashiko@kernel.org
-To: elder@riscstar.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
- daniel@riscstar.com, ansuelsmth@gmail.com, donggeunyoo.kernel@gmail.com,
- mohd.anwar@oss.qualcomm.com, lorenzo.bianconi@oss.qualcomm.com,
- devicetree@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 14:38:50 +0000
-Message-ID: <179242073068.3135.7197749008820152955@kernel.org>
-In-Reply-To: <20261015143849.483339-3-elder@riscstar.com>
-References: <20261015143849.483339-3-elder@riscstar.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="n8aGCNXm"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 354A4A156A;
+	Mon, 19 Oct 2026 16:42:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792420922; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gdPAFwtkiyGOrrmpDJKuYvH8c98AWepp1hYqr6NQ5+A=;
+	b=n8aGCNXms/uv7CzfapYewb+6FNb5I6XxvEM2THqbJ+0eVNxdgBR1CdLKSwAiP6yTZtl/+T
+	BiQqHZgfXpvS/NVyOU+x9fYvXTl8J12rfCsyzJmNMvgf2INH5/p1d/4S6eYV3h2jcQEj9l
+	o+84ZZILEiA1SxvgRTuXJUt2fvcPfJClCXVIpnSDaZHosUzqijz3rUU12HJui/Fsu0yAXN
+	7jzCW2uzfRSZCfzjayRdU41IZp0mee9yAWAwg4xw6oOzsA5Lui9jZFpYEJXTTSYPv7P/Qm
+	6BLxQydaKShJXXDOQt3fMgc/1q/5/coEb+FuAJ4cbj0GsgOqc0ysVXApbKaD5A==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Mon, 19 Oct 2026 16:42:02 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Mikkel Eskildsen <mke@visotia.com>
+Cc: Oliver Neukum <oneukum@suse.com>, Breno Leitao <leitao@debian.org>,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>
+Subject: Re: [BUG] cdc_ncm: soft lockup with netconsole over an AX88179B dock
+In-Reply-To: <PRAP189MB185019A5A8D411482BB6E0CDA9982@PRAP189MB1850.EURP189.PROD.OUTLOOK.COM>
+References: <PRAP189MB185019A5A8D411482BB6E0CDA9982@PRAP189MB1850.EURP189.PROD.OUTLOOK.COM>
+Message-ID: <6aaea20ede0bd16a5138bc126f3ec897@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Mikkel
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+On 19.10.2026 15:48, Mikkel Eskildsen wrote:
+> Hi,
+> 
+> My laptop panicked with a soft lockup on 2026-10-16 and again on 
+> 2026-10-19 while netconsole was running over a USB dock NIC that uses 
+> cdc_ncm. Both times the laptop was docked and netconsole was on that 
+> interface. I have turned netconsole off for now.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I was able to reproduce the issue with a similar device.
 
-- [Medium] qca808x_power_on() (drivers/net/phy/qcom/qca808x.c) turns on
-  the QCA8081 supplies only after phylib has already released the PHY…
-- [Low] Kept only because requires_validation=true; the baseline decision
-  is a false positive.
+Seems like netconsole holds the tx lock while the cdc_ncm driver
+lets pending network work run in the middle of the send.
+... which then starves on the lock netconsole still holds.
 
---
+Below is a patch which hopefully fixes the issue.
 
-net: phy: qcom: qca808x: Add regulator management
+> 
+> The trace below is from pstore. The netconsole thread on CPU15 is in 
+> netpoll_send_skb -> usbnet_start_xmit -> cdc_ncm_tx_fixup. The 
+> spin_unlock_bh() in cdc_ncm_tx_fixup runs pending softirqs, TCP RX 
+> sends a packet and it spins in sch_direct_xmit. My guess is that it 
+> waits for the eth0 tx queue lock that netpoll already holds. The other 
+> CPUs then wait on the socket lock until the watchdog panics.
+> 
+> The first panic looks the same, but pstore lost the part with the 
+> netconsole thread.
+> 
 
-This commit adds optional regulator handling to the qca808x PHY driver.
-qca808x_probe() now enables the avdd18, vdd, vdd18 and vdd125 supplies
-with devm_regulator_get_enable_optional() and leaves them on for the
-lifetime of the device. If any supply was found, the driver then waits
-for reset_assert_delay before it continues.
+> [...]
 
-> diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
-> index bab26e4c61408..4aba513b9a512 100644
-> --- a/drivers/net/phy/qcom/qca808x.c
-> +++ b/drivers/net/phy/qcom/qca808x.c
+> I can test a patch if that helps. Is this a known issue?
 
-[ ... ]
+https://github.com/nbuchwitz/linux/commit/319cb0933e2eaf984b98906ebddb55befb4e2996
 
-> @@ -181,15 +182,43 @@ static void qca808x_fill_possible_interfaces(struct phy_device *phydev)
->  		__set_bit(PHY_INTERFACE_MODE_2500BASEX, possible);
->  }
->  
-> +static int qca808x_power_on(struct phy_device *phydev)
-> +{
-> +	static const char * const regulator_names[] = {
-> +		"avdd18", "vdd", "vdd18", "vdd125"
-> +	};
-> +	struct device *dev = &phydev->mdio.dev;
-> +	u32 count = 0;
-> +	int ret;
-> +
-> +	for (u32 i = 0; i < ARRAY_SIZE(regulator_names); i++) {
-> +		ret = devm_regulator_get_enable_optional(dev, regulator_names[i]);
-> +		if (!ret)
-> +			count++;
-> +		else if (ret != -ENODEV)
-> +			return ret;
-> +	}
-> +
-> +	if (count)
-> +		fsleep(phydev->mdio.reset_assert_delay);
-
-[Severity: Medium]
-Is reset_assert_delay the right delay to use here?
-
-This value comes from the reset-assert-us DT property. ethernet-phy.yaml
-describes it as:
-
-  reset-assert-us:
-    description:
-      Delay after the reset was asserted in microseconds. If this
-      property is missing the delay will be skipped.
-
-mdio_device_reset() only uses it when reset is being asserted:
-
-    d = value ? mdiodev->reset_assert_delay : mdiodev->reset_deassert_delay;
-
-The qca,qca808x.yaml example has vdd18-supply but no reset-assert-us. For
-a board described that way, this call becomes fsleep(0).
-
-The ordering is also a concern. By the time qca808x_power_on() runs,
-phylib has already released the reset line, and the PHY had no power at
-that point:
-
-phy_device_register()
-    phy_device_reset(phydev, 0);
-    ...
-    device_add()
-        phy_probe()
-            phy_device_reset(phydev, 0);
-            phydev->drv->probe(phydev)
-                qca808x_probe()
-                    qca808x_power_on()
-                        devm_regulator_get_enable_optional()
-                        fsleep(phydev->mdio.reset_assert_delay);
-            phy_disable_interrupts(phydev);
-            phydrv->get_features(phydev);
-            ...
-            genphy_c45_read_eee_adv(phydev, ...);
-
-So the reset-deassert-us wait has already run out before the rails come
-up. MDIO accesses then start as soon as qca808x_probe() returns. The same
-thing happens again on unbind and rebind.
-
-Can this lead to MDIO accesses before the PHY has finished powering up?
-That could make probe fail, or leave phylib with the wrong supported and
-EEE link modes. The exact QCA8081 power-on timing isn't visible from the
-code, so this depends on the datasheet.
-
-Existing QCA8081 descriptions such as lemans-evk.dts set the two delays
-to different values:
-
-    reset-assert-us = <11000>;
-    reset-deassert-us = <70000>;
-
-So the time the PHY needs after reset release is separate from the time
-reset is held asserted. If a board raised reset-assert-us to cover
-power-up, every later reset assertion would also get slower.
-
-Would it work to assert reset with phy_device_reset(phydev, 1) before
-enabling the supplies, then release it with phy_device_reset(phydev, 0)?
-That way both documented delays apply in the right order. A fixed,
-documented power-up settle time would be another option. The commit
-message doesn't mention this sequencing either.
-
-> +
-> +	return 0;
-> +}
-> +
->  static int qca808x_probe(struct phy_device *phydev)
->  {
->  	struct device *dev = &phydev->mdio.dev;
->  	struct qca808x_priv *priv;
-> +	int ret;
->  
->  	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
->  	if (!priv)
->  		return -ENOMEM;
->  
-> +	ret = qca808x_power_on(phydev);
-> +	if (ret)
-> +		return ret;
-
-[Severity: Low]
-This isn't a bug, but a note in the binding or the commit message might
-help. The supplies are only enabled after a phy_device has been created
-and matched to this driver.
-
-If the DT node lacks the ethernet-phy-id004d.d101 compatible, or is
-marked c45, fwnode_mdiobus_register_phy() reads the ID registers from a
-PHY that has no power:
-
-    if (is_c45 || fwnode_get_phy_id(child, &phy_id))
-        phy = get_phy_device(bus, addr, is_c45);
-
-get_phy_c22_id() would then read all-ones and return -ENODEV. In that
-case qca808x_probe() never runs and the regulators are never turned on.
-
-ethernet-phy.yaml already says the explicit PHY ID compatible is needed
-when supplies must be sequenced before the ID can be read. qca,qca808x.yaml
-only allows ethernet-phy-id004d.d101, and all in-tree QCA8081 DTs already
-use it. So this is mostly about making the documentation clearer.
-
->  	priv->led_polarity_mode = QCA808X_PHY_LED_UNSET;
->  
->  	phydev->priv = priv;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015143849.483339-1-elder%40riscstar.com
+> 
+> Mikkel
