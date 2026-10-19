@@ -1,48 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AC4619B52;
-	Mon, 19 Oct 2026 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98F6621505;
+	Mon, 19 Oct 2026 14:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418661; cv=none; b=spAnL3SAfXw7ZHrCiuNy32pZ3oEDsXOgxPoDIM8esLo5AE3ypVKZn2hM/FZC+hJzu9vZsmQpG8eToWWQxocSNqFy1KWI5VqEUklsulCL8CCP0ADhxK+DMC7nEDn3uWq+VuI72N3fVpu9N7HmAOTC81eSV2sILzTQ5x65941O8JQ=
+	t=1792418683; cv=none; b=l70Qf47RsxSFARAZg7JXuKFemmUpqHJIIXmb+WmqFD216lPoeOCom78Br+/8xbMHXLraCTMPfgiZxui/OyJ5ujLkKFZS1C2zTisjYHNwAUYwcloxUdRd5srPGequAXywYLQ6rxZT6He6m05zznZqirAEWDsB8/U9or2GRFnd8Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418661; c=relaxed/simple;
-	bh=F0O74A15Hj/PmA4Y+S9XNbNxbJ+L1N6bacmXO1alJYI=;
+	s=arc-20240116; t=1792418683; c=relaxed/simple;
+	bh=GBPku60R2y3boWA+imjMNAAs0VVD1lQgUGv/Vo/Fyp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVQB5tt3qAIDMA76zAkOxk6nd071nN7HA8RT5vh54zT66jI+ie8AfOgdBB/pdWPtZ2Iyx3r8Eun3huVteloGtk0sVU5JadRk3Bt78Fyeo6zAXGNXhSopTfHUg1co8/Y1/1ZIS0QbdmYWZv3WVKBNMY892x0B2eTpeU+89qEOTKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3e7nqz7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=GsLVszVshuXAFbcMfNYev5eu0GAOzgopx9yoEk2js+CSGksGEI0f/OxHc5FixbphrGLY7gnGt2DDI6i/XgBY0Zx/xiNS+Y+HjbyeW0CMnUnwjGqVQJZ4hMEMThKAOtLnO6Rxi/VdR2ZG11rOJJnMdBnQL/JYp1uP6lM1C//TjHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmmUh9J5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3e7nqz7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF8A1F000CB;
-	Mon, 19 Oct 2026 14:04:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmmUh9J5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2C41F000C5;
+	Mon, 19 Oct 2026 14:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418658;
-	bh=58OqywC5/wj4SBg5Dvs3gdMF0UUQNJNonHWMD0YlIvw=;
+	s=k20260515; t=1792418680;
+	bh=w9tYo1ePiywHlsnDPw2BYj7IYsINTi3MQ626nFcaKGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j3e7nqz7z+xSSjo9We2cGextq/54FjBdEKJtVJivgnkTjDNJ+6/7Z7n7Nn3gb+PIB
-	 3SDEWcz9MFxlWEzTwgqXZEt1vh+PadaAvKwqY6I6UrO4+7OSdJIbVcdOeOtE5YaPId
-	 AGskqK4p9iivjsWSs9fzJPr5EyX1m6PAXwLviGEZxQvERj99CGT28/vAcBZj/ad/g1
-	 T01uuBdYumKyGMl1yI5sO3CXiGNjx8qjxhEQMYmhvxhdJ80cRS0kNK0hW3N5hT7B4a
-	 VcpjjMCnPFh8xx3s2o0lOQze0r3kMKtRjz6zhjzOw3zj7O5dzPFH4P479Ey460mlPy
-	 rmewYOZz1dS3Q==
+	b=HmmUh9J5MNelStFykMUhj8x9GoR8t9pqXQ+TRzVvBg7Jowxk6Y4lBiP1AjjGU5in0
+	 fXCeEpTldbAd5Shby84u9tvZii/CPJXf4o+5ilEFCQMQ5fXNRT+3XkWAptxjBdgdPb
+	 cHLcNvIGFVoNakjji/Y2SZ+N3GLLJ3wHOXJy2X5BHE3MaANQJK3SRtnd4tlh+5jVFj
+	 UIcp7aEgM2JMPWIlaij7PYj4i5O6M9M8/g7ViiLjdRK0S+tMxHOJ3gzPR8nPlAP+eA
+	 gv6zle60pL+VzFTSrhv/WPs/voXxw+ar7vMEjx9Fqrdcgmnkhgx6Xk4n1bZU0hWy9d
+	 i2QS0q3ZfEikQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+Cc: Johan Alvarado <contact@c127.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	fw@strlen.de,
+	maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
 	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] netfilter: nf_tables: call skb_valid_dst() before skb_dst()
-Date: Mon, 19 Oct 2026 09:51:36 -0400
-Message-ID: <20261019135441.1420968-405-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.15] net: stmmac: raise TX completion interrupt at the end of an xmit burst
+Date: Mon, 19 Oct 2026 09:51:51 -0400
+Message-ID: <20261019135441.1420968-420-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -58,578 +61,493 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johan Alvarado <contact@c127.dev>
 
-[ Upstream commit 689db98e535bf8efb5bc9c36f4fd3de3bd715eb6 ]
+[ Upstream commit d21a374995df9d7cfd193427748a19dcc87956a9 ]
 
-When fetching the dst_entry from the skb, check if it valid, ie. this is
-not a template dst, for extensions that can be used from the netdev
-ingress and egress chains.
+The TX mitigation logic only sets the Interrupt on Completion bit once
+every tx_coal_frames descriptors (STMMAC_TX_FRAMES = 25), with the
+tx_coal_timer hrtimer (STMMAC_COAL_TX_TIMER = 5000 us) as the only
+fallback. TX skbs are freed exclusively from the TX completion path,
+so any flow that keeps fewer than 25 frames in flight has all of its
+skbs held for up to 5 ms after transmission.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Paced flows never queue enough frames to reach the frame threshold:
+TCP Small Queues caps the amount of unfreed data at roughly two pacing
+intervals worth, which at moderate pacing rates is only a couple of
+packets. Every small burst then stalls until the coalesce timer fires,
+and throughput collapses to approximately tsq_limit / tx_coal_timer
+regardless of link capacity.
+
+This is easily reproducible with BBR, which paces its output and thus
+keeps only a few frames in flight at a time. On a YT6801
+(dwmac-motorcomm) equipped Orange Pi 5 Pro, a BBR upload over a ~23 ms
+RTT path is capped at 5.24 Mbit/s, while CUBIC reaches 207 Mbit/s on
+the same path. BBR measures the stalled send rate as the path
+bandwidth and locks its estimate near the floor, so the connection
+never recovers. Lowering the coalesce settings with ethtool -C
+(tx-usecs 100 tx-frames 1) lifts the same transfer to 447 Mbit/s,
+confirming the mechanism.
+
+Fix this by setting the IC bit on the last descriptor of every xmit
+burst, i.e. whenever netdev_xmit_more() reports that no further frames
+are pending in the current dequeue batch. Frame-based coalescing still
+applies within a burst, bulk traffic keeps batching through qdisc bulk
+dequeue and NAPI polling, and the coalesce timer becomes a pure
+fallback instead of the primary completion mechanism for lightly
+queued flows.
+
+tx-frames 0 keeps its meaning of timer-based mitigation only.
+
+Signed-off-by: Johan Alvarado <contact@c127.dev>
+Link: https://patch.msgid.link/20260731194522.55069-1-contact@c127.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-The evaluation target is **pending-6.6 (Linux 6.6.157)**. The live
-checkout later moved to mainline v7.3-rc4; all 6.6 findings below are
-from `refs/heads/pending-6.6` (`p-6.6-3-g04810563abb71`).
+The local tree is **6.12.111**. The TX-coalesce stall is in this
+checkout; the four-line IC-on-burst-end change is a real, tested fix for
+a severe paced-TCP collapse on stmmac.
 
-Original commit: `689db98e535bf8efb5bc9c36f4fd3de3bd715eb6` (Pablo Neira
-Ayuso, 2026-07-31). It is **not** an ancestor of pending-6.6.
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
 
----
+Step 1.1: PARSE THE SUBJECT LINE
+Record: [net: stmmac] [raise] [set TX Interrupt-on-Completion on the
+last descriptor of each xmit burst so lightly queued/paced flows are not
+stuck on the 5 ms coalesce timer]
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+Record:
+- Link: https://patch.msgid.link/20260731194522.55069-1-contact@c127.dev
+- Signed-off-by: Johan Alvarado \<contact@c127.dev\> (author)
+- Signed-off-by: Jakub Kicinski \<kuba@kernel.org\> (netdev maintainer,
+  applied)
+- No Reported-by / Tested-by / Reviewed-by / Acked-by / Cc: stable in
+  the committed message
+- No Fixes: in the committed message (expected for this pipeline)
 
-**Step 1.1: PARSE THE SUBJECT LINE**
-- Record: **[netfilter/nf_tables] [call/check] [require a real routing
-  dst, not a metadata template, before using skb_dst()]**
+Original mailing-list submission (v1 and RESEND) DID carry:
+- Fixes: da2024510031 ("net: stmmac: Tune-up default coalesce settings")
+That tag is treated as technical evidence of the introducing commit, not
+as a “already selected for stable” marker.
 
-**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
-- Record:
-  - **Fixes:** none (expected for this review)
-  - **Reported-by / Tested-by / Reviewed-by / Acked-by:** none
-  - **Link:** none in the commit; mailing list found separately
-  - **Cc: stable:** none (expected)
-  - **Signed-off-by:** Pablo Neira Ayuso (netfilter maintainer). Ignore
-    Sasha Levin SOB if present in a candidate wrapper.
+Step 1.3: ANALYZE THE COMMIT BODY TEXT
+Record:
+- Bug: TX IC is set only every `tx_coal_frames` descriptors (default
+  25). The 5 ms `tx_coal_timer` is the only fallback. TX skbs are freed
+  only from the completion path, so a flow with fewer than 25 frames in
+  flight holds those skbs for up to 5 ms.
+- Symptom: TCP Small Queues + pacing (BBR) never queues 25 frames. Each
+  small burst waits for the timer. Throughput collapses to ~tsq_limit /
+  tx_coal_timer. BBR then treats that stalled rate as path bandwidth and
+  never recovers.
+- Measured on Orange Pi 5 Pro / YT6801: BBR 5.24 Mbit/s vs CUBIC 207
+  Mbit/s; ethtool `-C tx-usecs 100 tx-frames 1` raises the same transfer
+  to 447 Mbit/s.
+- Root cause: coalescing designed for deep queues; lightly queued flows
+  only complete via the timer.
+- Fix: set IC when `!netdev_xmit_more()` (end of current dequeue batch).
+  Frame coalescing still applies inside a burst; `tx-frames 0` stays
+  timer-only.
 
-**Step 1.3: ANALYZE THE COMMIT BODY TEXT**
-- Record:
-  - **Bug:** `skb_dst()` is used as if it were a real
-    `rtable`/`rt6_info`. Packets on netdev/inet ingress/egress often
-    carry a **DST_METADATA** template (tunnels, TC) instead.
-  - **Symptom:** nft `rt` / `meta rtclassid` / `xfrm` evaluate a
-    template dst; `nf_send_reset`/`nf_send_unreach` skip filling a real
-    route and treat the template as an `rtable`.
-  - **Version info:** none in the message. Buggy pattern is old; 6.6
-    still has it.
-  - **Root cause (author):** template dst is not a valid routing dst;
-    must use `skb_valid_dst()` first.
+Step 1.4: DETECT HIDDEN BUG FIXES
+Record: Not a disguised cleanup. Submitted as `[PATCH net]` (bugfix
+tree, not net-next). It is a logic/correctness fix for TX completion
+starvation interacting with TSQ, not a style change.
 
-**Step 1.4: DETECT HIDDEN BUG FIXES**
-- Record: **Not hidden.** It is a real validity check. “Call X before Y”
-  is a missing-check fix, not cleanup.
+===============================================================
+PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
 
----
+Step 2.1: INVENTORY THE CHANGES
+Record:
+- File: `drivers/net/ethernet/stmicro/stmmac/stmmac_main.c`
+- +4 / −0 (two identical two-line insertions)
+- Functions: `stmmac_tso_xmit()`, `stmmac_xmit()`
+- Scope: single-file surgical fix
 
-## PHASE 2: DIFF ANALYSIS
+Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+Record:
+- Before (both functions): set_ic if HW timestamp, else if
+  `tx_coal_frames==0` never set IC, else if this skb’s descriptor count
+  exceeds the threshold, else if the running modulo wrapped, else false.
+  Then arm the 5 ms timer.
+- After: same, plus `else if (!netdev_xmit_more()) set_ic = true`
+  immediately after the `tx_coal_frames==0` check, so the last skb of a
+  dequeue batch gets IC unless the user asked for timer-only (`tx-frames
+  0`).
+- Path: normal `ndo_start_xmit`, not an error/init path.
 
-**Step 2.1: INVENTORY THE CHANGES**
-- Record:
-  - `net/ipv4/netfilter/nf_reject_ipv4.c` (+4/−2)
-  - `net/ipv6/netfilter/nf_reject_ipv6.c` (+6/−2)
-  - `net/netfilter/nft_meta.c` (+4/−2)
-  - `net/netfilter/nft_rt.c` (+4/−2)
-  - `net/netfilter/nft_xfrm.c` (+8/−1)
-  - **~26 insertions, 9 deletions, 5 files**
-  - Functions: `nf_reject_fill_skb_dst`, `nf_send_reset`,
-    `nf_send_unreach`, `nf_reject6_fill_skb_dst`, `nf_send_reset6`,
-    `nf_send_unreach6`, `nft_meta_get_eval_rtclassid`,
-    `nft_rt_get_eval`, `nft_xfrm_get_eval_out`
-  - **Scope:** small, same-subsystem, surgical
+Step 2.3: IDENTIFY THE BUG MECHANISM
+Record:
+- Category: logic / correctness (TX completion starvation vs TCP Small
+  Queues)
+- Mechanism: IC density was bounded by frame count only. Paced flows
+  never reach 25 in-flight frames, so completion waits for the hrtimer.
+  TSQ will not queue more until skbs are freed, so send rate is timer-
+  capped. Setting IC on burst end completes those skbs promptly; intra-
+  burst coalescing and the timer remain as fallback.
 
-**Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
-- Record:
-  - **Reject fill:** `skb_dst_set()` over a possible existing template →
-    `skb_dst_drop()` then `skb_dst_set()` of a real route.
-  - **Reject send:** `if (!skb_dst()) fill` → `if (!skb_valid_dst())
-    fill`. Template dst no longer counts as “already routed.”
-  - **nft_meta / nft_rt / nft_xfrm:** `skb_dst()` then NULL check →
-    `skb_valid_dst()` then `skb_dst()`. Template dst is treated as
-    missing.
+Step 2.4: ASSESS THE FIX QUALITY
+Record:
+- Obviously correct: `netdev_xmit_more()` is the standard “more packets
+  in this dequeue” signal; many other NIC drivers already use it this
+  way. Placement after `!tx_coal_frames` preserves timer-only mode.
+- Minimal: four lines, no API/data-structure change.
+- Regression risk: more TX IRQs on short bursts. Author measured ~3.3k
+  IRQs/s (~12 packets/IRQ) at 447 Mbit/s. Bulk traffic still coalesces
+  inside qdisc bulk dequeue / TSO. XSK/XDP paths intentionally unchanged
+  (`netdev_xmit_more()` is not meaningful there; no TSQ). Maciej
+  Fijalkowski asked whether coalescing could be dropped entirely; the
+  author kept the frame bound so a bulk batch larger than the ring
+  cannot drain with zero IC bits. Low regression risk.
 
-**Step 2.3: IDENTIFY THE BUG MECHANISM**
-- Record:
-  - **Category:** logic/correctness + type confusion (metadata dst used
-    as `rtable`/`xfrm_dst`).
-  - **Mechanism:** `skb_valid_dst()` is `dst && !(dst->flags &
-    DST_METADATA)`. Metadata dst is initialized with `dst_blackhole_ops`
-    and **`dev == NULL`**. Using it as `skb_rtable()` reads
-    `rt_flags`/`rt_gw*` from the metadata union; `nft_xfrm` would walk
-    `((xfrm_dst *)dst)->child` if `dst->xfrm` were set.
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
 
-**Step 2.4: ASSESS THE FIX QUALITY**
-- Record:
-  - **Quality:** obviously correct; same helper already used in
-    `ip_input`, `ip_tunnel`, wireguard, xfrm.
-  - **Minimal:** yes. Include of `net/dst_metadata.h` is required for
-    the helper.
-  - **Regression risk:** low. `meta rtclassid` on a metadata dst
-    currently succeeds with `tclassid == 0`; after the fix it fails
-    closed (`NFT_BREAK`). That is stricter and correct.
-  - **No API/feature additions.**
+Step 3.1: BLAME THE CHANGED LINES
+Record:
+- Core IC logic: c2837423cb5455 (“net: stmmac: Rework TX Coalesce
+  logic”, 2019-11-14)
+- `!tx_coal_frames` / per-queue threshold: db2f2842e6f560 (2021-03-17)
+- Default TX_FRAMES 1→25: da2024510031 (v5.5-rc1, 2019-11) — this is
+  what made “every frame gets IC” into “every 25 descriptors”
+- Timer 1 ms→5 ms: 039550960a223 (2023-10-19), present in this tree —
+  same stall, worse ceiling
+- Buggy pattern has been in tree since ~v5.5; this is long-standing, not
+  new-in-6.13+ code
 
----
+Step 3.2: FOLLOW THE FIXES: TAG
+Record:
+- Original submission tagged Fixes: da2024510031
+- `git merge-base --is-ancestor da2024510031 HEAD` → yes (exit 0)
+- That commit only retuned defaults (`STMMAC_TX_FRAMES` 1→25). Combined
+  with timer-only fallback, that is exactly the stall.
+- Intermediate related work already in this tree: c2837423cb5455
+  (rework), 2d1a42cf7f77c (timer arm vs NAPI, 2023), 039550960a223 (5 ms
+  timer). None of those set IC at burst end.
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
+Record:
+- Recent `stmmac_main.c` work is TSO descriptor checks, PTP lock init,
+  XDP, etc. Nothing equivalent to this IC-on-burst-end change.
+- `git log --grep=netdev_xmit_more --
+  drivers/net/ethernet/stmicro/stmmac/` → empty; the helper is unused in
+  stmmac here.
+- Standalone 4-line fix, not patch N/M.
 
-**Step 3.1: BLAME THE CHANGED LINES**
-- Record:
-  - Reject `!skb_dst() && fill`: `a0a3ace2a5788` (Florian Westphal,
-    2025-08-20) already **in 6.6** — “don’t leak dst refcount for
-    loopback packets.” That made “any dst present” skip fill, including
-    metadata dst.
-  - `nft_rt_get_eval` `skb_dst` check: `2fa841938c648` (2016), present
-    since nft_rt was added.
-  - **Bug is in 6.6, not new mainline-only code.**
+Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Record:
+- Johan Alvarado has no prior stmmac commits in this tree (end-user
+  reporter/fixer, not the subsystem maintainer).
+- Maintainers CC’d on the list: Alexandre Torgue, Jose Abreu. Applied by
+  Jakub Kicinski.
 
-**Step 3.2: FOLLOW THE FIXES TAG**
-- Record: **No Fixes: tag.** Not applicable. Introducer of the reject
-  skip-fill logic **is** in this tree (`a0a3ace2a5788`).
+Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+Record:
+- Needs `netdev_xmit_more()` — present in `include/linux/netdevice.h`
+  (this tree).
+- Needs the existing `set_ic` / `stmmac_set_tx_ic` / `tx_coal_frames`
+  block — present in both xmit paths.
+- Mainline context uses `CIRC_CNT` / `stmmac_get_tx_desc`; those helpers
+  are not required. The added lines sit in context that is identical
+  here:
+  `else if (!priv->tx_coal_frames[queue]) set_ic = false;`
+- Applies standalone.
 
-**Step 3.3: CHECK FILE HISTORY**
-- Record: Related 6.6 history includes `a0a3ace2a5788` (reject dst leak)
-  and `e64a48c50a1ff` (`nf_conntrack_sip`: validate `skb_dst()` for
-  tc/OVS). Same class of bug already accepted into 6.6. This commit is
-  standalone, not patch 2/N of a required series (it was 8/9 of an nf-
-  next pull, but the diff does not depend on patches 1–7).
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
 
-**Step 3.4: CHECK THE AUTHOR**
-- Record: **Pablo Neira Ayuso is the netfilter maintainer.** Nearby work
-  is normal nf-next flowtable/conncount material; this hunk is
-  independent.
+Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
+Record:
+- b4 dig on the msgid did not resolve a local commit (this SHA is not in
+  the 6.12 checkout). Fallback: openwall + patchew.
+- v1: 2026-07-06, Message-ID `0100019f35ea26e0-42ad009c-01ab-4a8f-b126-
+  fa65fbacae5c-000000@email.amazonses.com`
+- RESEND: 2026-07-31, msgid `20260731194522.55069-1-contact@c127.dev`
+  after netdev queue overflow (Jakub asked for a repost). Author: no
+  code changes vs v1.
+- Reviewer Maciej Fijalkowski: agreed each TX batch should get IC at the
+  end; asked if coalescing could be dropped. Author explained why the
+  frame bound must stay (ring-full with xmit_more set on every frame
+  until the queue stops → zero IC → timer stall on the bulk path). Kept
+  the patch minimal for `net`.
+- No NAK. No reviewer concern that the change is unsafe for the IC-on-
+  burst-end approach.
+- No explicit “Cc: stable” in the thread. Submitted to `net` as a
+  bugfix.
 
-**Step 3.5: DEPENDENT/PREREQUISITE COMMITS**
-- Record:
-  - `skb_valid_dst()` exists in 6.6 `include/net/dst_metadata.h`.
-  - No new helpers required.
-  - **Can apply standalone** with minor context (see Phase 6).
-  - No follow-ups on origin/master after `689db98e535bf`.
+Step 4.2: CHECK WHO REVIEWED THE PATCH
+Record:
+- To/Cc: netdev maintainers (Kicinski, Abeni, Dumazet, Daleck, Lunn),
+  stmmac (Torgue, Abreu, Coquelin), Pavel Machek (historical reporter),
+  linux-stm32, linux-arm-kernel.
+- Substantive review: Maciej Fijalkowski. Applied by Jakub Kicinski.
 
----
+Step 4.3: SEARCH FOR THE BUG REPORT
+Record:
+- Concrete iperf3 numbers from the author on real hardware (Orange Pi 5
+  Pro).
+- Historical same class of bug: Pavel Machek 2016 UDP burst pauses (40
+  ms low-res timer); his “disable coalescing” patch was rejected in
+  favor of a real solution. hrtimer conversion later fixed resolution
+  but left timer-as-only-completion for light flows.
+- Severity from reporter: BBR unusable (~5 Mbit/s vs hundreds).
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
+Record: Single standalone patch. Author deferred any coalescing rework
+to net-next. XSK/XDP IC logic deliberately not included.
 
-**Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
-- Record:
-  - `b4 dig -c 689db98e535bf`: **failed** (lore.kernel.org 503).
-  - Fallback: [PATCH net-next 8/9]
-    https://lists.openwall.net/netdev/2026/07/31/304
-  - Cover: [PATCH net-next 0/9]
-    https://lists.openwall.net/netdev/2026/07/31/319
-  - Submitted to **nf-next / net-next**, not `net` (fixes). Cover: “Call
-    skb_valid_dst() before accessing skb_dst() to ensure dst_entry is
-    not a template.”
-  - Syzbot CI on the nf-next posting: **passed**
-    (https://ci.syzbot.org/series/250b78fc-95ac-4f6f-8746-9f8d8777688b).
-    Not a syzbot crash report.
-  - No NAK found. No reviewer “Cc: stable” found.
+Step 4.5: CHECK STABLE MAILING LIST HISTORY
+Record: lore.kernel.org/stable search returned 403. No evidence on
+openwall/patchew that stable rejected this. UNVERIFIED that it was
+discussed on stable@ specifically.
 
-**Step 4.2: CHECK WHO REVIEWED**
-- Record: To/Cc: netfilter-devel, davem, kuba, pabeni, edumazet,
-  fw@strlen.de, horms. **Florian Westphal (nf core) was CC’d.** Applied
-  by Pablo himself. No extra Reviewed-by on the commit.
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
 
-**Step 4.3: SEARCH FOR THE BUG REPORT**
-- Record: **No user/syzbot/bugzilla report.** Author-driven correctness
-  fix.
+Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
+Record: `stmmac_tso_xmit`, `stmmac_xmit`. Helper used:
+`netdev_xmit_more`. Callee already present: `stmmac_set_tx_ic`.
 
-**Step 4.4: RELATED PATCHES AND SERIES**
-- Record: Series 1–7 is flowtable/`fill_forward_path` work; patch 9 is
-  conntrack TCP timeout. **This patch does not depend on them.** Same-
-  class SIP helper fix already in 6.6.
+Step 5.2: TRACE CALLERS
+Record:
+- `stmmac_xmit` is `ndo_start_xmit` (`stmmac_netdev_ops` at line 7155).
+- `stmmac_tso_xmit` is called from `stmmac_xmit` for TSO/GSO packets
+  (lines 4529/4531).
+- Context: process / softirq xmit (BH off). Userspace sockets, not
+  probe-only.
 
-**Step 4.5: STABLE MAILING LIST HISTORY**
-- Record: lore.kernel.org/stable fetch returned **403**. **UNVERIFIED**
-  whether stable@ discussed this SHA. No evidence it was rejected for
-  stable.
+Step 5.3: TRACE CALLEES
+Record: `stmmac_set_tx_ic` sets the hardware IC bit;
+`stmmac_tx_timer_arm` still runs after xmit (lines 4461 and 4750). Timer
+remains the fallback if IC is not set or NAPI is not scheduled.
 
----
+Step 5.4: FOLLOW THE CALL CHAIN
+Record: userspace send/write → TCP → qdisc → `ndo_start_xmit` →
+`stmmac_xmit` / `stmmac_tso_xmit`. Reachable on every stmmac Ethernet
+device. Unprivileged users who can send on the interface (typical
+networked host) trigger it. BBR/pacing makes it easy to hit.
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+Step 5.5: SEARCH FOR SIMILAR PATTERNS
+Record: `netdev_xmit_more()` is already used for doorbell/IC batching in
+many drivers in this tree (r8169, mlx5, virtio_net, qede, ionic, sfc,
+forcedeth, …). stmmac is the outlier. XSK/XDP in the same file still use
+frame-count-only IC; that is intentional and not a missed copy of this
+bug (no TSQ).
 
-**Step 5.1: KEY FUNCTIONS**
-- Record: listed in 2.1.
+===============================================================
+PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
 
-**Step 5.2: TRACE CALLERS**
-- Record (6.6):
-  - `nf_send_unreach` / `nf_send_reset`: `nft_reject_ipv4_eval`,
-    `nft_reject_inet_eval`, `ipt_REJECT`.
-  - IPv6 equivalents: nft reject ipv6/inet, ip6t_REJECT.
-  - **netdev reject does not use these**; it uses `nf_reject_skb_v4_*` /
-    `nf_reject_skb_v6_*` (unchanged).
-  - `nft_rt_get_eval`: packet path for the `rt` expression; **family
-    limited to ipv4/ipv6/inet** (not netdev).
-  - `nft_xfrm_get_eval_out`: ipv4/ipv6/inet, OUT hooks only.
-  - `nft_meta_get_eval_rtclassid`: **allowed on netdev** (no hook
-    restriction for this key).
+Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
+Record: Yes. `stmmac_tso_xmit` ~4380–4390 and `stmmac_xmit` ~4645–4655:
+same if/else IC logic, no `netdev_xmit_more()` branch. Defaults in this
+tree: `STMMAC_TX_FRAMES` 25, `STMMAC_COAL_TX_TIMER` 5000 (`common.h`).
+`git describe HEAD` → `p-6.12-2-gd38d58a4e0359`; `make kernelversion` →
+6.12.111.
 
-**Step 5.3: TRACE CALLEES**
-- Record: `skb_valid_dst`, `skb_dst_drop`/`skb_dst_set`,
-  `nf_ip_route`/`nf_ip6_route`, `skb_rtable`, `icmp_send`/`icmpv6_send`,
-  `ip_route_me_harder`.
+dwmac-motorcomm / YT6801 is not in this tree; that was only the
+reporter’s NIC. The bug lives in common `stmmac_main.c`, which 6.12
+already uses for dwmac-rk, dwmac-sunxi, dwmac-stm32, dwmac-intel, dwmac-
+imx, dwmac-qcom-ethqos, dwmac-ipq806x, dwmac-meson, etc.
 
-**Step 5.4: FOLLOW THE CALL CHAIN**
-- Record: Reachable from nftables/iptables **REJECT** and from
-  `rt`/`xfrm`/`meta rtclassid` eval. Userspace (`nft`/`iptables`)
-  installs the rules. Overlay tunnels (VXLAN/GENEVE collect-md, TC
-  tunnel_key) attach metadata dst, then the inner packet hits **inet
-  ingress / PRE_ROUTING**. **Yes, reachable.**
+Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
+Record: Expected apply: clean for the four added lines. Surrounding
+mainline helpers (`CIRC_CNT`, `stmmac_get_tx_desc`) differ, but they are
+not part of this hunk. Insertion context matches 6.12 exactly.
 
-**Step 5.5: SIMILAR PATTERNS**
-- Record: Same `skb_valid_dst` pattern in `net/ipv4/ip_input.c`,
-  `ip_tunnel.c`, `xfrm_input.c`. 6.6 already has `nf_conntrack_sip` dst
-  validation for tc/OVS.
+Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
+Record: 2d1a42cf7f77c (don’t re-arm timer while NAPI is scheduled) and
+039550960a223 (5 ms timer) are in this tree. They do not set burst-end
+IC. No equivalent fix present.
 
----
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
 
-## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE (6.6.157)
+Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
+Record: [net / stmmac Ethernet] [IMPORTANT — not mm/core, but the common
+DWMAC driver for a large set of ARM/x86 embedded and laptop NICs]
 
-**Step 6.1: DOES THE BUGGY CODE EXIST?**
-- Record: **Yes.**
-  - `nf_reject_ipv4.c`: `if (!skb_dst(oldskb) &&
-    nf_reject_fill_skb_dst...)` and no `skb_dst_drop` before
-    `skb_dst_set`.
-  - Same for IPv6 reject.
-  - `nft_rt.c`: `dst = skb_dst(skb); if (!dst) goto err;`
-  - `nft_meta.c`: `const struct dst_entry *dst = skb_dst(skb); if (!dst)
-    return false;`
-  - `nft_xfrm.c`: `const struct dst_entry *dst = skb_dst(pkt->skb);`
-    then walk `dst->xfrm`.
-  - 6.6 **has** netdev **ingress and egress**
-    (`nft_chain_filter_netdev`), **NF_INET_INGRESS** (inet reject
-    validates it), and `skb_valid_dst()`.
+Step 7.2: ASSESS SUBSYSTEM ACTIVITY
+Record: Actively maintained (recent TSO, XDP, PTP, FPE fixes). Coalesce
+core has been stable since 2019 with only timer-arm tweaks in 2023.
 
-**Step 6.2: BACKPORT COMPLICATIONS**
-- Record: **Minor context, not rework.**
-  - 6.6 `nft_rt` uses `(const struct rtable *)dst` not `dst_rtable()`
-    (unchanged context).
-  - 6.6 `nf_send_reset6` uses `skb_dst(oldskb)->dev` not `skb_dst_dev()`
-    (unchanged context). `skb_dst_dev()` exists in 6.6
-    `include/net/dst.h` but is not used in this file.
-  - Functional hunks match 6.6.
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
 
-**Step 6.3: RELATED FIXES ALREADY HERE**
-- Record: `a0a3ace2a5788` (reject dst leak) and `e64a48c50a1ff` (SIP
-  skb_dst). **This metadata-vs-real-dst check is not already applied.**
-  `git merge-base --is-ancestor 689db98e535bf pending-6.6` → not
-  ancestor.
+Step 8.1: DETERMINE WHO IS AFFECTED
+Record: Driver-specific, but a widely used driver. Anyone using stmmac
+with default coalescing and paced/TSQ-limited TCP (BBR is
+`CONFIG_TCP_CONG_BBR` in this tree). CUBIC is less affected because it
+queues more deeply (207 vs 5 Mbit/s in the report).
 
----
+Step 8.2: DETERMINE THE TRIGGER CONDITIONS
+Record: Normal TCP upload with pacing/TSQ and default ethtool coalesce
+(tx-frames 25, tx-usecs 5000). Common on WAN/RTT paths, not a rare error
+path. Unprivileged users sending data can trigger it. Workaround exists
+(`ethtool -C`) but is not discoverable for most users.
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
+Record: [TCP TX completion stall / order-of-magnitude throughput
+collapse; BBR bandwidth lock-in] [HIGH for affected workloads — not a
+panic/UAF/corruption, but the NIC is effectively unusable for paced TCP]
 
-**Step 7.1: SUBSYSTEM AND CRITICALITY**
-- Record: **netfilter / nf_tables + IPv4/IPv6 reject.** **IMPORTANT**
-  (firewall/NAT on almost every server/router/container host). Not core
-  mm/scheduler, but production-critical networking.
+Step 8.4: CALCULATE RISK-BENEFIT RATIO
+Record:
+- Benefit: high for stmmac + BBR/pacing (5 → 447 Mbit/s in the report);
+  restores TSQ-friendly completion.
+- Risk: low (4 lines, well-known helper, coalescing preserved in-burst,
+  `tx-frames 0` unchanged). 2023 ipq806x pain was timer-arm frequency
+  under bulk load; this patch does not change timer arming and keeps the
+  25-descriptor IC bound so a full ring cannot drain with zero IC.
+- Ratio: benefit clearly outweighs risk.
 
-**Step 7.2: SUBSYSTEM ACTIVITY**
-- Record: Mature and actively fixed. nft_rt dates to 2016; reject-at-
-  prerouting to 2020 (`f53b9b0bdc59`). Long-lived code.
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
 
----
+Step 9.1: COMPILE THE EVIDENCE
+FOR:
+- Real, measured bug: BBR ~5 Mbit/s vs CUBIC ~207 Mbit/s; ethtool
+  experiment confirms mechanism.
+- TSQ/pacing vs delayed TX completion is a known correctness class, not
+  a micro-optimization.
+- Introducing change da2024510031 (TX_FRAMES 1→25) is in this tree since
+  v5.5; 5 ms timer (039550960a223) is also here.
+- Four-line, obviously correct change; `netdev_xmit_more()` already in
+  this tree.
+- Applies on identical context in `stmmac_xmit` / `stmmac_tso_xmit`.
+- `[PATCH net]`, reviewed, applied by netdev maintainer; reviewer agreed
+  IC belongs at batch end.
+- Workaround requires non-default ethtool; default shipped settings are
+  the broken ones.
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+AGAINST:
+- Not a crash, UAF, deadlock, or security bug.
+- Changes IRQ pattern (more interrupts on short bursts).
+- Test NIC (dwmac-motorcomm) is not in 6.12 (common-path bug still is).
+- Original thread did not Cc stable@.
+- 2023 work raised the timer specifically to cut IRQ rate on some SoCs —
+  theoretical regression if burst-end IC is too aggressive under bulk
+  load. Mitigated by remaining in-burst coalescing and author’s IRQ
+  measurements.
 
-**Step 8.1: WHO IS AFFECTED**
-- Record: **Config/driver-specific but common:** `nftables`/`iptables`
-  REJECT, `rt`, `meta rtclassid`, `xfrm`, plus overlay/TC metadata dst
-  (Kubernetes, OVN, VXLAN/GENEVE collect-md).
+UNRESOLVED:
+- Could not fetch lore.kernel.org (403) or spinics (500); used
+  openwall/patchew instead.
+- Could not search stable@ archives (403).
+- No follow-up fix SHA in this tree (expected; this commit is not here).
 
-**Step 8.2: TRIGGER CONDITIONS**
-- Record: Packet carries DST_METADATA **and** hits reject or those
-  expressions. Common on inet ingress/PRE_ROUTING of collect-md tunnels.
-  Unprivileged users cannot install nft rules (CAP_NET_ADMIN); they
-  **can** send traffic that hits existing rules. Timing race: no.
+Step 9.2: APPLY THE STABLE RULES CHECKLIST
+1. Obviously correct and tested? PASS — 4 lines, list review,
+   before/after iperf3, IRQ rate reported.
+2. Fixes a real bug that affects users? PASS — paced TCP/TSQ stall with
+   measured multi-10x drop.
+3. Important issue? PASS — HIGH functional failure of a standard
+   congestion controller on a common NIC; not a panic, but the device is
+   unusable for that workload at default settings.
+4. Small and contained? PASS — +4 lines, one file, two functions.
+5. No new features or APIs? PASS — uses existing `netdev_xmit_more()` /
+   IC bit.
+6. Can apply to the local tree? PASS — buggy code and helper exist;
+   insertion context matches.
 
-**Step 8.3: FAILURE MODE SEVERITY**
-- Record:
-  - **Verified:** type confusion (`skb_rtable()` on metadata dst);
-    `rt_flags`/`nexthop` taken from the metadata union; reject may skip
-    `nf_reject_fill_skb_dst` and feed `icmp_send`/`ip_route_me_harder` a
-    template dst.
-  - **6.6 `__icmp_send`:** `if (!rt) return` is **not** enough (template
-    is non-NULL); `rt->dst.dev` NULL is handled, then `rt->rt_flags` is
-    still type-confused.
-  - **Not a proven KASAN UAF.** Metadata dst uses `dst_blackhole_ops`,
-    so `ops->mtu` is not NULL. `dst->xfrm` is NULL on metadata dst, so
-    the xfrm walk typically does not follow a garbage `child`.
-  - **Severity: HIGH for firewall correctness** (wrong `rt`/`meta`
-    match; REJECT may not emit RST/ICMP). **MEDIUM as a crash**
-    (plausible UB/type confusion, not a demonstrated oops). Still a real
-    bug in a hot firewall path.
+Step 9.3: CHECK FOR EXCEPTION CATEGORIES
+Record: None of device-ID / quirk / DT / build / docs. Qualifies as a
+normal small net driver correctness fix.
 
-**Step 8.4: RISK-BENEFIT**
-- Record:
-  - **Benefit:** high for nft/iptables + overlay users; restores
-    intended “no real route → lookup or fail closed.”
-  - **Risk:** low (26 lines, existing helper, fail closed).
-  - **Ratio:** favorable.
+Step 9.4: MAKE YOUR DECISION
+This is a small, tested fix for a long-standing TX completion stall that
+makes paced TCP (notably BBR) collapse on stmmac at default coalesce
+settings. The buggy path and the only dependency (`netdev_xmit_more`)
+are in 6.12.y. Benefit to stable users is large; regression risk is low.
 
----
+Verification:
+- [Phase 1] Parsed subject/body/tags from the candidate message; Link
+  msgid used to find the original `[PATCH net]` / RESEND threads.
+- [Phase 1] Original list post (openwall/patchew) still had Fixes:
+  da2024510031; committed copy in the pipeline does not.
+- [Phase 2] Diff is +4 lines in `stmmac_tso_xmit` and `stmmac_xmit`
+  only; both insertions are `else if (!netdev_xmit_more()) set_ic =
+  true` after the `tx_coal_frames==0` check.
+- [Phase 2] Read local `stmmac_main.c` 4380–4390 and 4645–4667: same IC
+  ladder, no xmit_more branch; timer still armed at 4461 and 4750.
+- [Phase 2] `STMMAC_TX_FRAMES` 25 and `STMMAC_COAL_TX_TIMER` 5000
+  confirmed in `common.h`.
+- [Phase 3] `git blame` on those lines: c2837423cb5455 (2019) and
+  db2f2842e6f560 (2021).
+- [Phase 3] `git merge-base --is-ancestor da2024510031 HEAD` exit 0;
+  `git show da2024510031` changed TX_FRAMES 1→25.
+- [Phase 3] `git merge-base --is-ancestor 039550960a223 HEAD` exit 0 (5
+  ms timer present).
+- [Phase 3] `git log --grep=netdev_xmit_more --
+  drivers/net/ethernet/stmicro/stmmac/` empty.
+- [Phase 3] `git describe HEAD` → p-6.12-2-gd38d58a4e0359; kernelversion
+  6.12.111.
+- [Phase 4] b4 dig on msgid: no local matching commit (expected).
+- [Phase 4] Openwall RESEND and patchew v1: Maciej Fijalkowski review,
+  Jakub apply-after-RESEND, no NAK; author kept frame coalescing for
+  ring-full IC bound.
+- [Phase 4] lore.kernel.org and stable@ fetches: 403. UNVERIFIED on
+  stable@ specifically.
+- [Phase 5] `stmmac_xmit` is `ndo_start_xmit`; `stmmac_tso_xmit` called
+  from it; `netdev_xmit_more()` defined in `include/linux/netdevice.h`
+  4989–5002.
+- [Phase 5] Grep: many other NIC drivers already use
+  `netdev_xmit_more()`; stmmac does not.
+- [Phase 6] Grep `netdev_xmit_more` under stmmac: no matches. Grep
+  YT6801/dwmac-motorcomm: no matches. Glob `dwmac-*.c`: 25 platform
+  files including dwmac-rk, dwmac-ipq806x, dwmac-intel, dwmac-stm32.
+- [Phase 6] Insertion context in 6.12 matches the patch;
+  CIRC_CNT/get_tx_desc differences are mainline-only context, not
+  required.
+- [Phase 7] MAINTAINERS: STMMAC ETHERNET DRIVER, Alexandre Torgue / Jose
+  Abreu.
+- [Phase 8] `CONFIG_TCP_CONG_BBR` exists in `net/ipv4/Kconfig`.
+- UNVERIFIED: whether a later mainline follow-up refined this patch (not
+  in this tree; lore search blocked).
 
-## PHASE 9: FINAL SYNTHESIS
-
-**Step 9.1: EVIDENCE**
-
-**FOR:**
-- Real bug: template dst treated as a route.
-- Present in 6.6; `skb_valid_dst()` already exists.
-- Reject skip-fill was introduced/worsened by a commit **already in
-  6.6**.
-- Small, maintainer-authored, obviously correct.
-- Same class as SIP `skb_dst` validation already in 6.6 stable.
-- Realistic trigger: collect-md tunnels + nft/iptables at
-  ingress/prerouting.
-- No follow-up reverting or rewriting this change.
-
-**AGAINST:**
-- Posted as net-next 8/9, not `net`.
-- No Fixes/Cc: stable, no crash report.
-- netdev-family `reject` does not call `nf_send_*`; `nft_rt`/`nft_xfrm`
-  cannot be used on netdev family even in mainline.
-- Crash is not as hard as a NULL `ops` deref (blackhole ops).
-
-**UNRESOLVED:**
-- lore.kernel.org was 503/403; no full review thread beyond Openwall. No
-  stable@ discussion verified.
-
-**Step 9.2: STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — helper semantics are clear;
-   syzbot CI passed; in mainline since 2026-07.
-2. Fixes a real bug that affects users? **PASS** — metadata dst on
-   ingress/tunnel paths is real; expressions/reject mishandle it.
-3. Important (crash/security/corruption/deadlock)? **PASS** — firewall
-   mis-eval and failed REJECT replies on overlay/ingress; type-confused
-   `rtable` use. Not a proven panic, but important networking
-   correctness.
-4. Small and contained? **PASS** — 26/9 lines, five netfilter files.
-5. No new features or APIs? **PASS**
-6. Can apply to this tree? **PASS** — minor context (`dst_rtable` /
-   `skb_dst_dev` in unchanged lines only).
-
-**Step 9.3: EXCEPTION CATEGORIES**
-- Record: none (not a device ID/quirk/DT/build/docs exception).
-  Qualifies as a normal bugfix.
-
-**Step 9.4: DECISION**
-This is a small, correct check that 6.6 needs. The tree has the buggy
-`!skb_dst()` reject path, nft `rt`/`meta`/`xfrm` eval, inet ingress, and
-netdev ingress/egress. Benefit outweighs risk.
-
----
-
-### What the commit solves for 6.6 users
-Packets with a **metadata/template dst** (VXLAN/GENEVE collect-md, TC)
-make `skb_dst()` non-NULL, so reject never installs a real route and
-`rt`/`meta rtclassid`/`xfrm` inspect a non-route. Users see wrong nft
-matches and missing TCP RST / ICMP unreachable. The fix uses the
-existing `skb_valid_dst()` helper and drops any template dst before
-attaching a real one.
-
-### Risk vs benefit
-Low risk, high correctness value on firewall + overlay hosts. Apply may
-need a one-line context tweak in `nft_rt.c` and `nf_reject_ipv6.c`.
-
-### Verification
-- **[Phase 1]** Parsed subject/body; tags: only Pablo SOB; no
-  Fixes/Reported-by/stable.
-- **[Phase 2]** Diff: 5 files, +26/−9; `skb_valid_dst` + `skb_dst_drop`
-  before `skb_dst_set`.
-- **[Phase 3]** `git describe` of pending-6.6: `p-6.6-3-g04810563abb71`,
-  Makefile 6.6.157.
-- **[Phase 3]** `git merge-base --is-ancestor 689db98e535bf pending-6.6`
-  → not present.
-- **[Phase 3]** Blame: reject condition `a0a3ace2a5788` (in 6.6); nft_rt
-  `2fa841938c648` (2016).
-- **[Phase 3]** `git show pending-6.6:include/net/dst_metadata.h`:
-  `skb_valid_dst()` present.
-- **[Phase 4]** `b4 dig -c 689db98e535bf`: lore 503, no match.
-- **[Phase 4]** Openwall: net-next 8/9 and 0/9 cover; no NAK.
-- **[Phase 4]** Syzbot CI series passed; not a syzbot bug report.
-- **[Phase 4]** lore.kernel.org/stable: 403, UNVERIFIED.
-- **[Phase 5]** Callers verified via `git grep` on pending-6.6:
-  ipt_REJECT, nft_reject_ipv4/inet; netdev reject uses `nf_reject_skb_*`
-  (not this path).
-- **[Phase 5]** `nft_rt_validate` / `nft_xfrm_validate` reject
-  NFPROTO_NETDEV in both 6.6 and mainline.
-- **[Phase 6]** Buggy `!skb_dst()` / raw `skb_dst()` still in
-  pending-6.6 sources.
-- **[Phase 6]** Context drift: `dst_rtable` and `skb_dst_dev` not used
-  in 6.6 versions of those unchanged lines.
-- **[Phase 7]** nf_tables + reject; important.
-- **[Phase 8]** `__icmp_send` in 6.6 handles NULL `dst->dev` but still
-  reads `rt->rt_flags` from a metadata object.
-- **[Phase 8]** Metadata dst: `dst_init(..., NULL, ...)` +
-  `DST_METADATA` + `dst_blackhole_ops`; `xfrm == NULL`.
-- **UNVERIFIED:** full lore review replies (503); stable@ archive (403).
+The stall is in this 6.12 tree, the fix is four obviously correct lines,
+and paced TCP is a real user-visible failure at default coalesce
+settings.
 
 **YES**
 
- net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++++--
- net/ipv6/netfilter/nf_reject_ipv6.c | 8 ++++++--
- net/netfilter/nft_meta.c            | 6 ++++--
- net/netfilter/nft_rt.c              | 6 ++++--
- net/netfilter/nft_xfrm.c            | 9 ++++++++-
- 5 files changed, 26 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 4626dc46808f3..59ec465a9df98 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -8,6 +8,7 @@
- #include <net/tcp.h>
- #include <net/route.h>
- #include <net/dst.h>
-+#include <net/dst_metadata.h>
- #include <net/netfilter/ipv4/nf_reject.h>
- #include <linux/netfilter_ipv4.h>
- #include <linux/netfilter_bridge.h>
-@@ -263,6 +264,7 @@ static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
- 	if (!dst)
- 		return -1;
- 
-+	skb_dst_drop(skb_in);
- 	skb_dst_set(skb_in, dst);
- 	return 0;
- }
-@@ -279,7 +281,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	if (!oth)
- 		return;
- 
--	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
-+	if (!skb_valid_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
- 		return;
- 
- 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
-@@ -352,7 +354,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
- 	if (iph->frag_off & htons(IP_OFFSET))
- 		return;
- 
--	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
-+	if (!skb_valid_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
- 		return;
- 
- 	if (skb_csum_unnecessary(skb_in) ||
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index ef5b7e85cffa8..07cdaa10da0d0 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -8,6 +8,7 @@
- #include <net/ip6_route.h>
- #include <net/ip6_fib.h>
- #include <net/ip6_checksum.h>
-+#include <net/dst_metadata.h>
- #include <net/netfilter/ipv6/nf_reject.h>
- #include <linux/netfilter_ipv6.h>
- #include <linux/netfilter_bridge.h>
-@@ -304,6 +305,7 @@ static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
- 	if (!dst)
- 		return -1;
- 
-+	skb_dst_drop(skb_in);
- 	skb_dst_set(skb_in, dst);
- 	return 0;
- }
-@@ -336,10 +338,12 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	fl6.fl6_sport = otcph->dest;
- 	fl6.fl6_dport = otcph->source;
- 
--	if (!skb_dst(oldskb)) {
-+	if (!skb_valid_dst(oldskb)) {
- 		nf_ip6_route(net, &dst, flowi6_to_flowi(&fl6), false);
- 		if (!dst)
- 			return;
-+
-+		skb_dst_drop(oldskb);
- 		skb_dst_set(oldskb, dst);
- 	}
- 
-@@ -440,7 +444,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
- 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
- 		skb_in->dev = net->loopback_dev;
- 
--	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
-+	if (!skb_valid_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
- 		return;
- 
- 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
-diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
-index 19e6d1c2436af..f3c7b7edb10c0 100644
---- a/net/netfilter/nft_meta.c
-+++ b/net/netfilter/nft_meta.c
-@@ -20,6 +20,7 @@
- #include <net/dst.h>
- #include <net/ip.h>
- #include <net/sock.h>
-+#include <net/dst_metadata.h>
- #include <net/tcp_states.h> /* for TCP_TIME_WAIT */
- #include <net/netfilter/nf_tables.h>
- #include <net/netfilter/nf_tables_core.h>
-@@ -274,11 +275,12 @@ static bool nft_meta_get_eval_ifname(enum nft_meta_keys key, u32 *dest,
- static noinline bool
- nft_meta_get_eval_rtclassid(const struct sk_buff *skb, u32 *dest)
- {
--	const struct dst_entry *dst = skb_dst(skb);
-+	const struct dst_entry *dst;
- 
--	if (!dst)
-+	if (!skb_valid_dst(skb))
- 		return false;
- 
-+	dst = skb_dst(skb);
- 	*dest = dst->tclassid;
- 	return true;
- }
-diff --git a/net/netfilter/nft_rt.c b/net/netfilter/nft_rt.c
-index ad527f3596c03..cb7dff336bbdc 100644
---- a/net/netfilter/nft_rt.c
-+++ b/net/netfilter/nft_rt.c
-@@ -8,6 +8,7 @@
- #include <linux/netfilter.h>
- #include <linux/netfilter/nf_tables.h>
- #include <net/dst.h>
-+#include <net/dst_metadata.h>
- #include <net/ip6_route.h>
- #include <net/route.h>
- #include <net/netfilter/nf_tables.h>
-@@ -59,10 +60,11 @@ void nft_rt_get_eval(const struct nft_expr *expr,
- 	u32 *dest = &regs->data[priv->dreg];
- 	const struct dst_entry *dst;
- 
--	dst = skb_dst(skb);
--	if (!dst)
-+	if (!skb_valid_dst(skb))
- 		goto err;
- 
-+	dst = skb_dst(skb);
-+
- 	switch (priv->key) {
- #ifdef CONFIG_IP_ROUTE_CLASSID
- 	case NFT_RT_CLASSID:
-diff --git a/net/netfilter/nft_xfrm.c b/net/netfilter/nft_xfrm.c
-index 7ffe6a2690d13..9c9ac27122ad9 100644
---- a/net/netfilter/nft_xfrm.c
-+++ b/net/netfilter/nft_xfrm.c
-@@ -12,6 +12,7 @@
- #include <linux/netfilter/nf_tables.h>
- #include <net/netfilter/nf_tables_core.h>
- #include <net/netfilter/nf_tables.h>
-+#include <net/dst_metadata.h>
- #include <linux/in.h>
- #include <net/xfrm.h>
- 
-@@ -177,9 +178,15 @@ static void nft_xfrm_get_eval_out(const struct nft_xfrm *priv,
- 				  struct nft_regs *regs,
- 				  const struct nft_pktinfo *pkt)
- {
--	const struct dst_entry *dst = skb_dst(pkt->skb);
-+	const struct dst_entry *dst;
- 	int i;
- 
-+	if (!skb_valid_dst(pkt->skb)) {
-+		regs->verdict.code = NFT_BREAK;
-+		return;
-+	}
-+
-+	dst = skb_dst(pkt->skb);
- 	for (i = 0; dst && dst->xfrm;
- 	     dst = ((const struct xfrm_dst *)dst)->child, i++) {
- 		if (i < priv->spnum)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 63c045616c9b7..7dbb5e9bcb54b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4400,6 +4400,8 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		set_ic = true;
+ 	else if (!priv->tx_coal_frames[queue])
+ 		set_ic = false;
++	else if (!netdev_xmit_more())
++		set_ic = true;
+ 	else if (tx_packets > priv->tx_coal_frames[queue])
+ 		set_ic = true;
+ 	else if ((tx_q->tx_count_frames %
+@@ -4687,6 +4689,8 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		set_ic = true;
+ 	else if (!priv->tx_coal_frames[queue])
+ 		set_ic = false;
++	else if (!netdev_xmit_more())
++		set_ic = true;
+ 	else if (tx_packets > priv->tx_coal_frames[queue])
+ 		set_ic = true;
+ 	else if ((tx_q->tx_count_frames %
 -- 
 2.53.0
 
