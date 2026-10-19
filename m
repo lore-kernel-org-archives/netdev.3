@@ -1,72 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792431930;
-	b=R9Yqs4pIA0mlHcttSLWZeVF1YvokKbdLQodlrdJhIqZp6zEPu33d+pXpSzZtDK7aYmI7
-	 EOYj2zYUjaPZRPo8KDY7ysEWpIKF/iLjR+FHk5o73bEN11qLK8zUV/HnPzxboQQcQsYfM
-	 uGSbxN3NrTEgFSrkyjFSsCFPCjUdnj/8dcDhdwHwp4Awlz3z8WvYXqBwmBYXllXyzpFLB
-	 yMAT7kP7/MHC3fxuFYiQPSoiCHuDZwE5UcCXnv3jAzNELvNK2tUt3XRhUO+5F+26eMLnw
-	 E3vZ8e8gpB5heFUpQfQr1mihWy5+G9mR0kOD54CLQhvx1Y9T6y6aIbqOtSQ5udxDjYg==
+	t=1792432712;
+	b=hDH8XGdIGGdczw6QpZspB/NneN+7IiYz9BpUHpXXI7K58bYzaYBJulEegci2pPzswfpO
+	 LbUfk18JUZjbSFYeZhBTpmLHckAZR2uopzkhD9FQ7+sx0lwDUN2HdprtTavjd6mQpoQ0P
+	 7+PcghNVKzthm6HFX58co6VLhc2K+PWXZa86pD390XiX+Qx95IbO+wwRiM5IsM3bb5MjG
+	 wqRtYruOCzKKq3Xf9vEAK7bp339N2dM/X8TqqPv4s1VM84FkcAPr61Twqey3nUjBmaKas
+	 UWKWc4CrrX09rWKnfQzC6ACx/i+2JlJBDFkYy4h7/JJkFe8w0rBVWZFyb8HLPDTrmsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792431930;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=R8+wlNGYlxpYSaKxrbBJvwUvjiV/RV0FPa1D8XSztvU=;
-	b=sCv5CKiPB/PHYRvwwRAog7Au29a/aDwnhYbViVJPB0OTFOj3+tiLZcATPVcgeGlasvmk
-	 ihlho2zDGtGlLc9THiykWMEbggw7pZ1HevmhWO1CHGSMR6YX3QetVucah3pN0YF94nWaU
-	 dDEDeM9xpKamNR/Sdj7ysrlyHBc9Hp8UivgRNAJg37jONTXh7FHODstptjFlq3sNaMvtV
-	 l9Q37ZQPY6frBsMlN8OXZ4N70g1Md9oU0TrEqikcqPYXK/pcARwyfbnUUDyNkDpZS51CK
-	 x5X2/CSfYgK3VT6vKS4Bp+c2iLPBzUA937arPugMqwu0EygLjsSyUSUjtQXR0rhHz0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792432712;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=EPl+s8Alb278lktSJ9Y4SjPtdKUrddbwq+zPo72cjqg=;
+	b=CwQ2THiyw+kmhlpssbmu/frzkkDAMHrAldaCir9t5EWJngxbhkwgllU505cqj7w6FvtJ
+	 SPHBfvCVJnrSApR7QeTqE+si8sefmBBZnmHkQetV8sccYQ+zPRhQIiW7Vu/bbvfa0BUoA
+	 KShKOVuZec/ddWV+NoJphtjHza5EL/HpPz55ZpAguDd/Mqhxns7ymTICOY4bDSfRVdqiX
+	 IjUwepJu63cCB9AMahvCKoBTwyp6wWjdT3i+b1+DJi+VWk4oMUlGD5T0boDuORDjWkfUq
+	 3468N6sBdZ9KHFT8XvF/1zIg+Wf92d0RXqyRSy7QZg8GrONBD0up6m28DC/bvKQPl/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LQD2GTB6;
-	arc=none smtp.remote-ip=74.125.82.197
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XTgQXl7m;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1618606A328
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:45:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1618606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E019606A319
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LQD2GTB6
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c0d568830so5080582eec.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:45:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792431929; x=1793036729; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R8+wlNGYlxpYSaKxrbBJvwUvjiV/RV0FPa1D8XSztvU=;
-        b=LQD2GTB6PLaX0bThFWl+XZffdUyTcAuaAN70cm1yC1ySpTFQt61Xhf+TIMJ+jlO+Dl
-         E/8Yi7LkjO+6srGPAROMw1udnTy7czZITXsXnmd7R7DDqu4gMNPLvmzO7lttyNh07so4
-         fmcK6q+2JX0a4M5skig3LJW7TeLuUOd7eJ3+AV7V/JGqBvz9/fCGDPNnDIqlJWxbHx8m
-         kUHckyhvpC6jd7elQVLe/0ktcRaPQ42Fog6SX5nJyfYEALrDxCKkTLgsDR0IbVjJCfm0
-         EqPp2je/fDGr5RiNDLvMqQuz/yCEp8mNOKa56ZmgXZfnqT20zHVVMthX6am++RJ/H2JQ
-         KlKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792431929; x=1793036729;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R8+wlNGYlxpYSaKxrbBJvwUvjiV/RV0FPa1D8XSztvU=;
-        b=FsrGBXHED0WCsQLp3K1aEu7WwgmkBjpllCxYtGQ2J+wMX3MExWFM33lMilwU/pkTEi
-         71+omdcJPU09vbylur3p0Q2kLys0MYITyp4rguNGgiAdSw1Z9xII4V403lyO4hPGNfht
-         lJh/3cS+z86XpJPE9bLS7MAOUsVvWYiQ06x7T96mow9crtIiBHemPVhbjuO8wlHJI5se
-         dGosKUwlErEQC6WvaA9e09Us5FQJqOCgyZdG8MDc0pHXSPB/AYZHPKNmX6Kqr3C9M94M
-         oviVvm/6DmbpBch/jdrK9/m5YUHjUECSLnPWomHoj5KYfTgHIc6kto9cURDPWSavRXvr
-         272w==
-X-Gm-Message-State: AFq9FYINjCqif8jorYO50AGBliy3FRx4UWeJ/DY09exI1sPwXWXPYMP7
-	U6/2Aj+oLioNy+FhAn3OyaLLONcyc1+dmz1yUF/7WKMcxh+HlBp8RG+zDYjypJ7nfBO+w5Y61Xd
-	rYVVgRSmqJcwy+F37ldwiGtDbyafqf4fqakBdhnqkNXMaJ1wlxZYpnr2CiBTFu80/xSGy8cchV3
-	uyVXEyfps9/vD22R3qHDQi7LL8ZKKgkWW9Ju2I7bDF0nzFdHA=
-X-Received: from dyox39.prod.google.com ([2002:a05:7300:7fa7:b0:359:ff6e:96f4])
- (user=kaifengw job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:88d0:10b0:35d:ea6f:b85e with SMTP id 5a478bee46e88-3619e926239mr12480074eec.1.1792431928540;
- Mon, 19 Oct 2026 10:45:28 -0700 (PDT)
-Date: Mon, 19 Oct 2026 17:45:22 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XTgQXl7m
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9BE1F000C8
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792432710;
+	bh=EPl+s8Alb278lktSJ9Y4SjPtdKUrddbwq+zPo72cjqg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=XTgQXl7mU0D47HGnG/yRNo8TFDoxWECV+3EwE/DUQqW+UbkvsrbJqWECoXY7KO5F+
+	 IHfVflfIaRPHdiTN7Yh2bYQjUKyGwLe5kzG6STQ7eLh4p0P5PjALiccMhpGnWEm4/a
+	 ZOpJwem4xJ2vB263X/pvMVhaXTmGxqRhfPC/HPTEq+VruQk2AjlqyOkRRJjDyGrxkf
+	 0Y4+mKA0HB7YwrN+XqEiGpBjdJ7h8fyeNCHD2SHMUwccv68hCfvJmTjkvjuSuvZhLr
+	 pA6UwYyKAqTMFAqmDZlh+o1x6GEdyHkiaefvy/X07510aZuQJlfmNhpS9s68IY5jz5
+	 LbGkxL8zRd1cg==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4949f037131so1481009fac.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:58:30 -0700 (PDT)
+X-Gm-Message-State: AFq9FYKZ9sjmfffjJ/sHQk0yMHq9r9WzSDXCaGAWYLof5Qc9xmsKSjn+
+	AC+GsVd7erveYv3hYG+RiPv/h3RyIzA1EKCE4K5CI3tHmp3b7yZ6M4sH37NIZLbLFHIfVqT5Mt7
+	bKRMH349M33JtMdTsI0U700WNNhVDYOM=
+X-Received: by 2002:a05:6870:3d90:b0:4a7:4a8e:237 with SMTP id
+ 586e51a60fabf-4a7578acf6bmr6059501fac.19.1792432710042; Mon, 19 Oct 2026
+ 10:58:30 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,104 +57,130 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261019174522.55644-1-kaifengw@google.com>
-Subject: [PATCH net v2] tcp: reject devmem tx with fastopen and repair
-From: Kaifeng Wang <kaifengw@google.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	asml.silence@gmail.com, almasrymina@google.com, willemb@google.com, 
-	kaiyuanz@google.com, sdf@fomichev.me, linux-kernel@vger.kernel.org, 
-	Kaifeng Wang <kaifengw@google.com>
+MIME-Version: 1.0
+References: <20261019174258.1375583-1-jkain@nuro.ai>
+In-Reply-To: <20261019174258.1375583-1-jkain@nuro.ai>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Mon, 19 Oct 2026 19:58:19 +0200
+X-Gmail-Original-Message-ID: <CAL4WiipkRkOnc_QJ51g6_9uB=pTeCSp6U8L-YVD2ytuZn4g5Qg@mail.gmail.com>
+X-Gm-Features: AclHuK9K2lPA1ci6HB3CJlYoscojO5J-XyHjuV9QqTl7I0JMA-hlZq3voyhM-j8
+Message-ID: <CAL4WiipkRkOnc_QJ51g6_9uB=pTeCSp6U8L-YVD2ytuZn4g5Qg@mail.gmail.com>
+Subject: Re: [PATCH net v6] net: schedule a purge when the defer queue rejects
+ a free
+To: Joseph Kain <jkain@nuro.ai>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, 
+	kerneljasonxing@gmail.com, bigeasy@linutronix.de, clrkwllms@kernel.org, 
+	rostedt@goodmis.org, linux-rt-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tcp_sendmsg_locked() enforces that devmem TX can only proceed if the
-zero-copy path is active and a valid dmabuf binding exists. However,
-subsequent branches in tcp_sendmsg_locked() can still intercept the
-message before it reaches the devmem zero-copy loop:
+Le lun. 19 oct. 2026 =C3=A0 19:43, Joseph Kain <jkain@nuro.ai> a =C3=A9crit=
+ :
+>
+> __skb_defer_free_flush() can leave defer_count at or above skb_defer_max
+> with an empty defer_list. That state is absorbing: every producer then
+> takes the nodefer path without queueing, so the list never refills.
+> Deferred freeing stays off for that (cpu, node) until reboot, and
+> cross-CPU frees fall back to the page allocator, which is the contention
+> deferral exists to avoid.
+>
+> skb_attempt_defer_free() increments before testing the limit and keeps
+> the increment when it rejects, so a rejected free leaves the counter
+> raised with nothing queued.
+>
+> Nothing brings it back down. The reject path returns before
+> kick_defer_list_purge(), so once the counter is stuck no producer
+> schedules a flush on the owner CPU. A CPU that never raises NET_RX itself
+> -- an application CPU doing TX while NIC IRQs are pinned elsewhere and
+> RPS is off -- then never runs the flush at all, so clearing the counter
+> inside the flush cannot help it either. proc_do_skb_defer_max() neither
+> resets the counters nor schedules a flush when the limit changes.
+>
+> It is reachable with no race at all:
+>
+>   sysctl -w net.core.skb_defer_max=3D1    # frees increment, then reject
+>   sysctl -w net.core.skb_defer_max=3D128  # does not recover
+>
+> skb_defer_max has .extra1 =3D SYSCTL_ZERO and no .extra2, so 1 is settabl=
+e.
+> From v7.1 on, 0 is safe because proc_do_skb_defer_max() flips
+> skb_defer_disable_key and the producer returns before incrementing. On
+> 6.18 through 7.0, which carry the llist conversion but not commit
+> 08dc30de1a40 ("net: add skb_defer_disable_key static key"), setting 0 and
+> restoring the previous value strands the counter the same way -- and 0 is
+> the documented way to turn the feature off.
+>
+> Kick the purge from the reject path instead. The reject is the one place
+> that observes a full queue, so scheduling the flush there is what stops
+> the counter outliving the list, and it does not depend on the owner CPU
+> ever raising NET_RX on its own. kick_defer_list_purge() already coalesces
+> through sd->defer_ipi_scheduled, so a burst of rejects costs one IPI.
+>
+> This also covers the case where skb_defer_max is lowered below the
+> current defer_count. The kick condition tests equality with half the
+> limit, so a reduction can move that point behind the counter and no
+> later producer ever reaches it; rejecting without a kick then strands a
+> non-empty list the same way. The reject-path kick recovers both.
+>
+> While here, test the limit with > rather than >=3D, so the effective limi=
+t
+> is skb_defer_max rather than skb_defer_max - 1, matching what
+> Documentation/admin-guide/sysctl/net.rst describes.
+>
+> That also makes the half-capacity kick reachable at small limits. At
+> skb_defer_max =3D 1 nothing was ever queued, so no kick was ever sent, an=
+d
+> at 2 the equality was never hit; both now kick. That is what commit
+> c09b0cd2cc6c ("net: avoid strange behavior with skb_defer_max =3D=3D 1") =
+set
+> out to allow.
+>
+> Also drain before clearing in the flush. A producer that queues between
+> the clear and the drain currently has its skb drained but its increment
+> kept, which over-counts and costs deferral until the next flush.
+> Draining first matches the ordering __dev_xmit_skb() already uses for the
+> qdisc defer_list.
+>
+> Found by manual code inspection, LLM-assisted, while backporting the
+> llist conversion to 6.1 after hitting the sd->defer_lock contention it
+> removes. The latch itself was not hit in production; it was reproduced by
+> lowering net.core.skb_defer_max.
+>
+> Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
+> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Joseph Kain <jkain@nuro.ai>
+> ---
 
-1. TCP Fast Open (MSG_FASTOPEN or DEFER_CONNECT):
-   If TCP_FASTOPEN_CONNECT is set, the socket may have a valid dst with
-   NETIF_F_SG (so zc == MSG_ZEROCOPY and binding is present), but
-   tcp_sendmsg_fastopen() -> tcp_send_syn_data() will use
-   copy_page_from_iter() to byte-copy from the iterator. Since iov_base
-   represents dma-buf offsets rather than user virtual addresses, this
-   misinterprets offsets as user pointers and copies the caller's memory
-   at those addresses into the SYN packet.
+Say not to very verbose changelog, that nobody will read.
 
-2. TCP repair mode:
-   If tp->repair is enabled with TCP_RECV_QUEUE, tcp_send_rcvq() similarly
-   calls skb_copy_datagram_from_iter(), byte-copying from the iterator.
+Since commit 844c9db7f7f5 ("net: use llist for sd->defer_list"),
+skb_attempt_defer_free() increments sdn->defer_count before testing
+it against skb_defer_max, and keeps the increment when it rejects.
+__skb_defer_free_flush() returns early on an empty list without
+clearing the counter.
 
-Neither path supports or makes sense for devmem transmission. Reject
-devmem sends inside the Fast Open and TCP repair branches when a devmem
-binding is present. Checking inside the tp->repair branch also covers
-the case where repair mode is enabled while sk_stream_wait_connect()
-drops the socket lock.
+With skb_defer_max =3D=3D 1, every free is rejected and nothing is ever
+queued, so the counter grows without bound and is never reset.
+Restoring a larger skb_defer_max does not recover: deferred freeing
+stays disabled for that (cpu, node) until reboot.
 
-Additionally, drop the !sockc_err gate from the devmem validation check
-and return sockc_err if set. Otherwise, if a valid SCM_DEVMEM_DMABUF is
-followed by a failing cmsg, sockc.dmabuf_id remains set while binding is
-not acquired, allowing the Fast Open and TCP_RECV_QUEUE repair paths to
-proceed and return before sockc_err is checked.
+  sysctl -w net.core.skb_defer_max=3D1
+  sysctl -w net.core.skb_defer_max=3D128   # does not recover
 
-This pre-existing issue was identified by Sashiko AI review on commit
-125755776bc6 ("tcp: reject non zerocopy devmem tx") and has not been
-hit in production.
+Test the limit with '>' instead of '>=3D', so that the first skb after
+a reset is always queued, and a counter above the limit implies a
+non-empty list that a flush will clear. This also makes the effective
+limit match the documentation, and makes the half-capacity kick
+reachable for skb_defer_max of 1 and 2.
 
-Fixes: 125755776bc6 ("tcp: reject non zerocopy devmem tx")
-Fixes: bd61848900bf ("net: devmem: Implement TX path")
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Kaifeng Wang <kaifengw@google.com>
----
-v1 -> v2:
-- Move the devmem rejection checks into the Fast Open and TCP repair
-  branches directly, also covering the case where tp->repair is enabled
-  while sk_stream_wait_connect() drops the socket lock.
-- Drop the !sockc_err gate from the devmem validation check and return
-  sockc_err if set, preventing a valid SCM_DEVMEM_DMABUF followed by a
-  failing cmsg from bypassing the check.
+When rejecting, kick the owner CPU if the list is not empty, so that
+lowering skb_defer_max below the current count cannot leave the list
+waiting for a NET_RX on the owner CPU that may never come.
+kick_defer_list_purge() coalesces through sd->defer_ipi_scheduled.
 
- net/ipv4/tcp.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 87ef6d5cbfeb..2792923f0748 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1169,14 +1169,18 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
- 			zc = MSG_SPLICE_PAGES;
- 	}
- 
--	if (!sockc_err && sockc.dmabuf_id && (zc != MSG_ZEROCOPY || !binding)) {
--		err = -EINVAL;
-+	if (sockc.dmabuf_id && (zc != MSG_ZEROCOPY || !binding)) {
-+		err = sockc_err ?: -EINVAL;
- 		goto out_err;
- 	}
- 
- 	if (unlikely(flags & MSG_FASTOPEN ||
- 		     inet_test_bit(DEFER_CONNECT, sk)) &&
- 	    !tp->repair) {
-+		if (binding) {
-+			err = -EINVAL;
-+			goto out_err;
-+		}
- 		err = tcp_sendmsg_fastopen(sk, msg, &copied_syn, size, uarg);
- 		if (err == -EINPROGRESS && copied_syn > 0)
- 			goto out;
-@@ -1200,6 +1204,10 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
- 	}
- 
- 	if (unlikely(tp->repair)) {
-+		if (binding) {
-+			err = -EINVAL;
-+			goto out_err;
-+		}
- 		if (tp->repair_queue == TCP_RECV_QUEUE) {
- 			copied = tcp_send_rcvq(sk, msg, size);
- 			goto out_nopush;
--- 
-2.56.0.385.gd3acb90ef8-goog
+Also clear the counter after llist_del_all() rather than before,
+as __dev_xmit_skb() does, so a racing producer is under-counted
+rather than over-counted.
