@@ -1,153 +1,162 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022085.outbound.protection.outlook.com [52.101.126.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3889A49E5ED;
-	Mon, 19 Oct 2026 10:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792404815; cv=none; b=nyMXh7IJV9/4bhn1O0IdyX25uaTNHQBflSn/mxUGtrJE3WmfBO2jM7IKO/AoDEUjnhAfX0qCPWAGWhdIE0bu7vjaMvU5M2gpg+69MYRbOuvK9ZbSV4T+UIpZN5bS1t+9622c7EMJy0/z1Tqhkfwt+QspYHBUWEyOtqoUWAnogm0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792404815; c=relaxed/simple;
-	bh=Xqo4vljIiiz21/RhJekpRAMPyzV+YVhpiXSTBanJPKo=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=j4+vWl+77qxkWwXtHTBFOwVUe1W1YcmqnasTxatw7ORWpAAqF9LF9bpuXhrqDLrefSeTQfK7sPagDzCqvNZVppe/DFtGA4M5CCJoLip8iEN6IYgA2TH3coOEtWbjEgx4QYpZKkD6yFoJySTVgTAeR+dQcYJRhJLo/kOZ32JMhvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=mpVR5LaG; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2334CDA37;
+	Mon, 19 Oct 2026 10:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792404820; cv=fail; b=ll3fFrLKRuklAdUE4Cyvl/0MIFVzAndWDoE37anqV5XC7MP7eMw6ZS3obDO5IrvOdNtsKDRZbFhcBMoA+aWmJ/9LV204iO7EgEFK1eaiDUog9OtOWtoFSgo5g+bHoICoAsLCTylg7Fd80A/L5v7ddUD7AaHTYpJjJp8OeyIjBCg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792404820; c=relaxed/simple;
+	bh=h3gVRyxkPQOp5CqpcJtdgXjUv27OZQ5nYBktB501rvQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LYDk3Q/8A1WZCL3eu8x+msbDmLlS7mQ8UoCAHSDrpOTFRa1O5jp0SRhWZ7gqoabV0/zXDd8XUYXnszG0SMvKqtco1HRNfNQG1dnjfG/hF+OkuLtBzOrCike8eC0gOhzl1nVRaYBmM2dlY2ufs/0r41xIoYx5ASWXUMIbzyPRetY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=D9bBWEXw; arc=fail smtp.client-ip=52.101.126.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="mpVR5LaG"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C5ECA0E36;
-	Mon, 19 Oct 2026 12:13:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792404810; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8h7nzr4NEQFRILhkT8O+MIgbmBu8pilgovWU9a/qJH0=;
-	b=mpVR5LaGIMURe9zfdSEKM5E3eM1d0m8Uhm2M4LJN9EGCTBTAiw7DiQNEX7XHKPTtkS2EM0
-	1YVLtpR93BK4bYib7ZQRl1bF7/nlUtSuECulC+poQPBHZaFZTCqUeedYELE7dFY2AZVSy5
-	ylj1loYbKSxjh+aci4/N4c7UrQZzT/FUjUAtICGtZYIPtYOUdB0SiXFQV/8t5Oc2B2hrKj
-	BrjGRziZMw9W+KZiy/L+gNxFTYO1iBvevmGSVGsTmK2WLowgAvcJXPSlJneuL9+zZMxzFE
-	tcCC9b90Rn0ByjM8W+Q39P7nMquh5Eib/dV0TkukaheHrf+SZtfkW66w1INm8Q==
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="D9bBWEXw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pgjQiGBIEgTva90n1NC7iA+DBxPqKgjJ7oIAakyK06UUgDUrKzjh+NaX9AFuSfruuPnHEnN1gFcP+ATbtSkxVhUTVWn9Nx5S066WG7o/LNwYhvKqsYS7Qn+sRQqKkjrjh3vqVxiIHbLiMKDujp5q3vVAUJkhNljqasuKYpHY2N6d8WkYDh59pm7AMpRuzznN2Me5toWbZHjuafcf/pB8FnNUCqEQyLxnpm+b1NP4JdUniBRv3PA0Th9SnbCYzeIqPRf4IrwxPk5aqObc+IArNdDkKc6gHWKUr6szbMaX6jSX7VuNn/J6VlvoO/K9W8HhuTQMd5MgPKbQK2kcEJ/rrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
+ bh=h3gVRyxkPQOp5CqpcJtdgXjUv27OZQ5nYBktB501rvQ=;
+ b=GTbzPARuykZxGR4N8TaSIsyyJoskYLcHRPeqIFJZ/7/MkIcmJE9Vc6PkfsUBSFT/KQdA2sojY7ZWyAvOUq6fr1oKAO4PclNB+YiskHRf7Znmj4Gpb/mQx2Gldmgb9BumiNjyOR2vqHnp9SVg2r+rx/26iNzYgyZxX1NLfuGxlCk1yLRclzynfzzn0bVOkeHA/AKOAVQUDJ/lLbYkcETNdiveNiMWkGS5CWQNapdtsZLOPzidAr4ibZ+r+kFV+iG7YAwa57eR6WjsdB/S+ijsaQwmSzV+80tTuS+IVYg3RspkzqxPC6ravEfjPYscXfBnhKIG2MYkNXEClY8hOs6lpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h3gVRyxkPQOp5CqpcJtdgXjUv27OZQ5nYBktB501rvQ=;
+ b=D9bBWEXwYWXkMi/8/e2ZW/QeCZ56Mq9UZ6mCTH2DGbk67InxgT4rnQ4hi57j8nE2TtbtiWWWsHSFIYPohClxqzbmVE98yyzQ8rYTPJ04s8fsYzmX4jtRIdLNETD1/qLOYkWF3VTEvttq8uhLUVfcH3yrxDtO2RIu0NEOYmBWUF4=
+Received: from SE3P153MB1848.APCP153.PROD.OUTLOOK.COM (2603:1096:101:340::5)
+ by SEZP153MB0791.APCP153.PROD.OUTLOOK.COM (2603:1096:101:a6::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.0; Mon, 19 Oct
+ 2026 10:13:32 +0000
+Received: from SE3P153MB1848.APCP153.PROD.OUTLOOK.COM
+ ([fe80::8f4e:575a:4706:a56e]) by SE3P153MB1848.APCP153.PROD.OUTLOOK.COM
+ ([fe80::8f4e:575a:4706:a56e%6]) with mapi id 15.21.0569.000; Mon, 19 Oct 2026
+ 10:13:31 +0000
+From: Wei Hu <weh@microsoft.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, Wei
+ Hu <weh@linux.microsoft.com>
+CC: "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"kuba@kernel.org" <kuba@kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [EXTERNAL] Re: [PATCH net-next v8 1/4] net: mana: prepare HWC
+ ownership for safe reinitialization
+Thread-Topic: [EXTERNAL] Re: [PATCH net-next v8 1/4] net: mana: prepare HWC
+ ownership for safe reinitialization
+Thread-Index: AQHdXWbLNk6ewlhwnUS+aa2fSPI+VLcBpSeAgAL522A=
+Date: Mon, 19 Oct 2026 10:13:31 +0000
+Message-ID:
+ <SE3P153MB18484659AA1DDB56695CF21EBB982@SE3P153MB1848.APCP153.PROD.OUTLOOK.COM>
+References: <cover.1791998462.git.weh@linux.microsoft.com>
+ <64987f49ea13b5ccdc9ef95f4a9baf23a479edc3.1791998462.git.weh@linux.microsoft.com>
+ <sashiko-outbox-175499@kernel.org>
+In-Reply-To: <sashiko-outbox-175499@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=7dad0630-2d5a-422a-a578-db5a56cf7494;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-10-19T09:33:32Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SE3P153MB1848:EE_|SEZP153MB0791:EE_
+x-ms-office365-filtering-correlation-id: 272cd593-a0aa-45f8-e66c-08df2dc9a05f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|42112799006|366016|1800799024|376014|38070700021|11063799006|4143699003|56012099006|10067099003|7146999003|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ fMrxL1rbP7Ah+tznyYL/NrF08ZOHp8lXsjyqUcXBgzYp3CnuMd8HQjr973jiHjYfkbUBCYA0BzNtAdluGcgcXh5JJcQ0xcVn9D0+HWp2YPlopcUXBA2iSwKcXmDQUPraRNf7sCEDnQ0LFV4yl6nhLyBZAwooGRbUYN4U8o0FM51MmXpps2wU6DhhNvN7VGt7zJxVYeyG56FypN1gRHXDKT9RiEX2EEva+7Z47DGaP9TpJmoM+DNiIg7RS1EaDS8HMysh1XobhgqTE8gBkMibQEKXZfDB8wqQOKKeVtaGvyl0WK3x+jXE8cCQ8jhck8Vbo/c7NRywUqYWKh5nopbNR97IzpPc4y0cS0WpkQvzq+M2ujJwxA09zQjb6VNDXGM8SwaBbfXY1R7eqWuMbBv7R4t4b8+Uu9DItP6a7FXzuyZ3cElbaV8TXlAQDmlzDN60lWm00Hil0XojCfTs5sHQq1jZdn8wLvZlKhubpNJxGCoFxwGxw50q1U9mfAb5TyEo9s/H8DWzb/Tll5X5bCLSY4JK/gj4NqHVxIrOtQLDiPsIeVMmNj1izMAr4+XbGaZide5KjUMvXDr5zlSNVY+t2YomIQCSRY8MwDCJ8tObsh00zLUUELZiQskFOjUrS2ZqYKeaO0MPZDXYm4xsMdHCLqS7X1FHLD2ShlqTTBWCJiHkAYhbkgaVMWaD8Ywp1PL6J4RyYUmMxQesEhdLXhCpxusgNxcLIjQDsrtTpBZQ0L0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SE3P153MB1848.APCP153.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(42112799006)(366016)(1800799024)(376014)(38070700021)(11063799006)(4143699003)(56012099006)(10067099003)(7146999003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?9cU8OogkFHTTLNIrLvXapJamdgLpCIc6Lmz0a9Sa5y2BvTynHTjw9cGh4fzu?=
+ =?us-ascii?Q?6VWJ54dGmNXxtZNjKL5fGc/vzZsjPAslcdid2q4oGmSSRPZyz+aWkLeol+9R?=
+ =?us-ascii?Q?V9cexp4s3yeq3Pcw8xu+GTaH1Y1fHEOmZ0HaQhSGAhV72KB9PrMkDSS9SEWb?=
+ =?us-ascii?Q?8cqy2IeOreUEuBQWwtXTgVxbXKUw8//ixZcDc7jZ6Vg1+hhnvTIhpPvab8/+?=
+ =?us-ascii?Q?Yct7jtmovlu/NPqiXzScx26e9xxBne9RqEBicmUT5kfNEthDCxTvnfWJEdrx?=
+ =?us-ascii?Q?MtE0Cm99wnG4r57XFISkRWBKY9OHC1/aEOwIAbXrNwa4Y8ZbyaiFm3z3M92Y?=
+ =?us-ascii?Q?lrkXrU2C1EVCQ2NpbJ0Ur8mOao/jMAiR7dL+yWxndjs/QHQXga9f3skQX8yN?=
+ =?us-ascii?Q?EJPWXmI7RE98SxxLE51jdy/4pC1swwSR5BzLqiT9XMAJ+/7P7Y2PFRvDCWul?=
+ =?us-ascii?Q?CGcfNSSH1bRxumZbnj/maGnpN1aGeBsZysFBe6zumLRBmPQBzUdy1tKKW7i0?=
+ =?us-ascii?Q?2LtGwsgc+AYspSEjFM2GM4TgBQeM3wNE8NKZnFPIoFIenv/NXTOQ6ejQ6eWH?=
+ =?us-ascii?Q?qtjdGpU2hh500y9mzFMyYyHb0pha3fWNBoTehZx+A2xl6aDI8tqyWn1+rXeD?=
+ =?us-ascii?Q?YuwUb2PesGVcEwqzglwaljmeKxC8LK18IRCkrUKnmNeqYG/uLKzMXRVGjXg+?=
+ =?us-ascii?Q?OJK2B4Gs/KKX/Wp+f75tLGr1OsT39f4TekmKpHgxd5ziKPyT5DOVLI+Kkzck?=
+ =?us-ascii?Q?oJpqegpUNpdRpQEQiolNwY+kZDzp64jvUOqaj+3bnFZPKVRcn1muj2H9Qk9x?=
+ =?us-ascii?Q?1DMj4r1ie2m9RwG/5ZuoeQbKpBXhAdXfuW3NKHCV2DkdYQainqeaSdJJM96N?=
+ =?us-ascii?Q?jPMclsQmLZZFttlQAjkBl+BroPtf2Cfy1zov5+amHXCnBxqjnUfZHPxSYOvo?=
+ =?us-ascii?Q?f0W73hvyiVdNpFTEIBbAmBXw6/6aU+K1XS6eTfTyc4/si01hMC9toBNxrXDv?=
+ =?us-ascii?Q?1A1DwqHY3/XXcY+bAXKNCsP2VCTsLGQQmAryaeUAmFQkZzSAj/DiTakMJbxA?=
+ =?us-ascii?Q?9ulIaLvw3rZrS/6XichYDvmWrxYNSoqUtDWudt3vLXXec3viGS0oLTU1vIUY?=
+ =?us-ascii?Q?K2woSQP9yFrJ9h2oVYiovBB69I619jXGLVteBgw+BomQh28t3MLveAUlFamo?=
+ =?us-ascii?Q?IbUi27CHgUonHKcwNoYkn9zbVSFtj+2qh01attD4ZVJcetRNO3aMC/GDHxef?=
+ =?us-ascii?Q?FdNDlsDOslyfLAtT2kTi57LNTC9Dqc1ZqYrGEGX3KVfgTWeKJpO6jUdHOc2e?=
+ =?us-ascii?Q?gQzUFx/NvPfQ30ppyq1KgGcHJAstElNB1XNOZrEF8iNddCVUSJr1vIcgMOsS?=
+ =?us-ascii?Q?WZSpUVuSXkYAKop4YPScYrp3wnaPSseeKDYCff3ZzWs8KtLkBTZYE0F+0WFw?=
+ =?us-ascii?Q?+Wis15sdKUa1BpEsUIorIpTAUpVP5Ivvplk1jhZwGhBiaP4rvkYPoRMfehqA?=
+ =?us-ascii?Q?2Mfn0aJ1aP+0sOMO88bKHHlkTFrDcH3ENIV5XxGm6uCnIal3m0rU73oO7chG?=
+ =?us-ascii?Q?TAdQGTBLvu/r9UTivAFxowWoHNnBDx+uzkmBr+mQWAYl1oujCTD+c2DkxePk?=
+ =?us-ascii?Q?5uc1mwfnf63v0dqSWKVBXNU1Amj54EnjaMwjNlZ9Zf68FDmNLv+TETT1WYa6?=
+ =?us-ascii?Q?AEfXur01Y8vlpNrNq3Jmsb/tZr0MZh5mddRW5oD1LlbMfUm2?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 19 Oct 2026 12:13:28 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Chris Babroski <cbabroski@nvidia.com>
-Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, richardcochran@gmail.com,
- linux@armlinux.org.uk, maxime.chevallier@bootlin.com,
- Raju.Lakkaraju@microchip.com, davthompson@nvidia.com
-Subject: Re: [PATCH net-next v1 2/5] net: lan743x: start phylink last and stop
- it first
-In-Reply-To: <84c495b24206953fb799d4070c4d99ff27efb829.1792008404.git.cbabroski@nvidia.com>
-References: <cover.1792008404.git.cbabroski@nvidia.com>
- <84c495b24206953fb799d4070c4d99ff27efb829.1792008404.git.cbabroski@nvidia.com>
-Message-ID: <b8e16814d4472d6456ba78918005c8bd@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SE3P153MB1848.APCP153.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 272cd593-a0aa-45f8-e66c-08df2dc9a05f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2026 10:13:31.2018
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IgpKMSeuCfPc4xd/OX/bH6WiX7ay2nJyTexyRJIaWgNlkYjGMU/OcwGd0G/LbeAHNRHkZYN4ZeXb1MfTD4Qqfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZP153MB0791
 
-On 15.10.2026 17:00, Chris Babroski wrote:
-> lan743x_netdev_open() starts phylink before the RX and TX rings exist,
-> and lan743x_netdev_close() only stops it after the rings are freed. The
-> mac_link_up() callback wakes all TX queues, so it can run while there 
-> is
-> no TX ring to transmit on.
-> 
-> For ndo_open and ndo_stop the qdisc is not active at that point, but 
-> the
-> suspend and resume paths call lan743x_netdev_close() and
-> lan743x_netdev_open() directly with the qdisc still attached. A link up
-> event in either window lets the stack call ndo_start_xmit() on a 
-> channel
-> whose ring is not allocated yet or has just been freed.
-> 
-> The error path of lan743x_netdev_open() is also wrong: a
-> lan743x_ptp_open() failure jumps past lan743x_phylink_disconnect(),
-> leaving phylink started and the PHY attached after open has failed.
-> Every later open then fails because the PHY is already attached.
-> 
-> Connect and start phylink as the last step of open and stop it as the
-> first step of close, as other phylink users do. If phylink fails to
-> connect, nothing is attached, so the error path only needs to unwind 
-> the
-> rings, PTP, MAC and interrupts.
-> 
-> Fixes: a5f199a8d8a0 ("net: lan743x: Migrate phylib to phylink")
-> Assisted-by: LLM
-> Signed-off-by: Chris Babroski <cbabroski@nvidia.com>
-> ---
->  drivers/net/ethernet/microchip/lan743x_main.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c 
-> b/drivers/net/ethernet/microchip/lan743x_main.c
-> index 9e1276cf313c..583f631df701 100644
-> --- a/drivers/net/ethernet/microchip/lan743x_main.c
-> +++ b/drivers/net/ethernet/microchip/lan743x_main.c
-> @@ -3334,6 +3334,8 @@ static int lan743x_netdev_close(struct net_device 
-> *netdev)
->  	struct lan743x_adapter *adapter = netdev_priv(netdev);
->  	int index;
-> 
-> +	lan743x_phylink_disconnect(adapter);
-> +
->  	for (index = 0; index < adapter->used_tx_channels; index++)
->  		lan743x_tx_close(&adapter->tx[index]);
-> 
-> @@ -3342,8 +3344,6 @@ static int lan743x_netdev_close(struct net_device 
-> *netdev)
-> 
->  	lan743x_ptp_close(adapter);
-> 
-> -	lan743x_phylink_disconnect(adapter);
-> -
->  	lan743x_mac_close(adapter);
-> 
->  	lan743x_intr_close(adapter);
-> @@ -3365,10 +3365,6 @@ static int lan743x_netdev_open(struct net_device 
-> *netdev)
->  	if (ret)
->  		goto close_intr;
-> 
-> -	ret = lan743x_phylink_connect(adapter);
-> -	if (ret)
-> -		goto close_mac;
-> -
->  	ret = lan743x_ptp_open(adapter);
->  	if (ret)
->  		goto close_mac;
-> @@ -3387,6 +3383,10 @@ static int lan743x_netdev_open(struct net_device 
-> *netdev)
->  			goto close_tx;
->  	}
-> 
-> +	ret = lan743x_phylink_connect(adapter);
-> +	if (ret)
-> +		goto close_tx;
-> +
->  	if (netdev->phydev)
->  		phy_support_eee(netdev->phydev);
-> 
-> @@ -3414,8 +3414,6 @@ static int lan743x_netdev_open(struct net_device 
-> *netdev)
->  			lan743x_rx_close(&adapter->rx[index]);
->  	}
->  	lan743x_ptp_close(adapter);
-> -	if (adapter->phylink)
-> -		lan743x_phylink_disconnect(adapter);
-> 
->  close_mac:
->  	lan743x_mac_close(adapter);
+On Sat, Oct 17, 2026 at 12:06:45PM +0000, sashiko-bot@kernel.org wrote:
+> Does this sequence still leave a use-after-free regression for Ethernet a=
+nd
+> RDMA queues during teardown?
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Thanks for the report. This is a pre-existing individual-CQ lifetime
+issue, rather than a regression introduced by this HWC series.
+
+mana_gd_destroy_cq() clears the slot, but mana_gd_destroy_queue() can free
+the CQ while an EQ reader still holds its pointer. The later EQ-side RCU
+grace period does not protect the earlier CQ free.
+
+I checked unmodified net-next at 98c2ad4f5d80 on October 17. Its MANA
+Ethernet, RDMA and header subtrees are identical to the series base,
+05b5019b01fb. The Ethernet CQ reader/teardown ordering is also already
+present at upstream commit 02fed6d92bad ("net: mana: add msix index sharing
+between EQs"), from December 2023, well before this series.
+
+The HWC-specific teardown addressed by this patch is different: after
+acknowledged HWC teardown, it unpublishes the CQ table and waits for
+existing IRQ-side RCU readers before freeing the HWC queues. Individual
+Ethernet and RDMA CQ lifetime handling remains separate, as stated in the
+patch description.
+
+I agree that the reported issue should be addressed in a separate fix to
+the existing per-CQ teardown paths, independently of this HWC series.
 
 Thanks,
-Nicolai
+Wei
+
+
