@@ -1,279 +1,466 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC6B4F6486
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418077; cv=pass; b=bKUdpdasJtKp1t/NNkyXj+9f/Rn+7wlfWTZZ954PGSWk+J8oVgStyWn5IS/PjYxso7ChLV0dvNGUeawJ4XrjEtknWl+P62//b/prNXKx6rYxJHFWjo7QsmPG4t9sht/2QeRgj3meV0lpiBpNoz8ntRpZ9QIGe4KhIa9fbU63KVY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418077; c=relaxed/simple;
-	bh=gvwoY48v8HtjEGBanR0EVPc+UxSyK5a07IZl2skoMZ4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gmDaN37lp+pQejdaLFui/EWDjwiqfx8QnkZpfjlyhRTAudqXdEzacMqGKX6pZcBEU72kDNgG6lquWZQ59arsSHcD9vgAOnkSB4zrtpNR7AdMSzKPc3XUCJlPV+K0ytY7NuZy/kmEJT4ib8mzjvwcD2hSiY2Z1Yg7TqtC1gAdSaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uNpXCGQP; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841314FB9B3;
+	Mon, 19 Oct 2026 13:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792418087; cv=none; b=EpjhU0MEx4ZmE1Y5iUbM0MIzz5lhnnXYwDibeTrTFYfIBHGDz8WF8SWw8LJAkwwu4U+XpxwFg7UBizvNxWcJOhY1jQ+UR3HmAsmu+Tl9klH7OCNkysaDPwYF+M4psioxgM4FvqWIUFDKOhSD9/JwUwsMAHUs4yOEFdPO3D77hbg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792418087; c=relaxed/simple;
+	bh=mn5hukJcRtbyeAxIN4fIXF2f2sf5d9hrj7E/AZtdEkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qrTEz9wl2/ccD81LIRRw+UGaxEzrx6V7aSTaE+svEbhspLgcAJ+GAQq94+ZZ7FJc747vBMiA4J8L/Zg8JISdi7wnkiYd8n1zD5ETG6g7as8KRgGm/5+dA5Jr5VgLyQfdYutqYw1qTs1gjcRaNoNk+n81xeYgg3FSglgtMHpb5kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfEUdrgf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uNpXCGQP"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5337fa12431so402701cf.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:54:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792418074; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sQgNQNYWzbvlobCNf7DoavTxVs6UWUymCHvzZVPNzumcE6rnSxBV8mdWz4p1Kn89Ez
-         Rv6JWn9JLFjwk5RqZeABRY25mybwP9VsJjLASzeuyfa+rrgO8OfW7AZAf9zl2oZji/lb
-         bTBpAZt/FFI9w0+x+/OVhDufuqjub01FIANnf+9JdnVjm1DZtmSwWaSPX0MLbnQbC2J/
-         NPsMfSPQ1KzQEMJMSlaSj98pufmgYKaZCGX4O68mA4wWUKJQ7WEBbBo2znC7ju8WhE4n
-         ATJUwJKoPmPeqaoB74aGwvQqwQJgjx8wLlSdR57ORJAnxxTej7dLj8TIukgq3grH13DH
-         6EfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0kEytU5LeiM3vhSLHRfNg06oRQOFH8XdzJ+MdOl7cWw=;
-        fh=0Pr3NAAL3/ASf12Ysq73Kx4oGjHnLEgkwhEBmjtcBZE=;
-        b=gCoMfXlDCaK9+tUbNIdJUOETweRw/p5DzojssIIC+/o9uERBNKd44SIwLExqb598GM
-         1fhgokLqCgQDJ1/IpJ9C1er21rPd4U/L7MWmT1OBlFlyolRZZW8DvDenjQc0hD7xKvOy
-         EcAuSK1RcYUquE8EtLBs1a8gvE8ukulv0l4N98qXVX8d00VGXb9cnDP3vWRnmEm62lK1
-         vPXQQLOlQUd1FnApZEi52yjYqxGAYy7CPfOK1py/+SoIs40TiNvalOnYggZIkP1S+fqS
-         0dOtYlFq9RJgnlIvsq9FFJZJe6yMzRGk0/pzsw740dxHLyEw9cvlTeLDnq5hTrrNTesN
-         FL7g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792418074; x=1793022874; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0kEytU5LeiM3vhSLHRfNg06oRQOFH8XdzJ+MdOl7cWw=;
-        b=uNpXCGQPcR1FBHrB7LaE+WHjBB52uC8BjnVVPYEmtek8ERcmSeijJ9LBLLm3BTxAqr
-         aPAH3DCoH57rKYO2v9WsiafoGqkCwWxfh85xiwk/SzfB5nR7V9ZNVdQRB9d08PwdyJYz
-         YeqQhUu/UVlD/Cbdavi/XdKRN+hGNO91HLRAihExCMqkd9RhcWL29TXISP/KuI83Z7YE
-         k0U66OxR055W3AkvkRdfYmr1meUrsTDI1N1wTb7gd5MfJzteXs6T3i4yaL8DNRyOsMZm
-         SMY5kub6Zj+WrgsJ203Oafz3t4jeM+JWEF5bWZIAFcuOQktMCKCM2eJUR9tBEjSR1Pym
-         /aKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792418074; x=1793022874;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0kEytU5LeiM3vhSLHRfNg06oRQOFH8XdzJ+MdOl7cWw=;
-        b=r+FzftVzs8/Xj7lormLx5tnYAUUrU6D1m0jLZY5XimIhYxE1roWjOUs23bP/c2Zxqi
-         YOM+uU2kzfd4DlKpxby/LPbFdcXwwOUVnm7jo9bOzj22zudrm47cJajq/ggmQ2wFq9ok
-         o99/vTr2Xid7EoPmA3s/yDpyFyopYy0GvwubUXb2wP1K4/FLFF+QPxToWwOmNIPNPrnx
-         Zcjc/FoLglnRwe9tm3bjoNLUDeLVrAkqq1QPBCo/RWzdlgRiRPiLNAEpTp5quHXqXMKR
-         ZUaswqkX4ao6X4RGu4mfNpjSxPXxcfPnKOcWfnZkfncoTKOUSUgyQIaHg0Ecw9k3YGIL
-         UINg==
-X-Forwarded-Encrypted: i=1; AKwUvBxjmCSDgpQeCt1H3joP3JzeYtLStao3lX7BXeeybimW9sqOiDcqZQUG35lWcycPZ4jOpBaV5rc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLpNUXybizKxOouvcCZ4FV0wUIJ7TLMOcHqJ+U5S9IklWIOjx24
-	6r3soZDjq6dKC4BnsHuTTj0dJTYfUKI3MMlrpkrUSAYOzUFwGkSbuNVsQoSNekAkZnaNNh8wV1D
-	q/PKV0D85qRYwetTj3CSK99KGVNYWX2aDQEliaYWv
-X-Gm-Gg: AYBFou19zLvydjQPK3KA/msLMhrE5NSLC9pjhYMliaZI/+3eDvQ+a5vpboh8eY1mapD
-	xTaQTpHflemKTIwtNjo38qzXUwZKsLraPp86VMPk7xkAHPRkER9ioACqmpKOb1f9M2wuwtPaXKj
-	TGkS8WOcIU5j/UPc0yg1LnbQtI8byZOt9ijjD8OtVN5g2OdZeUE2OcWUY2pX7O1/4tqZ+6yj0FI
-	gVEuRWIdsN63BSyN4qG7w27oaVXTtXxtgAxRFygsu1XhQ1AwcAU8L4B00Uv1pblnED08/o8quFq
-	9BZwlc2kqybKRzgILy9Av6UYxKfZ5AvYpZACkwvdngQyQHLozvVTdj2z+IfSM5wvzgGUnfq7GJX
-	yne21TFXvz+LYIPzD7/1YXLYC3y4U2nIF0LHfjmM2zGXvlDwQJ8QedOU=
-X-Received: by 2002:a05:622a:228b:b0:532:eff9:ca08 with SMTP id
- d75a77b69052e-536465dfce9mr41062201cf.12.1792418073474; Mon, 19 Oct 2026
- 06:54:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfEUdrgf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A381F000C5;
+	Mon, 19 Oct 2026 13:54:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792418084;
+	bh=+rMuxlEzta/xwXzh9GPR/CubwMf9s0sAxRcpqXWWx8M=;
+	h=From:To:Cc:Subject:Date;
+	b=WfEUdrgfwgbrC9/23O5Nbaey4oT1D1nSaA9w/0Z22Nh+9PYIX4hDk/z3+I4zagQoE
+	 73DJAxYXXPVxhygfubRJ5YpPDtvlGyQSE1xHylG6agT3TTT7Hkppl+IWlEdmCPqS32
+	 aysGmuhkqryms/zDxuJf6PVZXZ+StAmU9+WDJ2DKgEdUyjvad4xO0j3hwphw4ZaHc8
+	 Z1ep0klBKA3rgVA+n6nT903PGhtLOyi0Qz82IjcW4uh9sCK7O0CURZT8g/7naOoubN
+	 AEruD50qqmeRMfd82wxkdxqdN47ivlkPRw0dtg+CaQpF6zVkXkUrys4lJQd12ENlTy
+	 wfXr0PeRqFAGA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	chester.a.unal@arinc9.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.18-6.12] net: dsa: mt7530: check CORE_PLL_GROUP4 access in mt7531_setup()
+Date: Mon, 19 Oct 2026 09:44:52 -0400
+Message-ID: <20261019135441.1420968-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261018211514.2817293-1-chia-yu.chang@nokia-bell-labs.com> <20261018211514.2817293-2-chia-yu.chang@nokia-bell-labs.com>
-In-Reply-To: <20261018211514.2817293-2-chia-yu.chang@nokia-bell-labs.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Mon, 19 Oct 2026 09:54:16 -0400
-X-Gm-Features: AclHuK-yKHKszrAvQ0DWznhcRsJCvVm21RfRVRcavHBDlb8PKd3FVpjc1os6wtY
-Message-ID: <CADVnQy=jqk0vZUsG6JKv44cBbnR5pG5+7Tvacohuz3tzFpF6pQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/3] tcp: accecn: Add ece_delta to rate_sample
-To: chia-yu.chang@nokia-bell-labs.com
-Cc: ihor.solodrai@linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com, 
-	jiayuan.chen@linux.dev, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
-	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, emil@etsalapatis.com, linux-kselftest@vger.kernel.org, 
-	shuah@kernel.org, horms@kernel.org, dsahern@kernel.org, pabeni@redhat.com, 
-	jhs@mojatatu.com, stephen@networkplumber.org, davem@davemloft.net, 
-	edumazet@google.com, andrew+netdev@lunn.ch, donald.hunter@gmail.com, 
-	kuniyu@google.com, ij@kernel.org, koen.de_schepper@nokia-bell-labs.com, 
-	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
-	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
-	Jason_Livingood@comcast.com, vidhi_goel@apple.com, Mike_Rudolph@comcast.com, 
-	Jeff_Howe@comcast.com, srichard@netapp.com, 
-	Olivier Tilmans <olivier.tilmans@nokia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.57
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 18, 2026 at 5:15=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
- wrote:
->
-> From: Ilpo J=C3=A4rvinen <ij@kernel.org>
+From: Daniel Golle <daniel@makrotopia.org>
 
-Thanks for the patch. I agree this will be useful for congestion
-control modules using L4S ECN. For example, I see this field is used
-by Prague in https://github.com/L4STeam/linux/blob/testing/net/ipv4/tcp_pra=
-gue.c
-.... is that the current URL for the code?
+[ Upstream commit 1ae63b018d3d70e96d420b59a1334860cf232bc6 ]
 
-> Include echoed CE count into rate_sample. Replace local ecn_count
-> variable with it.
+mt7531_setup() reads CORE_PLL_GROUP4 through the MT7531 indirect c45
+PHY access, modifies it and writes it back to enable the PHY core
+PLL, but checks neither the read nor the write. Now that the indirect
+access functions propagate command-write failures, a failed read
+returns a negative errno that would be bit-modified and written back
+into the PLL register, and a failed write-back would go unnoticed.
+Check both and bail out. The adjacent EEE advertisement writes push a
+constant value and cannot corrupt state, so they are left as is.
 
-I'd suggest a clearer commit message, like:
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/a7dfe3b66ea6ac1ae7915034de0527060e6ddcd4.1785811140.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-Include in rate_sample a count of the number of segments that were
-newly marked, on this ACK, as having been CE (congestion experienced).
-Replace local ecn_count variable with it. This signal will be useful,
-in upcoming patches, for congestion control modules, like Prague,
-which want to process AccECN-style ECN signals.
+LLM Generated explanations, may be completely bogus:
 
->
-> Co-developed-by: Olivier Tilmans <olivier.tilmans@nokia.com>
-> Signed-off-by: Olivier Tilmans <olivier.tilmans@nokia.com>
-> Signed-off-by: Ilpo J=C3=A4rvinen <ij@kernel.org>
-> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> ---
->  include/net/tcp.h    |  1 +
->  net/ipv4/tcp_input.c | 41 +++++++++++++++++++----------------------
->  2 files changed, 20 insertions(+), 22 deletions(-)
->
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index 0265c27a5fd7..1838389a9d8a 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -1346,6 +1346,7 @@ struct rate_sample {
->         int  losses;            /* number of packets marked lost upon ACK=
- */
->         u32  acked_sacked;      /* number of packets newly (S)ACKed upon =
-ACK */
->         u32  prior_in_flight;   /* in flight before this ACK */
-> +       u32  ece_delta;         /* is this ACK echoing some received CE? =
-*/
+This is a real, small error-path fix for this 6.12 tree: an unchecked
+CORE_PLL_GROUP4 RMW can write a negative errno into the MT7531 PHY PLL.
+The buggy code is present here, and a related callee change already
+landed.
 
+## Phase 1: Commit message forensics
 
-This comment seems incorrect. It implies the value is a boolean, but
-it's a count.
+**Step 1.1 — Subject**
+Record: `[net: dsa: mt7530]` `[check]` Check CORE_PLL_GROUP4 read/write
+results in `mt7531_setup()`. “check” is used as a missing-return-value
+fix, not a feature add.
 
-I'd suggest renaming the field for clarity, to something like
-acked_sacked_ece, since AFAIK it is the subset of the packets in
-acked_sacked that were marked as CE.
+**Step 1.2 — Tags (from the candidate message)**
+Record:
+- `Signed-off-by: Daniel Golle <daniel@makrotopia.org>` (author)
+- `Link: https://patch.msgid.link/a7dfe3b66ea6ac1ae7915034de0527060e6ddc
+  d4.1785811140.git.daniel@makrotopia.org`
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev maintainer
+  applied it)
 
-So, for clarity/readability, I'd suggest renaming it, and placing the
-field immediately below acked_sacked, and reworking the comment to be
-like:
+Ignored per instructions: any pipeline “already selected” markers.
 
-        u32  acked_sacked;      /* number of packets newly (S)ACKed upon AC=
-K */
-        u32  acked_sacked_ece;  /* number of packets ECE-marked upon ACK */
+Original mailing-list version (openwall/lkml, same msgid) also had:
+- `Fixes: c288575f7810 ("net: dsa: mt7530: Add the support of MT7531
+  switch")`
+- No `Cc: stable`, no `Reported-by`, no `Reviewed-by` on this patch
+  itself
 
->         u32  last_end_seq;      /* end_seq of most recently ACKed packet =
-*/
->         bool is_app_limited;    /* is sample from packet with bubble in p=
-ipe? */
->         bool is_retrans;        /* is sample from retransmission? */
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 02ec0b0116d1..a5a7302050c4 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -588,9 +588,10 @@ static u32 __tcp_accecn_process(struct sock *sk, con=
-st struct sk_buff *skb,
->         return safe_delta;
->  }
->
-> -static u32 tcp_accecn_process(struct sock *sk, const struct sk_buff *skb=
-,
-> -                             u32 delivered_pkts, u32 delivered_bytes,
-> -                             u64 prior_bytes_acked, int *flag)
-> +static void tcp_accecn_process(struct sock *sk, struct rate_sample *rs,
-> +                              const struct sk_buff *skb, u32 delivered_p=
-kts,
-> +                              u32 delivered_bytes, u64 prior_bytes_acked=
-,
-> +                              int *flag)
->  {
->         struct tcp_sock *tp =3D tcp_sk(sk);
->         u32 delta;
-> @@ -600,11 +601,11 @@ static u32 tcp_accecn_process(struct sock *sk, cons=
-t struct sk_buff *skb,
->         if (delta > 0) {
->                 tcp_count_delivered_ce(tp, delta);
->                 *flag |=3D FLAG_ECE;
-> +               rs->ece_delta =3D delta;
->                 /* Recalculate header predictor */
->                 if (tp->pred_flags)
->                         tcp_fast_path_on(tp);
->         }
-> -       return delta;
->  }
+Cover letter for the series: Andrew Lunn’s `Reviewed-by` was collected
+on patches 1–3 and 6, not on this one (it was new in v2).
 
+**Step 1.3 — Body**
+Record:
+- Bug: `mt7531_setup()` RMW of `CORE_PLL_GROUP4` via
+  `mt7531_ind_c45_phy_read/write` does not check either result.
+- Failure mode: a failed read returns a negative errno that is bit-
+  modified and written into the PHY core PLL; a failed write is ignored.
+- Author’s framing: this became acute once the indirect helpers
+  propagate command-write failures.
+- Adjacent EEE advertisement writes are constant `0`, so they cannot
+  corrupt RMW state and are left alone.
 
-Does this compile? Did you try to compile this patch? This removes the
-only "return" statement from a function that returns a value. Looks
-like invalid C to me. :-)
+**Step 1.4 — Hidden bug fix?**
+Record: Not hidden. It is an explicit missing-error-check fix. The “now
+that …” wording is series context (patch 3/6), not a cleanup-only
+change.
 
->
->  /* Buffer size and advertised window tuning.
-> @@ -4220,8 +4221,8 @@ static void tcp_xmit_recovery(struct sock *sk, int =
-rexmit)
->  }
->
->  /* Returns the number of packets newly acked or sacked by the current AC=
-K */
-> -static u32 tcp_newly_delivered(struct sock *sk, u32 prior_delivered,
-> -                              u32 ecn_count, int flag)
-> +static u32 tcp_newly_delivered(struct sock *sk, struct rate_sample *rs,
-> +                              u32 prior_delivered, int flag)
->  {
->         const struct net *net =3D sock_net(sk);
->         struct tcp_sock *tp =3D tcp_sk(sk);
-> @@ -4232,8 +4233,8 @@ static u32 tcp_newly_delivered(struct sock *sk, u32=
- prior_delivered,
->
->         if (flag & FLAG_ECE) {
->                 if (tcp_ecn_mode_rfc3168(tp))
+## Phase 2: Diff analysis
 
+**Step 2.1 — Inventory**
+Record:
+- File: `drivers/net/dsa/mt7530.c` only
+- Function: `mt7531_setup()`
+- ~10 insertions, ~4 deletions (candidate hunk); net +6 lines of checks
+- Scope: single-file surgical caller fix
 
-This (tcp_ecn_mode_rfc3168(tp)) expression seems to suggest that the
-value will not be available for AccECN connections. How will Prague
-use this rs->ece_delta field if it's only available for rfc3168 ECN?
+**Step 2.2 — Flow**
+Record: Before, `u32 val = mt7531_ind_c45_phy_read(...)` then OR/AND
+bits and write back, ignoring errors. After, store the `int` in `ret`,
+return if `ret < 0`, copy into `val` only on success, check the write,
+return on write failure. Probe/`sw_setup` fails instead of programming
+PLL from an errno.
 
-I suggest addressing this so that the rs->ece_delta is updated if
-tcp_ecn_mode_any(), and putting that change in a new commit, placed
-before this commit in this patch series.
+**Step 2.3 — Bug mechanism**
+Record: **Logic / error-path correctness**, specifically “treat errno as
+register data.”
+- `mt7531_ind_c45_phy_read()` returns `int` (PHY data or negative
+  errno).
+- Assigned to `u32 val`, then modified (`MT7531_RG_SYSPLL_DMY2 |
+  MT7531_PHY_PLL_BYPASS_MODE`, clear `MT7531_PHY_PLL_OFF`).
+- Written through `mt7531_ind_c45_phy_write(..., u16 data)`, so a value
+  such as `(u32)-ETIMEDOUT` (`0xFFFFFF92`) truncates to
+  `0xFF92`/`0xFFD2` and is programmed into the PHY PLL.
+- Write errors (already returned on poll timeout in this tree) are
+  ignored.
 
->
-> -                       ecn_count =3D delivered;
-> -               NET_ADD_STATS(net, LINUX_MIB_TCPDELIVEREDCE, ecn_count);
-> +                       rs->ece_delta =3D delivered;
-> +               NET_ADD_STATS(net, LINUX_MIB_TCPDELIVEREDCE, rs->ece_delt=
-a);
->         }
->
->         return delivered;
-> @@ -4288,7 +4289,7 @@ static int tcp_ack(struct sock *sk, const struct sk=
-_buff *skb, int flag)
->         struct inet_connection_sock *icsk =3D inet_csk(sk);
->         struct tcp_sock *tp =3D tcp_sk(sk);
->         struct tcp_sacktag_state sack_state;
-> -       struct rate_sample rs =3D { .prior_delivered =3D 0 };
-> +       struct rate_sample rs =3D { .prior_delivered =3D 0, .ece_delta =
-=3D 0 };
+**Step 2.4 — Fix quality**
+Record: Obviously correct. `ret` is already declared in
+`mt7531_setup()`. No API/locking/data-structure change. Regression risk
+is that a failing MDIO access now fails switch setup instead of
+continuing with a bogus PLL; that is the intended behavior. Risk of the
+fix itself is very low.
 
-Adding the ece_delta field here in the initializer is redundant.
+## Phase 3: Git history
 
-According to the C99 standard (ISO/IEC 9899:1999, Section 6.7.9,
-paragraph 21), if an aggregate or union contains fewer initializers
-than there are members, the remaining fields are implicitly
-initialized the same as objects that have static storage duration.
-When you explicitly initialize even a single scalar field (whether to
-zero or any other value) using a designated initializer, you trigger
-the C language rule for partial initialization. Arithmetic/Scalar
-types (integers, floats) are initialized to 0.
+**Step 3.1 — Blame**
+Record:
+- Unchecked RMW originates in `c288575f7810` (Landen Chao, 2020-09-14):
+  “Add the support of MT7531 switch”.
+- Helper names/`MT753X_CTRL_PHY_ADDR` from later Arınç ÜNAL refactors
+  (`868ff5f4944aa9`, `06dfcd4098cfdc`, 2024).
+- Poll path in this tree already uses `regmap_read_poll_timeout()` from
+  `96e0f5184af69` (Daniel Golle, applied 2026-08-09): “error out on
+  failed reads in MT7531 PHY polling”.
 
-Thanks again for the patch.
+**Step 3.2 — Fixes: target**
+Record: `c288575f7810` **is** an ancestor of this tree. The original
+MT7531 support (and this RMW) has been here since well before 6.12.
 
-Best,
-neal
+**Step 3.3 — Related file history**
+Record:
+- `96e0f5184af69` — already in this tree. Makes poll/read failures
+  return negative errno instead of continuing with garbage “success”
+  data.
+- `93d46870c5440` — already in this tree. Same class: do not treat
+  `bus->read()` errno as register data.
+- This candidate is the missing **caller** check for the one in-driver
+  RMW of `mt7531_ind_c45_phy_read()`.
+
+**Step 3.4 — Author**
+Record: Daniel Golle is a regular MT7530 contributor (PLL/PHY access,
+MT7988, MT7531BE). Same author as the already-backported poll-error fix.
+
+**Step 3.5 — Prerequisites**
+Record: This is patch **4/6** of “fix remaining swallowed MDIO access
+errors”. Patch 3 (`error out on failed PHY_IAC command writes`, upstream
+`1c95dcb7e923`) is **not** in this tree. It is not required to compile
+or to apply this hunk: the helpers already return `int`, and
+`mt7531_ind_c45_phy_read/write` already return negative errno on
+`regmap_read_poll_timeout()` failure. Patch 3 only adds extra error
+returns from discarded `mt7530_mii_write()` of `MT7531_PHY_IAC`.
+Standalone apply: **yes**.
+
+## Phase 4: Mailing list / external
+
+**Step 4.1 — Original discussion**
+Record:
+- `b4 dig` on the msgid failed (`Cannot find a commit matching …`).
+- lore.kernel.org fetches returned 403.
+- Fallback: openwall + lkml + cover letter.
+- Lore/openwall URL: msgid `a7dfe3b66ea6ac1ae7915034de0527060e6ddcd4.178
+  5811140.git.daniel@makrotopia.org` (Tue 4 Aug 2026).
+- Cover: https://lists.openwall.net/netdev/2026/08/04/90
+- This patch was **new in v2**, flagged by Sashiko AI review of v1 as
+  another swallowed MDIO error.
+- Cover letter: “the call site exposed once patch 3 makes the MT7531
+  indirect c45 access propagate command-write failures.”
+- Applied by Jakub Kicinski; patchwork bot lists upstream as
+  `1ae63b018d3d`.
+- No NAK found in the material that could be retrieved.
+
+**Step 4.2 — Recipients**
+Record: To/Cc included Andrew Lunn, Vladimir Oltean, netdev maintainers,
+MediaTek/DSA people, `netdev@`, `linux-mediatek@`. Appropriate audience.
+Andrew reviewed 1–3 and 6; this patch 4 had no `Reviewed-by` in the
+submission.
+
+**Step 4.3 — Bug report**
+Record: No syzbot/bugzilla. Found by AI review of the MDIO-error series,
+not a user crash report.
+
+**Step 4.4 — Series**
+Record: v2 6-patch series. Patches 1, 2, 3, 5, 6 are **not** in this
+tree. This patch is self-contained at the `mt7531_setup()` call site.
+
+**Step 4.5 — Stable list**
+Record: No stable-specific discussion found (lore.kernel.org/stable
+search did not return this subject). UNVERIFIED: whether anyone later
+nominated it on stable@.
+
+## Phase 5: Code semantic analysis
+
+**Step 5.1 — Functions**
+Record: `mt7531_setup()` only. Helpers `mt7531_ind_c45_phy_read/write`
+are not modified.
+
+**Step 5.2 — Callers**
+Record:
+- `mt7531_setup` is `.sw_setup` for `ID_MT7531` only (`mt753x_table`).
+- `mt753x_setup()` calls `priv->info->sw_setup(ds)` and aborts on error.
+- `mt753x_setup` is `.setup` in `mt7530_switch_ops` → DSA switch setup /
+  probe.
+- MT7988/EN7581 use `mt7988_setup()` → `mt7531_setup_common()`; they do
+  **not** run this PLL RMW.
+
+**Step 5.3 — Callees**
+Record: `mt7531_ind_c45_phy_read/write` lock the MDIO mutex, write
+`MT7531_PHY_IAC`, poll `MT7531_PHY_ACS_ST`. On poll/read failure they
+`goto out` and return negative `ret`. `mt7530_mii_write()` already
+returns `regmap_write` errors, but those returns are still discarded in
+this tree (patch 3).
+
+**Step 5.4 — Reachability**
+Record: Probe-time only, when an MT7531 DSA switch is instantiated
+(`CONFIG_NET_DSA_MT7530`). Not a syscall hot path. Userspace cannot
+trigger it except by causing device probe. Trigger is MDIO/regmap
+failure or IAC poll timeout during setup.
+
+**Step 5.5 — Similar patterns**
+Record: The only in-driver `mt7531_ind_c45_phy_read()` call site is this
+PLL RMW. Other `mt7531_ind_c45_phy_write()` uses in the same function
+are constant EEE-adv `0`. Phylib also uses these as `.phy_read_c45` /
+`.phy_write_c45`.
+
+## Phase 6: Local tree (6.12.111 / `pending-6.12`)
+
+**Step 6.1 — Buggy code present?**
+Record: **Yes.** `drivers/net/dsa/mt7530.c` `mt7531_setup()` still does:
+
+```2665:2672:drivers/net/dsa/mt7530.c
+        val = mt7531_ind_c45_phy_read(priv,
+MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
+                                      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
+        val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
+        val &= ~MT7531_PHY_PLL_OFF;
+        mt7531_ind_c45_phy_write(priv,
+MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
+                                 MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
+```
+
+Bug introduced with MT7531 support (`c288575f7810`, v5.10-era). Present
+in 6.12.
+
+**Step 6.2 — Backport difficulty**
+Record: **Clean apply** aside from line-number offset (2665 here vs 2764
+in the candidate diff). Surrounding comments and EEE loop match. `ret`
+is already in scope.
+
+**Step 6.3 — Related fixes already here**
+Record: `96e0f5184af69` already backported. That change makes failed IAC
+polls/reads return errno into this unchecked caller, so this tree
+already has the callee half of the fix without the caller half. No
+equivalent caller check exists yet.
+
+## Phase 7: Subsystem context
+
+**Step 7.1**
+Record: `drivers/net/dsa/mt7530.c` — MediaTek MT7530/MT7531 DSA.
+**IMPORTANT** for MediaTek routers/SBCs (MT7621/MT7622/MT7531), not core
+mm/vfs. `CONFIG_NET_DSA_MT7530`.
+
+**Step 7.2**
+Record: File is actively maintained; recent 6.12 backports already
+include two MDIO-error fixes from the same author.
+
+## Phase 8: Impact and risk
+
+**Step 8.1 — Who is affected**
+Record: Driver-specific: MT7531 switch users (common on MediaTek ARM
+routers). Not MT7988/EN7581 setup (`mt7988_setup`).
+
+**Step 8.2 — Trigger**
+Record: MDIO/regmap failure or PHY_IAC poll timeout during `dsa_switch`
+setup. Uncommon on healthy hardware. Not an unprivileged syscall
+trigger. After `96e0f5184af69`, a failed bus read during poll is a
+**negative errno**, not silent garbage success — so this caller bug is
+easier to hit than before that backport.
+
+**Step 8.3 — Failure mode**
+Record: Hardware misconfiguration: PHY core PLL programmed from a
+truncated errno instead of a real `CORE_PLL_GROUP4` value, then setup
+continues. Switch can probe “successfully” with PHYs/PLL in a bad state.
+Not a KASAN crash. Severity: **HIGH** for that hardware (silent wrong
+PLL), not a generic kernel panic. Failing probe is the correct outcome.
+
+**Step 8.4 — Risk/benefit**
+Record:
+- Benefit: medium-high for MT7531 — closes a hole opened/worsened by the
+  already-applied poll-error backport; avoids writing errno into PLL.
+- Risk: very low (6 lines of `if (ret < 0) return ret`).
+- Ratio: favorable.
+
+## Phase 9: Synthesis
+
+**Evidence FOR**
+- Real bug: negative errno used as PLL register data, then written back.
+- Buggy RMW is in this 6.12 tree; `Fixes:` target `c288575f7810` is
+  here.
+- Companion to `96e0f5184af69`, already in this tree: that commit made
+  failed reads return errno; this caller still treats the result as PHY
+  data.
+- Small, obviously correct, no new API, applies cleanly.
+- Same class as other swallowed-MDIO fixes already accepted here
+  (`93d46870c5440`, `96e0f5184af69`).
+- Author intended it as a bug fix (`Fixes: c288575f7810` on the list).
+- Applied to mainline by Jakub Kicinski (`1ae63b018d3d`).
+
+**Evidence AGAINST**
+- Error path only; no syzbot/user crash report.
+- Driver-specific, probe-time, not a UAF/panic/CVE.
+- Series patch 4/6; Andrew Lunn did not `Reviewed-by` this specific
+  patch.
+- Patch 3 (PHY_IAC command-write checks) is not in this tree; the
+  author’s “now that writes propagate” story is only fully true after
+  patch 3.
+
+**Unresolved / UNVERIFIED**
+- Full lore thread (403); no individual review replies beyond cover
+  letter and patchwork apply notice.
+- Whether patch 3 will be evaluated separately for this tree (not
+  required for this hunk).
+
+**Stable rules**
+1. Obviously correct and tested? **PASS** — trivial return-value checks;
+   merged to net by Kicinski.
+2. Real bug affecting users? **PASS** — MT7531 setup can program PHY PLL
+   from errno on MDIO/poll failure.
+3. Important? **PASS** — hardware PLL corruption and silent “success”
+   after a failed access; worsened by an already-backported callee fix.
+   Not a generic oops, but it is serious for this switch.
+4. Small and contained? **PASS** — one function, ~6 net lines.
+5. No new features/APIs? **PASS**.
+6. Can apply to this tree? **PASS**.
+
+**Exception category:** none (not a device ID/quirk/DT/build/docs
+exception). It qualifies on ordinary bug-fix rules.
+
+The missing patch 3 does not make this a NO: poll timeout and failed
+`regmap_read_poll_timeout()` already return errno here, and those values
+are what get written into `CORE_PLL_GROUP4` today.
+
+### What it solves for this tree
+On MT7531 probe, a failed indirect C45 read of `CORE_PLL_GROUP4` is
+currently folded into the PLL enable RMW and written back. This tree
+already backported the helper change that returns those failures as
+errno. Without this caller check, 6.12 can program the PHY core PLL from
+that errno and keep going. The fix fails setup instead. It is small,
+matches local code, and does not need the rest of the series.
+
+Verification:
+- [Phase 1] Parsed subject/tags/body; list version has `Fixes:
+  c288575f7810`; candidate message has Link + Golle/Kicinski SOBs
+- [Phase 2] Diff: `mt7531_setup()` only; check read and write; `ret`
+  already declared
+- [Phase 3] `git blame` on 2660–2686: RMW from `c288575f7810`; helpers
+  renamed later; poll uses `96e0f5184af69`
+- [Phase 3] `git merge-base --is-ancestor c288575f7810 HEAD` → yes
+- [Phase 3] `git merge-base --is-ancestor 96e0f5184af69 HEAD` → yes
+  (callee error propagation already here)
+- [Phase 3] `git log --grep="PHY_IAC command writes"` → patch 3 **not**
+  in this tree
+- [Phase 3] `git show 96e0f5184af69` confirms
+  `regmap_read_poll_timeout()` returns negative on failed reads
+- [Phase 4] `b4 dig` on msgid failed; lore 403; used openwall/lkml/cover
+  letter; upstream SHA `1ae63b018d3d`; v2 new patch; Andrew reviewed 1–3
+  and 6 only
+- [Phase 4] UNVERIFIED: full review-reply text; stable@ thread
+- [Phase 5] grep: only in-driver `mt7531_ind_c45_phy_read` call is this
+  RMW; `.sw_setup = mt7531_setup` for `ID_MT7531`; `mt753x_setup()`
+  returns that error
+- [Phase 6] `git describe HEAD` → `p-6.12-4-gbf6fcdf761abd`; `make
+  kernelversion` → 6.12.111; buggy code at mt7530.c:2665–2672
+- [Phase 6] Pre-image matches the candidate hunk; clean apply expected
+- [Phase 8] Failure mode: PHY PLL programmed from truncated errno on
+  probe MDIO failure; severity HIGH for MT7531, trigger uncommon but
+  real after `96e0f5184af69`
+
+**YES**
+
+ drivers/net/dsa/mt7530.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index d2dcc2f1522f4..4f391ef797ea3 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2758,14 +2758,20 @@ mt7531_setup(struct dsa_switch *ds)
+ 	 * phy_[read,write]_mmd_indirect is called, we provide our own
+ 	 * mt7531_ind_mmd_phy_[read,write] to complete this function.
+ 	 */
+-	val = mt7531_ind_c45_phy_read(priv,
++	ret = mt7531_ind_c45_phy_read(priv,
+ 				      MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
+ 				      MDIO_MMD_VEND2, CORE_PLL_GROUP4);
++	if (ret < 0)
++		return ret;
++
++	val = ret;
+ 	val |= MT7531_RG_SYSPLL_DMY2 | MT7531_PHY_PLL_BYPASS_MODE;
+ 	val &= ~MT7531_PHY_PLL_OFF;
+-	mt7531_ind_c45_phy_write(priv,
+-				 MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
+-				 MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
++	ret = mt7531_ind_c45_phy_write(priv,
++				       MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr),
++				       MDIO_MMD_VEND2, CORE_PLL_GROUP4, val);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* Disable EEE advertisement on the switch PHYs. */
+ 	for (i = MT753X_CTRL_PHY_ADDR(priv->mdiodev->addr);
+-- 
+2.53.0
+
