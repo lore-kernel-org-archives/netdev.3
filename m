@@ -1,61 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792448992;
-	b=I7UvYnj9LbYyPHYt+QCc6H/krIJ86GX4TXkjHV/t26zhf7XWUd5q8pR/T7pETK3XQh1u
-	 nfmo0oJ8DlzpHhfQF09CJ0YfrMg9sg99pBAM4Ld20Yl7H8Jkymmv6j9l9F7QoA4SNBEQt
-	 U48mJmzOVzfplCOyGTFLCKIyP1PoBpyvoScHL+s+1Eqtjk0OKijAAmi26Q3jLKs0bDPfq
-	 A095LJNGPcdeNKGHNXEmWJ7hfQNLrSrrDD0xEOkmQO980gxy29O9Den2X83jJag/B7q4K
-	 u4D6D7mmF2qJBX9arE9R3gzRnVdiWuytV0nV6X+ez7/qELwYdWt4oEM4Eeysd+0xNLw==
+	t=1792449557;
+	b=d9cJvZLPawpwz7UhD48VSgoNFg3xfDUg8oDzk0hqfQmEqjiEgw+buFFwg9c2shSg7Wk2
+	 D5PukZ4++Typ4uzJMLrsnA/+BfO5u8HegwQwlxXb7M3qJOafGzMZyAWmDBiC8P/ilktkW
+	 ZCmkKXP9mOzfVd+d9NLfbCC4cXL5ryixosji+76NrV0k0bATUUtL1silhFF37sr3Qvn+x
+	 aMBlJCUANu3Ygz8IUQcmWmVAWHlZ9TMz7X6fkluG+a8aKUtXzaIJpDyWNFLKag+Ul2Mc+
+	 21DlZXMiHtmCtRX6VcFlVkhV9sEbGSFDBPs3/Q+3OTkLxD/8mdWKVMmIrda5tcwd3eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792448992;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792449557;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=bn0LUV8nV0X9AL2Oe4mZF4R4gBNcAcDh87LSeEPK0aQ=;
-	b=wOJBytxu6qIeGFTqjw09ACZmjtvUR7fOD5Vu86+W1W9U/v6WYFXGat2A3+ol3dWoBLpD
-	 rX8UheofdpssNmS3oZJUvDYa7Mqx6n5ozdxabjS00wkdufA++euaJT1XRfuaYbQGpFXCT
-	 1l6frqhvju4QzgNZoD0WmjnM/JD02BhwyOYr8i8RwljlWwegWVdeSOCaBvlhMNpmJvoze
-	 3hb0cFEjjKGw5T1ACDmSb12gTDQxwGenoNMCQzXOQA2pj46VYC6LNMW5lfoW9F6u2C6Ht
-	 kQGvdtdf0/uFVfr6uJGVlmPGneA52fSQ+AW2sEDRG3V0Mby+RvkuCB9PLZNcmCyDIWQ==
+	bh=iVicnuw5H5/wmwwsIU/+q31coS/UK87CGBJ64fdu6IY=;
+	b=3Yxk7UrxdMmdl3ctgt8v0quEEHrNN0OBj+vZ9duHbCoa5lzTXJMBrzu1WkKbfE6ZzzaA
+	 0G35ueXllZNM+VSjVwZ0pw28wsPlu80/uYX/mr/9zotTSHzNl9joPQ7Ud8qb0HWa6y0sU
+	 30ahzYVdxWyCRZ1fqZ8J0J30YqrzXsz4drjCh2dxAQydLJvnme8KjgqOfz17Pt5NU184R
+	 8DONNPEWOEt02TjWWklLjX2UiU1juRY+n3zMBmg/QiPaaUQLXn6Hj8LB2+zK97tdjNyB1
+	 b8hEYKRY2i5crYC79RY/Uy1jzTKBhA7X66AjHVwqG4o6m+Okgiufv95iQVhEeESuSiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oYpjPcO4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="I3Oej/Sd";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E026606A31B;
-	Mon, 19 Oct 2026 22:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD58606A319;
+	Mon, 19 Oct 2026 22:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oYpjPcO4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3FE1F000C4;
-	Mon, 19 Oct 2026 22:29:50 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I3Oej/Sd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DA11F000C4;
+	Mon, 19 Oct 2026 22:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792448991;
-	bh=bn0LUV8nV0X9AL2Oe4mZF4R4gBNcAcDh87LSeEPK0aQ=;
+	s=k20260515; t=1792449556;
+	bh=iVicnuw5H5/wmwwsIU/+q31coS/UK87CGBJ64fdu6IY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oYpjPcO4+qyVgDvU0SXTwuY03Cd2EM9GgCLwi1KJycLvfsoISiFgeC+/vCtrHS6XR
-	 WwUhW/XFyuaRVUFj3NDGImX7TebArRQIIRgpbiMqQi1CKZbOs5FOYy8ovxKjJC+mQA
-	 Q0H59J9WpJ6lbBRizcyO2B1xnIGHmo5eGZOKjPL/JRuxXDhbQ/M+9u/m0YbZpdkOgz
-	 aglhJjgWCro1GTi7eqZpbYGPMQJMxMCOsGvR9q+PZ9WAQcd97d/zMaKSIvmFS/+ZjJ
-	 hSvgRSVWV5eLah25O2qz/oO0LyVuwyT814urBfaEYZyU2Y8gDWyELU4tdOqKNXj8Qy
-	 q7tJkkGi/z8/Q==
-Subject:
- Re: [PATCH net-next v4] net: stmmac: dwxgmac2: enable L2 split header support
+	b=I3Oej/Sd4MFInT7nmMo0NRE2RDaSHXBbMedPRmi1orUNIXIrkUx9qG3ibXb87cRqn
+	 MGCpgHTPogrnzqOTQuaPfiBAR1ZKLIyxYnxLuzUZ0Inn8WjIzy4jUVnCDy8dLtz6Yt
+	 rNAmLY5TcF+vBitiNNP4p+QKj55M+RT7GQ+nlyPxFQosFfT6Xz+Y7vPiKW2PtJJq8+
+	 w9k4tET5f/VcULPRDS5NJOXRFMPUfU+GKoq5RKwk7MaTXwQCgMNczmxW0h29/2sU+X
+	 H1eFX4Nm3bl1nzmD/PefJfmZco5VZG4WBI2e6YxPqTC1f21wypo4txNTkHPsV0B4SA
+	 1X4eS8DU4EnNw==
+Subject: Re: [PATCH net v4 1/5] amt: fix use-after-free when a Membership
+ Update re-arms a freed tunnel
 From: netdev-bot+sashiko@kernel.org
-To: sagar.cheluvegowda@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- lorenzo.bianconi@oss.qualcomm.com, hongmei.xu@oss.qualcomm.com,
- abhishek.chauhan@oss.qualcomm.com, sarosh.hasan@oss.qualcomm.com
-Date: Mon, 19 Oct 2026 22:29:49 +0000
-Message-ID: <179244898962.3135.12890405028818098249@kernel.org>
-In-Reply-To: <20261015221215.1714047-1-sagar.cheluvegowda@oss.qualcomm.com>
-References: <20261015221215.1714047-1-sagar.cheluvegowda@oss.qualcomm.com>
+To: omar@blockcast.net
+Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org
+Date: Mon, 19 Oct 2026 22:39:15 +0000
+Message-ID: <179244955529.3135.5434983972100868824@kernel.org>
+In-Reply-To: <20261015220648.1545576-2-omar@blockcast.net>
+References: <20261015220648.1545576-2-omar@blockcast.net>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -69,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 2
+Critical: 0 · High: 1 (1) · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -80,200 +75,282 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] On XLGMAC cores, dwxgmac2_enable_sph() now corrupts the RX queue
-  enable register.
-- [Medium] dwxgmac2_enable_sph() programs MAC-global split and preamble
-  settings regardless of `en`.
-- [Low] The patch includes a fix for an existing XGMAC split-header bug
-  inside a feature patch, with no Fixes: tag.
-- [Low] dwxgmac2_enable_sph() sets the 2-bit SPLM field
-  (XGMAC_CONFIG1_SPLM_MASK = GENMASK(9,8)) with `value |=…
+- [High] In this patch's version, amt_tunnel_expire()
+  (drivers/net/amt.c:1374-1383) sets tunnel->dead under tunnel->lock.
+- [Medium] The commit message only describes tunnel gc_wq,
+  amt_update_handler(), amt_tunnel_expire() and amt_dev_stop().
+- [Medium] In this patch, amt_request_handler()
+  (drivers/net/amt.c:2783-2791) sets tunnel->last_seen = jiffies and…
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the stmmac
-  RX path has no dma_rmb() between seeing RDES3.OWN cleared and reading…
+- [High] This problem wasn't introduced by this patch, but the new
+  gnode->dead/snode->dead checks do not stop a use-after-free when a…
 
 --
 
-net: stmmac: dwxgmac2: enable L2 split header support
+amt: fix use-after-free when a Membership Update re-arms a freed tunnel
 
-This patch makes dwxgmac2_enable_sph() program SPLM and SAVE_EN in
-XGMAC_EXT_CFG1 and clear the variable preamble bit in XGMAC_EXT_CFG0. It
-also changes dwxgmac2_get_rx_header_len() so the header length is read
-only on the first descriptor. For non-IP (L2T) packets on the last
-descriptor, the length comes from RDES2[9:2].
+With this patch, amt_update_handler() only records tunnel->last_seen and no
+longer re-arms gc_wq. amt_tunnel_expire() now decides from last_seen,
+under amt->lock, whether to re-arm itself or free the tunnel. The patch
+also changes amt_dev_stop() to mark tunnels dead under amt->lock and
+unlink them one at a time, and it adds dead flags to the tunnel, group
+and source nodes.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> index 6719ac6e395bc..b28aa39f99472 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> @@ -292,8 +292,22 @@ static int dwxgmac2_get_rx_hash(struct dma_desc *p, u32 *hash,
+> diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+> index b53f8ec556615..b06916c7d57d5 100644
+> --- a/drivers/net/amt.c
+> +++ b/drivers/net/amt.c
+> @@ -215,9 +215,14 @@ static struct amt_group_node *amt_lookup_group(struct amt_tunnel_list *tunnel,
 >  
->  static void dwxgmac2_get_rx_header_len(struct dma_desc *p, unsigned int *len)
+>  static void amt_destroy_source(struct amt_source_node *snode)
 >  {
-> -	if (le32_to_cpu(p->des3) & XGMAC_RDES3_L34T)
-> +	u32 rdes3 = le32_to_cpu(p->des3);
-> +
-> +	/* HL is only defined on the first descriptor */
-> +	if (!(rdes3 & XGMAC_RDES3_FD))
+> -	struct amt_group_node *gnode = snode->gnode;
+> +	struct amt_group_node *gnode;
+>  	struct amt_tunnel_list *tunnel;
+>  
+> +	if (READ_ONCE(snode->dead))
 > +		return;
+> +	WRITE_ONCE(snode->dead, true);
+> +	gnode = snode->gnode;
 > +
-> +	/* when FD=1 and LD=0, HL is RDES2[9:0] */
-> +	if (!(rdes3 & XGMAC_RDES3_LD)) {
-> +		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+>  	tunnel = gnode->tunnel_list;
+>  
+>  	if (!gnode->v6) {
+> @@ -249,6 +254,9 @@ static void amt_del_group(struct amt_dev *amt, struct amt_group_node *gnode)
+>  	struct hlist_node *t;
+>  	int i;
+>  
+> +	if (READ_ONCE(gnode->dead))
+> +		return;
+> +	WRITE_ONCE(gnode->dead, true);
+>  	if (cancel_delayed_work(&gnode->group_timer))
+>  		dev_put(amt->dev);
+>  	hlist_del_rcu(&gnode->node);
+
+[Severity: Medium]
+
+The commit message covers the tunnel gc_wq race and the changes to
+amt_update_handler(), amt_tunnel_expire() and amt_dev_stop(). Several hunks
+in the diff are outside that description:
+
+  - a dead flag added to struct amt_source_node and struct amt_group_node
+  - amt_destroy_source() and amt_del_group() made idempotent
+  - amt_source_work() and amt_group_work() restructured: rcu_read_lock()
+    moved ahead of the gnode reads, the RCU/spinlock nesting swapped, and
+    new early exits added, one of which calls dev_put(amt->dev) when
+    gnode->dead is set
+
+Which race do the group/source changes fix? And why is the dev_put() on
+the new gnode->dead exit path balanced?
+
+The last patch in the series, "amt: harden relay authentication and
+teardown", describes these same changes in its own commit message ("Mark
+tunnels, groups, and sources dead under their locks; have group and source
+workers hold RCU while finding their owners..."). The code itself goes in
+here, though.
+
+Could these hunks either move to that patch or be described in this commit
+message?
+
+[ ... ]
+
+> @@ -403,26 +418,35 @@ static void amt_group_work(struct work_struct *work)
+>  	struct amt_group_node *gnode = container_of(to_delayed_work(work),
+>  						    struct amt_group_node,
+>  						    group_timer);
+> -	struct amt_tunnel_list *tunnel = gnode->tunnel_list;
+> -	struct amt_dev *amt = gnode->amt;
+> +	struct amt_tunnel_list *tunnel;
+> +	struct amt_dev *amt;
+>  	struct amt_source_node *snode;
+>  	bool delete_group = true;
+>  	struct hlist_node *t;
+>  	int i, buckets;
+>  
+> +	rcu_read_lock();
+> +	tunnel = READ_ONCE(gnode->tunnel_list);
+> +	amt = READ_ONCE(gnode->amt);
+>  	buckets = amt->hash_buckets;
+>  
+>  	spin_lock_bh(&tunnel->lock);
+> +	if (READ_ONCE(gnode->dead)) {
+> +		spin_unlock_bh(&tunnel->lock);
+> +		rcu_read_unlock();
+> +		dev_put(amt->dev);
 > +		return;
 > +	}
 
-[Severity: Low]
-Should this FD/LD handling go in its own patch with a Fixes: tag?
+[Severity: High]
 
-The commit message says L34T can hold stale data on a non-last
-descriptor. If so, the old code:
+This isn't a bug introduced by this patch, but can the new gnode->dead
+check actually protect amt_group_work() from amt_del_group()?
 
-	if (le32_to_cpu(p->des3) & XGMAC_RDES3_L34T)
-		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+amt_del_group() does a non-sync cancel and then frees the gnode:
 
-could return hlen == 0 for the first descriptor of a multi-descriptor IP
-frame with SPH active. stmmac_rx_buf1_len() would then take this path:
+    if (cancel_delayed_work(&gnode->group_timer))
+        dev_put(amt->dev);
+    hlist_del_rcu(&gnode->node);
+    ...
+    kfree_rcu(gnode, rcu);
 
-	/* Not last descriptor and not split header: buffer1 is fully filled */
-	if (status & rx_not_ls)
-		return priv->dma_conf.dma_buf_sz;
+process_one_work() clears PENDING before it calls amt_group_work(), so
+cancel_delayed_work() returns false and does not wait. The rcu_read_lock()
+above is only taken after the callback has started. A kfree_rcu() queued
+between the PENDING clear and rcu_read_lock() is therefore not held off.
+With CONFIG_PREEMPT_RCU the kworker can be preempted in that window and a
+grace period can complete.
 
-even though buffer 1 only holds the header.
+In that case the callback reads gnode->tunnel_list, gnode->amt and
+gnode->dead from freed memory. It then calls spin_lock_bh() through a stale
+tunnel pointer and dev_put() on a stale amt->dev.
 
-That looks like an existing XGMAC split-header bug in the code from
-commit 96147375d49f ("net: stmmac: xgmac: Only get SPH header len if
-available"). With the fix bundled into this feature patch, stable trees
-would also need the new EXT_CFG0/EXT_CFG1 programming to pick it up.
+A remote gateway can reach amt_del_group() at the same time, for example
+with an IGMPv2 Leave through amt_igmpv2_leave_handler() or an MLDv1 Done
+sent just as group_timer fires.
 
-> +
-> +	if (rdes3 & XGMAC_RDES3_L34T)
->  		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
-> +	else if (rdes3 & XGMAC_RDES3_L2T)
-> +		*len = (le32_to_cpu(p->des2) & XGMAC_RDES2_NONIPHL) >> 2;
->  }
+amt_source_work() has the same pattern with snode->gnode and
+gnode->tunnel_list. __amt_source_gc_work() also frees snodes without
+calling cancel_delayed_work_sync() on snode->source_timer.
 
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch, but
-is a dma_rmb() missing between the OWN check and the read of des2 here?
+The flag lives inside the object being freed, so it can't protect the
+callback that loads it. Would this need synchronous cancellation, or a
+reference that covers the callback's entry?
 
-dwxgmac2_get_rx_status() loads des3 and des2, then checks OWN:
+As far as I can tell, the final patch in the series ("amt: harden relay
+authentication and teardown") does not change amt_del_group(),
+amt_group_work(), amt_source_work() or __amt_source_gc_work(), so the
+problem is still there at the end of the series.
 
-	u32 rdes3 = le32_to_cpu(p->des3);
-	u32 rdes2 = le32_to_cpu(p->des2);
+[ ... ]
 
-	if (unlikely(rdes3 & XGMAC_RDES3_OWN))
-		return dma_own;
-
-stmmac_rx() then calls stmmac_rx_buf1_len()->dwxgmac2_get_rx_header_len()
-with no barrier in between. The TX completion path in stmmac_main.c calls
-dma_rmb() after its own check, and dwxgmac2_rx_check_timestamp() also
-uses one.
-
-On weakly ordered CPUs, could the RDES2 load complete before OWN is seen
-as cleared? That would give a stale HL and a wrong buf1_len.
-
-The new FD/LD logic doesn't depend on this ordering.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> index ff83858ebc1f3..0a9c787305a4e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> @@ -561,6 +561,16 @@ static void dwxgmac2_enable_sph(struct stmmac_priv *priv, void __iomem *ioaddr,
->  	value |= XGMAC_CONFIG_HDSMS_256; /* Segment max 256 bytes */
->  	writel(value, ioaddr + XGMAC_RX_CONFIG);
+> @@ -1328,8 +1350,30 @@ static void amt_tunnel_expire(struct work_struct *work)
+>  						      struct amt_tunnel_list,
+>  						      gc_wq);
+>  	struct amt_dev *amt = tunnel->amt;
+> +	unsigned long deadline;
 >  
-> +	value = readl(ioaddr + XGMAC_EXT_CFG1);
-> +	value |= XGMAC_CONFIG1_SPLM(1);
+>  	spin_lock_bh(&amt->lock);
 
-[Severity: Low]
-SPLM is a two-bit field (GENMASK(9, 8)). Should it be cleared with
-XGMAC_CONFIG1_SPLM_MASK before the OR, the way HDSMS is handled just
-above?
+[ ... ]
 
-	value &= ~XGMAC_CONFIG_HDSMS;
-	value |= XGMAC_CONFIG_HDSMS_256;
+> +	deadline = READ_ONCE(tunnel->last_seen) +
+> +		   msecs_to_jiffies(amt_gmi(amt)) * 3;
+> +	if (time_before(jiffies, deadline)) {
+> +		mod_delayed_work(amt_wq, &tunnel->gc_wq, deadline - jiffies);
+> +		spin_unlock_bh(&amt->lock);
+> +		return;
+> +	}
+> +	spin_lock_bh(&tunnel->lock);
+> +	WRITE_ONCE(tunnel->dead, true);
+> +	spin_unlock_bh(&tunnel->lock);
+>  	rcu_read_lock();
+>  	list_del_rcu(&tunnel->list);
+>  	amt->nr_tunnels--;
 
-If bit 9 were already set, the field would end up as 3 instead of mode 1.
+[ ... ]
 
-In stmmac_hw_setup(), the SWR from stmmac_init_dma_engine()->
-stmmac_reset() runs before this. So in practice the result depends on
-the register's reset value.
-
-> +	value |= XGMAC_CONFIG1_SAVE_EN;
-> +	writel(value, ioaddr + XGMAC_EXT_CFG1);
-> +
-> +	/* Disable variable preambles to keep the L2 split offset deterministic. */
-> +	value = readl(ioaddr + XGMAC_EXT_CFG0);
-> +	value &= ~XGMAC_EXT_CFG0_VPRE;
-> +	writel(value, ioaddr + XGMAC_EXT_CFG0);
+> @@ -2494,9 +2538,13 @@ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  		if (tunnel->ip4 == saddr) {
+>  			if ((nonce == tunnel->nonce &&
+>  			     response_mac == tunnel->mac)) {
+> -				mod_delayed_work(amt_wq, &tunnel->gc_wq,
+> -						 msecs_to_jiffies(amt_gmi(amt))
+> -								  * 3);
+> +				/* Refresh liveness only.  gc_wq is
+> +				 * re-armed by amt_tunnel_expire() itself
+> +				 * from last_seen, never from here, so this
+> +				 * cannot re-queue the work of a tunnel
+> +				 * that is being freed.
+> +				 */
+> +				WRITE_ONCE(tunnel->last_seen, jiffies);
+>  				goto report;
 
 [Severity: High]
-Can this corrupt the RX queue enable register on XLGMAC cores?
 
-The DWXLGMAC_CORE_2_00 entry in hwif.c uses the same DMA ops as XGMAC:
+Does this fully close the race the commit message describes? The Update
+path still holds the tunnel pointer it cached from the RCU walk. After
+goto report it does:
 
-	.desc = &dwxgmac210_desc_ops,
-	.dma = &dwxgmac210_dma_ops,
-	.mac = &dwxlgmac2_ops,
+amt_update_handler()
+    spin_lock_bh(&tunnel->lock);
+    amt_igmp_report_handler(amt, skb, tunnel);
+    spin_unlock_bh(&tunnel->lock);
 
-so dwxgmac2_enable_sph() runs there too. On XLGMAC, dwxlgmac2.h defines
-offset 0x140 as:
+The amt_mld_report_handler() path is the same, and neither path checks
+tunnel->dead.
 
-	#define XLGMAC_RXQ_ENABLE_CTRL0		0x00000140
+last_seen is written here without amt->lock. amt_tunnel_expire() can
+therefore read the old value, decide the tunnel has expired, and run:
 
-and dwxlgmac2_rx_queue_enable() programs it like this:
+amt_tunnel_expire()
+    WRITE_ONCE(tunnel->dead, true);
+    list_del_rcu(&tunnel->list);
+    amt_clear_groups(tunnel);
+    kfree_rcu(tunnel, rcu);
 
-	value = readl(ioaddr + XLGMAC_RXQ_ENABLE_CTRL0) & ~XGMAC_RXQEN(queue);
-	if (mode == MTL_QUEUE_AVB)
-		value |= 0x1 << XGMAC_RXQEN_SHIFT(queue);
+Suppose the Update takes tunnel->lock after amt_clear_groups() has released
+it. Could amt_add_group() then link a new gnode into the dying tunnel and
+arm group_timer with dev_hold()? For example, in
+amt_igmpv2_report_handler():
 
-BIT(8) is therefore the AVB enable for RX queue 4. Clearing
-XGMAC_EXT_CFG0_VPRE would disable that queue.
+    if (!mod_delayed_work(amt_wq, &gnode->group_timer,
+                          msecs_to_jiffies(amt_gmi(amt))))
+        dev_hold(amt->dev);
 
-The write to 0x144 also sets BIT(8) and BIT(24) in an XLGMAC register
-that the driver doesn't describe.
+When group_timer fires later, amt_group_work() reads gnode->tunnel_list
+and calls spin_lock_bh(&tunnel->lock) on the freed tunnel. The gnode and
+the device reference also look leaked.
 
-stmmac_hw_setup() enables the MTL queues through
-stmmac_mtl_configuration() first. Later it runs:
+This is the same class of problem the commit message sets out to close: an
+Update holding a cached tunnel pointer arms delayed work that outlives the
+tunnel.
 
-	sph_en = (priv->hw->rx_csum > 0) && priv->sph_active;
-	for (chan = 0; chan < rx_cnt; chan++)
-		stmmac_enable_sph(priv, priv->ioaddr, sph_en, chan);
+The later patch in this series, "amt: harden relay authentication and
+teardown", adds a tunnel->dead check after both spin_lock_bh(&tunnel->lock)
+calls in amt_update_handler(). This patch carries the Fixes: tag, so would
+it make sense to move that check here?
 
-There is no sph_capable or core check, so this would happen on every
-XLGMAC open, whether or not split header is supported. Should this be
-gated on the core type, or moved into a per-core MAC op?
+[ ... ]
 
-> +
->  	value = readl(ioaddr + XGMAC_DMA_CH_CONTROL(chan));
->  	if (en)
->  		value |= XGMAC_SPH;
+> @@ -2732,6 +2780,7 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  	for (i = 0; i < amt->hash_buckets; i++)
+>  		INIT_HLIST_HEAD(&tunnel->groups[i]);
+>  
+> +	tunnel->last_seen = jiffies;
+>  	INIT_DELAYED_WORK(&tunnel->gc_wq, amt_tunnel_expire);
+>  
+>  	list_add_tail_rcu(&tunnel->list, &amt->tunnel_list);
+> @@ -2739,7 +2788,7 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  	__amt_update_relay_status(tunnel, AMT_STATUS_RECEIVED_REQUEST, true);
+>  	amt->nr_tunnels++;
+>  	mod_delayed_work(amt_wq, &tunnel->gc_wq,
+> -			 msecs_to_jiffies(amt_gmi(amt)));
+> +			 msecs_to_jiffies(amt_gmi(amt)) * 3);
+>  	spin_unlock_bh(&amt->lock);
 
 [Severity: Medium]
-Only the per-channel XGMAC_SPH bit depends on en here. SPLM/SAVE_EN are
-set and VPRE is cleared on every call, and nothing restores them.
 
-stmmac_hw_setup() calls stmmac_enable_sph() for every RX channel, even
-when sph_en is false or the core has no SPH support.
-stmmac_set_features() calls it with sph_en == false when NETIF_F_RXCSUM
-is cleared, and stmmac_xdp_open() also calls it.
+Is this lifetime change intended? Before this patch, a tunnel created by a
+Request had gc_wq armed for GMI. Only an authenticated Membership Update
+extended it to 3*GMI.
 
-Doesn't that leave the variable preamble disabled on every XGMAC device
-after hw_setup? It would also stay disabled after split header is turned
-off with ethtool.
+Now the initial arm here and the re-arm in amt_tunnel_expire() both use
+last_seen + 3*GMI. A tunnel that never sends an Update therefore lives
+3*GMI.
 
-The commit message says:
+Requests carry no MAC, so spoofed sources can now hold each of the
+max_tunnels slots three times as long. The commit message doesn't mention
+this change.
 
-    Finally, disable the variable-length preamble when L2 splitting
-    is enabled.
+The later patch "amt: harden relay authentication and teardown" makes
+amt_request_handler() stateless, so tunnels are only created after a
+verified Update. That removes the problem in the final tree.
 
-which doesn't seem to match this behavior.
+Could this patch keep the old GMI lifetime for tunnels that have never
+sent an Update, or at least describe the change in the commit message?
 
-Also, dwmac4_enable_sph(), which this extends, doesn't change the
-preamble configuration. And these MAC-global read-modify-writes are
-repeated once per RX channel.
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015221215.1714047-1-sagar.cheluvegowda%40oss.qualcomm.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015220648.1545576-1-omar%40blockcast.net
