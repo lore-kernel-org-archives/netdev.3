@@ -1,151 +1,115 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4860E347C6
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23DA3B6BF1
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:23:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792380126; cv=pass; b=EiLu+TPd8ZtudNc67Rohyw6pAL4HqyI2ot9W1wxRtFFoW/fLwHfBcjDts7v61UoDGqQ6k8+f3MMJC8mGVKX7CieYxZ+YeAgwKbApemmeqrkAhu17Re4VNfLGEZyRMRSKEoDEI+JL59s/TQsl9Wzus5OoOvEjX3X2V3pCxixRC9M=
+	t=1792380182; cv=pass; b=atliaDfPtpyJ8Wd5pZqWFCuehJnvmbxo6QMhnFxjVX+PilRiXuTXl4suOCdCuR1GBDLaQF1M4z5+VXZUS3FO0NJ6L6jdIIZOsMYM81qOEiRWEg1x5dmjVDAmdOAlrs510rXzyulTnBnOMA3A8wAkkO8XzwW99Eg61A6mrup+qBg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792380126; c=relaxed/simple;
-	bh=XCCBIJhL1uiHwfrbhW2jplxuax2K8XniIo9zDCZF6dI=;
+	s=arc-20240116; t=1792380182; c=relaxed/simple;
+	bh=X8UYCgmRSd/S74rBcA7BLikNmBhdmEtIgctQKY56qBY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kO4Y32mQvdu/YA6Qixxsh/LAODF2gSFM7RyD2NP++AFe+zoARI4g09VoBQpOcL6i/pw1LJkeQrZYogyGKpuTPtrnME95lHTa2N7aEgNbY4XF+rd4/tpAXAjT/jYI39bPnl5ZdWD05hlyy63zMh4iBkcGCpj+W1nyCiulKnnlPo8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFrNLFgH; arc=pass smtp.client-ip=209.85.218.43
+	 To:Cc:Content-Type; b=cEqurutK4wekn+jSeCGwinq31s6mHB1vnv7uJPB+AthaOSjrSOZRFeeRV3UdaKga1Yxgo/y2ZxxkFbPWDf2Ca0sQXB/6011Aq18kcvvJ2g6n+HALDe4rCdI2fRoS8xJadoH6YidPCfadvTBotqIPmE8HBlKtt9feHZ9pigASI90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ey8dGutF; arc=pass smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFrNLFgH"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c34bff61551so220194266b.2
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:22:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792380123; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ey8dGutF"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c40e02b2ebaso229267166b.1
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:23:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792380179; cv=none;
         d=google.com; s=arc-20260327;
-        b=g7bqdtTyfZPZ+v3ujlfF7Cp+w/fXE46xJvlQKeEDoTcm/xegYRz+nTOQ9Llf7HoqK0
-         PI72RCuljDb4ludjwseZFF/cI9o/MQZtiRkpFPprYyPWNi9P6cRkiBoioa7ZzmWuqsxP
-         SYmSFVM259UN9k8IvdtWZ9vpweK+rz4hYtSTLJWmJRRgeAgA0wCW1QxQwBi5hqEOklrr
-         X8sHQ8C0h+qiazyBB9kkJOYnIt/ZTx5iHNfDp4uLaDSrHY+0HXsqDwQa032ig1bC5Shf
-         2I8WQTazs8MzHMkk6O4bTW30O2cXHNfskIvAWqMbFL2WCJL7L0vkdUngaz8sO6W7mDct
-         8zXQ==
+        b=ewx2cy3NAUDOPrV4YGMFd3llBUVGBmm5Q8iz91UiKJ+glH27+AKzoQ5MC/xO3Vj3ac
+         dhpttLd0IC1SNM5n/rDmhXwf1QpWBjVqhbDrGme0/Lyyo8G7ueEuNDwR4f7tYxWdTt6W
+         yPd1bzv9UrlQkmjBSEtAYwDlevysivO1lY6LfR4xT60FkbtzT0AZ03AeKP+MDFxtg7Oc
+         Q/qfMEKJuIckl+ig72nLEHRyOZ9YBaoRFDtwQMJljT3CcgIcNo4VxCQl9UhVpkxkCvub
+         gFxVCSs1XDETcefZx92hY4nroS0F4JHnig1be429E+0xSxbQpK/rh7/PqZ8IYtDoHapV
+         /Hqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XCCBIJhL1uiHwfrbhW2jplxuax2K8XniIo9zDCZF6dI=;
-        fh=MIjQ7J0Rr/iX56ttygi2AfcvAdgE/Jpvt+MB86iLBec=;
-        b=FPvbMOrMw+cSVMoAml72+qDyhA2qSJmJp6Yv+SuzjSLu3seZckkcSIGW8XAsEV+6Ov
-         qnQKWYJSED7CPSHRWolq7kclIU3gNAPDfkbH6A8/xcNPYEXyFck+Bc/eYW3cm10gLoWR
-         4IgjW5oNDRVXTKk5jKrt2Mqvnt8lH4BU0gqaDYyoCiH+gWaovjjVEX3mRL28yEPkhEs/
-         kPVcokO/IbL/LkuHiQ1Xf/PAzzpiqOzEp6AHDLl3yADi4vceCYIddVEvuCxQqIheu/Sb
-         qrYam6XHfFAcBZg9moDk8q3yFGc657gt2mA4kAnGwbtaElXUltLIGhHkI/LydgR+H0Be
-         ecDA==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=X8UYCgmRSd/S74rBcA7BLikNmBhdmEtIgctQKY56qBY=;
+        fh=WaNhqF1NVaVbe31szC6fIxoMt1u4Y2sQLJoRiC4wrJo=;
+        b=kJbiXVFLd1o1CiaUVtIOBLNn64I2VKa4w9LFPlqLazS56txRnPyzkJqqng0d/8eGfB
+         GxUNu5rpWmRSLg2zbhPUj8EeE6Rv4yC707evgTsuYFhkfuw9bwBYLDsCNwXGWsMw63+V
+         yc5lP7pLkhOfg/eEXFjn0j+C4UOLjJRF5OSxdfulwB6/ljz6x8T9GXGrII8nZHfXJ3rn
+         VjulrXOgjd/mBEMSKyqgQNnTe+4u0PIe3n6EerrQVdm8sNShAaU4mqFFXd11wKmbf6oB
+         JW9VHekBOKhAGhogOU1Wfu7ZuSJnIg+/yc969TV31Ef6d+jVT5UAGyHBUb2fkM1HGd7A
+         7sfg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792380123; x=1792984923; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XCCBIJhL1uiHwfrbhW2jplxuax2K8XniIo9zDCZF6dI=;
-        b=mFrNLFgH7XOF2H70ozU+iHmwLhwox/7BjOzypZK33n1y4pdmh5Zo32FnaAADE9K0RE
-         XPblvdqMW5ULR8ufPu1bZvD1orXFNCauzp67pAEaOB0ej0teBiWJfS72oI7cjh9OzwPt
-         YE0Pz1/v1MrzN853bRRQlRhRKeTA9h1hcNwg5Qvk2r99ObQcAZies0JEtxXz4uxr+bvq
-         gmmLNUz1JLoByvt2ZmvwlAt38812O7VxnZntiOmvubScL32ITr/FTBzgJXANUEhDC6Ez
-         5syZbzngfLmZChtnjqLuf5gsxdvTArDNMlRNkKY5XXCvYPPchPWPNSyeJtdEEWbTAyiZ
-         KlDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792380123; x=1792984923;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1792380179; x=1792984979; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XCCBIJhL1uiHwfrbhW2jplxuax2K8XniIo9zDCZF6dI=;
-        b=pyV/i2SBKnA3OuYQHe6OzAxc4UtgRbyBC1tOg1o7YVZ7zJ4UE5HFOIp6zSfKWSp4FU
-         rnCkB2YZW1SBzRX8MCEqUnVEfOoiECQ/NRwvwQ6ctWETwzD3e7w5cgMZClWcFgXOjX6b
-         nm/tJ+sAU8Cwp+1Sz1h4pJRDVRiR4uwoiqP0URu888TZ6xeJFVje7BZrjWk9scUuSjst
-         e2M82LEZbidhgxDTb99PA14h/OP+5MPwY5BYYTFLD/xjk+ekDehzN8VQS4QxkaCAoKcn
-         +TxqLCG/x8n0Lp9Q0ov6weWa6fsAJV2oHs6qAKZzicIcjuC27UdQurXtEN+sV6yu4YPN
-         yUzA==
-X-Forwarded-Encrypted: i=1; AKwUvBxY04PAdgp2DvGCSSj02sVJQwvbDyzFiFe1X7EkhEJqgBFOuft9lpfOwjLqiQxM6B7cZHCSlHg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIRKsNUVwJW4Qgk9owKWxIIVh2NWo6KMZgl7rs5dgE4w04IXtIu
-	BypDkfsmZ7HQNWKyIeapwVUIo1gKxyh9cQoJZO8ED9O6B+Ak7nsk9fhTRxvquU5EFFd8VomkOgc
-	Vvq7fvgisRAu6AcVGCL3x3lOblG8vQfk=
-X-Gm-Gg: AYBFou14awec8PC1d/XssyCj04qwSPQFxhOsKsPBqz+58BO83B3GUeg415eKkkHY9x8
-	jsRpNZvG3dRdFtvLjL6aK+m/ssvBZQiloRX8Jx/rIauT2JABPLBgIjlD015uIx/e56LlBp5izlc
-	daMmhi9ZBHbVy0fO7+BBbxatDoQNjSnG0Ec/P6D3YVIRSNlD9UrTewUi+OyqUD96RN+bdpbaekf
-	r0Y+SD86I5owGIFp8uwjT2tkBZyK038q4Jxl0mraqBiXAziE4W9Z88QKiWqB3YQSJme1a2pmRF4
-	9B0hdtntRRBMinbKF6CFHKmAjI1WnABUWe7ZQdd1L6P1znTi4nsGm9/txoU9LrENah7zjk8MGSn
-	ewPIAh6DvnqE=
-X-Received: by 2002:a17:907:c604:10b0:c42:3a77:80e5 with SMTP id
- a640c23a62f3a-c423a7781d9mr195405966b.29.1792380123432; Sun, 18 Oct 2026
- 20:22:03 -0700 (PDT)
+        bh=X8UYCgmRSd/S74rBcA7BLikNmBhdmEtIgctQKY56qBY=;
+        b=ey8dGutFhlYGuCzOB8nsogdpcAKhYJuVI9R41VUjSS+T2ZCEO0wAhQanXLt+JpFqbj
+         c73P+yiJLoyVW738WTfP/Xq5rtuRkdXekrnqCF47OhumfCpbCzzsevOvUTHnSgtu7lLY
+         Mqn0N0NbXupX0HZUtLYOyKt+86IFfHbwwkKIUnNzhHyVeMpRrVVtqTwu1OjJohqgOifJ
+         QMYiQnEvg0seDpdhHL7j5bkxBC3K7ONv5hvZ9Krj/ZNmsS/10q8Tb7EkIGDm4HCBl6p3
+         I2bx18kXIuEwxNwLCYkXtnHTmjsPg8JrTCM1d7I7I9cIB6jmBJVGhjGVQXa9hdq0fpa8
+         cV9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792380179; x=1792984979;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=X8UYCgmRSd/S74rBcA7BLikNmBhdmEtIgctQKY56qBY=;
+        b=tBbNOgz+Ydo+LRAplDwnyCEPWm2EnD5OzUU+JmfuNcp4laquWzidZWpeLXiARSFNck
+         76mARDn/E1g8Gqlx5SIAV94R66IOab7TR9zY/2xBcJfl+rC465qE6KkxqsFThjwSusp5
+         wrDbDwi13r75YtxULM4jYVYS+i9CvoFZVKVlCs0J1CRQQFhHoFU6YHXMk0qlmZuw5Hil
+         5voe8hE02P8zKEVI+Il5bei0fqRJ1WNjVHVwoKlof9NgdS5vrmXDhjI79qQ9f9CAsu4x
+         m2/cclJLHqsZf9UkigPsHWXfJXx49qSD5kGIxbBsQrqBVkBUOeVnGurWjromdzrni0iF
+         k/Ug==
+X-Forwarded-Encrypted: i=1; AKwUvBytw6OI2f1RgmkzfxizoN0o4/edgx/JISawZk/T8LpH5Qt3O8Y/RQTZiSEo7/UMrSi54m4w0KE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLI2W+ArT2BcM504Y/04DXkcu1IhSKqOPN6z/6ISgUk67/2OTPK
+	CI3/MP7Nr/cgkfz/GCAbGqc+gcb/LO1wOn++xISpNUASQM3JBcLq8rnEzewrbRrn9Z9dXOCaDeh
+	AaMvGIfF2fPAxaFaMs5w1807gO5etg/oscCDSf0ZIJQ==
+X-Gm-Gg: AYBFou0dFDATyVtrjvY2AeEiz+y+hT/b3gM5FlkhrUuYn30ozWykKicFO4EouDh1Zge
+	FPOEw1H1PN+9zB5ji81nOdaqBT07BMHRGO9zTN8mHN6Nn3rLAKOdKifpX9iFNjvhKVkfchvUii0
+	UsH1GFLzUAn1ScF1A7OPAHskEW/KLTI8PNRughxcZIJmyCewYYxH2mGepz4AYdrFaUxhaT/J/GR
+	Ztm2XTsqAq9v24YkngHGJyOuKA4jj8WSV8CXvQcopa6gjvVwM24L8gwCSv9LL7TnL/blxquk8zL
+	jLOP3cdraq0nZe9xHBIs5kT+St8qyaJEWifJPddnZLQUoKjOk4pKCDAIO5GyxEsBUBoNHoZYUTc
+	8kDYmwZWEdAKEfEXZbPUCfw==
+X-Received: by 2002:a17:906:c103:b0:c2e:3b23:1468 with SMTP id
+ a640c23a62f3a-c41a0cd2aa0mr418234366b.48.1792380178629; Sun, 18 Oct 2026
+ 20:22:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002115850.962676-1-o.rempel@pengutronix.de>
- <20261002115850.962676-6-o.rempel@pengutronix.de> <CAD++jLmPfzi6FqF+xYFJoAjqz+Q9Ax9vhUp-MjUSFNTwOPAn4g@mail.gmail.com>
- <CAD++jLnYB2ec6yOF2so7W8kkq3PR-+c2kCscTSxPuGVC-L5G4Q@mail.gmail.com>
-In-Reply-To: <CAD++jLnYB2ec6yOF2so7W8kkq3PR-+c2kCscTSxPuGVC-L5G4Q@mail.gmail.com>
+References: <20261002115850.962676-1-o.rempel@pengutronix.de> <20261002115850.962676-6-o.rempel@pengutronix.de>
+In-Reply-To: <20261002115850.962676-6-o.rempel@pengutronix.de>
 From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Mon, 19 Oct 2026 00:21:50 -0300
-X-Gm-Features: AclHuK8xO8XmxHG3i4cMn6U2H2agbXczak466E3kXFsr0E8C4_HvzBC2G-OG7dU
-Message-ID: <CAJq09z4KZ6kpF+VCTiezEVO5QU0fmYfdLNwn0gR7sjo2mHXh1A@mail.gmail.com>
+Date: Mon, 19 Oct 2026 00:22:46 -0300
+X-Gm-Features: AclHuK98fG096I_kHqarkQnfuU-ZnCrJiV3Y7LamgWacbZNZdujtbnhCv-KJfjw
+Message-ID: <CAJq09z7+1abRR2qetn-_Cd9sZUuiNKpLA1yaP-XdBC7GDepifg@mail.gmail.com>
 Subject: Re: [PATCH net-next v1 5/8] net: dsa: realtek: rtl8365mb: store the
  egress queue count per chip
-To: Linus Walleij <linusw@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>, 
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Linus Walleij <linusw@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
 	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
 	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
 	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
 	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-> On Mon, Oct 5, 2026 at 5:10=E2=80=AFPM Linus Walleij <linusw@kernel.org> =
-wrote:
-> > On Fri, Oct 2, 2026 at 1:58=E2=80=AFPM Oleksij Rempel <o.rempel@pengutr=
-onix.de> wrote:
-> >
-> > > Store the number of egress queues in the per-chip info structure and
-> > > advertise it through ds->num_tx_queues, following the ksz driver
-> > > (struct ksz_chip_data.num_tx_queues).
-> > >
-> > > The queue count is a per-chip hardware property, and this driver supp=
-orts
-> > > several chips of the rtl8367c family. All currently-supported chips e=
-xpose
-> > > eight queues, but keeping the count in chip_info lets the QoS code th=
-at
-> > > follows program the priority-to-queue map via the ieee8021q helpers f=
-or
-> > > whatever queue count a chip carries, so the 802.1Q collapse is correc=
-t
-> > > rather than hard-coded to eight.
-> > >
-> > > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> >
-> > RTL8366RB has 8 queues so it's fine to keep this separate
-> > per-subdriver.
-> > Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Store the number of egress queues in the per-chip info structure and
+> advertise it through ds->num_tx_queues, following the ksz driver
+> (struct ksz_chip_data.num_tx_queues).
 >
-> I meant RTL8366RB has 6 queues. Hm maybe you rather want to
-> store this in struct realtek_variant and have the core
-> helper instead?
+> The queue count is a per-chip hardware property, and this driver supports
+> several chips of the rtl8367c family. All currently-supported chips expose
+> eight queues, but keeping the count in chip_info lets the QoS code that
+> follows program the priority-to-queue map via the ieee8021q helpers for
+> whatever queue count a chip carries, so the 802.1Q collapse is correct
+> rather than hard-coded to eight.
+>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Hi Linus,
-
-Right now, the common realtek core doesn't handle any queue or QoS
-logic yet. In rtl8365mb, this property is primarily used internally by
-the driver. Moving it to struct realtek_variant felt premature since
-rtl8366rb doesn't implement this functionality yet. Unless we want to
-refactor both drivers to share QoS helpers right now, keeping it
-private to rtl8365mb's chip_info seems cleaner for this series. We can
-always promote it to the variant when rtl8366rb gains similar support.
-
-What do you think?
-
-Best regards,
-
-Luiz
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
