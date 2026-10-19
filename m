@@ -1,138 +1,127 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6F73E4C88
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 11:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792409741; cv=pass; b=JQboBy6xg7S/hZhGoTi5ysRIC36FVQXAuMjVYKGq4RPkb+/Nur+e0Eq1aFut7nFOjZZqVzuQRFvnk/hEz5aKEdm9wiuiBldcKspeTq0zb2or7Zx9/ZzUK4aVX8ACDAt+VvljGHP9sJqgYNdX+hjmQKAjOwAIwip4b5FX9SF9LzY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792409741; c=relaxed/simple;
-	bh=y392TKxI9NxK+HxZju6721gEDX3uifjte7V1FDxyHUE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ObBygXtNK6x9RKoaohZxWjML6l8FHFjnjK260P2B93KXFmcEQeitG/VnrHHPdJ5+df4Eudk8b3dygFuTAPTHkQvnn7mbJezjAANK+rC2SnfF3oew2KyuPyZTcmu+Bxjz0auznalsKhPkngvM84QYs5HT6ZSTO5y5J1+YI1ch7qA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bjnXzv+T; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B4E3D331D
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 11:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792409750; cv=none; b=Gy1CXHCfZsSXyVsh82Sk79K1Q+OZ1w6Oh/AZbz3I53/DR96P4rbpjIYn0ZHv6vOXJjUofArFiQUDj7j2hhBN3XwLS+ipSA2HiMvkickJp470YYntBXl02Rwrtr87Re3+PCcqJXrJogtn7WzOeI4iFRzCNitdDgiCoBIDuMgUCFA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792409750; c=relaxed/simple;
+	bh=8cfzRbtoqrJN9dOIOSF6x41DP1GhDqIoM4qDGEqk/aY=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=r3Yd0IaIIXhqvJApp67aeQvlpOBOThm3nABv8FXK7a6aig0RUipb/J65e7Mkuzwu+/rwJJQH607hQ5wz6lzSLv41nx0glALm91cER6OsLGAlGOoGJnZX3OzrHEonbewyXkvVXL4Cxvy4GngJeFSXb023hdszjcjFrmhH16scETw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cpmG/2PA; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bjnXzv+T"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a60cb94b80so21506581fa.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 04:35:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792409738; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZTa1WZRvkwopwKiDieHt+pRvLoYcOR8I53DgjuDE8JB4W4bk2p0OPvi8pYVvfw2qLH
-         pVknE1BSyzQRB05yws3Gzc02aKyS5I4TJWHFWVK/JpSbe5akOs2I6kLrCCN6JPUtSrW6
-         xotW2pGxXccAzc0S0qjJF7iZ1ociWYAEqbq7KbIa+8VS+GV3cSbfriYyVY8yWDSSCRRI
-         6JheR6lleazK2roc2RsNoIdohneXVmmznMV2QIt0zwz8IkY2KWeTt81QDSO3B8zveIlb
-         XdJxa0DtAN9jfCpGKiy0lH6GReixPuGTx5NS4QVMuMu2JlDZoEzavGwj99Vm05v6aNkE
-         q/ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=koS0XoT+3CWL8eMG9x4Bhcq/7nCXU3LWxtlSg2MxqiU=;
-        fh=U4aBjwiHjxm3RJbbm5PoAJlihfPyyI+nAV97Om2b+aI=;
-        b=ToU0sUZEl6h8L+A09tpJZCrlpfvTG1a4TladQ+HeLS0ERiBbeQcQRSZIIQRnZqUhLW
-         XLX0VtmPYwhhCMCzbZkz9TpfDDCshXVG3BtoXMX36IfVWoyhcORxRhzdQ142gfirBkYF
-         Svu/6I6+0W+PArKZDlWeFdOaFGs5KY+fKhY8YW/hrQU2nKQXQPoSL2rhS5nCwPWCLcsA
-         S0Kt3SqEg1fxL++m5W0tnP+t7ml0jUmbl1fOB83g0sCSjwIAKmuzOz4FipXNVgOgtDSr
-         kDTkuvdtYW2HxyJIWAJpvEqXsHk4S70aeDAN2iBaIdk6B8tqdPE4gskkLWRlkI41V3uJ
-         v6zw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792409738; x=1793014538; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=koS0XoT+3CWL8eMG9x4Bhcq/7nCXU3LWxtlSg2MxqiU=;
-        b=bjnXzv+TBUQuypXXr0s8Nh4syaUK6AQxcOxTbgcpzk7eY4BtTmAcds4PU7QzhjgPqT
-         Oq5R+pnwdzNJZVd7xKhnflqX0RQkJXppWnZtyvfxYY91IEz3iYhH9BM8/Dxn+RhKEJnT
-         E1f4AO4RVLsdQJotpERt8Md6niem22wiuEtBwnmVmvRFMmkDtTzELzSjB4TjOJ4KMeB+
-         88yViLIXuTh+6wvB+ba97qNcppNg8zaojFswZ2cXu+gSZdpXBDYe51JjzdzOrQgSfpkQ
-         gTt6mrC23J5SYBP8QEol9BHPA6JBaQWK4fxODLsfR5b8r6omutWNtP6Vdq+tPLWCZ3RC
-         7Hmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792409738; x=1793014538;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=koS0XoT+3CWL8eMG9x4Bhcq/7nCXU3LWxtlSg2MxqiU=;
-        b=z312Ory8o+SqU4Dz1Ynkhur1EZeAxUanaLq/6QWcBngdZ0WJ2Jr+Dsj6oi4kPnTS/z
-         4+KSHh1+vzUAIJCg0IDQklAaUCZF15sf/j7G4fxf4zo8KRXAlshLKiiOUYkfWeyUHI0z
-         1jXG+RXJ1nCV4wndsd8FLdIDX5lFJlMAYZdnm3Mqw88/o/vWLxbhFzk1Zmhqz27ouehc
-         iv2hSH0e8mIuNCgAbzoogq4Tv36xaVMX1jftUecmT45xElCdyJGjkmn5x51DRBGhdVvP
-         yJRLOQg930YddPwsA6wc3+4QVaLs7ttb2S4EC9QlFwwXo9gwXHJdiTalfXwHtzRdbzM6
-         tHGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwsJih3TwX8WHZSe2bW6NVVwMqFtVPQQbrwEX/odEMFtvRtTa0dbDYncfCY5w92d2eWMVJTfjQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJkbYqMmE1JbBKPUknEOFO2jjhmRDaLx70WbTjP04sItlbC/mPt
-	EXepjIYv8Ixl/mbBbzA49o4AqxgiYYQYTAIbm+TFSQL89iOgpVvD0/TrxCDuMMfXk8fLOuUw4fP
-	uzTxZvCGTFnXyifQunJoaenzKBdiSlQY=
-X-Gm-Gg: AYBFou2SFX4XOijuNHyltWD/lZftxy2WB0CssMtrUFYAvxy5CJF2XEWkR6xE4nMraQt
-	mkonDtv4Tg1Yc/l6fuSv9KdLcf8MJmik/q410TJkl62hrFwviOIDn7N3a5GoYAr+Xp3cyMqhpRX
-	ZLAFXL1emKkmcYtnBpGFuCWGT3M/GMO11u/BpwqxfbV+GLuT5oIW1PYP9MSIL33YetWQQrKk6Cn
-	UdMqcVPx9iVIabTdLLCZ6iOcWrygQ76INV48umuGDEIYGwOiIO2TpKFp0cJLih9zn+qZrj5qGA8
-	idU7R3E5dgqOh4syKjmgqCZ7idn/HCfs4ylHvphP+AGZXkseDpIc5lLdP61pvDOPMa7Vemi14Mz
-	+uRX5DPH4TVw=
-X-Received: by 2002:a05:6512:10c9:b0:5b8:f3b2:429b with SMTP id
- 2adb3069b0e04-5be50a96f8amr2627956e87.52.1792409738088; Mon, 19 Oct 2026
- 04:35:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cpmG/2PA"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 2BCB020743
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:35:45 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id qSHPKy_BOO4J for <netdev@vger.kernel.org>;
+ Mon, 19 Oct 2026 13:35:44 +0200 (CEST)
+Received: from EXCH-03.secunet.de (r13.secunet.de [10.32.0.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 7199420841
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:35:44 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7199420841
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1792409744;
+	bh=8cfzRbtoqrJN9dOIOSF6x41DP1GhDqIoM4qDGEqk/aY=;
+	h=From:To:Subject:Date:From;
+	b=cpmG/2PAj35ThsxGYpF+4HsSccIUa4sYhcQuCrz8C/FTOmPKrXSebydiWYEDpTeB1
+	 1q0FdLwUKC+WQ10IyUaZJx4sG5gVNn/myzF+RtRtnJGAYq6m7kJMfMTRx3xO+xZ+ZE
+	 gn3Q54a9sxv010w24Kkq+Q+rFZCFzwI55+sNb48vGWzs7zbVZACTbpJGAY/nyIeCrc
+	 GYoOo+eD2IsJAgAQAirS0Yl5/LUb9s82dKpY07xvV+wBSDgNw3ueokBv7751s6zwed
+	 BdXpZWCSYbDRz+Zmy39UqAAs8kWuzfDcoUMBNW25FeercF+yBzbGo3q5d+l4aME5P6
+	 FPYBh3kCtIBlg==
+Received: from EXCH-01.secunet.de (10.32.0.171) by EXCH-03.secunet.de
+ (10.32.0.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 19 Oct
+ 2026 13:35:43 +0200
+Received: from EXCH-01.secunet.de ([fe80::1c90:c91c:1edc:d47]) by
+ EXCH-01.secunet.de ([fe80::1c90:c91c:1edc:d47%19]) with mapi id
+ 15.02.2562.049; Mon, 19 Oct 2026 13:35:43 +0200
+From: "Girlich, Franz" <franz.girlich@secunet.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: IPv6: wrong routing from local socket with multiple routing tables
+Thread-Topic: IPv6: wrong routing from local socket with multiple routing
+ tables
+Thread-Index: AQHdX735Ly1YaUG33k+u/F5J/gz9mg==
+Date: Mon, 19 Oct 2026 11:35:43 +0000
+Message-ID: <84e3ec2178897680e510842e4282d691984bf20f.camel@secunet.com>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1F4244E25049E64A883F5D183A8F2380@secunet.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012011707.3378-4-sigefriedhyy@gmail.com> <179185709988.434549.15422498299449004512@kernel.org>
- <CA+7S2v+LHUWXQMD-cYPEzT5-f3Qhw_vz+LEssQH_A_oqDKtnnA@mail.gmail.com> <8dcd9564-e9a3-4b00-93b8-3cb023d68047@redhat.com>
-In-Reply-To: <8dcd9564-e9a3-4b00-93b8-3cb023d68047@redhat.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Mon, 19 Oct 2026 20:35:27 +0900
-X-Gm-Features: AclHuK9hdAIJx_qrpjOoKdOt12iq2yhV7pVdW2_mKKi8adHB_hqpyRSgWNesDcc
-Message-ID: <CA+7S2v+rWYvz9xKPEeM6=3HPz3o7TbX2uRfRKk95f9Y60HnEiA@mail.gmail.com>
-Subject: Re: [PATCH net-next v11 3/6] net: add a generation counter for
- dev->mc changes
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev-bot+sashiko@kernel.org, ajay.kathat@microchip.com, 
-	aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch, 
-	claudiu.beznea@tuxon.dev, davem@davemloft.net, dsahern@kernel.org, 
-	donald.hunter@gmail.com, edumazet@google.com, idosch@nvidia.com, 
-	jacob.e.keller@intel.com, kuba@kernel.org, johannes@sipsolutions.net, 
-	kees@kernel.org, kory.maincent@bootlin.com, kuniyu@google.com, 
-	nicolas.dichtel@6wind.com, nickgarlis@gmail.com, sd@queasysnail.net, 
-	shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com, 
-	vadim.fedorenko@linux.dev, willemb@google.com, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2026 at 8:19=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> I agree this is not a blocker, but I think it would be nice if you could
-> follow-up on this one.
->
-> The solution proposed by the LLM LGTM.
->
-> Same here.
->
-> Also, still speaking of possible follow-up,  I think it would be nice if
-> you could change the addr list lifecycle to RCU (no idea of how much
-> complex would be that).
->
-
-Thanks for the review. Since we're already at v12 I'd rather not respin
-just for these, but I agree both are worth fixing, so I'll handle them as
-follow ups.
-
-The first one is a simple fix, so if v13 ends up being needed
-for other reasons I'll fold it in there, otherwise I'll send it as a
-separate patch.
-
-The RCU conversion needs more thought and will probably
-cause quite a bit of churn, so I'll try it if there's a v13, and if it
-gets too messy. I'll post it separately later.
-
-Thanks,
-Yuyang
+SGkhDQoNCklQdjYgcm91dGluZyBmcm9tIGEgbG9jYWwgc29ja2V0IGJyZWFrcyB3aGVuIHVzaW5n
+IG11bHRpcGxlIHJvdXRpbmcNCnRhYmxlcyBhbmQgY2hhbmdpbmcgdGhlbSB3aGlsZSB0aGUgc29j
+a2V0IGlzIGluIHVzZS4gV2hlbiBhIGRpZmZlcmVudA0Kcm91dGluZyB0YWJsZSBpcyBjaGFuZ2Vk
+LCBpLmUuLCBvbmUgbm90ICJ1c2VkIiBieSB0aGUgbG9jYWwgc29ja2V0LCBzbw0KdGhhdCB0aGUg
+YmVzdCBwYXRoIGZvciB0aGUgc29ja2V0IGNoYW5nZXMsIHBhY2tldHMgZnJvbSB0aGUgc29ja2V0
+DQpzdGlsbCB1c2UgdGhlIG9sZCBwYXRoLg0KDQpUaGUgYmVoYXZpb3IgZml4ZXMgaXRzZWxmLCB3
+aGVuIHRoZSByb3V0aW5nIHJ1bGVzIGFyZSB0b3VjaGVkLCB0aGUNCnRhYmxlIGN1cnJlbnRseSBp
+biB1c2UgaXMgdG91Y2hlZCwgb3IgdGhlIHNvY2tldCBpcyByZS1vcGVuZWQuDQoNCkkgd2FzIGFi
+bGUgdG8gcmVwcm9kdWNlIHRoaXMgYnVnIHdpdGggbXVsdGlwbGUga2VybmVsIHZlcnNpb25zLA0K
+aW5jbHVkaW5nIGN1cnJlbnQgbWFzdGVyIDcuMy4wLXJjNyBhbmQgNi4xMi4xMTMgTFRTOiANCg0K
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KIyBhZGQgMiBkdW1teSBpbnRlcmZhY2VzDQpp
+cCBsaW5rIGFkZCBkMCB0eXBlIGR1bW15DQppcCBsaW5rIHNldCBkMCB1cA0KaXAgbGluayBhZGQg
+ZDEgdHlwZSBkdW1teQ0KaXAgbGluayBzZXQgZDEgdXANCg0KIyBzZXR1cCAyIHRhYmxlLCBhZGQg
+ZGVmYXVsdCByb3V0ZSB0byBsb3dlciBwcmlvIG9uZQ0KaXAgLTYgcnVsZSBhZGQgcHJpbyAxMCBs
+b29rdXAgMTANCmlwIC02IHJ1bGUgYWRkIHByaW8gMjAgbG9va3VwIDIwDQppcCAtNiByb3V0ZSBh
+ZGQgdGFibGUgMjAgZGVmYXVsdCBkZXYgZDENCg0KIyBzdGFydCB0cmFmZmljIGZyb20gYSBsb2Nh
+bCBzb2NrZXQNCmlwZXJmIC11IC1jIGZjOjoxIC10MCAmDQoNCiMgcGFja2V0cyBhcmUgcm91dGVk
+IGNvcnJlY3RseSB0byBkMQ0KdGNwZHVtcCAtbmkgYW55IC1jIDEwDQoNCiMgYWRkIHJvdXRlIHRv
+IGhpZ2hlciBwcmlvIHRhYmxlDQppcCAtNiByb3V0ZSBhZGQgdGFibGUgMTAgZGVmYXVsdCBkZXYg
+ZDANCg0KIyByb3V0aW5nIGxvb2t1cCBjb3JyZWN0bHkgcHJvZHVjZXMgcm91dGUgdG8gZDANCmlw
+IC02IHJvdXRlIGdldCBmYzo6MQ0KDQojIEJVRzogdHJhZmZpYyBmcm9tIG9sZCBzb2NrZXQgaXMg
+c3RpbGwgcm91dGVkIHRvIGQxIGluc3RlYWQgb2YgZDANCnRjcGR1bXAgLW5pIGFueSAtYyAxMA0K
+DQojIGNsZWFudXANCnBraWxsIGlwZXJmDQppcCAtNiBydWxlIGRlbCBwcmlvIDEwDQppcCAtNiBy
+dWxlIGRlbCBwcmlvIDIwDQppcCAtNiByb3V0ZSBmbHVzaCB0YWJsZSAyMA0KaXAgLTYgcm91dGUg
+Zmx1c2ggdGFibGUgMTANCmlwIGxpbmsgZGVsIGQwDQppcCBsaW5rIGRlbCBkMQ0KLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpJIHVzZWQgZGVlcHNlZWstdjQuMS1mbGFzaCB0byBhdHRl
+bXB0IGEgZml4IGZvciB0aGlzIGlzc3VlLiBUaGUgZml4DQpkb2VzIHdvcmsgZm9yIHRoZSByZXBy
+b2R1Y3Rpb24gYWJvdmUsIGJ1dCBJIGFtIG5vdCBjb25maWRlbnQgdGhhdCBpdCBpcw0KcmVncmVz
+c2lvbiBmcmVlLiBTbyBJIGFtIGF0dGFjaGluZyBpdCBmb3IgcmVmZXJlbmNlIG9ubHkuDQoNCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCmRpZmYgLS1naXQgYS9uZXQvaXB2Ni9pcDZfZmli
+LmMgYi9uZXQvaXB2Ni9pcDZfZmliLmMNCmluZGV4IDlmZjc2MTk2Mi4uNTE2MTc2NTk5IDEwMDY0
+NA0KLS0tIGEvbmV0L2lwdjYvaXA2X2ZpYi5jDQorKysgYi9uZXQvaXB2Ni9pcDZfZmliLmMNCkBA
+IC0yMDU5LDYgKzIwNTksOCBAQCBzdGF0aWMgdm9pZCBmaWI2X2RlbF9yb3V0ZShzdHJ1Y3QgZmli
+Nl90YWJsZQ0KKnRhYmxlLCBzdHJ1Y3QgZmliNl9ub2RlICpmbiwNCiAgICAgICAgaWYgKCFpbmZv
+LT5za2lwX25vdGlmeSkNCiAgICAgICAgICAgICAgICBpbmV0Nl9ydF9kZWxfbm90aWZ5KHJ0LCBp
+bmZvLCBkZWxfcmVhc29uKTsNCg0KKyAgICAgICBmaWI2X25ld19zZXJudW0obmV0KTsNCisNCiAg
+ICAgICAgZmliNl9pbmZvX3JlbGVhc2UocnQpOw0KIH0NCg0KZGlmZiAtLWdpdCBhL25ldC9pcHY2
+L3JvdXRlLmMgYi9uZXQvaXB2Ni9yb3V0ZS5jDQppbmRleCBhNWU5NTVlNTYuLmIyMWVmNzBmMSAx
+MDA2NDQNCi0tLSBhL25ldC9pcHY2L3JvdXRlLmMNCisrKyBiL25ldC9pcHY2L3JvdXRlLmMNCkBA
+IC0xNDMwLDggKzE0MzAsNyBAQCBzdGF0aWMgc3RydWN0IHJ0Nl9pbmZvICppcDZfcnRfcGNwdV9h
+bGxvYyhjb25zdA0Kc3RydWN0IGZpYjZfcmVzdWx0ICpyZXMpDQogICAgICAgIGlwNl9ydF9jb3B5
+X2luaXQocGNwdV9ydCwgcmVzKTsNCiAgICAgICAgcGNwdV9ydC0+cnQ2aV9mbGFncyB8PSBSVEZf
+UENQVTsNCg0KLSAgICAgICBpZiAoZjZpLT5uaCkNCi0gICAgICAgICAgICAgICBwY3B1X3J0LT5z
+ZXJudW0gPSBydF9nZW5pZF9pcHY2KGRldl9uZXQoZGV2KSk7DQorICAgICAgIHBjcHVfcnQtPnNl
+cm51bSA9IHJ0X2dlbmlkX2lwdjYoZGV2X25ldChkZXYpKTsNCg0KICAgICAgICByZXR1cm4gcGNw
+dV9ydDsNCiB9DQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQoNCg0KLS0gDQpGcmFueiBH
+aXJsaWNoDQpTZW5pb3IgU29mdHdhcmUgRGV2ZWxvcGVyDQpQQSBQRCBOZXR3b3JrDQpEaXZpc2lv
+biBQdWJsaWMgQXV0aG9yaXRpZXMNCnNlY3VuZXQgU2VjdXJpdHkgTmV0d29ya3MgQUcNCg0KVGVs
+LjogKzQ5IDIwMSA1NDU0IDEwOTkNCkUtTWFpbDogZnJhbnouZ2lybGljaEBzZWN1bmV0LmNvbQ0K
+V2VybmVyLXZvbi1TaWVtZW5zLVN0cmHDn2UgNiwgOTg2OTMgSWxtZW5hdQ0Kd3d3LnNlY3VuZXQu
+Y29tDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18NCg0Kc2VjdW5ldCBTZWN1cml0eSBOZXR3b3JrcyBBRw0KU2l0
+ejogS3VyZsO8cnN0ZW5zdHJhw59lIDU4LCA0NTEzOCBFc3NlbiwgRGV1dHNjaGxhbmQNCkFtdHNn
+ZXJpY2h0IEVzc2VuIEhSQiAxMzYxNQ0KVm9yc3RhbmQ6IE1hcmMtSnVsaWFuIFNpZXdlcnQgKFZv
+cnMuKSwgVG9yc3RlbiBIZW5uLCBEci4gS2FpIE1hcnRpdXMsDQpBdWZzaWNodHNyYXRzdm9yc2l0
+emVuZGVyOiBEci4gUmFsZiBXaW50ZXJnZXJzdA0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KDQo=
