@@ -1,142 +1,271 @@
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25A948489C;
-	Mon, 19 Oct 2026 07:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2643BC696
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 07:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792394979; cv=none; b=eVb6xs4iJ9bnvqo6xg6dVs+LDlYm5EsVGACMVfeFIlUdU0nyLoa2A/ZiD5mVtOYhMOEW5eadiKEQxv1+owX+R/oilWJwtMEJ0JBwLzyVWc7g93Th+mLSJteOAPyIadbMnASOz4SExIv3xdJgTgS9YiESL3p/JQBC/qdWH2Ds/7A=
+	t=1792395488; cv=none; b=R6Z8TC+vknty5sOv2aR81WSRKeWrU2DjZrPOarQex9N/NuBJdJrhp2pYJG32g0xbu8tqJZltiHK390OGqyJGcXOLFm/Jz5m1hURKQ6M2u2mmPPZKsaO7qlBKv8SL92d65N2g8qFll0SDX3aXGwrtTlDWuNwrK/vKRkL79mDWw9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792394979; c=relaxed/simple;
-	bh=RVrK23n9guhCLD0KdjKHBkNh91t7VI15fVyUzbwdeHQ=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Dvs26hVz3jzj6cbbCLbgoq792BivLwKOvwh4e2KZ8yl2gaJa09SH7urQpexJLIHzoxFLwFtLw6n+6xdcflQ7KaAVK+OInpnebe7+W5EGxolFYW/6o9ONXEzCYPMwSdwo2q5AHdgAMjUjAXwZIbKavTY0rQ1qf6r2rKSUaN6R99k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=UH3OWFJU; arc=none smtp.client-ip=113.46.200.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1792395488; c=relaxed/simple;
+	bh=cw0jAxB2/4pDIjwI5i4L/jE0/EDlSc5y/L41Gki7wfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Zd+DZRmSkhmiCY+ZiKjG0azPeKBdWesfe2M1R7YifdOaFZUGYyyJFIyJIJo3VNzJf9QbZtWyerZOa0azFQHNWw5GSDveN6w6ZJDtIwFPZfdYe7kDHTfS859YnemWNYXGy5CxiMul3YhZYTc1G8NzUYQSZrBESxGZ3S31yLFjg1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OmjSGJZ0; arc=none smtp.client-ip=74.125.229.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="UH3OWFJU"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ZbmY88yNudks0srVUF6WYDBtPygxpDMPSGSGxE3bBK4=;
-	b=UH3OWFJUC5LbHgZLqmkPP3DGN7DuPqiC6tV7M+6PbNEBMqGMBGMTFp50mKmzASsc0jv/SLJBZ
-	Ka+A2ilhudqUGZui2q4oVmKBg2P89w8K5W+/rQb5H7gdVb5HEcDZzJF0KMD/mrCNw8CR3v+hOlo
-	X2j6h9R6kWW4VnV84YyOMgg=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4j7Rxp5JDsz1prLh;
-	Mon, 19 Oct 2026 15:29:18 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6AF284056D;
-	Mon, 19 Oct 2026 15:29:21 +0800 (CST)
-Received: from [10.67.121.233] (10.67.121.233) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 19 Oct 2026 15:29:20 +0800
-Message-ID: <013a154b-1211-4b54-821b-5621a69ddd6a@huawei.com>
-Date: Mon, 19 Oct 2026 15:29:19 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OmjSGJZ0"
+Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-3535a54c09bso1744769eec.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 00:38:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792395486; x=1793000286; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WeZ3C8NSrKIaDQPOGP+WAdZGT2qrYqoMzpLwnMzu0Vk=;
+        b=OmjSGJZ0wWffjWIEf5FkLtWpuQCfAPM18p5sWUEbhs7aheoWtOZxgKh5UUvncA8CrB
+         SurL6hjo19jGA2l6wQD6CnNNGyfHRrLcg3UcaxQ1On2HsewAbN7NSoZ27U19evP0rxRK
+         f6m+EfFndubdSkDFezHmtmiBoWce8KJnE770Hu74NJ0UUvOOiobplExxbPrP+Drk0LyU
+         EbiWB2jeMFzh66n6a1n9lSHqxzp0ueEeUEhK3/8Lg3a2QrvTGbTNaQZDVP9vO8DRN1pK
+         EpQgF8yW2A6CDo9pXqylBkIuo323ouIQv374g+odLx6BqgMbd+SArTYdYv+tKh2KL5j+
+         X3tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792395486; x=1793000286;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WeZ3C8NSrKIaDQPOGP+WAdZGT2qrYqoMzpLwnMzu0Vk=;
+        b=ITfwoGmwhGtP9h3jxzPLP8mTphvrZXARmIZirryzftcJ3fkSqXJe8S/5v+roGHhsPR
+         1wO3FB464bBcaZho/s+diDVsIPDNQb93kyrP2IvUHuG8F8BAd6SG8TTgIDfH914Gb2E3
+         Lw0r8d/Pjy5YJ/THWfzyfgnWYSOY86kEPFBkhI2h7sSeBtVk9vDjXGhFeNb7S8y+dzsv
+         xrkoB8ND+Cz+Zy0SNywOFv8fw1UAflQOFMNd2R/ESKA6YMlGLeWjp5Ru5z83R88d1kAT
+         nVu61xU3DISNnSGq3QvI420dioHmdKJPQSLUXDfoMF9LrTiIiAO6f8mnsLYNShYRYYV0
+         ax/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxYgeCfRoSQZ9UtwL1lyVl2qTiOy4MxxrHI/kvdpS1UKVqWewygG6LpSoQLbyc7CSiuAq8KAaU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL+pPjC+h+uu1G3JNQToKFRtpx/0CRQ0fFfw/1zuz0hJrku0SXw
+	oUxrR18uZQmZyOA5cu/jqfOXIDB0l1cqAjUAMl8zUFQo7Kh0S07B8wIx
+X-Gm-Gg: AYBFou2PLnsgVojKYaLzY9JiAU6+lTMl9zT2f8mr3zEB0FiMpTHPJFebjHrzXv0ylvI
+	reKrzg8WO+ddObDTdFSdtqcwwGj3UdIeDNs9dr8iuJSmRPS0uI9WEd/IJzS79vUkBYMtWjjqRQE
+	AO9rKAM1kXouATHJejTs6KvSWjTYwrPh7j7DYUiE2hj4IUviq9jGSPKuqtiw9t9LGz84Kt6XNYB
+	bT64SjQAnNDadNrEy9Bf/mbqKNq6hD4iJHVDMQgog1YcJXTiFuG316Wuhhy7ookM68hv8UDWy0B
+	wtOsTvJfO2x0NUqt+hi3ciPyrlX3EIPUQLi44KZJ9yWSYlnvwBK13TmTVXKM3TEzuwC4VpA2V91
+	xt9MmxZiCrGs+IdyanPeBWcDFx7GMMbAYi1wGpbBkA2M/EZzRPy9UmzOSHCMwurpm2PHByOBL6p
+	C5csMZ+li2t7eNUF0ak+mm3pjmjyqcnE2KGi/119gXHdlzIXnhC+K8Yn5J+JuLzg==
+X-Received: by 2002:a05:7301:2d2f:b0:35c:cad8:e61f with SMTP id 5a478bee46e88-361a224cd72mr10463148eec.31.1792395485646;
+        Mon, 19 Oct 2026 00:38:05 -0700 (PDT)
+Received: from hhost ([120.231.212.164])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360813b6ca5sm28347221eec.9.2026.10.19.00.38.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 00:38:04 -0700 (PDT)
+Date: Mon, 19 Oct 2026 15:37:57 +0800
+From: Xingyuan Mo <hdthky0@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+	Xingyuan Mo <hdthky0@gmail.com>
+Subject: [PATCH v5] sctp: reject forged cookie peer_addr with unknown address
+ family
+Message-ID: <20261019073747.178626-1-hdthky0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Ijae Kim <ae878000@gmail.com>
-Subject: Re: [PATCH net] net: hix5hd2: serialize timeout recovery with
- interface teardown
-To: Myeonghun Pak <mhun512@gmail.com>, Jian Shen <shenjian15@huawei.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>
-References: <179203116093.2621539.3718842986255459438.G202@gmail.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <179203116093.2621539.3718842986255459438.G202@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.43.0
 
+When cookie authentication is disabled, COOKIE-ECHO peer_addr is
+attacker-controlled. An invalid sa_family made sctp_get_af_specific()
+return NULL and crash in sctp_transport_init() on
+af_specific->sockaddr_len. Validate it with af->addr_valid() in
+sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
+an AF_INET6 peer_addr on an IPv4 socket that would later crash in
+sctp_v6_get_dst() on inet6_sk(sk)->opt. Validate a copy of peer_addr,
+since addr_valid() rewrites a v4-mapped v6 address in place and the
+cookie still lives in the received skb, which is not guaranteed to
+be unshared. Store the validated copy in the new association and
+pass it to sctp_process_init() instead of the raw cookie, so a
+v4-mapped v6 address is normalised to AF_INET before the association
+and its primary transport are built from it.
 
-on 2026/10/15 10:26, Myeonghun Pak wrote:
-> The timeout worker calls the driver's close and open methods without
-> RTNL or a running-state check. A timeout queued before an interface is
-> closed can call close again after ndo_stop has disabled NAPI. The second
-> napi_disable() can then wait indefinitely. The worker can also race with
-> an ongoing close.
->
-> Take RTNL and skip recovery when the interface is no longer running.
-> Use the netdev core close and open helpers so a failed reopen leaves the
-> interface down, rather than leaving it marked running with NAPI disabled.
->
-> After unregister_netdev() has stopped the watchdog, drain the worker
-> before releasing its MDIO and descriptor resources. This wait is outside
-> RTNL, allowing an already queued worker to take RTNL, observe the down
-> state, and finish.
->
-> This issue was identified as part of our ongoing research while
-> reviewing kernel code.
->
-> Fixes: 57c5bc9ad7d7 ("net: hisilicon: add hix5hd2 mac driver")
-> Assisted-by: LLM
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+For that, sctp_v6_addr_valid() has to return 0 for a non-v4-mapped
+address when it is called with a socket that is not PF_INET6, so that
+IPv6 addresses are never used on IPv4 sockets. The check is done after
+the v4-mapped handling, so v4-mapped addresses passed to an IPv4
+socket through the socket API keep being accepted. As addr_valid()
+now also checks sk_family and ipv6_only_sock, simplify the address
+handling in sctp_process_param() with it, as it additionally filters
+out non-unicast addresses. As a side effect, a v4-mapped address in
+an IPv6 address parameter is now normalised to AF_INET before the
+transport is created, matching what the socket API paths already do.
 
-Thanks, The code changes look good to me.
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Also add the missing !af check in sctp_process_init(), as
+sctp_get_af_specific(AF_INET6) returns NULL on CONFIG_IPV6=n builds.
 
-> ---
-> Compile-tested with GCC, W=1 (arm64). No runtime testing.
->
-> Related remove-path change (devres-managed netdev lifetime):
-> https://lkml.iu.edu/2610.0/05627.html
->
->   drivers/net/ethernet/hisilicon/hix5hd2_gmac.c | 12 +++++++++---
->   1 file changed, 9 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
-> index 02282dc..12a5657 100644
-> --- a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
-> +++ b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
-> @@ -12,6 +12,7 @@
->   #include <linux/of_net.h>
->   #include <linux/of_mdio.h>
->   #include <linux/reset.h>
-> +#include <linux/rtnetlink.h>
->   #include <linux/clk.h>
->   #include <linux/circ_buf.h>
->   
-> @@ -890,8 +891,13 @@ static void hix5hd2_tx_timeout_task(struct work_struct *work)
->   	struct hix5hd2_priv *priv;
->   
->   	priv = container_of(work, struct hix5hd2_priv, tx_timeout_task);
-> -	hix5hd2_net_close(priv->netdev);
-> -	hix5hd2_net_open(priv->netdev);
-> +
-> +	rtnl_lock();
-> +	if (netif_running(priv->netdev)) {
-> +		dev_close(priv->netdev);
-> +		dev_open(priv->netdev, NULL);
-> +	}
-> +	rtnl_unlock();
->   }
->   
->   static void hix5hd2_net_timeout(struct net_device *dev, unsigned int txqueue)
-> @@ -1283,6 +1289,7 @@ static void hix5hd2_dev_remove(struct platform_device *pdev)
->   	struct hix5hd2_priv *priv = netdev_priv(ndev);
->   
->   	unregister_netdev(ndev);
-> +	cancel_work_sync(&priv->tx_timeout_task);
->   	mdiobus_unregister(priv->bus);
->   	mdiobus_free(priv->bus);
->   
-> @@ -1290,7 +1297,6 @@ static void hix5hd2_dev_remove(struct platform_device *pdev)
->   		hix5hd2_destroy_sg_desc_queue(priv);
->   	hix5hd2_destroy_hw_desc_queue(priv);
->   	of_node_put(priv->phy_node);
-> -	cancel_work_sync(&priv->tx_timeout_task);
->   	free_netdev(ndev);
->   }
->   
+  BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
+  Read of size 4 at addr 00000000000000b4 by task poc/682
+  Call Trace:
+   <IRQ>
+   sctp_transport_new+0xa7/0x350
+   sctp_assoc_add_peer+0x153/0x850
+   sctp_process_init+0xf9/0x1180
+   sctp_sf_do_5_1D_ce+0x464/0xbc0
+   sctp_do_sm+0x114/0x2990
+   sctp_endpoint_bh_rcv+0x280/0x430
+   sctp_inq_push+0xdd/0x100
+   sctp_rcv+0x17f5/0x1ae0
+   sctp4_rcv+0x2b/0x40
+   ip_protocol_deliver_rcu+0x25b/0x270
+   ip_local_deliver+0xd1/0xe0
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: opencode:deepseek-v4
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+---
+v2: https://lore.kernel.org/netdev/20260913113522.2674588-1-hdthky0@gmail.com/
+- validate the forged cookie peer_addr with af->addr_valid() instead of
+  a family whitelist, and make sctp_v6_addr_valid() reject non-PF_INET6
+  sockets, so a forged AF_INET6 cookie can no longer crash an IPv4
+  socket in sctp_v6_get_dst() (found by Sashiko)
+- simplify sctp_process_param() address handling with addr_valid(), as
+  addr_valid() now also checks sk_family and ipv6_only_sock
+- add the missing !af check in sctp_process_init() for CONFIG_IPV6=n
+  builds (suggested by Xin Long)
+
+v3: https://lore.kernel.org/netdev/20260915212917.3775248-1-hdthky0@gmail.com/
+- drop the sctp_transport_new() check
+- merge the !af checks into the conditions they guard with ||
+- drop the comment above the sctp_unpack_cookie() check
+
+v4: https://lore.kernel.org/netdev/20260917030505.4176635-1-hdthky0@gmail.com/
+- move the non-PF_INET6 socket check after the v4-mapped handling in
+  sctp_v6_addr_valid()
+- validate bear_cookie->peer_addr in place instead of a copy
+
+v5: https://lore.kernel.org/netdev/20261009074601.3954275-1-hdthky0@gmail.com/
+- validate a copy of peer_addr again, as writing to the cookie in the
+  received skb could corrupt data shared with clones
+- copy the validated peer_addr into the new association and use it in
+  sctp_sf_do_5_1D_ce() instead of re-reading the raw cookie
+
+ net/sctp/ipv6.c          |  6 +++++-
+ net/sctp/sm_make_chunk.c | 24 +++++++++++++-----------
+ net/sctp/sm_statefuns.c  |  2 +-
+ 3 files changed, 19 insertions(+), 13 deletions(-)
+
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index ef26878f1282..97390569c4bd 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -725,7 +725,8 @@ static int sctp_v6_available(union sctp_addr *addr, struct sctp_sock *sp)
+  * SCTP.
+  *
+  * Output:
+- * Return 0 - If the address is a non-unicast or an illegal address.
++ * Return 0 - If the address is a non-unicast or an illegal address,
++ *            or a non-v4-mapped address on a non-PF_INET6 socket.
+  * Return 1 - If the address is a unicast.
+  */
+ static int sctp_v6_addr_valid(union sctp_addr *addr,
+@@ -749,6 +750,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
+ 	if (!(ret & IPV6_ADDR_UNICAST))
+ 		return 0;
+ 
++	if (sp && sctp_opt2sk(sp)->sk_family != PF_INET6)
++		return 0;
++
+ 	return 1;
+ }
+ 
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index ddc31a5dbad3..d64c3ae33298 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -1733,7 +1733,9 @@ struct sctp_association *sctp_unpack_cookie(
+ 	struct sctp_cookie *bear_cookie;
+ 	struct sctp_chunkhdr *ch;
+ 	unsigned int len, chlen;
++	union sctp_addr paddr;
+ 	enum sctp_scope scope;
++	struct sctp_af *af;
+ 	ktime_t kt;
+ 
+ 	/* Header size is static data prior to the actual cookie, including
+@@ -1842,6 +1844,11 @@ struct sctp_association *sctp_unpack_cookie(
+ 		goto fail;
+ 	}
+ 
++	paddr = bear_cookie->peer_addr;
++	af = sctp_get_af_specific(paddr.sa.sa_family);
++	if (!af || !af->addr_valid(&paddr, sctp_sk(ep->base.sk), NULL))
++		goto malformed;
++
+ 	/* Make a new base association.  */
+ 	scope = sctp_scope(sctp_source(chunk));
+ 	retval = sctp_association_new(ep, ep->base.sk, scope, gfp);
+@@ -1858,6 +1865,7 @@ struct sctp_association *sctp_unpack_cookie(
+ 
+ 	/* Populate the association from the cookie.  */
+ 	memcpy(&retval->c, bear_cookie, sizeof(*bear_cookie));
++	retval->c.peer_addr = paddr;
+ 
+ 	if (sctp_assoc_set_bind_addr_from_cookie(retval, bear_cookie,
+ 						 GFP_ATOMIC) < 0) {
+@@ -2382,8 +2390,8 @@ int sctp_process_init(struct sctp_association *asoc, struct sctp_chunk *chunk,
+ 		    (param.p->type == SCTP_PARAM_IPV4_ADDRESS ||
+ 		     param.p->type == SCTP_PARAM_IPV6_ADDRESS)) {
+ 			af = sctp_get_af_specific(param_type2af(param.p->type));
+-			if (!af->from_addr_param(&addr, param.addr,
+-						 chunk->sctp_hdr->source, 0))
++			if (!af || !af->from_addr_param(&addr, param.addr,
++							chunk->sctp_hdr->source, 0))
+ 				continue;
+ 			if (sctp_cmp_addr_exact(sctp_source(chunk), &addr))
+ 				src_match = 1;
+@@ -2555,17 +2563,11 @@ static int sctp_process_param(struct sctp_association *asoc,
+ 	 */
+ 	switch (param.p->type) {
+ 	case SCTP_PARAM_IPV6_ADDRESS:
+-		if (PF_INET6 != asoc->base.sk->sk_family)
+-			break;
+-		goto do_addr_param;
+-
+ 	case SCTP_PARAM_IPV4_ADDRESS:
+-		/* v4 addresses are not allowed on v6-only socket */
+-		if (ipv6_only_sock(asoc->base.sk))
+-			break;
+-do_addr_param:
+ 		af = sctp_get_af_specific(param_type2af(param.p->type));
+-		if (!af->from_addr_param(&addr, param.addr, htons(asoc->peer.port), 0))
++		if (!af || !af->from_addr_param(&addr, param.addr,
++						htons(asoc->peer.port), 0) ||
++		    !af->addr_valid(&addr, sctp_sk(asoc->base.sk), NULL))
+ 			break;
+ 		scope = sctp_scope(peer_addr);
+ 		if (sctp_in_scope(net, &addr, scope))
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 8dc65498763c..b2f609f177fb 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -814,7 +814,7 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
+ 	 * effects--it is safe to run them here.
+ 	 */
+ 	if (!sctp_process_init(new_asoc, chunk,
+-			       &chunk->subh.cookie_hdr->c.peer_addr,
++			       &new_asoc->c.peer_addr,
+ 			       peer_init, GFP_ATOMIC))
+ 		goto nomem_init;
+ 
+-- 
+2.43.0
+
