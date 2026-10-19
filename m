@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38883597F3A;
-	Mon, 19 Oct 2026 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649705827B6;
+	Mon, 19 Oct 2026 14:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418351; cv=none; b=WoI1p9AI0N/s4YklKGlWsTZWRghziNJuHOTUMe2NYCR01yPM73Vtp7rb7KLBMaxrRAb3lM1MkMySxsoT5wl30Os4/PXnf9BZztfyBJDsUdh8IvVgyhVpaxZ6qMdGWK1+bJvf1JkLybJdGo8PFLxebSa1U4nvg7Q43eoZ3WML1pc=
+	t=1792418417; cv=none; b=Eb/c1EQViFVky5D8jp7QJ4R0VZ102II/oDqppaQnPsbR6lVBuZi73Aduw4KJTGUo0F2YnzhWv8uaeurlHhD8xPET+FjXdHXsfjgvD/urflLRsmyMs5saLPxFcfxZp9HSqcFwwooc3h+ZIgDWghRHMKBosffMcbhvAYvjH5iAVdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418351; c=relaxed/simple;
-	bh=ZmFqn/SlAhc3v+Rc1ip2hLKtM3P6jisQx7T+4rsX0Os=;
+	s=arc-20240116; t=1792418417; c=relaxed/simple;
+	bh=+xOolqVHTIjUNje/NBlWqngZewdY5WPe7Cv7eyrJaHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hYTHnSJWpFcAm2qMc48BQnPw4076g+EFqOENUaB9LZiYTXOXOQqRK6GwHj/+ZcOuFvlCKTqHbGYbu2tsZBoyNDKXoKgA+E2jpazYK6Ra2EUP8dCPNoHboAMuk7L/rXSXw36ozbb206QwrHAQ7x40UiFJ0wP50sZ9pIIKAewGhJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3mrAqjx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=g4cYwBns3s8ZW5wnDPi7JSiHklQBAUs0gvsSW6FguptNsPcMCKjU2WyB7J67haHKcEdiqe376hq3YSgIZPJ2jYkgv3RKs3fkyjJiHw+cOpSjNxXiR0cFaB46gyBGIKPVfihf95b7GOZZ63v8RDfxSW963af8AavnlIyEaH8zI8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olOeDOjT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3mrAqjx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E7F1F000CA;
-	Mon, 19 Oct 2026 13:59:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olOeDOjT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179181F000CB;
+	Mon, 19 Oct 2026 14:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418349;
-	bh=+6bWQl08vPlK9YvTDXELQKN70ZC2RyYIL3pE6RXTwm0=;
+	s=k20260515; t=1792418414;
+	bh=ZBGxOJXU7HjBVpyfzOXs9dH+Zt09Hx8bIDlSjJjZIfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V3mrAqjxNg79QaAFhEnSuwOkgPLNCGlzlyez8UmBhINIirU+4j6MG2QUhuStTy0Il
-	 pteG3/xnkt5PbvmAO2wNajmVqQWwrBJAA1VKGf0pWYDRFvnVC2L8UWBJz8/eLuLfcp
-	 KiJXqSKpQUYUrNxGB+Uqo8tnbUYwd/Ivw2VwnB//0hAKYDJE4+VwOgr+6karwNEzeP
-	 2Ey9b0d85FYy0ndOioZHO5T7VxS2K0Vm7XMsS7japQSZqcn0B1gGtYNeJdspmQi+4i
-	 CfS63KSZfPcDWBpsw/EGWcJtpYmOgh3a2d3CVDU1eKrQLnzz9emVSusGKI10xMPxTu
-	 jEnZtEXMf5AFw==
+	b=olOeDOjTLuRm4sKwbNu0/Rcpa7GSsMFZTmi2jhIKuEuwf8qC9/FtzeCYUK9PxXZNv
+	 hly3hf2uXpxmvtLzM1G/Xbq4ZSndpum6fEsRO+vkjd3lb+IjCsyo5BN3sUh/gmIuER
+	 QK9bXf+Ohuslhe/bKz3ygChK+lDQzeG3UXdIlOVESsGblOte11MbmSFO613D9L567u
+	 8lencfBzirbJYhHd3nK58hBLlIv+lFe3UxdN1RDDcCY8kbsXjr7WjNed/0wlZtP7cq
+	 hGb1OALT8gfNvmmyZVWDYWkzk7KU6bC6evEhNSAm8i9wW3ESvtIfIKSgGsdHZeLJSa
+	 NhDXAwXgHtZwA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
+Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	mengyuanlou@net-swift.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] netpoll: do not warn when the best-effort pool refill fails
-Date: Mon, 19 Oct 2026 09:47:55 -0400
-Message-ID: <20261019135441.1420968-184-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] net: libwx: disable TX VLAN offload for packets with >2 VLAN tags
+Date: Mon, 19 Oct 2026 09:48:43 -0400
+Message-ID: <20261019135441.1420968-232-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -55,430 +57,435 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 84c0ff1efb62b0053aa265b8deb13842f68f1a74 ]
+[ Upstream commit f5cfb576ce39ba5647024c6d6eeb5b7a822fab6e ]
 
-refill_skbs() tops up the per-netpoll skb pool with GFP_ATOMIC and
-simply stops on the first allocation failure, leaving the pool partially
-filled; a later refill tops it up once memory frees up. The allocation
-failing is therefore an expected and fully handled condition, but
-without __GFP_NOWARN the page allocator emits a warn_alloc() splat with
-a full stack trace on every miss.
+The current hardware does not support TX VLAN offload for packets with
+three or more VLAN tags. When such packets are transmitted with hardware
+VLAN offload enabled, the hardware may malfunction or produce corrupted
+frames.
 
-Pass __GFP_NOWARN so the best-effort refill stays quiet, mirroring the
-same change in netconsole's find_skb().
+Add a check in wx_features_check() to parse the VLAN depth of the
+skb. If more than two VLAN tags are detected (including both the
+hardware tag and in-band tags), strip NETIF_F_HW_VLAN_CTAG_TX and
+NETIF_F_HW_VLAN_STAG_TX from the feature set. This forces the
+kernel networking stack to handle VLAN insertion in software for
+these specific packets, ensuring correct transmission.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260629-netpoll_no_warn-v1-2-f380f0b2cd0c@debian.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/069DF89AA8029189+20260713060441.276612-1-jiawenwu@trustnetic.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-The local tree is **6.18.y** (`v6.18.53`). At that tag, `refill_skbs()`
-still allocates with plain `GFP_ATOMIC`, so the bug exists here. This is
-a one-line `__GFP_NOWARN` change on a best-effort refill that already
-treats allocation failure as success-with-partial-fill.
+The candidate is a hardware-limitation workaround in Wangxun `libwx`: TX
+VLAN offload is unsafe for more than two tags and can corrupt frames.
+This 7.3-rc4 tree already has `wx_features_check` and the VLAN TX path,
+so the rest of the write-up is whether that fix belongs here as a stable
+backport.
 
-===============================================================
-PHASE 1: COMMIT MESSAGE FORENSICS
-===============================================================
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-Step 1.1: PARSE THE SUBJECT LINE
-Record: **[netpoll] [do not warn] [silence warn_alloc on expected
-GFP_ATOMIC skb-pool refill failure]**
+**Step 1.1: PARSE THE SUBJECT LINE**
+- Record: `[net/libwx] [disable] disable TX VLAN offload for packets
+  with >2 VLAN tags`
+- Subsystem: `net: libwx` (Wangxun shared NIC library used by
+  txgbe/ngbe)
+- Verb `disable` is a hardware-workaround action, not a feature or
+  cleanup
 
-Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-Record:
-- **Fixes:** none (expected for this review pipeline)
-- **Reported-by / Tested-by / Reviewed-by / Acked-by / Cc: stable:**
-  none
-- **Link:** https://patch.msgid.link/20260629-netpoll_no_warn-v1-2-
-  f380f0b2cd0c@debian.org (netdev series, patch 2/2)
-- **Signed-off-by:** Breno Leitao (author; NETCONSOLE maintainer); Jakub
-  Kicinski (netdev maintainer)
-- Ignored pipeline tags: `[Upstream commit 84c0ff1efb62…]`, `Signed-off-
-  by: Sasha Levin`
+**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
+- Record:
+  - `Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>` (author;
+    Wangxun maintainer)
+  - `Link: https://patch.msgid.link/069DF89AA8029189+20260713060441.2766
+    12-1-jiawenwu@trustnetic.com`
+  - `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev
+    maintainer, applied)
+  - No `Fixes:` tag (expected for this review pipeline)
+  - No `Cc: stable@vger.kernel.org`
+  - No `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-by:`
+  - Ignore any pipeline `Signed-off-by: Sasha Levin` / `[Upstream commit
+    ...]` (none in the real commit)
 
-Step 1.3: ANALYZE THE COMMIT BODY TEXT
-Record:
-- **Bug:** `refill_skbs()` tops up a per-netpoll pool of 32 skbs with
-  `GFP_ATOMIC`. Failure is expected: the loop `break`s, leaving a
-  partial pool, and a later refill tries again.
-- **Symptom:** without `__GFP_NOWARN`, the page allocator still fires
-  `warn_alloc()` (`pr_warn` + `dump_stack()` + `__show_mem()`), a large
-  splat on every miss.
-- **Root cause:** best-effort allocation used a GFP mask that still
-  warns.
-- **Version info:** none in the commit text. Author date 2026-06-29;
-  merged to net-next 2026-06-30.
-- Cover letter (series 0/2, verified in the mbox): this class of splat
-  was seen on the **Meta fleet**. `warn_alloc` emits 100+ printk lines
-  which then go out through netconsole, **consuming the scarce skb
-  pool** and crowding out the real diagnostic. Stack in the cover letter
-  is the send path (`__alloc_skb` → `send_udp` → `netconsole_write` →
-  `nbcon_kthread_func`), i.e. the sibling `find_skb()` site; this commit
-  is the matching refill-path silence.
+**Step 1.3: ANALYZE THE COMMIT BODY TEXT**
+- Record:
+  - **Bug:** Wangxun TX VLAN offload does not support three or more VLAN
+    tags
+  - **Symptom / failure mode:** hardware may malfunction or produce
+    **corrupted frames**
+  - **Root cause (author):** HW offload still used on >2-tag packets
+  - **Fix:** in `wx_features_check()`, count hwaccel + in-band VLAN
+    tags; if `vlan_num > 2`, drop `NETIF_F_HW_VLAN_CTAG_TX` and
+    `NETIF_F_HW_VLAN_STAG_TX` so the stack inserts in software
+  - **Version info in message:** none
 
-Step 1.4: DETECT HIDDEN BUG FIXES
-Record: Not a disguised cleanup. It is explicitly a warning-suppression
-for an expected, already-handled allocation failure. The functional
-extra is that those warnings themselves eat the emergency pool they
-exist to protect.
+**Step 1.4: DETECT HIDDEN BUG FIXES**
+- Record: Not a disguised cleanup. This is an explicit hardware
+  workaround for incorrect TX offload. Intel reviewer Jacob Keller
+  treated it as a bug fix that should have gone to `net` with a `Fixes:`
+  tag (see Phase 4).
 
-===============================================================
-PHASE 2: DIFF ANALYSIS - LINE BY LINE
-===============================================================
+## PHASE 2: DIFF ANALYSIS - LINE BY LINE
 
-Step 2.1: INVENTORY THE CHANGES
-Record:
-- **File:** `net/core/netpoll.c` — 1 insertion, 1 deletion
-- **Function:** `refill_skbs()`
-- **Scope:** single-file surgical one-liner
+**Step 2.1: INVENTORY THE CHANGES**
+- Record:
+  - File: `drivers/net/ethernet/wangxun/libwx/wx_lib.c` — **+24 / -0**
+  - Function: `wx_features_check()`
+  - Scope: single-file surgical addition inside an existing
+    `ndo_features_check` hook
 
-Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-Record:
-- **Before:** `alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC)`; on NULL, `break`
-  (partial fill).
-- **After:** same, with `GFP_ATOMIC | __GFP_NOWARN`.
-- Path: best-effort refill from `__netpoll_setup()` and from
-  `refill_skbs_work_handler()` (workqueue scheduled when `find_skb()`
-  dequeues from the pool). Not a new error path; allocation behavior is
-  unchanged.
+**Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
+- Record:
+  - **Before:** `wx_features_check()` only restricted checksum/GSO for
+    encapsulated packets; VLAN TX offload was left on for every packet
+  - **After:** count `skb_vlan_tag_present()` plus in-band
+    `eth_type_vlan()` headers via `skb_header_pointer()`. If more than
+    two tags, clear HW VLAN TX features and break
+  - Path: per-packet TX feature check (`netif_skb_features()` →
+    `ndo_features_check`). Normal TX path, not probe/error-only
 
-Step 2.3: IDENTIFY THE BUG MECHANISM
-Record:
-- **Category:** logic/correctness of GFP flags (expected GFP_ATOMIC
-  failure must not warn). Secondary effect: resource starvation of the
-  32-skb emergency pool via printk/netconsole.
-- **Mechanism:** `warn_alloc()` in `mm/page_alloc.c` returns immediately
-  if `__GFP_NOWARN` is set; otherwise it rate-limits to 1/10s but still
-  dumps stack + meminfo. Those printks are exactly what the pool is
-  supposed to carry under OOM.
+**Step 2.3: IDENTIFY THE BUG MECHANISM**
+- Record:
+  - Category: **hardware workaround / logic correctness** (not
+    UAF/leak/race)
+  - Mechanism: HW can insert/offload at most two VLAN tags. With a third
+    tag and HW VLAN TX still enabled, the NIC may emit corrupted frames
+    or malfunction
+  - How the fix works: `validate_xmit_vlan()` in `net/core/dev.c` sees
+    VLAN TX offload cleared and calls `__vlan_hwaccel_push_inside()`, so
+    the extra tag is inserted in software
 
-Step 2.4: ASSESS THE FIX QUALITY
-Record:
-- Obviously correct: `__GFP_NOWARN` is the established pattern for best-
-  effort `GFP_ATOMIC` (many net/ core users already do this).
-- Minimal: one GFP flag bit.
-- **Regression risk: very low.** Allocation success/failure, pool
-  length, locking, and refill scheduling are unchanged. `warn_alloc`
-  does **not** use `WARN_ON` / `panic_on_warn` (verified: it is
-  `pr_warn` + `dump_stack` + `warn_alloc_show_mem`).
-- Red flags: none on this hunk. Series was `[PATCH net-next 2/2]` (not
-  `net`), which is a process signal, not a code risk.
+**Step 2.4: ASSESS THE FIX QUALITY**
+- Record:
+  - Obviously correct: this is the standard `ndo_features_check`
+    pattern; `skb_header_pointer()` is NULL-safe; loop stops at >2 tags
+  - v1 skipped the in-band walk when no hwaccel tag; v2 (applied) always
+    walks in-band tags — better
+  - Minimal, no API/data-structure change
+  - Regression risk: **low**. Extra work only while
+    `eth_type_vlan(skb->protocol)` is true. Worst case is extra software
+    VLAN insertion, not a new crash path
+  - Residual gap (not a reason to reject): VF drivers
+    (`txgbevf`/`ngbevf`) use `wx_xmit_frame` but do **not** set
+    `ndo_features_check`, so VFs are not covered
 
-===============================================================
-PHASE 3: GIT HISTORY INVESTIGATION
-===============================================================
+## PHASE 3: GIT HISTORY INVESTIGATION
 
-Step 3.1: BLAME THE CHANGED LINES
-Record:
-- `alloc_skb(..., GFP_ATOMIC)` in this refill loop dates to
-  **`1da177e4c3f41` (Linux-2.6.12-rc2)** — present for the entire git
-  history.
-- Per-target pool: `221a9c1df790fa` (“Individualize the skb pool”,
-  2024-11-14) — **in v6.18.53**.
-- Refill moved off the spinlock: `327c20c21d80e0` (“Fix deadlock in
-  memory allocation under spinlock”, 2025-11-03, Fixes:
-  `248f6571fd4c51`) — **in v6.18.53**. That commit even notes `printk`
-  from OOM-in-refill can re-enter netpoll; after it, allocation is
-  outside the lock, so this NOWARN change does not fight a deadlock, it
-  only stops the splat.
+**Step 3.1: BLAME THE CHANGED LINES**
+- Record:
+  - New lines are entirely from `f5cfb576ce39b` (this commit)
+  - Surrounding `wx_features_check()` introduced by `3b05aa997c491`
+    (“net: wangxun: restrict feature flags for tunnel packets”,
+    2025-04-22)
+  - TX VLAN offload itself: `3403960cdf86c` (“net: wangxun: libwx add tx
+    offload functions”, 2023-05-31, in v6.5-rc1)
 
-Step 3.2: FOLLOW THE FIXES: TAG
-Record: No `Fixes:` tag. Not applicable. The GFP_ATOMIC refill is
-original netpoll behavior, not a recent regression.
+**Step 3.2: FOLLOW THE FIXES: TAG**
+- Record: No `Fixes:` tag. Author told Jacob Keller they could not
+  identify one. The limitation dates to original TX VLAN offload
+  (`3403960cdf86c`), not a later regression. That commit **is** an
+  ancestor of this tree.
 
-Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Record (on `v6.18.53`, `-- net/core/netpoll.c`):
-- Recent real fixes already in this tree: UAF on shutdown, IPv6 local-
-  address corruption, MAC truncation, workqueue init order, refcount
-  cleanup, the refill deadlock fix.
-- **This NOWARN change is not in v6.18.53.**
-- Standalone vs series: **patch 2/2**. Sibling 1/2 is `09f7a613a14fd`
-  “netconsole: do not warn when the best-effort skb allocation fails”
-  (touches `drivers/net/netconsole.c` `find_skb()` **after** that
-  function was moved out of netpoll). No code dependency between the two
-  hunks.
+**Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
+- Record:
+  - Immediate follow-up: `732ed8f75ce58` “net: libwx: fix FDIR ATR queue
+    mismatch for software VLAN packets” — sets `WX_TX_FLAGS_SW_VLAN`
+    when VLAN is in-band; has its own `Fixes: b501d261a5b3`. Related
+    when more packets take the SW VLAN path, but standalone
+  - Not labeled patch X/Y. Standalone 24-line addition
+  - Prerequisite in this tree: `wx_features_check()` exists
+    (`3b05aa997c491` is an ancestor)
 
-Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Record: Breno Leitao is listed as **NETCONSOLE** maintainer in
-`MAINTAINERS`. He authored the per-target pool and the refill-deadlock
-fix. High-confidence author for this code.
+**Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
+- Record: Jiawen Wu is the Wangxun maintainer (`MAINTAINERS`: `M: Jiawen
+  Wu <jiawenwu@trustnetic.com>`). Regular libwx/txgbe/ngbe fixes around
+  the same time.
 
-Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-Record:
-- Needs the existing `refill_skbs()` + `skb_pool` (present since 2.6 /
-  individualized in 6.18).
-- Does **not** need patch 1/2 to compile or run.
-- Cover letter mentioned “reschedule the workqueue to try later”; **that
-  was not in either committed patch**. Current code already
-  `schedule_work(&np->refill_wq)` from `find_skb()` on pool dequeue. No
-  missing follow-up required for this hunk.
-- **Standalone; can apply on this tree.**
+**Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
+- Record: Depends on `wx_features_check()` / `ndo_features_check`
+  (`3b05aa997c491`). Both exist here. Helpers used (`eth_type_vlan`,
+  `skb_header_pointer`, `skb_vlan_tag_present`) are long-standing core
+  APIs. Can apply standalone on this tree.
 
-===============================================================
-PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-===============================================================
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-Record:
-- `b4 dig -c 84c0ff1efb62b`: https://patch.msgid.link/20260629-
-  netpoll_no_warn-v1-2-f380f0b2cd0c@debian.org
-- `b4 dig -a`: **v1 only** (no v2/v3).
-- Mbox (`/tmp/netpoll-nowarn.mbox`): cover letter + 1/2 + 2/2 +
-  patchwork “applied to netdev/net-next.git” by Jakub Kicinski. **No
-  NAK, no reviewer comments, no Cc: stable in the thread.**
-- Submitted as **`[PATCH net-next]`**, not `net`. Merged immediately (29
-  Jun → applied 1 Jul 2026).
+**Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
+- Record:
+  - `b4 dig -c f5cfb576ce39b`: [PATCH net-next v2] https://patch.msgid.l
+    ink/069DF89AA8029189+20260713060441.276612-1-jiawenwu@trustnetic.com
+  - `b4 dig -a`: v1 (2026-07-10) → v2 (2026-07-13, applied)
+  - v1 review (Przemek Kitszel): style/logic nits — don’t skip the loop
+    when no hwaccel tag; don’t use a dummy parse depth of 8; move the
+    `vlan_num > 2` test inside the loop. All addressed in v2
+  - v2 review (Jacob Keller): **asked why this went to net-next instead
+    of net with a Fixes: tag to the commit that introduced VLAN
+    tagging**
+  - Author reply: “Probably because I couldn't find a Fixes tag for
+    it...”
+  - Applied to **netdev/net-next.git** by Jakub Kicinski (patchwork bot,
+    2026-07-22)
+  - No NAKs; no reviewer objection to the fix itself
+  - No explicit `Cc: stable` in the thread (Jacob’s question is the
+    stable-relevant signal)
 
-Step 4.2: CHECK WHO REVIEWED THE PATCH
-Record (`b4 dig -w`): To/Cc netdev maintainers (Kicinski, Dumazet,
-Miller, Abeni, Horman, Lunn), `netdev@`, `linux-kernel@`, `kernel-
-team@meta.com`. No extra Reviewed-by on the git commit; maintainer merge
-is the review signal.
+**Step 4.2: CHECK WHO REVIEWED THE PATCH**
+- Record (`b4 dig -w`): netdev maintainers (Kicinski, Abeni, Dumazet,
+  Miller, Horman, Lunn), Wangxun (Jiawen Wu, Duanqiang Wen, Mengyuan
+  Lou), Intel NIC reviewers (Jacob Keller, Przemek Kitszel). Right
+  audience.
 
-Step 4.3: SEARCH FOR THE BUG REPORT
-Record: No bugzilla/syzbot. Evidence is the cover letter: Meta fleet,
-`page allocation failure: order:0, mode:0x40820(GFP_ATOMIC|__GFP_COMP)`,
-stack through netconsole send. That stack is the **`find_skb`/send_udp**
-site, not `refill_skbs` itself.
+**Step 4.3: SEARCH FOR THE BUG REPORT**
+- Record: No `Reported-by`, syzbot, or bugzilla. Vendor/maintainer
+  hardware-limitation report. Severity from message: corrupted frames /
+  hardware malfunction.
 
-Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-Record: Two independent one-liners. In **this** 6.18 tree, `find_skb()`
-is still in `net/core/netpoll.c:279` (`alloc_skb(len, GFP_ATOMIC)`
-without NOWARN). Patch 1/2 would not apply as written (wrong file). This
-2/2 patch does not fix that hot path; it only silences the async refill.
+**Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
+- Record: Standalone v1/v2 of one patch, not a multi-patch series.
+  Follow-up ATR SW-VLAN fix is separate and already in this tree.
 
-Step 4.5: CHECK STABLE MAILING LIST HISTORY
-Record: **UNVERIFIED** — `lore.kernel.org/stable/` and WebFetch both
-returned 403.
+**Step 4.5: CHECK STABLE MAILING LIST HISTORY**
+- Record: **UNVERIFIED** — lore.kernel.org HTTP 403; no local stable@
+  discussion found. No evidence it was rejected for stable.
 
-===============================================================
-PHASE 5: CODE SEMANTIC ANALYSIS
-===============================================================
+## PHASE 5: CODE SEMANTIC ANALYSIS
 
-Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-Record: `refill_skbs()` only.
+**Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF**
+- Record: `wx_features_check()` only (exported)
 
-Step 5.2: TRACE CALLERS
-Record (verified in this tree):
-- `refill_skbs_work_handler()` → process-context workqueue, scheduled
-  from `find_skb()` after `skb_dequeue(&np->skb_pool)`.
-- `__netpoll_setup()` → setup/open path (netconsole `netpoll_setup()`,
-  plus bond/team/macvlan/vlan/bridge/dsa netpoll setup).
+**Step 5.2: TRACE CALLERS**
+- Record:
+  - `txgbe_netdev_ops.ndo_features_check = wx_features_check`
+    (`txgbe_main.c`)
+  - `ngbe_netdev_ops.ndo_features_check = wx_features_check`
+    (`ngbe_main.c`)
+  - Core: `netif_skb_features()` → `dev->netdev_ops->ndo_features_check`
+    (`net/core/dev.c`)
+  - Called from the generic TX validation path (`validate_xmit_skb` /
+    `xmit_one`) — userspace-reachable on every transmit for those NICs
+  - VF ops use `wx_xmit_frame` but **no** `ndo_features_check` (coverage
+    gap)
 
-Step 5.3: TRACE CALLEES
-Record: `alloc_skb()` → `skb_queue_tail()`. On failure, `break`. No new
-locks, frees, or I/O.
+**Step 5.3: TRACE CALLEES**
+- Record: `skb_vlan_tag_present`, `eth_type_vlan`, `skb_header_pointer`
+  — read-only skb inspection; no alloc/lock/I/O
 
-Step 5.4: FOLLOW THE CALL CHAIN
-Record:
-- User-reachable via **netconsole** (module/`netconsole=`), kgdb-style
-  netpoll users, and stacked devices’ `ndo_netpoll_setup`.
-- Typical trigger: memory pressure while netconsole is logging →
-  `find_skb()` falls back to the pool → `schedule_work(refill_wq)` →
-  `refill_skbs()` `GFP_ATOMIC` fails → `warn_alloc` splat → those lines
-  go through netconsole again.
-- Unprivileged userspace cannot generally fire this unless netconsole is
-  enabled; operators enable it for crash/OOM debugging — exactly when
-  GFP_ATOMIC fails.
+**Step 5.4: FOLLOW THE CALL CHAIN**
+- Record: syscall/send path → qdisc → `validate_xmit_skb()` →
+  `netif_skb_features()` → `wx_features_check()` → if VLAN TX bits
+  dropped, `validate_xmit_vlan()` software-inserts the tag →
+  `wx_xmit_frame()`. Reachable from userspace on Wangxun PF devices.
+  Triple-tag is uncommon (QinQ + extra tag) but real.
 
-Step 5.5: SEARCH FOR SIMILAR PATTERNS
-Record: Hot-path twin still present here: `find_skb()` at
-`net/core/netpoll.c:279`. Same GFP_ATOMIC-without-NOWARN. Many other
-net/ callers already use `GFP_ATOMIC | __GFP_NOWARN`.
+**Step 5.5: SEARCH FOR SIMILAR PATTERNS**
+- Record: Many NICs call `vlan_features_check()`, which **keeps** HW
+  VLAN TX on multi-tag skbs and only tightens csum features. Wangxun’s
+  extra restriction is device-specific (max two tags). Same idea as
+  other `ndo_features_check` HW-limit hooks, not a copy of
+  `vlan_features_check()`.
 
-===============================================================
-PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
-===============================================================
+## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 
-Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
-Record: **Yes.** `git describe HEAD` → `v6.18.53-5049-g0f0bdc2b0dffb`;
-`make kernelversion` → **6.18.53**.
-At `v6.18.53:net/core/netpoll.c`:
-```
-skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC);
-```
-`git merge-base --is-ancestor 84c0ff1efb62b v6.18.53` → **not in
-v6.18.53**.
+**Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
+- Record:
+  - Local tree: **v7.3-rc4-27-gf0100363d8c37**, `make kernelversion` =
+    **7.3.0-rc4**
+  - `wx_features_check()` exists; pre-patch body had no VLAN-depth check
+    (`git show f5cfb576ce39b^:...`)
+  - TX VLAN flags (`WX_TXD_VLE`, `skb_vlan_tag_present` in
+    `wx_xmit_frame`) exist since `3403960cdf86c`
+  - Candidate **is** already an ancestor of HEAD (already merged here).
+    Evaluation is still whether the fix has stable merit for this
+    codebase; the pre-fix function is the buggy code
 
-Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-Record: `git show 84c0ff1efb62b -- net/core/netpoll.c | git apply
---check` on **v6.18.53** → **CLEAN_APPLY**. Surrounding `refill_skbs()`
-matches. No refactor needed.
+**Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
+- Record: **Clean apply** on this tree. Context is the existing
+  `wx_features_check()`; no conflicting refactor of that function
+  besides this commit and later unrelated wangxun work
 
-Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
-Record: No NOWARN/`best-effort` commits on these files in `v6.18.53`
-history. Deadlock fix is already here and complementary, not a
-substitute.
+**Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
+- Record: This fix is in the tree. Related ATR SW-VLAN fix
+  `732ed8f75ce58` is also here. No alternate fix of the >2-tag HW limit.
 
-===============================================================
-PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-===============================================================
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-Record: **net/core netpoll** used by netconsole and stacked netdevs.
-**IMPORTANT** (not core mm/scheduler; not obscure staging). Netconsole
-is the production debug path for machines that cannot use a serial
-console.
+**Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
+- Record: `drivers/net/ethernet/wangxun/libwx` — **IMPORTANT** for
+  Wangxun NIC users (txgbe/ngbe PFs), **PERIPHERAL** vs core mm/net. Not
+  staging.
 
-Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-Record: Actively maintained by Breno; several 6.18-era netpoll fixes
-already in this tree. Mature mechanism (skb pool since 2.6).
+**Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
+- Record: Actively developed (2026 wangxun commits: Tx timeout, PCIe
+  AER, FDIR, PTP). Author is the maintainer.
 
-===============================================================
-PHASE 8: IMPACT AND RISK ASSESSMENT
-===============================================================
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-Step 8.1: DETERMINE WHO IS AFFECTED
-Record: **Config/driver-specific** — `CONFIG_NETPOLL` / netconsole /
-bonding/team/vlan/macvlan/bridge/dsa netpoll. Not universal, but
-netconsole is widely used in production fleets (explicit Meta report).
+**Step 8.1: DETERMINE WHO IS AFFECTED**
+- Record: **driver-specific** — CONFIG_TXGBE / CONFIG_NGBE Wangxun PF
+  users. Not universal. VFs not covered by this hook.
 
-Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-Record: GFP_ATOMIC miss while the pool is not full — setup under
-pressure, or workqueue refill after the pool was used. Common under
-OOM/memory pressure with netconsole on. Not a userspace-exploitable
-crash.
+**Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
+- Record: TX of a frame with **three or more** VLAN tags (hwaccel + in-
+  band) while HW VLAN TX is on. Uncommon vs plain Ethernet; used in
+  QinQ/provider/NFV setups. Unprivileged users can send tagged frames if
+  the interface/bridge allows it. Not a pure timing race.
 
-Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-Record:
-- Direct: `warn_alloc` log flood (stack + `show_mem`), rate-limited
-  1/10s, **not** `panic_on_warn`.
-- Indirect (the reason the pool exists: “make sure the message gets out
-  even in extreme OOM”): splat printks consume the 32-skb pool and can
-  hide the original incident.
-- **Severity: HIGH for netconsole-under-OOM (lost emergency logs);
-  otherwise MEDIUM log noise.** The refill path is the lesser of the two
-  sites; the cover-letter stack is `find_skb`.
+**Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
+- Record: Corrupted TX frames and possible hardware malfunction.
+  **HIGH** (data corruption on the wire; possible device misbehavior).
+  Not a kernel oops, but not cosmetic.
 
-Step 8.4: CALCULATE RISK-BENEFIT RATIO
-Record:
-- **Benefit:** medium-high for netconsole users; stops expected refill
-  failures from dumping meminfo into the emergency path.
-- **Risk:** very low (one GFP bit).
-- **Ratio:** favorable. Incomplete vs the hot-path sibling, but this
-  hunk is still a correct, self-contained fix.
+**Step 8.4: CALCULATE RISK-BENEFIT RATIO**
+- Record:
+  - **Benefit:** high for affected Wangxun users (correct frames; avoid
+    HW malfunction)
+  - **Risk:** very low (24 lines, feature-bit clear, standard stack
+    fallback)
+  - **Ratio:** favors backporting
 
-===============================================================
-PHASE 9: FINAL SYNTHESIS
-===============================================================
+## PHASE 9: FINAL SYNTHESIS
 
-Step 9.1: COMPILE THE EVIDENCE
+**Step 9.1: COMPILE THE EVIDENCE**
+
 **FOR:**
-- Buggy `GFP_ATOMIC` refill is in this 6.18.53 tree and applies cleanly.
-- Failure is already handled; the splat is wrong and can starve the
-  32-skb OOM pool.
-- Production class of bug documented (Meta fleet cover letter).
-- 1 line, established `__GFP_NOWARN` pattern, maintainer-authored,
-  merged by Kicinski.
-- Zero change to allocation success/locking/API.
+- Real HW limit: >2 VLAN tags + HW VLAN TX → corrupted frames /
+  malfunction
+- Jacob Keller explicitly framed it as a `net` bugfix that needed
+  `Fixes:`
+- Author is the Wangxun maintainer; netdev maintainers applied it
+- Small (+24), contained, no new APIs
+- Uses the intended `ndo_features_check` mechanism
+- Hardware quirk/workaround class (stable exception)
+- `wx_features_check` and VLAN TX offload exist in this tree
+- v2 addressed review nits; no NAKs
 
 **AGAINST:**
-- Sent to **net-next**, not `net`; no `Fixes:` / `Cc: stable` /
-  Reviewed-by in the thread.
-- Cover-letter stack is **`find_skb`/send_udp**, not `refill_skbs`. This
-  tree still warns in `find_skb()`; backporting only 2/2 does not close
-  the reported hot path.
-- `warn_alloc` is rate-limited and does not panic.
-- Not a crash/UAF/deadlock by itself.
+- Sent to net-next, not `net` (author could not pick a `Fixes:` SHA)
+- No public reproducer, crash log, or extra `Reported-by`
+- Triple-tag TX is a relatively rare path
+- VF devices sharing `wx_xmit_frame` still lack this hook
 
-**UNRESOLVED:** stable@ lore search (HTTP 403). Whether 6.18 netconsole
-uses the same nbcon kthread as the 2026 stack (send path still is
-`netconsole → netpoll_send_udp → find_skb` here).
+**UNRESOLVED:**
+- No stable@ lore search (HTTP 403)
+- “Malfunction” not independently characterized beyond the vendor commit
+  message
 
-Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. Obviously correct and tested? **PASS** — one GFP flag; merged to net-
-   next; fleet report for the series.
-2. Fixes a real bug that affects users? **PASS** — expected alloc
-   failure must not dump; dump can eat the emergency pool.
-3. Important issue (crash, security, corruption, deadlock)? **PASS**
-   (narrow) — not a panic, but it undermines netpoll’s OOM delivery
-   guarantee. That is the point of this subsystem.
-4. Small and contained? **PASS** — 1 line, one function.
-5. No new features or APIs? **PASS**.
-6. Can apply to the local tree? **PASS** — clean on v6.18.53.
+**Step 9.2: APPLY THE STABLE RULES CHECKLIST**
+1. Obviously correct and tested? **PASS** — v2 after review; applied by
+   Kicinski; logic matches core `validate_xmit_vlan()`
+2. Fixes a real bug that affects users? **PASS** — HW TX of >2 VLAN tags
+   is wrong and user-triggerable
+3. Important issue? **PASS** — on-wire corruption / HW malfunction
+   (HIGH, not a core oops)
+4. Small and contained? **PASS** — +24 lines, one function
+5. No new features or APIs? **PASS** — disables an unsafe offload for
+   specific packets
+6. Can apply to the local tree? **PASS** — `wx_features_check()`
+   present; patch is a clean addition
 
-Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Record: None (not an ID/quirk/DT/build/docs add). Ordinary small bugfix.
+**Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
+- Record: **Hardware quirk/workaround** — disable an offload the NIC
+  cannot perform. Same class as USB/PCI/codec quirks.
 
-Step 9.4: MAKE YOUR DECISION
-Backport. The local 6.18.y tree has the buggy refill; the patch is a
-zero-risk one-liner that stops an expected GFP_ATOMIC miss from
-generating a huge `warn_alloc` that can drain the netconsole skb pool.
-The hotter sibling (`find_skb` in `net/core/netpoll.c` on this tree) is
-a separate candidate and is not required for this hunk to be correct.
+**Step 9.4: DECISION**
 
-What it solves for stable users: under memory pressure with
-netconsole/netpoll, pool refill already gives up on the first
-`alloc_skb` failure. Today that still prints `warn_alloc` (stack +
-meminfo). Those lines compete for the 32 preallocated skbs that exist
-specifically so messages still get out in OOM. Adding `__GFP_NOWARN`
-leaves refill semantics identical and keeps that path quiet.
+This tree is 7.3.0-rc4 and already contains the Wangxun TX offload path
+and `wx_features_check()`. The patch is a small, reviewed workaround for
+a vendor-confirmed HW limit that otherwise yields corrupted frames.
+Missing `Fixes:`/`Cc: stable` is why it needs manual review, not a
+reason to drop it. Jacob Keller’s net-vs-net-next question is the right
+classification: this is a bugfix, not a feature.
 
-Risk vs benefit: benefit is real for netconsole fleets; risk is
-negligible. The only caveat is that this does not silence `find_skb()`
-on 6.18 (still `GFP_ATOMIC` without NOWARN); that does not make this
-commit wrong or unsafe.
+### What the commit solves for stable users
+Wangxun PFs will no longer ask the NIC to hardware-insert/offload a
+third VLAN tag. Those packets fall back to software VLAN insertion,
+which avoids bad frames and possible device malfunction.
 
-===============================================================
+### Risk vs benefit
+Benefit is correctness on a real (if uncommon) TX path. Risk is a few
+extra header walks and software VLAN push only when tags are already
+present.
+
+### Concerns
+- Needs `wx_features_check()` (present here)
+- Optional companion `732ed8f75ce58` for FDIR ATR on SW-VLAN packets is
+  already in this tree
+- VFs still omit `ndo_features_check`; that is a remaining gap, not a
+  regression from this patch
+
 Verification:
-===============================================================
-- [Phase 1] Parsed tags: Link to msgid `…v1-2…`; SOBs Breno + Kicinski;
-  no Fixes/Reported-by/Cc:stable
-- [Phase 1] Cover letter from mbox: Meta fleet, 100+ line splat
-  consuming skb pool
-- [Phase 2] Diff: 1 line `GFP_ATOMIC` → `GFP_ATOMIC | __GFP_NOWARN` in
-  `refill_skbs()`
-- [Phase 2] `warn_alloc()` confirmed: respects `__GFP_NOWARN`;
-  `pr_warn`+`dump_stack`+`__show_mem`; ratelimit 1/10s; not
-  `panic_on_warn`
-- [Phase 3] Blame: GFP_ATOMIC refill since `1da177e4c3f41` (2.6.12-rc2);
-  individualize `221a9c1df790fa` in 6.18.53; deadlock fix
-  `327c20c21d80e0` in 6.18.53
-- [Phase 3] `git merge-base --is-ancestor 84c0ff1efb62b v6.18.53` → not
-  present
-- [Phase 3] Series sibling `09f7a613a14fd` is netconsole `find_skb`
-  post-move; not a compile dependency
-- [Phase 4] `b4 dig -c 84c0ff1efb62b`: lore msgid; v1 only; applied to
-  net-next; no NAK
-- [Phase 4] Recipients: netdev maintainers + kernel-team@meta.com
-- [Phase 4] UNVERIFIED: stable@ mailing list (HTTP 403)
-- [Phase 5] Callers: `__netpoll_setup()` and
-  `refill_skbs_work_handler()`; `find_skb()` still `GFP_ATOMIC` at line
-  279 in this tree
-- [Phase 5] `MAX_SKBS` is 32; comment documents OOM pool purpose
-- [Phase 6] `git describe HEAD` / `make kernelversion`: 6.18.53; buggy
-  line present at v6.18.53; `git apply --check` on v6.18.53: CLEAN_APPLY
-- [Phase 7] Breno is NETCONSOLE maintainer
-- [Phase 8] Failure mode: warn_alloc noise + emergency pool depletion
-  under OOM, not a kernel oops
-- UNVERIFIED: whether 6.18 netconsole uses nbcon kthread identically to
-  the 2026 cover-letter stack (send path is still `netpoll_send_udp` →
-  `find_skb` here)
+- [Phase 1] Parsed subject/tags/body from `git log -1` / `git show
+  f5cfb576ce39b`; no Fixes/Reported-by/Cc: stable
+- [Phase 2] Diff: +24 in `wx_features_check()` only; confirmed current
+  file at wx_lib.c:3265-3313
+- [Phase 2] Confirmed stack fallback: `validate_xmit_vlan()` in
+  net/core/dev.c:3971-3977
+- [Phase 3] `git blame` on wx_features_check: body from 3b05aa997c491;
+  new VLAN loop from f5cfb576ce39b
+- [Phase 3] TX offload intro `3403960cdf86c` (v6.5-rc1); `git merge-base
+  --is-ancestor` both 3b05aa997c491 and 3403960cdf86c vs HEAD: yes
+- [Phase 3] Follow-up 732ed8f75ce58 exists; not a required prereq for
+  this hunk
+- [Phase 3] Author Jiawen Wu listed as Wangxun maintainer in MAINTAINERS
+- [Phase 4] `b4 dig -c/-a/-w/-m`: v1→v2, lore msgid
+  069DF89AA8029189+...; Przemek nits on v1; Jacob Keller asked why not
+  net+Fixes; author said no Fixes SHA; applied to net-next
+- [Phase 4] lore WebFetch 403; v1 retrieved via `b4 mbox`
+- [Phase 5] Callers: txgbe_main.c:705, ngbe_main.c:681;
+  netif_skb_features in net/core/dev.c:3895-3924
+- [Phase 5] VF netdev_ops: ndo_start_xmit=wx_xmit_frame, no
+  ndo_features_check
+- [Phase 6] `git describe HEAD` = v7.3-rc4-27-gf0100363d8c37; `make
+  kernelversion` = 7.3.0-rc4; pre-patch function confirmed via `git show
+  f5cfb576ce39b^`
+- [Phase 8] Failure mode from commit text + HW offload path: corrupted
+  frames / malfunction, severity HIGH
+- UNVERIFIED: stable@ mailing-list history (lore 403); independent
+  crash/reproducer beyond vendor description
 
 **YES**
 
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c | 24 +++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 9ef344a6932f9..a22de992c8024 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -232,7 +232,7 @@ static void refill_skbs(struct netpoll *np)
- 	skb_pool = &np->skb_pool;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 4a6851612368d..9be339965a683 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -3193,6 +3193,30 @@ netdev_features_t wx_features_check(struct sk_buff *skb,
+ 				    netdev_features_t features)
+ {
+ 	struct wx *wx = netdev_priv(netdev);
++	__be16 type = skb->protocol;
++	u16 vlan_depth = ETH_HLEN;
++	u32 vlan_num = 0;
++
++	if (skb_vlan_tag_present(skb))
++		vlan_num++;
++
++	while (eth_type_vlan(type)) {
++		struct vlan_hdr vhdr, *vh;
++
++		vh = skb_header_pointer(skb, vlan_depth, sizeof(vhdr), &vhdr);
++		if (unlikely(!vh))
++			break;
++
++		type = vh->h_vlan_encapsulated_proto;
++		vlan_depth += VLAN_HLEN;
++		vlan_num++;
++
++		if (vlan_num > 2) {
++			features &= ~(NETIF_F_HW_VLAN_CTAG_TX |
++				      NETIF_F_HW_VLAN_STAG_TX);
++			break;
++		}
++	}
  
- 	while (READ_ONCE(skb_pool->qlen) < MAX_SKBS) {
--		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC);
-+		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC | __GFP_NOWARN);
- 		if (!skb)
- 			break;
- 
+ 	if (!skb->encapsulation)
+ 		return features;
 -- 
 2.53.0
 
