@@ -1,174 +1,137 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADDC4CDA0A
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792405012; cv=none; b=sZajAkrc/hk0pZaLnmYUtPwoXtkMhO6FJyFRcprKe+t7geLjsKP8eY2ILbJqaKXmjsUT9/Fs7TTSdr7yJJAZ2o1ozWZVbjGf212RZiRT6UJ2SfByZfBXOlHnBhXQt/12fjLwkWY4u4vWYgIC9DAVSunviPWzqPsJhbJDJg/nOes=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792405012; c=relaxed/simple;
-	bh=1H0FNz+n80FCown/LZvUyZBH0Hf8RqvHhNNGv70eFqo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E3OuiePbE+V6iYAbYtW0bL4uHZJkt2S9Ceu2DOyULusCbtQE7Y7pZuMEaJnD/FXxOq52AMFXPu69sQCxupstgpaucy7RFQSYmnDT1SejdKS/Nq2CPs1q443p/sOl6Iovb8GEzU70Bd1D1rCoAdd54dUaPmIn9ULWFqVpiP/NIsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GGdbfS93; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VAA1gI2M; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED32F4CEE4D
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792405111; cv=pass; b=HLefws3JosUHRq0pqsNw5gVQWjUhrMQiJSvPzGPXPMSAAOAnJYXQpUj4BdeRl/8ctz+JvH9q/xYaKwQr2ltdvBnejs9nN9Wy7mA+8gt+5JuRqSNuOeXEeegov2tIEQD5BXiWOrQtYGWq9q11EsAfSyea46TgErg0ox1L1sQ2vXo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792405111; c=relaxed/simple;
+	bh=0X5plGkx2cbkG2CtOVwpU5mD1drTa49dzUT6iJzQz9I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BZMu1Hz57TxWxa/wH/jPeHv7DuPbmRm73EV3Gw69hqGC83wu4y1TqnNb91WckxCcSuoERaCyA9hFzBdFLhDFETmmZ56T1u6+QuvoInQ58xQqEG1xZ7w52+nQrXUsZ3zscviXifEHZAeQmUddERfUEFFV96n6NA/qhWoKTCtOXeE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=b2nXhieO; arc=pass smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GGdbfS93";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VAA1gI2M"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69J8Otr13256627
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:16:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=/TzuN/kAKQJmAhx9QGfrfV
-	bOHmKxUQ0A1jrrL3yIsPQ=; b=GGdbfS93mde0fPqQ15LM9FbrpP2MkPyexVDmK6
-	u6iXZiOCyRKGbWTPzIKlRFQHnn2t39HbcEjDrZAPumHTWnsljasAbRB4GPqY9Vus
-	4KDa4rWfzBwFQD6phj3ShxQvA0AQOYDAu5Jrzq5K07CJm4GqxBNHByInichzOeK5
-	yKLeui6XyQLnEc8MfzEileDtvW3W4nuu99+X11lgKa7T5h/pFW/uUwp1D11cEiY8
-	+wT9Iwxz9kPswRbLi4DZUqClhSjww8Aym6c+uiCYlJNF85ztG2ByZ+evc82rFvZO
-	D2usT1G7DbaP7ReZsKCiuXLhkZzMvdPtmTba3Qq+Afz/DGUg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hdf3f8k16-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:16:49 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93cbf2fd504so336656085a.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:16:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="b2nXhieO"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5be47159f2bso1496516e87.2
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:18:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792405108; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qhEVFIqcgrp9tkeZbJMBnQJrGpB/r2qMtOj5WALFuV9fW6RaLDTM7t2rTytEfKBiiF
+         toIE72HI7bNoisMGh38Pk6y+DTNPzWFWyD3SUffJBndVTuBKWKyXvEQdxoxXT3Lv4/+A
+         9Akq5GZ1YkywyGfU+NVAxNX05j9owM+d1r6sv2vqfyJ6UK1U3+E694BaKQemyDdRlag0
+         gOGISBGAS9tNsyQ8Zh4OD3iKFLIAJgFAdvx+s6a3g5Arzi5iGYEmuUvvmONsEfOksbL5
+         5z9O2XrCuqOwlp/Al3R6xvaEB8HaPErnIiz7KlIEMemfrj2rfazUOrYLeJOOInXnbq7J
+         yW2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0X5plGkx2cbkG2CtOVwpU5mD1drTa49dzUT6iJzQz9I=;
+        fh=DSnUwYt7miEvJ2V8r3uZSNntWmNV2kPVmQ5OQSKjW0w=;
+        b=GHG1IZr+xzxQ0RUdkuOgaQW8yBzxb3joGce4DuZPi1mCGKd0924ct4JdG9hTdyzGbw
+         eWOdfw1vSjAE6qzSNGNlKN1QxXmYC4oSdxiItp8tO45swKaZ4iosuA+Gtv14TSeuL7cg
+         Xt5XL0W4bmUS72pecOnNI2afCgBE53qlwQ/Q2ecTEl05gRHZu+KBYim1PolI5yClg8Xu
+         h30Epy4SHqxYrvKOUKCYOABLvmhE3iGj16JJz28J3bvdhfuIG3I0aPH76Co754ya/PpE
+         NS5THVhzHhEm36+Uug6g4YzZADnbEapAk6eTxtwugs+mVjHg4WgxYFUTe/vTLhqaFUiu
+         rLTA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792405008; x=1793009808; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=/TzuN/kAKQJmAhx9QGfrfVbOHmKxUQ0A1jrrL3yIsPQ=;
-        b=VAA1gI2MEexu/k0Xd6GcWWaRejeS7xAzXvgK7+zCMJ0qXvdAmOgo3fcaw3bC0yYq4y
-         oJQyJ/Qyua1BEI0OMJVRHIjntjqjYHd3ZpF9TPg2o8CG7G3rAk9bEPJKvd1z6HIQeE55
-         yXniYoDlM/WBdrFmB/MmzWafOUsmiYrWoiUPwFKnNbHw4W3VyHtaYPXQ2jPJxrigNttS
-         STf3u2lZ31qawFOq1dXyLVV4De58OvkStQvyl7ySg164JS11L061qMxuYSKEkqMLMtPL
-         t0hRornl0OYQou+jUjS0bTXoy+ds1q0CsB1NpaQqjaYk7GnE552k13N46iSuacSnDcty
-         Vljw==
+        d=suse.com; s=google; t=1792405108; x=1793009908; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0X5plGkx2cbkG2CtOVwpU5mD1drTa49dzUT6iJzQz9I=;
+        b=b2nXhieOHRHMFL2rCXaJWL4epOElrY/WUDVe98SjLp/NKrjr4E89Ha/Ro9wT+O/hrN
+         +dPfhRTEZ3MV+FeUUtzaRN5LiX4aLMRGJm0qWpCj3F21gZEIsgbO847vUwNxuJJb6meR
+         R/fG2E6htgqJaEnwXsGDp0co+kg7OI6qjP+98UVbBO97PyiO8JUQdtSejkf7ZRC/uO1d
+         aj1lt49vreqxahyUT5Jej6Tuymrp87uKZQvOPNXXgQKOZOATiuZoaX+y/Sble5jP0QP6
+         Jujs1g2g/6GtLEPQMJfKJVSnQFI28wGvDN8NdAw+IBAfnDB126ApF1IHICA1xrql/Gbq
+         Nsng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792405008; x=1793009808;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=/TzuN/kAKQJmAhx9QGfrfVbOHmKxUQ0A1jrrL3yIsPQ=;
-        b=ztrwpdFY0d4DCiiYgXS69mdT77/3J+bIO6zRn+Z+zyGxEeUbnprE+ACfGh/dmx+dRe
-         sVH7oYqqIgzG9rSHLR3eRsaKyag2Jv7KPc8KT25TKu5pJKU28fant7DDqWMaAiKopzQp
-         HLNy/xSTNL1hUB0hOUmWjf9zFGWOrGp4WI4QmpdP0tqHRRympt/l1JHTIDou08N0VIV2
-         4vinrp9DZZD+DCBe4u4ONRncpWT0OKB4spVQwLWGxyTKWZu4R+tK1TuXLGblUtDlREtS
-         VpbobtUdxHNf0Px3k/hsRqQo4xci7jeUJgNvXa5PJ3EBouh1I2UuiI4PPlkvxrjHkI1i
-         JwqQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzb+2ocM7dVCitDyXKIfIWOm5pb7EPORbA0bv/GDnvxw2JzwHxuB+fZk+8m0lA2fPrqOFxZVMM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIHgjllptPDZZR6pjqQtI6id2z+mHF5fhtorzp0l/lGJaAz5Lfr
-	vr2GC76be2RLXVoxnCWYwpyOIMpg++v0tzf1GVUJ3cdTb4dH6jrpid7WCQsFcoeRvzn/og2Oebz
-	jVc3jy+rUgniPiqf7HIpIjXPBv7M6pQicbn9EKwCqGr0DZBjhXr6Jw1J5Z0o=
-X-Gm-Gg: AYBFou2bq2d5E5HNHWDgHeeoXkg2inxDP0QltLCBLei5OpBcMKWflJMY3gwfE8YF+ad
-	r6utDaPLbfhY26x2y29Or89ZPNKWajoH1jV0NBb1wlgsRPn+v1R2oowgmvbVVnmMTQ43zpgaBGS
-	uvF+IvBz0EcNId7TLyyO/3i4B1vVBI8Z4lwJuykd4tS2iubnvpOZJqxMwOIVWLFx8lUTfikc0o7
-	SNX8xCpg1R4vFWtPVTvLsn7bRZzz6uSYkDXnd08nWdrz6m3wU/mnQD6///8UZnnZW8duaoGwy9h
-	ewKcLQJphhveR1SiI43G2WhVCGUjCgrywXqOcOz+00DjP/G+d46CqdiXrQoZv1wwJjWdFfaJUGy
-	VBJNZsBdWx5Ew7Q==
-X-Received: by 2002:a05:620a:4503:b0:93e:7939:43f0 with SMTP id af79cd13be357-93f29cfbe5dmr1161424885a.32.1792405008352;
-        Mon, 19 Oct 2026 03:16:48 -0700 (PDT)
-X-Received: by 2002:a05:620a:4503:b0:93e:7939:43f0 with SMTP id af79cd13be357-93f29cfbe5dmr1161421385a.32.1792405007837;
-        Mon, 19 Oct 2026 03:16:47 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1d756ce69sm185607365e9.4.2026.10.19.03.16.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 03:16:46 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Mon, 19 Oct 2026 12:16:24 +0200
-Subject: [PATCH nf] netfilter: flowtable: fix pmtu discovery in
- nf_flow_tunnel_ip6ip6_push()
+        d=1e100.net; s=20260707; t=1792405108; x=1793009908;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0X5plGkx2cbkG2CtOVwpU5mD1drTa49dzUT6iJzQz9I=;
+        b=0k2xat0Y54AJ5937KZd3cxg9ePeZzwudm3Bw7eXVVH/Zonzb2uA4eCdMnWLPQiIcQS
+         DTW7/c8kvQZM5OV6aUTIbhOaabtsWLHE2hwMuB8fCv2IlicUeYx8fr8EwEru/rpqGpTd
+         Wft1/+wtiDlw3hmYYvtXuIwAXjJnj59yr0m6mqTpqCflrzUzlPL9/iB2qI8KxMiLxbYm
+         Im/1mHwvpmNxPwZEH/4IzsX8h4F6JuHN4UXZO8nbzXlNmQ5ZrjlHgo+CcMY4XF2GJGA9
+         L+PDWWFjS/oGJ/b4e2ka72nN9XGwTJjJaUSEkEwepkkJkrXLYMWrf8aPxaXiDRelWkYu
+         ndFg==
+X-Forwarded-Encrypted: i=1; AKwUvBx7JvxCBHQk1NlOwvqyZnKH+JkRfFazQ7w09a0LdYpfWLNSaikSfhdGCkBlk9QvRDR0b3Z+zs8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKVcFv5PLjHOzBlLu2R1LifascatpZxeClfkBBz9DFejrCqvEuC
+	DP+3QBNFERgbXDC9DaVetOLcD+Q0PRfe2ImuIgDeY8uZfpRdJvOABTNyLgIEejQkfojOtaiHzrA
+	HdP8C13B/ikn4wgtJKDA6CfCA5avfqog9eT/caAP3Nw==
+X-Gm-Gg: AYBFou1cfBS/ihkSuQ6KGp6JZN6clFocpEsmHoXkXE4u7IAKrJI5fwuuvGd1KXzHdlD
+	++ufHVK9kJF29LMZSq+vtLvVoBbINWrcDvtC0R3h7JLCJ2QWGmpcEjh8NPOFrfQcNHTxEoSQT+B
+	CCsM64ehgrPoZ5zXrQO7EVrGdpHlj0gNBpMBrSpMQlyOfg7k8rHK+ybG9C8Hf/E1dZx4dGCKIHJ
+	EqnkV2l3DX1SLe+RW3KElP8h43VnC2iCJfM3cFs5I/lm9QUYIoZG+C2pDeMLWkD3BXbuZGU3FRr
+	A50QE3NbtglPTfp1kIUN1OdbWHLwG6DMfcquiM8Fwxc3Zi8i6ZEzT+TAH4nnGq9vXJmohgETcBp
+	XOUgf5BhVz/6u
+X-Received: by 2002:a05:6512:3b08:b0:5bb:7b64:340d with SMTP id
+ 2adb3069b0e04-5be50a73dbcmr2180517e87.28.1792405107931; Mon, 19 Oct 2026
+ 03:18:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-nf_flow_tunnel_ip6ip6_push-fix-pmtu-v1-1-324979b15484@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2N0QqDMAxFf0XyvIDtWJn7lTGKuGQGNJbW6kD89
- 4XBeTkcuPeAQlmowKM5INMmRRY1cZcGhrHXD6G8zcG3PrjWdagceVr2uFZVmqKkYMRUy4gsX0z
- zWpH57sIt0NXzALaUMln7vzxBGV7n+QNyr8qeeQAAAA==
-X-Change-ID: 20261019-nf_flow_tunnel_ip6ip6_push-fix-pmtu-ff81656e32fc
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
-        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: 7IWV-7ws6o5IUYNoJ4SzWEB3hQZTQrjp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE5MDA0MCBTYWx0ZWRfXzFhFJTEZuL9P
- 6gb2frRaMc09b0HY3oUdtvO3LFLGDixssQGwiOS5CVKy9FWnQ+D0ZeUrS5Fr3zogZjGcbpPxd2O
- jf066NZKPW+uZh1FgXtAulyAlo7QxbXUTqO8iLZWXu+m4qjdccUY0lB6CoO0rCt70XvgZ7ggius
- NI6ZTwQ9a3mTi8AMGw879RqZ91kJ0IqaRicp6Rxvpbi3Zcg6SuflcPZZtylLhdN2htfy+kLcPpH
- k+fYVR9yz3CLwhXS1K+/BpfwUaKIuiJrjzToHdu++/Vkg3VzN4g07EmRoVehhGXQByZzG7LZh97
- 8i6tc46IikFv9OU5oXCeGMLdjI4zEHKfNhCjuutV4kKFUEJ7CDwlFvk717up+2fgWOGj372hJXZ
- Ar+DN1OuC3ntawsGiDqPhckdN9RK1E9+1TofTkQn9ifvZEqyjPN62n4udylu33emQwpWPuntv/m
- b3lO46TzThhPZddXFAA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE5MDA0MCBTYWx0ZWRfX+TwJusyNeary
- IPRrdzDg4qHWW8jOlvXTlwNxqZhnYW/Y13es58wEYshaUTW/pgQKj7OU8Erw7Nwapp8YJrqGsdj
- P3dMjIaxq0SJ0Bt4vbANcW3S0W+NV74=
-X-Proofpoint-GUID: 7IWV-7ws6o5IUYNoJ4SzWEB3hQZTQrjp
-X-Authority-Analysis: v=2.4 cv=OaANnRTY c=1 sm=1 tr=0 ts=6ad5ee11 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=3HDBlxybAAAA:8 a=EUspDBNiAAAA:8 a=jdz-NEu0cmAWA5xRHoAA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22 a=laEoCiVfU_Unz3mSdgXN:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-19_03,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 bulkscore=0 adultscore=0 clxscore=1015
- malwarescore=0 suspectscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
- definitions=main-2610190040
+References: <20261012095452.135828-1-marco.crivellari@suse.com>
+ <20261012095452.135828-2-marco.crivellari@suse.com> <de6d786b-fdbd-42f8-b2c9-b175a6a33c69@linux.ibm.com>
+In-Reply-To: <de6d786b-fdbd-42f8-b2c9-b175a6a33c69@linux.ibm.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Mon, 19 Oct 2026 12:18:17 +0200
+X-Gm-Features: AclHuK-BUw_TxfB1HhBk8jNSN8MxUezMM1hmofzvTqK6-PRot3PI1mJ4gMma7qc
+Message-ID: <CAAofZF4XMmr9ajA=W7g4EHOSy8C_GRR1n_aK+BXTgM60onFVqw@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 1/6] ibmvnic: Move long delayed work on system_dfl_long_wq
+To: mingming cao <mmc@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Haren Myneni <haren@linux.ibm.com>, 
+	Rick Lindsley <ricklind@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-nf_flow_tunnel_ip6ip6_push() invokes skb_scrub_packet() before updating
-the PMTU. skb_scrub_packet() drops the skb dst, so
-skb_dst_update_pmtu_no_confirm() finds no dst and the PMTU update is
-silently lost.
+On Fri, Oct 16, 2026 at 11:20=E2=80=AFPM mingming cao <mmc@linux.ibm.com> w=
+rote:
+> [...]
+> I walked through the reset path and the conversion looks fine.
+>
+> All three system_long_wq users move together and there are no
+> remaining users in the driver. The work items don't rely on per-CPU
+> state, so system_dfl_long_wq seems appropriate here.
+>
+> Minor commit message nit: ibmvnic doesn't use mod_delayed_work(), and
+> one of the conversions is queue_work() rather than delayed work.
+>
+> Acked-by: Mingming Cao <mmc@linux.ibm.com>
 
-Move the PMTU update before skb_scrub_packet() so the inner route is
-updated with the MTU advertised by the tunnel dst, as done in
-ip6_tnl_xmit().
+Thanks for your comment.
 
-Fixes: 93cf357fa797 ("netfilter: flowtable: Add IP6IP6 tx sw acceleration")
-Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- net/netfilter/nf_flow_table_ip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+drivers/net/ethernet/ibm/ibmvnic.c uses queue_delayed_work() and as
+you mentioned one queue_work(). The workqueue used here was also
+migrated based on Sashiko's feedback received in v2:
 
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index c8c29a9a1684..12faf85ee374 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -664,10 +664,10 @@ static int nf_flow_tunnel_ip6ip6_push(struct net *net, struct sk_buff *skb,
- 	if (err)
- 		return err;
- 
--	skb_scrub_packet(skb, true);
- 	mtu = dst_mtu(&rt->dst) - sizeof(*ip6h);
- 	mtu = max(mtu, IPV6_MIN_MTU);
- 	skb_dst_update_pmtu_no_confirm(skb, mtu);
-+	skb_scrub_packet(skb, true);
- 
- 	skb_push(skb, sizeof(*ip6h));
- 	skb_reset_network_header(skb);
+https://lore.kernel.org/all/20260711164434.1691221-3-horms@kernel.org/
 
----
-base-commit: ee2d4c2d7cc18a2cd504044a75ea614e720248eb
-change-id: 20261019-nf_flow_tunnel_ip6ip6_push-fix-pmtu-ff81656e32fc
+I will keep your Ack for this patch in v5.
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Thanks!
 
+--=20
+
+Marco Crivellari
+
+SUSE Labs
