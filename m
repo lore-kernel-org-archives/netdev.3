@@ -1,207 +1,450 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012066.outbound.protection.outlook.com [52.101.48.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00AA628639
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418703; cv=fail; b=uVCoUYNL7XOps/zqulsoMM6DewMQ/YoU5e8bd2JEGVXToI6B5sHuM8EU5c63bZUSyKC1WIDBM9biEEXoQCwi6SQcvwhcxcMagVJY6Z2flPWlcKIzx1Z9vF4DkgLgJDVlUrxYEcNk6E3sWOkFsTmhGOFUZ0NdFLe1RQxXFyKanIM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418703; c=relaxed/simple;
-	bh=RTtcnrJz1uUhrSwY63wbWhP1lelYa7NVqQDmglo2nvk=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55006297FB;
+	Mon, 19 Oct 2026 14:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792418706; cv=none; b=u4w3zY5MXxcV3jUIh7niujdpBym9i2oqKK/jZuuW1HQZhNxhTW3rWGFJsmbzL0N9kTx07MkDWu3CKRN8WjNrUsT4JuRo78c84o3F6+tvIXl2MTYOOXc56spuvBymrwjWXUeZ5gD+W3Hz1AicZ6gd/D50kRKPcm5jWrT0PxLC3NI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792418706; c=relaxed/simple;
+	bh=P70v4lbD7rijCKKYCp/Niqinta9IwzeeU3PKR/2sqCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tE2ufMia8ZlTKlfmiCOP/nBz4+12M9L5G6/SawNSz6SUqfHksLRTLAXcnmssHiXBxNfL9h56LNmZnXzQqJQPzdg+PncpYHtF3HvYFSepSy2sFbsbBEuPrPipyKBmRghUVNivhTsue6L9f0ipgDp+KqzZghIm0K54mUxcOAiykTw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tTxeEtrt; arc=fail smtp.client-ip=52.101.48.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	 MIME-Version:Content-Type; b=K2o70IR9yx2T2L1vcQ+QSwWAtVOBawfa8Toz4iUQ1zLFmfIGzhl9zxU6YpJwFF/OK0qs+UISDIduxwD+ZdilwOLqpWTYvqCkTENS4W5szRdw8XmPONJMSANQNOzZYy8kuSE31J9xf+4yxU+dvELhTqwKYFoi/hdFnt6+5oxVFUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFq9dHjM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tTxeEtrt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wnyU5G7bRZT9HfCwwvjZ4Pt0bCaGutiguph1gyNWNknSIkH1x8zyRB5iR98wB+qqaGLNWQJOlIjKGkYC/fH/lBA8VQcvFvI28fAhklHJN74fuekmb19bLxONj+icCn9UypSsO8cvcPdL5Mxd1tBQLbA24bpIEGI3ncOjUytpbmIeEd00oyU1sb5uNzXIY6ucFAm3PwK9Dq7gSfVYvsOhoWbEUYvlobbwKGabE9A5C4hiKE/64sxg911Ktk6QxTOZSYHnOvq/yNTwABZnmZ5HqnrkDZz/E59psyqpFYENqOefxyO5tJYNslUfS3YkkS885FDW6wGtKOIg6mqDgmJ9gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YLkYF+1wtoP4dWjJR+frvOO0qrXDZRDdT4Shm+mmbFY=;
- b=v6RJYIX5vreyOHpOGMN7wVsIeJ4Ixj1MiR0ZKfcZA3o2noBbim6QT5V26wzZbFu9P+AWq2ZyOMgWk7VeNUBoq4XhWNW5MM0+YarTitOypT8HxKEHnHtPHv1pqkHHyED6BYGUte3+/mE6VyGK+Aq+zNR7NXkW7bzucq5hCL8rqT4GN96vPgtz4c4dQ1yarc/4vm0tVzFD8mZVUiB0DtIkmc+mcCKzL143SAOq0d1gN99JoruXNDU7SXtFvc+NIpa19xMwIuei9JCMyLhH8gAvy/y6Na3eqWKyK+x1yAIrkjznOP/YrTQ9er62k3Vm2xqySHiSts5hN0OmS6YmsdFmZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YLkYF+1wtoP4dWjJR+frvOO0qrXDZRDdT4Shm+mmbFY=;
- b=tTxeEtrtW1zcOjX56G27tu0rhRIXgeCS7zurXbEocyn0KUM0ODxXJsAvgNJtaDBmqDo7eavW/Hd7HIpv1oSPwkv/m40DJlJW0fTz66b1NsdXvmgBLnDlJshVtXk34UON9K0qAzLa9Hh4c4FF+tf5RAOZLj8pqGTijScz8Tt1u0Cs1yFckz85KGs2TVKk3bEdsRI5/x1WNSdMmGWccCMjpuJNcxpDjLxUJOBot4pTFD8dOE15NjcNhErXG4+g4m/D62woTM9r06P98o0erClWZjto5hr+b+7pXbOXPDIAIsu0UrOtUHhxnmS/7jHQrMvVX3Y+X5HX1GrvZgkK/gLR+Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by CH2PR12MB4103.namprd12.prod.outlook.com (2603:10b6:610:7e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 14:04:55 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 14:04:55 +0000
-From: Ido Schimmel <idosch@nvidia.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	dsahern@kernel.org,
-	horms@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFq9dHjM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8781F000C4;
+	Mon, 19 Oct 2026 14:05:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792418703;
+	bh=KnrnkJtzxfhIMBglwJTSDpWhqf+G65Vun2GiB5efnRM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=XFq9dHjMLVbR3oPxFTsrK1geZ/lF0d9g2uV5oTa2IMENAoGPAsMq9T/1+zl5jyNWV
+	 bzHaSar+HaNqA9XBugcevM6Rw9y6+0LZkVeWX0KtQaoNuIKXZrw1Dk2sC6URoDTuWU
+	 7lTcWW6NxpCp53WvVXfrRHLJSKp273hlmhsLlN23ZeJwP5OUIg0gOXDA78TROPlF0j
+	 nb0mo3IHfUj6N6/RXuds2N6SbeioJ3OrCkeNQslIw21ZzItfQflT4caHXRKKFQ+zOf
+	 9LnHHsIAFSy+mclpPPWpqHDUYYUSa+2WL5KcJvfaqgYHyCd5EK1OfF4cYyssiTWH5r
+	 lEw2a7oe7H6/g==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Andy Moreton <andy.moreton@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	Alejandro Lucero <alucerop@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	ecree.xilinx@gmail.com,
 	andrew+netdev@lunn.ch,
-	petrm@nvidia.com,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net 1/2] ipv6: Hold RCU when emitting route hardware flags notification
-Date: Mon, 19 Oct 2026 17:03:36 +0300
-Message-ID: <20261019140337.2886875-2-idosch@nvidia.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261019140337.2886875-1-idosch@nvidia.com>
-References: <20261019140337.2886875-1-idosch@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TL0P290CA0009.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:5::6)
- To PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] sfc: add X4D PF support
+Date: Mon, 19 Oct 2026 09:52:07 -0400
+Message-ID: <20261019135441.1420968-436-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
+References: <20261019135441.1420968-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CH2PR12MB4103:EE_
-X-MS-Office365-Filtering-Correlation-Id: d02c276e-2721-4fe7-2304-08df2de9f3ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|6133799003|18002099003|22082099003|11063799006|10067099003|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	qxMoe2RCPwGW2E0uoI8Tsne+eyft5P9GC5Yrc2FGU33+Vl46Kx51iIn5nvX6m8AC+Ynk94cLljiwoem9zh5MkuQU6W5PtFzel+eu/dedlU2ZjAoYLyFsPZniOQWfmydEAoj31XA+6jgntaYSIKpqjj7rOz7QkS83bnXfw4XvwFpQ5+bT1oovnuXQpjFz/otR/3AdgdkEt/25SCYzSD7axrI2Oc5VVKf1458NFQd+utYkog5aL31bLqSIuILT1OUUmZWjwVhdeIkwsJ5onhARkVp9Xm7S45FDggw4YXYIXDFMHTLEr4cjHgz18Aisr5XwcsNqSpDWYJM9aDbZgOE53X6M8MUStVgSaTExD0GSDuYWPnarIp6RWyVJYSGGDvPzbv+TwrRFWIDwvFfya+sfv+wer3nLoJ8D/D83FxDAg1Y869b9HjiQqz7l5UOlGyz5SADOHc5yqzhsT0k4ACaoh27HksUZI0Mh5YSqz02eT03Vc9JW5vSVTFG0CAYP7mwMpCTNUPUmP/mS1PwhuYe+zhIHVkal651huAlnCZqjffejZ9VhNCIqhfJv19J9JVTQjFb9WBQbcyLtvP350nZQMC3sA5QaNpZH/DIwLFMjT9J3k6af9QMxhBkTFLb3WWMbri0G26M6ekPxLZ0C0RGYBhciBllMnzqDk0wBqMTS9RA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(11063799006)(10067099003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6iNjKulY7pejHSQ5KNWkq2JaOGufqd7jXuw+8Z88CkZZ5WiI49G69/DSCPtH?=
- =?us-ascii?Q?vgwLmS2gcqs19+/fcrhCF0/Z094oPPuYt2U8pZorWZYYTBy42oQgv4OMaaKq?=
- =?us-ascii?Q?vgXvxe7x+SHN2x/axtD7Q/k5aDIyYyHBz5jnsvtujdG0I6QyoRGDMpoFBhRr?=
- =?us-ascii?Q?e/G1winkBdo4xXRA3nxoIisYSSivbuQm+pNX4wunvkNXrLBbHPgzJllIctUj?=
- =?us-ascii?Q?r8MMS9QUM2JlS0Pny7NZ4qSECK2OAuYEUTMTFHszFX9+xeEOY5OEyPwx9zJt?=
- =?us-ascii?Q?vf0oyEznR6d8AbNXTEj2CGhpm9GF/Zli83LtyfiL9j7tsZUDyrunfFsD5rhD?=
- =?us-ascii?Q?aTTZXt1I/R48ahgLPUBasZOzm2OejjQ9E3Vc3KuLbUCke1y8Xau4SmKanxHv?=
- =?us-ascii?Q?OS7Fjy+eQoXtxVw96cwURCJ67yFLrIPMzRZfq59OeBkzFTF0mEsOcToywsw2?=
- =?us-ascii?Q?rfg/xV0UZu0z2MYd0x4v3bGGYIpLHyzUW+jt6GxFZ/4pt5YpSJ2iryTucQBn?=
- =?us-ascii?Q?2XHI+SD33XLXoWOibxbx5RTH8Np3eK1FNfBRO77NNgbYcTz2nGvjBzydrs58?=
- =?us-ascii?Q?ojeH3eI/8RTko/6amVqwaThSbXjLT5ngsVnFdVcDiJ0lsWRzBJz7SbcP38GG?=
- =?us-ascii?Q?ekjt4CERwwEgnTlj71M67di4Tuj+wS0PAXFs3KlgaetD8mJzL/XrlptW85Q/?=
- =?us-ascii?Q?haC/kIRIKnGXABX2SaWIeaXEqjbr6Cec1NXT94CGbDtwoWAT26A6vnX769t8?=
- =?us-ascii?Q?YbWVI2vR/BR5y/ju/HVYfK7W6qcC0yyJdWTdZBzpY0ZzVtZDK0S5ymCvQhj2?=
- =?us-ascii?Q?tOJBjA15CKacWdrfvVypCCg7Fd9Pa77/A039WbgH4orYpQPaoZhy0Kb9xEjo?=
- =?us-ascii?Q?Kicvyzr3dB4WIIF7kE7RJyx/anicx2MMQMg3WZZMwfe96tpBTXRJAi3n6/R9?=
- =?us-ascii?Q?D9o8OEUVg3iLwtwRisqBYZAd+Zi3ixN4TtsZem3bI2dx+gi3w9+L6Qtp6X8E?=
- =?us-ascii?Q?6xkB0SU9uOWtYB47VuAMWJFA9qWL86selYgJ0fOQth5ESpUv71d2MsrH8dD2?=
- =?us-ascii?Q?lZqvuQ07YnpN0WYgdGwMj2jGa9gL0yh55lYKZNXPsqNfyol2hujM6Y9h+UMx?=
- =?us-ascii?Q?NoWz8YRzOAi/NUaAh3/SJTVEyqNO+4Id3iVNduCFDxtXLB5PwJ7gCx0KZbkH?=
- =?us-ascii?Q?cYJSqAZVV2jBW4SK1FAh9Bnsm9XwDClqa6jftIJCKfvyGzK5F1Npg3qP0sop?=
- =?us-ascii?Q?t61K0VWn5cTy/SDRs7L0fWRd257RIQJJlOUkswaEdSPO3oWPHRzAPeTKoZ36?=
- =?us-ascii?Q?WSjrvbHdvLQ5lvppYhKdl0RJQ75t8sIJIGu2/DtJ91/nvf0pogjsZMd1jq4z?=
- =?us-ascii?Q?8MQAMwpTotZg6WGC5wTpxpbclP2O9FXFyYggFsUsQRppnJ0tuMDP57hRYBgJ?=
- =?us-ascii?Q?I0UgtzDr3BKH2TcnqIbdZ18acML5+s2P1gsSdxhep/bTUAAMcPDjHnosEOL9?=
- =?us-ascii?Q?prHejq/apM+042FRkqBsN/GQF0j6D8Yr/2Ogc1Pucx4FOL5h8ucl8Swd65Me?=
- =?us-ascii?Q?NlPU9y7Q6k8FQEych2gfq8/8flvwTiF8U1+bWwYeTHNhGbPe/qBq/+o80bms?=
- =?us-ascii?Q?7oWwRU6AcG9fsa1zcIRASpNsts8ueb1tMB8dAi7wI/04CLBUX2R1/sjpnmPE?=
- =?us-ascii?Q?PW5QbQWUhJAk6HcC/c7yPXleTDUNxH4XqW/GtW4vVl3VZj2v?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d02c276e-2721-4fe7-2304-08df2de9f3ce
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 14:04:55.1886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AvJugoW0LISJauc5i2B0RimVQyZ6LshNC48elKiIt3ouvWcNtVhYCGlO1xhDX6CBY2jLpJVAPhm2GSnXDeU3ZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4103
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.57
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-fib6_info_hw_flags_set() is called by drivers from process context
-without RTNL or RCU. When the route uses a nexthop object,
-rt6_nlmsg_size() and rt6_fill_node() access the nexthop's RCU protected
-nexthop info and group pointers via rcu_dereference_rtnl(), resulting in
-suspicious RCU usage splats [1].
+From: Andy Moreton <andy.moreton@amd.com>
 
-Fix by holding RCU while sizing and filling the notification, like
-fib_alias_hw_flags_set() already does. Switch to GFP_ATOMIC for the skb
-allocation accordingly.
+[ Upstream commit 24fedc7a569bce181728f0dd616504bef9f1513b ]
 
-Reproducer:
+X4D is an X4 controller instance as an IP block in an SoC.
+It has the same feature set as X4.
 
- # echo "10 0" > /sys/bus/netdevsim/new_device
- # sysctl -wq net.ipv6.fib_notify_on_flag_change=1
- # sysctl -wq net.ipv4.nexthop_compat_mode=1
- # ip -6 nexthop add id 1 blackhole
- # ip -6 route add 2001:db8:1::1/128 nhid 1
-
-[1]
-WARNING: suspicious RCU usage
-7.3.0-rc7-virtme-g191aa41548b2 #38 Not tainted
-net/ipv4/nexthop.c:1539 suspicious rcu_dereference_check() usage!
-[...]
-Workqueue: events nsim_fib_event_work
-Call Trace:
- <TASK>
- dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
- lockdep_rcu_suspicious.cold (kernel/locking/lockdep.c:6972)
- nexthop_for_each_fib6_nh (net/ipv4/nexthop.c:1539 (discriminator 16))
- rt6_nlmsg_size (net/ipv6/route.c:5728)
- fib6_info_hw_flags_set (net/ipv6/route.c:6503)
- nsim_fib6_rt_add (drivers/net/netdevsim/fib.c:671 drivers/net/netdevsim/fib.c:694)
- nsim_fib6_rt_insert (drivers/net/netdevsim/fib.c:759)
- nsim_fib_event_work (drivers/net/netdevsim/fib.c:856 drivers/net/netdevsim/fib.c:889 drivers/net/netdevsim/fib.c:1493)
- process_one_work (kernel/workqueue.c:3396)
- worker_thread (kernel/workqueue.c:3479 kernel/workqueue.c:3560)
- kthread (kernel/kthread.c:436)
- ret_from_fork (arch/x86/kernel/process.c:158)
- ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
- </TASK>
-
-Fixes: 907eea486888 ("net: ipv6: Emit notification when fib hardware flags are changed")
-Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-Closes: https://lore.kernel.org/netdev/179152182668.434549.18232968419539498055@kernel.org/
-Assisted-by: LLM
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Andy Moreton <andy.moreton@amd.com>
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Reviewed-by: Alejandro Lucero <alucerop@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260916125641.12238-1-alucerop@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index a5e955e56e79..ab355e86ea54 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -6500,7 +6500,9 @@ void fib6_info_hw_flags_set(struct net *net, struct fib6_info *f6i,
- 	if (!fib_notify_on_flag_change)
- 		return;
+LLM Generated explanations, may be completely bogus:
+
+The local tree is **6.18.57**. This commit is a four-line PCI ID
+addition that maps X4D PFs onto the existing X4 nic type, which is
+already in this tree.
+
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
+
+Step 1.1: PARSE THE SUBJECT LINE
+Record: [subsystem: sfc (Solarflare/AMD ethernet)] [action verb: add]
+[intent: enable X4D PF PCI devices in the existing sfc driver]
+
+Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+Record:
+- Fixes: none (expected for a device-ID addition)
+- Reported-by: none
+- Tested-by: none
+- Reviewed-by: Pieter Jansen van Vuuren (AMD), Alejandro Lucero (AMD),
+  Simon Horman (netdev)
+- Acked-by: none
+- Link: https://patch.msgid.link/20260916125641.12238-1-alucerop@amd.com
+- Cc: stable: none (expected; not a negative signal)
+- Signed-off-by: Andy Moreton (author, AMD); Jakub Kicinski (netdev
+  maintainer)
+- Ignored pipeline tags: Upstream commit
+  24fedc7a569bce181728f0dd616504bef9f1513b; Signed-off-by: Sasha Levin
+
+Notable: three Reviewed-by tags including a netdev regular (Horman) and
+the subsystem maintainer path via Kicinski.
+
+Step 1.3: ANALYZE THE COMMIT BODY TEXT
+Record:
+- [Bug description] Not a crash/corruption bug. X4D is an X4 controller
+  instantiated as an SoC IP block; without these PCI IDs the in-tree sfc
+  driver will not bind to that hardware.
+- [Symptom/failure mode] X4D PF devices (PCI IDs 0x8c03 and 0xac03,
+  vendor Solarflare 0x1924) are unrecognized; the NIC does not come up.
+- [Version information] None in the message. Author date 2026-09-16; not
+  in v6.18 or v6.18.57.
+- [Root cause] Missing PCI ID table entries. Feature set is stated to be
+  identical to existing X4, so no new nic_type is required.
+
+Step 1.4: DETECT HIDDEN BUG FIXES
+Record: [Not a hidden bug fix.] This is an explicit hardware-enablement
+/ device-ID addition. The subject says “add … support,” but the body and
+diff make clear it is only IDs, not a new driver or API.
+
+===============================================================
+PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
+
+Step 2.1: INVENTORY THE CHANGES
+Record:
+- [Files] drivers/net/ethernet/sfc/efx.c: +4 / -0
+- [Functions] none modified; only the static `efx_pci_table[]`
+  initializer
+- [Scope] single-file surgical PCI ID addition
+
+Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+Record: [hunk] Before: table lists X4 PF IDs 0x0c03 (FF/LL) and 0x2c03
+(FF only) bound to `efx_x4_nic_type`, then terminator. After: two
+additional IDs 0x8c03 and 0xac03 also bound to `efx_x4_nic_type`. Probe
+path is unchanged; PCI matching is the only difference. Normal bind path
+for new devices only.
+
+Step 2.3: IDENTIFY THE BUG MECHANISM
+Record: [category: hardware enablement / PCI device ID addition]
+[mechanism: devices 0x1924:0x8c03 and 0x1924:0xac03 would not match
+`efx_pci_table`, so `efx_pci_probe()` never runs. Mapping them to
+existing `efx_x4_nic_type` reuses the X4 implementation already in this
+tree.]
+
+Step 2.4: ASSESS THE FIX QUALITY
+Record: [Quality: obviously correct; same pattern as the 2024 X4 ID
+entries.] [Regression risk: very low. New IDs cannot match existing X4
+or older Solarflare cards. No locking, no API, no data-structure change.
+MODULE_DEVICE_TABLE already points at this table.]
+
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
+
+Step 3.1: BLAME THE CHANGED LINES
+Record: Adjacent X4 ID rows at v6.18.57 come from `cf06766f1525d` (“sfc:
+Add X4 PF support”, Jonathan Cooper, 2024-09-10). That commit added
+`efx_x4_nic_type` plus IDs 0x0c03/0x2c03. The table terminator dates to
+2008. X4 support has been in-tree since well before 6.18.
+
+Step 3.2: FOLLOW THE FIXES: TAG
+Record: [No Fixes: tag.] Not applicable; this did not regress existing
+code.
+
+Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
+Record:
+- Related: `cf06766f1525d` added X4 PF support (prerequisite; present in
+  v6.18.57).
+- Only X4D-related commit under `drivers/net/ethernet/sfc/` is this one;
+  no follow-up X4D fixes.
+- Standalone: not patch X/Y; single net-next patch.
+
+Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Record: Andy Moreton has other sfc commits in this history (EEPROM
+reporting, EF10 filter_table_remove). Submitter on-list was Alejandro
+Lucero (AMD). This is vendor driver work, not a random drive-by.
+
+Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+Record: Depends on `efx_x4_nic_type`, which exists at v6.18.57 in
+`drivers/net/ethernet/sfc/ef10.c` and is already used by 0x0c03/0x2c03.
+Context around the table in v6.18.57 matches the patch. [Can apply
+standalone: yes.]
+
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
+
+Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
+Record:
+- [Lore/msgid]
+  https://patch.msgid.link/20260916125641.12238-1-alucerop@amd.com
+- Direct lore.kernel.org fetch returned 403; thread recovered via `b4
+  dig` and openwall mirrors.
+- [Revisions] `b4 dig -a`: single revision, v1 `[PATCH net-next] sfc:
+  add X4D PF support` (2026-09-16).
+- [Review] Simon Horman Reviewed-by with no requested changes
+  (2026-09-17).
+- [Stable nomination] none in the thread.
+- [NAKs] none.
+- Applied by Jakub Kicinski; patchwork-bot announced netdev/net.git main
+  commit `24fedc7a569b` on 2026-09-19.
+
+Step 4.2: CHECK WHO REVIEWED THE PATCH
+Record: Recipients (`b4 dig -w`): netdev@vger.kernel.org, davem, kuba,
+pabeni, edumazet, ecree.xilinx@gmail.com, Andy Moreton, Pieter Jansen
+van Vuuren. Appropriate netdev maintainers and sfc/AMD people were on
+Cc.
+
+Step 4.3: SEARCH FOR THE BUG REPORT
+Record: No bugzilla/syzbot report. This is vendor hardware enablement,
+not a user-reported crash. Syzbot CI skipped the series as having no
+functional impact on generic fuzzing (expected for an ID table).
+
+Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
+Record: Standalone one-patch series. No other X4D patches in
+`drivers/net/ethernet/sfc/`. No siena/ef100 table changes needed; X4/X4D
+live in the main `efx_pci_table`.
+
+Step 4.5: CHECK STABLE MAILING LIST HISTORY
+Record: lore.kernel.org/stable search returned 403. No evidence on the
+public netdev thread that this was requested for or rejected from
+stable. UNVERIFIED: whether anyone mailed stable@ about it.
+
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
+
+Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
+Record: No functions edited. Data: `efx_pci_table[]`. Consumers:
+`efx_pci_driver.id_table` and `MODULE_DEVICE_TABLE(pci, efx_pci_table)`.
+
+Step 5.2: TRACE CALLERS
+Record: `pci_register_driver(&efx_pci_driver)` from `efx_init_module()`.
+Match leads to `efx_pci_probe()` → `efx_pci_probe_post_io()` →
+`efx_pci_probe_main()`. Interrupt/hot path unchanged. Impact surface:
+PCI enumeration of the two new IDs only.
+
+Step 5.3: TRACE CALLEES
+Record: Probe uses `efx_x4_nic_type` (already defined in ef10.c):
+EF10-like ops, `efx_ef10_probe_pf`, MCDI, etc. Same as discrete X4 PFs.
+
+Step 5.4: FOLLOW THE CALL CHAIN
+Record: Userspace cannot trigger this except by plugging/enumerating the
+NIC. Reachable on any machine with an X4D PF and CONFIG_SFC. Not a
+syscall-fuzz path.
+
+Step 5.5: SEARCH FOR SIMILAR PATTERNS
+Record: Same two-ID (FF/LL vs FF-only) pattern as X4 0x0c03/0x2c03.
+Older SFC9120/9140/9220/9250 entries use the same table style. No other
+copies of 0x8c03/0xac03 in this driver.
+
+===============================================================
+PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
+
+Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
+Record: Local tree is **v6.18.57** (`Makefile` VERSION=6 PATCHLEVEL=18
+SUBLEVEL=57). At v6.18.57, `efx_pci_table` has X4 IDs but not X4D
+0x8c03/0xac03. `efx_x4_nic_type` is present. The “bug” (missing IDs)
+exists here. X4 support was added in 2024 and is in v6.18.
+
+Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
+Record: [Expected backport difficulty: clean apply.] v6.18.57 context is
+identical to the hunk. No conflicting refactor of the ID table between
+v6.18.57 and this patch.
+
+Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
+Record: No other X4D ID or quirk in v6.18.57. Candidate overlay commit
+`6fd5947dd3d9d` is ignored per pipeline rules; it is not part of
+v6.18.57.
+
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
+
+Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
+Record: [Subsystem: drivers/net/ethernet/sfc] [Criticality: IMPORTANT
+for users of Solarflare/AMD X4-family NICs; PERIPHERAL relative to core
+mm/fs. Not staging.]
+
+Step 7.2: ASSESS SUBSYSTEM ACTIVITY
+Record: sfc is actively maintained (X4 in 2024, stats/MDIO churn, AMD
+authors). Mature driver; this is incremental ID adding on a stable
+nic_type.
+
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
+
+Step 8.1: DETERMINE WHO IS AFFECTED
+Record: [Affected population: driver-specific / hardware-specific.] Only
+Solarflare X4D PF devices (SoC IP block). Existing X4 and older SFC
+users are unaffected.
+
+Step 8.2: DETERMINE THE TRIGGER CONDITIONS
+Record: [Trigger: PCI probe of 0x1924:0x8c03 or 0x1924:0xac03.] Common
+on systems that ship that SoC NIC; never on others. Not an unprivileged
+software trigger.
+
+Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
+Record: [Failure mode: device never bound; no Ethernet for that port.]
+[Severity: MEDIUM for those platforms (hardware dead in this kernel),
+LOW for everyone else.] Not a crash/UAF, but it is user-visible hardware
+enablement of the kind stable explicitly accepts.
+
+Step 8.4: CALCULATE RISK-BENEFIT RATIO
+Record:
+- [Benefit] High for X4D SoC users on 6.18.y (NIC actually works).
+  Documented same feature set as X4 already in this tree.
+- [Risk] Very low: 4 lines, ID table only, no behavioral change for
+  other IDs.
+- [Ratio] Strongly favors backport.
+
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
+
+Step 9.1: COMPILE THE EVIDENCE
+FOR:
+- Official rule in this tree: “must either fix a real bug that bothers
+  people or just add a device ID.”
+- User-instruction exception: new PCI IDs in an existing driver are YES.
+- 4-line change; maps to existing `efx_x4_nic_type` already in 6.18.57.
+- Author states X4D has the same feature set as X4.
+- Reviewed by Horman and AMD; applied by Kicinski.
+- Clean apply; no prerequisites missing; no follow-up X4D patches.
+- No risk to existing devices.
+
+AGAINST:
+- Submitted to net-next, not as a “fix.”
+- No crash/security/corruption.
+- Niche SoC NIC; no public user bug report.
+- UNVERIFIED: stable@ discussion (lore 403).
+
+Step 9.2: APPLY THE STABLE RULES CHECKLIST
+1. Obviously correct and tested? [PASS — identical to existing X4 ID
+   rows; reviewed; merged upstream]
+2. Fixes a real bug that affects users? [PASS under the device-ID
+   clause; without it X4D NICs do not probe]
+3. Important issue (crash, security, corruption, deadlock)? [PASS via
+   device-ID exception, not via crash]
+4. Small and contained? [PASS — 4 lines, one table]
+5. No new features or APIs? [PASS — no new nic_type, no new sysfs/uAPI;
+   IDs only]
+6. Can apply to the local tree? [PASS — v6.18.57 has X4 type and
+   matching table context]
+
+Step 9.3: CHECK FOR EXCEPTION CATEGORIES
+Record: [Exception category: NEW DEVICE IDs to an existing driver.]
+Driver and X4 nic type already exist in 6.18.57.
+
+Step 9.4: MAKE YOUR DECISION
+This should be backported to this 6.18.y tree. It is the textbook PCI ID
+addition: small, obviously correct, no new APIs, and the implementation
+it binds to is already present.
+
+===============================================================
+What the commit solves for stable users
+===============================================================
+
+On 6.18.y, sfc already drives X4 PFs (`0x0c03` / `0x2c03`) via
+`efx_x4_nic_type`. X4D is the same controller as an SoC IP with
+different PCI IDs. Without this patch those devices never match, so the
+interface never appears. Adding the two IDs is the entire change.
+
+Risk vs benefit: benefit is hardware enablement for X4D PFs; risk is
+confined to those IDs. No locking, no API, no shared-path logic change.
+
+Concerns: none material. Not a series; X4 support is already here; apply
+is clean. Absence of Cc: stable is expected for this review queue.
+
+===============================================================
+Verification
+===============================================================
+- [Phase 1] Parsed tags: Reviewed-by Pieter Jansen van Vuuren, Alejandro
+  Lucero, Simon Horman; Link msgid
+  20260916125641.12238-1-alucerop@amd.com; no Fixes/Reported-
+  by/Cc:stable
+- [Phase 1] Body: “X4D is an X4 controller instance as an IP block in an
+  SoC. It has the same feature set as X4.”
+- [Phase 2] Diff: +4 lines in `efx_pci_table[]` only; IDs 0x8c03 and
+  0xac03 → `efx_x4_nic_type`
+- [Phase 3] `git describe HEAD` / `make kernelversion` / Makefile:
+  v6.18.57
+- [Phase 3] `git merge-base --is-ancestor 6fd5947dd3d9d v6.18.57` → NOT
+  in v6.18.57 (candidate overlay ignored)
+- [Phase 3] `git merge-base --is-ancestor cf06766f1525d v6.18.57` → X4
+  support IS in this tree
+- [Phase 3] `git show v6.18.57:drivers/net/ethernet/sfc/efx.c` table has
+  X4 IDs, not X4D; terminator immediately after 0x2c03
+- [Phase 3] `git blame -L 900,911 v6.18.57 --
+  drivers/net/ethernet/sfc/efx.c`: X4 rows from cf06766f1525d (2024)
+- [Phase 3] `git grep efx_x4_nic_type v6.18.57 --
+  drivers/net/ethernet/sfc/`: ef10.c:4308, efx.c X4 IDs, nic.h extern
+- [Phase 3] `git log --grep=X4D -- drivers/net/ethernet/sfc/`: only this
+  commit
+- [Phase 4] `b4 dig -c 24fedc7a569bce181728f0dd616504bef9f1513b`: msgid
+  match; v1 only
+- [Phase 4] `b4 dig -a`: single series, no v2+
+- [Phase 4] `b4 dig -w`: netdev maintainers + AMD + Edward Cree on Cc
+- [Phase 4] Openwall: Horman Reviewed-by; patchwork applied
+  24fedc7a569b; no NAK
+- [Phase 4] lore.kernel.org WebFetch: 403 — used openwall/b4 instead
+- [Phase 5] `efx_pci_table` used as `efx_pci_driver.id_table` and
+  MODULE_DEVICE_TABLE; probe is `efx_pci_probe`
+- [Phase 5] `PCI_VENDOR_ID_SOLARFLARE` is 0x1924 in v6.18.57 pci_ids.h
+- [Phase 6] Context at v6.18.57 matches patch; clean apply
+- [Phase 7] CONFIG_SFC present: “Solarflare SFC9100/EF100-family
+  support”
+- [Phase 8] Failure mode verified as non-bind of new PCI IDs, not a
+  crash
+- [Phase 9] Documentation/process/stable-kernel-rules.rst line 15: “or
+  just add a device ID”
+- UNVERIFIED: stable@ mailing list (lore 403)
+
+This is a contained PCI ID addition to a driver and nic type that
+already exist in 6.18.y, which stable policy explicitly allows.
+
+**YES**
+
+ drivers/net/ethernet/sfc/efx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ethernet/sfc/efx.c b/drivers/net/ethernet/sfc/efx.c
+index 112e55b98ed3b..62df7b6a26fa5 100644
+--- a/drivers/net/ethernet/sfc/efx.c
++++ b/drivers/net/ethernet/sfc/efx.c
+@@ -903,6 +903,10 @@ static const struct pci_device_id efx_pci_table[] = {
+ 	 .driver_data = (unsigned long)&efx_x4_nic_type},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0x2c03),  /* X4 PF (FF only) */
+ 	 .driver_data = (unsigned long)&efx_x4_nic_type},
++	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0x8c03),  /* X4D PF (FF/LL) */
++	 .driver_data = (unsigned long)&efx_x4_nic_type},
++	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0xac03),  /* X4D PF (FF only) */
++	 .driver_data = (unsigned long)&efx_x4_nic_type},
+ 	{0}			/* end of list */
+ };
  
--	skb = nlmsg_new(rt6_nlmsg_size(f6i), GFP_KERNEL);
-+	rcu_read_lock();
-+
-+	skb = nlmsg_new(rt6_nlmsg_size(f6i), GFP_ATOMIC);
- 	if (!skb) {
- 		err = -ENOBUFS;
- 		goto errout;
-@@ -6513,10 +6515,13 @@ void fib6_info_hw_flags_set(struct net *net, struct fib6_info *f6i,
- 		goto errout;
- 	}
- 
-+	rcu_read_unlock();
-+
- 	rtnl_notify(skb, net, 0, RTNLGRP_IPV6_ROUTE, NULL, GFP_KERNEL);
- 	return;
- 
- errout:
-+	rcu_read_unlock();
- 	rtnl_set_sk_err(net, RTNLGRP_IPV6_ROUTE, err);
- }
- EXPORT_SYMBOL(fib6_info_hw_flags_set);
 -- 
-2.56.0
+2.53.0
 
