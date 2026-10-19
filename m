@@ -1,251 +1,164 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E293E4E5341;
-	Mon, 19 Oct 2026 12:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0733A4E3EFB;
+	Mon, 19 Oct 2026 12:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792414707; cv=none; b=IYCzeFGDvUjocsN5yym8Di0sUY8oKD1xtWchxsAYa8X5KhbfMYMKjXsAaeke2Fi6cSjN3m8PY5mXhblq3DSTmmRQvqMENDloI8L4+4V/DtnP9BFulHkSWi2dxi2+503W5xWIen7l3JrnP6uql1rpdJHIERaQrTRmsfuY03dYZuc=
+	t=1792414744; cv=none; b=SYMquuqXd9MMEFlk9nJdKk4woY0x2It8LoHlaoq4RdKDfqbnd+SyhT/G7DKYstY0EJKjzA/Mom9KYCaxAcnNXEMPGzTCc+PNyTdtgo2txG2IJJRPyA6X2fPwUchXF19mF8Y7XbzpSPQflJB7SujBH4mzrejRdf1PNeezfLVCuWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792414707; c=relaxed/simple;
-	bh=jkwrL9SqjiHAM4XC9CAH0pUcXzr6TDF91vmBkt3Y7+k=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=VilfDaFyf09e7bxt9Khk9fKuEdnrUZhFxDotc4XMBhCSS4idj9Ln1glIQT8Bb3jteLTBS1Hxx2Hfet6Xr3RvP3UznE67pgODQAeC7KtX0ucU0/bEWvnaZ8fbZqaQ3BCZLM7uV6I6yAmcLK8nMXlM/lTQUZaeGYZixm+TbAx7Rss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Tj3drLej; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1792414744; c=relaxed/simple;
+	bh=1NiuXvMK1x1kT9RDVHcfDBR+3Bi791ZbVdM+nUoxkYk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=A8YF5DGsKSOY3dmdhUOPzCDsADrHm9Ra5uWdRAA8BR6EufVE0yCPdPy7XUPJu6ajxl+jLkLiSAdjq1k91yv9h8HIRI/ZFYu7BQ6M+pihtvaKtwyOJNGof5xqKwif1C6Bt05qUs9+mtyS7TDc85i2sP2vZY35b8ofi+vFJ9E1G5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=VHneX6jr; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=sreV4qm6; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Tj3drLej"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 829D8A156A;
-	Mon, 19 Oct 2026 14:58:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792414702; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=f40FzgG6SThcTbG2AbDyY38pPngCPmk/NPimEK3lJ2o=;
-	b=Tj3drLejj4yRUoSbUwI/IWkwoA1ESlO7xcjI2YsmpZnYMrQJmNz69axqttXgTRPXMYTNAQ
-	X2g4Qt2PzM76OkD75oxgL81kuAAGiw/oP03KgYzCHS3gq57TI1tate+bXWyxf/R0nIJD/C
-	KuHvPCl8Pq6UdCtIw8Hzbnc0PLW8JIeX4TBzbSyy/qh5khFwJhihy2VEkROGFang0Pkdn1
-	usl2N0RYI/qTsBf19CmpcMwkaLvOLf9scpTJ3d1Ih2n+J3854LKcls4e0B2oDS34Kl8qbk
-	TLLhaNnqN6pTZ/L5Ja04LE4cp5crK0Dw6JD/ro2lSuojGo4P9oIdasejMGePaw==
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="VHneX6jr";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="sreV4qm6"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69JCiEce031291;
+	Mon, 19 Oct 2026 14:44:20 +0200
+Received: from lubuntu-18.04 (host-79-32-222-240.retail.telecomitalia.it [79.32.222.240])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 451C2122951;
+	Mon, 19 Oct 2026 14:44:10 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1792413850; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZcO8tMb5SE5HTlX/hYlR3RK/n3xdFi018XnPAAEWrbQ=;
+	b=VHneX6jrHlHqM5uqYbYiMSVqMSpz/wIK7zz9qdkh7/J/vXuGchYGssnseA3+SL7mhMMj0A
+	lNoyqh2M+11+rzDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1792413850; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZcO8tMb5SE5HTlX/hYlR3RK/n3xdFi018XnPAAEWrbQ=;
+	b=sreV4qm6bfn6pubyB5tvVMTiYutM6Pi8iWwFRfvYxd3sO80q+GxgoXFi/rANW/QHW9F052
+	HIZEKytDcwfRuhYaZa50gxSmv45+Gmen3vxvdRsKsuESQhPerD1Q7yjyi/Ox7L4bIH0Qfw
+	sU/0iSA/e92H31Hh5GMcnCRVqkZjjdDwNz5FhyEq8FmNg+itrUSuoe3EiN4noQ6ShzYewz
+	Sfzr6O1o89/LLG4QC325GooEvW4chil+bQ0NPQ8w1U9nQi0l1oXkOil5ihfLmHXUGRufzr
+	zDBeesZ0dHD+J+7rI07F36LKmGk6gzrfcLOVhzfUV7VHmHxxLHXKNgvfWo/Xjg==
+Date: Mon, 19 Oct 2026 14:44:09 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Boyan Liu <yymhvert@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>,
+        "David S . Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        co+98d7de09cd94fec5@bugs.sh, stefano.salsano@uniroma2.it,
+        Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net v2] seg6: Fix unset mac header in SRv6 End.DT VRF
+ decapsulation
+Message-Id: <20261019144409.aeedfcbaf76b341945d6e370@uniroma2.it>
+In-Reply-To: <20261017120144.3059-1-yymhvert@gmail.com>
+References: <20261017120144.3059-1-yymhvert@gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Mon, 19 Oct 2026 14:58:21 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paolo Valerio <pvalerio@redhat.com>, Vladimir Kondratiev
- <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH net-next v5 3/3] net: macb: distribute evenly Tx SRAM
- segments
-In-Reply-To: <20261016-macb-set-channels-v5-3-90ce0c0b8e75@bootlin.com>
-References: <20261016-macb-set-channels-v5-0-90ce0c0b8e75@bootlin.com>
- <20261016-macb-set-channels-v5-3-90ce0c0b8e75@bootlin.com>
-Message-ID: <1113dac19771ff7881b60bfdd14b0af6@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-Hi Théo
+On Sat, 17 Oct 2026 20:01:44 +0800
+Boyan Liu <yymhvert@gmail.com> wrote:
 
-On 16.10.2026 18:58, Théo Lebrun wrote:
-> GEM has registers to configure the Tx SRAM segments distribution across
-> queues. The reset value is apprioriate (even spread) but we need to
-> care if/when number of active queues is modified (or if we inherited
-> unevenly initialised hardware from bootloader).
-> 
-> To distribute segments, we take as input the number of queues
-> (bp->num_queues) and the number of segments (found inside DCFG6).
-> Its output is a number of segments for each queue, formatted as
-> powers-of-two (eg 2 for queue 0 means it has 2^2=4 segments).
-> 
-> As the distribution logic is quite complex (at least its initial
-> versions had bugs), it is kunit-tested in macb_kunit.c and the
-> implementation lives in macb_utils.c. To test:
-> 
-> ⟩ env --unset=CROSS_COMPILE make ARCH=um mrproper
-> ⟩ env --unset=CROSS_COMPILE ./tools/testing/kunit/kunit.py run \
->         --kconfig_add CONFIG_NET=y \
->         --kconfig_add CONFIG_COMMON_CLK=y macb
-> 
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-> ---
->  drivers/net/ethernet/cadence/Kconfig      | 12 +++++
->  drivers/net/ethernet/cadence/Makefile     |  5 +-
->  drivers/net/ethernet/cadence/macb.h       | 17 +++++++
->  drivers/net/ethernet/cadence/macb_kunit.c | 78 
-> +++++++++++++++++++++++++++++++
->  drivers/net/ethernet/cadence/macb_main.c  | 19 +++++++-
->  drivers/net/ethernet/cadence/macb_utils.c | 60 
-> ++++++++++++++++++++++++
->  6 files changed, 188 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/Kconfig 
-> b/drivers/net/ethernet/cadence/Kconfig
-> index 5b2a461dfd28..a901f74fd4ab 100644
-> --- a/drivers/net/ethernet/cadence/Kconfig
-> +++ b/drivers/net/ethernet/cadence/Kconfig
-> @@ -51,4 +51,16 @@ config MACB_PCI
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called macb_pci.
-> 
-> +config MACB_KUNIT_TEST
-> +	tristate "KUnit test for MACB" if !KUNIT_ALL_TESTS
-> +	depends on KUNIT
-> +	default KUNIT_ALL_TESTS
-> +	help
-> +	  Build KUnit tests for the MACB driver.
-> +
-> +	  For more information on KUnit and unit tests in general,
-> +	  please refer to the KUnit documentation.
-> +
-> +	  If unsure, say N.
-> +
->  endif # NET_VENDOR_CADENCE
-> diff --git a/drivers/net/ethernet/cadence/Makefile 
-> b/drivers/net/ethernet/cadence/Makefile
-> index 1f33cdca9a3c..a0740da68649 100644
-> --- a/drivers/net/ethernet/cadence/Makefile
-> +++ b/drivers/net/ethernet/cadence/Makefile
-> @@ -2,7 +2,7 @@
->  #
->  # Makefile for the Atmel network device drivers.
->  #
-> -macb-y	:= macb_main.o
-> +macb-y	:= macb_main.o macb_utils.o
-> 
->  ifeq ($(CONFIG_MACB_USE_HWSTAMP),y)
->  macb-y	+= macb_ptp.o
-> @@ -10,3 +10,6 @@ endif
-> 
->  obj-$(CONFIG_MACB) += macb.o
->  obj-$(CONFIG_MACB_PCI) += macb_pci.o
-> +
-> +obj-$(CONFIG_MACB_KUNIT_TEST) += macb_test.o
-> +macb_test-y := macb_kunit.o macb_utils.o
+> SRv6 End.DT4/End.DT6 VRF decapsulation unsets the mac header in
+> end_dt_vrf_rcv() so that the VRF device can rebuild it for packet
+> sniffers. The VRF rx handler only performs the rebuild when a
+> sniffer is actually attached to the VRF device (ptype_all
+> non-empty); otherwise the packet continues up the stack with
+> mac_header == 0xffff.
+>
+> Every other receive path delivers packets with a valid mac header:
+> NIC drivers set it in eth_type_trans(), and tunnels without an L2
+> header (ipip, sit, gre, tun) reset it to the network header after
+> decapsulation. skb_mac_header() even warns on the unset state with
+> DEBUG_NET_WARN_ON_ONCE().
+>
+> If the decapsulated packet is an unexpected UDP GSO packet,
+> udp_queue_rcv_skb() re-segments it after restoring skb->data to the
+> mac header with __skb_push(skb, -skb_mac_offset(skb)). With the mac
+> header unset, skb_mac_offset() returns a large positive value,
+> which the unsigned __skb_push() argument turns into a huge length:
+> skb->data moves far outside the buffer and skb->len is corrupted,
+> so segmentation reads out of bounds:
+>
+>     BUG: KASAN: slab-out-of-bounds in inet_gso_segment (net/ipv4/af_inet.c:1383)
+>     Read of size 1 at addr ffff88800da7ffff by task exploit/149
+>     Call Trace:
+>      inet_gso_segment (net/ipv4/af_inet.c:1383)
+>      skb_mac_gso_segment (net/core/gso.c:53)
+>      __skb_gso_segment (net/core/gso.c:124)
+>      udp_queue_rcv_skb (net/ipv4/udp.c:2476 net/ipv4/udp.c:2466)
+>      udp_unicast_rcv_skb (net/ipv4/udp.c:2620)
+>      ip_local_deliver (net/ipv4/ip_input.c:262)
+>      seg6_local_input_core (net/ipv6/seg6_local.c:1640)
+>      lwtunnel_input (net/core/lwtunnel.c:465)
+>      ipv6_rcv (net/ipv6/ip6_input.c:351)
+>
+> Restore a valid mac header, pointing at the network header, once
+> the VRF rx handler returns. The sniffer rebuild happens inside the
+> handler while the header is still unset, so tap behavior is
+> unchanged; when no rebuild happened, the packet now carries the
+> same mac header state as any packet received on an L3 device.
 
-With MACB=m and MACB_KUNIT_TEST=m (so allmodconfig) kbuild complains:
+Thanks Boyan. On the SRv6 side the approach looks reasonable to me.
+With my own reproducer I see a KASAN slab-out-of-bounds in
+inet_gso_segment() without the fix. With the fix I could not reproduce it
+anymore, and the datagrams are delivered. A sniffer on the VRF sees the
+same L2 header with and without the fix.
 
-   drivers/net/ethernet/cadence/Makefile: macb_utils.o is added to 
-multiple modules: macb macb_test
-
-Maybe build the test into macb.ko instead, or use 
-EXPORT_SYMBOL_IF_KUNIT()?
-
-> diff --git a/drivers/net/ethernet/cadence/macb.h 
-> b/drivers/net/ethernet/cadence/macb.h
-> index 51835de0f2a1..60d61efbf3e4 100644
-> --- a/drivers/net/ethernet/cadence/macb.h
-> +++ b/drivers/net/ethernet/cadence/macb.h
-> @@ -194,6 +194,10 @@
->  /* Screener Type 2 match registers */
->  #define GEM_SCRT2		0x540
-> 
-> +/* Tx queue segment allocation */
-> +#define GEM_TXQSEGALLOC_LOWER	0x05A0
-> +#define GEM_TXQSEGALLOC_UPPER	0x05A4
-
-nit: unused now?
-
-> [...]
-
-> diff --git a/drivers/net/ethernet/cadence/macb_kunit.c 
-> b/drivers/net/ethernet/cadence/macb_kunit.c
-
-> [...]
-
-> +static void macb_sram_segments_test(struct kunit *test)
-> +{
-> +	const struct macb_sram_segments_case *p = test->param_value;
-> +	u32 val = gem_sram_distribute_segments(p->num_queues, 
-> p->num_segments);
-> +	unsigned int i, sum_segments = 0, max_assigned_segments;
-> +	unsigned int num_queues = min(p->num_queues, p->num_segments);
-> +
-> +	for (i = 0; i < num_queues; i++) {
-> +		unsigned int q_segments = field_get(GEM_TXQSEGALLOC_MASK(i),
-> +						    val);
-> +
-> +		q_segments = 1U << q_segments;
-> +		sum_segments += q_segments;
-> +		KUNIT_ASSERT_GT_MSG(test, q_segments, 0, "queue %d, val %#x",
-> +				    i, val);
-
-This can't fail, 1U << x is always at least 1.
-
-> +	}
-> +
-> +	for (i = num_queues; i < MACB_MAX_QUEUES; i++) {
-> +		unsigned int pow = field_get(GEM_TXQSEGALLOC_MASK(i), val);
-> +
-> +		KUNIT_ASSERT_EQ_MSG(test, pow, 0, "queue %d, val %#x", i, val);
-> +	}
-> +
-> +	max_assigned_segments = min(p->num_segments,
-> +				    MACB_MAX_QUEUES * num_queues);
-> +	KUNIT_ASSERT_EQ_MSG(test, sum_segments, max_assigned_segments,
-> +			    "val %#x", val);
-> +}
-> +
-> +struct macb_sram_segments_case macb_sram_segments_cases[] = {
-
-static const ... ?
-
-> [...]
-
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
-> b/drivers/net/ethernet/cadence/macb_main.c
-> index 2d069454795b..b70b81f51161 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -3163,6 +3163,20 @@ static void macb_init_hw(struct macb *bp)
->  	if (bp->caps & MACB_CAPS_JUMBO)
->  		bp->rx_frm_len_mask = MACB_RX_JFRMLEN_MASK;
-> 
-> +	/* Distribute Tx SRAM segments evenly based on active number of 
-> queues.
-> +	 * TXQSEGALLOC is only documented for some GEM integrations.
+> [snip]
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 7b5212220185..5232c9e2b7d7 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -1113,6 +1113,14 @@ static struct sk_buff *end_dt_vrf_rcv(struct sk_buff *skb, u16 family,
+>  		/* the skb buffer was consumed by the handler */
+>  		return NULL;
+>  
+> +	/* the VRF device had its chance to rebuild the mac header for
+> +	 * sniffers; restore a valid one pointing at the network header,
+> +	 * like any L3 device without an L2 header, before the packet
+> +	 * continues up the stack.
 > +	 */
-> +	if (bp->caps & MACB_CAPS_TXQSEGALLOC) {
-> +		unsigned int num_segments;
-> +		u32 val;
+> +	if (!skb_mac_header_was_set(skb))
+> +		skb_reset_mac_header(skb);
 > +
-> +		num_segments = 1U << GEM_BFEXT(SEGMENTS_BIT_SIZE,
-> +					       gem_readl(bp, DCFG6));
-> +		val = gem_sram_distribute_segments(bp->num_queues,
-> +						   num_segments);
-> +		gem_writel(bp, TXQSEGALLOC_LOWER, val);
-> +	}
-> +
->  	macb_configure_dma(bp);
-> 
->  	/* Enable RX partial store and forward and set watermark */
-> @@ -5854,6 +5868,7 @@ static const struct macb_config zynqmp_config = {
->  	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE |
->  		MACB_CAPS_JUMBO |
->  		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_BD_RD_PREFETCH |
-> +		MACB_CAPS_TXQSEGALLOC |
->  		MACB_CAPS_USRIO_HAS_MII,
+>  	/* when a packet is received by a VRF or by one of its slaves, the
+>  	 * master device reference is set into the skb.
+>  	 */
 
-AFAIU zynqmp can't change the queue count,so this only rewrites the 
-reset value there?
+The patch sets the mac header but not skb->mac_len, which stays at the
+value the ingress left (e.g. 14). IMO the patch should also reset
+skb->mac_len with skb_reset_mac_len(), which gives 0 with the mac header at
+the network header. Sashiko raised the same point.
 
-Also, where does the limit of 8 segments per queue come from? With a 
-single queue
-and 16 segments half of the Tx SRAM stays unused.
+Sashiko also asks about L2ENCAP. With the fix, the decapsulated packets now
+pass the skb_mac_header_was_set() check in seg6_do_srh() when the VRF has
+no sniffer. In my tests L2ENCAP then builds a malformed frame.
+skb_mac_header_was_set() only means the mac header is set, not that a real
+L2 header is present, and the L2 ends up rebuilt from the IP header bytes.
+Resetting mac_len does not make the frame valid either, since the IP header
+itself then sits where the L2 header should be. skb_mac_header_was_set()
+already lets End.DX4 packets into L2ENCAP without the fix, and the
+resulting frame is malformed as well. I will look at the L2ENCAP check
+separately.
 
-> [...]
-
-Thanks,
-Nicolai
+Ciao,
+Andrea
