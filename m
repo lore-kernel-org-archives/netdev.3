@@ -1,40 +1,40 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCABD4F55D4
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 12:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5FE4E433F;
+	Mon, 19 Oct 2026 12:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792414094; cv=none; b=KEOKY6yPm4Kv+x6wwRoU/MimJRo1WF1iGMOGJsMhZD0WojD7yBjy432E6LbafIhx0/5HMMfxJO39yEC9qZ2AnwB42kRyVUzTrJumgu0VIIcg7P4MYq7EGEiPbkn3J5GpkvPvvt7n0a+TM2lvfwm4EM8okm4bfb6BbfjEOjv7sTE=
+	t=1792414246; cv=none; b=T+2jxhjmSmJwLDFwH813TyX7YLeLvxrpfUxB+C0fyXwV2X4tRn0QBO1nd6Ge7dmGQIXVYfLMn1SFzWS9slrm8D+0b4oNjw8zETxj+jS8F2jPbSpG46dNo0EckhckRmtnlT2GUqBero7lApYzXF2yo+e0bA3e5AF5YdxLT5b3jHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792414094; c=relaxed/simple;
-	bh=WNFVVnLt668p+IXoSm9G2pDj9eZK4FmdBnGietE1J6I=;
+	s=arc-20240116; t=1792414246; c=relaxed/simple;
+	bh=zCsy6e9Bt2dq/Px6jDSSK5zcyrJRZAo8Uo76I5mQw3s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R0sCwqJvP8VHJy0sQRMpUdflA+WlmO7iEaNaLRKsjNjWjDILWTyer6XIdCcGQVtHFLPf9f2RcziEiOaGn5Z858Ux7D9jDl6MOR8uDwgoGVJnL4oE/6ibDShxxjK5Vz22+fsHlmPk0uL1jT2SjxZhqIL1jQdyVtGe1/FEHNzJITs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IJdxbAu/; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:Content-Type; b=Q9je5cl/FByfTKcAVrZbeTP/lZabnCArMSR7kCsRREYkfJvtORw8tpGvE6tx+zD4AuD+fV2eHqUsGy2i+78+QgqWTCntZJqdcsxY6fz0KS5qzegmgnTvta0Rjll+n6zO/9Kfv/h+AdTQOJP4yJk+viBHPvfmKlJf00ZZAM4t4UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bmkxdmwg; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IJdxbAu/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bmkxdmwg"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 8B6F8C653EB;
-	Mon, 19 Oct 2026 12:49:04 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6809E4E411CB;
+	Mon, 19 Oct 2026 12:50:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 70E3360582;
-	Mon, 19 Oct 2026 12:48:06 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5085110328BE3;
-	Mon, 19 Oct 2026 14:48:00 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3BCD960582;
+	Mon, 19 Oct 2026 12:50:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3526C10328D37;
+	Mon, 19 Oct 2026 14:50:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792414085; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1792414237; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=X7aN/1EMOjauQ/SlwtK7yhZJlVa+Q/Enec5Zc+5lc7s=;
-	b=IJdxbAu/ur+1VL5PvinQzEaoiDdAiUryLStMcEP9DYOwlsH6vaqq/+5fcLjiLMUszXP2i4
-	z2tFWedzDqLdM5ncs94gjw69Ypmun0jxi9JC+BX9SaV751t5w9Mwd9G4PR484oAShjqVyd
-	G/bhVyklKUhOBo7wMpd1KSusXK3qgB4LMbggE8rayw44753G10FRa+IzcP9iigwRXlZk+O
-	1pf/EOE/Nah1IHTtCaItcYgAJ4uuYvbZB6mf06sYRvynfdKsgzQ28amHnqavTBro4Edxou
-	P61W7/Xs4Iawx7mnRUYPKugaYfWtpBopgTvh6bAbrpiPqjT2PdqCcuEzCGKzWg==
-Message-ID: <41b5884e-cc3e-450a-b060-abfb8d27912b@bootlin.com>
-Date: Mon, 19 Oct 2026 14:47:59 +0200
+	bh=k8eO+sIYmJYfoiM/+c7wKwg3jchnyvQXxOnYb69grB8=;
+	b=bmkxdmwg3KaQNaN6vE02shBqu1L0emWE7NYvIKnIPY3/Am+RowXdoAetmQS8B374afKzOl
+	aNNn9C6MyDpdMVf6dFmeAv47BAp0kfW7qoCyWpZv25zIWfP4kg1FQkpF2u9l4GRRruBZ8S
+	dnS53dnWa9czjWRuFib3WK691ecdHp9XR0UxZo0vPsOQ2C7xAF6JQrzZHdR7Woz6ux2Krl
+	HZHo7oNU9931vm/H0Ci6WDzsUwST2kPYHB823e8jFBDrFXmq7EuauN3pUe7vjqb7S8czne
+	Xh/XTi+IG2e/gJtviiIagByRPio1lfkGJHdcz3NaztjDQ78wfTl36GFXIARgMg==
+Message-ID: <d9233496-7549-4c53-b240-344bb7a8d9a5@bootlin.com>
+Date: Mon, 19 Oct 2026 14:50:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net 08/10] net: pse-pd: pd692x0: defer probe while a
- manager supply is unresolved
+Subject: Re: [PATCH net 09/10] net: pse-pd: si3474: fix use-after-free in
+ ancillary client error path
 To: Carlo Szelinsky <github@szelinsky.de>,
  Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
  <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
@@ -54,10 +54,10 @@ Cc: Piotr Kubik <piotr.kubik@adtran.com>,
  Kyle Swenson <kyle.swenson@est.tech>, netdev-bot+sashiko@kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20261018082314.48950-1-github@szelinsky.de>
- <20261018082314.48950-9-github@szelinsky.de>
+ <20261018082314.48950-10-github@szelinsky.de>
 From: Kory Maincent <kory.maincent@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20261018082314.48950-9-github@szelinsky.de>
+In-Reply-To: <20261018082314.48950-10-github@szelinsky.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,45 +65,38 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 
 On 10/18/26 10:23, Carlo Szelinsky wrote:
-> pd692x0_req_managers_pw_budget() uses each manager regulator's supply
-> without a NULL check. The supply is NULL while the vmain regulator is
-> described but not registered yet, because regulator_register() does not
-> wait for its supply. Probe then crashes.
-> 
-> Return -EPROBE_DEFER in that case. On net, each retry also leaks the
-> notification kfifo and the PI array until vmain appears; the fix for
-> that is in the PSE core fixes for net-next.
+> If devm_add_action_or_reset() fails, it has already unregistered the
+> ancillary I2C client, and the error message then reads that client's
+> device. It can only fail with -ENOMEM, which is already reported, so
+> drop the message.
 
+That's not really a fix but well:
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
 Thank you!
 
-> Fixes: 359754013e6a ("net: pse-pd: pd692x0: Add support for PSE PI priority feature")
+> Fixes: a2317231df4b ("net: pse-pd: Add Si3474 PSE controller driver")
 > Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 > ---
->   drivers/net/pse-pd/pd692x0.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
+>   drivers/net/pse-pd/si3474.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
-> index 34f0dfbccd06..568789bd912f 100644
-> --- a/drivers/net/pse-pd/pd692x0.c
-> +++ b/drivers/net/pse-pd/pd692x0.c
-> @@ -1056,6 +1056,15 @@ pd692x0_req_managers_pw_budget(struct pd692x0_priv *priv)
->   		struct regulator *supply = priv->manager_reg[i]->supply;
->   		int pw_budget;
+> diff --git a/drivers/net/pse-pd/si3474.c b/drivers/net/pse-pd/si3474.c
+> index 1845b9c51cf7..2f4f241a48af 100644
+> --- a/drivers/net/pse-pd/si3474.c
+> +++ b/drivers/net/pse-pd/si3474.c
+> @@ -516,10 +516,8 @@ static int si3474_i2c_probe(struct i2c_client *client)
+>   		return PTR_ERR(priv->client[1]);
 >   
-> +		/* The regulator core registers the manager regulator even
-> +		 * when its vmain supply cannot be resolved yet and retries
-> +		 * later, leaving ->supply NULL until then.
-> +		 */
-> +		if (!supply)
-> +			return dev_err_probe(&priv->client->dev, -EPROBE_DEFER,
-> +					     "manager %d: vmain supply not resolved\n",
-> +					     i);
-> +
->   		pw_budget = regulator_get_unclaimed_power_budget(supply);
->   		if (!pw_budget)
->   			/* Do nothing if no power budget */
+>   	ret = devm_add_action_or_reset(dev, si3474_ancillary_i2c_remove, priv->client[1]);
+> -	if (ret < 0) {
+> -		dev_err(&priv->client[1]->dev, "Cannot register remove callback\n");
+> +	if (ret)
+>   		return ret;
+> -	}
+>   
+>   	ret = i2c_smbus_read_byte_data(priv->client[1], VENDOR_IC_ID_REG);
+>   	if (ret < 0) {
 
 -- 
 Köry Maincent, Bootlin
