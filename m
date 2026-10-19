@@ -1,106 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.45
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792429375;
-	b=evcXOqmhdH8drJxJG2asb+NFVnr8HSizOd4O/z8PTXR+1etHWKFv3WO2uFDIi73mBBtO
-	 tBYfUu7+C4/KO9pw8bpV17k9v+R8aPV6eEv6hSQZHev9bysquFf8tKAEMzW4NCXdVTj9Q
-	 n/yLGoXv8NbWmhznbd2xyee+cyAWzJYOYIJ/EJqQBuV6FJQfVBs83H3teF5XrY6Tsd0Qc
-	 6X8KN7pvBzJCFL+ruL01b8Q75omFlDfkZm0aelEBa3A0QOkRGa0pDWA3+Vubw+A77AcVE
-	 my+S1HT42EwA2tU6ZldXptg4xARLfOO70iU80cYI/GurTI2HmPVN/flpIn/yJNLDJ1Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792429375;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792429730;
+	b=civNlCz8+nNrsqUjk75G3VcwtLfQ1cAU1VN6VVsaMNAzAz5bK3zJeeLUUnSBXrG0nhfb
+	 dNO7REIDrttajMYE9LuolwE1r3/6GT9kItrQaJNvOM2Ar7uzLr0IcOXF3moiM8QdfdVRI
+	 nrfEoYCKu0KinDPEECJOmYJWwbhPtD3ScLq7isZWitP5iNd8HS1a+cyAJzZaU5EYa5EjY
+	 K+PIYsP03oNk4Bwlm61DVmJzNRuXrl8i1p9cYqEGyU919r5a0U5K6UYuw3EW+xJvQGbNa
+	 FL+pqhybLRyCrRnzE7zOVYVjLHW4uoyU9kgcu/63DqqHZmxq5/Q6phzBF7ruIsKSrJg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792429730;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=BIfyqA5AbmeLJ89zRooXyOk4Vu38p10es+1yAcp1pZA=;
-	b=pPmDLyzy9kEXwGBaD2GItYerDeX18G4AdJrX13fQGaI3m31Plu6sqbPU4l4f8//TBBSA
-	 l+clAAh2Jlqw92HZJfNR6ca0zaTPoQqPa2JPBTgpUeThJ2twCipWvcja8nncBFOa4vRRG
-	 pwK6P8X5fOTK7x0JhPdDrwlfwUVrty74hr6pD1m9Snbstsgx1Pk03NoByxoc/ITYiggVu
-	 rP3EVSmyqDy5QhwnV32lbZRb+TUdW/pZPct57vrs8+/cgFBdn86/+kivj4IQ5EAxoRiWk
-	 4MfWHwV+LoL/aZpQwIf965OGAfAiYjmMOLm/g2p3/0Fmpv67O0NaR8DCB1vHmJC70Mg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gKRvHBFp;
-	arc=none smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	bh=wbIi++T5I/EY7npkGc0X2Wvuhoby9O/RDkzRPOSp+tc=;
+	b=Pc1atayp5hv842GV0TbiWiZ1O7+OLNXsqsF7o33SgGjZv72S9yPWhTzRGXe7HyiM9adB
+	 nftr7c7RvxKuk9SHECPrf7z2CiFEE98/OnLDgsfE6kYP0ccAy1e5dXxeI+0KhnyQZPPBf
+	 qQf/1cfVvAVAA3dDmdDvKy3gzuA2tGf3mP9Q6MSXTQoOQI0ZxCcbuJ+FAoQeiLQg4Sesw
+	 TNqKpqEzmjBTrmekj6Pwcd+JNu0ib8I88LizSOodwXHXrLWtNrJBVBzhKVi/X5Q07BLnd
+	 qC5SEj46S4soio0CKq7+B0gct4ncILuIHB4VengyDN2mGKsGbLyHrPRa5bebmnLZ8bA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=eBLMQuCx;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5933D606A324
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:02:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5933D606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38DA606A31C;
+	Mon, 19 Oct 2026 17:08:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B38DA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=gKRvHBFp
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b1d8944cb0so3313583a12.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:02:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792429374; x=1793034174; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BIfyqA5AbmeLJ89zRooXyOk4Vu38p10es+1yAcp1pZA=;
-        b=gKRvHBFp53SqVVvz8uwI6Jz5jkiG9a6mLRDuJlp/poPdq2AfjPK4jPsrqlyEqajWCw
-         TqRjuSUtLby4mmYtf3cyhS2HJgAyOuaqA1+y2ewJsncBg2p2NnrVlU3O487Y35ihWdOM
-         Aft0kI0iOQ5DnVUVUlG15THQ6vge9boTyKUFYoKbVGfRWjDhmULmY5bXv74vsFAFlksK
-         W44yxIkKBnur2fkDoCc3f5m3Spa8QQVMsOu7IW+uAvdEi8/lwOvNZBGrA9a1oKJtaJlN
-         JBTCHfedY0GAuDs1HTVnkoWWs/CLTHF/tCRZSbBqiKKFFYBOIMSAQba3P7cA0zNf4pB8
-         ZCQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792429374; x=1793034174;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BIfyqA5AbmeLJ89zRooXyOk4Vu38p10es+1yAcp1pZA=;
-        b=A8MYIY3EUlzD5NRh3FppRCnMcpFk19zdByZ2eS5q2Rol8PHJwlh+tveHbiULITGODF
-         Jau5NsdL6GyZNkbXa8BsF3/wrJ/73nneu4UzA9Ay7xUliN2Tl5ohAeUyj7MowJ4mZqZb
-         dZEW6V7DPsZZVB9C9f++USBMUrDLh61nvz+wxhbw8qEYDkPm/5m/UORuTHww3L232OyT
-         h2s25IKDW5b5kjRIQCBferuerpViZzXWgYl1Ip7E1j1INZVLraXBOLBlRnHDcLBpWYvm
-         rlHjy6gU2CDw5lzQQ73OWZTdE9UG5sbdJ8JVEcrRrlb+tQqiKo9MyOx9W3NUGKm7j75W
-         o/2g==
-X-Gm-Message-State: AFq9FYLUqyO5jX/Z8XtrAU8EnAQlsGwQvjAYgPWO4AjonDXEIHLQnPq0
-	gunB+Uj+c2E2Hmn4mnSROctpgAaO59uwRPpq168oja8nNDdz5ag1C7yELXYx5DncjA/XnQ==
-X-Gm-Gg: AYBFou1e703mbzXet4fbL/BqfLC5zbgId+HE77L47at1koRwkePrwzT28XpzbKcCOKr
-	sf8kmUQUydjOIgrtyqyRLX6Tnurb9uhri2PntN/Drw+FTtjfnrfLVJRG//Gh/FdGNv+nQe2JICo
-	HFrtBpS+uFfdfpcDf1Jk35W8LODaUPhP19/lXC0P3z0swu34Fe/Uz93JU2d9G2pN45RfKlr6AM1
-	k1+WY3QTNCqLIgxf3cUE1Ax1yiiUucxyncsaQU1v5+eXDpB4TQqJtuwWcLp0egnyRANzh1Ac+Cc
-	R//6+5HpEd+ekrqQDdnB1rRlz4mkRSnK3Tn5r13G/z7cKYP2bRAGGkk+4Xlmskn2IJMgt+Nqail
-	NH2jzbcZwROlCVBLiAAwJmP/T8G1A9JXBpz2ceekdXGqGXKQBmSYs49VL2j6yn/rCel6ls1rhWf
-	SDoCm6csgq4s/kAOiCmgBsiYSnlIxSrhjsaKlpMUzJEKsRt64t9four8wN91e3kx3V
-X-Received: by 2002:a05:6402:450a:b0:6b1:b97b:745 with SMTP id 4fb4d7f45d1cf-6b3a8186737mr5328588a12.29.1792429373535;
-        Mon, 19 Oct 2026 10:02:53 -0700 (PDT)
-Received: from localhost ([2a03:2880:32ff:47::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b38a1b113dsm4084132a12.10.2026.10.19.10.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 10:02:51 -0700 (PDT)
-From: Vlad Poenaru <vlad.wing@gmail.com>
-To: netdev@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH net-next 2/2] net/sched: Don't wait for RCU when unregistering the qdisc lockdep key
-Date: Mon, 19 Oct 2026 10:02:25 -0700
-Message-ID: <20261019170225.729789-3-vlad.wing@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=eBLMQuCx
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DD1F9202852;
+	Mon, 19 Oct 2026 19:08:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792429716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wbIi++T5I/EY7npkGc0X2Wvuhoby9O/RDkzRPOSp+tc=;
+	b=eBLMQuCxaSG4u28kbg3Z7QajzD876uI/gAHmHPlwjnxcJ4Dwru7QKU2cakueEBUCh7unmD
+	+rD7AuIMYMZ4/yuHGjyDAj6zEG7P+qjpcy+Bs2SfxzurwaD5w5AZus3+Q7dKLZCne0wLNV
+	uQLW8d4k/UE17SeP6Ql7LB7wMt2BB9C9xfMcnIaF7ywyiWvhjI85wDz9LPC+ci4LDw/gaH
+	f8mxPSeNx0gpMiIQZCqwRzRVKvZDGqraysj1/6cG32TNH9wDS+s9QHildW7EaTU57qrE7/
+	CDYE2/yrO+9VrNj0f6sXxGvL1ONjucCRncjqB89NxmiGPPWEcnFu8KwuW4HVbg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792429716; a=rsa-sha256;
+	cv=none;
+	b=U0hQknE8MeBU2xjfWqul7jh8YcvCWs4fHk3iHiAK8g+dc7HdW3/fkULyLu+z5Og56Ae9Kx
+	JsCbKiUFGhpM8L1wtRg3N0SiYl/qha3I3vnq62V7vrDQr+9mXTez3FaRK4s4b/e0F27GY1
+	vO+lWD105DjLujcj/13fZo4VGqvuJhLFGiK+cGQUqa7EUxqHBSFROXvLiw6pNLMAh81vFM
+	AbEoIJk/HC9+vM45/2AqLMeS6WP1U8WrEYQkb8mXHF6xK1q1+qT6EmLEGum4qlXiqYcU+2
+	DWQkUvOvYjlahQnTdFQdrNafwbo1iYL2RKAmXlMtNLRnvqdxVjHdL/SqAUCAiw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792429716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wbIi++T5I/EY7npkGc0X2Wvuhoby9O/RDkzRPOSp+tc=;
+	b=fbg2yY2Pm1UVQpFmN3n8/9+inPhLXwO9cK3O+gxA0/tFzNmMdiLQ0DgRkz7UKRCJ5RwbtJ
+	a1LNk2aDJEs7PQkZy8RfF85l5VEpkz4vt8aWBIi2aahikvGEhUXdLz6zpl764Q7A9H2uDs
+	I49gY3/pePDR8lBZf4RfynFAyZlK2rf9MwJxRnjzTBIPRPBeI0yoEz4lXRvDmGeTsMdKsM
+	7Faudxcvj+uoBz8g5DLNdgRjGuwrnyoJiY3KbU6JvUMBSCrU4tnMoggkH93gl6WsSMvOqZ
+	UhKC2QP4+TDhpiX+gL5A/LVFc5d6qdjTGDrysqsEuqX4CRQHo9YfYW2CyNoRBA==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xIqqi-000FgB-2T;
+	Mon, 19 Oct 2026 19:08:36 +0200
+Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 7BA795C948D;
+	Mon, 19 Oct 2026 17:08:36 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Cunhao Lu <1579567540@qq.com>,
+	stable@kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 03/11] can: skb: make echo skb freeing safe in any IRQ context
+Date: Mon, 19 Oct 2026 19:01:08 +0200
+Message-ID: <20261019170834.1727150-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261019170225.729789-1-vlad.wing@gmail.com>
-References: <20261019170225.729789-1-vlad.wing@gmail.com>
+In-Reply-To: <20261019170834.1727150-1-mkl@pengutronix.de>
+References: <20261019170834.1727150-1-mkl@pengutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,67 +110,96 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit af0cb3fa3f9e ("net/sched: fix false lockdep warning on
-qdisc root lock") every qdisc except ingress, clsact and noqueue
-registers a dynamic lockdep key, and destroying it calls
-lockdep_unregister_key(), which waits for an expedited RCU grace period.
-Replacing an mq root destroys one qdisc per TX queue under RTNL, so a
-single "tc qdisc replace dev eth0 root mq" waits for that many grace
-periods, each of which IPIs every CPU that is not idle.
+From: Cunhao Lu <1579567540@qq.com>
 
-The wait is not needed here: __qdisc_destroy() and qdisc_create() free
-the qdisc with qdisc_free_rcu() after unregistering, which already
-keeps the key's memory valid for a grace period. Use
-lockdep_unregister_key_nosync(), and free with kfree_rcu() in the one
-qdisc_alloc() error path that used kfree().
+can_put_echo_skb() can be called with hardware interrupts disabled. Its
+direct drop paths use kfree_skb(), while can_create_echo_skb() uses
+kfree_skb() when cloning fails and consume_skb() after a successful clone.
+None of these helpers is safe in every IRQ context.
 
-On an x86_64 KASAN + PROVE_LOCKING kernel (64 vCPU KVM guest, 64-queue
-netdevsim device, 214K lock chains) this removes 5.3 ms of grace-period
-wait from each of the 65 qdisc destroys in "tc qdisc replace dev eth0
-root handle 1: mq".
+Use dev_kfree_skb_any() for all drop paths and dev_consume_skb_any() when
+consuming a successfully cloned skb. This preserves the respective skb drop
+and consumed semantics regardless of the caller IRQ context.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/all/CANn89iLvu_ijSV+FnrZ6qei_Ty2c9V-RjwLMk24+oOS91bNjaQ@mail.gmail.com/
-Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+Signed-off-by: Cunhao Lu <1579567540@qq.com>
+Link: https://patch.msgid.link/tencent_E84809CF236D0137885E7E4E4D58340B3208@qq.com
+Cc: stable@kernel.org
+Fixes: ae64438be192 ("can: dev: fix skb drop check")
+Fixes: 0ae89beb283a ("can: add destructor for self generated skbs")
+Fixes: 3ccd4c6167d3 ("can: Unify droping of invalid tx skbs and netdev stats")
+Fixes: 39549eef3587 ("can: CAN Network device driver and Netlink interface")
+[mkl: also convert can_dropped_invalid_skb(), can_dev_dropped_skb()]
+[mkl: add stable on Cc + add Fixes tags]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- include/net/pkt_sched.h | 3 ++-
- net/sched/sch_generic.c | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/can/dev/skb.c | 6 +++---
+ include/linux/can/dev.h   | 2 +-
+ include/linux/can/skb.h   | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 90d3e7943b19a..1f4195dabaa57 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -323,6 +323,7 @@ static inline void qdisc_lock_init(struct Qdisc *sch,
- 	lockdep_set_class(&sch->q.lock, &sch->root_lock_key);
+diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
+index bc0787535b52..46c151eece8f 100644
+--- a/drivers/net/can/dev/skb.c
++++ b/drivers/net/can/dev/skb.c
+@@ -63,7 +63,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
+ 	    (skb->protocol != htons(ETH_P_CAN) &&
+ 	     skb->protocol != htons(ETH_P_CANFD) &&
+ 	     skb->protocol != htons(ETH_P_CANXL))) {
+-		kfree_skb(skb);
++		dev_kfree_skb_any(skb);
+ 		return 0;
+ 	}
+ 
+@@ -91,7 +91,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
+ 	} else {
+ 		/* locking problem with netif_stop_queue() ?? */
+ 		netdev_err(dev, "%s: BUG! echo_skb %d is occupied!\n", __func__, idx);
+-		kfree_skb(skb);
++		dev_kfree_skb_any(skb);
+ 		return -EBUSY;
+ 	}
+ 
+@@ -403,7 +403,7 @@ bool can_dropped_invalid_skb(struct net_device *dev, struct sk_buff *skb)
+ 	return false;
+ 
+ inval_skb:
+-	kfree_skb(skb);
++	dev_kfree_skb_any(skb);
+ 	dev->stats.tx_dropped++;
+ 	return true;
+ }
+diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
+index 6d0710d6f571..346faddee02e 100644
+--- a/include/linux/can/dev.h
++++ b/include/linux/can/dev.h
+@@ -176,7 +176,7 @@ static inline bool can_dev_dropped_skb(struct net_device *dev, struct sk_buff *s
+ 	return can_dropped_invalid_skb(dev, skb);
+ 
+ invalid_skb:
+-	kfree_skb(skb);
++	dev_kfree_skb_any(skb);
+ 	dev->stats.tx_dropped++;
+ 	return true;
+ }
+diff --git a/include/linux/can/skb.h b/include/linux/can/skb.h
+index 5d27843862fc..87ace09c0d8b 100644
+--- a/include/linux/can/skb.h
++++ b/include/linux/can/skb.h
+@@ -78,12 +78,12 @@ static inline struct sk_buff *can_create_echo_skb(struct sk_buff *skb)
+ 
+ 	nskb = skb_clone(skb, GFP_ATOMIC);
+ 	if (unlikely(!nskb)) {
+-		kfree_skb(skb);
++		dev_kfree_skb_any(skb);
+ 		return NULL;
+ 	}
+ 
+ 	can_skb_set_owner(nskb, skb->sk);
+-	consume_skb(skb);
++	dev_consume_skb_any(skb);
+ 	return nskb;
  }
  
-+/* Free @sch only after an RCU grace period, e.g. with qdisc_free_rcu(). */
- static inline void qdisc_lock_uninit(struct Qdisc *sch,
- 				     const struct Qdisc_ops *ops)
- {
-@@ -330,7 +331,7 @@ static inline void qdisc_lock_uninit(struct Qdisc *sch,
- 	    ops == &noqueue_qdisc_ops)
- 		return;
- 
--	lockdep_unregister_key(&sch->root_lock_key);
-+	lockdep_unregister_key_nosync(&sch->root_lock_key);
- }
- 
- #endif
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 6f6a6f0d5eb0d..28791d4fe35b1 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -1033,7 +1033,7 @@ struct Qdisc *qdisc_alloc(struct netdev_queue *dev_queue,
- 	return sch;
- errout1:
- 	qdisc_lock_uninit(sch, ops);
--	kfree(sch);
-+	kfree_rcu(sch, rcu);
- errout:
- 	return ERR_PTR(err);
- }
 -- 
-2.53.0-Meta
+2.53.0
 
