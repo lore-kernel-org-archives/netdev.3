@@ -1,98 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.170
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792427590;
-	b=f4ue9RUqPi1Tr28Y1aGpTMvNcON+UJdGpN8CAHo5qLr0076d76sKPwB6Ib4uvFvkTIXq
-	 ZZ3QzwKT7pM1IzNoLmOBqemyxr+o14oZK2qrvQZ3yGsqqdthFpRX5t/u7Hf8rpjk6jY2z
-	 z8wWa61AhGDW67JrYzZ4wWsuSAPcbLyap42+VgFGgx8lJ/5be81jdeUiN3zFw7auBEott
-	 F9hzbDfe7VKEvgXabK3EqdXnxgcdKRGNRagFbfjCB8rDrr/uITFkeuoiuy9zVYvW/A2IC
-	 bjDgMNTT6IlVdhwwIn+jqBu/teP/rrvE5vX0NAW+AP6GSsG+FjQJbHpcaDPYW9nBXxg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792427590;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
-	b=JEoInmhX6rZICStn8pUFEkrzIyHUXhxbAv0ZLy9gksqPzYFm2/2IP2TMl6PiNSLN2Kiv
-	 K+7jTlgjf2g5lRtLr/0AMduNAmmdBMGskFptXdfFNg/b/Chmbm1fMKptMizEaZnh2HEKB
-	 jj8+oVETii22R1n9AimS1mhlY1/eozPFIfHdKv7slS44eWyR/2Xris/bFuWLjIeKFtHlQ
-	 EIs4cjKHM9BeSAIXf0MbRIhq9uy+35s3yoyhOebAd+W+Ggqoj5y4Pl24AZW51510UxxMf
-	 YkjgE8VjWChN1OvdSDSWgWuuxCpMM8YbQ0LGLkchfCBP69t9lzRsmC1YCaaQQmdcaAA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nuro.ai;
-	spf=pass smtp.mailfrom=nuro.ai;
-	dkim=pass header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=OlhatWBI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792427647;
+	b=UDxKcnt+fKlWgPoZ1HKT5jgF750FL2DaGWkMm2WoiZtnsGdOeerXqjhTIHAubE5zeYBR
+	 d4ygPKPJbRY0KzJAzh/hWRrzEfOofi5gKZwh1DW20XhYt0c/UTEoW22Ho2Tn0eYIrZt5t
+	 vFlE9oItweoHii7voz4PlkwJzp1omYm5Jv3X1Ms8mLwZBsi/GBZCW3JR8VQHMz87Xi2fe
+	 emRACF5bTww+eO3VYgvu7/lLJjjNi/QMBV1jJ1WXYj99tzMKjBfX/HXw1XhyLsFzHIbRw
+	 GsCBeGU6gQ0eNFt/WIkJLcVl7TRLuA6WdiHMDMfmBSX9DqbQpArub9mv4IK0/27VT+Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792427647;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=tdknUqhDMJzziC2gSM3SmcPdwavdTPIJrKZx0MpO4e4=;
+	b=h+Zh9+emw8DSOPvPwm0zACIWoMLLmhRpeJdnk9L2dwNdkbTF1UYdlf75EfS7vQ8JjW35
+	 i89pVBlXkisUmNX/+SuS3S0c3K6+fvDNAPouBD+JbhttWIVEmAyDdAPOuIKjKpMBCfudU
+	 96daaoAjM+gCjYaryPnme7u0Eyd/lrNZ9Avka9obKj7B0Lfo7juun57hW58TMKkwz+Pqy
+	 +9GhqH8EFah1Gx2PNE/x92iYxKs7oUtkMN6riRN6dW7/TpgsBtW78svaHpC6Wg0bmTJ3O
+	 yE5Ic/wsVtOM2BtTuBWGKC2tpwVRwYBplpwsf3XePBiBm9OSy5FZKk7m4zPK8QEhdxw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A1S2HDZI;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F06E606A321
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:33:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F06E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85399606A31B;
+	Mon, 19 Oct 2026 16:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=OlhatWBI
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35d7fa491deso2795774eec.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:33:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792427588; cv=none;
-        d=google.com; s=arc-20260327;
-        b=chCZaOXioZzv7fW0nFWH8q6F+Cbg/aEZYK9YbK+MyMpK88+9wnqqZ5QAxnvqQ/iRVS
-         xiISxShGEw1a/nWUHdl9/9tcul7qakahqrNXmwSchGduT4YCkYYmIA7NLi7UwByTSCFj
-         /6Kx4KCHaI+cuM/fUoTigWfybnuddjzIYpTd+6qiCUQj9lZKZlgzxNsFSjAKO4RXV5BC
-         piepNwx2q6xmJdM99tGOp+07j7pdllNNnBsmGZuzDgSrK//oUWmXMIP2mInSOfK9bLf/
-         G3eXngQlFPVKfxch5AkBIsfYHTOAi2wBXfDAbPCAYWHpIGu6+F7q2K/cESxTRykpNe3O
-         Ejkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
-        fh=c9zRjddif4uzV10rU+9vz9lUYI5CHfR5Fc+Vi2+29gc=;
-        b=RJrF9DIUwhxLt1gf+9AmBdBzuM246WvywAkYoPykP3BrcVOaovhAc3ZlYlLTYnf6bz
-         FNkv338/9PWxSltFhMpnMq9SsLJnFEI+3pAVMvrsqnf3EJPTKI0zSOGqTexF/9paha26
-         FxsIap0XkVEhQ/YiDZSIiqpiXCX44j300QBsaG4ufCvqOWaxbtMta8SHE8Pdb5JRhWeR
-         3SaKGcL79r1sxzHZJOC7oWvusEehC3PhifecpOvWo6P6NIeA+/+3fZBQvnyKXRsECkVQ
-         YRtoJvkGDWm/VzSEspRBIh93/dqAiPKbqKA5rKgGhPkf2mK2DjWGGVGynZ7rT/YWG3rx
-         Jj4A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nuro.ai; s=google; t=1792427588; x=1793032388; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
-        b=OlhatWBIrlneazpJe45AUJK8fRSXaijrg68jsh14HgKGtKFrLuMyNokLH8Zq6MDaxU
-         BWB5uMByukI2gjofWK57wO2uCs+5My8D8Be5fwqIO47oJvbg8yKQDPTDFr3ax41u1fA9
-         dg+OVBjuhmQIkXr7KLM4zUz+qP1TWICkljX23mqSd1lHESV5slmacMQp+4Kxl+K2FYHr
-         6upqUtRDcXuKK5xivwOkak3/e/w8W2dP7vynkAk+3RIraEi2dan6QsBHbSv/uQSbe+XY
-         SsfB7XgSAkWR1kOXfqxzz/Aa0UFb0d0FsSVOoAEQv5RbblIeQiD8V8PpTABLxFNXwkbS
-         4rDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792427588; x=1793032388;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
-        b=J7YzRQTyQPishKNsCYxq0fFaM+WHYOWLSQOYchyfrr6koxkqd6CPh9uo50TTZGXb1f
-         S3iJbeQlEqfMytJbe+C3FACT8S9PoVuDJRDHeu7ZSSWa1hv9liio2LHSPyzwgt2XdthP
-         SDxTNSudpN4nZTfzoCu72nW0RTKrqoePgv23zssW2BwxSYFtyDwYnlQE9YMEPg6UE4bj
-         lbVRi/jeLshKq83miRUPRmsNJqw5tT4kr7T9Ni8nXX9kuIPqW+UyVJOFc2LPfC1W+TJk
-         7zQynh9raamo9HbIIjix0PgYUnq7ERo3PHXUbjgCecJRCF8mypDAiFydwb0MZUXRtJfm
-         BwiQ==
-X-Gm-Message-State: AFq9FYJ35ioIWUw+LTIKEHklX53EEN6ozW2JQ4o8bi4yolKILK2nG2t2
-	fRJuC14DWdXmYbPw2hKO3T8VklSxC+0LL2qPK8S9Map6LQMq3uWThJzu8k5yTrgAvJhZsBHw5/C
-	IRPgASnnbDkp2COG/4Emxgr87l2hAB73MS/P0r3kXcyvL0q52zJrUKx82hg==
-X-Gm-Gg: AYBFou2qSEUStb1iOcjhUEz2J6wDtDU2VmelfAV99HFncEAEk1fXf7TklfwtMbzlup0
-	VTyih/gLJR67rujoXgWUsLignVY4ixytx2oBlsr5UroSjCLdIWNMIaHdQRB3FR9haFaiinQ9Jyb
-	1FaizU8EZjEyyjK9ufa8PI/7s5/Lq68ud6ZELrVPcklnL9AxCXfWW0naFTbj09tSACyOt/hyJUW
-	POUaZrAzxzgeQ/01WBv7d8znCuxNhADV07fRpoEre6LkfPi9sFNf4NZEF1hQrSf2WKUUTg0gw9k
-	0W7kQOGiVmYmCXOXwcO+6niDLWhdGpsfPJecFv1TOEHyDXH7E2cL+Cc=
-X-Received: by 2002:a05:7300:f78d:b0:353:ba38:789d with SMTP id
- 5a478bee46e88-3619b4101c6mr10300680eec.0.1792427587934; Mon, 19 Oct 2026
- 09:33:07 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A1S2HDZI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8AA1F000C4;
+	Mon, 19 Oct 2026 16:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792427647;
+	bh=tdknUqhDMJzziC2gSM3SmcPdwavdTPIJrKZx0MpO4e4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=A1S2HDZIZFpMQpmRaIil+CsdqX9Ho2Rfbt4pUEf57A2SUNPUXpwUawOzp2LZ6xcGy
+	 yizrpWuTjKaQ2B22OyNAZb1/bxm1tLT+nv59nF4SzJc305MgMaR+GgrOzzvz4gXqD7
+	 55sTjBgiaWrjuLOwitIUIilor0KaDmCeGZL68LdZhUVeaEXFX12p4zfG9f+VexeL9R
+	 8ZYNE53iJmU+rOvEj9PXOzbjXUvoLQkfciUBhSiIb52YRXYOOKOrPjZbXrTrCuIZP5
+	 NJ16+FvU6wPXtIGliWTc1a+mPRN1OimxLrmiNRjTI4DL+ibUvsPHX8kVxIFzG4F2AS
+	 aViku8Yk/4RtA==
+Subject: Re: [PATCH net-next v1 2/5] net: lan743x: start phylink last and stop
+ it first
+From: netdev-bot+sashiko@kernel.org
+To: cbabroski@nvidia.com
+Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, richardcochran@gmail.com, linux@armlinux.org.uk,
+ maxime.chevallier@bootlin.com, Raju.Lakkaraju@microchip.com,
+ davthompson@nvidia.com
+Date: Mon, 19 Oct 2026 16:34:05 +0000
+Message-ID: <179242764576.3135.4479437969199107753@kernel.org>
+In-Reply-To: =?utf-8?q?=3C84c495b24206953fb799d4070c4d99ff27efb829=2E1792008?=
+ =?utf-8?q?404=2Egit=2Ecbabroski=40nvidia=2Ecom=3E?=
+References: =?utf-8?q?=3C84c495b24206953fb799d4070c4d99ff27efb829=2E17920084?=
+ =?utf-8?q?04=2Egit=2Ecbabroski=40nvidia=2Ecom=3E?=
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,205 +68,231 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015162209.485940-1-jkain@nuro.ai> <atMVsAmXKl7D-Fxh@google.com>
-In-Reply-To: <atMVsAmXKl7D-Fxh@google.com>
-From: Joseph Kain <jkain@nuro.ai>
-Date: Mon, 19 Oct 2026 09:32:56 -0700
-X-Gm-Features: AclHuK96ao3-gcFPCTsoNVUIQop3QovF9TTmqCGWlYJyX7oEZUJ0dp91AGzMnc0
-Message-ID: <CA+Y90Pgk3Yd_+dQrTj42+c_cmi9D__Nfg=Xq4OZXRxpm9Eq68g@mail.gmail.com>
-Subject: Re: [PATCH net v4] net: do not let defer_count outlive an empty defer_list
-To: kuniyu@google.com
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	kerneljasonxing@gmail.com, bigeasy@linutronix.de, clrkwllms@kernel.org, 
-	rostedt@goodmis.org, linux-rt-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 16, 2026 at 11:51=E2=80=AFPM <kuniyu@google.com> wrote:
->
-> On Thu, 15 Oct 2026 09:22:09 -0700, Joseph Kain wrote:
-> > __skb_defer_free_flush() can leave defer_count at or above skb_defer_ma=
-x
-> > with an empty defer_list. That state is absorbing: every producer then
-> > takes the nodefer path without queueing, so the list never refills.
-> > Deferred freeing stays off for that (cpu, node) until reboot, and
-> > cross-CPU frees fall back to the page allocator, which is the contentio=
-n
-> > deferral exists to avoid.
-> >
-> > skb_attempt_defer_free() increments before testing the limit and does n=
-ot
-> > undo the increment when it rejects, so a rejected free leaves the count=
-er
-> > raised with nothing queued.
-> >
-> > Nothing brings it back down. The reject path returns before
-> > kick_defer_list_purge(), so once the counter is stuck no producer
-> > schedules a flush on the owner CPU. A CPU that never raises NET_RX itse=
-lf
-> > -- an application CPU doing TX while NIC IRQs are pinned elsewhere and
-> > RPS is off -- then never runs the flush at all, so clearing the counter
-> > inside the flush cannot help it either. proc_do_skb_defer_max() neither
-> > resets the counters nor schedules a flush when the limit changes.
-> >
-> > It is reachable with no race at all:
-> >
-> >   sysctl -w net.core.skb_defer_max=3D1    # frees increment, then rejec=
-t
-> >   sysctl -w net.core.skb_defer_max=3D128  # does not recover
-> >
-> > skb_defer_max has .extra1 =3D SYSCTL_ZERO and no .extra2, so 1 is setta=
-ble.
-> > From v7.1 on, 0 is safe because proc_do_skb_defer_max() flips
-> > skb_defer_disable_key and the producer returns before incrementing. On
-> > 6.18 through 7.0, which carry the llist conversion but not commit
-> > 08dc30de1a40 ("net: add skb_defer_disable_key static key"), setting 0 a=
-nd
-> > restoring the previous value strands the counter the same way -- and 0 =
-is
-> > the documented way to turn the feature off.
-> >
-> > Test the limit before incrementing, so the counter is only ever raised =
-by
-> > a producer that goes on to queue. It then cannot outlive the skbs it
-> > counts, and the absorbing state is unreachable without depending on a
-> > flush ever running on the owner CPU.
->
-> I think the state is still reachable when reducing the knob
-> if the new value >> 1 is smaller than the current defer_count
-> due to the kick condition (=3D=3D).  This can be fixed by bumping
-> the knob to defer_count * 2 though.
->
->
-> >
-> > This makes the limit advisory. The test no longer reserves the slot it
-> > checks, and the recvmsg callers run in preemptible context, so the
-> > overshoot is bounded by the number of producers in flight rather than b=
-y
-> > skb_defer_max; the post-increment test reserved the slot and bounded th=
-e
-> > queue exactly. The counter is already approximate -- the flush zeroes i=
-t
-> > without regard for producers in flight -- and the next flush erases the
-> > overshoot, where the latch it replaces never recovered at all.
-> >
-> > Undoing the increment on the reject path instead would be wrong: a flus=
-h
-> > that zeroes the counter between a producer's increment and its undo
-> > leaves the counter negative, and the producer's local is an unsigned
-> > long, so every later test reads it as enormous and rejects. That is the
-> > same dead end, reached more easily.
-> >
-> > While here, drain before clearing in the flush. A producer that queues
-> > between the clear and the drain currently has its skb drained but its
-> > increment kept, which over-counts and costs deferral until the next
-> > flush. Draining first matches the ordering __dev_xmit_skb() already use=
-s
-> > for the qdisc defer_list.
-> >
-> > Found by manual code inspection, LLM-assisted, while backporting the
-> > llist conversion to 6.1 after hitting the sd->defer_lock contention it
-> > removes. The latch itself was not hit in production; it was reproduced =
-by
-> > lowering net.core.skb_defer_max.
-> >
-> > Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
-> > Assisted-by: Claude:claude-opus-5
-> > Signed-off-by: Joseph Kain <jkain@nuro.ai>
-> > ---
-> > v4:
-> >  - v3's "undo the increment on reject" was wrong: a flush that zeroes t=
-he
-> >    counter between a producer's increment and its undo leaves the count=
-er
-> >    negative, and the producer's local is an unsigned long, so every lat=
-er
-> >    test reads it as enormous and rejects forever. Test the limit before
-> >    incrementing instead, so there is no decrement to underflow
-> >    (netdev-bot sashiko).
-> >
-> > Note this changes the effective limit from skb_defer_max - 1 to
-> > skb_defer_max, because the test now runs before the increment rather th=
-an
-> > after it. That matches what Documentation/admin-guide/sysctl/net.rst
-> > describes. It also means the half-capacity kick can now fire at
-> > skb_defer_max =3D 1, which commit c09b0cd2cc6c ("net: avoid strange
-> > behavior with skb_defer_max =3D=3D 1") set out to make possible.
-> >
-> > Built for x86_64 and arm64, with and without CONFIG_PREEMPT_RT. On
-> > v7.3-rc6 with skb_defer_max=3D1 and a cross-CPU TCP load, defer_count
-> > reached 1918118 unpatched and did not recover when the default was
-> > restored; with this patch it stays within the limit.
-> >
-> > v3: https://lore.kernel.org/all/20261013205416.3417296-1-jkain@nuro.ai/
-> > v2: https://lore.kernel.org/all/20261008220256.1844072-1-jkain@nuro.ai/
-> > v1: https://lore.kernel.org/all/20261007180056.1394868-1-jkain@nuro.ai/
-> >  net/core/dev.c    | 5 ++++-
-> >  net/core/skbuff.c | 9 ++++++---
-> >  2 files changed, 10 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index 18dc88990510..60d86bc21632 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -6940,8 +6940,11 @@ static void __skb_defer_free_flush(struct skb_de=
-fer_node *sdn, int budget)
-> >
-> >       if (llist_empty(&sdn->defer_list))
-> >               return;
-> > -     atomic_long_set(&sdn->defer_count, 0);
-> >       free_list =3D llist_del_all(&sdn->defer_list);
-> > +     /* Racy on purpose, as in __dev_xmit_skb(): a producer landing be=
-tween
-> > +      * the del_all and this store stays queued but uncounted.
-> > +      */
-> > +     atomic_long_set(&sdn->defer_count, 0);
-> >
-> >       llist_for_each_entry_safe(skb, next, free_list, ll_node) {
-> >               prefetch(next);
-> > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> > index 4aea06d5167d..25f82b7dcf01 100644
-> > --- a/net/core/skbuff.c
-> > +++ b/net/core/skbuff.c
-> > @@ -7386,11 +7386,14 @@ nodefer:      kfree_skb_napi_cache(skb);
-> >       sdn =3D per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + cpu_to_no=
-de(my_cpu);
-> >
-> >       defer_max =3D READ_ONCE(net_hotdata.sysctl_skb_defer_max);
-> > -     defer_count =3D atomic_long_inc_return(&sdn->defer_count);
-> > -
-> > -     if (defer_count >=3D defer_max)
-> > +     /* Test before incrementing: the reject path returns below withou=
-t
-> > +      * reaching kick_defer_list_purge(), so a kept increment never fl=
-ushes.
-> > +      */
-> > +     if (atomic_long_read(&sdn->defer_count) >=3D defer_max)
-> >               goto nodefer;
-> >
-> > +     defer_count =3D atomic_long_inc_return(&sdn->defer_count);
-> > +
->
-> IIUC, atomic_long_read() before atomic_long_inc_return() needs
-> two-step coherency transaction, and we could avoid that and
-> the corner case above by fixing the off-by-one and calling
-> kick_defer_list_purge() in the slow path:
->
-> if (unlikely(defer_count > defer_max)) {
->     if (!llist_empty(&sdn->defer_list))
->         kick_defer_list_purge(cpu);
->     goto nodefer;
-> }
->
->
-> >       llist_add(&skb->ll_node, &sdn->defer_list);
-> >
-> >       if (unlikely(!cpu_online(cpu) || my_cpu !=3D raw_smp_processor_id=
-())) {
-> > --
-> > 2.55.0
-> >
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Thanks kuniyu, I'll follow up on these in v6.
+Critical: 0 · High: 2 (2) · Medium: 0 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] Moving phylink_stop() to the start of lan743x_netdev_close()
+  relies on mac_link_down() (lan743x_phylink_mac_link_down ->…
+- [High] On the suspend path, lan743x_pcidev_shutdown() calls
+  netif_device_detach() (lockless netif_tx_stop_all_queues) and then…
+
+Pre-existing issues:
+- [High] On LAN7431/PCI11x1x boards with no DT node and no PHY on the
+  MDIO bus, every open after the first one fails.
+- [High] lan743x_pm_resume() ignores the return value of
+  lan743x_netdev_open() (line 4063) and always calls…
+
+--
+
+net: lan743x: start phylink last and stop it first
+
+This patch moves lan743x_phylink_connect() to the end of
+lan743x_netdev_open() and lan743x_phylink_disconnect() to the start of
+lan743x_netdev_close(). The goal is that mac_link_up() can no longer wake
+the TX queues while the rings are missing. It also changes the open error
+path, which used to leave phylink started and the PHY attached when
+lan743x_ptp_open() failed.
+
+> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+> index 9e1276cf313c8..583f631df701b 100644
+> --- a/drivers/net/ethernet/microchip/lan743x_main.c
+> +++ b/drivers/net/ethernet/microchip/lan743x_main.c
+> @@ -3334,6 +3334,8 @@ static int lan743x_netdev_close(struct net_device *netdev)
+>  	struct lan743x_adapter *adapter = netdev_priv(netdev);
+>  	int index;
+>  
+> +	lan743x_phylink_disconnect(adapter);
+> +
+>  	for (index = 0; index < adapter->used_tx_channels; index++)
+>  		lan743x_tx_close(&adapter->tx[index]);
+
+[Severity: High]
+Can a TX queue get woken again after this point and stay awake while the
+rings are freed?
+
+With phylink_stop() moved here, the only thing keeping the queues stopped
+during teardown is the netif_tx_stop_all_queues() call in
+lan743x_phylink_mac_link_down(). TX NAPI stays live until napi_disable()
+in lan743x_tx_close(), and lan743x_tx_napi_poll() wakes the queue whenever
+it reclaims descriptors:
+
+lan743x_tx_napi_poll() {
+    ...
+		if (tx->rqd_descriptors) {
+			if (tx->rqd_descriptors <=
+			    lan743x_tx_get_avail_desc(tx)) {
+				tx->rqd_descriptors = 0;
+				netif_tx_wake_queue(txq);
+			}
+		} else {
+			netif_tx_wake_queue(txq);
+		}
+    ...
+}
+
+On the suspend path the qdisc is still attached:
+
+lan743x_pm_suspend()
+  lan743x_pcidev_shutdown()
+    netif_device_detach()
+    lan743x_netdev_close()
+      lan743x_phylink_disconnect()   /* queues stopped */
+      <TX completion on a channel not yet closed>
+        lan743x_tx_napi_poll()
+          netif_tx_wake_queue()
+      lan743x_tx_close()             /* ring freed */
+
+Could ndo_start_xmit() then reach lan743x_tx_xmit_frame() on the freed
+ring?
+
+Before this patch, the phylink_stop() at the end of close stopped the
+queues again after the rings were gone (when the link was up). After this
+patch, nothing stops a re-woken queue for the rest of suspend.
+
+This looks to be fixed later in the series by "net: lan743x: quiesce TX
+before freeing the rings". That commit adds a netif_device_present() check
+before the NAPI wake, and adds synchronize_net() plus netif_tx_disable()
+after lan743x_phylink_disconnect() in lan743x_netdev_close().
+
+[Severity: High]
+Can a transmit that is already in flight also race with the ring
+teardown here?
+
+netif_tx_stop_all_queues() in lan743x_phylink_mac_link_down() only sets
+DRV_XOFF, just like netif_device_detach(). Neither one waits for an
+ndo_start_xmit() that is already running on another CPU under the txq lock
+and tx->ring_lock.
+
+lan743x_tx_close()->lan743x_tx_ring_cleanup() then frees head_cpu_ptr,
+buffer_info and ring_cpu_ptr without taking tx->ring_lock or the txq lock:
+
+CPU1                                  CPU0
+sch_direct_xmit()                     lan743x_pcidev_shutdown()
+  lan743x_netdev_xmit_frame()           lan743x_netdev_close()
+    lan743x_tx_xmit_frame()               lan743x_tx_close()
+      /* uses tx->ring_cpu_ptr */           lan743x_tx_ring_cleanup()
+
+The commit message says that on the suspend path ndo_start_xmit() can run
+on a ring that "has just been freed", but the patch only removes the
+link-up wake source. Is the in-flight case meant to be covered here too?
+
+This also appears to be fixed later in the series by "net: lan743x:
+quiesce TX before freeing the rings", which adds synchronize_net() and
+netif_tx_disable() right after lan743x_phylink_disconnect().
+netif_tx_disable() takes each txq lock, so it waits for in-flight
+transmits.
+
+[ ... ]
+
+> @@ -3387,6 +3383,10 @@ static int lan743x_netdev_open(struct net_device *netdev)
+>  			goto close_tx;
+>  	}
+>  
+> +	ret = lan743x_phylink_connect(adapter);
+> +	if (ret)
+> +		goto close_tx;
+> +
+
+[Severity: High]
+This is a pre-existing issue, but does every open after the first one
+fail on LAN7431/PCI11x1x boards that have no DT node and no PHY on the
+MDIO bus?
+
+In that case lan743x_phylink_connect() takes the fallback branch and calls
+phylink_set_fixed_link() on every open:
+
+lan743x_phylink_connect() {
+    ...
+			ret = phylink_set_fixed_link(adapter->phylink, &state);
+			if (ret) {
+				netdev_err(dev, "Could not set fixed link\n");
+				return ret;
+			}
+    ...
+}
+
+phylink_set_fixed_link() only succeeds while the mode is still
+MLO_AN_PHY, and it changes the mode for good when it succeeds:
+
+phylink_set_fixed_link() {
+	if (pl->cfg_link_an_mode != MLO_AN_PHY || !state ||
+	    !test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state))
+		return -EINVAL;
+    ...
+	pl->cfg_link_an_mode = MLO_AN_FIXED;
+    ...
+}
+
+lan743x_phylink_disconnect() only calls phylink_stop() and
+phylink_disconnect_phy(), and phylink_create() only runs at probe. Nothing
+resets cfg_link_an_mode.
+
+So the second ndo_open after ifdown/ifup, and every
+lan743x_pm_resume()->lan743x_netdev_open(), would fail with "Could not set
+fixed link" (-EINVAL).
+
+Boards with a DT node seem fine, because phylink_fwnode_phy_connect()
+returns 0 in fixed mode. The commit message covers a different "every
+later open then fails" case (the PHY left attached), not this one.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but what happens on resume
+when this goto close_tx is taken?
+
+lan743x_pm_resume() ignores the return value and attaches the device
+anyway:
+
+lan743x_pm_resume() {
+    ...
+	if (netif_running(netdev))
+		lan743x_netdev_open(netdev);
+
+	netif_device_attach(netdev);
+	rtnl_unlock();
+    ...
+}
+
+The device is still running, so netif_device_attach() calls
+netif_tx_wake_all_queues(). That leaves the interface IFF_UP with awake
+queues and no rings. Every TX/RX NAPI is disabled and deleted, with
+NAPIF_STATE_SCHED and NPSVC still set.
+
+A later ifdown, a second suspend, or a reboot through
+lan743x_pcidev_shutdown() then runs:
+
+lan743x_netdev_close()
+  lan743x_tx_close()
+    napi_disable()
+      napi_disable_locked()
+
+which waits on:
+
+		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+			usleep_range(20, 200);
+			val = READ_ONCE(n->state);
+		}
+
+__netif_napi_del_locked() does not clear SCHED, so can this loop run
+forever with rtnl held?
+
+A transmit path that bypasses the qdisc and does not check carrier, such
+as netpoll, could also reach lan743x_tx_xmit_frame() while ring_cpu_ptr
+and buffer_info are NULL.
+
+Together with the fixed-link -EINVAL above, every resume on fixed-link
+boards without a DT node would hit this. It still seems to be present at
+the end of the series. The lan743x_netdev_stop() wrapper added later only
+skips close when !netif_device_present(), and resume has already
+re-attached the device by then.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1792008404.git.cbabroski%40nvidia.com
