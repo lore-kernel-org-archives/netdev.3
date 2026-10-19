@@ -1,60 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792459944;
-	b=h0AY5TcxGdLZXZsXkWTyvpH/4/Ba65nZadafqomOTiXYhbBXjiB67+iOUm3wafDix4PL
-	 7Qf0tdpfNJQrOw7E0v/qO6G6nlW8MJKtyOaUwoYRzJwL/DR7k4R64wwy8vjsk3JmVhAC5
-	 bR3yLNnj98aEhGZvSeMjrPhZywZ7wd79K24HEEUHAZHFVlle0PioARWImlbT6JH5+/Op/
-	 GPRvCqeWIWVA0dG14Xj5ybjYJo7B4D+/a6UoAHqOpRHQhYI9qrRjsO8oN+fyzXlIsMkhb
-	 0uhp1tsa/9mitCqs3YJGkww5Q04Vns5B9bmOUO9Wnm+FSVWQmW3jmE3VEeouBfyfsWw==
+	t=1792460285;
+	b=QPWcboIUCwsWuo77p1DvKL9S4dpqZYjK3sib3tj1/XzXC6mRS6ydjESwWBo3PFQM0Nx8
+	 p4MwuH5AqafoH5/x5ia6KvF3MFWswft5UDV82c/Y7ZPfn9FxPkvNGlabOWQsfiGniEP6U
+	 LpgqUnU4BWCDHJTR78DA4mBDZboQSGHw353qN9KrJGXlOUGK+/Kz2SfL4FJ6jiBdx9VIw
+	 DTONNUkR9c4EF8wfs0blP8Ybd5z3gPgvf8asboAO/LwI2TiloKMwnZAfCPHZqK7DYi4PW
+	 O6GCcQtZwNsDu0PXwA7Pia0OCXSh8RTvJgwikLJLDV+rHmfTEA+KgIUiUCvR1aTm6qQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792459944;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=RHHZce2bisqZNUvfZX9Hgcl7uv7oyGBAYDbe5ybUc7g=;
-	b=l9+7a2ceEPug6ofE2ZIkInb7iv2x3durGq3z4GkLSAwarLDCOo7+L+XcQ7DhCN8fgdVM
-	 8Qiu+F5ptXKYIsNkAjV0HRELhEGMSUN2jpNRX00MpB+NwiPGM31T0dZn5g4+Zxpq7x0PW
-	 xPc73TSiV/NuHfMk8+D52vW4CA2SkFhcRcxu5gFErZaXoaG4nyLDD0HYtTR1QVHl6l4BH
-	 SSw13QReMk/9dSg7w6H++OmmnBilB7To0r5w67/FWMjzAjXIy8f+dM+WN6sfIvotlz4ah
-	 Q72gLBgddlNoKZXQFl0evQhHteotWiOsRBt1Ywi3QdACSHq0Aiuu9olGc0uphlzC4XA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792460285;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=PbjFjYksln6X5VCuok/GYUEp4Jt2bFAm9SetP90rGcM=;
+	b=3yM1FUTxHf2jQ8exWJqIo0VVpiLZ02N3lYNzcxiNISTnwOKnJmUlP/STN/1h3zYttreO
+	 6uhGJXLjWeRwBxjylaT1NCx9i8Ex8MnTBiySKZAQGXI/ySJplgowKYKnn5oQ1tuBqiq0B
+	 QZ1II9lhRV7KhMJGk/amJ5avb0V6Ut0blK7dRBCJWOJ9mAwortDwFZCUQZ40/JR5WwoLQ
+	 dZQzyW29VtC+nIWsqA6KdW7cL8DkNh4qc2X/t2+UNTTg3oMvT1SvC+rOcoP/P7efcnBGJ
+	 QrFLPti5vaKCDfZcOzt7tW7RGs1AGq/xbICAHHT8QYUoKK90e130GrWEjiPPBeGm4jw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m9fyw9BW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=nabladev.com;
+	spf=pass smtp.mailfrom=nabladev.com;
+	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=gkhjrsVg;
+	arc=none smtp.remote-ip=178.251.229.89
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EA8606A319;
-	Tue, 20 Oct 2026 01:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECFF606A319;
+	Tue, 20 Oct 2026 01:38:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4ECFF606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m9fyw9BW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4FD1F000C4;
-	Tue, 20 Oct 2026 01:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792459944;
-	bh=RHHZce2bisqZNUvfZX9Hgcl7uv7oyGBAYDbe5ybUc7g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=m9fyw9BWEA2jRonWWI+6v7nTpS04pSAddzT88+LEFIeWb1PsUprhO9zMQPc1zK5WD
-	 SLSMsRI93ZzBBzkgyACFkTLREk9zB4pAynyKUZHGnAEC3XmTexo84HVMnzdxnVEHGD
-	 EuKtbZtUeN9N1VXkAhGtQ05T+JMTCPGXLqEziTp1aMO4IAyeuRES27cIlcC18cgRop
-	 Or9cL5mJel0UWcFbcNLQcGi0CHLDkuasEC0Hd5J/NPO0uBaLM+dA7zh08cJGwc3BJ/
-	 kHjmU4mnnjF9nbiFflwky6Ch4sDqy6Y5cG3tv12HZHAtx4ngFIHvtF0JTn1m0WnJ9/
-	 mGP5uyJ7A0/mw==
-Date: Mon, 19 Oct 2026 18:32:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Cc: hexlabsecurity@proton.me, Paolo Abeni <pabeni@redhat.com>, Thorsten
- Winkler <twinkler@linux.ibm.com>, Eric Dumazet <edumazet@kernel.org>,
- Alexandra Winter <wintera@linux.ibm.com>, "David S. Miller"
- <davem@davemloft.net>, Nagamani PV <nagamani@linux.ibm.com>, Hidayath Khan
- <hidayath@linux.ibm.com>, netdev@vger.kernel.org, Simon Horman
- <horms@kernel.org>, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net/iucv: serialize HiperSockets receive with
- the socket lock
-Message-ID: <20261019183223.49a59d6f@kernel.org>
-In-Reply-To: <20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me>
-References: <20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me>
+	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=gkhjrsVg
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E71FA108825;
+	Tue, 20 Oct 2026 03:37:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1792460281;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=PbjFjYksln6X5VCuok/GYUEp4Jt2bFAm9SetP90rGcM=;
+	b=gkhjrsVg8YdzKJiWw+oBJJoGOWMSaX2plJh2ECGP6pobGez/hDtH0UV4Rc2GlxMKP/fXbF
+	mFRHOvJDQ5/kcprfkbErcvoAO2cidfW1VgzDUdVmsiwoKZq51M2pIyMSiB9+mFd5e2Y+XE
+	zIrWXd21uoO8qiwXwxlMoS1cEEkqb5V7RipLdtD1smpxlx42HVcI2xhjn7frxAydftEr9K
+	BRNUqGr0Hyai2/OODFby0KhwLg52WWQJ0Ndu4cZfDaERlK07618LcHO8wB2hrcFgrUvMa/
+	vQkCTJEDpb9ssDuGPZeYe/7oi7OrMmtFkutPvii2Ku6bc20iYPHtQno+K7cwGw==
+Message-ID: <fe920b05-6d89-4dc1-83d3-0664fbc2e00c@nabladev.com>
+Date: Mon, 19 Oct 2026 18:10:18 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,13 +56,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
+ DT
+To: Wei Fang <wei.fang@nxp.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
+ Eric Dumazet <edumazet@kernel.org>, Frank Li <frank.li@nxp.com>,
+ Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20261016193344.115518-1-marex@nabladev.com>
+ <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
+ <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
+ <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
+ <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, 11 Oct 2026 14:08:17 -0500 Bryam Vargas via B4 Relay wrote:
-> +static int afiucv_hs_dispatch(struct sock *sk, struct sk_buff *skb);
+On 10/19/26 4:59 AM, Wei Fang wrote:
 
-Please reorder the code to avoid forward decl, please respond to AI
-reviewer's feedback. Please trim the slop in the commit msg and notes.
--- 
-pw-bot: cr
+Hello Wei,
+
+>>>>> +int enetc_mdio_update_mdc_div(struct mii_bus *bus) {
+>>>>> +	struct enetc_mdio_priv *mdio_priv = bus->priv;
+>>>>> +	struct device *dev = bus->parent;
+>>>>> +	struct clk *enet_clk;
+>>>>> +	u32 div, mdc_freq;
+>>>>> +
+>>>>> +	if (device_property_read_u32(dev, "clock-frequency", &mdc_freq))
+>>>>> +		return 0;
+>>>>> +
+>>>>> +	enet_clk = devm_clk_get(dev, NULL);
+>>>>> +	if (IS_ERR(enet_clk))
+>>>>> +		return dev_err_probe(dev, PTR_ERR(enet_clk),
+>>>>> +				     "Input clock unknown, not changing MDC
+>>>> frequency\n");
+>>>>
+>>>> binding said clock is optional. If return failure here, it will block
+>>>> existing dts, which have not clock property.
+>>>>
+>>>
+>>> For EMDIO device, the clocks property is not added to
+>>> fsl,enetc-mdio.yaml, I suppose this property should be added to the
+>>> dt-binding doc if the clock is really needed here.
+>>
+>> Isn't this what 1/2 in this series does ? (maybe I misunderstood this
+>> paragraph)
+> 
+> Sorry, my email filtered out the 1/2 patch, so I missed it.
+
+No worries.
+
+>>> For ENETC device, we already have a 'ref' clock in the enetc node, so
+>>> devm_clk_get(dev, NULL) may get the 'ref' clock rather than the system
+>>> clock of NETC.
+>> Shouldn't the clock be described in the MDIO DT node ?
+> 
+> The enetc_mdio_read_* and enetc_mdio_write_* interfaces are not only
+> used by EMDIO devices, the ENETCs and NETC switches also use them.
+> NETC switches and ENETCs can access external PHYs or internal PCS/Serdes
+> through their own port MDIO registers, instead of through EMDIO devices.
+> 
+> Your first patch only modified the EMDIO binding-doc, not the ENETC and
+> switch binding-doc.
+So I need to patch also 
+Documentation/devicetree/bindings/net/dsa/mscc,ocelot.yaml ? Any other 
+binding document ?
+
+Thank you for your help !
