@@ -1,106 +1,111 @@
-Received: from mx.prosyst.ru (m2.prosoftsystems.ru [46.48.77.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C614A4FD7A6;
-	Mon, 19 Oct 2026 13:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.48.77.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840B24EA38C
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792417390; cv=none; b=Rme/QPoFfkynbHVq3duqs8WSBgnVKQ/JaStPat4gAD/BvQEVCsNG7BRJnnIXEBlwTeEG+LUySlXidlNJ+rfXBOYOQdSsj+HyyP2eHpuKaybvmq49GdFEfeihUa/5M0pOOaJf0GuKXtfa4WtDKMfvakZ7HFR0qHWr4fceQ4VfeJk=
+	t=1792417576; cv=none; b=Qv6nuqkosbRpkHEmv04r4YHEo0MOr+/KjFZgRqlbGziQqa0mauBgX1Cc8eONpblL/6PCQerqBDFhhTtY517a6vH8NLYz1XRbM8avHY4Cxz33msXwB6g0LzEIh7o7Vx77RJ0B30I4tqX9DQCubo4QvVgM6sqEZpj4oQJcWPQZ8a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792417390; c=relaxed/simple;
-	bh=w2I6dUNX+lVC5tw05EezKVTbmi0AzEe6g6msg8ES0lw=;
-	h=Content-Type:From:To:CC:Subject:Date:Message-ID:References:
-	 In-Reply-To:MIME-Version; b=f2uYyoPsC/t7aEWRXOAUkJkThEf0dclUHEo8BfW6SFW0SvEW1aSXyEdtnV57x2ZGZ1Ate+ZtIxt/mtbQQz5O81lf1iMAJdLuBvrmuIwNMSj9ThYE+KIupfT7e5obm2hxTlbAyLBzjfVkMT7DaPFtonOTE9S+B9HJZ5SS+3zn6o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru; spf=pass smtp.mailfrom=prosoftsystems.ru; dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b=OVPg26GI; arc=none smtp.client-ip=46.48.77.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prosoftsystems.ru
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b="OVPg26GI"
-Content-Language: ru-RU
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-DKIM-Signature: v=1; a=rsa-sha256; d=prosoftsystems.ru; s=ps;
-	c=relaxed/relaxed; t=1792417393; h=from:to:date:message-id:subject;
-	bh=w2I6dUNX+lVC5tw05EezKVTbmi0AzEe6g6msg8ES0lw=;
-	b=OVPg26GIUBfKzK1bxQh1ClLgXLEFSWkLw/KWJHu+DZJsTEIMZz5U8e9t7G3eDAlrjf1nCP5osrB
-	MZomLmMMiZs1o9HECstmlDtBvu1Bd0sqZJSz5t0Wce9uL6JosDjAlSf9in7iDAKMgWfBFJk3Y1uqo
-	S88JE3K1yxRGdhGV19ne+YJJLbbOeK4K4ptCxjdZV9c7QkQGiPIN/Oo0DqGBxOHel/CvEXTm7lQA+
-	7e61TeakJgoNRkvoFbv/nuJ+tJtBFWAjgVe2erOTj3HMrJqLYm6gf97o4Z3TBJG7tGvMFqkD0JkYR
-	rz3C4mGFvbC4vA+0AdTJexaua4n0PdqiGCKw==
-Received: from ECHO-3.prosoft.ural.ru (172.25.100.229) by mx.prosoftsystems.ru
- (172.21.240.33) with Microsoft SMTP Server (TLS) id 15.1.396.30; Mon, 19 Oct
- 2026 18:43:12 +0500
-Received: from echo-2.prosoft.ural.ru (172.21.245.22) by
- ECHO-3.prosoft.ural.ru (172.25.100.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.39; Mon, 19 Oct 2026 18:43:03 +0500
-Received: from echo-2.prosoft.ural.ru ([::1]) by echo-2.prosoft.ural.ru
- ([fe80::c1a2:90f7:8820:c669%17]) with mapi id 15.02.1748.039; Mon, 19 Oct
- 2026 18:43:03 +0500
-From: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
- =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
- =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Michael
- Grzeschik" <mgr@kernel.org>, Jijie Shao <shaojijie@huawei.com>, "Aleksandr
- Loktionov" <aleksandr.loktionov@intel.com>, Denis Benato
-	<benato.denis96@gmail.com>,
-	=?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
-	<u.kleine-koenig@baylibre.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH net v3 3/3] net: fealnx: bound card_idx to prevent
- out-of-bounds access
-Thread-Topic: [PATCH net v3 3/3] net: fealnx: bound card_idx to prevent
- out-of-bounds access
-Thread-Index: AQHdX8/D1qEnsPavCki1JbM1cebLZA==
-Date: Mon, 19 Oct 2026 13:43:03 +0000
-Message-ID: <20261019134136.104932-4-r.zhambakiev@prosoftsystems.ru>
-References: <20261019134136.104932-1-r.zhambakiev@prosoftsystems.ru>
-In-Reply-To: <20261019134136.104932-1-r.zhambakiev@prosoftsystems.ru>
-Accept-Language: ru-RU, en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
+	s=arc-20240116; t=1792417576; c=relaxed/simple;
+	bh=HNlOMRgr05iS9zkT34hfoQsiQYjyRLYbLhNxi+r3Phs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dkQgFDE8ektk+BmyxyOAntvqtNAVdDVBJ2Drhql4AEsEWqEmBTDAGs7m2vajxL6kqoB5vZyTkWJ3IoVn3Jt5iIcg0Ly4G5hS0rrOM19UpJ6oHCknQFlj0z3F3GHUdiUtdCvbmMyaU0t23nyyWYTU+77lI8jtSdNgrvTToRDHPpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 70763447B0;
+	Mon, 19 Oct 2026 15:36:08 +0200 (CEST)
+Date: Mon, 19 Oct 2026 15:36:06 +0200
+From: Gabriel Goller <g.goller@proxmox.com>
+To: Andre Brait <andrebrait@gmail.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com
+Subject: Re: [PATCH iwl-net] e1000e: segment TSO packets whose headers cross
+ a 4 KB boundary
+Message-ID: <atYbzARmBOVuRTdW@luna.proxmox.com>
+References: <20261018203215.77371-1-andrebrait@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261018203215.77371-1-andrebrait@gmail.com>
+User-Agent: NeoMutt/20260504
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1792416967724
 
-RnJvbTogUmFkaXkgWmhhbWJha2lldiA8ci56aGFtYmFraWV2QHByb3NvZnRzeXN0ZW1zLnJ1Pg0K
-DQpjYXJkX2lkeCBpcyBhIHN0YXRpYyBjb3VudGVyIHRoYXQgaXMgaW5jcmVtZW50ZWQgb24gZXZl
-cnkNCnByb2JlLiBJdCBjYW4gb3ZlcmZsb3cgYW5kIHdyYXAgdG8gYSBuZWdhdGl2ZSB2YWx1ZSwg
-d2hpY2gNCnRoZW4gaW5kZXhlcyBvcHRpb25zW10gYW5kIGZ1bGxfZHVwbGV4W10gb3V0IG9mIGJv
-dW5kcy4NCkxhcmdlIHZhbHVlcyBhbHNvIG5vIGxvbmdlciBmaXQgaW4gdGhlIDEyLWJ5dGUgYm9h
-cmRuYW1lW10NCmJ1ZmZlci4NCg0KQm91bmQgY2FyZF9pZHggdG8gOTk5OTksIHRoZSBsYXJnZXN0
-IHZhbHVlIHRoYXQgc3RpbGwgZml0cw0KaW50byBib2FyZG5hbWUsIGFuZCBmYWlsIHRoZSBwcm9i
-ZSBmb3IgYW55IGNhcmQgYmV5b25kIHRoYXQuDQoNCmZlYWxueCBpcyBhbiBvbGQgZHJpdmVyIHRo
-YXQgY2Fubm90IGJlIHRlc3RlZCBwcm9wZXJseSBvbg0KcmVhbCBoYXJkd2FyZSwgc28gYSBtaW5p
-bWFsIGJlc3QtZWZmb3J0IGd1YXJkIHdhcyBjaG9zZW4NCm92ZXIgYSBsYXJnZXIgcmV3b3JrLg0K
-DQpGb3VuZCBieSBMaW51eCBWZXJpZmljYXRpb24gQ2VudGVyIChsaW51eHRlc3Rpbmcub3JnKQ0K
-DQpGaXhlczogMWRhMTc3ZTRjM2Y0ICgiTGludXgtMi42LjEyLXJjMiIpDQpDYzogc3RhYmxlQHZn
-ZXIua2VybmVsLm9yZw0KU2lnbmVkLW9mZi1ieTogUmFkaXkgWmhhbWJha2lldiA8ci56aGFtYmFr
-aWV2QHByb3NvZnRzeXN0ZW1zLnJ1Pg0KLS0tDQogZHJpdmVycy9uZXQvZXRoZXJuZXQvZmVhbG54
-LmMgfCA1ICsrKysrDQogMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQ0KDQpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvZmVhbG54LmMgYi9kcml2ZXJzL25ldC9ldGhlcm5l
-dC9mZWFsbnguYw0KaW5kZXggYjVlOTZjNzAzN2YzLi5kNTkzMWMwMzE0ZmMgMTAwNjQ0DQotLS0g
-YS9kcml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbnguYw0KKysrIGIvZHJpdmVycy9uZXQvZXRoZXJu
-ZXQvZmVhbG54LmMNCkBAIC00MSw2ICs0MSw3IEBAIHN0YXRpYyBpbnQgcnhfY29weWJyZWFrOw0K
-IC8qIGludGVyb3BlcmFiaWxpdHkuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAqLw0KIC8qIFRoZSBtZWRpYSB0eXBlIGlzIHVzdWFsbHkgcGFzc2VkIGluICdvcHRp
-b25zW10nLiAgICAgICAgICAgICAqLw0KICNkZWZpbmUgTUFYX1VOSVRTIDgJCS8qIE1vcmUgYXJl
-IHN1cHBvcnRlZCwgbGltaXQgb25seSBvbiBvcHRpb25zICovDQorI2RlZmluZSBNQVhfQ0FSRF9J
-RFgJCTk5OTk5DQogc3RhdGljIGludCBvcHRpb25zW01BWF9VTklUU10gPSB7IC0xLCAtMSwgLTEs
-IC0xLCAtMSwgLTEsIC0xLCAtMSB9Ow0KIHN0YXRpYyBpbnQgZnVsbF9kdXBsZXhbTUFYX1VOSVRT
-XSA9IHsgLTEsIC0xLCAtMSwgLTEsIC0xLCAtMSwgLTEsIC0xIH07DQogDQpAQCAtNDg5LDYgKzQ5
-MCwxMCBAQCBzdGF0aWMgaW50IGZlYWxueF9pbml0X29uZShzdHJ1Y3QgcGNpX2RldiAqcGRldiwN
-CiAJaW50IGJhciA9IDE7DQogI2VuZGlmDQogDQorCWlmIChjYXJkX2lkeCA+PSBNQVhfQ0FSRF9J
-RFgpIHsNCisJCWRldl9lcnIoJnBkZXYtPmRldiwgImNhcmRfaWR4IGlzIHRvbyBiaWcgJWQsIGFi
-b3J0aW5nIiwgY2FyZF9pZHgpOw0KKwkJcmV0dXJuIC1FTk9ERVY7DQorCX0NCiAJY2FyZF9pZHgr
-KzsNCiAJc3ByaW50Zihib2FyZG5hbWUsICJmZWFsbnglZCIsIGNhcmRfaWR4KTsNCiANCi0tIA0K
-Mi41My4wDQo=
+Hi Andre,
+
+On 18.10.2026 22:32, Andre Brait wrote:
+> [snip]
+> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+> index 834a5b888..6f95ed19a 100644
+> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
+> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/pagemap.h>
+>  #include <linux/delay.h>
+>  #include <linux/netdevice.h>
+> +#include <linux/sizes.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/tcp.h>
+>  #include <linux/ipv6.h>
+> @@ -7359,6 +7360,34 @@ static int e1000_set_features(struct net_device *netdev,
+>  	return 1;
+>  }
+>  
+> +/**
+> + * e1000_features_check - validate offloads for a packet about to be sent
+> + * @skb: packet to check
+> + * @netdev: network interface device structure
+> + * @features: offload features usable for this packet
+> + *
+> + * The transmit DMA can stop for good when a TSO packet's protocol headers
+> + * cross a 4 KB boundary in the buffer holding them: the descriptor is never
+> + * written back, the driver reports "Detected Hardware Unit Hang", and only a
+> + * reset brings the queue back. Seen on I219-LM/-V (PCH) with forwarded
+> + * guest traffic, which arrives as linear GSO skbs that can start anywhere in a
+> + * page. Let the stack segment those few packets in software instead.
+> + *
+> + * Returns: the features to use for @skb.
+> + */
+> +static netdev_features_t e1000_features_check(struct sk_buff *skb,
+> +					      struct net_device *netdev,
+> +					      netdev_features_t features)
+> +{
+> +	if (skb_is_gso(skb) &&
+> +	    (skb_shinfo(skb)->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)) &&
+> +	    (offset_in_page(skb->data) & (SZ_4K - 1)) +
+> +	    skb_tcp_all_headers(skb) > SZ_4K)
+
+Hmm, doesn't validate_xmit_skb call validate_xmit_vlan after the
+ndo_features_check, which means that the vlan header can be pushed into the
+packet? Meaning the packet can grow after this check.
+
+> +		features &= ~NETIF_F_GSO_MASK;
+> +
+> +	return features;
+> +}
+> +
+>  static const struct net_device_ops e1000e_netdev_ops = {
+>  	.ndo_open		= e1000e_open,
+>  	.ndo_stop		= e1000e_close,
+> @@ -7378,7 +7407,7 @@ static const struct net_device_ops e1000e_netdev_ops = {
+>  #endif
+>  	.ndo_set_features	= e1000_set_features,
+>  	.ndo_fix_features	= e1000_fix_features,
+> -	.ndo_features_check	= passthru_features_check,
+> +	.ndo_features_check	= e1000_features_check,
+>  	.ndo_hwtstamp_get	= e1000e_hwtstamp_get,
+>  	.ndo_hwtstamp_set	= e1000e_hwtstamp_set,
+>  };
+> -- 
+> 2.56.0
+
+Gabriel
+
