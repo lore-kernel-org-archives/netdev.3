@@ -1,101 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792421713;
-	b=D/qLXu7x/mXP5DeAgTEIoHWSyYIqnRnYJWUznm7WUgJ5sKhC5FzMrVy9Pr3pmw2TxYW5
-	 LZ+hXJzGpRWr2ZLickwoudNBCd1CKOU7Q0Z85fwYtQmtpNE2r3B6zOg9wv0WP0GhP+kSI
-	 LHS+hov2hzb9tQbRhG9+ZCZDl7ZV+o4W+EdMHbeQchYrXBapnTwAP9O50eiHhD7TWkP+n
-	 GXmUk1qzjN4hMuBbtV9Ec7L1rMHprRsBSwra84A9hN+PZx1i4l9e6jp+o9br+mZlDCTpG
-	 jOYzVKa4WmcHHxPihEQH90GzTy7HQV0p/K0Ba7kxNtOHZdGJGQq9eXhJshzaSjjuCYQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792421713;
-	h=Received:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=MmAvYMzYsSLV9YGDTAToTSx5qORIoNpIq25+Tdy+3Zw=;
-	b=Iy2keD1+FQZRUOnQlm/qWjinJOkAgRJOxo8BXMLlFAjfce1/tV4jI5EBJD9/hDTockiB
-	 OycfNVfLu/lHl6eyqXe2bC+VAxGG7fGwPWrqYgSsjrbtYBpUjM2HVJqqwJyl8jn3t4o3a
-	 lgSfKjztAKRUDl9Nc8S148fFT6KXgxCkGqd0WgunnbdfWDlItEUhbZdKmHHwkXMLSIJ+S
-	 rLB+I+zW1C/gWzMWq7JpNsZXfIjo+JokywTi8uocHlzKPA/0xXFrxCRytEv2is3y8S5R7
-	 vaovotPd2k6QBVukP4kfgbsKmUO8GMqjvwyELdEolfZnatFW1Y1hAMLmptFVT7lj34g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fnhsvt9K;
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=10.30.226.211
-Received: from aws-us-west-2-korg-listserv-1.web.codeaurora.org (ip-10-30-226-211.us-west-2.compute.internal [10.30.226.211])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBDD606EFF0
-	for <netdev.vger.kernel.org@localhost.mlmmj>; Mon, 19 Oct 2026 14:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fnhsvt9K
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792422187;
+	b=NtlkLZ+6B+g1+9vurwt+ujs84tSbQGM5U7hhgAVeQsg4jaDlIOWqsRn40syEDuYms46q
+	 6Ws+PqtH3T0r62qZyndAe0z6T/eg6v8DLnTp+Glm/hHt4u5KczL67ydYfT+5onDXSdOgz
+	 zf8w/VDa9hGwDJJZS3f/fl/tppqw6HRt53D8nNnt0/ZG4MTRsfbBG2RTe6Vail9PB2yL7
+	 RNNyWpV891wFzaqHvgUYAkdeFGbZAHBDvHQ016FkPZWsc/afMBl9zakLqSgXsYIEvGFdH
+	 v8wX1h2Mtg6sq3kt7WAf6c4aNLm0NCWc+hSMZQpem7Zo17W3ygZ9GnggHtMtTVYhQnQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792422187;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=v9cgZkzXfJum8LMGLQnaHUy+a1LoPyGxau8ueJsc2kE=;
+	b=Qk/YtQALe1vWg1QkHFIsPrOUK/F+iayjeHQz1yqvd7C5ADY1q9LeCFEu1LIM6xsWybDw
+	 YYUS4LMnn+VgZjRhXvZONWN6rR0o1d5G7yllYRxM/S5g9ZNrsDTNupAAUb83Hf8xFechE
+	 B6zYJbuTACHJ4o+rVKk3txWLqJMCxNaAy3VbPBfOZjDPWA6ziXPehw0MXEvZoPOj8Pv4J
+	 kYxPqG6rRUwtaDjwo5aCnd4ngtSH7ep1ZjBv+Y7xK6eIn+Soun5xfwK6EceNTG1HC0D6I
+	 4amhMmslk4BRA5q5vjr2g8TfeHaLuU61E0kQvL+BS593s7XQZz74sJFtDxLQl10jVEA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=TCLdCUCH;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8376513C1
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792421713; cv=none; b=FL7EiDQ6VJqCUZNFtbPL3h5cf2W6OhVRkyYQbT6zzehFFOjosMcKJStz1pELk8S7f5zDMzgyk1NuoLlxXNhNF3tGoi8KU+9QaP1u9hPkzbQdH+CrBv35acYlY6Ij4TbOd/HLubkuNIWPrybQXly8MpsZZiVpwJD4O3WhNT0DtZA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792421713; c=relaxed/simple;
-	bh=RLy20rUqp920ststPilGHR8safvwyNqGX8plEY72uGE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d70FAGy1Zkxz41TcII9JYISOJW1KpURWoMFJFi+fhM2hYvfsnoc01bxvItiT8IB/m25c0aoUhLCXFO5xiqv0pPAiRyZ7idiUC30G8vJ0Zv57q60EGMrU4cVpplY3E9e3Dqcdm2d75ZlRVaa8XkD3SfOd1VDqvhM+WxIN1MVdJYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fnhsvt9K; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-353804b591eso4220252eec.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 07:55:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792421711; x=1793026511; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MmAvYMzYsSLV9YGDTAToTSx5qORIoNpIq25+Tdy+3Zw=;
-        b=fnhsvt9Kbw1KHj0wOt6IqTMP+1DcDpUsv4BTYunt5bj0b8ii+uHxtylm34um3hiQOr
-         yYQ/z8AWiIF7yBb79h9Ne5A+LFsYYnif+sS8cWKpfWO1SxbhT64IrzvIVr13sG0zcdXe
-         BlhPc/RHgKns/+w3vSZAOr9PraRqKPrtVheWj5zx9uzoYHhhPRQU6Ta1JpssPAgHFRwQ
-         biSv0E5Mmq0KH33gTcNH+XNmqI97O63iY/vEcpqDcT3FCi5J2sM0zealfq0Szv5UXXRL
-         97Z2C/xW4D4lFZ3moB2iKwe/pwDRaAtJvw9sZEXrwqlhb4BvHpZqxD4VOWhzoar9DR4M
-         I1aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792421711; x=1793026511;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MmAvYMzYsSLV9YGDTAToTSx5qORIoNpIq25+Tdy+3Zw=;
-        b=VSkA7nwTulyMdtN5w0ARqG3qqJBHv/ZIn6J0tyZw2tPpS1h/Zf6cEg3yiif5j2KqPC
-         oeIxS9EdGOr89W54+/BcNwdOLdw5lh1c+MPLxJOGyWo+DLUAOgMMKHzcOOIfJlzhSsLl
-         MGb2eZMdETYLhM29M+i8JcWTzcqkwCoCnPxTaYuqf2/d9aTEvCkmxHTrwEq12kKWNCPL
-         Rwul6gcEApc7LsDoh8CeBhzhxtaKQRDsJ6/IAPJ0q6nIzluyW8Qs7l2ykGAQ6X1lbHE/
-         cFtb+qS6jGx5Hr14xP8bZyX6qHRK14gOfZKcpALydVpzTlRnvYQkDbKSx34OihYZc8iH
-         JHHA==
-X-Forwarded-Encrypted: i=1; AKwUvBy1T8FR6jL6/GigCTe+SvvhaYZpSOqOJaLa4MAad4kncsY8CztUmekniz2FWqLEiDSz8HnzJ3k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKAcQf9nfch2vRvCmFEHGYBOyJxmM4EqI0JfARVC3Cn5TE8vTBZ
-	fQ5x5ok0oKSORI9Nb1iQWpHOpkgnhjWh1SxnHa5iK5f4c//qCs9OeJZHpQVkdzOS
-X-Gm-Gg: AYBFou1oBj+n9oBKOmMVm9iEWRGm1cI42tiiuYvPf9F1TfCo2oJuju74BjQK4IRW3mL
-	IDJZJv1D8EYT7fSqm51fRN5rFDP55SF+IafTbMvo8npXRqX31ziyGPypV52B3b1gJL+bondWDxk
-	/jIKZnMw88gmXdPN3wI1yYwvcrDlmoY07s8+AWt2dra3St4i46mHMh1tUcDzv2cZyEYX3tPRi8J
-	GKwSNXN8HG+n1oDFVP12rIpAGyb8LV4Z3o0O91xEhgXvb0FvfBQKnIJ+o9+Elzk87Jfm2kd3GV9
-	SRe4FHVqHtVK5pteXe/62Lgz/ODWP/H3r03tDqh1Y6WveOUYfx/GbP4LNKAQC4kaz8PsboVJsdA
-	SVQM1vaSlawvOdRuVGnlwYw/ywH7X2qJ1gEEMTUbVXFFW2i7Yf+XD2DcWYH6Tk2UR49OcB4eGie
-	bQ9X+Zr1Gdv7HJeKXWjiCbE6cr3L3zQ1INyfxXU5E3s97hyflovYa1w44Fqzx+EtLDIXW5eA==
-X-Received: by 2002:a05:7300:8284:b0:358:bbb7:88da with SMTP id 5a478bee46e88-361a234c05emr10464488eec.32.1792421710542;
-        Mon, 19 Oct 2026 07:55:10 -0700 (PDT)
-Received: from thangnn-ASUS.. ([2a09:bac1:7a80:50::3cf:67])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36082e81a06sm31590887eec.26.2026.10.19.07.55.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 07:55:10 -0700 (PDT)
-From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-To: David Heidelberg <david@ixit.cz>,
-	netdev@vger.kernel.org
-Cc: oe-linux-nfc@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
-	syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com
-Subject: [PATCH] nfc: pn533: bound the OUT URB wait in pn533_usb_send_frame()
-Date: Mon, 19 Oct 2026 21:55:05 +0700
-Message-ID: <20261019145505.176036-1-ngocthang2710.1999@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DE6607D34C;
+	Mon, 19 Oct 2026 15:03:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35DE6607D34C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=TCLdCUCH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792422176;
+	bh=v9cgZkzXfJum8LMGLQnaHUy+a1LoPyGxau8ueJsc2kE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TCLdCUCHdXutnNUIejtrEhyORq2G2tiOPo6TztfkjoOx/M/F1xLlxwt9njHMxvvRB
+	 9uqzu8DD8qEF4bvZtFlBMHYYADn3ZStgsspP08hdopUVG+XI+qykNJVthTIjSKTP+t
+	 U+vtqzABe0Kb3aRpFz5SlyucVtlowm8SROD/OPSLItecwuarVB3AWNzi3Gmg6Xmg2p
+	 bh41XLFBE7zI9N9+ZdRWs9BCFCvu6B2nw7W+4KF2H7ElYzO3smmUEwh9ZlYtw5BjcI
+	 8zxpSgteAHemI7UHnHaltSHAiIX7I2uAw33svNcTbz8Oy9SfEBcJ7kyCL2y3ELoCWf
+	 R7C1LXWnK5W5w==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id A58426005C;
+	Mon, 19 Oct 2026 17:02:55 +0200 (CEST)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 00/10] Netfilter/IPVS fixes for net
+Date: Mon, 19 Oct 2026 17:02:39 +0200
+Message-ID: <20261019150249.1879516-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,48 +69,120 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-pn533_usb_send_frame() submits phy->out_urb and then calls
-wait_for_completion() with no timeout. During probe this is reached
-via pn533_finalize_setup() -> pn533_get_firmware_version(), with the
-USB device lock held by hub_event(). If the device never completes the
-bulk OUT transfer, the wait never returns: the hub kworker hangs inside
-probe() and every other task needing that device lock (e.g.
-usbdev_open()) hangs behind it.
+Hi,
 
-Bound the wait with wait_for_completion_timeout(), using the same 5000ms
-that usb_bulk_msg() gets in pn533_acr122_poweron_rdr(). On timeout, kill
-the URB (usb_kill_urb() waits for the handler, so the on-stack
-completion can't be touched after return) and fail with -ETIMEDOUT,
-which __pn533_send_async() already unwinds.
+The following patchset contains Netfilter/IPVS for net:
 
-Fixes: 9dab880d675b ("nfc: pn533: Wait for out_urb's completion in pn533_usb_send_frame()")
-Reported-by: syzbot+1c5368988052dc2d8201@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1c5368988052dc2d8201
-Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
----
- drivers/nfc/pn533/usb.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+1) Fix IPv6 nexthdr offset truncation in fragment reassembly,
+   this has been uncovered by LLM, from Jeremy Jean.
 
-diff --git a/drivers/nfc/pn533/usb.c b/drivers/nfc/pn533/usb.c
-index efb07f944fce..569b1915afc9 100644
---- a/drivers/nfc/pn533/usb.c
-+++ b/drivers/nfc/pn533/usb.c
-@@ -184,7 +184,12 @@ static int pn533_usb_send_frame(struct pn533 *dev,
- 	if (rc)
- 		return rc;
- 
--	wait_for_completion(&arg.done);
-+	/* device may never ack the OUT transfer: don't hang probe() */
-+	if (!wait_for_completion_timeout(&arg.done, msecs_to_jiffies(5000))) {
-+		usb_kill_urb(phy->out_urb); /* waits for the handler, so &arg can't outlive us */
-+		phy->out_urb->context = cntx;
-+		return -ETIMEDOUT;
-+	}
- 	phy->out_urb->context = cntx;
- 
- 	if (dev->protocol_type == PN533_PROTO_REQ_RESP) {
--- 
-2.43.0
+2) Restrict checksums in nfqueue to known protocols and offset,
+   after this patch the plan is to re-enable nfqueue in userns,
+   this came via LLM report. from Florian Westhphal.
 
+3) Fix races when handling overload flag in IPVS, this patch
+   is not perfect but Julian considers this improves the situation.
+   This was uncovered by LLM. From Julian Anastasov.
+
+4) Error handling for IPVS sync_threshold sysctl, from Joel Granados.
+
+5) Use skb_vlan_tag_get_id() to retrieve the VLAN id, discard tci
+   bits, when handling VLAN in the flowtable, from Shuangfeng He.
+
+6) Initialize IPCB for inet/ingress reject, uncovered by LLM.
+
+7) Restrict completion of binary search array to anonymous set.
+
+8) Restrict DCCP option matching to avoid out-of-bound read,
+   from Sung Byeongchan.
+
+9) Reset transport header offset in flowtable after tunnel
+   decapsulation to fix issue with qdisc xmit path,
+   from Lorenzo Bianconi.
+
+10) Fix inverted matching in ctnetlink dump filtering,
+    from Liu Chao.
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-10-19
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit ab699d296e066eb64f51d2a8a1d42237a3b186c8:
+
+  Merge branch 'net-always-dissect-gso-packets-in-__virtio_net_hdr_to_skb' (2026-10-06 15:35:42 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-10-19
+
+for you to fetch changes up to cd37ab22a74e05aae5c16c67295cbf5188b16268:
+
+  netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter (2026-10-19 14:14:03 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 26-10-19
+
+----------------------------------------------------------------
+Florian Westphal (1):
+      netfilter: nft_payload: restrict checksum offsets to known values
+
+Joel Granados (1):
+      ipvs: skip committing sync_threshold when proc_dointvec fails
+
+Julian Anastasov (1):
+      ipvs: fix more races around the overload flag
+
+Jérémy Jean (1):
+      netfilter: nf_conntrack: avoid truncating IPv6 nexthdr offset
+
+Kyle Zeng (1):
+      netfilter: nf_reject: initialize IPCB at inet ingress
+
+Liu Chao (1):
+      netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter
+
+Lorenzo Bianconi (1):
+      netfilter: flowtable: reset transport header after nf_flow_encap_pop()
+
+Pablo Neira Ayuso (1):
+      netfilter: nft_set_rbtree: narrow down range completion to anonymous sets
+
+Shuangfeng He (1):
+      netfilter: flowtable: use the vlan id, not the full tci, in the tuple key
+
+Sung Byeongchan (1):
+      netfilter: xt_dccp: handle reserved options as single-byte
+
+ include/net/ip_vs.h                     | 50 +++++++++++++++++++++------------
+ net/ipv4/netfilter/nf_reject_ipv4.c     |  5 ++++
+ net/ipv6/netfilter/nf_conntrack_reasm.c |  2 +-
+ net/ipv6/netfilter/nf_reject_ipv6.c     |  5 ++++
+ net/netfilter/ipvs/ip_vs_conn.c         |  8 +++---
+ net/netfilter/ipvs/ip_vs_ctl.c          | 41 ++++++++++++++-------------
+ net/netfilter/ipvs/ip_vs_dh.c           | 16 ++---------
+ net/netfilter/ipvs/ip_vs_fo.c           |  2 +-
+ net/netfilter/ipvs/ip_vs_lblc.c         |  4 +--
+ net/netfilter/ipvs/ip_vs_lblcr.c        |  8 +++---
+ net/netfilter/ipvs/ip_vs_lc.c           |  2 +-
+ net/netfilter/ipvs/ip_vs_mh.c           |  2 +-
+ net/netfilter/ipvs/ip_vs_nq.c           |  2 +-
+ net/netfilter/ipvs/ip_vs_ovf.c          |  2 +-
+ net/netfilter/ipvs/ip_vs_rr.c           |  2 +-
+ net/netfilter/ipvs/ip_vs_sed.c          |  4 +--
+ net/netfilter/ipvs/ip_vs_sh.c           |  2 +-
+ net/netfilter/ipvs/ip_vs_twos.c         |  4 +--
+ net/netfilter/ipvs/ip_vs_wlc.c          |  4 +--
+ net/netfilter/ipvs/ip_vs_wrr.c          |  2 +-
+ net/netfilter/nf_conntrack_netlink.c    |  8 +++---
+ net/netfilter/nf_flow_table_ip.c        |  6 ++--
+ net/netfilter/nft_payload.c             | 40 +++++++++++++++++++++-----
+ net/netfilter/nft_set_rbtree.c          |  3 +-
+ net/netfilter/xt_dccp.c                 |  2 +-
+ 25 files changed, 134 insertions(+), 92 deletions(-)
