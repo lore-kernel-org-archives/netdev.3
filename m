@@ -1,100 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792428298;
-	b=xKptkSHOCHBP5iHGRZ/zr2AcsA84UxwyHM9c9CvfU160VsOP5xYrcorBY9xX6TL9IVdl
-	 Vs+w+hn/l+ERY7EFlhmOgdQs2gsHrKKFQ2ByNArYgTRd6q1otXsNK6vek8qm4q+U2/3Tm
-	 yknvNCw8MhWjJdZyvhxo5yKzkI0iutxhc3MIfiAry6V1RvNHyRjtzJcRPeHRvHEKnoEKp
-	 8ZzaNt6dGxODhs0dZxZO7zz09ZwF8zlC8juQOyKSTkOavVyceOZ60iRMIbHkA0NcORUsX
-	 Pjv6nPq+PXUnBsWut+jOJmPSFldroyWbIf6CMvXkSHxrQh2vXp4oFAmmPs0n8m3Pipw==
+	t=1792428493;
+	b=IRogoOrMFv4QfGmpyQ61H0uDmqMKi3r9w78DW5UmH8ThBE3qYO3aN8Kz2lxw+DAOwM3x
+	 IrCNzTMWYZbkJlw7bJEl6Id25Gc7yjIZo9k7l4GUM8UiwpEOF3SoB4Sicn5Ypos+VCFS1
+	 oVtbVk9pMDa9awu45E88oplzWo8uPDVeak+7XTebGAtPdwLj/Na70d9v3A74JGFSgztkR
+	 hrN0D/3MlKyDEpk6Bv2s7D5tggfpkmn1AiW5uPieyw59X5zjBKb0s0o9G2MN+k4llPsu+
+	 svjLgPBZT/bYtYpe7FGD00PPIfWY7JcRs0IIdKA+I4uXHaG30HrmfZVDquCJZwrwz/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792428298;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792428493;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=YBxE2RHs/xtw2k6w0uwqJcfXRjL9fFfsXhtkaG1a0dA=;
-	b=M8c3JhcO7HpMoaRec0iD8ismuNiK/W3wqHxtgk2j+p38iRlg0EwM2cin3aZFV1hZ8i5+
-	 b2XS3ArEJR0BzGfc0A/M5AUTcFgAT1nAfZLmzi3mJiFD2vXwjIyHY6q0lNkjd60Wjoi11
-	 xWX6DWHpqkbmLZxAxtif5fb2gTCn0ZAVgosN2o5IBPPybdmLO2MJ+Fd2dFdZCwGjIOrco
-	 tF+BQaTXJddpusTvaCO6rj0OUMB5bb/DwHtonBNYfRbUT626sTWbEegTH2DFZrtNHbujy
-	 pbZewoWA7I8d2CSv5WGgrFr0SEzrbwTBsXHaY6x0c9iLsnoPxY6VOQYap0VHmDU6GyQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=K0hIN0bpC6Dn/BvmYWqGKn3KF1sCzO0zF6mJDzHB458=;
+	b=tV5dFGys6ROB97jGrx73uuXB4oUBeoj7g637n3cKzfYXQr8NfJcgKOu5Gxhpqggnc66q
+	 Y1R4tbpVg7ZG6xUyiB/0SM451BGD3qtpZVXiBAJEv1xab6FXtx4N9MVWbGon9bc2AhvcX
+	 jNIKx7uNItKhEP50fXj28yZKlxIqctg/jisq8Mc6uUnoBknDRypXm/ZblApHCXMyxzKUq
+	 JDHmLdM/u1o8Bct69TH6Nb8q0N6tOfbQaxM68zRZJTpQMCgcDUb8Z0lQ1jqrgIlEF2KcW
+	 wAK6knWeZtSOHwJXMD8jqSJRuisYOITy2aSNcdNx5TpgfSKTGLRfM/ftBe382deuXKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=riscstar.com;
-	spf=pass smtp.mailfrom=riscstar.com;
-	dkim=pass header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sWUP6p6d;
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	arc=none smtp.remote-ip=209.85.215.178
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52802606A336
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:44:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52802606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sWUP6p6d
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4980fe6b3beso21429455e9.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:44:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AF260A382F
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:48:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3AF260A382F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so836036a12.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792428297; x=1793033097; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792428492; x=1793033292; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=YBxE2RHs/xtw2k6w0uwqJcfXRjL9fFfsXhtkaG1a0dA=;
-        b=sWUP6p6dS77gDd9crmmTzReRjbttlB+oGdebU8insTZ0eh8VuwE85bYmR7cVuMfITN
-         04ViV/M5Cli7xTKW1+fo4opBWS1lhlnfqVoEyTDIHAffyAjIGxPmIzYALh+/M2+i5hhm
-         dIou0xRjPwAY22CinG4x17pvDzKX4avuJU251GO8e4LulYdFpt4p+fzVlvyU9jj9CFUQ
-         rE0MiumtTqofDWMfk/iSipZfzKD7t+QsbDwy9bEKQZiGTiDe85n+QhXb02GSLwnZEvRt
-         l0W+tZzsycG6O3Rcc/9ZktykZeaw1RAAobhTLe/k8KMsoLXZvGEh5kbD5nWv4ECn/q4O
-         sEeA==
+        bh=K0hIN0bpC6Dn/BvmYWqGKn3KF1sCzO0zF6mJDzHB458=;
+        b=DG1mFAzqzk//JGRpK3JU6J14rFrJ4QtDaVkglqrhU6wEfWqolUPPw5Z8HMkCspI+tD
+         xK9hw4tFIbgjwmr0S7g0MSXc1R4XHOvL/4MILmzy6ySM2gYxhlqczlY2qf37GOWBeiHk
+         v/qTdaCYoBmuDbGUTumGRl20WKbfGS74YmusNCr2OmLB8iFB2euomw080uAem/Cx6Utt
+         wFxXQ3lREh6EgSZ1eCo4yWskR4xYcBZpsg1rPWyCOCcRFKVpd6qqJl5rzlSu/yw94RjG
+         Yg67PpyEgUX98fb0IWFvobz6u7nXPBPboIc+faHIijungrnrgA6vzu93k+WI6bJaZZUH
+         eOQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792428297; x=1793033097;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792428492; x=1793033292;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YBxE2RHs/xtw2k6w0uwqJcfXRjL9fFfsXhtkaG1a0dA=;
-        b=uLGfFQAmEptPnpfj8K4lqKj/5VaDefQFYtk+SCU83xEZAuMQGOyHEtbOwWhkPV7j29
-         vWYCvZmrApiqAJazUJSr7X/2PGBLtQhBVbu0UwrhGixEdEVJFbpBcTXuoIT1i7cUYFZ8
-         fUvvONLB4xZgz9rZ1gjYEW09893ze+5D/JQoSONlpsVof7zAWd5gd/qw6RH8xW2Mx4y4
-         ZHyTpKfp28kNntzZOIrahwrA5KFZGpyVXMbEVhakk1SOe3XGRiguC4kRaeh/IRP9TTb5
-         ifOValy97heGoVJZCoEstx/1cNHJ9wXq/quIvlgGV5f7VEhK2A5jYfaOxijL1lrvgqDY
-         ekAw==
-X-Forwarded-Encrypted: i=1; AKwUvBynzeymPJUrsNPxu+aQ2a0DArNO0PDAWUTBouJK5D2IDSV0l9tW9Ffns18PWuqxaYucnOV+/iU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL45im3vWtz0y5oPHlYUaTm1XCtrIBxiMpCUnWadmO3gpbDmzi+
-	nDPvbsEJW65/sNqQAh875hplZrDHytoO/7Vwm/Rlnmkt2xk8ajYLrTU6G8OkOGhtzjU=
-X-Gm-Gg: AYBFou1Wd5/Pvoh8DVzPyI5g7Bmu3APhmU347n9x98OkDN9TmqQLTKvtxm1vaFYmkSk
-	a7E8i3BEw0h5jWQ15opmBcgVNYNEZ+aIfZfztIV4lQ3kP/jXsQf1tJaJbbrLaBxUHsaSisiGH87
-	LzyMfo4AaGbwimj1CamS/KxYPQx6yFm/6xsnCaF3BJTQ9zUMZXEtuk7n9LO67naaMkN8CqpKNVK
-	UM2fv16IdvwX7ZZiya8HYGjE6DePGm5A8Bv7PnHI5E3y6rdSCWLpHHmdETgDSK0M61cMs75Iehz
-	lzKWknUjQgs20JQLEfY8PI+EnC4l90+hj4zM6Xsz5QoO8D7zF1ah3Aoun2LlJevphGfEoFCzLVU
-	eWzi2dpTEcRU/2KoQPtUuTaMW/b17TZdHhVOXP53w7wg9GtnMdzqkuzUq2mEypcmXnAEJPChLm2
-	p3t6gRhqWBJwdiVN6/2IPJRw8elbLmTQpYEPD0zoedm2K14t35z4CCTrs7pMii8G3VRMFLt2QrG
-	UhOfc/NErzkzbOkI7NnEhNJ+x01C6qB2BgQKbvh5HMXvjFNFXCUo66LLJE2sJNlXqDkLTO+MmKo
-	uIZAMor1qfVzsOBsY9lamHppwwinFnXWOSv2+2MeSl/7ootNMgzAkqpaC00=
-X-Received: by 2002:a05:600c:5254:b0:4a1:e57b:667e with SMTP id 5b1f17b1804b1-4a1e57b68c7mr97174505e9.4.1792428296450;
-        Mon, 19 Oct 2026 09:44:56 -0700 (PDT)
-Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2d324f8sm3668735e9.6.2026.10.19.09.44.54
+        bh=K0hIN0bpC6Dn/BvmYWqGKn3KF1sCzO0zF6mJDzHB458=;
+        b=y9L29DnsulfuXW3w+UQqcKHpcXIWTBkbXZHY+xsGLGA6R9LhLjOyNfQdxiwrChzAhE
+         VYfFLlIMMV2dVD46dCLNNRyMy1Wtg+tUwX2NWOEaOP1AAeT9DWMKhoU329aRQQ9jH7wd
+         31OMqCWsGfsSwdiCbnFPrJwmaQx3WnhS/KuD9/sBauoGge8nbvjqNBUNheLdZMn4IPgs
+         +k0xl1i+0iue0EUGOhgD+mJgI1SBc8TXfaGhZiC7kTVQ2t81kp2y/vR0PTSni6Zb5YdU
+         kRyNBQ3I2shdWnJiTQCmdBmPcn03rHC8YlgOrOEyAFOlARqIIjyMFFb+/ZN+wA4zZEsH
+         nfZQ==
+X-Gm-Message-State: AFq9FYIL385nZUWhSGt2rUAhsTo/Vq9a2QAs2B5HjWw6HhRdIoMBOaB0
+	kapjDFRCSY4YE2KVgfD2SVlw18mph8pwFXsq8zJpMz7Rux1Ku7jEI7ilW2oEj91Df9o=
+X-Gm-Gg: AYBFou0135p1stIGzjdt2GchCiyw9vSq+4Im20iSAaMRzWdEzw9RVgGNSN4f7+YKu1O
+	f0mkaBwGtD8dporTxl1RtLRUK4XEaQcN6VerevFCMkKOkr+RIv/wdzdBs7U9kQJJFupQ0Tqds2b
+	2FMq3gIRNhmzZnNq4VwL1rGHPFEl/tCZGoIJ2EvWXlV4qD0Txi07Pl2ETPqSI44vpz76zKZ1ijd
+	mq37KCzPcAkRrSNIu5+sntNAij72OdRiJb6RcGv37iHwaTurr31B5SVEUmRpVCD97I240QbU/IL
+	tTS5T8St5734IESbPZirn0GIe7E9VqLS1V1hBKfFXw+btgMh8aIAM2mRp/gH4UmiO7ZZkCDOdwu
+	KxAe3JmnmfMCgygFgd6miY82boegJVv8TfxZ4M+VM8jeAavqtKSniyaSvZYFwUdCp7nWIIwc1HV
+	/cvRjwmpjDyuRrOq7uDw1OL1bE6tTxCoaWQ1+yU7yLRtLkjUJkAd5/JRCbS3DtEEETt9R1yx0SI
+	07JzQzqVJb9zKpbNYc+aZ61yDiI2SnhW4OQovrubmfDW2jp3drzMzPHUgqt2wYGiuW5K49t4AEh
+	rvYynB+jW41jaOVTtiisBA==
+X-Received: by 2002:a17:90b:1f91:b0:3ac:b3e5:426c with SMTP id 98e67ed59e1d1-3acef10e078mr6645588a91.26.1792428491792;
+        Mon, 19 Oct 2026 09:48:11 -0700 (PDT)
+Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad60f34bb6sm37983a91.10.2026.10.19.09.48.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 09:44:55 -0700 (PDT)
-Date: Mon, 19 Oct 2026 17:44:53 +0100
-From: Daniel Thompson <daniel@riscstar.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexander Duyck <alexanderduyck@fb.com>,
-	Alex Elder <elder@riscstar.com>, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: pcs: xpcs: select operating mode for
- 10G-baseR capable PCS
-Message-ID: <atZJBaHU2QQGwcnG@aspen.lan>
-References: <20261014223100.304486-1-elder@riscstar.com>
- <20261014223100.304486-3-elder@riscstar.com>
- <f8c01002-da88-4f0f-a02a-7480591f4296@lunn.ch>
- <atI1IK6blP-vumLQ@aspen.lan>
- <fe13016b-ebd6-4a2f-a07b-324f46b456d3@lunn.ch>
+        Mon, 19 Oct 2026 09:48:11 -0700 (PDT)
+Date: Mon, 19 Oct 2026 09:48:08 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Gopal Malaviya <gopalmalaviya53@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [RFC iproute2-next] ss: remove /proc fallback paths
+Message-ID: <20261019094808.1aebae96@phoenix.local>
+In-Reply-To: <20261018200712.389-1-gopalmalaviya53@gmail.com>
+References: <20260901144034.437569-1-stephen@networkplumber.org>
+	<20261018200712.389-1-gopalmalaviya53@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,117 +93,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fe13016b-ebd6-4a2f-a07b-324f46b456d3@lunn.ch>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 18, 2026 at 05:48:39PM +0200, Andrew Lunn wrote:
-> > > > +	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
-> > > > +		switch (interface) {
-> > > > +		case PHY_INTERFACE_MODE_SGMII:
-> > > > +		case PHY_INTERFACE_MODE_1000BASEX:
-> > > > +		case PHY_INTERFACE_MODE_2500BASEX:
-> > > > +			/*
-> > > > +			 * Why are we writing MDIO_PCS_CTRL2_TYPE + 1? We want
-> > > > +			 * the modal behaviour that comes when we pick a
-> > > > +			 * reserved value. XPCS allocates extra bits to this
-> > > > +			 * field and allocates values from 15 down so
-> > > > +			 * MDIO_PCS_CTRL2_TYPE + 1 is the value likely to be
-> > > > +			 * allocated last (and hopefully never).
-> > > > +			 */
-> > > > +			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
-> > > > +					 MDIO_PCS_CTRL2_TYPE + 1);
-> > > > +			break;
-> > > > +		default:
-> > > > +			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
-> > > > +					 MDIO_PCS_CTRL2_10GBR);
-> > > > +			break;
-> > > > +		}
-> > >
-> > > MDIO_PCS_CTRL2_TYPE is 3. Looking at 802.3, the value 4 is
-> > > 40GBASE-R. The 2022 version of the standard has values defined up to
-> > > 10011b, for speeds up to 400G,
-> > >
-> > > Alex added support for 25G, 50G, 100G.
-> > >
-> > > Is this an issue?
-> >
-> > It will probably be an issue when the kernel is first called up on to
-> > support an XPCS that supports 40GBASE-R.
->
-> Which is likely to happen sometime in the future. Maybe Alex's
-> hardware even supports it, but if you can do 50G, why bother with 40G?
->
->
-> > The XPCS (at least in TC956x) handles MDIO_PCS_CTRL2 in a slightly odd way.
-> > It 4 bits wide and accepts 10GBASE-R, 10GBASE-X, 5GBASE-R and 2.5GBASE-X
-> > is defined in the standards up to 2018. All other bit patterns are
-> > reserved and instruct the XPCS to use Speed selection bit (13) of PCS
-> > control 1 to choose between 10GBASE-X or 1000BASE-X.
->
-> We probably need Alex in this thread, what happens for 25G, 50G, 100G?
+On Sun, 18 Oct 2026 20:07:12 +0000
+Gopal Malaviya <gopalmalaviya53@gmail.com> wrote:
 
-That would be very much appreciated (hi Alex)!
-
-I have spent a fairly big chunk of today trying to "get back inside my
-own head" since it's been quite a while since I last looked at this
-code; Alex (Elder) and I were focusing on other bits.
-
-I made two assumptions when I was reasoning about regressions:
-
-1. No existing code ever wrote to PCS Control 2 and therefore the value
-   after reset must be correct for existing working cases.
-
-2. The reset value is bit pattern 0 (10GBASE-R).
-
-The idea of the code above is designed to match only those cases where
-we *know* that the reset bit pattern (0) will cause trouble and change
-things. It's currently a very narrow match although I might expect
-additional cases to be added as other phy interface modes are tested.
-
-I have spotted a very obvious flaw in my reasoning above: the special
-case logic for FBNIC that suppresses the initial XPCS reset.
-Unfortunately the version history doesn't mention what bad thing we
-can avoid by suppressing the reset (perhaps a reset can clobber values
-such as PCS_TYPE_SEL that are injected by the firmware).
+> On Tue, 1 Sep 2026 14:38 UTC, Stephen Hemminger wrote:
+> > This patch removes the old /proc/net fallback code in ss command.
+> > The sock_diag netlink interfaces were all in 3.10, over 13 years ago.
+> > No longer need to carry all the additional text parsing code.  
+> 
+> I tested this on top of iproute2-next (204a7210). It builds with no new
+> warnings, testsuite/tests/ss/ssfilter.t passes, and on a WSL2 6.18
+> kernel the output of ss -tan, -uan, -xan, -s and -tanpie is identical
+> with and without the patch (ss -a -A netlink too, apart from the line
+> for ss's own netlink socket).
+> 
+> One concern: the diag interfaces are in the kernel, but each one is a
+> separate Kconfig option. INET_DIAG defaults to y, while UNIX_DIAG,
+> PACKET_DIAG, NETLINK_DIAG, INET_UDP_DIAG and INET_RAW_DIAG are all
+> "default n", and common configs leave some of them off:
+> x86_64_defconfig has "# CONFIG_INET_DIAG is not set", arm64 defconfig
+> sets none of the five, and Android's gki_defconfig enables only
+> INET_UDP_DIAG among them.
+> 
+> When the interface for a socket type is missing, ss currently falls
+> back to /proc/net/*. With this patch it prints only the header and
+> exits 0, so those sockets silently disappear. I reproduced this for
+> raw, unix and packet sockets (ss_before/ss_after are ss built
+> without/with this patch). Raw sockets, on a kernel without
+> INET_RAW_DIAG (the stock WSL2 kernel), with one ICMP and one ICMPv6 raw
+> socket open:
 
 
-> Maybe there are different revisions of the IP, and later revisions
-> make this register follow the standard?
-
-I'm not able to answer that. All I can say is most XPCS seem to have the
-same ID. Finger crossed that, if they change the behaviour they also
-change the ID!
-
-
-> > That means we *must* write a reserved value to this register because the
-> > default value after a reset prevents <=1G modes from working (I think
-> > automatic switch over between 1G and 2.5G also liked this to a reserved
-> > value but I don't fully recall right now).
-> >
-> > On that basis the best bit pattern to use one that isn't implemented by
-> > whatever XPCS we happen to be running on. One simple approach might be
-> > keep using 40GBASE-R but to check PCS Status 2 to ensure we fail in a
-> > non-silent manner on hypothesized future XPCS hardware:
-> >
-> > 	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
-> > 		if (mdio_stat2 & MDIO_PCS_STAT2_40GBR) {
-> > 			dev_err(dev, "40GBASE-R is *not* a reserved "
-> > 			              value on this XPCS");
-> > 			return -ENOTSUP;
-> > 		}
->
-> Maybe. But we need to ensure it does not cause regressions for fbnic,
-> which might actually support this speed.
-
-I will sketch out an idea based on explicitly checking both my
-assumptions hold by checking PCS Status 2 and PCS Control 2 after
-a soft reset. Thus if you never reset then the code will never
-deploy. Likewise we don't need to rely on my guess that all XPCS
-implementations will reset PCS_TYPE_SEL to 0.
-
-I will also, given everything I've had to share by e-mail,
-improve the commenting a lot!
-
-
-Daniel.
+I am ok with forcing use of inet_diag for this.
+If users turn it off, like Android, they are in embedded envrionments
+where ss doesn't make lot of sense.
