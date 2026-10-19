@@ -1,70 +1,69 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB3C4F93D9
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E021E4F96A5
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792417895; cv=none; b=P+AaXzJjCawJE/FXXGaW+tzWHuXmuLtZh0oghpP0+1zuU5tS5vRPBpekAC1GnuTYuzjsCOyAtue+iiIhsSzi/QS+NBJvQd7xQsXTcVc+gS9bIFCdaQnXJ10V29yd5rKEhNtElVU/U9a9eY2rQzFnY7jhTEVp+P2akKx2N/+g9Hw=
+	t=1792417898; cv=none; b=gOCQWVhSbuT271MscGDyxoMXM3qYVuzczCL5wyOHoU9y8SCvK5QeNudMz+M2k+CvdyzVfsGWSPSQ5LoW1TKcn3+epUTxFItoUCdz67FkYKK7L+jZiq/1bJ6WvqFFjmXjoX8GBraYMq+SuigDB3U0s7lMQyHOgCx6YhWF706F3ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792417895; c=relaxed/simple;
-	bh=6Z8CiNviIyVdg98sCBaRoAUJsHn+RV3Sx5RlE56aqBo=;
+	s=arc-20240116; t=1792417898; c=relaxed/simple;
+	bh=54YuJC4Sa4ftFWTwcdr1JHSPiV0/4B3b8lTqh1NoeIM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Pi+ou9i7skFLZGrxgtukuFg/Ae7NAM1iys1Fi0myllHh7NULWtjtIoMuC4oWMwiSm8l8wQWZzwTJDlX6sEToizpGCzuZ8OllUB5RfcmxY9KQIBbIsm817a9bnRt5xcdp2b6mUVHkaiAdtMZwy4SIgRrxk6z5NEnYdq6Vj3qjJDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=bQ/T3EWv; arc=none smtp.client-ip=209.85.222.169
+	 In-Reply-To:To:Cc; b=GY1zRLDknsmYmohLmwBiq/H3N74LdFL/uXV51PpDEZ08o9v1JiUFdA9TwIVfASb+Xmml7X+a2h4lh8VUI0yTfJw9RSVirDlWDtpc9BVtHattCV2FZM2GQItRjT4bp4pEo6x8TEw7+Ghkq9d25T38PB8OSFzUuqMYoLDC/qxK8vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=KKz8Q3gB; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="bQ/T3EWv"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93f079a63b8so201014485a.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:51:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="KKz8Q3gB"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-53394bffe0fso36182271cf.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:51:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1792417893; x=1793022693; darn=vger.kernel.org;
+        d=toxicpanda.com; s=google; t=1792417896; x=1793022696; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nH4MPLjNHd0ezQ30G0wFNIQg5eWAqIll/99R00Ry+f8=;
-        b=bQ/T3EWvXpvQBfbySB+faBw9gkHTec01pATJOxR9/n64bQq4YgrX713hq2DQBXGtJP
-         LZCqRm0J1dPctv6yJVE+iUfYkIPx2Ii7//gTF6PGdgQxGrErcoz2H2I8F7wG1hsg8FlL
-         Ykzh6iA+WxT0McvcBp2WP1ll+JMrb3QSbWX8+t2xfp/hnYKkewu4NalJsUuXItcWUbdU
-         MvgWUDTxlAVWJmocuXXNbIYkIALUEQKRAHbB8w7rRe2DGm8y6WAUG30IM6L0M4Q0gsC5
-         tSSJoyrRhusoTWRTfnAhwbzulzYNCK2gdC3Po7SQs2OjAialJoQPS7zm2frYotEhmZNi
-         NUow==
+        bh=cCcET6n/yfDRwSzhWgNa5UxSYwstO6x0SjXdcG6UWRc=;
+        b=KKz8Q3gBwduopcuN1jY3Reg5tOh2puh8ahKwMdaNM86vYl0D8brvpUVoHtn6hUDkOL
+         NzwmYkoQ4D5DF62wvT4cUC0rF7oARej8F+lkWplrhnjfhvlV1JoyHUfsk1sGTbj6Q3rL
+         NpM5hQXU6ijskXlMdL7/MKOAyoHKuVklQcYmUgRLU/DiQkvEU0ZIj8089vwkFP4Rxftl
+         M5a/WD56SIt4dvnIr96Uf2r43O5Zk/vAkj/ecwfIMab+RaVmPmc77i4QC+70JxdjwToJ
+         5kyE6ikVTmqZ4aYJqhmHoVCIjuWW2KBHQkKK+RX8ubrVzHvVG1AVnMqW2Ju2f9NNMTm0
+         ZO3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792417893; x=1793022693;
+        d=1e100.net; s=20260707; t=1792417896; x=1793022696;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nH4MPLjNHd0ezQ30G0wFNIQg5eWAqIll/99R00Ry+f8=;
-        b=RllLzyCR3aUbN+trsI0YWc7/yyXbXtJKp4qXjb1mx8lnLsDIJ/o3LxJ1chPcV86cbg
-         9KTW4A08HmmvDP2v25jIi7mxzDdQobcotMB8qJcDw5Ic/1oBWkjUiTD9GyTvf10I1KIb
-         jvUAZpc1lVJ54fzQYmRjZVsdvei/IELSTrAEZH2Ktz1UhHzeZ8kamcvTHD621q0EjgvI
-         02vzixGBEY+P7IKBXczTMQk15R5kUOtKfqFIp7tcNPKrmzPmVuTlYy4pv5En6z18f//r
-         UR61aAR+IVD58ABz1Y+mZIey4e5KbbHt0O319E8Uc24tZNs8cLM5AidFtCqSIYhx9ZcX
-         buNA==
-X-Forwarded-Encrypted: i=1; AKwUvBxhHhiVPitpyAXoAqcArxLSAq0eF/hTlBzVV75i7dFo7X4DtYZ9MXL2jfjwvsRsU/nW+xj/g1U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKRim76R+Hv0/M/Qu489ySMI2vOO56vSYK1MzkGpEMWHXCzcuzq
-	ZypUAsNoXVY83PkwUEppIOJWSxyPjMGnPX88fryaW9cas2fM0u0p0VlKUiSsUfsi1Vs/qI082z0
-	rSqs2
-X-Gm-Gg: AYBFou2GWdkAMOl4mx97doztae856XjYKeiBNo4NaWXRkron9+DoRsSRJNZxBtYlWPH
-	G997n+1x7LyYmVoY2l9uYIyfYZBbyZb7suc7ZFEuaKMlF11Hwz6sfEs3VHOhy/5ddoVGC4/o0q2
-	GmK6xU6ZTfNAA7oet+TkF5PYq7sYjiTbN36oysQ6j99r31ls4iketGsS4Hsh591i6TQmS6vh6BL
-	pnWQrDtQGY8fGCVm0lB+MR/KeJGW8G93mWRbfB2BmRQElKC7tPtCHw6PUdnVgwpmFSvBsOkPh/n
-	JCOg8O9Rk7ilFI0imG0lSi9Xk9isy5S5lTVztPG/PuAUuTzdJEmF5r9jjwl1/ZXuuhdlKR4bNp8
-	d3cigm/2MOvrAQcxtasOSwZcKWWiUmTEmQCqiKQxepmI84KNJjhZXzVj+r2vfwE0pR/g0sjIcDl
-	Oo23ExA+H4hKIIFXz9wLf0V8nVxQE8vpJmxISB7+DoFC3i0M32Lm2wIPnZ1LupA2VmTtYT9fIou
-	euFZ6Drdyhculg=
-X-Received: by 2002:a05:620a:4109:b0:93f:35fc:5266 with SMTP id af79cd13be357-93f35fc586emr874742485a.44.1792417893366;
-        Mon, 19 Oct 2026 06:51:33 -0700 (PDT)
+        bh=cCcET6n/yfDRwSzhWgNa5UxSYwstO6x0SjXdcG6UWRc=;
+        b=aPPFHHthOPhBncjrsPumUACXjG13RbrudUXdcP/s9mmrKog1SDs5NU5WpDoZ66VXRr
+         B4szLVqZkivdop+rggo5mxdgYT9+KFwKiLc/5MSPVqXnbr55R5E+oFSA2Ryt/isLhZob
+         n6JQgzWtxt8iJOdoW3s3xawp9Ot/EhWw9qxNxhlfitpGN5Bw4Eu9YlG81Ij1Ff6af25T
+         SX0L36FDXncnnj2gXf/0WC/J5SogjVQ4OynCA+NZ+vJmqjWJEHLepfG14HpCSMTZuA/w
+         rQhS1yhXM24kjIqeelC7s7eT3cJHE79awyUN9369jWwRhHgs2eJP9r9LQ4bx2qOtsdFS
+         CkCA==
+X-Forwarded-Encrypted: i=1; AKwUvByvq/YIbencyEWAxKSJDpK2n4S/LW0UZlhzI6pvOpV70NGYQd4mdCQXE4KAxigzCh4plTRtpaY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIvN1/s7iKwZU3wkJ2wTYNFxLlXDOV7cAxP0EanMGcw4lSI5ALA
+	Gnj29KwN/cu9TgOvdXyYTda5hoAnlztYHB5ePxT5A67m2z+w74dCeXySmu7eiHr/esk=
+X-Gm-Gg: AYBFou0YRevBMqlY2KYq09bInb1lg/Y/WtVoHWDAZqSzaKSA/mbOzAFELxyXLAt7qEf
+	2xZBdSDoUkcNVxcmAGwnrcbslkHYEW/XsOR/PfsLBheKx47z9livSKlR/9Z0MR52DmGnb1CrncJ
+	wDMYFB/9ArgNGEqWXJjQIupuSVjuW7/nmGaPlLupWbp3/VyUGfjbnnGX3ADrJeYaLYFVq5gqWzh
+	n2DPP/1ahYrLMnJEHP+JxYCEOgwVoQYlEecG0mf0WQ9g4PfHLZ6GmGx3sd0RFqd9E5tUd/DGNSc
+	0QfX+lZDrCuIDfhKA5DMEkev5aurtZjT5J45m/+8LNVHNwBFgyKdlQGyVVPF7JnACAodR7CC3fd
+	QzfOFu/IJzdsmywbCtkd6GMK5Qx/icedEyubuz7PTyWGXqYiqLcGpDCqhnrwxe2ZPZ5RFJrel4u
+	q5cPIsSkrWhRS2BwGk3g+mLTWEscCPSILafYZIoKJLUxmlrJS5XCR5X1bYjthrXNrBxsk5c2+Vk
+	uWvkajo4IVFmVU=
+X-Received: by 2002:a05:622a:8449:20b0:535:22e8:2fd3 with SMTP id d75a77b69052e-5362725afb9mr117803081cf.10.1792417895776;
+        Mon, 19 Oct 2026 06:51:35 -0700 (PDT)
 Received: from toxicpanda.com ([153.61.196.240])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f1a19ce5asm982035485a.32.2026.10.19.06.51.30
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362a8e43cfsm99302081cf.5.2026.10.19.06.51.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 06:51:32 -0700 (PDT)
+        Mon, 19 Oct 2026 06:51:34 -0700 (PDT)
 From: Josef Bacik <josef@toxicpanda.com>
-Date: Mon, 19 Oct 2026 13:50:45 +0000
-Subject: [PATCH net-next 11/15] net: skbuff: refuse to segment a nested
- frag_list
+Date: Mon, 19 Oct 2026 13:50:46 +0000
+Subject: [PATCH net-next 12/15] net: test the frag_list layouts
+ skb_segment() refuses
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,7 +72,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-b4-skbuff-bug-on-followups-v1-11-41dbef50b9f7@toxicpanda.com>
+Message-Id: <20261019-b4-skbuff-bug-on-followups-v1-12-41dbef50b9f7@toxicpanda.com>
 References: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
 In-Reply-To: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -88,73 +87,117 @@ Cc: Juergen Gross <jgross@suse.com>,
  David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
  xen-devel@lists.xenproject.org, Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1792417849; l=2113;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1792417849; l=3190;
  i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=6Z8CiNviIyVdg98sCBaRoAUJsHn+RV3Sx5RlE56aqBo=;
+ bh=54YuJC4Sa4ftFWTwcdr1JHSPiV0/4B3b8lTqh1NoeIM=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
  JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QPevlwc09v/MSkDiCKh5chGO+Z/rqVC5uo+IAjB+VXJ5WH8Ns5cSB+345mYyBpXOXcO+Ul5ANjw
- NRhLiDZ+GoA4=
+ QMl/CfrGUamcaF3Ng1FUVBnBIHC3kZ7QHRED94+HWu2IRKE9xF6ZECYluILceDZSaJN+2T+BFcn
+ /RZqmOf7s7Qg=
 X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
  fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
 
-skb_segment() walks head_skb's frag_list, but for each member it only
-looks at the linear part and frags[], never at the member's own
-frag_list.  head_skb->len still counts those bytes, so with a nested
-frag_list the walk runs out of members while it still owes data, sets
-list_skb to NULL, and dereferences it on the next pass, before any of
-the layout checks get a chance to catch it.
+The GSO KUnit test only checks layouts skb_segment() can segment.  Add
+two it has to refuse with -EINVAL: the non-uniform frag_list with SG
+on, which used to hit the BUG_ON(i >= nfrags) the existing test steps
+around, and a frag_list member that has its own frag_list.
 
-Nothing in the tree is known to build such an skb; GRO flushes instead
-of chaining an skb that already has a frag_list.  Check for it up front
-and fail the segmentation with -EINVAL, with a DEBUG_NET_WARN_ON_ONCE()
-for debug kernels, like the other frag_list layout checks.
+Both warn on CONFIG_DEBUG_NET kernels, so run them with the warning
+backtrace suppressed.
 
 Assisted-by: LLM
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- net/core/skbuff.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ net/core/net_test.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 56cec58bccb7..b6ada54ecc57 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4962,6 +4962,17 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- }
- EXPORT_SYMBOL_GPL(skb_segment_list);
+diff --git a/net/core/net_test.c b/net/core/net_test.c
+index bc2ef7612e7d..12a175268a01 100644
+--- a/net/core/net_test.c
++++ b/net/core/net_test.c
+@@ -39,6 +39,8 @@ enum gso_test_nr {
+ 	GSO_TEST_RESEGMENT_MULTI,
+ 	GSO_TEST_RESEGMENT_TAIL,
+ 	GSO_TEST_RESEGMENT_ONE_MSS,
++	GSO_TEST_FRAG_LIST_NON_UNIFORM_SG,
++	GSO_TEST_FRAG_LIST_NESTED,
+ };
  
-+/* skb_segment() only walks one level of frag_list. */
-+static bool skb_segment_nested_frag_list(const struct sk_buff *head_skb)
-+{
-+	const struct sk_buff *iter;
+ struct gso_test_case {
+@@ -57,6 +59,9 @@ struct gso_test_case {
+ 	unsigned int nr_segs;
+ 	const unsigned int *segs;
+ 	const unsigned int *gso_segs;
 +
-+	skb_walk_frags(head_skb, iter)
-+		if (skb_has_frag_list(iter))
-+			return true;
-+	return false;
-+}
-+
- /**
-  *	skb_segment - Perform protocol segmentation on skb.
-  *	@head_skb: buffer to segment
-@@ -5023,6 +5034,16 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 	sg = !!(features & NETIF_F_SG);
- 	csum = !!can_checksum_protocol(features, proto);
++	/* skb_segment() is expected to fail with this error */
++	int err;
+ };
  
-+	/* The walk below never looks inside a member's own frag_list, but
-+	 * head_skb->len counts those bytes, so it would run out of members
-+	 * and dereference a NULL list_skb.
-+	 */
-+	if (unlikely(list_skb && skb_segment_nested_frag_list(head_skb))) {
-+		DEBUG_NET_WARN_ON_ONCE(1);
-+		err = -EINVAL;
-+		goto err;
+ static struct gso_test_case cases[] = {
+@@ -204,6 +209,28 @@ static struct gso_test_case cases[] = {
+ 		},
+ 		.gso_segs = (const unsigned int[]) { 0, 0, 0, 0 },
+ 	},
++	{
++		/* frag_list members that don't end on gso_size boundaries
++		 * can't be segmented with SG
++		 */
++		.id = GSO_TEST_FRAG_LIST_NON_UNIFORM_SG,
++		.name = "frag_list_non_uniform_sg",
++		.linear_len = GSO_TEST_SIZE,
++		.nr_frag_skbs = 4,
++		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, 1, GSO_TEST_SIZE, 2 },
++		.err = -EINVAL,
++	},
++	{
++		/* the second frag_list member hangs off the first one's
++		 * frag_list instead of off the head's
++		 */
++		.id = GSO_TEST_FRAG_LIST_NESTED,
++		.name = "frag_list_nested",
++		.linear_len = GSO_TEST_SIZE,
++		.nr_frag_skbs = 2,
++		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE },
++		.err = -EINVAL,
++	},
+ };
+ 
+ static void gso_test_case_to_desc(struct gso_test_case *t, char *desc)
+@@ -283,6 +310,15 @@ static void gso_test_func(struct kunit *test)
+ 
+ 		if (tcase->id == GSO_TEST_GSO_BY_FRAGS)
+ 			skb_shinfo(skb)->gso_size = GSO_BY_FRAGS;
++
++		if (tcase->id == GSO_TEST_FRAG_LIST_NESTED) {
++			struct sk_buff *first = skb_shinfo(skb)->frag_list;
++
++			skb_shinfo(first)->frag_list = first->next;
++			first->next = NULL;
++			first->len += tcase->frag_skbs[1];
++			first->data_len += tcase->frag_skbs[1];
++		}
+ 	}
+ 
+ 	features = NETIF_F_SG | NETIF_F_HW_CSUM;
+@@ -296,6 +332,18 @@ static void gso_test_func(struct kunit *test)
+ 		features &= ~NETIF_F_SG;
+ 
+ 	SKB_GSO_CB(skb)->max_segs = tcase->max_segs;
++
++	if (tcase->err) {
++		/* the suppression block doesn't run if it can't be set up */
++		segs = NULL;
++		kunit_warning_suppress(test)
++			segs = skb_segment(skb, features);
++		KUNIT_EXPECT_EQ(test, PTR_ERR_OR_ZERO(segs), tcase->err);
++		if (!IS_ERR_OR_NULL(segs))
++			kfree_skb_list(segs);
++		goto free_gso_skb;
 +	}
 +
- 	if (sg && csum && !gso_by_frags)  {
- 		if (!max_segs && !(features & NETIF_F_GSO_PARTIAL)) {
- 			struct sk_buff *iter;
+ 	segs = skb_segment(skb, features);
+ 	if (IS_ERR(segs)) {
+ 		KUNIT_FAIL(test, "segs error %pe", segs);
 
 -- 
 2.55.0
