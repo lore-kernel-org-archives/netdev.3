@@ -1,136 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792428812;
-	b=iAJBJI2kszQaIof+LvCiq3ZEc0ZhiJCs0+VEHatUamHXKBZii/VOOikFH/ImSv+ppaLb
-	 BAouea3hhAS+Ccd4XYOK2gHEOpf2PLf1ZKnfwWMvBNQNmWRzWxeKf55gtQdcfY4L03KNN
-	 C6w5ftvKght3TXFESV6vWWC5hJTvnO0c92yMjHMvM61I5PWyJzSqdumwus+8ZamMvOuAj
-	 7Z97OMMhLHOUtWZOLlBC4GFRm5D8UMJPkDYw0vcevmQZHH7Pr+Gj0pD7Z3tBNep5TvCqz
-	 Msll96D9BgOrRPs30cXnpMzRwzl0cudv44stIuvzUp3cZ8gaoV98evftN66RB953rYA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792428812;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=5NpA8MejPYa5VoiZQgPe6XWOE6x9tmEcKlBuuceH0Ds=;
-	b=cvh7ZpmW0I978gABRgyNpgnshqFgnprVWTFRlEm1rLAHkebKYdnI/IFJNMDht0z2vkAU
-	 OHKaGIUjdcQ9kcrHMev3Actj3slth/wKu2VF9Gk1ZR9BfQf6vFkzSpjuDghMSKTVA3pZF
-	 GkwJv4+99cym5a0K8/zo6Kii/mGIXgOYBeuWk0UXj5v2tO9/V4oKNQb4d8m3vSydo8tcB
-	 ha55vuR9JQz5Xyx/aSvdZmwMG2maI6MuCG8Pg81U0b/iNPEG/MqV9Jp545+YS+KUvLz1A
-	 zbGxnTEoNsUcBCL8LjPn9Z2blgSFIFuVyZPKo8UfNqZBqpXZGwLhdBCg3DJWzjwMEvw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R3Cepbo3;
-	arc=fail smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792428931;
+	b=X2AB7WdCrRL0OK5fLP5MoppMyQrtQIDvRAB1oa59vLQ5NgjkV6Xa3kYeAGr/pXsEKAsq
+	 +BSLdhwejq8urJ34Xi7+STnznr27N4dFJuh1Cn88d1RTYmRzmHSB6pprHyQYMwrtvIYxR
+	 ls49xVeJiK3uyLkOi/u8xk4DZ62PfI2YjoNy28TxsIaIxod7nStyC09H15COkPAWu5BqH
+	 mQ1TGB9zHxOlvDDTnHKXMpAut2IRCaWI3legtCmhHghl/edwxwHqdnuPbkLXpIa7by0vX
+	 En9YypHiXYy+Y/Pd/zP2JxTedPOXjpqoGN6PlUkQcsjQ3iQd7luM7w+0FrygDLyNljg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792428931;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=Ci8Cm2jw1ezjETTeikEr3zJn3zOORrt6gyC+LSBdgIE=;
+	b=3oypXIWiROA8/IdA5z3vw3LXSZT7GeeKtLpKnUHln5vB6gDESm9VYsjym4859d9AAhC/
+	 a1jAEqRGeR9yJzoJ0qG/U9KPv9jfn2gZrQLndEkl4bp44ir5u2y6UaPMp+Izf5DF+n0DT
+	 /o8KWPq2SoRB7z5grkQSMW2K4uTLy9Gm+tfBEEdiMVEaH40p1rjRNW4fyKJK57R5vkNW7
+	 wzzBATX+3ZhnjZKZFlZwl+Flt1HaerTsA4exSYPdogoZ/wm1hvO6UHRli4o4qQtdcij5s
+	 B9hSdhV61U/DXOFLRLFKStObpbz34T+L0XfnqY5S9qscxClWOY2AbuhILrKxBPAeiMA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T+8R+CY4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ECF606A31B;
-	Mon, 19 Oct 2026 16:53:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68ECF606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92953606A31B;
+	Mon, 19 Oct 2026 16:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R3Cepbo3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792428812; x=1823964812;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=5uLTrQ1OjfNAa/IkbNpa9aGRZvE9G+aO/VExq6wRlVs=;
-  b=R3Cepbo3fsiUr5s6DKyi+ZqhnbCfcHggNMCbP7IJVkDU8AE1e2WQFfFj
-   uSGxSjMDM3MFxMjFhENkUWPSLnYInRLg5fof3I0qFG69vXckrRIg4GXc1
-   NJNjwSHAAmdy5xWSevtWDmIw6PSr2iRlil00Kp+99BOy1NZkTaOz965kM
-   pr5z5o7wyG5XY1BJHDmka5es0CWxxgMPl//X2lrPCDCY9pqGv7Zh0f05A
-   NMZIRmXq2Y4idPxDlvQDbTwHXK9tau8my9e15qc/XIYbTMuUfEqslS4Ph
-   PwrOKgbqIHnlP+F/nhqYez/vEj+Kz6zMlxM8BFfg4D+0a0S5VrQJlQZzp
-   A==;
-X-CSE-ConnectionGUID: NCdklk+FTEeAmmnheVXQog==
-X-CSE-MsgGUID: TTNgl82FTcCzbDScQWIZeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1023427"
-X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="1023427"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 09:53:31 -0700
-X-CSE-ConnectionGUID: +pW/dmshTvigpF+y+bCAhw==
-X-CSE-MsgGUID: DeILLBrOTNuHAWCA0CcYsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="2642037"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 09:53:29 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 09:53:28 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 19 Oct 2026 09:53:28 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.65) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 09:53:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XmaGII6MqIGZrZXXfSbucY+VjEtDG8ghj9oo7oT5V7vJzxQhbAZnwb0fd0jJO88j0m0cEyULtwosjb15byw27XFTY+Z1QoEQOibG3C1y5RUEvjvqC89IhWEAhHVZUuHJFAf0N53c8Igvlo/eWXdZ/i7rCsSGwAFg5aoFU1Pj2sGY15Bletgngq0PKr9sm5Ciaua9+BNXiwoxPipQKNjR2POl22Keo+rlFY4q6P/XzPbL96amqKm2pHzCaQPNPUqCfdqzbhrSA/t47bWRdp3tVvc89rMBkLwpMZXLGkyUNqJvOOpODJgG/0K2CVKCVd7OriGVw2pp/awT2tDzQ+asFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5NpA8MejPYa5VoiZQgPe6XWOE6x9tmEcKlBuuceH0Ds=;
- b=f5XiVrhTqV7+k5hAmD02HHsrxlV+B/UdvArnUaYPpdCttYV470OYAiWuLePpBiejiRKYEvs44zrYSJjLSKfn9TIqnA/Fzhc90pp8oul2EEKGOmp5JokzUjx0AaZgYi72zAxiCpENgXZL6V6TKgCkZk9GUDujVCMG7VEBXydNxu/zmKs2fbFmL3W1zmfITRu2XA8OprI7WPj64aMfke1PG1xchigvxypyhdrkX48KdtcedSvwY0dakJ1Ook+vYvKZ+W+Kws/hjFGe0nZOVi3ELXw1CNYjuMnrwohigEbD9OAHZOmK54b2RyFogkJDYAbwKGgGN3k8SiSnDZB1EfUgKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5) by IA1PR11MB7753.namprd11.prod.outlook.com
- (2603:10b6:208:421::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 16:53:26 +0000
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b]) by SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 16:53:26 +0000
-Message-ID: <44cc348f-f548-4496-bfb2-ad9dfdee2c74@intel.com>
-Date: Mon, 19 Oct 2026 09:53:23 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next] libeth, idpf: use GFP_KERNEL for the initial Rx
- ring fill
-To: Luigi Rizzo <lrizzo@google.com>, <intel-wired-lan@lists.osuosl.org>
-CC: <netdev@vger.kernel.org>, Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Luigi
- Rizzo" <rizzo.unipi@gmail.com>, Brian Vazquez <brianvv@google.com>, Joshua
- Hay <joshua.a.hay@intel.com>, Larysa Zaremba <larysa.zaremba@intel.com>,
-	"Jakub Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20261016151835.2500807-1-lrizzo@google.com>
-Content-Language: en-US
-From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
-In-Reply-To: <20261016151835.2500807-1-lrizzo@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0232.namprd04.prod.outlook.com
- (2603:10b6:303:87::27) To SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T+8R+CY4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF7F1F000C4;
+	Mon, 19 Oct 2026 16:55:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792428931;
+	bh=Ci8Cm2jw1ezjETTeikEr3zJn3zOORrt6gyC+LSBdgIE=;
+	h=From:Subject:Date:To:Cc;
+	b=T+8R+CY49guUWL4uT+cq9SPD+Yy3NLolKGNaqz2ZmG3JEYHrGflL486sWxJE5+4N1
+	 wata7+QNhKp3nixfX188EgIZMUZPTvI5fdFcA6NA3k02BYvlKHSpo86qqevlKtbN6W
+	 RZnvCZHaDKWbIKUeolDuvjXUnBwHFp71vyjY/B7jnCnjupB4VfaAqL5aoSs8YFaiMF
+	 sPJ0DlUHdMMNoj+ldaBQUWVV9ZW4zLHCpoHMS0GQlRfSn2LhZnA/oE2GZ0ok9h/LVd
+	 7ojqcFGtyCQqtzfhjRtTnKg2SRvEeEWZVpqpboLfX43UrNgoVyH+Dib9IKaXNwzrFP
+	 lY+EduNCSVB0A==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH net-next v6 0/9] net/tls: Receive-path fixes for
+ zero-length data records
+Date: Mon, 19 Oct 2026 12:55:16 -0400
+Message-Id: <20261019-tls-follow-on-v6-0-ab01c4ecca0c@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -140,94 +54,163 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR11MB186312:EE_|IA1PR11MB7753:EE_
-X-MS-Office365-Filtering-Correlation-Id: abe14fd0-2e67-4b0e-9650-08df2e017e79
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|56012099006|11063799006|261009223027099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info: Szox+RRSpclIHbFJM+PKPSnD1HzQAKsVeVD6Gfpvc+vfYe5SZ5Ilx+rBu9N0SUjvSbSNRgWdyboxPvhZPQGEhkflp1IcxhhJ/S+0IrKSUsRgBEmiNwQTjIUMP+YafA/mkH9LXW/hmNABd4O+Fkukj09JbFNSE9ZbKeiLTq1MSfSmH/e6bvEzmDRvXVc4JgtmmoU2TLhxxnrD+IYBJFFSemdhe7uflNYNvtkM0TSDLPRoHOjpTnTLCCmIoZoOTNHaqWWpTaK5myptmJOgJG7OzUBv/EgbX4k0526VnEJNJ05hk0MH2KtRgpyQofm4NjEEtKN1g1SF1F+CeFUz0GA+eWXVN+BdWD30aK5fPqnb7Sn7jB5frapgdaUhRFG8blK7uF3CADKstvlPfs6Ba000UZRkbM3CU+rXJdZdP6RaoBI8ReBflGo4hPdhu+uU171SXEjNzcR2X/5QAWPJlpxjwGaUC6L5yP/Ahh6mPKx7C53IEzrD9a4XYW4o7SLyURthA17+tD9x53HYA+P2i64aYzw3hWOvGhs24nl8AmnMIBKDavHyk6R8Le4uvVYEqrp4JcxPfhrDz/fX0QyCh3uTotHV7IcUqUaicWXu+QGT/+bOlVAefFPsXaEfCJA+dNrANBGpLkeZVr3bTY4+Wcax1jSWAUHv0OmJR/avbikyG3s=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB186312.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?azh1TER2c0ZFYzBUdnVxV3grT1JGZkY0aU1UK3Q2M0JRcEl6S05JZTA4bU9F?=
- =?utf-8?B?bUxzTVhCMm1OVnM0cFZYZDdtb2JoSnYyZGJadEYweS94SnFwYUVhbkdmS2RX?=
- =?utf-8?B?TDBXalh1dmR2R1ZYSWtZd0JVcVRBemZ2ZlRNOVduYldQOUNzREpQSGJaSlM4?=
- =?utf-8?B?K1VvZE9uWWZibWZraEs0c3lJckpmVkxKM0xZcURiYWFvS0h5a0JFWDFPa0tP?=
- =?utf-8?B?MkNoOG9NLzVmWnZ5QWVMbDlyRnVNdXpWYnZVSmVCejd5MFhobTduSmdaSmlZ?=
- =?utf-8?B?Rk9GMWtwK1pnT1N4NVc4cnU1ZmZ4SHpFRXRkd0hSdGg2d3pUeWt2bG9xL0Iv?=
- =?utf-8?B?RjBiNU5zSzMvbnBPOThwNExLaytKTlp1R29nMit4YlZXeGtIZFJHWnozVlVk?=
- =?utf-8?B?ZStpOXpNaGVrbnE1SEMxY1BCUHAxb09OdFNTdFJEeGw1UFRPWEM2djJRelVG?=
- =?utf-8?B?cWd2LytPeThtMWYrUmNkTVdCL1kxVDZrZ0pLSVZ0RENISkN4bHpVYjdqMm9z?=
- =?utf-8?B?UE5WSXhNc1NXYU9acmloWUxzWTlnUmNJU0hyNUk4MU1pZFRzbFV5Ky9yOVJ4?=
- =?utf-8?B?TDdwN0ZFRnJqSzF5akxrcmNtdTNGRFM2RkVGTWVVWlFWeHJyczdXOXh1c2lL?=
- =?utf-8?B?NWduYkxvZG1DNjZkMjRXYnUra3NKVjY1L0RleXF6WlJnOTlkVk1zZEZYeG1m?=
- =?utf-8?B?TjJIamI0azVQVmhHbWlxVEtqNDF3UGVnNWNsa09oc3czdmtUTCt6RW1sM3RT?=
- =?utf-8?B?VnQ2VHh4K3kxZFVDVG5hZTNNaDZlQk1DeVBsSlVMUHpORDRjdTRCTG15MGNJ?=
- =?utf-8?B?a0dtRDZhK09OcnltZUl1bTlTc0FjQTUrdU1KMGkvcHRNWkljZzdOdnVkUk14?=
- =?utf-8?B?OVYvdm5RekR1aEtjYW5rZlUvNUhKendZblAyWFdyQUZpNHltZ1RUSktYZjdv?=
- =?utf-8?B?eVZxL2RTVisyQkNDS1gvMTk4V0Y1OWFKSkFhT2xBY1kzUnEzbG11czkrRlNE?=
- =?utf-8?B?NHg5aUx6eVViS1J3Vjhzd0lJYWd6NGlDQm5rZjVPSnF6bnJOYkZXV2VScGEx?=
- =?utf-8?B?UUcxSW5ZUnpnNE5pbUhEYVB1K1djMng5NEo5V2JMRlBDVmthTlh6U2FHZlh1?=
- =?utf-8?B?N1NmUGlzSmNqVVNJeUNWRTFCbEZHcm9Icy9lWVQxVkVQUy9FZjRaRkxnNjUx?=
- =?utf-8?B?ajRKRFNoZTBYY1JPa1FUaTRORVFWUm1vWVBJRnVUcjAyaC9oSXgzUnZEOVlm?=
- =?utf-8?B?RU84elBHR01tMkVGcEJ3WFJMa3Z5Zk1JUUppVVFjTkg2aFBnOGY0RUtWTkt2?=
- =?utf-8?B?UU5RVFhDdE5pMXBpQzl6SnIwVmJwRmxRWTVuaVVlZnhROEsrS1RnT3psZEhp?=
- =?utf-8?B?dFl0bXA1NjMvZkhmbXpaenFTRnBZam13bExGajN0Wi9PNEV5OGFpL3FnbEI5?=
- =?utf-8?B?bWVnTWFxNXNkUE5hT016WnNMMy9wc1Qra29ZUnRpV0pVYjgrSGQ3My9acXFS?=
- =?utf-8?B?bUFRTUdRZDk4K2ZXY3JrVkpYeWl2MTRHZjJLTW9SUFdpVzlTM2F5VWJ1TndM?=
- =?utf-8?B?TXBLVFFEN3FqcldORVpnNWRlS2ZaRi83MjdhU3dZSjlnaWovdmZjemRTUUdu?=
- =?utf-8?B?T042WWZVVEdUamVUQkxnMUtLYnlOaFFMNXBlRXhmbFlnV1l5Um4zVE9EYUVC?=
- =?utf-8?B?aEFBb1c4SDEvMDVxWHBQb0ZtVWlHakQyQitCTGxrc3VLbG1sNjFFNXBYOUxM?=
- =?utf-8?B?YldIUGtnUzF3eEpLZTRvOFBQWVZzRVVEay91UUVhTUNKeGZtK01yaFgwMmVV?=
- =?utf-8?B?cm1GcnVFdks0d2NWTGhDSW50K1dBOTRDTkxYZjN5b1JGRVJueVpka2dBaFRk?=
- =?utf-8?B?NU92b2xBUXJ1VkxvOWlmNDBqeFpiZTNrbTZqNHJHelRsVjFJM3Z2NzhVMGxK?=
- =?utf-8?B?TjM0WnYvcUVtQ0ZGYUFPbEYxMFJyZEVPcUpzeXJRYUt3eFppYkxJaDdvVW50?=
- =?utf-8?B?VkJPM2gvZ0xwZVltTUdIbGEzODFxSVlhWE9NNEE2aUlYZlRLWnhoUFFVdXZp?=
- =?utf-8?B?QVFYM2NPUG5nYWtDV1N5aHBjS0E4NG1oKzZseGtlaUczRnZqMFFGT25vMDBu?=
- =?utf-8?B?YjN3eVQ0cTA3K0dkaHI0cGNuNzdsaVpQbm5ZbXN5U3BvT0FBK2V6NmVoZmtm?=
- =?utf-8?B?ODN4M0kvakcrUGwzZmswTng5cDJ2U2pYZ1lsaHVYZTJsc1NBOEN6Y0ZqT0ZH?=
- =?utf-8?B?WW05dE5zM2tFTnpVSkY4aEt3YTJlS214MjM4Q0tkTFRsZVpyUzRUWlZid0hv?=
- =?utf-8?B?MTBYMGtsZlpFcFlWUE5EUGQvN1NWaDlacVlNb3lVeGpld3lub2xXRlc3QzJQ?=
- =?utf-8?Q?HPjPTjqI/8FDbkV4=3D?=
-X-Exchange-RoutingPolicyChecked: YxlAlE09yuH6xclLehPOnMt7JYEGtazVY0vk7q8XZCUa1d1+MCwhekj/NdFYJi4lFOaptoSOjQI7EFwb7+Wls1L+68D18R1a4rjjcagprGIfsqLyN/oguOcDt2FwJvSoXQZ4s0Dm4rTBiOUr5Mt95Lktc3uqPsgQYKMV903I2Q5eYEQo4Gk2Qru7k04NAonCZGSWToqIIBGKz/Oxy+C0VKifiQJt9ZQ/hjgs/hBJuZxcjt5+UOcSERSjJrvTRHjM+dO8oQJhoXT1o+wlKU9BRiPJpCNfyOAKorSMpqvVUAJM+Lz0V7ksfx/03ncgWV/FWYe6MKPRyiqHI9ztvHsimw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: abe14fd0-2e67-4b0e-9650-08df2e017e79
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB186312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 16:53:26.2592
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RFBjj3KyMV0YI5xC8BBh9Rtlc4NUHzxy4cn7+wIAonqh/CStBLZ1+OAmeWQj+NU+CteilHazC+VOwdDs6s0W5JkO8K882r0Yca8BF92y4is=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7753
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOy07FIBAG4Fc5YS0KFGhx5XsYF1ymp2gFA1iPO
+ em7S2s0tY3LuXz/zBVlSB4yuj9dUYLJZx9DLeTNCdlBhzNg72qNGGGStEziMmbcx3GMHzgGzDv
+ ZU6M7YwxB1bwl6P1lzXtEAQoOcCno6XuS380z2LLELbtGZ8Am6WCHpfWzffeqfVjmg88lps/1t
+ Ymuif98MVFMsFKm59ZS2zL18AIpwHgb03k9PrFfTgmhe84qZ85RxVtjJGcH3mx5u+dN5dIJ5lT
+ XdMo0B843nLI955V3FjRnSkjh9IGLLed7LiqHVtqGUMd7Iv7weZ6/ABqCo8jjAQAA
+X-Change-ID: 20260726-tls-follow-on-486f1ba8bbb0
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
+ Dave Watson <davejwatson@fb.com>, Shuah Khan <shuah@kernel.org>, 
+ Qingfang Deng <qingfang.deng@linux.dev>, Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ sashiko-bot <sashiko-bot@kernel.org>, 
+ sashiko-bot <netdev-bot+sashiko@kernel.org>
+X-Mailer: b4 0.17-dev-9c833
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6515; i=cel@kernel.org;
+ h=from:subject:message-id; bh=Sh1mWDuUw2qFcpb4nVpa3/uH3MCwKiKo+z9qMCLkCiw=;
+ b=kA0DAAoBM2qzM29mf5cByyZiAGrWS3nISENHJ/+UaZrUnbDb0XhpuEnGFF2hQUsfhOo8+fkRZ
+ 4kCMwQAAQoAHRYhBCiy5bASht8kPPI+/jNqszNvZn+XBQJq1kt5AAoJEDNqszNvZn+XflcP/RdK
+ 4o8S/aKHCRURDRQx1FlucX5Xn7OSu8Qxwcjb4qwIlgEL0XTbAhOMpEXuTw3EeRxH4P9J2hW/qtH
+ SLio3SPbkE+D3CCsPhCIQJf9TwkXzTjMzj+jM59Jk9Jx8v226SOtvFvj7XWLeh29b5BzTncFkDK
+ 3BAHZKzH6mLshDGw/BP7FnkuzevTvIcaooSqHqV6EUw6ItMNtKb0MIyOLqVZL/OTbJ3Tr5cvUeK
+ UsQE5BsVRaopI8cNuPVJ0aZWd47aIvlMs9jm7YteGxoFkarN7H506Sm2+1598bVswwbdM5whb9M
+ O3t3dkCK2lW4a2tz3Dvib0a76Qs/SjZebJjoA39gloEcu+hIGk7a7QbsK2eXEEnEwfLG/Mae0vZ
+ xDD8Fnowib9Er6TL0aDp7iVDskkNPPEiPGNUbCGtz1UXd2x3qXLyTgZmWurAPEnNL0xYIxQ+DsU
+ XNcN8uT7v4XgiA3ocFbUEipZmA8uMQVBxCuOzQXKPv9HlvmzIEg6SanbDkK16GODbJz+VHJO3IX
+ 8aQfYrOcIJ0SCwKPrq+kO6lsR3KhQUjKtn0vSNhV8SFvRTZNi989IuvahFWpleH6RlKAKhR4XZc
+ WhRxwtJbNuEuvQbbOmevRxnmd9F2zW0aHr9uJMsjdTiUv7+HjTrkv7RZpnJHFpi6Xrdpbj14ZVG
+ 0bF3P
+X-Developer-Key: i=cel@kernel.org; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
+Commit 3be28e2c9cd0 ("net/tls: Consume empty data records in
+tls_sw_read_sock()") fixed one reader. TLS 1.2 and TLS 1.3 both
+permit a zero-length application_data record as a traffic-analysis
+countermeasure (RFC 5246, Section 6.2.1; RFC 8446, Section 5.1), so
+a peer that pads its stream emits them by design. The other two
+software readers still mishandle them. splice(2) reports an empty
+record as EOF, and the caller tears down a connection that is still
+live. recvmsg(2) makes no progress on one, so a peer that streams
+them holds the caller in the kernel past SIGKILL. With MSG_PEEK or
+async decryption, each record is also queued on rx_list, which
+grows without bound.
 
+This series supersedes "[PATCH net] tls: skip empty data records in
+tls_sw_splice_read()", which fixes the splice case alone:
+https://lore.kernel.org/netdev/20260930052636.166007-1-qingfang.deng@linux.dev/
 
-On 10/16/2026 8:18 AM, Luigi Rizzo wrote:
-> libeth_rx_alloc() always allocates with GFP_ATOMIC, including when idpf
-> fills its Rx rings at open or on queue reconfiguration. That fill runs
-> in process context, right after page_pool_create() and before the
-> queues' NAPI is enabled, so it may sleep, and GFP_ATOMIC is needlessly
-> restrictive there: it can neither reclaim nor compact, while the initial
-> fill can allocate tens of thousands of buffers across all queues.
-> 
-> Add libeth_rx_alloc_gfp(), which takes the allocation flags, and make
-> libeth_rx_alloc() its GFP_ATOMIC wrapper. Use GFP_KERNEL for the initial
-> fill in idpf.
-> 
-> Signed-off-by: Luigi Rizzo <lrizzo@google.com>
-> ---
->   .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  7 +++---
->   drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  9 +++++---
->   drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  2 +-
->   include/net/libeth/rx.h                       | 23 +++++++++++++++----
+Which fix a reader gets depends on its caller. splice(2) and
+recvmsg(2) are system calls, so consuming the record and testing
+signal_pending() is enough. A signal ends the call. An in-kernel
+caller of sock_recvmsg() cannot take a signal, so a flood holds
+that caller as it does today. Only tls_sw_read_sock() gets a bound
+of its own. Its callers hold the socket lock across the whole call
+and cannot act on a signal, so nothing else can stop the loop. A
+count of consecutive records that deliver no bytes supplies the
+bound (patch 1). The count is scoped to read_sock deliberately. A
+flood on the other two paths costs the caller CPU time and nothing
+else.
 
-Since libeth is outside the driver, it may be better as a separate patch?
+The series changes user-visible behavior. splice(2) on a
+nonblocking socket, and sendfile(2) from one, now return -EAGAIN
+where they used to block, as they do on a plain TCP socket. A
+splice that reaches a control record behind an empty one now
+returns -EINVAL rather than the zero that was the false EOF. A
+nonblocking recvmsg(2) or splice(2) that has copied nothing and
+finds a signal pending after an empty record returns -EINTR. A
+recvmsg(2) that has copied data now returns at an empty record
+rather than reading the records that follow.
 
->   4 files changed, 30 insertions(+), 11 deletions(-)
+SO_RCVTIMEO does not bound these calls. It is applied at the
+reader lock and again on each call to tls_rx_rec_wait(), so a call
+that keeps retrying can wait past it. recvmsg(2) behaves this way
+today. The retry added to splice(2) extends the same behavior to
+that path.
 
-Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Tested on x86_64. The tls selftest suite passes, 940 tests with
+no skips.
 
-Thanks,
-Emil
+---
+Changes in v6:
+- Drop the empty-record cap from tls_sw_splice_read() (sashiko).
+- Drop the zero_len_splice variant that reached the cap.
+- State why the read_sock consumer cannot bound the run (sashiko).
+- Name the later patches the O_NONBLOCK description relies on (sashiko).
+- Note the MSG_EOR change under MSG_PEEK in the recvmsg patch (sashiko).
+- Link to v5: https://patch.msgid.link/20261014-tls-follow-on-v5-0-e76c301d4f05@kernel.org
+
+Changes in v5:
+- Restore the v3 data_ready work item in tls_sw_read_sock() (sashiko).
+- Queue the work item on tls_strp_wq, not system_wq (sashiko).
+- Queue the work item only when a record is left parsed at the break.
+- Skip the work item's callback once the strparser is stopped.
+- Reword the signal patch: -EAGAIN needs a pending signal (sashiko).
+- Cap consecutive empty records in tls_sw_splice_read() (sashiko).
+- Define TLS_RX_NODATA_LIMIT above tls_sw_splice_read().
+- Add a zero_len_splice variant that reaches the cap.
+- Link to v4: https://patch.msgid.link/20261012-tls-follow-on-v4-0-8cea429565da@kernel.org
+
+Changes in v4:
+- Drop the data_ready work item; the reader release announces (sashiko).
+- Return -EAGAIN to a nonblocking reader with a signal pending (sashiko).
+- Add a Fixes: tag to the low-water mark patch (sashiko).
+- Add a zero_len variant that pins the low-water mark patch's behavior.
+- Link to v3: https://patch.msgid.link/20261007-tls-follow-on-v3-0-6d52d98389b3@kernel.org
+
+Changes in v3:
+- Run the consumer's sk_data_ready() from a work item (sashiko).
+- Move the sync decrypt of empty records to the signal patch (sashiko).
+- Put the O_NONBLOCK patch before the splice retry patch (sashiko).
+- Reword the O_NONBLOCK patch description to match (sashiko).
+- Say that the recvmsg patch does not bound the receive loop (sashiko).
+- Add a patch that returns copied data ahead of empty records (sashiko).
+- Put the zero_len skip patch before the coverage patch (sashiko).
+- Use poll() to check for records left on rx_list (sashiko).
+- Link to v2: https://patch.msgid.link/20261001-tls-follow-on-v2-0-2dd1947bb642@kernel.org
+
+Changes in v2:
+- Bound no-data records by count, not elapsed time (Jakub).
+- Drop the tls_rx_empty_data_rec() helper (Sabrina).
+- Keep the strparser anchor out of tls_sw.c comments (Sabrina).
+- Split the recvmsg signal test into its own patch.
+- Drop tls_rx_intr_errno(); a nonblocking reader now gets -EINTR.
+- Say why do_splice() misses the socket's O_NONBLOCK (Sabrina).
+- Point the recvmsg patch's Fixes: at the commit that added rx_list.
+- Reuse the new zero_len helpers in the existing fixture (Sabrina).
+- Check errno unconditionally in the zero_len tests (Sabrina).
+- Split the splice crypto-error fix and its test out (Jakub):
+  https://patch.msgid.link/20260806-tls-splice-crypto-fix-v1-0-a2624005a286@kernel.org
+- Link to v1: https://patch.msgid.link/20260726-tls-follow-on-v1-0-99bf4cc1c729@kernel.org
+
+---
+Chuck Lever (9):
+      tls: Bound consecutive no-data records in tls_sw_read_sock()
+      tls: Check for a pending signal after an empty record
+      tls: Honor O_NONBLOCK in tls_sw_splice_read()
+      tls: Consume empty data records in tls_sw_splice_read()
+      tls: Consume empty data records in tls_sw_recvmsg()
+      tls: Return copied data ahead of a run of empty records
+      selftests: tls: Skip the zero_len tests when TLS is unavailable
+      selftests: tls: Extend coverage for zero-length records
+      selftests: tls: Cover splice on a nonblocking socket
+
+ include/net/tls.h                 |   1 +
+ net/tls/tls.h                     |   2 +
+ net/tls/tls_strp.c                |   2 +-
+ net/tls/tls_sw.c                  |  98 +++++++++++++-
+ tools/testing/selftests/net/tls.c | 261 +++++++++++++++++++++++++++++++++++---
+ 5 files changed, 340 insertions(+), 24 deletions(-)
+---
+base-commit: 05b5019b01fb9443b09ae4ed34af1135a80a84c8
+change-id: 20260726-tls-follow-on-486f1ba8bbb0
+
+Best regards,
+--  
+Chuck Lever <cel@kernel.org>
+
