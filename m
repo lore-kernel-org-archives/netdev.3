@@ -1,99 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792423041;
-	b=TE0+ij4stB1XuRml7Tonrtxv0kturUidZGPurJot4lk6jN4ZU42A9jUluAagUHo5nmAu
-	 E3DcGYyUURol9Fs75/Mp2dM2E8P+Lrb/rzE9NchFna5BsIIM4DTPf5YiBeWjUnYgs5RMt
-	 M/6NUR+TzYZt/txZY/Qoh1Yg2ny6kUPY0eBaNMqq9XNtkslhYRNCd8Ni7dBn9nkRM+FkO
-	 oE0QFZzQWK0ldkADB/3CgLaGCK3VYhvYHKCDXjE+Kgsjjf/dMSuVkXw6tbWoVC6d9Bf63
-	 E37tpWr2hUe/PkizcvlfPGU0n+YwsS2NQRB58zLUmhGY2jhB0GvI7NQfXtAtyrRBWIw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792423041;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=g80TJgftAYOuY1eEY8Pj3cKxe/RJlcWG/Y9dI5fdM0I=;
-	b=0RBeZSM7UzHSvjvAF96CPpPcPNsoKeJv9qb3F4yDTt1jN/z52ZS3CUb/vBH190LBABab
-	 rpr5kHjv8kVswf9oxw8+DxYQvxE73KPep/TpL85xfOSPLQW65HEwE9VDC7ghGBQV5jtJE
-	 8gGbMttrJ7/OxpWpJR0yw0S77RodODeHYNpWdaoT7CLUyVR1QMHbiZRM495xvHbIa5XVi
-	 Et82CaZiF1oU4+HCJ2J6AkcuLNhXZl51nNLQA4ahakL6fYmgKETvnD5rZFDHB1+71Z40h
-	 QlMPW2AItWYkzF+Ign4iGndGIJ/myxyB+T7+vHpXFNmVxnCBVeGpjZbbCIck68Y5nOA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ezLXwHIz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792422189;
+	b=MgVyFFLwve1eqfAJ6gRb2atNoYRpL/hiPnqpsYUBamJKgNMx/XXBIy0phwmEj4SNZ/fz
+	 TWC99Q58uhm9haAEb5mRijECozMpi32kCwVkJNvWc1DWp06vBzyJuYjTm0IMDSM/d3YBQ
+	 qe+8w8gbAlDXxQU9muYZm4WhLL3lJV7YKjZ5/TxSvxLwTswwM00uLu+AldnYx61tG1OrZ
+	 GcEzMCdRe81/uixS0KQ/0HRQdLT9uw754eg8zIvSeMwiokHA8B2FHLsEmoGMphl/NMib7
+	 OnAZCQtcO4m3DweBPXXAozc6aoLvHbciGBew6oAHdfkfIRBMqu6jXqS3Gd09A1ulzOQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792422189;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=c5/ToZfD4LQ3CMw/UKyWzuZvE6sEZcZAHHntN38m0WA=;
+	b=ChlA+FtwRt0iPXV40aZYjAergGEojJT1gfAgylECsHH1tZdz9TSIqZlb2VMEyzqhd7K2
+	 hcaT++sTg4vOyw0sxm0cHFo7z+EIOHUn8a7STiOtYUhASHutLLHnFgdwwULNmmKqpGaSC
+	 U8XDzmSCsiZ01MEoFEIZ5C8sCTw24ClMRSE6ZvpNUfEZsCWnyu7h5lTRuV+36MBS0kjo3
+	 eRbgK6vkxaZwUAIOtnuxo0n23IcG56yFXcduFkmqGttx+E/w6VjAOfRW/7bX8D66b0c2q
+	 Vxuk4a+69IXMTvBXJHTHp1Dk59yGDhQMMQNFdyPErR/5lnmbTrIlqm/zVvEznctxnug==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b="cHon/KjN";
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A94D60A0AB8
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:17:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A94D60A0AB8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5616C607D355;
+	Mon, 19 Oct 2026 15:03:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5616C607D355
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ezLXwHIz
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so18007a12.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 08:17:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792423040; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HOZRkbGxCNCS89UOzN3cT5ZCXLcYe68QLIyEMW3ixZUWBIkeqNENN5ALVOQBQF5GMP
-         Wt8gHo7CkiEDTolqDZtKLaRXKoL2Lq3Gw6HXchezB3/JFFAINGzCDFrPXFBWf1TiW/O0
-         E1KDgE4x3DkcbuNANAJt15iaTTo3DoKDv8n6MZJlfwQS7YE2R/VXga7KmzMVlS9mU54C
-         lkCZ+H8Xbhs1zulU6YoSb1Hy2jzQuL8rDCsuCiSxxyoTrS0u9H+PN1u9ctIZUZyBGGfo
-         U4GKIp60LInt2LbTBObXpf6fyCAk1leO7E6W3se21bzzwCuE/2PbAbunRrlhrgIBEPxV
-         wvEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g80TJgftAYOuY1eEY8Pj3cKxe/RJlcWG/Y9dI5fdM0I=;
-        fh=1qiJ3F5uBo3fC5LI1LrOGTcuGDFIRg99y0nYm63EnrE=;
-        b=CQfHtiim3d5jrhfUYD9a8esc8m2X5ezWfG+LiFUCcjIy7iYaZoSSNwn6Oq9UH0isaO
-         zH0E7iuOoouUVCa+XyY83dIwRZmuKP6ONfS57ZWD/MKipEthdYgtanA1wIHuAkHa9KSG
-         7zVtJYUjwclxcfNdwZmXt98E8SSww0vX1g/8iXCGxFjg5oqQkPxSzYMwEhAXdQ5vI8uI
-         Cr3yH9ES7qFsKhz0yiBcR8BOycd+EiIvimJmuPnub9CVcS6cXQ7h0dcbzoplMFNSRmdB
-         ptjsnfFK1R3ZMM2lnuM0u0Dwx5oDSVhh2XfCsgmFPrYecK2+2fCCc5eqYoyNbzpXZtTV
-         Oyvw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792423040; x=1793027840; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=g80TJgftAYOuY1eEY8Pj3cKxe/RJlcWG/Y9dI5fdM0I=;
-        b=ezLXwHIzPfS4sEb4a/lZXhXGEhuDtOUs1if1P/9Ak+Qq4maPAojdQ/9u0w1JCobLs6
-         X2qdgAH/pLcQQVTxacqSHUYx6U1JRUcIZn4tCqNb3LkXxjpcgVHNqa3WoTOGvqyOills
-         BiT2SHvEyuzjoiUDwEqrkKaqqIzh6GuaX4ulvYHeJnHQYLR1ElbgGP4U4xx7Lagi2fO0
-         Vynf2ZaV+Wzz0LcbAkKRjY0IP9jZkLPwazVoJg22qEttAj4FtBF1o+o2OJakE541fU8u
-         FgKrm31Dik2dQYyZFm8ilfQpMr5pGVDf4JR9znCUx7KiyvzqmlL+y1djjhWdf7HTbGCf
-         568A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792423040; x=1793027840;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g80TJgftAYOuY1eEY8Pj3cKxe/RJlcWG/Y9dI5fdM0I=;
-        b=aAjiqk/K6pxPSkC/Hs5PBp0TrB1TS+5LPw01DGluFWqpx8DAcbFZPLQYm2Igjhx9XA
-         ywofGQ2Zy/+cJbjECVNRQOzi8xupsmIUbRPubG1aieARdo7D5Dj1OKB/QeMuGXpiWlMY
-         OQ7gU85OUbyp86nDXA3YyDn3u2eoHaMCPZAzPOW1MwAHUnHy2QvmIwyaAfTTqUKNTp3n
-         p0gq/SJJ4y4AY2ajPOF2rOsqyCRqclQfJWB/S/02PVb+szszPErUfoUHT2/XL7SK2cWA
-         KSgMSzHUjpCACjBMMADuTyRloAnKJh+B7hsfJRbhe4uH026mHUEcmuU3OMQB+UdpDIoL
-         vVcQ==
-X-Gm-Message-State: AFq9FYLF1T4URVFYs055PGDWWpVloLZICbM3G+OdqAQNLbDzb2OP9Nfo
-	2X4cZ7EcTd76oP/krL8DKF0nKSi06Z4R2gNrh1Z/AI6fxLYLOzwd5x/IJY7fIE9VLXC6WMoJ8+a
-	RLyeURf4GMhl1FbRONfmV5b8YtIfikSHGbv1Eoky9
-X-Gm-Gg: AYBFou26x5nSTk1s6ttTRYoCNVoCe7HlbIi8OjPf2DwBU04XQ49ewEgy8KHBM0ZveYY
-	tywCxlGZXg33n+jan7nRlDA7fZe30HIkunUzIWcYA2FLDHYsap9XIblnrk5fmhN8+GcwJH2qiTE
-	z1JXafV1DsjW4X9pVpu7SfFC+CME7MABTbFybFL/dq7w/YWlwa9gBFD2D7cTm/S6a32LirxWOeR
-	GGxFtCCE8AEBywo8Y7AbV9oCjAPUiuPL/RCBVpLQBxiXrOTDQZ3EbrW0fi3kPgFnU5p3MeEOpmy
-	3z30orpoaauOz5pRquVItGe5zAU6fUx+nmMIEq2oARgG3biujgXxFosWTU9aa0ABXlUC1X7ILOA
-	yg1PpiNJobA==
-X-Received: by 2002:a05:6402:24ca:10b0:6b1:cee4:8d8e with SMTP id
- 4fb4d7f45d1cf-6b3c73e2b3amr54877a12.14.1792423039402; Mon, 19 Oct 2026
- 08:17:19 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=cHon/KjN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792422186;
+	bh=c5/ToZfD4LQ3CMw/UKyWzuZvE6sEZcZAHHntN38m0WA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cHon/KjNKCRlfcO6PzWmnwvquPNdLNPJV16BWf5IWyGGaa6cNbsKy05dU5/hrFN4j
+	 KLoKa9paVT62GDBqJTrWDddldc5ow4eVa0iYcw3dJ9RAyoYnBuSWcSs7jD/2wq7Tf/
+	 7O4eDqfYsoMYPWnXysy/DeI1kCY4Loz1YH0M70wna3HjY/40lpUnIQlrvMjmkf3XO3
+	 Hd29zwSSsCEs9MF8RIoeo390zSY3zqQuPlOgXQG6jE+mS+p+okr8lKTeKfWH5/LCol
+	 vFHVZpd4rCuvw2r2PXP9lO08DeQ431U8/fFZpTN5g9jA4PGJx0AGROJ7hl4PEUe8T9
+	 JYvXPlekaJN3A==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 0041560076;
+	Mon, 19 Oct 2026 17:03:05 +0200 (CEST)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 06/10] netfilter: nf_reject: initialize IPCB at inet ingress
+Date: Mon, 19 Oct 2026 17:02:45 +0200
+Message-ID: <20261019150249.1879516-7-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261019150249.1879516-1-pablo@netfilter.org>
+References: <20261019150249.1879516-1-pablo@netfilter.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,51 +71,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261014173945.373295-5-almasrymina@google.com> <179209666252.434549.1850964039919625643@kernel.org>
-In-Reply-To: <179209666252.434549.1850964039919625643@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 19 Oct 2026 08:17:07 -0700
-X-Gm-Features: AclHuK-S5bmzvfsy_xN2FySxs-CZRN_0ke8ew0HfEdZQ0PJrgt9ujVcZv4HD-hY
-Message-ID: <CAHS8izPkWy4mMj+mDyHq8rKfthzj3n7dj7=Phzq2sut79JydkA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 4/6] net: skbuff: replace __skb_frag_ref()
- with symmetric skb_netmem_ref()
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, ayush.sawal@chelsio.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, tariqt@nvidia.com, horms@kernel.org, 
-	steffen.klassert@secunet.com, herbert@gondor.apana.org.au, 
-	ncardwell@google.com, kuniyu@google.com, john.fastabend@gmail.com, 
-	sd@queasysnail.net, ebiggers@kernel.org, kees@kernel.org, 
-	aleksandr.loktionov@intel.com, petrm@nvidia.com, u.kleine-koenig@baylibre.com, 
-	j.raczynski@samsung.com, wang.zhan@smartx.com, willemb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 15, 2026 at 1:37=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The commit fixes reachable page_pool refcount imbalances but
->   has no Fixes: tag, so the fix will not be picked up for stable.
+From: Kyle Zeng <kylebot@openai.com>
 
-Yes, this series completely cleans up the skb frag refcounting IMO and
-makes it all make sense and touches a lot of the skb frag refcounting
-call sites. It's a bit too drastic to mark this refactor to net. I'm
-suggesting just fixnig this forward for net-next.
+The inet ingress hook runs before ip_rcv_core() and ip6_rcv_core(), so
+neither IPCB nor IP6CB has been initialized when nft_reject_inet passes
+a packet to nf_send_unreach() or nf_send_unreach6(). skb->cb can
+therefore retain metadata from an earlier protocol layer.
 
---=20
-Thanks,
-Mina
+For IPv4, icmp_send() treats IPCB(skb)->opt as parsed IPv4 options.
+Stale option offsets can make __ip_options_echo() copy an
+attacker-controlled length into its 40-byte reply option buffer and
+overflow the stack. On an unpatched v7.2-rc5 kernel, the IPv4
+reproducer produced:
+
+  BUG: KASAN: stack-out-of-bounds in __ip_options_echo()
+  Write of size 255
+
+For IPv6, icmpv6_send() consumes IP6CB(skb) as parsed IPv6 metadata. It
+always uses iif for source selection and, when MIP6 is enabled, uses
+dsthao as an extension-header offset. These fields must not be stale.
+
+For NF_INET_INGRESS, clear the address-family-specific control block and
+restore its input interface before constructing the ICMP error.  This
+matches similar initialization normally performed by ip_rcv_core() and
+ip6_rcv_core().
+
+Fixes: 117ca1f8920c ("netfilter: nft_reject_inet: allow to use reject from inet ingress")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Co-developed-by: David Lee <david.lee@trailofbits.com>
+Signed-off-by: David Lee <david.lee@trailofbits.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/ipv4/netfilter/nf_reject_ipv4.c | 5 +++++
+ net/ipv6/netfilter/nf_reject_ipv6.c | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index 59ec465a9df9..7cb33af671e2 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -357,6 +357,11 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
+ 	if (!skb_valid_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
+ 		return;
+ 
++	if (hook == NF_INET_INGRESS) {
++		memset(IPCB(skb_in), 0, sizeof(*IPCB(skb_in)));
++		IPCB(skb_in)->iif = skb_in->skb_iif;
++	}
++
+ 	if (skb_csum_unnecessary(skb_in) ||
+ 	    !nf_reject_verify_csum(skb_in, dataoff, proto)) {
+ 		icmp_send(skb_in, ICMP_DEST_UNREACH, code, 0);
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 07cdaa10da0d..5e08d8529cc8 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -444,6 +444,11 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
+ 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
+ 		skb_in->dev = net->loopback_dev;
+ 
++	if (hooknum == NF_INET_INGRESS) {
++		memset(IP6CB(skb_in), 0, sizeof(*IP6CB(skb_in)));
++		IP6CB(skb_in)->iif = skb_in->skb_iif;
++	}
++
+ 	if (!skb_valid_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
+ 		return;
+ 
+-- 
+2.47.3
+
