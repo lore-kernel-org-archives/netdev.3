@@ -1,97 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792445955;
-	b=h3IC4297YwkABgk8VscQNThtaf9WQc06qCoxsiAt/OqpwXVR6laq2HMNnb6xnyPr4/K8
-	 WxdeX4ThV7vWXh8Dcmt2U/5mYHUp+pDoMyanpSbG3rEL+Y58MgNRJwYPu5QVlDDFkPR6P
-	 WfkBKWP1TmqcfHXq2j6whRc+bYqf9j2jz8xlwxo6IYVkzdONlcV1WOZzSWUETAjqPk1lP
-	 0PlaRQkz7Nai1Kmrx2JhklyiI0wyuQBs/g+s0XeGGmaf6limHbqHnVs0tb2W2g4QxgmYP
-	 1aLaG5sDFCoSplBXXs6J4v9vnoFCoX+hzRK+zAGKNoNbn8FWCiZnLs1+jsWrlfjdoxA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792445955;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=YdIEvH0szPm2mof3XdeDVOIQnMVjdWNpvjqDvVaEY5o=;
-	b=DOLrEE6d/5Fg7Raq7BxXFouNVq6ZHwfNUolW0tpMJ6vxFc6czGg8xUlMjFDtQf8kYk/I
-	 UTsyOBGnWza+2ZQnaGnLVODqf3WwvDAJ/5fqHfNY4g3rPCsYDG5UC9Cv/Q9gZJgLzNgj0
-	 9Od/8+EHagtssmJcIkM3M1eVn1317cw4cpVuprZeKDXNoEeWtcAqHZum3uJTfVO02UiT0
-	 VF+NCuJxGtDoxLMHNsDuWvaUtGpy8nwTnGsnzUOpH7nNRVR+R4ng7v2N5lmNCzZu1ZvqO
-	 SjmXPqkbH+x52Lp0GM7PDr/h6+PxR95SY6ib1tlLfa80hopASlBQGpT4JxdU/vwIpVQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Ix4y531f;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792445978;
+	b=uZMnn4JiH8DrOQKv9Q2eVGYHSBBJfKzNluxPF1+av88cgHYhvhJcF62GB7ATQIbuC7P/
+	 s2q0LLzqNYzkFXk6q1LIRP9hfZ0bNzewctrGPqCpUUIWMSez0tkoPFnM0G9zsFtrkiBAF
+	 EF5QIVmWSK7iMu2Z0RIawOjN2CW58Qea+GmRsdGvDRI5TisSJJrwuQEvdGmQhddxrCkH7
+	 enqc2qo42LS98wgUhqr0nSjRj5PdoaMvBhFDzpJVDyr/43V0WaY0b8qnqSpQCZQmldJDE
+	 3tBRhkZxi2rTK9eHgswYlZJuC653FV0F7BZaPj1soP+wFVapJsrdGtI8ZngD0J9naEg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792445978;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=UPFqQstS2ZI9d/LmUXF4gupNyOv5vMnDf08wB9sGsfU=;
+	b=XT+lmm38+NwhHhqVKR7C74wdDqF7hTCTMpA2tC4Ogada5YvOvBZUUEOlWHTUu0EdmCjr
+	 LWqSpN3tA1AZkGN8qPhPyhf+lQhNEXv80L2sAlz2Td8OZjaRbkv+hIKK4Q8iF2GVEFOWC
+	 pHfHRTTFTQxdTcMHnGT7Ogz92wfVQQ/lExZODIig2bq6wP23pwHQ75lXv6PD4isG+5xoT
+	 4pq1oqz4xzhHkZl3DZ2qoNEEzfRIUPsS5+NiD8A9zhP1XvPeTJBK6kEUXUwUPIHga9qZT
+	 An71T2lOEhM8A0E8iZZFFX4KmUOmIEvBcX4CJ/uJHh/WKzIw+U3sEc8OrmjzvFFmy3g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TcVWhDaD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE43606A31E
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:39:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FE43606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D66606A31B;
+	Mon, 19 Oct 2026 21:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=Ix4y531f
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-89f28c3ac7bso794055b3a.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:39:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792445955; cv=none;
-        d=google.com; s=arc-20260327;
-        b=k1DM/TOXpn30XosvGe/L8e2kBJzEUFrzInkyPsTlbFEuOLLIZpcoC8HGsOTtwRfZfh
-         DleLFa+xk6mIQvb86RjXunk0mkKtDbK2kU09jecHvd4Pp1dKk+PBFbxf1h+c03bVtkYg
-         iTZyo0M3lkB7q2ktqwMFo4BvChP8ufuRBqvimEmjuLWJ2W4bQm6831YI62CgQWhOvOB9
-         kk6GkMIWSYUkPpFq7xVZqoHVArwkr14I7Wj2ylXAgOwwKfMo2SFzy95mtzWkF656kF1l
-         BLdRyPULPV/VT7iWsmWnmxEnQcvNQJi8xkbsXWBYRu5ihQ6sewiIZr5LvxUvSGGAxxvC
-         XYlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YdIEvH0szPm2mof3XdeDVOIQnMVjdWNpvjqDvVaEY5o=;
-        fh=G5bKGl6+lfI/PxYHu3+KEOMWWD1aYkUh794QPz27BSU=;
-        b=i/WUvow2KT56APqIpzEHrk+qhf6scYCpvqM7ZeeRK2vHjgWT4EGBOL2KPzAcxUWqt9
-         Hh3BZ3XLOrq1dIpw9t/uLg9TK+SWSCXFtFKQ9uJHJWy7VAjJHmoNGRjHmfIdR5W6yJtR
-         B5SlKyFhpk5CGNuQE9I8qLzHhbsKeVtK2dWNFcWk+DXVrX4yKC1gRXR6/HRtV8tI3dh+
-         RyDdEci9zVnbcW/zzwWhRwzz2rSQ8eOlWj8rI8yjCrbeNGgoyD1ZKtx11JNxXse5MW4x
-         Kd9Pnf5FtykWpHAbAm9IdZ2zS7wYoBltwOmrlU+FeoKwvBPt+HZJh6ZRORRCalQxvo60
-         AY7g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792445955; x=1793050755; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YdIEvH0szPm2mof3XdeDVOIQnMVjdWNpvjqDvVaEY5o=;
-        b=Ix4y531fFH2LRlzr/qt2r0tTWy4UHbamabwB9nfj8hHvVXao3uSnn5SqW/tE891e22
-         ythou1cf5/KMlbs8XQeUkONh0fWtFAJphjqWOaUppfK66qrnpkh/2teQO1jlVkRXWFVq
-         63rdr5cDPba4k6d8nrX2MUtbx65RiHeQ3dzjU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792445955; x=1793050755;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YdIEvH0szPm2mof3XdeDVOIQnMVjdWNpvjqDvVaEY5o=;
-        b=D6r9d+GjNZg8ROMcf2gmLnjNR+pTx+N23C4w9vnOWypd9+Ae3PhrdqesP6XcUYrELd
-         ahMC40SfZmVyCsF9vwPuRJNUzDEHMppiYfeJNSOcBiai+scD/42icTPDOpntWVkjYxv6
-         6iVNb+KGfJwYXmf+pJ1P8Yqloc9NcAXlcNY1RdLC4xfO4wEhuICwfyrqpWxo6Ih7lUHU
-         1Hl8bM2BpGlGTnMM4t4P+a8WB/LzwzO/zThgb1i7WylxR6hW41bdI77E9ANniEeizDdf
-         gjcbx7Avko2W+z6ggsJ9qGf2+2LL/eNpObe4EWyFJK3TOxcYBZu8hWD89Qt2zOzOBD8Q
-         R3CQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwSAxgcf3hAMHKvgp0SV/XVlgL/JxPqQL+dIn+uor/TobmXq0OSdsXPawQ0EVcetwdDVnY+BGo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYImI3Ef2gCeIBCwY2POIMb+89qaU4LCJ18D9G/h+S/YiSxxPBF9
-	eku7l7a3ctWbAN7NXvvVBuaSP3e9k5Bg1oiarIpjxll+BVLWTIEDl/wKvgDCsXlv+D3piWsZvw7
-	n8PvZczCos6cRZIEk0H79m5dDV/TNOVQDVL7taQ06
-X-Gm-Gg: AYBFou05sJ+MIev1MpFCfm0JwWaq7EtzitxL1qeBaOrWaGht40eLjZw1lUxRSXCQLuv
-	4sE7YNzVaADiNjASyhVOhSmy0A6KLHfvHgb7YfTxxN218B/SLWH3k1LZchTV5UWzwt2qCiWB+B5
-	8HpFxp2Ii5E329vyyvAViQMPhUrWyRil5g+Z5TDdRrZ7MUgk9oOrzOrZaimfEZTVzZzmO/l96x/
-	aPAD2ovwQAQpeuN85aPRT1dY8dW9ZYyfSXLG1ZpuZKxKHZ7HDAXpO9DLoaWT93E6h1plyeDgP7X
-	F0EaBw/WDJ/Tb57DVKgO/Hq37RBNaP6dFBiJc5sY/32Sr2zd+IcUHak0MVlNvOYZInyiSo27i1v
-	6WdyGxJtqUJvUbGasODPjPfDDJSR6XhiCHBNTbkKBBzyx
-X-Received: by 2002:a05:6a00:408c:b0:89e:2154:befe with SMTP id
- d2e1a72fcca58-8a04aa2a249mr6685409b3a.8.1792445954768; Mon, 19 Oct 2026
- 14:39:14 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TcVWhDaD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCD71F000C4;
+	Mon, 19 Oct 2026 21:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792445977;
+	bh=UPFqQstS2ZI9d/LmUXF4gupNyOv5vMnDf08wB9sGsfU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TcVWhDaD3NrwY1P9KNGAIaRWOWeX4Rcdo8u0+Z/rL1zMv88ym24PjgZtnQePxx6Eu
+	 WpEn/4DGjQr+KcH/eziB6N8ggHvNSOyoZf7jnj3+UvmU/MCXgX4Az5WeuEcqRZqezv
+	 mfvOydcn4Sv8xuwcXdlrvFzYkjNXh71ambSt9kzWgZAri9v18DGNj02/XHtkl8RGSA
+	 yw5gRpHkQVx7YO+J8BI5bYiGMrnxqPrcDupIV2nhoMHS2d+iIfpJdIjgwTy1Q+8CkI
+	 PzNQIRvN0m7z8tz7vTI5hzWSvbB5PKtrSh1bFkFYbf+WCodSh7tM61RfYMGOrx18Ff
+	 R5Ror8bemtS0Q==
+Subject: Re: [PATCH net-next v2 1/3] net/sched: drr, ets, sfq: skip empty
+ rounds in the deficit-refill dequeue loop
+From: netdev-bot+sashiko@kernel.org
+To: victor@mojatatu.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
+ horms@kernel.org, sashiko-bot@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org
+Date: Mon, 19 Oct 2026 21:39:36 +0000
+Message-ID: <179244597608.3135.14866688728455017187@kernel.org>
+In-Reply-To: <QDISC-TIAE.v2.r0.20261015163454-1@mojatatu.com>
+References: <QDISC-TIAE.v2.r0.20261015163454-1@mojatatu.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,84 +64,236 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <QDISC-5RTM.v2.r0.20261015051735@mojatatu.com> <QDISC-5RTM.v2.r0.20261015051735-1@mojatatu.com>
- <87ld7t3kl3.fsf@all.your.base.are.belong.to.us> <CAM0EoMmL1Yjo67wOmOwWtfYLNrVFH7zSbgDtx2Rg+k3-Nu4QOQ@mail.gmail.com>
- <CAJ+HfNigAQTJ37tx_74jqPcCCwsk1XR5-reOo7i-u0xCKqF--Q@mail.gmail.com>
- <CAM0EoMnToUnKv9gSm=fxTj=t3BMXzu3=NDDFY3OvysnbdjCubw@mail.gmail.com> <87ld7twn5c.fsf@toke.dk>
-In-Reply-To: <87ld7twn5c.fsf@toke.dk>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 19 Oct 2026 17:39:03 -0400
-X-Gm-Features: AclHuK_v_qThEpQTS0k4SvxRYLmwbCwYIgn59ELw6lEuRTWz8aDuR5OJLtdOoCA
-Message-ID: <CAM0EoMm-uaKGGtvGLYiq_b22d+CNq4zFOD--y5hQ34tdnzv3rw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/4] net/sched/sch_cake: serialize
- reconfiguration with the datapath
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	cake@lists.bufferbloat.net, Victor Nogueira <victor@mojatatu.com>, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2026 at 2:39=E2=80=AFPM Toke H=C3=B8iland-J=C3=B8rgensen <t=
-oke@toke.dk> wrote:
->
-> Jamal Hadi Salim <jhs@mojatatu.com> writes:
->
-> > On Mon, Oct 19, 2026 at 10:53=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@k=
-ernel.org> wrote:
-> >>
-> >> Jamal!
-> >>
-> >> On Mon, 19 Oct 2026 at 15:47, Jamal Hadi Salim <jhs@mojatatu.com> wrot=
-e:
-> >> >
-> >> > Hey Bj=C3=B6rn,
-> >> >
-> >> > On Mon, Oct 19, 2026 at 9:07=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn=
-@kernel.org> wrote:
-> >> > >
-> >> > > Jamal Hadi Salim <jhs@mojatatu.com> writes:
-> >> > >
-> >> > > > This is a follow-up to commit 7cbfb180945c ("net/sched: sch_cake=
-: fix
-> >> > > > autorate reconfiguration throttling").  That change only stored
-> >> > > > last_reconfig_time; it did not address the concurrency between t=
-he
-> >> > > > autorate rate update in cake_enqueue() and the netlink reconfigu=
-ration
-> >> > > > path, which the original review flagged.
-> >> > > >
-> >> >
-> >> > You are reviewing a very old version - the last one was a v6[1], mos=
-t
-> >> > of these fixes are in the "no good deed goes unpunished" from sashik=
-o
-> >> > ;->
-> >> > I am about to post a v7. Maybe review that one?
-> >>
-> >> OMG... sorry for the noise.
-> >>
-> >
-> > Not noise at all - with all these AI dump it is overwhelming. Always
-> > great to have someone review. Sashiko will always find something to
-> > whine about - the bikeshedding it engages in is shameless sometimes;->
-> > I just sent an update.
->
-> Erm, I think you're confusing patch series? This one is not the one
-> you're at v7 on, Bj=C3=B6rn did review the latest version AFAICT (and I a=
-gree
-> with his comments FWIW) :)
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Sigh. You are correct - too many patches in flight (in this case both
-were 4 patch series and had "cake" in the subject).
-Sorry Bj=C3=B6rn - i will send with your suggestions in place (I notice
-that both sashikos have responded and bizare with all their
-bikeshedding skills they both missed reverse xmas;->)
+Critical: 0 · High: 0 (1) · Medium: 2 · Low: 1
 
-cheers,
-jamal
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> -Toke
+- [Medium] drr_dequeue() and ets_qdisc_dequeue() allow only one bulk
+  refill per dequeue: `scanned = true` is set at sch_drr.c:414 /…
+- [Medium] The new two-pass bulk refill in drr_dequeue() and
+  ets_qdisc_dequeue() reads each class's quantum separately in the scan…
+- [Low] The commit fixes a user-triggerable long busy loop under the
+  qdisc lock with BH disabled (the commit itself says ~1 s per drain,…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the sibling-
+  site audit in this series is incomplete.
+
+--
+
+net/sched: drr, ets, sfq: skip empty rounds in the deficit-refill dequeue loop
+
+This patch changes the DRR, ETS and SFQ dequeue loops. After a full round
+in which no class could dequeue, they now compute how many more rounds are
+needed and add that many quanta to every class in one pass, instead of
+refilling one quantum per iteration. It follows commit 8f735d64382d to bound
+the dequeue cost when a size table inflates packet lengths to 1 MiB.
+
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260819143213.57401-1-jhs@mojatatu.com
+
+> sfq has the same loop and is fixed the same way. ETS has at most 16
+> bands, so it was never that slow; it is changed to match DRR.
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch.
+cake_dequeue() in net/sched/sch_cake.c seems to have the same
+one-quantum-per-visit refill, and no patch in the series changes it.
+
+The later patch "net/sched: fq, fq_codel, fq_pie: skip empty rounds in the
+deficit-refill dequeue loop" covers fq, fq_codel and fq_pie. That leaves
+cake:
+
+net/sched/sch_cake.c:cake_dequeue() {
+    ...
+	if (flow->deficit <= 0) {
+		...
+		WRITE_ONCE(flow->deficit,
+			   flow->deficit + cake_get_flow_quantum(b, flow, q->config->flow_mode));
+		list_move_tail(&flow->flowchain, &b->old_flows);
+
+		goto retry;
+	}
+    ...
+}
+
+cake_overhead() starts from qdisc_pkt_len(skb). With a root stab of
+overhead 1048576, each flow can therefore be left about 1 MiB in deficit
+after a single dequeue.
+
+The per-visit quantum is also much smaller than DRR's minimum of 256:
+
+net/sched/sch_cake.c:cake_get_flow_quantum() {
+    ...
+	return (q->flow_quantum * quantum_div[host_load] +
+		get_random_u16()) >> 16;
+}
+
+Take the default triple-isolate mode with 1024 bulk flows from one host.
+That averages about 1.46 bytes per visit, or about 0.29 bytes with
+flow_quantum 300.
+
+Could one cake_dequeue() over 1024 flows at -1 MiB then need roughly 7e8
+to 3.7e9 iterations under the root lock with BH disabled? That is well
+past the 16384-class DRR case that the commit message describes as a ~1s
+stall.
+
+> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260819143213.57401-1-jhs@mojatatu.com
+> Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+
+[Severity: Low]
+Should this have a Fixes: tag? The commit message says this follows
+commit 8f735d64382d ("net/sched: bound qdisc_pkt_len to prevent qdisc
+soft lockup"), and that commit carries:
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+
+Without a matching tag, stable may take 8f735d64382d without this patch.
+8f735d64382d on its own still allows N * 4096 iterations per dequeue.
+
+> diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
+> index 8621d057edd9f..d6cb389a55f03 100644
+> --- a/net/sched/sch_drr.c
+> +++ b/net/sched/sch_drr.c
+
+[ ... ]
+
+> @@ -402,6 +403,45 @@ static struct sk_buff *drr_dequeue(struct Qdisc *sch)
+>  			return skb;
+>  		}
+>  
+> +		/* No class could dequeue in the last full round. Add the
+> +		 * quanta for the rounds still needed in one pass.
+> +		 */
+> +		if (!scanned && cl == first) {
+> +			unsigned int rounds = UINT_MAX;
+> +			struct drr_class *iter;
+> +			bool skip = true;
+> +
+> +			scanned = true;
+
+[Severity: Medium]
+scanned is never cleared, so each dequeue gets at most one bulk refill.
+Can a child's peeked head change between this scan and the loop's next
+visit to that class?
+
+prio_peek() polls every band again on each call:
+
+net/sched/sch_prio.c:prio_peek() {
+    ...
+	for (prio = 0; prio < q->bands; prio++) {
+		struct Qdisc *qdisc = q->queues[prio];
+		struct sk_buff *skb = qdisc->ops->peek(qdisc);
+		if (skb)
+			return skb;
+	}
+    ...
+}
+
+A netem band also decides readiness from a fresh ktime_get_ns() in
+netem_dequeue().
+
+Here is an example setup. One DRR class has a PRIO child with a delayed
+netem band 0 and a pfifo band 1 that holds a small packet. Every other
+class has a 1 MiB head and quantum 256. The scan sees the small packet,
+picks rounds=2 and raises every deficit to 1024.
+
+Suppose the netem deadline passes before the loop gets back to the PRIO
+class. prio_peek() then returns the 1 MiB netem packet and no class is
+eligible. Because scanned is already true, the loop falls back to the
+one-quantum path:
+
+		WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quantum));
+		list_move_tail(&cl->alist, &q->active);
+
+That costs roughly N * 4091 more iterations.
+
+The commit message says "a dequeue costs O(N)" for DRR/ETS without a
+caveat. The follow-up fq patch documents a similar limitation, but this
+one does not.
+
+Would clearing scanned and first after a bulk pass avoid this?
+ets_qdisc_dequeue() has the same one-shot guard, although there it is
+bounded by 16 bands.
+
+> +			list_for_each_entry(iter, &q->active, alist) {
+> +				unsigned int pkt_len;
+> +				struct sk_buff *peek;
+> +
+> +				/* An empty child unlinks iter; stop here. */
+> +				peek = iter->qdisc->ops->peek(iter->qdisc);
+> +				if (!peek) {
+> +					skip = false;
+> +					break;
+> +				}
+> +				pkt_len = qdisc_pkt_len(peek);
+> +				if (pkt_len <= iter->deficit) {
+> +					skip = false;
+> +					break;
+> +				}
+> +				rounds = min(rounds,
+> +					     DIV_ROUND_UP(pkt_len - iter->deficit,
+> +							  READ_ONCE(iter->quantum)));
+> +			}
+> +			if (skip && rounds != UINT_MAX) {
+> +				list_for_each_entry(iter, &q->active, alist)
+> +					WRITE_ONCE(iter->deficit,
+> +						   iter->deficit + rounds *
+> +						   READ_ONCE(iter->quantum));
+
+[Severity: Medium]
+quantum is read once in the scan to compute rounds, then read again here
+when the refill is applied. Can it change between the two reads?
+
+drr_change_class() updates an existing class without sch_tree_lock():
+
+net/sched/sch_drr.c:drr_change_class() {
+    ...
+	if (cl != NULL) {
+		...
+		if (tb[TCA_DRR_QUANTUM])
+			WRITE_ONCE(cl->quantum, quantum);
+
+		return 0;
+	}
+    ...
+}
+
+tc_ctl_tclass() calls cops->change() under RTNL only. It does not take
+the qdisc root lock that dequeue holds.
+
+As an example, say the scan computes rounds=1 from a class with quantum
+524288, deficit 524288 and a 1 MiB head. A concurrent change then sets
+that quantum to 256 before this pass, so the refill adds only 256 and no
+class becomes eligible.
+
+Since scanned is already true, would the loop then fall back to about
+2047 one-quantum rounds over all N classes?
+
+ets_qdisc_dequeue() and ets_class_change() have the same pattern.
+Snapshotting each class's quantum, or taking sch_tree_lock() around the
+quantum update, would close this.
+
+> +				continue;
+> +			}
+> +		}
+> +
+> +		if (!first)
+> +			first = cl;
+>  		WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quantum));
+>  		list_move_tail(&cl->alist, &q->active);
+>  	}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-TIAE.v2.r0.20261015163454%40mojatatu.com
