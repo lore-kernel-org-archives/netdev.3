@@ -1,87 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792440388;
-	b=XrheV8AMxnv4PKyzZ9siHn1UPBIjndB4GdATP7ZS0/CWiQNw46ROzO/hNRGrCQwP8ibr
-	 mEHyD8q2qqOrG3Tv/0iBfr5oAIQ11YtRVCT8KOMxRixWC1YjisRnp9LWBntPaBinxo5pe
-	 Ti4KvMfJ6VBosDC+RdeNPUVo38EeaW9ch+vgljYLxAnLf8hJHSlyNhqDReFBA7rR79vi/
-	 4gSKJqaK7HREAhhOJKH7ES3a/jhUT6X1ITZvJWbnX5Y/HhqyZ/gPx9GIHfwDE6e84n9bZ
-	 p7fSds0OdStGryvg0QsvFYf00q0YrnFwFHZDvwSmUZ+t5XM1P2gj1ovzoCOkV9P04BQ==
+	t=1792440389;
+	b=q+TmY/Htad6uH71H0+zGsYsVTgnHZeugzAtOixHVJo/fheuP5YWs8VdOEUg2C5bdgg+g
+	 LrSYoglI3TVHKfluQrst1u5i/Oxf7nEnAsjD/fiqxSRYnejqo211EGMOGg0O5qH1FM3wZ
+	 eu4BBDxhLkdynmas9QgUH8Ki6xG7G27HxUw1LK1wroMkjs5M9j85xARdsoaBZppJFHb3t
+	 EdfQv4EgKZJGf1XefQVgXeFKa0STwUjdyNDodijok4tenCP18Hd5LjzokUzqoicXXiSnE
+	 Cc0yu/g3SkFrA3t7a/TMzUdLfzGAu7I8v3emTqDB1sfgYJsiqTP26hxvqFz/3e4+0+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792440388;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792440389;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=V7aoMAt7nLdABcEGS/L+1z1bKpPVFdZyHVrN4B0HHZ0=;
-	b=CB6g5awvSYynzuS6F4qsrwyjQo8OOTtAp1cjM66IN6mGwnQMLMpnI0ew6PPAGmTZFDh0
-	 mxkeGwyVz6RFqJZcWbpLZSH1LaSwVHJpxTmgw5BYr0qCTvIXfrV7WsqVwIebk5FXdoyGm
-	 Luprc6OHB3zAU2UzEqdud+ejBW8vDM4jn2QJQ6SLazDEwlxymqroThpswnGxcinmHbup5
-	 wSuEKNId5meRp/UVFoUMaoXECtQzJnOjXAeYbC6krpmzx1NqUu2Y7VWUU6p6iJlbhB9un
-	 fNPrWPLjYFhh0mImaQPfxwZKldo1kH7T5FIYxc5pLS8h2EEcLF+6y5oNGhExK+Eo62Q==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=GKvFPIiWsPBqUlyXejunJjNEpXocLP020jmL4CYmeQI=;
+	b=c5pVcP8nRHUkcdjQuhp9a6fp+pGwlHpKWSJcCyKbdl9+DRhdgCnhJbCLU9xM66CT8KJa
+	 tyYoP0GxHgD5ru478IrvufHF9D30NeS/oYOsjsq2TIkl2Iegk3AjGCWRIG5plqAhBFK/x
+	 UDUur0aGN63Nax4rW973AxCJnYC1uXGnNzDJMa1ReNjFIFPzt3sXUtvbKx52lZSELOG6Y
+	 FEJo4ZIHSUbNA9+VmpNLLa6QlMIEXRt2XncI34amAMoZB1YxqKg2hi0h2tGjBE2Y2LxYN
+	 NZjQ+2xnmzoVTdds3lkoaJ8iPS7z2nj7QHYY9an/u62NwaXgeiKqxVrLlyODbmEypVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sIQ5rOeC;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=lusLDZlE;
+	arc=none smtp.remote-ip=209.85.215.178
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDE7606A320
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:06:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCDE7606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD1C606A31E
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:06:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FD1C606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sIQ5rOeC
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-398a4dcf289so1331819a91.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:06:27 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=lusLDZlE
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc758830601so1707185a12.2
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:06:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792440387; x=1793045187; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V7aoMAt7nLdABcEGS/L+1z1bKpPVFdZyHVrN4B0HHZ0=;
-        b=sIQ5rOeC0XaCMUd7ope5kVJ9mQRi1sxq6WK5jurwQDrHhL5Nf3peh9sKx04gJKKzXY
-         A2PvruLsbylktKx0m2MzOlTBYrIpeUa8rjOFhVjLXZhxIoQsz7kQ7OgEhUMI6ao3ngEc
-         NnyEKcQBnH7K3R88uTrunwC7TnGM8W6GcIaRtiWzM3T/iFg6kHcgzIlmYfRAqG9tZ4p8
-         lV3LdM7tWY6RX9Tz3Aww3yRitjn9Hs6yq4HNNvFZq4pLKsU+O4CddSvvqScBHZwOeQ2p
-         E1+2nnTlkyXYjF83VH7fYmMrIoEW3zSD+BQZ3/+2GyymmNB40ONvL8yc4KRmLeoRwyXz
-         zylA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792440387; x=1793045187;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792440388; x=1793045188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V7aoMAt7nLdABcEGS/L+1z1bKpPVFdZyHVrN4B0HHZ0=;
-        b=W1hYFsIdu1IqmioUpNH3KhDIHdM+qezU/ILNLwvwtjD7bQ7H3HmUDT3EPMGR2VL95M
-         WJqynYirfXdhtfuKc5yLGyeTBaBxfuIqVaERYplxcyt9K9pJcqMRoJyHoaklnJUy8pDf
-         3/FRPPa48vFO+vcShQOHzI2qLeS8I2e5H4MfmA8FtwNu8vN4UpyhishMPbFAcBMGJy1f
-         DsGzPD9xum7+KQs8fkEW4x32PIqaqjCtqh0eKvVrvFx5zs9qRDq8VkiXdGhG97GPpzdE
-         KTkPsze4kbTcEN/kcavkmt2WVXKiuRqgmoktTw8Bk8tnuGd4LxQEvXv6q0RU7/7rN9Uk
-         bXmQ==
-X-Gm-Message-State: AFq9FYJrYO55Mf6BLwRu2GX4OsuxI0cO331iNdG8lvz9biJCcekVs7jq
-	IPr4w57SPCyZzNMbk39c5pvEVVQLGkkdz8boeKZ14IFHnAsfAL+mCBEMWzGye2BhNH87gKSmihc
-	2j7hYubw=
-X-Gm-Gg: AYBFou37FIUt1AY0vITB5bi+CQ3OkO6enAFxo+O8U64LHsvNmgynZuYDN9lulbYpbJF
-	iVfulWHMmiodoL4Xi+GLUNSE3gagmSx6X5kLrh8cRAPbyKNwQrZAv5AXJ3e8HIX/JTOC43S0T3M
-	c3A89N1NdsrjLc5uGQ3DE8O0vdj52+zB8MyQhTz/z1Dm+GdItut/lE7IrMHHE1J1+5a5aFMaqpF
-	5unmVaKMF6rAZI6mROdyACmssbOkSFCXAsONJ2czI/XD+BN1MzIgKWES/Oca1E1dkdWXOnUtAjH
-	qLRnEeUv4I0J8sk+XPnivg1X8NY0R/EQnGN/AHYkfmbbJUL7u/J88McHyMdNzV4gkUolmpSB166
-	HenFUMJ0Wy8VaNlBTUiDNnECK3RQ3X5qSXCPxzshuhWtNZWwpERysUzofszzXIgjonTaCS7H/LJ
-	BDc0yXDFlj7oe5mXsV+DYfKsUponcKCtWLtplkmXPnXEBz5DCfxptXbCEV5E5Jv65YC2hQjoJ5r
-	h5P9cXr0Aj50EmT3ip1cvIuBkaQC9/Iot7N0g==
-X-Received: by 2002:a17:90b:2f4d:b0:3a6:fc30:ce16 with SMTP id 98e67ed59e1d1-3acef167363mr7118045a91.51.1792440386963;
-        Mon, 19 Oct 2026 13:06:26 -0700 (PDT)
+        bh=GKvFPIiWsPBqUlyXejunJjNEpXocLP020jmL4CYmeQI=;
+        b=lusLDZlEjthEPNukUwOei0Qc/zMDhBp7We7Rx61T5Lun+w7iyjohx+5h/1C7ApDtr/
+         ghdksf879JWyMUj0nNqNgKNA1VSLNhnBe5cS7Z4gJoz4VlzgoVsyG7nKu+8RS0hUf1w0
+         QC8EDZJfQgyvgpd+MOGXxZ/Yh08P4KfuzUHx9VS0yfMgs/ceGsg6zXsWmGk1uVwstxlk
+         PAE5F3c/WuG7W2oDYP/O4BLm4+TmO8uzaKYscyZ3nid5f0+u426n6kUHDmqDVDieJiCO
+         JOWB6hE2N2Ts2aE/5+ivCLLy+RRmWHx5vl1BVHpSN6P6vxHQvfxug2QvGMQsqHs2l1JD
+         M+Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792440388; x=1793045188;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GKvFPIiWsPBqUlyXejunJjNEpXocLP020jmL4CYmeQI=;
+        b=h3XiMo03XAuZSLEvs+C1HP23qiLOaIU9aNo1f04rbvkx/RNxWUd2KgZuN+QiDwX7rC
+         0qdwBOUl2sO4j4fwa942QRYZZi8CkT7cdNtqLJBGFxTBuW4iGLQdSTUeS4/WN3FNF4wj
+         EZdbyEInbHO4KXJGH1fpZ0dcx68XIoQp4dhRITdWYr3ZXn7XQ9RGJSgAonbsWP1g/c0v
+         nOJjvSvAhw+ngZ4ObxNOzxOXr24I6Um83Da55MNdBG7WXe6wA3eKod1FkTnNc+gIw/hB
+         g8vuxAqk+Iq2TabJ3M1Bwq5naYRL5lw5puZbJCDIePIZDc1xiRbB24Gz4M18vmZpTZ6a
+         Zksg==
+X-Gm-Message-State: AFq9FYK/spSRQZdKpT8AmUH/Zm5dOxGKjPgdkdF3nQDxgUWlEfa8xJ/L
+	iXovWYXVF8YAhVtLtz51FWOMjozauhsrD2xEqQxCxyMh4HdpKy5lqvf8W66gz6yk3sYCfMNoXaP
+	WFElHutQ=
+X-Gm-Gg: AYBFou3nYCKeMlNWDUw4riYkp5lbC53GCxYXLZfs4T+LeMyWomA7cL4PJdb6RQ2Nqaj
+	IusYSwzMHG963bHgwt1lmIbY1EbGLGeRhRXABn0Aupfd8fK71qxQf6H04y9cpYA+MZ7392YM0UR
+	HZX029h27bHRK2De1hwJsfN98uTyX29mR0HHZYTA1CUX8cvPfQJLnKo4FDHGDpeKvAhq/Jhgyfc
+	ADGEHcw8GypvE93DWRJcS+Xmb5/0HJ/5bzGXsSi+II64RljIu5V7Q3ADgelyo77pH9Q9/CFz9Ox
+	UJWYA9NIcsNMc+55biqUYtH47inOm9rSpxAEsggvNIiw5yKo/oAa+bwkVkXLcPVKJ1E7HuhhHoG
+	+0zvdEDAQmMkqH6BsU918mskpS3eto4R5VtK10Ka2PUx/4G5yJh6aw2eRoGQ2G+604l5JiAwp2W
+	Ao+lXE2e0J+y4dnbektfuqJOfHWHEl9pdClYs6j9mFeITc4FZ5r/fEyNSLAb+OyOhubX31Md3ou
+	4Ps2zrzZancxedeX+KaGKHOlCQqLIEn2if07SI=
+X-Received: by 2002:a05:6a21:6b88:b0:3dd:a00a:1715 with SMTP id adf61e73a8af0-3e2263d5f61mr7548730637.48.1792440388374;
+        Mon, 19 Oct 2026 13:06:28 -0700 (PDT)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd654850c61sm4492935a12.1.2026.10.19.13.06.25
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd654850c61sm4492935a12.1.2026.10.19.13.06.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 13:06:25 -0700 (PDT)
+        Mon, 19 Oct 2026 13:06:28 -0700 (PDT)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 0/3] don't build printf formats out of names
-Date: Mon, 19 Oct 2026 13:03:01 -0700
-Message-ID: <20261019200623.816470-1-stephen@networkplumber.org>
+Subject: [PATCH iproute 2/3] rdma: don't build printf formats out of keys
+Date: Mon, 19 Oct 2026 13:03:03 -0700
+Message-ID: <20261019200623.816470-3-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261019200623.816470-1-stephen@networkplumber.org>
+References: <20261019200623.816470-1-stephen@networkplumber.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,32 +97,84 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Several print helpers built a printf format string by concatenating a
-name or key onto a conversion specifier, then passed the result to
-printf as the format. This is unsafe since '%' in name would
-be converted by printf.
+print_key(), res_print_u32(), res_print_u64(), print_driver_string() and
+print_ipaddr() passed the attribute key as both the json key and the
+printf format, so a '%' in a kernel-supplied driver or hwcounter key was
+taken as a conversion. Pass the key as a string argument with a literal
+format; output is unchanged.
 
-Most of the affected names are string literals, but the rdma driver
-attribute and hwcounter keys and the vdpa vendor statistics names come
-from the kernel, so they are not under iproute2's control. No failures
-have been reported in practice. Each patch passes the name as a normal
-string argument with a literal format instead; text and JSON output are
-otherwise unchanged.
+Fixes: 9b578bbaded6 ("rdma: use print_XXX instead of COLOR_NONE")
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+---
+ rdma/res-cmid.c |  3 ++-
+ rdma/res.c      | 10 +++++-----
+ rdma/utils.c    |  4 ++--
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
-Found by an automated source scan (ANT-2026-JAWA8082).
-
-Stephen Hemminger (3):
-  lib: don't build printf formats out of names
-  rdma: don't build printf formats out of keys
-  vdpa: don't build printf format out of vendor stats name
-
- lib/json_print.c |  7 ++-----
- rdma/res-cmid.c  |  3 ++-
- rdma/res.c       | 10 +++++-----
- rdma/utils.c     |  4 ++--
- vdpa/vdpa.c      | 14 +++-----------
- 5 files changed, 14 insertions(+), 24 deletions(-)
-
+diff --git a/rdma/res-cmid.c b/rdma/res-cmid.c
+index 17a89cc4..956253fe 100644
+--- a/rdma/res-cmid.c
++++ b/rdma/res-cmid.c
+@@ -53,7 +53,8 @@ static void print_ipaddr(const char *key, char *addrstr, uint16_t port)
+ 	char json_name[name_size];
+ 
+ 	snprintf(json_name, name_size, "%s:%u", addrstr, port);
+-	print_string(PRINT_ANY, key, key, json_name);
++	print_string(PRINT_JSON, key, NULL, json_name);
++	print_string(PRINT_FP, NULL, "%s", key);
+ 	print_string(PRINT_FP, NULL, " %s:", addrstr);
+ 	print_uint(PRINT_FP, NULL, "%u ", port);
+ }
+diff --git a/rdma/res.c b/rdma/res.c
+index 7efced8d..185612f7 100644
+--- a/rdma/res.c
++++ b/rdma/res.c
+@@ -222,7 +222,7 @@ void print_key(const char *name, uint64_t val, struct nlattr *nlattr)
+ {
+ 	if (!nlattr)
+ 		return;
+-	print_string(PRINT_FP, NULL, name, NULL);
++	print_string(PRINT_FP, NULL, "%s", name);
+ 	print_hex(PRINT_ANY, name, " 0x%" PRIx64 " ", val);
+ }
+ 
+@@ -230,16 +230,16 @@ void res_print_u32(const char *name, uint32_t val, struct nlattr *nlattr)
+ {
+ 	if (!nlattr)
+ 		return;
+-	print_uint(PRINT_ANY, name, name, val);
+-	print_uint(PRINT_FP, NULL, " %" PRIu32 " ", val);
++	print_string(PRINT_FP, NULL, "%s", name);
++	print_uint(PRINT_ANY, name, " %" PRIu32 " ", val);
+ }
+ 
+ void res_print_u64(const char *name, uint64_t val, struct nlattr *nlattr)
+ {
+ 	if (!nlattr)
+ 		return;
+-	print_u64(PRINT_ANY, name, name, val);
+-	print_u64(PRINT_FP, NULL, " %" PRIu64 " ", val);
++	print_string(PRINT_FP, NULL, "%s", name);
++	print_u64(PRINT_ANY, name, " %" PRIu64 " ", val);
+ }
+ 
+ RES_FUNC(res_no_args,	RDMA_NLDEV_CMD_RES_GET,	NULL, true, 0);
+diff --git a/rdma/utils.c b/rdma/utils.c
+index 90ea1c55..f6605eef 100644
+--- a/rdma/utils.c
++++ b/rdma/utils.c
+@@ -795,8 +795,8 @@ void newline_indent(void)
+ 
+ static int print_driver_string(const char *key_str, const char *val_str)
+ {
+-	print_string(PRINT_ANY, key_str, key_str, val_str);
+-	print_string(PRINT_FP, NULL, " %s ", val_str);
++	print_string(PRINT_FP, NULL, "%s", key_str);
++	print_string(PRINT_ANY, key_str, " %s ", val_str);
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
