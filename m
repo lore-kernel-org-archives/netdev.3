@@ -1,80 +1,96 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6D23F0A96
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454853DAABF
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792407080; cv=none; b=hDR9wc7Z3SvnlwFlKN17SYwwmcOxzRmDpY1ByMfjcDz0fXIMUmgHs5Rp2vSGJmK5ApFE9XgS1Y+lQNSf/VpzpQchPNnUx0nqK3MrXUY4OeJArtMRfR/ADsimiMcKsCMf3/xTkmRcVXpFW9y83af8llg3XoE0s6Skzu6q1MhWgg8=
+	t=1792407169; cv=none; b=umbnMYVILh+JfcdV0OBrErbzRwrDKLBc7TObO/zF+I/RemWZEbmMLR54ITcusBjs195V1ue6oKCSbyFs8qoAxwS1ismrgcAacCVLTB3n1bHVHYnvhLZy8D4XLTLsPbiTnituaCVHW6fw6anWELUBz+zx2Z4hHpqrUUjNYWm+M3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792407080; c=relaxed/simple;
-	bh=mUZ3a4L9u8hGML0HGfu6/nfxzUPptIdNHJ1NPKl85No=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hk6PqxJFhHCCShL7TVqoBQobHEeA7O7ckl3PNmLomyVe9+sL6W/xurTCEBTkZHFRLo3QwW/rojTD4noUBhObMexjRs1scsnrXgkny1I4/yFUnokyHV3b4OD6v2PPUvpOnOslNDLqWQUlO2rDdswefCiHQ9ByF2DI+y3EVB3xYBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I9mFI+SJ; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792407169; c=relaxed/simple;
+	bh=pm2OcIWKS0Mrluk+xgY9BFIgHrq3LpZhYd+9i9aERN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R4HeD37pv2oxuzEhY1M3VyzqusfcL5YS/iDEUJKF+rM2MPO/4UB6eVzRvuWsujzckyKoE94Av4fxuykNQPsLbkEP94ou1A/RoxgQKnM51It30iQIs5fUMDxQI+wekOYi3ZthbGirfUCjPOLzXNTnAAnRy6zqWl/KrH/Y6OHgI2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=flfPEtlO; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I9mFI+SJ"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a018792ab3so14466545e9.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:51:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792407077; x=1793011877; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mUZ3a4L9u8hGML0HGfu6/nfxzUPptIdNHJ1NPKl85No=;
-        b=I9mFI+SJqjq0XcHwJFkb3M80ErIbN+HqMhWDoNhhyZG97HoZQSqIslgGV3mxXdU3mg
-         ysuq1Idipa8p89Gfi+fqm6HebGeSkM7mwbMTmiXTpvVqwuKZIbqX5bET9zmMa5VIVqeI
-         crwGAaApdGXW53OPqzRc/lIw1KLNcxkw3j51bw1Lp8e3xvob8PimwM4t2hklKAIrxLBn
-         ujeXY6x95chtJKlmd5c7UqONWnlXQ2HADmH7xOmN47AtDIuYyKGTbyS6tUkPD/Ewm8E5
-         PhycfHm9ps+TdPUbU44KIjg1DYe2SgvEFIXnhDL4dsbdN5mYS2flLtOQ5e1mfo7MEHqv
-         J+Bw==
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="flfPEtlO"
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id B4C263F2D7
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:52:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1792407154;
+	bh=1oLogmVGlJ6B8L+VB4rQSHuGOeONrwssRUu0KT4NlTo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=flfPEtlOpqeAEx1FPUBhErVNqoil4hRtlbVj/6sSWzfDI6WujJCcwfMw+T0EH+e2k
+	 sDczt0fMMdrl7rmB2O3pFPyFWaImbcoiSxdtUNh10nJQ0Za0M/xLuW6D/Gw57+jJ9C
+	 dzCpXdl/GyOq/tji6ftO3TkMYt8Pd29M5BhVJwRrWhVieFj8mA/YfaErO+2+LsuICt
+	 11YeA19NPXV3f4jaF5pXczxOWxKun6+sTgi8TE6g1xZbtAhTSFJoDqGWnD94gXNQz0
+	 7LbIGgGYEaKG0hJkbSh+KUs46Hv7DNs966Ils69/PelaGSr5BTNs4ds5qYCs3IiTAL
+	 HVOhRrfAB2/oeBZZoBhZ7shXPFmPtscM1WuaeW2GG64FDGm4wvF55Rj3U3YulxoxGx
+	 lxoELZijC882/A/Hf2cWzI8fbfOJDJAnPlBfPn3nOTVCXm4uqwHtqVVgDoFydE56AC
+	 hm6qZvrl8UDpQKRNNhK1PP6eRGSXkhEOBsgcOZkZ93DE/pWmbX4kxtjc+VPOIL6hFW
+	 8qp61wy3551iUPa/7o/0Md/k0Lwazi3yrLZTRxBjl6eU2yRFE8ZVpz3EMFvKAf9RRN
+	 jYEkcysFByAGfOV8n8atMPFtUsT3NyU33gBsBEq5qu/xceJu6XA+cO1eohFB8tUKSP
+	 epYIDkDYLeGYKm6J4Efr+GaQ=
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e1ad3cb66so149094f8f.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:52:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792407077; x=1793011877;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mUZ3a4L9u8hGML0HGfu6/nfxzUPptIdNHJ1NPKl85No=;
-        b=oZrrzgGrACuu4iZVnzx8AunmZZhKp65p8/cpZ5sd1fA0GWKOIFVepWOJei1sYTY0Zr
-         hvaeHZ6qAH2iOidPoRXc1cOjZhLkc+A7Nr4l9mBIuqAAoR6Yv3QGfTEWiImnPR9064PS
-         fPaeU0odNwTDmaiB5n60nSPmntL3XzuXGqdFxbKKTCTcrA5Lsa11opfz6F20mqIeY51/
-         95JxeI5ITGbRA8kJmvuoeliKD69cRi+P2INKiEQgTQOMu4ZUxNhD1Z+e/NvB0xKRK7gD
-         LMIILVAdTVHUeKMyYRD62RUZEJHElrDByJpm/xXrVpGiqjK60j4DnXr8uTRPoPCC+pHu
-         hczQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxw8EdcR+ouDw6CL+dBaIhbb47JnIphzqHb9XcI4bOPyCut+Khc/EjibuMSp20V/niEs1BQfGI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLvW1s3F8/gOsbangBNftSwFk/aAoTKUXL+m9WDR8l2BPsTOgbc
-	XWrd+xuVMNXWcGdqcJ8I/3SHQUAn3p3WS9xOkC6l2IfB8XUrirSfVAlY
-X-Gm-Gg: AYBFou3+Bq5Oy77vceXh5L9NvJ/3YJHLQpljF4w2cY6kXvQ7OqmF37LTQXZK9jPwMpv
-	gPNQKQXMgmma0BblEJBDEUUJkIvF4EpI3UlExHnPoQuv4UAc5p+US03gSBp8ZWaHBsLa8iMRfSF
-	Ei8a6RNAHMTv8zO2H6UvSbMpZYUQgWsW6eGqAQTnju6BmxQ7Yk7ThtuerARlJZW5+HEc2ONv9zC
-	doRd83ni0A82fGS8QPWHQwwuWlgLV/E9tSqNKGAYbjcFBJT/cabtkgguMqG7Rqpo5uCfEIHksN4
-	2nLm18Uh0fEWKA4Ke1q673A/pMt0/slKlaHahEBWu77+xruwSnbIBQrOv87TQ7WJPr13/v5WrkY
-	ALP9UwsNHgJgMLtjbejFBv8KE+2OFVx4wTTGo5SYIJH/3DG7+hHxa5ME4ViAYq4lcveQPFuaMwI
-	jYJwxNBPnRpMttY8y1kePA5wnFchPIV6neZ8i7gqhKU92tIlOhWEudmCYd5jRQw1MKDYEkfeG87
-	1VvXfrrryXkn6WWhvhf
-X-Received: by 2002:a05:600c:8b6f:b0:4a1:ce33:1536 with SMTP id 5b1f17b1804b1-4a1d75e37ecmr129613605e9.9.1792407076395;
-        Mon, 19 Oct 2026 03:51:16 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan ([2a00:f44:cd2:abb8:f65f:be3d:fed3:d2aa])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd471a1fsm19081835f8f.3.2026.10.19.03.51.14
+        d=1e100.net; s=20260707; t=1792407154; x=1793011954;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1oLogmVGlJ6B8L+VB4rQSHuGOeONrwssRUu0KT4NlTo=;
+        b=aV6g0qeFDVLeYxSZvODxnRo3K31bUOSzWRWyHDrqAu/0RXaCTZw60viBSWwioLcjOT
+         6/8+q2b3SfT+V5nW/bYng9aYyoo54pKn6BVAg9aQfG74/pot2RxNwaIcjafsChkLTImD
+         Jme3T0Nnjj5lZhKB8OLITo2FfDM6b1JchQAYCmGGbnlTfh/jK4FdFPc6+gXVxGuYDZ9g
+         zAElSNE3E3JGuOZ5f3u+eMikGw4XHqoy14/pgQTBTq6EVmXSsmRN0MhVeM2Nu35oBOI4
+         /sGFXvRjVQQ5v4wluUHu/1xMhakJlHVOnfyOTf71EdvY9Gq6/k1Es9AAvzwSr2xwMQ2i
+         HLDg==
+X-Forwarded-Encrypted: i=1; AKwUvByOp0jzc57TyiA0ZeKLM3Cxw4OXVMs+msM7vNqlPfG2krTpLiWAf/7bsbTQjMERJNOb7QQEj/c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI+9xsAEyRIDcPdOIBTHqlJKZ0HU1C/foKgswlePkjYa7gH5W+j
+	FgRDMNsvyjC3nnHmFQ/TWz8Ok26VcmOHwWncGoDjNjIrA4ZGQYtaKbfP+HcL+SCzjPXWgKO1bM6
+	Q7+67Nyuu5SOIiwPC+RkZTx4viyW3ZbQ3rnvbIBQdlEoE3TOv7G4sAgL3W60NhYXNkwty4pBOFg
+	==
+X-Gm-Gg: AYBFou1fgCfVUO5gksylHXgDenPaY3AqvUZxOMkSX0SN5wgjhHFFkww981/YgnvV0t7
+	elCQmtdPb6VKy9XhE4iD5HHycqkf+MrxwIZLhD3EFd0gxmzm9+bP9DAAbICxRaQQVTsrBSXlX35
+	O/KaELoDw7yG4k4bgzmWkIfsaETgVWtTyvScT/h1CTCluevpSQg/M53ylvfRZOR3+jGCnoVF7mz
+	vrCPQlvNwH0lX6nMVTrQXnZO1GWDW+FufqdzDFp3hNnGVXsrsy6t1RHOScYA3/MEdOLYUv2t1HE
+	7hPp5Ncg5uxnGke8XkDyP6r7Xwav+6v7cZMtomjzzmrgGL6SGcMoi/tsb9G0EnncpeUi3zaTuu9
+	P7cx7tlVXBuBwXi3rppIOBlfvyC7PNgtekM8sWEzK7vwctJNAfsLoSppcXX518nu92ftho0QgXN
+	Prqdn6ENj36jZedWvNNvNCn5Itx3bZGtowo1MaXF9f7c27pS5vrFQ26yntb2ui5MnW1ubhHXW7A
+	s6xurDU0Bhndp7jgx+miup+psoLjbD3IT6DNrFr
+X-Received: by 2002:a5d:61ca:0:b0:48b:10af:f85c with SMTP id ffacd0b85a97d-48e07fcda0dmr8499727f8f.37.1792407154202;
+        Mon, 19 Oct 2026 03:52:34 -0700 (PDT)
+X-Received: by 2002:a5d:61ca:0:b0:48b:10af:f85c with SMTP id ffacd0b85a97d-48e07fcda0dmr8499702f8f.37.1792407153808;
+        Mon, 19 Oct 2026 03:52:33 -0700 (PDT)
+Received: from u-ThinkPad-X1-Extreme-Gen-4i ([103.155.100.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd510201sm23238930f8f.55.2026.10.19.03.52.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 03:51:15 -0700 (PDT)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
+        Mon, 19 Oct 2026 03:52:33 -0700 (PDT)
+From: Aaron Ma <aaron.ma@canonical.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dsa: qca8k: report port statistics from the MIB
-Date: Mon, 19 Oct 2026 12:51:11 +0200
-Message-ID: <20261019105111.210567-1-kuncy7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6ad54060.58e5e2d3.9d5ca.ba8b@mx.google.com>
-References: <6ad54060.58e5e2d3.9d5ca.ba8b@mx.google.com>
+Cc: Dan Nowlin <dan.nowlin@intel.com>,
+	Brett Creeley <brett.creeley@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	intel-wired-lan@lists.osuosl.org (moderated list:INTEL ETHERNET DRIVERS)
+Subject: [PATCH 0/5] ice: fix reset and suspend paths
+Date: Mon, 19 Oct 2026 18:51:50 +0800
+Message-ID: <20261019105155.3793063-1-aaron.ma@canonical.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,91 +99,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 18, 2026 at 11:55:42PM +0200, Christian Marangi wrote:
-> If we really want we can reset after each read but that is problematic for
-> the ethtool OPs unless we also update that function to store local u64 MIB
-> for everything.
->
-> Up to you... I would start with keeping and updating all the below things
-> and then evaluate the needed changes to reset at every read.
+These fixes address failures seen while validating reset
+recovery and suspend/resume on a system with two E830 PFs and
+two E810 PFs, with KASAN enabled.  With several PFs probing,
+downloading DDP packages and rebuilding after resets at the
+same time, the logs filled up with:
 
-Agreed. v2 keeps QCA8K_MIB_CPU_KEEP and adds only the differences, so
-ethtool -S stays as it is.
+    ice 0000:38:00.0: Control Send Queue Writeback timeout.
+    ice 0000:38:00.0: Failed to get VLAN mode, status -5
+    ice 0000:38:00.0: Pkg download failed: err -5 off 267124737 inf 96
+    ice 0000:38:00.0: package load failed, -12
+    ice 0000:38:00.0: probe with driver ice failed with error -5
+    ice 0000:c8:00.1: clear PF configuration failed -5
+    ice 0000:c8:00.0: Rebuild failed, unload and reload driver
 
-> This really seems a task for the MIB from mgmt frame... May I ask why those
-> are not used here?
+Patch 2 has no Fixes tag on purpose; it is a prerequisite for
+patch 3, so stable backports of patch 3 must include patch 2.
 
-Only because of where I tested. On my GL-B3000 the switch runs with a
-tag_8021q based tagger from the OpenWrt tree I work on (the conduit is
-offloaded to the SoC's NSS engine there), so mgmt_conduit is never set
-and register reads over MDIO were all I had. That is no reason for
-mainline.
+Aaron Ma (5):
+  ice: check the full PF reset polling limit
+  ice: retain the adapter throughout hardware initialization and
+    teardown
+  ice: scope global configuration lock to the adapter
+  ice: clear DVM boost table before scanning package hints
+  ice: quiesce PTP periodic work before system suspend
 
-v2 will request one autocast per interval when mgmt_conduit is set and
-take every port from that one burst, and fall back to register reads
-otherwise (another tagger, CPU port 6, conduit down). To get all ports
-from one request, the autocast handler gets a mode that fills a buffer
-per port instead of dropping the ports that were not asked for.
+ drivers/net/ethernet/intel/ice/ice_adapter.c |  2 +
+ drivers/net/ethernet/intel/ice/ice_adapter.h |  6 ++
+ drivers/net/ethernet/intel/ice/ice_common.c  | 65 +++++++++++++-------
+ drivers/net/ethernet/intel/ice/ice_common.h  |  3 +-
+ drivers/net/ethernet/intel/ice/ice_ddp.c     |  8 +--
+ drivers/net/ethernet/intel/ice/ice_main.c    | 37 ++++++-----
+ 6 files changed, 80 insertions(+), 41 deletions(-)
 
-> I would like to see define in the header file, not in the middle of
-> functions and declaration.
+-- 
+2.53.0
 
-Will move it.
-
-> Why STATS and not MIB? Also I would like to have all these register
-> converted to define if really needed and update the ar8327_mib struct.
->
-> Also Also why not use that directly?
-
-Right, the second table is not needed. v2 drops it: an enum of indices
-into ar8327_mib[] (the table turned into designated initializers, so
-the two cannot drift apart), the counters read by the code that
-get_ethtool_stats uses, split out into a helper, and get_stats64 built
-from that array.
-
-> Why this? For 64 bit?
-
-Yes, RxGoodByte and TxByte are the two 64-bit counters. With the shared
-helper and ar8327_mib[].size they go away.
-
-> Maybe generalize the logic in get_ethtool_stats?
-
-Yes, as above: one helper for both.
-
-> As said MDIO here is extra slow especially for MIB every x seconds...
->
-> Autocast MIB is a MUCH BETTER WAY.
-
-Agreed, register reads stay only as the fallback.
-
-> Is it correct to give window_errors to TX late collision?
-
-I went by include/uapi/linux/if_link.h: "@tx_window_errors: Number of
-frame transmission errors due to late collisions (for Ethernet - after
-the first 64B of transmission)". The same file says tx_errors must
-include them, which the patch does.
-
-> No reason to scan for a port that is disabled or not connected...
-
-Ports disabled in DT are not user ports, so the loop already skips
-them. In the register-read fallback v2 also skips ports without link
-(a bit set in mac_link_up and cleared in mac_link_down). Since the
-counters keep their value, nothing is lost: the next read picks up the
-difference. With autocast the switch sends every port anyway.
-
-> Considering everything is run under the same delayed work, does it make
-> sense to have a spinlock for each port?
->
-> Either have a delayed work for each port or a global spinlock for the task.
-
-One spinlock for the whole cache in v2.
-
-v2 is written and tested on the B3000, both paths. Over three 15 s
-uploads on the WAN port each, the wan netdev's TX bytes matched the
-MIB's TxByte within 0.002% with the qca tagger, where every read was an
-autocast, and within 0.01% with register reads. I will send it
-tomorrow, so there is time to object to the approach first.
-
-Thanks for the review.
-
-Stanislaw
