@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3BC486E5A;
-	Mon, 19 Oct 2026 07:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3071148DB21;
+	Mon, 19 Oct 2026 07:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792394835; cv=none; b=Q7H5pOKkVWOdbt9V/NOlHfQysDroThM/co891ktWiCCWYFcRnlQg4ml5/KoOLV64VIJObj9NI+ifvyTPRBp4WH4vJlABPhnbd2DFkVQ69Xv1CAKOy0eM3nnqkvJ8rRmNnS5dUhAztRxeNtAT4pMCiCswzXLtar4iVuoKTgJe77c=
+	t=1792394837; cv=none; b=JGpqrwTRC35BSdFbQUJytOSRUWZNgbLdibV/Y5DWSo7f2SajLNZJotIHqrcO4k+aV4Essi2HpUZpX7BlDVCmVXEa3MsydDeM2GeIeCq9dmJkQz40amKMrmiWGTNPLnc17cISkOEXpH2AHK77PBv3OgaKiEx2xrtRpRt1HchCf7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792394835; c=relaxed/simple;
-	bh=9ULXod4bUR91ToHzbZzdWomf8gSblHEfMSPt1ofBFBQ=;
+	s=arc-20240116; t=1792394837; c=relaxed/simple;
+	bh=S96ESlRlb/3Q/5kQGwrxP09f2vEb8IHYk2k9L9JwXJE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k7GVVmS0wLIPb2SNXEZ8+i0Muvp7NykZfjpjcfIoMnDI7ZiR0joigxo7+3DZe8dX4Ga85bUlWwV/FWYaFX3BZCS+Zb1qTMOmxvQLqb2vagnZ6n/KqliUfTuGRTNinWxvt1STXrmWbfb+7uG6ybaipJ+6xMy/GfChyY1epjJuijU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O18R9u3P; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=gy7amtJdDKmg3z64RDpOp0db1/Yh3Gb4PGVtKzyrMO5s7ik4qmYIKMZQhrs4ZGJpDRnkgGlr0IPQosqVOmlenQCzHjIb+f8PQRq8MsER+4mKoDbNo9Pin252Yi3WTw0A55XhEM0e9XatstreIYWtr7h7hDGJ+KSu0kWVU8Y3joc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmWNjKWu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O18R9u3P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC7E1F000C5;
-	Mon, 19 Oct 2026 07:27:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmWNjKWu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90C81F000C4;
+	Mon, 19 Oct 2026 07:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792394834;
-	bh=vPKahiieUNWSBS0P4QMHjbfH/wRJi8FoZrJjUlGEzQo=;
+	s=k20260515; t=1792394835;
+	bh=5NaDqhThLEH8QW2uNs+kUXpY3WKRDv1cM3Y08+E496c=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=O18R9u3PiJeSZrP3fUQSJ+dqTw073h2GBUAAxRdhJWpIam/c0132AMtogSup3BEo0
-	 0P6hB1z9UvV4vvRk4UAj+tpxIh/2LgrcGACcohcoAgBf06k6saPzpbIKxDJY2bU7Cw
-	 oLNgY0FPvnoa6AbHnMEuKfAj18mN96xKsken5N/ErSxQCNVzJKxyZOoxdd+69e77nZ
-	 ph1XYgxFE62FOPQ6F+nvC1Gii1+lmXxlp19xQ9bx5Xwiz9i2uRaPEStFM7KoGlEHHs
-	 sGz4B/GI8exSI1wRJ647Tpt9+wv8aR55Yvo8/yzge6Bgo6iGQoC2n4tA7Bej5Z/Ydo
-	 E6p/eXTkc81YQ==
+	b=WmWNjKWulSqcqtpc7x8V46LmAv7ncFiA8GdWnpXan/pUlPvwgKhSFB+krEpdyjKw6
+	 yFXeDMM1kYbKJyRyfMWJAX/qzC2apeEFgiVqVZUecWhtaS++fvAN01aAJ3awQFgwrV
+	 lxbjlmKgCxJsI+TYVU2wp6tvYrqa3ptXROnqskrvN3v5MTgdjuW9aOVtjk+Z7FzrpB
+	 7zvBDKyC3pq71OI+pBG8711j6EWo1bsUUCCq/TKBUPpYmZ7G50v/imt06c2bM61Z49
+	 VT2u8IxTJ71N5gqEfYEbtioifMTSpc3v2tdrSVFMp/PZBzq1qjB47l05nbbl9uXHi8
+	 IAyo8qPFuVsOA==
 Subject:
- Re: [PATCH net-next v3 2/6] net: ftgmac100: Add AST2700 compatible support
+ Re: [PATCH net-next v3 3/6] net: ftgmac100: Enable AST2700 RMII support
 From: netdev-bot+sashiko@kernel.org
 To: jacky_chou@aspeedtech.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -35,11 +35,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  ratbert@faraday-tech.com, edumazet@kernel.org, hkallweit1@gmail.com,
  linux@armlinux.org.uk, netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 07:27:12 +0000
-Message-ID: <179239483279.3135.7936429088752447587@kernel.org>
-In-Reply-To: <20261015-support_ast2700-v3-2-8d7999171ac4@aspeedtech.com>
-References: <20261015-support_ast2700-v3-2-8d7999171ac4@aspeedtech.com>
-X-sashiko-severity: Low
+Date: Mon, 19 Oct 2026 07:27:14 +0000
+Message-ID: <179239483424.3135.16224025989668048488@kernel.org>
+In-Reply-To: <20261015-support_ast2700-v3-3-8d7999171ac4@aspeedtech.com>
+References: <20261015-support_ast2700-v3-3-8d7999171ac4@aspeedtech.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,64 +49,94 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] The comment on struct ftgmac100::rclk still says '/*
-  AST2500/AST2600 RMII ref clock gate */' (line 117 at this commit, and…
-- [Low] (Baseline: discarded as resolved later in the series.) At this
-  commit, AST2700 binds to the driver with no DMA support above 4 GiB.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [High] On Aspeed variants, including the newly added AST2700, a NULL
-  pointer dereference oopses ftgmac100_reset_and_config_mac() when the…
+- [Medium] The commit message and the new comment in ftgmac100_start_hw()
+  say a phy_device is always attached once the netdev is open.
+- [Low] The struct ftgmac100 field comment above `struct clk *rclk;`
+  still reads "AST2500/AST2600 RMII ref clock gate".
 
 --
 
-net: ftgmac100: Add AST2700 compatible support
+net: ftgmac100: Enable AST2700 RMII support
 
-This adds an FTGMAC100_AST2700 mac_id, its match data, and an
-"aspeed,ast2700-mac" entry in the OF match table. In ftgmac100_probe(),
-AST2700 is handled the same way as the other Aspeed variants: it gets
-the BIT(30) EDORR/EDOTR masks and is_aspeed is set.
+This commit adds a match-data quirk, FTGMAC100_QUIRK_RMII_ENABLE, for
+AST2700. With the quirk set, ftgmac100_start_hw() sets
+FTGMAC100_MACCR_RMII_ENABLE when the attached PHY uses RMII. The commit
+message says netdev->phydev is always populated once the device is open.
 
 > diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-> index 6d2fe5c2f390..67b1fa464a42 100644
+> index 67b1fa464a42..9b7becb01726 100644
 > --- a/drivers/net/ethernet/faraday/ftgmac100.c
 > +++ b/drivers/net/ethernet/faraday/ftgmac100.c
 
 [ ... ]
 
-> @@ -2017,7 +2018,8 @@ static int ftgmac100_probe(struct platform_device *pdev)
+> @@ -79,6 +82,7 @@ struct ftgmac100 {
+>  	void __iomem *base;
 >  
->  	if (priv->mac_id == FTGMAC100_AST2400 ||
->  	    priv->mac_id == FTGMAC100_AST2500 ||
-> -	    priv->mac_id == FTGMAC100_AST2600) {
-> +	    priv->mac_id == FTGMAC100_AST2600 ||
-> +	    priv->mac_id == FTGMAC100_AST2700) {
->  		priv->rxdes0_edorr_mask = BIT(30);
->  		priv->txdes0_edotr_mask = BIT(30);
->  		priv->is_aspeed = true;
+>  	enum ftgmac100_mac_id mac_id;
+> +	u32 quirks;
+>  
+>  	/* Rx ring */
+>  	unsigned int rx_q_entries;
 
-[Severity: High]
-This is a pre-existing issue, not one introduced by this patch. Setting
-is_aspeed for AST2700 does make it reachable with the new compatible,
-though. Can ftgmac100_reset_and_config_mac() dereference a NULL phydev
-here?
+[Severity: Low]
+This isn't a bug, but this patch enables RMII on AST2700. Should the
+comment on the rclk field further down in struct ftgmac100 mention
+AST2700 too?
 
-drivers/net/ethernet/faraday/ftgmac100.c:ftgmac100_reset_and_config_mac() {
-    ...
-	/* Aspeed RMII needs SCU reset to clear status */
-	if (priv->is_aspeed && priv->netdev->phydev->interface == PHY_INTERFACE_MODE_RMII) {
-    ...
-}
+	/* AST2500/AST2600 RMII ref clock gate */
+	struct clk *rclk;
 
-Suppose the DT node has an "mdio" child node but no "phy-handle", no
-"fixed-link" and no "use-ncsi". In that case ftgmac100_probe_dt() skips
-ftgmac100_mii_probe() and returns 0 without attaching a PHY:
+ftgmac100_setup_clk() requests the optional "RCLK" clock for every
+is_aspeed device, and that includes AST2700. The binding also describes
+it as "RMII RCLK gate for AST2500/2600/2700".
+
+> @@ -355,6 +359,12 @@ static void ftgmac100_init_hw(struct ftgmac100 *priv)
+>  static void ftgmac100_start_hw(struct ftgmac100 *priv)
+>  {
+>  	u32 maccr = ioread32(priv->base + FTGMAC100_OFFSET_MACCR);
+> +	/*
+> +	 * Only reached once the device is open, so a phy_device is already
+> +	 * attached: a discrete PHY via "phy-handle", a "fixed-link" node, or
+> +	 * NC-SI's internal fixed 100M PHY.
+> +	 */
+> +	struct phy_device *phydev = priv->netdev->phydev;
+>  
+>  	/* Keep the original GMAC and FAST bits */
+>  	maccr &= (FTGMAC100_MACCR_FAST_MODE | FTGMAC100_MACCR_GIGA_MODE);
+
+[ ... ]
+
+> @@ -383,6 +393,11 @@ static void ftgmac100_start_hw(struct ftgmac100 *priv)
+>  	if (priv->netdev->features & NETIF_F_HW_VLAN_CTAG_RX)
+>  		maccr |= FTGMAC100_MACCR_RM_VLAN;
+>  
+> +	if ((priv->quirks & FTGMAC100_QUIRK_RMII_ENABLE) &&
+> +	    phydev->interface == PHY_INTERFACE_MODE_RMII) {
+> +		maccr |= FTGMAC100_MACCR_RMII_ENABLE;
+> +	}
+
+[Severity: Medium]
+Is phydev guaranteed to be non-NULL here? The commit message says:
+
+  ftgmac100_probe_dt() always attaches a phy_device before
+  register_netdev() can succeed -- via a discrete PHY ("phy-handle"), a
+  "fixed-link" node, or NC-SI's internal fixed 100Mbit PHY
+
+Take a node that has an "mdio" child but no "use-ncsi", no "fixed-link"
+and no "phy-handle". It reaches the legacy branch in
+ftgmac100_probe_dt():
 
 	if (!ftgmac100_has_child_node(np, "mdio")) {
 		...
@@ -116,82 +146,42 @@ ftgmac100_mii_probe() and returns 0 without attaching a PHY:
 
 	return 0;
 
-ftgmac100_probe() also skips ftgmac100_setup_mdio() for AST2700. So
-register_netdev() succeeds with netdev->phydev == NULL. The
-faraday,ftgmac100.yaml binding allows this DT, because mdio and
-phy-handle are both optional.
+Probe then succeeds, and register_netdev() is called with
+netdev->phydev == NULL. ftgmac100_setup_mdio() is not called for
+AST2700, so the mdio child is simply ignored.
 
-Bringing the interface up then runs:
+The binding appears to allow this setup. mdio is allowed for every
+compatible, and AST2700 only adds phy-mode to the required list. It does
+not require phy-handle, fixed-link or use-ncsi.
 
-ftgmac100_open()
-  ftgmac100_reset_and_config_mac()
-    priv->netdev->phydev->interface
+When such a netdev is opened, the path
+ftgmac100_open()->ftgmac100_reset_and_config_mac() would oops first, on
+the same dereference the commit message cites as precedent:
 
-The reset task reaches the same code through ftgmac100_reset().
+	if (priv->is_aspeed && priv->netdev->phydev->interface == PHY_INTERFACE_MODE_RMII) {
 
-Elsewhere, ftgmac100_open() treats phydev as optional:
+The new phydev->interface check in ftgmac100_start_hw() has the same
+problem.
+
+Other parts of the driver treat a NULL phydev as valid, for example
+ftgmac100_open():
 
 	if (netdev->phydev) {
 		/* If we have a PHY, start polling */
 		phy_start(netdev->phydev);
-	}
 
-The unchecked dereference came in with commit af350ee72e9dd ("net:
-ftgmac100: Add optional reset control for RMII mode on Aspeed SoCs").
-It already affects AST2400/2500/2600.
+ftgmac100_stop(), ftgmac100_phy_disconnect(), ftgmac100_set_pauseparam()
+and the reset task also check for NULL.
 
-A later patch in this series, "net: ftgmac100: Enable AST2700 RMII
-support", adds another unconditional phydev->interface dereference in
-ftgmac100_start_hw(). Its commit message and code comment say that
-probe_dt always attaches a phy_device before register_netdev(). Doesn't
-the path above show that this assumption doesn't always hold?
+The later patch in this series, "Require phy-mode for AST2700", only
+adds a check inside ftgmac100_mii_probe(). That function isn't reached
+on the mdio-child path, so both unchecked dereferences are still there
+at the end of the series.
 
-[Severity: Low]
-This isn't a bug, but the comment on the rclk member of struct ftgmac100
-still reads:
-
-	/* AST2500/AST2600 RMII ref clock gate */
-	struct clk *rclk;
-
-Since is_aspeed is now set for AST2700, ftgmac100_setup_clk() acquires
-RCLK for it too. The binding also describes the clock as "RMII RCLK
-gate for AST2500/2600/2700". Could the comment be updated to include
-AST2700?
-
-[ ... ]
-
-> @@ -2131,6 +2133,10 @@ static const struct ftgmac100_match_data ftgmac100_match_data_ast2600 = {
->  	.mac_id = FTGMAC100_AST2600
->  };
->  
-> +static const struct ftgmac100_match_data ftgmac100_match_data_ast2700 = {
-> +	.mac_id = FTGMAC100_AST2700
-> +};
-> +
-
-[Severity: Low]
-Can AST2700 do DMA with only this match data? At this commit no quirks
-are set, so dma_set_mask_and_coherent() is never called. In addition:
-
-ftgmac100_init_hw() only programs the 32-bit RXR_BADR/NPTXR_BADR
-registers.
-
-ftgmac100_alloc_rx_buf() and the tx path only store the low 32 bits of
-the buffer address in rxdes3/txdes3.
-
-The AST2700 EVB puts all of its DRAM above 4 GiB:
-
-	reg = <0x4 0x00000000 0x0 0x40000000>;
-
-This looks to be handled later in the series. "net: ftgmac100: Add
-AST2700 upper DMA address support" adds FTGMAC100_QUIRK_DMA_35BIT to
-this match data. The same patch adds the RXR/TXR high base register
-writes and the upper address bits in rxdes2/txdes2.
-
-The driver also cannot be built for arm64 until "net: ftgmac100: Allow
-building on ARM64". The Kconfig has "depends on ARM || COMPILE_TEST"
-and "depends on !64BIT || BROKEN", so this entry has no effect at this
-point in the series.
+Would it make sense to fail probe on Aspeed when no PHY gets attached,
+to guard the check with phydev && ..., or to cache the phy-mode at probe
+time? At minimum, could the new comment and the commit message be
+corrected?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015-support_ast2700-v3-0-8d7999171ac4%40aspeedtech.com
