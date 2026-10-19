@@ -1,479 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71CF364943;
-	Mon, 19 Oct 2026 02:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792377534; cv=none; b=DTFwQ8CNms5N1Up5uSYiuTRDCGDextPz7ez5ORz9oM3bCYBd6mI0KdmzrCTsoXkDP3tbTO4HKnmJbUgRhWMdo923fAvUbsrb89YlBfe0opVdVRpzJE01lu6xK44AcrcmUTw+42eUT5gJP6Bu490+M9LrA462gNJNEXolm+RW3PU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792377534; c=relaxed/simple;
-	bh=jyT978WRZwYtdvjxnHBGIEagK3wQrhIZV6ZGqyVi8ew=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MlHN7Nzjix8mVSqFkF596nhU1f4m7ljISVyOYrKgoonExFTK92QX2oubhTEob8DXOxQhwsi0BxH0l/OyoLaQ90Cg1jO3YO5yTALWIi19OsgltwFomAgoE101IX6nIJ1s2pdrQw9pKsq7AWfTBQrZ6f4CPvfK2i5fZlWREPU2Daw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JeUbR/RO; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9A33328FD
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 02:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792377879; cv=pass; b=XJSTF76NbqjRgnJKGbretc/AOO4rrGnNPTlpcDmldIN7NGmZVjdR/YC5/da88ZyON4f2z+u4+I8SQZfj0dbzgKCMRgEaGrFvrVwPiIwJ7dIk8rzAJGorZgY4pVmmepGjkJdrHWNrrdHGXbwyEpCQQAFbxX9ahHNh5qo7WPFRHRM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792377879; c=relaxed/simple;
+	bh=H8gBL+Tbkuh5ikiT/QxIWPCRO5HignGSZr/FBWXq8ew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LL1NluqBEj3poEHuMijngInhNKzUW8M4LI4bLoFUxM6EHPHxiNe0Rpkll/Lm5UP9XbTxRZiThBWu/dXdRWheuYfLS5hHJ/grl2Yz7CwgsvlP7l7KVjigXJ9PdVjWqOJSz5reofjCtIRuIEPIKhkNwUCpq1lOCNhJrDMU+7rOP08=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WtiXZ+l/; arc=pass smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JeUbR/RO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715F31F000C5;
-	Mon, 19 Oct 2026 02:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792377532;
-	bh=JBoIp2kFOi/8Rb9HTrJXtAViU1KGcrdObT/hCxS0foo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JeUbR/ROhuTwyJohdwsr5PaiRRo7w0q3vxzf6i/LVRADOa/+lSB6JClStioxgQ3O8
-	 ymMTlRaGJkrR5gvwUtd4+xRYawEf04OySdHkVMZ5G1/dVcxAgKstEWN16hBfyeeCD0
-	 fAgselC1z+ddLMUFynFnrCVPmHCmjZ6j0QeT4ZeV6RXM45E2KYwOoKwWjusAA7Dnft
-	 xBhbHd2PY8uOgYjXfROQ7NV/h+uHL2uGCSPhk1apN6ySnICzfyPbuPqBIp+HG0frUv
-	 SqP9TdQhnxccp6FQ7ITcQSKngCCJ97wZA0O8em7zo5RlqD3s+f/cow/fTKKEyPhI2f
-	 RCrYWV8FL3/zQ==
-Subject: Re: [PATCH net-next v26 3/3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-From: netdev-bot+sashiko@kernel.org
-To: kyle.switch@motor-comm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com
-Date: Mon, 19 Oct 2026 02:38:51 +0000
-Message-ID: <179237753101.3135.5143187427252185051@kernel.org>
-In-Reply-To: <20261018022151.2677056-4-kyle.switch@motor-comm.com>
-References: <20261018022151.2677056-4-kyle.switch@motor-comm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WtiXZ+l/"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c2a4e013a44so186727266b.2
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 19:44:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792377876; cv=none;
+        d=google.com; s=arc-20260327;
+        b=i1V5HfKKni3MAMfwVBNgxRCuwE5StOx51Il51uHU56SVC2sItFThe0HMyQJh4V1VBL
+         QnfNxFse+ewo9qfqzVzg9AjXg9RdH4c+eM4cGRY/DltlbVdvH/tiP+rZOn11eM9+l7+q
+         Duti2o9G1cSWYvNJ/syxvm58L9Y7rSGW9XPmlE8utOLcsbH7SFknu+vjzmH1Nwg9iADB
+         mZnDqL3buppAxZZJEk0F/0gdcOKREca0sepkNuIb14XANS8Bo6C+SXACZ1sgrWntxfP4
+         1RA2aaqrpi5QM6BuhCP1w1X1rXtZbCaTFKsLllHODndaq2cqElcZBMQgo11UjRLqhJGB
+         C3yA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=H8gBL+Tbkuh5ikiT/QxIWPCRO5HignGSZr/FBWXq8ew=;
+        fh=uKCSp8/2t+N4YHdLiKKFs7fISgvLS72L4KwSYsKRSkM=;
+        b=fStY8aMQqjOK1W0FUDTbG5w9Of9nag2phO4Rr1bVnJGXxEKEfxWt5RlcxHIdVryECl
+         6KwIWR+8eSTgOP11ky1Yu3fKtVZxMJMxxS5hqUkNr7HPblJ+LRgQD/a2oo/TJaBsUzZ1
+         C9GbINYoQwz9MrSx61oVcqk+fRQfx73vrmH/Z/XGsuS558MlMJw1337Sm+aW2qRrAGt/
+         c5RZNZk9VBh/dY2RcU69crqFpIrYCAr85WQGC3Tw0CtIid6trLk5zFGc21ch577keBSj
+         OnU+w2r8ydNd7hx2DjBeeWoO5EYflr+dF2CWr1URNgnbTtB2GsCwqy8IzsbdwzeuLqPo
+         j6xw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792377876; x=1792982676; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H8gBL+Tbkuh5ikiT/QxIWPCRO5HignGSZr/FBWXq8ew=;
+        b=WtiXZ+l/Nf66nKHzqyovBo8zxcMaqmMLuuff89h2r4oQSCHcgdRERZuncEEFyRGuAm
+         Dj+Qat4VNUeqV5n7swfSgHhp1nocnOkMJGePTYxP4w78WBAuMKfW1YhT97M8vayXP5LL
+         3rn3hlFFZlhfS6Q3u4l8vr/4RerFW1uMEyumrPd7VIp2j51rmCtRt98gBWVa41TeOgq5
+         3PnJZbbr6hLcdrHbAfAikbiErUuY36y2ftWqKQNrowtv9QLrY3pvXn0P9oAfPh7WfDXA
+         Z8HfPDPPzCSfweJu2gixB8TIwj++39TxrKZVY/X1+kgsF9HONQOrzXvYVqXHN1rVwMM9
+         NXkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792377876; x=1792982676;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=H8gBL+Tbkuh5ikiT/QxIWPCRO5HignGSZr/FBWXq8ew=;
+        b=0HINUrLZRbI7F2HnG2mpK6R6JQvzK00Dll8Mg9BMVY/PTBB95WFogK3GfDxpF1j5WD
+         RR2gmmhQjKUJj7kekumLfpOJdsWIXPyXpQ/OEJANuWRQWrB2cN9VrnvKj9SyaclIt5qr
+         sr2bAzUC4Z43w0tC51lhX4EfVJtwhg4B/llLdG4GbyajUHpPo0j/vGmaGeD4XaEZUJAB
+         OiHiUgLIUuiLNh2Z6P7xsOIlQPgkT1PGHr+1gxQLE3fEoGPAePeR0HzelXNhDZ6utXSx
+         HdIVOk9/EGrBTpiVlLJb13pJnKeXdiH/Lu/A9Vp3/iHpoKI+bAyNYoEQNovjh17YpCm0
+         HBEA==
+X-Forwarded-Encrypted: i=1; AKwUvByAxnBQoDfD4t+9qF/BKWt9TC3vr5NyJfJtxazkJvPX0W6pZO9Aj2IFNwOZvM1wwj3B6LjL5a0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLBsNzN6MOmanKaDAzCnsw50NfsrMmt0GmT6K4zOiSPtZZvurg2
+	/KPMe1P2U0CQCbgrCSBbzx0PFsNPHCl13bgbevzldYv5UQrtZ9hGhfFCmpjeUb2HrBkQ/yFK1BL
+	0nGPu40BtO7ucDOCN85piXhC5VdCxiQU=
+X-Gm-Gg: AYBFou3hZBcBkuFKnziOB+V3Miw9GTm+KiQ0LxKFZ2zoPE16VQOO9TKz3H+APF8A1Zq
+	JgjQ2moi5QdmepPKNFp2yO4vmTN+ce1YR5HN4aeYTugvJ1Vlmhm2XW7ko6DPmRPXIpWbYUHEMuk
+	BW5A/c7u2tcYqZY1+ADfhJcaVlmxzYkpviz8hWOd+vciPqrfK2OR4iexVW5vrBuzOlSa2AT31yJ
+	CA/sbhIFhhPsHmnhSGlVyWWE/iNOHfAmZ6uXSGnLoQC0bsa8iHhKoAXJGyzvF492nsT10rXIxU8
+	uDRECxHLPgQTclm3QhGrwHbubNLeYWKczHi1TAhurlbz1QwwUoiD7hwtEzZFRqPNk9tmH3xcJ5e
+	fAt61uQ95gtc=
+X-Received: by 2002:a17:906:ba88:b0:c29:3c97:c994 with SMTP id
+ a640c23a62f3a-c41a06e6f22mr428888166b.35.1792377875551; Sun, 18 Oct 2026
+ 19:44:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 13 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 5 · Low: 7
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] net: phy: motorcomm: BMCR_PDOWN left set in
-  yt8824_config_utp_init_paged()
-- [Medium] In yt8824_config_init(), the package-wide SERDES tuning is
-  gated by priv->sds_initialized.
-- [Medium] Whenever the link is down, yt8824_read_status_paged() sets
-  phydev->speed = SPEED_UNKNOWN and phydev->duplex = DUPLEX_UNKNOWN,…
-- [Medium] yt8824_sds_isolate_and_softreset_paged() and
-  yt8824_extern_sds_softreset() call read_poll_timeout(__phy_read, ...,…
-- [Medium] yt8824_read_status_paged() only calls genphy_c45_read_lpa()
-  when autoneg is enabled and complete.
-- [Medium] yt8824_config_utp_init_paged() runs on every port's
-  config_init in both package modes, with no once-per-package gate.
-- [Low] yt8824_probe() consumes the one-shot phy_package_probe_once() bit
-  (test_and_set_bit, never cleared) before the DT parsing in…
-- [Low] In yt8824_config_utp_init_paged(), the err_restore path only
-  clears BMCR_PDOWN.
-- [Low] The commit message is three lines long for about 1900 lines of
-  new hardware support.
-- [Low] Leftover code: YT8824_PLL_VCO_SEL_CURRENT_B (line 431) is
-  defined, but yt8824_config_utp_init_paged() uses the bare literal…
-- [Low] The kernel-doc for yt8824_restore_working_status() says it is
-  'called to do store working status'.
-- [Low] The kernel-doc for yt8824_config_utp_init_paged() says 'config
-  external phy8824 utp init', but yt8824_config_init() calls it in both…
-- [Low] (Baseline: false positive.) The concern is that the comment in
-  yt8824_config_aneg() ('Only advertise 2.5G when autoneg is enabled, or…
-
---
-
-net: phy: Add driver for Motorcomm Quad 2.5GbE phy
-
-This adds support for the Motorcomm YT8824 quad-port 2.5G PHY to the
-motorcomm driver. It uses the phy_package helpers to access the shared top
-extended register space, and supports an internal and a 10G-QXGMII package
-mode.
-
-> Add support for Motorcomm YT8824 quad-port 2.5G PHY to the existing
-> motorcomm driver, using the phy_package helpers for the shared top
-> extended register space.
-
-[Severity: Low]
-This isn't a bug, but could the commit message say more about the design?
-It is three lines long for about 1900 lines of new code.
-
-It doesn't say why every soft reset, suspend and resume first puts the port
-into 10GBASE-T PMA template test mode 1. The only hint in the code is
-"NOTE: need WA like softreset", and the previous patch in the series
-describes these test modes as being used for PHY validation.
-
-It also doesn't mention the package-wide shared_lock that serializes all
-four ports. The two package modes and their separate init paths aren't
-described either.
-
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index 463e1ea3efc93..6628ebcca0819 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-
-[ ... ]
-
-> @@ -397,6 +416,226 @@
-
-[ ... ]
-
-> +/* PHY8824 UTP init registers */
-> +#define YT8824_WRITE_PROTECT_CAL_REG		0x1
-> +#define YT8824_WRITE_PROTECT			BIT(0)
-> +#define YT8824_PLL_VCO_ATEMP_REG		0xa20e
-> +#define YT8824_PLL_VCO_SEL_CURRENT		GENMASK(7, 4)
-> +#define YT8824_PLL_VCO_SEL_CURRENT_B		0xb
-
-[Severity: Low]
-This isn't a bug, but YT8824_PLL_VCO_SEL_CURRENT_B is never used.
-yt8824_config_utp_init_paged() uses the literal value instead:
-
-	ctrl = FIELD_PREP(YT8824_PLL_VCO_SEL_CURRENT, 0xb);
-
-YT8824_FFE_SUM_THRES is also unused, and so is the new
-#include <linux/of_net.h>. yt8824_read_page() and yt8824_write_page() each
-end with a stray "};".
-
-[ ... ]
-
-> @@ -638,15 +949,1165 @@ static int ytphy_set_wol(struct phy_device *phydev, struct ethtool_wolinfo *wol)
-
-[ ... ]
-
-> +static int yt8824_sds_isolate_and_softreset_paged(struct phy_device *phydev)
-> +{
-> +	int old_page = YT8824_RSSR_UTP_SPACE;
-> +	int val = 0;
-> +	int ret = -1;
-> +
-> +	old_page = phy_select_page(phydev, YT8824_RSSR_SERDES_SPACE);
-> +	if (old_page < 0)
-> +		goto err_restore_page;
-> +
-> +	/* sds softreset and disable isolate */
-> +	ret = __phy_modify(phydev, MII_BMCR, BMCR_RESET | BMCR_ISOLATE,
-> +			   BMCR_RESET & ~BMCR_ISOLATE);
-> +	if (ret < 0)
-> +		goto err_restore_page;
-> +
-> +	/* poll while still holding the lock */
-> +	ret = read_poll_timeout(__phy_read, val,
-> +				(val < 0) || !(val & BMCR_RESET), 50000, 600000,
-> +				true, phydev, MII_BMCR);
-
-[Severity: Medium]
-Does this sleep for 50ms to 600ms while holding the bus-wide mdio_lock?
-
-phy_select_page() takes phydev->mdio.bus->mdio_lock, and the lock isn't
-released until phy_restore_page(). Because sleep_before_read is true,
-every call sleeps at least once for 50ms under that mutex.
-
-yt8824_extern_sds_softreset() has the same poll. In 10G-QXGMII mode a
-single port's phy_init_hw() goes through it at least three times:
-
-phy_init_hw()
-  yt8824_soft_reset()
-    yt8824_sds_isolate_and_softreset_paged()
-  yt8824_config_init()
-    yt8824_extern_sds_softreset()
-    yt8824_soft_reset()
-      yt8824_sds_isolate_and_softreset_paged()
-
-Suspend, resume and the yt8824_restore_working_status() error path go
-through it again.
-
-While it sleeps, every other MDIO access on the bus is blocked. That
-includes the sibling ports, other PHYs and any switch on the same bus.
-
-yt8824_utp_softreset_paged() uses phy_read_poll_timeout(), which drops
-the lock between reads. Could the SERDES polls avoid sleeping under
-mdio_lock in a similar way?
-
-[ ... ]
-
-> +/**
-> + * yt8824_restore_working_status() - called to do store working status
-> + * @phydev: a pointer to a &struct phy_device
-> + * @ret: operation's return code
-
-[Severity: Low]
-This isn't a bug, but the summary says "store" while the function
-restores state. It sets the test mode back to normal and, outside
-internal mode, clears SERDES isolate and soft-resets the SERDES.
-
-[ ... ]
-
-> +/**
-> + * yt8824_config_utp_init_paged() - config external phy8824 utp init
-> + * @phydev: target phy_device struct
-
-[Severity: Low]
-This isn't a bug, but yt8824_config_init() calls this function in both
-the internal and the 10G-QXGMII branches, so "external" doesn't look
-accurate.
-
-The _paged suffix is also a little misleading. Elsewhere in this file it
-marks helpers built on phy_select_page()/phy_restore_page(). This function
-uses phy8824_page_write_with_lock() instead and never restores the page.
-
-[ ... ]
-
-> +	ctrl = FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH0, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH1, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH2, 0);
-> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH3, 0);
-> +	mask  = YT8824_U0_CSR_RESETB_TX_CH0 | YT8824_U0_CSR_RESETB_TX_CH1 |
-> +		YT8824_U0_CSR_RESETB_TX_CH2 | YT8824_U0_CSR_RESETB_TX_CH3;
-> +	ret = ytphy_modify_ext_with_lock(phydev, YT8824_U0_CSR_RESET_REG,
-> +					 mask, ctrl);
-> +	if (ret < 0)
-> +		goto err_restore;
-
-[Severity: Medium]
-Are the U0/U1 RESETB_TX registers, the P0/P1 DAC bias registers and
-P01_PLL_EN private to this port, or are they shared across the package?
-
-yt8824_config_init() runs this function for every port in both modes.
-Unlike the SERDES init, there is no once-per-package gate. Using the
-calling port's address, it pulses YT8824_PLL_DAC_RST, then clears and sets
-all eight U0/U1 RESETB_TX_CH0..3 bits.
-
-The U0/U1, P0/P1 and P01 names suggest these registers cover more than one
-UTP. If they are shared, would bringing up or resuming one port reset the
-TX channels or PLL DAC of a sibling port whose link is already up?
-
-The register overview in this patch lists a per-port UTP Top Extended
-space separately from Common Top Extended, so this may be fine. It just
-isn't clear from the code.
-
-[ ... ]
-
-> +err_restore:
-> +	r = phy_modify(phydev, MII_BMCR, BMCR_PDOWN, 0);
-> +	if (ret >= 0 && r < 0)
-> +		ret = r;
-> +	return ret;
-
-[Severity: High]
-Does this leave the UTP port powered down when the init succeeds?
-
-The function sets BMCR_PDOWN at the start with phy_modify(). The later
-reset only touches BMCR_RESET | BMCR_ANENABLE, so phy_modify() writes
-BMCR_PDOWN back as it was. The success path then returns 0 just before
-the err_restore label. The phy_modify() that clears BMCR_PDOWN only
-runs on errors.
-
-The err_restore_normal path clears BMCR_PDOWN after the reset, which
-suggests the bit survives BMCR_RESET on this chip.
-
-The ret >= 0 check under err_restore can never be true, because every
-goto err_restore happens with ret < 0. That suggests the success path
-was meant to fall through to the label.
-
-yt8824_config_init() then calls yt8824_soft_reset(). Its call to
-yt8824_utp_softreset_paged() only sets BMCR_RESET, so nothing there
-powers the port back up either.
-
-On attach, phy_start() and mdio bus resume, phy_resume() runs after
-phy_init_hw(). yt8824_power_on() then clears BMCR_PDOWN, so the common
-case may hide this.
-
-phy_init_hw() is also called on its own, though. Examples are
-phy_mii_ioctl() when userspace writes BMCR_RESET,
-phy_abort_cable_test(), and MAC drivers that reinit the PHY during
-error recovery. In those paths the port would stay powered down and no
-error would be reported. The link would not come back until something
-calls the resume callback again, for example an ip link down/up.
-
-Was the port meant to be powered back up here, or is that deliberately
-left to the resume callback? If it is deliberate, could the dead check
-under err_restore be dropped and a comment added to explain it?
-
-[Severity: Low]
-Some steps above assert a reset in one write and release it in another. If
-the releasing write fails, for example the second YT8824_PLL_DAC_RST write
-or the U0/U1 RESETB_TX writes to 1, this path only clears BMCR_PDOWN.
-
-Would that power the UTP back up with the PLL DAC or TX channels still
-held in reset, the write-protect bit still set, and the analog trim only
-half applied?
-
-config_init does return the error, and the next config_init runs the whole
-sequence again, so this only matters when MDIO writes fail.
-
-[ ... ]
-
-> +static int yt8824_config_init(struct phy_device *phydev)
-> +{
-> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
-> +	int ret;
-> +
-> +	mutex_lock(&priv->shared_lock);
-> +	if (priv->package_mode == PHY_INTERFACE_MODE_INTERNAL) {
-> +		ret = yt8824_config_utp_init_paged(phydev);
-> +		if (ret < 0)
-> +			goto err;
-> +	} else {
-> +		if (!priv->sds_initialized) {
-> +			ret = yt8824_extern_config_sds_init_paged(phydev);
-> +			if (ret < 0)
-> +				goto err;
-> +			priv->sds_initialized = true;
-> +		}
-
-[Severity: Medium]
-Can sds_initialized go stale after the chip loses its register state?
-
-The flag is only set to false once, in yt8824_phy_package_probe_once().
-No remove, reset or resume path clears it.
-
-phylib calls config_init again in cases where the PHY may have been reset
-or powered off:
-
-mdio_bus_phy_resume()
-  phy_init_hw()
-    yt8824_soft_reset()
-    yt8824_config_init()
-      if (!priv->sds_initialized)   <- false, SERDES init skipped
-
-phy_detach_internal() also asserts the reset line with
-phy_device_reset(phydev, 1) while the driver stays bound.
-
-In that case the package-wide SERDES setup would not be redone. That setup
-covers the write-protect unlock, the reset bypasses, CDR mode, the PLL VCO
-trim, the efuse-derived values and the calibration restart.
-
-The SERDES shared by all four ports in 10G-QXGMII mode would then run on
-its power-on defaults, and no error would be reported.
-
-[ ... ]
-
-> @@ -3240,6 +4701,450 @@ static int yt8821_resume(struct phy_device *phydev)
-
-[ ... ]
-
-> +static int yt8824_read_status_paged(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +	int val;
-> +
-> +	ret = phy8824_page_write_with_lock(phydev, YT8824_RSSR_UTP_SPACE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete) {
-> +		ret = genphy_c45_read_lpa(phydev);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-
-[Severity: Medium]
-When autoneg is enabled but has not completed, can a stale
-2500baseT_Full bit stay in phydev->lp_advertising?
-
-In that case genphy_read_lpa() only clears the C22 link partner bits:
-
-	if (!phydev->autoneg_complete) {
-		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-		mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-		return 0;
-	}
-
-genphy_c45_read_lpa() is skipped here, so the 10GBT link partner bits
-learned from an earlier 2.5G partner are never cleared. ethtool would keep
-reporting them after the cable is unplugged or the partner changes.
-
-rtl822x_read_status() in realtek_main.c clears these bits unconditionally
-with mii_10gbt_stat_mod_linkmode_lpa_t(phydev->lp_advertising, 0) before
-reading them. Would something similar work here?
-
-> +
-> +	if (!phydev->link) {
-> +		phydev->speed = SPEED_UNKNOWN;
-> +		phydev->duplex = DUPLEX_UNKNOWN;
-> +		if (phydev->autoneg == AUTONEG_ENABLE)
-> +			phy_resolve_aneg_pause(phydev);
-> +		return 0;
-> +	}
-
-[Severity: Medium]
-Should speed and duplex only be reset here when autoneg is enabled?
-
-With autoneg disabled, phydev->speed and phydev->duplex hold the forced
-configuration. genphy_read_status() has just read it back through
-genphy_read_status_fixed(). In the halted state, phy_state_machine() only
-clears these fields when autoneg is enabled.
-
-With a forced 100/full setting and no link, after ip link down/up:
-
-phy_start()
-  phy_state_machine()   /* PHY_UP */
-    _phy_start_aneg()
-      phy_sanitize_settings()
-        phy_caps_lookup(SPEED_UNKNOWN, ...)
-
-No capability matches, so the lookup falls back to the lowest supported
-mode, and the forced 100/full would quietly become 10 Mbps. Until then,
-ethtool also reports the speed as Unknown.
-
-[ ... ]
-
-> +static int yt8824_probe(struct phy_device *phydev)
-> +{
-> +	struct device *dev = &phydev->mdio.dev;
-> +	struct yt8824_shared_priv *shared_priv;
-> +	int ret;
-> +
-> +	ret = devm_of_phy_package_join(dev, phydev, sizeof(*shared_priv));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Ensure other PHY probes wait for shared mutex initialization. */
-> +	phy_package_lock(phydev);
-> +	if (phy_package_probe_once(phydev)) {
-> +		ret = yt8824_phy_package_probe_once(phydev);
-> +		if (ret) {
-> +			phy_package_unlock(phydev);
-> +			return ret;
-> +		}
-> +	}
-> +	phy_package_unlock(phydev);
-
-[Severity: Low]
-What happens to the sibling ports if yt8824_phy_package_probe_once() fails?
-
-phy_package_probe_once() uses test_and_set_bit(), and the bit is never
-cleared, so it records that an attempt was made rather than that it
-succeeded.
-
-Suppose two ports have already joined the package, and the first one fails
-because motorcomm,package-mode is missing or invalid. The shared storage
-survives, because the package refcount is still non-zero.
-
-The second port then sees phy_package_probe_once() return false, skips the
-validation, and probes successfully. Its package_mode is still the default
-that yt8824_phy_package_probe_once() stored before the check:
-
-	priv->package_mode = PHY_INTERFACE_MODE_INTERNAL;
-
-That would leave one port failed and its siblings running in internal
-mode, whatever the DT asked for. Hitting this needs concurrent probing and
-an invalid DT.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018022151.2677056-1-kyle.switch%40motor-comm.com
+References: <5a4715dd-89e0-4868-9ffb-c8fb73b18d04.ref@yahoo.com> <5a4715dd-89e0-4868-9ffb-c8fb73b18d04@yahoo.com>
+In-Reply-To: <5a4715dd-89e0-4868-9ffb-c8fb73b18d04@yahoo.com>
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Date: Sun, 18 Oct 2026 23:44:21 -0300
+X-Gm-Features: AclHuK932M6q_zkFu_mbN1a4J9J0hT7LZ-thPB6vZAsfRFyFX0Tnvfr-Pqnzhzw
+Message-ID: <CAJq09z4kKcQ+idfP+19pogi-H5s07SgKO-CGg7AWX8An-9p4Fw@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 0/9] net: dsa: realtek: rtl8365mb: add support
+ for RTL8367S-VB
+To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, 
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	linux@armlinux.org.uk, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+> This series adds support for the RTL8367S-VB (chip ID 0x6642) to the
+> rtl8365mb driver. The chip belongs to a new "family D" that differs from
+> the existing family C in its VLAN table layout, speed/RGMII configuration
+> and SerDes (SDS13) handling.
+>
+> Patch 1 documents the chip in the devicetree binding.
+> Patch 2 adds the chip family infrastructure (no functional change).
+> Patches 3-4 add port speed and RGMII mode configuration for family D.
+> Patches 5-6 add VLAN 4k table access and raw-VID PVID handling.
+> Patches 7-8 add SDS13 PCS support and re-latching of the SerDes.
+> Patch 9 adds the RTL8367S-VB chip table entry. It comes last, so that
+> no intermediate commit exposes a family D chip with incomplete
+> handling and the series stays bisectable.
+>
+> Family C's functional behaviour is unchanged. Changes in a shared path
+> include a mutex serializing SerDes register access, as well as
+> .pcs_disable in pcs_ops and .conduit_state_change in dsa_switch_ops
+> (both bail out immediately on family C). The port count is capped at 8
+> for family D only (patch 9).
+>
+> Tested on a TP-Link Archer AX55 v1 (RTL8367S-VB, CPU port over HSGMII
+> to an IPQ5018) with bridge VLAN filtering and per-port PVIDs. SGMII has
+> also been seen working, but I no longer have the exact link partner and
+> speed it was tested with, so treat it as lightly tested. RGMII mode has
+> not yet been tested.
+>
+> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+
+Thanks, Mieczyslaw, for working on this series.
+
+Support for Family D is very welcome and increasingly necessary, as Family C
+ASICs are no longer being used in new designs. However, the current support
+still feels incomplete in critical areas.
+
+When porting a new switch family to rtl8365mb, each feature and hardware table
+shared with Family C needs to be verified against the new family's register
+layout. In particular, this series leaves rtl8365mb_l2.c untouched, but the L2
+table layout in Family D differs from Family C (from memory, the table entry
+format is 1 byte shorter and the bitfields are organized differently).
+
+Passing basic traffic in a default router setup can easily give a false sense
+of stability because the switch starts forwarding with factory defaults.
+However, as soon as DSA attempts to configure FDB entries, dump the L2 table,
+or manage multicast groups via bridge operations, the driver will interact with
+the L2 table using the wrong layout, causing silent data corruption.
+
+To make Family D truly upstream-ready, we should adapt these shared components
+(especially L2/FDB handling) or, at the very least, explicitly return
+-EOPNOTSUPP
+for unsupported operations so the driver fails gracefully instead of corrupting
+hardware state.
+
+In the cover letter, you mentioned the test device. Do you have the Archer AX55
+on your own bench now, or were these tests run remotely by users?
+Exercising full
+DSA functionality (FDB add/del/dump, VLAN filtering, STP, flooding controls)
+usually requires a dedicated local test setup where you can generate, sniff,
+and inspect traffic directly.
+
+Best regards,
+
+Luiz
