@@ -1,100 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=81.169.146.170
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792425223;
-	b=hem9EBEh9UcYUnaQ6lFtjeNQu46hgtwa7JSpTngoGQaFkQbnpqiSCB7sPCkq2PU2mt5N
-	 bSZQ3Z3jom/lP6mkbH3/iPpCt1ZYy9RLM37yCDp3RkkZwk1cYtFhJdgs+9G1LRsXsGtKS
-	 QDkOsyubiBzXw09W16kZn9IBLNs90ALJapz4b+MWVD2BZTyAx+U1cfd2K+AW+q4kOu2yI
-	 B0TG5yOvuTvr2dUDFepiORfy9mN79r95gsNy3MQET37wUOzTEXhyYiT/4lT6JA1tAsavq
-	 zuJKMPL4Nfq2M9zZ53fTMVH6fLCElgzVrUUfDlQTCuOfMAyrhk7Ajo+zCU0CkaaGvxQ==
+	t=1792425294;
+	b=qF0Ffq8aSYBvIA2elRczgY0Vt1gPxDkbaiE/fKuWE8KnHQSkUgPIwB10fH+vUCiRopQB
+	 /Y165bWfx1n8cHYMfNkSIUFZdOYZ2jK2wkq9AI+eWz8t88B0U4gnzV6jv75tDsF22tFMt
+	 6dvD/+/fSsMknnUj5ht0oXjSi0mzuKw1OUuwo6YqXxr+CiUQiAxB+XCd+PUzHur7e288U
+	 IQxkg8IGuwzFzVuIXddswhTgFClXiP1vxib023XWppN1VU3xKpnJwhj6FREQFqHuOLehR
+	 mHOpOvwDr8Sc0y/iCtmi/SS8V+ufj/i8r2SLnlPpyFNRfGEbn5M+djcGUUJdBO7LidQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792425223;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=6NcDKQ3CQHRlm94fb+y6wjDFmyC79P2GiX9bB2T9H8w=;
-	b=I4n1eedx5DSXVI88jYxJqxA2V2+rQLueJGxfNH7gKdy1GWHQo0OBRfTvm5m639jxzUmT
-	 6i7j2PigE4WCI+h3MQupbgzlmy9SRg6rQC97UcOIinQ0ovVtG3vsj8k5fLzn6n123o/ma
-	 IA7EgAE6RFNRK+pJm4EmNdGOSysryyOQQbQdicqzOVKboDm/YwTQLlUBGJSNhioBGuFsQ
-	 WzorB7U81vFDvkqT6piyvT7Sxp95kMg97zgFXDszKCDnLPuRLkKc0DCueE86ZpH3dxG6B
-	 a0QzQDGoETjCK//LJkaxlKoCTB2S2zxRwBHWlE75EDNDoBInQQyLvFraa2VL/vFXREw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792425294;
+	h=DMARC-Filter:X-RZG-CLASS-ID:DKIM-Signature:DKIM-Signature:X-RZG-AUTH:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
+	b=MaYrOgp78zP2Iyt6UOk6jD45GB8XBsl+qhUamIeM04DuhWMk94spgaPBdmQdGdeljY41
+	 co24kFgrSE2tDnwCybU4yVznN68ZZkZ1HkbdnkSHFPtevhcugPTRdgBR/PC0JMnSSiStd
+	 DYt3reMepLuWG1G8m2fw9v1bv6Pt6EnbgsR7S396sM2YYjstrxxgDqgxsejMC7a46ZIKA
+	 jrNVjLppeBsbKfqdObnc3wAIY8ASkY3k3IViCtZc5VRQ8aCDP6hcVjJ9jOqEgNAslCryt
+	 R1BEoFWnxM1NgrqwFYIJqaHxbVf4yD96ypskFbgpwacYJGA/qT6X0oYIdyxSV6AiE9w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=r8sjLJMI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=hartkopp.net;
+	spf=fail smtp.mailfrom=hartkopp.net;
+	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jKrH84C4;
+	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b="eSO1TWq/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=81.169.146.170
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.170])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915DA606AFB4
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:53:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 915DA606AFB4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16692606C928
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:54:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16692606C928
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=r8sjLJMI
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-533202fe429so567891cf.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 08:53:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792425221; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PVvHJh3NwggR+ESJa6bizlKLjcu6xLoni/OrNUGqa9ceiJM9DK0hr75GMJwUfIk6Bp
-         pbErBuZFTIHXTcabNV4xunN9Mog0qTPhHR/aH2ZCv0U744kL1SssHsXIZwLcNebprUlU
-         uXl+fm34KPnxu89Dfp4wQsfCG3Ji/X9RCnYj2AboU4z46VEgur0/Ti+5sfiiqDG8lC69
-         Q7xkB2m2d23CEo1CMO7xv4cAHmPIN5gQ8vaS3AQ5EVhLXWuAWRrhHJyCRIOFQq7Sise0
-         YNE3CJdk7v0+2SdDRdd/X0HtEoCn0MKQ/K8frhIcgFJaOMbljtyWEh4HnuZAfId/yZwx
-         6wqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6NcDKQ3CQHRlm94fb+y6wjDFmyC79P2GiX9bB2T9H8w=;
-        fh=QqYnUUiTaq2APGmvDprWN92oEStI8kDHlSYZeiobxqQ=;
-        b=qVYVH+ieaOdeWUiPlZb3hL/3fXrZg9iG8R/6MqH5SocMoSSmOetPdRB9i2pVK5R/sR
-         gshIAZr15HSrkG8X8qT5Skf9lnKI0XAzTnGV4SzAjMfdtyRO5aZlq4Nxxn8gb3LbxxqW
-         BxRWyjtavfrL61vVFPtUygdTO6hGRPVVRYpfwti/VqJCZUkTXkjg7EDxQ9fs1Qlkmmoq
-         FI/JLw6upFfgGqNu8457jAfGzI3XfRXiGMy8agnSze+ZOgpntjtrWsHm/bpEGWODACuE
-         H4+uLjMWoRPb77BbZkvBHR/2hej4YNM1REfrYdNdhYATtF1Wh4C2pNil7qt1IU8sWcDq
-         V45Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792425221; x=1793030021; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6NcDKQ3CQHRlm94fb+y6wjDFmyC79P2GiX9bB2T9H8w=;
-        b=r8sjLJMIwgB9xutl6pJjP/QUzSKPFv2UXLERc+vgRpuysAuDTS7BpGdpzsjJ2JbnER
-         itY8EF0HTgUsAqSSN9G5St3M5574ImYzhoKOS0qFWIi1Q3Agu/DrWReIfLWS180JmHa0
-         YDse1R8q5Eq7/I578BtySMAklCURKIRdZ/AKQ4BO477lCJ4g5NN9hMSF2QvMEHufI7xN
-         dwgbc80NWkZYxWmCq2JDdEro8fE30FWvEx0znIDgmns+zy7wibHU+dRmrxdOwXSEMO0r
-         RhY7Fzc2oqOnmObNq0+HkSEB2f887Mxj382GFQf7rWYEop2yF6ejVDHWcn7+po/dW5d4
-         A98w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792425221; x=1793030021;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6NcDKQ3CQHRlm94fb+y6wjDFmyC79P2GiX9bB2T9H8w=;
-        b=FVV8vi6j5sIcDLCC4LgPvY9uJ0XHlv+ZqR68tYZYzXpSLE5XuGiPSMqVZrOG3s/Gqv
-         /dx5WOF4cL+dFFSbEPPKzVMNDcIrgOq3/49eWWfZcx52kKel92tTqIKfsLz144Bypldf
-         NIEpGUoc0KDscGtDPEirbt+N3UpiKtLMseyZJp1+VV/zDfaNHtYS4GvKD87Yxil9C/TB
-         xppU6GIqiyVt+/EyrXk9KBfucSPTx9d2qm8qy7x7PfFMUn3lvdtsKf3lsiRnD24iqfSm
-         S680/otDBUqtnJNXJLiGszbi9PJFU5/zPj1Lb2hXjrCmbyZBhZfwW/ddhr8JRWYsh9l1
-         t88g==
-X-Forwarded-Encrypted: i=1; AKwUvBxPGdzJYB7EXnbt8+6EPKLAlPMbkKcLvmP0fYqtngKBQfENSDmnSEwgPvpHXrpnP7LMJXdpOs4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIj8y8oo7nynK0FEPCQBs9EmErF2SA/gETceKZ501y8itBDtIpE
-	ZOj0fZM8161K8tUgzRaVY0y48EzTz2XTAgRQT8R46zaGES6OJ4e6QhxS1qdMcvfoR+SSSYbadGv
-	2VjyJTzZ6gNbAEF8bWKHISRuDC9L7+CE/pP/vSO1v
-X-Gm-Gg: AYBFou3e6mtvubxf+88GvaQP8dmXJp/D9qUiCj2MbOkE+4aRrxks1RzjWgFw4Y2QWVZ
-	5Boo9TYWFCquy5AwNQzGe+LCVVhpRyk/45IpFpVVqe1aoTieIySCZz5Gi4NGUJd0DrTqVemLKY+
-	U5HGWFmHCcZ8xH8Q9rkMHmfT0oJcWpmZH3+vQxF4+ct/PF4uFQOQL6T67pq6h4Y1F0cfLKxXU6H
-	YjmjBW2qaGupUylBbn6VIPsEFbBkOvR6basctcSddQDhbcAL/7Fn9PBX9VkD8tvtX/mYY+Ugna6
-	FBlGXePsUrHoGEVuZLunIMLRFDHrVF8iq/mRGIg5m2NImyNjU9mVAflrevJOYAEK7z1WXvk4V0x
-	lmtQSn0a61Q2kNk3geDwhzksEA5S4P3MJwQ/73GF50i9U
-X-Received: by 2002:a05:622a:4ccd:b0:535:30a:76c7 with SMTP id
- d75a77b69052e-53649a535b1mr41412171cf.3.1792425220585; Mon, 19 Oct 2026
- 08:53:40 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jKrH84C4;
+	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=eSO1TWq/
+ARC-Seal: i=1; a=rsa-sha256; t=1792425253; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=bd1f9XOSrrFJxFAMQWPmm+/6zssnm3Q9JFp46hbhKMe/W0DtTmnTI9jxEqFcZ/buEU
+    wsfw6B8bEUPtVJWXGUAuCpO9bsNMCE+opPwaCOcIpCVRwailg8F7iYJLXweujTECvboR
+    q5IKw1flxNzv+EN1kQ1NY1QglkRv2/Q0YPaq0b99GDkmy++25KrpqUH/GPIbJBVcyYEl
+    MWyQo4lpaekQVb5o1kzisYf9lauli2lRsF8V4lc6lbqr3eWa5fCobGVV1qgsFKKQgWTL
+    AI5yK+/SVeUUuU2xi5EkxDP0G4+kD+fzpjbxMvsRWh9XDWH9ISm/oZjuwexelOm2Gx7d
+    7yqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792425253;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
+    b=exNwYQQ2DYnNiv6o6tAGl7n2zTpimaF4dnpgT5g6CZZyi2tlJiBcEj+t3MHJv5/s9W
+    MpawjRd6y/BFAfB0rDm7a6I110LclrPbftB6FQvX1FeMePeQwVeCL3rq8+S0CjC9xgKn
+    Ru2o2ohVFDgVGLMOZ6mPDtb58fA4mCu+RbCGU7oxNTFDOcd1nKfYINYuoK9g4ND/VjKP
+    VTFVTiorqa07dwn5usO/oFGlw8+mn0oGeLyHFus8p+EzdpBoq7hW7gfGFvhL4pgK6UdD
+    LbkYH/LO6h8SiQVR9ANqmcE67+kDbHblQTNq0gi5Vv8c0l8P7Bw3s6b3CLQt2hT84Bvk
+    oqgA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792425253;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
+    b=jKrH84C4ccKQ3CtaaLqdUfJeXMr92JeoeDMsrXue90BSy4kg1LTYFsc7fJAvvFAnRn
+    H1erBKvIYoaZWW6N/fF3ZtUJOlEoVF52n/rBTBCn5rHPMllYBnxyb7o4VPxPPkOP6u+P
+    IoyqJAVeDI44W1WIOL0mLAYXcTB1a/SkYzfD02dx64233QSB1VO+55pbgWZ2rj2t6XOz
+    XR/zZJQ7EaGQfFZj4deNM+9Qlifs3HoG9OzK34MbpsXLOHPRqB+ByZT5Y1lwhVNs+0Go
+    l0rM+VH+Ci1YQg2RKtu5H69JoRpV8XSyiNS4Q94RnATeHHO9MRo1XKDrbVlErS8aG08i
+    b/TQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792425253;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Nnu0nVBwLrZHV65taNoT+uZ3ap97Y1DHuGewStl7BiM=;
+    b=eSO1TWq/7J9+R/vkrhomarv04DodKTFDRMa6ZR+Pv2nNpiGRvKGw8haQ+1tUIcGCEo
+    Om88i/FblMqz0dSdDXBQ==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from vivo.lan
+    by smtp.strato.de (RZmta 55.6.3 AUTH)
+    with ESMTPSA id Kfdf2a29JFsDXe9
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 19 Oct 2026 17:54:13 +0200 (CEST)
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+To: Jiri Pirko <jiri@resnulli.us>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jiale Yao <yaojiale02@163.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH net v5] team: reject CAN, IEEE 802.15.4 and 6LoWPAN devices in team_port_add
+Date: Mon, 19 Oct 2026 17:54:07 +0200
+Message-ID: <20261019155407.61487-1-socketcan@hartkopp.net>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,150 +103,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018211514.2817293-1-chia-yu.chang@nokia-bell-labs.com> <20261018211514.2817293-4-chia-yu.chang@nokia-bell-labs.com>
-In-Reply-To: <20261018211514.2817293-4-chia-yu.chang@nokia-bell-labs.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Mon, 19 Oct 2026 11:53:23 -0400
-X-Gm-Features: AclHuK_1jUVxI4Ba9SwLVrMjxrP5yi_6VMujUmIp5B2h4zHaQtt1sXCgtYIXGeA
-Message-ID: <CADVnQyn1sjYzfCRiVKOxvyXbx0j2_3y5t9FsyTr81YG9XjdvxA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/3] tcp: Add mss_cache_set_by_cca for CC
- algorithm to set MSS
-To: chia-yu.chang@nokia-bell-labs.com
-Cc: ihor.solodrai@linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com, 
-	jiayuan.chen@linux.dev, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
-	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, emil@etsalapatis.com, linux-kselftest@vger.kernel.org, 
-	shuah@kernel.org, horms@kernel.org, dsahern@kernel.org, pabeni@redhat.com, 
-	jhs@mojatatu.com, stephen@networkplumber.org, davem@davemloft.net, 
-	andrew+netdev@lunn.ch, donald.hunter@gmail.com, kuniyu@google.com, 
-	ij@kernel.org, koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com, 
-	ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com, 
-	cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com, 
-	vidhi_goel@apple.com, Mike_Rudolph@comcast.com, Jeff_Howe@comcast.com, 
-	srichard@netapp.com, Eric Dumazet <edumazet@kernel.org>, 
-	Yuchung Cheng <ycheng@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Sun, Oct 18, 2026 at 5:15=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
- wrote:
->
-> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
->
-> Make the CC module set the mss_cache smaller than path mtu. This is usefu=
-l
+From: Jiale Yao <yaojiale02@163.com>
 
-Since many CC modules will not set the mss_cache value, rather than
-"Make the CC module set" I think it's important to say "Allow the CC
-module to set".
+When the first port has a non-Ethernet type, team_setup_by_port()
+copies port_dev->type to the team device while netdev_priv() of the
+team device still holds a struct team. Several L2 stacks identify their
+devices by dev->type alone and then access type specific data that the
+team driver never sets up:
 
-> for a CC module that maintains an internal fractional cwnd less than 2 at
-> very low speed (<100kbps) and very low RTT (<1ms). In this case, the
-> minimum snd_cwnd for the stack remains at 2, but the CC module will limit
-> the pacing rate to ensure that its internal fractional cwnd takes effect.
-> Therefore, the CC algorithm can enable fine-grained control without
-> causing big rate saw-tooth and delay jitter.
->
-> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> ---
->  include/linux/tcp.h   | 3 ++-
->  net/ipv4/tcp.c        | 1 +
->  net/ipv4/tcp_output.c | 5 +++--
->  3 files changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-> index e4d1720f49f0..428d63e46206 100644
-> --- a/include/linux/tcp.h
-> +++ b/include/linux/tcp.h
-> @@ -232,7 +232,8 @@ struct tcp_sock {
->                 tcp_usec_ts : 1, /* TSval values in usec */
->                 is_sack_reneg:1,    /* in recovery from loss with SACK re=
-neg? */
->                 is_cwnd_limited:1,/* forward progress limited by snd_cwnd=
-? */
-> -               recvmsg_inq : 1;/* Indicate # of bytes in queue upon recv=
-msg */
-> +               recvmsg_inq : 1,/* Indicate # of bytes in queue upon recv=
-msg */
-> +               mss_cache_set_by_cca:1;/* mss_cache set by CCA */
->         __cacheline_group_end(tcp_sock_read_txrx);
->
->         /* RX read-mostly hotpath cache lines */
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index f4c9101e5996..708e1830227b 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -457,6 +457,7 @@ void tcp_init_sock(struct sock *sk)
->         tp->snd_ssthresh =3D TCP_INFINITE_SSTHRESH;
->         tp->snd_cwnd_clamp =3D ~0;
->         tp->mss_cache =3D TCP_MSS_DEFAULT;
-> +       tp->mss_cache_set_by_cca =3D false;
->
->         tp->reordering =3D READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_reorde=
-ring);
->         tcp_assign_congestion_control(sk);
-> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> index 3248f3895b15..c53d70718830 100644
-> --- a/net/ipv4/tcp_output.c
-> +++ b/net/ipv4/tcp_output.c
-> @@ -2082,7 +2082,7 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu=
-)
->         struct inet_connection_sock *icsk =3D inet_csk(sk);
->         int mss_now;
->
-> -       if (icsk->icsk_mtup.search_high > pmtu)
-> +       if (icsk->icsk_mtup.search_high > pmtu && !tp->mss_cache_set_by_c=
-ca)
->                 icsk->icsk_mtup.search_high =3D pmtu;
+- CAN protocols rely on the CAN mid-layer private data (ml_priv)
+- IEEE 802.15.4 code dereferences ieee802154_ptr and the mlme ops in
+  ml_priv
+- the 6LoWPAN netdev notifier writes through lowpan_dev(dev) on
+  NETDEV_DOWN and reads it on NETDEV_UP/NETDEV_CHANGE
 
-This looks suspicious, or at least I don't understand the motivation
-here. What's the motivation for this?
+Enslaving such a device (e.g. vxcan, wpan0, lowpan0) therefore leads to
+NULL pointer dereferences or to writes into struct team.
 
->         mss_now =3D tcp_mtu_to_mss(sk, pmtu);
-> @@ -2096,6 +2096,7 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pmtu=
-)
->
->         return mss_now;
->  }
-> +EXPORT_SYMBOL(tcp_sync_mss);
->
->  /* Compute the current effective MSS, taking SACKs and IP options,
->   * and even PMTU discovery events into account.
-> @@ -2111,7 +2112,7 @@ unsigned int tcp_current_mss(struct sock *sk)
->
->         mss_now =3D tp->mss_cache;
->
-> -       if (dst) {
-> +       if (dst && !tp->mss_cache_set_by_cca) {
->                 u32 mtu =3D dst_mtu(dst);
->                 if (mtu !=3D inet_csk(sk)->icsk_pmtu_cookie)
->                         mss_now =3D tcp_sync_mss(sk, mtu);
+This is the same problem that syzbot reported for the bonding driver
+with a vxcan device enslaved to a bond master, which crashed in
+can_rx_unregister() and was fixed by commit 8ba68464e478 ("bonding:
+refuse to enslave CAN devices"). The team driver has the same gap.
 
-How is this going to work if the path MTU reduces? For example, if the
-sysadmin lowers the MTU to be lower than what's consistent with the
-MSS value the CC module chose? Won't the packets from the connection
-all be bigger than the MTU, causing weird fragmentation or
-black-holing?
+Reject ARPHRD_CAN, ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR and
+ARPHRD_6LOWPAN devices in team_port_add().
 
-AFAICT, to be safe, if the dst_mtu() changes then we still have to
-call tcp_sync_mss(), even if the CC module wants some input into the
-MSS decision.
+Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5-c1c7e647ccca@hartkopp.net/
+Link: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95 # bonding splat
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Assisted-by: Claude:deepseek-v4-pro
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+---
+v5: [Hartkopp] reference the syzbot report of the identical bonding problem
+v4: [Hartkopp] also reject ARPHRD_6LOWPAN as reported by Sashiko AI
+    review, reworded commit message (bonding only rejects CAN)
+v3: [Hartkopp] fixed indention and compilation as reported by kernel test robot
+---
+ drivers/net/team/team_core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Wouldn't it be safer to propose that the CC module optionally sets a
-ceiling for the MSS value, rather than giving it direct control over
-the MSS value? Along those lines, perhaps CC modules that want to do
-this could export a new optional CC module callback that we use in
-__tcp_mtu_to_mss(), perhaps something like this?
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -1223,10 +1223,21 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		netdev_err(dev, "Device %s is loopback device. Loopback devices can't be added as a team port\n",
+ 			   portname);
+ 		return -EINVAL;
+ 	}
 
-        /* Clamp it (mss_clamp does not include tcp options) */
-        if (mss_now > tp->rx_opt.mss_clamp)
-                mss_now =3D tp->rx_opt.mss_clamp;
-+       /* Optionally clamp MSS based on CC module: */
-+       if (ca_ops->max_mss)
-+               mss_now =3D min(mss_now, ca_ops->max_mss(sk));
++	if (port_dev->type == ARPHRD_CAN ||
++	    port_dev->type == ARPHRD_IEEE802154 ||
++	    port_dev->type == ARPHRD_IEEE802154_MONITOR ||
++	    port_dev->type == ARPHRD_6LOWPAN) {
++		NL_SET_ERR_MSG(extack,
++			       "CAN, IEEE 802.15.4 and 6LoWPAN devices can't be added as a team port");
++		netdev_err(dev, "Device %s is CAN, IEEE 802.15.4 or 6LoWPAN. These device types can't be added as a team port\n",
++			   portname);
++		return -EINVAL;
++	}
++
+ 	if (netif_is_team_port(port_dev)) {
+ 		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
+ 		netdev_err(dev, "Device %s is already a port "
+ 				"of a team device\n", portname);
+ 		return -EBUSY;
+--
+2.53.0
 
-Perhaps Eric or Yuchung will have a better idea. :-)
-
-Best,
-neal
