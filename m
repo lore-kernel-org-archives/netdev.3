@@ -1,88 +1,88 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792429730;
-	b=civNlCz8+nNrsqUjk75G3VcwtLfQ1cAU1VN6VVsaMNAzAz5bK3zJeeLUUnSBXrG0nhfb
-	 dNO7REIDrttajMYE9LuolwE1r3/6GT9kItrQaJNvOM2Ar7uzLr0IcOXF3moiM8QdfdVRI
-	 nrfEoYCKu0KinDPEECJOmYJWwbhPtD3ScLq7isZWitP5iNd8HS1a+cyAJzZaU5EYa5EjY
-	 K+PIYsP03oNk4Bwlm61DVmJzNRuXrl8i1p9cYqEGyU919r5a0U5K6UYuw3EW+xJvQGbNa
-	 FL+pqhybLRyCrRnzE7zOVYVjLHW4uoyU9kgcu/63DqqHZmxq5/Q6phzBF7ruIsKSrJg==
+	t=1792429733;
+	b=tMIFQFLPgwiVHJDSdSu3jQpEdalnHYif42y1Ix47O572oblAmRPbZtIXqIa8zOGQ8K40
+	 NGIMIoA13KskxNiExjrtzu1vmjpfggv1iCi4ML+WLAnTQBNWkWVGkAW6IfnVDnYHxehxL
+	 WT8Kj4WEtvNuGbI5epasFLVggEawNSqVHt1mliHXcRyoLuJ+9BbB6wpzXq37Kc5/l/HZE
+	 bCR14NSTGzECjpLDYD18Kia9o+Qf36sLEY9TzAFs6QbuRa9ZlVZJznm7n2muSP9k5vHOK
+	 2HcziJAOqE+Aw+L2K2CF6AbaRoim3z8xtw6JCcR5BZ+WzZvoFWnK8s/LMWlfEThYY5g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792429730;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792429733;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=wbIi++T5I/EY7npkGc0X2Wvuhoby9O/RDkzRPOSp+tc=;
-	b=Pc1atayp5hv842GV0TbiWiZ1O7+OLNXsqsF7o33SgGjZv72S9yPWhTzRGXe7HyiM9adB
-	 nftr7c7RvxKuk9SHECPrf7z2CiFEE98/OnLDgsfE6kYP0ccAy1e5dXxeI+0KhnyQZPPBf
-	 qQf/1cfVvAVAA3dDmdDvKy3gzuA2tGf3mP9Q6MSXTQoOQI0ZxCcbuJ+FAoQeiLQg4Sesw
-	 TNqKpqEzmjBTrmekj6Pwcd+JNu0ib8I88LizSOodwXHXrLWtNrJBVBzhKVi/X5Q07BLnd
-	 qC5SEj46S4soio0CKq7+B0gct4ncILuIHB4VengyDN2mGKsGbLyHrPRa5bebmnLZ8bA==
+	bh=b/+LLk0g1xg6DsRCjMqT66ZWRjvKGdYEhmiOljPoLAI=;
+	b=2X9OmK7eGNhPEHBMfbR9i/DKuY9rXYLh+lA67i/mOXHVsFX1NDiSAT8o6m9akr/yLsWs
+	 /gw5Hjdn38uuVWXtRNQRj1pyc7mds2bx8qnJH+iMfs1qsx3YTfmqpe3Rwp8Adhq2gPkiF
+	 M+dbvUrrfjOWYK+MxNP3KXaWO+SyAW24HAQVze8Ol15QviiY7LVrMVVENON+GhBQKykiN
+	 DfPMXfDHTHrjd4wQrHzw2cNzOLTEWB+xSBv6pxX3oAbMW+zScFk9De3I/2mEGeLKZurD7
+	 hEQ2Tz+9PTOAGVKGqRgfRPjlMFB+R86qL+8gJuepuTwPicTDPLMzarmHeuPq3zAfCUg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=eBLMQuCx;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Vhq21IL6;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38DA606A31C;
-	Mon, 19 Oct 2026 17:08:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B38DA606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC20606A338;
+	Mon, 19 Oct 2026 17:08:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BC20606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=eBLMQuCx
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Vhq21IL6
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DD1F9202852;
-	Mon, 19 Oct 2026 19:08:36 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 27677202856;
+	Mon, 19 Oct 2026 19:08:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792429716;
+	s=20260414; t=1792429717;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wbIi++T5I/EY7npkGc0X2Wvuhoby9O/RDkzRPOSp+tc=;
-	b=eBLMQuCxaSG4u28kbg3Z7QajzD876uI/gAHmHPlwjnxcJ4Dwru7QKU2cakueEBUCh7unmD
-	+rD7AuIMYMZ4/yuHGjyDAj6zEG7P+qjpcy+Bs2SfxzurwaD5w5AZus3+Q7dKLZCne0wLNV
-	uQLW8d4k/UE17SeP6Ql7LB7wMt2BB9C9xfMcnIaF7ywyiWvhjI85wDz9LPC+ci4LDw/gaH
-	f8mxPSeNx0gpMiIQZCqwRzRVKvZDGqraysj1/6cG32TNH9wDS+s9QHildW7EaTU57qrE7/
-	CDYE2/yrO+9VrNj0f6sXxGvL1ONjucCRncjqB89NxmiGPPWEcnFu8KwuW4HVbg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792429716; a=rsa-sha256;
+	bh=b/+LLk0g1xg6DsRCjMqT66ZWRjvKGdYEhmiOljPoLAI=;
+	b=Vhq21IL6K5V921IovVeQU8d5ff4gdyTjPlNjdywMx33d0N6POvw2oc4phRjGgdG/3NtuyT
+	3Y25aYel4RZhKdvHpUGoBDKW2lfpsqAjGa4cRCjhulCr+iGuV78uVukxSdvhzK5E6bQ+kp
+	+UmHKfF6tCBDmZ2NCdlNm7zHEdbdeW5jrY3ueTFF+po8Qfug+4en4CM5TLHhVHFSylSBmJ
+	MHUTxf1auW/txB8H6rpFq2UwIt1t9/oOKCC0YdUTGbMzvD1N8ncm4N3putP+rQpnn5lU38
+	AgHLQ+Z3w67qXWgXB0uxUz2uWsK00vtbh3seB5cpAtoQMtCmEp1WX4VVZpfv4w==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792429717; a=rsa-sha256;
 	cv=none;
-	b=U0hQknE8MeBU2xjfWqul7jh8YcvCWs4fHk3iHiAK8g+dc7HdW3/fkULyLu+z5Og56Ae9Kx
-	JsCbKiUFGhpM8L1wtRg3N0SiYl/qha3I3vnq62V7vrDQr+9mXTez3FaRK4s4b/e0F27GY1
-	vO+lWD105DjLujcj/13fZo4VGqvuJhLFGiK+cGQUqa7EUxqHBSFROXvLiw6pNLMAh81vFM
-	AbEoIJk/HC9+vM45/2AqLMeS6WP1U8WrEYQkb8mXHF6xK1q1+qT6EmLEGum4qlXiqYcU+2
-	DWQkUvOvYjlahQnTdFQdrNafwbo1iYL2RKAmXlMtNLRnvqdxVjHdL/SqAUCAiw==
+	b=SjxEjTbY+80/FoLttNCyZrMxtqB7YKhb3RBSLADFCbiCQ0vDMIx5rJYD5G6wo+uF1nDGmh
+	/ABh0E5ncPezd4Y+vY6CnpLlcjP+sFObE/fUGiF7rar1Ms1JQk9DJ6D81xl8ffiXK2J32+
+	LzHmQZmTcAfbDrW3YHIMuxF02uNeMByuI0g9yOj0K2xcglBThxhxKiyitUWDuqWHpqEwhA
+	b/R6fcMApYBxRFoqkh3cokXKGhtf52PsiCLiyGiNVmf47WHZSmqsg2Ob0MC36zT5TYchvO
+	MwWc6BWwlK3IwWIyyzUUFnvQen0g7wqoyM2trldiX/dbqKoW98vg4mxd6vD3BQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792429716;
+	s=20260414; t=1792429717;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wbIi++T5I/EY7npkGc0X2Wvuhoby9O/RDkzRPOSp+tc=;
-	b=fbg2yY2Pm1UVQpFmN3n8/9+inPhLXwO9cK3O+gxA0/tFzNmMdiLQ0DgRkz7UKRCJ5RwbtJ
-	a1LNk2aDJEs7PQkZy8RfF85l5VEpkz4vt8aWBIi2aahikvGEhUXdLz6zpl764Q7A9H2uDs
-	I49gY3/pePDR8lBZf4RfynFAyZlK2rf9MwJxRnjzTBIPRPBeI0yoEz4lXRvDmGeTsMdKsM
-	7Faudxcvj+uoBz8g5DLNdgRjGuwrnyoJiY3KbU6JvUMBSCrU4tnMoggkH93gl6WsSMvOqZ
-	UhKC2QP4+TDhpiX+gL5A/LVFc5d6qdjTGDrysqsEuqX4CRQHo9YfYW2CyNoRBA==
+	bh=b/+LLk0g1xg6DsRCjMqT66ZWRjvKGdYEhmiOljPoLAI=;
+	b=A0hxEsI8BYUqhflZRZtOzj9egPto6LQo6H/7lOw/2KGk1uTI+tnH2oxGN96xyH8ToXXnLo
+	jmV/u5NALPKQbweG78fjFA5NnC9DfJD0ZyaRu+hw0BSaJtBIMqx/IhhqfmZ/KWUVC3dXYF
+	LPDMTzcrLYw3HAdXYc0l8S+wtX0FwlfKJmwLUcpz2RrNdCzNRfaiad7PQa20n2SdcZBl5P
+	1MKGamLJyuhlvL90brKGec4kPjBurfG+sQeywxHOu4Iig2Lkb7agy49+E0y8wwgz67xWOY
+	Tl4Iis0TWNIlNPB84IU1/XHqJDby2iQgbnIqleFRawFkxPUVzCReFkcHGZaB8Q==
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xIqqi-000FgB-2T;
-	Mon, 19 Oct 2026 19:08:36 +0200
+	id 1xIqqi-000FgM-3D;
+	Mon, 19 Oct 2026 19:08:37 +0200
 Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 7BA795C948D;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id BBF225C9491;
 	Mon, 19 Oct 2026 17:08:36 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -90,12 +90,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Cunhao Lu <1579567540@qq.com>,
-	stable@kernel.org,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	stable@vger.kernel.org,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 03/11] can: skb: make echo skb freeing safe in any IRQ context
-Date: Mon, 19 Oct 2026 19:01:08 +0200
-Message-ID: <20261019170834.1727150-4-mkl@pengutronix.de>
+Subject: [PATCH net-next 07/11] can: proc: reset pkg_stats atomics individually
+Date: Mon, 19 Oct 2026 19:01:12 +0200
+Message-ID: <20261019170834.1727150-8-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019170834.1727150-1-mkl@pengutronix.de>
 References: <20261019170834.1727150-1-mkl@pengutronix.de>
@@ -110,96 +111,125 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Cunhao Lu <1579567540@qq.com>
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
 
-can_put_echo_skb() can be called with hardware interrupts disabled. Its
-direct drop paths use kfree_skb(), while can_create_echo_skb() uses
-kfree_skb() when cloning fails and consume_skb() after a successful clone.
-None of these helpers is safe in every IRQ context.
+Commit 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+converted several members of struct can_pkg_stats to atomic_long_t and
+updated the hot TX/RX and procfs read paths to use atomic_long_*()
+helpers. However, can_init_stats() still clears the whole struct with
+memset().
 
-Use dev_kfree_skb_any() for all drop paths and dev_consume_skb_any() when
-consuming a successfully cloned skb. This preserves the respective skb drop
-and consumed semantics regardless of the caller IRQ context.
+can_init_stats() is reached from can_stat_update() in timer context and
+also from the procfs reset path. Those paths can run while the TX/RX hot
+paths are concurrently updating rx_frames, tx_frames, matches and their
+*_delta counters. Hitting the whole-struct memset() in that window
+performs plain writes to fields that otherwise follow an atomic_long_t
+access contract, which can lose or mix live statistics updates.
 
-Signed-off-by: Cunhao Lu <1579567540@qq.com>
-Link: https://patch.msgid.link/tencent_E84809CF236D0137885E7E4E4D58340B3208@qq.com
-Cc: stable@kernel.org
-Fixes: ae64438be192 ("can: dev: fix skb drop check")
-Fixes: 0ae89beb283a ("can: add destructor for self generated skbs")
-Fixes: 3ccd4c6167d3 ("can: Unify droping of invalid tx skbs and netdev stats")
-Fixes: 39549eef3587 ("can: CAN Network device driver and Netlink interface")
-[mkl: also convert can_dropped_invalid_skb(), can_dev_dropped_skb()]
-[mkl: add stable on Cc + add Fixes tags]
+This issue was found by source-level API-misuse analysis looking for
+whole-object resets left behind after atomic_long_t conversions, then
+manually audited on Linux v6.18.21.
+
+Replace the whole-struct memset() with a helper that resets the
+atomic_long_t counters via atomic_long_set() and clears the derived
+scalar statistics explicitly. This preserves the existing reset
+semantics for scalar fields while restoring atomic access discipline for
+the live counters.
+
+Build-tested by compiling net/can/proc.o on x86_64 netdev/main.
+Runtime-tested with a QEMU + vcan setup on Linux v6.18.21 by driving
+concurrent traffic and reset_stats reads, which reproduced inconsistent
+exported statistics before the fix.
+
+[Hartkopp] can_stat_update() also read the *_delta counters at the
+beginning and cleared them with atomic_long_set() at the end. Increments
+from the hot path in between were lost for both the current and the next
+interval. Use atomic_long_xchg() to fetch and clear the *_delta counters
+in one atomic step instead.
+
+Fixes: 80b5f90158d1 ("can: statistics: use atomic access in hot path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20261019152741.54854-2-socketcan@hartkopp.net
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/skb.c | 6 +++---
- include/linux/can/dev.h   | 2 +-
- include/linux/can/skb.h   | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ net/can/proc.c | 39 +++++++++++++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-index bc0787535b52..46c151eece8f 100644
---- a/drivers/net/can/dev/skb.c
-+++ b/drivers/net/can/dev/skb.c
-@@ -63,7 +63,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
- 	    (skb->protocol != htons(ETH_P_CAN) &&
- 	     skb->protocol != htons(ETH_P_CANFD) &&
- 	     skb->protocol != htons(ETH_P_CANXL))) {
--		kfree_skb(skb);
-+		dev_kfree_skb_any(skb);
- 		return 0;
- 	}
+diff --git a/net/can/proc.c b/net/can/proc.c
+index de4d05ae3459..70104f13077e 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -76,16 +76,39 @@ static const char rx_list_name[][8] = {
+  * af_can statistics stuff
+  */
  
-@@ -91,7 +91,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
- 	} else {
- 		/* locking problem with netif_stop_queue() ?? */
- 		netdev_err(dev, "%s: BUG! echo_skb %d is occupied!\n", __func__, idx);
--		kfree_skb(skb);
-+		dev_kfree_skb_any(skb);
- 		return -EBUSY;
- 	}
++static void can_reset_pkg_stats(struct can_pkg_stats *pkg_stats)
++{
++	atomic_long_set(&pkg_stats->rx_frames, 0);
++	atomic_long_set(&pkg_stats->tx_frames, 0);
++	atomic_long_set(&pkg_stats->matches, 0);
++
++	pkg_stats->total_rx_rate = 0;
++	pkg_stats->total_tx_rate = 0;
++	pkg_stats->total_rx_match_ratio = 0;
++
++	pkg_stats->current_rx_rate = 0;
++	pkg_stats->current_tx_rate = 0;
++	pkg_stats->current_rx_match_ratio = 0;
++
++	pkg_stats->max_rx_rate = 0;
++	pkg_stats->max_tx_rate = 0;
++	pkg_stats->max_rx_match_ratio = 0;
++
++	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->matches_delta, 0);
++}
++
+ static void can_init_stats(struct net *net)
+ {
+ 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+ 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
+ 	/*
+-	 * This memset function is called from a timer context (when
++	 * This stats reset is called from a timer context (when
+ 	 * can_stattimer is active which is the default) OR in a process
+ 	 * context (reading the proc_fs when can_stattimer is disabled).
+ 	 */
+-	memset(pkg_stats, 0, sizeof(struct can_pkg_stats));
++	can_reset_pkg_stats(pkg_stats);
+ 	pkg_stats->jiffies_init = jiffies;
  
-@@ -403,7 +403,7 @@ bool can_dropped_invalid_skb(struct net_device *dev, struct sk_buff *skb)
- 	return false;
+ 	rcv_lists_stats->stats_reset++;
+@@ -121,9 +144,10 @@ void can_stat_update(struct timer_list *t)
+ 	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
+ 	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
+ 	long matches = atomic_long_read(&pkg_stats->matches);
+-	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
+-	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
+-	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
++	/* fetch and clear values for 'current rate' calculation */
++	long rx_frames_delta = atomic_long_xchg(&pkg_stats->rx_frames_delta, 0);
++	long tx_frames_delta = atomic_long_xchg(&pkg_stats->tx_frames_delta, 0);
++	long matches_delta = atomic_long_xchg(&pkg_stats->matches_delta, 0);
  
- inval_skb:
--	kfree_skb(skb);
-+	dev_kfree_skb_any(skb);
- 	dev->stats.tx_dropped++;
- 	return true;
+ 	/* restart counting in timer context on user request */
+ 	if (user_reset)
+@@ -172,11 +196,6 @@ void can_stat_update(struct timer_list *t)
+ 	if (pkg_stats->max_rx_match_ratio < pkg_stats->current_rx_match_ratio)
+ 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
+ 
+-	/* clear values for 'current rate' calculation */
+-	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
+-	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
+-	atomic_long_set(&pkg_stats->matches_delta, 0);
+-
+ 	/* restart timer (one second) */
+ 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
  }
-diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
-index 6d0710d6f571..346faddee02e 100644
---- a/include/linux/can/dev.h
-+++ b/include/linux/can/dev.h
-@@ -176,7 +176,7 @@ static inline bool can_dev_dropped_skb(struct net_device *dev, struct sk_buff *s
- 	return can_dropped_invalid_skb(dev, skb);
- 
- invalid_skb:
--	kfree_skb(skb);
-+	dev_kfree_skb_any(skb);
- 	dev->stats.tx_dropped++;
- 	return true;
- }
-diff --git a/include/linux/can/skb.h b/include/linux/can/skb.h
-index 5d27843862fc..87ace09c0d8b 100644
---- a/include/linux/can/skb.h
-+++ b/include/linux/can/skb.h
-@@ -78,12 +78,12 @@ static inline struct sk_buff *can_create_echo_skb(struct sk_buff *skb)
- 
- 	nskb = skb_clone(skb, GFP_ATOMIC);
- 	if (unlikely(!nskb)) {
--		kfree_skb(skb);
-+		dev_kfree_skb_any(skb);
- 		return NULL;
- 	}
- 
- 	can_skb_set_owner(nskb, skb->sk);
--	consume_skb(skb);
-+	dev_consume_skb_any(skb);
- 	return nskb;
- }
- 
 -- 
 2.53.0
 
