@@ -1,45 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1793B2D39;
-	Mon, 19 Oct 2026 13:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA3D4F0527;
+	Mon, 19 Oct 2026 13:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792416200; cv=none; b=jXqbNvFmWjI52Wu4pJjGngilmYTpU4yqTW9tCiRqF1nP2pRkYU9KBOTNvV0OwSPUhIMYzDA6Ec6sUMBPbrCroNN4KEzbCUTBhF2JlkdUfBrP5RvZGq468GhnoWdPsc77E3hRy2BeKKyeMiJo5pzQqkrWuOB6OUgdHKjZDnXC55A=
+	t=1792416320; cv=none; b=YcGs7//hVAvoOMFQK5C7C5qJ13HWpf2XUTo/UwF+7jntd4Crzwtqh5kWqaFvaSLgVOodK104XvSVV7CKhXYBc3rwcQ1IzPvYpW2+8V8H0dT4GeakTW5DD+HFN4HrH6hFBo+jf/UINTKBL1CU/jyFlJz2ygpdpgbNcpciUuoXHGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792416200; c=relaxed/simple;
+	s=arc-20240116; t=1792416320; c=relaxed/simple;
 	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rVw4dGWlkCtzAsqXzjE0zwVB3uHNhr/LHlJDRM9onh5YlYF3/p8C6Ju2F1WdYzhIdeS4BhmWh2cx0vxqiAnglf1qCfOrTUDE0JGD2UdUCLSSo/NmG9Zr3FRck77SSOIO0C8B5IqXpXUDRyf9JKNMXFI6KQHrl9CYpKOGe6Fidfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyLzfyOc; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=lx+hwsPD6Fbc4KqDh8SJrdafNFtIWGUgVmqbBX+YBXVKOsvNk1aJfBreSg2pvqnSPfmE+wkLqfCGFZ9HgHdXBhBupKHGxQ/xY5Ln6hh6oa9SM/jdZ49nAKMsVilEh28tKH0UaBLa3Y9KjFaWSG2qJVdJxc9lYVwoemG1FZp4ye0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+QhBJmw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyLzfyOc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F1D1F000C4;
-	Mon, 19 Oct 2026 13:23:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+QhBJmw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650B21F000C4;
+	Mon, 19 Oct 2026 13:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792416198;
+	s=k20260515; t=1792416319;
 	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lyLzfyOcEoHsdsqpiMRf6uAvhLKQlAeLnwnwr2+4EL46wF1P77ABU49MPB99rCWm3
-	 /+ov75+78JrAaDdanMpY+rB5gghO9b1TbMn+ibS7mPmUONWhv/+44HHBigIGQ0bpPq
-	 KvoqDlOQ3ZyDi7B/WJ1vNX1Q/8KZOAEtwbba7DNo2Dc3BHQ4shmCSWNdnVJ4YGaH40
-	 t9QNHINPSwau+92fiIPU4HJ2NfpnHsg1Phj5/kvReuaeheIKLQ4XAzQS0T6RhZ21yF
-	 9j2zAjaBKfAXkIlOZg5Jh3fh6e2VkBI2G9yLzpXjCCII76gGfQ82Jy6qeNy9XGUdFP
-	 af3DLsvNhKV1w==
+	b=W+QhBJmw7wJCiqyzBNAHpepvNLtMo1bc2rYrlIPMgnYb7oiI2LKWXj2zVfIR4i7mt
+	 741yfQOld4xExZpg/Lxg+K1SGoF5JzWSIWXV5yGE2ti4918DO6bzJ2lSSvz59IjvpT
+	 5HMqgi2EXNjVjjlm6kgvb3Mmbm5q7itlJT8q4XLHWXdpTIxNNM+Si1IkCVLo4wyrcr
+	 +mMvBHX4b7iKWWLKKEcCq5db8GTZ5BgiM6V5PbEl+0Vet8fy2WmfjXFjDkHCT4tFq8
+	 RAKatShd1y5bHwguqm50EaLoOHgKWaiSWN8M99D0h2d3o4Nh9E9bBPMvd8YJ1svYBx
+	 FSmEY7h5IQ87w==
 From: netdev-bot+sinfo@kernel.org
 To: Haoran Wang <haoranwangsec@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
- netdev@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iucv: fix lockless sk_for_each in afiucv_netdev_event
-Date: Mon, 19 Oct 2026 13:23:17 +0000
-Message-ID: <179241619773.3290.4572866808123264878@kernel.org>
-In-Reply-To: <179241612354.5916.12881323209252769976@whr>
-References: <179241612354.5916.12881323209252769976@whr>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH] ipv6: icmp: use skb_dst_dev_net_rcu() for echo reply and unreach
+Date: Mon, 19 Oct 2026 13:25:18 +0000
+Message-ID: <179241631899.3290.12435413086500350464@kernel.org>
+In-Reply-To: <179241613335.5916.18191480036849517944@whr>
+References: <179241613335.5916.18191480036849517944@whr>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
