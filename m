@@ -1,241 +1,669 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010037.outbound.protection.outlook.com [52.101.85.37])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F2453D58E
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418712; cv=fail; b=PQRIOemMRXDi7piBa4loRTtLUveqezDNK2ufvKFRqJdOh+1CcwVvS6oi1QHwErzQzPY9FFrSV1x2dt3l1jwcaCoKJ2Z0DZIj2Ty8t5HqV3PeefP04GtKuclm0rE3r1GoEIc9NK5UP7NfgfkCpv1HFrCwLiKRVEC4tQj2QIkE0h4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418712; c=relaxed/simple;
-	bh=HRrWS488VoJnAee+u2R7b1p291DDuQbTVXILMNFLh7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=W0kQsUKTbosMBMXoNMV0o7be48aKpbdlKiP/4zG2EZHAellC3zntbH19GNSJdGCMjVtz1WTheB2JHuputARz+2xRqg5Z9idGefWaHuiBeK/USZoESpKjlo7ETnxBWJzj1Bd+WXvugbHscAec+f0rTqAXXQ9a6npKYwubP9jAAtU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=esezNWY8; arc=fail smtp.client-ip=52.101.85.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFB853F9A1
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792418722; cv=none; b=fG3wgJZKNr03HmLJLBjMD3NQqAw7WqKiYI+7VOqlb5X2BKKOSeXYTVZGIey8FWHHOQxUQIY4AksSl4UJZpjHdYtGmrNZyo2eaz+Pp+uVHaBcoDrGmDT3xCb/TO8NAE4YAXfgtyEXaShqGXNO6aqKXJvQRdpPMd6IZ66oBMs15qA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792418722; c=relaxed/simple;
+	bh=tmEiYkXBJICbx9511/42bzdA+vfIAGw4IUISTCCAh4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XMnBooc9EyPienerPm3w24erQjel7FNqoLlk8IBr15j26uKUaFK0XytqR+/SHRbYrjfg68hq4CIr1cdGz1CKAvMSJ2VLVVQO+2YYjcK42DlgP69KMUuKGkiD0+xMb98WCMFTLYNVKdg1oOF4nHdGxpbLYKOLdpgmnwDhq7CDZrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MfoRWlwL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JdE61Q8c; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="esezNWY8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Aq2OxkD15Hpp08pE1WRlg8vWZXxirVF/kBSXCZwwCqke0QODrth3e3Ajt8JarehDTJbW/zrevEU6JRjaQW8+kF0X1YHWtvS8LKckcWj+5jyX7VQLoqAbYxS4OAWALm19Yh5P4iojYIc4iCMHO361ZCC3VCWd5rzoSnydlO5+79XdD3K9DW3Ez03gHy8Fiw89f/OTIrHIbFe2GxRJ4JIDhnjXEm8hNaRRz0nMhoyQRLImGo1m5gFQAojvqSX7ag7Eslc8ufXi3qD6agFq4afdyYgYk2CoRwelyWnt8yWrsivoDOvCJvJXvk/jCLLuOOIUwBklent491eceEEMYs40Eg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y3gao+WpCkVsy/QfAKkfdYcXNiPWqI9TfrMYHusM7aA=;
- b=rDKrHKTLpIjdDgfOz4n+iTT9o5sGyILNSxS4gdGhjydmAXlIs27Ua7akAu01qLabc8rIQvOTeqimLy6bUfp0dUwsGun8ClOBfajP/6mfJnDDPNGnr0YfcGb1jAvb9TOZ6N6GknxLek1tUCI69o3+0IlBKL1GciXRv4JSCZKhotWRY6GOMQ3uR6esK8a5QS00XkwN9SbEgcfzkp13y4Cl+ZlGwzfREL8h4refZYFEVtYyuq/4gxmJ258WPkJn7mcT0LmQSvcguFhSInHzZFzWMosrtYtuBPjnnHBU10r16wCUtXcFo+twkR6mzvrikbtEmu0HpMuuu7cSFO1oX6szRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y3gao+WpCkVsy/QfAKkfdYcXNiPWqI9TfrMYHusM7aA=;
- b=esezNWY8BKOUr/4ERYcGgTW+ywev9TXpzR3IJaT935CRKi0UYY22SwlX8+p6VzTSqQ1jW7xnidiEN3UY8leEGCaen1NY8USGpILIaA0fOyU5WpfRKgBMGRW9HQuIAglyyKJyGSd1xb+2W2QKUVJNtJwxk7O+BWqzjc5CCveUcFz7UJV+VDNqn2Cg0rnKXij+LdDQwc5p2W23PL2xjs9fSY06yqasl2inbqFsIqNWTEezFJ9noysBWq3pxZv1x2gqnDOe5Wgtd1mtvQ4b61DKSGYfCNg0s6G20gCo0Rl6ZsE6AMyxXKyenrSCf0+zgr0jqV9KWTR+ED6NAFiEs5ViAQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by CH2PR12MB4103.namprd12.prod.outlook.com (2603:10b6:610:7e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 14:05:04 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 14:05:04 +0000
-From: Ido Schimmel <idosch@nvidia.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	dsahern@kernel.org,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	petrm@nvidia.com,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net 2/2] selftests: netdevsim: Add FIB notification tests for nexthop objects
-Date: Mon, 19 Oct 2026 17:03:37 +0300
-Message-ID: <20261019140337.2886875-3-idosch@nvidia.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261019140337.2886875-1-idosch@nvidia.com>
-References: <20261019140337.2886875-1-idosch@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TL2P290CA0012.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::16) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MfoRWlwL";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JdE61Q8c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792418717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ezmLGOLVcnsCSf4Mk5iUqNISUf1eff4TWMy+ztjXUUY=;
+	b=MfoRWlwLkbY1bN6qfd4iYe7dkGXvT2Glmlc4p1MEymX7TS0ekNf0cxrEYUxklT+Bs3dyKy
+	V7RqJJ5V0bDpNsB/0f3VzNoMCewirYvcQ435qOovj3eD4PbgknA6+71DY2MZd3BA1XGAx7
+	Yjj1T2tYClXKao4OdSiosXNxUiyN7iM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-80-jw4hkwGVMCSSAlCtIM1acA-1; Mon, 19 Oct 2026 14:05:16 +0000
+X-MC-Unique: jw4hkwGVMCSSAlCtIM1acA-1
+X-Mimecast-MFC-AGG-ID: jw4hkwGVMCSSAlCtIM1acA_1792418715
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c415561aaso1481583f8f.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 07:05:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792418715; x=1793023515; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ezmLGOLVcnsCSf4Mk5iUqNISUf1eff4TWMy+ztjXUUY=;
+        b=JdE61Q8cznkIiHK9Qn0+NygujViOeIs7kISWUPXGF76MHFFF7BpFI85Kp/xcmZ5Suy
+         ebQyeVCWrefNkWRBnbQ+/w+kTWQ+CkCYth4WQIoiyZzXjXI3kGBUnyU1NtZZvxLwXU7W
+         2DEpI8cAf8Sie4RU367tPeRIKDby2PoleYTk1Kromg2Kw1k/A/4bPZs3dtMwtRcME2+2
+         XUjPyNgTLDMu9Altv2ycjWu5Bxwq/eR7WjGP/JmXvn4ojAbZB+KFHtEHEsMjJUxA4lIt
+         CcxxQ4j3OSlP0LlVnLAUGBVXnfGNz5VFONt5ZFsq1OPvpEo59dv3gJUu9x7qSxxY2FME
+         N4tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792418715; x=1793023515;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ezmLGOLVcnsCSf4Mk5iUqNISUf1eff4TWMy+ztjXUUY=;
+        b=xytDBmtpNgJdVsRWm8VighfAlYMV1dUmOXzwcMlEWutMiJXb4txdSEoI7DbbdVrgKb
+         mawVlaxrrjKB/Tl9EfA4nsMcZDFMGapMlVHbYU/G/9l/sYd7eSCkMB6I+/GPJfU3qlaC
+         d6flYpdqCMDQ/6m41tKmdrzODYLcV8/GnjP5eCVybbZOubb4KbSliFSqqnwONV9varaj
+         zZun7UgsIvTbeyWV7qhCSKfRSsSaejUbaqV2MzldroTDuV+pALG3Jm6kxoQFZTmctoeJ
+         3inPxzp9BtdGSLmZP8lKys0XkGk21RUEv+lX1GiNfED4xH0hp4CzsNd+42bnQsvsyjSP
+         RBsA==
+X-Forwarded-Encrypted: i=1; AKwUvBzGNy7KjU4VmENYwqfcYo8eiIE5CTV53GX0yK2UIJNTfeUHpG7OO9YwWo1nZAFJqAz7Z4aoXqo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL3hnKEDf5jvzqQ+wMViN3s03i645YcFcFU1BEfvf3vrLAUaN+5
+	ZYdKL8G8+alWHWCaIPvtudH0u8w5kxxYJChqFIxXBDoirV4Ef+hIMLE9N61bhO3Er1ujJY58fuy
+	U95F+5hRtLrsAFYJUknKNtpw5EAgWrm0vRRNKf0mZ2KYn7crkHtPe9x8W/g==
+X-Gm-Gg: AYBFou1HIuBOgA6mg1UZf0FVRwjclsmnvDkE012NtQ9mnDc/twSyc6nrAl0tmlDNzdH
+	MFOtXpqB92vSs3w05XVorFioSQ+JlUAuiw97rp433DqMIJZplHsZtAjKiTEbmZW7wz3TfBorC8G
+	9p00BpAbZ+W5tpVNeJ7tZpLvFGBiF6RKV+x0iLg95Rn2YahrNC9dgr9wRmys2I1oGHl58pBW1RB
+	ht3ohu80wVf9U3mLkXZpqUfnsSqUP8wuRLLKeov48F6tWcvNsORqeSxsnYMZF/1vAdByQoiu3N0
+	x9Wi3fsaMPzjpIFf/0hL1z8biPepWCtVFnrjZWAqqxJEo43gboUbvZtf3YLX83n3Z6nk7/UbhNB
+	po5zx
+X-Received: by 2002:a05:600c:4f92:b0:4a0:1b21:2628 with SMTP id 5b1f17b1804b1-4a1d76120c4mr175541505e9.23.1792418713146;
+        Mon, 19 Oct 2026 07:05:13 -0700 (PDT)
+X-Received: by 2002:a05:600c:4f92:b0:4a0:1b21:2628 with SMTP id 5b1f17b1804b1-4a1d76120c4mr175540065e9.23.1792418712391;
+        Mon, 19 Oct 2026 07:05:12 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.74.151])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1cbedb6f7sm306709635e9.2.2026.10.19.07.05.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 07:05:11 -0700 (PDT)
+Date: Mon, 19 Oct 2026 16:05:04 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bobbyeshleman@gmail.com
+Subject: Re: [PATCH net-next v4 2/4] vsock/virtio: amortize RX socket locking
+ for stream packets
+Message-ID: <atYiS6jfctHKksVM@sgarzare-redhat>
+References: <20261014115640.184286-1-physicalmtea@gmail.com>
+ <20261014115640.184286-3-physicalmtea@gmail.com>
+ <atIrLeH8uOCHxsbv@sgarzare-redhat>
+ <CAJwVaMJsBKZSVwaJqTEU_GCFrc2q7dEghMTykR5Jgrj+dv45=w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CH2PR12MB4103:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12ccbd18-f4b6-47da-2bf0-08df2de9f94c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|6133799003|18002099003|22082099003|11063799006|10067099003|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	R7SguF3w9JzMFPieTSKlYH+4SQEsFi6q5yubitu1l20uB8Bw1hi7XKRBFYi7/AR75KN041UXzV+88JKoQBlYYEV2+rHrNSGHr92WydgDfKpikZWBGpOxSNn8vttuCFJi8raQldh3OpGeemehtVMVLh3FmRnx0Pt+q9qdSHhP6ky7HpdggN0JMOgEKIdHu+I4BzHQbwmt7iFthrMien76XWrXxuBzJjYJ6YJXAR//hoZnDi6FPnFsizV3RdHpumzCoJLEnvbNEsYsybDXJHrxG20oVadKtSNZ2qRZOp6EOa1kq4ouLGcnDTdcdykVgBTIjzSUL6ZEOaENaQaErwFJBEcvh/m5imam8FAUEB11SIzIraGLxKD1Mu2v24MRF3N1UDTco88ddt7zCoXbSENZRg7smYpjNtunjwDniP61GTd1bxN10geojbD6oVvPHluB8vAGurmnrdJ+gBT8/3UyvDdhp2t8HySJFbC6tiB/3cn0tMRN+6494VedgVZihGVKwPWQUk1TnB4iOICmaZ4Bvidwxd+7SCqU8LBrC/XU4r/G0iWE4cfbiN9u7gW/GEV98ctAMATFolnf2hY45A7IZaD5GMr/yHbrVOKpQJtzjd56Pky82mh540+9ZY7x4SoL3YSOQIKoUzZwjSJOrQqtBr1d6FqE3KB0XYRITuYhJ/c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(11063799006)(10067099003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BhI+SaqjYVpbqpc4Xfk5zRI6qsIN9+YIGPcudpj8Yq5GyhXIv5X5j1b+JJL8?=
- =?us-ascii?Q?f3DqIYzz/skqlRKtqt4YDnqam9VVVWy8HIvww4cveaKumgLChqzvP51mlZAD?=
- =?us-ascii?Q?BYJIrczqPlO7aLdhcjmyVB5L8hdU+mlT4YesOrXG5ac5NJz3FZv1Owm1oXip?=
- =?us-ascii?Q?zmjdTPuvZNEHTvEoaruvGl0ZtJiPkoc4EuAaKkZ93h9RY1dswIqtMt1yxbQk?=
- =?us-ascii?Q?UcKxRZrGgRVTcP2InOLI2Y1AjdaPHgIJ8Q57hH+JcrKlJpRTChgRM0XyEqVY?=
- =?us-ascii?Q?aRXyrwepMkHyAwsoDBjpPR5v8AUW/hZf+5Rv5C33ErpEbAxLYmXe94fOaUzT?=
- =?us-ascii?Q?m+58vJnRn8KfizO1kZ/MrVoA4noOyZye8y55MqHPrAb5+YiYWkY0VHTdWYhX?=
- =?us-ascii?Q?oAUKVddQi2qCNELxB6QtIYrctnU1ptp8HCP0+qTpx8WSkI5F0bnIMdC+NvIT?=
- =?us-ascii?Q?e98KCf0Gmv0bdj8iKpZNePfqWJUVMssC8wFu4ZVeZ4Scj1lJDY94hkN9BQ1i?=
- =?us-ascii?Q?SstJ1KqkisBGkuzCilSucg6WjdmySq8fx4elrx+fcFUowESl4fgAc5qShOfK?=
- =?us-ascii?Q?5rZFSL1V1yUfnU7xf3kIw4VuKNCd90ZAgprltdsBKGVbHo6t0nrDH9jPyav2?=
- =?us-ascii?Q?UZHLWnXUEmnjzqi2/cwr6GG6ohX95yX5Y0cEos7n6+kgz22ZZMyJ2vxcPHWe?=
- =?us-ascii?Q?y+xrsszP4sC7r3DsYPNxzPtfbNAXcxPCZWRqu2vZae5wcZP705eH/57wg3vA?=
- =?us-ascii?Q?odp2j+IAw78BJU6WN3juW28x3g5R9aRhxsxJFbsHI3s4y6LdbMwxu5Uwm0wm?=
- =?us-ascii?Q?MpR9pMeXIjSZbC6uwk3r2Q5M9/QDVEFjUl6sAATiT1aULaR4htFDTzSYCLEI?=
- =?us-ascii?Q?YpuK08tCMqkMSGq7mBKcIobNG+j6Ak4/5zRh5TY1A8LB2HlvOadtDREB82ev?=
- =?us-ascii?Q?UFWxdOYOoyCi9ViXU1dIZkD4qGzsB6AJM0opNWV3UExJDyexeczLI4M1aCO5?=
- =?us-ascii?Q?a106fEV1LuxyGdreg8DNYsC+MM/FXBL8TjZhnY3wxE+NbZu3uOJ/NucFB492?=
- =?us-ascii?Q?8SIQ/Pv8/mFkaFealbCphd4Nf8Phunm30KlTCaIgBvllip/0KwNf+eB33q90?=
- =?us-ascii?Q?Pe5Q9HcocH4ZBig1V9w6Bm7Ap0L4cExvvscX7um3LdhdyHNT+Q7zV08kPPpv?=
- =?us-ascii?Q?aH/xrU8MtFNU7jAcJurD2J1BCfPWNB1nvKR7+mVgZuFDLzO5iuC1Yk9gFRUt?=
- =?us-ascii?Q?vufcrLazSVTgjPPTD8GUlL/msN9NdaLcApQRC40ADvg5ftBx/a6mH3EIgW2J?=
- =?us-ascii?Q?rmHj+zo4exKxSj4eCr4d5MsmpE4x0+pqTGCkpqO2j2UFZUcBuWWGO+JFv9i1?=
- =?us-ascii?Q?rAAAJ4wAKLGoCaonviH8RUYo9QzSYXzq6sWDUk/2Z4mI66v28UcIoPsbleK/?=
- =?us-ascii?Q?S5tGqZRntsKBM0qnZ88UYQk6tFTXg4E7SBkG6HvkBADjoXmO4OxdDnzTkKT2?=
- =?us-ascii?Q?Z5KI2Co3LwsoYj1jSl12p9eTop/se4AK/p8shbmkDEV+z66Yzj66gV27Buva?=
- =?us-ascii?Q?9kV0k+KrwP0yY36REwcvgLNFhVwt/JVvlMi6/N1G7VyckAWo7Wzusb/GxsgC?=
- =?us-ascii?Q?XN8ENYAKPYg7erVgHoqNECRlQe9L/i9CqI9/nGqfmjn9+N6fCuDqBspMcOoK?=
- =?us-ascii?Q?F7RgibeuR6oSjI6u1UwqXPOesD9Dv9RiS6bhFOE14etl8No4?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12ccbd18-f4b6-47da-2bf0-08df2de9f94c
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 14:05:04.5526
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I31184AVr8+5dhUb9igt/NGff84BNN1HbYM/7KHc25LmQvoOnVBGu9mskBaW43Zu+0GUeJPY30EXZU+YLNkG1w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4103
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAJwVaMJsBKZSVwaJqTEU_GCFrc2q7dEghMTykR5Jgrj+dv45=w@mail.gmail.com>
 
-Add IPv4 and IPv6 test cases that program a route that uses a nexthop
-object and check that two notifications are emitted for it, with the
-second one carrying the RTM_F_TRAP flag.
+On Sun, Oct 18, 2026 at 12:52:36PM +0800, Jia Jia wrote:
+>>
+>> On Wed, Oct 14, 2026 at 07:56:38PM +0800, Jia Jia wrote:
+>> >The virtio-vsock RX worker currently looks up the socket and takes its
+>> >lock for every packet. Keep the socket lock and lookup reference across a
+>> >bounded run of STREAM/RW packets for the same established socket.
+>> >
+>> >Reuse the locked socket while packets continue to match the same flow.
+>> >End the batch for a different flow, non-RW traffic, malformed packets, or
+>> >a change in socket state, transport, protocol, or receive-buffer headroom.
+>> >A connected-table miss uses the existing receive path.
+>> >
+>> >The reused path still traces every packet, takes an skb owner reference,
+>> >validates the source and transport, updates credit, and runs the existing
+>> >receive state machine.
+>> >
+>> >Sockmap can replace the protocol without taking the socket lock. Check the
+>> >psock marker at each packet boundary and serialize initial admission with
+>> >sk_callback_lock, so a concurrent attach ends batching at the next packet.
+>> >
+>> >Cap a batch at 64 packets and 64K of payload. The packet limit bounds
+>>
+>> Why this cap?
+>>
+>
+>The 64 KiB limit was chosen to bound one uninterrupted socket-lock
+>ownership interval to one VIRTIO_VSOCK_MAX_PKT_BUF_SIZE worth of
+>payload. For small or zero-length packets, the byte limit alone would
+>not bound the per-packet work, so a separate packet limit is needed. I
+>chose 64 packets as an initial batch size, using VHOST_NET_BATCH as a
+>reference. It is a policy choice rather than a protocol requirement.
+>
+>Beyond these limits, a larger batch would only further amortize the
+>socket lookup and lock/unlock operations, while the virtqueue,
+>validation, tracing, skb ownership, credit update, and queueing work
+>remains per-packet. I therefore expect diminishing returns while the
+>uninterrupted socket-lock interval continues to grow, but I have not
+>measured larger limits yet.
 
-The new route_nexthop_check() helper follows the same pattern as the
-existing route_{addition,deletion,replacement}_check() helpers.
+A summary of this should be included in the commit message and where we 
+define the cap in the code.
 
-Without "ipv6: Hold RCU when emitting route hardware flags
-notification", the IPv6 test case passes, but triggers suspicious RCU
-usage splats. The IPv4 test case is added for completeness.
+>
+>> >per-packet work, while the byte limit bounds how much data can queue before
+>> >a reader acquires the socket lock. Batching remains in the process-context
+>> >RX worker.
+>>
+>> IMHO this patch should carry performance results.
+>>
+>
+>Sure, I'll include the relevant Patch 1 - Patch 2 cumulative
+>performance results in this commit message in v5.
+>
+>> >
+>> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+>> >---
+>> > include/linux/virtio_vsock.h            |  11 ++
+>> > net/vmw_vsock/virtio_transport.c        |  29 +++-
+>>
+>> Why no changes in vhost-vsock or vsock_loopback?
+>>
+>> I'm not asking to do that, I'd like to understand why only in the
+>> driver.
+>>
+>
+>I have not yet measured the corresponding worker and socket-lock
+>overhead in vhost-vsock or vsock_loopback, and they have different
+>worker and locking models, so I left those paths unchanged. I plan to
+>evaluate vhost-vsock separately as follow-up work.
 
-Assisted-by: LLM
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
----
- .../net/netdevsim/fib_notifications.sh        | 66 +++++++++++++++++++
- 1 file changed, 66 insertions(+)
+Please mention this in the commit.
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/fib_notifications.sh b/tools/testing/selftests/drivers/net/netdevsim/fib_notifications.sh
-index 9896580c3d85..c49d6deb621a 100755
---- a/tools/testing/selftests/drivers/net/netdevsim/fib_notifications.sh
-+++ b/tools/testing/selftests/drivers/net/netdevsim/fib_notifications.sh
-@@ -8,10 +8,12 @@ ALL_TESTS="
- 	ipv4_route_deletion_test
- 	ipv4_route_replacement_test
- 	ipv4_route_offload_failed_test
-+	ipv4_route_nexthop_test
- 	ipv6_route_addition_test
- 	ipv6_route_deletion_test
- 	ipv6_route_replacement_test
- 	ipv6_route_offload_failed_test
-+	ipv6_route_nexthop_test
- "
- 
- NETDEVSIM_PATH=/sys/bus/netdevsim/
-@@ -269,6 +271,50 @@ ipv4_route_offload_failed_test()
- 	log_test "IPv4 route offload failed"
- }
- 
-+route_nexthop_check()
-+{
-+	local ip=$1; shift
-+	local route=$1; shift
-+	local nhid=$1; shift
-+	local expected_num_notifications=$1; shift
-+	local outfile
-+
-+	ip netns exec testns1 sysctl -qw net.$ip.fib_notify_on_flag_change=1
-+
-+	outfile=$(mktemp)
-+
-+	$IP monitor route &> $outfile &
-+	sleep 1
-+	$IP route add $route nhid $nhid
-+	sleep 1
-+	kill_process %%
-+
-+	route_notify_check $outfile $expected_num_notifications
-+	rm -f $outfile
-+
-+	$IP route del $route nhid $nhid
-+}
-+
-+ipv4_route_nexthop_test()
-+{
-+	RET=0
-+
-+	local ip="ipv4"
-+	local route=192.0.2.0/24
-+	local nhid=1
-+
-+	$IP -4 nexthop add id $nhid dev dummy1
-+
-+	# Make sure two notifications will be emitted for a programmed route
-+	# that uses a nexthop object.
-+	local expected_num_notifications=2
-+	route_nexthop_check $ip $route $nhid $expected_num_notifications
-+
-+	$IP nexthop del id $nhid
-+
-+	log_test "IPv4 route with nexthop object"
-+}
-+
- ipv6_route_addition_test()
- {
- 	RET=0
-@@ -385,6 +431,26 @@ ipv6_route_offload_failed_test()
- 	log_test "IPv6 route offload failed"
- }
- 
-+ipv6_route_nexthop_test()
-+{
-+	RET=0
-+
-+	local ip="ipv6"
-+	local route=2001:db8:1::/64
-+	local nhid=1
-+
-+	$IP -6 nexthop add id $nhid dev dummy1
-+
-+	# Make sure two notifications will be emitted for a programmed route
-+	# that uses a nexthop object.
-+	local expected_num_notifications=2
-+	route_nexthop_check $ip $route $nhid $expected_num_notifications
-+
-+	$IP nexthop del id $nhid
-+
-+	log_test "IPv6 route with nexthop object"
-+}
-+
- setup_prepare()
- {
- 	modprobe netdevsim &> /dev/null
--- 
-2.56.0
+>
+>
+>> > net/vmw_vsock/virtio_transport_common.c | 183 +++++++++++++++++++++++-
+>> > 3 files changed, 216 insertions(+), 7 deletions(-)
+>> >
+>> >diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+>> >index f91704731057e..26dde6909c4ed 100644
+>> >--- a/include/linux/virtio_vsock.h
+>> >+++ b/include/linux/virtio_vsock.h
+>> >@@ -282,6 +282,17 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
+>> >
+>> > void virtio_transport_recv_pkt(struct virtio_transport *t,
+>> >                              struct sk_buff *skb, struct net *net);
+>> >+
+>> >+struct virtio_transport_rx_batch {
+>> >+      struct sock *sk;
+>> >+      unsigned int pkts;
+>> >+      size_t bytes;
+>> >+};
+>> >+
+>> >+void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+>> >+                                   struct sk_buff *skb, struct net *net,
+>> >+                                   struct virtio_transport_rx_batch *batch);
+>> >+void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch);
+>> > void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
+>> > u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
+>> > void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
+>> >diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+>> >index 4f9aa9c4c3aa5..ef076732158d4 100644
+>> >--- a/net/vmw_vsock/virtio_transport.c
+>> >+++ b/net/vmw_vsock/virtio_transport.c
+>> >@@ -629,8 +629,16 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
+>> >       return seqpacket_allow;
+>> > }
+>> >
+>> >+/*
+>> >+ * Keep a bounded run of packets for one socket under a single socket lock.
+>> >+ * Limit packet count and payload size to bound the work done while locked.
+>>
+>> Here we should explain why we choose these values.
+>>
+>
+>I'll update the comment here in v5 to explain why the 64-packet and 64
+>KiB thresholds were chosen.
+
+Yeah, exactly, thanks!
+
+>
+>> >+ */
+>> >+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS    64
+>> >+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES   (64 * 1024)
+>> >+
+>> > static void virtio_transport_rx_work(struct work_struct *work)
+>> > {
+>> >+      struct virtio_transport_rx_batch batch = {};
+>> >       struct virtio_vsock *vsock =
+>> >               container_of(work, struct virtio_vsock, rx_work);
+>> >       struct virtqueue *vq;
+>> >@@ -666,6 +674,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>> >                       /* Drop short/long packets */
+>> >                       if (unlikely(len < sizeof(*hdr) ||
+>> >                                    len > virtio_vsock_skb_len(skb))) {
+>> >+                              virtio_transport_rx_batch_finish(&batch);
+>> >                               kfree_skb(skb);
+>> >                               continue;
+>> >                       }
+>> >@@ -673,6 +682,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>> >                       hdr = virtio_vsock_hdr(skb);
+>> >                       payload_len = le32_to_cpu(hdr->len);
+>> >                       if (unlikely(payload_len > len - sizeof(*hdr))) {
+>> >+                              virtio_transport_rx_batch_finish(&batch);
+>> >                               kfree_skb(skb);
+>> >                               continue;
+>> >                       }
+>> >@@ -680,16 +690,33 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>> >                       if (payload_len)
+>> >                               virtio_vsock_skb_put(skb, payload_len);
+>> >
+>> >+                      if (batch.sk &&
+>> >+                          payload_len > VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES -
+>> >+                                        batch.bytes) {
+>>
+>> Why this?
+>>
+>>
+>
+>This pre-check ends the current batch before admitting a packet whose
+>payload would push it past the byte limit. The post-processing check
+>can end the
+>batch only after that packet has already been processed, so it cannot
+>enforce the limit by itself. I'll encapsulate and document this in the
+>common
+>batching code.
+
+Yes, please.
+
+>
+>> >+                              virtio_transport_rx_batch_finish(&batch);
+>> >+                      }
+>> >+
+>> >                       virtio_transport_deliver_tap_pkt(skb);
+>> >
+>> >                       /* Force virtio-transport into global mode since it
+>> >                        * does not yet support local-mode namespacing.
+>> >                        */
+>> >-                      virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
+>> >+                      virtio_transport_recv_pkt_batch(&virtio_transport, skb, NULL,
+>> >+                                                      &batch);
+>> >+
+>> >+                      if (batch.sk) {
+>> >+                              batch.pkts++;
+>> >+                              batch.bytes += payload_len;
+>> >+                              if (batch.pkts >= VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS ||
+>> >+                                  batch.bytes >= VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES) {
+>> >+                                      virtio_transport_rx_batch_finish(&batch);
+>> >+                              }
+>> >+                      }
+>>
+>> Why this is not in the common part?
+>>
+>
+>I put this in the driver because it owns the RX loop and its work
+>budget. But I agree that having the caller manipulate the batch
+>counters and active
+>state makes the interface harder to follow. I'll move the accounting
+>and limit checks into the common batching code in v5.
+>
+>> >               }
+>> >       } while (!virtqueue_enable_cb(vq));
+>> >
+>> > out:
+>> >+      virtio_transport_rx_batch_finish(&batch);
+>> >       if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+>> >               virtio_vsock_rx_fill(vsock);
+>> > out_nofill:
+>> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>> >index 61ee3bc205d5d..ff74e805527a5 100644
+>> >--- a/net/vmw_vsock/virtio_transport_common.c
+>> >+++ b/net/vmw_vsock/virtio_transport_common.c
+>> >@@ -576,11 +576,16 @@ virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs,
+>> >       skb_queue_splice(&new_queue, &vvs->rx_queue);
+>> > }
+>> >
+>> >+static bool
+>> >+virtio_transport_rx_skb_has_headroom(struct virtio_vsock_sock *vvs)
+>> >+{
+>> >+      return (u64)(skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0) <=
+>> >+              vvs->buf_alloc;
+>> >+}
+>>
+>> Please move this change in a separate patch.
+>>
+>> skb_has_headroom() is confusing IMO, maybe
+>> virtio_transport_rx_buf_full(), but reversing the return value, so
+>> keeping the same check as before.
+>>
+>
+>Sure, I'll move this into a separate preparatory patch
+>
+>> >+
+>> > static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>> >                                       u32 len)
+>> > {
+>> >-      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+>> >-
+>> >       /* Allow at most buf_alloc * 2 total budget (payload + overhead),
+>> >        * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
+>> >        * metadata. Check payload against buf_alloc to be sure the other
+>> >@@ -588,7 +593,7 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>> >        * queue growth.
+>> >        */
+>> >       if ((u64)vvs->buf_used + len > vvs->buf_alloc ||
+>> >-          skb_overhead > vvs->buf_alloc)
+>> >+          !virtio_transport_rx_skb_has_headroom(vvs))
+>> >               return false;
+>> >
+>> >       vvs->rx_bytes += len;
+>> >@@ -1798,12 +1803,38 @@ virtio_transport_find_socket(struct sk_buff *skb, struct sockaddr_vm *src,
+>> >       return sk;
+>> > }
+>> >
+>> >+static bool
+>> >+virtio_transport_sock_has_psock(const struct sock *sk)
+>> >+{
+>> >+      return (uintptr_t)rcu_access_pointer(__sk_user_data(sk)) &
+>> >+             SK_USER_DATA_PSOCK;
+>> >+}
+>> >+
+>> >+static bool
+>> >+virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
+>> >+                                  struct sock *sk)
+>> >+{
+>> >+      struct vsock_sock *vsk = vsock_sk(sk);
+>> >+      struct virtio_vsock_sock *vvs = vsk->trans;
+>> >+
+>>
+>> A comment here to explain why some checks like...
+>>
+>
+>I'll add why-focused comments for the condition groups in v5.
+>
+>> >+      return sk->sk_state == TCP_ESTABLISHED &&
+>> >+             sk->sk_type == SOCK_STREAM &&
+>> >+             READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
+>> ... this       ^
+>>
+>> I mean in general to explain better these conditions (I mean not a
+>> description of what we are doing, but why we are doing these checks).
+>>
+>
+>I'll add comments explaining these reasons.
+>
+>> >+             !sock_flag(sk, SOCK_DONE) &&
+>> >+             vsk->transport == &t->transport &&
+>> >+             vvs && virtio_transport_rx_skb_has_headroom(vvs) &&
+>> >+             !virtio_transport_sock_has_psock(sk);
+>> >+}
+>> >+
+>> > /*
+>> >- * The caller holds sk's socket lock and must free skb if this returns true.
+>> >+ * The caller holds sk's socket lock.  Set @batchable if the socket can remain
+>> >+ * locked for another ordinary STREAM/RW packet.  Return true if the caller
+>> >+ * must free @skb.
+>> >  */
+>> > static bool
+>> > virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+>> >-                               struct sk_buff *skb, struct sock *sk)
+>> >+                               struct sk_buff *skb, struct sock *sk,
+>> >+                               bool *batchable)
+>> > {
+>> >       struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+>> >       struct sockaddr_vm src;
+>> >@@ -1813,6 +1844,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+>> >       vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+>> >                       le32_to_cpu(hdr->src_port));
+>> >
+>> >+      if (batchable)
+>> >+              *batchable = false;
+>> >+
+>> >       /* Listener sockets accept packets from any source and are not assigned to
+>> >        * a transport.
+>> >        */
+>> >@@ -1854,6 +1888,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+>> >               break;
+>> >       }
+>> >
+>> >+      if (batchable)
+>> >+              *batchable = virtio_transport_recv_pkt_batchable(t, sk);
+>> >+
+>> >       return false;
+>> > }
+>> >
+>> >@@ -1894,7 +1931,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+>> >       }
+>> >
+>> >       lock_sock(sk);
+>> >-      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk);
+>> >+      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, NULL);
+>> >       release_sock(sk);
+>> >
+>> >       /* Release refcnt obtained when we fetched this socket out of the
+>> >@@ -1910,6 +1947,140 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+>> > }
+>> > EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
+>> >
+>> >+/*
+>> >+ * Finish the RX batch.
+>> >+ * For a non-empty batch, the caller must hold the socket lock acquired with
+>> >+ * lock_sock(). This function releases the lock and the batch's lookup
+>> >+ * reference.
+>> >+ * An empty batch is a no-op.
+>>
+>> What empty batch means, I mean how the caller can understand that a
+>> batch is empty?
+>>
+>> Maybe we should provide a function for that...
+>>
+>
+>I'll add virtio_transport_rx_batch_empty() and document the
+>associated socket-lock and lookup-reference ownership.
+>
+>> >+ */
+>> >+void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
+>> >+{
+>> >+      struct sock *sk = batch->sk;
+>> >+
+>> >+      batch->sk = NULL;
+>> >+      batch->pkts = 0;
+>> >+      batch->bytes = 0;
+>> >+
+>> >+      if (!sk)
+>> >+              return;
+>> >+
+>> >+      release_sock(sk);
+>> >+      sock_put(sk);
+>> >+}
+>> >+EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
+>> >+
+>> >+void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+>> >+                                   struct sk_buff *skb, struct net *net,
+>> >+                                   struct virtio_transport_rx_batch *batch)
+>> >+{
+>> >+      struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+>> >+      struct sockaddr_vm src, dst;
+>> >+      struct vsock_sock *vsk;
+>> >+      bool batchable, start_batch;
+>>
+>> Ditto about declarations order, please check in the entire series.
+>>
+>
+>Right, I missed this one too. I'll check and fix the declaration
+>ordering throughout the entire series in v5.
+>
+>> >+      struct sock *sk;
+>> >+      bool free_pkt;
+>> >+
+>> >+      /* Only STREAM/RW packets can share a socket lock. */
+>>
+>> Why?
+>>
+>> Should the caller holds the lock for the entire batch?
+>> Should this be documented?
+>>
+>
+>Yes. Once a batch is started, the receive helper returns with the
+>socket lock and lookup reference held, and the same caller retains
+>them until it calls the finish helper. That ownership contract is not
+>clear enough in the current interface, and I'll document it in the
+>public API in v5.
+>
+>
+>> >+      if (le16_to_cpu(hdr->type) != VIRTIO_VSOCK_TYPE_STREAM ||
+>> >+          le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW) {
+>> >+              virtio_transport_rx_batch_finish(batch);
+>> >+              virtio_transport_recv_pkt(t, skb, net);
+>> >+              return;
+>> >+      }
+>> >+
+>> >+      vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+>> >+                      le32_to_cpu(hdr->src_port));
+>> >+      vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
+>> >+                      le32_to_cpu(hdr->dst_port));
+>> >+
+>> >+      if (batch->sk) {
+>> >+              vsk = vsock_sk(batch->sk);
+>> >+              if (vsock_addr_equals_addr(&src, &vsk->remote_addr) &&
+>> >+                  dst.svm_port == vsk->local_addr.svm_port &&
+>> >+                  vsock_net_check_mode(sock_net(batch->sk), net) &&
+>> >+                  virtio_transport_recv_pkt_batchable(t, batch->sk)) {
+>> >+                      sk = batch->sk;
+>> >+                      trace_virtio_transport_recv_pkt(src.svm_cid,
+>> >+                                                      src.svm_port,
+>> >+                                                      dst.svm_cid,
+>> >+                                                      dst.svm_port,
+>> >+                                                      le32_to_cpu(hdr->len),
+>> >+                                                      le16_to_cpu(hdr->type),
+>> >+                                                      le16_to_cpu(hdr->op),
+>> >+                                                      le32_to_cpu(hdr->flags),
+>> >+                                                      le32_to_cpu(hdr->buf_alloc),
+>> >+                                                      le32_to_cpu(hdr->fwd_cnt));
+>> >+                      if (!skb_set_owner_sk_safe(skb, sk)) {
+>> >+                              WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+>> >+                              virtio_transport_rx_batch_finish(batch);
+>> >+                              kfree_skb(skb);
+>> >+                              return;
+>> >+                      }
+>> >+
+>>
+>> This code is unreadable TBH, there isn't a blank line till here...
+>> and too much nested blocks.
+>>
+>> Maybe you should move this in a function, and use a bit more blank lines.
+>>
+>>
+>
+>I'll move the active-batch path into a helper, reduce the nesting with
+>early returns, and add blank lines between the logical steps.
+>
+>
+>> >+                      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk,
+>> >+                                                                  &batchable);
+>> >+                      if (!batchable)
+>> >+                              virtio_transport_rx_batch_finish(batch);
+>> >+                      if (free_pkt)
+>> >+                              kfree_skb(skb);
+>> >+                      return;
+>> >+              }
+>> >+
+>> >+              virtio_transport_rx_batch_finish(batch);
+>> >+      }
+>> >+
+>> >+      sk = vsock_find_connected_socket_net(&src, &dst, net);
+>> >+      if (!sk) {
+>> >+              virtio_transport_recv_pkt(t, skb, net);
+>>
+>> Why this?
+>>
+>
+>If you mean the fallback to virtio_transport_recv_pkt(), my
+>understanding of the lookup semantics is that it is needed because the
+>batching fast path only
+>looks in the connected table, as only an established connected socket
+>is eligible for batching. A miss there can still match a bound socket,
+>so the packet
+>must follow the existing receive path rather than being treated as
+>having no socket. Please correct me if I have misunderstood this.
+
+Looks okay to me, but I need to review again to make sure.
+
+Please add a comment in these cases.
+
+>
+>> >+              return;
+>> >+      }
+>> >+
+>> >+      if (virtio_transport_get_type(sk) != le16_to_cpu(hdr->type)) {
+>> >+              sock_put(sk);
+>> >+              virtio_transport_recv_pkt(t, skb, net);
+>> >+              return;
+>> >+      }
+>> >+
+>> >+      trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
+>> >+                                      dst.svm_cid, dst.svm_port,
+>> >+                                      le32_to_cpu(hdr->len),
+>> >+                                      le16_to_cpu(hdr->type),
+>> >+                                      le16_to_cpu(hdr->op),
+>> >+                                      le32_to_cpu(hdr->flags),
+>> >+                                      le32_to_cpu(hdr->buf_alloc),
+>> >+                                      le32_to_cpu(hdr->fwd_cnt));
+>> >+
+>> >+      if (!skb_set_owner_sk_safe(skb, sk)) {
+>> >+              WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+>> >+              kfree_skb(skb);
+>> >+              return;
+>> >+      }
+>>
+>> We have this code duplicated in several place now, can this be avoided?
+>>
+>
+>Yes. I'll extract the trace and skb owner setup into a small shared helper.
+>
+>> >+
+>> >+      lock_sock(sk);
+>> >+      /*
+>> >+       * Sockmap removal restores the native protocol under sk_callback_lock.
+>> >+       * Serialize this initial eligibility check with that update.
+>> >+       */
+>> >+      read_lock_bh(&sk->sk_callback_lock);
+>> >+      start_batch = virtio_transport_recv_pkt_batchable(t, sk);
+>> >+      read_unlock_bh(&sk->sk_callback_lock);
+>> >+
+>> >+      free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk,
+>> >+                                                  start_batch ? &batchable : NULL);
+>> >+      if (start_batch && batchable) {
+>> >+              /* Keep the lookup reference until the batch is released. */
+>> >+              batch->sk = sk;
+>> >+              return;
+>> >+      }
+>>
+>> Ah, this is for the first run, when the batch is empty, right?
+>>
+>> Can you merge in some way both branches?
+>>
+>> BTW please add some more useful comments (explaining why)
+>>
+>
+>Yes. I'll merge the common parts of the two paths and add comments
+>explaining the remaining differences and why they are necessary.
+
+Yeah!
+
+Thanks,
+Stefano
+
+>
+>
+>> >+
+>> >+      release_sock(sk);
+>> >+      sock_put(sk);
+>> >+      if (free_pkt)
+>> >+              kfree_skb(skb);
+>> >+}
+>> >+EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt_batch);
+>> >+
+>> > /* Remove skbs found in a queue that have a vsk that matches.
+>> >  *
+>> >  * Each skb is freed.
+>> >--
+>> >2.53.0
+>> >
+>>
+>
 
