@@ -1,127 +1,119 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F96B4A99C6
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC91C4AA033;
+	Mon, 19 Oct 2026 09:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792401746; cv=none; b=tZLK2bvu4PvrX80Wbk1kaM4ZTIpYvZOEjyJwvnQjAbxs0vXYSDJkNFXP/IEzmVSnlcs2Fybe7kv3OF3pRTtjJBhnJQlRArejH4y3xmDsGBW+ZllSB7wWDzK/c7i88+AGRqukDEEHs/5U/GxXhAxdiAAeTeJb5jUFxsHm43CVF1Y=
+	t=1792401772; cv=none; b=CPGl7EzY0w4ij9xdGoCC5XI+QkBTqR9M5oATPtcBpXWgqX8KdcdgyrfaoWqRb+D056cH4RIThZJ/JGmGf8DZB/iFdFXG8+tZWPLpM1t0QlyOn8JvMo8YVltQ85D3HXyImk8ddgqbA9rkNRIyZwH7BzMNAprn4OG8VBjiQNFB3nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792401746; c=relaxed/simple;
-	bh=J5u6sWaFs1aIdBznEzlz0gzVqKHDPrr3ucBX/oe3SKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
-	 Content-Type:References; b=FMRVFcaH7uAfHXKoWJkpZUkdvNWigS03bKmpbGHNBVOaadBxlOU5/tHL88sW8aS2pKTyLJw0Ya/vubdet/XD8gZ8/ZMnjap1aCxDr4jcn4S/GxcHwvIoNsie2igRRRkAgxW+5VruqbmFJwI5zav0CkpI7IySgQrGjv7G+blB0ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=pWpArA8a; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1792401772; c=relaxed/simple;
+	bh=W50cj58I41P0amBD3Gwmn1grFT2/yBXFDueFYbxiJoI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HmlJ+wqVasLEqFkIWn5wuNOgVVWVoYdSl7Z2okJHTyM5fNBuI3t6ZCyEWIYYHnHwGrtg8Uxesy4a0+JuN+shwYop3XuOd05avXxccdBQ++t5ws04RjDZOeU8jYfTsiXMivPJbk70F9RlUGQcMFzRmtwljIX1ctLvNWORCOXZCKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HFj1YThk; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="pWpArA8a"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261019092220euoutp02f6e411de2dc1ecf34d3cc8040d383343~f4_LkbKsL0579705797euoutp02k
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:22:20 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261019092220euoutp02f6e411de2dc1ecf34d3cc8040d383343~f4_LkbKsL0579705797euoutp02k
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1792401740;
-	bh=v2HVMRDXjkeD++qT8O5sU//IhqXywOmYn/Fh/Fdivpg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pWpArA8adCY0weZo06h5l7f+VKdwx4bquomWpvYh9iJveXLQISPiB1M5/C0fPFs6P
-	 zdzEWpmLaORbBtXLFjLaDxDEA04nZJi4Yk7HAE6TuCAlSRgCBkpQZdQyYANL4aH+M0
-	 UutmKxFlA9EDm9mTYWRYD4ByP24c0ZYOlr5oTAYo=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20261019092219eucas1p22ca50383cc0e4c3f1eb14d4d334983b4~f4_K8T5X92231722317eucas1p2L;
-	Mon, 19 Oct 2026 09:22:19 +0000 (GMT)
-Received: from AMDC4622.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.34]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20261019092218eusmtip2172e5354d5c27789ffe4a60232b45023~f4_KBOKXV2833928339eusmtip27;
-	Mon, 19 Oct 2026 09:22:18 +0000 (GMT)
-Date: Mon, 19 Oct 2026 11:22:15 +0200
-From: Jakub Raczynski <j.raczynski@samsung.com>
-To: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, k.domagalski@samsung.com,
-	k.tegowski@samsung.com, cs0617.lee@samsung.com,
-	abhishek.chauhan@oss.qualcomm.com, lorenzo.bianconi@oss.qualcomm.com,
-	sarosh.hasan@oss.qualcomm.com, hongmei.xu@oss.qualcomm.com
-Subject: Re: [PATCH net-next] net/stmmac/dwxgmac: Extend MTL/DMA support to
- 16 queues
-Message-ID: <atXhR0sgdW84YxcQ@AMDC4622.eu.corp.samsungelectronics.net>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HFj1YThk"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 213201A1279;
+	Mon, 19 Oct 2026 09:22:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E02C460582;
+	Mon, 19 Oct 2026 09:22:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8649F10328429;
+	Mon, 19 Oct 2026 11:22:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792401766; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=aFzwGLSO7+RbqxryM9GCX4O+lQKeiiXFkttu5dRw2bc=;
+	b=HFj1YThkrMwCC0zp4DujoOXanRDftrdtowffwYLa58N99pmuWVaGjLS8C8J3Aw7yWHavOW
+	sCvDw0xFVDx4l7T7W+eZ/4pRBwoLbRdXOGUnwMus27YkOLkL4Tt4Z84p8EctWyKAhfLjRL
+	8cKtFi51W6Go1/BtiFX0R984VjvrHbynIuWtPa9Kpl2kyHL/m2+s/aMzreF4h0iRMFwzg4
+	nbkx29hxtIyy2e/9326toXpxjHXK8Fzs2qfyRwXIHP2kG0moKN30L5ANBb07T23asjqwIO
+	07dvh+ynhxU6r7eaJwwaDM/QTXl9acy4mmb1zuOd2gyolmNc5y2kp9Rvfn3OYg==
+Message-ID: <4d2eeba6-30d9-4628-a755-96a635c6bf42@bootlin.com>
+Date: Mon, 19 Oct 2026 11:22:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261016193823.2711773-1-sagar.cheluvegowda@oss.qualcomm.com>
-X-CMS-MailID: 20261019092219eucas1p22ca50383cc0e4c3f1eb14d4d334983b4
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-	boundary="----6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_18d29d_"
-X-RootMTR: 20261016193835eucas1p128cb1712afce0314b1ecb65b0c0fc841
-X-EPHeader: CA
-X-CMS-RootMailID: 20261016193835eucas1p128cb1712afce0314b1ecb65b0c0fc841
-References: <CGME20261016193835eucas1p128cb1712afce0314b1ecb65b0c0fc841@eucas1p1.samsung.com>
-	<20261016193823.2711773-1-sagar.cheluvegowda@oss.qualcomm.com>
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net 01/10] net: pse-pd: size the notification kfifo after
+ defaulting nr_lines
+To: Carlo Szelinsky <github@szelinsky.de>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Piotr Kubik <piotr.kubik@adtran.com>,
+ Sai Krishna <saikrishnag@marvell.com>, Simon Horman <horms@kernel.org>,
+ Kyle Swenson <kyle.swenson@est.tech>, netdev-bot+sashiko@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261018082314.48950-1-github@szelinsky.de>
+ <20261018082314.48950-2-github@szelinsky.de>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261018082314.48950-2-github@szelinsky.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-------6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_18d29d_
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
 
-On Fri, Oct 16, 2026 at 12:38:23PM -0700, Sagar Cheluvegowda wrote:
-> From: Jakub Raczynski <j.raczynski@samsung.com>
+
+On 10/18/26 10:23, Carlo Szelinsky wrote:
+> pse_controller_register() allocates the notification kfifo before it
+> turns nr_lines == 0 into 1, and kfifo_alloc() fails for a size below 2.
+> So a controller with nr_lines 0 or 1 cannot register. pse_regulator
+> (podl-pse-regulator) never sets nr_lines, so its probe has failed with
+> -EINVAL ever since the kfifo was added.
 > 
-> Patch 2/3 of Jakub's v2 series:
-> https://lore.kernel.org/netdev/20260601162537.553512-3-j.raczynski@samsung.com/
+> Apply the default first, and allocate at least two entries.
+
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+
+Thank you!
+
+> Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
+> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+> ---
+>   drivers/net/pse-pd/pse_core.c | 11 +++++++----
+>   1 file changed, 7 insertions(+), 4 deletions(-)
 > 
-> Jakub has confirmed he will not be continuing this series, so we are
-> posting this patch on its own. We need it for Qualcomm Nord, a
-> 25GMAC-based SoC that implements 12 MTL/DMA queues. Jakub's authorship
-> and sign-offs are kept.
-> 
-> Changes vs v2 2/3:
-> - Replace the netdev_err() + return in the default case with
->   WARN_ON() + return, following the review feedback on 1/3 against
->   message-only failures in void callbacks.
-> 
-> Tested on Qualcomm Nord with 12 queues: the MAP0..MAP2 registers were
-> checked to hold the expected RX queue to DMA channel mapping. The MAP3
-> register (queues 12-15) is carried over unchanged from v2 and is not
-> exercised on that hardware.
-> 
-> This is needed for XGMAC-based hardware with more than 8 MTL/DMA
-> queues (Qualcomm Nord has 12).
-> 
->  .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 ++
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index a5e6d7b26b9f..c0573cbbba5b 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
+> @@ -1044,16 +1044,19 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+>   	mutex_init(&pcdev->lock);
+>   	INIT_LIST_HEAD(&pcdev->pse_control_head);
+>   	spin_lock_init(&pcdev->ntf_fifo_lock);
+> -	ret = kfifo_alloc(&pcdev->ntf_fifo, pcdev->nr_lines, GFP_KERNEL);
+> +
+> +	if (!pcdev->nr_lines)
+> +		pcdev->nr_lines = 1;
+> +
+> +	/* kfifo_alloc() rejects a size that rounds up to less than 2 */
+> +	ret = kfifo_alloc(&pcdev->ntf_fifo, max(pcdev->nr_lines, 2U),
+> +			  GFP_KERNEL);
+>   	if (ret) {
+>   		dev_err(pcdev->dev, "failed to allocate kfifo notifications\n");
+>   		return ret;
+>   	}
+>   	INIT_WORK(&pcdev->ntf_work, pse_send_ntf_worker);
+>   
+> -	if (!pcdev->nr_lines)
+> -		pcdev->nr_lines = 1;
+> -
+>   	if (!pcdev->ops->pi_get_admin_state ||
+>   	    !pcdev->ops->pi_get_pw_status) {
+>   		dev_err(pcdev->dev,
 
-Thanks for including me as signed-off.
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
-But I am not sure I like this patch being sent on its own. I checked Sashiko
-review on patchwork and there are no comments and that is actually (not)
-impressive by Sashiko.
-Issues I have are:
-- Does it work if macro MTL_MAX_{TX/RX}_QUEUES is not increased?
-- My patch 1/3 was doing some prep since new XGMAC have unique setup where
-  number of DMA channels differ from number of TC's.
-
-  How does it look like in your hardware? 12 DMA and (8 or 12) TC's?
-
-  I agree with comment by Jakub Kicinski on my patchset 1/3 that I should have
-  implemented it better, but never finally did. Issue is, stmmac driver
-  assumes number of DMA = TC and uses {tx/rx}_queues_to_use everywhere.
-  So proper implementation would be spliting DMA count and TC count,
-  where both can be verified by stmmac_get_hw_features().
-
-  Of course, above applies if DMA!=TC in your hardware.
-
-BR
-Jakub Raczynski
-
-------6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_18d29d_
-Content-Type: text/plain; charset="utf-8"
-
-
-------6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_18d29d_--
