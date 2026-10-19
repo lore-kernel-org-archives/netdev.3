@@ -1,118 +1,78 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mta1.migadu.com (out-112.mta1.migadu.com [95.215.58.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12F913DDAE
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 00:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287EF2DA768
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 00:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792368655; cv=none; b=qQAUyxvXEmJnluqnNrrjXwfNcSDqc7Fur2micu79RS5xegshbh55Y9JNMrqSeKBv8OIRzMV88t+nvp6lrKMV7XZ1vnAsFsOb47E7uvUXdec33Dzvjer7FMb7HIrLjPcmlwYX1z/DcURIcIcgWNt+kuZ3dM5HfI63elP9y++J8T8=
+	t=1792370025; cv=none; b=tRAHFe8Fghd3rToDP6LpTBfHyNy+BsaVnmT91Nwf+sb1DxmhdeyJqoDQMbZjtJDZUlHabSKFUVlPaTntgtkhAwVsfOvitM0LSkFftYzfeRKfl+9AEdN9Z3ADNnyPjQq0guxGw7NrvjRxb/T4xcRHJWwANIS545McbJPck8lT7qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792368655; c=relaxed/simple;
-	bh=oQR1f1RasNwAug4NFhDAjr+2ufczJr8XLJFbnI5V+T4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Azf3TwWOeIdhXrTwKb9nbOHlhNNlKiG7KtThj4AQaignypkltbvESZRdKAIcirMb6DVkjH1z0rmItaYOv2XsnHSox2U/9XYaE2ch0K8RAt29chNngn5r+qp9up5V6DhfwgLYnzJLTc/6BU7+j5YKhE5T2NcZmCOhdPaz59g+vv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=ZUwvwRE4; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	s=arc-20240116; t=1792370025; c=relaxed/simple;
+	bh=HZkA8SDHue5Y450hQGCufHdAi8YP3S4vOtjG0PEnPvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iFAv15LsGH2rQ/twxmvwClhw353ot0C+0uUdr7rpuSaUlSTXo270VUXAXzpEfg7QGa5xfuphaqfKyQVWf38rnsouaLRnBf/7khVQqu83yzs2/HNrEzU9yh2x2WzMDq4Eld566jK25boJwp4c832bpSLmtc1nRTFRdJaEZjp4bNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Cj16Ysw+; arc=none smtp.client-ip=95.215.58.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="ZUwvwRE4"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc751eddf25so807546a12.3
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 17:10:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1792368653; x=1792973453; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oQR1f1RasNwAug4NFhDAjr+2ufczJr8XLJFbnI5V+T4=;
-        b=ZUwvwRE4huz7g3TAb3YokAiF7pX+g9Mn8AlR+jVJFa0Aqzk92oHDAg6Al8PgRqigq+
-         1EUd6OeXPKSV3hwmfDRYup+KG6FIiNiEKejP4sKvNXhPGVXTVldAyTOdUyywEYz8EHLf
-         wolImaXuV5E8DVS03K+GCrN88BH0/giAemGP/UdYNycEfJdkFtmbaWWLxItE8G6qjn4b
-         YLb2BGZEMU2iJa3o18G24x3AwNmn9Y+o4qEMdmeHkuRuFqdTVj9sLIqp9U/zMflaEvtR
-         WuuGd5QGoAunkRnCMnQy/NkC0SlnTOCmb4BeUqmPhK9qqd3hZPTpBO6UC1UA/uCu9Srt
-         41zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792368653; x=1792973453;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oQR1f1RasNwAug4NFhDAjr+2ufczJr8XLJFbnI5V+T4=;
-        b=PjWSfMRBygY2GpICASxjV0I1QwNdcIg0Fskkz5qJFzlx+ZlLsKiAIZo759O7FbabTb
-         H6Lw56EDLK145xsd1JvbYzgqXmY1lbl1ij+uNKDdfHK8QLsXK24Ig7g3we+1XOiBdMvW
-         P5XMpRQs+ifgvefzSrFD/V/LluIbX9MAzd3Tx3A8gUCRWoXFKnpI6PYxlTT/LuaBK3MB
-         oSVdScZXZPFSA3uyOzK9pL0T6anLMwG2idRGp+u5u+vh/1x4vwqUN8IwjGj5+so/tN+H
-         sdVKVkNurmNoFr6j5YuJRd2MUczU5wWjEoQ2z8DaMrmW7+wNhBGfLT4jxP0tYWgO72e7
-         Ws2w==
-X-Forwarded-Encrypted: i=1; AKwUvBynD/JBB/qe8MmxA9lW5nL1YULGTREB7aasn7NBnUS7PqI2+L+zvqP2hjUuetXLH0Fo30C74NA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIpUMoYMjqD3XYLtkxSAF2yLFQBMc8fL9UKFoTQCazWC17J0UaK
-	dldPSDg77K/ABz2/1rfrDytYmPRFA3BMmFgBJIHGibOB6rzlbfmhpHxyYMh/wIsAESY=
-X-Gm-Gg: AYBFou19wKe6wZfYq2DGBAsTxclC54Tk58IQaf1tl6T7J/SzTZyi4R7yfFVYXWL7beE
-	LxonvBitkWV6uQwQcgpdD1dfQeZem9n9wn6Bf8UUYIEdgtyIj4eox97iwy++FxSzIIkdWcv/lVl
-	d/VJl3D5YwCXCgpZBoCe/FKwGkhJ6JGantAcqRbL15w6m7Ay0/6NMcAVI95zh8OSxNWuun5xwjQ
-	vAf6P0Y0K56P5vYGx4v05kmjL5o16j/3FQPfNmCovNY41ZHc4HDpEoRbXNa6pCCZIZxLZOpMKOD
-	XdRw5RefW5zaqUjyJeTJkrD6mJq9jjOVSTWNuNk8ZOjG6DofeCGFJ52VQTR/kXOIrwg7Pd77jg6
-	59Jduyp8GuuE2vZ1DfqssGFnCn3rKnQadBSVyRJT5nWrUn/S732s5ximrJwLOD62TSuozbRd2+3
-	QzKxsOA60VRxnzqjnBIhGCN3YQJhouMgAv8ICNLa4bOL/RisMx+f7u9gKOvni8UvmsTC9zOB5J+
-	HxrOg==
-X-Received: by 2002:a17:90b:4cd0:b0:3ac:a203:e0a5 with SMTP id 98e67ed59e1d1-3acef104296mr5267670a91.11.1792368652920;
-        Sun, 18 Oct 2026 17:10:52 -0700 (PDT)
-Received: from yhlee-960QFG.. ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac945e74bcsm18750297a91.3.2026.10.18.17.10.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 17:10:52 -0700 (PDT)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Fan Gong <gongfan1@huawei.com>,
-	netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Cj16Ysw+"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HZkA8SDHue5Y450hQGCufHdAi8YP3S4vOtjG0PEnPvk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792370020; v=1; x=1792974820;
+ b=Cj16Ysw+mNj531KO1FFM2aTv8PmJOPkjLTNGR0FfsNizB1T9fU8Gmk/ActT6Bd9OJdOruUc1
+ s3KLaEXY6U0NmZFzB0KQthFkVcCn6P40uL5Ih/VknJ1CZWaQGAyJ8SO2uhRXxqnKFXKKJllFAXk
+ efBR3WDmLo7QVmYG8yF2nWEg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id e47ba85f2e4f76c7;
+	Mon, 19 Oct 2026 00:33:40 +0000
+X-Mizu-Trace-ID: e47ba85f2e4f76c7
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 19 Oct 2026 08:33:34 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Xin Guo <guoxin09@huawei.com>,
-	Gur Stavi <gur.stavi@huawei.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] hinic3: bound the Rx fragment count to MAX_SKB_FRAGS
-Date: Mon, 19 Oct 2026 09:10:37 +0900
-Message-ID: <20261019001037.3496843-1-yhlee@isslab.korea.ac.kr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261018170531.bILLh5Zw@linutronix.de>
-References: <20261010030901.1712792-1-yhlee@isslab.korea.ac.kr> <20261018170531.bILLh5Zw@linutronix.de>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net-next] selftests: net: exit with test failure status
+Message-ID: <atVlXsbU3YNwXmrH@fedora>
+References: <20261014-self_ret-v1-1-6b5a95ba6106@kylinos.cn>
+ <20261018114821.GA2470373@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261018114821.GA2470373@shredder>
 
-Thanks for the review.
+On Sun, Oct 18, 2026 at 02:48:21PM +0300, Ido Schimmel wrote:
+> On Wed, Oct 14, 2026 at 01:32:24PM +0800, Hangbin Liu wrote:
+> > From: Hangbin Liu <liuhangbin@kylinos.cn>
+> > 
+> > fdb_flush.sh, fib-onlink-tests.sh and l2tp.sh can print [FAIL]
+> > subtests while still exiting with status 0. Their log_test(), aka
+> > log_test_expected() in lib.sh, helpers record a failure in ret, but
+> > the scripts never propagate ret to the exit code, so a kselftest runner
+> > treats the run as a pass.
+> > 
+> > Initialize ret and exit with it at the end of each script so failed
+> > subtests are reflected in the exit status.
+> > 
+> > Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> 
+> fib_nexthop_multiprefix.sh seems to suffer from the same problem
 
-A well-behaved device can't reach it. rx_buf_len is fixed at 2048
-regardless of MTU, so the frag count is ceil(pkt_len / 2048): a max-MTU
-frame (9600) is 5 frags, and LRO -- off by default, capped at 32K when
-enabled -- is at most 16, both below the 17 the array holds. Only the
-16-bit length field in the completion descriptor (RQ_CQE_SGE_LEN_MASK)
-lets a device claim up to 65535 bytes, i.e. 32 frags. So it takes a
-device reporting a bogus length, i.e. broken or malicious firmware,
-which is why I treated it as a robustness fix -- I should have said so
-in the changelog.
+Oh, let me update it together. There is no need to bother another patch.
 
-I found it by code inspection, not in the field, and I don't have a
-hinic3 card, so it's untested on real hardware; I reproduced it by
-injecting an out-of-range length to get the KASAN splat in the
-changelog. The netdev bot asked for these same two things, so this
-answers it as well.
-
-You're right that the bare drop is unhelpful. It only surfaces as
-rx_dropped via ndo_get_stats64, not in ethtool -S -- hinic3 has no
-get_ethtool_stats, and the stats series in net-next doesn't export
-dropped either. I'm happy to add a net_warn_ratelimited() on the
-discard path in v2; it only fires for a misbehaving device, so it won't
-spam a healthy system. Let me know if you'd like that.
-
-For reference, eea does the same thing -- it drops once nr_frags
-reaches MAX_SKB_FRAGS.
-
-Thanks,
-Yehyeong
+Thanks
+Hangbin
