@@ -1,138 +1,94 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.grapheneos.org (mail.grapheneos.org [206.220.120.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F379364934
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F991FBC8C;
+	Mon, 19 Oct 2026 03:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.220.120.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792380694; cv=none; b=CHo6LG1aGDghky6BUTiKWUGut5eOJh/gUt49BUR4KkdUuRl5EjQB7uFO4ucLVae1gfvn/v9vozyhJQqRCMWmNrSPXnqomMy0KAnV3l80fG30AxW3FTKO5KPu5eCCsfXFFckJKvbk1T+J2xkZlVpZqoR3RyufJrbup+NJefqc618=
+	t=1792380727; cv=none; b=UxVe8luogbvr3/vi5B1pUNDbWtiMKRu209vAMfKbvZB+VuEuQ3jj0Zbh/ZtHGSt63lipJuTyuAmBXvZoaZHyU+N5hbH7J/+rBhxkGatHpu4xNtSTviz/RGtOASrMeOzobQQhRJGdi+YTYo5lfQSr/AD2hTzcuU2XQu0H6H9PfHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792380694; c=relaxed/simple;
-	bh=2ISdvGV7pkF79YAQofMB1xUFsmDARlM1DblPDqt6G8U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=joJ8Ff+3EnzBVyqC/uZRBVIqo5HMZWgnMm8Yt0izpZwkYaFF6w6MTOSnOPhqonL2RAQhJ9VRWjB0i/mVgFtYkRRSMsJ9RNOIKpTPyP4Cf0bjWNI9ass8K6hskAsX8L2hNr+CVdwPdc4YAeGYwLyice0mhZTF9kH61D1J3Om88QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EgAoVlbY; arc=none smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792380727; c=relaxed/simple;
+	bh=2LchfmMXqEkp53a3MK8snehWYjHNIdRHlq5NnjKSkDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ezfnMU+lMyGYvZg7np7d90eJLdQodE8ejifY4KaVVPA3u9a3sC1RiIw/YsD6FTZewqWqWOt4wgc+GncjqIJxbgPT+KpLO9n/YQtlGrCuUfYfe2JmZE4BraBCVLQMkr0N4FfLnzd0SkfeYYMocyUfP0jCQRAVIehWZZ3BnHIKLlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grapheneos.org; spf=pass smtp.mailfrom=grapheneos.org; dkim=pass (2048-bit key) header.d=grapheneos.org header.i=@grapheneos.org header.b=OM9n8N97; arc=none smtp.client-ip=206.220.120.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grapheneos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grapheneos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EgAoVlbY"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-35ef6b49813so3203090eec.0
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:31:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792380692; x=1792985492; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZqzNU1e0dfFjl60Tsw5RH9N/elLcwfaAYKt+WjG7Sz8=;
-        b=EgAoVlbYXjt45C634rPTAfMLiFYLbacxEKKQm3XS5kfJL63/k0X+z9rX4QY8Lewldn
-         YPNzmeY04NfdnYtlTca1Xg0rKRwjkmQSVJrRaLrMS4XMQdxwHxJsGS+M/Ovwa/j3ncXA
-         iTR9EAIR2nVluRKbn+kdmJEhbX2ENnjfKZ7HnikIHGUJ5RJCWKqp1oRRiHLzdcW8tywI
-         DT+A82l8RoVqtwpjekNGL5KI2RFBmYQZL+KGeTieliKMJp9KFF2OWv1Uw9t1J5bmeVCh
-         KG8u3ePRiwpPyK+1v5ukaDWygVLStPmzVZf6FWXAwmXxIb7RRqXimWd8Eym3aLVUqecH
-         j4qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792380692; x=1792985492;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZqzNU1e0dfFjl60Tsw5RH9N/elLcwfaAYKt+WjG7Sz8=;
-        b=ESfShGtEkJlpzNdMbFtXSJIginm2A/Z+4Gfav+7Fdpey+9XhmZ95VLOiU1e/+MU+zH
-         7q7OKRjI6tayatx5XVslP+LXHTX3FJqrvgrfiq576mUIQ15eKeTZE1Gx7Ivtyu6L/Sdq
-         qPqxlM65do8hzJQFvuq+n8gj5/2XXJJL2NY16KuEAjZb1YI7khikOHYi5JNQUsIWi7qE
-         yhFOWkWrC1ZgMiDvmrhyF12Mn8l0kkhMjvMjsAAVS/8iM4WhBkbteX0ngm31bl0uDhFb
-         dAytlcC3S54us5no1N+N0u1Lqv8DEaGmB1t+4wiCmZZUMHdXkcXtKXoIGpQ+46Myz7px
-         L0mQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzpE3jOyFHOPF7AKFsz4KGo+izj4DX5vQfq15EA0GXPaCyO+cxbVXRsRJOCWVFHyo6hku+b250=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ20fvKNdDqyNGzMxMjpBKwl8VaJiI0NcT00I4gdmRQnH0h4FiD
-	RFWoFIkm9pEWG1I3VY0zQEuqCAHH6Hy2FuDfgF6Z/6OQkyWPVrV+f+Fl
-X-Gm-Gg: AYBFou0um2hCVomtaMWyLpHqBB01VM3IMZA/fyAiNlHFT9T81ncJ1qgm3sGXMR/d6wM
-	hmybrgJiYLBSmXHkxi5bCiZXW7EmSLxb2jPNCzEsx5BgBHhuANityCMyCtDeAMMXsvZ0xZhX28m
-	J+I81q+TlH+/pG3lEOc/1rWJe15J7u+4nVhxp0lrv2BDpmN7FVQvie4lXGceSx+qZRMCvyNc/IL
-	w72dtyJ/24o6l89KkDLXZYmATouZzJEFi0a64eC7YFFZkvNctl4WYbiRJV5A0w/Tms1xdDd5HFl
-	7l0BGdGSBlhm8XB+U3QszqH0FbY9xp//p4j6eACfN02nC84qR5miaYF3W+TYhjF0Gy/a5vcTbPK
-	ufkIBJ1yy6il1GLM8rl/Njx6DoxjFoXszpRh4d8h5AQQfPZcS3kuNiufrzoVihK3DV//I02Foxq
-	S+PX9HE/cezjQ9WSweXwrhp4eF0ork++JypZnVEPMGp2fNqkXkLwJXLdk0LE8mngMaHA==
-X-Received: by 2002:a05:7022:e804:b0:168:6ad8:e89e with SMTP id a92af1059eb24-18514cf2721mr10290927c88.45.1792380692465;
-        Sun, 18 Oct 2026 20:31:32 -0700 (PDT)
-Received: from [127.0.1.1] ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa7bbsm24066888c88.5.2026.10.18.20.31.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 20:31:32 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Mon, 19 Oct 2026 11:31:17 +0800
-Subject: [PATCH net-next v2 3/3] net: remove rcu_barrier() from
- __dev_change_net_namespace()
+	dkim=pass (2048-bit key) header.d=grapheneos.org header.i=@grapheneos.org header.b="OM9n8N97"
+Received: by mail.grapheneos.org (Postfix) id D756C3C08EF31;
+	Mon, 19 Oct 2026 03:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grapheneos.org;
+	s=default; t=1792380278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oSaKTkm2VoVYXs44XIPo5O2omjJiGGPW5XaCPiUwhFw=;
+	b=OM9n8N97E+b0n763nYK3x+/X4wBrkvBi3Qs4ng4fS0hzOQKlSzEnomIh8f+eoNoQhnoN/n
+	32t9YnWb1NhymfmLKlIi0qnsM+YpV8i/eQNrCRsQoWiqbyoznOwxVeMP4vrMdihVZA3Jli
+	MY/ilg/T72pnexTIHUNMdo/jKR4TgaZPa9exW59MaMPIFBJHUUAvPxy8V8fXdPWAh+fwO2
+	jT46kV3WTTFZfSHCa9icavxMRP5MnhSKOCk1t+WIy82cZNXX9bfBfNIVcbrh2EiwDtDpqz
+	JwRehjK1p+iwkVgTPGmh22adIcIbh1ug+3tsGnJqF3Q6sQ9WPyTHD7oAI6IL2g==
+From: liamsmith827 <liamsmith827@grapheneos.org>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	liamsmith827 <liamsmith827@proton.me>
+Subject: [RFC net-next 0/2] ipv4: Honor prohibit when oif specified
+Date: Mon, 19 Oct 2026 03:24:04 +0000
+Message-ID: <20261019032406.88874-1-liamsmith827@grapheneos.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-bug-net-netns-move-rcu-barrier-v2-3-b6eb7780c492@gmail.com>
-References: <20261019-bug-net-netns-move-rcu-barrier-v2-0-b6eb7780c492@gmail.com>
-In-Reply-To: <20261019-bug-net-netns-move-rcu-barrier-v2-0-b6eb7780c492@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
-Commit 6549dd43c043 ("net: dev: fix the incorrect hold of net
-namespace's lo device") added rcu_barrier() before
-NETDEV_UNREGISTER_FINAL in dev_change_net_namespace(), so that dst
-entries released by RCU callbacks were on the dst garbage list before
-dst_ifdown() moved them to the loopback device of the old netns.
-Commit 070f2d7e264a ("net: Drop NETDEV_UNREGISTER_FINAL") removed the
-event but kept the barrier, and dead dst entries now point to
-blackhole_netdev instead of a loopback device.
+From: liamsmith827 <liamsmith827@proton.me>
 
-The barrier waits for the RCU callbacks pending on every CPU while RTNL
-is held, which takes a full grace period on each netns move. Container
-and sandbox managers move one end of a veth pair for every new network
-namespace, so this limits how fast such namespaces can be created on the
-whole system, regardless of how many threads create them.
+This RFC proposes honoring prohibit rules and routes when an output
+interface is specified.
 
-Remove the barrier. The RCU callbacks queued by NETDEV_UNREGISTER
-handlers free memory and drop device references, which the move does not
-wait for. Cached IPv4 and IPv6 routes through the moved device are
-rejected once its netns changes, since they no longer match the rt_genid
-or fib6_sernum of another netns.
+When flowi4_oif is set (SO_BINDTODEVICE, IP_PKTINFO, IP_UNICAST_IF,
+etc), prohibit rules and routes cause fib_lookup() to return -EACCES,
+but still allow the packet (and any necessary ARP) to be transmitted.
+This is documented as the expected behavior in the tests, but is
+confusing for route and rule maintainers.
 
-Creating 400 netns, each with a veth pair whose host end is moved back
-to the initial netns, a tap device, addresses and routes, in a 16 vCPU
-guest, median of 5 runs:
+Android uses prohibit rules as the basis for its VPN "kill switch", with
+the expectation that any packet encountering such a rule will not be
+allowed out. Due to this interface binding exemption, apps can trivially
+bypass the kill switch. This is most serious on cellular networks, where
+a connection to an arbitrary IPv4 address can be established without
+requiring ARP resolution.
 
-                   before      after
-  1 thread        69 /s      385 /s
-  4 threads       74 /s      368 /s
-  16 threads      76 /s      263 /s
+The first patch preserves -EACCES from fib_lookup() instead of
+constructing an on-link route when an output interface is specified.
+This honors prohibit rules and routes while retaining the existing
+fallback for other lookup errors.
 
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- net/core/dev.c | 1 -
- 1 file changed, 1 deletion(-)
+The second patch enables the existing test that expects an
+interface-bound ping to fail.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 8eb9bf1ff9eb6..ef172905109ee 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -12994,7 +12994,6 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
- 	 * the device is just moving and can keep their slaves up.
- 	 */
- 	call_netdevice_notifiers(NETDEV_UNREGISTER, dev);
--	rcu_barrier();
- 
- 	new_nsid = peernet2id_alloc(dev_net(dev), net, GFP_KERNEL);
- 
+I would appreciate feedback on compatibility implications and whether
+this change is acceptable given the longstanding behavior.
+
+liamsmith827 (2):
+  ipv4: Honor prohibit when oif specified
+  selftests: net: Test prohibit when oif specified
+
+ net/ipv4/route.c                          | 11 ++++++-----
+ tools/testing/selftests/net/fcnal-test.sh |  7 +++----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
 -- 
-2.43.0
+2.47.3
 
