@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3904D2701B8;
-	Mon, 19 Oct 2026 01:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33CA4CF468;
+	Mon, 19 Oct 2026 01:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792372711; cv=none; b=Pq8N9Dq7P4i4RDq3Kq6I3xjMGchFNlu1SvPMoPcJdx+fsmBf+I9HCw6xpF5JwFfosGeHE+kHYRGPjFxBuC+UZ6xjEtvSswFRunY7v0y06xbI24+LiDKpdrOjk/iFGkfnmZWKzMf6HxKnYSt4k2lsafAlR1tztdkZGr55fpx5HV8=
+	t=1792372729; cv=none; b=aCcQr0EwrTZkZvaYFTfHRbjNYNdD1XLr6t8/ibDlfHpZQdO2eV4C49lpeWd3FYxwZHqMuJ0P/Yl4IDZx1jEGf9BtbFX36Er09V3kFt6lzEqAa69leELZCM97GbxSgGhkHOyEoyZl8ixq9vtJQDhLGz+vCd4nieqxuEmj3cR4pSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792372711; c=relaxed/simple;
-	bh=QOLXutMGhg/dsjCWuURQEaaUGGiFKTyeKyDmSz97Gw8=;
+	s=arc-20240116; t=1792372729; c=relaxed/simple;
+	bh=JRVLMfAEDKuYjgqa28pXUMOlpuly+na2sdKmy4FUPRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLFmmfQA34LVu/Gth4Wn8I1FXicXp+rDJnYVIOpN5c3ehchPRXZi5THYn552Tu16NOwIJFWV1ELtOfqMb5NxJK5iC/t8oMNnHEx27eagd3Rv6fg0vxmz0+o5FHjpFlMt4tq2F/4QANPP39f7dCh9bRnSvHA+Zod9hNAHbHc6VfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V47D3As3; arc=none smtp.client-ip=117.135.210.5
+	 MIME-Version; b=F/BR9OEEgSyAUBYksGwhzkHK3kDxVvSvuo1wKpAS92+jTXjwHCKUKHjcniQ8XAd1BcxCVMrOj1J9J7DiU0sjs8G689w1SWY45SqKmrJPWrPrbqtDJOg1r0N7T5g6oCRax7rcFZJTI1tGi7bfYCBm+mb/rXLNNMgrVuK3TlQHPfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KX+F8Gl7; arc=none smtp.client-ip=117.135.210.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V47D3As3"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KX+F8Gl7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=3Q
-	P+wIe4QmUY+tlCZQ6eAhcTPkQre7gSIKJlJZj1oM8=; b=V47D3As3MCXylmv7zy
-	txM2J4Hv11qbk/UYg6UwwVVj7qGxzB2i033doLb+/Q9OL0urvK96yHXbeb3O3QLc
-	h3dQbp6lM2ACrowrfu53ojxaQ9zn98djvl4/PGbroEfF/b39cvl/vgnV8bc+pvWU
-	CCxZKgEjTTWEn+Kb8/KhZreos=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=IX
+	tiTclCiw4vcSUxWgahWVmxPjU90rZOsolN+JRIrC0=; b=KX+F8Gl7gzRtLusSqC
+	2JYY3fcEekKirPEeLWJIQ6EXK4EofZFjN0JTFmvzONVLy57FIslJRGwY+5hbq4zh
+	4MD+NXziTd78LEYWpw2fY36Al2vsVYcAl8K2tTk1/MiJRCy17ge2y/ZQ14mjxwSZ
+	LEYcdWUg1bxJpTx/jcQLK9ja4=
 Received: from colol4bi5.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD333iWb9Vqfw8vAw--.37579S2;
-	Mon, 19 Oct 2026 09:17:13 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD33z3Eb9VqCWdBAw--.40166S2;
+	Mon, 19 Oct 2026 09:17:57 +0800 (CST)
 From: Binbin Deng <18983559317@163.com>
 To: netdev@vger.kernel.org
 Cc: sam@mendozajonas.com,
@@ -37,12 +37,12 @@ Cc: sam@mendozajonas.com,
 	gwshan@linux.vnet.ibm.com,
 	joel@jms.id.au,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v1] net/ncsi: fix use-after-free of ncsi_dev_priv in ncsi_unregister_dev()
-Date: Mon, 19 Oct 2026 09:17:09 +0800
-Message-ID: <20261019011709.432664-1-18983559317@163.com>
+Subject: Re: [PATCH net v2] net/ncsi: fix use-after-free of ncsi_channel in ncsi_remove_channel()
+Date: Mon, 19 Oct 2026 09:17:56 +0800
+Message-ID: <20261019011756.432710-1-18983559317@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261017015315.415794-1-18983559317@163.com>
-References: <20261017015315.415794-1-18983559317@163.com>
+In-Reply-To: <20261017024947.420683-1-18983559317@163.com>
+References: <20261017024947.420683-1-18983559317@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,101 +50,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD333iWb9Vqfw8vAw--.37579S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCr45Jw15GF1fWr4fCr43trb_yoWrCw43pF
-	W5WFWYy3ykZrWUXFWkJF4fXFyruw47Jw45Z398KrW7Cay5uryIvryfKa1UZFy5CFs7uw40
-	vw4jvw4rXa1kAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbGYLUUUUU=
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC4BkS9WrVb5mnqAAA3Y
+X-CM-TRANSID:_____wD33z3Eb9VqCWdBAw--.40166S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFWDXr47tF1rXF1rCry5CFg_yoWrXF4xpF
+	Z3tr45C3ykGrWF9F95Za1UXry3GwsaqrWUC342gw13Aw45Gry8Xryaga1j9F45Cr92ga1Y
+	vrs0g39avas5AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j15lbUUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+wYdAWrVb8ZFOAAA3K
 
-Thank you for the review. All four Highs are legitimate and will be
-addressed in v2. One note first: of the two remedies you suggest for the
-ftgmac100 teardown, the reorder regresses a BUG_ON; the clearing variant is
-the one to take (item 4).
+Thank you for the review. The High is conceded with a companion-series
+answer, the two Mediums on code scope are conceded for v3, and on the
+get_net() question: yes, plain sock_net() is enough. Details:
 
-1. [High] monitors still running during the removal loop; request timers
-   never cancelled
+1. [High] the comment claims teardown "only unlinks these objects and frees
+   them after a grace period", but np and ndp are still freed right after
+   their list_del_rcu()
 
-   Agreed, this is the real hole in v1: dev_remove_pack() has already cut
-   off responses, so every in-flight request's one-second timer is certain
-   to fire, and a monitor GLS armed between dev_remove_pack() and the
-   removal loop is queued behind kfree_rcu(ndp). v2 quiesces everything
-   before the first package is released, in this order:
+   Conceded, the comment overclaims. Only the channel and its filter
+   arrays get a grace period from this series; np and ndp are deferred by
+   the two companion series:
 
-       dev_remove_pack(&ndp->ptype);
-       disable_work_sync(&ndp->work);
-       NCSI_FOR_EACH_PACKAGE(ndp, np)
-               NCSI_FOR_EACH_CHANNEL(np, nc)
-                       ncsi_stop_channel_monitor(nc);
-       for (i = 0; i < ARRAY_SIZE(ndp->requests); i++) {
-               nr = &ndp->requests[i];
-               spin_lock_irqsave(&ndp->lock, flags);
-               used = nr->used;
-               spin_unlock_irqrestore(&ndp->lock, flags);
-               if (used)
-                       ncsi_free_request(nr);
-       }
-       list_for_each_entry_safe(np, tmp, &ndp->packages, node)
-               ncsi_remove_package(np);
+     - "net/ncsi: fix use-after-free of ncsi_package in
+        ncsi_remove_package()" (msgid
+        20261017012431.413648-1-18983559317@163.com)
+     - "net/ncsi: fix use-after-free of ncsi_dev_priv in
+        ncsi_unregister_dev()" (msgid
+        20261017015315.415794-1-18983559317@163.com)
 
-   disable_work_sync() runs first so ncsi_configure_channel() cannot
-   re-arm a monitor afterwards; stopping all monitors before any free
-   closes the GLS window; ncsi_free_request() then takes each outstanding
-   request down, deleting nr->timer synchronously and releasing the cmd
-   and rsp skbs (nr->used is read under ndp->lock).
+   v3 rewords the comment to the channel scope and names the companions,
+   so the reader-side statement stays true independent of their
+   application state.
 
-2. [High] only the outermost ncsi_dev_priv gets an RCU-deferred free
+2. [Medium] the RCU reader protocol is only added to the PKG_INFO handlers
 
-   Agreed; the channels and their filter arrays are deferred in the
-   companion series "net/ncsi: fix use-after-free of ncsi_channel in
-   ncsi_remove_channel()" (msgid
-   20261017024947.420683-1-18983559317@163.com) and the packages in
-   "net/ncsi: fix use-after-free of ncsi_package in ncsi_remove_package()"
-   (msgid 20261017012431.413648-1-18983559317@163.com).
+   Conceded, v3 wraps all seven handlers (ncsi_set_interface_nl(),
+   ncsi_clear_interface_nl(), ncsi_send_cmd_nl(),
+   ncsi_set_package_mask_nl(), ncsi_set_channel_mask_nl(), and the two
+   PKG_INFO ones) around the ndp_from_ifindex() resolution and the walks.
+   Two sleeping constraints are handled:
 
-3. [High] kfree_rcu() does not protect the netlink reader, which resolves
-   ndp through ndp_from_ifindex() without RCU
+     - The PKG_INFO doit reply skb keeps its genlmsg_new(GFP_KERNEL)
+       outside the critical section: allocated before the lock, unicast
+       after the unlock, so the walk itself never sleeps.
+     - NCSI_CMD_SEND_CMD's error path (ncsi_send_netlink_err() ->
+       nlmsg_unicast(), which may sleep) is deferred to after the unlock,
+       using the net_device captured inside the critical section.
+       ncsi_xmit_cmd() itself is atomic -- GFP_ATOMIC command skbs,
+       spinlocks and dev_queue_xmit() -- and runs under the lock.
 
-   Agreed. The readers enter rcu_read_lock() in the channel companion
-   series, which also keeps the genlmsg_new(GFP_KERNEL) allocation of the
-   PKG_INFO doit outside the critical section -- that sleep window between
-   ndp_from_ifindex() and ncsi_write_package_info() is exactly the
-   "ndp->package_num at offset 160" access of the first KASAN trace. The
-   residual you sketch at the end (a CAP_NET_ADMIN NCSI_CMD_SEND_CMD
-   slipping a request in between the request sweep here and the deferred
-   free) cannot be closed by RCU lifetime alone; it needs serialization
-   between the genl handlers and unregistration, and I would like to leave
-   that for follow-up work rather than widen this series.
+   You are right that the SET_*/SEND_CMD handlers can turn the race into
+   use-after-free writes; they are GENL_ADMIN_PERM, but that only limits
+   who can trigger it, not whether it exists. The CONFIG_PROVE_RCU_LIST
+   angle is another reason the lock belongs around every walk, not just
+   the info ones.
 
-4. [High] the ftgmac100 teardown UAF is only made less likely
+3. [Medium] the ncsi_remove_channel() comment says the grace period covers
+   the "channel configuration worker"
 
-   Agreed that the fix must not depend on grace period length, but the
-   first suggested remedy is not viable: registering the NCSI Rx handler
-   sets ndp->ptype.dev = dev, so it sits on the netdev's
-   dev->ptype_specific, and netdev unregistration runs
-   BUG_ON(!list_empty(&dev->ptype_specific)) -- unregistering the netdev
-   before ncsi_unregister_dev() hits that BUG_ON. This is exactly the
-   crash that 3d5179458d22 ("net: ftgmac100: Fix crash when removing
-   driver", 2020) fixed by putting ncsi_unregister_dev() first. I will
-   take your second option instead: v2 adds a second patch to the series
-   that clears priv->ndev and priv->use_ncsi in ftgmac100_remove() right
-   after ncsi_unregister_dev(), so the unregister_netdev() ->
-   __dev_close_many() -> ftgmac100_stop() -> ncsi_stop_dev() path no
-   longer walks the released objects (it becomes a no-op), with its own
-   Fixes: 3d5179458d22.
+   Conceded as written; v3 drops the worker from the comment. The worker
+   is safe, but not because of call_rcu() -- it is quiesced by v2 of the
+   ndp companion series, which runs disable_work_sync(&ndp->work) before
+   any package or channel is released and stops every channel monitor
+   before the removal loop, so nothing can re-arm nc->monitor.timer
+   through ncsi_start_channel_monitor() afterwards. Given that, the stale
+   pointers you list are not walked after the quiesce point:
 
-5. Pre-existing issues
+     - nc->link sits on ndp->channel_queue, which only the worker walks
+       (ncsi_process_next_channel()); no netlink handler traverses it.
+     - ndp->active_channel and ndp->hot_channel are worker-only state.
+     - The info walkers' only use of np->preferred_channel is a pointer
+       comparison,
 
-   - The ncsi_vlan_rx_kill_vid() use-after-free against set_one_vid() is
-     fixed by 9c7e89fc1b68 ("ncsi: Fix use-after-free in the VLAN id
-     list removal"), which is in net-next already.
+           net/ncsi/ncsi-netlink.c:71:
+               if (nc == nc->package->preferred_channel)
 
-   - The ndp->vlan_vids leak on unregister is real: after ncsi_unregister_
-     dev() has removed ndp from ncsi_dev_list, the later
-     ncsi_vlan_rx_kill_vid() from the 8021q NETDEV_UNREGISTER path finds
-     no device and the entries leak. Freeing them from
-     ncsi_unregister_dev() with kfree_rcu() (same release discipline as
-     9c7e89fc1b68) is a natural separate follow-up patch.
+       which loads through np (kept alive by the package companion
+       series) and never dereferences the stale channel pointer.
+
+   The pre-teardown worker race itself (concurrent with the old immediate
+   kfree) predates this patch, as you note; the disable_work_sync()
+   ordering in the ndp companion is what closes it.
+
+4. [Medium] pre-existing: get_net(sock_net(skb->sk)) leaks a netns
+   reference in six handlers
+
+   Yes. Nothing in net/ncsi/ stores the struct net beyond the handler,
+   and the netlink socket pins the netns for the duration of the call, so
+   plain sock_net() is enough. v3 switches all six occurrences
+   (ncsi_pkg_info_all_nl(), ncsi_set_interface_nl(),
+   ncsi_clear_interface_nl(), ncsi_send_cmd_nl(),
+   ncsi_set_package_mask_nl(), ncsi_set_channel_mask_nl()).
 
 pw-bot: cr
 
