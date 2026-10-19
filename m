@@ -1,144 +1,131 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33CA4CF468;
-	Mon, 19 Oct 2026 01:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB30253951;
+	Mon, 19 Oct 2026 01:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792372729; cv=none; b=aCcQr0EwrTZkZvaYFTfHRbjNYNdD1XLr6t8/ibDlfHpZQdO2eV4C49lpeWd3FYxwZHqMuJ0P/Yl4IDZx1jEGf9BtbFX36Er09V3kFt6lzEqAa69leELZCM97GbxSgGhkHOyEoyZl8ixq9vtJQDhLGz+vCd4nieqxuEmj3cR4pSA=
+	t=1792372882; cv=none; b=fbkHxplNhie0w+VHa/AGgP3PyTp1aL4+Y31u9suwYS/l1cQMvUlYqawkjMU/EMYzznkOAvhmIeZi5t3RnjEY6dBwkYj1/k3q0WhiRXdhxrd1J8/1ItraXWHJBeM2dbE7hQsQhVuLU5LrFmZmCFcRorPlUftNebcqbg0iNy3a8UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792372729; c=relaxed/simple;
-	bh=JRVLMfAEDKuYjgqa28pXUMOlpuly+na2sdKmy4FUPRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/BR9OEEgSyAUBYksGwhzkHK3kDxVvSvuo1wKpAS92+jTXjwHCKUKHjcniQ8XAd1BcxCVMrOj1J9J7DiU0sjs8G689w1SWY45SqKmrJPWrPrbqtDJOg1r0N7T5g6oCRax7rcFZJTI1tGi7bfYCBm+mb/rXLNNMgrVuK3TlQHPfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KX+F8Gl7; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1792372882; c=relaxed/simple;
+	bh=3Ir8TP71k1No72mzl+a2aflk/XS3VTqfJ00gJ3yVlJ8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Dw3xYUT/VpHyatJUjjI05rPicml+qQuNTYanhu5WfUx+CWuU2aW8mAIsuKTogmru6k1Xhd8viJQdPJMWz5azAB56em8PGHVxs20Wn7fHn/u54VUz59luzULGMvO234GaiSd1IJKZcl2Z6enxYEK2fdvUiLF41kELRx8d9gTOPHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcTeZ0r0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KX+F8Gl7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=IX
-	tiTclCiw4vcSUxWgahWVmxPjU90rZOsolN+JRIrC0=; b=KX+F8Gl7gzRtLusSqC
-	2JYY3fcEekKirPEeLWJIQ6EXK4EofZFjN0JTFmvzONVLy57FIslJRGwY+5hbq4zh
-	4MD+NXziTd78LEYWpw2fY36Al2vsVYcAl8K2tTk1/MiJRCy17ge2y/ZQ14mjxwSZ
-	LEYcdWUg1bxJpTx/jcQLK9ja4=
-Received: from colol4bi5.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD33z3Eb9VqCWdBAw--.40166S2;
-	Mon, 19 Oct 2026 09:17:57 +0800 (CST)
-From: Binbin Deng <18983559317@163.com>
-To: netdev@vger.kernel.org
-Cc: sam@mendozajonas.com,
-	fercerpav@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	gwshan@linux.vnet.ibm.com,
-	joel@jms.id.au,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net/ncsi: fix use-after-free of ncsi_channel in ncsi_remove_channel()
-Date: Mon, 19 Oct 2026 09:17:56 +0800
-Message-ID: <20261019011756.432710-1-18983559317@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261017024947.420683-1-18983559317@163.com>
-References: <20261017024947.420683-1-18983559317@163.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcTeZ0r0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6C11F000C4;
+	Mon, 19 Oct 2026 01:21:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792372881;
+	bh=BaoUA/IiB69pw5+i5a25POFMR2S2myjx3y6u+M5wcw8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kcTeZ0r08fSCiNizJiDxkHgA+kLrVQ4yoy0p8aPXDfMurZYLmVmqMKLdb9Yl2qcqg
+	 4OKQUqmteLSqkGn5/oxeS8oYalw967nLY8ryxfaTBnJ27XdWiLKaf7D10whkVassxB
+	 ULbpohMjqEwdbMKNw4gvaXLAmkufiAZBKjTilBrpBJal6M5lE1ZlDh/42thNz4IZec
+	 LkVDcJQXrWE5c6P5gPJOiKTY126LoV2jnA2AgxCOJMjz0hPkA/D1UA4S8mjtDFe8ZF
+	 hjJZtHyjb2uN8QdyJGtsuovzF0VCcrUn6N/wO5Mmpvjw/PvsRMa4W7/+QvWc/UBpvB
+	 5aX7E2FRZbY0A==
+Subject:
+ Re: [PATCH net-next 01/15] netfilter: disable br_netfilter in user namespaces
+From: netdev-bot+sashiko@kernel.org
+To: pablo@netfilter.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Date: Mon, 19 Oct 2026 01:21:20 +0000
+Message-ID: <179237288041.3135.11774275051307629447@kernel.org>
+In-Reply-To: <20261018005638.1776148-2-pablo@netfilter.org>
+References: <20261018005638.1776148-2-pablo@netfilter.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD33z3Eb9VqCWdBAw--.40166S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXFWDXr47tF1rXF1rCry5CFg_yoWrXF4xpF
-	Z3tr45C3ykGrWF9F95Za1UXry3GwsaqrWUC342gw13Aw45Gry8Xryaga1j9F45Cr92ga1Y
-	vrs0g39avas5AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j15lbUUUUU=
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+wYdAWrVb8ZFOAAA3K
 
-Thank you for the review. The High is conceded with a companion-series
-answer, the two Mediums on code scope are conceded for v3, and on the
-get_net() question: yes, plain sock_net() is enough. Details:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-1. [High] the comment claims teardown "only unlinks these objects and frees
-   them after a grace period", but np and ndp are still freed right after
-   their list_del_rcu()
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-   Conceded, the comment overclaims. Only the channel and its filter
-   arrays get a grace period from this series; np and ndp are deferred by
-   the two companion series:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-     - "net/ncsi: fix use-after-free of ncsi_package in
-        ncsi_remove_package()" (msgid
-        20261017012431.413648-1-18983559317@163.com)
-     - "net/ncsi: fix use-after-free of ncsi_dev_priv in
-        ncsi_unregister_dev()" (msgid
-        20261017015315.415794-1-18983559317@163.com)
+- [Medium] tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
+  re-execs itself under `unshare -n` (line 40) and then runs `sysctl…
 
-   v3 rewords the comment to the channel scope and names the companions,
-   so the reader-side statement stays true independent of their
-   application state.
+--
 
-2. [Medium] the RCU reader protocol is only added to the PKG_INFO handlers
+netfilter: disable br_netfilter in user namespaces
 
-   Conceded, v3 wraps all seven handlers (ncsi_set_interface_nl(),
-   ncsi_clear_interface_nl(), ncsi_send_cmd_nl(),
-   ncsi_set_package_mask_nl(), ncsi_set_channel_mask_nl(), and the two
-   PKG_INFO ones) around the ndp_from_ifindex() resolution and the walks.
-   Two sleeping constraints are handled:
+This commit disables br_netfilter in network namespaces that are not
+owned by init_user_ns. In those namespaces it skips registration of the
+bridge-nf sysctls and of the br_netfilter hooks. It also adds a boot-time
+warning that the module is slated for removal in 2027, and updates the
+bridge documentation to match.
 
-     - The PKG_INFO doit reply skb keeps its genlmsg_new(GFP_KERNEL)
-       outside the critical section: allocated before the lock, unicast
-       after the unlock, so the walk itself never sleeps.
-     - NCSI_CMD_SEND_CMD's error path (ncsi_send_netlink_err() ->
-       nlmsg_unicast(), which may sleep) is deferred to after the unlock,
-       using the net_device captured inside the critical section.
-       ncsi_xmit_cmd() itself is atomic -- GFP_ATOMIC command skbs,
-       spinlocks and dev_queue_xmit() -- and runs under the lock.
+> diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+> index 0a394e5f43916..e15355ff215a7 100644
+> --- a/net/bridge/br_netfilter_hooks.c
+> +++ b/net/bridge/br_netfilter_hooks.c
 
-   You are right that the SET_*/SEND_CMD handlers can turn the race into
-   use-after-free writes; they are GENL_ADMIN_PERM, but that only limits
-   who can trigger it, not whether it exists. The CONFIG_PROVE_RCU_LIST
-   angle is another reason the lock belongs around every walk, not just
-   the info ones.
+[ ... ]
 
-3. [Medium] the ncsi_remove_channel() comment says the grace period covers
-   the "channel configuration worker"
+>  static int __net_init brnf_init_net(struct net *net)
+>  {
+> +	if (net->user_ns != &init_user_ns) {
+> +		struct brnf_net *brnet = net_generic(net, brnf_net_id);
+> +
+> +		brnet->in_userns = true;
+> +		pr_warn_once("br_netfilter no longer supported in user namespaces\n");
+> +		return 0;
+> +	}
+> +
+>  	return br_netfilter_sysctl_init_net(net);
+>  }
 
-   Conceded as written; v3 drops the worker from the comment. The worker
-   is safe, but not because of call_rcu() -- it is quiesced by v2 of the
-   ndp companion series, which runs disable_work_sync(&ndp->work) before
-   any package or channel is released and stops every channel monitor
-   before the removal loop, so nothing can re-arm nc->monitor.timer
-   through ncsi_start_channel_monitor() afterwards. Given that, the stale
-   pointers you list are not walked after the quiesce point:
+[Severity: Medium]
+Should tools/testing/selftests/net/netfilter/br_netfilter_queue.sh be
+updated along with this change?
 
-     - nc->link sits on ndp->channel_queue, which only the worker walks
-       (ncsi_process_next_channel()); no netlink handler traverses it.
-     - ndp->active_channel and ndp->hot_channel are worker-only state.
-     - The info walkers' only use of np->preferred_channel is a pointer
-       comparison,
+That script re-execs itself in a new netns via unshare -n. The new netns
+inherits the caller's user namespace:
 
-           net/ncsi/ncsi-netlink.c:71:
-               if (nc == nc->package->preferred_channel)
+    [ "${1}" != "run" ] && { unshare -n "${0}" run; exit $?; }
 
-       which loads through np (kept alive by the package companion
-       series) and never dereferences the stale channel pointer.
+It then treats a missing sysctl as a hard failure:
 
-   The pre-teardown worker race itself (concurrent with the old immediate
-   kfree) predates this patch, as you note; the disable_work_sync()
-   ordering in the ndp companion is what closes it.
+    modprobe -q br_netfilter
 
-4. [Medium] pre-existing: get_net(sock_net(skb->sk)) leaks a netns
-   reference in six handlers
+    sysctl net.bridge.bridge-nf-call-iptables=1 || exit 1
 
-   Yes. Nothing in net/ncsi/ stores the struct net beyond the handler,
-   and the netlink socket pins the netns for the duration of the call, so
-   plain sock_net() is enough. v3 switches all six occurrences
-   (ncsi_pkg_info_all_nl(), ncsi_set_interface_nl(),
-   ncsi_clear_interface_nl(), ncsi_send_cmd_nl(),
-   ncsi_set_package_mask_nl(), ncsi_set_channel_mask_nl()).
+Suppose the selftests run inside a non-initial user namespace, for
+example a rootless container or a CI job under unshare -r. Then the
+netns created by unshare -n has user_ns != &init_user_ns, and
+brnf_init_net() returns before registering the sysctls. The sysctl
+write fails and the script exits 1, so the test reports FAIL instead of
+SKIP.
 
-pw-bot: cr
+Before this patch the sysctl was present and writable by userns root,
+so the test passed in that environment.
 
+The sibling test br_netfilter.sh already treats the same condition as a
+skip:
+
+    if ! ip netns exec "$ns0" sysctl -q net.bridge.bridge-nf-call-iptables=1; then
+    	echo "SKIP: bridge netfilter not available"
+    	ret=$ksft_skip
+    fi
+
+Could br_netfilter_queue.sh use the same handling and exit with
+$ksft_skip here?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018005638.1776148-2-pablo%40netfilter.org
