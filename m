@@ -1,41 +1,40 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375344534B7;
-	Mon, 19 Oct 2026 06:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1AA47D450;
+	Mon, 19 Oct 2026 07:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792392998; cv=none; b=QDFT7R9E7D7dcv9cnaC/Kj+BfJp4C9P/V8MylIxuK/0W2eSGHQxXxHQfmQbeUmlc2JLthQfKm2XsU1/p+Lxgb7ej7M/7rF5qFThFjo4/QdfCqUYVvFAP/iKXqAi7vHHwb/yUM3jsFHVIvwQSN9aTH3rlrFK3ZgvLbFkphpCNsZQ=
+	t=1792393252; cv=none; b=cv1KmLf1k0fub5drR4hcQo1QGa7etT7jHqg9dbnrIFALYuFTwH+pKg7GpLTNWmL6sykZkFjaqgVwDkb8mByD19AF6L5EsROmneyveaF9oZQGw88z3xRv6z00a95jhDA560CeZW2MQavB6G1qeqwfwK7R0BaeFRkl06zSnue8GiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792392998; c=relaxed/simple;
-	bh=hsvwtCSKB+JctpL+L0TNRt3C/hGiQHXGwKtsDRo3E3s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iZPcNyJ6ybM3EobfdjEtYsY5Xh6ZvpqASKnNtNZiGB2vqD6Llicg3+lnRefpC9VADW5FGeKtAsCdLIX3xZuzRC6BMZr9T6VLurbRR963udODGFCsw11CxIDmMxJCK3/dP1QmWJCV7AQ/cmY64E0ASgBiFSvQsOM0hsib6h1McKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de; spf=pass smtp.mailfrom=jonasjelonek.de; dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b=A3iAiLpq; arc=none smtp.client-ip=212.227.17.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
+	s=arc-20240116; t=1792393252; c=relaxed/simple;
+	bh=o9ccJtBQN/UHaebcgJ1AB8L/RyzZ0eVWVRDgn2iPHMI=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Qbo7LaCoUzE24tiQSyVl2ysZ50Nl4mCB3esWr3VN7DLO2zi+0uKq/7KF+wPW/jtJmtZcf+LEZeqKPRxSYLle04hXKe2n8858PFcsyyAtiJpZZJjY7DO+L6zojxuqJ0fd4q4cxTMihUOO7q4Z1KTJSGYu/09BmONfcDt/GKCkCxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=odZIim5j; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b="A3iAiLpq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
-	s=s1-ionos; t=1792392987; x=1792997787; i=jonas@jonasjelonek.de;
-	bh=hsvwtCSKB+JctpL+L0TNRt3C/hGiQHXGwKtsDRo3E3s=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=A3iAiLpqHi7cyLXG3PG9yJy706tPOf6At0qxv0m7qgM1S9jE8A1SpDxmdgQnug8K
-	 ruZuW5Ubjz9kg9JblweSfbuoTHHVIh0vevOTpRj3R5Srf1wuGE5TILHhRAyoUsRrD
-	 /RkGwfZ2500EoFHx6y5RJBTfAJYIe6vgRyrHGIQtD3j9WUzJXe3rHb+Vy1MR0EufR
-	 znzckgnOfbj1U4O6DqFWOkug2kD6E0CyB0JybE14fzU2BUjFIBt1xPeKxZlHhlagq
-	 koBFqr+3Hc6Galt0yPnpS+yfCEj+lQ8pGm44DIE1y4Kfm1fg36E9V5XeeqMPRTs4E
-	 GtgSM29YMvGU3XbGog==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
- [213.165.67.113]) with ESMTPSA (Nemesis) id 1MEF87-1xQ59z3ZNV-0064lT; Mon, 19
- Oct 2026 08:56:27 +0200
-Message-ID: <2e3a8f8c-d415-497b-ae37-d736a77ad2e9@jonasjelonek.de>
-Date: Mon, 19 Oct 2026 08:56:24 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="odZIim5j"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uznnWvmHPQA48ZAqcGlW3kshcHeIrSRenmgmGp7j/Qc=;
+	b=odZIim5jb8qGPFxAcWSOTVbPewXiSpKNEUtDtxDItD9PkR0iQpskiEKH9cPLs6wkP4O1AfEpJ
+	9iiQRkxbp9elw1H6dpm1Z20MVcvP6eiZxTJakU/f7Q32T7uFh8WDtmsYqXKVZnXgrICoJG6UKSf
+	bRHO8/Dt1KrQJsmRWBfP9F4=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4j7RJh3TXzzRhrr;
+	Mon, 19 Oct 2026 15:00:36 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8DE8540579;
+	Mon, 19 Oct 2026 15:00:39 +0800 (CST)
+Received: from [10.67.121.233] (10.67.121.233) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 19 Oct 2026 15:00:38 +0800
+Message-ID: <e17bcdcf-3ae6-4444-ae18-aed0f98d5a6b@huawei.com>
+Date: Mon, 19 Oct 2026 15:00:37 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,79 +42,139 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] net: pse-pd: realtek-pse-mcu: add gen1 I2C
- transport
-Content-Language: en-US
-To: Sander Vanheule <sander@svanheule.net>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Kory Maincent <kory.maincent@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261018161248.376205-1-sander@svanheule.net>
- <20261018161248.376205-3-sander@svanheule.net>
-From: Jonas Jelonek <jonas@jonasjelonek.de>
-In-Reply-To: <20261018161248.376205-3-sander@svanheule.net>
-Content-Type: text/plain; charset=UTF-8
+CC: <shaojijie@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Ijae Kim <ae878000@gmail.com>
+Subject: Re: [PATCH net] net: hns: retire service work before releasing device
+ resources
+To: Myeonghun Pak <mhun512@gmail.com>, Jian Shen <shenjian15@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>
+References: <20261016020035.3621768-1-mhun512@gmail.com>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20261016020035.3621768-1-mhun512@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:U67j7Q4+Mqgy/EcIWchk2ozDOBWljjfv8EhqhvjKV0QzI++5wF1
- iVSRsWqKtLJObDr6DzUiCUU5LWzP/qOyhqGugA4sXsWWGfpj+a9Kl2Wiz6xnCIHZbIQmS8G
- Hz+a6xWg3HOtID/c5O6IMtK+mQADSwo8a4LnhaVSRSyuI+sFBbiamx0UND8w80mg7sNL/i6
- JzPW0GRmj1ntU82cCm9vA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:P0DXO2GqazI=;NqocGcpg8hXldB0ub+dAPfxb6Ra
- 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
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
 
-On 18.10.26 18:12, Sander Vanheule wrote:
-> Provide the required data for the gen1 raw I2C binding, which like for
-> gen2 is simply the gen1 protocol data with the native_i2c flag set.
+on 2026/10/16 10:00, Myeonghun Pak wrote:
+> The remove path releases ring, PHY and accelerator resources before
+> canceling service work, allowing use-after-free. A pending worker can
+> also reinitialize the device or publish linkwatch events after
+> unregister.
 >
-> Signed-off-by: Sander Vanheule <sander@svanheule.net>
+> Set REMOVING, synchronize an in-flight TX timeout, then shut down the
+> service timer and drain work before unregister invokes ndo_stop.
+> Serialize reset and link-update state checks and operations with
+> unregister under RTNL.
 >
+> Compile-tested with Clang 22.1.2 (W=1); not tested on hardware.
+>
+> This issue was identified as part of our ongoing research while
+> reviewing kernel code.
+>
+> Fixes: b5996f11ea54 ("net: add Hisilicon Network Subsystem basic ethernet support")
+> Assisted-by: LLM
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> ---
+>   drivers/net/ethernet/hisilicon/hns/hns_enet.c | 37 ++++++++++++++-----
+>   1 file changed, 27 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/hisilicon/hns/hns_enet.c b/drivers/net/ethernet/hisilicon/hns/hns_enet.c
+> index e905f10b894e..977f054b00c3 100644
+> --- a/drivers/net/ethernet/hisilicon/hns/hns_enet.c
+> +++ b/drivers/net/ethernet/hisilicon/hns/hns_enet.c
+> @@ -2024,21 +2024,22 @@ static void hns_nic_reset_subtask(struct hns_nic_priv *priv)
+>   		return;
+>   	clear_bit(NIC_STATE2_RESET_REQUESTED, &priv->state);
+>   
+> -	/* If we're already down, removing or resetting, just bail */
+> +	rtnl_lock();
+> +	/* Serialize the reset decision with ndo_stop and unregister. */
+>   	if (test_bit(NIC_STATE_DOWN, &priv->state) ||
+>   	    test_bit(NIC_STATE_REMOVING, &priv->state) ||
+>   	    test_bit(NIC_STATE_RESETTING, &priv->state))
+> -		return;
+> +		goto out;
+>   
+>   	hns_nic_dump(priv);
 
-Acked-by: Jonas Jelonek <jonas@jonasjelonek.de>
+Since hns_nic_dump() can be highly time-consuming, is it really appropriate
+to execute it inside the rtnl_lock critical section? Holding the global
+RTNL lock for a long period might block the entire network control path
+and impact system responsiveness.
 
-Best,
-Jonas
+
+>   	netdev_info(priv->netdev, "try to reset %s port!\n",
+>   		    (type == HNAE_PORT_DEBUG ? "debug" : "service"));
+>   
+> -	rtnl_lock();
+>   	/* put off any impending NetWatchDogTimeout */
+>   	netif_trans_update(priv->netdev);
+>   	hns_nic_net_reinit(priv->netdev);
+>   
+> +out:
+>   	rtnl_unlock();
+>   }
+>   
+> @@ -2058,7 +2059,14 @@ static void hns_nic_service_task(struct work_struct *work)
+>   	struct hnae_handle *h = priv->ae_handle;
+>   
+>   	hns_nic_reset_subtask(priv);
+> -	hns_nic_update_link_status(priv->netdev);
+> +
+> +	rtnl_lock();
+> +	/* Keep linkwatch events within the netdev's registered lifetime. */
+> +	if (!test_bit(NIC_STATE_DOWN, &priv->state) &&
+> +	    !test_bit(NIC_STATE_REMOVING, &priv->state))
+> +		hns_nic_update_link_status(priv->netdev);
+> +	rtnl_unlock();
+> +
+>   	h->dev->ops->update_led_status(h);
+>   	hns_nic_update_stats(priv->netdev);
+>   
+> @@ -2398,6 +2406,21 @@ static void hns_nic_dev_remove(struct platform_device *pdev)
+>   	struct net_device *ndev = platform_get_drvdata(pdev);
+>   	struct hns_nic_priv *priv = netdev_priv(ndev);
+>   
+> +	set_bit(NIC_STATE_REMOVING, &priv->state);
+> +	if (priv->notifier_block.notifier_call)
+> +		hnae_unregister_notifier(&priv->notifier_block);
+> +	priv->notifier_block.notifier_call = NULL;
+> +
+> +	/* Join a TX timeout that passed the REMOVING check before work drain. */
+> +	if (ndev->reg_state != NETREG_UNINITIALIZED) {
+> +		netif_tx_lock_bh(ndev);
+> +		netif_tx_unlock_bh(ndev);
+> +	}
+> +
+> +	/* Stop the timer and drain work before ndo_stop touches the hardware. */
+> +	timer_shutdown_sync(&priv->service_timer);
+> +	cancel_work_sync(&priv->service_task);
+
+The commit message states "Serialize ... with unregister under RTNL",
+but cancel_work_sync() has now been moved before unregister_netdev(),
+which already drains the service_task.
+Is the RTNL serialization in hns_nic_reset_subtask() still necessary?
+
+> +
+>   	if (ndev->reg_state != NETREG_UNINITIALIZED)
+>   		unregister_netdev(ndev);
+>   
+> @@ -2411,12 +2434,6 @@ static void hns_nic_dev_remove(struct platform_device *pdev)
+>   	if (!IS_ERR_OR_NULL(priv->ae_handle))
+>   		hnae_put_handle(priv->ae_handle);
+>   	priv->ae_handle = NULL;
+> -	if (priv->notifier_block.notifier_call)
+> -		hnae_unregister_notifier(&priv->notifier_block);
+> -	priv->notifier_block.notifier_call = NULL;
+> -
+> -	set_bit(NIC_STATE_REMOVING, &priv->state);
+> -	(void)cancel_work_sync(&priv->service_task);
+>   
+>   	/* safe for ACPI FW */
+>   	of_node_put(to_of_node(priv->fwnode));
