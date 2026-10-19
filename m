@@ -1,95 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792422558;
-	b=aZztDolTthiVuZS3PZwY9fbZrvFF4QezpezDVLc+sHwMydYz6TUGlVjAC0vCUiMwJb+4
-	 ISmJCeC3v4p1yXs3PjgkF4k5nXbgvUp5/0fCkZZaKqQP17oKnLXXJdUTPDRCn7hrQgiVL
-	 Bsq/RKlwyn8J80YHP3ZWTAw4zLt/OfkfFLiFU5u91lxr05BPGEm1F0oK6SEoAgRHgO8RH
-	 V7zpWoHDTpT0iFH/SWpQ1vhaIP3JOI2+Qu1fvSWVsNu3T8WlDUXm8MtgsIsBeMu7g5UKl
-	 5Ae1CdzPKo2sBuSinjziHtA44HEY/+trATZ8XCLaUBg2WnYTeLB/QOremH9/YRGdcTA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792422558;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.174
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792423879;
+	b=PuHKVJMFTuCAvUuBVXDIeOfuH6y/dhEGGjkY2zkGq5yLo8/tmbR7AD9ZAAvmBaOq01J5
+	 q7XRdRV8i09QIddpn/qiiLWsFnr9dLTj4AWY+85wnarDfPuB0ZuBTh0o++qJzEUt3fyX5
+	 ki+Bz22gGev5aYGvZzzDk8UKcKPRqm/pok/iQvSObEb/NAgfvm7EemmvRdjRs2ZvX82wy
+	 iKKPyzCb441JbiTEjgVR+ZGG/ot0Po32oWlRt/r4VF1MyoRuHoBCsKJRrosDuzOs5lP8W
+	 Ec4OjvvMvfilr3/n4cRyvXEubjCKq90RGlvjRDoPnNR8Tf09u7sflaQsAngP+m1C9YQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792423879;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=ddB4FacqIQ3q4kAqUUsX/lS6szbTGftArKoCUpP16Is=;
-	b=q0HYZJE5Gay8OdMwQPyN/i+pywMXeOQOPW/qfMcK8a9cCU0hQXok846YkUUM2GCas7rl
-	 hp1BQ/3thrjBTpLJlp2r2FYF2H3T2wQ6O+viyhHTb5CyeGnKB4M9V7xbaUWUywVcQx4vM
-	 j2xt3P9JQE5/A5cxMWt9iENWzoH2H9cu1iAATj2wi9JejTcvk3e9NJboWq8P8T0HloWhf
-	 kHUf29OnBPNpiz4TOtLQ4lurBn2OaEqhQYUy9T7hygtA8t8a/vplVZcupZcq1nLd/Qd0r
-	 MpCyo4qk2RDBFUeZ0LyrskqEozdfg2EYN8u7JnJ7ZJo66n+vu+DAYjdT66y1OuJLaGw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PQX0gmjX;
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=vH8K0tY0TTIHvq5G2+R9r502vTAhxsKA0mwhegsYO5c=;
+	b=BTeGItIhOmX3NDW6quSdas/9ahTlo59ITlF0EchjxXzusy0blRNO440Rh+6VZDZWkJaG
+	 StpOgeq1fdjuc8B1SGPtveAkJUXlyW7FLV/zSApP6nT2BbvLxPaWjJTM3PWANOXWhfnWB
+	 G1RU1129v7pK+/w0SKtgXCCMVXI1nejK2G0O//j6Ovyj96RDbq0WC0TRo7PdWuZ17aJkQ
+	 esLNtfZWk9wJ8KQ9kyR0sBSzi5gm2/VoTWU9ZcpEGKU2Exlif6J9zG+SRwKirwe+2Pv6M
+	 0muvcAIjTvGPUGoD0YYW2JgDISImmU40XqdzxN8tlyiOvKOJW9b2QZ+y/9y8cyGpihA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=UPpsJuHE;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.174
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689BE608607E
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:09:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 689BE608607E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5037D60ACCE6
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 15:31:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5037D60ACCE6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PQX0gmjX
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3535a54bed9so3060405eec.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 08:09:18 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=UPpsJuHE
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-535f598d126so433571cf.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 08:31:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792423877; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SqR8rkmU6YW1SlcFPcL1iINzjnmYazJZZjaxqYHH9pwq6UoKU9Vc0JVAFSduE+x0hE
+         Xk0BtnggWqEX8tiZN5UBHPeycJpoBXioSLwoQq8yARJt8yMnIs0roEng4Nh+sseJuAJT
+         sICj6waSHJjYkjYfudShAeCKDV2QHPKkiylwMJSZ4gHWMjaLtVa6C7D2h5oxvk7SWjIG
+         7/rgVu2+TyotXup+NvVi2pe2Aj3t5CjZnMJNuxqmg+5PtqzT2dB6lnhUGvlxzhZxpX7F
+         tAgOiRxwdw+P9acsR4Uh0LI6Kjjz3F7N2/029s0SjWvJXwHUf+M43oIST1Teqr9fL0FA
+         s+Mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vH8K0tY0TTIHvq5G2+R9r502vTAhxsKA0mwhegsYO5c=;
+        fh=Qm8I2+cj5Gghk6wauL5/9WWExm9OhE0zHhX7NvKJgVA=;
+        b=NHgRbhXL2cy5odPEKvILESa3hE0+Rxh6H3ykr93V9omNjvW7NvPbAF5EvWNpbsbVar
+         uFh33y8FWlCRtyhEda0sue7xIAprwxmz7A9LSfsYK0lxLI0tDG+mgp/QQgPeP94FU5rY
+         fcGfyGcdV/k4enS4btJpqZpFbhd3crZ0HrgsEO+j1xzuZYsRyUcmK89L9WE/n2Yryv5Q
+         jMbYxXIqQTufNDQmH1l0wdv0tc12ZyG8+Otwi+V7YECy/GlMEP3bFUKADL89SEsrghuF
+         9lgo7omiuuhisfBftNSsRwzmrJnAyzVh6Y498YhjMZQVZRQOF107Y2xCXYYSFZ81YDrL
+         I5IQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792422557; x=1793027357; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ddB4FacqIQ3q4kAqUUsX/lS6szbTGftArKoCUpP16Is=;
-        b=PQX0gmjXqloOScR31IyWgcireQx9fQT73X3Zpe08XKJbs8GqVMJ4KNbjN8+L60KuXS
-         5Vk10qFz9nXu8jDZwILHl0ivMfQSmgPWmV+ssVfeRAfCsvf6J6Jkoq6OHAfEpBSUCAgU
-         V45rL/7HO/YKrsqIyxvZwkaJ2Meo12GUZ5zSuKBZ0eSiuBjPxy4v/VSaxclARSLcXbxU
-         deApW+wAePATk/kvUdSUJYGKE/9RI9ssbaDtNOaFOKM7Lc54fLOx351BxdQT7Z3/rW6f
-         JCzWV9sfBRW7hpFcyPi330cllnO7OxWGT8RB7z3YI7SknpDdFHJk3AcJyaZlZdP+AprG
-         PD4A==
+        d=google.com; s=20251104; t=1792423877; x=1793028677; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vH8K0tY0TTIHvq5G2+R9r502vTAhxsKA0mwhegsYO5c=;
+        b=UPpsJuHEPgv0ykjk6AgT2el3DqaUNvZ/ii74oL+fkA0VD4d6rEpTHFBb9Yd2m17Pyk
+         NvgNWaGKTGRoSixKO+UmU1+kAex4grt/wH3hvHULqXf7DFv+QmNGEbYbvyJcIalXdOvH
+         yU30rRb0q2rl7ASvSqCML4e4l9cJu0nDIwGfTjClRgIC22QiuYccXCQKX4tiRGQdVIhy
+         DjyGSWl2fi5FdquSZMtl61xJv+z9ody6d+qyeeuXf73LgoJidyI7/CNBKnxw/J3Diear
+         C9cFn7Eiav5vWJYbS6Bs08c29j4r4R9cj4DGj8Rq0kKo8ZDI7VusqfvvVCfNBY8+UIaa
+         vxZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792422557; x=1793027357;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ddB4FacqIQ3q4kAqUUsX/lS6szbTGftArKoCUpP16Is=;
-        b=NkK4bvHxH8DHa+vK6KAmI7Abt817jWzKFdy9cXdOUiy3x6Llahks7disCQrx2pVUp5
-         jlEwefZDhV7o0BlkXxxuOLkH5ABjtjwd5j94MHGO/1Sn0/KN8FK64OEHgNaXlhzsFQ+O
-         nDFlrs7g6lcXEhhrCMk/o9pquLXQIHbhwvSoSMEoGBO045iBJy2k0Bx2psY3RY8EfmYv
-         2awf2KsPOAl96WnBGfqeUOa0pnMhAxIGO4gWwDJnL3CTzienS9MuIwua+99WhWuHvhY9
-         Vh19qWQlU3Gi1GoXOIbNTSkT8IzaUI0bEmiqM3GjOQBoWREkgmPX0YEIiS0foFcOHymI
-         fBkA==
-X-Forwarded-Encrypted: i=1; AKwUvBwdANkeu5YgR6eaEKc1trWAZx9k791SdgebDEYrXsynl1jD+mcDEiixiCmrvyT5N8eccJ0knmY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK1zmYWL+kimJh2pyhxH/7wGbXkgs/PeVwb7/PX+AjcBArsSZZD
-	oi8HJUWva/ypD6VjgbE4OB0aeVB5D5ZEIJ3jBO2JyjT0Ib1zkRwkNGA7IsSZtQtl
-X-Gm-Gg: AYBFou24JtpV7t5p4c2Dqs4EZc7uCvr/Xm8RXl+OAnnvqFg5ffwK3AM76QlfB1rZOLp
-	Q8uSu97VKXgpGCNJQ2/GYgB6WjGnuOCuNTn41JQ56x2JWw5ngAky9kjZcMusQL71HMC6CzFTI1e
-	/yz9Wwdj74aKLCFwXKX3WM9Tt15maPWJiwlGc385qt0+t5+qpoGNtg627v5AWxfB/j9mLXf5SVM
-	lZFriv97wi1uesPM4tzmrmBKpnvPMxi1MpUXTcwcph64wo8qACLbMEkgzG5DWqSNhAnLtQCfMoM
-	BqQrOp6C9/G7KzJREWQP2441tlL8cB9bpumBVPom+P3LuaBH2tn/kApj4PTSLOxU2yGhaVHAetj
-	Ea91Glkwtx3KrhT3P30/kZBgPoSmXblRscJNajWjJTA9z0+ykoEEJoy2fVAIQQDr6eoJjMe/pXU
-	uFz9f2yniy/hJV89Gw7sQ9RsQq+DJynKKyI9QTFRfs1pmNJv//jvOqpZ9kTP7RTBWPkAAyUAQQR
-	lzmAa+7wVM7SxK0Rh3oLRU=
-X-Received: by 2002:a05:7300:ea8e:b0:360:c266:cdd8 with SMTP id 5a478bee46e88-361a1f5679amr10624281eec.24.1792422557361;
-        Mon, 19 Oct 2026 08:09:17 -0700 (PDT)
-Received: from CHANDRUS-NITRO.localdomain ([106.200.8.36])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-360813b6e33sm34680599eec.7.2026.10.19.08.09.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 08:09:17 -0700 (PDT)
-From: Chandru Gopi <chandru.gopi.dev@gmail.com>
-To: maoyixie.tju@gmail.com
-Cc: alex.aring@gmail.com,
-	linux-wpan@vger.kernel.org,
-	miquel.raynal@bootlin.com,
-	netdev@vger.kernel.org,
-	stefan@datenfreihafen.org
-Subject: Re: nl802154: GET_WPAN_PHY dump resolves NL802154_ATTR_IFINDEX in init_net
-Date: Mon, 19 Oct 2026 15:13:22 +0000
-Message-ID: <20261019151322.8175-1-chandru.gopi.dev@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260920165057.3753458-1-maoyixie.tju@gmail.com>
-References: <20260920165057.3753458-1-maoyixie.tju@gmail.com>
+        d=1e100.net; s=20260707; t=1792423877; x=1793028677;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vH8K0tY0TTIHvq5G2+R9r502vTAhxsKA0mwhegsYO5c=;
+        b=NlZEUHps3N5gnFXWolwM11oVKYwZiVbE4U4PgF8FvKgllwm8NGlp8mRh4nYfsxG8Bh
+         6doKOhamqxH/pzsjVQdMrUboRCQ109Xd/uOjTavfEic7KcDh+ldZvyVSgAjB1pYi0j78
+         lFnJcg2A6zkqdS8TYvDuKqRengmmfMiFYcPAxjy8SO491V5GBC+e1CuYbelQihQ7mRDS
+         QJ0ZkZ/TYBwNtVKSEvVBnhZtM3fimG86yP0Y7V1+YEE7ydent8NGFYj25ruPmEY1xhQp
+         Znc+CAXSvUv7QhNxSL5Y11tYSO/n0B3vMg8VpIMYA5i6t0Qoj95Pubj0qrrFLaWsvjRx
+         Iygg==
+X-Forwarded-Encrypted: i=1; AKwUvBy5PoturvfORpfPwmG9Z3bqoxzw+d+6Mo+PCx7qkpNSO5HmC5CChNp939BoQRumZWkrICRi3k0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIacLxlmiByU64GuMapouYo/eJcx66oIqUsXp1yXd0Qap8jR/Vi
+	UmB8Eh1aqKFgh/d3S/bVYTIHEhXPAreBr8DDBrH1z2mS3ru0ylzzuNB7m71cq+5bDimvZyCW5OJ
+	dOwQkjrw94rMlDVM7kohjPUBUGZdNDWaRcBwto1Iz
+X-Gm-Gg: AYBFou1LziRB8ZKhH67syXQ0o03DC916pGr29zhi8DYO5OyyarrgqmZ9vVIsfn8Il5P
+	PUI1e19hqk2z8oD4AFxWd9hnBS4q6K1rk0/x7XFRoPW/EuU6xgy7gx5cJDDN0l+Zsv8BeygwehH
+	qUN1KQAq/k1lle5H1priYNKLsksoByeQ3CKMjUhnJZYZ6z/oyPjQLtZoWBAH1fAiYnBPZjtmMyw
+	cOhidbT0j6xL+/OCBH5e6CeBe19YHdSUcn+A28PUOLUJXgxj4cX4pMZ+Wv/pGkb5dOliJWey3pu
+	VfXUIGFmJHcFCJs5fdcz3Lcsg2sZwt3xQL7bU4pIQXEeR9kHJefzVxzkY1Rm/wHmIeGBCRBzCgj
+	FrVN1BKIK9+irnTGMgVco/VtKw5/mjVMpy6hMe937YdWC
+X-Received: by 2002:a05:622a:aad1:10b0:533:9746:9a86 with SMTP id
+ d75a77b69052e-536499e8967mr30482911cf.5.1792423876418; Mon, 19 Oct 2026
+ 08:31:16 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,38 +104,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261018211514.2817293-1-chia-yu.chang@nokia-bell-labs.com> <20261018211514.2817293-3-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20261018211514.2817293-3-chia-yu.chang@nokia-bell-labs.com>
+From: Neal Cardwell <ncardwell@google.com>
+Date: Mon, 19 Oct 2026 11:30:58 -0400
+X-Gm-Features: AclHuK_qCj8A5BQKckfNFBVvGNcKwP79HUqCKtNoolioGZCyxzrnsutbLK1QZbo
+Message-ID: <CADVnQykcesPYsRFmZGRJm93knNbPnWf81s6qu30g8Et-rYjsYg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 2/3] tcp: ECT_1_ESTABLISH identifier for CA
+To: chia-yu.chang@nokia-bell-labs.com
+Cc: ihor.solodrai@linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com, 
+	jiayuan.chen@linux.dev, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
+	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
+	jolsa@kernel.org, emil@etsalapatis.com, linux-kselftest@vger.kernel.org, 
+	shuah@kernel.org, horms@kernel.org, dsahern@kernel.org, pabeni@redhat.com, 
+	jhs@mojatatu.com, stephen@networkplumber.org, davem@davemloft.net, 
+	edumazet@google.com, andrew+netdev@lunn.ch, donald.hunter@gmail.com, 
+	kuniyu@google.com, ij@kernel.org, koen.de_schepper@nokia-bell-labs.com, 
+	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
+	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
+	Jason_Livingood@comcast.com, vidhi_goel@apple.com, Mike_Rudolph@comcast.com, 
+	Jeff_Howe@comcast.com, srichard@netapp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 21 Sep 2026 00:50:57 +0800, Maoyi Xie wrote:
-> Does this look like a real bug? If it does, I am happy to send a patch,
-> or to leave the fix to you.
+On Sun, Oct 18, 2026 at 5:15=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
+ wrote:
+>
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>
+> When connection is initialized after ECN negotiation, this patch
+> enables CA to control whether ECT(0) or ECT(1) should be used.
 
-Yes, I can reproduce it on v7.3-rc7 (58161ead29e5, Oct 16 2026) in
-x86_64 QEMU with two mac802154_hwsim radios. The lookup at
-net/ieee802154/nl802154.c:584 is unchanged, and I did not see a fix on
-the list or in mainline as of today.
+AFAICT this should be "When congestion control is initialized" rather
+than 'When connection is initialized".
 
-Setup: wpan0 on phy0 and wpan1 on phy1, both in init_net. phy1 is moved
-into a fresh netns with "iwpan phy phy1 set netns <pid>". From inside
-that netns I send NL802154_CMD_GET_WPAN_PHY dumps:
+> A new identiifer (TCP_CONG_ECT_1_ESTABLISH) defines the expected
+> ECT value in the IP header.
 
-                                          before        after
-  no ifindex filter                       1 phy         1 phy
-  ifindex of wpan1 (in this netns)        ENODEV        1 phy
-  ifindex of wpan0 (only in init_net)     empty dump    ENODEV
+Using "expected" here is not as clear as it could be. It sounds like
+the expected incoming value rather than a value that the CC algorithm
+is specifying should be sent.
 
-"after" is with __dev_get_by_index(&init_net, ifidx) replaced by
-__dev_get_by_index(sock_net(skb->sk), ifidx), as you suggested. Both
-cases now return what you described, and the init_net baseline is
-unchanged. No warnings were printed during the netns move.
+Also, the name TCP_CONG_ECT_1_ESTABLISH is quite verbose, and not 100%
+accurate AFAICT, since it is used in tcp_ecn_send(), which is called
+when the SYN bit is not set, which can be in a number of TCP states
+other than ESTABLISHED.
 
-I used a short static C program with raw generic netlink for this. I
-am happy to turn it into a hwsim-based selftest, and can put it
-wherever you think it belongs.
+I would suggest calling this something shorter and more clear and
+correct, like TCP_ECN_SEND_ECT_1.
 
-Are you still planning to send the fix? I can send it, with you as
-Reported-by, or send the selftest alongside yours, whichever you
-prefer.
+Putting that all together, how about something like:
 
-Thanks,
-Chandru
+"""
+This patch introduces the new TCP_ECN_SEND_ECT_1 bit, which enables a
+congestion control module to control whether the connection transmits
+using ECT(1) (if the bit is set) or ECT(0) (otherwise), when
+congestion control is initialized after ECN negotiation. A congestion
+control module, such as the upcoming TCP Prague using L4S ECN, can set
+this new TCP_ECN_SEND_ECT_1  bit if it wants to send the ECT(1) code
+point in outgoing IP headers.
+"""
+
+> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> ---
+>  include/net/tcp.h     | 1 +
+>  include/net/tcp_ecn.h | 6 ++++++
+>  net/ipv4/tcp_cong.c   | 4 +++-
+>  net/ipv4/tcp_output.c | 2 +-
+>  4 files changed, 11 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/net/tcp.h b/include/net/tcp.h
+> index 1838389a9d8a..b9def462479d 100644
+> --- a/include/net/tcp.h
+> +++ b/include/net/tcp.h
+> @@ -428,6 +428,7 @@ static inline void tcp_dec_quickack_mode(struct sock =
+*sk)
+>  #define        TCP_ECN_DEMAND_CWR      BIT(2)
+>  #define        TCP_ECN_SEEN            BIT(3)
+>  #define        TCP_ECN_MODE_ACCECN     BIT(4)
+> +#define        TCP_ECN_ECT_1_ESTABLISH BIT(5)
+>
+>  #define        TCP_ECN_DISABLED        0
+>  #define        TCP_ECN_MODE_PENDING    (TCP_ECN_MODE_RFC3168 | TCP_ECN_M=
+ODE_ACCECN)
+> diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
+> index 865d5c5a7718..210ec63538f8 100644
+> --- a/include/net/tcp_ecn.h
+> +++ b/include/net/tcp_ecn.h
+> @@ -38,6 +38,12 @@ static inline void INET_ECN_xmit_ect_1_negotiation(str=
+uct sock *sk)
+>         __INET_ECN_xmit(sk, tcp_ca_ect_1_negotiation(sk));
+>  }
+>
+> +/* Apply either ECT(0) or ECT(1) based on TCP_CONG_ECT_1_ESTABLISH flag =
+*/
+> +static inline void INET_ECN_xmit_ect_1_establish(struct sock *sk)
+> +{
+> +       __INET_ECN_xmit(sk, tcp_sk(sk)->ecn_flags & TCP_ECN_ECT_1_ESTABLI=
+SH);
+> +}
+
+This function name is quite verbose, and a little confusing, since it
+may or may not set the ECT code point to ECT(1). I realize the name is
+chosen to be consistent with INET_ECN_xmit_ect_1_negotiation(). But
+that one is confusing in the same way. :-)
+
+Also, using "establish" in this way sounds like a verb, making it
+sound like this function is establishing something.
+
+How about something like:
+
+(1) a new preceding patch in the series can rename
+INET_ECN_xmit_ect_1_negotiation() to INET_ECN_xmit_negotiation_ect()
+(2) this patch can rename its INET_ECN_xmit_ect_1_establish to
+INET_ECN_xmit_established_ect()
+
+Thanks for the patch!
+
+neal
