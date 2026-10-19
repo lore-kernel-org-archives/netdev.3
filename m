@@ -1,99 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792425659;
-	b=H4TaBjBR3pl9y+lKMI1Fke+J/SqKuBGMJt6Ec3sw3zMd3wHsCRwHEdOl+eJA7/cDLOWz
-	 HXTiaxjna9dqCrSHmerBjNrG7647OYKpTuNpaY1syBeB/oJMUmy95eqYIx0r8l8R8Yg9f
-	 hQNbRbZqd1QyaTI3jC33xqLR8W/puiwlEUIHHWJ5Avb1WWAPUGi4x+eD3+/t8A5KAH8WP
-	 X1OMoT5ennR2xeKO8cepBPpSlPk4OU3o7LPmw0yuBfs9acSZiWfR2JQtAJ0JbPviHL4KP
-	 Gr9oeNrs46KJDF4vP7Ot4wqjyWYoBM7kh1UpLRyNqG8knh/kN//aNiksEy4UgHgUk+Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792425659;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792425789;
+	b=S4ep4zll7Y/ERATzC7cVMK+eW6WgfpC9GZ5gvDnAkRbZB50FpCXwShtt8reH1TVQ0V6r
+	 EtDA+8MpHfjpCdEXVINsRVQYK5DDmIiTGutFBivcyz03GdRw/NvY8npBwsUWx0GY88tVM
+	 bSOnNP34WSzIDL3JR10B0rsSQvVIuLSgWwHRGL3xCNqw1/LJuZ5fbPhz68IhC0BfhzJBX
+	 wSQ9+9ZZWdOfFYAzRCNW7IJbb0AeRB5JgsV/YDM8cJuyLKUBmuxdbQ4w3HBaOH0b3Fad1
+	 e43gTxGs4l3MwWSvVDict8rR6JTWE1XE5YVjFvoWg15G/O2Gmt7Eo2o54tsNYXSJEFQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792425789;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=IE6pFaWkRG9TnAChp9q+R9nxD2mJ7LV7fQf6lXHQJ7U=;
-	b=nBaaCVMkyKrrPJQajFRx7IPHXsEkydr8qvmIkorolpiG1GYhTkgxxGQ/EWsTzAxuy6Sh
-	 /442iKwfh/3ldfqCuF8faksGSz78VE+B0IcyL/GBT1DdVP/Uo3ls0ubiZCBHsY0PMmMvX
-	 7vKP22IlF46giudY+CKRz57buU/3rp7l86Pg7itsX3m8Avm5FWoLdvHk4L+wqf6/pnN2T
-	 pMjlMmP3tL9zm0SO0C7XA5e6F10jk2mYr7MtyVGRyz8TNJaZtSfbMkBOTk8Z8rA4NxT/H
-	 gp7gU/Mz4PfxYbrYD4nr5jLLS/d/1qVR56pWr3pPNTY85L/F5/QwnWAYmbajMI3aWzg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=RbLiIfPw2q80htvwYCithB+heGpaY2y+RO++XY5n8fo=;
+	b=LfQzF7Z8NKQ5I6yfIv+W7rVyGMYc+f8AK8FyTXCTeLItqLrY/l5Z0lxLtUYCVZCHaNHS
+	 A5xIMHt4UfMJCB/7/qTAcybLj948kNIKglgQ5IF7m3ogtC4FX8abynB0s+Z3GfcNeOgOK
+	 sPcfVihS5hB02HZx2J4ULuSMrXQMSJh8JAIdsgdFjCOGPyHhNv0OKR7CKFwt5Q/tuqHON
+	 LN9H5DXcvk/kNr1339E7YSvUR8Y05k0ZTnLp0ZmBLhCCjfB2NzOnqOqBn4aXSFWLyInJE
+	 nNmsG59SKw1fem2QAFivGUtlOmv/bSfINYzQ2nkURMPEF7pOlyUvBCs7J/hXNTJ2Ezw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=oqTWi6y8;
-	arc=none smtp.remote-ip=209.85.219.52
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=diFMVrnN;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.170
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03C760740B0
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:00:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F03C760740B0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96006606C930
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:03:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96006606C930
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=oqTWi6y8
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-91becee60e9so706106d6.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:00:58 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=diFMVrnN
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8a05b210703so677245b3a.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:03:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792425789; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iCgjQ0dnvB1Q4c5kCxj8fl1ObuHkPBMBH2jriQAW3QmoUWBQZjDVkcjH9J0MmV1qaW
+         sksB/P2OyjLo9YJXRsugEHWJJmYFEpAnFgyl+JD1HikubYMm9IssrbZlAlPB/TSn4HVr
+         yeyikkCOBLNbwDw0PRUDwFf+L2LfTkI3hRXokHoEZjSqpcu8q1mpFPbNsP5bjHzhFybw
+         3jFKkZR4/vwif1zFg0pTt535UFUU/1QQXDX5rJzbECgUCrJnH8pbkx6AGwiLkmiVpeCQ
+         jOLKU7iMzns8cJJBtmc5mGNYJDhBeKKas3+QPb5L9DtAgX+O8wXqKr8r9T2hkdQPaWS6
+         5tbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RbLiIfPw2q80htvwYCithB+heGpaY2y+RO++XY5n8fo=;
+        fh=v1ruOtZGuvETx+98FBJCDsA/4QOspvRxhalQUISItZ0=;
+        b=Ex26YjZCrVPxelcfATqkZTrSVA10llWyBFD0kMGdr2ixnRQHcczWl9sBp8dg1Gj1mM
+         Q1zvofRIs3c91NYhfEFswiI24SSIV3bKZxmmhLF9ctBpNHnnEIDlk3NVKreZpRIgSlsX
+         UgS2O2td85+81FRM8SUYv4oBou14cnie4rlkLRfwpnexRFSShucudH8LW+pcxKG57kBv
+         AnkBU9fdLw48dxu+9wt12JX3G72nb4/JUcNYZjogLEjETnxVmPeS7zpZ48IFA4SCy7xF
+         MCv5gOJo0dnF5z1x8nPPrSfZ1o+Us05mj5rYPbRgdYf0dILsEfTngWNncnzzKe4CT1p4
+         xYsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792425658; x=1793030458; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IE6pFaWkRG9TnAChp9q+R9nxD2mJ7LV7fQf6lXHQJ7U=;
-        b=oqTWi6y8+780x1jeqjYOHndbr104vV9d9BLHDDx6PXdRWa7P8sEeMXuyIRre6LsDMc
-         7x6nhf170II+hysVpzf+j+N1aFDcDjirNQLbmsWbNLIGaCWwy9LoVfdC2ITvRUXZ7A2n
-         YjB+tDQIlBHO/OAzoRRptQF5htTCzWQx0JyA0=
+        d=mojatatu.com; s=google; t=1792425789; x=1793030589; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RbLiIfPw2q80htvwYCithB+heGpaY2y+RO++XY5n8fo=;
+        b=diFMVrnNwJmXFPGw+lfVLg3hTqKQ2UVWN2cS4YMS3K9Rmy5ENUX+H1zkypNM/Q1PDd
+         hTalqnuawtpIXDwTxHIS02gCo0S2XQboXofeS0gazsRrh7WV5rkEmRcLDRXtTXyAQ/XK
+         qTkX0e0UYQRWiMYvtTeNTr22rnwgpvlMv9XGY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792425658; x=1793030458;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IE6pFaWkRG9TnAChp9q+R9nxD2mJ7LV7fQf6lXHQJ7U=;
-        b=zl4aD1spBhhjXqEV0J8aK2TFHgYLfcyLB4gwbXhyOFP123qePE6zbJ60SAKjo9wLa9
-         s/UXEEoeW4/I2eol1XXl2cgqTGEzkPiv8qjLfI0PF95fPv7X8xsNPHD+NRVx58TE16CY
-         zrYcIgXA018h5UcSAPKykQT+svr/POgBMTN+hPCwrYBX15UQv9apFNtWDbCjV1wkiwtN
-         aof8T7j0ws/CY1OAnXB4IDFebNsznB8yCPQq82Ek6Ouc9/ai0RWE7p0yTwaDrzdVN7LN
-         6HrJrv4fOkPewLr3nxnFYLLsOBfsg1Gnu9OIq/i0oTZChIciFGSicexaBuLz6VihsIUe
-         YWUw==
-X-Gm-Message-State: AFq9FYIPMgFT19vQz3slUsa0ti14kjVKYs80Rhc1zR4l8EukIRwBvdI3
-	A99W347OQjqQmJD7Ww22H94zarqPij+MCFsFT3nfLjFY8Tpzq8S07INp+5KcMTSD6X0zpBZsUSG
-	oO4w=
-X-Gm-Gg: AYBFou2461xBkqjZ5ZwJ7n1N2pHGxKw1Zk2j6e1/wyiPp53LY24oC6IjKV9LJigLHBL
-	Tz61plFpGWu6FKS6ikvT2cL6xZYDNpZZn5ECo+1oWYPFiCTpRMUI3LCuYCJOag/lsCukpYOIaD3
-	Xmoe2Y8VTH4V2BxZqEqTyO36a7Z3NwjWH7fnf9pkAVkyL/kGGUFxsbu6VPwTx076KR27lh+s1FD
-	w9CXhXMjzaQXSEI5tQ6P1GWP5njVtGQXr1VSlclNvSJkH/OQr2V4qFNziMp4kD9Nka223VleKOs
-	pGpYwFnTHp7V0uwDnKIa5i/kZDIYXtDKay2TFvh08OkDDkCLJLQVKflYuRtIcIrWjK2EYQcvgQP
-	FCLBLZqezBaiPtWdAaobQTSZSKjocehojiFRB6G1Mi3mQa2T+0p9UgmNL+j2JXOSJGons0MO1s7
-	C9ULj2X6Mjg5qX2MvajTxL1RvEQBZ7FwBMpoet5bJ1hHl0AAPJ/8rVLPR0zNVxadIV36sNh3jGf
-	MVUHblGmLOQfqSW0jp15gvrOYR972IvoUDp8yuG
-X-Received: by 2002:a05:6214:2269:b0:91b:9136:d303 with SMTP id 6a1803df08f44-91bdf09ff11mr138963356d6.10.1792425651617;
-        Mon, 19 Oct 2026 09:00:51 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91be9d8acb5sm64846846d6.0.2026.10.19.09.00.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 09:00:49 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	cake@lists.bufferbloat.net,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net-next v7 3/4] net/sched: cap the accounted backlog before it can wrap
-Date: Mon, 19 Oct 2026 12:00:34 -0400
-Message-Id: <QDISC-BA27.v7.r0.20261019115505-3@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-BA27.v7.r0.20261019115505@mojatatu.com>
-References: <QDISC-BA27.v7.r0.20261019115505@mojatatu.com>
+        d=1e100.net; s=20260707; t=1792425789; x=1793030589;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RbLiIfPw2q80htvwYCithB+heGpaY2y+RO++XY5n8fo=;
+        b=b0oemNrAkGLYcnXUGTKO+zb0a90igERfn36vPo5okDsX9Yx255gNR7FmBCefBhq6rl
+         iRCpS++/vV4XSXC0+hm/RvRi9pNASQJS90eXtxbwtyswWKIdrqYaWJJvf8Aow6HxkyTM
+         7N36nz+Ars1YG3L/XDOSvYWNPYz0Q4d8wtTvruombv2vX9sJeYaTFzdwDnjyOMEEF7me
+         oDlOdqwAB6RaHmtBZy/GTTlvAHK9khKJGY24M0HMzhr4qfrU3mXJUpIYfSeE9kwy6hiP
+         QuUepOYiABgtWB1mtSXpdl+aVyc+sPZsDbMC10pqKychlw4DIKmms4iwvyUGrSW6bB4I
+         SFtA==
+X-Gm-Message-State: AFq9FYJfZ/cQ28BZU38F6aCOL2WxPT5KhA85ztjZ3r1pVVFa7n3Pv5t8
+	RVKKpWkTqFHmEgbOBv9fHJYRY9fPD9Nckn7QS6+L4IUmQXxRR4Vq/KzKSmiaCBBNRsL9Wj5U1em
+	6iemEDBtpqQTXz/VlpfSSSQm0p325hOHNYcAmWeUS
+X-Gm-Gg: AYBFou20AokmKjDOrm0hOYjEFz9qDR6QBc60O1Ls4jGe0jRQrVedLvqhiB51yyEgWD2
+	unf7LNlCDHPmB/EmmGuByc5yFrVpOsqhxjMul/BP3W/cpeRmjOH+tvQjN1It+Dd4be8MsJWN1mc
+	gVdjNyIB9X38kHOaU5lXm0r9x7nCwCwKaVzrS4OT/v7i7I9oRC7BXq8ZqjT4MOMgMGBk39P/IdG
+	LmK9NUNszcwLw0mn11aFEVf4n4XV8lCSqCE5P39Pqv0KRh2Vksl6q7CvcizlxNzqFEc2VTYYKTT
+	boN/pQKpsSB40is+omCWpkGh2BtuypfHlyiMP4RhMHL9/PQhoPFGGLj+AaEyFBMbPnKanGeRp9G
+	DOqTpEqeHgniuleFyXCWpcRTpe17i+2bHyZZ4+I2ILAQxL2r532QTXNKR78wLeURm/1x0h0LnLB
+	S2FOts7dY1+s6vE3S0HAUD7x9IZU08VYl3t16Z
+X-Received: by 2002:a05:6a00:2da4:b0:8a0:2914:5d27 with SMTP id
+ d2e1a72fcca58-8a04c43653emr5859750b3a.44.1792425788967; Mon, 19 Oct 2026
+ 09:03:08 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,356 +101,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <QDISC-5RTM.v2.r0.20261015051735@mojatatu.com> <QDISC-5RTM.v2.r0.20261015051735-1@mojatatu.com>
+ <87ld7t3kl3.fsf@all.your.base.are.belong.to.us> <CAM0EoMmL1Yjo67wOmOwWtfYLNrVFH7zSbgDtx2Rg+k3-Nu4QOQ@mail.gmail.com>
+ <CAJ+HfNigAQTJ37tx_74jqPcCCwsk1XR5-reOo7i-u0xCKqF--Q@mail.gmail.com>
+In-Reply-To: <CAJ+HfNigAQTJ37tx_74jqPcCCwsk1XR5-reOo7i-u0xCKqF--Q@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 19 Oct 2026 12:02:57 -0400
+X-Gm-Features: AclHuK98yjpUr4du6cnGnVd5CFRnSyfIIWkx7bK1GtpKEViD0x2r6Mmpiqnmitw
+Message-ID: <CAM0EoMnToUnKv9gSm=fxTj=t3BMXzu3=NDDFY3OvysnbdjCubw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/4] net/sched/sch_cake: serialize
+ reconfiguration with the datapath
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: netdev@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, cake@lists.bufferbloat.net, 
+	Victor Nogueira <victor@mojatatu.com>, Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a followup of commit 709f34f7c28d ("net/sched: fq: add overflow
-bounds to quantum and initial quantum") as reported by Sashiko.
+On Mon, Oct 19, 2026 at 10:53=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kerne=
+l.org> wrote:
+>
+> Jamal!
+>
+> On Mon, 19 Oct 2026 at 15:47, Jamal Hadi Salim <jhs@mojatatu.com> wrote:
+> >
+> > Hey Bj=C3=B6rn,
+> >
+> > On Mon, Oct 19, 2026 at 9:07=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@ke=
+rnel.org> wrote:
+> > >
+> > > Jamal Hadi Salim <jhs@mojatatu.com> writes:
+> > >
+> > > > This is a follow-up to commit 7cbfb180945c ("net/sched: sch_cake: f=
+ix
+> > > > autorate reconfiguration throttling").  That change only stored
+> > > > last_reconfig_time; it did not address the concurrency between the
+> > > > autorate rate update in cake_enqueue() and the netlink reconfigurat=
+ion
+> > > > path, which the original review flagged.
+> > > >
+> >
+> > You are reviewing a very old version - the last one was a v6[1], most
+> > of these fixes are in the "no good deed goes unpunished" from sashiko
+> > ;->
+> > I am about to post a v7. Maybe review that one?
+>
+> OMG... sorry for the noise.
+>
 
-The issue: fq_codel, cake, codel, pie, fq_pie, dualpi2, RED, pfifo, plug
-and (non-WRED) gred account every enqueued packet's stab-adjusted length
-into the 32-bit sch->qstats.backlog, which the AQM logic reads back (for
-non-WRED gred it is the reported stats and the dequeue-side subtractions
-that go wrong instead). A crafted tc size table inflates qdisc_pkt_len()
-up to QDISC_PKT_LEN_MAX (1 MiB), and a dodgy GSO skb can account even more
-through qdisc_pkt_len_segs_init(), so a few thousand packets wrap the
-counter mod 2^32. The AQM then reads a small backlog and makes the wrong
-drop decision, and the dequeue-side subtractions leave it corrupt. In
-fq_codel a wrapped per-flow backlog can also make fq_codel_drop()'s scan
-pick an empty flow, dereferencing a NULL flow->head.
+Not noise at all - with all these AI dump it is overwhelming. Always
+great to have someone review. Sashiko will always find something to
+whine about - the bikeshedding it engages in is shameless sometimes;->
+I just sent an update.
 
-The Fix: drop at enqueue once the stored backlog cannot represent the
-incoming packet's accounted length. Ordinary packets (qdisc_pkt_len() at
-most QDISC_PKT_LEN_MAX) are covered by a standing ceiling: drop once the
-backlog is within QDISC_MAX_BACKLOG (U32_MAX - QDISC_PKT_LEN_MAX) of the
-wrap point, the largest backlog one more 1 MiB packet cannot wrap, so
-there is no per-enqueue 64-bit add. A larger wire estimate is checked
-against the space that actually remains (len > U32_MAX - backlog):
-qdisc_pkt_len_segs_init() adds the headers replicated on every output
-segment, so a supported small-MSS BIG TCP aggregate can carry a wire
-estimate above 1 MiB while its raw length stays within GSO_MAX_SIZE, and
-such traffic must pass on an empty queue. qdisc_pkt_len() itself stays
-truthful for every input: it is not clamped and the initializer keeps
-succeeding, so BPF __sk_buff.wire_len, act_police and the HTB/TBF shapers
-read the real length, and sch_handle_ingress() -- which ignores the
-initializer's return value and reads pkt_segs for packet statistics --
-keeps complete metadata. Cover sch_plug and non-WRED sch_gred too: plug
-admits on skb->len while qdisc_enqueue_tail() adds qdisc_pkt_len(), and
-gred bounds each virtual queue but adds every VQ into the one aggregate.
-pfifo is included because RED reads a grafted child's backlog into
-red_calc_qavg(); it can be reached standalone or as the default child of
-SFB. In RED, account the packet to the aggregate before handing it to the
-child, because a duplicating netem child re-enqueues its clone at the root
-while the stored backlog is still un-updated -- one guard check must not
-authorize two additions.
+cheers,
+jamal
 
-The guard bounds each qdisc's own enqueue path: a child that segments a
-GSO skb (tbf, netem) can still grow a parent's aggregate through
-qdisc_tree_reduce_backlog()'s unclamped byte delta, which is left to a
-separate change.
 
-Conditions to recreate the bug:
-  ip tuntap add tun0 mode tun
-  ip link set tun0 txqueuelen 32 up
-  ip addr add 10.99.0.1/24 dev tun0
-  tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
-      fq_codel flows 1 limit 20000 ecn
-  # hold the tun fd open without reading so the backlog persists, then
-  # send 6000 packets: the counter wraps and the unfixed kernel reports
-  # a wrapped backlog, while the fixed one drops at the ceiling.
-
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.com/
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101130.16203-1-jhs@mojatatu.com
-Link: https://lore.kernel.org/netdev/CANn89iLfMJV7ancKH1Gjzzm7ZUG-gKcrczkJjJEWN5sCuWd-ug@mail.gmail.com/
-Link: https://lore.kernel.org/netdev/CANn89i+GOFH_8g+vSV0jUj0aBqLYVWuFOrHuDggZu9kPC_m6tQ@mail.gmail.com/
-Link: https://lore.kernel.org/netdev/87a4oottcj.fsf@toke.dk/
-Link: https://lore.kernel.org/netdev/87pkxks68f.fsf@toke.dk/
-Link: https://lore.kernel.org/netdev/179231932946.3135.7497478990186385688@kernel.org/
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v6 -> v7: qdisc_pkt_len_segs_init() no longer clamps the shared
-qdisc_pkt_len(); it stays truthful for every input, including the wire
-estimates above QDISC_PKT_LEN_MAX that a small-MSS BIG TCP aggregate
-legitimately carries. The overflow protection is enqueue admission
-instead: each affected qdisc drops a packet once the stored backlog
-cannot represent its accounted length -- the standing QDISC_MAX_BACKLOG
-ceiling covers ordinary packets, and a per-packet representability check
-covers the larger wire estimates -- so BPF __sk_buff.wire_len,
-act_police and the HTB/TBF shapers read the real length and the ingress
-path keeps complete pkt_segs metadata. (Sashiko nipa v6 review, main-2-6)
----
- include/net/pkt_sched.h   |  1 -
- include/net/sch_generic.h | 20 ++++++++++++++++++++
- net/sched/sch_cake.c      |  7 +++++++
- net/sched/sch_codel.c     | 16 +++++++++-------
- net/sched/sch_dualpi2.c   |  1 +
- net/sched/sch_fifo.c      |  6 ++++++
- net/sched/sch_fq_codel.c  |  8 ++++++++
- net/sched/sch_fq_pie.c    |  3 ++-
- net/sched/sch_gred.c      |  9 +++++++++
- net/sched/sch_pie.c       |  3 ++-
- net/sched/sch_plug.c      |  9 ++++++++-
- net/sched/sch_red.c       | 23 ++++++++++++++++++-----
- 12 files changed, 90 insertions(+), 16 deletions(-)
-
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 90d3e7943b19..18a419cd9d94 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -12,7 +12,6 @@
- 
- #define DEFAULT_TX_QUEUE_LEN	1000
- #define STAB_SIZE_LOG_MAX	30
--#define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
- 
- struct qdisc_walker {
- 	int	stop;
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 1acaadb3e2cf..a5a6bdf55e0a 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -915,6 +915,26 @@ static inline unsigned int qdisc_pkt_len(const struct sk_buff *skb)
- 	return qdisc_skb_cb(skb)->pkt_len;
- }
- 
-+#define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
-+
-+/* Largest backlog that still has room for one more 1 MiB packet. */
-+#define QDISC_MAX_BACKLOG	(U32_MAX - QDISC_PKT_LEN_MAX)
-+
-+/* Would this packet's accounted length wrap sch->qstats.backlog?
-+ * Packets up to QDISC_PKT_LEN_MAX fit below QDISC_MAX_BACKLOG; GSO
-+ * can make the length larger, so compare against the real headroom.
-+ */
-+static inline bool qdisc_backlog_overflow(const struct Qdisc *sch,
-+					  const struct sk_buff *skb)
-+{
-+	u32 backlog = READ_ONCE(sch->qstats.backlog);
-+	u32 len = qdisc_pkt_len(skb);
-+
-+	if (likely(len <= QDISC_PKT_LEN_MAX))
-+		return backlog > QDISC_MAX_BACKLOG;
-+	return len > U32_MAX - backlog;
-+}
-+
- static inline unsigned int qdisc_pkt_segs(const struct sk_buff *skb)
- {
- 	u32 pkt_segs = qdisc_skb_cb(skb)->pkt_segs;
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 0d13c4b0bfe3..91c33295b30b 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1777,6 +1777,13 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return ret;
- 	}
- 
-+	/* Drop before touching the hash or shaper state. */
-+	if (unlikely(qdisc_backlog_overflow(sch, skb))) {
-+		qdisc_qstats_overlimit(sch);
-+		return qdisc_drop_reason(skb, sch, to_free,
-+					 QDISC_DROP_OVERLIMIT);
-+	}
-+
- 	/* choose flow to insert into */
- 	b = cake_select_tin(sch, skb);
- 	idx = cake_hash(b, skb, q->config->flow_mode, flow_override,
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index a1ba2e355f2d..78c5d72d6406 100644
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -116,15 +116,17 @@ static struct sk_buff *codel_peek(struct Qdisc *sch)
- static int codel_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			       struct sk_buff **to_free)
- {
--	struct codel_sched_data *q;
-+	struct codel_sched_data *q = qdisc_priv(sch);
- 
--	if (likely(qdisc_qlen(sch) < sch->limit)) {
--		codel_set_enqueue_time(skb);
--		return qdisc_enqueue_tail(skb, sch);
-+	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
-+	    unlikely(qdisc_backlog_overflow(sch, skb))) {
-+		WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
-+		return qdisc_drop_reason(skb, sch, to_free,
-+					 QDISC_DROP_OVERLIMIT);
- 	}
--	q = qdisc_priv(sch);
--	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
--	return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_OVERLIMIT);
-+
-+	codel_set_enqueue_time(skb);
-+	return qdisc_enqueue_tail(skb, sch);
- }
- 
- static const struct nla_policy codel_policy[TCA_CODEL_MAX + 1] = {
-diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
-index 4947def7c49e..7331f0ec1c8f 100644
---- a/net/sched/sch_dualpi2.c
-+++ b/net/sched/sch_dualpi2.c
-@@ -392,6 +392,7 @@ static int dualpi2_enqueue_skb(struct sk_buff *skb, struct Qdisc *sch,
- 	struct dualpi2_skb_cb *cb;
- 
- 	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
-+	    unlikely(qdisc_backlog_overflow(sch, skb)) ||
- 	    unlikely((u64)q->memory_used + skb->truesize > q->memory_limit)) {
- 		qdisc_qstats_overlimit(sch);
- 		if (skb_in_l_queue(skb))
-diff --git a/net/sched/sch_fifo.c b/net/sched/sch_fifo.c
-index 1b6388d50967..16c8d4f74e7e 100644
---- a/net/sched/sch_fifo.c
-+++ b/net/sched/sch_fifo.c
-@@ -29,6 +29,9 @@ static int bfifo_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- static int pfifo_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			 struct sk_buff **to_free)
- {
-+	if (unlikely(qdisc_backlog_overflow(sch, skb)))
-+		return qdisc_drop(skb, sch, to_free);
-+
- 	if (likely(sch->q.qlen < READ_ONCE(sch->limit)))
- 		return qdisc_enqueue_tail(skb, sch);
- 
-@@ -43,6 +46,9 @@ static int pfifo_tail_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	if (unlikely(READ_ONCE(sch->limit) == 0))
- 		return qdisc_drop(skb, sch, to_free);
- 
-+	if (unlikely(qdisc_backlog_overflow(sch, skb)))
-+		return qdisc_drop(skb, sch, to_free);
-+
- 	if (likely(sch->q.qlen < READ_ONCE(sch->limit)))
- 		return qdisc_enqueue_tail(skb, sch);
- 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 011b8fc54d84..f708ae56b7e3 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -218,6 +218,14 @@ static int fq_codel_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		__qdisc_drop(skb, to_free);
- 		return ret;
- 	}
-+
-+	/* Drop before hashing so a dropped packet cannot create a flow. */
-+	if (unlikely(qdisc_backlog_overflow(sch, skb))) {
-+		q->drop_overlimit++;
-+		return qdisc_drop_reason(skb, sch, to_free,
-+					 QDISC_DROP_OVERLIMIT);
-+	}
-+
- 	if (do_hash)
- 		idx = fq_codel_hash(q, skb) + 1;
- 	idx--;
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 5982847df8f8..9f927a08b7bc 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -155,7 +155,8 @@ static int fq_pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	memory_limited = q->memory_usage > q->memory_limit + skb->truesize;
- 
- 	/* Checks if the qdisc is full */
--	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
-+	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
-+	    unlikely(qdisc_backlog_overflow(sch, skb))) {
- 		q->stats.overlimit++;
- 		goto out;
- 	} else if (unlikely(memory_limited)) {
-diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
-index f04f425c6c44..bedb945d3b67 100644
---- a/net/sched/sch_gred.c
-+++ b/net/sched/sch_gred.c
-@@ -170,6 +170,15 @@ static int gred_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	unsigned long qavg = 0;
- 	u16 dp = tc_index_to_dp(skb);
- 
-+	/* Per-VQ limits don't bound the total: every VQ adds into the
-+	 * same u32 backlog, so check it before picking a VQ.
-+	 */
-+	if (unlikely(qdisc_backlog_overflow(sch, skb))) {
-+		qdisc_qstats_overlimit(sch);
-+		return qdisc_drop_reason(skb, sch, to_free,
-+					 QDISC_DROP_OVERLIMIT);
-+	}
-+
- 	if (dp >= t->DPs || (q = t->tab[dp]) == NULL) {
- 		dp = t->def;
- 
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index 3b7863ffd284..2a5fc493a7e5 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -89,7 +89,8 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct pie_sched_data *q = qdisc_priv(sch);
- 	bool enqueue = false;
- 
--	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
-+	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
-+	    unlikely(qdisc_backlog_overflow(sch, skb))) {
- 		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
- 		goto out;
- 	}
-diff --git a/net/sched/sch_plug.c b/net/sched/sch_plug.c
-index b60ddfee6a68..c90b5ca60bc0 100644
---- a/net/sched/sch_plug.c
-+++ b/net/sched/sch_plug.c
-@@ -89,7 +89,14 @@ static int plug_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- {
- 	struct plug_sched_data *q = qdisc_priv(sch);
- 
--	if (likely((u64)sch->qstats.backlog + skb->len <= q->limit)) {
-+	if (unlikely(qdisc_backlog_overflow(sch, skb))) {
-+		qdisc_qstats_overlimit(sch);
-+		return qdisc_drop_reason(skb, sch, to_free,
-+					 QDISC_DROP_OVERLIMIT);
-+	}
-+
-+	if (likely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) <=
-+		   q->limit)) {
- 		if (!q->unplug_indefinite)
- 			q->pkts_current_epoch++;
- 		return qdisc_enqueue_tail(skb, sch);
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index d7598214270b..72990d0db4fd 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -76,6 +76,12 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	unsigned int len;
- 	int ret;
- 
-+	if (unlikely(qdisc_backlog_overflow(sch, skb))) {
-+		qdisc_qstats_overlimit(sch);
-+		return qdisc_drop_reason(skb, sch, to_free,
-+					 QDISC_DROP_OVERLIMIT);
-+	}
-+
- 	q->vars.qavg = red_calc_qavg(&q->parms,
- 				     &q->vars,
- 				     child->qstats.backlog);
-@@ -136,14 +142,21 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	len = qdisc_pkt_len(skb);
-+	/* Reserve the length before the child sees the packet: netem
-+	 * can re-enqueue a clone here before the backlog is updated.
-+	 * Undo it if the child drops the packet.
-+	 */
-+	qstats_backlog_add(sch, len);
- 	ret = qdisc_enqueue(skb, child, to_free);
- 	if (likely(ret == NET_XMIT_SUCCESS)) {
--		qstats_backlog_add(sch, len);
- 		qdisc_qlen_inc(sch);
--	} else if (net_xmit_drop_count(ret)) {
--		WRITE_ONCE(q->stats.pdrop,
--			   q->stats.pdrop + 1);
--		qdisc_qstats_drop(sch);
-+	} else {
-+		qstats_backlog_sub(sch, len);
-+		if (net_xmit_drop_count(ret)) {
-+			WRITE_ONCE(q->stats.pdrop,
-+				   q->stats.pdrop + 1);
-+			qdisc_qstats_drop(sch);
-+		}
- 	}
- 	return ret;
- 
--- 
-2.43.0
-
+> Bj=C3=B6rn
