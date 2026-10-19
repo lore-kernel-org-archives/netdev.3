@@ -1,69 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.177.127.194
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792449845;
-	b=qUO8WLGWxmaGfBv+CA0nU7KrvayRs8BhrIe2u72+x3o93ruOVD40E0DWIYnkX+4YDd2s
-	 dd0cYrONu2xvTOPHMCwfrMG4cjOVqqTSJnRpEJUe7OHXHtydFHajje9MpxbSpIQoK5XXx
-	 j0ZEOHnynz+j0c+t6NkPnX4gyIZM6ZrnB2cOPbWMtbPZO71nqEOosWD1Zpu24c1U942t2
-	 4wV6seOzczJjG0aiL7dbKjbzHvSQ4X2X5Biv921jV/AeP1VdFjfuLod/Ehnw0R2/nD3sT
-	 gLTfVj/AWpij81YxCh/IbPHa9n45omj+FtMlWMsbRHrd0fAvFgTQ6NmatRvZJblTSBw==
+	t=1792450889;
+	b=2R/7zwnDkIJPXy9e9oH+2U1ZZ0lrNaKvVMDyF3B7usOFnmTyIsbDOIeDNiyROiGgKHnT
+	 vhMB/HciOUFYeK7R5D96oCTTHLXAMjaQMIhlrEM7nfw6NK22xTxJEsl/f0Ub1LVqhs9WL
+	 QeLWxdaGs9jsxkVTHymKZL7LJCPdTpUvEpG1HqxvFNPohB+jcUgsoRoCxaO1O9ZuO27E6
+	 IAix4VnZPZGncz0Ec2Oa89zHNVUL3mtKwN0BWhkoTt6EtBnEzxJfMiRz8tn3dXXBAWFrt
+	 sgx4FXUXusCXUn8BBKG1ngaEAfOxF8MD3nWB3pRfrWX5ML9F90bDhEIgO4nv29Ou+gA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792449845;
-	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=+dNjgBC2+QzhU+cjcTNlNzFVT+rLL5KRnH7o4DHsvCk=;
-	b=HzSwkntTqFigLgzQcCMkm+C9aK+ZmwpzeQnqSaiYLLNXrva7DUpQcEkBPq+ezI7OBWob
-	 j8O/19MoAdCAzg6ew6lBydJnyBxq9fVLR4+4dBY1JYlxcEErionMc7YhLi+U6Lmty36u+
-	 nFAZ/lBhYSAZY5njgUTQNYc/MKM1monE5NSFYID3UIfA18FJsbRvEHEg5jJU31vVy/v/v
-	 OTzQauh2rbWGi/rqQm38Kg22jute3uguMJ5U9dUvk5lKUoAv6/JbuR3KPYdiKZZk43IBX
-	 zF8H5erIu0WyavPXemmP2HeXDRgebiIoWCgbB8bcu+Ah4uAbyWuVAPYbpxho4C4I+0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792450889;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Envelope-From;
+	bh=emO6sEIDSkEFWkAyFtAW5uo9IdZWrTOY02AsTAB3ghg=;
+	b=t2sm649qCP8a65HZQSP4WFIMQVDI5kfqtedGLlXYXuhG1PGOjTU9YLQoYUvFqJUq7C3J
+	 hiAB2enwPdcKd4ZtkVScYew85AP/hbhfFu+tki+nCqmEoZzUO8QADvc2i/Wl3V8nQ08Xx
+	 WuI4ppNgNDsVtU/LFJRfczpMkPDfmjTi7cpPNni2cUYBBjPrJMG2TywVbIsTtHd9VV+6m
+	 W+cBl+LkcScxrSrzwApBWxZEoRYsqy5LqXSBwyIQxkm4ph8w7br8hj262oc8PJk8wJBHy
+	 cvlYljtmqm0fNA/5Mx/5S52rM/R691FilUPeqAI9ttRBycftVdrdM6gQ4eVBbm5wsTQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iKISpuaY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=r-sc.ca;
+	spf=pass smtp.mailfrom=r-sc.ca;
+	dkim=pass header.d=r-sc.ca header.i=@r-sc.ca header.a=rsa-sha256 header.s=spacemail header.b=kbEdxGlY;
+	arc=none smtp.remote-ip=198.177.127.194
+Received: from out-utut-a194.jellyfish.systems (out-utut-a194.jellyfish.systems [198.177.127.194])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD466606A319;
-	Mon, 19 Oct 2026 22:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C8D606A31A
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:01:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3C8D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r-sc.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iKISpuaY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F4A1F000C4;
-	Mon, 19 Oct 2026 22:44:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792449844;
-	bh=+dNjgBC2+QzhU+cjcTNlNzFVT+rLL5KRnH7o4DHsvCk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iKISpuaYGy1oGof2BsP8zRzRcOoi/dmugJgX16sfDIJg+7RGTWP0FfD1a+Hz04R4r
-	 AG9aNlCv1S6mMdKFOIUC+v38IDqdU0NkbnUxsPaPXfXjerslcrSZEITvBDg7KBVdhO
-	 N4h2PFrB//KC1nmOWmU67cnK68RqZ2lbf4+97rEoVFMCPeCBAM76dlcbgupE1PrFWh
-	 gF6SbG9H+j65iH7nUpOid2FBblp8mX1aOdH53jnf5q4/dhp9X5hP9NSHk9PKlVfVru
-	 pvCIgmn7XmHr/iy5MSghhm3HJrjWHTivGPY3ih6NjyppK8keBU+sbkIzsT+lmSYpmU
-	 /8LRYHriQsu4w==
-Message-ID: <b5ed40d362375f5e93669a974b1ca03b716afa2a.camel@kernel.org>
-Subject: Re: [rds-devel] [External] : Re: [PATCH net] RDS/IB: validate
- receive completion payload length
-From: Allison Henderson <achender@kernel.org>
-To: Gerd Rausch <gerd.rausch@oracle.com>
-Cc: sungbyeongchan <tjdqudcks0424@naver.com>, "David S . Miller"
-	 <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	 <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	 <horms@kernel.org>, Andy Grover <andy.grover@oracle.com>, 
- "netdev@vger.kernel.org"
-	 <netdev@vger.kernel.org>, "linux-rdma@vger.kernel.org"
-	 <linux-rdma@vger.kernel.org>, "rds-devel@oss.oracle.com"
-	 <rds-devel@oss.oracle.com>, "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>
-Date: Mon, 19 Oct 2026 15:44:03 -0700
-In-Reply-To: <30C797F2-FB1B-494D-8E36-B50C58BB8A03@oracle.com>
-References: <20261006205204.1322102-1-tjdqudcks0424@naver.com>
-	 <c1efb25a93739dfe2c16828bbcdc9bd7535850c1.camel@kernel.org>
-	 <7e69b862-7cad-443f-912b-ce2db7854d60@oracle.com>
-	 <f1504e3ae8da8789bcd6cd474ce51fec7dd15555.camel@kernel.org>
-	 <30C797F2-FB1B-494D-8E36-B50C58BB8A03@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key, unprotected) header.d=r-sc.ca header.i=@r-sc.ca header.a=rsa-sha256 header.s=spacemail header.b=kbEdxGlY
+Received: from DESKTOP-290OH2S (d207-6-150-133.bchsia.telus.net [207.6.150.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4j7rcq5L1Gz8sWN;
+	Mon, 19 Oct 2026 23:00:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r-sc.ca;
+	s=spacemail; t=1792450860;
+	bh=emO6sEIDSkEFWkAyFtAW5uo9IdZWrTOY02AsTAB3ghg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kbEdxGlY9Nlbf4rp/11jWG32FqrEyxlFiYY1zJbOTD/+utKtaYNDlVzg8jgCqtgGB
+	 6K4uPO4SeNrtk47TN8NZzN8CUIGZKuZ8PNrGlGG9EtmYXQ/3Ezn7HPZGci8vPK+nhz
+	 MDLzYkXQF94JKsOnSSYNr+d+5Nn9aGpEOXEi3f6d2MqQDKNdPUf0BAagTYLlubK9PJ
+	 N+3fcNxexu0Cpb8BMKcdgQEgx34J17WYCDxL/F2DMviO6MtbsMGnGVSD/Pjp4fl8Xf
+	 2Yjs/X7Aq2YkRdLI7I90SEVWbubj0grzDbgIxEx7TUwXB/fG2FmNLhAtxyFUcPnvrE
+	 VkzOWlCdLUjzQ==
+From: Ross Cawston <ross@r-sc.ca>
+To: markus.stockhausen@gmx.de,
+	andrew@lunn.ch
+Cc: lee@kernel.org,
+	pavel@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	chris.packham@alliedtelesis.co.nz,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ross Cawston <ross@r-sc.ca>
+Subject: Re: [PATCH 0/3] leds: add Realtek RTL9300 port LEDs under software control
+Date: Mon, 19 Oct 2026 16:00:53 -0700
+Message-ID: <20261019230053.503-1-ross@r-sc.ca>
+X-Mailer: git-send-email 2.55.0.windows.5
+In-Reply-To: <010701dd5f94$d636ff70$82a4fe50$@gmx.de>
+References: <20261018194339.132-1-ross@r-sc.ca> <59f75e7d-9b56-441d-a4b5-58ad3862267e@lunn.ch> <20261018232015.527-1-ross@r-sc.ca> <38ca5375-ecea-4361-ab26-c044f38ceadb@lunn.ch> <20261019054233.1884-1-ross@r-sc.ca> <010701dd5f94$d636ff70$82a4fe50$@gmx.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,165 +83,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: ross@r-sc.ca
 
-On Sun, 2026-10-18 at 18:32 +0000, Gerd Rausch wrote:
-> Hi Allison,
->=20
-> > On Oct 17, 2026, at 22:38, Allison Henderson <achender@kernel.org> wrot=
-e:
-> > On Fri, 2026-10-16 at 13:18 -0700, Gerd Rausch wrote:
-> > >=20
-> > > On 2026-10-06 18:13, Allison Henderson via rds-devel wrote:
-> > > > > --- a/net/rds/ib_recv.c
-> > > > > +++ b/net/rds/ib_recv.c
-> > > > > @@ -949,6 +949,15 @@ static void rds_ib_process_recv(struct rds_c=
-onnection *conn,
-> > > > > }
-> > > > > }
-> > > > >=20
-> > > > > + if (data_len !=3D min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE=
-)) {
-> > > > > + rds_ib_conn_error(conn,
-> > > > > +  "incoming fragment payload length %u, expected %u; "
-> > > > > +  "disconnecting and reconnecting\n",
-> > > > > +  data_len,
-> > > > > +  min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE));
-> > > > > + goto done;
-> > > > > + }
-> > > > > +
-> > > > > list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
-> > > > > recv->r_frag =3D NULL;
-> > > > >=20
-> > > How does forcing a reconnect help this situation?
-> > >=20
->=20
-> [...]
->=20
-> >=20
-> > On the retransmit loop: cp_retrans only matters if the sender is our
-> > own RDS stack, and our stack can't produce the fragment this check
-> > rejects.
->=20
-> Correct. But this check was presumably added for a reason.
->=20
-> 1) An incorrect implementation of RDS (other than the one we're looking a=
-t)
-> 2) A bad actor, intentionally crafting such messages.
->=20
-> > > Therefore, apart from security concerns, the previous behavior of gar=
-bage-in / garbage-out
-> > > is IMO better than this behavior of just endlessly forcing a reconnec=
-t.
-> >=20
-> > The trouble is that the garbage going out wasn't the sender's.  The
-> > receiver delivered h_len bytes of a page that only had data_len bytes
-> > written into it, so the tail was whatever the page held before: an
-> > earlier message to another socket (the report demonstrated this across
-> > UIDs), or unzeroed memory on a fresh page.  That's the bug. And
-> > refusing to deliver it is the whole fix.
->=20
-> Wait. This patch was created for a hypothetical case, no?
-> Based on analysis of "Assisted-by: LLM".
-Per Documents/process/coding-assistants.rst it means an LLM contributed in
-some way, but sungbyeongchan patch had a reproducer and Shubham validated
-it under KMSAN
+On Mon, Oct 19, 2026 at 08:41 AM +0200, Markus Stockhausen wrote:
+> [...] it is currently beyond the time available.
 
->=20
-> This patch does *not* refuse to deliver the bogus message.
-> That would have been a fine choice.
->=20
-> This patch just drops the underlying connection, in the hopes
-> that when this message gets sent again, it'll somehow be different.
-The short fragment is never linked, and the half-built inc is freed when th=
-e
-connection shuts down, so it doesn't reach the socket.
+Thanks Markus, that answers it.
 
->=20
-> What would make it different?
-> Some unknown and non-deterministic sender?
->=20
-> >=20
-> > Dropping the connection is also what rds_ib_process_recv() has always
-> > done for the neighbouring case, a fragment whose header doesn't match
-> > the message in progress.  That check has been there since 1e23b3ee0e94
-> > and has the same "a misbehaving peer can keep us reconnecting"
-> > property.  This patch doesn't add a new failure mode, it just closes
-> > the one way a malformed fragment could still get through.
->=20
-> How much benefit a 16bit IPv4 checksum calculation adds on top of
-> the underlying InifiniBand CRC-32 protection is debatable.
->=20
-> But let's just say somehow (I don't know how) the CRC-32 check missed
-> a header corruption that ip_fast_csum() catches:
-> You're correct, the connection would be dropped.
-> So the assumption here is that this is a transport error,
-> that fixes itself with a retransmit, and not that it's a bogus
-> or malicious sender.
->=20
-> Does this patch also assume we're looking at a transport
-> error, that the CRC-32 didn't catch, and consider that more likely
-> than a bad or malicious sender?
->=20
-> I suggest that just dropping this message, not tearing down the connectio=
-n,
-> would have been a much better choice here.
->=20
-> > >=20
-> >=20
-> > > If there's a strong desire to address this issue, the sender should b=
-e
-> > > told to discard the message. A reconnect doesn't address this issue.
-> > >=20
-> > I don't think there's a way to say that today.  The RDS header flags ar=
-e
-> > congestion-bitmap, ack-required, retransmitted and the extension-header
-> > bit.  The only error a receiver can signal to its peer is to drop the
-> > connection.
-> >=20
->=20
-> Not exactly true.
-> There's already code for the RDMA_CM_EVENT_REJECTED case to downgrade
-> protocol version.
->=20
-> The RDS code can be changed. The RDS protocol can be extended.
-> A receiver could be made to tell a sender to drop a message,
-> if we'd consider that beneficial.
->=20
-> But in this case, since the message itself violates the "unwritten rules"
-> of the RDS protocol, I'd say just dropping the message would be been
-> a fine choice.
->=20
-> Dropping the connection however, doesn't do anything.
-> It just asks the sender to send the same bogus message again.
->=20
-> > A per-message reject would be a protocol extension that both ends have =
-to
-> > implement.  But that would be net-next material, and it couldn't help
-> > against the only peers that actually send these.  I'd be happy to revie=
-w it
-> > if someone wants to take it on, but I don't think it should hold up a s=
-table
-> > fix for a data disclosure.
-> >=20
->=20
-> Again, we don't need to do that.
-> Dropping the message would have been a fine choice here.
+Then please drop this series. The PoE LEDs of this board go to OpenWrt
+with openwrt/openwrt#25341 for now, and I'll come back to the port LEDs,
+in the port nodes, once there is an RTL930x switch driver upstream.
 
-I think dropping just the offending message, and skipping the rest
-of its fragments by sequence, would be a reasonable refinement for
-net-next.  And it would make sense to treat the header-mismatch exit
-the same way at the same time.  I'd be happy to review patches for those.
-
-The landed fix does refuse to deliver the message though. The conn drop is
-the same policy the other exits in that function use too, so it's the right
-solution for stable.  Patches welcome on the other points though.
-
-Thanks!
-Allison
-
->=20
-> Thanks,
->=20
->   Gerd
->=20
-
+Ross
