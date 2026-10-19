@@ -1,68 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792445413;
-	b=kMtmkWo5Yu27bhX3Y/b2iPc4AzAwvPyulL4/tyaVGLl/Q0WfcwcOwV5RiymjcOOG5Emu
-	 iwBeWDHR3s1Er1VzLLWMX4uTwybifwOifu3MQerjxKzFIsgsRcJgaz8Hsq1FtMtckQnNM
-	 nurwP4xQfiDE4QZYUgJ8Saix7JT8goyqmnFNgqP+LL5sKTpe/bBbe3tzZKUAf1La2vggJ
-	 r9H12mfh2nwvBRhq6y8OV46aHcVnb9RmnYJepfokZBezzaKcZNlMHG8VQ2AGfcgzeT81n
-	 FKUlYNQkP+jTNf/U7ldnvF9g5X3nmqz4SvGOi5HCTe9vPHItqG273nNALWra+Rxr0AQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792445413;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=UuICSS5DMo4Gcw0hAWTDJJ5h4bUS85wyXSJnINw8FnE=;
-	b=aSe763eP1Pv4KRW4qFZKeIJLJrXVwjU2oeMBmv7PvEpkJ6XVz/uC/7xeZyPVBrpHtVE0
-	 N1MtJy/JMdO7PXgx60Xt6DeOQ3cn2+syM87YwazjijSa2g5f1ZQEi5VCEEXIzv4v4Mqq4
-	 KnA2p4UI0eTh3cm+Tg0BmTb/BD8I/1y2y28utkZq2h5MdIwyG6nRAnZsZrUb3vIfBWdSA
-	 yplkzhp+RLZZAKyi3mGKsNIH7oUXQjRCPPHQFAFjwEUVeX5GnBFKTn9tOGapW3/TzavPh
-	 1Yh+jT0/62o3Bj+UyzAtAt3TpWWMsW95o3BZ2DRvuYgtzLADWBxi2Y7rulzabDm2arg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X6BYdnTv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792445745;
+	b=K1wKF+2Otg/BE+hQ2k5C+lQYL3OkhLUtQAPoO3V4br1EGRSw+9at1QyGfxS8reXh99Il
+	 xN5T0u1o+PPOmksT/G9N6IaQRZBrKTdGgJRIBh+1SFwQhb0AmY+yFEpfVeeKtIJetGqfA
+	 SVZGEwMi+QJpaY9XSpEksLC2/r3urufbX1FUYGKP8ZNetQWA+gn3U8AmljeQV+EGhtGKR
+	 EwnPVuLtS8gWV5G5HuavGFr6Mkh2fjMqFVSkAyqgzKoxUEmgwFuozEKojmEzk3pRyhKPW
+	 ekmg8OGhJdUMQs5QkbFICN2eCqaVlP2CTPEONm+9x3i4OY8Fe9RRhtvbEOJwKyaQwCg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792445745;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=rTup29isLPRYZMrCHMspM4k8Os1ZwUgbxx5EShHoFyI=;
+	b=rwWaDtqpsE+G6Eo2Jtbovmx8fmNcPuNpLYmjYUcjMuA0/biBnFZK0giFeTn0k4soQrez
+	 60zPiKp1rKVPbWnSSjK6RFHZuidnr8M2Y7k39NWURDxyNY/7Ddx7SYGnMd2rwZtemHuhT
+	 bIltsHzmUdD8omXkwOUg7hGZm5X9XYEI32SvAebxB7hXnQKJAUZiAwnLYs9/RfEM9msll
+	 ijae8bawlcF+aSZ+PdpvRcr0/uxgYWXTBWoT6eLMQ7zVwHCx30RD3C+1wNj8byEz4dhuO
+	 b2pfw6JAcvOwfpNbM9kvhL3/Zg+RN53879k589sBWqRK4GvZAc5WpfTO6wEo0FvMPdQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=dduLRk3X;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63506606A319;
-	Mon, 19 Oct 2026 21:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFBD606A319
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:35:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1AFBD606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X6BYdnTv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88A01F000C9;
-	Mon, 19 Oct 2026 21:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792445412;
-	bh=UuICSS5DMo4Gcw0hAWTDJJ5h4bUS85wyXSJnINw8FnE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=X6BYdnTvC6C15mHDkX22cBjEl6SoM5OpsD1FPrncIRLgN2Y7ja0uoYw6CPQrHHlEQ
-	 cV2fGLklVZXA7zmRbtdkOhRn29swKPDzzh3I5d/3lMuT005nTO9lXJ3N49RWNpUAoE
-	 mid7bcvLFFQ8YQCcRGxfHueccbAcZqn4jFY85UJfggmQ/tKMSLQ5cgcf4YEIkTKKMF
-	 taTnKv155x3+a+xP3fk2RArbEUHBL+7kIUrH1eWiX5PgzbuIu9l6yxtaK4euEQjZDA
-	 0RIXXvXy9cbipOpnmKDyiPVKmVjgBFVsNA36wEPI5iFxBuZDoOmdJ6IsMIPGA+pgeO
-	 64S7a2B3ujdVA==
-Subject: Re: [PATCH net-next v17 15/15] quic: add packet parser base
-From: netdev-bot+sashiko@kernel.org
-To: lucien.xin@gmail.com
-Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net,
- kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- metze@samba.org, mbuhl@openbsd.org, tfanelli@redhat.com, hepengtao@xiaomi.com,
- dreibh@simula.no, linux-cifs@vger.kernel.org, pc@manguebit.org,
- linkinjeon@kernel.org, tom@talpey.com, kernel-tls-handshake@lists.linux.dev,
- chuck.lever@oracle.com, jlayton@kernel.org, steved@redhat.com, hare@suse.de,
- aahringo@redhat.com, dhowells@redhat.com, matttbe@kernel.org,
- mail@johnericson.me, xiyou.wangcong@gmail.com, alibuda@linux.alibaba.com,
- jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net,
- marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com,
- mef@scarletmail.rutgers.edu, paul@jakma.org, kuniyu@google.com
-Date: Mon, 19 Oct 2026 21:30:10 +0000
-Message-ID: <179244541026.3135.1595523596507400028@kernel.org>
-In-Reply-To: =?utf-8?q?=3C47ec29f97f3986e6b9cb5b07f109dcae340916e6=2E1792164?=
- =?utf-8?q?438=2Egit=2Elucien=2Exin=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3C47ec29f97f3986e6b9cb5b07f109dcae340916e6=2E17921644?=
- =?utf-8?q?38=2Egit=2Elucien=2Exin=40gmail=2Ecom=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=dduLRk3X
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8a052aff9e9so1641091b3a.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:35:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792445744; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OJfEh6AaBgVILcnDIo1r5NwYXrAMHS8cSykFyirilIPbMfnuGcCbNCt67AIzTblCT7
+         stUPs0kOWYshIuUHCCr1anAlsJnnFeTHOjgIVPawekLvmutBnBEUac41NlCL/q5XlgjQ
+         +FSozHb59WfGrahTkvhIxOBVglW7tgcwUZoijDjpp/e6aZejjEXEVGvAv7P8DOthjJV6
+         Jhcxx2QfxvFCQ8upMjjvN4uvIH5NmqYXV8Eb1X/7bu1m2nAl4CncZ419r3wQZRaI3Hm2
+         4ANIkgpaQds5ua0ytWmtf1la43mrn1y9iy5a+UJD1FSKukpCls7rDkmaLZApzjrjRcRv
+         81tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rTup29isLPRYZMrCHMspM4k8Os1ZwUgbxx5EShHoFyI=;
+        fh=xmp1vX2ksVRtN/ju6J6bqhuSKfOgjk3q1XA6KuGu+8E=;
+        b=T7JAlLmEJnmBf8ZsSZOo+yVv9ixQ6UrgRl5xRSYCruj/m8xNX/RbGBXVXrMByAcq4q
+         9ORwIAXp55E/+RjoSN7NNp89XPqPHGdIq29tV9/wUllGiJl9JSL9Xp+ecVo/cxnNM4NW
+         7EkopmYgXmXmwOItrcl50fVrjr872cR0uR2ipYVDG9IskuqH+Dc0yLhqlvZKgAvWUeVl
+         WBDhDFwYD/B7ws3TEEmy5tv9Tqg4U4hO3zIPI81NXMw4TO9YtzEq/L6PtPbgqhyVEeuT
+         zo9AQQvnZcZZpFbWfZw1MRPg5/zCMsWouVq8c8smGfzodNs5XHmvagXcvoS81+7Q1zAq
+         TxrA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1792445744; x=1793050544; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rTup29isLPRYZMrCHMspM4k8Os1ZwUgbxx5EShHoFyI=;
+        b=dduLRk3Xnm/Ck0nm6hG40Vm8zk3tNvxPTZy00VJaVrnHm0cHVzWB5mJ4xZlfqA/5dc
+         cAfer76ygiW2yfGvPMx0wTNsprgC2z+NNxrxTfRVgIGAjbrh1BBIn1sbCBZmbwXyEFzj
+         n/LHr7go3BtkNIgBUBg1hOqSwcsH531L6dLXc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792445744; x=1793050544;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rTup29isLPRYZMrCHMspM4k8Os1ZwUgbxx5EShHoFyI=;
+        b=B04zy6FTubSo5+ACMXeC6s3IS95VXFCJ6gW3Eho6PPZrzx2r9L2EdSw6IgSly8AaFk
+         4j91SyJHaLmHwFBwA4f8Ko3K06lYwoFkBpFIQNrCULiwdVUmly9hXuzYX7amqK4hEbY1
+         1H5KwL7aSfaAWAKxzycbqqd0TwcJl0Y0RPldK2RW4Tc9aMIECBWmqs+qpAKi5eVZl9gZ
+         3HeS2uFS8jZhIRk7qHTeKdBYfTONt2IuBbKvhUgJbTVhN0rSz1DW9N4ccsvqJPsoXcSf
+         ByyZ4SON+Q3aubcdT7H7Kk8Tcm9UFwL5ShQPrPawMmDPZPRw7KhlgYLig+xvd/xVNZs2
+         /asg==
+X-Gm-Message-State: AFq9FYLbSNur8JcnCqclQFYSY1tAxazuB4C/wCFwnFY+62xgSGNzNwqs
+	L5vKnS55W320eV2ZKPV+0XDSFwAWSrrpy8puPszYKmD+P4Y6V0I+xx1+0EFHqx6p9JxKywOJrN9
+	4K6ylOrBKxBCYVlK8TNMmrVlQi0N0+YZnJkGA+vBk
+X-Gm-Gg: AYBFou1vbPsgy+d63svuBlZNkslK4QoPNc3Ewr+BZO7J3pH7CHwOIkeKC+dEXpdhWJ7
+	SdBBajODUWBhSmGLzoz6lJp9HDjRm5wt3QfmTt90AZ7YyTOQ8DNSRD0M3oHp7z7iiGrDF5tc+LO
+	NvsqW/6tVH5Kf9LTKD+uoRvyfsDGDvPcehNyATz13lBLPdMKTwVi/tRxZ5uUXKawq9DRGZ+/g2j
+	VyBfkWtpVPOWaVL2ZhVJRXp1We+bqXL7LGJoV8wYSxNoDGcsPmQjR0ViNGvrPkOwSpcCgrHPhbV
+	OlZRmmLS/ALDwanEx1+DFkJhwSh/tGOc6o2+3qGX3Bi8Qf5zTq8b92qL1NrGKi88GmuZrMmX/0N
+	JVoFkfMmsXVU5DwimbdiIl3X+GWjm87Swiw==
+X-Received: by 2002:a05:6a00:2d93:b0:891:3e34:e06f with SMTP id
+ d2e1a72fcca58-8a04c248605mr6757189b3a.44.1792445744177; Mon, 19 Oct 2026
+ 14:35:44 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,301 +100,376 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <QDISC-BA27.v7.r0.20261019115505@mojatatu.com> <QDISC-BA27.v7.r0.20261019115505-4@mojatatu.com>
+ <87o6cpwnh5.fsf@toke.dk>
+In-Reply-To: <87o6cpwnh5.fsf@toke.dk>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 19 Oct 2026 17:35:32 -0400
+X-Gm-Features: AclHuK8BMeTl4BZ64Q5bXTV8MQ1sfhpPW3JZAVfYpgUa7kopAIfu68bKFzERd6Y
+Message-ID: <CAM0EoMnNvr4Ep_0m78UidcEGbdE-5x8dfxbpgO1pbaVTHs4H3A@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 4/4] net/sched: cake: hash before segmenting
+ and reject an overlong split
+To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Victor Nogueira <victor@mojatatu.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	cake@lists.bufferbloat.net, Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
+On Mon, Oct 19, 2026 at 2:32=E2=80=AFPM Toke H=C3=B8iland-J=C3=B8rgensen <t=
+oke@toke.dk> wrote:
+>
+> Jamal Hadi Salim <jhs@mojatatu.com> writes:
+>
+> > The Fix:
+> > with CAKE_FLAG_SPLIT_GSO, cake computes the flow/host hash keys, then
+> > splits a GSO skb into segments it accounts individually. Key extraction
+> > must run on the unsegmented skb -- skb_gso_segment() can rewrite an
+> > encapsulated packet's headers to the inner ones -- and the resolution
+> > must wait until the packet is admitted, since it commits the
+> > set-associative tags, host indices and way counters that a later
+> > rejection would leave mutated (a GSO skb whose segmentation fails was
+> > dropped with that state already committed).
+> >
+> > Split cake_hash() into a side-effect-free cake_hash_keys(), run on the
+> > unsegmented skb, and cake_hash_resolve(), run only once the packet is
+> > admitted. Move the split-GSO path ahead of the resolution: sum the
+> > segment list, test the total against the ceiling before linking any
+> > segment, and drop the whole list on rejection so no persistent state is
+> > committed. The list is deferred to to_free so the tail segment's
+> > sock_wfree() never runs under the qdisc lock; a fraglist GSO, where
+> > skb_segment_list() returns the original skb as the head, drops the
+> > caller's reference and queues the list once instead of self-linking it.
+> >
+> > Tag every deferred segment with QDISC_DROP_OVERLIMIT: __skb_gso_segment=
+()
+> > keeps SKB_GSO_CB at cb offset 32, aliasing tc_skb_cb.drop_reason, and
+> > __copy_skb_header() copies it into every segment, so tagging only the
+> > head left the rest with GSO scratch (a headroom-sized value) as their
+> > drop reason, which __tcf_kfree_skb_list() would report as an unrelated
+> > core reason.
+> >
+> > Read q->config->flow_mode once with READ_ONCE() in cake_enqueue() and
+> > pass that value to both cake_hash_keys() and cake_hash_resolve().
+> > cake_config_change() writes the mode before cake_change() takes
+> > sch_tree_lock(), and the split introduced two separate loads with the
+> > segmentation work between them; a concurrent reconfiguration could
+> > extract keys in one mode and resolve them in another.
+> >
+> > Link: https://lore.kernel.org/netdev/179231933068.3135.8034079263307798=
+6@kernel.org/
+> > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > ---
+> > v6 -> v7: the split-GSO reject path now sets QDISC_DROP_OVERLIMIT on
+> > every deferred segment, not only on the head/original skb; the GSO cb
+> > aliases tc_skb_cb.drop_reason and is copied into every segment, so
+> > untagged segments carried GSO scratch as their drop reason. The
+> > flow_mode is likewise snapshotted once with READ_ONCE() and passed to
+> > both cake_hash_keys() and cake_hash_resolve(). (Sashiko nipa v6
+> > review, gpt-6-astra-2-5, gpt-6-astra-5-9)
+> > ---
+> >  net/sched/sch_cake.c | 130 ++++++++++++++++++++++++++++++++-----------
+> >  1 file changed, 99 insertions(+), 31 deletions(-)
+> >
+> > diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+> > index 91c33295b30b..730c90af14bd 100644
+> > --- a/net/sched/sch_cake.c
+> > +++ b/net/sched/sch_cake.c
+> > @@ -706,19 +706,28 @@ static u16 cake_get_flow_quantum(struct cake_tin_=
+data *q,
+> >               get_random_u16()) >> 16;
+> >  }
+> >
+> > -static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *sk=
+b,
+> > -                  int flow_mode, u16 flow_override, u16 host_override)
+> > +struct cake_hash_keys {
+> > +     u32 srchost_hash;
+> > +     u32 dsthost_hash;
+> > +     u32 flow_hash;
+> > +};
+> > +
+> > +static void cake_hash_keys(const struct sk_buff *skb, int flow_mode,
+> > +                        u16 flow_override, u16 host_override,
+> > +                        struct cake_hash_keys *out)
+> >  {
+> >       bool hash_flows =3D (!flow_override && !!(flow_mode & CAKE_FLOW_F=
+LOWS));
+> >       bool hash_hosts =3D (!host_override && !!(flow_mode & CAKE_FLOW_H=
+OSTS));
+> >       bool nat_enabled =3D !!(flow_mode & CAKE_FLOW_NAT_FLAG);
+> > -     u32 flow_hash =3D 0, srchost_hash =3D 0, dsthost_hash =3D 0;
+> > -     u16 reduced_hash, srchost_idx, dsthost_idx;
+> >       struct flow_keys keys, host_keys;
+> >       bool use_skbhash =3D skb->l4_hash;
+> >
+> > +     out->flow_hash =3D 0;
+> > +     out->srchost_hash =3D 0;
+> > +     out->dsthost_hash =3D 0;
+> > +
+> >       if (unlikely(flow_mode =3D=3D CAKE_FLOW_NONE))
+> > -             return 0;
+> > +             return;
+> >
+> >       /* If both overrides are set, or we can use the SKB hash and nat =
+mode is
+> >        * disabled, we can skip packet dissection entirely. If nat mode =
+is
+> > @@ -753,50 +762,64 @@ static u32 cake_hash(struct cake_tin_data *q, con=
+st struct sk_buff *skb,
+> >       switch (host_keys.control.addr_type) {
+> >       case FLOW_DISSECTOR_KEY_IPV4_ADDRS:
+> >               host_keys.addrs.v4addrs.src =3D 0;
+> > -             dsthost_hash =3D flow_hash_from_keys(&host_keys);
+> > +             out->dsthost_hash =3D flow_hash_from_keys(&host_keys);
+> >               host_keys.addrs.v4addrs.src =3D keys.addrs.v4addrs.src;
+> >               host_keys.addrs.v4addrs.dst =3D 0;
+> > -             srchost_hash =3D flow_hash_from_keys(&host_keys);
+> > +             out->srchost_hash =3D flow_hash_from_keys(&host_keys);
+> >               break;
+> >
+> >       case FLOW_DISSECTOR_KEY_IPV6_ADDRS:
+> >               memset(&host_keys.addrs.v6addrs.src, 0,
+> >                      sizeof(host_keys.addrs.v6addrs.src));
+> > -             dsthost_hash =3D flow_hash_from_keys(&host_keys);
+> > +             out->dsthost_hash =3D flow_hash_from_keys(&host_keys);
+> >               host_keys.addrs.v6addrs.src =3D keys.addrs.v6addrs.src;
+> >               memset(&host_keys.addrs.v6addrs.dst, 0,
+> >                      sizeof(host_keys.addrs.v6addrs.dst));
+> > -             srchost_hash =3D flow_hash_from_keys(&host_keys);
+> > +             out->srchost_hash =3D flow_hash_from_keys(&host_keys);
+> >               break;
+> >
+> >       default:
+> > -             dsthost_hash =3D 0;
+> > -             srchost_hash =3D 0;
+> > +             out->dsthost_hash =3D 0;
+> > +             out->srchost_hash =3D 0;
+> >       }
+> >
+> >       /* This *must* be after the above switch, since as a
+> >        * side-effect it sorts the src and dst addresses.
+> >        */
+> >       if (hash_flows && !use_skbhash)
+> > -             flow_hash =3D flow_hash_from_keys(&keys);
+> > +             out->flow_hash =3D flow_hash_from_keys(&keys);
+> >
+> >  skip_hash:
+> >       if (flow_override)
+> > -             flow_hash =3D flow_override - 1;
+> > +             out->flow_hash =3D flow_override - 1;
+> >       else if (use_skbhash && (flow_mode & CAKE_FLOW_FLOWS))
+> > -             flow_hash =3D skb->hash;
+> > +             out->flow_hash =3D skb->hash;
+> >       if (host_override) {
+> > -             dsthost_hash =3D host_override - 1;
+> > -             srchost_hash =3D host_override - 1;
+> > +             out->dsthost_hash =3D host_override - 1;
+> > +             out->srchost_hash =3D host_override - 1;
+> >       }
+> >
+> >       if (!(flow_mode & CAKE_FLOW_FLOWS)) {
+> >               if (flow_mode & CAKE_FLOW_SRC_IP)
+> > -                     flow_hash ^=3D srchost_hash;
+> > +                     out->flow_hash ^=3D out->srchost_hash;
+> >
+> >               if (flow_mode & CAKE_FLOW_DST_IP)
+> > -                     flow_hash ^=3D dsthost_hash;
+> > +                     out->flow_hash ^=3D out->dsthost_hash;
+> >       }
+> > +}
+> > +
+> > +/* Commit the flow into the set-associative table (q->tags[], host
+> > + * indices, bulk counters). Only after the packet is admitted.
+> > + */
+> > +static u32 cake_hash_resolve(struct cake_tin_data *q,
+> > +                          const struct cake_hash_keys *keys, int flow_=
+mode)
+> > +{
+> > +     u32 flow_hash =3D keys->flow_hash, srchost_hash =3D keys->srchost=
+_hash,
+> > +         dsthost_hash =3D keys->dsthost_hash;
+> > +     u16 reduced_hash, srchost_idx, dsthost_idx;
+> > +
+> > +     if (unlikely(flow_mode =3D=3D CAKE_FLOW_NONE))
+> > +             return 0;
+> >
+> >       reduced_hash =3D flow_hash % CAKE_QUEUES;
+> >
+> > @@ -1761,13 +1784,17 @@ static s32 cake_enqueue(struct sk_buff *skb, st=
+ruct Qdisc *sch,
+> >  {
+> >       u32 idx, tin, prev_qlen, prev_backlog, drop_id;
+> >       struct cake_sched_data *q =3D qdisc_priv(sch);
+> > +     int flow_mode =3D READ_ONCE(q->config->flow_mode);
+>
+> This breaks the reverse x-mas tree ordering. Move the u32 defs below,
+> and keep an empty line after the qdisc_priv() resolution?
+>
+> >       int len =3D qdisc_pkt_len(skb), ret;
+> >       u16 flow_override, host_override;
+> > +     struct sk_buff *segs =3D NULL;
+> > +     struct cake_hash_keys keys;
+> >       struct sk_buff *ack =3D NULL;
+> >       ktime_t now =3D ktime_get();
+> >       struct cake_tin_data *b;
+> >       struct cake_flow *flow;
+> >       bool same_flow =3D false;
+> > +     u64 slen =3D 0;
+> >
+> >       /* Classify first: a terminal TC action consumes the packet. */
+> >       if (cake_tcf_classify(sch, skb, &flow_override, &host_override, &=
+ret)) {
+> > @@ -1784,12 +1811,59 @@ static s32 cake_enqueue(struct sk_buff *skb, st=
+ruct Qdisc *sch,
+> >                                        QDISC_DROP_OVERLIMIT);
+> >       }
+> >
+> > -     /* choose flow to insert into */
+> > +     /* Select the tin and extract the keys before segmenting:
+> > +      * skb_gso_segment() rewrites encapsulated headers, which
+> > +      * changes the keys.
+> > +      */
+> >       b =3D cake_select_tin(sch, skb);
+> > -     idx =3D cake_hash(b, skb, q->config->flow_mode, flow_override,
+> > -                     host_override) + 1;
+> > +     cake_hash_keys(skb, flow_mode, flow_override, host_override, &key=
+s);
+> > +
+> > +     if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_=
+SPLIT_GSO) {
+> > +             struct sk_buff *nskb, *seg;
+> > +             netdev_features_t features =3D netif_skb_features(skb);
+>
+> Reverse x-mas tree, please.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 4
+Grrr...
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> > +
+> > +             segs =3D skb_gso_segment(skb, features & ~NETIF_F_GSO_MAS=
+K);
+> > +             if (IS_ERR_OR_NULL(segs))
+> > +                     return qdisc_drop(skb, sch, to_free);
+> > +
+> > +             /* The split path accounts the segment sum, not the
+> > +              * stab-adjusted qdisc_pkt_len(), so check it here.
+> > +              */
+> > +             skb_list_walk_safe(segs, seg, nskb)
+> > +                     slen +=3D seg->len;
+> > +
+> > +             if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_=
+BACKLOG)) {
+> > +                     qdisc_qstats_overlimit(sch);
+> > +                     /* __skb_gso_segment() puts SKB_GSO_CB at cb
+> > +                      * offset 32, over tc_skb_cb.drop_reason; every
+> > +                      * segment inherits it. Tag each one with the
+> > +                      * qdisc drop reason.
+> > +                      */
+> > +                     skb_list_walk_safe(segs, seg, nskb)
+> > +                             tcf_set_qdisc_drop_reason(seg,
+> > +                                                       QDISC_DROP_OVER=
+LIMIT);
+> > +                     /* skb_gso_segment() moved sock_wfree to the tail
+> > +                      * segment, so defer the list to to_free rather
+> > +                      * than free it under the qdisc lock.
+>
+> I don't think this part of the comment is needed - we do all the drops
+> using to_free, so the sock_wfree thing is irrelevant.
 
-- [High] When PLPMTUD is disabled, ICMP Packet Too Big messages never
-  lower the MSS.
-- [Medium] quic_accept_sock_exists() (net/quic/socket.c) passes an skb to
-  an accept socket's sk_backlog_rcv() while atomic: local_bh_disable()…
-- [Low] quic_packet_get_connid() rejects any connection ID longer than
-  QUIC_CONN_ID_MAX_LEN (20) regardless of version.
-- [Low] quic_request_sock_backlog_tail() calls __sk_rmem_schedule(sk,
-  len) before skb_set_owner_r().
-- [Low] quic_packet_deferred_work() drains deferred_list while holding
-  lock_sock(sk) and never calls cond_resched(): `while ((skb =…
-- [Low] quic_packet_get_alpn() prints the u32 field alpn->len (struct
-  quic_data in net/quic/common.h) with %d: `pr_debug("%s: alpn_len:…
+I was trying to rationalize "the segs =3D=3D skb fraglist". How about:
+/* Fraglist GSO returns the original skb as head  (segs =3D=3D skb), so
+drop our ref first */
+I can drop it if it seems obvious
 
---
+> > +                      * Fraglist GSO returns the original skb as head
+> > +                      * (segs =3D=3D skb), so drop our ref first.
+> > +                      */
+> > +                     if (unlikely(segs =3D=3D skb)) {
+> > +                             consume_skb(skb);
+> > +                             return qdisc_drop_all(segs, sch, to_free)=
+;
+> > +                     }
+> > +                     __qdisc_drop_all(segs, to_free);
+> > +                     return qdisc_drop_reason(skb, sch, to_free,
+> > +                                              QDISC_DROP_OVERLIMIT);
+>
+> Since you already set the drop reason above, there's not really any
+> reason to use qdisc_drop_reason() anymore; so this logic can be
+> simplified to simply:
+>
+>                         if (unlikely(segs =3D=3D skb))
+>                                 consume_skb(skb);
+>                         return qdisc_drop_all(segs, sch, to_free);
+>
 
-quic: add packet parser base
+How does this look ?
+tcf_set_qdisc_drop_reason(skb, QDISC_DROP_OVERLIMIT);
+skb_list_walk_safe(segs, seg, nskb)
+     tcf_set_qdisc_drop_reason(seg, QDISC_DROP_OVERLIMIT);
 
-This patch adds the QUIC receive path. Sockets are looked up by
-connection ID and address, and packets are dispatched by socket state.
-Listen sockets handle client Initial packets (request sockets, ALPN
-demux, deferred work), and ICMP Packet Too Big errors update the path
-MTU.
-
-> diff --git a/net/quic/packet.c b/net/quic/packet.c
-> index 56d2b8df292a0..a2f836cc22d70 100644
-> --- a/net/quic/packet.c
-> +++ b/net/quic/packet.c
-> @@ -14,6 +14,801 @@
-
-[ ... ]
-
-> +/* Extracts a QUIC Connection ID from a buffer in the long header packet. */
-> +static int quic_packet_get_connid(struct quic_conn_id *connid, u8 **pp,
-> +				  u32 *plen)
-> +{
-> +	u64 len;
-> +
-> +	if (!quic_get_int(pp, plen, &len, 1) ||
-> +	    len > *plen || len > QUIC_CONN_ID_MAX_LEN)
-> +		return -EINVAL;
-
-[Severity: Low]
-Should the 20-byte connection ID limit be applied before we know the
-version is supported?
-
-quic_packet_get_long_header() is called from quic_packet_get_sock() and
-from quic_packet_listen_process(). Both calls happen before the
-!quic_packet_compatible_versions(version) branch that sends Version
-Negotiation.
-
-So a long-header packet with an unknown version and a CID longer than
-20 bytes is dropped as an invalid header, and no Version Negotiation is
-sent.
-
-RFC 9000 section 17.2 limits CIDs to 20 bytes only for version 1.
-Sections 5.2.2 and 6.1 say a server SHOULD be able to read longer CIDs
-from other versions so that it can send Version Negotiation.
-
-[ ... ]
-
-> +/* Process PMTU reduction event on a QUIC socket. */
-> +void quic_packet_rcv_err_pmtu(struct sock *sk)
-> +{
-
-[ ... ]
-
-> +	info = clamp(paths->mtu_info, QUIC_PATH_MIN_PMTU, QUIC_PATH_MAX_PMTU);
-> +	/* If PLPMTUD is not enabled, update MSS using route and ICMP info. */
-> +	if (!paths->plpmtud_interval) {
-> +		if (quic_packet_route(sk))
-> +			return;
-> +
-> +		dst = __sk_dst_get(sk);
-> +		if (dst) {
-> +			dst->ops->update_pmtu(dst, sk, NULL, info, true);
-> +			/* Re-read actual MTU after update_pmtu, which may have
-> +			 * rejected the increase. Only use values accepted by
-> +			 * route layer to prevent spoofed ICMP from raising MSS.
-> +			 */
-> +			info = clamp(dst_mtu(dst), QUIC_PATH_MIN_PMTU,
-> +				     QUIC_PATH_MAX_PMTU);
-> +		}
-> +		quic_packet_mss_update(sk, info - packet->hlen);
-
-[Severity: High]
-Does this ever lower the MSS when PLPMTUD is disabled?
-
-With skb == NULL, ip_rt_update_pmtu() builds its flow key through
-ip_rt_build_flow_key()->build_sk_flow_key(), which takes the
-destination from the socket:
-
-net/ipv4/route.c:build_sk_flow_key() {
-    ...
-	__be32 daddr = inet->inet_daddr;
-    ...
+if (unlikely(segs =3D=3D skb)) {
+        consume_skb(skb);
+        return qdisc_drop_all(segs, sch, to_free);
 }
+__qdisc_drop_all(segs, to_free);
+return qdisc_drop(skb, sch, to_free);
 
-When there is no packet header, __ip6_rt_update_pmtu() does the same
-with sk->sk_v6_daddr.
+> > +             }
+> > +     }
+> > +
+> > +     /* Admitted: resolve the flow. The mode is read once above, so
+> > +      * extraction and resolution agree if cake_change() intervenes.
+> > +      */
+>
+> The last sentence here is just distracting. Please drop.
+>
 
-Nothing in net/quic sets inet_daddr or sk_v6_daddr, and ip6_dst_store()
-is called with daddr_set false. The exception would then be created for
-0.0.0.0 or :: instead of the peer.
+Ok.Will reword to: /* Admitted: resolve the flow. */
 
-Even with the right key there is a second problem. When
-update_or_create_fnhe() creates a new exception, it only marks the
-cached routes obsolete:
+I wont wait for the 7 days for sashiko to respond if we can reach a
+quick consensus.
 
-	WRITE_ONCE(rt->dst.obsolete, DST_OBSOLETE_KILL);
+cheers,
+jamal
 
-It does not change their MTU. The IPv6 path inserts a new RTF_CACHE
-route and leaves the old dst unchanged.
-
-So re-reading dst_mtu(dst) on the same cached dst would return the old
-MTU, and quic_packet_mss_update() keeps the old MSS.
-
-If that's right, the v17 change to re-read the MTU after update_pmtu()
-makes the ICMP-driven reduction a no-op. plpmtud_interval is 0 by
-default, so a path whose PMTU is below the local MTU could stall:
-full-size DF packets are dropped and the PTBs are ignored.
-
-For comparison, SCTP temporarily sets the socket daddr around
-update_pmtu() (to_sk_daddr()), and inet_csk_update_pmtu() re-checks the
-dst with __sk_dst_check() afterwards. Is something similar needed here?
-
-[ ... ]
-
-> +	pr_debug("%s: alpn_len: %d\n", __func__, alpn->len);
-
-[Severity: Low]
-This isn't a bug, but alpn->len is a u32 in struct quic_data, so %u
-would match it. The v16 changelog made the same fix in quic_packet_rcv().
-
-[ ... ]
-
-> +/* Work function to process packets in the deferred list. */
-> +static void quic_packet_deferred_work(struct work_struct *work)
-> +{
-> +	struct quic_sock *qs = container_of(work, struct quic_sock, work);
-> +	struct sock *sk = &qs->inet.sk;
-> +	struct sk_buff_head *head;
-> +	struct sk_buff *skb;
-> +
-> +	lock_sock(sk);
-> +	head = &quic_packet(sk)->deferred_list;
-> +	while ((skb = __skb_dequeue(head)) != NULL)
-> +		quic_packet_process(sk, skb, GFP_KERNEL);
-
-[Severity: Low]
-Was the cond_resched() from the v12 changelog lost in the v15 rework?
-The v12 entry reads:
-
-  "Call cond_resched() in the loop inside quic_packet_backlog_work()."
-
-Each iteration here can run synchronous AEAD decryption (cb->sync = 1),
-GFP_KERNEL allocations and token verification, all under lock_sock().
-
-On the quic_listen_sock_switch() path, the listener lock is dropped and
-re-taken in the middle of this loop. Under sustained traffic, packets
-processed from the socket backlog in that window can keep adding to
-deferred_list, so the loop keeps running.
-
-> +	release_sock(sk);
-> +	sock_put(sk);
-> +}
-
-[ ... ]
-
-> diff --git a/net/quic/socket.c b/net/quic/socket.c
-> index 0173416d0368a..c75d2dcaba9d4 100644
-> --- a/net/quic/socket.c
-> +++ b/net/quic/socket.c
-> @@ -24,6 +24,319 @@ static void quic_enter_memory_pressure(struct sock *sk)
-
-[ ... ]
-
-> +int quic_request_sock_backlog_tail(struct sock *sk,
-> +				   struct quic_request_sock *req,
-> +				   struct sk_buff *skb)
-> +{
-> +	u32 limit = sk->sk_rcvbuf / sk->sk_max_ack_backlog;
-> +	int len = skb->truesize;
-> +
-> +	limit =  max_t(u32, limit, QUIC_MIN_UDP_PAYLOAD * 4);
-> +	if (req->blen + len > limit || !__sk_rmem_schedule(sk, len, false)) {
-> +		QUIC_INC_STATS(sock_net(sk), QUIC_MIB_PKT_RCVDROP);
-> +		kfree_skb(skb);
-> +		return -ENOBUFS;
-> +	}
-> +
-> +	QUIC_SKB_CB(skb)->backlog = 1;
-> +	skb_set_owner_r(skb, sk);
-
-[Severity: Low]
-Can this push sk_forward_alloc negative when the skb is already charged
-to this listener?
-
-Consider a second Initial packet for the same connection that was
-deferred through quic_packet_deferred_schedule(). Its destructor is
-already sock_rfree, and in quic_packet_listen_process() it takes this
-path, which skips skb_set_owner_sk_safe():
-
-	req = quic_request_sock_lookup(sk);
-	if (req) /* If request sock already exists, enqueue packet directly. */
-		goto out;
-
-In quic_request_sock_backlog_tail(), __sk_rmem_schedule() reserves the
-memory first. skb_set_owner_r() then orphans the skb
-(sock_rfree()->sk_mem_uncharge()->sk_mem_reclaim()) and charges it
-again.
-
-The reclaim can return the pages that were just reserved, so the
-sk_mem_charge() that follows can leave sk_forward_alloc below zero.
-
-For example, start with forward_alloc 2000 and truesize 2304:
-
-  schedule adds a page:      6096
-  uncharge:                  8400
-  reclaim leaves:            208
-  charge leaves:             -2096
-
-Would orphaning the skb before the __sk_rmem_schedule() check avoid
-this?
-
-> +	__skb_queue_tail(&req->backlog_list, skb);
-> +	req->blen += len;
-
-[ ... ]
-
-> +	/* Look up accepted socket matching packet addresses and DCID. */
-> +	local_bh_disable();
-> +	sk = quic_sock_lookup(skb, &packet->daddr, &packet->saddr,
-> +			      quic_path_usock(quic_paths(sk), 0),
-> +			      &packet->dcid);
-> +	if (!sk)
-> +		goto out;
-> +
-> +	/* Found a matching accept socket. Process packet with this socket. */
-> +	skb_orphan(skb);
-> +	bh_lock_sock_nested(sk);
-> +	if (sock_owned_by_user(sk)) {
-> +		/* Socket is busy (owned by user context): queue to backlog. */
-> +		if (sk_add_backlog(sk, skb, READ_ONCE(sk->sk_rcvbuf))) {
-> +			QUIC_INC_STATS(sock_net(sk), QUIC_MIB_PKT_RCVDROP);
-> +			kfree_skb(skb);
-> +		}
-> +	} else {
-> +		/* Socket not busy: process immediately. */
-> +		sk->sk_backlog_rcv(sk, skb); /* quic_backlog_rcv(). */
-> +	}
-
-[Severity: Medium]
-Should cb->backlog and cb->sync be cleared before the skb is handed to
-the accept socket here?
-
-When this runs from quic_packet_deferred_work(), the skb came off
-deferred_list with cb->backlog = 1. An skb that went through
-quic_listen_sock_switch() also has cb->sync = 1 and cb->resume = 1, set
-by quic_packet_get_alpn().
-
-The call path here is atomic:
-
-quic_packet_deferred_work()
-  quic_packet_process()
-    quic_packet_listen_process()
-      quic_accept_sock_exists()
-        local_bh_disable()
-        bh_lock_sock_nested(accept_sk)
-        accept_sk->sk_backlog_rcv()
-          quic_packet_process(..., GFP_ATOMIC)
-
-Elsewhere the patch treats cb->backlog as meaning the context can sleep,
-for example in quic_packet_deferred_schedule():
-
-	if (cb->backlog)
-		return 0;
-
-quic_crypto_decrypt() also checks !cb->backlog before doing a key
-update, and cb->sync forces a blocking crypto wait.
-
-The handshake and app handlers are still stubs in this patch. Once they
-are filled in, could these leftover flags make them sleep while holding
-the spinlock with BH disabled?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1792164438.git.lucien.xin%40gmail.com
+> > +     idx =3D cake_hash_resolve(b, &keys, flow_mode);
+> >       tin =3D (u32)(b - q->tins);
+> > -     idx--;
+> >       flow =3D &b->flows[idx];
+> >
+> >       /* ensure shaper state isn't stale */
+> > @@ -1816,14 +1890,9 @@ static s32 cake_enqueue(struct sk_buff *skb, str=
+uct Qdisc *sch,
+> >       if (unlikely(len > b->max_skblen))
+> >               WRITE_ONCE(b->max_skblen, len);
+> >
+> > -     if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_=
+SPLIT_GSO) {
+> > -             struct sk_buff *segs, *nskb, *seg;
+> > -             netdev_features_t features =3D netif_skb_features(skb);
+> > -             unsigned int slen =3D 0, numsegs =3D 0;
+> > -
+> > -             segs =3D skb_gso_segment(skb, features & ~NETIF_F_GSO_MAS=
+K);
+> > -             if (IS_ERR_OR_NULL(segs))
+> > -                     return qdisc_drop(skb, sch, to_free);
+> > +     if (segs) {
+> > +             struct sk_buff *nskb, *seg;
+> > +             unsigned int numsegs =3D 0;
+> >
+> >               skb_list_walk_safe(segs, seg, nskb) {
+> >                       skb_mark_not_on_list(seg);
+> > @@ -1837,7 +1906,6 @@ static s32 cake_enqueue(struct sk_buff *skb, stru=
+ct Qdisc *sch,
+> >                       qdisc_qlen_inc(sch);
+> >                       numsegs++;
+> >                       q->buffer_used +=3D seg->truesize;
+> > -                     slen +=3D seg->len;
+> >                       WRITE_ONCE(b->packets, b->packets + 1);
+> >               }
+> >
+> > --
+> > 2.43.0
