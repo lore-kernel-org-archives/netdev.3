@@ -1,167 +1,153 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C521B4A2A5F
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3889A49E5ED;
+	Mon, 19 Oct 2026 10:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792404550; cv=none; b=SLE900NlGTSgRFVhh2In0TSHV4Jr2KrlKF0vU+mVVCGSn1aGMfgihzjTGi2LaMoWE3Mu7BW50Lu0z28PpOYFhrmMsT9Rf1XGhyX0YlLR4h1ExyIPY7jpVYqc+vYB9JHmbeqoIPouGyerPi7cfJNuFmaWUdzPCBPYsslkjyAWu0g=
+	t=1792404815; cv=none; b=nyMXh7IJV9/4bhn1O0IdyX25uaTNHQBflSn/mxUGtrJE3WmfBO2jM7IKO/AoDEUjnhAfX0qCPWAGWhdIE0bu7vjaMvU5M2gpg+69MYRbOuvK9ZbSV4T+UIpZN5bS1t+9622c7EMJy0/z1Tqhkfwt+QspYHBUWEyOtqoUWAnogm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792404550; c=relaxed/simple;
-	bh=QoQK/kdHldyPvMQ5dW8PaBXStij6P0wjcMNlvVILmvo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tr4h+xbYTtDmp2k95YtdmQNgNvZ5XnNmQKeFUJKOtP62M6p0JTfzplwKfQ1R2qyy+Q9jveCrp+oufeduS8UyYFf74J5PJAaKSt8qSKmCN67quszUSGbNSY9TD+IoK4GBIy1/ugRDR9+tNTAIuIbwWJ0aiCtIVhomAQ+pJHpz5oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=guDw5IHB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qCGs9qPw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792404815; c=relaxed/simple;
+	bh=Xqo4vljIiiz21/RhJekpRAMPyzV+YVhpiXSTBanJPKo=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=j4+vWl+77qxkWwXtHTBFOwVUe1W1YcmqnasTxatw7ORWpAAqF9LF9bpuXhrqDLrefSeTQfK7sPagDzCqvNZVppe/DFtGA4M5CCJoLip8iEN6IYgA2TH3coOEtWbjEgx4QYpZKkD6yFoJySTVgTAeR+dQcYJRhJLo/kOZ32JMhvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=mpVR5LaG; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="guDw5IHB";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qCGs9qPw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792404547;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S1kyYaAz8+24p19YS7FhB0fj4LUm2ZTPvS5HDwK3dJc=;
-	b=guDw5IHBDOskp8/QKuivtqVpTIEzEQwPlpQyp2coD9ysuxPrTvt7gSsjo5w0KdOG72Qv6j
-	ijZzq6nMWgSb4YQ/UM0OUMx6zZ7UuzM5Sx27BGEw5vF/nypRrZVTiZvICb8tqQNDVWd0iX
-	UH01rZWatfrQ7q8tdSCJDKyvEHiHPVM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-T8PBjhQiMCK5vv5qbT45Vw-1; Mon, 19 Oct 2026 10:09:06 +0000
-X-MC-Unique: T8PBjhQiMCK5vv5qbT45Vw-1
-X-Mimecast-MFC-AGG-ID: T8PBjhQiMCK5vv5qbT45Vw_1792404545
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48b0a199b20so1715796f8f.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:09:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792404545; x=1793009345; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S1kyYaAz8+24p19YS7FhB0fj4LUm2ZTPvS5HDwK3dJc=;
-        b=qCGs9qPwT5aOOMdHzCpszP1Gi+dvR5FCtXmar8tLcfzi+uR4lSs/lnIQ4LeCT8/Lp9
-         8qs767VBtg3fF9fvdh4Eb1ywvgax3gYOIm3/3/RymyXRAWqnIxUd2jupQKc7UehXa6g2
-         KQeHbw2jaPtM5oGePSTkDtUXH2slfvNtm9MXkJ4+PpsLNFK/A0Dv/+xzrGLzA+RvUa/i
-         gpT7D1Gb7ZANj7jqS8RxLWDkGp1dedoz0EWUKg6+ZXz0XpP2UCR2KYj86Ct+ermftLQY
-         bTgFhEUccXhY2lRUUrhj55U5dF9lFhgg8koZX7gZGck98EWWfO/OMhRBnUYlZY8tUntp
-         0/BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792404545; x=1793009345;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=S1kyYaAz8+24p19YS7FhB0fj4LUm2ZTPvS5HDwK3dJc=;
-        b=2xIwIrTGlMsw6iQuSD18GkR0ebOFPdD7ybe7lAxTctG9JENH6Mt40JjZo0VeE8c3dG
-         SCGRmTpVH+mUFmohF4lHGTjO+njEHFCsR/AsJSum8DENWvzIwtpPrpQh17ZSQ7frtEW6
-         sqJcSq1l+p6ZaarByke/JG+cuswJQajSPkE9ICBPuTspwLMPgta6iyrNvGQOCbCBoKBc
-         hUXHF5DgtPldukt2I2m6vMYgYxMDjWcd8l8omn8RZYaSujAVGjh04GB3sxCyuogVWDRO
-         2/+0k7eouBxSey+Doo3Pz8/vfuHnN/yeKeY4nptlH0T9vqtcpxrrByNEiwpc9If+Wxgf
-         kagw==
-X-Forwarded-Encrypted: i=1; AKwUvBzdkW5meWyyEvI7P+adNLwtInba5uwlbvJbDKRH1RpHVYJ5zmILSv6SZ6UASCiisvgjYryqTWA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIRnMY0n54K/Y1h6yJhZyoF7MVV+bVdaSV82KTHFJfwGeF172mr
-	1vXNWippMwxng0xGQrwqqZwSoyz0FZmvgRP1sMkyBbCxWaXPLURWUYTtoEKHOsC+pUDndgpDuQ3
-	q2+vhgLep4JJSFHqUPFLs3J2ivCcjQmPosPVo5/nkZftQVkqu6FgBjhsAuw==
-X-Gm-Gg: AYBFou1KMyS6xFagYkv/9rvjHOeHefpqMdBaOwiTp+WKDm7nM64WJqhfXs5DZn9q5F7
-	q2BGfcB+FtTjazQdfSWrCgnJqlAjNg7Bu0U0pfQrD50qL6E2Y25fKkVCo/b/LcNA4AIW5l6J90q
-	vJVbRPYJbLCt/k2RVBZKJufFddbjkcj7nGoVkvbV9eJ6h5uRL0Bq9OatP7/ClsMQD2589L6NB5p
-	uQp5rOiCBS6BY+z6fjKIY2gYUshAHK1aEsWaoClnDyvM0iZZPWc1CUs3uzVsp6n6pmuYoV4461e
-	S2riD0owHKYLOZl2ab6vk74FkFnCwmQ5uy+atqIuFWsv223Ieh27bX3M0fZHIlzXdzQm9w==
-X-Received: by 2002:adf:e189:0:b0:487:27f9:842 with SMTP id ffacd0b85a97d-48e07fbeffcmr15398399f8f.55.1792404544895;
-        Mon, 19 Oct 2026 03:09:04 -0700 (PDT)
-X-Received: by 2002:adf:e189:0:b0:487:27f9:842 with SMTP id ffacd0b85a97d-48e07fbeffcmr15398333f8f.55.1792404544324;
-        Mon, 19 Oct 2026 03:09:04 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd503862sm21999178f8f.46.2026.10.19.03.09.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 03:09:03 -0700 (PDT)
-Date: Mon, 19 Oct 2026 06:09:00 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Pranjal Kumar Singh <pranjalksingh92@gmail.com>
-Cc: cve@kernel.org, netdev <netdev@vger.kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paulos Yibelo <habte.yibelo@gmail.com>,
-	openvswitch <dev@openvswitch.org>, stable@vger.kernel.org,
-	"fw@strlen.de" <fw@strlen.de>
-Subject: Re: Kernel bug report: unguarded deferred skb_checksum_help() writes
- corrupt the previously-validated IPv6 fixed header (IPv6 counterpart of
- commit 6785011f8b16, "ipv4: validate checksum_start before completing
- checksum")
-Message-ID: <20261019060131-mutt-send-email-mst@kernel.org>
-References: <CA+UYBZDMpqq989aWq318+T2j4+PU7giVpO8ZffrkDFwqaoKjJw@mail.gmail.com>
- <20261019044815-mutt-send-email-mst@kernel.org>
- <CA+UYBZCEe3C2HuqgZSZ9Xa7MUxCNy=9ckBmA1Kyjmt882ZRQBA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="mpVR5LaG"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C5ECA0E36;
+	Mon, 19 Oct 2026 12:13:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792404810; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=8h7nzr4NEQFRILhkT8O+MIgbmBu8pilgovWU9a/qJH0=;
+	b=mpVR5LaGIMURe9zfdSEKM5E3eM1d0m8Uhm2M4LJN9EGCTBTAiw7DiQNEX7XHKPTtkS2EM0
+	1YVLtpR93BK4bYib7ZQRl1bF7/nlUtSuECulC+poQPBHZaFZTCqUeedYELE7dFY2AZVSy5
+	ylj1loYbKSxjh+aci4/N4c7UrQZzT/FUjUAtICGtZYIPtYOUdB0SiXFQV/8t5Oc2B2hrKj
+	BrjGRziZMw9W+KZiy/L+gNxFTYO1iBvevmGSVGsTmK2WLowgAvcJXPSlJneuL9+zZMxzFE
+	tcCC9b90Rn0ByjM8W+Q39P7nMquh5Eib/dV0TkukaheHrf+SZtfkW66w1INm8Q==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+UYBZCEe3C2HuqgZSZ9Xa7MUxCNy=9ckBmA1Kyjmt882ZRQBA@mail.gmail.com>
+Date: Mon, 19 Oct 2026 12:13:28 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Chris Babroski <cbabroski@nvidia.com>
+Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, richardcochran@gmail.com,
+ linux@armlinux.org.uk, maxime.chevallier@bootlin.com,
+ Raju.Lakkaraju@microchip.com, davthompson@nvidia.com
+Subject: Re: [PATCH net-next v1 2/5] net: lan743x: start phylink last and stop
+ it first
+In-Reply-To: <84c495b24206953fb799d4070c4d99ff27efb829.1792008404.git.cbabroski@nvidia.com>
+References: <cover.1792008404.git.cbabroski@nvidia.com>
+ <84c495b24206953fb799d4070c4d99ff27efb829.1792008404.git.cbabroski@nvidia.com>
+Message-ID: <b8e16814d4472d6456ba78918005c8bd@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Oct 19, 2026 at 02:36:14PM +0530, Pranjal Kumar Singh wrote:
-> Yes. One 16-bit csum_fold() write at
-> csum_start + csum_offset, always within the packet's own linear data
-> (admission's pskb_may_pull(needed) bounds it), so no OOB, no memory
-> safety issue and no crash; just a previously-validated header field
-> changed after the stack committed to it.  With the IPv6 geometry I
-> reported (csum_start in [20, 40) slipping past nh_min_len == 20), the
-> write lands in the fixed IPv6 header only -- dst/src bytes; version,
-> payload length, nexthdr and hop limit (bytes 0-7) are unreachable from
-> that geometry -- and the written value is attacker-derivable
-> (precomputed csum_fold in the reproducer; wire value matched byte for
-> byte, control run intact).
+On 15.10.2026 17:00, Chris Babroski wrote:
+> lan743x_netdev_open() starts phylink before the RX and TX rings exist,
+> and lan743x_netdev_close() only stops it after the rings are freed. The
+> mac_link_up() callback wakes all TX queues, so it can run while there 
+> is
+> no TX ring to transmit on.
 > 
-> I went through the full v2 series: with 4/7 my geometry is resolved at
-> ingress via the mismatch path (Routing-header parse -> csum_start !=
-> thoff -> completed before protocol processing), so the observed window
-> is closed on the virtio-hdr-tested flows and my sink-side patches are
-> superseded for that case.  I'll repost them (or thin them further out)
-> as a net-next follow-up to your v3 only for the sysctl opt-out case in
-> 5/7 (knob off = my geometry is admitted fully intact with
-> CHECKSUM_PARTIAL retained and the deferred write happens as before),
-> plus the xt_CHECKSUM v6 / nf_queue / xfrm_output family gates, which
-> 0/7 doesn't touch.
+> For ndo_open and ndo_stop the qdisc is not active at that point, but 
+> the
+> suspend and resume paths call lan743x_netdev_close() and
+> lan743x_netdev_open() directly with the qdisc still attached. A link up
+> event in either window lets the stack call ndo_start_xmit() on a 
+> channel
+> whose ring is not allocated yet or has just been freed.
 > 
+> The error path of lan743x_netdev_open() is also wrong: a
+> lan743x_ptp_open() failure jumps past lan743x_phylink_disconnect(),
+> leaving phylink started and the PHY attached after open has failed.
+> Every later open then fails because the PHY is already attached.
+> 
+> Connect and start phylink as the last step of open and stop it as the
+> first step of close, as other phylink users do. If phylink fails to
+> connect, nothing is attached, so the error path only needs to unwind 
+> the
+> rings, PTP, MAC and interrupts.
+> 
+> Fixes: a5f199a8d8a0 ("net: lan743x: Migrate phylib to phylink")
+> Assisted-by: LLM
+> Signed-off-by: Chris Babroski <cbabroski@nvidia.com>
+> ---
+>  drivers/net/ethernet/microchip/lan743x_main.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c 
+> b/drivers/net/ethernet/microchip/lan743x_main.c
+> index 9e1276cf313c..583f631df701 100644
+> --- a/drivers/net/ethernet/microchip/lan743x_main.c
+> +++ b/drivers/net/ethernet/microchip/lan743x_main.c
+> @@ -3334,6 +3334,8 @@ static int lan743x_netdev_close(struct net_device 
+> *netdev)
+>  	struct lan743x_adapter *adapter = netdev_priv(netdev);
+>  	int index;
+> 
+> +	lan743x_phylink_disconnect(adapter);
+> +
+>  	for (index = 0; index < adapter->used_tx_channels; index++)
+>  		lan743x_tx_close(&adapter->tx[index]);
+> 
+> @@ -3342,8 +3344,6 @@ static int lan743x_netdev_close(struct net_device 
+> *netdev)
+> 
+>  	lan743x_ptp_close(adapter);
+> 
+> -	lan743x_phylink_disconnect(adapter);
+> -
+>  	lan743x_mac_close(adapter);
+> 
+>  	lan743x_intr_close(adapter);
+> @@ -3365,10 +3365,6 @@ static int lan743x_netdev_open(struct net_device 
+> *netdev)
+>  	if (ret)
+>  		goto close_intr;
+> 
+> -	ret = lan743x_phylink_connect(adapter);
+> -	if (ret)
+> -		goto close_mac;
+> -
+>  	ret = lan743x_ptp_open(adapter);
+>  	if (ret)
+>  		goto close_mac;
+> @@ -3387,6 +3383,10 @@ static int lan743x_netdev_open(struct net_device 
+> *netdev)
+>  			goto close_tx;
+>  	}
+> 
+> +	ret = lan743x_phylink_connect(adapter);
+> +	if (ret)
+> +		goto close_tx;
+> +
+>  	if (netdev->phydev)
+>  		phy_support_eee(netdev->phydev);
+> 
+> @@ -3414,8 +3414,6 @@ static int lan743x_netdev_open(struct net_device 
+> *netdev)
+>  			lan743x_rx_close(&adapter->rx[index]);
+>  	}
+>  	lan743x_ptp_close(adapter);
+> -	if (adapter->phylink)
+> -		lan743x_phylink_disconnect(adapter);
+> 
+>  close_mac:
+>  	lan743x_mac_close(adapter);
 
-I don't get what this all means What sink side patches? 0/7 of the
-patches I posted touches what code? I don't think it makes sense to look
-at that sysctl deep in the net stack, if that is what you are saying.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-
-> On Mon, Oct 19, 2026 at 2:20 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> 
->     On Mon, Oct 19, 2026 at 02:13:04PM +0530, Pranjal Kumar Singh wrote:
->     > Hello Security Team,
->     >
->     > The IPv4 part of this was fixed some time ago in commit 6785011f8b16
->     > ("ipv4: validate checksum_start before completing checksum"): a packet
->     > whose virtio_net_hdr csum metadata points its checksum start inside the
->     > IP header makes skb_checksum_help() (the deferred csum completion)
->     > rewrite the header the stack has already validated (fixed checksum
->     > offset-width write at csum_start + csum_offset).  The IPv6 paths were
->     > not covered, and they still are not: a 2-patch series mirroring that
->     > commit for IPv4->IPv6, including its remaining not-yet-IPv6-guarded
->     > sinks, is reproduced below and attached as patches/0001 and 0002.
-> 
->     Thanks, I think this has been reported already. Just to clarify, the effect
->     is just packet header corruption past validation, right?
-> 
->     See [PATCH net-next v2 0/7] more virtio-net csum hardening
->     for WIP fixes.
-> 
->     --
->     MST
-> 
-> 
-
+Thanks,
+Nicolai
