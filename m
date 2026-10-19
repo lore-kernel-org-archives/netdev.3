@@ -1,100 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.170
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792427261;
-	b=uI2JhYt7OwQKNOjAY86u6o/SAfBW1UKkKA+DJbfPm/Is312Mxq2Ao0zFPejJMyiqRSQk
-	 yHFgdkH4+VWvenjiAAfztMMEcOQzIQxTqFMXCTXbsL0JiTHAnKS+8Rq2EHMzpM9oS047S
-	 RBR0JLEUHkgDr3ubrosIDgjc7yQqnbG+3p/PR2oEN2N+UZhHo3RIOfkMv4IzdRW0qMT3Y
-	 PtDl7J3dVOPxmbjMXeVRv53EJ0pKw0QocCCy9EXfaKlJc6GlnaKaautSzIbOzehUJYAPZ
-	 TyVJlKr/0Cuvn99T+Nu0hQnInGIs+QpAgr9ucwlzGL1ySqzPfXu2zrlxbMw8PJ6+7QQ==
+	t=1792427590;
+	b=f4ue9RUqPi1Tr28Y1aGpTMvNcON+UJdGpN8CAHo5qLr0076d76sKPwB6Ib4uvFvkTIXq
+	 ZZ3QzwKT7pM1IzNoLmOBqemyxr+o14oZK2qrvQZ3yGsqqdthFpRX5t/u7Hf8rpjk6jY2z
+	 z8wWa61AhGDW67JrYzZ4wWsuSAPcbLyap42+VgFGgx8lJ/5be81jdeUiN3zFw7auBEott
+	 F9hzbDfe7VKEvgXabK3EqdXnxgcdKRGNRagFbfjCB8rDrr/uITFkeuoiuy9zVYvW/A2IC
+	 bjDgMNTT6IlVdhwwIn+jqBu/teP/rrvE5vX0NAW+AP6GSsG+FjQJbHpcaDPYW9nBXxg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792427261;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792427590;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=jvYDp8Hgj7nrDsJX6hOppStmzsVdbwBuZBD84+051RI=;
-	b=udHtN01qWXp63+CuKP5H6CL7v+1ChPP1nWufAd283H49aN83Wqtc61a0K8F9PlCwmb3L
-	 Fnf829RCaBNYflMiAfmnJe/Z1XLhGzi0jza9jPT22hi1LmAC3QZbS787l1zrLMUHeATSH
-	 6LZ9o4UBaP7jGC2WwwvWK7woleQXIjvbsm8dnomSkX2GWu5wmlyEXtQFvCDvnB9ckXBqt
-	 2mSWZ23FxtUAnSTmMNIpdXm9/iFEPhVdRhi3fRZMKcZPhPtbU7r67epN/mlUulxhb43wU
-	 kVrGmRwTHNSE07a2NmmWH9RunRlJyK62voSUgdMVcy3Y8NgbzuIqwQL4nkKR17A5/Qg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
+	b=JEoInmhX6rZICStn8pUFEkrzIyHUXhxbAv0ZLy9gksqPzYFm2/2IP2TMl6PiNSLN2Kiv
+	 K+7jTlgjf2g5lRtLr/0AMduNAmmdBMGskFptXdfFNg/b/Chmbm1fMKptMizEaZnh2HEKB
+	 jj8+oVETii22R1n9AimS1mhlY1/eozPFIfHdKv7slS44eWyR/2Xris/bFuWLjIeKFtHlQ
+	 EIs4cjKHM9BeSAIXf0MbRIhq9uy+35s3yoyhOebAd+W+Ggqoj5y4Pl24AZW51510UxxMf
+	 YkjgE8VjWChN1OvdSDSWgWuuxCpMM8YbQ0LGLkchfCBP69t9lzRsmC1YCaaQQmdcaAA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="Vg+MAJ/D";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	dmarc=pass header.from=nuro.ai;
+	spf=pass smtp.mailfrom=nuro.ai;
+	dkim=pass header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=OlhatWBI;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.170
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6E2606A33A
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:27:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE6E2606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F06E606A321
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:33:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F06E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Vg+MAJ/D
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so17008a12.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:27:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792427259; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=OlhatWBI
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35d7fa491deso2795774eec.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:33:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792427588; cv=none;
         d=google.com; s=arc-20260327;
-        b=Vs+EeS2ozhx0diT+13IOv49sLlX0sSJvCaqkZTq4pmyxv2MDy/COephWCf+QrS71D9
-         LJQfE0gmJb980YO7r/mEQkBqL8OVQZP6I5rOvORBKQV26sGYCUsMF5vxMwFR7VG6037q
-         AaKPUTOYiK3thTdXlllozWPZkUBRdPBjcqbeEtii/wbbBoZgsWV/mn4ggwfqvPuAILYp
-         Hcd761DeOBIXXhJnBPdA39BKmrEK2iiYw18PJ9tipDuMNbejr7lYysmI1WrUnQYpHhbC
-         miV8a0LE4Jz/X0K+nlNVPXync5zc9Xjbwkv6qPoF/Uc7gLC9NJuJXrrYvumk36Qiq2Xd
-         7hxw==
+        b=chCZaOXioZzv7fW0nFWH8q6F+Cbg/aEZYK9YbK+MyMpK88+9wnqqZ5QAxnvqQ/iRVS
+         xiISxShGEw1a/nWUHdl9/9tcul7qakahqrNXmwSchGduT4YCkYYmIA7NLi7UwByTSCFj
+         /6Kx4KCHaI+cuM/fUoTigWfybnuddjzIYpTd+6qiCUQj9lZKZlgzxNsFSjAKO4RXV5BC
+         piepNwx2q6xmJdM99tGOp+07j7pdllNNnBsmGZuzDgSrK//oUWmXMIP2mInSOfK9bLf/
+         G3eXngQlFPVKfxch5AkBIsfYHTOAi2wBXfDAbPCAYWHpIGu6+F7q2K/cESxTRykpNe3O
+         Ejkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=jvYDp8Hgj7nrDsJX6hOppStmzsVdbwBuZBD84+051RI=;
-        fh=063oi7RuDvzv1VomBYm82Xj4unkWFItNS9ELyp5nTmU=;
-        b=nyMte0uMmTB3vTefYq/Tlf/Djfjb3DH4/aIFA6KbDykJwugadjnAMY7/uJnmJLiRn+
-         Z9Xjh49zZbwlXwzhy/NcdCIoizVoo49SKPq4rbNtuY6BEinO229F4OZCSj3pRWgbuXc6
-         qdY1yZOlbd1aizObQ7Dkucdbsi+3Fly6pSVTZDCFUBEiC2dJsqEQsMYF0PvpFNWdVPqO
-         Z/X05QuFva304jJNw8cA/PiHRAnB0N40UU6G4Ihc9VofN8nmsg2Y7qBsUVw28rYjdEhX
-         7OXAG6lTC+mPKPO/l0QsqyS/TKWOZ+0HNLhr5DQfdkMs5wIQWwkfje0eeNYNVrA2GQG8
-         yBBw==;
+        bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
+        fh=c9zRjddif4uzV10rU+9vz9lUYI5CHfR5Fc+Vi2+29gc=;
+        b=RJrF9DIUwhxLt1gf+9AmBdBzuM246WvywAkYoPykP3BrcVOaovhAc3ZlYlLTYnf6bz
+         FNkv338/9PWxSltFhMpnMq9SsLJnFEI+3pAVMvrsqnf3EJPTKI0zSOGqTexF/9paha26
+         FxsIap0XkVEhQ/YiDZSIiqpiXCX44j300QBsaG4ufCvqOWaxbtMta8SHE8Pdb5JRhWeR
+         3SaKGcL79r1sxzHZJOC7oWvusEehC3PhifecpOvWo6P6NIeA+/+3fZBQvnyKXRsECkVQ
+         YRtoJvkGDWm/VzSEspRBIh93/dqAiPKbqKA5rKgGhPkf2mK2DjWGGVGynZ7rT/YWG3rx
+         Jj4A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792427259; x=1793032059; darn=vger.kernel.org;
+        d=nuro.ai; s=google; t=1792427588; x=1793032388; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=jvYDp8Hgj7nrDsJX6hOppStmzsVdbwBuZBD84+051RI=;
-        b=Vg+MAJ/D/s6BzPq2oMNvrIO24+Zc38CbeIk8kxNnS37t+MfRvYxhs+VlXNtz3u+LkH
-         eWelEEgPiZ7qckP5A/zjj5zXZjhGCxK7j82MqFjPpAkpUV+miZs+pfj2DQ+MZqS/xEbw
-         AD0OuYQDfu/zj2XfCqyx8gu/IwjPONtrUE4BZVMmR4ZHI2/aDKQ8VzQXZcAY+YH4OdhD
-         PNQ3YA1pS1x6IsPb5783cUcgNoxeXfjNmbenJBIttZXiD6m7T1jybg3wwwFEVfNTbbR8
-         t0FjAq/kPsrGzti+21HaV//wgHfdyyVWokclcAHt79+gJKTK99uLpv6pdKF8WtqqQ0GL
-         jdtw==
+        bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
+        b=OlhatWBIrlneazpJe45AUJK8fRSXaijrg68jsh14HgKGtKFrLuMyNokLH8Zq6MDaxU
+         BWB5uMByukI2gjofWK57wO2uCs+5My8D8Be5fwqIO47oJvbg8yKQDPTDFr3ax41u1fA9
+         dg+OVBjuhmQIkXr7KLM4zUz+qP1TWICkljX23mqSd1lHESV5slmacMQp+4Kxl+K2FYHr
+         6upqUtRDcXuKK5xivwOkak3/e/w8W2dP7vynkAk+3RIraEi2dan6QsBHbSv/uQSbe+XY
+         SsfB7XgSAkWR1kOXfqxzz/Aa0UFb0d0FsSVOoAEQv5RbblIeQiD8V8PpTABLxFNXwkbS
+         4rDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792427259; x=1793032059;
+        d=1e100.net; s=20260707; t=1792427588; x=1793032388;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jvYDp8Hgj7nrDsJX6hOppStmzsVdbwBuZBD84+051RI=;
-        b=TcJzrl+TEcqyWUeTJLlxJzREHfsEOCLoUSlV3rMh07qSERMYhkpbQNHzbTI5v399G5
-         8/IrSuxTak8OIxSEPwhsQPOncCt/mloWOwF2ln3X5U39Ikt1NNcR492l7iLZnQGu9fQh
-         r3hYk7LHTlWsvnLVWbG8f451yQfAtcM2kogbTV9GrR2HRH5r0B8HF4qHcrgafwcgJnC0
-         2zebxwqv4dMvRnn9vmvb44zMx0RDhi+/TH4bDiJRYvyn6RrLhqEA1UAlsOUPOF8PbfJu
-         11HcbZoxmQ+QIm5KJMwMicP/18x//pGrA0Vp9OM+Z+Rs8oslyiRBZSjvm0gOTbkiZS9b
-         T0Lg==
-X-Forwarded-Encrypted: i=1; AKwUvBzN1cn4OvK7vYE3OC7Vna4gYsbCRcfTNajhd1YVjnoFWnkc2OCvrS27xM2jmZVFSCfRHnQR6ZE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI3zlBis08+6kdwFHszuznxi0cFebvRTGLfBCddBpSgjl8BqO3A
-	wjSIqgbsO4AqiPm0fVezYGq/nipkXg0etyO1wExqVrKi0qDPLBC3mT/1SxU5guJlGjQ4g44YbuL
-	iJLbIhb2rIJ5R7G2fA7iP0CDeWuqXQNWvNvHsV0mx
-X-Gm-Gg: AYBFou0DiI6M1+RETZUFLgn0Awvzv3yXRjlckSQAHOUnBKgkAxPE7BCS3gUv7/xxlXs
-	0QUMa5VovgP/ZY+1Cx6Qr8I+VnXngzMjAbV6cd4fzgk/SeOZqmBCosRi/6xNhe5JETS2bO5vKKf
-	uqqlMxHyoxDFPMNyVfsmRn8FO9X8RVs2DM89vVXab4KFPc1UVepJ7eq3XQSfywftZcKmWd8ZoPC
-	obT8pUj3YsqC26RpXT1nBAolrucA4IJRNFOD7RJ4HU5TOTfd4OdZyDjCK88l5vNuRMA7iQi+Wf2
-	9a5IP6e3tGeuB1WqN6wnIcf2XFgmVf/EdhVJPdR9nKHbHHohwWTufTyvzZr93BgVW84ROv88u3L
-	UB0PfdwL7MafAb84Wp3cc
-X-Received: by 2002:a05:6402:4052:10b0:6a6:8513:7e14 with SMTP id
- 4fb4d7f45d1cf-6b3ae336676mr18681a12.9.1792427258726; Mon, 19 Oct 2026
- 09:27:38 -0700 (PDT)
+        bh=PVyw06abLNr7loVcICaX07VDm6KPz5wxyY1cmqpMoX4=;
+        b=J7YzRQTyQPishKNsCYxq0fFaM+WHYOWLSQOYchyfrr6koxkqd6CPh9uo50TTZGXb1f
+         S3iJbeQlEqfMytJbe+C3FACT8S9PoVuDJRDHeu7ZSSWa1hv9liio2LHSPyzwgt2XdthP
+         SDxTNSudpN4nZTfzoCu72nW0RTKrqoePgv23zssW2BwxSYFtyDwYnlQE9YMEPg6UE4bj
+         lbVRi/jeLshKq83miRUPRmsNJqw5tT4kr7T9Ni8nXX9kuIPqW+UyVJOFc2LPfC1W+TJk
+         7zQynh9raamo9HbIIjix0PgYUnq7ERo3PHXUbjgCecJRCF8mypDAiFydwb0MZUXRtJfm
+         BwiQ==
+X-Gm-Message-State: AFq9FYJ35ioIWUw+LTIKEHklX53EEN6ozW2JQ4o8bi4yolKILK2nG2t2
+	fRJuC14DWdXmYbPw2hKO3T8VklSxC+0LL2qPK8S9Map6LQMq3uWThJzu8k5yTrgAvJhZsBHw5/C
+	IRPgASnnbDkp2COG/4Emxgr87l2hAB73MS/P0r3kXcyvL0q52zJrUKx82hg==
+X-Gm-Gg: AYBFou2qSEUStb1iOcjhUEz2J6wDtDU2VmelfAV99HFncEAEk1fXf7TklfwtMbzlup0
+	VTyih/gLJR67rujoXgWUsLignVY4ixytx2oBlsr5UroSjCLdIWNMIaHdQRB3FR9haFaiinQ9Jyb
+	1FaizU8EZjEyyjK9ufa8PI/7s5/Lq68ud6ZELrVPcklnL9AxCXfWW0naFTbj09tSACyOt/hyJUW
+	POUaZrAzxzgeQ/01WBv7d8znCuxNhADV07fRpoEre6LkfPi9sFNf4NZEF1hQrSf2WKUUTg0gw9k
+	0W7kQOGiVmYmCXOXwcO+6niDLWhdGpsfPJecFv1TOEHyDXH7E2cL+Cc=
+X-Received: by 2002:a05:7300:f78d:b0:353:ba38:789d with SMTP id
+ 5a478bee46e88-3619b4101c6mr10300680eec.0.1792427587934; Mon, 19 Oct 2026
+ 09:33:07 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,82 +102,205 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
- <20261019-b4-skbuff-bug-on-followups-v1-14-41dbef50b9f7@toxicpanda.com>
- <CAHS8izP4qMy9MFxVrRAZR0sec-XmkuxShrPTe2XNvHSKdQh-ng@mail.gmail.com> <CAF=yD-JORWYaYZ5YvpXg46vxCPLoceh3AADe0XKD-P+rpZT5zw@mail.gmail.com>
-In-Reply-To: <CAF=yD-JORWYaYZ5YvpXg46vxCPLoceh3AADe0XKD-P+rpZT5zw@mail.gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 19 Oct 2026 09:27:27 -0700
-X-Gm-Features: AclHuK-UIC0HG6JOck2i4c0hPYtzFxPXwWW3DcSBGnG1oasbGjmvMuZRGvs17qg
-Message-ID: <CAHS8izOA8S5GhPtpaD3EPWS_vBZZABrwqgd_bDKVm50VSuwS3g@mail.gmail.com>
-Subject: Re: [PATCH net-next 14/15] net/tls: don't BUG() on leftover length in __skb_nsg()
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, 
-	Fernando Fernandez Mancera <fmancera@suse.de>, David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
-	xen-devel@lists.xenproject.org
+References: <20261015162209.485940-1-jkain@nuro.ai> <atMVsAmXKl7D-Fxh@google.com>
+In-Reply-To: <atMVsAmXKl7D-Fxh@google.com>
+From: Joseph Kain <jkain@nuro.ai>
+Date: Mon, 19 Oct 2026 09:32:56 -0700
+X-Gm-Features: AclHuK96ao3-gcFPCTsoNVUIQop3QovF9TTmqCGWlYJyX7oEZUJ0dp91AGzMnc0
+Message-ID: <CA+Y90Pgk3Yd_+dQrTj42+c_cmi9D__Nfg=Xq4OZXRxpm9Eq68g@mail.gmail.com>
+Subject: Re: [PATCH net v4] net: do not let defer_count outlive an empty defer_list
+To: kuniyu@google.com
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	kerneljasonxing@gmail.com, bigeasy@linutronix.de, clrkwllms@kernel.org, 
+	rostedt@goodmis.org, linux-rt-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2026 at 9:23=E2=80=AFAM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
+On Fri, Oct 16, 2026 at 11:51=E2=80=AFPM <kuniyu@google.com> wrote:
 >
-> On Mon, Oct 19, 2026 at 11:13=E2=80=AFAM Mina Almasry <almasrymina@google=
-.com> wrote:
+> On Thu, 15 Oct 2026 09:22:09 -0700, Joseph Kain wrote:
+> > __skb_defer_free_flush() can leave defer_count at or above skb_defer_ma=
+x
+> > with an empty defer_list. That state is absorbing: every producer then
+> > takes the nodefer path without queueing, so the list never refills.
+> > Deferred freeing stays off for that (cpu, node) until reboot, and
+> > cross-CPU frees fall back to the page allocator, which is the contentio=
+n
+> > deferral exists to avoid.
 > >
-> > On Mon, Oct 19, 2026 at 6:51=E2=80=AFAM Josef Bacik <josef@toxicpanda.c=
-om> wrote:
-> > >
-> > > __skb_nsg() counts the scatterlist entries for a range of an skb with=
- a
-> > > copy of the __skb_to_sgvec() walk, including its BUG_ON(len) when the
-> > > skb runs out before the range does.  tls_decrypt_sg() calls it on the
-> > > same range it then passes to skb_to_sgvec(), so a bad range would BUG=
-()
-> > > here before it got to skb_to_sgvec()'s error return.
-> > >
-> > > __skb_nsg() already returns -EMSGSIZE for a frag_list nested too deep=
-,
-> > > and tls_decrypt_sg() fails the record on any return below 1.  Return
-> > > -EINVAL for the leftover length too, with a DEBUG_NET_WARN_ON_ONCE() =
-for
-> > > debug kernels.
-> > >
-> > > Assisted-by: LLM
-> > > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> > > ---
-> > >  net/tls/tls_sw.c | 5 ++++-
-> > >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> > > index 312e51270f29..1c578ea47a1b 100644
-> > > --- a/net/tls/tls_sw.c
-> > > +++ b/net/tls/tls_sw.c
-> > > @@ -142,7 +142,10 @@ static int __skb_nsg(struct sk_buff *skb, int of=
-fset, int len,
-> > >                          start =3D end;
-> > >                  }
-> > >          }
-> > > -        BUG_ON(len);
-> > > +       if (unlikely(len)) {
-> > > +               DEBUG_NET_WARN_ON_ONCE(1);
-> > > +               return -EINVAL;
-> > > +       }
+> > skb_attempt_defer_free() increments before testing the limit and does n=
+ot
+> > undo the increment when it rejects, so a rejected free leaves the count=
+er
+> > raised with nothing queued.
 > >
-> > Ugh, why DEBUG_NET_WARN...? Seems WARN_ON_ONCE() is more appropriate,
-> > after all we're downgrading from a BUG_ON(). Another nice thing is
-> > that it could have been done inline:
+> > Nothing brings it back down. The reject path returns before
+> > kick_defer_list_purge(), so once the counter is stuck no producer
+> > schedules a flush on the owner CPU. A CPU that never raises NET_RX itse=
+lf
+> > -- an application CPU doing TX while NIC IRQs are pinned elsewhere and
+> > RPS is off -- then never runs the flush at all, so clearing the counter
+> > inside the flush cannot help it either. proc_do_skb_defer_max() neither
+> > resets the counters nor schedules a flush when the limit changes.
+> >
+> > It is reachable with no race at all:
+> >
+> >   sysctl -w net.core.skb_defer_max=3D1    # frees increment, then rejec=
+t
+> >   sysctl -w net.core.skb_defer_max=3D128  # does not recover
+> >
+> > skb_defer_max has .extra1 =3D SYSCTL_ZERO and no .extra2, so 1 is setta=
+ble.
+> > From v7.1 on, 0 is safe because proc_do_skb_defer_max() flips
+> > skb_defer_disable_key and the producer returns before incrementing. On
+> > 6.18 through 7.0, which carry the llist conversion but not commit
+> > 08dc30de1a40 ("net: add skb_defer_disable_key static key"), setting 0 a=
+nd
+> > restoring the previous value strands the counter the same way -- and 0 =
+is
+> > the documented way to turn the feature off.
+> >
+> > Test the limit before incrementing, so the counter is only ever raised =
+by
+> > a producer that goes on to queue. It then cannot outlive the skbs it
+> > counts, and the absorbing state is unreachable without depending on a
+> > flush ever running on the owner CPU.
 >
-> Because that still triggers on systems with panic_on_warn. See also
+> I think the state is still reachable when reducing the knob
+> if the new value >> 1 is smaller than the current defer_count
+> due to the kick condition (=3D=3D).  This can be fixed by bumping
+> the knob to defer_count * 2 though.
 >
-> https://lore.kernel.org/all/willemdebruijn.kernel.140f4eac91ab3@gmail.com=
-/
+>
+> >
+> > This makes the limit advisory. The test no longer reserves the slot it
+> > checks, and the recvmsg callers run in preemptible context, so the
+> > overshoot is bounded by the number of producers in flight rather than b=
+y
+> > skb_defer_max; the post-increment test reserved the slot and bounded th=
+e
+> > queue exactly. The counter is already approximate -- the flush zeroes i=
+t
+> > without regard for producers in flight -- and the next flush erases the
+> > overshoot, where the latch it replaces never recovered at all.
+> >
+> > Undoing the increment on the reject path instead would be wrong: a flus=
+h
+> > that zeroes the counter between a producer's increment and its undo
+> > leaves the counter negative, and the producer's local is an unsigned
+> > long, so every later test reads it as enormous and rejects. That is the
+> > same dead end, reached more easily.
+> >
+> > While here, drain before clearing in the flush. A producer that queues
+> > between the clear and the drain currently has its skb drained but its
+> > increment kept, which over-counts and costs deferral until the next
+> > flush. Draining first matches the ordering __dev_xmit_skb() already use=
+s
+> > for the qdisc defer_list.
+> >
+> > Found by manual code inspection, LLM-assisted, while backporting the
+> > llist conversion to 6.1 after hitting the sd->defer_lock contention it
+> > removes. The latch itself was not hit in production; it was reproduced =
+by
+> > lowering net.core.skb_defer_max.
+> >
+> > Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
+> > Assisted-by: Claude:claude-opus-5
+> > Signed-off-by: Joseph Kain <jkain@nuro.ai>
+> > ---
+> > v4:
+> >  - v3's "undo the increment on reject" was wrong: a flush that zeroes t=
+he
+> >    counter between a producer's increment and its undo leaves the count=
+er
+> >    negative, and the producer's local is an unsigned long, so every lat=
+er
+> >    test reads it as enormous and rejects forever. Test the limit before
+> >    incrementing instead, so there is no decrement to underflow
+> >    (netdev-bot sashiko).
+> >
+> > Note this changes the effective limit from skb_defer_max - 1 to
+> > skb_defer_max, because the test now runs before the increment rather th=
+an
+> > after it. That matches what Documentation/admin-guide/sysctl/net.rst
+> > describes. It also means the half-capacity kick can now fire at
+> > skb_defer_max =3D 1, which commit c09b0cd2cc6c ("net: avoid strange
+> > behavior with skb_defer_max =3D=3D 1") set out to make possible.
+> >
+> > Built for x86_64 and arm64, with and without CONFIG_PREEMPT_RT. On
+> > v7.3-rc6 with skb_defer_max=3D1 and a cross-CPU TCP load, defer_count
+> > reached 1918118 unpatched and did not recover when the default was
+> > restored; with this patch it stays within the limit.
+> >
+> > v3: https://lore.kernel.org/all/20261013205416.3417296-1-jkain@nuro.ai/
+> > v2: https://lore.kernel.org/all/20261008220256.1844072-1-jkain@nuro.ai/
+> > v1: https://lore.kernel.org/all/20261007180056.1394868-1-jkain@nuro.ai/
+> >  net/core/dev.c    | 5 ++++-
+> >  net/core/skbuff.c | 9 ++++++---
+> >  2 files changed, 10 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/net/core/dev.c b/net/core/dev.c
+> > index 18dc88990510..60d86bc21632 100644
+> > --- a/net/core/dev.c
+> > +++ b/net/core/dev.c
+> > @@ -6940,8 +6940,11 @@ static void __skb_defer_free_flush(struct skb_de=
+fer_node *sdn, int budget)
+> >
+> >       if (llist_empty(&sdn->defer_list))
+> >               return;
+> > -     atomic_long_set(&sdn->defer_count, 0);
+> >       free_list =3D llist_del_all(&sdn->defer_list);
+> > +     /* Racy on purpose, as in __dev_xmit_skb(): a producer landing be=
+tween
+> > +      * the del_all and this store stays queued but uncounted.
+> > +      */
+> > +     atomic_long_set(&sdn->defer_count, 0);
+> >
+> >       llist_for_each_entry_safe(skb, next, free_list, ll_node) {
+> >               prefetch(next);
+> > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> > index 4aea06d5167d..25f82b7dcf01 100644
+> > --- a/net/core/skbuff.c
+> > +++ b/net/core/skbuff.c
+> > @@ -7386,11 +7386,14 @@ nodefer:      kfree_skb_napi_cache(skb);
+> >       sdn =3D per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + cpu_to_no=
+de(my_cpu);
+> >
+> >       defer_max =3D READ_ONCE(net_hotdata.sysctl_skb_defer_max);
+> > -     defer_count =3D atomic_long_inc_return(&sdn->defer_count);
+> > -
+> > -     if (defer_count >=3D defer_max)
+> > +     /* Test before incrementing: the reject path returns below withou=
+t
+> > +      * reaching kick_defer_list_purge(), so a kept increment never fl=
+ushes.
+> > +      */
+> > +     if (atomic_long_read(&sdn->defer_count) >=3D defer_max)
+> >               goto nodefer;
+> >
+> > +     defer_count =3D atomic_long_inc_return(&sdn->defer_count);
+> > +
+>
+> IIUC, atomic_long_read() before atomic_long_inc_return() needs
+> two-step coherency transaction, and we could avoid that and
+> the corner case above by fixing the off-by-one and calling
+> kick_defer_list_purge() in the slow path:
+>
+> if (unlikely(defer_count > defer_max)) {
+>     if (!llist_empty(&sdn->defer_list))
+>         kick_defer_list_purge(cpu);
+>     goto nodefer;
+> }
+>
+>
+> >       llist_add(&skb->ll_node, &sdn->defer_list);
+> >
+> >       if (unlikely(!cpu_online(cpu) || my_cpu !=3D raw_smp_processor_id=
+())) {
+> > --
+> > 2.55.0
+> >
 
-Heh, looks like we have the opposite instincts here and I missed the
-initial conversation. DEBUG_NET_WARN_ is fine by me too. Thanks!
-
---=20
-Thanks,
-Mina
+Thanks kuniyu, I'll follow up on these in v6.
