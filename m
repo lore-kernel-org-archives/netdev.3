@@ -1,49 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792428941;
-	b=i6/A/arrVEhe5/dY9AFRGfDGZlAN7QrpCcv10zZuFyCzOhGRMSOqhaaN5gAc34s9Qc6N
-	 xC1dfuYwX0xy1UYgGJ2Pmtt+UYmwpMW9q/TMgC2/BhOdu2zZ6TfBhqDV3GYCOoXBO///v
-	 gSLoetU8cn9/YdWZ1Mpy1QOeGIKymUfo2nEFB2UFzE1QbE2gxTag8JwY92YrohdWX7mAt
-	 8rHdayM5S0DF2n4RDz/DsoKSMprBCwqdeHwAkI0uwSIuJEHB7MxWpyKp8wHUhc9Wr0Wa6
-	 xMyESTUK3ZRzdzbed0CNsl6A1gRKeUCtDgaNs5kErIkYgw6csp4XIh2S0uJsFKyhFJA==
+	t=1792429350;
+	b=3GUVyDQ4Pi0KZPc3iY5/tEWefiEmQlvTjQb0uC/mQoAX8pjLqjmoJJzBQBJLUlVsh3C+
+	 KN0tBDipGrLeTaQENVQ3sdVwvLy43XojU/8TTEcaYvb8RRJQ+bz1hcVhqZdmu/pnybsWR
+	 kRRIV8vJR0T1Vh/3LzdB0lb3ZC/NWiI3fOGbDzLe1GilWPhRFbYnZ1Ho3LhmD73VgYm3z
+	 1mBFEwC1pmy/bUxIoYY4JtnldsiVfNoqc+ZNlG4PNEDGZFpgnuobSWhQ6iiiH8PVyqo11
+	 TEywpd2QFjuKgd/W2QCLAU01+aiLvRj59+7veZZqOKYEEoHdK3fY6PQr8AyEGdohJjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792428941;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=rFCMxCD79vEB4iyMWGtxNJDVMBMGuW8tGz3ncBlH5DE=;
-	b=5j/Ic77lpB07Taxh6y3CHWnCWt6tw/1O7+ftvc47namJtKHlEJuB4cEaPAEzv0sBR9bS
-	 O+r+ByN0UMEmF4EvMuies9ecyKITWnuNOEX2e/Sx+0/c4UWfn9oG2BywmoPlfWF4NCF51
-	 BLxD2i3UEAU4S6LMZtUCFG8uVfKlqZnFUkHNCW8AqYbBTT07bDLmucFcpqOccIpziHGOM
-	 uTtomtPk2/+dmPobmyUDTaLkLX+MRTnZGkimFqyGMznwPhTSPutaTKS4AmZuRwa+mo7Uk
-	 UzGtsNJyLRmKI9UMv5qghpRe+h0a9gs2ctw518xNYBOpz/EQjb9e2MvNKb+6y1yfZGQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792429350;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=zgafyIzMsT1pjWtIoIB1zWf6MuLMC07egBrhlZEEtIw=;
+	b=0S6oLRAerd0mbkgAMfIboQLLlOpnsEIqUGHrTr4g+VmoBr0oruPDR6LVg0kFNFBoFrcT
+	 fK5t5Jx8EesJHlDrUDzEf1aDIaz7RO5sEERp7ykjXBltUNX9GVcKcWunttHKMrEkep4zo
+	 os263vmLmAyifP106XCp6vfSv/zX6GtlFv0bOCLWjsf6ki9KDpIVh2gsN52jeUZxBGac3
+	 0S2wWELwW+6CS2pCtHpgC7WP3tTJh9Q0FYFIc5HMyzwXADwqma8hdD/bvqkgroKqsNEm7
+	 9Zz16uP8fV95Ai5Dohpb9spie0lnFnyLu/pyz6ein/nt62wi6iAd3+O0u50aruPhdOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YYAWuP4R;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HC5cA4or;
+	arc=none smtp.remote-ip=209.85.218.42
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0486960A2619;
-	Mon, 19 Oct 2026 16:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745ED606A31E
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 17:02:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 745ED606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YYAWuP4R
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24571F0157C;
-	Mon, 19 Oct 2026 16:55:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792428940;
-	bh=rFCMxCD79vEB4iyMWGtxNJDVMBMGuW8tGz3ncBlH5DE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YYAWuP4RFH9egcbjrf7Ucl/hUbJ/I5rrdG/rdr9digYHMplte5Q7BulOM1qlGcvlf
-	 7GTDjNcr8xVpA+k9SjWPgkpXk9XhE9xonxFGyx4D7UfLw6VA/rRlZhGfXZU8+sK5ic
-	 9/rZOkY9z4tFkdj5n6qODpFGuXYl86118+YdyOctwyUpgd+9Kkvbe/z3PuBss5NWMR
-	 TKJlU7DPWa03y1uYdLIGs5gM2pRKKmsX9DrTHTyDLUNZPYrBiv0jQnMf6N/1Z403tl
-	 ru87YuLM2eD/bm1hefBiiAHeaV+HukxSECwuRySLKuFe3nQ1WEIaEaAosu7qdj2G72
-	 VCSIKjPbKyOTg==
-From: Chuck Lever <cel@kernel.org>
-Date: Mon, 19 Oct 2026 12:55:23 -0400
-Subject: [PATCH net-next v6 7/9] selftests: tls: Skip the zero_len tests
- when TLS is unavailable
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HC5cA4or
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c40e02b2ebaso335353266b.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 10:02:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792429349; x=1793034149; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zgafyIzMsT1pjWtIoIB1zWf6MuLMC07egBrhlZEEtIw=;
+        b=HC5cA4oraBsT/6Cwj86YWowEwNgxxDxLSPOYc+6lXZ3rsXcwEVJvZIblo0j4CiRFvL
+         jjwHY/vNZiHW1XIBeQlXHYLhCydDbpq6FiSXLNb0oKgCRacCIY8lvi2tbYk7NiPqn7Ya
+         KF7bDcWlIz6e97FaTZiBx89FG2+6E27z9c6hhXcT5/RhX45xrlf+AxVc1KH7jII7dbCb
+         9rcJ0/8TgY35/D50dHimFJwIB9B2OxsZpNHTssPZth/wUdSYX/h2Xww/EtbeOh9QD1yq
+         feEWZccbrMnQliubCuSUyQu08pi/l0lpiW7cQlto8P6pbMiy4lZ2s3+BV9Gz2tdBt2qH
+         iaZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792429349; x=1793034149;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zgafyIzMsT1pjWtIoIB1zWf6MuLMC07egBrhlZEEtIw=;
+        b=pekjFb3H/X8D8mG5vsMYY7TsMhGeJiOM5EQC47eTjCfD+4xnA0yZT5trdQYtZPEofl
+         BMCmdXG1wfY59fXFcjdVgNYOqbpuwzK1/ok38NafdnHUfre2EwX1DPkKmY/HJ7EJrNK4
+         UaPsrsxhpEvwNJbzH7K/WrQBMM5ByHs4ntbXFY9hJXpZ4P/JY+DDs+YJxlT4QQIG/hCT
+         A96i77gp1Chkk/pfTMzqQy7pyGYS/6JnS/TdLKaKsBaJp0/MoW20Lg1YL+yjKNNuXm68
+         9I0JfDZ803HGL7AceZAXAA1ur+AFsGdfeeNMHVf2ounWCc+nToQucDIIHgOa1hgqoWts
+         sKUg==
+X-Gm-Message-State: AFq9FYJGNNUFF1csgENVsS9V5Inv9B1P4qx2lYFbuyKfutF2rmp5LwVH
+	wILnA5N9EN7cuNLANQMeGT54FfTUepqyDFR6WqDw5PZ//Uc9oO9lTeXZs6ONsEtZ3iu9Xg==
+X-Gm-Gg: AYBFou0AhYJ1ai/EHTA8katrpfQhA/zUVndXHa9mGeyKP/4Ra7N5S4S0bMMebhUBLuj
+	caqEY4Nz4+rl3Y52S5HVR9ZAxHFO6o+bL4TJfs9IwHiA9TcjWMzDNQSSpudjG7zHAR2F8RTPDOj
+	pe6HiMRjIophlAksgbBL0Ey6Khwro9jxSAVshVyye07fyT0qvzhFLzElRjLzVw1u5pYrpBVjKZO
+	bR/nJCPwWcK8WlSSX5tYclbpuWEbjcld7PcLy+qw7xZzILiaOGixvQt4Rz8SHafkfjG1iYxVQxY
+	by8o5RQzmcayidLpL8ibSihyLPBnj/qA1724l7yk4xo8QwqPJrFqfOVeSKuVldrulkLH1rmAeyu
+	1j3Ke2PxGtZ7LGX/WKqSFS8CziGHwkAPNsfuJU3LMJTcBi+3UHlnBSGpP7CcXU166XdmUCQX8bi
+	tDqWKJq4UniejZw2vu1MvXaHhqSFMaoBT/mUWOo/SUA7meAyM6xGYiSsIZiOh7UnKL
+X-Received: by 2002:a17:906:1012:20b0:c41:b4e4:7958 with SMTP id a640c23a62f3a-c41b4e47ad3mr361011966b.0.1792429348652;
+        Mon, 19 Oct 2026 10:02:28 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:45::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40919c0402sm391036266b.61.2026.10.19.10.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 10:02:28 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: netdev@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	Vlad Poenaru <thevlad@meta.com>
+Subject: [PATCH net-next 0/2] net/sched: don't wait for RCU when destroying qdisc lockdep keys
+Date: Mon, 19 Oct 2026 10:02:23 -0700
+Message-ID: <20261019170225.729789-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,68 +106,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-tls-follow-on-v6-7-ab01c4ecca0c@kernel.org>
-References: <20261019-tls-follow-on-v6-0-ab01c4ecca0c@kernel.org>
-In-Reply-To: <20261019-tls-follow-on-v6-0-ab01c4ecca0c@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
- Dave Watson <davejwatson@fb.com>, Shuah Khan <shuah@kernel.org>, 
- Qingfang Deng <qingfang.deng@linux.dev>, Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-Mailer: b4 0.17-dev-9c833
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1218; i=cel@kernel.org;
- h=from:subject:message-id; bh=wqxT4pxVpI2WjHbBcnA9gBITBl3U0Fhzz/JQdT0Rqpg=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq1kuB67eC1ndU1vPlx7ayaTw0p/sV7iIHo4AYC
- KGr7Bj4rUaJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCatZLgQAKCRAzarMzb2Z/
- l719D/9l8WJKjNUeg0XnULielJmAulTEB7/TADNU+oqJvBdm6JBcvS2ImcFJQk2yT/WdUcO8aNx
- iTlwx8zu1e1st+wNgNJc1WKoXqQ+7zAnIU+SZLzM1Xvirzzf1PHby7iLeGAbljzFzvhfU11dEmv
- pGvJowYIYeL7r9i+gZ4i4dXqU7BFLu9gLbPlxKM/WLKdMAyhme6XwNsDr6wDxty/yof7uTI2w/W
- rWoKJSBKkQf8fxGfy5Lc98jcXCn8I/ZsaB+saKHmncN0Up2qousEeAgsmCvBsshh3oqYCLYT3e1
- G0QdMmI8o9bRQTo2lriLpfdVwyBFPjhYuSgLbrxzAocvZr0w+ffqTBkcxN/sASMYbAXQGHlmPXK
- eTEIlF7oMrTUNNQsLG7LqWNK7uXiN4KhXle7kWXMhC+pBm4CCtAoAVPJpmdvs8eZIvr4SJdvImE
- xQK4uXNIPUKQ31aDGl9O6Kjhkb+nbX/+ZMmxZsJmmw7kZbJy+5si1Ne2STUvrhrlLDjITpu7JVU
- ihHe6HyzF3ycU8vPtx3+7FDjfBiXWWVrqpkN+RwojTVQTRJnheBrpKyxb6pOQzInBMzn86MBNFP
- mhnnQwIcVrxjpCaelwV/FpHtyxzjTyyv98NXlsyFkikE9hSjS9n0YXekpmZ+u1SPMI/wglRSeNS
- SDrclv0osGoUUgQ==
-X-Developer-Key: i=cel@kernel.org; a=openpgp;
- fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+Content-Transfer-Encoding: 8bit
 
-FIXTURE_SETUP(zero_len) returns early when ulp_sock_pair() reports
-that the TCP_ULP setsockopt failed, so on a kernel built without
-CONFIG_TLS the TLS_RX setsockopt never runs. TEST_F(zero_len, test)
-then sends its raw records over a plain TCP socket, which returns
-the ciphertext verbatim. All eight variants FAIL on a machine that
-lacks TLS, and those failures mask any real regression in the same
-run.
+From: Vlad Poenaru <thevlad@meta.com>
 
-Skip the test when the fixture recorded notls, as the other
-fixtures in this file do.
+On kernels with CONFIG_PROVE_LOCKING, every qdisc except ingress, clsact
+and noqueue has a dynamic lockdep key, and destroying the qdisc calls
+lockdep_unregister_key(), which waits for an expedited RCU grace period.
+Replacing an mq root destroys one qdisc per TX queue under RTNL, so a
+single "tc qdisc replace dev eth0 root mq" waits for that many grace
+periods. Commit 7a3cedafccf8 ("lockdep: Speed up lockdep_unregister_key()
+with expedited RCU synchronization") made each wait shorter as a
+temporary workaround until hazard pointers are available.
 
-Fixes: a61a3e961baf ("selftests: tls: add tests for zero-length records")
-Signed-off-by: Chuck Lever <cel@kernel.org>
----
- tools/testing/selftests/net/tls.c | 3 +++
- 1 file changed, 3 insertions(+)
+The wait is redundant for qdiscs: the qdisc is freed with call_rcu()
+after its key is unregistered, so the key's memory already outlives an
+RCU grace period. Patch 1 revives Bart Van Assche's
+lockdep_unregister_key_nosync() [1], with the grace-period requirement
+spelled out, and patch 2 uses it for qdisc keys, as Eric suggested [2].
 
-diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
-index 9d3cd4fff062..0bc43728262e 100644
---- a/tools/testing/selftests/net/tls.c
-+++ b/tools/testing/selftests/net/tls.c
-@@ -2639,6 +2639,9 @@ TEST_F(zero_len, test)
- 	int rec_off;
- 	int i;
- 
-+	if (self->notls)
-+		SKIP(return, "no TLS support");
-+
- 	for (i = 0; i < 4 && variant->recs[i]; i++)
- 		EXPECT_EQ(send(self->fd, variant->recs[i]->cipher_data,
- 			       variant->recs[i]->cipher_len, 0),
+Boqun was concerned that a nosync variant is hard to enforce and review,
+since a later refactor could move the free [3]. For qdiscs the RCU-deferred
+free is not optional: datapath readers find the qdisc under RCU, so
+freeing it synchronously would already be a use-after-free regardless of
+lockdep. Patch 2 also documents the requirement at qdisc_lock_uninit().
+The hazptr-based replacement for the wait is still under discussion [4];
+if it lands, the nosync variant can stay as the no-wait path or be
+dropped.
+
+On an x86_64 KASAN + PROVE_LOCKING kernel (64 vCPU KVM guest, 64-queue
+netdevsim device, 214K lock chains) this removes 5.3 ms of grace-period
+wait from each of the 65 qdisc destroys in "tc qdisc replace dev eth0
+root handle 1: mq".
+
+A separate lockdep patch, sent to tip, makes the zap_class() part of
+lockdep_unregister_key() cheaper [5]; the two are independent. Nilay
+Shroff's pending "lockdep: Fix subclass resource leak in
+lockdep_unregister_key()" [6] touches the same function as patch 1;
+whichever lands second needs a trivial rebase.
+
+Peter, Boqun, Waiman: if patch 1 looks fine, an Ack for taking it
+through net-next with its user would be appreciated.
+
+[1] https://lore.kernel.org/all/20250203175939.3133477-2-bvanassche@acm.org/
+[2] https://lore.kernel.org/all/CANn89iLvu_ijSV+FnrZ6qei_Ty2c9V-RjwLMk24+oOS91bNjaQ@mail.gmail.com/
+[3] https://lore.kernel.org/all/Z-OPya5HoqbKmMGj@Mac.home/
+[4] https://lore.kernel.org/all/20261005171529.1378809-9-kunwu.chan@gmail.com/
+[5] https://lore.kernel.org/all/20261019170018.699298-1-vlad.wing@gmail.com/
+[6] https://lore.kernel.org/all/20260727182312.3750145-1-nilay@linux.ibm.com/
+
+Bart Van Assche (1):
+  lockdep: Introduce lockdep_unregister_key_nosync()
+
+Vlad Poenaru (1):
+  net/sched: Don't wait for RCU when unregistering the qdisc lockdep key
+
+ include/linux/lockdep.h  |  5 +++++
+ include/net/pkt_sched.h  |  3 ++-
+ kernel/locking/lockdep.c | 36 +++++++++++++++++++++++++-----------
+ net/sched/sch_generic.c  |  2 +-
+ 4 files changed, 33 insertions(+), 13 deletions(-)
 
 -- 
-2.55.0
+2.53.0-Meta
 
