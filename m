@@ -1,38 +1,37 @@
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B0E2E0B5C;
-	Mon, 19 Oct 2026 03:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2760F3515D6;
+	Mon, 19 Oct 2026 03:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792381724; cv=none; b=EIKubGwFblNCpq5I7O+AIA6/SAysg8h2CqIJ2CzdRvmEXltTpcR2oJBA0Te1yOs/Oiva2+QcqgCNKUSqMuDo0EtZzv4IMUA9FTZHwu3z6x5E34ZjBFlnTTNMXmyfRT69NMUrQZt6uv9NlR5BHM+6MgWqvCT9ZD1HZquFcmem6Bg=
+	t=1792381725; cv=none; b=l1N7uCn4RkUEM1gsL1sBLcxd6ImzfCFnqAyEgcXCHSIvGfz4UyNDtNyVrCDfXZJZR/GeLLxRmrl3Eg9VRbOsXBzd3gnLmPNI9A5lHqnymKk6O8Pe3XbHyP/hcITdgcK2khMziJXgWM7fyEChzE/MWA2CNxKul8bwjnPFa1xerno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792381724; c=relaxed/simple;
-	bh=bcRjCWPoLnbor3uljaWadDJZ55ho0nIUZHmrHK59PaQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cn2YKb9rIpuANq3aqSnFwYMiXPfBwKrxHE+D12DEcAKsuGl2dYNgpsVFtyFKS4jnGs2MJ507i10qjy4PvhMA7Zr6aGTXuSRt8ab+mcLw197YDso+rKc4EJeFqCjWKk+Th03FkHTKQCNRUQi0dk5a+mdtRnKA+2vR+Y914IoFRBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=xzuIi5jz; arc=none smtp.client-ip=113.46.200.227
+	s=arc-20240116; t=1792381725; c=relaxed/simple;
+	bh=F8r7RJb2HkqTNVJUBwMV9xUh0wueKrB6HbmUUOqrOaU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UIkQdPxVWsZHwjwNUs3H8aW9MM+3jMbNW6nNyUpZJKPyY4zgt4yJ6ItVTJp16c80H7GwjpSR2afZvNMrAP1yexGzUObek6OQIqZnlRJ9dDyeNcNDAyCcjbc2Olv7CR2g8e2xG3UrCv4qJorGcrNuFzqHAJcEiZ0uyjCK7n1KOBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=XQ0aVcD9; arc=none smtp.client-ip=113.46.200.220
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="xzuIi5jz"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="XQ0aVcD9"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=VoqSHFq5MCqTnGnobVtvT07ONI3aaCbGwmbdmqmXZ1A=;
-	b=xzuIi5jzfVr8hzonLqrzXUn8csBpD8TvaDQvuyOKbWqBvPWSmzZFjL2KyoggnHsET8Y48Mdpj
-	XPpVVhs7d9Efauqb9EHb/s7J9hMG2OFY+s87U7WH1MK4a8Y1SwmbKh/Y2omdpgEwarI6FJ5WGRE
-	rcabGCF8lB7U1FjVwOaf7U4=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4j7M366hMTznTyB;
-	Mon, 19 Oct 2026 11:48:34 +0800 (CST)
+	bh=6y9ZCsegJinoqGedyx0155yMaMPNRTZAec0JZJWx9CA=;
+	b=XQ0aVcD9MkXVJyZ4cbAJCDveAMQlw2j9U1doXBgQoQtMK/I8zDh3SovBQxAQ+sazdGTgIQjjH
+	skxA/vMJZU+4WmmVrkiQuthO2cpawqChKBFlmiNR0qw8rpOmx8cADrv1yiDi7tETlt1xw+nm/ZC
+	MtThAbvZH+J8WrDtM2b66bU=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4j7M342hd6z12LFX;
+	Mon, 19 Oct 2026 11:48:32 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 86C2E4056C;
-	Mon, 19 Oct 2026 11:48:34 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7426340561;
+	Mon, 19 Oct 2026 11:48:32 +0800 (CST)
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.38) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 19 Oct 2026 11:48:33 +0800
+ 15.2.2562.45; Mon, 19 Oct 2026 11:48:31 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
 	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
@@ -46,12 +45,10 @@ To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
  Fedorenko <vadim.fedorenko@linux.dev>
 CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Zhou Shuai
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>
-Subject: [PATCH net-next v17 1/2] hinic3: Add ethtool statistic ops part1
-Date: Mon, 19 Oct 2026 11:45:37 +0800
-Message-ID: <0d19828afdc0cec629c8b342cc3f7a0c11ecb1f3.1792378301.git.gongfan1@huawei.com>
+Subject: [PATCH net-next v17 0/2] net: hinic3: Support ethtool ops
+Date: Mon, 19 Oct 2026 11:45:36 +0800
+Message-ID: <cover.1792378301.git.gongfan1@huawei.com>
 X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <cover.1792378301.git.gongfan1@huawei.com>
-References: <cover.1792378301.git.gongfan1@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,1013 +60,286 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-This commit adds per-queue TX/RX software counters and firmware-backed
-vport and physical port statistics to the hinic3 driver. It implements
-the .get_strings, .get_sset_count and .get_ethtool_stats callbacks so
-these can be read with ethtool -S, and adds packet/byte accounting to
-the RX and TX hot paths.
+This is [3/3] part of hinic3 Ethernet driver second submission.
+With this patch hinic3 becomes a complete Ethernet driver.
 
-Co-developed-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Wu Di <wudi234@huawei.com>
-Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
----
- .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 290 ++++++++++++++++++
+These patch-set will include all ethtool interfaces for hinic3. To facilitate
+review, this interfaces will be Split into multiple submissions, with each
+commit limited to approximately 1000 lines of code.
+
+Add:
+    .get_strings
+    .get_sset_count
+    .get_ethtool_stats
+    .get_eth_phy_stats
+    .get_eth_mac_stats
+    .get_eth_ctrl_stats
+    .get_rmon_stats
+    .get_pause_stats
+
+Changes:
+
+PATCH 03 V01: https://lore.kernel.org/netdev/cover.1773387649.git.zhuyikai1@h-partners.com/
+* Add rmon/pause/phy/mac/ctrl stats (Ioana Ciornei)
+
+PATCH 03 V02: https://lore.kernel.org/netdev/cover.1774684571.git.zhuyikai1@h-partners.com/
+* Remove OutOfRangeLengthField, FrameToolong and InRangeLengthErrors (Ioana Ciornei)
+* Remove redundant mtu commit (Maxime Chevallier)
+* Modify "return -EINVAL" intension problem (AI Review)
+* Use le16_to_cpu for rss_indir pair.out->buf (AI Review)
+* Use u32 instead of int in coalesce_limits to avoid overflow (AI Review)
+* Remove redundant u64_stats_update_begin/end when reading stats without
+  concurrent reader (AI Review)
+* Modify nic_dev->stats.syncp logic (AI Review)
+* Complete rxq/txq stats stats fileds in hinic3_rx/txq_get_stats (AI Review)
+* Remove statistics values in rtnl_link_stats64 from ethtool statistics
+  values (AI Review)
+* Add channel_cfg_lock & channel_res_lock to protect resources access (AI Review)
+
+PATCH 03 V03: https://lore.kernel.org/netdev/cover.1774940117.git.zhuyikai1@h-partners.com/
+* Change unnedd to unneeded (AI Review)
+* Remove packets,bytes,errors and dropped in hinic3_rx/tx_queue_stats (AI Review)
+* Remove duplicated entried in hinic3_port_stats[] (AI Review)
+* change stats_info.head.status to ps->head.status (AI Review)
+
+PATCH 03 V04: https://lore.kernel.org/netdev/cover.1775618797.git.zhuyikai1@h-partners.com/
+* Use old_q_param to store old config and use it in error handling (Mohsin Bashir)
+* Add netdev_info to inform the user that depth is trimmed (Mohsin Bashir)
+* Remove const in hinic3_get_qp_stats_strings parameters (Mohsin Bashir)
+* Change EOPNOTSUPP to ERANGE in is_coalesce_exceed_limit (Mohsin Bashir)
+* Update nic_dev->rss_type after hinic3_set_rss_type (Mohsin Bashir)
+* Modify MGMT_STATUS_CMD_UNSUPPORTED to EOPNOTSUPP for complying with the
+  error code specifications (Mohsin Bashir)
+* Remove restore_drop_sge in hinic3_rx_queue_stats (AI Review)
+* Remove hinic3_nic_stats (AI Review)
+
+PATCH 03 V05: https://lore.kernel.org/netdev/cover.1775711066.git.zhuyikai1@h-partners.com/
+* As tx and rx share interrupts, we only use ETHTOOL_COALESCE_RX_USECS for
+  user setting to avoid user misunderstanding. So we do not add
+  ETHTOOL_COALESCE_TX_USECS. (Mohsin Bashir & AI Review)
+* Clear HINIC3_CHANGE_RES_INVALID bit in error handling (AI Review)
+* Use low >= high to avoid low=high in is_coalesce_legal (AI Review)
+
+PATCH 03 V06: https://lore.kernel.org/netdev/cover.1779867397.git.zhuyikai1@h-partners.com/
+* Remove redundant rx_jumbo_pending and rx_mini_pending judgement (Jakub Kicinski)
+* Remove redundant max tx_pending judgement when .get_ringparam already got the
+   max value (Jakub Kicinski)
+* Use extack instead of netdev_err/netdev_info/netdev_warning (Jakub Kicinski)
+* Remove HINIC3_CHANNEL_RES_VALID and only use HINIC3_CHANGE_RES_INVALID
+  bit (Jakub Kicinski)
+* Deference freed pointers in hinic3_change_channel_settings error
+  handling (Jakub Kicinski)
+* Modify hinic3_open_channel (Jakub Kicinski)
+
+PATCH 03 V07: https://lore.kernel.org/netdev/cover.1779940072.git.zhuyikai1@h-partners.com/
+* Remove the trailing '\n' in NL_SET_ERR_MSG* (Jakub Kicinski)
+
+PATCH 03 V08: https://lore.kernel.org/netdev/cover.1780907605.git.wudi234@huawei.com/
+* Update patch commit to be more accurate for change information (AI Review)
+* Modify <net/devlink.h> to <linux/netlink.h> (AI Review)
+* Use sq/rq_depth instead of rx/txqs[0].q_depth (AI Review)
+* hinic3_change_channel_settings() runs under change_res_mutex
+  to protect dynamic channel updates (AI Review)
+* hinic3_close() serializes close and channel reconfiguration paths (AI Review)
+* Remove useless u64_stats_init in hinic3_get_drv_queue_stats() (AI Review)
+* hinic3_get_drv_queue_stats() fills rxq stats at correct idx
+  when txq is null (AI Review)
+* Remove unnecessary semicolons after the closing bracket of
+  static inline functions (AI Review)
+* Disable preemption in hinic3_rx_fill_buffers() (AI Review)
+* Add spinlock to protect per-queue coalesce parameters from
+  concurrent access (AI Review)
+* Reject static coalesce config when adaptive RX coalesce is
+  enabled (AI Review)
+* Validate interface state and queue ID before modifying coalesce
+  parameters (AI Review)
+* Differentiate get_coalesce output for adaptive/static modes and
+  zero-fill the struct (AI Review)
+* Return -ERANGE for invalid coalesce frame limits and simplify
+  error message (AI Review)
+* Remove unused watchdog timeout definition and assignment (AI Review)
+* Return -EOPNOTSUPP when RSS type query is unsupported by firmware (AI Review)
+* Reject L4 hash bits for pure L3 flow types (AI Review)
+* Split RSS type conversion to correctly handle L3-only flows (AI Review)
+* Reprogram RSS indir table and HW parameters after channel count
+  changes (AI Review)
+* Propagate exact error code from channel parameter validation (AI Review)
+* Update SW RSS indir copy only after HW programming succeeds (AI Review)
+* Program RSS hash type to HW before updating SW state to prevent
+  inconsistency (AI Review)
+
+PATCH 03 V09: https://lore.kernel.org/netdev/cover.1781062575.git.wudi234@huawei.com/
+* Remove useless messages in hinic3_set_ringparam() (Jakub Kicinski)
+* Solve the big-endian and little-endian issue (Jakub Kicinski)
+
+PATCH 03 V10: https://lore.kernel.org/netdev/cover.1782718232.git.wudi234@huawei.com/
+* Unify 3 mutex in struct hinic3_nic_dev: port_state_mutex, change_res_mutex,
+  coal_lock.(Simon Horman)
+* Use rxq->q_mask instead of rxq->q_depth - 1 in hinic3_configure_rxqs()
+  (Dimitri Daskalakis)
+* Implement dedicated get_rx_ring_count ethtool operation (Dimitri Daskalakis)
+* Correct copy-paste error in hinic3_get_ringparam() (AI Review and
+  Harshitha Ramamurthy)
+* Clarify extack error message in hinic3_check_ringparam_valid()
+  (Harshitha Ramamurthy)
+* Use rounddown_pow_of_two() instead of 1U << ilog2() in hinic3_set_ringparam()
+  for readability. (Harshitha Ramamurthy)
+* hinic3_set_interrupt_moder() now compare q_id and num_qps inside mutex lock
+  (AI Review)
+* Error branches in hinic3_link_status_change() goto unlock mutex before return
+  (AI Review)
+* In hinic3_change_channel_settings(), hinic3_config_num_qps() and
+  hinic3_alloc_channel_resources() now run inside mutex lock. (AI Review)
+* Call hinic3_free_qp_ctxts() in error paths of hinic3_open_channel(),
+  thus hinic3_change_channel_settings() don't call it in error path (AI Review)
+* Unset HINIC3_INTF_UP during close and reopen in hinic3_change_channel_settings
+* hinic3_change_channel_settings() restore previous resources before freeing
+  new_qp_params (AI Review)
+* Delete unused macro HINIC3_LRO_PKT_HDR_LEN (AI Review)
+* Drop packets when skb_checksum_help() return error (AI Review)
+* Protect interrupt coalesce parameter reads with state_lock to prevent data
+  races(AI Review)
+* Restore previous coalesce parameters on HW configuration failure (AI Review)
+* Always report all coalesce parameters regardless of adaptive mode (AI Review)
+* Safely stop DIM work when disabling adaptive RX coalescing (AI Review)
+* Change coalesce disabled message from extack error to info log (AI Review)
+* Pass new RSS hash type to HW instead of the old one (AI Review)
+* Initialize default RSS indirection table before HW programming when not
+  user-configured(AI Review)
+* Revert queue count on RSS reprogramming failure (AI Review)
+* Use sizeof for RSS indirection table copy to prevent size mismatch (AI Review)
+
+PATCH 03 V11: https://lore.kernel.org/all/cover.1784538912.git.root@localhost.localdomain/
+* Remove state_lock in hinic3_set_interrupt_moder() and
+  hinic3_link_status_change() (Andrew Lunn and AI Review)
+* In hinic3_change_channel_settings(), cur_trxq_params is read after taking lock,
+  and get symmetrically restored when alloc resources failed. (AI Review)
+* Remove preempt_disable()/preempt_enable() pairs in hinic3_rx_fill_buffers().
+  (AI Review)
+* Add a comment about csum_err, and rewrite its judgement in hinic3_rx_csum().
+  (AI Review)
+* Rollback hash function type to previous state if setting RSS indirection
+  table or key fails (AI Review)
+* Allow users to disable L3 hashing for IPV4/IPV6 flows by properly handling
+  empty hash tuple in ethtool (AI Review)
+* Update software queue coalesce state only after successful hardware
+  configuration to avoid manual rollback (AI Review)
+* Use READ_ONCE and WRITE_ONCE for adaptive_rx_coal to ensure safe
+  concurrent memory access (AI Review)
+* Reset RX queue DIM state to DIM_START_MEASURE when canceling
+  adaptive RX coalescing work (AI Review)
+* Remove unnecessary state_lock mutexes when reading queue coalesce
+  parameters in IRQ and update paths (AI Review)
+* Rename is_coalesce_legal to hinic3_validate_coalesce for better code
+  readability and naming consistency (AI Review)
+
+PATCH 03 V12: https://lore.kernel.org/all/cover.1785120952.git.root@localhost.localdomain/
+* Remove get_val_of_ptr() which is unnecessary (Dimitri Daskalakis)
+* Split the monolithic patch into multiple patches (Mohsin Bashir)
+* Fix MSI-X leak and defer q_params publication and add error-path
+  rollback to prevent regressions (AI Review)
+* Rfactor hinic3_update_hash_func_type() (AI Review)
+* Guard irq_cfg traversal with INTF_UP check to prevent NULL dereference
+  and fully reinitialize DIM state on adaptive re-enable (AI Review)
+* Snapshot per-queue coalesce configs before applying and rollback via
+  backup array on partial failure to ensure atomic set_coalesce (AI Review)
+
+PATCH 03 V13: https://lore.kernel.org/netdev/cover.1786774752.git.tengpeisen@huawei.com/
+* Split previous version into 3 parts. The first 2 patches were sent to
+  net tree, patch #5, #6 and #8 stayes in this series, and others will be sent
+  in the future. (Larysa Zaremba and Jakub Kicinski)
+* Remove dead size field from struct hinic3_stats and add
+  HINIC3_STAT_SIZE_CHECK() with BUILD_BUG_ON_ZERO to enforce
+  per-entry compile-time verification that all stats members are u64. (AI Review)
+* Remove never-incremented frag_len_overflow and frag_size_err from
+  hinic3_txq_stats, hinic3_txq_clean_stats(), hinic3_txq_get_stats()
+  and the hinic3_tx_queue_stats ethtool table. (AI Review)
+* Add missing txq_stats.busy increment in hinic3_send_one_skb() when
+  returning NETDEV_TX_BUSY due to insufficient WQEBBs. (AI Review)
+* Add missing txq_stats.offload_cow_skb_err increment when offload
+  type is invalid in hinic3_send_one_skb(). (AI Review)
+* Remove mac_tx_good_oct_num and mac_rx_good_oct_num from the
+  hinic3_port_stats private table as they are already reported through
+  the get_eth_mac_stats standard interface. (AI Review)
+* Fix OctetsTransmittedOK/ReceivedOK mapping in
+  hinic3_get_eth_mac_stats() to use mac_tx/rx_good_oct_num instead
+  of mac_tx/rx_total_oct_num per RFC 2863 (error-free frames only). (AI Review)
+* Add HINIC3_IS_VF guard to hinic3_get_eth_phy_stats() to prevent
+  VF from reading physical port stats, consistent with the ethtool
+  -S path which already gates hinic3_port_stats on PF-only. (AI Review)
+* Use u64_stats_update_begin_irqsave/end_irqrestore in
+  hinic3_rx_fill_buffers() where the function can be called from
+  preemptible process context via hinic3_configure_rxqs(), avoiding
+  seqcount deadlock on 32-bit systems. (AI Review)
+* Expand state_lock protection scope in hinic3_get_coalesce() and
+  hinic3_set_coalesce() to cover intr_coalesce array accesses. (AI Review)
+* Use standard net_dim_work_cancel() in hinic3_set_coalesce() to cancel
+  DIM work instead of manually clearing struct fields, ensuring safe DIM
+  state reset and simplifying error rollback. (AI Review)
+
+PATCH 03 V14: https://lore.kernel.org/netdev/cover.1791858167.git.gongfan1@huawei.com/
+* Remove if (!nic_dev->txqs) & if (!nic_dev->rxqs). (Vadim Fedorenko)
+* All comments regarding this submission have been documented and will be
+  addressed incrementally in subsequent patch-set.
+
+PATCH 03 V15: https://lore.kernel.org/netdev/cover.1792053295.git.gongfan1@huawei.com/
+* Break get_ethtool_stats into the standard statistic groups.
+  Only retain the counters which are not part of standard groups.
+  (Andrew Lunn and AI Review)
+* Netdev netlink qstats (struct netdev_stat_ops) does not be implemented
+  by hinic3, it will be implemented in future. So the per-queue stats of
+  rxq%d_csum_errors etc. will be retained in ethtool -S.(AI Review)
+* Change netdev_err to netdev_err_once and dev_err to dev_err_once.
+  (AI Review)
+* The stall of hinic3_rx_fill_buffers() and LRO in extreme condition will
+  go in a separate patch.(AI Review)
+* Use the same algorithms for calculating the number of bytes and packets
+  in the TSO and LRO statistics.(AI Review)
+* Replace skb_inner_transport_header() with skb_inner_tcp_all_headers()
+  will go in a separate patch.(AI Review)
+* Drops taken in hinic3_xmit_frame() are counted.(AI Review)
+* u64_stats_update_begin() in hinic3_rxq_clean_stats() and
+  hinic3_txq_clean_stats() will go in a separate patch.(AI Review)
+* get_pauseparam callback will go in a separate patch.(AI Review)
+
+PATCH 03 V16: https://lore.kernel.org/netdev/cover.1792149958.git.gongfan1@huawei.com/
+* Change lro_packets = 1 to lro_packets++.(Mohsin Bashir)
+* Init txq at the correct place.(Mohsin Bashir)
+* Statistics in hinic3_function_stats and rtnl_link_stats64 originate from
+  different sources: the chip records the former, while the driver records
+  the latter. Chip statistics are readable via ethtool -S, and driver
+  statistics are returned via rtnl_link_stats64.(AI Review)
+* Change u64 to __le64 in l2nic_vport_stats and mag_cmd_port_stats.(AI Review)
+* Reset lro_packets and gso_packets.(AI Review)
+
+PATCH 03 V17:
+* Use ethtool_puts().(Dimitri Daskalakis)
+* Remove the casting of char *p = (char *)data.(Dimitri Daskalakis)
+* It was clarified in the last patch that tx_unicast_pkts_vport and
+  per-queue metrics are not standard statistics.(AI Review)
+* Use le64_to_cpu() to handle variables definded as __le64.(AI Review)
+* Optimize the txq initialization position to prevent out-of-bounds
+  memory access.(Mohsin Bashir & AI Review)
+* The coexistence of hinic3_get_stats64() and hinic3_get_pkt_stats()
+  will go in the separate patch.(AI Review)
+
+Fan Gong (2):
+  hinic3: Add ethtool statistic ops part1
+  hinic3: Add ethtool statistic ops part2
+
+ .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 492 ++++++++++++++++++
  .../ethernet/huawei/hinic3/hinic3_hw_intf.h   |  11 +
- .../huawei/hinic3/hinic3_mgmt_interface.h     |  37 +++
- .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   |  64 ++++
- .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   | 108 +++++++
- .../net/ethernet/huawei/hinic3/hinic3_rx.c    |  64 +++-
+ .../huawei/hinic3/hinic3_mgmt_interface.h     |  37 ++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   |  64 +++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   | 108 ++++
+ .../net/ethernet/huawei/hinic3/hinic3_rx.c    |  64 ++-
  .../net/ethernet/huawei/hinic3/hinic3_rx.h    |   8 +-
- .../net/ethernet/huawei/hinic3/hinic3_tx.c    |  79 ++++-
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    |  79 ++-
  .../net/ethernet/huawei/hinic3/hinic3_tx.h    |   5 +-
- 9 files changed, 650 insertions(+), 16 deletions(-)
+ 9 files changed, 852 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-index 90fc16288de9..64c862052f1e 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-@@ -13,8 +13,11 @@
- 
- #include "hinic3_lld.h"
- #include "hinic3_hw_comm.h"
-+#include "hinic3_hwif.h"
- #include "hinic3_nic_dev.h"
- #include "hinic3_nic_cfg.h"
-+#include "hinic3_tx.h"
-+#include "hinic3_rx.h"
- 
- #define HINIC3_MGMT_VERSION_MAX_LEN     32
- 
-@@ -409,6 +412,290 @@ hinic3_get_link_ksettings(struct net_device *netdev,
- 	return 0;
- }
- 
-+struct hinic3_stats {
-+	char name[ETH_GSTRING_LEN];
-+	int  offset;
-+};
-+
-+#define HINIC3_STAT_SIZE_CHECK(type, member) \
-+	BUILD_BUG_ON_ZERO(sizeof_field(type, member) != sizeof(u64))
-+
-+#define HINIC3_FUNC_STAT(_stat_item) {	\
-+	.name   = #_stat_item, \
-+	.offset = offsetof(struct l2nic_vport_stats, _stat_item) \
-+		  + 0 * HINIC3_STAT_SIZE_CHECK(struct l2nic_vport_stats, \
-+					       _stat_item) \
-+}
-+
-+static struct hinic3_stats hinic3_function_stats[] = {
-+	HINIC3_FUNC_STAT(tx_unicast_pkts_vport),
-+	HINIC3_FUNC_STAT(tx_unicast_bytes_vport),
-+	HINIC3_FUNC_STAT(tx_multicast_pkts_vport),
-+	HINIC3_FUNC_STAT(tx_multicast_bytes_vport),
-+	HINIC3_FUNC_STAT(tx_broadcast_pkts_vport),
-+	HINIC3_FUNC_STAT(tx_broadcast_bytes_vport),
-+
-+	HINIC3_FUNC_STAT(rx_unicast_pkts_vport),
-+	HINIC3_FUNC_STAT(rx_unicast_bytes_vport),
-+	HINIC3_FUNC_STAT(rx_multicast_pkts_vport),
-+	HINIC3_FUNC_STAT(rx_multicast_bytes_vport),
-+	HINIC3_FUNC_STAT(rx_broadcast_pkts_vport),
-+	HINIC3_FUNC_STAT(rx_broadcast_bytes_vport),
-+
-+	HINIC3_FUNC_STAT(tx_discard_vport),
-+	HINIC3_FUNC_STAT(rx_discard_vport),
-+	HINIC3_FUNC_STAT(tx_err_vport),
-+	HINIC3_FUNC_STAT(rx_err_vport),
-+};
-+
-+#define HINIC3_PORT_STAT(_stat_item) { \
-+	.name   = #_stat_item, \
-+	.offset = offsetof(struct mag_cmd_port_stats, _stat_item) \
-+		  + 0 * HINIC3_STAT_SIZE_CHECK(struct mag_cmd_port_stats, \
-+					       _stat_item) \
-+}
-+
-+static struct hinic3_stats hinic3_port_stats[] = {
-+	HINIC3_PORT_STAT(mac_tx_fragment_pkts),
-+	HINIC3_PORT_STAT(mac_tx_undersize_pkts),
-+	HINIC3_PORT_STAT(mac_tx_undermin_pkts),
-+	HINIC3_PORT_STAT(mac_tx_1519_max_bad_pkts),
-+	HINIC3_PORT_STAT(mac_tx_1519_max_good_pkts),
-+	HINIC3_PORT_STAT(mac_tx_oversize_pkts),
-+	HINIC3_PORT_STAT(mac_tx_jabber_pkts),
-+	HINIC3_PORT_STAT(mac_tx_bad_pkts),
-+	HINIC3_PORT_STAT(mac_tx_bad_octs),
-+	HINIC3_PORT_STAT(mac_tx_total_pkts),
-+	HINIC3_PORT_STAT(mac_tx_uni_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri0_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri1_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri2_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri3_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri4_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri5_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri6_pkts),
-+	HINIC3_PORT_STAT(mac_tx_pfc_pri7_pkts),
-+	HINIC3_PORT_STAT(mac_tx_err_all_pkts),
-+	HINIC3_PORT_STAT(mac_tx_from_app_good_pkts),
-+	HINIC3_PORT_STAT(mac_tx_from_app_bad_pkts),
-+
-+	HINIC3_PORT_STAT(mac_rx_undermin_pkts),
-+	HINIC3_PORT_STAT(mac_rx_1519_max_bad_pkts),
-+	HINIC3_PORT_STAT(mac_rx_1519_max_good_pkts),
-+	HINIC3_PORT_STAT(mac_rx_bad_pkts),
-+	HINIC3_PORT_STAT(mac_rx_bad_octs),
-+	HINIC3_PORT_STAT(mac_rx_total_pkts),
-+	HINIC3_PORT_STAT(mac_rx_uni_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri0_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri1_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri2_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri3_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri4_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri5_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri6_pkts),
-+	HINIC3_PORT_STAT(mac_rx_pfc_pri7_pkts),
-+	HINIC3_PORT_STAT(mac_rx_send_app_good_pkts),
-+	HINIC3_PORT_STAT(mac_rx_send_app_bad_pkts),
-+	HINIC3_PORT_STAT(mac_rx_unfilter_pkts),
-+};
-+
-+#define HINIC3_TXQ_STAT(_stat_item) { \
-+	.name   = "txq%d_"#_stat_item, \
-+	.offset = offsetof(struct hinic3_txq_stats, _stat_item) \
-+		  + 0 * HINIC3_STAT_SIZE_CHECK(struct hinic3_txq_stats, \
-+					       _stat_item) \
-+}
-+
-+#define HINIC3_RXQ_STAT(_stat_item) { \
-+	.name   = "rxq%d_"#_stat_item, \
-+	.offset = offsetof(struct hinic3_rxq_stats, _stat_item) \
-+		  + 0 * HINIC3_STAT_SIZE_CHECK(struct hinic3_rxq_stats, \
-+					       _stat_item) \
-+}
-+
-+static struct hinic3_stats hinic3_tx_queue_stats[] = {
-+	HINIC3_TXQ_STAT(gso_packets),
-+	HINIC3_TXQ_STAT(busy),
-+	HINIC3_TXQ_STAT(skb_pad_err),
-+	HINIC3_TXQ_STAT(offload_cow_skb_err),
-+	HINIC3_TXQ_STAT(map_frag_err),
-+	HINIC3_TXQ_STAT(unknown_tunnel_pkt),
-+};
-+
-+static struct hinic3_stats hinic3_rx_queue_stats[] = {
-+	HINIC3_RXQ_STAT(lro_packets),
-+	HINIC3_RXQ_STAT(csum_errors),
-+	HINIC3_RXQ_STAT(other_errors),
-+	HINIC3_RXQ_STAT(rx_buf_empty),
-+	HINIC3_RXQ_STAT(alloc_skb_err),
-+	HINIC3_RXQ_STAT(alloc_rx_buf_err),
-+};
-+
-+static u16 hinic3_get_hw_stats_strings(struct hinic3_nic_dev *nic_dev, u8 *p)
-+{
-+	u16 i, cnt = 0;
-+
-+	for (i = 0; i < ARRAY_SIZE(hinic3_function_stats); i++) {
-+		ethtool_puts(&p, hinic3_function_stats[i].name);
-+		cnt++;
-+	}
-+
-+	if (!HINIC3_IS_VF(nic_dev->hwdev)) {
-+		for (i = 0; i < ARRAY_SIZE(hinic3_port_stats); i++) {
-+			ethtool_puts(&p, hinic3_port_stats[i].name);
-+			cnt++;
-+		}
-+	}
-+
-+	return cnt;
-+}
-+
-+static void hinic3_get_qp_stats_strings(struct hinic3_nic_dev *nic_dev, u8 *p)
-+{
-+	u16 i, j;
-+
-+	for (i = 0; i < nic_dev->q_params.num_qps; i++) {
-+		for (j = 0; j < ARRAY_SIZE(hinic3_tx_queue_stats); j++)
-+			ethtool_sprintf(&p,
-+					hinic3_tx_queue_stats[j].name, i);
-+	}
-+
-+	for (i = 0; i < nic_dev->q_params.num_qps; i++) {
-+		for (j = 0; j < ARRAY_SIZE(hinic3_rx_queue_stats); j++)
-+			ethtool_sprintf(&p,
-+					hinic3_rx_queue_stats[j].name, i);
-+	}
-+}
-+
-+static void hinic3_get_strings(struct net_device *netdev,
-+			       u32 stringset, u8 *data)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	u16 offset;
-+
-+	switch (stringset) {
-+	case ETH_SS_STATS:
-+		offset = hinic3_get_hw_stats_strings(nic_dev, data);
-+		hinic3_get_qp_stats_strings(nic_dev,
-+					    data + offset * ETH_GSTRING_LEN);
-+
-+		break;
-+	}
-+}
-+
-+static int hinic3_get_sset_count(struct net_device *netdev, int sset)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	int count, q_num;
-+
-+	switch (sset) {
-+	case ETH_SS_STATS:
-+		q_num = nic_dev->q_params.num_qps;
-+		count = ARRAY_SIZE(hinic3_function_stats) +
-+			(ARRAY_SIZE(hinic3_tx_queue_stats) +
-+			 ARRAY_SIZE(hinic3_rx_queue_stats)) *
-+			q_num;
-+
-+		if (!HINIC3_IS_VF(nic_dev->hwdev))
-+			count += ARRAY_SIZE(hinic3_port_stats);
-+
-+		return count;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static u16 hinic3_get_ethtool_port_stats(struct net_device *netdev, u64 *data)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct mag_cmd_port_stats *ps;
-+	u16 i = 0, j;
-+	char *p;
-+	int err;
-+
-+	ps = kmalloc_obj(*ps);
-+	if (!ps)
-+		goto err_zero_stats;
-+
-+	err = hinic3_get_phy_port_stats(nic_dev->hwdev, ps);
-+	if (err) {
-+		kfree(ps);
-+		netdev_err_once(netdev, "Failed to get port stats from fw\n");
-+		goto err_zero_stats;
-+	}
-+
-+	for (j = 0; j < ARRAY_SIZE(hinic3_port_stats); j++, i++) {
-+		p = (char *)ps + hinic3_port_stats[j].offset;
-+		data[i] = le64_to_cpu(*(__le64 *)p);
-+	}
-+
-+	kfree(ps);
-+
-+	return i;
-+
-+err_zero_stats:
-+	memset(&data[i], 0, ARRAY_SIZE(hinic3_port_stats) * sizeof(*data));
-+
-+	return i + ARRAY_SIZE(hinic3_port_stats);
-+}
-+
-+static void hinic3_get_drv_queue_stats(struct net_device *netdev, u64 *data)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct hinic3_txq_stats txq_stats = {};
-+	struct hinic3_rxq_stats rxq_stats = {};
-+	u16 i = 0, j, qid;
-+	char *p;
-+
-+	for (qid = 0; qid < nic_dev->q_params.num_qps; qid++) {
-+		hinic3_txq_get_stats(&nic_dev->txqs[qid], &txq_stats);
-+		for (j = 0; j < ARRAY_SIZE(hinic3_tx_queue_stats); j++, i++) {
-+			p = (char *)&txq_stats +
-+			    hinic3_tx_queue_stats[j].offset;
-+			data[i] = *(u64 *)p;
-+		}
-+	}
-+
-+	i = nic_dev->q_params.num_qps * ARRAY_SIZE(hinic3_tx_queue_stats);
-+	for (qid = 0; qid < nic_dev->q_params.num_qps; qid++) {
-+		hinic3_rxq_get_stats(&nic_dev->rxqs[qid], &rxq_stats);
-+		for (j = 0; j < ARRAY_SIZE(hinic3_rx_queue_stats); j++, i++) {
-+			p = (char *)&rxq_stats +
-+			    hinic3_rx_queue_stats[j].offset;
-+			data[i] = *(u64 *)p;
-+		}
-+	}
-+}
-+
-+static void hinic3_get_ethtool_stats(struct net_device *netdev,
-+				     struct ethtool_stats *stats, u64 *data)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct l2nic_vport_stats vport_stats = {};
-+	u16 i = 0, j;
-+	char *p;
-+	int err;
-+
-+	err = hinic3_get_vport_stats(nic_dev->hwdev,
-+				     hinic3_global_func_id(nic_dev->hwdev),
-+				     &vport_stats);
-+	if (err)
-+		netdev_err_once(netdev,
-+				"Failed to get function stats from fw\n");
-+
-+	for (j = 0; j < ARRAY_SIZE(hinic3_function_stats); j++, i++) {
-+		p = (char *)&vport_stats + hinic3_function_stats[j].offset;
-+		data[i] = le64_to_cpu(*(__le64 *)p);
-+	}
-+
-+	if (!HINIC3_IS_VF(nic_dev->hwdev))
-+		i += hinic3_get_ethtool_port_stats(netdev, data + i);
-+
-+	hinic3_get_drv_queue_stats(netdev, data + i);
-+}
-+
- static const struct ethtool_ops hinic3_ethtool_ops = {
- 	.supported_coalesce_params      = ETHTOOL_COALESCE_USECS |
- 					  ETHTOOL_COALESCE_PKT_RATE_RX_USECS,
-@@ -417,6 +704,9 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
- 	.get_msglevel                   = hinic3_get_msglevel,
- 	.set_msglevel                   = hinic3_set_msglevel,
- 	.get_link                       = ethtool_op_get_link,
-+	.get_strings                    = hinic3_get_strings,
-+	.get_sset_count                 = hinic3_get_sset_count,
-+	.get_ethtool_stats              = hinic3_get_ethtool_stats,
- };
- 
- void hinic3_set_ethtool_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
-index cfc9daa3034f..6b0f486ba590 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
-@@ -53,6 +53,17 @@ static inline void mgmt_msg_params_init_default(struct mgmt_msg_params *msg_para
- 	msg_params->timeout_ms = 0;
- }
- 
-+static inline void
-+mgmt_msg_params_init_in_out(struct mgmt_msg_params *msg_params, void *in_buf,
-+			    void *out_buf, u32 in_buf_size, u32 out_buf_size)
-+{
-+	msg_params->buf_in = in_buf;
-+	msg_params->buf_out = out_buf;
-+	msg_params->in_size = in_buf_size;
-+	msg_params->expected_out_size = out_buf_size;
-+	msg_params->timeout_ms = 0;
-+}
-+
- enum cfg_cmd {
- 	CFG_CMD_GET_DEV_CAP = 0,
- };
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
-index c5bca3c4af96..a2fe66a40b3f 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
-@@ -143,6 +143,41 @@ struct l2nic_cmd_set_dcb_state {
- 	u8                   rsvd[7];
- };
- 
-+struct l2nic_port_stats_info {
-+	struct mgmt_msg_head msg_head;
-+	u16                  func_id;
-+	u16                  rsvd1;
-+};
-+
-+struct l2nic_vport_stats {
-+	__le64 tx_unicast_pkts_vport;
-+	__le64 tx_unicast_bytes_vport;
-+	__le64 tx_multicast_pkts_vport;
-+	__le64 tx_multicast_bytes_vport;
-+	__le64 tx_broadcast_pkts_vport;
-+	__le64 tx_broadcast_bytes_vport;
-+
-+	__le64 rx_unicast_pkts_vport;
-+	__le64 rx_unicast_bytes_vport;
-+	__le64 rx_multicast_pkts_vport;
-+	__le64 rx_multicast_bytes_vport;
-+	__le64 rx_broadcast_pkts_vport;
-+	__le64 rx_broadcast_bytes_vport;
-+
-+	__le64 tx_discard_vport;
-+	__le64 rx_discard_vport;
-+	__le64 tx_err_vport;
-+	__le64 rx_err_vport;
-+};
-+
-+struct l2nic_cmd_vport_stats {
-+	struct mgmt_msg_head     msg_head;
-+	u32                      stats_size;
-+	u32                      rsvd1;
-+	struct l2nic_vport_stats stats;
-+	u64                      rsvd2[6];
-+};
-+
- struct l2nic_cmd_lro_config {
- 	struct mgmt_msg_head msg_head;
- 	u16                  func_id;
-@@ -234,6 +269,7 @@ enum l2nic_cmd {
- 	L2NIC_CMD_SET_VPORT_ENABLE    = 6,
- 	L2NIC_CMD_SET_RX_MODE         = 7,
- 	L2NIC_CMD_SET_SQ_CI_ATTR      = 8,
-+	L2NIC_CMD_GET_VPORT_STAT      = 9,
- 	L2NIC_CMD_CLEAR_QP_RESOURCE   = 11,
- 	L2NIC_CMD_CFG_RX_LRO          = 13,
- 	L2NIC_CMD_CFG_LRO_TIMER       = 14,
-@@ -272,6 +308,7 @@ enum mag_cmd {
- 	MAG_CMD_SET_PORT_ENABLE = 6,
- 	MAG_CMD_GET_LINK_STATUS = 7,
- 
-+	MAG_CMD_GET_PORT_STAT   = 151,
- 	MAG_CMD_GET_PORT_INFO   = 153,
- };
- 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
-index de5a7984d2cb..e4a3fa6fb8db 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
-@@ -738,3 +738,67 @@ int hinic3_get_pause_info(struct hinic3_nic_dev *nic_dev,
- 	return hinic3_cfg_hw_pause(nic_dev->hwdev, MGMT_MSG_CMD_OP_GET,
- 				   nic_pause);
- }
-+
-+int hinic3_get_vport_stats(struct hinic3_hwdev *hwdev, u16 func_id,
-+			   struct l2nic_vport_stats *stats)
-+{
-+	struct l2nic_cmd_vport_stats vport_stats = {};
-+	struct l2nic_port_stats_info stats_info = {};
-+	struct mgmt_msg_params msg_params = {};
-+	int err;
-+
-+	stats_info.func_id = func_id;
-+
-+	mgmt_msg_params_init_in_out(&msg_params, &stats_info, &vport_stats,
-+				    sizeof(stats_info), sizeof(vport_stats));
-+
-+	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_L2NIC,
-+				       L2NIC_CMD_GET_VPORT_STAT, &msg_params);
-+
-+	if (err || vport_stats.msg_head.status) {
-+		dev_err_once(hwdev->dev,
-+			     "Failed to get function statistics, err: %d, status: 0x%x\n",
-+			     err, vport_stats.msg_head.status);
-+		return -EFAULT;
-+	}
-+
-+	memcpy(stats, &vport_stats.stats, sizeof(*stats));
-+
-+	return 0;
-+}
-+
-+int hinic3_get_phy_port_stats(struct hinic3_hwdev *hwdev,
-+			      struct mag_cmd_port_stats *stats)
-+{
-+	struct mag_cmd_get_port_stats_in ps_in = {};
-+	struct mag_cmd_get_port_stats_out *ps_out;
-+	struct mgmt_msg_params msg_params = {};
-+	int err;
-+
-+	ps_out = kzalloc_obj(*ps_out);
-+	if (!ps_out)
-+		return -ENOMEM;
-+
-+	ps_in.port_id = hinic3_physical_port_id(hwdev);
-+
-+	mgmt_msg_params_init_in_out(&msg_params, &ps_in, ps_out,
-+				    sizeof(ps_in), sizeof(*ps_out));
-+
-+	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_HILINK,
-+				       MAG_CMD_GET_PORT_STAT, &msg_params);
-+
-+	if (err || ps_out->head.status) {
-+		dev_err_once(hwdev->dev,
-+			     "Failed to get port statistics, err: %d, status: 0x%x\n",
-+			     err, ps_out->head.status);
-+		err = -EFAULT;
-+		goto out;
-+	}
-+
-+	memcpy(stats, &ps_out->counter, sizeof(*stats));
-+
-+out:
-+	kfree(ps_out);
-+
-+	return err;
-+}
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
-index 5d52202a8d4e..aa4a6457d44e 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
-@@ -129,6 +129,110 @@ struct mag_cmd_get_xsfp_present {
- 	u8                   rsvd[2];
- };
- 
-+struct mag_cmd_port_stats {
-+	__le64 mac_tx_fragment_pkts;
-+	__le64 mac_tx_undersize_pkts;
-+	__le64 mac_tx_undermin_pkts;
-+	__le64 mac_tx_64_oct_pkts;
-+	__le64 mac_tx_65_127_oct_pkts;
-+	__le64 mac_tx_128_255_oct_pkts;
-+	__le64 mac_tx_256_511_oct_pkts;
-+	__le64 mac_tx_512_1023_oct_pkts;
-+	__le64 mac_tx_1024_1518_oct_pkts;
-+	__le64 mac_tx_1519_2047_oct_pkts;
-+	__le64 mac_tx_2048_4095_oct_pkts;
-+	__le64 mac_tx_4096_8191_oct_pkts;
-+	__le64 mac_tx_8192_9216_oct_pkts;
-+	__le64 mac_tx_9217_12287_oct_pkts;
-+	__le64 mac_tx_12288_16383_oct_pkts;
-+	__le64 mac_tx_1519_max_bad_pkts;
-+	__le64 mac_tx_1519_max_good_pkts;
-+	__le64 mac_tx_oversize_pkts;
-+	__le64 mac_tx_jabber_pkts;
-+	__le64 mac_tx_bad_pkts;
-+	__le64 mac_tx_bad_octs;
-+	__le64 mac_tx_good_pkts;
-+	__le64 mac_tx_good_octs;
-+	__le64 mac_tx_total_pkts;
-+	__le64 mac_tx_total_octs;
-+	__le64 mac_tx_uni_pkts;
-+	__le64 mac_tx_multi_pkts;
-+	__le64 mac_tx_broad_pkts;
-+	__le64 mac_tx_pause_pkts;
-+	__le64 mac_tx_pfc_pkts;
-+	__le64 mac_tx_pfc_pri0_pkts;
-+	__le64 mac_tx_pfc_pri1_pkts;
-+	__le64 mac_tx_pfc_pri2_pkts;
-+	__le64 mac_tx_pfc_pri3_pkts;
-+	__le64 mac_tx_pfc_pri4_pkts;
-+	__le64 mac_tx_pfc_pri5_pkts;
-+	__le64 mac_tx_pfc_pri6_pkts;
-+	__le64 mac_tx_pfc_pri7_pkts;
-+	__le64 mac_tx_control_pkts;
-+	__le64 mac_tx_err_all_pkts;
-+	__le64 mac_tx_from_app_good_pkts;
-+	__le64 mac_tx_from_app_bad_pkts;
-+
-+	__le64 mac_rx_fragment_pkts;
-+	__le64 mac_rx_undersize_pkts;
-+	__le64 mac_rx_undermin_pkts;
-+	__le64 mac_rx_64_oct_pkts;
-+	__le64 mac_rx_65_127_oct_pkts;
-+	__le64 mac_rx_128_255_oct_pkts;
-+	__le64 mac_rx_256_511_oct_pkts;
-+	__le64 mac_rx_512_1023_oct_pkts;
-+	__le64 mac_rx_1024_1518_oct_pkts;
-+	__le64 mac_rx_1519_2047_oct_pkts;
-+	__le64 mac_rx_2048_4095_oct_pkts;
-+	__le64 mac_rx_4096_8191_oct_pkts;
-+	__le64 mac_rx_8192_9216_oct_pkts;
-+	__le64 mac_rx_9217_12287_oct_pkts;
-+	__le64 mac_rx_12288_16383_oct_pkts;
-+	__le64 mac_rx_1519_max_bad_pkts;
-+	__le64 mac_rx_1519_max_good_pkts;
-+	__le64 mac_rx_oversize_pkts;
-+	__le64 mac_rx_jabber_pkts;
-+	__le64 mac_rx_bad_pkts;
-+	__le64 mac_rx_bad_octs;
-+	__le64 mac_rx_good_pkts;
-+	__le64 mac_rx_good_octs;
-+	__le64 mac_rx_total_pkts;
-+	__le64 mac_rx_total_octs;
-+	__le64 mac_rx_uni_pkts;
-+	__le64 mac_rx_multi_pkts;
-+	__le64 mac_rx_broad_pkts;
-+	__le64 mac_rx_pause_pkts;
-+	__le64 mac_rx_pfc_pkts;
-+	__le64 mac_rx_pfc_pri0_pkts;
-+	__le64 mac_rx_pfc_pri1_pkts;
-+	__le64 mac_rx_pfc_pri2_pkts;
-+	__le64 mac_rx_pfc_pri3_pkts;
-+	__le64 mac_rx_pfc_pri4_pkts;
-+	__le64 mac_rx_pfc_pri5_pkts;
-+	__le64 mac_rx_pfc_pri6_pkts;
-+	__le64 mac_rx_pfc_pri7_pkts;
-+	__le64 mac_rx_control_pkts;
-+	__le64 mac_rx_sym_err_pkts;
-+	__le64 mac_rx_fcs_err_pkts;
-+	__le64 mac_rx_send_app_good_pkts;
-+	__le64 mac_rx_send_app_bad_pkts;
-+	__le64 mac_rx_unfilter_pkts;
-+};
-+
-+struct mag_cmd_get_port_stats_in {
-+	struct mgmt_msg_head head;
-+
-+	u8                   port_id;
-+	u8                   rsvd0[3];
-+};
-+
-+struct mag_cmd_get_port_stats_out {
-+	struct mgmt_msg_head      head;
-+
-+	struct mag_cmd_port_stats counter;
-+	u64                       rsvd1[15];
-+};
-+
- enum link_err_type {
- 	LINK_ERR_MODULE_UNRECOGENIZED,
- 	LINK_ERR_NUM,
-@@ -215,4 +319,8 @@ int hinic3_del_vlan(struct hinic3_hwdev *hwdev, u16 vlan_id, u16 func_id);
- int hinic3_get_pause_info(struct hinic3_nic_dev *nic_dev,
- 			  struct hinic3_nic_pause_config *nic_pause);
- 
-+int hinic3_get_vport_stats(struct hinic3_hwdev *hwdev, u16 func_id,
-+			   struct l2nic_vport_stats *stats);
-+int hinic3_get_phy_port_stats(struct hinic3_hwdev *hwdev,
-+			      struct mag_cmd_port_stats *stats);
- #endif
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-index 309ab5901379..44b0723cedbb 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-@@ -38,6 +38,7 @@ static void hinic3_rxq_clean_stats(struct hinic3_rxq_stats *rxq_stats)
- 	u64_stats_update_begin(&rxq_stats->syncp);
- 	rxq_stats->bytes = 0;
- 	rxq_stats->packets = 0;
-+	rxq_stats->lro_packets = 0;
- 	rxq_stats->errors = 0;
- 	rxq_stats->csum_errors = 0;
- 	rxq_stats->other_errors = 0;
-@@ -46,7 +47,6 @@ static void hinic3_rxq_clean_stats(struct hinic3_rxq_stats *rxq_stats)
- 
- 	rxq_stats->alloc_skb_err = 0;
- 	rxq_stats->alloc_rx_buf_err = 0;
--	rxq_stats->restore_drop_sge = 0;
- 	u64_stats_update_end(&rxq_stats->syncp);
- }
- 
-@@ -147,6 +147,8 @@ static u32 hinic3_rx_fill_buffers(struct hinic3_rxq *rxq)
- {
- 	u32 i, free_wqebbs = rxq->delta - 1;
- 	struct hinic3_rx_info *rx_info;
-+	struct u64_stats_sync *syncp;
-+	unsigned long flags;
- 	dma_addr_t dma_addr;
- 	int err;
- 
-@@ -155,8 +157,13 @@ static u32 hinic3_rx_fill_buffers(struct hinic3_rxq *rxq)
- 
- 		err = rx_alloc_mapped_page(rxq->page_pool, rx_info,
- 					   rxq->buf_len);
--		if (unlikely(err))
-+		if (unlikely(err)) {
-+			syncp = &rxq->rxq_stats.syncp;
-+			flags = u64_stats_update_begin_irqsave(syncp);
-+			rxq->rxq_stats.alloc_rx_buf_err++;
-+			u64_stats_update_end_irqrestore(syncp, flags);
- 			break;
-+		}
- 
- 		dma_addr = page_pool_get_dma_addr(rx_info->page) +
- 			rx_info->page_offset;
-@@ -170,6 +177,11 @@ static u32 hinic3_rx_fill_buffers(struct hinic3_rxq *rxq)
- 				rxq->next_to_update << HINIC3_NORMAL_RQ_WQE);
- 		rxq->delta -= i;
- 		rxq->next_to_alloc = rxq->next_to_update;
-+	} else if (free_wqebbs == rxq->q_depth - 1) {
-+		syncp = &rxq->rxq_stats.syncp;
-+		flags = u64_stats_update_begin_irqsave(syncp);
-+		rxq->rxq_stats.rx_buf_empty++;
-+		u64_stats_update_end_irqrestore(syncp, flags);
- 	}
- 
- 	return i;
-@@ -330,10 +342,23 @@ static void hinic3_rx_csum(struct hinic3_rxq *rxq, u32 offload_type,
- 	struct net_device *netdev = rxq->netdev;
- 	bool l2_tunnel;
- 
-+	/* HW ensures that only 1 bit is set in csum_err. */
-+	if (unlikely(csum_err == HINIC3_RX_CSUM_IPSU_OTHER_ERR)) {
-+		u64_stats_update_begin(&rxq->rxq_stats.syncp);
-+		rxq->rxq_stats.other_errors++;
-+		u64_stats_update_end(&rxq->rxq_stats.syncp);
-+	}
-+
- 	if (!(netdev->features & NETIF_F_RXCSUM))
- 		return;
- 
- 	if (unlikely(csum_err)) {
-+		if (csum_err != HINIC3_RX_CSUM_HW_CHECK_NONE &&
-+		    csum_err != HINIC3_RX_CSUM_IPSU_OTHER_ERR) {
-+			u64_stats_update_begin(&rxq->rxq_stats.syncp);
-+			rxq->rxq_stats.csum_errors++;
-+			u64_stats_update_end(&rxq->rxq_stats.syncp);
-+		}
- 		/* pkt type is recognized by HW, and csum is wrong */
- 		skb->ip_summed = CHECKSUM_NONE;
- 		return;
-@@ -387,8 +412,12 @@ static int recv_one_pkt(struct hinic3_rxq *rxq, struct hinic3_rq_cqe *rx_cqe,
- 	u16 num_lro;
- 
- 	skb = hinic3_fetch_rx_buffer(rxq, pkt_len);
--	if (unlikely(!skb))
-+	if (unlikely(!skb)) {
-+		u64_stats_update_begin(&rxq->rxq_stats.syncp);
-+		rxq->rxq_stats.alloc_skb_err++;
-+		u64_stats_update_end(&rxq->rxq_stats.syncp);
- 		return -ENOMEM;
-+	}
- 
- 	/* place header in linear portion of buffer */
- 	if (skb_is_nonlinear(skb))
-@@ -555,6 +584,8 @@ int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget)
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(rxq->netdev);
- 	u32 sw_ci, status, pkt_len, vlan_len;
- 	struct hinic3_rq_cqe *rx_cqe;
-+	u64 lro_packets = 0;
-+	u64 rx_bytes = 0;
- 	u32 num_wqe = 0;
- 	int nr_pkts = 0;
- 	u16 num_lro;
-@@ -575,9 +606,12 @@ int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget)
- 			break;
- 
- 		nr_pkts++;
-+		rx_bytes += pkt_len;
- 		num_lro = RQ_CQE_STATUS_GET(status, NUM_LRO);
--		if (num_lro)
-+		if (num_lro) {
- 			num_wqe += hinic3_get_sge_num(rxq, pkt_len);
-+			lro_packets++;
-+		}
- 
- 		rx_cqe->status = 0;
- 
-@@ -588,5 +622,27 @@ int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget)
- 	if (rxq->delta >= HINIC3_RX_BUFFER_WRITE)
- 		hinic3_rx_fill_buffers(rxq);
- 
-+	u64_stats_update_begin(&rxq->rxq_stats.syncp);
-+	rxq->rxq_stats.packets += (u64)nr_pkts;
-+	rxq->rxq_stats.bytes += rx_bytes;
-+	rxq->rxq_stats.lro_packets += lro_packets;
-+	u64_stats_update_end(&rxq->rxq_stats.syncp);
- 	return nr_pkts;
- }
-+
-+void hinic3_rxq_get_stats(struct hinic3_rxq *rxq,
-+			  struct hinic3_rxq_stats *stats)
-+{
-+	struct hinic3_rxq_stats *rxq_stats = &rxq->rxq_stats;
-+	unsigned int start;
-+
-+	do {
-+		start = u64_stats_fetch_begin(&rxq_stats->syncp);
-+		stats->lro_packets = rxq_stats->lro_packets;
-+		stats->csum_errors = rxq_stats->csum_errors;
-+		stats->other_errors = rxq_stats->other_errors;
-+		stats->rx_buf_empty = rxq_stats->rx_buf_empty;
-+		stats->alloc_skb_err = rxq_stats->alloc_skb_err;
-+		stats->alloc_rx_buf_err = rxq_stats->alloc_rx_buf_err;
-+	} while (u64_stats_fetch_retry(&rxq_stats->syncp, start));
-+}
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
-index 06d1b3299e7c..9a87203f887e 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
-@@ -8,6 +8,10 @@
- #include <linux/dim.h>
- #include <linux/netdevice.h>
- 
-+/* rx cqe checksum err */
-+#define HINIC3_RX_CSUM_HW_CHECK_NONE    BIT(7)
-+#define HINIC3_RX_CSUM_IPSU_OTHER_ERR   BIT(8)
-+
- #define RQ_CQE_OFFOLAD_TYPE_PKT_TYPE_MASK           GENMASK(4, 0)
- #define RQ_CQE_OFFOLAD_TYPE_IP_TYPE_MASK            GENMASK(6, 5)
- #define RQ_CQE_OFFOLAD_TYPE_TUNNEL_PKT_FORMAT_MASK  GENMASK(11, 8)
-@@ -32,6 +36,7 @@
- struct hinic3_rxq_stats {
- 	u64                   packets;
- 	u64                   bytes;
-+	u64                   lro_packets;
- 	u64                   errors;
- 	u64                   csum_errors;
- 	u64                   other_errors;
-@@ -39,7 +44,6 @@ struct hinic3_rxq_stats {
- 	u64                   rx_buf_empty;
- 	u64                   alloc_skb_err;
- 	u64                   alloc_rx_buf_err;
--	u64                   restore_drop_sge;
- 	struct u64_stats_sync syncp;
- };
- 
-@@ -125,4 +129,6 @@ int hinic3_configure_rxqs(struct net_device *netdev, u16 num_rq,
- 			  u32 rq_depth, struct hinic3_dyna_rxq_res *rxqs_res);
- int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget);
- 
-+void hinic3_rxq_get_stats(struct hinic3_rxq *rxq,
-+			  struct hinic3_rxq_stats *stats);
- #endif
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-index f92568f0f00b..ccac6413f980 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-@@ -21,15 +21,14 @@ static void hinic3_txq_clean_stats(struct hinic3_txq_stats *txq_stats)
- 	u64_stats_update_begin(&txq_stats->syncp);
- 	txq_stats->bytes = 0;
- 	txq_stats->packets = 0;
-+	txq_stats->gso_packets = 0;
- 	txq_stats->busy = 0;
- 	txq_stats->dropped = 0;
- 
- 	txq_stats->skb_pad_err = 0;
--	txq_stats->frag_len_overflow = 0;
- 	txq_stats->offload_cow_skb_err = 0;
- 	txq_stats->map_frag_err = 0;
- 	txq_stats->unknown_tunnel_pkt = 0;
--	txq_stats->frag_size_err = 0;
- 	u64_stats_update_end(&txq_stats->syncp);
- }
- 
-@@ -97,8 +96,12 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
- 
- 	dma_info[0].dma = dma_map_single(&pdev->dev, skb->data,
- 					 skb_headlen(skb), DMA_TO_DEVICE);
--	if (dma_mapping_error(&pdev->dev, dma_info[0].dma))
-+	if (dma_mapping_error(&pdev->dev, dma_info[0].dma)) {
-+		u64_stats_update_begin(&txq->txq_stats.syncp);
-+		txq->txq_stats.map_frag_err++;
-+		u64_stats_update_end(&txq->txq_stats.syncp);
- 		return -EFAULT;
-+	}
- 
- 	dma_info[0].len = skb_headlen(skb);
- 
-@@ -117,6 +120,9 @@ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
- 						     skb_frag_size(frag),
- 						     DMA_TO_DEVICE);
- 		if (dma_mapping_error(&pdev->dev, dma_info[idx].dma)) {
-+			u64_stats_update_begin(&txq->txq_stats.syncp);
-+			txq->txq_stats.map_frag_err++;
-+			u64_stats_update_end(&txq->txq_stats.syncp);
- 			err = -EFAULT;
- 			goto err_unmap_page;
- 		}
-@@ -260,6 +266,9 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
- 		if (l4_proto != IPPROTO_UDP ||
- 		    ((struct udphdr *)skb_transport_header(skb))->dest !=
- 		    VXLAN_OFFLOAD_PORT_LE) {
-+			u64_stats_update_begin(&txq->txq_stats.syncp);
-+			txq->txq_stats.unknown_tunnel_pkt++;
-+			u64_stats_update_end(&txq->txq_stats.syncp);
- 			/* Unsupported tunnel packet, disable csum offload */
- 			return skb_checksum_help(skb);
- 		}
-@@ -487,6 +496,20 @@ static u16 hinic3_set_wqe_combo(struct hinic3_txq *txq,
- 					      num_sge + !!offload);
- }
- 
-+static void hinic3_get_pkt_stats(struct hinic3_txq *txq, struct sk_buff *skb)
-+{
-+	u64 gso_packets = 0;
-+
-+	if (skb_is_gso(skb))
-+		gso_packets = 1;
-+
-+	u64_stats_update_begin(&txq->txq_stats.syncp);
-+	txq->txq_stats.bytes += skb->len;
-+	txq->txq_stats.packets += 1;
-+	txq->txq_stats.gso_packets += gso_packets;
-+	u64_stats_update_end(&txq->txq_stats.syncp);
-+}
-+
- static void hinic3_prepare_sq_ctrl(struct hinic3_sq_wqe_combo *wqe_combo,
- 				   __le32 queue_info, int nr_descs, u16 owner)
- {
-@@ -541,8 +564,12 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 	u32 offload;
- 	int err;
- 
--	if (skb_put_padto(skb, MIN_SKB_LEN))
-+	if (skb_put_padto(skb, MIN_SKB_LEN)) {
-+		u64_stats_update_begin(&txq->txq_stats.syncp);
-+		txq->txq_stats.skb_pad_err++;
-+		u64_stats_update_end(&txq->txq_stats.syncp);
- 		goto err_out;
-+	}
- 
- 	offload = hinic3_tx_offload(skb, &task, &queue_info, txq);
- 	num_sge = skb_shinfo(skb)->nr_frags + 1;
-@@ -557,10 +584,16 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 					hinic3_wq_free_wqebbs(&txq->sq->wq),
- 					txq->tx_start_thrs);
- 
-+		u64_stats_update_begin(&txq->txq_stats.syncp);
-+		txq->txq_stats.busy++;
-+		u64_stats_update_end(&txq->txq_stats.syncp);
- 		return NETDEV_TX_BUSY;
- 	}
- 
- 	if (unlikely(offload == HINIC3_TX_OFFLOAD_INVALID)) {
-+		u64_stats_update_begin(&txq->txq_stats.syncp);
-+		txq->txq_stats.offload_cow_skb_err++;
-+		u64_stats_update_end(&txq->txq_stats.syncp);
- 		goto err_drop_pkt;
- 	} else if (!offload) {
- 		wqebb_cnt -= 1;
-@@ -595,6 +628,7 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- 				  txq->tx_stop_thrs,
- 				  txq->tx_start_thrs);
- 
-+	hinic3_get_pkt_stats(txq, skb);
- 	hinic3_prepare_sq_ctrl(&wqe_combo, queue_info, num_sge, owner);
- 	hinic3_write_db(txq->sq, 0, DB_CFLAG_DP_SQ,
- 			hinic3_get_sq_local_pi(txq->sq));
-@@ -604,6 +638,9 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
- err_drop_pkt:
- 	dev_kfree_skb_any(skb);
- err_out:
-+	u64_stats_update_begin(&txq->txq_stats.syncp);
-+	txq->txq_stats.dropped++;
-+	u64_stats_update_end(&txq->txq_stats.syncp);
- 	return NETDEV_TX_OK;
- }
- 
-@@ -611,18 +648,25 @@ netdev_tx_t hinic3_xmit_frame(struct sk_buff *skb, struct net_device *netdev)
- {
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
- 	u16 q_id = skb_get_queue_mapping(skb);
--
--	if (unlikely(!netif_carrier_ok(netdev)))
--		goto err_drop_pkt;
-+	struct hinic3_txq *txq;
- 
- 	if (unlikely(q_id >= nic_dev->q_params.num_qps))
-+		goto err_qid_out;
-+
-+	txq = &nic_dev->txqs[q_id];
-+
-+	if (unlikely(!netif_carrier_ok(netdev)))
- 		goto err_drop_pkt;
- 
--	return hinic3_send_one_skb(skb, netdev, &nic_dev->txqs[q_id]);
-+	return hinic3_send_one_skb(skb, netdev, txq);
- 
- err_drop_pkt:
--	dev_kfree_skb_any(skb);
-+	u64_stats_update_begin(&txq->txq_stats.syncp);
-+	txq->txq_stats.dropped++;
-+	u64_stats_update_end(&txq->txq_stats.syncp);
- 
-+err_qid_out:
-+	dev_kfree_skb_any(skb);
- 	return NETDEV_TX_OK;
- }
- 
-@@ -795,3 +839,20 @@ bool hinic3_tx_poll(struct hinic3_txq *txq, int budget)
- 
- 	return pkts == HINIC3_TX_POLL_WEIGHT;
- }
-+
-+void hinic3_txq_get_stats(struct hinic3_txq *txq,
-+			  struct hinic3_txq_stats *stats)
-+{
-+	struct hinic3_txq_stats *txq_stats = &txq->txq_stats;
-+	unsigned int start;
-+
-+	do {
-+		start = u64_stats_fetch_begin(&txq_stats->syncp);
-+		stats->gso_packets = txq_stats->gso_packets;
-+		stats->busy = txq_stats->busy;
-+		stats->skb_pad_err = txq_stats->skb_pad_err;
-+		stats->offload_cow_skb_err = txq_stats->offload_cow_skb_err;
-+		stats->map_frag_err = txq_stats->map_frag_err;
-+		stats->unknown_tunnel_pkt = txq_stats->unknown_tunnel_pkt;
-+	} while (u64_stats_fetch_retry(&txq_stats->syncp, start));
-+}
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.h b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.h
-index 00194f2a1bcc..a166e7aa3677 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.h
-@@ -103,14 +103,13 @@ struct hinic3_sq_wqe_combo {
- struct hinic3_txq_stats {
- 	u64                   packets;
- 	u64                   bytes;
-+	u64                   gso_packets;
- 	u64                   busy;
- 	u64                   dropped;
- 	u64                   skb_pad_err;
--	u64                   frag_len_overflow;
- 	u64                   offload_cow_skb_err;
- 	u64                   map_frag_err;
- 	u64                   unknown_tunnel_pkt;
--	u64                   frag_size_err;
- 	struct u64_stats_sync syncp;
- };
- 
-@@ -160,4 +159,6 @@ netdev_tx_t hinic3_xmit_frame(struct sk_buff *skb, struct net_device *netdev);
- bool hinic3_tx_poll(struct hinic3_txq *txq, int budget);
- void hinic3_flush_txqs(struct net_device *netdev);
- 
-+void hinic3_txq_get_stats(struct hinic3_txq *txq,
-+			  struct hinic3_txq_stats *stats);
- #endif
+
+base-commit: 73022f605c447f31610b94ed4a983d2b4bf2c721
 -- 
 2.43.0
 
