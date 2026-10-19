@@ -1,119 +1,98 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3681F487CE8
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565B125392A;
+	Mon, 19 Oct 2026 06:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792392837; cv=none; b=EaJhu1NZYAfAiFzlCOrINVNp6Qfz/3ADRP0AlJXmvh2O2r6mKAJkU954S/Di+xpv448jK/vLm+6cj9Oh/iNnzUp7r/OnrieE3ASt9v0CVOldffHxK1dHOpgzEpVk/5KSqeKrqVsFOJ5rdG6AZa8lhGOeePvwFIaX2kmgXuzwDb0=
+	t=1792392948; cv=none; b=ZErdc6AAQ6LtmXtwveAkTtZHDrsMbAcgLaUMUwZsPMzEsWK4w7f0sQ2AyxiISsFELCEVaxKE77IdapSHua24GmZha50Vvp//ez5MDG+Oy3QXv9REs7Xu8uQm7+IotNucGPMjVF3WHQH91IDTfUgEL4O/Olh1BBDzdcYsYMJIfJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792392837; c=relaxed/simple;
-	bh=ie9v22uPr7PotWlb4fNjvhbFPlRotAAB+Ebqx+gumkE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1fA9rrIzy1raJJJGlhUsr5Acwu1JGl3ESI+s4lLRMcVcQZ4VpIgvdSDfgWj2PEYBbjje/7oAIG9MdmbbGAjx4RcybSVwjepscRGV6axzf5Sze3r60o160i09NM7qrmWJNOM7oGf4+9klQ4o75ycjIHjG09HlUF3TWWRGsCqMJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W5nW6nyc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1792392948; c=relaxed/simple;
+	bh=nVPR/wVfw88sj38qQgKSyYoONX1twjU6nqbBIWBVGTs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BtlkqgEr4lGx2aDgvLC7cL3ahbvUJpbE/vLME2x45Q/x7gr4ZKX2m2fH6C1z0aNAGK+c7uGgp+Dc5LUVC6NOkPfsuF0FGrDBWV8y7GyIgU5y+jbAk72nLICDaO7q/b0UpL2kN0fGPQ6KNySqGNhoPGBS3cDi3AO65B5WfJn0SNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YgB1giYD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W5nW6nyc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792392835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+7V933gJJwiBIK/wX238Dvmgf2YOL/YBDIJFdDFHDQ8=;
-	b=W5nW6nycjUxW+a6zTIvv75nL+HApt4TglIlqVNBMAcgyGVaaa0KVSqbkaRvp4EmQpIAGIT
-	pyubgHzG+fRtY0xz6imDC+fZ1QbRdoWykrgqF37sz1E54yiubjHYVQwAO5t/VBB66pZvVH
-	MRVcM95HqxFcoOoNvns8uVdIWGnY4Bs=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-489-tqBd2ESLMDC73_C1eKDJ_g-1; Mon,
- 19 Oct 2026 06:53:37 +0000
-X-MC-Unique: tqBd2ESLMDC73_C1eKDJ_g-1
-X-Mimecast-MFC-AGG-ID: tqBd2ESLMDC73_C1eKDJ_g_1792392815
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B90819560BE;
-	Mon, 19 Oct 2026 06:53:34 +0000 (UTC)
-Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.48.130])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 543621956086;
-	Mon, 19 Oct 2026 06:53:28 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Kamil Maziarz <kamil.maziarz@intel.com>,
-	Rafal Rogalski <rafalx.rogalski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	linux-rdma@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mateusz Palczewski <mateusz.palczewski@intel.com>,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH iwl-net 3/3] ice: do not block on the aux device lock in ndo_setup_tc
-Date: Mon, 19 Oct 2026 08:53:01 +0200
-Message-ID: <20261019065301.3983537-4-poros@redhat.com>
-In-Reply-To: <20261019065301.3983537-1-poros@redhat.com>
-References: <20261019065301.3983537-1-poros@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YgB1giYD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADCB1F000C4;
+	Mon, 19 Oct 2026 06:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792392947;
+	bh=1K8qIit/bBE/r3ctFbU5AiNYL7DN74LzCmsZIKix1go=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YgB1giYDu4H1Vw5Mu7creBaShHjfY4tCXT2ctTHX++UE04vpMdu1+UEfiKIc86AUq
+	 xtcFTFmLzEZ0bVBW9dmA30qXXdw5csN09ke4DjGleSaSfls0SBIL9mEWABecjsjzQM
+	 OPNCrVW5GFmWRzEkBRt1VPEP83Tt+V4N96u9WXKk6K4bayL5r+dC12xj1Y7HPNhj16
+	 bfA/PsKba+aY0cgRNDEG9RzZin+c6sohNox19L7ZBvBXiH+8DIMhOOEFUN/HlP+y6N
+	 1J9Q0gbOmx6+FHVX2/A7QMN9Dr8s0d8CVZKXTMDqlGbDCPII3LNIqQzoinuLtmtdV+
+	 /zY+NPbNihyhg==
+Date: Mon, 19 Oct 2026 08:55:44 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Til Kaiser <mail@tk154.de>
+Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, linux-kernel@vger.kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, quic_leiwei@quicinc.com, 
+	quic_suruchia@quicinc.com, quic_pavir@quicinc.com, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net 2/2] dt-bindings: net: qcom,ipq9574-ppe: Apply PPE
+ constraints to all switch ports
+Message-ID: <20261019-pristine-brainy-guppy-eb2af2@quoll>
+References: <20261016150140.929729-1-mail@tk154.de>
+ <20261016150140.929729-3-mail@tk154.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261016150140.929729-3-mail@tk154.de>
 
-The TC_SETUP_QDISC_MQPRIO path of ice_setup_tc() takes the auxiliary
-device lock to test whether the RDMA driver is bound, and ndo_setup_tc()
-runs with the RTNL lock held. This closes the same cycle against the
-RDMA auxiliary probe as the two preceding patches.
+On Fri, Oct 16, 2026 at 05:01:40PM +0200, Til Kaiser wrote:
+> The generic ethernet-switch schema accepts both ports and ethernet-ports
+> containers and both port and ethernet-port child nodes. The PPE binding
+> only applies its port constraints to ethernet-port nodes with addresses
+> matching [1-6]+ inside ethernet-ports.
+> 
+> As a result, ethernet-port@7 with reg = <7> is accepted without the PPE
+> port ID limit. The alternative container and child naming forms also
+> bypass the required PPE clocks and resets.
+> 
+> Match the same container and child node patterns as ethernet-switch.yaml
+> so that every accepted switch port receives the PPE constraints. Keep
+> the valid port IDs constrained by reg.
+> 
+> Fixes: 1898fc572118 ("dt-bindings: net: Add PPE for Qualcomm IPQ9574 SoC")
 
-Use device_trylock() and report the device as busy when it fails, with
-a distinct message for the same reason as in the previous patch.
+Nothing to be fixed here, really, drop.
 
-Fixes: 4b31fd4d77ff ("ice: Fix RDMA VSI removal during queue rebuild")
-Cc: stable@vger.kernel.org
-Signed-off-by: Petr Oros <poros@redhat.com>
----
- drivers/net/ethernet/intel/ice/ice_main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+> Signed-off-by: Til Kaiser <mail@tk154.de>
+> ---
+>  Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
+> index 6d0b21a10732..a5e8aab500ed 100644
+> --- a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
+> +++ b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
+> @@ -173,9 +173,10 @@ properties:
+>        - interrupts
+>        - interrupt-names
+>  
+> -  ethernet-ports:
+> +patternProperties:
+> +  "^(ethernet-)?ports$":
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index edb62606d2aae3..7b251136149615 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -9448,7 +9448,11 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		cdev = pf->cdev_info;
- 		if (cdev && cdev->adev) {
- 			mutex_lock(&pf->adev_mutex);
--			device_lock(&cdev->adev->dev);
-+			if (!device_trylock(&cdev->adev->dev)) {
-+				mutex_unlock(&pf->adev_mutex);
-+				netdev_dbg(netdev, "RDMA auxiliary device is busy, try again\n");
-+				return -EBUSY;
-+			}
- 			locked = true;
- 			if (cdev->adev->dev.driver) {
- 				netdev_err(netdev, "Cannot change qdisc when RDMA is active\n");
--- 
-2.56.0
+Why are you reverting the review? The name is ethernet-ports.
+
+>      patternProperties:
+> -      "^ethernet-port@[1-6]+$":
+> +      "^(ethernet-)?port@[0-9a-f]+$":
+
+Same here.
+
+Best regards,
+Krzysztof
 
