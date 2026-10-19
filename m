@@ -1,90 +1,165 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7C6491B12;
-	Mon, 19 Oct 2026 14:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792420930; cv=none; b=sK/FO4Ix6Hb9TCfe0ddqrynXFV7UzF0jZuhKWqJoh/w3yfHkxTP/sbaEJFFTSoDO2aoH9zKZ3lyNRay2F7AgELFB449lgtkD27bUNeXtHO3pIiSfqpgx/VbO6f+jMZpzI/wyBV6eQVC6R2KReclpeRtQufb80SP/H5a6TWyRvL4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792420930; c=relaxed/simple;
-	bh=+CcE//8LwHV5giiOzprhXnBLjNfbqHe6aALXRB3Ow80=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=oZpm9DMUNqO38jmObRi41HdToJlxjB6rAl/cMTLbf5MLAxifPq7MWeeQXFI4bAgs2bPinU9WX+/96O2laSBB1ETlv0ZJIM+Z/JespVFNQpn/tSQa9UwWF/eOWx5NH6oWJpcvpmRn+PfEIuwQxIN7t/7e+B/eFFIuj5zcfMS7mRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=n8aGCNXm; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD9C4D73DF
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 14:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.166
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792421305; cv=pass; b=hm/QnsCYzO/YcZ1/PWqeBjy0afAaTLHOiWVmJ5SjnZsVmr2kxnJ35jcUX4R5N4eFBEJtUlQGsLOWSBUwu9N5d7lJEJ8oJUZ5/qrXehfvvcFqlmneRY+bZC0KnAgra6Mev5ZTmWL2Nf/PUpZGmK9Agbqnuo1sUp3IZs341gNynco=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792421305; c=relaxed/simple;
+	bh=KtRgrbk4cdWvqtMsuF+6WxyUrype50D8+NF+PCRvC68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cerV4430Ewk8p0rd5gdJEwcdBQX+JAoA5DJ05C8NTKzNRmxvMHnPshS/lIXvBUpcTiw0YIx9SKMgEIazaotpdGuc7cVPHToJuTgzh7t9bOj7IgNAlGturrXOS+Izv+18MinNSrmwFjL7dZD9Szr9YGFgRVChXVyBAjA6O5KkIAY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=Vkfe3EW7; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=uNCna+sg; arc=pass smtp.client-ip=81.169.146.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="n8aGCNXm"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 354A4A156A;
-	Mon, 19 Oct 2026 16:42:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792420922; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=gdPAFwtkiyGOrrmpDJKuYvH8c98AWepp1hYqr6NQ5+A=;
-	b=n8aGCNXms/uv7CzfapYewb+6FNb5I6XxvEM2THqbJ+0eVNxdgBR1CdLKSwAiP6yTZtl/+T
-	BiQqHZgfXpvS/NVyOU+x9fYvXTl8J12rfCsyzJmNMvgf2INH5/p1d/4S6eYV3h2jcQEj9l
-	o+84ZZILEiA1SxvgRTuXJUt2fvcPfJClCXVIpnSDaZHosUzqijz3rUU12HJui/Fsu0yAXN
-	7jzCW2uzfRSZCfzjayRdU41IZp0mee9yAWAwg4xw6oOzsA5Lui9jZFpYEJXTTSYPv7P/Qm
-	6BLxQydaKShJXXDOQt3fMgc/1q/5/coEb+FuAJ4cbj0GsgOqc0ysVXApbKaD5A==
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="Vkfe3EW7";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="uNCna+sg"
+ARC-Seal: i=1; a=rsa-sha256; t=1792421283; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=NgU18o0oYsfcew7rPuRNEr3FFlLP03j7xC3YyA8waetBRlRfNMxVtjESshSUDiipNh
+    MwFSuf0YiWLBwRnQ4HoPCJVXYxvda6c1OprRQfBC9nlfHwYlniiqUHWcJJWisx7q+YtL
+    xHZoKsbV0LXXDD1wu3TLxfhVFeuWhaOkfA9thVld/9Wz+oQS9spEYd2n1Ockyt1GuwQl
+    CLehDEr5tC2FnZYRlY7wIbBrXvuyAXKxpCCFSWpF/4RzBt6Sdl8nE5Siua4571qwjk31
+    HLsS7ug/gj/5TgnS4vEOVOVNf3dg7Rjmno9lufLE7u6TbM9iX4QucBryuSBYWa4xaaKf
+    eD4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792421283;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Am9IYcY8VLdf7s45sks5mTGT30lEapUlqqzMBU/AqiU=;
+    b=VFr7RNrjH75Y2sj4epjPtFc9079czjUJEucgwMi8aXhgf4E64Haxhpa+r0uU3bS1K3
+    PwN3n9bnMxzL1IDJLPYDGCLvpl/cSMvgcjLzyn1a1QIzCbfhG0P2KUTd+QtQ9/GLwnXw
+    A4dRFLxSzJs90ZjJGdoRyCpx+zxa2nzDSUCS/vk3KKahtZQbX0RfiX/t/EGYVPXq/L7E
+    jCMmYBFYDGgX9WtFg1ovnezrWg+DDEC0K1mZyM2zwTiMF4zZKJm3HgWPm2bM/EAeGJf0
+    1oRr8l950AtN3tNGyjooAufJKVSn/g/EVnTG7DuduFMPS73O6s7ECzmPCjUAuF1QscC6
+    IbQw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792421283;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Am9IYcY8VLdf7s45sks5mTGT30lEapUlqqzMBU/AqiU=;
+    b=Vkfe3EW7qLyQ+/R8BLen4FPe5VBtqocLIOcQ1Hx3BXvWnZbEUrftRgGxXgXzXDbpyq
+    jar83vp8yrohUkOj04cs/dNnd1uqvfnq7CKrCaGJ+GhhCcS8uFqKMB8SsYrYVJjWA3UJ
+    I4I4mwTuaVdwwz687kKVqjgLedIO90a6MuiOtxSaXFF46NloDVQmQsVxe5JbUkwCw83j
+    th7htD3BELUeH1WrED5u10zHdtoVjnSaA5al4nCv+ReZLbPiqraya0Bef8z6L9dJUYs7
+    QGpbyXTklyD3Tyg5Rrk+SHR0p86nLXL+QSvcKAAkNgoWmoLNORUbad0jhbN3uR8ZR+ue
+    QPUQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792421283;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Am9IYcY8VLdf7s45sks5mTGT30lEapUlqqzMBU/AqiU=;
+    b=uNCna+sgfZvI1soZshx44e1IDvFnue7o39aq+gW/89tg+/8Tppw+elM17vG9rpqOlf
+    BEfyw8IvjNkl7fPmYtDA==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from [IPV6:2a00:6020:4a38:6810::989]
+    by smtp.strato.de (RZmta 55.6.3 AUTH)
+    with ESMTPSA id Kfdf2a29JEm2XNU
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 19 Oct 2026 16:48:02 +0200 (CEST)
+Message-ID: <b0ff428a-4d7e-47b0-b752-4533bb403677@hartkopp.net>
+Date: Mon, 19 Oct 2026 16:48:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 19 Oct 2026 16:42:02 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Mikkel Eskildsen <mke@visotia.com>
-Cc: Oliver Neukum <oneukum@suse.com>, Breno Leitao <leitao@debian.org>,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org, Jakub Kicinski
- <kuba@kernel.org>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>
-Subject: Re: [BUG] cdc_ncm: soft lockup with netconsole over an AX88179B dock
-In-Reply-To: <PRAP189MB185019A5A8D411482BB6E0CDA9982@PRAP189MB1850.EURP189.PROD.OUTLOOK.COM>
-References: <PRAP189MB185019A5A8D411482BB6E0CDA9982@PRAP189MB1850.EURP189.PROD.OUTLOOK.COM>
-Message-ID: <6aaea20ede0bd16a5138bc126f3ec897@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] team: reject CAN and IEEE 802.15.4 devices in
+ team_port_add
+To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
+Cc: jiri@resnulli.us, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, yaojiale02@163.com
+References: <20261013083523.4728-1-socketcan@hartkopp.net>
+ <179196707247.434549.3372737964220312421@kernel.org>
+ <bf99c42f-92eb-4e4f-aba4-1aeda5b84f65@hartkopp.net>
+ <6ecdd152-36ea-4ddc-8c41-d74f7fadd497@redhat.com>
+Content-Language: en-US
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <6ecdd152-36ea-4ddc-8c41-d74f7fadd497@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Mikkel
 
-On 19.10.2026 15:48, Mikkel Eskildsen wrote:
-> Hi,
+
+On 19.10.26 15:58, Paolo Abeni wrote:
+> On 10/14/26 13:49, Oliver Hartkopp wrote:
+>> On 14.10.26 10:37, netdev-bot+sashiko@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found 1 potential
+>>> issue(s) to consider.
+>>>
+>>> Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+>>>
+>>> If you believe none of the issues are legitimate, please reply to each
+>>> issue of Medium severity or higher and explain why the AI is wrong.
+>>> If any of them are legitimate and you plan to respin, please let 
+>>> patchwork
+>>> know by including "pw-bot: cr" as a separate line at the end of your 
+>>> reply
+>>> (one such reply per series is enough).
+>>>
+>>> - [High] The new denylist in team_port_add()
+>>>    (drivers/net/team/team_core.c:1228-1236) only rejects ARPHRD_CAN,…
+>>>
+>>> Pre-existing issues:
+>>> - [High] This problem wasn't introduced by this patch, but the bonding
+>>>    driver, which the commit message cites as the precedent being…
+>>>
+>>> -- 
+>>>
+>>> team: reject CAN and IEEE 802.15.4 devices in team_port_add
+>>>
+>>> This patch makes team_port_add() reject ports of type ARPHRD_CAN,
+>>> ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR. Team never sets up the
+>>> private mid-layer data these L2 types expect, so enslaving one leads 
+>>> to a
+>>> NULL pointer dereference. The check mirrors the CAN check bonding has 
+>>> had
+>>> since commit 8ba68464e478.
+>>>
+>>> Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5- 
+>>> c1c7e647ccca@hartkopp.net/
+>>>
+>>>> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/ 
+>>>> team_core.c
+>>>> index ca75f08e3c593..5f1708c2a3445 100644
+>>>> --- a/drivers/net/team/team_core.c
+>>>> +++ b/drivers/net/team/team_core.c
+>>>> @@ -1225,6 +1225,16 @@ static int team_port_add(struct team *team, 
+>>>> struct net_device *port_dev,
+>>>>           return -EINVAL;
+>>>>       }
+>>>> +    if (port_dev->type == ARPHRD_CAN ||
+>>>> +        port_dev->type == ARPHRD_IEEE802154 ||
+>>>> +        port_dev->type == ARPHRD_IEEE802154_MONITOR) {
+>>>
+>>> [Severity: High]
+>>> Does this list cover the whole class of devices the commit message
+>>> describes? ARPHRD_6LOWPAN devices still seem to get through
+>>> team_port_add(). Examples are lowpan0 on top of wpan0, or a Bluetooth 
+>>> bt0.
+>>
+>> I'll send a v4 covering ARPHRD_6LOWPAN too.
+> If this message is not too late, please additionally include the
+> relevant stack trace in the commit message.
+
+Will add a stack strace ASAP.
+
+Thanks!
+
+Oliver
 > 
-> My laptop panicked with a soft lockup on 2026-10-16 and again on 
-> 2026-10-19 while netconsole was running over a USB dock NIC that uses 
-> cdc_ncm. Both times the laptop was docked and netconsole was on that 
-> interface. I have turned netconsole off for now.
-
-I was able to reproduce the issue with a similar device.
-
-Seems like netconsole holds the tx lock while the cdc_ncm driver
-lets pending network work run in the middle of the send.
-... which then starves on the lock netconsole still holds.
-
-Below is a patch which hopefully fixes the issue.
-
+> Thanks,
 > 
-> The trace below is from pstore. The netconsole thread on CPU15 is in 
-> netpoll_send_skb -> usbnet_start_xmit -> cdc_ncm_tx_fixup. The 
-> spin_unlock_bh() in cdc_ncm_tx_fixup runs pending softirqs, TCP RX 
-> sends a packet and it spins in sch_direct_xmit. My guess is that it 
-> waits for the eth0 tx queue lock that netpoll already holds. The other 
-> CPUs then wait on the socket lock until the watchdog panics.
-> 
-> The first panic looks the same, but pstore lost the part with the 
-> netconsole thread.
+> Paolo
 > 
 
-> [...]
-
-> I can test a patch if that helps. Is this a known issue?
-
-https://github.com/nbuchwitz/linux/commit/319cb0933e2eaf984b98906ebddb55befb4e2996
-
-> 
-> Mikkel
