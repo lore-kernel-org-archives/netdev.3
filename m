@@ -1,51 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55006297FB;
-	Mon, 19 Oct 2026 14:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAD553D571;
+	Mon, 19 Oct 2026 14:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418706; cv=none; b=u4w3zY5MXxcV3jUIh7niujdpBym9i2oqKK/jZuuW1HQZhNxhTW3rWGFJsmbzL0N9kTx07MkDWu3CKRN8WjNrUsT4JuRo78c84o3F6+tvIXl2MTYOOXc56spuvBymrwjWXUeZ5gD+W3Hz1AicZ6gd/D50kRKPcm5jWrT0PxLC3NI=
+	t=1792418711; cv=none; b=K6J8XbI95ujNK/nqedw0HykNJF44sRLPG7oNRXIgHNPJFUtRhRsR0jeXjxWiEM9UGp6qJDGC3MP+jOj7zxTkQ1bbwEo+yA4YEFmHKPuLsTQSQOUGEfcRB8iVyHWJWocMgFb/v4oLhD97RxBda2uqYH/aNS2cpX+0X1FkThrdiIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418706; c=relaxed/simple;
-	bh=P70v4lbD7rijCKKYCp/Niqinta9IwzeeU3PKR/2sqCI=;
+	s=arc-20240116; t=1792418711; c=relaxed/simple;
+	bh=KOswoNjEcV8ovVzEKJvJY+RaXH0B+Z4iDE3cex5hL9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K2o70IR9yx2T2L1vcQ+QSwWAtVOBawfa8Toz4iUQ1zLFmfIGzhl9zxU6YpJwFF/OK0qs+UISDIduxwD+ZdilwOLqpWTYvqCkTENS4W5szRdw8XmPONJMSANQNOzZYy8kuSE31J9xf+4yxU+dvELhTqwKYFoi/hdFnt6+5oxVFUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFq9dHjM; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Nj6kaTFPO2rtxWdy61dJiBWGtUO90VhO62ZswqHP23BCizvOBNUkbOfkpHoeYBvER7Bb0NePirhAlfWmbA1KusNi/yy2JH+dFkgEZcMrnyGVZOatlimF64YIVjZoB5v7jOWsdDZMnNvBmyZCmYWAipFHZiIzBcJSzNPGs/NvDcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBOVmxvu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFq9dHjM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8781F000C4;
-	Mon, 19 Oct 2026 14:05:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBOVmxvu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEA71F000CA;
+	Mon, 19 Oct 2026 14:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418703;
-	bh=KnrnkJtzxfhIMBglwJTSDpWhqf+G65Vun2GiB5efnRM=;
+	s=k20260515; t=1792418709;
+	bh=1atrWMidy/mqUqIpPrKw3eieFv9QQz6XVuDdor/tV+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XFq9dHjMLVbR3oPxFTsrK1geZ/lF0d9g2uV5oTa2IMENAoGPAsMq9T/1+zl5jyNWV
-	 bzHaSar+HaNqA9XBugcevM6Rw9y6+0LZkVeWX0KtQaoNuIKXZrw1Dk2sC6URoDTuWU
-	 7lTcWW6NxpCp53WvVXfrRHLJSKp273hlmhsLlN23ZeJwP5OUIg0gOXDA78TROPlF0j
-	 nb0mo3IHfUj6N6/RXuds2N6SbeioJ3OrCkeNQslIw21ZzItfQflT4caHXRKKFQ+zOf
-	 9LnHHsIAFSy+mclpPPWpqHDUYYUSa+2WL5KcJvfaqgYHyCd5EK1OfF4cYyssiTWH5r
-	 lEw2a7oe7H6/g==
+	b=fBOVmxvuuzlVI7nx4UrO4WVGIdWt3t4o8PvVBOrQFkvcBrTx9oGTKWIFhrqHsSMjI
+	 3ja39q2LqBpKX26nSlUQX9g71EulyIjmFmPzFq+B2NGfi7G1Ft1QZkl2H+7LJnMJE9
+	 zcgkqqlR6MShhrvlbe9Wf+mee64TRzmGYWpR/uVqSUnAvBf5fGnUQZS9wyJtpDVyhy
+	 BgJX0XNXMh1veMjZnn7AI85hruEe8VglQ7anIp94ksfXoA5acg1sEOV2oeQN05S3wl
+	 hk16PpBZE5odZFcEjibgZi/DlEseiJWsJyXu3ROSQEE+kYOiRC9GnU7Cs9AmwqpiMu
+	 IGF/al+q7Fc4w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Andy Moreton <andy.moreton@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	Alejandro Lucero <alucerop@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ecree.xilinx@gmail.com,
-	andrew+netdev@lunn.ch,
+	fw@strlen.de,
 	davem@davemloft.net,
 	edumazet@kernel.org,
+	kuba@kernel.org,
 	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-net-drivers@amd.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] sfc: add X4D PF support
-Date: Mon, 19 Oct 2026 09:52:07 -0400
-Message-ID: <20261019135441.1420968-436-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.1] netfilter: tproxy: use DEBUG_NET_WARN_ON_ONCE for protocol fallbacks
+Date: Mon, 19 Oct 2026 09:52:11 -0400
+Message-ID: <20261019135441.1420968-440-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -61,70 +59,71 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Andy Moreton <andy.moreton@amd.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 24fedc7a569bce181728f0dd616504bef9f1513b ]
+[ Upstream commit 1f0391aea883e99d402d0f77ba3530e4e879350d ]
 
-X4D is an X4 controller instance as an IP block in an SoC.
-It has the same feature set as X4.
+Replace WARN_ON calls with DEBUG_NET_WARN_ON_ONCE in the default switch
+blocks of nf_tproxy_get_sock_v4 and v6. Unsupported transport protocols
+are already safely handled by returning a NULL socket pointer. This
+prevents unnecessary system panics when panic_on_warn=1 is enabled in
+production systems.
 
-Signed-off-by: Andy Moreton <andy.moreton@amd.com>
-Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
-Reviewed-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260916125641.12238-1-alucerop@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/cover.1786968834.git.zhilinz@nebusec.ai/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-The local tree is **6.18.57**. This commit is a four-line PCI ID
-addition that maps X4D PFs onto the existing X4 nic type, which is
-already in this tree.
+This is a two-line datapath `WARN_ON` demotion in netfilter tproxy. The
+`WARN_ON(1)` is present in this 6.12 tree, `DEBUG_NET_WARN_ON_ONCE`
+already exists here, and Pablo later took the change into `-net` because
+that warning is reachable and can panic under `panic_on_warn=1`.
 
 ===============================================================
 PHASE 1: COMMIT MESSAGE FORENSICS
 ===============================================================
 
 Step 1.1: PARSE THE SUBJECT LINE
-Record: [subsystem: sfc (Solarflare/AMD ethernet)] [action verb: add]
-[intent: enable X4D PF PCI devices in the existing sfc driver]
+Record: [netfilter / tproxy] [use] [replace `WARN_ON` with
+`DEBUG_NET_WARN_ON_ONCE` on unsupported-protocol fallbacks in IPv4/IPv6
+tproxy socket lookup]
 
 Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
 Record:
-- Fixes: none (expected for a device-ID addition)
-- Reported-by: none
-- Tested-by: none
-- Reviewed-by: Pieter Jansen van Vuuren (AMD), Alejandro Lucero (AMD),
-  Simon Horman (netdev)
-- Acked-by: none
-- Link: https://patch.msgid.link/20260916125641.12238-1-alucerop@amd.com
-- Cc: stable: none (expected; not a negative signal)
-- Signed-off-by: Andy Moreton (author, AMD); Jakub Kicinski (netdev
+- Link:
+  https://patch.msgid.link/cover.1786968834.git.zhilinz@nebusec.ai/
+  (cover from Zhiling Zou / nebusec.ai, 2026-08-17)
+- Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de> (author)
+- Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org> (netfilter
   maintainer)
-- Ignored pipeline tags: Upstream commit
-  24fedc7a569bce181728f0dd616504bef9f1513b; Signed-off-by: Sasha Levin
+- No Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, or Cc:
+  stable (absence expected)
+- Ignore any pipeline "Upstream commit" / Sasha Levin SOB if present
 
-Notable: three Reviewed-by tags including a netdev regular (Horman) and
-the subsystem maintainer path via Kicinski.
+Notable: the msgid points at an external bug-finding series, not at
+Fernando’s original June nf-next cover. Pablo later described a concrete
+datapath reachability bug.
 
 Step 1.3: ANALYZE THE COMMIT BODY TEXT
 Record:
-- [Bug description] Not a crash/corruption bug. X4D is an X4 controller
-  instantiated as an SoC IP block; without these PCI IDs the in-tree sfc
-  driver will not bind to that hardware.
-- [Symptom/failure mode] X4D PF devices (PCI IDs 0x8c03 and 0xac03,
-  vendor Solarflare 0x1924) are unrecognized; the NIC does not come up.
-- [Version information] None in the message. Author date 2026-09-16; not
-  in v6.18 or v6.18.57.
-- [Root cause] Missing PCI ID table entries. Feature set is stated to be
-  identical to existing X4, so no new nic_type is required.
+- Bug: `WARN_ON(1)` in the default arm of the L4 protocol switch in
+  `nf_tproxy_get_sock_v4` / `nf_tproxy_get_sock_v6`.
+- Symptom: kernel warning splat; with `panic_on_warn=1`, a full panic.
+- Failure mode: “unnecessary system panics when panic_on_warn=1”.
+- Root cause (author): unsupported transport protocols are already
+  handled by returning `sk = NULL`; the `WARN_ON` is not needed for
+  correctness.
+- Version info in the message: none.
 
 Step 1.4: DETECT HIDDEN BUG FIXES
-Record: [Not a hidden bug fix.] This is an explicit hardware-enablement
-/ device-ID addition. The subject says “add … support,” but the body and
-diff make clear it is only IDs, not a new driver or API.
+Record: Not a disguised cleanup in the sense of a leak/UAF. It is a real
+defensive fix: a reachable `WARN_ON` in the packet path that can panic
+production/hardened kernels. Originally patch 6/9 of an nf-next “replace
+raw warnings” series; Pablo later moved this specific change to `-net`
+because the warning is reachable.
 
 ===============================================================
 PHASE 2: DIFF ANALYSIS - LINE BY LINE
@@ -132,63 +131,79 @@ PHASE 2: DIFF ANALYSIS - LINE BY LINE
 
 Step 2.1: INVENTORY THE CHANGES
 Record:
-- [Files] drivers/net/ethernet/sfc/efx.c: +4 / -0
-- [Functions] none modified; only the static `efx_pci_table[]`
-  initializer
-- [Scope] single-file surgical PCI ID addition
+- `net/ipv4/netfilter/nf_tproxy_ipv4.c`: 1 line changed (`WARN_ON(1)` →
+  `DEBUG_NET_WARN_ON_ONCE(1)`)
+- `net/ipv6/netfilter/nf_tproxy_ipv6.c`: same 1-line change
+- Functions: `nf_tproxy_get_sock_v4`, `nf_tproxy_get_sock_v6`
+- Scope: single-function surgical fix, two files, +0/−0 net (2
+  modifications)
 
 Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-Record: [hunk] Before: table lists X4 PF IDs 0x0c03 (FF/LL) and 0x2c03
-(FF only) bound to `efx_x4_nic_type`, then terminator. After: two
-additional IDs 0x8c03 and 0xac03 also bound to `efx_x4_nic_type`. Probe
-path is unchanged; PCI matching is the only difference. Normal bind path
-for new devices only.
+Record:
+- Before: protocol switch handles TCP and UDP; any other protocol hits
+  `default: WARN_ON(1); sk = NULL;` then returns NULL.
+- After: same NULL return; warning only if `CONFIG_DEBUG_NET=y`, and
+  only once.
+- Path: packet/socket-lookup path for TPROXY, not init. Already a
+  handled fallback, not a crash-without-WARN bug.
 
 Step 2.3: IDENTIFY THE BUG MECHANISM
-Record: [category: hardware enablement / PCI device ID addition]
-[mechanism: devices 0x1924:0x8c03 and 0x1924:0xac03 would not match
-`efx_pci_table`, so `efx_pci_probe()` never runs. Mapping them to
-existing `efx_x4_nic_type` reuses the X4 implementation already in this
-tree.]
+Record:
+- Category: logic/correctness of assertions in the datapath (WARN-in-
+  packet-path / panic_on_warn DoS), not UAF/leak/race.
+- Mechanism: `WARN_ON(1)` treats “non-TCP/UDP protocol in tproxy lookup”
+  as a kernel bug. Callers can still pass a non-TCP/UDP protocol. The
+  function already returns NULL and callers drop/break. The WARN is the
+  harmful part under `panic_on_warn`.
 
 Step 2.4: ASSESS THE FIX QUALITY
-Record: [Quality: obviously correct; same pattern as the 2024 X4 ID
-entries.] [Regression risk: very low. New IDs cannot match existing X4
-or older Solarflare cards. No locking, no API, no data-structure change.
-MODULE_DEVICE_TABLE already points at this table.]
+Record:
+- Obviously correct: fallback already returns NULL; only the assertion
+  changes.
+- Minimal: two identical one-line edits.
+- Regression risk: very low. Production kernels (`CONFIG_DEBUG_NET=n`)
+  compile this to `BUILD_BUG_ON_INVALID(1)`, a compile-time sizeof no-op
+  (`include/linux/build_bug.h`). Debug kernels still warn once.
+- No API, locking, or structure changes.
+- Red flag that does not block backport: this does not fix checkentry
+  itself; it makes the already-safe fallback non-fatal.
 
 ===============================================================
 PHASE 3: GIT HISTORY INVESTIGATION
 ===============================================================
 
 Step 3.1: BLAME THE CHANGED LINES
-Record: Adjacent X4 ID rows at v6.18.57 come from `cf06766f1525d` (“sfc:
-Add X4 PF support”, Jonathan Cooper, 2024-09-10). That commit added
-`efx_x4_nic_type` plus IDs 0x0c03/0x2c03. The table terminator dates to
-2008. X4 support has been in-tree since well before 6.18.
+Record:
+- Introduced by `45ca4e0cf2734` (“netfilter: Libify xt_TPROXY”, Máté
+  Eckl, 2018-06-01).
+- `git merge-base --is-ancestor 45ca4e0cf2734 HEAD` succeeded. Present
+  since the tproxy libification, long before 6.12.
 
 Step 3.2: FOLLOW THE FIXES: TAG
-Record: [No Fixes: tag.] Not applicable; this did not regress existing
-code.
+Record: No Fixes: tag. Not applicable. Upstream applied commit is
+`1f0391aea883` (netdev `-net`); `git merge-base --is-ancestor
+1f0391aea883 HEAD` failed, so this tree does not already contain the
+fix.
 
 Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Record:
-- Related: `cf06766f1525d` added X4 PF support (prerequisite; present in
-  v6.18.57).
-- Only X4D-related commit under `drivers/net/ethernet/sfc/` is this one;
-  no follow-up X4D fixes.
-- Standalone: not patch X/Y; single net-next patch.
+Record: Recent local history on these files: `21a673bddc8fd` (NULL
+indev), `4a02426787bf0` (BH deadlock), hashinfo via net. No competing
+tproxy WARN change. Standalone; not patch 2/3 of a required series for
+this tree.
 
 Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Record: Andy Moreton has other sfc commits in this history (EEPROM
-reporting, EF10 filter_table_remove). Submitter on-list was Alejandro
-Lucero (AMD). This is vendor driver work, not a random drive-by.
+Record: Fernando Fernandez Mancera is a regular netfilter contributor in
+this tree (conncount, synproxy, osf, NFQUEUE). Pablo signed off as
+maintainer. Original June 2026 series was a broad WARN→DEBUG_NET
+conversion; only tproxy (and separately conncount) were later taken into
+`-net`.
 
 Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-Record: Depends on `efx_x4_nic_type`, which exists at v6.18.57 in
-`drivers/net/ethernet/sfc/ef10.c` and is already used by 0x0c03/0x2c03.
-Context around the table in v6.18.57 matches the patch. [Can apply
-standalone: yes.]
+Record: Depends only on `DEBUG_NET_WARN_ON_ONCE` in
+`include/net/net_debug.h`, present in this tree. Both files include
+`linux/skbuff.h` (IPv4 directly; IPv6 via `nf_tproxy.h` → `net/tcp.h` →
+`skbuff.h`), and `skbuff.h` includes `net/net_debug.h`. Applies
+standalone.
 
 ===============================================================
 PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
@@ -196,129 +211,165 @@ PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
 Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
 Record:
-- [Lore/msgid]
-  https://patch.msgid.link/20260916125641.12238-1-alucerop@amd.com
-- Direct lore.kernel.org fetch returned 403; thread recovered via `b4
-  dig` and openwall mirrors.
-- [Revisions] `b4 dig -a`: single revision, v1 `[PATCH net-next] sfc:
-  add X4D PF support` (2026-09-16).
-- [Review] Simon Horman Reviewed-by with no requested changes
-  (2026-09-17).
-- [Stable nomination] none in the thread.
-- [NAKs] none.
-- Applied by Jakub Kicinski; patchwork-bot announced netdev/net.git main
-  commit `24fedc7a569b` on 2026-09-19.
+- `b4 dig -c` not usable: candidate SHA is not in this checkout.
+- lore.kernel.org fetches returned 403.
+- Original submission: [PATCH 6/9 nf-next] 2026-06-01, cover “replace
+  raw warnings with DEBUG_NET_WARN_ON_ONCE”
+  (https://ratatoskr.run/netfilter-devel/2026/06/17074549 and 17074557).
+  Intent: nf-next hardening.
+- Re-posted as [PATCH net 01/10] then [PATCH net,v2 1/9] by Pablo,
+  2026-08-21 / 2026-08-27:
+  https://lists.openwall.net/netdev/2026/08/21/202 and
+  https://lists.openwall.net/netdev/2026/08/27/160
+- Pablo’s cover: “a recent bug found a way to reach WARN_ON from
+  datapath due to insufficient validation of xt_TPROTO checkentry.”
+- Applied to netdev `-net` as `1f0391aea883`; included in the v7.3-rc1
+  networking pull.
+- No NAK found. Florian commented on other patches in the June series,
+  not a NAK of this tproxy hunk.
+- Commit Link cover.1786968834.git.zhilinz@nebusec.ai is dated
+  2026-08-17 (same reporter class as the sch_cake WARN backport already
+  in this tree).
 
 Step 4.2: CHECK WHO REVIEWED THE PATCH
-Record: Recipients (`b4 dig -w`): netdev@vger.kernel.org, davem, kuba,
-pabeni, edumazet, ecree.xilinx@gmail.com, Andy Moreton, Pieter Jansen
-van Vuuren. Appropriate netdev maintainers and sfc/AMD people were on
-Cc.
+Record: Recipients on Pablo’s net posting: netfilter-devel, davem, kuba,
+pabeni, edumazet, horms, fw@strlen.de (Florian Westphal), ja@ssi.bg.
+Pablo applied it. No separate Reviewed-by on the commit.
 
 Step 4.3: SEARCH FOR THE BUG REPORT
-Record: No bugzilla/syzbot report. This is vendor hardware enablement,
-not a user-reported crash. Syzbot CI skipped the series as having no
-functional impact on generic fuzzing (expected for an ID table).
+Record: Direct zhilinz cover fetch from lore 403’d. Independent
+maintainer statement in the `-net` cover is the verified evidence of
+datapath reachability. Same reporter’s analogous `WARN_ON` panic_on_warn
+issue was already backported here as `2504a76e5c069` (“sch_cake: drop
+WARN_ON(1) for malformed packets”).
 
 Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-Record: Standalone one-patch series. No other X4D patches in
-`drivers/net/ethernet/sfc/`. No siena/ef100 table changes needed; X4/X4D
-live in the main `efx_pci_table`.
+Record: June 9-patch nf-next series is bulk hardening. Pablo cherry-
+picked tproxy into `-net` because it was shown reachable; conncount in
+the same `-net` pull was explicitly “not known issue”. This tproxy
+commit does not need the rest of that series.
 
 Step 4.5: CHECK STABLE MAILING LIST HISTORY
-Record: lore.kernel.org/stable search returned 403. No evidence on the
-public netdev thread that this was requested for or rejected from
-stable. UNVERIFIED: whether anyone mailed stable@ about it.
+Record: lore.kernel.org/stable search 403. UNVERIFIED whether anyone
+already requested/rejected this on stable@. No evidence in-tree that it
+was already applied.
 
 ===============================================================
 PHASE 5: CODE SEMANTIC ANALYSIS
 ===============================================================
 
 Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-Record: No functions edited. Data: `efx_pci_table[]`. Consumers:
-`efx_pci_driver.id_table` and `MODULE_DEVICE_TABLE(pci, efx_pci_table)`.
+Record: `nf_tproxy_get_sock_v4`, `nf_tproxy_get_sock_v6`.
 
 Step 5.2: TRACE CALLERS
-Record: `pci_register_driver(&efx_pci_driver)` from `efx_init_module()`.
-Match leads to `efx_pci_probe()` → `efx_pci_probe_post_io()` →
-`efx_pci_probe_main()`. Interrupt/hot path unchanged. Impact surface:
-PCI enumeration of the two new IDs only.
+Record (from grep in this tree):
+- `net/netfilter/xt_TPROXY.c`: `tproxy_tg4`, `tproxy_tg6_v1` (mangle
+  PREROUTING)
+- `net/netfilter/nft_tproxy.c`: `nft_tproxy_eval_v4`,
+  `nft_tproxy_eval_v6`
+- Re-entered from `nf_tproxy_handle_time_wait4` / v6 for TIME_WAIT
+  reopen
+- Exported (`EXPORT_SYMBOL_GPL`)
+
+xt_TPROXY checkentry (`tproxy_tg4_check` / `tproxy_tg6_check`) rejects
+rules that are not `-p tcp`/`-p udp`. Native nft_tproxy returns
+`NFT_BREAK` unless `pkt->tprot` is TCP or UDP. TPROXY target has no
+`.proto` in the `xt_target` struct; protocol restriction is only
+checkentry + nft eval. Pablo’s cover says that checkentry validation is
+insufficient, so the default arm can still run.
 
 Step 5.3: TRACE CALLEES
-Record: Probe uses `efx_x4_nic_type` (already defined in ef10.c):
-EF10-like ops, `efx_ef10_probe_pf`, MCDI, etc. Same as discrete X4 PFs.
+Record: TCP/UDP hash lookups (`inet_lookup_listener`, `udp4_lib_lookup`,
+IPv6 equivalents), `sock_put` on mismatch. Default arm only sets `sk =
+NULL`. No alloc/lock in the changed path.
 
 Step 5.4: FOLLOW THE CALL CHAIN
-Record: Userspace cannot trigger this except by plugging/enumerating the
-NIC. Reachable on any machine with an X4D PF and CONFIG_SFC. Not a
-syscall-fuzz path.
+Record: Reachable from netfilter PREROUTING when TPROXY/nft tproxy is
+loaded. Not a syscall on every box, but it is a packet path. With user
+namespaces + CAP_NET_ADMIN in a netns, and with syzbot-style fuzzing of
+iptables/nft compat, it is userspace-reachable once the module is
+present. Native nft IPv4 sets `pkt->tprot = ip->protocol` then checks
+tprot, so that path is consistent; xt_TPROXY uses `iph->protocol` /
+`ipv6_find_hdr()` after a checkentry that Pablo says can be bypassed.
 
 Step 5.5: SEARCH FOR SIMILAR PATTERNS
-Record: Same two-ID (FF/LL vs FF-only) pattern as X4 0x0c03/0x2c03.
-Older SFC9120/9140/9220/9250 entries use the same table style. No other
-copies of 0x8c03/0xac03 in this driver.
+Record: Same files still `BUG()` on invalid `lookup_type` (kernel enum,
+not packet proto). Unrelated. Networking policy is to use
+`DEBUG_NET_WARN_ON_ONCE` on datapath asserts (`include/net/net_debug.h`,
+`CONFIG_DEBUG_NET`). This tree already backported a sibling pattern in
+sch_cake.
 
 ===============================================================
 PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 ===============================================================
 
 Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
-Record: Local tree is **v6.18.57** (`Makefile` VERSION=6 PATCHLEVEL=18
-SUBLEVEL=57). At v6.18.57, `efx_pci_table` has X4 IDs but not X4D
-0x8c03/0xac03. `efx_x4_nic_type` is present. The “bug” (missing IDs)
-exists here. X4 support was added in 2024 and is in v6.18.
+Record: Yes.
+- Tree: `pending-6.12`, `git describe` p-6.12-3-gc504cf0baa3d8, `make
+  kernelversion` 6.12.111 (Makefile 6.12.111).
+- `WARN_ON(1)` at `nf_tproxy_ipv4.c:141` and `nf_tproxy_ipv6.c:140`.
+- Bug introduced 2018 (`45ca4e0cf2734`), present in this branch.
 
 Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-Record: [Expected backport difficulty: clean apply.] v6.18.57 context is
-identical to the hunk. No conflicting refactor of the ID table between
-v6.18.57 and this patch.
+Record: Surrounding code matches the submitted diff context exactly.
+Expected apply: clean. `DEBUG_NET_WARN_ON_ONCE` already defined. No
+extra include needed.
 
 Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
-Record: No other X4D ID or quirk in v6.18.57. Candidate overlay commit
-`6fd5947dd3d9d` is ignored per pipeline rules; it is not part of
-v6.18.57.
+Record: Upstream `1f0391aea883` is not an ancestor. No other commit on
+these files replaces this `WARN_ON`. sch_cake WARN demotion is a
+precedent, not a substitute.
 
 ===============================================================
 PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 ===============================================================
 
 Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-Record: [Subsystem: drivers/net/ethernet/sfc] [Criticality: IMPORTANT
-for users of Solarflare/AMD X4-family NICs; PERIPHERAL relative to core
-mm/fs. Not staging.]
+Record: netfilter tproxy (`net/ipv4/netfilter`, `net/ipv6/netfilter`,
+used by xt_TPROXY / NFT_TPROXY). Criticality: IMPORTANT (transparent
+proxy / service-mesh / squid / k8s-style TPROXY), not core mm/VFS, not
+staging.
 
 Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-Record: sfc is actively maintained (X4 in 2024, stats/MDIO churn, AMD
-authors). Mature driver; this is incremental ID adding on a stable
-nic_type.
+Record: Mature. TPROXY lookup logic has been stable for years; recent
+commits are bugfixes (NULL indev, BH deadlock), not refactors. Fits “old
+assertion, newly shown reachable.”
 
 ===============================================================
 PHASE 8: IMPACT AND RISK ASSESSMENT
 ===============================================================
 
 Step 8.1: DETERMINE WHO IS AFFECTED
-Record: [Affected population: driver-specific / hardware-specific.] Only
-Solarflare X4D PF devices (SoC IP block). Existing X4 and older SFC
-users are unaffected.
+Record: Config-specific: `NF_TPROXY_IPV4`/`IPV6`,
+`NETFILTER_XT_TARGET_TPROXY`, `NFT_TPROXY`. Production transparent-proxy
+users, and fuzzers/hardened kernels that load those modules with
+`panic_on_warn=1`.
 
 Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-Record: [Trigger: PCI probe of 0x1924:0x8c03 or 0x1924:0xac03.] Common
-on systems that ship that SoC NIC; never on others. Not an unprivileged
-software trigger.
+Record: Packet hits tproxy lookup with protocol ≠ TCP/UDP. Native
+nft_tproxy tries to gate on tprot; xt_TPROXY checkentry tries to require
+`-p tcp|udp`. Pablo stated checkentry is insufficient, so the default
+arm is reachable from the datapath. Not every boot; requires TPROXY in
+the ruleset (or a checkentry bypass). Unprivileged trigger: not from raw
+packets alone without a TPROXY rule; with a loaded rule or netns admin,
+yes. Syzbot-class environments typically have both.
 
 Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-Record: [Failure mode: device never bound; no Ethernet for that port.]
-[Severity: MEDIUM for those platforms (hardware dead in this kernel),
-LOW for everyone else.] Not a crash/UAF, but it is user-visible hardware
-enablement of the kind stable explicitly accepts.
+Record:
+- Default: `WARN_ON` splat in dmesg, lookup returns NULL, packet
+  dropped/broken — MEDIUM.
+- `panic_on_warn=1` (syzbot, some hardened/Android/debug distros): panic
+  — HIGH/CRITICAL for those users.
+- Not data corruption or UAF.
 
 Step 8.4: CALCULATE RISK-BENEFIT RATIO
 Record:
-- [Benefit] High for X4D SoC users on 6.18.y (NIC actually works).
-  Documented same feature set as X4 already in this tree.
-- [Risk] Very low: 4 lines, ID table only, no behavioral change for
-  other IDs.
-- [Ratio] Strongly favors backport.
+- Benefit: medium-high for TPROXY + panic_on_warn; prevents a panic on a
+  path that already handles the case. Low-medium for default 6.12
+  (warning only).
+- Risk: very low (2 lines, no-op when `CONFIG_DEBUG_NET=n`).
+- Ratio: favorable. Same class as the sch_cake WARN removal already in
+  this 6.12 tree.
 
 ===============================================================
 PHASE 9: FINAL SYNTHESIS
@@ -326,124 +377,134 @@ PHASE 9: FINAL SYNTHESIS
 
 Step 9.1: COMPILE THE EVIDENCE
 FOR:
-- Official rule in this tree: “must either fix a real bug that bothers
-  people or just add a device ID.”
-- User-instruction exception: new PCI IDs in an existing driver are YES.
-- 4-line change; maps to existing `efx_x4_nic_type` already in 6.18.57.
-- Author states X4D has the same feature set as X4.
-- Reviewed by Horman and AMD; applied by Kicinski.
-- Clean apply; no prerequisites missing; no follow-up X4D patches.
-- No risk to existing devices.
+- `WARN_ON(1)` is in this 6.12 tree since 2018; fix is not.
+- Maintainer placed this in `-net` because the warning is reachable from
+  the datapath.
+- Fallback already returns NULL; the WARN is the only dangerous part
+  under `panic_on_warn`.
+- Two lines, clean apply, `DEBUG_NET_WARN_ON_ONCE` already exists.
+- Same reporter/class as sch_cake WARN backport `2504a76e5c069` already
+  in this tree.
+- TPROXY is a real production feature, not staging.
 
 AGAINST:
-- Submitted to net-next, not as a “fix.”
-- No crash/security/corruption.
-- Niche SoC NIC; no public user bug report.
-- UNVERIFIED: stable@ discussion (lore 403).
+- Started as nf-next bulk hardening, not a one-off crash fix.
+- Does not repair checkentry; only demotes the assertion.
+- Default kernels do not panic on WARN.
+- Affects only TPROXY users / fuzzers, not all 6.12 systems.
+
+UNRESOLVED:
+- Exact zhilinz reproducer (lore 403). Relied on Pablo’s `-net` cover
+  instead.
+- Whether stable@ already discussed this (lore stable 403).
+- Precise checkentry-bypass mechanics in 6.12 (nft_compat proto vs
+  actual matches is a plausible hole; not fully reproduced here).
+  Decision does not depend on re-deriving that hole because the
+  maintainer already stated reachability and the fallback is already
+  correct.
 
 Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. Obviously correct and tested? [PASS — identical to existing X4 ID
-   rows; reviewed; merged upstream]
-2. Fixes a real bug that affects users? [PASS under the device-ID
-   clause; without it X4D NICs do not probe]
-3. Important issue (crash, security, corruption, deadlock)? [PASS via
-   device-ID exception, not via crash]
-4. Small and contained? [PASS — 4 lines, one table]
-5. No new features or APIs? [PASS — no new nic_type, no new sysfs/uAPI;
-   IDs only]
-6. Can apply to the local tree? [PASS — v6.18.57 has X4 type and
-   matching table context]
+1. Obviously correct and tested? PASS — two-line assert demotion; Pablo
+   merged to `-net`.
+2. Fixes a real bug that affects users? PASS — reachable datapath WARN;
+   panic with `panic_on_warn=1`.
+3. Important issue? PASS — panic/DoS on hardened and fuzzer configs;
+   warning noise otherwise. Severity HIGH with `panic_on_warn`, MEDIUM
+   without.
+4. Small and contained? PASS — 2 lines, 2 files.
+5. No new features or APIs? PASS.
+6. Can apply to the local tree? PASS — buggy code present, macro
+   present, context matches.
 
 Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Record: [Exception category: NEW DEVICE IDs to an existing driver.]
-Driver and X4 nic type already exist in 6.18.57.
+Record: Not a device-ID/quirk/DT/build/docs exception. Ordinary small
+bugfix.
 
 Step 9.4: MAKE YOUR DECISION
-This should be backported to this 6.18.y tree. It is the textbook PCI ID
-addition: small, obviously correct, no new APIs, and the implementation
-it binds to is already present.
+The local tree is 6.12.111. The bug exists here. The fix is a minimal,
+obviously correct datapath change that stops a handled protocol fallback
+from taking down `panic_on_warn` systems. That matches stable policy and
+an existing 6.12 precedent for the same WARN class.
+
+What it solves for stable users: a tproxy socket lookup for an
+unsupported L4 protocol currently fires `WARN_ON(1)` even though it
+already returns NULL. On kernels with `panic_on_warn=1` that is a panic;
+otherwise a splat. Backporting only changes the assertion, not lookup
+behavior.
+
+Risk vs benefit: benefit is avoiding a panic/warning on a real packet
+path; risk is negligible (`CONFIG_DEBUG_NET=n` compiles to a no-op). No
+prerequisites missing in 6.12.
 
 ===============================================================
-What the commit solves for stable users
-===============================================================
+Verification:
+- [Phase 1] Tags: Link to zhilinz cover (2026-08-17), SOB Fernando +
+  Pablo; no Fixes/syzbot/Cc:stable
+- [Phase 2] Diff: 2 files, `WARN_ON(1)` → `DEBUG_NET_WARN_ON_ONCE(1)` in
+  `nf_tproxy_get_sock_v4/v6` default arms; `sk = NULL` unchanged
+- [Phase 2] Confirmed current 6.12 code still has `WARN_ON(1)` at
+  ipv4:141 and ipv6:140
+- [Phase 3] `git blame`: 45ca4e0cf2734 (2018 Libify xt_TPROXY); ancestor
+  of HEAD
+- [Phase 3] `git merge-base --is-ancestor 1f0391aea883 HEAD`: not in
+  this tree
+- [Phase 3] `DEBUG_NET_WARN_ON_ONCE` in `include/net/net_debug.h` gated
+  on `CONFIG_DEBUG_NET`; `BUILD_BUG_ON_INVALID` is sizeof no-op
+- [Phase 3] `linux/skbuff.h` includes `net/net_debug.h`; both tproxy
+  files get that include
+- [Phase 4] lore/b4: lore 403; used openwall + ratatoskr. Original: nf-
+  next 6/9 2026-06-01; Pablo `-net` 2026-08-21/27 stating datapath
+  reachability via weak xt protocol checkentry
+- [Phase 4] No NAK found; applied as 1f0391aea883 in netdev `-net`
+- [Phase 4] UNVERIFIED: full zhilinz thread body; stable@ discussion
+- [Phase 5] Callers: xt_TPROXY, nft_tproxy, timewait helpers; xt
+  checkentry requires TCP/UDP; nft eval checks tprot; TPROXY `xt_target`
+  has no `.proto`
+- [Phase 6] `git describe`/Makefile: pending-6.12 / 6.12.111; context
+  matches patch; clean apply
+- [Phase 6] Precedent in this tree: 2504a76e5c069 sch_cake WARN_ON drop,
+  Reported-by Zhiling Zou, panic_on_warn
+- [Phase 7] netfilter tproxy, IMPORTANT, mature
+- [Phase 8] Failure: WARN splat or panic_on_warn panic; not
+  UAF/corruption
+- UNVERIFIED: exact checkentry-bypass PoC in 6.12; not used as the sole
+  driver (maintainer statement + existing WARN + safe NULL return are
+  verified)
 
-On 6.18.y, sfc already drives X4 PFs (`0x0c03` / `0x2c03`) via
-`efx_x4_nic_type`. X4D is the same controller as an SoC IP with
-different PCI IDs. Without this patch those devices never match, so the
-interface never appears. Adding the two IDs is the entire change.
-
-Risk vs benefit: benefit is hardware enablement for X4D PFs; risk is
-confined to those IDs. No locking, no API, no shared-path logic change.
-
-Concerns: none material. Not a series; X4 support is already here; apply
-is clean. Absence of Cc: stable is expected for this review queue.
-
-===============================================================
-Verification
-===============================================================
-- [Phase 1] Parsed tags: Reviewed-by Pieter Jansen van Vuuren, Alejandro
-  Lucero, Simon Horman; Link msgid
-  20260916125641.12238-1-alucerop@amd.com; no Fixes/Reported-
-  by/Cc:stable
-- [Phase 1] Body: “X4D is an X4 controller instance as an IP block in an
-  SoC. It has the same feature set as X4.”
-- [Phase 2] Diff: +4 lines in `efx_pci_table[]` only; IDs 0x8c03 and
-  0xac03 → `efx_x4_nic_type`
-- [Phase 3] `git describe HEAD` / `make kernelversion` / Makefile:
-  v6.18.57
-- [Phase 3] `git merge-base --is-ancestor 6fd5947dd3d9d v6.18.57` → NOT
-  in v6.18.57 (candidate overlay ignored)
-- [Phase 3] `git merge-base --is-ancestor cf06766f1525d v6.18.57` → X4
-  support IS in this tree
-- [Phase 3] `git show v6.18.57:drivers/net/ethernet/sfc/efx.c` table has
-  X4 IDs, not X4D; terminator immediately after 0x2c03
-- [Phase 3] `git blame -L 900,911 v6.18.57 --
-  drivers/net/ethernet/sfc/efx.c`: X4 rows from cf06766f1525d (2024)
-- [Phase 3] `git grep efx_x4_nic_type v6.18.57 --
-  drivers/net/ethernet/sfc/`: ef10.c:4308, efx.c X4 IDs, nic.h extern
-- [Phase 3] `git log --grep=X4D -- drivers/net/ethernet/sfc/`: only this
-  commit
-- [Phase 4] `b4 dig -c 24fedc7a569bce181728f0dd616504bef9f1513b`: msgid
-  match; v1 only
-- [Phase 4] `b4 dig -a`: single series, no v2+
-- [Phase 4] `b4 dig -w`: netdev maintainers + AMD + Edward Cree on Cc
-- [Phase 4] Openwall: Horman Reviewed-by; patchwork applied
-  24fedc7a569b; no NAK
-- [Phase 4] lore.kernel.org WebFetch: 403 — used openwall/b4 instead
-- [Phase 5] `efx_pci_table` used as `efx_pci_driver.id_table` and
-  MODULE_DEVICE_TABLE; probe is `efx_pci_probe`
-- [Phase 5] `PCI_VENDOR_ID_SOLARFLARE` is 0x1924 in v6.18.57 pci_ids.h
-- [Phase 6] Context at v6.18.57 matches patch; clean apply
-- [Phase 7] CONFIG_SFC present: “Solarflare SFC9100/EF100-family
-  support”
-- [Phase 8] Failure mode verified as non-bind of new PCI IDs, not a
-  crash
-- [Phase 9] Documentation/process/stable-kernel-rules.rst line 15: “or
-  just add a device ID”
-- UNVERIFIED: stable@ mailing list (lore 403)
-
-This is a contained PCI ID addition to a driver and nic type that
-already exist in 6.18.y, which stable policy explicitly allows.
+The change is small, already handled correctly aside from the warning,
+and belongs on this 6.12 tree.
 
 **YES**
 
- drivers/net/ethernet/sfc/efx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv4/netfilter/nf_tproxy_ipv4.c | 2 +-
+ net/ipv6/netfilter/nf_tproxy_ipv6.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/efx.c b/drivers/net/ethernet/sfc/efx.c
-index 112e55b98ed3b..62df7b6a26fa5 100644
---- a/drivers/net/ethernet/sfc/efx.c
-+++ b/drivers/net/ethernet/sfc/efx.c
-@@ -903,6 +903,10 @@ static const struct pci_device_id efx_pci_table[] = {
- 	 .driver_data = (unsigned long)&efx_x4_nic_type},
- 	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0x2c03),  /* X4 PF (FF only) */
- 	 .driver_data = (unsigned long)&efx_x4_nic_type},
-+	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0x8c03),  /* X4D PF (FF/LL) */
-+	 .driver_data = (unsigned long)&efx_x4_nic_type},
-+	{PCI_DEVICE(PCI_VENDOR_ID_SOLARFLARE, 0xac03),  /* X4D PF (FF only) */
-+	 .driver_data = (unsigned long)&efx_x4_nic_type},
- 	{0}			/* end of list */
- };
+diff --git a/net/ipv4/netfilter/nf_tproxy_ipv4.c b/net/ipv4/netfilter/nf_tproxy_ipv4.c
+index 041c3f37f237b..5eab7a2dc8ef2 100644
+--- a/net/ipv4/netfilter/nf_tproxy_ipv4.c
++++ b/net/ipv4/netfilter/nf_tproxy_ipv4.c
+@@ -137,7 +137,7 @@ nf_tproxy_get_sock_v4(struct net *net, struct sk_buff *skb,
+ 		}
+ 		break;
+ 	default:
+-		WARN_ON(1);
++		DEBUG_NET_WARN_ON_ONCE(1);
+ 		sk = NULL;
+ 	}
+ 
+diff --git a/net/ipv6/netfilter/nf_tproxy_ipv6.c b/net/ipv6/netfilter/nf_tproxy_ipv6.c
+index b2f59ed9d7cc0..12ec36a6be2e1 100644
+--- a/net/ipv6/netfilter/nf_tproxy_ipv6.c
++++ b/net/ipv6/netfilter/nf_tproxy_ipv6.c
+@@ -136,7 +136,7 @@ nf_tproxy_get_sock_v6(struct net *net, struct sk_buff *skb, int thoff,
+ 		}
+ 		break;
+ 	default:
+-		WARN_ON(1);
++		DEBUG_NET_WARN_ON_ONCE(1);
+ 		sk = NULL;
+ 	}
  
 -- 
 2.53.0
