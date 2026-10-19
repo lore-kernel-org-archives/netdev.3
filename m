@@ -1,230 +1,146 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C44360ED6
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792378844; cv=pass; b=Vad9mGXEZ0VU95T+tqPZsHqxL5wIwykG+W7xMYPGJUvVxzLrj9apG+p0pnp8cH2Aaiu8Fc8oBFL1XM7+U7KgjC9wdFXKEwak6P3Zzh9DF+KQm11JBTiAY42dLZKFIhjEMmcenavCmokWOOI36WZTvREjZkIYGWtPQgkaNi6DNVs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792378844; c=relaxed/simple;
-	bh=+xNsUs3eGIHajBdGM33Tm+gbSb32AlDiJkdtXoaQq8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L/24RrgsvdICq/Ij6F0tlq9A9+alJlLCZn9vjsDF/P0aUTiirvqJ2JzrYMv4o4LGIJNHoznUwIM1coRtg32cG8wxWRQQc+uPdsZh+3PzYTm94af2OQNaNZQd68I1QR+VXfVw4SpI2G8FIjm8TzR9bo9kIQ9+gTt6bCKx5FEXLRI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h+qwC1Gy; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6923428C009
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792378897; cv=none; b=A89nHeMtMoMG5wiMk9Ett2oQ8o+xbehs6kR1KE8QtS7imo34knd2XYb6vwKQt+wn4vrSmOXAlxiibeBlv+4nyZCZ6t2OcQt+d2+gBdKlhpL0X6wvswj0it/iYFYxSVm2ohHygxblFNS8YXdvoUDCjTS2rzc2x8AWmDktM5DdI0U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792378897; c=relaxed/simple;
+	bh=FrNTlR4U8Qa0xBE+AtEzlNDQeO1NfeIDzp16ScHs28s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=En+w/dblEiCK0sSWVwSScAobe+iVUo38v2e+bF7iCcqZ/Iy7SLRRY2j+p6Kxhpdmjs3+2IGFvtIw/4n0DS1clMsdYuFdbezJ0t3Bet9KUvUpDK21R74YUciNBjoZ01nu3YSzR+giUWCrpFGQ7WrMfscNmAin6jt/J2riYMsrfuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=ZXjY2OdS; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h+qwC1Gy"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b2232d8ef5so2316896a12.3
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:00:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792378841; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iZjsyAlWJ/qvkJ2TkRv1WTxzci49T3dv1S4fj/GSISmcZSxCTYzrSxk85pdDh6L6Ki
-         fSdrmtm2+tjlxjSklc416c268Fo+yrlg3dBDF0a9K7EQTRS7Q/MExaNYmddtcmMsbJDo
-         OJiyR68J3+MdkI11inuj+J9QTf4myNXPjEy6pvDYHbQ1MDba3sBmenBMytT/VrM+kD9p
-         4zJE5gjxPBZieUQolSloHh06SJKAaJfigbjIZKaDcSv1V2TLSYZXu4E8L3T6j2VjYHo5
-         CiUJeUub7SXpv1XmLgfLdNcBZES1zNxoqspPtTi4mNzeIwe2TPIjwyw0f/orCLFmamBj
-         T/Rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=uRs0G98QztzlnE+h6YsSA8pblIG/6flAT+WC3eNIoig=;
-        fh=NOJCrXTTkDlAPq3ff2QduMF7NErT4b86Q926OfUrj3M=;
-        b=L/TnEZv7g2EGpZEjVu1BeaTXQECTk7RXaUqHLDGpsyROvg/HXkEtbBanPEAVAbLfZm
-         XXwUBs13Q7D/wuVhej1dmpibATfKFriAOwESeqo+MH+ICruqNFNLjAVPa4o7T05LwJyT
-         Myg1AbXqnaLNxxk1U3VRAfiJan2PsG+ffui5Sik6izz9ScDYj8Nea7qdmGTYCC+yZs/O
-         lDsciaIO49szuZukXjEISIN3Y9UQ31H5EVIW5AJP7M3BLETXA6oW371hpKB+/gbXKk+z
-         KRpnDRQzF4VJX6m8wJuAhmNpiOciyFZpUzfHs45uDeo9C1U9za8NX8O6whCB7737vDcM
-         Bvxw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="ZXjY2OdS"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93e63ee7b4cso198870985a.2
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:01:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792378841; x=1792983641; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uRs0G98QztzlnE+h6YsSA8pblIG/6flAT+WC3eNIoig=;
-        b=h+qwC1Gyg1Yeuo0XHq60QZDAl3Y1sGdD+Rtu6eqSHx2jqn+SX+yoU6bc2/s6qr6Qzo
-         hFJR4uVMU/vnBjZzCYqaQYAQH+ajNcjfz4NWYco7vmWJelSFCqNpVkBsUs8zHshx9AfW
-         22Zd8oqCbX5aCt6le6oeLUUpigNhwpwDAcLeTrV2fIZWYFqECysAmSBpXYkcwy2sAL9i
-         2TJvR0hZkZTXrGiuJ31a9MqwsTJP1i+qfVV/po6iwwawGxUVMsTVkOT9vn9Ej51Lf422
-         DxK/V4XUCDjSmjfKB2phVA5DscdGcvulVsFMmKuG3wFAbLWsVbeu5TIjp6eci5+bgMf5
-         /mEQ==
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792378893; x=1792983693; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oLqDvu5I7JlAwNybBnp+q/NWLExf0+AtI016xe/bA7I=;
+        b=ZXjY2OdSkA9EE8eAiNXmnnrB6RZ9LQOK2UmXZCt0uCAQsgFDaXOQhUm6hfrAbhAynq
+         wdmPr48wcIU3gvyyKxp+AwnBD0BAKyHY8hPqduvDMBATHUV4rnxH1I/HRQau8WdGjeuW
+         DDia2P/cYdWAEk2w2isYnsjbNh3S2qU1LRZkswwGsIN0IiAwr0J5zJoYscftRdOwc3ql
+         EbVsJdwBaHWV7rDY4OSpANiKefkmDBveGPZKKZ0z0lX96DtVvYLNctvtnk6II4K4LvZT
+         zoxsEGT9GT8imFn9cntiZ/SWd5XTzKPCmIftHq8TRlq3kqtcyi9MNzbTIyF+pPi2xtqi
+         bCqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792378841; x=1792983641;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uRs0G98QztzlnE+h6YsSA8pblIG/6flAT+WC3eNIoig=;
-        b=dqxARG6TDhhzI21lhtlrZJB78yfBGyAYZN2ebOlC8RF+TFLOwWqS/j4CENCADaC4QU
-         YEbU61Xgx0XAfyU7913klYCySPLfEQFf0AmkhgJBegmPKIhDCeJ6jVCqpUKjMwz+2h0X
-         7chCWIYoKt+lcdpotsYnmbwmWFN6Ole4JcL3vfQ7EW8zgjyyLKXUPho5vO2U6q6RdX8U
-         BzybuyFNgR8S4rL24A0a7SGNaka+M3WQYc//vRScFF2DmWaLs0UPeiy9sNo2MKIv0chE
-         wDcql1m9e+T9nzTJLubc+R5SSiQcx6NihVRqjFVShCrSTyfZazkyw1EEffgTOYK683VR
-         eqkg==
-X-Forwarded-Encrypted: i=1; AKwUvByigSPK/+3smeNGiCkZ7o9uibBRuD9ZAoGXFsWK78HC+9Op9sQrBb1bWU+0OQRvdvVxIN70QS0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJq6VJ8YurdMcvPramG+uJfm/oPgR9sGSffvGiGr97MOl/JNkDB
-	9eRQJ/P4EFSPx+VDZ9odM3z77j3D/YzFR94E5ll2TZ9iy11XokPd2tUmFu4xjwTLN/UEXrMBNgz
-	2IlNQ8JgiJ4+Mu/5ZqRPOB4o+qMeGYgQ=
-X-Gm-Gg: AYBFou1TW12DUi/oa/zrQdsOFNlXozzbPM9+sp8Oeq5Q756odmFplAK3zDqyVjmf/4x
-	tj/6vJflBgI64VYBlNNV3Q3lmJUYl6Ow4SotNEHWnQFqzKGk+j1UgkYIe7fekmY8xN7AsJ6OpZ1
-	TwJIUsjB2ML5338Jvcf+85Bog4G7n+Zh7z0PSS/DQuxr59EtNqUsw9Ynh9vGed63M2GmKo1AA4F
-	hjadna9G8VAFfqawqWspkFu5RGUTLDEj6wx247E3LrhxSYDZLcgI/5VJfoLFepAMMEKuQcdkPpb
-	gg681c9p0aRAYUE4y/xKtDK0F9KN3o5XGbeEmCCrR9FwAiiYFtGXX2uHM8Vhq9lT6uRnqn0DFjy
-	GCiSOyiFqYjg=
-X-Received: by 2002:a17:907:9617:b0:c40:3a99:3f96 with SMTP id
- a640c23a62f3a-c419d9314d3mr411996366b.10.1792378840978; Sun, 18 Oct 2026
- 20:00:40 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792378893; x=1792983693;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oLqDvu5I7JlAwNybBnp+q/NWLExf0+AtI016xe/bA7I=;
+        b=vNBllxLVEgkUEoX8k1zyBcS+RrflrNeQnAEzRiZMniCbM5myghSwbJ6nBpDBq517Bd
+         vldG+K0MWgI56206XVaC/5vYRvqgHbclSCsPOLbvbSK1MLRYVafPhylYQqIZ9xcpFCo8
+         +NJLScPJbMTWPkpm5S5H4DINpkr0rCmOu4pSNtLPfBUfnETt8gy7r38LXuO4B44QstuR
+         xzmeguL8+fNaU33gXkPl9WJFpK93Ubjhfj6QmH0FbipaEuLJ8EEIO2mkUeb8xJcxUUld
+         0RLiUlYW2A6hmD3gb85oYwjMDCxkxH8I2YdR+lBUeuRklXWiPE5fcyDG5xeV4y13yOf4
+         MX3g==
+X-Forwarded-Encrypted: i=1; AKwUvBxOVXuDLqsE5pbwBt+H3fgbubL28My3kl0o9ugAa6bn8DFP60KK/YHgBihpNZKsso5kDaHPcgI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIuP36XRjkPHtvvd0WoJ9umFEuzMjnMrATsp5AiZ2NbwVot8m+d
+	hrRbHhALQKZSv4YhBXzeocaJCbTTupWo19oigya3DruC7/KHlJGz7x0CoFZAds02AS0=
+X-Gm-Gg: AYBFou1gqyd7DlgD6tZ/EXpbhMlNTSSeCvT//zvHpgNBNVrS8pMRbWx/1oqXuDUVq3l
+	MzPlnBneoMsm5W3Trrn22o0RaFlZEj9ZUckrR/psKrQScxCYcSRYjDq9FwPJLdHKtzp9m7HVClv
+	KENiRXusng6sozlmxa3Uhcqc22ZdbZHGRhX9uZ/xGNcEr1axkbBPwrk/en0APr16sqlaYGH/Efp
+	DEJmekGmfLhIIT4nDrIvRIfLdvQo1GYMwoqeWC2ivb/ldZZvypF0QDiaPEXUd+1G/ydeNaulmGV
+	W+/Ggcn45WZ+7iWWKVyY9+XaN7g7r10iVyXQk8Cfl8sUUNsKsj69i5/2YlETvqY7RZn3o8PYtQR
+	HtFpcFmVYqo6V8g5//aDyVDNP0eQK+p0CLGAs/3Izbw63ZZ80/2XfWvxyeFub/k8lkOGThOTFzb
+	FaxIJ5A6uRtXA8ZPoItaiZ4oBRgn6HhC3jdHrUFDyy6BZKsLEiF/K2njSDGVGiBReE6u4GxTZIj
+	W4=
+X-Received: by 2002:a05:620a:25d4:b0:93f:12d4:67cb with SMTP id af79cd13be357-93f29e0edf8mr1056254885a.80.1792378893364;
+        Sun, 18 Oct 2026 20:01:33 -0700 (PDT)
+Received: from zippy.localdomain ([73.62.185.64])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f3c61c440sm216840185a.10.2026.10.18.20.01.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Oct 2026 20:01:32 -0700 (PDT)
+From: Alex Elder <elder@riscstar.com>
+To: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	richardcochran@gmail.com,
+	p.zabel@pengutronix.de,
+	peppe.cavallaro@st.com,
+	joabreu@synopsys.com,
+	mohd.anwar@oss.qualcomm.com,
+	lorenzo.bianconi@oss.qualcomm.com,
+	daniel@riscstar.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/5] net: stmmac: enable Toshiba TC9564
+Date: Sun, 18 Oct 2026 22:01:23 -0500
+Message-ID: <20261019030129.1470307-1-elder@riscstar.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002115850.962676-1-o.rempel@pengutronix.de> <20261002115850.962676-3-o.rempel@pengutronix.de>
-In-Reply-To: <20261002115850.962676-3-o.rempel@pengutronix.de>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Mon, 19 Oct 2026 00:00:28 -0300
-X-Gm-Features: AclHuK_U7udrZyUvnHnnOTPCDsZnVnkfDFkPSmosXztYTXcTGB0CZ9Wc4bXtYqI
-Message-ID: <CAJq09z47LERHFg0KSC+XB5s+iBxRPvdffJzJ8Ka+_i8vN-pKBQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 2/8] net: ieee8021q: add pcp_to_tt()
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> Add a helper that maps an IEEE 802.1Q Priority Code Point (PCP) to the
-> corresponding 802.1Q traffic type, complementing the existing
-> ietf_dscp_to_ieee8021q_tt().
->
-> It is very nearly an identity map, except that PCP 0 (Best Effort) and
-> PCP 1 (Background) are swapped: per 802.1Q-2022 (Annex I, Table I-2)
-> Background is a lower priority than Best Effort even though it carries
-> the higher PCP value. PCP 2..7 map straight through to the matching
-> traffic type, and values above 7 are rejected with -EINVAL. This decodes
-> the 8P0D encoding (Table I-7), where every PCP value is a priority and
-> none carries drop eligibility.
->
-> Drivers that classify ingress traffic by PCP need this to map into a
-> priority-ordered internal space without misordering Best Effort and
-> Background. The first consumer, the realtek rtl8365mb DSA driver, lands
-> later in this series.
->
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  include/net/ieee8021q.h      | 10 +++++++--
->  net/core/ieee8021q_helpers.c | 41 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 49 insertions(+), 2 deletions(-)
->
-> diff --git a/include/net/ieee8021q.h b/include/net/ieee8021q.h
-> index 8bfe903dd3d0..d24e4036577b 100644
-> --- a/include/net/ieee8021q.h
-> +++ b/include/net/ieee8021q.h
-> @@ -10,8 +10,8 @@
->   * enum ieee8021q_traffic_type - 802.1Q traffic type priority values (802.1Q-2022)
->   *
->   * @IEEE8021Q_TT_BK: Background
-> - * @IEEE8021Q_TT_BE: Best Effort (default). According to 802.1Q-2022, BE is 0
-> - * but has higher priority than BK which is 1.
-> + * @IEEE8021Q_TT_BE: Best Effort (default). According to 802.1Q-2022 (Annex I,
-> + * Table I-2), BE is 0 but has higher priority than BK which is 1.
->   * @IEEE8021Q_TT_EE: Excellent Effort
->   * @IEEE8021Q_TT_CA: Critical Applications
->   * @IEEE8021Q_TT_VI: Video, < 100 ms latency and jitter
-> @@ -38,6 +38,7 @@ enum ieee8021q_traffic_type {
->  #if IS_ENABLED(CONFIG_NET_IEEE8021Q_HELPERS)
->
->  int ietf_dscp_to_ieee8021q_tt(u8 dscp);
-> +int ieee8021q_pcp_to_tt(u8 pcp);
->  int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues);
->
->  #else
-> @@ -47,6 +48,11 @@ static inline int ietf_dscp_to_ieee8021q_tt(u8 dscp)
->         return -EOPNOTSUPP;
->  }
->
-> +static inline int ieee8021q_pcp_to_tt(u8 pcp)
-> +{
-> +       return -EOPNOTSUPP;
-> +}
-> +
->  static inline int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt,
->                                      unsigned int num_queues)
->  {
-> diff --git a/net/core/ieee8021q_helpers.c b/net/core/ieee8021q_helpers.c
-> index bbacdfff9b4c..a5bd5e039b47 100644
-> --- a/net/core/ieee8021q_helpers.c
-> +++ b/net/core/ieee8021q_helpers.c
-> @@ -222,3 +222,44 @@ int ietf_dscp_to_ieee8021q_tt(u8 dscp)
->         return SIMPLE_IETF_DSCP_TO_IEEE8021Q_TT(dscp);
->  }
->  EXPORT_SYMBOL_GPL(ietf_dscp_to_ieee8021q_tt);
-> +
-> +/**
-> + * ieee8021q_pcp_to_tt - Map an IEEE 802.1Q PCP to a traffic type
-> + * @pcp: IEEE 802.1Q Priority Code Point value
-> + *
-> + * Decode @pcp to its IEEE 802.1Q traffic type per Table I-7 ("Priority Code
-> + * Point decoding") for the 8P0D encoding, where all eight PCP values are
-> + * priorities and none carries drop eligibility. It is nearly the identity,
-> + * except PCP 0 (Best Effort) and PCP 1 (Background) map to swapped traffic
-> + * types: Background is lower priority than Best Effort despite the higher PCP
-> + * value (Table I-2: BE = priority 0, BK = priority 1).
-> + *
-> + * The 7P1D/6P2D/5P3D encodings, whose lower PCP values carry drop eligibility,
-> + * are the other rows of Table I-7 and are not decoded here.
-> + *
-> + * Return: the traffic type, or a negative value on error.
-> + */
-> +int ieee8021q_pcp_to_tt(u8 pcp)
-> +{
-> +       switch (pcp) {
-> +       case 0:
-> +               return IEEE8021Q_TT_BE;
-> +       case 1:
-> +               return IEEE8021Q_TT_BK;
-> +       case 2:
-> +               return IEEE8021Q_TT_EE;
-> +       case 3:
-> +               return IEEE8021Q_TT_CA;
-> +       case 4:
-> +               return IEEE8021Q_TT_VI;
-> +       case 5:
-> +               return IEEE8021Q_TT_VO;
-> +       case 6:
-> +               return IEEE8021Q_TT_IC;
-> +       case 7:
-> +               return IEEE8021Q_TT_NC;
-> +       }
-> +
-> +       return -EINVAL;
+This series enables the two XGMAC interfaces present in the Toshiba
+TC9564 SoC.
 
-Would it be cleaner to use a lookup table here instead of the switch
-statement? It saves quite a few lines (not tested):
+The TC9564 SoC connects to a host using the upstream interface of
+the PCIe switch it implements.  The PCIe switch has three downstream
+ports; two are exposed externally, and one implements an embedded
+PCIe endpoint.  That endpoint has two functions, and each of those
+has a 10 Gbps capable DesignWare XGMAC interface.
 
-static const u8 ieee8021q_pcp_to_tt_map[] = {
-  [0] = IEEE8021Q_TT_BE,
-  [1] = IEEE8021Q_TT_BK,
-  [2] = IEEE8021Q_TT_EE,
-  [3] = IEEE8021Q_TT_CA,
-  [4] = IEEE8021Q_TT_VI,
-  [5] = IEEE8021Q_TT_VO,
-  [6] = IEEE8021Q_TT_IC,
-  [7] = IEEE8021Q_TT_NC,
-};
+This support was originally submitted earlier this year using a
+PCI driver within the stmmac source directory.  This version
+instead implements a platform driver, "dwmac-tc9564.c".
 
-int ieee8021q_pcp_to_tt(u8 pcp)
-{
-  if (pcp >= ARRAY_SIZE(ieee8021q_pcp_to_tt_map))
-    return -EINVAL;
+					-Alex
 
-  return ieee8021q_pcp_to_tt_map[pcp];
-}
+Alex Elder (1):
+  dt-bindings: net: add support for Toshiba TC9564
 
-Best regards,
-Luiz
+Daniel Thompson (4):
+  net: pcs: pcs-xpcs-regmap: support XPCS memory-mapped MDIO bus via
+    regmap
+  net: stmmac: dwxgmac2: Add XGMAC 3.01a support
+  net: stmmac: dwxgmac2: export symbols for XGMAC 3.01a DMA
+  net: stmmac: support the TC9564 SoC
+
+ .../devicetree/bindings/net/snps,dwmac.yaml   |  26 +-
+ .../bindings/net/toshiba,tc9564-xgmac.yaml    | 327 ++++++++++
+ MAINTAINERS                                   |  10 +
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |  11 +
+ drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
+ .../ethernet/stmicro/stmmac/dwmac-tc9564.c    | 590 ++++++++++++++++++
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  10 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   |   1 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_descs.c  |   1 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_dma.c    |  70 ++-
+ drivers/net/pcs/Makefile                      |   3 +-
+ drivers/net/pcs/pcs-xpcs-regmap.c             | 169 +++++
+ include/linux/pcs/pcs-xpcs-regmap.h           |  13 +
+ 13 files changed, 1214 insertions(+), 18 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/toshiba,tc9564-xgmac.yaml
+ create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-tc9564.c
+ create mode 100644 drivers/net/pcs/pcs-xpcs-regmap.c
+ create mode 100644 include/linux/pcs/pcs-xpcs-regmap.h
+
+
+base-commit: 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64
+-- 
+2.53.0
+
