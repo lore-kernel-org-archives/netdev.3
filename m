@@ -1,88 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792444323;
-	b=2ladoLzvM6ymZ0Aqr3L8RAdfYgArPbw1Nhkh8kblvM2kVphCqSQOzcesKiWxlyRggHdT
-	 EOX5UP6hV83hAlDd6hI6UHukQ0FWrshxV/4Udx8MfKlFuxIFnkrEMZIIG//qaz2MH+MJd
-	 c/htOh+0KnEcuFnYg6KVle1wTpTlZdRatwBUCJer1pPmaQXxQxYeSUar37w/Uc7rpklOx
-	 SUhEXVXIBlScx4IDyB7HNhKO9WZvZpS0U55mIGkFw5BwH4VBzkhPxHz92y4+UPVxLGPY5
-	 2EcONplvBTZpLaqm30B5+NuHeCL1lGtgNQrL/+h80O5Uu5sdChHru9dalZ0CM7LPoIQ==
+	t=1792445058;
+	b=gsRkFarLHqzVt4J+gbaAMzwWTVCdizUOQk0PSdpMY7ecs9ai5XjbWdE51G0ss/QQE9HC
+	 DidBuPUDyEVSUysEuSUGSeefq+SjuO9NMtaiGZ8bOh0yg6LPA31oPf55pey/i/qrxPkKp
+	 2+qupLmFph230C0Gen6vuT9FMl0smYR95YTfWL+7xHWeDPAyFxB4oMosiz6Top88/Nxhi
+	 vFqmUs3Tyc2Hke6fF27/brFMzWosGtmSdyVxZS7YiVPl1xSYwoMQxAtJ5g+86BtiIC0kQ
+	 TlpOwOkEOxF2OtmfyS5RcTcCmsd/lJ3C3LPcMRGXA/N0pciJ8uhCgY96jsZHgjtqU5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792444323;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Date:From:To:Subject:Message-ID:MIME-Version:
-	 Content-Type:Content-Disposition:X-Spam-Flag:X-Spam-Score:
-	 X-Spam-Level:X-Spamd-Result;
-	bh=wk5Go9Qbfzx7UCuPO/qvObUW/F4DcWUvpioYl7ExAhM=;
-	b=ddmPSuDiv2kU7wVDh3WjojULYOixaC+1jziOX1mfKCQ3HiSDtuJVarrIn5srOPvgqLqV
-	 Q9ehWjOGmTzF+ioqCkkhMf8bZ0YiFhiSA6I5qR2t8NEHralm3D1To/mvYDdB2ggyH0OcS
-	 NSb5qGuLZRRuP40aEuNJUlkLTwUAXt0jGOUvx6LinCHnyOhiJD9krdYF/e70W8L8ypWG3
-	 +9HY2g6Z4PWMkFE8/RlSv7UzM95FDMzf16fosxX8UtsACf5g2fR4GgylB9Fo+yLukNG4V
-	 qz7ZMINKV8YYIOcg0UYLtRsEoyA9Uz7391VkSKdPLsiAFjtQWO14IWT11FxYO7s1H5A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792445058;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=1YXs6rrJZv6Usz6XsrtQKINxbiM6rWZ3xRR58cYtHN0=;
+	b=ew7oYesFWySryqopaEXzoZ/rRtj6BFuJ2hbraNpRHEmpZdd3HDpHtET0yL376EVM5tVn
+	 54c9l1lqGs5LLiRpgsLuZSzU1evtLNxem50PtL8lUOKZ40BAneqiyw/WfSBNWvI18YSDL
+	 hJ515tp6+vRH1q+S0xXNFkh7ywKKqUeDzd+emmQaGfc7dkl/FLJjgcOuxnPxDdq+6fiBz
+	 ElJCcbJeAuXW5XgFHqywLsCBCAgGBHPXD8ycq5ChHYzCJs41WXYisLI1NJ9czwIuFTzb9
+	 Hy07bhaQXOO7xVdP0WLkMNgwsxScVbm3JWou4Uz/pzKx0Eab/CBT6mGLinUbfjxMm1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=flrY5zZk;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cVcYjiz8;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=flrY5zZk;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cVcYjiz8;
-	arc=none smtp.remote-ip=195.135.223.130
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=SDLR9a8l;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE14606A31B
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:12:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DE14606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43AC606A319;
+	Mon, 19 Oct 2026 21:24:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C43AC606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=flrY5zZk;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cVcYjiz8;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=flrY5zZk;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cVcYjiz8
-Received: from lion.mk-sys.cz (unknown [10.149.218.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9916821C98
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792444320; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=wk5Go9Qbfzx7UCuPO/qvObUW/F4DcWUvpioYl7ExAhM=;
-	b=flrY5zZkU91THchLMcDSunDibb4NJjHSSU1/6h5w8IXR6eyzvp0NGn/8rt+vXnVeEpSneN
-	4y3NFZQ04IYL8zvWwFG1iN17i5ZcaB6MwqnZf4dSO2lGSgAMXxDMBkiisXV69IdXxRv3XD
-	ELOiTYEVGz5O4VBrCD0pSCiin50fIGs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792444320;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=wk5Go9Qbfzx7UCuPO/qvObUW/F4DcWUvpioYl7ExAhM=;
-	b=cVcYjiz8lC+2NIvX4IDC2xfBtfuBPlkvjOhqEx/7c6+OIz/I1I/eu0PY+mIIAL9WiWz8zW
-	dn13e+PWs/V7YTCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1792444320; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=wk5Go9Qbfzx7UCuPO/qvObUW/F4DcWUvpioYl7ExAhM=;
-	b=flrY5zZkU91THchLMcDSunDibb4NJjHSSU1/6h5w8IXR6eyzvp0NGn/8rt+vXnVeEpSneN
-	4y3NFZQ04IYL8zvWwFG1iN17i5ZcaB6MwqnZf4dSO2lGSgAMXxDMBkiisXV69IdXxRv3XD
-	ELOiTYEVGz5O4VBrCD0pSCiin50fIGs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1792444320;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=wk5Go9Qbfzx7UCuPO/qvObUW/F4DcWUvpioYl7ExAhM=;
-	b=cVcYjiz8lC+2NIvX4IDC2xfBtfuBPlkvjOhqEx/7c6+OIz/I1I/eu0PY+mIIAL9WiWz8zW
-	dn13e+PWs/V7YTCQ==
-Received: by lion.mk-sys.cz (Postfix, from userid 1000)
-	id 54C942005E; Mon, 19 Oct 2026 23:12:00 +0200 (CEST)
-Date: Mon, 19 Oct 2026 23:12:00 +0200
-From: Michal Kubecek <mkubecek@suse.cz>
-To: netdev@vger.kernel.org
-Subject: ethtool 7.2 released
-Message-ID: <5pwax6gry662nxlc5ndva2fovja5fv6yvvjx7qxkzfsgheowgt@jc4wuskaupn5>
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=SDLR9a8l
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=1YXs6rrJZv6Usz6XsrtQKINxbiM6rWZ3xRR58cYtHN0=; b=SDLR9a8lBKfpRccuCc5ld0BsJn
+	9uCmTFKQYrlloKxuSKSPg7w00B7M64mutjTo45+3XNOMC8ikGdM7PCqSsm/QeCwQ/KR+AZBYOrE41
+	Bm6VyUqlckHXiM3bV53xvhs+EsMsMcQ6Qy1ksIIk0Zqi/qcg0iZA/mFY1tSS5LxlUlOg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xIuq6-00Bi8x-7G; Mon, 19 Oct 2026 23:24:14 +0200
+Date: Mon, 19 Oct 2026 23:24:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Prashant Sengar <prashantsengar25031@gmail.com>
+Cc: netdev@vger.kernel.org, Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH net v2] net: usb: lan78xx: avoid NULL PHY dereference in
+ WoL setup
+Message-ID: <d9177176-75c2-4273-b5ba-d0c6afdad6c5@lunn.ch>
+References: <20261019193148.1381545-1-prashantsengar25031@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,78 +63,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yivxeqs73hbc4hbq"
-Content-Disposition: inline
-X-Spam-Flag: NO
-X-Spam-Score: -5.90
-X-Spam-Level: 
-X-Spamd-Result: default: False [-5.90 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SIGNED_PGP(-2.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	NEURAL_HAM_SHORT(-0.20)[-0.984];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
-	RCVD_COUNT_ONE(0.00)[1];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_NONE(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[]
-
-
---yivxeqs73hbc4hbq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20261019193148.1381545-1-prashantsengar25031@gmail.com>
 
-Hello,
+> @@ -1805,7 +1805,9 @@ static int lan78xx_set_wol(struct net_device *netdev,
+>  	if (ret < 0)
+>  		goto exit_pm_put;
+>  
+> -	ret = phy_ethtool_set_wol(netdev->phydev, wol);
+> +	if (phylink_expects_phy(dev->phylink))
 
-ethtool 7.2 has been released.
+Is phylink_expects_phy() actually needed?
 
-Home page: https://www.kernel.org/pub/software/network/ethtool/
-Download link: https://www.kernel.org/pub/software/network/ethtool/ethtool-7.2.tar.xz
+> +		ret = phylink_ethtool_set_wol(dev->phylink, wol);
 
-Release notes:
-	* Feature: support for KSZ87xx PHY tunables (--{get,set}-phy-tunable)
-	* Fix: cmis: fix printing of Tx bias current (-m)
-	* Fix: cmis: fix printing of channel-level flags (-m)
-	* Fix: cmis: fix printing of CDB EPL pages (-m)
-	* Fix: printing of transmitter technology for CMIS transceivers (-m)
-	* Fix: avoid undefined behavior with CMIS transceivers (-m)
-	* Fix: add missing CMIS transmitter technologies (-m)
-	* Fix: printing of attenuation and wavelength (-m)
-	* Fix: printing of link length (-m)
-	* Fix: sfpid: print all implemented options (-m)
-	* Fix: sfpid: print all compliance codes (-m)
-	* Fix: qsfp: print all compliance codes (-m)
-	* Fix: module-eeprom: clamp data length to attribute payload size (-m)
-	* Fix: validate module EEPROM offset and length (-m)
-	* Fix: rss: bound hash function masks in text and JSON output (-x)
-	* Fix: fbnic: fix off-by-one shift in reg dump parser (-d)
-	* Fix: fbnic: Fix various TX and RX CSR fields decoding (-d)
-	* Fix: fbnic: Fix register dump names and bit labels (-d)
+We try to keep the phylink API simple, and put all the complexity
+within phylink. Hence it would be better if you could just call
+phylink_ethtool_set_wol() and at the MAC level not have to care about
+fixed link. phylink knows if there is a PHY, it should decide what to
+do.
 
-Michal
-
---yivxeqs73hbc4hbq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEWN3j3bieVmp26mKO538sG/LRdpUFAmrWh5sACgkQ538sG/LR
-dpU8VAgAvmGy6Rv5E78yGeyIngKFkRRcfF3iz79bA0RtVeRF3BdgmZ+gUERCUk2W
-BPNtB56R9Zv2CHPHRbl22GiWNTcOBGdkp6npY2oDOfh0nuag4OBhlIqPPeFOVZF3
-nmGktEJsIB/FGX63prOFxmTQTvKmuExmE17kz+dRePHFksFvGRt9dg5iufQAp5Cf
-u9efMuftRkqYaVBMxqBunCwvUBeIa78CvMhthG+UQNXzon7VPmSMzhk/6lt3WDCC
-J1m6qQynLlCxJjhiIdjgpsa4wlkdpIBft1htkxzHb1pS1V+JhOs5l7FvoHaqQXLP
-5f13cCCmYYUTStSKE6mRDWWVhLgX9w==
-=Yq+J
------END PGP SIGNATURE-----
-
---yivxeqs73hbc4hbq--
+	Andrew
