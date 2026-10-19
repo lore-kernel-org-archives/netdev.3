@@ -1,110 +1,80 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F813A48ED;
-	Mon, 19 Oct 2026 13:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3755C25B0AC;
+	Mon, 19 Oct 2026 13:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792417172; cv=none; b=nJs0glT9ShfTHU6kxQ7Rkc+vvvZzbcMXa7r0pIlz+5m6TPqzLOtrqQwMKMuFmWkdeLg/O73vq54uOIXgYVB+RPWb6XZAAj285GC0awYyQ678zAkjcEkcAzZzGPhcU78Be8pWf3PA8MFsHfJQ+PqwYlXz75LwUsKRkXnYJiKUNVk=
+	t=1792417207; cv=none; b=T+HCSfGLdlaw8bHX8aUq2oYXlQ8KEgH2uVJGQyzM9lCk1bM79yxq9k9SC0KovKU6pI92JSm/PBWGAV3dZYhqfdWidbPaspIQKfv1vFZdMtYjy0mHEyNQeM5sguTIbNXBOQ86MAgrhDoiPirLGmZ94tk1Ocv31MiQdBomT/MexJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792417172; c=relaxed/simple;
-	bh=ngUBoix9dtKSnZkI0CS0G87uTOxA5tC/jiZ1VTHUC+I=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=iVnUIhViDXoDHKOp0AcESgUVRfD96O9EUHAeKO+mp6glWIchTuS4+Y2ZsdoTbjWrh+WESNdm9b/4a56FIvE74oaunQx89rf6KfSjVdg6SxV0vKGRv4bkePQppbekEUzzacd95xU+d8WlfAl3i81q/0jxtHtq5d/JQbymBByVnuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=UVeuBwOR; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1792417207; c=relaxed/simple;
+	bh=RgJyghLzBKDpDHe+EmU2wbzv+ckn30VHMaa2sWpzK44=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hNTQE4gu3iJt3hJapP3MIySXQXR9bKnY9t+XkFEBBRBe1uwvN/cSqaDxOcYaoRxmPDKJTodhfBxGBQcY/7FO+HxXfNfF+OSNiEEcM7HDbGdNXK+1Ye44P8OGNi+EsG4ar42Pu1aB1BGXX/bp1r/GP29zgAtNswK26Ozdn4eV9OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6Rv15To; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="UVeuBwOR"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=czbkqsq2pcEM/rFQZWf8Jk8Y3M/gHEHgTQVhxW29WYE=;
-	b=UVeuBwORIcpI+1j7MdhnhLBiIlwt9/I1Cn7XwqNK9939zWEycsaPMkbmIwHrpFQ2kkOBlvdhG
-	e9l6RLWLTkJ0VO/qLnbfy9A7eqE9q5rKCv7qmbJiQQ48FMz0wfyhcrsYZd1ds1lRnMRFD+eCATG
-	fMH2ox8MkTDb+AFOos4tds8=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4j7c8g5WmtzLlT6;
-	Mon, 19 Oct 2026 21:39:15 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7A36A40586;
-	Mon, 19 Oct 2026 21:39:19 +0800 (CST)
-Received: from [10.67.121.233] (10.67.121.233) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 19 Oct 2026 21:39:19 +0800
-Message-ID: <e5715cfc-f116-43ab-a117-38b913b2cd69@huawei.com>
-Date: Mon, 19 Oct 2026 21:39:18 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6Rv15To"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7421F000C4;
+	Mon, 19 Oct 2026 13:40:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792417205;
+	bh=xoEjR6t5ELBV0Ehld1uRhN2++C9qxzbzrI+HEJf6tz0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=d6Rv15TourIfcTkDQL3m+iTso1zkZP8LN7F0q6Na/vSwDJ4/n4WqGvm8HprhfxcAU
+	 u82mEx3jYGH5KatejGP3v8TplirpU/HvJmzLsgD60A8MNZUxajOqLqwByNPFslBK7f
+	 ojrxIztwjGfW6BYXJCijRNIyxy8Qf9yWYGCVOI7GrDN5mm4426Rsw9+W6uoLc5Nim7
+	 PgvInHCbSowZJ19KCkThCrDQGefNrk+nPD9HxH7Nmo3VGM2hCt9TXpJZbY9OU9oDiZ
+	 QV+0NWzo1cU6dLI3TOXjam9YcFTnNYDUuIeSdWL02JT/3J9zHEEc6Z/BRj56AtkasO
+	 azCOI1M5UpJVA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44963811A5C;
+	Mon, 19 Oct 2026 13:40:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: hns3: bound debugfs queue-name sprintf with
- scnprintf
-To: Haoran Wang <haoranwangsec@gmail.com>, Jian Shen <shenjian15@huawei.com>
-References: <179241616311.5916.9868151766207198451@whr>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <179241616311.5916.9868151766207198451@whr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3] net: stmmac: unwind the WoL IRQ after a
+ safety
+ IRQ request failure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179241720453.2644569.6506845719154683565.git-patchwork-notify@kernel.org>
+Date: Mon, 19 Oct 2026 13:40:04 +0000
+References: <20261013-stmmac-irq-unwind-v3-1-fff4e2db805a@gmail.com>
+In-Reply-To: <20261013-stmmac-irq-unwind-v3-1-fff4e2db805a@gmail.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, edumazet@kernel.org,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ fancer.lancer@gmail.com, davem@davemloft.net, nb@tipi-net.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue, 13 Oct 2026 11:37:11 -0600 you wrote:
+> The safety IRQ is requested after the MAC and optional WoL IRQs. If its
+> request fails, stmmac_free_irq() frees the unregistered safety IRQ and
+> leaks the WoL handler. This can warn about an already-free IRQ and make
+> the next open fail.
+> 
+> Move the safety and WoL cleanup labels into reverse acquisition order.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v3] net: stmmac: unwind the WoL IRQ after a safety IRQ request failure
+    https://git.kernel.org/netdev/net-next/c/ecb8b18051a1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-on 2026/10/19 21:22, Haoran Wang wrote:
-> hns3_dbg_bd_file_init() builds one debugfs file name per queue with an
-> unbounded sprintf into a stack buffer.
->
->      char name[HNS3_DBG_FILE_NAME_LEN];
->      sprintf(name, "%s%u", hns3_dbg_cmd[cmd].name, i);
->
-> The only two table entries that reach this sprintf use the 11-char prefixes
-> "tx_bd_queue" and "rx_bd_queue".  i is a u16 loop index bounded by
-> max_queue_num = hns3_get_max_available_channels(handle), a
-> firmware-reported u16 with no kernel-side clamp on either the PF path
-> (le16 tqp_num, ext_tqp_num, pf_rss_size_max from the hclge config
-> command) or the VF mailbox path.  When firmware reports >= 10000
-> queues, i reaches five decimal digits and the write becomes
->
->      11 (prefix) + 5 (digits) + 1 (NUL) = 17 > 16
->
-> so the NUL terminator lands one byte past the 16-byte stack buffer.
->
-> Replace sprintf with scnprintf(name, sizeof(name), ...) so the write is
-> bounded, guarding against a potential overflow.  Queue counts below
-> 10000 are unaffected (no truncation); in the firmware-misreport case
-> the name is truncated instead of corrupting the stack.
-
-Thank you for the report.
-However, the number of queues on our hardware will not exceed 10000,
-and the driver trusts the queue count reported by firmware.
-So this issue is not practically possible.
-
-Thanks,
-Jijie Shao
-
-
->
-> Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
-> ---
->   drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c |    2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-> index 1347edac7..e186ec940 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-> @@ -860,7 +860,7 @@ static int hns3_dbg_bd_file_init(struct hnae3_handle *handle, u32 cmd)
->   		data[i].handle = handle;
->   		data[i].cmd = hns3_dbg_cmd[cmd].cmd;
->   		data[i].qid = i;
-> -		sprintf(name, "%s%u", hns3_dbg_cmd[cmd].name, i);
-> +		scnprintf(name, sizeof(name), "%s%u", hns3_dbg_cmd[cmd].name, i);
->   		debugfs_create_file(name, 0400, entry_dir, &data[i],
->   				    &hns3_dbg_bd_info_fops);
->   	}
