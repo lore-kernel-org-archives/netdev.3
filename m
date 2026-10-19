@@ -1,175 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1F39099C;
-	Mon, 19 Oct 2026 09:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3B14AA033
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792401545; cv=none; b=rRrsz6xYo7lDdhdv+cNAEJkkwIjfXxkIqPzvBxLsrG6e5bcjeKWGC/Jb4NGZ58TrljkVWEF9wfwmoEZQ2frQquNdMeEaRvJoy+pFbumg1KdVaAQHODlpEIZW1Shyid9mYCoPNxzcj0XsiTfeO8e48L79GKh+8pIKNspjV3AJJSg=
+	t=1792401628; cv=none; b=D8AxyU5qtxWNEoxOe2uuPeXBkbq8CHVvB9PMEm6ngIcuFqBiIsmpto4Kl9jXXDc5lJP5l0MfsVQNSjO+ewt/LZKAAuE2UplXU9jnOg6KNYZyYb7wM6v1BSHMh0pO1ESvdWKIE9vOG7WnmtGi7A4QxEGySXomOoQgCGmNezpvVtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792401545; c=relaxed/simple;
-	bh=+7YEmMh9hqu9EFqnLCRSsNJtJX3xTYVHHsuMazPAaZM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DFDgADhB8QLJ1Ka3z9RL4ZrR6zxQBBzr1jVA5vqA8KEb8x0yzsmWlkfIREEACAm1HHB1FXthl+7jlkWj5lDvlP35YhI3QYMQ8j9fHVfEqgj1KiSrJ431nGQ5+qE3Zw06rri3w9YoSFJmDoaqGiacONFq7gnRjRAeOO7CiOaGx68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i19dov7+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792401628; c=relaxed/simple;
+	bh=23uLVGVu4LenPJTiUbtiHkyS7W5/ZO7Ic3YJWLzrJ8Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sQsIr7zsADQXfzS/ZMfadSYm9hlFTTPoSOLChyp5U1I/3sitx/3CCtdO8XX6acwxvXi2NJ4plnCSpeXA1HgyduqnBuCkDOVjIcV1MNZFyBpn16MsHcLBvFu/uN0N3nfKKDEXvN4soD5wbvHXTsJXVzDoAsGWJb2RHA/2mle69RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=N7B4PspO; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i19dov7+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350161F000C5;
-	Mon, 19 Oct 2026 09:19:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792401544;
-	bh=oN70H5R9ldPbMGdAr2ddG48R+ac02LOo0uRx3leltQU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=i19dov7+vGYjSHrO6jpb2nbQ4GIXDtxmwgJ1eZLG+iurtBU/w2rpNV3RI8TxKuEOq
-	 rLAlAq9YQYe6dTie7MA8+ojwz534boCl+tizXrN95A0aV7vH7x6L4gi0xBSjbh7iZc
-	 qDNAVSE95znBlVeZANVjVkm8JhNr0TAyQnAjlVh2z3HkAB8FR3bQFl20/qg6Lgc8t2
-	 ENodISmPYwI/7bxlKDed0gJL9f5n48EiGZGnBU5z5mRQzMwv0HTwVYVA11wVesAjjv
-	 UlRaka7UNppXEO8yC5iYmjlkru7U+aGc1YrYII3mV7sEyPeSUrSBbPy2Hlmt0eMvu8
-	 Ei4Owapx6kabQ==
-Subject: Re: [PATCH net v11] net/smc: fix lgr/lnk lifetime vs diag reader race
-From: netdev-bot+sashiko@kernel.org
-To: mjambigi@linux.ibm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Mon, 19 Oct 2026 09:19:02 +0000
-Message-ID: <179240154272.3135.17238777571997282600@kernel.org>
-In-Reply-To: <20261015081349.1252391-1-mjambigi@linux.ibm.com>
-References: <20261015081349.1252391-1-mjambigi@linux.ibm.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="N7B4PspO"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c441e267930so91074766b.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 02:20:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1792401626; x=1793006426; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=rCnbEw2lvBYbntrA6KDS3EO6vufdqSnBrzMmqli8drs=;
+        b=N7B4PspOq9/uakZFaemK5D2GJIoFlyDJz0JsUXxdX31t+m2Dauj4XpS2EkeuQKOdQK
+         wh7Nw7ttBy4ELbOtSYNv8tnTYh6+p8NQEB5WFUDhN+wgg8VqjjLwl5bqhs3xCbmGIXKx
+         i5QjNH6U6AnZPuLL0e/Y7IC5j52uMt7wcpWCB9Cn5qTDwwoTYn8+DMeTwvi/gKrm1Qby
+         RxDIrBARe3ujeUbAo6+zhot+jzY4erZQvdN7Fq3/DJQB9OVOdot7wM9Wyq2W/n3jETal
+         u60AD7/aJeGZi9MJ6nJC8JFXUDR+X2dZnTavmhaaE3doRuAzwmg0F5ZgFW3A8pUd4/ye
+         r6hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792401626; x=1793006426;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=rCnbEw2lvBYbntrA6KDS3EO6vufdqSnBrzMmqli8drs=;
+        b=NMtlAdC1Fu1PD+7SPZ+Zl+HNvrjOZmA18hdhqCNQs3b7Wfw3webxdRcx5eCw90s1vS
+         wAqVaO77fp3oHKUR2D2BFNUFBWDgeVrlBUlgpceAfc2VSXbdrWOc8OCf9jPtpYvwuAPD
+         9xJLwF4TFrXgcszsrH7v4q37L+8cnHrrIkKmmGlQa4Pl4Lyn0NX68tsBlK4CqmtGq7Xq
+         yAZ/Mmok/toUaQK/gqYvwuns0B39pHVJjU4A5AwdQ6xBhoIS2GWgTEuHRxpKu6Tdt9ic
+         56U0QjLm0P/loE9VjDS14/1L9ePLaeyMcunpTIGM07cwebXxc079Nabl4vinqDTRfpAJ
+         JKBg==
+X-Forwarded-Encrypted: i=1; AKwUvBx1JgX6qIiq1sXPtscq5ASkz75d3ueyciDwr5yhlEjF+cVhov2WtPCYgfQUWIq3gRB60+uOVRg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI36LM4aURyeNkP28dBc6+jfxOyS7e1P2Qe0THeKw3+1d762iYG
+	fBPEnEJwtb5NSHcgu0KBZds/Qk2dEOHQKqADfPXCoV2aBZq51Tf62BcJoMDmkrPPyw4Lnawrfzu
+	BLmkXqO0=
+X-Gm-Gg: AYBFou1yqXs9gGJQ4/eaouV9EZ1RUGPrs5vSNZgF3NqY/3nt/tE2sOkeFnykYkNtZ7b
+	9bD/SWuweSk9eVklSiAtzI4nAewcdhCP5BMdVnnxpnQPMnyZtOM/iU32Pj5yYarTJScUmFhaoXl
+	XvQnzV8Awfatg7Q0Qd5zJDcyrnXCd0jRjNUu7yT9cySQD5ToD3cyPnWtpK0WUea7Dv9ul96VFaH
+	6W0ssga9dZO0aCNUfBC/sNClGtK8DRQ0PWpsE3ewHFJetKzvvNu5bHTGxVGpPk0HEi3CUHmoyEN
+	Y52V/v+F/2wCO9NUOPforCfyaNTn2wiyJiFYJm27s4rqNj5PrbNGmcLGz+b8S8PVZQf5MA8V0pg
+	SuAmeL/3K+D5hqf8Gy13MyBGeU5Ryn+PSYHpGGJfzF93b9XrdXXBE8jN3k4sIrZ9jhehvZLaOhy
+	1QbU43Jn0mvt/bEjWn7hCHPCpMTf4eccf/sUJPMlMy3oWVfNFONuncqeFOOnER
+X-Received: by 2002:a17:906:ba89:b0:c31:c767:ae0b with SMTP id a640c23a62f3a-c4196dac03amr433604866b.0.1792401625664;
+        Mon, 19 Oct 2026 02:20:25 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac6:5067:2dc::49:220])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40919c0402sm342196266b.61.2026.10.19.02.20.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 02:20:25 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Willem Ferguson <wferguson@cloudflare.com>,  netdev@vger.kernel.org,
+  davem@davemloft.net,  edumazet@kernel.org,  kuba@kernel.org,
+  pabeni@redhat.com,  ncardwell@google.com,  bpf@vger.kernel.org,
+  ast@kernel.org,  daniel@iogearbox.net,  andrii@kernel.org,
+  eddyz87@gmail.com,  memxor@gmail.com,  linux-doc@vger.kernel.org,
+  corbet@lwn.net,  linux-kselftest@vger.kernel.org,  shuah@kernel.org,
+  linux-kernel@vger.kernel.org,  kernel-team@cloudflare.com
+Subject: Re: [RFC PATCH net-next 0/4] tcp: carry a BPF-chosen identifier in
+ TSval low bits
+In-Reply-To: <atFI9vl5hy09Dc0t@devvm7509.cco0.facebook.com> (Stanislav
+	Fomichev's message of "Thu, 15 Oct 2026 14:45:02 -0700")
+References: <20261013103906.2660384-1-wferguson@cloudflare.com>
+	<atFI9vl5hy09Dc0t@devvm7509.cco0.facebook.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Mon, 19 Oct 2026 11:20:24 +0200
+Message-ID: <87a4oaf3mv.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hey Stan,
 
-Critical: 1 · High: 0 · Medium: 0 · Low: 0
+On Thu, Oct 15, 2026 at 02:45 PM -07, Stanislav Fomichev wrote:
+> On 10/13, Willem Ferguson wrote:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+[...]
 
-- [Critical] The patch makes smc_conn_free() call
-  smc_lgr_unregister_conn() unconditionally.
+>> Questions for reviewers:
+>> 
+>>  1. Is encoding an identifier in the low bits of TSval acceptable in
+>>     principle, given the trade-offs above?
+>>  2. If so, what feedback do you have on the implementation?
+>
+> Don't see any feedback yet, so from the top of my head: looks like you
+> control two sides of the communication, so why not a custom (bpf) tcp option?
+> Would you need that on every packet and it makes it expensive?
+>
+> Or any other field you can abuse maybe? IPv6 Flow label?
 
---
+Nah, we don't control the client unfortunately.
 
-net/smc: fix lgr/lnk lifetime vs diag reader race
+Client here is any device that connects to our edge PoP.
 
-This patch closes races between the SMC sock_diag dump and teardown of
-conn/lgr/lnk state. It unhashes sockets before smc_conn_free() and
-smcd_buf_detach(), orders sk_state with acquire/release, skips the
-extension attributes for sockets in SMC_INIT/SMC_CLOSED, and uses the
-cached link->ibname. It also makes smc_conn_free() always call
-smc_lgr_unregister_conn().
+> Implementation-wise, the sock_ops is going away in favor of bpf_tcp_ops,
+> so BPF_SOCK_OPS_TCP_TS_ID_CB_FLAG is a no go.
 
-> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-> index 9974149659c2..6735f185cf48 100644
-> --- a/net/smc/smc_core.c
-> +++ b/net/smc/smc_core.c
-> @@ -1279,10 +1279,9 @@ void smc_conn_free(struct smc_connection *conn)
->  		if (current_work() != &conn->abort_work)
->  			cancel_work_sync(&conn->abort_work);
->  	}
-> -	if (!list_empty(&lgr->list)) {
-> +	if (!list_empty(&lgr->list))
->  		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
-> -		smc_lgr_unregister_conn(conn);
-> -	}
-> +	smc_lgr_unregister_conn(conn);
->  
->  	if (!lgr->conns_num)
->  		smc_lgr_schedule_free_work(lgr);
+Yeah, we have just recently realized [1].
 
-[Severity: Critical]
-Now that the unregister is unconditional, can lgr->free_work get re-armed
-on a link group that is already being torn down? If so, the lgr could be
-freed while that timer is still pending.
+Thanks for feedback.
 
-smc_lgr_cleanup_early() unlinks the lgr but never sets lgr->freeing:
+[1] https://lore.kernel.org/all/877bjk893u.fsf@cloudflare.com/
 
-smc_lgr_cleanup_early() {
-    ...
-	if (!list_empty(&lgr->list))
-		list_del_init(&lgr->list);
-	spin_unlock_bh(lgr_lock);
-	__smc_lgr_terminate(lgr, true);
-}
 
-smc_lgr_schedule_free_work() checks only lgr->freeing, not
-lgr->terminating:
-
-	if (!lgr->freeing) {
-		mod_delayed_work(system_percpu_wq, &lgr->free_work, ...
-
-__smc_lgr_terminate() cancels free_work once, before a loop that sleeps
-in lock_sock(). After the loop it calls smc_lgr_free(), and nothing on
-that path cancels free_work again:
-
-__smc_lgr_terminate() {
-    ...
-	cancel_delayed_work(&lgr->free_work);
-	lgr->terminating = 1;
-	...
-		lock_sock(&smc->sk);
-		smc_conn_kill(conn, soft);
-	...
-	smc_lgr_cleanup(lgr);
-	smc_lgr_free(lgr);
-}
-
-One possible sequence on an SMC-D server:
-
-- Conn X creates a first-contact lgr L. smc_listen_work() releases
-  smc_server_lgr_pending for SMC-D right after sending ACCEPT.
-
-- Conn Y joins L. smc_conn_create() has no conns_num limit for SMC-D.
-
-- X's CONFIRM fails:
-  smc_listen_decline(X) -> smc_conn_abort() -> smc_conn_free(X), while
-  L is still listed. Then smc_lgr_cleanup_early(L) runs list_del_init()
-  and __smc_lgr_terminate(L) cancels free_work, sets terminating = 1 and
-  blocks in lock_sock(Y). Y's listen worker holds that lock while it
-  waits for its own CONFIRM.
-
-- Y's CONFIRM also fails:
-  smc_listen_decline(Y) -> smc_conn_abort() -> smc_conn_free(Y). The
-  lgr list is now empty, but with this change smc_lgr_unregister_conn(Y)
-  still runs. conns_num drops to 0, freeing is 0, so
-  smc_lgr_schedule_free_work() arms free_work with
-  SMC_LGR_FREE_DELAY_SERV.
-
-- X's worker resumes, the loop ends, and smc_lgr_free(L) ->
-  smc_lgr_put() -> __smc_lgr_free() -> kfree(L) runs while free_work is
-  still pending.
-
-Would the timer then fire on freed memory? If L were still alive at that
-point, smc_lgr_free_work() would see freeing == 0 and an empty conns_all
-and call smc_lgr_free() a second time.
-
-Before this patch, smc_conn_free(Y) skipped smc_lgr_unregister_conn() when
-the lgr list was empty, so conns_num stayed at 1 and free_work was not
-re-armed.
-
-The peer decides whether and when each CONFIRM fails, and with
-loopback-ism the client can be a local unprivileged user.
-
-Should smc_lgr_cleanup_early() set lgr->freeing like the other unlink
-paths do? Alternatively, smc_lgr_schedule_free_work() could also check
-lgr->terminating.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015081349.1252391-1-mjambigi%40linux.ibm.com
