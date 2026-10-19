@@ -1,179 +1,230 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013005.outbound.protection.outlook.com [52.101.72.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2010A370AC7;
-	Mon, 19 Oct 2026 02:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C44360ED6
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792378800; cv=fail; b=N4v8dJc4VhHUVtyIWoK3QH47lzzXVxKPOfQK7apE+6zCY1m0V0xWHv9NPD3r2/UQ5pGMO6v3OKJd0O3Ie7RFdSn9I2MDmJBfd0b6B1SRYrcfw3aLOzdwJw0n208yTj9WlEyqgzZG4nXWdfUDUteeG5EfCTZ6CYBySBBRkCn1YJ0=
+	t=1792378844; cv=pass; b=Vad9mGXEZ0VU95T+tqPZsHqxL5wIwykG+W7xMYPGJUvVxzLrj9apG+p0pnp8cH2Aaiu8Fc8oBFL1XM7+U7KgjC9wdFXKEwak6P3Zzh9DF+KQm11JBTiAY42dLZKFIhjEMmcenavCmokWOOI36WZTvREjZkIYGWtPQgkaNi6DNVs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792378800; c=relaxed/simple;
-	bh=H826vY5YSKTACsvFq59wSp7laBxPXljNVS30li1slI0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KenawXaAAyyXGGZxQNz8RjmyQa6wWuRbG12DTkBxNJczGhpWC6wQ2wUmOIqb5sba/el/B57yRvVDbo5/m4SfxdDkAssO8j6x6uP11I8X6bfexPfqbYgtcHJ1SrkOlbxm1zaWCExwm2YpCeY2ZmDTw/66wdr/fYB/KP6slacklA0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Zg6dTv5H; arc=fail smtp.client-ip=52.101.72.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1792378844; c=relaxed/simple;
+	bh=+xNsUs3eGIHajBdGM33Tm+gbSb32AlDiJkdtXoaQq8Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L/24RrgsvdICq/Ij6F0tlq9A9+alJlLCZn9vjsDF/P0aUTiirvqJ2JzrYMv4o4LGIJNHoznUwIM1coRtg32cG8wxWRQQc+uPdsZh+3PzYTm94af2OQNaNZQd68I1QR+VXfVw4SpI2G8FIjm8TzR9bo9kIQ9+gTt6bCKx5FEXLRI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h+qwC1Gy; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Zg6dTv5H"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BAfxtZ+o7v+ox/CmVJmWBb3Gv08txLBF0yArQuKlggTISQQwa1qwApYYRaGXhwrd6W6k2LfMn+rRoHVn/7KmPt9NYWzaUMBgJUjMK+ebO8NyHa6tNi7tPnRqTJoJNpaErudEsNM4TiaXjD/90rfVdyPBkQ9ayYvgeOcxAMhyfkSpjLfl0xTAjC/0iywt5199zwJtMeajH4D2bz2lYjeE7QMF9r2xc8z02YO1zSJ9h9aVHtR9O6Ljlb4fwaRW67KKRpLJI0UEF8EZP0vMSzMcuItFDKdCxnGUOUr7DYYEO5lAAm45FfESMu0lflMUTF8/ejsjT9Vtndb2nURacsUdcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H826vY5YSKTACsvFq59wSp7laBxPXljNVS30li1slI0=;
- b=eFr27xJWZbo0phPNB85aoVcD9KsqWB5+VxudtMwpuo1cKFnieES6Z6xpGM3ObrLRwsgo07jm8YpYNv/VY7t3ZxRqEaEps75mjbXnto0QuBJQHzgYXACggoNocWKfY449/GjEYvmzolibkcdkF1tz1NO5y5ykGgDddaBIOX657Q8QOVh5XUh9kJSPWYhrBrN30wOzK3oQnjmKFFjhhFD1qv6Q02bWK1vEQtLkGXsTTuspttnGRLrr/XpHSeyiaWwjvudvJf1CripkOyLVjOaKn0w348uX78tOSxA6egEunInBxFHLGIvTj+jzP+MZ2cyaHAqGuwOqp65LaRsWTLy/Jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H826vY5YSKTACsvFq59wSp7laBxPXljNVS30li1slI0=;
- b=Zg6dTv5HLEA0qVpOTBaE6PzfNUxXSbhX7tsfmBLzkYjCfP+Mw9qt3B2Uw0/fPzTSH36sMfZBA54b1O9WAJoNNwO7OZYz+uCnV+nCTc0qZg8WmNSh8RQQGWR3KY4Bb5HNMaCjdflrHs2UgHYI34a9rgh0SY/y/pBJzonX2YH0E4CCE6KyZGX3RUoE1NET24a/aZtK2SeuyR6cqBTdT5OZmjiiT8El/nBSv8iCka2REVFmwqZE1v1MCne3lQmqhRdtNZB5GAMoO20Uw+mK9TY4a5710nXt8kxUSi+Kqw4qEHW5APGZBHfbBzR65JrSUWGJMbhqvf1ZjH6tQT5yJ9LxLQ==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by DBAPR04MB7285.eurprd04.prod.outlook.com (2603:10a6:10:1ac::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 02:59:55 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 02:59:55 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Marek Vasut <marex@nabladev.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, "Christophe Leroy (CS GROUP)"
-	<chleroy@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>, Eric Dumazet
-	<edumazet@kernel.org>, Frank Li <frank.li@nxp.com>, Jakub Kicinski
-	<kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	"UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: RE: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
- DT
-Thread-Topic: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable
- from DT
-Thread-Index: AQHdXaVPTB8CJdKLoUewahs8NUD/ZLcAl7OAgABoBfCAAP9vgIACLV7Q
-Date: Mon, 19 Oct 2026 02:59:55 +0000
-Message-ID:
- <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20261016193344.115518-1-marex@nabladev.com>
- <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
- <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
- <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
-In-Reply-To: <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|DBAPR04MB7285:EE_
-x-ms-office365-filtering-correlation-id: daf015f2-04c2-4de3-dd56-08df2d8d0db0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|1800799024|7416014|23010399003|19092799006|38070700021|11063799006|4143699003|56012099006|261009223027099003|10067099003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- nC6wKL7iMei+A7t4Gp2AVXlepVKuB3j3W5E8vEx8gD31Wl7x8Pq4TS45HyQEpnWepN89uMm1wBJ9IOnUN+MeZZ2lGJuQ/Vg4cBXN1UaCXqRyEUKtdI0DKX8TmRzJQYU3n0fQjIwrK7cYLOX1qCuyq8xm81n6RnEyjGs19vtXJCPeo7TSPUShZTYpY98qiwuW/+uYafqetamxdBi0DbdMI4bKs1t87uQWOmDqvQ/C0QTdUpVlfK7r+EucPSKR/TK3ZP3oKho7VJUTXXMjtqdIjM0D+VNTvsiyIOiS+aBYeNOOuBiuUv8nUP1l/3UQFJcM+OefsmUZa60ZYbrkcluDDNfh4yVP1rgp9e61e4O/ZpSNRe8noB87xxp+uj8oYJ7EAHcggtD9e0CYsLQl3Elg2I8yGQScnh0EQQTIYvAIN5X9sb+XWgyad0xjAu4ZOmjB7ttwQyReznMMUKeTGO20xbPbgH90uA1C7BEelBh1e2M7LZ3eJGiub3JBcX4t5E0E0jjKdRyB1SObavO32jQFYjhlid80cVmQ+SZ/isYJbunX0reHMSC5ghWn0NDhcKz0f0rIvF2hOWMHGTdCaV30efQGsc3UXuv57UM7yHAMBanKljJi3nZv8VgUQ6AexmktHsBI36PRqvzhjbRMQ/VCcVa0WEVrUY3IpV1MfQCBA2Cowqstg/XpgogF47/r/LG6Yk+PtvJC4AhHRmIzfX/mr5DrRnoNffn7BLdTl1Yvtac=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(23010399003)(19092799006)(38070700021)(11063799006)(4143699003)(56012099006)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?RHpLZEtYOFNkMnNyK0hIUTdKWWkzU2JQR0hFcnZsMHUvQlNQbDJQYWh5TFhh?=
- =?utf-8?B?NFpmZ2tNYU5WOEZsVStDeTNxUVE0ODZMNUJ6VGhSbWN2QVRHbGNKMHQ0QmJz?=
- =?utf-8?B?a2xINlNJQmdOU2JqYWRXem1VTmpDSko1dTlsc3Q2T2pwV1k1QjQzM0JXUzgv?=
- =?utf-8?B?YnI4ZmNkaWZwM0FXdlpWWDJKcDhpVHpjME9ybmZPZ3NCNmk4N25mS255QTk1?=
- =?utf-8?B?ODlQaVM0OS9ueTYvSmNFbDNnZDV5c1UyTWFzRnJqYi9tRW1GN0daOWJxR1RH?=
- =?utf-8?B?cXdTN082YTJPOGYyRjQ2RUR1TXFMNWVIcHcwNGt0Q2VxTVJ6LzZGRnY5M044?=
- =?utf-8?B?VjlnYWJqZkx5YVNIZkhoTS9tTnc1MGRYcUJ2bUdZL3MwWU9zSUpVNU9UT2d5?=
- =?utf-8?B?ME5DZU05SlkxeWF4V25XMzI5RWRnZXhKWmZlUHBzUWhOSlpTNVJsZ3prR0t4?=
- =?utf-8?B?L0lBOGZNTERLc3d1S3pPUUFET1Q0UWhuV0M0cDQ3dmNGUmhBY252K2htc0t1?=
- =?utf-8?B?UWI0ZUtrT1kya0laY1psSFlmV3VBdmlLcGdLY1h5ajdXMkw5dFl4WGl0ZVAr?=
- =?utf-8?B?bjNNVnNFajJrZVFub0tndEN5MVJxekF0bWhVcU1rM1VHSXZaRjFOUnFDMEkw?=
- =?utf-8?B?bUhPYzlzTFB1dzBsN0xlVXp4YU5DNmVDVWk2d3ZraGh6bDdtMGhQQm5xL3cw?=
- =?utf-8?B?YTNOTExlZ2E4dngwMGZwcHV2Vlp6ZnNkM2FBN1E2TGVvcjVNaTdEdHQ5ck9D?=
- =?utf-8?B?WFhPcW9BbFJDWUVpN3AxVGxVeWp2ZVhHNkZZVUluRkYzYVc5b0hycEo3ems5?=
- =?utf-8?B?N2VoOE05MFlxK2l2TWllZkI0Skhac0dVMkhkS3FVd2M4Nld2UjFmQjFPTGZa?=
- =?utf-8?B?VExWNGpzQkR2UlNWbGJYSVpwOWpPOUVIRlVwOVdPSHFuQnl0KzVpcVQ2ZjFk?=
- =?utf-8?B?anVUOWx6L05maHNzemhWcFJ6M1h0MVRVUUpvV1d6aTlkMXJEL1cxMnhIYW1l?=
- =?utf-8?B?OUpWNVNxclNuZmlWcENrK1JzdXJsQlJMQWJIZjJiTTJOVHFxNC94TTlGcE9x?=
- =?utf-8?B?WE9nNmo5cDBJcE1XaS80SlkzWDNWWUJjanhEYk9KZkJucnNIU2NEMjBBQ240?=
- =?utf-8?B?cXlOaHphaDBvWlBTOVpZSGJ4STFhenF1ZmpibjhHN2tZbDQwZ3ordWZlNmhj?=
- =?utf-8?B?dS9kbk5RTHRMN0c1bnhiSHlHQ0N4ZnVRMldyTnNLbFZiYUFuYVdNWjlKUjhG?=
- =?utf-8?B?L3FxbFpnMVVmR3V4WTgxQ1E0T3pqZUowcG1VM1NxQy9OMUNWL1pZVDVhUHlC?=
- =?utf-8?B?c3B0TnVXbXJydmFsNFN1TExVS0VhaFhaYzFJa3NuK3JLTlhlbDJkMnVyWE5w?=
- =?utf-8?B?Q3NSWjhhM3Q1alIzTTgwREFUUHVpcDFGdjJlZjB4V3VFUFluQ2pQUmw0a1By?=
- =?utf-8?B?MVFJODRRenVSY2ZxeUZaQU16cnloa2pBZHlnQ2NVeksyTTlBUmtpd1pBbGdo?=
- =?utf-8?B?WjJ1WTJWOWp5cW5wOWxuT2drRFc4YXhScFQ1RlFIVTM2TTFxRjdxMGRUYUxD?=
- =?utf-8?B?SHZSVkxjYk1pcWV4b3pXMVpCWFNZZlNhVDByMnJ1aUlXL1phandNL244WTNU?=
- =?utf-8?B?N0swaldwZGpMOFF0SWN2WWFnY290WHZvNUVvNHB6czY2N2xkNjU4SkNZQWc1?=
- =?utf-8?B?aWd0Tm5YK1ZLd0p4ZUNodE40Wlc1bUhsWUtGMmJ6NDlPSHRJd2ROR3ZFUW92?=
- =?utf-8?B?L0JWR3B1UVlwZmsxek1HYmUxZHp2a081ekJQTDZTdkZNTER2OGszY1BYdHZp?=
- =?utf-8?B?eFRuSGhnUWZBeGxzd085LzdKTGl4V1Z2SnhaaWQ2WFVldmpFTFg0MExSbitX?=
- =?utf-8?B?RXdpK3FseXJmRm8wbWpSWXZXY3VQMlFVWVB0Y0lMd1RpYkdkVzJuTm1TMS9T?=
- =?utf-8?B?WEwyUkx4dEx0TmhxMysyQ0lEK011R3BudXBsdFhjd09GLytLSFNkQStVTGNU?=
- =?utf-8?B?VWVCK1RNOWRCTjlPV2pQajY4ak4rdHptNXRnSXhVZHVLWnlLUGUrQVN1dWQw?=
- =?utf-8?B?b2t2YXp0V05JaXc4cm1JUEdkbDNxeWFGbjVKZ20rS3BmMmc0QTIyRlJ6Rng3?=
- =?utf-8?B?QUVHbm5pdzRyU253TnJNL2x6dTNWMXFSbXcyT1BTRmNvVHhvR1JPdmtZM3dk?=
- =?utf-8?B?N29UN1k3K0pUQVdKOEZUYW00R3VoTzhFRWg0azd2Y2xiQUtjelEzR1czTWpu?=
- =?utf-8?B?M291NHhtM3JpMThLRThkdkxwaTUreTZLSVlEdURxS2FEK3liSWtKZ0N5ZGln?=
- =?utf-8?Q?mv0FpTRL1O62MYG6xE?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h+qwC1Gy"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b2232d8ef5so2316896a12.3
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:00:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792378841; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iZjsyAlWJ/qvkJ2TkRv1WTxzci49T3dv1S4fj/GSISmcZSxCTYzrSxk85pdDh6L6Ki
+         fSdrmtm2+tjlxjSklc416c268Fo+yrlg3dBDF0a9K7EQTRS7Q/MExaNYmddtcmMsbJDo
+         OJiyR68J3+MdkI11inuj+J9QTf4myNXPjEy6pvDYHbQ1MDba3sBmenBMytT/VrM+kD9p
+         4zJE5gjxPBZieUQolSloHh06SJKAaJfigbjIZKaDcSv1V2TLSYZXu4E8L3T6j2VjYHo5
+         CiUJeUub7SXpv1XmLgfLdNcBZES1zNxoqspPtTi4mNzeIwe2TPIjwyw0f/orCLFmamBj
+         T/Rg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=uRs0G98QztzlnE+h6YsSA8pblIG/6flAT+WC3eNIoig=;
+        fh=NOJCrXTTkDlAPq3ff2QduMF7NErT4b86Q926OfUrj3M=;
+        b=L/TnEZv7g2EGpZEjVu1BeaTXQECTk7RXaUqHLDGpsyROvg/HXkEtbBanPEAVAbLfZm
+         XXwUBs13Q7D/wuVhej1dmpibATfKFriAOwESeqo+MH+ICruqNFNLjAVPa4o7T05LwJyT
+         Myg1AbXqnaLNxxk1U3VRAfiJan2PsG+ffui5Sik6izz9ScDYj8Nea7qdmGTYCC+yZs/O
+         lDsciaIO49szuZukXjEISIN3Y9UQ31H5EVIW5AJP7M3BLETXA6oW371hpKB+/gbXKk+z
+         KRpnDRQzF4VJX6m8wJuAhmNpiOciyFZpUzfHs45uDeo9C1U9za8NX8O6whCB7737vDcM
+         Bvxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792378841; x=1792983641; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uRs0G98QztzlnE+h6YsSA8pblIG/6flAT+WC3eNIoig=;
+        b=h+qwC1Gyg1Yeuo0XHq60QZDAl3Y1sGdD+Rtu6eqSHx2jqn+SX+yoU6bc2/s6qr6Qzo
+         hFJR4uVMU/vnBjZzCYqaQYAQH+ajNcjfz4NWYco7vmWJelSFCqNpVkBsUs8zHshx9AfW
+         22Zd8oqCbX5aCt6le6oeLUUpigNhwpwDAcLeTrV2fIZWYFqECysAmSBpXYkcwy2sAL9i
+         2TJvR0hZkZTXrGiuJ31a9MqwsTJP1i+qfVV/po6iwwawGxUVMsTVkOT9vn9Ej51Lf422
+         DxK/V4XUCDjSmjfKB2phVA5DscdGcvulVsFMmKuG3wFAbLWsVbeu5TIjp6eci5+bgMf5
+         /mEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792378841; x=1792983641;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uRs0G98QztzlnE+h6YsSA8pblIG/6flAT+WC3eNIoig=;
+        b=dqxARG6TDhhzI21lhtlrZJB78yfBGyAYZN2ebOlC8RF+TFLOwWqS/j4CENCADaC4QU
+         YEbU61Xgx0XAfyU7913klYCySPLfEQFf0AmkhgJBegmPKIhDCeJ6jVCqpUKjMwz+2h0X
+         7chCWIYoKt+lcdpotsYnmbwmWFN6Ole4JcL3vfQ7EW8zgjyyLKXUPho5vO2U6q6RdX8U
+         BzybuyFNgR8S4rL24A0a7SGNaka+M3WQYc//vRScFF2DmWaLs0UPeiy9sNo2MKIv0chE
+         wDcql1m9e+T9nzTJLubc+R5SSiQcx6NihVRqjFVShCrSTyfZazkyw1EEffgTOYK683VR
+         eqkg==
+X-Forwarded-Encrypted: i=1; AKwUvByigSPK/+3smeNGiCkZ7o9uibBRuD9ZAoGXFsWK78HC+9Op9sQrBb1bWU+0OQRvdvVxIN70QS0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJq6VJ8YurdMcvPramG+uJfm/oPgR9sGSffvGiGr97MOl/JNkDB
+	9eRQJ/P4EFSPx+VDZ9odM3z77j3D/YzFR94E5ll2TZ9iy11XokPd2tUmFu4xjwTLN/UEXrMBNgz
+	2IlNQ8JgiJ4+Mu/5ZqRPOB4o+qMeGYgQ=
+X-Gm-Gg: AYBFou1TW12DUi/oa/zrQdsOFNlXozzbPM9+sp8Oeq5Q756odmFplAK3zDqyVjmf/4x
+	tj/6vJflBgI64VYBlNNV3Q3lmJUYl6Ow4SotNEHWnQFqzKGk+j1UgkYIe7fekmY8xN7AsJ6OpZ1
+	TwJIUsjB2ML5338Jvcf+85Bog4G7n+Zh7z0PSS/DQuxr59EtNqUsw9Ynh9vGed63M2GmKo1AA4F
+	hjadna9G8VAFfqawqWspkFu5RGUTLDEj6wx247E3LrhxSYDZLcgI/5VJfoLFepAMMEKuQcdkPpb
+	gg681c9p0aRAYUE4y/xKtDK0F9KN3o5XGbeEmCCrR9FwAiiYFtGXX2uHM8Vhq9lT6uRnqn0DFjy
+	GCiSOyiFqYjg=
+X-Received: by 2002:a17:907:9617:b0:c40:3a99:3f96 with SMTP id
+ a640c23a62f3a-c419d9314d3mr411996366b.10.1792378840978; Sun, 18 Oct 2026
+ 20:00:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: daf015f2-04c2-4de3-dd56-08df2d8d0db0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Oct 2026 02:59:55.2966
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AoLip3OtQe7IbUrHZY9I5QofQnjd8YF9V2KjQ/EFA+LHuS+/4FgJgpOmDYaO+lFkfkEjlBncOIBCVHk6SgJJMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7285
+References: <20261002115850.962676-1-o.rempel@pengutronix.de> <20261002115850.962676-3-o.rempel@pengutronix.de>
+In-Reply-To: <20261002115850.962676-3-o.rempel@pengutronix.de>
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Date: Mon, 19 Oct 2026 00:00:28 -0300
+X-Gm-Features: AclHuK_U7udrZyUvnHnnOTPCDsZnVnkfDFkPSmosXztYTXcTGB0CZ9Wc4bXtYqI
+Message-ID: <CAJq09z47LERHFg0KSC+XB5s+iBxRPvdffJzJ8Ka+_i8vN-pKBQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 2/8] net: ieee8021q: add pcp_to_tt()
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Linus Walleij <linusw@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
+	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-PiA+Pj4gK2ludCBlbmV0Y19tZGlvX3VwZGF0ZV9tZGNfZGl2KHN0cnVjdCBtaWlfYnVzICpidXMp
-IHsNCj4gPj4+ICsJc3RydWN0IGVuZXRjX21kaW9fcHJpdiAqbWRpb19wcml2ID0gYnVzLT5wcml2
-Ow0KPiA+Pj4gKwlzdHJ1Y3QgZGV2aWNlICpkZXYgPSBidXMtPnBhcmVudDsNCj4gPj4+ICsJc3Ry
-dWN0IGNsayAqZW5ldF9jbGs7DQo+ID4+PiArCXUzMiBkaXYsIG1kY19mcmVxOw0KPiA+Pj4gKw0K
-PiA+Pj4gKwlpZiAoZGV2aWNlX3Byb3BlcnR5X3JlYWRfdTMyKGRldiwgImNsb2NrLWZyZXF1ZW5j
-eSIsICZtZGNfZnJlcSkpDQo+ID4+PiArCQlyZXR1cm4gMDsNCj4gPj4+ICsNCj4gPj4+ICsJZW5l
-dF9jbGsgPSBkZXZtX2Nsa19nZXQoZGV2LCBOVUxMKTsNCj4gPj4+ICsJaWYgKElTX0VSUihlbmV0
-X2NsaykpDQo+ID4+PiArCQlyZXR1cm4gZGV2X2Vycl9wcm9iZShkZXYsIFBUUl9FUlIoZW5ldF9j
-bGspLA0KPiA+Pj4gKwkJCQkgICAgICJJbnB1dCBjbG9jayB1bmtub3duLCBub3QgY2hhbmdpbmcg
-TURDDQo+ID4+IGZyZXF1ZW5jeVxuIik7DQo+ID4+DQo+ID4+IGJpbmRpbmcgc2FpZCBjbG9jayBp
-cyBvcHRpb25hbC4gSWYgcmV0dXJuIGZhaWx1cmUgaGVyZSwgaXQgd2lsbCBibG9jaw0KPiA+PiBl
-eGlzdGluZyBkdHMsIHdoaWNoIGhhdmUgbm90IGNsb2NrIHByb3BlcnR5Lg0KPiA+Pg0KPiA+DQo+
-ID4gRm9yIEVNRElPIGRldmljZSwgdGhlIGNsb2NrcyBwcm9wZXJ0eSBpcyBub3QgYWRkZWQgdG8N
-Cj4gPiBmc2wsZW5ldGMtbWRpby55YW1sLCBJIHN1cHBvc2UgdGhpcyBwcm9wZXJ0eSBzaG91bGQg
-YmUgYWRkZWQgdG8gdGhlDQo+ID4gZHQtYmluZGluZyBkb2MgaWYgdGhlIGNsb2NrIGlzIHJlYWxs
-eSBuZWVkZWQgaGVyZS4NCj4gDQo+IElzbid0IHRoaXMgd2hhdCAxLzIgaW4gdGhpcyBzZXJpZXMg
-ZG9lcyA/IChtYXliZSBJIG1pc3VuZGVyc3Rvb2QgdGhpcw0KPiBwYXJhZ3JhcGgpDQoNClNvcnJ5
-LCBteSBlbWFpbCBmaWx0ZXJlZCBvdXQgdGhlIDEvMiBwYXRjaCwgc28gSSBtaXNzZWQgaXQuDQoN
-Cj4gDQo+ID4gRm9yIEVORVRDIGRldmljZSwgd2UgYWxyZWFkeSBoYXZlIGEgJ3JlZicgY2xvY2sg
-aW4gdGhlIGVuZXRjIG5vZGUsIHNvDQo+ID4gZGV2bV9jbGtfZ2V0KGRldiwgTlVMTCkgbWF5IGdl
-dCB0aGUgJ3JlZicgY2xvY2sgcmF0aGVyIHRoYW4gdGhlIHN5c3RlbQ0KPiA+IGNsb2NrIG9mIE5F
-VEMuDQo+IFNob3VsZG4ndCB0aGUgY2xvY2sgYmUgZGVzY3JpYmVkIGluIHRoZSBNRElPIERUIG5v
-ZGUgPw0KDQpUaGUgZW5ldGNfbWRpb19yZWFkXyogYW5kIGVuZXRjX21kaW9fd3JpdGVfKiBpbnRl
-cmZhY2VzIGFyZSBub3Qgb25seQ0KdXNlZCBieSBFTURJTyBkZXZpY2VzLCB0aGUgRU5FVENzIGFu
-ZCBORVRDIHN3aXRjaGVzIGFsc28gdXNlIHRoZW0uDQpORVRDIHN3aXRjaGVzIGFuZCBFTkVUQ3Mg
-Y2FuIGFjY2VzcyBleHRlcm5hbCBQSFlzIG9yIGludGVybmFsIFBDUy9TZXJkZXMNCnRocm91Z2gg
-dGhlaXIgb3duIHBvcnQgTURJTyByZWdpc3RlcnMsIGluc3RlYWQgb2YgdGhyb3VnaCBFTURJTyBk
-ZXZpY2VzLg0KDQpZb3VyIGZpcnN0IHBhdGNoIG9ubHkgbW9kaWZpZWQgdGhlIEVNRElPIGJpbmRp
-bmctZG9jLCBub3QgdGhlIEVORVRDIGFuZA0Kc3dpdGNoIGJpbmRpbmctZG9jLg0KDQo=
+> Add a helper that maps an IEEE 802.1Q Priority Code Point (PCP) to the
+> corresponding 802.1Q traffic type, complementing the existing
+> ietf_dscp_to_ieee8021q_tt().
+>
+> It is very nearly an identity map, except that PCP 0 (Best Effort) and
+> PCP 1 (Background) are swapped: per 802.1Q-2022 (Annex I, Table I-2)
+> Background is a lower priority than Best Effort even though it carries
+> the higher PCP value. PCP 2..7 map straight through to the matching
+> traffic type, and values above 7 are rejected with -EINVAL. This decodes
+> the 8P0D encoding (Table I-7), where every PCP value is a priority and
+> none carries drop eligibility.
+>
+> Drivers that classify ingress traffic by PCP need this to map into a
+> priority-ordered internal space without misordering Best Effort and
+> Background. The first consumer, the realtek rtl8365mb DSA driver, lands
+> later in this series.
+>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  include/net/ieee8021q.h      | 10 +++++++--
+>  net/core/ieee8021q_helpers.c | 41 ++++++++++++++++++++++++++++++++++++
+>  2 files changed, 49 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/net/ieee8021q.h b/include/net/ieee8021q.h
+> index 8bfe903dd3d0..d24e4036577b 100644
+> --- a/include/net/ieee8021q.h
+> +++ b/include/net/ieee8021q.h
+> @@ -10,8 +10,8 @@
+>   * enum ieee8021q_traffic_type - 802.1Q traffic type priority values (802.1Q-2022)
+>   *
+>   * @IEEE8021Q_TT_BK: Background
+> - * @IEEE8021Q_TT_BE: Best Effort (default). According to 802.1Q-2022, BE is 0
+> - * but has higher priority than BK which is 1.
+> + * @IEEE8021Q_TT_BE: Best Effort (default). According to 802.1Q-2022 (Annex I,
+> + * Table I-2), BE is 0 but has higher priority than BK which is 1.
+>   * @IEEE8021Q_TT_EE: Excellent Effort
+>   * @IEEE8021Q_TT_CA: Critical Applications
+>   * @IEEE8021Q_TT_VI: Video, < 100 ms latency and jitter
+> @@ -38,6 +38,7 @@ enum ieee8021q_traffic_type {
+>  #if IS_ENABLED(CONFIG_NET_IEEE8021Q_HELPERS)
+>
+>  int ietf_dscp_to_ieee8021q_tt(u8 dscp);
+> +int ieee8021q_pcp_to_tt(u8 pcp);
+>  int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues);
+>
+>  #else
+> @@ -47,6 +48,11 @@ static inline int ietf_dscp_to_ieee8021q_tt(u8 dscp)
+>         return -EOPNOTSUPP;
+>  }
+>
+> +static inline int ieee8021q_pcp_to_tt(u8 pcp)
+> +{
+> +       return -EOPNOTSUPP;
+> +}
+> +
+>  static inline int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt,
+>                                      unsigned int num_queues)
+>  {
+> diff --git a/net/core/ieee8021q_helpers.c b/net/core/ieee8021q_helpers.c
+> index bbacdfff9b4c..a5bd5e039b47 100644
+> --- a/net/core/ieee8021q_helpers.c
+> +++ b/net/core/ieee8021q_helpers.c
+> @@ -222,3 +222,44 @@ int ietf_dscp_to_ieee8021q_tt(u8 dscp)
+>         return SIMPLE_IETF_DSCP_TO_IEEE8021Q_TT(dscp);
+>  }
+>  EXPORT_SYMBOL_GPL(ietf_dscp_to_ieee8021q_tt);
+> +
+> +/**
+> + * ieee8021q_pcp_to_tt - Map an IEEE 802.1Q PCP to a traffic type
+> + * @pcp: IEEE 802.1Q Priority Code Point value
+> + *
+> + * Decode @pcp to its IEEE 802.1Q traffic type per Table I-7 ("Priority Code
+> + * Point decoding") for the 8P0D encoding, where all eight PCP values are
+> + * priorities and none carries drop eligibility. It is nearly the identity,
+> + * except PCP 0 (Best Effort) and PCP 1 (Background) map to swapped traffic
+> + * types: Background is lower priority than Best Effort despite the higher PCP
+> + * value (Table I-2: BE = priority 0, BK = priority 1).
+> + *
+> + * The 7P1D/6P2D/5P3D encodings, whose lower PCP values carry drop eligibility,
+> + * are the other rows of Table I-7 and are not decoded here.
+> + *
+> + * Return: the traffic type, or a negative value on error.
+> + */
+> +int ieee8021q_pcp_to_tt(u8 pcp)
+> +{
+> +       switch (pcp) {
+> +       case 0:
+> +               return IEEE8021Q_TT_BE;
+> +       case 1:
+> +               return IEEE8021Q_TT_BK;
+> +       case 2:
+> +               return IEEE8021Q_TT_EE;
+> +       case 3:
+> +               return IEEE8021Q_TT_CA;
+> +       case 4:
+> +               return IEEE8021Q_TT_VI;
+> +       case 5:
+> +               return IEEE8021Q_TT_VO;
+> +       case 6:
+> +               return IEEE8021Q_TT_IC;
+> +       case 7:
+> +               return IEEE8021Q_TT_NC;
+> +       }
+> +
+> +       return -EINVAL;
+
+Would it be cleaner to use a lookup table here instead of the switch
+statement? It saves quite a few lines (not tested):
+
+static const u8 ieee8021q_pcp_to_tt_map[] = {
+  [0] = IEEE8021Q_TT_BE,
+  [1] = IEEE8021Q_TT_BK,
+  [2] = IEEE8021Q_TT_EE,
+  [3] = IEEE8021Q_TT_CA,
+  [4] = IEEE8021Q_TT_VI,
+  [5] = IEEE8021Q_TT_VO,
+  [6] = IEEE8021Q_TT_IC,
+  [7] = IEEE8021Q_TT_NC,
+};
+
+int ieee8021q_pcp_to_tt(u8 pcp)
+{
+  if (pcp >= ARRAY_SIZE(ieee8021q_pcp_to_tt_map))
+    return -EINVAL;
+
+  return ieee8021q_pcp_to_tt_map[pcp];
+}
+
+Best regards,
+Luiz
