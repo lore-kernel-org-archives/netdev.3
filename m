@@ -1,81 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.54.127.157
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792446849;
-	b=ahfj6HDAwlq/AOkcGwtwezvGt2Yyc5yHCFDm7nhQ+ByX5USjQIkxfgSth8XYNsWwcfi2
-	 p0g1kkQK8Nl57giiIrLT2C58YuOXNK5qKOlAtGKDJx0zw80YdQKV39F9ynbL8fHHe89a7
-	 f7ySIblME2QwmqYFzQyQNmeVsM+0jMMaXRMFC47Lokd61gYl4yFr7N71qpXuKrpe3ZlLe
-	 fWoVFz1h8FjETj5Avjjy2PBKNOUrpiHVO6ozXHsbt8+jYhMcXtMiiGszteAYe8USu9dJv
-	 8me+01yrO5M1NG1Ujn7oU769UuVvpY8XwSQ1YtQvGAHR4Yfosfs5gJLFXks2PbNxw7w==
+	t=1792447819;
+	b=4CukWHt261hRvUkeIjYPz5WsqhdI8dpi9a9rBUd/kIQHzAPVeqmFxN3Z9z/igRA81yc6
+	 /7aM2cCA3hUzh7HmLXWk78pC+vG4yTA8OeLnUd0ufciGebbkdUNXHZJjaAKaAdBt6/1Fz
+	 S7M0lkClD0nOVIxrDgfUFesv2R93t4RzS4lezS8SnF8Qf+WDkzsBPrmBpVqnawuyRfCLV
+	 GhAWYhEwyA4UUuo4iu7B2+gSkjE2w5ozPcc0vi1clotdzv4WJWoAmiZLz2eCTMKaI+5Ef
+	 MXusS5CNxg2dUpAVqBGRfnLOy3IhJPagVywofTTQJ8WCtrnLjMsbsw6eBSQs62HaYAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792446849;
-	h=DMARC-Filter:Date:DKIM-Signature:DKIM-Signature:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=REW/9j+OlAseSVUPZSaGZcgsaYuUzx8Jih/oiiyk91c=;
-	b=caxF8sy51/nW52CjiXe7kh6PDLORowtwYhi+Rfi1jw+MoBl1wkRBB7emNT1jg71UxocD
-	 E8G4p5p9ZCUgDT4aVeBPVkBxg1cDqmq8S/TVFjFhkXCUSKyT2cDpS/RqxjsBe7CYfFzBi
-	 gdi+C1nMRkgiFQ5BQxj/hNHgpHRahlZMKPoNU1sN984+1QVkekE5TYzZlUVLi2QXPWA5o
-	 KS3eQKu5blRXTCX+gtqrm8Ubm0PFZNDRozt4Zr4zK25GW0sSOu67/XkBK+uNcSF1gcVFa
-	 Ot/ZLh5JI6J0IX9FMFF83V0GU+o7gMzgrAmMUnlHDWs9kUyaU8gMwEK+0+qOvLE+xeA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792447819;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Envelope-From;
+	bh=A9M+eQGTgrKJjVISHFIRHuM3Rvm+gb3HgdVuKPjSkV0=;
+	b=5Vk1mX2AYytAkse+11HPQ9ImyDEsgsW6LXzcxVjoOrLEb242wEdTm1K842PngVtqtN0s
+	 sm0rHaFVtoGLwdJKunvt4Dni1J4XotIfsJRY/lrhGnemM2W0C9h6dg7vYvuUTQAqb6Yle
+	 MYHgCazjtCQJ2PlddT5lPpj0th0U40SvBwb1gYDO1p3Rcj68AeDTKD0nvTo2623dULocr
+	 mOVQjSOwT9slot61Ek72wCNn4NcKPS3hsLK87RpD4U9IGwD8PeOiQxa76M7hY96Vydu7a
+	 SPVwSlTLY+t1efhSo7YKUx3QGuSoVccOKpOizy7SIIKdMwuGk/Bjb3G4LIfSz09k8mg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=H7ONmosJ;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=izJT5KbY;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dmarc=none header.from=r-sc.ca;
+	spf=pass smtp.mailfrom=r-sc.ca;
+	dkim=pass header.d=r-sc.ca header.i=@r-sc.ca header.a=rsa-sha256 header.s=spacemail header.b=PZdai8wY;
+	arc=none smtp.remote-ip=198.54.127.157
+Received: from out-2z4y-a157.jellyfish.systems (out-2z4y-a157.jellyfish.systems [198.54.127.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2E1606A319;
-	Mon, 19 Oct 2026 21:54:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB2E1606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F1F606A31D
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 22:10:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6F1F606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=r-sc.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=r-sc.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=H7ONmosJ;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=izJT5KbY
-Date: Mon, 19 Oct 2026 23:54:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1792446846;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=REW/9j+OlAseSVUPZSaGZcgsaYuUzx8Jih/oiiyk91c=;
-	b=H7ONmosJ6zh6o9SpTnoFSdKuZJWBx2Yxqc+G+jHtUPhx7c7ud9ydR+LVE3+lN0RMh8C4KS
-	8G3nCCbis88zqCsmMSaVdNcHGhP7wLEwCFalK2lFBg1ZBu+HqXebx/QtKf3a3g+YLfc4Lh
-	jV/cE6BoOXG4Zs8W/cV3V90pkjzr0oqjs2acZbgyqKr9Yz069Kg7dPlLvmJSy4csDxNyun
-	uL1+4pZlCS6DGRgIgrEel5QLllBEvfuCQjsxDEcEeoIJ/0A8NKgtNHFW+KBt0Vrpnrkz/B
-	9VY8PfjKWnH4lBmJvus7ioEmA7P2iPj9Nf/IAhhUDL0kxyz2WT29JUYWkryHxw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1792446846;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=REW/9j+OlAseSVUPZSaGZcgsaYuUzx8Jih/oiiyk91c=;
-	b=izJT5KbYwxJdCKsI4l1Onn0ZAkS1NLhodI8dZ38boqdNTaLmtDi5UQr/YUzocMRSNfjxjt
-	UeZZ20yI2vUpysCw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/4] eth: mpnic: count packets, bytes, and
- drops per ring
-Message-ID: <20261019215405.OCzrrKYw@linutronix.de>
-References: <20261012-mpnic-counters3-v2-0-8afba81c2d5a@gmail.com>
- <20261012-mpnic-counters3-v2-1-8afba81c2d5a@gmail.com>
- <20261016220930.i32JEcqe@linutronix.de>
- <DM8U47F4MNK3.2V54CCQ9YTNBY@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=r-sc.ca header.i=@r-sc.ca header.a=rsa-sha256 header.s=spacemail header.b=PZdai8wY
+Received: from DESKTOP-290OH2S (d207-6-150-133.bchsia.telus.net [207.6.150.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4j7qV854FLz6tkL;
+	Mon, 19 Oct 2026 22:10:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=r-sc.ca;
+	s=spacemail; t=1792447809;
+	bh=A9M+eQGTgrKJjVISHFIRHuM3Rvm+gb3HgdVuKPjSkV0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PZdai8wYQayJZfOy5O+qN3ZhLQejDrw8jwduUTMX+f5P1pD0FIuj8ny1NC1YqVX8l
+	 9KlchquCstkf6woO0H0stvGHQQ6DYQNSEEemH+k5jL7XcN3QAE9kvzC34nzjYAoSbu
+	 KX4HBHkCHudILQoC1WNNAgebFNp71twgBm0HkHQ1WvUQ3HihbyzM8VdIs2URBVghjd
+	 ny4+c5PKDR/Yuf8nP6phY22X5M2fTfOtpBbBTB0YuSxwWriyn+JoG5r7wQ0rYcyeeH
+	 +Tyy98Qm6GmXJhhZU+SND8etd08NhFTR+3mlp28zSGprcBrYDjBMq+gvvgIhOsuU92
+	 COIDyZ+JgFLAQ==
+From: Ross Cawston <ross@r-sc.ca>
+To: netdev@vger.kernel.org
+Cc: kory.maincent@bootlin.com,
+	github@szelinsky.de,
+	o.rempel@pengutronix.de,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Ross Cawston <ross@r-sc.ca>
+Subject: [PATCH net v2] net: pse-pd: don't enable a PI again while disabling it
+Date: Mon, 19 Oct 2026 15:08:34 -0700
+Message-ID: <20261019220835.613-1-ross@r-sc.ca>
+X-Mailer: git-send-email 2.55.0.windows.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,47 +74,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DM8U47F4MNK3.2V54CCQ9YTNBY@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: ross@r-sc.ca
 
-On 2026-10-19 09:04:38 [-0400], Daniel Zahka wrote:
-> >> An RCU approach is used because ndo_get_stats64 is not called with the
-> >> instance lock.
-> >
-> > Why do you have the two mpnic_base_stats and fold the stats into into
-> > it? My guess would be that on stop the counters are reset and you want
-> > to preserve the stats.
-> >
-> 
-> Not sure I understand. I think you are asking about two things:
-> 
-> 1. Why have two mpnic_base_stats?
-> 
-> To avoid a separate heap allocation that can fail. Handling an
-> allocation failure in the ndo_stop path when doing the aggregation into
-> the base stats is tricky.
+With software power control, _pse_pi_disable() frees the power budget
+of the PI and then retries the power delivery of the PIs waiting for
+power in its power domain: those that are admin enabled, have a PD
+detected, and are not enabled in hardware. On an admin disable or a
+disconnection, the PI being disabled is one of them, as its admin state
+or PD detection is only cleared after _pse_pi_disable() returns, so it
+is enabled again right away:
 
-Right. But looking at hinic3_get_stats64() for instance (I just grabbed
-a random one) it simply does query the stats for each queue, add up,
-return. It probably does not drop the queues on down, just reallocates
-them while changing the number of queues (and maybe MTU).
+- an admin disable of a port with a PD keeps the port powered, and the
+  next admin enable allocates its budget a second time
+- a disconnection enables the now empty port again, with a new budget
+  allocation that is never freed: when the port reports the
+  disconnection again, its PD detection is already cleared
 
-> 2. Why split stats into base stats and per queue stats, and why reset
-> the per queue counts when the device transitions down?
-> 
-> This is the way the stats in netdev.yaml are exposed depending on the
-> 'scope' request attribute. My reading of the relevant kernel docs is
-> that the per queue counters are counting events for the current live
-> queue, so it makes sense to reset them and fold those counts into the
-> base stats when the interface is transitioned down.
+Move the retry out of _pse_pi_disable() into its callers:
+pse_pi_disable() and the disconnection handling of pse_set_config_isr()
+retry after they clear the admin state or the PD detection, and
+pse_disable_pi_pol() retries as before.
 
-Is there any other driver doing this?
-There is ::get_sset_count() and so on for the per-queue stats.
-If the interface goes down and frees all its queues, then the stats are
-gone, true. But preserving them at the price of two (down+up) forced RCU
-grace period, I don't know. It looks like a bit too much.
+The problem was found while testing the budget on a switch with two
+Realtek RTL8239 PSE controllers, whose driver (not in mainline yet) uses
+the static budget strategy like the TPS23881. Before this change,
+"ethtool --set-pse <port> c33-pse-admin-control disable" left a port
+with a PD powered, and the budget allocated in the power domain grew
+with every disable and every unplug. With it, the port stays off, and
+the allocated budget is back to 0 after a disable and after an unplug.
+Tested on that switch with OpenWrt's 6.18 kernel; the change for
+mainline is the same apart from context and is build-tested.
 
-> >> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
+Signed-off-by: Ross Cawston <ross@r-sc.ca>
+---
+Changes in v2:
+- Move the retry of the power domain out of _pse_pi_disable() into its
+  callers, instead of splitting out a __pse_pi_disable() without it
+  (Kory)
+- Keep the retry after pse_disable_pi_pol(): without it, PIs turned off
+  for a PI of higher priority stay off even when their budget wasn't
+  needed (Sashiko). That the retry powers such a PI again right away is
+  left for a separate patch.
 
-Sebastian
+v1: https://lore.kernel.org/netdev/20261018182005.1193-1-ross@r-sc.ca/
+
+ drivers/net/pse-pd/pse_core.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index a5e6d7b26b9..c71acfd5337 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -469,9 +469,6 @@ static int _pse_pi_disable(struct pse_controller_dev *pcdev, int id)
+ 
+ 	pse_pi_deallocate_pw_budget(&pcdev->pi[id]);
+ 
+-	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d))
+-		pse_pw_d_retry_power_delivery(pcdev, pcdev->pi[id].pw_d);
+-
+ 	return 0;
+ }
+ 
+@@ -493,6 +490,8 @@ static int pse_disable_pi_pol(struct pse_controller_dev *pcdev, int id)
+ 	ret = _pse_pi_disable(pcdev, id);
+ 	if (ret)
+ 		notifs |= ETHTOOL_PSE_EVENT_SW_PW_CONTROL_ERROR;
++	else if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d))
++		pse_pw_d_retry_power_delivery(pcdev, pcdev->pi[id].pw_d);
+ 
+ 	ntf.notifs = notifs;
+ 	ntf.id = id;
+@@ -709,8 +708,11 @@ static int pse_pi_disable(struct regulator_dev *rdev)
+ 	pi = &pcdev->pi[id];
+ 	mutex_lock(&pcdev->lock);
+ 	ret = _pse_pi_disable(pcdev, id);
+-	if (!ret)
++	if (!ret) {
+ 		pi->admin_state_enabled = 0;
++		if (pse_pw_d_is_sw_pw_control(pcdev, pi->pw_d))
++			pse_pw_d_retry_power_delivery(pcdev, pi->pw_d);
++	}
+ 
+ 	mutex_unlock(&pcdev->lock);
+ 	return 0;
+@@ -1229,10 +1231,16 @@ static int pse_set_config_isr(struct pse_controller_dev *pcdev, int id,
+ 				ret = 0;
+ 		}
+ 	} else if (notifs & ETHTOOL_C33_PSE_EVENT_DISCONNECTION) {
+-		if (pcdev->pi[id].admin_state_enabled &&
+-		    pcdev->pi[id].isr_pd_detected)
++		struct pse_pi *pi = &pcdev->pi[id];
++		bool disable = pi->admin_state_enabled && pi->isr_pd_detected;
++
++		/* Cleared first, so that the retry doesn't enable it again */
++		pi->isr_pd_detected = false;
++		if (disable) {
+ 			ret = _pse_pi_disable(pcdev, id);
+-		pcdev->pi[id].isr_pd_detected = false;
++			if (!ret)
++				pse_pw_d_retry_power_delivery(pcdev, pi->pw_d);
++		}
+ 	}
+ 
+ 	return ret;
+-- 
+2.55.0.windows.5
+
