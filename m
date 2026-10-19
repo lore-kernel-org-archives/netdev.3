@@ -1,66 +1,45 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B4E3D331D
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 11:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD0E29E116;
+	Mon, 19 Oct 2026 11:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792409750; cv=none; b=Gy1CXHCfZsSXyVsh82Sk79K1Q+OZ1w6Oh/AZbz3I53/DR96P4rbpjIYn0ZHv6vOXJjUofArFiQUDj7j2hhBN3XwLS+ipSA2HiMvkickJp470YYntBXl02Rwrtr87Re3+PCcqJXrJogtn7WzOeI4iFRzCNitdDgiCoBIDuMgUCFA=
+	t=1792410000; cv=none; b=sk+omE6tYwIawUUUSpMxsq0D97N1yQOUJQj3S3gG2VYiUZKv2sot1xR7Bd4oLEl7qJBfXUsWhF9n6uTKjRaqE5/La3oScDPpgABXHBC6pg3KWBYlO8SMMjcUllKnLxi3Be6wMvv0RUPrKNKCp4OH6qWNz2s7QmR1lHvOd3RPCoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792409750; c=relaxed/simple;
-	bh=8cfzRbtoqrJN9dOIOSF6x41DP1GhDqIoM4qDGEqk/aY=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=r3Yd0IaIIXhqvJApp67aeQvlpOBOThm3nABv8FXK7a6aig0RUipb/J65e7Mkuzwu+/rwJJQH607hQ5wz6lzSLv41nx0glALm91cER6OsLGAlGOoGJnZX3OzrHEonbewyXkvVXL4Cxvy4GngJeFSXb023hdszjcjFrmhH16scETw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cpmG/2PA; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1792410000; c=relaxed/simple;
+	bh=Qph89yOUtQgOqZVxZJ5kREPik3PNlaeu9jjROoX+uSc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Hzmj/mPvlJ9zNy3j56jjM4OHEZBlA4ILP/Of8kTb/PVSUdkQUnPlmjbrbcX87yC/dmEto5IL8GOShxUqGJTV2iCFjiEJPyUbSQGyt3ODRd9CejNK3DB0M9rkWgX0Qrg45vFmKXUzJrICiF6TjHnGFemRM7Laof5CLYOJVgi6bSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Du+unxfm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cpmG/2PA"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 2BCB020743
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:35:45 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id qSHPKy_BOO4J for <netdev@vger.kernel.org>;
- Mon, 19 Oct 2026 13:35:44 +0200 (CEST)
-Received: from EXCH-03.secunet.de (r13.secunet.de [10.32.0.243])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 7199420841
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 13:35:44 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7199420841
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1792409744;
-	bh=8cfzRbtoqrJN9dOIOSF6x41DP1GhDqIoM4qDGEqk/aY=;
-	h=From:To:Subject:Date:From;
-	b=cpmG/2PAj35ThsxGYpF+4HsSccIUa4sYhcQuCrz8C/FTOmPKrXSebydiWYEDpTeB1
-	 1q0FdLwUKC+WQ10IyUaZJx4sG5gVNn/myzF+RtRtnJGAYq6m7kJMfMTRx3xO+xZ+ZE
-	 gn3Q54a9sxv010w24Kkq+Q+rFZCFzwI55+sNb48vGWzs7zbVZACTbpJGAY/nyIeCrc
-	 GYoOo+eD2IsJAgAQAirS0Yl5/LUb9s82dKpY07xvV+wBSDgNw3ueokBv7751s6zwed
-	 BdXpZWCSYbDRz+Zmy39UqAAs8kWuzfDcoUMBNW25FeercF+yBzbGo3q5d+l4aME5P6
-	 FPYBh3kCtIBlg==
-Received: from EXCH-01.secunet.de (10.32.0.171) by EXCH-03.secunet.de
- (10.32.0.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 19 Oct
- 2026 13:35:43 +0200
-Received: from EXCH-01.secunet.de ([fe80::1c90:c91c:1edc:d47]) by
- EXCH-01.secunet.de ([fe80::1c90:c91c:1edc:d47%19]) with mapi id
- 15.02.2562.049; Mon, 19 Oct 2026 13:35:43 +0200
-From: "Girlich, Franz" <franz.girlich@secunet.com>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: IPv6: wrong routing from local socket with multiple routing tables
-Thread-Topic: IPv6: wrong routing from local socket with multiple routing
- tables
-Thread-Index: AQHdX735Ly1YaUG33k+u/F5J/gz9mg==
-Date: Mon, 19 Oct 2026 11:35:43 +0000
-Message-ID: <84e3ec2178897680e510842e4282d691984bf20f.camel@secunet.com>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Du+unxfm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138A41F000C4;
+	Mon, 19 Oct 2026 11:39:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792409998;
+	bh=ppgv3sde9BfUFCjlo6uNKGzLm2p48ZtfrYiLyAps7uQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Du+unxfmq0nGhNn/tfND8fmgO/xvQ1AdcOinanC6kOExG+TgrPGG2gV1uIwbh3bzN
+	 gThmL4jymrw9R/PMehGSU71W8L8vs9Gm6eIEzP+hN1U5R01YkV5sIdhHX3JACoMklr
+	 V786CgVZM5IYAWNrVGqqzkb8V4jlGEmZsEouORrV+gQCZ2EnfeiMa8G1DbrcC3eDsM
+	 qP07OJ1Dz0BybW9t1vhonriIiv5OkIwkXlCOqcgQjeFvyt8dqhyRYGB8jOZtB9nkGe
+	 elK0oG+PYJufyQoiY0Bn1MvDpIVc2oZnRF0ekA9VzvV0FZX45oVRgiGzhMrcAQzh0l
+	 BFiv8KIWNDgpg==
+Subject:
+ Re: [PATCH net v2] net/sched: cls_api: unlink indr cb on a failed bind
+From: netdev-bot+sashiko@kernel.org
+To: q.h.hack.winter@gmail.com
+Cc: jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, pablo@netfilter.org, stable@vger.kernel.org
+Date: Mon, 19 Oct 2026 11:39:57 +0000
+Message-ID: <179240999753.3135.11391134985623127399@kernel.org>
+In-Reply-To: <20261018112955.61470-1-q.h.hack.winter@gmail.com>
+References: <20261018112955.61470-1-q.h.hack.winter@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <1F4244E25049E64A883F5D183A8F2380@secunet.com>
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,60 +47,186 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-SGkhDQoNCklQdjYgcm91dGluZyBmcm9tIGEgbG9jYWwgc29ja2V0IGJyZWFrcyB3aGVuIHVzaW5n
-IG11bHRpcGxlIHJvdXRpbmcNCnRhYmxlcyBhbmQgY2hhbmdpbmcgdGhlbSB3aGlsZSB0aGUgc29j
-a2V0IGlzIGluIHVzZS4gV2hlbiBhIGRpZmZlcmVudA0Kcm91dGluZyB0YWJsZSBpcyBjaGFuZ2Vk
-LCBpLmUuLCBvbmUgbm90ICJ1c2VkIiBieSB0aGUgbG9jYWwgc29ja2V0LCBzbw0KdGhhdCB0aGUg
-YmVzdCBwYXRoIGZvciB0aGUgc29ja2V0IGNoYW5nZXMsIHBhY2tldHMgZnJvbSB0aGUgc29ja2V0
-DQpzdGlsbCB1c2UgdGhlIG9sZCBwYXRoLg0KDQpUaGUgYmVoYXZpb3IgZml4ZXMgaXRzZWxmLCB3
-aGVuIHRoZSByb3V0aW5nIHJ1bGVzIGFyZSB0b3VjaGVkLCB0aGUNCnRhYmxlIGN1cnJlbnRseSBp
-biB1c2UgaXMgdG91Y2hlZCwgb3IgdGhlIHNvY2tldCBpcyByZS1vcGVuZWQuDQoNCkkgd2FzIGFi
-bGUgdG8gcmVwcm9kdWNlIHRoaXMgYnVnIHdpdGggbXVsdGlwbGUga2VybmVsIHZlcnNpb25zLA0K
-aW5jbHVkaW5nIGN1cnJlbnQgbWFzdGVyIDcuMy4wLXJjNyBhbmQgNi4xMi4xMTMgTFRTOiANCg0K
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KIyBhZGQgMiBkdW1teSBpbnRlcmZhY2VzDQpp
-cCBsaW5rIGFkZCBkMCB0eXBlIGR1bW15DQppcCBsaW5rIHNldCBkMCB1cA0KaXAgbGluayBhZGQg
-ZDEgdHlwZSBkdW1teQ0KaXAgbGluayBzZXQgZDEgdXANCg0KIyBzZXR1cCAyIHRhYmxlLCBhZGQg
-ZGVmYXVsdCByb3V0ZSB0byBsb3dlciBwcmlvIG9uZQ0KaXAgLTYgcnVsZSBhZGQgcHJpbyAxMCBs
-b29rdXAgMTANCmlwIC02IHJ1bGUgYWRkIHByaW8gMjAgbG9va3VwIDIwDQppcCAtNiByb3V0ZSBh
-ZGQgdGFibGUgMjAgZGVmYXVsdCBkZXYgZDENCg0KIyBzdGFydCB0cmFmZmljIGZyb20gYSBsb2Nh
-bCBzb2NrZXQNCmlwZXJmIC11IC1jIGZjOjoxIC10MCAmDQoNCiMgcGFja2V0cyBhcmUgcm91dGVk
-IGNvcnJlY3RseSB0byBkMQ0KdGNwZHVtcCAtbmkgYW55IC1jIDEwDQoNCiMgYWRkIHJvdXRlIHRv
-IGhpZ2hlciBwcmlvIHRhYmxlDQppcCAtNiByb3V0ZSBhZGQgdGFibGUgMTAgZGVmYXVsdCBkZXYg
-ZDANCg0KIyByb3V0aW5nIGxvb2t1cCBjb3JyZWN0bHkgcHJvZHVjZXMgcm91dGUgdG8gZDANCmlw
-IC02IHJvdXRlIGdldCBmYzo6MQ0KDQojIEJVRzogdHJhZmZpYyBmcm9tIG9sZCBzb2NrZXQgaXMg
-c3RpbGwgcm91dGVkIHRvIGQxIGluc3RlYWQgb2YgZDANCnRjcGR1bXAgLW5pIGFueSAtYyAxMA0K
-DQojIGNsZWFudXANCnBraWxsIGlwZXJmDQppcCAtNiBydWxlIGRlbCBwcmlvIDEwDQppcCAtNiBy
-dWxlIGRlbCBwcmlvIDIwDQppcCAtNiByb3V0ZSBmbHVzaCB0YWJsZSAyMA0KaXAgLTYgcm91dGUg
-Zmx1c2ggdGFibGUgMTANCmlwIGxpbmsgZGVsIGQwDQppcCBsaW5rIGRlbCBkMQ0KLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpJIHVzZWQgZGVlcHNlZWstdjQuMS1mbGFzaCB0byBhdHRl
-bXB0IGEgZml4IGZvciB0aGlzIGlzc3VlLiBUaGUgZml4DQpkb2VzIHdvcmsgZm9yIHRoZSByZXBy
-b2R1Y3Rpb24gYWJvdmUsIGJ1dCBJIGFtIG5vdCBjb25maWRlbnQgdGhhdCBpdCBpcw0KcmVncmVz
-c2lvbiBmcmVlLiBTbyBJIGFtIGF0dGFjaGluZyBpdCBmb3IgcmVmZXJlbmNlIG9ubHkuDQoNCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCmRpZmYgLS1naXQgYS9uZXQvaXB2Ni9pcDZfZmli
-LmMgYi9uZXQvaXB2Ni9pcDZfZmliLmMNCmluZGV4IDlmZjc2MTk2Mi4uNTE2MTc2NTk5IDEwMDY0
-NA0KLS0tIGEvbmV0L2lwdjYvaXA2X2ZpYi5jDQorKysgYi9uZXQvaXB2Ni9pcDZfZmliLmMNCkBA
-IC0yMDU5LDYgKzIwNTksOCBAQCBzdGF0aWMgdm9pZCBmaWI2X2RlbF9yb3V0ZShzdHJ1Y3QgZmli
-Nl90YWJsZQ0KKnRhYmxlLCBzdHJ1Y3QgZmliNl9ub2RlICpmbiwNCiAgICAgICAgaWYgKCFpbmZv
-LT5za2lwX25vdGlmeSkNCiAgICAgICAgICAgICAgICBpbmV0Nl9ydF9kZWxfbm90aWZ5KHJ0LCBp
-bmZvLCBkZWxfcmVhc29uKTsNCg0KKyAgICAgICBmaWI2X25ld19zZXJudW0obmV0KTsNCisNCiAg
-ICAgICAgZmliNl9pbmZvX3JlbGVhc2UocnQpOw0KIH0NCg0KZGlmZiAtLWdpdCBhL25ldC9pcHY2
-L3JvdXRlLmMgYi9uZXQvaXB2Ni9yb3V0ZS5jDQppbmRleCBhNWU5NTVlNTYuLmIyMWVmNzBmMSAx
-MDA2NDQNCi0tLSBhL25ldC9pcHY2L3JvdXRlLmMNCisrKyBiL25ldC9pcHY2L3JvdXRlLmMNCkBA
-IC0xNDMwLDggKzE0MzAsNyBAQCBzdGF0aWMgc3RydWN0IHJ0Nl9pbmZvICppcDZfcnRfcGNwdV9h
-bGxvYyhjb25zdA0Kc3RydWN0IGZpYjZfcmVzdWx0ICpyZXMpDQogICAgICAgIGlwNl9ydF9jb3B5
-X2luaXQocGNwdV9ydCwgcmVzKTsNCiAgICAgICAgcGNwdV9ydC0+cnQ2aV9mbGFncyB8PSBSVEZf
-UENQVTsNCg0KLSAgICAgICBpZiAoZjZpLT5uaCkNCi0gICAgICAgICAgICAgICBwY3B1X3J0LT5z
-ZXJudW0gPSBydF9nZW5pZF9pcHY2KGRldl9uZXQoZGV2KSk7DQorICAgICAgIHBjcHVfcnQtPnNl
-cm51bSA9IHJ0X2dlbmlkX2lwdjYoZGV2X25ldChkZXYpKTsNCg0KICAgICAgICByZXR1cm4gcGNw
-dV9ydDsNCiB9DQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQoNCg0KLS0gDQpGcmFueiBH
-aXJsaWNoDQpTZW5pb3IgU29mdHdhcmUgRGV2ZWxvcGVyDQpQQSBQRCBOZXR3b3JrDQpEaXZpc2lv
-biBQdWJsaWMgQXV0aG9yaXRpZXMNCnNlY3VuZXQgU2VjdXJpdHkgTmV0d29ya3MgQUcNCg0KVGVs
-LjogKzQ5IDIwMSA1NDU0IDEwOTkNCkUtTWFpbDogZnJhbnouZ2lybGljaEBzZWN1bmV0LmNvbQ0K
-V2VybmVyLXZvbi1TaWVtZW5zLVN0cmHDn2UgNiwgOTg2OTMgSWxtZW5hdQ0Kd3d3LnNlY3VuZXQu
-Y29tDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18NCg0Kc2VjdW5ldCBTZWN1cml0eSBOZXR3b3JrcyBBRw0KU2l0
-ejogS3VyZsO8cnN0ZW5zdHJhw59lIDU4LCA0NTEzOCBFc3NlbiwgRGV1dHNjaGxhbmQNCkFtdHNn
-ZXJpY2h0IEVzc2VuIEhSQiAxMzYxNQ0KVm9yc3RhbmQ6IE1hcmMtSnVsaWFuIFNpZXdlcnQgKFZv
-cnMuKSwgVG9yc3RlbiBIZW5uLCBEci4gS2FpIE1hcnRpdXMsDQpBdWZzaWNodHNyYXRzdm9yc2l0
-emVuZGVyOiBEci4gUmFsZiBXaW50ZXJnZXJzdA0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KDQo=
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
+
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The new flow_indr_block_cb_unlink() helper takes
+  flow_indr_block_lock, and the v2 notes say this stops the race with a…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the same
+  failed indirect bind leaves a second stale indirect-offload object,…
+
+--
+
+net/sched: cls_api: unlink indr cb on a failed bind
+
+With this patch, the tcf_block_bind() error path removes an indirect
+flow_block_cb from flow_block_indr_list before freeing it. It does this
+through a new flow_indr_block_cb_unlink() helper that takes
+flow_indr_block_lock. The patch also initialises indr.list in
+flow_block_cb_alloc(), so the helper does nothing for direct callbacks.
+
+> diff --git a/net/core/flow_offload.c b/net/core/flow_offload.c
+> index 5071d7fe6ce2a..62bc2eb6e0da1 100644
+> --- a/net/core/flow_offload.c
+> +++ b/net/core/flow_offload.c
+
+[ ... ]
+
+> @@ -525,6 +527,13 @@ static void flow_block_indr_init(struct flow_block_cb *flow_block,
+>  	flow_block->indr.cleanup = cleanup;
+>  }
+>  
+> +void flow_indr_block_cb_unlink(struct flow_block_cb *block_cb)
+> +{
+> +	mutex_lock(&flow_indr_block_lock);
+> +	list_del_init(&block_cb->indr.list);
+> +	mutex_unlock(&flow_indr_block_lock);
+> +}
+
+[Severity: High]
+Does taking flow_indr_block_lock here really serialize against a
+concurrent flow_indr_dev_unregister()? The v2 notes say it does.
+
+Unregister only holds the lock while it moves the matching callbacks onto
+a private list on its stack:
+
+net/core/flow_offload.c:flow_indr_dev_unregister() {
+    ...
+	__flow_block_indr_cleanup(release, cb_priv, &cleanup_list);
+	mutex_unlock(&flow_indr_block_lock);
+
+	tcf_action_reoffload_cb(cb, cb_priv, false);
+	flow_block_indr_notify(&cleanup_list);
+    ...
+}
+
+flow_block_indr_notify() then walks cleanup_list without the lock. For
+each entry it poisons the list node and calls the cleanup callback:
+
+	list_for_each_entry_safe(this, next, cleanup_list, indr.list) {
+		list_del(&this->indr.list);
+		this->indr.cleanup(this);
+	}
+
+For tc, the cleanup callback is tc_block_indr_cleanup(). It blocks in
+rtnl_lock() and down_write(&block->cb_lock).
+
+The binder holds both of those locks for the whole of
+tcf_block_offload_bind(), and that includes the err_unroll path in
+tcf_block_bind().
+
+So this sequence looks possible:
+
+CPU A (driver teardown)
+flow_indr_dev_unregister()
+  __flow_block_indr_cleanup()      /* moves X to cleanup_list */
+  mutex_unlock(&flow_indr_block_lock)
+  flow_block_indr_notify()
+    list_del(&X->indr.list)        /* X poisoned */
+    tc_block_indr_cleanup(X)
+      rtnl_lock()                  /* blocks */
+
+CPU B (tc qdisc add, holding rtnl and cb_lock)
+tcf_block_bind()
+  err_unroll:
+    flow_indr_block_cb_unlink(X)   /* list_del_init() on poison */
+    flow_block_cb_free(X)
+
+If the walker has already called list_del() on X, does list_del_init()
+in this helper then run on LIST_POISON1/LIST_POISON2? Before this patch
+the error path never touched indr.list, so that crash point looks new.
+
+X could instead be the walker's saved next pointer, while the cleanup of
+an earlier entry is blocked on rtnl. In that case the helper unlinks X
+from CPU A's private cleanup_list and frees it. Would the walker then
+step into freed memory?
+
+Either way, once CPU A gets rtnl and cb_lock, tc_block_indr_cleanup()
+runs:
+
+	list_del(&block_cb->driver_list);
+	list_move(&block_cb->list, &bo.cb_list);
+	tcf_block_unbind(block, &bo);
+
+Does this write into the already freed X? tcf_block_unbind() would then
+call flow_block_cb_free(X) a second time, which runs the driver's
+->release() on cb_priv twice.
+
+The error path seems to need a way to tell, under flow_indr_block_lock,
+that unregister has already claimed the entry, and skip the free in that
+case. The other option is to make the notify/cleanup side handle it.
+
+> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> index a9f54988561f2..9e4ea37154191 100644
+> --- a/net/sched/cls_api.c
+> +++ b/net/sched/cls_api.c
+> @@ -1665,6 +1665,7 @@ static int tcf_block_bind(struct tcf_block *block,
+>  err_unroll:
+>  	list_for_each_entry_safe(block_cb, next, &bo->cb_list, list) {
+>  		list_del(&block_cb->driver_list);
+> +		flow_indr_block_cb_unlink(block_cb);
+>  		if (i-- > 0) {
+>  			list_del(&block_cb->list);
+>  			tcf_block_playback_offloads(block, block_cb->cb,
+
+[Severity: High]
+This is a pre-existing issue, but a failed indirect bind also leaves a
+stale flow_indir_dev_info entry on flow_indir_dev_list. Could that entry
+cause a use-after-free later?
+
+flow_indr_dev_setup_offload() records the bind before it knows whether
+the bind succeeds. It holds no references on dev, sch or the block:
+
+	if (bo) {
+		if (bo->command == FLOW_BLOCK_BIND)
+			indir_dev_add(data, dev, sch, type, cleanup, bo);
+
+On the indirect path, tcf_block_offload_cmd() ignores the result of
+tcf_block_setup() and always returns -EOPNOTSUPP:
+
+	flow_indr_dev_setup_offload(dev, sch, TC_SETUP_BLOCK, block, &bo,
+				    tc_block_indr_cleanup);
+	tcf_block_setup(block, &bo);
+
+	return -EOPNOTSUPP;
+
+tcf_block_offload_bind() then fails whenever the block already has
+offloaded filters:
+
+no_offload_dev_inc:
+	if (tcf_block_offload_in_use(block))
+		goto err_unlock;
+
+The err_block_offload_bind path in tcf_block_get_ext() never sends
+FLOW_BLOCK_UNBIND, so indir_dev_remove(block) is never called. Once the
+qdisc, the device or the shared block is freed, info->sch, info->dev and
+info->cb_list point to freed memory.
+
+The next flow_indr_dev_register() then calls existing_qdiscs_register(),
+which does:
+
+	cb(cur->dev, cur->sch, cb_priv, cur->type, &bo, cur->data, cur->cleanup);
+	list_splice(&bo.cb_list, cur->cb_list);
+
+Would that pass freed dev and sch pointers to the driver? For example,
+mlx5e_rep_indr_setup_block() dereferences netdev right away. Would it
+also splice into the flow_block.cb_list of a freed block?
+
+Triggering this does not need tcf_block_bind() to fail. It is enough to
+bind a device without ndo_setup_tc to a shared block that already has
+offloaded filters, even when no indirect driver is registered. Any later
+driver load or reload that calls flow_indr_dev_register() then uses the
+stale entry.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261018112955.61470-1-q.h.hack.winter%40gmail.com
