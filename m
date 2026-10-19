@@ -1,29 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B076213D8BD;
-	Mon, 19 Oct 2026 01:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671FE29B8E1;
+	Mon, 19 Oct 2026 01:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792373888; cv=none; b=IrxDCYUBJVOQpRFJMJ34u9rDvovpqfv3rbRcwc5tP/P9t7StP3M6KdpnfMglAuT4jEYNJ4TTRzSW5X0lTcCWti6yTWeYlkDmKxocRUcXBEOdfiO+WxptGm4F9mukUrZ/Fp772E92LnnDoyq++DUq8RnEGldFy4xwlWRZbj9GijU=
+	t=1792373909; cv=none; b=E2HLgcZ6ozaIDT9TglNkjGt4HnDstNScjWPb+nZr8JGh2WoJcZONO23j35IHfuXJjQqxZmbsDfGCRGdm34mzTwEqoj64iaqow0x/JYOsvVRKSfmu6W5t9K5FXmPBX5zJ0sSAcefP1s9N2TWkQfimrQMLZDOjVXIwjDQMiIMyl3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792373888; c=relaxed/simple;
-	bh=ljwi3zkBL0CWPJQETI88XsqWvddOmZlPW//n/XmLJVs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j9TKKtc+wtOyAOVwU7ZbPl600h/1M/plNp8lp/ZbUpCIRSWoRWZuRpqHrs1B3SQGJOPcUflgdDI/kPFNTFaGY1NMHhzqybwzD1U9NW5knKZERUslWP4p1g+F3S9v6/J8nE2QG3BAy1ZEqDOvrN7Ftn6H4Eiv99IHRJFTZ/+nqOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=D2YA+bL2; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1792373909; c=relaxed/simple;
+	bh=xZp69AcqqcLYdgTjDKNCo6arObT7ZYaZKk2Uqmy/dbo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d97o96I1ZWwtj3ZbreTLplsqm1y72xmSCjz/qFxFK2Tmet2vexlbHFlXE85AC8oZ0J6KTmdn3jT7N1aqEiYBxEESK020XZHWOVUs66XM6T4eOgxHOC9eTg/zImO3j8Ke7YMrUgVzcQ70wKszxCXFzm5Mg2SYy3O4e2AKdBzWKHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HjnntV9y; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="D2YA+bL2"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HjnntV9y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=dQ
-	Sy07/Z3KzGq8VBZfw5dQqUQm3UjIvOL14CUKMnEnI=; b=D2YA+bL2rdEcBKkilZ
-	v/fbjC7RaJxMPt9X6OBKptvoXApBEoFSHeADD9ybrl9eIuJnpXbhq06hWL7stx2/
-	dc2KwKbG/0cN1Nr5uY+m+SC1h8/76yE84OX0l0BYel3nMPXprVHUTBwVxwq2yJze
-	EcSGfPtUsBgNH6W9lSbIrQwTA=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=C1
+	hlcy8uosj/hXxugJg3frVYFqDhWTyUwRZR33eXhdo=; b=HjnntV9yRRunbt4eM3
+	B52dNuBqX/ZXpKtEOMQy9VR7TMGRl3bJrnvybbptxKfMoRJRHlHVeP00KUpjUBNq
+	K4EKS+NfTp7PVqxvLhNb12H4MAQ0Bfnc4xDKZ30OZq6FKuC4oO9VCBxfeX0sY6+L
+	bONlg3G4K05MUe55PscafdUac=
 Received: from colol4bi5.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgAXb0IsdNVqwsjJAg--.21603S2;
-	Mon, 19 Oct 2026 09:36:46 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDn14ZldNVqANBiBA--.31905S2;
+	Mon, 19 Oct 2026 09:37:41 +0800 (CST)
 From: Binbin Deng <18983559317@163.com>
 To: sam@mendozajonas.com,
 	fercerpav@gmail.com,
@@ -37,9 +37,9 @@ To: sam@mendozajonas.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Binbin Deng <18983559317@163.com>
-Subject: [PATCH net v2] net/ncsi: fix use-after-free of ncsi_package in ncsi_remove_package()
-Date: Mon, 19 Oct 2026 09:36:40 +0800
-Message-ID: <20261019013640.449965-1-18983559317@163.com>
+Subject: [PATCH net v2 1/2] net/ncsi: fix use-after-free of ncsi_dev_priv in ncsi_unregister_dev()
+Date: Mon, 19 Oct 2026 09:37:39 +0800
+Message-ID: <20261019013739.450017-1-18983559317@163.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -48,68 +48,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgAXb0IsdNVqwsjJAg--.21603S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWw1rCF47ZFy7AFykuw4DArb_yoWrWF1DpF
-	W3KFy5G3yvyryUWr97uFWruFy5Zr4fur1UK3sagw4Syas8Wry0qryIyayY9Fy5Krs7ua1a
-	vr4UW3yavFWUA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRjQ6LUUUUU=
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC3w44HGrVdC4rgQAA36
+X-CM-TRANSID:_____wDn14ZldNVqANBiBA--.31905S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3XF1fJr18AF48Ar1rWF1DAwb_yoW7Kr4DpF
+	W3Ja43K3ykZr1jgrZ3Zr43uF1rXrs7Zw17C3sIgw4aya45G34jvryIyay09Fy5GFZ7Ga12
+	vr4DWws09rs8X3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziiL08UUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC3wZGKmrVdGYvugAA3N
 
-ncsi_remove_package() unlinks the package from ndp->packages with
-list_del_rcu() and then frees it with kfree(), after having released
-all of its channels.  The generic netlink package info walkers iterate
-the same list with the list_for_each_entry_rcu() based
-NCSI_FOR_EACH_PACKAGE() and dereference the package in the loop body:
-
-    rc = nla_put_u32(skb, NCSI_PKG_ATTR_ID, np->id);
-
-None of the NCSI genl handlers enters an RCU read-side critical
-section: genl doit and dumpit callbacks run under genl_mutex and
-cb_mutex, not under rcu_read_lock(), and ncsi_unregister_dev() takes
-neither.  A reader that is preempted mid-walk -- or one that has
-resolved the device and then sleeps in the genlmsg_new(GFP_KERNEL)
-allocation of ncsi_pkg_info_nl() -- has no protection at all when the
-teardown frees the package under it.
-
-The race needs no real NC-SI hardware and is reachable by an
-unprivileged user, as NCSI_CMD_PKG_INFO has no GENL_ADMIN_PERM:
+ncsi_unregister_dev() releases every package and channel, unlinks the
+device from the global ncsi_dev_list with list_del_rcu() and
+immediately frees it with kfree().  The generic netlink handlers
+resolve the device through that list (ndp_from_ifindex() ->
+ncsi_find_dev()) and walk ndp->packages with no lock and no RCU
+protection, so a reader that overlaps the teardown dereferences freed
+memory.  NCSI_CMD_PKG_INFO has no GENL_ADMIN_PERM, so an
+unprivileged user can race it against rmmod of the driver:
 
   writer: rmmod ftgmac100
-            -> ftgmac100_remove() -> ncsi_unregister_dev()
-            -> ncsi_remove_package() -> kfree(np)
+            -> ftgmac100_remove() -> ncsi_unregister_dev() -> kfree(ndp)
   reader: sendmsg(NETLINK_GENERIC, NCSI_CMD_PKG_INFO)
             -> ncsi_pkg_info_nl() -> ncsi_write_package_info()
 
-ftgmac100_remove() calls ncsi_unregister_dev() before
-unregister_netdev(), so the netdev, and with it the genl entry point,
-stays reachable during the whole window.
+The genlmsg_new(GFP_KERNEL) allocation between the resolution and the
+walk makes the window wide enough to hit even without preemption.
 
-KASAN report (arm multi_v7, QEMU ast2600-evb, KASAN + SLUB + PREEMPT,
-four threads looping PKG_INFO doit/dump while cycling insmod/rmmod):
+KASAN report (arm multi_v7, QEMU ast2600-evb, KASAN + SLUB + PREEMPT):
 
-  BUG: KASAN: slab-use-after-free in ncsi_write_package_info+0xe3c/0xf84
-  Read of size 1 at addr c69e2580 by task poc_dump/69
-  The buggy address belongs to the object at c69e2580
-   which belongs to the cache kmalloc-64 of size 64
-  The buggy address is located 0 bytes inside of
-   freed 64-byte region [c69e2580, c69e25c0)
+  BUG: KASAN: use-after-free in ncsi_write_package_info+0xf50/0xf84
+  Read of size 4 at addr c9f100a0 by task poc_dump/62
 
-The read is the u8 np->id feeding the nla_put_u32() above;
-sizeof(struct ncsi_package) is 60 bytes, so it lands in kmalloc-64,
-and with no VLAN churn in this mode the only size-1 read at offset 0
-of that cache on this path is np->id.
+which is ndp->package_num at offset 160, the bounds check at the
+entry of ncsi_write_package_info(); the page had already been
+returned to the buddy allocator.  A second capture of the same access
+shows the object as an 8K kmalloc region still in the slab.
 
-Free the package with kfree_rcu() so that it survives the grace
-period, and give struct ncsi_package an rcu_head.
+Two kernel-side users keep running into the objects as well:
 
-This is the free side of the fix for the package object.  The read
-side -- rcu_read_lock() around the device resolution and the list
-walks of all NCSI genl handlers -- is the companion series "net/ncsi:
-fix use-after-free of ncsi_channel in ncsi_remove_channel()"; the
-parent ncsi_dev_priv is deferred by the companion series "net/ncsi:
-fix use-after-free of ncsi_dev_priv in ncsi_unregister_dev()".  The
-race is closed by the three series together; each one keeps its own
-Fixes: tag so they can be backported independently.
+  * The per-channel monitor timers keep running while the removal
+    loop frees the packages: ncsi_remove_channel() stops the monitor
+    only of the channel it is about to free, so the monitor of a
+    channel on a later package can fire concurrently with the loop.
+
+  * Every outstanding request has a one second timeout timer in
+    ndp->requests[].  dev_remove_pack() has already cut off the
+    responses, so these timers are all certain to fire, and
+    ncsi_request_timeout() would run on an ndp that the deferred
+    free has already released, with the timer_list still linked into
+    the timer wheel.  Their command and response skbs leak.
+
+Quiesce everything that walks the objects before releasing them, and
+defer the final free:
+
+    dev_remove_pack(&ndp->ptype);   no more responses
+    disable_work_sync(&ndp->work);  worker cannot re-arm monitors
+    stop every channel monitor;
+    ncsi_free_request() every used request
+                                     (deletes its timer, frees skbs);
+    ncsi_remove_package() loop;
+    list_del_rcu(&ndp->node);
+    kfree_rcu(ndp, rcu);
+
+The rcu_head sits at the head of struct ncsi_dev_priv because
+kfree_rcu() requires its offset to be below 4096 and the structure is
+about 17 KB on arm32 (requests[256]).
+
+This is the free side of the fix for the device object: the packages
+and channels are deferred by the companion series "net/ncsi: fix
+use-after-free of ncsi_package in ncsi_remove_package()" and
+"net/ncsi: fix use-after-free of ncsi_channel in ncsi_remove_channel()",
+which also adds the rcu_read_lock() to the genl readers.  The driver
+side that walks the released objects from ftgmac100_stop() during
+unregister_netdev() is fixed by the second patch of this series.
 
 Found by a Coccinelle rule matching kfree() immediately after
 list_del_rcu(); the code inspection and the fix were LLM-assisted,
@@ -118,36 +127,83 @@ and the race was confirmed at runtime with KASAN as above.
 Fixes: 2d283bdd079c ("net/ncsi: Resource management")
 Signed-off-by: Binbin Deng <18983559317@163.com>
 ---
- net/ncsi/internal.h    | 1 +
- net/ncsi/ncsi-manage.c | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ net/ncsi/internal.h    |  4 ++++
+ net/ncsi/ncsi-manage.c | 36 +++++++++++++++++++++++++++++++++---
+ 2 files changed, 37 insertions(+), 3 deletions(-)
 
 diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index adee6dc..cb41953 100644
+index cb41953..3630ee4 100644
 --- a/net/ncsi/internal.h
 +++ b/net/ncsi/internal.h
-@@ -253,6 +253,7 @@ struct ncsi_package {
- 	bool                 multi_channel; /* Enable multiple channels  */
- 	u32                  channel_whitelist; /* Channels to configure */
- 	struct ncsi_channel  *preferred_channel; /* Primary channel      */
-+	struct rcu_head         rcu;
- };
+@@ -317,6 +317,10 @@ struct vlan_vid {
  
- struct ncsi_request {
+ struct ncsi_dev_priv {
+ 	struct ncsi_dev     ndev;            /* Associated NCSI device     */
++	/* RCU deferred free; must sit near the head of the struct as
++	 * kfree_rcu() requires the offset to be below 4096
++	 */
++	struct rcu_head     rcu;
+ 	unsigned int        flags;           /* NCSI device flags          */
+ #define NCSI_DEV_PROBED		1            /* Finalized NCSI topology    */
+ #define NCSI_DEV_HWA		2            /* Enabled HW arbitration     */
 diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 54d0df0..237e041 100644
+index 237e041..70cb31e 100644
 --- a/net/ncsi/ncsi-manage.c
 +++ b/net/ncsi/ncsi-manage.c
-@@ -326,7 +326,8 @@ void ncsi_remove_package(struct ncsi_package *np)
- 	ndp->package_num--;
- 	spin_unlock_irqrestore(&ndp->lock, flags);
+@@ -1956,11 +1956,42 @@ int ncsi_reset_dev(struct ncsi_dev *nd)
+ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ {
+ 	struct ncsi_dev_priv *ndp = TO_NCSI_DEV_PRIV(nd);
++	struct ncsi_request *nr;
+ 	struct ncsi_package *np, *tmp;
++	struct ncsi_channel *nc;
+ 	unsigned long flags;
++	bool used;
++	int i;
  
--	kfree(np);
-+	/* Netlink walkers may still hold the package */
-+	kfree_rcu(np, rcu);
+ 	dev_remove_pack(&ndp->ptype);
+ 
++	/* Quiesce everything that walks the packages and channels
++	 * before releasing them.  The monitors are stopped after the
++	 * worker so that ncsi_configure_channel() cannot re-arm them.
++	 */
++	disable_work_sync(&ndp->work);
++	NCSI_FOR_EACH_PACKAGE(ndp, np)
++		NCSI_FOR_EACH_CHANNEL(np, nc)
++			ncsi_stop_channel_monitor(nc);
++
++	/* With the Rx handler gone no response can complete an
++	 * outstanding request any more.  Free every request so that
++	 * its timer is deleted and its command and response skbs are
++	 * released; otherwise ncsi_request_timeout() would fire on
++	 * @ndp after the deferred free below, with the timer still
++	 * linked into the timer wheel.
++	 */
++	for (i = 0; i < ARRAY_SIZE(ndp->requests); i++) {
++		nr = &ndp->requests[i];
++
++		spin_lock_irqsave(&ndp->lock, flags);
++		used = nr->used;
++		spin_unlock_irqrestore(&ndp->lock, flags);
++
++		if (used)
++			ncsi_free_request(nr);
++	}
++
+ 	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+ 		ncsi_remove_package(np);
+ 
+@@ -1968,8 +1999,7 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ 	list_del_rcu(&ndp->node);
+ 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
+ 
+-	disable_work_sync(&ndp->work);
+-
+-	kfree(ndp);
++	/* Netlink readers may still hold the device */
++	kfree_rcu(ndp, rcu);
  }
- 
- void ncsi_find_package_and_channel(struct ncsi_dev_priv *ndp,
+ EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
 -- 
 2.43.0
 
