@@ -1,61 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792428261;
-	b=1U1Dq4FRFvIZ2WvClvtyN53YsVbLxnvt9RggaLjv6QXcNB1rXqPgchKa9Qi9z3BIvNQ8
-	 xo/fYpIDS6Ks5XxUYkzS5I+z3XA/XeskApWIktEyDqSb/Fp3QfIPibCllg7Yez110oYii
-	 9+BYWVsBySHx5Ap7EfYqQSPYcYwFwKUBSUKxFgad0WG9xKO8qj09lWB5F9Jr1V/32sX/j
-	 jl7RV9TCU9NBSJjoedsWR4j9CYvIIT7HzOdXEnXm/05fncVbqrXkGWU+oqwEd8+H8flmb
-	 G1RFUaOK2+zmziGCIHTBKotkzQoGDOF4+4O+ylOHz5Qp62LBFqnKcL9vP9rOmOFfpWA==
+	t=1792428298;
+	b=xKptkSHOCHBP5iHGRZ/zr2AcsA84UxwyHM9c9CvfU160VsOP5xYrcorBY9xX6TL9IVdl
+	 Vs+w+hn/l+ERY7EFlhmOgdQs2gsHrKKFQ2ByNArYgTRd6q1otXsNK6vek8qm4q+U2/3Tm
+	 yknvNCw8MhWjJdZyvhxo5yKzkI0iutxhc3MIfiAry6V1RvNHyRjtzJcRPeHRvHEKnoEKp
+	 8ZzaNt6dGxODhs0dZxZO7zz09ZwF8zlC8juQOyKSTkOavVyceOZ60iRMIbHkA0NcORUsX
+	 Pjv6nPq+PXUnBsWut+jOJmPSFldroyWbIf6CMvXkSHxrQh2vXp4oFAmmPs0n8m3Pipw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792428261;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=xxmctpVt6LC6OQdxxTHfXyb8cOj5HeFKq0AjwhVXAm4=;
-	b=P+4BUsmb+MDpxRn/QfGpTx026GP/JipUzQ9xxKm2jZ9At5fA3QmOmM8u+ea/18Gg9dDS
-	 6jqd/Z3mfdOLXmBLaXvWr4RL+aS091Sk+iAyytzRqwvgwX8rPVpPWAS+PqY721jWrRFhm
-	 RM2D4UY+PEW2ZD5WdFwNHR62yjSpfQC4Tzw5oCBi+QuqsiAo0BlcShbJzbTXY7rkWqTj/
-	 VMNGfgPdOjLEjvM0YB81Mnw1eBUjY5DtYTqFYMkwn8ioSt9YJm+eAHFUr8y91HK3geQ/z
-	 7vxOx26rbepbxqZmn8gJmAdA+S0sGtT3Z8RdbEXK3L2r0wuyljKqAE1lg7yjVIPcHVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792428298;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=YBxE2RHs/xtw2k6w0uwqJcfXRjL9fFfsXhtkaG1a0dA=;
+	b=M8c3JhcO7HpMoaRec0iD8ismuNiK/W3wqHxtgk2j+p38iRlg0EwM2cin3aZFV1hZ8i5+
+	 b2XS3ArEJR0BzGfc0A/M5AUTcFgAT1nAfZLmzi3mJiFD2vXwjIyHY6q0lNkjd60Wjoi11
+	 xWX6DWHpqkbmLZxAxtif5fb2gTCn0ZAVgosN2o5IBPPybdmLO2MJ+Fd2dFdZCwGjIOrco
+	 tF+BQaTXJddpusTvaCO6rj0OUMB5bb/DwHtonBNYfRbUT626sTWbEegTH2DFZrtNHbujy
+	 pbZewoWA7I8d2CSv5WGgrFr0SEzrbwTBsXHaY6x0c9iLsnoPxY6VOQYap0VHmDU6GyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FQaPlh8g;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=riscstar.com;
+	spf=pass smtp.mailfrom=riscstar.com;
+	dkim=pass header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sWUP6p6d;
+	arc=none smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A5A606A31B;
-	Mon, 19 Oct 2026 16:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52802606A336
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 16:44:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52802606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FQaPlh8g
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C791F000C4;
-	Mon, 19 Oct 2026 16:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792428261;
-	bh=xxmctpVt6LC6OQdxxTHfXyb8cOj5HeFKq0AjwhVXAm4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FQaPlh8gKIwJF1ZMcj9IY6o18bQPgRKhMlTz7Id+3Zx6+imad61o4TKPlBP2bGVZr
-	 JDrZ3VGH4F3C0zcTTwEEbPboog5yLn/j4nTSQz7CA30Q35EPCC7ANuEiIRAAejJzGd
-	 duviv1SH+TWKtbvtx9efkFC6WLU2Yca3ueEATXEAM2gY3gmhtGKF7ESWzvfih6hRGa
-	 rb8CdreYFeuJgbnV+FYiOzd1//UREAPMn62VGFrLnUyof093pXq7eMpxIs0BFE+BDt
-	 kmBYY2FHzU/ntW3Ai7v3Y4EpZ2W+b5VoxLhu1wbvmkheZv8f+A7BXzGWEbhF/hb3R4
-	 xD8v4G6jXfHwQ==
-Subject:
- Re: [PATCH net v4] net: do not let defer_count outlive an empty defer_list
-From: netdev-bot+sashiko@kernel.org
-To: jkain@nuro.ai
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com,
- kerneljasonxing@gmail.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
- rostedt@goodmis.org, linux-rt-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Date: Mon, 19 Oct 2026 16:44:19 +0000
-Message-ID: <179242825964.3135.3632926428667630864@kernel.org>
-In-Reply-To: <20261015162209.485940-1-jkain@nuro.ai>
-References: <20261015162209.485940-1-jkain@nuro.ai>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sWUP6p6d
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4980fe6b3beso21429455e9.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 09:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792428297; x=1793033097; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YBxE2RHs/xtw2k6w0uwqJcfXRjL9fFfsXhtkaG1a0dA=;
+        b=sWUP6p6dS77gDd9crmmTzReRjbttlB+oGdebU8insTZ0eh8VuwE85bYmR7cVuMfITN
+         04ViV/M5Cli7xTKW1+fo4opBWS1lhlnfqVoEyTDIHAffyAjIGxPmIzYALh+/M2+i5hhm
+         dIou0xRjPwAY22CinG4x17pvDzKX4avuJU251GO8e4LulYdFpt4p+fzVlvyU9jj9CFUQ
+         rE0MiumtTqofDWMfk/iSipZfzKD7t+QsbDwy9bEKQZiGTiDe85n+QhXb02GSLwnZEvRt
+         l0W+tZzsycG6O3Rcc/9ZktykZeaw1RAAobhTLe/k8KMsoLXZvGEh5kbD5nWv4ECn/q4O
+         sEeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792428297; x=1793033097;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YBxE2RHs/xtw2k6w0uwqJcfXRjL9fFfsXhtkaG1a0dA=;
+        b=uLGfFQAmEptPnpfj8K4lqKj/5VaDefQFYtk+SCU83xEZAuMQGOyHEtbOwWhkPV7j29
+         vWYCvZmrApiqAJazUJSr7X/2PGBLtQhBVbu0UwrhGixEdEVJFbpBcTXuoIT1i7cUYFZ8
+         fUvvONLB4xZgz9rZ1gjYEW09893ze+5D/JQoSONlpsVof7zAWd5gd/qw6RH8xW2Mx4y4
+         ZHyTpKfp28kNntzZOIrahwrA5KFZGpyVXMbEVhakk1SOe3XGRiguC4kRaeh/IRP9TTb5
+         ifOValy97heGoVJZCoEstx/1cNHJ9wXq/quIvlgGV5f7VEhK2A5jYfaOxijL1lrvgqDY
+         ekAw==
+X-Forwarded-Encrypted: i=1; AKwUvBynzeymPJUrsNPxu+aQ2a0DArNO0PDAWUTBouJK5D2IDSV0l9tW9Ffns18PWuqxaYucnOV+/iU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL45im3vWtz0y5oPHlYUaTm1XCtrIBxiMpCUnWadmO3gpbDmzi+
+	nDPvbsEJW65/sNqQAh875hplZrDHytoO/7Vwm/Rlnmkt2xk8ajYLrTU6G8OkOGhtzjU=
+X-Gm-Gg: AYBFou1Wd5/Pvoh8DVzPyI5g7Bmu3APhmU347n9x98OkDN9TmqQLTKvtxm1vaFYmkSk
+	a7E8i3BEw0h5jWQ15opmBcgVNYNEZ+aIfZfztIV4lQ3kP/jXsQf1tJaJbbrLaBxUHsaSisiGH87
+	LzyMfo4AaGbwimj1CamS/KxYPQx6yFm/6xsnCaF3BJTQ9zUMZXEtuk7n9LO67naaMkN8CqpKNVK
+	UM2fv16IdvwX7ZZiya8HYGjE6DePGm5A8Bv7PnHI5E3y6rdSCWLpHHmdETgDSK0M61cMs75Iehz
+	lzKWknUjQgs20JQLEfY8PI+EnC4l90+hj4zM6Xsz5QoO8D7zF1ah3Aoun2LlJevphGfEoFCzLVU
+	eWzi2dpTEcRU/2KoQPtUuTaMW/b17TZdHhVOXP53w7wg9GtnMdzqkuzUq2mEypcmXnAEJPChLm2
+	p3t6gRhqWBJwdiVN6/2IPJRw8elbLmTQpYEPD0zoedm2K14t35z4CCTrs7pMii8G3VRMFLt2QrG
+	UhOfc/NErzkzbOkI7NnEhNJ+x01C6qB2BgQKbvh5HMXvjFNFXCUo66LLJE2sJNlXqDkLTO+MmKo
+	uIZAMor1qfVzsOBsY9lamHppwwinFnXWOSv2+2MeSl/7ootNMgzAkqpaC00=
+X-Received: by 2002:a05:600c:5254:b0:4a1:e57b:667e with SMTP id 5b1f17b1804b1-4a1e57b68c7mr97174505e9.4.1792428296450;
+        Mon, 19 Oct 2026 09:44:56 -0700 (PDT)
+Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2d324f8sm3668735e9.6.2026.10.19.09.44.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 09:44:55 -0700 (PDT)
+Date: Mon, 19 Oct 2026 17:44:53 +0100
+From: Daniel Thompson <daniel@riscstar.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexander Duyck <alexanderduyck@fb.com>,
+	Alex Elder <elder@riscstar.com>, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: pcs: xpcs: select operating mode for
+ 10G-baseR capable PCS
+Message-ID: <atZJBaHU2QQGwcnG@aspen.lan>
+References: <20261014223100.304486-1-elder@riscstar.com>
+ <20261014223100.304486-3-elder@riscstar.com>
+ <f8c01002-da88-4f0f-a02a-7480591f4296@lunn.ch>
+ <atI1IK6blP-vumLQ@aspen.lan>
+ <fe13016b-ebd6-4a2f-a07b-324f46b456d3@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,169 +104,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fe13016b-ebd6-4a2f-a07b-324f46b456d3@lunn.ch>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Sun, Oct 18, 2026 at 05:48:39PM +0200, Andrew Lunn wrote:
+> > > > +	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
+> > > > +		switch (interface) {
+> > > > +		case PHY_INTERFACE_MODE_SGMII:
+> > > > +		case PHY_INTERFACE_MODE_1000BASEX:
+> > > > +		case PHY_INTERFACE_MODE_2500BASEX:
+> > > > +			/*
+> > > > +			 * Why are we writing MDIO_PCS_CTRL2_TYPE + 1? We want
+> > > > +			 * the modal behaviour that comes when we pick a
+> > > > +			 * reserved value. XPCS allocates extra bits to this
+> > > > +			 * field and allocates values from 15 down so
+> > > > +			 * MDIO_PCS_CTRL2_TYPE + 1 is the value likely to be
+> > > > +			 * allocated last (and hopefully never).
+> > > > +			 */
+> > > > +			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
+> > > > +					 MDIO_PCS_CTRL2_TYPE + 1);
+> > > > +			break;
+> > > > +		default:
+> > > > +			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
+> > > > +					 MDIO_PCS_CTRL2_10GBR);
+> > > > +			break;
+> > > > +		}
+> > >
+> > > MDIO_PCS_CTRL2_TYPE is 3. Looking at 802.3, the value 4 is
+> > > 40GBASE-R. The 2022 version of the standard has values defined up to
+> > > 10011b, for speeds up to 400G,
+> > >
+> > > Alex added support for 25G, 50G, 100G.
+> > >
+> > > Is this an issue?
+> >
+> > It will probably be an issue when the kernel is first called up on to
+> > support an XPCS that supports 40GBASE-R.
+>
+> Which is likely to happen sometime in the future. Maybe Alex's
+> hardware even supports it, but if you can do 50G, why bother with 40G?
+>
+>
+> > The XPCS (at least in TC956x) handles MDIO_PCS_CTRL2 in a slightly odd way.
+> > It 4 bits wide and accepts 10GBASE-R, 10GBASE-X, 5GBASE-R and 2.5GBASE-X
+> > is defined in the standards up to 2018. All other bit patterns are
+> > reserved and instruct the XPCS to use Speed selection bit (13) of PCS
+> > control 1 to choose between 10GBASE-X or 1000BASE-X.
+>
+> We probably need Alex in this thread, what happens for 25G, 50G, 100G?
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+That would be very much appreciated (hi Alex)!
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I have spent a fairly big chunk of today trying to "get back inside my
+own head" since it's been quite a while since I last looked at this
+code; Alex (Elder) and I were focusing on other bits.
 
-- [Medium] The patch makes the empty-list latch unreachable, but a
-  closely related latch on a non-empty list is still reachable.
-- [Low] Two user-visible behaviour changes in skb_attempt_defer_free()
-  appear only in the v4 notes below the '---' line, so they will be…
-- [Low] Documentation/admin-guide/sysctl/net.rst (lines 362-368) still
-  calls skb_defer_max the 'Max size (in skbs) of the per-cpu list of…
+I made two assumptions when I was reasoning about regressions:
 
---
+1. No existing code ever wrote to PCS Control 2 and therefore the value
+   after reset must be correct for existing working cases.
 
-net: do not let defer_count outlive an empty defer_list
+2. The reset value is bit pattern 0 (10GBASE-R).
 
-This patch moves the skb_defer_max test in skb_attempt_defer_free() ahead
-of the atomic increment. A rejected free then no longer leaves defer_count
-raised with nothing queued. It also changes __skb_defer_free_flush() to
-drain the list before it zeroes defer_count.
+The idea of the code above is designed to match only those cases where
+we *know* that the reset bit pattern (0) will cause trouble and change
+things. It's currently a very narrow match although I might expect
+additional cases to be added as other phy interface modes are tested.
 
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 41beaf625421a..411cbf6754f9e 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -7390,11 +7390,14 @@ nodefer:	kfree_skb_napi_cache(skb);
->  	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + cpu_to_node(my_cpu);
->  
->  	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
-> -	defer_count = atomic_long_inc_return(&sdn->defer_count);
-> -
-> -	if (defer_count >= defer_max)
-> +	/* Test before incrementing: the reject path returns below without
-> +	 * reaching kick_defer_list_purge(), so a kept increment never flushes.
-> +	 */
-> +	if (atomic_long_read(&sdn->defer_count) >= defer_max)
->  		goto nodefer;
+I have spotted a very obvious flaw in my reasoning above: the special
+case logic for FBNIC that suppresses the initial XPCS reset.
+Unfortunately the version history doesn't mention what bad thing we
+can avoid by suppressing the reset (perhaps a reset can clobber values
+such as PCS_TYPE_SEL that are injected by the firmware).
 
-[Severity: Medium]
 
-This fixes the empty-list case. Can a non-empty list still get stuck the
-same way?
+> Maybe there are different revisions of the IP, and later revisions
+> make this register follow the standard?
 
-The reject path here still returns through nodefer without calling
-kick_defer_list_purge(). The only kick is an exact-equality test later in
-skb_attempt_defer_free():
+I'm not able to answer that. All I can say is most XPCS seem to have the
+same ID. Finger crossed that, if they change the behaviour they also
+change the ID!
 
-	kick = (defer_count - 1) == (defer_max >> 1);
 
-proc_do_skb_defer_max() only acts when the value crosses 0:
+> > That means we *must* write a reserved value to this register because the
+> > default value after a reset prevents <=1G modes from working (I think
+> > automatic switch over between 1G and 2.5G also liked this to a reserved
+> > value but I don't fully recall right now).
+> >
+> > On that basis the best bit pattern to use one that isn't implemented by
+> > whatever XPCS we happen to be running on. One simple approach might be
+> > keep using 40GBASE-R but to check PCS Status 2 to ensure we fail in a
+> > non-silent manner on hypothesized future XPCS hardware:
+> >
+> > 	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
+> > 		if (mdio_stat2 & MDIO_PCS_STAT2_40GBR) {
+> > 			dev_err(dev, "40GBASE-R is *not* a reserved "
+> > 			              value on this XPCS");
+> > 			return -ENOTSUP;
+> > 		}
+>
+> Maybe. But we need to ensure it does not cause regressions for fbnic,
+> which might actually support this speed.
 
-	if (nval != oval) {
-		if (nval)
-			static_branch_enable(&skb_defer_disable_key);
-		else
-			static_branch_disable(&skb_defer_disable_key);
-	}
+I will sketch out an idea based on explicitly checking both my
+assumptions hold by checking PCS Status 2 and PCS Control 2 after
+a soft reset. Thus if you never reset then the code will never
+deploy. Likewise we don't need to rely on my guess that all XPCS
+implementations will reset PCS_TYPE_SEL to 0.
 
-So a change from one positive value to another does not reset
-defer_count, does not flush, and does not kick.
+I will also, given everything I've had to share by e-mail,
+improve the commenting a lot!
 
-If a limit change leaves the count at or past the new half-capacity
-point, the kick never matches. The counter then climbs to the limit (or
-is already above it), and every later producer rejects without a kick.
-For example:
 
-  skb_defer_max=128, count in 51..64 (the 128 kick only fires at 65)
-  sysctl -w net.core.skb_defer_max=100   # half is 50, already passed
-  count climbs to 100, then every producer rejects
-  sysctl -w net.core.skb_defer_max=128   # half is 64, count is 100
-  pre-increment 100..127 never equals 64, so it stays stuck at 128
-
-A simpler case: lower the limit from 128 to 32 while 40 skbs are queued.
-Every producer then reads 40 >= 32 and rejects.
-
-A preemptible recvmsg producer can also miss the kick. If it samples a
-larger defer_max and the limit is lowered before it increments, it
-compares against the old half and does not kick.
-
-The owner CPU here is the one the commit message describes.
-napi_consume_skb() defers TX-completion frees to skb->alloc_cpu, so a
-TX-only application CPU that never raises NET_RX owns these lists.
-
-Deferral for that (cpu, node) stays off. The queued skbs and their pages
-stay pinned until something runs net_rx_action() or busy-poll on that
-CPU, or the CPU goes offline.
-
-The commit message says:
-
-  "the absorbing state is unreachable without depending on a flush ever
-   running on the owner CPU"
-
-Does that hold only for the empty-list state? The sequence above restores
-the default value and still does not recover, which is the same symptom
-as the reproducer in the commit message.
-
-Would it work to kick on reject when the list is non-empty, rate-limited
-through defer_ipi_scheduled or the backlog NAPI SCHED bit? Another option
-is to make the kick a threshold-crossing test. A third is to have
-proc_do_skb_defer_max() flush or kick the defer nodes when the limit
-changes.
-
->  
-> +	defer_count = atomic_long_inc_return(&sdn->defer_count);
-> +
-
-[Severity: Low]
-
-This isn't a bug, but the changelog body leaves out two behaviour changes
-that come from testing before the increment. They are only described in
-the v4 notes below the '---' line, and git am drops that part.
-
-First, the effective per-(cpu, node) limit moves from skb_defer_max - 1
-to skb_defer_max, because the old code rejected on the post-increment
-value.
-
-Second, the half-capacity kick can now fire at small limits. With
-skb_defer_max=1, the old post-increment value of 1 was always rejected,
-so no kick was ever sent. Now the first producer after each flush sees a
-pre-increment value of 0, which equals 1 >> 1, so it kicks. With
-skb_defer_max=2, the kick now fires on the second producer.
-
-Could these two changes go into the commit message itself, for stable
-backporters and for anyone tuning skb_defer_max?
-
->  	llist_add(&skb->ll_node, &sdn->defer_list);
-
-[Severity: Low]
-
-The commit message says "This makes the limit advisory", but
-Documentation/admin-guide/sysctl/net.rst still describes skb_defer_max
-as:
-
-  Max size (in skbs) of the per-cpu list of skbs being freed
-  by the cpu which allocated them.
-
-The atomic_long_read() check and the atomic_long_inc_return() are now
-separate steps. Producers that read the same below-limit value all pass
-and call llist_add(). The recvmsg callers can also be preempted between
-the two steps. The list can therefore exceed skb_defer_max by roughly the
-number of producers in flight.
-
-__skb_defer_free_flush() now does:
-
-	free_list = llist_del_all(&sdn->defer_list);
-	...
-	atomic_long_set(&sdn->defer_count, 0);
-
-Any skb queued between those two steps stays on the list without being
-counted, and up to skb_defer_max more can be added on top of it.
-
-The old code was not exact either, and the doc already says per-cpu for
-a list that is really per-(cpu, node). Should the sysctl documentation be
-updated to say the limit is approximate?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261015162209.485940-1-jkain%40nuro.ai
+Daniel.
