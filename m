@@ -1,917 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7797A3515F0
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 06:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890B044E67D;
+	Mon, 19 Oct 2026 06:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792391815; cv=none; b=EoaTjzvXNQGtC1J1LbUwPg/gmxWlLRodDldrM6j32+uVqcRUcAE8UI/Su4WxMeMSZ+YnakzzSlSAuxB0HB2lCJ7tgIW3I4cFO4zQ4jJVo8kEBRTb0tNMCMpCuLIArKt8Qcw7mlj7X32NlUAzHJitwekdhMIzfUmIJr9Lz07qXT4=
+	t=1792392113; cv=none; b=jYJCjD9OemNmiIKp8l8mRgTchqXaXmUBC3xh4IG7IP5cI5FIivdLdyWY/FWozP/SqDwof/PwMNGNi9ZGvepYCh+P0K4quoesW8JAz/COeihjuO9W8xL0w4WT+LGmoOc/SMRCWty2LorO/FMS//NwlziE4vBSB0LZRim4NYShaQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792391815; c=relaxed/simple;
-	bh=BAR5o80T95VESoSJF4+HporOMkkJolKN68Pa4OXC74c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JKxlSupY1G7j3H5pLsuMMd5ndGmbw0wV0x8zSqrPtCxjgf9a1iHeU3Pf1UYUgL1mFLkadH1qzppdVpsqxBG/DKhS/fr26NpQBRup/M45uHkIwfdFXJ7kVmeWjQMzbCWXI0MlY0Ou9nZZMSIFLIYViL8gHkAqPA8PdzyZ9crGDO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtENN6D8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1792392113; c=relaxed/simple;
+	bh=mi5H1NCE5aKaHjd2HwK3TS3X/UUPrsS8S7xPN+RJFJY=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SljmVs/gFLx6nfP+OZKRvmJSz/X4+LeZYWv79a3u033vtY799LBo3cTuEHH/oFqRw1oN4d8ULAxykhdKZpQrdn69Ho2UekfpOuScNmZb/xTZvvuS5jn+rBIMruBNeof9JKdWUA4lNvnEF8lOdbc6AJRvvATHxMU4kkMJoduwrk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=mVAZKS6E; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtENN6D8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 02D4CC2BCF4;
-	Mon, 19 Oct 2026 06:36:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792391815;
-	bh=BAR5o80T95VESoSJF4+HporOMkkJolKN68Pa4OXC74c=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=dtENN6D8EefK7/UjMDVxZQi6fL3EgfymYOZ5HQ7ukANQ30ELLu/NCUpom9Tg48hkQ
-	 5imID9F0eEuli0vLNL4/pf36VS1m7ZB/YYdhJMxcm4vG8d/SToV7NcURVo5FZ1Ts02
-	 Lyv8zr9z/nKzcDkih2zPwhR7rvewq+puqyqpa4UYJgH+pqy8mRFzoc6WqjGqlDOYja
-	 QfUDfF76n18KuyQN9XcIFd3PLkdJR2WWuIhAt0A3Wc6OvPx/yKDNOcOy/XbHHZndHQ
-	 eVANR6RG3Yuy3KK7KpQrZdK0bl6I3FdX3TN2qfrgrmHbsVXol6eDedOCsd42tkKE+Y
-	 VHuTw9RYjLLaQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4140CCF2DB;
-	Mon, 19 Oct 2026 06:36:54 +0000 (UTC)
-From: Demos Ra via B4 Relay <devnull+demosthenes.ra.gmail.com@kernel.org>
-Date: Mon, 19 Oct 2026 13:35:51 +0700
-Subject: [PATCH net-next] netlink: specs: Add a spec for nexthops in
- rtnetlink
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="mVAZKS6E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1792392074; x=1792996874;
+	i=markus.stockhausen@gmx.de;
+	bh=X8luB4Mc1hr0i0vgNZ+3TmvNwTbJK56l7F27Ty/vAng=;
+	h=X-UI-Sender-Class:From:To:Cc:References:In-Reply-To:Subject:Date:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=mVAZKS6E7UW7Dn/6AQSvP9CEIO07K7fvZGF2hpScxZlXWsG33Hby3BXcBQy3QeYL
+	 eJgGdBfUuSMVYpg1iD8ZZZvdRk4GPREKK7toBmA+GqEiChOBED8GYAn2PCYKlS9IQ
+	 JpP4pRflTwIvZ7+SxT9iF2gX9xb05vvc2Afyvwpd/8n1EEMMX1nQ29yCUMKkOm6AM
+	 P1z6gTmbsXP3A6SVZ10xFfwVOsSKnI769BDcALNFlFG+Yc+SGItEo0QQYNefhFr1d
+	 HadDztYjN0nkg9sziR4/FKY273pAhCq0Snn/Okr94eBR7X8Q691hqFZclmrrP1GEF
+	 9wPrPFUJ+FU8pJokqQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQ5vc-1wwkMT3jqS-00Oa1f; Mon, 19
+ Oct 2026 08:41:14 +0200
+From: "Markus Stockhausen" <markus.stockhausen@gmx.de>
+To: "'Ross Cawston'" <ross@r-sc.ca>,
+	<andrew@lunn.ch>
+Cc: <lee@kernel.org>,
+	<pavel@kernel.org>,
+	<robh@kernel.org>,
+	<krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>,
+	<chris.packham@alliedtelesis.co.nz>,
+	<andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@kernel.org>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<linux-leds@vger.kernel.org>,
+	<devicetree@vger.kernel.org>,
+	<netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20261018194339.132-1-ross@r-sc.ca> <59f75e7d-9b56-441d-a4b5-58ad3862267e@lunn.ch> <20261018232015.527-1-ross@r-sc.ca> <38ca5375-ecea-4361-ab26-c044f38ceadb@lunn.ch> <20261019054233.1884-1-ross@r-sc.ca>
+In-Reply-To: <20261019054233.1884-1-ross@r-sc.ca>
+Subject: AW: [PATCH 0/3] leds: add Realtek RTL9300 port LEDs under software control
+Date: Mon, 19 Oct 2026 08:41:10 +0200
+Message-ID: <010701dd5f94$d636ff70$82a4fe50$@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-rt-nexthop-spec-v1-1-9c586edf86ab@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywqAIBAAf0X23IIPCuxXokPYWnsxUQkh/Pekj
- gMz80CmxJRhFg8kujnzFTqoQYA7t3AQ8t4ZtNSTkspiKhiolvOKmCM5lN5Js2lnrRmhVzGR5/o
- dFwj027C29gKo4Nx/awAAAA==
-X-Change-ID: 20261019-rt-nexthop-spec-0fc03a2c9935
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>, 
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
- Demos Ra <demosthenes.ra@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792391812; l=19503;
- i=demosthenes.ra@gmail.com; s=20261019; h=from:subject:message-id;
- bh=AgOHI97g4P+nb3cL7huyP7l7Zh+C9X8g6L/mUOvUcVw=;
- b=otjehsogbyBd5Ub3TTOYDJGBbjWSEUkpqYe6/1HoiarMkFQJBfAiugnb3ISa7weaHfxjrmmFZ
- ZA4K43wGbAdBJTJdZm1LQx0XhgYuU0D/t+iF8hcJTdlh8j3kx3CwGHP
-X-Developer-Key: i=demosthenes.ra@gmail.com; a=ed25519;
- pk=sDKS9AI9zxhWgOqkhc9EOIo6cky+anqccB3VGtDvzCc=
-X-Endpoint-Received: by B4 Relay for demosthenes.ra@gmail.com/20261019 with
- auth_id=1235
-X-Original-From: Demos Ra <demosthenes.ra@gmail.com>
-Reply-To: demosthenes.ra@gmail.com
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQKS3mjgtCHAxEvchmCWIzCJqjgszwLFeSyTAnQPNfsBSDL+mwD4bEuwtV2TWLA=
+Content-Language: de
+X-Provags-ID: V03:K1:KvbP/2mEFFpnK9lE47Mq9Lh9beIgdtaEbr0yuH7InuSC6aLC55M
+ ppLj6h0HeM65gDw7xew5qXthc8g4L/lAU02m87L1NjqJPepKnzfsvnNSso9RXYoTj98JIYd
+ 4emh4nxdbwC/4MscKb/0NG3m0XvwRXgQDFf8x86B6tpxiZcI6kxqacxYNHNL5MnOcKxY/4r
+ CLWPSR5iEnxdeQxf/TVkA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:OO7Tf0xW40U=;S/JOCM3h6DKBrwSkIecjbsscOiB
+ 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
+ WXmDBcdTUVSjknhcaNKw=
 
-From: Demos Ra <demosthenes.ra@gmail.com>
+Hi you two,
 
-Add a YNL spec for nexthop objects and nexthop buckets in rtnetlink.
+> Von: Ross Cawston <ross@r-sc.ca>=20
+> Gesendet: Montag, 19. Oktober 2026 07:43
+> An: andrew@lunn.ch
+> Betreff: Re: [PATCH 0/3] leds: add Realtek RTL9300 port LEDs under
+software control
+> ...
+>
+> Thanks, adding Markus.
+>
+> Markus, are you planning to take the RTL930x switch driver upstream?=20
 
-./tools/net/ynl/pyynl/cli.py \
-    --spec Documentation/netlink/specs/rt-nexthop.yaml \
-    --dump getnexthop
+While this is the overall goal some day it is currently beyond the time=20
+available. I'm only two months into the nearly abandoned Otto DSA=20
+driver and just keep things rolling. As of today the operation mode is=20
+more like:
 
-Exclude newnexthopbucket-ntf from the C code generation. ynl_gen_c.py
-looks up a classic notification by the request of the same message
-type, and no request uses RTM_NEWNEXTHOPBUCKET. The spec keeps the
-notification, so the Python tools can still subscribe to it.
+Some commited contributors are throwing AI at the hardware to fix and=20
+enhance the DSA driver. Coding, testing and PR submission is runnung=20
+full-auto-mode. So a lot gets documented during this process. With my=20
+limited time and knowledge I'm doing my best to review and organize
+this to some extend.  If possible I ask for refactoring or add simple=20
+refactoring PRs on my own.
 
-Signed-off-by: Demos Ra <demosthenes.ra@gmail.com>
----
-Tested with tools/net/ynl/pyynl/cli.py on a 7.0 kernel: each
-operation's replies match ip nexthop, and the create and delete
-notifications are received. rt-nexthop-user.o builds with no warnings.
-
-newnexthopbucket-ntf is left out of the C generation with
---exclude-op, as ethtool does for stats-get. If you would rather
-have ynl_gen_c.py handle a notification with no matching request,
-I can do that instead.
----
- Documentation/netlink/specs/rt-nexthop.yaml | 761 ++++++++++++++++++++++++++++
- MAINTAINERS                                 |   1 +
- tools/net/ynl/Makefile.deps                 |   9 +
- tools/net/ynl/generated/Makefile            |   1 +
- 4 files changed, 772 insertions(+)
-
-diff --git a/Documentation/netlink/specs/rt-nexthop.yaml b/Documentation/netlink/specs/rt-nexthop.yaml
-new file mode 100644
-index 000000000..06c28fa7d
---- /dev/null
-+++ b/Documentation/netlink/specs/rt-nexthop.yaml
-@@ -0,0 +1,761 @@
-+# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+---
-+name: rt-nexthop
-+protocol: netlink-raw
-+uapi-header: linux/nexthop.h
-+protonum: 0
-+
-+doc: >-
-+  Nexthop object management over rtnetlink.
-+
-+definitions:
-+  -
-+    name: nhmsg
-+    type: struct
-+    members:
-+      -
-+        name: nh-family
-+        type: u8
-+      -
-+        name: nh-scope
-+        type: u8
-+      -
-+        name: nh-protocol
-+        type: u8
-+      -
-+        name: resvd
-+        type: pad
-+        len: 1
-+      -
-+        name: nh-flags
-+        type: u32
-+        enum: rtnh-f
-+  -
-+    name: rtnh-f
-+    type: flags
-+    name-prefix: rtnh-f-
-+    enum-name:
-+    entries:
-+      - dead
-+      - pervasive
-+      - onlink
-+      - offload
-+      - linkdown
-+      - unresolved
-+      - trap
-+  -
-+    name: nexthop-grp
-+    type: struct
-+    members:
-+      -
-+        name: id
-+        type: u32
-+      -
-+        name: weight
-+        type: u8
-+      -
-+        name: weight-high
-+        type: u8
-+      -
-+        name: resvd2
-+        type: pad
-+        len: 2
-+  -
-+    name: nexthop-grp-type
-+    type: enum
-+    name-prefix: nexthop-grp-type-
-+    enum-name:
-+    entries:
-+      - mpath
-+      - res
-+  -
-+    name: encap-type
-+    type: enum
-+    name-prefix: lwtunnel-encap-
-+    enum-name:
-+    entries:
-+      - none
-+      - mpls
-+      - ip
-+      - ila
-+      - ip6
-+      - seg6
-+      - bpf
-+      - seg6-local
-+      - rpl
-+      - ioam6
-+      - xfrm
-+  -
-+    name: seg6-local-actions
-+    type: enum
-+    name-prefix: seg6-local-action-
-+    enum-name:
-+    entries:
-+      - unspec
-+      - end
-+      - end-x
-+      - end-t
-+      - end-dx2
-+      - end-dx6
-+      - end-dx4
-+      - end-dt6
-+      - end-dt4
-+      - end-b6
-+      - end-b6-encap
-+      - end-bm
-+      - end-s
-+      - end-as
-+      - end-am
-+      - end-bpf
-+      - end-dt46
-+  -
-+    name: seg6-local-flv-ops
-+    type: enum
-+    name-prefix: seg6-local-flv-op-
-+    enum-name:
-+    entries:
-+      -
-+        name: unspec
-+      -
-+        name: psp
-+      -
-+        name: usp
-+      -
-+        name: usd
-+      -
-+        name: next-csid
-+  -
-+    name: nha-op-flag
-+    type: flags
-+    name-prefix: nha-op-flag-
-+    enum-name:
-+    entries:
-+      - dump-stats
-+      - dump-hw-stats
-+  -
-+    name: nha-op-flag-resp-grp-resvd-0
-+    type: const
-+    value: 2147483648
-+
-+sub-messages:
-+  -
-+    name: encap-data
-+    formats:
-+      -
-+        value: mpls
-+        attribute-set: mpls-iptunnel
-+      -
-+        value: ip
-+        attribute-set: lwtunnel-ip
-+      -
-+        value: ila
-+        attribute-set: ila-attrs
-+      -
-+        value: ip6
-+        attribute-set: lwtunnel-ip6
-+      -
-+        value: seg6
-+        attribute-set: seg6-iptunnel
-+      -
-+        value: bpf
-+        attribute-set: lwt-bpf
-+      -
-+        value: seg6-local
-+        attribute-set: seg6-local
-+      -
-+        value: rpl
-+        attribute-set: rpl-iptunnel
-+      -
-+        value: ioam6
-+        attribute-set: ioam6-iptunnel
-+      -
-+        value: xfrm
-+        attribute-set: lwt-xfrm
-+
-+attribute-sets:
-+  -
-+    name: nexthop-attrs
-+    name-prefix: nha-
-+    attributes:
-+      -
-+        name: id
-+        type: u32
-+      -
-+        name: group
-+        type: binary  # array of struct: nexthop-grp
-+      -
-+        name: group-type
-+        type: u16
-+        enum: nexthop-grp-type
-+      -
-+        name: blackhole
-+        type: flag
-+      -
-+        name: oif
-+        type: u32
-+      -
-+        name: gateway
-+        type: binary
-+        display-hint: ipv4-or-v6
-+      -
-+        name: encap-type
-+        type: u16
-+        enum: encap-type
-+      -
-+        name: encap
-+        type: sub-message
-+        sub-message: encap-data
-+        selector: encap-type
-+      -
-+        name: groups
-+        type: flag
-+      -
-+        name: master
-+        type: u32
-+      -
-+        name: fdb
-+        type: flag
-+      -
-+        name: res-group
-+        type: nest
-+        nested-attributes: res-group-attrs
-+      -
-+        name: res-bucket
-+        type: nest
-+        nested-attributes: res-bucket-attrs
-+      -
-+        name: op-flags
-+        type: u32
-+        checks:
-+          flags-mask: nha-op-flag
-+      -
-+        name: group-stats
-+        type: nest
-+        nested-attributes: group-stats-attrs
-+      -
-+        name: hw-stats-enable
-+        type: u32
-+        checks:
-+          max: 1
-+      -
-+        name: hw-stats-used
-+        type: u32
-+      -
-+        name: dst-port
-+        type: u16
-+        byte-order: big-endian
-+        checks:
-+          min: 1
-+  -
-+    name: mpls-iptunnel
-+    name-prefix: mpls-iptunnel-
-+    header: linux/mpls_iptunnel.h
-+    attributes:
-+      -
-+        name: dst
-+        type: binary
-+      -
-+        name: ttl
-+        type: u8
-+  -
-+    name: lwtunnel-ip
-+    name-prefix: lwtunnel-ip-
-+    header: linux/lwtunnel.h
-+    attributes:
-+      -
-+        name: id
-+        type: u64
-+        byte-order: big-endian
-+      -
-+        name: dst
-+        type: u32
-+        byte-order: big-endian
-+        display-hint: ipv4
-+      -
-+        name: src
-+        type: u32
-+        byte-order: big-endian
-+        display-hint: ipv4
-+      -
-+        name: ttl
-+        type: u8
-+      -
-+        name: tos
-+        type: u8
-+      -
-+        name: flags
-+        type: u16
-+        byte-order: big-endian
-+      -
-+        name: pad
-+        type: pad
-+      -
-+        name: opts
-+        type: nest
-+        nested-attributes: lwtunnel-ip-opts
-+  -
-+    name: ila-attrs
-+    name-prefix: ila-attr-
-+    header: linux/ila.h
-+    attributes:
-+      -
-+        name: locator
-+        type: u64
-+        byte-order: big-endian
-+      -
-+        name: identifier
-+        type: u64
-+      -
-+        name: locator-match
-+        type: u64
-+        byte-order: big-endian
-+      -
-+        name: ifindex
-+        type: s32
-+      -
-+        name: dir
-+        type: u32
-+      -
-+        name: pad
-+        type: pad
-+      -
-+        name: csum-mode
-+        type: u8
-+      -
-+        name: ident-type
-+        type: u8
-+      -
-+        name: hook-type
-+        type: u8
-+  -
-+    name: lwtunnel-ip6
-+    name-prefix: lwtunnel-ip6-
-+    header: linux/lwtunnel.h
-+    attributes:
-+      -
-+        name: id
-+        type: u64
-+        byte-order: big-endian
-+      -
-+        name: dst
-+        type: binary
-+        display-hint: ipv6
-+      -
-+        name: src
-+        type: binary
-+        display-hint: ipv6
-+      -
-+        name: hoplimit
-+        type: u8
-+      -
-+        name: tc
-+        type: u8
-+      -
-+        name: flags
-+        type: u16
-+        byte-order: big-endian
-+      -
-+        name: pad
-+        type: pad
-+      -
-+        name: opts
-+        type: nest
-+        nested-attributes: lwtunnel-ip-opts
-+  -
-+    name: seg6-iptunnel
-+    name-prefix: seg6-iptunnel-
-+    header: linux/seg6_iptunnel.h
-+    attributes:
-+      -
-+        name: srh
-+        type: binary
-+      -
-+        name: src
-+        type: binary
-+        display-hint: ipv6
-+      -
-+        name: table
-+        type: u32
-+  -
-+    name: lwt-bpf
-+    name-prefix: lwt-bpf-
-+    header: linux/lwtunnel.h
-+    attributes:
-+      -
-+        name: in
-+        type: nest
-+        nested-attributes: lwt-bpf-prog
-+      -
-+        name: out
-+        type: nest
-+        nested-attributes: lwt-bpf-prog
-+      -
-+        name: xmit
-+        type: nest
-+        nested-attributes: lwt-bpf-prog
-+      -
-+        name: xmit-headroom
-+        type: u32
-+  -
-+    name: seg6-local
-+    name-prefix: seg6-local-
-+    header: linux/seg6_local.h
-+    attributes:
-+      -
-+        name: action
-+        type: u32
-+        enum: seg6-local-actions
-+      -
-+        name: srh
-+        type: binary
-+      -
-+        name: table
-+        type: u32
-+      -
-+        name: nh4
-+        type: u32
-+        byte-order: big-endian
-+        display-hint: ipv4
-+      -
-+        name: nh6
-+        type: binary
-+        display-hint: ipv6
-+      -
-+        name: iif
-+        type: u32
-+      -
-+        name: oif
-+        type: u32
-+      -
-+        name: bpf
-+        type: nest
-+        nested-attributes: seg6-local-bpf
-+      -
-+        name: vrftable
-+        type: u32
-+      -
-+        name: counters
-+        type: nest
-+        nested-attributes: seg6-local-cnt
-+      -
-+        name: flavors
-+        type: nest
-+        nested-attributes: seg6-local-flv
-+  -
-+    name: rpl-iptunnel
-+    name-prefix: rpl-iptunnel-
-+    header: linux/rpl_iptunnel.h
-+    attributes:
-+      -
-+        name: srh
-+        type: binary
-+  -
-+    name: ioam6-iptunnel
-+    name-prefix: ioam6-iptunnel-
-+    header: linux/ioam6_iptunnel.h
-+    attributes:
-+      -
-+        name: mode
-+        type: u8
-+      -
-+        name: dst
-+        type: binary
-+        display-hint: ipv6
-+      -
-+        name: trace
-+        type: binary
-+      -
-+        name: freq-k
-+        type: u32
-+      -
-+        name: freq-n
-+        type: u32
-+      -
-+        name: src
-+        type: binary
-+        display-hint: ipv6
-+  -
-+    name: lwt-xfrm
-+    name-prefix: lwt-xfrm-
-+    header: linux/lwtunnel.h
-+    attributes:
-+      -
-+        name: if-id
-+        type: u32
-+      -
-+        name: link
-+        type: u32
-+  -
-+    name: lwtunnel-ip-opts
-+    name-prefix: lwtunnel-ip-opts-
-+    attributes:
-+      -
-+        name: geneve
-+        type: binary
-+      -
-+        name: vxlan
-+        type: nest
-+        nested-attributes: lwtunnel-ip-opt-vxlan
-+      -
-+        name: erspan
-+        type: nest
-+        nested-attributes: lwtunnel-ip-opt-erspan
-+  -
-+    name: lwtunnel-ip-opt-vxlan
-+    name-prefix: lwtunnel-ip-opt-vxlan-
-+    attributes:
-+      -
-+        name: gbp
-+        type: u32
-+  -
-+    name: lwtunnel-ip-opt-erspan
-+    name-prefix: lwtunnel-ip-opt-erspan-
-+    attributes:
-+      -
-+        name: ver
-+        type: u8
-+      -
-+        name: index
-+        type: u32
-+        byte-order: big-endian
-+      -
-+        name: dir
-+        type: u8
-+      -
-+        name: hwid
-+        type: u8
-+  -
-+    name: lwt-bpf-prog
-+    name-prefix: lwt-bpf-prog-
-+    attributes:
-+      -
-+        name: fd
-+        type: u32
-+      -
-+        name: name
-+        type: string
-+        checks:
-+          max-len: 256
-+  -
-+    name: seg6-local-bpf
-+    name-prefix: seg6-local-bpf-
-+    attr-max-name: seg6-local-bpf-prog-max
-+    attributes:
-+      -
-+        name: prog
-+        type: u32
-+      -
-+        name: prog-name
-+        type: string
-+        checks:
-+          max-len: 256
-+  -
-+    name: seg6-local-cnt
-+    name-prefix: seg6-local-cnt-
-+    attributes:
-+      -
-+        name: pad
-+        type: pad
-+      -
-+        name: packets
-+        type: u64
-+      -
-+        name: bytes
-+        type: u64
-+      -
-+        name: errors
-+        type: u64
-+  -
-+    name: seg6-local-flv
-+    name-prefix: seg6-local-flv-
-+    attributes:
-+      -
-+        name: operation
-+        type: u32
-+        enum: seg6-local-flv-ops
-+        enum-as-flags: true
-+      -
-+        name: lcblock-bits
-+        type: u8
-+      -
-+        name: lcnode-fn-bits
-+        type: u8
-+  -
-+    name: res-group-attrs
-+    name-prefix: nha-res-group-
-+    attributes:
-+      -
-+        name: pad
-+        type: pad
-+        value: 0
-+      -
-+        name: buckets
-+        type: u16
-+      -
-+        name: idle-timer
-+        type: u32
-+      -
-+        name: unbalanced-timer
-+        type: u32
-+      -
-+        name: unbalanced-time
-+        type: u64
-+  -
-+    name: res-bucket-attrs
-+    name-prefix: nha-res-bucket-
-+    attributes:
-+      -
-+        name: pad
-+        type: pad
-+        value: 0
-+      -
-+        name: index
-+        type: u16
-+      -
-+        name: idle-time
-+        type: u64
-+      -
-+        name: nh-id
-+        type: u32
-+  -
-+    name: group-stats-attrs
-+    name-prefix: nha-group-stats-
-+    attributes:
-+      -
-+        name: entry
-+        type: nest
-+        nested-attributes: group-stats-entry-attrs
-+        multi-attr: true
-+  -
-+    name: group-stats-entry-attrs
-+    name-prefix: nha-group-stats-entry-
-+    attributes:
-+      -
-+        name: id
-+        type: u32
-+      -
-+        name: packets
-+        type: uint
-+      -
-+        name: packets-hw
-+        type: uint
-+
-+operations:
-+  enum-model: directional
-+  fixed-header: nhmsg
-+  name-prefix: rtm-
-+  list:
-+    -
-+      name: newnexthop
-+      doc: Add new nexthop entry
-+      attribute-set: nexthop-attrs
-+      do:
-+        request:
-+          value: 104
-+          attributes:
-+            - id
-+            - group
-+            - group-type
-+            - blackhole
-+            - oif
-+            - gateway
-+            - encap-type
-+            - encap
-+            - fdb
-+            - res-group
-+            - hw-stats-enable
-+            - dst-port
-+    -
-+      name: delnexthop
-+      doc: Delete nexthop with given id.
-+      attribute-set: nexthop-attrs
-+      do:
-+        request:
-+          value: 105
-+          attributes:
-+            - id
-+    -
-+      name: getnexthop
-+      doc: Get or dump nexthop entries
-+      attribute-set: nexthop-attrs
-+      do:
-+        request:
-+          value: 106
-+          attributes:
-+            - id
-+            - op-flags
-+        reply:
-+          value: 104
-+          attributes: &nexthop-all-attrs
-+            - id
-+            - group
-+            - group-type
-+            - blackhole
-+            - oif
-+            - gateway
-+            - encap-type
-+            - encap
-+            - fdb
-+            - res-group
-+            - op-flags
-+            - group-stats
-+            - hw-stats-enable
-+            - hw-stats-used
-+            - dst-port
-+      dump:
-+        request:
-+          value: 106
-+          attributes:
-+            - oif
-+            - groups
-+            - master
-+            - fdb
-+            - op-flags
-+        reply:
-+          value: 104
-+          attributes: *nexthop-all-attrs
-+    -
-+      name: newnexthop-ntf
-+      doc: Notification about a created nexthop.
-+      value: 104
-+      notify: getnexthop
-+    -
-+      name: delnexthop-ntf
-+      doc: Notification about a deleted nexthop.
-+      value: 105
-+      notify: getnexthop
-+    -
-+      name: getnexthopbucket
-+      doc: Get or dump nexthop buckets
-+      attribute-set: nexthop-attrs
-+      do:
-+        request:
-+          value: 118
-+          attributes: &nexthop-bucket-all-attrs
-+            - id
-+            - res-bucket
-+        reply:
-+          value: 116
-+          attributes: *nexthop-bucket-all-attrs
-+      dump:
-+        request:
-+          value: 118
-+          attributes:
-+            - id
-+            - oif
-+            - master
-+            - res-bucket
-+        reply:
-+          value: 116
-+          attributes: *nexthop-bucket-all-attrs
-+    -
-+      name: newnexthopbucket-ntf
-+      doc: Notification about a created nexthop bucket.
-+      value: 116
-+      notify: getnexthopbucket
-+
-+mcast-groups:
-+  list:
-+    -
-+      name: rtnlgrp-nexthop
-+      value: 32
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 23e919448..6a5062f02 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19144,6 +19144,7 @@ L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/netlink/specs/rt-addr.yaml
- F:	Documentation/netlink/specs/rt-neigh.yaml
-+F:	Documentation/netlink/specs/rt-nexthop.yaml
- F:	Documentation/netlink/specs/rt-route.yaml
- F:	Documentation/netlink/specs/rt-rule.yaml
- F:	include/linux/inetdevice.h
-diff --git a/tools/net/ynl/Makefile.deps b/tools/net/ynl/Makefile.deps
-index 3eee34e0e..9389f3752 100644
---- a/tools/net/ynl/Makefile.deps
-+++ b/tools/net/ynl/Makefile.deps
-@@ -45,6 +45,15 @@ CFLAGS_rt-link:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h) \
- 	$(call get_hdr_inc,_LINUX_IF_LINK_H,if_link.h)
- CFLAGS_rt-neigh:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h) \
- 	$(call get_hdr_inc,__LINUX_NEIGHBOUR_H,neighbour.h)
-+CFLAGS_rt-nexthop:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h) \
-+	$(call get_hdr_inc,_LINUX_NEXTHOP_H,nexthop.h) \
-+	$(call get_hdr_inc,_LINUX_ILA_H,ila.h) \
-+	$(call get_hdr_inc,_LINUX_IOAM6_IPTUNNEL_H,ioam6_iptunnel.h) \
-+	$(call get_hdr_inc,_LINUX_MPLS_IPTUNNEL_H,mpls_iptunnel.h) \
-+	$(call get_hdr_inc,_LINUX_RPL_IPTUNNEL_H,rpl_iptunnel.h) \
-+	$(call get_hdr_inc,_LINUX_SEG6_IPTUNNEL_H,seg6_iptunnel.h) \
-+	$(call get_hdr_inc,_LINUX_SEG6_LOCAL_H,seg6_local.h) \
-+	$(call get_hdr_inc,_LWTUNNEL_H_,lwtunnel.h)
- CFLAGS_rt-route:=$(call get_hdr_inc,_LINUX_ILA_H,ila.h) \
- 	$(call get_hdr_inc,_LINUX_IOAM6_IPTUNNEL_H,ioam6_iptunnel.h) \
- 	$(call get_hdr_inc,_LINUX_MPLS_IPTUNNEL_H,mpls_iptunnel.h) \
-diff --git a/tools/net/ynl/generated/Makefile b/tools/net/ynl/generated/Makefile
-index 5a186349b..d76d4ca94 100644
---- a/tools/net/ynl/generated/Makefile
-+++ b/tools/net/ynl/generated/Makefile
-@@ -18,6 +18,7 @@ include ../Makefile.deps
- 
- YNL_GEN_ARG_ethtool:=--user-header linux/ethtool_netlink.h \
- 	--exclude-op stats-get
-+YNL_GEN_ARG_rt-nexthop:=--exclude-op newnexthopbucket-ntf
- 
- TOOL:=../pyynl/ynl_gen_c.py
- TOOL_RST:=../pyynl/ynl_gen_rst.py
-
----
-base-commit: 98c2ad4f5d805dbc1ea436a334ee59311806a48c
-change-id: 20261019-rt-nexthop-spec-0fc03a2c9935
-
-Best regards,
--- 
-Demos Ra <demosthenes.ra@gmail.com>
+Markus
 
 
