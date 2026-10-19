@@ -1,48 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D6E5BE69A;
-	Mon, 19 Oct 2026 14:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFB04D73B8;
+	Mon, 19 Oct 2026 14:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418469; cv=none; b=g7Yo4G1CoeawGCx7dX9OJlINl0fC9Uz0cCaifq2MHzJwnYHl7hZXgDfdKphYHI06KT4ziSVPQJjk6I9JcvOFPX7MlkkV+ROtCeBN28FZceQ9wg9T/gjoVwKfnHXCIcXL6Yl6RcT/aEniQFRZk8tacPi8+Y3sOqU4mypjMTHCrQw=
+	t=1792418526; cv=none; b=GetcLJtOMoaYpl4cEa7reYjmQqqh5NXFUkCzSthPHkvfCL+mgpkXNrFV149Oex8HCnJwrXirKzG4S4ZbWClFKMYqnO7NUA9ih4kyUxiXdrXmppSv8NJWENznHw8S8aKLH9nTmkozNIdyvTJFRpFAKg0uAaDZw1ptG4a7HfHOo7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418469; c=relaxed/simple;
-	bh=pWdHP9LHEKz+sABbungOTDUeh0Z4zqzoeeY4zbHYH+g=;
+	s=arc-20240116; t=1792418526; c=relaxed/simple;
+	bh=Qb75CgYlwdM8XV9iRNoXRIk8ViIQgsrvj9Ml8WaJ+Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DS4YwJP8qfGRGpOQmXI4218IZfTPEk5DE5A96tvZNPYa6k/HAIm5Tr2PbXuVRJQvfKctOT/odpgZMih8UAtVP92eEWDgchJ/wxJOpTd23hlDqfrMm/Xl4C2WCZqFFrVoLe2w6hhDmT5GciR6Jb8hJ1VnA0a+9VSOdNHcn+QOloY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZb2M6IK; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=aMvkikubKQiUQC5boMck/3tvZQliWs/UBSV1Lfj3VVGatJAexDx4LBBgmm4m4aHXd4bE0uCHEBTXdqghU7IKi9dQsVcf9g9eIB4yUJGaCWA4d6iKk8apwkCg8PRGEKygl8k8czUoijPGzzSHD9mvE1kIlQL5ESIiW5Vg5KQ/SUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/39ILUj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZb2M6IK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F95A1F000CA;
-	Mon, 19 Oct 2026 14:01:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/39ILUj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67381F000C6;
+	Mon, 19 Oct 2026 14:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418467;
-	bh=lJlw6GhXp1L1rVQ4RJd14E3+3JJvpD0/PFLiCS+TtDM=;
+	s=k20260515; t=1792418524;
+	bh=Ma8s4LVFQY649KjDepXzI1/wOG9UbmIpugztJsBFM5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iZb2M6IKha4110qa8pjwQOWKVKtq4azzbl/EltGrYAFX6d/rjwfb4L9d71RGIno6k
-	 eqwTHI2+IkPL7eWwLRrGUiLOTqtmqK68l9rd47jHpSMP31nYAuOo3LCAIAs3pBep9m
-	 aBFGw9NnOAe2qdFF3RoHiw1JtMbJSCdyvAuR+u/YKkrm5uw35FKG9GLCW1oQS8giEQ
-	 OlzoTozmmd9S0ue7MuS4DC5PhPh0IytA6XdS29m8nXiP4UaL+y/jrWjj7oDH4/O9Kv
-	 ioxmUmH+NMSU5BiMRmkg3jI7Sk793HQCZoovdyAjj7KA8EbH42pZF8G+xXA35EG5P9
-	 dr9nVMCB+IVdw==
+	b=a/39ILUjHHJR8izdvcINKSvGFnYZJzUU3Q7dbGNfu2S1hYFkNFHahDGvSFUZwG4ut
+	 LWVadlWxQVY8licl2LSyQHSgh6KybNnAxRIrmV/h1MaqknsCde57n/g1tHrnVwX5It
+	 GDuDLX1V+0nCveOzRCZi5w+DbRWLKc0/6KYNR64oXakGtAhVHt6aEQxYyGQuytyLfI
+	 CbiUxZLWtkUyvzXjqj6lcanZc+FinnDG/JmeNd6Id62rccqspj4f8Nk7E0f+P/omXi
+	 BK1tYVwST6HnHXXkqzFG+BIxJlJ9raMZHBDgDR/zxOSOdcpR4xQhS4lnuFCR7IlCFm
+	 XaLQss2dwDyBw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Brian Grech <bgrech@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>,
+	pablo@netfilter.org,
+	razor@blackwall.org,
+	idosch@nvidia.com,
 	davem@davemloft.net,
 	edumazet@kernel.org,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	shuah@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] selftests/net: fin_ack_lat: fix latency threshold typo
-Date: Mon, 19 Oct 2026 09:49:20 -0400
-Message-ID: <20261019135441.1420968-269-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] netfilter: ebtables: bound num_counters like nentries in do_replace()
+Date: Mon, 19 Oct 2026 09:50:00 -0400
+Message-ID: <20261019135441.1420968-309-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -58,381 +62,454 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Brian Grech <bgrech@redhat.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 2373107782a98ba15931a37bbd9dd46d7213e5aa ]
+[ Upstream commit 43ae85af154b27f9a0ff602f7a01e3a7583ffdab ]
 
-The commit message for af8c8a450bf4 ("selftests: net: Add FIN_ACK
-processing order related latency spike test") states: "if the latency
-is larger than 1 second (spike), print a message". However the code
-uses a threshold of 100000 us (100 ms), not 1000000 us (1 s).
+do_replace_finish() allocates the counter buffer before it is validated:
 
-The lower threshold causes false positives on slower hardware where
-normal connection latency occasionally exceeds 100 ms but never
-approaches the 1 s spike that indicates the actual FIN/ACK race bug.
+   counterstmp = vmalloc_array(repl->num_counters, sizeof(*counterstmp));
 
-Fix the threshold to match the documented intent.
+do_replace() only checks num_counters against INT_MAX / sizeof(struct
+ebt_counter), so vmalloc_array() can be asked for up to 134217726 * 16 =
+2147483616 bytes (~2 GiB).
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Brian Grech <bgrech@redhat.com>
-Link: https://patch.msgid.link/20260806151645.4172900-1-bgrech@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+num_counters must in fact equal nentries: do_replace_finish() later
+rejects the request when repl->num_counters != t->private->nentries.
+get_counters() folds the per-CPU counters back into one entry per rule,
+so what userspace gets is bounded by nentries, never by nentries *
+nr_cpus. Apply the same upper bound used for nentries (MAX_EBT_ENTRIES)
+to the incoming num_counters so the over-sized allocation can no longer
+be requested.
+
+The allocation is still kept outside the ebt_mutex, since vmalloc() may
+sleep and trigger reclaim; only the bound is tightened.
+
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-I have the local 6.12 tree, the one-line typo, mailing-list review, and
-a clean apply. Compiling the nine-phase analysis next.
+This is a real allocate-before-validate bound bug in legacy ebtables
+`do_replace()`. The local tree is **6.18.53**; the buggy checks are
+present here and the fix is small enough to apply cleanly.
 
----
+===============================================================
+PHASE 1: COMMIT MESSAGE FORENSICS
+===============================================================
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+Step 1.1: PARSE THE SUBJECT LINE
+- Subsystem: `netfilter: ebtables`
+- Action verb: **bound** (limit an existing userspace-controlled size)
+- Intent: cap `num_counters` with the same ceiling already used for
+  `nentries` in `do_replace()`
+Record: [netfilter/ebtables] [bound] [tighten `num_counters` so
+`do_replace()` cannot request a ~2 GiB counter `vmalloc`]
 
-**Step 1.1: PARSE THE SUBJECT LINE**
-- Record: `[selftests/net] [fix] latency threshold typo in fin_ack_lat`
+Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+- Signed-off-by: Jiayuan Chen \<jiayuan.chen@linux.dev\> (author)
+- Signed-off-by: Florian Westphal \<fw@strlen.de\> (netfilter/ebtables
+  maintainer; applied the patch)
+- Signed-off-by: Sasha Levin — **ignored** (pipeline)
+- `[Upstream commit 43ae85af154b…]` — **ignored** (pipeline)
+- No Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, Link:,
+  or Cc: stable
+Record: Author SOB + maintainer SOB only. Absence of Fixes/Cc-stable is
+expected and not a negative.
 
-**Step 1.2: PARSE ALL COMMIT MESSAGE TAGS** (from the presented message
-and from `git show 2373107782a9`)
-- `Reviewed-by: Simon Horman <horms@kernel.org>`
-- `Signed-off-by: Brian Grech <bgrech@redhat.com>` (author)
-- `Link:
-  https://patch.msgid.link/20260806151645.4172900-1-bgrech@redhat.com`
-- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev maintainer,
-  applied it)
-- No `Reported-by`, `Tested-by`, `Acked-by` in the committed message
-- Committed message has no `Fixes:` / `Cc: stable` (those tags were on
-  mailing-list v3; they are not treated as “already selected”)
-- Record: Reviewed by a netdev reviewer; applied by the net maintainer.
-  Author is Red Hat.
+Step 1.3: ANALYZE THE COMMIT BODY TEXT
+Bug: `do_replace_finish()` does `vmalloc_array(repl->num_counters,
+sizeof(*counterstmp))` **before** checking `repl->num_counters !=
+t->private->nentries`. `do_replace()` only rejects `num_counters >=
+INT_MAX / sizeof(struct ebt_counter)`, so the allocation can be up to
+`134217726 * 16 = 2147483616` bytes (~2 GiB). Semantically
+`num_counters` must equal the current table’s `nentries`;
+`get_counters()` returns one summed entry per rule, not per-CPU.
+Symptom: a crafted `EBT_SO_SET_ENTRIES` sockopt can force a huge
+`vmalloc` and reclaim/OOM, then the request is rejected.
+Root cause: allocate-then-validate; the `nentries` overflow formula is
+much tighter than the `num_counters` formula.
+Record: [oversized counter vmalloc before validation] [memory exhaustion
+/ reclaim DoS] [bug present since the 2010 overflow checks] [same
+MAX_EBT_ENTRIES ceiling as nentries]
 
-**Step 1.3: ANALYZE THE COMMIT BODY TEXT**
-- Record: [Bug] `fin_ack_lat` treats latency ≥ 100000 µs (100 ms) as a
-  spike, while the original test commit says the spike is **1 second**.
-  [Symptom] false FAIL printouts on slower/loaded hardware when normal
-  localhost connect latency is 100 ms–1 s. [Version] original test is
-  `af8c8a450bf4` (2020). [Root cause] missing zero: 100000 vs 1000000.
+Step 1.4: DETECT HIDDEN BUG FIXES
+Not disguised. Explicit bound-check fix for a userspace-controlled
+allocation. Extracting the existing `nentries` formula into
+`MAX_EBT_ENTRIES` is mechanical, not a hidden refactor.
+Record: [Direct bug fix, not a hidden cleanup]
 
-**Step 1.4: DETECT HIDDEN BUG FIXES**
-- Record: Not hidden. Explicit typo/threshold bug in a kselftest. “fix”
-  is accurate.
+===============================================================
+PHASE 2: DIFF ANALYSIS - LINE BY LINE
+===============================================================
 
----
+Step 2.1: INVENTORY THE CHANGES
+File: `net/bridge/netfilter/ebtables.c` — 6 insertions, 6 deletions.
+Functions: file-scope `#define MAX_EBT_ENTRIES`; `do_replace()`;
+`compat_copy_ebt_replace_from_user()`.
+Record: [1 file, ±6 lines] [do_replace,
+compat_copy_ebt_replace_from_user] [single-file surgical fix]
 
-## PHASE 2: DIFF ANALYSIS
+Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+Hunk 1: existing `nentries` overflow expression becomes
+`MAX_EBT_ENTRIES` (same formula).
+Hunk 2 (`do_replace`): `num_counters >= INT_MAX / sizeof(struct
+ebt_counter)` → `num_counters >= MAX_EBT_ENTRIES`.
+Hunk 3 (compat): same `num_counters` change.
+Normal sockopt replace path, before any allocation of `newinfo` /
+`counterstmp`.
+Record: [before: num_counters allowed up to ~134M; after: same ceiling
+as nentries]
 
-**Step 2.1: INVENTORY THE CHANGES**
-- Record: `tools/testing/selftests/net/fin_ack_lat.c` — 1 line changed
-  (`100000` → `1000000`). Function: `client()`. Scope: single-file, one-
-  line surgical fix. `git show --stat`: `1 file changed, 1 insertion(+),
-  1 deletion(-)`.
+Step 2.3: IDENTIFY THE BUG MECHANISM
+Category: memory-safety / resource-exhaustion bound check (not UAF,
+leak, or race).
+Mechanism: `num_counters` is independent of sockopt `len` (`len` only
+covers `sizeof(ebt_replace) + entries_size`). A small blob plus a huge
+`num_counters` still reaches `vmalloc_array()`. `vmalloc_array()` uses
+`check_mul_overflow`, so this is not an integer-wrap heap overflow; it
+is a ~2 GiB allocation request. Later `do_replace_finish()` rejects
+mismatched `num_counters` and `vfree`s the buffer.
+Record: [resource exhaustion] [userspace size used for vmalloc before
+semantic validation]
 
-**Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
-- Record: After `connect`/`send`/`read`, `timediff()` returns
-  microseconds (`tv_sec * 1000000 + tv_usec`). If `lat < threshold`,
-  skip the printf and close. Before: print (and the wrapper script
-  counts a FAIL) at ≥ 100 ms. After: only at ≥ 1 s.
+Step 2.4: ASSESS THE FIX QUALITY
+Obviously correct: `num_counters` must equal current `nentries`, and
+`nentries` was already capped by this formula. Kernel-registered initial
+tables (`ebtable_filter` etc.) have a handful of entries. No API/ABI
+change; oversized requests now get `-ENOMEM` earlier instead of
+allocating then `-EINVAL`. Allocation stays outside `ebt_mutex` (vmalloc
+may sleep). Regression risk is very low.
+Record: [minimal, maintainer-applied] [very low regression risk]
 
-**Step 2.3: IDENTIFY THE BUG MECHANISM**
-- Record: [Category] logic/correctness (wrong constant). [Mechanism]
-  threshold was 10× too low vs documented 1 s spike that matches
-  `TCP_TIMEOUT_INIT` (1×HZ). Wrapper `fin_ack_lat.sh` fails if any spike
-  line is printed.
+===============================================================
+PHASE 3: GIT HISTORY INVESTIGATION
+===============================================================
 
-**Step 2.4: ASSESS THE FIX QUALITY**
-- Record: Obviously correct vs the original commit text and vs
-  `timediff()` units. Minimal. Regression risk is that 100 ms–1 s events
-  would no longer FAIL; that is intended, because those are not the
-  FIN/ACK race (which waits a full initial RTO of 1 s). No
-  API/locking/kernel-runtime change.
+Step 3.1: BLAME THE CHANGED LINES
+The pair of overflow checks was added in `e788759f44b2` (“netfilter:
+ebtables: split do_replace into two functions”, Florian Westphal,
+2010-02-04), first appearing around **v2.6.34-rc1**. The loose
+`num_counters` bound has been unchanged since then (aside from a 2015
+revert of an unrelated `num_counters == 0` check).
+Record: [e788759f44b2, v2.6.34-rc1] [bug ~16 years old; present in this
+6.18.y tree]
 
----
+Step 3.2: FOLLOW THE FIXES: TAG
+No Fixes: tag. The introducing commit is an ancestor of HEAD and of
+`v6.18.53`.
+Record: [no Fixes tag] [introducing commit is in this tree] [no
+intermediate tightening of this bound]
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
+Nearby ebtables work (`terminate table name`, `zero chainstack`, `module
+names must be null-terminated`) is independent. This commit is not patch
+N/M.
+Record: [standalone] [no prerequisites beyond the 2010 overflow checks]
 
-**Step 3.1: BLAME THE CHANGED LINES**
-- Record: Line 72 (`if (lat < 100000)`) blamed to `af8c8a450bf469`
-  (SeongJae Park, 2020-02-02). Introduced with the test; never changed
-  since.
+Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Jiayuan Chen is not the ebtables maintainer. Florian Westphal applied
+it. Same-period netfilter work from this author is unrelated (`nft_ct`).
+Record: [regular contributor; maintainer SOB] [no dependent series]
 
-**Step 3.2: FOLLOW THE FIXES: TAG**
-- Committed message has no `Fixes:` tag. Mailing-list v3 cited `Fixes:
-  af8c8a450bf4`.
-- `git merge-base --is-ancestor af8c8a450bf4 HEAD` → yes (exit 0).
-- Original test message: “if the latency is larger than 1 second
-  (spike), print a message.”
-- Related kernel fix `9603d47bad464` (“tcp: Reduce SYN resend delay if a
-  suspicous ACK is received”) is also an ancestor; it describes the 1 s
-  `TIMEOUT_INIT` reconnection spike this test is for.
+Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+`MAX_EBT_ENTRIES` is introduced here from an in-tree formula.
+`vmalloc_array()` exists (`mm/util.c`). Compat path exists under
+`CONFIG_NETFILTER_XTABLES_COMPAT`. Applies standalone.
+Record: [none] [standalone apply]
 
-**Step 3.3: CHECK FILE HISTORY**
-- Record: Only one commit on this file in this tree: `af8c8a450bf46`. No
-  later refactor. Standalone, not patch X/Y.
+===============================================================
+PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+===============================================================
 
-**Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
-- Record: `git log --author="Brian Grech" --
-  tools/testing/selftests/net/` is empty in this tree (author is not a
-  6.12 net-selftest regular). Reviewer Horman and committer Kicinski are
-  netdev maintainers/reviewers.
+Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
+`b4 dig -c 43ae85af154b` →
+https://patch.msgid.link/20260610030259.194456-1-jiayuan.chen@linux.dev
+Subject: `[PATCH nf-next] netfilter: ebtables: bound num_counters like
+nentries in do_replace()`
+v1 only (`b4 dig -a`). Mbox is the patch itself; **no replies, NAKs, or
+Cc: stable**. Applied as-is by Florian on 2026-07-02. Merged via `nf-
+next-26-07-02`; pull text: “Bound num_counters in ebtables: do_replace()
+by MAX_EBT_ENTRIES to prevent oversized vmalloc_array() allocations.”
+Record: [msgid 20260610030259.194456-1] [v1 only] [no review comments]
+[sent to nf-next, not nf] [no stable nomination in thread]
 
-**Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
-- Record: None. Only changes a numeric constant. `git apply --check` of
-  `2373107782a9` succeeds on this tree.
+Step 4.2: CHECK WHO REVIEWED THE PATCH
+`b4 dig -w`: To netfilter-devel@vger.kernel.org and the author only.
+Florian’s SOB is the review.
+Record: [netfilter-devel + maintainer applied]
 
----
+Step 4.3: SEARCH FOR THE BUG REPORT
+No Reported-by, syzbot, bugzilla, or CVE in the commit or thread. Bug is
+derived from code analysis in the message (exact 2 GiB arithmetic).
+Record: [no external bug report] [mechanism documented in the patch]
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
+Standalone v1. iptables still uses `INT_MAX / sizeof(xt_counters)` plus
+`xt_counters_alloc()`’s extra `XT_MAX_TABLE_SIZE` (512 MiB) cap.
+ebtables had no equivalent extra cap before this patch.
+Record: [standalone] [iptables already had a tighter allocator cap]
 
-**Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
-- Record: `b4 dig -c 2373107782a9` →
-  https://patch.msgid.link/20260806151645.4172900-1-bgrech@redhat.com
-- Revisions (`b4 dig -a`):
-  - v1: 2026-07-31,
-    https://patch.msgid.link/20260731145914.4014912-1-bgrech@redhat.com
-  - v2: 2026-08-04 (added maintainer CCs)
-  - v3: 2026-08-06 (applied)
-- Horman (2026-08-06): looks good; “might be nice” to explain why 1 s;
-  “if this is a fix to be backported (I am unsure)” then add `Fixes:`
-  and target `net`. **Reviewed-by** given; no NAK.
-- Author replied and sent v3 with original-commit wording, `Fixes:`, and
-  `Cc: stable`.
-- Applied to netdev/net-next by Jakub Kicinski (`2373107782a9`). No NAKs
-  in the saved thread.
+Step 4.5: CHECK STABLE MAILING LIST HISTORY
+lore.kernel.org HTTP fetch returned 403. `b4 dig` mbox has no stable@
+traffic. No evidence it was rejected for stable.
+Record: [no stable-list discussion found; lore HTTP 403]
 
-**Step 4.2: CHECK WHO REVIEWED THE PATCH**
-- Record (`b4 dig -w`): netdev, linux-kselftest, Shuah Khan, Eric
-  Dumazet, Paolo Abeni, Simon Horman, Jakub Kicinski. Right lists and
-  maintainers.
+===============================================================
+PHASE 5: CODE SEMANTIC ANALYSIS
+===============================================================
 
-**Step 4.3: SEARCH FOR THE BUG REPORT**
-- Record: No syzbot/bugzilla. Evidence is the commit text plus a Red Hat
-  author describing loaded/slower-hardware false positives. Severity:
-  incorrect kselftest FAIL, not a kernel oops.
+Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
+Record: [`do_replace`, `compat_copy_ebt_replace_from_user`; allocation
+in `do_replace_finish`]
 
-**Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
-- Record: Standalone 1-patch series. No sibling patches required.
+Step 5.2: TRACE CALLERS
+`do_ebt_set_ctl()` (CAP_NET_ADMIN via `ns_capable(net->user_ns,
+CAP_NET_ADMIN)`) → `EBT_SO_SET_ENTRIES` → `do_replace()` /
+`compat_do_replace()` → `compat_copy_ebt_replace_from_user()` then
+`do_replace_finish()`.
+Record: [privileged sockopt; user_ns capable] [not IRQ; process context]
 
-**Step 4.5: CHECK STABLE MAILING LIST HISTORY**
-- Record: lore.kernel.org/stable search via WebFetch returned 403. Web
-  search did not find a stable-list rejection or discussion of this fix.
-  UNVERIFIED: no confirmed stable@ thread beyond v3 CCing stable.
+Step 5.3: TRACE CALLEES
+`vmalloc_array()` → overflow-checked `__vmalloc`. `get_counters()`
+memcpy/sum into `nentries` slots. `copy_to_user` of `num_counters`
+entries only after the match check.
+Record: [vmalloc_array, get_counters, copy_to_user]
 
----
+Step 5.4: FOLLOW THE CALL CHAIN
+Reachable from `setsockopt` with `EBT_SO_SET_ENTRIES`. `len` need not
+include the counter array. Unprivileged user namespaces that have
+CAP_NET_ADMIN in that netns can call it if
+`CONFIG_BRIDGE_NF_EBTABLES_LEGACY` is loaded. `find_table_lock` failure
+still happens **after** the `counterstmp` allocation.
+Record: [userspace sockopt] [reachable; userns-relevant]
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+Step 5.5: SEARCH FOR SIMILAR PATTERNS
+`do_update_counters()` also `vmalloc_array(num_counters)` but `len` must
+equal `sizeof(hlp) + num_counters * sizeof(ebt_counter)`, so the sockopt
+size bounds it. `copy_counters_to_user()` allocates from validated
+`nentries`. Sibling not the same bug; this commit does not need to wait
+for a series.
+Record: [replace path is the unbounded one]
 
-**Step 5.1: KEY FUNCTIONS**
-- Record: `client()` only.
+===============================================================
+PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+===============================================================
 
-**Step 5.2: TRACE CALLERS**
-- Record: `main()` forks and the child calls `client(port)`. Userspace-
-  only. `fin_ack_lat.sh` runs `./fin_ack_lat` for 30s and FAILs if any
-  stdout spike line appears. Makefile: `TEST_PROGS += fin_ack_lat.sh`,
-  `TEST_GEN_FILES += fin_ack_lat` — part of default net selftests.
+Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
+Local tree: `git describe HEAD` = `v6.18.53-5049-g0f0bdc2b0dffb`; `make
+kernelversion` = **6.18.53**; Makefile VERSION/PATCHLEVEL/SUBLEVEL =
+6.18.53.
+At `v6.18.53`, `do_replace()` still has the old `INT_MAX / sizeof(struct
+ebt_counter)` check. `git merge-base --is-ancestor 43ae85af154b
+v6.18.53` fails (fix not in 6.18.53). Introducing commit **is** in
+6.18.53.
+Record: [yes, both native and compat replace] [introduced v2.6.34-rc1]
 
-**Step 5.3: TRACE CALLEES**
-- Record: socket/connect/send/read, `timediff()`, `printf` on spike. No
-  kernel helpers.
+Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
+The overflow-check lines at `v6.18.53` match the pre-image of this
+patch. `MAX_EBT_ENTRIES` is new here. Clean apply expected.
+Record: [clean apply]
 
-**Step 5.4: FOLLOW THE CALL CHAIN**
-- Record: Reachable by running the net kselftest (localhost TCP). Not a
-  syscall bug; it is the test harness for the 2020 FIN/ACK race.
+Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
+No earlier equivalent bound on `num_counters`. Name-termination commits
+nearby do not fix this.
+Record: [no alternate fix in 6.18.y]
 
-**Step 5.5: SEARCH FOR SIMILAR PATTERNS**
-- Record: Only this one comparison. `timediff()` already uses `*
-  1000000` (µs), which confirms 1000000 = 1 s.
+===============================================================
+PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+===============================================================
 
----
+Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
+`net/bridge/netfilter/ebtables.c`, `CONFIG_BRIDGE_NF_EBTABLES_LEGACY`
+(default n). Still used by docker/libvirt/firewalld-style bridge
+filtering on distro kernels that enable it.
+Record: [netfilter/ebtables legacy] [IMPORTANT for those configs, not
+core mm/VFS]
 
-## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
+Step 7.2: ASSESS SUBSYSTEM ACTIVITY
+Mature (2002-era) with occasional correctness/security fixes. Not churny
+new code.
+Record: [mature/stable]
 
-**Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
-- Record: Yes. This checkout is **6.12.111** (`pending-6.12`,
-  `p-6.12-3-gc504cf0baa3d8`). `fin_ack_lat.c:72` is still `if (lat <
-  100000)`. Introduced 2020-02 (`af8c8a450bf4`); present throughout
-  6.12. Candidate `2373107782a9` is **not** an ancestor of HEAD.
+===============================================================
+PHASE 8: IMPACT AND RISK ASSESSMENT
+===============================================================
 
-**Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
-- Record: `git diff af8c8a450bf4 HEAD --
-  tools/testing/selftests/net/fin_ack_lat.c` is empty. `git apply
-  --check` of the candidate succeeds. Expected: **clean apply**.
+Step 8.1: DETERMINE WHO IS AFFECTED
+Systems with legacy ebtables loaded. Trigger is a sockopt, not data-
+plane forwarding.
+Record: [config-specific / legacy-ebtables users]
 
-**Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
-- Record: `git log --grep="fin_ack_lat: fix latency"` and
-  `--grep="latency threshold typo"` on that path: empty. No alternate
-  fix.
+Step 8.2: DETERMINE THE TRIGGER CONDITIONS
+Crafted `EBT_SO_SET_ENTRIES`: small `entries_size`, `num_counters` near
+`INT_MAX/16`. Cheap. Needs CAP_NET_ADMIN in the socket’s user_ns
+(`ns_capable`), so unprivileged userns can hit it when the module is
+present. Not every boot; attacker- or test-triggered.
+Record: [malicious/buggy replace] [easy if capable] [userns-capable, not
+world-unprivileged without userns]
 
----
+Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
+Success: ~2 GiB kernel vmalloc held through verify/translate, then freed
+— OOM/reclaim. Failure: `-ENOMEM`. Not UAF, not silent corruption, not a
+panic by itself. iptables caps similar allocations at 512 MiB; ebtables
+could request ~4× that.
+Record: [local memory-exhaustion DoS] [HIGH, not crash/corruption
+CRITICAL]
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+Step 8.4: CALCULATE RISK-BENEFIT RATIO
+Benefit: stops a documented ~2 GiB sockopt vmalloc on a long-lived path;
+high for hosts that ship legacy ebtables. Risk: 6-line bound change,
+same formula as `nentries`; very low.
+Record: [high benefit for ebtables users] [very low risk] [favorable]
 
-**Step 7.1: SUBSYSTEM AND CRITICALITY**
-- Record: `tools/testing/selftests/net/` — kselftest, not kernel
-  runtime. Criticality: **PERIPHERAL** for production machines;
-  **IMPORTANT** for people who run net selftests on 6.12 (distro CI, LTS
-  validation).
+===============================================================
+PHASE 9: FINAL SYNTHESIS
+===============================================================
 
-**Step 7.2: SUBSYSTEM ACTIVITY**
-- Record: Net selftests are active in 6.12; this **file** is untouched
-  since 2020 (mature, long-standing typo).
-
----
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-**Step 8.1: WHO IS AFFECTED**
-- Record: Anyone running `tools/testing/selftests/net`
-  (`fin_ack_lat.sh`). Not production TCP. Config: standard net
-  kselftests.
-
-**Step 8.2: TRIGGER CONDITIONS**
-- Record: 30 s of localhost connect/send/read. False FAIL when a loop
-  exceeds 100 ms (loaded CI, slow VM, embedded). Unprivileged users can
-  run the test; this is not a security trigger.
-
-**Step 8.3: FAILURE MODE SEVERITY**
-- Record: Incorrect kselftest FAIL (script: `FAIL: N spikes detected`).
-  No oops, hang, or corruption. Severity: **MEDIUM** for testers/CI,
-  **LOW** for production runtime. The kernel bug the test is meant to
-  catch is a ~1 s SYN retry (`TCP_TIMEOUT_INIT` = `1*HZ` in
-  `include/net/tcp.h`).
-
-**Step 8.4: RISK-BENEFIT RATIO**
-- Record: Benefit: stops false FAILs on 6.12 net selftests; restores the
-  1 s meaning the test was written for. Risk: one constant in userspace;
-  no kernel change. Ratio: **high benefit for testers / very low risk**.
-
----
-
-## PHASE 9: FINAL SYNTHESIS
-
-**Step 9.1: EVIDENCE**
-
+Step 9.1: COMPILE THE EVIDENCE
 FOR:
-- Real, documented mismatch: commit `af8c8a450bf4` says 1 s; code uses
-  100 ms.
-- `timediff()` is in microseconds; 1000000 µs is 1 s.
-- Kernel symptom being tested is a 1 s initial RTO (`TCP_TIMEOUT_INIT`),
-  not 100 ms.
-- Wrapper treats any printed spike as FAIL, so the typo causes false
-  failures.
-- File and bug exist in this 6.12 tree unchanged since 2020.
-- One-line, applies cleanly, userspace-only.
-- Reviewed-by Horman; applied by Kicinski.
-- Author (Red Hat) describes slower/loaded-system false positives — a
-  real “bothers people” case for LTS testing.
+- Real allocate-before-validate bug; commit shows the 2 GiB request
+- Small (6/6), obviously correct, maintainer-applied
+- Bug in this 6.18.y tree since v2.6.34; patch applies cleanly
+- Reachable from `setsockopt`; `ns_capable` makes userns relevant
+- Matches stable “oh, that’s not good” / security-DoS class
+- Does not add features or APIs
 
 AGAINST:
-- Not a kernel crash, UAF, deadlock, or CVE.
-- Horman was unsure about backport before v3.
-- Applied via net-next; committed message dropped `Fixes:`/`Cc: stable`.
-- Only testers are affected.
+- Sent to **nf-next**, not `nf` (not treated as an urgent -rc fix)
+- No user/syzbot/CVE report
+- Legacy ebtables, Kconfig default n
+- Requires CAP_NET_ADMIN in the netns user_ns
+- Transient allocation (freed on the later `-EINVAL` path), not a leak
 
 UNRESOLVED:
-- Could not read lore.kernel.org/stable (403). No evidence of a stable
-  rejection.
+- lore.kernel.org WebFetch 403; thread recovered via `b4 dig -m` (patch-
+  only)
+- No stable@ discussion found
 
-**Step 9.2: STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — units, original docs, and
-   TCP_TIMEOUT_INIT all agree; reviewed.
-2. Fixes a real bug that affects users? **PASS** — false kselftest FAILs
-   on slower/loaded hardware; Red Hat author.
-3. Important issue? **PASS** (as “oh, that's not good” / broken default
-   net selftest), not as a production crash. Official `stable-kernel-
-   rules.rst` allows a real bug that bothers people, not only
-   oops/hang/CVE.
-4. Small and contained? **PASS** — 1 line, 1 file.
-5. No new features or APIs? **PASS**.
-6. Can apply to this tree? **PASS** — clean apply; buggy code present.
+Step 9.2: APPLY THE STABLE RULES CHECKLIST
+1. Obviously correct and tested? **PASS** — same ceiling as `nentries`;
+   maintainer applied v1
+2. Fixes a real bug that affects users? **PASS** — oversized vmalloc
+   from a sockopt field that is later rejected
+3. Important (crash/security/corruption/deadlock)? **PASS** — local DoS
+   / “oh, that’s not good” memory exhaustion, including userns
+   CAP_NET_ADMIN; not a panic
+4. Small and contained? **PASS** — 6 lines, one file
+5. No new features or APIs? **PASS**
+6. Can apply to the local tree? **PASS** — pre-image matches v6.18.53
 
-**Step 9.3: EXCEPTION CATEGORIES**
-- Record: Not a device-ID/quirk/DT/build/docs exception. Closest
-  analogue: **test/tooling correctness** (same spirit as a build fix:
-  helps people who build and test this kernel).
+Step 9.3: CHECK FOR EXCEPTION CATEGORIES
+Not a device ID, quirk, DT, build, or docs exception. Ordinary small
+bugfix.
 
-**Step 9.4: DECISION**
+Step 9.4: MAKE YOUR DECISION
+nf-next targeting and lack of a reporter argue it is hardening rather
+than an emergency, but the defect is concrete, old, reachable, and the
+patch is the lowest-risk way to close a ~2 GiB kernel allocation. That
+is appropriate for 6.18.y.
 
-This tree is **6.12.111**. The typo is in-tree, the 1 s threshold is
-what the test and the TCP bug both mean, and the patch is a one-line
-userspace correction with no kernel regression surface. That is
-appropriate for 6.12 stable: it stops false net-selftest failures
-without changing runtime behavior.
+What the commit solves for stable users: a crafted ebtables replace can
+ask `vmalloc` for up to ~2 GiB of counter scratch space before the
+kernel checks that `num_counters` equals the table’s `nentries`.
+Tightening that field to `MAX_EBT_ENTRIES` stops the request without
+moving vmalloc under `ebt_mutex`.
 
----
+Risk vs benefit: benefit is preventing reclaim/OOM on a privileged (and
+userns-capable) sockopt; risk is a stricter `-ENOMEM` on values that
+could never succeed the later equality check.
 
-## What the commit solves for stable users
+Verification:
+- [Phase 1] Parsed tags: author + Florian Westphal SOB only; no
+  Fixes/Reported-by/Cc-stable
+- [Phase 1] Body: 134217726 * 16 = 2147483616 documented; verified
+  `sizeof(struct ebt_counter)` is two `__u64` in `ebtables.h`
+- [Phase 2] Diff: 6/6 in `ebtables.c`; `do_replace` + compat copy;
+  `MAX_EBT_ENTRIES` is the old nentries formula
+- [Phase 2] Pre-fix at `c06e4b417f61^` and `v6.18.53`: `num_counters >=
+  INT_MAX / sizeof(struct ebt_counter)`
+- [Phase 2] `do_replace_finish()` still allocates then checks
+  `num_counters != t->private->nentries` (lines 1025–1056)
+- [Phase 2] `get_counters()` copies/sums `nentries` entries only (lines
+  992–1011)
+- [Phase 3] `git log -L` on the overflow checks: introduced
+  `e788759f44b2` (2010-02-04); `git describe --contains` → v2.6.34-rc1
+- [Phase 3] `git merge-base --is-ancestor e788759f44b2 v6.18.53` exit 0;
+  `43ae85af154b` not ancestor of v6.18.53
+- [Phase 3] No MAX_EBT_ENTRIES before this commit (`git log -S
+  MAX_EBT_ENTRIES`)
+- [Phase 4] `b4 dig -c 43ae85af154b`: msgid 20260610030259.194456-1; nf-
+  next; v1 only
+- [Phase 4] `b4 dig -w`: netfilter-devel only; `b4 dig -m`: 110-line
+  mbox, no replies
+- [Phase 4] Florian nf-next pull `b73bc9ca3686b` item 11 describes
+  oversized vmalloc_array prevention
+- [Phase 4] UNVERIFIED: stable@ lore search (HTTP 403)
+- [Phase 5] Callers: `do_ebt_set_ctl` requires `ns_capable(...,
+  CAP_NET_ADMIN)`; `EBT_SO_SET_ENTRIES`
+- [Phase 5] `vmalloc_array` uses `check_mul_overflow`
+  (`mm/util.c:656-662`) — overflow-safe, still ~2 GiB
+- [Phase 5] `xt_counters_alloc` extra cap `XT_MAX_TABLE_SIZE` 512 MiB;
+  ebtables lacked that
+- [Phase 6] `git describe HEAD` v6.18.53-5049; kernelversion 6.18.53
+- [Phase 6] `git show v6.18.53:net/bridge/netfilter/ebtables.c` still
+  has the loose num_counters checks at 1132 and 2275
+- [Phase 7] `obj-$(CONFIG_BRIDGE_NF_EBTABLES_LEGACY) += ebtables.o`;
+  Kconfig default n
+- [Phase 8] Failure mode: vmalloc/reclaim/OOM DoS, not oops/corruption
+- UNVERIFIED: whether a specific distro 6.18 config enables
+  BRIDGE_NF_EBTABLES_LEGACY
 
-On 6.12, `fin_ack_lat` is a default net selftest. It is supposed to flag
-the ~1 s reconnect spike from FIN/ACK processing order
-(`TCP_TIMEOUT_INIT`). A missing zero makes it flag ≥100 ms instead, so
-loaded or slow machines can FAIL without the actual TCP bug. Distros and
-anyone running kselftests on 6.12 get noisy, wrong results.
-
-## Stable rules / risk vs benefit
-
-It is obviously correct, tiny, already reviewed, and applies cleanly.
-Benefit is reliable tests; risk is negligible. It does not fix a
-production crash, but it does fix a real, user-visible test bug in this
-tree.
-
-## Concerns
-
-None that block a backport: no missing prerequisites, no file drift, no
-kernel ABI change. Raising the threshold will ignore 100 ms–1 s events;
-that matches the original design.
-
----
-
-## Verification
-- [Phase 1] Parsed committed tags on `2373107782a9`; Horman Reviewed-by;
-  Kicinski SOB; no Fixes in committed text
-- [Phase 1] Original test commit `af8c8a450bf4` text: “larger than 1
-  second (spike)”
-- [Phase 2] Diff: one comparison in `client()`, 100000 → 1000000
-- [Phase 2] `timediff()` uses `tv_sec * 1000000` (microseconds) —
-  verified in `fin_ack_lat.c`
-- [Phase 2] `fin_ack_lat.sh` FAILs if any spike line is printed —
-  verified
-- [Phase 3] `git blame` line 72 → `af8c8a450bf469` (2020-02-02)
-- [Phase 3] `git merge-base --is-ancestor af8c8a450bf4 HEAD` → yes;
-  `2373107782a9` → no
-- [Phase 3] `9603d47bad464` (TCP SYN resend / 1 s spike) is an ancestor
-- [Phase 3] File unmodified after introduction (`git diff af8c8a450bf4
-  HEAD -- fin_ack_lat.c` empty)
-- [Phase 3] `git apply --check` of candidate → success
-- [Phase 4] `b4 dig -c 2373107782a9` → lore msgid
-  `20260806151645.4172900-1-bgrech@redhat.com`
-- [Phase 4] `b4 dig -a`: v1 (2026-07-31), v3 (2026-08-06, applied)
-- [Phase 4] `b4 dig -m`: Horman Reviewed-by; unsure about backport; no
-  NAK; v3 added Fixes + Cc: stable on the list
-- [Phase 4] Patchwork: applied to net-next as `2373107782a9`
-- [Phase 4] UNVERIFIED: stable@ archive (lore 403)
-- [Phase 5] `client()` called only from forked `main()`; Makefile lists
-  the test in `TEST_PROGS`
-- [Phase 5] `TCP_TIMEOUT_INIT` is `1*HZ` in `include/net/tcp.h`
-- [Phase 6] `git describe HEAD` → `p-6.12-3-gc504cf0baa3d8`; `make
-  kernelversion` → 6.12.111; line 72 still `100000`
-- [Phase 8] Failure mode: kselftest false FAIL, not kernel oops;
-  severity MEDIUM for testers
+The patch meets the stable rules for this 6.18.y tree: real, important,
+small, and it applies.
 
 **YES**
 
- tools/testing/selftests/net/fin_ack_lat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/netfilter/ebtables.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
-index 70187494b57af..4117332eb1a9c 100644
---- a/tools/testing/selftests/net/fin_ack_lat.c
-+++ b/tools/testing/selftests/net/fin_ack_lat.c
-@@ -69,7 +69,7 @@ static void client(int port)
- 		lat = timediff(start, end);
- 		sum_lat += lat;
- 		nr_lat++;
--		if (lat < 100000)
-+		if (lat < 1000000)
- 			goto close;
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index 96176aa881117..5266f4d021c6d 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -39,6 +39,8 @@
+ #define COUNTER_OFFSET(n) (SMP_ALIGN(n * sizeof(struct ebt_counter)))
+ #define COUNTER_BASE(c, n, cpu) ((struct ebt_counter *)(((char *)c) + \
+ 				 COUNTER_OFFSET(n) * cpu))
++#define MAX_EBT_ENTRIES (((INT_MAX - sizeof(struct ebt_table_info)) / \
++			 NR_CPUS - SMP_CACHE_BYTES) / sizeof(struct ebt_counter))
  
- 		if (getsockname(sock, (struct sockaddr *)&laddr, &len) == -1)
+ struct ebt_pernet {
+ 	struct list_head tables;
+@@ -1126,10 +1128,9 @@ static int do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 		return -EINVAL;
+ 
+ 	/* overflow check */
+-	if (tmp.nentries >= ((INT_MAX - sizeof(struct ebt_table_info)) /
+-			NR_CPUS - SMP_CACHE_BYTES) / sizeof(struct ebt_counter))
++	if (tmp.nentries >= MAX_EBT_ENTRIES)
+ 		return -ENOMEM;
+-	if (tmp.num_counters >= INT_MAX / sizeof(struct ebt_counter))
++	if (tmp.num_counters >= MAX_EBT_ENTRIES)
+ 		return -ENOMEM;
+ 
+ 	tmp.name[sizeof(tmp.name) - 1] = 0;
+@@ -2269,10 +2270,9 @@ static int compat_copy_ebt_replace_from_user(struct ebt_replace *repl,
+ 	if (tmp.entries_size == 0)
+ 		return -EINVAL;
+ 
+-	if (tmp.nentries >= ((INT_MAX - sizeof(struct ebt_table_info)) /
+-			NR_CPUS - SMP_CACHE_BYTES) / sizeof(struct ebt_counter))
++	if (tmp.nentries >= MAX_EBT_ENTRIES)
+ 		return -ENOMEM;
+-	if (tmp.num_counters >= INT_MAX / sizeof(struct ebt_counter))
++	if (tmp.num_counters >= MAX_EBT_ENTRIES)
+ 		return -ENOMEM;
+ 
+ 	memcpy(repl, &tmp, offsetof(struct ebt_replace, hook_entry));
 -- 
 2.53.0
 
