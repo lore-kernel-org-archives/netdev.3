@@ -1,777 +1,176 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9226B3AA50B
-	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792378906; cv=none; b=OY+p8ymzSKkYXvm7XesGf2DOvv5mmv8PbzfurY2BPfQX0rE5E/fK1dBp/Xb+y2u2UIZmHTZiMneqaQrXOURVs7dyc3hkyxxspcEwuZAsPVjSvWv0v7fioqA4p90I6Hk1OZvZ3VBrJ/y279beI3iOMRoZVvJJRipnqTOiXC4lwsE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792378906; c=relaxed/simple;
-	bh=hX5PyMDFaRreQYvEGT8VQUCwj36JYJ5ruUaokb3YktE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOzEWLx+nmXjqFJJkjiF5pwnqNRpFtY3EkA0/e/rMVX9yb9mZ8ZmpgzchIspMW6xoLxXKvDxORtn9Uz7IyWhqIE6Lq4Ph7WqS3i+yByFqjjw9Uln2YpylRA1lm0v5athHqcgiUgQmCAwohgw293QS9x7EUIKtq2oy2/heHjdCe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=kb08LAL9; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEC63D8914
+	for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 03:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792379299; cv=pass; b=Rn62q89GCPJJWVIXPPngQCftWpY92E+A57DD0Rqgt5ycJWjn/TwXG3bEo7zhipBsIQuf4oLtW6TZk3vOH00MZLRahJ3ibdjNAlxFp4voCNiZj79WSFVEcCVXmhXJF0PcW6PGNvbcmZ391sf6PAYEpncOi79E3nlrmaEsK0pl5BY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792379299; c=relaxed/simple;
+	bh=nCTg2yEQ0LNZyao3mm+6GhqTmbPvZfn6W+wLrwSGvv8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UeUH42L3h7mGtorlF5+Xs5QRlFtE0ebV8vmteO9n5YAVDlyz58J2srlRcLW/aa9yoGK2Nw/IQmt+oRKj4slMWOkVGSZ2Cwmcg0dPgBI6r9Ywk8rRCSnLP60mQbLyVOV0y0kCQw0Xtqd2/iigucLxpFy0wm1RoU9FX2qGFGSOkgE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oXKWtPiQ; arc=pass smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="kb08LAL9"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93f2ed2541aso123846185a.0
-        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:01:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oXKWtPiQ"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c434376dbebso127637166b.1
+        for <netdev@vger.kernel.org>; Sun, 18 Oct 2026 20:08:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792379293; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fLlgjH+JIs7sKGkCRhAvSeUu564Ls6PZbFEMtx1z5eT6qT+qS8CXtoWhzzQiD2DIAl
+         gfFK/MJGXM7+fteY7C37Ifmb5ZwiCAABlNwIGvubK9cZF+xm47IkV7xSWN145euo8kK9
+         aHjLwl+1wgBEG8KFXM/I5PZ0WGjcURlHqr6uNG/AO8Vjz7pPdl2MS45bz4r+vJgXgohy
+         4qmK/hTVjBmr3RKVt8u83IVzwEbAqQBPHDQiz3qryiC12Zt18fys+5eEByZk8iM9uBT1
+         51YU1iISQOe/ZfeAx2X56o+bx7Br+s9UNq3r+/8tGFSRKlkqR5uCp6fo22yOLcmZrYSr
+         ZzaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=hKRDlsDlYO9+73nMSkDl9EUQQZlY2MbgYvZNCnDwk34=;
+        fh=DwSpmXD7Tcdip/LHov2K4oH+f+te64C5T6VBCMmJbCs=;
+        b=MBqfXx4vg4kE/vNdY6Yqi0bPISw4GpaJdmoufjhz+ML70mJ+pvhiADAIhORCQi2cd8
+         Y7iwMT6l8+Ked+vd02x4Sr4ZTLC6J4mWft5XeNO1Dq+3nK4ac6kn8ihQz9xGVLw9Fg+O
+         ul8SMzc0plafAaa+UR5yotEXydJYtJJRFwHSszWNsHVeDFGBTt8LGIOrP/ZyrvwXgCMM
+         oHoBSmfLuRysx71XdMXMOtQrGCe+IN9TdV/F/MrUFGX3GgSu7tKKZ/d0QmTeqbNF0uDF
+         wXqzZ7c7utu47uJiMamoOdIsXmM96uLqW3TiKj6STvPwR+sb4ps3b9wtq5RNyrSon3bA
+         a3sg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792378902; x=1792983702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vxrF+w8Q23uby1iTwtJ7S5pgFbxD0bEz9UgNKdK80H0=;
-        b=kb08LAL9rMIYU560yJYkmaDSYvweF1rXKUc6g3x0fWBj20qy7OEmMow2poUBzQMh+6
-         kmn2CW6clA+CCH5H7YpWiudXVrhGkBfqnU/OrI+M/4/FsySLsuEtOLZ/PsoVpupSwphW
-         Nl2YcfYpxH7bsUhEhWVhHlleS0/p6CyZrO2ihg/a/jGu+B8QI55sf+ZX7mew/nDHxITc
-         SZuhHbHDY79AgR+tZK74kavMN953zE4x9LjNRbgftOu44qQkzMk3QQEEdaKVr94nyRNw
-         ybQZZQ97CBNOlJcKMHgXItB/lh0g4CEWl+juw+803k3RvQRjTMqHiSE/VUtNzq+5bkc3
-         Qugw==
+        d=gmail.com; s=20251104; t=1792379293; x=1792984093; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hKRDlsDlYO9+73nMSkDl9EUQQZlY2MbgYvZNCnDwk34=;
+        b=oXKWtPiQLOlJ3WbWmea0qPP3AYoedzEoMR2aEYmYe7+fJxAjLOXebc08Jl82XXgAAw
+         ewPviWHz1tGVlO+PT5yALt2PNSwTfCLLROeUpdrf6FtyykWzsQUZ2NxQgKEAAzPFhXJG
+         ZZNxocV1DzAI/WX9kW30Mcd07ZkQEoWtAbOkW4jFj5fOqjyRfJuW9NNtDA440jyt0vJb
+         DQyD9ZID2sl5RZpX3cQQSRH2NshD6qq8Erj5t0qbOq86BtTO6vzMzgGbbJhEIHSBl8rS
+         IhO7pUwkFp9qeDSsxJDdgDTsIpob9tk1qvVx8o5A8n6GUnJuAcHppW3KcEPQckF94yKM
+         Cpvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792378902; x=1792983702;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vxrF+w8Q23uby1iTwtJ7S5pgFbxD0bEz9UgNKdK80H0=;
-        b=JDe/1xRhMuvhcqoYvQ4cFGxqT0f+MyMmCIAsEwg9UiKiY31NAU24kOIBG07PVjrkJg
-         9FRKPzeYcR9ucuc/N3kt9aZulbeaD1fJ7U3T4N8fMsDBpXJqWRlKdCHjldgWZBIR3454
-         3G9vVJyptGYOcsKxknvDHlHAVrZtoAmw6JXNTLhNQklz0ElkvMqp6oIvJamoJ3c9nAzO
-         yRIwr1IJkYxw9do6s4L1VO7D10UOBL8+02M9Sg2yMujf4AlmzY9MQB0rz3KCI/BECK14
-         qrg6CGuflUCj5006nxFgW07SHOX7uRwU1Y5YbhpuM921AY37Icinl6k7fwQOk3FZ527m
-         V5bQ==
-X-Forwarded-Encrypted: i=1; AKwUvBykmnKtLrq8gPf58GJXanWVrN04qpSyLYJY91ELXSJtXvCoeFuhQM7TjdTFOmPAA5SFET74eRU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIC9MsD/t+7mmh3RCo+mFEZKyfabiA0hR45pdI9N8xMSAkZrDJY
-	y4lRS/dK3iu0bPmu6svuXXT/J8fMcAIa42DXS0988JTiu/+j/ap93oBPrAMycNV9+U8=
-X-Gm-Gg: AYBFou1kNtf3XPpVau4tLP3qFKyW8V3vHhTsBQUKBAnupFdlLBV7n712/HoZEZ1QBwb
-	MSbvjHbneLmg3RfZDfb8rp0lXKdCDXL7slcVuJllj3gkg8s0MD7/Dji4lKSC6cEBa6CKow48Gsz
-	YC+nJkbBvjZD+3wX5sySVsF5A/HkEwKto72guag8yAVLaNyITrulczjHwZM1yGHEdWr6W6veLBJ
-	B0GYv7lSSWc/GGoQOxN+sDtwZbhBhJOoQXdVxAaTwbXsxh3UiLiGUByTixkxeNP6EU/mUtmSBSC
-	HroCCV5vP45sEZiJTBv1NjNtCkoSPNYnRLPQwq7aFai0AxCn+V0kh+JdmZ2F/IjDHFaTqDfEEcO
-	9j7PYx/9FnalwcSp/Ku987zKLlu07mlwSsBIOKjEG9RZTylvO6J5MEhLmh2wmqFZgyAJk5QsZJn
-	KgOKCImwIbqrtjPO8GGqNs5gsWEz8o7NGbzHmYiLWGmY2qvms3NkTLtCU08JZA5fHnuJ9JZbFGV
-	PE=
-X-Received: by 2002:a05:620a:290e:b0:939:2b7c:34d1 with SMTP id af79cd13be357-93f29cc75afmr1023103585a.15.1792378902477;
-        Sun, 18 Oct 2026 20:01:42 -0700 (PDT)
-Received: from zippy.localdomain ([73.62.185.64])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f3c61c440sm216840185a.10.2026.10.18.20.01.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 20:01:42 -0700 (PDT)
-From: Alex Elder <elder@riscstar.com>
-To: maxime.chevallier@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: Daniel Thompson <daniel@riscstar.com>,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	richardcochran@gmail.com,
-	p.zabel@pengutronix.de,
-	peppe.cavallaro@st.com,
-	joabreu@synopsys.com,
-	mohd.anwar@oss.qualcomm.com,
-	lorenzo.bianconi@oss.qualcomm.com,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 5/5] net: stmmac: support the TC9564 SoC
-Date: Sun, 18 Oct 2026 22:01:28 -0500
-Message-ID: <20261019030129.1470307-6-elder@riscstar.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261019030129.1470307-1-elder@riscstar.com>
-References: <20261019030129.1470307-1-elder@riscstar.com>
+        d=1e100.net; s=20260707; t=1792379293; x=1792984093;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hKRDlsDlYO9+73nMSkDl9EUQQZlY2MbgYvZNCnDwk34=;
+        b=g24j0O+4aOMkimPRT/Xt8MpH5I+yqnqLU3SzuE8lbNAzsywcUlsP9WicsNS+4zXFlt
+         55+WElo3hXE7HwyovogUmJGHbsLa7QSxogxXlgzRHv8Ppkh/AuUBvOlkoKJSnA5MN9A1
+         ZjliXzZoBnQLb/MXS6VnmxC2+/grwdvhayDaEGD3qv5FYH5i4El7gHBkED1aiPyvtWsO
+         H7T2AVjEoXjw4ca1XVVrlSBZdj0iJRD+8wDaSo23/6bPfs25v+jeR0ISj9Fd0ZpZwP9p
+         SPlPcgkzCrSO1gPzZsDKWGPU0X2xcv5g+ctJe4ikXsUfX2uP6fJ3wC3UpR5RNNImtqfA
+         vy/g==
+X-Forwarded-Encrypted: i=1; AKwUvByRkvoj2UhaeUiLs/6MEzr+eJKldpYDa3k7vhZefsw/zEsIQaEAO5GqznFDLuNsEPgnq27OEBY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJzf+dp04GPQIGsaRyxpW5flUJfGJ16hEaA/qn3oc7BfwiyB6dc
+	IheTRtbbOJLZDTjKO5h9vtcstV96pUC0llwwqCBLlEHDYuO6/NeZmiwb1e3idZnczyqx3dRuyXL
+	cIx1Mpf1aTCOMIyr+tSlzd5VM08aWVY4=
+X-Gm-Gg: AYBFou3lnEL31TgKLAUr14Vq2Xo2ZPO+8J7lDr3JwOjG1BApSbpleOGHGVizYn0hqk9
+	9LGN0cCyfQjQ43hbTSJR1Dx4vLynhmMJ/jTYGCBOOHWPsRAy+9LwlNUN/FNuFHQKcgmAgUKiq62
+	IgFRdN65onxs5EoHvWWV9ncDehvVHoTmjjltYp7diDL1XYbsJTGhQIvNEqxwiIDN5keVqe6YK0v
+	udv9Nf+ApAOJ4/K8LbTbq2R9Vx+EcgupBSOEbodIF4MGvp6VtEqVypD9JS/RcgA1B/rvc1/PmgS
+	JBgT1axd49InXdejbvTuF2XsklyDcFFnwOxo++GefTfMDCItII1X8bMSV+wUWThCy8d6EuGkdRf
+	rKfjPy/T1oaI=
+X-Received: by 2002:a17:906:1009:20b0:c42:bc58:f21 with SMTP id
+ a640c23a62f3a-c42bc5810ccmr164486466b.15.1792379292960; Sun, 18 Oct 2026
+ 20:08:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261002115850.962676-1-o.rempel@pengutronix.de> <20261002115850.962676-4-o.rempel@pengutronix.de>
+In-Reply-To: <20261002115850.962676-4-o.rempel@pengutronix.de>
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Date: Mon, 19 Oct 2026 00:07:58 -0300
+X-Gm-Features: AclHuK9qqhhKzBJuYmeDL3jwm5xPymgETCO67Uh4ZsDvV4-HZrLD0w6CHv10108
+Message-ID: <CAJq09z7GXHesthJby4e_63Sse4+ue5=kpHr9jtraKjDzpuAZMA@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 3/8] net: ieee8021q: clarify the tt_to_tc()
+ traffic-class mapping
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Linus Walleij <linusw@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
+	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Daniel Thompson <daniel@riscstar.com>
+> Document that the tt_to_tc() traffic-class numbers are the pre-computed
+> composition of Table I-2 (traffic type -> priority) with Table 8-5
+> (priority -> traffic class). Note that Table 8-5 is the mapping for
+> implementations without the credit-based shaper, so the helper's scope
+> is clear; credit-based-shaper implementations use Table 34-1/34-2
+> instead.
+>
+> The existing kdoc cited Annex I Table I-1 as the mapping basis, but
+> Table I-1 only partitions traffic types into classes; it does not assign
+> the class numbers.
+>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Add support for the Ethernet XGMAC functionality present in the
-Toshiba TC9564 SoC.
+Looks good to me. Please just make sure `make htmldocs` builds cleanly
+without warnings and renders the ASCII diagram properly.
 
-The TC9564 is a fairly complex chip that attaches to a host via
-the upstream port of a PCIe switch it implements.  That switch
-has three downstream ports, and one of those has an embedded PCI
-endpoint.  The PCI endpoint implements two PCI functions, and a
-10 Gbps-capable XGMAC interface is attached to each.
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 
-The TC9564 implements additional peripherals, and access to them
-is provided by a PCI endpoint bus associated with BAR 4 of the
-first PCI function.  A PCI driver sets up the PCI function for
-use, and peripherals using the bus use platform drivers, matched
-by compatible string.
-
-We use the pci-ep-bus approach for the stmmac driver as well, with
-each PCI function exposing access to its BAR 4 via an endpoint bus.
-The XGMAC device is defined within a pci-ep-bus node, and is bound
-to the platform driver based on its compatible string.
-
-Signed-off-by: Daniel Thompson <daniel@riscstar.com>
-Co-developed-by: Alex Elder <elder@riscstar.com>
-Signed-off-by: Alex Elder <elder@riscstar.com>
----
- MAINTAINERS                                   |   1 +
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |  11 +
- drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
- .../ethernet/stmicro/stmmac/dwmac-tc9564.c    | 590 ++++++++++++++++++
- 4 files changed, 603 insertions(+)
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-tc9564.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 972c9faead5b3..69f301aa26eb9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -28313,6 +28313,7 @@ M:	Alex Elder <elder@kernel.org>
- M:	Daniel Thompson <danielt@kernel.org>
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/toshiba,tc9564-dwmac.yaml
-+F:	drivers/net/ethernet/stmicro/stmmac/dwmac-tc9564.c
- 
- TOSHIBA WMI HOTKEYS DRIVER
- M:	Azael Avalos <coproscefalo@gmail.com>
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index ab3c4cf964239..5613921188df4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -363,6 +363,17 @@ config DWMAC_LOONGSON1
- 	  device driver. This driver is used for Loongson1-based boards
- 	  like Loongson LS1B/LS1C.
- 
-+config DWMAC_TC9564
-+	tristate "Toshiba TC9564 DWMAC support"
-+	depends on OF && COMMON_CLK && TC9564_PCI
-+	default TC9564_PCI
-+	help
-+	  Support for the Ethernet controllers on the Toshiba TC9564.
-+
-+	  This enables glue layer support in the stmmac driver support
-+	  for the Toshiba TC9564.  This chip implements two embedded
-+	  PCIe functions, each of which has an XGMAC interface.
-+
- config DWMAC_TEGRA
- 	tristate "NVIDIA Tegra MGBE support"
- 	depends on ARCH_TEGRA || COMPILE_TEST
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
-index b16a456b730ec..c4de25db93715 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Makefile
-+++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
-@@ -52,4 +52,5 @@ obj-$(CONFIG_STMMAC_PCI)	+= stmmac-pci.o
- obj-$(CONFIG_DWMAC_INTEL)	+= dwmac-intel.o
- obj-$(CONFIG_DWMAC_LOONGSON)	+= dwmac-loongson.o
- obj-$(CONFIG_DWMAC_MOTORCOMM)	+= dwmac-motorcomm.o
-+obj-$(CONFIG_DWMAC_TC9564)	+= dwmac-tc9564.o
- stmmac-pci-objs:= stmmac_pci.o
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tc9564.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tc9564.c
-new file mode 100644
-index 0000000000000..21098f91e3bbf
---- /dev/null
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tc9564.c
-@@ -0,0 +1,590 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (C) 2026 by RISCstar Solutions Corporation.  All rights reserved.
-+ *
-+ * Derived from code having the following copyrights:
-+ * Copyright (C) 2011-2012  Vayavya Labs Pvt Ltd
-+ * Copyright (C) 2025 Toshiba Electronic Devices & Storage Corporation
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/iopoll.h>
-+#include <linux/irqdomain.h>
-+#include <linux/irqchip/chained_irq.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/pcs/pcs-xpcs-regmap.h>
-+#include <linux/pcs/pcs-xpcs.h>
-+#include <linux/phy.h>
-+#include <linux/regmap.h>
-+#include <linux/stmmac.h>
-+#include <linux/types.h>
-+#include <linux/units.h>
-+
-+#include "common.h"
-+#include "dwxgmac2.h"
-+#include "stmmac.h"
-+#include "stmmac_platform.h"
-+
-+#define DRIVER_NAME			"dwmac-tc9564"
-+
-+/* Start of range representing PCI space on the TC9564 internal bus */
-+#define TC9564_SLV00_SRC_ADDR		0x0000001000000000ULL
-+
-+#define TC9564_PTP_CLOCK_RATE		(250 * HZ_PER_MHZ)
-+
-+#define TC9564_RX_FIFO_SIZE		(46 * SZ_1K)
-+#define TC9564_TX_FIFO_SIZE		(46 * SZ_1K)
-+
-+/* Fields and values for the EMACTL registers */
-+#define EMAC_SP_SEL_MASK		GENMASK(3, 0)
-+#define SP_SEL_2500BASEX		4
-+#define SP_SEL_SGMII_1000M		5
-+#define SP_SEL_SGMII_100M		6
-+#define SP_SEL_SGMII_10M		7
-+#define EMAC_PHY_INF_SEL_MASK		GENMASK(5, 4)
-+#define PCS_CLK_PHY			1	/* Clock from PHY */
-+#define EMAC_INV_SGM_SIG_DET		BIT(6)	/* 1 = polarity inverted */
-+#define EMAC_LPIHWCLKEN			BIT(8)	/* 1 = low power mode */
-+#define EMAC_INIT_DONE			BIT(21)
-+
-+/* Offset to the XPCS memory block, relative to the EMAC address range */
-+#define DWMAC_XPCS_OFFSET		0x3a00
-+
-+/* Offset to the PMATOP memory block, relative to the EMAC address range */
-+#define DWMAC_PMATOP_OFFSET			0x4000
-+
-+#define PMA_CML_GL_PM_CFG0			0x01b8
-+
-+/*
-+ * Five sets three registers must be configured for PMA.  The HWT_REFCLK
-+ * registers are each separated by 0x14 bytes.  The Common0 configuration
-+ * registers are separated by 0x8 bytes.
-+ */
-+#define PMA_REG_COUNT				5
-+
-+#define PMA_HWT_REFCK_R_EN			0x1080
-+#define PMA_HWT_REFCK_TERM_EN			0x1090
-+#define PMA_HWT_REFCK_STRIDE			0x0014
-+
-+#define PMA_COMM_CFG_0_1			0x1888
-+#define PMA_COMM_CFG_0_1_STRIDE			0x0008
-+
-+/* PMA_COMM_CFG_0_1 fields (WRITE_MASK is a field name) */
-+#define COMM_CFG_WRITE_MASK_MASK		GENMASK(16, 9)
-+#define WRITE_MASK_VALUE			0xf7	/* Power-on value */
-+#define COMM_CFG_ENABLE				BIT(8)
-+#define COMM_CFG_WRITE_DATA_MASK		GENMASK(7, 0)
-+#define WRITE_DATA_VALUE			0x04	/* Power-on value */
-+
-+enum {
-+	RESET_ID_MAC,
-+	RESET_ID_XPCS,
-+	RESET_ID_PMA,
-+};
-+
-+static const char * const tc9564_reset_names[] = {
-+	[RESET_ID_MAC] = "mac",
-+	[RESET_ID_XPCS] = "xpcs",
-+	[RESET_ID_PMA] = "pma",
-+};
-+
-+/**
-+ * struct tc9564_data - Toshiba-specific platform data
-+ * @dev:		Device pointer
-+ * @ioaddr:		Pointer to mapped eMAC memory
-+ * @plat:		Pointer to our stmmac platform data
-+ * @resets:		Reset controller bulk array
-+ * @clocks:		Clock controller bulk array
-+ * @clock_count:	Number of valid elements in the clock array
-+ * @config_regmap:	Regmap used to access eMAC configuration registers
-+ * @emac_ctl_offset:	Offset of the eMAC control register within the regmap
-+ * @res:		Structure passed to stmmac_dvr_probe()
-+ * @desc:		DMA descriptor data used by mac_device_info
-+ * @dma:		DMA operations data used by mac_device_info
-+ */
-+struct tc9564_data {
-+	struct device *dev;
-+	void __iomem *ioaddr;
-+	struct plat_stmmacenet_data *plat;
-+	struct reset_control_bulk_data resets[ARRAY_SIZE(tc9564_reset_names)];
-+	struct clk_bulk_data *clocks;
-+	u32 clock_count;
-+
-+	struct regmap *config_regmap;
-+	u32 emac_ctl_offset;
-+
-+	/* This field is data passed to stmmac_dvr_probe() */
-+	struct stmmac_resources res;
-+
-+	/* These two fields are used by the mac_device_info structure */
-+	struct stmmac_desc_ops desc;
-+	struct stmmac_dma_ops dma;
-+};
-+
-+struct tc9564_mac_speed {
-+	phy_interface_t phy_interface;
-+	int speed;
-+	u32 sp_sel;
-+};
-+
-+static struct tc9564_mac_speed mac_speed[] = {
-+	{ PHY_INTERFACE_MODE_2500BASEX,	SPEED_2500,  SP_SEL_2500BASEX },
-+	{ PHY_INTERFACE_MODE_SGMII,	SPEED_1000,  SP_SEL_SGMII_1000M },
-+	{ PHY_INTERFACE_MODE_SGMII,	SPEED_100,   SP_SEL_SGMII_100M },
-+	{ PHY_INTERFACE_MODE_SGMII,	SPEED_10,    SP_SEL_SGMII_10M },
-+};
-+
-+/* TC9564 uses indirect addressing so this need only describe a 1KiB range */
-+static const struct regmap_config xpcs_regmap_config = {
-+	.reg_bits	= 32,
-+	.val_bits	= 32,
-+	.reg_base	= 0x00,		/* Minimum XPCS reg offset */
-+	.max_register	= 0xff,		/* Register DW_VR_CSR_VIEWPORT */
-+	.reg_shift	= REGMAP_UPSHIFT(2),
-+};
-+
-+/**
-+ * tc9564_pma_init() - Initialize PMA
-+ * @td:	bsp_priv pointer
-+ *
-+ * Initialize (or re-initialize) the PMA, configure the clocks and wait for the
-+ * eMAC to be ready.
-+ */
-+static void tc9564_pma_init(struct tc9564_data *td)
-+{
-+	struct reset_control *rstc = td->resets[RESET_ID_PMA].rstc;
-+	struct regmap *regmap = td->config_regmap;
-+	void __iomem *pmatop;
-+	u32 val;
-+	int ret;
-+	u32 i;
-+
-+	/*
-+	 * When we re-initialize the PMA then the reset will already have
-+	 * been deasserted. We must make sure the PMA reset is asserted
-+	 * before we change the clock settings.
-+	 */
-+	WARN_ON(reset_control_assert(rstc));
-+
-+	pmatop = td->res.addr + DWMAC_PMATOP_OFFSET;
-+
-+	/* Power on CML buffer (0 = normal mode, 1 = power down) */
-+	writel(0, pmatop + PMA_CML_GL_PM_CFG0);
-+
-+	/* This value switches clock from C0_REFCK to CLK_REF_I */
-+	val = u32_encode_bits(WRITE_MASK_VALUE, COMM_CFG_WRITE_MASK_MASK);
-+	val |= COMM_CFG_ENABLE;
-+	val |= u32_encode_bits(WRITE_DATA_VALUE, COMM_CFG_WRITE_DATA_MASK);
-+
-+	for (i = 0; i < PMA_REG_COUNT; i++) {
-+		u32 offset =  i * PMA_HWT_REFCK_STRIDE;
-+
-+		/* Disable C0_REFCK and 100 ohm termination */
-+		writel(0, pmatop + PMA_HWT_REFCK_R_EN + offset);
-+		writel(0, pmatop + PMA_HWT_REFCK_TERM_EN + offset);
-+
-+		/* Switch clock from C0_REFCK to CLK_REF_I */
-+		offset =  i * PMA_COMM_CFG_0_1_STRIDE;
-+		writel(val, pmatop + PMA_COMM_CFG_0_1 + offset);
-+	}
-+
-+	WARN_ON(reset_control_deassert(rstc));
-+
-+	ret = regmap_read_poll_timeout(regmap, td->emac_ctl_offset,
-+				       val, val & EMAC_INIT_DONE, 50, 1000000);
-+	WARN(ret, "timeout waiting for MAC init done\n");
-+}
-+
-+static int tc9564_mac_speed_select(struct tc9564_data *td,
-+				   phy_interface_t interface, int speed)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(mac_speed); i++) {
-+		if (mac_speed[i].phy_interface != interface)
-+			continue;
-+
-+		if (speed == mac_speed[i].speed || speed == SPEED_UNKNOWN)
-+			return mac_speed[i].sp_sel;
-+	}
-+	dev_err(td->dev, "%s/%d unsupported\n", phy_modes(interface), speed);
-+
-+	return -EOPNOTSUPP;
-+}
-+
-+static void tc9564_mac_configure(struct tc9564_data *td,
-+				 phy_interface_t interface, int speed)
-+{
-+	struct regmap *regmap = td->config_regmap;
-+	u32 offset = td->emac_ctl_offset;
-+	int sp_sel;
-+	u32 val;
-+
-+	sp_sel = tc9564_mac_speed_select(td, interface, speed);
-+	if (sp_sel < 0)
-+		return;
-+
-+	/* No error checking needed for MMIO regmap */
-+	regmap_read(regmap, offset, &val);
-+	val |= EMAC_LPIHWCLKEN;
-+	val &= ~EMAC_INV_SGM_SIG_DET;
-+	val = u32_replace_bits(val, PCS_CLK_PHY, EMAC_PHY_INF_SEL_MASK);
-+	val = u32_replace_bits(val, sp_sel, EMAC_SP_SEL_MASK);
-+	regmap_write(regmap, offset, val);
-+}
-+
-+static void tc9564_mac_enable(struct tc9564_data *td)
-+{
-+	WARN_ON(clk_bulk_prepare_enable(td->clock_count, td->clocks));
-+
-+	WARN_ON(reset_control_deassert(td->resets[RESET_ID_MAC].rstc));
-+
-+	tc9564_mac_configure(td, td->plat->phy_interface, SPEED_UNKNOWN);
-+	tc9564_pma_init(td);
-+
-+	WARN_ON(reset_control_deassert(td->resets[RESET_ID_XPCS].rstc));
-+}
-+
-+static void tc9564_mac_disable(struct tc9564_data *td)
-+{
-+	WARN_ON(reset_control_bulk_assert(ARRAY_SIZE(td->resets), td->resets));
-+
-+	clk_bulk_disable_unprepare(td->clock_count, td->clocks);
-+}
-+
-+/*
-+ * Override method for dwxgmac301_dma_ops->init_rx_chan
-+ *
-+ * This differs from the dwxgmac301_dma_ops->init_rx_chan by translating the DMA
-+ * address for TC9564 internal bus. The window that provides DMA access to PCI
-+ * is linearly mapped at 0x10_0000_0000.
-+ */
-+static void tc9564_dma_init_rx_chan(struct stmmac_priv *priv,
-+				    void __iomem *ioaddr,
-+				    struct stmmac_dma_cfg *dma_cfg,
-+				    dma_addr_t phy, u32 chan)
-+{
-+	u64 translated = phy + TC9564_SLV00_SRC_ADDR;
-+
-+	dwxgmac2_dma_init_rx_chan(priv, ioaddr, dma_cfg, phy, chan);
-+
-+	writel(upper_32_bits(translated),
-+	       ioaddr + XGMAC_DMA_CH_RxDESC_HADDR(chan));
-+	writel(lower_32_bits(translated),
-+	       ioaddr + XGMAC_DMA_CH_RxDESC_LADDR(chan));
-+}
-+
-+/* Override method for dwxgmac301_dma_ops->init_tx_chan */
-+static void tc9564_dma_init_tx_chan(struct stmmac_priv *priv,
-+				    void __iomem *ioaddr,
-+				    struct stmmac_dma_cfg *dma_cfg,
-+				    dma_addr_t phy, u32 chan)
-+{
-+	u64 translated = phy + TC9564_SLV00_SRC_ADDR;
-+
-+	dwxgmac2_dma_init_tx_chan(priv, ioaddr, dma_cfg, phy, chan);
-+
-+	writel(upper_32_bits(translated),
-+	       ioaddr + XGMAC_DMA_CH_TxDESC_HADDR(chan));
-+	writel(lower_32_bits(translated),
-+	       ioaddr + XGMAC_DMA_CH_TxDESC_LADDR(chan));
-+}
-+
-+/* Override method for dwxgmac210_desc_ops->set_addr */
-+static void tc9564_desc_set_addr(struct dma_desc *p, dma_addr_t addr)
-+{
-+	u64 translated = addr + TC9564_SLV00_SRC_ADDR;
-+
-+	p->des0 = cpu_to_le32(lower_32_bits(translated));
-+	p->des1 = cpu_to_le32(upper_32_bits(translated));
-+}
-+
-+/* Override method for dwxgmac210_desc_ops->set_sec_addr */
-+static void tc9564_desc_set_sec_addr(struct dma_desc *p, dma_addr_t addr,
-+				     bool is_valid)
-+{
-+	u64 translated = addr + TC9564_SLV00_SRC_ADDR;
-+
-+	p->des2 = cpu_to_le32(lower_32_bits(translated));
-+	p->des3 = cpu_to_le32(upper_32_bits(translated));
-+}
-+
-+/*
-+ * Use mac_setup to apply the override methods above.
-+ *
-+ * The memory for the modified ops structures is pre-allocated as part of
-+ * struct tc9564_data.
-+ */
-+static int tc9564_mac_setup(void *apriv, struct mac_device_info *mac)
-+{
-+	struct stmmac_priv *priv = apriv;
-+	struct tc9564_data *td;
-+
-+	td = priv->plat->bsp_priv;
-+
-+	/* dwxgmac301_dma_ops needs extending to provide DMA address translation */
-+	td->dma = dwxgmac301_dma_ops;
-+	td->dma.init_rx_chan = tc9564_dma_init_rx_chan;
-+	td->dma.init_tx_chan = tc9564_dma_init_tx_chan;
-+	mac->dma = &td->dma;
-+
-+	/* dwxgmac210_desc_ops also needs extending for the same reason */
-+	td->desc = dwxgmac210_desc_ops;
-+	td->desc.set_addr = tc9564_desc_set_addr;
-+	td->desc.set_sec_addr = tc9564_desc_set_sec_addr;
-+	mac->desc = &td->desc;
-+
-+	priv->hw = mac;
-+
-+	return dwxgmac2_setup(priv);
-+}
-+
-+static int tc9564_pcs_init(struct stmmac_priv *priv)
-+{
-+	void __iomem *emac = priv->ioaddr;
-+	struct regmap *xpcs_regmap;
-+	void __iomem *xpcs_addr;
-+	struct dw_xpcs *xpcs;
-+
-+	xpcs_addr = emac + DWMAC_XPCS_OFFSET;
-+	xpcs_regmap = devm_regmap_init_mmio(priv->device, xpcs_addr,
-+					    &xpcs_regmap_config);
-+	if (IS_ERR(xpcs_regmap))
-+		return PTR_ERR(xpcs_regmap);
-+
-+	xpcs = devm_xpcs_regmap_register(priv->device, xpcs_regmap);
-+	if (IS_ERR(xpcs))
-+		return PTR_ERR(xpcs);
-+
-+	xpcs_config_eee_mult_fact(xpcs, priv->plat->mult_fact_100ns);
-+	priv->hw->phylink_pcs = xpcs_to_phylink_pcs(xpcs);
-+
-+	return 0;
-+}
-+
-+static struct phylink_pcs *tc9564_select_pcs(struct stmmac_priv *priv,
-+					     phy_interface_t interface)
-+{
-+	return priv->hw->phylink_pcs;
-+}
-+
-+static void tc9564_fix_mac_speed(void *bsp_priv, phy_interface_t interface,
-+				 int speed, unsigned int mode)
-+{
-+	struct tc9564_data *td = bsp_priv;
-+
-+	tc9564_mac_configure(td, interface, speed);
-+	tc9564_pma_init(td);
-+}
-+
-+static int tc9564_dwmac_suspend(struct device *dev, void *bsp_priv)
-+{
-+	struct tc9564_data *td = bsp_priv;
-+
-+	tc9564_mac_disable(td);
-+
-+	return 0;
-+}
-+
-+static int tc9564_dwmac_resume(struct device *dev, void *bsp_priv)
-+{
-+	struct tc9564_data *td = bsp_priv;
-+
-+	tc9564_mac_enable(td);
-+
-+	return 0;
-+}
-+
-+static int tc9564_probe_config_dt(struct tc9564_data *td)
-+{
-+	struct platform_device *pdev = to_platform_device(td->dev);
-+	struct device_node *np = td->dev->of_node;
-+	struct plat_stmmacenet_data *plat;
-+	phy_interface_t phy_interface;
-+	struct device *dev = td->dev;
-+	int ret;
-+
-+	ret = device_get_phy_mode(dev);
-+	if (ret < 0)
-+		return -ENODEV;
-+	phy_interface = ret;
-+
-+	/* The platform structure is allocated with devm_kzalloc() */
-+	plat = devm_stmmac_probe_config_dt(pdev, td->res.mac);
-+	if (IS_ERR(plat))
-+		return PTR_ERR(plat);
-+
-+	/*
-+	 * Core driver cannot deduce or validate fifo size because the bits
-+	 * that provide FIFO size only worth in powers of two.
-+	 */
-+	if (plat->rx_fifo_size == 0 || plat->tx_fifo_size == 0)
-+		return dev_err_probe(dev, -EINVAL, "fifo size is not set\n");
-+	if (plat->rx_fifo_size > TC9564_RX_FIFO_SIZE ||
-+	    plat->tx_fifo_size > TC9564_TX_FIFO_SIZE)
-+		return dev_err_probe(dev, -EINVAL, "fifo size too big (%u/%u)\n",
-+				     plat->rx_fifo_size, plat->tx_fifo_size);
-+
-+	/*
-+	 * toshiba,tc9564-xgmac is *not* compatible with snps,dwxgmac because
-+	 * generic drivers cannot possibly work on TC9564 (without clocks
-+	 * reading registers wedges the bus). However, without snps,dwxgmac,
-+	 * devm_stmmac_probe_config_dt(), can't figure of the core type and
-+	 * won't parse a couple of extra properties. Let's handle that here!
-+	 */
-+	plat->core_type = DWMAC_CORE_XGMAC;
-+	plat->pmt = true;
-+	if (of_property_read_bool(np, "snps,tso"))
-+		plat->flags |= STMMAC_FLAG_TSO_EN;
-+	of_property_read_u32(np, "snps,multicast-filter-bins",
-+			     &plat->multicast_filter_bins);
-+	of_property_read_u32(np, "snps,perfect-filter-entries",
-+			     &plat->unicast_filter_entries);
-+
-+	plat->phy_interface = phy_interface;
-+
-+	/*
-+	 * Set a few additional flags and settings that are always needed for
-+	 * TC9564.
-+	 */
-+	plat->default_an_inband = true;
-+	plat->host_dma_width = 36;
-+	plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
-+	for (int i = 4; i < plat->tx_queues_to_use; i++) {
-+		plat->tx_queues_cfg[i].coe_unsupported = true;
-+		plat->tx_queues_cfg[i].tbs_en = 1;
-+	}
-+
-+	plat->fix_mac_speed = tc9564_fix_mac_speed;
-+	plat->suspend = tc9564_dwmac_suspend;
-+	plat->resume = tc9564_dwmac_resume;
-+	plat->mac_setup = tc9564_mac_setup;
-+	plat->pcs_init = tc9564_pcs_init;
-+	plat->select_pcs = tc9564_select_pcs;
-+
-+	plat->bsp_priv = td;
-+
-+	td->plat = plat;
-+
-+	return 0;
-+}
-+
-+/* Look up resets, and ensure they're initially all asserted */
-+static int tc9564_reset_init(struct tc9564_data *td)
-+{
-+	u32 reset_count = ARRAY_SIZE(td->resets);
-+	int ret;
-+	u32 i;
-+
-+	for (i = 0; i < reset_count; i++)
-+		td->resets[i].id = tc9564_reset_names[i];
-+
-+	ret = devm_reset_control_bulk_get_exclusive(td->dev, reset_count,
-+						    td->resets);
-+	if (ret)
-+		return ret;
-+
-+	return reset_control_bulk_assert(reset_count, td->resets);
-+}
-+
-+static int tc9564_clock_init(struct tc9564_data *td)
-+{
-+	struct device *dev = td->dev;
-+	int ret;
-+
-+	ret = devm_clk_bulk_get_all(dev, &td->clocks);
-+	if (ret < 0)
-+		return ret;
-+	td->clock_count = ret;
-+
-+	return 0;
-+}
-+
-+static int tc9564_dwmac_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct tc9564_data *td;
-+	struct device_node *np;
-+	struct regmap *regmap;
-+	int ret;
-+
-+	td = devm_kzalloc(dev, sizeof(*td), GFP_KERNEL);
-+	if (!td)
-+		return -ENOMEM;
-+
-+	td->dev = dev;
-+
-+	np = dev_of_node(dev);
-+	regmap = syscon_regmap_lookup_by_phandle_args(np,
-+						      "toshiba,config-syscon",
-+						      1, &td->emac_ctl_offset);
-+	if (IS_ERR(regmap))
-+		return dev_err_probe(dev, PTR_ERR(regmap),
-+				     "failed to get config regmap\n");
-+	td->config_regmap = regmap;
-+
-+	ret = tc9564_reset_init(td);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to initialize resets\n");
-+
-+	ret = tc9564_clock_init(td);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to initialize clocks\n");
-+
-+	ret = tc9564_probe_config_dt(td);
-+	if (ret)
-+		return ret;
-+
-+	ret = stmmac_get_platform_resources(pdev, &td->res);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to initialize stmmac resources\n");
-+
-+	tc9564_mac_enable(td);
-+
-+	ret = stmmac_dvr_probe(dev, td->plat, &td->res);
-+	if (ret) {
-+		ret = dev_err_probe(dev, ret, "failed stmmac probe\n");
-+		goto err_disable_mac;
-+	}
-+
-+	return 0;
-+
-+err_disable_mac:
-+	tc9564_mac_disable(td);
-+
-+	return ret;
-+}
-+
-+static void tc9564_dwmac_remove(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct net_device *ndev = dev_get_drvdata(dev);
-+	struct stmmac_priv *priv = netdev_priv(ndev);
-+	struct tc9564_data *td = priv->plat->bsp_priv;
-+
-+	stmmac_dvr_remove(dev);
-+	tc9564_mac_disable(td);
-+}
-+
-+static const struct of_device_id tc9564_dwmac_ids[] = {
-+	{ .compatible = "toshiba,tc9564-xgmac", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, tc9564_dwmac_ids);
-+
-+static struct platform_driver tc9564_dwmac_driver = {
-+	.probe			= tc9564_dwmac_probe,
-+	.remove			= tc9564_dwmac_remove,
-+	.driver = {
-+		.name		= DRIVER_NAME,
-+		.of_match_table	= tc9564_dwmac_ids,
-+		.pm		= &stmmac_simple_pm_ops,
-+		.owner		= THIS_MODULE,
-+	},
-+};
-+module_platform_driver(tc9564_dwmac_driver);
-+
-+MODULE_DESCRIPTION("Toshiba TC9564 PCIe Ethernet Network Driver");
-+MODULE_LICENSE("GPL");
--- 
-2.53.0
-
+> ---
+>  net/core/ieee8021q_helpers.c | 30 +++++++++++++++++-------------
+>  1 file changed, 17 insertions(+), 13 deletions(-)
+>
+> diff --git a/net/core/ieee8021q_helpers.c b/net/core/ieee8021q_helpers.c
+> index a5bd5e039b47..520d86d592eb 100644
+> --- a/net/core/ieee8021q_helpers.c
+> +++ b/net/core/ieee8021q_helpers.c
+> @@ -12,10 +12,10 @@
+>         compiletime_assert(ARRAY_SIZE(tbl) == IEEE8021Q_TT_MAX, \
+>                            #tbl " size mismatch")
+>
+> -/* The following arrays map Traffic Types (TT) to traffic classes (TC) for
+> - * different number of queues as shown in the example provided by
+> - * IEEE 802.1Q-2022 in Annex I "I.3 Traffic type to traffic class mapping" and
+> - * Table I-1 "Traffic type to traffic class mapping".
+> +/* The following arrays map a traffic type (TT) to a traffic class (TC) for
+> + * each supported number of queues. The mapping is the traffic-type -> priority
+> + * -> traffic-class composition documented in the ieee8021q_tt_to_tc() kdoc
+> + * below, reduced for the given number of queues.
+>   */
+>  static const u8 ieee8021q_8queue_tt_tc_map[] = {
+>         [IEEE8021Q_TT_BK] = 0,
+> @@ -84,17 +84,21 @@ static const u8 ieee8021q_1queue_tt_tc_map[] = {
+>  };
+>
+>  /**
+> - * ieee8021q_tt_to_tc - Map IEEE 802.1Q Traffic Type to Traffic Class
+> - * @tt: IEEE 802.1Q Traffic Type
+> - * @num_queues: Number of queues
+> + * ieee8021q_tt_to_tc - Map an IEEE 802.1Q traffic type to a traffic class
+> + * @tt: IEEE 802.1Q traffic type
+> + * @num_queues: number of traffic classes (queues) available, 1..8
+>   *
+> - * This function maps an IEEE 802.1Q Traffic Type to a Traffic Class (TC) based
+> - * on the number of queues configured on the NIC. The mapping is based on the
+> - * example provided by IEEE 802.1Q-2022 in Annex I "I.3 Traffic type to traffic
+> - * class mapping" and Table I-1 "Traffic type to traffic class mapping".
+> + * Return the traffic-class number for @tt. It is the pre-computed composition
+> + * of two IEEE 802.1Q-2022 mappings:
+>   *
+> - * Return: Traffic Class corresponding to the given Traffic Type or negative
+> - * value in case of error.
+> + *   traffic type --[Table I-2]--> priority --[Table 8-5]--> traffic class
+> + *
+> + * Table 8-5 is the priority-to-traffic-class mapping for implementations that
+> + * do NOT support the credit-based shaper (8.6.8.2). Credit-based-shaper
+> + * implementations use a different mapping (Table 34-1 for SR classes A and B,
+> + * or Table 34-2 for SR class B only), which this helper does not implement.
+> + *
+> + * Return: the traffic class, or a negative value on error.
+>   */
+>  int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues)
+>  {
+> --
+> 2.47.3
+>
