@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792459809;
-	b=O6oDmCW8tO/DDErf3xa4vZmZ6WIFn8nW/1FSMeyhOf5q3XOvlksLxtaLta5dkL4Mri5T
-	 0AdyJdF/yuxb1cktezwITOZK9a0VkLwyHnwE2nYOvEozVGZfA/WcjwnwIvzskU5AfJoE6
-	 TnXfZD6uOkTfP+D85ze94spGEWm8zDwtewnVqCQVDN9/YPCxHxman63Jj6BdENINakmUc
-	 P785usqy/RL6XHzHOdRLb0C3OqqwN0/80EezIdiFnBTbfnbEk7MjPLzUkkDTyyDZ2IEts
-	 omAAQ6CkwjI8zO4KekJy/yTsEqdG0UK95Gz65f52V3nHZJ/Q+T+visToWHylo3zV4Gg==
+	t=1792459811;
+	b=k/p/Dz2FQalZcnP7uDiDHIOXol+3hoNuGL7QWFd+SNIDSc5rqKXzL/ObXHpbqwMwmViz
+	 aLDVjuXrQAQC4iL6pY7ZvsuDlHqnGFk3/6DDBeZZ5ZPHbcJSlaqMMpPUqDbjcdEI6mEKZ
+	 d5kdG+BZM92q7+8WIlh6J1CDpmAhqEeTZMyOakBp9CclXcvTSrLTbnXW1NrqTMTy/3yoy
+	 yBZtoW88w4eutydvmsN0vlFNTffnXCLJjFsIebzUFwJuIDuhQtiRS7FgmZZSBPiqKORYy
+	 cDDcz0LVrP1SjpgyKtCk6xgfMOCodqPx7K163CUtMGUDQfXMO8EvUBKGheAHNO0yoXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792459809;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792459811;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=FzucgFhkY9ThJI72vZY3NNoGVXc8zIf74nFvWBK5StE=;
-	b=EK+pUNR5EAJLmMgQqsXaH43JsFPiHgGLJgqydomR1mx/gomVRJWgB6BmQHuhFahzU0/6
-	 tuY5K9WdPamcmzN5KQlGRH4A/7Y2AnafpuR0oYNm57qsINUa2stK1FGKWgXyzSqd2D4F6
-	 GsQuzL6UCHjQEUUa5TFuc0bn3I9DJOl1FfwbLJidS8PByTjGcilqb+D2FCoWpI3oGEjjQ
-	 JVmk4+RCRatbH26H0x1rAHuN7zCrF1yoVXnIhAd/4t+i3+0xMNQrP3Aup/w5Dl+vz/GHW
-	 hQ9l5tOVYEEZY97mSDBv4brfEleI8xKf2GTMienUbN6hSnjKFmiHtm93HejNGQk4G/Q==
+	bh=Nr/CEPOzBBBJCwa/nOw7aYctJE8L0LWSYjvBLUHHXPY=;
+	b=3yl0R8bHVGC0NnUlCGxzDy0TkprPlZec/hzzMvZPnlr6T2wzHT9i1/6Nwz6/PtBcjbp5
+	 0MpDoptpFS11G+XMef9DW2Y6/C6XVWlCcriuZPC9Prq/I8jVxR2TQCIMMci7cZZVSnG+l
+	 1/3Fv8h6UVRNJ91WOUe75CJJStEKxgMg7PPm8mris4o2yvPOSYcIoyuhLwF6XEhSNj4gM
+	 /cpZW/+Sse7GdfHN22wHLNfd7zZ8hhxkbxYCHwnxS5Or7rU8O/qxut0EV+MmUTvW5V3y7
+	 rRGdGf6GKGK+8fen1JRSNUhFftwZ7+Rj9hkEbsZVZfc2uED+sOCH3XDqpct5pq/N9qg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="NW/n1sII";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs4TBmWI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B20606A31B;
-	Tue, 20 Oct 2026 01:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4A2606A326;
+	Tue, 20 Oct 2026 01:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NW/n1sII
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074991F000C4;
-	Tue, 20 Oct 2026 01:30:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs4TBmWI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FA11F000C7;
+	Tue, 20 Oct 2026 01:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792459809;
-	bh=FzucgFhkY9ThJI72vZY3NNoGVXc8zIf74nFvWBK5StE=;
+	s=k20260515; t=1792459810;
+	bh=Nr/CEPOzBBBJCwa/nOw7aYctJE8L0LWSYjvBLUHHXPY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NW/n1sIIwpqKVq2lo/V4KTC4LZVtsCmGdz+c0Jy5e4iH1g117sh3zrXMkZ+3VRLCC
-	 d4xqxS2kvrU/WNcJN1ESTVsAQIaLwxQ1BvVGiWQr8L9OXJG7phcSCrqj53i5ajHxJB
-	 PU1V45TvkU/n6yBvEwTwjbSec4iv8p8cGv6NNYTBIly3MQWNLGMO2nR2hKyCXjh4yq
-	 DKMP7YU8CKVV4yIGEZkNuYuMRB+/m8I6lNt7gORoFSgsofaVmfLyIF10L8Iboq3CE0
-	 ewm3AQEwwLo0xZzx0JNAnrrsWP2+qWhQWTUc59Gh5CIGvrpnw/OiH8Pj/vkr32+0fl
-	 2PsKwnaayGmxQ==
+	b=hs4TBmWIMGctWAukjihukJ7atoeVBirF/LnPAu73mOyajryQCXsDFMf0d+2XO72qu
+	 bjG2D1Zh5FQ3e1DSdbjvDZ1NHqH2ogFtItObFiC0AMeS5ixGEskHkP0/5usG22DNL3
+	 3YMnsJxOLfYIKlx5VDbb4vsUl5ZDEVVG053ehoo+ISqgd5gQDSp16GzDWJm8gABkoB
+	 7XQUwiG0cYoex+PAwHzS3T0cjZqaNzgbdgthAFVDhs2yt5erMGRWYVZrk+pWMRL17q
+	 wwjIX4BRiAX49ilMn1knt4L/KyCDso2wxwsS7/LdRuyTV6ZfinskX/XUlqZGzhGkuH
+	 4lAbjsd0an9bQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F14CD3924A6F;
-	Tue, 20 Oct 2026 01:30:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774283924A6F;
+	Tue, 20 Oct 2026 01:30:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,67 +54,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 00/11] net: ethernet: qualcomm: ppe: Add
- support for IPQ5424 SoC
+Subject: Re: [PATCH net-next V2] net/dcb: Validate bandwidth for non-ETS
+ traffic
+ classes
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179245980778.3422113.8249352066378796733.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 01:30:07 +0000
-References: <20261011-qcom_ipq5424_ppe-v2-0-8c7b057e2c43@oss.qualcomm.com>
-In-Reply-To: <20261011-qcom_ipq5424_ppe-v2-0-8c7b057e2c43@oss.qualcomm.com>
-To: Jie Luo <jie.luo@oss.qualcomm.com>
+ <179245980903.3422113.4762636508765499257.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 01:30:09 +0000
+References: <20261011083929.739261-1-tariqt@nvidia.com>
+In-Reply-To: <20261011083929.739261-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, quic_leiwei@quicinc.com, quic_suruchia@quicinc.com,
- quic_pavir@quicinc.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ alazar@nvidia.com, cjubran@nvidia.com, gal@nvidia.com, kees@kernel.org,
+ linux-kernel@vger.kernel.org, oss-drivers@corigine.com, horms@kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 11 Oct 2026 06:02:06 -0700 you wrote:
-> This series adds support in the PPE driver for the IPQ5424 SoC.
+On Sun, 11 Oct 2026 11:39:29 +0300 you wrote:
+> From: Alexei Lazar <alazar@nvidia.com>
 > 
-> IPQ5424 integrates the same PPE switch core as IPQ9574, but with a few
-> differences:
+> The IEEE 802.1Qaz standard defines that bandwidth allocation percentages
+> only apply to ETS traffic classes. Reject ETS configurations that
+> specify non-zero bandwidth for non-ETS traffic classes.
 > 
-> 1.) It has 3 Ethernet ports plus 1 EDMA FIFO, instead of IPQ9574's 6 ports,
->     1 EDMA FIFO and 1 EIP FIFO.
-> 2.) The PPE clock runs at 375 MHz instead of IPQ9574's 353 MHz.
-> 3.) It requires a different, smaller set of interconnect paths.
-> 4.) It uses different BM (buffer management), QM (queue management) and
->     scheduler configurations.
+> Placing this check in dcbnl_ieee_set() enforces the constraint uniformly
+> for all drivers rather than relying on each driver to validate it
+> independently.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,01/11] dt-bindings: net: qcom,ipq9574-ppe: Split EDMA reset into sys and apb
-    https://git.kernel.org/netdev/net-next/c/7d0692e7f050
-  - [net-next,v2,02/11] net: ethernet: qualcomm: ppe: Fix multicast queue config table access
-    https://git.kernel.org/netdev/net-next/c/7baaa2bed6fd
-  - [net-next,v2,03/11] dt-bindings: net: qcom,ipq9574-ppe: Add IPQ5424 PPE support
-    https://git.kernel.org/netdev/net-next/c/2575292d1c92
-  - [net-next,v2,04/11] docs: networking: Document IPQ5424 as a supported SoC
-    https://git.kernel.org/netdev/net-next/c/ff5f9cb0c28d
-  - [net-next,v2,05/11] net: ethernet: qualcomm: ppe: Add platform support for IPQ5424
-    https://git.kernel.org/netdev/net-next/c/b52c8b48864e
-  - [net-next,v2,06/11] net: ethernet: qualcomm: ppe: Add IPQ5424 BM buffer configuration
-    https://git.kernel.org/netdev/net-next/c/d377b0e5c488
-  - [net-next,v2,07/11] net: ethernet: qualcomm: ppe: Add IPQ5424 QM configuration
-    https://git.kernel.org/netdev/net-next/c/04181e75cbd2
-  - [net-next,v2,08/11] net: ethernet: qualcomm: ppe: Add IPQ5424 scheduler resource configuration
-    https://git.kernel.org/netdev/net-next/c/b9f3abbb9f1c
-  - [net-next,v2,09/11] net: ethernet: qualcomm: ppe: Add IPQ5424 scheduler configuration
-    https://git.kernel.org/netdev/net-next/c/7ba101e7fa86
-  - [net-next,v2,10/11] net: ethernet: qualcomm: ppe: Add IPQ5424 service code configuration
-    https://git.kernel.org/netdev/net-next/c/c61091061206
-  - [net-next,v2,11/11] net: ethernet: qualcomm: ppe: Add IPQ5424 counter debugfs support
-    https://git.kernel.org/netdev/net-next/c/f60a45426d5a
+  - [net-next,V2] net/dcb: Validate bandwidth for non-ETS traffic classes
+    https://git.kernel.org/netdev/net-next/c/0e36a335c84e
 
 You are awesome, thank you!
 -- 
