@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792524627;
-	b=CLPnZFyntw+9wiMzEWEeh6KwBxEcGyQ4k8hlOGFG9Td3aKPZ1SyB8nOc7HrJRyMtUKE0
-	 7YuGGYNknvMkDyHKL9WdecyZEY38Q9qcjszk5kXnlstcge+VLsTBv4hyZWCn0+lDcedV5
-	 yl0N6ylOm4I6rcHlM84mh5hY7TkM5ZnGvq+gi5TzMUdBgGeyTVJulZwLlTcF3ZaBTHuD3
-	 VCxiKKQV4eszu+a9FlvpX+vtUcBXAWIV3Jd1kmcAV8ULRsH1mDk93R2p4N/Ky+rzPLihq
-	 cOmdjfQyrMruyjwK+AFKTyzwSQxyHo2MwDKsVCMGKIdWHYmhX9Y/+hsdsWLSlYd3oVQ==
+	t=1792524630;
+	b=myUjWJ5rhQ6zxJq0zcRc5wvdVRmskZtbTs3EGlCAYSwBTiAEfJrFDlNAssP3FM4ibY+T
+	 IS6bTW+4p10EEdRQVQ9BBOoSxtfyJjzYC1r3JqrhgAiP2zEMMtGPVTj4eEbkx/fua7UdU
+	 TSSk6G3G0qHBIVuA4YjHrBU/O+agxdV0JytzqVpCWkxHtErIVpl6A1urV/MwH571UC/sR
+	 reIr5ksyZDncyD9CVhUqevP6mlXTmOk9z8/oOgxB2OY9z3Nyu5AEHNS+Nz1ovgPHQge1N
+	 tjR6O10/qVM8Kq1MyX9lSW/C5WB3ZD8T/OrHqaN68IZSujDN/tmp6TXb3ncoOLyjBQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792524627;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792524630;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=KSeUcvYUjSwsww34n8o7HdXqLU0bLoM+ufR8PXL12y8=;
-	b=5hOBgIa29g7Yu8t09LRBLBxC3o6s0UZxIOkcaqXyw2yujndMpsnwjIdGMd+nAfHhPaHw
-	 GawaqkFlm9prbQuIP0Uq9d3RueKDAktAXrvO4WOImI3Tv3/BDOflLYINwtS8/Gsu61ZCF
-	 BPtVJRoX6JoKLn7wwFVL31Oo9Kpt4aLxJALkOf/kuiD4nqt5owMukZtm69PELBDF0rg5f
-	 XV7xGEjlg/pWmiosMSHl0x8BSOjkzYpZ1u+LKKI8JhaBQgWtKdHrC7ywuYKy8sDkzG8Um
-	 UvIzE+LIw+7UpZ/iQMMsnNiq7IvOobxrTBcG84iTMZgkByLpNDEYZ7LobWewQIa9nMA==
+	bh=3/6lfOiLcuVyA3cX0EYsczIjRwzeAaCSLhLn+i8CtDI=;
+	b=2ipiKY3YaPHCMYe59wNNytIiRDOCw0oYHXocKYWOgrrv2w3LipyCH1JmXPWKO1XZ8oJc
+	 /HoEr8ecSt0kqoUz+aL9Jsv68R47btHuSIjgdztsV+iXDlsDPpMWpDw97cOmbrVBP8Hh4
+	 sYl8ztpXjEUaFSxucjbXQFMzg2ZytqSHk3rsygu3HoSSnm4krUU8NcRaS4dVR3OtIe2WX
+	 EepIXu7ZRJr8GLTQmBHFhboWkSAgTebI4wY3HnWpB0PRRYdRKk00ag5KsrFCI+Aeuc3gZ
+	 PuoADchUtDa+jxVW1VzdFbW7CvrRBSdX1236v3GFypJXasmSicGFsbaUEyqvKVqxlYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JAeLnyPy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QdfHw1Lk;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D78606A322;
-	Tue, 20 Oct 2026 19:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674CC606A32D;
+	Tue, 20 Oct 2026 19:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JAeLnyPy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EBB1F000CE;
-	Tue, 20 Oct 2026 19:30:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QdfHw1Lk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7961F000D1;
+	Tue, 20 Oct 2026 19:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792524626;
-	bh=KSeUcvYUjSwsww34n8o7HdXqLU0bLoM+ufR8PXL12y8=;
+	s=k20260515; t=1792524630;
+	bh=3/6lfOiLcuVyA3cX0EYsczIjRwzeAaCSLhLn+i8CtDI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JAeLnyPyB6jABg2Y16IolXFwqhIFPwWIJRyPK/1woNixgG3DFtV+hdVddTuClialv
-	 xbm8ppWAY3xNJHi/9iHtD1UPRkHCycxTdl5ICzaglY7YSju6bPURo+j4w7u5Np8YLb
-	 GaCAISgXVAgVozkqA6kzg2utb412SSzRg6ZjLAu76DECG3Nh13ydLBC5Hqw48Nu0yW
-	 RIcNmkfpX1PMnL1R5Jxh2Ppf/Pqw1va9kJy+qDDJChV8+3p1f2+tbhu+WmkjkNPtn1
-	 3sqFot52DEzNMWWyXD5+GKLWNtY0ezLcfYmq7qW6L6wXf/QTPIl4QlLrRa69870Bjg
-	 MDU8pGFjCj/5g==
-Subject: Re: [PATCH v4 net-next 09/15] selftests: xsk: run one test case per
- xskxceiver invocation
+	b=QdfHw1LkD5+b+rGvqANXS2NVfo2wC9RlgwMb803Le9givN6mxXU/EUuJKXwiTYTn1
+	 9UMg5yBtcTHf8bFr8Y0CA4bFOGvTizUIRC310n0OlibZlFvrKJ0cDOLM3a5wYTaHfw
+	 Yku2I+RWIkp3ceBRLNOwWZu3cy3FjIFpS64I2b9OZy8Z1XEvkgBpTe4Hh0tYVWQfS4
+	 B9sdv7b3FgRv9eZj1/poIng9lZEUvyHb3/G2zejVkdbiQ41oIME/aoRoM/SDq0Wjr4
+	 0WFkqIRZVJ1Q5eqMsH982nI/R0N/zErNdDHwTtk9pj7fJ7AQDgiyT9lUfryiGGe2Kn
+	 I+HDUHdytOLcQ==
+Subject: Re: [PATCH v4 net-next 12/15] selftests: xsk: prepare xskxceiver for
+ endpoints on two hosts
 From: netdev-bot+sashiko@kernel.org
 To: maciej.fijalkowski@intel.com
 Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
  stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com,
  tushar.vyavahare@intel.com, kerneljasonxing@gmail.com, bjorn@kernel.org
-Date: Tue, 20 Oct 2026 19:30:25 +0000
-Message-ID: <179252462533.3135.3442908149115698082@kernel.org>
-In-Reply-To: <20261016174338.787135-10-maciej.fijalkowski@intel.com>
-References: <20261016174338.787135-10-maciej.fijalkowski@intel.com>
-X-sashiko-severity: Medium
+Date: Tue, 20 Oct 2026 19:30:29 +0000
+Message-ID: <179252462905.3135.16990828336786085778@kernel.org>
+In-Reply-To: <20261016174338.787135-13-maciej.fijalkowski@intel.com>
+References: <20261016174338.787135-13-maciej.fijalkowski@intel.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,147 +64,123 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] test_xsk.py reserves the 2 MiB pool only
-  (/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages), on the…
-- [Low] In xsk_wait_endpoint_exit()
-  (tools/testing/selftests/net/lib/py/xsk.py), the TimeoutExpired…
-- [Low] Concern: xsk_reserve_hugepages()/xsk_release_hugepages() read,
-  modify and restore the global 2 MiB nr_hugepages with no protection…
+- [Low] parse_command_line() does not fully validate the new numeric
+  options.
+- [Low] In the adjust-tail cases, RX can decide to skip only after the
+  traffic has run: testapp_validate_rx_endpoint() clears…
 
 --
 
-selftests: xsk: run one test case per xskxceiver invocation
+selftests: xsk: prepare xskxceiver for endpoints on two hosts
 
-This replaces test_xsk.sh and xsk_prereqs.sh with test_xsk.py, which runs
-xskxceiver once per mode and case on a fresh veth pair. It moves the huge
-page, busy-poll and endpoint wait helpers into net/lib/py/xsk.py.
-xskxceiver now requires -m and -t and runs exactly one case.
+This prepares xskxceiver to run a case with its two endpoints on two
+hosts. It adds --queue, --max-frags and --timeout options, a SKIP message
+on the control channel, and a wait for the link to come up once the
+endpoints are in sync. It also changes the default case MTU to
+ETH_DATA_LEN and restores the original MTU in cleanup_iface().
 
-> diff --git a/tools/testing/selftests/net/lib/py/xsk.py b/tools/testing/selftests/net/lib/py/xsk.py
-> new file mode 100644
-> index 0000000000000..ffaf4b2d35b9d
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/lib/py/xsk.py
-> @@ -0,0 +1,73 @@
-
-[ ... ]
-
-> +NR_HUGEPAGES = 32
-> +# xskxceiver maps the UMEMs of the UNALIGNED cases with MAP_HUGE_2MB.
-> +HUGEPAGES = "/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages"
-
-[Severity: Medium]
-This comment, and the commit message line "test_xsk.py reserves 32 huge
-pages of 2 MiB, the size that xskxceiver maps the UNALIGNED UMEMs with",
-hold for thread_common_ops(). Do they also hold for the probe that decides
-whether the UNALIGNED cases can run?
-
-hugepages_present() in lib/xsk/test_xsk.c does:
-
-	bufs = mmap(NULL, mmap_sz, PROT_READ | PROT_WRITE,
-		    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, MAP_HUGE_2MB);
-
-Here MAP_HUGE_2MB goes in as the offset and is not OR-ed into the flags.
-That leaves no size bits in flags, so the kernel uses the default hstate.
-
-Take a host booted with default_hugepagesz=1G, or arm64 with 64K pages.
-The probe checks the wrong pool there. The 0x54000000 offset is also not
-aligned to the default huge page size, so the mmap fails with -EINVAL.
-
-On such a host the sequence is:
-
-  xsk_reserve_hugepages() fills the 2 MiB pool and returns True
-  _get_cases() keeps the UNALIGNED cases
-  detect_ifobj_caps()->hugepages_present() fails
-  XSK_CAP_UNALIGNED stays clear
-  testapp_validate_traffic() prints "No huge pages present." and skips
-
-Every UNALIGNED case then skips, even though the 2 MiB pages were reserved.
-The docstring says these cases are left out only without huge pages.
-
-The probe was already wrong before this patch, but this patch is the first
-to rely on xskxceiver using the 2 MiB pool. Should hugepages_present() put
-MAP_HUGE_2MB in the flags, the way thread_common_ops() does?
-
-> +
-> +
-> +def xsk_reserve_hugepages(saved, host=None):
+> diff --git a/tools/testing/selftests/net/lib/xsk/xsk_peer.c b/tools/testing/selftests/net/lib/xsk/xsk_peer.c
+> index e3e353d6abd95..256e63196f923 100644
+> --- a/tools/testing/selftests/net/lib/xsk/xsk_peer.c
+> +++ b/tools/testing/selftests/net/lib/xsk/xsk_peer.c
 
 [ ... ]
 
-> +    have = cmd(f"cat {HUGEPAGES}", fail=False, host=host)
-> +    if have.ret:
-> +        return False
-> +    have = int(have.stdout)
-> +    if have >= NR_HUGEPAGES:
-> +        return True
-> +    saved.append((host, have))
-> +    cmd(f"echo {NR_HUGEPAGES} > {HUGEPAGES}", shell=True, fail=False,
-> +        host=host)
-
-[ ... ]
-
-> +def xsk_release_hugepages(saved):
-> +    """Restore the counts that xsk_reserve_hugepages() added to saved, the
-> +    last one first, as two hosts can share the pool."""
-> +    for host, have in reversed(saved):
-> +        cmd(f"echo {have} > {HUGEPAGES}", shell=True, fail=False, host=host)
+> @@ -162,6 +179,30 @@ void xsk_peer_abort(struct xsk_peer *peer)
+>  		peer_send(peer, XSK_PEER_ABORT, 0);
+>  }
+>  
+> +/*
+> + * Tell the peer that this endpoint skips the case, so that it skips too.
+> + * Closing with unread data, or getting data once closed, resets the
+> + * connection and drops the SKIP if the peer has yet to acknowledge it, as
+> + * when a NIC reset holds the link down. So read until the peer closes.
+> + */
+> +void xsk_peer_skip(struct xsk_peer *peer, int timeout_ms)
 
 [Severity: Low]
-This probably isn't a problem in practice. The kselftest runner runs tests
-one at a time, and saving and restoring nr_hugepages is the usual pattern
-(mm's run_vmtests.sh does the same).
+Is "so that it skips too" accurate for the adjust-tail cases?
 
-Still, the 2 MiB nr_hugepages count is global, and it is read, changed and
-restored here with no coordination. If something else on the host changes
-it during the run, would this restore overwrite that change?
+In those cases the RX endpoint decides to skip only after the traffic has
+run. testapp_validate_rx_endpoint() clears the support flag:
+
+    if (!is_adjust_tail_supported(ifobject->xdp_progs)) {
+        test->adjust_tail_support = false;
+        return TEST_PASS;
+    }
+
+and then testapp_adjust_tail() returns TEST_SKIP:
+
+    if (!test->adjust_tail_support) {
+        ...
+        return TEST_SKIP;
+    }
+
+By that point the TX endpoint has usually finished with TEST_PASS. It
+never sees the SKIP, so it does not skip.
+
+The final verdict still comes out right, because xsk.py later in the
+series reports a pass plus a skip as a skipped case. Could the comment
+say that the peer either skips or passes?
 
 [ ... ]
 
-> +def xsk_wait_endpoint_exit(endpoint, label, timeout):
+> diff --git a/tools/testing/selftests/net/lib/xsk/xskxceiver.c b/tools/testing/selftests/net/lib/xsk/xskxceiver.c
+> index 9704702f60fc9..56ea5ac6a3c63 100644
+> --- a/tools/testing/selftests/net/lib/xsk/xskxceiver.c
+> +++ b/tools/testing/selftests/net/lib/xsk/xskxceiver.c
 
 [ ... ]
 
-> +    try:
-> +        endpoint.process(terminate=False, fail=False, timeout=timeout)
-> +    except subprocess.TimeoutExpired:
-> +        endpoint.proc.kill()
-> +        endpoint.process(terminate=False, fail=False)
+> @@ -328,6 +302,18 @@ static void parse_command_line(struct ifobject *ifobj_tx, struct ifobject *ifobj
+>  		case OPT_UDP_PORT:
+>  			opt_udp_port = strtoul(optarg, NULL, 10);
+>  			break;
+> +		case OPT_QUEUE:
+> +			opt_queue = strtoul(optarg, NULL, 10);
+> +			break;
+> +		case OPT_MAX_FRAGS:
+> +			/* It sizes the packet array of TOO_MANY_FRAGS. */
+> +			opt_max_frags = strtoul(optarg, NULL, 10);
+> +			if (opt_max_frags > 0xffff)
+> +				print_usage(argv);
+> +			break;
+> +		case OPT_TIMEOUT:
+> +			opt_timeout = strtoul(optarg, NULL, 10);
+> +			break;
 
 [Severity: Low]
-Can this second process() call time out too? That could happen if
-xskxceiver is in uninterruptible sleep, for example blocked in the kernel on
-a hung page_pool or XDP teardown, so the SIGKILL does not take effect.
+Should --timeout and --max-frags get a full range check here?
 
-cmd.process() defaults to timeout=20, so this is another bounded
-proc.communicate(timeout=20). A TimeoutExpired raised inside this handler
-is not caught by the except BaseException clause next to it.
+strtoul() returns an unsigned long, and the result is truncated to u32
+before the > 0xffff check. A --max-frags value of 2^32 or more can
+therefore pass the check.
 
-The exception would then escape without the "killed after" log, without the
-captured stdout and stderr, and with the child left unreaped. ksft_run()
-would mark the case failed with a traceback.
+--timeout accepts any u32, including 0. Later the value is multiplied by
+1000 in u32 and passed on as an int:
 
-The case would also take about 2 x CASE_TIMEOUT. The commit message says:
+    wait_link_up()
+        err = xsk_wait_link_up(ifobj->ifname, thread_tmout * 1000);
 
-    A case is killed and fails after 20s, so that the run ends within
-    the net timeout even if all cases hang.
+    main()
+        xsk_peer_skip(peer, opt_timeout * 1000);
 
-> +        ksft_pr(f"killed after {timeout}s", line_pfx=f"{label}|")
-> +    except BaseException:
-> +        endpoint.proc.kill()
-> +        endpoint.proc.wait()
-> +        raise
+A timeout of 2147484 seconds or more, or a negative string (which
+strtoul() wraps), gives a negative timeout_ms. With a negative
+timeout_ms, the poll() in xsk_peer_skip() blocks with no limit.
+
+In this series, xsk.py checks --max-frags and --timeout against 1-0xffff
+before passing them on. So this only happens when xskxceiver is run by
+hand.
+
+Could xskxceiver reject these out-of-range values itself, as it already
+does for the --max-frags upper bound?
 
 [ ... ]
 
