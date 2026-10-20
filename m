@@ -1,105 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792536878;
-	b=tsXo3vCy+iPFG9L4NgSK6627m0sKnRTlzlojn14jNZMCkiJ+AbMGlI5cZneju7ezUaQx
-	 ajTKtqr01vnHQfLUnh2rHSrLkM0/9gv/UiTFXGU1Znj/NwVJrqp4SEcI7sQz4qPnzZpQd
-	 4+FsGsAVtz93pwfBBIWtuzxkAoK0RDeLOdUg65QdTnHsKde/NEmYGl/T+oLOHYfPDkCCH
-	 2rFTfHjsKw3XCatiKV8ePZArH0tt6P60sAt1JJ0ULXbNRjovrNdz+B144BllsAiT62ien
-	 X52O5slp14iVYFkGi+peIaO4vy22DczKe+SwDPVU6VxfdHL8Qb+2NtQjznx4ct2nxlQ==
+	t=1792537438;
+	b=BfHZagybSVSUNa7j4tUeJZhBTAVNcMAtTwVsNnDKyX69SLC5kKkBso2iGyhmoCPd49tC
+	 0Y3QwmBEfz1mwlS5x8LgN9ONb4KVZM2Ovv/0rmZm7s6SKgAFf3mjnnlj8gnClyeBVxbMh
+	 zRyccCs6gI0UvQoZcnMzAShRZKVbXv7qenwEPaFXkIqT+6yJgNPJoegx4X1S8SDsH+QU9
+	 cm+o/30h3pXZ2PkyQQZC147GVmVqW2NbikWFjoWrwvoX9ShWbB8unJZ+fqEetr+D6rxDg
+	 L6LPbfMYMPzqyhQMQXxdwP/1TBwwv56qe630xBdv4PZzVchz6niwvnATuhQPbAdy7+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792536878;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=nTY4UiwHZnguYZHnP/ahTYNmkFfFglzVMEyieXYZ2S8=;
-	b=A/r/0RSskxqNOeT2RqS+8mtUFK45s9+tT0yXRcdN4IgsL6gRah3giUgKF68wFjiJiBlv
-	 F1SYWJ33rQZMZKUL53px43+HR+svDxFR15/JG6499J0mp1NBvWgHMKDehObgWRMTR/JMK
-	 /laEhD+idqJq6L7uvY08y5tjqH7znBVMlWGFbuS5EHALaANrgM+NNDJ26xOrHDLINMl9N
-	 LNdfHUi8gqbutlpDk09U9PNMod4lH+c77NtpUm9VMvoEbNEYJzash4JDMFeLYiPPqsss8
-	 mbgydNrc+ViGSMtOuB/SSBDjMVKmXUBFOOL+dmIIJNIXjCOo+2zmpMSVJrCrqYVaY3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792537438;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=uNLcmzGbPyxrDzejr5AbDJAD8CAf+fLALEo3HZwcBXk=;
+	b=1y21W1CzJTSO7jVGmwnltANXqrUMn1LLsk7c4Fr/oyVOzi44shSn2zNS4lzUQ0P5VjBb
+	 xaQ/EWb+Q5HHHkSmHZpV/YyvnVUbI4LK171hO9UvBZvecs7sDGvs4juLleGK+qKVBHIW7
+	 bT76TZNm8pdxb/UK648J5P+OZtEfLbGDNuXbQE2zICmLsYWv7zj7CW0LAI9el0XP8xEhr
+	 8GuymUIFNrYHJFY1VWYGl/DbuAs02T5qKk0ZX33P/TIhBbm/lszCrQLJlhHjX5nqyN4K0
+	 2LMZihxIDBiaYZg2mwkeUSRiNqYDNHEBaaePghIITIsutWxQOF9bn1OQ07aedNoT4QA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=YzT96xX8;
-	arc=none smtp.remote-ip=209.85.216.100
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SgGEiRBE;
+	arc=none smtp.remote-ip=209.85.218.41
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B3606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 22:54:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD9B3606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB745606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 23:03:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB745606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=YzT96xX8
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ad41b47541so127389a91.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:54:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792536877; x=1793141677;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nTY4UiwHZnguYZHnP/ahTYNmkFfFglzVMEyieXYZ2S8=;
-        b=Bh3pHaXZ1/+06spo3UOv7QgeWIxRGZHSHS+aivDPdK31u3k8/+YkmdNgsV78+eDXj6
-         1H2YUOm1ldUY9+L0Y+TrnGsh+e5P6hLYUKJyUHHb2BY6Zk8FfX7+xYOKl3LMKI68lG+M
-         Nq09NeyteZJfM6g/kTQtPCl9w0kTphENG5e429WY+GHjxMgVzpu3sqSnqdCewKcm9eE1
-         p5M/P4Pmn9JUCnXa8yuWYj91GoSgAR9lC6Sg9pkNA0Xn9Q4thPSIynw4QmADAPg+/IE7
-         1Z/ZBLsknle7hohgLm6HAOWPkccFrz2J5wR0DAYjpl89SVdnkTLJeeMvyRJYX65BZgqa
-         IUow==
-X-Gm-Message-State: AFq9FYKf0RiD0GZjvVRF9CRMDNhjT3N8DMKmC14DSsGIVTXgLs+/XtJ9
-	esgn0geqeVghKwxkNdMtoz8zrNkCJaRsKsg0MXYGjbbMHVMuU+/kv0KruzOytaiQd4CwYnnvBgY
-	0SRGDnFtQ/h3LPYb08OkgJYm8f14WrgUS/OSWs67NVUsW06X1VQdCCHk2ZoRehJuCj65Gsl9Z48
-	5Yv9Y3eMsjDPxf7eDkILQtQlOkE4S22SjPletUXGNYqhncgxvTH4Gwn2K4MrZevDaJf0r556NaJ
-	5aEXZGzNg0=
-X-Gm-Gg: AYBFou19WmRuoeUzrn4om3eqmtM4seyLo0wSDWW2Kc2KCRA8OBsT/qLYF7ixI6RJ0Vb
-	yLpeKA3ZwMnSOqe4qFxgQcMyv/fd7qY3cO7c82J7lBehlmY+CBU5kSQ/rAkBIM3DUSJzcAIJa3+
-	lXDMvwAqwFqluSOy1diEWJNkFq4MYxSJTx6w9HBNLHM6McoNPfDAlIOgSUA0OVSYE9o8q7EQA1Q
-	0ZcJbSak3XoGzK1wndygZFPPpm6XgD4Vli3IF/wwuNxTUONLaqZ+fswBy4jQiFqW2gjMP17ZSU2
-	daVkwChC1B1qNMzaP5Tcdoz4EIKPuZKRSLLna0NQzuqIaTiiVgx6yk8Pvrt0VgJ4yKuNOTEMNE+
-	UdKKYOk4lWGJwQdykBJXUJxpaYhVpu8+OffXuw7SKx/YC42rTZuKzNtT3l057rNtFJ8XTJhJ+CA
-	mLOaiSy4l0C4e0TjVy6VBRBsYGVl76WhKoFnhUuw==
-X-Received: by 2002:a17:90b:4c49:b0:3ab:a188:b8b7 with SMTP id 98e67ed59e1d1-3ad86f1bbf2mr272360a91.22.1792536876998;
-        Tue, 20 Oct 2026 15:54:36 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ad81f69d2fsm617265a91.3.2026.10.20.15.54.36
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Oct 2026 15:54:36 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-341eff9e381so153644eec.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:54:36 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=SgGEiRBE
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c40f29667e6so10295066b.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:03:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1792536875; x=1793141675; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792537436; x=1793142236; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nTY4UiwHZnguYZHnP/ahTYNmkFfFglzVMEyieXYZ2S8=;
-        b=YzT96xX8TG4hzXTrL0v08jZ62xwhimj7jIlxZ14sOkUN2OsaToGIZdDYLbg28LWf5j
-         lywh+1P5baM4fcU4+uQi0RYj5xYhv4tyxEySl4wp/Ps0ShhcIMUukwIjwqnsWCBHUJ42
-         TCC2VKUsJ7eaY/mqAAEgk+k5C7sLmSZjjrPGs=
-X-Received: by 2002:a05:7300:828a:b0:367:185e:867a with SMTP id 5a478bee46e88-3674f21c1f2mr822737eec.38.1792536875037;
-        Tue, 20 Oct 2026 15:54:35 -0700 (PDT)
-X-Received: by 2002:a05:7300:828a:b0:367:185e:867a with SMTP id 5a478bee46e88-3674f21c1f2mr822695eec.38.1792536874251;
-        Tue, 20 Oct 2026 15:54:34 -0700 (PDT)
-Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-367405ee5eesm1496843eec.8.2026.10.20.15.54.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 15:54:33 -0700 (PDT)
-From: Michael Chan <michael.chan@broadcom.com>
-To: davem@davemloft.net
+        bh=uNLcmzGbPyxrDzejr5AbDJAD8CAf+fLALEo3HZwcBXk=;
+        b=SgGEiRBE9unPyBTgv6ppFscSIVEV02BOWARDnd6WD+ZmooptrVIAQuXxMSzTPOT7ZS
+         d/JPU/SeNyy5iVFFzc2LjFu3nyCvsgmRf+kDwdbRXFEKB7Kqw2Uu64K+GkzV1fw1+wU8
+         QUZ/rkVtayGmeRdxC6kBh0fKlQ13+mW/oqGM91xDU+Sm84g2JSiz7lhUxxJEadtyckxf
+         Y/3k1iWLZ6AT+Y7pSEjfQscsRR99C4RFpDt7l3l0UPLRtriDBn+hxPDcqzoTnC3RKSrt
+         jMYXDWKp27BV2oXUjRIGGiX77M4W34ASUn6gCj5z7q4fTzGlIaI0swsRS0ISbL9Uyz17
+         2dIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792537436; x=1793142236;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uNLcmzGbPyxrDzejr5AbDJAD8CAf+fLALEo3HZwcBXk=;
+        b=P3KKOQKeMUublI5y/Gr9dsLhyYQGDBYBI2Qv+J012tUUhB94KHBlAlZOuWPk/2oPot
+         5XnfzJNCANRj3gIyWXKeAcZzbQ+PJZ8CE1mvJWvv24reZiErRaPqaASwPEhc5lmvql5O
+         X2obY+5j6LUJyuoR2XN1f+i6UDWGk3k9hvKubLCljYxS+yZ6eEw0wvQoHSqF8zcy0iou
+         QS9UhQWozufSc8qtQLIIn6DkYmWID9k0ay1YB+BL7b9B+D7mg6L5vEpwniSAymeNz8F0
+         jbbe6V1t/frjcHo1K9Qlwy/oWOPzAn/yQf4/TD/oILdWQDch9LfTSBqaZ1nnYR/cHoGy
+         QT6A==
+X-Gm-Message-State: AFq9FYIFDUwVy/FPhQ4fuC+zvMf6IzYfzJG5yLBPvA2sLT3UexHYxz3i
+	0wTC+7p5hHyHgsJjf2x43DWq2UyoifBPClqe5r1x1Zv5t2yb+MJ4Lj97
+X-Gm-Gg: AYBFou1wc8rYAwK9WUUpfEkSZmIfg0NMEx8dPnGPAv035lJrcvfqCwHbcSfQrX3onYq
+	UjqCdPR9aKNWqiuHM66Dr/tw3b0yRJiLVM0mUzFB3AaA+a6iE441KQq/1ObZenU6g2pB2Yr7F+L
+	dBidfV1nb33QEW1tENJvBrZ4J8FhJd85c46wBUwRK4dwk187EYJ/wUGEeMorO+N7zvtInntg9t/
+	8amWa4cSr+dbw2nPUX6FWzXB/4cBHoCGb19gbv2Jc221QA+BB8TnOv7D0HAxiDZk64ZqI93rG3O
+	LNpukn6qClEDgE9OVhMRIAzGtjwF9Ab/2w/1OO4CyVo7SX+CIBe6gFWMGG79Ay8HriwwS4AvouD
+	M9G7cS4Vk+cyKnZ/AIRuddPX5TQe1SRROOp9EapKVqQpjNZTQfZm3yA93QnIsas7e3SCjdqJNVV
+	aglaRELrB58wRLvDh+qLiAgCFqPrEyCzT86HSLIYHabiqdXp01UF5lRCOoylTLEeaKbAWBZEyQX
+	B1JnxKucz1U+phcTPmrH0pGS7qaheSAqrG4/RbE1pzlIr3hhurL8U/6smtH6vNq5E/F1uMUSEM0
+	5aHvyRchHXJGCiaxWubx5Wn5cMY=
+X-Received: by 2002:a17:907:2d29:b0:c41:55b4:d88b with SMTP id a640c23a62f3a-c4679708c7fmr34909466b.43.1792537435956;
+        Tue, 20 Oct 2026 16:03:55 -0700 (PDT)
+Received: from localhost.localdomain (2a02-a466-79a7-beef-68fa-5691-e1e5-a015.fixed6.kpn.net. [2a02:a466:79a7:beef:68fa:5691:e1e5:a015])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46790366d8sm18433266b.87.2026.10.20.16.03.52
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 20 Oct 2026 16:03:53 -0700 (PDT)
+From: Andre Brait <andrebrait@gmail.com>
+To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com
-Subject: [PATCH net] MAINTAINERS: Update Michael Chan's email for tg3
-Date: Tue, 20 Oct 2026 15:53:58 -0700
-Message-ID: <20261020225358.1130051-1-michael.chan@broadcom.com>
-X-Mailer: git-send-email 2.54.0
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	g.goller@proxmox.com,
+	Andre Brait <andrebrait@gmail.com>
+Subject: [PATCH iwl-net v2] e1000e: work around TSO erratum that corrupts data and hangs Tx
+Date: Wed, 21 Oct 2026 01:02:11 +0200
+Message-ID: <20261020230211.75665-1-andrebrait@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,42 +96,163 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-My old email address doesn't work anymore.  Update it to the current
-working one.
+On I219, a TSO packet whose first buffer is long and has a 4 KB
+boundary just after the TCP checksum field makes the NIC send corrupted
+data and then hang the Tx DMA. Forwarded VM traffic (tun/vhost-net)
+produces such packets, so hosts bridging guests onto an I219 hit it
+within minutes:
 
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+  e1000e 0000:00:1f.6 eno1: Detected Hardware Unit Hang
+
+Right before the hang the receiver gets TCP segments carrying data from
+128 bytes earlier in the stream, with a valid checksum.
+
+This is the erratum Intel documents for the 82571/82572 (#76), 82574
+(#17) and 82583V (#7): if the first buffer is larger than
+3 * (max_read_request - 4) bytes and a 4 KB boundary falls just after
+the headers, a read is repeated, wrong data goes out with a correct
+checksum, and the Tx DMA hangs. e1000e never implemented the documented
+workaround.
+
+Apply it to all e1000e parts: limit the first data descriptor of a TSO
+packet to 3 * (max_read_request - 4) bytes (372 on the I219, where
+pcie_get_readrq() returns 128). The rest of the linear part goes into
+the next descriptor, which e1000_xmit_frame() already reserves; the NIC
+still segments the packet.
+
+Tested on I219-LM (8086:15bb), v7.0.14, byte-verified traffic:
+
+                                        unpatched        patched
+  packets placed inside the window [1]  hang in seconds  no hang
+  guest traffic, TCP timestamps on      hang at 387 s    60 min ok
+  guest traffic, TCP timestamps off     hang at 402 s    40 min ok
+  guest traffic, VLAN tag from stack    hang at 1176 s   40 min ok
+
+  [1] 785-1013 packets at each of 10 offsets, 54- to 70-byte headers
+
+Unpatched, data was corrupted at every hang. Patched, no corruption, no
+Tx timeouts or drops, and hardware TSO stayed in use (26.5M segments).
+
+Developed with an AI coding assistant (Claude); details below the cut.
+
+Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
+Assisted-by: LLM
+Signed-off-by: Andre Brait <andrebrait@gmail.com>
 ---
- .mailmap    | 1 +
- MAINTAINERS | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/.mailmap b/.mailmap
-index 0a0be49bc4de..16c3e6599082 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -638,6 +638,7 @@ Mayuresh Janorkar <mayur@ti.com>
- Md Sadre Alam <quic_mdalam@quicinc.com> <mdalam@codeaurora.org>
- Miaoqing Pan <quic_miaoqing@quicinc.com> <miaoqing@codeaurora.org>
- Michael Buesch <m@bues.ch>
-+Michael Chan <michael.chan@broadcom.com> <mchan@broadcom.com>
- Michael Grzeschik <mgr@kernel.org> <m.grzeschik@pengutronix.de>
- Michael Grzeschik <mgr@kernel.org> <mgr@pengutronix.de>
- Michael Riesch <michael.riesch@collabora.com> <michael.riesch@wolfvision.net>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 00b440be0d46..4941eeec4a0a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5623,7 +5623,7 @@ F:	drivers/net/ethernet/broadcom/unimac.h
+Notes:
+    This is a follow-up to a first attempt at fixing this issue
+    (https://lore.kernel.org/netdev/20261018203215.77371-1-andrebrait@gmail.com/).
+    
+    Gabriel replied that the stack can still move the headers after
+    ndo_features_check, which made me look further. The condition that
+    patch relied on, TSO headers crossing a 4 KB boundary, turned out to be
+    only part of the problem.
+    
+    The NIC hangs, after sending TCP segments with the wrong data and a
+    valid checksum, when the first buffer of a TSO packet is long and a
+    4 KB boundary falls 1 to 16 bytes after the start of the TCP checksum
+    field. The headers do not have to cross the boundary: with TCP
+    timestamps off (54-byte headers), a packet whose headers end 10 bytes
+    before it hangs the NIC too, and the first patch did not catch that.
+    Forwarded VM traffic hits this because tun/vhost-net builds linear TSO
+    buffers at arbitrary offsets.
+    
+    Intel documents the same failure as a TSO erratum for the
+    82571/82572, 82574 and 82583V: a first buffer longer than
+    3 * (max_read_request - 4) bytes with a 4 KB boundary just after the
+    headers. Its workaround is to keep the headers in a first buffer no
+    longer than that, which removes the long-buffer condition no matter
+    where the boundary falls. This patch applies it to all e1000e parts; on
+    the I219 it prevented the hang at every offset in the window.
+    
+    The full investigation, tools, captures and raw results are at
+    https://github.com/andrebrait/e1000e-i219-tso-hang/tree/08c29e379bac
+    
+    Summary of the runs. "ts on/off" is TCP timestamps in the guest (66-
+    or 54-byte headers); "VLAN" has the stack insert a VLAN tag (rx/txvlan
+    off, timestamps on). "hang <Xm": every run hung, the slowest within
+    X minutes; "ok Xm": ran X minutes without a hang.
+    
+                          ts on      ts off     VLAN       placed [1]
+      unpatched           hang <27m  hang <7m   hang <20m  hang <12m
+      first patch         ok 252m    hang <6m   ok 72m     -
+      check in xmit [2]   ok 60m     hang <2m   ok 47m     -
+      SPT/KBL regs [3]    -          -          -          hang <1m
+      split at 4 KB [4]   -          -          -          hang <1m
+      this patch          ok 60m     ok 40m     ok 40m     ok
+    
+      [1] buffer placed so the 4 KB boundary falls inside the window;
+          "ok" means about 1000 packets per offset without a hang
+      [2] an attempt to redo the first patch in e1000_xmit_frame(), on the
+          final layout, segmenting in the driver; it could also stall the
+          queue when it returned NETDEV_TX_BUSY
+      [3] the existing SPT/KBL IOSFPC/TARC0 workaround, extended to CNP
+      [4] first descriptor ending at the 4 KB boundary
+    
+    Every hang came with corrupted data, except the two with the 4 KB
+    split.
+    
+    Limits:
+    - Tested only on I219-LM (CNP); an I219-V hung the same way in
+      production. The 8257x parts are covered by the erratum but untested
+      here. Runtime-tested on 7.0.14; builds with W=1 on dev-queue.
+    - The I219 window (1-16 bytes after tucso) differs from the documented
+      8257x one (64 bytes after the headers). Intel may know whether the
+      engine differs, and the I219's actual max_read_request.
+    - Not addressed here: since 95ecba62e2fd the netdev watchdog may never
+      reset a hung e1000e (bugzilla.kernel.org 118721, comments 29-30).
+    
+    The AI ran as an agent with SSH access to my two test hosts. I set the
+    test requirements (byte-checked traffic, controls that must fail first,
+    identical setups) and reviewed the results and the code.
+
+ drivers/net/ethernet/intel/e1000e/e1000.h  |  1 +
+ drivers/net/ethernet/intel/e1000e/netdev.c | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/e1000e/e1000.h b/drivers/net/ethernet/intel/e1000e/e1000.h
+index 63ebe0037..704284188 100644
+--- a/drivers/net/ethernet/intel/e1000e/e1000.h
++++ b/drivers/net/ethernet/intel/e1000e/e1000.h
+@@ -219,6 +219,7 @@ struct e1000_adapter {
+ 	/* Tx - one ring per active queue */
+ 	struct e1000_ring *tx_ring ____cacheline_aligned_in_smp;
+ 	u32 tx_fifo_limit;
++	u32 tx_hdr_buf_max;
  
- BROADCOM TG3 GIGABIT ETHERNET DRIVER
- M:	Pavan Chebbi <pavan.chebbi@broadcom.com>
--M:	Michael Chan <mchan@broadcom.com>
-+M:	Michael Chan <michael.chan@broadcom.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	drivers/net/ethernet/broadcom/tg3.*
+ 	struct napi_struct napi;
+ 
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 834a5b888..f5f5d2230 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -4143,6 +4143,15 @@ void e1000e_reset(struct e1000_adapter *adapter)
+ 	adapter->tx_fifo_limit = min_t(u32, ((er32(PBA) >> 16) << 10) - 96,
+ 				       24 << 10);
+ 
++	/* TSO erratum (82571/82572 #76, 82574 #17, 82583V #7, also seen on
++	 * I219): when the first buffer of a TSO packet is larger than
++	 * 3 * (max_read_request - 4) bytes and a 4 KB boundary lies just
++	 * after its headers, the NIC repeats a read, sends wrong data with a
++	 * correct checksum and then hangs. Keep the headers in a first buffer
++	 * no larger than that.
++	 */
++	adapter->tx_hdr_buf_max = 3 * (pcie_get_readrq(adapter->pdev) - 4);
++
+ 	/* Disable Adaptive Interrupt Moderation if 2 full packets cannot
+ 	 * fit in receive buffer.
+ 	 */
+@@ -5632,6 +5641,8 @@ static int e1000_tx_map(struct e1000_ring *tx_ring, struct sk_buff *skb,
+ 	while (len) {
+ 		buffer_info = &tx_ring->buffer_info[i];
+ 		size = min(len, max_per_txd);
++		if (!offset && skb_is_gso(skb))
++			size = min(size, adapter->tx_hdr_buf_max);
+ 
+ 		buffer_info->length = size;
+ 		buffer_info->time_stamp = jiffies;
 -- 
-2.51.0
+2.56.0
 
