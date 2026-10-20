@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792460489;
-	b=T7SAkcD0hfE3rA+nMPv8v4KIOoEcJsqTUH7a+DrqsbS5z6f6Tld8uRXpRmE1djBnOY+Q
-	 khtzBvXlJZIPsT0mjXpcUcpxIqR8dtrMQzzeYbvQT6p66MdepD9AZNf/qKOhRy2Iz26+L
-	 f/TeLTuQuHmO7mQem2GqF88rItpkqlqMYdtaYmD3m1Pj/VxZ3tBsiIjoayW9DWAM/vo87
-	 glqTJaM4Y2WbXqYFk0Y3BoIYEnPJ2JwuUFH4kUoHnfLa2/eB7YzskYuQokugQDB1ZkkbO
-	 BrvBNXVV15+hi5fmJEvKwJ2+QmgtqqRT2hI05Ri8K7zFqHZ8UQDGE0s9s76Ka1sQ9UA==
+	t=1792460492;
+	b=wdiR8UkvZcWbE/6Q0sa5IIkGtqA0WUFKLIN6WXn8W1yIQoiWY13pGTJYW4647Q7y74ez
+	 LTPqPU12uTYDvMWT/IUxATTWM/HB/l9rpq/OjSKbXeF01JiWFXSr+9n9pH5RvLvGTSpzX
+	 OxECSS8z/Pdva2aAf3EP7RAGQWWpwLSKx901XlnbPl5q+b05qIX3o41OgiHGVxt2uQ6hl
+	 FO2U2T6Mzzf/nCDoQt8omhDlIwAkaGaJr3xtTFzqVWz1hlxD6oRq2pKHjDmYwv/HrpDi4
+	 liFskIQu7rQW+iWWQeZTro+w0dMlez4yppI7+X4QXVADuyl5EU5/0+wV4b2Ot7wBWoQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792460489;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792460492;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=OSYF1NwugUVOIfmyavH/lgXJtnbm8axpRYf+453IfXI=;
-	b=AxwE9+e3xGcRFGLQ2shBMOizy7GfQ4NOzOVQ1clUulGz+xn5PIuY92V3gm3YRC/wsEzf
-	 FOnUmc8xYgNTlhYkTXMoFhHQZU4HEWWJOE5CV748ix4pvKOTrCWwMvaQY2/2/nXXFytsK
-	 eO9qBK65QBKCObn4okFTM91vtypwB2NTRt4MoJmaFf/92j4+8ia5O0xg7HO+g9QHoEwvm
-	 NOkkLrmrBoS4P3wrXAESxOFZkr/HkIPabs616qC3QiLd+6k2UiUn9mowjKlAh5G0/H1au
-	 Fw8TVfbW1FtfjXprAgLIewL3zXLvE7tiwNpeoGNQ+VwXz0g9uBWTD46eLUlbncX3vag==
+	bh=aDnrN/rnO8GTJvw/uGicHbUYV95/hlCAICtPYU2nHKk=;
+	b=RZAPYybVX1BUTCSortI6fjOV6EF2DIL6nDqnMoRWnizry0jQTnBQs6++cGU4Ndq1/3t/
+	 i2zLKAV1rtEbhNSyO/HXMJDVVnpIgj9Q6wrQ/3mi+gSu8XYAYophw8UKndfxLZ/xMv0rP
+	 hKn1y5SaczaZN64s8eNd6GLRrOuN1KYMFI1P/lGNPGFyNb/skKIe+5Q3mWQbDoYQczkMm
+	 tHqKHtnlUVTkwTt2U3vVql5SLe7v3aFNXnOMAvzXnBfhFR/fTCm/lL2uKnsIYyBliOtlL
+	 i2x+mWsP1RliK3Oie3eAQZID1oEH7W2B8akoLjdB5Rda/EvdFEnj1wJnpn53Z0q3xPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Rmr/Y751";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEGECTr6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8F8606A321;
-	Tue, 20 Oct 2026 01:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A372B606A328;
+	Tue, 20 Oct 2026 01:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rmr/Y751
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32871F000C5;
-	Tue, 20 Oct 2026 01:41:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEGECTr6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DF01F000C7;
+	Tue, 20 Oct 2026 01:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792460488;
-	bh=OSYF1NwugUVOIfmyavH/lgXJtnbm8axpRYf+453IfXI=;
+	s=k20260515; t=1792460491;
+	bh=aDnrN/rnO8GTJvw/uGicHbUYV95/hlCAICtPYU2nHKk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Rmr/Y7518FkX/XqrQBIxXgYFQMLyu5szj62mX/3lkC+wHy8/FeV7itYT2wi5T/EAF
-	 jbt3TImbq0MIowaI5AGM18Uu7NwGf/o27hqRjQ2HQqExshhdhzNXe+zkU+g3LI6Nos
-	 9IZhM+AxeBJ5rA8urC3XbcrYO+J0ujMiOkY6HnZW6M/Z877SxdqH9V/q/p7diJTtVg
-	 RsfLD1XU5yVxTPu47IML4Ief4cudPa+PC02eOVhq1aqXsb0LXJgqhkisPVFIcBzUfo
-	 DhDyEFf+aonhRuk8jXb2Nn2Zo0btdL4NxLjNZI9gUrcHhqB5dB5wUncvgmO5qDOEVF
-	 bCtYfFz+I1KZQ==
-Subject: Re: [PATCH net-next v6 3/9] net: dsa: realtek: rtl8365mb: set speed
- for family D
+	b=OEGECTr6MHjApaNaS5+l2ymKg3u8HTBL/7GV3C5c5WJoQ8MW7IsR0A2qF4yZGzorC
+	 dcK2MbWcgiTqwiZXIxc7HCCn47o/YGI+bvhRKoRgrU1TyJbODxLwZkp4uivelC9TvX
+	 PIU0j4E0VOPC5RhEiFdCPTWwlvQVGe2wocxgB5UZ/9KmxYFYWOZMn9KfyNvUx758JN
+	 MuWCjWiAAzBYtv+tf1opGvqVyzjvNx5tWyA2mFq9BHxZp/j4yHYqgujNuqM/j1YEJL
+	 vUzs7/lj17u4rKMi3rjBdQGhfSLDK+t6h68T54F6H+CPwKMuj99U1bF70Um4foADHH
+	 rHUW5sx9y+Yng==
+Subject: Re: [PATCH net-next v6 8/9] net: dsa: realtek: rtl8365mb: re-latch
+ the family D SerDes
 From: netdev-bot+sashiko@kernel.org
 To: namiltd@yahoo.com
 Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 20 Oct 2026 01:41:27 +0000
-Message-ID: <179246048740.3135.14592585398817212074@kernel.org>
-In-Reply-To: <75829f0c-69d4-4c16-8300-142023f840d7@yahoo.com>
-References: <75829f0c-69d4-4c16-8300-142023f840d7@yahoo.com>
-X-sashiko-severity: Low
+Date: Tue, 20 Oct 2026 01:41:30 +0000
+Message-ID: <179246049030.3135.13023954288671040078@kernel.org>
+In-Reply-To: <c43a5bf1-0cf9-4c68-b905-e9b615e2c9b2@yahoo.com>
+References: <c43a5bf1-0cf9-4c68-b905-e9b615e2c9b2@yahoo.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,65 +65,136 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] This finding was checked and rejected as a false positive,
-  because later patches in the series finish the work.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] rtl8365mb_conduit_state_change() never looks at its `conduit`
+  argument.
 
 --
 
-net: dsa: realtek: rtl8365mb: set speed for family D
+net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
 
-This commit adds family D handling to rtl8365mb_ext_config_forcemode().
-On family D, 2500M uses its own speed value (5), and the top speed bit
-goes into a new FORCE_SPEED2 field. The forced-mode configuration is
-written to a per-port register at 0x12c0 + port, and forced mode is
-enabled by writing 0xFFFF to 0x12c8 + port, while family C keeps its
-existing behaviour.
+On family D chips, this adds a delayed work item that repeatedly parks
+and restores SDS_MISC. That drives the DISABLE -> HSGMII edge the SerDes
+receiver needs in order to latch, and the work keeps checking the link
+after that. Episodes start from ->conduit_state_change(), or from
+pcs_config() when the conduit is already up, and stop when the conduit
+goes down.
 
 > diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index 840db5ad32efe..2dabc4da861f4 100644
+> index a8e9220b217fd..a1155a75356da 100644
 > --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 > +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
 
 [ ... ]
 
-> @@ -1646,23 +1669,32 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
->  	u32 r_duplex;
->  	u32 r_speed;
->  	u32 r_link;
-> +	bool is_d;
->  	int val;
->  	int ret;
->  
->  	if (!extint)
->  		return -ENODEV;
->  
-> +	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
+> @@ -1670,8 +1774,184 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
 
-[Severity: Low]
-This isn't a bug, but can the family D branch run at this point in the
-series? Every rtl8365mb_chip_infos[] entry is still RTL8365MB_FAMILY_C
-here. So is_d is always false, and rtl8365mb_ext_config_forcemode() only
-takes the family C path.
+[ ... ]
 
-Later patches in the series make the path reachable:
+> +	/* The re-latch edge has only been observed with HSGMII, so the work is
+> +	 * only armed for 2500base-x. It starts once the conduit is up.
+> +	 */
+> +	if (is_d) {
+> +		WRITE_ONCE(mb->sds_relatch_armed,
+> +			   interface == PHY_INTERFACE_MODE_2500BASEX);
+> +		/* With the conduit already up no conduit_state_change() will
+> +		 * follow, so start the episode here.
+> +		 */
+> +		if (READ_ONCE(mb->sds_relatch_armed) &&
+> +		    READ_ONCE(mb->sds_conduit_up))
+> +			rtl8365mb_sds_relatch_start(mb);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void rtl8365mb_conduit_state_change(struct dsa_switch *ds,
+> +					   const struct net_device *conduit,
+> +					   bool operational)
+> +{
+> +	struct realtek_priv *priv = ds->priv;
+> +	struct rtl8365mb *mb = priv->chip_data;
+> +
+> +	if (rtl8365mb_get_family(priv) != RTL8365MB_FAMILY_D)
+> +		return;
+> +
+> +	guard(mutex)(&mb->sds_cfg_lock);
+> +
+> +	WRITE_ONCE(mb->sds_conduit_up, operational);
+> +	cancel_delayed_work_sync(&mb->sds_relatch);
+> +	if (operational && READ_ONCE(mb->sds_relatch_armed))
+> +		rtl8365mb_sds_relatch_start(mb);
+> +}
 
-  "net: dsa: realtek: rtl8365mb: add family D SDS13 PCS support" adds
-  the family D SerDes setup to rtl8365mb_pcs_config(). It also makes
-  rtl8365mb_pcs_link_up() return early on family D.
+[Severity: Medium]
+Should rtl8365mb_conduit_state_change() check which conduit the event is
+for? It never uses the conduit argument. As a result, every conduit in
+the tree overwrites the single sds_conduit_up flag, and each one cancels
+or restarts the one SerDes work item.
 
-  "net: dsa: realtek: rtl8365mb: add support for RTL8367S-VB" adds the
-  first FAMILY_D chip, with extint ports 6 and 7. That keeps
-  0x12c0 + port below the 0x12c8 enable window.
+dsa_switch_conduit_state_change() in net/dsa/switch.c passes on every
+conduit's state without filtering:
 
-The other preparatory patches in the series say that the family D path
-stays unreachable until the final chip table patch. Could this commit
-message say the same?
+    ds->ops->conduit_state_change(ds, info->conduit, info->operational);
+
+rtl8365mb_setup() also accepts more than one CPU port:
+
+    dsa_switch_for_each_cpu_port(dp, ds) {
+        /* Use the first CPU port as trap_port */
+        if (cpu->trap_port == RTL8365MB_MAX_NUM_PORTS)
+            cpu->trap_port = dp->index;
+
+The RTL8367S-VB, added later in the series, allows port 6 (EXT0, SerDes)
+and port 7 (EXT1, RGMII) to both be CPU ports. Suppose the RGMII conduit
+goes down while the SerDes conduit stays up. Would that cancel the
+SerDes work and leave sds_conduit_up false? A SerDes that has not
+latched yet, or that loses its link later, would then stay in the "link
+up, no frames" state.
+
+A later pcs_config() would not restart the work either, because it reads
+the cached flag.
+
+The reverse case looks affected too. If the RGMII conduit comes up while
+the SerDes conduit is down, park/restore episodes would start against a
+far end that is not running.
+
+rtl8365mb_pcs_config() above raises a related question.
+rtl8365mb_phylink_mac_select_pcs() returns the shared PCS for any port
+in a SerDes mode:
+
+    if (rtl8365mb_interface_is_serdes(interface))
+        return &mb->pcs;
+
+rtl8365mb_pcs_config() then sets sds_relatch_armed for any 2500base-x
+user, with no dsa_port_is_cpu() check. Suppose port 6 is a 2500base-x
+user port (SFP or 2.5G PHY). Could any CPU conduit coming up start an
+episode on it?
+
+If so, whenever that user link is down (after a cable pull, for
+example), SDS_MISC would be parked for 20 ms every 1 s for 15 tries,
+then every 10 s. The "did not latch" and "link lost outside a
+reconfiguration" warnings would be logged each time.
+
+Other implementers of this op filter on the conduit. For example,
+qca8k_conduit_change() does:
+
+    struct dsa_port *dp = conduit->dsa_ptr;
+    ...
+    if (dp->index != 0)
+        return;
+
+Would a similar check here, limited to the CPU port that owns the
+SerDes, avoid both cases?
 
 [ ... ]
 
