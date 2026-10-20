@@ -1,47 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792467213;
-	b=F+QH+IsGELokQL8+LkRSd+EwgUBfwa0JjI3M+MKPJhPr2/sO1q2Ehjp1Vfl7zGPJaQLl
-	 as1l0AAlhyZYvywDsfpQaw5yZ3eskY0TZN5tOQYfHRiePoTnIwOAsZTOL2xI+bv1efVpm
-	 8inUsxbhKnBoJ7u9udgUHgVhjP3t5M3TPpw9RKLYTJg5NBwAAGByItZWHQiQJYJc61vuV
-	 6fqfRoRmR52XNFIGAifS0HcOe773WF3qzPqrby6T3Jm0bU7Kq4LSzj96LdlWqvtYpYpCN
-	 VAgA1bKnEDTkgy9AGbWJeeJtH5lQBR1Gv/RUw4qVJJe8ucA9ZnXLfZwQx3J4Ca7gaLw==
+	t=1792467342;
+	b=0tJZCQHN81K3y0Fszw1TC59fHGGz3VuJMUivIL8pxfncGPJfkO2uYw4SpNhKr1J4vxWK
+	 gkk3NnclyAtv+vp4ZGu3xa3tjmOQP72SZLGowzkcOe0vHA7Ux0SBy1hhazyYN0Pe1ugie
+	 /9M4fT9a8uBY9tS7dvk1uta311GUVHXbUBcbhE/KPj9QpWYrfsgJL9yYWG4stLCPC2MRj
+	 YdXukiksLnNv9f2FZ4nOn7Do33u6sjlybhCbjByyLiLZac0gV/ZU5rQ6WNrSDQiKC5CVy
+	 NvXf2CVhqEsk7qUxCJoCBRJO7ychw+46AQ3WDxUEBTG9VSX9Pt9DAc90mnwZ7mum82Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792467213;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792467342;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=CjIRWE6TQ7/W5lfKi5fjb7V3GBfojCU+K/Wrc9kZoRQ=;
-	b=Dxsg8OqU/xiazM4t8UHl1MWRbMUcroU0xHU8KnknKMlyIZZYUfwUPf2BV0T7NvUZVNtW
-	 Iou1yDaqoFKnrlJnR8KqQtOjm8d3xbaNFXLHNY876ArtYVQPYwHkmDkZTC5mLZbUM1nNc
-	 XkATL3U3YAFhSOJwhkFOc7gT+UZZLymZZ/E2oN1XAGt7w+vuIntxdGAPI5oYBda/U+y6g
-	 9yy3ScFtdkcsm/VkXlBS3jj5LMxI1pI5ddimzVdxrhbYtE8qgy0X3UHTaOKDDkcp9t3g/
-	 kVS9etSRtIir+8PJXpBC+cVuu+4ClWDPk1mH1cNvaIs09n7KwnQxsoQaS11EqFJ2TkQ==
+	bh=mDMtfasMIDRqx9JZ0G661KrJEHlSs89jiaCe7dgEIRI=;
+	b=d46IbyeDfLkcrDfpZFZ17YcYCcp0vVKrWGLAZ6UKZ91aYwtHIDG8qM3WpcMVxC18W5MU
+	 esrNkfmKUihIorDLE7smsP5FAqVLRt35tlnQDCOUhK3MDqbLqma1tZo5TGkSFrDdhw9cc
+	 nGIX8nagia+nH4aC++ZG0RZJF9ElITJzL48odAhj1iKx8+vhbFFCZs8QYI0n0xEMy6CBa
+	 GBpoMgav9NPKUu+ZUIf4L9nXiJJK8lQ3XkNAz1z5w8akKLXslJ5vfVE+RHCdKZS/zpQFU
+	 TJK/b+tpv+cSY9Xud9saKz05jMG6Fz7mhM6IEPYHU2bC2olpBUcuQqeK/ncsLnv8NNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=l2lzkRTc;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=qA1XkcNx;
+	arc=none smtp.remote-ip=220.197.31.3
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6847D606A319;
-	Tue, 20 Oct 2026 03:33:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6847D606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC6A606A319;
+	Tue, 20 Oct 2026 03:35:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDC6A606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=l2lzkRTc
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=qA1XkcNx
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Cj
-	IRWE6TQ7/W5lfKi5fjb7V3GBfojCU+K/Wrc9kZoRQ=; b=l2lzkRTcny7+zz7Yf9
-	hTLQEO1Bwfz61xOa0No0liA/QKoRJdQD+pOmtNPj8Oq9UsHkNi34Ws9Hr2VUK7kK
-	ugYQ63csDii267OLpy1VsXhJ6caqQG8cFOVvGh2uCuPB1MUA2eR32ebZ98cWvY4f
-	0CHS3C5+KOIaELUWcthHjcWmg=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mD
+	MtfasMIDRqx9JZ0G661KrJEHlSs89jiaCe7dgEIRI=; b=qA1XkcNx1h082dRCOK
+	WQv4Qc/UbDH11GqF/w0b9139Sl7bosyj8JKHQZRtE9PDuQRqVTs4nET1W2CXaFf9
+	MUm8Z7vHpUzQhFhq4QUFt0+4UoHImO8jcaVCIB81J2mB+HouOkRxwn0uVaJj1Tqz
+	+7oDVf0MLp/cDsHmfnWhfQ/hA=
 Received: from colol4bi5.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgA39Xji4NZqukytAw--.48022S2;
-	Tue, 20 Oct 2026 11:32:52 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3l4Bj4dZqigSKBQ--.21731S2;
+	Tue, 20 Oct 2026 11:35:00 +0800 (CST)
 From: Binbin Deng <18983559317@163.com>
 To: anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
@@ -53,9 +53,9 @@ To: anthony.l.nguyen@intel.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Binbin Deng <18983559317@163.com>
-Subject: [PATCH v1] ice: Lock TC flower filter list operations
-Date: Tue, 20 Oct 2026 11:32:48 +0800
-Message-ID: <20261020033248.522973-1-18983559317@163.com>
+Subject: [PATCH v2] ice: Lock TC flower filter list operations
+Date: Tue, 20 Oct 2026 11:34:57 +0800
+Message-ID: <20261020033457.523151-1-18983559317@163.com>
 X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,12 +67,12 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgA39Xji4NZqukytAw--.48022S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKw4UXr13KFWrKw4ruw45Jrb_yoW7tw1xpF
+X-CM-TRANSID:_____wD3l4Bj4dZqigSKBQ--.21731S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKw4UXr13KFW7Jr17tr4fKrg_yoW7tw13pF
 	Z8J34j9r18Jw15WasrXa17Zrs0gwnYkr43WF95C3Z8Zr4DJF4qgFnrtay5trs5GrW3GFW3
 	tF17Zw15A3WDGaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimhF7UUUUU=
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+wTBpWrW4OQbLQAA3V
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piGjg7UUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC3wXhxWrW4WW2FQAA3l
 
 The per-PF TC flower filter list is used without a common lock.  TC flower
 add and delete paths traverse the list, send firmware commands, and then
@@ -98,7 +98,7 @@ while an entry is being added, removed, or replayed.
 Found during a static-analysis-assisted audit: candidate sites were
 surfaced by a Coccinelle rule, and the reader/writer paths were
 confirmed by LLM-assisted (GLM-5.3) code inspection. Due to a lack
-of hardware infrastructureThe issue was not observed at runtime.
+of hardware infrastructure. The issue was not observed at runtime.
 It is identified by code inspection only.
 
 Fixes: 9fea749856d1 ("ice: Add tc-flower filter support for channel")
