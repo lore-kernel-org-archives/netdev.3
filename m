@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792522812;
-	b=hDQ7zFLZy5OhzKRc15MiiS1x/9Jwx3q0aIall8TJh8onNSo+s++90Tr/wutkECMBNjo1
-	 JwDnJuhVnsXYgxSCtJHEIxlCtSnJwh3BLl4satvzt3MBxlBlaI9L6AvFd+qi38zPDkkL3
-	 XEg8w3oTyKFN5Kn6O0IjnobEvnxJjaDvLW7R8fr3oRFXkL7M4s6tAmhXfzhs/yQnLzW7i
-	 FyToYfPL5XmEqoN+I00+N94S3LxeH6zx+InhlljnsrLQqNOXfuoshxCQLMMYKn9M77+27
-	 HJP0wwX5R4KIU2tA1P1nNYf6bwAbsP1B7bTZVg1Q/PvPQi/TSYsZo3VcYgdM5a0lo4Q==
+	t=1792522821;
+	b=H1vhn6EN8nAyu563wGhBOeahAI1e+eGStZ6BNr+F7feXV2YwyuPigSP21MCmA0HvXwLe
+	 4skWVI7SmVMHFGvWxGYU+uWKDq3C0snoMBmY+/XcexO4QoklKX7xGVG7LM2t3lmAThNVn
+	 asfgd40aOz/+pg+VDpZP+te8Fk0MJBV6faTcUqKk6xEmZa+OPlviVF3i1+kOy/xr2XfD8
+	 Y5j/EpsTN3OkUuvU6S7pCXp+UeHeT8JtvxjB86H1Pc7JJWivtWOis9knbdTCn3XxppCgY
+	 VxZqNpPYzSDZ1thBYxG6uHZG+DCgEzpVZ/ygFEz47uTHHn5YezzmT4RbJ83/ZsMO74w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792522812;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792522821;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=kS7rklsk1M528PZqQFNZHAogQLZIvw+QNAsWcaaDZNs=;
-	b=jTFId0O9bQYRnva5PEh01mrSg7fuuaW2G9eD8StdkE1AiVsxqmZ0gN+Ysrm4rBo42a+t
-	 rL6Xv9HWtrnw5lnguujtF5VZWwX03UhW/BXtPeAF1CZeCP4H2RiGzLhutViCqsFTeQmO8
-	 idJwVQK8V0osD0sFS1SkQmLdsqG4cr4+J0BKXvNGNtpEkOAN4keYauDypQAEji8iXLfWE
-	 P8Ow1WDWsLDfBAK6J9MMLz3Z6BBkSegQ/1OG2SZ+5tVjER3u2CRvcOgTJ5ab/J6S5Yqla
-	 /2bVCbHmtZJ+/VNAdswEw8RAEdvZfikOug9CGjgJLw7g2gY/2Lj9way4+fn3WJaajmw==
+	bh=BR48JBBLgoT5Ab+WlGBsITJm2E+BPQLQTiC4wGtjjew=;
+	b=qGaNLJS3zU63Z7O3Rp6T0yuDC0pNDexR7OdgYE71D4gi/LisEKPhfiMk+OxTVKZhcBKJ
+	 EDhXG0dRMuYKuZH/bHrORgqUomWvqTzwYFFg/R9WBPfysGmZF0f063FWzIgpUzmInu2Ng
+	 qqDOgHIc514E+58WbfxbumPQVgkAO4ZC7IQO/2UQ0zZ8/NQIpbZ3fYw3kp58Wo284NaIv
+	 FltV/KnNuZYODeIV2kMlD5nfcoOBEAHxQ3Fxby/5bIs06jx8+n2Jjfv4vaVh8NU4MnmGw
+	 jTnXpO0iF/wLGGtlnkhVDv3XYqaX5opGHW6+cAMVBW5uRZhfvFW/9oPXZMrv+4bko0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mXkI96xI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dpzxDArZ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E801606A31A;
-	Tue, 20 Oct 2026 19:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE7B606A327
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 19:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mXkI96xI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B1B1F000C9;
-	Tue, 20 Oct 2026 19:00:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dpzxDArZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4317D1F000CA;
+	Tue, 20 Oct 2026 19:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792522812;
-	bh=kS7rklsk1M528PZqQFNZHAogQLZIvw+QNAsWcaaDZNs=;
+	s=k20260515; t=1792522816;
+	bh=BR48JBBLgoT5Ab+WlGBsITJm2E+BPQLQTiC4wGtjjew=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mXkI96xI3xDMevLgzCeDXKzLv5TWVypV9COSIonPH1jZZmlyak01+Yh+iC0T39+Pa
-	 R0ItlatIEuL7iz5pkHrj4hGr/7bmxYUqOwmyJYHi/hqNJarx27qD5ND+uPH6joqxFP
-	 7xEfPG9C4APq/uewY7TGGj/x4Yw4D1hBqgbG+Rkb5L0xagbEHjqKML5CpQxfBxXHpn
-	 20wQ9m+SFNWweY2D+yb3cGGOnTiUaFR+GEcqmlRPY9pDtih7QqAd7Q1gKyFu3adKw8
-	 StU2YEuwVfI21mUNuBJYd4qojD9Mjd6WAAC+UfwwMlzMVZnPdyQ19GfzVG9Fwa2Duq
-	 BhPr9Aynad/kw==
+	b=dpzxDArZdVKDu8g6LOTLWHomQqn7cV3zGmdfilHiG8Mw9Og5RyB2Rr8cYXeLGE5At
+	 nU67dED61CSU71U0+9/j45Zv4fWR+11r7069anvMGIxOiP7Hg7TqVZ1NIhB5G5VCLX
+	 De4IlApuv7I6cqX+d6aleIrhx/KokYUGS5tNObKmTeo6RCNBQK2GpZSzYfYwlbrb0M
+	 n4LuKafOv/iFPVuvS2qTprch9KtoFA/I4g8ciNh0aTJfQiB2DA8PcH6yurjCCA9APf
+	 1S0Zk/8t4zSomIFlrCSu31MPJ2nX6m6WUMPKnq8nehLs53Q0synTmCyacRMnlO/hTQ
+	 8RxUVRR229pAQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F15173808209;
-	Tue, 20 Oct 2026 19:00:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A34C3808209;
+	Tue, 20 Oct 2026 19:00:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] veth: decide peer queue count from the peer's own
- attributes
+Subject: Re: [PATCH 1/2 net-next] net: openvswitch: skip IPv4 later fragments
+ on
+ TCP/UDP set actions
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179252281052.159319.12461762929045255363.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 19:00:10 +0000
-References: <20261014013620.2497-1-lirongqing@baidu.com>
-In-Reply-To: <20261014013620.2497-1-lirongqing@baidu.com>
-To: Li@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Rongqing <lirongqing@baidu.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179252281478.159319.15440207107164273578.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 19:00:14 +0000
+References: <20261015124749.4694-1-fmancera@suse.de>
+In-Reply-To: <20261015124749.4694-1-fmancera@suse.de>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, jesse@nicira.com,
+ aatteka@nicira.com, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@kernel.org, davem@davemloft.net, i.maximets@ovn.org,
+ echaudro@redhat.com, aconole@redhat.com
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 14 Oct 2026 09:36:20 +0800 you wrote:
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> veth_newlink() creates the peer netdev from tbp, which points at the
-> nested VETH_INFO_PEER attributes when they are supplied (peer_tb) and
-> only aliases the primary device's tb otherwise. However the queue
-> reduction is gated on the primary device's attributes:
+On Thu, 15 Oct 2026 14:47:48 +0200 you wrote:
+> An IPv4 later fragment carries no L4 header, but key extraction leaves
+> ip.proto set to the real protocol and the flow may wildcard the frag
+> field, so validate_set() accepts such packets. set_tcp() and set_udp()
+> then treat the first bytes of the fragment payload as an L4 header,
+> rewrite them as ports and patch the bytes at the checksum offset,
+> corrupting the packet.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] veth: decide peer queue count from the peer's own attributes
-    https://git.kernel.org/netdev/net-next/c/267bc3f113d8
+  - [1/2,net-next] net: openvswitch: skip IPv4 later fragments on TCP/UDP set actions
+    https://git.kernel.org/netdev/net-next/c/14c0350142ab
+  - [2/2,net-next] net: openvswitch: drop IP fragments on SCTP set action
+    https://git.kernel.org/netdev/net-next/c/4d0d8f491307
 
 You are awesome, thank you!
 -- 
