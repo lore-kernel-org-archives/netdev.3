@@ -1,102 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.174
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792504234;
-	b=PP1mcc6asu6SdFh9fgakQ3GSM56sSErY/+o3Lgk9nXxyv0Z2XhMgtwTn5IpIjWMEz7EI
-	 /aNZBA0NEb/46qUGNjGB54yfrln7+uMIxnI9A/wKwSzL8rlM4ml+MopCwR+Ywp4TAiKys
-	 8mHcbcKEnthuwYifYaYi4vCWip8/IKuWlCdctfoPohnQiTKvgUYCA5XuRF5HZ9wW452os
-	 q74ZfpdNS2piHWiyqmrfezvH+8mdIFdkucqEBCd7pe8A7K8Cvt7vsj1Go5k1SVIyEfq9m
-	 q9bGTrnfu8u/kxogn9Tl20lhPaqRMah0KbFJOCwORUEBi5au0GsnhxU7LBEJg0sK6ZA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792504234;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792504349;
+	b=1nKaH4HAoYsYIvf7y+L9o77yFyyRUV0Do4HtTUpTC79lwm+d4uldoyGzFUWHffY6ahiU
+	 f9Pa51Ddslt/ISuYibleijCHgUMiUNNV2x3z/mYMWuv0lTSzRer4noIt/+qkiFB1mJ1gw
+	 xqtimoyXsim5N+VRSHAxcGT/PWJeRW1DmUN7HNaSCR3Jt8M9XQGnMCTAKjJ8vZPs3lenM
+	 eqTiZHnpw8iyg23e/gczMECzJ/s2700NwYWcn5ltPi3Lw/N5PsZxdx/MCR2WtFI5knqP3
+	 VARMGCpSyJQRo8dyg22FyZ+/wDikxtWqPBj0S+9vTtAuo0wNbDz6nzgG7PDhkdfcx6A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792504349;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=96lFzuIF0y8LTZ/Xj/gpwS61X9RAuz+hWffATqcJfZw=;
-	b=IBUfxLMMWLhDZxKjZij78RqR24R1k7DCdsrVTA/IPQsgPAPwluRdUkctTaNooxLBz8g6
-	 JtNX8s88odEfZu4WmnvOcinUe6c/iPBy/YLjmMhJnMA64cQm4bcHNxJyQo6kPSwymtV2t
-	 41v91ZaM3TvzBY/QUe5kp3eMyixgjOiRDToel7fv0q1TcNU3fv1oHLwQVTjTEODq4YACv
-	 9a+ilgue3fF7G663tzNpFMU+KIFRl14NYeAVpAhULqueGCbPJHy08dMXJR04ctPkcfB9u
-	 pXopWURluAJok1j0LID97he6UileI2lWBaqWkMPcSX6KBNC1tqiurW5nUsWJGMusBrw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=k/hbwlcYMnNfV2mBX84KMoYZ1kQ82mEtSuTGwp2XYJ0=;
+	b=Th/y3F2Sj2ECUE7apx+h56N7WcalCgU1Os7cujtqdd+BEmZDWHKqMlYZrnYTe7ZSfmu/
+	 v+ZsYFfhs60FRmoHAnNcL8dSFHvR1/3PMX1xY1cSmDwwv+81qeRFcocGJsMuW3/1C0Uac
+	 CuytTUOsC8KntG2MWuCpNcXwpWa+k1/Ng96JzyTzD/XRIddpVxMwbClDhE6ayhil5xesz
+	 WzGm2YKHtAY8EYM6wOakUNJHSzK4sXpgGksBl+RE4Mm9n/L9TQIu7lej18RH1MBhp8vxy
+	 RxvEO9FaEc+Px2417mTKUsdGbTFk1ilFDGUFxeNDCjKKQcjcLH171Ftd6iuMMLcF6Tw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ONkEtMSC;
-	arc=none smtp.remote-ip=209.85.221.174
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=IV2bjblS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A2E606AB27
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:50:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69A2E606AB27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B0B606A320
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:52:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28B0B606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ONkEtMSC
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5e948e56af3so1075422e0c.2
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:50:34 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=IV2bjblS
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8a064dcfcfdso597561b3a.2
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:52:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792504348; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kGRxH0B98vCIPoKVsOWwVcuibdrdUwWH5gj7IFWo6QSJ7jaV6jCpRErBnTj7o8j0l3
+         twa4xIBLHqYcsjlGn3IRcMzisflPqJt8VYT+YoQC3zV9r4UodOrGEs3sRgK2fS2lGtC3
+         q5YTRQBmtMAdnoV0HhB6Ugt5TF0cyXrmo9AhyDz3GscsKZhERMDPn87hnNoJ7WYT3Hw7
+         VfgV2yA0ZWmLtOK+oKZvXxgQET0RbM+/hLcZxQKSieytC7JsZoj+mBYkQSbOrjxB9a7O
+         EWzmDAgZJSUkF/kh3Nq93+LdprePoKkQl4cVnoak0T8u4jy/IGRXaYfn/6O8Ld+DaBnt
+         9rwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k/hbwlcYMnNfV2mBX84KMoYZ1kQ82mEtSuTGwp2XYJ0=;
+        fh=FPxBST2WYYXjpjgO5N+O61dd8G4nUuqOmz28f+gpAm4=;
+        b=Yixu0XRESFJeao0k4uR/4rNmPMJE4OTfQiEtgeIFhj05rdDazgyiDJZvx9CLIWQKOd
+         5B1CZzyPqxPSWQFIdJiYfoFLRNxtzl6N95VBXGx6KkSlcqBFoTLu8jjXdmd7oXNXRNZD
+         H6cK6sCWGbySo6l3CYPGoC3Y2jCKW8P3K3hzT/eOravXmoqsTyrdsVGeM3EodfuuMlEv
+         XYbCIELrHMZHO/7Xoxq2eR9XNGvuFx974qM9DKbweoIV4YWlLE2/L9Q5cUzNGktDzTbE
+         QXRh6Ut9Nrs5H3z+B7MwMKoXNw8lEg3TZUNfPWBn3XWxFiPNyNFlRGRNbsms39yZVIix
+         ufXA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792504233; x=1793109033; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=96lFzuIF0y8LTZ/Xj/gpwS61X9RAuz+hWffATqcJfZw=;
-        b=ONkEtMSChaZ/kXr1iIEYaNVrBiwMiySHPPA4GNOuWGjsv2BrWZaUOoJ5J8X79pnhzx
-         7xeioSNgPyYCGWj1xPBLR07Leiirw6LR50AaNasrNP9fdE0h+qyR4cqnPsx559blmnCm
-         /J8TRgNz/PJHHKEYIHNmhgqbj4I8QUPvUY3njmNyIrRaQ/WgCBs3Y4m9U1tLESg4FdLg
-         VHwJR/y8o8iNmGCnvKhfdShCGL7l9Wd13QQBbEg1M22mdwsRPfSXn3CUVUGdQp0noAq9
-         +9hlGW6PebbaVKG4L+r2scB6fSxBz2vzVEP8IPYNFObQfW4GxhGEyGD7r1f4zzOCfn+U
-         /+eg==
+        d=gmail.com; s=20251104; t=1792504348; x=1793109148; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k/hbwlcYMnNfV2mBX84KMoYZ1kQ82mEtSuTGwp2XYJ0=;
+        b=IV2bjblS35z+WtRmdC+d2NdVsRgCEc2iwHZCl7nN04NO7e2vjqFjw+Kx6HSekD8k2E
+         /NPZRHZ2d9c1Lug7zCFOG0L68NjXSPPtKPzbZDrCoc8aYx91Wv0bQUQUtgRqVZulPYqu
+         1syNEVnV219YTcsBqwsBTN8OTqFxpdGQxQXvZjeKMq+Ep4Z1SjPPQ2wtKwOxkoh5zuly
+         P4+EdYiXsq+MlyOJePp6ZT18lccIxbzkqhPTQ/AorTqz9PdbsZePwazefSSyjIBhqVlp
+         rbcM+9y4QEhyT9xZ5apQ6lMNz3ew0gGjIvKSy+Cg69b03SN4ZpNYRn/LcJvQzq+77ydf
+         +7KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792504233; x=1793109033;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792504348; x=1793109148;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=96lFzuIF0y8LTZ/Xj/gpwS61X9RAuz+hWffATqcJfZw=;
-        b=gt6WB8Rhug/yNngKIfx4XB9bOsEoZu1EHxrEbeg/HsWw2ZqHRy3aLsqYuEhywVLqWO
-         Bikf7Hl0MWLP+8b1xIWyrfE6qeoUCLwtSVyNWC3Wds8zzU7fEVyoTXUusNwTGL5+yEuP
-         Av9bS7KwASiZYVP49ONdAH3hgNjV5WOWAyfLnxSKDCKVHtpJi6i8OHqLz02UdCfRYeGf
-         1VN3Iuo7xlJWo3gvkuq5U0CQzB0No3lAx9pTiPbAaj/gsv3zZwBzDkiam5tUA0vQUA4g
-         wqZoXr9yg2AoE348oL1cPnYXsq54Cgl6LxH+mVAKxLuoUCYSiZIMAawEPWys4nQ2WNnr
-         ozlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxud+LPMLvTsonv+iusgZq0ou383MrPQdDugkPnm/FYl3a6YGdJ5F/Vb1eqEItTVGvQCHGQkDs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKz09xZrKhOnPlST1z+yHFtDTr6QxgX+hyet9cAHd5ztooPRTQk
-	0bP8kvQp2yhan4DCe2OINixn7CdYZlfDBR5fYTNjqB0JtWtwTWFouCQS
-X-Gm-Gg: AYBFou32m4CKGRJQNX6L4PR9z3hZtUrp9UqwGWDdClzpEuiKxc438Y4y4/d4TSg5yFf
-	OhGQIt0W1e2J5Qm96Mkmc7WvSA3Y/tlymyUfiXlcnjIXQMC6CyWqM34m1sIe0abIgBxzcgCHc6Z
-	+3NiKeVVozToovjWiXLwgw8jZuOnDMk/ItGpZiXm/hw36cOJ4z11ej2AU/tBInxseoM2khNQCic
-	UIfDstfoDU25h8UwIzJiYOIX6cPAVmVa2g64jvwgBhlTe1ooc4xAyrFaD3PDwcqacm/TyTGOtqM
-	iWmQH6YrikV2Y9MxNvM366wgMSyTrbm3bOqrPYwHmYAXvUJsUOYco1C9l3KMZStkGqSaRVmCu47
-	kc3riceSSR3iEDWEBM05DGieuZCyQ+6kJY7m6Voywgz1t60LzkcnnpRCFpf+DwKK1nrXNpKE9Vd
-	8QAntPP+gfmFL2B31D3czVz2DkFT9CPzsn6meR+6uGx2xTN38i1at+78Y7kFeyFrW71VzDRiCxH
-	Nj6cyXEZ3RYzkMZpS+nnMrDXlshlcGEvPxknetV4hqKJ84MJbAzKMSjyaoCDAKTZBkKFUofvCYS
-	40D5ej3Ex9m/zsrc2GWRCNKJX51HCvmIjk9uFg==
-X-Received: by 2002:a05:6122:4890:b0:5e9:5e79:ab3 with SMTP id 71dfb90a1353d-5eaaa954f51mr4242745e0c.21.1792504233298;
-        Tue, 20 Oct 2026 06:50:33 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eac20d6aa6sm7205788e0c.7.2026.10.20.06.50.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 06:50:32 -0700 (PDT)
-Date: Tue, 20 Oct 2026 09:50:32 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jason Xing <kerneljasonxing@gmail.com>, 
- Josh Don <joshdon@google.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1a81a5aacc334@gmail.com>
-In-Reply-To: <CAL+tcoBjWDwA+MrjzRapUeAom-4siL-cnXXLQrVf-A4myNRxyg@mail.gmail.com>
-References: <20261019230758.2960779-1-joshdon@google.com>
- <CAL+tcoBjWDwA+MrjzRapUeAom-4siL-cnXXLQrVf-A4myNRxyg@mail.gmail.com>
-Subject: Re: [PATCH] udp: Add noinline_for_tracing annotation for
- udp{,_v6}_send_skb()
+        bh=k/hbwlcYMnNfV2mBX84KMoYZ1kQ82mEtSuTGwp2XYJ0=;
+        b=krYQO94T7Xzj8zReNXbXb4qgNljMjXOi8HkyGzhy2P4Ik9A1yTeAGQBW5e5a6AmesL
+         KbbSiw0OL1j0A0oGwDzqeVlXqJDQ5NX+NGCG4r/ZZILl1F2vdScJbZuRiS11eZB8MgFw
+         kljhXNx0vbgdaLCqpYxD4PMdgbj/Q4NEeQOlnmG876W8tlT5kgWmtTZmQqBc38Np+ULv
+         xwgLsJTk6/uY/3C+QqJfLBIXWYH6pciQyz87US69NiUyJw5dqPW6YKwsFhUvI1ZRjr5m
+         ZK8z980fTkKr6H7BatnwQplz6FwP6hUePyBwMHodemqekK1a7fq6oJDcDGMliblvIMQT
+         3zVw==
+X-Forwarded-Encrypted: i=1; AKwUvBya8DeMDbxRy0GnivaiS8OO+VEkksNR7zGupTEdAfPDlWOLHmDekhq5gkx11+zExPyTz27r9uM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJJWsyTXhMHgAfhpXhkfID5b7Mfcg9sjX+UFrp9uIyGuvafFeHl
+	g1JgxRoykJmuAP4Jsrj7Td5nEl7bm0odfWG4BpETga1fOdbTb79IpQvsAQDvsfXIqsFQXrt5vtH
+	WQegLNrH5ngW8+ix4yv1ggGqdRbQ3i1Y=
+X-Gm-Gg: AYBFou3PAAU6Bfow32CA40rTWtj3PCipCj2rZTUK85iT/ylU25Mbh628oF49YVE1jT1
+	7GtmffTW0EGLHyvOYxkJcAW4E3R4LPr94qrSf9DYlNRpfc+1GfSbbfXyjXqV/qCuADiT/+7uVYx
+	jgVIY/1ULdCr5Ue1aHzh7pV2fSfNILL5SCjOqaypIsZwiXxbSYj1Fpwif4FkI3oX4/H+Hd1lYFl
+	PiasqwJPU8KbdIEtpCIDubn4CEJ2x7EqvH6HWQ8BnniXicRvTXsqqPt7QCLe1V9TAhYI4tsOKMQ
+	5LAoyE+0LxOW85peDm2brYMTMRmwrcTnFnV4aGmmbWXjc8hwFQqxwV8NsZsC0uRNzRvdQyezPMT
+	XE0jFOqeXles8uYY8jQgvihzQ9Qg+7coQnzAq95TIdxzBAj2uwWvA0ZAvW/xpwztGuC+xNwC5Kx
+	cnWghitHOPmuOjpqMrBw/zcK8fMzbknUDFKzcPHw==
+X-Received: by 2002:a05:6a00:2343:b0:89e:9c7e:fd51 with SMTP id
+ d2e1a72fcca58-8a04ba30b92mr8261328b3a.10.1792504348492; Tue, 20 Oct 2026
+ 06:52:28 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,50 +105,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20261019135441.1420968-1-sashal@kernel.org> <20261019135441.1420968-252-sashal@kernel.org>
+ <20261019172836.GA1885@quark>
+In-Reply-To: <20261019172836.GA1885@quark>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 20 Oct 2026 09:52:16 -0400
+X-Gm-Features: AclHuK-B306P9cHCODywZCNc6I1CxZirkEbtUGcvZRPSRQ2med4P2bdTR4gz54A
+Message-ID: <CADvbK_d3hcGcP21Fy_z9hkoSuQT0Bg7111Ejns_WxOYfCCGFHw@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.18-5.10] sctp: auth: propagate HMAC calculation
+ errors to callers
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Qing Luo <luoqing@kylinos.cn>, Paolo Abeni <pabeni@redhat.com>, marcelo.leitner@gmail.com, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Jason Xing wrote:
-> On Tue, Oct 20, 2026 at 7:08=E2=80=AFAM Josh Don <joshdon@google.com> w=
-rote:
-> >
-> > We hook udp_send_skb() and udp_v6_send_skb() using BPF fentry program=
-s
-> > to monitor UDP transmits. Both functions are static and have two
-> > callers: udp{,v6}_sendmsg() and udp{,_v6}_push_pending_frames().
-> >
-> > After an FDO profile update, udp_v6_send_skb() is now inlined into
-> > udpv6_sendmsg(), while an out-of-line copy remains for
-> > udp_v6_push_pending_frames(). The fentry program still attaches
-> > successfully, but it is silently bypassed for all uncorked sends.
-> >
-> > To address this, make both functions noinline explicitly for tracing,=
+On Mon, Oct 19, 2026 at 1:28=E2=80=AFPM Eric Biggers <ebiggers@kernel.org> =
+wrote:
+>
+> On Mon, Oct 19, 2026 at 09:49:03AM -0400, Sasha Levin wrote:
+> > - Residual in this tree: `crypto_shash_setkey()` failure still `goto
+> >   free` without an error (mainline HMAC helpers no longer have that
+> >   path). That is preexisting and outside this commit.
+>
+> I don't think this backport can be considered complete without handling
+> that case.
+>
 
-> > as was done for tcp_drop_reason() in commit dbd5e2e79ed8 ("net: tcp:
-> > Add noinline_for_tracing annotation for tcp_drop_reason()").
-> >
-> > Assisted-by: LLM
-> > Signed-off-by: Josh Don <joshdon@google.com>
-> =
+Agreed. We should return the error from crypto_shash_setkey() when
+it fails in sctp_auth_calculate_hmac().
 
-> I actually mentioned this thing a few times before. The original
-> thread was from Breno who tried to apply a similar change for tcp
-> sendmsg. The fact is until now we don't guarantee those functions
-> should be kept noinline like how uAPI works just for BPF prog. What I
-> suggested was to select a series of functions in one Doc so that we
-> could tell people those functions should be noinline or whatever else
-> just for tracing in a soft way?
-> =
-
-> Otherwise people would argue there are more functions that should be
-> done in the same way because they internally trace it.
-> =
-
-> Willem, Kuniyuki, any thoughts?
-
-We'll have to review hooks on a case-by-case basis for performance
-impact.
-
-If possible, it's preferable to select hooks that cannot be inlined.
-Over limiting what the compiler is allowed to do.=
+Thanks.
