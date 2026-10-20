@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792497503;
-	b=eOP399azSKMNXgcA3FdXiE9jwkdTOgAzmJxfjvvCPCvd3qiYidOw9mZeW0ovedzQH1IF
-	 bBf+eAv20oFk7Qo/wlH8AcR2pISMLaNPn21do/sbNdKL/x23/gqP6GSHW0o3wo9jD5mz5
-	 142ZA42IXkK2skbts5k5AFn4/8WFbSaScebNXhnqXzC631k5z2dS8heyW4yRzCmobsVzH
-	 OuSyR5ErA8Gjzq0/7vfOhy1BaXIG5xJNBR3NWRJhwym/wlfqHZzs7euodQ5JMJhkwSoy3
-	 U6YmeVcSjExsYjFmqZhqrXyjafaYeXOrnltjpM+eD/E9vB/ZT1FebqiHBRBv1uG2CeQ==
+	t=1792497501;
+	b=aiL4uxkV9ILXdJXTAL3Gwr5GDj9U0IWYwZnIh79PJOGMhEgWOh65xsqN830QAYNPMh1T
+	 93zNwNixR4qIwfYs2MtIu3SbTB7gF/PtsshsSQYI6Jf+/5ic3uWe19mWIzBr3tsUrpIEX
+	 FyNj1DE0z8sgedBqpwszonA1vkh1Os5qB2MJT39hcN+sb9lO1o8+in4l9VzAlV4P5TEFh
+	 109XPcNjdsXHcaN12UF6vd/pYp5JFt42QvPZ+gT41XegjizirWsj/oACj2EVeYG30SeN0
+	 TDOsRLVdU2xYJb588Mdh9o9aDtc9PdemwLQ6eNZVM1eksUigPcHC8ZXjMnYMG9v30PA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792497503;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792497501;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=UqSlIyIk6qjKoWIK+qLBrziazj0CloqHB/lLKRjw9ig=;
-	b=axJQOkbLraPPOCgZxTwxz7p+uV4naNIE3xoWguA3bwQsbPzrnuOQqfZIDBSrtxTLo/Xj
-	 bEXiT4dhNmI50Wq7UYUIIjBYv0ritRtk9F5zSFZutMnIGaK+2pH6LEtL3e+VteYKg61y9
-	 Yxd7bQLVdMHWArlnwj/y7SxAzq2pF73rjfYe0SHZ8ouG+x8meQk6VcM3857nker75Xd5d
-	 jSxq4tIr+AlAvrn5mYDqO3Z1ogIwxUoEX6Cx+MKPksypN2xVEhfVvAFLO854CXZRWTRlx
-	 uVJvKXcdgzRJkDkU5dg1Irj2bmekKabPC9m4VBErgvRAdwOPxWl/eV3vcf2GigI1s0Q==
+	bh=vpSCBqmNjvCfEzI72/33mULq5zVEPuCqZqDGgmalYOY=;
+	b=b37DW4VqRYQqrWc8AZLyF57gKWQZWW1hsOoTMYNa8WY+1fBdylFa08zAYJfA5m3lSZ3z
+	 8yf9KhHxbXUf6CbqG4qg5jlweUJPS7CK6PMyQrmqRSfFZ8hFQmfM16E6EwT8VMLwOTtVR
+	 kF5w9hcaSYyCbMT58Q5h1pvJiHuzWWfsMAnmjwMvWNMFiPsDWMZzNSUcCI6mE1ka3LB1a
+	 rH5bxnq6tISsqbSJhYhbNd8d1b3Esp2Num/0/q5YWVQy1Ha0FOidXthPm2hMA5QqO7RQZ
+	 F3mL+H5jHKU3WhfghVB6xJx24uwMJKmU0AxdmgJQSSQ6ouTN/Fi7NHz1XiBpeXaIbLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9zlO8z7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d06FRsxT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBACD60A261B;
-	Tue, 20 Oct 2026 11:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52BE606A334;
+	Tue, 20 Oct 2026 11:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9zlO8z7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275351F000C6;
-	Tue, 20 Oct 2026 11:58:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d06FRsxT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C75A1F000D0;
+	Tue, 20 Oct 2026 11:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792497502;
-	bh=UqSlIyIk6qjKoWIK+qLBrziazj0CloqHB/lLKRjw9ig=;
+	s=k20260515; t=1792497500;
+	bh=vpSCBqmNjvCfEzI72/33mULq5zVEPuCqZqDGgmalYOY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D9zlO8z7idsjIRZ+rqp+QAyWvbo24wC7k/h+1DvX0ht/GH0SgIblUnTGxGZsSobvd
-	 zUozG6VKm1WP5YHw/t2JbYz1wjvU1LIpjp88sUScnwhGjFR890q2AFhsmLJJdMfno7
-	 caKhVMGGz70IwMZJuxOXpaLHXr4+oIXNMthRbXbtGZak2oYC49GATOVT2JU4DHCcZU
-	 esJm6SUJ5ZofQhlVI1tuYirLQds0oKW8quwVskCa24eOxZGGn2g7M6gMg/pKv4/ZgL
-	 PZo19PsU9gl4PJUSWLYD5Z+FCOfAcPASvEHGtIm4ctFlw3uEzDKd0d1KUjfZlRoqvb
-	 Zgx1LDDPZfd2A==
-Subject:
- Re: [PATCH net-next v3 6/8] net: xilinx: tsn: add the endpoint RX data path
+	b=d06FRsxTYwJ+qu0tcjaH6OWzrK5d7sFyMXIiFtk7iRrBnhNYxn41KXbuDQ8qFLX1P
+	 NwK+M3H9oKgi3VJF+1Kylh6XAcsYBb4Rg/xw+8/ScH6NHorpyiQFiTOoNozPo4u8oW
+	 FOvuvp6DcMoEXP2UXJ1zdgSRnIxnFnrV96rRH+kEY81w1PW4c8t9GSqmxXQiQDqrhG
+	 nUgbMc6NFgxu2d61LqK0Cg6KRJaVfV7hvwWXvIIFUKIXDW7C9f8xvAkxUS0Z7oULU0
+	 rmHHVUDPA9BeARbYd3BOhzyc7F4y09rj5XLwYjQfUGLPyMaeJybdrFmODVpM1bUA0t
+	 qGDxNfw5Izzgw==
+Subject: Re: [PATCH net-next v3 5/8] net: xilinx: tsn: bring up the endpoint
+ MCDMA channels
 From: netdev-bot+sashiko@kernel.org
 To: srinivas.neeli@amd.com
 Cc: nagadheeraj.rottela@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -51,11 +51,11 @@ Cc: nagadheeraj.rottela@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-rt-devel@lists.linux.dev, neelisrinivas18@gmail.com, git@amd.com
-Date: Tue, 20 Oct 2026 11:58:20 +0000
-Message-ID: <179249750068.3135.14908716798460807295@kernel.org>
-In-Reply-To: <20261016-patches_v2_external-v3-6-e33d3960ca1e@amd.com>
-References: <20261016-patches_v2_external-v3-6-e33d3960ca1e@amd.com>
-X-sashiko-severity: Critical
+Date: Tue, 20 Oct 2026 11:58:18 +0000
+Message-ID: <179249749885.3135.15584191069467566874@kernel.org>
+In-Reply-To: <20261016-patches_v2_external-v3-5-e33d3960ca1e@amd.com>
+References: <20261016-patches_v2_external-v3-5-e33d3960ca1e@amd.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,10 +68,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 1 · High: 1 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -79,282 +79,159 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Critical] RX buffers are freed and unmapped while the MCDMA engine
-  still owns them, so incoming DMA lands in freed memory.
-- [High] The RX path cannot deliver any frame on the in-tree Xilinx AXI
-  MCDMA provider.
-- [Medium] After an MCDMA RX channel error, RX on that queue stops
-  permanently while the interface stays up.
-- [Medium] A partially armed RX batch can hold received frames for an
-  unbounded time under sparse traffic.
-- [Low] ep_rx_refill() decides whether 'at least one descriptor is armed'
-  by testing ring_head != READ_ONCE(ring_tail) after…
+- [Medium] ep_reset_dma_controller() resets the whole MCDMA core at probe
+  through one channel handle, but the driver does not own every channel…
+- [Low] In drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c, the kernel-
+  doc for struct skbuf_dma_descriptor calls @dma_address the "physical…
 
 --
 
-net: xilinx: tsn: add the endpoint RX data path
+net: xilinx: tsn: bring up the endpoint MCDMA channels
 
-This commit posts RX buffers to every MCDMA RX channel on open. It reaps
-them from the dmaengine completion callback and passes MAC1/MAC2 frames up
-the stack with __netif_rx(). Refill runs from the completion callback, with
-a retry timer for a drained ring and a closing flag plus a per-channel lock
-to serialise refill against teardown.
+At probe, this patch requests every TX and RX MCDMA channel named in the
+device tree and holds them until remove. It also resets the MCDMA
+controller once, through the first TX channel. Each channel gets a ring of
+preallocated SKB descriptor slots in ndo_open, and the rings are torn down
+in ndo_stop.
 
 > diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-> index ab3d6d8cb9440..0a13e04d40575 100644
+> index 2adee07f6f51c..ab3d6d8cb9440 100644
 > --- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
 > +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
 
 [ ... ]
 
-> @@ -112,6 +135,181 @@ ep_get_desc(struct xlnx_tsn_ep_dma_chan *xchan, int idx)
+> @@ -30,6 +35,47 @@
+>  #define TSN_MAX_VLAN_FRAME_SIZE		(ETH_DATA_LEN + VLAN_ETH_HLEN + \
+>  					 ETH_FCS_LEN)
+>  
+> +#define TX_BD_NUM_DEFAULT		64
+> +#define RX_BD_NUM_DEFAULT		128
+> +
+> +/**
+> + * struct skbuf_dma_descriptor - skb container for each in-flight DMA descriptor
+> + * @sgl: scatter-gather list backing the DMA mapping
+> + * @desc: dmaengine descriptor handle
+> + * @dma_address: physical address of the first sgl entry (RX path)
+
+[Severity: Low]
+
+This isn't a bug, but is "physical address" the right description for
+@dma_address?
+
+The field is a dma_addr_t. ep_free_dma_chan() passes it to
+dma_unmap_single() as a mapping handle, and in the RX data path patch
+ep_rx_submit_desc() fills it from sg_dma_address() after dma_map_single().
+If an IOMMU sits in front of the MCDMA, the value is an IOVA, not a CPU
+physical address.
+
+The same wording is still there at the end of the series. Would something
+like "DMA address of the first sgl entry" be more accurate?
+
+> + * @skb: SKB owning the buffer
+> + * @sg_len: number of valid entries in @sgl (TX path)
+> + */
 
 [ ... ]
 
-> +static bool ep_rx_refill(struct xlnx_tsn_ep_dma_chan *xchan, bool arm_timer)
+> +static int ep_reset_dma_controller(struct xlnx_tsn_ep *ep)
 > +{
-> +	int avail, i;
+> +	struct xilinx_vdma_config cfg = { .reset = 1 };
+> +	int ret;
 > +
-> +	scoped_guard(spinlock_bh, &xchan->rx_lock) {
-> +		if (READ_ONCE(xchan->ep->closing))
-> +			return false;
-> +
-> +		avail = CIRC_SPACE(xchan->ring_head, READ_ONCE(xchan->ring_tail),
-> +				   xchan->ring_size);
-> +		for (i = 0; i < avail; i++) {
-> +			if (ep_rx_submit_desc(xchan))
-> +				break;
-> +		}
-> +		dma_async_issue_pending(xchan->chan);
+> +	ret = xilinx_vdma_channel_set_config(ep->tx_dma[0], &cfg);
 
-[Severity: Critical]
-Can this give RX buffers back to the allocator while the MCDMA engine still
-owns them?
+[Severity: Medium]
 
-On open, this loop posts CIRC_SPACE(0, 0, 128) = 127 descriptors in one
-batch. xilinx_mcdma_start_transfer() only reprograms the IRQ coalescing
-threshold when the batch is small enough:
+Can this reset stall channels on the same MCDMA instance that belong to
+another dmaengine client?
+
+The commit message says:
+
+  "An MCDMA soft reset resets the whole core, so any channel of the
+  instance reaches it."
+
+For MCDMA, every MM2S channel uses ctrl_offset 0, which is the common
+control register. The call chain is:
+
+xlnx_tsn_ep_probe()
+  ep_reset_dma_controller()
+    xilinx_vdma_channel_set_config()
+      xilinx_dma_chan_reset()
+        xilinx_dma_reset()
+
+drivers/dma/xilinx/xilinx_dma.c:xilinx_dma_reset() {
+	dma_ctrl_set(chan, XILINX_DMA_REG_DMACR, XILINX_DMA_DMACR_RESET);
+	...
+	chan->err = false;
+	chan->idle = true;
+	chan->desc_pendingcount = 0;
+	chan->desc_submitcount = 0;
+	...
+}
+
+The hardware reset hits the whole core, but software state is only reset
+for tx_dma[0].
+
+The endpoint only requests the tx_chanN/rx_chanN entries in its own
+dma-names. Nothing in the binding or the driver stops the other channels of
+the instance from going to another consumer. Suppose one of those channels
+is mid-transfer when the endpoint probes, for example after a probe
+deferral or a module load. It is still marked idle == false and has
+descriptors on active_list. Its next submit then goes through:
 
 drivers/dma/xilinx/xilinx_dma.c:xilinx_mcdma_start_transfer() {
-    ...
-	if (chan->desc_pendingcount <= XILINX_MCDMA_COALESCE_MAX) {
-		reg &= ~XILINX_MCDMA_COALESCE_MASK;
-		reg |= chan->desc_pendingcount <<
-			XILINX_MCDMA_COALESCE_SHIFT;
-	}
-    ...
-}
-
-XILINX_MCDMA_COALESCE_MAX is 24. With 127 pending, the threshold keeps its
-previous or reset value, which is well below 127.
-
-When the first IOC fires, xilinx_mcdma_irq_handler() calls
-xilinx_dma_complete_descriptor(). That function only checks per-BD
-completion for AXIDMA:
-
-drivers/dma/xilinx/xilinx_dma.c:xilinx_dma_complete_descriptor() {
-    ...
-	list_for_each_entry_safe(desc, next, &chan->active_list, node) {
-		if (chan->xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
-			...
-			if (!(seg->hw.status & XILINX_DMA_BD_COMP_MASK) && chan->has_sg)
-				break;
-		}
-		...
-		list_add_tail(&desc->node, &chan->done_list);
-	}
-}
-
-For MCDMA, every active descriptor goes to done_list, and the tasklet runs
-ep_dma_rx_cb() for each of them. For every BD the hardware has not filled
-yet, ep_dma_rx_cb() unconditionally calls dma_unmap_single() and then frees
-the skb.
-
-The S2MM engine's CURDESC..TAILDESC chain still points at those BDs and
-buffer addresses. Would the next received frames then be written into
-freed skb memory?
-
-The descriptor segments are also recycled, and the next refill rewrites
-them while the engine is running. active_list is empty by then, so
-xilinx_mcdma_start_transfer() also rewrites CDESC on a channel that already
-has RUNSTOP set:
-
+	...
 	if (chan->has_sg && list_empty(&chan->active_list))
 		xilinx_write(chan, XILINX_MCDMA_CHAN_CDESC_OFFSET(chan->tdest),
 			     head_desc->async_tx.phys);
+	...
+	if (chan->idle)
+		xilinx_dma_start(chan);
+	...
+}
 
-The same thing looks possible in steady state, whenever a small refill
-sets the threshold to 1 while other descriptors are still active.
+CDESC is not reprogrammed and xilinx_dma_start() is skipped. Doesn't that
+leave the engine halted, with no error reported to that client?
 
-The commit message says dmaengine "delivers one descriptor per callback".
-That assumes per-BD completion, and this provider doesn't appear to
-provide it for MCDMA.
+I could not confirm that shared MCDMA designs exist in practice. The
+binding example gives the whole instance to the endpoint.
 
-[Severity: Medium]
-Could a partially armed batch hold received frames for an unbounded time
-when traffic is sparse?
+Is the reset needed at all? The provider already resets each channel in
+xilinx_dma_chan_probe(). The MCDMA path of
+xilinx_dma_alloc_chan_resources() only allocates BD memory and does not
+program the hardware. So the endpoint's own channels look clean already,
+and the only visible effect of this reset is on channels the endpoint does
+not own.
 
-This loop can post between 2 and 24 descriptors in one call. That happens
-if dev_alloc_skb() fails partway through, or if a callback refills several
-slots at once. xilinx_mcdma_start_transfer() then sets the coalescing
-threshold to that count, and no IOC is raised until that many frames have
-arrived.
+Calling dmaengine_terminate_sync() from ep_free_dma_chan() on ndo_stop also
+resets the whole core, through the provider's xilinx_dma_terminate_all().
+Any MCDMA client that terminates a channel causes this, so that part comes
+from the provider and not from this patch.
 
-xilinx_mcdma_irq_handler() only logs the delay interrupt and reaps nothing:
-
-	if (status & XILINX_MCDMA_IRQ_DELAY_MASK) {
-		...
-		dev_dbg(chan->dev, "Inter-packet latency too long\n");
-	}
-
-No delay timer appears to be programmed for MCDMA. ep_rx_refill() returns
-true because the ring is non-empty, so the refill timer isn't armed either.
-
-Would low-rate traffic such as ARP, PTP or control frames sit in host
-memory until enough further frames arrive, or indefinitely if traffic
-stops?
-
+> +	if (ret < 0)
+> +		return dev_err_probe(ep->dev, ret,
+> +				     "failed to reset DMA controller\n");
 > +
-> +		if (xchan->ring_head != READ_ONCE(xchan->ring_tail))
-> +			return true;
-
-[Severity: Medium]
-What recovers this RX queue after an MCDMA channel error?
-
-On XILINX_MCDMA_IRQ_ERR_MASK, xilinx_mcdma_irq_handler() sets
-chan->err = true. An error-only interrupt completes no descriptor, because
-completion only happens under XILINX_MCDMA_IRQ_IOC_MASK. So no
-ep_dma_rx_cb() runs, and xilinx_mcdma_start_transfer() returns early while
-chan->err is set.
-
-The outstanding descriptors keep ring_head != ring_tail here. The refill
-timer is never armed and nothing new is submitted. The only automatic
-reset is in xilinx_dma_tx_submit():
-
-	if (chan->err) {
-		...
-		err = xilinx_dma_chan_reset(chan);
-
-That reset needs a new submit, and none ever happens.
-
-Does the queue then stay halted until ifdown/ifup, with the interface up
-and no driver-level counter showing the problem?
-
-> +
-> +		if (arm_timer)
-> +			mod_timer(&xchan->rx_refill_timer,
-> +				  jiffies + EP_RX_REFILL_RETRY);
-> +	}
-> +
-> +	return false;
+> +	return 0;
 > +}
 
 [ ... ]
 
-> +static void ep_dma_rx_cb(void *data, const struct dmaengine_result *result)
-> +{
-
-[ ... ]
-
-> +	metadata = dmaengine_desc_get_metadata_ptr(skbuf_dma->desc,
-> +						   &meta_len,
-> +						   &meta_max_len);
-> +	if (IS_ERR_OR_NULL(metadata)) {
-> +		if (net_ratelimit())
-> +			dev_warn(ep->dev, "Failed to get RX metadata pointer\n");
-> +
-> +		dev_kfree_skb_any(skb);
-> +		DEV_STATS_INC(ndev, rx_dropped);
-> +		DEV_STATS_INC(ndev, rx_errors);
-> +		goto submit_new;
-> +	}
-> +
-> +	/* MCDMA metadata: [0] = status, [1] = sideband (TID/TDEST/TUSER), [2..] = app */
-> +	tuser = metadata[1] & TSN_TUSER_MASK;
-
-[Severity: High]
-Can any frame reach __netif_rx() with the in-tree MCDMA provider?
-
-For XDMA_TYPE_AXIMCDMA, xilinx_dma_probe() installs
-xilinx_mcdma_prep_slave_sg(), and that function never sets
-async_tx.metadata_ops. DESC_METADATA_ENGINE is only set when
-has_axistream_connected is true, and that flag is only read for AXIDMA:
-
-drivers/dma/xilinx/xilinx_dma.c:xilinx_dma_probe() {
-    ...
-	if (xdev->dma_config->dmatype == XDMA_TYPE_AXIDMA) {
-		xdev->has_axistream_connected =
-			of_property_read_bool(node, "xlnx,axistream-connected");
-	}
-    ...
-	if (xdev->has_axistream_connected)
-		xdev->common.desc_metadata_modes = DESC_METADATA_ENGINE;
-    ...
-}
-
-So dmaengine_desc_get_metadata_ptr() looks like it always returns an
-ERR_PTR for these descriptors. The error comes either from
-desc_check_and_set_metadata_mode() or from the NULL metadata_ops check.
-
-If so, every DMA_TRANS_NOERROR completion is dropped here with "Failed to
-get RX metadata pointer". ndo_open still succeeds, so the interface comes
-up with RX dead.
-
-Wiring up the existing hook wouldn't fix this on its own.
-xilinx_dma_get_metadata_ptr() casts to the AXIDMA segment type and returns
-the app words, which start at BD offset 0x20:
-
-	seg = list_first_entry(&desc->segments,
-			       struct xilinx_axidma_tx_segment, node);
-	return seg->hw.app;
-
-In struct xilinx_aximcdma_desc_hw, status is at 0x18 and sideband_status
-(TID/TDEST/TUSER) is at 0x1C. The "[0] = status, [1] = sideband" layout
-assumed here doesn't match any get_ptr in the tree. metadata[1] would be
-an app word, and the TUSER port_id filter would act on unrelated bits.
-
-metadata[1] is also read without checking meta_len.
-
-No patch in the series touches drivers/dma/. The same code is still there
-at the end of the series, in "net: xilinx: tsn: deliver endpoint RX frames
-to DSA user ports".
-
-[ ... ]
-
-> @@ -305,9 +523,19 @@ static int ep_init_dmaengine(struct xlnx_tsn_ep *ep)
->  		rx_allocated++;
->  	}
+> @@ -286,9 +587,17 @@ static int xlnx_tsn_ep_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto err_free_ndev;
 >  
-> +	for (i = 0; i < ep->num_rx_queues; i++) {
-> +		if (!ep_rx_refill(ep->rx_chans[i], false)) {
-> +			dev_err(ep->dev, "RX channel %d: no descriptors armed\n",
-> +				i);
-> +			ret = -ENOMEM;
-> +			goto err_free_chans;
-> +		}
-> +	}
+> +	ret = ep_request_dma_chans(ep, rx_dma_chan_map);
+> +	if (ret)
+> +		goto err_free_ndev;
+> +
+> +	ret = ep_reset_dma_controller(ep);
+> +	if (ret)
+> +		goto err_release_chans;
+> +
 
-[Severity: Low]
-Can ep_rx_refill() return false here even though a descriptor was armed?
-
-ep_rx_refill() decides success by testing ring_head !=
-READ_ONCE(ring_tail) after dma_async_issue_pending(). ep_dma_rx_cb()
-advances ring_tail outside rx_lock, before it calls ep_rx_refill() and
-blocks on the lock:
-
-	WRITE_ONCE(xchan->ring_tail, xchan->ring_tail + 1);
-
-The callback runs in the provider tasklet, possibly on another CPU, and
-spin_lock_bh() only blocks BH locally.
-
-Suppose only one slot gets armed, because dev_alloc_skb() (GFP_ATOMIC) or
-prep fails on the second slot. If that frame completes before the
-head/tail test, head == tail and ep_rx_refill() returns false. ndo_open
-then fails with -ENOMEM and "no descriptors armed", even though the frame
-has already gone up through __netif_rx().
-
-Teardown after that failure looks safe. closing is set before
-ep_free_dma_chan() takes the lock and shuts down the timer.
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-patches_v2_external-v3-0-e33d3960ca1e%40amd.com
