@@ -1,113 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792491928;
-	b=q5L9DrbiWu2BbKQMCzJeBTXTaVNMAWgC7WRValptG4UaFgSXiwhzCbeB/smmWW5K8Pbq
-	 oHyYaStdYdIqyu98HDbFzyO6Wq+a8rkzi+eAmoxJvwC2y1YXe4z61MV9W+S9XdKGoJtSQ
-	 KAVzCxFzF2VE47ZTcz6EhtJ9VN5JQWXh4U5oXbZiPwdWRGrhmuDRyEt0RPa0bmhR4S/cQ
-	 ssQ5jvneHjMPJyUC6Pc+5mblQL+f9eaADIQe1WDBeDiyQ+2w0B3OK/0/TlRJoK6IZ4ueb
-	 sAJe7ZxdFNwvesvqTLzA+wo1rkhG6vs78rIj/TzJsAAxdDD0L06hQjuxs0C4uZxmuwg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792491928;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.174
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792492015;
+	b=rav10In9GmieQEAY6xOkiLeFrtDSWMKHatED61cppCrxo2e6nWnVWsq5jzbT64wHiyAJ
+	 6tCcdcN7OjPOs+nKN54VG+BhW5ck2UUONMAiiTRzsJejtxvHEH+uuy4M0Wo7ThLgAsUU0
+	 KJrLiN3ZKaFBjZih5gVdiBFSNdD+dQuH6ltPGlCv4mUK9/VC1XpIsJNWmZ/9YyoeHoq6w
+	 YinVWkCROTaUwyXEXCmiZKp7mCf7bpYOWXcQw2vdAMWkG2l/HwHnPxbD+NXRtx7KLZAQK
+	 3SnEedruN50f7VLLGp1rQAtg+PuZPfmkA6EmNyGeL3RVaQ3f6x4Je0LjLjWsLBXFp3Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792492015;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=hGAvaD5FraNbfMMFntkD8CACjxCj7f+xaJYrjp5/P9U=;
-	b=DpGXlefV86r+0ktdf06wULrG5+BwZBi9OLOqJa03ab1froqA5ztnw14WlvUw7w+99pCd
-	 7XAKjWf5pH/GFpZJwAYauumpSE61IA6TAY4q/51TnGb1j2CXjKB8L5tZEUUsdVAvm4Vwg
-	 cFs1fnPAH/cfE8DUMYlMeYaQs/3xpLBFWeLdSVHIOJn2Joy2FXdChEirYDfhCfKZW6vP2
-	 FErSKoXxhNGQ6LBhg6CfwT7ZbwgXcp1iETjNvxxO77Oc8iHbfYXKupl91yf2a5BdccAlh
-	 /L8NpfWYJE4TJ5NZAB5jPLibuj6AG6iKal6vOHpEOQ3mT5GeOO30y+6e0LMs2gFhEgw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=cYHKsHnA;
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=EHu9OWyHCYQOt2qT53IJOKTu9rnDJwEoiNY3WIDTNJw=;
+	b=TCgLd5Oipfy4aKWRo9MR4jwQbDZdwzjJncTOEsYaOCzwFs/ta65/zf3evAUtHlySCFI0
+	 KXkoxN1ZyQYAkY8L5h2hNd1VNJ96xBkM57Le+Mg9JC5UsQfqF3I7po6o+RqIqqo4j0QKm
+	 QvMI4KJIDLJGdvQ8aGjtgO6aWBPGiuRYrLtXQVTJur7YF2P2H1WNILO47ZYbtUpDYiev7
+	 n19vfySR24gxk+W1UAyxUeeiJoBGcOuV2f4n2mTiENHy23Kz1Z1YeWt9LSJyDoMG6TnNp
+	 riAJOwOtZgKJmFQQpzX5LxZxAjkd8jOkYxrInqiTJVtid8F9xhqiBhrE+93Idj5JHLw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=o9AFjjEr;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.174
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2435F60A2601
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:25:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2435F60A2601
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD75606A31E
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:26:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CD75606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=cYHKsHnA
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a1f68a9855so2596875e9.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:25:27 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=o9AFjjEr
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-ccce6d9abfeso2095085a12.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:26:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792492015; cv=none;
+        d=google.com; s=arc-20260327;
+        b=niV95RWOY9f6Ke7CKSgQYwMPjjTq86m6Vo07BcTjKxkATGx8+sHmabMAXqdgFP1aXi
+         wC6qNxvocVcl/EAo1kCaQ1IhNq5rFx58zIteS2sbCPATWTzWAQwP4U9gE24zhL0DHQc8
+         DZ15DYUKodoMi8HGHIrtZ8YqcwFuwiki9U+dTGmbkyGS7WMdPS9nJWe4I+1VLhD9gcTB
+         am6SatQAAvfKLowbtFcD0AnUrPB45W9Y7BfH+KJwb6LKv5BpyDC0AwYBqkMVsY0NDTLZ
+         2o6jdGwMIXLxkQEw3kSzzLzn9KNNV10Kzh476BnIUbHCOX6sUj8LqPxCNIKftULY+1Wi
+         JSDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EHu9OWyHCYQOt2qT53IJOKTu9rnDJwEoiNY3WIDTNJw=;
+        fh=Pf2jx/fDVPKwjm3pqqIqkBPEkE+u1WZ+Nawe80Sebh8=;
+        b=UuD8KVthODxicJTVNFpnXkle4yd2yg6XCv5M8Cmwa0Fcr+eq2g7oYDI9IVZ2CMJUNp
+         3rphTe4fHR2Q3amMizcjMc/7Eb0/gxlKBw3WV3KdqjYBLGO0u7Omkir6ZxsN8kq5msFD
+         urIh0JZUbK12ASqulUfrKqIV2t8dSN4mTpP83UzwyY7Hbl7ewndkdCWIdSodx4wK3SYc
+         Az+BWY6JbROU/JEAZNswbdl/i0o2uN6epkUZNRWsrUuIfmb+p/26XWsJxgL4aRY41AlS
+         Warb4dMgwl0rCBVqD+FHAazx+CyhXfQgWYh7CzeHHRYKMoqd2q/Q4fQDLQiO9H0vzygr
+         cCIA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792491926; x=1793096726; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hGAvaD5FraNbfMMFntkD8CACjxCj7f+xaJYrjp5/P9U=;
-        b=cYHKsHnAwCNUzF4Lfw4RofTAiQ+DdY0ztZV8T1RjQu6KF8hb2gr4LuHuNnhBjyMbNu
-         FlMTwDZ66Y5cPras0ruUIcVvwUxBm279gTQwRwKGwPe4/pNceVXOHx+QHYD4KmdDtt1N
-         Ln/8cUNlu1qh8sXuRMFWp+0+Rwo0cTrDMpM2xjvY3h1r5Ta81sPnN81vkxmlrFocaKur
-         7oSwbKvg2EAwtzfBaoyLwZfm9nm9Vb7EZRxlTw3OnAA5dnbeX71IuS/G+lzi0mxvrMnJ
-         P/6C2ll222vXTU+OPfoY7gug7hZGtsaW4KRQyujs+ji+z6NP3nZMhOG0CXTYMcLVStgK
-         SC0g==
+        d=mojatatu.com; s=google; t=1792492015; x=1793096815; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EHu9OWyHCYQOt2qT53IJOKTu9rnDJwEoiNY3WIDTNJw=;
+        b=o9AFjjErLSgOk8N/zevDeBsLl78ZdWDy3lyuN91Tkeqj3Bm7pigFcLtxOJLb2OPptZ
+         xtSi2czVZSmowJ4TIlFZmx3ywvC16rKGTukmHKa1WfynCSPL7l2kCG9q1QA6NO9kCOIj
+         3PelFBmhd+9mjRVVjAdX88vXdGOCZTEDXmm38=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792491926; x=1793096726;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hGAvaD5FraNbfMMFntkD8CACjxCj7f+xaJYrjp5/P9U=;
-        b=a//uj4Vw+0j0T6uQkpS17fIguysYbaJtq2ZzGmo2+vJ76x8Ssz/gjGpWvjLs5ER+il
-         b97s5N0xbo+wEXr5zJ2Gdt4Q6t8zmxuviG5OOb8jaebOzKsuwV4x2yVOKE3F5FqF9p1E
-         Df35CkPswnlaBgOPq6hbB7gWbnrrJRO0+pG9oLwfu61UX2tVKQq1fIpOqS2EVfKpQw/P
-         a93ucXu0600EyiRwVZuIDtsAqR8DQTgQn4K5H6RYWn2CtQ1ZFnhlo+NmAsb+LspM6Y0i
-         e7xQlp2mz17htTDg9jpetrc/aEqk0g591/tVO8w43EKdixKu7z/5/1fgRk2AULOZqomJ
-         EoCQ==
-X-Forwarded-Encrypted: i=1; AKwUvByZIFBlDCv0g6L5iBywGHdBqHl7kbsob3w4DhqYqfOlwDD8L6mp4xXNThjlNkDurvwLjLPX+oY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLaPw0eskLFsJy/vhBSBeAi6CWaYZTmau3qmfHoh6V5A4VzaE+B
-	UywuhS1SSExgmcAMbG8YDJsO5rsjcLD8LYtMowfJHmg8WgbUcikYmkx6
-X-Gm-Gg: AYBFou3JRhumGksA9QGhnsAeTPHPFIwh5YHKOsWCTr5PVkVIicpp18+486ns9NtsojL
-	1vrIO6H83i0THvQY9XlcW/R2gtbA2uczc7d6tZBboZQ3cxq/Nq5HVUhmrs0PcSRoIwZY/ibnDGP
-	0z71C7uoIYynNJeheke0lQMAUu54Faopk2bVuwfraEBCmm+fuoiXq90JmkbZ3BnW/A6Bck0KlSm
-	EeSiUekv3d/ZA0K6BPkEP2PteMXJHUrJrKsD3lfUWO66o8WnVVakjEVvN7wJksOpsk6S1X+D6Kt
-	YYHXDRMYNJu5Blm68p2v9QG+DDD5ryDHqkzFOgjHgkylnu21xvf3wO0FhJyYBy/AHcsxM6QT+5l
-	TVxLuZoNyxeat34KJokDKwjS338Vjhc8uZmGEIK1KtcPkmzsFIHMV8pTwJ/+6rUr6jXotViPIj2
-	7rIg8ytpekVlMNxsMM3s7I+FgDvG/W2l0rSukfuvcFTd5adyVo0eFT8hjgSp7RjAD3TkU2wuu42
-	GPUOaxMlF+thUArdQONPN8Lb8sLXQRhUsAuynYQU7jP2Q==
-X-Received: by 2002:a05:600c:63cb:b0:49f:ce72:e931 with SMTP id 5b1f17b1804b1-4a1d76356c9mr155492965e9.35.1792491926406;
-        Tue, 20 Oct 2026 03:25:26 -0700 (PDT)
-Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a1f69d9b1esm37544825e9.7.2026.10.20.03.25.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 03:25:26 -0700 (PDT)
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bpf@vger.kernel.org
-Cc: andrii@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	willemb@google.com,
-	eddyz87@gmail.com,
-	edumazet@google.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	liamwisehart@meta.com,
-	martin.lau@linux.dev,
-	pabeni@redhat.com,
-	song@kernel.org,
-	netdev@vger.kernel.org,
-	sdf.kernel@gmail.com,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	kuniyu@google.com,
-	memxor@gmail.com,
-	emil@etsalapatis.com,
-	almagui@kernel.org,
-	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next 6/8] bpf: add bpf_ksock_sendto() kfunc
-Date: Tue, 20 Oct 2026 10:25:10 +0000
-Message-ID: <20261020102512.518479-7-mahe.tardy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261020102512.518479-1-mahe.tardy@gmail.com>
-References: <20261020102512.518479-1-mahe.tardy@gmail.com>
+        d=1e100.net; s=20260707; t=1792492015; x=1793096815;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EHu9OWyHCYQOt2qT53IJOKTu9rnDJwEoiNY3WIDTNJw=;
+        b=PxhzEIW3kjRQIkOvKmMFsaD6R4345ibyS11dVtnZhfOkON1vByOoU38Ne5JFU+//jX
+         ck9BYujB27vvueUhTBQNNNtIjyJbdEXQxx9FkRXHBH6+zCG+osvBOXmpQb2V5K5Vol+n
+         PinonFH6qy3379EpyHAZnFB71CVVseHDSbT9t/U++gHQ31iVahixVL1J16T/zBBuiU2V
+         QRCxWLyc3xrvNY9W7MirAoCJGuJlvnPipd0P7ECyqY4HJdW400Oh2s8giO0TjpZNhyZd
+         rhIwJCtBtbbPi4lbJnnclNEmv3wTA0Yo0ZwqyzLNFtZGdE+C/TawdPbR71A3OZ10YBRy
+         egAQ==
+X-Gm-Message-State: AFq9FYKRoLpII6FvgpL4KIzzaGG6jxsA17IvfVjHwBwkIva3mXBYqdyt
+	LUSfHBsZl0edLxVjpfylDQrsvLQfh/YiUjaOmVcbHnPe3bDJNbawBPhWbf2tgETegnMs7FF9dAT
+	byNO0osSJCVB9ICxf9XVu3+KCv1/jriCm9joxmZu7
+X-Gm-Gg: AYBFou2SEUJKGwn0jz+AJAP6fCtZmcxszFt0U3p5ladHXHviKPY7U3CEmllOpzCmIF0
+	c1PFI0RDibhnXHIU5B67HQtw9EC8U7FNHAArdXqF5fbUfE0PpZESFbYXR2Dt2uXDQwEduZtOjQH
+	Q1DoeGibBTZhFicwIvJcFPa5QIydpbYRUp9huisM6o0dE7xV9D8AOtIKde0aR8bfkWeI3jwCSXl
+	5ziFjf6kgKS1ChO91/fHFoTFIjNhdrDYTV/A4rv/WklvrfwzREuPQH7wuTGxo70NN7vwtTtGI+p
+	JnKzUv+DCaTtCiPCezSYRHCNFSslrHfhthl6kVuF74GXhKQlf3c740+2mmFFNrqJ6GwOVQD+tHZ
+	cSmw7ApcZIDDM9/wE//yP/w96eVgsYtkFeQo0eLuC/J8BVTCiTV+ZBbu/T49cO44fhr3JsjzMjB
+	2NslCcQDYzdzzyMQw=
+X-Received: by 2002:a05:6a21:b89:b0:3e2:1a3e:395c with SMTP id
+ adf61e73a8af0-3e2260fab05mr8114467637.59.1792492014703; Tue, 20 Oct 2026
+ 03:26:54 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,164 +101,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <QDISC-6HS9.v1.r1.20261012134711-1@mojatatu.com> <20261019194019.4b778671@kernel.org>
+In-Reply-To: <20261019194019.4b778671@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 20 Oct 2026 06:26:41 -0400
+X-Gm-Features: AclHuK9w4N--2-RJIEl8VBx-0rkjIVFOVYul8Lm3ZHkR3c1K0BlS8cEin8kt8kM
+Message-ID: <CAM0EoM=iL9kpU6Ju_9=9Frg4sSbD0OMtbQxwYva607259WBXhQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/2 repost1] net/sched: sch_teql: fix shared headroom
+ and header strip on slave retry
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	sashiko-bot@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The motivation is to plumb more of the socket API into ksock, thus
-supporting sendto() in addition to send() which makes a lot of sense in
-the context of UDP sockets which are the only type currently supported.
-This is useful when ksock is used to reply to specific addresses or send
-to multiple addresses.
+On Mon, Oct 19, 2026 at 10:40=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Mon, 12 Oct 2026 14:16:27 -0400 Jamal Hadi Salim wrote:
+> > Subject: [PATCH net 1/2 repost1] net/sched: sch_teql: fix shared headro=
+om and header strip on slave retry
+>
+> not correctly threaded, again..
+> patch 2 should be in reply to patch 1
 
-Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
----
- net/core/bpf_ksock.c | 98 ++++++++++++++++++++++++++++++++------------
- 1 file changed, 71 insertions(+), 27 deletions(-)
+Thanks for catching it - will resend. I fixed the scripts so this
+doesnt happen again, but looks like this one went out before i did
+that.
 
-diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-index 87329c4a2f8e..dda5aefb101e 100644
---- a/net/core/bpf_ksock.c
-+++ b/net/core/bpf_ksock.c
-@@ -37,6 +37,49 @@ static void ksock_release_work_fn(struct work_struct *work)
- 	kfree(ks);
- }
-
-+static int bpf_ksock_addr_to_sockaddr(const union bpf_ksock_addr *addr,
-+				      u32 addr_sz, struct sockaddr_storage *sa)
-+{
-+	if (!addr || addr_sz != sizeof(*addr))
-+		return -EINVAL;
-+
-+	/* Kfunc memory arguments may be unaligned. */
-+	memcpy(sa, addr, sizeof(*addr));
-+
-+	switch (sa->ss_family) {
-+	case AF_INET:
-+		return sizeof(struct sockaddr_in);
-+	case AF_INET6:
-+		return sizeof(struct sockaddr_in6);
-+	default:
-+		return -EAFNOSUPPORT;
-+	}
-+}
-+
-+static int ksock_sendto(struct bpf_ksock *ks, const void *data, u32 data_sz,
-+			const union bpf_ksock_addr *addr, u32 addr_sz)
-+{
-+	struct sockaddr_storage sa;
-+	struct msghdr msg = {
-+		.msg_flags = MSG_DONTWAIT,
-+	};
-+	struct kvec iov = {
-+		.iov_base = (void *)data,
-+		.iov_len = data_sz,
-+	};
-+	int addrlen;
-+
-+	if (addr) {
-+		addrlen = bpf_ksock_addr_to_sockaddr(addr, addr_sz, &sa);
-+		if (addrlen < 0)
-+			return addrlen;
-+		msg.msg_name = &sa;
-+		msg.msg_namelen = addrlen;
-+	}
-+
-+	return kernel_sendmsg(ks->sock, &msg, &iov, 1, data_sz);
-+}
-+
- __bpf_kfunc_start_defs();
-
- /**
-@@ -155,22 +198,9 @@ __bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *ks,
- 	struct sockaddr_storage sa;
- 	int addrlen;
-
--	if (!addr || addr__sz != sizeof(*addr))
--		return -EINVAL;
--
--	/* Kfunc memory arguments may be unaligned. */
--	memcpy(&sa, addr, sizeof(*addr));
--
--	switch (sa.ss_family) {
--	case AF_INET:
--		addrlen = sizeof(struct sockaddr_in);
--		break;
--	case AF_INET6:
--		addrlen = sizeof(struct sockaddr_in6);
--		break;
--	default:
--		return -EAFNOSUPPORT;
--	}
-+	addrlen = bpf_ksock_addr_to_sockaddr(addr, addr__sz, &sa);
-+	if (addrlen < 0)
-+		return addrlen;
-
- 	return connect_socket(ks->sock, &sa, addrlen, 0);
- }
-@@ -225,18 +255,29 @@ CFI_NOSEAL(bpf_ksock_release_dtor);
- __bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *data,
- 			       u32 data__sz)
- {
--	struct msghdr msg = {
--		.msg_flags = MSG_DONTWAIT,
--	};
--	struct kvec iov = {
--		.iov_base = (void *)data,
--		.iov_len = data__sz,
--	};
--	int ret;
--
--	ret = kernel_sendmsg(ks->sock, &msg, &iov, 1, data__sz);
-+	return ksock_sendto(ks, data, data__sz, NULL, 0);
-+}
-
--	return ret;
-+/**
-+ * bpf_ksock_sendto() - Send data through a BPF kernel socket to a remote address.
-+ * @ks:		The BPF kernel socket context. Must be an acquired reference.
-+ * @data:	Pointer to the data to send.
-+ * @data__sz:	Size of the data to send.
-+ * @addr__nullable: Pointer to an IPv4 or IPv6 socket address, or NULL to use
-+ *		   the connected destination.
-+ * @addr__sz:	Size of the address union, ignored when the address is NULL.
-+ *
-+ * Sends data to the specified address, or to the connected destination when
-+ * the address is NULL, best-effort and nonblocking. This may sleep
-+ * (kernel_sendmsg), so it can only be called from sleepable BPF programs.
-+ *
-+ * Return: Number of bytes sent on success, negative errno on error.
-+ */
-+__bpf_kfunc int bpf_ksock_sendto(struct bpf_ksock *ks, const void *data, u32 data__sz,
-+				 const union bpf_ksock_addr *addr__nullable,
-+				 u32 addr__sz)
-+{
-+	return ksock_sendto(ks, data, data__sz, addr__nullable, addr__sz);
- }
-
- __bpf_kfunc_end_defs();
-@@ -255,6 +296,7 @@ BTF_ID_FLAGS(func, bpf_ksock_release, KF_RELEASE)
- BTF_ID_FLAGS(func, bpf_ksock_acquire, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
- BTF_ID_FLAGS(func, bpf_ksock_connect, KF_SLEEPABLE)
- BTF_ID_FLAGS(func, bpf_ksock_send, KF_SLEEPABLE)
-+BTF_ID_FLAGS(func, bpf_ksock_sendto, KF_SLEEPABLE)
- BTF_KFUNCS_END(ksock_kfunc_btf_ids)
-
- #ifdef CONFIG_BPF_LSM
-@@ -265,6 +307,7 @@ BTF_ID(func, bpf_lsm_socket_sendmsg)
- BTF_ID_UNUSED
- #endif
- BTF_ID_LIST_SINGLE(bpf_ksock_send_id, func, bpf_ksock_send)
-+BTF_ID_LIST_SINGLE(bpf_ksock_sendto_id, func, bpf_ksock_sendto)
-
- BTF_ID_LIST(bpf_lsm_socket_connect_id)
- #ifdef CONFIG_SECURITY_NETWORK
-@@ -287,6 +330,7 @@ static int bpf_ksock_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
- 	if (prog->type == BPF_PROG_TYPE_LSM) {
- 		if (prog->aux->attach_btf_id == bpf_lsm_socket_sendmsg_id[0] &&
- 		    (kfunc_id == bpf_ksock_send_id[0] ||
-+		     kfunc_id == bpf_ksock_sendto_id[0] ||
- 		    /*
- 		     * Break the socket_sendmsg -> bpf_ksock_connect() ->
- 		     * socket_connect -> bpf_ksock_send() -> socket_sendmsg'
---
-2.43.0
-
+cheers,
+jamal
