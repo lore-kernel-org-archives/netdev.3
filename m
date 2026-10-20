@@ -1,60 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792483463;
-	b=nn+rgOV0mgR+3yNmfsLaQbMH415ewZ9jucVBuFgMj1T9p0E7DpFp+cIJI/rZLMmbcKPT
-	 a3D3qVkMX9WXzkUYDDHYLCB460NqLoXWTJ356O2Sw3umnUXYqqwScqQdYEAuvzjLA5LXE
-	 CrYWiQ7b+YqecfOUYwImBIeRKLlEJp4K3YKv5k4EnWUqXfy04yFQOKaPyDe37qibbTYlQ
-	 a7rdl7hFHZK5ZbmO/ZkoVirCmZ3zpybDDHu8Kaq8tjmTsgdAXlSAqhjSLQDT2xdcWf1Zp
-	 JBjLKOY8A5x4I9S212z95wnXOeGHgqD2C7eMm1FpFOZ/uoCeth5n5rD2QGZC8x+nrnQ==
+	t=1792483517;
+	b=EqAMn9taAHoWsr8Dodim0VlDo5cJQ1vyrq/O6eF8qnvKNWVbEi6EVIL9jREWtuwCIGUN
+	 KAwLmyreJEJd9ZlUmMhwD/XKqrj1XYl8CTFeTJ/iLZUrc+eCVUDWTtZfX5bgmFqddiqEH
+	 +1vpqFM3lUuB9q+MBsdKINYp9z8leAX1ZrEnu/ZS5PFpdA+I1i+SJRYWnGBi9iMTXwLYi
+	 z2LOdUTOGog60axu20mEQ6QKA6zvdXZaDx/rma7THOC5QFaVkt01WP5mV4bkO3ie271CO
+	 9KojjB7cr4KIeJNRZqgaCWWnw8FYi8wA9kaseJ9y+VIp8KKPUMrCmBWhdQ5O8BgRkMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792483463;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=r1apn0rse9yrbGp949MhUou2z747LInhZntky023sh39EhIX96N6MVQ+PXH+VKPYcOdv
-	 KCGUOu/78Nn7+eDNEha6Zo7WViWuYmMUJHNzRDb/S7lm0A30MjXSZ6fU4bS0BiVEGg45u
-	 +GBa1VVbozS8+6UHUmWGXZOkXLd9B2GUh7jArkhbdYbr73P+K1cxKnQrOAUPgzQ5dzfyw
-	 tJEZgUk5dzqIuMIrsWt8EUKfpa9tx6CzdMUlVsqaHB4HcXKdwJ0s/nisuqVsjnBUFIEod
-	 DQ2NyPYF0whdGsfhOD2kEZ7kIv3MygBRfFGhORRdGWu7P4rVQnwz7gT+WXQYbSVVNXQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792483517;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=GPg92EprU8pd6RZNS84knIcONGEuxb3GDBAmGPh7pqc=;
+	b=N67nzz+qhFHwU1onv/pJrxopOcRzUBJT8wMQ+w9tsMbmIsT+jMubobpkoPk3eWYCUJQi
+	 YKtuxe/gIKYpXgGa/n+2o13c6AxFEGOP22hlBMRYZuHzCCLd6iMAkje+5ed2o+70Xaasd
+	 0RMUrmMoFroYvFYgxjEfith7pWS2Os78orN9mRhQWZn7PyUPUz7bD2lY0N5lsHTKXBigD
+	 CAU5mHneaMQ2DQxW8mQWPL+aLe+6QSK3m9gxQWaZ4WmHfJPu4vIX+Ichn4M5DbxdKtS76
+	 J8hHsW3i17Uhx/JOjcM00GpRn70wYqkqDKoHO5dUaVPAREfGAlqG2rbdHkMJlNZWSfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT9XujEv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qFKnXVQ1;
+	arc=none smtp.remote-ip=209.85.167.54
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397F8606A319;
-	Tue, 20 Oct 2026 08:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4D0606A31B
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:05:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E4D0606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT9XujEv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4997E1F000C4;
-	Tue, 20 Oct 2026 08:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792483462;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CT9XujEv8qyVL5es+LW22rM7MFgjushdbgd9qHIXvjXTdrQUTLjQIIZf/KkJDTRMj
-	 1zBt8eqtZdbUHn1XWSD/DqPBuETv0S2IIRgpkSTRWt+3XdRxw2iMDsTMRwSLg0U1nl
-	 cSaFIwe+eRoHGXuq1lG4pYiHO+gS++UsknTs8o7pKtCfPgNhV4DTJiBSo7HgSRba8a
-	 cCXD3gNJ7jpwQO30xHrpYC9hy6+pN8mKRt1pm2ltCMxb2o7HAJTRiJEoZz6slM/Wcy
-	 gVi9zvuD5bfpUsY80Xi5XSE2PcDwfO8dKmd1J3pjHHxvz/KMV8rRgk6z2XZ8s4sMHi
-	 crTNE9pRe5c9w==
-From: netdev-bot+sinfo@kernel.org
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
- kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
- imx@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller if
- interface is down
-Date: Tue, 20 Oct 2026 08:04:21 +0000
-Message-ID: <179248346178.3290.6150529956117056026@kernel.org>
-In-Reply-To: <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
-References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
- <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=qFKnXVQ1
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5be4fea434bso396482e87.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 01:05:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792483515; x=1793088315; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GPg92EprU8pd6RZNS84knIcONGEuxb3GDBAmGPh7pqc=;
+        b=qFKnXVQ10drmnI4HN5aRXpeaLOJkYq9Tab1fnPYppELjXVdHUSWEp+Dk1VNn5ENReb
+         VwzP4JUSbupg4lvvQzvzg/36LSOMH7gG/w2Qar9ZI+ExP48nYy88fQzt3H5bv0FTd696
+         eC3KQ4TvONuZEL5tLNguddcsvPPss71h1Q6yJHss3ENVEYtGTHxETQAgx1ETPlL4Purg
+         LbiCMljC6M9zRqzNLy6pMf1A8jNVxhOh/w9t/OPaxi76TTDqxbPF0Ez44yM3cxkVvwe9
+         Mj6KMw9v9eqeb4tv+TcsTCSqVk0BqCRhIEqNB981XV21I70KGJpxyRNW0dmmwq9//noK
+         rvSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792483515; x=1793088315;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GPg92EprU8pd6RZNS84knIcONGEuxb3GDBAmGPh7pqc=;
+        b=D0zi8JKMgKMEdLs0Cd9tPfsPm2WKXajzAbBDxB2edJ3DR+Q2uODsHE+JN90pWDk6Gl
+         FC1IJBKuQW1KqgDpS6RRtiNKNxdusdMyTM78N1Q4MbD7m2IIQSPtK627sl6DoReHwLu7
+         Lnb03HkvYoEHLVoD3HDT7d+28JrIxM+eKuwWaTnblLOpIbLJwzLeNosJlPyNUHtcN7Gr
+         vL10Mvu39ztvpjSEcDEyYSCqFo2hHbSkmpSr+6HPLHflK5HgB6S8K9Qo63cpOdw7ki48
+         0/scid6pNFDoddoFaK5BArCCE34CSmd0l3AWbG6FDIsA4vWnB0bT5VeYtK1uvYJF2PEQ
+         SxUw==
+X-Forwarded-Encrypted: i=1; AKwUvBwGQFX7gsgB+0ZutTWUmKdhnKDBgnzZXHW8s4dDun6M0s03g7R7ZEMA24wHao1908o+uZhC00U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ3HYt3NKacXqIlxWihmam7WvYpgFJlc0nkhqMeJIi/itJi4nCS
+	5dbrcKLeKr8D2DZF0lMD1eBSJABgrjQYk6EPLsLxQECz3MhoDVku5IIn5H2mnAYc
+X-Gm-Gg: AYBFou1c2e6yOhb31K79LTme+izeEstH9Qn6CyfkXJ0pZP/J8MfIeiFL5e5L37L9kyZ
+	KingaxCB0ahSpMLej4UaebGbcngpfvg4s3HtOqGyP1P0eQL8h8OrUMNwDyklFqSikVrvn+8FT+k
+	hZpC/UCeUPoKO4aplhkqpBd2ErCjtmXc/avTP3cKDCtIIPUOCrm/4CQtQX9c65+En1s7wmF0yxW
+	DK6m2jRBEQ404hscZPg5cMb6thUrfhb6FnRZ9DV4SOn3MSh190UzsQP456+tvAwGMZUmp2PqD9x
+	gryJzpBiHaLxzYnVHRZBGi8iijtXuK526hozfx7/0MTv8/brZNb1oLwlst0SZ0gYjjzWjx48OYR
+	SoL3utt9hxvke84OTpu/IHoZv/kQfgxtjW8v+xweL5eNVYsCvhvX4WgizPYbCLHq4cQQj7XlIxz
+	ubOUw6hwJVVH2LD6h3IO9VQZO5qm0Z5EowrF3/HE1gce80Yvisuj7RUlWDcx0zkGf6hHRVxbcfz
+	R3W574qyw==
+X-Received: by 2002:a05:6512:104a:b0:5bc:f2fb:f4be with SMTP id 2adb3069b0e04-5be66a23f9bmr431809e87.6.1792483514495;
+        Tue, 20 Oct 2026 01:05:14 -0700 (PDT)
+Received: from grower.astralinux.ru ([38.74.72.197])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5be4a42b330sm2424863e87.15.2026.10.20.01.05.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 01:05:14 -0700 (PDT)
+From: Alexander Martyniuk <alexevgmart@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: alexevgmart@gmail.com,
+	co+0ea1ac045375cf05@bugs.sh,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	stable@vger.kernel.org,
+	xmei5@asu.edu
+Subject: Re: [PATCH 5.10/5.15/6.1/6.6] vlan: require the MAC header to be present in __vlan_insert_inner_tag()
+Date: Tue, 20 Oct 2026 11:05:05 +0300
+Message-ID: <20261020080505.279102-1-alexevgmart@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026102010-hazy-clear-1f06@gregkh>
+References: <2026102010-hazy-clear-1f06@gregkh>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,25 +106,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+>> just a friendly reminder
+>> 
+>
+>Of what?
+>
+>There's no context here...
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
-
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Of patch, which is first message in the thread
