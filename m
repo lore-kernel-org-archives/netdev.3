@@ -1,156 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.129
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792504384;
-	b=t52n24ZdtuPnYhvFkiSEuESkTKJuRVGpwcyddh5Y5FLsjGZkFr7a4tAMntUt/eHR8pOR
-	 jYWRCDNRdcln3K7WV0LT6+BdjMkDZylIb6w9FcviUw25WKusUpX8B1yx2BRypbCH6i67i
-	 gPZzy80Z1jrmODZo5lFFQhNRk2kbOuEK+F8DYQe28dv7bElCgKUb8Oft02Xfndz9Jpqq4
-	 ECpUkXOl2VzP+ASHwsrbpo5/nhNIcMy2aLKMZm65un+5k9/Tvk/nKKZ3WfYF6ibFbTjvo
-	 LfXpWhdiYzzGagpZlYrdON4oeBqipdhpoaTwY2H4MHPT+SbMnuHa0EqGMO5SbTEDVzg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792504384;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Sp9BZDCJSPYKYKwWttAGfBpvJHVea57EX6Bnuoov61o=;
-	b=S6bDKQ95sS0GnyWzjH4fjzM1CWwtvaeixPoWdL9zhvB3z6ZX7znVgsyeRyBXAWCqMg2+
-	 yCGa3WfVxilfkCRjvYLf63INKu8judVGqkam3IjYsa+CepbZaYHU/wYobf7QkqjGIyro/
-	 HZqIlWNYWfb0sTttirdPARKshK1Cydd2uKSpUPi0EWL3KehcTf3FQoL+KnZzNUqexXjfu
-	 giYPNUtDZ2JEyJoQb/M3xulHmyFSEcLDUvV1BlBFqzyitcUt5EYDAeygA2iDI+1ipKna3
-	 rnO4U8CrdxqnDi4jzmhZa9cAKO84QxXmKrvUHmzApLefG8FgZY/UMF88KfTu/w6Ghag==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=vecima.com;
-	spf=pass smtp.mailfrom=vecima.com;
-	dkim=pass header.d=vecima.com header.i=@vecima.com header.a=rsa-sha256 header.s=selector1 header.b=iTmMWBSE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.129
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11021129.outbound.protection.outlook.com [40.93.194.129])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792504600;
+	b=sEVbWXs5WmzwpDuEOhy0Lj+cfBT1oqeFe+tjrUS0KpACmsmbEOhNvvnq2GfW/tE0VaKP
+	 rVTP9epmEIZHsc4x+ThirMZr1OVUJ9qEXSa7gTL0CFHeYaR+wlEL3ggnKjzU6PDdnp6mU
+	 ipuUABOJ9QULNtV3zV4zHJyoeZITkQcvesZ1tgurH03QLboadT093X/LgG79tps5Hw4iC
+	 oGZJRov+eOCINcsTJu8sY/B+FIMdP79ejj4j0Ky53zOqoS2vqfBTdBsDHliAHm+Y1qbiJ
+	 Rq+IFAYmKXRG8u0TgayvY/a5H5FW1fsBxnFxRqwx8lOf1ljdSTIp9+cRykXNO/Irxhw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792504600;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=l8TpnDSr4xMVn+kzn3EMXGvx3pJwLmxiXIETZ9Ka+Pw=;
+	b=t8ojVmoSg++VVULjcwS5Ngyc5S0OdJLGTEAOkcMIRZufr9iPRROKXKCTBUoiLvsWHT/g
+	 kU4rX/pZ+DsrxJ3qIlvlYqXXfyHYd3wAX5Jy8HBdxcB5gz5hLCyqVhuRGH6BowEyeGJ7t
+	 D5vAnDSqM8OMCibsOPCVgImhXo8gbjvpyHbFDz5HOWl+DMZ7dJUU5gme7hQlEmIJGXOGF
+	 gk9pDtbT347aWqzw56jKeM/ZtBbV6Eq4mSJaPq+WaPpSdh+0YTLG0mSDZQiheXpHX/8oO
+	 E1Ww2u0tC498R8VVwtknfWZqzbs2bshFgULfItO0KrCQJcUmQBZb4QBxdkICVOJqogQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Xbn3xy8E;
+	arc=none smtp.remote-ip=117.135.210.5
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F75D606A31C;
-	Tue, 20 Oct 2026 13:53:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F75D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vecima.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vecima.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC3C606A31A;
+	Tue, 20 Oct 2026 13:56:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEC3C606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=vecima.com header.i=@vecima.com header.a=rsa-sha256 header.s=selector1 header.b=iTmMWBSE
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PyyNpZb9CvO/bwFPCj5Gncom2OB7Bq3IsmE1HH8Q//+hwGCnlFQsWSSPh+lOX2HDPhLLzfpLVrVIgwM7ZCCKTWM7SXKVdOqbsHw3gjc9VoHVsJg3afMVrjoUlLkwpQS9F9AFe13ACCToP9C6nJPvtWhsvZhmsyknWao0TzBIHUoarLA0YbMSwNOgIEgl48QmExzwWVLrbsVIqG7uACzQMctO+mfgffr/lx14Gh0dx+5X1eCEgzQvYhEKGSAjKM08+jMujqJYZUsHlRNBhyOp8yVhuJUrxSIPhzN9mMqHsAP3UXc5mwyE3JEqGzwYAiRqlEHG9cztDwwWtbxL1W2dHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sp9BZDCJSPYKYKwWttAGfBpvJHVea57EX6Bnuoov61o=;
- b=ak5fLcbn+ZnYooPk2NDaLMJ3VM5KrA6D3k3AhUOku4ZOQHqbpUMWzrRulKsFSnY0uIiU7xUsV8YEgvMiU/hKZtX03rnK/ZuOqoJekICMckEf6cGfssCNqHXYp4L+I0nZ2z2DleRUT2qSp1Ax8p/WtzUp+3SHEq/OAADJgtBg6UVMt4vLvlDPDb/LhqaS16gQVnoLvHBVQKCCrVpvLJML9FOEfZvnEOZsdOKvgDI+G8TV6pmnuestM8iT3uQQuvBsf0VCHK7oi9dHTkiOPDT7B2us+kslib7om0DFG80Q4w6ZRs9aSqp9X8gwam1CLQM4ReP1HIhrFKTz2dbOxIA9xQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vecima.com; dmarc=pass action=none header.from=vecima.com;
- dkim=pass header.d=vecima.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vecima.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sp9BZDCJSPYKYKwWttAGfBpvJHVea57EX6Bnuoov61o=;
- b=iTmMWBSEU5SNywhHJGm99sPUYgQPyXqxxNMx6WOc929f29jDhjCUBaawdabKdnCeOeS2uKpOJopLsxyQZFNv1lmCIS3EFORwoqth63yhZ9tSgdwzcGATb5QHmMSoRB/3bC4cKd+U5LXeNdE7IO1NtYpukdKswWthG2Rzp9IS9Vy6FBsKEJ1gQBou0Wog/G1bS6vuzLlNFbWRrWMPTPKs2x4HETf9EsGYYbTaLh2RXAoi1xHexPBxm4Y33oZK+Zy/eb48gqGYai6ZC/nz++aWR+1qONdOL7ToSxHr9IbiikBb86xSeZlMjzWyZwTT/36WPcHhPS12Tu/wz3hbDXEH4Q==
-Received: from DS4PPFFD8A841C2.namprd18.prod.outlook.com
- (2603:10b6:f:fc00::ad2) by CH9PR18MB074315.namprd18.prod.outlook.com
- (2603:10b6:610:351::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Tue, 20 Oct
- 2026 13:52:54 +0000
-Received: from DS4PPFFD8A841C2.namprd18.prod.outlook.com
- ([fe80::6a72:cf5b:2c44:9ac0]) by DS4PPFFD8A841C2.namprd18.prod.outlook.com
- ([fe80::6a72:cf5b:2c44:9ac0%4]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
- 13:52:54 +0000
-From: Marcin Knap <Marcin.Knap@vecima.com>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-CC: Magnus Karlsson <magnus.karlsson@gmail.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Magnus Karlsson <magnus.karlsson@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper
- Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
-	"jtollet@cisco.com" <jtollet@cisco.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: Re: [PATCH bpf] xsk: Do not free ZC Rx buffer when the Rx ring is
- full
-Thread-Topic: [PATCH bpf] xsk: Do not free ZC Rx buffer when the Rx ring is
- full
-Thread-Index: AQHdX6MW14dMxGSC9k6V0uDc5Tc4vLcFXSSAgACWooCAAA4QkIAAWoaAgAAN7TM=
-Date: Tue, 20 Oct 2026 13:52:54 +0000
-Message-ID:
- <DS4PPFFD8A841C22E2663DBBA3A1B4F581E80672@DS4PPFFD8A841C2.namprd18.prod.outlook.com>
-References: <20261019-xsk-zc-rx-double-free-v1-1-2aa19f6628fb@vecima.com>
- <ataHK9s/MpNgXWhT@boxer>
- <CAJ8uoz38cE-1diOnih=HYW+ACqq9YQhaM7tz8KCHjTxgZVc+rQ@mail.gmail.com>
- <DS4PPFFD8A841C2AC917618A9B1B19453C480672@DS4PPFFD8A841C2.namprd18.prod.outlook.com>
- <atddQ8qN/R1tU1fk@boxer>
-In-Reply-To: <atddQ8qN/R1tU1fk@boxer>
-Accept-Language: en-150, pl-PL, en-US
-Content-Language: aa
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_93f18445-29d5-46c2-bca3-016d3ef06464_Enabled=True;MSIP_Label_93f18445-29d5-46c2-bca3-016d3ef06464_SiteId=9d639caa-2d40-486d-ac82-e59b0005382f;MSIP_Label_93f18445-29d5-46c2-bca3-016d3ef06464_SetDate=2026-10-20T13:52:54.153Z;MSIP_Label_93f18445-29d5-46c2-bca3-016d3ef06464_Name=General;MSIP_Label_93f18445-29d5-46c2-bca3-016d3ef06464_ContentBits=1;MSIP_Label_93f18445-29d5-46c2-bca3-016d3ef06464_Method=Standard;
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vecima.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS4PPFFD8A841C2:EE_|CH9PR18MB074315:EE_
-x-ms-office365-filtering-correlation-id: b6cd637d-625d-4ec3-6e8b-08df2eb170e4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|7416014|366016|376014|6133799003|10067099003|22082099003|18002099003|11063799006|4143699003|38070700021|56012099006;
-x-microsoft-antispam-message-info:
- R/mH1Fvunx+g1aBqDz3oBWgFO2z35h2ARcaRv9wxEgCHizQnkVurZdg89gSSwg8Aw4hGq6xCwvVuIIO3CQj+ugeuutLJr4WadlMm57di7Y9mk09eiRnAhvGMYyBzn5Aq4byOrO+43WFhSiJR1eQtisM/AJAYFGBgDybYVLSwJTa5h3Obw04+E46M1idL93gcfBLz51R+7tyMhXpd95VHumkVsD0zHQtZ1ej5ApFN88x2h5YYVpQJuovxgfnBDupAv8Gg4N4xO3LkObCP4CBZnlcfRRCq0rgIEQEFXcKosF8CyXpwrBmD5XYTWWtmW5IaKTSmUsxjc44LrZsre2LbjuqRPVZT+vpWP+w2wH85nLBrgRNpYA5Fez9Tw1RFEQ0GPGGCynEvhhR1/kcwDP3TrcfGH0TUWA+mNoHl7V3oS+YFLF0RtLlQ/oa1xfnPxLqSQtA6NT5HTqV2RepFSTyfZFOH9cgf8tE0FiZ7pcTy3nKY5AXqGBMsAdUoQE503UxqvKb7GskE5an/WWsTYMyF5xsXd3JDZkXFaLHRkmy2bdiNo7pdGqQD3LKim588sZ//Vulvzcxt99s0QKFu+o9kretzVfiMir/UWaCcRbU7CtJHCPJ/pg2QnZiAyky+QyepArZbeVe86Rr68+ThLiyPoyejJwqPqc7ebXcTwma+RBLvr+umDjbFTN7TuAJCGYsre6+vCsQX0wmPRpNgwyFc+5aeAeT2kcIOkiPB+w10bds=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPFFD8A841C2.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(366016)(376014)(6133799003)(10067099003)(22082099003)(18002099003)(11063799006)(4143699003)(38070700021)(56012099006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?pp2IvRtMth5VFOsJKXUQ67AJdB2AQQ61oLKKeJ0PhiXB0HXFkjeL544lOhDE?=
- =?us-ascii?Q?ab8xEAVuQ3tYLo3cnEfkgrBUHMwKycAKV9CxdrzqPRH6z3SxJjsdxbJfC/6D?=
- =?us-ascii?Q?h5c+t3uEBH5eWGSWzyR9AupRmNnqF959LCzK5Pzmy5/uelwLmEGli+GKM4sa?=
- =?us-ascii?Q?4Uueab9erd0FhRF5p5MwNsox3tmiqsHLVsXuMoC8ISHmdbW4wAY7zk5OrQBG?=
- =?us-ascii?Q?tVlkzq4dtvbPZx+GsIK9FUkAqzknAa7ZkLDzr4K4tRO7BeNcB+7pLg3T5Chr?=
- =?us-ascii?Q?g/3rkldrwPzp77o0B9IXIgnpE5yr/XBRlQ85EvoqhY/st/Wf3ag+D1LKn8nT?=
- =?us-ascii?Q?Yg2uzpdWkgYXUBOh/4yPehdoK6n4izMZB2Iz1VelEfIMOO8isp5FSfN9t/tn?=
- =?us-ascii?Q?Sue6PS3YLbJqOcZdu8Zyq8N3LyjX1/YNzjnlHU0+FAbjG7qe9NTG8pjcqWp4?=
- =?us-ascii?Q?a9cESzq26dHLk1siOH9PnYyRzF2e1O9yWapwwJfQqj+xudHj6mPHAt2pLiK8?=
- =?us-ascii?Q?yfrjxVfSPqwQYFOYVRNYyur8up/ZYftZUBkbOfO2/J6fnYg0FJz0Elf4NAHo?=
- =?us-ascii?Q?ZeEq1SDl9IbQlPZ4+gX80fEg4U6aTeoqyWp3xB0NUABqfVi6evtCML+aAQDf?=
- =?us-ascii?Q?XrG+wk3+fFk1YfZSHjlYqQyDrZq6jsL5/XSYs6JC2WwPTwK4/gsvxcjmzJEA?=
- =?us-ascii?Q?UFxZ0fB3EN6YmarN7qbxxfDZmR0Y6Cv31RatfetlnGZ63d3dmek0+Jb8BaXq?=
- =?us-ascii?Q?PLdPQ7sANwUIcgATWwq/ajSgPVUa8MPKeAKgrS3Ql6zc4aNUV5LgQCfRk4Jj?=
- =?us-ascii?Q?xkuQovBJA+LaBp6mLBfQ0uoCwc2VGdpWHq5X79UFE0Xy2kIPyaEQHFsPjjRz?=
- =?us-ascii?Q?ono1soG/orJKCM6G8y+44mWS4aUPgAK41lV7VHBULKtTWR+UU7uAvBOwZVhk?=
- =?us-ascii?Q?TFErVSK6cbxxJflVgdHVePj925iSk+lEC1V7E0ojQ+P/0FgPTrxuEwQ21Dye?=
- =?us-ascii?Q?U7pbaRokR84da9Uz1yzwvCYe/rhBsB1BI580wDkgryDW61kCES/QsSmnDeeI?=
- =?us-ascii?Q?RrcNOzlspQGWlKiQf+TTpb2FQLEZWjRvEuwDyhw2/pOfYEJVvAzqK9ShgjXI?=
- =?us-ascii?Q?RO+JvnLdDGGZZhePsI2CmUDlEP+1m2azLKQSDGmXJ486BTu1ZZfAN/aJfT3R?=
- =?us-ascii?Q?/LTUTHR8R1RPiP3K79JQfSkefbf2ap0jrbICJWFS23qMvwNKw5MYr6xQ/BH3?=
- =?us-ascii?Q?jUwoPLOUmjW+F+4jNdvLx8EwiOqjNLMjMMEDgCG55GQxyX1de/X4CmLnfq64?=
- =?us-ascii?Q?UrprJcbuWkDjnn/r8EK7Xw7O0cDAKgVLDRXwc1yubt8bjOWu+J2GUd6xngKT?=
- =?us-ascii?Q?ICK49bBrkMN6Sx2WicAnNjQOapvQxCIr/yeZWMtmOWkrus+wILf/vnOMQQA9?=
- =?us-ascii?Q?d/OngPbYTnKftyEvJdA/TKdlN8Rw46Ge3A6LozMzKV4FntCKifTYRuwBgJ+m?=
- =?us-ascii?Q?w3Rx9J3lI1ZA8FqwkcDqDSq3k6uV5JizMiYlmBCGFa0zrHQqjnSicoiTaKXo?=
- =?us-ascii?Q?h5+8MJs6+/UsyiP8AUkn+lqxiyaKncoCIFg/jH82z3uqA0yXwuDwSrhYfRwC?=
- =?us-ascii?Q?KqL1VrLNaJFe6WMB2k1HItz5GG8tNWZTSY03sbPaBuitkIUgSoyjUmiwHPs9?=
- =?us-ascii?Q?qXYJemmPdqrlg5ayaPbqhOzFFnchiZs83HUNB35ZjFXuQAcs?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Xbn3xy8E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=l8
+	TpnDSr4xMVn+kzn3EMXGvx3pJwLmxiXIETZ9Ka+Pw=; b=Xbn3xy8EZpfuq97yov
+	qknSOML+iIpfh0Q4t1XjFQbK7MHdWvwpO5ogWN7aXRlAKoEyANtrzzAVB3ybBo8f
+	sVefRMzZ1vKFi6XCKG5/Y0cCeF/oVeehlDupT6pbXwe/S2ZJaWrd48vtmri3IYiq
+	74bhyW95YsnaJAxCBKSpXLlws=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3YQntctdquSfMAw--.51436S3;
+	Tue, 20 Oct 2026 21:55:58 +0800 (CST)
+From: Xia Yan <yana06070@163.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	yana06070@163.com
+Subject: [PATCH net v2 2/2] selftests: net: check veth carrier after changing channel counts
+Date: Tue, 20 Oct 2026 21:55:44 +0800
+Message-Id: <20261020135544.24441-2-yana06070@163.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20261020135544.24441-1-yana06070@163.com>
+References: <20261020135544.24441-1-yana06070@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -160,64 +70,170 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: vecima.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPFFD8A841C2.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6cd637d-625d-4ec3-6e8b-08df2eb170e4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Oct 2026 13:52:54.7406
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9d639caa-2d40-486d-ac82-e59b0005382f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: djdKji4WsOIg8z4skYSW7/2mSdcDevjKT+AgAmoJy5JW79m9YoSRD1K/bJVFT52Y6/D1xxck4k+iS0eQjasf+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH9PR18MB074315
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:PSgvCgD3YQntctdquSfMAw--.51436S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKF4fJr18tF17Gr1kZFWDJwb_yoW7Gw1fpF
+	s3Cwn8Gr1IqF1aqw4xKw1xZFyUW3Wqqw4UX34fK34xZ3W7Kr9aqr13K34Ut3W2krs0va13
+	ZF9a9Fn2g3WDCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zifbb_UUUUU=
+X-CM-SenderInfo: p1dqtiawqxiqqrwthudrp/xtbC-A9o7mrXcu9LwgAA3c
 
-On Tue, Oct 20, 2026 at 07:00:47AM +0000, Maciej Fijalkowski wrote:=0A=
-=0A=
-> Please don't top-post on MLs and configure your mail client to wrap your=
-=0A=
-> lines. Kernel people get triggered by this :P=0A=
-=0A=
-Sorry for that, I was trying but not good enough... =0A=
-cannot setup this on web outlook and I have blocked every other client.=0A=
-=0A=
-> ZC drivers are supposed to break processing and yield cpu to=0A=
-> application when xsk rxq gets full. We didn't want to expose=0A=
-> particular packet multiple times to XDP progs as that might confuse=0A=
-> internal logic of progs. Therefore we drop the packet in the core and=0A=
-> let driver side know about this via ENOBUFS return value.=0A=
-=0A=
-Thanks, that explains it and it makes sense to me. =0A=
-I will drop the core change and fix the=0A=
-drivers that free the buffer again after -ENOBUFS instead.=0A=
-=0A=
-> Marcin, could you re-iterate why Jerome's fixes were not enough for=0A=
-> you?=0A=
-=0A=
-This is how I understand this but I don't know this code well and I can be=
-=0A=
-wrong.=0A=
-Jerome's patches stop mlx5e from releasing the same WQE buffer twice=0A=
-when a refill is retried. They don't cover the case where the core=0A=
-has already freed the buffer on -ENOBUFS. mlx5e_xdp_handle() treats=0A=
-the failed redirect as XDP_DROP, skip-release isn't set, and the=0A=
-buffer is released again when its slot is refilled.=0A=
-=0A=
-xp_free() only catches this if the buffer is still on the free list.=0A=
-The free list is LIFO and refill allocates replacement buffers in=0A=
-bulk, so the buffer freed by the core is usually handed to another=0A=
-WQE before its old slot is refilled. The second free then puts a=0A=
-buffer that is still in use back on the free list, and the same UMEM=0A=
-frame is later published twice.=0A=
-=0A=
-> Would also be nice to align mlx-5 to -ENOBUFS case.=0A=
-=0A=
-Will do, I have potential mlx5 fix (this was my workaround).=0A=
-=0A=
-I did quick analysis with AI tool and it sounds like all drivers have =0A=
-similar problem and they don't handle -ENOBUFS correctly except =0A=
-Intel drivers needs_wakup path. Given that, would you prefer the driver =0A=
-fixes, or do you have any other ideas?=0A=
-=0A=
-Thanks,=0A=
-Marcin=
+Add a regression test for veth_set_channels() incorrectly reporting
+LOWER_UP on a running interface whose peer is administratively down.
+
+Test the up/up and both mixed up/down combinations with GRO enabled and
+disabled. Resize the RX and TX channel counts in both directions on
+each end and check LOWER_UP on each running interface. Also verify that
+rejecting an out-of-range channel count leaves that state unchanged.
+
+IFF_LOWER_UP is masked on administratively down interfaces, so do not
+use it to assert their raw carrier state. Omit the down/down combination,
+where neither endpoint can report LOWER_UP.
+
+On an unpatched UML kernel the four mixed up/down cases fail. All six
+cases pass with the carrier restoration fix.
+
+Assisted-by: LLM
+Signed-off-by: Xia Yan <yana06070@163.com>
+---
+
+Notes:
+    Changes in v2:
+    - Limit carrier assertions to running endpoints and omit down/down, since
+      IFF_LOWER_UP does not expose a down endpoint's raw carrier state.
+    - Use log_test_skip() on veth creation failure to avoid a stale retmsg.
+    - Include the discovery and reproduction details in the driver commit.
+    - Driver code is unchanged.
+    
+    v1: https://lore.kernel.org/netdev/20261015085821.12725-1-yana06070@163.com/
+    Review: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/8081
+    
+    Validation for the revised selftest on the original net baseline:
+    - bash -n passed.
+    - Unpatched UML kernel: 2 pass, 4 fail (the mixed up/down cases).
+    - Patched UML kernel: 6 pass.
+    - Injected veth creation failure after an earlier failed case: SKIP no
+      longer repeats the earlier error; the aggregate failure is preserved.
+    
+    Reused the existing UML kernels; no kernel rebuild was performed for
+    this revision. Prior build results and their limits remain archived.
+
+ tools/testing/selftests/net/Makefile          |  1 +
+ .../selftests/net/veth_channels_carrier.sh    | 93 +++++++++++++++++++
+ 2 files changed, 94 insertions(+)
+ create mode 100755 tools/testing/selftests/net/veth_channels_carrier.sh
+
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 590b33e..4004014 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -128,6 +128,7 @@ TEST_PROGS := \
+ 	udpgso_bench.sh \
+ 	unicast_extensions.sh \
+ 	veth.sh \
++	veth_channels_carrier.sh \
+ 	vlan_bridge_binding.sh \
+ 	vlan_hw_filter.sh \
+ 	vrf-xfrm-tests.sh \
+diff --git a/tools/testing/selftests/net/veth_channels_carrier.sh b/tools/testing/selftests/net/veth_channels_carrier.sh
+new file mode 100755
+index 0000000..03c2995
+--- /dev/null
++++ b/tools/testing/selftests/net/veth_channels_carrier.sh
+@@ -0,0 +1,93 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
++
++require_command ip
++require_command ethtool
++
++if [ "$EUID" -ne 0 ]; then
++	echo "SKIP: root privileges are required"
++	exit "$ksft_skip"
++fi
++
++trap cleanup_all_ns EXIT
++setup_ns ns || exit $?
++
++check_carrier()
++{
++	local dev=$1
++	local state=$2
++	local expected=$3
++	local carrier=0
++	local link
++
++	# IFF_LOWER_UP is reported only for running interfaces.
++	[ "$state" = up ] || return 0
++
++	link=$(ip -n "$ns" -o link show dev "$dev")
++	check_err $? "Failed to read $dev link state"
++	[[ $link == *LOWER_UP* ]] && carrier=1
++	[ "$carrier" -eq "$expected" ]
++	check_err $? "$dev carrier is $carrier, expected $expected"
++}
++
++check_state()
++{
++	local left=$1
++	local right=$2
++	local gro=$3
++	local expected=0
++	local count dev
++
++	RET=0
++	if ! ip -n "$ns" link add vca numtxqueues 2 numrxqueues 2 \
++		type veth peer name vcb numtxqueues 2 numrxqueues 2; then
++		log_test_skip "veth carrier: $left/$right, GRO $gro"
++		return
++	fi
++
++	ip -n "$ns" link set vca "$left"
++	check_err $? "Failed to configure vca"
++	ip -n "$ns" link set vcb "$right"
++	check_err $? "Failed to configure vcb"
++	ip netns exec "$ns" ethtool -K vca gro "$gro" >/dev/null
++	check_err $? "Failed to configure GRO"
++	ip netns exec "$ns" ethtool -K vcb gro "$gro" >/dev/null
++	check_err $? "Failed to configure peer GRO"
++
++	[ "$left" = up ] && [ "$right" = up ] && expected=1
++	check_carrier vca "$left" "$expected"
++	check_carrier vcb "$right" "$expected"
++
++	for dev in vca vcb; do
++		for count in 1 2; do
++			ip netns exec "$ns" ethtool -L "$dev" \
++				rx "$count" tx "$count"
++			check_err $? "Failed to resize $dev channels"
++			check_carrier vca "$left" "$expected"
++			check_carrier vcb "$right" "$expected"
++		done
++
++		ip netns exec "$ns" ethtool -L "$dev" rx 3 tx 3 \
++			>/dev/null 2>&1
++		check_fail $? "Out-of-range channel counts were accepted"
++		check_carrier vca "$left" "$expected"
++		check_carrier vcb "$right" "$expected"
++	done
++
++	ip -n "$ns" link del vca
++	check_err $? "Failed to delete the veth pair"
++	log_test "veth carrier: $left/$right, GRO $gro"
++}
++
++for gro in off on; do
++	for left in down up; do
++		for right in down up; do
++			[ "$left" = down ] && [ "$right" = down ] && continue
++			check_state "$left" "$right" "$gro"
++		done
++	done
++done
++
++exit "$EXIT_STATUS"
+-- 
+2.43.0
+
