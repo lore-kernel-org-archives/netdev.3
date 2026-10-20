@@ -1,84 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792488290;
-	b=u9acdRjG4O+tP/QUBfNJl1Aznmz+G/iWhN+5W4uVk1a+iKzUri5sWjZRQpWssdgt0Xta
-	 Lq0c6eRnEQIXigvGL84nmL0Vi2GP6TT93YAWJz1hywi+dgUYpwIwd697uY8ahKB2Oi/dv
-	 uqi1addOVezpXkdjTKz4fZ/ieGN5guxhTUYtiW9JaeYj/QcXGK3NcCQbaUJFInklFDhSm
-	 dSY0D6JlJXkKiLXPfFxE5KQAr1UxM/t7ZvBQbo/ueSqnFpMeSJ0XvDXzIJFwkA6MKfLwS
-	 h35EcW8MdhW5uymrbV4spzYN/nbQ3rED1solM3HRzq1gz/NGLhKy/XJx9URuQ9mZ4yA==
+	t=1792488795;
+	b=5T5nLaBFLubgT2BsDtmXsSPK573XG6gmf069dIy66yUX6Ih0h0bppAzRRp331a4IXOAI
+	 dygtO/d/84iCl6WxbJMUx0sVqiAw5rqCQb6szz27fVXYjsk6KFIOQuUfm/dGVr4qkYmTG
+	 6u/y+V4mJsmnbBjCskIqSkGyaoFhGXdBYDLGkjE80aZ/Rdx5xShkxOcjXewdKOIPdf6JM
+	 GuvlOCV54YlcHYHQikKVGLaXZtFOZ57AoCFWnsjFSHsa4WQvSTgZUL7/4ipOskh4Pd4Rd
+	 Wu/0235cqEiI/ccIh18rRJDaTyF/wTo1Sg/fiQHdu/UCu2YERhD8QqfYztB7+fRC2pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792488290;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Scanned-By;
-	bh=BznN/lY8tjRKb0k1WwnLhH6cM8dWen14mRHzzd6dYZk=;
-	b=XSx0TJvl6qA698UIScaTW9wisC7wXyQD/UkYdPEGeACAYMhKkV/fCNzGCOzW3ZzmfiV8
-	 +jiP0UEBptWD9BziIGpVhX+Sj6/Fi53K+q4Mvz4GLb27Gu8ezzNA/IX/1tuhTCb5uZtHe
-	 PuUxCN1OvSOLnXN2AzYOzIIcWaKpfVR23vjDaZMGNFvt0WkuwONpxnWbuJ0nB0ZTHwmCx
-	 hTK6YxUKx2Nz87KsUZctE2gHzZjxjufI+juDedJK66KUIWm3mw2Ogl2t2Pz7ra+x/l0A8
-	 bzf9zGYqZpSTib15A5tb5Yg2YSXfWpt180ZGWRXN0WEcl+l3Wk/Q6PN6mCaFIa49RbQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792488795;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=dZoTt4H1bkHJ1iFFezg2ia6GW7SdKnykrK0ER0bdGsc=;
+	b=aqlJR3oojV85QKUCycfkFbFu5VRcp8/5t671nwabZ5dpt4t5RtzlejkQUrE8wpB7ZeU+
+	 lUuwf5nDar92fuvavWkdw2DZ9S6aoxdLHokh2hCgW37DmBtlbAkjqfn1khOgSWzm19UeO
+	 PHCwM6nPHSOLwrVA16/gfWIs/ckNbYY+GRb0eaJDP5RMQNwEj9tUFBpgMLhren1Cgzm0H
+	 Ou27v0GBJqOmrZh8RNEUkx5ua3eIvcFf8qs76/gU5F1Tw652MY5fbz5dEv7Z1FHcitImY
+	 zDqEQC/kEgAY890Mgvx6m3jUWRCDuh15K2kxIdfkANEhLx/z/uIGGTvD87zxO/bWqcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PC96n0e8;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vbhWYMIo;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB3D60A261A
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:24:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BB3D60A261A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C52606A319;
+	Tue, 20 Oct 2026 09:33:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2C52606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PC96n0e8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792488288;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BznN/lY8tjRKb0k1WwnLhH6cM8dWen14mRHzzd6dYZk=;
-	b=PC96n0e8m+GRrNsFQCuhcvOKayJi6Y5Z23Mh15N6BhlVLQmLcYNRiEf/m1N+tdforVX/3l
-	ltk4AZAGmRVP3UZ8rUJOYBL66eZZVTY/iNOPs/5zL4jwkl9j/Gv8Xo5UeZeRXF5obf72oC
-	HJO3kqf604x4Y2lSXz4OzVwPSgZGLZA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-yQTXnxNLNOSym5LCND7XSQ-1; Tue,
- 20 Oct 2026 09:24:47 +0000
-X-MC-Unique: yQTXnxNLNOSym5LCND7XSQ-1
-X-Mimecast-MFC-AGG-ID: yQTXnxNLNOSym5LCND7XSQ_1792488285
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1459F18007F6;
-	Tue, 20 Oct 2026 09:24:45 +0000 (UTC)
-Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id B3A68418;
-	Tue, 20 Oct 2026 09:24:41 +0000 (UTC)
-Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
-	oleg@redhat.com; Tue, 20 Oct 2026 11:24:44 +0200 (CEST)
-Date: Tue, 20 Oct 2026 11:24:40 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Joel Granados <joel.granados@kernel.org>
-Cc: Allison Henderson <achender@kernel.org>,
-	kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev,
-	lkp@intel.com, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
-	wireguard@lists.zx2c4.com, rds-devel@oss.oracle.com
-Subject: Re: [linus:master] [sysctl]  8d75c338f0:
- BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
-Message-ID: <atczWEzYbWO67aNd@redhat.com>
-References: <202610190310.9737b2e3-lkp@intel.com>
- <atYB0bm9eEXp8A2g@redhat.com>
- <atYW0K3t57puHeLW@hobbes>
- <atYuE1xnVYe0BDG4@redhat.com>
- <atY42k00k0Waj6o4@redhat.com>
- <atctwUB5NlRLk4Wy@hobbes>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=vbhWYMIo
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4AB5B4E4128D;
+	Tue, 20 Oct 2026 09:33:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 17FAE60393;
+	Tue, 20 Oct 2026 09:33:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8EE1710328D1B;
+	Tue, 20 Oct 2026 11:33:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792488791; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=dZoTt4H1bkHJ1iFFezg2ia6GW7SdKnykrK0ER0bdGsc=;
+	b=vbhWYMIoLd5Mn/nP4oRxLuUdxGbpgKYYyEd+/yUjHW8cWY4yBVf7sC/3Bax08gNW4B9mX2
+	HS42Y57YrGqO4D2rzTDrcA+NJJkWg6LVreDQfvfRs60hbw47hSIIgBQUUxrEhRtOg7guFM
+	vxM1Raqyl9EVjNE8QLzKzpeH01czxGo8g7vMb4+RUKzEyXMMjQPxT9s+olYKDsXhu5en0L
+	rI1UbfMjk219FFdbeNgabAXddHAjApxBHiZ0AOp8cWgekKRUNuyok8f/qViOUxvyfB05CO
+	7s4tNgtI+0Vi0+yPp0g0ifoEgWH0gf8N53mjXT0cU7+11qVkJuLw9ILmGQezuQ==
+Message-ID: <72715cc7-da78-4ff6-a22d-f81ea8235b74@bootlin.com>
+Date: Tue, 20 Oct 2026 11:33:06 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,46 +62,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atctwUB5NlRLk4Wy@hobbes>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net 2/2] net: pse-pd: si3474: validate the channels of a
+ PI
+To: Piotr Kubik <piotr@kubik.pl>, netdev@vger.kernel.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org, Carlo Szelinsky <github@szelinsky.de>
+References: <20261019162453.1244120-1-piotr@kubik.pl>
+ <20261019162453.1244120-3-piotr@kubik.pl>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261019162453.1244120-3-piotr@kubik.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/20, Joel Granados wrote:
->
-> You can also do this (also untested and not compiled):
->
-> diff --git i/net/rds/ib_sysctl.c w/net/rds/ib_sysctl.c
-> index 2af678e71e3c6..bc97a3eecad69 100644
-> --- i/net/rds/ib_sysctl.c
-> +++ w/net/rds/ib_sysctl.c
-> @@ -114,7 +114,7 @@ void rds_ib_sysctl_exit(void)
->  int rds_ib_sysctl_init(void)
->  {
->         rds_ib_sysctl_hdr = register_net_sysctl(&init_net, "net/rds/ib", rds_ib_sysctl_table);
-> -       if (!rds_ib_sysctl_hdr)
-> +       if (!rds_ib_sysctl_hdr && IS_ENABLED(CONFIG_SYSCTL))
->                 return -ENOMEM;
->         return 0;
->  }
-> diff --git i/net/rds/sysctl.c w/net/rds/sysctl.c
-> index 025f518a43495..41c65b98c94bd 100644
-> --- i/net/rds/sysctl.c
-> +++ w/net/rds/sysctl.c
-> @@ -93,7 +93,8 @@ static struct ctl_table rds_sysctl_rds_table[] = {
->
->  void rds_sysctl_exit(void)
->  {
-> -       unregister_net_sysctl_table(rds_sysctl_reg_table);
-> +       if (rds_sysctl_reg_table)
-> +               unregister_net_sysctl_table(rds_sysctl_reg_table);
 
-Yes, this is what Allison suggested too. But he also pointed out that
-the changes in _exit() are not strictly needed, unregister_net_sysctl_table
-is nop if !CONFIG_SYSCTL. Plus we also need to change rds_tcp_init_net()
-the same way, see register_net_sysctl_sz().
 
-So, let me repeat, I agree in advance with anything you and Allison prefer.
+On 10/19/26 18:24, Piotr Kubik wrote:
+> si3474_get_of_channels() accepted channel 8, one past the last channel.
+> The driver then accessed channel 4 instead: quad 1, channel index 0.
+> 
+> It also accepted a 4-pair PI whose two channels are not a channel pair
+> of one quad. The chip forms a 4-pair port only from channels 0+1 or 2+3
+> of a quad (2P/4P mode bit in POWER_ALLOCATION, PORT_REMAP default), and
+> the driver sends every register access of a PI to the quad of its first
+> channel, so such a PI enabled and measured the wrong channels.
+> 
+> Reject both at probe.
+> 
+> Discovered by an AI code review agent; no shipped device tree triggers
+> it. Validated and tested on an SDG-9000 board (MediaTek MT7988A, two
+> Si3474) with Linux 6.18 and a modified device tree: one chip with a
+> channel at reg 8, the other with a 4-pair PI on channels 1 and 2. The
+> driver now rejects both at probe, and the unmodified device tree still
+> probes all eight PIs. No kernel selftest covers PSE hardware.
 
-Oleg.
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+
+Thank you!
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
