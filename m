@@ -1,71 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.138
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792515202;
-	b=Fv6VELwUKhA2m0rjF5BSqWKXcrOgFe8vL6/G9UftSQnCN8uF9Ki6BLwnMuYQ7RfNn31z
-	 ePKn3357hfQkSXwghE0+Nex87GLpOcaqe3Li7umKtFi/D6M26wlfN1jG0QQB7/NEH4oub
-	 eQNYkJF40I+K+1hI3rMxStpt6/miXfsdUM2d8s4SUGTW+KkA7598BrMJUC91bjd0NMdMG
-	 mOdo/3I4nAzz15ZOkLZ5iEyg42+xJqIjTgD9zL8sfwOXoG0o3HRsmGYa7ln7SJgNFAb2n
-	 5ioVRVBqriFiXv/bX3sG0LDlMbLC6+UTYz09aHvYVlLzzLaV3pSKyxLlqfvLkZv/i3g==
+	t=1792515263;
+	b=A6ZlZ1Yn9zgeJi04YiPIwf2YGFIGnwa7O40DlbIcLFDIiUShwdTGZtraOHwCN+FrwJsH
+	 pzIsrBHH/gWmLWVUtxPUkUEe91i1g5eKDMYYChLtgk1uEH0wuQU6s5mBPJgeEfHcqtBMh
+	 0vmyENLWeG0ldI/HM/WPsB0DPEOUvlPUqa0U8/+xJOkf72RdkF4gta7OnRMvHj7Ua4NJv
+	 PRQ+mqbPGrsQKFQVgBKwOhe+xp50FxhlHI/XrIK8d1a+GFFAxdooNKM8Zo4TfPEmeyUQ1
+	 jM1u/IwfMxahSnJ3VtuWVuTDUTqG6mvK7NcC0JJzcC5ymqV8lq0pCMc3dsPCjxE1Atw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792515202;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-Spam-Status:
-	 X-Spam-Checker-Version;
-	bh=imfu4Q1xLhRu8Rb4R6sPh28+g8HdrHEwcBOMUN84DFw=;
-	b=bn8ZQnS3L+iShialp3gS4fPfvoHj3sDlTD+15uz/N2gjX9IuaaNu6+Md/HRjb4gL+kxs
-	 WoDTzgiz03lEvF3bBlCCWrHn9jtIMzg8QeJS0K7VR5IrTZKt+aJb+eRI1FbhTxU/U2Wo8
-	 u5T/3GUn8kOXcIkIZcQoGF59WHtKiSbFRUwRHkFCIYIVc3SLXTsj5u3KrjLdmA9l25d8g
-	 k6nyf3O9lMmS2iEBLwHjmgdTpWx0svpnnuUyF/qRTHYqXc6VAuBZYlHGs1HwqJuTKf9v3
-	 cwjHhxMM1zW6CaTwU0ve9LQBAZc2V8wfx+izNfJBOYpSNoeFB9NPOTMivkOLpbhoceQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792515263;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=y7pJWX6mRQI0TWb4dnXe4N95Ebe0/SB4aAlZ0+60zH0=;
+	b=mdbYWwoA3SchvZZP2IZz71sK41yxOqS7107dElwdnwLbS1panAZ/0gwVqbeGJP1QgYV/
+	 H6nw0ZDM5f0EHK+4A4nDlkX/QK7pLOPUw/mPjOAOX3LBv9+v01WxewUy4rAOtNa6Cvp90
+	 71Xa2Hczh+8+nVN270+9UNvcsa2a2a71wwaVmfwI3dwKacyRSDO2LaEA+cG7hIWVJuH/E
+	 0zRTV5UyYKZ1bB6o9bZaPtX+xsW2rr2uTNv1tYojy0V53l+GYE6Z0v5kOMwGuh+d9ZH1n
+	 R9Eiwf9UpTns+Escv/ibUhEGvBMC7tveVeaUyWCptqXSRh6sZrPvNYixZY7sgVltDlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=bwnnMoh3;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Odl7PJRO;
+	arc=none smtp.remote-ip=74.125.227.138
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 3BCCB606A324;
-	Tue, 20 Oct 2026 16:53:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BCCB606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78A1606A33D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:54:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C78A1606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=bwnnMoh3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1792515199;
-	bh=imfu4Q1xLhRu8Rb4R6sPh28+g8HdrHEwcBOMUN84DFw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bwnnMoh30H86OwYZ15UsSWVlD17cstjAGJtXI+iGD+SzpfNiBGGTq+ect7vgMAOxD
-	 5R65v7pv3HGbBxpj5Ux8/9X+yLGY6ql0/BftfGBwuzte93HVxjBWPU2ug4zu/hj8gd
-	 j6hQSQG9V/E/Q5tTuTGksLiZ1r0rT+LH5/+vjtwS1S639ZEETeoXDqn8btJiL5xYiO
-	 3N/ceCCa9P6fOX5cifyzniGRKfleamtvNjfByKkUuW2dIL4JP2DROO2P3A1QXtM9jH
-	 Xqyq61gqL3nOXDWZSIr3zK1Bd260eysJk33efAN2SnsqAgGVzmTcpMnLtVtfAFaO56
-	 /LCfCrpnf5/Jw==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id BC99660051;
-	Tue, 20 Oct 2026 18:53:19 +0200 (CEST)
-Date: Tue, 20 Oct 2026 18:53:16 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Eric Dumazet <edumazet@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Odl7PJRO
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c1c8so10881185ad.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:54:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792515262; x=1793120062; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=y7pJWX6mRQI0TWb4dnXe4N95Ebe0/SB4aAlZ0+60zH0=;
+        b=Odl7PJROQh4Q61IEQ8CPcx6DqKGqhKlac1t0A9z6v5r8e9IgP5bUmSn2zR38CCYcnQ
+         4Wez/O0AVyYFuJ7V7sk8Pqk5xC+5A1RwilN+EGNiLxVRsqJrd6qtOTU68u1d5vtFOJ4x
+         dw7p1HOzu5Jrz6ZU34Exk9IqCCo8FhomjBimuNTRSR5QbxYwZbjnfcPlxeA6Us693U0L
+         KbCTJ84aHNF7b4hCM7wjKlW9Z0CWM4Sjj/2hrhSvZVch1ekc8MhuYc9eSmXzcplS6SO9
+         p1grSv3PBGRuIVbkI0zuFBt5rJASh4w2OPSHlC+cYr0i4Rqiqh3w9U7ZQ3MsOvjwyAvq
+         hkpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792515262; x=1793120062;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y7pJWX6mRQI0TWb4dnXe4N95Ebe0/SB4aAlZ0+60zH0=;
+        b=Vk9Ta3zErmSDQ2no7IhkxM/rUUjAVGHw9PLFG2/FuoGJM3zhnv6jAyemNjTsEvkWm+
+         0qI0jN+fGIXLOGCEigJQIE+jc9zGK9vopC8kgpsXZ54bWQQAWATxjfQUANmS2KyNvtmw
+         SqDIisTWVIxIuh8dm/PsyJiwvOM3iqXs2rM/6Offqdi9OB1z1v9Ti9bjy4fUJGsHqZp9
+         Giy56Y/MQ2kxKqOUzXReTGJ2gLcRZkzDYgqMY/2eGXwYsywrEkoqZ+XwmEl1HFlvo/GJ
+         v4DutBUN5oLX6M3mRfDBecYKPYB1Ju6cAbkt83gzcRcUpqwVuBb7R54P1g0oXLAYAyc0
+         xF9w==
+X-Gm-Message-State: AFq9FYL/Js/bx5omF41jEL0bJTxS1q5O51zeg8jqB8AtS1jrDY9cJ/bI
+	uVs7BKpr6zDQnVW3ozgu/290i8/D51GmajzaI3O2SlfECdeVElqvbR4L
+X-Gm-Gg: AYBFou1CvXwgEhbh5SCttum2CggL4F4S6dRwt4itK8Lx5iU6szmW1jRih1YPresylKy
+	dJ9S2Jbijh/VpmPU/thZ4H+iGJAaaYMOUBAu7WqPbpzcwGno/TC4K23+sYV5btNRNJalGCyOe4O
+	eWKYD7sz1BP5NTEeeaNQ9TXk91yoEV4eqJnsxfTZI/5SrCMWHsLE0SpHYJb/qbEPc4eOanFMEUi
+	2D7FCFP7LhaPyBJk/aVMYpnHSKPlilNAnsIOEtiGue3EYdS10JYhV8RkMFKZs/yp9G+YBQ/2n1a
+	GiQNWiUSC5ZZ5xuMx+vU1/GoEXK6QkV0OZ2tWvdwueCOzfJIcl8vD/xrPfATDpNsEr2lOTRKD80
+	mb4lA1aTD3Xt3oa30jwl6LFS2/aCv7Jl/268C1kR7FxwcBLR5hJFAs97uRN0W1gG+acV6Pt1ZXU
+	mHuuwEiMWCpfeCb/B/VnEzfNNvxojhEdNR9bTeUECZgqhDDww38X7oG+s8D0wr2UcL
+X-Received: by 2002:a17:902:cec2:b0:2e8:3190:73a with SMTP id d9443c01a7336-2e9a7151518mr100280005ad.58.1792515262067;
+        Tue, 20 Oct 2026 09:54:22 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:51::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b308afasm1724805ad.4.2026.10.20.09.54.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 09:54:21 -0700 (PDT)
+Date: Tue, 20 Oct 2026 09:54:16 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Kaifeng Wang <kaifengw@google.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com, 
+	kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, asml.silence@gmail.com, almasrymina@google.com, 
+	willemb@google.com, kaiyuanz@google.com, sdf@fomichev.me, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC net] net: force software segmentation of PPPoE packets
-Message-ID: <atecfDGNBh2XIHqm@chamomile>
-References: <20261020143031.1829-1-qingfang.deng@linux.dev>
- <CAL4Wiiptz1zyxRDKrCrnK2Q-qn0_1d1aSxuUPkJKWnODpjMp1g@mail.gmail.com>
- <ee955f2c-c97b-4505-a996-f7d7c5d2a3f5@linux.dev>
- <ateaf9-cY50Goz0j@chamomile>
+Subject: Re: [PATCH net v2] tcp: reject devmem tx with fastopen and repair
+Message-ID: <atecrKwmLG4aYsSB@devvm7509.cco0.facebook.com>
+References: <20261019174522.55644-1-kaifengw@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,90 +98,54 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ateaf9-cY50Goz0j@chamomile>
+In-Reply-To: <20261019174522.55644-1-kaifengw@google.com>
 
-On Tue, Oct 20, 2026 at 06:44:50PM +0200, Pablo Neira Ayuso wrote:
-> On Wed, Oct 21, 2026 at 12:10:32AM +0800, Qingfang Deng wrote:
-> > On 10/20/2026 11:08 PM, Eric Dumazet wrote:
-> > > Le mar. 20 oct. 2026 à 16:30, Qingfang Deng <qingfang.deng@linux.dev> a écrit :
-> > > > 
-> > > > Ordinary TSO does not update the PPPoE payload length. A PPPoE GRO packet
-> > > > forwarded by a bridge can retain hardware GSO features and reach the
-> > > > driver without software segmentation, if the egress Ethernet interface
-> > > > advertises TSO.
-> > > > 
-> > > > To force software segmentation, clear the GSO feature mask for
-> > > > ETH_P_PPP_SES in harmonize_features().
-> > > > 
-> > > > Fixes: 55a5d8fca836 ("net: pppoe: implement GRO/GSO support")
-> > > > Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-> > > > ---
-> > > >   net/core/dev.c | 4 ++++
-> > > >   1 file changed, 4 insertions(+)
-> > > > 
-> > > > diff --git a/net/core/dev.c b/net/core/dev.c
-> > > > index a6951ea08961..27483a2ad747 100644
-> > > > --- a/net/core/dev.c
-> > > > +++ b/net/core/dev.c
-> > > > @@ -3831,6 +3831,10 @@ static netdev_features_t harmonize_features(struct sk_buff *skb,
-> > > >          type = skb_network_protocol(skb, NULL);
-> > > >          features = net_mpls_features(skb, features, type);
-> > > > 
-> > > > +       /* Ordinary TSO does not update the PPPoE payload length. */
-> > > > +       if (IS_ENABLED(CONFIG_PPPOE) && type == htons(ETH_P_PPP_SES))
-> > > > +               features &= ~NETIF_F_GSO_MASK;
-> > > > +
-> > > >          if (skb->ip_summed != CHECKSUM_NONE &&
-> > > >              !can_checksum_protocol(features, type)) {
-> > > >                  features &= ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
-> > > > --
-> > > > 2.34.1
-> > > > 
-> > > 
-> > > Ouch.
-> > > 
-> > > harmonize_features() is called for every packet, GSO or not.
-> > > 
-> > > This is a GSO-only problem, please do not add more protocol-specific
-> > > tests in this path. gso_features_check() is only called for GSO
-> > > packets, and the cost there is amortized over all segments.
-> > > 
-> > > Devices without NETIF_F_HW_CSUM already lose GSO for ETH_P_PPP_SES
-> > > because of the can_checksum_protocol() check in harmonize_features(),
-> > > and fraglist GRO packets (the main use case for PPPoE GRO) are
-> > > segmented in software anyway.
-> > > 
-> > > This leaves bridged, non fraglist GRO PPPoE packets sent to a
-> > > NETIF_F_HW_CSUM + TSO device. Have you hit this on real hardware?
-> > 
-> > I reproduced this on a VM veth interface, which advertises both features.
-> > The real hardware I have is an Intel IGC but I have not tested with it.
+On 10/19, Kaifeng Wang wrote:
+> tcp_sendmsg_locked() enforces that devmem TX can only proceed if the
+> zero-copy path is active and a valid dmabuf binding exists. However,
+> subsequent branches in tcp_sendmsg_locked() can still intercept the
+> message before it reaches the devmem zero-copy loop:
 > 
-> IIRC, I could reproduce the issue too with a virtio netdevice.
+> 1. TCP Fast Open (MSG_FASTOPEN or DEFER_CONNECT):
+>    If TCP_FASTOPEN_CONNECT is set, the socket may have a valid dst with
+>    NETIF_F_SG (so zc == MSG_ZEROCOPY and binding is present), but
+>    tcp_sendmsg_fastopen() -> tcp_send_syn_data() will use
+>    copy_page_from_iter() to byte-copy from the iterator. Since iov_base
+>    represents dma-buf offsets rather than user virtual addresses, this
+>    misinterprets offsets as user pointers and copies the caller's memory
+>    at those addresses into the SYN packet.
 > 
-> I made this inaceptable patch (see oneliner patch with protocol
-> specific update below), so the recent pppoe gso support kicks.
+> 2. TCP repair mode:
+>    If tp->repair is enabled with TCP_RECV_QUEUE, tcp_send_rcvq() similarly
+>    calls skb_copy_datagram_from_iter(), byte-copying from the iterator.
 > 
-> I guess adding NETIF_F_GSO_PPPOE (similar to NETIF_F_GSO_SCTP) is a
-> no-go to force software tx path to segment skbs too?
+> Neither path supports or makes sense for devmem transmission. Reject
+> devmem sends inside the Fast Open and TCP repair branches when a devmem
+> binding is present. Checking inside the tp->repair branch also covers
+> the case where repair mode is enabled while sk_stream_wait_connect()
+> drops the socket lock.
+> 
+> Additionally, drop the !sockc_err gate from the devmem validation check
+> and return sockc_err if set. Otherwise, if a valid SCM_DEVMEM_DMABUF is
+> followed by a failing cmsg, sockc.dmabuf_id remains set while binding is
+> not acquired, allowing the Fast Open and TCP_RECV_QUEUE repair paths to
+> proceed and return before sockc_err is checked.
+> 
+> This pre-existing issue was identified by Sashiko AI review on commit
+> 125755776bc6 ("tcp: reject non zerocopy devmem tx") and has not been
+> hit in production.
+> 
+> Fixes: 125755776bc6 ("tcp: reject non zerocopy devmem tx")
+> Fixes: bd61848900bf ("net: devmem: Implement TX path")
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+> Signed-off-by: Kaifeng Wang <kaifengw@google.com>
+> ---
+> v1 -> v2:
+> - Move the devmem rejection checks into the Fast Open and TCP repair
+>   branches directly, also covering the case where tp->repair is enabled
+>   while sk_stream_wait_connect() drops the socket lock.
+> - Drop the !sockc_err gate from the devmem validation check and return
+>   sockc_err if set, preventing a valid SCM_DEVMEM_DMABUF followed by a
+>   failing cmsg from bypassing the check.
 
-s/NETIF_F_GSO_/SKB_GSO_
-
-> Thanks.
-> 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 9981d637f8b5..07bf265d0295 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -5514,7 +5514,8 @@ static inline bool netif_needs_gso(struct sk_buff *skb,
->  {
->         return skb_is_gso(skb) && (!skb_gso_ok(skb, features) ||
->                 unlikely((skb->ip_summed != CHECKSUM_PARTIAL) &&
-> -                        (skb->ip_summed != CHECKSUM_UNNECESSARY)));
-> +                        (skb->ip_summed != CHECKSUM_UNNECESSARY)) ||
-> +               unlikely(skb->protocol == htons(ETH_P_PPP_SES)));
->  }
->  
->  void netif_set_tso_max_size(struct net_device *dev, unsigned int size);
-> 
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
