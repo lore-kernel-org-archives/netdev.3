@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792529407;
-	b=0ZwqzuwVdVh0mP2FpV0YKlqRZyzbIGVjBJks3SdGmn/6i7vvewFZHkQGwU9jyXL9Q03b
-	 f6FiBphVxTlrWy5PIqACR97qjz36cYv/S3L9EwPT2f9c2Lwua5nePt2grNcz7enkL9RxN
-	 fcrpZ4iNQm0slQxB9O0BKjmmaasZ0OWAo5G6wTI7mtyzM9kG6Vur9T4mYHwtb69a9M+rI
-	 mSd4M9Bf8yRKVxtvJotoLpXQITXFOqZQae8FXnrFutqI4RpW750IlWpkuKVuvo5cBesAJ
-	 zrbXIEawMofd8lVaoar6pHQrO2yNRSwR51Od/2z/Iz/Pc54VqomWOMDHWGTej3+kRMw==
+	t=1792529412;
+	b=ljmUZlAULYsQ24Kl/2vofPMyw0R8n+GBIQkxHuO1M23MK6aZzbrJiJFFQQTkv8tIgmWF
+	 OxTe29Ox83idUbekOQDKBRnj7atsVV1yYX3C/5sBnX71EtO1ZANUw0WD6icHt6bvukcR0
+	 fLZKtEQbukq37+xTN6t90vY3nHx89Q2HtgCbTmHWNoyobDBa5Acc0w4An+R0naajrsIRh
+	 qMzy7BxdvN7YjCmO7DB/Mpmy+gDw5uQkzsWnMcuDeoGxbTmIasrMLBVPSKZwSvc8DrswZ
+	 VhSwlclof1TUsiP/ZQR2LTKxAA/WyuooMQb+VHRSSSw4mtb2rd7tBaDn5l2EJeQT1tg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792529407;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792529412;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=HOr2sSGtDvuyubDx7gjU8mlKWmyyBpjlV++4gXMLlq0=;
-	b=bCr30r3MnpAjaHof0vCJUdfVPJC/z0Oa+nq9lqtCwV+O/+mm5GQeFaebSJWzmTHkcmTo
-	 0933e84jO0jHeO91zXKo2Wwkp94mqOMYmOdqzfsPOR0VQkLWZcQOj305afe6coLkwpakB
-	 /ErVS2QCH02nYHMTqZCaX6cMMi6WtfmHJOTnglIZGvWud7OjEd+KhPSPHFBaIvhWzXAPJ
-	 6VQOA+ZxCIRj8Dosqn5D9VyPqr8d7eNpKW9LY1W8uLRjEAzFDWcF88i+w8/5qh0pKMVXP
-	 bObs6j1XSrTke7TCkaYfrjVR7/QK+k/Y+7xkaMl5qyhwcpUU++4JdjetP+6k83Kw3Bw==
+	bh=4kBeYw1QN9RLpUkse88tUQ3URyvYGAihH6x26tvte7s=;
+	b=fSn6SdQnue+cd8q6n9EO7IuqGk93EwfGmOasywFR45dCFlZvlCiLPCCRpyZM7Lh/thR4
+	 gEOH8VA39dgyVF+MBzD7LFtmz1yySNnV41sO/XJp+u2ok9Hbcylz+qQ4+HF9wMjW1sL8p
+	 t9ZTjTKEwnSdBxNr3hbFMm+Pbpq+ho8OfA862jRjQOkiLrcN3FpbdlOf4cThMQIehgkpB
+	 fjNHhgWkybvQ7q6qhWqe28tCHVsdew1dgzdngMQYcxc+vVG86fbulxB7gJYiXmk4rtd3R
+	 14+2ci++0EdR787/pllJQvh9O4SAJfPGw1yG9znGOXmY5BhmJdADX0Dt8jKBGRhXrYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="IX+0D+f/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wsyos3W6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704D3606A31A
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED74B606A323;
+	Tue, 20 Oct 2026 20:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IX+0D+f/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0874A1F000C9;
-	Tue, 20 Oct 2026 20:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wsyos3W6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39431F000CE;
+	Tue, 20 Oct 2026 20:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792529407;
-	bh=HOr2sSGtDvuyubDx7gjU8mlKWmyyBpjlV++4gXMLlq0=;
+	s=k20260515; t=1792529411;
+	bh=4kBeYw1QN9RLpUkse88tUQ3URyvYGAihH6x26tvte7s=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=IX+0D+f/3ZqjQUJr92W71AVTzLdGNs+Y/FY1pLICv/I4eYZDffZqOkZGumZNZQE/1
-	 MVG/pschgXTc04No6m3NjJ9eN48nBWb6esfTDPiexhBoTEYqMux7gfokYFX+PraqjB
-	 ZLaJb9az/0EMD+C2vAw4WrZFocu3OkXomq17oZtcB/1SVgs0pFVVNySWQcdGMv0xpF
-	 3qZzGL12naBtzHR/Zk60fp510ri2pTnc0dSXMg2J3ZP8VHTBpMdEQgw1Kks9dlmg/B
-	 H+WnY4l91wQiIuCeSM3j94RDPESX58VtJ68/4i54k+Hb+nEVFje8mlfi+JRsZ4a14/
-	 rqZ8+1oPj3nmQ==
+	b=Wsyos3W6vCyeubB6c2YWrKr4wfiTG3RJqLkIPj+G3WrVMFGCyooyplR86mxQqqqVt
+	 PU/kfFwK3u3Fkdig6SNbSJhM+DVxdzDlNC0J9k/Z3yxXlgg6MPI5gF+RVZI9HF9Fit
+	 lQ/6PVRKeHiI349prrgERWlYCZYJ/yAbKtcCKfQIjLNlrH8flsgLfbfkYg3mLVqhw9
+	 Fqn7kP6OxzdosCWtIgSq6p2+vKY3nTbTQ5gobA4f2mpt8dz2tRzbhw7Z3JiPQN4bn1
+	 0/ZO/9tZsrXkPc4E5c9WZsKkid/RIdqgD8Mo8q/EFepDSWG/i1+T+gk295A0aaBb9A
+	 4aKI1vwszk8Cw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F180C3809A09;
-	Tue, 20 Oct 2026 20:50:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B49033809A09;
+	Tue, 20 Oct 2026 20:50:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ipv6: account route exceptions to the netns of their
- dst
+Subject: Re: [PATCH net-next] net: axienet: release every RX buffer in
+ axienet_dma_bd_release()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179252940578.202014.14262102316114186364.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 20:50:05 +0000
-References: <20261016091556.2750902-1-edumazet@kernel.org>
-In-Reply-To: <20261016091556.2750902-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- odys.yuan@gmail.com, kuniyu@google.com, dsahern@kernel.org,
- idosch@nvidia.com, netdev@vger.kernel.org
+ <179252941027.202014.1920735438863244312.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 20:50:10 +0000
+References: <20261015084743.1798326-1-maimon.sagi@gmail.com>
+In-Reply-To: <20261015084743.1798326-1-maimon.sagi@gmail.com>
+To: Sagi Maimon <maimon.sagi@gmail.com>
+Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, andre.przywara@arm.com,
+ robert.hancock@calian.com, horms@kernel.org, joe@dama.to,
+ suraj.gupta2@amd.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 16 Oct 2026 11:15:56 +0200 you wrote:
-> rt6_insert_exception() and rt6_remove_exception() update
-> rt6_stats->fib_rt_cache of dev_net(rt6i->dst.dev), but the device of an
-> exception dst can move to another netns while the exception is still in
-> its bucket.
-> 
-> This happens when the bucket is flushed from an RCU callback, for
-> instance from nexthop_free_rcu() for the nh_info of a replaced nexthop,
-> whose exceptions still point to live routes. If the device moves to
-> another netns before that callback runs, the decrement hits the other
-> netns, whose u32 counter underflows in /proc/net/rt6_stats, while the
-> counter of the original netns never goes back down.
+On Thu, 15 Oct 2026 11:47:43 +0300 you wrote:
+> The RX walk in axienet_dma_bd_release() stops at the first descriptor
+> without an skb, assuming that such a slot and all after it were never
+> filled.  That holds on the axienet_dma_bd_init() error path, but not once
+> the ring has been running: when axienet_rx_poll() fails to allocate or
+> map a replacement buffer it leaves the slot it emptied with a NULL skb,
+> in the middle of a populated ring, until a later poll refills it.
+> Closing the interface before then leaks the skb and the streaming DMA
+> mapping of every descriptor after that slot, which can be most of the
+> ring, and is most likely under memory pressure.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ipv6: account route exceptions to the netns of their dst
-    https://git.kernel.org/netdev/net/c/8ff017b891e8
+  - [net-next] net: axienet: release every RX buffer in axienet_dma_bd_release()
+    https://git.kernel.org/netdev/net-next/c/b59787892d04
 
 You are awesome, thank you!
 -- 
