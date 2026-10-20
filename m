@@ -1,98 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792511252;
-	b=ugbXXFczJ3VEBRdiXE54m30opITAWXzLnNyshhWCPJmrNicrc4uC/KCTUzq35Iynmdu+
-	 k+mhe1wOllgrsAhQKTRe3qgQtfg1g+huSlEktzxDFNEW0X6Rub4eLmo4mRD9sOK/3B7JO
-	 rM7ydQF9EsHYzA994PCZlHSiIgPbGth8u+96i6jyLCoXG1zqS86P5r5W61dAYiE85QWMF
-	 sSzBEWezOf+jGB755HvqlElkZzKClFLv4HiIKVoxCCmtmPo6r6oLiouoBbR5KlUWTMak2
-	 rzh/I+WkciI3yF+SULgxc+1Vuy2Ddnnr/ndZf7ag7NlEar5at+/5h5TRQFR3hLof/Bw==
+	t=1792511941;
+	b=XViBnU/u76bwr+KWivabJZKHhisEYrYU9TLOSvFWQp/wIP4P97nxghIxGxZgUckp3HJn
+	 MyEmW5OIkQlGkd/LoEVN6broFgZybjsZYQL1fvgj4PPzy5Xr2i2No2ryaVMwv+W1RNcYL
+	 et5fWRS6AdIvpYPG3aObc+ooRPX2xJlZgoS/fDf/E/EpouPK5wE8r4CyVd5fXee/JQa4U
+	 LR7b5LZvhfe69Akgj51Oex3fMa95HQaMn9bgNm7AX1ZFgRDuS1ch3YdEymiiqMAyttfZ2
+	 onaegkdtsyEYhHfIRf1UX3gC0Jqprl4MQoDGa9jQvP7M3NvkfsszmUmzLwjPp3U8JcQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792511252;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792511941;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=bfQ4W09NB0+NwKg8cP0sb9j3FSEtD3mmTAXdVQHhhdA=;
-	b=mG09ALVE4kX24Y2Kt0j3O57alqFurpan0gttn2eH4bc6+8KNyTu7XezPayhR63nD4yma
-	 diZHdA2YzL8CWnuI27o55lCxfiudXwwyYGs9GX+xbU6/+qQpAVnLJrlaC6Z//CSHfgv+i
-	 YrOcT3mWdbZ94huzYcoWV6XUU9Hv7Lle8yvvVnV3gMDOYvLkbT+6nyz2bNwdZ6QLFhOu6
-	 dHbYV8Ju1FZ8Jv0IooMJXOTT/F3JXRx5RAtIK8RryOTiuQgq3NvObf6vDx1zU3Xcmn3KM
-	 4dNMZ9lQS2KK4CxUGl3z+8BRv8hSZs/UGwJah158AruVWYa8irHr2onIVY2PuPu7Kig==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=H4H7iRSUlsSj9ifdlVtDp+ziRohA+ewp4DyoXrJPO6Q=;
+	b=UKkrKp+bENbQWDRvRxru0yhDQlSLRV2uwP1ymu8SXYPGG104E7U4iZmrVXTuptoMX5XL
+	 IGLdu7MCLNROaUgwNkDUEwvoZVwklZt9MABDPRQ+TPE1+yXeXurZj+Ofl1s5McTgAq8Mg
+	 hJ1FKU3tem4anjq/pY62eI45GXAKvdcti+m7Qtpkz1KY+baJf9ek1fIvZj5jHCxCGhox4
+	 akfZqU20HIbwuKA4kCUDgE/elJfXw7galRR0VCEn8XRvlYIQGrlafT6013Ner8ftCERRA
+	 k+aBESiac8f1P1WYvo+188SDB6atINQTwfiBWQsGdmES/V1vOyFvYqMJgwvaNRWR9lg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hfBOJrwa;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=R8iBNnGY;
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD86606A32A
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:47:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BD86606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB97606A327
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:58:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DB97606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hfBOJrwa
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1e34ecb02so18078125e9.2
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:47:32 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=R8iBNnGY
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1e2957d7eso24580215e9.2
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792511250; x=1793116050; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bfQ4W09NB0+NwKg8cP0sb9j3FSEtD3mmTAXdVQHhhdA=;
-        b=hfBOJrwamHlvg3Tc7VBjHnCBeFmhcVdrrZwddWmLyBbU//Ycen7YKqT6MJclhXBwbp
-         teO+5PFMbBswBUsYgNNLTG1aU/cXEvx/cCYs/8CkrBrQbmhJYVcZMtpBmdvLA3Vd/myf
-         rkLHRDl/FBW3w9Busut3qzOdqIBbf6NAE5W0rVgF/kNdjTpqYqG7vIfh303iNj2qHKok
-         8J1ZeTAxnbaBjX8XsgP2/YIFCNNYDRdsxtNnvyFj2MbMuXLM24lLtJ0QV6pEzl8TEMVD
-         adr0Lm709tS9Bt0Sdur8AzapRYy0Y2qdv/JiFUPSMQOrV2iDwLFf6gHvqKiRL1r8q6TT
-         mQQg==
+        d=gmail.com; s=20251104; t=1792511938; x=1793116738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=H4H7iRSUlsSj9ifdlVtDp+ziRohA+ewp4DyoXrJPO6Q=;
+        b=R8iBNnGYaqT/wGTjR7wkqrvY+S3fvytGSkjEUzOmFr8dCGfdqjyLMjhUjrzdLPNQar
+         Qly8fNmIxnutCyFiTuBB9EZMl/5V3qTDS/UzBpZtriUgp1ryjFgaA1xM5JEXXSKPz+6W
+         Iy6REj4P5u+N+0MX1VxxtNtesU9/+cTibZixvOYM5tawFdR8NuBDGj1lahLxq61D/Pte
+         MkG4RP71Ysjh4yQoLQ07bDUCbEmbTQZYvRnvLzlEq3mGWa5E76ZUKrgA20C605xF1hjF
+         3SOI5B7T4BIv0zDBqTa8WOHDjqQ0NiMNNuoLirHSLMmrKGL/VqmA5DSrxfChWBGkJXtQ
+         x61Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792511250; x=1793116050;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bfQ4W09NB0+NwKg8cP0sb9j3FSEtD3mmTAXdVQHhhdA=;
-        b=c8l95fLKhQN9qQ/ImVzWMVRl3Y6jpun00h5KvNJk13cLLrDZKBGdDaPVI4Iw44Ghmm
-         9aa+cUP4eezI18LPwSjdpgzm71gB1WLI1SVf/69butCHfXI7ar6B4+8S+u9LjLOuZ2cr
-         WJTCgkiZiaL4iE1riXCO5Uy1YfKZTuJY11pIfw5n3N7VvLfOldL4GHhqMd3hxknLeMBt
-         7++lPWwDmyJMY5tkhD7v6hDJwHlLPKu9Ga95oga9tarRtsjypp24ERxiYaMekfq2oWYH
-         /GA9CqHNOqJyMn17f+t9OAB7GTGe4Ekcr5QSu0Bv1rVqB8PLtzeEEU4oa0j3Xbzumt0A
-         0egg==
-X-Forwarded-Encrypted: i=1; AKwUvBzOK2IGK9BiSc5DO3zxPCxctDFxkiWprtW6+uSe5oQhT15weamFNd5LJBZith4GVB5NPquH7QE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKOfQS513D+Sg1gMRzboENBC8mP4P8GfvoR5SDPt8MZOJQ9yoJK
-	hoFcNe+sj4rYBIo8KlrAdtsuwBxcnOzAcZX/4vw/7w42/lZ+1orasmLa
-X-Gm-Gg: AYBFou0+iz7J0qrRkD1cim8bpZBm999ac7944y+XkNJbvIqoHoF2KADk0jdpMGKotDC
-	kKGLLmHiFs0UpU+FU4ziE6x9rYytueeOjLtuhN6tTZ5XsmfGQ7Zx30I2GJZMHIkIh0YAle7syWo
-	H/P6jCWZ8x5kJpp0W6pHU0rJIAOKqiXAhunfg7rvjmfvdO8YVGDdyrJyuLkf9qHt45X53Ud1DSR
-	UI+5u3THTMiZ33fkhLjqCKHmlRSTYToK/faaawQO8Q+5k2LZc2Z6qFactHeuGQIPjM8UzodEXHl
-	lWBPTXz1PAt40wpozgo9iusAPAMQRKuTc+VJ/RdHPEr1plKbAyDuCdrolqeqnDxMBWFpr+H3mzL
-	At7zcjWSlbd5nVTVhZMh7lZWypuM6dh6iMVNc8xwj3+UXmvrTFdXO24KsoxRF0UiYi6DewfS7DQ
-	/sWB2+QUrdqRbGtk9mp9IVdES7MNNGw3u9XbmTqh3ZN9FJ+kkDK7iy/v3WEx+1RYy1ybNiqOGdh
-	JhLvUM4AY13Va8M5cMDhd43nS3ams+v1plr
-X-Received: by 2002:a05:600c:3b91:b0:4a1:e0b7:ff09 with SMTP id 5b1f17b1804b1-4a1e0b80060mr221153195e9.33.1792511250372;
-        Tue, 20 Oct 2026 08:47:30 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2d57ef7sm100402205e9.11.2026.10.20.08.47.29
+        d=1e100.net; s=20260707; t=1792511938; x=1793116738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H4H7iRSUlsSj9ifdlVtDp+ziRohA+ewp4DyoXrJPO6Q=;
+        b=jwk873c3Q7jx/OGdRjIIbmrGVEjATUHnDOA7THmCXwRwtGusl//9hydwHb7PeccqgS
+         wNKd6tokY73C1jQtDEQQjxyXwAwYGx/oo5Hihz/0oGLMStQ3xShEn1sTQtbYXioUWL/p
+         9lkO/HZ4727Oet7rKNm54UL8Cy6zUVKr/WNlZqBbZTH+LMpdNuMkVhlvOrqTwREbRX/0
+         04S8ucZ+UzmYjF74GED9WKL5DnXvqwWuLwEwV0SpYwahEw9fsSZ0XtailiDSvhsDU+r2
+         mhfABpad79QKjSY0RrpHp9U2dOAgA4PYTIjlvkVaMWZkwZ53iz+TTjn52WYM/dZ5CBED
+         BweQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx5BRuddXtFbx4rKQ99Kd7fkjFrE926ZQAfe7Zujf6a8h8kP/XdL22UepFMIbnStAvKItJsAMA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK+/Xmk529S+IPl337JF199gEsR9P+P+vRio5wKQB1DqAb7yXGX
+	RNshaBUEajUqkkTRB0AGQxlMbfqRhuUANrDo4K+vrLfSyj8bN3DoLeg7
+X-Gm-Gg: AYBFou0iG0YuVHlE24u6wfAal9rMjM0Urzp6vHfzg8R4JIiLziqQ3nV25IQ3mtTYxni
+	Ei5MD7hjdLWCw2ZTXP3qYNRSx/FiZfFsJnekAmwDQlRzgMcjT5OXsrijvBFb/GByR0CgRIDqZJz
+	mfTXfhsZmjr1zQsEWvyT5C1a02WhFoVvY6FChgtYzjE8vf/soSw6DfZX0SA4++4ob9iFYTgnnLP
+	mGLLaL5FUsxzWmExov9u2FjaQLiWsvynWPD2i/Sqa9/+XWS/eW66YvU+GugW6m8kB9RVQ2QREpt
+	kpPHIS4sFq4BMRMTDhedO2GWxEC87Bpygjx4HV8m+xMmCwhWlC5rclY8tBM2qzVnv2m9h0tHm+B
+	FIBpFZWAe+J/aF3e1l2nsvknQdM7GAJoAz4mRJ6xyFws9xh2JhFPP+XKtZH8mwkKVDMxLy91V4Z
+	K9sfTzYMg2glTW6udXYpVKOiLx5T3b53Paf2wMeqPDPBXbb06IVgWelgLGHDbdpW2qVQBcsqcyM
+	caJZE+q8kf1VBofSPk8KIgNFMBTkA9YtHhdz7hZKPIAyA==
+X-Received: by 2002:a05:600c:4fd4:b0:4a1:cd83:f027 with SMTP id 5b1f17b1804b1-4a1d7634bf5mr214566405e9.27.1792511938310;
+        Tue, 20 Oct 2026 08:58:58 -0700 (PDT)
+Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a1fb83ff02sm5627335e9.6.2026.10.20.08.58.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 08:47:29 -0700 (PDT)
-Date: Tue, 20 Oct 2026 17:47:28 +0200
+        Tue, 20 Oct 2026 08:58:57 -0700 (PDT)
 From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: bpf@vger.kernel.org, andrii@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, willemb@google.com, eddyz87@gmail.com,
-	edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org,
-	horms@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
-	sdf.kernel@gmail.com, yonghong.song@linux.dev, jolsa@kernel.org,
-	kuniyu@google.com, memxor@gmail.com, emil@etsalapatis.com,
-	almagui@kernel.org
-Subject: Re: [PATCH bpf-next 0/8] bpf: Expand ksock send-path support
-Message-ID: <ateNEHabOb81MRLU@gmail.com>
-References: <20261020102512.518479-1-mahe.tardy@gmail.com>
- <DM9RCU3BDWEG.1C32ZIVU95S76@gmail.com>
+To: bpf@vger.kernel.org
+Cc: andrii@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	willemb@google.com,
+	eddyz87@gmail.com,
+	edumazet@google.com,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	horms@kernel.org,
+	liamwisehart@meta.com,
+	martin.lau@linux.dev,
+	pabeni@redhat.com,
+	song@kernel.org,
+	netdev@vger.kernel.org,
+	sdf.kernel@gmail.com,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	kuniyu@google.com,
+	memxor@gmail.com,
+	emil@etsalapatis.com,
+	almagui@kernel.org,
+	Mahe Tardy <mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next v2 0/3] bpf: Add bpf_ksock_sendto() kfunc
+Date: Tue, 20 Oct 2026 15:58:45 +0000
+Message-ID: <20261020155848.75711-1-mahe.tardy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,40 +114,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM9RCU3BDWEG.1C32ZIVU95S76@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 20, 2026 at 03:07:31PM +0000, Alexei Starovoitov wrote:
-> On Tue, Oct 20, 2026 at 03:25 AM Mahe Tardy <mahe.tardy@gmail.com> wrote:
-> > * allow bpf_ksock_connect() to be called in the send path
-> > * add bpf_ksock_sendto() kfunc to complement to bpf_ksock_send()
-> >
-> > This is useful when using ksock to reply to differents peers while
-> > reusing the same UDP socket and generally works toward the goal of ksock
-> > to support the basic socket operations.
-> 
-> can we drop connect from LSM progs and patches 1-5 altogether ?
-> bpf_ksock_sendto() alone replies to different peers on one socket.
-> 
-> connect + send from LSM progs can't do that reliably. The socket is
-> shared through the kptr and sleepable progs run concurrently. Between
-> bpf_ksock_connect(A) and bpf_ksock_send() on one CPU, another CPU does
-> bpf_ksock_connect(B) and the datagram for A goes to B.
-> 
-> Without connect there, acquire/release in socket_sendmsg has no user:
-> nothing can be done with that reference. bpf_ksock_sendto() is in
-> ksock_kfunc_btf_ids, so the current filter rejects it in socket_sendmsg
-> already. Then no need for bpf_ksock_send_id, bpf_ksock_sendto_id,
-> bpf_ksock_connect_id, bpf_lsm_socket_connect_id and the cycle comment.
-> 
-> Selftests are left out below. Patch 8 stays as is, patch 7 stays
-> without the socket_connect hunk.
-> 
+This patch series improves the bpf_ksock infrastructure in line with the
+work proposed during Prague Plumbers 2026 presentation[^1] by adding
+the bpf_ksock_sendto() kfunc to complement the bpf_ksock_send().
 
-Okay, agree it's simpler! Let me send this as v2.
+This is useful when using ksock to reply to differents peers while
+reusing the same UDP socket and generally works toward the goal of ksock
+to support the basic socket operations.
 
-[...]
+[^1]: https://lpc.events/event/20/contributions/2430/
 
-> 
-> pw-bot: cr
+v2 updates:
+- remove the LSM verifier filter refinements (alexei)
+- remove allowing calling connect() from the send path (alexei)
+- change order of the tests patches for signature definition (sashiko)
+
+v1: https://lore.kernel.org/bpf/DM9RCU3BDWEG.1C32ZIVU95S76@gmail.com/
+
+Mahe Tardy (3):
+  bpf: add bpf_ksock_sendto() kfunc
+  selftests/bpf: Test ksock sendto()
+  selftests/bpf: Test forbidden bpf_ksock_sendto() LSM attach
+
+ net/core/bpf_ksock.c                          |  96 +++++++++++-----
+ .../selftests/bpf/prog_tests/ksock_sendto.c   | 108 ++++++++++++++++++
+ .../selftests/bpf/progs/ksock_common.h        |   2 +
+ .../selftests/bpf/progs/ksock_lsm_verifier.c  |  25 +++-
+ .../selftests/bpf/progs/ksock_sendto.c        |  59 ++++++++++
+ 5 files changed, 262 insertions(+), 28 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/ksock_sendto.c
+ create mode 100644 tools/testing/selftests/bpf/progs/ksock_sendto.c
+
+--
+2.43.0
+
