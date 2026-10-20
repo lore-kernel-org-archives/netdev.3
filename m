@@ -1,53 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792480637;
-	b=0lg5AkQ/+1LnnqIAyXjo5hoQ4IRvcPMalk+FdYIBMHij+guGD8UXteZmSr2jiIlp+73y
-	 wdVACpOvRa/4HtSVaOLG5rhn1saoTYXNtOFxtW/1HFYId9h6v01aAwV+r7WQCrtRgfFuh
-	 dL/3MTIqBCPpPH4DvysFp8E94jD5fXINv4sjN4xj+PWKjS+Aem08YyrX4W7e/uel5WM9U
-	 NgxOnhc4O392tX6Bip3dWyAFUNM+fv+xBCTdo6fad1y+I8PjF4RPOW8yjwOP2eMGA33Ol
-	 3ydGoIbcgwxO+AYqTOo8taLjmSJ0JECKxct+czr1UA1Y/mu0Htyvtxg/24L9xDWh26Q==
+	t=1792480786;
+	b=o1cBU1lWBj99MF8/0Q6EBOuKrtp4Q8BSe+se3rhgtcZfaKbOBobqvE9yxevUqE22jcKu
+	 ba2RORWbY3J9DrDtDhB+o05KXDEpaXjoy7bquzCA6cyfFGz5MxRmO7HUG4yw8HqcPyF+1
+	 IUaSrSsd8EFRDLFfI+/dYAi3xBtTBfJsffLqGCdgJIKBpYF0Xc8NlmoqScQ8Skv4+2unK
+	 gsVFgrInbPLfXTKA5ibkMNwbaxR2RNaQUv1PriglSjMwDtJBWm00YuLLk0uD+PJbCeAcM
+	 /3iNY6iwCNwiY+YWyqHIDjT3K178Z4dAu5veS40GL8dZZQL0zgHfkIiX985Hzsi6vBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792480637;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=uY08WIDcyfXsbuMxE0cgXupuT9t+N3HFFpO9VcmEGwU=;
-	b=CShd92EHPQa/lahlErT+1liHL28pPaBkMGuEUkrop2BUSwEXLj/atPVEEHVeeZL1B8jb
-	 3uJ7TDt1VUrgiicVhSmYiTrVhNZv4dHEH3CwT8ZWGrxWzBupx5RCUJUgJPu/+Dh1u/xHF
-	 YS2ZTTmIJ4vKaBjKm+1DWt9b/Gp5G3eK0ebRD6g4EYS/vTFiGYk611a2Sad/16VkEC58J
-	 VMtm+gwNTWouSZOw5YI/8NanJR3K09Q2Wrn17uOl3f4YL5/GgFQDyhEIxuwQnnc/KkOz8
-	 ypmd8kCCb6AQoRiZ0vTMpA3iJQQdiWOKuD3aziACfq6um3Ym2QPwrt32eJgsOMoZEIA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792480786;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Ui9p0aimwq/+/RaSYtQ2u41VZdG+ZsDq8umW+9wZaS4=;
+	b=09hdO7oXGG/thPhZJi1PMLzHi+6TyXrSWduKrtKavj2P+edR3YMRCM6/XDLMjEjI1jlh
+	 BAxApYoxj/L4FoTPW57CwLKwW8JJdczOwXHY3DHQtBEbVCTjKdgbUeDepkLYeNh+vwjks
+	 FEZxfx2Rm6lvj0Ql73OpYEk5fPB4hSVNbhl7bjoMALh06SKy6/Z/f6qNsdj3AQsH9xmyU
+	 SO5WYuzpBEdrT0sw0+mKiPtVoR1EU9Fv9O67hdtqVSwC8HVZ7nfRH1cavXGxJajvIpQw0
+	 tYnAXLrh3uAD9hCnzKndxcnnEcFSukB0TFXh/jbo8Ev0JpSCcaP/e61mBNHP2yumO1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=dAPnKuoL;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bmhphRlQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13C0606A31B;
-	Tue, 20 Oct 2026 07:17:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F13C0606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056A3606A31D;
+	Tue, 20 Oct 2026 07:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=dAPnKuoL
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A702CA161C;
-	Tue, 20 Oct 2026 09:17:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792480631; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uY08WIDcyfXsbuMxE0cgXupuT9t+N3HFFpO9VcmEGwU=;
-	b=dAPnKuoLH5fTxAT2T6oMqat6co0w1F2NGiLIenFqREcIooZvV8vCC7uRI7adwUBFlDH52M
-	urHHu/fw3PytKvreeLeOkeYAqe79clO+yecf8SCWrQqGPaOPMhPZtcoEVmz/bQWxBbMcy6
-	SdR16NuGhHRuto822NfoQvGT9gbJP4GCavzTyecs2di4a/ytUsS5dg+BdqV68nNubGh/lF
-	/r0CMcYC5pTWxWzVgYSHkGzOj2h0+ja3aQX/8X2bQiHNAzjdBY5p1FzFkHVweLa1NGl2Qc
-	nSsIPnbZhYE87f1N9AZNl9va8YECaQRj7DlPbXNEAIJesxtu5mTZdAnLeoj/3Q==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Tue, 20 Oct 2026 09:16:55 +0200
-Subject: [PATCH net 1/2] net: usb: cdc_ncm: don't enable BHs in tx_fixup
- under netpoll
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bmhphRlQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3891F000C4;
+	Tue, 20 Oct 2026 07:19:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792480785;
+	bh=Ui9p0aimwq/+/RaSYtQ2u41VZdG+ZsDq8umW+9wZaS4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bmhphRlQyGNivJZ2bRFw490m+bzd+aOVK65B1oyiPPtuQXMzdhK0g2z/iZWZ9Kcul
+	 Gol0ybzQ/r8yunYwcOIhjtHNKBzER+g0WyC88B3iscvFFBAb1kYaSoxHuSMgveVP8g
+	 4xw5fGx27Q2qIgO4gffRsp1uA2lzysm9UTlycvBubs5A9dsnQOM7iSLrblyaPV7fVa
+	 q8kP6Xk3a0P4PPdYjqKUiLnTqJ0EN/jqqyMpAcHZAw9g6xOh3P9XmfyFg4sEjiu3PA
+	 2az9SUj3RhqeTiY774C1suCjXfn3eKwLgAJeAL8+J8wPodJDhjFi5FO/Xh9c7ZiVvg
+	 Q0wt4OWx9tYRw==
+Date: Tue, 20 Oct 2026 09:19:42 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Richard Cochran <richardcochran@gmail.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v3 2/9] dt-bindings: net: qcom,ethqos: add
+ qcom,shikra-ethqos compatible
+Message-ID: <20261020-hopeful-delectable-dove-62f1d1@quoll>
+References: <20261017-shikra_ethernet-v3-0-26a8beb44b8f@oss.qualcomm.com>
+ <20261017-shikra_ethernet-v3-2-26a8beb44b8f@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,75 +69,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261020-cdc-ncm-netpoll-v1-1-682184384b49@tipi-net.de>
-References: <20261020-cdc-ncm-netpoll-v1-0-682184384b49@tipi-net.de>
-In-Reply-To: <20261020-cdc-ncm-netpoll-v1-0-682184384b49@tipi-net.de>
-To: Oliver Neukum <oliver@neukum.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- =?utf-8?q?Sjur_Br=C3=A6ndeland?= <sjur.brandeland@stericsson.com>, 
- Alexey Orishko <alexey.orishko@gmail.com>, 
- Greg Suarez <gsuarez@smithmicro.com>, 
- =?utf-8?q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-Cc: Breno Leitao <leitao@debian.org>, linux-usb@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolai Buchwitz <nb@tipi-net.de>, Mikkel Eskildsen <mke@visotia.com>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261017-shikra_ethernet-v3-2-26a8beb44b8f@oss.qualcomm.com>
 
-netpoll holds the txq lock and calls ndo_start_xmit() with IRQs off but
-BHs on. The spin_unlock_bh() in cdc_ncm_tx_fixup() then runs pending
-softirqs. If one of them transmits, it spins on the txq lock that
-netpoll holds. With netconsole on a cdc_ncm device this ends in a soft
-or hard lockup.
+On Sat, Oct 17, 2026 at 03:15:13PM +0530, Mohd Ayaan Anwar wrote:
+> +    then:
+> +      properties:
+> +        clocks:
+> +          minItems: 6
+> +        clock-names:
+> +          items:
+> +            - const: stmmaceth
+> +            - const: pclk
+> +            - const: ptp_ref
+> +            - const: rgmii
+> +            - const: axi-noc
+> +            - const: pcie-tile-axi-noc
+> +        operating-points-v2:
+> +          description: |
+> +            The OPP table specifies the rates for the NOC access
+> +            clocks in "stmmaceth", "axi-noc", "pcie-tile-axi-noc"
+> +            order.
 
-Use spin_lock_irqsave(), which is safe both under netpoll and on the
-normal xmit path.
+Drop property here and move description to the top-level part.
 
-Fixes: c84ff1d6dff3 ("cdc_ncm: reduce driver latency in the data path")
-Reported-by: Mikkel Eskildsen <mke@visotia.com>
-Closes: https://lore.kernel.org/netdev/PRAP189MB185019A5A8D411482BB6E0CDA9982@PRAP189MB1850.EURP189.PROD.OUTLOOK.COM/
-Tested-by: Mikkel Eskildsen <mke@visotia.com>
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- drivers/net/usb/cdc_ncm.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> +      required:
+> +        - operating-points-v2
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 35db38cb3e4a2..b579442f4a272 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1524,6 +1524,7 @@ cdc_ncm_tx_fixup(struct usbnet *dev, struct sk_buff *skb, gfp_t flags)
- {
- 	struct sk_buff *skb_out;
- 	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
-+	unsigned long irqflags;
- 
- 	/*
- 	 * The Ethernet API we are using does not support transmitting
-@@ -1535,14 +1536,17 @@ cdc_ncm_tx_fixup(struct usbnet *dev, struct sk_buff *skb, gfp_t flags)
- 	if (ctx == NULL)
- 		goto error;
- 
--	spin_lock_bh(&ctx->mtx);
-+	/* netpoll calls this with IRQs off and BHs on, so unlocking with
-+	 * spin_unlock_bh() would run softirqs that need the held txq lock.
-+	 */
-+	spin_lock_irqsave(&ctx->mtx, irqflags);
- 
- 	if (ctx->is_ndp16)
- 		skb_out = cdc_ncm_fill_tx_frame(dev, skb, cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN));
- 	else
- 		skb_out = cdc_ncm_fill_tx_frame(dev, skb, cpu_to_le32(USB_CDC_NCM_NDP32_NOCRC_SIGN));
- 
--	spin_unlock_bh(&ctx->mtx);
-+	spin_unlock_irqrestore(&ctx->mtx, irqflags);
- 	return skb_out;
- 
- error:
-
--- 
-2.53.0
+Best regards,
+Krzysztof
 
