@@ -1,93 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510170;
-	b=Vc2+hmAUbmD1Qnh0n/s//2dg+JpBQbUz7rcWDReITtWtU++UyLIrS2M/UW23IcosNa+d
-	 FEeL3eIKyhzvXzdGv4K8q1Y5WBJrCkVWs5yl73NeCGK+bP79V9Ll4RMknoqn/i38TdmXe
-	 kP53TPduq9xzryUGMJnpB+XTtA16jUVU53nHSNPBsnhlQaXwQnt81qo/MNx1dsjPEZrUv
-	 DmJsgxu7RSAjQUIrnVZQpNp2G7SxcekrM4ybBm1FNxEnxvWg5hBlXwqxXdIAycMRAMs3/
-	 ruF/7iBxFWrB5M7BRFIgLGNf7QNM0sKR7gKWr4HpDEKkE2Vq2hK6wFYDCe/M7gdUgCA==
+	t=1792510276;
+	b=qKgVZAVFcZMLyYQgYqmXu+rbOW2Xxeghu4ds1XLsbAZL6dN6RMJ9vRzprUEEUISrKpt5
+	 i7g5g7R2Vdqr6IkW02HwUmyk9chqmTmpckbFCxvA51gfuTlO/BBG6MyGFU5oC08LieHRm
+	 2IiQL4gf0iz7ByW19N0MFz5q2p7dUmdF5vmGr056olKIbVwWFEZBT1lOgKXCdlo8P7RIE
+	 ja56gX3s72wRh856vusqvC3XMEC0z183fyB+SiDPdelyfw48Ypq0iAUoxViMQ2uJ7hwZ6
+	 nBJKZ974VbBPURBXf4frIfnuv6QkPFx/RYHfBqTQnYbq3BWJ4Krc+sMvRR+tw5aVUWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510170;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792510276;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=9GDFV35RrSVf5yP47jS+7rs1H7n+XBgiZq3zykV+XtQ=;
-	b=qIzGC5pib+tcCXIuxRNv+a2zX7PCTJMUNY3qL9Lg1cn380+JxZuR1bpczX2CdznIYY01
-	 h5AftyLDPs4x8wujkx+ILAkIqxnFgybKVqXSp/Dfsf0AiuxQ7WZLP6XETCoXFv4ffLJJ3
-	 h+hdEzxsVoQ0wf6qR1GfNpy00xIaw0Xysw4tVgZ023SkjJgTFtHUi7xHmm6zo9ATwgaS3
-	 7DhxxqcbxdZwtCtBMMaHCrYdxxxz7KiZz+VW0pLpi9xc9iaMehwucT9bVFnSlHnFrMHJS
-	 PDRQAY7OmJ8eUyWqLAiA9cDV5/CCwJ2m+DIb4IyB7KlY64udGoqhVoHU1N3zBvazrfQ==
+	bh=qsoSLYus+M1tCAzqI/ZNpAHRrLwoOIcxK2qsa3BkpZs=;
+	b=GpoFbiEaynoGojYRLeMapizSRtDk/6NBtHc6kpc+45Lnp0p5Ru49CP1QyWVXheRyHOg5
+	 qjNFss5oRb3qDDi2Cu7j5wihp1z1BNBR0rRdsVn/nu8OljfiIvda4H+swsMr/vXDhs2hW
+	 9sda5MBg2jvMNor0giK2Px+TCRGTcV66/znJVbv3aFyYPf4mEtoXCao2PidiSeWcYi4dB
+	 fnN8EaD/E/CE/cN5/xknxOnnkktcP1y8KgKWkkHiQkz1pKnQuoSTOTG4H3tExNCA0Dc9M
+	 N0Ar79lhaLXOe+7X1Xr/iquUtnf2jKxgd3mI751ivZeQai1wXjQuQXwN1O8OYJBacOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="n/xDhLui";
-	arc=none smtp.remote-ip=91.218.175.135
-Received: from mta0.migadu.com (out-135.mta0.migadu.com [91.218.175.135])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p9V+we3v;
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B76606A32D
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:29:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6B76606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85C3606A31D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:31:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E85C3606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=n/xDhLui
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=qDoOdKi6oKQdzWjw9ttiqe9bR4kfbpGeSoHF507AHt0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792510167; v=1; x=1793114967;
- b=n/xDhLui/B6iYXMShd5zI/knbMIldewi4erzJF60TWChYVvJpknTaz4HGbgpGLkp0A/xRbx4
- EW5iAvpS96paL562RyUJM91bhiYUP5xc/YiqDDEfWfG+cxLjlCb0iu/dMRz7lSPbVTZGpOFa+Z4
- lnwyVE+7mQEWlzCco1UgoqWo=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 4a298b9aecc1ef70;
-	Tue, 20 Oct 2026 15:29:26 +0000
-X-Mizu-Trace-ID: 4a298b9aecc1ef70
-X-Migadu-Flow: FLOW_OUT
-From: Leon Hwang <leon.hwang@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Masashi Honma <masashi.honma@gmail.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p9V+we3v
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1ec92f655so9760935e9.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792510274; x=1793115074; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qsoSLYus+M1tCAzqI/ZNpAHRrLwoOIcxK2qsa3BkpZs=;
+        b=p9V+we3v1bSecIybHxsxM454TeWmuCMmdqKwv724cigxeNMU3C48odpzjFjJVRTeuL
+         FdahkGhmGg8Vk3aMjbUQmF2HnnyNM2EqVvVCpp2HqJ/gO+vzYMtAOXAedCsninSfZ/18
+         S2phVMfDFEDnoktgmtMqyo2/jQqZ3p1FRPKIUOP/iB6dn2ND8eSsQ8SXotGJUM/GKjah
+         UnQoE2JoO+FdD7A9g7At9H5ZIKELCyCPHnJp1/NIN2/CMQn9INRy1FSs450in2BRz0Zj
+         MG0qOD1Fx2YHBke7goite6W1MayeX+DniL0xoCuKveN4maA3IMZaFfaU/8U74tH7GTjv
+         1Nkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792510274; x=1793115074;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qsoSLYus+M1tCAzqI/ZNpAHRrLwoOIcxK2qsa3BkpZs=;
+        b=Bd4V2ZG/m12dN0J9HAJOeyJCMu6LEr6wjuQad+FdWqjlYj5WVh/f0R5ImdrhebLGpg
+         jrwLPYDPWun/kVwe2C0G9h1WBWJJrtnF8co54MxeLp9W3acdtA/6wjy+f00yyuWU9AG2
+         Pq9Kl72X9uZNAvHJHV3J8b6PjFIoCkzD+e9VRS0zdBamrE/OcJJa2anV5OHDwJ41W2rP
+         VY0oMbBtI9GX2Sd3bCNO5YsjYSN8fNJKiM+ncky4m0XbpQMYpvqKcmdXL0uo37BIYK3G
+         tUYVoIzEe0NxI8i3j5YqmzYnCofo+Mlrz4z4v3iLyC1wF895oA+8DyWci0jknRvNVH0o
+         OM8A==
+X-Gm-Message-State: AFq9FYImCrvO4kDJl+c3Zy1HqS018KdUdW5P/PlEGsUgiPOAOxPIyRUv
+	XuQkcOehpkD6+KTgAiRG33psCSeg0rtn/MQm9oQdqBKthCS11suQ34g8sjyxhpeX
+X-Gm-Gg: AYBFou2rYc5coP0HsmAVaMH74mu+lufVTG6yPBK2sxM9nAfJJUFcNOH9naVI2tmdZ4l
+	s19S3Qww0QLPsURJY04oKc0DPCsT1piKpE+25T5Z53DxkofgS5KGYhDC08K9XJc/e+6vax9shwn
+	3Qk2Ia44WHMj9zSRg32fXsHbUjo4C2h8UxC1QdJnC2y0tehIIkI42toeVy2/bdyt7dJBZLNW7kg
+	ZMJpMCoMCQLe7U+G1WLKvAC7KpK0oTHPfXWVtP7UH74To5r4LdBIXLwDBgj4Po2Evg/BmCyN1jf
+	COCygon7K937mO0fy9T27YuTyThsW24YeLBVlGFhbnATRntI+W401Op/V9Bo2XyHAmeNFrxIs+a
+	Tb+kodFXdmXhIP5YvL0fYVkh7ALyzB3d+9TciIg40vVFH3KVIr1mSJpW6sDAhhZxQNNsxEvrdMA
+	bQwix1Eg+r8JHPwOtf+drbc6JL6+hzhGjle0Yc62Jx0RUvB6fepbjyn87Q6SrNm8RiikaU
+X-Received: by 2002:a05:600c:8b2b:b0:49e:63cc:6324 with SMTP id 5b1f17b1804b1-4a1f4c80374mr69433495e9.6.1792510273908;
+        Tue, 20 Oct 2026 08:31:13 -0700 (PDT)
+Received: from metepc ([46.197.185.71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d818c59sm7271629f8f.30.2026.10.20.08.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 08:31:13 -0700 (PDT)
+From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+To: netdev@vger.kernel.org
+Cc: oneukum@suse.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Leon Hwang <leon.hwang@linux.dev>
-Subject: [PATCH bpf-next v3 6/6] selftests/bpf: Add tests to verify link_create logs
-Date: Tue, 20 Oct 2026 23:28:04 +0800
-Message-ID: <20261020152804.39863-7-leon.hwang@linux.dev>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261020152804.39863-1-leon.hwang@linux.dev>
-References: <20261020152804.39863-1-leon.hwang@linux.dev>
+	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+Subject: [PATCH net v4] usbnet: fix EVENT_RX_PAUSED race in usbnet_skb_return()
+Date: Tue, 20 Oct 2026 18:29:09 +0300
+Message-ID: <20261020153044.18828-1-omermetekaya0@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,125 +99,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add tests to verify the new logs in link_create and xdp link_create,
-including a log reported via extack when fail to create an xdp link.
+On SMP, usbnet_skb_return() can observe EVENT_RX_PAUSED as set on CPU0
+while usbnet_resume_rx() clears the flag and drains rxq_pause on CPU1.
+The skb can then be queued after the drain has completed and remain
+stranded until the next MTU change or device stop.
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Synchronize the EVENT_RX_PAUSED state transition and paused-queue
+dequeue operations with rxq_pause.lock, dropping the lock around each
+usbnet_skb_return() call to avoid lock inversion. In usbnet_skb_return()
+use a double-check pattern under rxq_pause.lock on the slow path,
+keeping the normal RX fast path lock-free. Use spin_lock_irqsave() to
+match the lockdep class shared with other sk_buff_head locks taken from
+hardirq context in defer_bh().
+
+Discovered by Sashiko, not triggered, not runtime-tested.
+
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
+
 ---
- .../selftests/bpf/prog_tests/xdp_link.c       | 101 ++++++++++++++++++
- 1 file changed, 101 insertions(+)
+v4: Use spin_lock_irqsave()/spin_unlock_irqrestore() to match lockdep
+    class shared with other sk_buff_head locks taken from hardirq
+    context in defer_bh(); restore local_bh_disable()/local_bh_enable()
+    around drain loop to preserve BH context.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_link.c b/tools/testing/selftests/bpf/prog_tests/xdp_link.c
-index e7e9f3c22edf..18c1f1039d4e 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_link.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_link.c
-@@ -150,3 +150,104 @@ void serial_test_xdp_link(void)
- 	test_xdp_link__destroy(skel1);
- 	test_xdp_link__destroy(skel2);
- }
-+
-+static void test_link_create(int prog_fd, int ifindex, enum bpf_attach_type attach_type,
-+			     struct bpf_link_create_opts *opts, int exp_err, const char *msg)
-+{
-+	char log_buf[128] = {};
-+	int fd;
-+	LIBBPF_OPTS(bpf_log_opts, log_opts,
-+		    .buf = log_buf,
-+		    .size = sizeof(log_buf),
-+		    .level = 1,
-+	);
-+
-+	fd = bpf_link_create_log(prog_fd, ifindex, attach_type, opts, &log_opts);
-+	if (!ASSERT_LT(fd, 0, "bpf_link_create_log")) {
-+		close(fd);
-+		return;
-+	}
-+
-+	ASSERT_EQ(fd, exp_err, "fd");
-+	ASSERT_STREQ(log_buf, msg, "log_buf");
-+	ASSERT_EQ(log_opts.true_size, strlen(msg) + 1, "log_size");
-+}
-+
-+static void test_link_create_invalid_prog_fd(void)
-+{
-+	const char *msg = "Invalid prog_fd.\n";
-+
-+	test_link_create(-1, IFINDEX_LO, BPF_XDP, NULL, -EBADF, msg);
-+}
-+
-+static void test_link_create_invalid_prog_type(void)
-+{
-+	const struct bpf_insn insns[] = {
-+		BPF_MOV64_IMM(BPF_REG_0, 0),
-+		BPF_EXIT_INSN(),
-+	};
-+	const char *msg = "Invalid prog type.\n";
-+	int prog_fd;
-+
-+	prog_fd = bpf_prog_load(BPF_PROG_TYPE_LIRC_MODE2, NULL, "GPL", insns,
-+				ARRAY_SIZE(insns), NULL);
-+	if (!ASSERT_GE(prog_fd, 0, "bpf_prog_load"))
-+		return;
-+
-+	test_link_create(prog_fd, 0, BPF_LIRC_MODE2, NULL, -EINVAL, msg);
-+
-+	close(prog_fd);
-+}
-+
-+static void test_link_create_attach(int ifindex, enum bpf_attach_type attach_type,
-+				    struct bpf_link_create_opts *opts, const char *msg)
-+{
-+	struct test_xdp_link *skel;
-+
-+	skel = test_xdp_link__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "test_xdp_link__open_and_load"))
-+		return;
-+
-+	test_link_create(bpf_program__fd(skel->progs.xdp_handler), ifindex, attach_type, opts,
-+			 -EINVAL, msg);
-+
-+	test_xdp_link__destroy(skel);
-+}
-+
-+static void test_link_create_invalid_attach_type(void)
-+{
-+	const char *msg = "Invalid attach_type.\n";
-+
-+	test_link_create_attach(IFINDEX_LO, BPF_CGROUP_INET_INGRESS, NULL, msg);
-+}
-+
-+static void test_link_create_xdp_invalid_target_ifindex(void)
-+{
-+	const char *msg = "Invalid target_ifindex.\n";
-+
-+	test_link_create_attach(0, BPF_XDP, NULL, msg);
-+}
-+
-+static void test_link_create_xdp_extack(void)
-+{
-+	const char *msg = "Invalid XDP flags for BPF link attachment\n";
-+	LIBBPF_OPTS(bpf_link_create_opts, opts,
-+		    .flags = XDP_FLAGS_REPLACE,
-+	);
-+
-+	test_link_create_attach(IFINDEX_LO, BPF_XDP, &opts, msg);
-+}
-+
-+void test_link_create_log(void)
-+{
-+	if (test__start_subtest("invalid_prog_fd"))
-+		test_link_create_invalid_prog_fd();
-+	if (test__start_subtest("invalid_prog_type"))
-+		test_link_create_invalid_prog_type();
-+	if (test__start_subtest("invalid_attach_type"))
-+		test_link_create_invalid_attach_type();
-+	if (test__start_subtest("xdp/invalid_target_ifindex"))
-+		test_link_create_xdp_invalid_target_ifindex();
-+	if (test__start_subtest("xdp/extack"))
-+		test_link_create_xdp_extack();
-+}
--- 
-2.55.0
+ drivers/net/usb/usbnet.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 84f97f448b2d..9c4a23d8cb86 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -329,9 +329,14 @@ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
+ 	unsigned long flags;
+ 	int	status;
+
+-	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
+-		skb_queue_tail(&dev->rxq_pause, skb);
+-		return;
++	if (unlikely(test_bit(EVENT_RX_PAUSED, &dev->flags))) {
++		spin_lock_irqsave(&dev->rxq_pause.lock, flags);
++		if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
++			__skb_queue_tail(&dev->rxq_pause, skb);
++			spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
++			return;
++		}
++		spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
+ 	}
+
+ 	/* only update if unset to allow minidriver rx_fixup override */
+@@ -700,15 +705,18 @@ void usbnet_resume_rx(struct usbnet *dev)
+ {
+ 	struct sk_buff *skb;
+ 	int num = 0;
++	unsigned long flags;
+
+ 	local_bh_disable();
++	spin_lock_irqsave(&dev->rxq_pause.lock, flags);
+ 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+-
+-	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
++	while ((skb = __skb_dequeue(&dev->rxq_pause)) != NULL) {
++		spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
+ 		usbnet_skb_return(dev, skb);
++		spin_lock_irqsave(&dev->rxq_pause.lock, flags);
+ 		num++;
+ 	}
+-
++	spin_unlock_irqrestore(&dev->rxq_pause.lock, flags);
+ 	queue_work(system_bh_wq, &dev->bh_work);
+ 	local_bh_enable();
+
+--
+2.56.0
 
