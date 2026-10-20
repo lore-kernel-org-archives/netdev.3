@@ -1,62 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792468640;
-	b=AfvkXKLt5gQoCjQ3ylZi+VjvfuUV3JmZqdikDlbdsENKQ+kxzK81j02XtwwSENO2TAAz
-	 4jtNLw5U1PK5aXDtsmrj/8sfRxiJ/VcoMiMJU2mEBbD0EuyapV3KaR4kf7GSEgYJftMsF
-	 +MsxQMDIFyw1gTdQYlTCFpTMND5DymlCJhoVcaMhAiOVTGAknh95gleKA1PV6PqLwVDHo
-	 NBQubcNlhXQVCn+LLnjQOwtoNS79aMjW6rJY0eHyeohggGVEl619jUCSBlVbwIVY7M4qB
-	 0kr740we/pG2pRzMv/nuD5RoPShwRsVqkFejKWAvOMTVrVEbTm6ffJCzdFk8QcBeLdw==
+	t=1792469529;
+	b=WX1tDEHNyP9r25jdAHaQwIHHTkY+XiEMn7LaMQk67fzyVp/dNTE2kZHgbsQLLQELteZQ
+	 XNCSardrsCNn98wHgLcCLkPaFAp0tOwzBsrji+XYb5KVZcY9xLP6SVqXz5T0/BmF9j0O3
+	 Tr10T+dqVZAIx0ZZ7eKNu0Bn32MHNI5RhXLk6mQukaxn58yzkY79vfEGxcEsqeE3khmwo
+	 aftRHf7F0c8ds+GWaYR9C0CgthZE3AXmVneJUuw2EFdyOm0ALUpNhxksrpKjwHUm0ufgb
+	 lGwzbOeb6wnweXma+NCxd6gh3A+/N8kdyA20tNKi7xEUoJvfnF+SykqBkODDFBJp6jQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792468640;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=/W8Ed4jSRre2wfHFR+X/2tT/ft4pZKYlenk33nsLqiM=;
-	b=QUrUj9jkEDdEMmBa78olBX+YRe8kGnHNw/6ycIOHPeMVf9Tk4h6JI2tSiqJ1tdlNgo8x
-	 bvFuC0NsVv7AKLlhQMjJBDScnSLTJIEQ8jsG9jQhdZLbYA1bRJUmIloDPke7kOK5hErHq
-	 EbjpeB1bHrVTAyyZ0L4RmvRL/5m5jhnoJlb1RU0/P2af1p0vuzu58aiUyYg5qykw1K/yy
-	 lOV7LKjuwPBujEa+yAj9+YDDOvD1anxEOx7N17pczfXDFlzSJHIR87pEfhYON4cRbgy1b
-	 vBHXBTJFDUC+3MlVHhrgYFn9bb++x6aWCRMaiDy5jDbB9Zqkc/maJH00hPNEJr7OqMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792469529;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=uAQVeBdqF8iBjUZznDFAjUGvJNEGAa606+53oDaEyLw=;
+	b=W3XzdfRNiJZDfxE4wgM1uHT7Rh5a9qOln1qeNIUukaHGs1gJ7XMF31aW0KkXVhRiBx0U
+	 1tbET9JMMpC8kTaxCuswX1jxOthrZwsh8hBCPiDtIgnnuEubfYV9nfpgPo7VDOar4SJ9y
+	 nhipR50xxh5k1iMN5xAIt7pz7nHeVsPRj0ZN+bvAsK20WrYRDVZTDsLbGtZe0UrnkXMqg
+	 6L7qC7WHLRl98fJSnvvsJy6keBbWVWOwgG1u8Uc26OFbpMqLfjgtu42k3qzoTpCqkQbAi
+	 j/RR6W0ihgM46gTodNiXe/kn1CGPTuo9TMtVj7oPj1laavYc5JzlsotnevKQ+3XFhIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WamV38WX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bREnexKh;
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6C1606A319;
-	Tue, 20 Oct 2026 03:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8CF606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:12:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F8CF606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WamV38WX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446E11F000C4;
-	Tue, 20 Oct 2026 03:57:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792468639;
-	bh=/W8Ed4jSRre2wfHFR+X/2tT/ft4pZKYlenk33nsLqiM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WamV38WXMlJZhfZjfN9lZxgi+2MEM8+GM6sy+7SWg78m7EJPaYgG8zmH52wEDfDgy
-	 HndhMq2G3A3iNuQha/7Ia7V6NoiH8R66/v5pa8cixxy2iEUt8KZm5qEfU/v9USZ/KI
-	 n4SVj7wNxO0ALrsl1BBrsp/4T7e85CFTkTW3LjRgDlqyQbXboX8ADiMIS8kQIwAIWw
-	 CgQTPfK2W8YKqQXCBl1+lg0zJxqI5o/nsbm5S3FwAefEmniCY1k0t7a0iAhyCp6zzp
-	 s6jGt24Kpe/ixPLTSQOFBG4SlBdHLUQIKsZbJ4F2oOV6TTVqXC+vN24WJI/qZCHntV
-	 m/dXQYMcJjP8A==
-Subject:
- Re: [PATCH net-next] net: ti: icssg-prueth: Fix dma_unmap_single() direction
-From: netdev-bot+sashiko@kernel.org
-To: fourier.thomas@gmail.com
-Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- elfring@users.sourceforge.net, jacob.e.keller@intel.com,
- vadim.fedorenko@linux.dev, haokexin@gmail.com, diogo.ivo@siemens.com,
- jan.kiszka@siemens.com, linux-arm-kernel@lists.infradead.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 20 Oct 2026 03:57:17 +0000
-Message-ID: <179246863774.3135.8755286961796234504@kernel.org>
-In-Reply-To: <20261016125534.36024-2-fourier.thomas@gmail.com>
-References: <20261016125534.36024-2-fourier.thomas@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bREnexKh
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89f2846ab57so2923513b3a.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:12:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792469527; x=1793074327; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uAQVeBdqF8iBjUZznDFAjUGvJNEGAa606+53oDaEyLw=;
+        b=bREnexKhXahp6Bc9honRucDCkEreBwjOPgqmKVZi1KCtuI8Gi6q1oSNXOTDgPw0cp6
+         fXmDAVsHL5jwDGgSRHn5ZAEAkzYoPmRFdw/ut6rUhCb9zgKHLTbN4PdY4IBClV/rvIhZ
+         5oDaJr055lhCGmZnScl2BHVfWPcY9PtiKAvDA7WiFmAVgGMI/ID+lEUv/hyplMT2jz7Z
+         p51zsTmvLAgXQGfVLGtENWquS6NPwrLqY3n5OOb0hWGX5HDnxJEfhpGPy2PZESQu1Q7C
+         hd9k0FXu7q3vcN4/DUUXA2/ekGm4LWjYRkXqaHx4zoh4iusbjor2W9B3eBU12mdugD4t
+         U0EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792469527; x=1793074327;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uAQVeBdqF8iBjUZznDFAjUGvJNEGAa606+53oDaEyLw=;
+        b=RqLnI4JPb3ayeVix5cppGYR4neTghLEhgED+Csjptf+gMnr75iTVBCPyPhaNLa3egi
+         hwDDyg3WCWMzcQReeE5NZ3gtLV3EdA1dC1a10pLricGuTvi2L9tPb7jq1k2s4lQfS+Q8
+         ApHMEdGJUFxioMyKBXvSc3Ir6VH2UNcR5p2duesHedvVER2i7s4UKb722WL0Tzl5wqQ+
+         cbobvwd2Xky6nGgA1VirY+EUanG4IdJy/bXzW8a6GRquKtckMu6T+JgNePc3XG5ZeBTk
+         TsCAC58zL/mMpE9r6RkfwjYTzbC/qhULNYT13B6k/DjhPGyjTe5h3zUiIGFo2qgKtiFr
+         Oi2A==
+X-Forwarded-Encrypted: i=1; AKwUvBw3MHT0Qbx0XtxS4hMcOtCN1K3tAboPXwlVqzbpWll6LDDiX5rnKvXvgXXOS25Dmf2JzbA+ntU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLk+PKeVlXdMwEBCtS+l6h0Wa1DsPIkt34eYfqI81pwoAkHqZj0
+	HOt/KFWdHSUSedixnfM2x09j/9M6eDbATOh+kikY+T4eK2nAYIcM7LIJK3TDKQM0LhB7XV61eGL
+	sYk75aw==
+X-Received: from pfbcj24.prod.google.com ([2002:a05:6a00:2998:b0:889:4fa3:fafc])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f12:b0:89f:9da8:1b66
+ with SMTP id d2e1a72fcca58-8a04cc2adfbmr7226294b3a.33.1792469527213; Mon, 19
+ Oct 2026 21:12:07 -0700 (PDT)
+Date: Tue, 20 Oct 2026 04:12:06 +0000
+In-Reply-To: <20261019174152.2932829-1-cjubran@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,255 +79,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261019174152.2932829-1-cjubran@nvidia.com>
+Message-ID: <atbp-Zxbm_Os6-mT@google.com>
+Subject: Re: [PATCH v3 net] net: skbuff: don't copy alloc_cpu in skb header copies
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Carolina Jubran <cjubran@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dragos Tatulea <dtatulea@nvidia.com>, "=?utf-8?B?QmrDtnJuIFTDtnBlbA==?=" <bjorn@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On Mon, 19 Oct 2026 20:41:52 +0300, Carolina Jubran wrote:
+> Commit 68822bdf76f1 ("net: generalize skb freeing deferral to
+> per-cpu lists") added alloc_cpu to struct sk_buff and placed it in the
+> headers group copied by __copy_skb_header().
+>=20
+> This is wrong for newly allocated skbs. For example, skb_segment()
+> allocates a new skb and records the current CPU in alloc_cpu, but
+> __copy_skb_header() overwrites it with the value from the original skb.
+>=20
+> If the original skb was allocated on another CPU, the segment may later
+> be treated as remotely allocated and unnecessarily deferred there when
+> it is freed.
+>=20
+> Move alloc_cpu out of the headers group so it is preserved across
+> header copies. Copy it explicitly in skb_clone(), which allocates
+> the skb object directly instead of going through __alloc_skb().
+>=20
+> This was discovered while investigating a throughput regression with
+> software IPsec. The load used 512 IPsec tunnels carrying traffic over
+> VXLAN, with 512 parallel iperf3 flows and an MTU of 4500.
+>=20
+> Before the fix:
+>=20
+>   16.09%  queued_spin_lock_slowpath
+>              |
+>              --15.90%--_raw_spin_lock_irqsave
+>                        |
+>                        --9.37%--__slab_free
+>                                  kfree
+>                                  skb_release_data
+>                                  napi_consume_skb
+>                                  mlx5e_poll_tx_cq
+>=20
+> After the fix:
+>=20
+>    6.84%  queued_spin_lock_slowpath
+>              |
+>              --6.57%--_raw_spin_lock_irqsave
+>                       |
+>                       --5.00%--__slab_free
+>                                 kfree
+>                                 skb_release_data
+>                                 napi_consume_skb
+>                                 mlx5e_poll_tx_cq
+>=20
+> Fixes: 68822bdf76f1 ("net: generalize skb freeing deferral to per-cpu lis=
+ts")
+> Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-Critical: 0 · High: 3 (1) · Medium: 2 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch adds the very map/unmap direction mismatch it claims
-  to fix.
-- [High] The direction is not the real bug in prueth_process_rx_mgm().
-- [High] net: cacheline corruption due to DMA_BIDIRECTIONAL on unaligned
-  inline array
-- [Medium] The commit message's premise is wrong.
-- [Medium] The Fixes tag points at the wrong commit.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  prueth_process_rx_mgm() refills the wrong ring.
-
---
-
-net: ti: icssg-prueth: Fix dma_unmap_single() direction
-
-This patch changes the DMA direction to DMA_BIDIRECTIONAL in two places:
-the mapping of the firmware command buffer in emac_send_command_sr1(),
-and the RX management buffer unmap in prueth_process_rx_mgm(). The commit
-message says the TX map and the RX unmap use mismatched directions.
-
-> In emac_send_command_sr1(), the command data is mapped with direction
-> DMA_TO_DEVICE. However, in prueth_process_rx_mgm(), dma_unmap_single()
-> is called with direction DMA_FROM_DEVICE. It seems like the buffer is
-> written to by the CPU before mapping the buffer; and, after mapping the
-> buffer, the device writes to the buffer.
-
-[Severity: Medium]
-Are these the same buffer? emac_send_command_sr1() maps emac->cmd_data
-on tx_chn->dma_dev. That mapping is released by prueth_xmit_free() when
-the TX completes:
-
-drivers/net/ethernet/ti/icssg/icssg_common.c:prueth_xmit_free() {
-    ...
-	cppi5_hdesc_get_obuf(first_desc, &buf_dma, &buf_dma_len);
-	k3_udma_glue_tx_cppi5_to_dma_addr(tx_chn->tx_chn, &buf_dma);
-
-	dma_unmap_single(tx_chn->dma_dev, buf_dma, buf_dma_len,
-			 DMA_TO_DEVICE);
-    ...
-}
-
-So before this patch the command buffer was both mapped and unmapped
-with DMA_TO_DEVICE.
-
-prueth_process_rx_mgm() handles a different buffer. It is a page_pool
-page that arrived on emac->rx_mgm_chn, attached by
-prueth_dma_rx_push_mapped() as page_pool_get_dma_addr(page) +
-PRUETH_HEADROOM.
-
-The firmware reply is also read from that RX page, not from cmd_data:
-
-prueth_rx_mgm_rsp_thread() {
-    ...
-	rsp = le32_to_cpu(*(__le32 *)page_address(page)) & 0xffff0000;
-    ...
-}
-
-Does anything make the device write to emac->cmd_data, or read cmd_data
-back after the DMA? If not, could the commit message be reworded to
-describe the problem that actually exists?
-
-> Fixes: e654b85a693e ("net: ti: icssg-prueth: Add ICSSG Ethernet driver for AM65x SR1.0 platforms")
-
-[Severity: Medium]
-Is this the right commit for the Fixes tag? At e654b85a693e both pairs
-seem to match. cmd_data was mapped and unmapped with DMA_TO_DEVICE. The
-RX management buffer was an skb, mapped DMA_FROM_DEVICE in
-prueth_dma_rx_push() and unmapped DMA_FROM_DEVICE in
-prueth_process_rx_mgm().
-
-The RX side only went wrong with 46eeb90f03e0 ("net: ti: icssg-prueth:
-Use page_pool API for RX buffer allocation"). That commit moved RX to
-page_pool pages but kept the old dma_unmap_single().
-
-Stable trees that have e654b85a693e but not 46eeb90f03e0 would end up
-with a FROM_DEVICE map paired with a BIDIRECTIONAL unmap on the skb path.
-They would also get a new mismatch on the TX command path.
-
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-> index b8115ca47082f..6f4a3f64ad39f 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
-> @@ -98,7 +98,7 @@ static int emac_send_command_sr1(struct prueth_emac *emac, u32 cmd)
->  	tx_chn = &emac->tx_chns[emac->tx_ch_num - 1];
->  
->  	/* Map the linear buffer */
-> -	buf_dma = dma_map_single(tx_chn->dma_dev, data, pkt_len, DMA_TO_DEVICE);
-> +	buf_dma = dma_map_single(tx_chn->dma_dev, data, pkt_len, DMA_BIDIRECTIONAL);
-
-[Severity: High]
-There's a second problem with mapping cmd_data DMA_BIDIRECTIONAL.
-emac->cmd_data is a 16 byte array embedded in struct prueth_emac with
-no alignment or padding of its own:
-
-	u8 cmd_seq;
-	/* shutdown related */
-	__le32 cmd_data[4];
-	struct completion cmd_complete;
-	/* Mutex to serialize access to firmware command interface */
-	struct mutex cmd_lock;
-
-So it shares a cacheline with cmd_seq, cmd_complete and likely part of
-cmd_lock.
-
-Documentation/core-api/dma-api.rst asks for regions mapped with
-dma_map_single() to start and end on cacheline boundaries, so that
-nothing else shares those lines. With DMA_TO_DEVICE this was harmless
-in practice, because the CPU side never has to invalidate anything.
-dma-debug skips its overlapping cacheline tracking for DMA_TO_DEVICE
-mappings for exactly that reason.
-
-DMA_BIDIRECTIONAL tells the architecture the device may write the
-buffer. On a non-coherent system the CPU sync on unmap then invalidates
-the lines covering cmd_data, and those lines also hold cmd_complete.
-
-reinit_completion() writes cmd_complete after the map.
-prueth_rx_mgm_rsp_thread() calls complete() on it from the mgm IRQ
-thread while the buffer may still be mapped. Can the invalidate throw
-away those updates and lose the wakeup?
-
-Today only the descriptor allocation failure path above unmaps with
-DMA_BIDIRECTIONAL. Every command would, though, if prueth_xmit_free()
-were converted to match.
-
-If the firmware really does write into this buffer, cmd_data would need
-its own cacheline aligned allocation. If it doesn't, wouldn't keeping
-DMA_TO_DEVICE avoid the problem altogether?
-
-[Severity: High]
-Doesn't this add a map/unmap direction mismatch? Only the unmap on the
-descriptor allocation failure path below was converted. Every other
-release of this mapping still goes through prueth_xmit_free(), which
-hardcodes DMA_TO_DEVICE:
-
-emac_send_command_sr1()
-  k3_udma_glue_push_tx_chn()
-  ... TX completion ...
-emac_tx_complete_packets()
-  default:    /* PRUETH_SWDATA_CMD */
-    prueth_xmit_free()
-      dma_unmap_single(..., DMA_TO_DEVICE)
-
-The same is true of the free_desc path in this function when
-k3_udma_glue_push_tx_chn() fails, and of TX channel teardown.
-
-With CONFIG_DMA_API_DEBUG, would check_unmap() now report "device driver
-frees DMA memory with different direction" on every successful firmware
-command?
-
-The device only reads cmd_data. With an IOMMU, though, BIDIRECTIONAL also
-lets the device write to the page that holds it. That page is inside
-netdev_priv(), next to cmd_complete, cmd_lock and the napi/hrtimer state.
-
-Should the TX hunks be dropped?
-
->  	if (dma_mapping_error(tx_chn->dma_dev, buf_dma)) {
->  		netdev_err(emac->ndev, "cmd %x: failed to map cmd buffer\n", cmd);
->  		ret = -EINVAL;
-
-[ ... ]
-
-> @@ -303,7 +303,7 @@ static struct page *prueth_process_rx_mgm(struct prueth_emac *emac,
->  	page = swdata->data.page;
->  	cppi5_hdesc_get_obuf(desc_rx, &buf_dma, &buf_dma_len);
->  
-> -	dma_unmap_single(rx_chn->dma_dev, buf_dma, buf_dma_len, DMA_FROM_DEVICE);
-> +	dma_unmap_single(rx_chn->dma_dev, buf_dma, buf_dma_len, DMA_BIDIRECTIONAL);
-
-[Severity: High]
-Should this be a dma_unmap_single() at all? The page comes from a page
-pool that prueth_create_page_pool() sets up with:
-
-	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
-	...
-	pp_params.dma_dir = DMA_BIDIRECTIONAL;
-
-That means the pool owns a mapping of the whole page.
-prueth_dma_rx_push_mapped() gives the device an offset into that mapping:
-
-	buf_dma = page_pool_get_dma_addr(page) + PRUETH_HEADROOM;
-
-Here the address is read back with cppi5_hdesc_get_obuf(). It is never
-converted with k3_udma_glue_rx_cppi5_to_dma_addr(), and it is unmapped
-with a partial length. So it does not match any mapping the driver
-created.
-
-After the unmap, the page is either recycled with
-page_pool_recycle_direct(), or, if allocation fails, pushed straight back
-to hardware as new_page = page. In both cases the pool still treats the
-page as mapped.
-
-With an IOMMU, which the commit message mentions, can this free the IOVA
-of a page the pool is still using? The next DMA into that page would then
-fault or land on a reused IOVA, and page_pool_destroy() would unmap it a
-second time.
-
-DMA-API debug would also flag this as "device driver tries to free DMA
-memory it has not allocated", whatever the direction.
-
-emac_rx_packet() handles the same kind of buffer by calling
-page_pool_dma_sync_for_cpu() instead of unmapping. Would a similar CPU
-sync be the right replacement for the unmap here?
-
->  	k3_cppi_desc_pool_free(rx_chn->desc_pool, desc_rx);
->  
->  	new_page = page_pool_dev_alloc_pages(rx_chn->pg_pool);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but a little further down in
-prueth_process_rx_mgm() the replacement buffer goes to the data channel
-instead of the management channel:
-
-	/* queue another DMA */
-	ret = prueth_dma_rx_push_mapped(emac, &emac->rx_chns, new_page,
-					PRUETH_MAX_PKT_SIZE);
-	if (WARN_ON(ret < 0))
-		page_pool_recycle_direct(rx_chn->pg_pool, new_page);
-
-The descriptor was just returned to rx_mgm_chn's desc_pool. The refill,
-however, allocates from rx_chns.desc_pool and posts on the data RX
-channel, using a page from the mgm page pool.
-
-emac_ndo_open() fills the mgm ring only once, with
-PRUETH_MAX_RX_MGM_DESC_SR1 (8) descriptors. After 8 management packets
-(command responses or TX timestamps), does the firmware run out of mgm
-buffers? If so, emac_send_command_sr1() would time out on every command,
-and the skbs held in emac->tx_ts_skb[] would never complete.
-
-All data descriptors are posted at open, so this push will usually fail
-in k3_cppi_desc_pool_alloc() and hit the WARN_ON() on most management
-packets. When it does succeed, emac_rx_packet() or prueth_rx_cleanup()
-later recycles the mgm-pool page into the data pool.
-
-Before 46eeb90f03e0 this call pushed to &emac->rx_mgm_chn. Should it do
-so here as well?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016125534.36024-2-fourier.thomas%40gmail.com
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
