@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792530024;
-	b=Om6EDoJg/qxohyiS3esgpU45cvkWoeUnweVLZfMFRGz8YR8a+vuirol9kagXbzHtcr58
-	 T/lYEj4/v9ejHetCtrJPlhfvz0EE0+GkUtwo9/Qyz0C+aDffzF9l5MH/CKTGsv/FUm81R
-	 c4gwdlRJQoUmBEw6MJzTP/vAOaqtTnE5tTpcPm0MTcK2KES5W5wU9Ng7zWXedZBgTk3J1
-	 IdRtvSv8fFF6E/MqH0UIzSQvfA071bq/hmFLje9fqM7qRHP4nomHpfSh8HQrau79Ek3Yo
-	 ehJtqzbxpKROxKJe6Omo6PalCOKMX0CZOa0WfYL6qDb1Oi7NTSdtBazbLRs0o4P1epQ==
+	t=1792530046;
+	b=4NnwORzSQd92kqLsAvP5HaCf6JXT0bFsR1nhP75AE9h8GZnX1OU/8tNAUJcTYtYGdbJC
+	 g7ZGanWeQGCjRBdhWBe1CcLYAauztt6Rbh/jgeRZHFvgUCZ6V2qJWN3dV2kphu8kNmmTa
+	 JuGYmVbnqGY2J9tTij4PY8SpUdG3/diZEfo9w8A7ulma7IlHjsjutqHXAZrZzBOkM71VM
+	 9/kcUEdpXmkIB/GoNSIjVKo3P/a5RwerEw3hsU7O3X1+wS2z3vy5cE00uXt0DqCtwfzIW
+	 IQkJUgBgN7GOI57p7VaprsoKMkQ3mKnXMyy1q2WBd3liofch84e59LdxBruiBHuDXFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792530024;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792530046;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=XX3XLV0xHg6luX3whJrUDl/guabkVK+4J15AfwA4RJY=;
-	b=lkD2/M4qHAXlebFBNHUQdGloNuaPlHkYHG7SB5w9HTup18U8ijda2zgxQity7s47PJ7v
-	 88DTRIlQng/7cKIbHmX5pdY3crPVrviTtZEOb3QppCEu17Km1GnHdwGUt/U34rIIWbZc8
-	 sJAPp9jjX0KpMnMaIRAHPWRUPqcPLx7ue0LxW3/xEx3/VdS082oCsAmQf9vn/IKc0VxV9
-	 hntHo1EV4DDfx87qda2cO3CkhbGRDB7rCrAQCVAEHqZD545x3BT/R03F+f/vUcKWZhT78
-	 QcfUEcl6k6/HFOqnA/eje5GH82q5Blp1B9AFEO1mH2i/5lBVDZ56QGDWYFbsd6Wo1zQ==
+	bh=s7LHFRSXHic5XGEInYp0jAmgGHudXLNGKJjFiKqPrq4=;
+	b=x+8OXnHWdA2SCN9KDQAKJt0MMJL10iH/H1v1ek83/wgaBfgexB7ZRr9AOzjh5Loz3lma
+	 ULtYYSYsuO5pwFoPjEZ3xQ8EDPUN8Y+O7Kb2I2HTfiQZIK6DhBfUAgZw+hdxfCbsmkm4N
+	 3UwdiBe+CwTnoOYORS7eNDJIVaCoiefCTRfs/APEjb+YmVoz35G37gxKXJx8rkBa0plEi
+	 /AhxxFzyL8eY9KxU8Yzsab9VaFfVqhwFL7lqs24MRcgeP/k0ij9kml6SI3fku3+tfKlNp
+	 vCAYjcmTEHHUTGm00CUkkTHPy5KZlqrNV/QSCwQKunK6FJpjwevclBW+JBLy/4XowIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j8vUMbvR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQci7tJF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D877E606A327
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2E7606A326;
+	Tue, 20 Oct 2026 21:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j8vUMbvR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E401F000CF;
-	Tue, 20 Oct 2026 21:00:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQci7tJF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BAF1F000CA;
+	Tue, 20 Oct 2026 21:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792530023;
-	bh=XX3XLV0xHg6luX3whJrUDl/guabkVK+4J15AfwA4RJY=;
+	s=k20260515; t=1792530046;
+	bh=s7LHFRSXHic5XGEInYp0jAmgGHudXLNGKJjFiKqPrq4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=j8vUMbvRPTZc8qeYxyVx+Tucj1PeGloQW9hh4wnS/6CvYppTwv2MCz69dVqH4oBGA
-	 SEsGELHuUkZ5/qvknsPVzH3kSg0csouXHfIXbd3i8h5Loxi3edUtMIXnFjSkPAz5rp
-	 9KYAP5FbIMRQ75HMyfQQmxLX0IeMMuIVx1+smaU+LeLRcohoWJ7TJytyKWFDTrjXHO
-	 Z4s492i3s+V77wgS0nyVV3jR31vjwWGulUmDu+GK90xmox0k3mxh/DfNKv8m1Asq7V
-	 TgQIIa3Yc/exhf9FvS8O3zpOH5UCZFhZsgCmWMhvNtS6R105EkKmDqv7d8m0mLuOUi
-	 z6UI47l8B7MaA==
+	b=KQci7tJF+IYLQv12efD+MqxN8J1OOwJGnXlOocHPZKc29bqs7Rn4uxmeGPDrGl9/K
+	 DlZh+oY49USpQZHxL+KjFEv0OW74s+5g6WrN4Umesz8ZSy4kJ9elFqSZiEMHh9kWav
+	 cW5alHMgELP+qd4Mj0p1uOEq+HRuwVz7Fu6mmpjK8oo/udT3qTqa3lWAJSP6l6NSuA
+	 cqQOtolImM7THpRhx7QSnEtpo7lCBakPYqUOtiVqaERF/8ITWp+Sdb+HOO0PPGlWHO
+	 weVCueq+jZPslSqNq3gslFD+60qceaw0ggnoYot0rsoW8NUlJNaaAUwhpHsjhyVO50
+	 Zc2yMZPTVRHfQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773FA3809A09;
-	Tue, 20 Oct 2026 21:00:23 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3B93809A09;
+	Tue, 20 Oct 2026 21:00:46 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,49 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5e: Update netdev features only after a
- successful
- ringparam set
+Subject: Re: [PATCH net-next v3] net: mana: add BQL support
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179253002202.208021.1423217243586983766.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 21:00:22 +0000
-References: <20261017005401.1582755-1-dimitri.daskalakis1@gmail.com>
-In-Reply-To: <20261017005401.1582755-1-dimitri.daskalakis1@gmail.com>
-To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
- cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com, cjubran@nvidia.com,
- bjorn@kernel.org, netdev@vger.kernel.org
+ <179253004477.208021.12583295837722282628.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 21:00:44 +0000
+References: <20261013214937.145312-1-hamzamahfooz@linux.microsoft.com>
+In-Reply-To: <20261013214937.145312-1-hamzamahfooz@linux.microsoft.com>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Cc: netdev@vger.kernel.org, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ kotaranov@microsoft.com, horms@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 16 Oct 2026 17:54:01 -0700 you wrote:
-> From: Dimitri Daskalakis <daskald@meta.com>
+On Tue, 13 Oct 2026 17:49:37 -0400 you wrote:
+> MANA doesn't support byte queue limits, so each TX queue can hold 256
+> WQEs by default, and up to 16384, of up to 64 KB TSO packets, before the
+> qdisc layer sees any backpressure. This adds latency to all the flows
+> sharing a queue, and defeats AQM qdiscs such as fq_codel, which rely on
+> BQL to keep the driver queues short.
 > 
-> mlx5 couples HW-GRO with tcp-data-split. If a user sets rx-gro-hw on ->
-> tcp-data-split on -> rx-gro-hw off, the driver will leave HW-GRO on.
-> mlx5e_ethtool_set_tcp_data_split() calls netdev_update_features() when
-> tcp-data-split goes from enabled to disabled in case HW-GRO needs to be
-> released. mlx5e_fix_features() reads the new HDS config from
-> dev->cfg_pending, so HW-GRO is released before all ring parameters are
-> validated.
+> Report the bytes queued and completed to BQL, except for the XDP_TX and
+> XDP_REDIRECT frames. These share the SQs, but bypass the qdisc and are
+> sent even when the queue is stopped, so BQL can't hold them back.
+> Counting them would let sustained XDP traffic keep the queue stopped,
+> starving the stack, and the TX watchdog would then either fire while the
+> completions still arrive, or, if the XDP sends refreshed trans_start,
+> not fire when the completions stop. The XDP SKBs are marked in their
+> skb->cb, next to the WQE size, so that their completions are skipped as
+> well.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/mlx5e: Update netdev features only after a successful ringparam set
-    https://git.kernel.org/netdev/net/c/23dd5be7e19c
+  - [net-next,v3] net: mana: add BQL support
+    https://git.kernel.org/netdev/net-next/c/799cdeaa5c39
 
 You are awesome, thank you!
 -- 
