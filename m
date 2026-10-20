@@ -1,89 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792519988;
-	b=Y2o579XY4xLxywPLMX+BRejgjvBFyZinA7rH6A4sf3wNdLf4plxWUdaexeT23v9/NGol
-	 sg7rznxKEP4iv6WEyKnOT+M6pEZV9lOTr/qgVfv4hOaQk1McfJCO7U8UNERh8f9zEPqvK
-	 nnDAf9+37Q765AUx0a8+jvMAmmkklEcK7gLR26qVVn+yT7UDaKAS9F6SBnvb1rsnNh/nm
-	 SRd1jlKQBi0yByR72WLSR1t64uxooq3tyYf+l5+npT+vCZa8eLHnn432BE4h4NwG/J+qU
-	 v6UgJsnlWq1CtSs8is65Dq9AvbTWbEPS8AH3TAnrAMzf/ZNor+fNpaVA9/Q6+8W6w9A==
+	t=1792520085;
+	b=2XokDx3SOxQaRMLcPhVUnQrC5R2y8swXmZEW9Y6A4qtHppRwXycNJpx1xqjtTM71ayyG
+	 uLcgLoKGR3YM/XwiHxKG1G1fsglOEDfko0wo+4kjo6WSIqFhWvWjNFGVBbH+4cYvhNI+W
+	 P372qJewwwdHvswM31bXid/yKWq9Q1Xor9DgLdTy3UVM3DO7kjPmwdQ/C1zqNazpCPKfP
+	 6Nzvi4Sn9KKVq+9dS/Z/SdPBIF4kEV+DnY3aUzN0BNd+lkX1qxnL5XPga6wCxqq6X4BVt
+	 dfF39pwRir5iT388+jd0cRHZfJaQEJD0xA+eZSowDtG7BtuBiFwldVrLQbFnZWoaAqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792519988;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=7Wx9GyoHHfawHRnV0Cg3i7Hst1BvQl6Kp0zfGCvvP3g=;
-	b=5tI3ab2vFDUYlXwtkqyE72+n7A0yjrkD/FSZV2Jye94Wn9jAB/Yv4d1sU1O6Q9+/NMCD
-	 o10t8gcsF5Xmd4B71t0UoRHFUX8UQSqxoCuVEcaZX+arX8kcrVF0zg+0U81GZqwu6QSTk
-	 mj+MHDEW1zecafPynQQKP0GtvoY3GRs89BtN9ZZjh1Q+0coHi6ShA1xb1jqF4HRO3vQM7
-	 WRCU2PfsYM9rqTuGs6+pCCrne3AsOHn8NFaAHYU8ZlC0Hs19P+sk8IPurNUrwGZBz+lDF
-	 scvh2gjHJbB0djj8WLjJo+S8WEjU6xZBalmR0wZcVJrw6/PMRsVGSdiTVbBxqFGJEJQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792520085;
+	h=Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=uK7yicMd7fV27ely5ePv4vfAPSKVcR6O+lt+i4O5dkU=;
+	b=xPAM/ua+N7zBO53Msg4y0dlR5o2nrN2Oj7QHJsj9D4oNWGW91RiKs3rc1S5Ux4j5gQKZ
+	 /pP2rRQB7ghupYMVVKxy+a3R5O0L6VkxzcChH9jfIb8VJwnOjopYhhD6cEBOuinUk96ub
+	 FQ3tapsp4bzj8tRaZ1rmAoLBaIPCLdPmyNWsg5DUjkor5aSZne+oS/x8A+ZxAtTEAPta+
+	 yhED3svb6GjqeMb6ZayUOT5KDJWAMUiy0cVkZJDZT5BYj1UR0PFQ5uWd6z73aI9wN8DEy
+	 1keiyRQiQhP/v4b2OmtcqEoLNYS/GKT86piM5L3AKfr1fgnjULiy3YhtpDbOzYTF/2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dd3axunV;
-	arc=none smtp.remote-ip=74.125.82.171
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7081F606A31C
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 18:13:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7081F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dd3axunV
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-354ba08cfd1so6393009eec.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:13:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792519988; x=1793124788; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7Wx9GyoHHfawHRnV0Cg3i7Hst1BvQl6Kp0zfGCvvP3g=;
-        b=dd3axunVuUqRuGrGGRSfLkb1V8FvMQ424d9Mzy0sC6Mk8rBd+qmiIfOpd9wkRXU7N3
-         QazkkiHhdfGV8qnqKWXHIO5Lv0Vvx0yb5h6EpRB2UVGv3OKrHmY3bkfnj4t9rd7ZtEGN
-         6Vp4P2VDjhHXjYOsALXNwbWhaKKxCeEfPDdaYlgcQWig4aYrjgYIh9ci+avYY7wjWGo6
-         CnTgsiURhUCBlzMHXSe88xGlEHv2YRSYUZXIIuknz4iQFOIkW8LvTzZJ/qTMlb3JQ4Jk
-         bQfhlGSfHvH1y9OviUtBf/sty6IPXxG6urYRWk2bpT0ic4WSTe+lV4ZDa3X8bwbS1Kvl
-         2Xmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792519988; x=1793124788;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7Wx9GyoHHfawHRnV0Cg3i7Hst1BvQl6Kp0zfGCvvP3g=;
-        b=SDXGMu2KKJciVxaDZf8CEVkJff9BwURnpmo2KwIQ6XTUfiFDPbAo7ADfmgrUY/JquP
-         3Z34MH4120zgaV/pddhg6pU0grUrRZLN+StsOrfNhBrqz0o0Chi3ABUxH+W3djDKaCq3
-         P063pFql7v2hee/nmTGEzmuLeNst2OnnH0f1goa+NFic2khMgSyZ6SWp8sh4VlnhPx1E
-         8/gkuEw3xDhipXE3/nPKs2IB5y4yEIyd25WKY3yvXSaP9n0b9oGEWurZpqIU08vbZGiX
-         KlPrNzsNiDugFOU6+lGgqWrUoSMMuwxlgMcgkJ2YRAKvtMP4LDMVkNfCywKJbzW6bYpm
-         y7eA==
-X-Gm-Message-State: AFq9FYJcDzofBqm0Pq8TxxgdyyIFAOi0M3/vEgpRVyjxr5PDWuGQVyS3
-	2Hrp0YbsG7HohCps5CZb1hol17i00CmYgmBkQQK4Z04oPCLMGlNK51xEqnAWRA==
-X-Gm-Gg: AYBFou3rSfYEPZNs/wS/KhhVKLjKF+JTGJ6EU3+nHE6PdFOSEoAZT9JOid7x8ADJJrj
-	wjY83HcSRZJy05zOqsqiJjj9+R5L8gfVm2ygQBtELIctJJJy99FS/UnEFLVk6nXCYa0+uKSOSsL
-	oFH/pWBKEgkfs0qqMAV8quMd1uskVo41au/y5hSvqbCjwAR1wmGqQ1JMbfCt4E7xk6XaFhmOG50
-	GH3UR2+ffopSKm+oRH+06SPIDsHnZ4IAPq+rUR7DVnVwiXwH+810tbTRSbkhS/eJlg5+BFuijZe
-	G46ebuiIX20Vr6NskwkOi/TAexyyVprz3z6oEXLIeWqD/CUgs0UFP6CatyuIqZ4CI4TqqjnOY99
-	V7kSHPWoZwycLJPjUBO+4VQ+66SacdLk3bdti3pbLxGVn55gTACsezg5ukZ0jnmPYZn8Hc+Taoy
-	PtMQ0u1d6T24KEDlbswXUBUE0YR771NoIJfCG5DgJOOynkncRjLyZ/Lgfr0fhkvIpH5klPzfOw5
-	wt4W2YlB98x5tpEpnih8g==
-X-Received: by 2002:a05:693c:608b:b0:35c:ef18:6a78 with SMTP id 5a478bee46e88-3674a41869amr97000eec.2.1792519987538;
-        Tue, 20 Oct 2026 11:13:07 -0700 (PDT)
-Received: from arch.localdomain ([2401:4900:e005:334b:4504:532e:b7dc:d438])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-367416a1fb9sm265873eec.20.2026.10.20.11.13.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 11:13:06 -0700 (PDT)
-From: Prashant Sengar <prashantsengar25031@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Thangaraj.S@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	andrew+netdev@lunn.ch,
-	linux-usb@vger.kernel.org
-Subject: [PATCH net v3] net: usb: lan78xx: avoid NULL PHY dereference in WoL setup
-Date: Tue, 20 Oct 2026 23:42:37 +0530
-Message-ID: <20261020181237.2374075-1-prashantsengar25031@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16155606A31E;
+	Tue, 20 Oct 2026 18:14:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983261F000C9;
+	Tue, 20 Oct 2026 18:14:44 +0000 (UTC)
+Date: Tue, 20 Oct 2026 13:14:41 -0500
+From: Rob Herring <robh@kernel.org>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Po-Yu Chuang <ratbert@faraday-tech.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 1/7] dt-bindings: net: ftgmac100: Make Aspeed
+ compatibles standalone
+Message-ID: <20261020181441.GA510274-robh@kernel.org>
+References: <20261020-support_ast2700-v4-0-4d36b40939b3@aspeedtech.com>
+ <20261020-support_ast2700-v4-1-4d36b40939b3@aspeedtech.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,73 +53,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020-support_ast2700-v4-1-4d36b40939b3@aspeedtech.com>
 
-LAN7801 supports fixed-link configurations without an attached PHY.
-However, lan78xx_set_wol() unconditionally passes netdev->phydev
-to phy_ethtool_set_wol(), causing a NULL pointer dereference when
-a userspace WoL request reaches this path.
+On Tue, Oct 20, 2026 at 07:34:12PM +0800, Jacky Chou wrote:
+> The aspeed,ast2400-mac, aspeed,ast2500-mac, and aspeed,ast2600-mac
+> compatibles are currently only valid when paired with the generic
+> "faraday,ftgmac100" fallback: if a node ever bound through the
+> generic entry alone, ftgmac100_probe() would set
+> rxdes0_edorr_mask/txdes0_edotr_mask to BIT(15) instead of the Aspeed
+> BIT(30), skip Aspeed clock setup, and leave the DMA mask too narrow.
+> 
+> Make each of them a standalone compatible instead, so none of the
+> Aspeed compatibles require the generic fallback alongside them.
+> 
+> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+> 
+> ---
+> ftgmac100_of_match[] has had dedicated entries for AST2400, AST2500,
+> and AST2600 since commit 03a2aba50b2c ("net: ftgmac100: List all
+> compatibles"), so there is no known kernel + devicetree combination
+> where a node has actually bound through the generic entry and gotten
+> the wrong EDORR bit. This part is a binding correctness fix, not a fix
+> for an observed failure.
+> 
+> Note that arch/arm/boot/dts/aspeed/aspeed-g4.dtsi, aspeed-g5.dtsi, and
+> aspeed-g6.dtsi still declare their MAC nodes with the two-string
+> "aspeed,astXXXX-mac", "faraday,ftgmac100" compatible, so this will make
+> dtbs_check warn against those files until the redundant fallback
+> compatible is dropped there as well. That .dtsi change will be sent as
+> a separate series through the Aspeed/arm-soc tree, since dt-bindings
+> changes don't go through that tree.
 
-Report no WoL capabilities when no PHY is attached, and return
--EOPNOTSUPP from lan78xx_set_wol() before modifying the wakeup
-configuration. Keep the existing phylib WoL handling for devices
-with an attached PHY.
+No. This just creates unnecessary warnings even if only temporary.
 
-The issue was reproduced using USB Raw Gadget and dummy_hcd in QEMU.
-An ETHTOOL_SWOL ioctl triggered a kernel Oops with the original
-driver. With this change, the PHY-less configuration no longer
-advertises unsupported WoL operations, avoiding the crash.
+What a driver uses doesn't matter. That can evolve over time, but that 
+doesn't mean we change the DT schema.
 
-Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
-Signed-off-by: Prashant Sengar <prashantsengar25031@gmail.com>
----
-v3:
-  - Report no WoL capabilities when no PHY is attached.
-  - Return -EOPNOTSUPP from set_wol() before updating wakeup state
-    when no PHY is present.
-  - Retain the original phylib WoL call for PHY-attached devices,
-    following Andrew Lunn's review.
-  - Leave fixed-link MAC WoL support for separate net-next work.
-
-v2: https://lore.kernel.org/netdev/20261019193148.1381545-1-prashantsengar25031@gmail.com/
- drivers/net/usb/lan78xx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 5655941f1478..612e1e46de6d 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1763,7 +1763,11 @@ static void lan78xx_get_wol(struct net_device *netdev,
- 	int ret;
- 	u32 buf;
- 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
--
-+	if (!netdev->phydev) {
-+		wol->supported = 0;
-+		wol->wolopts = 0;
-+		return;
-+	}
- 	if (usb_autopm_get_interface(dev->intf) < 0)
- 		return;
- 
-@@ -1795,6 +1799,9 @@ static int lan78xx_set_wol(struct net_device *netdev,
- 	if (wol->wolopts & ~WAKE_ALL)
- 		return -EINVAL;
- 
-+	if (!netdev->phydev)
-+		return -EOPNOTSUPP;
-+
- 	ret = usb_autopm_get_interface(dev->intf);
- 	if (ret < 0)
- 		return ret;
-@@ -1807,6 +1814,7 @@ static int lan78xx_set_wol(struct net_device *netdev,
- 
- 	ret = phy_ethtool_set_wol(netdev->phydev, wol);
- 
-+
- exit_pm_put:
- 	usb_autopm_put_interface(dev->intf);
- 
--- 
-2.55.0
-
+Rob
