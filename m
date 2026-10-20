@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792481136;
-	b=cZnJo4LijYiVgMZ+05AdlhFeIlWqExJtCIidKm+TvLCOQ1A7P3zF4X/IqtPR9KNSFeS8
-	 duraGxkeFa9kjYzH+vrhB6yLvZRtpsEGSSSYMLuf1tT9z3XHSrMNpsJupHhNSYEIHz6Yu
-	 EGCSgfDT6MRs3Ypm6d1ECyCGt/Ypik4RnZnsgi/zb+r6STnIPs+csxAAYr7au8PzFdLBK
-	 zaNmoLBw3RJ3LJVw5sxMwk9dCpso2U6ZKDD0t+1kg9W89oDy8cED4+74Vb3v5vS8OrA3Y
-	 RD88xfupLCVz97hXuZs1Z+iC9IJyZc8kCNjxTF/XnBPEZKbXBk19sHeIgKHYFzgOfyw==
+	t=1792481137;
+	b=bib1nt5281N3YqBDIqudPxMwWksxvY9vnD+tg07UaPtc4wRBJVS8D8t1upiKPNgtdYtk
+	 i0+PF0ZuzR7JVeWBEiXd6BDsOhQyzfGw02obT56SerQM+c+UmqOKkVj4qkyG+heXp4cn2
+	 bDaWhKmRlHpExlQR+v41Uj0ihW6BCPQTfZ5GFYf9B3cWQOm7QVqd1oa5WwRLvuYBRPL41
+	 Yvug+DEcP9cBxWc6KSYHew6CgKMnbnFYj2mbElsRRfMU83OEnFY25exh7FY/jwffPMH8g
+	 fKhzycCuBOFdWRoWO8/0tBX9WkC+TBbJQGrsIl2YwcDpVbIXDXgNHPDrTXo2OmkkyZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792481136;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792481137;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=PPW/XTQAxsMVsOUVSjAA4Cf34VDwECwyRWXpKbl9Dcs=;
-	b=vnLxiP9wvB5EgshwBy1lIf0rZxdnEsszXUX3ghjoMKsUQRWK43jPHjfrKcrIjLzT2m62
-	 SSp30sugCN/ciaqvkvnXOXjp5vhFR7WoX3Tk943NDdie4KRE6dtQnrad8X7n9sPI8ohBL
-	 eqCEkfqG8Ki2xPGGzcg7qTEw8jcEfL2HApZH/Tz+SGZpryjDsQ/TSglTVdjQEN6ASiUS7
-	 o7N/Pck69vDtFFECup0mBGzSMUFv0a+2Agi3yujjJHzLCeOvlfkZwZDkMXpPlDhiiGir3
-	 f2MHeTZ0XrDZXJcY8TK1KidNcr/gZoN+6dEYlRqsxuLtjZCRIOmTWPDtXtRCyilKTMg==
+	bh=lfp58XwQi70g7NLqVgPwHNlO3lGqNpuNaYUDj97KvYY=;
+	b=NQ4Q5O9OL9XJ2BXdomvVtj2mC1x3Ih63VkIb2sWEXkR1L+TNEy+cXpbDP1E7z/oz0Avx
+	 sIK+LBgXqUEoQIHwm8uqLvJxp9fGkN83sPXssw0Tu6gX+y3C/d7fEzlbPkLt77c6sj9cD
+	 /kFPu9rij6cMPXIo9JADkmdFkCbO/Xgk6j2qTMNeVnL93ngO1eMxAM3BFLV3MD0jALhk0
+	 S/RhmzRKDBAjmKHsZVjc+MIKdPY/OV4AkMZhLvpkHuIpCKuAh6Ro+vQal2WTNrIwKibCr
+	 twUuJeNeisjdEBPjsJ0s9Kfj9Eyo5n52uvyKkzfu6g0IZ5aPqEjqSasKm9zfF8kiTCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K79WblqD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="EPRS/1Rj";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF83606A324
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 07:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A48606A33A
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 07:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K79WblqD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF671F000CA;
-	Tue, 20 Oct 2026 07:25:35 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EPRS/1Rj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928571F000C6;
+	Tue, 20 Oct 2026 07:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792481136;
-	bh=PPW/XTQAxsMVsOUVSjAA4Cf34VDwECwyRWXpKbl9Dcs=;
+	s=k20260515; t=1792481137;
+	bh=lfp58XwQi70g7NLqVgPwHNlO3lGqNpuNaYUDj97KvYY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=K79WblqDT7D6Rs93xNsWhIkNycZFp9Eaju1qnlg9XDdO0mMkVov5ZsC26/3ROjVbQ
-	 eSkoH19ba26Y7N8sAObVY/ky8MEGPVFdGkTE5VvfzO57E004xWa7zB9R7+xPMTBfA+
-	 yFhgDik6mxkXiPrUEtJlwf/pkLkkMNhXlBQXeMiKbly5awVecPFBdSpQmDi3jXiWW+
-	 l9YvEctX8IhT7sN3/NTG1/XJt3LQgxg7JXiC88eHAODYnhHzukVEwIIhtpPP+FQfan
-	 cSk1rD72Ja4znCQ/jtOQxZZbxvT702cd41Tv1rm28tQ6zdEPyxWnGt8pW7FYa6BL+z
-	 HqJJAz2+I9neA==
-Subject:
- Re: [PATCH net-next v4 5/8] bnxt_en: Reinit IRQ when configuring LRO/GRO/HDS
+	b=EPRS/1RjpS5N5xK7XrhqtsfWzWxGJHhLOtp5rAWrSX97U1iMIKXyCPdu8x2njqbU1
+	 2S+hhFJauJ+ePl02MDCABlViSW+FiiAhaWXO/tRMawcDLySr0t4FyXOoe/7DLVvyhj
+	 97fyM7wTuzCBVjPkMh+4IfKafz7CUSjyMglehP1RsrYgDz15RFs+FXYOcSXGHG/mep
+	 iwglMxftT9nRukwc9gLPQ7w46WwYglV+mMclvHKw65NAKcx/l1m09+v2YA09KkXJg4
+	 CeJQYABTmfpXV9SuLPl9w8flFlqS7Y44JE6z8YJvoNbSTLIzxGf2CqsuQZd1ywDvK1
+	 tKz9Urvmxmxog==
+Subject: Re: [PATCH net-next v4 8/8] bnxt_en: Fix ring accounting and
+ validation when rings are constrained
 From: netdev-bot+sashiko@kernel.org
 To: michael.chan@broadcom.com
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
  pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com
-Date: Tue, 20 Oct 2026 07:25:34 +0000
-Message-ID: <179248113498.3135.2062167577992892555@kernel.org>
-In-Reply-To: <20261016064427.496944-6-michael.chan@broadcom.com>
-References: <20261016064427.496944-6-michael.chan@broadcom.com>
-X-sashiko-severity: Low
+Date: Tue, 20 Oct 2026 07:25:36 +0000
+Message-ID: <179248113613.3135.941378516751494969@kernel.org>
+In-Reply-To: <20261016064427.496944-9-michael.chan@broadcom.com>
+References: <20261016064427.496944-9-michael.chan@broadcom.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,165 +64,241 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 (2) · Medium: 1 · Low: 0
 
-- [Low] The commit message understates the bug being fixed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] In bnxt_init_int_mode(), the new min_tx check (`min_tx =
+  bp->tx_nr_rings_xdp ?
 
 Pre-existing issues:
-- [Medium] bnxt_set_ringparam() ignores BNXT_FLAG_NO_AGG_RINGS when tcp-
-  data-split is enabled.
-- [Medium] bnxt_set_ringparam() sets BNXT_FLAG_HDS in bp->flags before
-  calling bnxt_open_nic() and does not roll it back when the open fails.
+- [High] Out-of-bounds read of bp->rx_ring in bnxt_fill_hw_rss_tbl_p5()
+  through stale non-default RSS context indirection tables after the RX…
+- [High] This problem wasn't introduced by this patch, but the
+  BNXT_STATE_READ_STATS single-bit reader protocol in bnxt_get_stats64()…
 
 --
 
-bnxt_en: Reinit IRQ when configuring LRO/GRO/HDS
+bnxt_en: Fix ring accounting and validation when rings are constrained
 
-When enabling LRO/GRO/HDS newly requires RX aggregation rings, this patch
-sets irq_re_init in both bnxt_set_features() and bnxt_set_ringparam().
-Firmware may grant fewer rings than requested. That shrinks the channel
-count, and with it the number of IRQs and NAPIs.
+This patch renames bnxt_adj_tx_rings() to bnxt_adj_rings(). The new
+function scales TX, RX and CP rings together when fewer rings are
+reserved. It also strengthens bnxt_rings_ok() to check the minimum ring
+configuration needed for TCs and XDP. The adjustment is now done only in
+__bnxt_reserve_rings() and bnxt_init_int_mode(), and the TC reset error
+path at the end of bnxt_reserve_rings() is removed.
 
-> change and we must set irq_re_init to true to make that work.  Without
-> this patch, when the driver is eventually shutdown, some memory for the
-> unused NAPIs may never be freed properly if the rings have shrunk.
-
-[Severity: Low]
-Does "never be freed properly" cover the full impact here? The old
-behavior looks like it can lead to a use-after-free and leftover IRQ
-handlers, not only a leak.
-
-When agg rings are newly required on a running device,
-__bnxt_reserve_rings() can shrink the ring counts. The old, larger set of
-NAPIs and IRQs stays in place:
-
-    if (bp->flags & BNXT_FLAG_AGG_RINGS) {
-        if (hwr.rx >= 2) {
-            rx_rings = hwr.rx >> 1;
-    ...
-    bp->rx_nr_rings = rx_rings;
-    bp->cp_nr_rings = hwr.cp;
-
-On a later close with irq_re_init set, both teardown loops stop at the
-new, smaller bp->cp_nr_rings:
-
-bnxt_free_irq()
-    for (i = 0; i < bp->cp_nr_rings; i++) {
-        ...
-            free_irq(irq->vector, bp->bnapi[i]);
-
-bnxt_del_napi()
-    for (i = 0; i < bp->cp_nr_rings; i++) {
-        ...
-        __netif_napi_del_locked(&bnapi->napi);
-
-The higher-index IRQs stay requested, with dev_id pointing at
-bp->bnapi[i]. The higher-index NAPIs stay linked on dev->napi_list.
-
-bnxt_free_mem(bp, true) then calls kfree(bp->bnapi). That frees the single
-allocation holding every bnxt_napi, including the ones still linked.
-
-The next open goes through netif_napi_add()->netif_napi_dev_list_add().
-That walks dev->napi_list and reads pos->napi_id from the freed entries.
-
-Could the commit message describe this as a use-after-free of the stale
-napi_struct entries plus leaked IRQs, rather than unfreed memory? The
-code change itself looks correct for the LRO/GRO/HDS paths.
-
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-> index 622e89587e5db..5c9e770960e6d 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index 9ea2de8e81358..7cc50c48f3b9e 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 
 [ ... ]
 
-> @@ -876,8 +877,13 @@ static int bnxt_set_ringparam(struct net_device *dev,
->  		return -EINVAL;
->  	}
+> @@ -11528,20 +11579,50 @@ static int bnxt_init_int_mode(struct bnxt *bp)
+>  		bp->irq_tbl[i].vector = pci_irq_vector(bp->pdev, i);
 >  
-> +	if (hds_config_mod &&
-> +	    tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-> +	    !(bp->flags & BNXT_FLAG_AGG_RINGS))
-> +		irq_re_init = true;
+>  	bp->total_irqs = total_vecs;
+
+[ ... ]
+
+>  	/* Trim rings based upon num of vectors allocated */
+>  	rc = bnxt_trim_rings(bp, &bp->rx_nr_rings, &bp->tx_nr_rings,
+>  			     total_vecs - ulp_msix, min == 1);
+>  	if (rc)
+>  		goto msix_setup_exit;
+>  
+> -	tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings, bp->tx_nr_rings_xdp,
+> -				  bp->rx_nr_rings);
+> -	bp->cp_nr_rings = (min == 1) ?
+> -			  max_t(int, tx_cp, bp->rx_nr_rings) :
+> -			  tx_cp + bp->rx_nr_rings;
+> +	min_tx = bp->tx_nr_rings_xdp ? tcs + 1 : tcs;
+> +	if (bp->tx_nr_rings < min_tx) {
+> +		netdev_err(bp->dev, "Not enough MSI-X to satisfy min. TX rings\n");
+> +		rc = -ENOMEM;
+> +		goto msix_setup_exit_restore;
+> +	}
+
+[Severity: Medium]
+Does this check also reject the driver's own "rings not reserved yet"
+state, where bp->tx_nr_rings is 0?
+
+That state is created by bnxt_clear_reservations(bp, false), which is
+called from bnxt_dl_reload_down() and bnxt_cancel_reservations(). A
+failed bnxt_set_dflt_rings() creates it too. In both cases cp_nr_rings
+is left nonzero:
+
+bnxt_clear_reservations() {
+    ...
+	if (!fw_reset) {
+		bp->tx_nr_rings = 0;
+		bp->rx_nr_rings = 0;
+	}
+    ...
+}
+
+In this state the sequence is:
+
+- bnxt_get_num_msix() returns cp_nr_rings plus the ULP vectors, so
+  vectors get allocated.
+- bnxt_trim_rings() succeeds with rx = tx = 0.
+- tx_nr_rings (0) is then less than min_tx (at least 1).
+- The function frees irq_tbl, calls pci_free_irq_vectors() and returns
+  -ENOMEM.
+
+Before this patch the same input returned 0.
+
+Some callers run bnxt_init_int_mode() before the default rings are
+reserved again:
+
+bnxt_open()
+  bnxt_reinit_after_abort()
+    bnxt_clear_int_mode()
+    bnxt_init_int_mode()   <- fails, BNXT_STATE_ABORT_ERR stays set
+
+bnxt_open() then returns -ENODEV and never reaches
+__bnxt_open_nic()->bnxt_init_dflt_ring_mode(), which would rebuild the
+rings. Would every later open fail the same way until the driver is
+rebound?
+
+bnxt_sriov_disable()->bnxt_restore_pf_fw_resources() has the same
+problem. It calls bnxt_clear_int_mode() and bnxt_init_int_mode(), then
+passes the -ENOMEM to bnxt_ulp_irq_restart(). With the interface down,
+wouldn't the RoCE ULP be left without MSI-X vectors?
+
+Should this check be skipped when tx_nr_rings is 0?
+
+[ ... ]
+
+> @@ -13118,13 +13194,29 @@ static void bnxt_set_xdp_tx_rings(struct bnxt *bp)
+>  	bp->tx_nr_rings += bp->tx_nr_rings_xdp;
+>  }
+>  
+> -static void bnxt_adj_tx_rings(struct bnxt *bp)
+> +static void bnxt_adj_rings(struct bnxt *bp)
+>  {
+> -	/* Make adjustments if reserved TX rings are less than requested */
+> -	bp->tx_nr_rings -= bp->tx_nr_rings_xdp;
+> -	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
+> -	if (bp->tx_nr_rings_xdp)
+> -		bnxt_set_xdp_tx_rings(bp);
+> +	int tcs = bp->num_tc ? bp->num_tc : 1;
+> +	int rx = bp->rx_nr_rings;
 > +
->  	if (netif_running(dev))
-> -		bnxt_close_nic(bp, false, false);
-> +		bnxt_close_nic(bp, irq_re_init, false);
+> +	/* Make adjustments to rings based on TC/XDP/shared rings policies */
+> +	if (bp->tx_nr_rings_xdp) {
+> +		tcs++;
+> +		bp->tx_nr_rings_per_tc = bp->tx_nr_rings / tcs;
+> +		bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
+> +	} else {
+> +		bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
+> +	}
+> +
+> +	if (bp->flags & BNXT_FLAG_SHARED_RINGS) {
+> +		bp->tx_nr_rings_per_tc = min(bp->tx_nr_rings_per_tc, rx);
+> +		bp->rx_nr_rings = bp->tx_nr_rings_per_tc;
+> +		if (bp->tx_nr_rings_xdp)
+> +			bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
+> +	}
+
+[Severity: High]
+This is a pre-existing issue, but this clamp gives rx_nr_rings new ways
+to shrink:
+
+- In shared-ring mode, a TX-only shortfall from firmware or MSI-X now
+  also reduces RX.
+- Under XDP, RX is clamped to tx / (tcs + 1).
+
+After a shrink, __bnxt_reserve_rings() and bnxt_init_int_mode() only
+check and reset the default table (bp->rss_indir_tbl).
+
+Non-default contexts in dev->ethtool->rss_ctx are kept across close and
+applied again at open:
+
+__bnxt_open_nic()
+  bnxt_hwrm_realloc_rss_ctx_vnic()
+    __bnxt_setup_vnic_p5()
+      bnxt_fill_hw_rss_tbl_p5()
+
+In bnxt_fill_hw_rss_tbl_p5() the stored index is used directly:
+
+	else if (vnic->flags & BNXT_VNIC_RSSCTX_FLAG)
+		j = ethtool_rxfh_context_indir(vnic->rss_ctx)[i];
+	...
+	rxr = &bp->rx_ring[j];
+
+bnxt_alloc_mem() has already reallocated bp->rx_ring with the smaller
+rx_nr_rings. Can this read past the end of bp->rx_ring[]? Would
+bnxt_cp_ring_for_rx() then dereference a garbage rxr->rx_cpr?
+
+The commit message says the fix for non-default RSS contexts is
+deferred to a separate patchset. This patch makes the shrink reachable
+in more configurations. Would it make sense to land that fix with this
+one or before it?
+
+> +
+> +	bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tcs;
+> +	bnxt_set_cp_rings(bp, bp->flags & BNXT_FLAG_SHARED_RINGS);
+>  }
 >  
->  	if (hds_config_mod) {
->  		if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_ENABLED)
-
-[Severity: Medium]
-This is a pre-existing issue, but should bnxt_set_ringparam() also refuse
-tcp-data-split when BNXT_FLAG_NO_AGG_RINGS is set?
-
-The only check before BNXT_FLAG_HDS is set is BNXT_RX_PAGE_MODE. Every
-other way of enabling an agg-ring feature honours NO_AGG_RINGS:
-bnxt_set_features(), bnxt_fix_features(), bnxt_set_tpa_flags(), and the
-jumbo branch of bnxt_set_ring_params().
-
-Suppose bnxt_get_dflt_rings() set NO_AGG_RINGS at probe. Then
-"tcp-data-split on" sets BNXT_FLAG_HDS while NO_AGG_RINGS stays set.
-
-bnxt_set_ring_params() then computes agg_factor from HDS without checking
-NO_AGG_RINGS:
-
-    if (bp->flags & BNXT_FLAG_TPA || bp->flags & BNXT_FLAG_HDS)
-        agg_factor = min_t(u32, 4, 65536 / BNXT_RX_PAGE_SIZE);
-
-On reopen, if firmware grants fewer than 2 RX rings, __bnxt_reserve_rings()
-hits:
-
-        } else {
-            if (netif_running(bp->dev))
-                return -ENOMEM;
-
-bnxt_open_nic() then calls netif_close(), and the interface goes down.
-
-The new irq_re_init check keys only on
-!(bp->flags & BNXT_FLAG_AGG_RINGS). The outcome is the same with or
-without this patch.
-
-> @@ -891,7 +897,7 @@ static int bnxt_set_ringparam(struct net_device *dev,
->  	bnxt_set_ring_params(bp);
+>  static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+> @@ -13144,7 +13236,6 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+>  	if (rc)
+>  		return rc;
 >  
->  	if (netif_running(dev)) {
-> -		rc = bnxt_open_nic(bp, false, false);
-> +		rc = bnxt_open_nic(bp, irq_re_init, false);
->  		if (rc)
->  			return rc;
->  	}
+> -	bnxt_adj_tx_rings(bp);
+>  	rc = bnxt_alloc_mem(bp, irq_re_init);
+>  	if (rc) {
+>  		netdev_err(bp->dev, "bnxt_alloc_mem err: %x\n", rc);
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but BNXT_FLAG_HDS stays set in
-bp->flags when bnxt_open_nic() fails here. Should the error path restore
-the previous flags?
+[Severity: High]
+This isn't a bug introduced by this patch, but it concerns the
+allocation and freeing of bp->bnapi around this path. The
+BNXT_STATE_READ_STATS handshake in bnxt_get_stats64() seems to track
+only a single reader:
 
-ethnl_default_set_doit() only updates dev->cfg when the driver succeeds:
+bnxt_get_stats64() {
+	set_bit(BNXT_STATE_READ_STATS, &bp->state);
+	...
+	clear_bit(BNXT_STATE_READ_STATS, &bp->state);
+}
 
-    ret = ops->set(req_info, info);
-    if (ret < 0)
-        goto out_ops;
+Consider two readers:
 
-    swap(dev->cfg, dev->cfg_pending);
+- Reader A sets the bit and starts walking
+  bp->bnapi[i]->cp_ring.stats.
+- Reader B sets and clears the same bit while A is still reading.
 
-After a failed "tcp-data-split on", dev->cfg->hds_config keeps its old
-value (for example UNKNOWN), but the driver has HDS enabled.
+__bnxt_close_nic() then sees bnxt_drv_busy() as false and frees the
+memory:
 
-A later "tcp-data-split auto" then sees hds_config_mod as false, so the
-branch that clears BNXT_FLAG_HDS never runs. "tcp-data-split off" returns
--EINVAL.
+	clear_bit(BNXT_STATE_OPEN, &bp->state);
+	smp_mb__after_atomic();
+	while (bnxt_drv_busy(bp))
+		msleep(20);
+	...
+	bnxt_free_mem(bp, irq_re_init);
 
-Does this leave no normal way to turn HDS and its agg rings back off? The
-only ways out seem to be setting "on" while the device is down and then
-"auto", or reloading the driver.
+RTM_GETSTATS goes through rtnl_stats_get()->dev_get_stats() under RTNL
+without rcu_read_lock(). So synchronize_net() in bnxt_del_napi() does
+not wait for it.
 
-Together with the NO_AGG_RINGS case above, the interface could stay unable
-to open.
+The FW reset close path also runs under netdev_lock only, without RTNL:
+
+bnxt_fw_reset_task()
+  bnxt_fw_reset_close()
+    __bnxt_close_nic()
+
+Can reader A then access the freed bnapi and ring stats? Would a real
+lock or RCU be a better fit here than the state bit?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016064427.496944-1-michael.chan%40broadcom.com
