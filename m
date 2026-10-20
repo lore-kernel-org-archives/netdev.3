@@ -1,66 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792519581;
-	b=yRxVG1cn2VDemaZX9X34VXm+aBqqsT38soHCB7l6vr+e0rdZ84YSBiLJAVplL0PUubQA
-	 pBalpFyoaEZLUH7rI/zB5wIfGLAIXbguXr4gTJ5/pm+1ctz5wW/FVcvOOGsngoqZaeQe1
-	 4VjLk71lzchdy1Bvb8/gTfF8nagOVDHbeq1omLtUBrZ9eR4OyUzIMZ6FwvAGQALNXtNC+
-	 sBR4ZC4pNbgl7puDHECxYy11fs3S7sbC5AkFsmp3+KfA3DGeAUilDxQAgzwT+I3l3dz3l
-	 fmvAuNdXY9Ogk9OSLzeII/7fN2ijoxQ5Te8mqrJveaJheZsU4lkuNz76Yy1rgi79F8g==
+	t=1792519606;
+	b=PdEKa8M2pMTklBG8ytX2S3v0yVwrKXWad9LTfTW8Vqu3V/iaHBozlgVSJn1sNexX+0wH
+	 ZweW7S5VpkV9aWd8K1gwQ0WpdTjtrLgHUvtRxTiq9NXhwtH65XGAFYTJHfqB4AS/Z2pgT
+	 Immc8vzMuvBwEczGH65Ax1ueN3iekcv1RqxXBftOma0Mi5XPOIshw3qMf2RnZPdUhZmnW
+	 bdpC2pXqCucLQGJnmSi5BTNUAyIcqbPKKJxiUM6aOITdeZ14IEXaGW0PV/pPWjth99eyd
+	 kzF0+9ojmHrk6dyCp8u0OCj8GENm9vJ/buyE+XYFifesw6o/EB0DGA8Jw7OAGn2BSkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792519581;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792519606;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=HVb+cZJd/B0SyswVrB5yNoiyhOraxVQrSwREAf5tTOE=;
-	b=teARR8Ol0RpM2q/I6oKAzG3P94nRztZZo0rStM9vgYTYSgh/5gM6i6ceD2/aPv8M43b7
-	 i/wb3vejoioWbSQ5dIYmRMdis7SutRBdRjkubh201pBm0T7BiOPP/T7ErhFf/+F/iDfDd
-	 CsbNt37bunaDxroi4eBnWVDBpirU9ExHDnXK4BR0zD7Pkq4/VNLpm+9rextk8vELFQuxp
-	 1PuYJyg3TxhYaQSRJU5Yxj3qEuEtuUS9xXWprEAyf1Qhan2bcVe6ICLpHGAyae17tZOFA
-	 pZ1Gkr901ji1Or1c/nGHaMBkp+tWMZrTnyZWE0GIHLmL/S47zTiBpRJwEv+THm6gVZA==
+	bh=XzM7UKgxE0FtsrjcI8bgns6hPdNcwyb/UbRZ9e5cm/0=;
+	b=X34yMq/HZZaFt9Fa07mCP1NwcWFOWMtOq+DjnOSJCeQGb5hmQtUQVJNK5NfeeUDE+dJB
+	 uTml6fp82RIUdQCPDxM+TrMiKgx9j2S4SbuHGsm8SMGm2hbpFU/iwdsAWBTXdHnXrF1Vr
+	 FFe7mDkRo0SxqtBgm3hif77b5LhFSdAQq3MuC1ooRzIdi/8HN1FsHZz0P4qwzvNSno6kX
+	 Wq3qzk1xFi9zvoiCzIZH+Vi2UqLFoU3lGqMbUWvrWLY2hqM2K/asb5AAOYypvlK3h1vmQ
+	 JFBKMJoiXa8i8aFEAHw1p8z86WyqHhMvCN6mePZmgo4OjHQFLTFM+/D4xAtXKT4GKXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VOSCLcav;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=S4drKmBe;
+	arc=none smtp.remote-ip=209.85.215.174
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAFA606A323;
-	Tue, 20 Oct 2026 18:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E080606A31C
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 18:06:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E080606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VOSCLcav
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F9B1F000C9;
-	Tue, 20 Oct 2026 18:06:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792519581;
-	bh=HVb+cZJd/B0SyswVrB5yNoiyhOraxVQrSwREAf5tTOE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VOSCLcav+2Q4vNjUNvhkr6i5DNiI17LtAqaaIRzCzrM8wZyC5l4KcdrlFDpvx5311
-	 SEo6MM2zhzIGkyPZXOnlvwBXy6MFWr3/RnJaISTv+py52eDkP3e4GcI070pM172tyA
-	 aN9qceol4RnuUJReHmdm/O+2skabYnJSxsPSNRHdhamkukSo5wMIWfncUJIpwQm6A1
-	 iZu/hz1oyXwCkgHMK8aqynuQK/TsdwJQ5k636/lNnJ3/8qBYlWEZ0bsE2odhTVdnJU
-	 /Os3eb+hvwQdYrZMQNU7V5fqPT3awKe8qb+OD5vIErPd7bWxHq17+Xs4tg8sbSyrMe
-	 zj9J8181KItxQ==
-Date: Tue, 20 Oct 2026 11:06:19 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Imre Kaloz <kaloz@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, Lee Jones
- <lee@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri
- Slaby <jirislaby@kernel.org>, mfd@lists.linux.dev,
- linux-serial@vger.kernel.org, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, linux-rtc@vger.kernel.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel
- <cassel@kernel.org>, linux-ide@vger.kernel.org, Pavel Machek
- <pavel@kernel.org>, linux-leds@vger.kernel.org, Bjorn Helgaas
- <bhelgaas@google.com>, linux-pci@vger.kernel.org, Christoph Hellwig
- <hch@lst.de>
-Subject: Re: [PATCH v2 00/53] MIPS: SGI-IP27: add support for the IP35
- (Bedrock hub) machines
-Message-ID: <20261020110619.12774a1c@kernel.org>
-In-Reply-To: <cover.1791890466.git.kaloz@kernel.org>
-References: <cover.1791890466.git.kaloz@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=S4drKmBe
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cbedd5aece4so444045a12.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:06:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792519605; x=1793124405; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XzM7UKgxE0FtsrjcI8bgns6hPdNcwyb/UbRZ9e5cm/0=;
+        b=S4drKmBe9BgJBjJv6mJVYRdQiWn4a2745yGJGjEeF5gbA7eAx++ZdpFZT5ReCUtvua
+         OdzR370u7zRuw1QWYR8aT+2MOfl89mP8EBPNWk3L6nFQOZvpD6fGm8+bfLNmEYzINRRr
+         pNY+JsZOjjzeit8aWF1xLoOoh6zn8C+1xjd6ogQL62/1FFR1OFxka/qVPhlbkrRaE7Sb
+         E+iGGxlYrvd5yyUEJqOVM2S1vGzeu1V/90EwYtt2zJUo4UnlN0vpQaGaPTW1B/i5iJ4z
+         IK9LzRFlh2E0rYje72lMqHID2oOLn67ZR6YZxnpG8oAXvWCYSEU9W6tlaquZBRwjhfTw
+         oQrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792519605; x=1793124405;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XzM7UKgxE0FtsrjcI8bgns6hPdNcwyb/UbRZ9e5cm/0=;
+        b=nWZfM406wTxuZCe3BmAUk3VtMqecL0WNmZru56FhMdobdVJKW04TspnACGIpUEFuST
+         DzyDrOjxLB0Z2In1D1qp+5LwnsCcQTi/b5u4c9mZCJxEUginsnlzPV4a5AzFgNQPbYce
+         10QN9hB2/eZNVFMokdlvCBR3Tom1Ma4P0qQuP3KwFEhJJpjS92irZMcHafOA/trDhlpN
+         A4BM5yB/nw/hw6Abpf1bsFLTTbUiVwGvKdrkv0zUz26/prGBDCFQ7xLMtppc9mqEVLJY
+         mss0ygnnzDCWb9Gnolx1LAkrpCo1SF6wXbwnz1DgrBjszpfkzU3E8VtZsRm82r13RP8L
+         bHgw==
+X-Gm-Message-State: AFq9FYLllrlm+6S4aEsLmWBYVkoiuZqtGatrXRHHVfztIwCjt1AyKB2v
+	Hyk/ABxC3i7YTYWp+azxBRiXUr7HWXxErkDgxtiDHrbf7NYVdP6NfdVaED8LtfEpcLY=
+X-Gm-Gg: AYBFou3xM7x3yIEj7oTzVSVVYcRZparrXvk55KZUeFWWBTOYg+mqNCid8pV+zNUg5x6
+	sbqJp9zpD7z0ZWfWDl/YvJvtaJxS/3sKBx+d+2OgTamd8sxikszKkFU4cYc6+8jLliCVw9X2T42
+	irmrc+7nhVQFex3gTFRGEAEPguwGZqzA83zVQyY7VyVl4K8VxjPYY5IxefDU/2jDEtha59nW8wN
+	cLYi9VnfF8qw9gLzELJxrT2JxRfSnyjTc7fmD1vFojES7tOIrxq+exaRLvRXmmUFkift0H7SA0B
+	LxKgRVk8sM2s/Rk0d5HQz7poSDSUn2UanSIc26pTJVLmUWZqc4Ay06tyxDzIo4iHJ4Z/tU7wBj/
+	5Pz2XpM6LpWxTv+IJOji543bLxGcq8potiQA3py5qNTS/PhPMDnnLdiCPMim6x0hE3dOBMOaq4m
+	5UumDpJrDVj7U2+zCgeRb8kqDzCzfewMRt/LLg07OqUJ/Tk9j1gaVTIRGOKffOQiIw7CvjKl8dV
+	kB53qLp4MJV4XvkBIw1X5tEqaywnZOueozX4RPXM+mQ51OfBFVLoEBKCsHSTDKf5CxflacTHvEm
+	uEQldk/7AtbtkSF4iuamETN9A91JbyFyntfRCVLoap4=
+X-Received: by 2002:a17:90a:ec88:b0:3a6:d850:bf16 with SMTP id 98e67ed59e1d1-3ad64bb7a75mr1660109a91.23.1792519604978;
+        Tue, 20 Oct 2026 11:06:44 -0700 (PDT)
+Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad80912f26sm493560a91.1.2026.10.20.11.06.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 11:06:44 -0700 (PDT)
+Date: Tue, 20 Oct 2026 11:06:42 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Prashanth Swaminathan <prashanthsw@google.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, maze@google.com,
+ yuyanghuang@google.com
+Subject: Re: [PATCH iproute2] ss: bound fscanf width when reading comm in
+ user_ent_hash_build_task
+Message-ID: <20261020110642.218231ce@phoenix.local>
+In-Reply-To: <CAHdA9BwQPp9ciwB4RxUd79AOkcFo6gb2t52NTtWq_52=K15p=Q@mail.gmail.com>
+References: <CAHdA9BwQPp9ciwB4RxUd79AOkcFo6gb2t52NTtWq_52=K15p=Q@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,8 +100,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 13 Oct 2026 15:16:20 +0200 Imre Kaloz wrote:
-> This series adds support for the SGI machines built around the Bedrock
-> hub (IP35), such as Fuel and Tezro, to the IP27 platform code.
+On Tue, 20 Oct 2026 09:59:56 -0700
+Prashanth Swaminathan <prashanthsw@google.com> wrote:
 
-Why do we need support for machines discontinued 20+ years ago?
+> user_ent_hash_build_task() reads the process comm name from
+> /proc/<pid>/stat into a 16-byte stack buffer (char name[16]) using an
+> unbounded fscanf("%*d (%[^)])", name).
+> 
+> Although the Linux kernel bounds the comm field to TASK_COMM_LEN - 1
+> (15) bytes, bound the conversion specifier to %15[^)] so a malformed
+> stat entry (e.g., via PROC_ROOT or non-standard procfs implementations)
+> cannot overflow the stack buffer.
+> 
+> Signed-off-by: Prashanth Swaminathan <prashanthsw@google.com>
+> ---
+
+If you have a non-standard procfs, that is not our problem.
