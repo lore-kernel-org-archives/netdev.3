@@ -1,64 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.97.239
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792468089;
-	b=jmLkvkxzEDcZIv896odtJqnZ33zMbfv+GfUEWw3UYhEmwo30pdZg+bk4c3kb9r7KvwnX
-	 gwAm/7npZXO4v1z3uIRv0jcq+W7ybE4LsHdmng8VR7VV4R/4QckgZDnN17bDGwdH8F/fB
-	 oFTr6uf7dsMu7bsGKlH8l4c/0vFv8EQOI2M6t0r6xwBs3cWmHH2ji+s3Re1c+PTwGl7jq
-	 1/otC+vgM4z2BR7pdRxRvIT4u1jZlf8DP+H7JrL4xRcgH3Yh5fmRt9Amuoh3/VdeXzk1R
-	 HSAUTGCmXQ2IqJx4b/3Z9FDx7sLo1uIU4xOpJRaTBJ539RYpVMtiwm5TDCEbTWySJ9Q==
+	t=1792468219;
+	b=VTAnHb2CM4TscR/+U6nea+owKdj1emGaAxeIXWYrXFZsvBtOKyfbItoiA0B/UU8qP4HQ
+	 4LwRdhMZn0++uV/8z0kkRTrgncJZ83n0SKDR06BmLT2Tw1uRSp77/+RIK11ydpm2/lKEO
+	 +59kE1JBjD2lV3l09ehVO+SjtdviuII36Bl1SQ3kuf5Sct2g/riQX1lk4bNdP+QWIbs4X
+	 nLxgJqqrSobJTODGG9Z+TUQS68sD87pkAl6930wz6jUZGfrhZpDA+v3nirXnyF+Evit5R
+	 xPDNQi1Ice9VAwV1gqVOWFEk6RHTLB4eohuspcQNVRwYB5B2IcWT/hxpZFbolxayr8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792468089;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	b=Bc7z7/t8ceUF4M0DlG7shX2EyfNSQkfigq4lZk5vt81yWbDtx9ywMGNryan+H+PNsoj5
-	 QBLESbVFlJhZBMtFiBozCKnOuKUUcxYUUPOrtAl3LR6w2gkYQiAN9O+r4BFj1+r9eRQFm
-	 jj5noE5v0WEtWNIy9Myy2UjDlpDuptVC00h4tCdsboD6gl7V8WOksgyDgqxJbt3IC6seV
-	 fZhhqJFIoYZ3iL+sxD83vMfc4vkonpldlc1/ki/5vSYrVPlvtfAt/xmY3GLxzIUCr5zL4
-	 yNl/vXjodTBTt12w+J2AZsUYfrq24PEGCfxEvWUTfTKSQNqoVrLNmx/omPgWCI65A1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792468219;
+	h=DMARC-Filter:DKIM-Signature:Received:X-Spam-Checker-Version:
+	 X-Spam-Level:X-Spam-Status:DKIM-Signature:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Zs7TQJ1QMl5/wgAW6DMgdgeWAnLtRic9HtSTpoGlsjY=;
+	b=3bk+V8yLwxPEhb/R+KVYubID+x4USL3pQnI2Ye/Dk775wYaDIeN+SLUQWZ3sn4QvFPZ+
+	 CETAk7Zr1J28eFpW+XR3OUlK7ClH+Sn03NsaH204b8t6dGq97cRQiMJsOLn4SxYjmlNRX
+	 CuBHe1jZgFVGpvT89bjSkt/9HiJ2j3GBXHlpvMwE5zshTV0jNu0yYmgT0pDG+bah9eTNL
+	 h0y9IICX0wV7FugM8sfXvfBsnQMkfUy4Cwv+ZFjgTRTVzqL0Fc+JiV0VqNQ4I2ws0fnnI
+	 JD9Dnry2s5sa2BufCn/71wVjyd/KW4BLJB4eiP2AXtbo8zE+kG9b6+FOITZ5HT3+PLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TX2qi0ZP;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=birger-koblitz.de;
+	spf=pass smtp.mailfrom=birger-koblitz.de;
+	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=sKH2Imjl;
+	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=qR33jShD;
+	arc=none smtp.remote-ip=23.88.97.239
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56217606A319;
-	Tue, 20 Oct 2026 03:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF733606A319;
+	Tue, 20 Oct 2026 03:50:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF733606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TX2qi0ZP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2EC1F000C4;
-	Tue, 20 Oct 2026 03:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792468088;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TX2qi0ZPaD/9PxYAwt/dOgQmAEkIYvN4zOvspgJGmh3DtZ9T6i2JzeP/HVyuCFSn1
-	 +C0UQo1WjuCsrfTYJ3jcqliDHZSd7X1mc+KO+6HiiCdjMSxNgfuAu+K0cQpaaNtgNy
-	 6R/fMycg28ae36ddVnr21lKiBS07Bk+ZmndrRZtat63RgKQ1NdRAnXNqpMEd+yQXVw
-	 kwUGbP6P3VfdZWccAsH3s4YJGRXs0N1r+WOA/DU0GYFEF4fmOjhNHOdfw8uvdWe49t
-	 f4rf6UFNX832ENG7c+KFFiJzui7VSYOMPCohmzse1xLGJ4faWjn0tnWgcAmJBy77ts
-	 rM5Jz9IzGZxWw==
-From: netdev-bot+sinfo@kernel.org
-To: Henry Martin <bsdhenrymartin@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew@lunn.ch>, Simon Horman <horms@kernel.org>,
- Kuniyuki Iwashima <kuniyu@google.com>, Ido Schimmel <idosch@nvidia.com>,
- Petr Machata <petrm@nvidia.com>, Ferruh Yigit <ferruh.yigit@amd.com>,
- Antoine Tenart <atenart@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- Seungwon Bae <qotmddnjs@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: 
- Re: [PATCH net v2] vxlan: reject adding a remote to a nexthop fdb entry
-Date: Tue, 20 Oct 2026 03:48:07 +0000
-Message-ID: <179246808735.3290.16512552225994896963@kernel.org>
-In-Reply-To: <20261020034531.1420194-1-bsdhenrymartin@gmail.com>
-References: <20261020034531.1420194-1-bsdhenrymartin@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=sKH2Imjl;
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=qR33jShD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1792468211;
+	bh=7+K4+AX/RtVusBYoHVcrrKKwlzL1owrS1ons4OCjTgo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sKH2ImjlFrukzax0bdrGDOvPEsAFx9elkdNoKqJZKlGqbNf+uH7qj/b7GE8mEfVWV
+	 XcoImoyp1DRsRlLh/26L4WsDZSD8TTgMQfYwwPBBQ8qPM41QMcgd48gDSs12K0uDWJ
+	 Pv26Qc/C8pUaoiCE7lmKdCn5URJwbDBYjgM1YwTQr46Z4D1RmebVfzL1ekMMc6SqOp
+	 TIEo+0vr0+29E84PTjQISkB6tdJm+MEZHtHAhPxtHNLVIxr10JlMIAPlV3jkHt5YVa
+	 H2PzWW3B7poS7FZ5mBG4yLim5/dTsr8+OZ25vBIronmWZDras2jR1cbr3T6V/tNQfD
+	 AW64zrDg8ut1w==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 07C14491A8; Tue, 20 Oct 2026 03:50:11 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1792468208;
+	bh=7+K4+AX/RtVusBYoHVcrrKKwlzL1owrS1ons4OCjTgo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qR33jShDxubnpWGjAKP4snVpA0kPV8kHg5LEng0IY0Ov2UqnwZGLV2TjvCxhsi4EZ
+	 eTPRk+16geu+Gqr5OYqYtMptFgEvTIVixmpkBLPTHp5vNm6e/iJ6+lGiv7IqAYcG7q
+	 epmL/R6S67VxftIhBhuIgDeoQkW+Yn4yimIJo4PEb8XwG6d1/V/tVoEjlYOQYn/cN7
+	 n/VYoc3xE8jJzDP9GmytVn4pdR+SymFVNoKgZM2DoBYt40d94rJFbe8fJLsGxZpepO
+	 uJH6p6Tvgi/T/Z072Y/WzcyFERdEtFqbSP24vuUhped3cFgwl4wdlQTqjNw5AVVENf
+	 5HCxYfSom+LhQ==
+Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 9D16F491A7;
+	Tue, 20 Oct 2026 03:50:08 +0000 (UTC)
+Message-ID: <d2b9c51d-2f82-49d9-a072-aa47959d7242@birger-koblitz.de>
+Date: Tue, 20 Oct 2026 05:50:08 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,21 +73,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v19 01/13] phylink: Add phylink_mac_interrupt
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: sashiko-reviews@lists.linux.dev, linux-usb@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>,
+ Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+References: <20261010-ax88179a-v19-0-7475173cfb56@birger-koblitz.de>
+ <20261010-ax88179a-v19-1-7475173cfb56@birger-koblitz.de>
+ <sashiko-outbox-167008@kernel.org>
+ <acada24c-903e-49ea-be04-879fedbfa08b@birger-koblitz.de>
+ <20261019171805.6aa3a7a3@kernel.org>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <20261019171805.6aa3a7a3@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi!
+Thanks Jakub for the explanation!
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On 20/10/2026 2:18 am, Jakub Kicinski wrote:
+> On Sun, 11 Oct 2026 07:32:52 +0200 Birger Koblitz wrote:
+> You are responding to the main Sashiko instance, not the netdev one.
+> Due to infinite wisdom of some MM people these are not even CCed
+> to netdev (I guess CCing the USB list triggers them?)
+> You can ignore the feedback form that instance for networking patches.
+> 
+> Unfortunately our instance didn't run because patch 4 breaks the build
+> (patch 12 fixes it). Our instance tries to save tokens and doesn't run
+> on patches where basic CI checks fail.
+It would be nice to get that kind of feedback immediately from the CI 
+system.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+> 
+> drivers/net/usb/ax88179_178a.c:691:8: error: use of undeclared label 'err_nodev'
+>    691 |                 goto err_nodev;
+>        |                      ^
+Interestingly, Sashiko did not even complain about that. And the extra 
+error handling was in respect of existing code. Should have refused to 
+do that, I guess...
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+I will fix only this issue, then, and re-send once the patch window 
+opens again. Thanks again for looking into this,
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Birger
