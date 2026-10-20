@@ -1,115 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792477859;
-	b=dcK7QmM3UPEiFgWBqB7U5TR+D3ZhR4GjenJu38NbwTBkMjruX9MYBu2w84yS5/pLtOVD
-	 Z8znLGn8I5WnrAwYXl6Sgz43ygHTBgxyzIVo6218ZBCooyafPG8eppT+/IMCCVfZ4/SXf
-	 uha8bgKs7PSsl6m7Q7b3vlrIYUgZGj92ItXrM3jYhyGgCxu1ZWnOFsZkcDItQqNmpSjvi
-	 bd0rJMgent1EL/qlgwAs2YMEj9I8LpQ+zqPn+AeIAM9NS21ioT2qUY9SRPmZ9QkUG4cuv
-	 FH41m+aX4OaxtbTWXX09FIT2XI61D5yhUxbZJUGb56b8+lLk8Em0pnUxjycgpLpLM8g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792477859;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=byUfW4kLa5VquMzq/fU72LMKv+Nm6w7mdDd6FaonJuY=;
-	b=5NKH0Ci415yKUynml4QphrJetaw7EIWZfUxtmG5HAFVshrCy36oX6xdpteDOLYBpKRer
-	 A59SBeqPKrR9XD5Nm7dZuZcf6pkDPQJ5u1cX1kMQ4DzjJb0DxHb44a5Z/DpZKKCbDSAeh
-	 nux3Uq16sZ/+GnZkW0Bq9awbHzOeE8D4LxLOy6oq1SGKW5gwqd3HIkaC1DCN/+u35y3fH
-	 9QeiAMb2Nao0MivmsNYsautoikQabrau3WLh793/Xe5iWPdM2+AlzRF+dECxkalc8aNoF
-	 PyhHobINgjJ80/tmueWAdy8KDHkcWHZBg+5KLwrlFKsgCejgvYm5C9E4fCbiLr6EfRg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XhI7KWPz;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=bE1fQ0Xr;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.40
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792478006;
+	b=PXO6U+kkxbRxyC1zz/zjBgEgiSLiemayq7ARilU3vU0szr+E9j2K7ox0bosIruyjWCEz
+	 htN67MB2WdATUJQw4htEQicHzMsSUq3V1m4Uqixm+mbHhPomAwwS6CFcGGOWlunjo36pG
+	 qF6YT9/2+K+lfZD9W5zHxostbuuVwhQWe09eMq965kf/QKoObdul4YN5n3chJTFbnS6j4
+	 nkwXC3Jgfo8P9/L/Z+6aK2LirNZm0wR+3aw1iGeNDl9DFfCZJQbbtrgRC8fd9jE8Yzfyc
+	 B4iK6OAzQkbT9b3L/Qx47/w0hvzG8MlTO4Gs9J9vtKU2k4qsPMdTOtE3rbOEccvD6WQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792478006;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=XGEnG6SK7p+aoZFFS5/l/2WDyW89SuHgKkeTRJz7IF8=;
+	b=OsNX+5FRoHQjERycj3jJ+PVs2Fj9XGl+BtoasB+xai2yTdttyKxkOGUiuHLo4V18AR/9
+	 nuqVNGiJT7+BVhCVWBjaLCuiwYU3TIFHNLZ/4LIIsVCPqIkV/IeqDSmVpjHHa/EB/To9r
+	 RLpH/6EgrAJN9XvwnTeTLe/8vIgBweFJH3QR+8mI7QU9ygkoIw0gi51YIuBOQSWLtcNNR
+	 06HsYmzh9qP89mceVmwBE1hKFB6O9aJRYR9CFnaFYHLBgLF6MTBr0tjiGDqeJDB7HbjHA
+	 waA+pUKuoErB0hUdtwXez48q5HARZqSIVr3e0X6pYsxKzwlHgp5444BuWIrXT8WB+Kg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Iv6ZsOMu;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.40
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013040.outbound.protection.outlook.com [40.107.201.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D860606A31D
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:30:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D860606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04303606A31B;
+	Tue, 20 Oct 2026 06:33:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04303606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XhI7KWPz;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=bE1fQ0Xr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792477857;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=byUfW4kLa5VquMzq/fU72LMKv+Nm6w7mdDd6FaonJuY=;
-	b=XhI7KWPzn3rZCb7U5nGPq24YgfwALBIyc3VjY/9o3Mm3jgozhVCI5xokUixdbPffByC2gL
-	/5gUIDNi716A22//Id5uGaIw1u+tZ4RtIQK70eLW5UtwOy6UpMT9mZaA8pvK4PyOYI8t7z
-	zPyJ9AJ5JNxujgBKvdCm8SEqJAtFdBA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-NVFvRMU5Pha8pfbnHEu0Hg-1; Tue, 20 Oct 2026 06:30:55 +0000
-X-MC-Unique: NVFvRMU5Pha8pfbnHEu0Hg-1
-X-Mimecast-MFC-AGG-ID: NVFvRMU5Pha8pfbnHEu0Hg_1792477855
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48af5a07314so1844480f8f.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:30:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792477855; x=1793082655; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=byUfW4kLa5VquMzq/fU72LMKv+Nm6w7mdDd6FaonJuY=;
-        b=bE1fQ0XrrD5SciDTZcprPRRyeq0XAd6kEktstG38AewJCDrj+CUEcPPjJD8W30/XwR
-         cesprwjN5c+0+Ihm7zm254TEOFmoENhQn0mO/WcBQgVvxB5WTPsVQ3vAZ1YQbmg1ln2n
-         Cx54Vv4/D9K+nt1UFo4g4A9JszwKcdGnVvG/Emxc7TwVPEHirfmZxf8FflLPYegfKher
-         YbxWXtQ3FE7+uBv0H8M0zigK1n0K6VEOQMSUsVas9zSM3qhrTu6/yHfYwblE7mUerp+7
-         uqYwW0eD04cI1RCR9ZNhtUh8eJQ0JT9wBhDI7YduUqxyDrPnuagnlcOk4IFhOduF7k+i
-         kpAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792477855; x=1793082655;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=byUfW4kLa5VquMzq/fU72LMKv+Nm6w7mdDd6FaonJuY=;
-        b=MEzKezCxCNI1X2SeSFZgO+8tyrbHx/jMZgSUIMmIZRbfEXYX5awUc0XlOQmGfVJdFD
-         QrS2ceI/9+vbaLG98L1QFz67oBdPC6o+g8t0qejblhyZ+eOrUJ1vm7Z7v5o+VM7KFgFu
-         JIYw3pxRx7iEIggy1X15EptwshX9DkrsROUcqzT+AJq8BqvC1FMsDv/3bfxsGfxeOK6Q
-         EPIke3tRv1u2WazA+H/aPa4l0MCpg/TWJwLt3ZNyYIJovf2yL1Rpq8o+jBOAhkiPaUh8
-         2Tx0FtnDjToxa9L3Uxhk28wsaeiCyNeBKohglf0dFn+IRRvQcCW5O8bLZUGE5HT5eJB8
-         7Wtw==
-X-Forwarded-Encrypted: i=1; AKwUvBxFUL+lITXq9vHqT1cG5ACsnyPgJfXsx0MH5zC9zAGJto7kgIzVZD9FwDGPK0Unq114jIdgpgw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJjB9IL4wvPfz0neskS22w8h2p4eRDABU7bRo6wuLnALqsReWVY
-	IqqqKu+qZ4NWXmI8hKcBog9xmLUHQ1AdD+6vzUtBE8jYT/6b3J39bkMKbylwI1zc7Eq01VhbTRX
-	9biyhiFMFBUG7YDxS+StIig+00jVciTjXf/RChkKequBHTOWIWLiiYad4Bg==
-X-Gm-Gg: AYBFou14QkZsZHILfKwCnMJ29eU58fQ3HP1W+a0czhMdXLTciBGyUEOmyyPnMzvL19v
-	CGt8C854RQRekZwpuSUFAb+J5rx9hL9VQmzBdpZfsbduN4jrCFkMIsgqXBIu9o1yj4gGs0ISfcz
-	vKjprewGymd7BnDgILI+ABdakbCukDcnbKdY9zorGl8R5RU/438UBn7JK2vkWgfB+eKzoB9CeDS
-	NcparbyN12FwKzJsLEBuqk1Lx2pmHStC45+CEp3m6cSw0RTjzDzKjpOs+iVw5FDwRMW1s3vOpW8
-	c/9zRkVNuDESSavSML4TcbNTCfoMYOqhTEYTtkQW2RoNmVp/lTR3YY29UhNYlBU0+SFfUw==
-X-Received: by 2002:a05:6000:1887:b0:488:8437:b8b7 with SMTP id ffacd0b85a97d-48e07978bfcmr21309158f8f.7.1792477854577;
-        Mon, 19 Oct 2026 23:30:54 -0700 (PDT)
-X-Received: by 2002:a05:6000:1887:b0:488:8437:b8b7 with SMTP id ffacd0b85a97d-48e07978bfcmr21309119f8f.7.1792477854028;
-        Mon, 19 Oct 2026 23:30:54 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d8214e1sm3912561f8f.37.2026.10.19.23.30.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 23:30:53 -0700 (PDT)
-Date: Tue, 20 Oct 2026 02:30:50 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Wang Haoran <haoranwangsec@gmail.com>
-Cc: torvalds@linuxfoundation.org, jasowangio@gmail.com, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	eperezma@redhat.com
-Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
- memory via vDPA passthrough
-Message-ID: <20261020021924-mutt-send-email-mst@kernel.org>
-References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
- <20261018152358-mutt-send-email-mst@kernel.org>
- <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
- <20261018174250-mutt-send-email-mst@kernel.org>
- <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Iv6ZsOMu
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TKsMaQ2ppTeJyBdAIb/NXItspdGfttusJwUElmbykS7/XdAeg+m0/qgmegIOiQdsE09afcVvxzLCZJLD643qS3VjQfk7ckcsoXrLYm3hEvfbbb4WiFc83GZG5yiGicaH3d4XAXAljV4ej0cFoH1x13LVXHipU/iqaAkdsMinWy0rNLYKPNUORF2MIel98nN+kfnuKOj6w9KFeY8FVmb2mByUzn59OY7TXv6cYEdlNykDRHkjYcGD+6QUMRFehlcgLo29rKmxZ6USTmCT42nC8RJQB4lcmuI7PolIBfe6R1vpd6YDFRpH/O3rj2S6EhrWNkQheeVlow/v8+F08hoduQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XGEnG6SK7p+aoZFFS5/l/2WDyW89SuHgKkeTRJz7IF8=;
+ b=oCM7PtTyavQp6UqwCRJyJwSBH78n15YfO0vwxZwXK0I3ZSTl1q/RWMxQL3QKZPtH7iAiUWd0fZB0Ym2lcMm5RINhhmTF8tQeMlrEjVAanLr6vaWURnBsFY63iUGKdoYhQ+2N71HuYDngeGUPUdb2IVhP5BBJ75uHxQF8pJ8cNDUC7GpiQUb9pisPVKPHRyAPNNxM1cUqyZaz8tyJrDLaqjXNSQtl3bwbhs1qBmRNF2lo+Qj8w8wr+R7kdQLY7lpb3mBLT8/j8/2ysvGypq3GlawIiHuZUL8fApVEcV6sDEa7ofXboFQvlF9aC5meVlfPF3i9HbBHYycN4PKQ7xeVpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XGEnG6SK7p+aoZFFS5/l/2WDyW89SuHgKkeTRJz7IF8=;
+ b=Iv6ZsOMu2K4+kP3KWuBCXrnqnE2j00q1sb1YQFnTkWrsJOebuNo5g5vbqehHO6qafPuvvYpabu4w/OChsPWb6njErv3A4aTlfgtSUT62Bn+0Z966w2f696yPdlKe5mo8gmvzPAW84RxNNOx2pCoe/HHEm05P1/JQPBM+i4V2bhrzuG8mqTgxOtluFHQpc4CtXrlGHRGPwpYlw0o8NTex3H/89krG4ATRZ564ozaYRoQcVGVtqRGw6sTDsQS3wg6+vwalQVB+Hn4p/U+agvKS/joAl22smWxWAXoFjekZpb5o/3f42RkMtynHgf3DU9fR6DUtX5jE5ZuJZyP+hUo7vA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15) by MW4PR12MB7189.namprd12.prod.outlook.com
+ (2603:10b6:303:224::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
+ 2026 06:33:22 +0000
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
+ 06:33:22 +0000
+Message-ID: <12f872fe-abeb-433e-8221-ceba1427f371@nvidia.com>
+Date: Tue, 20 Oct 2026 09:33:16 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/3] net/mlx5e: Fix CQE moderation mode reporting and
+ control
+To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Joe Damato <joe@dama.to>, Leon Romanovsky <leon@kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org,
+ Mark Bloch <mbloch@nvidia.com>, "Nabil S. Alramli" <dev@nalramli.com>,
+ Rahul Rameshbabu <rrameshbabu@nvidia.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Yael Chemla <ychemla@nvidia.com>
+References: <20261014124704.1017782-1-tariqt@nvidia.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <20261014124704.1017782-1-tariqt@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL0P290CA0011.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::13) To IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -119,99 +105,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|MW4PR12MB7189:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd24c330-9114-4de2-bf8a-08df2e740970
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|261009223027099003|10067099003|56012099006|6133799003|22082099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	8PuIP+h7vusrmkCTYxoYk3HDhMJ62Vtgd11Cn/WoXG9iwa590eY93xzqOTcXUYI0+PCMhOFR5zgUoJoUkpuKq7UCHM9yR0e+q+KgQci2ewnTUGBLaT5FBH7fRwvku4qvBkAYB7t4s7Zy40D66E5zkNlCS5lEicpwhJbpjJvT1FW9PJkDoACIPGMFWybDCnYuLws3gttCkPUQyXOxMeqaNhzH/Qi1tLFq+aYhwGXn1XumzTv/0Yv8WGMAkqVXgm9AamJlnThwsHBZcbofAd7zeLNeSLngMDZ9qUhhRNnGN3+PQH8GeIf4mnLtw/2nWz7Vtb7qXRDEFSe3bWV4NZ5gKsSuhqLUxEqt+N5/noJBNedtMsg23L6R5mpSRebuaSCed/L3w2VqywJfOSgW2DslIgStEiDFCLXF8qkTx+yutxpqPaq7G4/5jySyzlG2AWXsAkw4IpPVUU3oNlJrP7Abm1QCFsQ1iwZKfbcH2A1ltVjOMP7uzE/O7FFeZG6KmGoUxoC/r3H/LML7atLkDbnb+6dwXG0hnRAn9UNZ7YKqYaay4nVU7eAg+g/+MTI7XW7bNpyTz2lnCOzKgJtjHneVcxHYhB2ALsV+Eig7JS8a0NCX3DWVNiZsNlM4CkGVnfahzmVBBg7GKGkCBZ93MU593VfY6OpvFJDqzR+44LUEyH8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(261009223027099003)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?czV3WUcyWjZsZlhGZXVDdVd6WkllY2FuTUdOYU9xZ2UvU29vZ1J4Zk12eTlL?=
+ =?utf-8?B?K0laRjliTWZCRXRwaXg1LzFYbEVIZEpuTDQ5Q2hLWno4MU1kVzZnUFQva1Nr?=
+ =?utf-8?B?WFhUS3FYV256TXMyWW83SW9kV01nY0NQdjRTclp3YTJaSndiYlY5Mkc1SEJN?=
+ =?utf-8?B?VThzMk0zQmcxVmdCMTM1Z0NGUXR3TENsSU9ZSFNuTm9PWExKSjFSRksyN0o5?=
+ =?utf-8?B?V2s2M3BrZ3VubHVDZlV0SDVacE5zMHRVdWtRRkxXTk9TTC8wMHZLTmpxQ3M1?=
+ =?utf-8?B?WitRQTdlSGptb1hqOU9PSjNUV3FLbmFXY2ZoM2hJNC9ja0NvNXhqcGxDQmRv?=
+ =?utf-8?B?cHI4d2huSGpuOThRTlBpZkVUbTV0UnFCTlNHeFQvOEtmbnhld0NmVW5JWkcx?=
+ =?utf-8?B?Rmh2Y2xtVGkreFhDN2VNUnJMN2ZYWjk2bm1FNXlmS2Q2d0FDK1Z5NlRzKzhY?=
+ =?utf-8?B?ZVAwYkVyalRRcTA5V2gwb0IyUW5HYWl0WjduMkNxVTVKNnRndlZXZThnYVRj?=
+ =?utf-8?B?bmc2SEZaNlpJUEdOT3N3T2dDOFhyWVhSaGYxcWVlOGJ2N2VoVFNJNDV4WDIv?=
+ =?utf-8?B?Qzd5SGVNeFJOVlBMUjcvY0lWa1FEUVBNUmRpdUpnKzNiek5hQkwwM3c4MUpu?=
+ =?utf-8?B?dmZmdytXS3RFdDEvMGtDMDhmbWd2R3Z0WkJLdmpnbW5PSTRsb3VxLzRtTDJW?=
+ =?utf-8?B?bmdiUkV3ZTE0MU9LYnhyVHE3RXM4NFQyMXlVaVpSaC8xZVZiQWhUQmRGZ3Ji?=
+ =?utf-8?B?R3pkMGJNdXBISTR5Q21aODA4SHRNZGxCSFZOVjZUdjRVVCtIVXVIeHBTM1Zz?=
+ =?utf-8?B?MEdhODBDVmFWZHFKOGxQMUZqMFcyb013dFZoSElhdDVHU08yNWtWWlhFTmZs?=
+ =?utf-8?B?eGgxcmlNSzBBUUVrVG5PTU9OS2JVbUp0eUZqMjNuY1hqVklaNFZFdFZLSHo4?=
+ =?utf-8?B?V3dXUk9jb25ZdGRNTzJaM3hGUmVWMzRUSDFwdGhxWGFueGZvTHFyY0k1cm56?=
+ =?utf-8?B?dGI4TzRReUdsTWZOWUorL21Xdm1WYll3NHlBYVFTc3J6cW9mamVudlhqRDc3?=
+ =?utf-8?B?L0dPRGVXQVpPZDBWamF6ZFdKNEVJcUVaL2wwM2ZoanRHS2FYQnozU21yVkJW?=
+ =?utf-8?B?Nk53WkZDMG5ZaE1pWld3UWJ4ZFdnNDk0S29Ka0hjbzZvTHFxVUVUaW4yWXdN?=
+ =?utf-8?B?dWNXc3dDSDgxbGFnZzhqYkp1ZHJSMDBqZ05SSHBHQ2xQZDd5aC9naldWZUE3?=
+ =?utf-8?B?NjZPNk93MDQ3UTh3cUJiT25kTWlMWVhWRDRQNENKdmM1cnNOSG0wK1RRZWJB?=
+ =?utf-8?B?QmRaVnd0TFloSlI1S0FibzhLdVB3NTI0Yno2aEdaNytMVElHVjJFWDVYMFF3?=
+ =?utf-8?B?VGN2Vm9ERjJ6K3R0L1JNV3NuMzdkT1F6OWJySWZ1UzJHcVJjcnNuQkZLaU8r?=
+ =?utf-8?B?aVV6eUQrN0xVcEVkclBreXlXSmNyaU9pUTBUVXZBRDR5NEp6ME0yN0NianlV?=
+ =?utf-8?B?dmcwQjdPaTZnVXlZcmJFN25DS24wTzhab3QzNWFmU1pDSnZBaGhpOWM0c0ZZ?=
+ =?utf-8?B?WmM4ZW1hZGo0V1lRckhUVkdwRFR2a2IwYnJyd3UyVTluL3l1L2xLQmQrS3lt?=
+ =?utf-8?B?Wm1IUmxpWGhWU0hzZGVrNHVhWHI0V3RvM05USXQvK0ZJZ3l1ZXUxa1BTZzQx?=
+ =?utf-8?B?TStNRDJCS2gwOU9iSWVvbmxUakJaMTZSUG9IVTNZeU5yZXhWQmo0MmZhWWlx?=
+ =?utf-8?B?Tmc4a1Q1YWVxeHFGOFNmc01kbmtkRXFIeXRORTZadmlxVkFSaENtalVvNk43?=
+ =?utf-8?B?cFl3R2RZeWM5STNOaUNMTEp5R0JiV3VXMGExaEhPb1lUeS9EemdSR212SUpU?=
+ =?utf-8?B?VkpXY0RGNUEyaTJhV0I3VXVQOENVTGhjTXRCN05TRG9Va0NrOCtVNmRrMTlC?=
+ =?utf-8?B?ekp0cE41S0dGRGxNUlpLRzY1V01GN0FJRWJLenp0Mm8wZlBpcU9qY1lUSENK?=
+ =?utf-8?B?dm5uTEJ6MW1oeWdpUnYwcGpnM2xsc2s3WnZheXd5MDlQdWZrQkQxSXlRZFZK?=
+ =?utf-8?B?a1dFZGN1MFJkRTVPcnNHU2U2UjBFUjZXN0pSSE5FdHo4NFpLUHZ6U0JhdGV4?=
+ =?utf-8?B?b2U4N2JiY2gwL08weVptVWFVYko0QUdGWEk5amw0bUdCa1RNOUJxNk5RQ2Fr?=
+ =?utf-8?B?MjRlelRKZFVwRUMxYjJBQ3EzNDAxQlNlaDZTL1BtT2lZcjVCQ251LzJmY2Fk?=
+ =?utf-8?B?dTMvNmZyMEN6cDMzOE1iRjhWOWNHNzM4L2dXclBxWTREemNOcmRYS25OTnhv?=
+ =?utf-8?B?NzVtTDdWNzhkdWRDUGJYR09Ja0toK0x3MzNta2dHamFnTzRaQ2M1QT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd24c330-9114-4de2-bf8a-08df2e740970
+X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 06:33:22.1001
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l+tcG755N56ODYA2bsGMiYZlr+iu3hy7JpM/rI6LVD95MHujxmpMN2GXZhtEszpkNT0veMFXceMnxw1u82MqQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7189
 
-On Mon, Oct 19, 2026 at 03:14:46PM +0800, Wang Haoran wrote:
-> Eugenio previously offered some additional suggestions in reply to
-> my patch email. Should these also be addressed?
 
-The following seems to work for me. Testing would be appreciated.
 
-From: Michael S. Tsirkin <mst@redhat.com>
-Subject: [PATCH v2] vringh: use get_user/put_user in the use_va path
+On 14/10/2026 15:47, Tariq Toukan wrote:
+> Hi,
+> 
+> This series by Yael fixes inconsistencies in how mlx5e reports and
+> configures the CQE moderation mode through ethtool.
+> 
+> mlx5e_params keeps two representations of CQE moderation: the private
+> flags (MLX5E_PFLAG_RX_CQE_BASED_MODER, MLX5E_PFLAG_TX_CQE_BASED_MODER)
+> and the fields rx_moder_use_cqe_mode / tx_moder_use_cqe_mode. Ethtool
+> get/set coalesce uses the fields, while the priv-flags path uses the
+> pflags. When the two disagree, the reported CQE moderation state is
+> wrong. In addition, commit bc541621f8ba ("net/mlx5e: Support ethtool cq
+> mode") added ETHTOOL_COALESCE_USE_CQE to the NIC ethtool ops but not to
+> the representor ones.
+> 
+> Patch 1 syncs the pflags with the capability-derived fields in
+> mlx5e_build_nic_params(), so that after channel attach or reopen the
+> private flags no longer remain zero while the fields reflect the
+> hardware configuration.
+> 
+> Patch 2 fixes the opposite direction. set_pflag_cqe_based_moder() now
+> also updates rx_moder_use_cqe_mode / tx_moder_use_cqe_mode, and resets
+> the RX/TX CQ moderation to the defaults of the new period mode, so that
+> ethtool -c no longer reports a stale CQE mode or stale rx-usecs after
+> toggling the priv flag.
+> 
+> Patch 3 adds ETHTOOL_COALESCE_USE_CQE to mlx5e_rep_ethtool_ops, so that
+> setting cqe-mode-rx/tx on a representor is no longer rejected with
+> EINVAL.
+> 
+> Regards,
+> Tariq
+> 
+> Yael Chemla (3):
+>    net/mlx5e: Sync CQE moderation pflags with coalesce params
+>    net/mlx5e: Sync CQE moderation params with pflags in
+>      set_pflag_cqe_based_moder
+>    net/mlx5e: Expose CQE moderation mode on representors
+> 
+>   drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 8 ++++++++
+>   drivers/net/ethernet/mellanox/mlx5/core/en_main.c    | 4 ++++
+>   drivers/net/ethernet/mellanox/mlx5/core/en_rep.c     | 3 ++-
+>   3 files changed, 14 insertions(+), 1 deletion(-)
+> 
+> 
+> base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
 
-getu16_iotlb()/putu16_iotlb() pass the address produced by
-iotlb_translate() straight to __get_user()/__put_user(),
-without access_ok checked anywhere. Not good.
-
-Switch to get_user()/put_user(), which are always
-correct, and safer.
-
-But the fact is that accessing user memory like this
-will sometimes (rarely) race with page being swapped
-out, trigger EFAULT, and it should be retried
-from a worker, and vdpa_sim currently does not do this.
-
-Fixes: 42823a871fd4 ("vringh: support VA with iotlb")
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
----
-
-Notes (changelog):
-v1->v2:
-    Use get_user()/put_user() wrapped in pagefault_disable() instead of
-    access_ok() followed by __get_user()/__put_user(); the helpers are
-    reached from BH-disabled sections, and __get_user() is not a valid
-    way around that (David Laight, Linus Torvalds)
-
- drivers/vdpa/vdpa_sim/vdpa_sim_blk.c | 2 ++
- drivers/vdpa/vdpa_sim/vdpa_sim_net.c | 2 ++
- drivers/vhost/vringh.c               | 4 ++--
- 3 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c b/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c
-index 76dd5b0828d7..325ec8f0ab85 100644
---- a/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c
-+++ b/drivers/vdpa/vdpa_sim/vdpa_sim_blk.c
-@@ -347,8 +347,10 @@ static void vdpasim_blk_work(struct vdpasim *vdpasim)
- 			smp_wmb();
- 
- 			local_bh_disable();
-+			pagefault_disable();
- 			if (vringh_need_notify_iotlb(&vq->vring) > 0)
- 				vringh_notify(&vq->vring);
-+			pagefault_enable();
- 			local_bh_enable();
- 
- 			if (++reqs > 4) {
-diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim_net.c b/drivers/vdpa/vdpa_sim/vdpa_sim_net.c
-index a6514b5ccd86..964cdf422467 100644
---- a/drivers/vdpa/vdpa_sim/vdpa_sim_net.c
-+++ b/drivers/vdpa/vdpa_sim/vdpa_sim_net.c
-@@ -77,8 +77,10 @@ static void vdpasim_net_complete(struct vdpasim_virtqueue *vq, size_t len)
- 	smp_wmb();
- 
- 	local_bh_disable();
-+	pagefault_disable();
- 	if (vringh_need_notify_iotlb(&vq->vring) > 0)
- 		vringh_notify(&vq->vring);
-+	pagefault_enable();
- 	local_bh_enable();
- }
- 
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 9066f9f12ba1..74836eb60c7a 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -1213,7 +1213,7 @@ static inline int getu16_iotlb(const struct vringh *vrh,
- 		return ret;
-
- 	if (vrh->use_va) {
--		ret = __get_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-+		ret = get_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
- 		if (ret)
- 			return ret;
- 	} else {
-@@ -1251,7 +1251,7 @@ static inline int putu16_iotlb(const struct vringh *vrh,
- 	tmp = cpu_to_vringh16(vrh, val);
-
- 	if (vrh->use_va) {
--		ret = __put_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
-+		ret = put_user(tmp, (__virtio16 __user *)ivec.iov.iovec[0].iov_base);
- 		if (ret)
- 			return ret;
- 	} else {
-
+pw-bot: cr
