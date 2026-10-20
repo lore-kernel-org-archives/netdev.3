@@ -1,75 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792514337;
-	b=yXpSRP5fWLvZVZDRsH7d2a5LakTgtoHgxDRi57uQdQY5TbmAJ8L3jXfa/dgDzov9GLlV
-	 kgB7MBXNgRT8MflESKQZlCalQArzHwFmdMEhs/JDGwtGIBtonX6E2bg51z9+1nRqfbIBX
-	 thKPVdMJ5EOIDtIDH2dDlWvSz11iTBaNrhy21KirmcBcWwCpV/bsEioJbYCae9ueFqgpL
-	 ntAYrCw+Tuu6dlKyQMlD9VjESBUKUIwZqatf1PhbnIKP/UVfy30Ut9qhZw/RNT0eMP8tS
-	 iTQVvJ9YkC7ii+NRKkilu8MWFZhuy2rUZcGNDZd7VGqQT5BsC96kpu3uW9QbYBjwdWQ==
+	t=1792514591;
+	b=JtiMkNdoCparh82QGB3mQnXY/vWSJ/y8xWHRqyZTn+8KaOBoNw9oojwfJqDg2e8/ImNi
+	 409I+YH0i9IPQmTFrd1wU4M4BtbirNwC6rZ7v5jzXCX+Y38FS0nvAKr3yZu20Ys/VBot7
+	 1K3n3tF9QZdlq4po2yPT3ZpM1D8W7SsZYq8Af9m6sME/wRV/HG6FfMXVOtOBLN2b18SgK
+	 s7GItRegVAAskp0x3UuWr6QTgZmIC0Ztg5vbGMe+8t0mFh8nmwRzO/v7sxNp7kp3Dl3lU
+	 5ueOP5f3szfR5jnXByHfDgtrFkppfhZ//Frsh/Y9/P8Vpcz/W3ouGYIPlVXBYxBOdRA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792514337;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792514591;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=r6Qh0C8VZGXvZEDc2kZsxVXKMJiu5wqeD9DHYON/9u4=;
-	b=JIERD0EQ6WskEhdiiDaLGCKcGTrX3wOl7p803KBlEL1yG0bdwoqCh2+DzOguAKNSXmEb
-	 P/Zkq+Y31jTFrDaIWfiWubU8xlC38VBFcQ29/EshbG6iDJ1pNnn6xKGdtqmJfa/rBzMYF
-	 tNfKa34xBvjtq8PAuiFJr7GMUgie5y0FnyHH6X1H0rXHThA5/6DP/m8BKSLgZ9wgrMiEK
-	 ac0scjVI/JIx2OPMkGTjeKkIlma73Z0CArCveIBZ7FnmU1mCnF1bx2j/wN0A8KgQ8QJ9F
-	 DqN0bkpVti/j6AgTaWnehIZkVsbsCBvso4CO8/HB3i31PpEsTPP3R2TQMPZ7hLr4FHw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=CdlYPARhuT5EgLufL/ZQ6dU/20tseBOVd7fjLCxWlSo=;
+	b=gfNNz/aNjrC5QUNFjczXrBhBdQ9AmQOeT61F3rI7BM/XEuUODoRjUbQ7Ku4vxizMigcL
+	 I4lpOhVkviB8Xwf/KVeeEnJ9IhGb29lAeGtxANPE61TR4BH5PRjqvjdDrHoNyxTv6Wq9p
+	 Ykazgrr6jVd2Rt8cIP6w5k2SHBj59Z8Mmx/eCMg15S5MUxGchgjg8Cwxm7nv3FTq7Cspr
+	 2NABsl4TR1KyGpOgK3zTi9TYBiqHTKMBtCJY6STtYwx+yfTjTHboQ3GlyEP8Zqo6ML8m9
+	 qAzdUwZMXfpQ4vEk/FVIxtPqtKPb/muwkJaVV302PC4FhF73EMmWyNnmv9xlYfD0TzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tavip.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=KYgZ+C7j;
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p10U2UEo;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC22606D520
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:38:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DC22606D520
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D014606A32D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:43:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D014606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=KYgZ+C7j
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a03834d8ffso4494533b3a.3
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:38:56 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=p10U2UEo
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a01933b584so24691645e9.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:43:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792514336; x=1793119136; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=r6Qh0C8VZGXvZEDc2kZsxVXKMJiu5wqeD9DHYON/9u4=;
-        b=KYgZ+C7j3c5dwv4GHy9pr7LdM1CxrF5CNMfFJM5DOO+lPu665oZmc9mDHqjYT5XHAT
-         opu2QloeTeCgpu3TqIw2bzZ5kLERLZr9fFSZTY1+8wpzkqio8CzWtdHaBlfw88ZcQNw9
-         KWMy1smzR1EDbTMYIqATI7NLaKTaTsYUwdjAHrp2Zaq2m7yUM92lHDZQ4CuK3F4sLokZ
-         gIj7u1DwXOXSzTZnYv4P3t6qCabBDafQeOPiQpyMtzP+g9dmr1nyJTGByso1diZIUUDo
-         chHHb1QMHJjFp3JOD60p4vjB9oP+4p/X7szNga1rQ6Oj/7MRzzRzGNYTe+hvUIIfx3iu
-         i39w==
+        d=gmail.com; s=20251104; t=1792514589; x=1793119389; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CdlYPARhuT5EgLufL/ZQ6dU/20tseBOVd7fjLCxWlSo=;
+        b=p10U2UEopDR0Q/Yj8jDVPbCso9MIg9ixUZiZzxfdCSAisf/I/blQW1TgxbbPL0VOLq
+         R47u8hZFr5snKKUmwksv1uvElX2vsoAik6jLR7tNX4qWTm2rdPCadETL+3ufuFnxbegj
+         yR1FRzFy9sluZ7gA3+va6d5yxbXdBI6KZzNjBJd/VX2fq5JBcX3UpoxT8lwSJ9zjrm9Y
+         L/7FR4TnzkWqTYuT2jP8fQXlxU3cXhfOYJBWds/snZB/WfjMjc3NxEFbzOHzFYuu+7u4
+         kutmn7XgWl/H8tDTNAu0m7FEkhfi8jNE+xaYIRUJvMXpojOwP2iaTkBS8BabWkM3/3sk
+         2MGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792514336; x=1793119136;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1792514589; x=1793119389;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=r6Qh0C8VZGXvZEDc2kZsxVXKMJiu5wqeD9DHYON/9u4=;
-        b=d0kkgFLW9bNxYYZ6PZLyPi9Cz1Ih8C8HAq6x9EVjWg0g1l4kbjawQct8FnF37JfNEo
-         ARI5Do5IGCuQOnBWRAV1BGmOPux/o2gjs4Ee3QOHWkM3VwEsgAJBkes8Y3eP4ey77Ip1
-         ERKDPhkO0Oo4ckQz2PkEXvLe/lXE7S57o2WxgS/2EBdIPdcvXLuNT+GxM6iU1XJiA9du
-         +6MtU9aFnZmuUSVz6FuhKY8TZYr5y6UBK9pZ+kKMV1MmaPl4dzp2+FaznS64Vv7Hfq5+
-         SmrCkC+DQbTCv7UlcghmT7zYYhSmG7dV6FxsLM4DaooIxCBpW1xrfUNW5Q4RNOTNe2ap
-         V0gw==
-X-Forwarded-Encrypted: i=1; AKwUvBzr7ltQBCDfYh8kqP7L53FzQTmxevFctivqR/RbDVcSrm8OwK9ZIZmE0eGY2nyLqak6QZx1WX0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKvZlhAWfgI830MH18k3ghCCVXCRX6ppZ4cSaEwgwk7SifZUS/z
-	gj0NYv/aaU+1ZLXt87M0f0syjAzmG7sTOqxiuC5YnWNcw9KPSVJKrVWEDWizFcP3dX1E17psTNc
-	tFQ==
-X-Received: from pgbd19-n2.prod.google.com ([2002:a05:6a02:64d3:20b0:cc7:d4f0:846d])
- (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6f89:b0:3d8:1f68:59ac
- with SMTP id adf61e73a8af0-3e225fe8c5cmr9977058637.23.1792514335679; Tue, 20
- Oct 2026 09:38:55 -0700 (PDT)
-Date: Tue, 20 Oct 2026 16:38:35 +0000
-In-Reply-To: <20261020163835.4076594-1-tavip@google.com>
+        bh=CdlYPARhuT5EgLufL/ZQ6dU/20tseBOVd7fjLCxWlSo=;
+        b=1IUHi3LWZBx0yc89WnDq1iOIBI5UecC02epmxSEa6izqs/iM3zePqkNINhh7qVjnl7
+         jSA5drZz7rWA24Jf4DWdprpKwNULyVCLlP6VONMQSQPt+xv/kh3wl8EQfNwXvdRLVqrq
+         RJuyFldx/eU+7X4IYd/Izng1BcBVu7QqDXauqHx2fhLAf/0dSaMrHKjnP0RdOB4rEone
+         gRv/YBax8sLLof3LVMNTsZUp+azJvLjLimgT8H3kbhVzNXNzi180Nu0AZSzPRmNdRXSG
+         m80SH7uy12uj0BuIgtMEjTr939SwzSrwwgyheTjWtASzTfPzMYthjEhjoMgzHkYY+RVH
+         kP2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzDbS+PEO1BdcSAZMbTsz2QsSg+58Pxfx+rWkna6+1qZv59R4+50bTV/+1q1up9Lq9Ghr5aphc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLUQ0/l0tKtk9EjcNrT3OngU7X2QU9U6p1/6YlpFRE/BazxUGYp
+	Bf+9Is8a1lCfEYKIXj9+0tOLqrBjhgMyeWTlDnpiIsIxwU7EZj4ee5BD
+X-Gm-Gg: AYBFou2lVzf3s5rjISlRwrB5BiRJB9q0laClKOxlBFVh4ywnziRhu8//t88aO75gf6m
+	18uVQCU7FGKsiWcc1hMRgggpfwpUN3IJbeVbKlIl74s5UOadOsOe9/Z5mG4iXvMyPr7wuygLztd
+	qzgIJe4qOIJSJJh4+3csC1ZXg7hcboLseMGT1HUIeCSY8XIUoWwQm6XLEaliIeuo9KyCbqWCL6F
+	BBLw6dIrxuJvQDaLbV3O50koEW6OvhqONchO46GIi0sTjW3WnhUAgQ2YD9GtLZ9Nkm9Tpju7rFc
+	bN/gAEk+RRco8ShxGOmrX2T8tbM3SS7Zv9xyJzxhmteL/PzgFSvOSqcJ6hxAzf7j7VeMd32WL9e
+	AKVDcctYkv0bV/uLzA+I0KNrA/bSXt6bjf39oZFehtozxmRZr1EqJMt+G4essJ5EfLq2JtXA5+o
+	pJiTqRYMF2ErwNmKM5nbh8QKbPoci0RX65F/ij3T7JCKgoSB1y5f/dM/3IX9CGfX277IgLPIOg8
+	xSFItVCZOk9IjZCXEVMN95rSuD8PqKtMgQCWY6v6M4/PGUNZeKz1ZSZrMpbS85+wxWE620Jtx4m
+	KT8SLmR2e9c/Gx7MBCZdkYAsnNcATGXEh+SPblqhmKUBUtLtcFieitmpgj72fOPizTJ7m9HB
+X-Received: by 2002:a05:600c:46cf:b0:4a1:f8cb:7d70 with SMTP id 5b1f17b1804b1-4a1f8cb7ecemr44109325e9.24.1792514588519;
+        Tue, 20 Oct 2026 09:43:08 -0700 (PDT)
+Received: from p15v.lan ([217.169.3.90])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fb864dacsm8742505e9.12.2026.10.20.09.43.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 09:43:08 -0700 (PDT)
+From: Peter Morrow <pdmorrow@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Peter Morrow <pdmorrow@gmail.com>
+Subject: [PATCH net] net/mlx4: always create the eth and ib auxiliary devices
+Date: Tue, 20 Oct 2026 17:42:39 +0100
+Message-ID: <20261020164239.3808903-1-pdmorrow@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,195 +103,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261020163835.4076594-1-tavip@google.com>
-X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261020163835.4076594-3-tavip@google.com>
-Subject: [PATCH net v2 2/2] selftests: net: packetdrill: add test for negative
- sk_forward_alloc in tcp_wmem_schedule()
-From: Octavian Purdila <tavip@google.com>
-To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Wei Wang <weiwan@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Octavian Purdila <tavip@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Add a packetdrill test that drives sk->sk_forward_alloc negative via
-tcp_collapse() on the receive queue while sk->sk_wmem_queued exceeds
-sysctl_tcp_wmem[0], and verifies that a subsequent non-blocking write()
-under TCP memory pressure fails with EAGAIN rather than returning a
-negative copy length from tcp_wmem_schedule() and failing with EFAULT.
+Since commit 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the
+auxiliary bus"), mlx4_core creates the "ib" auxiliary device only for
+an IB port or a device that advertises IBoE. Before it, each mlx4
+interface was offered every device and decided in its own add callback.
+mlx4_ib_add() accepted Ethernet ports without IBoE and registered them
+for raw packet QPs only.
 
+ConnectX-3 VFs on Azure have an Ethernet port and no IBoE, so since
+v6.6 they get no RDMA device. DPDK's mlx4 PMD, which needs only raw
+packet QPs, then cannot open them:
+
+  net_mlx4: cannot access device, is mlx4_ib loaded?
+
+Restore the old behaviour by creating both auxiliary devices for every
+device and letting mlx4_en and mlx4_ib decide in probe, as their add
+callbacks did. mlx4_ib_probe() returns -ENODEV when there are no usable
+ports, and mlx4_en_probe() binds a device without Ethernet ports but
+creates no netdevs, as mlx4_en_add() did.
+
+Tested on 6.12.111 on an Azure VM with two ConnectX-3 VFs: each gets an
+eth and an ib auxiliary device, and DPDK attaches both VFs and passes
+traffic through them.
+
+Fixes: 7d22b1cb9d84 ("mlx4: Connect the infiniband part to the auxiliary bus")
+Closes: https://lore.kernel.org/r/20261014133951.3219055-1-pdmorrow@gmail.com
+Suggested-by: Leon Romanovsky <leon@kernel.org>
 Assisted-by: LLM
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Peter Morrow <pdmorrow@gmail.com>
 ---
-v2:
-- Skip the test when PAGE_SIZE != 4096 via --define=REQUIRES_PAGESIZE="4096"
-  in ksft_runner.sh (Eric Dumazet).
+ drivers/net/ethernet/mellanox/mlx4/intf.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
- .../testing/selftests/net/packetdrill/config  |   1 +
- .../selftests/net/packetdrill/ksft_runner.sh  |   6 +
- .../tcp_wmem_schedule_negative_fwd_alloc.pkt  | 117 ++++++++++++++++++
- 3 files changed, 124 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
-
-diff --git a/tools/testing/selftests/net/packetdrill/config b/tools/testing/selftests/net/packetdrill/config
-index b7df8bf309200..dc3cd72a8da8c 100644
---- a/tools/testing/selftests/net/packetdrill/config
-+++ b/tools/testing/selftests/net/packetdrill/config
-@@ -1,6 +1,7 @@
- CONFIG_HZ=1000
- CONFIG_HZ_1000=y
- CONFIG_IPV6=y
-+CONFIG_MEMCG=y
- CONFIG_NET_NS=y
- CONFIG_NET_SCH_FIFO=y
- CONFIG_NET_SCH_FQ=y
-diff --git a/tools/testing/selftests/net/packetdrill/ksft_runner.sh b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-index 0a97d5ae34699..dcda2b93c76e0 100755
---- a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-+++ b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-@@ -52,6 +52,12 @@ if [[ -n "${KSFT_MACHINE_SLOW}" ]]; then
- 	failfunc=ktap_test_xfail
- fi
+diff --git a/drivers/net/ethernet/mellanox/mlx4/intf.c b/drivers/net/ethernet/mellanox/mlx4/intf.c
+index 82e467c..31860b4 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/intf.c
++++ b/drivers/net/ethernet/mellanox/mlx4/intf.c
+@@ -43,23 +43,12 @@ static DEFINE_IDA(mlx4_adev_ida);
  
-+pagesize=$(grep -E '^--define=REQUIRES_PAGESIZE=' $script | cut -d '=' -f 3 | tr -d '"')
-+if [[ -n "$pagesize" && "$(getconf PAGESIZE)" != "$pagesize" ]]; then
-+	ktap_skip_all "requires ${pagesize}B PAGE_SIZE"
-+	exit "$KSFT_SKIP"
-+fi
-+
- ip_versions=$(grep -E '^--ip_version=' $script | cut -d '=' -f 2)
- if [[ -z $ip_versions ]]; then
- 	ip_versions="ipv4 ipv6 ipv4-mapped-ipv6"
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
-new file mode 100644
-index 0000000000000..96a5d60a52cb1
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
-@@ -0,0 +1,117 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Test that tcp_wmem_schedule() clamps negative sk->sk_forward_alloc to 0
-+// when sk_wmem_schedule() fails under memory pressure and
-+// sk->sk_wmem_queued >= sysctl_tcp_wmem[0], returning EAGAIN rather than EFAULT.
-+
-+--define=REQUIRES_PAGESIZE="4096"
-+--mtu=65535
-+--tolerance_usecs=100000
-+
-+`set -e
-+./defaults.sh
-+ip link set dev tun0 mtu 65535
-+sysctl -q net.ipv4.tcp_rmem="4096 131072 6291456"
-+sysctl -q net.ipv4.tcp_wmem="4096 16384 4194304"
-+cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-+[ -n "$cgroot" ]
-+echo +memory > "${cgroot}/cgroup.subtree_control"
-+mkdir -p "${cgroot}/pkt_${PPID}"
-+echo $PPID > "${cgroot}/pkt_${PPID}/cgroup.procs"
-+`
-+
-+// Create listening socket in pkt_${PPID} memcg and establish connection
-+0.000 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-++0.000 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-++0.000 bind(3, ..., ...) = 0
-++0.000 listen(3, 1) = 0
-+
-++0.000 < S 0:0(0) win 65535 <mss 36000,nop,wscale 7>
-++0.000 > S. 0:0(0) ack 1 <...>
-++0.000 < . 1:1(0) ack 1 win 512
-++0.000 accept(3, ..., ...) = 4
-+
-+// Move packetdrill back to its original cgroup so only the sockets remain charged to pkt_${PPID}
-++0.000 `cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-+runner_pid=$(awk '/^PPid:/ {print $2}' /proc/$PPID/status)
-+orig_cg=$(sed -n 's/^0:://p' /proc/$runner_pid/cgroup)
-+echo $PPID > "${cgroot}${orig_cg}/cgroup.procs"`
-+
-++0.000 setsockopt(4, SOL_SOCKET, SO_SNDBUF, [2097152], 4) = 0
-++0.000 setsockopt(4, SOL_SOCKET, SO_RCVBUF, [145536], 4) = 0
-+
-+// 1. Warm up rcv_ssthresh to full window (~256 KB)
-++0.000 < P. 1:36001(36000) ack 1 win 512
-++0.000 > . 1:1(0) ack 36001
-++0.000 read(4, ..., 36000) = 36000
-+
-++0.000 < P. 36001:72001(36000) ack 1 win 512
-++0.000 > . 1:1(0) ack 72001
-++0.000 read(4, ..., 36000) = 36000
-+
-++0.000 < P. 72001:108001(36000) ack 1 win 512
-++0.000 > . 1:1(0) ack 108001
-++0.000 read(4, ..., 36000) = 36000
-+
-++0.000 < P. 108001:144001(36000) ack 1 win 512
-++0.000 > . 1:1(0) ack 144001
-++0.000 read(4, ..., 36000) = 36000
-+
-+// 2. Queue 500 KB on TX so sk_wmem_queued >= sysctl_tcp_wmem[0]
-++0.000 write(4, ..., 500000) = 500000
-+
-+// 3a. Inject 6 high-density 36 KB segments (216 KB payload, 222.7 KB truesize)
-+//     and read 100 bytes from the head SKB so before(skb->seq, tp->copied_seq) is true.
-++0.000 < P. 144001:180001(36000) ack 1 win 512
-++0.000 read(4, ..., 100) = 100
-+
-++0.000 < P. 180001:216001(36000) ack 1 win 512
-++0.000 < P. 216001:252001(36000) ack 1 win 512
-++0.000 < P. 252001:288001(36000) ack 1 win 512
-++0.000 < P. 288001:324001(36000) ack 1 win 512
-++0.000 < P. 324001:360001(36000) ack 1 win 512
-+
-+// 3b. Inject 22 smaller 1000-byte segments into the remaining advertised rcv_wnd.
-+//     Their higher truesize pushes sk_rmem_alloc > sk_rcvbuf (291072),
-+//     triggering tcp_prune_queue -> tcp_collapse on the 216 KB of 36 KB SKBs
-+//     and driving sk->sk_forward_alloc negative (-32768).
-++0.000 < P. 360001:361001(1000) ack 1 win 512
-++0.000 < P. 361001:362001(1000) ack 1 win 512
-++0.000 < P. 362001:363001(1000) ack 1 win 512
-++0.000 < P. 363001:364001(1000) ack 1 win 512
-++0.000 < P. 364001:365001(1000) ack 1 win 512
-++0.000 < P. 365001:366001(1000) ack 1 win 512
-++0.000 < P. 366001:367001(1000) ack 1 win 512
-++0.000 < P. 367001:368001(1000) ack 1 win 512
-++0.000 < P. 368001:369001(1000) ack 1 win 512
-++0.000 < P. 369001:370001(1000) ack 1 win 512
-++0.000 < P. 370001:371001(1000) ack 1 win 512
-++0.000 < P. 371001:372001(1000) ack 1 win 512
-++0.000 < P. 372001:373001(1000) ack 1 win 512
-++0.000 < P. 373001:374001(1000) ack 1 win 512
-++0.000 < P. 374001:375001(1000) ack 1 win 512
-++0.000 < P. 375001:376001(1000) ack 1 win 512
-++0.000 < P. 376001:377001(1000) ack 1 win 512
-++0.000 < P. 377001:378001(1000) ack 1 win 512
-++0.000 < P. 378001:379001(1000) ack 1 win 512
-++0.000 < P. 379001:380001(1000) ack 1 win 512
-++0.000 < P. 380001:381001(1000) ack 1 win 512
-++0.000 < P. 381001:382001(1000) ack 1 win 512
-+
-+// 4. Cap the socket memcg at its current usage and expect -EAGAIN on non-blocking write.
-++0.010 `cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-+echo 0 > "${cgroot}/pkt_${PPID}/memory.high"
-+cat "${cgroot}/pkt_${PPID}/memory.current" > "${cgroot}/pkt_${PPID}/memory.max"`
-++0.000 fcntl(4, F_SETFL, O_RDWR|O_NONBLOCK) = 0
-++0.000 write(4, ..., 16384) = -1 EAGAIN (Resource temporarily unavailable)
-+
-++0.000 close(4) = 0
-++0.000 close(3) = 0
-+
-+// Untimed cleanup command executed by packetdrill on both pass and early failure.
-+`cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-+[ -n "$cgroot" ] || exit 0
-+runner_pid=$(awk '/^PPid:/ {print $2}' /proc/$PPID/status)
-+orig_cg=$(sed -n 's/^0:://p' /proc/$runner_pid/cgroup)
-+echo $PPID > "${cgroot}${orig_cg}/cgroup.procs" 2>/dev/null || true
-+echo $$ > "${cgroot}${orig_cg}/cgroup.procs" 2>/dev/null || true
-+rmdir "${cgroot}/pkt_${PPID}"`
+ static bool is_eth_supported(struct mlx4_dev *dev)
+ {
+-	for (int port = 1; port <= dev->caps.num_ports; port++)
+-		if (dev->caps.port_type[port] == MLX4_PORT_TYPE_ETH)
+-			return true;
+-
+-	return false;
++	return true;
+ }
+ 
+ static bool is_ib_supported(struct mlx4_dev *dev)
+ {
+-	for (int port = 1; port <= dev->caps.num_ports; port++)
+-		if (dev->caps.port_type[port] == MLX4_PORT_TYPE_IB)
+-			return true;
+-
+-	if (dev->caps.flags & MLX4_DEV_CAP_FLAG_IBOE)
+-		return true;
+-
+-	return false;
++	return true;
+ }
+ 
+ static const struct mlx4_adev_device {
 -- 
-2.56.0.212.g129ede20d9-goog
+2.47.3
 
