@@ -1,61 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=199.89.1.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792527675;
-	b=AtFhCM506mkBPm+5ShnIBI28DhOukScW/zCRFmGecVnVcFHWmj9vUjJwQ0OGr+1IhlX7
-	 r8N/Vn/eMI33AtL3V2jfCS6wEugv5j2o1FOOouzJxJ2lPFc7BUO4oBn4hy5MAtOVDIoOo
-	 qRDlpGLkeAMZyUKkoknh5pGdXT00G6Kw3kUm/falrw/ESqPSJhpW23XP41I13zfqKWhKw
-	 XmKm1lrWudXzk32yiyAnLQE3MLhm6QWB33DOQeWir03GhzKOy8dP+npfwsMBTIO5bNlsD
-	 vATpAg7+LUMQtRNHnK+unOvM0LI9LcE7Omn1nfmB0skEKdlf1qgR62MwJle8z2nnoVg==
+	t=1792527697;
+	b=3e5IoCZfQ9QLVsTbRQ5JgZyYI3W37/HGVUQLlsT6mT9hFgdQV/wYXIOo9cMrNHBXgN8S
+	 jZR2vA/1Ix2tvuJE5wI3PesO/7cvadTRy6osU9hOmlpDnK7RQGDj7mT2DjN27ZJh6FQEo
+	 WJb2nozjnCrcqZQuW43XGHSxW4q2ZMvwrvsaQjzuER0NfGAau3naFOll/oS1Av078Lc6N
+	 xbQH8yoYLx/+wVSbQ/SRafDn7fqTyvjDpoO+lS3+cUt85GyBkwbydFRxNyDbUqyhViTtB
+	 XzSjXrGQ1NM2oXdaX1jkWR4WD/mJFcy6p2S+podDTF5sNpniuJe7uqP/ndH3EE2deIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792527675;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PIk/27vrC8tFZSqMzqtn6yu+JCHiDh7H3FxEkoyebTU=;
-	b=E+4fGIoPMkmC6MRYmC5cI95GrJ4td+G+sKhQNrRw+X6xF/ZRgnG0bdj1XjNK9MQkXZY0
-	 GC/vqum/YvLjVAuq1bc0RmYjaR/+tgmOSfRQl38HL9lKSVi2/FHZmL9nb9PhCBDxynW3i
-	 Na5bYyf/8kmYH1s34KcY46Oa9pTx5OAU7t5dj3G8lJd12XFRnLTy8l6zqhf9e9m4+13qU
-	 259rw7npm4enfIVIP0+0q6I3x2sVtBe2jsnraMKH1ZVQR7tGgiQqjc68PfIm9Ri9PSwV3
-	 JTnMg8nYkQRxUgJ0Amwdw4jWEegOs/r2/VQ2yx3v2SaJorDU7JAYyJQD/gk3Y9QL7lA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792527697;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
+	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=aWr+EQV2AqXLdpHg6xfVKso9cQjncAIKwcJkZpbhOMQ=;
+	b=wZoeynoCEM7dn810lzvX7UISxgyAbbfpFvlSHru6Dy+lIwDj8z0xg0/+DwcapnEHBQIs
+	 LVX08VUbBrOHszcQIy9fyZ3dZ5Xt2CCKwWMLyKNHP8ACNJ/DzqD6qYC1aVzN3VAxqslTX
+	 FWhXyGF7FHqJoZsJYkFQdTHwH1+j4S3N+LxGSY8eY9+eL3/u03KWnwhX4WJCxWccGonER
+	 8o/L+QReOevUmRSzqud8k4C2oMSwkA1XMsVN/DG4dB1Kw+DT9qrB4MrxF4zRJgwCAlwkF
+	 wj5h0xCKlfLFHkybQ2PHoiJTXKsXzt+IstJQdR0PMiIdPljl1Zg6KP5kuu6xslB6MtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DA9bTy85;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=acm.org;
+	spf=pass smtp.mailfrom=acm.org;
+	dkim=pass header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=3VV6sUu6;
+	arc=none smtp.remote-ip=199.89.1.14
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A519606A321
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B66E606A319;
+	Tue, 20 Oct 2026 20:21:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B66E606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DA9bTy85
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2651F000CA;
-	Tue, 20 Oct 2026 20:21:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792527674;
-	bh=PIk/27vrC8tFZSqMzqtn6yu+JCHiDh7H3FxEkoyebTU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DA9bTy85VE4Uov8Lg16+ABaJLU4vJhOrylsiR282w4y13e3xkq1lMXpgHqV+QWCND
-	 Nxk6DXJeAyX7zezhXG7wI2Z+Vyz3GYvJFZox/v2k9yQjuiQt+yrRnREdZPKWipgG5f
-	 20muVJ9XGRUQqtamCICzc2hxAI0UDtJkH/6oHfEUVj5JEA32hJbnAnc/MJL/069+CS
-	 LltA1cc7xMzfHRQAmEUPxLw3wegrhlfDMa7Asgthuv4izmLM5jelDZxyj829dHYS3v
-	 Ze5JiZv96G2unA0Zla6wW5pfpJHWxV25C//CzBOmzAQQbtkaAB90EEFRRmaO5XR2sz
-	 JKQ2tc+iCsduQ==
-Subject: Re: [PATCH net v10 3/3] rxrpc: bound DATA receive queues
-From: netdev-bot+sashiko@kernel.org
-To: zihanx@nebusec.ai
-Cc: linux-afs@lists.infradead.org, netdev@vger.kernel.org, dhowells@redhat.com,
- marc.dionne@auristor.com, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai, root@tr0jan.top,
- kuba@kernel.org
-Date: Tue, 20 Oct 2026 20:21:13 +0000
-Message-ID: <179252767364.3135.10345050454011895644@kernel.org>
-In-Reply-To:
- <d74b9bee555058bd56e884f9ef0dab5fb9ccedcf.1792174935.git.zihanx@nebusec.ai>
-References:
- <d74b9bee555058bd56e884f9ef0dab5fb9ccedcf.1792174935.git.zihanx@nebusec.ai>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=3VV6sUu6
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4j8P2S4jmmz1XM4Tn;
+	Tue, 20 Oct 2026 20:21:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1792527691; x=1795119692; bh=aWr+EQV2AqXLdpHg6xfVKso9
+	cQjncAIKwcJkZpbhOMQ=; b=3VV6sUu6XFcb+0fHx+G4gb6Z9HSQ7tBFyCkfJS06
+	uNZLdFRv6Vji+9LXIj0CLFlMq1R4qhJapb2v3JWUk06JasAkhhU9472dM+vsXo0p
+	w77oZiQ843bFLG37mQdR1vex7UHHLVy7rF3+D/zlGW/gcRxNBpD/gYBDBNWQwGfi
+	PKgMaNKgZc+SHkP7nEQYJ0UZ7CR8fBtG7rgEISKBmBo0wCc2EgabPZTB6HHfIe0f
+	MJBFH7LSBDMfeNUPk+l2ZDDPRzb4g9YQMVQgkF1MhQKSx7NdLggX36JMiB8qOnE1
+	mOHNbMYUhKGEsdJt/jkIBgNpbq9Nfrc6BySJq9dp+BkssQ==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id OSQoDqW9Pjax; Tue, 20 Oct 2026 20:21:31 +0000 (UTC)
+Received: from [100.80.231.125] (unknown [104.135.182.41])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4j8P2K1b1Sz1XM4Tl;
+	Tue, 20 Oct 2026 20:21:29 +0000 (UTC)
+Message-ID: <9b33cc28-9e30-4bdb-aa1e-cd8dec149833@acm.org>
+Date: Tue, 20 Oct 2026 13:21:28 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,189 +70,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/2] net/sched: don't wait for RCU when
+ destroying qdisc lockdep keys
+To: Boqun Feng <boqun@kernel.org>
+Cc: Vlad Poenaru <vlad.wing@gmail.com>, netdev@vger.kernel.org,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+ Waiman Long <longman@redhat.com>, Davide Caratti <dcaratti@redhat.com>,
+ Breno Leitao <leitao@debian.org>, Nilay Shroff <nilay@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Vlad Poenaru <thevlad@meta.com>
+References: <20261019170225.729789-1-vlad.wing@gmail.com>
+ <atZtYi_Xnz27O8Bp@tardis.local>
+ <c3de29a9-8edf-4186-bc26-82d1d68c4c78@acm.org>
+ <ateu_3PV81VuFK1i@tardis.local>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <ateu_3PV81VuFK1i@tardis.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On 10/20/26 11:12 AM, Boqun Feng wrote:
+> Is there any context that I'm missing that you want to shut up this
+> discussion and rush the change in?
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
+I'm not trying to shut up anything or rush in anything. All I did is to
+share my opinion.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] rxrpc_input_data_one() (net/rxrpc/input.c:556) now charges every
-  accepted DATA skb, from every call on a local endpoint, to one…
-- [High] Out-of-sequence DATA can deadlock a call.
-- [Medium] When a call completes, the DATA skbs on call->rx_oos_queue
-  keep their charge against the shared per-local budget until…
-
---
-
-rxrpc: bound DATA receive queues
-
-This patch charges accepted DATA skbs, including split jumbo subpackets,
-to the per-local asynchronous receive budget (local->rx_async_queue_bytes).
-The charge is released when recvmsg consumes the packets or when they are
-purged. The per-call receive window limit is now based on rx_consumed
-instead of ackr_window.
-
-Link: https://lore.kernel.org/all/cover.1791994057.git.zihanx@nebusec.ai/
-
-> diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-> index 21be9c86d7a74..9360852604645 100644
-> --- a/net/rxrpc/call_event.c
-> +++ b/net/rxrpc/call_event.c
-> @@ -473,6 +473,7 @@ bool rxrpc_input_call_event(struct rxrpc_call *call)
->  out:
->  	if (__rxrpc_call_is_complete(call)) {
->  		timer_delete_sync(&call->timer);
-> +		rxrpc_purge_queue(&call->rx_queue);
-
-[Severity: Medium]
-
-Should this purge rx_oos_queue instead of rx_queue?
-
-Nothing on call->rx_queue is charged, and rxrpc_purge_queue() only
-uncharges RXRPC_SKB_MARK_SERVICE_CONN_SECURED skbs.
-
-The DATA skbs on call->rx_oos_queue were charged in rxrpc_input_data_one().
-Once the call is complete they can never be delivered, because
-rxrpc_input_data() returns early for completed calls.
-
-Those charges are only released in
-rxrpc_destroy_call()->rxrpc_cleanup_rx_buffers():
-
-	rxrpc_purge_data_queue(call, &call->rx_oos_queue);
-
-Suppose a peer fills rx_oos_queue and then aborts the call. Does the charge
-stay held against the shared local budget until the application reads the
-termination and releases the call, or until a kernel user drops its last
-reference?
-
-Only the I/O thread and the destroy path touch rx_oos_queue, so it looks
-safe to purge it here with rxrpc_purge_data_queue().
-
->  		if (!test_bit(RXRPC_CALL_DISCONNECTED, &call->flags))
->  			rxrpc_disconnect_call(call);
-
-[ ... ]
-
-> diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-> index 73cafe6bfa9f5..6f0ba50097390 100644
-> --- a/net/rxrpc/input.c
-> +++ b/net/rxrpc/input.c
-
-[ ... ]
-
-> @@ -511,17 +531,33 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
-
-[ ... ]
-
-> +	sp->data.charge = NULL;
-> +	if (sp->offset != sizeof(struct rxrpc_wire_header) ||
-> +	    (sp->hdr.flags & RXRPC_JUMBO_PACKET)) {
-> +		if (!*_charge)
-> +			*_charge = rxrpc_alloc_async_queue_charge(skb);
-> +		sp->data.charge = *_charge;
-> +	}
-> +	if (!rxrpc_charge_async_queue(call->local, skb)) {
-> +		sp->data.charge = NULL;
-> +		if (set_last)
-> +			clear_bit(RXRPC_CALL_RX_LAST, &call->flags);
-> +		ack_reason = RXRPC_ACK_NOSPACE;
->  		goto send_ack;
->  	}
-
-[Severity: High]
-
-Can one call use up the receive budget for the whole local endpoint here?
-
-Every accepted DATA skb from every call on the rxrpc_local is now charged
-to local->rx_async_queue_bytes. rxrpc_charge_async_queue_bytes() caps that
-counter at the UDP socket's sk_rcvbuf:
-
-net/rxrpc/skbuff.c:rxrpc_charge_async_queue_bytes() {
-    ...
-		if (queued &&
-		    (queued >= rcvbuf || size >= rcvbuf - queued)) {
-			sk_drops_inc(sk);
-			return false;
-		}
-    ...
-}
-
-rxrpc_adjust_rcvbuf() sizes sk_rcvbuf for about one call's window and
-clamps it to sysctl_rmem_max (212992 by default). That is room for about
-90-100 normal DATA skbs across the whole endpoint.
-
-Meanwhile rxrpc_fill_out_ack() still advertises up to rx_winsize (255)
-packets to each peer:
-
-net/rxrpc/output.c:rxrpc_fill_out_ack() {
-    ...
-	qsize = (window - 1) - call->rx_consumed;
-	rsize = max_t(int, call->rx_winsize - qsize, 0);
-    ...
-}
-
-The charge is released only when the application reads the data, in
-rxrpc_rotate_rx_window(), or when the call is destroyed.
-
-A remote peer could open a call to a listening service, for example kafs on
-AFS_CM_PORT using its shared socket. It sends seq 1, then seq 3..N, and
-never seq 2. Each of those packets is charged and queued on rx_oos_queue,
-all within wlimit.
-
-No authentication seems to be needed, since DATA is queued even while the
-connection is still challenging. Each packet also refreshes expect_req_by,
-so the call stays alive. A slow reader on a single call could have the same
-effect.
-
-Once the budget is full, would every other call on the endpoint get
-RXRPC_ACK_NOSPACE drops?
-
-The same counter also gates CHALLENGE/RESPONSE posting in
-rxrpc_post_packet_to_conn() and OOB CHALLENGE delivery. Would connection
-security setup for unrelated connections fail as well?
-
-Before this patch DATA wasn't charged, so other calls couldn't be starved
-this way. Does this need a per-call or per-peer split of the budget, or a
-reserved portion? The commit message also doesn't mention that calls now
-share this limit.
-
-[Severity: High]
-
-Can ordinary packet loss livelock a call through this check?
-
-The charge is applied before the seq == window test. The packet that would
-fill the hole therefore goes through the same budget check as
-out-of-sequence packets, with no exemption or reserved space.
-
-With the defaults, rxrpc_rx_window_size is 255 and the budget is clamped to
-rmem_max, roughly 90-100 skbs at a typical truesize. A Linux sender can
-have up to RXRPC_TX_MAX_WINDOW (128) packets in flight.
-
-Suppose the packet at seq == window is lost early in a large flight. The
-packets after it are charged and queued on rx_oos_queue until the budget is
-nearly full.
-
-Every retransmission of the missing packet would then fail here and be
-dropped with RXRPC_ACK_NOSPACE. The OOS packets move to recvmsg_queue only
-after the hole is filled:
-
-	while ((oos = skb_peek(&call->rx_oos_queue))) {
-
-rxrpc_recvmsg_data() only reads recvmsg_queue, so the application can't
-release anything either.
-
-Does anything break this cycle other than call destruction? The
-retransmissions keep refreshing the call timers. The call could then stall
-indefinitely while holding the shared budget, which also starves the other
-calls on the same rxrpc_local.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1792168462.git.zihanx%40nebusec.ai
+Bart.
