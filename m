@@ -1,60 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.145.95.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792500909;
-	b=W0Gp1bZRMfYxEf63/JAc/P0bUmvaT31+v8vFLVWGHIYj1d331l3yz/fqZUp0ITdUzesb
-	 nJEAd1/jB/HHwf/O9UMIG1RwN8PfZ3XF0nuRJ5uH8SfmpcQxdOeciZUruMGC6+sxWoN1o
-	 EqWwL2Tt7Tb+uFN8Slwedk5J/wn3TCFe3V2OY9ZBRzjyX6nLmVwf23dOhso+MqvckxeMD
-	 KAFBKGByStuJPjE0/9tsb2VxP6lYOJvbVgIeCKyja8FVj3dVPIfFkMc3ccZsOU9/jpKIg
-	 roLTjE/qzgFcx5DqZRyo4O8/RWGvaT/L9rY5dPZyqlFAJtX/sUb7Cy814Tn6rFcjBgg==
+	t=1792500939;
+	b=Wan4eLQ0nxj75XLrzTUbivjPp0F8luLDxGB11nIDpOs4FC0+PMuQ9/8SK+H+birzxHO3
+	 krXWjjX6vvPsanle54/QYrfGzK/7793uVql+KjKlecWvIHZwjAPh8m+lfuEeE9Ni9qFKO
+	 cgJ6XOyUgsOjqtmnEvJ++WTY3kYmu4zWUfVuZJrZg3JgLLQiKS1NGImY7dRZ6rrQKba8a
+	 WVBfOW44kE8iXj2lEKcfm1L6r4Hdf3t4ZaD0uUokx8JIoPbdPwkqp7q9U1P7gE03LrjXY
+	 HOxMk5RewA+1/v7fGHtpYtPdlQwE9jMlymdERgEHIJ2UPC6kJsn+Wj6PoEHIkossT9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500909;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=/rN1jszK6Prt0JXmM/VVC9bxR5gk6QbRi+899j8yGqQ=;
-	b=LwlZEvPAZvfqluXJmKZ0EwoeMxD8IJCFWTrLX6r4T7RYfGn7izOp/OXXQY3+fXYGzROs
-	 kvrMR4+plnr1133NXjmTNdWB7t6F10COW9nlBZeT28aB65gPohIN64XHyJbrftEVRyN7j
-	 JJtg+Xn74CuXJTC+ptoUMDTVTkqqhEQ0p+1R6E625HrSGLepqkt76d76oQO++kWdC53+9
-	 rilCIlEaOXqgAf5dbTfJGqatIsrwN6eEdo38lXYTl9Igq6oH6gL1y3ZpdutncEog1z5lU
-	 1T2nEU8up3E71c0+SWaT/8oGHVZtXGkhhBEC/h+E7GEH9wodQmY6GCSwRU23atOSVUw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792500939;
+	h=DMARC-Filter:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 X-Clacks-Overhead:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ZYAc1wx3Vua5Vp0s1jMJClpzyO/jsYX8bKYKZg99y3g=;
+	b=H0Mqrwpk2vFialZ/+e75zuTo8TTpXvoXOXxUh2B/2shcQK5g2QAtZm2ZWFzibNZ05rhz
+	 EMlcx/j1kLBuVkCxl5iBmDdY5PjahoEcvpITYuZ7YxZfOKrP5hzVHqWcy7rfDupeh0B29
+	 994KQ/Kmes3BUXYtbB6sXqLrbr77XHszdpMOkxXeFNa1x3RBQLmwothpTl1Iai3yBomHP
+	 L61SBnXsAo/6aOUrS56DVxCBNry/30Ad3GQjhw6mZ72E4qtCEx/7E5+d3WV7SJ5LvvC3Y
+	 KSohHEZx2j4JSuhftJR1nLOgTU968H81ZzeB7yKfQEsucyyBsc4A+XSxT0HQMzgUhDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MnF9adIO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=toke.dk;
+	spf=pass smtp.mailfrom=toke.dk;
+	arc=none smtp.remote-ip=45.145.95.4
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0CB606A31A;
-	Tue, 20 Oct 2026 12:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MnF9adIO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7AF1F000C4;
-	Tue, 20 Oct 2026 12:55:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792500908;
-	bh=/rN1jszK6Prt0JXmM/VVC9bxR5gk6QbRi+899j8yGqQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MnF9adIOkMF9DWYDi7EtSiELWq7mW60krPzrCYqF2bV62U7RMqSmrS5txVv/eYZad
-	 roMPSmsF1VZDsv1ONvHy7bwBZ+LQZ3cA83ruxKNh1sKBiRLGJLheWKSFxOLxGmZzBF
-	 OL0X0+4+m0fE69cphWLfHDeHjka/0Gmgjfb66rrBi9ZUok3QWMMf7b/jYGtXFgajo2
-	 nnw27eq7Xpw1F7WHwHd4YmuEKWwKjndl1w59//pc15z+H6jqERASKMRGzKVyGBmBLc
-	 oQRREJbNdtbhOOCsjFPz1KfveBTef39x5ozpCmidTGP74Dvab5bVfB/9ukiMeNwvoP
-	 Xxjux1NBHTKAA==
-Subject: Re: [PATCH net v2 1/2] net: bcmgenet: recover from a failed resume
-From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, f.fainelli@gmail.com,
- justin.chen@broadcom.com
-Date: Tue, 20 Oct 2026 12:55:06 +0000
-Message-ID: <179250090686.3135.17597197349680697960@kernel.org>
-In-Reply-To: <20261019-nb-genet-fini-dma-net-v2-1-b85f6b92654a@tipi-net.de>
-References: <20261019-nb-genet-fini-dma-net-v2-1-b85f6b92654a@tipi-net.de>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFB1606A31A
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 12:55:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AFB1606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+Authentication-Results: mail.toke.dk; dkim=none
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ cake@lists.bufferbloat.net, Victor Nogueira <victor@mojatatu.com>, Sashiko
+ <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net-next v3 3/4] net/sched/sch_cake: widen buffer_used
+ to u64
+In-Reply-To: <QDISC-5RTM.v3.r0.20261020053711-3@mojatatu.com>
+References: <QDISC-5RTM.v3.r0.20261020053711@mojatatu.com>
+ <QDISC-5RTM.v3.r0.20261020053711-1@mojatatu.com>
+ <QDISC-5RTM.v3.r0.20261020053711-2@mojatatu.com>
+ <QDISC-5RTM.v3.r0.20261020053711-3@mojatatu.com>
+Date: Tue, 20 Oct 2026 14:55:36 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87tsmgtttj.fsf@toke.dk>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,189 +58,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Jamal Hadi Salim <jhs@mojatatu.com> writes:
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+> This is a follow-up to commit 4c660ee8c809 ("net: sched: fix 32-bit
+> backlog wrap in gred, bfifo and plug enqueue"), which promoted the
+> backlog + length admission sums in gred, bfifo and plug to u64.  CAKE's
+> own memory accounting has the same 32-bit wrap.
+>
+> The issue:
+> cake_sched_data.buffer_used accumulates skb->truesize and is compared
+> against memory_limit:
+>
+> 	q->buffer_used +=3D skb->truesize;
+> 	if (q->buffer_used <=3D q->buffer_limit)
+> 		return NET_XMIT_SUCCESS;
+> 	while (q->buffer_used > q->buffer_limit)
+> 		drop...
+>
+> buffer_used is u32, so once the resident truesize passes 2^32 it wraps to
+> a small value, the <=3D test passes and the drop loop is skipped even
+> though far more than the configured limit is queued.  memory_limit is a
+> u32 attribute (TCA_CAKE_MEMORY), so buffer_limit can be as large as
+> U32_MAX and never caps buffer_used below the wrap point; with a large
+> memory_limit the queue then grows until the machine is out of memory.
+>
+> The fix:
+> Widen buffer_used and buffer_max_used to u64, the same shape as the
+> gred/bfifo/plug fix.  buffer_limit stays u32; the comparison promotes it
+> to u64, so the bounded queue stops at the configured limit below 2^32 and
+> the counter can no longer wrap.  buffer_used is subtracted on dequeue and
+> drop, so the widened type flows through unchanged.  The ACK-filter
+> replacement applied the net delta as one expression,
+> q->buffer_used +=3D skb->truesize - ack->truesize.  Both operands are
+> unsigned int, so the subtraction is evaluated at u32 and a larger removed
+> ACK wraps the delta; the old u32 accumulator folded that back to the
+> correct net value, but the widened u64 accumulator would persist it as a
+> roughly 4 GiB over-count.  Apply the replacement as two exact operations
+> on the widened counter instead; the queue already accounts ack->truesize,
+> so the subtraction cannot underflow.
+>
+> Widening the counters alone is incomplete because cake_dump_stats() still
+> exports buffer_max_used through PUT_STAT_U32(MEMORY_USED, ...), and
+> tc.yaml declares memory-used as u32.  buffer_max_used only ever rises, so
+> once the widened counter passes 2^32 the export reports peak - 2^32 for
+> the rest of the qdisc's life.  Clamp the exported value to U32_MAX; the
+> counter itself is unaffected.
+>
+> The dump path runs without the qdisc lock: tc_fill_qdisc() passes NULL to
+> gnet_stats_start_copy_compat(), so the reader races with the enqueue-side
+> update.  READ_ONCE() is not an atomic 64-bit load on 32-bit CPUs, so a
+> reader can observe a torn high-water mark and report a bogus MEMORY_USED.
+> Publish the counter as u64_stats_t under the qdisc lock, which the enqueue
+> path already holds, and take a seqcount-protected snapshot in the dump.
+> The counter stays u64; only the exported value is bounded.
+>
+> Conditions to recreate the bug:
+> CAP_NET_ADMIN (root or a user namespace, the qdisc attach is gated by
+> netlink_net_capable(CAP_NET_ADMIN)).
+>
+> A TUN device is needed so the root qdisc can park packets instead of
+> dropping them.  Open /dev/net/tun, request TUNSETIFF with
+> IFF_TUN | IFF_NO_PI | IFF_BACKPRESSURE and keep the fd open without
+> reading it (run it in the background and stop it at teardown): with
+> IFF_BACKPRESSURE the full tx ring calls netif_tx_stop_queue() rather than
+> dropping, so the queue behind the qdisc can grow past 4 GiB of resident
+> truesize.  A plain 'ip tuntap add' attaches no fd and does not request
+> IFF_BACKPRESSURE, so it cannot park the queue this way.
+>
+>   ip link set tun0 txqueuelen 32 up
+>   ip addr add 10.99.0.1/24 dev tun0
+>   tc qdisc add dev tun0 root handle 1: cake memlimit 4294967295
+>
+>   # Then push more than 4 GiB of resident truesize through the qdisc: six
+>   # UDP senders using large SO_SNDBUFFORCE buffers send 1400-byte
+>   # datagrams (the reported OOM witness used 6 workers for 100 s on a
+>   # 12 GiB guest).  On the unfixed kernel buffer_used wraps, the admission
+>   # test passes, the drop loop is bypassed and the guest runs out of
+>   # memory; with the fix the counter passes the limit without wrapping and
+>   # the excess is dropped.
+>
+>   # The ACK-filter over-count is a separate corner: it needs ack-filter
+>   # enabled and a queued pure ACK whose truesize is larger than the
+>   # replacement ACK.  Use a fresh interface (or 'tc qdisc change') rather
+>   # than a second root 'tc qdisc add' on an interface that already has a
+>   # qdisc:
+>   tc qdisc change dev tun0 root cake ack-filter
+>
+> CONFIG_NET_SCH_CAKE=3Dy and CONFIG_TUN=3Dy are required, and the
+> memory-residency recipe needs a root-run sender envelope with enough
+> guest RAM to hold the queued data.
+>
+> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260818095927.15901-1-jhs@mojatat=
+u.com
+> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818095927.=
+15901-1-jhs@mojatatu.com
+> Link: https://lore.kernel.org/netdev/20260818095927.15901-1-jhs@mojatatu.=
+com/
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] After a failed resume, the next Wake-on-LAN suspend can no
-  longer wake on the user's configured wake filters.
-- [Medium] When WoL is not in use, the new `!priv->tx_cbs` early return
-  in bcmgenet_suspend() (bcmgenet.c:4358-4368) does nothing to the PHY.
-- [Medium] On the new ringless WoL suspend path after a failed DMA
-  rebuild, the receiver is enabled while UniMAC still has its reset-…
-
---
-
-net: bcmgenet: recover from a failed resume
-
-This patch changes what happens when a resume fails in bcmgenet_init_dma(),
-so that close and suspend can still handle the device. NULL rx_cbs/tx_cbs
-now means there is no datapath. The block stays clocked on failure, close
-reattaches the device, bcmgenet_suspend() gets a new path for the no-rings
-case, and the WoL resume path stops the PHY before it rebuilds.
-
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index e8908916558b1..34acd3c47cc55 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-
-[ ... ]
-
-> @@ -4288,6 +4302,9 @@ static int bcmgenet_resume(struct device *d)
->  		bcmgenet_rdma_disable(priv);
->  		bcmgenet_intr_disable(priv);
->  		bcmgenet_fini_dma(priv);
-> +		if (phy_is_started(dev->phydev) ||
-> +		    dev->phydev->state == PHY_ERROR)
-> +			phy_stop(dev->phydev);
->  		enable_irq(priv->irq1);
->  	}
->  
-> @@ -4310,8 +4327,9 @@ static int bcmgenet_resume(struct device *d)
->  	/* Reinitialize TDMA and RDMA and SW housekeeping */
->  	ret = bcmgenet_init_dma(priv, false);
->  	if (ret) {
-> +		/* Leave the block clocked, close and suspend tear it down */
->  		netdev_err(dev, "failed to initialize DMA\n");
-> -		goto out_clk_disable;
-> +		return ret;
->  	}
-
-[Severity: Medium]
-
-Does this return leave UMAC_CMD at the reset-default 10 Mb/s speed when the
-next WoL suspend runs?
-
-Earlier in bcmgenet_resume(), init_umac()->reset_umac() writes only
-CMD_SW_RESET to UMAC_CMD. That zeroes the speed field (CMD_SPEED_10 is 0)
-and the duplex and pause bits.
-
-On the WoL rebuild path, the new phy_stop() above also leads to
-phy_link_down()->bcmgenet_mii_setup() with the link down, which clears
-RGMII_LINK.
-
-bcmgenet_mac_config() is the only code that restores the speed and duplex
-bits and RGMII_LINK, and it runs only from the phylib adjust_link callback.
-After this early return, bcmgenet_netif_start()/phy_start() never run, so
-that callback never fires. Meanwhile phy_init_hw() and genphy_config_aneg()
-have already restarted autonegotiation on the PHY, which is still powered.
-
-On the next WoL suspend, the new !priv->tx_cbs branch in bcmgenet_suspend()
-returns 0. Then bcmgenet_suspend_noirq()->bcmgenet_wol_power_down_cfg()
-does this:
-
-	/* Can't suspend with WoL if MAC is still in reset */
-	if (reg & CMD_SW_RESET)
-		reg &= ~CMD_SW_RESET;
-
-	/* Receiver must be enabled for WOL MP detection */
-	reg |= CMD_RX_EN;
-	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-
-None of this corrects the speed.
-
-If the PHY links at 1000 or 100 Mb/s, can magic packet reception fail even
-though WoL looks armed? Together with the HFB_CTRL write below, a failed
-resume could leave GENET with no working wake source.
-
-> @@ -4340,6 +4352,22 @@ static int bcmgenet_suspend(struct device *d)
->  	if (!netif_running(dev))
->  		return 0;
->  
-> +	/* A failed resume has torn the datapath down already. Resume still
-> +	 * enables irq1 on the WoL path, so it has to be disabled here.
-> +	 */
-> +	if (!priv->tx_cbs) {
-> +		if (device_may_wakeup(d) && priv->wolopts) {
-> +			/* No rings to receive into, so no filter wake */
-> +			bcmgenet_hfb_reg_writel(priv, 0, HFB_CTRL);
-
-[Severity: Medium]
-
-Does writing 0 to HFB_CTRL here turn off WAKE_FILTER wake completely?
-
-bcmgenet_wol_power_down_cfg() reads HFB_CTRL after this point. It unmasks
-the filter wake interrupts only if RBUF_HFB_EN is still set:
-
-	reg = UMAC_IRQ_MPD_R;
-	if (hfb_ctrl_reg & RBUF_HFB_EN)
-		reg |=  UMAC_IRQ_HFB_SM | UMAC_IRQ_HFB_MM;
-
-MPD is enabled only for WAKE_MAGIC/WAKE_MAGICSECURE. With wolopts set to
-WAKE_FILTER only, the system would suspend with device_may_wakeup() true
-and no GENET wake source.
-
-A few lines below, the normal WoL path keeps only the RX_CLS_FLOW_WAKE
-filters armed:
-
-		if (priv->wolopts & WAKE_FILTER)
-			list_for_each_entry(rule, &priv->rxnfc_list, list)
-				if (rule->fs.ring_cookie == RX_CLS_FLOW_WAKE &&
-				    rule->state == BCMGENET_RXNFC_STATE_ENABLED)
-					hfb_enable |= 1 << rule->fs.location;
-		...
-		if (!hfb_enable)
-			reg &= ~RBUF_HFB_EN;
-
-Could this path use the same selection? Because tx_cbs is NULL, the
-following resume rebuilds the rings anyway. The device is detached here,
-so the WoL setting can't be changed from ethtool (it returns -ENODEV).
-
-The commit message says:
-
-    leave the hardware as bcmgenet_resume_noirq() set it up so
-    close and suspend finish the teardown once.
-
-Is that accurate? In bcmgenet_resume(), init_umac(), phy_init_hw(),
-genphy_config_aneg() and bcmgenet_hfb_restore() all run before
-bcmgenet_init_dma() fails. bcmgenet_hfb_restore() has already re-armed
-every rule that is not unused.
-
-The commit message also doesn't mention that configured filter wake is lost
-after a failed resume.
-
-> +			bcmgenet_intrl2_0_writel(priv, 0xFFFFFFFF,
-> +						 INTRL2_CPU_MASK_SET);
-> +			bcmgenet_intrl2_0_writel(priv, 0xFFFFFFFF,
-> +						 INTRL2_CPU_CLEAR);
-> +			disable_irq(priv->irq1);
-> +		}
-> +		return 0;
-> +	}
-
-[Severity: Medium]
-
-With WoL not in use, can this early return leave an external PHY powered
-for the whole sleep?
-
-The non-WoL path that this skips calls bcmgenet_netif_stop(dev, true). That
-calls phy_stop(), which ends in phy_suspend() and powers the PHY down.
-
-bcmgenet_mii_probe() sets phydev->mac_managed_pm = true, so MDIO bus PM
-won't power the PHY down either. bcmgenet_suspend_noirq() handles only the
-internal PHY.
-
-In the failed resume, phy_init_hw() calls the PHY driver's soft_reset and
-sets phydev->suspended = 0. With genphy_soft_reset, BMCR_RESET clears
-BMCR_PDOWN. genphy_config_aneg() then restarts autonegotiation.
-
-bcmgenet_init_dma() then fails before phy_resume()/phy_start() run. The
-PHY is now powered and linking while phylib still has it as PHY_HALTED.
-
-This doesn't show on the CM4's BCM54213PE, because its phy_driver entry has
-no soft_reset. It looks reachable when wolopts is 0 and the external PHY's
-driver has a real soft_reset (such as genphy_soft_reset).
-
-Does this match the commit message's statement that suspend will "finish
-the teardown once"?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019-nb-genet-fini-dma-net-v2-0-b85f6b92654a%40tipi-net.de
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
