@@ -1,61 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792528486;
-	b=zVMHPQeyuPAtUK14pjUhhSzQCXUbzcDMxm15TZqoOciPe8I1aYTaGUQBS4imB0zsvODi
-	 WLSvJEa3B2omwCQ5UMSn0toRY7Bjpuiwu9nTy328YWJ+KjG0jI5SrDj8PxgxY8MkL+ciq
-	 /gChtbK75hzQZJf1W7LUXp6sr8Vead2o0MFj5hc0z3+xPupIh9nwH4IAnTmo7FkEYp9nB
-	 +AGsm+sfjYbM4pJt/HrvYTsALOazUsy794WrVKHT2QVwdNHrc6okqzjM3g8gunMdKsV7s
-	 sVSNYU+MsSk0I9urCC/4MrL06UdHyZN3rV5B+QJirZ78kAjP0JlQWs9pj4phbh7btKg==
+	t=1792528563;
+	b=JHUuO8maeBkl7T9ltAN3Es/nxVGGpQs1+FZ/WpAsSbBCS2UL97SEphTZeaTyJinSVh5+
+	 yXlE4IgUcxDTxefTvq0zZRVVUvYzCL4AhuafwWQQqKNaJ8Ob1rEhmGclT0hDNZ0YNMR9L
+	 to/GAZaexbjsB2LNp4Pqz3MvrLGlE2YK6hPSEOZN5MPOiHf0gmnQF/zcNnpaw02oAPAJB
+	 20VE1CMer2Ygr2Z3pIcFzd7oqeO4hMpisgxwIHwgbrsv8Phxkj4tJh3EnTxinq8tlrD6b
+	 nPHfr4KNbEHZk9upvc+Y+cS8UmB5chVP9Lwj89ymAlKKwLI7noEftfANBvkGcrZ8d1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792528486;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792528563;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=O4ssWf9mPwzFD/vOFS0ydL59N5Jw/IIth11ALEy8fqA=;
-	b=0hV6PPE5RDCMeiO5RbhWuPE86WT+NVKudwOOegiH+McmJR7Fi/O50h/73SI978MwdXQL
-	 8uctuJu2q4BBfKBK6CJasIMikJLrf59cFu27eUWJMfa6QajBmXKrOtp+vzepazliGXq0s
-	 ZV/IKDVRcLUcvr8YzDddNitqk6MNLrwWEM2vALZWrH0bv5m3rULrqff43+5kvk9dKeeDT
-	 DbezO/aMjcNsUKh3tW65Gm0qDyDX7wGBbyKzRszNNhfIXjV+NV5sdc1kqcclnMcl9GdtQ
-	 ohdd1b/micTs1rTt0ifEaMpdbYkGjcv6USKl/Mxgk9MwAhXU45hW0n3VYpvCJkFvr9A==
+	bh=9D1PBb71/gAByJ4z+WJJSzFWzWkmuaIL2pUlNA0bFLw=;
+	b=HTpOSsDVkvvGQniJiOQBMzJGhdZz+6kao9RyNwUVSbMDrVwQCIRo/JQMJqiSAK98MtHx
+	 WIGkn6h2WjGIxS+rOvc5cih56NJraUEFJAL4LyNKaum09uANUTm9Wf1m6HFmiLcC0E/1+
+	 dUHG4M2lZVXJgYyXLUfAyl4MxYJgbWODrT1EBlQqasdNLkyNXztV/Pur690dm/IGfz892
+	 jz89FQ1ZGh61vH7YN57pExdfFYLvPQE5ewTcZvHfCtE1eFJxOlSddreKhx8z9FMRrxzPP
+	 P3weYMIfe5WW9bBDg0DFJJ+XRlIDygQkZocMrOIbwIxpKEL++3whTzEsQCKxU47KcVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PECMHDer;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LiM40T26;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C38606A319;
-	Tue, 20 Oct 2026 20:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6517606A31E;
+	Tue, 20 Oct 2026 20:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PECMHDer
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FA11F000C9;
-	Tue, 20 Oct 2026 20:34:45 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LiM40T26
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FA71F000C9;
+	Tue, 20 Oct 2026 20:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792528485;
-	bh=O4ssWf9mPwzFD/vOFS0ydL59N5Jw/IIth11ALEy8fqA=;
+	s=k20260515; t=1792528562;
+	bh=9D1PBb71/gAByJ4z+WJJSzFWzWkmuaIL2pUlNA0bFLw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PECMHDerYPhfsqzwFL6HszqczvA7pEc2qIFewtOs08m4m/cQblAeb7exgS4fa4yOD
-	 1B98hQK3145lEZhPfljS1AV3olSXYnrcsnmilnRyIenPmo5dCiNRyGexLhnZQAM9mc
-	 TI/uTnaD/CnIhmHqW5gh04107Y0WVQ4kcGOjSFQ8r5BYyJB3asmSVay7cyYWnjfb+B
-	 ZFFJO+9ImfE4aruJWgPJacRqE+6ik/dY8KG3xDiqDKVOsjB40gRLGT7tH3r1Z4V+AI
-	 kMjRfQ3UrgMdq4mHR5IE1qeBJuj+B5mYnwH1wkCvJE4+9nywtUyVoMtbHnJtADW8tA
-	 TD+Pru4GImG2g==
-Date: Tue, 20 Oct 2026 13:34:44 -0700
+	b=LiM40T26FGAR/0Jgm3M8vaoVhptkJyOqUPh564+gfbGb352XSYYs9aN+UALBCfXVk
+	 Ak+BNklF0yQjIYywwuEDhiYkqYe9JYPKX/JyDArvhp47Sn8xfFFCzu2NPJY/rvVSm8
+	 FtA2K7FdfhrhAx7Au4CQb6pp54FWmAhE2nQD/Sm6jfxNqxoPeXMGL7HveM0VJ0xy9P
+	 aE/JIRg6Td4t/47OFNn3rvW+ejFFykqz2PB/bBn89bYvg874S8KTePhqSQ54PEK/oB
+	 UJU66lDVc7YV48IsnUzhpQ4Tr+QVKFYDUy5yAFjjxZnNR0eax7yoeMxNNplCfuIBGd
+	 gjqbzvbzYWKLA==
+Date: Tue, 20 Oct 2026 13:36:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com,
- vikas.gupta@broadcom.com, Dharmender Garg <dharmender.garg@broadcom.com>,
- Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>, Ramakrishna Koduri
- <ramakrishna.koduri@broadcom.com>
-Subject: Re: [PATCH net-next v3 5/5] bnge: make NQ0 persistent across
- open/stop cycles
-Message-ID: <20261020133444.3395670e@kernel.org>
-In-Reply-To: <20261013200645.1346299-6-bhargava.marreddy@broadcom.com>
-References: <20261013200645.1346299-1-bhargava.marreddy@broadcom.com>
-	<20261013200645.1346299-6-bhargava.marreddy@broadcom.com>
+To: Rishikesh Jethwani <rjethwani@purestorage.com>
+Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH] tls: keep TX and RX hardware offload on the same device
+Message-ID: <20261020133601.2081ab1f@kernel.org>
+In-Reply-To: <20261013202647.2206263-1-rjethwani@purestorage.com>
+References: <20261013202647.2206263-1-rjethwani@purestorage.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,10 +63,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 14 Oct 2026 01:36:45 +0530 Bhargava Marreddy wrote:
-> NQ0's NAPI keeps running while the interface is down
+On Tue, 13 Oct 2026 14:26:47 -0600 Rishikesh Jethwani wrote:
+> +	       rcu_dereference_protected(ctx->netdev,
+> +					 lockdep_is_held(&device_offload_lock)) == netdev;
 
-Sounds like abuse of netdev infra. Creative reuse of this sort makes it
-extremely painful to add stack-level features.
+Too ugly, add temp variable, pls
 -- 
 pw-bot: cr
