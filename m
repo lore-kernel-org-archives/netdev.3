@@ -1,101 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.40
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.53
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792478006;
-	b=PXO6U+kkxbRxyC1zz/zjBgEgiSLiemayq7ARilU3vU0szr+E9j2K7ox0bosIruyjWCEz
-	 htN67MB2WdATUJQw4htEQicHzMsSUq3V1m4Uqixm+mbHhPomAwwS6CFcGGOWlunjo36pG
-	 qF6YT9/2+K+lfZD9W5zHxostbuuVwhQWe09eMq965kf/QKoObdul4YN5n3chJTFbnS6j4
-	 nkwXC3Jgfo8P9/L/Z+6aK2LirNZm0wR+3aw1iGeNDl9DFfCZJQbbtrgRC8fd9jE8Yzfyc
-	 B4iK6OAzQkbT9b3L/Qx47/w0hvzG8MlTO4Gs9J9vtKU2k4qsPMdTOtE3rbOEccvD6WQ==
+	t=1792478126;
+	b=3siv+noHVMM6WJNrHxogHI9vq5yu4QzGsVQXTnRfz0gkkp++Yb/D2xLR8Su8PVgKs/xs
+	 3kxdKXn0gkSGAH9TedyqhkBH4BjKMiMYij1QUe8oQA6Er6wHugxc3JBCvPcvOHKoXR857
+	 2OT3Q3se76C1zyDh6izXMOdzOhsCF0vHl8ZabhbL/pbCFUSK4BuzAbFrTWEsTWJ6qWV7c
+	 ncoXPzbrSXIl1Upv3ckKAiRqCdbeYriPlvPCI//WzUDfHVQwdwKfbQ44qIRzjmrAhpUZk
+	 OZ3Xk6UfvGeemwhzy8tR7LRWIersc4x+NQZmYVYr6r6P8w5VYYzkLCEgt8o2jdbaPDA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792478006;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=XGEnG6SK7p+aoZFFS5/l/2WDyW89SuHgKkeTRJz7IF8=;
-	b=OsNX+5FRoHQjERycj3jJ+PVs2Fj9XGl+BtoasB+xai2yTdttyKxkOGUiuHLo4V18AR/9
-	 nuqVNGiJT7+BVhCVWBjaLCuiwYU3TIFHNLZ/4LIIsVCPqIkV/IeqDSmVpjHHa/EB/To9r
-	 RLpH/6EgrAJN9XvwnTeTLe/8vIgBweFJH3QR+8mI7QU9ygkoIw0gi51YIuBOQSWLtcNNR
-	 06HsYmzh9qP89mceVmwBE1hKFB6O9aJRYR9CFnaFYHLBgLF6MTBr0tjiGDqeJDB7HbjHA
-	 waA+pUKuoErB0hUdtwXez48q5HARZqSIVr3e0X6pYsxKzwlHgp5444BuWIrXT8WB+Kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792478126;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=OQoTQKp69zwalft8c0xKATXGQMtLqX55wVubm4cBdtk=;
+	b=YmLGS1eufP3bclSmxTw1/6QqC6iM46nG3NOH3+hrN/e4q05pQhNV1TXXHjKGgi33E+cH
+	 wOSi6GUcEO20GNSYwTcJmDrhoQp6us00nSWFMFxGT8u+LC0L0q8c59Umbw7+x9cHzOOvd
+	 c96N8FdqhhYiPtkOX8pSbM3hcHhfIBeqI+0CHhtTeZ26HKTzTCVi9iJU1XGAwfTU0x5NW
+	 1NHIHMSZLAriSz/V+BspJo0OX5yJva1emp4S9FudEs3XFmS65cUKAJWL+SIGurr75Or8a
+	 5AtEkMYAQTOCY06eTDGj405xWwT9AZBxuW02eM0GJZMjFiOwRODvU9SueG5b+om9e+g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Iv6ZsOMu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.40
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013040.outbound.protection.outlook.com [40.107.201.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JZ74QMfw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.53
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04303606A31B;
-	Tue, 20 Oct 2026 06:33:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04303606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DB0606A31F
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:35:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4DB0606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Iv6ZsOMu
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TKsMaQ2ppTeJyBdAIb/NXItspdGfttusJwUElmbykS7/XdAeg+m0/qgmegIOiQdsE09afcVvxzLCZJLD643qS3VjQfk7ckcsoXrLYm3hEvfbbb4WiFc83GZG5yiGicaH3d4XAXAljV4ej0cFoH1x13LVXHipU/iqaAkdsMinWy0rNLYKPNUORF2MIel98nN+kfnuKOj6w9KFeY8FVmb2mByUzn59OY7TXv6cYEdlNykDRHkjYcGD+6QUMRFehlcgLo29rKmxZ6USTmCT42nC8RJQB4lcmuI7PolIBfe6R1vpd6YDFRpH/O3rj2S6EhrWNkQheeVlow/v8+F08hoduQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XGEnG6SK7p+aoZFFS5/l/2WDyW89SuHgKkeTRJz7IF8=;
- b=oCM7PtTyavQp6UqwCRJyJwSBH78n15YfO0vwxZwXK0I3ZSTl1q/RWMxQL3QKZPtH7iAiUWd0fZB0Ym2lcMm5RINhhmTF8tQeMlrEjVAanLr6vaWURnBsFY63iUGKdoYhQ+2N71HuYDngeGUPUdb2IVhP5BBJ75uHxQF8pJ8cNDUC7GpiQUb9pisPVKPHRyAPNNxM1cUqyZaz8tyJrDLaqjXNSQtl3bwbhs1qBmRNF2lo+Qj8w8wr+R7kdQLY7lpb3mBLT8/j8/2ysvGypq3GlawIiHuZUL8fApVEcV6sDEa7ofXboFQvlF9aC5meVlfPF3i9HbBHYycN4PKQ7xeVpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XGEnG6SK7p+aoZFFS5/l/2WDyW89SuHgKkeTRJz7IF8=;
- b=Iv6ZsOMu2K4+kP3KWuBCXrnqnE2j00q1sb1YQFnTkWrsJOebuNo5g5vbqehHO6qafPuvvYpabu4w/OChsPWb6njErv3A4aTlfgtSUT62Bn+0Z966w2f696yPdlKe5mo8gmvzPAW84RxNNOx2pCoe/HHEm05P1/JQPBM+i4V2bhrzuG8mqTgxOtluFHQpc4CtXrlGHRGPwpYlw0o8NTex3H/89krG4ATRZ564ozaYRoQcVGVtqRGw6sTDsQS3wg6+vwalQVB+Hn4p/U+agvKS/joAl22smWxWAXoFjekZpb5o/3f42RkMtynHgf3DU9fR6DUtX5jE5ZuJZyP+hUo7vA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15) by MW4PR12MB7189.namprd12.prod.outlook.com
- (2603:10b6:303:224::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
- 2026 06:33:22 +0000
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0546.012; Tue, 20 Oct 2026
- 06:33:22 +0000
-Message-ID: <12f872fe-abeb-433e-8221-ceba1427f371@nvidia.com>
-Date: Tue, 20 Oct 2026 09:33:16 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/3] net/mlx5e: Fix CQE moderation mode reporting and
- control
-To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Joe Damato <joe@dama.to>, Leon Romanovsky <leon@kernel.org>,
- open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org,
- Mark Bloch <mbloch@nvidia.com>, "Nabil S. Alramli" <dev@nalramli.com>,
- Rahul Rameshbabu <rrameshbabu@nvidia.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Yael Chemla <ychemla@nvidia.com>
-References: <20261014124704.1017782-1-tariqt@nvidia.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20261014124704.1017782-1-tariqt@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL0P290CA0011.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:5::13) To IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=JZ74QMfw
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5bcb4f23ddeso2792545e87.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:35:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792478124; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KVewS8ntKunnf5BJe1FEOuWPntm58canClA5NnZYiApDPow2Wnt96y4Q5pZvcKWyCI
+         fFYeP1B3tHs7vj1SnyyvUyAm+XnCWEDslSyQhVqMRV0BcQUukWlkYLk+mmAolFvsKhNQ
+         6gNBEAianxWDdTa1zoljVtP7wzftALhsyNUNTl4N72uskY8DaD3isomw08K/BaEc+xKz
+         7QOZtETQx1XHs80dcBZaL4BKNzREMkuMjPs5Z8aG/fd2TgwnErb9lXwvKoA6hjgTWxvx
+         fjrE56WZRjzx9Hm5R9FGXYTWl9rqMiDD2OgxywP358KMtJ16xHlWjdpJuUptNSCkF48J
+         OFhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OQoTQKp69zwalft8c0xKATXGQMtLqX55wVubm4cBdtk=;
+        fh=6stTtrFeHHBq5eu90RORS/eooQy6Kf25x0IgNCGhZ3k=;
+        b=OZfnXm8UDi06bb/h5xnBxYgqnHh8gdezpwhTkn6ApXs+Ib9XADktxN6GaGfeT4o3hB
+         om+QXUGDFDCLu0uqWJNUfHQEq3lSCRALfH32I01TFgMFF+XKgX12XZ1rXXafpctBlZG5
+         SfPtyKA76dHvCK04d/adY5tPwVkpeTkclNsd3zZXW08FZ/1vqSz92vgOMZQ6362lThTr
+         4+sULb/cpsGkGzTnwE01C1XI0d0ukvqPfBDv4Y6+65L/UrX5hkVAAaQWSb3PZkmZha3d
+         /QOLUbYIAjiuQTQfZHGYj1pRZKd0QyMCIWSD7+3UGWlHZqseIsACVRJZw7n7+jiryJja
+         f/3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792478124; x=1793082924; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OQoTQKp69zwalft8c0xKATXGQMtLqX55wVubm4cBdtk=;
+        b=JZ74QMfwflYx2KrfRKL8OB86rBTNIBBLbD5SeLzYwVnY8gnkr1s9daBAnTD3CO0m+S
+         QUxp96nRchqvrU+TnMXPan2qGkVvlBeNZETERxhm5D9pvIYSNBNOcmGhgEzJad1ljQHX
+         jilHJYy3udvhIwIzqDh6KELFoCDGXpLiF6/g2Qt19tPUHBArURe1TO04cfiX39/v5PC3
+         gB9I61/aRSvenkimYYwEl+eyu7lBgrr6VRUBV7JFVIX/8UGASPGsy3ub4a0cSfareBOj
+         HGs156cv5HWcQBmySBMPg/ZxNC/uOKeNheJr2yi8qhdDVQT7pZ1/x6Uot+nkz2y8ltxc
+         PIkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792478124; x=1793082924;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OQoTQKp69zwalft8c0xKATXGQMtLqX55wVubm4cBdtk=;
+        b=SdTDKrC0n+T3CjDlJYWpezndv0S5dJG5UzH8YECf+j0vAmxUhigY+n3f1Fgjtfb1P6
+         BOs6l9GAbs4p7BE3eiWEXR/tfufOGKlF0sCLagvw4ANfUp0Xy9IjNX+Fvd5OBqLqyxj1
+         Kdp69C/jA4vCIbOXXM0tNyBNAocbuZ1MPCTlUVVssgofdPgMtECdseDLnBb96YIpKNfE
+         5FgNGq3YPZfLnQG0EohAwrDAe7iOskL10MQ082OK6ROVBro6hDuCcjhWotfSmWdzWauX
+         FNymcNWSiupfrMKKXuUXNMzrv0JaLFRjMBQEDmA7CPOAOrwRX61p3l7Kd3FFv1sFKlNp
+         3NHA==
+X-Forwarded-Encrypted: i=1; AKwUvBx9KylaXk6xHyRINghfMVkf5ep+Fu5J4Md4+qZW8qCntBpeAvtxF+gVXCtUBNPH8Nx65wFg5H0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIpFkqpHxPZn0wWZ6TF/O7x2NmTSnWZ5bMmGZLWQYnCmApJEwQv
+	UiRaM93uhcXZ432UlmYV4BU1mMYOUpUOs8cg/HlY/pA4itJ/LwZcXHPBYKp9lmBJ6OcF3Sksdzb
+	pfZFqW4PMtCLqP5o8MwrTWPceRfevx78=
+X-Gm-Gg: AYBFou3C/2mhCyXb/ZxrQMj6gNICexqUOyj/0TOM6jmmxF1S49jioc+Zl/FXq7G2B2G
+	jvXH8lvhCCp9VMFsoo8ZQGIlSFOs/D02lrMKIJD84+3S1BbzDOurcHyEdpa2AHFd76EsjJxSuA6
+	MSrOCIptCDMise/GC3VS9roAVDadiZIhgAG63+zBmp5U9gj8MfUGrXc4DofMs4G2+VACHnc3Fy+
+	e9gmYQVB07OMGjegk9j866PZ4hs4IWpw2JDI57FbItSjRFFbGETFlsiwGiGwCE4cqESbSyoHIYX
+	6kRJbJr/XJRuOD4xtU7Hn9wNvtZtxMcbJQ/NWE0AVj1dvT/XgyZwOyptq5zNFuWtrS7VHE0c9Ld
+	TeEGbw+Omoq/x1CZ4fUKHdmn7dV0x/UCmX4xJn+MFaxczXcQGmeX8E7JvhKV5kcjqU+OEAA==
+X-Received: by 2002:a05:6512:3da4:b0:5bc:d9d6:6aa8 with SMTP id
+ 2adb3069b0e04-5be50a49e8fmr3342745e87.23.1792478123701; Mon, 19 Oct 2026
+ 23:35:23 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,117 +104,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|MW4PR12MB7189:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd24c330-9114-4de2-bf8a-08df2e740970
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|261009223027099003|10067099003|56012099006|6133799003|22082099003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	8PuIP+h7vusrmkCTYxoYk3HDhMJ62Vtgd11Cn/WoXG9iwa590eY93xzqOTcXUYI0+PCMhOFR5zgUoJoUkpuKq7UCHM9yR0e+q+KgQci2ewnTUGBLaT5FBH7fRwvku4qvBkAYB7t4s7Zy40D66E5zkNlCS5lEicpwhJbpjJvT1FW9PJkDoACIPGMFWybDCnYuLws3gttCkPUQyXOxMeqaNhzH/Qi1tLFq+aYhwGXn1XumzTv/0Yv8WGMAkqVXgm9AamJlnThwsHBZcbofAd7zeLNeSLngMDZ9qUhhRNnGN3+PQH8GeIf4mnLtw/2nWz7Vtb7qXRDEFSe3bWV4NZ5gKsSuhqLUxEqt+N5/noJBNedtMsg23L6R5mpSRebuaSCed/L3w2VqywJfOSgW2DslIgStEiDFCLXF8qkTx+yutxpqPaq7G4/5jySyzlG2AWXsAkw4IpPVUU3oNlJrP7Abm1QCFsQ1iwZKfbcH2A1ltVjOMP7uzE/O7FFeZG6KmGoUxoC/r3H/LML7atLkDbnb+6dwXG0hnRAn9UNZ7YKqYaay4nVU7eAg+g/+MTI7XW7bNpyTz2lnCOzKgJtjHneVcxHYhB2ALsV+Eig7JS8a0NCX3DWVNiZsNlM4CkGVnfahzmVBBg7GKGkCBZ93MU593VfY6OpvFJDqzR+44LUEyH8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(261009223027099003)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?czV3WUcyWjZsZlhGZXVDdVd6WkllY2FuTUdOYU9xZ2UvU29vZ1J4Zk12eTlL?=
- =?utf-8?B?K0laRjliTWZCRXRwaXg1LzFYbEVIZEpuTDQ5Q2hLWno4MU1kVzZnUFQva1Nr?=
- =?utf-8?B?WFhUS3FYV256TXMyWW83SW9kV01nY0NQdjRTclp3YTJaSndiYlY5Mkc1SEJN?=
- =?utf-8?B?VThzMk0zQmcxVmdCMTM1Z0NGUXR3TENsSU9ZSFNuTm9PWExKSjFSRksyN0o5?=
- =?utf-8?B?V2s2M3BrZ3VubHVDZlV0SDVacE5zMHRVdWtRRkxXTk9TTC8wMHZLTmpxQ3M1?=
- =?utf-8?B?WitRQTdlSGptb1hqOU9PSjNUV3FLbmFXY2ZoM2hJNC9ja0NvNXhqcGxDQmRv?=
- =?utf-8?B?cHI4d2huSGpuOThRTlBpZkVUbTV0UnFCTlNHeFQvOEtmbnhld0NmVW5JWkcx?=
- =?utf-8?B?Rmh2Y2xtVGkreFhDN2VNUnJMN2ZYWjk2bm1FNXlmS2Q2d0FDK1Z5NlRzKzhY?=
- =?utf-8?B?ZVAwYkVyalRRcTA5V2gwb0IyUW5HYWl0WjduMkNxVTVKNnRndlZXZThnYVRj?=
- =?utf-8?B?bmc2SEZaNlpJUEdOT3N3T2dDOFhyWVhSaGYxcWVlOGJ2N2VoVFNJNDV4WDIv?=
- =?utf-8?B?Qzd5SGVNeFJOVlBMUjcvY0lWa1FEUVBNUmRpdUpnKzNiek5hQkwwM3c4MUpu?=
- =?utf-8?B?dmZmdytXS3RFdDEvMGtDMDhmbWd2R3Z0WkJLdmpnbW5PSTRsb3VxLzRtTDJW?=
- =?utf-8?B?bmdiUkV3ZTE0MU9LYnhyVHE3RXM4NFQyMXlVaVpSaC8xZVZiQWhUQmRGZ3Ji?=
- =?utf-8?B?R3pkMGJNdXBISTR5Q21aODA4SHRNZGxCSFZOVjZUdjRVVCtIVXVIeHBTM1Zz?=
- =?utf-8?B?MEdhODBDVmFWZHFKOGxQMUZqMFcyb013dFZoSElhdDVHU08yNWtWWlhFTmZs?=
- =?utf-8?B?eGgxcmlNSzBBUUVrVG5PTU9OS2JVbUp0eUZqMjNuY1hqVklaNFZFdFZLSHo4?=
- =?utf-8?B?V3dXUk9jb25ZdGRNTzJaM3hGUmVWMzRUSDFwdGhxWGFueGZvTHFyY0k1cm56?=
- =?utf-8?B?dGI4TzRReUdsTWZOWUorL21Xdm1WYll3NHlBYVFTc3J6cW9mamVudlhqRDc3?=
- =?utf-8?B?L0dPRGVXQVpPZDBWamF6ZFdKNEVJcUVaL2wwM2ZoanRHS2FYQnozU21yVkJW?=
- =?utf-8?B?Nk53WkZDMG5ZaE1pWld3UWJ4ZFdnNDk0S29Ka0hjbzZvTHFxVUVUaW4yWXdN?=
- =?utf-8?B?dWNXc3dDSDgxbGFnZzhqYkp1ZHJSMDBqZ05SSHBHQ2xQZDd5aC9naldWZUE3?=
- =?utf-8?B?NjZPNk93MDQ3UTh3cUJiT25kTWlMWVhWRDRQNENKdmM1cnNOSG0wK1RRZWJB?=
- =?utf-8?B?QmRaVnd0TFloSlI1S0FibzhLdVB3NTI0Yno2aEdaNytMVElHVjJFWDVYMFF3?=
- =?utf-8?B?VGN2Vm9ERjJ6K3R0L1JNV3NuMzdkT1F6OWJySWZ1UzJHcVJjcnNuQkZLaU8r?=
- =?utf-8?B?aVV6eUQrN0xVcEVkclBreXlXSmNyaU9pUTBUVXZBRDR5NEp6ME0yN0NianlV?=
- =?utf-8?B?dmcwQjdPaTZnVXlZcmJFN25DS24wTzhab3QzNWFmU1pDSnZBaGhpOWM0c0ZZ?=
- =?utf-8?B?WmM4ZW1hZGo0V1lRckhUVkdwRFR2a2IwYnJyd3UyVTluL3l1L2xLQmQrS3lt?=
- =?utf-8?B?Wm1IUmxpWGhWU0hzZGVrNHVhWHI0V3RvM05USXQvK0ZJZ3l1ZXUxa1BTZzQx?=
- =?utf-8?B?TStNRDJCS2gwOU9iSWVvbmxUakJaMTZSUG9IVTNZeU5yZXhWQmo0MmZhWWlx?=
- =?utf-8?B?Tmc4a1Q1YWVxeHFGOFNmc01kbmtkRXFIeXRORTZadmlxVkFSaENtalVvNk43?=
- =?utf-8?B?cFl3R2RZeWM5STNOaUNMTEp5R0JiV3VXMGExaEhPb1lUeS9EemdSR212SUpU?=
- =?utf-8?B?VkpXY0RGNUEyaTJhV0I3VXVQOENVTGhjTXRCN05TRG9Va0NrOCtVNmRrMTlC?=
- =?utf-8?B?ekp0cE41S0dGRGxNUlpLRzY1V01GN0FJRWJLenp0Mm8wZlBpcU9qY1lUSENK?=
- =?utf-8?B?dm5uTEJ6MW1oeWdpUnYwcGpnM2xsc2s3WnZheXd5MDlQdWZrQkQxSXlRZFZK?=
- =?utf-8?B?a1dFZGN1MFJkRTVPcnNHU2U2UjBFUjZXN0pSSE5FdHo4NFpLUHZ6U0JhdGV4?=
- =?utf-8?B?b2U4N2JiY2gwL08weVptVWFVYko0QUdGWEk5amw0bUdCa1RNOUJxNk5RQ2Fr?=
- =?utf-8?B?MjRlelRKZFVwRUMxYjJBQ3EzNDAxQlNlaDZTL1BtT2lZcjVCQ251LzJmY2Fk?=
- =?utf-8?B?dTMvNmZyMEN6cDMzOE1iRjhWOWNHNzM4L2dXclBxWTREemNOcmRYS25OTnhv?=
- =?utf-8?B?NzVtTDdWNzhkdWRDUGJYR09Ja0toK0x3MzNta2dHamFnTzRaQ2M1QT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd24c330-9114-4de2-bf8a-08df2e740970
-X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 06:33:22.1001
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l+tcG755N56ODYA2bsGMiYZlr+iu3hy7JpM/rI6LVD95MHujxmpMN2GXZhtEszpkNT0veMFXceMnxw1u82MqQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7189
+References: <20261019230758.2960779-1-joshdon@google.com>
+In-Reply-To: <20261019230758.2960779-1-joshdon@google.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Tue, 20 Oct 2026 14:34:46 +0800
+X-Gm-Features: AclHuK8Z6eedwZFjydm_QKED12xWeIvXORddk5spHPuvKLcq0T7ga9yYuVAKwaY
+Message-ID: <CAL+tcoBjWDwA+MrjzRapUeAom-4siL-cnXXLQrVf-A4myNRxyg@mail.gmail.com>
+Subject: Re: [PATCH] udp: Add noinline_for_tracing annotation for udp{,_v6}_send_skb()
+To: Josh Don <joshdon@google.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 20, 2026 at 7:08=E2=80=AFAM Josh Don <joshdon@google.com> wrote=
+:
+>
+> We hook udp_send_skb() and udp_v6_send_skb() using BPF fentry programs
+> to monitor UDP transmits. Both functions are static and have two
+> callers: udp{,v6}_sendmsg() and udp{,_v6}_push_pending_frames().
+>
+> After an FDO profile update, udp_v6_send_skb() is now inlined into
+> udpv6_sendmsg(), while an out-of-line copy remains for
+> udp_v6_push_pending_frames(). The fentry program still attaches
+> successfully, but it is silently bypassed for all uncorked sends.
+>
+> To address this, make both functions noinline explicitly for tracing,
+> as was done for tcp_drop_reason() in commit dbd5e2e79ed8 ("net: tcp:
+> Add noinline_for_tracing annotation for tcp_drop_reason()").
+>
+> Assisted-by: LLM
+> Signed-off-by: Josh Don <joshdon@google.com>
 
+I actually mentioned this thing a few times before. The original
+thread was from Breno who tried to apply a similar change for tcp
+sendmsg. The fact is until now we don't guarantee those functions
+should be kept noinline like how uAPI works just for BPF prog. What I
+suggested was to select a series of functions in one Doc so that we
+could tell people those functions should be noinline or whatever else
+just for tracing in a soft way?
 
-On 14/10/2026 15:47, Tariq Toukan wrote:
-> Hi,
-> 
-> This series by Yael fixes inconsistencies in how mlx5e reports and
-> configures the CQE moderation mode through ethtool.
-> 
-> mlx5e_params keeps two representations of CQE moderation: the private
-> flags (MLX5E_PFLAG_RX_CQE_BASED_MODER, MLX5E_PFLAG_TX_CQE_BASED_MODER)
-> and the fields rx_moder_use_cqe_mode / tx_moder_use_cqe_mode. Ethtool
-> get/set coalesce uses the fields, while the priv-flags path uses the
-> pflags. When the two disagree, the reported CQE moderation state is
-> wrong. In addition, commit bc541621f8ba ("net/mlx5e: Support ethtool cq
-> mode") added ETHTOOL_COALESCE_USE_CQE to the NIC ethtool ops but not to
-> the representor ones.
-> 
-> Patch 1 syncs the pflags with the capability-derived fields in
-> mlx5e_build_nic_params(), so that after channel attach or reopen the
-> private flags no longer remain zero while the fields reflect the
-> hardware configuration.
-> 
-> Patch 2 fixes the opposite direction. set_pflag_cqe_based_moder() now
-> also updates rx_moder_use_cqe_mode / tx_moder_use_cqe_mode, and resets
-> the RX/TX CQ moderation to the defaults of the new period mode, so that
-> ethtool -c no longer reports a stale CQE mode or stale rx-usecs after
-> toggling the priv flag.
-> 
-> Patch 3 adds ETHTOOL_COALESCE_USE_CQE to mlx5e_rep_ethtool_ops, so that
-> setting cqe-mode-rx/tx on a representor is no longer rejected with
-> EINVAL.
-> 
-> Regards,
-> Tariq
-> 
-> Yael Chemla (3):
->    net/mlx5e: Sync CQE moderation pflags with coalesce params
->    net/mlx5e: Sync CQE moderation params with pflags in
->      set_pflag_cqe_based_moder
->    net/mlx5e: Expose CQE moderation mode on representors
-> 
->   drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 8 ++++++++
->   drivers/net/ethernet/mellanox/mlx5/core/en_main.c    | 4 ++++
->   drivers/net/ethernet/mellanox/mlx5/core/en_rep.c     | 3 ++-
->   3 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> 
-> base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
+Otherwise people would argue there are more functions that should be
+done in the same way because they internally trace it.
 
-pw-bot: cr
+Willem, Kuniyuki, any thoughts?
+
+Thanks,
+Jason
+
+> ---
+>  net/ipv4/udp.c | 4 ++--
+>  net/ipv6/udp.c | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> index b090bd1f59e86..487c8cc8ab206 100644
+> --- a/net/ipv4/udp.c
+> +++ b/net/ipv4/udp.c
+> @@ -1110,8 +1110,8 @@ void udp_set_csum(bool nocheck, struct sk_buff *skb=
+,
+>  }
+>  EXPORT_SYMBOL(udp_set_csum);
+>
+> -static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
+> -                       struct inet_cork *cork)
+> +noinline_for_tracing static int
+> +udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4, struct inet_cork *=
+cork)
+>  {
+>         struct sock *sk =3D skb->sk;
+>         int offset, len, datalen;
+> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+> index 93478d1ad5769..fe92538835176 100644
+> --- a/net/ipv6/udp.c
+> +++ b/net/ipv6/udp.c
+> @@ -1366,8 +1366,8 @@ static void udp6_hwcsum_outgoing(struct sock *sk, s=
+truct sk_buff *skb,
+>   *     Sending
+>   */
+>
+> -static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
+> -                          struct inet_cork *cork)
+> +noinline_for_tracing static int
+> +udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6, struct inet_cor=
+k *cork)
+>  {
+>         struct sock *sk =3D skb->sk;
+>         int offset, len, datalen;
+> --
+> 2.56.0.212.g129ede20d9-goog
+>
+>
