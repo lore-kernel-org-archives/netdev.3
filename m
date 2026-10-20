@@ -1,82 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792519955;
-	b=VDoLw/sf0Eg6endPgfQ5YCmwhuJp/TsAzYD7Jzs74EmTydt94rTZeruVJpLne/wPU1A1
-	 nmxYzkeBLJG7n59r5270Vkiitat09zz7eJP9KH+0gvnQg3V9+hjttzIfuiiIE1WXcSbc/
-	 2hTiwr1ZmQ03mo8yLLZM15QFn64bT6YuOju4EeEErLngtkTe5zm0sw4NZy7+0uSkVvf8n
-	 u8+kANYg0RIU4oyYFAYEf0mj9Qoc24GxUDK2b0KxYhMwGWVNRzxbPf8nzFHVtV5BIVG4i
-	 DG5VAHaKNIseZWSULeduziMAXl1nScMLt1o4EQprWmGO5pha4hjQP4rMMPPl17roFmQ==
+	t=1792519988;
+	b=Y2o579XY4xLxywPLMX+BRejgjvBFyZinA7rH6A4sf3wNdLf4plxWUdaexeT23v9/NGol
+	 sg7rznxKEP4iv6WEyKnOT+M6pEZV9lOTr/qgVfv4hOaQk1McfJCO7U8UNERh8f9zEPqvK
+	 nnDAf9+37Q765AUx0a8+jvMAmmkklEcK7gLR26qVVn+yT7UDaKAS9F6SBnvb1rsnNh/nm
+	 SRd1jlKQBi0yByR72WLSR1t64uxooq3tyYf+l5+npT+vCZa8eLHnn432BE4h4NwG/J+qU
+	 v6UgJsnlWq1CtSs8is65Dq9AvbTWbEPS8AH3TAnrAMzf/ZNor+fNpaVA9/Q6+8W6w9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792519955;
-	h=Received:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=+C6ycQ+oN+TYj3nNGaZ3QZSlDcpsWKcnMQlN4CBAL9Y=;
-	b=cEsYhrq7VW1xJt4t2Lih4L9H6uye5n6+r1f6S8i+bLKNIVtDrm+qgtjy1nQO7M8dcWn5
-	 22/XQMMpAih9gAK9OdEDrs92FcRdEwS5nV6lbusnHjDB5exN4ok3mEa8/BzC2uy93w0Ag
-	 bvks3bhWQsnp/yDXcVZdZIvp5vkK9QwOPBgV3dbOghR8hClVRumygdSmjlJ+A3kRttt3u
-	 0Ri41KVFgt1PtdE2OGMoG5UQrB8hhc7zjQgf9/kO/FrHpZ41r2Ep3PRXsAh4OWk8rD7IU
-	 mH2vwtYcR7p5/RZ4g6TsH7mgn5VKeAfTySEaCUWBcd2CTzpPCNrkBg8U4pwuSgOs5zw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792519988;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=7Wx9GyoHHfawHRnV0Cg3i7Hst1BvQl6Kp0zfGCvvP3g=;
+	b=5tI3ab2vFDUYlXwtkqyE72+n7A0yjrkD/FSZV2Jye94Wn9jAB/Yv4d1sU1O6Q9+/NMCD
+	 o10t8gcsF5Xmd4B71t0UoRHFUX8UQSqxoCuVEcaZX+arX8kcrVF0zg+0U81GZqwu6QSTk
+	 mj+MHDEW1zecafPynQQKP0GtvoY3GRs89BtN9ZZjh1Q+0coHi6ShA1xb1jqF4HRO3vQM7
+	 WRCU2PfsYM9rqTuGs6+pCCrne3AsOHn8NFaAHYU8ZlC0Hs19P+sk8IPurNUrwGZBz+lDF
+	 scvh2gjHJbB0djj8WLjJo+S8WEjU6xZBalmR0wZcVJrw6/PMRsVGSdiTVbBxqFGJEJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dd3axunV;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47691606A333
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 18:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730F41F000CA;
-	Tue, 20 Oct 2026 18:12:34 +0000 (UTC)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7E6C1F40069;
-	Tue, 20 Oct 2026 14:12:17 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 20 Oct 2026 14:12:17 -0400
-X-ME-Sender: <xms:Aa_XagYWLbjIYt_N_Nd6PU6YenTgPJwHyxKupEWzyIvelwxhvG2SMQ>
-    <xme:Aa_XagScVeuXk0nFCFn7sjl_9Dki1cqHICiR7zLtasyDx51-hLqM3yB3NK-dsztJK
-    J--SCgUzH4WCCpLZWTR6-BZfJcL-NxTpSl2dqDm4Prf9X0tw6gvOto>
-X-ME-Received: <xmr:Aa_XajhOm5xD-7qNcI8z17gKOm-AJckSRzpsQ7djYCaQo82uWuPiOhz_BAhFpTs938xmTSb3To-2Xl1JY0rnDb-AP8fsrLyY>
-X-ME-Proxy-Cause: dmFkZTF3CR5tUIMrZT4IWXUrbzvyIKYP26OXYm9gMSu9uTliunqceHPYsDYXzCwrrtaqYe
-    lYjVXzusIy3LQ3LUtlsZk6dae6J0s0d3ZELRs741EOWV/lTF+MSl6ZUHFfvYwyBWlPEf4b
-    sY9oZxEZFQUo2hMOUZTt3Sk/4XhbaWx+jBPI705wb9fEbFh9vJoH9bBeq+tC9glla4b5Kr
-    Y1r9UbcC5uZjeGe/VSebLPOWT+W88IAOd4BIXsMTt6+V6GJbuY+rEgOOr82XWnMboMB0mp
-    PoExY5thAeR5jzHGzxp7BvtA0A74yGkBlnUwRFgRodhgVUxxLtThffcKsY5fhtzyoObeTX
-    A+XNeTtMZC/ppNUvL2tCekc4jBDS3JEPApSyGLnj7AuvP/TauOWxySWDB18uVKYMnJOlvx
-    Jus+tztNJyB5kFAsJawJ0R3yuTgZkL5X8+shlxKW7KVRxIMp8MU1fRs/KeyXt+OEImkjcr
-    qX79GYjjci1aobEaE/GuOj/eGRvK4l/uzod+MzxXlkkN/UCbfZllBW7ZxZYhW7f5lXVHL5
-    8/rSFJX/FKs5XWdMAfP0qtCB4225SGLysM47bGn1noxGwXk1s53+gjv6Qfc4MdcPbQXxXh
-    M9kL6m5kW0HYibZlGjQ17surEUVRBjbJVFzPWWWPzDOhE6P7yIjNJUAE9Nsw
-X-ME-Proxy: <xmx:Aa_Xar7sCb7tzfxISUi4khRXSAC_bchX-AfROJon49I7Yz402e1p6g>
-    <xmx:Aa_XaulnKOGtSvpQQG6sr9n7uy0RGR1JeZZUfQFl2u2paYcoZHQUBw>
-    <xmx:Aa_XakN-zldHuTCuwAAYbGkC8L7BKL7sXWXiTKtJXJqRExSqXm4W0g>
-    <xmx:Aa_Xaoqti-OIfajd8eWOSvRBhwifWLth0rCR632sY4R6TqDEixdfhQ>
-    <xmx:Aa_Xalt29scg7V59JekhcwetldvIWbxh8yKDLyl1Di5NSG1o6WH3rBKf>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Oct 2026 14:12:16 -0400 (EDT)
-Date: Tue, 20 Oct 2026 11:12:15 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Vlad Poenaru <vlad.wing@gmail.com>, netdev@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Nilay Shroff <nilay@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	Vlad Poenaru <thevlad@meta.com>
-Subject: Re: [PATCH net-next 0/2] net/sched: don't wait for RCU when
- destroying qdisc lockdep keys
-Message-ID: <ateu_3PV81VuFK1i@tardis.local>
-References: <20261019170225.729789-1-vlad.wing@gmail.com>
- <atZtYi_Xnz27O8Bp@tardis.local>
- <c3de29a9-8edf-4186-bc26-82d1d68c4c78@acm.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7081F606A31C
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 18:13:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7081F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dd3axunV
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-354ba08cfd1so6393009eec.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:13:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792519988; x=1793124788; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7Wx9GyoHHfawHRnV0Cg3i7Hst1BvQl6Kp0zfGCvvP3g=;
+        b=dd3axunVuUqRuGrGGRSfLkb1V8FvMQ424d9Mzy0sC6Mk8rBd+qmiIfOpd9wkRXU7N3
+         QazkkiHhdfGV8qnqKWXHIO5Lv0Vvx0yb5h6EpRB2UVGv3OKrHmY3bkfnj4t9rd7ZtEGN
+         6Vp4P2VDjhHXjYOsALXNwbWhaKKxCeEfPDdaYlgcQWig4aYrjgYIh9ci+avYY7wjWGo6
+         CnTgsiURhUCBlzMHXSe88xGlEHv2YRSYUZXIIuknz4iQFOIkW8LvTzZJ/qTMlb3JQ4Jk
+         bQfhlGSfHvH1y9OviUtBf/sty6IPXxG6urYRWk2bpT0ic4WSTe+lV4ZDa3X8bwbS1Kvl
+         2Xmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792519988; x=1793124788;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7Wx9GyoHHfawHRnV0Cg3i7Hst1BvQl6Kp0zfGCvvP3g=;
+        b=SDXGMu2KKJciVxaDZf8CEVkJff9BwURnpmo2KwIQ6XTUfiFDPbAo7ADfmgrUY/JquP
+         3Z34MH4120zgaV/pddhg6pU0grUrRZLN+StsOrfNhBrqz0o0Chi3ABUxH+W3djDKaCq3
+         P063pFql7v2hee/nmTGEzmuLeNst2OnnH0f1goa+NFic2khMgSyZ6SWp8sh4VlnhPx1E
+         8/gkuEw3xDhipXE3/nPKs2IB5y4yEIyd25WKY3yvXSaP9n0b9oGEWurZpqIU08vbZGiX
+         KlPrNzsNiDugFOU6+lGgqWrUoSMMuwxlgMcgkJ2YRAKvtMP4LDMVkNfCywKJbzW6bYpm
+         y7eA==
+X-Gm-Message-State: AFq9FYJcDzofBqm0Pq8TxxgdyyIFAOi0M3/vEgpRVyjxr5PDWuGQVyS3
+	2Hrp0YbsG7HohCps5CZb1hol17i00CmYgmBkQQK4Z04oPCLMGlNK51xEqnAWRA==
+X-Gm-Gg: AYBFou3rSfYEPZNs/wS/KhhVKLjKF+JTGJ6EU3+nHE6PdFOSEoAZT9JOid7x8ADJJrj
+	wjY83HcSRZJy05zOqsqiJjj9+R5L8gfVm2ygQBtELIctJJJy99FS/UnEFLVk6nXCYa0+uKSOSsL
+	oFH/pWBKEgkfs0qqMAV8quMd1uskVo41au/y5hSvqbCjwAR1wmGqQ1JMbfCt4E7xk6XaFhmOG50
+	GH3UR2+ffopSKm+oRH+06SPIDsHnZ4IAPq+rUR7DVnVwiXwH+810tbTRSbkhS/eJlg5+BFuijZe
+	G46ebuiIX20Vr6NskwkOi/TAexyyVprz3z6oEXLIeWqD/CUgs0UFP6CatyuIqZ4CI4TqqjnOY99
+	V7kSHPWoZwycLJPjUBO+4VQ+66SacdLk3bdti3pbLxGVn55gTACsezg5ukZ0jnmPYZn8Hc+Taoy
+	PtMQ0u1d6T24KEDlbswXUBUE0YR771NoIJfCG5DgJOOynkncRjLyZ/Lgfr0fhkvIpH5klPzfOw5
+	wt4W2YlB98x5tpEpnih8g==
+X-Received: by 2002:a05:693c:608b:b0:35c:ef18:6a78 with SMTP id 5a478bee46e88-3674a41869amr97000eec.2.1792519987538;
+        Tue, 20 Oct 2026 11:13:07 -0700 (PDT)
+Received: from arch.localdomain ([2401:4900:e005:334b:4504:532e:b7dc:d438])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-367416a1fb9sm265873eec.20.2026.10.20.11.13.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 11:13:06 -0700 (PDT)
+From: Prashant Sengar <prashantsengar25031@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	andrew+netdev@lunn.ch,
+	linux-usb@vger.kernel.org
+Subject: [PATCH net v3] net: usb: lan78xx: avoid NULL PHY dereference in WoL setup
+Date: Tue, 20 Oct 2026 23:42:37 +0530
+Message-ID: <20261020181237.2374075-1-prashantsengar25031@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,34 +93,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c3de29a9-8edf-4186-bc26-82d1d68c4c78@acm.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 20, 2026 at 10:26:31AM -0700, Bart Van Assche wrote:
-> On 10/19/26 12:20 PM, Boqun Feng wrote:
-> > I think my concern is still valid: for lockdep PoV,
-> > lockdep_unregister_key_nosync() is an API that users have to use it
-> > carefully, because it leaves the unregistration process in a stage that
-> > you need to guarantee that the lockdep key reclamation is delayed by an
-> > RCU grace period. Or in other words, do you have a way to prevent a user
-> > from doing lockdep_unregister_key_nosync() but kfree(key), or some sort
-> > of debugging to find a mis-use?
-> 
-> Kernel developers are assumed to know what they are doing. A clear comment
+LAN7801 supports fixed-link configurations without an attached PHY.
+However, lan78xx_set_wol() unconditionally passes netdev->phydev
+to phy_ethtool_set_wol(), causing a NULL pointer dereference when
+a userspace WoL request reaches this path.
 
-Well, if that's true, why do you need lockdep :) If developers know what
-they are doing, they should write no deadlock or prove that in a
-comment.
+Report no WoL capabilities when no PHY is attached, and return
+-EOPNOTSUPP from lan78xx_set_wol() before modifying the wakeup
+configuration. Keep the existing phylib WoL handling for devices
+with an attached PHY.
 
-Is there any context that I'm missing that you want to shut up this
-discussion and rush the change in?
+The issue was reproduced using USB Raw Gadget and dummy_hcd in QEMU.
+An ETHTOOL_SWOL ioctl triggered a kernel Oops with the original
+driver. With this change, the PHY-less configuration no longer
+advertises unsupported WoL operations, avoiding the crash.
 
-Regards,
-Boqun
+Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
+Signed-off-by: Prashant Sengar <prashantsengar25031@gmail.com>
+---
+v3:
+  - Report no WoL capabilities when no PHY is attached.
+  - Return -EOPNOTSUPP from set_wol() before updating wakeup state
+    when no PHY is present.
+  - Retain the original phylib WoL call for PHY-attached devices,
+    following Andrew Lunn's review.
+  - Leave fixed-link MAC WoL support for separate net-next work.
 
-> above lockdep_unregister_key_nosync() should be sufficient.
-> 
-> Thanks,
-> 
-> Bart.
+v2: https://lore.kernel.org/netdev/20261019193148.1381545-1-prashantsengar25031@gmail.com/
+ drivers/net/usb/lan78xx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 5655941f1478..612e1e46de6d 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1763,7 +1763,11 @@ static void lan78xx_get_wol(struct net_device *netdev,
+ 	int ret;
+ 	u32 buf;
+ 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
+-
++	if (!netdev->phydev) {
++		wol->supported = 0;
++		wol->wolopts = 0;
++		return;
++	}
+ 	if (usb_autopm_get_interface(dev->intf) < 0)
+ 		return;
+ 
+@@ -1795,6 +1799,9 @@ static int lan78xx_set_wol(struct net_device *netdev,
+ 	if (wol->wolopts & ~WAKE_ALL)
+ 		return -EINVAL;
+ 
++	if (!netdev->phydev)
++		return -EOPNOTSUPP;
++
+ 	ret = usb_autopm_get_interface(dev->intf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -1807,6 +1814,7 @@ static int lan78xx_set_wol(struct net_device *netdev,
+ 
+ 	ret = phy_ethtool_set_wol(netdev->phydev, wol);
+ 
++
+ exit_pm_put:
+ 	usb_autopm_put_interface(dev->intf);
+ 
+-- 
+2.55.0
+
