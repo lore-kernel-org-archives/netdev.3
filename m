@@ -1,47 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792492304;
-	b=ePwf5ceOIrcIwamM1LUy8Dwau1AmZGn5nvynA+y3kLwGk8m5nh3q/E2kQwgj6Z9b/DkV
-	 gS1nvrOc5m+NNLjFA33ICQ/v8Fl/g3+VTq1ozQFwuR/gqYKxJ97dLGqjxDnfHZByZ4vRV
-	 tBGSaHvm5qJiTG+ucK43jnJIgQGLgkyM9KVMBVdHL+xzXFSHCxSxTA0yNJDXRhRKsNpPi
-	 goUjwIxSPT0ijLAwyqnmfayElh/Gg+BwbI8jW7HYU0m0zFlYFD6eAEsoSwMWzPpoCLXQ4
-	 iyao1suKhccC4vzIodzmVPcyAOoFxOjMWnyW4M004j9gZX4dx2gqkkHOzfrvIRs7G0A==
+	t=1792492397;
+	b=XQolOiVt0NVhG54br6zbTw/HL8gy85a8Ufz1KSCECFZ0ULcmae1OVB57MAHGIQ7OR7uJ
+	 pw+GiBiyAYUP/mvaeg6y+xulyg0mcHwt9I8nsA15rKeckb/r+jTrBC3V57O7bY3DNODb7
+	 Fz5zumc258QAxZz59W9zXhnwnZEt8idMa4pDYtx4HA33Z6iiu1WsQAUST3E9GRbdKd+gw
+	 cbz0ZN0TE5dH8BE5kjxLE6svqfcfWGPoJqIaZ723nihBYtqlABENBUK7u4GYGs65zZbHC
+	 9y5Uqf9pfqYmzdrz2pikH0S8jjF48PlPeXpfBA4NajS0q0h3VpGnXoubD3aOIumfVlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792492304;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=aW+tUhGIytr6myAG/haqiFo8CoeHUsC4Au7jENp7FB0=;
-	b=Stl5wCs28Hmd0nSs9d0xNKzRMaVuUVBoBfZsJmNKCN2s0gnkW4ThfnCLhlSZkXwdaTdB
-	 bFCuOGXUlt+1mFL0HJyf/k4RPcHVv6X/9z7Gwr4/YT9qBMgucz7zwhONWiMZIgboXiNP6
-	 FLWy6O9ju/AHJfAoXKGywYeaUL9kJHUb9DKTlwiy3p5KjHvSEpvELzJDzVsAbBQHXERl8
-	 X5y6J8p0zFr/qDq0u+uIvlrpBBQiLJRCccftHxDnS5x/oRR8fYdFFliK1yX7Jkm+mKZXp
-	 nCTo21kUu+6KteMDdOqQRAZWLSvG6bu1v1NlybuCM5USgzEyVaX/QT4tOU8WlXk7tMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792492397;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=eQxfLYkOiU0nxAEbk2HPi+UrC6nZfg0/s7ZOZOcgNoQ=;
+	b=s6q66FQws51bUDdHGzCj5LPFmbQnx3qvYD49B6xf/vT9rWLfUyQ7rouDKq9ea4iSsSKH
+	 XtFWhBOy1qe0ez02QlaxCIVT4nphsx/Y+RkLdyGh8UyMd5ekgxKgXVHenIKx9a+gL+Kop
+	 JEwot5aQttMPa2cxZtJdTlNGhb18N3o6vt67qDmCmIhua+2kjVu/seRUhizaUYgM7sNI3
+	 8bh6CMIEmG3v6qbTYZQvomGSW4qPKdNhUwCtWzSgKIbALrmtpDo4T1LllGnADywE+lJ3X
+	 s2yD1oC9SjnZO+tRsl+vAonVJ+dHteTVPqv3ScoVdQeUP1gq4gzu/rxpMCcqtqkirKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fdIsAXuY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XbrlQHoc;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=C1v1fBvt;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE31606A31A;
-	Tue, 20 Oct 2026 10:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F09B606A322
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:33:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F09B606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fdIsAXuY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FD21F000C4;
-	Tue, 20 Oct 2026 10:31:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792492304;
-	bh=aW+tUhGIytr6myAG/haqiFo8CoeHUsC4Au7jENp7FB0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fdIsAXuYNFCvTxZEqUFxtcgLs7ZMUHxO4dBU2zUuVXo8Y32rD52ephxinNlUuIu3u
-	 gGBRPorpuUwTZnCjWKqEZMkSC1qPaYfr5ibX6PakxqzZZY+riitZKwvUSrF3t20u7T
-	 h4UA9C6LIUYm80TkiBDiFtnzLPj9nAsZxAjm8h6gG2E+uizSFZ47WspBg+5VOTrXnk
-	 wYuBOH4BF3oOpTgFtuDC8isv6h/R9eFPaXCp9DbmQTmK/EscMqfaPtR26bN4UxU0/t
-	 38eo7Zotu521jTaRcxY09MfJsOLuG7CJFuC+xeWLONA3dyKCNLZjRcim0bVQTunTsB
-	 wIY2MHR+aCLXg==
-Message-ID: <f54da1f7-4ee2-4e19-b95c-c442f4f91a31@kernel.org>
-Date: Tue, 20 Oct 2026 12:31:39 +0200
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XbrlQHoc;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=C1v1fBvt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792492396;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eQxfLYkOiU0nxAEbk2HPi+UrC6nZfg0/s7ZOZOcgNoQ=;
+	b=XbrlQHocIjGPoxeB1LhiS8nAghJOE0A58wHHS3MuRwY48VBZpQx43UTZDyiDicGPsN93DX
+	/hFH0+fxrNXZwydI5tQnh3G8Oc0zoiPqtVV8F6eTECIZajJIz+20ly3nt0ljzpCySohfi7
+	rXsWe6oyGIk2cPmdMgj2fVg1CvKIZVA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-cOezvA6kNpetrOhcKSJUOw-1; Tue, 20 Oct 2026 06:33:13 -0400
+X-MC-Unique: cOezvA6kNpetrOhcKSJUOw-1
+X-Mimecast-MFC-AGG-ID: cOezvA6kNpetrOhcKSJUOw_1792492393
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48af4046a3bso2888486f8f.2
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:33:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792492392; x=1793097192; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eQxfLYkOiU0nxAEbk2HPi+UrC6nZfg0/s7ZOZOcgNoQ=;
+        b=C1v1fBvtmYHpH3kwwfM0yeK3TlRKCNKe9A5++joaFkDMf+HGxyaPZ5O4tHNA9NPorf
+         QOSaUwMCmg/3yy/8T4CLsjoDW5QHWC7GYTT+orXwbR6W5znZDPfpNw/bNmxAZ/9ThtwV
+         V9pwyAzqaxGYQ/heIRSIaPcyDXVLqmO50Oe1O2CbkShFJlKHy7Zv6X60OA2Z1/V1W1e1
+         DgOaeNHBzbT/2UOswzbjPwjYXXqoYYgDFMbNmKLbLRRoI2k6wt4w1Z3sigT590ibOXuw
+         /aEXNFhdJKlUEru5aockHpvcCdElS6ugTIAz7n94NDKNwdfYT8y6iOY9v31u5y14UOZI
+         1/3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792492392; x=1793097192;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eQxfLYkOiU0nxAEbk2HPi+UrC6nZfg0/s7ZOZOcgNoQ=;
+        b=HiFnES8qvsqnZN4HMt/wnObZJI0nLDOTAj8xfA1WOMKvOg8xI4TkghmhowAxexYt73
+         1ivllMswYJ/5El33BQjeJTVMIxEcZ/hEOR80qotO56EEqka9j0VKTFR/dY5l4NWHzw2L
+         JILZw307P6txOBeG+gyeLdVUVOiBuTiW7IyLrrwT97ysKn0G0LfH1zbVPB31YxPoM0K5
+         8DopkmsaQPkb/cTYmEvTErNupjmUcGF7iRmyFq3+Jgi5gjHQOiXm97VPiT1MH9r1IG83
+         AktnR8Rvj39UUw00N9d+p8cm25LvZJf3mEyMspuDGkK6TCz4XDnVu7KQIGkl1fGOGYHc
+         U3Ow==
+X-Gm-Message-State: AFq9FYIahLf+SAUzzJqkMh1o4VXaucPtC0aEdPoZ2Em/4glSeVHthn1x
+	II8Au1fAOyG3I6h1kMk5o08zL8V5jDIoRO9IURnZyJgILnq0PqhRbI+X8mhbuiZ5jv+awKTehA4
+	8+oxa5kFspuEaBeOrB50smb3TPb8ybGvpf5vtIcc1Yq3KZJN/7GB4XEjovA==
+X-Gm-Gg: AYBFou2n7DYxtE45rQ1l0m7A9ug36qpFA6xigsdRTHu+niwluum2/fnZqcN1o9EmgYA
+	ms9uplGS59Sx4e7KfBlnDrIMBuXRlgTqnYp+Gzng78n++mgX0+ea5XPFEiEFQww2GE6HEADemUY
+	BnWbmLxcIXsxLIIFs44uWVcgrQ+ZRiO8D3DZC4XJb3LCH5+rHC+AlEmAEu8S0NBEu6U4y78eEOe
+	kUjPxo3Gk2qQXYXADmGy4DyhCLBBWV2lmjvKx5wAKmR3Eo7Uk0u5CqQLkWEq5DPOwoziwuKo4T5
+	gQqXdZDXT0SD+iWZBbaU3i5gb/n4E8UbCnTgpu0DPa9xUJd8mkW2bysBhlWXKNdetHWzOg==
+X-Received: by 2002:a05:6000:4025:b0:48e:1d87:f179 with SMTP id ffacd0b85a97d-48e1d87f1bcmr4575313f8f.25.1792492392427;
+        Tue, 20 Oct 2026 03:33:12 -0700 (PDT)
+X-Received: by 2002:a05:6000:4025:b0:48e:1d87:f179 with SMTP id ffacd0b85a97d-48e1d87f1bcmr4575254f8f.25.1792492391869;
+        Tue, 20 Oct 2026 03:33:11 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d8185d2sm5455794f8f.28.2026.10.20.03.33.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 03:33:11 -0700 (PDT)
+Date: Tue, 20 Oct 2026 06:33:06 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	andrew+netdev@lunn.ch, jasowangio@gmail.com, eperezma@redhat.com,
+	Willem de Bruijn <willemb@google.com>
+Subject: Re: [PATCH net] virtio-net: fix frag overflow in big packets receive
+Message-ID: <20261020003357-mutt-send-email-mst@kernel.org>
+References: <20261020032108.81879-1-willemdebruijn.kernel@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,129 +114,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5] net: ipv4: add zero check for snd_cwnd_clamp
-To: Kaho Jiang <kj2864@nyu.edu>, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- edumazet@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- co+71b6509cb791e531@bugs.sh
-References: <20261019222531.1073-1-kj2864@nyu.edu>
-Content-Language: en-US
-From: Eric Dumazet <edumazet@kernel.org>
-In-Reply-To: <20261019222531.1073-1-kj2864@nyu.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020032108.81879-1-willemdebruijn.kernel@gmail.com>
+
+On Mon, Oct 19, 2026 at 11:15:50PM -0400, Willem de Bruijn wrote:
+> From: Willem de Bruijn <willemb@google.com>
+> 
+> In big packets mode with guest GSO, add_recvbuf_big() posts a chain of
+> MAX_SKB_FRAGS + 1 pages. page_to_skb() copies only ETH_HLEN of the
+> first page into the linear area and adds the rest of that page as a
+> frag, then one frag per remaining page. A device that fills the entire
+> buffer therefore causes MAX_SKB_FRAGS + 1 frags, writing one
+> skb_frag_t past the end of skb_shinfo(skb)->frags[].
+> 
+> Post one page less. The buffer still fits a maximal GSO packet. A well
+> behaved device does not trigger this, as GSO packets are at most 64KB.
+> 
+> Also check the frag count in page_to_skb() before adding any frag as
+> defense in depth.
+> 
+> Fixes: 9ab86bbcf8be ("virtio_net: Defer skb allocation in receive path Date: Wed, 13 Jan 2010 12:53:38 -0800")
+
+Wow an old one.
 
 
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
 
-On 10/20/26 00:25, Kaho Jiang wrote:
-> User can pass zero to snd_cwnd_clamp via RTAX_CWND type.
-> This could lead to division of zero error if not checked properly.
-> 
-> Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-> Call Trace:
->   <IRQ>
->   tcp_reno_cong_avoid (net/ipv4/tcp_cong.c:510 (discriminator 1))
->   tcp_ack (net/ipv4/tcp_input.c:3517 net/ipv4/tcp_input.c:3873 net/ipv4/tcp_input.c:4440)
->   tcp_rcv_established (net/ipv4/tcp_input.c:6685)
->   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
->   tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
->   ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207 (discriminator 1))
->   ip_local_deliver_finish (net/ipv4/ip_input.c:241 (discriminator 1))
->   ip_local_deliver (./include/linux/netfilter.h:325 ./include/linux/netfilter.h:319 net/ipv4/ip_input.c:262)
->   ip_rcv (./include/net/dst.h:481 (discriminator 6) net/ipv4/ip_input.c:492 (discriminator 6) ./include/linux/netfilter.h:325 (discriminator 6) ./include/li)
->   __netif_receive_skb_one_core (net/core/dev.c:6297 (discriminator 4))
->   __netif_receive_skb (net/core/dev.c:6410)
->   process_backlog (net/core/dev.c:6761)
->   __napi_poll.constprop.0 (net/core/dev.c:7830)
->   net_rx_action (net/core/dev.c:7893 net/core/dev.c:8050)
->   handle_softirqs (kernel/softirq.c:645)
->   __irq_exit_rcu (kernel/softirq.c:679 kernel/softirq.c:519 kernel/softirq.c:758)
->   irq_exit_rcu (kernel/softirq.c:775)
->   sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1062 (discriminator 35) arch/x86/kernel/apic/apic.c:1062 (discriminator 35))
-> RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
-> 
-> Fix by checking if user pass in zero as parameter,
-> if so reject the value zero.
-> 
-> Fixes: 814d488c6126 ("tcp: fix the timid additive increase on stretch ACKs")
-> Cc: stable@vger.kernel.org
-> Reported-by: co+71b6509cb791e531@bugs.sh
-> Assisted-by: LLM
-> Signed-off-by: Kaho Jiang <kj2864@nyu.edu>
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
 > ---
->   include/net/tcp.h  | 2 +-
->   net/ipv4/metrics.c | 4 ++++
->   2 files changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index 4416cdf9bf30..9f605d9ecb35 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -1522,7 +1522,7 @@ static inline u32 tcp_snd_cwnd(const struct tcp_sock *tp)
->   static inline void tcp_snd_cwnd_set(struct tcp_sock *tp, u32 val)
->   {
->   	WARN_ON_ONCE((int)val <= 0);
-> -	WRITE_ONCE(tp->snd_cwnd, val);
-> +	WRITE_ONCE(tp->snd_cwnd, max(val, 1U));
+> The "Date: ..." in the Fixes tag is literally part of the subject
+> line of commit 9ab86bbcf8be in git history.
 
-No. Please do not hide bugs.
+Caused me a double take, too.
 
-I repeat : Do not change tcp_snd_cwnd_set()
+> 
+> Reported by an offline AI review of a related virtio-net patch.
+> ---
+>  drivers/net/virtio_net.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index daab43ac92ce..cb7ed53fd55e 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -906,6 +906,15 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+>  	}
+>  
+>  	BUG_ON(offset >= PAGE_SIZE);
+> +
+> +	/* The first frag starts at offset, each next frag is a full page. */
+> +	if (unlikely(DIV_ROUND_UP(offset + len, PAGE_SIZE) > MAX_SKB_FRAGS)) {
+> +		pr_debug("%s: rx error: len %u needs more than %d frags\n",
+> +			 vi->dev->name, len, MAX_SKB_FRAGS);
+> +		kfree_skb(skb);
+> +		return NULL;
+> +	}
+> +
+>  	while (len) {
+>  		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+>  		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page, offset,
+> @@ -6717,7 +6726,8 @@ static void virtnet_set_big_packets(struct virtnet_info *vi, const int mtu)
+>  	 */
+>  	if (mtu > ETH_DATA_LEN || guest_gso) {
+>  		vi->big_packets = true;
+> -		vi->big_packets_num_skbfrags = guest_gso ? MAX_SKB_FRAGS : DIV_ROUND_UP(mtu, PAGE_SIZE);
+> +		vi->big_packets_num_skbfrags = guest_gso ? MAX_SKB_FRAGS - 1 :
+> +							   DIV_ROUND_UP(mtu, PAGE_SIZE);
 
->   }
->   
->   static inline bool tcp_in_slow_start(const struct tcp_sock *tp)
-> diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-> index ad40762a8b38..cb36686973e5 100644
-> --- a/net/ipv4/metrics.c
-> +++ b/net/ipv4/metrics.c
-> @@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
->   			NL_SET_ERR_MSG(extack, "Unknown flag set in feature mask in metrics attribute");
->   			return -EINVAL;
->   		}
-> +		if (type == RTAX_CWND && !val) {
-> +			NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero");
-> +			return -EINVAL;
-> +		}
->   		metrics[type - 1] = val;
->   	}
-
-But is it really fixing anything ? I guess this is why you added the 
-max() in tcp_snd_cwnd_set() because you did not understand the issue.
-
-An unlocked CWND of zero is harmless.
-
-I think a better fix would be:
-
-diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-index 
-ad40762a8b38379e4ccdc505e3885adb8dfff763..b7f8c47f72f9707adb4ef4dde5558af23b46a502 
-100644
---- a/net/ipv4/metrics.c
-+++ b/net/ipv4/metrics.c
-@@ -60,6 +60,12 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
-         if (ecn_ca)
-                 metrics[RTAX_FEATURES - 1] |= DST_FEATURE_ECN_CA;
-
-+       if ((metrics[RTAX_LOCK - 1] & (1 << RTAX_CWND)) &&
-+           !metrics[RTAX_CWND - 1]) {
-+               NL_SET_ERR_MSG(extack, "Locked cwnd metric must be non 
-zero");
-+               return -EINVAL;
-+       }
-+
-         return 0;
-  }
+The two most common issues in computer science are off by one bugs.
 
 
-
-
-Note that my email address is edumazet@kernel.org
-
-Make sure to refresh your git tree, because git should have handled the 
-change automatically.
-
-pw-bot: cr
+>  	}
+>  }
+>  
+> -- 
+> 2.56.0.212.g129ede20d9-goog
 
