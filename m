@@ -1,53 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792486079;
-	b=UUP/uhToXzKhtaUqVVYClv8MdOxr2LDeyyb7SPN4uhZFS7W7B4tLiB5b5kJWFeF2X/2n
-	 yb8616RiXbpE+U3RTthmk2VR9DCawJVRf72NdNvF85CdVpO6sh/lWKl+GN1BhMFvayg38
-	 ftwk/8xOYFArU8pl6WcrfPLRDklMFes8aC6Zq+Xtov2ujDXfEYnn88LoR0p9KQLzjmhho
-	 yShVpOvMvUDANiQZ3VjD1tDiM+i0XDpMx2zjAAljsPBYZHkgRjF0GuQitOT8odBpw0Ib/
-	 nS0xfoYSaruDrge8BZr+4mQt6BCvPBij6VqEN7B62uEj3J5Z1PMGLUo0S6aeBRNtnQw==
+	t=1792486681;
+	b=0Utgb94FXvRY1lfa//ImSIS4XEV+NC63kP8LK/7fKJLzu9ZHth5NdZzBIC4pEURpCJsB
+	 WUCsyRjYDq+nmR5ql4HgoE1jTwq54GFPMtHXqEgJbaJU5z6hK7Z95Fnfa28zVoeiWPkiJ
+	 QeSF3rT8Bf6A6lUjjA6IS8rR5N61hBwtMsV41vR9UyCcUjSTTvyXdPcen2io0N3eePSjP
+	 kkTrS51mLVKQEO6R0XpaOLgTEkgUWOLpOPN/HsKYadS+K+5VFf2fYIGslwYzofyHHG+ee
+	 CUW8FSASriNKmUDKekaYVJUcdJfQcr9N0stiT4n7GqMMmtlSUPbHH3QWPwzNcZHwEJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792486079;
-	h=DMARC-Filter:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 X-Clacks-Overhead:Message-ID:MIME-Version:Content-Type;
-	bh=XkaU7AQU9KO+oLyNWBT/0Ji5JFYhBxgOpCvKk/9FgR0=;
-	b=rUlscLsz1yMyZBivcu17RlmG/kudOgmkOD1VMTs7ERhf2Rvb9pjAMuUHFW17z6XL+5Ck
-	 Fkd1JuPc90UJmvMhOlF0er5zjJUi4SrwtPGCnSWc2rRoU48ai6ypajrxG5v5smzqmPJ85
-	 RcRGGSdOSZsbHftpNgh0aCPyoq+NEjXzKzUhhpAoghsSnDP4AD6MuuqXYa+iT31Q3OO8a
-	 ql7kXCuIZ9fI76xHCtvPncdduf1cO2crYR9gvvxsvuS18YJKchZI/dZagHc4uwM47mZAu
-	 wNWqnMbN1sugJc71HVdYYYfvt8pppTZ43gFWSskpU1Dz7PUh6UWn3UcXjnQ/vRJqzxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792486681;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
+	bh=f2RC02k4kzNCEkVNB0+GicfGGVn/vdjSFeUmhuG7iU8=;
+	b=JnoRORtKkNiodKsaZta1ievrz3KmBVJi+EUsaZJNfjUmmsCQxHPAzKilseaafRwEfCHm
+	 9HFFokXYZGFN8DIb+/Nuucfd4gYd4zkct3z1KPgFcPHd3RImF5R0rSutURXBQTcX0b0KO
+	 JzpxphHXnPbMkRXCuBmNexr4xCx9DoT11nsrHgx6d91p/Nm/LK8NYdIEnDFlHnXE989VU
+	 zZA+6/9puWqKKdCsA8lE15BZYXvZO95IoNvaiiyimXnloiuOp/QJgvgk600katRIDWW9q
+	 rp9QRXeu97gJZ8OwZ2XeFUJDgj9MAedyqqRDcQNEOuzx0yMcr/YoTYYyNG3durfxb9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=toke.dk;
-	spf=pass smtp.mailfrom=toke.dk;
-	arc=none smtp.remote-ip=45.145.95.4
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b="McdG56U/";
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B3A60A3802
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:47:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2B3A60A3802
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-Authentication-Results: mail.toke.dk; dkim=none
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>, =?utf-8?B?Qmo=?=
- =?utf-8?B?w7ZybiBUw7ZwZWw=?=
- <bjorn@kernel.org>, cake@lists.bufferbloat.net, Sashiko
- <sashiko-bot@kernel.org>
-Subject: Re: [PATCH net-next v7 4/4] net/sched: cake: hash before segmenting
- and reject an overlong split
-In-Reply-To: <CAM0EoMnNvr4Ep_0m78UidcEGbdE-5x8dfxbpgO1pbaVTHs4H3A@mail.gmail.com>
-References: <QDISC-BA27.v7.r0.20261019115505@mojatatu.com>
- <QDISC-BA27.v7.r0.20261019115505-4@mojatatu.com> <87o6cpwnh5.fsf@toke.dk>
- <CAM0EoMnNvr4Ep_0m78UidcEGbdE-5x8dfxbpgO1pbaVTHs4H3A@mail.gmail.com>
-Date: Tue, 20 Oct 2026 10:47:54 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <878q3svjut.fsf@toke.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3244F606A319;
+	Tue, 20 Oct 2026 08:58:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3244F606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=McdG56U/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792486687; x=1824022687;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=AG80YPxqxi+pkt3jLWqElJJ+6PD1MdH6CVxrcZj82s4=;
+  b=McdG56U/R/HOvn8uLU0siwzVvPo10fW58sg+wwelkDwV4M3yyIEuZBIm
+   oUf3OyPBD0v32vznMLvSxSD1HTP4EhPcHBAV9j+9TRaRTlhjofBY8M/gU
+   nzeXqOKzRJwuW1tJzj2dxzNEO7xu2i88OvhBLfv3WGTdp+JoBETO+jnfS
+   sbCcbrF/IuEN5a2sUl/I/Xr7jk/iJUvJ4jKOwKUiv+NMaz1NT611vuNsl
+   xMfjdpPIW1EjMTLeZateG+SyxIIAitDx2E8oF5h5QoMsKiCGXw+4PqU2p
+   cSwI4PB5Q+yo3F9qRd0oONd312NNRgO75BdwPDK23UWe3Pfa6P3M1LqDF
+   g==;
+X-CSE-ConnectionGUID: g1XMydjBTL6qIJKaVNKb0Q==
+X-CSE-MsgGUID: +ALR+oy0QVOFf9U4GZMkCw==
+X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
+   d="scan'208";a="65303176"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 01:58:07 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Tue, 20 Oct 2026 01:57:59 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 20 Oct 2026 01:57:58 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Date: Tue, 20 Oct 2026 10:57:27 +0200
+Subject: [PATCH net] net: lan969x: don't disable hardirqs in fdma tx clear
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,162 +73,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261020-lan969x-fdma-tx-clear-irq-v1-1-b9f9d1eda317@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAPYs12oC/x3MQQqEMAxA0atI1gasSrVeRVwUm2pAO2MqUhDvb
+ nH5Fv/fEEmYIgzFDUIXR/6FDFUWMK82LITssqGuaq0qZXCzwWiT0Lvd4plw3sgKshzoet13nTe
+ 6bRTk/i/kOX3vEQKdMD3PC39ukH1wAAAA
+X-Change-ID: 20261019-lan969x-fdma-tx-clear-irq-d86877f96431
+To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Steen
+ Hegelund" <Steen.Hegelund@microchip.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+X-Mailer: b4 0.14.3
 
->> > +
->> > +             segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
->> > +             if (IS_ERR_OR_NULL(segs))
->> > +                     return qdisc_drop(skb, sch, to_free);
->> > +
->> > +             /* The split path accounts the segment sum, not the
->> > +              * stab-adjusted qdisc_pkt_len(), so check it here.
->> > +              */
->> > +             skb_list_walk_safe(segs, seg, nskb)
->> > +                     slen += seg->len;
->> > +
->> > +             if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG)) {
->> > +                     qdisc_qstats_overlimit(sch);
->> > +                     /* __skb_gso_segment() puts SKB_GSO_CB at cb
->> > +                      * offset 32, over tc_skb_cb.drop_reason; every
->> > +                      * segment inherits it. Tag each one with the
->> > +                      * qdisc drop reason.
->> > +                      */
->> > +                     skb_list_walk_safe(segs, seg, nskb)
->> > +                             tcf_set_qdisc_drop_reason(seg,
->> > +                                                       QDISC_DROP_OVERLIMIT);
->> > +                     /* skb_gso_segment() moved sock_wfree to the tail
->> > +                      * segment, so defer the list to to_free rather
->> > +                      * than free it under the qdisc lock.
->>
->> I don't think this part of the comment is needed - we do all the drops
->> using to_free, so the sock_wfree thing is irrelevant.
->
-> I was trying to rationalize "the segs == skb fraglist". How about:
-> /* Fraglist GSO returns the original skb as head  (segs == skb), so
-> drop our ref first */
-> I can drop it if it seems obvious
+lan969x_fdma_tx_clear_buf() runs from the NAPI poll and frees the skbs
+of completed tx DCBs with napi_consume_skb(), under sparx5->tx_lock.
 
-Yeah, that bit is fine to keep :)
+Before this patch, the lock is taken with spin_lock_irqsave(), so the
+skbs are freed with hardirqs disabled. RX skbs are marked for page_pool
+recycling, so when such an skb is forwarded back out and its tx
+completion frees it here, the free path reaches __page_pool_put_page(),
+which warns via lockdep_assert_no_hardirq().
 
->> > +                      * Fraglist GSO returns the original skb as head
->> > +                      * (segs == skb), so drop our ref first.
->> > +                      */
->> > +                     if (unlikely(segs == skb)) {
->> > +                             consume_skb(skb);
->> > +                             return qdisc_drop_all(segs, sch, to_free);
->> > +                     }
->> > +                     __qdisc_drop_all(segs, to_free);
->> > +                     return qdisc_drop_reason(skb, sch, to_free,
->> > +                                              QDISC_DROP_OVERLIMIT);
->>
->> Since you already set the drop reason above, there's not really any
->> reason to use qdisc_drop_reason() anymore; so this logic can be
->> simplified to simply:
->>
->>                         if (unlikely(segs == skb))
->>                                 consume_skb(skb);
->>                         return qdisc_drop_all(segs, sch, to_free);
->>
->
-> How does this look ?
-> tcf_set_qdisc_drop_reason(skb, QDISC_DROP_OVERLIMIT);
-> skb_list_walk_safe(segs, seg, nskb)
->      tcf_set_qdisc_drop_reason(seg, QDISC_DROP_OVERLIMIT);
->
-> if (unlikely(segs == skb)) {
->         consume_skb(skb);
->         return qdisc_drop_all(segs, sch, to_free);
-> }
-> __qdisc_drop_all(segs, to_free);
-> return qdisc_drop(skb, sch, to_free);
+Take tx_lock with a plain spin_lock(), as the only other tx_lock user,
+sparx5_port_xmit_impl(), already does. tx_clear_buf() is only called
+from softirq context, so disabling hardirqs is not needed.
 
-Ah, right, got the 'segs' and 'skb' variables a bit confused, sorry
-about that.
+Found with lockdep enabled (CONFIG_PROVE_LOCKING), which the assert
+depends on. Reproduced on lan969x by redirecting received frames out of
+another port with tc mirred.
 
-But, thinking about it some more:
+Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+---
+ drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-In both branches of your code above, we have a drop of the skb, and a
-drop_all of the segs. And the existing code already has an unconditional
-consume_skb() after segmentation, where none of the post-segmentation
-uses the 'skb' pointer.
-
-So wouldn't it be simpler to just add the consume_skb() unconditionally
-immediately after the skb_gso_segment() call? Something like this, on
-top of your patch:
-
-diff --git i/net/sched/sch_cake.c w/net/sched/sch_cake.c
-index 730c90af14bd..20173aaf973c 100644
---- i/net/sched/sch_cake.c
-+++ w/net/sched/sch_cake.c
-@@ -1819,13 +1819,17 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
-        cake_hash_keys(skb, flow_mode, flow_override, host_override, &keys);
+diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+index c7e0e58ff0f7..053d125eda65 100644
+--- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
++++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+@@ -54,10 +54,9 @@ static void lan969x_fdma_tx_clear_buf(struct sparx5 *sparx5, int weight)
+ {
+ 	struct fdma *fdma = &sparx5->tx.fdma;
+ 	struct sparx5_tx_buf *db;
+-	unsigned long flags;
+ 	int i;
  
-        if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
--               struct sk_buff *nskb, *seg;
-                netdev_features_t features = netif_skb_features(skb);
-+               struct sk_buff *nskb, *seg;
+-	spin_lock_irqsave(&sparx5->tx_lock, flags);
++	spin_lock(&sparx5->tx_lock);
  
-                segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
-                if (IS_ERR_OR_NULL(segs))
-                        return qdisc_drop(skb, sch, to_free);
+ 	for (i = 0; i < fdma->n_dcbs; ++i) {
+ 		db = &sparx5->tx.dbs[i];
+@@ -83,7 +82,7 @@ static void lan969x_fdma_tx_clear_buf(struct sparx5 *sparx5, int weight)
+ 		db->used = false;
+ 	}
  
-+               /* we never use the original skb after splitting */
-+               consume_skb(skb);
-+               skb = NULL;
-+
-                /* The split path accounts the segment sum, not the
-                 * stab-adjusted qdisc_pkt_len(), so check it here.
-                 */
-@@ -1842,20 +1846,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
-                        skb_list_walk_safe(segs, seg, nskb)
-                                tcf_set_qdisc_drop_reason(seg,
-                                                          QDISC_DROP_OVERLIMIT);
--                       /* skb_gso_segment() moved sock_wfree to the tail
--                        * segment, so defer the list to to_free rather
--                        * than free it under the qdisc lock.
--                        *
--                        * Fraglist GSO returns the original skb as head
--                        * (segs == skb), so drop our ref first.
--                        */
--                       if (unlikely(segs == skb)) {
--                               consume_skb(skb);
--                               return qdisc_drop_all(segs, sch, to_free);
--                       }
--                       __qdisc_drop_all(segs, to_free);
--                       return qdisc_drop_reason(skb, sch, to_free,
--                                                QDISC_DROP_OVERLIMIT);
-+
-+                       return qdisc_drop_all(segs, sch, to_free);
-                }
-        }
+-	spin_unlock_irqrestore(&sparx5->tx_lock, flags);
++	spin_unlock(&sparx5->tx_lock);
+ }
  
-@@ -1917,9 +1909,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
-                WRITE_ONCE(b->backlogs[idx], b->backlogs[idx] + slen);
- 
-                qdisc_tree_reduce_backlog(sch, 1-numsegs, len-slen);
--               consume_skb(skb);
-        } else {
--               /* not splitting */
-+               /* not splitting - skb pointer still valid */
-                int ack_pkt_len = 0;
- 
-                cobalt_set_enqueue_time(skb, now);
+ static void lan969x_fdma_free_pages(struct sparx5_rx *rx)
 
->> > +             }
->> > +     }
->> > +
->> > +     /* Admitted: resolve the flow. The mode is read once above, so
->> > +      * extraction and resolution agree if cake_change() intervenes.
->> > +      */
->>
->> The last sentence here is just distracting. Please drop.
->>
->
-> Ok.Will reword to: /* Admitted: resolve the flow. */
->
-> I wont wait for the 7 days for sashiko to respond if we can reach a
-> quick consensus.
+---
+base-commit: 07bd391eb9572e74f073c49acef327611234f9bb
+change-id: 20261019-lan969x-fdma-tx-clear-irq-d86877f96431
 
-Fine with me :)
+Best regards,
+-- 
+Daniel Machon <daniel.machon@microchip.com>
 
--Toke
