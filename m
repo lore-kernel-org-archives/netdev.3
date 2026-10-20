@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792462808;
-	b=0QS/4E1tkpG52sIMYZ96DAOECTc9w7CEtt20WiTA2VOWOkW3uGdLNfkFWibfmXUCyr3f
-	 PQTJ5ST2qkk83Vo2OJzKS4tjtjw0hbOpQRU/IWQ+RGjZx0C8SVFIKC12v5I3deZv82owd
-	 cQrkWW5seRQdYqYa5aL5bdOSuY2aWv7bDtJC7FigJ4ResxjzQyoTes3ASzw0Xr4PuHIMm
-	 LfRrNW4/sBihvgXUHqq1wqbg0nZdGzoZH96O/jaNzDW+/TlSmHsJMuX9yTVW9LXaGXsln
-	 RgxeQarefKVGLCoGSdkSwcTp84IfalcaefaBtApP1bp5IqZfQBhWLIOMV1UeyW3Zh7g==
+	t=1792462809;
+	b=HVibfJvdBDwJdckJ2m0ulyXZxtPrqwPHSKKvcDvM8LGy1YvAV/ZxfY63BGmIgwFavgbp
+	 CIVRHprY7N7I/nzcCy6sh7kEWMVUxp/N88sHCCq/t47KgQz6IaeVF4zbo4218EQExZ8C4
+	 qLcEW2YAc0QX2w2j1gwcatVaxvJlaH01psygSqhOciLl45tOD1y6AM0TzAVDbCsk1dKU6
+	 iiey7VO864qGaXwkMB2sl3Nm6urM4NewxgTDx2ai8pKTNK7Um5LIvfLivrncsrw7mDTrD
+	 poakp0uIyTHk/0JGX/AM1UBfyMGGwdYTgn11z+BTi3zSbhUEcL83LnQBUpF6cvvyBTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792462808;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792462809;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=g5bYbQ/yGOxA8yv59v0I5cj6dg4wwRzsxQIpkc/8d2g=;
-	b=Lsj5KfpPkFneCf8Df4d4P2VYKdtUM8AkI9wzfXd11u20DemdQrw+6sqtb0MdMsOoBN0B
-	 PHqZ54nBE11/NJtRTWcMbt6w7PZAzzis+uL15Xjz2Ibdzopu7dtDNB3JuYW+43LzKAT1n
-	 rJOLhwr5zDmB1TTTneExnfcDGunUTpx51MoNjTs+YrLxLzw8uv6uwveBSre63TNLJgqzc
-	 aWrnmHpVy1YrFtfS6JJ+plYlvkzcFELGig48uKKO0pbg141sHpOTyZLMCQPmGfrKiN6SA
-	 uAmTiGG2r5bCGrH1yA5gA3T65x3GaduR4CWdBWYr+LKG/tSWLSxsoSt4D9UV5RXqVQw==
+	bh=+6D1iMcEiNp91wI9iV+LsIIjUJIqXv+F8ad2QlrDXZY=;
+	b=Ks+uabrXETlPZkedPnmbjgguuk9hZqj44+u0z55yh0Ci+dcn0NRvYX/5wPV3WQqtHwmF
+	 /jsLVcCVMLWy/fac/dGu962HKk8E/LgyroHvv4PH5YI73zEeuFjbHDKzU8hnwlm1IuTqp
+	 VNUeFGAHgGVJtd0c12s8vm0mV7boN2QBsIhkHwpT2/SAH8hDTryOFStS5YhcW3xPdn/E1
+	 KOHF/f8Q2mDIi5bwarL7x3ruFDY2LCcUQtBqZ4evmccwIB+cFYUfOcyFpQtgrUHGJqfAm
+	 6WeMAFVeoXNwyO8UOib/tlmNJWHNr6w1xBI/FzMhUlOhcBqOgJku6vZCkpI8z6yxx5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HjmYPpMd;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="P4eZN/UV";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E635606A31C
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 02:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFD7606A32C
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 02:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HjmYPpMd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5A41F000C4;
-	Tue, 20 Oct 2026 02:20:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P4eZN/UV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E081F000C4;
+	Tue, 20 Oct 2026 02:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792462807;
-	bh=g5bYbQ/yGOxA8yv59v0I5cj6dg4wwRzsxQIpkc/8d2g=;
+	s=k20260515; t=1792462809;
+	bh=+6D1iMcEiNp91wI9iV+LsIIjUJIqXv+F8ad2QlrDXZY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HjmYPpMdP84qXgsbWnGyevWOd9F3k+cyoyruaflz4IE7W1AsZ4thKf/thiTA0Aold
-	 eAK6MVc+7TGX6F312lCdrfMY1e8lsp2jU6j4u+vPdN0C/oHbtTYWwjyQXf1hYHHO8a
-	 EEje8WyOMJJhAJ8iPPGGefdC78ncH5MOyLOhncy9NmL91roYkSbmiTNwbl2BCASszw
-	 sbjEUPyYHhSrk0WUoAu+WzCxxJe+KviDmxawILmpXUkbR/RQz0ArzgYcV8WgNtPK0R
-	 pjhshVTLL2Z+Mjx9oEhADHTFOxIgrBrFbhapM/ISxMNY3gSglPd9sHCNBiieGyCLs5
-	 T2xKNOL+5NdxQ==
+	b=P4eZN/UV50g8methjG2c+Pbq7OsnCvV8vBu8wMy9fibe6uiioo5FY8ph9Q41VDVyW
+	 21EotIQnnlsYCNWTZhajb5D9AMutAXmGY7wfFQkbCs44veVSH76O9r58GK7+cwiyGX
+	 B4y3jDR3507RN4Rsj+7K+LX6e8CXPjePzx3OBf2OUQbDCYlD4Kzh7Ij+yv4zuGZTbt
+	 rjjN6kAhJUaNAE1RBsyvWvIgc/elRYA3OKB7eD6fgcmw63qLvAdA+jdg4moQ49PJoM
+	 cti5ybk+Q18+jok8B612jraH7Nw0671amz/NZZGgD0ryPnROv8TVLMpqtcCRtPHf5e
+	 fX2cKcHFSvrNw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B43C13924A6F;
-	Tue, 20 Oct 2026 02:20:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2AC3924A6F;
+	Tue, 20 Oct 2026 02:20:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,48 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/6] pull request: ovpn 2026-10-12
+Subject: Re: [PATCH net] selftests: net: fix race condition in icmp.sh causing
+ CKI
+ sporadic failures
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179246280653.3441618.14893314533107061618.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 02:20:06 +0000
-References: <20261012133809.2477063-1-antonio@openvpn.net>
-In-Reply-To: <20261012133809.2477063-1-antonio@openvpn.net>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, sd@queasysnail.net, ralf@mandelbit.com,
- kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com
+ <179246280777.3441618.8223791550221195346.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 02:20:07 +0000
+References: 
+ <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
+In-Reply-To: 
+ <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
+To: Prasenjit Mukherjee <pmukherj@redhat.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dsahern@kernel.org,
+ toke@redhat.com, netdev@vger.kernel.org, dcaratti@redhat.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Antonio Quartulli <antonio@openvpn.net>:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 12 Oct 2026 15:37:57 +0200 you wrote:
-> Hi all!
-> 
-> Here is v4 of the ovpn batch for net-next.
-> 
-> It is all cleanup and selftest work this time: no functional change to
-> the driver. The selftests get TCP_NODELAY on ovpn-cli's TCP sockets and
-> proper synchronization against the server-side key setup. Ralf is added
-> to MAINTAINERS as ovpn reviewer.
+On Mon, 12 Oct 2026 18:23:32 +0530 you wrote:
+> CKI reports sporadic failures in icmp.sh, Davide suggests this might be
+> caused by a race condition where tcpdump starts capturing after the last of
+> expected ICMP unreachable packets have been sent.
+> Fix this replacing tcpdump with a tc flower filter that
+> matches ICMP Destination Unreachable (type 3, code 0),
+> and match on act_gact counters instead.
+> This will remove any race condition to appear.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/6] ovpn: Fix the return value in ovpn_bind_from_sockaddr() kernel-doc
-    https://git.kernel.org/netdev/net-next/c/c73695b5c297
-  - [net-next,2/6] ovpn: remove unused work field from struct ovpn_socket
-    https://git.kernel.org/netdev/net-next/c/1926cf58b0a8
-  - [net-next,3/6] ovpn: remove redundant peer NULL checks in crypto post functions
-    https://git.kernel.org/netdev/net-next/c/fbe0f8413514
-  - [net-next,4/6] selftests: ovpn: enable TCP_NODELAY on TCP sockets
-    https://git.kernel.org/netdev/net-next/c/5a5c645415c2
-  - [net-next,5/6] selftests: ovpn: wait for the TCP server key setup before traffic
-    https://git.kernel.org/netdev/net-next/c/03b7050e67e2
-  - [net-next,6/6] MAINTAINERS: ovpn: add Ralf Lici as reviewer
-    https://git.kernel.org/netdev/net-next/c/b2ed202907d6
+  - [net] selftests: net: fix race condition in icmp.sh causing CKI sporadic failures
+    https://git.kernel.org/netdev/net-next/c/c6b97e579ea3
 
 You are awesome, thank you!
 -- 
