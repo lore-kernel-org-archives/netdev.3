@@ -1,83 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792501801;
-	b=ukz29ydtEttw9eJOfEHG0JqqOqZIHkJeGNvRglXp7ih4bQHA6noG7/D+i+70R9GQK3jt
-	 9TAm+cw1W6Rsce3mH9S1zIKZKOH+Fgn4+rD5SHyOfNrhF1aC+yc8ezNPtwWztHJqwM6eZ
-	 ewf7HLbs7JT+XlA6+rNCWnS5+KmbczCwgjMUH1tc88Z4eeiSUsleXlbH2KG4S03MA1LDC
-	 X/C2ai1oA9/EBfH8WNVbxj2QpmClWBIAxb07NMSitylPPe7vkF6tVb0oa2MzLYVzWGoIj
-	 +4p32hG/etQj9QhJFOvwISUNJbKAU1lmM2iX8olJFlRFBRvYVhPJo8bXkvYxfw40TfA==
+	t=1792501808;
+	b=En6ALBgk8/VCwF0DjCMWNkB1dUSSQPVWKuKh2tjHrwSnpHWBeqRjlJC0V2aB6qrdTykr
+	 NFg1+K8A/7UXacEHdRZhVLZ+kZ7GI5XaFgmdyknwI0vnxT6xuIcMsjv4PG2wAWHywph0X
+	 ZHAmKuSXWQesfgV8rMPGJLpX7srTSuGSI53+po71SD2gGicxp518MnP0cZe1xweG2/QOK
+	 rq2I7eqcXovQD+ZQW84+sJq64tPahRM2jtskg4hZt4DcaPm97I06co01LcibwxyF14aY3
+	 zJ+dzERHqId0QADv0xbhdbDSD2Tum0tPfu4mvu4MxOeyfpIH1tO7GsVm4oMYmcBJmNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792501801;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Scanned-By;
-	bh=r7db5+BopgpcFDUxO3SJq0ATIR0htP6s/SGZniIH6PQ=;
-	b=hcuHMc3UkNODE1p6RjqMp1tOk4uWfkIArmlEg5W0x7lYap+EwzGauDL7Da/dXwNKuuXy
-	 Po6pdA1gnNOchPDob4xNfXRYu75snWupDvul22xpgALNkJ0M7YPWIv7CtSg38vSIEKexT
-	 zXCCcm9HrwMe5oCRTRtS45Tbpj9hBJ3o2KAmg0iMPKyqf2MJ4r5G1AKPkO7zMdJNpZvxg
-	 wvPuFrxMp7W0vszKPJi8Yhfei+QFugN5BXZ6mjLVG/QGMoesvkHvnymdMNjhiHwy7WsLX
-	 FB0vkubaE7GzaZ42FyG4IIZ1wJIejMP7hq/Sav1DQvo4ej1tX/04zlhHlwIrDUWwODQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792501808;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=MJnzoeGDJGlYFhnUg3KqAZEf4kJrQ0yTrNTuF4zJyDA=;
+	b=0b/BR8QeVzYDDAlopk5Y1eHkLzWjNbRbor1TfmIRS2MTRm+4HNrkVZ5GAiuIELrSH0mB
+	 LB4dYJb2ibBfMaeLQiHqoMwZ7GQFU0Y7t7SG+4egNF59Ep16XK1kRGIG4uygRi+DqIdmu
+	 3vtSvRT9swSM79Hy77LOpsXTo8fHHVYlTjCkQ2VHC0F/yZAa6pT9po/08VVLZQNfzHwlx
+	 BRUValsazXr0Dna1UVS5pG9BXzUzSejaq2XHrIJETtwcon1w+zsVWywm3yvOBzxNW8peW
+	 AfJAHr7/w092te6vejcm+9jug+PYZILjBzOqRx1X8P8fIGWbkcXNSiHzhVSb+ZWm8Qw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ao2yf5XA;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TWKxgIPL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E5606A32D
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:10:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E51E5606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AB4606A33F
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ao2yf5XA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792501800;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r7db5+BopgpcFDUxO3SJq0ATIR0htP6s/SGZniIH6PQ=;
-	b=ao2yf5XA+ZFHcxSmGiDA8lAFHBE+9PkYlhrD4iXyeqCCquQ7/ieT4UC/j+ktZ2OYLdrgoP
-	QK0Bw2Sr0eO9JIe2zVHNoa/wOuTUgPPqdQNVNYO+u1/BEa3B+eV7JtgebqeKs7nHpI/ILd
-	fvVzYB/tXHqAVWgtzYvSDV/aXHCMO2s=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-300-GjRzZyDDNB-mlwpQ4uaVZg-1; Tue,
- 20 Oct 2026 13:09:53 +0000
-X-MC-Unique: GjRzZyDDNB-mlwpQ4uaVZg-1
-X-Mimecast-MFC-AGG-ID: GjRzZyDDNB-mlwpQ4uaVZg_1792501791
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B2A641954B14;
-	Tue, 20 Oct 2026 13:09:50 +0000 (UTC)
-Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 5CDEB362;
-	Tue, 20 Oct 2026 13:09:47 +0000 (UTC)
-Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
-	oleg@redhat.com; Tue, 20 Oct 2026 15:09:50 +0200 (CEST)
-Date: Tue, 20 Oct 2026 15:09:46 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Allison Henderson <achender@kernel.org>
-Cc: Joel Granados <joel.granados@kernel.org>,
-	kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev,
-	lkp@intel.com, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
-	wireguard@lists.zx2c4.com, rds-devel@oss.oracle.com
-Subject: rds_wq UAF
-Message-ID: <atdoGiW_sHlWgOwt@redhat.com>
-References: <202610190310.9737b2e3-lkp@intel.com>
- <atYB0bm9eEXp8A2g@redhat.com>
- <atYW0K3t57puHeLW@hobbes>
- <atYuE1xnVYe0BDG4@redhat.com>
- <atY42k00k0Waj6o4@redhat.com>
- <42964fa071bd8dcafd418c89be6d66856def4dc5.camel@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TWKxgIPL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0391F000C4;
+	Tue, 20 Oct 2026 13:10:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792501808;
+	bh=MJnzoeGDJGlYFhnUg3KqAZEf4kJrQ0yTrNTuF4zJyDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TWKxgIPLJ9LqYrCWrojpTigzIZC0QvcpwMnXvOAHRndMDSyMQ6o9YIelmVs1WdZot
+	 Menq4HSdUVM8iNAw7piS8paMXEXazB6vFZ/Qsl7OfLLdDBm1J18ucIFBHSQ5daAspW
+	 4JnMFNBpYVv0UYtoeUUyOc5oIS4B9AUxdPfBwaWRclis9Y1uS/Rja4i3DaRJa5iAr2
+	 7r1ZznJdl+fx9D2xH1oqt7hLbaWaqA49U8/hyoYh4gmgUw0yDTDkCHu4a3ghOBNfPl
+	 7sLuPwMLC6tJ3PDl5lGrOHnPngRH4rHcvsxm/9RtU1B2CRdB+J5T5fBproLnCzkeKO
+	 ZDhn5puKKnOyg==
+Date: Tue, 20 Oct 2026 16:10:03 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH iproute 2/3] rdma: don't build printf formats out of keys
+Message-ID: <20261020131003.GM64621@unreal>
+References: <20261019200623.816470-1-stephen@networkplumber.org>
+ <20261019200623.816470-3-stephen@networkplumber.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,59 +58,16 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <42964fa071bd8dcafd418c89be6d66856def4dc5.camel@kernel.org>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+In-Reply-To: <20261019200623.816470-3-stephen@networkplumber.org>
 
-(change subject)
+On Mon, Oct 19, 2026 at 01:03:03PM -0700, Stephen Hemminger wrote:
+> print_key(), res_print_u32(), res_print_u64(), print_driver_string() and
+> print_ipaddr() passed the attribute key as both the json key and the
+> printf format, so a '%' in a kernel-supplied driver or hwcounter key was
+> taken as a conversion. Pass the key as a string argument with a literal
+> format; output is unchanged.
 
-On 10/19, Allison Henderson wrote:
->
-> On Mon, 2026-10-19 at 17:35 +0200, Oleg Nesterov wrote:
-> > >
-> > > But. rds_init() can also fail even if CONFIG_SYSCTL=y, after
-> > > rds_sysctl_init(), so to me this looks like a bug in net/rds/.
-> > >
->
-> Yes that's a separate bug, so I'll send a separate fix for that.
+I'm not aware of any real firmware that sets `%` there. However, why not?
 
-Let me try to summarize.
-
-If rds_init() fails after rds_threads_init() for any reason,
-rds_threads_exit() will destroy/free rds_wq.
-
-If rds_rdma_init() is called after that, and rds_ib_init() fails
-after rds_ib_mr_init(), rds_ib_unregister_client() will try to
-flush the already freed rds_wq.
-
-But we have
-
-	module_init(rds_init);		// net/rds/af_rds.c
-	module_init(rds_rdma_init);	// net/rds/rdma_transport.c
-
-and IIUC the order of these initcalls is not defined. So if
-rds_rdma_init() -> rds_ib_init() is called before rds_init(), it
-can do flush_workqueue(rds_wq) when rds_wq == NULL on failure.
-
-With or without CONFIG_SYSCTL. Right?
-
-But it seems that rds_ib_init() doesn't need to flush rds_wq on failure,
-so how about the patch below? Of course, I have no idea if net/rds has
-more similar issues with rds_wq.
-
-Oleg.
----
-
-diff --git a/net/rds/ib.c b/net/rds/ib.c
-index 786f39169bc1..cde2d1bfabbd 100644
---- a/net/rds/ib.c
-+++ b/net/rds/ib.c
-@@ -619,7 +619,7 @@ int rds_ib_init(void)
- out_sysctl:
- 	rds_ib_sysctl_exit();
- out_ibreg:
--	rds_ib_unregister_client();
-+	ib_unregister_client(&rds_ib_client);
- out_mr_exit:
- 	rds_ib_mr_exit();
- out:
-
+Thanks,
+Reviewed-by: Leon Romanovsky <leon@kernel.org>
