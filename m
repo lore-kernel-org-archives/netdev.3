@@ -1,45 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792486734;
-	b=VBmKK3LlAhSBpqtq8RbpjCijsUAhhnnhS8Nm3TCiit2PCitiB6dAWxBIafevSqUgA9MJ
-	 Lac9tQyTdLDHS/JYBrKadUkZ5brXdT5gc+dURjLnMLhNGcNRrUdBbMtB+Jv6PC5EQeC7K
-	 zkYBg5nX+W2R3hq12uLC8u3SWRmNvb6ExvgHtI4IMopoW/ZnGY8d//GdupuMjTbc1tqq7
-	 AlL6tLuXcQEIO3wD7xeeoQDoGAkqDoYjJQgUVrPaJNY/FJBWUavs7UIkmizcQ7L1a/81g
-	 yJ4bBVe0cFx04zVn30Jea7Ndt0Z8++F1rd9eQ+50JKhEqSHRicO+LwzJNIAny14eSZg==
+	t=1792486748;
+	b=vvJHhv2jQE2EVLxL51rzb5Qsfmjyx5cnC2EtSVIvKEuVOtNf34/kuyDDrkUZFy5OCIWd
+	 6xbUgPH9M8Wg984jIdecffk3KoS3j/fovgCTDcvP54VXmhHoRa8161cq/elUhfq3772t9
+	 1yc/KXTfGvne5gAjsQUvM0OWl3t+11wqAIN4c44rcpLvJHDtu1PwQsniNGxuWgB/gGPls
+	 8E7l/cwYckFbB/vqMU7jpVCKoqjKOTXUZUA7k0QGE3AooFi5SROqXQA1Mb4qX4iRmj+Uw
+	 fZ4QzBcIr6PBIUBTINprtcRw5DR74RqYCL9Ax02ZOHjAsnVMb8kZFbuM0/pysAraHQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792486734;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=HlLZ9zGeNEup/rHEpny5JmMLv3fK5Tlr0wrd1y6qyXY=;
-	b=IyehdeazHh7byR9b+KkNcUk1oI0F9BQd4+6EE4e0bC68+aQClf3AB21Vv+KHZmHrlzKV
-	 uzGg5Lky3C6qKoDkU1anjwTPM3L97ARLHaBvAsTLg9n4/oAfno0gEu2EFr1gspVZsWLKb
-	 UY1S0Y9Eu5OF1dIKIf1ep/uJdktsCtP7shtA8THnZ6kvtFk4AvHLeMyIgogZI/bTIUzev
-	 9eT69ICOP02J8d/cXDoidcFznhZqxLcjQc6vpAeu1il1n9JE0Sy0gf0NITNlnwYIn3vX4
-	 S+P4pLPN+uLdY0rn6L4VQXEadRHwB3DBzMneJThZTGetMBUgOl17YknbE7jk6F5aoqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792486748;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
+	bh=DlRQrLuCp1pQiPvoZuE03RamHxP4GUYs64HC5pBSfnk=;
+	b=KyEPl4RdWe/gFZtB9AYaMHTOpT8FGLMmyBavphYb55e8QNhJqsCtIUHK0uG14onu7rJt
+	 MRozm6jxHmsTeNTUYtq19BEp0pQRYrSw53PPf7OjKgEUFMXikbbeiIMeziQ9K0x/4fxZg
+	 aB41R4AnSoPqtvLB1Xo8A0PY9tAYSl+eR0OE4k82YJkriP0XkfpMReB7QLW/Nb74UuWRI
+	 v8JCGjADcC4sEaJmfUy6JDa2+3SuHlkDew0Of4WfBLUCd6KeCu6sPcMnJpVdzmc0HxtuZ
+	 r2y6AxUU+T6x7LuxPKFmB9+uOk7zuCbIQ0StVpsFZ5ClXB0uFf5We/nNVojyK8wfX0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EwlNOE9A;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=XT0Yt2yT;
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABC9606A31A;
-	Tue, 20 Oct 2026 08:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA13B606A31A;
+	Tue, 20 Oct 2026 08:59:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA13B606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EwlNOE9A
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C421F000C4;
-	Tue, 20 Oct 2026 08:58:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792486734;
-	bh=HlLZ9zGeNEup/rHEpny5JmMLv3fK5Tlr0wrd1y6qyXY=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=EwlNOE9A6HClJkvde0kvUnzaqmRf601biMcVfJWjPPZAPytYo3tQ2sQspN5IdLrr8
-	 j1LKmnLBwQ4VpNLE939lziDV64lDN1ppA9OjHtxyFTQorxqVCeeqqvOCfFJG7p8Egx
-	 tn7AU4U63x6jl0VWqgQjuQbUS9YZsLXNhaLarB2KdlyJTu4oVzLwf45aPqOM5euA2P
-	 9jQrzNi9IlM4mQS7knsGSVoJN6EHvMXzKQSveHO0qJdIlLJfLo4pPB7MU15S2LWNtj
-	 3qnN98lfGiaC2xxxviQYyqR0znEe7mJN2E/F3jaWyI1VXLxrGWxhz1C6ns+teAQ8l3
-	 MT8nrF3+l/xEg==
-Content-Type: multipart/mixed; boundary="===============0961616978328380911=="
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=XT0Yt2yT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792486746; x=1824022746;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=FIHdx2fBc52egtG9sz56x/Sle9+Dbim4lb5RV7ZqdVc=;
+  b=XT0Yt2yTHNqI/TW4Y6Sq4Hw/ljhGoKVlWEvA9XRq5SP9M0GX3/HTn0Jj
+   bkT3H2FE+sOq6NUOIDndgn8mOABRADCgBs3DBW+WJPDIJrXRmokaQEwYD
+   guCS/j2TmFElPnmmpuDitg5aSJIaBqHWw1PQLvurzPYEsVF/7+I0VHEzx
+   0oTPwjaaCWSXg9Gi49RQCegR1hRq4I9i9eiUe8LRdg5upRcjkRwNUeOVD
+   u+yHQsZph5IVwmsACV+WExjdmMtGtYXOb+qbIqRVj7fPGhkpx/oV0dsu5
+   VLEg94LSf4q8Rlknrsa1mhzu9/FajBZTJwSeAR2qHlZRlikW/pYR5mIG1
+   Q==;
+X-CSE-ConnectionGUID: o8FD05qDQcuAdhvUGHh3Fw==
+X-CSE-MsgGUID: BZp+t77KTViALDwbfgmOQw==
+X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
+   d="scan'208";a="75728452"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 01:59:05 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Tue, 20 Oct 2026 01:59:06 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 20 Oct 2026 01:59:04 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Date: Tue, 20 Oct 2026 10:58:58 +0200
+Subject: [PATCH net] net: sparx5/lan969x: do not clobber the PSFP cycle
+ timer update period
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,66 +74,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <a02301c0ff8593349602f81cdf0c21f1b38db0b60118f8eed3199a6a38330234@mail.kernel.org>
-In-Reply-To: <20261020083713.905006-1-yanxia@cmss.chinamobile.com>
-References: <20261020083713.905006-1-yanxia@cmss.chinamobile.com>
-Subject: Re: [PATCH bpf-next v2] tools/bpf: Remove legacy BPF tools
-From: bot+bpf-ci@kernel.org
-To: yanxia@cmss.chinamobile.com,daniel@iogearbox.net,bpf@vger.kernel.org
-Cc: yana06070@163.com,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@kernel.org,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,corbet@lwn.net,skhan@linuxfoundation.org,rdunlap@infradead.org,richardcochran@gmail.com,netdev@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 20 Oct 2026 08:58:53 +0000 (UTC)
-
---===============0961616978328380911==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20261020-sparx5-psfp-cycle-timer-v1-1-00f2908f096a@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAFEt12oC/x3MwQqDMAyA4VeRnBdICg70VcYOXU23wOxKIkMR3
+ 93i8Tv8/w4upuIwdjuY/NX1Vxr41kH6xPIW1KkZAoU7Ew/oNdraY/VcMW3pK7joLIaJQh4ivVi
+ IodXVJOt6nR9QZIHncZxKD/5JbgAAAA==
+X-Change-ID: 20261019-sparx5-psfp-cycle-timer-c02f9a0b1e01
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, Simon Horman
+	<horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+X-Mailer: b4 0.14.3
 
-> tools/bpf: Remove legacy BPF tools
+sparx5_psfp_init() enables the periodic stream gate cycle timer update,
+which keeps the cycle start time of each stream gate within one cycle
+time of the current time. SG_CT_CLKS sets the update period, in system
+clock cycles.
 
-TL;DR: Nit only: the reworded filter.rst sentence says the instruction table
-lists opcodes, but it only has mnemonics and descriptions, so the new wording
-may mislead readers.
+Before this patch, the update is enabled with a full register write of
+SG_CT_UPDATE_ENA only, which also sets SG_CT_CLKS to zero. That is below
+the documented minimum, the number of stream gates (1024 on sparx5 and
+256 on lan969x).
 
-> diff --git a/Documentation/networking/filter.rst b/Documentation/networking/filter.rst
-> index e0b9dc14a9bf..ee35cea6face 100644
-> --- a/Documentation/networking/filter.rst
-> +++ b/Documentation/networking/filter.rst
+Write both fields, and set the period to the recommended 10 us,
+computed from the core clock since it differs per target (6250 cycles
+at 625 MHz, 3280 at 328 MHz).
 
-[ ... ]
+Found by an AI code review agent, and confirmed on lan969x and sparx5
+by reading the register back as 0x80000000.
 
-> @@ -213,9 +210,8 @@ contains a miscellaneous argument that can be interpreted in different
->  ways depending on the given instruction in op.
->
->  The instruction set consists of load, store, branch, alu, miscellaneous
-> -and return instructions that are also represented in bpf_asm syntax. This
-> -table lists all bpf_asm instructions available resp. what their underlying
-> -opcodes as defined in linux/filter.h stand for:
-> +and return instructions. This table lists the assembly notation and
-> +the corresponding opcodes defined in linux/filter.h:
->
->    ===========      ===================  =====================
->    Instruction      Addressing mode      Description
+Fixes: e116b19db202 ("net: microchip: sparx5: initialize PSFP")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+---
+ drivers/net/ethernet/microchip/sparx5/sparx5_psfp.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Does the table that follows actually list opcodes?
-
-It only has three columns: Instruction (mnemonics such as ld, ldh, jeq, ret),
-Addressing mode, and Description (prose such as "Load word into A").  There
-are no opcode values like 0x28 and no BPF_* opcode macros from
-linux/filter.h or linux/bpf_common.h in it.
-
-The old text said the table showed what the underlying opcodes defined in
-linux/filter.h "stand for", which matched the Description column.  The new
-wording reads as if the opcodes themselves are listed, so a reader looking
-for the encoding of an instruction will not find it there.
-
-Would something like "This table lists the assembly notation and what the
-corresponding opcodes defined in linux/filter.h do:" keep the original
-meaning?
-
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_psfp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_psfp.c
+index 83b37f95ee46..fa19a48f941d 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_psfp.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_psfp.c
+@@ -322,6 +322,7 @@ void sparx5_psfp_init(struct sparx5 *sparx5)
+ {
+ 	const struct sparx5_ops *ops = sparx5->data->ops;
+ 	const struct sparx5_sdlb_group *group;
++	u32 sg_ct_clks;
+ 	int i;
+ 
+ 	for (i = 0; i < sparx5->data->consts->n_lb_groups; i++) {
+@@ -330,7 +331,14 @@ void sparx5_psfp_init(struct sparx5 *sparx5)
+ 				       group->min_burst, group->frame_size, i);
+ 	}
+ 
+-	spx5_wr(ANA_AC_SG_CYCLETIME_UPDATE_PERIOD_SG_CT_UPDATE_ENA_SET(1),
++	/* Poll the stream gate cycle start times every 10 us. The core clock
++	 * period is in picoseconds.
++	 */
++	sg_ct_clks = 10 * NSEC_PER_USEC * PSEC_PER_NSEC /
++		     sparx5_clk_period(sparx5->coreclock);
++
++	spx5_wr(ANA_AC_SG_CYCLETIME_UPDATE_PERIOD_SG_CT_CLKS_SET(sg_ct_clks) |
++		ANA_AC_SG_CYCLETIME_UPDATE_PERIOD_SG_CT_UPDATE_ENA_SET(1),
+ 		sparx5, ANA_AC_SG_CYCLETIME_UPDATE_PERIOD);
+ 
+ 	spx5_rmw(ANA_L2_FWD_CFG_ISDX_LOOKUP_ENA_SET(1),
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+base-commit: 07bd391eb9572e74f073c49acef327611234f9bb
+change-id: 20261019-sparx5-psfp-cycle-timer-c02f9a0b1e01
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39395316270
---===============0961616978328380911==--
+Best regards,
+-- 
+Daniel Machon <daniel.machon@microchip.com>
+
