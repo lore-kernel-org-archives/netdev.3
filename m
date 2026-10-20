@@ -1,60 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792487194;
-	b=lMIF5G8hSnIDsSNpEbkxFIjnUeYX1131ahtQPgSpZ7EmXcFQjcUCnZs3yDGLvRsYEduC
-	 weyeUGAYof/M8ARnJjSaKY0Fk73RunXGChIbwhUE9LgyjDx7RYqYKjJhgjkEYpzPvNQuA
-	 20lOF52d+DbHu7rxUIregTJqioGrdYKjicdJmmWMznhOGZBLO0CJ4I6zozPnhU3irSZu4
-	 80pAU3dykihT7EWhTMk+CzCM4Kbr5N8/R0Z7OgF7Fba7IC19JLhG3gLL9fxSVQFdfpQLD
-	 pDyEingtD0MCwmoygbHTGmFC3Rx3Whba2o3vstvkBteKh8YuB2ZoxO5ilOsQpAjm+Bw==
+	t=1792487243;
+	b=x0o1xjvTO3vXm0+iJQSuwz6JxTp+bFtUZqlO3rP63PXMeOFS1+M/KaUvaSX3BuTU1ucm
+	 y9E8P6S1GerErQbEZ4mfY5rBEEVSqz0DTGoEj1P+zW/rCmxN7aAjsAkbnXXzZXu0YoF3v
+	 ymHtLVedroEZkmM1jOad7m5h/yhSeG04T+A1qVcAO29TUDryrJUF6N3mwIG/q5dDmmy/O
+	 SpYwmeLcbo4Qc8YC3SY7TauVB53jLbXuJBEbkNUu6MDOB380wIeRskH5MJD0sN9bbkpAU
+	 GEQng97zrw0CLr+ouLd0r02DC4J+a+KK/Foo+p5IQ/S2NzI7PLmUcRvC6mXvotryGEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792487194;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=byMpnzMiLTG8THNjkNmp9UgpYnNMNTx0auzeW57yB8U=;
-	b=DtLJAWSm6u9JGHTnz96Wvg+QhH2eX/jIcBCHC5FDpLnhaEai4CX9+EbmCPlMT/xG/T/g
-	 CW0LzQ8qiZDZc3VWDwhcaY99OiGzizFQ0t2U5FFQkhNcLV+v3HAtyGQ76pnmQLyrKkFuM
-	 6WTbm6m4w65C+8+0aeEDcUVMDd8nOTGWR04X3BX1VHFCqINf7WsDkl4BkXL1MaQt1j75B
-	 nnR/TmjwXNweeA/9+yIp4ON5P9ocKrXSZ247duhXMK62Mc2RKKa0Eb85IJ3ZmRWAGYTx4
-	 bes00efT0Q30H4rxHD38hjt3C/4coTTT41xK3DaGXIZlKuryyX+3FVvV7ngnxKzbwyQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792487243;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Content-Language:From:To:Subject:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=4awUjCoPkMordNZ7dimHR0j762Iy/DR9nQP5uwRaSgs=;
+	b=mxowgF2wCtlUptuBpMKaUPLDBT9I9XIRuPhTp2RjCugdUvoox/ybZJvr6ErYPn3D6hAC
+	 qXQsJlJmbfbueWD6b5+SEJ2WcmzxQBVdcpHj1lgsHyg0UkoZa/OpouTb0ZSu66EbNpzhZ
+	 A/qbqJUCvbS/Ii1Etf9QQu+HbQOdUwjDpITZwzla2XGUfztR7jYKMUAmZ7FeyYHJZHxsA
+	 TYYAc7Hx++fJAseaeMNSzuUUG2OHkxLvYDdw71RDaoVMwpb8RclHFLPkT65resM/v4oRs
+	 rqPtle+sZ3gUalsoncqlUD6LeH20qTH1DSL3Is7rI25feKW7m0SZv4ajQfFhrXTtT7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtgQErrW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=fxW3WUj0;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03763606A31B;
-	Tue, 20 Oct 2026 09:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74107606A31B
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:07:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74107606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtgQErrW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340EF1F000C4;
-	Tue, 20 Oct 2026 09:06:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792487193;
-	bh=byMpnzMiLTG8THNjkNmp9UgpYnNMNTx0auzeW57yB8U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RtgQErrWcSXkn4om10fEUZVsYPQS8E0C/5ZMqJW739OOKCRRH5cgZYWz6k9JW+NEA
-	 TXlyeYKprnZiyrNMoxCJbbwx/VXBq45YssFHz1sFkjxDHLYntyV8QmG1eGeLwBJeXZ
-	 79cdAncfI+BcHaxn3CPdPzDm1iSaInRvneceLD7fGwATCqRl2B+GAqG6GeVWRk/KmF
-	 VR1bAD3ZDJ9IabcZtURZJUnMDYc5qfuKlPdxlUDPi5+ksFEQyy+2HiccWtke1b315Y
-	 4ytv3hocK/lsNGOKxbtNmiQHyzD5hUINETjPtNB7EMhCIC7slgaFYzF9BrNWaAmyJo
-	 lDTQCa4S6emGw==
-Date: Tue, 20 Oct 2026 11:06:18 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Allison Henderson <achender@kernel.org>, 
-	kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, wireguard@lists.zx2c4.com, 
-	rds-devel@oss.oracle.com
-Subject: Re: [linus:master] [sysctl]  8d75c338f0:
- BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
-Message-ID: <atctwUB5NlRLk4Wy@hobbes>
-References: <202610190310.9737b2e3-lkp@intel.com>
- <atYB0bm9eEXp8A2g@redhat.com>
- <atYW0K3t57puHeLW@hobbes>
- <atYuE1xnVYe0BDG4@redhat.com>
- <atY42k00k0Waj6o4@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=fxW3WUj0
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D3D3B1A12A4;
+	Tue, 20 Oct 2026 09:07:20 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A1E5360393;
+	Tue, 20 Oct 2026 09:07:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99403103289A8;
+	Tue, 20 Oct 2026 11:07:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792487239; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:content-language;
+	bh=4awUjCoPkMordNZ7dimHR0j762Iy/DR9nQP5uwRaSgs=;
+	b=fxW3WUj0J4JZ9qtamgeHIyTlRVX0RuIbIVCw1xH2xs7QROhhVhqS46Xou0mORf3H4sBSgh
+	C/xadBgwiuQBxE+oxDOOHZtDm8jgDV6cw9Izd74wd9vVcL1I3SIdrEdM3QyySSphRpAB+y
+	oj067Lg9Lbixh8GLaK/mZweW+go4RSMWHEZDSOHMob83giabh6gN6IwFh+JD1T8BDHWNcO
+	QcSdUlij83TnIr4GN2MMOLFdDVoIGhXUTmppT07+XSVXkztY6FSXCJZEG4yakO3KY8u0VE
+	dUM/5hgCEhSmVge20ZO1k4yAlYFWmWq5VEiXKTO/jx5jKV0B8xCEs4V0i5eh/Q==
+Message-ID: <bdc75e18-8ae7-4056-8f43-dc280a3414f5@bootlin.com>
+Date: Tue, 20 Oct 2026 11:07:16 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,226 +61,136 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pcvh7stf5trtufk4"
-Content-Disposition: inline
-In-Reply-To: <atY42k00k0Waj6o4@redhat.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: netdev <netdev@vger.kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>
+Subject: [ANN] stmmac enters the Netdev CI
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi everyone,
 
---pcvh7stf5trtufk4
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [linus:master] [sysctl]  8d75c338f0:
- BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
-MIME-Version: 1.0
+It's my pleasure to inform you that the stmmac driver now has a runner
+that feeds into the Netdev CI. It runs in a lab I maintain, and the results
+are hosted by Bootlin, accessible here :
 
-On Mon, Oct 19, 2026 at 05:35:54PM +0200, Oleg Nesterov wrote:
-> On 10/19, Oleg Nesterov wrote:
-> >
-> > But. rds_init() can also fail even if CONFIG_SYSCTL=3Dy, after
-> > rds_sysctl_init(), so to me this looks like a bug in net/rds/.
-> >
-> >
-> > In any case, I guess net/rds/ init paths should not fail if
-> > CONFIG_SYSCTL=3Dn ?
->=20
-> So I think that something like the uncompiled/untested patch below makes
-> sense anyway even if doesn't fix all the potential problems with rds_wq.
->=20
-> What do you think?
+https://netdevci.bootlin.com/stmmac/results.json
 
-That is a good option. I also did not compile not test it, but guarding
-the error inside an ifdef would work and is a pattern that is used
-elsewhere.
+What that means is that now contributions will be subject to CI
+validation, by having the kernel selftests run on real hardware.
 
-You can also do this (also untested and not compiled):
+Results are already aggregated in the patchwork contest, and can also
+be found here :
 
-diff --git i/net/rds/ib_sysctl.c w/net/rds/ib_sysctl.c
-index 2af678e71e3c6..bc97a3eecad69 100644
---- i/net/rds/ib_sysctl.c
-+++ w/net/rds/ib_sysctl.c
-@@ -114,7 +114,7 @@ void rds_ib_sysctl_exit(void)
- int rds_ib_sysctl_init(void)
- {
-        rds_ib_sysctl_hdr =3D register_net_sysctl(&init_net, "net/rds/ib", =
-rds_ib_sysctl_table);
--       if (!rds_ib_sysctl_hdr)
-+       if (!rds_ib_sysctl_hdr && IS_ENABLED(CONFIG_SYSCTL))
-                return -ENOMEM;
-        return 0;
- }
-diff --git i/net/rds/sysctl.c w/net/rds/sysctl.c
-index 025f518a43495..41c65b98c94bd 100644
---- i/net/rds/sysctl.c
-+++ w/net/rds/sysctl.c
-@@ -93,7 +93,8 @@ static struct ctl_table rds_sysctl_rds_table[] =3D {
+https://netdev.bots.linux.dev/devices.html
+https://netdev.bots.linux.dev/status.html
 
- void rds_sysctl_exit(void)
- {
--       unregister_net_sysctl_table(rds_sysctl_reg_table);
-+       if (rds_sysctl_reg_table)
-+               unregister_net_sysctl_table(rds_sysctl_reg_table);
- }
+As stmmac is an off-the-shelf IP from Synopsys and is integrated in a lot
+of different platforms out there, the CI currently runs on 9 different
+boards that include the following SoCs :
 
- int rds_sysctl_init(void)
-@@ -103,7 +104,7 @@ int rds_sysctl_init(void)
+ - Starfive JH7110, riscV, dwmac 5.20 (rgmii-id w/ YT8531 PHY)
+ - LoongSon 2K0300, Loongarch, dwmac 3.70a (rgmii-id w/ YT8531 PHY)
+ - Amlogic S905X, arm64, dwmac 3.70a (rgmii-txid w/ RTL8211F PHY)
+ - Rockchip RK3566, arm64, dwmac4.20a (rgmii-id w/ RTL8211F PHY)
+ - Altera AgileX5, arm64, dwxgmac 2.10 (rgmii-id w/ KSZ9031 PHY)
+ - Altera cycloneV, arm, dwmac 3.70a (rgmii-id w/ KSZ9031 PHY)
+ - ST stm32mp157a, arm, dwmac 4.20a (rgmii-id </ RTL8211F PHY)
+ - Allwinner A20, arm, dwmac1000 (rgmii-id w/ RTL8211E PHY)
+ - Allwinner H2+, arm, Allwinner specific version (mii w/ internal PHY)
+ 
+On top of that, there's a Motorcomm PCIe card with dwmac 5.20 that's
+connected to the JH7110 board, also running the tests.
 
-        rds_sysctl_reg_table =3D
-                register_net_sysctl(&init_net, "net/rds", rds_sysctl_rds_ta=
-ble);
--       if (!rds_sysctl_reg_table)
-+       if (!rds_sysctl_reg_table && IS_ENABLED(CONFIG_SYSCTL))
-                return -ENOMEM;
-        return 0;
- }
+Coming-up is NXP imx8mp, ST stm32mp2 and Ingenic X1000 (MIPS board) that
+will be running these tests in a near future. I will also include another
+CycloneV setup with SFP and the Lynx PCS.
 
+If you're interested in getting your HW in that CI, I have some room to
+spare to host a few more boards, if it's relevant, feel free to contact
+me.
 
-Both are ok IMO.
+This setup is cruelly lacking DWXGMAC IPs (only one now, and it's 1G only),
+as well as stmmac boards that use a PCS. Only Lynx will get coverage with
+the CycloneV board, there's no XPCS boards yet in the lab even though
+it's quite an active area today.
 
-Best
+The tests that are run are the tests in :
 
->=20
-> Oleg.
-> ---
->=20
-> diff --git a/net/rds/ib_sysctl.c b/net/rds/ib_sysctl.c
-> index 2af678e71e3c..bccdb5c4df1d 100644
-> --- a/net/rds/ib_sysctl.c
-> +++ b/net/rds/ib_sysctl.c
-> @@ -36,19 +36,10 @@
-> =20
->  #include "ib.h"
-> =20
-> -static struct ctl_table_header *rds_ib_sysctl_hdr;
-> -
->  unsigned long rds_ib_sysctl_max_send_wr =3D RDS_IB_DEFAULT_SEND_WR;
->  unsigned long rds_ib_sysctl_max_recv_wr =3D RDS_IB_DEFAULT_RECV_WR;
->  unsigned long rds_ib_sysctl_max_recv_allocation =3D (128 * 1024 * 1024) =
-/ RDS_FRAG_SIZE;
-> -static unsigned long rds_ib_sysctl_max_wr_min =3D 1;
-> -/* hardware will fail CQ creation long before this */
-> -static unsigned long rds_ib_sysctl_max_wr_max =3D (u32)~0;
-> -
->  unsigned long rds_ib_sysctl_max_unsig_wrs =3D 16;
-> -static unsigned long rds_ib_sysctl_max_unsig_wr_min =3D 1;
-> -static unsigned long rds_ib_sysctl_max_unsig_wr_max =3D 64;
-> -
->  /*
->   * This sysctl does nothing.
->   *
-> @@ -61,6 +52,14 @@ static unsigned long rds_ib_sysctl_max_unsig_wr_max =
-=3D 64;
->   */
->  unsigned int rds_ib_sysctl_flow_control =3D 0;
-> =20
-> +#ifdef CONFIG_SYSCTL
-> +static unsigned long rds_ib_sysctl_max_wr_min =3D 1;
-> +/* hardware will fail CQ creation long before this */
-> +static unsigned long rds_ib_sysctl_max_wr_max =3D (u32)~0;
-> +
-> +static unsigned long rds_ib_sysctl_max_unsig_wr_min =3D 1;
-> +static unsigned long rds_ib_sysctl_max_unsig_wr_max =3D 64;
-> +
->  static struct ctl_table rds_ib_sysctl_table[] =3D {
->  	{
->  		.procname       =3D "max_send_wr",
-> @@ -105,6 +104,8 @@ static struct ctl_table rds_ib_sysctl_table[] =3D {
->  	},
->  };
-> =20
-> +static struct ctl_table_header *rds_ib_sysctl_hdr;
-> +
->  void rds_ib_sysctl_exit(void)
->  {
->  	if (rds_ib_sysctl_hdr)
-> @@ -118,3 +119,15 @@ int rds_ib_sysctl_init(void)
->  		return -ENOMEM;
->  	return 0;
->  }
-> +
-> +#else
-> +
-> +void rds_ib_sysctl_exit(void)
-> +{
-> +}
-> +
-> +int rds_ib_sysctl_init(void)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> diff --git a/net/rds/sysctl.c b/net/rds/sysctl.c
-> index 025f518a4349..a0673a41633a 100644
-> --- a/net/rds/sysctl.c
-> +++ b/net/rds/sysctl.c
-> @@ -36,11 +36,6 @@
-> =20
->  #include "rds.h"
-> =20
-> -static struct ctl_table_header *rds_sysctl_reg_table;
-> -
-> -static unsigned long rds_sysctl_reconnect_min =3D 1;
-> -static unsigned long rds_sysctl_reconnect_max =3D ~0UL;
-> -
->  unsigned long rds_sysctl_reconnect_min_jiffies;
->  unsigned long rds_sysctl_reconnect_max_jiffies =3D HZ;
-> =20
-> @@ -49,6 +44,10 @@ unsigned int  rds_sysctl_max_unacked_bytes =3D (16 << =
-20);
-> =20
->  unsigned int rds_sysctl_ping_enable =3D 1;
-> =20
-> +#ifdef CONFIG_SYSCTL
-> +static unsigned long rds_sysctl_reconnect_min =3D 1;
-> +static unsigned long rds_sysctl_reconnect_max =3D ~0UL;
-> +
->  static struct ctl_table rds_sysctl_rds_table[] =3D {
->  	{
->  		.procname       =3D "reconnect_min_delay_ms",
-> @@ -91,6 +90,8 @@ static struct ctl_table rds_sysctl_rds_table[] =3D {
->  	},
->  };
-> =20
-> +static struct ctl_table_header *rds_sysctl_reg_table;
-> +
->  void rds_sysctl_exit(void)
->  {
->  	unregister_net_sysctl_table(rds_sysctl_reg_table);
-> @@ -107,3 +108,15 @@ int rds_sysctl_init(void)
->  		return -ENOMEM;
->  	return 0;
->  }
-> +
-> +#else
-> +
-> +void rds_sysctl_exit(void)
-> +{
-> +}
-> +
-> +int rds_sysctl_init(void)
-> +{
-> +	return 0;
-> +}
-> +#endif
->=20
+ - tools/testing/selftests/drivers/net
+ - tools/testing/selftests/drivers/net/hw
 
---pcvh7stf5trtufk4
-Content-Type: application/pgp-signature; name="signature.asc"
+Not all the tests are currently running, as some of them do not pass
+cleanly on stmmac, either because of driver issues, or because the
+selftest itself doesn't properly run on the boards.
 
------BEGIN PGP SIGNATURE-----
+The following tests are excluded :
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmrXLwMACgkQupfNUreW
-QU9Yjwv/cCHjunDrXXsuyNvatzPDExXb5X0UzfkQLy2qA3coR/DKb4c6DSrxHAXb
-KpHrt6e9QT0I2SPoxXj4PltCuUz848uz0awIUBqnTzndf0VHj3hXQlnOzH0fZ65b
-Wn0qAyxnEitEIbt1uSa7Xq24CfbATRcSjtPthG34yTnbF733Fz4lvwVkXbJi4TPl
-uoyvrPEcXxnogCVN0W9XNu8u5UHk0CuHOFVj13NvhFcoykqRQbMQcpefAKpJzm2Y
-0yUyZK+zZ2CyFchpYt4khOGyW5RLiwV0d1kER0UKqD9lnH4cznErsgqU0tb34Rn1
-Xig5W0V/rLLEemKlyC6sdnq1ZeigxxSHlwcRUVMt1UOsECTmaTfaTaO79R2BVLSU
-y8a8NvfPWzuASlTcNMV+AT03DA/syjvh2OihVN7ec7ExnUAdfEmpibahUar/MDZA
-bBMHemB+kEmt61+nBWc6VAsa6/WJEzxKtDaaR4rMdSuyi20EQBPQsryOF1YPAYRT
-Lm5E7bEc
-=mg3e
------END PGP SIGNATURE-----
+  - drivers/net:napi_threaded.py
+  - drivers/net:ring_reconfig.py
+  - drivers/net/hw:rss_ctx.py
+  - drivers/net/hw:xsk_reconfig.py
+  - drivers/net/hw:xdp_features.py
+  - drivers/net/hw:irq.py
+  - drivers/net/hw:tso.py
+  - drivers/net/hw:toeplitz.py
+  - drivers/net/hw:rss_api.py
+  - drivers/net/hw:rss_drv.py
+  - drivers/net/hw:rss_flow_label.py
+  - drivers/net/hw:nk_qlease.py
+  - drivers/net:stats.py
+  - drivers/net/hw:csum.py
+  - drivers/net/hw:uso.py 
+  - drivers/net/hw:nic_timestamp.py
+  - drivers/net:xdp.py
+  - drivers/net:gro_hw.py
+  - drivers/net:gro_lro.py
+  - drivers/net:gro_sw.py
+  - drivers/net/hw:vlan.py
+  - drivers/net/hw:devmem.py
+  - drivers/net/hw:nk_devmem.py
+  - drivers/net/hw:userns_devmem.py
+  - drivers/net/hw:nk_netns.py
+  - drivers/net:psp.py
+  - drivers/net:macsec.py
+  - drivers/net:netpoll_basic.py
+  - drivers/net:ping.py
+  - drivers/net/hw:ethtool.sh
+  - drivers/net/hw:ethtool_extended_state.sh
+  - drivers/net/hw:hw_stats_l3.sh
+  - drivers/net/hw:hw_stats_l3_gre.sh
 
---pcvh7stf5trtufk4--
+This list will likely shrink down in the near future, as the driver gets
+cleaned-up, but also as the selftests themselves get adjusted to run on
+less capable HW. Hopefully we can get the XDP/XSK tests online soon, as
+there's a lot of activity in this area currently.
+
+A few of these exclusions also result from the lab itself not supporting
+some features (e.g. macsec or psp).
+
+Note that there's also a secondary CI that runs a few test that aren't
+covered by the kselftests, it's not much and doesn't get the same amount
+of attention as the NetdevCI runner, but still it's useful for aggregated
+results of the "ethtool -t" selftests runs :
+
+https://minimaxwell.github.io/stmmac-ci/
+
+Special thanks to Matthieu Baerts, Jakub and Andrew who helped a lot in
+setting this CI up, and to Bootlin for hosting the results.
+
+And of course, thank you to all stmmac contributors, this is the busiest
+driver in net and we've seen a lot of efforts lately fixing bugs all over
+the place, getting better PCS handling, better XDP/XSK support, better
+TC support and overall multi-queue improvements, multi-buff mode, proper
+MTU change and suspend/resume error handling, cleaner VLAN support...
+
+Let's hope this CI can help making bigger reworks without the fear of
+breaking other people's setup :)
+
+Maxime
