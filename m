@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792491045;
-	b=gBGFavcAJSUkC0shxvJvSvgZAMpmrTXb3l3LJMHlULyaYBJ/bK4RlNXBXpIB8IEB8Bw2
-	 6sdikJcQ6SRRxeiOlqpBzlCo6z4XZwnCapXI9fTqG1V25Yo12y/n0QAhHqdPX8DaJv7hh
-	 ZVBnaiFcMaXv2oO7Eg2kG6oM8T6PwtczKaKkg/fN1gjjVNDHVSTu85Hr6/unIqiA1YeNU
-	 IWxH7iAK9T3UUOiTOXsS0lywE42ZV5daYiFO+SOV+WvntW4U/SaCXLSUqsH4twhB/9KrV
-	 0m9C8ewFwwpL6DPZ6Jy49ZMW+LiiUY3HtY3s7qWoVJ9RdY7N0UtzsRxPwoa3XrWpceA==
+	t=1792491047;
+	b=D7O71b3JIuuQcHNcCYz147Oxdu+TZMFiTlbkL4NaQLqEK01WR0J6rZRC5TPK8puYlAhN
+	 /TbgFoRxAKOPI9jLUhRPnHMfoxCe9EO0AMuwf0VDQj+wsamkzjqDDFUSj+qnn1fZQyfpR
+	 /wadPLBjQpApdkn4ozX1HtITdrdrNqHxHZ2ojsI5mz8CKUypcPMlM8rR8VxravrclRlv2
+	 jl9D2QC5w7++YXo11K5q8sCOs6uZSpqxcQNuJVfg8IP63w4lYCyq6bbP3mslwiMOSk4iX
+	 +knOjDXPKoVmHI/nsOG20/P59HtYXTreHpSxaquuEg9zz5oliv7rNBGn8/Fso/UWglw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792491045;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792491047;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=MMHFHJsHvrQ6vsAyrpqxqCfyIZhO9hxrgzTqYUNgKyM=;
-	b=MTSnTQdOgOsl3VYtkzMHcjcQlgWnuFG2N1C3AckoYXHwYdIM+W/DBsJxeq9Ps9FHTMOu
-	 7DZW97Rx6BvLfssBdRibCtoWWiCanBspDThfw5sB9j5fFL6Dx6FCOnrWsslJqfaQ8WxHe
-	 t9kKNX7p2pPbhTXdj1io1kGEO0MMZUtUupaRhVqYiNaf6JE3sj3i2AJW51eiB0JAjRfuK
-	 yEQpi87d8t5Z0eZ0ikhhH9j4VGgTDnaWdOoxrsyRAhR01OvlD2ILaUzFfg8vX8GCAQ86K
-	 M/roRcQ87/JHygrhJ1d2wT/8mauc51Syuo+ngAo6eWYq2tFwGp83v8WS6wukvW95Fjw==
+	bh=LxvIhudppg/9jn0Jz/7UvjFFVFLiDA9D1Q4sZu2AKRE=;
+	b=Qye+yUP1jkbo01kZz9rMa7OZMLy52J+v15JhFhXNbolQ0EAksowQUwDuhfExYRJXNhXH
+	 WKAT+d2lKs7PAt2xjPkiR8/4eFpHL64MvMntPYUmluUdRoduy7bgSZwSy22B85pHBQ/ze
+	 ncIvoUgjnSxpw5H0VJrM3kgCG7s8vdBSLH7qMPc0oCTxAgc7jEXzZn3+mlEvyMq0EMrct
+	 cdty7qabmr+Tj/I3d5ZoCCs/IIq+D0Fob3NBvwxB/b1FofKiAXdr5gxlt8QViSlUc41W0
+	 lrizulEUZ30BjUsJZ1pWbNmlxX8PM6gJl8tkVMoKnjpG7ixHDtVNbctgr9xGH85G8Lg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YJ0vlel+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DdSxsoJw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3BA606A33C;
-	Tue, 20 Oct 2026 10:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D83960A2618;
+	Tue, 20 Oct 2026 10:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YJ0vlel+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39D71F000C6;
-	Tue, 20 Oct 2026 10:10:44 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DdSxsoJw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F03A1F000C9;
+	Tue, 20 Oct 2026 10:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792491045;
-	bh=MMHFHJsHvrQ6vsAyrpqxqCfyIZhO9hxrgzTqYUNgKyM=;
+	s=k20260515; t=1792491047;
+	bh=LxvIhudppg/9jn0Jz/7UvjFFVFLiDA9D1Q4sZu2AKRE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YJ0vlel+0ZFenaF2Hs5rWNEGQjMJkDJ44Nx1JIrKo56KCi3vKcYnbcDKuPBKAIzmM
-	 8NBUWIHgtC9DUO4r4g9QegKQXQL1hh0UuFG2hcFlE60B9QU2Si1mJvy7Det0bqdnyx
-	 LMAnW/UshLwIVESQwSuNUVWj4G34muIkjl+T0HQisunWR1sCJQOC7fMy9UVgz6Dtng
-	 i289+FAQMOiYodKRf4YlIlA1+TA2RX0gm5HFrz7Puzad2xxI986j/MvV5rSCQO1IGS
-	 /nIZHjyCwCKNgjTSdqnmIQGFIvPKnKjFQfURJdOj4qgnMrQPZH9h2Kd9NXLHFwdx+Z
-	 p7n3bkdXSGZLg==
-Subject: Re: [PATCH net v5 4/5] net: ethernet: mtk_wed: setup WDMA_RING_TX(0)
- for non-DBDC MT7986
+	b=DdSxsoJwNpRWU14cbsY3Mk+cwugpbScrotQJeaF9kx7D9fJPYt9h366fGv7uJruMt
+	 Eaqq8+09HQkd2atwNomoyz7w/ghFtHPKRAaMiaKcCW8r2EBlOZlJkduSNaWdHsn/Du
+	 78qXReDRJGnDLGmUUc+6dZqCn3QEs9rGlf9QTRn4zdBZ5A29C9IgxnD5K0csoIwUVz
+	 +wyUixpg90ZMXjAoul7KlD2UaItjwHh/spX6PPd0jfF2pBBp0xWq9pYBhLKx8YbT/8
+	 SWuESYoisQq4m8tJjvvw4nYW2nQw1wA/+MQhYLf2XbVLnT0i8gdvpkCtpHfacMLcXo
+	 qjUk9nvR36FNw==
+Subject: Re: [PATCH net v5 5/5] net: ethernet: mtk_wed: bail out when failed
+ to set up rings in wed_start
 From: netdev-bot+sashiko@kernel.org
 To: hujy652@gmail.com
 Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
@@ -50,10 +50,10 @@ Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
  sujuan.chen@mediatek.com, rex.lu@mediatek.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org
-Date: Tue, 20 Oct 2026 10:10:44 +0000
-Message-ID: <179249104422.3135.15395792602371896876@kernel.org>
-In-Reply-To: <20261016-wedfix-v5-4-8b02e78fd34f@gmail.com>
-References: <20261016-wedfix-v5-4-8b02e78fd34f@gmail.com>
+Date: Tue, 20 Oct 2026 10:10:45 +0000
+Message-ID: <179249104567.3135.3150268582386164073@kernel.org>
+In-Reply-To: <20261016-wedfix-v5-5-8b02e78fd34f@gmail.com>
+References: <20261016-wedfix-v5-5-8b02e78fd34f@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,7 +70,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 (1) · High: 0 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,112 +78,196 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In mtk_wed_start()
-  (drivers/net/ethernet/mediatek/mtk_wed.c:2362-2363), this commit adds…
-- [Medium] mtk_wed_free_rx_rings()
-  (drivers/net/ethernet/mediatek/mtk_wed.c:954-956) decides whether to…
-- [Low] The new comment in mtk_wed_start() describes the motivating case,
-  a non-DBDC MT7986 that allocates only rx_ring[1]/tx_wdma[1].
+- [Medium] The new bail-outs in mtk_wed_start()
+  (drivers/net/ethernet/mediatek/mtk_wed.c) log a dev_err() and return,…
+- [Medium] net: ethernet: mtk_wed: memory leak on ring setup error paths
+- [Low] The commit fixes error handling for two calls in mtk_wed_start()
+  but has no Fixes: tag.
+
+Pre-existing issues:
+- [Critical] This problem wasn't introduced by this patch, but it is a
+  double free in the same reset -> start lifecycle.
 
 --
 
-net: ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
+net: ethernet: mtk_wed: bail out when failed to set up rings in wed_start
 
-This patch makes mtk_wed_start() set up WDMA_RING_TX(0) on WED v2 devices
-when rx_ring[0] was not allocated. This is the case on a non-DBDC MT7986,
-which only sets up ring index 1. If tx_wdma[0] is already allocated, it is
-reset instead of being allocated again.
+This commit checks the return values of mtk_wed_wdma_rx_ring_setup() and
+mtk_wed_wdma_tx_ring_setup() in mtk_wed_start(). When either one fails, it
+prints an error and returns early.
 
-> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-> index b8264435acbe5..3a7c2bb33691f 100644
-> --- a/drivers/net/ethernet/mediatek/mtk_wed.c
-> +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-> @@ -2355,6 +2355,13 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
->  		if (!dev->rx_wdma[i].desc)
->  			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
->  
-> +	/*
-> +	 * non-DBDC MT7986 allocates only rx_ring[1] and tx_wdma[1] during setup
-> +	 * but tx_wdma[0] is also needed for WED to function.
-> +	 */
-> +	if (mtk_wed_is_v2(dev->hw) && !dev->rx_ring[0].desc)
+Link: https://lore.kernel.org/all/179000700034.2160803.10594281691384015089@kernel.org/
+
+> Add error message and return when fail to set up tx/rx wdma rings.
+>
+> This is suggested by Sashiko.
 
 [Severity: Low]
-This isn't a bug, but the comment covers less than the condition does. The
-guard matches any WED v2 device where rx_ring[0] was not set up, and MT7981
-also has .version = 2. It is not limited to a non-DBDC MT7986.
+Should this patch have a Fixes: tag?
 
-Could the comment describe the condition as it is implemented, the way the
-commit message does?
+The previous patch in this series, "net: ethernet: mtk_wed: setup
+WDMA_RING_TX(0) for non-DBDC MT7986", added the
+mtk_wed_wdma_tx_ring_setup(dev, 0, ...) call checked here, and that patch
+carries Fixes: 4c5de09eb0d0. Without a tag on this patch, a stable
+backport of the earlier one could land without its error check.
 
-> +		mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, !!dev->tx_wdma[0].desc);
+The unchecked mtk_wed_wdma_rx_ring_setup() call comes from commit
+23dca7a90017 ("net: ethernet: mtk_wed: add reset to tx_ring_setup
+callback").
+
+Every other patch in this series has a Fixes: tag. The line "This is
+suggested by Sashiko." is free text and does not say which bug is being
+fixed.
+
+> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+> index 3a7c2bb33691f..86845893ae20f 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_wed.c
+> +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+> @@ -2353,14 +2353,20 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
+>  
+>  	for (i = 0; i < ARRAY_SIZE(dev->rx_wdma); i++)
+>  		if (!dev->rx_wdma[i].desc)
+> -			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
+> +			if (mtk_wed_wdma_rx_ring_setup(dev, i, 16, false)) {
+> +				dev_err(dev->hw->dev, "wdma rx ring %d setup failed\n", i);
+> +				return;
+> +			}
 
 [Severity: Medium]
-Should the return value of mtk_wed_wdma_tx_ring_setup() be checked here?
+Does the caller ever find out that start failed here? The same question
+applies to the tx_wdma[0] return below.
 
-On the first start, tx_wdma[0].desc is NULL, so reset is false and the
-helper allocates the ring. If the allocation fails, the helper returns
-before it programs any WDMA or WED ring register:
+mtk_wed_start() is static void and is installed as the .start op. In
+include/linux/soc/mediatek/mtk_wed.h the op is declared as:
 
-mtk_wed_wdma_tx_ring_setup() {
-	...
-	if (!reset && mtk_wed_ring_alloc(dev, wdma, MTK_WED_WDMA_RING_SIZE,
-					 dev->hw->soc->wdma_desc_size, true))
-		return -ENOMEM;
-	...
-}
+	void (*start)(struct mtk_wed_device *dev, u32 irq_mask);
 
-mtk_wed_start() keeps going anyway. It calls mtk_wed_hw_init() and then
-mtk_wed_dma_enable(), which does:
+The early return therefore skips mtk_wed_hw_init(),
+mtk_wed_configure_irq(), mtk_wed_set_ext_int(), the v1 PCIe mirror map
+write, mtk_wed_rro_cfg(), mtk_wed_amsdu_init(), mtk_wed_dma_enable() and
+dev->running = true, and nothing is reported back.
 
-	wed_set(dev, MTK_WED_WDMA_GLO_CFG,
-		MTK_WED_WDMA_GLO_CFG_TX_DRV_EN |
-		MTK_WED_WDMA_GLO_CFG_TX_DDONE_CHK);
+mtk_wed_device_active() only checks the ops pointer:
 
-It then sets dev->running = true. At that point WDMA TX is enabled but the
-ring 0 base was never programmed.
+#define mtk_wed_device_active(_dev) !!(_dev)->ops
 
-The other caller of this helper, mtk_wed_rx_ring_setup(), does pass the
-failure back:
+so mt76 still treats WED as active. mt7915_dma_start() has already put
+WFDMA into WED mode and written MT_INT_WED_MASK_CSR before it gets here:
 
-	if (mtk_wed_wdma_tx_ring_setup(dev, idx, MTK_WED_WDMA_RING_SIZE,
-				       reset))
-		return -ENOMEM;
+		mtk_wed_device_start(&dev->mt76.mmio.wed, wed_irq_mask);
+	}
 
-A later patch in this series, "net: ethernet: mtk_wed: bail out when
-failed to set up rings in wed_start", wraps this call with a dev_err()
-and a return. With that patch applied, the end of the series is fine. Can
-the check be added in this patch so it works on its own?
+	irq_mask = reset ? MT_INT_MCU_CMD : irq_mask;
+
+	mt7915_irq_enable(dev, irq_mask);
+
+It then returns 0, even though it returns int and could pass an error up.
+mt7996_dma_start() does the same after writing MT_INT_MASK_CSR.
+
+On WED v3 with hw_rro, mt76 later calls mtk_wed_start_hw_rro(). That
+function has no init or running check. It writes MTK_WED_WPDMA_INT_MASK
+and MTK_WED_INT_MASK and sets MTK_WED_RRO_MSDU_PG_DRV_EN. Because of the
+early return, mtk_wed_hw_init() never programmed MTK_WED_RX_BM_BASE or
+MTK_WED_RRO_PG_BM_BASE.
+
+Can this leave a half-initialized WED that the wlan driver keeps using as
+if it had started, with only the dev_err() to show anything went wrong?
+
+Would it be better to have ->start return an int, so that mtk_wed_start()
+and the mt76 callers can propagate the error and unwind?
+
+>  
+>  	/*
+>  	 * non-DBDC MT7986 allocates only rx_ring[1] and tx_wdma[1] during setup
+>  	 * but tx_wdma[0] is also needed for WED to function.
+>  	 */
+>  	if (mtk_wed_is_v2(dev->hw) && !dev->rx_ring[0].desc)
+> -		mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, !!dev->tx_wdma[0].desc);
+> +		if (mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, !!dev->tx_wdma[0].desc)) {
+> +			dev_err(dev->hw->dev, "wdma tx ring 0 setup failed\n");
+> +			return;
+> +		}
+
+[Severity: Medium]
+This is outside the lines changed here. It is the same ring setup
+error handling this patch is tightening, though, so it seems worth
+raising.
+
+In mtk_wed_rx_ring_setup(), mtk_wed_ring_alloc() first allocates the
+descriptor memory for dev->rx_ring[idx]. If the following
+mtk_wed_wdma_tx_ring_setup() call fails, the function returns -ENOMEM
+without setting MTK_WED_RING_CONFIGURED on that ring.
+
+mtk_wed_tx_ring_setup() has the same shape. dev->tx_ring[idx] is
+allocated, and a failure from mtk_wed_wdma_rx_ring_setup() returns
+without setting the flag.
+
+The teardown helpers only free rings that have
+MTK_WED_RING_CONFIGURED set. In both cases the coherent DMA buffer
+for the wlan-facing ring is therefore never released by
+mtk_wed_free_tx_rings() or mtk_wed_free_rx_rings(). If setup is
+later retried with reset == false, mtk_wed_ring_alloc() overwrites
+ring->desc and the old buffer is lost for good.
+
+mtk_wed_free_rx_rings() also looks like it tests the wrong array. It
+frees dev->rx_ring[i] based on dev->tx_ring[i].flags. Whether an rx
+ring is freed or skipped then depends on the tx ring with the same
+index, not on the rx ring itself. That makes the rx side leak more
+easily still.
+
+Should the error paths in mtk_wed_rx_ring_setup() and
+mtk_wed_tx_ring_setup() free the ring they just allocated? Or should
+the free helpers key off ring->desc instead of the flag? And should
+the check in mtk_wed_free_rx_rings() test dev->rx_ring[i].flags?
 
 [ ... ]
 
-[Severity: Medium]
-This code is not part of this hunk. It comes from the earlier patch in
-this series, "net: ethernet: mtk_wed: free up rings during detach". It is
-mentioned here because mtk_wed_free_rx_rings() is also what frees the
-tx_wdma[0] ring added above. Does the flag check test the right array?
+[Severity: Critical]
+This isn't a bug introduced by this patch, but it sits in the same reset
+and start lifecycle. mtk_wed_rx_reset() does:
 
-mtk_wed_free_rx_rings() {
-	...
-	for (i = 0; i < ARRAY_SIZE(dev->rx_ring); i++)
-		if ((dev->tx_ring[i].flags & MTK_WED_RING_CONFIGURED))
-			mtk_wed_free_ring(dev, &dev->rx_ring[i]);
-	...
-}
+	mtk_wed_free_rx_buffer(dev);
+	mtk_wed_hwrro_free_buffer(dev);
 
-mtk_wed_rx_ring_setup() sets MTK_WED_RING_CONFIGURED on
-dev->rx_ring[idx].flags, not on tx_ring[idx]. So if rx_ring[i] is
-configured and tx_ring[i] is not, the coherent descriptor buffer for
-rx_ring[i] is not freed. After that, __mtk_wed_detach() calls
-memset(dev, 0, sizeof(*dev)) and the pointer is lost.
+When dev->rx_buf_ring.desc is non-NULL, mtk_wed_free_rx_buffer() already
+ends with its own call:
 
-One setup where this appears to happen is MT7988 with an MT7992 using
-hif2. mt7996_dma_init() registers the band1 rx queue on the primary WED
-as MT_WED_Q_RX(1). mt7996_register_phy() sends band1 tx to wed_hif2. The
-primary WED therefore has rx_ring[1] configured but not tx_ring[1].
+	dev->wlan.release_rx_buf(dev);
+	dma_free_coherent(dev->hw->dev, dev->rx_buf_ring.size * sizeof(*desc),
+			  desc, dev->rx_buf_ring.desc_phys);
 
-Does primary rx_ring[1] then leak on every detach, for example on a
-module reload? Should this check dev->rx_ring[i].flags instead?
+	mtk_wed_hwrro_free_buffer(dev);
+
+mtk_wed_hwrro_free_buffer() frees everything but never clears
+dev->hw_rro.pages or dev->hw_rro.desc:
+
+	dma_free_coherent(dev->hw->dev, dev->hw_rro.size * sizeof(*desc),
+			  desc, dev->hw_rro.desc_phys);
+
+free_pagelist:
+	kfree(page_list);
+
+Does the second call in mtk_wed_rx_reset() then read page_list[] from
+freed memory? It would also __free_page() the hw_rro pages,
+dma_free_coherent() hw_rro.desc and kfree() the page list a second time.
+
+This looks reachable on every SER/DMA reset on WED v3 with wlan.hw_rro
+set, which mt7996 does for the primary WED:
+
+mt7996_dma_reset()
+  mtk_wed_device_dma_reset()
+    mtk_wed_reset_dma()
+      mtk_wed_rx_reset()
+        mtk_wed_free_rx_buffer()
+          mtk_wed_hwrro_free_buffer()
+        mtk_wed_hwrro_free_buffer()
+
+There is a second, separate issue: mtk_wed_free_rx_buffer() leaves
+dev->rx_buf_ring.desc pointing at freed memory. Suppose the next
+mtk_wed_start()->mtk_wed_rx_buffer_alloc() fails at dma_alloc_coherent()
+before that pointer is reassigned. Could a later
+__mtk_wed_detach()->mtk_wed_free_rx_rings()->mtk_wed_free_rx_buffer() then
+free it again?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-wedfix-v5-0-8b02e78fd34f%40gmail.com
