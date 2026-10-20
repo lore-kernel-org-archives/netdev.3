@@ -1,54 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792512647;
-	b=x3v095lBVXfjan0tS4jRs70QqbUIIoxC3W2+hT/1mDzKKCO5xqR1h0lHoqaUTocVG8ew
-	 a3jAG+jrVcgJ2OrtNO4CwScQyHnmVtaklSnsspdRLw+iHHOO4IDbOvVuewch7TXxzwhDT
-	 9q1q3ZNCy6QGpSUtzoPH0DxXtbnngOONDscDdCo/Oxb7E91XXWNs/2fjptQAV3IkpkZbd
-	 uQnhUhxDtVjk0D3lW6GEfvo3Bj31hfgeycLEVRc+WR8cRiigI/RJ5Wu+qN7g12lvvKc9U
-	 4kC+mfHamGIbbqUCn0sRfHTEnDN/OzcR0I5O3OH4foY1D+0lp0SOclErasx79jfwhdA==
+	t=1792512946;
+	b=sJtfXMN7K3IuZ6wBvMCooqieICiZ3KVNBA2DJ7fhPggbb8cQ5NiOtos1JTA6gTMHj+le
+	 nzV7N002nwAON9bna8m1MN2ngLbcTnqI2xQPwpcyDtpSH9gTVhJ2IJO03fl49y6V+JQ+/
+	 EcFs0UnV2PHlqGebsFZs1mrzzqs9ngwUXTzXyBqx4HakHe2hfw+VkI+H8Tnyq85j2Y+Ds
+	 dPdtbzlHIgtRg2eX75FU2OD0ruE8zXWrtBGu4OoNRFkt3pX5m1g2+5sawtaqzYWL8m0p9
+	 9ZcUtmCMCzWvxvx+Bg11Gf/e6fAZACxnCIyvsAJbpGI1EC/M+tIlw93HhxEsU6Ot6gA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792512647;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=G/6kGUmNcoC4XU/YLpcwdTE/U/y5YRTksJEoErK8i3Q=;
-	b=5Q2CxS9cLVOOiCbt8m+WN5aWdcFjDWiOVnLiKU8KtqkOBXzyLPbc21H7oQXA4Pek7Esg
-	 VJnEtq9/s/coa336Xd808Xvgz8O7CtZ4auCwBa1C6/IvV9cFi9IZG3Qx+XxO17svu+4VQ
-	 P0n9gCS8m7Vq2AVi7IgRSrGP74QHd6SCfC+CIUiX7XJx44/5I3As+3u6QMAPTt7NPKDSp
-	 5JL77zGcy/Rduk7oQYUg9JzcM5+uFbPKmek03+ryLY2m6ybFCyvcY4k9goSJpUGjTdpF8
-	 l7FY0E8iGFkI93A36LiHu3jRBwZSrRSmHfvuWkQqB3iI01afYPbkvaYxAb48OcW87XA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792512946;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=jhi+Gy6QvyViB7QdmrhjBmEWelHbbWlA/V7dTA0A7ck=;
+	b=LCngLMmWKKSYMoLIYgBOwf19QBZel6SoJ53VAOwwkMF+iomj4w/C801waWqgvNty7ma7
+	 pbrKO9Ajxn8IVPY0PRZB1gM1VJm76Q1ytTCMpm2zykZVUpuTcsY4XiQX4A2l6OqgZ6ASB
+	 FU13vgWx7Gy5KaKPwZt3O/Itzj4I1mc5r8hI2AKY/nG+pJveW0/KlDVy0BedQAMgKsrjE
+	 EexVeph1XPK2dAbTXs4+y4wJ+3K0nRdmQG/twhWwR3vAzzv7D/cvmp2lhdVVILgfU31ZP
+	 OtM+sqzGd6KT0VHDXxY2ccELnK0wo50sF7/wByUU24wdrgnULI30Upy4xBTOlhQ0COQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hc+ik37J;
-	arc=none smtp.remote-ip=91.218.175.17
-Received: from mta0.migadu.com (out-17.mta0.migadu.com [91.218.175.17])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VZdC17DZ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E55606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:10:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3E55606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D33606A32C;
+	Tue, 20 Oct 2026 16:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hc+ik37J
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=L7g9mcR6Nsn/m1DjPlzQxXZCO6qDBPFpGMoZoXjDkyY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792512642; v=1; x=1793117442;
- b=hc+ik37Jq9Fp+OyeblebgklxkllaarIMdj0ZoeRZxiARKxD6Sg3CzrNepLYUpcl3oXtCo5U2
- RyJyXvFCyHsGRYJ8q3wxs4/RsjtpLMEOYKBkfA6fnnqmCeEbzv3EUCDuM+dor1Xk3J0ldyiBR9F
- sPkLua8fnohaTEGk5Ccj1O+w=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 00df53f15c7f61e1;
-	Tue, 20 Oct 2026 16:10:42 +0000
-X-Mizu-Trace-ID: 00df53f15c7f61e1
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ee955f2c-c97b-4505-a996-f7d7c5d2a3f5@linux.dev>
-Date: Wed, 21 Oct 2026 00:10:32 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VZdC17DZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C801F000C4;
+	Tue, 20 Oct 2026 16:15:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792512945;
+	bh=jhi+Gy6QvyViB7QdmrhjBmEWelHbbWlA/V7dTA0A7ck=;
+	h=From:To:Cc:Subject:Date;
+	b=VZdC17DZqza6hbz5Oaao6qPBCDRXocil0B76rRBuTmzIcmvv2HTX3V6HU3Fe7sjQ6
+	 QsRsKpSu8DiOLOWfsl9GizT5Slp5eLMriM1B1tFYIncWTw86Xpx522fH0quiuMlmqH
+	 sYzY18PGVBGGJurM++wavsIgoUMACt2/AXZp/AOhisy1PA+kyDyvLqru4RR0n/s0Nz
+	 X8papsIyD/A+A/DYUAmc4qXFwss0wpPRWf+2R30UUiviYnb4L/C3rWmcJ3VTt0G85g
+	 jTuiC+phlcP4IywfpO4DzSVm/aU6qofP5yBBS2gXioUlZi+Nv+8/X/zKU3m6N3o+h4
+	 3Mrjer0aSA33A==
+From: Sasha Levin <sashal@kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+	nic_swsd@realtek.com
+Cc: Javen Xu <javen_xu@realsil.com.cn>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Dennis Piecha <d.piecha@ymail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] r8169: clear TX LPI on RTL8168h at link up after phylink conversion
+Date: Tue, 20 Oct 2026 12:15:42 -0400
+Message-ID: <20261020161543.3712208-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,76 +65,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC net] net: force software segmentation of PPPoE packets
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Stanislav Fomichev <sdf.kernel@gmail.com>, Hangbin Liu
- <liuhangbin@gmail.com>, Martin Karsten <mkarsten@uwaterloo.ca>,
- Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>
-References: <20261020143031.1829-1-qingfang.deng@linux.dev>
- <CAL4Wiiptz1zyxRDKrCrnK2Q-qn0_1d1aSxuUPkJKWnODpjMp1g@mail.gmail.com>
-Content-Language: en-US
-From: Qingfang Deng <qingfang.deng@linux.dev>
-In-Reply-To: <CAL4Wiiptz1zyxRDKrCrnK2Q-qn0_1d1aSxuUPkJKWnODpjMp1g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/20/2026 11:08 PM, Eric Dumazet wrote:
-> Le mar. 20 oct. 2026 à 16:30, Qingfang Deng <qingfang.deng@linux.dev> a écrit :
->>
->> Ordinary TSO does not update the PPPoE payload length. A PPPoE GRO packet
->> forwarded by a bridge can retain hardware GSO features and reach the
->> driver without software segmentation, if the egress Ethernet interface
->> advertises TSO.
->>
->> To force software segmentation, clear the GSO feature mask for
->> ETH_P_PPP_SES in harmonize_features().
->>
->> Fixes: 55a5d8fca836 ("net: pppoe: implement GRO/GSO support")
->> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
->> ---
->>   net/core/dev.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/net/core/dev.c b/net/core/dev.c
->> index a6951ea08961..27483a2ad747 100644
->> --- a/net/core/dev.c
->> +++ b/net/core/dev.c
->> @@ -3831,6 +3831,10 @@ static netdev_features_t harmonize_features(struct sk_buff *skb,
->>          type = skb_network_protocol(skb, NULL);
->>          features = net_mpls_features(skb, features, type);
->>
->> +       /* Ordinary TSO does not update the PPPoE payload length. */
->> +       if (IS_ENABLED(CONFIG_PPPOE) && type == htons(ETH_P_PPP_SES))
->> +               features &= ~NETIF_F_GSO_MASK;
->> +
->>          if (skb->ip_summed != CHECKSUM_NONE &&
->>              !can_checksum_protocol(features, type)) {
->>                  features &= ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
->> --
->> 2.34.1
->>
-> 
-> Ouch.
-> 
-> harmonize_features() is called for every packet, GSO or not.
-> 
-> This is a GSO-only problem, please do not add more protocol-specific
-> tests in this path. gso_features_check() is only called for GSO
-> packets, and the cost there is amortized over all segments.
-> 
-> Devices without NETIF_F_HW_CSUM already lose GSO for ETH_P_PPP_SES
-> because of the can_checksum_protocol() check in harmonize_features(),
-> and fraglist GRO packets (the main use case for PPPoE GRO) are
-> segmented in software anyway.
-> 
-> This leaves bridged, non fraglist GRO PPPoE packets sent to a
-> NETIF_F_HW_CSUM + TSO device. Have you hit this on real hardware?
+Commit 3cdeaef1754a ("r8169: disable EEE on RTL8168h/8111h") disables
+EEE on RTL_GIGA_MAC_VER_46 with phy_disable_eee() but keeps the version
+EEE-capable, so that link up still calls rtl_enable_tx_lpi(tp, false)
+and clears the MAC TX-LPI bits (ERI 0x1b0[1:0]). rtl_hw_start_8168h_1()
+does not clear them, so a warm reboot from an EEE-active state could
+otherwise leave TX-LPI asserted while the PHY no longer negotiates EEE.
 
-I reproduced this on a VM veth interface, which advertises both 
-features. The real hardware I have is an Intel IGC but I have not tested 
-with it.
+In net-next, commit 8a3c76523e44 ("r8169: add support for phylink")
+moved link handling to phylink, and rtl_mac_link_up() does not touch
+the TX-LPI bits. The merge of net into net-next kept the
+phy_disable_eee() quirk and its comment, but not the link-up clear it
+depends on. The only remaining clear is rtl_mac_disable_tx_lpi(), which
+phylink calls from phylink_deactivate_lpi() only after
+phylink_activate_lpi() has enabled LPI. With EEE disabled on this chip
+that never happens, so the bits are never cleared and the comment in
+r8169_mdio_register() no longer holds.
+
+Clear TX-LPI explicitly in rtl_mac_link_up() for RTL_GIGA_MAC_VER_46.
+
+Fixes: f49defea7668 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+Link: https://lore.kernel.org/all/0e0b727e94d046b19ad463e7a1a9fe68@realsil.com.cn/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+llminus, an LLM-assisted merge conflict resolution tool, found this while
+resolving the same net/net-next conflict in our integration tree.  Not tested
+on RTL8168h hardware, and the warm reboot case was not reproduced.
+
+Javen's proposal in the linked thread, returning no LPI capabilities for this
+version, has the same gap: phylink then calls neither LPI op.
+
+ drivers/net/ethernet/realtek/r8169_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 88354e7570f00..cd4ebc654dd0b 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -6428,6 +6428,8 @@ static void rtl_mac_link_up(struct phylink_config *config,
+ 
+ 	tp->speed = speed;
+ 	rtl_link_chg_patch(tp, speed);
++	if (tp->mac_version == RTL_GIGA_MAC_VER_46)
++		rtl_enable_tx_lpi(tp, false);
+ 
+ 	/*
+ 	 * Note: This hardware does not support forcing flow control.
+-- 
+2.53.0
+
