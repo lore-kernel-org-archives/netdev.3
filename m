@@ -1,71 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792484027;
-	b=Y+PWfcAAVNr5/zsPVn2V+ZBA/wcaYeXwYPc2J8Nh5z4LDjaDHYhdQfSu+KT0/UeVCv0O
-	 ygltsDjMKi7dM+I8+LY8yLH/4Oiu8cWqFgw2eIvUgB+LMk++Kls/O1ryZ+4CzxxJcIopP
-	 tkDXIXbqceFdyOghao+4/0eLb16Xd+WQjn8WTIp7LySDHCaTzVn3LBAu2XqQyL3P2Lzeg
-	 cplOMqWTNfH6aB9vm6pmCz1jiN2iJ1Bjm65lDcZ5oCdrUBMI7Wou8pV6lNRbcYi+wNBsi
-	 CG17mbmOIxC3i3htWrt2QxSo89905QztEFV3QSLvBy6Dm5ATpTtd0q3NwuyqNXzBEzA==
+	t=1792484596;
+	b=ich43zudWhpyqnwaVOPbybzZ1qltIq1yHN85l2lQw8UamYBaeyBu0QPP/gQJg/wyddUQ
+	 F2CN+67KEKWogd6dRvL9wN/ZBnUicnlw37AHj85YT4E0tLcRnoKF04wtXdL0NqsrcY+Qs
+	 4D0Es9wbIcuCoyqdl7n7qlL6yUtGRAkyO1EwHbl97HoC7U50HWgYkj37ypvQ/tY1G2tW4
+	 NmMufumClJYsvNVIOXTh/AZG6StqF6lyQVnBgi5D7P6YM4nRHDodmhggAC23MQMgMAgxh
+	 CTcyL907eBP/J82pUw4Kdrb9uLdpc8UxcwgaZAs0j+yJbCvUmNu6CZmkpYw//Jfg5Jg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792484027;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:X-Last-TLS-Session-Version;
-	bh=MN63htuYUqrgFOXv/xwBT/iNnGMFTc69oLMOIWBDMN8=;
-	b=tJLi0Y5NU7gPc8skMbwLcyVvk3kr6QcbKA/3BsDRtfwcAz/jq83I2fDNKnG/sUXfrXCG
-	 xZeKZTiQ6aecg4+a5mna7aBb6YIwkDTu5DIxXYXNQxLsh9ep0/a3l8fdS8LMvLSHRu25b
-	 gbKWorezYJN6+S4O3syd+QFmsyv+NkyccpqAxqZBa9+JIsboLFg3jH4Ov3+W8nEZHzr2i
-	 M1anNWOXWhfkd4q52H0uneK1//zUsc7pS4PddEnUeNMjVYnNzEWzMyY04ltsEzDixRAUE
-	 YUg4SFXJCgnZ24rwdD4ZmMTYXk5hZmERl1PXwtdbayV3Mh3Kh3Ulplh4eR6r/AKGGZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792484596;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=AYAooeFUC47HXA3GtiinK14fsxDzY9i4mk2b1PHqREI=;
+	b=GJWKwDacH2MFKx+g8IYUrogyrX2H1uJ6ht26hlSDp5Pw8fo5TlbFML/QWc37nSLGJk2F
+	 BZJ0X6CFVdn8qvoHP4/BZrkz/oFNv+I1/mrcvkCMW34A2TUNMSI274bngmxfIQKukjB/n
+	 yQipcVgR11PKsWBi+rRT0mq4ylzd1vnqevovG/AMbKyobwiUq5O87BjR9ODdt8+HgAoqI
+	 vcXcxI+nGjBiD7v7BXrm7vOa9sUYBZ6z58+XlOJz9mR/6uHYCGFDjaanr6vPY1AyuDBjN
+	 +sYbhQS7/eLCXFbyr7E1hKly5VS0YiHIp3jyO17KqvhiOdxl803+XQmiWqIJ3fJt1hA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=03OZ40IQ;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=jclark.com;
+	spf=pass smtp.mailfrom=jclark.com;
+	dkim=pass header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sf3ZNOQG;
+	arc=none smtp.remote-ip=209.85.210.174
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D278606A31E
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:13:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D278606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5E1606A31C
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:23:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F5E1606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=03OZ40IQ
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 71F9B4E4128D;
-	Tue, 20 Oct 2026 08:13:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3C3A060393;
-	Tue, 20 Oct 2026 08:13:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1925D10328A45;
-	Tue, 20 Oct 2026 10:13:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792484024; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=MN63htuYUqrgFOXv/xwBT/iNnGMFTc69oLMOIWBDMN8=;
-	b=03OZ40IQu92p+6zcM7lPsTtHDySziOlL6p2l7mREPKNcIKAdggk/zBqFUYfhtfeAL07r3t
-	j0n7+Dj4Rim8EAwgcKN53lOYIl9/Yff5WfFqMUb9aiKsBSfvbDGgqxJiOnLcn6+PgQkVqL
-	6wrdIiWr+5A1I3m7I67WEy034pwF4AGD9osfqoRzr73PpJXMl/jL0ll4aAKo7z5ZPQ24El
-	bw92Xh7KhRxXuz8sJe15OugBJ1GJJk58MokHZdzZImRbTlLhq5zoju5d5adGEbNXgSzaVY
-	+RxZJOfedAiiLWNpcMA0IZI7AajeBFBOdtmGTyZtvWHAmwRXKlG+rvBnwPB4mQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: Alexander Aring <alex.aring@gmail.com>,  Stefan Schmidt
- <stefan@datenfreihafen.org>,  "David S . Miller" <davem@davemloft.net>,
-  Eric Dumazet <edumazet@kernel.org>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
-  Marcel Holtmann <marcel@holtmann.org>,  Chandru Gopi
- <chandru.gopi.dev@gmail.com>,  linux-wpan@vger.kernel.org,
-  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wpan] ieee802154: look up the wpan_phy dump ifindex in
- the caller's netns
-In-Reply-To: <20261020065125.896530-1-maoyixie.tju@gmail.com> (Maoyi Xie's
-	message of "Tue, 20 Oct 2026 14:51:25 +0800")
-References: <20261020065125.896530-1-maoyixie.tju@gmail.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Tue, 20 Oct 2026 10:13:40 +0200
-Message-ID: <8733u0vlfv.fsf@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=sf3ZNOQG
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a06210b29fso761238b3a.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 01:23:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1792484595; x=1793089395; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AYAooeFUC47HXA3GtiinK14fsxDzY9i4mk2b1PHqREI=;
+        b=sf3ZNOQGb/y8xKb1LemkS8KzSTimIw7R7l4kGJJ7G2XWOFsTQXDwqDAai8DmW/dkKM
+         EK+RTePaAGe5v9TTH02H3LZSy8/ZrBJhYDPJlgwB76Ur47eQoNVzIMix6pq8loP2GUfH
+         cYEXf9LSyUgX6YP9z7ZlA27fmHAtCzIx7MKA6DYFqsRtpSWe128GqHnpjC/Hw+QhtJA/
+         8LpBJHsCtrorQQSMTd3jUCWphMCXjhul/3oam8wCBxRERV5YC2BUgN6JcbEFyXJILu8g
+         s/gXmgtiWr2V5UUhcI4FoOepML99jfkCV+oL6xgXYh9neQTpFVcyEI9mw0ddOAg1a5k1
+         8/9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792484595; x=1793089395;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AYAooeFUC47HXA3GtiinK14fsxDzY9i4mk2b1PHqREI=;
+        b=YsODV1bq42faIo6li5cHVcYbgrZpt92A9sYHZvzIKswJrX+OAUnPMovdq4gueA2n2q
+         Xwq7l8vXzspGfHSSMRXZfy4j4+CpqX61BxQgDNv8RaYVLZRySkn5UF4GopqfjiKCWhoV
+         iIA4yzGQPRFEdgTqq4jVShx46g/BE1UIiicXDEh57ttbLMg5LgA7FFfRvnrv7zKypL73
+         wi3MkcunnHqMO/LrYD4/heI9Qcl4XFMdhjgqTXv9fHHAW3ZQ2+31JfRsotez5lE/YgDl
+         Zg+AJbfBHD+ycPOoA2rOomJN+yipr3tKReZf4Tfd7y/O9SxGGYXPnTI/GK6oMdfn7Xm+
+         w4sw==
+X-Forwarded-Encrypted: i=1; AKwUvBzSTRKvHXOKyKMCBwbSL0+peh375I7VldgFLWZ6h6z3ibS9avwMmUbFV5F+UpZSrW8sVQCnZ8k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJitgdhdsqOU9QcgKW4stTDoQDvP0VBYucnMAoHFsVKnMO7mj6p
+	GgkoO5N9myCeHRGWZvCwWebb9e5LgWyp7Td7PPVGakB60YADW/php49SjNGAcPeXMA==
+X-Gm-Gg: AYBFou02Nx09AugwShxXk9T6Ppf9w4X8PuycLSQ1kY7EGy2qEUNdpLeh8Y+F4m2iYrJ
+	gQz7yAaC8dI1elqT53GBhmr72d7ndeV9v/EFiYXO2jmjRtM2aXLXLASWCM02pMWlydwPiVjlkkC
+	CmjLI5vVP5lU5V617pLeJU/cUZ27XRk4wMrghBptKV8mKOvfoJ6jRV1M4oix44r1yMUAipSRdSj
+	16B/FgVx7/DpKnoFmOrpeGF+56EjgTmMzHQC3sobko0LlN7N9Prgvrn/RYWRzIMqmE3v6fb1F+V
+	95evm4UJCYWZGgxHlkpDsfXtO9aFaBA5CTLBxYpfC87SYdUhNN4SVn3S6/Vzgl9Z6SBfjKwec6N
+	wBrrOJck9YvgCAD86Uo12GSv+9nVUnB/nDThU5abwchj/hVi/vjvazIOber5pbyy8/MdXlaES85
+	30KhT4VIy4jxK43RK7ci/HDM2JTJmWWJ8OKtnWcVkdVdETvzFdl3QD4p/x62M8TXjNABUae9vUW
+	/filDk00JvC9uc8TebOvxWXVmymZ8DbKQZ7eKyQhqAGmFDoASvRZzp3OO09FuUF
+X-Received: by 2002:a05:6a21:7a46:b0:3e0:da23:8746 with SMTP id adf61e73a8af0-3e225f355f5mr8247362637.18.1792484594268;
+        Tue, 20 Oct 2026 01:23:14 -0700 (PDT)
+Received: from cantal.lan ([58.136.73.153])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd6549ee946sm4419397a12.20.2026.10.20.01.23.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 01:23:13 -0700 (PDT)
+From: James Clark <jjc@jclark.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Chintan Vankar <c-vankar@ti.com>,
+	Aksh Garg <a-garg7@ti.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: ethernet: ti: am65-cpts: fix support for PTP_EXTTS_REQUEST2 ioctl
+Date: Tue, 20 Oct 2026 15:23:07 +0700
+Message-ID: <20261020082307.1267591-1-jjc@jclark.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261020003525.1237742-1-jjc@jclark.com>
+References: <20261020003525.1237742-1-jjc@jclark.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,34 +107,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On 20/10/2026 at 14:51:25 +08, Maoyi Xie <maoyixie.tju@gmail.com> wrote:
-
-> nl802154_dump_wpan_phy_parse() looks up NL802154_ATTR_IFINDEX in
-> init_net, while the dump only returns phys in the caller's netns. For a
-> caller outside init_net, the result depends on what the ifindex is in
-> init_net. If no device there has it, the dump returns -ENODEV, even
-> when the ifindex is one of the caller's own 802.15.4 interfaces. If an
-> 802.15.4 interface there has it, the dump is empty. If any other device
-> there has it, the filter is ignored and the dump returns every phy in
-> the caller's netns.
+On Tue, 20 Oct 2026 07:35:25 +0700, James Clark wrote:
+> Commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to
+> ptp_clock_info") modified the PTP core to validate the supported flags
+> of external timestamp requests, rather than relying on each driver to
+> check them.
 >
-> GET_WPAN_PHY needs no privilege, so an unprivileged process outside
-> init_net can use this to tell which ifindexes exist in init_net.
->
-> Look the ifindex up in sock_net(skb->sk), as nl80211_dump_wiphy_parse()
-> does. Commit 66e5c2672cd1 ("ieee802154: add netns support") added the
-> netns check to the dump loop. It also removed the "TODO netns" comment
-> above this lookup but kept init_net.
->
-> Fixes: 66e5c2672cd1 ("ieee802154: add netns support")
-> Cc: stable@vger.kernel.org # v4.8+
-> Assisted-by: LLM codeql
-> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-> ---
+> am65_cpts_extts_enable() ignores the flags, and am65-cpts was not given
+> any .supported_extts_flags. Since PTP_EXTTS_REQUEST2 always implies
+> PTP_STRICT_FLAGS, the core now rejects every PTP_EXTTS_REQUEST2 for this
+> driver with -EOPNOTSUPP, where before that commit the same requests
+> succeeded.
 
-Seems sensible:
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Adding Aksh Garg and Sebastian Andrzej Siewior, whom I missed on the Cc list.
+The full patch is at
+https://lore.kernel.org/all/20261020003525.1237742-1-jjc@jclark.com/
