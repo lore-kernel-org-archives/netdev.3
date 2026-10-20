@@ -1,98 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792465498;
-	b=yddWUQPbQ2KiAnLR957IKZGmZ2Y4GtaXP4nGhcToa5dC70k6qvCHgztkHgCLpnquneDn
-	 juQJjA1r6a9qevvE0+dS4wfu2Hlw3JlMUCaVfys6q9RssvcffycSz+SgpzOYi0uDFUnvt
-	 kxyiOzJvGJBUi4XzNupYe11HypQiWJwsafrNCvHgjjpRMnMxuVP4AI3f4ABFN3gccYCCv
-	 dMruxOWHyW5CPGxTZCR8T6n/7qDGgx8+QUguNaKd7uLRYA7nARlMELqj8qgZnBLia5Pv1
-	 Yy2cSMPOpoC14rb2/1q16LCibO9dQSV4AdpklVjaWeIimOwHqq6AHcm2B0WmQMUG+tg==
+	t=1792465780;
+	b=h1mCPVOGtH6qFfzqWx3+Knm6zvONUxIztVRn59v3l4UUOMgFnBJfp9zt+kanbOSdFug5
+	 /KwFTbp70NCKLPtxRa/H+Mt4fVwOhJMnM9S4OfpchrKZWURs6WI5PR6X8b0T9gG+ZiAAt
+	 c60SSem6dkAujI+4AooDECGjxUhqzf0U68Iv0FTL9yObPR+AaEUQItzj0qqkba5NTbH3b
+	 VZ39GC9kOKiqnaB5yVfZAnvjU6Cxinsh7J38uOEIJSHKchtvEciPZzL2xuH5XvC0JTO5+
+	 +AgB5AI5DWaVGxWX2dZaRY3qcAttOZAdWZGbMPZ+aiQwvCNUU5RJ7mVlCAeNeMwDeYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792465498;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Pm54GtLoc9Ls0ofX4mP3XCN3sjH8BR9wUxBcQ7EXzFE=;
-	b=4inZ9YCvyM8SF3K5glY9BwobwL4eDMJcBNOFNchHdkfxZr5EanPPEy+psA3RYorX8aDV
-	 H1TYytym8I0uzXxgY9JANhxH17ZcXyPVAuGVFPcOZW/nwljgny3aOOpbbODThoXhVOmWB
-	 8qs3Q99UzKFikJnP4wG6y+JalDly5CLhIbZFi0ZYh/07RcA4TjB4kISYrzynvywQ7b41o
-	 U6nsEhoSGA1yi1ac3s4eEH7bN9cLIKjxgl/IsMBRZ4JhWWLL2acRjU5B+rXXKPDKLMK0w
-	 uJr4lj3KcOUWYlmxRJhNBSXs1puhfJnMk4OZExsREJkTEHJr+guR9EE0BxJGndX+yVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792465780;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Ve17lLZjmHFU7QkEK3uFrRJlrH3bqy8ujTXSTOq1L2E=;
+	b=CiRyUDyPUZlzjnSZHFemYrg62IzTUJIJUXQQ5lg3UOKjb2ioF2xTXnr2VuKSUMvGUKM1
+	 yHyI9FsiVJhXRjVXumHXMo5dI9Uw+KLegjynRGlkeCYt77y4qToVE+o0JNE2ox9EK/kHR
+	 TViz1E4RgQ4Vf4tvF6TPJ9MVU19sp6btLPagJT4RhNMP81vR1Du6n4PGvhzTbtjmf6IR3
+	 ueePpXUzZlCmIgnzQegZ8i0rccrsuHwbGrSWEmiTg/D3bEy4TGiLmSI9KhMVD3EQmX8kR
+	 0yeH/nvdvzwMFxe3SU+8/qc3nWvJn59PlH2FURGnuB1ejPzLXMdUP26fiaIKLFwy0Bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fkj345uK;
-	arc=none smtp.remote-ip=209.85.216.42
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQAz7e2V;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A0B606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:04:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4A0B606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6170D606A33B;
+	Tue, 20 Oct 2026 03:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=fkj345uK
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so1566625a91.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 20:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792465497; x=1793070297; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Pm54GtLoc9Ls0ofX4mP3XCN3sjH8BR9wUxBcQ7EXzFE=;
-        b=fkj345uKHxlY1zp+L646DsGbiQCi4nncGEY+opVpYR1ADxZ7pgziCLhYFDqttQU8d6
-         odIEkEVwT/kQHCYYKNBAfksIGO0FiP9VKFgjHEn6YGa5X8+RwsuwOtdN201t+wnsHRyL
-         6JUEzjUU3XYuMTpf+CJ/wFp9eu3qlMcDHjjeWDHt5o+rOrVxnhV1roP6liSGzS4knz89
-         JpNFXTG7f6gAuoDRAI0PNDCGr/Y5F7rO5zVvqnbpA81oaPMGgVJOPegW/NtcklIg8Ffz
-         mhajwchBAyRtR9wIOA/3w2yyGp6TUB9l8Xd65pY5ZBaLxCMO1Pk4u8gW3Q5nu/RUkcCn
-         dlFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792465497; x=1793070297;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Pm54GtLoc9Ls0ofX4mP3XCN3sjH8BR9wUxBcQ7EXzFE=;
-        b=AArab9yUSbzsfLf6zqm2tQSQWXSIDelJbOxdzPui7cjZnvS9A18XQu7HVVpwwjxnvE
-         x8/EluUMG15zrSkKJmKFLEeakh8piYvf3Q/7PXMcFMvCUeM8Q2w1CO720iwNBKiS/fcE
-         7bxfT3U9aZeSBTEhoGbD4WyA6yw3iOXKgPU28WbSGs8Stv/hQpB4yA8zwCc2BrIvnBwG
-         ro8Pbwk1ppWz/3VYEIcqdlqbiWqOVYRpLAgAUGYdY/tVYIQb/A6sKZ8MNEN1smzx+2sQ
-         BSP/X5ekLoNdX7diZTWzQpF5St8TzRTZhTYLa0DTD1NdAHc0XAT+3J482PfOR2DdNZBX
-         7pNw==
-X-Forwarded-Encrypted: i=1; AKwUvByaTY8vCAWB2U1BdBlxeUFEjDZAfxtAXkseENFpkT9S/UPm/pE7cDLqKGHTw/WdKJHBjdj1LyY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL3mJ4BU317VsLgKHbASgFvBvZVJS+r1jRe1PQcakhjYbule54Q
-	lU/8SVLUej4T4fkReoEMRNhZc14ZdVgai8M0MwJFGTGAV9PeBVXERwnZ
-X-Gm-Gg: AYBFou19Tl98thzo1xYY5yZKS5us71AsgprkPxjt801uPVxmXVHYRbBmFBaDrwfrj/5
-	AgBv1EMk5qR2VgoW7V5+Ln+HyS5fye6WUaYE5r9SrmAQqHtA74gzNsoGBfr+flMdbNnIicwLC+E
-	U34spEUyWitOrtgvmTLpqequToyC8rbgHtLIAWYUyZhjwyZek9Xit89qw7tDdS5osKwXonHF4AQ
-	lknlmETX5GhkAQvf9VvM0neb9i/9MHe5JYDzfX0eEnvnzuFX2WOLAIAeBVlQt/LanmuqgzCKkQ0
-	TcAs2zuAOxHKBj6uAaRawTz6RcT7weo/yDB6lsWpp1HBST995CrIfaiMKpsKrzAsOwa9gcBUfDk
-	L7fNPDLfUDIyB9OZ2DQUeUFyonJChsCQ7BICJ5kDDmPaIIO7pp9NhsKUt5R7breX4lx9QRjBtT/
-	Mjg2B1ix5NeC7KQ5xdOfc1BLbyj9QrgNlfI1DOF3Flmn/3N6SdFYM/vCvJcX4QimDgQR24MlzVK
-	F5zSRqH70zWozn4Dz/dfPolYqhkVoEkj8pruzOfCJD9jjlOk6Pb/u/JNV2Q6fs=
-X-Received: by 2002:a17:90b:3b46:b0:3a8:c0cd:57f3 with SMTP id 98e67ed59e1d1-3aceebc55e4mr7918127a91.18.1792465496890;
-        Mon, 19 Oct 2026 20:04:56 -0700 (PDT)
-Received: from localhost.localdomain (ip67.244-167-222.hkg.ten111.net. [222.167.244.67])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acd05c9255sm9545638a91.2.2026.10.19.20.04.53
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 19 Oct 2026 20:04:56 -0700 (PDT)
-From: Guoshuai Yang <yangguoshuai@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sabrina Dubroca <sd@queasysnail.net>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Guoshuai Yang <yangguoshuai@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] xfrm: esp: reset outer TCP GSO metadata on espintcp input
-Date: Tue, 20 Oct 2026 11:04:50 +0800
-Message-ID: <20261020030450.7170-1-yangguoshuai@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQAz7e2V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011F31F000CB;
+	Tue, 20 Oct 2026 03:09:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792465779;
+	bh=Ve17lLZjmHFU7QkEK3uFrRJlrH3bqy8ujTXSTOq1L2E=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KQAz7e2V3PQA3JBzvBgMs4fjiDS+tXq3Hr4EphjWWNY0HgyBOC9GxT9bI4qW/kLEH
+	 PqeNurGjKuY99pNbDjfqPCnsm0yYjCdmZPeoIUL53fieNeRcBng44S9NMfyQwCe3yp
+	 JvVVN7TN9zlbL8gxOF0DhnbRb8PBSTytaphtxe0SaBnVooFTSnakbVEpyuBTCS2Czx
+	 I8Xhot/eFPARk7MKi/zIYFsf1mv5DI5jfY+t16XI2IXkqOZutNl0fJPFh0l74nROfk
+	 fP8Wa5c2qqpEbXwy3r072ZhRwvQkNdt1CTdlZu6W3XTjKrA6mxWHQFtv8FPIxg4/4G
+	 mQMpeiV600vRA==
+Subject: Re: [PATCH net-next v14 02/12] dt-bindings: dpll: add SiTime SiT95316
+ clock generator
+From: netdev-bot+sashiko@kernel.org
+To: arouhi@sitime.com
+Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
+ arkadiusz.kubalewski@intel.com, ivecera@redhat.com, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, cjubran@nvidia.com,
+ Oleg.Zadorozhnyi@devoxsoftware.com, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 20 Oct 2026 03:09:38 +0000
+Message-ID: <179246577843.3135.4737368277316143256@kernel.org>
+In-Reply-To: <20261016005823.13690-3-arouhi@sitime.com>
+References: <20261016005823.13690-3-arouhi@sitime.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,121 +66,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When ESP packets are received over TCP (RFC 8229 espintcp), strparser
-slices individual length-prefixed ESP records from the outer TCP stream by
-cloning the incoming TCP skb(s) in __strp_recv().
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-If the outer TCP skb was GRO-coalesced before reaching strparser, its
-skb_shinfo carries the outer TCP stream's GSO metadata (gso_size, gso_segs,
-and gso_type). When an ESP record spans two outer TCP segments, strparser
-chains the spillover clone onto skb_shinfo(head)->frag_list.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Subsequently in esp_input() and esp6_input(), skb_cow_data() unshares the
-head skb via pskb_expand_head() (preserving the outer TCP gso_size and
-gso_type in the new private skb_shinfo) and calls skb_copy() on each cloned
-frag_list member, which copies the outer TCP GSO fields via
-skb_copy_header() onto a linear frag_list child skb allocated from slab
-with head_frag == 0.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-After ESP decryption and header removal, the resulting single inner packet
-still has skb_is_gso(skb) == true with the stale outer TCP gso_size, while
-skb_headlen(head_skb) is now smaller than that gso_size due to stripping
-the outer framing and ESP header. When this packet passes through
-gro_cells_receive() (which flushes frag_list packets via GRO_NORMAL
-without resetting gso_size) and is forwarded, validate_xmit_skb() invokes
-tcp_gso_segment() -> skb_segment(). Because head_skb is shorter than the
-stale gso_size and SKB_GSO_DODGY is not set, skb_segment() attempts to map
-the slab-backed frag_list member as a scatter-gather page fragment and hits
-BUG_ON(!list_skb->head_frag):
+- [Medium] The shared DPLL pin property `supported-frequencies-hz` now
+  uses two incompatible cell widths, depending on the device.
 
-  Internal error: Oops - undefined instruction: 0 [#1] SMP ARM
-  PC is at skb_segment+0x574/0xd20
-  LR is at skb_segment+0x884/0xd20
-  Call trace:
-   skb_segment from tcp_gso_segment
-   tcp_gso_segment from inet_gso_segment
-   inet_gso_segment from skb_mac_gso_segment
-   skb_mac_gso_segment from __skb_gso_segment
-   __skb_gso_segment from validate_xmit_skb
-   validate_xmit_skb from __dev_queue_xmit
-   __dev_queue_xmit from ip_finish_output2
-   ip_finish_output2 from ip_output
-   ip_output from ip_sublist_rcv_finish
-   ip_sublist_rcv_finish from ip_sublist_rcv
-   ip_list_rcv from __netif_receive_skb_list_core
-   __netif_receive_skb_list_core from __netif_receive_skb_list
-   __netif_receive_skb_list from gro_normal_list
-   gro_normal_list from gro_cell_poll
+--
 
-Furthermore, if a decrypted inner packet with a frag_list later takes the
-ip_do_fragment() frag_list fast path, each detached frag_list member is
-transmitted as a standalone IP fragment and would still carry the stale
-outer TCP GSO state when reaching validate_xmit_skb(). And even when an
-ESP record does not have a frag_list, leaving the stale outer TCP gso_size
-on the decrypted inner skb prevents dev_gro_receive() from initializing
-gso_size to the inner packet's skb_gro_len().
+dt-bindings: dpll: add SiTime SiT95316 clock generator
 
-We cannot reset GSO state earlier in espintcp_rcv() / handle_esp() because
-the skb is still a clone sharing skb_shinfo with the outer TCP skb held by
-strparser. Instead, call skb_gso_reset() on both the head skb and each
-skb_walk_frags() member at skip_cow in esp_input() and esp6_input(), where
-the head skb and all frag_list members are guaranteed to be uncloned with
-private skb_shinfo.
+This adds a devicetree binding for the SiTime SiT95316/SiT95317 clock
+generators. They are I2C-controlled DPLL providers with four PLLs, up to
+eight inputs and up to twelve outputs. The XO is given either as a clock
+or as clock-frequency, and the supplies are named after their pins.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guoshuai Yang <yangguoshuai@gmail.com>
----
-v2:
-  - Also call skb_gso_reset() on each skb_walk_frags() member at skip_cow
-    in esp_input() and esp6_input() so detached frag_list members on the
-    ip_do_fragment() fast path do not retain stale outer TCP GSO state.
-  - Specify target tree 'net' in subject prefix.
-  - Link to v1: https://lore.kernel.org/netdev/20261018005218.53267-1-yangguoshuai@gmail.com/
- net/ipv4/esp4.c | 8 ++++++++
- net/ipv6/esp6.c | 8 ++++++++
- 2 files changed, 16 insertions(+)
+> diff --git a/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
+> new file mode 100644
+> index 0000000000000..9a8163d121f24
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index e76db58..012b59f 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -900,6 +900,14 @@ static int esp_input(struct xfrm_state *x, struct sk_buff *skb)
- 	nfrags = err;
- 
- skip_cow:
-+	if (x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
-+		struct sk_buff *iter;
-+
-+		skb_gso_reset(skb);
-+		skb_walk_frags(skb, iter)
-+			skb_gso_reset(iter);
-+	}
-+
- 	err = -ENOMEM;
- 	tmp = esp_alloc_tmp(aead, nfrags, seqhilen);
- 	if (!tmp)
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index b1c9b36..b08cc1c 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -943,6 +943,14 @@ static int esp6_input(struct xfrm_state *x, struct sk_buff *skb)
- 	}
- 
- skip_cow:
-+	if (x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP) {
-+		struct sk_buff *iter;
-+
-+		skb_gso_reset(skb);
-+		skb_walk_frags(skb, iter)
-+			skb_gso_reset(iter);
-+	}
-+
- 	ret = -ENOMEM;
- 	tmp = esp_alloc_tmp(aead, nfrags, seqhilen);
- 	if (!tmp)
+[ ... ]
+
+> +            input-pins {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                /* IN0P and IN0N: pair 0 runs single-ended */
+> +                pin@0 {
+> +                    reg = <0>;
+> +                    label = "clkin0";
+> +                    connection-type = "ext";
+> +                    supported-frequencies-hz = <10000000>;
+
+[Severity: Medium]
+Should this entry, and the other supported-frequencies-hz entries in this
+example, use /bits/ 64 like the existing binding for this shared property?
+
+The property comes from dpll-pin.yaml, which gives it no explicit width:
+
+  supported-frequencies-hz:
+    description: List of supported frequencies for this pin, expressed in Hz.
+
+The only other user, microchip,zl30731.yaml, always writes it as 64-bit
+cells:
+
+  supported-frequencies-hz = /bits/ 64 <10000 10000000>;
+
+Its driver also reads it as u64:
+
+drivers/dpll/zl3073x/prop.c:zl3073x_pin_props_get() {
+    ...
+	num_freqs = fwnode_property_count_u64(props->fwnode,
+					      "supported-frequencies-hz");
+	if (num_freqs <= 0) {
+		num_freqs = 0;
+    ...
+}
+
+This example uses 32-bit cells. The SiT9531x driver later in the series
+reads u32 on purpose in sit9531x_pin_props_get():
+
+	/* A -hz property is 32-bit; no rate of this part needs more. */
+	num_freqs = fwnode_property_count_u32(props->fwnode, "supported-frequencies-hz");
+
+So the driver in this series and this example agree with each other. The
+shared property, though, would now be encoded differently depending on the
+device.
+
+Suppose a SiT95316/7 board DT uses the existing /bits/ 64 form, for
+example /bits/ 64 <10000000>. Wouldn't sit9531x_pin_props_get() read that
+as two u32 values, [0, 10000000]? For an input, curr_freq = freqs[0] would
+then be 0, and the wired rate would never reach sitdev->ref[index].freq.
+
+The reverse case is also a problem. A reader that follows the u64
+convention, such as zl3073x or a future shared DPLL fwnode helper, would
+fail the element count on the 4-byte SiT encoding and silently skip the
+property.
+
+It is not clear whether dt_binding_check would reject the 64-bit form
+under the maxItems: 1 constraint in input-pins. That depends on how
+dtschema decodes -hz properties.
+
+Could the binding and driver use the same 64-bit encoding as
+microchip,zl30731? Alternatively, could dpll-pin.yaml define a single
+width for this property?
+
+> +                };
+
+[ ... ]
+
 -- 
-2.54.0 (Apple Git-157)
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016005823.13690-1-arouhi%40sitime.com
