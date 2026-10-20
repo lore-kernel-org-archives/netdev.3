@@ -1,67 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792533040;
-	b=oOGm2tgZpEOj8FZE1xFJIGi1zKW5ZMinW/tuQXDUP7Qwx0vJ+9JtGUxm/tsiRiJYnylS
-	 LKzH2q3NBlSGqxm4TlTEOEZ36C8JKx3dZj1pS3Jmbwo1D0/DvZxDgrkhj+YsI9WfkkDau
-	 o68Q/lFFa0PCeoUKeada/bHL/tdRkT9LFeklin/DBYOWEDyqL7jTdB3JSClF6/sEZB5Oi
-	 2FZ2auqNb2RVgSQIIq5YahphpPZhXmBhhSMeirx9WuMgGHosgyKezPQXAoLnNVQia+Q59
-	 U3rBLWzCX5m4mjD59WN4K7u4czLw6fT+xedVyZd+HMUzpEjVBa68J9e/XFkRSfLICMg==
+	t=1792533373;
+	b=CDhK9dOLHAOAqUzeUOtSfOwE6joSiBofnE8gxrjCBbteeeJq/Giddszio4YQgJrvevsI
+	 CuE0X+Ff/5AuzNZQYOWifJ4Pzl1go/tDJAqy9hEfI3GhatfnZnBZ3Hss/mU9m1A5Rrngo
+	 4XbIwt+cHyXV64gaUPvDq4ZbwVtoH1CVRik+JgIuTrff3TR2jNF7ZbFWn28WlsXXVn6l9
+	 YfDeUd4/yR3ocfhPB14RYwuy3OARYJtb/2tIsi4ArwGfjId+p0Q12Hz7BFYfte22qdbps
+	 u4BrdjSgbCob3/tzsiQ9vH8lViFS6P6GWLb4XoJvMVlw6PrYLpSJnCtX/mmeZzlwJ9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792533040;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792533373;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=wh0AGYPF6mCurL31eIvMZgQeZnelcGsoRPRPBnoOqTQ=;
-	b=IrjVr9OoTRqnNxM3JapRZkriWEWYebMn+0hOm4XE24uGNGFp+5sto0jeY9QbII84wV8Y
-	 RHGf10mcN8Wd6DgZwn7e+Zq+gh7amB09zRPhikPft6e9VvEEOStU8fxT384/TI+kFHQzb
-	 O6190yD4Pk/M0Df216RJj7/QDzFQ7w05fm6hdFvelUVxeBuC2dYmQFoq51ghjDkB20qXM
-	 EwY4PGpWWiBLF2q/lr8gD/lnjiolTk9/HgM/4ek/7wZ03UC0nHbxD1IXbIJYgDX3Uiem3
-	 0UhfH7/nu1b3WDP2uWlCHRMvUSMbt720U+cZ7lXbkav4u1r1IXGo8wUVTK4pqGdUxBA==
+	bh=RC3iU6EQa1/dBaJxMKqA5Cnd4YmN92OAMtq0Pq+n7O8=;
+	b=jSKaiObb3NAmzBEa2MOm6ZpAuK5qMy8pxLOqGoXkXavSAO5wgOTVEs/PvX9y2m+tCEsW
+	 5OT7DIknQaE7xqH7ZC0yaKH03dPBYOfMhYwehVnBj9H8nwAg0gcM3yP1hj0tWn/lkwmYl
+	 +Qh8B0onsvg8ZBJT34oqT8lrn2M8ZoKPPAoLI0zjIMlxgztnT0GzhhgO2UWq5CMopv0HN
+	 F+3kQs5PZD+tzR4cWDHG3fP3JMIUwf6kbYfQarCU4r2+8pX9CNXfL79M/8fuiy1kLUrFJ
+	 JNqND/QiQeEkz9WhlCFPLzsXNleO62jGBrWRUYmzPUdWWxzas5YWZ66fRsPvivP8lig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i+Paarq3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DuUrn674;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B71606A319;
-	Tue, 20 Oct 2026 21:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B4B606A319;
+	Tue, 20 Oct 2026 21:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i+Paarq3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845821F000C9;
-	Tue, 20 Oct 2026 21:50:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DuUrn674
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D229A1F000C9;
+	Tue, 20 Oct 2026 21:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792533040;
-	bh=wh0AGYPF6mCurL31eIvMZgQeZnelcGsoRPRPBnoOqTQ=;
+	s=k20260515; t=1792533372;
+	bh=RC3iU6EQa1/dBaJxMKqA5Cnd4YmN92OAMtq0Pq+n7O8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=i+Paarq3UVuSI3LH6bh9wFDgAOlMbD1z3j5tUg8jygIOlmLHlG7lsBudUxIO0HN6j
-	 sid+0HKW9INRsXYVLs1lK2U91MTfTkli3Xcd337UdJZ1JMaU1Sh1oQ0gCC+ofsu/hY
-	 RzsyLqDyomh0tto99ufDTzd/Pr9UOiS6a8bw0l0/UbY4Vcvk4kkz3PfGMewW7TUdD4
-	 mN8C84+XDwE28sEMO/GRgnFgAvaHHSKu++4vVwSIJE/g2/k1KdHC7q3aoqIIRgI06V
-	 Fk9VpqQHIwqQde4TkIgffbRim73dh3V/bBBg0dDqSMOOQxfBNAHQErhIGt7U7Rks3u
-	 VbD+DQaH7m39Q==
-Date: Tue, 20 Oct 2026 14:50:38 -0700
+	b=DuUrn674JMfXslg2ZVIwkEZJtPfpC7JU+qX2L2K8Oh2/xjnofe6PrmmX8ZxFxsTVl
+	 CJOnJDtdnjIXlGFq9CBRrcq2ueUjWplnyH5AncNdRDpLNGHRWpzIGomydnzupqLOlw
+	 FbTBqEUAveMFam6YnOpQTQ2/COE0/VT3wzF286C/7ye0i4M/CdCChU9ZLOk2i9EXSv
+	 Q+lY65xyMmC5+k2HSifJ14S7zMp6VcSauQcNjY3AHqv32NC+zsFhfpkmQnPH+Ey97p
+	 I/wIrP0EUbChYnjCb7+tAIweHRJRGK6ruc5DheKNK5rKsZGenGsEL9OuNluLdwEQoQ
+	 W3xcV/fHxt1jA==
+Date: Tue, 20 Oct 2026 14:56:11 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Daniel Zahka <daniel.zahka@gmail.com>, Alexander Duyck
- <alexanderduyck@fb.com>, kernel-team@meta.com, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Paolo
- Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/4] eth: mpnic: count packets, bytes, and
- drops per ring
-Message-ID: <20261020145038.4f7eb295@kernel.org>
-In-Reply-To: <20261020212155.47v0ot4g@linutronix.de>
-References: <20261012-mpnic-counters3-v2-0-8afba81c2d5a@gmail.com>
-	<20261012-mpnic-counters3-v2-1-8afba81c2d5a@gmail.com>
-	<20261016220930.i32JEcqe@linutronix.de>
-	<DM8U47F4MNK3.2V54CCQ9YTNBY@gmail.com>
-	<20261019215405.OCzrrKYw@linutronix.de>
-	<20261019190543.419e70bc@kernel.org>
-	<20261020212155.47v0ot4g@linutronix.de>
+To: Imre Kaloz <kaloz@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, Lee Jones
+ <lee@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri
+ Slaby <jirislaby@kernel.org>, mfd@lists.linux.dev,
+ linux-serial@vger.kernel.org, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, linux-rtc@vger.kernel.org, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel
+ <cassel@kernel.org>, linux-ide@vger.kernel.org, Pavel Machek
+ <pavel@kernel.org>, linux-leds@vger.kernel.org, Bjorn Helgaas
+ <bhelgaas@google.com>, linux-pci@vger.kernel.org, Christoph Hellwig
+ <hch@lst.de>
+Subject: Re: [PATCH v2 00/53] MIPS: SGI-IP27: add support for the IP35
+ (Bedrock hub) machines
+Message-ID: <20261020145611.4e277615@kernel.org>
+In-Reply-To: <20261020204214.28625-1-kaloz@kernel.org>
+References: <cover.1791890466.git.kaloz@kernel.org>
+	<20261020110619.12774a1c@kernel.org>
+	<20261020204214.28625-1-kaloz@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,35 +75,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 20 Oct 2026 23:21:55 +0200 Sebastian Andrzej Siewior wrote:
-> > > Is there any other driver doing this?
-> > > There is ::get_sset_count() and so on for the per-queue stats.  
-> > 
-> > You may be mixing up queue stats (netlink) with the old ethtool -S
-> > kitchen sink / garbage dump.  
+On Tue, 20 Oct 2026 22:42:13 +0200 Imre Kaloz wrote:
+> On Tue, 20 Oct 2026 11:06:19 -0700 Jakub Kicinski wrote:
+> > Why do we need support for machines discontinued 20+ years ago?  
 > 
-> The statistics is folded on device-down into a global counter. So on
-> device-up the statistics is still available. At least that is my
-> understanding. This means the per-queue stats are lost and global stats
-> don't match the per queue stats anymore.
-
-Yes, that's intentional and recommended by the docs for queue stats.
-
-> > > If the interface goes down and frees all its queues, then the stats are
-> > > gone, true. But preserving them at the price of two (down+up) forced RCU
-> > > grace period, I don't know. It looks like a bit too much.  
-> > 
-> > This is a modern driver, the down / up path is not taken when interface
-> > is reconfigured. It's only taken when the interface is actually taken
-> > down or bought up. Which virtually never happens for a datacenter NIC.  
+> For netdev the question is smaller than the series: patches 25 and 38,
+> 44 lines in ioc3-eth, a driver that is already in tree for the same
+> part on IP27 and IP30. Patch 25 is a no-op on both of those (the bit it
+> tests is always set behind a classic Bridge); patch 38 is a MAC-address
+> fallback. I should have said in the cover that the series is meant to go
+> through the MIPS tree and that I'm only after an Ack for those two --
+> sorry for the noise on your queue.
 > 
-> So if this never happens, it might not be needed to preserve this. That
-> force-RCU might not be needed. This does happen on down and I would
-> assume that the device is no longer processing packets.
+> As for why at all: same reason IP27, IP30 and IP32 are in tree. The
+> hardware is in use, Thomas maintains the platform, and people run and
+> test it; "discontinued" has never been the removal criterion, lack of
+> maintainers has. IP35 is IP27's direct successor on the same
+> Hub/XTalk/Bridge architecture with the same IOC3, plus its successor
+> IOC4, so most of the series is teaching existing code about one more
+> hub generation. And these boxes still earn their keep as a stress case
+> for arch and core code -- e.g. the kmem_cache_destroy() race that just
+> turned up on my Ultra 45:
+> https://lore.kernel.org/all/atDCYwNfKW3m6YXh@thinkstation/
 
-The (old) ndo for stats reading runs under RCU, only.
-AI will immediately point that out if we remove the sync.
+I don't think you answered my question, or at least I'm too daft 
+to catch what you mean. IP35 was not supported so nobody is using
+it with Linux today. You're adding the support, and since it's 
+a platform discontinued 20 years ago there's 0 chance of real users 
+of any of this code.
 
-May I ask why you care? Is there another driver you're trying 
-to implement stats in? I'm not sure where you're coming from
-and therefore what to explain to you.
+What am I missing?
