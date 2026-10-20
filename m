@@ -1,99 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792479094;
-	b=TBol2bJgfj15QOfeZ4qWlKiEYxnaZm6ZfAJeW6j4SGGNqI7eZ7RhOlnPpbv4ga3cmCBX
-	 6XOwG8vP/81Ea3qgm9ilTa/M3Zza5aKc37pQmyupqQf82pIOHAvoYjP1j/+2OEnZhZXeC
-	 cbWVorEVHxpno62u8HlVouLv2wxOkcM9m4oyllhwI7Z43TcT+j8m/DlmJvmW0yDpzmeEq
-	 j7+n7GFHb4e1CuXWZ2esGCGIp+7u5mcBpdWr9dviJ7RcHjf8APszz6QXG0CoTX8Rnb87U
-	 5L1mQfLrEO4zeHzLzJ5kgCgzzZGXCfnFcGRgenqxVWC7w91SD4HDsFEDY5OpmcSSI/Q==
+	t=1792479125;
+	b=yMWERRu6yVt6EoT+IblJWkgzr4CyCTngMU1M7dPBG4rV0c5/5EyWmjXs+zqu3kfsj2d+
+	 7s0CYqF4CG+G2DFS8egagrdpGjozsgk8GLkRAJTZfzSeBgEHO3HRC0PDm7wG4IqX8Gmzs
+	 LSs6K8sAB906CVy/hqkhxeqqOTiVe/GgYcbQjqlKs7tuDykgcj7YrgTvXgKoOCzTuDAg3
+	 tqg9a0SNRkQe+tBEvCRQYInkh2uSz/kgbH3NhyqouG2H1MvPtsmDAqFqlQ5W6IqZc3jFL
+	 Iuu4wgINjd6C2vm/rDgcI9X2P+oplyNq02BqtSzj5LDE7cHA3Jcot5UfGQ0XCqM5LEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792479094;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792479125;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=dHQhRD6vyxHfKtcPIP6kj0jtBv/cVh1zjgBd/JhnQeQ=;
-	b=n3r6PZet2SLZYFjE1Dzs75mkxlMH0ZCQBsl3QeGr9pPOWe0xjQ400CtGWGM8Y3KyCcj6
-	 GOXqIO3GDTTeBuKmdZsqy9sLYoSsEAq5UfJxQiriYhIIHcflHgm4mJgSrXLH7T74fBYYl
-	 SLyZkH9mDohGrUA6Z0IDWFEA51YT8Edh8AcC4D4mAas/OKwXk21TfNnyn94siEApYwEO4
-	 FX9u2PDTiR0yU0vw9q8octtDsQt88ZfQgmpF9LGuDL4g6sB6Thb6pndziQCJPOihApKh6
-	 XCxVOHwf26KLXIzE6Y185nC7nsFtYXxFjbzEb3x0qyUuxhFrBggnr4Q3JW9ipOauhsQ==
+	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=oDF42rmnmkhzedotr2E1sl7hiMAx0kNtO/q61gkgaPI=;
+	b=TKj5fJ1q0c9vN5Wdnx+yoJo7zbh9wqXH15M11LBsqn0sT6Ll31B+Y3r7uE6sEh8oGGCb
+	 7kfvmikp6/qI+hQ+ky599VGLmZoyOZzvPLCsleMxbbHjw5XKOSrBqlHA35AOULZsLjyGJ
+	 zPTtpUTHr+XqY6uSX3MGHUh2ClyUeQUYboOU4xQ1M3yLFWJTBNFtAZ6pku4+VfscAdjQq
+	 Ihgc0p8uURQjamA3XiOAXAIJ5mbHdu4qXGdn4uqUoSKM13vEmcHYdZMeMbVmHWgyNvY/3
+	 dMIVcgTouieeVvNkH8a+LkIVVugqqCohuLaftCaiRwrDjjnhUgIW4OByTc4V5CiKjSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XlsyYn4Q;
-	arc=none smtp.remote-ip=209.85.216.50
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	dmarc=pass header.from=linuxfoundation.org;
+	spf=pass smtp.mailfrom=linuxfoundation.org;
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=T2ieWWm2;
+	arc=none smtp.remote-ip=209.85.218.47
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7D4606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:51:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF7D4606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8F0606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:52:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F8F0606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XlsyYn4Q
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3a0aaa0fd13so2631778a91.2
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:51:33 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=T2ieWWm2
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso395126566b.2
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:52:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792479093; x=1793083893; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dHQhRD6vyxHfKtcPIP6kj0jtBv/cVh1zjgBd/JhnQeQ=;
-        b=XlsyYn4QZ5xeFcxfmYe0YJbtBkOtdfi0jehGfY+o5BU0Y74fuNp7fOQIjsX5KqKHMi
-         BkGGTDd19afZjuMgFZlYCMY2C7cNfgKjiiIN2yfrYPK8sP5OyQ+CuQATH+cZhDlDH7kh
-         vrv+nGnm9HowpCUXOv7nXl+CAmiPsXMEMAxZxD3L0GP+b55VoxT/MlKYvyg7dU/58Lfa
-         JFbAwvf0mcc3IYkPykpf0CRH1vK0mf/kFen+cmbfFhaW6VnApk9gwFlVRNO08br0nSx4
-         /NIA+YcVR4mIvHEfyVrUS2xjEEEniVbgibRLENc3JM9yParehvYI6iGEhfQWo6UVgGok
-         GD5Q==
+        d=linuxfoundation.org; s=google; t=1792479123; x=1793083923; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oDF42rmnmkhzedotr2E1sl7hiMAx0kNtO/q61gkgaPI=;
+        b=T2ieWWm2fJMs0ly/lKc+VBaeNbR7JULdp/Yv1onwgfgH6q5MD5rmGllkC4r1IGDjPh
+         b/oViX0b6w+uMFqC5z0zvmY+lbDh55jK+TCaZMeqXjulSW3NEhRsiuz2anP+CryhJBrp
+         lyXFOsCuCjD/XcDxIqSfX1dJPC9p/wimpItQE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792479093; x=1793083893;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dHQhRD6vyxHfKtcPIP6kj0jtBv/cVh1zjgBd/JhnQeQ=;
-        b=I6WtvxtbCGtAuUaP1tpimfkV+AENgN7xQLcVzowWyCA97S3VMJlOVttZBDlPWrZj21
-         2Yq2xZw7+vROWZvSCMnVrOl/vdeSKMFMmKwlcBUJjeIXLL8SGCrAuOeJPGicQNPUG5Og
-         1aN3F5oj01YiFu91IzinNGh0wDLPMcvHgj0jF4ZQ/wV0S9YBRY7jlUnxy3ycAioCga/v
-         Yw93Fb+bgBl9TSSbNAljk3W8idG5vncdJszUgTBK5e1S5SRONnsqlHlG+etgq+7DKloa
-         geVjAT5dOV6QJOoww66KzDnJX3Z6LViR3t4AYpy1bn+e3bvY1olJrdUfde5Tx1zp1cwn
-         KVfg==
-X-Forwarded-Encrypted: i=1; AKwUvByRccFfXgHX1vWT25AYqHx49iA0HntaitkQGUFZMTUpSug1GSn5zIk6yOO8cca/v2E4/c6GdT0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIdSsOSt81IiJwLrinswQ+MDTLTeIAIlogO1QoQrw1f5aEE9UvR
-	BnUWy9GWFFDaxK8JeRywVj+bjQauGHioyFlnmO+wpUe1lTQj+2kWrFom
-X-Gm-Gg: AYBFou0kKB0NUn/mRvbfNz+UuMHITrqrDsqbCpu6bdN0yUpKhXV4zE/39HbMlIXtvj6
-	QH2TE9qqdFNfa9V/WbmtyI/kip+CptE/Zc8/69UHdTPKVhVfXOEcIz1IPJvttVg7UqBUz4gIgiX
-	qsE9DEUOzTbCiwHywbC3n8pUKOQ1VDm7lzogzLsHN9H4F47A65unFpENaouEQJzQejRx9sfw0Sc
-	oS++xIyR0gYJzdNEVe6rYmD6ELts3nFgdfAighwYivjgtoDgZTvMDqz8XfAHzRnNnmQmwu4jJp/
-	/SMOmeCieseMDUDU2AfjWKtlswNf6bT21kBVwLU0P7V55ozCw+L4PFrDUW0XMH10e0JmtLAiYUH
-	Pohii6fQmQd57Hv8MC6yLUGe7cp0fcWLuFlgxeqcjc+H2U/mB5Mapa0jpfnGJ9SMw143ORV5vYL
-	kR2SIvg6/xvOgPUYNH5Dp1CDPIxQFcTefZMCDDVGZl4elbBMrkmfB6qjcJ2lV9CWz7OkjMWfJlN
-	fAyVJVJ3qNCTB2D0Z1AmJRCi0IwvYh9PA==
-X-Received: by 2002:a17:90b:3ec5:b0:3ac:adce:60af with SMTP id 98e67ed59e1d1-3aceeb92998mr8773726a91.16.1792479093049;
-        Mon, 19 Oct 2026 23:51:33 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad5d56eddbsm2563561a91.9.2026.10.19.23.51.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 23:51:32 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Chandru Gopi <chandru.gopi.dev@gmail.com>,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH wpan] ieee802154: look up the wpan_phy dump ifindex in the caller's netns
-Date: Tue, 20 Oct 2026 14:51:25 +0800
-Message-Id: <20261020065125.896530-1-maoyixie.tju@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20260707; t=1792479123; x=1793083923;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=oDF42rmnmkhzedotr2E1sl7hiMAx0kNtO/q61gkgaPI=;
+        b=dij2V4gjlnYIdlhjIwqYFcZLFJ3WiF7mlyvK2MVoOSGUuFlDqwgc5y2CtB01RJJ3Wd
+         /aY+pUjHo7lvuS18zN/MagfAMoHIrYoFbYqc0Ms1TWV5XE69SWGxPzWpwzotVuaagWkl
+         7zVW3pk2fZNeI/H5q5ZtaKhxVd1xvdi1QZ/lQ4I98HLHvZTBIt/t6XQl85HMGK9b9uov
+         rblIrxsgH/UZAU/lYY+rvrFMe0S05JYfaF04FebpWS3LCINXS7iCpqKJ4z/2YgCYoY8n
+         8UKbZWqa+lBbny1KI2AxeTmq4aEKy9mSjDvXbzVMZvLrlVQXdadpDqkby6+GhDR+Enyb
+         ESqw==
+X-Forwarded-Encrypted: i=1; AKwUvBxW+n+MYBN8XtnjDo3TokFjVSgp/MVs7s9dmU2Ojm0+Igwg4HN1lUiiq6eCCF4aesYSvhM0Vyw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLCabZhcTT6HdjETMIgI5uDIrs/or5vh25SRXy/sh+U6JUdLRWR
+	qR7xPXRmr/1PFKx72h5FmNHIsiE0ozHtfVRpwHmNTnQ33Xr3i9w+D2S/p1YTbxKATjMkhoMaIoi
+	LxETkMug=
+X-Gm-Gg: AYBFou2rKKeqksBpx67uEJdAnwV2X82YC4qBJl4hn5NbqI/SY8hRvlTOTg3sDNKhs9/
+	TDLvbRFrRAaS4cwAdOCCVC+DD4Bt+tMzzCdzs+E9vI9UU0befH51hQo1E5TVeOQUx3k6fn73/9v
+	pkKJp13tCvst98/w2xeZCgffQuxf+V+fGofapeH3+xvLGgPVzLOxZwfJannGFZTrV4CbxYLivSh
+	nL/PHyS02stAbfMgV2/6fS8R8JYFNyNwr9/Ra0WdVmPdz5KmWESAbldPV61OYsOCtjm+quC9j/H
+	/+nhNOK8c7ER2tBfw5esvHmSGIOTo+PlqB43b3icIiFHnepinMBkFwsWzmdxGug3QzhzG5h1YQq
+	9OlMi03frIJTYFE70XaZ3aQFuNG6YLLLMFESl/bT9FLyQtf140HVGlkSr51sBupFKzCYhFv+wUA
+	zrAFl9QVdZaBubgZFuJ4FKeaoaY2norM8PLHUktl7XN0MclB2UMeU3aUvAU8IojJdwJXPuYOQbO
+	U3L/tWLRjoTmM/CKRWn9fW5f0pSk3opxN4xgaiR2Ip2kDQ=
+X-Received: by 2002:a17:906:ba89:b0:c26:2a2:b91d with SMTP id a640c23a62f3a-c419a93b941mr611701766b.6.1792479122679;
+        Mon, 19 Oct 2026 23:52:02 -0700 (PDT)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c408e32874bsm444109666b.9.2026.10.19.23.52.00
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2026 23:52:00 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c4395d31228so252266366b.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:52:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzes627CFI/JFMQLunmF7IkHoYYkMBQqayCFh2MA9ni3pmlso5AHO7HDAhT950NUVQR7py4AYM=@vger.kernel.org
+X-Received: by 2002:a17:906:dc8d:b0:c46:645f:cedd with SMTP id
+ a640c23a62f3a-c46645fd0e1mr41541566b.8.1792479120078; Mon, 19 Oct 2026
+ 23:52:00 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,66 +92,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
+ <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
+ <20261018174250-mutt-send-email-mst@kernel.org> <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
+ <20261020021924-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20261020021924-mutt-send-email-mst@kernel.org>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Mon, 19 Oct 2026 20:51:43 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
+X-Gm-Features: AclHuK8XyMOfalc2h8xLYAwuI7OOaq7eZ0Xa-sCHFlL0Wx6hRPrX61Uqe-VGGwI
+Message-ID: <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
+Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
+ memory via vDPA passthrough
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Wang Haoran <haoranwangsec@gmail.com>, jasowangio@gmail.com, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, eperezma@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-nl802154_dump_wpan_phy_parse() looks up NL802154_ATTR_IFINDEX in
-init_net, while the dump only returns phys in the caller's netns. For a
-caller outside init_net, the result depends on what the ifindex is in
-init_net. If no device there has it, the dump returns -ENODEV, even
-when the ifindex is one of the caller's own 802.15.4 interfaces. If an
-802.15.4 interface there has it, the dump is empty. If any other device
-there has it, the filter is ignored and the dump returns every phy in
-the caller's netns.
+On Mon, 19 Oct 2026 at 20:31, Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> The following seems to work for me. Testing would be appreciated.
 
-GET_WPAN_PHY needs no privilege, so an unprivileged process outside
-init_net can use this to tell which ifindexes exist in init_net.
+I have a whole branch that removes __get_user() and __put_user() entirely.
 
-Look the ifindex up in sock_net(skb->sk), as nl80211_dump_wiphy_parse()
-does. Commit 66e5c2672cd1 ("ieee802154: add netns support") added the
-netns check to the dump loop. It also removed the "TODO netns" comment
-above this lookup but kept init_net.
+Somebody should check that I did it right. But I didn't want to do the
+pagefault_disable() around the vringh_notify() part, so it's not quite
+the same as yours.
 
-Fixes: 66e5c2672cd1 ("ieee802154: add netns support")
-Cc: stable@vger.kernel.org # v4.8+
-Assisted-by: LLM codeql
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
----
-I asked about this on linux-wpan and netdev in September [1].
+Let me just push it out. I was going to let it simmer, but your email
+made me go "I should just let more people look at it".
 
-Found with a CodeQL check for lookups done in init_net. Tested on an
-unmodified v7.3 and on v7.3 with this patch, in qemu with two
-mac802154_hwsim radios and phy1 moved into netns ns1. Not tested on
-real 802.15.4 hardware. Dumps from ns1, filtered by ifindex:
+Mind taking a look at the 'uaccess-cleanups' branch?
 
-  ifindex in the filter                     before fix   with fix
-  4: wpan1 in ns1, unused in init_net       -ENODEV      phy1
-  3: wpan0 in init_net, unused in ns1       empty        -ENODEV
-  5: sit0 in init_net, unused in ns1        phy1         -ENODEV
-  3: wpan0 in init_net, new wpan2 in ns1    empty        phy1
+It builds for me. That's all the testing it has gotten so far. Blush.
 
-Rows 1 to 3 give the same results for uid 65534 in ns1. For uid 65534
-in its own user and net namespace, which has no phy, ifindex 3 and 5
-return an empty dump before the fix and -ENODEV with it. Unfiltered
-dumps and dumps from init_net do not change.
-
-[1] https://lore.kernel.org/all/20260920165057.3753458-1-maoyixie.tju@gmail.com/
-
- net/ieee802154/nl802154.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ieee802154/nl802154.c b/net/ieee802154/nl802154.c
-index 115f43d0e158..fae5c413fa60 100644
---- a/net/ieee802154/nl802154.c
-+++ b/net/ieee802154/nl802154.c
-@@ -581,7 +581,7 @@ static int nl802154_dump_wpan_phy_parse(struct sk_buff *skb,
- 		struct cfg802154_registered_device *rdev;
- 		int ifidx = nla_get_u32(tb[NL802154_ATTR_IFINDEX]);
- 
--		netdev = __dev_get_by_index(&init_net, ifidx);
-+		netdev = __dev_get_by_index(sock_net(skb->sk), ifidx);
- 		if (!netdev)
- 			return -ENODEV;
- 		if (netdev->ieee802154_ptr) {
--- 
-2.34.1
-
+                   Linus
