@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792465785;
-	b=McypTiDUIRZBgBtnsl8uYAEp6ONMB7d662K/gauzJC+B2VFO61eQgqm6E6lc1kq0hgB+
-	 kfFzwec2CelK/0Fs/g0UV3Rxe1VejiUoILYiAKDTd7Fpfl3i3ZMRDSA0uGNqzO5/iGN6M
-	 7kmNdRHD9opybduxhxmhc3hJnlaMs2agxPUFv66oDjhlJF6iT+ZoFl/19+0CXen63Gizy
-	 ykdmjotfFiH/UMSh9HH0RRMV8fs8Ib7ZagQp1idqo+CHpiFL8a7tNICK4tT2PZzUIM443
-	 Ei76G48FvjbKU0nlECuVldD/OEO77LOOLxCVgw0ORinccuCvOjeqi4Eu3U+PRr9WvMQ==
+	t=1792465788;
+	b=T/eopU6Dq9C2vb3xo7bYe/NYe3Sk03vu5HcaDEeZ8VsMFjlbpRAPnnEhDz81LT8qKtki
+	 KvoLkSlRmfdZhn6b8TDpPdMigG5pnkg16IjiQm5gN4Ohu7CT2NRj8Kceu4ckmijOae4jS
+	 RJvPdp/HXGaVTFpW1vg/SaCYsKW0MXG3rKxvMehLeYz8WOarDnl21GDIm6dkO2vfh0X+8
+	 8SmsCVzD8tPACzFEaKBudbJuNXF/ijXJoR1BsO+P1xBmFhOQwgzcN2a1btrmxxFpk5px0
+	 QrUU9hI7jf1UBpfSmv51jljoGMkIY7ribxhMh030Z8b0JmEQkKTAGqY1rAZuW3zJAIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792465785;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792465788;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=IfL1YpjRMTUWS4zQrfAe51404IjkHHoLvglXoKL+x/A=;
-	b=dsHKfQ9GYEy8fWOTIPZUMcy+2u2C3pgi6sVW/MGy3VzhLzxoBz1hd5bVDerpZ182xfe6
-	 eZCBPk+glCNkTTggUTksdpaiwrQhsIoFDXjBI44kwzUfVmrQOmz6VCIXv4uX9ESd4o3oY
-	 l9cO2UP+pN2pmIk4+CFZfjkV8A3EBJOcsEc8/rRbTsTadthJ4EDrHs09jKrNYqIlioCaP
-	 4x1emSd+vtEVVrEY9hFLjWxexzQHT/1OCqZOVgNIsNTUXXrtgPIuhnT8Kz5bLPPd5Mvvk
-	 6XDLRkgHDmNq+8vTnpuAu4TYs+CKI2bS+YCx+OlfUhY8en70Io108FVLGDR6cQOA1jw==
+	bh=BwMABzq17quVoIHYyKwYmdp349lPbATYRGNxi8kCTYY=;
+	b=kDyCxh54ZNnXLQNIlCPAsKNUdDbsR9J8jLlSDBiVSCh3I3B0oqXAwv1sr3IoqTH+rksK
+	 IINTOnVWEOJ5Wa9awmtfsPBYII8lRBqjxPLixX/3HnG+a1QIBCr8ubcERuuBiJyVB2IOf
+	 E4Z1m6cF7HVQXsYQOAOiCInE2h2Yaw+FRXXznpjhRE5bXyE4VEfxPg1vggBoY4N3S0/2q
+	 /G88lLpO1ZmLMiUONfYRtdXVdPxiOBc5qbGnEGgRBYtIUTLgt2HhnxKuDD5GKCl9/E6L9
+	 OIsolRMdBaIha38t/T4JfdfDXKQJ0MoaUiXJ3/uozcTir0Q1VspmiJDGWATTxVFuopw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M2EUiwBR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dPYyX69e;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB7F60A4AD5;
-	Tue, 20 Oct 2026 03:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CC460A6F69;
+	Tue, 20 Oct 2026 03:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M2EUiwBR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7441F01574;
-	Tue, 20 Oct 2026 03:09:43 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dPYyX69e
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216911F000C5;
+	Tue, 20 Oct 2026 03:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792465784;
-	bh=IfL1YpjRMTUWS4zQrfAe51404IjkHHoLvglXoKL+x/A=;
+	s=k20260515; t=1792465788;
+	bh=BwMABzq17quVoIHYyKwYmdp349lPbATYRGNxi8kCTYY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=M2EUiwBRscpOoENuomzzB19HqYfatThUt1hxmg1aPERjR/AyN401mo0ENNboIGSeF
-	 BllqZ9bkGjPtTvEb6ZmVNXxc90PlqgllWl5js+Ui14lVfnsYR90vfkPL71n28r1MGa
-	 CLTdFpkhmjdWi2m6li72jRiBH50GmUzevV0vMy0ZwpXZHIVIc/34qv48FljjnEu59n
-	 AMBdvR80tFtZjmlA0zfrrm1XI+CxdAJ8DjlGwdkey5bnqv8qLKqSnLy2pnaQDmF3sd
-	 ikzOs7iQ5E1C/CyS2Tm7Se20m6DsKPiwYR8vEb7sP0XaArYIFRSdsdHVssz41cTNYR
-	 0TA9xef0ugZ7g==
-Subject:
- Re: [PATCH net-next v14 05/12] dpll: sit9531x: register DPLL devices and pins
+	b=dPYyX69eo4wU0/dBW9jZ15xf2ZIpNIZtrDb8AZg/FnVRKI2n+4mqsBL+n17AXoen6
+	 5adRlZYqi+iYdB0fU/qEoKvSMqJL09an/ua1yUNN/RT/P4nqzGOmqeXuiwcb7DMoU5
+	 rmCk7M65Qup8RmGokk4KAQPpXa5v9oR7Wtm/UcRIMfUxQ7Ur2N+JSW2UhF/D3r4vrr
+	 4e3RchktRf3YXhsStH8o87alGJAMT3025sXlfLElof2lnAy5rPDUFSaHcvSTUWXD4A
+	 Rvfh9dK5+ZzCDA11XvkzHF/KsEPBYs6lssJfRf6sSolzGaOF5t1R+SRyMeIERY88T8
+	 7PQtgbiQbDd8w==
+Subject: Re: [PATCH net-next v14 07/12] dpll: sit9531x: add support to get and
+ set priority on input pins
 From: netdev-bot+sashiko@kernel.org
 To: arouhi@sitime.com
 Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
@@ -50,10 +50,10 @@ Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  prabhakar.mahadev-lad.rj@bp.renesas.com, cjubran@nvidia.com,
  Oleg.Zadorozhnyi@devoxsoftware.com, devicetree@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 20 Oct 2026 03:09:43 +0000
-Message-ID: <179246578341.3135.4793320596114957014@kernel.org>
-In-Reply-To: <20261016005823.13690-6-arouhi@sitime.com>
-References: <20261016005823.13690-6-arouhi@sitime.com>
+Date: Tue, 20 Oct 2026 03:09:46 +0000
+Message-ID: <179246578667.3135.9023338680952688439@kernel.org>
+In-Reply-To: <20261016005823.13690-8-arouhi@sitime.com>
+References: <20261016005823.13690-8-arouhi@sitime.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,10 +67,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,241 +78,231 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] sit9531x_dpll_mode_get() always returns DPLL_MODE_AUTOMATIC,
-  and sit9531x_dpll_supported_modes_get() advertises only AUTOMATIC.
-- [Medium] When the device stops answering on I2C (unpowered, held in
-  reset, bus fault, adapter error), the 500 ms poll floods the kernel…
-- [Low] Some documentation in this commit describes code that is not
-  here.
-- [Low] sit9531x_derive_clock_id() builds the uAPI-visible DPLL clock_id
-  as SIT9531X_OUI (0x0090C2FFFE) << 24 | (i2c bus & 0xffff) << 8 | addr,…
+- [Medium] A priority that the device has latched can be rolled back in
+  the driver's records and reported to userspace as refused.
+- [Medium] A priority change confined to standby inputs can move the PLL
+  off a healthy fallback reference.
+- [Low] The default priority for a source a PLL has never listed is
+  SIT9531X_PRIO_MAX_SLOTS - 1 = 10.
 
 --
 
-dpll: sit9531x: register DPLL devices and pins
+dpll: sit9531x: add support to get and set priority on input pins
 
-This patch registers each of the four on-chip PLLs as a DPLL device, and
-the crystal as a fixed pin on each. It adds a kthread worker that polls
-chip state twice a second into a per-input and per-PLL cache, and an
-optional INTRB interrupt that kicks the poll. The clock_id is built from
-the SiTime OUI, the I2C bus number and the address.
+This patch adds prio_get and prio_set callbacks for the sit9531x input
+pins. Both work on a per-PLL configured priority, and the Page 1 table is
+rebuilt in priority order when a listed input's priority changes. The
+poll now also watches priority and operational state, and the baseline
+for that comparison is taken when each pin is registered.
 
 > diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> index 20ccf024077bc..78a7a1def2137 100644
+> index 1aad598930d72..f3dbe949f219b 100644
 > --- a/drivers/dpll/sit9531x/core.c
 > +++ b/drivers/dpll/sit9531x/core.c
-
-[ ... ]
-
-> @@ -193,109 +213,1690 @@ int sit9531x_update_pll_u8(struct sit9531x_dev *sitdev, u8 pll_idx,
->  	return rc;
+> @@ -671,6 +671,44 @@ bool sit9531x_input_prio_present(struct sit9531x_dev *sitdev, u8 pll_idx,
+>  	return !!(sitdev->chan[pll_idx].prio_mask & BIT(input_idx));
 >  }
 >  
-> -static int sit9531x_read_variant_id(struct sit9531x_dev *sitdev, u8 *id)
 > +/*
-> + * sit9531x_input_get_regs - get force mask and state register addresses
-> + * @index:	logical input index
-> + * @force_reg:	output force mask register address
-> + * @state_reg:	output state register address
-
-[Severity: Low]
-These say "output", but the helper returns the Page 0x02 input receiver
-registers (SIT9531X_REG_IN_*_FORCE / SIT9531X_REG_IN_*_STATE). Should
-they say "input"?
-
-There is also a repeated sentence in the kernel-doc of
-sit9531x_dpll_pins_register():
-
-  * and registers each one.  Input pins come first, then output pins,
-  * with input pins first, then output pins.
-
-Both of these are still there at the end of the series.
-
-Some other text in this patch describes code that is not in this
-commit. The commit message says:
-
-  Output state is not polled: it changes only through a request, and
-  the getter reads the device again when one could not be confirmed.
-
-This patch registers no output pins and has no output state getter or
-set path. That getter (sit9531x_output_state_refresh()) only shows up
-in the later "dpll: sit9531x: implement output pin state on a DPLL"
-commit. Could this sentence move to that commit?
-
-These forward references are also resolved later in the series:
-
-- the Kconfig help text ("exposes input/output clocks as DPLL pins,
-  providing runtime configuration via Generic Netlink")
-- the "five pin ops tables below" comment in dpll.c, although this
-  commit defines three
-- the comment in sit9531x_ref_state_fetch() that mentions
-  sit9531x_input_enable()
-- the sit9531x_dpll_register() kernel-doc claiming that all input and
-  output pins are registered
-
+> + * sit9531x_input_prio_get - read an input's priority for a PLL
+> + * @input_idx:	input source in hardware encoding (see
+> + *		sit9531x_input_hw_src())
+> + * @prio:	output priority (lower is preferred)
 > + *
-> + * Selects the correct Page 0x02 register pair based on the pair's
-> + * signal mode and the lane (P/N) the index refers to.
-> + */
+> + * Reports the priority configured for the source on this PLL, which is
+> + * kept whether or not the source is currently in the table: state and
+> + * priority are separate attributes, so disconnecting an input and
+> + * connecting it again must not change the priority it reports.  The
+> + * value is seeded from the hardware table, and re-seeded whenever the
+> + * read-back shows the table was rewritten by something other than this
+> + * driver.  A source that was never listed reports the lowest slot.
 
 [ ... ]
 
-> +static void sit9531x_dev_ref_states_update(struct sit9531x_dev *sitdev)
-> +{
-> +	int i, rc;
-> +
-> +	for (i = 0; i < sitdev->info->num_inputs; i++) {
-> +		rc = sit9531x_ref_state_fetch(sitdev, i);
-> +		if (rc)
-> +			dev_warn(sitdev->dev,
-> +				 "Failed to get REF%u status: %d\n", i, rc);
-> +	}
-> +}
-> +
-> +static void sit9531x_dev_chan_states_update(struct sit9531x_dev *sitdev)
-> +{
-> +	int i, rc;
-> +
-> +	for (i = 0; i < SIT9531X_NUM_PLLS; i++) {
-> +		rc = sit9531x_chan_state_fetch(sitdev, i);
-> +		if (rc)
-> +			dev_warn(sitdev->dev,
-> +				 "Failed to get PLL%c state: %d\n",
-> +				 'A' + i, rc);
-> +	}
-> +}
-
-[ ... ]
-
-> +static void sit9531x_dev_periodic_work(struct kthread_work *work)
-> +{
-
-[ ... ]
-
-> +	mutex_lock(&sitdev->multiop_lock);
-> +	sit9531x_dev_ref_states_update(sitdev);
-> +	sit9531x_dev_chan_states_update(sitdev);
-> +	mutex_unlock(&sitdev->multiop_lock);
-
-[ ... ]
-
-> +	mutex_lock(&sitdev->multiop_lock);
-> +	rc = sit9531x_clear_notifications(sitdev);
-> +	mutex_unlock(&sitdev->multiop_lock);
-> +	if (rc)
-> +		dev_warn_ratelimited(sitdev->dev,
-> +				     "Failed to clear notifications: %d\n",
-> +				     rc);
-> +
-> +	/* Run twice a second */
-> +	kthread_queue_delayed_work(sitdev->kworker, &sitdev->work,
-> +				   msecs_to_jiffies(SIT9531X_STATUS_POLL_MS));
-> +}
-
-[Severity: Medium]
-What happens to the kernel log if the part stops answering on I2C, for
-example when it is unpowered, held in reset, or the bus has failed?
-
-On every tick, each failed input fetch logs the unconditional dev_err
-from sit9531x_read_u8() and then the dev_warn above. The 4 PLLs do the
-same through sit9531x_dev_chan_states_update().
-sit9531x_clear_notifications() adds another dev_err from
-sit9531x_write_u8(). Only its follow-up warning is ratelimited.
-
-That is about 25 lines per tick, roughly 50 lines a second. The work
-requeues itself unconditionally, with no backoff or failure count, so
-it never stops. The IRQ path gives up after SIT9531X_IRQ_ACK_TRIES.
-Could the poll use ratelimited messages, or back off after repeated
-failures?
-
-The same pattern is still there at the end of the series, which adds
-more reads per tick.
-
-[ ... ]
-
-> +static u64 sit9531x_derive_clock_id(struct sit9531x_dev *sitdev)
-> +{
-> +	u64 clkid;
-> +	int adap;
-> +
-> +	adap = i2c_adapter_id(sitdev->client->adapter);
-> +
-> +	/*
-> +	 * The OUI with its EUI-64 filler takes the top 40 bits.  Bus numbers
-> +	 * are not bounded by the number of adapters -- a DT alias or a mux
-> +	 * child can number a bus 256 or above on a board with a handful of
-> +	 * them -- so the bus gets 16 bits.  The variant does not need a
-> +	 * field: one address on one bus holds one part.
-> +	 */
-> +	clkid  = SIT9531X_OUI << 24;
-> +	clkid |= (u64)(adap & 0xffff) << 8;
-> +	clkid |= (u64)sitdev->client->addr;
-> +
-> +	return clkid;
-> +}
-
-[Severity: Low]
-Is this identifier really an EUI-64? core.h documents the field as:
-
-  * @clock_id:		IEEE 1588 EUI-64 clock identifier
-
-But every board that puts the part on the same bus number and address
-gets the same value under the SiTime OUI.
-
-The value also depends on i2c_adapter_id(). That is allocated
-dynamically unless DT aliases fix the bus numbers. On DT without
-aliases, or on ACPI through PRP0001, can the clock_id change between
-boots when adapters probe in a different order? Userspace that keys
-its configuration on clock-id would then lose the device.
-
-For comparison, zl3073x uses get_random_u64() and lets the user
-override the clock_id through a devlink parameter, without claiming
-an EUI-64.
-
-[ ... ]
-
-> diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
-> new file mode 100644
-> index 0000000000000..e88fa4e29bdf3
-> --- /dev/null
-> +++ b/drivers/dpll/sit9531x/dpll.c
-> @@ -0,0 +1,411 @@
-
-[ ... ]
-
-> + * Advertising MANUAL and then refusing the one request MANUAL exists for
-> + * is the worse of the two incomplete answers, and after merge it would be
-> + * ABI.  A profile that sets manual select anyway is reported at probe,
-> + * since the mode this driver reports would then be wrong.
-> + */
-> +static int
-> +sit9531x_dpll_mode_get(const struct dpll_device *dpll, void *dpll_priv,
-> +		       enum dpll_mode *mode, struct netlink_ext_ack *extack)
-> +{
-> +	*mode = DPLL_MODE_AUTOMATIC;
+> +	chan = &sitdev->chan[pll_idx];
+> +	if (chan->cfg_known & BIT(input_idx))
+> +		*prio = chan->cfg_prio[input_idx];
+> +	else
+> +		*prio = SIT9531X_PRIO_MAX_SLOTS - 1;
 > +
 > +	return 0;
 > +}
 
+[Severity: Low]
+Is "the lowest slot" still accurate now that priorities from 0 to 255 are
+accepted?
+
+The default for a source the PLL has never listed is
+SIT9531X_PRIO_MAX_SLOTS - 1, which is 10. sit9531x_prio_cfg_seed() seeds
+it the same way:
+
+	chan->cfg_prio[src] = SIT9531X_PRIO_MAX_SLOTS - 1;
+	chan->cfg_known |= BIT(src);
+
+The commit message says the same thing:
+
+  "An input the PLL has never listed reports the lowest slot, the
+  priority it would be connected at."
+
+However, sit9531x_dpll_input_pin_prio_set() accepts values up to U8_MAX:
+
+	if (prio > U8_MAX) {
+		NL_SET_ERR_MSG(extack, "Priority out of range (0-255)");
+
+sit9531x_prio_table_build() sorts members by cfg_prio and uses
+prio_last only to break ties:
+
+	kc = (chan->cfg_known & BIT(cur)) ?
+	     chan->cfg_prio[cur] : U8_MAX;
+
+Here is an example. IN0 is listed and is set to 50. IN1 has never been
+listed and keeps the default of 10. Connecting IN1 then goes through
+sit9531x_input_prio_add()->sit9531x_prio_table_apply()->
+sit9531x_prio_table_build(), which puts IN1 in slot 0, ahead of IN0.
+sit9531x_prio_activesel_pick() may then move the PLL to it.
+
+Should the default follow the real lowest priority (U8_MAX, for example),
+or should the comments and commit message stop promising "lowest"?
+
+[ ... ]
+
+> diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
+> index 4c7cae4ce93ec..0400444d91a55 100644
+> --- a/drivers/dpll/sit9531x/dpll.c
+> +++ b/drivers/dpll/sit9531x/dpll.c
+
+[ ... ]
+
+> +static int
+> +sit9531x_dpll_input_pin_prio_set(const struct dpll_pin *pin, void *pin_priv,
+> +				 const struct dpll_device *dpll,
+> +				 void *dpll_priv, u32 prio,
+> +				 struct netlink_ext_ack *extack)
+> +{
+
+[ ... ]
+
+> +	mutex_lock(&sitdev->multiop_lock);
+> +	rc = sit9531x_input_prio_set(sitdev, sitdpll->id,
+> +				     sit9531x_input_hw_src(dpin->id),
+> +				     (u8)prio);
+
 [Severity: Medium]
-Should this report AUTOMATIC for a PLL whose profile sets
-PLL_CONFIG1F bit 6 (manual active select)?
+Can a priority change that only touches standby inputs move the PLL off
+a healthy fallback reference?
 
-In that configuration the PLL follows its active-selection register,
-the input-select pins, or the GPIO_INPUT_FUNC_CTRL5..8 code. It does
-not arbitrate by priority. sit9531x_manual_sel_report() detects this
-at probe but only logs it. The comment above agrees that the reported
-mode would then be wrong.
+sit9531x_prio_table_commit() takes the current source from the
+CLK_ACTIVESEL nibble it reads back, not from the reference actually
+routed to the PLL:
 
-The netlink mode attribute is uAPI. Once the priority patch adds
-prio_set, a controller that sees AUTOMATIC would tune priorities the
-hardware ignores.
+		u8 sel = sit9531x_prio_slot_get(val, slot + 1);
+		...
+		sel = sit9531x_prio_activesel_pick(sitdev, chan->prio_srcs,
+						   srcs, sel);
 
-Would it work to report MANUAL as both the current and the only
-supported mode for such a PLL? That keeps the reported value correct
-without implementing mode switching.
+The driver's comments say that when the selected source A loses its
+signal, the device fails over to B on its own and leaves the selection
+naming A. Suppose A then recovers while the PLL is still on B.
 
-This code is the same at the end of the series.
+Now a prio_set that only reorders inputs below A and B rewrites the
+table. In sit9531x_prio_activesel_pick(), A is the top live source in
+both the old and the new table, so the function falls through to:
+
+	if (sit9531x_prio_src_usable(cur) &&
+	    sit9531x_prio_src_live(sitdev, cur))
+		for (i = 0; i < SIT9531X_PRIO_MAX_SLOTS; i++)
+			if (srcs[i] == cur)
+				return cur;
+
+It returns A, and latching that selection moves the PLL from B to A.
+
+Doesn't that contradict "a change further down the table leaves the PLL
+where it is" in the commit message? The comment above the pick also
+says "a change further down the table must not pull a PLL off a healthy
+reference".
+
+The selection logic came with the previous patch, for state changes.
+This patch adds prio_set as a new way to reach it. When the top is
+unchanged, would keeping the routed reference (chan->routed_ref) rather
+than the stale selection nibble avoid the switch?
+
+> +	if (!rc)
+> +		dpin->prio = prio;
+> +	mutex_unlock(&sitdev->multiop_lock);
+> +
+> +	if (rc) {
+> +		NL_SET_ERR_MSG(extack, "Failed to set input priority");
+> +		return rc;
+> +	}
+
+[Severity: Medium]
+Can the driver's record of this priority end up disagreeing with what
+the device latched?
+
+In sit9531x_prio_table_commit(), the slot writes and the latch can
+succeed. The new table is then recorded as the read-back baseline:
+
+	if (!rc) {
+		sit9531x_prio_mask_build(sitdev, pll_idx, srcs);
+		memcpy(chan->seen_srcs, srcs, sizeof(chan->seen_srcs));
+		chan->seen_valid = true;
+	}
+
+The holdover release runs after that. If all SIT9531X_HO_CLEAR_TRIES
+attempts fail:
+
+	if (ho_rc) {
+		...
+		if (!rc)
+			rc = ho_rc;
+	}
+	chan->ho_release_pending = !!ho_rc;
+
+sit9531x_ho_release_retry() clears HO_FORCE later from the poll, so the
+PLL ends up running the new order.
+
+Meanwhile sit9531x_input_prio_set() sees rc != 0 and reverts:
+
+	rc = sit9531x_prio_table_apply(sitdev, pll_idx, chan->prio_mask);
+	if (rc) {
+		chan->cfg_prio[input_idx] = old_prio;
+		chan->cfg_known = old_known;
+	}
+
+sit9531x_dpll_input_pin_prio_set() then returns the error and leaves
+dpin->prio as it was.
+
+sit9531x_chan_state_fetch() re-seeds only when the read-back differs
+from seen_srcs:
+
+	if (!chan->seen_valid ||
+	    memcmp(srcs, chan->seen_srcs, sizeof(chan->seen_srcs)))
+		sit9531x_prio_cfg_seed(sitdev, pll_idx, srcs);
+
+seen_srcs already holds the new table, so the poll never repairs this.
+The getter and the poll snapshot keep reporting the old priority while
+the device holds the new order, and no notification is sent.
+
+The next sit9531x_prio_table_apply() for some unrelated reason, such as a
+sibling's state change, builds from the reverted cfg_prio. That reorders
+the device back without anyone asking, and
+sit9531x_prio_activesel_pick() may move the PLL off its reference.
+
+A latch failure in sit9531x_prio_prg_commit(), or a rollback that fails
+part-way, looks like it ends in the same split. In both cases seen_srcs
+comes from the read-back table while cfg_prio has been reverted.
+
+The commit message says:
+
+  "A priority the table write refused is not kept: the configured
+  value goes back to what it was, so nothing reports a priority the
+  device never took."
+
+On this path, isn't the driver reporting the opposite of what the device
+holds? Could the rollback be based on what the read-back table actually
+encodes, rather than on the errno?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016005823.13690-1-arouhi%40sitime.com
