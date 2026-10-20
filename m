@@ -1,136 +1,161 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.7
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792455118;
-	b=fLCVLN+qKQhEC3mAVYDXC7lPGkWCDoHEDIiYOm1dtpKNBeSwix65aK7TwhhSiyO0uS3T
-	 R9qwRjyEXt/oYU2tCD9ppQjpfpgo6QMUVzIBcA3BfzLl6YaxvSn1GaPnC/Oe+4Hs8wmze
-	 xta4gNgXjOrpO+2FPMcHzDaEh6n3jCSC4SgkL1qn5W+ybfkHbQAuHeGEXRhaUbtK8WPWM
-	 11x4L2y3pgbMB69jnisTIVqkttJl488U2rwHInm3rt4L+hqYS4meB6h4OCwCvGK/NOC1g
-	 w6b/p2xHRQYJ4+64UQSEDerlfYJExXwDoJIASE5gCcKWcwI5zKYldReBDcGZ+D9Ov2A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792455118;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.153.120
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792455233;
+	b=S3EFi3lrQ/BXTTGUgjfQ+zcJw2/Q97g5YUrz1ve2ALxiIulMfoLZogacr1NKGagzWYLX
+	 zREACQStg5joUiUneKxVWfAGxKGGVjrn5r94svyx9jlugRshOvKxYV5YWbaTq3CU9K4F8
+	 D1aJf31acygFf+azuPZnWr98mr5kW7GbXWm1Y02dscOW2fG7LnDE9qww2Gq0j07LaJy6K
+	 IDkgFSAll2b4HhEcT8ytT610S7WLBKvD8TYBmXZuhei6tmZTnagTTI8MU513nJ8HGyfeq
+	 ys5u/ftXhWCxm4/TkLHaddx4eHqiaWdOU0hIiMC3K9qFQ67m92xQdzK2khpZGsV5k1g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792455233;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=JY0w5S7dGEM2q2L3J2dHIbSrxWaT81sFtZ/ll7XOdRQ=;
-	b=NntWQfzjhpK/W0SK/M/U5eCuBMQwciiE+GS5Z7IcIVuCpDzsWg0JIg2NKsDhq9bxl8qr
-	 by8iOhFb5GE23+vDNL9XT7o/X1uuGB6Rn3tRgTu6T5ZyIyl2dAOFYnmof+8OgT9vap5Vd
-	 Dg6baJDsBAT/h5zD1d4J1DjB0tUBeGnKv+Mrpo6On6VWPX/Cs5y5iq3Z4geU0HfnZbViQ
-	 3cf4Pgr6NL34E0VFPLSWYVQzlZ/T+J9lwcGAZdcboAWPD6Jw9UQ9i1KvnWhL4hnEnJK16
-	 baX6Sb9kWuYx87XXtTDiYl8wMUXLsSqHZ9GjD9pbNU1AdH9zLADL35FwtxhtYol0beA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xt4hLJkj;
-	arc=fail smtp.remote-ip=192.198.163.7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
+	 Content-Language:Content-Type:Content-Transfer-Encoding;
+	bh=j0vMuNMcmabeviRrTXlh4uvQQDshpjz9HEjXMbWkueM=;
+	b=VgmQnkycLPWugFnV243RiOsNOzS8L778uMWQqjWXETZD2lKL7QC0cHcB924em4EuTDys
+	 5Mjc0rZyW3RM8Jtkt/UhIBIcfon8ZXVbQb8WRDycDQp9ayuvsdHPehEh5gLNiBz00abup
+	 WvXu7Nrgof9mz8TbFM89TNAk0juCL8KWTV2chIAtSKLL8nbN0g/uPJpnq8kw7wcEpdWFb
+	 5sxKxQ1ZdB/u8xlhfkfykXzY5CPukLUMc5BztyL1jLuysktGlUdUGbcyogsLYI1nfYZtp
+	 Dt8Zt0L8HxaT0/DaWJ/1cPPx3709Eru+dCxOdyWhOXqIfYS7Qm8XSNi9cFmJgy5LYJg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=onsemi.com;
+	spf=pass smtp.mailfrom=onsemi.com;
+	arc=none smtp.remote-ip=170.10.153.120
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.153.120])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3188606A32E
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 00:11:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3188606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xt4hLJkj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792455117; x=1823991117;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=bzmQ8Bt29w1TCbEcMFsZHubv0948iQc32dVFqWbY8qI=;
-  b=Xt4hLJkj8uTcqZcicuj73iY4qg7sbFth2lL9XV0NW/nns04so3DXomtW
-   CYRG4kiCLEGmKL/8Ty9ZhbDwTFOECKv5wDaOg7jctO9MnBT3d1L9FJb/D
-   /Ft/3GBt0oBthC2nZ3+VLyUcDIvcskJQ/brQ5EsllzV0fgaA1y+wB3B5a
-   bRwymYkl8RyjtRLBjRYzMJjzmz99yM2My4XIzDEMy8RNBGMx2v+5lyh0R
-   44beDQiwQ6LTJExDWA5yMcVdH+O09r6NZ0nG64ZCIzOhUc/8ZvuLy0mD/
-   ZFlLvWbKXKRRZVX5pxUQd5/ngbn9xnVn3csZUARQpiPX0b02bmblwM1Lw
-   Q==;
-X-CSE-ConnectionGUID: NifKW48JTTK3433XaYeJ3A==
-X-CSE-MsgGUID: 1agarL5YQW+ecvfEopWT9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1054343"
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="1054343"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 17:11:57 -0700
-X-CSE-ConnectionGUID: /j9gapZaTM6YXnMmM+wdtw==
-X-CSE-MsgGUID: YHq4+PMjQCKYPw/utHepSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="4454404"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa013.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2026 17:11:56 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 17:11:55 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 19 Oct 2026 17:11:55 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.62) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 19 Oct 2026 17:11:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QrwE12Zv2zi8NV+YwZFL/qZGBNK6mBWaHzboJ9zZdAr3D4kl8nNcGiWcmp6SZ+xIWJmWD0xGgmgk5XLIwhU0UBYRLRP1nxkmRL3VOK5xh0psQXpLRb8GYGG41RR1ODu9ttpZof2obQKR8w5PeKQiGrtfyoaIAJaEdoZfJ+22hGKDlPGoeWxV2wwy0wQV+iCij64lxH6zkL3d1jmz7VF93kULJX5CBI7/6FpaI+D/tkraNnD2AYhsaZd1zLW/fA8nL4c2JYVnPS4dDi62ap/ibo4QOLs62ZQt9dXRp4KxQPYldGFnMszUtco+c9qoSKMCWZyFxQkNClzJvBMzxt5pGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JY0w5S7dGEM2q2L3J2dHIbSrxWaT81sFtZ/ll7XOdRQ=;
- b=TlKOWGsY+PSWA4cX5eC0LFlWEGf7xwJO6/mEg24pG3VPg2Oyh9/McoP5iqIy1j3a8qDTKKENSaN6uEzSuUJxn7s2F/46ynRPd8mD12tYIfL+d2zXO4sg2G/27s/GZLgFsz7LUZZK2pW6nC3Qpamx1UyvonfHbfJcmZvR7N4YgrvfBYZn+nNdl4nuFTstDXCmC0E04Xv6lfvp15q53yUguYB20z/HNLQWv77tQkrwcZfaDKdmub6cZ+c3OLFzMlFPb2LfQBlKR7PAW5aMjNN+BceKcrqAzOJKlt8Fe1f3Ye+w7gXFTgLRsQ6dbDo6GSqVBIky0cjym4SYFYd5JWHUZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7364.namprd11.prod.outlook.com (2603:10b6:930:87::14)
- by IA1PR11MB7343.namprd11.prod.outlook.com (2603:10b6:208:424::21) with
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EE7606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 00:13:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7EE7606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1792455218;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j0vMuNMcmabeviRrTXlh4uvQQDshpjz9HEjXMbWkueM=;
+	b=EpvBnvqj4IcWqUuBs9EaKRGN/ms10j2IkCBplaqzSUQDvNYs5Nz7g06wEnFhb9Y+7WbpKj
+	xJZjcbh5/h1iPzEwVGF8aEI9pt5BHJv34mNeYy27tcMRp/gJq/J3jK7qlrFZMaZ3508WyI
+	ULsQwb4P8PXUkEFEd7OoQ5aNdIx3p71XID+Xb42kqk9bDni4LykhRr+M5HPdmTMQHDu6fu
+	W6JuM5auCwFJXykBPLUQaa515rAHhed+LzT5wtW5T+QQQLpVw5tLbaMnGXQPw+UidbO205
+	3e2lsT7IWSVS3YSYTrRHpreEOigVCPddKYTKD8SHfFBZtEKTyL4Cy7ZKUutNgw==
+Received: from SN4PR0501CU005.outbound.protection.outlook.com
+ (mail-southcentralusazon11011022.outbound.protection.outlook.com
+ [40.93.194.22]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ usb-mta-56-pOHAt71YOiihmOMOfLg9_g-1; Tue, 20 Oct 2026 00:13:31 +0000
+X-MC-Unique: pOHAt71YOiihmOMOfLg9_g-1
+X-Mimecast-MFC-AGG-ID: pOHAt71YOiihmOMOfLg9_g_1792455205
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com (2603:10b6:610:110::22)
+ by SA1PR02MB11579.namprd02.prod.outlook.com (2603:10b6:806:4da::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
- 2026 00:11:47 +0000
-Received: from CY8PR11MB7364.namprd11.prod.outlook.com
- ([fe80::1b92:4856:eb86:f7e3]) by CY8PR11MB7364.namprd11.prod.outlook.com
- ([fe80::1b92:4856:eb86:f7e3%5]) with mapi id 15.21.0522.017; Tue, 20 Oct 2026
- 00:11:47 +0000
-Message-ID: <8902e581-02b1-4cbd-8a52-ad6f938230c4@intel.com>
-Date: Mon, 19 Oct 2026 17:11:45 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 12/14] ice: keep Tx timestamp slots tracked until
- completion or timeout
-To: <netdev-bot+sashiko@kernel.org>, <anthony.l.nguyen@intel.com>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
-	<poros@redhat.com>, <maciej.machnikowski@intel.com>,
-	<przemyslaw.korba@intel.com>, <grzegorz.nitka@intel.com>,
-	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
-	<richardcochran@gmail.com>, <horms@kernel.org>
-References: <20261015191102.1174111-13-anthony.l.nguyen@intel.com>
- <179244085652.3135.218744406584842048@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
-Content-Language: en-US
-In-Reply-To: <179244085652.3135.218744406584842048@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR03CA0100.namprd03.prod.outlook.com
- (2603:10b6:303:b7::15) To CY8PR11MB7364.namprd11.prod.outlook.com
- (2603:10b6:930:87::14)
+ 2026 00:13:23 +0000
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e]) by CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e%6]) with mapi id 15.21.0522.017; Tue, 20 Oct 2026
+ 00:13:23 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: Jakub Kicinski <kuba@kernel.org>, Selvamani Rajagopal via B4 Relay
+	<devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Parthiban Veerasooran
+	<parthiban.veerasooran@microchip.com>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Richard Cochran
+	<richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+	<hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Eric Dumazet
+	<edumazet@kernel.org>, Piergiorgio Beruto <piergiorgio.beruto@gmail.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Jerry Ray
+	<jerry.ray@microchip.com>, Ciprian Regus <ciprian.regus@analog.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: RE: [PATCH net-next v9 00/11] Support for onsemi's S2500 10Base-T1S
+ MAC-PHY
+Thread-Topic: [PATCH net-next v9 00/11] Support for onsemi's S2500 10Base-T1S
+ MAC-PHY
+Thread-Index: AQHdWBFkAt79C072hEav0nhQ93qGbrcFl1qAgAAHxfA=
+Date: Tue, 20 Oct 2026 00:13:23 +0000
+Message-ID: <CH0PR02MB7867C0602A44EF8D4588057183672@CH0PR02MB7867.namprd02.prod.outlook.com>
+References: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
+ <20261019164413.5d4c6eed@kernel.org>
+In-Reply-To: <20261019164413.5d4c6eed@kernel.org>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR02MB7867:EE_|SA1PR02MB11579:EE_
+x-ms-office365-filtering-correlation-id: 781afbae-ded2-4bb3-bca4-08df2e3ef4a2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|10067099003|56012099006|18096099006|20046099003|6133799003|22082099003|18002099003|4143699003|11063799006|38070700021
+x-microsoft-antispam-message-info: BGLAgfJDTAG9m0rI+hAT5kGsVvNewRJLjTtBxDknSyZRVNV7HOkubhT5KvjEOiM4UYvGzVdS2KPEeTFrRfXaIs/CPi7wNgs4CRcvdnkpdkqaL0i88r/6ncicLIxxbQgChkNaDMKmjVA3wgDzjbDRbOFzTQfUWyi6oJWKCyqTWyDlX0B3OIJ9bVZ0Od3zzJvTnMf6xov2njQGUnD6EnMyPaXFaj2XB9wPLWfcMo+emamRyLBV+mLnaWf5FsYIKYzySobD9eA9OKw0UnWOD01s/Xjl9BDyCwnT/KSFBfHNLPnW/t0EDBviSuEecB62DW9S9BgPwSL858RaiTiQ7qxmAlRKcSaKseIUSbwDXoJlF5tXGZuFtprgWHVlUdgBQjC7LQMlZUFzYPSXRwgWHkcuUNROaW0nAQX4CAquQ5jk9sErwZebOpWDfis5T66xfPjTdSZfukz+mTqyHS+41nzLCLG6fGH6q5yNdcJgCojr8aFIOLWxuIPF4kdNuEqpdiGnpdPyLlI4hkWf05n05yCwQ0G02/5VZajCWDX8RiJOdlb+0SlKz2XZfFngnbWO2BXRstCwML6VE9YVDn+W+9ywUVwIq7iF7lIuHTWEPuHC8UdpRuz1d7NtAEQwJb7YgffYkei/9xExl7xIhFbE66J53cJ7teqa3jtyDdv0wIpep7dmltz5MYCt7pJBVOjJajhZa8AKNhmZAXIoxjXzAvlKnsuUpnSRXaq7BWPu0ixeZ2g=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR02MB7867.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(18096099006)(20046099003)(6133799003)(22082099003)(18002099003)(4143699003)(11063799006)(38070700021);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OXkwa2pZcXh1bFlWeEpucm0xczZIaUdRNXk3UjU4WjNiUXRGTTQrd01PeGVh?=
+ =?utf-8?B?Z0ZxdzhRQmltMlJSbE0vZmN2YmxHcjM2L0RFUUh1UHE5bngzY284MEc2bERS?=
+ =?utf-8?B?SEVBUTR1enJCbm9jK0xRSXk0UDk2MmljZk5RcUxGczlkNjF0bFNwSml4WC95?=
+ =?utf-8?B?VXhHMjk5RGdHekU0dHJIME91NkZudmJCMkdmYmpTY3NZOVUyZzY1cUZUYXZM?=
+ =?utf-8?B?azV3SzVEalB3T1VLTEQ2UmdhdXZCaThNa0oyU3VYeXhZN1Z2WjdRekJsS1JY?=
+ =?utf-8?B?MGdpa0xnMXNtSUlJYkw2U1BaNkVRb0d2WG1JSllMcUVkc2NjVGExTmdkblpC?=
+ =?utf-8?B?WXgrc0F1bGlRbVJBd2NiZmRzUEg1dytwc2YrblNZdGRqb090RmVvWE9hYWlF?=
+ =?utf-8?B?dHBBbkl3NlFjSzN6Nmtwc2FTemNuYll6eEJpY0dPeldkUll2UzE0ZDZIU1cw?=
+ =?utf-8?B?WTlWVlBPbzdyMkFFQTFhZys2bytFdVovamQ1ck9VT3NTb0JWYUZRa2dBempi?=
+ =?utf-8?B?VjUzcVpaV1NKaGdTblZwNFBhVUZqVUlnaWx0MWh0aFc4T0RTcDVXN0xEQXUv?=
+ =?utf-8?B?dHRhTlVLR3ZvTGNQZnRkcWVQUVlZWXNkSWVTaTdLVmp0U3MxQUxrRXdBTWEw?=
+ =?utf-8?B?VmRlSDFTUHcvUkhlMXVLcXF0dnlZdGN2aytUS2xxV3hMMHd4azlDUGd1R044?=
+ =?utf-8?B?RHY1RlI5M1hVazZNMlFxV0M2QkZLUC9SYk5BZVVldDNMaW1hc01hQ04zWUow?=
+ =?utf-8?B?OG1jZU1Qc0xkM29NZ1BDOHlxdk4yUzdGVTNkdXozOWhUWWJpQXdmVjVhLzlX?=
+ =?utf-8?B?TUxFaEhWVlExR3pIdWVyZjRtbXNRMWxhaWgybjR0OVJsUDNtdzNqdmRkWlhv?=
+ =?utf-8?B?Tkg5S1dFUjFIRVl0MXp5VCtQNjZPdkoyZGNYbElsSkJWNDQvN1k2bkorY1Vt?=
+ =?utf-8?B?dzdjNWdTSXpRR25RaUJxWEpkSGxNS1lpcThIYzcwanZiOW5CUTdNUEdTTVFL?=
+ =?utf-8?B?UFlxUXpmLzVkd0ZIdjFITk43SG4yVG44YzljdStld2xETVU3dTdvbWk3cFBn?=
+ =?utf-8?B?MVEwU3UxM0hLSjl0bUFWUTQ4ckJKOVV3STZNekNxcTVydlhXVWZ1c1ZXdGpq?=
+ =?utf-8?B?Ry9GM2RhTjlUWlgzdU9jaDlqSFNXbVRWbkxiUjRZWjlnMjE2VWZkVHNhSnYv?=
+ =?utf-8?B?WjNrenlXNk83MWRlRk5aa1JDQVNMUzhqcjVQSFVSaXRVL1BrYU9CZkhBdVVv?=
+ =?utf-8?B?ckk1UmIrdWdmbE5PM2FUc09nSmVTRzBlUHlzZ1ZSL0xqTS85LzhoN1h1bTRD?=
+ =?utf-8?B?N3l0UXIxY2dVL0RLUHgwSnhtdUg2YVJMSzJySFY4dnc5emJxanp5T3NQQXc5?=
+ =?utf-8?B?UWNiOUxHa3JyUDhlMk4yaTJSOWYyQk5ER25YWEVqTXRZemRNYUZrdnpJWUFF?=
+ =?utf-8?B?cEZ5TnFHVlVNSXhUa3NEZEJXRWVEbWt0TFhhdjd0bU5EWHhVelF1QW44L0lj?=
+ =?utf-8?B?Ni9HSk9qRy8xRzMydG5DUUJpRTBpT3FLY2h5OFNIRVJ6eFpRV3c0VlNFNFps?=
+ =?utf-8?B?S1daV0FGYkEwTUlsMEE4ang0YThnbVY5eFd0a21kTHNZUW1FSG1GRSt6dFZP?=
+ =?utf-8?B?ZW1OejVOTzZaaXVmUU1oeENNTDNxZDVmYzV1bzl2N0hjL0JuRHRWM1JtTUNp?=
+ =?utf-8?B?VGhseUFUNFM0SFpYMEJlanUwMnYrSHl3YlN6OWJFZFArMFdCZVRwVXBhT3JU?=
+ =?utf-8?B?cDVpNGRnbnFBMzRjRUQySjc5ZEZvTUpJLzBEYytRM09wMjBPLzFEU2Q4dWFG?=
+ =?utf-8?B?RVZaNmZHWXNRZ1o1enZvZWEvVzUrL1N2N2JlclNRYi81MzA4K0x3OTloMEpI?=
+ =?utf-8?B?T2JLSWZvQ3pUMGNMLzlWZUxHb0t5bmxRZ1RURm1wK1BUcDlnZkx2ZzQvR2hl?=
+ =?utf-8?B?ejRsVGE0cEtqSDM2OXlXU2RnaURtMW00SHRaVWlZclNLT1N3NnhOVkhQbWFw?=
+ =?utf-8?B?MmhXRVNLY1pvbGhWUnc4azd4WGdBRHRhMU1GaURndVpPTGFvd2NHZjAwTUtW?=
+ =?utf-8?B?bXRwM04zNFRLZjdLSklucm5heGQ3OXlzemNuYmlQLzdWb1ZvTUQ3YURVeUIx?=
+ =?utf-8?B?YlJRajFQUDgwU21pcGNrWitrN0RrV0k3cDJ1U2NWb3dtblVrQmZqdHhzTzYr?=
+ =?utf-8?B?SGlKam1yMmlQYXRVdXdzK3BOeXdCRnp6THNtUlVGNDUxa1BMNm1CQ2J5eEtO?=
+ =?utf-8?B?YlFTQ2NERHprWGcyNUFROG1tcG5TYzNkQmlxQVc2OGRrZllWalR1Tm8yc3Qv?=
+ =?utf-8?B?dy9VUm1HZmd1bTJqbE9aY3lmcFJLK1hTRS80a2R2SVNJY1JPTUlEWWIrNWNY?=
+ =?utf-8?Q?kKi81D7kRhT6cHdk=3D?=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -140,306 +165,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7364:EE_|IA1PR11MB7343:EE_
-X-MS-Office365-Filtering-Correlation-Id: 449a470f-e71b-4637-d357-08df2e3ebb06
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|56012099006|4143699003|5023799004|11063799006|261009223027099003|10067099003|22082099003|18002099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info: ZBt9xROSjo5MQcyfyBCjiuNozH9+Xl6yA/gS+MW4N7mKy6TpWsvAp164Hq6gT9uXP5kSJ3Ex81Thgtog958znm4RdD6vjO8W32ufA6kQ7OsQGPSFYzVkE7vpXZrJl2cgmCitc8w/CnVK6HE10b+qzlCebQ98qAqEROq6UdXqK+aSpMLOH9CkjtYdnCOT2sVsenwRROva2buwkeIDNwVC4I0dBV8UlMhzFFoEzi4Cf4OWUUFZpYMUQcdRNSQR+RXW1lNB2L8sKqsuXL89yrNBwGEAkfwwKYRQYGUgQuexPhPfcOCv7DUbkfouwB6AS9EpZLUIzZzvgQmtn9/FXYC1/Bz9K9Hj3t3hfJ9HbnOeqgjeQk58R7X5WB6nWiV2lqt4aJd1ZLHfa1Lpn4Q7D79h2XCborMznDV2Klsx5JBjEi1pM3aBw/o7ARSpr5Z5BezTwqNNUKwAyyPlydTUVDknLOE07xHz1wBC9iUvCOSApCj7fUtJ/AN7o+ZE/3XtBtiMQvogsi86pkYUnW7mYYi61m182MvpuTU2qPjyZl9Vpi9mg4mGDfaWQTc4bWcHeQm2kSMx9ui6pnfeyzH/Ca3EN55lw7BUTE1Td9dOgKVBwJvNOcAXE4L5e1eBAGfNnx9V5DwEALDCWW04/yIxaVwcgvhtIQ5z8e6etJEWoFVjx9A=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7364.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(56012099006)(4143699003)(5023799004)(11063799006)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SHp3VmMvbXpyMEpzWGRSZ0xjanE3WWZjZHc2TFVmajY3bFlJcmwzZ2hERFc4?=
- =?utf-8?B?Nmo5Vm0xMys2ZURlVGVIYjV2ejZIQVN0emVqSU9xQS9VRk9GREJWUHFHS3pD?=
- =?utf-8?B?TUNKRExvY0xEaWQyZzczVEI5cEdRWjJSQUpaV1BBYUpIejZtMEdlOGs0VnQv?=
- =?utf-8?B?UjVUT2tDUTVQZFU0b2JWTHdIRllhWVpmSHdmM3AwNHdIQU9IM3BOQzloYVFM?=
- =?utf-8?B?anhtN2ttZW9QTU1aclhydlpBVjlMRk53YlIzdjdBdjhqbGVtc1I2WDdrVm5z?=
- =?utf-8?B?NnEwVUkzeElJL1d4WlpzZnovN1c4eVRLQW85eVBQSTBsbVVjOXNSRmY0QUpO?=
- =?utf-8?B?eWFTTG9pdmVJL3BMMmMvNUZyQmNQNmpYUFkrQnFKK0RMSEJvLzZhb1FBcjY4?=
- =?utf-8?B?M1BTZC9Gd1dqQ0lsYlpjanRSTW1PUFF3V1R2L0pDQ3ZzcnRwZnI1a1RQM2Ur?=
- =?utf-8?B?U3BTeGN0c1p3bkliUFVFdW5QR1MrcnpQTnZYZTR3Zzl5S3RwTHZENDNCSHk1?=
- =?utf-8?B?TnBIRWpHQjdMMldUNzZONGdDM0tseUgvc3RTemhHU3g0bHcvSVFRR3BHekJ1?=
- =?utf-8?B?SWViSWdoNjFQWXpsL1JlcGhJdHpmTURza2NXTTRNVWdOUCtHU3RaYmNqTzBV?=
- =?utf-8?B?TFJaM2lwR3AvcStzay8xTjNra0VwanlBREtsT25SdGorbnZ4VGZicHEvdko5?=
- =?utf-8?B?K3NvcXVhc2RnOU1kRnFVM1lDWmJuRDBKN1dhcXN4WU9NcUlNN25Sb2UySkZY?=
- =?utf-8?B?Rk4zUkQyb3lHOWlBVkF3M2JMU2VKU1ZOWUVIbkVjcFZFVkhHT3JDZ2tXZTU2?=
- =?utf-8?B?Mk92SEtLRU13QkR3OTJLMGRaaDhnUHZzTkFac0d0L0pXTzRLbTh1ck1qdjVp?=
- =?utf-8?B?VWtFeG1qSVNsb2dYSjVwWm5iaGRaZUVobFlqY0hUY1gzYU1GdmVrdXVhQUxi?=
- =?utf-8?B?Zk5ZRDV5UENncXJqaUl5bW9hcE9EeitRSm9Fakp5ZWRxdW1ybGZiYmc1WWlV?=
- =?utf-8?B?aDE2di9xS1Q5TEJGQVBHYTl5ak1vZGJYUUJjTjNXdElHT1BVV1RwUjV0QlN3?=
- =?utf-8?B?MmRyS2pMUWkwcGlLZURFTkVGZVRUb3pnYjZNa1VOeEFYSEF0d0IrdE5lc1o4?=
- =?utf-8?B?TTFYalVSZDQ3TDg2QkY3b21FT1RkbWNUUlE4aytscUlKMkN0TDlyWXBZQjlp?=
- =?utf-8?B?N2ZHNDNXVWVNN3lOdXRSd2tPUDZqVnZWM2V3c2dRSytmWGNMd25DVFNnT0lI?=
- =?utf-8?B?VFhVYWtxS0habXVTL2FMbXB5MTlXSXZQQVRkWmQzcm1GeFFJR01DR3hjYktZ?=
- =?utf-8?B?VDJBZkhRS1UvMHdsLzJ4eTNLMTc0NTVyNUpqc3BnN25tSDFOelFZRWF3Q0lL?=
- =?utf-8?B?MFU5dHYvaThoUjd0OGFxOXRnRXFmckpkaktnZ25wRGhkQ25FUEhJWHU0S1FK?=
- =?utf-8?B?eDlCbXBKNXhnU3JQblZMSnVXNXJMbVBIM3VLM05NMGtOQ2MzRmNWRERZQXlz?=
- =?utf-8?B?R3RxWFFYNkFXZndRNEhNaEUyczEzT2xNVUNWVmNLanFpLzhqTmJ2VUtWWU1E?=
- =?utf-8?B?M21laElrRVdNUm02MGluMUl1c25QY0hiVEw1K0Nxcm13MFhtUndjWU4yUUNp?=
- =?utf-8?B?M0xGN3RUc2pyR2RBc1BKN0M0ZERCNnZJWGRuNEdaRHpxS0R0dUJJQldVWU9v?=
- =?utf-8?B?WTh2cFAzT2gwVkRwY1pwR0xHV0dicjRya0cxVE1lcWU2WEFKYXNwNGtkK3Fi?=
- =?utf-8?B?Vmp2TkhMZTdYOUJVZGZMZ0lYb2ZjWXJ1NlVkUHFVcXNLV0hWWFZGbXdGdTFr?=
- =?utf-8?B?OHJPV0I1T0RaRXo2aU1KYkw5V2RwWUd3WFprZGNNSDA5NWU4TDZaai91dnpp?=
- =?utf-8?B?cGc5aEgzQXN0bkVRNzlIVWtjU2tmVWR4Vys4clQ5RFdOSXNEVXdHR2R6ZEEz?=
- =?utf-8?B?QVZyN0tEU3UxMmZ4Z0o5RkpKaGRHdnBNejlKWHBzVE05UE1FRUlDcHowWjA3?=
- =?utf-8?B?cUtObjk2UDlmL0o2dWVXUUF2bW1yd1lOanB1dU80eUFSRjFQN3B6clpqb3JT?=
- =?utf-8?B?Smp1dGQxRXp4TWl4UW9FcENsSHNHdVRoVmRnZEk4VnBjUktYUWxhcVBBQmVF?=
- =?utf-8?B?dm1aVThRNjRidEVpWDBLNlpvaTNxdGxpb014Mlc1c24vS3A0V2dGNDRib0U0?=
- =?utf-8?B?YlE0M1A5K1MwanBpTFY0TS9nallaQjRRbEc1Qjhka2k1a2NSdm1ZSmU5NU4z?=
- =?utf-8?B?cTZtTXFweGRMNjF6T2VyWnl4M2g4Q1VpbGY0TU95WGE1YllvdThBWHh1S3dx?=
- =?utf-8?B?ajVtM3NSKzRUbCtRR1lWTjkrZDQ2MU9TblVTUGhaQ0VBK2RhbXJKdz09?=
-X-Exchange-RoutingPolicyChecked: 2VAM9D1txtS33gHUhlYjjr8wOP6GTgNvfCcseWxfm9fsI3npi7O7qBa9uwCNTLUtTceL3OMvlr8+qgu6/77jEiGUrhbyECt9ntJzaf+G/8r0AaWQn/wpGMSnDG05SeOKSpjHQZ9IMlsVi8ZczUOww76TZi//0f4khyBFkXlmvM9JioF29GQt+MFhuQMwdV2QnQnHjsFCeiK9YNE5/DybrYjHoHd2ZSAnwKUDm0ZuoQopmQ65ATsGOU7Y2HEGsTfevFLDjVJZLPROzjU1+oq7q/ewrpDjnI+3WcvuENcbfRlrqKVQUDIaiJNgPHaNQm0KooTHp4dVDf/BKUl9zEyeug==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 449a470f-e71b-4637-d357-08df2e3ebb06
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7364.namprd11.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: VrhYNM2VbWJUV2ZO3Gxi5beIiCXQLfa7GfGj279IFi19v4RnHe3Kk2ABdK3r/PqbCDkuc+19tqvJVYNjtZwacVxRGWn5bj8hyxBc/sqrJLOk2S70aNUZnoCC0Nlq4fpfvR6EgQ5OST63WzlN5wm4oidg16vGKB22cPZvDf1IQ8NH69rR+ndZLmdLYdcgeSkQBrdkrqsLoXTUVjkMxfFIf/ITE7BOepW5bN863SW33RkabzgzTesxxKrQc5ywvKfn/1r2J57tyoZ2qQeuOp8Yc64ylsAucvrVNR0oEaNj5DRzqXH23E/E4cryLgMPiNMddEosVig6bOFzs2cFA6jPCA==
+X-OriginatorOrg: onsemi.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 00:11:47.3236
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB7867.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 781afbae-ded2-4bb3-bca4-08df2e3ef4a2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Oct 2026 00:13:23.6649
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wfrpjDQogq8OtlUE4KuOOD/Q0jHuidFJn/RrCR2oBdW16IG9tCqynWa7E0mtLOJ+bgAS+DBnLx/QQIUFTu6l+5V56v4MA0XiFWqXN12S2MU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7343
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: l7QCqRbcg3uLBqtPrQPLf8fBYzm8YXRG0D1b0s+JfDdxrHKoO9U+tk+lfboE7CGh+BFdu8pLonWJl43EP5/7x8/Y0EVgcrK2sdL2v/xOC2g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR02MB11579
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2HY-p1R4xEBn-6RC9RpFxoOnYZR24OJjN1SNTWTBmrc_1792455205
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On 10/19/2026 1:14 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 (1) · Medium: 2 (1) · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The commit message says this patch adds the tracker-init
->   check: "Since we're adding a new call to ice_ptp_mark_tx_tracker,…
-> - [Medium] ice_ptp_link_change() now calls
->   ice_ptp_mark_tx_tracker_stale() on every link-down, before the…
-> - [Low] The concern says the kernel-doc of
->   ice_ptp_mark_tx_tracker_stale() ('should be called when the PTP clock…
-> 
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but in the
->   ICE_PTP_READY branch ice_ptp_release() calls…
-> - [Medium] The concern: the 2 s timeout in ice_ptp_process_tx_tstamp()
->   releases a not-ready index without reading it.
-> 
-> --
-> 
-> ice: keep Tx timestamp slots tracked until completion or timeout
-> 
-> This commit stops dropping outstanding Tx timestamp requests when the
-> link goes down. Instead it marks them stale, rejects new requests while
-> the link is down, and frees a slot that is not ready only after the 2
-> second timeout. It also changes the pending-timestamp check used when
-> re-arming the IRQ and in ice_ptp_maybe_trigger_tx_interrupt().
-> 
->> Since we're adding a new call to ice_ptp_mark_tx_tracker, notice that the
->> function previously did not check the tracker initialization state. Fix
->> this by only accessing the bitmaps if the init field is set.
-> 
-> [Severity: Medium]
-> Is this paragraph accurate for this patch? The diff does not modify
-> ice_ptp_mark_tx_tracker_stale(). The if (tx->init) guard in it comes
-> from the earlier commit "ice: E825: stop clearing
-> PHY_REG_TX_OFFSET_READY".
-> 
-> The message also names the function ice_ptp_mark_tx_tracker instead of
-> ice_ptp_mark_tx_tracker_stale.
-> 
-> This patch has Fixes: fcc2cef37fed, so it is likely to be picked for
-> stable. A backport of this patch alone would add the new
-> ice_ptp_link_change() caller without the guard. Then a link-down after a
-> failed tracker allocation would call bitmap_or() on NULL in_use and
-> stale bitmaps.
-> 
-> Could the message say that the guard is a prerequisite from the other
-> commit, so the two get backported together?
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> index ca581490f3edb..57141e94c5708 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> 
-> [ ... ]
-> 
->> @@ -582,14 +584,11 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
->>  			return;
->>  	}
->>  
->> -	/* Drop packets if the link went down */
->> -	link_up = READ_ONCE(ptp_port->link_up);
->> -
->>  	for_each_set_bit(idx, tx->in_use, tx->len) {
->>  		struct skb_shared_hwtstamps shhwtstamps = {};
->>  		u8 phy_idx = idx + tx->offset;
->>  		u64 raw_tstamp = 0, tstamp;
->> -		bool drop_ts = !link_up;
->> +		bool drop_ts = false;
->>  		struct sk_buff *skb;
->>  
->>  		/* Paired with smp_mb__before_atomic() in ice_ptp_request_ts()
-> 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the 2 second timeout
-> later in ice_ptp_process_tx_tstamp() still releases an index that is not
-> ready, without reading it:
-> 
-> 		if (tx->has_ready_bitmap &&
-> 		    !(tstamp_ready & BIT_ULL(phy_idx))) {
-> 			if (drop_ts)
-> 				goto skip_ts_read;
-> 
-> Suppose the hardware holds a timestamp-requested frame for more than 2
-> seconds, for example during a long pause or PFC stall. Could the capture
-> then land in an index that a new request has reused, or leave a ready
-> bit with no in_use owner?
-> 
-
-We have to pick some cutoff. We believe that 2 seconds is a safe amount
-of time to wait before we assume the timestamp will never happen.
-
-> That seems to conflict with this statement in the commit message: "This
-> way an index is never reused while the hardware can still write it".
->
-
-I can try to rephrase the commit message, but ultimately we have to
-decide at what point we assume the hardware will never complete an
-index. There is no mechanism for the ring to tell that the index will
-never be completed. I could increase this timeout even longer but then
-we run the risk of many such stuck packets becoming locked for so long
-that we can't handle timestamps. We *know* there are cases where the
-index is never completed so we can't lock the index indefinitely either.
-
-
-> For the link-down case itself, the device counts frames dropped while
-> the link is down (GLPRT_TDOLD), so that case looks less likely to hit
-> this.
-> 
-> [ ... ]
-> 
->> @@ -1432,6 +1431,9 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
->>  
->>  	WRITE_ONCE(ptp_port->link_up, linkup);
->>  
->> +	if (!linkup)
->> +		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
->> +
->>  	if (pf->ptp.state != ICE_PTP_READY || pf->hw.reset_ongoing)
->>  		goto out_unlock;
->>  
-> 
-> [Severity: Medium]
-> Can this take an uninitialized spinlock on link down?
-> 
-> ice_ptp_mark_tx_tracker_stale() takes tx->lock before it checks
-> tx->init:
-> 
-> 	spin_lock_irqsave(&tx->lock, flags);
-> 	if (tx->init)
-> 		bitmap_or(tx->stale, tx->stale, tx->in_use, tx->len);
-> 	spin_unlock_irqrestore(&tx->lock, flags);
-> 
-> The only spin_lock_init() of tx->lock is in ice_ptp_alloc_tx_tracker().
-> That is reached only through ice_ptp_init() -> ice_ptp_init_port(), and
-> ice_init_features() calls ice_ptp_init() only when
-> ICE_FLAG_PTP_SUPPORTED is set and the driver is not in safe mode.
-> 
-> ice_link_event() calls ice_ptp_link_change() without checking
-> ICE_FLAG_PTP_SUPPORTED, and the new call comes before the ICE_PTP_READY
-> check. Consider a PF without 1588 support, a PF in safe mode, or a PF
-> where ice_ptp_init() failed before reaching ice_ptp_init_port(). Every
-> link-down there would do:
-> 
-> ice_link_event()
->   ice_ptp_link_change(pf, false)
->     ice_ptp_mark_tx_tracker_stale()
->       spin_lock_irqsave(&tx->lock, flags)
-> 
-> on a lock that was never initialized. With CONFIG_DEBUG_SPINLOCK this
-> gives "spinlock bad magic". With lockdep it gives "trying to register
-> non-static key" and lockdep turns itself off.
-> 
-> Also, ice_ptp_alloc_tx_tracker() sets tx->init = 1 before it calls
-> spin_lock_init(&tx->lock).
-> 
-> Should this new call depend on PTP having been initialized, for example
-> by moving it after the ICE_PTP_READY check?
-> 
-
-We can try adding a state check. Of course there are also complaints if
-we try to check tx->init outside of lock too :\
-
-> [Severity: Low]
-> This isn't a bug, but the kernel-doc for ice_ptp_mark_tx_tracker_stale()
-> still says:
-> 
->  * This should be called when the PTP clock is modified such as after a set
->  * time request.
-> 
-> Now that ice_ptp_link_change() also calls it on link down, should the
-> comment mention that use as well?
-> 
-
-Sure I can fix this.
-
-> [Severity: High]
-> This is a pre-existing issue, not one introduced by this patch.
-> 
-> ice_ptp_release() destroys the PTP kworker before it unregisters the
-> PHC:
-> 
-> 	if (pf->ptp.kworker) {
-> 		kthread_destroy_worker(pf->ptp.kworker);
-> 		pf->ptp.kworker = NULL;
-> 	}
-> 
-> 	if (!pf->ptp.clock)
-> 		return;
-> 
-> 	/* Disable periodic outputs */
-> 	ice_ptp_disable_all_perout(pf);
-> 
-> 	ptp_clock_unregister(pf->ptp.clock);
-> 
-> Neither ice_ptp_settime64() nor ice_ptp_adjtime() checks ptp.state, and
-> on success they call ice_ptp_reset_cached_phctime(). If
-> ice_ptp_update_cached_phctime() returns -EAGAIN because ICE_CFG_BUSY is
-> held, that function then does:
-> 
-> 		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work,
-> 					   msecs_to_jiffies(10));
-> 
-> ICE_CFG_BUSY can be held by a concurrent settime or adjtime on the same
-> clock, or by ethtool set_link_ksettings or set_ringparam.
-> 
-> Could a clock_settime() on /dev/ptpX that races with PF removal queue
-> delayed work on a worker that kthread_destroy_worker() is about to free?
-> Could it instead call kthread_queue_delayed_work() with a NULL kworker?
-> 
-> The ethtool paths can still run at this point, because ice_unload()
-> tears down PTP before it unregisters the netdev:
-> 
-> ice_unload()
->   ice_deinit_features()
->     ice_ptp_release()
->       kthread_destroy_worker()
->       ...
->       ptp_clock_unregister()
->   ...
->   ice_unregister_netdev()
-> 
-> Would unregistering the clock before destroying the worker close this
-> window?
-> 
-
-Yes, this is part of the entire issue that we register the PTP clock too
-early and we unregister it too late. That should be fixed but its a
-pre-existing issue that should be fixed in a follow up.
-
-> [ ... ]
-> 
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEpha3ViIEtpY2luc2tpIDxr
+dWJhQGtlcm5lbC5vcmc+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggbmV0LW5leHQgdjkgMDAvMTFd
+IFN1cHBvcnQgZm9yIG9uc2VtaSdzIFMyNTAwIDEwQmFzZS1UMVMgTUFDLQ0KPiBQSFkNCj4gDQo+
+IE9uIEZyaSwgMDkgT2N0IDIwMjYgMTA6MTI6MjAgLTA3MDAgU2VsdmFtYW5pIFJhamFnb3BhbCB2
+aWEgQjQgUmVsYXkNCj4gd3JvdGU6DQo+IA0KPiBZb3UgYXJlIGV4cGVjdGVkIHRvIHJlcGx5IHRv
+IHRoZSBBSSBmZWVkYmFjaywgaWYgYWxsIG9mIGl0IGlzIGludmFsaWQNCg0KDQpUaGFua3MgSmFr
+dWIuIEkgc2hvdWxkIGhhdmUgYXNrZWQuIExldCBtZSByZXNwb25kIHRvIHRoZW0uDQoNCg0KPiAo
+aW4geW91ciBvcGluaW9uKSBvbmUgcmVwbHkgdG8gdGhlIGNvdmVyIGxldHRlciBzYXlpbmcgc28g
+aXMgZW5vdWdoLg0KPiBHaXZlbiBsYWNrIG9mIHJlcGx5IGFuZCB0aGUgMTArIE1lZGl1bSBzZXZl
+cml0eSBpc3N1ZXMgSSdsbCBhc3N1bWUNCj4gdGhpcyBuZWVkcyBhIHJlc3Bpbg0KPiAtLQ0KPiBw
+dy1ib3Q6IGNyDQoNCg==
 
