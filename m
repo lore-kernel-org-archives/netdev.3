@@ -1,49 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792462809;
-	b=HVibfJvdBDwJdckJ2m0ulyXZxtPrqwPHSKKvcDvM8LGy1YvAV/ZxfY63BGmIgwFavgbp
-	 CIVRHprY7N7I/nzcCy6sh7kEWMVUxp/N88sHCCq/t47KgQz6IaeVF4zbo4218EQExZ8C4
-	 qLcEW2YAc0QX2w2j1gwcatVaxvJlaH01psygSqhOciLl45tOD1y6AM0TzAVDbCsk1dKU6
-	 iiey7VO864qGaXwkMB2sl3Nm6urM4NewxgTDx2ai8pKTNK7Um5LIvfLivrncsrw7mDTrD
-	 poakp0uIyTHk/0JGX/AM1UBfyMGGwdYTgn11z+BTi3zSbhUEcL83LnQBUpF6cvvyBTA==
+	t=1792463106;
+	b=b6LLTTYN2GJ0vxITXZL8kZ99PJKMyP6gR0St7mggx0o951yqLELorQwmPpBUOkHQkxg3
+	 9gHU8m7DpE8oFYfkgs09cUiKdg2oE5MqYAQzzCkhDPnxHnXlj+KSvRE/HE5lZyYxnK1PT
+	 ojAtMxo7oyCWHjqNWQaYDM0JEAZr3oY/7kVV548QLfEOyIWgB4TVUqXzOry9S8vdqGSGq
+	 0OuML6xz+j5sM4+oDwy97OZBIoxjoFRM9IidQG4fHD61l5YlPehzHxTqM49VjzxgG2/qR
+	 XEF+suY5cCN3cpm4CU+Ith8SAdAGZzz4Z9LQgbvBhKoHsnUkL8R9gTEW/eJQdNKpAVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792462809;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=+6D1iMcEiNp91wI9iV+LsIIjUJIqXv+F8ad2QlrDXZY=;
-	b=Ks+uabrXETlPZkedPnmbjgguuk9hZqj44+u0z55yh0Ci+dcn0NRvYX/5wPV3WQqtHwmF
-	 /jsLVcCVMLWy/fac/dGu962HKk8E/LgyroHvv4PH5YI73zEeuFjbHDKzU8hnwlm1IuTqp
-	 VNUeFGAHgGVJtd0c12s8vm0mV7boN2QBsIhkHwpT2/SAH8hDTryOFStS5YhcW3xPdn/E1
-	 KOHF/f8Q2mDIi5bwarL7x3ruFDY2LCcUQtBqZ4evmccwIB+cFYUfOcyFpQtgrUHGJqfAm
-	 6WeMAFVeoXNwyO8UOib/tlmNJWHNr6w1xBI/FzMhUlOhcBqOgJku6vZCkpI8z6yxx5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792463106;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=kYD02ZXBlrEEySdNfcMyQ0toSOLtwjrwU+Tdgho5Jkg=;
+	b=RIPl/kG2/5TV2ue6+cAvVo37ZQ6DxGclOASjp87C1HJwL8ENLvRtOvdVliXYl/KjZFY1
+	 yFh7Es8HYMSBzicagO7BYX23afkOqwfMU/jXGOZ+5FXjFl+SSDFvoQnDv/9UGeb33Evyj
+	 2yb7nt9VxV74G8Sf6LT7+9Txc5NlTo1qrQc6Fi5yiXh6NhU8asZQQrzjLe74y6p23K7cb
+	 TJIy+GrDdhZ3927ue9qFlDv2VxEWfpwaDgHps0PNf176zjfp/45OkwVwqrNK1xDGzN94Q
+	 RDIIWbQNq1yqSeC9ietphlsdZV+HMWxPw8k2sPQaBgSWpjjBll71DT2b/zbYT8FOMMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="P4eZN/UV";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SPfgy3rU;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFD7606A32C
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 02:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9402F606A319;
+	Tue, 20 Oct 2026 02:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P4eZN/UV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E081F000C4;
-	Tue, 20 Oct 2026 02:20:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SPfgy3rU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E721F000C4;
+	Tue, 20 Oct 2026 02:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792462809;
-	bh=+6D1iMcEiNp91wI9iV+LsIIjUJIqXv+F8ad2QlrDXZY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=P4eZN/UV50g8methjG2c+Pbq7OsnCvV8vBu8wMy9fibe6uiioo5FY8ph9Q41VDVyW
-	 21EotIQnnlsYCNWTZhajb5D9AMutAXmGY7wfFQkbCs44veVSH76O9r58GK7+cwiyGX
-	 B4y3jDR3507RN4Rsj+7K+LX6e8CXPjePzx3OBf2OUQbDCYlD4Kzh7Ij+yv4zuGZTbt
-	 rjjN6kAhJUaNAE1RBsyvWvIgc/elRYA3OKB7eD6fgcmw63qLvAdA+jdg4moQ49PJoM
-	 cti5ybk+Q18+jok8B612jraH7Nw0671amz/NZZGgD0ryPnROv8TVLMpqtcCRtPHf5e
-	 fX2cKcHFSvrNw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2AC3924A6F;
-	Tue, 20 Oct 2026 02:20:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792463106;
+	bh=kYD02ZXBlrEEySdNfcMyQ0toSOLtwjrwU+Tdgho5Jkg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SPfgy3rUpMslapQQG1A++l4xkexw+M4TH++6ArexD8P5QxXwn/7eHCfkB2FyrZJrO
+	 1Hfib7VStokWwiJYb7rH3KpBMILwfWoFOGjSVMQNEfh681e10ESLp+O3PnWzV0fu7T
+	 sxJcybPCyqxZFhepvffia3Rt/rj1dmENSfwh3axtuKlw934tHC/jkI4MQOcmrOlJYy
+	 bMII4r8Ddaiq9ntZs93CU8oe8Q3oVmztqswKlUESszqjmmKUvtIuT9Ewxpu2vR2NtX
+	 SJHLyOczQ2Py5JTaJq5TRwKysg4bX72vvawXGnd6KPcej90Z7+B2lWWivriTkjfIj+
+	 s+yFe8PVU+A+w==
+Date: Mon, 19 Oct 2026 19:25:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: Jiacheng Xu <stitch@zju.edu.cn>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <jiri@resnulli.us>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net] netdevsim: avoid NULL dereference after failed
+ probe
+Message-ID: <20261019192505.5e7b1341@kernel.org>
+In-Reply-To: <20261015080133.lv4rnnyuontntlkb@DEN-DL-M70577.microsemi.net>
+References: <20261012135941.78329-1-stitch@zju.edu.cn>
+	<20261015080133.lv4rnnyuontntlkb@DEN-DL-M70577.microsemi.net>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +62,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] selftests: net: fix race condition in icmp.sh causing
- CKI
- sporadic failures
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179246280777.3441618.8223791550221195346.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 02:20:07 +0000
-References: 
- <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
-In-Reply-To: 
- <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
-To: Prasenjit Mukherjee <pmukherj@redhat.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dsahern@kernel.org,
- toke@redhat.com, netdev@vger.kernel.org, dcaratti@redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu, 15 Oct 2026 10:01:33 +0200 Daniel Machon wrote:
+> There might be another approach though. Did you explore nsim_driver.dev_groups?
+> Adding nsim_bus_dev_new_port_attr/nsim_bus_dev_del_port_attr there might work,
+> and the fix will be simpler. I cant claim to be an expert in this area, but it
+> might be wort investigating.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I had a similar feeling, but looks like nsim_bus_dev_numvfs_store()
+already checks drvdata :\ Let's stick to this approach, but please
+fix the flow to look identical to the check in numvfs_store:
 
-On Mon, 12 Oct 2026 18:23:32 +0530 you wrote:
-> CKI reports sporadic failures in icmp.sh, Davide suggests this might be
-> caused by a race condition where tcpdump starts capturing after the last of
-> expected ICMP unreachable packets have been sent.
-> Fix this replacing tcpdump with a tc flower filter that
-> matches ICMP Destination Unreachable (type 3, code 0),
-> and match on act_gact counters instead.
-> This will remove any race condition to appear.
-> 
-> [...]
+        device_lock(dev);                                                       
+        ret = -ENOENT;                                                          
+        if (dev_get_drvdata(dev))                                               
+                ret = nsim_XXX(nsim_bus_dev, num_vfs);            
+        device_unlock(dev);     
 
-Here is the summary with links:
-  - [net] selftests: net: fix race condition in icmp.sh causing CKI sporadic failures
-    https://git.kernel.org/netdev/net-next/c/c6b97e579ea3
+Please make sure to include the info requested by the bot in next
+version, namely:
 
-You are awesome, thank you!
+- How the issue was discovered, e.g. hit in production, hit during
+  development, syzbot report, manual code inspection, LLM or static
+  analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
