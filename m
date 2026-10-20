@@ -1,46 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.33
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792505828;
-	b=Toi59e5no87jBf4q7kYedrw8G6wbWM7Opv6qhHtRAkfUFjjEH+6p8GpQqu1e2HSQ9k20
-	 UFaM2y76qg7ivQz11vgePaKM1dEcTr21wzKCBdXHbsVQbn/B31oTzeeWu3CIBtyk/OnYz
-	 QRj8hg8IAR85P5pN4/Ruz6g5x7beKaLqowGhznUZC9CCKpFhXohuk69TrPRdXejLE3qt7
-	 dbRcfmsy58kVP/bfDhak5ejSu7aYVAIfBorBhuqlLKl6RFIDmaijiErqT+7uHx/QYI6EM
-	 np2NRAfD5zGJNpiUa1wz8hfKINqznxVokS2IOuO7zQuIVEUPSWf4VWlDqGkb+Lf1lng==
+	t=1792506656;
+	b=ba+HETFUkUY5LcKJeUjjBtUpsqP+DJqR67xQsbLWz7I2/qqLBhfByT9YYRelcX07FERf
+	 VDxu+sJu1Ct7PCn+8PEo08kJ++BBaJPutSc/fgWS8rtM/9iDNby1vdnlDEb2ONFG2RDw6
+	 ok6sShK2MNoHZ3AH49brnovJjwzxNsiDO1r7oPn1rX9I/0mEcsAXaFHIZMk5FEW/ShEu5
+	 qF9oGs9N7oH3GbfKBO211yRIt2Jt/NzDH7giou3usMrSGpI3nZ3zF49T0I59fpRaa9lEV
+	 rykkLAiKGOwbRsiJmu48uAkuzd59AWyy3sLzrdp0/KME8eKqrwf8YfHY5KBn8ADTxlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792505828;
-	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=KzZBcixn1nkLMFly7L58yQXI8hYiFn4S/rL1DV8cbi4=;
-	b=bAfbZ2+33EI5VVTWbL6xSlr5k7V4aiiMnFOmDjDjw3naugnQBp8cZl++Ps2B+Id/OKRO
-	 NdLeAPd715qS7eoybUgBrHtyGg15to29sU1sJoOcsYPzwjFQrFGkuypZEPNzFy4YQ0so9
-	 lHH5XL1M9EHYAXBLrmcdM2NUuPUoI4T1ajbY9T93T5MyOWgLn9YsPMZPZrpnBWVCMYoz4
-	 D3Xx//fpSLfp1fLPNcpaLJ1VSi4xON40IaQAH7pmNGywkaM6OvjiWHNjQYhdxDISOT830
-	 PIWtC47vl6Xunmi6eacaGRqQKVFyo3/GWmly6MxCb866BPk7s1mElYZJQgvB+lq5E5Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792506656;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-Id:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Kjv9P6jh7n80KmQTVviZB7f96Of0OPau+dzZLCspckQ=;
+	b=W90C5Xi/Xmo7P8EDWfVH6dD4WFAb2h2NN03kSRpFJg9QkZ6NAX283Z/9VkoA0Y4sENCa
+	 He7mUt5hJH7vkFrNBmfc4szQi6RbfKDd8t2bLc9MWnmsgNlrQoOAzB8dADlQ11yhkfeCZ
+	 INsvNXlzo/c3q32hDAC+1eqq4x7FFR8k+Rui2hSk85LwJAoayKJYHPp4R8w386+7dcYxJ
+	 pQZCExPcs8hhUaZ/svnOlagLumwbcsXaU4Us0WaxP8huBdk9FDMzQ6q959S/QheaSk0q8
+	 Oe85Z1NCv0BTEf1RLGa6yW+8tRDy15g5JCk1Ee7mG8v5/bumrbz/E5oD9PvZZ1/O3ng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=V9KmQD36;
+	arc=none smtp.remote-ip=91.218.175.33
+Received: from mta0.migadu.com (out-33.mta0.migadu.com [91.218.175.33])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E3B606AA17;
-	Tue, 20 Oct 2026 14:17:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13E3B606AA17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E970FA155F;
-	Tue, 20 Oct 2026 16:16:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792505822; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=KzZBcixn1nkLMFly7L58yQXI8hYiFn4S/rL1DV8cbi4=;
-	b=sbmiIeqgetFkGWxwyF4SF+wQINbgAf1J+fvOoUqZX6iVTHL0Ws1Y1S6DEN1iS5MRwHCNS3
-	ci2DrF7iYoWVf35bpHKF2jWozxkylF8AYDSSxxXcddSyj1Xg1g9LlaP1Z31ZG7wM8XeWww
-	bjs3/GKY1but/fFTEHmX0zzg2/+DS2DgCrgryH2e2yj9cRajF4u5eieCqTWn6m59bCYzd+
-	YulF20Y4kp/rcA7S+YH+lGNH9GCXXqh6dLTjZE1ff3r+VhyT766Cmg8X82cU1uB7vFQYZK
-	8jBnWbcW0g3EC2fwdVCIikwDa51vOJlZUT1Vg8qWwa586NduXd0d5nxhLhZSqA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB97606A31F
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 14:30:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FB97606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=V9KmQD36
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Ym7fuUE5bda8YR8vTMQIuvc+NuQU+bNetmk10VNyjek=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792506653; v=1; x=1793111453;
+ b=V9KmQD36F+81Q1izwnngyc8XLeKXqVKHzeaol2Bdwh7IuqEMffVjJ529g0q7ue6k6oL9TNCC
+ a0T4Di4UTY4xMZ2SZh24A7LweMmy/samdGxgC7Oyx6tuRCCtUbZ4unKqiGGcbAS/kK8iuhT6LXi
+ o8VDieIOZ3XLGff2/4szLtNE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 7487264007fe2945;
+	Tue, 20 Oct 2026 14:30:38 +0000
+X-Mizu-Trace-ID: 7487264007fe2945
+X-Migadu-Flow: FLOW_OUT
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	Felix Fietkau <nbd@nbd.name>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [RFC net] net: force software segmentation of PPPoE packets
+Date: Tue, 20 Oct 2026 22:30:30 +0800
+Message-Id: <20261020143031.1829-1-qingfang.deng@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -50,145 +73,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 20 Oct 2026 16:16:59 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- f.fainelli@gmail.com, justin.chen@broadcom.com
-Subject: Re: [PATCH net v2 1/2] net: bcmgenet: recover from a failed resume
-In-Reply-To: <179250090686.3135.17597197349680697960@kernel.org>
-References: <20261019-nb-genet-fini-dma-net-v2-1-b85f6b92654a@tipi-net.de>
- <179250090686.3135.17597197349680697960@kernel.org>
-Message-ID: <a033b1e2dd424000dc5669f88bed0c89@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On 20.10.2026 14:55, netdev-bot+sashiko@kernel.org wrote:
-> [...]
+Ordinary TSO does not update the PPPoE payload length. A PPPoE GRO packet
+forwarded by a bridge can retain hardware GSO features and reach the
+driver without software segmentation, if the egress Ethernet interface
+advertises TSO.
 
-> [Severity: Medium]
-> 
-> Does this return leave UMAC_CMD at the reset-default 10 Mb/s speed when 
-> the
-> next WoL suspend runs?
-> 
-> Earlier in bcmgenet_resume(), init_umac()->reset_umac() writes only
-> CMD_SW_RESET to UMAC_CMD. That zeroes the speed field (CMD_SPEED_10 is 
-> 0)
-> and the duplex and pause bits.
-> 
-> On the WoL rebuild path, the new phy_stop() above also leads to
-> phy_link_down()->bcmgenet_mii_setup() with the link down, which clears
-> RGMII_LINK.
-> 
-> bcmgenet_mac_config() is the only code that restores the speed and 
-> duplex
-> bits and RGMII_LINK, and it runs only from the phylib adjust_link 
-> callback.
-> After this early return, bcmgenet_netif_start()/phy_start() never run, 
-> so
-> that callback never fires. Meanwhile phy_init_hw() and 
-> genphy_config_aneg()
-> have already restarted autonegotiation on the PHY, which is still 
-> powered.
-> 
-> On the next WoL suspend, the new !priv->tx_cbs branch in 
-> bcmgenet_suspend()
-> returns 0. Then bcmgenet_suspend_noirq()->bcmgenet_wol_power_down_cfg()
-> does this:
-> 
-> 	/* Can't suspend with WoL if MAC is still in reset */
-> 	if (reg & CMD_SW_RESET)
-> 		reg &= ~CMD_SW_RESET;
-> 
-> 	/* Receiver must be enabled for WOL MP detection */
-> 	reg |= CMD_RX_EN;
-> 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-> 
-> None of this corrects the speed.
-> 
-> If the PHY links at 1000 or 100 Mb/s, can magic packet reception fail 
-> even
-> though WoL looks armed? Together with the HFB_CTRL write below, a 
-> failed
-> resume could leave GENET with no working wake source.
+To force software segmentation, clear the GSO feature mask for
+ETH_P_PPP_SES in harmonize_features().
 
-Yes, but IMHO pre-existing: the init resets UMAC_CMD to 10M and only
-restored by adjust_link (which doesn't run anymore once init_dma() 
-fails).
-Without my patch the next suspend hangs in napi_disable(), so there is 
-no
-wake source either way. It makes the interface recoverable, not WoL 
-work.
+Fixes: 55a5d8fca836 ("net: pppoe: implement GRO/GSO support")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+ net/core/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-The real fix is probably to allocate before tearing the rings down...
+diff --git a/net/core/dev.c b/net/core/dev.c
+index a6951ea08961..27483a2ad747 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3831,6 +3831,10 @@ static netdev_features_t harmonize_features(struct sk_buff *skb,
+ 	type = skb_network_protocol(skb, NULL);
+ 	features = net_mpls_features(skb, features, type);
+ 
++	/* Ordinary TSO does not update the PPPoE payload length. */
++	if (IS_ENABLED(CONFIG_PPPOE) && type == htons(ETH_P_PPP_SES))
++		features &= ~NETIF_F_GSO_MASK;
++
+ 	if (skb->ip_summed != CHECKSUM_NONE &&
+ 	    !can_checksum_protocol(features, type)) {
+ 		features &= ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
+-- 
+2.34.1
 
-> [...]
-
-> [Severity: Medium]
-> 
-> Does writing 0 to HFB_CTRL here turn off WAKE_FILTER wake completely?
-> 
-> bcmgenet_wol_power_down_cfg() reads HFB_CTRL after this point. It 
-> unmasks
-> the filter wake interrupts only if RBUF_HFB_EN is still set:
-> 
-> 	reg = UMAC_IRQ_MPD_R;
-> 	if (hfb_ctrl_reg & RBUF_HFB_EN)
-> 		reg |=  UMAC_IRQ_HFB_SM | UMAC_IRQ_HFB_MM;
-> 
-> MPD is enabled only for WAKE_MAGIC/WAKE_MAGICSECURE. With wolopts set 
-> to
-> WAKE_FILTER only, the system would suspend with device_may_wakeup() 
-> true
-> and no GENET wake source.
-> 
-> A few lines below, the normal WoL path keeps only the RX_CLS_FLOW_WAKE
-> filters armed:
-> 
-> 		if (priv->wolopts & WAKE_FILTER)
-> 			list_for_each_entry(rule, &priv->rxnfc_list, list)
-> 				if (rule->fs.ring_cookie == RX_CLS_FLOW_WAKE &&
-> 				    rule->state == BCMGENET_RXNFC_STATE_ENABLED)
-> 					hfb_enable |= 1 << rule->fs.location;
-> 		...
-> 		if (!hfb_enable)
-> 			reg &= ~RBUF_HFB_EN;
-> 
-> Could this path use the same selection? Because tx_cbs is NULL, the
-> following resume rebuilds the rings anyway. The device is detached 
-> here,
-> so the WoL setting can't be changed from ethtool (it returns -ENODEV).
-
-Yes, keeping just the RX_CLS_FLOW_WAKE rules is better than my off.
-Will do this in v3, together with the clock wording.
-
-> [...]
-
-> [Severity: Medium]
-> 
-> With WoL not in use, can this early return leave an external PHY 
-> powered
-> for the whole sleep?
-
-Yes, but IMHO also pre-existing: phy_init_hw() in the failed resume 
-powers
-it up and it isn't started again. Before this patch suspend hung 
-instead.
-Not leaving the half state behind is arguably a better way.
-
-> [...]
-
-I really need to find a WOL capable genet board, so I can test these 
-code paths too ....
-
-Nicolai
-
---
-pw-bot: cr
