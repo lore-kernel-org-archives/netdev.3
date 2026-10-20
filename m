@@ -1,62 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792488267;
-	b=x2i7UZaD+/zeKKjd+VFXa/4+7+jKAqQrubU1O4ffJzo/5ZGYb0FSZErRZlag+Ff6eGRD
-	 taMHG1GNw/fgxuyLUjmJF8dNYTC0QPfaPoCZnbuvqh3Vq8/BrLO2lWZ8xuVO2We5ySKBC
-	 ib5iKm4uOcB4exhgkYMazWoXT+nQkGRD80evnvo2TlZRlBuCbi2+JthWnZGCZ1xhP7nR0
-	 jrUHSBTxMYLEiH/ZyU7T3/qc/2TUHNs6VCGyZ0zD6hQ/1+ryxeBbDPvgQ7PoR+kuZe4Cd
-	 xe/UlllZ7VvqMYuhd3akPN7CB2FgRj9J6OdKi4JktsB4FJBSywQ1UP5ABTyqklbOBCw==
+	t=1792488290;
+	b=u9acdRjG4O+tP/QUBfNJl1Aznmz+G/iWhN+5W4uVk1a+iKzUri5sWjZRQpWssdgt0Xta
+	 Lq0c6eRnEQIXigvGL84nmL0Vi2GP6TT93YAWJz1hywi+dgUYpwIwd697uY8ahKB2Oi/dv
+	 uqi1addOVezpXkdjTKz4fZ/ieGN5guxhTUYtiW9JaeYj/QcXGK3NcCQbaUJFInklFDhSm
+	 dSY0D6JlJXkKiLXPfFxE5KQAr1UxM/t7ZvBQbo/ueSqnFpMeSJ0XvDXzIJFwkA6MKfLwS
+	 h35EcW8MdhW5uymrbV4spzYN/nbQ3rED1solM3HRzq1gz/NGLhKy/XJx9URuQ9mZ4yA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792488267;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=HPDU4wFGpZSpXzlh/OCt3qlLi0YoMeKdoPa1Qo+08eNVd+Zvx+EyOiMIG/YfzGBAR4SW
-	 7d80aZ9PFCV02u1n42MDLd55bQ6NskWSIlBebt4iVo19DEG7oPpgXlRVZ0LoUzN0+P4ni
-	 xQprfJJmxpJos26daugpTS85QVclOL8pIGQw/HtM4kYiRa3HxjcsI9JAeXJsB5P1cHzU0
-	 r9Bccvxd65CAs5LH2UBDbWgsMNuz7Wk/JgV2xZtahrkVoRmJoCCe7KzCh80PAvpus+t7b
-	 CGf2Q4UrxL1PIT+ddgxkZfzCaTWByKGeVAE26hlAuXk3KHRs3ZGeS4/CnJrK32H9Q4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792488290;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Scanned-By;
+	bh=BznN/lY8tjRKb0k1WwnLhH6cM8dWen14mRHzzd6dYZk=;
+	b=XSx0TJvl6qA698UIScaTW9wisC7wXyQD/UkYdPEGeACAYMhKkV/fCNzGCOzW3ZzmfiV8
+	 +jiP0UEBptWD9BziIGpVhX+Sj6/Fi53K+q4Mvz4GLb27Gu8ezzNA/IX/1tuhTCb5uZtHe
+	 PuUxCN1OvSOLnXN2AzYOzIIcWaKpfVR23vjDaZMGNFvt0WkuwONpxnWbuJ0nB0ZTHwmCx
+	 hTK6YxUKx2Nz87KsUZctE2gHzZjxjufI+juDedJK66KUIWm3mw2Ogl2t2Pz7ra+x/l0A8
+	 bzf9zGYqZpSTib15A5tb5Yg2YSXfWpt180ZGWRXN0WEcl+l3Wk/Q6PN6mCaFIa49RbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NMwLoyce;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PC96n0e8;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043E7606A319;
-	Tue, 20 Oct 2026 09:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB3D60A261A
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:24:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BB3D60A261A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NMwLoyce
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D361F000C4;
-	Tue, 20 Oct 2026 09:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792488266;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NMwLoycej/ssvbx9ITmRXcNKM6CjL73IYWbfm1z778x8g6jo5t98RRcGulQFXzMfe
-	 a0nGgTc99yT6KQPhVnOa1LLzZlk6DogbKvXwDcreDZggxrkulyqapMFoZGH8a+sxnq
-	 McwgkO7AqtF+YzOa/n0oFe0molderu5QeYORlfw8lRJUIO5vD/KQFEuHGjN3lTTpLr
-	 YV1zUThVqdjKPNKQJIecY2ms8H5a9i7r94gukqFsptV/78S3FAFmI32DE+FhJ41x/M
-	 hQWxwSKkrsy6MESybEP64ffQKkyaPlGKtA7o1leXHSCX/tizgp6IiXJYl7iDWe9k36
-	 rSpFGKXLH+pJw==
-From: netdev-bot+sinfo@kernel.org
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Kees Cook <kees@kernel.org>, Simon Horman <horms@kernel.org>,
- Asim Viladi Oglu Manizada <manizada@pm.me>,
- Eric Woudstra <ericwouds@gmail.com>, Felix Fietkau <nbd@nbd.name>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] pppoe: delete session hash entries by pointer match
-Date: Tue, 20 Oct 2026 09:24:25 +0000
-Message-ID: <179248826539.3290.615848934021449047@kernel.org>
-In-Reply-To: <20261020092118.47416-1-qingfang.deng@linux.dev>
-References: <20261020092118.47416-1-qingfang.deng@linux.dev>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PC96n0e8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792488288;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BznN/lY8tjRKb0k1WwnLhH6cM8dWen14mRHzzd6dYZk=;
+	b=PC96n0e8m+GRrNsFQCuhcvOKayJi6Y5Z23Mh15N6BhlVLQmLcYNRiEf/m1N+tdforVX/3l
+	ltk4AZAGmRVP3UZ8rUJOYBL66eZZVTY/iNOPs/5zL4jwkl9j/Gv8Xo5UeZeRXF5obf72oC
+	HJO3kqf604x4Y2lSXz4OzVwPSgZGLZA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-yQTXnxNLNOSym5LCND7XSQ-1; Tue,
+ 20 Oct 2026 09:24:47 +0000
+X-MC-Unique: yQTXnxNLNOSym5LCND7XSQ-1
+X-Mimecast-MFC-AGG-ID: yQTXnxNLNOSym5LCND7XSQ_1792488285
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1459F18007F6;
+	Tue, 20 Oct 2026 09:24:45 +0000 (UTC)
+Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id B3A68418;
+	Tue, 20 Oct 2026 09:24:41 +0000 (UTC)
+Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
+	oleg@redhat.com; Tue, 20 Oct 2026 11:24:44 +0200 (CEST)
+Date: Tue, 20 Oct 2026 11:24:40 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Joel Granados <joel.granados@kernel.org>
+Cc: Allison Henderson <achender@kernel.org>,
+	kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev,
+	lkp@intel.com, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+	wireguard@lists.zx2c4.com, rds-devel@oss.oracle.com
+Subject: Re: [linus:master] [sysctl]  8d75c338f0:
+ BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
+Message-ID: <atczWEzYbWO67aNd@redhat.com>
+References: <202610190310.9737b2e3-lkp@intel.com>
+ <atYB0bm9eEXp8A2g@redhat.com>
+ <atYW0K3t57puHeLW@hobbes>
+ <atYuE1xnVYe0BDG4@redhat.com>
+ <atY42k00k0Waj6o4@redhat.com>
+ <atctwUB5NlRLk4Wy@hobbes>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,25 +88,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atctwUB5NlRLk4Wy@hobbes>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Hi!
+On 10/20, Joel Granados wrote:
+>
+> You can also do this (also untested and not compiled):
+>
+> diff --git i/net/rds/ib_sysctl.c w/net/rds/ib_sysctl.c
+> index 2af678e71e3c6..bc97a3eecad69 100644
+> --- i/net/rds/ib_sysctl.c
+> +++ w/net/rds/ib_sysctl.c
+> @@ -114,7 +114,7 @@ void rds_ib_sysctl_exit(void)
+>  int rds_ib_sysctl_init(void)
+>  {
+>         rds_ib_sysctl_hdr = register_net_sysctl(&init_net, "net/rds/ib", rds_ib_sysctl_table);
+> -       if (!rds_ib_sysctl_hdr)
+> +       if (!rds_ib_sysctl_hdr && IS_ENABLED(CONFIG_SYSCTL))
+>                 return -ENOMEM;
+>         return 0;
+>  }
+> diff --git i/net/rds/sysctl.c w/net/rds/sysctl.c
+> index 025f518a43495..41c65b98c94bd 100644
+> --- i/net/rds/sysctl.c
+> +++ w/net/rds/sysctl.c
+> @@ -93,7 +93,8 @@ static struct ctl_table rds_sysctl_rds_table[] = {
+>
+>  void rds_sysctl_exit(void)
+>  {
+> -       unregister_net_sysctl_table(rds_sysctl_reg_table);
+> +       if (rds_sysctl_reg_table)
+> +               unregister_net_sysctl_table(rds_sysctl_reg_table);
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Yes, this is what Allison suggested too. But he also pointed out that
+the changes in _exit() are not strictly needed, unregister_net_sysctl_table
+is nop if !CONFIG_SYSCTL. Plus we also need to change rds_tcp_init_net()
+the same way, see register_net_sysctl_sz().
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+So, let me repeat, I agree in advance with anything you and Allison prefer.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Oleg.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
