@@ -1,74 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792470492;
-	b=rtxY2YN0+flDVamok01g1QTje6105+jaAeef8hVwnquIhB1yxOd8/duBZvpDxQRO76fA
-	 AzTOiyYFDlVqrRm1ehjxklbJiuSf6HQ3i1rUC+tzyfYjGU4MhiIyAJJq7/H8DqCHXKlgM
-	 gXFK47mYbbc26ZXu7HHmgvU1qa2n3sidF9a+hifsTa+EeU65M0kjjyVdrUuwtYFAGBluB
-	 efFNX2R9vZ6a4Gd6NCkelP0e8wkIu2k957jUZh2wzA2v4ltflIn1/4oBxGr948cJxRIuZ
-	 5LBg1v6shEKDHzy+EfCW63/7NFCfZE/z+WPYZnMwbMh9wCaoog1aoWPyqirpXavuJEA==
+	t=1792470651;
+	b=zn5SKflZ2gz+OClLxY37gxa3EnLs924VhG/dEMtHXB74IOjGFMPxLRvhLAJ8T9jLixlJ
+	 4FXR0df8Tvwsdw6F4lf6cQScwnlNSZVzg5aFt4NluAqbc9kpB281V9cUEEcnQLPB4GMY3
+	 tEGTktH9nKYfSvR+V/z7bc/0A0Qqj8cq0FbuqpEl9wJ5zxbYlKiJ+mJCbxMo60G0vE36j
+	 3Y3rRdOqmsC5fM1EBMivGA2/tPn1FouNpJdN48NOd96yiCx06x/mXr2ThJy57xzGoa3CB
+	 M8XbvZGB1cO6+nOsNIUB9RQJGU7KAQC7P5lT/UOlZVosK6SR3KT980DRKKbaq2zPdKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792470492;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=bmehFgwVRnUa6nikz4hkDREK8DqOmKWW9Zk/XGD2B3A=;
-	b=w2du+qmcPQOZ9EnrnXG43sR7kkNinCmPAqnqup5VJHug14UGcgmlO0TVQIQn8Sdhtv4C
-	 V+zzt/QMlBun4FT4TAG0mZcOmCC5yMgtxJ2YHs6AvyNcKn3rz7YjNmuviw1+3dadMyFW0
-	 uQY3knnnGfq62FCELzw2075G2lxz3Wh41j3rTChUJPBO9O2vqll/rCxvgmwgp7iActrKO
-	 SSPBYlfVVt/bGSye6dwWWOdsD4acb2qivTc2xVmClvo9cZd6e6DpZEpVtl9MugiTGGOWc
-	 rAqPHfQcRwxWmhWpNmDd/oSt8sG0yflkuYAwmbnGwstoNB9qGRGwm9a/ZWKxW9IQNpA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792470651;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:Content-Type:
+	 MIME-Version:Content-Transfer-Encoding:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=KwfIC9w5+Dsb3Z7ZsSlMvDgkuO9sLeD+ol8gOYO/XGU=;
+	b=K4MobklifO1cVdo/dBvWqJ0hZzacF3ZvXBGA8HjPprhK3m5VSYCVvS7tk97vGNEtIsI1
+	 9YiJXsoDBDZ/mdD+/AEN3SLYWmy5rPIN5TgyahdzzSzditpabjIhAk017e8LR+kTmpRFA
+	 vwQvnAvfdTMgS2sqrBAHSoRjsmOY5fhXkVbJgdaKMlCs1dSoyM0/9vXtPxAEm6/GmHgPA
+	 anT0nypua5SOslbvDIpNpFjg/47xzBDH/kC1aO6d3UXZgpjZJloJRg+Oig7IBKKHJ2WVM
+	 E1tiVkh5n/QXJFfon2qC2Ok/8VnxzO2OpHsep6BaiM+5C9NXD74e6HcpryX6p0Ds7UQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="d4WUqqT/";
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B80606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:28:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13B80606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b="q/0//lIs";
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE232606A32D;
+	Tue, 20 Oct 2026 04:30:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE232606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=d4WUqqT/
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-89f71ac2e2fso1773163b3a.3
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:28:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792470491; x=1793075291; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bmehFgwVRnUa6nikz4hkDREK8DqOmKWW9Zk/XGD2B3A=;
-        b=d4WUqqT/ugdSV/vev8VVX+KiV9oN5rngtzS06jooCvYrn+rIgo1DA7lYkBfuKBLrcz
-         4PQv/HHNZLQ74SAy3RBoE2SmV+7YEoWl05DTBtA8mQLGto0RJNaKPyGnuBHz+K27vkCN
-         inzUrmNuz3kTBxzxTndkItq7X2qxPerm7viy8phPjyO10KT5cXXsrWIS4HE9awU8Mga1
-         bIFyv/6jW5b9oe/ugmL6JQsQfkrhMTpPOTpsujNaCL2i7w8mcB/cRCgHlJIQm65c4q2P
-         +gv24xa4VsVqcS3DsPzZYZ4sOAJ7GJqOURySWfpVfCHegtD+eA5uU0MnYuRxgDfU1fwd
-         Yjmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792470491; x=1793075291;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bmehFgwVRnUa6nikz4hkDREK8DqOmKWW9Zk/XGD2B3A=;
-        b=1woW4zRD1gLw6JF8NRwV5XAm/VxdPcqpyBlcI1Mz0CnNaLYFfGp3d2sXj2kmd7owNd
-         G+pJoMPp25FdeiRC/IkXD0A5e2I+NIH2Z6wrWwP1XmOKk/OF52nc11zHjvBtVwBnUe12
-         36Qt069ws6NXAPbsYmNyBrn+C6Lp+hztb0UX56pslJGvG1v4RBIc3ZsvK2Osg/6rFI1Y
-         j2HsKqcQ1vKFMEOwgGc6QjEgApOjupeG585KUc+sih8wKwBxmCc1eXCMv3paAJW5ND7J
-         An+eGPIopuDnaVKvmcIAHK//bJAeYUGzRL55iwyxImTI9VUFcCyxpEndWmsbXe88Pzhx
-         9KXg==
-X-Forwarded-Encrypted: i=1; AKwUvByjnuRTIkWNa18nKNgCaK8+rbDOZchofyShiptp2hDnBIt3ORCCztU9FUBjHi6MJxw8hlRJ2tc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIP2QpAqAn4G4lF+HB5S4lgYg0Vu9xO8ANBLlTzLOyiJyf9Kh7B
-	u5p3X609wxNtlD+PJwz9IXxiXyJwU2doCMdu9DqxAgWwwFuBtG4VkPpaO5jBrGiM4aNxccDncZW
-	v0BM4qg==
-X-Received: from pfgu40.prod.google.com ([2002:a05:6a00:9a8:b0:887:5ba8:7334])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a8d:b0:899:53a9:1dd9
- with SMTP id d2e1a72fcca58-8a04d34d8b6mr7973176b3a.57.1792470490721; Mon, 19
- Oct 2026 21:28:10 -0700 (PDT)
-Date: Tue, 20 Oct 2026 04:28:10 +0000
-In-Reply-To: <20261019230758.2960779-1-joshdon@google.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=q/0//lIs
+Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
+	by linux.microsoft.com (Postfix) with ESMTPSA id B6E9220B716D;
+	Mon, 19 Oct 2026 21:30:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B6E9220B716D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1792470643;
+	bh=KwfIC9w5+Dsb3Z7ZsSlMvDgkuO9sLeD+ol8gOYO/XGU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=q/0//lIsfhOVPJayY/cmdILeb33ChMX0PqCRqec6HLrFm6vXr/QtCIUrlPPymkKEP
+	 m/9kaKQBjJp1ds+9U4Xfsj50HA4aj6fOe0m792CKotlYwolHbQccbbJC+gAxFqAihB
+	 0poLefqDKI7jsnU/Gb0JJFSNQxYBELIZ/Rm7KaP0=
+From: Wei Hu <weh@linux.microsoft.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	weh@microsoft.com,
+	kuba@kernel.org
+Subject: Re: [PATCH net-next v7 04/13] net: mana: swap queue sets in mana_set_channels
+Date: Tue, 20 Oct 2026 04:30:40 +0000
+Message-ID: <qset-v7-sashiko-04-v8-plan.20261018.weh@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <sashiko-outbox-175604@kernel.org>
+References: <cover.1791710735.git.weh@linux.microsoft.com> <ec57f3853ef344a7d5ec8907ba530313b0163bae.1791710735.git.weh@linux.microsoft.com> <sashiko-outbox-175604@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,79 +65,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261019230758.2960779-1-joshdon@google.com>
-Message-ID: <atbsxDZecXYSDBqH@google.com>
-Subject: Re: [PATCH] udp: Add noinline_for_tracing annotation for udp{,_v6}_send_skb()
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Josh Don <joshdon@google.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Oct 2026 23:07:58 +0000, Josh Don wrote:
-> We hook udp_send_skb() and udp_v6_send_skb() using BPF fentry programs
-> to monitor UDP transmits. Both functions are static and have two
-> callers: udp{,v6}_sendmsg() and udp{,_v6}_push_pending_frames().
-> 
-> After an FDO profile update, udp_v6_send_skb() is now inlined into
-> udpv6_sendmsg(), while an out-of-line copy remains for
-> udp_v6_push_pending_frames(). The fentry program still attaches
-> successfully, but it is silently bypassed for all uncorked sends.
-> 
-> To address this, make both functions noinline explicitly for tracing,
-> as was done for tcp_drop_reason() in commit dbd5e2e79ed8 ("net: tcp:
-> Add noinline_for_tracing annotation for tcp_drop_reason()").
+Hi,
 
-Unlike tcp_drop_reason(), udp_send_skb() is a hot function as
-inlined by FDO.
+> Does mana_xdp_xmit() require a lock when updating tx_stats->syncp further
+> down in this function?
 
-Did you see how this change affects to udp_rr performance ?
+I will leave this counter update unchanged in v8. Multiple CPUs can map
+to the same queue, and the aggregate xdp_xmit update is outside the
+per-frame send lock, so lost increments are a real issue. However, the
+same writer-exclusion gap exists in both unmodified upstream bases.
+Moving the counters to port-owned storage does not introduce that race.
+I am keeping that independent statistics fix outside this series.
 
-Also, net-next is closed.
-https://lore.kernel.org/netdev/7a0446eb-8539-4300-ae0b-a3d66a692cbc@redhat.com/
+The claimed sequence-counter corruption and infinite reader loop also
+require a configuration this driver does not support. PCI MANA requires
+X86_64 or ARM64, and CDX requires 64BIT. On those 64-bit configurations,
+u64_stats_sync has no sequence counter and fetch_retry() returns false.
+This does not excuse the baseline lost increments, but it does rule out
+the reported 32-bit hang for supported builds.
 
+> Could this u64_stats_update_begin() call deadlock a preempting softirq
+> reader?
 
-> 
-> Assisted-by: LLM
-> Signed-off-by: Josh Don <joshdon@google.com>
-> ---
->  net/ipv4/udp.c | 4 ++--
->  net/ipv6/udp.c | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-> index b090bd1f59e86..487c8cc8ab206 100644
-> --- a/net/ipv4/udp.c
-> +++ b/net/ipv4/udp.c
-> @@ -1110,8 +1110,8 @@ void udp_set_csum(bool nocheck, struct sk_buff *skb,
->  }
->  EXPORT_SYMBOL(udp_set_csum);
->  
-> -static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
-> -			struct inet_cork *cork)
-> +noinline_for_tracing static int
-> +udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4, struct inet_cork *cork)
->  {
->  	struct sock *sk = skb->sk;
->  	int offset, len, datalen;
-> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-> index 93478d1ad5769..fe92538835176 100644
-> --- a/net/ipv6/udp.c
-> +++ b/net/ipv6/udp.c
-> @@ -1366,8 +1366,8 @@ static void udp6_hwcsum_outgoing(struct sock *sk, struct sk_buff *skb,
->   *	Sending
->   */
->  
-> -static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
-> -			   struct inet_cork *cork)
-> +noinline_for_tracing static int
-> +udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6, struct inet_cork *cork)
->  {
->  	struct sock *sk = skb->sk;
->  	int offset, len, datalen;
-> -- 
-> 2.56.0.212.g129ede20d9-goog
-> 
+I will leave the folding synchronization unchanged as well. This second
+report depends on the same unavailable 32-bit sequence-counter behavior.
+There is no odd sequence counter for the preempting reader to spin on in
+the supported 64-bit implementation. Adding BH exclusion to address that
+specific scenario is therefore not warranted.
+
+Thanks,
+Wei
