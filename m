@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792503391;
-	b=HJRgn1cbPZYf0VRYm2xyzn1kCFzGw173EP6pZkKQkpLlBv0bj65Q1QX3H1hoMCbGX1Eq
-	 J2B7rO+bia+oQwXktjrzjvDMsu9AzZgf6CukrqlLv8FxkpMD03k1QrdneuN0KOaUKVW9t
-	 7etIqku1oDvxPfy2Luue+0Y2bTcW3NKJjUqYT98R3AbxSRIImB+AlIOLsmt69QNq2Plc3
-	 jkR/TnEdP+fIhfm+/c56yHttH16/ZhX72IPSnXbwN7HSADJnyJataECUBAAwFX0nX2oZ/
-	 TQ3nGU6WBigYKE0hvSrzHZPG/TXeeGsNHP+fihkq3/nxDMqnNO24dTbilTCS2P3HBxg==
+	t=1792503397;
+	b=Z1af0pGWlP8vsTgCcPeCIfLeLNiHbbOah+LCQwh2oqggea6W4bEelSyeuM7kMfU6gmQE
+	 HV/9ZvH5fvrdZfUjeJOtNQQYq7UQNzSz5YZbD0E7An8BdmZeV+1yg9041sBvm0lp1a6Nk
+	 qO/tnR9rwlUVZxbRRWNzyIKp2Qu37F+KWh3iSOaHMFMsd/UNOxw+e0RXjuJC2r+3kuITZ
+	 mcc3hwGZICIW0b2KkBq3gb0e1saxoOgu60MiUcQ8Yhqnq3OdqMkEnjVH1gdAaCN52a9u0
+	 XqWG0CA/fZ4D4cGvG7DJ7uB8QOqid/Yka7z2Y44CELvlrv7XonN/lkShwk8zrR5mD0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792503391;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792503397;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=7jqSFBI+hkejNeRR/cQHY482qWcy5UbBBf92Mi07d98=;
-	b=3IBVitXUqCda/C8L4BiFu2xZzO0s4yz7Nr8I2I2DumOLATXMTLnjOnGLSabyLmLZMGlO
-	 Y86KuwkwUaPygh0wuaIzx/CxYwe71Qzlu2ITPeUtkXGAeP9DSa7AlrznnJLfLnXsv+r6c
-	 Qx/HIsmGw0sxEzCf/hlhLI8ixFwxv2D0DGqaaa6/USl0ibv5v3o9hDcAAOfMxIooc2pX1
-	 NIdCksflmKrjU5iCBbXn7tEltzb/EPPEdmIzcycatsmDzHiQM0Tn3PTxr0DfmN+r6r+DJ
-	 zGK8C6tykOEelMSReCwkNs5D3oivSiYoCzBU/0RVjOEArQhue43HI8kwIh32/BiIjsA==
+	bh=MTcLZ13M8wQqh5NfAuT+FDOrmigvvwT1NksmdqftjC8=;
+	b=mUgNeGnlruB1poOPHR23tViNRlpXmtvhMIkOpZ6Tn/6+aL9pkKQKDPkUC9dItt1DLBgf
+	 R3SSopozXpjjfL8JOpjERZL15Aqs6rsTVNRkyMytGAuSPVJw1RxRgr2wmsWtu98d0B46h
+	 uooPbn1nBJZ1mnvyKgYfiWPybHU3bm2fOvYMinVXGz6zzrKorbNnwVvB9zWR7nKKKXA10
+	 sVgitGmOCqF7emwVdl5mooR+I0WRSgRcla2F0LXcYqw+cLT3pKxNqKCE4ngaMN7ZeE0tD
+	 NHxHgfGMOpO8b4uoiLC9CSY2y2d7Zq5eeq1e/ySJyDYOFZSxEiTsoB1NvIpy0UAIUSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Xg9/+FlP";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yd1KJ+oQ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D95660A262D;
-	Tue, 20 Oct 2026 13:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3719B60A4AE1;
+	Tue, 20 Oct 2026 13:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xg9/+FlP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E5E1F000CD;
-	Tue, 20 Oct 2026 13:36:28 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yd1KJ+oQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354DB1F000C7;
+	Tue, 20 Oct 2026 13:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792503390;
-	bh=7jqSFBI+hkejNeRR/cQHY482qWcy5UbBBf92Mi07d98=;
+	s=k20260515; t=1792503396;
+	bh=MTcLZ13M8wQqh5NfAuT+FDOrmigvvwT1NksmdqftjC8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Xg9/+FlPDSbIpNqcZT9UKF94nAjIczCTzECRcl9Zzaaq1pbdST0KBBKSEYwD+nfA8
-	 mVHYrmuStcZ9x202Tu9teSQWDMUqMg7TrLdwSQhvsM6A1HH0/PSagQh6U2DzSvYg3q
-	 BT4drjNQAGgXuOkPkyBy677fU8e0WWz9MRTXPWSaxdakalV23aphKgw0vpbr4NA1YJ
-	 cXFosDc+hTEqmxm1Kp3018wGXAZQWpd1+IY0MQaKaXNAywSipJNH6/3A3IrGCBIddv
-	 8Y8wsBlG64nv7UzD4/7xZvr+Je/J0uKRkAbevgxR9ovKu8bq0vycls6tV5G0di+6gT
-	 uYyMCTlVNJzLQ==
-Subject: Re: [PATCH net-next v8 1/4] net: mana: prepare HWC ownership for safe
- reinitialization
+	b=Yd1KJ+oQ+3H4EFsXkBHw1APCdwWCw6IB2ZncTYDYsaQApOL4yIcyn4MeHJH3ljIum
+	 yKlIklv8ARIzhhYigJ++D4MWVC+BDJiJUIGOLAKTp/Q3PI6aiVdcFspmNzN/kPlbMD
+	 Ocnkn8KrfUgc9MTyER1V+qssriXvAWknZ3lv5YUNUjFvRvZMhuXuu8M8ZJijlUnGHD
+	 n0wBa3KUxdkWr/WaWInoRU0b+beLLFChtyFaL8NAR2FBW25sQRfBwwATRbZ05mJpp7
+	 +AF+ew03KP4gWjb61y9sw6rGok18++RxNpBuosO2HhfRurdj12XIqXkFc80zmJBmJg
+	 X9A+zrWR8gW4g==
+Subject: Re: [PATCH net-next v8 4/4] net: mana: add dynamic HWC queue depth
+ with reinit path
 From: netdev-bot+sashiko@kernel.org
 To: weh@linux.microsoft.com
 Cc: longli@kernel.org, kotaranov@microsoft.com, kuba@kernel.org,
@@ -53,13 +53,13 @@ Cc: longli@kernel.org, kotaranov@microsoft.com, kuba@kernel.org,
  linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
  gargaditya@linux.microsoft.com, kees+treewide@kernel.org, kees@kernel.org,
  mawasthi@linux.microsoft.com, weh@microsoft.com, edumazet@kernel.org
-Date: Tue, 20 Oct 2026 13:36:28 +0000
-Message-ID: <179250338816.3135.13276488357316939732@kernel.org>
-In-Reply-To: =?utf-8?q?=3C64987f49ea13b5ccdc9ef95f4a9baf23a479edc3=2E1791998?=
+Date: Tue, 20 Oct 2026 13:36:34 +0000
+Message-ID: <179250339474.3135.8335532818248262678@kernel.org>
+In-Reply-To: =?utf-8?q?=3C877e674c0255820b0517f863e535615b4028a48a=2E1791998?=
  =?utf-8?q?462=2Egit=2Eweh=40linux=2Emicrosoft=2Ecom=3E?=
-References: =?utf-8?q?=3C64987f49ea13b5ccdc9ef95f4a9baf23a479edc3=2E17919984?=
+References: =?utf-8?q?=3C877e674c0255820b0517f863e535615b4028a48a=2E17919984?=
  =?utf-8?q?62=2Egit=2Eweh=40linux=2Emicrosoft=2Ecom=3E?=
-X-sashiko-severity: Low
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -72,184 +72,186 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-- [Low] The commit message presents this patch only as preparation for
-  dynamic HWC queue sizing.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch
-  documents mana_gd_process_eqe() as an RCU-protected lockless reader of…
+- [Medium] Rebuilt HWC rings change size with depth, but the PF is never
+  told the new size.
+- [Low] The fix for the unchecked HWC init doorbell index ships inside a
+  large feature patch, and the patch has no Fixes: tag.
+- [Low] mana_hwc_rebuild_channel() saves hwc_timeout into timeout_ms on
+  entry.
 
 --
 
-net: mana: prepare HWC ownership for safe reinitialization
+net: mana: add dynamic HWC queue depth with reinit path
 
-This commit serializes the shared-memory ESTABLISH_HWC and DESTROY_HWC
-transactions. When DESTROY_HWC is not acknowledged, it keeps the
-PF-visible HWC resources, and it adds a final-disposal helper for when
-the gdma_context is discarded. It also snapshots the bootstrap CQ count
-and ID, publishes cq_table with release/acquire ordering, and waits for
-RCU readers before freeing the HWC queues.
+The HWC now starts with depth-one bootstrap queues. When the PF reports a
+depth from 2 to 128 with 4096-byte maxima, the channel is torn down and
+rebuilt at that depth. If the rebuild fails, the driver falls back to
+fresh bootstrap queues. Request sizes are bounded by the negotiated limits
+in the GDMA and RDMA builders, and the HWC init doorbell index is now
+validated against BAR0 before use.
 
-Link: https://lore.kernel.org/r/20260908035201.402424-2-longli@microsoft.com
 Link: https://lore.kernel.org/r/20260908035201.402424-5-longli@microsoft.com
-Link: https://lore.kernel.org/r/178910960115.219967.13830871915506436112@kernel.org
-Link: https://lore.kernel.org/r/179196575238.434549.10775387794024020898@kernel.org
-Link: https://lore.kernel.org/r/sashiko-outbox-170992@kernel.org
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index ae0ed700b3b93..d11068f1dc05f 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-
-[ ... ]
-
-> @@ -765,11 +767,16 @@ static void mana_gd_process_eqe(struct gdma_queue *eq)
->  	switch (type) {
->  	case GDMA_EQE_COMPLETION:
->  		cq_id = eqe->details[0] & 0xFFFFFF;
-> -		if (WARN_ON_ONCE(cq_id >= gc->max_num_cqs))
-> +		/* The IRQ handler's RCU read-side section protects the table
-> +		 * until HWC teardown has fenced its EQ and waited for readers.
-> +		 */
-> +		cq_table = smp_load_acquire(&gc->cq_table);
-> +		if (!cq_table || cq_id >= READ_ONCE(gc->max_num_cqs))
->  			break;
->  
-> -		cq = gc->cq_table[cq_id];
-> -		if (WARN_ON_ONCE(!cq || cq->type != GDMA_CQ || cq->id != cq_id))
-> +		cq = READ_ONCE(cq_table[cq_id]);
-> +		if (!cq || WARN_ON_ONCE(cq->type != GDMA_CQ ||
-> +					cq->id != cq_id))
->  			break;
->  
->  		if (cq->cq.callback)
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. This
-hunk now documents mana_gd_process_eqe() as an RCU-protected lockless
-reader of gc->cq_table, though. Do the Ethernet and RDMA writers of the
-same slots follow that model?
-
-The reader loads cq from the slot, dereferences cq->type and cq->id,
-and then calls cq->cq.callback(cq->cq.context, cq).
-
-In drivers/infiniband/hw/mana/cq.c, mana_ib_remove_cq_cb() frees the
-queue before it clears the slot, and it never waits for a grace period:
-
-drivers/infiniband/hw/mana/cq.c:mana_ib_remove_cq_cb() {
-    ...
-	kfree(gc->cq_table[cq->queue.id]);
-	gc->cq_table[cq->queue.id] = NULL;
-}
-
-mana_ib_destroy_cq() calls this before mana_ib_gd_destroy_cq(), so the
-hardware CQ is still live at that point.
-
-Ethernet CQs have a similar problem. In mana_gd_destroy_queue(),
-mana_gd_destroy_cq() does WRITE_ONCE(gc->cq_table[id], NULL), and then
-kfree(queue) runs straight away with no synchronize_rcu() in between.
-
-Could an IRQ on another CPU that has already loaded the slot in
-mana_gd_process_eqe() then read freed memory and call through a freed
-cq->cq.callback?
-
-The publish side looks similar. mana_ib_install_cq_cb() initializes
-gdma_cq and then publishes it with a plain store:
-
-	gdma_cq->id = cq->queue.id;
-	gc->cq_table[cq->queue.id] = gdma_cq;
-
-The txq and rxq creation paths in mana_en.c do the same:
-
-	gc->cq_table[cq->gdma_id] = cq->gdma_cq;
-
-Neither store has release ordering. Could a reader on a weakly ordered
-CPU such as arm64 see a partly initialized CQ?
-
-The commit message says "Individual Ethernet and RDMA CQ lifetime
-handling remains separate". drivers/infiniband/hw/mana/cq.c is still
-unchanged at the end of the series.
-
-[ ... ]
+Link: https://lore.kernel.org/r/179196575846.434549.7933818740976196422@kernel.org
 
 > diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> index 3bca4b683134b..a1c1c6f32cafa 100644
+> index 9ea67c076ebda..c4cae1baaef4d 100644
 > --- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
 > +++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
 
 [ ... ]
 
-> @@ -382,16 +386,49 @@ static void mana_hwc_comp_event(void *ctx, struct gdma_queue *q_self)
->  	mana_gd_ring_cq(q_self, SET_ARM_BIT);
->  }
->  
-> -static void mana_hwc_destroy_cq(struct gdma_context *gc, struct hwc_cq *hwc_cq)
-> +static int mana_hwc_publish_cq(struct gdma_context *gc,
-> +			       struct gdma_queue *cq)
->  {
-> -	kfree(hwc_cq->comp_buf);
-> +	struct gdma_queue **cq_table = READ_ONCE(gc->cq_table);
-> +	u32 id = READ_ONCE(cq->id);
->  
-> -	if (hwc_cq->gdma_cq)
-> -		mana_gd_destroy_queue(gc, hwc_cq->gdma_cq);
+> @@ -247,8 +263,18 @@ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
+>  	switch (event->type) {
+>  	case GDMA_EQE_HWC_INIT_EQ_ID_DB:
+>  		eq_db.as_uint32 = event->details[0];
+> +		if (!mana_gd_is_valid_doorbell(gd->gdma_context,
+> +					       eq_db.doorbell)) {
+> +			dev_err(hwc->dev, "HWC: invalid doorbell %u\n",
+> +				eq_db.doorbell);
+> +			WRITE_ONCE(hwc->hwc_init_error, -EPROTO);
+> +			complete(&hwc->hwc_init_eqe_comp);
+> +			break;
+> +		}
+> +
+>  		hwc->cq->gdma_eq->id = eq_db.eq_id;
+>  		gd->doorbell = eq_db.doorbell;
+> +		hwc->hwc_init_doorbell = true;
+>  		break;
+
+[Severity: Low]
+This isn't a bug, but the unchecked HWC init doorbell index fixed here
+dates back to ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure
+Network Adapter (MANA)").
+
+Before this patch, mana_hwc_init_event_handler() did:
+
+	gd->doorbell = eq_db.doorbell;
+
+with no bounds check. mana_gd_ring_doorbell() then used that index to
+compute the MMIO address.
+
+The fix looks self-contained: mana_gd_is_valid_doorbell(), the
+INVALID_DOORBELL check in mana_gd_ring_doorbell() and the hwc_init_error
+completion. Would it be easier to review and backport as a separate patch
+ahead of the dynamic depth rebuild?
+
+The similar hardening commit 89fe91c65992 ("net: mana: hardening: Validate
+doorbell ID from GDMA_REGISTER_DEVICE response") was merged without a
+Fixes: tag, so leaving the tag off here may be intentional.
 
 [ ... ]
 
-> +static void mana_hwc_destroy_cq(struct gdma_context *gc, struct hwc_cq *hwc_cq)
+> @@ -1179,32 +1258,168 @@ void mana_hwc_free_retained_channel(struct gdma_context *gc)
+
+[ ... ]
+
+> +static int mana_hwc_rebuild_channel(struct hw_channel_context *hwc,
+> +				    u16 q_depth,
+> +				    struct mana_hwc_init_report *report)
 > +{
-> +	/* Destroy the EQ first: it deregisters the IRQ and drains in-flight
-> +	 * handlers, so none can touch the CQ after it is freed.
-> +	 */
->  	if (hwc_cq->gdma_eq)
->  		mana_gd_destroy_queue(gc, hwc_cq->gdma_eq);
->  
-> +	/* Safe to free now that the EQ handler is fenced. */
-> +	if (hwc_cq->gdma_cq)
-> +		mana_gd_destroy_queue(gc, hwc_cq->gdma_cq);
+> +	u32 timeout_ms = mana_hwc_timeout_read(hwc);
+> +	int cleanup_err;
+> +	int err;
 > +
-> +	kfree(hwc_cq->comp_buf);
->  	kfree(hwc_cq);
->  }
+> +	err = mana_hwc_teardown_queues(hwc);
+> +	if (err)
+> +		return err;
+> +
+> +	err = mana_hwc_build_channel(hwc, q_depth, report);
+
+[Severity: Medium]
+How does the PF learn the size of the rebuilt rings?
+
+mana_hwc_create_cq() and mana_hwc_create_wq() size the rings from the
+depth:
+
+	eq_size = roundup_pow_of_two(GDMA_EQE_SIZE * q_depth);
+	cq_size = roundup_pow_of_two(GDMA_CQE_SIZE * q_depth);
+	queue_size = roundup_pow_of_two(GDMA_MAX_RQE_SIZE * q_depth);
+	queue_size = roundup_pow_of_two(GDMA_MAX_SQE_SIZE * q_depth);
+
+At depth 128 the CQ is 16 KiB, the RQ 32 KiB and the SQ 64 KiB. At depth
+1 every ring is 4 KiB.
+
+The ESTABLISH_HWC message built by mana_smc_setup_hwc_locked() carries
+only the four frame addresses, their high 4 bits and the EQ MSI-X index:
+
+	hdr->msg_type = SMC_MSG_TYPE_ESTABLISH_HWC;
+	hdr->msg_version = SMC_MSG_TYPE_ESTABLISH_HWC_VERSION;
+
+It has no size or depth field, and the message version is unchanged.
+
+mana_hwc_rebuild_channel() sends this message for the depth-N rings. If
+that fails, mana_hwc_restore_bootstrap() sends the same message for 4 KiB
+rings, after the PF has already accepted a depth-N establish. A later
+driver reload does the same, because mana_hwc_create_channel() always
+starts with a bootstrap establish.
+
+If the PF sizes the rings from the depth it advertised, could it write
+EQEs or CQEs past the end of the 4 KiB bootstrap rings? If it assumes
+4 KiB instead, would the owner-bit phase diverge after the first wrap of
+a rebuilt ring and stall the HWC?
+
+The check_depth test in mana_hwc_validate_report() confirms the depth the
+PF reports, not the ring size it actually uses. Is there a firmware
+contract that covers this? If so, could it be documented here?
+
+> +	if (!err)
+> +		err = mana_hwc_validate_report(hwc, report, q_depth, true, true);
+> +	if (!err)
+> +		err = mana_hwc_finish_channel(hwc, report);
+> +	if (!err)
+> +		return 0;
+> +
+> +	dev_warn(hwc->dev,
+> +		 "HWC depth %u rebuild failed, restoring bootstrap: %d\n",
+> +		 q_depth, err);
+> +
+> +	cleanup_err = mana_hwc_teardown_queues(hwc);
+> +	if (cleanup_err)
+> +		return cleanup_err;
+> +
+> +	/* Do not carry the failed test's reduced wait into the retry. */
+> +	mana_hwc_timeout_update(hwc, timeout_ms);
 
 [Severity: Low]
-This isn't a bug in the code, but the commit message describes the
-patch only as preparation for dynamic HWC queue sizing. Several of the
-changes appear to fix problems in the existing driver. There is no
-Fixes: tag and no stable Cc, so stable kernels will not pick these
-fixes up.
+Can this restore overwrite a timeout that firmware set during the
+rebuild?
 
-The baseline mana_hwc_destroy_cq() freed comp_buf and destroyed the CQ
-before destroying the EQ, and destroying the EQ is what deregisters the
-IRQ and runs synchronize_rcu(). The baseline mana_hwc_destroy_channel()
-also destroyed txq and rxq before the CQ and EQ. A concurrent
-mana_hwc_comp_event() or rx handler could therefore touch freed memory.
+timeout_ms is read once at the top of mana_hwc_rebuild_channel(). While
+the depth-N channel is being built, its EQ is live with
+mana_hwc_init_event_handler(), which can run this from IRQ context:
 
-The baseline mana_hwc_destroy_channel() ignored the return value of
-mana_smc_teardown_hwc(). It freed the HWC DMA memory even when
-DESTROY_HWC was not acknowledged.
+	case HWC_DATA_CFG_HWC_TIMEOUT:
+		mana_hwc_timeout_update(hwc, val);
 
-The baseline mana_hwc_init_event_handler() did:
+mana_hwc_timeout_update() replaces any nonzero value. If the rebuild then
+fails, this call writes the stale snapshot over the firmware-supplied
+value, not just over the value of 1 left by mana_hwc_timeout_reduce().
 
-	case HWC_INIT_DATA_MAX_NUM_CQS:
-		gd->gdma_context->max_num_cqs = val;
+The commit message says the restore is there so that "a failed test's
+fail-fast reduction does not poison the retry". Would a cmpxchg from 1 to
+timeout_ms match that intent and keep concurrent firmware updates?
 
-on any such event. That handler stays installed for the life of the
-channel. A later event could raise the bound above the vcalloc() size,
-and mana_gd_process_eqe() would then read gc->cq_table out of bounds
-in hardirq context.
+The effect looks temporary. Once mana_hwc_create_channel() succeeds,
+mana_gd_verify_vf_version() queries the PF timeout again through
+mana_gd_query_hwc_timeout() when GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG
+is advertised.
 
-The baseline also vfree()d gc->cq_table without waiting a grace period
-for IRQ-side readers on other EQs.
-
-Would it make sense to send these fixes separately, with Fixes: tags,
-so they can be backported?
+> +
+> +	return mana_hwc_restore_bootstrap(hwc, report);
+> +}
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1791998462.git.weh%40linux.microsoft.com
