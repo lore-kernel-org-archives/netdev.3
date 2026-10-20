@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792469833;
-	b=SuR+U/SzLpjffvKRVSvjUGpx3k6kN3pY1YMU82QIaJe5oS2zv2DIENkVbK8A30vFEHIX
-	 UBbTWTp7TdbopLxWQZ8Dvn/1GKopU8VpbJUsgJT4CSWc/fYHCNDX+IffWLyyg1IZQ1ET4
-	 KB+mmlVdkJ5ulf9PYIswDqoLVL4cflYs5lmmE0oWjW/CPdj2jccuDOpbeIoAA1gbX7bF9
-	 pVp3MnmY/gc3qYV6GjyxSjrakNqwFwfUKCKlUjI6uhf6/Y1L4AAdiLD6GDBv8YVksWlhR
-	 dUo0ATpVwAlP8/ixDjQwaUDcrxZ2/Y7dDb5J94DFbkntDBrDl1WUenHWxxE/ownZntw==
+	t=1792470492;
+	b=rtxY2YN0+flDVamok01g1QTje6105+jaAeef8hVwnquIhB1yxOd8/duBZvpDxQRO76fA
+	 AzTOiyYFDlVqrRm1ehjxklbJiuSf6HQ3i1rUC+tzyfYjGU4MhiIyAJJq7/H8DqCHXKlgM
+	 gXFK47mYbbc26ZXu7HHmgvU1qa2n3sidF9a+hifsTa+EeU65M0kjjyVdrUuwtYFAGBluB
+	 efFNX2R9vZ6a4Gd6NCkelP0e8wkIu2k957jUZh2wzA2v4ltflIn1/4oBxGr948cJxRIuZ
+	 5LBg1v6shEKDHzy+EfCW63/7NFCfZE/z+WPYZnMwbMh9wCaoog1aoWPyqirpXavuJEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792469833;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792470492;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=y3El/zgkrIeOwSVM/xohA1VqXQV6ttAXBbNdMdXf5L8=;
-	b=w6OmzNCsM2AtuSPLlAM9ggrlkk7GYghWk7ngrno3QhwQavCxKD+zyAvfAQXTbVcKCpi5
-	 twPh++KQ6hEZuOy+8u5L6ubNxLOi6x0K1Gj31qewLSHAhwcwsbA/PSgsf1PjclU4yk6Ot
-	 pho7/9357aIfcSiwcMpQQjgRO9v3+ru401k8Cqw7E0/lUEDRKHaF7ACfcANvOSGIPRCmZ
-	 +4fwOgevZZgyodi+sXXdbEL9z5W9Zof6CFtf/bgH55bY0TQqVpSGw9tc22S0L6mBI+zWC
-	 CpPXK87foUA5v2zj8uSegEB1cAwOsLU2egJdxeQ8BNy8nMlPzNEmsFmStYTdZSTRSDg==
+	bh=bmehFgwVRnUa6nikz4hkDREK8DqOmKWW9Zk/XGD2B3A=;
+	b=w2du+qmcPQOZ9EnrnXG43sR7kkNinCmPAqnqup5VJHug14UGcgmlO0TVQIQn8Sdhtv4C
+	 V+zzt/QMlBun4FT4TAG0mZcOmCC5yMgtxJ2YHs6AvyNcKn3rz7YjNmuviw1+3dadMyFW0
+	 uQY3knnnGfq62FCELzw2075G2lxz3Wh41j3rTChUJPBO9O2vqll/rCxvgmwgp7iActrKO
+	 SSPBYlfVVt/bGSye6dwWWOdsD4acb2qivTc2xVmClvo9cZd6e6DpZEpVtl9MugiTGGOWc
+	 rAqPHfQcRwxWmhWpNmDd/oSt8sG0yflkuYAwmbnGwstoNB9qGRGwm9a/ZWKxW9IQNpA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Vru2u8Jq;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b="d4WUqqT/";
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9522C606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:17:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9522C606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B80606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:28:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13B80606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Vru2u8Jq
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e61a48d5b7so2464795ad.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:17:12 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=d4WUqqT/
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-89f71ac2e2fso1773163b3a.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:28:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792469832; x=1793074632; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792470491; x=1793075291; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y3El/zgkrIeOwSVM/xohA1VqXQV6ttAXBbNdMdXf5L8=;
-        b=Vru2u8Jq82+miZuKIMq+iNrrySMlbLwYlqtQrdYaraqYni21KD8DxLXUPTGa4QAwLf
-         f7qBlLr4I1FbdSRQzAcfsQfOT0ZrlUTn73WWjW5MQJW4AW9rEJZoiAWDBnvSBN3ADDO/
-         4TSMaILDuaVNgWpB6Iz1aFKsc7v/dB37P/CqjiqqXq4aGVX1O/42mZLdNoBGPcUbF+pn
-         7wWrteItlH/2NGR31vXppE9xfDYKOfVEL8xFIPUB+8p91KAZfPQIUB1UzvkQguCwYW32
-         EWZ5h3nKIIrHS3aC1OfC59CccWRenvr8xuRaWjm/eQhYguOogTxq1ctfdSifY+y1GpYr
-         xIOw==
+        bh=bmehFgwVRnUa6nikz4hkDREK8DqOmKWW9Zk/XGD2B3A=;
+        b=d4WUqqT/ugdSV/vev8VVX+KiV9oN5rngtzS06jooCvYrn+rIgo1DA7lYkBfuKBLrcz
+         4PQv/HHNZLQ74SAy3RBoE2SmV+7YEoWl05DTBtA8mQLGto0RJNaKPyGnuBHz+K27vkCN
+         inzUrmNuz3kTBxzxTndkItq7X2qxPerm7viy8phPjyO10KT5cXXsrWIS4HE9awU8Mga1
+         bIFyv/6jW5b9oe/ugmL6JQsQfkrhMTpPOTpsujNaCL2i7w8mcB/cRCgHlJIQm65c4q2P
+         +gv24xa4VsVqcS3DsPzZYZ4sOAJ7GJqOURySWfpVfCHegtD+eA5uU0MnYuRxgDfU1fwd
+         Yjmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792469832; x=1793074632;
+        d=1e100.net; s=20260707; t=1792470491; x=1793075291;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=y3El/zgkrIeOwSVM/xohA1VqXQV6ttAXBbNdMdXf5L8=;
-        b=TbRfFoPrUHLW9rYmTSHNCEqsllmeBcDZ8Gk3lQjwqIL3F2M2fDfoPEiGXoq+QM5Z3w
-         DhnynvMGWKZhqWF5z3grKEgh8nHISpqpTPEDOeAmXoBN7H19tWdjY/sBXo6DCJStHtyl
-         JwVQtvDIIjlIFCG1dTNBHCyx1PfrrYGyBL9WarrHN4jIJHvigx+RRTTSATkK6FIZqq/4
-         DPDEK+hRX3oremDIfW2tuKiBQ88UP5895QRDClGrU+9igf1G27pU8PGkV8bjNKJo6/1J
-         xnp0BMFqCc+rSCZbjq4xTtvGj2l5n07fuKrL70VKzVkkD9WGPh8ckihDBn6HbpyGZmRJ
-         3sWg==
-X-Forwarded-Encrypted: i=1; AKwUvBz4hnCU598ZlnGnKdd1gNex6ssevB08cVXU04m2rpsJPvBYqXpKYdToCC42DyLzlnZJCG4EkQw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJC9+1LM6lQSB4pWTTQ7zbYB3YHvduoNllzA15CS01q6T71/B71
-	FQ0bEC4F+mcWFWCmkQcRcPkTGtOnf/WK32ohyawok33/o682yy7yuo/sujk/Iz3spcLkeHdRr7Z
-	orZ1Dhg==
-X-Received: from plsr10.prod.google.com ([2002:a17:902:be0a:b0:2df:a429:6698])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4c4:b0:2df:b510:cebb
- with SMTP id d9443c01a7336-2ea1d5d079bmr7431245ad.6.1792469831159; Mon, 19
- Oct 2026 21:17:11 -0700 (PDT)
-Date: Tue, 20 Oct 2026 04:17:10 +0000
-In-Reply-To: <20261019-bug-net-netns-move-rcu-barrier-v2-2-b6eb7780c492@gmail.com>
+        bh=bmehFgwVRnUa6nikz4hkDREK8DqOmKWW9Zk/XGD2B3A=;
+        b=1woW4zRD1gLw6JF8NRwV5XAm/VxdPcqpyBlcI1Mz0CnNaLYFfGp3d2sXj2kmd7owNd
+         G+pJoMPp25FdeiRC/IkXD0A5e2I+NIH2Z6wrWwP1XmOKk/OF52nc11zHjvBtVwBnUe12
+         36Qt069ws6NXAPbsYmNyBrn+C6Lp+hztb0UX56pslJGvG1v4RBIc3ZsvK2Osg/6rFI1Y
+         j2HsKqcQ1vKFMEOwgGc6QjEgApOjupeG585KUc+sih8wKwBxmCc1eXCMv3paAJW5ND7J
+         An+eGPIopuDnaVKvmcIAHK//bJAeYUGzRL55iwyxImTI9VUFcCyxpEndWmsbXe88Pzhx
+         9KXg==
+X-Forwarded-Encrypted: i=1; AKwUvByjnuRTIkWNa18nKNgCaK8+rbDOZchofyShiptp2hDnBIt3ORCCztU9FUBjHi6MJxw8hlRJ2tc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIP2QpAqAn4G4lF+HB5S4lgYg0Vu9xO8ANBLlTzLOyiJyf9Kh7B
+	u5p3X609wxNtlD+PJwz9IXxiXyJwU2doCMdu9DqxAgWwwFuBtG4VkPpaO5jBrGiM4aNxccDncZW
+	v0BM4qg==
+X-Received: from pfgu40.prod.google.com ([2002:a05:6a00:9a8:b0:887:5ba8:7334])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a8d:b0:899:53a9:1dd9
+ with SMTP id d2e1a72fcca58-8a04d34d8b6mr7973176b3a.57.1792470490721; Mon, 19
+ Oct 2026 21:28:10 -0700 (PDT)
+Date: Tue, 20 Oct 2026 04:28:10 +0000
+In-Reply-To: <20261019230758.2960779-1-joshdon@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,55 +78,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261019-bug-net-netns-move-rcu-barrier-v2-0-b6eb7780c492@gmail.com>
- <20261019-bug-net-netns-move-rcu-barrier-v2-2-b6eb7780c492@gmail.com>
-Message-ID: <atbrOCfiVAJrmUgH@google.com>
-Subject: Re: [PATCH net-next v2 2/3] ipv6: take fib6_sernum from a sequence
- shared by all netns
+References: <20261019230758.2960779-1-joshdon@google.com>
+Message-ID: <atbsxDZecXYSDBqH@google.com>
+Subject: Re: [PATCH] udp: Add noinline_for_tracing annotation for udp{,_v6}_send_skb()
 From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Qiliang Yuan <odys.yuan@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+To: Josh Don <joshdon@google.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 19 Oct 2026 11:31:16 +0800, Qiliang Yuan wrote:
-> A per-cpu IPv6 route of a nexthop object records fib6_sernum of the
-> netns it was created in, and rt6_is_valid() compares it with fib6_sernum
-> of the netns its device belongs to when the route is checked. Every netns
-> starts its fib6_sernum at 1 and increments it on each tree change, so
-> different netns often hold the same value.
+On Mon, 19 Oct 2026 23:07:58 +0000, Josh Don wrote:
+> We hook udp_send_skb() and udp_v6_send_skb() using BPF fentry programs
+> to monitor UDP transmits. Both functions are static and have two
+> callers: udp{,v6}_sendmsg() and udp{,_v6}_push_pending_frames().
 > 
-> When a device moves to another netns, such a route remains usable until
-> nexthop_free_rcu() releases it, and fib6_info_destroy_rcu() queues that
-> callback from inside an RCU callback, after the device has moved. If the
-> fib6_sernum of the new netns matches the cached one in that window,
-> ip6_dst_check() accepts the route and a socket in the old netns keeps
-> sending through a device that now belongs to another netns.
+> After an FDO profile update, udp_v6_send_skb() is now inlined into
+> udpv6_sendmsg(), while an out-of-line copy remains for
+> udp_v6_push_pending_frames(). The fentry program still attaches
+> successfully, but it is silently bypassed for all uncorked sends.
 > 
-> Take every fib6_sernum bump from one sequence shared by all netns, which
-> only hands out values from 2 up: every netns still starts at 1, and 0
-> means there is no sernum to check. Every netns bumps its fib6_sernum
-> when a route is inserted, so before a route through it can be cached,
-> and the new netns does so before the moved device can transmit, when
-> NETDEV_UP adds a route through it. A cached route therefore never
-> matches the fib6_sernum of the netns its device moves to.
-> fib6_new_sernum() callers only hold their own table's tb6_lock, so two
-> tables of one netns can store their values in either order, and
-> fib6_sernum is no longer monotonic per netns. It is only compared for
-> equality, so this costs at most an extra invalidation.
-> 
-> A connected UDP socket in netns A caches a route through an IPv6 nexthop
-> object on a veth. The veth is moved to netns B and brought up with one
-> RTM_NEWLINK, then the socket sends 200000 datagrams. A route is added to
-> and removed from B 0 to 20 times before the move, 63 trials:
-> 
->                                 before     after
->   trials sending after move          1         0
->   datagrams sent after move        251         0
-> 
-> Fixes: 8f34e53b60b3 ("ipv6: Use global sernum for dst validation with nexthop objects")
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> To address this, make both functions noinline explicitly for tracing,
+> as was done for tcp_drop_reason() in commit dbd5e2e79ed8 ("net: tcp:
+> Add noinline_for_tracing annotation for tcp_drop_reason()").
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Unlike tcp_drop_reason(), udp_send_skb() is a hot function as
+inlined by FDO.
+
+Did you see how this change affects to udp_rr performance ?
+
+Also, net-next is closed.
+https://lore.kernel.org/netdev/7a0446eb-8539-4300-ae0b-a3d66a692cbc@redhat.com/
+
+
+> 
+> Assisted-by: LLM
+> Signed-off-by: Josh Don <joshdon@google.com>
+> ---
+>  net/ipv4/udp.c | 4 ++--
+>  net/ipv6/udp.c | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> index b090bd1f59e86..487c8cc8ab206 100644
+> --- a/net/ipv4/udp.c
+> +++ b/net/ipv4/udp.c
+> @@ -1110,8 +1110,8 @@ void udp_set_csum(bool nocheck, struct sk_buff *skb,
+>  }
+>  EXPORT_SYMBOL(udp_set_csum);
+>  
+> -static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
+> -			struct inet_cork *cork)
+> +noinline_for_tracing static int
+> +udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4, struct inet_cork *cork)
+>  {
+>  	struct sock *sk = skb->sk;
+>  	int offset, len, datalen;
+> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+> index 93478d1ad5769..fe92538835176 100644
+> --- a/net/ipv6/udp.c
+> +++ b/net/ipv6/udp.c
+> @@ -1366,8 +1366,8 @@ static void udp6_hwcsum_outgoing(struct sock *sk, struct sk_buff *skb,
+>   *	Sending
+>   */
+>  
+> -static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
+> -			   struct inet_cork *cork)
+> +noinline_for_tracing static int
+> +udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6, struct inet_cork *cork)
+>  {
+>  	struct sock *sk = skb->sk;
+>  	int offset, len, datalen;
+> -- 
+> 2.56.0.212.g129ede20d9-goog
+> 
