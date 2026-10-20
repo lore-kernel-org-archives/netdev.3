@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792465782;
-	b=48oaASsl/+Bc4qlZfEJGh8mniyLvLM7XqgFxT+Nnoqcg2cbz5GOfuHnvdhMTmgKReWhH
-	 7WtILAwrNJH/cG20MJZzjgPLy8Z0wu+F9dvcd+FmsNyKAS8WdQ1ZsKf1fQTc/PZKZVASc
-	 Btzm0PFR48NeYa19Uz/PG4SesZQ5i+X0hVSjPaVSfG3nnxLeUUHB5U+wy/yV9mDuxVxy6
-	 QdoMprsInsPrt61ny9mewHIc4t3mat2YfkwFhbtEIANwUm3S6rcOX/b+Ur/vNyNt07V12
-	 tFNaEkuVIh96UEgEcOPNrl0hFxR8JTvm7UFqP30z2D8HlKLGwiZxFLHRE2qK2P0QScQ==
+	t=1792465791;
+	b=UB4WbiYOjzbkGIHSLoQDuUnGl8c83bohJmTUthGaq+q6X3EURNrFriSpQxCFWSz32ppi
+	 dNAU5X7jNRTLTQY28drcU/tc5HTgu6kNb0oY5Jv8b+W++7IXdsOam+m1YsuYXkFINql8n
+	 r5y1GXgV0wqgR7XXUfIs7wsVGBgvm5bXGAZDgvI0/h5ljYUpHbgdrwu4KFpQqHigI+AU6
+	 tJzPzeBNdd6DQNgfkfTvnnDWuQ/Vma5woZPbC8x6m5l6uLLtfh1ft0HUSQx9vLlyYl3hi
+	 hJh8vDNk+6XrYHEdge8yVWHTmKHVqb6opFo899XUswCxen1qrAC/lh0CMW37Q4y94ZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792465782;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792465791;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=pSsfZH/67Vix+etTbU2mm68hM404RBAzMT3mtugbqvw=;
-	b=WUT63o97LW6GfomnkqTGQ7mJNxnh/bEfu/pjgX5eKbmzHHRZFluKpvNliFNdswhybVfC
-	 oT+D2++CJFXISf4XcS8O978EhHaFJIt2SljvF6nLIrW9EIqAeFGyugTK91tHJRWzCPj2O
-	 1+RAJGGlp4N9kaHWg8UAhJSfIDue8HfRB+ptk5q6fiHXMO+GgMIDxYBXOCDeUaxh6AtNu
-	 SWIxG4YrlSAHT7gNAOs+F3BhGRZS98kgxAcjx5b3oRvtCqGvih8HP1VaS/Kc135B1llIB
-	 BNc8bYJCyTwxAiX3DQX19I6L5jx9gYb5yrMCbzoBmmd+3UCIsktZu8xRS5Ub8yGl6ow==
+	bh=YTnEwrqbClY+qztthSIjAqrp48KfJq8i6dyBJdAnUnc=;
+	b=jcwCZ0hNeYqsxcoogH7B/sWsdI2THMoxxhflZ7NClsmx1fZgKlZfF4ZyP5SRORZLQKzO
+	 O8ba7hPsYFE4C4zbuCwK8tpannMzDBrva1DCdACk55nsIA/xHYYyChZfSK31bOLikyzTV
+	 O7HhrhxVuZCb4wh6lqas6G+N23fTyOT7L0GoL/Zn+90yeqSbD1iYmADV7CQ3+Z7iEt4ZH
+	 a5vxHk5RLDIHaBVK09uTZfzyY5+p9TLZKYr1hXwyReE4mJCiSlIIW2ssp9y9zJFchk7zk
+	 BGuhODzAL2xAUhCMBW4jvjtt55LulL8iJtVQxTKFxZjv9Anwk3oh2aJ6A26EoLqJBvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gHldU58j;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XEKbZmvW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40E60A263F;
-	Tue, 20 Oct 2026 03:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCCC606AF54;
+	Tue, 20 Oct 2026 03:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gHldU58j
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EF61F000CA;
-	Tue, 20 Oct 2026 03:09:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XEKbZmvW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F23C1F000D0;
+	Tue, 20 Oct 2026 03:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792465781;
-	bh=pSsfZH/67Vix+etTbU2mm68hM404RBAzMT3mtugbqvw=;
+	s=k20260515; t=1792465791;
+	bh=YTnEwrqbClY+qztthSIjAqrp48KfJq8i6dyBJdAnUnc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gHldU58jDw34NUt1A5amUehuODtpwB3ovBHIefKGwDYLkFsOKGv6HiYRiAmMTwDk3
-	 coOUui0+6bRGL8lQqbZAVrlLx5nSg9n2GkCo5QNuzxqyTKzmJwUeRDFkuq94jXpPdG
-	 U/0sOZyccKc2myEDxf0ZLWSlVAzWp+URrImaZzR6j5jn8pdKe0l+NJ9LygUalF6PML
-	 5tsaFhratMbYzWpMh4f9+VjSGUXpp8p9u8zYOSgLqmIvAhA+QoFZOCstZ4N53S/Ups
-	 eLIIbwBpC2R5/fpS4W+gD7Fbx6h1t7sygRLCvOYJlaczBgfjAefS88S1GlkoBAHKbD
-	 RDEHtXdnDzm7Q==
-Subject:
- Re: [PATCH net-next v14 03/12] dpll: add basic SiTime SiT9531x support
+	b=XEKbZmvWLH7j5eOauzcXAL8MS5xYGY+G9EztGIAMD+2fxgWPOre3OPGOAkkusV2iS
+	 wgHWLM8c02lywHGZXHKnRHQO8R6o0TjtmJbt30VsnexfvCif2vap0Pa0MZ9ImlRKxN
+	 aEe9g2d756bS3cmv6W06UdjR8KifwEegD0NJbUpzQTHFlXDmLf89WZaXLCWiZSyrfF
+	 Nrd/O3I62Hr6u7RXrAYEfGdrflalDf8eOdPPTs3bVOIgcIQbfnchfOLXlQRL3tInnr
+	 Hr1FGEWvjMsfmG7xZzHnW7Kz2eLCzCfvlGGSCgwZt95iScppC2kOzfLUO+VKeR5dzC
+	 dEo7NJL4UNKbg==
+Subject: Re: [PATCH net-next v14 09/12] dpll: sit9531x: implement output pin
+ state on a DPLL
 From: netdev-bot+sashiko@kernel.org
 To: arouhi@sitime.com
 Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
@@ -50,10 +50,10 @@ Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  prabhakar.mahadev-lad.rj@bp.renesas.com, cjubran@nvidia.com,
  Oleg.Zadorozhnyi@devoxsoftware.com, devicetree@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 20 Oct 2026 03:09:40 +0000
-Message-ID: <179246578013.3135.1593003347944416304@kernel.org>
-In-Reply-To: <20261016005823.13690-4-arouhi@sitime.com>
-References: <20261016005823.13690-4-arouhi@sitime.com>
+Date: Tue, 20 Oct 2026 03:09:49 +0000
+Message-ID: <179246578976.3135.2089146013224508142@kernel.org>
+In-Reply-To: <20261016005823.13690-10-arouhi@sitime.com>
+References: <20261016005823.13690-10-arouhi@sitime.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,10 +67,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 3 · Low: 3 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,193 +78,300 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The binding
-  (Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml)…
-- [Medium] The page-selector cache recovery does not cover every case.
-- [Low] In sit9531x_dev_probe(), the XIN/XO reference is enabled with
-  devm_clk_get_optional_enabled() (line 227) before the reset GPIO is…
+- [Medium] In sit9531x_output_hiz_write() (drivers/dpll/sit9531x/core.c),
+  un-mute does not undo mute.
+- [Medium] In sit9531x_dpll_output_pin_state_on_dpll_set(), a CONNECTED
+  request is answered with success without running the un-mute whenever…
+- [Medium] The new no-op short-circuit can report success while the
+  output system is still in PRG_CMD with its loops open.
+- [Low] The commit message describes the register writes inaccurately in
+  three ways.
+- [Low] Two kernel-docs in drivers/dpll/sit9531x/dpll.c do not match the
+  implementation.
+- [Low] The commit message promises that "A request that fails after some
+  of its writes landed still announces the change, so a subscriber is…
+
+Pre-existing issues:
+- [Low] If the first write in sit9531x_prg_enter()
+  (SIT9531X_DEBUG_UNLOCK_VAL to SIT9531X_REG_OUTSYS_DEBUG) reports an…
 
 --
 
-dpll: add basic SiTime SiT9531x support
+dpll: sit9531x: implement output pin state on a DPLL
 
-This adds an I2C driver for the SiTime SiT9531x clock generator. It has a
-paged regmap configuration and page:offset register accessors. Probe reads
-the XO rate, releases the optional reset line and identifies the variant
-from page 0 offset 0x02.
+This adds state_on_dpll_get/set callbacks for sit9531x output pins.
+DISCONNECTED mutes an output by forcing its pads to Hi-Z, and CONNECTED
+releases the override. The patch also starts registering output pins with
+the DPLL core.
+
+> The force bit and the state bit are separate, and a pad follows the loaded
+> configuration while the force bit is clear, so both are read to decide
+> whether an output is muted and both are written to change it.  Which of
+> the four register banks applies depends on the slot and on whether the pad
+> is single-ended or differential.
+
+[Severity: Low]
+Is this description accurate? A few parts of it don't match the code.
+
+The un-mute branch of sit9531x_output_hiz_write() only clears the MASK
+(force) bit. It never writes STATE.
+
+Only the read side, sit9531x_output_forced_hiz(), looks at
+sitdev->out[].cmos. Mute and un-mute both write all three pairs (DIFF,
+CMOS OutP, CMOS OutN), whatever the output's wiring.
+
+sit9531x_output_get_hiz_regs() uses five mask/state register pairs
+(DIFF_07, SE_07, SEN_07, DIFF_811, SE_811), not four banks.
 
 > diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> new file mode 100644
-> index 0000000000000..20ccf024077bc
-> --- /dev/null
+> index 875a5fe783d5c..9aa0d327b6bf6 100644
+> --- a/drivers/dpll/sit9531x/core.c
 > +++ b/drivers/dpll/sit9531x/core.c
-> @@ -0,0 +1,320 @@
+
+[ ... ]
+
+> @@ -622,6 +601,251 @@ static int sit9531x_prg_commit(struct sit9531x_dev *sitdev)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Enter the output-system programming state: unlock the debug
+> + * registers on Page 3 and issue the PRG_CMD state command.  Register
+> + * writes that reconfigure the output system only take effect when
+> + * they are made inside this state.
+> + */
+> +static int sit9531x_prg_enter(struct sit9531x_dev *sitdev)
+> +{
+> +	int rc;
+> +
+> +	rc = sit9531x_write_u8(sitdev, SIT9531X_REG_OUTSYS_DEBUG,
+> +			       SIT9531X_DEBUG_UNLOCK_VAL);
+> +	if (rc)
+> +		return rc;
+
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch. The
+previous patch's sit9531x_prg_enter() had the same early return, and this
+patch only moves it.
+
+If this first write reports an error but the transfer still reached the
+part, does the output-system debug key stay unlocked? Nothing on this path
+writes SIT9531X_DEBUG_LOCK_VAL back. The key would stay open until the next
+sequence that runs sit9531x_prg_commit().
+
+> +
+> +	rc = sit9531x_write_u8(sitdev, SIT9531X_REG_PRG_DIR_GEN,
+> +			       SIT9531X_PRG_CMD_STATE);
+
+[ ... ]
+
+> +static int sit9531x_output_hiz_write(struct sit9531x_dev *sitdev, u8 slot,
+> +				     bool mute)
+> +{
+> +	u8 mask[SIT9531X_HIZ_PAIRS], state[SIT9531X_HIZ_PAIRS];
+> +	struct sit9531x_hiz_pair p[SIT9531X_HIZ_PAIRS];
+> +	int i, rc, undo_rc;
+> +
+> +	sit9531x_output_get_hiz_regs(slot, p);
+> +
+> +	if (!mute) {
+> +		for (i = 0; i < SIT9531X_HIZ_PAIRS; i++) {
+> +			rc = sit9531x_hiz_set_bit(sitdev, p[i].mask, p[i].bit,
+> +						  false);
+> +			if (rc)
+> +				return rc;
+> +		}
+> +		return 0;
+> +	}
+> +
+> +	/*
+> +	 * Remember every pair as it was: if the mute fails part-way, that
+> +	 * is what the pad goes back to -- which may already be a mute, from
+> +	 * an earlier request or from the loaded profile.
+> +	 */
+> +	for (i = 0; i < SIT9531X_HIZ_PAIRS; i++) {
+> +		rc = sit9531x_read_u8(sitdev, p[i].state, &state[i]);
+> +		if (rc)
+> +			return rc;
+> +		rc = sit9531x_read_u8(sitdev, p[i].mask, &mask[i]);
+> +		if (rc)
+> +			return rc;
+> +	}
+
+[Severity: Medium]
+Does un-mute actually undo a mute here? The mute path reads each pair's
+MASK and STATE first, because a pair "may already be a mute, from an
+earlier request or from the loaded profile". Those values are only used
+by the rollback.
+
+The !mute branch above clears MASK on all three pairs unconditionally. So
+any Hi-Z override the loaded profile set on one of these pads is lost
+after a DISCONNECTED -> CONNECTED cycle.
+
+Take a CMOS output where the profile forces only one pad to Hi-Z. It still
+decodes as CONNECTED, because sit9531x_output_forced_hiz() needs both pads
+forced. After a mute/un-mute round trip, that pad follows its
+unoverridden configuration. The getter reports CONNECTED both before and
+after.
+
+The kernel-doc of sit9531x_output_enable() says the device drives the
+output "again as the loaded profile configures it". That doesn't hold in
+this case. Could the pre-mute MASK/STATE bits be kept and restored on
+un-mute?
+
+[ ... ]
+
+> diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
+> index aa021b374c45c..f6e76318a567a 100644
+> --- a/drivers/dpll/sit9531x/dpll.c
+> +++ b/drivers/dpll/sit9531x/dpll.c
+> @@ -831,10 +831,140 @@ sit9531x_dpll_output_pin_frequency_set(const struct dpll_pin *pin,
+>  	return rc;
+>  }
+>  
+> +/*
+> + * sit9531x_dpll_output_pin_state_on_dpll_get - get output pin state
+> + *
+> + * reports CONNECTED when the output is driven and
+> + * DISCONNECTED when it has been muted via sit9531x_output_disable().
+> + */
 
 [ ... ]
 
 > +/*
-> + * Everything the device holds can change without the driver writing it,
-> + * so nothing here is cacheable except the page selector.  Caching that
-> + * one spares a read of it before every access: the range code selects
-> + * the page through a read-modify-write, and with no cache that read goes
-> + * to the bus each time.
+> + * sit9531x_dpll_output_pin_state_on_dpll_set - mute/un-mute an output
 > + *
-> + * The cached value is only as good as the last transfer, though.  A
-> + * transfer that fails can leave the part on another page than the cache
-> + * records, so every accessor drops the entry on an error and the next
-> + * access reads the selector again.
+> + * Forces Hi-Z on the output through the Hi-Z force/state register pairs
+> + * of its slot, the differential and the single-ended one.
+> + *   CONNECTED    -> enable (release the override, the device drives it)
+> + *   DISCONNECTED -> disable (force Hi-Z)
 > + */
-> +static bool sit9531x_volatile_reg(struct device *dev __maybe_unused,
-> +				  unsigned int reg)
-> +{
-> +	return reg != SIT9531X_PAGE_SEL;
-> +}
-
-[ ... ]
-
-> +static void sit9531x_page_cache_drop(struct sit9531x_dev *sitdev)
-> +{
-> +	regcache_drop_region(sitdev->regmap, SIT9531X_PAGE_SEL,
-> +			     SIT9531X_PAGE_SEL);
-> +}
-
-[ ... ]
-
-> +int sit9531x_read_u8(struct sit9531x_dev *sitdev, unsigned int reg,
-> +		     u8 *val)
-> +{
-
-[ ... ]
-
-> +	rc = regmap_read(sitdev->regmap, vreg, &tmp);
-> +	if (rc) {
-> +		sit9531x_page_cache_drop(sitdev);
-
-[Severity: Medium]
-Does this recovery still work when something other than these accessors
-uses the map?
-
-The selector is the only cached register, so _regmap_select_page() skips
-the selector write when the cached page already matches. _regmap_write()
-also updates the cache before the bus write and does not roll it back on
-failure:
-
-drivers/base/regmap/regmap.c:_regmap_write() {
-    ...
-	if (!map->cache_bypass && !map->defer_caching) {
-		ret = regcache_write(map, reg, val);
-    ...
-	ret = map->reg_write(context, reg, val);
-    ...
-}
-
-So a failed selector write leaves the cache at page P while the chip
-stays on page Q.
-
-sit9531x_page_cache_drop() only runs after regmap_read() has released
-map->lock, and regcache_drop_region() then takes the lock again. Could
-another map user take map->lock in that window, trust the stale page P,
-and access page Q?
-
-Map users that bypass sit9531x_read_u8(), sit9531x_write_u8() and
-sit9531x_update_pll_u8() never drop the entry. For example,
-regmap_read_debugfs() calls regmap_read() directly and only prints 'X'
-on error:
-
-drivers/base/regmap/regmap-debugfs.c:regmap_read_debugfs() {
-    ...
-			ret = regmap_read(map, i, &val);
-			if (ret == 0)
-				snprintf(buf + buf_pos, count - buf_pos,
-					 "%.*x", map->debugfs_val_len, val);
-			else
-				memset(buf + buf_pos, 'X',
-				       map->debugfs_val_len);
-    ...
-}
-
-Suppose a selector write fails while the debugfs registers file is being
-dumped, and the dump stops before the next page switch. Would the
-driver's next access to page P then skip the selector write and silently
-read or write the same offset on page Q?
-
-The comment above sit9531x_volatile_reg() says "every accessor drops the
-entry on an error". That seems to hold only while the driver's accessors
-are the only users of the map.
-
-[ ... ]
-
-> +static int sit9531x_dev_probe(struct sit9531x_dev *sitdev)
-> +{
-
-[ ... ]
-
-> +	xtal_clk = devm_clk_get_optional_enabled(sitdev->dev, "xtal");
-> +	if (IS_ERR(xtal_clk))
-> +		return dev_err_probe(sitdev->dev, PTR_ERR(xtal_clk),
-> +				     "Failed to get xtal clock\n");
 
 [Severity: Low]
-The XO is enabled here, before the steps that can defer or fail. These
-include devm_gpiod_get_optional() for the reset line, which returns
--EPROBE_DEFER if RESETB sits on a GPIO expander that has not probed yet,
-and the variant ID read and match.
+This isn't a bug, but these two comments don't match the implementation.
 
-On those paths devres calls clk_disable_unprepare() on the xtal clock.
-If the XO is a gateable clock that the bootloader left running, with a
-CCF enable_count of 0 before probe, does this gate the reference of a
-chip that is already running from efuse or a pre-probe blob?
+sit9531x_output_hiz_write() writes three pairs (DIFF, CMOS OutP and CMOS
+OutN), not two. For slots 8-11, CMOS OutN is a second bit inside the
+DIFF_811 registers (slot - 8 + SIT9531X_HIZ_SEN_811_SHIFT).
 
-The PLLs would then lose lock, and the outputs would glitch or stop on
-every deferral cycle until probe succeeds.
+The getter comment says DISCONNECTED means the output was muted via
+sit9531x_output_disable(). However, sit9531x_out_state_fetch() also
+reports DISCONNECTED for a Hi-Z override the loaded profile left at
+probe.
 
-Could the resources that can defer be looked up before the clock is
-enabled and reset is deasserted? For example, the reset GPIO could be
-requested with GPIOD_ASIS.
+> +static int
+> +sit9531x_dpll_output_pin_state_on_dpll_set(const struct dpll_pin *pin,
 
 [ ... ]
 
-> +	sitdev->reset_gpio = devm_gpiod_get_optional(sitdev->dev, "reset",
-> +						     GPIOD_OUT_LOW);
-> +	if (IS_ERR(sitdev->reset_gpio))
-> +		return dev_err_probe(sitdev->dev, PTR_ERR(sitdev->reset_gpio),
-> +				     "Failed to request reset gpio\n");
-> +	if (sitdev->reset_gpio)
-> +		fsleep(10000);	/* internal boot after release */
+> +	mutex_lock(&sitdev->multiop_lock);
 > +
-> +	rc = sit9531x_read_variant_id(sitdev, &variant_id);
-> +	if (rc)
-> +		return rc;
+> +	/*
+> +	 * The core forwards a request for the state the output is already
+> +	 * in.  The Hi-Z pairs say what the pad does now, so read them and
+> +	 * answer such a request from them rather than run the programming
+> +	 * sequence, which holds the output loops unlocked for the 100 ms its
+> +	 * commit takes and would change nothing.  A read that fails leaves
+> +	 * the request to the sequence and its own read-back.
+> +	 */
+> +	if (!sit9531x_output_state_refresh(sitdev, dpin->id) &&
+> +	    sitdev->out[dpin->id].enabled == enable) {
+> +		mutex_unlock(&sitdev->multiop_lock);
+> +		return 0;
+> +	}
 
 [Severity: Medium]
-The binding in sitime,sit95316.yaml documents vdd-supply, vddin-supply,
-vdds-supply and the vddo*-supply rails, and its example wires several of
-them. The driver never gets or enables any regulator, and that is still
-true at the end of the series.
+Can this early return leave a CMOS pad forced to Hi-Z while every
+CONNECTED request reports success?
 
-If one of these rails is a switchable regulator that is off at boot,
-sit9531x_dev_probe() releases reset and reads the variant ID over I2C
-from an unpowered part. Wouldn't probe then fail?
+For a CMOS output, sit9531x_output_forced_hiz() reports muted only when
+both pads are forced. It stops as soon as CMOS_P isn't forced:
 
-A rail might instead be left on by the bootloader or regulator-boot-on,
-without being always-on and with no other consumer. Nothing holds a
-reference to it, so regulator_late_cleanup() would switch it off:
+	rc = sit9531x_hiz_pair_forced(sitdev, &p[SIT9531X_HIZ_CMOS_P], muted);
+	if (rc || !*muted)
+		return rc;
 
-drivers/regulator/core.c:regulator_late_cleanup() {
-    ...
-	if (rdev->use_count)
-		goto unlock;
-    ...
-		ret = _regulator_do_disable(rdev);
-    ...
-}
+So enabled here means "not every CMOS pad is forced", not "no override is
+left".
 
-Would that cut power to the running clock generator? It would lose the
-efuse or pre-probe configuration that the driver avoids resetting for,
-and downstream consumers would lose their reference clocks.
+The un-mute branch of sit9531x_output_hiz_write() clears MASK in the order
+DIFF, CMOS_P, CMOS_N. It returns on the first failure without rolling
+back. Suppose the CMOS_N read-modify-write fails after CMOS_P was released:
 
-Should probe get and enable the documented supplies before releasing
-reset?
+sit9531x_output_enable()
+  sit9531x_output_hiz_write(mute=false)   CMOS_P released, CMOS_N fails
+  sit9531x_prg_commit()                   commits the partial result
+  sit9531x_output_forced_hiz()            decodes enabled = true
+
+The callback returns an error and notifies CONNECTED. A CONNECTED retry
+then sees enabled == enable here and returns 0 without calling
+sit9531x_output_enable(). CMOS_N stays forced on every later retry.
+
+The same thing happens if a mute's CMOS_N write fails and its CMOS_P
+rollback also fails, leaving P forced and N released. Only a DISCONNECTED
+followed by a CONNECTED clears it.
+
+[Severity: Medium]
+Could the same early return also skip re-locking the output loops?
+
+Suppose the Hi-Z writes in sit9531x_output_enable() or
+sit9531x_output_disable() succeed, but all SIT9531X_LOOP_LOCK_TRIES writes
+of SIT9531X_LOOP_LOCK in sit9531x_prg_commit() fail. prg_commit() only
+logs "output loops left unlocked after programming" and returns rc2.
+
+If the bus recovers before the read-back that follows the msleep(100),
+the cache shows the requested state, state_stale is cleared, and the
+callback returns an error.
+
+A retry of the same request then takes this early return and returns 0
+without running prg_enter()/prg_commit(). The loops stay open until some
+unrelated programming sequence runs. Without this short-circuit, a retry
+would re-run the sequence and re-lock them. Nothing records that the exit
+from the programming state failed.
+
+[ ... ]
+
+> +	if (rc) {
+> +		struct dpll_pin *dpll_pin;
+> +
+> +		NL_SET_ERR_MSG(extack, "Failed to set output pin state");
+
+[ ... ]
+
+> +		dpll_pin = READ_ONCE(dpin->dpll_pin);
+> +		if (changed && dpll_pin)
+> +			__dpll_pin_change_ntf(dpll_pin);
+> +	}
+
+[Severity: Low]
+The commit message says:
+
+  A request that fails after some of its writes landed still announces
+  the change, so a subscriber is not left with the old state
+
+Does that hold when the read-back keeps failing? If the Hi-Z read-back in
+sit9531x_output_enable()/disable() fails, state_stale is set and this
+code calls __dpll_pin_change_ntf(). That builds the message synchronously:
+
+__dpll_pin_change_ntf()
+  dpll_pin_event_send()
+    dpll_cmd_pin_get_one()
+      dpll_msg_add_pin_dplls()
+        dpll_msg_add_pin_on_dpll_state()
+          sit9531x_dpll_output_pin_state_on_dpll_get()
+            sit9531x_output_state_refresh()
+
+If that second read also fails, the getter returns an error and
+dpll_pin_event_send() cancels the message without multicasting it:
+
+	ret = dpll_cmd_pin_get_one(msg, pin, NULL);
+	if (ret)
+		goto err_cancel_msg;
+
+The return value of __dpll_pin_change_ntf() is ignored here, and no
+pending notification is recorded. The periodic poll doesn't look at
+outputs. After the bus recovers, would subscribers keep the old state
+until some other operation sends a notification?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016005823.13690-1-arouhi%40sitime.com
