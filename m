@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792479395;
-	b=HQhhCyQeSsJXIiqOTZmO2ZEYzoXGIeCxuxuWPHRaln2etQOVxKM0ze8AHAO1KscA6qJA
-	 ofrQTBNcivumEEAkA0f16epOs19A0aFTMSJWo+W7FXgQtpEN5vBM49DCLI38d3oDn4MPr
-	 UkYSqAVmsEwFm5I/7Bll6BTGvutZsh+IXYK6EbcKNCvDvQzh4MLrbS3ETciSJkoJERDc1
-	 N3qM6wZOJ3ZJn3fPPoEfKRWcnIhXYTRcy27h/rCnmzFi5S4PSXFn9NNOfr3zATf/qtiPW
-	 GwAWsBE36x8YXd2p3gN47YWamgcbjQHcyVwnljl3WxHXuv5aJRh1R2BLDcObLRWw5dg==
+	t=1792479426;
+	b=G1A3z0aQ+BsgNAFO1h3/wMZs3Efn76SrcIkXAdsJpG6VTqXMxDDOFjbDjRdPvt0pENZO
+	 Crxzb48mIworK9HaxEUoTfKxaz6QFCXgzK8w8O9Uo/ZZOqoss/GaqdFOmleJwMUWwsysj
+	 0gCY/h8ODfMpQMBiP0L0WsWgwz1XfDVzI25PWoOz7SCCjsE9pAaZRh5Vq0TQRE2tWVpnk
+	 MwUuDpuYaQOtNw5N/WDiyKCDx0Zf15+jh4CMQLklF06bxtOX3KiofSL+UwcfRnLVu1taW
+	 F66r50UeBgGPJWXOJ34r8+5ZEEYTTGDlLLJB+N3ZccqG1CCnf87SZ24gZo4cVv8uOng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792479395;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792479426;
 	h=Received:Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
 	 X-sashiko-severity:Content-Type:Content-Transfer-Encoding:
 	 MIME-Version;
-	bh=5tC1oPv5bw067d36adR/tx+nkyFn+JAeQtEauC9q75I=;
-	b=finF+pyUDZ4icpq0a2PJri37hGXxwQYfFaHis1I3JfBdaQTt0kCFp8LFTnhNGrP2riuc
-	 E85I8Y3ynUHmhZnldYF2kqkYzJf6UA+9OVQsWwdZ+sxP+y41HMumIhweUO3Fo/nTEBMOk
-	 /QeuOXz4sPdSBNSKFxAuSiFbg3KEcaj23K9eM++d1poF8oqm+ICtEKM6EHk5P4C4Dq56q
-	 f6GvLDhpFhOzgQ1Mk9Cn31kT8iwTY1vpeJx1dl3NUco+9Qif7XYy18Mo6XrP+ypusIie1
-	 iYkm+lfeW2+cMyfSI0iofH6Y96IKZaMRyBpti6JLB6miBelBoRveJl71VrZauuKFuHA==
+	bh=iG0aUIBeV/zYIg4N92+3vkhTNWz/ar0q70g/y98WEaw=;
+	b=VkRiIrG19E7eJ+Gf2NAvDla44UUUVnAO3dbjqvSTM9R42BvH5abFPlvUh8pvdxpJo+s/
+	 XF2uGwi/FxiLyNnhNy3XvSaiM0Z5rST0EH7y96gHLB1rKVkji6VoU+jmgLp1PbsNu5iHn
+	 5QcylTF48AAGUyThCXBIT4rhmGjTEKoVK+oaDsv7DIyQtWKkQXjTRyvtZJ8vywg+AwnQ7
+	 udGBLCy3rmK5wEcg3uqWsy4u6q5RVzAkWJt5fXDVlLo4IKWH+VBRYPgT6LpPJWS1g5uLi
+	 1cKNjuRWD5Yzw6DfxIBMMtAGRidIfgyWVrb+SVXHHoe//gJJw7Dpa+OLRa8TG1wOrQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9CE606A31E;
-	Tue, 20 Oct 2026 06:56:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D22D1F000C4;
-	Tue, 20 Oct 2026 06:56:33 +0000 (UTC)
-Subject: Re: [PATCH net-next 1/3] ipv4: draw rt_genid from a sequence shared
- by all netns
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C14B60A2617;
+	Tue, 20 Oct 2026 06:57:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39ECE1F000C4;
+	Tue, 20 Oct 2026 06:57:05 +0000 (UTC)
+Subject: Re: [PATCH net-next 2/3] ipv6: take fib6_sernum from a sequence
+ shared by all netns
 From: netdev-bot+sashiko@kernel.org
 To: odys.yuan@gmail.com
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org, idosch@nvidia.com,
  razor@blackwall.org, kuniyu@google.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Tue, 20 Oct 2026 06:56:03 +0000
-Message-ID: <179247936363.3135.8282502053822981062@kernel.org>
+Date: Tue, 20 Oct 2026 06:56:34 +0000
+Message-ID: <179247939485.3135.13096111463721138716@kernel.org>
 In-Reply-To:
- <20261016-bug-net-netns-move-rcu-barrier-v1-1-4157d798658f@gmail.com>
+ <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
 References:
- <20261016-bug-net-netns-move-rcu-barrier-v1-1-4157d798658f@gmail.com>
+ <20261016-bug-net-netns-move-rcu-barrier-v1-2-4157d798658f@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,100 +65,106 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch says it stops cached routes from matching another
-  netns's genid, but that guarantee breaks once the 32-bit counter wraps.
+- [Medium] The patch makes every netns take fib6_sernum (and fn_sernum)
+  from one static counter, fib6_sernum_seq.
 
 --
 
-ipv4: draw rt_genid from a sequence shared by all netns
+ipv6: take fib6_sernum from a sequence shared by all netns
 
-This patch takes every IPv4 rt_genid from one global atomic sequence
-instead of a per-netns counter starting at 0. That includes the initial
-value set in rt_genid_init(). The aim is that a cached route never
-matches the rt_genid of another netns after its device moves, which
-closes the window before the deferred dst_dev_put() for nexthop-backed
-routes.
+This patch replaces the per-netns fib6_sernum counter with one static
+sequence, fib6_sernum_seq, that all netns draw from, including for the
+initial value. The goal is that a nexthop pcpu route cached against one
+netns can no longer match the fib6_sernum of another netns after its
+device moves.
 
-> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> index 595a3b7f17830..bd52d14476f6f 100644
-> --- a/net/ipv4/route.c
-> +++ b/net/ipv4/route.c
-> @@ -393,6 +393,20 @@ static inline int ip_rt_proc_init(void)
+> diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+> index 0dc6ebee6e568..c66466be64451 100644
+> --- a/net/ipv6/ip6_fib.c
+> +++ b/net/ipv6/ip6_fib.c
+> @@ -89,13 +89,21 @@ static void fib6_walker_unlink(struct net *net, struct fib6_walker *w)
+>  	write_unlock_bh(&net->ipv6.fib6_walker_lock);
 >  }
->  #endif /* CONFIG_PROC_FS */
->  
+>
 > +/*
-> + * Draw every rt_genid from one sequence shared by all netns. A route keeps
-> + * the genid of the netns it was created in, and is checked against the netns
-> + * its device is in now. Distinct values make that check fail once the device
-> + * has moved to another netns.
+> + * Draw every fib6_sernum from one sequence shared by all netns, so that a
+> + * route cached against one netns never matches the sernum of another one,
+> + * e.g. after its device moved.
 > + */
-> +static atomic_t rt_genid_seq;
+> +static atomic_t fib6_sernum_seq;
 > +
-> +void rt_genid_bump_ipv4(struct net *net)
-> +{
-> +	atomic_set(&net->ipv4.rt_genid, atomic_inc_return(&rt_genid_seq));
-> +}
+>  static int fib6_new_sernum(struct net *net)
+>  {
+> -	int new, old = atomic_read(&net->ipv6.fib6_sernum);
+> +	int new, old = atomic_read(&fib6_sernum_seq);
+>
+>  	do {
+>  		new = old < INT_MAX ? old + 1 : 1;
+> -	} while (!atomic_try_cmpxchg(&net->ipv6.fib6_sernum, &old, new));
+> +	} while (!atomic_try_cmpxchg(&fib6_sernum_seq, &old, new));
+> +	atomic_set(&net->ipv6.fib6_sernum, new);
+>
+>  	return new;
+>  }
 
 [Severity: Medium]
-Does the uniqueness guarantee still hold once rt_genid_seq wraps?
+The comment says a cached route "never matches the sernum of another one".
+Does the code guarantee that once fib6_sernum_seq wraps?
 
-The commit message says:
+The shared counter still wraps to 1 at INT_MAX:
 
-  "so that a cached route never matches the rt_genid of another netns."
+    new = old < INT_MAX ? old + 1 : 1;
 
-rt_genid_seq is a 32-bit atomic_t shared by every netns. Its values are
-only distinct modulo 2^32, and nothing stops it from handing out a value
-that a live netns or a cached rtable still holds.
+Nothing checks whether the reissued value is still held by a live netns, a
+fib6_node, or a cached dst.
 
-Every rt_cache_flush() in any netns advances the counter. One source is
-ipv4_sysctl_rtcache_flush(), which calls rt_cache_flush(net) on every
-write to /proc/sys/net/ipv4/route/flush with no rate limit.
-sysctl_route_net_init() exposes that sysctl in netns owned by
-non-initial user namespaces:
+Validation has not changed. ip6_rt_pcpu_alloc() records only the value:
 
-net/ipv4/route.c:sysctl_route_net_init() {
-    ...
-		/* Don't export non-whitelisted sysctls to unprivileged users */
-		if (net->user_ns != &init_user_ns) {
-			if (tbl[0].procname != ipv4_route_flush_procname)
-				table_size = 0;
-		}
-    ...
-}
+    if (f6i->nh)
+        pcpu_rt->sernum = rt_genid_ipv6(dev_net(dev));
 
-After a wrap, can this sequence still happen?
+rt6_is_valid() then compares it for plain equality against the device's
+current netns:
 
-  rt_dst_alloc() stamps a route through dev D in netns A with genid g
-  D moves to netns B
-  B's latest bump (e.g. a fib_netdev_event() flush on link up) is g
-  ipv4_dst_check()
-    rt_is_expired()
-      rth->rt_genid != rt_genid_ipv4(dev_net_rcu(rth->dst.dev))  /* false */
-    route is accepted
+    return rt6->sernum == rt_genid_ipv6(dev_net(rt6->dst.dev));
 
-If so, a socket in A keeps sending through D until the deferred RCU
-teardown reaches dst_dev_put(). The chance per move is small (about
-2^-32, and userspace can't see the counter), but the "never" in the
-commit message is not strictly true.
+and ip6_dst_check() returns the dst on a match:
+
+    if (rt->sernum)
+        return rt6_is_valid(rt) ? dst : NULL;
+
+After a wrap, couldn't netns B be given the same value S that a socket in
+netns A cached? If A's device then moves into B while B holds S, the
+original problem comes back in the window before nexthop_free_rcu() runs.
+
+This patch also links netns that used to be independent. Each successful
+fib6_add(), fib6_flush_trees(), the link up/down sync paths, and
+rt6_insert_exception() (reachable from a received ICMPv6 Packet Too Big)
+now advance the shared counter. Any netns can therefore push it through a
+full cycle, including one owned by an unprivileged user namespace.
+
+Before this patch, netns N could only reissue an old value after N itself
+made about 2^31 draws. Now, once the global counter has wrapped, can a
+route add in N draw exactly N's current fib6_sernum, or a value still held
+by a stale cookie? In that case the cached dsts that fib6_add() should
+invalidate would still pass ip6_dst_check() and keep using the old route.
+
+A hit needs about 2^31 draws plus an exact match, so it is far rarer than
+the per-netns collisions this patch removes. The commit message makes the
+same absolute claim, though:
+
+    so that a cached route never matches the fib6_sernum of
+    another netns.
 
 The later patch in this series, "net: remove rcu_barrier() from
-__dev_change_net_namespace()", removes the barrier because "rt_genid and
-fib6_sernum are now unique across netns". After that change, genid
-equality modulo 2^32 becomes the only protection for all cached IPv4
-routes through a moved device, not just the nexthop-backed ones.
+__dev_change_net_namespace()", relies on this as well. It cites that
+"rt_genid and fib6_sernum are now unique across netns" as its reason for
+dropping the barrier. The end of the series doesn't seem to add a wrap
+guard, a wider generation, or a check on the originating netns.
 
-Would it make sense to state the modular limit in the commit message,
-widen the genid, or have rt_is_expired() compare the originating netns
-directly instead of relying only on genid equality?
-
-> +EXPORT_SYMBOL_GPL(rt_genid_bump_ipv4);
-> +
->  static inline bool rt_is_expired(const struct rtable *rth)
->  {
->  	bool res;
-
-[ ... ]
+Could the comment and the commit message be reworded so they don't claim
+uniqueness? Or, if the rcu_barrier() removal depends on uniqueness, could
+the series handle the wrap explicitly?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-bug-net-netns-move-rcu-barrier-v1-0-4157d798658f%40gmail.com
