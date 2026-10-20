@@ -1,61 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792461572;
-	b=ExVbR1Y5wyfCWhjclZTbBkqMdfuyVFOqy7wJnKbuts+WvjKeBzaW3otkwRKWtbcNVB9z
-	 IboGpIBMtv8UDkoO+jxUjFITUTzLmvroQ1IeEPbAWjH9KUHw9U0RjFTY56TE1vxRawDhb
-	 mTx3ncKxZ8Huf/rOCSIrHboH8TeCoFygXQiXC+H9Zt6mOvAZxiHgUrc34ZrAsGfyNphYA
-	 fWZ+QtSc6mWDgjFIZAnbHyW9mEoWoTa5kHhmea0ljDeF4MTAQg3w/GfEUvSpFRzLnpd1e
-	 feJv/rl3SZcilSAe2pGtq4tcTAoMCR5xxuPicvEY2ytvokbl9H2mYrlox7tpI7U+Udg==
+	t=1792461637;
+	b=fDLddZD2oAIRPVfl//Wc8NOskz3+E+/BWZQUbqse51bVEjYxv73ww3060N/oo3ITHDrq
+	 3jC0onYIWrinUWhbl++GHASAaOapd5T0qRcS3wvoS1zFgSFAil9dwrj4soNPFAqA2WgUX
+	 SjQBwXsH9M2Li6ilUfBDK+hDe9/YmKEtY42bOwCISARKRuSkPuSQjrfHNEZnvr9ul7QmL
+	 e2v8eREGXbZLYCiQqCeuI7A49bCFMkfYpEuuRiPaxhssF5otSHkutYqGQGxK8TP4Gvycs
+	 iRmERCAtgvLkjcovFAeGK4ElGzDxCHGZ4d/iwlLnEJMw31hC4NwgP9FxJ0sjIe8aaHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792461572;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
-	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
-	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
-	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
-	bh=Y9GqRZMOhEmyaunPLV07nyz61nY08XdqoGvFsPJGpTs=;
-	b=piIwq4Phk1JFenr1IG1IvnoBH/uoS9HBsTDe5L5+eEnsoQhAos/oVfz1RobJIJzEKMXw
-	 9GBkxLdE3uqNFXg+4/a8AlyywdLdar69l5xRclvIKVos7vzp6peaPjVjQzTxzCcmoCRAw
-	 g/syXKem3RDh4U1rPi+ZdNICRvJdNQouK6zLpiiIbVm411LAwS2vhvHW54bUbrdnW1jd+
-	 nCBhBY1tMxx1wEfUc0D5ht9cdSIHG7RB6bB7+djDY0ZcE6DrjCxqyTB6LYh4nxj8R0o9d
-	 DGWMMwdO0G+hZzMQxKeFREKvKAEC3sz33XkBFzFMabsB7qHRrcx3M6vKlIanCcd6olA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792461637;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=JlodduQldZdsStWJrjgdzJgqzFFrar5i3dmdR0/tpuk=;
+	b=vuVSDJGXtkMPlfd6SfxMMZnlAksZkYheTQ4fhzt//N8UG2OSP35Pbp1/+iN56BBHFkmL
+	 2i1X7AJFM//fEFXiZ5mBIqpATpKPOELOyy+iTX3avsjFLaQceSQvycvokKlV6qyOf5oG/
+	 JpcdSY8/3ImUYPDHWzbCHgNoew32RQMamAhbxBAr5uXCMPnR6ZBJre9UjbLHIXps5ILuZ
+	 2/WDKzi8O+rE6IM2HbuNzlOITIAtnx1iieKaSoS2igUsAA9hLiRr9cREVObfgiXDWNo0e
+	 APP4DTwax7pfEmAb4Tx9n04eopol5u/leX2dOc8ETex4ZsQ/4hauzaYB4MEzjQRfEBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=VqoV9gwx;
-	arc=none smtp.remote-ip=115.124.28.1
-Received: from out28-1.mail.aliyun.com (out28-1.mail.aliyun.com [115.124.28.1])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fX22Ah8a;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6B8606A31B;
-	Tue, 20 Oct 2026 01:59:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D6B8606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE345606A319;
+	Tue, 20 Oct 2026 02:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=VqoV9gwx
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1792461561; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
-	bh=Y9GqRZMOhEmyaunPLV07nyz61nY08XdqoGvFsPJGpTs=;
-	b=VqoV9gwx6OYfcEeEvdTj/G+iYx0Gu1LqY5exsI08DHrGdudfuC+aYQtzsK+pJ6D7E79zhKWo/WJOHS9oB4XcdRJEpP1iWPOoQyLdP1xPebF3Xd0NhK4CyTFg7wvNJBYSL6+apif2dxAxg+S9aVpUhIBWgkaPu3rJrDvlSy5qE/TU91vh/+QNZnj+dzJEYrfLXvPHhRAXNT50U0xTIkFhVkSpVDi6TS+iBP4uK/sIWb1xg3lJQLl8PZedx97Zw9V0enTlx7fwWoD8ZUlG8NRm/aqbz1qN6wyc03ogr9h0oR6cpvIb+Jdm8CEKf5jerhj1js1YDGWRunm6r8PNP5HHnA==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1739379|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.687584-0.00403358-0.308383;FP=16199972983251956156|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037071049;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=7;RT=7;SR=0;TI=W4_0.2.3_2125197E_1792461313123_o7001c888;
-Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_2125197E_1792461313123_o7001c888] cluster:ay29) at Tue, 20 Oct 2026 09:59:16 +0800
-Date: Tue, 20 Oct 2026 09:59:16 +0800
-From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-To: "Marc Kleine-Budde" <mkl@pengutronix.de>
-Cc: "linux-can" <linux-can@vger.kernel.org>,
-  "mkl" <mkl@pengutronix.de>,
-  "netdev" <netdev@vger.kernel.org>,
-  "kernel" <kernel@pengutronix.de>,
-  "stable" <stable@vger.kernel.or>,
-  "shawnguo" <shawnguo@kernel.org>,
-  "imx" <imx@lists.linux.dev>
-Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-Message-ID: <294fac9a-da73-4584-92a0-2a1618b10202.chunyuzhiqiang@yinhe.ht>
-Subject: =?UTF-8?B?5Zue5aSN77yaW1BBVENIIG5ldCB2NF0gY2FuOiBkZXY6IGNhbl9maWxsX2luZm8oKTogZG9u?=
-  =?UTF-8?B?J3Qgd2FrZSB1cCBjb250cm9sbGVyIGlmIGludGVyZmFjZSBpcyBkb3du?=
-X-Mailer: [Alimail-Mailagent][W4_0.2.3][null][Chrome]
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fX22Ah8a
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3571F000C4;
+	Tue, 20 Oct 2026 02:00:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792461636;
+	bh=JlodduQldZdsStWJrjgdzJgqzFFrar5i3dmdR0/tpuk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fX22Ah8aZrRJqDcfW+nPRCo2sGrBATBa6L38IXJVuy3esscBe+LDQwt9um8KJVp4v
+	 YQh6HqKf3aEuRWKkURcTmYh3n/6eiBAC8eF/FwfMGtXQR9k35kIxn0V4ctVOq4B9AN
+	 BnP4v4FXaTPFd0jQGkQqr/l2kQkUEvIxF7YmhP9rVgUvFBlSAyfk6UjMVbRr5dTqR6
+	 czsHrahS+ooGy+qDR3u+vK5usX8ZvoHaxAaq8jDbgMAbSuN3d0X28NwR0a3+u6f7WS
+	 w6Z5CcYccQAEEKleHBEZ+n6/nnC4XetXnvNDMzo81KGGr2+qL+yF/XjC64QQmpjiib
+	 Vhqx5p7Zzwbpw==
+Date: Mon, 19 Oct 2026 19:00:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Daniel Zahka" <daniel.zahka@gmail.com>
+Cc: <netdev-bot+sashiko@kernel.org>, <alexanderduyck@fb.com>,
+ <kernel-team@meta.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+ <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+ <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+ <edumazet@kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 2/4] eth: mpnic: report per-queue stats
+Message-ID: <20261019190035.4c3ebf4d@kernel.org>
+In-Reply-To: <DM3QWDZ4B408.2O12B5PXKY8AR@gmail.com>
+References: <20261012-mpnic-counters3-v2-2-8afba81c2d5a@gmail.com>
+	<179189313526.434549.10762925482009523771@kernel.org>
+	<DM3QWDZ4B408.2O12B5PXKY8AR@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,51 +64,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-x-aliyun-im-through: {"version":"v1.0"}
-References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht> <179240547538.3135.2010975389384383545@kernel.org>,<20261019-enchanted-garnet-teal-bc6dad-mkl@pengutronix.de>
-x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
-In-Reply-To: <20261019-enchanted-garnet-teal-bc6dad-mkl@pengutronix.de>
-x-aliyun-mailtrack: {"foreign-track":"0"}
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-SGkgTWFyYywKCj4gQ2FuIHlvdSBhZGQgdGhlIHNhbWUgZm9yIGJvdGggSUZMQV9DQU5fVERDIGFu
-ZCBJRkxBX0NBTl9YTF9UREMuCj4KPiBNYXJjCgpZZXMsIHdpbGwgZG8uIHYyIGdhdGVzIGNhbl90
-ZGNfZmlsbF9pbmZvKCkgb24gbmV0aWZfcnVubmluZygpIGZvciBib3RoCklGTEFfQ0FOX1REQyBh
-bmQgSUZMQV9DQU5fWExfVERDLCBhbmQga2VlcHMgY2FuX2dldF9zaXplKCkgY29uc2lzdGVudC4K
-Cj4gW1NldmVyaXR5OiBMb3ddCj4gVGhpcyBhbHNvIGNoYW5nZXMgd2hhdCB1c2Vyc3BhY2Ugc2Vl
-cyBmb3IgZXZlcnkgZHJpdmVyIHRoYXQgaW1wbGVtZW50cwo+IGRvX2dldF9iZXJyX2NvdW50ZXIo
-KS4gVG9nZXRoZXIgd2l0aCB0aGUgbWF0Y2hpbmcgY2hhbmdlIGluIGNhbl9nZXRfc2l6ZSgpLAo+
-IElGTEFfQ0FOX0JFUlJfQ09VTlRFUiBpcyBub3cgbGVmdCBvdXQgb2YgUlRNX0dFVExJTksgYW5k
-IFJUTV9ORVdMSU5LCj4gbWVzc2FnZXMgd2hlbmV2ZXIgdGhlIGludGVyZmFjZSBpcyBkb3duLiBB
-cyBhIHJlc3VsdCwgImlwIC1kZXRhaWxzIGxpbmsKPiBzaG93IiBubyBsb25nZXIgcHJpbnRzIGJl
-cnItY291bnRlciBmb3IgYSBkb3duIGludGVyZmFjZS4KPgo+IEJlZm9yZSB0aGlzIHBhdGNoIHRo
-ZSBhdHRyaWJ1dGUgd2FzIGFsd2F5cyBwcmVzZW50Ogo+Cj4gLSBmbGV4Y2FuLCB4aWxpbnhfY2Fu
-IGFuZCBjX2NhbiB3b2tlIHRoZSBkZXZpY2UgYW5kIHJlcG9ydGVkIHRoZSByZWFsCj4gICBjb3Vu
-dGVycy4KPiAtIG1fY2FuX2dldF9iZXJyX2NvdW50ZXIoKSBhbmQgbWNwMjUxeGZkX2dldF9iZXJy
-X2NvdW50ZXIoKSByZXR1cm5lZCAwIHdpdGgKPiAgIHplcm9lZCBjb3VudGVycyB3aGVuIHRoZSBp
-bnRlcmZhY2Ugd2FzIG5vdCB1cDoKPgo+IFRoZSBuZXRsaW5rIHBhdGggY2FuIG5vIGxvbmdlciBy
-ZWFjaCB0aGVzZSBkcml2ZXItbGV2ZWwgSUZGX1VQIGNoZWNrcy4KPgo+IFRoZSBjb21taXQgbmFt
-ZWQgaW4gRml4ZXM6LCBlYzU2YWNmZWYyYWYxLCB3YXMgYWRkZWQgc28gdGhhdCB1c2Vyc3BhY2Ug
-Y291bGQKPiBjYWxsIGZsZXhjYW5fZ2V0X2JlcnJfY291bnRlcigpIGV2ZW4gd2hpbGUgdGhlIGlu
-dGVyZmFjZSB3YXMgZG93bi4gVGhpcwo+IHBhdGNoIHJldmVyc2VzIHRoYXQgYmVoYXZpb3VyIHJh
-dGhlciB0aGFuIGZpeGluZyBhIGRlZmVjdCBpbiBpdCwgYW5kIGl0IGlzCj4gdGFnZ2VkIGZvciBz
-dGFibGUuCj4KPiBDb3VsZCB0aGUgY29tbWl0IG1lc3NhZ2Ugc2F5IHRoYXQgSUZMQV9DQU5fQkVS
-Ul9DT1VOVEVSIGlzIG5vIGxvbmdlcgo+IHJlcG9ydGVkIGZvciBkb3duIGludGVyZmFjZXMsIGFu
-ZCBleHBsYWluIHdoeSB0aGF0IGNoYW5nZSBpcyBhY2NlcHRhYmxlIGZvcgo+IHN0YWJsZT8KClRo
-aXMgaXMgYSByZWFsIGFuZCBpbnRlbnRpb25hbCB1c2Vyc3BhY2UtdmlzaWJsZSBjaGFuZ2UsIGFu
-ZCBJIHdpbGwgbWFrZSBpdApleHBsaWNpdCBpbiB0aGUgY29tbWl0IG1lc3NhZ2UuCgpUaGUgcmVh
-c29uIGZvciBvbWl0dGluZyBJRkxBX0NBTl9CRVJSX0NPVU5URVIgd2hpbGUgdGhlIGludGVyZmFj
-ZSBpcyBkb3duIGlzCnRoYXQgdGhlIGNvdW50ZXJzIGFyZSBub3QgbWVhbmluZ2Z1bCBpbiB0aGF0
-IHN0YXRlLCBhbmQgY2FsbGluZyBpbnRvIHRoZQpkcml2ZXIgY2FuIHdha2UgYSBydW50aW1lLXN1
-c3BlbmRlZCBjb250cm9sbGVyIG9yIHRvdWNoIHJlZ2lzdGVycyB3aG9zZQpjbG9ja3MgYXJlIGdh
-dGVkLiBUaGUgc2FtZSBjb25jZXJuIGFwcGxpZXMgdG8gdGhlIFREQyBhdXRvIHJlYWRiYWNrIHBh
-dGgsCndoaWNoIGlzIHdoeSB2MiBhbHNvIGdhdGVzIElGTEFfQ0FOX1REQyBhbmQgSUZMQV9DQU5f
-WExfVERDIG9uCm5ldGlmX3J1bm5pbmcoKS4KCkkgYWdyZWUgdGhhdCB0aGlzIHN1cGVyc2VkZXMg
-dGhlIGJlaGF2aW91ciBpbnRyb2R1Y2VkIGJ5IGVjNTZhY2ZlZjJhZjEKcmF0aGVyIHRoYW4gZml4
-aW5nIGEgZGVmZWN0IGluIGl0LiB2MiB3aWxsIGRlc2NyaWJlIGl0IHRoYXQgd2F5OiBkb3duCmlu
-dGVyZmFjZXMgbm8gbG9uZ2VyIHJlcG9ydCBiZXJyLWNvdW50ZXIsIHVzZXJzcGFjZSBtdXN0IHRy
-ZWF0IHRoZSBhdHRyaWJ1dGUKYXMgb3B0aW9uYWwsIGFuZCB0aGUgY2hhbmdlIGlzIGFjY2VwdGFi
-bGUgZm9yIHN0YWJsZSBiZWNhdXNlIGl0IGF2b2lkcwpoYXJkd2FyZSBhY2Nlc3MgaW4gdGhlIGRv
-d24gc3RhdGUuIEkgd2lsbCBhbHNvIHJld29yZCB0aGUgRml4ZXM6IHRhZyBzbyBpdApkb2VzIG5v
-dCBpbXBseSB0aGF0IGVjNTZhY2ZlZjJhZjEgaXRzZWxmIHdhcyBidWdneS4KCnB3LWJvdDogY3I=
+On Tue, 13 Oct 2026 09:30:02 -0400 Daniel Zahka wrote:
+> > The counter semantics come from "eth: mpnic: count packets, bytes, and
+> > drops per ring" earlier in this series. This patch is the one that
+> > exposes them as qstats rx-packets and rx-bytes.
+> >
+> > The later patch "eth: mpnic: count Rx allocation failures" also counts
+> > skb build failures in alloc_failed. Those packets still stay in packets
+> > and bytes.
+> 
+> So, the question is whether or not rx-packets, reported both to rtnl
+> stats and qstats, should count drops in the driver. Here, drops are
+> either running out of shinfo frags, but really just skb allocation
+> failure. 
+> 
+> The docs for rtnl stats strongly suggest an skb allocation failure
+> should still be counted for rx-packets.
+> 
+> The docs for qstats imply the opposite. Especially when xdp is not
+> present, which is the case as of this point. Once xdp is introduced,
+> though, counting an skb allocation failure in rx-packets becomes
+> reasonable by the qstats docs, because xdp runs before the point of skb
+> allocation.
+> 
+> Another option would be reporting rx-packets differently for the two
+> APIs. I think this is not desirable, and seems to violate what is in
+> the stats.py selftest.
+> 
+> So, I could either submit a v3, which would just be reverting to v1, or
+> take the approach here as is.
+
+The rtnl stats and qstats are supposed to behave the same if maintained
+by SW. I should have been clearer in the doc but "XDP is considered the
+first layer" was supposed to mean - if you reach the point in the driver
+where you'd call an XDP prog - its a successful Rx, whether the XDP prog
+is actually attached & called, or is NULL & skipped.
+
+I believe the series is good as is.
+
+Acked-by: Jakub Kicinski <kuba@kernel.org>
