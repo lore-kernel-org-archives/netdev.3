@@ -1,64 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792488952;
-	b=E2N7zlVf3mv9HtD3+AXIIRmZgrN++QW75jj+BtiCsESUGDiiMKNHTn5G+hmsrLhlU830
-	 i8pJefzGYTRsv1lZLxXweiOAlnlOrv8riKO9G4KRArnznpRao0QwjPk1Xn8bele12M3eU
-	 GuTv8NJp9EfLabR3RY0ptQEADFlwgQWupTrrKTtF4831oC3ckZzrnjVuXmykS+JbX8TiI
-	 AbwA+/z42F74ebt/fFzyrLdZX2IEAtgKMhKVpdtpMgfBllJQtbKHRzcxwdcnoo9HK6Az9
-	 xytJq2sxWInQ0xkJyD+N4XVK9ekdQEo0Zy8bQNWabe8pak0wJA5DByycCz69sxh4ghQ==
+	t=1792488955;
+	b=obWbqHMyRjDF925ZloxIx+WhlucpjfiZcnDKJC7dg5kgqbbcYcuvjbSbPkHY0ZaGrJ7q
+	 wAZ07DUUyvfgZx1Y13fy6ATousZW8vgD9Fy7uSJAJSwCXKiCXj9cRmYZyEDEwU68WsqX0
+	 U1jwyQbzV6VJ6Kiv9ny3rRMHZQZI8xOWTDSRex8LpHf03SUapKuMa6Jhmhy0QlHlSy2ds
+	 8gWrf9Aovu2yVeOSlo0vEJFV5cBp2AH0G4s7yilOV4A1N60W/8HwPPLUZMq2Dig2vRqbm
+	 KUOZi0TeuvzAWSmjP1u+9JAEKf/Svj+7+aXGSLLy7yQE8ebKA34V6s4GDek9VxtLb5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792488952;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Virus-Scanned;
-	bh=xQaeHm0XXJnSVYUyU+gItJomu67kge3hzFFJ233evnA=;
-	b=5nmdxGb+Jn6sxwCRmKtdvXGaXwA95uecfCNv3YwkhKR/q3wfceb7VMJAVvAWv47jRRyZ
-	 2/WqzJs6HOpeDVFwABPpxMcxrEFAJbKcbrJbwf6XwKcbpsRpT2SQyiY2eiJjvQa+QbP+D
-	 8slp9dvFeuALsk3vb/60Q+TKQFeL5YnbxwmtfyPK9BWrOdvRKL1bdAp4aPaT2WIY2zNil
-	 reNywPneXsqQhx4ICth+NgvGOHWnwahSR57r7s30eSwfLLzCUN2gK+sedbNIEqOOC/jdv
-	 RHosbQtI21kh3wSROIQ5pZ2DUZTmtDQ25JlChtj5Y6P8q5WCe0RrKzBQ4PWFAQZoFSQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792488955;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=5SrFVlhqweihfl8k9IgoOl+0ODAHoLQXMzmHVFVUY+4=;
+	b=AHGYnhcU2Jr2C0O1dBPTr16txhBf3rYsidcOLzjtsmOv5+p+DEj38XgwU+2cEN4bppHk
+	 cklHZSZWo9suNjxV1l9o/4N8Ask0MdZjZv/j4IaFJzt/FRTEN7gRrefqwHGWKDioONDdM
+	 vpj+a3+nJ6oRp9rwHe6vukIKmrG6A+KembbqYqffgC9TMV9VBNuSQtoxiABKUO6vpyPzt
+	 inEc0irf77LeWrZ2HU8y3D5x4yCWWjeY3qsLlkBTGqJT1yPrpZcS48j9tAidUhtMH/tiv
+	 7iptJ2cR5lzAvw9zUL10WHQ5YTRlw0esOeb5iH10idluvkK40SxdI8GAH+XJkxgXBIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=iogearbox.net;
-	spf=pass smtp.mailfrom=iogearbox.net;
-	dkim=pass header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b="KX9nX4r/";
-	arc=none smtp.remote-ip=213.133.104.62
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cTRlJZ+c;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3FC606A31E;
-	Tue, 20 Oct 2026 09:35:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B3FC606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC779606A32C;
+	Tue, 20 Oct 2026 09:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b=KX9nX4r/
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=xQaeHm0XXJnSVYUyU+gItJomu67kge3hzFFJ233evnA=; b=KX9nX4r/77OBqaWv1pfPEM2nNn
-	euS5Kp2IO52RYFZ6jDNwqVGFGS6a43yqxMwqf8QwoTfvTQtiGS6/VmzLkJSk2sQQe8FlUSyYVYR7b
-	y+ZdD5l0CkVn/3ZKKgKFtddI9IPxH51oQ2TQpfC6V2cwb4qt9XYNvJY2NU0HyfDQwrRHwSpDDnOED
-	QiZLSBmKgsk2XK8r2jKJYoCDIkJbp6csYpSmnlV1nQtfRskfidAwY7YlB1OaCqu4rSzcsfY7Cs691
-	FAkBIOv0sX/oOLYkqfOfS78jx0OF+RXgNewBnWymz7WdWRlowF0PtE5CAG57iUi/nnGfZSRV+SJj/
-	bMnLNiTQ==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1xJ6Ft-000E6m-0U;
-	Tue, 20 Oct 2026 11:35:37 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1xJ6Fs-00063z-0P;
-	Tue, 20 Oct 2026 11:35:35 +0200
-Message-ID: <d86445fe-aae3-4d37-9289-7e06cb210a74@iogearbox.net>
-Date: Tue, 20 Oct 2026 11:35:34 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cTRlJZ+c
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D711F000CE;
+	Tue, 20 Oct 2026 09:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792488954;
+	bh=5SrFVlhqweihfl8k9IgoOl+0ODAHoLQXMzmHVFVUY+4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cTRlJZ+c06ltDCZMu1qT+1KCSvkfPR/mFbvcYtfTtJiRY38RipWa3tmFdGOG/3KWJ
+	 /KmzkHzykgN8QNWjssMWMUPG6ReK+03rcg4Xg+CP0C8O6TnYIEV748FmulqCZeLAXI
+	 7INdmAKKjUNPc8Woal88/kKYECxjZTMxuAZOsiKqdI6cmGONg6i2SsPcpeiCR27bsc
+	 wULs3OlXX8u/dv0MRrQmZJ68Md+5cYYxntorWkviKuHfMJQHr3mJp788u9sLByZAkK
+	 NJEZPkoZHExX0R/59AKgldq8rnVcITjkD+trCNCB3VBHRyrDIe6XFUTXcTPd6nNTJC
+	 EqbuX84ZlHobQ==
+Subject: Re: [PATCH net-next 2/3] net: qrtr: propagate sock_alloc_send_skb()
+ errors from sendmsg()
+From: netdev-bot+sashiko@kernel.org
+To: chunkai.deng@oss.qualcomm.com
+Cc: mani@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tao.zhang1@oss.qualcomm.com, peter.chen@oss.qualcomm.com,
+ jeff.johnson@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com
+Date: Tue, 20 Oct 2026 09:35:53 +0000
+Message-ID: <179248895346.3135.4501440719994077753@kernel.org>
+In-Reply-To: <20261016-qrtr-add-shutdown-v1-2-e1cc01ca5919@oss.qualcomm.com>
+References: <20261016-qrtr-add-shutdown-v1-2-e1cc01ca5919@oss.qualcomm.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,41 +65,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v2] tools/bpf: Remove legacy BPF tools
-To: yanxia <yanxia@cmss.chinamobile.com>, bot+bpf-ci@kernel.org,
- bpf@vger.kernel.org
-Cc: yana06070@163.com, ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, richardcochran@gmail.com,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- martin.lau@kernel.org, mason@kernel.org
-References: <20261020083713.905006-1-yanxia@cmss.chinamobile.com>
- <a02301c0ff8593349602f81cdf0c21f1b38db0b60118f8eed3199a6a38330234@mail.kernel.org>
- <20261020092119.918464-1-yanxia@cmss.chinamobile.com>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-In-Reply-To: <20261020092119.918464-1-yanxia@cmss.chinamobile.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28159/Tue Oct 20 08:24:12 2026)
 
-On 10/20/26 11:21 AM, yanxia wrote:
-> Thanks for the review. Agreed: the table lists mnemonics, addressing
-> modes and descriptions. I'll fix the wording in the next revision:
-> 
->    The instruction set consists of load, store, branch, alu, miscellaneous
->    and return instructions. This table lists the assembly notation and what
->    the corresponding opcodes defined in linux/filter.h do:
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-sgtm, and please add a full name to the Signed-off-by once you respin [0].
+Low priority / nit picks for your consideration:
 
-   [0] Documentation/process/submitting-patches.rst
+- [Low] The patch fixes a userspace-visible errno regression in
+  qrtr_sendmsg() (net/qrtr/af_qrtr.c) and names the commit that caused…
 
-> Best regards,
-> yanxia
+--
 
+net: qrtr: propagate sock_alloc_send_skb() errors from sendmsg()
+
+This patch removes the rc = -ENOMEM override in qrtr_sendmsg() that runs
+when sock_alloc_send_skb() fails. The error set by the helper is now
+returned to userspace instead. This brings back reporting of a pending
+ENETRESET from qrtr_reset_ports(), as well as -EAGAIN, -EPIPE and signal
+errors.
+
+> Since commit 179d0ba0c454 ("net: qrtr: fix error return code of
+> qrtr_sendmsg()"), qrtr_sendmsg() returns -ENOMEM whenever
+> sock_alloc_send_skb() fails. The helper already sets rc on every failure
+> path, so this overwrites the real error.
+
+[ ... ]
+
+> Signed-off-by: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
+
+[Severity: Low]
+This isn't a bug, but the body names the commit that introduced the
+-ENOMEM override. Should the patch also carry a Fixes: trailer for it?
+
+Fixes: 179d0ba0c454 ("net: qrtr: fix error return code of qrtr_sendmsg()")
+
+179d0ba0c454 has been in stable kernels since v5.12. Without the tag, the
+stable backport tooling may not pick up this fix. Those kernels would then
+keep returning -ENOMEM in these cases:
+
+A pending ENETRESET set by qrtr_reset_ports(). sock_error() clears it when
+it reads it inside sock_alloc_send_pskb(), so the notification is lost.
+
+MSG_DONTWAIT senders with a full sndbuf, which should get -EAGAIN.
+
+SEND_SHUTDOWN (-EPIPE) and signal interruptions (-ERESTARTSYS/-EINTR).
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-qrtr-add-shutdown-v1-0-e1cc01ca5919%40oss.qualcomm.com
