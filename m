@@ -1,62 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.149
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792487659;
-	b=R+6x/7JXAbS6jHfoOXHnvs2EQFb3KSkObuuULE61FK/kW4KSrFhmnaZdZatENhNHXbvq
-	 m5yVmV0bxjsKGlviNY4n9D+Xq5zipe41mmImugVMXAf2LKT4DbyF1TqIkU4WEqn0Vp9RA
-	 jDGfaC6PGu9FZdnaq3uAo3HFSHlxB0oNyxL0sbBonu6IwMEql/bKL385fs+yg4S6BPcrb
-	 ObyI1MIR7kdVReUOv8UNVNAJfflDtYJNp8K8Y5Yz4YVoN5BcbMid7ok4GorBgKFtDDp7V
-	 zDhHzJQugGZVS0ALgrOWkpWsH2fUEa+R3uuDxVfTdJBJYuYCenaDO6gCh/l/1vu68DA==
+	t=1792487727;
+	b=PmGltNKWoUJ95UWJ8Ovp0NyLdiBBBZWkV2ALsSHkrxn/bTqFD1PtE/QpYTX5k4wEfeaP
+	 D2z+aHUcJSHmPTp+v/AAj5ZiT8mKFAOQ6q2/NOE7wKFfS4fZQV9Zemdqva6qOC3n0qBSs
+	 FV1h98tWkwKPjiMJlSDTw3AFk80vvU1f/jRveQMQLIBRwt0Oh41vwnwR2HtifBC2pr7P/
+	 XNycSWj7+lc76oaD+vZSrHMOkNox4gpOA2RH+/iA5T6kRmr+mtsjU5aCyPFIMNDfWehKS
+	 A12gFOyNZdxT8N/aWA2DrB2dcjdKK/U1lFv0JE/Y3wfFTztvcHaGlAaz94GUoYRMbPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792487659;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
-	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
-	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
-	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
-	bh=fJssb/JemlsZHxSdI31pU9LtOV8CRFz+KtmHHMh8J48=;
-	b=SQxmecRfka/E59r2L85onNsHzi1DlzFm0sX43R1sjz0XGM+buNo8ECziMeKc16ohUQ8d
-	 +dP59yPNS7EKihMZLQReEWNc6slZO+l1wyP2Rhb9ijAQCs64z9fDV78RPDNN0cgfAp7gn
-	 bbV+O25EKbAxYWIdURux96Sgg5icfIWEPoW4opVV5osIxJZhW6OkZCJRCNzb1L35I9wB1
-	 vFrNaMCllndSJQpyXpeLWGChtUdGI7a8GZW9q9CRNdpjEULVItyrSf1Yudap+M/pHGxlb
-	 20WtXbYOOijXMZXMOKlGdYTtpJM6JZoZtubTsH2qsQ2BAUt6+siQppv2CkK2LITWRCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792487727;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=3fZFaomKLWvXOGLrVyrii/Wn33bpKfsaF9RKLcePpZo=;
+	b=OL2nxlwdGkyL7i5Fqjlds43KrLdTe3qa4rSQ0NWTubGqo/FI3t+KUPpox35dwVI/mJzZ
+	 nW9apPbewKEwgGCiEQOl9yn+VhEJ76B4x1biFIwhT69xGV78wh8HQUB1sDRzdo1mjxEVr
+	 FmpIyLMcAJo9QwZulbDhqTzTEPjxJhNYOyN2tUHUJRa2WOY0uMgBE5LXlAQpDNLuHy/xr
+	 +8mhCt9EQp26db6mEDT4aj5+R/RRmtuan3AGvMraY4lRG6Vmu1FxQH2Db657lafdc2Jx5
+	 i5Va33DdsI0WmryLxoPl2niav/esV5bkb3yFBJig8SvPXZNbG0hspQTn7lniJY4iipw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=W5dI1uEQ;
-	arc=none smtp.remote-ip=115.124.28.149
-Received: from out28-149.mail.aliyun.com (out28-149.mail.aliyun.com [115.124.28.149])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RqiCIZ1V;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8D8606A31B;
-	Tue, 20 Oct 2026 09:14:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D8D8606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F3B606A31D;
+	Tue, 20 Oct 2026 09:15:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84F3B606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=W5dI1uEQ
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1792487647; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
-	bh=fJssb/JemlsZHxSdI31pU9LtOV8CRFz+KtmHHMh8J48=;
-	b=W5dI1uEQRRJzNXa5pj7JA2jznVHEXyF/txbFizA/f/VLY940yNdAr+sNj0wDxIi14V3bDhZU4Ta/fiMoB8nC40wuYJK0WrWM+mCIKUdeKMO47R2okHYHDm9sQiKBWbtRdGAH8WXUP+Htj197nUcdhc8U50iNpldFAzW7aQJObzzGe20zfTf9DeVB3zBtIUPg5H9UXzgr1CzVbMf0MWxUtOwUKgLHYL7yd56Al/b0l2iGOJnSmGnQstH+gzSHmAG7tCM6qTk2Nje3DrQEqhB9z5kcFPwSO2GNa5+C1KrK5bPO5/UGJRfUjnnpN4XyDypSCiMPfukbiHhfv47qgqjzQg==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.3885555|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.261227-0.00109014-0.737683;FP=2599619405778432795|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083032240;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=9;RT=9;SR=0;TI=W4_0.2.3_2125168E_1792487647042_o7001c537;
-Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_2125168E_1792487647042_o7001c537] cluster:ay29) at Tue, 20 Oct 2026 17:14:07 +0800
-Date: Tue, 20 Oct 2026 17:14:07 +0800
-From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-To: "Marc Kleine-Budde" <mkl@pengutronix.de>
-Cc: "netdev-bot+sinfo" <netdev-bot+sinfo@kernel.org>,
-  "netdev" <netdev@vger.kernel.org>,
-  "linux-can" <linux-can@vger.kernel.org>,
-  "kernel" <kernel@pengutronix.de>,
-  "haibo.chen" <haibo.chen@oss.nxp.com>,
-  "shawnguo" <shawnguo@kernel.org>,
-  "imx" <imx@lists.linux.dev>,
-  "stable" <stable@vger.kernel.org>
-Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-Message-ID: <ac8ad731-c77d-4088-aeb7-b7e472cdbf0d.chunyuzhiqiang@yinhe.ht>
-Subject: =?UTF-8?B?UkXvvJpbUEFUQ0ggdjVdIGNhbjogZGV2OiBjYW5fZmlsbF9pbmZvKCk6IGRvbid0IHdha2Ug?=
-  =?UTF-8?B?dXAgY29udHJvbGxlciBpZiBpbnRlcmZhY2UgaXMgZG93bg==?=
-X-Mailer: [Alimail-Mailagent revision 74][W4_0.2.3][null][Chrome]
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RqiCIZ1V
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CF7104E4122B;
+	Tue, 20 Oct 2026 09:15:23 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 94CF460393;
+	Tue, 20 Oct 2026 09:15:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3BF63103289A8;
+	Tue, 20 Oct 2026 11:15:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792487722; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=3fZFaomKLWvXOGLrVyrii/Wn33bpKfsaF9RKLcePpZo=;
+	b=RqiCIZ1VGeW06L64sT6IzotR2GLPFXJsSQAq1ZRcyhqSGLpvfMVRc1jUH0TrWuigTLiawd
+	+kNPpFMl3os4bCraJfrJt2IQn2BA1DYejnhyiQy/r6DUWMPcKLM0chmRcV+dUL9sKnf2Qz
+	zTYgRab6rcV/46pvORmcdb9o/PCyT+uFBZQ+t+kpVoMU1IcLfAUU8+zhiUnhvdQzofg7bs
+	O4oIhaJvgwZBsFse5W/WM2ysoza+1b/WjIZ2XqInEm0PDvuAC/7s+kXRNuP03vG3M7yAgM
+	uESb+JCYCzmi1EXWfTV67cjcuNDdCL2d6HC9buCyPB7i8OVBdRKsMqHA2bhp9Q==
+Message-ID: <5b63ae66-551e-40ed-81ad-fbc52b93e24f@bootlin.com>
+Date: Tue, 20 Oct 2026 11:15:17 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,15 +62,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-x-aliyun-im-through: {"version":"v1.0"}
-References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht> <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>,<20261020-purring-cute-ocelot-54ef8b-mkl@pengutronix.de>
-x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
-In-Reply-To: <20261020-purring-cute-ocelot-54ef8b-mkl@pengutronix.de>
-x-aliyun-mailtrack: {"foreign-track":"0"}
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net 1/2] net: pse-pd: si3474: keep detection enabled on
+ the other PIs
+To: Piotr Kubik <piotr@kubik.pl>, netdev@vger.kernel.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org, Carlo Szelinsky <github@szelinsky.de>
+References: <20261019162453.1244120-1-piotr@kubik.pl>
+ <20261019162453.1244120-2-piotr@kubik.pl>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261019162453.1244120-2-piotr@kubik.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-SGkgTWFyYyw+IFRoYW5rcyBmb3IgdGhlIHBhdGNoLiBJbiB0aGUgZnV0dXJlLCBwbGVhc2UgZG9u
-J3Qgc2VuZCB2TisxIGFzIGEgcmVwbHkKPiB0byB2Ti4KVW5kZXJzdG9vZCwgdGhhbmtzIGZvciB0
-aGUgcmVtaW5kZXIuIEknbGwgcG9zdCBmdXR1cmUgdmVyc2lvbnMgYXMgYSBuZXcsCmluZGVwZW5k
-ZW50IHRocmVhZC4KVGhhbmtzLApDaHVuWXVaaGlRaWFuZwo=
+
+
+On 10/19/26 18:24, Piotr Kubik wrote:
+> DETECT_CLASS_ENABLE holds the detection and classification bits of
+> all four channels of a quad. si3474_pi_enable() wrote the register
+> with the bits of its own PI only, so it cleared them for the other PI
+> of the quad. In AUTO mode that PI keeps its admin state and a PD that
+> already has power keeps it, but the port runs no new detection: a PD
+> plugged in later, or one waiting for detection when the other PI is
+> enabled, gets no power.
+> 
+> Read the register and set the PI bits, as the PORT_MODE update above
+> already does.
+> 
+> Discovered by an AI code review agent. Confirmed on an SDG-9000 board
+> (MediaTek MT7988A, two Si3474 in AUTO pin mode) with Linux 6.18:
+> with both PIs of one quad disabled, enabling PI A and then PI B left
+> DETECT_CLASS_ENABLE with the bits of PI B only, and a PD on PI A never
+> got power. No kernel change was needed to reproduce it.
+> 
+> Tested on the same board with the same sequence in both orders:
+> DETECT_CLASS_ENABLE keeps the bits of both PIs, and the PD gets power.
+> No kernel selftest covers PSE hardware.
+
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+
+Thank you!
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
