@@ -1,49 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792529409;
-	b=vDUol0bXVA7FRKu+Fq7QOIa4rrtBC+tcjFmUKAxMYX5FTwDTmF2iYmddPknTVKrauZwn
-	 SmAyRA0r13A1O+tctFLRzZ6SbSuh+8uvV/fEZWI0hmyLhAdbepmw+Mc01H03LMdASxcZe
-	 HQ/w18ItZw7xZMpzcVsf9BxY5Is3tVc71vGNwnm0n+0wDhLIBYzr6Xa66dV/f7Q2V/rXg
-	 4EZfCV3XYCCrKBepfJyeHX9UX6+0WCbjpFGvjqe3rxR05IJsF4a/GT77qh0yLGU+PJ9YW
-	 QxFLr+0BcrAca0d7/P74d/6f3VwJ+781UsUkg18105/im7dtuLYNg0Qs14YZ5Gc59qg==
+	t=1792529602;
+	b=BennO3DIjwurS8Byth0LRkDNJSFS5mGH4xadMW47L2KU8aMITmG5jHPPtYHbSzl+eJCt
+	 1qO3Qgl0jWF92EDdUq9r/QzYXWm4x/SWaWLFriovOl67P0im5EAv7bmcOn/8DFslS5lAp
+	 yDOpbXsQIald4rNVfD0sN3U3GN7D+HIq7Qjymeaq5yvri/Lgx9G8iQ4g6qF106yQAt0M5
+	 34cY/Dpbyvf9r9wEZ1ZiP++2kT1dVevxMwt/NqDKmPcFzImzs34drEUXvtVHNSlrd+g1x
+	 LmTJSy6WNn+JEqr+D9NXBuyU/R18PvJs620uBWlY+4dCEjNcW221p+Ax//PD71ky/yQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792529409;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=UQAaHgmlQKDGLtXEfAY2vP+sucWYdmNtFS1d5EJPeGc=;
-	b=q2ZMsTN9r/PlyfYc3iHcNfu8UGGUnHuhGT1pNH8SQjGHAYrvqhnN2cV5hAt6ubgELc8H
-	 ToAwWimcnNHaHCJrD7ZlzkxvcZfGaC3B9JEBzuUKE7VAK8XR+W7byd80szamqyUpRJc2L
-	 KN549CYwemwodYII65v2gz6Auc4qXgRJd6oN/Q9mPmdwYwoxM/vS4//qG58ceh+HJIO2s
-	 eiQwnXr+3a78yGjpiRCwFdvGkolwP3SIAEGnM90dnwtGIHHd13k862nTAIz6c6/MmvqY3
-	 7mtd5hngjKZ/Cq2tWZF2DlH7nMVF2o+NQ1TOLgzqedPvU6L6EZkf+dteLMedblZnjkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792529602;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=fLQPyZNKQPhltfb8QjbLH6GiiK70H5pcOSO0dY3JeC8=;
+	b=Yoz0C4vBVSi70+v8OG551yBQOJ7K89PHV13LeLxTRrCIDaYqsBBQr3kYL0AL9WJFlcQb
+	 89UdZ6Zwx2HN+/EbWSUkt0JASO3itnLdKVa6UDNkyge0OleyYGKrpETtVkiyaEHyukq7D
+	 3Y9uMWHsoACDHWj7fEYOA0s8ZfLj9uxuWPuw5o8t8/9gRBRguz6TuuFH/4cyHCnOBIIQc
+	 wfTUbWEgj3ZzVijccmkKnpbduNeHSVTQx6BwErh36sqqk0az9rjbDJRBDgUqGHyF9YWKz
+	 gR5mwzjg9QKgRgDvzwTzqcdeSuITsj/aKZSOaNAFkM1YOH6QRIyO04cBTA/cwme3TSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lMHv9988;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZiVDGH/q";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2E0606A326;
-	Tue, 20 Oct 2026 20:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C9C606A319;
+	Tue, 20 Oct 2026 20:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lMHv9988
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D121F000C9;
-	Tue, 20 Oct 2026 20:50:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZiVDGH/q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15831F000C9;
+	Tue, 20 Oct 2026 20:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792529408;
-	bh=UQAaHgmlQKDGLtXEfAY2vP+sucWYdmNtFS1d5EJPeGc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lMHv9988OSw2Qf+jK72hfM+vT4RWfedhlGVr3DF3Qf+AgaVYB8GqYUmk2VmWZSGAt
-	 fVLMIxSADHPxcIxNqHJCYDs6mG9jfnMOsCPQQfAqVbHCGkX5i8lPFh5h8naCuHh+Cb
-	 mO1FC6lE2R0nlZzI5YWZ2+HCqxdUiKWTl5APQiJTZuoFsYqdmqAiAQ7/cgnYnzBAOL
-	 mO8clKUA62qvqMATwLOjyFeezb4Qf0Ahf9vNnh7EcxMUZKutXlgVj6VPod3lotxsCT
-	 Ohcbn63c8567IwCpq6rIvpbujWvIyASF6PXBgMemmmNKRtVdPJcAEbJt1FHeQQ6052
-	 K262PCg9WIR3Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774423809A09;
-	Tue, 20 Oct 2026 20:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792529602;
+	bh=fLQPyZNKQPhltfb8QjbLH6GiiK70H5pcOSO0dY3JeC8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZiVDGH/qgbA6MPW2SFLOcaeSO3h33sIn4htawp1MNSG8QzdpkQHv0bJPvDTXgEbH9
+	 OrENY9zavE2QkXyJwShRZf8cMhX3Gc2lZ9BK6JK9m6GGW29G8wVXy7TkjiPmffZC0i
+	 Lz2ce30reDQGclIexXoDh3slnayl9V84kpfwhEeM0tqjYm7DmcmWfArkAp/6vTwFKe
+	 8FsblU4kXgMi/rI2g9T+z84vc/8jXw6vLjvtkg+s7zQIpI2/wUWRgOjYk/93h/vCXm
+	 sv1N110esZJ6wbuAHXuymIpY927/ATqT+7PVYmHViHlQm7Cu/zKk9dzasL0mLJ+Ih0
+	 r34a2d6wUwxSA==
+Date: Tue, 20 Oct 2026 13:53:21 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev-bot+sinfo@kernel.org
+Cc: Wei Tao <taowei@kylinos.cn>, jhs@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net/sched: cls_fw: allow filter replace without
+ re-specifying mask
+Message-ID: <20261020135321.21517b1d@kernel.org>
+In-Reply-To: <179194621915.160550.4770507189079039972@kernel.org>
+References: <20261014024548.37874-1-taowei@kylinos.cn>
+	<179194621915.160550.4770507189079039972@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,49 +61,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5] net: phy: marvell: keep WOL_EIE across interrupt
- reconfiguration
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179252940703.202014.9168036604597546075.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 20:50:07 +0000
-References: <20261014194818.11640-2-rosenp@gmail.com>
-In-Reply-To: <20261014194818.11640-2-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com,
- sshegde@linux.ibm.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, michael@stapelberg.de,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed, 14 Oct 2026 02:50:19 +0000 netdev-bot+sinfo@kernel.org wrote:
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 14 Oct 2026 12:48:18 -0700 you wrote:
-> marvell_config_intr() rewrites the whole interrupt enable register, so
-> the config_intr call from phy_init_hw() on resume silently cleared
-> WOL_EIE on the 88E1318S and 88E1510: m88e1318_get_wol() still reported
-> WAKE_MAGIC, but a matched magic packet was no longer routed to INTn and
-> the board did not wake.
-> 
-> Bit 7 of that register is WOL_EIE only on these two PHYs; on others,
-> such as the 88E1111, it enables a FIFO error interrupt. So give the
-> 88E1318S and 88E1510 their own config_intr and handle_interrupt, and
-> leave the shared callbacks unchanged.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v5] net: phy: marvell: keep WOL_EIE across interrupt reconfiguration
-    https://git.kernel.org/netdev/net/c/f434191f9388
-
-You are awesome, thank you!
+You are expected to reply to these questions. If this is an LLM-based
+report please be more considerate of maintainer's time. If you actually
+use this feature please include the response to the question above in
+the commit message and repost. The repost should not carry a Fixes
+tag, it's not a real bug.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
