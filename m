@@ -1,100 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.171
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792533508;
-	b=HSvoxaC0ECDer9V7zOuF+grFMn/GTT2aO6hZlfQIeMklAWCl7TlekGa6+uWDEeCICqV0
-	 mCJWleUdNhcuySP2IfBFjBty7IB0EIPmYnve0YKOlEjVlc3J2fc7gBv5H6yduAF1KMVB4
-	 pebc4ay+HVy6biWOTqSkutak9ej2UDyUUGAZ/9P4Xxx3ZKxipzefdGI/2yUGiONCVWc2N
-	 apGCMDYcG0jQiqf4hLzh8smGqn+x7Y39zQpnlhBSr+EjA1WoEcZVgS87dYij0l/OBbPdu
-	 x7i+nnwUyZEksIj7DrL36ToX87g6Pf4cCO5ZTBPY/73goFR0rGND3HzwvRC0Ul3bhRw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792533508;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
-	b=Gx43tSiEGjws3wejMCbYZnyVRUuSR/ba//fJh6fUTx9oQZYEQacTiTuzh0VD3DCVlTMM
-	 787dytuGpKbZ71PrBogW0O0U0gmg25dOEbMBTRrOuI+lLqLoZNJ53otQtEITLh/egE3Gq
-	 mwKD96cwnkakX3E3OsPOLh1EWNgJq75MopOv0RZlzvwZ5SUeW8RDXbjFlnKccbNIUQd08
-	 My3c16KtUWS1Q+i9KIy2hWmg3WOnztWN/wya49t8guH+UipZbKwXgD4nyD8VHEkmCdaLL
-	 zO0nabSPzauQtVAw46nsvDD4XfEO0d1L8D3Zry0anS44rEo1nHaQxSzv+njWSmWFYMQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=paul-moore.com;
-	spf=pass smtp.mailfrom=paul-moore.com;
-	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=ZlCPSaes;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.171
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792533725;
+	b=Dq1ulR1x1jA0ZXmtHknGokavmMQYWaHKvzVtvpQ4Lb/TOuaSslUrjgQ2i/PY+aDVKhUT
+	 8MX8pHgoS9i2P4TYJdevXnUVzyWie2xFnYRAgyRZE0Q75qe40faYuzuwwnyD17f6eKt6U
+	 JNcnrjKjfEd9uKp2kKv31s5BUJ8UkiUl3p2igcIFwqKyzDTZYYkX/UC3lzcuyed/brPrK
+	 0ykSnZjE61YpnTiSuw6FxZCO7Q3xW8B1aIZoChdcpKgJx0Tl0ZQMcuDy6bEiJAjLroFYl
+	 SvnHxf+Cvj1D0+YD00/UrCJbvFUfw0qbE7Lhk4gJbEEnQRWkgefOixd4ZgfegVbQOiA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792533725;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=cEfg6TQOl4fvtdftJ1/ez1z9HrOcl9TL5QfIsA4wvdg=;
+	b=gbVufSkhem4I5ADcAQim5w2HkXT2r3NaIX0oPoiSzcoDmsOtAki6IBExdKTqwjv9UlPe
+	 pPmIGtgooPHpkORfO6SW8FtlV1Uwk4MG88LFyF1/dxlIK0L5A9/x2iGrgV+/YSpQ8vy+F
+	 YDXlv34oFZIvp426JLm4DRfgJfAbsHmjKo6g1u6fiLQUY4z22Yhn6W5ZW/8cKCXjT+TcO
+	 +vHdUDsH6QCmegGM9EhSqRBsrd+UwO+MwjGWUyVMFh0K8qP+RiG7aHQq5rvfc/ByHCh32
+	 68fdA709M78YiBENKv8Dm6RMOww8f5/yCeQcJje0LJL+FlLvC1rq6HSdI2dwowkgdEA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ip9wkiMf;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B23606A31D
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:58:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73B23606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id A0083606A31B;
+	Tue, 20 Oct 2026 22:01:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0083606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=ZlCPSaes
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e5fb79ce82so338715ad.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 14:58:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792533507; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TGIm7gx41Zd1EgMSOnGtetnUuRqMhew8emLE2T5w0gTrOf4xICWEPwy3S5h1YI0tGe
-         Hw+IL3FCKKkN80OhCmUi0Z1Lk64LHz/NvAASTvQLilA+8yrkGMyiq/LqmsbA+Jj/ROV2
-         nmjO53VDxMHdfqUklN8EmdI+ZOCdgYTIFM6C3rKmqCZPnYNedPNlIth5Eiu+YyDmxHs4
-         S1Ly6o8zbMsDM2ekgdutrKpaPhi/SC9S5yziZWDgJal5Ic3CJmlaiMtlrK8KDGOJHvCg
-         2WNNjGtzLyTOTx0mlJghztcNy6GTVp291U7UJ8ArguCdWnkzCF41mcb01RnLry7N33hN
-         jzNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
-        fh=DUOjEDVvtgWYRHEAPAymTOAr+RfDOB0HlfebCKH5OFk=;
-        b=ExLmvkD+qGY6NeD5kHa3dCZMuxXUhvDVRBgmGXyiZUGN82mZnoK4PCOybQU7uQV8ho
-         yoxaL3VTYa39uCEhUCwgBTzB++cnBVRLu1MM1x8H4adKQ0uzMsOkRYvUqVIKKc4t/O64
-         +n2jaa7JCovP9P6Eh2cIiZRFK0SFfAJMZuFt+EXuAwzV2a/nurOYkEBDmG9pJYrH5fUU
-         ogZbn1g8AiPTGweWxNKigfgQSeLkVYpALqOrsO7ARIfRBIZBn4R1N8IK5vXlxlKheP5Z
-         j2tU3rbzkcO6Qxs1jP0CzjzJo0D4vdGHzK8zpb58sya3LN3hciMQA9nfjZ/XAQ6e3Hg8
-         2hQg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1792533507; x=1793138307; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
-        b=ZlCPSaesvwK6ytevnWbTHn0TkN/ILYgKMLvVa+tEKPUiI/PXEgd7eOMiq+SnfX0kRJ
-         wqPZqYXGzmDSfSov9ygbM5FaoZsi8bAJ5yPxoeKuAggi1uuyppnl86Kf6jIq1ueT2MkJ
-         fNMdSChgDXaIEYSYaeWM6YWOdsxPAhe4AbIEkCaAJAsGZ9mOy/IhBXPiNSjTZ3GHubiU
-         XwoZ7vMLO/o01Slg5yXTFqwib0as9ToE5VFmGl9Kq8tH4ULUtbFXWDJNOFVY/oZXWiMe
-         dHnNiznLoItrj5HNuMEJDE+1IKIutN+nzKD0M6XegYgQImAS2CNtMjD7ojkhTlY3ZSpW
-         ZnCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792533507; x=1793138307;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
-        b=GWgBiC3aYefeYsuSRdTsVzl3kW3+8t7eLAhv010vrGOKyWo9H3/IGgFfgmB6RLAqW5
-         LVLlrUOKPkXoZzuiH3Kdm6h82dKzah2l476S4jcJNqVTnELR23HmsapRNrv/YXsaEZ2y
-         5WRzHlrCL43H1VbF+ar2NNxdIfTBQ7iWIruCbuYYsflabWcpf9jwuVgLn/ofKECYCUQW
-         IljFZFca9fEQyHHcdPu8paz6/dPxelsnxr4T3xyHt5JiLFS1vLtvf08E017zPo1JDV1z
-         lxagDkbfp4P24xRVdan9KH0zFY57QMI4XpctHaIzeP1q1VwudQFQVR+ZvLHlPMokHArl
-         5cBA==
-X-Forwarded-Encrypted: i=1; AKwUvBxSWX0E+nU5Tcbi6KDPIBhRDP9gkFG0nr8il8AOCjGka66s90WkttlIqUqJQFPnOz5nKf/zw6o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKhRG919hxO3PUNb5kGn3REJnO9W+grNG+xUhYtPospLai+ydNL
-	YvnutGKWzhxCrJfMRaYmQbKhOx7KuCZ+0VVeSjZvmP20qeoNeNWO2/bKrYrNPoa4lR2CeaK1N4E
-	f528rJ4rj35V1meUBbEtLfPy0tXmnFKTcnxtDU7/R
-X-Gm-Gg: AYBFou2+HvmFtWhQ3t/LvbeII80iyFIWRV4vPgAPI3AwOW5GOhv51BYOwiVLGM+kvxC
-	CcWcb+Xcc3EAaOhnvrNy6L5gW0QVmjKGEhn9VHKLOY0FE2xEK2jykC5IcaJdezJm/JGGwK7LH3d
-	XggG6WeCQat6/v0hXjDW7E/u+ovVbf0Bazo+9bD0Jn+gGOv+3zFGEJYjkAMfgNvmOTX3IucoxYT
-	2r9KGvvXNxltzCO7DG1z72I/PdnfZ0exk/9C9KzZCHKPUICqxs6o7pyeLlOubBOMuDrGZT75eZ5
-	PhYv5YpGc0axG+acyC9XbWly7TSdcEhVMBkVzH1+tjSfh83Je9c9SEmHXp54y2UoEo5C83EoJOK
-	q70sD+Ag6javI
-X-Received: by 2002:a17:903:98f:b0:2e9:7e90:8a3 with SMTP id
- d9443c01a7336-2ea43c649bcmr890865ad.39.1792533506693; Tue, 20 Oct 2026
- 14:58:26 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ip9wkiMf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792533717;
+	bh=cEfg6TQOl4fvtdftJ1/ez1z9HrOcl9TL5QfIsA4wvdg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ip9wkiMfVMx7MNEyEKW99XvsFTthH2wE5b19Gqn6ZHbRwfBfvlPtgkuugLxr0JEF+
+	 8HoPCLz8hnRR5Z87lxoX8ZCCd+//N31PxRjgdeUbs1UcTRfWdcmCD2FJWwFMAVECbY
+	 ptOZhCRp/Y9m1Gz6jV2oY9i77Md60moI3xOFJd38wGTIMTeeI10qF5FxhjgWK2+sAE
+	 +uZ4u0GYF3FvwLl3bvIpRSCTd/N+B1LuEbXWHW6Vcvm/4IUniCNspX6MP+7g9Ehtwe
+	 iiUMTPzcni3/RuF+prj0X9RLAeRV3KTaYZrJjEEICQvRVcztojhclzvMUw9jvqH5ke
+	 pqUiFbyz1UwBw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id E8E8260050;
+	Wed, 21 Oct 2026 00:01:56 +0200 (CEST)
+Date: Wed, 21 Oct 2026 00:01:53 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 06/10] netfilter: nf_reject: initialize IPCB at inet
+ ingress
+Message-ID: <atfk0c7OlGd6hxWc@chamomile>
+References: <20261019150249.1879516-7-pablo@netfilter.org>
+ <179251065552.3135.365430607202597759@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,49 +67,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <179138670045.80227.16292613517250896744@gmail.com>
- <CAL4WiirbJrQThGS4BUo=a=AV9ckJk2AyedO8AgJgozjHOwu5Vw@mail.gmail.com>
- <CAHC9VhT5w3K1MvmP=1Mxf6KKWZD5BbK14bVHJGYFN93080j5jg@mail.gmail.com> <179216077404.22091.15636720633867774901@gmail.com>
-In-Reply-To: <179216077404.22091.15636720633867774901@gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 20 Oct 2026 17:58:15 -0400
-X-Gm-Features: AclHuK_bFa67Ysq0EPlVn9haOjzs2jVy9717_wwLtZiIrC2qKhEMo2q1W3c8W7E
-Message-ID: <CAHC9VhTDnwGkX47vOLvS_1HTAcqg7qjkXCiJwn=qGhdy_n0Jvw@mail.gmail.com>
-Subject: Re: [PATCH net] calipso: update payload_len when removing the CALIPSO option
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Alice Mikityanska <alice.kernel@fastmail.im>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179251065552.3135.365430607202597759@kernel.org>
 
-On Fri, Oct 16, 2026 at 10:26=E2=80=AFAM Joas Antonio dos Santos
-<joasantonio108@gmail.com> wrote:
->
-> On Wed, Oct 14, 2026 at 9:39 AM Paul Moore wrote:
-> > while basic CALIPSO labeling is tested via an automated test job, this
-> > particular code path is not part of the automated testing.
-> > Improvements to the tests are always welcome.
->
-> Hi Paul,
->
-> I opened a PR adding a forwarding test to tests/inet_socket:
->
->   https://github.com/SELinuxProject/selinux-testsuite/pull/106
->
-> It builds a client -- router -- server setup with network namespaces
-> and checks both directions: the router removing the CALIPSO option and
-> the router adding one.  On Fedora 44 (6.19.10, without the fix) only
-> the removal subtest fails, with the forwarded packet dropped as
-> truncated; with the fix all inet_socket and sctp tests pass, both as
-> unconfined_t and sysadm_t.
->
-> Until the fix reaches the kernel used by the CI, the removal subtest
-> will fail there; I'm happy to gate it on a kernel version if you
-> prefer.
+On Tue, Oct 20, 2026 at 03:37:35PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The new IPv6 initializer in nf_send_unreach6() sets
+>   IP6CB(skb_in)->iif = skb_in->skb_iif unconditionally.
+> 
+> Pre-existing issues:
+> - [Low] At NF_INET_INGRESS, the reject helpers do not check the L4
+>   checksum of CHECKSUM_COMPLETE packets.
+> 
+> --
+> 
+> netfilter: nf_reject: initialize IPCB at inet ingress
+> 
+> The inet ingress hook runs before ip_rcv_core() and ip6_rcv_core(), so
+> skb->cb can still hold stale data from an earlier layer. When called from
+> NF_INET_INGRESS, nf_send_unreach() and nf_send_unreach6() now clear
+> IPCB/IP6CB and restore iif. This stops stale IPv4 option offsets from
+> overflowing the stack buffer in __ip_options_echo().
+> 
+> > diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+> > index 59ec465a9df9..7cb33af671e2 100644
+> > --- a/net/ipv4/netfilter/nf_reject_ipv4.c
+> > +++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+> > @@ -357,6 +357,11 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
+> >  	if (!skb_valid_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
+> >  		return;
+> >  
+> > +	if (hook == NF_INET_INGRESS) {
+> > +		memset(IPCB(skb_in), 0, sizeof(*IPCB(skb_in)));
+> > +		IPCB(skb_in)->iif = skb_in->skb_iif;
+> > +	}
+> > +
+> >  	if (skb_csum_unnecessary(skb_in) ||
+> >  	    !nf_reject_verify_csum(skb_in, dataoff, proto)) {
+> >  		icmp_send(skb_in, ICMP_DEST_UNREACH, code, 0);
+> 
+> [Severity: Low]
+> This is a pre-existing issue and was not introduced by this patch. Since
+> this path now has NF_INET_INGRESS handling, though: is the L4 checksum of
+> a CHECKSUM_COMPLETE packet ever checked at this hook?
+> 
+> Further down, nf_send_unreach() does:
+> 
+> 	if (nf_ip_checksum(skb_in, hook, dataoff, proto) == 0)
+> 		icmp_send(skb_in, ICMP_DEST_UNREACH, code, 0);
+> 
+> nf_ip_checksum() in net/netfilter/utils.c only verifies for PRE_ROUTING
+> and LOCAL_IN:
+> 
+> 	case CHECKSUM_COMPLETE:
+> 		if (hook != NF_INET_PRE_ROUTING && hook != NF_INET_LOCAL_IN)
+> 			break;
+> 
+> With hook == NF_INET_INGRESS, csum stays 0, and the reject code reads that
+> as a good checksum.
+> 
+> nf_ip6_checksum() has the same check. It affects
+> reject6_csum_ok()->icmpv6_send() in nf_send_unreach6(), and also the TCP
+> RST path through nf_reject_ip6_tcphdr_get().
+> 
+> So can an inet ingress reject rule answer a packet with a bad L4 checksum
+> with an ICMP/ICMPv6 unreachable or a TCP RST? The same packet would get no
+> reply at PRE_ROUTING, or at netdev ingress (NF_NETDEV_INGRESS has the same
+> value as NF_INET_PRE_ROUTING).
+> 
+> Adding NF_INET_INGRESS to that hook list may not be enough on its own. At
+> ingress, skb->len can still include link-layer trailer padding, which
+> ip_rcv_core()/ip6_rcv_core() would normally trim.
+> 
+> This came in with commit 117ca1f8920c ("netfilter: nft_reject_inet: allow
+> to use reject from inet ingress").
+> 
+> > diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+> > index 07cdaa10da0d..5e08d8529cc8 100644
+> > --- a/net/ipv6/netfilter/nf_reject_ipv6.c
+> > +++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+> > @@ -444,6 +444,11 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
+> >  	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
+> >  		skb_in->dev = net->loopback_dev;
+> >  
+> > +	if (hooknum == NF_INET_INGRESS) {
+> > +		memset(IP6CB(skb_in), 0, sizeof(*IP6CB(skb_in)));
+> > +		IP6CB(skb_in)->iif = skb_in->skb_iif;
+> > +	}
+> 
+> [Severity: Medium]
+> The commit message says this matches ip6_rcv_core(). Does that hold for
+> packets looped back through lo? ip6_rcv_core() chooses iif based on the
+> dst:
+> 
+> 	IP6CB(skb)->iif = skb_valid_dst(skb) ?
+> 				ip6_dst_idev(skb_dst(skb))->dev->ifindex :
+> 				dev->ifindex;
 
-I see you sent it to the list too - thank you for helping with this!
+There is no dst in the inet/ingress reject path.
 
---=20
-paul-moore.com
+This currently does not dst lookup.
+
+This fix aims at a minimal cure for uninitialized access to skb->cb
+area.
+
+This fix address the issue reported here by moving this block
+
+        if (hooknum == NF_INET_INGRESS) {
+                memset(IP6CB(skb_in), 0, sizeof(*IP6CB(skb_in)));
+                IP6CB(skb_in)->iif = skb_in->skb_iif;
+        }
+
+after:
+
+        if (!skb_valid_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
+                return;
+
+in nf_send_unreach6().
+
+That should fix this feature in loopback.
+
+But I prefer this patch gets in because it is already improving the
+situation.
