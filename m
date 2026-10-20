@@ -1,100 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792500555;
-	b=qKbu1zFVaze2aKkNcBlvBntIoZUaBB7SGSReWbUhorvh+eB5W5IgJe7DTov3gsnSdQp6
-	 1aM7jgxMs3fjpEsHA8CZVw6ug7AgRdT/CM8VTdZmGKTU58K1tDe+AS+JuGrT6CHpTqVTX
-	 eyVwYgH6aNllOZoS0m3H6mcUgcTXkOPXPgrhFNWL3Bay1S3sLFP5+zogB9u2ECJwpTjCG
-	 ArPdNq8gfphv0z0Ai54VKwkIaD18PqLm9WL7lm9Kg7jy3jDYQspB+vpU/JMPQAHn//pRn
-	 /crhkhSbprwXtiipOYgrZXNiYz/TfVXXyms0KYZo6sTaxx32tNZT+bKD1vgsUkXho+w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500555;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=CqnJR5Wud1DAN6Fg9Q8koGamno6KsLilMYisqlHxAoA=;
-	b=CmvCPLgN8Px9hG0C9re5Yc8GGnaoRc0cFTKBiOkwEwcYeWiPz9W/wnkqU5I5mCNzLmMa
-	 Y5AyEzYGtBBmKCTsX+yHxcBoNPtNj668vQ9lCRmS0g/zMQyzeQWiSgU22dSrWM0d/Pg2V
-	 EAMZw0GQH5BKAf7R6W+N3OBWvTkRGdD9T3NVJgiJ6zewsNJc9bO+W7ppRxzJagz0FwE+M
-	 +1z/r2Hrso7A8STx0GLudz2zWN/nyRiTN3mPiE2M1cYFu39Rx9+cyWwR2UshT47N86L+r
-	 0VHD4M2x0WyjIsi+hRr9ghgHMqdNXJfYKZcm6j9ptOTYY+7qYgeo5GrwvFcfkroBGtg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sartura.hr;
-	spf=pass smtp.mailfrom=sartura.hr;
-	dkim=pass header.d=sartura.hr header.i=@sartura.hr header.a=rsa-sha256 header.s=sartura header.b=rL6WWZyG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.43
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.145.95.4
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792500601;
+	b=mMZ1QB6z5CDBLd4uO75GucAWYcQ4qmUDkyFQALUuzfO9iSsJLV7wOdHYGu1ybyB+S9kM
+	 8LhGke4+83udBKFL2zkO5aee9jTnNBykktz9LtV6RNX4uplkLD8fKjiJ3+gle5qpuaXTv
+	 8Xa/1LAuU8P1hmPDDWEoKASp0FrMuWrTPcyBRmjaelbpjmaVXLzt+0iUzaXblqvDRvkF3
+	 E0ZhxGj6prYDw48sAda9PaprmvZd5W45+2WSxgz0EAcaejt3TQ0A0QO977oL/OAPmsjeF
+	 ZvjIiIuzBbllvUChjEFLDv8ChulIpEcssgxR3dKwXgnkCVW/3oVtqZbsgMkjL95iciA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792500601;
+	h=DMARC-Filter:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 X-Clacks-Overhead:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=IzQx6pHKIouWCSktHVNsKQuHimzuXnFnXJ6+lki+f2c=;
+	b=2mVGRuQYkVDFGGQ9c2lVqUNku6bL1YBK+ZkYC6MvbLj692ljS3TwXWSkU1VLcXRX7sJp
+	 8TfZGJmYf+AZOipqbQZ/CRQUrWzMN8zyUfJwrjgVYPMJ2fV0XhSyJ2caWggXhphi3HABm
+	 HgkCdgMLUSlUNx4w07zRniBECNnDB8SERmpzK57LWeSf1pRJ5zNfQohP0OApvW6V1B2R5
+	 BcmkfR85QfDYLuEsPaOM+4ZIJoVTJg9/iudI8FGlhM/VXzFB6VywPlChOvLTvQxQAyNEW
+	 Rjuo3YbheEBRZuTBrgOU0HS3e2YOzTmiQYZg4MNN1E1022s81TE7vPcJXEO/S229AFA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=toke.dk;
+	spf=pass smtp.mailfrom=toke.dk;
+	arc=none smtp.remote-ip=45.145.95.4
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5162C606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 12:49:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5162C606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sartura.hr header.i=@sartura.hr header.a=rsa-sha256 header.s=sartura header.b=rL6WWZyG
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3acd21ba21aso2334399a91.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 05:49:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792500555; cv=none;
-        d=google.com; s=arc-20260327;
-        b=a2xMo16In80LfhfTuST+9beo8bJh+CU0Niq7mtNWKbMoK9kDILBXAp6m52G5AAVCE5
-         AJ5SRdx0E0Na7WwzFsC5R8lHf97lE1pPjAekT/fyMYXmiLwIdTiJV/1EcZK7d+LrC2FD
-         eHdnVDDEuLU/Ut22tONP00pSu08chtoAjkyIDdTzqNysrgZxYbIXDCAhfnSZaeeeekMf
-         bZ2C8FHWuwcK1ZinclzLKPX37wDlDRc2/AiUohxeMSBjnH6g/FM9m0d2FzrVfkZx7rHp
-         J9xq2CTgK+FyCn1I5Sfr9QWeuDRrfm53IiQAXMR/KTUacbUncVKuaVzUff8d2+YYhQy2
-         Ig1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CqnJR5Wud1DAN6Fg9Q8koGamno6KsLilMYisqlHxAoA=;
-        fh=Zl/FnWyMYTzOu2onzN03+9cwzb6UbAQzHJNn8mfkjTo=;
-        b=QJGnqrJ4wb/tlj/niY4eEEkFW4lqEJHGw6vjJUOelJ3n5/rGlx+41huo7FNgWtDDqL
-         q6M9nYoVYaIZYl+/ywPFeAOEgVa3z4ocsPEEHnT118YMJv+ronDV4G1/rqhoEQVwC2Fg
-         2FN95FIy5EYtihGSdinxvzScug9nYviLO2h4LB3/nBcwHqdSByjK0faVo6Q8bcFoKWB4
-         p2S+fpu9+9kTFcPLeYcz1RkMY/5saW9D+vDVjKngx+9afv5CH21n4yX/Ko4ryw+w9laa
-         9afzPp+Sio2Xb8bta7gW/3ria798mrZ8NKHEfaJBPlG07twx1S0xnDE2PlzwD9BhvyQ1
-         DLTw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1792500555; x=1793105355; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CqnJR5Wud1DAN6Fg9Q8koGamno6KsLilMYisqlHxAoA=;
-        b=rL6WWZyGJ3W3e3+Utht2+BdLbdxPTSSy235V9hfVvYaxXKj2VNXGzb69QZgg5R/sb3
-         matF7cmJ8hr5KQLCxG2RkpmAqlEN8qZaGTXWmaSSfpzYDwhPKRH2hEJGRMdEs/ZHLhb1
-         NsRkA39Pt3BIcMUoffHh9+yOXjdq3u4FySWTrbri9CUkYapRRVJxCBfmx2ghlDQxKE+q
-         BOX9wYPxsuHVCkx5CS1v1Ny0VFCqK2DVbmKCA7mUnfuLHxEBLTNuoqOsLHV6J494MdXC
-         P5CKjjX5opd2nCfEcB2ARvPw2nq77l5EuO1ybDEbW9nzdbyW5wu5EOx5wfVwxNVuB+FS
-         vjww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792500555; x=1793105355;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CqnJR5Wud1DAN6Fg9Q8koGamno6KsLilMYisqlHxAoA=;
-        b=lswNe/FAbSz4aQUOhN9aSYzy1PT5txfFNXOuVpIdaGJUvP7IN6PNxOFkkUvT0T5Y+C
-         gvWlHNFNBfD7j536cyvP9f8nX9TzCpwbHcsZl05JhjUkNN87NAloYZT0DdmaIGW/pLHc
-         wKjhzn//+DVwnfZsHPj7q3ofoCT5c/UqjH4a/AQ0ra0IotfNNCxfFuyF3x8YeK4DD5ec
-         ESib22FWV0xrdS82Zjf6IT0bweetZJPRWvhQyaBCm7IKcYuLhV1YaXeAyZco9aV1L/je
-         xfSfBDBA0/rstuK93CXwNWemFLeoO+n5jPk3EwcGpeNw+Q83ScaHphZQ0bSdf3DmFxUG
-         eC5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzrdbMKWCV0ZkVnTgNYKfrcrhAQs9vdTxdtaXV1yq81+Yft/WQbq7nmYgoRLEXLVYsKUSmtjd8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK/yIEqQfIXYFWaRwrKvciJPMAWURKRdyhiFiIJkBHx0JZEN3BQ
-	4gjd5A7+FJlO7QRe3VI/JIWnAlYNmJDTnH0NM6MJ63EgrCxKJHCfU3yehK/OMyqFFY1AgybMe9r
-	I5MmVlTuK98dvJBNvQuOl292r8oO3pQiTz4nNsF3Y5rtQ1nYzpgitTeGDjQ==
-X-Gm-Gg: AYBFou2JXPXrjAI5vbovbGghW3XsPX6WUtpVRq7M+8e3zb7I97VyrDAjzDY3dTis483
-	meD9cS4TN8RyUSOLte9Ebgj9unF5kMloHE39mAmOnBqL3cYesgmDIZpfZWzSFAFbI8zTTz8O0iI
-	R1Lx9qYulW3yFmK55Sp7VHDNiL6n+Bdt1Ma5sES2a+MlN5dL3esGBUo9sw1GgX9Bb3JNlFiqKXl
-	ANiD4o9x142ph/MHq/9hXNbLjHN8ga9PXdM9ucH8fnSjbh4xfzA+VrlCoCILquTkIdVEy/+JrVj
-	Da4BcNpUP3+9O2Gy9ctYNPMwkCYTJswJ5IOqPG4ZRutJmM4CAN3tAxbHAMlvtfg21QXpAl5qNCn
-	7mGfq+qaYLDxmPan9eTCnT8khEO07adHlO65MmjpeiSLd
-X-Received: by 2002:a17:90a:da87:b0:3ab:36c4:b502 with SMTP id
- 98e67ed59e1d1-3acef19656fmr9756442a91.30.1792500554208; Tue, 20 Oct 2026
- 05:49:14 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400A6606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 12:50:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 400A6606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+Authentication-Results: mail.toke.dk; dkim=none
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>,
+ Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ cake@lists.bufferbloat.net, Victor Nogueira <victor@mojatatu.com>, Sashiko
+ <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net-next v3 1/4] net/sched/sch_cake: serialize
+ reconfiguration with the datapath
+In-Reply-To: <QDISC-5RTM.v3.r0.20261020053711-1@mojatatu.com>
+References: <QDISC-5RTM.v3.r0.20261020053711@mojatatu.com>
+ <QDISC-5RTM.v3.r0.20261020053711-1@mojatatu.com>
+Date: Tue, 20 Oct 2026 14:49:57 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87wlrctu2y.fsf@toke.dk>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,46 +57,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020093655.344585-1-robert.marko@sartura.hr>
- <20261020093655.344585-2-robert.marko@sartura.hr> <554ff2eb-af27-434f-be62-17246c7a302a@lunn.ch>
-In-Reply-To: <554ff2eb-af27-434f-be62-17246c7a302a@lunn.ch>
-From: Robert Marko <robert.marko@sartura.hr>
-Date: Tue, 20 Oct 2026 14:49:01 +0200
-X-Gm-Features: AclHuK_rohgS66giciekkFEQ6V1rvibGJWMBWALaApFMciIq_wE3KnKfDINfbIc
-Message-ID: <CA+HBbNF7DKkwu9X2=cykc1brHLmVnbYJe2VqbOH71S3sULu57A@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/5] net: phy: mxl-gpy: add MxL86211C VDDP supply
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, lxu@maxlinear.com, hkallweit1@gmail.com, 
-	linux@armlinux.org.uk, lgirdwood@gmail.com, broonie@kernel.org, 
-	michael@walle.cc, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lrosu@maxlinear.com, luka.perkov@sartura.hr
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 20, 2026 at 2:39=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+Jamal Hadi Salim <jhs@mojatatu.com> writes:
+
+> This is a follow-up to commit 7cbfb180945c ("net/sched: sch_cake: fix
+> autorate reconfiguration throttling").  That change only stored
+> last_reconfig_time; it did not address the concurrency between the
+> autorate rate update in cake_enqueue() and the netlink reconfiguration
+> path, which the original review flagged.
 >
-> > +/* Packet Manager Control */
-> > +#define VSPEC1_PM_CTRL               0x0c
-> > +#define VSPEC1_PM_CTRL_MDIO_VOL      BIT(14)
+> The issue:
+> cake_change() -> cake_config_change() updates the fields of the shared
+> struct cake_sched_config under RTNL but not under the qdisc lock: it only
+> took sch_tree_lock() later, around cake_reconfigure().  The datapath in
+> turn serializes cake_enqueue() with itself under the qdisc lock, and its
+> autorate-ingress path stores the estimated rate into
+> q->config->rate_bps.  Two writers therefore update the same rate with no
+> common lock:
 >
-> Is this Packet or Power?
-
-The datasheet calls it Packet Manager Control.
-
-Regards,
-Robert
+>   CPU0: cake_enqueue() sees CAKE_FLAG_AUTORATE_INGRESS, computes an
+>         estimate, and is about to store it.
+>   CPU1: 'tc qdisc change ... bandwidth X' clears autorate in its local
+>         rate_flags, writes rate_bps =3D X, publishes the cleared flag, and
+>         waits in sch_tree_lock().
+>   CPU0: stores the estimate, calls cake_reconfigure(), and unlocks.
+>   CPU1: reconfigures from the estimate and returns.
 >
->         Andrew
+> The qdisc is left with autorate disabled but with the estimate installed
+> instead of X.
+>
+> The fix:
+> Commit the parsed configuration and reconfigure while holding the same
+> qdisc lock that serializes the datapath, so the netlink writer and the
+> autorate writer can no longer interleave.  rate_bps needs no atomic: it is
+> only ever loaded and stored, so plain READ_ONCE()/WRITE_ONCE() annotations
+> are enough for the accesses that run outside the lock.  The lockless
+> paths read the rate once into a local and reuse that value, so a single
+> coherent snapshot is used per operation.
+>
+> The annotations do not make a 64-bit access single-copy atomic on 32-bit:
+> READ_ONCE()/WRITE_ONCE() are still two 32-bit accesses there.  The lockle=
+ss
+> readers -- cake_config_dump() and the cake_mq children, which observe the
+> shared config under a different child's lock -- can therefore still see a
+> torn rate on 32-bit.  That rate is an advisory shaper value and is accept=
+ed
+> as best-effort; the state that must be consistent (the configured rate and
+> the autorate flag) is written under the qdisc lock.
+>
+> Conditions to recreate the bug:
+> The lost update (a) needs no sanitizer. Put cake in autorate-ingress on a
+> device, drive bursty traffic with gaps so the 250 ms autorate reconfigura=
+tion
+> fires, and concurrently loop 'tc qdisc change ... cake bandwidth <N>kbit'
+> without autorate-ingress (specifying a bandwidth clears the flag).
+> If the autorate store lands after the change wrote its rate but before the
+> change reconfigures, the qdisc ends up with autorate disabled and the est=
+imate
+> installed instead of <N>; reading the rate back then shows the estimate, =
+which
+> an unfixed kernel can do and a fixed one cannot.
+> (b) The unsynchronized access is reported by KCSAN: build with CONFIG_KCS=
+AN=3Dy
+> and run the same trigger with the change loop keeping autorate-ingress se=
+t;
+> KCSAN reports a data race in cake_config_change / cake_enqueue.
+> The non-atomic 64-bit store only shows up as tearing on a 32-bit machine;
+> on 64-bit the store is atomic and KCSAN flags the access discipline inste=
+ad.
+>
+> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+> Link: https://sashiko.dev/#/patchset/20260816012109.2865223-1-ooonea@gmai=
+l.com
+> Link: https://lore.kernel.org/netdev/20260816012109.2865223-1-ooonea@gmai=
+l.com/
+> Link: https://lore.kernel.org/netdev/875wzctsky.fsf@toke.dk/
+> Link: https://lore.kernel.org/netdev/87ld7t3kl3.fsf@all.your.base.are.bel=
+ong.to.us/
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-
-
---=20
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura d.d.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
