@@ -1,57 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792487243;
-	b=x0o1xjvTO3vXm0+iJQSuwz6JxTp+bFtUZqlO3rP63PXMeOFS1+M/KaUvaSX3BuTU1ucm
-	 y9E8P6S1GerErQbEZ4mfY5rBEEVSqz0DTGoEj1P+zW/rCmxN7aAjsAkbnXXzZXu0YoF3v
-	 ymHtLVedroEZkmM1jOad7m5h/yhSeG04T+A1qVcAO29TUDryrJUF6N3mwIG/q5dDmmy/O
-	 SpYwmeLcbo4Qc8YC3SY7TauVB53jLbXuJBEbkNUu6MDOB380wIeRskH5MJD0sN9bbkpAU
-	 GEQng97zrw0CLr+ouLd0r02DC4J+a+KK/Foo+p5IQ/S2NzI7PLmUcRvC6mXvotryGEw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792487243;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Content-Language:From:To:Subject:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=4awUjCoPkMordNZ7dimHR0j762Iy/DR9nQP5uwRaSgs=;
-	b=mxowgF2wCtlUptuBpMKaUPLDBT9I9XIRuPhTp2RjCugdUvoox/ybZJvr6ErYPn3D6hAC
-	 qXQsJlJmbfbueWD6b5+SEJ2WcmzxQBVdcpHj1lgsHyg0UkoZa/OpouTb0ZSu66EbNpzhZ
-	 A/qbqJUCvbS/Ii1Etf9QQu+HbQOdUwjDpITZwzla2XGUfztR7jYKMUAmZ7FeyYHJZHxsA
-	 TYYAc7Hx++fJAseaeMNSzuUUG2OHkxLvYDdw71RDaoVMwpb8RclHFLPkT65resM/v4oRs
-	 rqPtle+sZ3gUalsoncqlUD6LeH20qTH1DSL3Is7rI25feKW7m0SZv4ajQfFhrXTtT7A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=fxW3WUj0;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792487320;
+	b=2XZkLtHQq4oLDC4Op4cjZM5F69CPL9LsZFVqdLQsO1px3Yd4NhXNqYXX/PXKVgkMvkxj
+	 clX5FZeY+tTwmyoMarWCpZd0DdYzpkJPhBfIZla3af2hGpARy2X/9KCg+9BqpYCAANj3s
+	 WufqWjd5sBITH/kY6lKY20aa+Gi24B3Ub+4ddI3x6/t9amJ46d8BNGRiV+06tMrMUlcLC
+	 W/NdapuzUkSkjGrM9IhzML2hd+uDMVVpTL+Fh3ifwxf7/xUVZ4xihgfL5I79Ti5GsUvj1
+	 YEURAHM4XWiG10/NLC8+7/QTk7SRDDTZ4jQHK5HK6SoMVWnGLywyMVTQqYcWMJ0OrSQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792487320;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=SI3NG50e0qifw8rcKAfg82Rn2PZGsgRISScsgeSFDRY=;
+	b=hHYeZWEr38oLZ+9zuaDv4M08LHra8DzC2EkyG8ZsiZ17Lyinte/iIQoiuNTYZf/lsaIe
+	 xQYrGEZ/qGA5boZEyd5nt4KN+LGgmoULWAEe9/VBxw8K5tLbK38pPkHZBPjUkKxBRznXw
+	 +bwfw9q+JLkYd4/T02Vw4X7ZWnl8FFbxTQTLqLNBFK/y8g8eAUTxVLDgVj4vvtr4lWpdZ
+	 bV4FuLxf+i+YTE1uvZBja8lFzKl4UyDZfjyr9G7TB8i7uAhyPYahDGD37JsoXYeoJZNHn
+	 C5N5mIH3TGHCfncRmZyWW88HaQDMlMo+nYxzBPjYVXvS2USqw3QdufKpQ62n6G3675A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=SIEaPCGK;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74107606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:07:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74107606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D00606A325;
+	Tue, 20 Oct 2026 09:08:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46D00606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=fxW3WUj0
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D3D3B1A12A4;
-	Tue, 20 Oct 2026 09:07:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A1E5360393;
-	Tue, 20 Oct 2026 09:07:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99403103289A8;
-	Tue, 20 Oct 2026 11:07:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792487239; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:content-language;
-	bh=4awUjCoPkMordNZ7dimHR0j762Iy/DR9nQP5uwRaSgs=;
-	b=fxW3WUj0J4JZ9qtamgeHIyTlRVX0RuIbIVCw1xH2xs7QROhhVhqS46Xou0mORf3H4sBSgh
-	C/xadBgwiuQBxE+oxDOOHZtDm8jgDV6cw9Izd74wd9vVcL1I3SIdrEdM3QyySSphRpAB+y
-	oj067Lg9Lbixh8GLaK/mZweW+go4RSMWHEZDSOHMob83giabh6gN6IwFh+JD1T8BDHWNcO
-	QcSdUlij83TnIr4GN2MMOLFdDVoIGhXUTmppT07+XSVXkztY6FSXCJZEG4yakO3KY8u0VE
-	dUM/5hgCEhSmVge20ZO1k4yAlYFWmWq5VEiXKTO/jx5jKV0B8xCEs4V0i5eh/Q==
-Message-ID: <bdc75e18-8ae7-4056-8f43-dc280a3414f5@bootlin.com>
-Date: Tue, 20 Oct 2026 11:07:16 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=SIEaPCGK
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A22EA201EDB;
+	Tue, 20 Oct 2026 11:08:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792487316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SI3NG50e0qifw8rcKAfg82Rn2PZGsgRISScsgeSFDRY=;
+	b=SIEaPCGK1H9u0hn8qedTLfpXNn+Yo4MptoDtAENBu1oorp9X6fToxUxqA8r455VAqWeb86
+	1EIejGU6KVu+D1f4ytKe9n7EYvOt9DoVcZXX43Q4JdEtX5faUABUvp5TGyMJssLvIA7MYp
+	syMgjHkfdqPcDMJEw1Puqowmra1fZLx55arx30o0+LRNGFZZNrmAGNLWvhrfQmng4crx4i
+	ocPcJdhV1L37VJr+45Ilhdzhhr10tkQH1eRiRBfgAP/FtajS+JNbrLCvP+Y9qpem1tkdKs
+	eOAO4IzMIZslTQscYdVZP5cOMHT5Fqtzt8rnHXvstaJbjUYETyIYtEibeIfV3Q==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792487316; a=rsa-sha256;
+	cv=none;
+	b=MnU0gGfUhlKxmHnBdRI4GhC5Or7Q5fGUG48Hk7brgTTvnqPGOpxDzG9sgd23Lf+LNbXbgs
+	y63K5012keYShgs1MtyezQHsCdf/wFebF8YzSHqSxzG1EqgzZcwvlY8+da9Xk51EQ5OT5o
+	Z6ndNLUc0OyVw/lLhW76UsPmqAhoEO/65Ev02go39N6kGgMEdSzR4csoWZQZO5uyl2K8wP
+	AkUGaDDV8D0duJ0N5HXdtWhfywAw0h9oC4RDTbJ8DFd2KmdEPo3epQrJh5mirNrZl0H4FU
+	j1GN+41hd3T0YEH6pTzAe+O+AcUDnRhDcVatzEqTQx1YmvO22WmT42/ZGMmPow==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792487316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SI3NG50e0qifw8rcKAfg82Rn2PZGsgRISScsgeSFDRY=;
+	b=HgNbthJPzXtrs5PHZB3CFOmjJ4566bwTMpg+SmWcJZqNUgENZ6Kz2gpdg/2EsPE08uAJOQ
+	htDPnNG3cAPia7umd+DGdH+yPTvfcqMzd9UlgQ++GHJ9Y12+NrNV/RDGj6YPxsZ100QtX1
+	9mq0higEGkQm6/hEGEP+1ap9MEy7E2XRwjV85CeM9R8LkmXDk/g1wIHe6/vOOtQ7Czj7mm
+	9aCLOVC96CkOItY/HbG+Xon8qN6Q3YL8i3oMHTYNk7r9uygr8HhTZFQ4V1CLCwnZ9jiufy
+	5OOddYHFQCYH/V7MXFlxOFEDDTU37AG1xyf++80GAUXA1+RtQ5kKHZnl5tfVCw==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xJ5pk-000LmT-1l;
+	Tue, 20 Oct 2026 11:08:36 +0200
+Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 3C1355C9D7C;
+	Tue, 20 Oct 2026 09:08:36 +0000 (UTC)
+Date: Tue, 20 Oct 2026 11:08:35 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, 
+	linux-can@vger.kernel.org, kernel@pengutronix.de, haibo.chen@oss.nxp.com, 
+	shawnguo@kernel.org, imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller
+ if interface is down
+Message-ID: <20261020-purring-cute-ocelot-54ef8b-mkl@pengutronix.de>
+References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+ <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,136 +102,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: netdev <netdev@vger.kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>
-Subject: [ANN] stmmac enters the Netdev CI
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xhtixbv4xfmns22l"
+Content-Disposition: inline
+In-Reply-To: <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
 
-Hi everyone,
 
-It's my pleasure to inform you that the stmmac driver now has a runner
-that feeds into the Netdev CI. It runs in a lab I maintain, and the results
-are hosted by Bootlin, accessible here :
+--xhtixbv4xfmns22l
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller
+ if interface is down
+MIME-Version: 1.0
 
-https://netdevci.bootlin.com/stmmac/results.json
+On 20.10.2026 15:53:40, ChunYuZhiQiang wrote:
+> If the interface is down, the CAN controller might be powered down, the
+> clock disabled, and/or its external reset asserted.
+>
+> Don't call do_get_berr_counter() or do_get_auto_tdcv() to read the CAN
+> controller if the interface is down. This fixes a generic logic problem
+> that exists on all platforms.
+>
+> As a result, IFLA_CAN_BERR_COUNTER and IFLA_CAN_TDC are no longer
+> reported for down interfaces. This is intentional: the counters are not
+> meaningful in that state, and calling into the driver can wake a
+> runtime-suspended controller or touch registers whose clocks are gated.
+>
+> Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch o=
+n clocks before accessing ecr register")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+> ---
+> v5:
+>  - Gate can_tdc_fill_info() on netif_running() for IFLA_CAN_TDC, as
+>    requested by Marc Kleine-Budde. This branch has no IFLA_CAN_XL_TDC
+>    definition or call path at all.
+>  - Keep the TDC part of can_get_size() consistent with can_fill_info(),
+>    without hiding the non-TDC data bittiming attributes.
+>  - Document that IFLA_CAN_BERR_COUNTER is no longer reported for down
+>    interfaces, and explain why this is acceptable for stable.
+>  - Clarify the Fixes: rationale.
 
-What that means is that now contributions will be subject to CI
-validation, by having the kernel selftests run on real hardware.
+Thanks for the patch. In the future, please don't send vN+1 as a reply
+to vN.
 
-Results are already aggregated in the patchwork contest, and can also
-be found here :
+regards,
+Marc
 
-https://netdev.bots.linux.dev/devices.html
-https://netdev.bots.linux.dev/status.html
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-As stmmac is an off-the-shelf IP from Synopsys and is integrated in a lot
-of different platforms out there, the CI currently runs on 9 different
-boards that include the following SoCs :
+--xhtixbv4xfmns22l
+Content-Type: application/pgp-signature; name="signature.asc"
 
- - Starfive JH7110, riscV, dwmac 5.20 (rgmii-id w/ YT8531 PHY)
- - LoongSon 2K0300, Loongarch, dwmac 3.70a (rgmii-id w/ YT8531 PHY)
- - Amlogic S905X, arm64, dwmac 3.70a (rgmii-txid w/ RTL8211F PHY)
- - Rockchip RK3566, arm64, dwmac4.20a (rgmii-id w/ RTL8211F PHY)
- - Altera AgileX5, arm64, dwxgmac 2.10 (rgmii-id w/ KSZ9031 PHY)
- - Altera cycloneV, arm, dwmac 3.70a (rgmii-id w/ KSZ9031 PHY)
- - ST stm32mp157a, arm, dwmac 4.20a (rgmii-id </ RTL8211F PHY)
- - Allwinner A20, arm, dwmac1000 (rgmii-id w/ RTL8211E PHY)
- - Allwinner H2+, arm, Allwinner specific version (mii w/ internal PHY)
- 
-On top of that, there's a Motorcomm PCIe card with dwmac 5.20 that's
-connected to the JH7110 board, also running the tests.
+-----BEGIN PGP SIGNATURE-----
 
-Coming-up is NXP imx8mp, ST stm32mp2 and Ingenic X1000 (MIPS board) that
-will be running these tests in a near future. I will also include another
-CycloneV setup with SFP and the Lynx PCS.
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatcvkQAKCRDMOmT6rpmt
+0rQsAP44p13C0FJDoheLomyTm1VKGdoHw1GCjJoCA7idRbdqewD/aQFNnROx2OGI
+kU7F50XIuO/F9m2zEK9DjzJ3dXYEcg8=
+=BMlh
+-----END PGP SIGNATURE-----
 
-If you're interested in getting your HW in that CI, I have some room to
-spare to host a few more boards, if it's relevant, feel free to contact
-me.
-
-This setup is cruelly lacking DWXGMAC IPs (only one now, and it's 1G only),
-as well as stmmac boards that use a PCS. Only Lynx will get coverage with
-the CycloneV board, there's no XPCS boards yet in the lab even though
-it's quite an active area today.
-
-The tests that are run are the tests in :
-
- - tools/testing/selftests/drivers/net
- - tools/testing/selftests/drivers/net/hw
-
-Not all the tests are currently running, as some of them do not pass
-cleanly on stmmac, either because of driver issues, or because the
-selftest itself doesn't properly run on the boards.
-
-The following tests are excluded :
-
-  - drivers/net:napi_threaded.py
-  - drivers/net:ring_reconfig.py
-  - drivers/net/hw:rss_ctx.py
-  - drivers/net/hw:xsk_reconfig.py
-  - drivers/net/hw:xdp_features.py
-  - drivers/net/hw:irq.py
-  - drivers/net/hw:tso.py
-  - drivers/net/hw:toeplitz.py
-  - drivers/net/hw:rss_api.py
-  - drivers/net/hw:rss_drv.py
-  - drivers/net/hw:rss_flow_label.py
-  - drivers/net/hw:nk_qlease.py
-  - drivers/net:stats.py
-  - drivers/net/hw:csum.py
-  - drivers/net/hw:uso.py 
-  - drivers/net/hw:nic_timestamp.py
-  - drivers/net:xdp.py
-  - drivers/net:gro_hw.py
-  - drivers/net:gro_lro.py
-  - drivers/net:gro_sw.py
-  - drivers/net/hw:vlan.py
-  - drivers/net/hw:devmem.py
-  - drivers/net/hw:nk_devmem.py
-  - drivers/net/hw:userns_devmem.py
-  - drivers/net/hw:nk_netns.py
-  - drivers/net:psp.py
-  - drivers/net:macsec.py
-  - drivers/net:netpoll_basic.py
-  - drivers/net:ping.py
-  - drivers/net/hw:ethtool.sh
-  - drivers/net/hw:ethtool_extended_state.sh
-  - drivers/net/hw:hw_stats_l3.sh
-  - drivers/net/hw:hw_stats_l3_gre.sh
-
-This list will likely shrink down in the near future, as the driver gets
-cleaned-up, but also as the selftests themselves get adjusted to run on
-less capable HW. Hopefully we can get the XDP/XSK tests online soon, as
-there's a lot of activity in this area currently.
-
-A few of these exclusions also result from the lab itself not supporting
-some features (e.g. macsec or psp).
-
-Note that there's also a secondary CI that runs a few test that aren't
-covered by the kselftests, it's not much and doesn't get the same amount
-of attention as the NetdevCI runner, but still it's useful for aggregated
-results of the "ethtool -t" selftests runs :
-
-https://minimaxwell.github.io/stmmac-ci/
-
-Special thanks to Matthieu Baerts, Jakub and Andrew who helped a lot in
-setting this CI up, and to Bootlin for hosting the results.
-
-And of course, thank you to all stmmac contributors, this is the busiest
-driver in net and we've seen a lot of efforts lately fixing bugs all over
-the place, getting better PCS handling, better XDP/XSK support, better
-TC support and overall multi-queue improvements, multi-buff mode, proper
-MTU change and suspend/resume error handling, cleaner VLAN support...
-
-Let's hope this CI can help making bigger reworks without the fear of
-breaking other people's setup :)
-
-Maxime
+--xhtixbv4xfmns22l--
