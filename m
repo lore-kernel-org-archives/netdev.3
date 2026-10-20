@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792527018;
-	b=U7W3ZAJOjfgeNQoA3k5EEv8+5x1pTs2gJeFbce6C//cehssWF7Etjg8SrZqiA+WR0IYG
-	 VGQmgPiyucnEV0MnWxSM0i6BkY++uX760g+sw3DjnTQBq+Liql1rLqfXBvvmwsH0ZNqfs
-	 o2TZy/sJNApspop7q3m4tn6xp4ctADgAw2OEWV5tVvZD35GB8DoGbe2U4Lb54TnWfPSSb
-	 m3j/REYaPHHogeXgHzHv2oBsnxdIFVo32cd9ZDHPCNmF9VMDyvZn59wDNsywYbqZhssXz
-	 mE//G1ggpelgqAn7IQh6Kv7+L7YftHBRD/AsLRsIjaEeEJwUrJg9KIFYzihIAjpw5Ng==
+	t=1792527016;
+	b=qTuN5KLmYZHG+Q+ygjG07w23scVd6t6x7ykbOrLWxO5cbY4zZpp+A1JKnolsCH/cSrNc
+	 gxW5ai/Fz6EV/TZDyNyxJG6NqQZ9a9mDOSMx0ZFa9oCi0bVLPEaq0J6hQ6eFRoz/Y1w/R
+	 3HRJZt/glqlTA2avLeR1t0Ezfkk4YN57fOSmxx5wmR1PsP1nMYI2dAW2dj+QY4A/rnmVF
+	 umjicIBKXy4MGZS+AbB2hg8gvUloEyO70wsv5K1qN1xi7mQDfws6kCd60Y0Ph3q6XXqcz
+	 RL0mgSqVZk1Nqu0mWg7khaQNYWoxLXtpqCQ+NaegG8YwBKaEzP5otZe6x93s/Uds3mA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792527018;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792527016;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=MPEk93LBm0iJwBdLoARQ321u5Nm45b1//8fq9Tdp1+g=;
-	b=h8WwPmcTvao22VyGRPJa8roYk19L036ECu1SJ8E3m8+M47v/3RpXQFovQOTEZinpcikg
-	 6MKoVm4SlbYMzsTEGXD1iyTO9bTzXpxjeObZBtZpV+rcrLqXktSJECs3Ng3ZYHERRe49K
-	 C5y1mWmHRFtowPVvxhoamNjhVEF1B0rORPoPtbNQKqU3Wh2eL/O2HSzidWUdFL2bSh76T
-	 Soaoh5AFQH2VoEBfDqJC4ZGPk7umTScATxoNpkc+lYMQm6dyfM9Ohh83I6BNjiYRz+ow+
-	 Ib/cNomh2fU2Wp+4hpwEMylXvvJ0FdUCYKezQiCgVrEs57J2zvj+qLkvMaxvx6L0wVw==
+	bh=ScSEejHb7NfkJGEdOKnoYcp0hYXqiNV3pa9I4r/NVRA=;
+	b=i/Kd65M3OaM0gT46+5fOI1VqCda9G+EULSjRYpIDqPPvD+l1/e5DxLrXANrgn5DUS5lB
+	 uYwmv+HsgT/OHGBrN/iKDAgQJzuQgIwd8UN8LvDZtaWCBcLYDzaY3G1gcZGJcLqR1YcQx
+	 6x0ENWvrRwSYiUHT7aEnaAVoewz0Y5EENVvjtKTRTDXbU0NsyLSizrA47AlRKrOYGwGCX
+	 f4lUEn+gaLCLf6FowcUoUpMgDeq136KpABmzcFM2k5yVewq1OKF0efWRVv9eqrexe0pjv
+	 NFmLqb/mTGAnNZ+hgHK1Dm9/nhpzFnZkVptWrvQQzLuli+oADHMz0UDaZ1917/UB04g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yvd0Ea2G;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P8GsMGGo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EEE606A32C;
-	Tue, 20 Oct 2026 20:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D82606A31D;
+	Tue, 20 Oct 2026 20:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yvd0Ea2G
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F081F000CF;
-	Tue, 20 Oct 2026 20:10:17 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P8GsMGGo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E4A1F000CA;
+	Tue, 20 Oct 2026 20:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792527017;
-	bh=MPEk93LBm0iJwBdLoARQ321u5Nm45b1//8fq9Tdp1+g=;
+	s=k20260515; t=1792527016;
+	bh=ScSEejHb7NfkJGEdOKnoYcp0hYXqiNV3pa9I4r/NVRA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Yvd0Ea2GsHae7Xg3sIlLy+ORGSIpNtGoeIaVd0H/+iECaWBOJm7R7IWIx9mNdbDq+
-	 T9+iRcWzBTxRhBaOSs0npGO+dTc5B4TWeiN7DGPcVZ/yfpupA6LETsUcMw6iPi1nKR
-	 bf3XghXyip7qxudbKtxu7lPyl6LkwPzIzqb+jjxTV1gof92vHHyNi/jOFUEkeC9prh
-	 J1djmD3a4b+ft+9CoE8MvcKHZFrdMHAsY3OeiDFQ2hZno7d0BWo8aYhl9IAMsvhnfK
-	 huLPkHLR21J9aLjgzI+CM34Q/g5UfEXBH2DY7VcuG+2WQhOAQYnXnUEMrDd2Y/L9yD
-	 eq2ITX4QJy8qA==
+	b=P8GsMGGo3DblBFQoa2N3IJZrY6HTLhxiERLX1AhlzXJp6bnLZRsVK4Vhj6pRVBW+j
+	 vdwVnU2RTp75Q1w5i5mXQAdmEjFZ3KB0RSTyKlVTmrjh/EuVtpPR306NMoPOCwtnve
+	 xEGTr1J0tQhxAcRf+fE7zPvnd2zpDUzakP0oH308DCaBtggg19dowst4pFQJESJcjm
+	 DID1TH86cOQLgzyOvVRZQ+KdvrIZwRuOmrmF2dOjtXrpzjZyvQ7RfZK6WDCvRxh1Ss
+	 CyqDJYQaMjZO1OBWCQS1WftNsUWodazTvdGMDxqes5ctoi5fk3r5OV/MITsJuBcHI1
+	 rVSDFyAVq+tNA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774023809A09;
-	Tue, 20 Oct 2026 20:10:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F14AC3809A09;
+	Tue, 20 Oct 2026 20:10:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,63 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: phy: realtek: restore RTL8211F RGMII delays
- on
- resume
+Subject: Re: [PATCH net-next v3 0/5] net/sched: reject oversized action dumps
+ and
+ cap unbounded entry lists
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179252701602.186787.14998467033083522856.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 20:10:16 +0000
-References: <20261015045001.83986-1-kmehltretter@gmail.com>
-In-Reply-To: <20261015045001.83986-1-kmehltretter@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
- linux-kernel@vger.kernel.org
+ <179252701452.186787.8173064049574810392.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 20:10:14 +0000
+References: <QDISC-H19Z.v3.r0.20261012193813@mojatatu.com>
+In-Reply-To: <QDISC-H19Z.v3.r0.20261012193813@mojatatu.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ ihor.solodrai@linux.dev, john.fastabend@gmail.com, sdf@fomichev.me,
+ bpf@vger.kernel.org, vinicius.gomes@intel.com, olteanv@gmail.com,
+ vladimir.oltean@nxp.com, p@1g4.org, eadavis@qq.com, dcaratti@redhat.com,
+ sashiko-bot@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 15 Oct 2026 06:50:01 +0200 you wrote:
-> RTL8211F and RTL8211F-VD both use rtl8211f_config_rgmii_delay() during
-> initialization and share rtl821x_resume(). The RTL8211F-VD loses its
-> RGMII TX and RX delay enable bits across a software power-down, but the
-> shared resume path only clears BMCR_PDOWN and waits for the receive clock
-> to stabilize.
+On Tue, 13 Oct 2026 04:54:26 -0400 you wrote:
+> An action dump is carried inside nested netlink attributes whose lengths
+> are u16. When a single action's dump does not fit, a plain nla_nest_end()
+> writes a wrapped length and the kernel hands userspace a corrupt reply; on
+> the classifier path the -EMSGSIZE this produces is mistaken for socket
+> buffer exhaustion and retried in a loop that can never succeed.
 > 
-> On a BeagleV Ahead configured for rgmii-id, carrier and the negotiated
-> speed return after an interface close/open, but the receive path does not
-> work. At 100 Mbit/s no frames were received. At 1000 Mbit/s all 11
-> observed frames had CRC errors.
+> Patch 1 makes every nest an action dump can be carried in fail cleanly
+> (-EMSGSIZE) instead of wrapping, bounds the tfilter_notify_prep() retry,
+> and stops a notification that cannot be built from vetoing a filter or
+> action delete. Patch 2 stops an action add whose actions were already
+> committed from being reported as a failure when the notification cannot
+> be built. Patch 3 caps the number of gate scheduling entries at 1024,
+> rejected with -E2BIG and an extack message. Patch 4 caps the number of
+> taprio schedule entries at 1024 in the same way. Patch 5 makes the action
+> dump report an action that cannot be serialized into one dump skb as
+> -EMSGSIZE instead of returning success and silently dropping the rest of
+> the list.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: phy: realtek: restore RTL8211F RGMII delays on resume
-    https://git.kernel.org/netdev/net-next/c/20c0c6773624
+  - [net-next,v3,1/5] net/sched: act_gate: reject oversized dumps instead of wrapping them
+    https://git.kernel.org/netdev/net-next/c/ed9e404dcf9b
+  - [net-next,v3,2/5] net/sched: act_api: keep an add that created its actions from failing
+    https://git.kernel.org/netdev/net-next/c/1a49567560a1
+  - [net-next,v3,3/5] net/sched: act_gate: cap the number of scheduling entries
+    https://git.kernel.org/netdev/net-next/c/150167ea4d7a
+  - [net-next,v3,4/5] net/sched: sch_taprio: cap the number of schedule entries
+    https://git.kernel.org/netdev/net-next/c/2bc124a5f8df
+  - [net-next,v3,5/5] net/sched: act_api: report an oversized action dump instead of silently truncating it
+    https://git.kernel.org/netdev/net-next/c/10a486c17dff
 
 You are awesome, thank you!
 -- 
