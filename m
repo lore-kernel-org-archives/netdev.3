@@ -1,63 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.191
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792463244;
-	b=k2t6AOAxwddfx50V2mv8/9t0agkq2Ll8HfdtiOTZLVw8oQjATI4wFLADt3EiFyxB9jre
-	 8DsuWHEryfZjRM36d+S0SQRJEE5DWUwqEZpm/PMSXG6w8b5mZlW/LKQ2r+tsXaM62H0xd
-	 9MLEzZmn7rwN2ZkKoWuWn9lAWmtn17HnfMjVvJ5xcOZ6jUyMwtgY18lbKyV1lEyaQASno
-	 Dt/U5H2E34qMfZN/OT/k6BM2mH9FfSVyyXEh9O6CbdnMdXue/K9Ej7Y/p+Ndo0K6ABPUH
-	 CuariDuCYvZK6RN2aGWZGVmru/0nvZ6qhOrnGxDYg6AE9yk/5tUiJS+0IbgqSgFUCFA==
+	t=1792463236;
+	b=ZwjJtsQJs+LNYJI0Ss8wl4nU6C4nzR7jxQhw+2Mm89QA08WHTd/Z1xvjCqAk0ZTVu6yK
+	 yDBSWO9wIaHsAhwXM0vzQEXKyV1wF64ljdGWfpyu4bLmsMGth9kjMZJbpKWojwmP/6F23
+	 kB9EIDYjo+pak3EYXbhox6FMf7ysefCUApv6BLsmyJbFG+CI45ADWAdG1u9v3aLMYIEYp
+	 MJtewBQS6dJhv0pOP6fRFRWd9rRFPFzlxosXpSz/ifYYCvG4BM+7BGJwvJwp+VBmg8ZA7
+	 C5gBaCC1EeW1hURRmPk/HjHNh/3jhFxlUGYSP/XpiOJbwY9myjjGBqH9hTa6kTcmDJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792463244;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=4dpF3PjqXhgSVJ1gs4ldu0scOe6sTlAmI5ssZqcED1A=;
-	b=wuUgDzhO3oc+W9TUBdaE7HuJGaMbVvsEErGcBZdGdrvFfp4ArMGpuAgY6S5+C/GN1aAl
-	 lt3VkxpXhlVZYszjPT6ahoIGhteQbCRO8IdIWXOjumkYXmzdG4uJ3UKs9+ebaII7qPEdV
-	 jdOn4mbmFBpQP7SQlHkYe7dT1Z8g+UtbhOU3ZYzKXvQK1QtOarCJvfPBvJAIxUSBuL+D5
-	 PEAf25odp/XAVPOCdxbha0wTUKKfQJL0/QIyGhHrwBZFMtP5cdQYJsk1K7fp4JGuwA/W2
-	 x16PX3glWm1Tfb4qKnHfzxPGevM6Lfo7X25xt8kCzFWaD98ZF7Ako4EtYju1OWc0cXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792463236;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=dy3ucRc1XCEeofmHBSnscKm5xMHhfbbrvHz358CCx1g=;
+	b=IV1+5EC6I7rw2q7HIuZFtmOXMSwOpNl9SLXcbLQ2b1hVERo89ve6R7QmTjfhfZoVMNhD
+	 c51d1OnySmUEp0Tv8ZL7n4Utmx4d8a5A3KD3gD+iTs94ZL2kHke5nCQbTF+YDcnwlRrWr
+	 VRRZOCSAoFv1SJNWLsvrqLWt1p7vb1VLyPEo4Fhtx494IcXiIjA4F1FNGeAo3QcGV7wMG
+	 uoHHQgBLAbjJOt/xmXpWP3KHrXbLgfgKeL1zA0fp4GHID29H1g6XylQAzpDPFjgk6i6QH
+	 Z99OwSgUyXg5J8oQ8Unw7dEO/2pSfVZ6gwQcXSWLVmQvqIGcqEQugQvdngNw5aYOWBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DXyZbBq1;
-	arc=none smtp.remote-ip=91.218.175.191
-Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YZAly+Wb;
+	arc=none smtp.remote-ip=220.197.31.3
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A13606A31F
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 02:27:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9A13606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB48606A31A;
+	Tue, 20 Oct 2026 02:27:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FB48606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DXyZbBq1
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ruhOIGzk5JT5yGbHrtNFr71ekWRk/c340FuzwAxWGdY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792463241; v=1; x=1793068041;
- b=DXyZbBq1Up33KytlyQroVDiZDg3DWx1mk4Qtk7XZr38KK1RDbw477/dkNr0luealpXCCtv/T
- EOI1lidKVtg98tmuYE6DDdUbUKNmSNMGfVkM68Pw0F5jKJF2bBGumU8bqdyDBLHCVNjneSmCfNd
- 9yuBU5nx3GNDU32i0Mzryfeg=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 7172e4ae6d6e83ce;
-	Tue, 20 Oct 2026 02:27:21 +0000
-X-Mizu-Trace-ID: 7172e4ae6d6e83ce
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 20 Oct 2026 10:27:03 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, andrea.mayer@uniroma2.it, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, contact@proelbtn.com, pablo@netfilter.org,
-	vega@nebusec.ai, sashiko-bot@kernel.org, petalzu987@gmail.com
-Subject: Re: [PATCH net v2 1/1] seg6: validate state in netfilter
- continuations
-Message-ID: <atbRd1km4IlW4wwY@fedora>
-References: <cover.1792230570.git.petalzu987@gmail.com>
- <ec7399b424e82f050a1ff5dc79537aee1d93723a.1792230570.git.petalzu987@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YZAly+Wb
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=dy
+	3ucRc1XCEeofmHBSnscKm5xMHhfbbrvHz358CCx1g=; b=YZAly+WbRPbtTKx65w
+	YkpZCvRmxS9GbeBLFW9zGc6w7drekd9lf3sjd5Drh4+0HPbN/k9W9K2VYArx7ttu
+	2DA/JZOwECx3kUi3SpzVtrWHRijOJYAi7Rb4OfYSvi3fmLb7sT96ee7KDZYO1hN4
+	/OaxERnjGt4X+n3G/QA4Sjz5o=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3N8ZY0dZqKUFdBA--.5766S2;
+	Tue, 20 Oct 2026 10:26:34 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: sukhdeeps@marvell.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH v1] net: atlantic: Unregister before clearing RXNFC rules
+Date: Tue, 20 Oct 2026 10:26:30 +0800
+Message-ID: <20261020022630.515209-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,250 +65,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ec7399b424e82f050a1ff5dc79537aee1d93723a.1792230570.git.petalzu987@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3N8ZY0dZqKUFdBA--.5766S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZryUZF43tr13Xr1fZw45trb_yoW8trW5pa
+	15Wry7C340qw10qw1kXF18ZFyYkwn7tF95K34UGwsY9rs8AFWxtF4rKrWq9F10vFZ5uF1j
+	vrWYv3ySkFZ8A3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUDG5UUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC4BravmrW0VqIwgAA3j
 
-On Sun, Oct 18, 2026 at 02:27:29PM +0800, Ren Wei wrote:
-> From: Zixuan Chai <petalzu987@gmail.com>
-> 
-> Netfilter hooks can drop or replace skb_dst() while an SRv6 packet is
-> queued for continuation. The End.DX4 and End.DX6 finish callbacks and
-> the seg6local input continuation currently dereference the destination's
-> lwtstate without validating it. The seg6_iptunnel input and output
-> continuations make the same assumption after POST_ROUTING hooks.
-> 
-> Validate skb_valid_dst(), a non-NULL lwtstate, and the expected
-> LWTUNNEL_ENCAP_SEG6_LOCAL or LWTUNNEL_ENCAP_SEG6 type before using the
-> state. Drop the skb when validation fails. This check is by type, not by
-> identity of the original state. It does not walk through an XFRM dst or
-> take an additional lwtstate reference. Retain the loop-detection
-> explanation for saving the lwtstate address in seg6_input_core().
-> 
-> The End.DX4 reproducer creates a SEG6_LOCAL End.DX4 SID, enables
-> nf_hooks_lwtunnel, installs an IPv4 PREROUTING DNAT rule, and injects an
-> outer IPv6/inner IPv4 frame through AF_PACKET from a non-root user in a
-> fresh user/network namespace. DNAT drops skb_dst() before
-> input_action_end_dx4_finish() resumes.
-> 
-> A separate root-only reproducer exercises seg6_output_core(): an SRv6
-> encap route, POST_ROUTING SNAT, and an ESP transport policy replace the
-> route destination before the continuation resumes.
-> 
-> On a clean KASAN kernel, the End.DX4 reproducer triggered a NULL pointer
-> dereference in input_action_end_dx4_finish from packet_sendmsg(). On the
-> patched kernel, the End.DX4 reproducer completed with exit status 0. The
-> SNAT+ESP/XFRM reproducer ran twice; one run returned exit status 0. No
-> target KASAN report, Oops, or kernel panic was found on the patched
-> guest. Tests used QEMU TCG because KVM was unavailable to the test user.
-> 
-> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Closes: https://bugtracker.nebusec.ai/f/11977
+aq_pci_remove() clears the driver's RXNFC rule list before unregistering
+the netdevice.  Until unregister_netdev() returns, ethtool operations can
+still call aq_get_rxnfc_rule(), aq_get_rxnfc_all_rules(),
+aq_add_rxnfc_rule(), or aq_del_rxnfc_rule().  Those paths traverse the
+same unlocked hlist that aq_clear_rxnfc_all_rules() is mutating and
+freeing.
 
-Nit: The link is not accessible to non-maintainers. I'm not sure if
-this fits here.
+The race is reachable by issuing RXNFC ethtool commands concurrently with
+PCI device removal or driver unbind.  A reader can dereference a node that
+has just been freed, and two writers can corrupt the list or free the same
+rule more than once, causing KASAN reports, list corruption, or a kernel
+panic.
 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260720204430.1886091-1-xmei5@asu.edu
-> Assisted-by: LLM
-> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
-> 
-> ---
-> Changes in v2:
-> - Add unlikely() to the new checks.
-> - Validate the current dst/lwtstate type in both seg6local and
->   seg6_iptunnel continuations; drop invalid state.
-> - Do not walk through XFRM dsts or take an extra lwtstate reference.
-> - Retain the seg6_input_core() loop-detection comment.
-> - Document both reproducer setups and clean/patched KASAN results.
-> - v1 Link: https://lore.kernel.org/all/cover.1790748418.git.petalzu987@gmail.com/
-> 
->  net/ipv6/seg6_iptunnel.c | 35 ++++++++++++++++++++++++++++++-----
->  net/ipv6/seg6_local.c    | 38 ++++++++++++++++++++++++++++++++------
->  2 files changed, 62 insertions(+), 11 deletions(-)
-> 
-> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-> index 7cbe0685f8bb..75ceeb127337 100644
-> --- a/net/ipv6/seg6_iptunnel.c
-> +++ b/net/ipv6/seg6_iptunnel.c
-> @@ -18,6 +18,7 @@
->  #include <net/ip6_fib.h>
->  #include <net/route.h>
->  #include <net/seg6.h>
-> +#include <net/dst_metadata.h>
->  #include <linux/seg6.h>
->  #include <linux/seg6_iptunnel.h>
->  #include <net/addrconf.h>
-> @@ -60,6 +61,21 @@ static inline struct seg6_lwt *seg6_lwt_lwtunnel(struct lwtunnel_state *lwt)
->  	return (struct seg6_lwt *)lwt->data;
->  }
->  
-> +static struct lwtunnel_state *seg6_lwt_state_from_skb(struct sk_buff *skb)
-> +{
-> +	struct dst_entry *dst;
-> +
-> +	if (unlikely(!skb_valid_dst(skb)))
-> +		return NULL;
-> +
-> +	dst = skb_dst(skb);
-> +	if (unlikely(!dst->lwtstate ||
-> +		     dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6))
-> +		return NULL;
-> +
-> +	return dst->lwtstate;
-> +}
-> +
->  static inline struct seg6_iptunnel_encap *
->  seg6_encap_lwtunnel(struct lwtunnel_state *lwt)
->  {
-> @@ -557,7 +573,6 @@ static int seg6_input_finish(struct net *net, struct sock *sk,
->  static int seg6_input_core(struct net *net, struct sock *sk,
->  			   struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct dst_entry *dst = NULL;
->  	struct lwtunnel_state *lwtst;
->  	struct seg6_lwt *slwt;
-> @@ -568,7 +583,11 @@ static int seg6_input_core(struct net *net, struct sock *sk,
->  	 * need the address of its lwtstate. So, save the address of lwtstate
->  	 * now and use it later as a comparison.
->  	 */
-> -	lwtst = orig_dst->lwtstate;
-> +	lwtst = seg6_lwt_state_from_skb(skb);
-> +	if (unlikely(!lwtst)) {
-> +		err = -EINVAL;
-> +		goto drop;
-> +	}
->  
->  	slwt = seg6_lwt_lwtunnel(lwtst);
->  
-> @@ -667,12 +686,18 @@ static struct dst_entry *seg6_output_dst_lookup(struct net *net,
->  static int seg6_output_core(struct net *net, struct sock *sk,
->  			    struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct dst_entry *dst = NULL;
-> +	struct lwtunnel_state *lwtst;
->  	struct seg6_lwt *slwt;
->  	int err;
->  
-> -	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
-> +	lwtst = seg6_lwt_state_from_skb(skb);
-> +	if (unlikely(!lwtst)) {
-> +		err = -EINVAL;
-> +		goto drop;
-> +	}
-> +
-> +	slwt = seg6_lwt_lwtunnel(lwtst);
->  
->  	local_bh_disable();
->  	dst = dst_cache_get(&slwt->cache_output);
-> @@ -695,7 +720,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
->  		}
->  
->  		/* cache only if we don't create a dst reference loop */
-> -		if (orig_dst->lwtstate != dst->lwtstate) {
-> +		if (lwtst != dst->lwtstate) {
->  			local_bh_disable();
->  			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
->  			local_bh_enable();
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 53f7b2452575..79c27e467c2b 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -24,6 +24,7 @@
->  #include <net/addrconf.h>
->  #include <net/ip6_route.h>
->  #include <net/dst_cache.h>
-> +#include <net/dst_metadata.h>
->  #include <net/ip_tunnels.h>
->  #ifdef CONFIG_IPV6_SEG6_HMAC
->  #include <net/seg6_hmac.h>
-> @@ -213,6 +214,21 @@ static struct seg6_local_lwt *seg6_local_lwtunnel(struct lwtunnel_state *lwt)
->  	return (struct seg6_local_lwt *)lwt->data;
->  }
->  
-> +static struct seg6_local_lwt *seg6_local_lwt_from_skb(struct sk_buff *skb)
-> +{
-> +	struct dst_entry *dst;
-> +
-> +	if (unlikely(!skb_valid_dst(skb)))
-> +		return NULL;
-> +
-> +	dst = skb_dst(skb);
-> +	if (unlikely(!dst->lwtstate ||
-> +		     dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6_LOCAL))
-> +		return NULL;
-> +
-> +	return seg6_local_lwtunnel(dst->lwtstate);
-> +}
-> +
->  static struct ipv6_sr_hdr *get_and_validate_srh(struct sk_buff *skb)
->  {
->  	struct ipv6_sr_hdr *srh;
-> @@ -1008,11 +1024,14 @@ static int input_action_end_dx2(struct sk_buff *skb,
->  static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
->  				       struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct in6_addr *nhaddr = NULL;
->  	struct seg6_local_lwt *slwt;
->  
-> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
-> +	slwt = seg6_local_lwt_from_skb(skb);
-> +	if (unlikely(!slwt)) {
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
->  
->  	/* The inner packet is not associated to any local interface,
->  	 * so we do not call netif_rx().
-> @@ -1059,13 +1078,16 @@ static int input_action_end_dx6(struct sk_buff *skb,
->  static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
->  				       struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	enum skb_drop_reason reason;
->  	struct seg6_local_lwt *slwt;
->  	struct iphdr *iph;
->  	__be32 nhaddr;
->  
-> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
-> +	slwt = seg6_local_lwt_from_skb(skb);
-> +	if (unlikely(!slwt)) {
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
->  
->  	iph = ip_hdr(skb);
->  
-> @@ -1722,13 +1744,17 @@ static void seg6_local_update_counters(struct seg6_local_lwt *slwt,
->  static int seg6_local_input_core(struct net *net, struct sock *sk,
->  				 struct sk_buff *skb)
->  {
-> -	struct dst_entry *orig_dst = skb_dst(skb);
->  	struct seg6_action_desc *desc;
->  	struct seg6_local_lwt *slwt;
->  	unsigned int len = skb->len;
->  	int rc;
->  
-> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
-> +	slwt = seg6_local_lwt_from_skb(skb);
-> +	if (unlikely(!slwt)) {
-> +		kfree_skb(skb);
-> +		return -EINVAL;
-> +	}
-> +
->  	desc = slwt->desc;
->  
->  	rc = desc->input(skb, slwt);
-> -- 
-> 2.34.1
-> 
+Reverse the removal order: unregister the netdevice first, then clear the
+RXNFC rules.  After unregister_netdev() returns, ethtool can no longer
+enter the driver, while the PCI device is still available for the
+rule-clearing routine to issue hardware commands.
 
-The patch looks good to me.
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by LLM-assisted (GLM-5.3) code inspection.  The issue was
+not observed at runtime; it is identified by code inspection only.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Fixes: 8d0bcb012f57 ("net: aquantia: add infrastructure for ntuple rules")
+Assisted-by: GLM-5.3 coccinelle
+Signed-off-by: Binbin Deng <18983559317@163.com>
+---
+ drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
+index 005d6ef4fc36..881727c3aa0a 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
+@@ -344,9 +344,9 @@ static void aq_pci_remove(struct pci_dev *pdev)
+ 	struct aq_nic_s *self = pci_get_drvdata(pdev);
+ 
+ 	if (self->ndev) {
+-		aq_clear_rxnfc_all_rules(self);
+ 		if (self->ndev->reg_state == NETREG_REGISTERED)
+ 			unregister_netdev(self->ndev);
++		aq_clear_rxnfc_all_rules(self);
+ 
+ #if IS_ENABLED(CONFIG_MACSEC)
+ 		aq_macsec_free(self);
+-- 
+2.43.0
+
