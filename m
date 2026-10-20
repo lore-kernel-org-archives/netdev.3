@@ -1,63 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.242
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792497501;
-	b=aiL4uxkV9ILXdJXTAL3Gwr5GDj9U0IWYwZnIh79PJOGMhEgWOh65xsqN830QAYNPMh1T
-	 93zNwNixR4qIwfYs2MtIu3SbTB7gF/PtsshsSQYI6Jf+/5ic3uWe19mWIzBr3tsUrpIEX
-	 FyNj1DE0z8sgedBqpwszonA1vkh1Os5qB2MJT39hcN+sb9lO1o8+in4l9VzAlV4P5TEFh
-	 109XPcNjdsXHcaN12UF6vd/pYp5JFt42QvPZ+gT41XegjizirWsj/oACj2EVeYG30SeN0
-	 TDOsRLVdU2xYJb588Mdh9o9aDtc9PdemwLQ6eNZVM1eksUigPcHC8ZXjMnYMG9v30PA==
+	t=1792498377;
+	b=eLgBpmPkdzaeugzpb13X/2C2/q9QJq0hNZ7L/zNClATYZMxP3lekBcWcrN9NcXY/KlTl
+	 bXkpCY4+4v15SsV6+DwYLY5pCI7AB363k11YZzHHJ6hYjMY6vPpdR9L8fVq3rpIBycxqH
+	 r92Nzk9coN4EqI9GY8hOLJqY9j0/Lv9KBKo4jSL8IPLJCHoMZsBaYEDbq5ztOeVsmPKgW
+	 2+5zfDWCFtATL0sQUg6qeZnpcBOFvKJtSCqtgjAOp6Ossun7joSrRt81yiTaPoc0ljl6r
+	 9dbZ/+ViafKjKdDo2BpqDunrDmxAlbEy7KXmdwUWHfVh+W8G7N9nGrmbRyCepFN99GA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792497501;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=vpSCBqmNjvCfEzI72/33mULq5zVEPuCqZqDGgmalYOY=;
-	b=b37DW4VqRYQqrWc8AZLyF57gKWQZWW1hsOoTMYNa8WY+1fBdylFa08zAYJfA5m3lSZ3z
-	 8yf9KhHxbXUf6CbqG4qg5jlweUJPS7CK6PMyQrmqRSfFZ8hFQmfM16E6EwT8VMLwOTtVR
-	 kF5w9hcaSYyCbMT58Q5h1pvJiHuzWWfsMAnmjwMvWNMFiPsDWMZzNSUcCI6mE1ka3LB1a
-	 rH5bxnq6tISsqbSJhYhbNd8d1b3Esp2Num/0/q5YWVQy1Ha0FOidXthPm2hMA5QqO7RQZ
-	 F3mL+H5jHKU3WhfghVB6xJx24uwMJKmU0AxdmgJQSSQ6ouTN/Fi7NHz1XiBpeXaIbLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792498377;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=+3aP9S+I4hN8ayAzr2FdVXGfcpVuzHhgRmKY7lrV5LU=;
+	b=tk6F52N8CpkeSO2XZO6MZsfmNwyCt3kkCVejyJOHR7lM2Tsnbq1+pjWCZ5FXdOdy5LNv
+	 U4l+hiEwfS2gcJu56PW1N8ExktR34Wf5TwwAx4m62AhEmesGTdGB5NnIw+IGI2wMUA2Ya
+	 SaRvdP6vTrLmLr4FiiaojYu2nCLDjaAbjia76XcnLMk89VboclNCzXWAG5/OvhT7jDGoJ
+	 CHAwCunQ4Un7GW7Ve6MmJ9gvzYIMUi/SJf/9xJ7SQOy74ZgELT+cj5rcTxS6um993BBct
+	 2phgjAtVvQiKXodPOMSQyotWw2vC8CgPkTgQskSsM9bYKuvhxcnQ6FTAGzJ+3N3TRKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d06FRsxT;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q9KMvSBE;
+	arc=none smtp.remote-ip=95.215.58.242
+Received: from mta1.migadu.com (out-242.mta1.migadu.com [95.215.58.242])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52BE606A334;
-	Tue, 20 Oct 2026 11:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08542606A31F
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 12:12:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08542606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d06FRsxT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C75A1F000D0;
-	Tue, 20 Oct 2026 11:58:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792497500;
-	bh=vpSCBqmNjvCfEzI72/33mULq5zVEPuCqZqDGgmalYOY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=d06FRsxTYwJ+qu0tcjaH6OWzrK5d7sFyMXIiFtk7iRrBnhNYxn41KXbuDQ8qFLX1P
-	 NwK+M3H9oKgi3VJF+1Kylh6XAcsYBb4Rg/xw+8/ScH6NHorpyiQFiTOoNozPo4u8oW
-	 FOvuvp6DcMoEXP2UXJ1zdgSRnIxnFnrV96rRH+kEY81w1PW4c8t9GSqmxXQiQDqrhG
-	 nUgbMc6NFgxu2d61LqK0Cg6KRJaVfV7hvwWXvIIFUKIXDW7C9f8xvAkxUS0Z7oULU0
-	 rmHHVUDPA9BeARbYd3BOhzyc7F4y09rj5XLwYjQfUGLPyMaeJybdrFmODVpM1bUA0t
-	 qGDxNfw5Izzgw==
-Subject: Re: [PATCH net-next v3 5/8] net: xilinx: tsn: bring up the endpoint
- MCDMA channels
-From: netdev-bot+sashiko@kernel.org
-To: srinivas.neeli@amd.com
-Cc: nagadheeraj.rottela@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, richardcochran@gmail.com, michal.simek@amd.com,
- bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org,
- edumazet@kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rt-devel@lists.linux.dev, neelisrinivas18@gmail.com, git@amd.com
-Date: Tue, 20 Oct 2026 11:58:18 +0000
-Message-ID: <179249749885.3135.15584191069467566874@kernel.org>
-In-Reply-To: <20261016-patches_v2_external-v3-5-e33d3960ca1e@amd.com>
-References: <20261016-patches_v2_external-v3-5-e33d3960ca1e@amd.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q9KMvSBE
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=pHt6jSjv0iNign9HC3Cohxdp/lbHFVpVVhQ1kwkIEhI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792498374; v=1; x=1793103174;
+ b=q9KMvSBEXRZHEK7AmP+Eif3Mgy+vhxvZyI3cUHdSMzwUHcO4qE8bE+CfIe66VaLGQdYy0Dxm
+ WIo5Il2/9bQn+o4baJa3+fguXruOvYOMx0B/Ruj0jZO5nfUH+vje3qV6wrH26Bmo+ITI94HQtyh
+ Z412TWwJm+E6cBRxokIjMPII=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c323d3c4687816b9;
+	Tue, 20 Oct 2026 12:12:54 +0000
+X-Mizu-Trace-ID: c323d3c4687816b9
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] tls: fix the open record check in the max payload size setsockopt
+Date: Tue, 20 Oct 2026 20:12:39 +0800
+Message-ID: <20261020121240.29082-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,171 +71,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+do_tls_setsockopt_tx_payload_len() refuses to resize records while one is
+open, but the check is broken in two ways.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+It reaches for the open record through tls_sw_ctx_tx(), an unchecked cast
+of ctx->priv_ctx_tx.  Under device offload that pointer is a
+tls_offload_context_tx, so the check reads a field of the wrong struct: it
+returns EBUSY on whatever happens to be there, and never sees the record
+that really is open.  Dispatch on tx_conf.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The socket lock alone is also not enough to tell no sender is in flight.
+The device tx path drops it in sk_stream_wait_memory() after
+tls_push_record() cleared open_record, so setsockopt can slip in
+mid-sendmsg and shrink the limit.  tls_push_data() latches the limit once
+per call, and a record left open by MSG_MORE can then be bigger than the
+new limit, making the u32 subtraction in the copy clamp wrap around and
+build an oversized record.  Take tx_lock like the sendmsg paths do so
+setsockopt waits for in-flight senders.  Re-reading the limit inside the
+tls_push_data() loop could close the wrap too, but a parked sender would
+still finish with the old limit, so serializing on tx_lock is simpler.
 
-- [Medium] ep_reset_dma_controller() resets the whole MCDMA core at probe
-  through one channel handle, but the driver does not own every channel…
-- [Low] In drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c, the kernel-
-  doc for struct skbuf_dma_descriptor calls @dma_address the "physical…
+Take tx_lock interruptible, as tls_sw_sendmsg() does.  Both sendmsg paths
+keep it across sk_stream_wait_memory(), which sleeps until the peer reads,
+so a plain mutex_lock() could park setsockopt in D state for as long as
+the sender waits.  The lock_sock() after it is fine uninterruptible: a
+sender sleeping for memory has released the socket lock, so that wait only
+covers short critical sections, like every other setsockopt.
 
---
+Fixes: 82cb5be6ad64 ("net/tls: support setting the maximum payload size")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+v2 -> v3:
+  - no code change, explain why tx_lock is taken interruptible, in the
+    commit message and the comment (Paolo)
+  - resend, v2 was marked "changes requested" in patchwork, thanks to
+    Sabrina for the reminder:
+    https://lore.kernel.org/netdev/atdJUP6Jb0jODBYE@krikkit/
+v2: https://lore.kernel.org/all/20260901072927.128688-1-jiayuan.chen@linux.dev/
+v1 -> v2:
+  - also take tx_lock in setsockopt, the socket lock alone can't stop a
+    device sender parked in sk_stream_wait_memory() (AI review on v1)
+v1: https://lore.kernel.org/netdev/20260831025607.62927-1-jiayuan.chen@linux.dev/
 
-net: xilinx: tsn: bring up the endpoint MCDMA channels
+base on my netdevsim + tls (in progress)
+https://lore.kernel.org/netdev/20260728125658.390500-1-jiayuan.chen@linux.dev/
 
-At probe, this patch requests every TX and RX MCDMA channel named in the
-device tree and holds them until remove. It also resets the MCDMA
-controller once, through the first TX channel. Each channel gets a ring of
-preallocated SKB descriptor slots in ndo_open, and the rings are torn down
-in ndo_stop.
+Previous finding:
+b17cf742eaad ("tls: device: fix out-of-bounds write in tls_append_frag()")
+---
+ net/tls/tls_main.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-> diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-> index 2adee07f6f51c..ab3d6d8cb9440 100644
-> --- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-> +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-
-[ ... ]
-
-> @@ -30,6 +35,47 @@
->  #define TSN_MAX_VLAN_FRAME_SIZE		(ETH_DATA_LEN + VLAN_ETH_HLEN + \
->  					 ETH_FCS_LEN)
->  
-> +#define TX_BD_NUM_DEFAULT		64
-> +#define RX_BD_NUM_DEFAULT		128
-> +
-> +/**
-> + * struct skbuf_dma_descriptor - skb container for each in-flight DMA descriptor
-> + * @sgl: scatter-gather list backing the DMA mapping
-> + * @desc: dmaengine descriptor handle
-> + * @dma_address: physical address of the first sgl entry (RX path)
-
-[Severity: Low]
-
-This isn't a bug, but is "physical address" the right description for
-@dma_address?
-
-The field is a dma_addr_t. ep_free_dma_chan() passes it to
-dma_unmap_single() as a mapping handle, and in the RX data path patch
-ep_rx_submit_desc() fills it from sg_dma_address() after dma_map_single().
-If an IOMMU sits in front of the MCDMA, the value is an IOVA, not a CPU
-physical address.
-
-The same wording is still there at the end of the series. Would something
-like "DMA address of the first sgl entry" be more accurate?
-
-> + * @skb: SKB owning the buffer
-> + * @sg_len: number of valid entries in @sgl (TX path)
-> + */
-
-[ ... ]
-
-> +static int ep_reset_dma_controller(struct xlnx_tsn_ep *ep)
-> +{
-> +	struct xilinx_vdma_config cfg = { .reset = 1 };
-> +	int ret;
-> +
-> +	ret = xilinx_vdma_channel_set_config(ep->tx_dma[0], &cfg);
-
-[Severity: Medium]
-
-Can this reset stall channels on the same MCDMA instance that belong to
-another dmaengine client?
-
-The commit message says:
-
-  "An MCDMA soft reset resets the whole core, so any channel of the
-  instance reaches it."
-
-For MCDMA, every MM2S channel uses ctrl_offset 0, which is the common
-control register. The call chain is:
-
-xlnx_tsn_ep_probe()
-  ep_reset_dma_controller()
-    xilinx_vdma_channel_set_config()
-      xilinx_dma_chan_reset()
-        xilinx_dma_reset()
-
-drivers/dma/xilinx/xilinx_dma.c:xilinx_dma_reset() {
-	dma_ctrl_set(chan, XILINX_DMA_REG_DMACR, XILINX_DMA_DMACR_RESET);
-	...
-	chan->err = false;
-	chan->idle = true;
-	chan->desc_pendingcount = 0;
-	chan->desc_submitcount = 0;
-	...
-}
-
-The hardware reset hits the whole core, but software state is only reset
-for tx_dma[0].
-
-The endpoint only requests the tx_chanN/rx_chanN entries in its own
-dma-names. Nothing in the binding or the driver stops the other channels of
-the instance from going to another consumer. Suppose one of those channels
-is mid-transfer when the endpoint probes, for example after a probe
-deferral or a module load. It is still marked idle == false and has
-descriptors on active_list. Its next submit then goes through:
-
-drivers/dma/xilinx/xilinx_dma.c:xilinx_mcdma_start_transfer() {
-	...
-	if (chan->has_sg && list_empty(&chan->active_list))
-		xilinx_write(chan, XILINX_MCDMA_CHAN_CDESC_OFFSET(chan->tdest),
-			     head_desc->async_tx.phys);
-	...
-	if (chan->idle)
-		xilinx_dma_start(chan);
-	...
-}
-
-CDESC is not reprogrammed and xilinx_dma_start() is skipped. Doesn't that
-leave the engine halted, with no error reported to that client?
-
-I could not confirm that shared MCDMA designs exist in practice. The
-binding example gives the whole instance to the endpoint.
-
-Is the reset needed at all? The provider already resets each channel in
-xilinx_dma_chan_probe(). The MCDMA path of
-xilinx_dma_alloc_chan_resources() only allocates BD memory and does not
-program the hardware. So the endpoint's own channels look clean already,
-and the only visible effect of this reset is on channels the endpoint does
-not own.
-
-Calling dmaengine_terminate_sync() from ep_free_dma_chan() on ndo_stop also
-resets the whole core, through the provider's xilinx_dma_terminate_all().
-Any MCDMA client that terminates a channel causes this, so that part comes
-from the provider and not from this patch.
-
-> +	if (ret < 0)
-> +		return dev_err_probe(ep->dev, ret,
-> +				     "failed to reset DMA controller\n");
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> @@ -286,9 +587,17 @@ static int xlnx_tsn_ep_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto err_free_ndev;
->  
-> +	ret = ep_request_dma_chans(ep, rx_dma_chan_map);
-> +	if (ret)
-> +		goto err_free_ndev;
-> +
-> +	ret = ep_reset_dma_controller(ep);
-> +	if (ret)
-> +		goto err_release_chans;
-> +
-
-[ ... ]
-
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index 8bdb78718a8d..42ab291eee42 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -831,15 +831,29 @@ static int do_tls_setsockopt_no_pad(struct sock *sk, sockptr_t optval,
+ 	return rc;
+ }
+ 
++/* priv_ctx_tx holds a different structure on each TX path, so tx_conf has to
++ * say which open record to look at.
++ */
++static bool tls_tx_record_is_open(struct tls_context *ctx)
++{
++	switch (ctx->tx_conf) {
++	case TLS_SW:
++		return !!tls_sw_ctx_tx(ctx)->open_rec;
++	case TLS_HW:
++		return !!tls_offload_ctx_tx(ctx)->open_record;
++	default:
++		return false;
++	}
++}
++
+ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+ 					    unsigned int optlen)
+ {
+ 	struct tls_context *ctx = tls_get_ctx(sk);
+-	struct tls_sw_context_tx *sw_ctx = tls_sw_ctx_tx(ctx);
+ 	u16 value;
+ 	bool tls_13 = ctx->prot_info.version == TLS_1_3_VERSION;
+ 
+-	if (sw_ctx && sw_ctx->open_rec)
++	if (tls_tx_record_is_open(ctx))
+ 		return -EBUSY;
+ 
+ 	if (sockptr_is_null(optval) || optlen != sizeof(value))
+@@ -860,6 +874,7 @@ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 			     unsigned int optlen)
+ {
++	struct tls_context *ctx;
+ 	int rc = 0;
+ 
+ 	switch (optname) {
+@@ -879,9 +894,18 @@ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		rc = do_tls_setsockopt_no_pad(sk, optval, optlen);
+ 		break;
+ 	case TLS_TX_MAX_PAYLOAD_LEN:
++		/* Take tx_lock like the sendmsg paths do, the socket lock is
++		 * dropped while a sender waits for memory, maybe with no record
++		 * open.  Senders sleep with tx_lock held, so take it interruptible.
++		 */
++		ctx = tls_get_ctx(sk);
++		rc = mutex_lock_interruptible(&ctx->tx_lock);
++		if (rc)
++			break;
+ 		lock_sock(sk);
+ 		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
+ 		release_sock(sk);
++		mutex_unlock(&ctx->tx_lock);
+ 		break;
+ 	default:
+ 		rc = -ENOPROTOOPT;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-patches_v2_external-v3-0-e33d3960ca1e%40amd.com
+2.43.0
+
