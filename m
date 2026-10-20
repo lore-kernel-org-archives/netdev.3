@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792522813;
-	b=PXTTId1vuXg4vgC8b5B8h+dfMrbkSX7r4Rpy528q8pspSfi8EaTpIwcej2T4CZP7ERMX
-	 ME/SZbJ2iwXMfFvIehgjlV4gViQLmUIfHlDhgZVhKsQt0YllSJWZRCq6bUuHUrrtbKPj7
-	 65IpqewmG4DWtR10I7GwgKybo2ABogZhrDtw0ypzQktDoNH1KSZZ1Krx/3b7kO1Sfef0N
-	 xTnCpehpSA3fXqEFnhEM3U9Qy46+GL/iT5p2+I6pq1657iHUP7lMT3tojoo8ivNbjUEvo
-	 6rhWMLMV7Ahh9P4Q7VWqmYut1AYrH2sdg9zhIYutmf+ZnKk+aQO8OxBpjipprkYIJuw==
+	t=1792522821;
+	b=0vyQzoMCQS6K0dHWy6W9jmj1C3FqGbALwUXRcljeJEy3HmPjT8D3tTYPCvQCxY/FWOGB
+	 hYnzip+/arBV79ZtSuNEFh9TSjtzBwr3gYtX9vNXylHAcR/QCjcQOmWgAjEYaq3Z+UbjJ
+	 SJIHh/4dN+p0YlOLhau3fgTEyOcgKINFEmWlndQFzXjVN4XRBtRaGVNOnNPrdjMQ4fWQc
+	 ssqDGHzt2sMP79D506rvoE04kZuySxN7PEjGstlvNgfQdU6GQigAKX3bAuZHIInJNeUbT
+	 obK5B994zehJ4I7H1ZPeKU5F54/BCiAnsbvImesbu6/1kvsX9GNGnDcnqv8lRFhs4jQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792522813;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792522821;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=xptzn6H+kY/U51+BBw86cHqhpxcCxol1LT8XKtGNVLI=;
-	b=0bSLyBjiyMao8GZO2RDHKF4aBeO/fk/QfWuDPRWoRGYcItgXNvr4WbOw5pRI6+k5te1O
-	 gaZgmNuHqm8TOEUo+spN2xJVKouLKomEIIlqCkz2C8GlP8veqVaTIMrOAw4f3Barj6qSF
-	 jW5cOxushHLjIHsu7PTwHReVIY069kOyKldqTa+WK8LzpVzuV+Qu/KPu1B5ko0UK515HV
-	 GmV4hrB+5xmmrW3/OEHJEW6slxvBeKeTpPyQSZQf32fGiA2xvC2903majApyPwzXq/Mhx
-	 b+09CC1WN0u6lUwxxELJP5Pu1v3UwhNb2Aq2xOvM2c75KMJSahdRz54plGOzxcs8CYg==
+	bh=xGrLjgO9rmqQYilzMY/O/l1oa07fIv3cEE46t9tgqMQ=;
+	b=pKhV/OJgDA2ITG4hF2aY9NunwtFpZv7qkApvl4nqhro0AFA3J2ifMHSnraWC5NkPRDph
+	 fmEFLSeEwvSQ+Z1dO6Dvt9qIrVxHCpcL43F6MUcLz3nsKOYNIDHg/Zm/NNHl0pB22l24p
+	 Smdu9pd92Kd+KmFPXN2k6P5Nf0NOJwKvPeHh9HdUVY1hRVKYxMFxVSIJciiS3TfVq+hNq
+	 4W8N2b1wzo3yUU8tT5yKXL4Vm3NNWOZ6q09PzWOu2YoT3gn3HPoQOTghV4f3iQb/A8VMH
+	 Ah8Z0h3DX3lCl4HLzk9wE8PccHgfNPrSiYL1YpCEWbjfOZMEyqylAQDZK+i2y2HYDXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WGeZUb7y;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KF4YwUl7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70444606A31E
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 19:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7936606A331;
+	Tue, 20 Oct 2026 19:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WGeZUb7y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482021F000CA;
-	Tue, 20 Oct 2026 19:00:13 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KF4YwUl7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE68A1F000D2;
+	Tue, 20 Oct 2026 19:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792522813;
-	bh=xptzn6H+kY/U51+BBw86cHqhpxcCxol1LT8XKtGNVLI=;
+	s=k20260515; t=1792522820;
+	bh=xGrLjgO9rmqQYilzMY/O/l1oa07fIv3cEE46t9tgqMQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WGeZUb7y9QlYIX3aZmaWOkNJwPuAZSQpZEhh/hJoEfstfZjkcPaiq2QHXrczTziD9
-	 qS5UrwBOsDwfWZGI56HgXg9lrbdn+DlcTRghUEAHbde7c3J6957pnLfgzwR1x2c7KG
-	 gaseCXtQy/2bTIysoyQvu1wxduhwWGTblDQ3TtbA6sr5QvYKVnYCvHQfjyAlsxJ34r
-	 sXubEwWsDcOgmw6wFgqAh7OQpJUe/MS2De9uzJ1VTsJ4c5iaD6g2UyXJWpC4l6igVF
-	 UsVuCyNn3k+XrvnqkDGixnVGd6xIWxcFRkkGbHePisHygXxtmqtiHBZ5nmoSDXb7F1
-	 lytdSo2JfH1Gw==
+	b=KF4YwUl7P2qIoq8+j+5/5ll9js1ic8WqcC/kMLdc8Cazg6jf2gd23p49ViDHc5PyP
+	 djMNoECQyxYJqVcX05Ag6Rx/lGInS0zCrpN83YJCWq/ec4/Xceds5BbrlekyA564I7
+	 Ea7C20VwSWLChAbFf9QgRaLJOrUZGsPchag6ZLfmLbGvAESI8EnhJiZov6PhSmNiPQ
+	 UazbrXNlJ7zEoR0MrfKxlDWczfROSGjPNm2cFsyumVKidETjyDI75DXzavXNOC4SAZ
+	 QErOplJ0Lt47lhJLizqpNnNNBvySLdsSiqv18pl+XXCCusL4Xytyz2IccfrkdcavhB
+	 nYs4RsNIqbhwQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3AF5F380820D;
-	Tue, 20 Oct 2026 19:00:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B450F3808209;
+	Tue, 20 Oct 2026 19:00:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,39 +54,46 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] veth: use peer attributes to set peer real
- number of
- queues
+Subject: Re: [PATCH net-next v10 0/2] net: wwan: support DTR/RTS on AT ports
+ via
+ MHI IP_CTRL
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179252281203.159319.14985722680524433222.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 19:00:12 +0000
-References: <20261016160351.3022939-1-edumazet@kernel.org>
-In-Reply-To: <20261016160351.3022939-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, odys.yuan@gmail.com
+ <179252281927.159319.5542146548061223834.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 19:00:19 +0000
+References: <20261013183500.261229-1-peter.hunt@opengear.com>
+In-Reply-To: <20261013183500.261229-1-peter.hunt@opengear.com>
+To: Peter Hunt <peter.hunt@opengear.com>
+Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com, dnlplm@gmail.com,
+ johannes@sipsolutions.net, mani@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 16 Oct 2026 18:03:51 +0200 you wrote:
-> veth_newlink() creates the peer from its own attributes (tbp), which
-> come from the nested VETH_INFO_PEER ifinfomsg when present, so the
-> peer num_tx_queues/num_rx_queues follow the peer IFLA_NUM_TX_QUEUES
-> and IFLA_NUM_RX_QUEUES.
+On Tue, 13 Oct 2026 12:34:58 -0600 you wrote:
+> Qualcomm/Sierra SDX55/SDX65 modems (e.g. EM9291) withhold unsolicited AT
+> result codes until the host asserts DTR. The in-tree mhi_wwan_ctrl driver
+> exposes AT ports but never signals DTR, so URCs never reach userspace.
 > 
-> veth_init_queues(peer, ...) is then called with the attributes of
-> the first device (tb) instead, so the decision to reduce the peer to
-> a single real queue is based on the wrong device:
+> Patch 1 extends the wwan core with an optional ->dtr_rts(port, mdmbits)
+> port op. The TIOCM bitmask state is tracked in the wwan core, which raises
+> DTR/RTS on first open of an AT port whose driver implements ->dtr_rts,
+> drops them on last close (if HUPCL is set, which is the default for AT
+> ports) and on port removal, and passes the resolved bitmask to the
+> driver on TIOCMSET/TIOCMBIC/TIOCMBIS.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] veth: use peer attributes to set peer real number of queues
-    https://git.kernel.org/netdev/net-next/c/267bc3f113d8
+  - [net-next,v10,1/2] net: wwan: core: propagate modem control signals to port drivers
+    https://git.kernel.org/netdev/net-next/c/241c9ed785d0
+  - [net-next,v10,2/2] net: wwan: mhi_wwan_ctrl: drive DTR/RTS via the IP_CTRL channel
+    https://git.kernel.org/netdev/net-next/c/d509edf90bc6
 
 You are awesome, thank you!
 -- 
