@@ -1,64 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792528145;
-	b=X93hQmI8DwW5ys9xjy6Y+4IGOSKSveIXd+oZccY20PBvOSXUkfHiCzNU+KYP51pPnmLs
-	 dfkz9i3TDe0RPt6AxpCs1d5bQWt6urj9irccVCdNifibxvJCcn2llEFoliGoViYuHbnmn
-	 QBPwqDuo0sZ8XD4lLpPzMEU72ZxV3CFcgOpfEFbm8W1tl9YP4desFISfWxI/b0AypFGhI
-	 oDmynJi7Ig6pUEmuWeJ9eYy+AYPHkFPBuKoa7krHUezDsJPDsh+BWpFu6r3yYVh/ji7Xw
-	 ESS6f/xcwrERbQjoC5461LYyzko9Dgu/KI8ZS2uBfcMR44V2cZ4VRCZG5HioeKD5ZsQ==
+	t=1792528207;
+	b=xDQNBT67+cEyZIGMivLID3pHsem9ehDfGbNuD2aqvKuvNcaoBZP0jAYIfJPOIgl48Awf
+	 IT8Mx9epQEJZqCAqRZ3KI7Df8Xqy6snBGKMLze5+F1Y2rCPPkkDwnFO16BGr2668mipvc
+	 0Off6cpmW273zJGDeqt5fUk/980J1UFgMO/qTeWZcWC3NCbvzEwHaFv8eXpzi9KXrEqOp
+	 M0CCp/Ys8x7IG7iwnyNfEwgF8SQrAnztvlh3Dlh8nA6DoNZdP6h4S0Ypbmc+TEYP/CuyA
+	 375K79OQH4peSLHMKFgImTN38N6qxfisbClDXtG6yJ9Fxv1uwT2O9ut63FmVHC/cahg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792528145;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=ER3VL/YKcVAvi6I4leAEmmCSa5fzlRBhaTWdm3Y34p8Q+Y8OGA7gKl7ey9uzlBnvfuw6
-	 6IMmcyI6C5knwnzadONtAKkHvKgNtQvNSs7llgAhrrvfGjB6ZP5edCP5g9fZ0Z0kCRrzJ
-	 FskFUyhS3M4OZs3K2pyJQyQ+aHxfhuXwVaG3NTqGegibA4AKytNwgXW5exsAOThtFhyCn
-	 UnfiQpiEkU87yzcHmqtBiCnDPvynxQYfxW5bPzhW2c8ed2l2E0CiCOmdmEdNVnlDvKRkC
-	 f9+QiQtItafCem2iFMLdy1/ZvXc8LAOkrQ7F5bJQ0puvvFrOhENNNZ3m+DRF06HXfYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792528207;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=aAvnBMjH92cM2QBT1lcCnBLDPwEz2bOfhH5v02cG0N8=;
+	b=uz1pRi/psojjbkraqOHvPCRiEP9OBBVmfYhX+SQzCcRjfI+vPsm13qVDxafVzcZhlvxQ
+	 589Tq41gmGOvJgxJnTWTuHWCIkjSDdq+/gIuKelalnOtbBYPnxylnZQqMwPFEqC1gWj87
+	 Atk4Ywh9amELf0lUSKYnKUQWUaIoTcka22ZgXhrpZ0OrPVz7gwJAPcIwhn8HNDzBSMhpv
+	 D2VpZyewNzZKHACI3GrQh/NyTkph/FCXZB0trfeN+LAm2oSeQNG+yzFBKae+bCYPVaBqy
+	 n1lRKiKF+00To51pyLlc8p0Zk4XmscP3DQTRmNRuZ30bpFNGJj3cjy050Ex/8PX82Xw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DVn5k188;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="MJOf1/IK";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DE1606A319;
-	Tue, 20 Oct 2026 20:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4B6606A31A
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DVn5k188
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19DD1F000C9;
-	Tue, 20 Oct 2026 20:29:03 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MJOf1/IK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2521F000C9;
+	Tue, 20 Oct 2026 20:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792528144;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DVn5k188EQ6OALYXS3EEOWOS7LLlYJX5eJAothAcwLyQ0ugIGMLAKM32ayOgB5v7z
-	 SPHWgfDt+FmsttDnX90hmAr57mp67FYK2A1lmINGDTGHJXuVFDi/ZmszxqySjN2BzQ
-	 ld7pCSuOgAvWSiY1KtKRvcMuaZIHptxH5QAU3p2NoKKcjUqP6iULXpn8jsph6Nq+SQ
-	 cfXVIMahvDw2V++H0r2RkE2yz4obJzjGb0kGK6XZAeox0flMnsSpL/aCTnyZCL/KfB
-	 0sUDUV1/ul0EmJyXqhoDMlUN/NO1cBSDOxbs5X/JXTAj/C4PnLMNFh4i6IxOsVINTv
-	 omJ3bFmGnQYIA==
-From: netdev-bot+sinfo@kernel.org
-To: Stefano Munari <stefanomunari.sm@gmail.com>
-Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
- UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Nicolai Buchwitz <nb@tipi-net.de>,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net v2] net: usb: lan78xx: fix error handling in lan78xx_open()
-Date: Tue, 20 Oct 2026 20:29:03 +0000
-Message-ID: <179252814326.3290.13906032175458755329@kernel.org>
-In-Reply-To: <20261020202614.30277-1-stefanomunari.sm@gmail.com>
-References: <20261020202614.30277-1-stefanomunari.sm@gmail.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1792528206;
+	bh=aAvnBMjH92cM2QBT1lcCnBLDPwEz2bOfhH5v02cG0N8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=MJOf1/IKCwPN99R9XHEP862ecVSvVtx+v7esXNrxTME3xDw/60KFWw63Ub4VjqQZQ
+	 duoOQDWOYSi7Dk8bOmfZjJ3pzOQfqBrZ31j/aQl96CFSKo08hL4jSI5MObho9XQc8N
+	 z56mMSYo//iDWy0N9zReWhtWT2ipFUuCHq/s3aC9gOvRYE3HkEkvpWoZ+uQ0PyqB06
+	 Xs2Sp9dq6C+6KPanlCL25JdiLYG6b7yPyqqbMJWCyKLbL37l9vPDtQOcnez/wpYMoi
+	 yo5OA4XFM68TKUClBdFF/OYDD0GLk53i91OL/jWVwuvHPxDYP13946dOKeMVCGo/VI
+	 m0islQW6NW7/A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44113809A09;
+	Tue, 20 Oct 2026 20:30:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,21 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] iavf: use skb_put_padto()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179252820557.194567.3699567188784426422.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 20:30:05 +0000
+References: <20261016094925.2762785-1-edumazet@kernel.org>
+In-Reply-To: <20261016094925.2762785-1-edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch
 
-Hi!
+Hello:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+On Fri, 16 Oct 2026 11:49:25 +0200 you wrote:
+> Replace skb_pad() and the manual skb->len and tail pointer updates
+> in iavf_xmit_frame() with skb_put_padto().
+> 
+> No functional change.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> 
+> [...]
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Here is the summary with links:
+  - [net-next] iavf: use skb_put_padto()
+    https://git.kernel.org/netdev/net-next/c/4f29e69cf1d8
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
