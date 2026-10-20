@@ -1,66 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792534043;
-	b=lyRiEa/Zfwl9PgC59jWwf8eorXF1j08JlTw3PzDQ1tB9bbpbO+YiNcjPbCn7dCarFH3j
-	 mg4cVvmfaGhteebQAEobLQ0L9F2YP1hDujcKygJoLEu8jTcYAv8nxCsnUdIOA6p/Sae1d
-	 y6ovkefXtii2gG89UC/nFspHgYOLp31WiYK4Z+506WlDEQFswwlKy/RHM3SKcaN1J2ZZZ
-	 phYamRWlln57I/lE36WGj14nQzq4sYKYWc2kYyfy3JNK7V5e9RMgYIAu7MdketSzSTZv8
-	 tG4eSAPrpzaMwX856GM9nqYYZ7aQ2q0VkNZt/tEMe2kpBcEb+eVD67H+n/uXd+kFdlA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792534043;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=n9Uj6I/vyje6NpHmWRgLFomQk1yoneAGW7/KZ4kNqIY=;
-	b=Ospncj6P1pxnIKRwwnDTdJ2lw/FSgHaAJ4tFhS2GKK6SnMVowJxjsKA/VlLxqVbQXc8i
-	 aI5hqa/4W59TUbZ+CKYrWX+keUCJTby0VsGXjmjhBFoW6j7HAZvoU3ZL/+ytlSvFMAi4S
-	 U487NA6TOaGc38+UxSivcGCzRTCPcHd94aODsfLT/FWN0zhDU8j0sAv8Fo9rJ850yvKrA
-	 KD1TQDpLujgebKhAhpRiDbDCldwvVIPg9/F1AE8NGT1ELqiHaXsowdG3LAuF6yfm8QUr1
-	 eVbUrMR+IUUvKFtzNgfSajpJgnaSwQgitVmyekkcnzcoVi1tBlldwPO6kAsy1ItuIEg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aPrrBgbU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.208.51
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792534217;
+	b=yvDtP6KA1apuY60DwIZGBPamEBUAxZknP5D5VT2MFUee095PzztCwtb3PiZGwcmsSpXh
+	 NG0ERZnSoY3k+TaTOd0bUsTp1VXRaoYuK4JmbhNBq9NpzGH5SBiuupmlTzQBGj93bFlig
+	 ZlAmHW7lLb3D0P9UUfFAVvkqo7GZ0XUI7s+RAfTmClfYZWDOYIQRLOQ1TMZfAiKVtOT0/
+	 dE1J06kTuzd20BlLGkXa+mSZpugyV6mBeSoF3KdRIxLWs9RyGjUaqRm2gM5WZuem74nzJ
+	 //FB8FFzCYgqz/bTFnqPb2O2r9OIR0RazBg7zP/yLq1RUkS0DcBsBrVVXwKjKvgpuOA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792534217;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=tl7GK25Ew5sPTNDqInllcRJZPijbAjxuuEYSDtAi2Yg=;
+	b=LfxZNRXwxMju3PHGUjI7ihx6b+kaXgZWBdSJDbsbcu7qYRCBnc8EcZJwoxfed6oTSyse
+	 URzAF8Im2rCXecvKHjtC9/mYgRSaOH/KXjJy5ob9blebdLmrmjGPQ33kFEW8qEvwU/Cmg
+	 C4kbX5SAyiQn0tu5AI49QEEbKjALINqZG8Xw5WRH9LmbMAhIgQ4IXPUkYgCve9nqnLjo3
+	 CmCZuUF7KSho0o67ntLfrWhEG3MpD9dw8ZMrMIQGW4rdvXEzDu1GiuTAQ5HL/rcvY8Yux
+	 by+6qyo2SeNjzS5DOJUTp/I+sWcA0KHaDahbOe0iAM8CT6h+Q6WJ17Ibdxl6KPo9SmA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=I9foUfAp;
+	arc=fail smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1376606A319;
-	Tue, 20 Oct 2026 22:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0C2606A31D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 22:10:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F0C2606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aPrrBgbU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A841F000CA;
-	Tue, 20 Oct 2026 22:07:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792534042;
-	bh=n9Uj6I/vyje6NpHmWRgLFomQk1yoneAGW7/KZ4kNqIY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aPrrBgbUNdrGEu1Uw4wv7tSFj4Ap2UM1XENFp6x4IdBcCzvtI2l+UzPXrSLsCQnor
-	 tCOxpGVbohItdMi5AmMfrSLtzsDTgm0UwOS95oCAtb8ptK1OzlejGcyfJ99PBU5xZZ
-	 koCO92tbqFX3EbZOloUqQq1RkuT9A5oNSAplXD3qWIscYjWmMlSYebeXA9NEcWvrWR
-	 s2kFepDeRuZhPn+/JO0BKq45nXpUZEuOKMf3bqgiaFMH/91tdGVjqncxM/hVOb5AWj
-	 OhKfDYdmoUp2BKjdSsutBdpwswI29+EeT03+4F4IwNRF4LCnPME4lk7Y7Xp7R+n9P9
-	 dyDS2Tt8yA49Q==
-Date: Tue, 20 Oct 2026 15:07:21 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Christian Brauner <brauner@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Halaney <andrew@amutable.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Oleg Nesterov <oleg@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>, Willem de Bruijn
- <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, Alexander Mikhalitsyn
- <alexander@mihalicyn.com>, Eric Dumazet <edumazet@kernel.org>,
- broonie@kernel.org
-Subject: Re: [PATCH v4 00/10] net: support thread-specific pidfds for send
- and connect
-Message-ID: <20261020150721.0f23d7ea@kernel.org>
-In-Reply-To: <atfAmtsj0LmZtBZs@meerkat.local>
-References: <20261005-work-unix-passpidfd-v4-0-350183b6e02a@amutable.com>
-	<1ab71b00-fbe1-42a0-a99e-27d5cd5e5a6e@redhat.com>
-	<20261016-erdball-skisport-erhaben-93d64cfd2890@brauner>
-	<20261016085732.2f1ffb8a@kernel.org>
-	<atfAmtsj0LmZtBZs@meerkat.local>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=I9foUfAp
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2074a12.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:10:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792534216; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Lk/bonH4hDX4PmRZ1qiFajztvn+aLuuRMNeL7V+o8Brci5cHsGkGCyFrQxrwm3+bIH
+         uhaTgUnU9x2Im79IXXdCkfzveQ59XJ9825gHXV05Nd5ac4qPig97PQuc15pYnNnkOld1
+         5QHs8iKbnR+KZwUTz48SWiPVWwQCSxZarnEBld5ownZNBDw7Amk1b36v2DI0HSwYIoOa
+         +ATmLV8gzbDR/pGSidxXix2EZ9paLQC0Qt5qmjRa0Td8dCvDww0p0i2jYdmWvUUGe9Xu
+         UhHp+obI4IKUutKJn0TLfLRxClWo0vaQAyUYf7XzoOK+qtfsHtBH6N8k1Nqa3TCmjQQQ
+         9n/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tl7GK25Ew5sPTNDqInllcRJZPijbAjxuuEYSDtAi2Yg=;
+        fh=h8hBcefETGeQ11cy5DgoiL3AmOFJnEiD6eSSmIGrmzM=;
+        b=eEg6Vf4uGosrKNykAUgU4AzHQpkEjFzTyw2pUcdRh2vLw2IpJjjYLys+Vx6LJKBaAr
+         sCXwxeovmZPGbkIuxKcy+tI3mxBRWcWbdYZFinoohRDJ8BnD9gPbSXkwSWqeEcDB7bZy
+         TxxGNSnZy++uWZHoEC4cKtXFJphEOvT6kbPV7uLylEbL1f6txmrjtdBK4CoHTFaVRIet
+         rHragteJlfv5bcLafgNSzNV2n9Ot31LyyyCJTRKUDsLh/WEdTNPNMpDn1Q2WA7u4uBGu
+         iJ7QXj/4pBWA5ic8BdmI91aHSLgxm6ANEAYfHFKlg3A8Rv8P8TPIOZAVuDcgbzucgPC/
+         Yz6w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792534216; x=1793139016; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tl7GK25Ew5sPTNDqInllcRJZPijbAjxuuEYSDtAi2Yg=;
+        b=I9foUfApie8pgiZYfjauz9V97l8g4NY7YWU34Ms4vzqIiWzmDpB6SAaaxEekO1Ln4b
+         c8MNWhWbPFk/vCJM+YBYqGFY57jiIrZ+7fJImQDXwBRlBeaoLdQ1beDrYnDSzhfJiCib
+         hsFfdqtoj/lDRsFzW+hluaVqKh8H89NS+SuLcpfXQNl4HCwmaVmOYfxihZP1pizMtFk0
+         SdTKRjQiEYXwKziMKFxUVXS2nBERdwR7JzAPUl/fDLwyJWWOy88RBh7nm8CKPWyw4nuJ
+         ROWXaKIaP4ZdS/NK0g0qbrZTY+3srupeCZ3c6wEcJ3wpqH8EuhEd00haIcRuxsSlEVYn
+         tUUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792534216; x=1793139016;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tl7GK25Ew5sPTNDqInllcRJZPijbAjxuuEYSDtAi2Yg=;
+        b=Cc62g4UTYt0YmQASue4+RnJHuxXH5zZUnUT5gNYMimeQAofVmfJ4i4OW9DNN10pkYJ
+         vPSwL5U+iHuqL2zhAfMAwCodPFru7hj7xFCXNAxMTn+beD1zQ/At6e23kOWPSr0JjFfM
+         Y9MmJoym1CWNHQB3f/IXtlw7yMuyXMn607ZqO+jD0q3M15w6XvALORXTEJkZIc+/IwU3
+         LzX39RLJzXhi5H2sjH9tc7bGa+qNkgSfXEAmffGGrmJZFP19uySEhJKyTzO1GlHI+Q3X
+         BUY6FGMe2ERJoj98Nk1unUhDp2MiMnXQ8Kv3gsaaDdHqRfUV+JzenRYcs+8goEheL0+o
+         XpAw==
+X-Forwarded-Encrypted: i=1; AKwUvByrDfj4TVPglAUUlzILFvz2IBG4DJcujER21dt8zmFY1jjH+FN/QAKW1GOaCkOEoFTXTFEF/pA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8+bDgKNtenu5tQd/UJX23Ds/A6iAudQVeRY1cmIoO34vAy40A
+	wMscWNzzJXM4EfWZk9DRq3T88Pgqq04bW/3SUAU0ZCt45uMImdhAWrhE/VMKM9/pTOqUfs4dwaQ
+	m2M8krqn3Depv7VJdS0QSlTu5tG56PUp8k1ptufYR
+X-Gm-Gg: AYBFou22Wt0/y+mE/PeTHpcAsyK8xi414jLPNc06MinigF6HbJdqEVjXC4IgNbzONSL
+	SjNyVp+dtdUn6LzG8QxXAIfA+8CAr1ufVAoPGNZXwKdZ3tzSBzFYXWVY4a4NbP4/+rCmbehR2Mo
+	zFX8J3/QloaFtcZnxnHhhmEjawviGUdMgAqAMcux0zdW38PnOXf6sqm0vig8hnbFRJn8tQcRzmn
+	yNP//+29IqDs7oobCvpmPdhX5JW8krNUdCMcQBABlFI5gw+Wl+gGNjPlY6riL3Op8vWSe52Ojb4
+	GcGhqMzc4CA6/wpxL+Y141Wk6iVX6ofHLVJVsXz6jDXNQrx2umUdD5o82xbdXIt1EvwwdcFjtA2
+	uRhXNQT7iZYNSMKdDH5TRRGWlH8Kuw4fg/g==
+X-Received: by 2002:a05:6402:550:b0:6aa:7db5:ad39 with SMTP id
+ 4fb4d7f45d1cf-6b3e5a00af2mr82366a12.5.1792534215024; Tue, 20 Oct 2026
+ 15:10:15 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,60 +104,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20261014173945.373295-1-almasrymina@google.com>
+ <179249101026.3632927.6502845375265155678.git-patchwork-notify@kernel.org>
+ <CAHS8izMRSU3AyVf+sP5uXShiSKuLumZwT=fsgW+bhJz47UoPRQ@mail.gmail.com> <20261020150307.258b00e9@kernel.org>
+In-Reply-To: <20261020150307.258b00e9@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 20 Oct 2026 15:10:03 -0700
+X-Gm-Features: AclHuK8BsF2XH95JeQFPf6l-JaNozEbyLRQcmco_5nfrlR9V-h8rfRnrpx5Opf4
+Message-ID: <CAHS8izPZ18v_1CnRkaAAA=d94wutJhoOZdOFO_1CEXSexd_=EQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/6] net: unify symmetric netmem and page_pool refcounting
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
+	ayush.sawal@chelsio.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@kernel.org, pabeni@redhat.com, tariqt@nvidia.com, horms@kernel.org, 
+	steffen.klassert@secunet.com, herbert@gondor.apana.org.au, 
+	ncardwell@google.com, kuniyu@google.com, john.fastabend@gmail.com, 
+	sd@queasysnail.net, ebiggers@kernel.org, kees@kernel.org, 
+	aleksandr.loktionov@intel.com, petrm@nvidia.com, u.kleine-koenig@baylibre.com, 
+	j.raczynski@samsung.com, wang.zhan@smartx.com, willemb@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 20 Oct 2026 19:39:20 +0000 Konstantin Ryabitsev wrote:
-> On Fri, Oct 16, 2026 at 08:57:32AM -0700, Jakub Kicinski wrote:
-> > Konstantin, could you consider adding a b4 option which would
-> > make it apply the patches on the most recent Linus release tag
-> > and then merge them into current branch as normal?
-> > Simpler version is to let the user name the application base.
-> > This lets other trees trivially create a branch later if they
-> > want to.  
-> 
-> This was a fairly frequent request, so I made this change now:
-> 
->     b4 shazam -M <msgid>
-> 
-> applies the series on the nearest annotated tag in the history of your current
-> branch (e.g. v7.3-rc6), and then merges it into your branch with the cover
-> letter as the merge message, just like a pull request. If the series doesn't
-> apply cleanly on that tag, or there is no annotated tag, b4 falls back to
-> applying on HEAD and tells you why.
-> 
-> As previously, use -H instead of -M if you just want the result in FETCH_HEAD
-> so you can look at it first.
-> 
-> If you don't want to upgrade to current master, you can already use
-> --merge-base to achieve the same effect:
-> 
->     b4 shazam -M --merge-base v7.3-rc6 <msgid>
-> 
-> It takes any commit, branch, or tag. The most recent master also takes a few
-> new markers: _tag (the nearest annotated tag, with no fallback to HEAD),
-> _specified (the series' own base-commit, which is what -M used before), and
-> _guess (guess from the blob hashes in the patches).
-> 
-> The breaking change here is that b4 no longer uses the series' base-commit by
-> default -- it was always envisioned as more of a hint for the CI systems. As
-> far as I'm aware, almost every real maintainer wants to apply to HEAD or, at
-> least, to the most recent tag as the base.
-> 
-> One potential pitfall: b4 can't know if "the nearest ancestor annotated tag"
-> is actually useful or meaningful, so if your own annotated pull request tags
-> (e.g. net-7.3-rc7) are in the history of your branch, one of those could end
-> up being the nearest tag. b4 always prints which tag it picked, so if you see
-> that, just pass --merge-base with the release tag you wanted.
+On Tue, Oct 20, 2026 at 3:03=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Tue, 20 Oct 2026 09:23:03 -0700 Mina Almasry wrote:
+> > This is awesome. For years the skb refcounting annoyed the hell out of
+> > me. I couldn't fix it on my own; there were too many edge cases I
+> > didn't thoroughly understand and could break. LLMs made this possible.
+> > Thanks!
+>
+> You should have followed more modern naming patterns tho
+> get_netmem() is pretty bad IMO. PP naming is object_action()
+> so netmem_ref() or netmem_inc_ref() would be better, no?
 
-Hopefully it only looks for tags which haven't been deleted?
+Ah, I didn't know about the modern naming. I made get_netmem mirror
+get_page. I now notice it's folio_get not get_folio. I can follow up
+with a cleanup when net-next reopens. I assume that will not be a lot
+of code churn. I was also going to try to look into deleting and
+consolidating some of the now-redundant ref-ing functions anyway.
 
-> The same logic now is in the "b4 review" TUI when taking a series with the
-> merge method: the dialog shows which base it's going to use and lets you
-> change it before anything is applied. I know Mark has been asking for this
-> (cc'ing him for review).
-> 
-> Please let me know if this works for your workflow, or if you run into
-> problems, or if I completely misunderstood the request. :)
+I can also make it one of the design pricnciple in the page_pool docs
+so that the LLMs pick up good naming practices moving forward.
 
-Looks like you got it right. Thanks a lot!
+--=20
+Thanks,
+Mina
