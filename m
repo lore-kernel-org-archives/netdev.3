@@ -1,68 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792533373;
-	b=CDhK9dOLHAOAqUzeUOtSfOwE6joSiBofnE8gxrjCBbteeeJq/Giddszio4YQgJrvevsI
-	 CuE0X+Ff/5AuzNZQYOWifJ4Pzl1go/tDJAqy9hEfI3GhatfnZnBZ3Hss/mU9m1A5Rrngo
-	 4XbIwt+cHyXV64gaUPvDq4ZbwVtoH1CVRik+JgIuTrff3TR2jNF7ZbFWn28WlsXXVn6l9
-	 YfDeUd4/yR3ocfhPB14RYwuy3OARYJtb/2tIsi4ArwGfjId+p0Q12Hz7BFYfte22qdbps
-	 u4BrdjSgbCob3/tzsiQ9vH8lViFS6P6GWLb4XoJvMVlw6PrYLpSJnCtX/mmeZzlwJ9w==
+	t=1792533480;
+	b=vng7qvR3OazWGpoOp1yOYZl4ZGMdsCmv9eVVcxnurej0cLi6NHmEUGEoKwzxbDix+4ma
+	 /SRn7md9Jr8rTYIG/2VF40FqlPQ9DnGi9XDJ8KYsXSZ11k0LkRguKfDYRkSAmUC0flbsh
+	 LV0BkWPHWl0p+18bzzKZNshq8CzyYOcfGCYZtY4eRuGhNl0cgw2vEY/zkslRU+h3Wkpoi
+	 UGQxqxmPjRVTzPrbE/pUNqui7yzCEpgNWjfY9RPIE+8DB7GsZNl8YNNLrifTsMS9pCJsh
+	 3kn2QVTPwOAWGxdV6dwB4eVg8g588ZLaQQl8K/FtkD/fS1gzGrApYBomAAkNFNKN0QQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792533373;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=RC3iU6EQa1/dBaJxMKqA5Cnd4YmN92OAMtq0Pq+n7O8=;
-	b=jSKaiObb3NAmzBEa2MOm6ZpAuK5qMy8pxLOqGoXkXavSAO5wgOTVEs/PvX9y2m+tCEsW
-	 5OT7DIknQaE7xqH7ZC0yaKH03dPBYOfMhYwehVnBj9H8nwAg0gcM3yP1hj0tWn/lkwmYl
-	 +Qh8B0onsvg8ZBJT34oqT8lrn2M8ZoKPPAoLI0zjIMlxgztnT0GzhhgO2UWq5CMopv0HN
-	 F+3kQs5PZD+tzR4cWDHG3fP3JMIUwf6kbYfQarCU4r2+8pX9CNXfL79M/8fuiy1kLUrFJ
-	 JNqND/QiQeEkz9WhlCFPLzsXNleO62jGBrWRUYmzPUdWWxzas5YWZ66fRsPvivP8lig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792533480;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=hYnXTzJewxVnTsYQsR0lTJu5zv/qnETwI2MNTZueBaE=;
+	b=w8pDMqksdEUYgaKszkLL43yQJZ+wDJmX2PxUgBIM76GTIENZaqez8T/nXZfR1xYAd03m
+	 IgegiN3EvyGDXVARGVfxSqHiZujX73XC84bJXrVaUiyD1LVqqxH6UBBE12+lFvH8LR5X8
+	 OMuOqAOCWOJ53V4FcgZC3R/mjSxJnay5ifiTH9att/ZAhyqiD5eyB0QT2vwnWEzil3Qbz
+	 4lA6898qHMbES1j4h2du3eVDVTvttML4a++lNKzQ6xyBuJh0eWun8AW+WeVfwAH5wJ099
+	 r8u4015ed59KQ3cRwY/SSnSdiOiOJxRXRN1VRq7vqxWlwezg4rDTl32E0rvU1XXIRIQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DuUrn674;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=J+M8k3LW;
+	arc=none smtp.remote-ip=74.125.229.8
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B4B606A319;
-	Tue, 20 Oct 2026 21:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19984606A31A
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:57:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19984606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DuUrn674
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D229A1F000C9;
-	Tue, 20 Oct 2026 21:56:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792533372;
-	bh=RC3iU6EQa1/dBaJxMKqA5Cnd4YmN92OAMtq0Pq+n7O8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DuUrn674JMfXslg2ZVIwkEZJtPfpC7JU+qX2L2K8Oh2/xjnofe6PrmmX8ZxFxsTVl
-	 CJOnJDtdnjIXlGFq9CBRrcq2ueUjWplnyH5AncNdRDpLNGHRWpzIGomydnzupqLOlw
-	 FbTBqEUAveMFam6YnOpQTQ2/COE0/VT3wzF286C/7ye0i4M/CdCChU9ZLOk2i9EXSv
-	 Q+lY65xyMmC5+k2HSifJ14S7zMp6VcSauQcNjY3AHqv32NC+zsFhfpkmQnPH+Ey97p
-	 I/wIrP0EUbChYnjCb7+tAIweHRJRGK6ruc5DheKNK5rKsZGenGsEL9OuNluLdwEQoQ
-	 W3xcV/fHxt1jA==
-Date: Tue, 20 Oct 2026 14:56:11 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Imre Kaloz <kaloz@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, Lee Jones
- <lee@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri
- Slaby <jirislaby@kernel.org>, mfd@lists.linux.dev,
- linux-serial@vger.kernel.org, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, linux-rtc@vger.kernel.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel
- <cassel@kernel.org>, linux-ide@vger.kernel.org, Pavel Machek
- <pavel@kernel.org>, linux-leds@vger.kernel.org, Bjorn Helgaas
- <bhelgaas@google.com>, linux-pci@vger.kernel.org, Christoph Hellwig
- <hch@lst.de>
-Subject: Re: [PATCH v2 00/53] MIPS: SGI-IP27: add support for the IP35
- (Bedrock hub) machines
-Message-ID: <20261020145611.4e277615@kernel.org>
-In-Reply-To: <20261020204214.28625-1-kaloz@kernel.org>
-References: <cover.1791890466.git.kaloz@kernel.org>
-	<20261020110619.12774a1c@kernel.org>
-	<20261020204214.28625-1-kaloz@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=J+M8k3LW
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-33baa8eb238so13198eec.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 14:57:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792533479; x=1793138279; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hYnXTzJewxVnTsYQsR0lTJu5zv/qnETwI2MNTZueBaE=;
+        b=J+M8k3LW1y1p2rAPNOoanZEOm8pIOU1+hFBlot9nZuGIe4j/NEAa3FoXR4K0fIC/Ww
+         nMySMKfpE2Akc8lwd9+qGjYpg65pMLQArQFxr4tam3HsNsKTXdlfbPjO2xBVcl2cHAk5
+         5zHbTyv+gliwodCFR7WwgWQY720cCKozaMjhp6H0kmml3W2bYWCO0bmj2aC2HDVJlTv4
+         qR0UCKjB/bpPAJupIljMfGC8oih7hHdEW9uM09884Y/2Qa0kNX/x6LnMQp+92vf8im2B
+         qGwF2UGwdNw88cc+T6dT47t7P8G/p9wcCyLXIZf8fox/xEFre6sXoE5mS4Iui8gmh8xT
+         z51g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792533479; x=1793138279;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hYnXTzJewxVnTsYQsR0lTJu5zv/qnETwI2MNTZueBaE=;
+        b=XyrcFoFed6ay6wa+ka7o+3B2Jg3ENmN1RGkmDyYytyNxX8HrNqT64oXkZOn0K53/5I
+         GOGQjDEzg8C7ZziLqOmtUnwRO6Mo1PvY7jwdPWOMF1vGJfBo151Mr9ndXcH5OPK7Naeb
+         1m0uRHF5Ue7bjukOv5mlxQ4XTdNsuEVRQmjFCcO9+cwuSaeG3cIVay5IY1tFeDg5nXPW
+         AX41JweXAkvfIcXb6Ts23blO1K3+WNV3RIIGCIewFHrnJEC62aVxW/Ku4XQMjq0njsIT
+         eUcQBgCxv/0dHERTtjrlRaLtzrAqrlTwGWIgH+fn0QveZ0ygynllKFT6DyQ5SWQ/4Ksh
+         vUsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzJFtPPQltz/ne3+aAYgUfZOePVWwVHGZ84cJVe0xeG9QzO1sJb3SWp3zbDFjb2pXPHMeLjX94=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLBsTSSFcHfA32Y5skLRat40V4t8MyYx2xM5/4b/qwt3wPQsCC5
+	/a42KN+glQQdfN6J3GqdGloi8yE022yh5O2DCthIIDvhyJ3oovZ0hOXI
+X-Gm-Gg: AYBFou19G8F9ccZoZmzlAexUNrbgmNfzsnc5sEktAqetGHX6l1jAyIH5oA5T/lYXxGq
+	QRxJGFizBTlJw3McMh/pjzdLbVHVihraagvIqKxGJqhjtFSjCy9PZpFf4Rzhhz9VSrNwO5ICECN
+	1jzzwoc2kSbRR6AFTJpCBzyvBl1hNbmOYv6NECPjAwP5EBBoXuSvQzUEt/pSOn3k6sPiqFNm5av
+	gkKLnpdkKSvDwRbyZN2pKdfB63tF9B/KfM9GnhVGctRBG9zWLJoC0kJw1abgZCcUWXyRPSjHTuH
+	Qo/4MX8U2hTl0JFf12twr6c2ir8Xc+AiWvICh2/CrMS90RLcrnBoF+hKitdQ3HDGGTHv2Fd1HZx
+	2R28y2du3wZscuBiXoTA0hs9Q9eU1KsC/cWs227FVUgi7gLrqEuFQ0CMpMKYhPFLdATs6nD/fuq
+	cXbEKdPx5j3SkHdNJMFfN5Wr1/9LZ/WyprsfmoQFyh1ioFHIRu/cV+10JVmjBfFb927u8yixrZl
+	ILnKyUSoWKlJ9x1tT2zkOIcD+aY5/Op2KXlvNaqOv0c4FW01w==
+X-Received: by 2002:a05:7022:7e84:b0:143:4450:e1e6 with SMTP id a92af1059eb24-190a7660d75mr193063c88.35.1792533478955;
+        Tue, 20 Oct 2026 14:57:58 -0700 (PDT)
+Received: from localhost ([2a03:2880:9ff:70::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903bb7f098sm1857639c88.12.2026.10.20.14.57.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 14:57:58 -0700 (PDT)
+Date: Tue, 20 Oct 2026 14:57:33 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>
+Subject: Re: [PATCH net] net/mlx5e: Stop asserting for RTNL when closing
+ channels
+Message-ID: <atfjx6iJJiqAq3Io@devvm16445.scu0.facebook.com>
+References: <20261020153659.3440902-1-tariqt@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,36 +101,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261020153659.3440902-1-tariqt@nvidia.com>
 
-On Tue, 20 Oct 2026 22:42:13 +0200 Imre Kaloz wrote:
-> On Tue, 20 Oct 2026 11:06:19 -0700 Jakub Kicinski wrote:
-> > Why do we need support for machines discontinued 20+ years ago?  
+On 10/20, Tariq Toukan wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
 > 
-> For netdev the question is smaller than the series: patches 25 and 38,
-> 44 lines in ioc3-eth, a driver that is already in tree for the same
-> part on IP27 and IP30. Patch 25 is a no-op on both of those (the bit it
-> tests is always set behind a classic Bridge); patch 38 is a MAC-address
-> fallback. I should have said in the cover that the series is meant to go
-> through the MIPS tree and that I'm only after an Ack for those two --
-> sorry for the noise on your queue.
+> mlx5e_close_channels() has an ASSERT_RTNL() from the time when RTNL was
+> required for closing channels.
+> But the driver has been switched to using the netdev lock a while back,
+> and this fired from a flow which was forgotten during the conversion:
 > 
-> As for why at all: same reason IP27, IP30 and IP32 are in tree. The
-> hardware is in use, Thomas maintains the platform, and people run and
-> test it; "discontinued" has never been the removal criterion, lack of
-> maintainers has. IP35 is IP27's direct successor on the same
-> Hub/XTalk/Bridge architecture with the same IOC3, plus its successor
-> IOC4, so most of the series is teaching existing code about one more
-> hub generation. And these boxes still earn their keep as a stress case
-> for arch and core code -- e.g. the kmem_cache_destroy() race that just
-> turned up on my Ultra 45:
-> https://lore.kernel.org/all/atDCYwNfKW3m6YXh@thinkstation/
+> mlx5e_tx_timeout_work()
+>   -> mlx5e_reporter_tx_timeout()
+>   -> mlx5e_health_report()
+>   -> mlx5e_tx_reporter_timeout_recover()
+>   -> mlx5e_safe_reopen_channels()
+>   -> mlx5e_safe_switch_params()
+>   -> mlx5e_close_channels()
+> 
+> The RTNL is not acquired here, but the netdev lock is, and it is enough.
+> 
+> Rather than switching to netdev_assert_locked(), simply drop the assert.
+> Upper layers (networking core, ethtool core) provide locking and lower
+> layers (NAPI helpers) assert that the netdev lock is held.
+> 
+> Fixes: 8f7b00307bf1 ("net/mlx5e: Convert mlx5 netdevs to instance locking")
+> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+> Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 
-I don't think you answered my question, or at least I'm too daft 
-to catch what you mean. IP35 was not supported so nobody is using
-it with Linux today. You're adding the support, and since it's 
-a platform discontinued 20 years ago there's 0 chance of real users 
-of any of this code.
-
-What am I missing?
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
