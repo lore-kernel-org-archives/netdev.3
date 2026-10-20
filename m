@@ -1,49 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792504809;
-	b=hTaSb2dJbZb5YHndR6MXdsApJRgDp1kb2BVu6DqU9qV/4o3r3myATjVO1poUvF/qiL/l
-	 wHQb02YR4ohx7oy1yp3KjmabS1SCjo8GPLRYySIfqKZm6uON2kozKO4DhdvYnFJ11LEla
-	 C9BDUnmmo3z7W1vjaoGIjc3wv/bhc/r5YrZOBBckj1hzLovbxX+jobWLxryZXTBkrEOOG
-	 WuyImxsv4smj63UU8OdIH2BhA0GyRrXHXly6SigrRsG/hOtIorgjfsUWTceR8T3RIy3fI
-	 hCSnN1ZiQs+7lfqDGkTC8UUuO6kv0BYAk+HYTjBvu6gn0xQSaKhgvQlQpe+O54hw9iw==
+	t=1792504926;
+	b=BwuL/If2+Hu3IxtohkH2AJKk1ZDWcdG5SpChLxoLBJiZOYSA08TrO3HQPRAi9mSfCLGi
+	 DGFY9HQCO4AEgfk1+NbxNUBsS6ovgmMxZLBIIH580ZFvXYWYTAK5TMKarfLMEuw3rQrr/
+	 bB9iI4gnrbLl5K2rSb0kyJwiOiWSTR+97oI+vmKyap3RRKt4FaOMWAPGcSJAkR6rbHpW4
+	 vsP22AY42WMcU4eRlRjh1UGlz3qSgBW/ELdHJAtNuj68Oxo6xdwBF3sE6BNoGf/cg4N36
+	 iGfBdZyV4hM4dRGzH9aHgsNEOiO4KRTy5GY9qZ0Ay+a7evo31xGgFGsvkGJsHFH091g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792504809;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=L2eGtHUGnzzO9epK47Pma4jOia1R+ecV8u3hnLDUFu0=;
-	b=pZecn75ZTOQhjfDjzUwQTPt62XQjMX+84q9EvFRhsp7uhDnb0grAbvBGkjf++LORYc5J
-	 TiJQR7m9cah8AvoO8dk8E3dUlU9wjgyt0PmakDaWhWdal33pW7rQ54kmfAmqEfm/aJyg1
-	 NRB98MjbQrktaD7ExNCELYFvuus+7RmTpmJcSD5rAH11MOcg5phAPH8Zt5NKHmgdFBZm3
-	 6mKlEd9K9uRPSVtcbxw0cJpNqwiUEcNufKPnuTFl9TLbMAQtR1qOh3YVvjgH6yo6jfLFZ
-	 Lw/JxbMU+vqluf/Uox2wEvvpDO4EIvJAzs2kgf0Qv4ooH5i0IO4kTPFzZAu56b8224w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792504926;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=3+1HCFOuIMN80iGsOQMwOgwNj3bEV3gIzKqis9v3+sA=;
+	b=lRNxkfZMQAh2A0CqmDykqwjZtnWhEqsYwt2owOrgZdifyJNSPyih8MyEjPisApwWXW7D
+	 Q/CfqQfjHONw34GTepXbQFuyO4dAsWL9sPSMX17pF/UjX45s2tscMuEA1QpKZcwH9JdCF
+	 FLtnc+hfAnjIVWJYPd/d2suGPfWGuhwpXUghsSNXwZsrrgG63TnY/z1G/tCbDxjgdMx9/
+	 sx8x1lIyFkj6k8CH8GYaxwTNuMKuEwOPquzu7PzLYVc7r8rCkY28W8TIB/r/moyXNTCL7
+	 Q34wkg9Prmtw+O26IdYs+fEoXb1cboI/gQNNzzrTRQbLvMZtYWPnslTlEfXjWFYriYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FqXTZICB;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=WmMrUH+L;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D483A60A2615;
-	Tue, 20 Oct 2026 14:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E956E606A31C;
+	Tue, 20 Oct 2026 14:02:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E956E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FqXTZICB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A21B1F000C4;
-	Tue, 20 Oct 2026 14:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792504808;
-	bh=L2eGtHUGnzzO9epK47Pma4jOia1R+ecV8u3hnLDUFu0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=FqXTZICB510Pb3vwXhMbQLNw7owJUKI49QhSd1TaVVXBLzTywCc0YbAtHgvTKQxOd
-	 ZB7Sez3XCpro3CurfHpOnj5VLMuGHasxlPb6l9xez4GG/YWQM+ZrCrKvFljpMpJV6b
-	 ehdJjk+MedBt7pwY5qD/5vJWIaMcSR/a2W2ViXvxnNYcy0kIRtvDUKzvCAuXWnmP86
-	 vwDJjw6veLP6XLKs5p/XVDv+ew9qFslumimMwMQJV3wnSJGym1/ulWVmHSeneyHLXq
-	 Mw8zv4k8e8xh07em1+mcgCjXmYXx/anymQnAevi8IfQI/9wHJJsoXD3WxFW43pGR0k
-	 gBziCp4w6pwoA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3E33808209;
-	Tue, 20 Oct 2026 14:00:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=WmMrUH+L
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=3+1HCFOuIMN80iGsOQMwOgwNj3bEV3gIzKqis9v3+sA=; b=WmMrUH+L8ohTFjXap/o2k7dg7m
+	EvS6Ao5CrAHMcjflH2TU8T8ro/gCbkyDD4qJ3gNKKHFpOZA3JuHkqb1MHjAP8CTfuUgHhaDF0BkKp
+	0Ea5dQyvJ9NJAym8KIXwh0FIDmQLydUohs+yN35I7F1MJ5yZccH17tVGhFzeXVLA2ulE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xJAPg-00BrVO-Gk; Tue, 20 Oct 2026 16:02:00 +0200
+Date: Tue, 20 Oct 2026 16:02:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Prashant Sengar <prashantsengar25031@gmail.com>
+Cc: netdev@vger.kernel.org, Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH net v2] net: usb: lan78xx: avoid NULL PHY dereference in
+ WoL setup
+Message-ID: <3a48b21c-0209-4dde-9356-b127eb5fa58e@lunn.ch>
+References: <20261019193148.1381545-1-prashantsengar25031@gmail.com>
+ <d9177176-75c2-4273-b5ba-d0c6afdad6c5@lunn.ch>
+ <CABW1sBkKtBt0gipBNsNRWbwYy3GSDbe2d0TMBX8=whwu4WQmJg@mail.gmail.com>
+ <7bff1292-9371-4e3e-8062-31a554aeee17@lunn.ch>
+ <CABW1sB=n--dJDK2zieM1bzOjG3AEwfZLTZ6HJrXLG+F1R1LB1A@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,51 +67,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/2] Support unaligned RTL8224 PHY packages
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179250480675.3753996.13961192946834391780.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 14:00:06 +0000
-References: <20261013185635.1412452-1-oskari@lemmela.net>
-In-Reply-To: <20261013185635.1412452-1-oskari@lemmela.net>
-To: Oskari Lemmela <oskari@lemmela.net>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, hkallweit1@gmail.com, daniel@makrotopia.org,
- vladimir.oltean@nxp.com, maxime.chevallier@bootlin.com, olek2@wp.pl,
- javen_xu@realsil.com.cn, marek.vasut@mailbox.org, ih@simonwunderlich.de,
- amadeus@jmu.edu.cn, jan@3e8.eu, f.fainelli@gmail.com, linux@armlinux.org.uk,
- andrew@lunn.ch, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, mensi@mensi.ch, dam.dejean@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABW1sB=n--dJDK2zieM1bzOjG3AEwfZLTZ6HJrXLG+F1R1LB1A@mail.gmail.com>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue, 13 Oct 2026 21:56:33 +0300 you wrote:
-> RTL8224 packages contain four PHYs at consecutive MDIO addresses, but
-> their first address need not be a multiple of four. The Hasivo
-> S1100WP-8GT-2S+ uses two such packages at addresses 1-4 and 5-8.
+On Tue, Oct 20, 2026 at 06:23:56PM +0530, Prashant Sengar wrote:
+> Thanks, Andrew.
 > 
-> This series adds a dedicated realtek,rtl8224-package binding and extends
-> the driver to use the explicit package base when provided. The
-> package-relative port index selects the MDI pair order and polarity
-> fields. Existing configurations without a package node retain the
-> aligned-address assumption.
+> I understand that LAN78xx needs to advertise its MAC WoL capabilities and
+> implement mac_wol_set() for phylink to handle controller-managed WoL.
 > 
-> [...]
+> Since this would involve additional changes and testing, I would like to keep
+> v3 focused on preventing the NULL dereference by calling
+> phylink_ethtool_set_wol() unconditionally.
 
-Here is the summary with links:
-  - [net-next,v3,1/2] dt-bindings: net: realtek: add RTL8224 package binding
-    https://git.kernel.org/netdev/net-next/c/9f902fbc955e
-  - [net-next,v3,2/2] net: phy: realtek: support unaligned RTL8224 PHY packages
-    https://git.kernel.org/netdev/net-next/c/8f3a933fa1a7
+So there are two different things.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+1) Avoid the crash.
+2) Make it actually work with a fixed link.
 
+For net, you can do a quick and simple fix, which makes ethtool set
+wol/get_wol return EOPNOTSUPP if there is no PHY. It did not work
+before, it still does not work, so no regression. But the crash is
+gone. And keep calling phylib, rather than phylink.
 
+For net-next, you can add proper WoL support using phylink, and make
+fixed-link work. Since it never worked, this is new development, so
+should be for net-next.
+
+	   Andrew
