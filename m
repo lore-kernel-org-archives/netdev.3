@@ -1,83 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792494014;
-	b=05+jG2AMcU0QYHIBpaEuQVFThC/tD/e4V8miHGXVWQbeY9yn0ArZhsX1IeZZpWhrrOru
-	 IdCfK8cu7iqvHvPMAGjHeP0trb5TUjmZKGUP7yyWA5X+64apF5itxkSZpi1hljwwaQO+5
-	 AKjeW9I8GYhwBKUgqKI+gEbuRXL/r7BIHtnfcMQHv6cSVMEg99ZDe1T9BEh3GWqyIGSkC
-	 y8HTgF1LgjqZz4ugAIUmk7yOvzZp/gEzN685gDmSXLN+LVAtutpk2/qUZZ2/wD5rVfMPr
-	 JJFs2Q74eNxCYhtIJxyfec8E0bGxQnP/tOaJoXp+lAK6HIs0pbajRlckwDQgTNRTFpA==
+	t=1792494016;
+	b=bdAjKxoeAfEIfWFpE9ZCTd0GW7J4ihqk9mVwAw2rzP4/Ewtf+/6eaNNmoasV8zG8TQT6
+	 JsllKez/YgTU+VhlkUluP/Nfx3cn4UCUSpZ6WrGf6CvcFdnsLKdfnHzigX76/y9P8N2i6
+	 EzHpk5TdwyxYgIpskM2K1gHc6YzsElwEtb14HLJ+pVIiNyLHvkQn7RZDFrdBTH/sSrUFl
+	 OVyaHQEBOVtMTc0TfX44YoPeAXXGAs4kw8japQvQj8FUrAdWQKLHW+ukg/0Trhbio5Eav
+	 IGVisNn1Y+y9J4Ycz7sIkLGp8sdQtQ8ex4GNBAv+Z6tA2yhjvetxxreGKpyL7DchdCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792494014;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792494016;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=KOzquRVJX7CuCnTjfd7MDQSX824d3kGTwCuJPFcsHFw=;
-	b=XZCRABKizvEYj3DRupbIUG4kbt2ecenhRpdjTbTlxmJJSLNqyNVpxrmWH0mU3WFUO54N
-	 bwZXMvtzh/aIyOuVYuH+P2pl0RIVUEsr9/X1DHC3cR2RfpRipw56VPQBLi9U7Q8zrBQsT
-	 15RyvIt5NZSva9qkQQ5ibqBhBrM6NNwecI5FSCwXmsjii83AuwFmU8JEzBQMBye4Th20l
-	 c9dNE2/FScP94RAKpYGLZ05iFrlsJzWlTMtex0kmNtC/Y61pOuORlY89naVXQcYBb+JeS
-	 HuI47rDfJROG4SU238D7xGKUFpTCmx+gZ+AnhCNtZaic8qhXinwCNg9xpi5O7BcojQg==
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=o8s7jLwbwEzkdmp69F3R584GvBbqe/nWZgEc2v9hYWw=;
+	b=0Rx740u51RTWq/8F0n2uY5epUs76BXu/V/Xq+hrTM1XHYKMJjTXnAy8gnfhkf1yCRDoF
+	 OP+PwHoaTzuxKc9KKOqt1ZdWkvcZkbXborpKnUefQMqqPDMvodD054pY2CgzzYTpROdEF
+	 Yoq/ySHlNP29vsCeSGpsZnodtO6uSVupNI7kC4s8nNc77jozLDvUpo694qPj7tVa7QIgy
+	 Xh3AAeGggfol5vToESKJRAG1qk9ZfvwgdhOaN1EHm1ODJrJOpqhwjZ02B6YHxkN4CZ16d
+	 gGNkXuutacEonNjr+f3J0oI7N092dIw7l7Q+CqaqPiApauuHXb4QyG9IbeH8tf2D5ow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=W3iOg25e;
-	arc=none smtp.remote-ip=209.85.222.182
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=k03Ywafi;
+	arc=none smtp.remote-ip=209.85.160.171
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF082606A327
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:00:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF082606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF0B606A332
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:00:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BF0B606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=W3iOg25e
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f22a8515eso286698985a.2
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:00:13 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=k03Ywafi
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5365b48238dso20402571cf.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:00:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792494013; x=1793098813; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KOzquRVJX7CuCnTjfd7MDQSX824d3kGTwCuJPFcsHFw=;
-        b=W3iOg25eukv4Ju9RqklfduXdwfUiupJuI0rYieV9xhm3gmDOW5qfuVrfBj2Phle1UY
-         N5gWTxC+NUJ7kamJj8b7b3ps0JdbYkmOxo1jq0pVpYqKw3MWMnDDfGFzyU959ycqPab1
-         7FzXVIlM8TGLyjNvsBjC3B4nySEJRodGnYUi8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792494013; x=1793098813;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=mojatatu.com; s=google; t=1792494014; x=1793098814; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=KOzquRVJX7CuCnTjfd7MDQSX824d3kGTwCuJPFcsHFw=;
-        b=K83ziz/wQS9zXUJW2LxubFtbeHHcHyhgQxVANHb7KQ1zG72+75yTwrhsiSXbRh24/y
-         gT/DpSuAO4VIcAK6lTsu3yySpMphmonC/y2o4foxuqxnFwuNYhEEv8d7PseaxqYOzgkp
-         3dXqovLy7IZlO2SJi6K6nl/C5b8+Lz8sb3l7wN9Wenxx4sjStQ2+JkWLvi8zxwmqSWiG
-         +p8Zz59OnVTbJwvt8U4CdYR2o+q4oHMjPRoCAsn37K/ib5rqHFlOyxnXxeZ+oCZtsIzs
-         lRx5IFPZIaGFkd6IplZp5uutPgGFbklj+0jP1elEnb3UHrFDosvjuNXmpIFp0B7gr/tC
-         B0uw==
-X-Gm-Message-State: AFq9FYIhAwtEgt4/AZs3Rw+LvugmktxrWRpG0jE1O6BsbM2IxilTWf0J
-	9K6FFDcZgIkkeSrjxG5BA1NGLFBQwnMqGLKOQ8AbfpqXjKa7SJseJH9g57Z3P0i7f8jqMsXoXq3
-	Ae+g=
-X-Gm-Gg: AYBFou3oUJsxNOQE+EmUGj3pUStDkF11EHMxbs73GlALVe0DXm9zApACMG3z85NmuyI
-	z1RJbXyYlO/Z0g1kN4iAPtPMOeq/iw+fXWdDril3+gW96Cg5XbA6uk+j3rHe94zwjKku4VzinHb
-	icQSO54Gd4e1R87+DHm0iMBZOM8zcBpEjz+7gUNCZHKx3yNbRPi53Ws23x5MDx+PHWyiyLJz+fV
-	aofK9Fqtz00+htDdX8yViG9nFuE77kS/NYFsqUrgX6k2SQ0ElWeGLFgGCGxnD46zrR640yxeaRs
-	gNzhh9zezT9Qa3J/oNKigFSPL8EK8opT2QKHfVHW9sHwe8jOa1UVJ3CjCz1GoKP6SP9BFf5TIFk
-	+oDgq+iSIm16P0v4R9oKdjfXlcVG71+gTME6f+SAK3NZQN+/thK3zfmFpiWcw0YQ9qCZmIDPYnc
-	+dBqhvP4J8kZ9/O7eCm9gWlz+fpqjXqDws9Nl7WzIvhgtUEcxAQXdBxyYHW1x9STOCfyheWf6r/
-	jBBD3MjHXshb7nQFurr1VY1pYZ8jrOl/vq4W5apUJ/0
-X-Received: by 2002:a05:620a:270b:b0:93e:623d:99ec with SMTP id af79cd13be357-93f29c94085mr1741356885a.13.1792494012590;
-        Tue, 20 Oct 2026 04:00:12 -0700 (PDT)
+        bh=o8s7jLwbwEzkdmp69F3R584GvBbqe/nWZgEc2v9hYWw=;
+        b=k03YwafitnVoPt/DlvMtJ2aC3NEYocSi3MJiUOQoGX+JeVYV4fde6wGRGJHp/8Q+jj
+         Sav/MYIMFL4AoWdkU7Vjt5gb5EjFTjr8wAi6TpyHJaNZKbXsEhEbKl2mHCXrr5lWKATw
+         B0Y8lCGWDNn0Tw4gk1HIQZ2JGKepJ7ytJcEIQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792494014; x=1793098814;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o8s7jLwbwEzkdmp69F3R584GvBbqe/nWZgEc2v9hYWw=;
+        b=Y8DnijYx0TJKRqQMt+V/VmHRs3UcqZO9AQg4EjjYO4VBNQo/0OoQ0mj6WIovJEgxIk
+         BBLx2gfPIV7n9hpzmjrvip2z4BLxrHstmDgXNXuQLSVhjTkbQdEd+t09Nr2c1wLKd0Kx
+         riK+UPtz89AqKW6/dQTAU/RzEm68VBTQ4P17ZieS/6b4lSM76wPs+voU06/mNd6Shhj8
+         pasKCZ69tjKgs5ehcQUySLKtBdhB2jTfwAfOuZyaVXFcV9U4mFY+FhMbT5ghFl6YCI33
+         STgzICr/DQM11MMh0VQ1bY4dO+JouOuq83U9DQz1KLIDjHXA4m760dD71QNJnhVeazWA
+         MtBg==
+X-Gm-Message-State: AFq9FYJYsLFscwS5MwY4wjFHIYbN7zvN3VAOWyt4Pvxck9Q7QZh/CYls
+	YOWe2LOGSiYvjIZ19gM7HPy+C3RkRUjBkxpVa9BlsAGzyXRq8pcADiXsAB0fGE4mY3DHjVVYHUv
+	MQio=
+X-Gm-Gg: AYBFou0Z3XdcOsP0Q/8+EgcMiQN6dtrK1oen1uEePJj1u6gJh0ettM7ZDWZ5wdcORd1
+	1aINbpz5CEJNuGUU/TSQarGjZtX6ui+QGSuMZOf1N7uAo/9s5Hy8QsnswP+zueZZhLuyuJ2R77B
+	ochZg8axv3mmO+cAp7YkNF4ty08wQa1DXAWRCFfSehyY9QRh2+gY8zVVZCiVf243O40RFyLbrF/
+	wG6k8nj7lp84rYRZODVx8fZ9GZTAA/eAadr6E+swrPtY9c+C9lpXbCBZETsIoLAw+S+A1GKhFM6
+	WWVxTGoznKmqy3vZpHilXYsKI7Cc+Vpr4M1ImhdK0MjRKVgkOdgZs2obKY7UyRk6uD0XsNi3+Qj
+	kvyD9L4f7saqIdSX2G3h7BqfLrHrn7PPY3lYrqek5Fre5IhiXLjX8V9HOuiJEh7vuEeIKhsN5p4
+	9ER9ogDEKiRI1Y4KeIDEw/JaQBnWXA4thIWXiPXtXmA4+tU1ylRZmjvPB9DBEhdAnSKDOLWgJlM
+	vcj5TRFUcw1ghwjlJ8PdOCNnGl+THQkV0QIZnGOS0OwwGOk3Lmluqg=
+X-Received: by 2002:a05:622a:4187:b0:536:6ff4:652e with SMTP id d75a77b69052e-5366ff472a9mr70980151cf.56.1792494014493;
+        Tue, 20 Oct 2026 04:00:14 -0700 (PDT)
 Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040e6667sm23382356d6.39.2026.10.20.04.00.11
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040e6667sm23382356d6.39.2026.10.20.04.00.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 04:00:12 -0700 (PDT)
+        Tue, 20 Oct 2026 04:00:13 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	Jiri Pirko <jiri@resnulli.us>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
@@ -87,10 +89,12 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	cake@lists.bufferbloat.net,
 	Victor Nogueira <victor@mojatatu.com>,
 	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net-next v3 0/4] net/sched: sch_cake: fixes for accounting and reconfiguration
-Date: Tue, 20 Oct 2026 07:00:04 -0400
-Message-Id: <QDISC-5RTM.v3.r0.20261020053711@mojatatu.com>
+Subject: [PATCH net-next v3 1/4] net/sched/sch_cake: serialize reconfiguration with the datapath
+Date: Tue, 20 Oct 2026 07:00:05 -0400
+Message-Id: <QDISC-5RTM.v3.r0.20261020053711-1@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-5RTM.v3.r0.20261020053711@mojatatu.com>
+References: <QDISC-5RTM.v3.r0.20261020053711@mojatatu.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,69 +107,183 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Four independent fixes in the CAKE qdisc.  Three are follow-ups to the
-autorate reconfiguration work around commit 7cbfb180945c ("net/sched:
-sch_cake: fix autorate reconfiguration throttling") and the 32-bit
-admission-counter wraps fixed in gred/bfifo/plug by commit 4c660ee8c809
-("net: sched: fix 32-bit backlog wrap in gred, bfifo and plug enqueue");
-the fourth is a dead-code cleanup found while auditing the dump path.
+This is a follow-up to commit 7cbfb180945c ("net/sched: sch_cake: fix
+autorate reconfiguration throttling").  That change only stored
+last_reconfig_time; it did not address the concurrency between the
+autorate rate update in cake_enqueue() and the netlink reconfiguration
+path, which the original review flagged.
 
-Patch 1 serializes a 'tc qdisc change' with the datapath's autorate
-update under the qdisc lock, so the netlink writer and the autorate
-writer can no longer lose the configured rate.  rate_bps needs no atomic
-(it is only loaded and stored), so it stays a plain u64 with
-READ_ONCE()/WRITE_ONCE() annotations.
+The issue:
+cake_change() -> cake_config_change() updates the fields of the shared
+struct cake_sched_config under RTNL but not under the qdisc lock: it only
+took sch_tree_lock() later, around cake_reconfigure().  The datapath in
+turn serializes cake_enqueue() with itself under the qdisc lock, and its
+autorate-ingress path stores the estimated rate into
+q->config->rate_bps.  Two writers therefore update the same rate with no
+common lock:
 
-Patch 2 propagates the backlog reduction of the reconfigure-time tin
-purge to classful parents, so a CAKE leaf under HTB no longer leaves the
-purged packets in the parent's qlen/backlog forever.
+  CPU0: cake_enqueue() sees CAKE_FLAG_AUTORATE_INGRESS, computes an
+        estimate, and is about to store it.
+  CPU1: 'tc qdisc change ... bandwidth X' clears autorate in its local
+        rate_flags, writes rate_bps = X, publishes the cleared flag, and
+        waits in sch_tree_lock().
+  CPU0: stores the estimate, calls cake_reconfigure(), and unlocks.
+  CPU1: reconfigures from the estimate and returns.
 
-Patch 3 widens buffer_used and buffer_max_used to u64.  The u32
-accumulator wraps once the resident truesize passes 2^32, bypassing the
-over-limit drop loop while the configured limit is a u32 attribute; the
-u32 MEMORY_USED export is clamped so widening the counter does not
-truncate the reported value.
+The qdisc is left with autorate disabled but with the estimate installed
+instead of X.
 
-Patch 4 drops an unreachable 'nla_nest_end() < 0' error check: the
-helper never returns a negative value.
+The fix:
+Commit the parsed configuration and reconfigure while holding the same
+qdisc lock that serializes the datapath, so the netlink writer and the
+autorate writer can no longer interleave.  rate_bps needs no atomic: it is
+only ever loaded and stored, so plain READ_ONCE()/WRITE_ONCE() annotations
+are enough for the accesses that run outside the lock.  The lockless
+paths read the rate once into a local and reuse that value, so a single
+coherent snapshot is used per operation.
 
-All four are hardening for net-next (no Fixes:, no Cc: stable): the
-counter wrap, the missing parent-backlog propagation and the
-reconfiguration race all predate any contract we could anchor a
-regression on.  Patches 1-2 were reported by Sashiko (gemini) and patch
-3 comes from the gred 32-bit-wrap family; patch 4 is a static cleanup.
+The annotations do not make a 64-bit access single-copy atomic on 32-bit:
+READ_ONCE()/WRITE_ONCE() are still two 32-bit accesses there.  The lockless
+readers -- cake_config_dump() and the cake_mq children, which observe the
+shared config under a different child's lock -- can therefore still see a
+torn rate on 32-bit.  That rate is an advisory shaper value and is accepted
+as best-effort; the state that must be consistent (the configured rate and
+the autorate flag) is written under the qdisc lock.
+
+Conditions to recreate the bug:
+The lost update (a) needs no sanitizer. Put cake in autorate-ingress on a
+device, drive bursty traffic with gaps so the 250 ms autorate reconfiguration
+fires, and concurrently loop 'tc qdisc change ... cake bandwidth <N>kbit'
+without autorate-ingress (specifying a bandwidth clears the flag).
+If the autorate store lands after the change wrote its rate but before the
+change reconfigures, the qdisc ends up with autorate disabled and the estimate
+installed instead of <N>; reading the rate back then shows the estimate, which
+an unfixed kernel can do and a fixed one cannot.
+(b) The unsynchronized access is reported by KCSAN: build with CONFIG_KCSAN=y
+and run the same trigger with the change loop keeping autorate-ingress set;
+KCSAN reports a data race in cake_config_change / cake_enqueue.
+The non-atomic 64-bit store only shows up as tearing on a 32-bit machine;
+on 64-bit the store is atomic and KCSAN flags the access discipline instead.
+
+Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260816012109.2865223-1-ooonea@gmail.com
+Link: https://lore.kernel.org/netdev/20260816012109.2865223-1-ooonea@gmail.com/
+Link: https://lore.kernel.org/netdev/875wzctsky.fsf@toke.dk/
+Link: https://lore.kernel.org/netdev/87ld7t3kl3.fsf@all.your.base.are.belong.to.us/
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
 
 v2 -> v3:
- - Patch 1/4: reuse the rate snapshot in cake_dequeue() and
-   cake_reconfigure() instead of a second READ_ONCE() per use, order the
-   declarations longest-first (Björn Töpel), and scope the annotation
-   claim: READ_ONCE()/WRITE_ONCE() do not make a 64-bit access
-   single-copy atomic on 32-bit, so the lockless cake_config_dump() and
-   cake_mq readers remain best-effort (Sashiko nipa).
- - Patch 2/4: no change; carries Toke's v1 Acked-by.
- - Patch 3/4: publish buffer_max_used as u64_stats_t under the qdisc lock
-   and snapshot it with u64_stats_fetch_begin()/retry(), so the lockless
-   stat read is coherent on 32-bit (Sashiko gemini + nipa).
- - Patch 4/4: no change; carries its Reviewed-by and Acked-by tags.
+- Reuse the rate snapshot in cake_dequeue() and cake_reconfigure() instead
+  of a second READ_ONCE() per use, and order the declarations longest-first
+  (Björn Töpel).
+- Commit log: scope the annotation claim.  READ_ONCE()/WRITE_ONCE() do not
+  make a 64-bit access single-copy atomic on 32-bit, so the lockless
+  cake_config_dump()/cake_mq readers remain best-effort (Sashiko nipa).
+- Conditions: make recipe (a) distinguish fixed from unfixed (the change
+  must clear autorate) and separate the KCSAN-only effect (b).
 
 v1 -> v2:
- - Patch 1/4: drop atomic64_t; rate_bps stays a plain u64 with
-   READ_ONCE()/WRITE_ONCE() annotations (per Toke's review: the accesses
-   are plain loads/stores, so no atomic is needed).
- - Patch 2/4: no change; carries Toke's v1 Acked-by.
- - Patch 3/4: clamp the MEMORY_USED export to U32_MAX, so widening the
-   counter does not truncate the u32 stat (Sashiko nipa Medium).
- - Patch 4/4: no change; carries Toke's v1 Acked-by.
+- Drop atomic64_t for rate_bps.  Per Toke's v1 review, rate_bps takes only
+  non-RMW ops, so per atomic_t.txt SEMANTICS a plain u64 with READ_ONCE()/
+  WRITE_ONCE() annotations is the right shape (no atomic needed).  Reverts
+  the struct field to u64 and every atomic64_* back to READ_ONCE()/
+  WRITE_ONCE().  The cake_change() commit-and-reconfigure-under-sch_tree_lock
+  fix (the real race fix) is unchanged.
 
-Jamal Hadi Salim (4):
-  net/sched: sch_cake: serialize reconfiguration with the datapath
-  net/sched: sch_cake: reduce parent backlog when clearing a tin
-  net/sched: sch_cake: widen buffer_used to u64
-  net/sched: sch_cake: drop dead nla_nest_end() error check
+ net/sched/sch_cake.c | 32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
- net/sched/sch_cake.c | 69 ++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 50 insertions(+), 19 deletions(-)
-
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index dc93267029e7..d71617aa56d9 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1906,7 +1906,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			if (ktime_after(now,
+ 					ktime_add_ms(q->last_reconfig_time,
+ 						     250))) {
+-				q->config->rate_bps = (q->avg_peak_bandwidth * 15) >> 4;
++				WRITE_ONCE(q->config->rate_bps,
++					   (q->avg_peak_bandwidth * 15) >> 4);
+ 				q->last_reconfig_time = now;
+ 				cake_reconfigure(sch);
+ 			}
+@@ -2019,9 +2020,9 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 
+ 	if (q->config->is_shared && q->rate_ns &&
+ 	    now - q->last_checked_active >= q->config->sync_time) {
++		u64 new_rate = READ_ONCE(q->config->rate_bps);
+ 		struct net_device *dev = qdisc_dev(sch);
+ 		struct cake_sched_data *other_priv;
+-		u64 new_rate = q->config->rate_bps;
+ 		u64 other_qlen, other_last_active;
+ 		struct Qdisc *other_sch;
+ 		u32 num_active_qs = 1;
+@@ -2042,7 +2043,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 		}
+ 
+ 		if (num_active_qs > 1)
+-			new_rate = div64_u64(q->config->rate_bps, num_active_qs);
++			new_rate = div64_u64(new_rate, num_active_qs);
+ 
+ 		cake_configure_rates(sch, new_rate, true);
+ 		q->last_checked_active = now;
+@@ -2625,13 +2626,15 @@ static void cake_reconfigure(struct Qdisc *sch)
+ 	struct cake_sched_data *qd = qdisc_priv(sch);
+ 	struct cake_sched_config *q = qd->config;
+ 	u32 buffer_limit;
++	u64 rate_bps;
+ 
+-	cake_configure_rates(sch, qd->config->rate_bps, false);
++	rate_bps = READ_ONCE(qd->config->rate_bps);
++	cake_configure_rates(sch, rate_bps, false);
+ 
+ 	if (q->buffer_config_limit) {
+ 		buffer_limit = q->buffer_config_limit;
+-	} else if (q->rate_bps) {
+-		u64 t = q->rate_bps * q->interval;
++	} else if (rate_bps) {
++		u64 t = rate_bps * q->interval;
+ 
+ 		do_div(t, USEC_PER_SEC / 4);
+ 		buffer_limit = max_t(u32, t, 4U << 20);
+@@ -2784,9 +2787,16 @@ static int cake_change(struct Qdisc *sch, struct nlattr *opt,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	/* Once the qdisc is live, commit and reconfigure under the lock that
++	 * serializes the datapath, so a concurrent 'tc qdisc change' and the
++	 * autorate update cannot lose the configured rate.
++	 */
++	if (qd->tins)
++		sch_tree_lock(sch);
++
+ 	ret = cake_config_change(q, opt, extack, &overhead_changed);
+ 	if (ret)
+-		return ret;
++		goto unlock;
+ 
+ 	if (overhead_changed) {
+ 		WRITE_ONCE(qd->max_netlen, 0);
+@@ -2795,13 +2805,13 @@ static int cake_change(struct Qdisc *sch, struct nlattr *opt,
+ 		WRITE_ONCE(qd->min_adjlen, ~0);
+ 	}
+ 
+-	if (qd->tins) {
+-		sch_tree_lock(sch);
++	if (qd->tins)
+ 		cake_reconfigure(sch);
++unlock:
++	if (qd->tins)
+ 		sch_tree_unlock(sch);
+-	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void cake_destroy(struct Qdisc *sch)
 -- 
 2.43.0
 
