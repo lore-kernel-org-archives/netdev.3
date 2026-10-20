@@ -1,101 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792515734;
-	b=OeWaphYwuAYaO4OzxXaa/iWp35iTIJKoKNf4zurhecgdOwwy3MAecjjIyW66J9VekDLS
-	 qRPf4ayIOZr7p1lLHB6Pp9QDKoBizFPTYnOVRYMAA1WvHUDFSTt09bEPXCQ3lwNWCH3FO
-	 oLmBmjEBt6S0ssbkMiOdd7tsd66auH+GsVmm7NpkICS2mBXzf77Zs6rjp5u+cdce7ih3r
-	 vBpX+67+rczoNF8QH1CHbhv6q1u9VGBBKpHx9+RPKz6frVV7ncvU8WIzxAn9zxdrUL/iN
-	 jcpZfo0ZU10Yrqmud/AflVgNA2H+Sd+7QRz0Z/hr4/L9i+3rkyyepbX4ZNuy/4NAZ8Q==
+	t=1792516045;
+	b=D73ls/lFI+X3NXRiQ8IB8fulGXkR+rCxFhYrCSez7ov+P6NYUCparPLReuP2/IhmNw3G
+	 7hOxDZgavJbnUmPAWTJMXOb4QmjJwHpB4vgwIcDavJ33p2aPRHsV6/6qd1ld6AglyIld0
+	 BnpYUVcrc14ubYyb8N8ZLchmgq6MgG1UpvpXdzVxK47tPVAIZQnxqpLlyn3XOCquGlJF0
+	 IQwAbhM3SA+q1QRUohWcDhK4hPf4UjBxJ7nad832DbyRv0enhdwZZ97gRUaJ9RT78ZDh9
+	 37aPlBisRXfoLXtWIUZ7957kc0L7G6L/46r0wc2aUe2QGnd+cT599gFl/ISNBm76agA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792515734;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=c2tWJog8tF6NqAN0I/hU2qsBbMxLRSq66EQB1uSbRW0=;
-	b=NZDDNfq0rI1E0CiwLo7z5i3DxdC+E7/woxZsq8dxf4gxZAhDmLqgNyqxeD3oVTGKP75H
-	 gR1wB7KB6ZSR+iXYxupm9DkRGI+sT1cG2hYdg8+Vxw0sxZ1JrSuZZ/B6hOk/5PoCpUaPD
-	 zRblTBd+VElK9Da0MBqwuGGk4USPxrBm40J0zCUYkWvBDdHAd15Yl+RdO6osztnDIxUoX
-	 d4B21QgYyMhsZ0JZ510gjgdJRREp5ynvrfE1oD2V4MSSYROlHa4cZbZe5Dm7w+ONYnoWH
-	 PX0JyT2NketDf2+FoC/GcZRj/g9UTHORBWnRyrCLL6P4AekjjsZv5f0fEgJTUS6WtNQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792516045;
+	h=Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=9/l68fSQm/RuZObxkeWmD9P0V6B9tkMkoAUEJkdJXq0=;
+	b=OePukrZABgwSLc87tuTC+gaTYhNRepVkOyG6WeE7jMvyMBVPAxcEic9eGcBF3CUJ9huG
+	 urwlHvfiahj2sL9Nw2lgTfOUnCsm2gN+X/fEhdG1Bm8BMF24YLdbqXwVkaHWRu+S3UyjK
+	 J84MNA1ptkplIvivxmhvYsnHio1ayGZGK0CDQQNGqyD2qDGcyoc9CXqbfsRED1TFmmqgx
+	 2qe/2ez03xo8CHjq/OtG1eqgARjbXYTpb1YGx85VZUPbMOU6yEL8vO1XdzzIbh+b/pbLF
+	 0eCTX/g5AQ5TlnMt4ioqjpek5q3Ig2jTpfOaod37XsqdV2nreKwc4xL7DnV3sHBABwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=riscstar.com;
-	spf=pass smtp.mailfrom=riscstar.com;
-	dkim=pass header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=AY0iWU8p;
-	arc=none smtp.remote-ip=209.85.128.44
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60665606A31D
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 17:02:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60665606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=AY0iWU8p
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1dfd49525so22555555e9.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:02:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792515728; x=1793120528; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c2tWJog8tF6NqAN0I/hU2qsBbMxLRSq66EQB1uSbRW0=;
-        b=AY0iWU8pvlbKT+2yzZbsuE25L2C2Gr41g/TG90G27s8xW1rj8Lu5RhcydvNnfvj2wH
-         0qr076ccreXx1HR5lJ31ZWHUn0ku3zLvM95RLCGRkwGPz7PIC805yQ0m7A9kgL/wPNyp
-         DXEexD4HiSyD/TZNLVmuVV/symdSscMT6yAzyvQbEhvg+eScdzOoCcSF2Xb4UbIRv7GQ
-         u0j5cmv7vOam9mhrvFcJn+b1n2bG8zw7jv1rKwjbwBu1eo6NKwzw6YLLzkSYmMy2CWie
-         CHFZ+lGaed1X4VKCt8VxWxIEbLUn5imtO3LGsV3zNOpQFXRcdjDrxp1p4M/zE3JlKmSv
-         c4Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792515728; x=1793120528;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c2tWJog8tF6NqAN0I/hU2qsBbMxLRSq66EQB1uSbRW0=;
-        b=d7rvoU8vDKXkMz2scbmjl15QwOhX3i8dPrRV9up4JX9HTtiCMGtko7orZfXWjhP9kV
-         B+D3mDo+UK707GbdlUsv6quy7d71wj34R8PJNTayxUD1vv/wNRe35iKY7+kIxhmELUpR
-         qIApgnc9z8ECge7CmfjAbpODmcFVcJ9jZ/50GoYgTcut4KfCSmGQAEd8XGr9E/9sBg7X
-         codGolVVs3uFal8wZBY/X/crmdM4pbVvHLPFxKgr91AmhbAh3qJdIS35t+WIAQIzWGZB
-         fo2yvGyu1TnGZmB1n+P3/S7V+REVnDjUpNU0sQqATEbwDyxAXSn0lLDfUi7ifNyNV7kI
-         nD0w==
-X-Forwarded-Encrypted: i=1; AKwUvBzw6qkGFlajuYJK+MkdekZmVY9a8CnUofKQumZn6nHq1hBl8CjL6wz0GmLojf0BA8tZFNy7Ok8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYICNpr0P6pofPxf2QUwN9i1DAk1A7VAhBbxYPMHDQT1Qkp0OiTo
-	eLIjQJwrOL4W9SF+lmhOlzK1xaW2AYol8bktw4g1vjk8mTWgsWgN2qv/tzwnDn0k7TY=
-X-Gm-Gg: AYBFou3tYFd1Xb6XJ8w10kOjuSZMaoD5VOe6bxDl9G3t6dKX+Skzk+XcdA4Q8TM1ipU
-	T8yOSBiZsVWmhBBJZcKRhi7uJxnOuqtpIXsHD+gAO2jzdeWnp0Uk3VCyx7ffATbhtL7OIqSgj6W
-	7IaRc96G1sgsqoO5MadLNuXn/o+N4n1sWFyP0QLs2uqSmz+yMmTnJRbGPTTwULeBwgSktw/bb7+
-	It8JuJqQZY5uuDiYvBLoF2rBvgIubgaJMXn4Wg3YmKFLwlrUXwtCWW2nIpY/GWVfR7+PwbHAeW+
-	LVTrtHyLnFokKCKwCTAP01xl6rr4+UvnFTL8f2ZB8OC5K5wkAIBWRMzu0PDo04ZOetJ2Lr3KHcL
-	a3EXdidCpNidUtth9mFCZx9AhC76e+zf5FdktGgBco2sT8tcjusUC0ntiRNk4G0izdHBIY3UXuB
-	gtU+iqtY8QfNXtWoEMaBEgnDPisyAzlg7vmU+YbRsluRctpmajWO4X75fg1jcUlHvahN9oMFz9c
-	IkRvl/qABlvtku05esdZ4lAK/NTzc1d63Q1dSda8z05Mp8BGMQ4HKHkqemug3c5xdQ8e8eMHMGB
-	yUFvRiyG6SsQoEGPZ3cbDVBlSFZXbGKIsDgui/RDwyN7iFiumagGbQukAvo=
-X-Received: by 2002:a5d:4602:0:b0:48d:f0e4:27a4 with SMTP id ffacd0b85a97d-48e07f9d7edmr19141664f8f.24.1792515727622;
-        Tue, 20 Oct 2026 10:02:07 -0700 (PDT)
-Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d82456asm8232406f8f.42.2026.10.20.10.02.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 10:02:07 -0700 (PDT)
-Date: Tue, 20 Oct 2026 18:02:04 +0100
-From: Daniel Thompson <daniel@riscstar.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexander Duyck <alexanderduyck@fb.com>,
-	Alex Elder <elder@riscstar.com>, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4A7606A31A;
+	Tue, 20 Oct 2026 17:07:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B891F000C9;
+	Tue, 20 Oct 2026 17:07:22 +0000 (UTC)
+Date: Tue, 20 Oct 2026 18:06:49 +0100
+From: Simon Horman <horms@kernel.org>
+To: Paul Moses <p@1g4.org>
+Cc: netdev-bot+sashiko@kernel.org, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	aleksandr.loktionov@intel.com, maciej.fijalkowski@intel.com,
+	avigailx.dahan@intel.com, stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: pcs: xpcs: select operating mode for
- 10G-baseR capable PCS
-Message-ID: <ateejER1HFGxjQpG@aspen.lan>
-References: <20261014223100.304486-1-elder@riscstar.com>
- <20261014223100.304486-3-elder@riscstar.com>
- <f8c01002-da88-4f0f-a02a-7480591f4296@lunn.ch>
- <atI1IK6blP-vumLQ@aspen.lan>
- <fe13016b-ebd6-4a2f-a07b-324f46b456d3@lunn.ch>
- <atZJBaHU2QQGwcnG@aspen.lan>
+Subject: Re: [PATCH net v2] igc: only strip RX timestamp header from first
+ buffer
+Message-ID: <20261020170649.GQ503057@horms.kernel.org>
+References: <20261013010854.4068874-1-p@1g4.org>
+ <179194315897.434549.3743742848544230715@kernel.org>
+ <Z4u97qIiSB-8nYCRmd03ddR4OFMcrpNVUcTHSoOADzNQcLvQVIQotijZpukYAO4AzV4r6j11nGS_lWTwyh709u_USu516VJmvffbjukcAs0=@1g4.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,86 +52,173 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <atZJBaHU2QQGwcnG@aspen.lan>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z4u97qIiSB-8nYCRmd03ddR4OFMcrpNVUcTHSoOADzNQcLvQVIQotijZpukYAO4AzV4r6j11nGS_lWTwyh709u_USu516VJmvffbjukcAs0=@1g4.org>
 
-On Mon, Oct 19, 2026 at 05:44:53PM +0100, Daniel Thompson wrote:
-> On Sun, Oct 18, 2026 at 05:48:39PM +0200, Andrew Lunn wrote:
-> > > default value after a reset prevents <=1G modes from working (I think
-> > > automatic switch over between 1G and 2.5G also liked this to a reserved
-> > > value but I don't fully recall right now).
+On Wed, Oct 14, 2026 at 05:43:10AM +0000, Paul Moses wrote:
+> On Tuesday, October 13th, 2026 at 8:59 PM, netdev-bot+sashiko@kernel.org <netdev-bot+sashiko@kernel.org> wrote:
+> 
+> > Thank you for your contribution! Sashiko AI review found 2 potential
+> > issue(s) to consider.
+> > 
+> > Critical: 0 · High: 2 · Medium: 0 · Low: 0
+> > 
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchwork
+> > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > (one such reply per series is enough).
+> > 
+> > - [High] The patch fixes the TSIP length underflow only in
+> >   igc_clean_rx_irq().
+> > - [High] In igc_clean_rx_irq(), the new condition `if (!skb &&
+> >   igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP))` uses `!skb` to mean…
+> > 
+> > --
+> > 
+> > igc: only strip RX timestamp header from first buffer
+> > 
+> > This patch changes igc_clean_rx_irq() so the 16-byte inline RX timestamp
+> > header is only stripped when no skb is in progress. Before, a continuation
+> > buffer shorter than 16 bytes could underflow the unsigned length and
+> > produce a skb fragment of almost 4 GiB.
+> > 
+> > > diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+> > > index 1fb5f3cbe93c5..41b293dc10c3a 100644
+> > > --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> > > +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> > > @@ -2639,7 +2639,8 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
 > > >
-> > > On that basis the best bit pattern to use one that isn't implemented by
-> > > whatever XPCS we happen to be running on. One simple approach might be
-> > > keep using 40GBASE-R but to check PCS Status 2 to ensure we fail in a
-> > > non-silent manner on hypothesized future XPCS hardware:
+> > >  		pktbuf = page_address(rx_buffer->page) + rx_buffer->page_offset;
 > > >
-> > > 	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
-> > > 		if (mdio_stat2 & MDIO_PCS_STAT2_40GBR) {
-> > > 			dev_err(dev, "40GBASE-R is *not* a reserved "
-> > > 			              value on this XPCS");
-> > > 			return -ENOTSUP;
-> > > 		}
-> >
-> > Maybe. But we need to ensure it does not cause regressions for fbnic,
-> > which might actually support this speed.
->
-> I will sketch out an idea based on explicitly checking both my
-> assumptions hold by checking PCS Status 2 and PCS Control 2 after
-> a soft reset. Thus if you never reset then the code will never
-> deploy. Likewise we don't need to rely on my guess that all XPCS
-> implementations will reset PCS_TYPE_SEL to 0.
->
-> I will also, given everything I've had to share by e-mail,
-> improve the commenting a lot!
+> > > -		if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
+> > > +		if (!skb &&
+> > > +		    igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
+> > 
+> > [Severity: High]
+> > Is !skb a reliable first-buffer test when an XDP program is attached?
+> > 
+> > Suppose the XDP program returns a non-PASS verdict (CONSUMED, TX or
+> > REDIRECT) for the first, non-EOP buffer of a multi-descriptor frame. No skb
+> > gets built, and the loop moves on with skb still NULL:
+> > 
+> > 		/* fetch next buffer in frame if non-eop */
+> > 		if (igc_is_non_eop(rx_ring, rx_desc))
+> > 			continue;
+> > 
+> > On the next continuation descriptor, !skb is still true, so the TSIP branch
+> > subtracts IGC_TS_HDR_LEN again. If that continuation holds fewer than 16
+> > bytes, size wraps.
+> > 
+> > The wrapped size then goes to xdp_prepare_buff(), and the continuation is
+> > run through XDP as a new frame with data_end before data. On XDP_PASS, both
+> > igc_build_skb() and igc_construct_skb() compute:
+> > 
+> > 	unsigned int size = xdp->data_end - xdp->data;
+> > 
+> > That comes out to about 4 GiB:
+> > 
+> > - igc_build_skb() passes it to __skb_put(). On PAGE_SIZE >= 8192,
+> >   igc_get_rx_frame_truesize() also wraps to a tiny truesize, so
+> >   napi_build_skb() would place skb_shared_info inside the packet data.
+> > - igc_construct_skb() turns it into a fragment of almost 4 GiB. That looks
+> >   like the same corrupted skb the commit message describes.
+> > 
+> > Can this be reached from the wire? On PAGE_SIZE >= 8192, igc_set_rx_mode()
+> > never clamps RLPML:
+> > 
+> > #if (PAGE_SIZE < 8192)
+> > 	if (adapter->max_frame_size <= IGC_MAX_FRAME_BUILD_SKB)
+> > 		rlpml = IGC_MAX_FRAME_BUILD_SKB;
+> > #endif
+> > 	wr32(IGC_RLPML, rlpml);
+> > 
+> > So the hardware still accepts jumbo frames even though XDP limits the MTU to
+> > 1500, and with XDP the ring uses 3072-byte buffers. A remote frame that
+> > leaves 1 to 15 bytes in the second descriptor would hit this.
+> > 
+> > Would it be safer to track start-of-frame explicitly, or to drop the rest of
+> > the frame's descriptors after a non-PASS verdict? Another option is to
+> > reject size < IGC_TS_HDR_LEN before the subtraction.
+> > 
+> > >  			ctx.rx_ts = pktbuf;
+> > >  			pkt_offset = IGC_TS_HDR_LEN;
+> > >  			size -= IGC_TS_HDR_LEN;
+> > 
+> > [Severity: High]
+> > The same unchecked subtraction is still present in the AF_XDP zero-copy
+> > path. igc_clean_rx_irq_zc() strips the header from every descriptor with
+> > TSIP set. There is no first-buffer gate and no size check:
+> > 
+> > 		if (igc_test_staterr(desc, IGC_RXDADV_STAT_TSIP)) {
+> > 			ctx->rx_ts = bi->xdp->data;
+> > 
+> > 			bi->xdp->data += IGC_TS_HDR_LEN;
+> > 			...
+> > 			size -= IGC_TS_HDR_LEN;
+> > 		} else {
+> > 			ctx->rx_ts = NULL;
+> > 		}
+> > 
+> > 		bi->xdp->data_end = bi->xdp->data + size;
+> > 
+> > Can zero-copy frames span descriptors at MTU 1500?
+> > igc_configure_rx_ring() programs the XSK frame size through
+> > IGC_SRRCTL_BSIZEPKT(), which is (x) / 1024. With 2048-byte chunks the frame
+> > size is 1792, so the hardware buffer becomes 1 KB.
+> > 
+> > igc_xdp_enable_pool() only checks:
+> > 
+> > 	if (frame_size < ETH_FRAME_LEN + VLAN_HLEN * 2) {
+> > 
+> > That accepts 1792 without allowing for the 1 KB rounding or the 16-byte
+> > inline timestamp, even though the comment there says frames should not
+> > span multiple buffers.
+> > 
+> > On 4K pages RLPML is IGC_MAX_FRAME_BUILD_SKB. A received frame of about
+> > 1009 to 1023 bytes, plus the timestamp header, would leave 1 to 15 bytes in
+> > a second descriptor.
+> > 
+> > The reproduction in the commit message suggests TSIP is set on such
+> > continuation descriptors. If so, size wraps here and data_end ends up about
+> > 4 GiB past the XSK chunk.
+> > 
+> > Wouldn't that let the XDP program's packet bounds checks pass for offsets
+> > past the chunk? On XDP_REDIRECT, it would also report a bogus length to the
+> > XSK socket.
+> > 
+> > Should igc_clean_rx_irq_zc() get a similar fix? Should
+> > igc_xdp_enable_pool() also account for the 1 KB SRRCTL granularity and the
+> > inline timestamp?
+> > 
+> > --
+> > Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013010854.4068874-1-p%401g4.org
+> > 
+> 
+> Yes, there's work needed elsewhere, but it's entirely independent of my fix. It's 
+> questionable how much of this is even reachable and if any impact whatsoever. 
+> 
+> Here's what I can reproduce with and without kasan and what my patch fixes. You are on your 
+> own on the rest.
+> 
+> I'm sorry, if only there were more time...
+> 
+> Good luck.
 
-Patches will follow in due course but in case anyone is curious in the
-mean time, that sketched out idea becomes the following. I had to read
-the TRM very closely but we can avoid using the obviously weird 40GBR
-value (the key information that allowed this version to write a better
-value to PCS Control 2 turned out to be a missing bit pattern in a very
-narrow column that I must have read tens of times without noticing).
+Hi Paul,
 
-Anyhow, pcs_type_sel_quirk is true if and only if my assumptions hold
-(explicit test after a soft reset that 10GBR is supported and that
-PCS_TYPE_SEL is 0 after reset). This hugely drops the risk of
-regression:
+Thanks a lot for your patch.
 
-+	/*
-+	 * XPCS (at least in some implementations) is a little odd in it's
-+	 * handling of PCS CTRL2:PCS_TYPE_SEL. Instead of PCS CTRL1:SPEED
-+	 * SELECTION controlling how PCS_TYPE_SEL is interpreted it is the other
-+	 * way around: the speed selection is only honored when PCS TYPE SEL has
-+	 * specific values.
-+	 *
-+	 * This is a particular issue on XPCS implementations that implement
-+	 * 10GBASE-R because that will be the reset value for PCS_TYPE_SEL. That
-+	 * means that at reset, the system does not honor speed selection by
-+	 * default. This forces us to recognize an XPCS with this property and
-+	 * update PCS_TYPE_SEL accordingly.
-+	 */
-+	if (xpcs->pcs_type_sel_quirk) {
-+		switch (interface) {
-+		case PHY_INTERFACE_MODE_SGMII:
-+		case PHY_INTERFACE_MODE_1000BASEX:
-+		case PHY_INTERFACE_MODE_2500BASEX:
-+			/* Really means 10GBX unless speed sel says otherwise */
-+			mdio_ctrl2 = MDIO_PCS_CTRL2_10GBX;
-+			break;
-+		default:
-+			/* Restore the reset value for unmatched cases */
-+			mdio_ctrl2 = MDIO_PCS_CTRL2_10GBR;
-+			break;
-+		}
-+
-+		ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2, mdio_ctrl2);
-+		if (ret < 0)
-+			return ret;
-+	}
+I  do accept that there are some pre-existing issues in the AI-generated
+review that are not strictly related to this patch.
 
-The code still doesn't entirely spark joy but I think at this point I
-can blame the hardware!
+But I do think that it would be best to make this patch more complete
+in so far as preventing the overrun described by making a wider guard
+for calling igc_test_staterr().
 
+And including igc_clean_rx_irq_zc() in the fix.
 
-Daniel.
+My slight preference would be for explicitly tracking the first buffer.
+But perhaps that degrades performance.
