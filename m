@@ -1,87 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792536707;
-	b=iYuOR+NcDses/4SyINMJK7iTvCGVXYA4dodoay2DndLlJpPN2U+m7FuS/pMPaYPncklm
-	 dKzFnDEtqqcuEJATWhlM5AHB9EKjzPwzO0PbOGnOiPoIVZ2getMfKTAIyzn58baguAxkQ
-	 H9L7RrDcpk0nu/onjQJJGXzXEScrZcswT1oprVxuBI3k3aZHTdwdQIMTPmYIWcB6abpEM
-	 CEKeL1tNJzhkIMuBxXvVI6n7nKbAUJgu9JYCmZTkBn4rC169N0eqt3q6uE97Cb2kFdoeH
-	 pcj4KHAbS2+o/lGvKNROsbGO++0He7DPC2ZvESm1r419hGYJRPB2yIevU0rezwFXAxQ==
+	t=1792536878;
+	b=tsXo3vCy+iPFG9L4NgSK6627m0sKnRTlzlojn14jNZMCkiJ+AbMGlI5cZneju7ezUaQx
+	 ajTKtqr01vnHQfLUnh2rHSrLkM0/9gv/UiTFXGU1Znj/NwVJrqp4SEcI7sQz4qPnzZpQd
+	 4+FsGsAVtz93pwfBBIWtuzxkAoK0RDeLOdUg65QdTnHsKde/NEmYGl/T+oLOHYfPDkCCH
+	 2rFTfHjsKw3XCatiKV8ePZArH0tt6P60sAt1JJ0ULXbNRjovrNdz+B144BllsAiT62ien
+	 X52O5slp14iVYFkGi+peIaO4vy22DczKe+SwDPVU6VxfdHL8Qb+2NtQjznx4ct2nxlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792536707;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Zxqq5nhDQ6z/IfYQAoXRtEyDpcvq49vwSR86SZQ63GQ=;
-	b=X6ysYchC6jpkbtbtIuPYmHfP7qgYbAMp5rkiBhRX87Gd/PVPteEo4IiCbtQ/YOovMZ1K
-	 lQAJ46/ykmdnFS3zkTAhLbKeiN47Lh6pSPvH1th11D+f68HPxpIxWY3qte6DNLnD6G6iY
-	 0K6yVgxQ8mQPC8rhYi8SdLpYbD5thtENO+J/fCgTkNERyqX6WB7ZKRE+AOzJm7IWDc7Uh
-	 qHbpB+7CTwvcamcXkDIJkCYvXELi1Xf53915buafywVfUU9lX526GD94tavxzC1YgdQkK
-	 2vsEOcTbDj8y/5mXgLphw3f1VCUn+R8VaDUpqYG/W4vYWcsh5sHvCokFcHR3PfOH0Ig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792536878;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
+	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=nTY4UiwHZnguYZHnP/ahTYNmkFfFglzVMEyieXYZ2S8=;
+	b=A/r/0RSskxqNOeT2RqS+8mtUFK45s9+tT0yXRcdN4IgsL6gRah3giUgKF68wFjiJiBlv
+	 F1SYWJ33rQZMZKUL53px43+HR+svDxFR15/JG6499J0mp1NBvWgHMKDehObgWRMTR/JMK
+	 /laEhD+idqJq6L7uvY08y5tjqH7znBVMlWGFbuS5EHALaANrgM+NNDJ26xOrHDLINMl9N
+	 LNdfHUi8gqbutlpDk09U9PNMod4lH+c77NtpUm9VMvoEbNEYJzash4JDMFeLYiPPqsss8
+	 mbgydNrc+ViGSMtOuB/SSBDjMVKmXUBFOOL+dmIIJNIXjCOo+2zmpMSVJrCrqYVaY3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="Aq4Yq/6e";
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=YzT96xX8;
+	arc=none smtp.remote-ip=209.85.216.100
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B37606A31A
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 22:51:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00B37606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B3606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 22:54:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD9B3606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Aq4Yq/6e
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso309714eec.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:51:46 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=YzT96xX8
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ad41b47541so127389a91.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:54:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792536877; x=1793141677;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=nTY4UiwHZnguYZHnP/ahTYNmkFfFglzVMEyieXYZ2S8=;
+        b=Bh3pHaXZ1/+06spo3UOv7QgeWIxRGZHSHS+aivDPdK31u3k8/+YkmdNgsV78+eDXj6
+         1H2YUOm1ldUY9+L0Y+TrnGsh+e5P6hLYUKJyUHHb2BY6Zk8FfX7+xYOKl3LMKI68lG+M
+         Nq09NeyteZJfM6g/kTQtPCl9w0kTphENG5e429WY+GHjxMgVzpu3sqSnqdCewKcm9eE1
+         p5M/P4Pmn9JUCnXa8yuWYj91GoSgAR9lC6Sg9pkNA0Xn9Q4thPSIynw4QmADAPg+/IE7
+         1Z/ZBLsknle7hohgLm6HAOWPkccFrz2J5wR0DAYjpl89SVdnkTLJeeMvyRJYX65BZgqa
+         IUow==
+X-Gm-Message-State: AFq9FYKf0RiD0GZjvVRF9CRMDNhjT3N8DMKmC14DSsGIVTXgLs+/XtJ9
+	esgn0geqeVghKwxkNdMtoz8zrNkCJaRsKsg0MXYGjbbMHVMuU+/kv0KruzOytaiQd4CwYnnvBgY
+	0SRGDnFtQ/h3LPYb08OkgJYm8f14WrgUS/OSWs67NVUsW06X1VQdCCHk2ZoRehJuCj65Gsl9Z48
+	5Yv9Y3eMsjDPxf7eDkILQtQlOkE4S22SjPletUXGNYqhncgxvTH4Gwn2K4MrZevDaJf0r556NaJ
+	5aEXZGzNg0=
+X-Gm-Gg: AYBFou19WmRuoeUzrn4om3eqmtM4seyLo0wSDWW2Kc2KCRA8OBsT/qLYF7ixI6RJ0Vb
+	yLpeKA3ZwMnSOqe4qFxgQcMyv/fd7qY3cO7c82J7lBehlmY+CBU5kSQ/rAkBIM3DUSJzcAIJa3+
+	lXDMvwAqwFqluSOy1diEWJNkFq4MYxSJTx6w9HBNLHM6McoNPfDAlIOgSUA0OVSYE9o8q7EQA1Q
+	0ZcJbSak3XoGzK1wndygZFPPpm6XgD4Vli3IF/wwuNxTUONLaqZ+fswBy4jQiFqW2gjMP17ZSU2
+	daVkwChC1B1qNMzaP5Tcdoz4EIKPuZKRSLLna0NQzuqIaTiiVgx6yk8Pvrt0VgJ4yKuNOTEMNE+
+	UdKKYOk4lWGJwQdykBJXUJxpaYhVpu8+OffXuw7SKx/YC42rTZuKzNtT3l057rNtFJ8XTJhJ+CA
+	mLOaiSy4l0C4e0TjVy6VBRBsYGVl76WhKoFnhUuw==
+X-Received: by 2002:a17:90b:4c49:b0:3ab:a188:b8b7 with SMTP id 98e67ed59e1d1-3ad86f1bbf2mr272360a91.22.1792536876998;
+        Tue, 20 Oct 2026 15:54:36 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ad81f69d2fsm617265a91.3.2026.10.20.15.54.36
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Oct 2026 15:54:36 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-341eff9e381so153644eec.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792536706; x=1793141506; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1792536875; x=1793141675; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Zxqq5nhDQ6z/IfYQAoXRtEyDpcvq49vwSR86SZQ63GQ=;
-        b=Aq4Yq/6eveKKKNK6o7vPlA92sbI+h48KXZ987WZRG2P+KBJtxESmsvnxnnEB1ZCfsJ
-         sgmhx/nhOsT1fmAlhoEyP1ywlGwMnSVK7NtYFFXveZpea8leaI/Xq/Lnl4EKPJQeDisX
-         p1vrCUdajF3N3skVP7tlBKhnOvyFWIFdYbVoRtPKIHBr+Ias5qeC3on8jGQ8VulRA0zh
-         4a+n7DR80eOjnykvytLiVPRSfgHpGx2J1D5RN1P/8X3cDILl7v+YT5HdRcQa9f0M4k6n
-         fa5v7CNwJjXauouWirdYaK+BVa5tvyDkX068H+XtS4TlezWjkE8+oN4ZRDJNJf6ZFOsN
-         hQ6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792536706; x=1793141506;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Zxqq5nhDQ6z/IfYQAoXRtEyDpcvq49vwSR86SZQ63GQ=;
-        b=Qi+3qF3ifcq2YRpqCqXX/hcnBbjIP+XQ5Al50S3wSPpK8pdkPii8+r86ysQi4jnhsp
-         eI0AhrIYfwXsA4Bj1YUlBHokAMu2pMmrReFagijb8acPDhXehPl4ydDnnWB2V7wP1+Dd
-         f6I4JUGxHqL88jZpWwUCMQciqCuVL6esceWdIkwFaOWhYjog0No5tBD1oxyLwm3R8yE7
-         bLhugP5ZgiDiapyPZkBjebVUGex0s7javv5Vi0vTQz50EOFDeNIiym6f0kYZPRFqmKHF
-         fYoN+Duh+tcwEi9oiH/YV2KCrOPORUFvQFH2qiN7fnglhBPqGxZ6rsRkY83fD6DIPaoF
-         wMcw==
-X-Gm-Message-State: AFq9FYJAFJAdH5UzVzNIUGCKGj4NNc304Ux5bn6zDr+Lv8HqW15guOX6
-	O/EwL2ltuugaERVtLN1rFEHBvv/7y8rvVRFNgXeudDt12fKrqhdmTlt5qpYi0A==
-X-Gm-Gg: AYBFou2gT+zjjHerrX9RNXRZFvxDcGirhZwos5aZHADlH+P801S5n77AvepV//5VW78
-	6Vfl7wfjEr1d4PP68KHorF9L3ARHXAk2ytNIuwy41f03uTWZitKo07yrpzxA0Xy/lP+x1DmmBPQ
-	UmTgITDC9apRqFt3w28X4Aw1Jrc7UB8Pf7ZhaFUYtltec999Rs9/gEMEVqEt5PR4qqBKqj7ZpuG
-	SKRv0tWSZ3Vz1/zWDwe7Wl/4uCE6UTND+klWsq1dWMb1Bxp2Uu7dK1RUy1c1hSy9qnucyf8Yiym
-	6MoqkgynEwL/iM1DL/CCLQmAIPff2oDE9uKrpClxAyqMWdJwunUrw7qW6Xm2Cbz46ZtFrHYFOr7
-	snHqpGneTNQipysqNqU2cFssrNqyxfeTAm4omfTc4yzCbf2N1b2Fn80Nkd9aQBfbMKN7kT4aSau
-	5FBXfkNctakquOFFUSWM8PYXfkxs6j1ceDdiDyjbUgERka6nazGNB7mcLBDgTeZCRs0M4JkigGW
-	zA73U1ME7kkWHfT7u7kn5fS2AUYPSfio/k3Tw==
-X-Received: by 2002:a05:7022:83:b0:15a:9834:73c9 with SMTP id a92af1059eb24-190a941d9famr254809c88.40.1792536705945;
-        Tue, 20 Oct 2026 15:51:45 -0700 (PDT)
-Received: from LAPTOP-KD1TH5BD.tail375eb4.ts.net ([152.59.50.165])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903bf5d61csm1515803c88.15.2026.10.20.15.51.43
+        bh=nTY4UiwHZnguYZHnP/ahTYNmkFfFglzVMEyieXYZ2S8=;
+        b=YzT96xX8TG4hzXTrL0v08jZ62xwhimj7jIlxZ14sOkUN2OsaToGIZdDYLbg28LWf5j
+         lywh+1P5baM4fcU4+uQi0RYj5xYhv4tyxEySl4wp/Ps0ShhcIMUukwIjwqnsWCBHUJ42
+         TCC2VKUsJ7eaY/mqAAEgk+k5C7sLmSZjjrPGs=
+X-Received: by 2002:a05:7300:828a:b0:367:185e:867a with SMTP id 5a478bee46e88-3674f21c1f2mr822737eec.38.1792536875037;
+        Tue, 20 Oct 2026 15:54:35 -0700 (PDT)
+X-Received: by 2002:a05:7300:828a:b0:367:185e:867a with SMTP id 5a478bee46e88-3674f21c1f2mr822695eec.38.1792536874251;
+        Tue, 20 Oct 2026 15:54:34 -0700 (PDT)
+Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-367405ee5eesm1496843eec.8.2026.10.20.15.54.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 15:51:45 -0700 (PDT)
-From: Gopal Malaviya <gopalmalaviya53@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: [PATCH iproute2] lib/fs: fix cgroup2 path for cgroups outside the cgroup namespace
-Date: Tue, 20 Oct 2026 22:51:13 +0000
-Message-ID: <20261020225114.18233-1-gopalmalaviya53@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Tue, 20 Oct 2026 15:54:33 -0700 (PDT)
+From: Michael Chan <michael.chan@broadcom.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com
+Subject: [PATCH net] MAINTAINERS: Update Michael Chan's email for tg3
+Date: Tue, 20 Oct 2026 15:53:58 -0700
+Message-ID: <20261020225358.1130051-1-michael.chan@broadcom.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,79 +110,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-get_cgroup2_path() opens a cgroup by its ID, reads the path of the
-resulting fd from /proc/self/fd and returns it with the cgroup2 mount
-point stripped. It assumes that the path always starts with the mount
-point.
+My old email address doesn't work anymore.  Update it to the current
+working one.
 
-That is not true for a cgroup outside the caller's cgroup namespace:
-the link then reads as just "/". Skipping strlen(mnt) characters of
-it reads past the end of the string into stale stack data, which ss
-then prints as the cgroup path.
-
-This happens when ss runs with CAP_DAC_READ_SEARCH (needed for
-open_by_handle_at()) inside a cgroup namespace and shows sockets of
-processes outside of it, for example in a container started with
---cgroupns private and --cap-add DAC_READ_SEARCH or --privileged.
-Without that capability open_by_handle_at() fails, and the socket is
-already shown as unreachable.
-
-Reproducer, as root, with a listener in the original cgroup:
-
-  # python3 -m http.server 8080 --bind 127.0.0.1 &
-  # mkdir /sys/fs/cgroup/test
-  # echo $$ > /sys/fs/cgroup/test/cgroup.procs
-  # unshare --cgroup --mount --propagation private sh
-  # umount /sys/fs/cgroup; mount -t cgroup2 none /sys/fs/cgroup
-  # cat /proc/self/cgroup
-  0::/
-  # ss -tlne sport = :8080 | grep -o "cgroup:[^ ]*"
-  cgroup:-microsoft-standard-WSL2
-
-The garbage depends on what is left on the stack; here it is part of
-the kernel release string, and in an Alpine container it was
-"s/cgroup".
-
-Only strip the mount point when the path starts with it. Otherwise
-return NULL, so that cg_id_to_path() shows the cgroup as unreachable,
-the same as when open_by_handle_at() fails:
-
-  # ss -tlne sport = :8080 | grep -o "cgroup:[^ ]*"
-  cgroup:unreachable:550d
-
-Fixes: d5e6ee0dac64 ("ss: introduce cgroup2 cache and helper functions")
-Signed-off-by: Gopal Malaviya <gopalmalaviya53@gmail.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 ---
- lib/fs.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ .mailmap    | 1 +
+ MAINTAINERS | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/fs.c b/lib/fs.c
-index 6fe1d6db..1562d25c 100644
---- a/lib/fs.c
-+++ b/lib/fs.c
-@@ -238,10 +238,18 @@ char *get_cgroup2_path(__u64 id, bool full)
- 	}
- 	link_buf[link_len] = '\0';
+diff --git a/.mailmap b/.mailmap
+index 0a0be49bc4de..16c3e6599082 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -638,6 +638,7 @@ Mayuresh Janorkar <mayur@ti.com>
+ Md Sadre Alam <quic_mdalam@quicinc.com> <mdalam@codeaurora.org>
+ Miaoqing Pan <quic_miaoqing@quicinc.com> <miaoqing@codeaurora.org>
+ Michael Buesch <m@bues.ch>
++Michael Chan <michael.chan@broadcom.com> <mchan@broadcom.com>
+ Michael Grzeschik <mgr@kernel.org> <m.grzeschik@pengutronix.de>
+ Michael Grzeschik <mgr@kernel.org> <mgr@pengutronix.de>
+ Michael Riesch <michael.riesch@collabora.com> <michael.riesch@wolfvision.net>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 00b440be0d46..4941eeec4a0a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5623,7 +5623,7 @@ F:	drivers/net/ethernet/broadcom/unimac.h
  
--	if (full)
-+	if (full) {
- 		path = strdup(link_buf);
--	else
--		path = strdup(link_buf + strlen(mnt));
-+	} else {
-+		size_t mnt_len = strlen(mnt);
-+
-+		/* A cgroup outside our cgroup namespace is not under the
-+		 * mount and the link reads as just "/".
-+		 */
-+		if (strncmp(link_buf, mnt, mnt_len) != 0)
-+			goto out;
-+		path = strdup(link_buf + mnt_len);
-+	}
- 	if (!path)
- 		fprintf(stderr,
- 			"Failed to allocate memory for cgroup2 path\n");
+ BROADCOM TG3 GIGABIT ETHERNET DRIVER
+ M:	Pavan Chebbi <pavan.chebbi@broadcom.com>
+-M:	Michael Chan <mchan@broadcom.com>
++M:	Michael Chan <michael.chan@broadcom.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/net/ethernet/broadcom/tg3.*
 -- 
-2.43.0
+2.51.0
 
