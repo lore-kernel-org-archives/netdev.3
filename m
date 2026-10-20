@@ -1,47 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792528059;
-	b=yTJIU0X8ZhF5LHC5z1l4faktA31FXj1dKzQBbcbujtIL1tySIiePijxLENa/7cTuosTN
-	 Ru1ZBFYcMLUe609NyQB9WhJ7gFqM4WBfuY8A5EDav1qXARd1Ey/8PJ7akDKCJsaiN1WGe
-	 uzesNdRyrZhI/jMa1c3ftayo+XRyX+Cdst6oOREIM4EtiXS6+nzKNhcm+kBv7QjQ3r1yi
-	 U0v/f+kXI603Ls7v8YiNHlgTncdAt/zK1MJ2xcJ3IhPvEoReexfTZYHDNpQTu8/nQTSPZ
-	 /9Zh/aRj1qJBWRV+bylpdMhSpcCE3IH8cPfIfLkZbTFrF5fGYdCZdZ32cbTfRoPWSrQ==
+	t=1792528145;
+	b=X93hQmI8DwW5ys9xjy6Y+4IGOSKSveIXd+oZccY20PBvOSXUkfHiCzNU+KYP51pPnmLs
+	 dfkz9i3TDe0RPt6AxpCs1d5bQWt6urj9irccVCdNifibxvJCcn2llEFoliGoViYuHbnmn
+	 QBPwqDuo0sZ8XD4lLpPzMEU72ZxV3CFcgOpfEFbm8W1tl9YP4desFISfWxI/b0AypFGhI
+	 oDmynJi7Ig6pUEmuWeJ9eYy+AYPHkFPBuKoa7krHUezDsJPDsh+BWpFu6r3yYVh/ji7Xw
+	 ESS6f/xcwrERbQjoC5461LYyzko9Dgu/KI8ZS2uBfcMR44V2cZ4VRCZG5HioeKD5ZsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792528059;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Mm8j0XhfffO5W2SZHZPf3exKju/4xVfUOaT00ZyRTb0=;
-	b=WrG3S7NGm+OymThj1aNWijPvnlBXWluGk/xhLwZPGjgH+R9HyEQ5FJqUvDIrpB9K3YmF
-	 uRdQGkX4Qpeh7+N7dhT89h9ER18sX+CRNJAdWnX2BRyTq2B2olV/OBdnGg2o1FCRmGHhx
-	 6AE8d5A7BiwpnZAxfDv7uZEoMQ3NFYaY2clufdEE+jL+FWhPfwrkfZl9XTSWfdFwLBy1O
-	 8RozQRZQGRRvBbSTaxkXDUUClzRIA7mFkpoBkhHGW1hLqusCxtEv7yg8DHtMQwuiA7lHy
-	 oEeJNv9GdTQGLcWNeoHA94rNKoYiW3daFU3gSq1bwEw4hr8QEbRc8PGsN+f/OJcUhYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792528145;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=ER3VL/YKcVAvi6I4leAEmmCSa5fzlRBhaTWdm3Y34p8Q+Y8OGA7gKl7ey9uzlBnvfuw6
+	 6IMmcyI6C5knwnzadONtAKkHvKgNtQvNSs7llgAhrrvfGjB6ZP5edCP5g9fZ0Z0kCRrzJ
+	 FskFUyhS3M4OZs3K2pyJQyQ+aHxfhuXwVaG3NTqGegibA4AKytNwgXW5exsAOThtFhyCn
+	 UnfiQpiEkU87yzcHmqtBiCnDPvynxQYfxW5bPzhW2c8ed2l2E0CiCOmdmEdNVnlDvKRkC
+	 f9+QiQtItafCem2iFMLdy1/ZvXc8LAOkrQ7F5bJQ0puvvFrOhENNNZ3m+DRF06HXfYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZgsPtdZg;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DVn5k188;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CABC606A31A;
-	Tue, 20 Oct 2026 20:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DE1606A319;
+	Tue, 20 Oct 2026 20:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZgsPtdZg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2E51F000CB;
-	Tue, 20 Oct 2026 20:27:38 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DVn5k188
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19DD1F000C9;
+	Tue, 20 Oct 2026 20:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792528059;
-	bh=Mm8j0XhfffO5W2SZHZPf3exKju/4xVfUOaT00ZyRTb0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZgsPtdZgYmMEJPt8BwA+JYdWGCcf4f5KZpfgQwnRcwQi7yjJ2US2+RMA/Q8Y5vOGr
-	 IPJ6czIW9urBUN+QK/W/Xl1lE0mOvOxysa2pkmwzIe6TMpt/AJ8LOQpFYyyF6SEGqx
-	 u7+QZ4xwlD5pciVvBExeDnv/xzu/yX3Sb6CixcZbUEq8nZDj/6a2CUxBvvREckxp/Y
-	 Qb3ntthD5T1kS8kz+K1ck6xe3m41nDQJEdv4paPJ3ZENOLXauXXdcjb8VdaYdVODHt
-	 J6WxetKi72+ZHhepA929E2Tdwe3JF2woEA8wGupi0brE2w5boPJW2OC9zdd0Ss9dQu
-	 Y/XM+IP8yPsRg==
-Message-ID: <6b84d4b4-e040-40ed-8d60-c065fd02ad4d@kernel.org>
-Date: Tue, 20 Oct 2026 14:27:37 -0600
+	s=k20260515; t=1792528144;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DVn5k188EQ6OALYXS3EEOWOS7LLlYJX5eJAothAcwLyQ0ugIGMLAKM32ayOgB5v7z
+	 SPHWgfDt+FmsttDnX90hmAr57mp67FYK2A1lmINGDTGHJXuVFDi/ZmszxqySjN2BzQ
+	 ld7pCSuOgAvWSiY1KtKRvcMuaZIHptxH5QAU3p2NoKKcjUqP6iULXpn8jsph6Nq+SQ
+	 cfXVIMahvDw2V++H0r2RkE2yz4obJzjGb0kGK6XZAeox0flMnsSpL/aCTnyZCL/KfB
+	 0sUDUV1/ul0EmJyXqhoDMlUN/NO1cBSDOxbs5X/JXTAj/C4PnLMNFh4i6IxOsVINTv
+	 omJ3bFmGnQYIA==
+From: netdev-bot+sinfo@kernel.org
+To: Stefano Munari <stefanomunari.sm@gmail.com>
+Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+ UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Nicolai Buchwitz <nb@tipi-net.de>,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH net v2] net: usb: lan78xx: fix error handling in lan78xx_open()
+Date: Tue, 20 Oct 2026 20:29:03 +0000
+Message-ID: <179252814326.3290.13906032175458755329@kernel.org>
+In-Reply-To: <20261020202614.30277-1-stefanomunari.sm@gmail.com>
+References: <20261020202614.30277-1-stefanomunari.sm@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,76 +68,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] seg6: fix transport header for inner IPv4 with IP
- options
-Content-Language: en-US
-To: Andrea Mayer <andrea.mayer@uniroma2.it>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- David Lebrun <david.lebrun@uclouvain.be>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Hazley Samsudin <hazleycryilis@gmail.com>,
- Stefano Salsano <stefano.salsano@uniroma2.it>
-References: <20261020023336.34-1-andrea.mayer@uniroma2.it>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20261020023336.34-1-andrea.mayer@uniroma2.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/19/26 8:33 PM, Andrea Mayer wrote:
-> The End.DT4, End.DT46 (its IPv4 path only) and End.DX4 behaviors set the
-> transport header of the decapsulated IPv4 packet at a fixed 20 bytes, the
-> size of an IPv4 header without options. They do not validate the header
-> length either. With options, the transport header points at the first
-> option byte. The effects include:
-> - ping -R sends an echo request with a 60-byte IPv4 header to a local
->   address through an End.DT4 or an End.DX4 SID. Since icmp_rcv()
->   computes the ICMP checksum from the first option byte, the request
->   fails the check and is counted in IcmpInCsumErrors.
-> - A UDP datagram can reach a port that an iptables rule drops. The rule
->   checks the UDP header after the full IPv4 header, while the socket
->   lookup reads it at the fixed 20-byte offset.
-> - With an inbound AH state, ah_input() reads the AH header at the fixed
->   20-byte offset, but copies the IPv4 header over it with the length in
->   the IHL field. A packet shorter than that length can make ah_input()
->   write past the end of the data, into skb_shared_info when the skb has
->   no tailroom.
-> 
-> Validate the inner IPv4 header length with the new helper
-> seg6_validate_iphdr_len() and set the transport header at that length. A
-> packet that is not IPv4, whose header length field is below 5, or whose
-> header is truncated, is dropped with a drop reason. The fix is limited to
-> the header length, which the transport header relies on. Other checks done
-> on IPv4 input, such as the header checksum, the total length and the IP
-> options, are not addressed here.
-> 
-> Found by code inspection while reviewing commit 44930446dde4 ("ipv6: seg6:
-> clear IPv4 control block on IPIP decapsulation"), as a pre-existing issue
-> that Sashiko also reported on v2 of that patch. Without this patch, a
-> bpftrace probe on ah_input() shows the reporter's reproducer packet
-> written into skb_shared_info. With it, that packet is dropped before
-> ah_input(), ping -R no longer fails the ICMP checksum, the UDP datagram
-> reaches its real port, and the SRv6 selftests still pass. These effects
-> reproduce on an unmodified kernel, without error injection.
-> 
-> Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
-> Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-> Reported-by: Hazley Samsudin <hazleycryilis@gmail.com>
-> Closes: https://lore.kernel.org/netdev/20260809221915.2ffc1ecd0f445fcb70270e31@uniroma2.it/
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  net/ipv6/seg6_local.c | 56 ++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 48 insertions(+), 8 deletions(-)
-> 
+Hi!
 
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-LGTM.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
