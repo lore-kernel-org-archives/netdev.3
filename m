@@ -1,79 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792515457;
-	b=IZPNf71YL6qOw7ivGuu9xaulK7H4aMiAtFvYCpqPo1YDCDHP0PmwK7o6AOCpitRxpaXV
-	 JDkA4Qqheb+Pa/GqbCH2JG70McVe6Hpz4Gj8VsQbH3xWQd2csmU7rAHgs6PBx+Gy1aXBv
-	 oOImbsddlSIjmbY9C9puP+cBJT27Ezw/TeUg88+I+Qpi8oQq9/Ok7DTYbKmEuCYcIKZlr
-	 BeVgGl58VHtN/5MOdZcotTOH2O0yS0MT4sZa+dakS8vRMyL9t9FqcGFs6PvxYSw7cA+aw
-	 AAbEIS0oguNLPSrMvnxFXreUzCQ6gfBogtvRhXXzx58pmWIDU122AMY78UQJ66M4SHA==
+	t=1792515458;
+	b=EYwwsELVXgU6EGu3nCHPI506TnMGQQTmnEta6oX/+n9ZGAttkIvsOQnp3gO+Z77FQz3s
+	 9xkOIdd1iTfTCCYLIm8N2+Y5Ia9AfL3Xn4zQUKdz99/9FHTZevkFrIIzBtixp6487EEaz
+	 ZG2oHr4wH+WsVMMa85EScmexgHKjSUrQsoIvP+l23QEfHvGin5K50IHfRqo20mIClVXU4
+	 pdjhyRShJdi/YO7KdZcXZPm4NGrZv3N8nEFsoYY861vjuooyA1f3eU9DjtRs5cCgIGwTb
+	 D6PLYxa1m3CYqKgfMxWW/M+4VaOrQuBENdYt9bXWXXhDAr6YbFsp0S5wU3p2SIUKNEQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792515457;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792515458;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=JHEt6N5Ticf96mw5x9ZzEm52SQKQT8zrU+XA8kvKCYM=;
-	b=th8WvV+ewgTocNq/3pL5/d2o1+jWg6uXFSTG4tJT6sSyp0vrlfWah1xBOv61rtdsYGro
-	 qkaLuvy+zPOoSPxh7x/pYuPT2dun6H/OI5O9AMwhW3xQDmr68v6nRISDXd2KXzBHviRhr
-	 NadtqGrGxFwIktGFVtXYz8YAJ4UhmZj0korZJX9PwXrPr1QxlFGYwxa8lW9iKTTMyfotk
-	 yglry7kwIJANYWiSwNfjQ5JBb/MFOd8+Zc1ZeYgosQUvkf5NgXwpPmY2SIWYnXlBT9yKm
-	 Xv7KzeYfCjQB99dJ43hA5utLs/43LiIpczbBJ/Y2uYb+sMeLc4xVGxVgfR6VvgcSoiA==
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=oiEarQC/3fEvRro+vt5Fbtv4PiJvM7a5NbeSJuclpMQ=;
+	b=eUiJWYyuVVRa5CTvcyG9sDBPXzv9Ll2yPb5VFk+vUNsryYeDv9VNUOVTs1uzm1jPy5v2
+	 oev/IZY0y1k+VtXjAww0e9Fb7AEEMNitZl/3xBqX7Y6xA6zBlZ6ZSIWXMuDfJAxeFYEIP
+	 LjkyK7HILkZKOEOfhQfnU1Mlpe7Cwxjk4H62wCh714uGP/F8wBX0R9xcvrA5qrWEPGaGB
+	 KjUyBR1VIw/Cy/0PrgPGglht9Vdr9UNiwnMDs3fqcywMAIxBvI/QGoK4BZ7OzvvnZLgdG
+	 eFzUfh4NcTFaODRDroUi/tKLLQ2u3POYbPzNrSM3nEpb3cEjZMw+uYqmcU4jpdxZssg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=LL1tZR23;
-	arc=none smtp.remote-ip=209.85.219.42
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b="mCxvhGr/";
+	arc=none smtp.remote-ip=209.85.219.45
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A38E606A320
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:57:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A38E606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39046606A329
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:57:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39046606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=LL1tZR23
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-917866225aaso32579106d6.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:57:36 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=mCxvhGr/
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-9196d8543cbso31804046d6.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:57:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792515455; x=1793120255; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JHEt6N5Ticf96mw5x9ZzEm52SQKQT8zrU+XA8kvKCYM=;
-        b=LL1tZR23b8WQlsx7F+v+5P4/QsK7so1JJg5oRbEte9SovoIxbcR3JIqNzYebDgRjXE
-         FSTmMaCOmVUDgR5nNE9FOfcUHPmLiOxnAICjswnYPkli2ue1nKd2PHDxut4LdXGiexNK
-         S9lNdxmhZypZPZNCW+t8CY6ba9QxrpTaqKNvo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792515455; x=1793120255;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=mojatatu.com; s=google; t=1792515457; x=1793120257; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=JHEt6N5Ticf96mw5x9ZzEm52SQKQT8zrU+XA8kvKCYM=;
-        b=JptGYNY69qljLFTTPm7gzi6yGykCGJmhBVeLHIempZahVmCWuqmVI/1YOaAAKVjH75
-         VH9r7pEFcujkEv1bTnaQ6TJMfn8mTgB/bR2f5OUfqK3gStby/1iXB8awwg6uyOoJaClY
-         ExENoM7UlWsRv0fbBILg6ByFTcNJcW0wcwMV0+QF90UNrv38a4yV4Cc0XIM2q3RpUNxx
-         v+5GIQ94fIn/jkWGy3g4pIfOBafeJUcHuLMhd9JkX95zK0jwVEEVhEc8GQSmlUrqk9F/
-         CmALFXgDJJpc3gV42sgldqhrRgKMO8Vho/0wTkSfz3PLRQlOv7ZBdUMGKgaqW+zIjriw
-         LVsg==
-X-Gm-Message-State: AFq9FYIEZkmV8bXAHc46Bk7MEKJG1PqAvHIlI31fIWN9a9QCeUtf4Orp
-	pSapwDX7drbWeZBAIZ1TUjPPkUbeSMNDXeg5mSCcly+MIHcQW+1fT7OvEM3EtPv8OTOO6rE8K9L
-	hRIk=
-X-Gm-Gg: AYBFou3BvRgzRmfsv50g1Cm/QWKJNfl43/Vo6Jen0p6O/X2UVxLV+nm+LcbRUZrtQnJ
-	8rv6aD05w6v9jmfrSfPowRhLhLmKkBF7/BEK7cS2dkripYLZgIPuSd2sBKKCedDVduZvOR1hUdM
-	j9O3wWIPk0W7RujPCD+PaYkLAa/ugWF4CFzDdh7xiDvsVREfvoEoqZU7CXA58GrVypzMCsrYeUz
-	EG0TlMJ5iJGBJmpfg+URN/CMZAmaQBkhhHJwXSXyUiJAjErXA81WaqWGMOuDKeAR4yJQZ1/kqfb
-	l0iUnjVv2MfZD4XcYpkabPbdHbfnwAye2ltpLIlYksVzqD+oqBRiWlnq9fcvCKlHYBFiBlCL7ws
-	3U6oLHwpEqI1wHOhHdkJu3UkRjYMSeiWNqMsNyfMET++IXRbSWCT/P/KXD89pwQmyj67usl+qhW
-	V8HvLYtPHcfLJJAXqe52Oe2+bTpeEgaUf/OR6T//+fvWpV/VKbf7PCGQ5bRQaIXCVW+aZsT8sxk
-	PnlvwIlk83h8hXpvVVKLtjeqbdm3mIJUkLrLCwYHBbX
-X-Received: by 2002:a05:6214:2f89:b0:91b:8d3b:7d44 with SMTP id 6a1803df08f44-91bdf0a1fc1mr203880666d6.19.1792515455088;
-        Tue, 20 Oct 2026 09:57:35 -0700 (PDT)
+        bh=oiEarQC/3fEvRro+vt5Fbtv4PiJvM7a5NbeSJuclpMQ=;
+        b=mCxvhGr/938gvaUECdZti4bCEWBol+UANFu07SOQLavfr9+j8GNq+EHq+L0uGO6N8T
+         GzRfMcX3hJuh20eMiyKNv9tycUiPl+q1YoLE8xuvBCFMDCGNnTRPqshXnjzuS46Neu5N
+         K30mXOU+fy6KGOgvNUDihATATIFk4M0S8HfE4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792515457; x=1793120257;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oiEarQC/3fEvRro+vt5Fbtv4PiJvM7a5NbeSJuclpMQ=;
+        b=mPrZhIkNGwFkZSJ7wZO2FsBHT1APh6DxDcDqBZPvnN76ik2qm4own0IgmGCnJcipaB
+         ds3cAfWYT/MQT+JTjoE5ZlSMuqIqyEXVp7rRnZhZn2Pe/P65x8dat2DIi74f8WulaCnC
+         w4fLVuJoRQH/xIxgWxw7Z8HolGKA3dNB+Bjj8C1PFF5xV9LpnjI6zItzv/Hw9OUgTSnH
+         9IM61P8JV6PO/UiyS4/6b53XpyWowKay4wlNlX3b+3yFaM5gjkbXrzuWFJT/izsBJavs
+         lwXjNKGNnh3jmqhZ5cp2gz98LHUy5I2zcQXga44ecGTYrLkgDDvPeQD64Kcw5QsoV/XL
+         sE5Q==
+X-Gm-Message-State: AFq9FYIF2mwSLA5Of33Cm/CoZ31SX9pVBYbfRjF+QioZKOyzodA3rGlt
+	fzvlBN93rFhjucXH29lhM0vShVvhj9BtmW07XSIELy5hEwBRScC60O4oqWwL4a9kvem0wa0Zgem
+	M2EM=
+X-Gm-Gg: AYBFou2AS2xibNUMvE8+ZqyBXcMqA6H+f3iMfYtdmnktF64fHoeaIPkGOdI4mOtwnVs
+	OjnkIrTF3V59n7SJ16487Hj30NZWYKB4JMw37vq1hHGsCFXIJo1hop6CNQmqY7CghPjo/W4drYJ
+	Tlh+ZkS0flNviui9dHfNLRNcbTDSxUyLnUq571mB+WEk9CSH5O/9p5Ks+/yGwS86xaoI6YjKcrA
+	/HRkh/W9S4GuQJKQ/sO3q5Vs5NSMaAQJPH/Ac+zQvw+yihl9cuqWqKy1VpWnyNzIc1jTkEtoQcM
+	pjjmO0qLDQ066DzjUdkU96JQeRlGQdr14oExvpQCXKtLe5uArgquvGNk+Wi+nG6RbmC+OPP020v
+	CJHN9jIUO2a3PATpMXDKHk6w7ILD2DIIQspi3HyhV4UvdkwF25/gyKwvJXXWyuhmOp/lZS4Rmp7
+	Bf122zqvH6h6okMW5tdAzwGaQxT+/cyerZZfQG/yiPOjILHM5SbrMWwZUvop0sKZTJ+044gDcl8
+	BtfnyM5kpRCZmo2Epeu1hromDNLoU3rl6pofyoEXDYadWkY42ZNe+w=
+X-Received: by 2002:a05:6214:43c7:b0:915:e85d:8831 with SMTP id 6a1803df08f44-91bde91dbeamr174802326d6.0.1792515457017;
+        Tue, 20 Oct 2026 09:57:37 -0700 (PDT)
 Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10a441acsm3034586d6.6.2026.10.20.09.57.33
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10a441acsm3034586d6.6.2026.10.20.09.57.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 09:57:34 -0700 (PDT)
+        Tue, 20 Oct 2026 09:57:36 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -88,10 +89,12 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	cake@lists.bufferbloat.net,
 	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net-next v8 0/4] net/sched: cap the accounted backlog before it can wrap
-Date: Tue, 20 Oct 2026 12:57:26 -0400
-Message-Id: <QDISC-BA27.v8.r0.20261020063241@mojatatu.com>
+Subject: [PATCH net-next v8 1/4] net/sched: cake: return the classifier result to the caller
+Date: Tue, 20 Oct 2026 12:57:27 -0400
+Message-Id: <QDISC-BA27.v8.r0.20261020063241-1@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-BA27.v8.r0.20261020063241@mojatatu.com>
+References: <QDISC-BA27.v8.r0.20261020063241@mojatatu.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,127 +107,112 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series bounds the accounted backlog of the AQM qdiscs so that it
-cannot wrap mod 2^32.
+The Fix:
+cake runs an optional external classifier from its enqueue path and then
+computes the flow hash inside the helper. Have the helper return the
+filter's overrides instead, so the caller owns the flow selection.
 
-v1 widened the counters to u64 and was rejected; from v2 on the fix drops
-at enqueue instead. The v5 posting was a single patch; at the reviewer's
-request it is split into four:
+This is preparation for the accounting changes that follow. Packet
+classification and flow selection are unchanged.
 
-  1/4  cake: classifier refactor: cake_tcf_classify() returns its result
-       to the caller.
-  2/4  cake: use a dedicated split-GSO list iterator.
-  3/4  the fix: drop at enqueue once the stored backlog cannot
-       represent the packet's accounted length -- the standing
-       QDISC_MAX_BACKLOG ceiling for ordinary packets, a per-packet
-       representability check for the larger wire estimates. Covers
-       fq_codel, cake, codel, pie, fq_pie, dualpi2, RED, pfifo, plug
-       and gred.
-  4/4  cake: split cake_hash() into side-effect-free key extraction (on
-       the unsegmented skb) and set-associative resolution (after
-       admission), move the split-GSO path ahead of the resolution, and
-       tag every deferred split segment.
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-The commit logs and the in-code comments are written for readability.
+---
 
-The guard half is a net fix, but the CAKE hash split is new-code net-next
-material, so the series targets net-next with no Fixes: (the aggregate
-wrap predates every touched qdisc).
+v7 -> v8: cake-only.  fq_codel_classify() is line-for-line the same as
+fq_pie_classify() and fq_pie is not changed by this series, so fq_codel
+keeps its original classify shape; the fq_codel backlog guard is placed
+inline in sch_fq_codel.c in 0003 instead.  (Toke Høiland-Jørgensen, v7
+review)
+---
+ net/sched/sch_cake.c | 35 ++++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-Changes in v8:
-  - 1/4 is cake-only. fq_codel_classify() is line-for-line the same as
-    fq_pie_classify(), and fq_pie is not changed by this series, so the
-    two stay in lockstep: fq_codel keeps its original classify shape and
-    the fq_codel backlog guard is placed inline in its enqueue path
-    (3/4) instead. (Toke Høiland-Jørgensen)
-  - 3/4: the fq_codel guard sits between idx-- and
-    codel_set_enqueue_time(), so a dropped packet cannot touch flow
-    state. The commit message is reworded as suggested. (Toke
-    Høiland-Jørgensen)
-  - 4/4: the original skb is consumed unconditionally right after a
-    successful split -- that is the caller's reference, since a fraglist
-    GSO takes the list's own reference on the same skb in
-    skb_segment_list() -- so the reject branch tags every deferred
-    segment and drops the whole list with qdisc_drop_all(), and the
-    admitted path no longer consumes the skb after the walk. (Toke
-    Høiland-Jørgensen)
-
-Changes in v7:
-  - 1/4: complete the fq_codel_classify() comment (Sashiko nipa v6
-    main-2-1, Low). The comment listed only the terminal-action and
-    no-class-ID cases; the function also returns true when no filter
-    matched or when the selected class minor is above q->flows_cnt,
-    and those packets are BYPASS drops, not a fallback to hashing as
-    in cake. Comment-only, no code change; folded into this resend
-    since the series is revised anyway.
-  - 3/4: do not clamp the shared qdisc_pkt_len() (Sashiko nipa v6
-    main-2-6, Medium). The clamp silently undercharged BPF
-    __sk_buff.wire_len, act_police and the HTB/TBF shapers for a valid
-    large GSO estimate. The initializer now stays truthful for every
-    input and the overflow protection is enqueue admission: each
-    affected qdisc drops a packet once the stored backlog cannot
-    represent its accounted length -- the standing QDISC_MAX_BACKLOG
-    ceiling covers ordinary packets, and a per-packet representability
-    check covers the larger wire estimates, which a supported
-    small-MSS BIG TCP aggregate can legitimately carry above 1 MiB
-    while its raw length stays within GSO_MAX_SIZE. The consumers read
-    the real length, and sch_handle_ingress() keeps complete pkt_segs
-    metadata.
-  - 4/4: tag every deferred split-GSO segment with QDISC_DROP_OVERLIMIT
-    (Sashiko nipa v6 gpt-6-astra-2-5, Medium). __skb_gso_segment() stores
-    SKB_GSO_CB at cb offset 32, aliasing tc_skb_cb.drop_reason, and the cb
-    is copied into every segment, so tagging only the head left the rest
-    with GSO scratch as their drop reason.
-  - 4/4: snapshot q->config->flow_mode once with READ_ONCE() and pass it
-    to both hash helpers (Sashiko nipa v6 gpt-6-astra-5-9, Low). The split
-    introduced two loads with the segmentation work between them.
-  - Not folded: the 3/4 intermediate-commit split-GSO limitation (4/4
-    closes it; the pre-series path was already unbounded) and the
-    Fixes:/stable suggestions (intentional net-next target). The gemini
-    v6 TC_ACT_CONSUMED High is the v5 finding already rebutted as
-    unreachable from a qdisc classify switch.
-
-v6  rewrite as a four-patch series per Toke Høiland-Jørgensen's review of
-    v5 (split the classifier refactor, the split-GSO iterator, the
-    overflow guard and the cake hash split; drop the machine-written
-    prose). Considered the Sashiko gemini v5 TC_ACT_CONSUMED report and
-    did not fold it (unreachable; see below). Reworded the cake block
-    comment that had an embedded "/*" (Simon Horman's W=1 warning) and
-    reworded a comment that overstated the classifier's return cases. The
-    TC_ACT_CONSUMED switch case was dropped from the final 0001 because it
-    still reached __qdisc_drop(); no in-tree producer can deliver
-    TC_ACT_CONSUMED to a qdisc classify switch (act_ct returns it only on
-    a clsact/ingress qdisc, act_mirred only for a non-cloning ingress
-    redirect, and cls_bpf/act_bpf remap an unknown verdict to UNSPEC).
-
-v5/v4/v3/v2 history: see the v6 posting. In short, v3 adopted the stored
-    backlog compare qdisc_backlog_at_max() (no double-count of the 1 MiB
-    headroom, no per-enqueue 64-bit add), moved the classifier and the
-    ceiling check ahead of the hash/shaper state, and added pfifo; v4
-    split the hash keys from the set-associative resolution and handled
-    the fraglist-GSO self-link; v2 replaced the rejected u64 widening with
-    the enqueue drop; v1 widened the counters.
-
-Jamal Hadi Salim (4):
-  net/sched: cake: return the classifier result to the caller
-  net/sched: cake: use a dedicated split-GSO list iterator
-  net/sched: cap the accounted backlog before it can wrap
-  net/sched: cake: hash before segmenting and reject an overlong split
-
- include/net/pkt_sched.h   |   1 -
- include/net/sch_generic.h |  20 +++++
- net/sched/sch_cake.c      | 177 +++++++++++++++++++++++++++-----------
- net/sched/sch_codel.c     |  16 ++--
- net/sched/sch_dualpi2.c   |   1 +
- net/sched/sch_fifo.c      |   6 ++
- net/sched/sch_fq_codel.c  |   9 ++
- net/sched/sch_fq_pie.c    |   3 +-
- net/sched/sch_gred.c      |   9 ++
- net/sched/sch_pie.c       |   3 +-
- net/sched/sch_plug.c      |   9 +-
- net/sched/sch_red.c       |  23 +++--
- 12 files changed, 209 insertions(+), 68 deletions(-)
-
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index dc93267029e7..6432d10c992e 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1712,18 +1712,24 @@ static struct cake_tin_data *cake_select_tin(struct Qdisc *sch,
+ 	return &qd->tins[tin];
+ }
+ 
+-static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
+-			 struct sk_buff *skb, int flow_mode, int *qerr)
++/* Run the qdisc's optional external classifier. Returns true when a
++ * terminal TC action consumed the packet, with the reason in *qerr;
++ * otherwise *flow and *host hold the filter's overrides (0 if none).
++ */
++static bool cake_tcf_classify(struct Qdisc *sch, struct sk_buff *skb,
++			      u16 *flow, u16 *host, int *qerr)
+ {
+ 	struct cake_sched_data *q = qdisc_priv(sch);
+ 	struct tcf_proto *filter;
+ 	struct tcf_result res;
+-	u16 flow = 0, host = 0;
+ 	int result;
+ 
++	*flow = 0;
++	*host = 0;
++
+ 	filter = rcu_dereference_bh(q->filter_list);
+ 	if (!filter)
+-		goto hash;
++		return false;
+ 
+ 	*qerr = NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+ 	result = tcf_classify_qdisc(skb, filter, &res, false);
+@@ -1737,17 +1743,15 @@ static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
+ 			*qerr = NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
+ 			fallthrough;
+ 		case TC_ACT_SHOT:
+-			return 0;
++			return true;
+ 		}
+ #endif
+ 		if (TC_H_MIN(res.classid) <= CAKE_QUEUES)
+-			flow = TC_H_MIN(res.classid);
++			*flow = TC_H_MIN(res.classid);
+ 		if (TC_H_MAJ(res.classid) <= (CAKE_QUEUES << 16))
+-			host = TC_H_MAJ(res.classid) >> 16;
++			*host = TC_H_MAJ(res.classid) >> 16;
+ 	}
+-hash:
+-	*t = cake_select_tin(sch, skb);
+-	return cake_hash(*t, skb, flow_mode, flow, host) + 1;
++	return false;
+ }
+ 
+ static void cake_reconfigure(struct Qdisc *sch);
+@@ -1758,20 +1762,25 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
+ 	struct cake_sched_data *q = qdisc_priv(sch);
+ 	int len = qdisc_pkt_len(skb), ret;
++	u16 flow_override, host_override;
+ 	struct sk_buff *ack = NULL;
+ 	ktime_t now = ktime_get();
+ 	struct cake_tin_data *b;
+ 	struct cake_flow *flow;
+ 	bool same_flow = false;
+ 
+-	/* choose flow to insert into */
+-	idx = cake_classify(sch, &b, skb, q->config->flow_mode, &ret);
+-	if (idx == 0) {
++	/* Classify first: a terminal TC action consumes the packet. */
++	if (cake_tcf_classify(sch, skb, &flow_override, &host_override, &ret)) {
+ 		if (ret & __NET_XMIT_BYPASS)
+ 			qdisc_qstats_drop(sch);
+ 		__qdisc_drop(skb, to_free);
+ 		return ret;
+ 	}
++
++	/* choose flow to insert into */
++	b = cake_select_tin(sch, skb);
++	idx = cake_hash(b, skb, q->config->flow_mode, flow_override,
++			host_override) + 1;
+ 	tin = (u32)(b - q->tins);
+ 	idx--;
+ 	flow = &b->flows[idx];
 -- 
 2.43.0
 
