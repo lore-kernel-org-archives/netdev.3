@@ -1,47 +1,97 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792528312;
-	b=jSbvawyKFKPix+UzFNIaCMzXryqGKuEQIMVOESYHThwV5DBscWOYjdCcht83BDZNjt+e
-	 +kfHnKPLkFzAU80MGYPHLAs8rUDuaVXReaSsIMVjVTmzKUooHCtJY76TJB9QueW812PX/
-	 kFy6AVs3r416QJxOQP5ezfvcQu2A6rmDmHDcOu3QG52+sRGIoJbqslPmnLgyXD6RIDhdZ
-	 g05J+KPBm7lx4HFLgtn0ATmmcrzUlOtavvttlD7aRndoMXUx/uD8w4r+oBGRrod1tNfuO
-	 wmRXFVVDGD3TDL7Ax9lvheQA85oKscxQsPnpOHeEpyam1h9UPxE3vqzrTfnv5zi061A==
+	t=1792528352;
+	b=xTneP5z2oJkcAj/l6LDVpZ9FGVV5vszlxU5YAsR5YHk0iH8IFQR4Gmrb2DaqZTfF1TAG
+	 PZJpQIWLIVBVDOvraab9tY6wVBlIMs1Lskd0z/2y+DFw/tdRiRpuwDf0iScTKuoKpAqwZ
+	 0BrEibadPIiPwSde63xtKcvJFv6PPgdAkTJfQgyJ9LoohE3CFaK7T48AxIx88CaXrnyFi
+	 eWqmu9m1/yr1Xw70rVSXwXCniVl9CEWJP0f8GrVvHpi8oQr3ZefxAJQYZg9rL0N9yhBdU
+	 p+9A2FvpiZR6imfiE0sGcieD5X9dh1qlNi9jt1c2hz+7kqf6020r+GIIKSBLHH3iHWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792528312;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=MHafQ+j9a+qjzrbYsK97o5qE4Gd/l3akDGUhkY8tLgg=;
-	b=TtRA0pTA4Ti5lMgY1klgQdo5bRvoaUNw1PgTaCCFYjWv2Jn1aBp6afJ8nTYkS6I21naQ
-	 8HaK59XrsuvJYz1V4oznOF96GeW+/5SeXSbYZw5KXJ8zj6danr9ErnDcEHReqYnuoTJM9
-	 oleXwZOVzW5gjeb1AY4CjZ26SpyqgTFsQf3QqxkqSjYlSTZVTwnfOitizeEF4jLzx1HCi
-	 IOpxtft0NCwk0bfMeiuqhSHvbOoiyRtyueJ1qrthfh8cjck8H4aBffoEe+j3r8ynUyf6Z
-	 8cw/9zGdbFUsF35KIQHiG2+mSJWOkHs8pkgPtI4zmzM3b/aAuytPkOpArRrI8uaFGlA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792528352;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=ZkWQE/uALqfLnZKuscsosAHo1zEUz4R5lm4SmlWWw6w=;
+	b=p3A3UTQH9CethCQC2tMCTBSRTEujqgcd9YKeUWfJ8DcRdpXxzzKtYQ1eyTrW1IgSi1P3
+	 Omw08N0q6dn9mekCNlaEv3XXKKkGY/tAVpQ8xWxx3rlixuYWdVX/8i/WX9k2AXKJCBla+
+	 nDann6pXQqwfLkHeBPKj69hlwbAKecstPG4JT7KC3nXFdvx2hSy04gE9sqXuOErq+3Tk6
+	 u+OgOdnx/TIQxawzcuBZkOOqA3r6HBQEBHvd+hSQu/KJLt5FsIM0PIYMSv9h4Vsr0YQew
+	 CEItByLJ+chGZSmyQPMEilNLX5bcH7Li5Ka1JJXgryPeG1XZ5yObcW28vSXOlRh4ipg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMT4jAUX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gkq5TCq8;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE90606A31A
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2150606A31B
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMT4jAUX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AD51F000C9;
-	Tue, 20 Oct 2026 20:31:51 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gkq5TCq8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECA41F000CA;
+	Tue, 20 Oct 2026 20:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792528312;
-	bh=MHafQ+j9a+qjzrbYsK97o5qE4Gd/l3akDGUhkY8tLgg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kMT4jAUXCnPjhoUPPokodJSTv/gEnxMRbTcp/rIH8jQApJTWkYYoZHsOFjm65gwMd
-	 Lm5+06GR70SZj0G2T4BHPATWJtnnJAMOEBSW5HSckLRRokIWbc6bVifOeFZjZGmf00
-	 KWIfaH/dnMGA29nqF4DSwDgqVddFTp0pBj7MlkKHG1DwWvfm8Uy+atImuC6fw9zd77
-	 9q0VOb53XSQy9l7sh+zV3L+XBG1j6bzpGNNA0AjOosWAYnBG2AsNQf6KPHVlvHn9tG
-	 6QeH+jpzajmcKe9uPDjI6p2FEEJXbyK7IfvIqjLlgSm48ChAOROtfkli5u9G0F2bMt
-	 Z74GazyMt6Rqw==
-Message-ID: <88fc86f6-d096-4e81-b346-29cddf774945@kernel.org>
-Date: Tue, 20 Oct 2026 14:31:51 -0600
+	s=k20260515; t=1792528351;
+	bh=ZkWQE/uALqfLnZKuscsosAHo1zEUz4R5lm4SmlWWw6w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Gkq5TCq80SSQskzQkfsgHUu2HSuSGc2Oma4YCr3nINfDqKXggEiwb73ITrV5JWm33
+	 pxLn2/TngXZISnhZ9YdLBKz6+QgYL13L7SNfjTuYuTSmNMp0tww2AHOyeHc6xWhXPC
+	 ghrrO1bi8QeyJ71g+Ouz2T+YA2Eag/4UHprOsAQjQrKuOXE28t81olCd3k79j3u7xn
+	 C+fi1MXADW+CzgbApqf03EWF6PSoNQgubxBilMUMIUyy6j4TcRODsun2DGoLMLYyQ/
+	 M40boy1QIk2NHM3G+b74wx4n65Lmh6xF0J7U5URhMOOpJMa9nVXQryE2fJmSVc7yMf
+	 4nTHQAVFho+ww==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0E7C8F4006B;
+	Tue, 20 Oct 2026 16:32:30 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 20 Oct 2026 16:32:30 -0400
+X-ME-Sender: <xms:3s_XamN42F183gxMSO2a_dH2dOTn1d7hJoYI6qhAoV2_jio4lXkL2w>
+    <xme:3s_Xap0LasOYBCh50uK7ALGn3NvYnW18g-8lJ9UIpt5RruCceNUhlmZjEAXxpd0Vx
+    nc7-j6Hl0D_AeI60gVcDBIPCCdwLU40_0horMMH0N1uiaG9oEaQSf0>
+X-ME-Received: <xmr:3s_Xal1InojV7R7LAGL7hua-2NBFRmRnnrcVfP5gCDdJi_kHMmyxEEVTgfiOB9s_yraPKyjLJFkRaAk7RxgKT3voYrSfqRKa>
+X-ME-Proxy-Cause: dmFkZTF2jD+MaXG7JBc6kMXRFqJOwuJfgs6TtjLrVebZcy1oGq69rP+skQs/Q55fcuR+hP
+    dfOwQXHwP0n0T/4mX/xRrgdyTMsXGJeEojmwqRazHVvRzeptbDaLb1X0Lqe+/U78n5p0YT
+    n+kNVD9LgQrvUZaqpz2azFY8EBZcZYbfTwELiJdrnj7ojVEUi3oytPg9Phv8o71pJ/FjvN
+    o2EPTS04NWPTbygPRy+m9kzkNV+KBGQrB0ol291C5DgE4mjXWciYXJCweQZNTdpe5hJQNt
+    LqdpBpdKYkQCjLh6phrlhg8DGIWr2d7vgaNwCi+hayS6Z6+UWWsnxpQA6DzobiGBGGDauI
+    1Su7SHOYPoYQKX5XVb0grr6MPWB3iMC44UYNKCdT50t/0vgDs4VWwLUPVLes9OrfM27vWl
+    EwBFf520/RLSi3SkQDCxTjsnTI6fBKd3FWMeTUcdCz2oqButbZ1rtWnYf0Y/Nyw6iKAGN0
+    TlT2l962IFu82q0dIk5olwo8QUoCy8rw76J5RIqZg6f9T5xrtSg2x0Az8fWToKxP2U2Ofp
+    r3QUR3mMVrZVadZi69zGNrhEh9KYleUXDMuNJTL+7YG34nJAOQCihYnXzmx+LIRQ/G02R7
+    QOX4D4Kdj6mXBTufPQ1IxU/fC09AUNMv37vSjHlG6b8jz1yvd+VOyduhI2ug
+X-ME-Proxy: <xmx:3s_Xan-sJ5hctZHYIj2ooDyZC_LMHhd_Velr9G36LPhzdE66xtHWJw>
+    <xmx:3s_XahZzBp70_C5oUv30CAFDWebM2OkgGZY8nTLYakCfsdTAmQl4Qw>
+    <xmx:3s_Xamyu35PIA4Eo6qYHlXisAzjeQmB08Vv-7en9b7Z9fJOYy8Mg0w>
+    <xmx:3s_Xav8E7ttZeS01BqXbvCBAtbTCVI5fJIOgR-yNKngHoD-B6PRJ3w>
+    <xmx:3s_XaizRRPpmZg0Mw0sP9ak_DgKL77ZXrdSAGg-gH9E0OBtYHECJDNxd>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Oct 2026 16:32:29 -0400 (EDT)
+Date: Tue, 20 Oct 2026 13:32:28 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Vlad Poenaru <vlad.wing@gmail.com>, netdev@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Nilay Shroff <nilay@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	Vlad Poenaru <thevlad@meta.com>
+Subject: Re: [PATCH net-next 0/2] net/sched: don't wait for RCU when
+ destroying qdisc lockdep keys
+Message-ID: <atfP3PyUjF6pKh--@tardis.local>
+References: <20261019170225.729789-1-vlad.wing@gmail.com>
+ <atZtYi_Xnz27O8Bp@tardis.local>
+ <c3de29a9-8edf-4186-bc26-82d1d68c4c78@acm.org>
+ <ateu_3PV81VuFK1i@tardis.local>
+ <9b33cc28-9e30-4bdb-aa1e-cd8dec149833@acm.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,73 +101,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] ipv6: Hold RCU when emitting route hardware flags
- notification
-Content-Language: en-US
-To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@kernel.org, horms@kernel.org, andrew+netdev@lunn.ch,
- petrm@nvidia.com
-References: <20261019140337.2886875-1-idosch@nvidia.com>
- <20261019140337.2886875-2-idosch@nvidia.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20261019140337.2886875-2-idosch@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b33cc28-9e30-4bdb-aa1e-cd8dec149833@acm.org>
 
-On 10/19/26 8:03 AM, Ido Schimmel wrote:
-> fib6_info_hw_flags_set() is called by drivers from process context
-> without RTNL or RCU. When the route uses a nexthop object,
-> rt6_nlmsg_size() and rt6_fill_node() access the nexthop's RCU protected
-> nexthop info and group pointers via rcu_dereference_rtnl(), resulting in
-> suspicious RCU usage splats [1].
+On Tue, Oct 20, 2026 at 01:21:28PM -0700, Bart Van Assche wrote:
+> On 10/20/26 11:12 AM, Boqun Feng wrote:
+> > Is there any context that I'm missing that you want to shut up this
+> > discussion and rush the change in?
 > 
-> Fix by holding RCU while sizing and filling the notification, like
-> fib_alias_hw_flags_set() already does. Switch to GFP_ATOMIC for the skb
-> allocation accordingly.
-> 
-> Reproducer:
-> 
->  # echo "10 0" > /sys/bus/netdevsim/new_device
->  # sysctl -wq net.ipv6.fib_notify_on_flag_change=1
->  # sysctl -wq net.ipv4.nexthop_compat_mode=1
->  # ip -6 nexthop add id 1 blackhole
->  # ip -6 route add 2001:db8:1::1/128 nhid 1
-> 
-> [1]
-> WARNING: suspicious RCU usage
-> 7.3.0-rc7-virtme-g191aa41548b2 #38 Not tainted
-> net/ipv4/nexthop.c:1539 suspicious rcu_dereference_check() usage!
-> [...]
-> Workqueue: events nsim_fib_event_work
-> Call Trace:
->  <TASK>
->  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
->  lockdep_rcu_suspicious.cold (kernel/locking/lockdep.c:6972)
->  nexthop_for_each_fib6_nh (net/ipv4/nexthop.c:1539 (discriminator 16))
->  rt6_nlmsg_size (net/ipv6/route.c:5728)
->  fib6_info_hw_flags_set (net/ipv6/route.c:6503)
->  nsim_fib6_rt_add (drivers/net/netdevsim/fib.c:671 drivers/net/netdevsim/fib.c:694)
->  nsim_fib6_rt_insert (drivers/net/netdevsim/fib.c:759)
->  nsim_fib_event_work (drivers/net/netdevsim/fib.c:856 drivers/net/netdevsim/fib.c:889 drivers/net/netdevsim/fib.c:1493)
->  process_one_work (kernel/workqueue.c:3396)
->  worker_thread (kernel/workqueue.c:3479 kernel/workqueue.c:3560)
->  kthread (kernel/kthread.c:436)
->  ret_from_fork (arch/x86/kernel/process.c:158)
->  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
->  </TASK>
-> 
-> Fixes: 907eea486888 ("net: ipv6: Emit notification when fib hardware flags are changed")
-> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-> Closes: https://lore.kernel.org/netdev/179152182668.434549.18232968419539498055@kernel.org/
-> Assisted-by: LLM
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> ---
->  net/ipv6/route.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+> I'm not trying to shut up anything or rush in anything. All I did is to
+> share my opinion.
 > 
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Phew. I value your input but note the Vlad already offered some options
+to resolve my concern [1]. It'll be valuable to examine these first in
+my opinion.
 
+[1]: https://lore.kernel.org/lkml/20261020125335.678200-1-vlad.wing@gmail.com/
 
+Regards,
+Boqun
+
+> Bart.
