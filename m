@@ -1,106 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792500825;
-	b=zbz8fWo0t9E0R74wzy5luKdJr8bJ129KM6elNtCWb3LWfwtx8E3z5VR9qFfQjmP0GzR7
-	 SnGEq/jVuKcVf7eQepRvWlUz/yBws7rL/zVSN/sV7uEzVddzqpvXNaXrTd1Ycy9Z44ANF
-	 1u/zkFEykNfzCG19iOIHFezYUl763gC24dedZ0aN/p39PODC6D/DcA9jb7H5xuhXjmnlz
-	 ZMMpTALW7tOlP8jgBKmiQD83Ct8c3PrOWAKtWvAOWpVNfs57mxfXTh1NgnHiKY5rojAYh
-	 i3D3Gv6tLW1G9x/SHH8gwqvi1RGDXnxbBPqKLHJsD9vVelMThc0x889soVbFOtqdEWA==
+	t=1792500909;
+	b=W0Gp1bZRMfYxEf63/JAc/P0bUmvaT31+v8vFLVWGHIYj1d331l3yz/fqZUp0ITdUzesb
+	 nJEAd1/jB/HHwf/O9UMIG1RwN8PfZ3XF0nuRJ5uH8SfmpcQxdOeciZUruMGC6+sxWoN1o
+	 EqWwL2Tt7Tb+uFN8Slwedk5J/wn3TCFe3V2OY9ZBRzjyX6nLmVwf23dOhso+MqvckxeMD
+	 KAFBKGByStuJPjE0/9tsb2VxP6lYOJvbVgIeCKyja8FVj3dVPIfFkMc3ccZsOU9/jpKIg
+	 roLTjE/qzgFcx5DqZRyo4O8/RWGvaT/L9rY5dPZyqlFAJtX/sUb7Cy814Tn6rFcjBgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500825;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=PHhSiGv7NsVrVBKhJQlP69zE0Ua2+MTZMk1VrAIO/GU=;
-	b=qLbFm6h1o6jrUt/dF8T5M8r0UQUBnC8aNQQE5LGaEzfoFTAfvfNtLUatH/7yA7IH21E3
-	 /xfw9qnAytCdZBLyilVpqyUkto7VF0xcshal9tv4IRb7QwJr0HXJEVAocgImW8a14xqaQ
-	 DdX5pzfz5rWiX6EVpK+AYhMRJPhFyl0eLRGMJcRZ8iYLomIYBid+FpG8SpNmVzjShJmNo
-	 XHH/WENyxmQriSi9StAoS4Iq02O50GHqv8XfuJDrDZ62HgcOUkKep+JVi17e8F0t11Tlk
-	 ZotxNmjJP8q2TZs3oOh2Zqy/3oX+GdhMuqkLSlu+8ADbnfjRe7EzTcaVf2VVYuKTSqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792500909;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=/rN1jszK6Prt0JXmM/VVC9bxR5gk6QbRi+899j8yGqQ=;
+	b=LwlZEvPAZvfqluXJmKZ0EwoeMxD8IJCFWTrLX6r4T7RYfGn7izOp/OXXQY3+fXYGzROs
+	 kvrMR4+plnr1133NXjmTNdWB7t6F10COW9nlBZeT28aB65gPohIN64XHyJbrftEVRyN7j
+	 JJtg+Xn74CuXJTC+ptoUMDTVTkqqhEQ0p+1R6E625HrSGLepqkt76d76oQO++kWdC53+9
+	 rilCIlEaOXqgAf5dbTfJGqatIsrwN6eEdo38lXYTl9Igq6oH6gL1y3ZpdutncEog1z5lU
+	 1T2nEU8up3E71c0+SWaT/8oGHVZtXGkhhBEC/h+E7GEH9wodQmY6GCSwRU23atOSVUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=l8pNXIPd;
-	arc=none smtp.remote-ip=209.85.208.47
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MnF9adIO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F314606A322
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 12:53:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F314606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0CB606A31A;
+	Tue, 20 Oct 2026 12:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=l8pNXIPd
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b203527bceso3934619a12.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 05:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792500824; x=1793105624; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PHhSiGv7NsVrVBKhJQlP69zE0Ua2+MTZMk1VrAIO/GU=;
-        b=l8pNXIPdPKgh6DgFmINJfHrqdYV6b/OPNuQDuY42FxvFthp5pNYGUeDZFIoYiWKOmG
-         vFhQ3Fs8VPQuqk/5oA000CQ3bU+1qdcggTd6nDOLRaK/TgQthZsLvJ9BG+uWy2UrSKNM
-         O5BvXzKyIZsddoFNqjkssqVLkNxrzCiWKsm69+PY1tjIYCgUQZmxYp4TSohTW3YCavzF
-         0YwZgQbHw6ULGc18Kng4THpCsoMyDp1sne/c0hPJpsqqrKzMv9DFnyjrJOfa7HQPE9Ga
-         G85Yz7hwnfBgAmF7xHyNitDWBeMyjK6ClyL9o89gctv8vFJ33LIJmd2OBDLbLen1YF+9
-         6HXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792500824; x=1793105624;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PHhSiGv7NsVrVBKhJQlP69zE0Ua2+MTZMk1VrAIO/GU=;
-        b=v1xPIOpIgAzO8tmDhFDtFGKOAf6RUVcV8IJ6ahwr4yk27bN9jp/NGrumfrO+DiAnN3
-         sBxX/roDTQSc9m4f1qvOm6BEBB5g127/2grjbNaZMR4EhbAzdFBTgpYAuLL+ceY5BKhl
-         jKh5Z2gB9AF/iplJ1IZ3/0zUJJmgATGuiPhO8Cl+z1OLby/IZSE9Yfqzj+MaIh+Mtr7Q
-         P3nDK70beEN4p3AIgiLmIb67XKufwMHLF4AKfAvGvLnQKimdELkQQhBvG0E8qTTejsOB
-         3IapVQvqq8tptBzLX9j+9o19F6wa3lf3kA00U6Iq+4IWh83KSpbYYPdGUvfstbuBncbk
-         TeRA==
-X-Forwarded-Encrypted: i=1; AKwUvBy8lB62iv7BfK3H51GydYym2RIZu4Qh5RR2D02UL0YObmATLNi04/NHlerVhl2kz+vF//5+804=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKMrxYQ62RSfZ6rM6AP0rqBi4E5jLDyxwE+GMwji6YrLBD2OL6+
-	TqhJP15eVIHGfbalitMp8K7Sgnlz487gN3BgHcj3clXyBqEJQP23fpfq
-X-Gm-Gg: AYBFou38ab3EF/pRkqqj764glD+ugQLAxjPhMjIUajaPTxeKxuyLa3Cpwnn7XJKqrDA
-	AmkHYdAF5SoUEaCbVtdLyqryvFv2Yrmbf7NgO7pAVNTiZt+DLrnonHOvUB3cNucTPQWtEnvVI7O
-	xorqqoLHzDKsW+1VFsMAAfaQjqx6nMpbIBXUaQO4EqNCV8ugqgb52pF3fx9J1H2oB2avZ6+nZsK
-	PDsFDGOQrKHxhrpgccdd6tZ1I+qDgMlOsxe0RcImrfQhe9xahCg7p9X3QTb8U5xJ7nkYMFqs2jd
-	d96PHB3fcWDP6UYelLRPGNoY/427nUgu2aeqGSRsx0FPnpX+dLUCx9KmaAiJQyEiTxiG+rW8vxg
-	An9h8pwKS1yOf1j3YP2xoK5av4LIXUHCHKt4+B+Qi7PA3pyeE74Fbx+910itnD6lxo3bu8h3N42
-	t/U/8bqVB4fOfW9BFELib4bCf954pfWd9weXBBWmSwd6wI90UAlBaqmLZl9jRGMuvL
-X-Received: by 2002:a05:6402:a518:20b0:6b3:e575:f4ed with SMTP id 4fb4d7f45d1cf-6b3e575f74dmr1272971a12.21.1792500823260;
-        Tue, 20 Oct 2026 05:53:43 -0700 (PDT)
-Received: from localhost ([2a03:2880:32ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b38a1335d3sm5347046a12.3.2026.10.20.05.53.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 05:53:42 -0700 (PDT)
-From: Vlad Poenaru <vlad.wing@gmail.com>
-To: Boqun Feng <boqun@kernel.org>,
-	netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] net/sched: don't wait for RCU when destroying qdisc lockdep keys
-Date: Tue, 20 Oct 2026 05:53:35 -0700
-Message-ID: <20261020125335.678200-1-vlad.wing@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <atZtYi_Xnz27O8Bp@tardis.local>
-References: <atZtYi_Xnz27O8Bp@tardis.local>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MnF9adIO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7AF1F000C4;
+	Tue, 20 Oct 2026 12:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792500908;
+	bh=/rN1jszK6Prt0JXmM/VVC9bxR5gk6QbRi+899j8yGqQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MnF9adIOkMF9DWYDi7EtSiELWq7mW60krPzrCYqF2bV62U7RMqSmrS5txVv/eYZad
+	 roMPSmsF1VZDsv1ONvHy7bwBZ+LQZ3cA83ruxKNh1sKBiRLGJLheWKSFxOLxGmZzBF
+	 OL0X0+4+m0fE69cphWLfHDeHjka/0Gmgjfb66rrBi9ZUok3QWMMf7b/jYGtXFgajo2
+	 nnw27eq7Xpw1F7WHwHd4YmuEKWwKjndl1w59//pc15z+H6jqERASKMRGzKVyGBmBLc
+	 oQRREJbNdtbhOOCsjFPz1KfveBTef39x5ozpCmidTGP74Dvab5bVfB/9ukiMeNwvoP
+	 Xxjux1NBHTKAA==
+Subject: Re: [PATCH net v2 1/2] net: bcmgenet: recover from a failed resume
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, f.fainelli@gmail.com,
+ justin.chen@broadcom.com
+Date: Tue, 20 Oct 2026 12:55:06 +0000
+Message-ID: <179250090686.3135.17597197349680697960@kernel.org>
+In-Reply-To: <20261019-nb-genet-fini-dma-net-v2-1-b85f6b92654a@tipi-net.de>
+References: <20261019-nb-genet-fini-dma-net-v2-1-b85f6b92654a@tipi-net.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,47 +64,189 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 19, 2026 at 12:20:02PM -0700, Boqun Feng wrote:
-> I think my concern is still valid: for lockdep PoV,
-> lockdep_unregister_key_nosync() is an API that users have to use it
-> carefully, because it leaves the unregistration process in a stage that
-> you need to guarantee that the lockdep key reclamation is delayed by an
-> RCU grace period. Or in other words, do you have a way to prevent a user
-> from doing lockdep_unregister_key_nosync() but kfree(key), or some sort
-> of debugging to find a mis-use?
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Not in this version, but lockdep could catch it. Every slab, page and
-vmalloc free already goes through debug_check_no_locks_freed(), so:
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
- - lockdep_unregister_key_nosync() records the key together with
-   get_state_synchronize_rcu() in a small fixed-size table;
- - debug_check_no_locks_freed() warns if the freed range contains a
-   recorded key whose grace period has not elapsed yet
-   (poll_state_synchronize_rcu()), and retires entries whose grace
-   period has;
- - lockdep_register_key() warns the same way if a recorded key is
-   reused too early.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The table is empty nearly all the time, so frees only pay for it during
-bursts of unregisters. A correct kfree_rcu() or call_rcu() free runs
-after the grace period and never warns; lockdep_unregister_key_nosync()
-followed by kfree() warns on that kfree().
+- [Medium] After a failed resume, the next Wake-on-LAN suspend can no
+  longer wake on the user's configured wake filters.
+- [Medium] When WoL is not in use, the new `!priv->tx_cbs` early return
+  in bcmgenet_suspend() (bcmgenet.c:4358-4368) does nothing to the PHY.
+- [Medium] On the new ringless WoL suspend path after a failed DMA
+  rebuild, the receiver is enabled while UniMAC still has its reset-…
 
-Would that address your concern? If so I'll add it to v2.
+--
 
-The other way would be for lockdep to keep the dynamic-key hash nodes in
-its own storage, freed via RCU like zapped classes, so is_dynamic_key()
-never dereferences caller memory and lockdep_unregister_key() needs no
-wait at all. That removes the nosync API, but it is a bigger change.
+net: bcmgenet: recover from a failed resume
 
-Separately, two corrections to the cover letter: please ignore the
-stray "From: Vlad Poenaru <thevlad@meta.com>" line (Eric, sorry for the
-confusion; the series is from and signed off by vlad.wing@gmail.com),
-and [5] should be:
+This patch changes what happens when a resume fails in bcmgenet_init_dma(),
+so that close and suspend can still handle the device. NULL rx_cbs/tx_cbs
+now means there is no datapath. The block stays clocked on failure, close
+reattaches the device, bcmgenet_suspend() gets a new path for the no-rings
+case, and the WoL resume path stops the PHY before it rebuilds.
 
-[5] https://lore.kernel.org/all/20261019170601.805087-1-vlad.wing@gmail.com/
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index e8908916558b1..34acd3c47cc55 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 
-Thanks,
-Vlad
+[ ... ]
+
+> @@ -4288,6 +4302,9 @@ static int bcmgenet_resume(struct device *d)
+>  		bcmgenet_rdma_disable(priv);
+>  		bcmgenet_intr_disable(priv);
+>  		bcmgenet_fini_dma(priv);
+> +		if (phy_is_started(dev->phydev) ||
+> +		    dev->phydev->state == PHY_ERROR)
+> +			phy_stop(dev->phydev);
+>  		enable_irq(priv->irq1);
+>  	}
+>  
+> @@ -4310,8 +4327,9 @@ static int bcmgenet_resume(struct device *d)
+>  	/* Reinitialize TDMA and RDMA and SW housekeeping */
+>  	ret = bcmgenet_init_dma(priv, false);
+>  	if (ret) {
+> +		/* Leave the block clocked, close and suspend tear it down */
+>  		netdev_err(dev, "failed to initialize DMA\n");
+> -		goto out_clk_disable;
+> +		return ret;
+>  	}
+
+[Severity: Medium]
+
+Does this return leave UMAC_CMD at the reset-default 10 Mb/s speed when the
+next WoL suspend runs?
+
+Earlier in bcmgenet_resume(), init_umac()->reset_umac() writes only
+CMD_SW_RESET to UMAC_CMD. That zeroes the speed field (CMD_SPEED_10 is 0)
+and the duplex and pause bits.
+
+On the WoL rebuild path, the new phy_stop() above also leads to
+phy_link_down()->bcmgenet_mii_setup() with the link down, which clears
+RGMII_LINK.
+
+bcmgenet_mac_config() is the only code that restores the speed and duplex
+bits and RGMII_LINK, and it runs only from the phylib adjust_link callback.
+After this early return, bcmgenet_netif_start()/phy_start() never run, so
+that callback never fires. Meanwhile phy_init_hw() and genphy_config_aneg()
+have already restarted autonegotiation on the PHY, which is still powered.
+
+On the next WoL suspend, the new !priv->tx_cbs branch in bcmgenet_suspend()
+returns 0. Then bcmgenet_suspend_noirq()->bcmgenet_wol_power_down_cfg()
+does this:
+
+	/* Can't suspend with WoL if MAC is still in reset */
+	if (reg & CMD_SW_RESET)
+		reg &= ~CMD_SW_RESET;
+
+	/* Receiver must be enabled for WOL MP detection */
+	reg |= CMD_RX_EN;
+	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
+
+None of this corrects the speed.
+
+If the PHY links at 1000 or 100 Mb/s, can magic packet reception fail even
+though WoL looks armed? Together with the HFB_CTRL write below, a failed
+resume could leave GENET with no working wake source.
+
+> @@ -4340,6 +4352,22 @@ static int bcmgenet_suspend(struct device *d)
+>  	if (!netif_running(dev))
+>  		return 0;
+>  
+> +	/* A failed resume has torn the datapath down already. Resume still
+> +	 * enables irq1 on the WoL path, so it has to be disabled here.
+> +	 */
+> +	if (!priv->tx_cbs) {
+> +		if (device_may_wakeup(d) && priv->wolopts) {
+> +			/* No rings to receive into, so no filter wake */
+> +			bcmgenet_hfb_reg_writel(priv, 0, HFB_CTRL);
+
+[Severity: Medium]
+
+Does writing 0 to HFB_CTRL here turn off WAKE_FILTER wake completely?
+
+bcmgenet_wol_power_down_cfg() reads HFB_CTRL after this point. It unmasks
+the filter wake interrupts only if RBUF_HFB_EN is still set:
+
+	reg = UMAC_IRQ_MPD_R;
+	if (hfb_ctrl_reg & RBUF_HFB_EN)
+		reg |=  UMAC_IRQ_HFB_SM | UMAC_IRQ_HFB_MM;
+
+MPD is enabled only for WAKE_MAGIC/WAKE_MAGICSECURE. With wolopts set to
+WAKE_FILTER only, the system would suspend with device_may_wakeup() true
+and no GENET wake source.
+
+A few lines below, the normal WoL path keeps only the RX_CLS_FLOW_WAKE
+filters armed:
+
+		if (priv->wolopts & WAKE_FILTER)
+			list_for_each_entry(rule, &priv->rxnfc_list, list)
+				if (rule->fs.ring_cookie == RX_CLS_FLOW_WAKE &&
+				    rule->state == BCMGENET_RXNFC_STATE_ENABLED)
+					hfb_enable |= 1 << rule->fs.location;
+		...
+		if (!hfb_enable)
+			reg &= ~RBUF_HFB_EN;
+
+Could this path use the same selection? Because tx_cbs is NULL, the
+following resume rebuilds the rings anyway. The device is detached here,
+so the WoL setting can't be changed from ethtool (it returns -ENODEV).
+
+The commit message says:
+
+    leave the hardware as bcmgenet_resume_noirq() set it up so
+    close and suspend finish the teardown once.
+
+Is that accurate? In bcmgenet_resume(), init_umac(), phy_init_hw(),
+genphy_config_aneg() and bcmgenet_hfb_restore() all run before
+bcmgenet_init_dma() fails. bcmgenet_hfb_restore() has already re-armed
+every rule that is not unused.
+
+The commit message also doesn't mention that configured filter wake is lost
+after a failed resume.
+
+> +			bcmgenet_intrl2_0_writel(priv, 0xFFFFFFFF,
+> +						 INTRL2_CPU_MASK_SET);
+> +			bcmgenet_intrl2_0_writel(priv, 0xFFFFFFFF,
+> +						 INTRL2_CPU_CLEAR);
+> +			disable_irq(priv->irq1);
+> +		}
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+
+With WoL not in use, can this early return leave an external PHY powered
+for the whole sleep?
+
+The non-WoL path that this skips calls bcmgenet_netif_stop(dev, true). That
+calls phy_stop(), which ends in phy_suspend() and powers the PHY down.
+
+bcmgenet_mii_probe() sets phydev->mac_managed_pm = true, so MDIO bus PM
+won't power the PHY down either. bcmgenet_suspend_noirq() handles only the
+internal PHY.
+
+In the failed resume, phy_init_hw() calls the PHY driver's soft_reset and
+sets phydev->suspended = 0. With genphy_soft_reset, BMCR_RESET clears
+BMCR_PDOWN. genphy_config_aneg() then restarts autonegotiation.
+
+bcmgenet_init_dma() then fails before phy_resume()/phy_start() run. The
+PHY is now powered and linking while phylib still has it as PHY_HALTED.
+
+This doesn't show on the CM4's BCM54213PE, because its phy_driver entry has
+no soft_reset. It looks reachable when wolopts is 0 and the external PHY's
+driver has a real soft_reset (such as genphy_soft_reset).
+
+Does this match the commit message's statement that suspend will "finish
+the teardown once"?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019-nb-genet-fini-dma-net-v2-0-b85f6b92654a%40tipi-net.de
