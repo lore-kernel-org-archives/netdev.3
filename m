@@ -1,62 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.221
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792461665;
-	b=POJwdaWgIhtpFEmSVSSyMNcHMO108MTMaSQKbysHGgzlUSaZAkfARSTSDg9hb0ejQyST
-	 Hi+ScjcCsADJRs5077aOxPulGR3COG4fAmD/x//oQV159ohR3OWJdAB78qx1RRKRi9ybT
-	 hQmm3Ui0BwPDyEqmocGou0ViabpHWwb/yBIfi8EgC20d/3sXUu3pq8/7qVVQRrl0oAplg
-	 H4cL+s9cjAqvOE1+w+L7tWR8UOEmo4StkNVNKe6geoISWUHbaPJJJfUeCuQ8rsKA6WAeD
-	 XnCCObF+exxNw1Z918ZkAiEQbCPG624ZpgItrsDwrVujpSHOh6ii66eAfrItqIAYfYA==
+	t=1792461731;
+	b=tpnuKAHJAkX6AKqHdFwYH8Apkollmk0YoqtA5cvBscsluhOQHYEylNygTnx6lc87/+VM
+	 Sm/FHEGlpfaqGqOyhpCUjcpcnh4ZZqy6z5ZyBbq5tng3rY/6PNHeq574VXvcXEvoEmBb1
+	 91aCce9lufsr2C1VwHyvRkpN5AvYN9RCWoDjxF3nKsIiZZ2LJIJNsSt8uSQutI2UXvcE7
+	 pn+Eq7i4Yh3k0+9bcp97L/u80rhUnZftFL2n+Nz4dSLeqjzNiaapiimCE3b3fFJG9Db8p
+	 0iAWYHZEV3FJbk2CwHPxMQnJ0zn8KKVWAj0S+DvTfU6Tw2qfBSAZhUbYfj87EkSrJDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792461665;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
-	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
-	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
-	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
-	bh=P6hdNoNCLQyVKiMErGaqjxCf7TzlzqtzKh6YWTL7EAM=;
-	b=0euVgGAZJHW5t2HUj7jgJjOQQXOdZsFlFLh4Pv6AP9N2J2F3U3LgqGnbTMPGEaSX45Vm
-	 +cg1bP33gE0ncZIuYrSTTJYCZX/ay/ntigbJZH/CCiWLfm7lyFJrY2A2rI68ZtvHkf755
-	 IpJMNg5FfrTEJ0OVIOlc2nXGg3tIfIuuA7CYvtcwbc1oqi9K2pJHLV+boIDMovyefG0eE
-	 gWbxhJadMSFnFpi0Q6VJ6MDHV0ktFlVC2phJzzeLrVhXlW4bG+AU2tVnKxi5XVg8FmfYq
-	 HWoW4raAEZND0YNVtMG/JHSVzTYm/vnUSqPl4gG3kS8Uk5hENlLdhYCa/PCqqnVblZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792461731;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=0E0Q82Is6zdEjs6jL2vNo7lRDKdCGLWZjluyuxDIQjY=;
+	b=XcF7+JbAZy2OM9LmT2AMGaFUB1vv3r6zv7kxyLNleJ5GJVIGcAEvTpZGF8ai8KknmCRB
+	 KecrQfYxTu+7XXlQgSPZNYdB//QT4GhB3tboJoYhuk4S9lUA7NAFmj/BAcg6DU6gud4p1
+	 z2urf2lVA9F+Mm8fOrxYjYfCwr3zrxRlqEU65thOmd6qm6vMPnhe6pDoJQYxLea75a0VR
+	 U3jj+6JyhAxlIgW3PnO0s/GTCMzpyD1HVVDsZ5snIW1/NP5DzCfMmYmaTVZLlusrpv4U2
+	 1OoxaQwrpnglGVsuqANZrm63TrSLR54xJNu9fweBOqBm90CwBmZUWP+DEVHyR/5KMSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=ENmHpTRB;
-	arc=none smtp.remote-ip=115.124.28.221
-Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7569E606A31A;
-	Tue, 20 Oct 2026 02:01:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7569E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="IcD/Wkuw";
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBE0606A319;
+	Tue, 20 Oct 2026 02:02:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EDBE0606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=ENmHpTRB
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1792461654; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
-	bh=P6hdNoNCLQyVKiMErGaqjxCf7TzlzqtzKh6YWTL7EAM=;
-	b=ENmHpTRBy/zuJXQDW7JqoUMct+m1MVPKYkMMV40wOAtGwy9reWPPqqrjHlj4CkESs9IvZ0PwIiW4PCq0YGDiS+eMcINIgy9cb9ODeK2bnwWeGwU/dTqeu7RLD1Twq766TCUSzT6cuYDp43Pl0ryW2Ea3olWThig+paRVuL+7WLRFX3yd5lZ93Fc/3CHcHQ2LyA00hfvOmr7vZT2HJb6/bzifOrESYTZm+pbPR6RMxX86IrqmiBK28DZRv7wM07HPMpicuhjmw7kKeW+S/PvuRhoP015RjxbGCqJKvjHWQtFcgDz1SkLlqxirAhVxyRUfPmPCvlwyUQh2VTmrTyZXXA==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07388826|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.015177-0.0016757-0.983147;FP=4673029751259682172|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=9;RT=9;SR=0;TI=W4_0.2.3_21252944_1792461648206_o7001c192e;
-Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_21252944_1792461648206_o7001c192e] cluster:ay29) at Tue, 20 Oct 2026 10:00:48 +0800
-Date: Tue, 20 Oct 2026 10:00:48 +0800
-From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-To: "Marc Kleine-Budde" <mkl@pengutronix.de>,
-  "netdev-bot+sashiko" <netdev-bot+sashiko@kernel.org>
-Cc: "netdev" <netdev@vger.kernel.org>,
-  "linux-can" <linux-can@vger.kernel.org>,
-  "kernel" <kernel@pengutronix.de>,
-  "haibo.chen" <haibo.chen@oss.nxp.com>,
-  "shawnguo" <shawnguo@kernel.org>,
-  "imx" <imx@lists.linux.dev>,
-  "kuba" <kuba@kernel.org>
-Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-Message-ID: <e44cff00-741c-4f29-bcf3-a9df14b4f3f0.chunyuzhiqiang@yinhe.ht>
-Subject: =?UTF-8?B?UkXvvJpbUEFUQ0ggbmV0IHY0XSBjYW46IGRldjogY2FuX2ZpbGxfaW5mbygpOiBkb24ndCB3?=
-  =?UTF-8?B?YWtlIHVwIGNvbnRyb2xsZXIgaWYgaW50ZXJmYWNlIGlzIGRvd24=?=
-X-Mailer: [Alimail-Mailagent][W4_0.2.3][null][Chrome]
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=IcD/Wkuw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=IcD/Wkuwea181oj1+ZhQlsefMEZjCRnWU3t7K0zHabYpAXROemLoRAujzGGyCSu7baYhTD1K7oQTr
+	 u2LSDwtzzS2NKpBKpXmSeB0eoNPRnDj/LJH2ng3gNdImqWKKYCgLISYRou24eG2GGw6FnXFrf1AtbL
+	 pJfuCil0d6+pUJTE=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56ad6cb9609e-14724;
+	Tue, 20 Oct 2026 10:01:58 +0800 (CST)
+X-RM-TRANSID:2ee56ad6cb9609e-14724
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.99])
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66ad6cb95dba-ba9c2;
+	Tue, 20 Oct 2026 10:01:58 +0800 (CST)
+X-RM-TRANSID:2ee66ad6cb95dba-ba9c2
+From: yanxia <yanxia@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	lorenzo@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] veth: fix stale peer max_mtu on XDP program replacement
+Date: Tue, 20 Oct 2026 10:01:47 +0800
+Message-ID: <20261020020147.790274-1-yanxia@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,109 +79,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-x-aliyun-im-through: {"version":"v1.0"}
-References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht> <179240547538.3135.2010975389384383545@kernel.org>,<20261019-enchanted-garnet-teal-bc6dad-mkl@pengutronix.de>
-x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
-In-Reply-To: <20261019-enchanted-garnet-teal-bc6dad-mkl@pengutronix.de>
-x-aliyun-mailtrack: {"foreign-track":"0"}
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-SGkgTWFyYywKCj4gQ2FuIHlvdSBhZGQgdGhlIHNhbWUgZm9yIGJvdGggSUZMQV9DQU5fVERDIGFu
-ZCBJRkxBX0NBTl9YTF9UREMuCj4KPiBNYXJjCgpZZXMsIHdpbGwgZG8uIHYyIGdhdGVzIGNhbl90
-ZGNfZmlsbF9pbmZvKCkgb24gbmV0aWZfcnVubmluZygpIGZvciBib3RoCklGTEFfQ0FOX1REQyBh
-bmQgSUZMQV9DQU5fWExfVERDLCBhbmQga2VlcHMgY2FuX2dldF9zaXplKCkgY29uc2lzdGVudC4K
-Cj4gW1NldmVyaXR5OiBMb3ddCj4gVGhpcyBhbHNvIGNoYW5nZXMgd2hhdCB1c2Vyc3BhY2Ugc2Vl
-cyBmb3IgZXZlcnkgZHJpdmVyIHRoYXQgaW1wbGVtZW50cwo+IGRvX2dldF9iZXJyX2NvdW50ZXIo
-KS4gVG9nZXRoZXIgd2l0aCB0aGUgbWF0Y2hpbmcgY2hhbmdlIGluIGNhbl9nZXRfc2l6ZSgpLAo+
-IElGTEFfQ0FOX0JFUlJfQ09VTlRFUiBpcyBub3cgbGVmdCBvdXQgb2YgUlRNX0dFVExJTksgYW5k
-IFJUTV9ORVdMSU5LCj4gbWVzc2FnZXMgd2hlbmV2ZXIgdGhlIGludGVyZmFjZSBpcyBkb3duLiBB
-cyBhIHJlc3VsdCwgImlwIC1kZXRhaWxzIGxpbmsKPiBzaG93IiBubyBsb25nZXIgcHJpbnRzIGJl
-cnItY291bnRlciBmb3IgYSBkb3duIGludGVyZmFjZS4KPgo+IEJlZm9yZSB0aGlzIHBhdGNoIHRo
-ZSBhdHRyaWJ1dGUgd2FzIGFsd2F5cyBwcmVzZW50Ogo+Cj4gLSBmbGV4Y2FuLCB4aWxpbnhfY2Fu
-IGFuZCBjX2NhbiB3b2tlIHRoZSBkZXZpY2UgYW5kIHJlcG9ydGVkIHRoZSByZWFsCj4gICBjb3Vu
-dGVycy4KPiAtIG1fY2FuX2dldF9iZXJyX2NvdW50ZXIoKSBhbmQgbWNwMjUxeGZkX2dldF9iZXJy
-X2NvdW50ZXIoKSByZXR1cm5lZCAwIHdpdGgKPiAgIHplcm9lZCBjb3VudGVycyB3aGVuIHRoZSBp
-bnRlcmZhY2Ugd2FzIG5vdCB1cDoKPgo+IFRoZSBuZXRsaW5rIHBhdGggY2FuIG5vIGxvbmdlciBy
-ZWFjaCB0aGVzZSBkcml2ZXItbGV2ZWwgSUZGX1VQIGNoZWNrcy4KPgo+IFRoZSBjb21taXQgbmFt
-ZWQgaW4gRml4ZXM6LCBlYzU2YWNmZWYyYWYxLCB3YXMgYWRkZWQgc28gdGhhdCB1c2Vyc3BhY2Ug
-Y291bGQKPiBjYWxsIGZsZXhjYW5fZ2V0X2JlcnJfY291bnRlcigpIGV2ZW4gd2hpbGUgdGhlIGlu
-dGVyZmFjZSB3YXMgZG93bi4gVGhpcwo+IHBhdGNoIHJldmVyc2VzIHRoYXQgYmVoYXZpb3VyIHJh
-dGhlciB0aGFuIGZpeGluZyBhIGRlZmVjdCBpbiBpdCwgYW5kIGl0IGlzCj4gdGFnZ2VkIGZvciBz
-dGFibGUuCj4KPiBDb3VsZCB0aGUgY29tbWl0IG1lc3NhZ2Ugc2F5IHRoYXQgSUZMQV9DQU5fQkVS
-Ul9DT1VOVEVSIGlzIG5vIGxvbmdlcgo+IHJlcG9ydGVkIGZvciBkb3duIGludGVyZmFjZXMsIGFu
-ZCBleHBsYWluIHdoeSB0aGF0IGNoYW5nZSBpcyBhY2NlcHRhYmxlIGZvcgo+IHN0YWJsZT8KClRo
-aXMgaXMgYSByZWFsIGFuZCBpbnRlbnRpb25hbCB1c2Vyc3BhY2UtdmlzaWJsZSBjaGFuZ2UsIGFu
-ZCBJIHdpbGwgbWFrZSBpdApleHBsaWNpdCBpbiB0aGUgY29tbWl0IG1lc3NhZ2UuCgpUaGUgcmVh
-c29uIGZvciBvbWl0dGluZyBJRkxBX0NBTl9CRVJSX0NPVU5URVIgd2hpbGUgdGhlIGludGVyZmFj
-ZSBpcyBkb3duIGlzCnRoYXQgdGhlIGNvdW50ZXJzIGFyZSBub3QgbWVhbmluZ2Z1bCBpbiB0aGF0
-IHN0YXRlLCBhbmQgY2FsbGluZyBpbnRvIHRoZQpkcml2ZXIgY2FuIHdha2UgYSBydW50aW1lLXN1
-c3BlbmRlZCBjb250cm9sbGVyIG9yIHRvdWNoIHJlZ2lzdGVycyB3aG9zZQpjbG9ja3MgYXJlIGdh
-dGVkLiBUaGUgc2FtZSBjb25jZXJuIGFwcGxpZXMgdG8gdGhlIFREQyBhdXRvIHJlYWRiYWNrIHBh
-dGgsCndoaWNoIGlzIHdoeSB2MiBhbHNvIGdhdGVzIElGTEFfQ0FOX1REQyBhbmQgSUZMQV9DQU5f
-WExfVERDIG9uCm5ldGlmX3J1bm5pbmcoKS4KCkkgYWdyZWUgdGhhdCB0aGlzIHN1cGVyc2VkZXMg
-dGhlIGJlaGF2aW91ciBpbnRyb2R1Y2VkIGJ5IGVjNTZhY2ZlZjJhZjEKcmF0aGVyIHRoYW4gZml4
-aW5nIGEgZGVmZWN0IGluIGl0LiB2MiB3aWxsIGRlc2NyaWJlIGl0IHRoYXQgd2F5OiBkb3duCmlu
-dGVyZmFjZXMgbm8gbG9uZ2VyIHJlcG9ydCBiZXJyLWNvdW50ZXIsIHVzZXJzcGFjZSBtdXN0IHRy
-ZWF0IHRoZSBhdHRyaWJ1dGUKYXMgb3B0aW9uYWwsIGFuZCB0aGUgY2hhbmdlIGlzIGFjY2VwdGFi
-bGUgZm9yIHN0YWJsZSBiZWNhdXNlIGl0IGF2b2lkcwpoYXJkd2FyZSBhY2Nlc3MgaW4gdGhlIGRv
-d24gc3RhdGUuIEkgd2lsbCBhbHNvIHJld29yZCB0aGUgRml4ZXM6IHRhZyBzbyBpdApkb2VzIG5v
-dCBpbXBseSB0aGF0IGVjNTZhY2ZlZjJhZjEgaXRzZWxmIHdhcyBidWdneS4KCnB3LWJvdDogY3IK
-CgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tCuWPkeS7tuS6uu+8mk1hcmMgS2xlaW5lLUJ1ZGRlIDxta2xAcGVuZ3V0cm9u
-aXguZGU+CuWPkemAgeaXtumXtO+8mjIwMjblubQxMOaciDE55pelKOWRqOS4gCkgMTk6MTQK5pS2
-5Lu25Lq677yaIm5ldGRldi1ib3Qrc2FzaGlrbyI8bmV0ZGV2LWJvdCtzYXNoaWtvQGtlcm5lbC5v
-cmc+CuaKhOOAgOmAge+8miLmt7Pkuo7mmbrlvLoiPGNodW55dXpoaXFpYW5nQHlpbmhlLmh0Pjsg
-bmV0ZGV2PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+OyAibGludXgtY2FuIjxsaW51eC1jYW5Admdl
-ci5rZXJuZWwub3JnPjsga2VybmVsPGtlcm5lbEBwZW5ndXRyb25peC5kZT47ICJoYWliby5jaGVu
-IjxoYWliby5jaGVuQG9zcy5ueHAuY29tPjsgc2hhd25ndW88c2hhd25ndW9Aa2VybmVsLm9yZz47
-IGlteDxpbXhAbGlzdHMubGludXguZGV2Pjsga3ViYTxrdWJhQGtlcm5lbC5vcmc+CuS4u+OAgOmi
-mO+8mlJlOiBbUEFUQ0ggbmV0IHY0XSBjYW46IGRldjogY2FuX2ZpbGxfaW5mbygpOiBkb24ndCB3
-YWtlIHVwIGNvbnRyb2xsZXIgaWYgaW50ZXJmYWNlIGlzIGRvd24KCgpPbiAxOS4xMC4yMDI2IDEw
-OjI0OjM1LCBuZXRkZXYtYm90K3Nhc2hpa29Aa2VybmVsLm9yZyB3cm90ZToKPiBUaGFuayB5b3Ug
-Zm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3VuZCAyIHBvdGVudGlh
-bAo+IGlzc3VlKHMpIHRvIGNvbnNpZGVyLgo+Cj4gQ3JpdGljYWw6IDAgwrcgSGlnaDogMSDCtyBN
-ZWRpdW06IDAgwrcgTG93OiAxCj4KPiBJZiB5b3UgYmVsaWV2ZSBub25lIG9mIHRoZSBpc3N1ZXMg
-YXJlIGxlZ2l0aW1hdGUsIHBsZWFzZSByZXBseSB0byBlYWNoCj4gaXNzdWUgb2YgTWVkaXVtIHNl
-dmVyaXR5IG9yIGhpZ2hlciBhbmQgZXhwbGFpbiB3aHkgdGhlIEFJIGlzIHdyb25nLgo+IElmIGFu
-eSBvZiB0aGVtIGFyZSBsZWdpdGltYXRlIGFuZCB5b3UgcGxhbiB0byByZXNwaW4sIHBsZWFzZSBs
-ZXQgcGF0Y2h3b3JrCj4ga25vdyBieSBpbmNsdWRpbmcgInB3LWJvdDogY3IiIGFzIGEgc2VwYXJh
-dGUgbGluZSBhdCB0aGUgZW5kIG9mIHlvdXIgcmVwbHkKPiAob25lIHN1Y2ggcmVwbHkgcGVyIHNl
-cmllcyBpcyBlbm91Z2gpLgo+Cj4gLSBbSGlnaF0gVGhlIGZpeCBpcyBpbmNvbXBsZXRlLgo+IC0g
-W0xvd10gVGhlIHBhdGNoIGNoYW5nZXMgbmV0bGluayB1QVBJIG91dHB1dCBmb3IgZXZlcnkgQ0FO
-IGRyaXZlciB0aGF0Cj4gwqAgaW1wbGVtZW50cyBkb19nZXRfYmVycl9jb3VudGVyOiBJRkxBX0NB
-Tl9CRVJSX0NPVU5URVIgaXMgbm93IGxlZnQgb3V04oCmCj4KPiAtLQo+Cj4gY2FuOiBkZXY6IGNh
-bl9maWxsX2luZm8oKTogZG9uJ3Qgd2FrZSB1cCBjb250cm9sbGVyIGlmIGludGVyZmFjZSBpcyBk
-b3duCj4KPiBUaGlzIGFkZHMgYSBuZXRpZl9ydW5uaW5nKCkgY2hlY2sgdG8gY2FuX2dldF9zaXpl
-KCkgYW5kIGNhbl9maWxsX2luZm8oKS4KPiBXaGVuIHRoZSBpbnRlcmZhY2UgaXMgZG93biwgZG9f
-Z2V0X2JlcnJfY291bnRlcigpIGlzIG5vIGxvbmdlciBjYWxsZWQgYW5kCj4gSUZMQV9DQU5fQkVS
-Ul9DT1VOVEVSIGlzIG5vIGxvbmdlciByZXBvcnRlZC4gVGhlIGNoZWNrIHVzZWQgdG8gYmUgaW4g
-dGhlCj4gZmxleGNhbiBkcml2ZXIgYW5kIGlzIG5vdyBpbiB0aGUgQ0FOIGNvcmUsIHNvIGl0IGFw
-cGxpZXMgdG8gYWxsIGRyaXZlcnMuCj4KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9jYW4v
-ZGV2L25ldGxpbmsuYyBiL2RyaXZlcnMvbmV0L2Nhbi9kZXYvbmV0bGluay5jCj4gPiBpbmRleCA3
-NjZkNDU1OTUwZjU1Li5iOTU4YzA0ZDUzZGI2IDEwMDY0NAo+ID4gLS0tIGEvZHJpdmVycy9uZXQv
-Y2FuL2Rldi9uZXRsaW5rLmMKPiA+ICsrKyBiL2RyaXZlcnMvbmV0L2Nhbi9kZXYvbmV0bGluay5j
-Cj4KPiBbIC4uLiBdCj4KPiA+IEBAIC0xMDA2LDcgKzEwMDYsNyBAQCBzdGF0aWMgaW50IGNhbl9m
-aWxsX2luZm8oc3RydWN0IHNrX2J1ZmYgKnNrYiwgY29uc3Qgc3RydWN0IG5ldF9kZXZpY2UgKmRl
-dikKPiA+IMKgIMKgIMKgIG5sYV9wdXQoc2tiLCBJRkxBX0NBTl9DVFJMTU9ERSwgc2l6ZW9mKGNt
-KSwgJmNtKSB8fAo+ID4gwqAgwqAgwqAgbmxhX3B1dF91MzIoc2tiLCBJRkxBX0NBTl9SRVNUQVJU
-X01TLCBwcml2LT5yZXN0YXJ0X21zKSB8fAo+ID4KPiA+IC0gwqAgwqAgKHByaXYtPmRvX2dldF9i
-ZXJyX2NvdW50ZXIgJiYKPiA+ICsgwqAgwqAgKHByaXYtPmRvX2dldF9iZXJyX2NvdW50ZXIgJiYg
-bmV0aWZfcnVubmluZyhkZXYpICYmCj4gPsKgIMKgIMKgIMKgICFwcml2LT5kb19nZXRfYmVycl9j
-b3VudGVyKGRldiwgJmJlYykgJiYKPiA+wqAgwqAgwqAgwqAgbmxhX3B1dChza2IsIElGTEFfQ0FO
-X0JFUlJfQ09VTlRFUiwgc2l6ZW9mKGJlYyksICZiZWMpKSB8fAo+Cj4gW1NldmVyaXR5OiBIaWdo
-XQo+IElzIHRoaXMgZml4IGNvbXBsZXRlPyBMYXRlciBpbiB0aGUgc2FtZSBleHByZXNzaW9uLCBj
-YW5fZmlsbF9pbmZvKCkgY2FsbHMKPiBjYW5fdGRjX2ZpbGxfaW5mbygpIGZvciBJRkxBX0NBTl9U
-REMgYW5kIElGTEFfQ0FOX1hMX1REQy4gVGhhdCBwYXRoIGNhbgo+IHN0aWxsIHJlYWQgY29udHJv
-bGxlciByZWdpc3RlcnMgd2hpbGUgdGhlIGludGVyZmFjZSBpcyBkb3duOgo+Cj4gZHJpdmVycy9u
-ZXQvY2FuL2Rldi9uZXRsaW5rLmM6Y2FuX3RkY19maWxsX2luZm8oKSB7Cj4gwqAgwqAgLi4uCj7C
-oCBpZiAodGRjX2lzX2VuYWJsZWQpIHsKPiDCoCAuLi4KPiDCoCB9IGVsc2UgaWYgKGRidF9wYXJh
-bXMtPmRvX2dldF9hdXRvX3RkY3YpIHsKPsKgIMKgIGVyciA9IGRidF9wYXJhbXMtPmRvX2dldF9h
-dXRvX3RkY3YoZGV2LCAmdGRjdik7Cj4gwqAgfQo+IMKgIMKgIC4uLgo+IH0KCkNhbiB5b3UgYWRk
-IHRoZSBzYW1lIGZvciBib3RoIElGTEFfQ0FOX1REQyBhbmQgSUZMQV9DQU5fWExfVERDLgoKTWFy
-YwoKcHctYm90OiBjcgoKLS0gClBlbmd1dHJvbml4IGUuSy4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgfCBNYXJjIEtsZWluZS1CdWRkZcKgIMKgIMKgIMKgIMKgIHwKRW1iZWRkZWQgTGludXggwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfCBodHRwczovL3d3dy5wZW5ndXRyb25peC5kZSB8ClZl
-cnRyZXR1bmcgTsO8cm5iZXJnwqAgwqAgwqAgwqAgwqAgwqAgwqAgfCBQaG9uZTogKzQ5LTUxMjEt
-MjA2OTE3LTEyOSB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IHwgRmF4OiDCoCAr
-NDktNTEyMS0yMDY5MTctOSDCoCB8Cgo=
+veth_xdp_set() calculates the peer MTU limit from the incoming program's
+XDP fragment capability, but only stores it when no program was attached.
+Replacing a program with one having a different fragment capability
+therefore leaves the peer's max_mtu stale.
+
+Replacing a regular program with an xdp.frags program keeps rejecting
+otherwise valid jumbo MTUs. The opposite replacement leaves a larger
+limit in place and permits MTUs which a fresh attachment of the regular
+program would reject.
+
+Update peer->max_mtu after every successful attachment or replacement.
+Keep the GSO feature update conditional on the first attachment.
+
+Found during review of the XDP replacement path and confirmed with
+native XDP on an isolated veth pair. Before the fix, direct replacement
+rejects MTU 9000 after switching to xdp.frags, and accepts it after
+switching back to a regular program. Detaching and attaching instead
+produces the expected results in both directions.
+
+UML tests on net reproduce the problem before this change and match the
+detach/attach controls afterwards, with both devices up or down and
+with either endpoint receiving XDP. Failed replacements preserve the
+previous state; same-type replacements and detach also behave as
+expected. Small-frame traffic passes in the devices-up cases.
+
+Fixes: 7cda76d858a4 ("veth: Allow jumbo frames in xdp mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: yanxia <yanxia@cmss.chinamobile.com>
+---
+ drivers/net/veth.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 643b97dc..7db389ae 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1622,10 +1622,9 @@ static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 			}
+ 		}
+ 
+-		if (!old_prog) {
++		if (!old_prog)
+ 			peer->hw_features &= ~NETIF_F_GSO_SOFTWARE;
+-			peer->max_mtu = max_mtu;
+-		}
++		peer->max_mtu = max_mtu;
+ 
+ 		xdp_features_set_redirect_target(peer, true);
+ 	}
+
+base-commit: 78731b46967e3e7102b5cd5062bef185f3404b5c
+-- 
+2.43.0
+
+
+
