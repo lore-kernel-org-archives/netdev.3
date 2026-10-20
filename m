@@ -1,97 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792492528;
-	b=uG2HiHFHleNFuhCz66pSbor+tB0pZ99hQkjUTns0t6TUJ36EuNRgDNe/DCwe/we3nBQa
-	 PjZb1rp0ZQKXSaxKmPTPtLtVapwVuUHMXf1BqHeUPFu9kjQMb5TCJL4rlTEZTssE8HG7i
-	 bJOoJ8+0d4eHkx2OOksyuuZKrIq3gjZ6xxixNQKMmiw4zZQ5Hb8zJH/iALXaQ9Cjlk9kh
-	 6F5DwL0K8Y+mdsxu1W7aCV8SiSCMQnFdH+A2FhncTPyxCr6KxUZfUCoayYROFxa2y+Et+
-	 VSNZRErapLOgPUwE2CeCQ3qn6iwYwrvQaq1PqXDFqCi6GNaEY8oy4+LMnN9n6TzdGKg==
+	t=1792492715;
+	b=1sIK/andNu6CnOupN1qNizPZgq1kZbVi1taxgQ6uaBFq+RQ/R3vIFJMaqpnWJXVr6ZMi
+	 Kdv/4Ty5WmTNNib/Nv8DS6Uc1CyDUVKqxkusMLu1qsSRASuqCUS9qBt4tDo7943UuYuCK
+	 t0w9uLQsi6zOgkuW3sVr8i9o8x1noYjXP2qhTHA5qZ6EMV1D9DbDzhcYacA563bMLgPIo
+	 u9zSmLWk55UVVABF6zz9q939mJuNpBWtcOoF4/b1tguAkUNIyOWkUuGXPWKVVgzzjPGAT
+	 uGf3R7AfGGdaeloszhemmhj8CdCoQcDFl93RZVGf+4dnOeQ9czIaj/T9QpJ6hTZNMsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792492528;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792492715;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=b6vl8DhBKNBBeDdXDarV+k7b4TukYYKqz3C8gKFsMSM=;
-	b=KWPs2MGWmC6oI0oFgGPa/JWczQmww2JJWuUoGCe9CMteBPwFwTuYOxmbkRk5wcmoqgdl
-	 klxwbW8JLliJ+EWGNckyLrRoNRpWxfI+uvEgoiAkNozlnPDzkVJb+CRDqcZv1QlxHYB5W
-	 faF3aK7YU2g07r6FYhH5Pe9/zJPlYAJmfKFu+vClD3wd1c0EQkWLROcxHt4qY1yrMqoI+
-	 iUZo2TI+VplxnoC0Oqno9DF+7FLJ+PqrmWQwcS4aWrMaHubzkUT4wQnjdK+YmyLdyLlW7
-	 1JnHRCo8Iyrlvo/jCYbKQqJqUvqOBaVYAAt5zbcjZy8VGzc1wJwZWwhIZHw6OP84CWw==
+	bh=fzChrc19jcQoCQovxW6S7a9HWkv0j2zGCifMcuBL9m8=;
+	b=yaVnHh+G3qJBspObr4CYIzTsUPHVmlyUN9OlLPtTwtReWjC/sNdfRjYUDWIBOwNSWX7p
+	 7gjo99XjcSMAM0iP+ZNKV4TAqGeNe44fxgNpxqB3SE6p00Qni9A64jHcw0YRHnPeMLxno
+	 vkgvKL/CHvNar7Z8DHyn6VgKx5Vt7AU+LJrA9l8rLgBOApMIvwTzK67Gfb8/aYrkX1A/m
+	 X7NstCHSQQQfo3uJrRT2hpXMENyRGo5148ukHeFtddPrE58ka2yP388Foik+3fnKzlIWc
+	 1hR5eNTJa3StWk6So6usTWsRsLjwNWXapJb7NyE5eIVQw0Pms3tMOilI9YHdgUQmK+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Tfy8gPpg;
-	arc=none smtp.remote-ip=209.85.218.47
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=whbZwAFJ;
+	arc=none smtp.remote-ip=209.85.222.170
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC659606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:35:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC659606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F61E606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:38:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F61E606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Tfy8gPpg
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c3f8d72d7ceso527540566b.3
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:35:27 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=whbZwAFJ
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-93ece7a73b9so398311685a.3
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:38:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792492526; x=1793097326; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b6vl8DhBKNBBeDdXDarV+k7b4TukYYKqz3C8gKFsMSM=;
-        b=Tfy8gPpgNea4NWmTe/7uKj8VWr03aU0uep+R7u3EFHcdUFS3ae+coI/B/Hu3NW78CT
-         y/GZGFdeUTthHmMrLVJpyb/zB/r4//qrjlRALruWMwv0M1SzyvyrhWc7grCEz1dnNnhi
-         tjeLbdjlPXE7NqLWScuqc3+OfFtRubc7ukA+lUkYNxyqZ+Hj9HkupJjDRflce8aUJBuB
-         wkX8xo5uJOktCCHq9WcXGb5wf/9aI1Uio7EBxdeo37XyAJuGLw0btJme7AOZv4iQrQ2u
-         COI/cssbwIY9TtKbVd+2oS8KG+8xAcJrqb3Tj9iT65FxEaCV/PLkyfddaxYrw44i94hU
-         uFnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792492526; x=1793097326;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1792492713; x=1793097513; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=b6vl8DhBKNBBeDdXDarV+k7b4TukYYKqz3C8gKFsMSM=;
-        b=cc5oy0m+MaCElMObMPMHuPImdf/5uIknJRsy0tPJh81BsQNqiPQQC5gr9tP9MmSiDJ
-         RIbwoqEZt9g2N96umnzm/jWwEkTj0FDRSZYCVIxyjiisl8hgp127oWU8T0qeSr4SOTzu
-         i+RywXTIwrfJ5BhCQTE1atPMSMrc1ogmPDeeJrgb1Fu1G76xZX4cbz5bz8qnsm+PK9Xf
-         CMD88BtXRfmC6QNN7QLFnpMlPsJ75PjCqpbG4r5g6C2U7BbflOxxlxFQEIdGTXfSvm3D
-         QtgJ3LuftWTjMmu6JgPymSrm/UyMcSeodz/JfgR38zeW4I3phGLvjurpyoSy07Q5CzCe
-         Wbkg==
-X-Forwarded-Encrypted: i=1; AKwUvByAosj0NwElw9SfUXPWNjjzlKgyEKVaNGU3DTwhK9r9S/1uEaLGX+zgEL7DWfzgpIxwFDCI2OM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJT2cXpKI/0S59YeV7i0ZJu3apI+DF/awH23anL0KB0GAFbpnTd
-	2lmBstWKtKQbvDlSV1+DPEgwu8dOm0uIOLuq/TWohMIXoBojpZdfQ7Br
-X-Gm-Gg: AYBFou0pydtSlBoB2X7IF/vy9H95ZAICWXukjrsAk7t+Bejsq05yqzYRq0GgDB/aDou
-	Dr2/ONJdvVoXNdD1A5YtuA/KR90tSfihXw6gNVS6sUKpzYy/6HxaPhRNSgNCSZyQX3IZYg8smpY
-	JSFPXFh6Wae6DTAH18bd4+bUM8U5kBWplMhtgE6+nj47DWlD+y5WgYtw2bQ8UofJbeAWacFqRGw
-	qojm8BLCT9EvUOFGAl4abttiIMQLffobX94ViBOagDtYLvO7kTmJDv4YkE27XRD608xlSYC6Kvu
-	vUzQ0Q8rim/PzYWyrhueBEq+mbzQ4ZUAgJ0pjU9V4bjc/0N092Cc/V4P6Uqp+HYUihbMVbumX+/
-	UyxsrCLmBJlJVcq0A2GRi3ZYkUKH0mM2BKjBtPeJA0dNPvOlTeaPSb4qKifV8YmHoENTjLs4g51
-	pwXJuK9cWEnoto9z3/p347zycNzy+Rwz52uqDFNyttaPqrjqrVYxl3D/gtI/ukqnK79Q/4MsHDK
-	4uCvMdjIYsGTSBBsECHYAAqhpDKBVQCawkIHDLIUEviIrruCuK15UsgefR5q0alY9CJxknhW44r
-	pEE9IqmXFUFBtmw2yOI4bS310uoAyw==
-X-Received: by 2002:a17:907:60c8:b0:c43:a881:3f4b with SMTP id a640c23a62f3a-c43a8814361mr595412366b.47.1792492526023;
-        Tue, 20 Oct 2026 03:35:26 -0700 (PDT)
-Received: from localhost.localdomain (ip-80-113-117-72.ip.prioritytelecom.net. [80.113.117.72])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c40919bcae3sm479893666b.57.2026.10.20.03.35.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 20 Oct 2026 03:35:25 -0700 (PDT)
-From: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michail Andreas Michalopoulos <mike.michalo@gmail.com>,
-	syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com,
+        bh=fzChrc19jcQoCQovxW6S7a9HWkv0j2zGCifMcuBL9m8=;
+        b=whbZwAFJq3Zz9ZCqcJlOm970YpraVN0BDNHHlNozw2UAqpjGCUO7hVhi9GjcXFgIfQ
+         Kf6jkv55rkNsY7Q7vl/AMHqTuWD63fsXw7GGLfX6nCa4nE5Di1vDec8gZ6kkTxTwGUDn
+         0Xd32cbc+CSvmhqYNqH3e3Fz+Aa2IpRvex3zY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792492713; x=1793097513;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fzChrc19jcQoCQovxW6S7a9HWkv0j2zGCifMcuBL9m8=;
+        b=eZrqwefjZJhNrFw7cVC61QcajSNYeJ3ZCl0mXtpO0swxVR1WWh/JGBUCUfTQ2ASr/9
+         psxjfblluEvY55UB95UpOggVv1InIWd+saiIYZtapVI+E8ftGggqsZOoqCakANYrMFDz
+         vvHOO5r930X7ddrK9Oqs6WE9ppRoY4avSLc0yiOuR5FnLGZ8028/7ZU+qjidn1Ecd9kw
+         nlW503pzxoveIWQPSRtN2RFH+68oECWqUuHNAacMjaEGS9SV09de7bdlAUfGZLAMB/Vp
+         IVDmmKat/qimYppTMkxx+sdO1EguIknH261SOiAU9kIwKoz7LyNp9f1bmSog+4e1N/ZN
+         L9Cw==
+X-Gm-Message-State: AFq9FYILgLhxfDbvPh3TCeuLZstLAJsCE6aON3rQnAThYltrC9vKFJMS
+	b4YGBuMpVx1l8zvUI5Nfj6RT1W9Uepx2bk+v/NJnFTwnJ2eUZR869k4N8LEghYCTfVI2N5iju40
+	thyI=
+X-Gm-Gg: AYBFou1gZ6OUyon16lm7CELua5J4hjCygHg01pLeQGKTPXeqCDq4QpkY447456HFJGl
+	SsZNLfo3jBkalpalEcOXoCLIbhgnbZgr1PjSMiHZq5Uo/bJiQ6YOXc9fKHzeNCJVRtGv+FnSR15
+	oJaySgJZY0MU3eyYDDZ28y/W/oipE7k7K5RD7NWIQCUUJ9YTq4BKqxSd+6GaXqHZrh0e/7NoygY
+	sNRnQH0hqXBkVD2ZqD0PJ89v1b9TSD5d2STIEUgrOTtlRsG9vrgR7T3QePUEB2M7GzttdBSxgSn
+	W1l2i6eCEsSh8mLIMpxNDV5B0O9JTxO4pqqK7SYquHXYgvVCtDDapis6qlZtaAJvDPJnkIhzTLi
+	fc7lu/eME89C/tKQFrCZiXOd7btkvun9zBomVGeW/bumRMzQn8pNJTGjJZZHEKNQm48lJe2G5wf
+	IWvxBWkrXFuPhjyHsulz84mlIqlIKhbp49Ofzt61ytYbG5C63ZuAw8XHUZjaW6L7V9o0VKf33Il
+	K0XwxP6u/jFPRXwq+7YyzgUYFjLtrjPLkItqU0L9rFl
+X-Received: by 2002:a05:620a:7106:b0:93b:db80:e0cf with SMTP id af79cd13be357-93f29db7f0fmr1693123485a.60.1792492713316;
+        Tue, 20 Oct 2026 03:38:33 -0700 (PDT)
+Received: from mbili.waya ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040b4915sm23275556d6.26.2026.10.20.03.38.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 03:38:32 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	sashiko-bot@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH nf] netfilter: flowtable: extend ct timeout of offloaded GRE flows
-Date: Tue, 20 Oct 2026 12:35:20 +0200
-Message-ID: <20261020103520.76439-1-mike.michalo@gmail.com>
-X-Mailer: git-send-email 2.56.0
+Subject: [PATCH net 1/2 repost2] net/sched: sch_teql: fix shared headroom and header strip on slave retry
+Date: Tue, 20 Oct 2026 06:38:26 -0400
+Message-Id: <QDISC-6HS9.v1.r2.20261020051718-1@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-6HS9.v1.r2.20261020051718@mojatatu.com>
+References: <QDISC-6HS9.v1.r2.20261020051718@mojatatu.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,85 +103,149 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn
-timeout extension logic"), the flowtable gc worker extends the timeout
-of an offloaded conntrack entry from nf_flow_table_extend_ct_timeout()
-once it falls below 5 minutes. That function only knows about TCP and
-UDP and hits WARN_ON_ONCE() for any other layer 4 protocol. However,
-GRE flows can be offloaded too, both via nft_flow_offload and act_ct,
-since commit 4e8d9584d154 ("netfilter: flowtable: Support GRE").
+teql_master_xmit() writes the link header of the current slave directly
+into the skb via teql_resolve(), and on retry undoes it with
+__skb_pull(skb, skb_network_offset(skb)).  Two problems exist on the
+retry path:
 
-The timeout of an offloaded GRE entry drops below that threshold as soon
-as a packet of the flow still goes through conntrack. With ip6gre
-tunnels using the default encapsulation limit this is ordinary traffic:
-the flowtable does not parse the Destination Options header in front of
-GRE, so every packet of the flow takes the classic forwarding path. It
-also happens for a packet with ttl <= 1, which the flowtable fast path
-passes up to the classic forwarding path. nf_conntrack_gre_packet() then
-refreshes ct->timeout to the GRE stream timeout (180 seconds by default),
-and the next gc run triggers, as reported by syzbot:
+1. When the skb is shared (for example a packet tap installed on the
+   master makes xmit_one() clone it before teql_master_xmit()),
+   dev_hard_header() writes into memory shared with the other clones and
+   corrupts them.  The headroom must be made private before the write.
 
-  WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_ct_timeout+0x1ee/0x2f0
-  Workqueue: events_power_efficient nf_flow_offload_work_gc
-  Call Trace:
-   nf_flow_offload_gc_step+0x545/0x7b0
-   nf_flow_table_iterate+0x13c/0x1f0
-   nf_flow_offload_work_gc+0x22/0x70
-   process_scheduled_works+0xc3d/0x1630
-   worker_thread+0xa47/0xfb0
-   kthread+0x38b/0x480
+2. The pull blindly removes skb_network_offset() bytes.  For a frame
+   that carries its own link header in the payload (AF_PACKET/SOCK_RAW
+   with no dst entry), teql_resolve() returns 0 without adding a header,
+   so the retry strips the userspace-supplied header and pushes a frame
+   whose first bytes are payload.
 
-Besides the splat, which panics the machine with panic_on_warn, the
-default branch sets the new timeout to 1 jiffy, so the conntrack entry
-expires right away and the offloaded flow is torn down.
+Fix this by calling skb_cow_head() before dev_hard_header(), and by
+pulling back only the header length that this slave actually added,
+tracked per iteration.  An AF_PACKET/SOCK_RAW frame is then retried on
+the next slave with its header intact, and a shared skb is unshared
+before it is modified.
 
-Handle GRE like UDP and extend the timeout to NF_CT_DAY. GRE conntrack
-has no protocol state to take into account, and NF_CT_DAY is also what
-flow_offload_add() already sets for every offloaded entry, GRE included.
-This also restores the behaviour from before commit 03428ca5cee9, when
-the conntrack gc worker extended offloaded entries of any protocol to
-NF_CT_DAY.
+This is a follow-up to commit dc4b95b8fee9 ("net/sched: sch_teql: restore
+skb->dev on the slave failure path"), which restored skb->dev to the
+master on the slave failure path but left these pre-existing defects on
+the same teql_resolve()/retry path.
 
-Fixes: 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn timeout extension logic")
-Reported-by: syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=521f7e7e2b974abde99a
+Conditions to recreate the bug: a teql master with at least two slaves,
+the first of which does not consume the skb, then send an
+AF_PACKET/SOCK_RAW frame (no dst entry) through the master: the frame
+arriving on the second slave's peer has its MAC header stripped.  The
+shared-headroom write needs a packet tap on the master so the skb is
+cloned before teql_master_xmit().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
+Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260824115928.4099988-1-victor@mojatatu.com
+Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
-Tested on v7.3 in QEMU, with and without KASAN, lockdep and
-DEBUG_OBJECTS, using netns topologies where a router namespace
-offloads GRE flows to a flowtable:
+ net/sched/sch_teql.c | 32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
- - nft "flow add" and tc act_ct, each with IPv4 GRE and ip6gre
- - ip6gre with the default encapsulation limit (plain pings), and
-   ttl=1 GRE packets for IPv4
- - 120s stress runs: 6 GRE tunnels plus TCP/UDP traffic, ttl=1
-   packets, flowtable deleted and re-added every ~20s
-
-Without this patch every run hits the WARN above and the GRE
-conntrack entries are torn down and recreated over and over (hundreds
-of NEW events in the stress run); with panic_on_warn=1 the kernel
-panics. With it there is no WARN, GRE entries stay offloaded with a
-~1 day timeout, and TCP/UDP behave as before. The nft_flowtable.sh,
-nft_offload.sh and nft_interface_stress.sh selftests give the same
-results with and without this patch.
-
- net/netfilter/nf_flow_table_core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 36bbc7be2f..94502c97ba 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -544,6 +544,7 @@ static void nf_flow_table_extend_ct_timeout(struct nf_conn *ct)
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 409ce50cc0db..acd03f9afc6b 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -245,7 +245,7 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ static int
+ __teql_resolve(struct sk_buff *skb, struct sk_buff *skb_res,
+ 	       struct net_device *dev, struct netdev_queue *txq,
+-	       struct dst_entry *dst)
++	       struct dst_entry *dst, int *hlen)
+ {
+ 	struct neighbour *n;
+ 	int err = 0;
+@@ -265,15 +265,28 @@ __teql_resolve(struct sk_buff *skb, struct sk_buff *skb_res,
+ 	}
  
- 		switch (l4proto) {
- 		case IPPROTO_UDP:
-+		case IPPROTO_GRE:
- 			new_timeout = NF_CT_DAY;
+ 	if (neigh_event_send(n, skb_res) == 0) {
++		int off = skb_network_offset(skb);
+ 		char haddr[MAX_ADDR_LEN];
+ 
+ 		neigh_ha_snapshot(haddr, n, dev);
++		/* The skb may be shared (e.g. a packet tap clone); make the
++		 * headroom private before dev_hard_header() writes into it.
++		 */
++		if (skb_cow_head(skb, LL_RESERVED_SPACE(dev)) < 0) {
++			err = -ENOMEM;
++			goto out;
++		}
+ 		if (dev_hard_header(skb, dev, ntohs(skb_protocol(skb, false)),
+ 				    haddr, NULL, skb->len) < 0)
+ 			err = -EINVAL;
++		/* The header, if any, is prepended above skb->data, so the
++		 * network offset grew by exactly the bytes to undo later.
++		 */
++		*hlen = skb_network_offset(skb) - off;
+ 	} else {
+ 		err = (skb_res == NULL) ? -EAGAIN : 1;
+ 	}
++out:
+ 	neigh_release(n);
+ 	return err;
+ }
+@@ -281,11 +294,13 @@ __teql_resolve(struct sk_buff *skb, struct sk_buff *skb_res,
+ static inline int teql_resolve(struct sk_buff *skb,
+ 			       struct sk_buff *skb_res,
+ 			       struct net_device *dev,
+-			       struct netdev_queue *txq)
++			       struct netdev_queue *txq,
++			       int *hlen)
+ {
+ 	struct dst_entry *dst = skb_dst(skb);
+ 	int res;
+ 
++	*hlen = 0;
+ 	if (rcu_access_pointer(txq->qdisc) == &noop_qdisc)
+ 		return -ENODEV;
+ 
+@@ -293,7 +308,7 @@ static inline int teql_resolve(struct sk_buff *skb,
+ 		return 0;
+ 
+ 	rcu_read_lock();
+-	res = __teql_resolve(skb, skb_res, dev, txq, dst);
++	res = __teql_resolve(skb, skb_res, dev, txq, dst, hlen);
+ 	rcu_read_unlock();
+ 
+ 	return res;
+@@ -305,6 +320,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct Qdisc *start, *q;
+ 	int busy;
+ 	int nores;
++	int hlen;
+ 	int subq = skb_get_queue_mapping(skb);
+ 	struct sk_buff *skb_res = NULL;
+ 
+@@ -332,7 +348,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			continue;
+ 		}
+ 
+-		switch (teql_resolve(skb, skb_res, slave, slave_txq)) {
++		switch (teql_resolve(skb, skb_res, slave, slave_txq, &hlen)) {
+ 		case 0:
+ 			if (__netif_tx_trylock(slave_txq)) {
+ 				unsigned int length = qdisc_pkt_len(skb);
+@@ -374,8 +390,14 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			nores = 1;
  			break;
- 		case IPPROTO_TCP:
+ 		}
++		/* Undo only the header teql_resolve() pushed for this slave.
++		 * Pulling skb_network_offset() instead would strip a
++		 * userspace-supplied header when the slave added none, e.g.
++		 * an AF_PACKET/SOCK_RAW frame with no dst entry.
++		 */
++		if (hlen > 0)
++			__skb_pull(skb, hlen);
+ 		skb->dev = dev;
+-		__skb_pull(skb, skb_network_offset(skb));
+ 	} while ((q = rcu_dereference(NEXT_SLAVE(q))) != start);
+ 
+ 	if (nores && skb_res == NULL) {
 -- 
 2.43.0
 
