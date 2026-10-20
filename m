@@ -1,53 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792508303;
-	b=oKyoFHsdWo0qTR9VIcLbhIZ89GGbtEP7M5q0fz3AK/5yCDgpTZFoLSYaFMhywHwRAEW/
-	 sjMMsm1STRnMaS1RhjQbvj0rFPrjG+dFW9C+2v6vLrjfdQnSf27kIQH+3Q+cS1NgGcPcV
-	 GatE05bsD6hk8iWV6+st4A2SumpqLKhM2pErbIshJuaKB/SS+vEAR4wD5sbQXrYuROjL3
-	 NFKrIorhC4ASJzlqiMXe44dCvCmZ3DhsBfFTESV2M3dnBpQFKlHbAQBAUQisXtBRGtoqP
-	 JhzUb3198DZ4a3aRQXA+GXJcAbioNGcyzH+1g8wldJHK9rsCmrYdr03Ws4aDu6Upf2w==
+	t=1792508455;
+	b=MCmjW0LwmbzfpIuJK0hCX3RfFdESuBeSY8TtlWPYleIuoi1KsKBoP1ukkVwJDMZyU2d5
+	 ndLrkzXNAzQBwKnQPt8JVwFPwADBSto7Kpk8BjOs4kLySOS2t6JXfqlgARR+jlEgAIJ0+
+	 kjnahBWcwjOs/+TIfALwPAuI6U7VeUXlzOTPUZwpOg2Oxd8SPKs64l5GXv2Hrt2Px5qL7
+	 LBzqsy3i8Ly7Kk3PjkjbsX3l7Z4+DpEE2muOctc1WmTrtJAjLSvTn04dREPej+Y3e9WUQ
+	 py5oBCUKPrmwm3Lfp9G+VKASS3L6d0ytrFvFx3OxUNxU4gLBc6A4YULYoTXCUQjF7KA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792508303;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=ztv0HJ8l22RRsNhgDD2bkXEQ2puahy2KotEJnS3/Ydg=;
-	b=5AEd2lEsBRtZ6xQyGBAoRxNDpETDOQ+5x3zSpfkUaxYAAP7sVkFGVQeZ/iAw90bivj8Q
-	 2gpXhwY2IXpoG5eslisz68nq5/OhwK8wPG3hnfG/tcmBAmSBiQEbowccxkF5aKDQvy5M1
-	 W4zu04dmXjzsR9vb2Y9eyRwfWGCv3woh+q3gPdftM6qFPbTwgOYpS2lFm2iqM+qox1niN
-	 ycp5d0ifBeN7qEPP3GzsZe4kH95BgnVMkjLZnUnqZNMSoLdqKE/dc/6vRkZN7Etanj6Qb
-	 vH24PPmFV9ULf/J0fV9RVGH/N4gK9k9ovh6PiF3CuOd0oZlywKxNKBHA0eEDCO37XrQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792508455;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=tXs1R/Pc8fPj3MZ2A9bwsOFFGo9wKdk1WOT8dGH7DfI=;
+	b=Ut64P42lTcZecpCchfl6uT2QSkfWmn7McMLQ1D/It7DLW6wgg+wEtGMSecFZZRqQCvkj
+	 TZVhmafGPdtYUYTqLZ0cvxZ/MIC+VtIkxG2Zjq/zQ28XF75UcGS+p18lygtXxbWxB62vM
+	 tSsWGUdyn51mQgB1JbCuCSUWNmQHa8zZfg+IfJkXGmquHVQTasfQsmw5C5AYF7xCIwCkf
+	 QoR2PGv783JmCPq7nynhSV8fHvIYZ0knYVDTILSwo4Ec4G/NMq8PzUV9RoQDvqIOD6mh0
+	 2kyBWZpvniytp7u+/wysNU1bJTbBX19L3TSsxnzKCyA7KZA+qGqZaitzGs3uzc8Tbpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=XUfQyvgt;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="N5jZt3/b";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC09606A319;
-	Tue, 20 Oct 2026 14:58:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBC09606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AE4606A31E;
+	Tue, 20 Oct 2026 15:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=XUfQyvgt
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 20F43A02DC;
-	Tue, 20 Oct 2026 16:58:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792508300; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=ztv0HJ8l22RRsNhgDD2bkXEQ2puahy2KotEJnS3/Ydg=;
-	b=XUfQyvgtMIFS9NUybNkk3G15CGBu9TocD6/t68NAvHfY8yTD5ZDTrcJiQLAuLdnoVTkwh7
-	9J5snnKJFFnYJSqDvuBX4QvV70VO0spX6/DmcmUvXkVLZWyZlHDcH6/RezGHwz9IhB6CTq
-	k5kxCDLLIt03//O5Pc0hqQiQywk/IxWUbo5d3RJ0+zV7FvGDFL44ypsGTQLZ8EZRKY8DYK
-	0yw91bL1OB1H+VChen/EriIIeMXiAaAv31wteLNr2VU5v4tmAwhv/ytsk7f8KYSc3RTNfI
-	WM0672a3sMi1Srp2n8KiKKyIcnCcXUdfNCA0fxqJrjKreYo9IFbre7jreAopww==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH 0/3] clk: bcm2835: describe the BCM2711 GISB clock for the
- GENET MDIO controller
-Date: Tue, 20 Oct 2026 16:58:08 +0200
-Message-Id: <20261020-devel-bcm2711-gisb-clk-v1-0-a1728724d0f8@tipi-net.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N5jZt3/b
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D791F000C4;
+	Tue, 20 Oct 2026 15:00:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792508455;
+	bh=tXs1R/Pc8fPj3MZ2A9bwsOFFGo9wKdk1WOT8dGH7DfI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=N5jZt3/bavAkK5vTeGgezwT/UiXeU3mx9vQshsEIGIVKda4Q7A9o+sZoS9lPU51tM
+	 w1Q/4/RbRnRKrt40kORad1w35T6G0BjaVeLZsAiLCYTrDmnAnMZmcU5F+ZVwZVzqTz
+	 /aPcGd+6G1k+Fc+6dj4laAyX2lSorYTwfaOi+IuWPghT3ysHgflyU3ZfCgrMu9LqU9
+	 lfao/hb75wbkaRoxFNkdQP0wez5hcf5KJCN68VUb97/jeTU3hd4dCewi0V5CJQYbs5
+	 jDpcTksAnAe8Xlz/RQU59/I31P1SHOuDxsPPsBQgFGf82HpT2ESFdbOomvlUsCQna8
+	 0xgEkz+JgwZUA==
+From: Sasha Levin <sashal@kernel.org>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: Eric Biggers <ebiggers@kernel.org>,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org,
+	Qing Luo <luoqing@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	marcelo.leitner@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.18-5.10] sctp: auth: propagate HMAC calculation errors to callers
+Date: Tue, 20 Oct 2026 11:00:24 -0400
+Message-ID: <20261020150024.3643458-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CADvbK_d3hcGcP21Fy_z9hkoSuQT0Bg7111Ejns_WxOYfCCGFHw@mail.gmail.com>
+References: <20261019135441.1420968-252-sashal@kernel.org> <20261019172836.GA1885@quark> <CADvbK_d3hcGcP21Fy_z9hkoSuQT0Bg7111Ejns_WxOYfCCGFHw@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,74 +68,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMyw6CQAxG4VchXduETgxeXsW4mCk/WEU0UyQmh
- Hd31OW3OGchRzY4HauFMmZze4wFsqlIL3HswdYWU6hDI7UEbjFj4KT3sBPh3jyxDjfWbg9EOei
- 2iVTiZ0Zn79/4dP7bX+kKnb43WtcPNgwxmnoAAAA=
-X-Change-ID: 20261012-devel-bcm2711-gisb-clk-cf8eea19c46a
-To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>
-Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
- Stefan Wahren <wahrenst@gmx.net>, Phil Elwell <phil@raspberrypi.com>, 
- netdev@vger.kernel.org, James Clark <jjc@jclark.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-The timestamped MDIO write series [1] needs the reference clock the
-GENET MDIO controller divides its MDC from. On BCM2711 that clock is
-not described anywhere, so 5/5 of that series hardcodes 200 MHz behind
-a compatible match, and mdio-bcm-unimac's clock-frequency handling
-assumes the 250 MHz of the STB chips.
+On Tue, Oct 20, 2026 at 09:52:16AM -0400, Xin Long wrote:
+>On Mon, Oct 19, 2026 at 1:28 PM Eric Biggers <ebiggers@kernel.org> wrote:
+>> I don't think this backport can be considered complete without handling
+>> that case.
+>
+>Agreed. We should return the error from crypto_shash_setkey() when
+>it fails in sctp_auth_calculate_hmac().
 
-On BCM2711 the MDC is derived from the CPRMAN generator at 0x1d8, which
-the firmware calls gisb and has always run at 200 MHz (PLLD_PER 750 MHz
-/ 3.75). Changing that divider at runtime moves the MDIO busy time by
-the same ratio, see [2], and Phil confirmed it from the
-Raspberry Pi side. GISB is the register bus of the STB peripherals,
-which is where the driver's 250 MHz default comes from.
+I've dropped it from all trees. If you'd like it in stable, I'm happy to
+take backports that also return the crypto_shash_setkey() error.
 
-This adds a clock id, the generator in clk-bcm2835 (critical, the
-firmware enables it and nothing in Linux owns it) and a clocks property
-on the mdio node, like Stefan did for EMMC2.
-
-No functional change by itself. The driver only looks the clock up
-with [1], and only for the timestamp bounds. Making
-unimac_mdio_clk_set() use the real rate is a follow-up, as that moves
-the Pi 400, whose clock-frequency = <1950000> currently lands at
-1.56 MHz instead of 1.95. The limit is a level shifter on that board,
-so the follow-up keeps it at 1.56 MHz.
-
-Patches 1 and 2 are for the clk tree, patch 3 for Florian once the
-header is in. dtbs_check clean, booted on a CM4: clk_summary shows
-gisb at 200 MHz under plld_per, eth0 comes up as before.
-
-[1] https://lore.kernel.org/netdev/20261009143506.2507607-1-jjc@jclark.com/
-[2] https://lore.kernel.org/netdev/60accbd89cfaf0d4be1da5ec2fafd975@tipi-net.de/
-
----
-Nicolai Buchwitz (3):
-      dt-bindings: clock: bcm2835: add the BCM2711 GISB clock
-      clk: bcm2835: register the BCM2711 GISB clock
-      ARM: dts: bcm2711: give the GENET MDIO controller its clock
-
- arch/arm/boot/dts/broadcom/bcm2711.dtsi |  1 +
- drivers/clk/bcm/clk-bcm2835.c           | 16 ++++++++++++++++
- include/dt-bindings/clock/bcm2835.h     |  1 +
- 3 files changed, 18 insertions(+)
----
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
-change-id: 20261012-devel-bcm2711-gisb-clk-cf8eea19c46a
-
-Best regards,
---  
-Nicolai Buchwitz <nb@tipi-net.de>
-
+-- 
+Thanks,
+Sasha
