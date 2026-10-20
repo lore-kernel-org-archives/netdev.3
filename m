@@ -1,67 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792523941;
-	b=bdZsJipmn7HuuQaqPofFrpBeM4c9gYymmQ26TD+SpztUN63+gG0MVpWvA7qJPhZ4yiLr
-	 udbL4A52G0aUPvY6g1gOfQvUyNq5IxtAl7XcSbCwIgWleKnolHIKRR+rJs+dwoRur8vik
-	 LNA7jJUxxHjpAWf+88frlTOAN5hb1z2tIRGQT9s52sBXvgbMiVVYiKWKJZj8YtcYvyI07
-	 SnMU/6NlQbfihuaROPSmORcl96EBbl9NjHP9JNRvgSlpkAunFAk/6H9VQtMoaEnplPNih
-	 a1RMzq9j6KFK6aeQ01BvTz/Hq61Zs8R3tRGIigbTq++ded5KQyc2+0/b+Wf47BdWrUg==
+	t=1792524276;
+	b=XUR5DMKqw293/o40JS+dMw3lrtPO8CoZlPrK1RtEvnnBvogOwuR9QP5xzKvtQOiSmx/s
+	 3xsaHgVZF0FGvBGYvN2HnHRmdQprOXGyXTIFGo8VlU/X5SUFFJOYDsxxkzuww6NlD7y34
+	 wsRQ1EY82HPQRiQ5EJToJbCyyZvhims6cE2++o7yYjViQ7n0rL/f0EonSN7taY4dzRDse
+	 3Cr6hdR707zpLjMR7BMvWFNW8QWaziViN0d0Ox4aO5P3SrsZ08O+qbz8vRIApiXxjVbP4
+	 vk90pOA4m9KE0sdiiSKvcu2xp0Q9QwyrEMDqmMFcPuC6R+f95z8tpWNTlVWGxTCTCOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792523941;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792524276;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=o+qYngWD3VtHRYJROR8r2QEagYzTVh9jUdoxhwafRww=;
-	b=gdoHODeoncCBU+8sItiS/rXB3QTdA/8BwDlyLDXF1ZPBdhhS8CFsMBnOU+TPrr2FiidK
-	 eCIK/rSyl/0jEjop2RsAIyX0tYFJ0D2nPsigSxWOO3U7dE/ZKveGR3BjNbKOA3UWJb74Q
-	 vu/6iHnvzpJyUEKu7c5Zav/oeNQATS4Jz75W/fAL862XUanLRj3+PYI5dHtGsNX/IyLJY
-	 C2MICUA03EnFVAN2Yq4kfGJAnLkcZMeHgZIGQNpqNvvBNXg8zT+B2S8RZiH4OurGz9oKp
-	 /njZaLAtnbcN4QO4PeoMh5wxIbWg9AQrHjg9z+bXYDeEeJytPgxdORv9ooeSU07BPDw==
+	bh=M+Z/CSLfbtLNI8KeSX5aKzw16HLuhGFRAPfRi2/mK+Q=;
+	b=Jo/EZU1iJlZQYGqC8iBXMGnu9N3QQ/qDxiV3LsrZihn00j0YND9t5gLUrmgORbr/9awk
+	 v+ZBjleLJjn1XRsym6GppwGAMWIMcp3cvCYmJ5m4aA6yhQkiexr/cKZi3kQKeWNPZe5d8
+	 2GEpOCae+n6gnjZB7wIj0vEWmBbobgivPRwA3bSsuUVwqrZ2y5T2eu2t312hcYfE+C8GN
+	 oL57+Nvg64tjnfcFDzz6x0F0Wn4SkEkY4cm7sksKtYa868YnFEYLd2WyrTxFfvCsAjKni
+	 18bK3kMtYNBUCBvR+5Wxfow8KXQ5AUjHIpoS2xPe7BVIxB6DbIv79MONBiEQj9ODCOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A7w0gEdO;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SQYQbvSS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE96606A319;
-	Tue, 20 Oct 2026 19:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FC8606A319;
+	Tue, 20 Oct 2026 19:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A7w0gEdO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921281F000C9;
-	Tue, 20 Oct 2026 19:18:59 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SQYQbvSS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C571F000C9;
+	Tue, 20 Oct 2026 19:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792523940;
-	bh=o+qYngWD3VtHRYJROR8r2QEagYzTVh9jUdoxhwafRww=;
+	s=k20260515; t=1792524276;
+	bh=M+Z/CSLfbtLNI8KeSX5aKzw16HLuhGFRAPfRi2/mK+Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=A7w0gEdOvYzmk0vkW1JwU8bkYmH1HgaxOPga0sFNm0yLcYM4qvuuthmiN2t9Vfdoz
-	 Cvd4nrhYU5g2767tUif4Olx3uzuA/n46c9VtZTpU9WVxwL3YptLYYmWfvH3KroQ5Dv
-	 lWcBo5Qsj0pQHd7fBmqd0z0hPK+h7fEvL4kUx4Cf4987ztpjXd5CyKl5iAy+0FURRY
-	 9bvyzOZvLD2ZovXoR9m02gJzdFd6jpTAWE45BDZ1zpEeJsVqIGwY2blTooVEy7m6e5
-	 MEg/4Um77dGmgbveH57cGzYzZiXaO9DwLdLyfo9Y4AkHpPdJWnWc5E/IUoMft3kNva
-	 1dzazHcVxQ7kg==
-Date: Tue, 20 Oct 2026 12:18:58 -0700
+	b=SQYQbvSSg9eIQLU+57l0bR1dxOfpeKYESIKHUWNz9JoioDMv3Fj1lxY26LXV0jQU2
+	 EDgnWLIZJnGddMMvgFdK9940KXRUN/hCQCx1eBDArjd2jHuQ59XyPjTB3N1rEO+yZv
+	 xhxnessAWwtS6Q4+ODoiX8ThveA29T03rDZU5PR2cLp4SkGvPHVlkXsowiQaQyvFDE
+	 JAuopzelMV5mIrmmyyEguGQn1rm/NA7/avt7uYWzeiCObNSv3m3JUcMmtRDQeuuGaC
+	 XzWKbAJ51RezPlTc4qiuvamvRuN+aY2jAYwdwEP1cV3l4TTaecar8FAAOWOxlyT1jN
+	 zZvRAMatcykMg==
+Date: Tue, 20 Oct 2026 12:24:35 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>,
- Stanislav Fomichev <sdf@fomichev.me>, Taehee Yoo <ap420073@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Kaiyuan Zhang <kaiyuanz@google.com>, Bobby
- Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, Simon Horman
- <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, "Christian =?UTF-8?B?S8O2bmln?="
- <christian.koenig@amd.com>, Dragos Tatulea <dtatulea@nvidia.com>, Nikolay
- Aleksandrov <razor@blackwall.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Tariq Toukan <tariqt@nvidia.com>, Kaifeng Wang <kaifengw@google.com>
-Subject: Re: [PATCH net v4 3/4] netdevsim: support devmem RX and TX bindings
-Message-ID: <20261020121858.3b9107c5@kernel.org>
-In-Reply-To: <20261015163915.1166043-4-almasrymina@google.com>
-References: <20261015163915.1166043-1-almasrymina@google.com>
-	<20261015163915.1166043-4-almasrymina@google.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Daehyeon Ko <4ncienth@gmail.com>, David Ahern <dsahern@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Hannes Frederic Sowa <hannes@stressinduktion.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4 3/4] ipv6: initialize temporary ifaddr before
+ publication
+Message-ID: <20261020122435.055178e9@kernel.org>
+In-Reply-To: <20261015143230.GC1794897@shredder>
+References: <20261015050651.1841557-1-4ncienth@gmail.com>
+	<20261015050651.1841557-4-4ncienth@gmail.com>
+	<20261015143230.GC1794897@shredder>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,13 +67,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 15 Oct 2026 16:39:14 +0000 Mina Almasry wrote:
-> Set a 64-bit DMA mask on nsim_bus_dev, enable NETMEM_TX_DMA on the
-> netdevsim net_device, and configure page_pool instances with
-> PP_FLAG_ALLOW_UNREADABLE_NETMEM and queue_idx, plus PP_FLAG_DMA_MAP |
-> PP_FLAG_DMA_SYNC_DEV when CONFIG_HAS_DMA is set, so devmem bind-rx and
-> bind-tx netlink operations can be tested against netdevsim in software
-> selftests.
+On Thu, 15 Oct 2026 17:32:30 +0300 Ido Schimmel wrote:
+> FTR, I suggested a smaller diff [1] which you decided to change without
+> a comment. Tagging this one because it fixes the problem and because I
+> want to put this frustrating submission behind me.
 
-Slightly worried this will bring a bunch of maintenance burden and
-"bugs" in netdevsim. IOW that this will be more pain than gain.
+Ido, FWIW it would be more than fine for you to take over and submit
+your own patch when the author is likely an LLM jokey simply feeding
+sashiko reports and your replies into a machine.
