@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792460492;
-	b=wdiR8UkvZcWbE/6Q0sa5IIkGtqA0WUFKLIN6WXn8W1yIQoiWY13pGTJYW4647Q7y74ez
-	 LTPqPU12uTYDvMWT/IUxATTWM/HB/l9rpq/OjSKbXeF01JiWFXSr+9n9pH5RvLvGTSpzX
-	 OxECSS8z/Pdva2aAf3EP7RAGQWWpwLSKx901XlnbPl5q+b05qIX3o41OgiHGVxt2uQ6hl
-	 FO2U2T6Mzzf/nCDoQt8omhDlIwAkaGaJr3xtTFzqVWz1hlxD6oRq2pKHjDmYwv/HrpDi4
-	 liFskIQu7rQW+iWWQeZTro+w0dMlez4yppI7+X4QXVADuyl5EU5/0+wV4b2Ot7wBWoQ==
+	t=1792460490;
+	b=vv858ZREanOa9H7baTtozRhPjnyrdbZ1x5qBgQgpzQp/Utoc+e/H1vnQhlnMKeuHD2jE
+	 9MLx/V7gC7rmllA/DGLCLmw51A4r/eWF3mauME67oef/pvV1vxf7ZeyoJoP3oG3CzaOyI
+	 WGgz+h7OZd3zODibwJDQ9ITQ3PrOPxCtGr+wrdnH5RB6vfDCWCUYvfMeF87y5+aZM4ZYL
+	 AYsAGHEudGa6hfnVHrpb0kgD6o4hF/NM9P/A8JUSwHeXPm3t2/6KBV/bWSMmK2WD9ep+g
+	 fVNuI6SaMry979v0/BvrJH0UFLNYKdBrypCDQJxMx7V3GXEXGEb+YLA9QR+bf0mTMLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792460492;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792460490;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=aDnrN/rnO8GTJvw/uGicHbUYV95/hlCAICtPYU2nHKk=;
-	b=RZAPYybVX1BUTCSortI6fjOV6EF2DIL6nDqnMoRWnizry0jQTnBQs6++cGU4Ndq1/3t/
-	 i2zLKAV1rtEbhNSyO/HXMJDVVnpIgj9Q6wrQ/3mi+gSu8XYAYophw8UKndfxLZ/xMv0rP
-	 hKn1y5SaczaZN64s8eNd6GLRrOuN1KYMFI1P/lGNPGFyNb/skKIe+5Q3mWQbDoYQczkMm
-	 tHqKHtnlUVTkwTt2U3vVql5SLe7v3aFNXnOMAvzXnBfhFR/fTCm/lL2uKnsIYyBliOtlL
-	 i2x+mWsP1RliK3Oie3eAQZID1oEH7W2B8akoLjdB5Rda/EvdFEnj1wJnpn53Z0q3xPQ==
+	bh=JaW0Sa8+8s9JtpmJ9NEF3RVrWWI4PzMiemCJ0QAXzTs=;
+	b=OaJPXdoE+rgDGq0+ReywebjPNqtYD8Kd1Hpl2eHYcrBmraPLFJUUlM2JbmdYo31oyiT3
+	 ZD1KkhRToacX7nfVfDpQEVS6pwxegIzmy72gg2wDIvURVN4dRJxxA1ru8l6MzB9VVHNqI
+	 rvT/3/E6Dd/+PdfecXcYp3rPb0GQel/W0MCqbM+k9C/7+N3mAtI80U33isVmOprN9lD0r
+	 Qzqw2fUvhJpjbwfL6oGnMlKM8jOuDYGa6GbBxVC/x1fQCJWx++KDEh05c3Isl2rmaH42h
+	 2By3rOYhZPWCYO1T7r8t9SRT8MVD0EvIWc3JjI/1VLIL0L/aOHAxrpCKI7pq7jaEuvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEGECTr6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CjS7SNfG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A372B606A328;
-	Tue, 20 Oct 2026 01:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEGECTr6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DF01F000C7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350B4606A322;
 	Tue, 20 Oct 2026 01:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CjS7SNfG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5673B1F000C7;
+	Tue, 20 Oct 2026 01:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792460491;
-	bh=aDnrN/rnO8GTJvw/uGicHbUYV95/hlCAICtPYU2nHKk=;
+	s=k20260515; t=1792460490;
+	bh=JaW0Sa8+8s9JtpmJ9NEF3RVrWWI4PzMiemCJ0QAXzTs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OEGECTr6MHjApaNaS5+l2ymKg3u8HTBL/7GV3C5c5WJoQ8MW7IsR0A2qF4yZGzorC
-	 dcK2MbWcgiTqwiZXIxc7HCCn47o/YGI+bvhRKoRgrU1TyJbODxLwZkp4uivelC9TvX
-	 PIU0j4E0VOPC5RhEiFdCPTWwlvQVGe2wocxgB5UZ/9KmxYFYWOZMn9KfyNvUx758JN
-	 MuWCjWiAAzBYtv+tf1opGvqVyzjvNx5tWyA2mFq9BHxZp/j4yHYqgujNuqM/j1YEJL
-	 vUzs7/lj17u4rKMi3rjBdQGhfSLDK+t6h68T54F6H+CPwKMuj99U1bF70Um4foADHH
-	 rHUW5sx9y+Yng==
-Subject: Re: [PATCH net-next v6 8/9] net: dsa: realtek: rtl8365mb: re-latch
- the family D SerDes
+	b=CjS7SNfGzaX1jzv0AndZ/y/gG80ag9G1GsNOFqMZlm9ZV4/kJt2S9/GztILFnRjpw
+	 dVJR1Q/L5DMWKApZHRIxtzTDZ0C2jUJei/4FXn369zr+gcyw4blVnxReWGgqxp751u
+	 9/I8ilzM/kZ56GhGjk0n1baq2vY23n2kJizTE+WHP0sRnRhM5jlsFmoPBtAQPWTPza
+	 4dPQS8pywGU4hmEylQAg81TyZP1f0yIe7rUnE1Hk1UBE8QyOwHJTMeoKSeH4a9LPQK
+	 f8VbhD7kq0/eBYqrTm16Qm/0cwZoOnzfjxEb1mWSfFVx2ZetH7W4/3FrawvBtMKukp
+	 Z86l0phZiZ2GA==
+Subject: Re: [PATCH net-next v6 4/9] net: dsa: realtek: rtl8365mb: set RGMII
+ mode for family D
 From: netdev-bot+sashiko@kernel.org
 To: namiltd@yahoo.com
 Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 20 Oct 2026 01:41:30 +0000
-Message-ID: <179246049030.3135.13023954288671040078@kernel.org>
-In-Reply-To: <c43a5bf1-0cf9-4c68-b905-e9b615e2c9b2@yahoo.com>
-References: <c43a5bf1-0cf9-4c68-b905-e9b615e2c9b2@yahoo.com>
-X-sashiko-severity: Medium
+Date: Tue, 20 Oct 2026 01:41:28 +0000
+Message-ID: <179246048886.3135.6585155779624882591@kernel.org>
+In-Reply-To: <aca905a9-9cc2-456d-ba5f-2d9425f1b5c1@yahoo.com>
+References: <aca905a9-9cc2-456d-ba5f-2d9425f1b5c1@yahoo.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,138 +65,175 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] rtl8365mb_conduit_state_change() never looks at its `conduit`
-  argument.
+- [Low] rtl8365mb_phylink_get_caps() drops RGMII without logging anything
+  when TOP_CON0.MAC4_SEL_EXT1 (BIT(12) of 0x1d70) is set on family D…
+- [Low] At this commit the two parts of the code describe EXT1
+  differently.
+- [Low] On family D EXT1, rtl8365mb_ext_config_rgmii() writes in this
+  order: RGMXF delays, DIGITAL_INTERFACE_SELECT = RGMII, clear…
 
 --
 
-net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
+net: dsa: realtek: rtl8365mb: set RGMII mode for family D
 
-On family D chips, this adds a delayed work item that repeatedly parks
-and restores SDS_MISC. That drives the DISABLE -> HSGMII edge the SerDes
-receiver needs in order to latch, and the work keeps checking the link
-after that. Episodes start from ->conduit_state_change(), or from
-pcs_config() when the conduit is already up, and stop when the conduit
-goes down.
+This patch adds family D handling for RGMII on extension interface 1. It
+clears the EXT1 RGMII TX delay field in EXT_TXC_DLY, binds the pins to
+MAC7 through TOP_CON0, and disables SerDes 1. RGMII is also no longer
+advertised for port 7 in rtl8365mb_phylink_get_caps() when TOP_CON0 shows
+that MAC4 owns EXT1.
 
 > diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index a8e9220b217fd..a1155a75356da 100644
+> index 2dabc4da861f4..f00c1c24014a0 100644
 > --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 > +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
 
 [ ... ]
 
-> @@ -1670,8 +1774,184 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+> @@ -1270,6 +1290,33 @@ static int rtl8365mb_ext_config_rgmii(struct realtek_priv *priv, int port,
+>  	if (ret)
+>  		return ret;
+>  
+> +	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D &&
+> +	    extint->id == 1) {
 
-[ ... ]
+[Severity: Low]
+At this point in the series, does this model of EXT1 disagree with the
+existing SerDes comment and constants near the top of
+rtl8365mb_main.c?
 
-> +	/* The re-latch edge has only been observed with HSGMII, so the work is
-> +	 * only armed for 2500base-x. It starts once the conduit is up.
-> +	 */
-> +	if (is_d) {
-> +		WRITE_ONCE(mb->sds_relatch_armed,
-> +			   interface == PHY_INTERFACE_MODE_2500BASEX);
-> +		/* With the conduit already up no conduit_state_change() will
-> +		 * follow, so start the episode here.
+/* The embedded SerDes can only be muxed to external interface 1 (MAC8),
+ * which is port 6.
+ */
+#define RTL8365MB_SDS_EXT_INTERFACE_ID		1
+#define RTL8365MB_SDS_EXT_INTERFACE_PORT	6
+
+Those apply to every family. The new family D code treats extint id 1 as
+the RGMII interface of MAC7 and disables SerDes 1 on it.
+
+Later patches in the series fix this. The comment is rewritten to say
+family D has the SerDes on external interface 0 (MAC6), and
+rtl8365mb_pcs_config() skips the EXT1 DIGITAL_INTERFACE_SELECT write on
+family D. Family D also can't be reached until the last patch.
+
+Could the comment be qualified in this patch so both descriptions agree
+at every point in the series?
+
+> +		ret = regmap_update_bits(priv->map,
+> +					 RTL8365MB_D_REG_EXT_TXC_DLY,
+> +					 RTL8365MB_D_EXT1_RGMII_TX_DLY_MASK, 0);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Bind the RGMII/MII pins to MAC7. MAC4 does not own them:
+> +		 * RGMII is not advertised otherwise, see
+> +		 * rtl8365mb_phylink_get_caps().
 > +		 */
-> +		if (READ_ONCE(mb->sds_relatch_armed) &&
-> +		    READ_ONCE(mb->sds_conduit_up))
-> +			rtl8365mb_sds_relatch_start(mb);
+> +		ret = regmap_update_bits(priv->map,
+> +					 RTL8365MB_D_REG_TOP_CON0,
+> +					 RTL8365MB_D_MAC7_SEL_EXT1_MASK,
+> +					 RTL8365MB_D_MAC7_SEL_EXT1_MASK);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = regmap_update_bits(priv->map,
+> +					 RTL8365MB_D_REG_SDS1_MISC0,
+> +					 RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK,
+> +					 RTL8365MB_D_PORT_SDS_MODE_DISABLE);
+> +		if (ret)
+> +			return ret;
 > +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void rtl8365mb_conduit_state_change(struct dsa_switch *ds,
-> +					   const struct net_device *conduit,
-> +					   bool operational)
-> +{
-> +	struct realtek_priv *priv = ds->priv;
-> +	struct rtl8365mb *mb = priv->chip_data;
-> +
-> +	if (rtl8365mb_get_family(priv) != RTL8365MB_FAMILY_D)
-> +		return;
-> +
-> +	guard(mutex)(&mb->sds_cfg_lock);
-> +
-> +	WRITE_ONCE(mb->sds_conduit_up, operational);
-> +	cancel_delayed_work_sync(&mb->sds_relatch);
-> +	if (operational && READ_ONCE(mb->sds_relatch_armed))
-> +		rtl8365mb_sds_relatch_start(mb);
-> +}
 
-[Severity: Medium]
-Should rtl8365mb_conduit_state_change() check which conduit the event is
-for? It never uses the conduit argument. As a result, every conduit in
-the tree overwrites the single sds_conduit_up flag, and each one cancels
-or restarts the one SerDes work item.
+[Severity: Low]
+Is this write order intended? The TOP_CON0 pin mux and the SDS1_MISC0
+SerDes 1 disable are written only after DIGITAL_INTERFACE_SELECT has
+already been switched to RGMII just above.
 
-dsa_switch_conduit_state_change() in net/dsa/switch.c passes on every
-conduit's state without filtering:
+Suppose SerDes 1 was active before mac_config (from strap or EEPROM, for
+example), and the hardware drives the shared pins as soon as RGMII is
+selected. Could RGMII and SerDes 1 then both be set up on the same pins
+for a few SMI transactions?
 
-    ds->ops->conduit_state_change(ds, info->conduit, info->operational);
+Nothing is unwound if one of these writes fails partway through, either.
+rtl8365mb_phylink_mac_config() only logs the error:
 
-rtl8365mb_setup() also accepts more than one CPU port:
+	ret = rtl8365mb_ext_config_rgmii(priv, port, state->interface);
+	if (ret)
+		dev_err(priv->dev,
+			"failed to configure RGMII mode on port %d: %pe\n",
+			port, ERR_PTR(ret));
 
-    dsa_switch_for_each_cpu_port(dp, ds) {
-        /* Use the first CPU port as trap_port */
-        if (cpu->trap_port == RTL8365MB_MAX_NUM_PORTS)
-            cpu->trap_port = dp->index;
+After that, rtl8365mb_phylink_mac_link_up() can still force the MAC link
+up through rtl8365mb_ext_config_forcemode(), with the mux or TX delay
+only partly programmed.
 
-The RTL8367S-VB, added later in the series, allows port 6 (EXT0, SerDes)
-and port 7 (EXT1, RGMII) to both be CPU ports. Suppose the RGMII conduit
-goes down while the SerDes conduit stays up. Would that cancel the
-SerDes work and leave sds_conduit_up false? A SerDes that has not
-latched yet, or that loses its link later, would then stay in the "link
-up, no frames" state.
+The existing RGMXF and DIGITAL_INTERFACE_SELECT writes, and
+rtl8365mb_pcs_config(), behave the same way. The concern also depends on
+hardware behaviour that hasn't been confirmed.
 
-A later pcs_config() would not restart the work either, because it reads
-the cached flag.
-
-The reverse case looks affected too. If the RGMII conduit comes up while
-the SerDes conduit is down, park/restore episodes would start against a
-far end that is not running.
-
-rtl8365mb_pcs_config() above raises a related question.
-rtl8365mb_phylink_mac_select_pcs() returns the shared PCS for any port
-in a SerDes mode:
-
-    if (rtl8365mb_interface_is_serdes(interface))
-        return &mb->pcs;
-
-rtl8365mb_pcs_config() then sets sds_relatch_armed for any 2500base-x
-user, with no dsa_port_is_cpu() check. Suppose port 6 is a 2500base-x
-user port (SFP or 2.5G PHY). Could any CPU conduit coming up start an
-episode on it?
-
-If so, whenever that user link is down (after a cable pull, for
-example), SDS_MISC would be parked for 20 ms every 1 s for 15 tries,
-then every 10 s. The "did not latch" and "link lost outside a
-reconfiguration" warnings would be logged each time.
-
-Other implementers of this op filter on the conduit. For example,
-qca8k_conduit_change() does:
-
-    struct dsa_port *dp = conduit->dsa_ptr;
-    ...
-    if (dp->index != 0)
-        return;
-
-Would a similar check here, limited to the CPU port that owns the
-SerDes, avoid both cases?
+Does the vendor RTL8367D code set the mux and disable SerDes 1 before it
+selects RGMII mode?
 
 [ ... ]
+
+> @@ -1802,8 +1851,23 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
+>  	 * which remain unimplemented.
+>  	 */
+>  
+> -	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII)
+> -		phy_interface_set_rgmii(config->supported_interfaces);
+> +	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII) {
+> +		/* On family D the EXT1 pins are shared with MAC4 (UTP port 4).
+> +		 * If MAC4 owns them, RGMII on this port cannot work.
+> +		 */
+> +		if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D &&
+> +		    extint->id == 1) {
+> +			ret = regmap_read(priv->map, RTL8365MB_D_REG_TOP_CON0, &data);
+> +			if (ret)
+> +				dev_warn(priv->dev,
+> +					 "failed to read TOP_CON0, RGMII on port %d disabled: %pe\n",
+> +					 port, ERR_PTR(ret));
+> +			else if (!(data & RTL8365MB_D_MAC4_SEL_EXT1_MASK))
+> +				phy_interface_set_rgmii(config->supported_interfaces);
+
+[Severity: Low]
+When MAC4_SEL_EXT1 is set, RGMII is dropped here with no message. Only
+the regmap_read() failure branch warns.
+
+The commit message says:
+
+    If the internal MAC4 block occupies extension 1, do not advertise RGMII
+    for port 7 in phylink_get_caps(), so the configuration is refused before
+    any EXT1 register is touched.
+
+How would a user find out why it was refused?
+
+The last patch in the series adds the RTL8367S-VB entry, where port 7 is
+{ 7, 1, MII|TMII|RMII|RGMII }. MII, TMII and RMII are still not
+implemented in rtl8365mb_phylink_mac_config(), so supported_interfaces
+ends up empty. phylink_create() then fails with only the generic message:
+
+	if (phy_interface_empty(config->supported_interfaces)) {
+		dev_err(config->dev,
+			"phylink: error: empty supported_interfaces\n");
+		return ERR_PTR(-EINVAL);
+	}
+
+If port 7 is the CPU port, DSA tree setup fails. Nothing in the log says
+that MAC4 (UTP port 4) owns the EXT1 pins.
+
+Could this branch print a dev_warn() that names the MAC4/EXT1 pin
+conflict?
+
+> +		} else {
+> +			phy_interface_set_rgmii(config->supported_interfaces);
+> +		}
+> +	}
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/5a4715dd-89e0-4868-9ffb-c8fb73b18d04%40yahoo.com
