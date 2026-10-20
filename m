@@ -1,97 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792528352;
-	b=xTneP5z2oJkcAj/l6LDVpZ9FGVV5vszlxU5YAsR5YHk0iH8IFQR4Gmrb2DaqZTfF1TAG
-	 PZJpQIWLIVBVDOvraab9tY6wVBlIMs1Lskd0z/2y+DFw/tdRiRpuwDf0iScTKuoKpAqwZ
-	 0BrEibadPIiPwSde63xtKcvJFv6PPgdAkTJfQgyJ9LoohE3CFaK7T48AxIx88CaXrnyFi
-	 eWqmu9m1/yr1Xw70rVSXwXCniVl9CEWJP0f8GrVvHpi8oQr3ZefxAJQYZg9rL0N9yhBdU
-	 p+9A2FvpiZR6imfiE0sGcieD5X9dh1qlNi9jt1c2hz+7kqf6020r+GIIKSBLHH3iHWw==
+	t=1792528384;
+	b=TiAQqkGzTZkz0UxIC5vwQk0RhJ4Zon4IzJjgW215vDKSmU0eZBDB5s3HWnUPg24Yg1gE
+	 DDzTNbhOCF7h1ovca5V8Pn0mPKrXgMWdUvxukc/n/u9oa5d7BEFGVqiCa9bDAwGGtzwVw
+	 FVNawJCEBo1WooKBKXxbt1iRgxG03O1tNGpQXf/fxPzBK07yoV2QZZ5RUcl+cwwJc+iW+
+	 n5ZX6qy/k+Feug43RKqEqcYQZJTvOa8FXOolBrjnvUJFeg1DPvsCiMNJn2a2I/CnL8iUR
+	 HpcYribFK3H8bTRYVPpq6zYglX9roqmL5EurRy6e8PzDrp9JanPdX01NJG/IVwoYHmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792528352;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=ZkWQE/uALqfLnZKuscsosAHo1zEUz4R5lm4SmlWWw6w=;
-	b=p3A3UTQH9CethCQC2tMCTBSRTEujqgcd9YKeUWfJ8DcRdpXxzzKtYQ1eyTrW1IgSi1P3
-	 Omw08N0q6dn9mekCNlaEv3XXKKkGY/tAVpQ8xWxx3rlixuYWdVX/8i/WX9k2AXKJCBla+
-	 nDann6pXQqwfLkHeBPKj69hlwbAKecstPG4JT7KC3nXFdvx2hSy04gE9sqXuOErq+3Tk6
-	 u+OgOdnx/TIQxawzcuBZkOOqA3r6HBQEBHvd+hSQu/KJLt5FsIM0PIYMSv9h4Vsr0YQew
-	 CEItByLJ+chGZSmyQPMEilNLX5bcH7Li5Ka1JJXgryPeG1XZ5yObcW28vSXOlRh4ipg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792528384;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=HokUeG8K61PqpdYWUVTP/w5f2xfNpsSk7jsIIuyA5pA=;
+	b=LZqjhF18QyzpCMnCRaVk9KUqaBLMUDwb6+2qbmAwt2m2w3hKpGJMRuzfSjuTY9LkEx/P
+	 1pCeOoge/qef4FTUk0pxtNQMWwrGAZIUXowR5kMlRls0LZmyTIzlrz6IcXcmdDaJWKMEL
+	 Z60XHDB/PfznJXJV/XFUv1Vt2bthGnv5VUtj7zi5KHJj/MxCg4MZd6bmchmPwi+RpnrXw
+	 4eeJQG7HtP8ZinYOqe8CHEo9dfZlucu12khpDI03++j3W9CRNLbZmXl0gwiy5L1BMfUV7
+	 yI+AHATOBnMpCoMvsKYsjU8Bl+5oXf4VyOJHCCo+RHOcWdksT3kyKn+Hz2hgAcTOQOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gkq5TCq8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T6m3j63p;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2150606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61011606A321
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gkq5TCq8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECA41F000CA;
-	Tue, 20 Oct 2026 20:32:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T6m3j63p
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A086B1F000CA;
+	Tue, 20 Oct 2026 20:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792528351;
-	bh=ZkWQE/uALqfLnZKuscsosAHo1zEUz4R5lm4SmlWWw6w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Gkq5TCq80SSQskzQkfsgHUu2HSuSGc2Oma4YCr3nINfDqKXggEiwb73ITrV5JWm33
-	 pxLn2/TngXZISnhZ9YdLBKz6+QgYL13L7SNfjTuYuTSmNMp0tww2AHOyeHc6xWhXPC
-	 ghrrO1bi8QeyJ71g+Ouz2T+YA2Eag/4UHprOsAQjQrKuOXE28t81olCd3k79j3u7xn
-	 C+fi1MXADW+CzgbApqf03EWF6PSoNQgubxBilMUMIUyy6j4TcRODsun2DGoLMLYyQ/
-	 M40boy1QIk2NHM3G+b74wx4n65Lmh6xF0J7U5URhMOOpJMa9nVXQryE2fJmSVc7yMf
-	 4nTHQAVFho+ww==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0E7C8F4006B;
-	Tue, 20 Oct 2026 16:32:30 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 20 Oct 2026 16:32:30 -0400
-X-ME-Sender: <xms:3s_XamN42F183gxMSO2a_dH2dOTn1d7hJoYI6qhAoV2_jio4lXkL2w>
-    <xme:3s_Xap0LasOYBCh50uK7ALGn3NvYnW18g-8lJ9UIpt5RruCceNUhlmZjEAXxpd0Vx
-    nc7-j6Hl0D_AeI60gVcDBIPCCdwLU40_0horMMH0N1uiaG9oEaQSf0>
-X-ME-Received: <xmr:3s_Xal1InojV7R7LAGL7hua-2NBFRmRnnrcVfP5gCDdJi_kHMmyxEEVTgfiOB9s_yraPKyjLJFkRaAk7RxgKT3voYrSfqRKa>
-X-ME-Proxy-Cause: dmFkZTF2jD+MaXG7JBc6kMXRFqJOwuJfgs6TtjLrVebZcy1oGq69rP+skQs/Q55fcuR+hP
-    dfOwQXHwP0n0T/4mX/xRrgdyTMsXGJeEojmwqRazHVvRzeptbDaLb1X0Lqe+/U78n5p0YT
-    n+kNVD9LgQrvUZaqpz2azFY8EBZcZYbfTwELiJdrnj7ojVEUi3oytPg9Phv8o71pJ/FjvN
-    o2EPTS04NWPTbygPRy+m9kzkNV+KBGQrB0ol291C5DgE4mjXWciYXJCweQZNTdpe5hJQNt
-    LqdpBpdKYkQCjLh6phrlhg8DGIWr2d7vgaNwCi+hayS6Z6+UWWsnxpQA6DzobiGBGGDauI
-    1Su7SHOYPoYQKX5XVb0grr6MPWB3iMC44UYNKCdT50t/0vgDs4VWwLUPVLes9OrfM27vWl
-    EwBFf520/RLSi3SkQDCxTjsnTI6fBKd3FWMeTUcdCz2oqButbZ1rtWnYf0Y/Nyw6iKAGN0
-    TlT2l962IFu82q0dIk5olwo8QUoCy8rw76J5RIqZg6f9T5xrtSg2x0Az8fWToKxP2U2Ofp
-    r3QUR3mMVrZVadZi69zGNrhEh9KYleUXDMuNJTL+7YG34nJAOQCihYnXzmx+LIRQ/G02R7
-    QOX4D4Kdj6mXBTufPQ1IxU/fC09AUNMv37vSjHlG6b8jz1yvd+VOyduhI2ug
-X-ME-Proxy: <xmx:3s_Xan-sJ5hctZHYIj2ooDyZC_LMHhd_Velr9G36LPhzdE66xtHWJw>
-    <xmx:3s_XahZzBp70_C5oUv30CAFDWebM2OkgGZY8nTLYakCfsdTAmQl4Qw>
-    <xmx:3s_Xamyu35PIA4Eo6qYHlXisAzjeQmB08Vv-7en9b7Z9fJOYy8Mg0w>
-    <xmx:3s_Xav8E7ttZeS01BqXbvCBAtbTCVI5fJIOgR-yNKngHoD-B6PRJ3w>
-    <xmx:3s_XaizRRPpmZg0Mw0sP9ak_DgKL77ZXrdSAGg-gH9E0OBtYHECJDNxd>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Oct 2026 16:32:29 -0400 (EDT)
-Date: Tue, 20 Oct 2026 13:32:28 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Vlad Poenaru <vlad.wing@gmail.com>, netdev@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Nilay Shroff <nilay@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	Vlad Poenaru <thevlad@meta.com>
-Subject: Re: [PATCH net-next 0/2] net/sched: don't wait for RCU when
- destroying qdisc lockdep keys
-Message-ID: <atfP3PyUjF6pKh--@tardis.local>
-References: <20261019170225.729789-1-vlad.wing@gmail.com>
- <atZtYi_Xnz27O8Bp@tardis.local>
- <c3de29a9-8edf-4186-bc26-82d1d68c4c78@acm.org>
- <ateu_3PV81VuFK1i@tardis.local>
- <9b33cc28-9e30-4bdb-aa1e-cd8dec149833@acm.org>
+	s=k20260515; t=1792528384;
+	bh=HokUeG8K61PqpdYWUVTP/w5f2xfNpsSk7jsIIuyA5pA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=T6m3j63poNq10qY8QWwhrf+ACKb/kLHteqgU8jHz90x+M/DIq+2SsU1fETzIKgLil
+	 Ntvkw74FrmppLTvy8K5tZmKcpzu8wqYTZZfWOOZRkr+LAU5qQkrpKTCD/BCNqtG34V
+	 2yZMVhEKQyfDJNKvl1fVfy9dB0u3kzDXiudaLLM8L3+trWy/gjkW1fnzZUrOzzY/QT
+	 b4OxvN/1G62866S5WiB6Q3kSVWlLUIAcOSRFJZbtM+lonyf4saEDect3umI3F3xMCo
+	 zOdxgBoRaFPi1Nyd//9tC2NqkyHoDr/ORUl8WI1aJd57ZSLHUecAKQOEcAGJcpIsPw
+	 tdrVwipwW+USA==
+Message-ID: <f2bcccb4-0790-48bd-a292-fecba10e85ec@kernel.org>
+Date: Tue, 20 Oct 2026 14:33:03 -0600
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,26 +51,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b33cc28-9e30-4bdb-aa1e-cd8dec149833@acm.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] selftests: netdevsim: Add FIB notification tests
+ for nexthop objects
+Content-Language: en-US
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, horms@kernel.org, andrew+netdev@lunn.ch,
+ petrm@nvidia.com
+References: <20261019140337.2886875-1-idosch@nvidia.com>
+ <20261019140337.2886875-3-idosch@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20261019140337.2886875-3-idosch@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 20, 2026 at 01:21:28PM -0700, Bart Van Assche wrote:
-> On 10/20/26 11:12 AM, Boqun Feng wrote:
-> > Is there any context that I'm missing that you want to shut up this
-> > discussion and rush the change in?
+On 10/19/26 8:03 AM, Ido Schimmel wrote:
+> Add IPv4 and IPv6 test cases that program a route that uses a nexthop
+> object and check that two notifications are emitted for it, with the
+> second one carrying the RTM_F_TRAP flag.
 > 
-> I'm not trying to shut up anything or rush in anything. All I did is to
-> share my opinion.
+> The new route_nexthop_check() helper follows the same pattern as the
+> existing route_{addition,deletion,replacement}_check() helpers.
+> 
+> Without "ipv6: Hold RCU when emitting route hardware flags
+> notification", the IPv6 test case passes, but triggers suspicious RCU
+> usage splats. The IPv4 test case is added for completeness.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>  .../net/netdevsim/fib_notifications.sh        | 66 +++++++++++++++++++
+>  1 file changed, 66 insertions(+)
 > 
 
-Phew. I value your input but note the Vlad already offered some options
-to resolve my concern [1]. It'll be valuable to examine these first in
-my opinion.
 
-[1]: https://lore.kernel.org/lkml/20261020125335.678200-1-vlad.wing@gmail.com/
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-Regards,
-Boqun
-
-> Bart.
