@@ -1,66 +1,46 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792505181;
-	b=r5Q5RqnrgPJ7pI6ZlHpPH097nK1eSfKNRRVl3JUX3eFQB1bMKTFckttkJDQrzOybApaq
-	 aVhMJpkLyQFN8AT0NyCleE/B6VsyNjU21HFXEernR3aEXTsKqP/DDwebk3FSXqNYF1sPN
-	 sYf9+Yi5z+WPwzuvRgshfGjsOREM4XxlFzU8HLLXAXuKb400AouUYfWLbYHAP4mN99vOn
-	 2i6WuMNxU50lNnXtIJKgU7iPKbxZ2YhoeUxcnspg58ejk6/k9HEO5+F6FAxw4x3GBQWRj
-	 cSK4RmAhp7Yb2ZtJ93zokQuR8i7Hyknh2DT6u5sn6w9soZYpQ0jfatAxtwi6UtQVSOA==
+	t=1792505828;
+	b=Toi59e5no87jBf4q7kYedrw8G6wbWM7Opv6qhHtRAkfUFjjEH+6p8GpQqu1e2HSQ9k20
+	 UFaM2y76qg7ivQz11vgePaKM1dEcTr21wzKCBdXHbsVQbn/B31oTzeeWu3CIBtyk/OnYz
+	 QRj8hg8IAR85P5pN4/Ruz6g5x7beKaLqowGhznUZC9CCKpFhXohuk69TrPRdXejLE3qt7
+	 dbRcfmsy58kVP/bfDhak5ejSu7aYVAIfBorBhuqlLKl6RFIDmaijiErqT+7uHx/QYI6EM
+	 np2NRAfD5zGJNpiUa1wz8hfKINqznxVokS2IOuO7zQuIVEUPSWf4VWlDqGkb+Lf1lng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792505181;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=gBPuTVDgEiGC7gv3ImQ1lrlNU1MOvL9EhgW5csxKSjA=;
-	b=Iw72ESx8D4Y6PzbGZcU7o21p6Ej0Dp+ibv1zm8hxvXI9ivkkF89heNzzy4HEsZznTmx3
-	 EawzWXD9m6RfR5zw9EPQl9H3OrqX1//L95O9+x3hu6qqDyMa1IEUBXNsXIUY4EOejuu1Q
-	 m6cxp+79ODOWaAiyZryiWKXceun1EUUmi+Mt7RqpPvdBqMvI/+wP0Q7j7rmAhRI0x0YMJ
-	 emqZzGp6yEwlvD5k8JFbn2vGOTmy6wXULomClRTn5CVh98sSImF8pMKzixKDc/lMyck5m
-	 2vOeW9Yhpqkg0uPWTQ+GW2ropVa+4gfigiZUmirnvUF2peNHy6zYIeoDgkhm2+uZxew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792505828;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=KzZBcixn1nkLMFly7L58yQXI8hYiFn4S/rL1DV8cbi4=;
+	b=bAfbZ2+33EI5VVTWbL6xSlr5k7V4aiiMnFOmDjDjw3naugnQBp8cZl++Ps2B+Id/OKRO
+	 NdLeAPd715qS7eoybUgBrHtyGg15to29sU1sJoOcsYPzwjFQrFGkuypZEPNzFy4YQ0so9
+	 lHH5XL1M9EHYAXBLrmcdM2NUuPUoI4T1ajbY9T93T5MyOWgLn9YsPMZPZrpnBWVCMYoz4
+	 D3Xx//fpSLfp1fLPNcpaLJ1VSi4xON40IaQAH7pmNGywkaM6OvjiWHNjQYhdxDISOT830
+	 PIWtC47vl6Xunmi6eacaGRqQKVFyo3/GWmly6MxCb866BPk7s1mElYZJQgvB+lq5E5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b="K/dtBbdT";
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573F1606A334;
-	Tue, 20 Oct 2026 14:06:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 573F1606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=K/dtBbdT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=gBPuTVDgEiGC7gv3ImQ1lrlNU1MOvL9EhgW5csxKSjA=; b=K/dtBbdThHETNk7iWl4Qtq6Bz8
-	UVUwNm2oLf7CLYIU+sbuB522PSdkJff8BUpIZvY7iTTuepaofbkQ+GTxmGLi1sLELuYhcbRMmOc0V
-	mUghmsGFwb5E9VIm2x//0ShsytGdaxl9rfXEN3rVGOfh2sJ/f3yj9DUKjtc7zzJ9/hDE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xJATh-00BrYm-S4; Tue, 20 Oct 2026 16:06:09 +0200
-Date: Tue, 20 Oct 2026 16:06:09 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, lxu@maxlinear.com,
-	hkallweit1@gmail.com, linux@armlinux.org.uk, lgirdwood@gmail.com,
-	broonie@kernel.org, michael@walle.cc, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lrosu@maxlinear.com, luka.perkov@sartura.hr
-Subject: Re: [PATCH net-next v3 3/5] net: phy: mxl-gpy: release MxL86211C
- Super Isolate
-Message-ID: <3a43a496-42ba-467d-8771-a777be5d0e42@lunn.ch>
-References: <20261020093655.344585-1-robert.marko@sartura.hr>
- <20261020093655.344585-3-robert.marko@sartura.hr>
- <21892f3a-8e0a-4c72-938c-b2e77b9f0dbf@lunn.ch>
- <CA+HBbNGLc+imr9geBVSZthromLUCBTbC-4roVuz7SM2PdYPfuw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E3B606AA17;
+	Tue, 20 Oct 2026 14:17:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13E3B606AA17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E970FA155F;
+	Tue, 20 Oct 2026 16:16:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792505822; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=KzZBcixn1nkLMFly7L58yQXI8hYiFn4S/rL1DV8cbi4=;
+	b=sbmiIeqgetFkGWxwyF4SF+wQINbgAf1J+fvOoUqZX6iVTHL0Ws1Y1S6DEN1iS5MRwHCNS3
+	ci2DrF7iYoWVf35bpHKF2jWozxkylF8AYDSSxxXcddSyj1Xg1g9LlaP1Z31ZG7wM8XeWww
+	bjs3/GKY1but/fFTEHmX0zzg2/+DS2DgCrgryH2e2yj9cRajF4u5eieCqTWn6m59bCYzd+
+	YulF20Y4kp/rcA7S+YH+lGNH9GCXXqh6dLTjZE1ff3r+VhyT766Cmg8X82cU1uB7vFQYZK
+	8jBnWbcW0g3EC2fwdVCIikwDa51vOJlZUT1Vg8qWwa586NduXd0d5nxhLhZSqA==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,21 +50,145 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+HBbNGLc+imr9geBVSZthromLUCBTbC-4roVuz7SM2PdYPfuw@mail.gmail.com>
+Date: Tue, 20 Oct 2026 16:16:59 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ f.fainelli@gmail.com, justin.chen@broadcom.com
+Subject: Re: [PATCH net v2 1/2] net: bcmgenet: recover from a failed resume
+In-Reply-To: <179250090686.3135.17597197349680697960@kernel.org>
+References: <20261019-nb-genet-fini-dma-net-v2-1-b85f6b92654a@tipi-net.de>
+ <179250090686.3135.17597197349680697960@kernel.org>
+Message-ID: <a033b1e2dd424000dc5669f88bed0c89@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> I think that Sashiko confused me, it claimed that PHY HW reset could
-> happen during interface up/down, etc, so these would be lost.
+On 20.10.2026 14:55, netdev-bot+sashiko@kernel.org wrote:
+> [...]
+
+> [Severity: Medium]
 > 
-> Is that correct?
+> Does this return leave UMAC_CMD at the reset-default 10 Mb/s speed when 
+> the
+> next WoL suspend runs?
+> 
+> Earlier in bcmgenet_resume(), init_umac()->reset_umac() writes only
+> CMD_SW_RESET to UMAC_CMD. That zeroes the speed field (CMD_SPEED_10 is 
+> 0)
+> and the duplex and pause bits.
+> 
+> On the WoL rebuild path, the new phy_stop() above also leads to
+> phy_link_down()->bcmgenet_mii_setup() with the link down, which clears
+> RGMII_LINK.
+> 
+> bcmgenet_mac_config() is the only code that restores the speed and 
+> duplex
+> bits and RGMII_LINK, and it runs only from the phylib adjust_link 
+> callback.
+> After this early return, bcmgenet_netif_start()/phy_start() never run, 
+> so
+> that callback never fires. Meanwhile phy_init_hw() and 
+> genphy_config_aneg()
+> have already restarted autonegotiation on the PHY, which is still 
+> powered.
+> 
+> On the next WoL suspend, the new !priv->tx_cbs branch in 
+> bcmgenet_suspend()
+> returns 0. Then bcmgenet_suspend_noirq()->bcmgenet_wol_power_down_cfg()
+> does this:
+> 
+> 	/* Can't suspend with WoL if MAC is still in reset */
+> 	if (reg & CMD_SW_RESET)
+> 		reg &= ~CMD_SW_RESET;
+> 
+> 	/* Receiver must be enabled for WOL MP detection */
+> 	reg |= CMD_RX_EN;
+> 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
+> 
+> None of this corrects the speed.
+> 
+> If the PHY links at 1000 or 100 Mb/s, can magic packet reception fail 
+> even
+> though WoL looks armed? Together with the HFB_CTRL write below, a 
+> failed
+> resume could leave GENET with no working wake source.
 
-It is easy to put a printk() in the reset code. Just make sure you get
-both. There is MDIO bus reset as a whole, and individual PHY reset.
+Yes, but IMHO pre-existing: the init resets UMAC_CMD to 10M and only
+restored by adjust_link (which doesn't run anymore once init_dma() 
+fails).
+Without my patch the next suspend hangs in napi_disable(), so there is 
+no
+wake source either way. It makes the interface recoverable, not WoL 
+work.
 
-Also check out suspend/resume, with and without WoL, if that is a use
-case you are interested in. It could be suspend without WoL might
-cause a reset? And if the board actually powers the PHY off/on, i
-assume the strapping defaults are reapplied.
+The real fix is probably to allocate before tearing the rings down...
 
-      Andrew
+> [...]
+
+> [Severity: Medium]
+> 
+> Does writing 0 to HFB_CTRL here turn off WAKE_FILTER wake completely?
+> 
+> bcmgenet_wol_power_down_cfg() reads HFB_CTRL after this point. It 
+> unmasks
+> the filter wake interrupts only if RBUF_HFB_EN is still set:
+> 
+> 	reg = UMAC_IRQ_MPD_R;
+> 	if (hfb_ctrl_reg & RBUF_HFB_EN)
+> 		reg |=  UMAC_IRQ_HFB_SM | UMAC_IRQ_HFB_MM;
+> 
+> MPD is enabled only for WAKE_MAGIC/WAKE_MAGICSECURE. With wolopts set 
+> to
+> WAKE_FILTER only, the system would suspend with device_may_wakeup() 
+> true
+> and no GENET wake source.
+> 
+> A few lines below, the normal WoL path keeps only the RX_CLS_FLOW_WAKE
+> filters armed:
+> 
+> 		if (priv->wolopts & WAKE_FILTER)
+> 			list_for_each_entry(rule, &priv->rxnfc_list, list)
+> 				if (rule->fs.ring_cookie == RX_CLS_FLOW_WAKE &&
+> 				    rule->state == BCMGENET_RXNFC_STATE_ENABLED)
+> 					hfb_enable |= 1 << rule->fs.location;
+> 		...
+> 		if (!hfb_enable)
+> 			reg &= ~RBUF_HFB_EN;
+> 
+> Could this path use the same selection? Because tx_cbs is NULL, the
+> following resume rebuilds the rings anyway. The device is detached 
+> here,
+> so the WoL setting can't be changed from ethtool (it returns -ENODEV).
+
+Yes, keeping just the RX_CLS_FLOW_WAKE rules is better than my off.
+Will do this in v3, together with the clock wording.
+
+> [...]
+
+> [Severity: Medium]
+> 
+> With WoL not in use, can this early return leave an external PHY 
+> powered
+> for the whole sleep?
+
+Yes, but IMHO also pre-existing: phy_init_hw() in the failed resume 
+powers
+it up and it isn't started again. Before this patch suspend hung 
+instead.
+Not leaving the half state behind is arguably a better way.
+
+> [...]
+
+I really need to find a WOL capable genet board, so I can test these 
+code paths too ....
+
+Nicolai
+
+--
+pw-bot: cr
