@@ -1,69 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792486779;
-	b=bEKUis1LqxZcD9Cm0//l/Rpd877mRoAV1/6hBWGuTa1kZ892SujtJYXxoW+mLVxIOpAB
-	 gp9yGew+RehOhJHFBZvqHfvr9d2wZMWZ7NJ9oi+xys/VgP/uwuk/F0H/7Egh3wsBxNj5Z
-	 Tar9JumVTMiPEatew3zPPX27mhOFb7jQoZAkR1GgvGrponRpRXDeh7WHNl309IN50lmGK
-	 8uKkM5v7aDqcKRMfWizwCj4OsaXNyrswcZNp7nAXaPplH4U8TnRBVUpIyNdudOYpQQWFp
-	 zinAIQHrpXLtLnwhpnIMYi4e+Ks+6h0yItLDEpSdert4X40npgB+/OOSgg07f4p1cDg==
+	t=1792487194;
+	b=lMIF5G8hSnIDsSNpEbkxFIjnUeYX1131ahtQPgSpZ7EmXcFQjcUCnZs3yDGLvRsYEduC
+	 weyeUGAYof/M8ARnJjSaKY0Fk73RunXGChIbwhUE9LgyjDx7RYqYKjJhgjkEYpzPvNQuA
+	 20lOF52d+DbHu7rxUIregTJqioGrdYKjicdJmmWMznhOGZBLO0CJ4I6zozPnhU3irSZu4
+	 80pAU3dykihT7EWhTMk+CzCM4Kbr5N8/R0Z7OgF7Fba7IC19JLhG3gLL9fxSVQFdfpQLD
+	 pDyEingtD0MCwmoygbHTGmFC3Rx3Whba2o3vstvkBteKh8YuB2ZoxO5ilOsQpAjm+Bw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792486779;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
-	bh=/3Wq3q5zJibO+/ypQKvyVSj+5oRUgcCIqCtsRgxRLW0=;
-	b=viMspqbKPXC6d6Xev/EFeQoLsjP0DkR3SPVqX8YpGBaCXC48WGqFR+ma8LhDpbcK7alj
-	 3jFtjq4rNC/K98dkAl2hrDdJjjpQezdCcD4tbCtxTcwvd5VhLZXNAKPlW+Lw7BH/HFuqi
-	 O+L9ADMm3PO1He9O3UdoI0/DAZRrFjnAnX+JukVIuHKjRG8IQU0i06dgolUxGy5DQU5Cu
-	 9UQzVvRirNcjkyH6/bjxh5Uhr+BmilZhZksG2F2QcxQgKgQEolBMTVZWAqxUuGwUmxtzj
-	 i1d449LXxMfQgJ+7pjaVEX0MwpVIPlaxSqHoAeyEO8Lw/mvaeG1fW13yhSbiX9Oaztw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792487194;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=byMpnzMiLTG8THNjkNmp9UgpYnNMNTx0auzeW57yB8U=;
+	b=DtLJAWSm6u9JGHTnz96Wvg+QhH2eX/jIcBCHC5FDpLnhaEai4CX9+EbmCPlMT/xG/T/g
+	 CW0LzQ8qiZDZc3VWDwhcaY99OiGzizFQ0t2U5FFQkhNcLV+v3HAtyGQ76pnmQLyrKkFuM
+	 6WTbm6m4w65C+8+0aeEDcUVMDd8nOTGWR04X3BX1VHFCqINf7WsDkl4BkXL1MaQt1j75B
+	 nnR/TmjwXNweeA/9+yIp4ON5P9ocKrXSZ247duhXMK62Mc2RKKa0Eb85IJ3ZmRWAGYTx4
+	 bes00efT0Q30H4rxHD38hjt3C/4coTTT41xK3DaGXIZlKuryyX+3FVvV7ngnxKzbwyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=db1Q3yN4;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtgQErrW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F311D606A31A;
-	Tue, 20 Oct 2026 08:59:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F311D606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03763606A31B;
+	Tue, 20 Oct 2026 09:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=db1Q3yN4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792486778; x=1824022778;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=PqqolydTHxuVAc5gOeVz22tU0KJ0OwLnMV9tvA+bGuU=;
-  b=db1Q3yN4b+9HIq9mjFjQ/d/XJGUdxrOtlznbX7p3bI1d39TImZVsoW25
-   l4jSD+aMBO0PBTaREZOwjX747YVaKdMWG3H7LP/7WjUfTWHD02JQ/sBfC
-   JSLKbWuRT/PcD5JJI5/khgIn0LZnGBQM3ecOS3Q++xiXM/DAHISukTE19
-   3432rYl+MzRSiSwQ+5d/zCucTC68y2dCQIBTKc2DlruvI3yyXs9/L2H9s
-   hfT4ICUJSb/30jOHbYE1/9z7ztVR7GjNO2PUJQ/pkzsv49A8Vhm29MkxT
-   LT4fDkFyYxBAxFQiLOiRNlVGx3q5Jfh8xC8FV3OCrOmaFOCczcUGiAvNH
-   g==;
-X-CSE-ConnectionGUID: mf+Nmy+dQleBqoTYdmd+ZQ==
-X-CSE-MsgGUID: XdUIh4SQQRK1L1Hc3PtmAw==
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="232382489"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 01:59:38 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Tue, 20 Oct 2026 01:59:37 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 20 Oct 2026 01:59:35 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Tue, 20 Oct 2026 10:59:32 +0200
-Subject: [PATCH net] net: sparx5: don't reuse the last DCB in fdma xmit
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RtgQErrW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340EF1F000C4;
+	Tue, 20 Oct 2026 09:06:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792487193;
+	bh=byMpnzMiLTG8THNjkNmp9UgpYnNMNTx0auzeW57yB8U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RtgQErrWcSXkn4om10fEUZVsYPQS8E0C/5ZMqJW739OOKCRRH5cgZYWz6k9JW+NEA
+	 TXlyeYKprnZiyrNMoxCJbbwx/VXBq45YssFHz1sFkjxDHLYntyV8QmG1eGeLwBJeXZ
+	 79cdAncfI+BcHaxn3CPdPzDm1iSaInRvneceLD7fGwATCqRl2B+GAqG6GeVWRk/KmF
+	 VR1bAD3ZDJ9IabcZtURZJUnMDYc5qfuKlPdxlUDPi5+ksFEQyy+2HiccWtke1b315Y
+	 4ytv3hocK/lsNGOKxbtNmiQHyzD5hUINETjPtNB7EMhCIC7slgaFYzF9BrNWaAmyJo
+	 lDTQCa4S6emGw==
+Date: Tue, 20 Oct 2026 11:06:18 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Allison Henderson <achender@kernel.org>, 
+	kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, wireguard@lists.zx2c4.com, 
+	rds-devel@oss.oracle.com
+Subject: Re: [linus:master] [sysctl]  8d75c338f0:
+ BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
+Message-ID: <atctwUB5NlRLk4Wy@hobbes>
+References: <202610190310.9737b2e3-lkp@intel.com>
+ <atYB0bm9eEXp8A2g@redhat.com>
+ <atYW0K3t57puHeLW@hobbes>
+ <atYuE1xnVYe0BDG4@redhat.com>
+ <atY42k00k0Waj6o4@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,68 +64,226 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261020-sparx5-fdma-last-dcb-v1-1-fb9a956196dd@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAHMt12oC/x3MSwqAMAwA0atI1gZs0fq5irioNmpAqzQiQvHuF
- pdvMRNBKDAJdFmEQDcLHz5B5RlMq/ULIbtk0IU2qlAtymnDU+HsdoublQvdNCJpaspWjbVrDKT
- 0DDTz82978HTB8L4fdiu4cWsAAAA=
-X-Change-ID: 20261019-sparx5-fdma-last-dcb-e2e8491b7d86
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	=?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-X-Mailer: b4 0.14.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pcvh7stf5trtufk4"
+Content-Disposition: inline
+In-Reply-To: <atY42k00k0Waj6o4@redhat.com>
 
-sparx5_fdma_xmit() advances dcb_index to the next tx DCB and, if the
-FDMA is done with it, adds it to the end of the chain, which makes it
-the new fdma->last_dcb.
 
-Before this patch, sparx5_fdma_xmit() can pick last_dcb itself. A
-failed transmit advances dcb_index without adding a DCB, so dcb_index
-no longer follows last_dcb, and after a burst of failures it can land
-on it. Re-adding last_dcb loses the frame, because the FDMA has already
-passed the tail of the chain.
+--pcvh7stf5trtufk4
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [linus:master] [sysctl]  8d75c338f0:
+ BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
+MIME-Version: 1.0
 
-Also reject the DCB when it is the last one in the chain, using the
-same !fdma_is_last() guard that lan966x and lan969x use to pick their
-next tx DCB, so the tail is never re-added.
+On Mon, Oct 19, 2026 at 05:35:54PM +0200, Oleg Nesterov wrote:
+> On 10/19, Oleg Nesterov wrote:
+> >
+> > But. rds_init() can also fail even if CONFIG_SYSCTL=3Dy, after
+> > rds_sysctl_init(), so to me this looks like a bug in net/rds/.
+> >
+> >
+> > In any case, I guess net/rds/ init paths should not fail if
+> > CONFIG_SYSCTL=3Dn ?
+>=20
+> So I think that something like the uncompiled/untested patch below makes
+> sense anyway even if doesn't fix all the potential problems with rds_wq.
+>=20
+> What do you think?
 
-Found by an AI code review agent and confirmed by code inspection; not
-reproduced. Tested on sparx5 that traffic still passes, with ping floods
-in both directions.
+That is a good option. I also did not compile not test it, but guarding
+the error inside an ifdef would work and is a pattern that is used
+elsewhere.
 
-Fixes: f4aa7e361ae2 ("net: sparx5: use FDMA library for adding DCB's in the tx path")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+You can also do this (also untested and not compiled):
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-index dbe86f937b21..221b2f1932f6 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-@@ -218,7 +218,8 @@ int sparx5_fdma_xmit(struct sparx5 *sparx5, u32 *ifh, struct sk_buff *skb,
- 	void *virt_addr;
- 
- 	fdma_dcb_advance(fdma);
--	if (!fdma_db_is_done(fdma_db_get(fdma, fdma->dcb_index, 0)))
-+	if (!fdma_db_is_done(fdma_db_get(fdma, fdma->dcb_index, 0)) ||
-+	    fdma_is_last(fdma, fdma_dcb_next_get(fdma)))
- 		return -EINVAL;
- 
- 	/* Get the virtual address of the dataptr for the next DB */
+diff --git i/net/rds/ib_sysctl.c w/net/rds/ib_sysctl.c
+index 2af678e71e3c6..bc97a3eecad69 100644
+--- i/net/rds/ib_sysctl.c
++++ w/net/rds/ib_sysctl.c
+@@ -114,7 +114,7 @@ void rds_ib_sysctl_exit(void)
+ int rds_ib_sysctl_init(void)
+ {
+        rds_ib_sysctl_hdr =3D register_net_sysctl(&init_net, "net/rds/ib", =
+rds_ib_sysctl_table);
+-       if (!rds_ib_sysctl_hdr)
++       if (!rds_ib_sysctl_hdr && IS_ENABLED(CONFIG_SYSCTL))
+                return -ENOMEM;
+        return 0;
+ }
+diff --git i/net/rds/sysctl.c w/net/rds/sysctl.c
+index 025f518a43495..41c65b98c94bd 100644
+--- i/net/rds/sysctl.c
++++ w/net/rds/sysctl.c
+@@ -93,7 +93,8 @@ static struct ctl_table rds_sysctl_rds_table[] =3D {
 
----
-base-commit: 07bd391eb9572e74f073c49acef327611234f9bb
-change-id: 20261019-sparx5-fdma-last-dcb-e2e8491b7d86
+ void rds_sysctl_exit(void)
+ {
+-       unregister_net_sysctl_table(rds_sysctl_reg_table);
++       if (rds_sysctl_reg_table)
++               unregister_net_sysctl_table(rds_sysctl_reg_table);
+ }
 
-Best regards,
--- 
-Daniel Machon <daniel.machon@microchip.com>
+ int rds_sysctl_init(void)
+@@ -103,7 +104,7 @@ int rds_sysctl_init(void)
 
+        rds_sysctl_reg_table =3D
+                register_net_sysctl(&init_net, "net/rds", rds_sysctl_rds_ta=
+ble);
+-       if (!rds_sysctl_reg_table)
++       if (!rds_sysctl_reg_table && IS_ENABLED(CONFIG_SYSCTL))
+                return -ENOMEM;
+        return 0;
+ }
+
+
+Both are ok IMO.
+
+Best
+
+>=20
+> Oleg.
+> ---
+>=20
+> diff --git a/net/rds/ib_sysctl.c b/net/rds/ib_sysctl.c
+> index 2af678e71e3c..bccdb5c4df1d 100644
+> --- a/net/rds/ib_sysctl.c
+> +++ b/net/rds/ib_sysctl.c
+> @@ -36,19 +36,10 @@
+> =20
+>  #include "ib.h"
+> =20
+> -static struct ctl_table_header *rds_ib_sysctl_hdr;
+> -
+>  unsigned long rds_ib_sysctl_max_send_wr =3D RDS_IB_DEFAULT_SEND_WR;
+>  unsigned long rds_ib_sysctl_max_recv_wr =3D RDS_IB_DEFAULT_RECV_WR;
+>  unsigned long rds_ib_sysctl_max_recv_allocation =3D (128 * 1024 * 1024) =
+/ RDS_FRAG_SIZE;
+> -static unsigned long rds_ib_sysctl_max_wr_min =3D 1;
+> -/* hardware will fail CQ creation long before this */
+> -static unsigned long rds_ib_sysctl_max_wr_max =3D (u32)~0;
+> -
+>  unsigned long rds_ib_sysctl_max_unsig_wrs =3D 16;
+> -static unsigned long rds_ib_sysctl_max_unsig_wr_min =3D 1;
+> -static unsigned long rds_ib_sysctl_max_unsig_wr_max =3D 64;
+> -
+>  /*
+>   * This sysctl does nothing.
+>   *
+> @@ -61,6 +52,14 @@ static unsigned long rds_ib_sysctl_max_unsig_wr_max =
+=3D 64;
+>   */
+>  unsigned int rds_ib_sysctl_flow_control =3D 0;
+> =20
+> +#ifdef CONFIG_SYSCTL
+> +static unsigned long rds_ib_sysctl_max_wr_min =3D 1;
+> +/* hardware will fail CQ creation long before this */
+> +static unsigned long rds_ib_sysctl_max_wr_max =3D (u32)~0;
+> +
+> +static unsigned long rds_ib_sysctl_max_unsig_wr_min =3D 1;
+> +static unsigned long rds_ib_sysctl_max_unsig_wr_max =3D 64;
+> +
+>  static struct ctl_table rds_ib_sysctl_table[] =3D {
+>  	{
+>  		.procname       =3D "max_send_wr",
+> @@ -105,6 +104,8 @@ static struct ctl_table rds_ib_sysctl_table[] =3D {
+>  	},
+>  };
+> =20
+> +static struct ctl_table_header *rds_ib_sysctl_hdr;
+> +
+>  void rds_ib_sysctl_exit(void)
+>  {
+>  	if (rds_ib_sysctl_hdr)
+> @@ -118,3 +119,15 @@ int rds_ib_sysctl_init(void)
+>  		return -ENOMEM;
+>  	return 0;
+>  }
+> +
+> +#else
+> +
+> +void rds_ib_sysctl_exit(void)
+> +{
+> +}
+> +
+> +int rds_ib_sysctl_init(void)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> diff --git a/net/rds/sysctl.c b/net/rds/sysctl.c
+> index 025f518a4349..a0673a41633a 100644
+> --- a/net/rds/sysctl.c
+> +++ b/net/rds/sysctl.c
+> @@ -36,11 +36,6 @@
+> =20
+>  #include "rds.h"
+> =20
+> -static struct ctl_table_header *rds_sysctl_reg_table;
+> -
+> -static unsigned long rds_sysctl_reconnect_min =3D 1;
+> -static unsigned long rds_sysctl_reconnect_max =3D ~0UL;
+> -
+>  unsigned long rds_sysctl_reconnect_min_jiffies;
+>  unsigned long rds_sysctl_reconnect_max_jiffies =3D HZ;
+> =20
+> @@ -49,6 +44,10 @@ unsigned int  rds_sysctl_max_unacked_bytes =3D (16 << =
+20);
+> =20
+>  unsigned int rds_sysctl_ping_enable =3D 1;
+> =20
+> +#ifdef CONFIG_SYSCTL
+> +static unsigned long rds_sysctl_reconnect_min =3D 1;
+> +static unsigned long rds_sysctl_reconnect_max =3D ~0UL;
+> +
+>  static struct ctl_table rds_sysctl_rds_table[] =3D {
+>  	{
+>  		.procname       =3D "reconnect_min_delay_ms",
+> @@ -91,6 +90,8 @@ static struct ctl_table rds_sysctl_rds_table[] =3D {
+>  	},
+>  };
+> =20
+> +static struct ctl_table_header *rds_sysctl_reg_table;
+> +
+>  void rds_sysctl_exit(void)
+>  {
+>  	unregister_net_sysctl_table(rds_sysctl_reg_table);
+> @@ -107,3 +108,15 @@ int rds_sysctl_init(void)
+>  		return -ENOMEM;
+>  	return 0;
+>  }
+> +
+> +#else
+> +
+> +void rds_sysctl_exit(void)
+> +{
+> +}
+> +
+> +int rds_sysctl_init(void)
+> +{
+> +	return 0;
+> +}
+> +#endif
+>=20
+
+--pcvh7stf5trtufk4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmrXLwMACgkQupfNUreW
+QU9Yjwv/cCHjunDrXXsuyNvatzPDExXb5X0UzfkQLy2qA3coR/DKb4c6DSrxHAXb
+KpHrt6e9QT0I2SPoxXj4PltCuUz848uz0awIUBqnTzndf0VHj3hXQlnOzH0fZ65b
+Wn0qAyxnEitEIbt1uSa7Xq24CfbATRcSjtPthG34yTnbF733Fz4lvwVkXbJi4TPl
+uoyvrPEcXxnogCVN0W9XNu8u5UHk0CuHOFVj13NvhFcoykqRQbMQcpefAKpJzm2Y
+0yUyZK+zZ2CyFchpYt4khOGyW5RLiwV0d1kER0UKqD9lnH4cznErsgqU0tb34Rn1
+Xig5W0V/rLLEemKlyC6sdnq1ZeigxxSHlwcRUVMt1UOsECTmaTfaTaO79R2BVLSU
+y8a8NvfPWzuASlTcNMV+AT03DA/syjvh2OihVN7ec7ExnUAdfEmpibahUar/MDZA
+bBMHemB+kEmt61+nBWc6VAsa6/WJEzxKtDaaR4rMdSuyi20EQBPQsryOF1YPAYRT
+Lm5E7bEc
+=mg3e
+-----END PGP SIGNATURE-----
+
+--pcvh7stf5trtufk4--
