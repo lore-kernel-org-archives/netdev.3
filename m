@@ -1,52 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792518332;
-	b=IabxyzaMgt/9QiY3HePeCcz967Kl+mohuKPdCNA/wMQWveSQl0snsl0Y6gdk7kfPpm1B
-	 mEOmr1Bvn9tQaHAVsnJ3VA49Lvq3K85QCttzRQUTBD7zumJeQG4jlE/gVe2z5EUp8EsFm
-	 6+iJe5yQo5n0QJK8fku5/RKv7YhQzh2Al6rZhegqU9ExhZ0y3XVoaKIoy25BEGopWcL0t
-	 4btjqGlbXjLEt6rE3wpdP2QKUyuBsg8VLHShWtf3H+Lfaz8slwohf3FegaV2g8z5WBxc9
-	 wHQ3/RSUpUoMuQb1x5A3zu4PhSH4OhaGGaczyEMVSY+xXdPhdTzwgd6g0uF9KgRGn8A==
+	t=1792518657;
+	b=wNwnFPPmBIfFFyqpBUjcx9zhoVt2f24eGtQP6Q1HxG2AiE4Yvms80K21yLub09YcGaLf
+	 ubWKMl8KzmvJmf38Gr3Ztw9v2m5KGKiAIMNjGLdnK+QoepCtF2c61U9JorhzAbASm4xai
+	 XKhdcN9DU+NbeERDMp/LOOH8/GwA4KKm9XvAtlE4rCiFTz9MN/dIzoxNO9T5nMHIwgfvW
+	 en+96Azu7v4tIuQRqJKKiD0LTUyjx/g0DnZYT3zvbdNOQLBZMvJ+9vQHza/ZMRqH2EGnw
+	 95QIA0f8OfFoCYfnq46MW+IsDL2FNh20OSxgaxNPFtz56145+W3urH3nz2la9YhkdIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792518332;
-	h=DMARC-Filter:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 X-Clacks-Overhead:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=cyKu2JIBSJUnhgMWBwDQKpk8fK4vwAgYU+eQK8Lufxc=;
-	b=fBgNJ2bwWfa5YS2sLY5mssTVW2H4Iwix5F7UweIiWBSkFOA+Us/WPExIvJHF+HUu0ZM4
-	 /TWwxE9hc9B5XZu80xpkTjeA33HFTXMW2llL9pNDd1rzX03WNJNJSNOxy/tnZ6jY09FtS
-	 VQLuqsYCorTRH7CScXpdRcJkAHjVH0MOzPXetzULtUb99WOnPghzP9X92xxedqW96RDvK
-	 GjMq9Lu3VZ1sd9RPz5u8PnFnr7FyrdjDvWfmHh/JJ6dvrWvuTUwrUtvaZaPKsOoseSJq9
-	 F0YVL1hYmKBW+dfoA6cMwnX68PWOfy/LhwhKsh3aHFcXcFx+ZebhnuyowJ1nr79PlBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792518657;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
+	b=VdTMBQnNa/cIXGijnYUN3uAUaU8q+Sa/6peQQ4PPXuGEhHfkuwdSGDtazrkdBhPPyeJw
+	 ufE5ycmpWUysozFcXOG+XB34if6dW2HwpdcWy3dsfMn3sQtMh4b7IqmS7JdcBDcmNQYmP
+	 FDPysvQdCiJRfnG/UJ12uaVNx2XSzEH7T3FclQhN8mEhW+43N4y2f4ozGSj0GBFoMYOYh
+	 Vs6J7oVHfEWs8sUHf2oWgYX+HitSSKotMFC91enEANnot7eMmUfFLHhOLrM0BplgayMVP
+	 /ASgBeF7bD5e/LNCoq6wbR05VeFdDNswDjggZ4nou3GP1/6X8yQMyhFZvHdhi1QKZ+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=toke.dk;
-	spf=pass smtp.mailfrom=toke.dk;
-	arc=none smtp.remote-ip=45.145.95.4
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linuxfoundation.org;
+	spf=pass smtp.mailfrom=linuxfoundation.org;
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=FaXZZkDT;
+	arc=none smtp.remote-ip=209.85.208.45
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA2D606A329
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 17:45:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FA2D606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-Authentication-Results: mail.toke.dk; dkim=none
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Victor Nogueira
- <victor@mojatatu.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- cake@lists.bufferbloat.net, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH net-next v8 1/4] net/sched: cake: return the classifier
- result to the caller
-In-Reply-To: <QDISC-BA27.v8.r0.20261020063241-1@mojatatu.com>
-References: <QDISC-BA27.v8.r0.20261020063241@mojatatu.com>
- <QDISC-BA27.v8.r0.20261020063241-1@mojatatu.com>
-Date: Tue, 20 Oct 2026 19:45:29 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87cxt4tgee.fsf@toke.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52483606A325
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 17:50:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52483606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=FaXZZkDT
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b1cc392d8bso4405159a12.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:50:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1792518655; x=1793123455; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
+        b=FaXZZkDT4JTAJD9dls5zNgoYwqN4YoaMS9ggdsn9VJDCOrpWIPpIJtnKJc5VsnFaa6
+         NstxfC4k9ERrs0kvhRAeH1sHz2ZLoi6fy7GQyMHWaqdZYp+tOqS9UKf4ZqNmZ55I/VYB
+         BJUlcKtqh1qMtChxYdXTyHU7LwFIy0XxNhEeI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792518655; x=1793123455;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=pUauNVWehf9yJlxoCpgSpQ8hZTVkN4yj1GOVaT5sy9U=;
+        b=p486oEabfHqqL4oiu3azkWKIiD1xinEqZdrvASGwxTviaIzzcZIod/jrYFvYKJcbk7
+         9IxzqzRCLtsVCVovQ4eUFgvd/nghMCbnc03GHIUzKZgwB0vd0hYitOa/BeHPcgjgPGOW
+         Tk0ibPZOjYfjlDgfqBH577HYJfCtdgBFmT751evE26zDlbOWZwvAOViNSsKAlPv+ghjS
+         OZn69E+kHHbjbO3XOPSkt7SQNimueLbsqEob9VufahKK9QF1Mi7ER5szW4ENvc3Jdjks
+         uc4zkkDyWLuvEMN78qiwVV8L8dkunWn8LZ3QyLwvgD3z4KuI5t0TmN9ycogo5/rdY5tM
+         Aj5w==
+X-Forwarded-Encrypted: i=1; AKwUvByGeSZKt0npdpDI3jWx8InG3xtd7GciEop2W/wysZAd7eZXTe4qPet+FkS3Wppmrj1bX2fD40g=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKJmBk7YLUQln+6XxM77ukCmaDw2CPs3RH9cEVgqQntgudO7Elp
+	GN+MJ3649XRW0or+TbIhXw+JqNxSeCkg3rVjKVVEqwgN1Z7InSfVulF/wVBvYnoVe1UoImb4gzg
+	/LC8NlfU=
+X-Gm-Gg: AYBFou33k1NKb2G+lBRcb46nHxp0fk6E5FFy2FlCLxqES9pB5HzK/oBzqWdPrEt/j4x
+	gzGGJCvSQZWVECYlb/5R16Cw/qLQYTgsnZGLLh7uiaRSSVUJZFjmktTT0lCqqx7/FLMs9XBplfg
+	mMHyhoycRl10JCQlnFYBBzGpCIE0UChgNxTrGdM4/gNzf39ObRsy5vMcRb8faFBzHnTJqAeLlmB
+	DPFAXAjwGeXc8dY2G0X17TG8PElfc3G9qukcM4oXjPU94VVhBofFgVgHj70fckqDGLxo/Utf7bd
+	2ButIH2wOOnyK/HSw73azsNB/ab8+tm+50IFhgPem5rhHukM92YGbn5ISrhF0klowsNhQJkfPFK
+	R/3lOUxmpxOYHX8hjsSUZH3XNFhUXVRu+ZxQ23BI2mqsGOedaBey7vDVPvvusHXC42klPNr1/UZ
+	r74I1r2FqJdXljHwOxYCjtpzrJPX95cLaGMzHYMgSCv70lvot61GQC1APPEnPwIoiBNe+rcevWf
+	lqxg14LJTQbDcyP4HDDOVOCvXTnTWC46pTMItaT/1rDQcG/RwB3g1NzIoZS66dNdGW5JzWocRhk
+	a3xjwdTVZ+p0FwU+G05g7qwHFwQpYkL+FYusJvkOX2fNa9GkxA==
+X-Received: by 2002:a05:6402:11ca:b0:6b3:c878:3c93 with SMTP id 4fb4d7f45d1cf-6b3c878476cmr5073207a12.6.1792518654573;
+        Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com. [209.85.218.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4028dfabasm45887a12.6.2026.10.20.10.50.54
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c37b612635bso476557766b.3
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:50:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxZ1KO27Qed3fSIDLgetF86PK1jVRM9ejq2/z4CW2qhZ8iC0W5lIDhVG4mHt95sY3oR1tmL1Qo=@vger.kernel.org
+X-Received: by 2002:a17:907:d2a:b0:c41:21ef:26ef with SMTP id
+ a640c23a62f3a-c419ef2407fmr811663866b.20.1792518653997; Tue, 20 Oct 2026
+ 10:50:53 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,129 +93,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com> <20261018152358-mutt-send-email-mst@kernel.org>
+ <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
+ <20261018174250-mutt-send-email-mst@kernel.org> <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
+ <20261020021924-mutt-send-email-mst@kernel.org> <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
+ <20261020102134.745ff48a@pumpkin>
+In-Reply-To: <20261020102134.745ff48a@pumpkin>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Tue, 20 Oct 2026 07:50:36 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wjUb=G+9gtaSO4bfUYKL+tVBVQq-Zfn_pGbCfxNWbz9AA@mail.gmail.com>
+X-Gm-Features: AclHuK9rATEm1NS_MFfAyhy60SuMBv6wKyZqfF_GIdeIDY7VES_ZxkiFI1mL3aE
+Message-ID: <CAHk-=wjUb=G+9gtaSO4bfUYKL+tVBVQq-Zfn_pGbCfxNWbz9AA@mail.gmail.com>
+Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
+ memory via vDPA passthrough
+To: David Laight <david.laight.linux@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wang Haoran <haoranwangsec@gmail.com>, jasowangio@gmail.com, 
+	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	eperezma@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-Jamal Hadi Salim <jhs@mojatatu.com> writes:
-
-> The Fix:
-> cake runs an optional external classifier from its enqueue path and then
-> computes the flow hash inside the helper. Have the helper return the
-> filter's overrides instead, so the caller owns the flow selection.
+On Mon, 19 Oct 2026 at 23:21, David Laight <david.laight.linux@gmail.com> wrote:
 >
-> This is preparation for the accounting changes that follow. Packet
-> classification and flow selection are unchanged.
->
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> There should also be very few (if any) access_ok() calls outside of the code
+> that implements user copies.
 
-One nit below, in case you need to respin for other reasons; but I guess
-I can live with it as-is, so:
+Note that that branch only removes __get_user/__put_user - and only on x86.
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+So there's still a lot of valid access_ok() calls left. Some are
+around things like raw_copy_to/from_user() etc.
 
+But some are around things that just want to verify that it's a valid
+user address for other reasons. On example is in fork.c that just
+checks that the stack that is supplied is ok.
 
-> ---
->
-> v7 -> v8: cake-only.  fq_codel_classify() is line-for-line the same as
-> fq_pie_classify() and fq_pie is not changed by this series, so fq_codel
-> keeps its original classify shape; the fq_codel backlog guard is placed
-> inline in sch_fq_codel.c in 0003 instead.  (Toke H=C3=B8iland-J=C3=B8rgen=
-sen, v7
-> review)
-> ---
->  net/sched/sch_cake.c | 35 ++++++++++++++++++++++-------------
->  1 file changed, 22 insertions(+), 13 deletions(-)
->
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index dc93267029e7..6432d10c992e 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-> @@ -1712,18 +1712,24 @@ static struct cake_tin_data *cake_select_tin(stru=
-ct Qdisc *sch,
->  	return &qd->tins[tin];
->  }
->=20=20
-> -static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
-> -			 struct sk_buff *skb, int flow_mode, int *qerr)
-> +/* Run the qdisc's optional external classifier. Returns true when a
-> + * terminal TC action consumed the packet, with the reason in *qerr;
-> + * otherwise *flow and *host hold the filter's overrides (0 if none).
-> + */
+But yes, the branch does remove a number of access_ok() calls. Fewer
+than you'd maybe think, though.
 
-nit: I still think this comment is superfluous and should just be removed :/
-
-> +static bool cake_tcf_classify(struct Qdisc *sch, struct sk_buff *skb,
-> +			      u16 *flow, u16 *host, int *qerr)
->  {
->  	struct cake_sched_data *q =3D qdisc_priv(sch);
->  	struct tcf_proto *filter;
->  	struct tcf_result res;
-> -	u16 flow =3D 0, host =3D 0;
->  	int result;
->=20=20
-> +	*flow =3D 0;
-> +	*host =3D 0;
-> +
->  	filter =3D rcu_dereference_bh(q->filter_list);
->  	if (!filter)
-> -		goto hash;
-> +		return false;
->=20=20
->  	*qerr =3D NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
->  	result =3D tcf_classify_qdisc(skb, filter, &res, false);
-> @@ -1737,17 +1743,15 @@ static u32 cake_classify(struct Qdisc *sch, struc=
-t cake_tin_data **t,
->  			*qerr =3D NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
->  			fallthrough;
->  		case TC_ACT_SHOT:
-> -			return 0;
-> +			return true;
->  		}
->  #endif
->  		if (TC_H_MIN(res.classid) <=3D CAKE_QUEUES)
-> -			flow =3D TC_H_MIN(res.classid);
-> +			*flow =3D TC_H_MIN(res.classid);
->  		if (TC_H_MAJ(res.classid) <=3D (CAKE_QUEUES << 16))
-> -			host =3D TC_H_MAJ(res.classid) >> 16;
-> +			*host =3D TC_H_MAJ(res.classid) >> 16;
->  	}
-> -hash:
-> -	*t =3D cake_select_tin(sch, skb);
-> -	return cake_hash(*t, skb, flow_mode, flow, host) + 1;
-> +	return false;
->  }
->=20=20
->  static void cake_reconfigure(struct Qdisc *sch);
-> @@ -1758,20 +1762,25 @@ static s32 cake_enqueue(struct sk_buff *skb, stru=
-ct Qdisc *sch,
->  	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
->  	struct cake_sched_data *q =3D qdisc_priv(sch);
->  	int len =3D qdisc_pkt_len(skb), ret;
-> +	u16 flow_override, host_override;
->  	struct sk_buff *ack =3D NULL;
->  	ktime_t now =3D ktime_get();
->  	struct cake_tin_data *b;
->  	struct cake_flow *flow;
->  	bool same_flow =3D false;
->=20=20
-> -	/* choose flow to insert into */
-> -	idx =3D cake_classify(sch, &b, skb, q->config->flow_mode, &ret);
-> -	if (idx =3D=3D 0) {
-> +	/* Classify first: a terminal TC action consumes the packet. */
-> +	if (cake_tcf_classify(sch, skb, &flow_override, &host_override, &ret)) {
->  		if (ret & __NET_XMIT_BYPASS)
->  			qdisc_qstats_drop(sch);
->  		__qdisc_drop(skb, to_free);
->  		return ret;
->  	}
-> +
-> +	/* choose flow to insert into */
-> +	b =3D cake_select_tin(sch, skb);
-> +	idx =3D cake_hash(b, skb, q->config->flow_mode, flow_override,
-> +			host_override) + 1;
->  	tin =3D (u32)(b - q->tins);
->  	idx--;
->  	flow =3D &b->flows[idx];
-> --=20
-> 2.43.0
+                  Linus
