@@ -1,34 +1,43 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792509164;
-	b=ES0NRdlga7TDnLbgJDrEGIrNloDe6cTj/41C+lFa2KeyFsBb12mkK5moZ0XtcCmPBjHY
-	 xLC0/FYJombeTxI8q799TKEPAqvOZzsFK1oEAPoPYAVht56137wRjCrYOk/1K0yX9wTmH
-	 tFLI0wMRyLJxzAYjk8zoVmdjS9OPz8oJbNBUyDu4uhNUL3wq8c7HNfiY2opL4Tok3Ntlo
-	 Y3tVSY0D0S5db1/A/mVgHPSoxvY7pexc+JW+yBKmNRQaClay6CVUVXHwHBrzIPuMtcahz
-	 f0BFoxcVr+l75Hy9OD/792sk3GIfUIv2dEMXXki0VRMCq5UVSOYeep7BFrd0jfl8BmA==
+	t=1792509628;
+	b=bJ1Ov+BqclPatD0q748CedXZL3sqp+rLsbmhedwIOEuUUflE4hNBh6f0UEvIJArVa146
+	 AezIjW2TLhiP9Rdl5mqYauk4mOmkd3FCb5d1LlrwwASE2pHC/xylBhhyCcLrO8Xx0bYCy
+	 dP9wmYjhFKWfdpz/QRz08Ku1jVIW8KTZi0ynernz2oxIctSueh7RdAHWRxfycZ/OUEKxT
+	 BO9TqGe263XJzJqCViitJ1vzc820FjbNKYxS0jrDy95Je9ikIa6RuIu6yPco/H8MjVwnX
+	 uBLvSesIeO2CBRVBWverjBLBtrH8R8eRcONkz8SkPDctJkbKdrSHHc4nMxMNT9YLbPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792509164;
-	h=Received:Date:Content-Type:Content-Transfer-Encoding:MIME-Version:
-	 From:Cc:To:In-Reply-To:References:Message-Id:Subject;
-	bh=13Yuoyae55wiKNqti/LOAEL9RI5niDoBeik6pXc0Zx4=;
-	b=mKzhujc8cKb4YtGoFK7QOWHZ1bc3euRZyqC9x0d7KHsonNkulDebB7LmcBudNpDH9kXO
-	 5wYoc9MkSHSO6Ct97BByfvL2lXAOYRduHiSuZO32MAg3/PjI1GljO6mkPGpzpsoaua9rG
-	 PkzVPbSNxFttx7emWxiEI4R+jn5oLYDUDZVzoztmHRTDNIz1Hyw1xvS17iJy8S0fbcn2r
-	 HQje6kuFamzaKfIDpmLZ37CoGG+/sH43lF4Y3kQI5xqZSyoLVFUMJRHszUIQJC9xqSpF0
-	 qVZp7rAS0j2z8h+FzliTLchtVWg6s9Yh4hYoyH5U51EQ5OGxn6Bry3nvxv9yDxcstfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792509628;
+	h=Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=p9TIKS8VDMW+tXGZ/hE86qwPZJdVFZaNx+Bs5qu9VnI=;
+	b=AQp5WdnlAF4inT8VSYVKcL60rlrZd8LTUMCzk8dLbBpfBzlcfD/6IjSColM/c8S+fZyj
+	 nnH3YbbavMwrpnfhZFgE2j1s65YTUm66GeWU1+mIZwqenVyymkHm6kUYeDza8/blTEJjr
+	 iJTfot3VRkgsbVrla1BBB4T5AwZY5/ruoNXnFNOqPgra9MFyj8F6CXkOApIkiCxetMRLg
+	 TYXP25k5gxu8RJOXWhptXZ2VC86EnWifb7DWfBcc9t8wEAvMONe5MiG6bD0pkj9O5IZ5B
+	 VH1LxTDhOF6ot+lZBelIPxnXwPVLt0sL+9292Z9PnGxmBIX30CJCEgnbrpJAVnsVu9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE3C606A320;
-	Tue, 20 Oct 2026 15:12:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1188E1F000C4;
-	Tue, 20 Oct 2026 15:12:44 +0000 (UTC)
-Date: Tue, 20 Oct 2026 10:12:43 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E423606A31B
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:20:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BA91F000C4;
+	Tue, 20 Oct 2026 15:20:26 +0000 (UTC)
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Stephan Lipp <Stephan@adalogics.com>
+Subject: [PATCH net] net: shrink the payload-only part of skb dataref to one bit
+Date: Tue, 20 Oct 2026 17:19:54 +0200
+Message-ID: <20261020151954.22953-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -38,81 +47,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, edumazet@kernel.org, 
- devicetree@vger.kernel.org, mohd.anwar@oss.qualcomm.com, 
- peppe.cavallaro@st.com, linux-stm32@st-md-mailman.stormreply.com, 
- alexandre.torgue@foss.st.com, daniel@riscstar.com, joabreu@synopsys.com, 
- pabeni@redhat.com, davem@davemloft.net, maxime.chevallier@bootlin.com, 
- netdev@vger.kernel.org, linux@armlinux.org.uk, richardcochran@gmail.com, 
- linux-arm-kernel@lists.infradead.org, mcoquelin.stm32@gmail.com, 
- kuba@kernel.org, hkallweit1@gmail.com, krzk+dt@kernel.org, 
- p.zabel@pengutronix.de, andrew+netdev@lunn.ch, conor+dt@kernel.org, 
- lorenzo.bianconi@oss.qualcomm.com
-To: Alex Elder <elder@riscstar.com>
-In-Reply-To: <20261019030129.1470307-2-elder@riscstar.com>
-References: <20261019030129.1470307-1-elder@riscstar.com>
- <20261019030129.1470307-2-elder@riscstar.com>
-Message-Id: <179250894164.3309593.6302141090126438838.robh@kernel.org>
-Subject: Re: [PATCH net-next 1/5] dt-bindings: net: add support for Toshiba
- TC9564
+Content-Transfer-Encoding: 8bit
 
+skb_shinfo(skb)->dataref is split in two 16-bit halves: the lower
+one counts all references, the upper one the payload-only (nohdr)
+references.
 
-On Sun, 18 Oct 2026 22:01:24 -0500, Alex Elder wrote:
-> The Toshiba TC9564 is an SoC that exposes two XGMAC 10 Gbps Ethernet
-> interfaces, each of which is attached to an embedded PCIe function.
-> 
-> These XGMAC interfaces have three resets, for the MAC, PMA, and XPCS
-> layers.  These resets differ from the standard two resets defined
-> in "snps,dwmac.yaml".
-> 
-> To permit these other resets to be used, modify the way resets are
-> defined in "snps,dwmac.yaml" to be similar to the way interrupts and
-> their names are defined earlier in the file.  That is, rather than
-> adding descriptions with the resets property values, just specify the
-> maximum number of items.  Then, in the reset-names property, provide
-> a list of description/constant value pairs, indicating which renames
-> may be used among the (three) reset items specified.
-> 
-> Signed-off-by: Alex Elder <elder@riscstar.com>
-> ---
->  .../devicetree/bindings/net/snps,dwmac.yaml   |  26 +-
->  .../bindings/net/toshiba,tc9564-xgmac.yaml    | 327 ++++++++++++++++++
->  MAINTAINERS                                   |   7 +
->  3 files changed, 351 insertions(+), 9 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/toshiba,tc9564-xgmac.yaml
-> 
+__skb_clone() increments dataref without bound, and skb_cloned()
+only checks the low 16 bits. With 65,537 references the low half
+reads 1, the head looks private, and pskb_expand_head() (or
+skb_unclone(), skb_cow(), ...) frees it while clones still point
+to it.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+An unprivileged user can reach this from a user and network namespace:
+about 32,770 AF_PACKET sockets on lo bring dataref to 0x10001, then
+any pskb_expand_head() on the receive path (here a pull of a large
+IPv6 Hop-by-Hop header) frees the shared head:
 
-yamllint warnings/errors:
+BUG: KASAN: slab-use-after-free in _copy_to_iter+0x187/0x1330
+Read of size 1590 at addr ff110001104a9002 by task dataref_wrap/87
+ skb_copy_datagram_iter+0x60/0x190
+ packet_recvmsg+0x1f5/0x12b0
+ __sys_recvfrom+0x18d/0x290
+Freed by task 87:
+ kfree+0xf3/0x3b0
+ pskb_expand_head+0x344/0xeb0
+ __pskb_pull_tail+0xf9/0x1bf0
+ ipv6_parse_hopopts+0x377/0x4f0
+ ip6_rcv_core+0xc67/0x1620
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/snps,dwmac.yaml: properties:reset-names: {'maxItems': 3, 'items': [{'oneOf': [{'description': 'GMAC stmmaceth reset', 'const': 'stmmaceth'}, {'description': 'AHB reset', 'const': 'ahb'}, {'description': 'MAC reset', 'const': 'mac-reset'}, {'description': 'PMA (Physical Medium Attachment) reset', 'const': 'pma-reset'}, {'description': 'XPCS reset', 'const': 'xpcs-reset'}, {'description': 'OCP reset (deprecated)', 'const': 'stmmaceth-ocp'}]}]} should not be valid under {'required': ['maxItems']}
-	hint: "maxItems" is not needed with an "items" list
-	from schema $id: http://devicetree.org/meta-schemas/items.yaml
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/snps,dwmac.yaml: properties:reset-names:items:0: 'oneOf' is not one of ['const', 'deprecated', 'description', 'enum', 'not', 'pattern']
-	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml
-Documentation/devicetree/bindings/net/toshiba,tc9564-xgmac.example.dtb: ethernet@48000 (toshiba,tc9564-xgmac): False schema does not allow True
-	from schema $id: http://devicetree.org/schemas/net/toshiba,tc9564-xgmac.yaml
-Documentation/devicetree/bindings/net/toshiba,tc9564-xgmac.example.dtb: ethernet-phy@1c (ethernet-phy-id004d.d101): Unevaluated properties are not allowed ('vdd18-supply' was unexpected)
-	from schema $id: http://devicetree.org/schemas/net/qca,qca808x.yaml
+The upper half never holds more than 1. It is only set by
+__skb_header_release(), with atomic_set() on an skb owning its head
+(TCP/SCTP output, and GRO which never sees cloned skbs).
+__skb_clone() clears nohdr, and __copy_skb_header() does not copy it.
 
-doc reference errors (make refcheckdocs):
-MAINTAINERS: Documentation/devicetree/bindings/net/toshiba,tc9564-dwmac.yaml
+Move SKB_DATAREF_SHIFT to 30, so that the reference count gets 30 bits,
+and dataref stays positive. Wrapping it would need 2^30 live clones of
+a single skb, which socket buffer limits and memory make unreachable.
 
-See https://patchwork.kernel.org/project/devicetree/patch/20261019030129.1470307-2-elder@riscstar.com
+This issue was found by Anthropic using Claude, and validated by
+Ada Logics.
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Stephan Lipp <Stephan@adalogics.com>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+ include/linux/skbuff.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index a3ff380d43f01db0b040573c9dd7acc4e2e2cda8..58007e5db61e0228e773dc9ee688fcd1d056a345 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -633,9 +633,9 @@ struct skb_shared_info {
+  *
+  * Transport layers send out clones of payload skbs they hold for
+  * retransmissions. To allow lower layers of the stack to prepend their headers
+- * we split &skb_shared_info.dataref into two halves.
+- * The lower 16 bits count the overall number of references.
+- * The higher 16 bits indicate how many of the references are payload-only.
++ * we split &skb_shared_info.dataref into two parts.
++ * The lower 30 bits count the overall number of references.
++ * Bit 30 indicates whether one of the references is payload-only.
+  * skb_header_cloned() checks if skb is allowed to add / write the headers.
+  *
+  * The creator of the skb (e.g. TCP) marks its skb as &sk_buff.nohdr
+@@ -655,7 +655,7 @@ struct skb_shared_info {
+  * Having multiple payload-only skbs with different lengths of hdr_len is not
+  * possible. The payload-only skbs should never leave their owner.
+  */
+-#define SKB_DATAREF_SHIFT 16
++#define SKB_DATAREF_SHIFT 30
+ #define SKB_DATAREF_MASK ((1 << SKB_DATAREF_SHIFT) - 1)
+ 
+ 
+-- 
+2.53.0
 
