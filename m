@@ -1,61 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.251
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792488954;
-	b=PRV3b5ORGvshoUGCPieGahrd2zvQUXYCEMJGFoARygnXwMc69hxpljMeoSHPrw4VIeWw
-	 ihUaualC1Lj1gZI5eVSLcCJd17vQXaZkFd9+Opd6QJp9r6Jkf1y8RFNSR4YcmUW6NuQzI
-	 TGWdU/SM0xu4/T/OeIslK/zcYKGSW6GWU7gn16U7kHZ5VmuNPbBZOYLR2rI3Vo6An8fSz
-	 P6z0H7jfZolYkYhxAJGN2zMa6+C/YW2HefcsLomo2P2qi66KncE4OZaOjCceNkjiNdmZr
-	 2S2LIzmAfQCsaypXGtCQSXBRR4S7eHFOe52HB5nJyn2dfzJmYT8MeagIHAS+m3wANxg==
+	t=1792489022;
+	b=SI5YUtRv0YHaTZ8fy+oCYqn2amW1+gk7kKFGwWbVN3WEU86YBPp6BDKf0zc4Q5T2H/1B
+	 PIY8tqMtIdLmipNOZR6YfSQqEDPL+DQ7Gx5CPPCbRafb+eqApB+XrlK9O2MOz/V9XVLgo
+	 78kDL/Fzolkv9eMLHHfYgfmuo7OWp4W6ODSOkZsullZHWcqPzpw9HPolNYRQ8frzJPym2
+	 mlsdrtVQ8xYNiUGvWybBSfAdhuPuPHYtDVOWaYJBM4J8xmWpUnJv6gJEHf0ACZ/kx5DnH
+	 E9z2IExS8XCwq5Da/1wKJVdU7j+vUMkuWKwx8/KTA/U/QidtCAUNShYoLRl439No7fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792488954;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=HSmjPI16nvDN8Ul0NAtxX99vasGqIsxArWPRVzPVvL4=;
-	b=axmDNX00zdS/lx28xxRUIlOp7LyLM1+cOt5q5B36AI3WenVoMcZMYb6FTCTmarDAEpMC
-	 AxMPt5og/8pZXhRz8iaiVuVzXgMaG/y0ZyPqgn7CUT0QPLP0i0Mh85hlHOGeBconoSBqp
-	 e2slpfvPP6vsPwTt38+XV8DLikt1wxoVDPHfXTmnUaoJVWJ2qFmz+2CND4jUiso3YqIiE
-	 IvbI6cZahbE90C2i7wPHvbLZwuJH321l/c9k8+40JRa7TE5C9r2AIsxH2VWQEjowNQa49
-	 Fol+o1HwpKhqkGV7217iswWPRnhw5BhJvazjP/bUTIuKAMJl/q8AsiyCas1oCTdL3Xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792489022;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=5lpsvBHvAxlpc1hwk1xYx6qm1Ra+T5Mj3gqvkbfy5tc=;
+	b=5o03nrc25PeFKgbHwaE1GV+xCEqPSQA3cPe13qkE/mSkr8wDPahCRbEk/ZgizAm30yvP
+	 l1zdK78OpFRxfraVcS+h+xv5yuCSGZbZRsfyWqcrXn2gxBjLmPTu0qGdm1OQtM0ZtJJ5V
+	 56iCsOIRkItoXuoLDemMQevhYH8lN+wWIiTyLHG30Fzr146Xhj32hhQs0PEAmMsEFqMoW
+	 mM+abPYnydWaVuMVsU1Fhs+laP/fBRx6KT4xrkzoCZUMCVAHT2mJPdazzBmn9igpTEhBh
+	 zsbBJEkf9pnfKikI4d1RZFWF8nZgfC4QVoK8Aaj7/tmTMVlIEeEfpCRLRBfXN0x4TXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T0LhVunn;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=L3LrkfZY;
+	arc=none smtp.remote-ip=95.215.58.251
+Received: from mta1.migadu.com (out-251.mta1.migadu.com [95.215.58.251])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FE5606A327;
-	Tue, 20 Oct 2026 09:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA7A606A31F
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:37:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FA7A606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T0LhVunn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AE61F000C4;
-	Tue, 20 Oct 2026 09:35:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792488953;
-	bh=HSmjPI16nvDN8Ul0NAtxX99vasGqIsxArWPRVzPVvL4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=T0LhVunnP9LkJ49WUDcR9bg/c+SeBVw6wOT7ZN4DiA4Z8Xx179x45rntpoC609Z1u
-	 TORpH9toScTu8AeJTwyup6DjDuBZq3Kcyhlr1f/bSq+q54MlYJu/CVEjxYesBObVdV
-	 /jiDggaRbY3vtKUp+sj7Im5MJ1DwRmK9mV5+8Htca0m43c6s9epKuTj6cndHgh8HLS
-	 t7xhO9rFWJYEoEWHg6JCNSXMGK/z8Q1uz6hoRvZHKoeFq5eKPDvKbDSeV95RlJraYy
-	 NzwPjXjjKh0Zb5ew76X63yvHI6mMELqeDLjt4l/IeOdvJ76X0f2ENCN90ZYCHTpSwb
-	 q4hbF+74Gm6tA==
-Subject: Re: [PATCH net-next 1/3] net: qrtr: do not take the sock lock on
- blocking recv
-From: netdev-bot+sashiko@kernel.org
-To: chunkai.deng@oss.qualcomm.com
-Cc: mani@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux-arm-msm@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- tao.zhang1@oss.qualcomm.com, peter.chen@oss.qualcomm.com,
- jeff.johnson@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com
-Date: Tue, 20 Oct 2026 09:35:52 +0000
-Message-ID: <179248895205.3135.9429539491944688688@kernel.org>
-In-Reply-To: <20261016-qrtr-add-shutdown-v1-1-e1cc01ca5919@oss.qualcomm.com>
-References: <20261016-qrtr-add-shutdown-v1-1-e1cc01ca5919@oss.qualcomm.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=L3LrkfZY
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=YIEvM8sHgjMXvgUVAE5uSY5439/NF7a2ha/iAy9npzU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792489019; v=1; x=1793093819;
+ b=L3LrkfZYl0gjR3Vo12WVSvF7RcDabj6ykozs1ep9Cl2E7fudrl/9zjW0ynytHSug1SGDaJ2m
+ fKUJkVQ6vdDsT/v6dM4r9ENYhCb9wTM/CtoFw/A1S/rMa5z/RbgHE4C2USf6A7b2orO2VRuqQz8
+ YwngvetnNnlVbKg7Le+up8hk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 26a47b0b7a78b92f;
+	Tue, 20 Oct 2026 09:36:59 +0000
+X-Mizu-Trace-ID: 26a47b0b7a78b92f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <c23a3d37-fd61-4f7f-8bb5-64792ac7152a@linux.dev>
+Date: Tue, 20 Oct 2026 17:36:52 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,97 +58,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] pppoe: delete session hash entries by pointer match
+To: netdev-bot+sinfo@kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Kees Cook <kees@kernel.org>, Simon Horman <horms@kernel.org>,
+ Asim Viladi Oglu Manizada <manizada@pm.me>,
+ Eric Woudstra <ericwouds@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261020092118.47416-1-qingfang.deng@linux.dev>
+ <179248826539.3290.615848934021449047@kernel.org>
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <179248826539.3290.615848934021449047@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On 2026/10/20 17:24, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>   - How the issue was discovered, e.g. hit in production, hit during
+>     development, syzbot report, manual code inspection, LLM or static
+>     analysis tool scan.
 
-Low priority / nit picks for your consideration:
+This was found by LLM when generating selftests.
 
-- [Low] The commit "net: qrtr: do not take the sock lock on blocking
-  recv" fixes a real, user-visible defect but has no Fixes: tag.
-- [Low] The concern says qrtr_ioctl(TIOCINQ) (net/qrtr/af_qrtr.c:1234),
-  which calls skb_peek(&sk->sk_receive_queue) under lock_sock() only, is…
+>
+>   - Whether the issue was actually triggered, or is only theoretical
+>     (e.g. found by code inspection). If it was triggered please include
+>     the symptoms, like the stack trace or error messages.
 
---
+It was triggered by a duplicate connection attempt in a generated 
+selftest, breaking the existing connection.
 
-net: qrtr: do not take the sock lock on blocking recv
-
-This patch changes qrtr_recvmsg() so it no longer holds lock_sock() while
-it blocks in skb_recv_datagram(). The lock is now taken only after a
-datagram has been dequeued. Before this, other calls on the same socket
-could not run while a recv() was waiting.
-
-> Signed-off-by: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
-
-[Severity: Low]
-Should this have a Fixes: tag? The commit message describes a hang that
-users can see. A thread blocked in recv() holds lock_sock() inside
-skb_recv_datagram(). While it waits, sendmsg(), bind(), connect() or
-ioctl() from another thread on the same socket cannot proceed until a
-datagram arrives.
-
-In qrtr_recvmsg(), the lock_sock() held across skb_recv_datagram() and
-the release_sock() calls on the early return paths all come from the
-original driver, so perhaps:
-
-Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
-
-> diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-> index e7b3647424b8f..0851763d83baf 100644
-> --- a/net/qrtr/af_qrtr.c
-> +++ b/net/qrtr/af_qrtr.c
-> @@ -1109,18 +1109,14 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
->  	struct qrtr_cb *cb;
->  	int copied, rc;
->  
-> -	lock_sock(sk);
-> -
-> -	if (sock_flag(sk, SOCK_ZAPPED)) {
-> -		release_sock(sk);
-> +	if (sock_flag(sk, SOCK_ZAPPED))
->  		return -EADDRNOTAVAIL;
-> -	}
->  
->  	skb = skb_recv_datagram(sk, flags, &rc);
-> -	if (!skb) {
-> -		release_sock(sk);
-> +	if (!skb)
->  		return rc;
-> -	}
-> +
-> +	lock_sock(sk);
-
-[Severity: Low]
-This isn't a bug, but the dequeue now happens outside lock_sock(), so
-qrtr_ioctl(TIOCINQ) is no longer serialized against it:
-
-net/qrtr/af_qrtr.c:qrtr_ioctl() {
-    ...
-	lock_sock(sk);
-    ...
-	case TIOCINQ:
-		skb = skb_peek(&sk->sk_receive_queue);
-		if (skb)
-			len = skb->len;
-    ...
-}
-
-As far as I can tell this is still memory safe. skb_free_datagram() in
-qrtr_recvmsg() still runs under lock_sock(). The consume_skb() in
-skb_set_peeked() only drops a reference on a shared skb.
-
-The length TIOCINQ reports also matches some valid ordering of the ioctl
-and the recv. The unlocked skb_peek() racing with __skb_queue_tail() on
-the enqueue path was already possible before this patch.
-
-Would it be worth taking sk_receive_queue.lock around the skb_peek() in
-TIOCINQ, as packet_ioctl() does? Then the ioctl would not rely on
-qrtr_recvmsg() freeing the skb under lock_sock().
-
->  	cb = (struct qrtr_cb *)skb->cb;
->  
->  	copied = skb->len;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-qrtr-add-shutdown-v1-0-e1cc01ca5919%40oss.qualcomm.com
