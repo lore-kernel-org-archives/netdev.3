@@ -1,68 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792466940;
-	b=tLJvMnLE7Cx3f60B+UlsNMW4W/M2pKks+rvgLLAR08n6QboI6GzuiEsFBOzo1esmqs6l
-	 duN+wukaITME7dQ4VXzInX8v+o8QRunAxkc8urOvcSTR3xWHB/1AHtQ1YsuUHNCOQ33eK
-	 LwyFlEUnbWMKvI5FpNHcmf+5ldU9LI+t8TVEwN2g2n2rJqppT/1VsPNMWMpK91AHR0POI
-	 3aG6/IuNA73gbRvzjhixpDZRoBOd17TuftUXUiYud8MeET6EpOC7ih/NFJSlGeIMZUBfU
-	 esGNNwiweubJHOahUZSYC46i0EK6ibry4Ze4EMZcEpTTWTET9DRTlKwFl9uO0RV9GJg==
+	t=1792467213;
+	b=F+QH+IsGELokQL8+LkRSd+EwgUBfwa0JjI3M+MKPJhPr2/sO1q2Ehjp1Vfl7zGPJaQLl
+	 as1l0AAlhyZYvywDsfpQaw5yZ3eskY0TZN5tOQYfHRiePoTnIwOAsZTOL2xI+bv1efVpm
+	 8inUsxbhKnBoJ7u9udgUHgVhjP3t5M3TPpw9RKLYTJg5NBwAAGByItZWHQiQJYJc61vuV
+	 6fqfRoRmR52XNFIGAifS0HcOe773WF3qzPqrby6T3Jm0bU7Kq4LSzj96LdlWqvtYpYpCN
+	 VAgA1bKnEDTkgy9AGbWJeeJtH5lQBR1Gv/RUw4qVJJe8ucA9ZnXLfZwQx3J4Ca7gaLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792466940;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=eYhpFhCV1vkP+5Z5Z8wHRbiIDOGVJbobZIYMKB9tLZY=;
-	b=jwx59sWzWugIA+tmIj1lQLiPQkISYOPS9HARt4ZKr8d8eIrOkIKfIhvNPVDER1nXkL8I
-	 9KBFMlxUNY+bdE3p0IZh2t9bydsIRPxiph9fylc5FpeKLQHBKvkwIar8TEDsInt7gD3pz
-	 zKJazLc0O3AOkOv8Yh4SqPMhBr8vdU+dxnZ9+j+ga3OABdq8ugGb2rXzLW57ye2Jska6A
-	 3VKKL4SObOC0kYCojR74qNrXpmSSQrovOfJAblMmTFUUDM2Dp5UfN8T/SzHHebHosPVo5
-	 LOcIUjNnh579u/vGdGdDEm6i+dfO2sLbb8MxF6t0dxzz0ThEd9k0PwupoHkfcDEu0iA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792467213;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=CjIRWE6TQ7/W5lfKi5fjb7V3GBfojCU+K/Wrc9kZoRQ=;
+	b=Dxsg8OqU/xiazM4t8UHl1MWRbMUcroU0xHU8KnknKMlyIZZYUfwUPf2BV0T7NvUZVNtW
+	 Iou1yDaqoFKnrlJnR8KqQtOjm8d3xbaNFXLHNY876ArtYVQPYwHkmDkZTC5mLZbUM1nNc
+	 XkATL3U3YAFhSOJwhkFOc7gT+UZZLymZZ/E2oN1XAGt7w+vuIntxdGAPI5oYBda/U+y6g
+	 9yy3ScFtdkcsm/VkXlBS3jj5LMxI1pI5ddimzVdxrhbYtE8qgy0X3UHTaOKDDkcp9t3g/
+	 kVS9etSRtIir+8PJXpBC+cVuu+4ClWDPk1mH1cNvaIs09n7KwnQxsoQaS11EqFJ2TkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XSKQrgUG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=l2lzkRTc;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4770606A319;
-	Tue, 20 Oct 2026 03:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6847D606A319;
+	Tue, 20 Oct 2026 03:33:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6847D606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XSKQrgUG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877581F000C5;
-	Tue, 20 Oct 2026 03:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792466939;
-	bh=eYhpFhCV1vkP+5Z5Z8wHRbiIDOGVJbobZIYMKB9tLZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XSKQrgUGH/vud0NN4jnQ5CZIK6KTjKqy0BRlpbRhVKNnj4v0bVWBb+Avzcb2qEBUW
-	 m45bzOoiGv+wH2OjTiwNBlCPLIjGVEMJNSpEXeF5RKgG6cOC3PXF3S3d3LdlXlhjXJ
-	 Wlnro1p4sJH927Cl1e3sLhEJLgj4cnxBui5nQlVE9LCrUX3Ikc1fmPYcY/gHtDCP4x
-	 X9Tu5NDX+qQmkegmfLtEwJmUY/iOlhQXa7aXruy0J/Fn1VNKdREfGXCLELl+dr4uoC
-	 xmwItsj5+5HNstG6De1zlVCD26TutAkE5EW/8+xqPkS8s9HqXJamhjmxL5HpyQxKT0
-	 IVb8uS6oufAxg==
-Date: Tue, 20 Oct 2026 11:08:54 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: stmmac: disable TX checksum offload
- for jumbo frames on bugged cores
-Message-ID: <atbbRqSJIJ_glwuf@xhacker>
-References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
- <20261012-stmmac-xdp-tx-pre-fixes-v1-2-05fd0c90f7e1@oss.qualcomm.com>
- <6d1d99b5-1c3c-4e59-a0b2-e4d671e594ce@bootlin.com>
- <ata8k2EVDCDTmeE6@xhacker>
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=l2lzkRTc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Cj
+	IRWE6TQ7/W5lfKi5fjb7V3GBfojCU+K/Wrc9kZoRQ=; b=l2lzkRTcny7+zz7Yf9
+	hTLQEO1Bwfz61xOa0No0liA/QKoRJdQD+pOmtNPj8Oq9UsHkNi34Ws9Hr2VUK7kK
+	ugYQ63csDii267OLpy1VsXhJ6caqQG8cFOVvGh2uCuPB1MUA2eR32ebZ98cWvY4f
+	0CHS3C5+KOIaELUWcthHjcWmg=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgA39Xji4NZqukytAw--.48022S2;
+	Tue, 20 Oct 2026 11:32:52 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH v1] ice: Lock TC flower filter list operations
+Date: Tue, 20 Oct 2026 11:32:48 +0800
+Message-ID: <20261020033248.522973-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,95 +66,178 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ata8k2EVDCDTmeE6@xhacker>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgA39Xji4NZqukytAw--.48022S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKw4UXr13KFWrKw4ruw45Jrb_yoW7tw1xpF
+	Z8J34j9r18Jw15WasrXa17Zrs0gwnYkr43WF95C3Z8Zr4DJF4qgFnrtay5trs5GrW3GFW3
+	tF17Zw15A3WDGaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimhF7UUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+wTBpWrW4OQbLQAA3V
 
-On Tue, Oct 20, 2026 at 08:57:55AM +0800, Jisheng Zhang wrote:
-> On Fri, Oct 16, 2026 at 04:18:06PM +0200, Maxime Chevallier wrote:
-> > Hi Lorenzo,
-> > 
-> > On 10/12/26 17:24, Lorenzo Bianconi wrote:
-> > > stmmac_xdp_xmit_xdpf() decides TX checksum insertion from the queue COE
-> > > capability only:
-> > > 
-> > > 	csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
-> > > 
-> > > and lets the enhanced descriptor set TX_CIC_FULL accordingly. On the
-> > > bugged_jumbo cores (snps,dwmac-3.40a, snps,dwmac-3.610 and
-> > > snps,dwmac-3.710) hardware checksum insertion is broken for jumbo
-> > > frames; the skb path works around it by clearing NETIF_F_CSUM_MASK in
-> > > stmmac_fix_features() when the MTU exceeds ETH_DATA_LEN, so skbs are
-> > > never marked CHECKSUM_PARTIAL and no checksum is inserted. The XDP TX
-> > > path bypasses that workaround, so once XDP is allowed at MTU >
-> > > ETH_DATA_LEN, jumbo frames sent via XDP_TX or redirected into the
-> > > device would leave the interface with a full checksum insertion enabled
-> > > on those cores - exactly what the workaround is meant to avoid.
-> > > 
-> > > Disable checksum insertion for oversized frames on bugged_jumbo cores in
-> > > the XDP TX path too.
-> 
-> Here I want to query a generic rule from netdev maintainers:
-> can XDP frame enable HW checksum on dwmac IP? Per my understanding, the
-> dwmac can only do HW checksum for normal particular packets layouts, such as
-> TCP, UDP. What about if XDP transmits a non-IP frame?
+The per-PF TC flower filter list is used without a common lock.  TC flower
+add and delete paths traverse the list, send firmware commands, and then
+insert or remove and free nodes.  The reset path can concurrently walk the
+same list in ice_rem_all_chnl_fltrs() while removing queue-channel filters,
+and ice_replay_tc_fltrs() replays the same list after reset.  The reset
+state check in the flower handlers is not a synchronization primitive.
 
-or a generic XDP guide from netdev maintainers:
-Since XDP can tranmist arbitrary Eth frames, so how does the eth driver cope
-with HW checksum if the HW checksum is intended for supported IP packet
-layouts rather than arbitrary layer2 frames?
+The race is reachable by creating or deleting a TC flower filter while
+service work handles a reset and removes queue channels.  A flower
+operation can obtain a filter node before reset teardown removes and frees
+it, or reset/replay can traverse a list concurrently modified by flower
+control operations.
 
-choices:
-c1. Simply disabled HW checksum by default. Then XDP prog must provide
-checksums themselves, lost the HW offload cap for IP packets.
+This can produce a KASAN use-after-free, hlist corruption, stale filter
+state after replay, or a panic.  Firmware commands are slow-path
+operations, so mutual exclusion is appropriate here.
 
-c2. detect the frame in eth driver's xdp code path, then enable/disable
-HW checksum accordingly. Then how? Any example in exisiting eth drivers
-is appreciated.
+Add a per-PF mutex and hold it across each list lookup, firmware operation,
+list update, and free.  This keeps every reader of the filter list stable
+while an entry is being added, removed, or replayed.
 
-Thanks in advance
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by LLM-assisted (GLM-5.3) code inspection. Due to a lack
+of hardware infrastructureThe issue was not observed at runtime.
+It is identified by code inspection only.
 
-> 
-> Correct me if I misunderstood something.
-> 
-> Thanks
-> > > 
-> > > Fixes: be8b38a722e6 ("net: stmmac: Add support for XDP_TX action")
-> > > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> > 
-> > Looks cleaner to me than the alternative patch from Jisheng :
-> > 
-> > https://lore.kernel.org/netdev/20260929121025.20821-1-jszhang@kernel.org/
-> > 
-> > It sure seems there're a lot of people interested in getting XDP/XSK
-> > working properly on stmmac :)
-> > 
-> > Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> > 
-> > Maxime
-> > 
-> > > ---
-> > >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > > 
-> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > index ca61ab449e32..0e29c5d04714 100644
-> > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > @@ -5276,6 +5276,14 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
-> > >  		return STMMAC_XDP_CONSUMED;
-> > >  	}
-> > >  
-> > > +	/* Disable TX checksum offload for jumbo frames on cores where
-> > > +	 * checksum insertion is broken for oversized frames, matching the
-> > > +	 * stmmac_fix_features() workaround used by the skb path.
-> > > +	 */
-> > > +	if (priv->plat->bugged_jumbo &&
-> > > +	    xdp_get_frame_len(xdpf) > ETH_FRAME_LEN)
-> > > +		csum = false;
-> > > +
-> > >  	while (true) {
-> > >  		skb_frag_t *frag = i ? &sinfo->frags[i - 1] : NULL;
-> > >  		int len = frag ? skb_frag_size(frag) : xdpf->len;
-> > > 
-> > 
+Fixes: 9fea749856d1 ("ice: Add tc-flower filter support for channel")
+Assisted-by: GLM-5.3 coccinelle
+Signed-off-by: Binbin Deng <18983559317@163.com>
+---
+ drivers/net/ethernet/intel/ice/ice.h        |  1 +
+ drivers/net/ethernet/intel/ice/ice_main.c   |  3 +++
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c | 26 +++++++++++++++++----
+ 3 files changed, 26 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index db3c7015c56c..dac14c97bcbc 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -643,6 +643,7 @@ struct ice_pf {
+ 	 */
+ 	u16 num_dmac_chnl_fltrs;
+ 	struct hlist_head tc_flower_fltr_list;
++	struct mutex tc_flower_fltr_lock; /* Protect TC flower filters */
+ 
+ 	u64 supported_rxdids;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index d88835482d3a..90031ba17b06 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3877,6 +3877,7 @@ void ice_deinit_pf(struct ice_pf *pf)
+ 	mutex_destroy(&pf->adev_mutex);
+ 	mutex_destroy(&pf->sw_mutex);
+ 	mutex_destroy(&pf->tc_mutex);
++	mutex_destroy(&pf->tc_flower_fltr_lock);
+ 	mutex_destroy(&pf->avail_q_mutex);
+ 	mutex_destroy(&pf->vfs.table_lock);
+ 
+@@ -3976,6 +3977,7 @@ int ice_init_pf(struct ice_pf *pf)
+ 
+ 	mutex_init(&pf->sw_mutex);
+ 	mutex_init(&pf->tc_mutex);
++	mutex_init(&pf->tc_flower_fltr_lock);
+ 	mutex_init(&pf->adev_mutex);
+ 	mutex_init(&pf->lag_mutex);
+ 
+@@ -8882,6 +8884,7 @@ static void ice_rem_all_chnl_fltrs(struct ice_pf *pf)
+ 		hlist_del(&fltr->tc_flower_node);
+ 		kfree(fltr);
+ 	}
++	mutex_lock(&pf->tc_flower_fltr_lock);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index d20357c04127..955ad3cc5417 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -2276,21 +2276,29 @@ int ice_add_cls_flower(struct net_device *netdev, struct ice_vsi *vsi,
+ 		return -EINVAL;
+ 	}
+ 
++	mutex_lock(&pf->tc_flower_fltr_lock);
++
+ 	/* avoid duplicate entries, if exists - return error */
+ 	fltr = ice_find_tc_flower_fltr(pf, cls_flower->cookie);
+ 	if (fltr) {
+ 		NL_SET_ERR_MSG_MOD(extack, "filter cookie already exists, ignoring");
++		mutex_unlock(&pf->tc_flower_fltr_lock);
+ 		return -EEXIST;
+ 	}
+ 
+ 	/* prep and add TC-flower filter in HW */
+ 	err = ice_add_tc_fltr(netdev, vsi, cls_flower, &fltr, ingress);
+ 	if (err)
+-		return err;
++		goto unlock;
+ 
+ 	/* add filter into an ordered list */
+ 	hlist_add_head(&fltr->tc_flower_node, &pf->tc_flower_fltr_list);
++	mutex_unlock(&pf->tc_flower_fltr_lock);
+ 	return 0;
++
++unlock:
++	mutex_unlock(&pf->tc_flower_fltr_lock);
++	return err;
+ }
+ 
+ /**
+@@ -2305,28 +2313,36 @@ ice_del_cls_flower(struct ice_vsi *vsi, struct flow_cls_offload *cls_flower)
+ 	struct ice_pf *pf = vsi->back;
+ 	int err;
+ 
++	mutex_lock(&pf->tc_flower_fltr_lock);
++
+ 	/* find filter */
+ 	fltr = ice_find_tc_flower_fltr(pf, cls_flower->cookie);
+ 	if (!fltr) {
+ 		if (!test_bit(ICE_FLAG_TC_MQPRIO, pf->flags) &&
+-		    hlist_empty(&pf->tc_flower_fltr_list))
+-			return 0;
++		    hlist_empty(&pf->tc_flower_fltr_list)) {
++				mutex_unlock(&pf->tc_flower_fltr_lock);
++				return 0;
++		}
+ 
+ 		NL_SET_ERR_MSG_MOD(cls_flower->common.extack, "failed to delete TC flower filter because unable to find it");
++		mutex_unlock(&pf->tc_flower_fltr_lock);
+ 		return -EINVAL;
+ 	}
+ 
+ 	fltr->extack = cls_flower->common.extack;
+ 	/* delete filter from HW */
+ 	err = ice_del_tc_fltr(vsi, fltr);
+-	if (err)
++	if (err) {
++		mutex_unlock(&pf->tc_flower_fltr_lock);
+ 		return err;
++	}
+ 
+ 	/* delete filter from an ordered list */
+ 	hlist_del(&fltr->tc_flower_node);
+ 
+ 	/* free the filter node */
+ 	kfree(fltr);
++	mutex_unlock(&pf->tc_flower_fltr_lock);
+ 
+ 	return 0;
+ }
+@@ -2340,10 +2356,12 @@ void ice_replay_tc_fltrs(struct ice_pf *pf)
+ 	struct ice_tc_flower_fltr *fltr;
+ 	struct hlist_node *node;
+ 
++	mutex_lock(&pf->tc_flower_fltr_lock);
+ 	hlist_for_each_entry_safe(fltr, node,
+ 				  &pf->tc_flower_fltr_list,
+ 				  tc_flower_node) {
+ 		fltr->extack = NULL;
+ 		ice_add_switch_fltr(fltr->src_vsi, fltr);
+ 	}
++	mutex_unlock(&pf->tc_flower_fltr_lock);
+ }
+-- 
+2.43.0
+
