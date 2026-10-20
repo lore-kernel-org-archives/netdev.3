@@ -1,61 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792463236;
-	b=ZwjJtsQJs+LNYJI0Ss8wl4nU6C4nzR7jxQhw+2Mm89QA08WHTd/Z1xvjCqAk0ZTVu6yK
-	 yDBSWO9wIaHsAhwXM0vzQEXKyV1wF64ljdGWfpyu4bLmsMGth9kjMZJbpKWojwmP/6F23
-	 kB9EIDYjo+pak3EYXbhox6FMf7ysefCUApv6BLsmyJbFG+CI45ADWAdG1u9v3aLMYIEYp
-	 MJtewBQS6dJhv0pOP6fRFRWd9rRFPFzlxosXpSz/ifYYCvG4BM+7BGJwvJwp+VBmg8ZA7
-	 C5gBaCC1EeW1hURRmPk/HjHNh/3jhFxlUGYSP/XpiOJbwY9myjjGBqH9hTa6kTcmDJg==
+	t=1792463672;
+	b=zhmgSGbLIAEl8SsPf8yJcPJ+AZ3ea76onpyw8fmhLP47XQ0v9/kvJr/hbw9l1kbAQ0mH
+	 hd/voROwFBLDuLZ3+VrTshgsILuR5SrozXO/s8Am1F/90aeLQUCfwqswj/HOyMCmCa5zv
+	 8PLAmlbK6yPmSpThrnGdi87/vWxopU4Bg1Al5nnPMIplJd2rc2otNK5Qoce6gI0u2ZHsP
+	 8JfwOIMJJz9WihqYnM2AGkU0lAG8tcF4md+5b6FAHzUeeLhy0qGvSvndP4d4Wyw3FHMat
+	 Z5/MprOjclKV+nu4W/X8qT9xEy72ietbdb+yo5JCnKQrIQCl+nUnAVf1vYPtL7MkSjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792463236;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=dy3ucRc1XCEeofmHBSnscKm5xMHhfbbrvHz358CCx1g=;
-	b=IV1+5EC6I7rw2q7HIuZFtmOXMSwOpNl9SLXcbLQ2b1hVERo89ve6R7QmTjfhfZoVMNhD
-	 c51d1OnySmUEp0Tv8ZL7n4Utmx4d8a5A3KD3gD+iTs94ZL2kHke5nCQbTF+YDcnwlRrWr
-	 VRRZOCSAoFv1SJNWLsvrqLWt1p7vb1VLyPEo4Fhtx494IcXiIjA4F1FNGeAo3QcGV7wMG
-	 uoHHQgBLAbjJOt/xmXpWP3KHrXbLgfgKeL1zA0fp4GHID29H1g6XylQAzpDPFjgk6i6QH
-	 Z99OwSgUyXg5J8oQ8Unw7dEO/2pSfVZ6gwQcXSWLVmQvqIGcqEQugQvdngNw5aYOWBA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792463672;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:From:To:
+	 Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Virus-Scanned:X-Virus-Status;
+	bh=rAcJpnc3Fz26CFHGng6q7kIunuo/xgjRbsmYFh4OhgA=;
+	b=1pzXCWbR3+aDlX/JMMRnpb2GghcBQ3TTcme4JXpWIgU5I0OSlFyezv3VZ6WvoW0DeI+v
+	 YPWemsNC5EZqk3nwoH2xNixMdPG0y1PuuQ6kxdiYGGQk2jFu2qnruH5JSFZxjx+FKgmFW
+	 YO7CtLs8tWuOJKqT0pMfRFZrSuEimksbBJap+6zFXUsDHx43ajooipgQpCem8h/uMaSrD
+	 3ivJ0UhA0r3PtspSfqWuWcagDm4g+SzbaMyuTW8BYyn8EyZobrWseIwQM1RaISYyYAEr1
+	 LZiexmb6FQbMS79Js9QmVSbKS/6fiqeU0ptxXl7z9zmT0uFPFA77oE2L57s5m9REOMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YZAly+Wb;
-	arc=none smtp.remote-ip=220.197.31.3
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB48606A31A;
-	Tue, 20 Oct 2026 02:27:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FB48606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	dmarc=pass header.from=uniroma2.it;
+	spf=pass smtp.mailfrom=uniroma2.it;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=Tu12XhNn;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=wyH0+BBX;
+	arc=none smtp.remote-ip=160.80.4.37
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704CC606A319;
+	Tue, 20 Oct 2026 02:34:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 704CC606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YZAly+Wb
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=dy
-	3ucRc1XCEeofmHBSnscKm5xMHhfbbrvHz358CCx1g=; b=YZAly+WbRPbtTKx65w
-	YkpZCvRmxS9GbeBLFW9zGc6w7drekd9lf3sjd5Drh4+0HPbN/k9W9K2VYArx7ttu
-	2DA/JZOwECx3kUi3SpzVtrWHRijOJYAi7Rb4OfYSvi3fmLb7sT96ee7KDZYO1hN4
-	/OaxERnjGt4X+n3G/QA4Sjz5o=
-Received: from colol4bi5.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3N8ZY0dZqKUFdBA--.5766S2;
-	Tue, 20 Oct 2026 10:26:34 +0800 (CST)
-From: Binbin Deng <18983559317@163.com>
-To: sukhdeeps@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Binbin Deng <18983559317@163.com>
-Subject: [PATCH v1] net: atlantic: Unregister before clearing RXNFC rules
-Date: Tue, 20 Oct 2026 10:26:30 +0800
-Message-ID: <20261020022630.515209-1-18983559317@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=Tu12XhNn;
+	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=wyH0+BBX
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69K2Xn69006835;
+	Tue, 20 Oct 2026 04:33:55 +0200
+Received: from localhost.localdomain (unknown [160.80.105.87])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 307AB120535;
+	Tue, 20 Oct 2026 04:33:46 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1792463626; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=rAcJpnc3Fz26CFHGng6q7kIunuo/xgjRbsmYFh4OhgA=;
+	b=Tu12XhNnVe1NjqsYEvaBCUM1uB5FOmpzposrSXE6Qc2G6pE8U8R2DLhzBMTW0b9GQQOQKb
+	QbLJTZyEJ9yzptCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1792463626; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=rAcJpnc3Fz26CFHGng6q7kIunuo/xgjRbsmYFh4OhgA=;
+	b=wyH0+BBXW/D7ujqEzQox8Rtw9ViWXpsAmJ1fHJIDi4fJU20WXzuXBkP5jRQq3Fnv8eeYCj
+	1MEGX6m2EcGilHB+eVhIroaakHPaQ47PJ3WNYYm4+vNNS2QbvDWbMPrAaqCIN/AHElVMlu
+	Hfd5fxwLrw+GIGp7cFN0puG2k+a2H/UR2PQn6mtULdQEpZ4kAkYPYSWYT9DqKDlnJyFpLj
+	SevmNuMLc3/P8Iw2K+TBwaPY1kFjmODgOWg9+LyPVpkamys7iWI/k1G+tMdp874nl7uuRr
+	Gc7XX8R0TQ+UcP6mOXZu/O43wvqRZ2pP70/Nhh42Wf1esozed+egF2clc8tHUw==
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        David Lebrun <david.lebrun@uclouvain.be>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        David Ahern <dsahern@kernel.org>,
+        Hazley Samsudin <hazleycryilis@gmail.com>,
+        Stefano Salsano <stefano.salsano@uniroma2.it>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: [PATCH net] seg6: fix transport header for inner IPv4 with IP options
+Date: Tue, 20 Oct 2026 04:33:36 +0200
+Message-Id: <20261020023336.34-1-andrea.mayer@uniroma2.it>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,58 +81,175 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3N8ZY0dZqKUFdBA--.5766S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZryUZF43tr13Xr1fZw45trb_yoW8trW5pa
-	15Wry7C340qw10qw1kXF18ZFyYkwn7tF95K34UGwsY9rs8AFWxtF4rKrWq9F10vFZ5uF1j
-	vrWYv3ySkFZ8A3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUDG5UUUUU=
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC4BravmrW0VqIwgAA3j
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-aq_pci_remove() clears the driver's RXNFC rule list before unregistering
-the netdevice.  Until unregister_netdev() returns, ethtool operations can
-still call aq_get_rxnfc_rule(), aq_get_rxnfc_all_rules(),
-aq_add_rxnfc_rule(), or aq_del_rxnfc_rule().  Those paths traverse the
-same unlocked hlist that aq_clear_rxnfc_all_rules() is mutating and
-freeing.
+The End.DT4, End.DT46 (its IPv4 path only) and End.DX4 behaviors set the
+transport header of the decapsulated IPv4 packet at a fixed 20 bytes, the
+size of an IPv4 header without options. They do not validate the header
+length either. With options, the transport header points at the first
+option byte. The effects include:
+- ping -R sends an echo request with a 60-byte IPv4 header to a local
+  address through an End.DT4 or an End.DX4 SID. Since icmp_rcv()
+  computes the ICMP checksum from the first option byte, the request
+  fails the check and is counted in IcmpInCsumErrors.
+- A UDP datagram can reach a port that an iptables rule drops. The rule
+  checks the UDP header after the full IPv4 header, while the socket
+  lookup reads it at the fixed 20-byte offset.
+- With an inbound AH state, ah_input() reads the AH header at the fixed
+  20-byte offset, but copies the IPv4 header over it with the length in
+  the IHL field. A packet shorter than that length can make ah_input()
+  write past the end of the data, into skb_shared_info when the skb has
+  no tailroom.
 
-The race is reachable by issuing RXNFC ethtool commands concurrently with
-PCI device removal or driver unbind.  A reader can dereference a node that
-has just been freed, and two writers can corrupt the list or free the same
-rule more than once, causing KASAN reports, list corruption, or a kernel
-panic.
+Validate the inner IPv4 header length with the new helper
+seg6_validate_iphdr_len() and set the transport header at that length. A
+packet that is not IPv4, whose header length field is below 5, or whose
+header is truncated, is dropped with a drop reason. The fix is limited to
+the header length, which the transport header relies on. Other checks done
+on IPv4 input, such as the header checksum, the total length and the IP
+options, are not addressed here.
 
-Reverse the removal order: unregister the netdevice first, then clear the
-RXNFC rules.  After unregister_netdev() returns, ethtool can no longer
-enter the driver, while the PCI device is still available for the
-rule-clearing routine to issue hardware commands.
+Found by code inspection while reviewing commit 44930446dde4 ("ipv6: seg6:
+clear IPv4 control block on IPIP decapsulation"), as a pre-existing issue
+that Sashiko also reported on v2 of that patch. Without this patch, a
+bpftrace probe on ah_input() shows the reporter's reproducer packet
+written into skb_shared_info. With it, that packet is dropped before
+ah_input(), ping -R no longer fails the ICMP checksum, the UDP datagram
+reaches its real port, and the SRv6 selftests still pass. These effects
+reproduce on an unmodified kernel, without error injection.
 
-Found during a static-analysis-assisted audit: candidate sites were
-surfaced by a Coccinelle rule, and the reader/writer paths were
-confirmed by LLM-assisted (GLM-5.3) code inspection.  The issue was
-not observed at runtime; it is identified by code inspection only.
-
-Fixes: 8d0bcb012f57 ("net: aquantia: add infrastructure for ntuple rules")
-Assisted-by: GLM-5.3 coccinelle
-Signed-off-by: Binbin Deng <18983559317@163.com>
+Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
+Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
+Reported-by: Hazley Samsudin <hazleycryilis@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260809221915.2ffc1ecd0f445fcb70270e31@uniroma2.it/
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/seg6_local.c | 56 ++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 48 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
-index 005d6ef4fc36..881727c3aa0a 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
-@@ -344,9 +344,9 @@ static void aq_pci_remove(struct pci_dev *pdev)
- 	struct aq_nic_s *self = pci_get_drvdata(pdev);
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 53f7b2452575..c249f7751d41 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1056,6 +1056,40 @@ static int input_action_end_dx6(struct sk_buff *skb,
+ 	return -EINVAL;
+ }
  
- 	if (self->ndev) {
--		aq_clear_rxnfc_all_rules(self);
- 		if (self->ndev->reg_state == NETREG_REGISTERED)
- 			unregister_netdev(self->ndev);
-+		aq_clear_rxnfc_all_rules(self);
++/* Validate the length of the IPv4 header at skb->data (which must point to
++ * the network header) and report that length, options included.
++ * Only the version, the header length and the presence of the whole header
++ * are checked.
++ * The length is written only when SKB_NOT_DROPPED_YET is returned.
++ *
++ * skb pointers may change: after this call, the caller must evaluate again
++ * any pointer into the packet data.
++ */
++static enum skb_drop_reason
++seg6_validate_iphdr_len(struct sk_buff *skb, int *hdrlen)
++{
++	enum skb_drop_reason reason;
++	const struct iphdr *iph;
++	int len;
++
++	reason = pskb_may_pull_reason(skb, sizeof(struct iphdr));
++	if (reason)
++		return reason;
++
++	iph = ip_hdr(skb);
++	if (iph->version != 4 || iph->ihl < 5)
++		return SKB_DROP_REASON_IP_INHDR;
++
++	len = ip_hdrlen(skb);
++
++	reason = pskb_may_pull_reason(skb, len);
++	if (reason)
++		return reason;
++
++	*hdrlen = len;
++	return SKB_NOT_DROPPED_YET;
++}
++
+ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+ 				       struct sk_buff *skb)
+ {
+@@ -1085,14 +1119,18 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+ static int input_action_end_dx4(struct sk_buff *skb,
+ 				struct seg6_local_lwt *slwt)
+ {
++	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
++	int hdrlen;
++
+ 	if (!decap_and_validate(skb, IPPROTO_IPIP))
+ 		goto drop;
  
- #if IS_ENABLED(CONFIG_MACSEC)
- 		aq_macsec_free(self);
+-	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
++	reason = seg6_validate_iphdr_len(skb, &hdrlen);
++	if (reason)
+ 		goto drop;
+ 
+ 	skb->protocol = htons(ETH_P_IP);
+-	skb_set_transport_header(skb, sizeof(struct iphdr));
++	skb_set_transport_header(skb, hdrlen);
+ 	nf_reset_ct(skb);
+ 
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+@@ -1102,7 +1140,7 @@ static int input_action_end_dx4(struct sk_buff *skb,
+ 
+ 	return input_action_end_dx4_finish(dev_net(skb->dev), NULL, skb);
+ drop:
+-	kfree_skb(skb);
++	kfree_skb_reason(skb, reason);
+ 	return -EINVAL;
+ }
+ 
+@@ -1234,6 +1272,7 @@ static struct net_device *end_dt_get_vrf_rcu(struct sk_buff *skb,
+ static struct sk_buff *end_dt_vrf_core(struct sk_buff *skb,
+ 				       struct seg6_local_lwt *slwt, u16 family)
+ {
++	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
+ 	struct seg6_end_dt_info *info = &slwt->dt_info;
+ 	struct net_device *vrf;
+ 	__be16 protocol;
+@@ -1246,7 +1285,9 @@ static struct sk_buff *end_dt_vrf_core(struct sk_buff *skb,
+ 	switch (family) {
+ 	case AF_INET:
+ 		protocol = htons(ETH_P_IP);
+-		hdrlen = sizeof(struct iphdr);
++		reason = seg6_validate_iphdr_len(skb, &hdrlen);
++		if (unlikely(reason))
++			goto drop;
+ 		break;
+ 	case AF_INET6:
+ 		protocol = htons(ETH_P_IPV6);
+@@ -1260,6 +1301,7 @@ static struct sk_buff *end_dt_vrf_core(struct sk_buff *skb,
+ 
+ 	if (unlikely(info->family != AF_UNSPEC && info->family != family)) {
+ 		pr_warn_once("seg6local: SRv6 End.DT* family mismatch");
++		reason = SKB_DROP_REASON_NOT_SPECIFIED;
+ 		goto drop;
+ 	}
+ 
+@@ -1273,7 +1315,7 @@ static struct sk_buff *end_dt_vrf_core(struct sk_buff *skb,
+ 	return end_dt_vrf_rcv(skb, family, vrf);
+ 
+ drop:
+-	kfree_skb(skb);
++	kfree_skb_reason(skb, reason);
+ 	return ERR_PTR(-EINVAL);
+ }
+ 
+@@ -1286,9 +1328,7 @@ static int input_action_end_dt4(struct sk_buff *skb,
+ 	if (!decap_and_validate(skb, IPPROTO_IPIP))
+ 		goto drop;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
+-		goto drop;
+-
++	/* end_dt_vrf_core() validates the inner IPv4 header length */
+ 	skb = end_dt_vrf_core(skb, slwt, AF_INET);
+ 	if (!skb)
+ 		/* packet has been processed and consumed by the VRF */
 -- 
 2.43.0
 
