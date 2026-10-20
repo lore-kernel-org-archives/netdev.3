@@ -1,49 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792459811;
-	b=k/p/Dz2FQalZcnP7uDiDHIOXol+3hoNuGL7QWFd+SNIDSc5rqKXzL/ObXHpbqwMwmViz
-	 aLDVjuXrQAQC4iL6pY7ZvsuDlHqnGFk3/6DDBeZZ5ZPHbcJSlaqMMpPUqDbjcdEI6mEKZ
-	 d5kdG+BZM92q7+8WIlh6J1CDpmAhqEeTZMyOakBp9CclXcvTSrLTbnXW1NrqTMTy/3yoy
-	 yBZtoW88w4eutydvmsN0vlFNTffnXCLJjFsIebzUFwJuIDuhQtiRS7FgmZZSBPiqKORYy
-	 cDDcz0LVrP1SjpgyKtCk6xgfMOCodqPx7K163CUtMGUDQfXMO8EvUBKGheAHNO0yoXQ==
+	t=1792459944;
+	b=h0AY5TcxGdLZXZsXkWTyvpH/4/Ba65nZadafqomOTiXYhbBXjiB67+iOUm3wafDix4PL
+	 7Qf0tdpfNJQrOw7E0v/qO6G6nlW8MJKtyOaUwoYRzJwL/DR7k4R64wwy8vjsk3JmVhAC5
+	 bR3yLNnj98aEhGZvSeMjrPhZywZ7wd79K24HEEUHAZHFVlle0PioARWImlbT6JH5+/Op/
+	 GPRvCqeWIWVA0dG14Xj5ybjYJo7B4D+/a6UoAHqOpRHQhYI9qrRjsO8oN+fyzXlIsMkhb
+	 0uhp1tsa/9mitCqs3YJGkww5Q04Vns5B9bmOUO9Wnm+FSVWQmW3jmE3VEeouBfyfsWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792459811;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=Nr/CEPOzBBBJCwa/nOw7aYctJE8L0LWSYjvBLUHHXPY=;
-	b=3yl0R8bHVGC0NnUlCGxzDy0TkprPlZec/hzzMvZPnlr6T2wzHT9i1/6Nwz6/PtBcjbp5
-	 0MpDoptpFS11G+XMef9DW2Y6/C6XVWlCcriuZPC9Prq/I8jVxR2TQCIMMci7cZZVSnG+l
-	 1/3Fv8h6UVRNJ91WOUe75CJJStEKxgMg7PPm8mris4o2yvPOSYcIoyuhLwF6XEhSNj4gM
-	 /cpZW/+Sse7GdfHN22wHLNfd7zZ8hhxkbxYCHwnxS5Or7rU8O/qxut0EV+MmUTvW5V3y7
-	 rRGdGf6GKGK+8fen1JRSNUhFftwZ7+Rj9hkEbsZVZfc2uED+sOCH3XDqpct5pq/N9qg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792459944;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=RHHZce2bisqZNUvfZX9Hgcl7uv7oyGBAYDbe5ybUc7g=;
+	b=l9+7a2ceEPug6ofE2ZIkInb7iv2x3durGq3z4GkLSAwarLDCOo7+L+XcQ7DhCN8fgdVM
+	 8Qiu+F5ptXKYIsNkAjV0HRELhEGMSUN2jpNRX00MpB+NwiPGM31T0dZn5g4+Zxpq7x0PW
+	 xPc73TSiV/NuHfMk8+D52vW4CA2SkFhcRcxu5gFErZaXoaG4nyLDD0HYtTR1QVHl6l4BH
+	 SSw13QReMk/9dSg7w6H++OmmnBilB7To0r5w67/FWMjzAjXIy8f+dM+WN6sfIvotlz4ah
+	 Q72gLBgddlNoKZXQFl0evQhHteotWiOsRBt1Ywi3QdACSHq0Aiuu9olGc0uphlzC4XA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs4TBmWI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m9fyw9BW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4A2606A326;
-	Tue, 20 Oct 2026 01:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EA8606A319;
+	Tue, 20 Oct 2026 01:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs4TBmWI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FA11F000C7;
-	Tue, 20 Oct 2026 01:30:10 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m9fyw9BW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4FD1F000C4;
+	Tue, 20 Oct 2026 01:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792459810;
-	bh=Nr/CEPOzBBBJCwa/nOw7aYctJE8L0LWSYjvBLUHHXPY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hs4TBmWIMGctWAukjihukJ7atoeVBirF/LnPAu73mOyajryQCXsDFMf0d+2XO72qu
-	 bjG2D1Zh5FQ3e1DSdbjvDZ1NHqH2ogFtItObFiC0AMeS5ixGEskHkP0/5usG22DNL3
-	 3YMnsJxOLfYIKlx5VDbb4vsUl5ZDEVVG053ehoo+ISqgd5gQDSp16GzDWJm8gABkoB
-	 7XQUwiG0cYoex+PAwHzS3T0cjZqaNzgbdgthAFVDhs2yt5erMGRWYVZrk+pWMRL17q
-	 wwjIX4BRiAX49ilMn1knt4L/KyCDso2wxwsS7/LdRuyTV6ZfinskX/XUlqZGzhGkuH
-	 4lAbjsd0an9bQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774283924A6F;
-	Tue, 20 Oct 2026 01:30:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792459944;
+	bh=RHHZce2bisqZNUvfZX9Hgcl7uv7oyGBAYDbe5ybUc7g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=m9fyw9BWEA2jRonWWI+6v7nTpS04pSAddzT88+LEFIeWb1PsUprhO9zMQPc1zK5WD
+	 SLSMsRI93ZzBBzkgyACFkTLREk9zB4pAynyKUZHGnAEC3XmTexo84HVMnzdxnVEHGD
+	 EuKtbZtUeN9N1VXkAhGtQ05T+JMTCPGXLqEziTp1aMO4IAyeuRES27cIlcC18cgRop
+	 Or9cL5mJel0UWcFbcNLQcGi0CHLDkuasEC0Hd5J/NPO0uBaLM+dA7zh08cJGwc3BJ/
+	 kHjmU4mnnjF9nbiFflwky6Ch4sDqy6Y5cG3tv12HZHAtx4ngFIHvtF0JTn1m0WnJ9/
+	 mGP5uyJ7A0/mw==
+Date: Mon, 19 Oct 2026 18:32:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Cc: hexlabsecurity@proton.me, Paolo Abeni <pabeni@redhat.com>, Thorsten
+ Winkler <twinkler@linux.ibm.com>, Eric Dumazet <edumazet@kernel.org>,
+ Alexandra Winter <wintera@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, Nagamani PV <nagamani@linux.ibm.com>, Hidayath Khan
+ <hidayath@linux.ibm.com>, netdev@vger.kernel.org, Simon Horman
+ <horms@kernel.org>, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net/iucv: serialize HiperSockets receive with
+ the socket lock
+Message-ID: <20261019183223.49a59d6f@kernel.org>
+In-Reply-To: <20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me>
+References: <20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,47 +64,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V2] net/dcb: Validate bandwidth for non-ETS
- traffic
- classes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179245980903.3422113.4762636508765499257.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 01:30:09 +0000
-References: <20261011083929.739261-1-tariqt@nvidia.com>
-In-Reply-To: <20261011083929.739261-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- alazar@nvidia.com, cjubran@nvidia.com, gal@nvidia.com, kees@kernel.org,
- linux-kernel@vger.kernel.org, oss-drivers@corigine.com, horms@kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sun, 11 Oct 2026 14:08:17 -0500 Bryam Vargas via B4 Relay wrote:
+> +static int afiucv_hs_dispatch(struct sock *sk, struct sk_buff *skb);
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 11 Oct 2026 11:39:29 +0300 you wrote:
-> From: Alexei Lazar <alazar@nvidia.com>
-> 
-> The IEEE 802.1Qaz standard defines that bandwidth allocation percentages
-> only apply to ETS traffic classes. Reject ETS configurations that
-> specify non-zero bandwidth for non-ETS traffic classes.
-> 
-> Placing this check in dcbnl_ieee_set() enforces the constraint uniformly
-> for all drivers rather than relying on each driver to validate it
-> independently.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,V2] net/dcb: Validate bandwidth for non-ETS traffic classes
-    https://git.kernel.org/netdev/net-next/c/0e36a335c84e
-
-You are awesome, thank you!
+Please reorder the code to avoid forward decl, please respond to AI
+reviewer's feedback. Please trim the slop in the commit msg and notes.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
