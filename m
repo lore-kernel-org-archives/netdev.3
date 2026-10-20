@@ -1,57 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792501860;
-	b=kf8tMykC1SuqozPf8japRH7Z6iDj5IgwA6bHbpSogxam8s+qwhEPVBTPjqd02gk+LgE0
-	 rhdhpL5sUiCnVHzmRz1HbrESAlY6lL83wKO7uRzfDl2GdlNhuCsKCxC2CK40Q9mrOcW9V
-	 yhwB2CCawnyb2VN4LpS8PK9cS4b04OVqv7yvxB/pNewapKGP+EL66GzHk/E/WhQwQ8Vqm
-	 9qKI97fWvzwQjyENUlz+sDs1Y+HD97FmjMVs6rWSmgA2O/2lPhpF/rOMu+YwDWM/bseel
-	 ep9D3dh8IVgAzi+zpn43a9KO4M5ObKnaIJQgR1tkUw/TWt2f0YYEMshS2aBc3KThTDw==
+	t=1792501852;
+	b=JI7iR2oQfxbviiff8RyU9vYMSyyg6Pxd2tSpUCclmwfD12/mDqxkrCWFxDJWsVBssxtH
+	 suI5kwXuaaa6ArDgHshB2c8IBF6asqw9zP6RTHSWWo2S0BZJTUSmrvjOarA1IjmVrC/k4
+	 V+W6oexcvSO8QkX4yxM6+5ZMX65zuG0rhCJLZJpK9PUc65m2tvGLQLC3O5c10e2D9fBlP
+	 DETaUEtXm6CRwiE9E6x7xcgNNpx3NPkNxKe7T+0mwRT1wIJzpogUZT1WfYPnGuEnx8tSN
+	 38Yj9LovlWFWepa3UOUmtOy5kKopjmChrMba47MnEWOeOsH9VcbhpdPPso0PITjL1hA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792501860;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792501852;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=BgtBHnxdOVXZopSmsnS/chjAyd2c5e1oaSz23YMKP0A=;
-	b=YGqV+hek0ycZwOWG8VnPfIziOip8bTIDNjjAnJCiRT32OjMfPt2W3J7Z0D9mGKvf1vu8
-	 UQfSEz5SfMuWA3VJk2fBWDIryJR84EboDh9rObYNeTFqfFf/nMfmYtqHydx4pBekr9zWV
-	 t6vX4shp1U6jqTGIU/C0BJ4BBC4Ess2zFuTEDV852qI7J3JPyVtvOyVfO2T7wD3levyvd
-	 aM/oVbwksJX7Wjc63nnvwjw8r1aAiAZAh4SKm498qs3m27+6zqD6gJ1U8/gR6HDfZ/Acv
-	 4mYPrmy2eqooQxK6O532qy4EiUO1269hqLkyxbBRd3CTFPdSpLzrmJUvkpEYH7PN/AA==
+	bh=XuD6zr6E/WXraw+qY7ed3x7Km9phQJZA6ZLc39olELM=;
+	b=z5oexE2QYmY11u+/qxGydHiM5Uu+3DLY/BiwX7kSYHk7HJVoVi/Pks1yzd//nszB0Qrk
+	 7O0UcnuK5G1cWTbghu6ZXrDJqCxQ8nPoKEPbB9tTBlSvOoRKqXGjlRDwsicxJd6NdDvUi
+	 V006NDl41GUuO3fQfI5aVLcAaREXZJ2Y/93LtPhV5NVfCPPMFNkBWlKduB9hAMitqRmhW
+	 LmrlUrl1MeS/TogtjAojExWAax6K4+52ysM0JDLfObku+2ihv4DX+HIHY80dZiT5iN6Wu
+	 zpaT37VdAgf5JS475Vh3tMgTtCMNlycpRt0tpHKLOgDMNUmFwTeACZGzk63Lk0A9Brw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OlLMsskF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5XeuGiX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173C960A380C;
-	Tue, 20 Oct 2026 13:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C73606A31C;
+	Tue, 20 Oct 2026 13:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OlLMsskF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0051F000C5;
-	Tue, 20 Oct 2026 13:10:59 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5XeuGiX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F401F000C4;
+	Tue, 20 Oct 2026 13:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792501859;
-	bh=BgtBHnxdOVXZopSmsnS/chjAyd2c5e1oaSz23YMKP0A=;
+	s=k20260515; t=1792501852;
+	bh=XuD6zr6E/WXraw+qY7ed3x7Km9phQJZA6ZLc39olELM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OlLMsskFsoFxLF+IvX8Llhosc1jUFdCZttH/kXyszE6omWbJJ4shiJEy/D95AhcBt
-	 karqWrU9lA9umLHRJaznYWE7sbbD3lUM+8ZgnNaID971IUK73aAFjAiYEUdiuW6/p5
-	 Yf/vMXBPSx8hNbTapMpLiGYncoBrWFWJm0zGK9TZ3zZTQEkvr71iKS/CRgkG9gK73A
-	 ooH4NndEVtfDdo1j1zVDv/ABnSEktffo49qlYTnDKa2dawZXdNNm9Yt1eBLmjr48EP
-	 soIMzog+8n+h/yh8s5jbKjjmpH3xqSOZnMzhoW5Ib4jbzGHUyisK6nwl1143sNkDpf
-	 HQ+Z00FCEUtFw==
-Subject: Re: [PATCH net] ice: fix Tx hang dump using stale tx_buf[0].skb
+	b=b5XeuGiXV9gmpP0zjxDKguhvUm/0MEXDjHw/i5xVGXRYCHUofj/VsmDz858ZnEUH/
+	 BKf7eKAHoM9GdHXBqq2xDXVSyqYyOyGmJIVigTZvd1lMGWv5cf8OiTKmv0fUyklVFE
+	 YrGbF/P7Di5bGSFNs0RCsWQhgXiGZb3BFBIvLFenk0A2HtotRCJwoUaQwk8y+ei2IS
+	 /al52OXUUZgBFdJAgBb7Jzu0p4P+KF10flkclPJzSnFm60toe7nf4j6H3Oe/ADszjY
+	 2jSw3arIPF/AftSt0yXxwtLWmsoMP7BtXG89UNDcIOumV/eW3oXjLIWIabM/F7mYHB
+	 MNr/mIx1oHVbQ==
+Subject: Re: [PATCH net-next v3 4/9] net: stmmac: mediatek: simplify TX/RX
+ delay handling in mt2712_set_delay
 From: netdev-bot+sashiko@kernel.org
-To: choiniere.vincent@hydroquebec.com
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- intel-wired-lan@lists.osuosl.org, aleksandr.loktionov@intel.com,
- michal.kubiak@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 20 Oct 2026 13:10:58 +0000
-Message-ID: <179250185873.3135.10101707471960530546@kernel.org>
-In-Reply-To: <20261016-ice-tx-hang-dump-v1-1-3df0f5979a51@hydroquebec.com>
-References: <20261016-ice-tx-hang-dump-v1-1-3df0f5979a51@hydroquebec.com>
+To: louisalexis.eyraud@collabora.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ richardcochran@gmail.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, biao.huang@mediatek.com,
+ maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, edumazet@kernel.org, kernel@collabora.com,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com
+Date: Tue, 20 Oct 2026 13:10:50 +0000
+Message-ID: <179250185040.3135.9271701401823597487@kernel.org>
+In-Reply-To: <20261016-dwmac-mediatek-mt8189-v3-4-25daf2bbcf35@collabora.com>
+References: <20261016-dwmac-mediatek-mt8189-v3-4-25daf2bbcf35@collabora.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -76,154 +81,181 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new `tx_buf->type == ICE_TX_BUF_SKB` guard in
-  ice_tx_hang_reporter_dump()…
+- [High] In drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c,
+  mt2712_set_delay() now uses the wrong picosecond-per-stage divisor for…
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the patch
-  keeps it and adds another access to the same storage.
+- [Medium] This problem wasn't introduced by this patch, but
+  mt2712_gmac_variant uses a single rx_delay_max/tx_delay_max of 17600ps…
 
 --
 
-ice: fix Tx hang dump using stale tx_buf[0].skb
+net: stmmac: mediatek: simplify TX/RX delay handling in mt2712_set_delay
 
-This commit changes ice_tx_hang_reporter_dump() so it reads the Tx buffer
-at event->next_to_clean instead of always reading tx_buf[0]. It uses that
-buffer's skb only when the buffer type is ICE_TX_BUF_SKB, and skips the skb
-dump otherwise.
+This commit removes mt2712_delay_ps2stage() and mt2712_delay_stage2ps().
+Those helpers converted the TX/RX delays in the driver data in place. The
+stage values are now computed in local variables inside mt2712_set_delay(),
+and new defines are added for the MT2712 delay stage dividers and maximum
+values.
 
-Link: https://lore.kernel.org/all/20260327072332.130320-1-aleksandr.loktionov@intel.com/
-
-> diff --git a/drivers/net/ethernet/intel/ice/devlink/health.c b/drivers/net/ethernet/intel/ice/devlink/health.c
-> index 8e9a8a8178d48..059859c36dfb2 100644
-> --- a/drivers/net/ethernet/intel/ice/devlink/health.c
-> +++ b/drivers/net/ethernet/intel/ice/devlink/health.c
-> @@ -390,12 +390,15 @@ static int ice_tx_hang_reporter_dump(struct devlink_health_reporter *reporter,
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> index f7eb85110df08..596411d4a5b2b 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> @@ -36,6 +36,14 @@
+>  #define ETH_FINE_DLY_GTXC	BIT(1)
+>  #define ETH_FINE_DLY_RXC	BIT(0)
+>  
+> +#define MT2712_RMII_DLY_RXC_STAGE_DIV	170 /* 170ps per stage */
+> +#define MT2712_RMII_DLY_TXC_STAGE_DIV	170 /* 170ps per stage */
+> +
+> +#define MT2712_RGMII_DLY_RXC_STAGE_DIV	550 /* 550ps per stage */
+> +#define MT2712_RGMII_DLY_RXC_MAX	17600 /* 32 x 550ps */
+> +#define MT2712_RGMII_DLY_TXC_STAGE_DIV	550 /* 550ps per stage */
+> +#define MT2712_RGMII_DLY_TXC_MAX	17600 /* 32 x 550ps */
+> +
 
 [ ... ]
 
-> -	skb = event->tx_ring->tx_buf->skb;
-> +	tx_buf = &event->tx_ring->tx_buf[event->next_to_clean];
-> +	if (tx_buf->type == ICE_TX_BUF_SKB)
-> +		skb = tx_buf->skb;
+> @@ -129,71 +137,36 @@ static int mt2712_set_interface(struct mediatek_dwmac_plat_data *plat,
+>  	return 0;
+>  }
+>  
+> -static void mt2712_delay_ps2stage(struct mediatek_dwmac_plat_data *plat)
+> -{
+> -	struct mac_delay_struct *mac_delay = &plat->mac_delay;
+> -
+> -	switch (plat->phy_mode) {
+> -	case PHY_INTERFACE_MODE_MII:
+> -	case PHY_INTERFACE_MODE_RMII:
+> -		/* 550ps per stage for MII/RMII */
+> -		mac_delay->tx_delay /= 550;
+> -		mac_delay->rx_delay /= 550;
+> -		break;
+> -	case PHY_INTERFACE_MODE_RGMII:
+> -	case PHY_INTERFACE_MODE_RGMII_TXID:
+> -	case PHY_INTERFACE_MODE_RGMII_RXID:
+> -	case PHY_INTERFACE_MODE_RGMII_ID:
+> -		/* 170ps per stage for RGMII */
+> -		mac_delay->tx_delay /= 170;
+> -		mac_delay->rx_delay /= 170;
+> -		break;
+
+[ ... ]
+
+>  static int mt2712_set_delay(struct mediatek_dwmac_plat_data *plat)
+>  {
+>  	struct mac_delay_struct *mac_delay = &plat->mac_delay;
+> -	u32 delay_val = 0, fine_val = 0;
+> +	u32 rx_delay_stage_val, tx_delay_stage_val;
+> +	u16 rx_delay_stage_div, tx_delay_stage_div;
+> +	u32 delay_val = 0;
+> +	u32 fine_val = 0;
+>  
+> -	mt2712_delay_ps2stage(plat);
+> +	if (phy_interface_mode_is_rgmii(plat->phy_mode)) {
+> +		rx_delay_stage_div = MT2712_RGMII_DLY_RXC_STAGE_DIV;
+> +		tx_delay_stage_div = MT2712_RGMII_DLY_TXC_STAGE_DIV;
+> +	} else {
+> +		rx_delay_stage_div = MT2712_RMII_DLY_RXC_STAGE_DIV;
+> +		tx_delay_stage_div = MT2712_RMII_DLY_TXC_STAGE_DIV;
+> +	}
+> +	rx_delay_stage_val = mac_delay->rx_delay / rx_delay_stage_div;
+> +	tx_delay_stage_val = mac_delay->tx_delay / tx_delay_stage_div;
 
 [Severity: High]
-Is this type check enough to stop devlink_fmsg_dump_skb() from reading a
-freed skb when Tx cleanup runs at the same time?
+Are the RGMII and MII/RMII stage dividers swapped here?
 
-The dump runs from the service task:
+The removed mt2712_delay_ps2stage() divided MII/RMII delays by 550 and
+RGMII delays by 170. The binding in
+Documentation/devicetree/bindings/net/mediatek-dwmac.yaml says the same
+thing for mediatek,tx-delay-ps and mediatek,rx-delay-ps:
 
-ice_service_task()
-  ice_report_tx_hang()
-    devlink_health_report()
-      devlink_health_do_dump()
-        ice_tx_hang_reporter_dump()
+    For MT2712 RGMII interface, Allowed value need to be a multiple of 170,
+    or will round down. Range 0~31*170.
+    For MT2712 RMII/MII interface, Allowed value need to be a multiple of 550,
+    or will round down. Range 0~31*550.
 
-The only lock held on that path is reporter->dump_lock. Nothing disables
-NAPI, takes the Tx queue lock or takes a reference on the skb.
+The new defines use 550 for RGMII and 170 for MII/RMII. The commit message
+describes the same reversed mapping:
 
-ice_service_task() calls ice_report_tx_hang() before ice_reset_subtask(),
-so the ring's NAPI and queue IRQ are still live while the dump runs:
+    by dividing them by a constant (550 for RGMII, 170 for MII/RMII)
 
-	if (pf->health_reporters.tx_hang_buf.tx_ring) {
-		ice_report_tx_hang(pf);
-		pf->health_reporters.tx_hang_buf.tx_ring = NULL;
-	}
+The in-tree arch/arm64/boot/dts/mediatek/mt2712-evb.dts uses
+phy-mode = "rgmii-rxid" and mediatek,tx-delay-ps = <1530> (9 x 170ps).
+For that board, the GTXC stage count written to PERI_ETH_DLY drops from 9
+to 1530 / 550 = 2.
 
-	ice_reset_subtask(pf);
+In MII/RMII mode, a binding-valid 1100ps (2 x 550ps) now becomes 6 stages,
+which is roughly 3300ps on the hardware. Any value above 31 * 170 no longer
+fits in the 5-bit ETH_DLY_*_STAGES fields, and FIELD_PREP() truncates it.
 
-In ice_clean_tx_irq(), the skb is freed before the type is changed, and
-tx_buf->skb is never cleared:
+This path runs on every probe and resume through mediatek_dwmac_init() ->
+mt2712_set_delay(). Could it keep the link from coming up, or corrupt
+TX/RX data, on MT2712 boards that set a delay property?
 
-		/* free the skb */
-		napi_consume_skb(tx_buf->skb, napi_budget);
+The problem is still there at the end of the series. In the later patch
+"net: stmmac: mediatek: add RX/TX delay stage divider in platform data",
+mt2712_gmac_variant sets .rx_rgmii_delay_stage_div to
+MT2712_RGMII_DLY_RXC_STAGE_DIV (550) and the rmii dividers to 170. It also
+sets .tx_rgmii_delay_stage_div to MT2712_RMII_DLY_TXC_STAGE_DIV (170),
+which looks like a typo.
 
-		/* unmap skb header data */
-		dma_unmap_single(tx_ring->dev,
-		...
-		/* clear tx_buf data */
-		tx_buf->type = ICE_TX_BUF_EMPTY;
+That typo happens to restore the RGMII TX divider for mt2712-evb. RGMII RX
+and all MII/RMII delays still appear to use the wrong divider.
 
-This means the reporter can see ICE_TX_BUF_SKB for an skb that has already
-been freed.
+[ ... ]
 
-The index is racy as well. ice_report_tx_hang() copies
-tx_ring->next_to_clean with a plain read of a field that NAPI updates, so
-it can name the slot NAPI is reclaiming at that moment.
+> @@ -263,19 +248,17 @@ static int mt2712_set_delay(struct mediatek_dwmac_plat_data *plat)
 
-After this check and before devlink_fmsg_dump_skb(), the dump makes many
-devlink_fmsg_put() calls that allocate with GFP_KERNEL. It also copies the
-whole descriptor ring. That is a long window in which the task can be
-preempted.
+[ ... ]
 
-The scenario in the commit message seems to set up exactly this case. The
-descriptors have completed and only the queue IRQ is delayed. NAPI can run
-on another CPU, as the RT IRQ thread preempting the kworker, or because Rx
-traffic on the shared q_vector kicks it. Whenever it runs, it frees the
-skb at next_to_clean. devlink_fmsg_dump_skb() would then read skb->len,
-skb_shinfo(skb) and skb->sk from freed memory.
-
-Could that cause the same page fault this patch is meant to fix, or copy
-freed memory into the dump? The notes below the commit message already say
-"the skb lifetime against concurrent Tx cleanup still needs review".
-
-Would it work to call napi_disable() and napi_enable() on
-tx_ring->q_vector->napi around reading and dumping the skb? Two other
-options are to capture the skb fields while cleanup is excluded, or to
-dump only the skb pointer and not the skb contents.
-
-> @@ -409,7 +412,8 @@ static int ice_tx_hang_reporter_dump(struct devlink_health_reporter *reporter,
->  	ice_fmsg_put_ptr(fmsg, "skb-ptr", skb);
->  	devlink_fmsg_binary_pair_put(fmsg, "desc", event->tx_ring->desc,
->  				     event->tx_ring->count * sizeof(struct ice_tx_desc));
+>  static const struct mediatek_dwmac_variant mt2712_gmac_variant = {
+> -		.dwmac_set_phy_interface = mt2712_set_interface,
+> -		.dwmac_set_delay = mt2712_set_delay,
+> -		.clk_list = mt2712_dwmac_clk_l,
+> -		.num_clks = ARRAY_SIZE(mt2712_dwmac_clk_l),
+> -		.rx_delay_max = 17600,
+> -		.tx_delay_max = 17600,
+> -		.dma_bit_mask = 33,
+> +	.dwmac_set_phy_interface = mt2712_set_interface,
+> +	.dwmac_set_delay = mt2712_set_delay,
+> +	.clk_list = mt2712_dwmac_clk_l,
+> +	.num_clks = ARRAY_SIZE(mt2712_dwmac_clk_l),
+> +	.rx_delay_max = MT2712_RGMII_DLY_RXC_MAX,
+> +	.tx_delay_max = MT2712_RGMII_DLY_TXC_MAX,
+> +	.dma_bit_mask = 33,
+>  };
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but the patch keeps it and adds
-one more access through the same saved ring pointer. Is event->tx_ring
-guaranteed to still be valid when this dump runs?
+This is a pre-existing issue and was not introduced by this patch. Should
+the MT2712 delay limit depend on the phy mode?
 
-ice_prep_tx_hang_report() saves a raw ring pointer from watchdog context:
+mt2712_gmac_variant applies one 17600ps rx_delay_max/tx_delay_max to every
+interface mode. mediatek_dwmac_config_dt() only rejects values at or above
+that limit:
 
-	buf->tx_ring = tx_ring;
+    if (tx_delay_ps < plat->variant->tx_delay_max) {
+        mac_delay->tx_delay = tx_delay_ps;
 
-ice_service_task() uses it later with no lock and no reference. It holds
-neither rtnl nor ICE_CFG_BUSY, and ring teardown never clears the saved
-pointer.
+The ETH_DLY_GTXC_STAGES, ETH_DLY_TXC_STAGES and ETH_DLY_RXC_STAGES fields
+are 5 bits wide, so each holds at most 31 stages.
 
-ice_set_ringparam() runs under rtnl and does not check
-ice_is_reset_in_progress(). It calls ice_down(), which runs
-ice_clean_tx_ring(). That frees every skb, clears tx_buf and resets
-next_to_clean to 0. Then ice_set_ringparam() does:
+In the 170ps per stage mode (RGMII per the binding), any accepted value
+above 31 * 170 = 5270ps gives a stage count between 32 and 103. FIELD_PREP()
+on a runtime value just masks it (for example 100 & 0x1f = 4). The result
+is an unrelated delay, written with the ENABLE bit still set and no error
+reported.
 
-			ice_for_each_txq(vsi, i) {
-				ice_free_tx_ring(vsi->tx_rings[i]);
-				*vsi->tx_rings[i] = tx_rings[i];
-			}
+The binding documents a separate range for each mode (RGMII 0~31*170,
+MII/RMII 0~31*550).
 
-ice_free_tx_ring() frees tx_buf and desc and sets both to NULL.
+This patch also moves the limit into macros named MT2712_RGMII_DLY_*_MAX
+with the comment "32 x 550ps". That does not match the 170ps RGMII stage
+given in the binding.
 
-If ethtool -G runs while the service task is dumping, can
-ice_tx_hang_reporter_dump() do any of the following?
-
-- Index freed or NULL tx_buf memory using the old next_to_clean.
-- Dump count * sizeof(struct ice_tx_desc) bytes from a freed or NULL desc.
-  The count and desc values may also come from different ring
-  generations.
-- Dereference q_vector->name.
-
-On VSI rebuild, ice_vsi_clear_rings() frees the ring structs themselves
-with kfree_rcu(). That would leave the saved pointer completely stale.
-
-ice_stop() is mostly blocked here. ice_tx_timeout() sets ICE_PFR_REQ, and
-ice_stop() returns -EBUSY while a reset is in progress.
-
-The tx_hang_buf fields are also written and read with plain accesses.
-Because ice_service_task() clears tx_ring after reporting, it can drop a
-newer timeout record. The head and intr values may also come from a
-different event than tx_ring.
-
-The old code had the same exposure through
-event->tx_ring->tx_buf->skb.
+Because of the swapped dividers above, binding-valid MII/RMII values can
+now overflow as well. That part goes away once the divider swap is fixed.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-ice-tx-hang-dump-v1-1-3df0f5979a51%40hydroquebec.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35%40collabora.com
