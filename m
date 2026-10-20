@@ -1,100 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792529759;
-	b=XiBR/GX0fIoozcInGaOsplnhK87X+x7Jr6i2ehM/nIucKdJTV2IWMdXcxdjI7ZKylwTS
-	 Bj0fUNxrYEtWQqr4u7RGJvPKmNyPCENfM2dF4Q+k7hrUzUoB8ELO4LJ7TKh/eo1h9TMvi
-	 SjHi8tlnD0uDQYx+v9OO8XvKIJBGDMQhtIWh1B7NCu7zsdy6ED7Hk30Qfqdl51oHbETQ2
-	 jU8ZlmCqD09C8ECvIAbbf+mqmLBlJHkFxkZHkThIBYa86sAXZdRVygr2ygR9YRZVwwdm9
-	 PM0Xn9zdAGGB/rB06hhwYaA9dlA6EGW+BTxn6zIauSWdIzsvz424uFhH+7/imXk9nog==
+	t=1792529768;
+	b=yWfvLC5vrS7MCtNKJv/eG3vW6DDywiACl/1BVYulKxrG+tOFFzfO0bCtZw+Tp4IIdADS
+	 pwx2UbLPi8WRBoNnUSqN1oDPkeoj14dXU2aQHY9Lpahkq1x+8n7KohaSTEf/dnij//prv
+	 dtzpYUWVXEWVw+EbjyMv/LXi2cZUgahFrdxsfJcNSL0OMtyHLhhr5iOLyi+AcvPDenbiQ
+	 BQQQ80yyoWtp3NjCvf6sxqpxAI+RvF8el3QbqQvsq7XdwR7LqbRtsH1YjE9hKv8/QZQkl
+	 g8IsLrGA1aw/v7RvSJOiaq2pvw4WX73+mwolvJS1CefkXC65hrByVZVsYt+rZd3qCuw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792529759;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792529768;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
 	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=9va69Z70VDBET6RC2fy59u2Ycvr0LSmJxWPH1bvD2co=;
-	b=VH74xKjx+LXHCxnJR2bMkezUsiGU5EubI3jqg9NIB8o8Tbq4E90SQhVHQc0dDiHrYDm2
-	 FGjyva4Rq/vt5PhJND9Nl9Qwpo1JZBywJRWkrBWkOMQNspTBRqhCska59h5thVTtj2uCF
-	 3gElnqy0aWnmdMkjzsHzphN1Y+Vi+vSt6QRZGNNTdfTwkESbK7IWwJgzLgDsERokFC1B5
-	 XfOn6BLQkDqHiXyj0RLEbs9ifwqAEoKoeDXajHvHPTbuzlh8DrauV8AkVoWC6aqheJt3E
-	 iI2W3t2ODE7jIy6Zw31hOnRRWNjEpvGfLl9BoSn/4VnFbvdJyiDg4wNDZ/SR3nriO4Q==
+	bh=sl+ao6jj/EJqVd8mitMcxYql8KlVrUDpfsHnTJtiC1U=;
+	b=wtFd1jCjffDWeM3Hh44ZiSM7JTSzkETVjesN2EG43PEci5iE09D3yuX6/TqpoxXPDT8o
+	 MabhADSe2/KNk65bdAOQnGKlPo69ZtGoFb+/DpZbv6uzv9N/izeIUGHXZ2+Rr09DssH3W
+	 RYXNwTKc0GTV5Gz4Dno5u9sHHs2oanPjdzWUZXrOfmz6ZFmzD9SY+FtERBlfUeF0SsKlO
+	 SL5EmsbUdWCoNn/rXOTEvzKwD3yvXEluvO8RPK+436gDzEu3oATIS/fl1aQx2LYYsnALC
+	 S8LY8OqamUtmvtf8TMGV6wCmLJxFIEbxGRYJQfJA2M3U78Sw/L4FFVF1VHw7DwL5yyg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QrNh3kgc;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.182
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	dmarc=pass header.from=nuro.ai;
+	spf=pass smtp.mailfrom=nuro.ai;
+	dkim=pass header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=QBRGJsiF;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F31C606A323
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:55:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F31C606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1753606A326
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:56:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1753606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QrNh3kgc
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8a06b436dffso16899b3a.3
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:55:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792529758; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=QBRGJsiF
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-36681e85e87so1658490eec.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:56:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792529766; cv=none;
         d=google.com; s=arc-20260327;
-        b=N2k7Ifuev8h7ARVYGXjWTNn9OvJT5+wgH/+/IRO1Ntp17YSjk9fbihZzrzJRn4bXg9
-         S98mbzPUi7aq4btvLtv7UZoa0xWORalOqyoH9bjKfrzTvCqerKVoTHk5iTp+lKSVIzpR
-         pHWqAjbRWbYRDXkViHGEoRooV9yNYuoAWFqUDRqjhfZhxgIXTlHW8ttLSV+TucUa5Zrs
-         KV/m7+Tbi1mjHoAFihihONEc+3qg0PljNGcvY4uP4rqAw8ZR9tAlcX2k3WBU1UDOJc+k
-         xpHuulAklJKNZv40zBHKIy9wsV5xkVTUjaTcA33h6TRA3rzx1UqJ2oO6zBSmfd37mqkW
-         Ru0A==
+        b=kqHuAg4kJb06qivwkKsQgNpXrhqP2J8I1wjbs6ZgHOVmyjPhPMwbG7/mpsEHUV9hd7
+         aChvn2EgmCSpoAaBCs3IM/aOxqxnwIT5KstJSIHeBHxLok9izoir6mxQn49z+dp43Yn2
+         BI4NhVyWdSGJCaSGpB2MtqdHeHb8n8AG8Kh/E7yG7gIHnqN/wQaZCMK7jG7UNqPVmVkb
+         Cp6QocZUjunsxWpIcVneW8zOS970qAfAeNmHvbj9Cnnxl11mtHf2x9RI3PKeSUh4mYTE
+         h8Mv5cUrRNb+hxgYfDzxFGgM2ycWAeMwWK9QfYYSFdpmdZPG1LP2YrvRX3U5DCw0pPps
+         1Wpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=9va69Z70VDBET6RC2fy59u2Ycvr0LSmJxWPH1bvD2co=;
-        fh=FcywtlDZoDkM4edKsFlp1mDZyBkJFKZZqzJffsc2CVg=;
-        b=ie9AZtQZ/rkHTgnBAZcLVaTpvy85v3uHRLm6QpMZGCFgd20az+YJe2Zitq2WN+yrlr
-         XbFqNZ+4H7tAw0VI0T4w7kETzBQAAW/8NbuidC2G4UnIN3dUHp2i02GRv8E3mhKk6KOB
-         dWL15b9LnnXRjlo7gMdcayQ8oyjlFicqQfEUqJXl0OkkMA71Q5rASr/qbjAUCu16wbtT
-         5FytPlRNxQCe5OxuatVywgmq6HieR7brQogT0RHOAK8vsA9F66dGQ8YTMKCibruJ3g+o
-         N3pSuAs9i6U1DXqXnI/6yzyxOD0pAtZ0P3AsVjI8Jck+YXXSN8biWtygsZk5dZNZRCto
-         rTYA==;
+        bh=sl+ao6jj/EJqVd8mitMcxYql8KlVrUDpfsHnTJtiC1U=;
+        fh=g08+9vh1/MP1Ck6l+7DhliWxsk2afdR2+6nrlAYFSxs=;
+        b=lkspImtfwTPdPfqY1t+86VbCZcSSVK433NwqGz/24nm7+dQE1LpCfs+m/UiX4i0QSw
+         uoj0KGgi3EXD3RD/PAJsWwyEbBLuo5CELoPr+3uklG0Nv17i/snkMEIdxcIT/NgOnEor
+         tsW/+Y/T6CBhf4zWhFZjeBu514tIxiD0Chvv/nyA+dIrTmDp4za9hwGc7XcjW9EdUM++
+         fUCSAKZew2l3splsfu7w9iQ/oFlitgjj3dw5n8WzZfSCW8qAwhWGS9wkhPv3RLbCNxNu
+         H4+YFlPRH0uH95g9fdvg74BF5JCKqbXM6t1Ii4J43I87YfpCDDo+u7sSqHB0bY8ske/2
+         bRXQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792529758; x=1793134558; darn=vger.kernel.org;
+        d=nuro.ai; s=google; t=1792529766; x=1793134566; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=9va69Z70VDBET6RC2fy59u2Ycvr0LSmJxWPH1bvD2co=;
-        b=QrNh3kgcdR/6jLgf7MwS2UZRSkGRoGZhk18YMBsEnRYrGG5nJKu38/qpATYqjQli2M
-         BlCzS9dUMi8inZgL5aGyjJ+dQBf842MYTJrRhpJxlNHs2t1yFjMDpHPC2fTAjy7F0O57
-         GFqSWT2CpgAxr5SAXS5zLNQMWBQuweohGGNKyIy009mlEGwi+m2Q9Zu9/zvut3wcuPL1
-         TrcK7XZqqswCRpvhXdW6PLYomEFiBbocJzkD1yEbaeE+Numo51nFgBTZmU3+oBz9Yp6x
-         fcFX1Nc2xS+g/h7UbOcfRwr7UqVol1rCW6bl/KSAtRnXIST4bjOlAJwJfq6wVhUS5Hao
-         VVog==
+        bh=sl+ao6jj/EJqVd8mitMcxYql8KlVrUDpfsHnTJtiC1U=;
+        b=QBRGJsiFVCrhjLHQvzC8rKPKju2tMSUEZizd5uil8TnWzE5VZgOBqrQt1ryDvFovu+
+         mRLoS0MODyFyVb1MCqwomuFE/+I146dY0fGUEP3Qh9HjZMMZLN4Y5WoUdoW+7F0znGRq
+         +R+hmZxocYsWRXq7Ai5lg6Kb/FEo1MYKz4C//WSLH+ueMcJzpVCeH6PHuWrzWxkPBRP5
+         SxXMfXPaZOMPD+YTfZM8jyxMJPtNdF5T9eH+IbjBZMr7NDog22z9XBDWQSNcCpaFslMd
+         0VQAVBS82DXGsbrjq72mkgfNk7Jmk54xrksIEPzKb8PpJSAvUcO1OSIkCpPlGleWA3o+
+         p6rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792529758; x=1793134558;
+        d=1e100.net; s=20260707; t=1792529766; x=1793134566;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9va69Z70VDBET6RC2fy59u2Ycvr0LSmJxWPH1bvD2co=;
-        b=sHZqFOUTwSrb0OJ7wYKWfMD8bWj0gdFump/R/gOn1Ytr/ObwpJcuYnpf3L2jeMBjnB
-         CBhAZiZppyjAEjRJrKz46vttSMUuYySH+4YUCr8Zu/hvW4N3bdziqLujA9quTCf+OjaI
-         VS3uFk+yrvTN8inIak9mL26rlWMs709aX5E06DG3DwkjkL3PbsewzHjOu8LkhJ6pAryP
-         cBMM1Ma1tN0jOqxzG5g4Ns4aCxheNOouylOwfO8I1eH0S8gtDl751Qp5QgdsAUySlu1j
-         AxgjzJw1wRiX3nF3PD3Vtuo4+EcRLjWAxh11cH40BnQMo90Ly6ayI3usrIqjPdcZXu2V
-         8auA==
-X-Gm-Message-State: AFq9FYLtNlzlLCwfYJhhVB4xPDdH+QF1RsLinwppNKjZknv9Bd4mwl4a
-	kgbZP5YXN6IKNUiGa9fiIu9UvGipr7vRSTFnNce759RFLB6XPvZKtsEz5zlL/oGzh+Lz0JoWMfg
-	U9BrHFQQnB7circo2bY27O6EDzLMswfw=
-X-Gm-Gg: AYBFou1YNpdWJ87SYuKdfgjA6cGx4WWo0p/PlN+w7tFvaAPzfxeircXC+v2CaCpOUEO
-	9jw3Cw9nTxZWPQA1hf4iNrHTpHT0Q+xoksXJe/vnGw3UO6sUtbwAP1aHr6hj0MPxljIbxe0+slb
-	yCsOCu9joo2W4zR0BSi1zq4z1DjRW7xJbX+lxMj9Qbnb2sEZUrPp4je6t0Qef9RZjy0fNYeR/IC
-	ZCCxfQ6K3DrtRj0bWHkBXEUCWgeLscgGaK8ttbI7Q/j3lbExVQE1p9GFVERvJOXGax5KWN773kd
-	aTvVpOTJoA6UPLBx4LzRBNrkxmIoB1t8EGhmjRA9VQJSdKlo1sxjD5mxY/J3XibL3RLE4LZCw9g
-	pyNIh6sR46avdo7XpCxpokG8m2ninOdL2dqJipjYnvEnr0oL3xsdcWlzekq4TWKxqPMwteWuWIw
-	6sp27EdrrcJXEv8Q==
-X-Received: by 2002:a05:6a00:4c92:b0:89e:261c:447a with SMTP id
- d2e1a72fcca58-8a089d8f4cdmr110909b3a.7.1792529757792; Tue, 20 Oct 2026
- 13:55:57 -0700 (PDT)
+        bh=sl+ao6jj/EJqVd8mitMcxYql8KlVrUDpfsHnTJtiC1U=;
+        b=gTDYJ9G6EJd5wRUapaGjh6Pq1Tf5UsqAZD4nxsS6aa/of0GCpTXvok9K87cdrzjpJ7
+         h6S0xmAIWcz8kyZQdSR6/1xy0MWBRLBckDOQp0jFX/HL+VD/QHbLXh1YFtYuyIEOz218
+         qdQW+ryXc1duhHMT5g/hpxuXl7d7ICwceEoD6Q9U+82rOsZPbXxmlGLEL0fm9kk9CCRg
+         47ZEQDj7yChq3O5GnzMYGG/Vbgk2ELHiE225omtGbP64cuhakq/uIiF5FDVIZwjqGEoC
+         9fXh4b6NI9xRXyD+8BtHoQzMnK81X57m1zTEOUZxA/AGdV3k8ZGqA07vE+2IhEf9RN1n
+         cseQ==
+X-Gm-Message-State: AFq9FYK6pa1RFMo7BYkr9hF77RdoC7ea6Rh6i3lNY2RdaStXGF8ac9VQ
+	uMM6CfR5/VvGMaulAL64p3Ozx36mPdYjiIbphayLXzEkIIOIHi1QxZDo5kCqMYvdCJCHw8EeaX7
+	IMj2mef0o5lV7le1vITE70cMZskcrhROnyQgZblKzRQ==
+X-Gm-Gg: AYBFou1Gv3G4rhE+HI6i9KTJ5LG2g2dkgP0VtnqcLi30odSoIB65r29iqCICm9g9vIY
+	8UkWnemUgBj++90DIvOrHAh83Dd+zc0JWf0EvHZx2kXRln/WDz23r6QHX5gIY66js/MnSitGxM2
+	Tv9IdyYom5HFbslUt2HbjG2qLPx/rElYCiJOD9jJqH+a3eNzRRxC7sEZOlTe5Q8ZbWQcSTEbns7
+	suJqa7WpUlEKb9fm4BHgIEvu/gjTPcsr9d/8sS5Q8cxKj+GfGthS3rZVYus7u+2NExBNOGLwcQG
+	acB4xxAOWYZIrWpjzIDjGuhvNyetlZNFj3dJAcyKcD4HsTgKg88idFtu1KI2uPs050iSd9cHnaO
+	HUV9uxsDHxFzPKOfcIFY9W627DdrdZvLQ0Mx+
+X-Received: by 2002:a05:693c:60cf:b0:353:8205:8558 with SMTP id
+ 5a478bee46e88-3674b82ad86mr744900eec.5.1792529765608; Tue, 20 Oct 2026
+ 13:56:05 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,130 +103,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <1da72318e969eb252977ccf5d8e3e506c2fa2e69.1792164438.git.lucien.xin@gmail.com>
- <179244540463.3135.17132817693152829356@kernel.org>
-In-Reply-To: <179244540463.3135.17132817693152829356@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 20 Oct 2026 16:55:46 -0400
-X-Gm-Features: AclHuK_xypNF_3ZupZmQ5gCHrMwwp4u_9BbDfwJ9qW_3NU4_ksSvUmCEVd-BZ04
-Message-ID: <CADvbK_d=J7Oq8VQFRYzoxX0YPs26tnJvxE7wMa4hyoe_M5n39A@mail.gmail.com>
-Subject: Re: [PATCH net-next v17 11/15] quic: add crypto key derivation and installation
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net, 
-	kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	metze@samba.org, mbuhl@openbsd.org, tfanelli@redhat.com, hepengtao@xiaomi.com, 
-	dreibh@simula.no, linux-cifs@vger.kernel.org, pc@manguebit.org, 
-	linkinjeon@kernel.org, tom@talpey.com, kernel-tls-handshake@lists.linux.dev, 
-	chuck.lever@oracle.com, jlayton@kernel.org, steved@redhat.com, hare@suse.de, 
-	aahringo@redhat.com, dhowells@redhat.com, matttbe@kernel.org, 
-	mail@johnericson.me, xiyou.wangcong@gmail.com, alibuda@linux.alibaba.com, 
-	jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net, 
-	marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com, 
-	mef@scarletmail.rutgers.edu, paul@jakma.org, kuniyu@google.com
+References: <20261019174258.1375583-1-jkain@nuro.ai> <CAL4WiipkRkOnc_QJ51g6_9uB=pTeCSp6U8L-YVD2ytuZn4g5Qg@mail.gmail.com>
+In-Reply-To: <CAL4WiipkRkOnc_QJ51g6_9uB=pTeCSp6U8L-YVD2ytuZn4g5Qg@mail.gmail.com>
+From: Joseph Kain <jkain@nuro.ai>
+Date: Tue, 20 Oct 2026 13:55:47 -0700
+X-Gm-Features: AclHuK-crS7z_XIcQyguixXXCUEme6bZ9BWpgUYG6WSh9lO_ed8dYy8vP4sPrPk
+Message-ID: <CA+Y90Pg5UaL9WkaGghc3PZadrsN+ud-vY89aE3xuZ3UjUxz9Ww@mail.gmail.com>
+Subject: Re: [PATCH net v6] net: schedule a purge when the defer queue rejects
+ a free
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, 
+	kerneljasonxing@gmail.com, bigeasy@linutronix.de, clrkwllms@kernel.org, 
+	rostedt@goodmis.org, linux-rt-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2026 at 5:30=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
+On Mon, Oct 19, 2026 at 10:58=E2=80=AFAM Eric Dumazet <edumazet@kernel.org>=
+ wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
+> Say not to very verbose changelog, that nobody will read.
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+> Since commit 844c9db7f7f5 ("net: use llist for sd->defer_list"),
+> skb_attempt_defer_free() increments sdn->defer_count before testing
+> it against skb_defer_max, and keeps the increment when it rejects.
+> __skb_defer_free_flush() returns early on an empty list without
+> clearing the counter.
 >
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] quic_init_sock() (net/quic/socket.c:58) sets sk->sk_destruct =3D
->   quic_sock_destruct.
->
-> --
->
-> quic: add crypto key derivation and installation
->
-> This patch adds quic_crypto, which derives and installs QUIC packet
-> protection keys for the Initial, Handshake, 0-RTT and 1-RTT levels. It
-> handles key updates and stateless reset token generation. It also adds a
-> quic_sock_destruct() callback that frees the per-level crypto transforms
-> when the last socket reference goes away.
->
-> > diff --git a/net/quic/socket.c b/net/quic/socket.c
-> > index 12f0817c8b55f..9b1106a9f5e73 100644
-> > --- a/net/quic/socket.c
-> > +++ b/net/quic/socket.c
-> > @@ -40,10 +40,22 @@ static void quic_write_space(struct sock *sk)
-> >       rcu_read_unlock();
-> >  }
-> >
-> > +static void quic_sock_destruct(struct sock *sk)
-> > +{
-> > +     u8 i;
-> > +
-> > +     /* Deferred crypto free for async encryption/decryption. */
-> > +     for (i =3D 0; i < QUIC_CRYPTO_MAX; i++)
-> > +             quic_crypto_free(quic_crypto(sk, i));
->
-> [Severity: High]
-> Is it safe to free the crypto transforms from sk_destruct, given the
-> context it can run in?
->
-> sk_destruct runs in whatever context drops the last socket reference.
-> Later in this series, several of those contexts are softirq:
->
->   quic_packet_rcv() (UDP encap receive) ends with sock_put(sk)
->   quic_timer_timeout() ends with sock_put(sk)
->   quic_packet_rcv_err() drops its reference with sock_put()
->   quic_packet_xmit() takes a reference per TX skb through
->     skb_set_owner_sk_safe(); sock_efree() releases it on TX completion,
->     usually in NAPI
->
-> If the user has already closed the socket, any of these can end up as:
->
->   sock_put()
->     __sk_destruct()
->       quic_sock_destruct()
->         quic_crypto_free()
->           crypto_free_aead()
->             crypto_destroy_tfm()
->               alg->cra_exit()
->
-> The AEADs come from crypto_alloc_aead(cipher->aead, 0, 0), so an async
-> hardware implementation can be selected. hisi_sec2, for example, register=
-s
-> both "gcm(aes)" and "ccm(aes)". Its sec_aead_exit() calls
-> dma_free_coherent(). Behind an IOMMU that leads to __iommu_dma_free() and
-> then vunmap(), which begins with:
->
-> mm/vmalloc.c:vunmap() {
->         ...
->         BUG_ON(in_interrupt());
->         ...
-> }
->
-> Can this hit that BUG when a QUIC socket is destroyed from softirq?
-> Listen sockets already hold AEAD transforms in this series, via
-> quic_packet_get_alpn()->quic_crypto_initial_keys_install().
->
-> macsec hit the same crash and fixed it in commit 6624bba469a3 ("macsec:
-> use rcu_work to defer RX SA crypto cleanup out of softirq").
->
-> The note about in-flight async requests holding a socket reference covers
-> the lifetime of the transforms. It does not cover the context in which
-> the free runs.
->
-> Would it work to defer the tfm teardown to process context, for example
-> with a work item or rcu_work queued from quic_sock_destruct()?
->
-True.
 
-Didn't know crypto_free_aead() must be called in process context
-due to the async hardware crypto implementation.
+Review bots found that:
 
-I will  defer crypto cleanup to a work thread like quic_udp_sock.
+1. skb_defer_max=3D0 still latches.
 
-Thanks.
+proc_do_skb_defer_max() publishes the new value before it calls
+static_branch_enable(), so a producer can read skb_defer_max=3D0,
+increment, and reject with an empty list, which skips the kick.
+__skb_defer_free_flush() then returns early without clearing. Restoring
+any limit at or below the count that accumulated leaves every later
+producer rejecting on an empty list. On 6.18 through 7.0, which the
+Fixes: tag targets, there is no skb_defer_disable_key at all, so there it
+is deterministic rather than a race.
+
+2. The kick does not coalesce the way I said it did.
+
+trigger_rx_softirq() clears sd->defer_ipi_scheduled as soon as the IPI
+runs, before the list is drained, so if the owner has BHs disabled the
+next rejection sends another IPI. With use_backlog_threads(),
+kick_defer_list_purge() also takes sd->input_pkt_queue.lock before it
+tests NAPI_STATE_SCHED, and on PREEMPT_RT that is a remote
+spin_lock_irqsave() per rejected free. This series started from
+sd->defer_lock contention on this same path, so I would rather not ship
+that.
+
+
+For v7 I plan to restore the empty-list clear in the flush which covers 1
+(but was dropped in v3).  I=E2=80=99ll keep a kick for the case where the
+owner never raises NET_RX on its own, but bound it.
+
+The bound is what I am unsure of. Kicking only on the first rejection
+after the limit is crossed costs one IPI per overflow, but nothing
+retries if that one does not land. Would you prefer that, or something
+that keeps retrying?
