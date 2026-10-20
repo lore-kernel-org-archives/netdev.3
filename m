@@ -1,59 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792524624;
-	b=biuiF1V/LJ4y0S/Tlz7PKIK+2YCylHjFvcxmgPWqVeSJ3ngh7dvZZP3O9gk1A5piciQK
-	 C68xwNii6PFiWNdEBWKURgEZuiwo7il1QsMbUtvebHgIawkK8reapsVQ8xO7J4uF/W+U6
-	 6yEG8kM7DLXa+dp42ztIo/7BztuZevXEO/cWZpE8uiDwEd3S8eGUJRhzaB/+y+llqjKxe
-	 SqLHPggy9llCv6DmJu7eS51XICbT5m9ITxAIgCnyoHtu44wpOhKWaaXjci/xjCfswOp54
-	 BBacdXixbMIvVApslrs6g/M739xjNqBMGiVA6MVYgxzFjLqOFK2PoygzJVg8zBwqIMA==
+	t=1792524612;
+	b=tDiWNW30wPi7BGhSfUy89GjiC0dmM17bEqHnRTZbbqfaIw2LraU+itF59c7pcnf6ZKR/
+	 bS+hJ3lZudkMnDfSVop/V+fPBNoOYh3/jzybXbZkGF9mI5FiK4CApmFi8Tp38vWbjFEdx
+	 aKDyy40LsW0T2MJ/IG0eXurDJ9AriW830fzPb27dPreQRfBYrmoQQwKrou/zE99CajThg
+	 QXgVqU5pA8GsFCVdu7jLxdsFOE/PsKh8i5HHkR5NNCBJmy/X/09IPD1XCW0xk8MCEVeAR
+	 wo1sZcZ/pOAd9iVNaSeIAmaN5//LYJ3TGzkmrPi4YLyY9/NPadxwOkcKYmshgL85k6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792524624;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=2LYIs8aFRzc8aCCkLtrsuAXgCJ+0neQAn2pAIkJK0dU=;
-	b=hZczzsAYVJn9jiPOOu1VrtnnEd4Shyu5QYbsfuZ7niw0lFJCcUwwqEJso3dbiMdlVoQ9
-	 lbIWpW4Ehwtvf0f8MwYUp+0yQOOOpRnlLBINHe2jynTb94IRUWGaEzKRsLDHyFFYge8nD
-	 TR1PS15Da2f98jqLua0dfAZy9xtRYofaLy1SPywIOyEXdlg54D7wLlN5TQO4zlRykQzyU
-	 SenE+bzOgYwOcQf2FyOWX1dVKIXUrl/0PDH5atvhfVv/ysvCgWn/NvE6wSHF3+ifUGgHk
-	 GR9doQopHcMtoACjSv3PVMtjYzA5VtK7oqYx3fThIVeiAH41qoRVjzzJMLYniX63AQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792524612;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=Ro+ZQGqvoHjxfsJoqJ8Yh63KTW/BZhi188QX3SNHCQU=;
+	b=XReSWmyk04XHA9hfOMOTB+JssWLyb/2y9wxC7pbBgTNO+AyuaubSWaBLM2/C33oLY4v4
+	 VVAayQZqj/NwvVYJA+qOa+85bJTIj6C/iJZKrOhATGioF9fj0Eu182rjzHzQ5lSfrPc6s
+	 aztsC++/GWyHr6jCRQU949Od0vWaEYc+dOOLNz13iJNGBF89C+Gv9UGgOrTC4r3XEZGdT
+	 u75DBr3e7tV3pZybauM7JpxTsbFHNLOdsBFqKoK0SJEUI2zA+YVfs57SGEHbezo56/98y
+	 8qzsQ81SfZXxj3doUCjeZOVq/oDUlP52hdWCQzMZOL4hXxiOuyEe3AL8Fhizj1c6yzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NNeIl6Lq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=HGxkr8il;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D40F606A31F;
-	Tue, 20 Oct 2026 19:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF18606A331;
+	Tue, 20 Oct 2026 19:30:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BF18606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NNeIl6Lq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615B21F000CD;
-	Tue, 20 Oct 2026 19:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792524624;
-	bh=2LYIs8aFRzc8aCCkLtrsuAXgCJ+0neQAn2pAIkJK0dU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NNeIl6LqqtnHLej8cyJoytG/dYprnqoVr1tlqK1G2aNgHV2Kou2ZR6NSGgHCAXW4S
-	 1tApnrKp1BWpky612yIDouXWES8eflVF761LpVRB++MxwLDjK1sk4nmWDy+dh4KlPl
-	 aKADT/lmCPMiQUjPDq6P18/x7WMc54cMeLNEnl9RRSi1EV1asyzn97tPGvCqiJYkxa
-	 tjg+woGAy2FeXRtbP/pcy1l+/5h6VkWk1Zg2OUFZ+mJnd2lGRynX6G5IB39SvHaRBR
-	 AbFMn8+Ydk+VRDGACAAAn5dABpQLkPrw67AsMo/uVOpCT/dPwuFfm3ZS/dWHNC+HsM
-	 ToHhpNrKh10Wg==
-Subject: Re: [PATCH v4 net-next 06/15] selftests: xsk: move the AF_XDP test
- suite to selftests/net
-From: netdev-bot+sashiko@kernel.org
-To: maciej.fijalkowski@intel.com
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
- stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com,
- tushar.vyavahare@intel.com, kerneljasonxing@gmail.com, bjorn@kernel.org
-Date: Tue, 20 Oct 2026 19:30:22 +0000
-Message-ID: <179252462291.3135.9171929520806354921@kernel.org>
-In-Reply-To: <20261016174338.787135-7-maciej.fijalkowski@intel.com>
-References: <20261016174338.787135-7-maciej.fijalkowski@intel.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=HGxkr8il
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Ro+ZQGqvoHjxfsJoqJ8Yh63KTW/BZhi188QX3SNHCQU=; b=HGxkr8ilpsS8CX1H+RCJQyXN9N
+	kgK96RizNWOsvfnVMSk8Tt1EQ7flE2KgXhZ5O/fI2/MmGTw3xKY9+D4UtEo/+1sR+IS99TLqIPlNm
+	mdqkHxouGZwgPCqcGJG3oZmu6wsPQNdQpn2ZN4AgPmvYJhZi3WoFFmVjVMPyCzulyMTs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xJFWw-00BueB-Gr; Tue, 20 Oct 2026 21:29:50 +0200
+Date: Tue, 20 Oct 2026 21:29:50 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"parthiban.veerasooran@microchip.com" <parthiban.veerasooran@microchip.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+	"rdunlap@infradead.org" <rdunlap@infradead.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"edumazet@kernel.org" <edumazet@kernel.org>,
+	"piergiorgio.beruto@gmail.com" <piergiorgio.beruto@gmail.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"jerry.ray@microchip.com" <jerry.ray@microchip.com>,
+	"ciprian.regus@analog.com" <ciprian.regus@analog.com>
+Subject: Re: [PATCH net-next v9 03/11] net: ethernet: oa_tc6: Move oa_tc6.c
+ to its own directory
+Message-ID: <e40a4fae-b339-4a5a-b21e-3a31dd3ddd5a@lunn.ch>
+References: <20261009-s2500-mac-phy-support-v9-3-dcefe1d0bf0d@onsemi.com>
+ <179166121127.434549.2014178695820662916@kernel.org>
+ <CH0PR02MB786710538BD4784E5CF2C9A183672@CH0PR02MB7867.namprd02.prod.outlook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,183 +86,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CH0PR02MB786710538BD4784E5CF2C9A183672@CH0PR02MB7867.namprd02.prod.outlook.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Tue, Oct 20, 2026 at 04:48:48PM +0000, Selvamani Rajagopal wrote:
+> Andrew, Jakub (and other concerned reviewers).
+> 
+> This following feedback about change of module name is being raised regularly. While I understand 
+> the concern (and I agree with it), this is how it has been from the beginning and I didn't see any 
+> concern from the reviewers. So, I thought it is ok to leave it the way it is.
+> 
+> My question is, should I change the module name back to the original oa_tc6.ko (from
+> oa_tc6_mod.ko that is used in this patch series). If I choose to do that, original file name oa_tc6.c
+> would have to change to oa_tc6_core.c or something like that.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0 (1)
+I don't think we consider module names ABI.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+However, some distros, especially in the embedded space such as yocto,
+do make use of the module name, it produces a binary RPM named from
+the module name. So if a rename can be avoided, that would be great.
 
-- [Medium] This patch moves get_hw_ring_size() out of
-  tools/testing/selftests/bpf/network_helpers.c and appends it to…
-- [Medium] The new $(XSK_BPF_OBJ) rule in
-  tools/testing/selftests/net/lib/Makefile compiles xsk_xdp_progs.bpf.c…
+Git is pretty good at following renames, so renaming oa_tc6.c to
+oa_tc6_core.c in order to keep the module name the same should not
+cause problems.
 
-Pre-existing issues:
-- [Low] At this commit, test_exit() in
-  tools/testing/selftests/net/xsk_prereqs.sh ends with an unconditional…
-
---
-
-selftests: xsk: move the AF_XDP test suite to selftests/net
-
-This commit moves xskxceiver, the AF_XDP library, the test definitions
-and the XDP program from selftests/bpf to selftests/net/lib/xsk. It also
-moves test_xsk.sh and xsk_prereqs.sh to selftests/net, and net/lib now
-builds xskxceiver and its skeleton when a working bpftool is available.
-The ethtool ring helper get_hw_ring_size() moves from network_helpers.c
-into xsk.c.
-
-> diff --git a/tools/testing/selftests/net/lib/Makefile b/tools/testing/selftests/net/lib/Makefile
-> index ff83603397d06..c26088da04892 100644
-> --- a/tools/testing/selftests/net/lib/Makefile
-> +++ b/tools/testing/selftests/net/lib/Makefile
-
-[ ... ]
-
-> @@ -23,3 +33,28 @@ TEST_INCLUDES := $(wildcard py/*.py sh/*.sh)
->  include ../../lib.mk
->  
->  include ../bpf.mk
-> +
-> +# AF_XDP test engine used by net/test_xsk.sh.
-> +XSK_DIR := xsk
-> +XSK_BPF_OBJ := $(OUTPUT)/xsk_xdp_progs.bpf.o
-> +XSK_SKEL := $(OUTPUT)/xsk_xdp_progs.skel.h
-
-[ ... ]
-
-> +$(XSK_BPF_OBJ): $(XSK_DIR)/xsk_xdp_progs.bpf.c $(XSK_DIR)/xsk_xdp_common.h $(BPFOBJ)
-> +	$(call msg,BPF_PROG,,$@)
-> +	$(Q)$(CLANG) -O2 -g --target=bpf $(CCINCLUDE) $(CLANG_SYS_INCLUDES) \
-> +		-Wno-compare-distinct-pointer-types -c $< -o $@
-
-[Severity: Medium]
-Could this produce a BPF object with the wrong byte order when
-cross-compiling for a big-endian target?
-
-Plain --target=bpf uses the build host's byte order. xskxceiver itself
-is built with $(CC), and lib.mk sets that to $(CROSS_COMPILE)gcc. So a
-build for s390x on an x86_64 host would put a little-endian object into
-the skeleton of a big-endian xskxceiver.
-
-On the target, xsk_xdp_progs__open_and_load() would then fail in
-bpf_object_load():
-
-tools/lib/bpf/libbpf.c:bpf_object_load() {
-    ...
-	} else if (!is_native_endianness(obj)) {
-		pr_warn("object '%s': loading non-native endianness is unsupported\n", obj->name);
-		return libbpf_err(-LIBBPF_ERRNO__ENDIAN);
-	}
-    ...
-}
-
-The bpf selftests Makefile, which built this program before the move,
-picks the target based on $(CC):
-
-BPF_TARGET_ENDIAN:=$(if $(IS_LITTLE_ENDIAN),--target=bpfel,--target=bpfeb)
-
-The existing rule in net/bpf.mk also uses plain --target=bpf. Should
-the new rule pick bpfel or bpfeb the same way the bpf selftests do?
-
-> +
-> +$(OUTPUT)/xskxceiver: $(XSK_SOURCES) $(XSK_HEADERS) $(XSK_SKEL) $(BPFOBJ)
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/xsk.c b/tools/testing/selftests/net/lib/xsk/xsk.c
-> similarity index 97%
-> rename from tools/testing/selftests/bpf/xsk.c
-> rename to tools/testing/selftests/net/lib/xsk/xsk.c
-> index 25d568abf0f20..660540efc46e0 100644
-> --- a/tools/testing/selftests/bpf/xsk.c
-> +++ b/tools/testing/selftests/net/lib/xsk/xsk.c
-
-[ ... ]
-
-> @@ -779,3 +778,27 @@ void xsk_socket__delete(struct xsk_socket *xsk)
->  		close(xsk->fd);
->  	free(xsk);
->  }
-> +
-> +int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
-
-[Severity: Medium]
-Can this function move into xsk.c without its license being addressed?
-
-get_hw_ring_size() comes from tools/testing/selftests/bpf/network_helpers.c,
-which carries:
-
-// SPDX-License-Identifier: GPL-2.0-only
-
-xsk.c carries:
-
-// SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
-
-The function was contributed as GPL-2.0-only in commit 90a695c3d31e1c
-(Tushar Vyavahare). After this move, the xsk.c file tag offers it under
-LGPL-2.1 or BSD-2-Clause. Neither the SPDX header nor the function gets
-a license note.
-
-The commit message only says:
-
-  "Move the ethtool ring helper from network_helpers into xsk.c"
-
-It does not mention a relicense or carry an ack from the original
-author. Could the relicense be acked explicitly, or could the helper
-live in a GPL-2.0 file such as test_xsk.c instead?
-
-> +{
-> +	struct ifreq ifr = {0};
-> +	int sockfd, err;
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/test_xsk.sh b/tools/testing/selftests/net/test_xsk.sh
-> similarity index 98%
-> rename from tools/testing/selftests/bpf/test_xsk.sh
-> rename to tools/testing/selftests/net/test_xsk.sh
-> index 69fac65f073c5..fbf4551d596a4 100755
-> --- a/tools/testing/selftests/bpf/test_xsk.sh
-> +++ b/tools/testing/selftests/net/test_xsk.sh
-> @@ -97,6 +97,11 @@ do
->  	esac
->  done
->  
-> +if [ ! -x "./${XSKOBJ}" ]; then
-> +	echo "xskxceiver was not built; skipping"
-> +	exit $ksft_skip
-> +fi
-> +
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but the new check exits with
-$ksft_skip, while the other skip paths go through test_exit() in
-xsk_prereqs.sh, and that always exits 1:
-
-tools/testing/selftests/net/xsk_prereqs.sh:test_exit() {
-	if [ $1 -ne 0 ]; then
-		test_status $1 $(basename $0)
-	fi
-	exit 1
-}
-
-validate_veth_support() and validate_ip_utility() both call
-"test_exit $ksft_skip". So when veth support or the ip utility is
-missing, the result is a failure rather than a skip.
-
-Later in the series, "selftests: xsk: run one test case per xskxceiver
-invocation" replaces test_xsk.sh and xsk_prereqs.sh with test_xsk.py,
-which skips with exit code 4. By the end of the series this is gone.
-
-Should test_exit() pass its argument to exit for the commits in
-between?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016174338.787135-1-maciej.fijalkowski%40intel.com
+    Andrew
