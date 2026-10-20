@@ -1,63 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792502242;
-	b=ZtnRuanOX01Z7HJBdrJw2ZYKm8qzzWk5X6DOC/BCNg1VOAOIiKkj+2m87UvO6/aVTVcu
-	 /UYGHsFr/KZ+8FsNcWfP0RKI6+nfXIzz0Gn1AqSGacAuMHzO5vG/bYmS60rDmYx1+s3l9
-	 lxpVoLFIRo1kwUjTTqf5rE4PCyigNHhmFuS3nbGH4Cb3tRh8+jyX3Px+A5QtqQeR3LZzw
-	 I/DuO4Vh+Ey6YGVPCHS8ApnieEfRmYfObldbx6ZHn1T9EUIWUsGVZJ4KL78mxrXvJ+T6i
-	 PNvf7rITLUeUds6iwmfvMqfKQ2862J2IrktKVGk1Jpo5pCd0e4T2L2Kf2IPkMOebgxQ==
+	t=1792502279;
+	b=Jb4LrvXrwQriouGRL3RZHNPrQuw/v4rnWriZdv33BqcUZBOxwfgBwA4ZfFP9F5LPSzk/
+	 ZNWh2hKB/wkx/pVsVDUJ5Jd7ckyNT6Ae3OMYyP9KG9T+xGhbVVYvZ7qqk6nXHZxbRCHbF
+	 QgZdt10UHFBnTT9st1fBwBllhHhgah2jI+K9Xwo3iD8PpB0HCgXLJ7cv7gg2DcZZZQG8C
+	 75yfMW+gPsMVpbRaGeX3QxCWK1MyU4DfNmWgv1340U648jZFaioHkYkbypBNgjE/fyMMo
+	 0mBWsN4CkOcJonIVKKnmyT/MPdVLwgUmFBR3VuSRxGPDcbZGOBvwqp2gyboJpKyPpOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792502242;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=YdVnxrvkhHt9mjANzsaK5MP3THwExPR4ircmNBidooE=;
-	b=Cd9GeOGNyybUPSndMECbxePwzKt86aA/iSt5lX+I95/VXk9WdjIEtTlhPpiUHnIytpT7
-	 gMGUIhrYQxHubJSpQ5aG01eoptzLeYimUnOn/moh6LK6eiFXABqJr0Ykay+F+iAa9B+B0
-	 xumRnllcem5pe3JqSeRc6J7yWF8NopWB3ZtRWHrIbUM/lse2ErhYiyLXw4bA9/Gxqg8pP
-	 8VIe77dGXGaJ70Ta4+3GdkGFyQ+xFcXvef8H9uRuDJ79eTh2WZZy1FdiC514aZUhr13yw
-	 vhmdiRukISVzoUOYx6KVTreOK6C63y6U0c4E8sPJDTogFtiV0fU84F/7bLR0oD/zZTA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792502279;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=L1RqAEfTuGbkvUdAUwAcy8yMPvcz5IhXkDHeJXVKQMg=;
+	b=f/kryzVgWlBydC1/TP+J8NLyYrlJP/GydYIXDAOefbbBoX4r2tc6QkyodrO0ajguoB4h
+	 wO/eYmj30BpxUOckU9+mUN8oZfGIVaupUOhqS76/yT4oaQd17g/cxjYQp9j3LGEDZq0cE
+	 SIHxjf7yQHfvWWo3ACBPwGqvaUSi69HrRmHCCIhU2MuNaw+hls8H7evPbSVMXH+JMPsB4
+	 ET+/yR8yWd3p+nBN1g2n0PYTKH3GoYm61PdpcELoPkQrIO2ihgZohyauDOqDm+bWP9nbY
+	 zcmXgGrGPoxJ0g0EYbXtejkMz5b4ggOOimcmfqa0+k+Ll8lx8o2amb6xuyi9dqxFIoQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UzxpwiBM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Bl9Y6qAB;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=dQ5qnD5g;
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3731F606A31C;
-	Tue, 20 Oct 2026 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBCE606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:17:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8CBCE606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UzxpwiBM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6F81F000C4;
-	Tue, 20 Oct 2026 13:17:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792502241;
-	bh=YdVnxrvkhHt9mjANzsaK5MP3THwExPR4ircmNBidooE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UzxpwiBMNkZVpY2VxiZgi8WbHrD9Btojc9Ame/mtdjTofHtvZFMjKaCRLEbcNTorz
-	 3ZeIFKwxTa8OZH/4EjId0R8n/N0XyIgXWupxAQLoA7LAbuYjLdtr6mbRnZ0Z04lZc1
-	 x7s8bZRN0UEoqOCoyrUAIQbVmL7PdVQfMs/wfYeH/Q9EWiuDvnk1jhFE98+qYsdHrt
-	 X5XhMNjHhyKNB6QQ/QSFebeiCA0gdaBwpyOSdNfUDoMTDWbYCqKjWJ52t4+/7idIST
-	 mhfyJ1+D/GKk0oPTO6OrWPQjggu6vU8An7LBCUZzCBcwNgWhOtf6QehtzmVSJHHYtS
-	 zlgNiY/apP6FQ==
-Subject: Re: [PATCH net-next] net: ti: icssm-prueth: use
- dev_close()/dev_open() in icssm_prueth_change_mode()
-From: netdev-bot+sashiko@kernel.org
-To: saivarun@couthit.com
-Cc: danishanwar@ti.com, parvathi@couthit.com, rogerq@kernel.org,
- pmohan@couthit.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, afd@ti.com,
- basharath@couthit.com, horms@kernel.org, linux-arm-kernel@lists.infradead.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pratheesh@ti.com,
- vigneshr@ti.com, praneeth@ti.com, srk@ti.com, j-rameshbabu@ti.com,
- m-malladi@ti.com, rogerq@ti.com, krishna@couthit.com, mohan@couthit.com
-Date: Tue, 20 Oct 2026 13:17:20 +0000
-Message-ID: <179250224009.3135.4883643346445826814@kernel.org>
-In-Reply-To: <20261016105206.167094-1-saivarun@couthit.com>
-References: <20261016105206.167094-1-saivarun@couthit.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Bl9Y6qAB;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=dQ5qnD5g
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69KDAJTu2214644
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:17:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=L1RqAEfTuGbkvUdAUwAcy8yM
+	Pvcz5IhXkDHeJXVKQMg=; b=Bl9Y6qABYgqtoQKdJHCs5a8sTn62iZskwg7QMeGc
+	GCkh7xI6U9HoZRs+U7tPz9GDgH6zOUeA1Pbi5ysDD+6eaYqL+lcSu7NKK6G/SdSC
+	lHGVcfJEW0l/G2f8m2S9z8ZHNWY/fwApnhSoGhVR5p+VDaNO2z+F4vZHkMVpBAnn
+	ljXT/lvFInhxPmR6jsHemw/8okDM6Akx8i8e5Xg0s26YLDQgh9JMAUZ0Om2dGPpR
+	H8yokCtISbqgiHZgAevMNbdrr0BTms/q59poNlWRNZKT9Abi0ZMctXpA+cSpTXDD
+	y+d5uso3qLhrn6/TP4KfkOeEKo2DW+eVOcWglYqtW5FKYQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hdw5nthrt-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:17:57 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93f322ef7d3so581196985a.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:17:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1792502275; x=1793107075; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L1RqAEfTuGbkvUdAUwAcy8yMPvcz5IhXkDHeJXVKQMg=;
+        b=dQ5qnD5gNly0auPMERAxFVKFT7ZPc+Ayj53OePcXmM6PNDJEOLs7C/Hl8kq1TbN88o
+         81isYgWkuIahO3uy7NkT2gRCfUMM9zrCjye+Y5roDgn5W2giQVTwCknjrSr04mWRQQEE
+         Iawwjc1NyB4e5BehwSusuf0ZfDDJQIhze16j+tiPaRokZybylCgzyD7QX7nqIAPfmQl5
+         RouXVXNmTa2Zign/47bqC9Etv9PO73MgJE2Z6QLfXgR7VoNwuTMLACasBdXhYEWwg2IJ
+         rO1jDhafOyYyP/WVXvDIQZk7pREJRRGuphAbJrNOctlrp28tLqWSvT2IweP2uvgCIbKk
+         q99w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792502275; x=1793107075;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L1RqAEfTuGbkvUdAUwAcy8yMPvcz5IhXkDHeJXVKQMg=;
+        b=TQXDzpDgKDnMxlclMEzGsSzG+tlz+Dj1p44aHYdcum+jSO31MOumSNf6Nq2Ac4pkNu
+         MzcX45/stBs7+kAQqNmZirHZkGRqunnlyIRNdqXwN81rVRuy1KjwkYM4zjPAPxFjTeqx
+         X07SZ2pACC2+E2AbFTbhZcZ+3m63x4gpVSVxRqwWhpWp4XvBBfbCpdW0YEgpfFAgVpZy
+         YUlxLjx8bmXkQWW48DglB2qfoh6hZJ1wgjbnAV81znpLLQEmJE9ISwSwCbjSrM9enBi5
+         NmgX8p2SV+Rbx9ttpj2uGBUwM4asf6L8GrSzH3ecYLNyQ0Fac4Qi/kMsNYfuQVD/pmEs
+         ixxQ==
+X-Forwarded-Encrypted: i=1; AKwUvByI7mVui7c8k9thKpuDpFu4/C6LVDBe8yqsd6hFxPwTjahwlCuLSwfch7r1csdWPFWKgrYOrrY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJHX13f+ZThT8ucK/G8LH9XFAWaj2yM7kUK0fclDz0VWw6/kuDg
+	RFewcCzL+3yJyjtGk9AKe21OA7cRua+i9oeYQdAb+hcgQl9v4jVFfQk7hD4E6KDBv9cCpWx+iWv
+	dcjZvDCJHtCiTU2GTFe7EHXoWP2K5SBYx1J24bAjgLQ+a7KteGQZIiYljyQk=
+X-Gm-Gg: AYBFou3nowj72959kkDkQPGfZzQzYRS0R1kh4TsyPQnQJXqROnV6r//PO9IrBaE4xen
+	xK6ckWUUGKcbyKWuj0tZAnkYc4TceSLpo0wd6XoUuKnI/yKBqDXy5R7BUFVZyxmhfJMZlUgGIJQ
+	PZYTwzAkt3TbwFyMvJd0kfEomrODAFAWgV1chg3j5xyUMNHWHRlRDXWdbAgFAlGBl45jpdp18Za
+	FsBQui1/Fg/SQRA4nbl7rNvRh8wBlhHdlJx521PI5VDW9+Yu1ffpTSGARYySf6UmbKcytbk3EuV
+	KnNV5ClCijT77p06KXgYPsDOHf3p3lmLcFgIybi+HelwskH6jUUrBlfl7+n5wfBq9fI3f2o53VI
+	i7ihje7zOfcuj6Q==
+X-Received: by 2002:a05:620a:280b:b0:93f:1ed3:a9cc with SMTP id af79cd13be357-93f29ceec2bmr1774236085a.17.1792502274425;
+        Tue, 20 Oct 2026 06:17:54 -0700 (PDT)
+X-Received: by 2002:a05:620a:280b:b0:93f:1ed3:a9cc with SMTP id af79cd13be357-93f29ceec2bmr1774228685a.17.1792502273730;
+        Tue, 20 Oct 2026 06:17:53 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d817d8bsm5401884f8f.24.2026.10.20.06.17.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 06:17:52 -0700 (PDT)
+Date: Tue, 20 Oct 2026 15:17:51 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev-bot+sashiko@kernel.org, maxime.chevallier@bootlin.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+        kuba@kernel.org, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, ast@kernel.org, daniel@iogearbox.net,
+        hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+        boon.leong.ong@intel.com, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: stmmac: disable TX checksum offload
+ for jumbo frames on bugged cores
+Message-ID: <atdp_0QJfjR_H3U-@lore-desk>
+References: <20261012-stmmac-xdp-tx-pre-fixes-v1-2-05fd0c90f7e1@oss.qualcomm.com>
+ <179190522792.434549.2113659711683261245@kernel.org>
+ <as5PVATLFOcTHbkV@lore-desk>
+ <de6dc65e-04bf-40b2-b5e6-d7035d2f9b7c@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,281 +127,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VlBw4mY3Q/Sm2KIC"
+Content-Disposition: inline
+In-Reply-To: <de6dc65e-04bf-40b2-b5e6-d7035d2f9b7c@redhat.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIwMDA1MiBTYWx0ZWRfX07ZyRuMvEuW/
+ lcr0eIARHqSPEv4iur7lmQ7yk/5nsWbX7A8OMoOJucPcFDOlAzwrzv2tzVlZBl76YIVU714cmXu
+ VbOuZrKpyqqYzw8/WqXUAu6RUdg+fOo=
+X-Proofpoint-GUID: kefyT-yQZSqH5ZlXeWiDZEdxYblxjr6I
+X-Proofpoint-ORIG-GUID: kefyT-yQZSqH5ZlXeWiDZEdxYblxjr6I
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIwMDA1MiBTYWx0ZWRfX6M33KYWvuczb
+ R627UcOytUI85eMu+L943egj28GteoKfk3xJWd4ML9QgZpa3MnYIOM77hV8QqzGQBQXL0fjzvrL
+ DHdfxm76pXaxUiRh2DvY+alYl8ImgJCDXMBWvM9vB8ccfU1+igcjY6JXwntDRqtVeHL4ulNgzBu
+ h3eJ0/wdpR9jHDgfgJ6D6R2t4xRpP0WFWvabfRh6iRUQZC+zploZ01QNxaRyS4Ks97NlITauJVL
+ woNhYixjyLOGhfo8CkKK+l+/yW4txT4QdZiKQ4t4gcsotkBhhR4dgz07sAxbrWKwvbXmGzQhK5F
+ rHI/WwwKDsg81kWDHM3qLH1Vz5NyP7aCQ/RqsI4f9wgSH8SwcokGKimxRoeZmd6+Ay+F5xPkOM6
+ MBV0v70IQ1Y+qVTn9b2SF732yP1iNR6RyFuDRf8tPGOUwwGM/DrJnl1OJLn+G16U5YDluYQZk/G
+ d6ePJkotrt9ONYcc1Og==
+X-Authority-Analysis: v=2.4 cv=TcsDJhQh c=1 sm=1 tr=0 ts=6ad76a05 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=xPDQizAfL9ec5cwQt_8A:9
+ a=QEXdDO2ut3YA:10 a=cxd64Jjv5Ts7904Sr0EA:9 a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-20_02,2026-10-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 impostorscore=0 suspectscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610200052
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+--VlBw4mY3Q/Sm2KIC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Critical: 0 · High: 2 (1) · Medium: 1 · Low: 0
+> On 10/13/26 17:33, Lorenzo Bianconi wrote:
+> > > Thank you for your contribution! Sashiko AI review found more severe
+> > > issue(s) in other patches of this series. This mail is only an FYI, i=
+n case
+> > > you want to address the nit picks below when you respin.
+> > >=20
+> > > Low priority / nit picks for your consideration:
+> > >=20
+> > > - [Low] The commit message's premise doesn't match the tree.
+> > >=20
+> > > Pre-existing issues:
+> > > - [Medium] This problem wasn't introduced by this patch, but
+> > >    stmmac_xdp_xmit_xdpf() never looks at priv->plat->tx_coe when deci=
+ding=E2=80=A6
+> > >=20
+> > > --
+> > >=20
+> > > net: stmmac: disable TX checksum offload for jumbo frames on bugged c=
+ores
+> > >=20
+> > > This patch turns off TX checksum insertion in stmmac_xdp_xmit_xdpf() =
+for
+> > > frames longer than ETH_FRAME_LEN on bugged_jumbo cores. It is meant to
+> > > match the stmmac_fix_features() workaround that the skb path already =
+uses.
+> > >=20
+> > > > The XDP TX
+> > > > path bypasses that workaround, so once XDP is allowed at MTU >
+> > > > ETH_DATA_LEN, jumbo frames sent via XDP_TX or redirected into the
+> > > > device would leave the interface with a full checksum insertion ena=
+bled
+> > > > on those cores - exactly what the workaround is meant to avoid.
+> > >=20
+> > > [Severity: Low]
+> > > Can this scenario happen in the current tree? XDP still can't be used=
+ with
+> > > a jumbo MTU. stmmac_xdp_set_prog() refuses to attach a program when t=
+he MTU
+> > > is above ETH_DATA_LEN:
+> >=20
+> > This is actually a preliminary fix needed to remove the MTU limitation =
+when the
+> > device is running in XDP mode.
+> The point is that this patch does not address any issues, no it should not
+> include a fixes tag. I'll drop it while applying the series.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+ack, thx Paolo for fixing it.
 
-- [High] The new br_members rollback in
-  icssm_prueth_port_offload_fwd_mark_update() undoes the wrong port.
-- [High] The bug this patch fixes (a failed direct ndo_open() leaves
-  IFF_UP/__LINK_STATE_START set with NAPI disabled, so a later…
-- [Medium] In icssm_prueth_change_mode(), the switch from
-  netdev_ops->ndo_stop()/ndo_open() to dev_close()/dev_open() turns an…
+Regards,
+Lorenzo
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  prueth->hw_bridge_dev is shared by both MAC ports and each side only…
+>=20
+> Also a more explicative cover letter would have helped.
+>=20
+> No need to repost.
+>=20
+> Thanks,
+>=20
+> Paolo
+>=20
 
---
+--VlBw4mY3Q/Sm2KIC
+Content-Type: application/pgp-signature; name=signature.asc
 
-net: ti: icssm-prueth: use dev_close()/dev_open() in icssm_prueth_change_mode()
+-----BEGIN PGP SIGNATURE-----
 
-This patch replaces the direct ndo_stop()/ndo_open() calls in
-icssm_prueth_change_mode() with dev_close()/dev_open(). If dev_open()
-fails, it closes the ports already reopened and falls back to EMAC mode.
-It also undoes the br_members update from icssm_prueth_ndev_port_link()
-when the switch to switch mode fails.
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCatdp/wAKCRA6cBh0uS2t
+rFmoAP414FEDjStL4n4qvHemK+O+WXPITqOkK0QE5TTAxXJutgEA+GNB2i9SNe2P
+Jm3Rh13AJigugNCR10M7PsREpZKSwwc=
+=zatQ
+-----END PGP SIGNATURE-----
 
-> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-> index b42c98e861e08..d50aa0992c33d 100644
-> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-
-[ ... ]
-
-> @@ -1115,11 +1115,7 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
->  		if (!portstatus[i])
->  			continue;
->  
-> -		ret = ndev->netdev_ops->ndo_stop(ndev);
-> -		if (ret < 0) {
-> -			netdev_err(ndev, "failed to stop: %d", ret);
-> -			return ret;
-> -		}
-> +		dev_close(ndev);
-
-[Severity: Medium]
-Is a full administrative down/up of every running port intended here?
-
-dev_close() goes through __dev_close_many(). That sends
-NETDEV_GOING_DOWN and NETDEV_DOWN, clears IFF_UP and emits RTM_NEWLINK.
-dev_open() sends NETDEV_UP. The old ndo_stop()/ndo_open() calls produced
-none of these events.
-
-So each switch to switch mode (the second port joins the bridge) and each
-switch back to EMAC mode (the last port leaves) now affects every running
-port, including the sibling port that has nothing to do with the bridge
-operation. On those ports it:
-
-  - flushes IPv6 addresses (with the default keep_addr_on_down=0)
-  - removes routes and multicast memberships
-  - runs br_stp_disable_port() and then re-enables STP on bridge ports
-  - shows link-down events to userspace
-
-For example, say eth0 leaves the bridge and gets an IP configuration.
-When eth1 leaves later, eth0 is dev_close()'d and dev_open()'d. Won't
-eth0 lose that configuration?
-
-dev_close() is also called on the joining port in the middle of
-br_add_if(), from inside that port's own NETDEV_CHANGEUPPER notifier.
-
-Now consider a dev_open() failure. The err_dev_open path added below
-closes ports 0..i-1 and port i stays down. Ports after i were closed in
-the first loop and are never reopened. So every port that was up ends up
-administratively down. The "Fall back to EMAC mode" step only changes
-eth_type.
-
-The commit message says this "keeps IFF_UP consistent" but doesn't
-mention these user-visible side effects. Could they be described in the
-commit message, or avoided?
-
->  	}
->  
->  	if (mode == PRUSS_ETHTYPE_EMAC || mode == PRUSS_ETHTYPE_SWITCH) {
-> @@ -1141,14 +1137,25 @@ static int icssm_prueth_change_mode(struct prueth *prueth,
->  		if (!portstatus[i])
->  			continue;
->  
-> -		ret = ndev->netdev_ops->ndo_open(ndev);
-> +		ret = dev_open(ndev, NULL);
->  		if (ret < 0) {
->  			netdev_err(ndev, "failed to start: %d", ret);
-> -			return ret;
-> +			goto err_dev_open;
->  		}
->  	}
-
-[Severity: High]
-This fixes the double napi_disable() in icssm_prueth_change_mode(). Is
-the same pattern still reachable through the PM callbacks?
-
-icssm_prueth_suspend() calls icssm_emac_ndo_stop() directly on each
-running interface. That disables NAPI but leaves the interface
-administratively up. icssm_prueth_resume() then does:
-
-	if (netif_running(ndev)) {
-		ret = icssm_emac_ndo_open(ndev);
-		if (ret < 0) {
-			netdev_err(ndev, "failed to start: %d", ret);
-			return ret;
-		}
-		netif_device_attach(ndev);
-	}
-
-icssm_emac_ndo_open() can fail before napi_enable(). Examples are
-icssm_prueth_sw_emac_config(), icssm_prueth_sw_init_fdb_table(),
-icss_iep_init(), the PRU boot and icssm_emac_request_irqs(). The
-interface is then left IFF_UP and detached, with NAPI disabled. Any later
-ports in the loop are not reopened.
-
-A later ip link set dev down, or unregister on driver unbind, then
-reaches:
-
-__dev_close_many()
-    ops->ndo_stop(dev)    /* still called after a DETACH event */
-        icssm_emac_ndo_stop()
-            napi_disable()
-
-napi_disable_locked() then loops on:
-
-	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC))
-		usleep_range(20, 200);
-
-Both bits are still set from the first disable, so it spins forever while
-holding RTNL. Should the resume path get the same fix?
-
->  
->  	return 0;
-> +
-> +err_dev_open:
-> +	for (j = 0; j < i; j++) {
-> +		if (portstatus[j])
-> +			dev_close(prueth->emac[j]->ndev);
-> +	}
-> +
-> +	/* Fall back to EMAC mode */
-> +	prueth->eth_type = PRUSS_ETHTYPE_EMAC;
-> +
-> +	return ret;
->  }
-
-[ ... ]
-
-> @@ -1661,11 +1670,20 @@ static int icssm_prueth_port_offload_fwd_mark_update(struct prueth *prueth)
->  	 */
->  	if (set_val && !PRUETH_IS_SWITCH(prueth)) {
->  		ret = icssm_prueth_change_mode(prueth, PRUSS_ETHTYPE_SWITCH);
-> -		if (ret < 0)
-> +		if (ret < 0) {
->  			dev_err(prueth->dev, "Failed to enable Switch mode\n");
-> -		else
-> +			emac = prueth->emac[0];
-> +			spin_lock_irqsave(&emac->addr_lock, flags);
-> +
-> +			prueth->br_members &= ~BIT(emac->port_id);
-> +			if (!prueth->br_members)
-> +				prueth->hw_bridge_dev = NULL;
-
-[Severity: High]
-Does this roll back the right port? emac[0] is MAC0 (port_id MII0). The
-bit that needs undoing was set by icssm_prueth_ndev_port_link() for
-netdev_priv(ndev), the port that is joining. That port isn't passed to
-this helper.
-
-set_val is only 1 when br_members has both BIT(PRUETH_PORT_MII0) and
-BIT(PRUETH_PORT_MII1) set. So this failure always comes from the second
-port to join.
-
-In the usual order (eth0/MII0 joins first, eth1/MII1 second), this clears
-MII0 and leaves br_members == BIT(MII1). But eth0 is still a bridge port,
-and the core has removed eth1.
-
-The driver never gets an unlink event for eth1 afterwards:
-
-  - __netdev_upper_dev_link() handles a NETDEV_CHANGEUPPER notifier
-    error with only __netdev_adjacent_dev_unlink_neighbour()
-  - br_add_if() jumps to err5, which skips netdev_upper_dev_unlink()
-
-After the rollback, br_members still has the other port's bit set. Can
-the hw_bridge_dev = NULL assignment here ever run?
-
-When eth0 later leaves or br0 is deleted,
-icssm_prueth_ndev_port_unlink() clears the MII0 bit, which is already
-clear. br_members stays BIT(MII1), so hw_bridge_dev is never reset. The
-driver holds no reference on the bridge, so once br0 is freed the pointer
-dangles.
-
-One possible sequence:
-
-  ip link set eth0 master br0
-  ip link set eth1 master br0   (change_mode fails, MII0 bit cleared)
-  ip link del br0               (hw_bridge_dev not reset)
-  ip link set eth0 up           (dev_open -> ndo_set_rx_mode)
-
-icssm_emac_ndo_set_rx_mode() then walks the freed bridge's mc list:
-
-	if (prueth->hw_bridge_dev) {
-		netdev_for_each_mc_addr(ha, prueth->hw_bridge_dev) {
-
-The SWITCHDEV_OBJ_ID_HOST_MDB delete path in icssm_switchdev.c has the
-same dereference. Every later bridge link also fails with -EOPNOTSUPP,
-because hw_bridge_dev != br_ndev.
-
-The pre-patch code left the same dangling pointer, so this only fixes it
-when MII0 happens to be the second port to join.
-
-Could the rollback be done in icssm_prueth_ndev_port_link() instead, or
-could the joining emac be passed in, so it uses that port's port_id and
-addr_lock?
-
-> +
-> +			spin_unlock_irqrestore(&emac->addr_lock, flags);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is prueth->hw_bridge_dev
-protected consistently between the two ports?
-
-Both MACs share it, but each side only takes its own port's addr_lock.
-icssm_prueth_ndev_port_unlink() clears it under the unlinking port's
-emac->addr_lock, plus RTNL:
-
-	spin_lock_irqsave(&emac->addr_lock, flags);
-
-	if (!prueth->br_members)
-		prueth->hw_bridge_dev = NULL;
-
-icssm_emac_ndo_set_rx_mode() on the other port walks it under that
-port's own emac->addr_lock and netif_addr_lock:
-
-	if (prueth->hw_bridge_dev) {
-		netdev_for_each_mc_addr(ha, prueth->hw_bridge_dev) {
-			hash = icssm_emac_get_mc_hash(ha->addr,
-						      emac->mc_filter_mask);
-			icssm_emac_mc_filter_bin_allow(emac, hash);
-		}
-	}
-
-The two lock sets don't overlap. ndo_set_rx_mode can also run without
-RTNL here, for example from an unprivileged IPv6 multicast join:
-
-ipv6_sock_mc_join()->dev_mc_add()
-
-Suppose the unlink sets hw_bridge_dev to NULL while the other port is
-inside this loop. The loop condition reloads
-&prueth->hw_bridge_dev->mc.list (the out-of-line
-icssm_emac_mc_filter_bin_allow() call forces the reload). That near-NULL
-address never matches the real list head.
-
-Could the walk then circle the bridge's mc list forever with IRQs
-disabled? If the NULL is seen as the loop starts, it would be a near-NULL
-dereference instead.
-
-The bridge's mc list is also walked without the bridge's own address
-lock.
-
-> +		} else {
->  			dev_info(prueth->dev,
->  				 "TI PRU ethernet now in Switch mode\n");
-> +		}
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016105206.167094-1-saivarun%40couthit.com
+--VlBw4mY3Q/Sm2KIC--
