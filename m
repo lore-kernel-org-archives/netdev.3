@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792494612;
-	b=w8SrpMQrFykejeEkVsWqdyrZWBNc5ijXc/N1gnDh7pkNvBlYJrYzsXDwEbVtRUk3ZvF+
-	 dHFeLuQElLFRbixFJD7teAcGO9S264tZX065V+4K3iAyqQCVTlkbw3fnoBrrEXnx6I9jM
-	 FZ4SzTYAXIN/66+vC3u7/V9OJbt4k+Ki1oysRhWBpFG7sZI0QsN19j/nAaIWyYLHeg4nh
-	 aGk79FquBHMZXGfvbawsNKq3zxXnA5imuyr5yAJwFdVBhw9nGzYgSdziCuSOOO87wV2OW
-	 mTVtcw32YnrHp5kGkBBu/HaNS6FziuU8lwusYAVFf53TBtbOJcCOfiqkIHWcpvQ1Evg==
+	t=1792494613;
+	b=IagGTVellNYOjBEM0pfYMs9eArSABF2KN0lc7TCM86abZ4QoVcScgnc1TSJV1M8W566w
+	 dGRF/UxD5DyJ3nLPqD1ADeYf+1zaZy/Od5WPXu9U+N5o+F+UT2zUjqIKQegNPsXj1Z33Y
+	 Njaha6E63I1DPebDzRThezOmMi37q58Jq5w3qDzFuO7/8SVf4EMGM2RgE6tdwc77w4/bU
+	 2OtShVpNnX/c2HmJQYq9I6e1l6omV7kx0NJ3wgjZfJJ8Z+OoRlky2HaMBu1QhzUIzEXvh
+	 awiPpOogb6C/R5Z9dFvxx+aGjioNKwABh4Z+2YAUP72Xz4XgX9HDEOdo9I7hJfra3ug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792494612;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792494613;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=+3IN+A5nhPvRVvbTJkXzSBFdWFbcMb+5QoRptbxfYPc=;
-	b=RnGqd2XLqoburs4R7MBvgydfkEiE1F4+M7t+pjAYPgQ2doodjYCLC0KUGaXnphQI8HCo
-	 jYPGFsE6MGmH0DvpKMTTa1UcFRkMydXvXhFky5j4WUOE7oiGOpBgxCiIV8FwpPxxPqskq
-	 Lva4ymrcM6iX6QHWzIxmyE+kttcSBYmrNI24GF0f1FWbY2RhjMKbraBnWpbhiRWHEqkB7
-	 qrcaGxrQe/U0KFF5PxmYNWGZ0PScxwPkibGtA3ZQOL34TOr2SDlDFMGUEIIeVUtndjp1D
-	 iQZDA4smG5OHPPc+ffKd1OLoT3U5mbeu4/IcJWW5zwy3zRUp2H6NdMY+Bws32858bag==
+	bh=P4h9TC2io46Bq+01lwp1kjn/etlJt1LLfgkjec69ha0=;
+	b=35T962vLIg4puJuwIWuCs/tAtu0I+kRs7TzbRoxF8QcbnuzM//HVDqNNI5OspqfuRgFd
+	 Z/lBuFTbw4Li1rrbf80vxeWO/rBdWVc+S+7u37uVxI4QhT2wcrOKLmT/R5QnEjjmHo/n+
+	 O93JSi8z/FugsuHpdy5RP8+x24xzptypeMZaTH7sA+zEb7A5A6mUZuutmRSA467jGo5nv
+	 bvtKyl8oXDnwS3wqZ2l76tDkJ3SsSZaelmORzxVCs6DMD8GURi2RXZmu8pdEg1QWd26ph
+	 FRTtETjXOBmshe6JTJ+KIAHQjH7ppVx/wuOMFm7Kve13q5yBo8V2pbhfoSpgsB7ohBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LGdYPtG1;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hcd74N1W;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E7606A327;
-	Tue, 20 Oct 2026 11:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3FB606A319;
+	Tue, 20 Oct 2026 11:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LGdYPtG1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804261F000C5;
-	Tue, 20 Oct 2026 11:10:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hcd74N1W
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7571F000CA;
+	Tue, 20 Oct 2026 11:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792494611;
-	bh=+3IN+A5nhPvRVvbTJkXzSBFdWFbcMb+5QoRptbxfYPc=;
+	s=k20260515; t=1792494613;
+	bh=P4h9TC2io46Bq+01lwp1kjn/etlJt1LLfgkjec69ha0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LGdYPtG1MJ1ghbSsRWWiJCdPbf2TIcAqxNSWH0IzHSvEx7c2lHhK/206qutwwzpbn
-	 h18sggMQSZM5D0rgg+Owo7q92ZETXMi0KuFJa/601B5njnGKXWQJqmk/kVHSs7ck65
-	 kVyJTqPzzc4YlkQuX/XeLFP68+k6jlnJ8F+9hKfcpHVIIoDarlUE8zuflfPCr9MK+e
-	 ytoROKiDWZ7jKbyztJoVgucM+y3PsWwd8ooB2RIWxa7KMYOhfAPxkadocoSd/RFxL3
-	 +ade7ZU6ix/v0zr8WVkF3+L3+LNLosiDPKuw+OuW9V9uwBKLMlzFw2GM2F4U16GuAS
-	 roxmcI48UBsQA==
+	b=hcd74N1WF4k/GU9f1SogMznwoL0EZbMDtLgMU+E8thcOXxDUQQaUPT8if2SJJmc7r
+	 PWL+CKdV50x9RRt+VOKQ9Ad2R9AxtFCIXvg6JWK90OnDHMmmanHl0TJ93Y6dE0Ck/i
+	 TochueyH8NpL70WGAjelgoufkGCUtwS69gcS5Pn9oamK3mepRIhnDpdQWZeIzHo3H/
+	 Sdm7h74oPOtRwmcCsd/NQSt9ql5QtBdEwtxNhNKApZhziKqEWBvoHugtoPDI/Sje9z
+	 zXCDNVYLzWTcEtw3zc1th86vtBW8tL4KDPJZ++/81HRTFFTCNfZ7ELNMYHJbnzo6ba
+	 iPSnw4yKh/FdA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7737B3808209;
-	Tue, 20 Oct 2026 11:10:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F18013808209;
+	Tue, 20 Oct 2026 11:10:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,17 +54,17 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: dsa: motorcomm: Remove the redundant MIB
- clear
+Subject: Re: [PATCH net-next] selftests: tc-testing: preload all qdisc modules
+ enabled in config
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179249461002.3669402.14815907556195165257.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 11:10:10 +0000
-References: <20261015004422.1554104-1-mmyangfl@gmail.com>
-In-Reply-To: <20261015004422.1554104-1-mmyangfl@gmail.com>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ <179249461152.3669402.6400194971670892353.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 11:10:11 +0000
+References: <20261014122045.2375722-1-ivecera@redhat.com>
+In-Reply-To: <20261014122045.2375722-1-ivecera@redhat.com>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
 
 Hello:
@@ -72,21 +72,19 @@ Hello:
 This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Thu, 15 Oct 2026 08:44:19 +0800 you wrote:
-> The MIB clear in yt921x_chip_setup() is redundant. yt921x_dsa_setup()
-> issues a hardware reset first, and the reset itself zeroes all the MIB
-> counters.
+On Wed, 14 Oct 2026 14:20:45 +0200 you wrote:
+> tdc.sh preloads only some of the qdisc modules that the tc-testing
+> config enables. Add the missing ones: ingress, mqprio, multiq, netem,
+> pie, plug, prio, qfq, red, sfb, sfq, skbprio, taprio and tbf.
 > 
-> It does not follow the correct procedure either: CLEAN only takes effect
-> while ALL_PORT is low, so a single-step CLEAN | ALL_PORT write does
-> nothing once ALL_PORT is latched - and this write is what latches it for
-> any CLEAN requested later.
-> 
-> [...]
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> ---
+>  tools/testing/selftests/tc-testing/tdc.sh | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 
 Here is the summary with links:
-  - [net-next,v2] net: dsa: motorcomm: Remove the redundant MIB clear
-    https://git.kernel.org/netdev/net-next/c/7d23f0f650d9
+  - [net-next] selftests: tc-testing: preload all qdisc modules enabled in config
+    https://git.kernel.org/netdev/net-next/c/8e793b899b90
 
 You are awesome, thank you!
 -- 
