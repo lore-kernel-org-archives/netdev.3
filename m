@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792531810;
-	b=jp/wT8fcXGjY97E8mcWbwpGjW1cTV3650IqDZMRxCLUaymRqh+15BFi7I4JigJojEjtU
-	 Zxw4pAe1iLHAJHh4sdFhbRX9xc+iRs3RNEs/Fdwd0vUSN0OT3vwRzRisJNZLEIyiCMPUe
-	 +/19lXgwxbfO29G620T7p5yCxRdJaS3N3De0/IFWEIjA5TgYWFnAVPyIx2yzLsE5m/1Jx
-	 nvSCIpo//XFfmU7GXlKgJAfIUY7iqjqXcdA5slJWN74iwxeImEsCqp5ImGNaZmgtJNN/F
-	 GfDOBsmqNNiOIG10x3wRDQqH0SJMnSZJS/ueR2L3yqcvDVe25qGphjFlY383v1/gUuQ==
+	t=1792531815;
+	b=Sxwqq3itGX9GiJKjIRKPVKrtf8MMO3pvNsKFq3hdA+uJBBO2fG0ULNURV+rsErX4tib4
+	 LMgqi19XERrvSWlyKYq7MdhW2fR5Ro+X5yw1cJ5tfv7lbYn/jiRmrRW2Cx3rN4lXwl5b7
+	 jwL3AIy9x7ofYdrZQtEhBf1MdnomeRoWbenIvnLTXO7yIPBl6D6AsLhs7NJxQIoSS/07q
+	 s6sHuBVd3nqsCmK/X9RmDt+n9aJWkjG/20jnYOLPNIMmBNawQe19DB44tmhOFo5BaEsbq
+	 mMFFMAl7l1mWa5DQdqDBUr97phXwzjgF+BAYFkAeBKb78v1gNrWePMrRwkZs3IHwdCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792531810;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792531815;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=0MYo00akXtoBZhMUG+d4YDzZnNAVRklf3K/GEVbaW9s=;
-	b=ZAz/WhA48cddbtm2epJDUbVKagLLexKcLlKWPlqq2gT+lpvhbkLFxrAPTjb/LmdTsJXa
-	 VXeVo6iD693oObtcynSvwKI/rC7dcGvmy9+4riqeSyX4kTIfl9gwuzEpiMfno434UeWra
-	 CcCiGa82+IwrqDs0BYko+UnUlRo98Q6IxW18N/9V6QofTrRAunW0a6yXacQEh9+2XcLD8
-	 KhevoEWI6rzL0gsUmFZ9/b+k5+MKhZov3uUtPNPJASy6Kqr0mKllIqpIadKfpHp4TgtHS
-	 p71CTRSStszDkn2oKX8bwrWAOFXfiiH9XRzOh+ZBBMK8Ca2Lry8NV1ksEkkM4KSAWyg==
+	bh=J52yf6wiclMJabmxnVaoIJf0AuS/MM8eQ4Dlsmc3wb0=;
+	b=k1Lq0Dn9O6Dch9XTydDH/qjPRYTSCOqB2egSEgmTN2E1qplFWdG/g2mnTfUF6SAWzd4h
+	 QlAhVNopKSnrQ6I07oGbLHXRyFDn/bUOMcwA+GCJ4gDo0hbQ4d2fdUtlwNd0zeQ8xyC/W
+	 cZroUNYcUVp8SsEw2j86c8ZGZQ8MVbPIvD6o0LqLGoa38p7J/rKjLxNkjwUrPlRiAVVg0
+	 a2VHwG/G/xhFEWLoLfOsjWnV0oJbao3KGOcn2iK7nooOcfaUDQ+hfU0NG01Fb0qQfqFUS
+	 5hyyqNTpL9/R64Nzk1x3ffc2EYdS9lYCcRpi4wDz+WlVB5ZAD85HFMOfYQZ9RC1yUhw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="d3Ew/jq+";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eHQ8yZyY;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF90606A324
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88FC606A31A;
+	Tue, 20 Oct 2026 21:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d3Ew/jq+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A911F000CA;
-	Tue, 20 Oct 2026 21:30:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eHQ8yZyY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831311F000CA;
+	Tue, 20 Oct 2026 21:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792531809;
-	bh=0MYo00akXtoBZhMUG+d4YDzZnNAVRklf3K/GEVbaW9s=;
+	s=k20260515; t=1792531814;
+	bh=J52yf6wiclMJabmxnVaoIJf0AuS/MM8eQ4Dlsmc3wb0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=d3Ew/jq+K/5LL7nyh0lmG9qz1jJ+B0aS5xT6E627svmVP/LVHTJVhTh1p7atbfSdk
-	 72MxMI7V0LVdPS1oDdPsDEjbIHWJwUXCoQtXL5sqw2+08QegVrmKpfhWx1r7Pt6I5B
-	 pM99XH90XlfmU7pvHteFdN+zQto03UVfI+akxK2Nikk6vIFsTdVMrd6400ue+bZHXx
-	 MC2zLmWPq+6zCR7lzU4xl8M5rXPuZPdGnz7R1xKoLqam3OzCtY177OSRqHG9O3U1kr
-	 mQvShkNwqXdeM9XlGLjeXwg7swdwrGUsDii78+oVYoPZilJo2V2NIHO+gbMLrr1OKb
-	 P1iheYJHKfWrg==
+	b=eHQ8yZyY84tatF7KM3DslRXtYQ/9q92pR66szqcqv1y4RuBbaoL/hkQNlQAiAYV3G
+	 1/DsF4EMJH0/K2jb7WX6xk2kaCLC26gGRGY8ihRYOYzM3O4t018jieAkR8WaVWS9jh
+	 qE2ztadEnGw3u0vR7dr6dWUOYGd5bmkljGN5nOFqyPF2SmOkQ7eyiGYsEKHkJGaweH
+	 k8g+Ohv5R8CAJK/hhyOOnSJeMeu8ZTaK3nR+CqOCDYt99YgOGUDopLK4wYAjOY9lnz
+	 DnYFYV8IT5FlaMZS4RQmTXT+/dqRQVLbSvWu+BX7GtC9t3/y9YovoDWY3K2AmmmW8+
+	 DontoGP5WKUBQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B43F13809A09;
-	Tue, 20 Oct 2026 21:30:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773E03809A09;
+	Tue, 20 Oct 2026 21:30:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,41 +54,52 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] ipv6: Fix suspicious RCU usage in route hardware
- flags notification
+Subject: Re: [PATCH net-next v3 0/7] net: mctp: usblib: Increase coverage of
+ kunit testing
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179253180827.220085.5504005327866544536.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 21:30:08 +0000
-References: <20261019140337.2886875-1-idosch@nvidia.com>
-In-Reply-To: <20261019140337.2886875-1-idosch@nvidia.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, edumazet@kernel.org, dsahern@kernel.org, horms@kernel.org,
- andrew+netdev@lunn.ch, petrm@nvidia.com
+ <179253181301.220085.14897480542454867780.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 21:30:13 +0000
+References: 
+ <20261014-dev-mctp-usb-lib-test-v3-0-ee5bc3ea1db1@codeconstruct.com.au>
+In-Reply-To: 
+ <20261014-dev-mctp-usb-lib-test-v3-0-ee5bc3ea1db1@codeconstruct.com.au>
+To: James Lee <james@codeconstruct.com.au>
+Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ kees@kernel.org, gustavoars@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 19 Oct 2026 17:03:35 +0300 you wrote:
-> fib6_info_hw_flags_set() is called by drivers to update the hardware
-> flags of an IPv6 route and to emit a notification when
-> fib_notify_on_flag_change is set. Drivers call it from process context
-> without RTNL or RCU, so when the route uses a nexthop object, building
-> the notification triggers suspicious RCU usage splats.
+On Wed, 14 Oct 2026 12:47:30 +0800 you wrote:
+> Current usblib tests only check receipt of a limited combination of
+> packets lengths.
 > 
-> Patch #1 fixes the problem by holding RCU while building the
-> notification.
+> Added tests of receiving packets with invalid fields, and more complex
+> packet spanning. Also created tests for transmitting packets, covering
+> most code, except for mctp_usblib_tx_cancel() and allocation failures.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] ipv6: Hold RCU when emitting route hardware flags notification
-    https://git.kernel.org/netdev/net/c/7c9cb1edaf8f
-  - [net,2/2] selftests: netdevsim: Add FIB notification tests for nexthop objects
-    https://git.kernel.org/netdev/net/c/b5dc3fde8b92
+  - [net-next,v3,1/7] net: mctp: usblib: Add to parameterized kunit tests.
+    https://git.kernel.org/netdev/net-next/c/acfb9c263d70
+  - [net-next,v3,2/7] net: mctp: usblib: Add test for splits inside headers
+    https://git.kernel.org/netdev/net-next/c/21e1d4515755
+  - [net-next,v3,3/7] net: mctp: usblib: Add tests of invalid headers
+    https://git.kernel.org/netdev/net-next/c/c0a372f72972
+  - [net-next,v3,4/7] net: mctp: usblib: Complete rx tests
+    https://git.kernel.org/netdev/net-next/c/40e59c00ae21
+  - [net-next,v3,5/7] net: mctp: usblib: Simplify allocation logic in mctp_usblib_test_rx_init
+    https://git.kernel.org/netdev/net-next/c/77cb5c6b3464
+  - [net-next,v3,6/7] net: mctp: usblib: Add initial kunit tx tests
+    https://git.kernel.org/netdev/net-next/c/1e12f734afc1
+  - [net-next,v3,7/7] net: mctp: usblib: Add test for failing append
+    https://git.kernel.org/netdev/net-next/c/9e061caa3bdd
 
 You are awesome, thank you!
 -- 
