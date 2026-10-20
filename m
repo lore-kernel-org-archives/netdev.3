@@ -1,60 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.191
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792463128;
-	b=jydfwPkrQMUdgfar0DkWzbwhxs6R14qgPPoiEcOXyI40WyCz/zX7TKLHnrFAuNpb5ZEF
-	 lBgtBnddJ3qOrQYS7I9E+cSNDH+dJ52bjpdL8IJF/4rUxp2yNFwUmLwfWAQNkj+1mpx3m
-	 dw+vjmb5ZTfVOT4850C1vjUC0DTvGlQaa7kNWVkfq9gWjzNQZGTuW1wehI1w6sIK8vtvA
-	 goeMkUHEKLQfkhijOYVS9/fbRZEg++rfcoVhiBEoPtJo5eHToWJuMN2AmMpGhl9dIC8CD
-	 JqkwElitseaGMqkXeCqevrgioW3lySbeE/OZOIiDG09Wz9x73yQ01+j/79zTVgHU0Kg==
+	t=1792463244;
+	b=k2t6AOAxwddfx50V2mv8/9t0agkq2Ll8HfdtiOTZLVw8oQjATI4wFLADt3EiFyxB9jre
+	 8DsuWHEryfZjRM36d+S0SQRJEE5DWUwqEZpm/PMSXG6w8b5mZlW/LKQ2r+tsXaM62H0xd
+	 9MLEzZmn7rwN2ZkKoWuWn9lAWmtn17HnfMjVvJ5xcOZ6jUyMwtgY18lbKyV1lEyaQASno
+	 Dt/U5H2E34qMfZN/OT/k6BM2mH9FfSVyyXEh9O6CbdnMdXue/K9Ej7Y/p+Ndo0K6ABPUH
+	 CuariDuCYvZK6RN2aGWZGVmru/0nvZ6qhOrnGxDYg6AE9yk/5tUiJS+0IbgqSgFUCFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792463128;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZMl9cMpXzSR9zQQ8SdtmT5kSnxs//KSEsh15kGzC4os=;
-	b=Mtrv5K6wRAdUFslwemIENntcKl3rB53/L+0ULK6Eh472y71m9LMOzNUgG3W5gyuoZrh3
-	 U3oKGIOwde20J811knHgnT+a80yKdJHON3/X6OY3CiV6hGAOpoPlQVTmsHcxEViyWgUrJ
-	 ajpnUsgbsYh93nwyH790BoguxtKz2MGSWI+LJDWSTnRlKfB8CfMw1h90HPC37VSWvfKVR
-	 CFCJ0y6Okc9HWyzvNLIIlzyXxyq7076Uy7d5QHLsKllHC6fUswNbWcv3TIZUewhJZ79MQ
-	 S7fnthM4Cv1zyD7a8NUIcUPBxf2cEQ81bmbQoIUIspn8gp8r4uYY8LsesEZLjh+9dQQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792463244;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=4dpF3PjqXhgSVJ1gs4ldu0scOe6sTlAmI5ssZqcED1A=;
+	b=wuUgDzhO3oc+W9TUBdaE7HuJGaMbVvsEErGcBZdGdrvFfp4ArMGpuAgY6S5+C/GN1aAl
+	 lt3VkxpXhlVZYszjPT6ahoIGhteQbCRO8IdIWXOjumkYXmzdG4uJ3UKs9+ebaII7qPEdV
+	 jdOn4mbmFBpQP7SQlHkYe7dT1Z8g+UtbhOU3ZYzKXvQK1QtOarCJvfPBvJAIxUSBuL+D5
+	 PEAf25odp/XAVPOCdxbha0wTUKKfQJL0/QIyGhHrwBZFMtP5cdQYJsk1K7fp4JGuwA/W2
+	 x16PX3glWm1Tfb4qKnHfzxPGevM6Lfo7X25xt8kCzFWaD98ZF7Ako4EtYju1OWc0cXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ijXRI3VP;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DXyZbBq1;
+	arc=none smtp.remote-ip=91.218.175.191
+Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8889C606A31B;
-	Tue, 20 Oct 2026 02:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A13606A31F
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 02:27:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9A13606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ijXRI3VP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC461F000C5;
-	Tue, 20 Oct 2026 02:25:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792463128;
-	bh=ZMl9cMpXzSR9zQQ8SdtmT5kSnxs//KSEsh15kGzC4os=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ijXRI3VPglqQ2eVLwZrLlX4QCnFieQkVKofC1euR4YCBwseXzIGHPDJOIcIwH/P4K
-	 hxUuw0ISdfF/W4B0L0yPs26gyVwIa+EVUowUPaW7aake4aZJhkcb8SxEURp5iPGful
-	 PQuEvOstjUo48xvUXbEUJUbL7vGBExJBOoBP4l55KBWf48nQju6Gq9mNJSRVEIWzrC
-	 7+6sTlE3aCA8oWOihXPlgtrwFNGVsZw8xKlh5mQ8OuAO01EonhT99qqpyoOM7csJqw
-	 igZOWDVqf3xyPWZC/7JhgJATq8oxuJn4IjwaBCohMBNeNS7X/PewcEmgsZS6RoK/r2
-	 uuJFyt+A2k4QQ==
-Subject: Re: [PATCH net v2] net/ncsi: fix use-after-free of ncsi_package in
- ncsi_remove_package()
-From: netdev-bot+sashiko@kernel.org
-To: 18983559317@163.com
-Cc: sam@mendozajonas.com, fercerpav@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- gwshan@linux.vnet.ibm.com, joel@jms.id.au, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 20 Oct 2026 02:25:26 +0000
-Message-ID: <179246312683.3135.9781363315996989576@kernel.org>
-In-Reply-To: <20261019013640.449965-1-18983559317@163.com>
-References: <20261019013640.449965-1-18983559317@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DXyZbBq1
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ruhOIGzk5JT5yGbHrtNFr71ekWRk/c340FuzwAxWGdY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792463241; v=1; x=1793068041;
+ b=DXyZbBq1Up33KytlyQroVDiZDg3DWx1mk4Qtk7XZr38KK1RDbw477/dkNr0luealpXCCtv/T
+ EOI1lidKVtg98tmuYE6DDdUbUKNmSNMGfVkM68Pw0F5jKJF2bBGumU8bqdyDBLHCVNjneSmCfNd
+ 9yuBU5nx3GNDU32i0Mzryfeg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 7172e4ae6d6e83ce;
+	Tue, 20 Oct 2026 02:27:21 +0000
+X-Mizu-Trace-ID: 7172e4ae6d6e83ce
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 20 Oct 2026 10:27:03 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Ren Wei <weir@nebusec.ai>
+Cc: netdev@vger.kernel.org, andrea.mayer@uniroma2.it, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, contact@proelbtn.com, pablo@netfilter.org,
+	vega@nebusec.ai, sashiko-bot@kernel.org, petalzu987@gmail.com
+Subject: Re: [PATCH net v2 1/1] seg6: validate state in netfilter
+ continuations
+Message-ID: <atbRd1km4IlW4wwY@fedora>
+References: <cover.1792230570.git.petalzu987@gmail.com>
+ <ec7399b424e82f050a1ff5dc79537aee1d93723a.1792230570.git.petalzu987@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,190 +67,250 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec7399b424e82f050a1ff5dc79537aee1d93723a.1792230570.git.petalzu987@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Sun, Oct 18, 2026 at 02:27:29PM +0800, Ren Wei wrote:
+> From: Zixuan Chai <petalzu987@gmail.com>
+> 
+> Netfilter hooks can drop or replace skb_dst() while an SRv6 packet is
+> queued for continuation. The End.DX4 and End.DX6 finish callbacks and
+> the seg6local input continuation currently dereference the destination's
+> lwtstate without validating it. The seg6_iptunnel input and output
+> continuations make the same assumption after POST_ROUTING hooks.
+> 
+> Validate skb_valid_dst(), a non-NULL lwtstate, and the expected
+> LWTUNNEL_ENCAP_SEG6_LOCAL or LWTUNNEL_ENCAP_SEG6 type before using the
+> state. Drop the skb when validation fails. This check is by type, not by
+> identity of the original state. It does not walk through an XFRM dst or
+> take an additional lwtstate reference. Retain the loop-detection
+> explanation for saving the lwtstate address in seg6_input_core().
+> 
+> The End.DX4 reproducer creates a SEG6_LOCAL End.DX4 SID, enables
+> nf_hooks_lwtunnel, installs an IPv4 PREROUTING DNAT rule, and injects an
+> outer IPv6/inner IPv4 frame through AF_PACKET from a non-root user in a
+> fresh user/network namespace. DNAT drops skb_dst() before
+> input_action_end_dx4_finish() resumes.
+> 
+> A separate root-only reproducer exercises seg6_output_core(): an SRv6
+> encap route, POST_ROUTING SNAT, and an ESP transport policy replace the
+> route destination before the continuation resumes.
+> 
+> On a clean KASAN kernel, the End.DX4 reproducer triggered a NULL pointer
+> dereference in input_action_end_dx4_finish from packet_sendmsg(). On the
+> patched kernel, the End.DX4 reproducer completed with exit status 0. The
+> SNAT+ESP/XFRM reproducer ran twice; one run returned exit status 0. No
+> target KASAN report, Oops, or kernel panic was found on the patched
+> guest. Tests used QEMU TCG because KVM was unavailable to the test user.
+> 
+> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Closes: https://bugtracker.nebusec.ai/f/11977
 
-Critical: 0 · High: 3 · Medium: 0 · Low: 0
+Nit: The link is not accessible to non-maintainers. I'm not sure if
+this fits here.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] On its own, this patch does not close the ncsi_package use-
-  after-free its commit message describes.
-- [High] ncsi_unregister_dev() (net/ncsi/ncsi-manage.c:1956-1974) frees
-  every package via ncsi_remove_package() at line 1965, and only…
-- [High] ncsi_remove_package() now defers only the package free.
-
---
-
-net/ncsi: fix use-after-free of ncsi_package in ncsi_remove_package()
-
-This patch makes ncsi_remove_package() free the package with kfree_rcu()
-instead of kfree(), and adds an rcu_head to struct ncsi_package. The
-commit message calls this the free side of the fix. The read side and
-the deferral of the parent object are left to two companion series.
-
-[ ... ]
-
-> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-> index 54d0df0a9efe6..237e0416e6d93 100644
-> --- a/net/ncsi/ncsi-manage.c
-> +++ b/net/ncsi/ncsi-manage.c
-> @@ -326,7 +326,8 @@ void ncsi_remove_package(struct ncsi_package *np)
->  	ndp->package_num--;
->  	spin_unlock_irqrestore(&ndp->lock, flags);
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260720204430.1886091-1-xmei5@asu.edu
+> Assisted-by: LLM
+> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> 
+> ---
+> Changes in v2:
+> - Add unlikely() to the new checks.
+> - Validate the current dst/lwtstate type in both seg6local and
+>   seg6_iptunnel continuations; drop invalid state.
+> - Do not walk through XFRM dsts or take an extra lwtstate reference.
+> - Retain the seg6_input_core() loop-detection comment.
+> - Document both reproducer setups and clean/patched KASAN results.
+> - v1 Link: https://lore.kernel.org/all/cover.1790748418.git.petalzu987@gmail.com/
+> 
+>  net/ipv6/seg6_iptunnel.c | 35 ++++++++++++++++++++++++++++++-----
+>  net/ipv6/seg6_local.c    | 38 ++++++++++++++++++++++++++++++++------
+>  2 files changed, 62 insertions(+), 11 deletions(-)
+> 
+> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+> index 7cbe0685f8bb..75ceeb127337 100644
+> --- a/net/ipv6/seg6_iptunnel.c
+> +++ b/net/ipv6/seg6_iptunnel.c
+> @@ -18,6 +18,7 @@
+>  #include <net/ip6_fib.h>
+>  #include <net/route.h>
+>  #include <net/seg6.h>
+> +#include <net/dst_metadata.h>
+>  #include <linux/seg6.h>
+>  #include <linux/seg6_iptunnel.h>
+>  #include <net/addrconf.h>
+> @@ -60,6 +61,21 @@ static inline struct seg6_lwt *seg6_lwt_lwtunnel(struct lwtunnel_state *lwt)
+>  	return (struct seg6_lwt *)lwt->data;
+>  }
 >  
-> -	kfree(np);
-> +	/* Netlink walkers may still hold the package */
-> +	kfree_rcu(np, rcu);
+> +static struct lwtunnel_state *seg6_lwt_state_from_skb(struct sk_buff *skb)
+> +{
+> +	struct dst_entry *dst;
+> +
+> +	if (unlikely(!skb_valid_dst(skb)))
+> +		return NULL;
+> +
+> +	dst = skb_dst(skb);
+> +	if (unlikely(!dst->lwtstate ||
+> +		     dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6))
+> +		return NULL;
+> +
+> +	return dst->lwtstate;
+> +}
+> +
+>  static inline struct seg6_iptunnel_encap *
+>  seg6_encap_lwtunnel(struct lwtunnel_state *lwt)
+>  {
+> @@ -557,7 +573,6 @@ static int seg6_input_finish(struct net *net, struct sock *sk,
+>  static int seg6_input_core(struct net *net, struct sock *sk,
+>  			   struct sk_buff *skb)
+>  {
+> -	struct dst_entry *orig_dst = skb_dst(skb);
+>  	struct dst_entry *dst = NULL;
+>  	struct lwtunnel_state *lwtst;
+>  	struct seg6_lwt *slwt;
+> @@ -568,7 +583,11 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+>  	 * need the address of its lwtstate. So, save the address of lwtstate
+>  	 * now and use it later as a comparison.
+>  	 */
+> -	lwtst = orig_dst->lwtstate;
+> +	lwtst = seg6_lwt_state_from_skb(skb);
+> +	if (unlikely(!lwtst)) {
+> +		err = -EINVAL;
+> +		goto drop;
+> +	}
+>  
+>  	slwt = seg6_lwt_lwtunnel(lwtst);
+>  
+> @@ -667,12 +686,18 @@ static struct dst_entry *seg6_output_dst_lookup(struct net *net,
+>  static int seg6_output_core(struct net *net, struct sock *sk,
+>  			    struct sk_buff *skb)
+>  {
+> -	struct dst_entry *orig_dst = skb_dst(skb);
+>  	struct dst_entry *dst = NULL;
+> +	struct lwtunnel_state *lwtst;
+>  	struct seg6_lwt *slwt;
+>  	int err;
+>  
+> -	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+> +	lwtst = seg6_lwt_state_from_skb(skb);
+> +	if (unlikely(!lwtst)) {
+> +		err = -EINVAL;
+> +		goto drop;
+> +	}
+> +
+> +	slwt = seg6_lwt_lwtunnel(lwtst);
+>  
+>  	local_bh_disable();
+>  	dst = dst_cache_get(&slwt->cache_output);
+> @@ -695,7 +720,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+>  		}
+>  
+>  		/* cache only if we don't create a dst reference loop */
+> -		if (orig_dst->lwtstate != dst->lwtstate) {
+> +		if (lwtst != dst->lwtstate) {
+>  			local_bh_disable();
+>  			dst_cache_set_ip6(&slwt->cache_output, dst, &fl6.saddr);
+>  			local_bh_enable();
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 53f7b2452575..79c27e467c2b 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -24,6 +24,7 @@
+>  #include <net/addrconf.h>
+>  #include <net/ip6_route.h>
+>  #include <net/dst_cache.h>
+> +#include <net/dst_metadata.h>
+>  #include <net/ip_tunnels.h>
+>  #ifdef CONFIG_IPV6_SEG6_HMAC
+>  #include <net/seg6_hmac.h>
+> @@ -213,6 +214,21 @@ static struct seg6_local_lwt *seg6_local_lwtunnel(struct lwtunnel_state *lwt)
+>  	return (struct seg6_local_lwt *)lwt->data;
+>  }
+>  
+> +static struct seg6_local_lwt *seg6_local_lwt_from_skb(struct sk_buff *skb)
+> +{
+> +	struct dst_entry *dst;
+> +
+> +	if (unlikely(!skb_valid_dst(skb)))
+> +		return NULL;
+> +
+> +	dst = skb_dst(skb);
+> +	if (unlikely(!dst->lwtstate ||
+> +		     dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6_LOCAL))
+> +		return NULL;
+> +
+> +	return seg6_local_lwtunnel(dst->lwtstate);
+> +}
+> +
+>  static struct ipv6_sr_hdr *get_and_validate_srh(struct sk_buff *skb)
+>  {
+>  	struct ipv6_sr_hdr *srh;
+> @@ -1008,11 +1024,14 @@ static int input_action_end_dx2(struct sk_buff *skb,
+>  static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
+>  				       struct sk_buff *skb)
+>  {
+> -	struct dst_entry *orig_dst = skb_dst(skb);
+>  	struct in6_addr *nhaddr = NULL;
+>  	struct seg6_local_lwt *slwt;
+>  
+> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
+> +	slwt = seg6_local_lwt_from_skb(skb);
+> +	if (unlikely(!slwt)) {
+> +		kfree_skb(skb);
+> +		return -EINVAL;
+> +	}
+>  
+>  	/* The inner packet is not associated to any local interface,
+>  	 * so we do not call netif_rx().
+> @@ -1059,13 +1078,16 @@ static int input_action_end_dx6(struct sk_buff *skb,
+>  static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+>  				       struct sk_buff *skb)
+>  {
+> -	struct dst_entry *orig_dst = skb_dst(skb);
+>  	enum skb_drop_reason reason;
+>  	struct seg6_local_lwt *slwt;
+>  	struct iphdr *iph;
+>  	__be32 nhaddr;
+>  
+> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
+> +	slwt = seg6_local_lwt_from_skb(skb);
+> +	if (unlikely(!slwt)) {
+> +		kfree_skb(skb);
+> +		return -EINVAL;
+> +	}
+>  
+>  	iph = ip_hdr(skb);
+>  
+> @@ -1722,13 +1744,17 @@ static void seg6_local_update_counters(struct seg6_local_lwt *slwt,
+>  static int seg6_local_input_core(struct net *net, struct sock *sk,
+>  				 struct sk_buff *skb)
+>  {
+> -	struct dst_entry *orig_dst = skb_dst(skb);
+>  	struct seg6_action_desc *desc;
+>  	struct seg6_local_lwt *slwt;
+>  	unsigned int len = skb->len;
+>  	int rc;
+>  
+> -	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
+> +	slwt = seg6_local_lwt_from_skb(skb);
+> +	if (unlikely(!slwt)) {
+> +		kfree_skb(skb);
+> +		return -EINVAL;
+> +	}
+> +
+>  	desc = slwt->desc;
+>  
+>  	rc = desc->input(skb, slwt);
+> -- 
+> 2.34.1
+> 
 
-[Severity: High]
+The patch looks good to me.
 
-Does kfree_rcu() protect anything here if this patch is applied by
-itself? It only waits for RCU read-side critical sections that already
-exist. At this revision, none of the NCSI genl handlers enters one. The
-only rcu_read_lock() in net/ncsi/ is the vlan_vids walk in
-ncsi-manage.c.
-
-For example, ncsi_pkg_info_nl() resolves ndp, sleeps in an allocation,
-and then walks the list without rcu_read_lock():
-
-net/ncsi/ncsi-netlink.c:ncsi_pkg_info_nl() {
-    ...
-	ndp = ndp_from_ifindex(genl_info_net(info), ...);
-    ...
-	skb = genlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-    ...
-	rc = ncsi_write_package_info(skb, ndp, package_id);
-    ...
-}
-
-ncsi_write_package_info() then does:
-
-	NCSI_FOR_EACH_PACKAGE(ndp, np) {
-		if (np->id != id)
-			continue;
-
-The dumpit handler ncsi_pkg_info_all_nl() keeps package after an
-unprotected walk and later passes package->id to
-ncsi_write_package_info().
-
-ncsi_set_interface_nl() also keeps package. It then takes package->lock
-and writes multi_channel, channel_whitelist and preferred_channel through
-that pointer.
-
-Under CONFIG_PREEMPT_RCU, a reader that is preempted or blocked outside
-an RCU section does not hold up the grace period. So the kfree_rcu()
-callback can run before the reader touches np. That matches the splat in
-the commit message, which came from a PREEMPT kernel. NCSI_CMD_PKG_INFO
-has no GENL_ADMIN_PERM, so unprivileged users can reach these readers.
-
-ncsi_unregister_dev() also still frees ndp itself with a plain kfree().
-
-The commit message says:
-
-  "The race is closed by the three series together; each one keeps its
-  own Fixes: tag so they can be backported independently."
-
-If this patch is backported alone, the ncsi_package use-after-free is
-still reachable. Should the dependency on the read-side series be stated
-explicitly, or should the series be merged and backported as one unit?
-
-Also, the read side can't just wrap ncsi_pkg_info_nl() in one
-rcu_read_lock(). ndp is resolved before the GFP_KERNEL genlmsg_new()
-call, and that call can sleep.
-
-[Severity: High]
-
-Is there also a reader of the package outside netlink that RCU deferral
-can't cover? ncsi_unregister_dev() frees every package before it
-disables the work item:
-
-net/ncsi/ncsi-manage.c:ncsi_unregister_dev() {
-	dev_remove_pack(&ndp->ptype);
-
-	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
-		ncsi_remove_package(np);
-    ...
-	disable_work_sync(&ndp->work);
-
-	kfree(ndp);
-}
-
-A request timer can still expire after dev_remove_pack(). The timeout
-path then queues the work again:
-
-ncsi_request_timeout()
-  ncsi_free_request()
-	if (driven && cmd && --ndp->pending_req_num == 0)
-		schedule_work(&ndp->work);
-
-ncsi_dev_work() then runs ncsi_configure_channel(), which caches the
-active package and channel outside any RCU section:
-
-	struct ncsi_package *np = ndp->active_package;
-	struct ncsi_channel *nc = ndp->active_channel;
-	...
-		nca.package = np->id;
-
-ncsi_probe_channel() reads ndp->active_package->id in the same way.
-
-ncsi_remove_package() never clears ndp->active_package or active_channel.
-The active_package pointer also lives across separate work runs, so no
-single RCU section could cover it.
-
-Channels are still freed right away, and later config states write
-channel state under nc->lock.
-
-Would it work to disable ndp->work and stop the request timers before
-the package loop in ncsi_unregister_dev()?
-
-[Severity: High]
-
-Only the package free is deferred here. Earlier in ncsi_remove_package(),
-the child channels are still freed synchronously:
-
-	list_for_each_entry_safe(nc, tmp, &np->channels, node)
-		ncsi_remove_channel(nc);
-
-ncsi_remove_channel() frees the filter arrays while the channel is still
-linked on np->channels. It then frees the channel right after
-list_del_rcu():
-
-net/ncsi/ncsi-manage.c:ncsi_remove_channel() {
-    ...
-	/* Release filters */
-	kfree(nc->mac_filter.addrs);
-	kfree(nc->vlan_filter.vids);
-    ...
-	list_del_rcu(&nc->node);
-	np->channel_num--;
-	spin_unlock_irqrestore(&np->lock, flags);
-
-	kfree(nc);
-}
-
-Even if the package survives, can ncsi_write_package_info() still walk
-into freed channels?
-
-ncsi_write_package_info()
-  NCSI_FOR_EACH_CHANNEL(np, nc)
-    ncsi_write_channel_info()
-      reads nc->version.fw_name and ncf->vids[i]
-
-If so, freed heap contents would be copied into a netlink reply sent to
-an unprivileged caller.
-
-The commit message leaves the channel to the companion series. But the
-filter arrays are freed before the channel is unlinked, so deferring nc
-alone would not be enough. The filter frees would also need to move after
-list_del_rcu() and be deferred.
-
-Does the companion series handle that ordering?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019013640.449965-1-18983559317%40163.com
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
