@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792465207;
-	b=oR94LJaMRj7zDeQwF1byR5zPHqLRNXeFDHQuLbuIKaOg2huaPkhido6AF26le6DhJkDb
-	 I2F8t+r9nnM65maIkHWzfjGIaMfrX76mJL6O/Y79BGiLgoNUt/gvzRsSx82rgyT/7nWtB
-	 BTpKh+dQGj2LafrBsdtGQSWtmfGg1eSFX3yAfMyY5ZjURSi9xMP/SWRiNDAoDNyauFIB8
-	 d/FXLtxCbNjT3ln5zSigVI2HRHKd3ivy6WsExt3hO5885PJcrHDo22iwIcd62Hw1CHejB
-	 kKoeE+lDXM4IkJroMgotM91RAHG4LnuhgrjjdE14HZdrNVYMjSeUJdf7CRLaSs+aBeA==
+	t=1792465212;
+	b=wf/kEPZWy7azQhY7oopUuR8XGlkYOKl3sDKof7lKobpopXf3obnniLbvSGDjD47KKsj0
+	 EMn1NyEUu7VI+sk9oRRz14U3FyMre0I3YNJQuNIum9UIozi75+3trY+vtAqYd7c/vpd4V
+	 kpmL9kTJAhuR0mvf97wKEztdBkEwGLeS9QoQo2Hl7YTciz3cI1dSCE2a9oiJuea7ORONq
+	 U016l31FjcOx7+mwDB/J7nlE+u6u3psI69KPPMVKYQiVzPYwGOcqatu2GrGIY2R/BEzEa
+	 f0dA5qucwdqRo97tJX3/nuyq6XIoeQoBTcFP/ig/17hnQqdwei24EvKmCp5M6r25Wyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792465207;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792465212;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=LLU3IDAkcJ517K/+XbdTzGRryYF+KBNYwub94onqkuw=;
-	b=WHDFbJV5JghkZ6nzeF5/idV1vdEi4w0MGMfYcT8b7M1eQGMgtMP9DV9fabihsztIUJny
-	 BpXJR//BCxbGu9W65UT+mt2CXp0EnudmGSZtBuxUwAaSaZ/gv+obrH2ontRuC0YamP7Te
-	 F52Gv2SGyQk7IXbkiq7wlsUNUUOJsRgXiOtMRr+rBrLpdl+S4wNktbreZwNV5u99A/FfI
-	 uSz0ajHjv4BZoPFqT9i1OoAg8dEcITeFt8knriwHKbr1vlBG+39ZojhBcj5fJ+91QP/eQ
-	 jpRtDD1Bz8x7lfMBKrYAZfZew7MWp0uy0kCuYdmEyjCFiDPX2LOA4zpzlrEWz0eK5ZQ==
+	bh=IMJS6mXGGtY2FRrHHHGMcRbUHVmff4Nc8DOy2VGJQ30=;
+	b=SEpzQOy/YtJ9FxKhLkUVovofP6hD6HmjeaTCLad1S9MaW/8Ihaq4nTX9zRdg3gezYN0K
+	 HRaYcZEt0yLtC8uHhQoQTho9iRXBy8Tc4W7DpJVZ+rDILGJs2F3Pt5MwM+3X1g/UUpbLw
+	 GO9g9VllIPmVnYofPMKTaZIQodVuhqncPuO6INTXh9UoHSjfeJCu4mlodIsM85YRYggm1
+	 cD90IUv+7booFjdbaMvqU3CmBdvPGnH542jI/wPpHfQpVjK/N699acp9gqSwaHjxKdFVL
+	 2/zCNgFUN8c+P0JpjgtOcUahZuKwjZyy9J67zsPjKFx1SDwnis0EJ/pcGZVAys4wO1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Psfyw63l;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QyVMbS7h;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D84606A31B;
-	Tue, 20 Oct 2026 03:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3793C606A328;
+	Tue, 20 Oct 2026 03:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Psfyw63l
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830271F000C4;
-	Tue, 20 Oct 2026 03:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QyVMbS7h
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEAF1F000C5;
+	Tue, 20 Oct 2026 03:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792465206;
-	bh=LLU3IDAkcJ517K/+XbdTzGRryYF+KBNYwub94onqkuw=;
+	s=k20260515; t=1792465211;
+	bh=IMJS6mXGGtY2FRrHHHGMcRbUHVmff4Nc8DOy2VGJQ30=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Psfyw63ltsfp7qgwVwL28W0xzMoJqM7M5vyR0+zlxbu6pYpueAIZ0RaWIIx+tZvWw
-	 H8qFADS5ZJZkDfPbLKMA8BRLo4Z3AAZ3n38DXnCR/oXuw9ux5Tiv3AsRxP+oN2rGjL
-	 id8VNig8zev47ls0LfHgry+0IA3OPvUbeRMqUgtVr3uBYnQMnoGsKclS+w7BVE5jld
-	 sIIJrDN13WnjZN6MrYsIygxVk0QM2JOGhs506Rj4YYWMAR6bZ8DM7JIzIARyZHf8Qg
-	 7NYqlZcbYRqLmdXlV8AsrTABrRaBwD1WcXLTiLmuDnjncdvmsLwW6wRJxx9rg4ic02
-	 xzlOE2ieU8hoQ==
+	b=QyVMbS7hmbNJQX3jnvTe2cFrO8yQqaajGdQJ68X4g98WHHJkclEY0YDTTC+fWm62r
+	 VyEopVPbF6F9vCO77SwAfQGGnTKcuAm8qQoGqWXNLbT1260fW5F+t/Goqi18RW659m
+	 vKAzOMAtQ6C53W6ga1E1PygtAmfZw473DB6WAv/BjZILEj1yFMP9dF7ZtXkONUh3sH
+	 yLKEN7/0CZ3GoM4cFR3KHW2Us6R35Fdh1IL5WJTcorJkEHs4SrkSHN/aUKllgaJZrk
+	 7W62SbDmmm4V3+St+dtlXWaVUEtlzLL9+kRiKpGQu8ELqIqtEnF2gXg7uNJQjXNPKc
+	 /88LbT5XCb2eg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773923924A70;
-	Tue, 20 Oct 2026 03:00:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44D23924A70;
+	Tue, 20 Oct 2026 03:00:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,46 +54,52 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2 repost3] net/sched: act_api: reject duplicate
- actions
- in a batch
+Subject: Re: [PATCH net-next v16 0/5] net: rnpgbe: Add TX/RX and link status
+ support
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179246520503.3454580.1042472378869646593.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 03:00:05 +0000
-References: <QDISC-K1TH.v1.r3.20261012134653-1@mojatatu.com>
-In-Reply-To: <QDISC-K1TH.v1.r3.20261012134653-1@mojatatu.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, victor@mojatatu.com,
- jiri@resnulli.us, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, vladbu@mellanox.com,
- marcelo.leitner@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org,
- sashiko-bot@kernel.org
+ <179246521027.3454580.12892078954545199148.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 03:00:10 +0000
+References: <3B42BE25B3696EAE+20261013022920.63529-1-dong100@mucse.com>
+In-Reply-To: <3B42BE25B3696EAE+20261013022920.63529-1-dong100@mucse.com>
+To: Yibo Dong <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+ u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, yaojun@mucse.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 12 Oct 2026 14:09:25 -0400 you wrote:
-> tca_action_gd() builds actions[] with one tcf_action_get_1() per nested
-> TCA_ACT_TAB entry.  Each successful lookup takes its own reference to the
-> resolved action, so repeated TCA_ACT_INDEX entries in one request yield
-> the same pointer in multiple slots.
+On Tue, 13 Oct 2026 10:29:20 +0800 you wrote:
+> Hi maintainers,
 > 
-> For RTM_DELACTION, tcf_action_delete() then consumes two references per
-> slot: one in tcf_action_put() and one in tcf_idr_delete_index().  A
-> duplicate therefore drives the refcount to zero mid-walk -- the delete
-> frees the action and removes its IDR slot -- and the next slot calls
-> tcf_action_put() on the freed action:
+> This patch series adds the packet transmission, reception, and link status
+> management features to the RNPGBE driver, building upon the previously
+> introduced mailbox communication and basic driver infrastructure.
+> 
+> The series introduces:
+> - MSI-X interrupt handling with NAPI support
+> - TX path with scatter-gather DMA and completion handling
+> - RX path with page pool buffer management
+> - Unicast/Multicast filter.
+> - Firmware link-event processing and carrier management
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2,repost3] net/sched: act_api: reject duplicate actions in a batch
-    https://git.kernel.org/netdev/net/c/f67b3ed1308d
-  - [net,2/2,repost3] selftests: tc-testing: add duplicate action delete batch test
-    https://git.kernel.org/netdev/net/c/044ad3c90d9d
+  - [net-next,v16,1/5] net: rnpgbe: Add interrupt handling
+    https://git.kernel.org/netdev/net-next/c/600efa8e598c
+  - [net-next,v16,2/5] net: rnpgbe: Add basic TX packet transmission support
+    https://git.kernel.org/netdev/net-next/c/02b5891a50c1
+  - [net-next,v16,3/5] net: rnpgbe: Add basic RX data path support
+    https://git.kernel.org/netdev/net-next/c/250a6edaea49
+  - [net-next,v16,4/5] net: rnpgbe: Add receive mode support
+    https://git.kernel.org/netdev/net-next/c/20c17178e192
+  - [net-next,v16,5/5] net: rnpgbe: Add link status handling support
+    https://git.kernel.org/netdev/net-next/c/92a671d510a8
 
 You are awesome, thank you!
 -- 
