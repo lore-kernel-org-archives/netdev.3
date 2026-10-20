@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792530021;
-	b=dNjiy1stwckrovkr4bcHZQ6CMMZCrw7k3ZGCUPrSXXs5ndzgIuKI579enT3SBa5pmVii
-	 OiTdH8zEfeCrJyuBsoFCm+2fLh2H89vkFKammGb82SZ2soUIaDKgY1oOL/PE2PIna3Lmg
-	 3MrhYiEx3sKUB+LEI/vQyEOioo3sGPXYqLfBTSzc/ruwUuf0okhc+udZdfyaZ9F0Fhsvp
-	 x4VzH6CpX8vmDowr3z3xEvrPuizOBSQG7J+n7Yb7E3syCJ/2059sqTmvKUsdEicLzXD+C
-	 FA72fcKTavhr1mj6Gs83nNCxNRIo71iMJqHwoX1AliJxY8R+kkMhpN4eZdINGws4xdg==
+	t=1792530024;
+	b=Om6EDoJg/qxohyiS3esgpU45cvkWoeUnweVLZfMFRGz8YR8a+vuirol9kagXbzHtcr58
+	 T/lYEj4/v9ejHetCtrJPlhfvz0EE0+GkUtwo9/Qyz0C+aDffzF9l5MH/CKTGsv/FUm81R
+	 c4gwdlRJQoUmBEw6MJzTP/vAOaqtTnE5tTpcPm0MTcK2KES5W5wU9Ng7zWXedZBgTk3J1
+	 IdRtvSv8fFF6E/MqH0UIzSQvfA071bq/hmFLje9fqM7qRHP4nomHpfSh8HQrau79Ek3Yo
+	 ehJtqzbxpKROxKJe6Omo6PalCOKMX0CZOa0WfYL6qDb1Oi7NTSdtBazbLRs0o4P1epQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792530021;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792530024;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=rXhJ4L/NzZHRNleuPwZVcwoS29a45TpivMkwEHBOWew=;
-	b=Pr16G6nUUtsaU2aphu+Iam/nTkAt2f9Bzi9OWmrEZ6Gl40DX+4q9x43cgLmR2f/7ATmw
-	 h7ggd5kyHEMm0jdnMgAF51yoFzOPb7ndpTgYb/zsk8VODb2BE1RbsRvnujG5u0qGZFlUD
-	 T0g4zXykBfPhj4xVQ4zrRn3snZQJyBmS6mTtnHP3TMsLcyTKfVlvGpd5qcGMf7ILgRAYq
-	 hEMq6JpElkRuRA4RuCTM94QG4Q5pb/LcJO4+9wpsRS3MZWYxrGLIkSVb1TVNXQRxg/49T
-	 rHeuMTXNgTjuweRYvXYFjyqy/T+KK+Hx1PCzZzMAiYkMzOMMPfwbwkocjIV7ikLFCPA==
+	bh=XX3XLV0xHg6luX3whJrUDl/guabkVK+4J15AfwA4RJY=;
+	b=lkD2/M4qHAXlebFBNHUQdGloNuaPlHkYHG7SB5w9HTup18U8ijda2zgxQity7s47PJ7v
+	 88DTRIlQng/7cKIbHmX5pdY3crPVrviTtZEOb3QppCEu17Km1GnHdwGUt/U34rIIWbZc8
+	 sJAPp9jjX0KpMnMaIRAHPWRUPqcPLx7ue0LxW3/xEx3/VdS082oCsAmQf9vn/IKc0VxV9
+	 hntHo1EV4DDfx87qda2cO3CkhbGRDB7rCrAQCVAEHqZD545x3BT/R03F+f/vUcKWZhT78
+	 QcfUEcl6k6/HFOqnA/eje5GH82q5Blp1B9AFEO1mH2i/5lBVDZ56QGDWYFbsd6Wo1zQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MTmDRsy3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j8vUMbvR;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B79606A326;
-	Tue, 20 Oct 2026 21:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D877E606A327
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MTmDRsy3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C791F000C9;
-	Tue, 20 Oct 2026 21:00:20 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j8vUMbvR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E401F000CF;
+	Tue, 20 Oct 2026 21:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792530020;
-	bh=rXhJ4L/NzZHRNleuPwZVcwoS29a45TpivMkwEHBOWew=;
+	s=k20260515; t=1792530023;
+	bh=XX3XLV0xHg6luX3whJrUDl/guabkVK+4J15AfwA4RJY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=MTmDRsy3nLBQ0PhKm6Gb0dU33W8UFBz7XMBQN21MCWcbcn62H6RMM4ALcD7PujBR2
-	 2hZODVAK2ICJeo8rw54l1P80smzfFiYoy0JAkwuyvKBsrRE6ZPPz/Je5ct62o1fw2x
-	 sGkpw9CUbCSqQJ51JxYRMywQv2e13LQ6dNAIWGq0OYdnR+jvx3mB8p4IjWu7lcycif
-	 2SmlkwP4RMnQ73tzKepKaAPBmRZSDuu0Hb2JGAPXVUcy9crBnwzZPaRsEvK+buBcDd
-	 nf5RgO2xJhpd1VhgLGjzkV+pKWT1i+pu60aAEs4vcgiMNpG9K0a0CAZLy7UqRvN/+R
-	 FoRNQQ7Oal5zg==
+	b=j8vUMbvRPTZc8qeYxyVx+Tucj1PeGloQW9hh4wnS/6CvYppTwv2MCz69dVqH4oBGA
+	 SEsGELHuUkZ5/qvknsPVzH3kSg0csouXHfIXbd3i8h5Loxi3edUtMIXnFjSkPAz5rp
+	 9KYAP5FbIMRQ75HMyfQQmxLX0IeMMuIVx1+smaU+LeLRcohoWJ7TJytyKWFDTrjXHO
+	 Z4s492i3s+V77wgS0nyVV3jR31vjwWGulUmDu+GK90xmox0k3mxh/DfNKv8m1Asq7V
+	 TgQIIa3Yc/exhf9FvS8O3zpOH5UCZFhZsgCmWMhvNtS6R105EkKmDqv7d8m0mLuOUi
+	 z6UI47l8B7MaA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A44E3809A09;
-	Tue, 20 Oct 2026 21:00:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773FA3809A09;
+	Tue, 20 Oct 2026 21:00:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,58 +54,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v3 0/6] bpf: Add syscall common attrs support for
- xdp
- link_create
+Subject: Re: [PATCH net] net/mlx5e: Update netdev features only after a
+ successful
+ ringparam set
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179253001886.208021.6536312952037292688.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 21:00:18 +0000
-References: <20261020152804.39863-1-leon.hwang@linux.dev>
-In-Reply-To: <20261020152804.39863-1-leon.hwang@linux.dev>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, shuah@kernel.org, kuniyu@google.com,
- liuhangbin@gmail.com, mkarsten@uwaterloo.ca, masashi.honma@gmail.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+ <179253002202.208021.1423217243586983766.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 21:00:22 +0000
+References: <20261017005401.1582755-1-dimitri.daskalakis1@gmail.com>
+In-Reply-To: <20261017005401.1582755-1-dimitri.daskalakis1@gmail.com>
+To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
+ cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com, cjubran@nvidia.com,
+ bjorn@kernel.org, netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 20 Oct 2026 23:27:58 +0800 you wrote:
-> I'm planning to add syscall common attrs support for LINK_CREATE cmd.
+On Fri, 16 Oct 2026 17:54:01 -0700 you wrote:
+> From: Dimitri Daskalakis <daskald@meta.com>
 > 
-> This is the first series for the plan, that adds syscall common attrs
-> support for xdp LINK_CREATE.
-> 
-> Thereafter, retire the tracepoint bpf_xdp_link_attach_failed, because
-> the underlying driver's error can be back-propagated to user space via
-> the syscall common attrs.
+> mlx5 couples HW-GRO with tcp-data-split. If a user sets rx-gro-hw on ->
+> tcp-data-split on -> rx-gro-hw off, the driver will leave HW-GRO on.
+> mlx5e_ethtool_set_tcp_data_split() calls netdev_update_features() when
+> tcp-data-split goes from enabled to disabled in case HW-GRO needs to be
+> released. mlx5e_fix_features() reads the new HDS config from
+> dev->cfg_pending, so HW-GRO is released before all ring parameters are
+> validated.
 > 
 > [...]
 
 Here is the summary with links:
-  - [bpf-next,v3,1/6] bpf: Add syscall common attrs support for link_create
-    https://git.kernel.org/bpf/bpf-next/c/c8e3a753a9ee
-  - [bpf-next,v3,2/6] bpf: Add syscall common attrs support for xdp link_create
-    https://git.kernel.org/bpf/bpf-next/c/d80d00835520
-  - [bpf-next,v3,3/6] bpf: Retire tracepoint bpf_xdp_link_attach_failed
-    https://git.kernel.org/bpf/bpf-next/c/278568acb588
-  - [bpf-next,v3,4/6] libbpf: Factor out __sys_bpf_fd helper
-    https://git.kernel.org/bpf/bpf-next/c/deb9732f53da
-  - [bpf-next,v3,5/6] libbpf: Add bpf_link_create_log API
-    https://git.kernel.org/bpf/bpf-next/c/1480f290d1f7
-  - [bpf-next,v3,6/6] selftests/bpf: Add tests to verify link_create logs
-    https://git.kernel.org/bpf/bpf-next/c/f23fa8f01ce3
+  - [net] net/mlx5e: Update netdev features only after a successful ringparam set
+    https://git.kernel.org/netdev/net/c/23dd5be7e19c
 
 You are awesome, thank you!
 -- 
