@@ -1,67 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792534435;
-	b=1pwQtRilOK4ODfinwerEsY278PmvoUno/85njgiN1vDkm01UqpcfGN7FaNFWj/hvc3w7
-	 l2wGFLyAr3cZ82S93ykNq0edV+Pz1541QP/kwI4qUPYhu5VtqPpc5+/ydHs5DELUfp4Gi
-	 QL2iiQUBEufTn/7dMoSc5TF2ZEndHujfdKDOWQsJ6pSaJmhbl1VIFI00aeXlwtJONgMsH
-	 Rp2e8yIUzHuZh7p7pWcFbcq6+hsnWwEG9NpFmqzza+0mYaPkE0TxOo5gr3a2sys9bBl7f
-	 2TglqfDd2jftKzc8s6xZ4dxoKYLaZD0d+vSqvtyxPKwO1KTxFkxficW6qPW7cKXQW8w==
+	t=1792534766;
+	b=A9YdCsE0tJhU3kDggY3+x1j22qy7F4ZjP6LJmD9r/Hrh9Bgv3jP+Dp2sBp/bIZiKUxxj
+	 xXQjbZG58eEYeb2m6lq/4G4a/nUyIHZA9vBRF+vLx387uUAVvDaMpF32iuPiignG3gxfX
+	 TJM+FgYfuAfM8BR+oK7fsqbmfjJKkCrzKiXM+0GdK2Ep64XTclM/8PiJkuQ/dsm7ELGIo
+	 NG2J2erJG3LiXEFR6PE05ne2kYGNgVI4kt9iTpuvzEq11ZmaszkJjBQPSLNTSOWZGwGV8
+	 DUvSDQ54s3qla8PrL92LPZ+jzuN92bbhtC6zdgdRqz7ugGNpc4+X2FM50RykS2sYCOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792534435;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792534766;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=jZfhbIqi1uUmdy+pyP1X9I2KypCtlyueUy+pbMyFKC4=;
-	b=Pu7Yw/DyKHiX76pNbFP5NAw/wewnx7B2KOuh7od6g9aMYx7PeimOMwG3jqGlXirehLvQ
-	 5XW7mrmq9ZcOAO8P31k2gvVRNwwPm4TzjOSQBJoMZohzmGNUoBzfvmyGSSR5jvLwy9vcl
-	 XmOrwC5hAeh3PcxkKrSrtmVgIyjqgAhB639OgjolRnMZApCSd7XMjzqshgS+Qz9CmP2Vm
-	 Hodgstl73wqF0rZTIRDLGLjVl8m75pSsz0OiBrdchEkJ2/v2GtPr702xfecB36qOBIsie
-	 2Tf6gVrqMqzkuJnHaxw4BCjAj/0utGHs1O12QE9op/PpbQGGBKxUAVOqURyL9owCmeA==
+	bh=txnx7PIhC3EgAqV7GUHYMv76bzFYtKuAOGW3BbDl5Gs=;
+	b=G2ZWJcWmYFLqeCYI5hIY5hTcWJyMnwCi4Tn35LM4PvkDZmI/0KKmlfM2VOZmPovxGCkI
+	 m8hFORrwPD25xCLXaWXxFhGKTUbdjU+mLrOdrwzg/LTcldI2gbk212GXKccdBDFsnr8Yd
+	 FZiiGI5F06BZ0goPhnCg9IV09+o8mgqqMQmPSoybbmfVn6Z/uLhkke72qmRPWRZGosfhn
+	 yaFDXQdsYnApMt5cdNZaPvpzR/tvGocGu8rBXeAEIJ3ALIjZ3gmS973q3R0CI+U7svvXO
+	 dURTT9Pf03byM1rTEu0bZKcDjZLhoe8ZT0PjBPyVN01UtdUI17o1Q3ZKSlJI1gk+nSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JZplb9jj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TrkxBC7r;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19822606A31B;
-	Tue, 20 Oct 2026 22:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D062A606A319;
+	Tue, 20 Oct 2026 22:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JZplb9jj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FAC1F000CA;
-	Tue, 20 Oct 2026 22:13:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TrkxBC7r
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229E61F000C9;
+	Tue, 20 Oct 2026 22:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792534434;
-	bh=jZfhbIqi1uUmdy+pyP1X9I2KypCtlyueUy+pbMyFKC4=;
+	s=k20260515; t=1792534765;
+	bh=txnx7PIhC3EgAqV7GUHYMv76bzFYtKuAOGW3BbDl5Gs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=JZplb9jj3/fh4yPxtmiEATTk0TxsAhQ51FI6louGQa040mVzXQ8BPS5D2iJ69mU5o
-	 6QhVF3SBrJ3x73n9V7B3OQ1cZUAaoheXvorGNCS2sRULZYq/Sh+vpnl80GqC2HUYRT
-	 ktonkocnOBAjFssRKmlIhpnylCxff7cntyCzEkBaHxpa4HIKMUyz2FIGqT0H1XPieB
-	 9QJeat0+uE1UyTqhZeGyHOrZdr9XTNzc4yO+Cgz18GrqoIoU25aMDUHQAEebhQAUHD
-	 Qaveaet+Tx+bDPQjARR31jSBxdhpxelTNStdK6H9IjBJ6A4Lqjcp41gZj968IKOI60
-	 g2cPZgKlIKNRQ==
-Date: Tue, 20 Oct 2026 15:13:52 -0700
+	b=TrkxBC7rsozS8XAQDw8v+k9+czCVSWF2em4vHgIO8WOkV6LIMQ/T+QHKQdrkKqvS9
+	 efIyh3z9GghObw+fSNzpRkjIKWBJ5KR/CM4834V30SzhrSCvfnDDr6fObhCXkTVsAG
+	 qScn8M5h7T0W7SKeVY+3e0XujWg1s16qfC9j1wOR7V03lYiDexnGPswLbpWlDzRn75
+	 rdr8F3K38zeNGhHMTXDLGRKJ68U4arnVbpK7PRLe6j4st2M5yjBWKIZ6YhcEa8Somx
+	 s0wlJlS6xjstfDcJKbJmZl9tjKyNabTz3/FsrY6kszU4ZVVhiV5tpvkbvhAihpGwaS
+	 zqs7pxB2eMQYQ==
+Date: Tue, 20 Oct 2026 15:19:24 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- bpf@vger.kernel.org, ayush.sawal@chelsio.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
- tariqt@nvidia.com, horms@kernel.org, steffen.klassert@secunet.com,
- herbert@gondor.apana.org.au, ncardwell@google.com, kuniyu@google.com,
- john.fastabend@gmail.com, sd@queasysnail.net, ebiggers@kernel.org,
- kees@kernel.org, aleksandr.loktionov@intel.com, petrm@nvidia.com,
- u.kleine-koenig@baylibre.com, j.raczynski@samsung.com,
- wang.zhan@smartx.com, willemb@google.com
-Subject: Re: [PATCH net-next v3 0/6] net: unify symmetric netmem and
- page_pool refcounting
-Message-ID: <20261020151352.794bf03b@kernel.org>
-In-Reply-To: <CAHS8izPZ18v_1CnRkaAAA=d94wutJhoOZdOFO_1CEXSexd_=EQ@mail.gmail.com>
-References: <20261014173945.373295-1-almasrymina@google.com>
-	<179249101026.3632927.6502845375265155678.git-patchwork-notify@kernel.org>
-	<CAHS8izMRSU3AyVf+sP5uXShiSKuLumZwT=fsgW+bhJz47UoPRQ@mail.gmail.com>
-	<20261020150307.258b00e9@kernel.org>
-	<CAHS8izPZ18v_1CnRkaAAA=d94wutJhoOZdOFO_1CEXSexd_=EQ@mail.gmail.com>
+To: Rishikesh Jethwani <rjethwani@everpuredata.com>
+Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH] tls: keep TX and RX hardware offload on the same device
+Message-ID: <20261020151924.41e22eac@kernel.org>
+In-Reply-To: <CAKaoeS2WHQ6QH5XJ+T0RLuxVDJAOtzdfVz0V6gSoZ7n5GJkFdA@mail.gmail.com>
+References: <20261013202647.2206263-1-rjethwani@purestorage.com>
+	<20261020133601.2081ab1f@kernel.org>
+	<CAKaoeS2WHQ6QH5XJ+T0RLuxVDJAOtzdfVz0V6gSoZ7n5GJkFdA@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,26 +62,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 20 Oct 2026 15:10:03 -0700 Mina Almasry wrote:
-> > You should have followed more modern naming patterns tho
-> > get_netmem() is pretty bad IMO. PP naming is object_action()
-> > so netmem_ref() or netmem_inc_ref() would be better, no?  
-> 
-> Ah, I didn't know about the modern naming. I made get_netmem mirror
-> get_page. I now notice it's folio_get not get_folio. I can follow up
-> with a cleanup when net-next reopens. I assume that will not be a lot
-> of code churn. I was also going to try to look into deleting and
-> consolidating some of the now-redundant ref-ing functions anyway.
+On Tue, 20 Oct 2026 14:01:23 -0700 Rishikesh Jethwani wrote:
+> On Tue, Oct 20, 2026 at 1:36=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> >
+> > On Tue, 13 Oct 2026 14:26:47 -0600 Rishikesh Jethwani wrote: =20
+> > > +            rcu_dereference_protected(ctx->netdev,
+> > > +                                      lockdep_is_held(&device_offloa=
+d_lock)) =3D=3D netdev; =20
+> >
+> > Too ugly, add temp variable, pls =20
+>=20
+> Thanks, I'll use a ctx_netdev temporary and send v2.
 
-If you do it soon I think we can try to squeeze it into this merge
-window to avoid unnecessary burden for backports.
-
-> I can also make it one of the design pricnciple in the page_pool docs
-> so that the LLMs pick up good naming practices moving forward.
-
-I don't think it's needed. I mean, if at all we should perhaps
-think about naming guidelines for all of netdev, but no time for that
-right now..
+Is that a name you've seen anywhere else in this file? :/
