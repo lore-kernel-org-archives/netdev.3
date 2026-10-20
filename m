@@ -1,55 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792482633;
-	b=fkmdp6qZU3eNrUdtCvJS7jZ83EADIejB/GYXR9mwQqnGsj5WM79L2vfO9BR0LYqIlgKo
-	 +gx3crRKifDOXFKQAKt/wsjYBTB/dckM+NF0JA+JjXTHdDFlNCHMhCiBWjldPg2+Yro9v
-	 M/Zna01oj7WrAyF3MzHo3Va6OVqSwFMpVzPav/z0Iulcjk8McS7L9NRjwXawolGBFKW7P
-	 JmT4npyCG54c1FixsjDc6FpYONry3T3n7zn7L0SPpCjLkR9lzD0X0ivlKd/b93Gg8/uDJ
-	 7du2je4KuhfjNKLMqaxXQEzIv2cfCiPSSn7FUyn9/LhRYL3+JyKE0yJr3OQ2lLtjjhw==
+	t=1792482926;
+	b=gT6poeKVfHA4bNerE6umsgG8oh9yZicElyU5eQ4vSSUBwLxMfvK6tuHDPyLRxoZQSUJC
+	 aTd7fKgS5UKFxt4Fk9zDuAkyOMiiOKVV2wOGIohxT/FWI9jxKXWPyeRKgEnfUD7WQdw/3
+	 kE/psJIeBVOgJEVQKhZHuj0EU6Gjg14h/V0QRC7k1hOiTlOahJOH/ZEVaBgNkircgHwee
+	 s1fNfeROFbrZtRW53In6A1bZpJS4EMzHmEDFAIQmeb3rn22ZJeoMm7wFr2DR3XVB9hbJV
+	 usOXW2lOBMBhdmF0W5G0WFzCiqDZ2OFeppU/PNUVaW9sLGKJ1+SfcEwV01UZwluYibQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792482633;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=lkDIuBRDwBt9QuWfP6v+tNbF2hM2OFlcCRYMmL+zaDM=;
-	b=sr+32jpLZ9HU1wAFtQ62v+XmDv6x74aGOxmUfZ7SkEetAlATt6ipVZxdikSgYSjLniCY
-	 7WcLp9iJcQIUo1E4+R7FiWxLxiWkr6Jtb+l0+bPcWdpcgIfoBxMzh/et2Yu0Dh+dkmpN8
-	 IMzPkoFjfsUpE2CNwdHYfMFjnQoLiAwwgIrBvzbQOsFCSUjAo0s49RBFblgmsrktqJuy3
-	 gpO8zo8QBB3qpwfiCuvpZWYHCl4vcIU6gSXrKic3TKNXnAP89TlqG9WVAH5CYrpQdC+vg
-	 2DFXXQOop4JkpQF49vIY27ZGvZnD5wILmiPiJazrAGX1FCeuN1xh9QQ64AwxWD/9Oew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792482926;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=wiYcyYLmidZvaVJOjwXyMAgj6pRDKve8NH/1uX7Y5XE=;
+	b=B/eEuS64XcWEVp7dDlTsBT2trix8K/+ocIB1iBgbQKgj4X/LrnDOAVe0kwABPWpii6sp
+	 cdA94W8DmwFpWebaMpSukyATQrZczGG6by2huHPMGZqdT4hrjPeVBuMKlIM8Ibnn4ImeE
+	 ux9U6X/3+XLULf30It4FbyFw8BA0PveJj7YzKvfH88VnSORR3tObZk+zsXIZnen2WQ4js
+	 /ERwJet+/fVagHQAYeoTy1/ZK+iDyyEa1e65Ou2Bxx25nrUwU/08D0wG9mvQ5ML+5kDp3
+	 k0kpxQWbUPyOT1ryY4CY59ZZZxFUB+3vM5Ix5p+DQg+WJGVIyroY2uOF3+z/skIr2tA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RuzyxS6y;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MijKg5Pi;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DC3606A322
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 07:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CB0606A31C;
+	Tue, 20 Oct 2026 07:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RuzyxS6y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B2E1F000C6
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 07:50:32 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MijKg5Pi
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC1C1F000C4;
+	Tue, 20 Oct 2026 07:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792482632;
-	bh=lkDIuBRDwBt9QuWfP6v+tNbF2hM2OFlcCRYMmL+zaDM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=RuzyxS6yuH/4Q5MVXucuFLmtlMumhDZiAXBvUR0cF36R1uAeAvcsefXJUuvAYYkBF
-	 tQDHMAZzY3bL6TTkIfqK/KY5KqzjJygt5rgS0gnXh/fZljUXlVR/nMA+wffGbfp6Z8
-	 HZMBCdgLIKcGDyfL2/EUTVfMTfqiiQTS1ZKghZ7hZzSiW8SEGgPrFJIRe1IJYht3Cy
-	 NSRSI4UlFeV3dRrIX9KxURXuiPKyrKU4DRjrAr3TI/a61EHGjK/2IinGOFCcUBscS7
-	 0imMl3aJtqJXfzA08BRrNpzJbF9eB0PxcDL3vGOOI8kFGzabE5OM/thgWgrrOGlRXl
-	 fqvUlZXHmig+w==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-499f20c7054so1577419fac.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 00:50:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxX/xHFyLkg8hOrv0jDJunrD284vrtCY/dfbIKNgqj49FsNBV3mRb8+pnpc2Sg6sUmgWU0K+WU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLUNw4Elz9CzfWr+h9dtzWpRyY4JBtWrMgGnHq1u8xcJKufdE0s
-	dZPF0IpJbM+4iRcvNZS0C863qCCZX6mb25BnP5gszq0kRS6BQZFDNHzUZ2m7SeIh9wU6cY7Ilv9
-	daY3WdjWIvT8RcHDUP+/CkkHdvRRNMuQ=
-X-Received: by 2002:a05:6870:ac20:b0:475:a1ec:9616 with SMTP id
- 586e51a60fabf-4a75795be3emr8911747fac.24.1792482632305; Tue, 20 Oct 2026
- 00:50:32 -0700 (PDT)
+	s=k20260515; t=1792482926;
+	bh=wiYcyYLmidZvaVJOjwXyMAgj6pRDKve8NH/1uX7Y5XE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MijKg5PiQSN4IeG87vq5Yt3/rVEOVOiaPlYoJcUIm++uXCodktoqH3rFHZJ3vXLg3
+	 MbEvGyMVcu8ta0JQAZ/6/CyKJfnVs4NOL4EO+SuFnsyFAQfDFloIovKzTmVtFaywE7
+	 5MMyInA6heob1AvwY1YlJuSGSYD2epYDU9VT0CA8ur5h1stMY9++8Pt69cam5D5j34
+	 iMie7hxbn7ltrvpnSMwsadaWIPXrdctRpqpTxvJSgyhCjtXz0Swx33L9AsJADIY7qi
+	 ei8UsEfMAQ9C9tuXNadnmHWd63vc/UzaTHUiXU8zbmpRzPsHDUkiwnCjZDGuQVEOE7
+	 6TBQDsjEdSP2g==
+Date: Tue, 20 Oct 2026 09:55:20 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Allison Henderson <achender@kernel.org>, 
+	kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, wireguard@lists.zx2c4.com, 
+	rds-devel@oss.oracle.com
+Subject: Re: [linus:master] [sysctl]  8d75c338f0:
+ BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
+Message-ID: <atcS-NKX1TpbklyR@hobbes>
+References: <202610190310.9737b2e3-lkp@intel.com>
+ <atYB0bm9eEXp8A2g@redhat.com>
+ <atYW0K3t57puHeLW@hobbes>
+ <atYuE1xnVYe0BDG4@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,37 +63,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019082214.102398-1-dmantipov@yandex.ru> <CAL+tcoAyM0uL8UWqYMH9=bCrLwtqorAKHqm=v1tQ95p2y5AqBw@mail.gmail.com>
-In-Reply-To: <CAL+tcoAyM0uL8UWqYMH9=bCrLwtqorAKHqm=v1tQ95p2y5AqBw@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 20 Oct 2026 09:50:19 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipY6wmLFLAYFixj153jSBTG=3QrK-KHeUj80hqeyMoZ5A@mail.gmail.com>
-X-Gm-Features: AclHuK9QC9cuFZdOl573QWNYzlljhHxBTaYVBVby7uu1YXb47yqDbTTaJfdCnc4
-Message-ID: <CAL4WiipY6wmLFLAYFixj153jSBTG=3QrK-KHeUj80hqeyMoZ5A@mail.gmail.com>
-Subject: Re: [PATCH v2] tcp_bpf: propagate error code in tcp_bpf_sendmsg()
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Levi Zim <rsworktech@outlook.com>, 
-	Denis Yarapov <yarapov_d@mcst.ru>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	lvc-project@linuxtesting.org, Sashiko <shodan.ai@mcst.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="a42qtuqnvg7yxrg6"
+Content-Disposition: inline
+In-Reply-To: <atYuE1xnVYe0BDG4@redhat.com>
+
+
+--a42qtuqnvg7yxrg6
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [linus:master] [sysctl]  8d75c338f0:
+ BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
+MIME-Version: 1.0
 
-Le mar. 20 oct. 2026 =C3=A0 08:23, Jason Xing <kerneljasonxing@gmail.com> a=
- =C3=A9crit :
->
-> On Mon, Oct 19, 2026 at 4:27=E2=80=AFPM Dmitry Antipov <dmantipov@yandex.=
-ru> wrote:
+On Mon, Oct 19, 2026 at 04:49:55PM +0200, Oleg Nesterov wrote:
+> On 10/19, Joel Granados wrote:
 > >
-> > In tcp_bpf_sendmsg(), the value returned by sk_msg_memcopy_from_iter()
-> > is checked for error but not propagated to 'out_err' label, so error
-> > handling may not work as expected. Fix this by assigning error value
-> > to 'err', thus making sure that error won't be silently ignored.
+> > On Mon, Oct 19, 2026 at 01:41:05PM +0200, Oleg Nesterov wrote:
+> > > On 10/19, kernel test robot wrote:
+> > > >
+> > > >
+> > > > Hello,
+> > > >
+> > > > kernel test robot noticed "BUG:KASAN:slab-use-after-free_in_touch_w=
+q_lockdep_map" on:
+> > > >
+> > > > commit: 8d75c338f0bcecaa6c9af67f86c176b67b6acf3e ("sysctl: remove C=
+ONFIG_PROC_SYSCTL, it just mirrors CONFIG_SYSCTL") https://git.kernel.org/c=
+git/linux/kernel/git/torvalds/linux.git master
+> > >
+> > > I don't think that commit could cause such a problem. Please re-check.
+> > >
+> > > Oleg.
 > >
-> > Reported-by: Sashiko <shodan.ai@mcst.ru>
-> > Fixes: 5153a75ef34b ("tcp_bpf: Fix copied value in tcp_bpf_sendmsg")
-> > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
->
-> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+> > That commit might not be the one that introduces the UAF, but it might
+> > be the one that exposes it?
+> >
+> > You have CONFIG_SYSCTL=3Dn & CONFIG_RDS=3Dy & CONFIG_RDS_RDMA=3Dy.
+> > Therefore rds_sysctl_init() returns -ENOMEM  and rds_ib_sysctl_init
+> > returns -ENOMEM.
+> >
+> > If rds_ib_sysctl_init is called after a failed rds_sysctl_init, then
+> > rds_ib_sysctl_init would call a flush_workqueue on a rds_wq that has
+> > already been freed by the failed rds_sysctl_init. Right?
+> >
+> > Please let me know if I missed anything.
+>=20
+> I think you are right...
+>=20
+> rds_init() does
+>=20
+> 	rds_threads_init()
+> 		rds_wq =3D create_singlethread_workqueue("krdsd");
+>=20
+> 	rds_sysctl_init()
+> 		fails due to CONFIG_SYSCTL=3Dn
+>=20
+> 	out_threads:
+> 		destroy_workqueue(rds_wq);
+>=20
+> After that any access to rds_wq is wrong.
+>=20
+> If rds_rdma_init() runs after that, rds_ib_init() will call
+> rds_ib_unregister_client() -> flush_workqueue(rds_wq).
+>=20
+> And this will equally happen before the blamed commit 8d75c338f0bc,
+> just you need CONFIG_PROC_SYSCTL=3Dn instead of CONFIG_SYSCTL=3Dn.
+>=20
+>=20
+> But. rds_init() can also fail even if CONFIG_SYSCTL=3Dy, after
+> rds_sysctl_init(), so to me this looks like a bug in net/rds/.
+>=20
+>=20
+> In any case, I guess net/rds/ init paths should not fail if
+> CONFIG_SYSCTL=3Dn ?
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+That is up to net/rds.=20
+
+The question is: do you have to fail if a sysctl registration fails? Or
+another way to ask it is: Can't it (net/rds or others) run while not
+being tuned or queried through sysctl?
+
+If the answer to these questions is that the sysctl path is necessary,
+then the failure is reasonable. But if they can work without the sysctl,
+the failure is an overreaction (IMO).
+
+Best
+
+
+>=20
+> Oleg.
+>=20
+
+--a42qtuqnvg7yxrg6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmrXHlsACgkQupfNUreW
+QU912gv/eejjrtoxUgh51UagvsJXA0SMOI6Yaa+uIBcExUpCjVRcUBjhj2jT/GV9
+JRJK0zb9dOeEg4yIm/bzf4j3qYwBTqiRdVf5++8HB9yuqIx4w0NlVIbks9Q8YDQh
+QRXDBUAUoP6FxYb3jE1U49avWB37mPqj986qpNiwwqXq9nIRDKDf/9sPY/b2Vvyn
+RibI+hOi7hfCSUntOsrbN7NmOtV9e1FQtHZxCjHpdz51bQqn1S84/WJ0dDgy+RUT
+J1sLIQsUlmxKtJ78VYmaCPUJ+owrm3mFNvzmw2ERplHoA2JqT3r6lY1jP2G5Xi8y
+pRSKsCTfoRUgVrXh6yByuK/2ywuqzfTEneUTJ4F97bLgJClP+4FtYcUjnbZOvsrm
+l/VWLpeaTxFHDiDWu/rJ+K9YFs8JcsnTtmJqJ/pLJAW/IjvQ5sQsT6P+d04LgWQJ
+fRYc1/dcsViZ1Bz/LUpV4NWsMtqP70EPbjuvvPYA5GG5HRM1bj6x4hHL2e9gGsQ5
+vMczI+dC
+=OX/2
+-----END PGP SIGNATURE-----
+
+--a42qtuqnvg7yxrg6--
