@@ -1,49 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792531207;
-	b=c2D2qFXmZyWSofJ9/K6q5VbSNy21NmdVP43erGgkkDHpnNsZgy0rALSqWdOVxEPUXT1G
-	 xFEBz/L9xdLZ+l9kW0RV4JNa5gDDCtZvNXMKNJTBEdTAA9wZh4c/z1tlmQZRaeL8Y5RBo
-	 IYFfkHrMs4wjy2cdNuDCvijiTbxh5IQsgQoiEZFVXGMBHRzMu32LU60t8vM7rJAX9w6+N
-	 4GN5U26o0gfnmNVHrQ8Rv/i8x6a72xhJ1QiAFrQ0InB8Udt/CAnSkG4JsPKulptskHdGT
-	 rV30Ngv8SMCnJzZKCTMFhqFNWyuqJEP2Z2d2mg5XfLT+x9INlx6vKrGo00c+eDPpqfg==
+	t=1792531320;
+	b=yAuI5R/ovsDBzR019y3z48IbDKjwvzHnhguZ1DsncwhvE678F5KEhi2UD0lO3xD5OzT3
+	 ZkdBFjD93kdKTIzpQ3wmBte2Qdh3XFEoIMP9TMf/h3TywlMbS9KnZZPVt34dG6LDif7zF
+	 PjB2lkxKLHfD7IvCjY/PeliY38vp+KbUcjOQiv+GW2BcgoLSoAEYyPkA/qy8AoFnUqNxm
+	 usAMoN1H1rLsdygPBMDJFRt2G1aTbmSLiOyt3+gR1Vz7YhigRaR2eP3NhAy8uagbUWc9J
+	 3fdr/WsM1aLTOno0mZTpFOCWpS2dVjYM4ZJQfb2RZDzLR87Jlk57E799huEY287qwKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792531207;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=1HifwW2tzpw/dBlqdN30sk8tMvZZs/3YEkBT2Gwdt/U=;
-	b=ONYOoTlGQIsHCSbfxnOHsbJt8ACd7Po7MdOjJ7LvHMbL/F28x/tPLIjM+t6DriNlt5Wu
-	 JbRoVlnxMaRxBtgJNXoKbVYiSlldLrVqcdELb+cK8Xt92h/9+VB7WQOOa9lHiVIR+NQ11
-	 cQ+R73sY6uEXhN3gXGTGdajVqWPLSQqbU4cQL8aooxR2dPANLBMyPjyJIdnfjMYsx4aYE
-	 wK1+vaCIeR5wZit+PjfPXDaE42GqX04UGS0vBtmrL1h0qFMnYG2s+oHOfFCYZbEwwyqlU
-	 03NpRQc+pIFqOmP3tBxo6GNpu5Z6mQ2xUVsjUGIPkDpOrPezt0rbxqzL/PluQ6f6FMQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792531320;
+	h=DMARC-Filter:Date:DKIM-Signature:DKIM-Signature:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=L4lW4QRgtgru/oJ0WAOdQrIQ+BhNIuEeNA/PzS3zOCU=;
+	b=QOlWEbU71aI200lJeOPqFhlY0yH7kjEr4BxSkEUb0lkeZWoJOUOoYGmKjbb+Lej/s9t5
+	 GDTjSi4uNgzx6qVHqDJdnFV7bmNek/1qMTxq9gvP7GsztKtwl59atM26HNv/A/7/gEk7U
+	 UNM4gDr/P5Pw4lS3Wp3ujb6edLpkpML5WKNGkXa27zO1/0y8bu5hMQscL1kHp/lmpansC
+	 bXaP1A+3OzR5VDRFeiS0sEdZoysPhfP9CIMOjQzWhfeyO/TRoHTKigyUYSZVMrbA/YnZO
+	 1Nr2b7M7V7X5b3nz0yjxzs11aUOCSyKHUUpZ3vBALPnY2UoEx8uflcsTG3clXdhuY9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="F9ycV/1B";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linutronix.de;
+	spf=pass smtp.mailfrom=linutronix.de;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wshPDE74;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=WUNt9Kam;
+	arc=none smtp.remote-ip=193.142.43.55
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA95606A319;
-	Tue, 20 Oct 2026 21:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86818606A31A;
+	Tue, 20 Oct 2026 21:21:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86818606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F9ycV/1B
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141011F000C9;
-	Tue, 20 Oct 2026 21:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792531207;
-	bh=1HifwW2tzpw/dBlqdN30sk8tMvZZs/3YEkBT2Gwdt/U=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=F9ycV/1BiyxFr1paMzQQaBRAsw8fTP6WrSzclml0+HVNypOI1utWbllyri+gYP8AP
-	 hnm7xQep0JwEtYCvd5lZBHpegLWFHBwQVkElddzJdMHxi+wdu9d+Y0DS+gThAgqf/P
-	 XisB6HdwyS9LMaILGHhPQUZLde3yYW4U+J57DEdPW4GJUMH8nCWfCA8PkkRwzEmNop
-	 jarMbfBFjoPeFWil7xgKT6mfrFrRK+lh2gYNz9C3WGmeZTPyCjX2Lj96XZiRLSGO5u
-	 a4ye/rJQkn7Z3e9qn9uhRQG5DXM0IbSAs+QZTjBZnF7+tDtAAKX9JIcsbTqtTcF/wr
-	 5jwv6/vGX2PUw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F16633809A09;
-	Tue, 20 Oct 2026 21:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wshPDE74;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=WUNt9Kam
+Date: Tue, 20 Oct 2026 23:21:55 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1792531317;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L4lW4QRgtgru/oJ0WAOdQrIQ+BhNIuEeNA/PzS3zOCU=;
+	b=wshPDE74zOyIJblawM0ld+RVwBdmNL+hTu4IkXviGe8mBvFDgUQnY0ypd7Ox/aKJX5xV41
+	vjjahZR1uYWTTkrRst4uSI6Xc1mCi3LwKp9kEzqv3t4tgDwJPAxiZpRO4GxU8WE0ORmH4b
+	h0TR1bqKzkEffTFnJxV6qOn4bKKxbQYz0Ib15TZ7/qnGTsGvp3PojpUbzAqUMjlP+RTLeu
+	Wm/foE4AAXB7Ht1sG2dPRUYX5UuF8bQxLB4aTvexAOnk4x6e3QRHLTY+VBLrT1iFlFi35G
+	ctewgWr/VcXTFf4YgJdEK7oGfdOVtDU2XBcmtNWiv5asayyx95R3qwDxArfpMA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1792531317;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L4lW4QRgtgru/oJ0WAOdQrIQ+BhNIuEeNA/PzS3zOCU=;
+	b=WUNt9KamSn2SD6IiwERG2R4ZVIcxL9GDX/e8f7Axht6534Bijne2Msy8+pClpbxb9VXoPQ
+	Wb3xzWg93+LAwdAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Daniel Zahka <daniel.zahka@gmail.com>,
+	Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/4] eth: mpnic: count packets, bytes, and
+ drops per ring
+Message-ID: <20261020212155.47v0ot4g@linutronix.de>
+References: <20261012-mpnic-counters3-v2-0-8afba81c2d5a@gmail.com>
+ <20261012-mpnic-counters3-v2-1-8afba81c2d5a@gmail.com>
+ <20261016220930.i32JEcqe@linutronix.de>
+ <DM8U47F4MNK3.2V54CCQ9YTNBY@gmail.com>
+ <20261019215405.OCzrrKYw@linutronix.de>
+ <20261019190543.419e70bc@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +87,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] mlxsw: Initialize register query payloads
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179253120553.216428.17809324600646525016.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 21:20:05 +0000
-References: <20261014173117.26305-1-mail@tk154.de>
-In-Reply-To: <20261014173117.26305-1-mail@tk154.de>
-To: Til Kaiser <mail@tk154.de>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, idosch@nvidia.com,
- petrm@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
- vadimp@mellanox.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261019190543.419e70bc@kernel.org>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 14 Oct 2026 19:31:17 +0200 you wrote:
-> MFGD register queries can exhaust EMAD retries and leave Mellanox
-> Spectrum switches stuck during boot or shutdown when running OpenWrt
-> built with GCC 15.
+On 2026-10-19 19:05:43 [-0700], Jakub Kicinski wrote:
+> On Mon, 19 Oct 2026 23:54:05 +0200 Sebastian Andrzej Siewior wrote:
+> > On 2026-10-19 09:04:38 [-0400], Daniel Zahka wrote:
+> > > > Why do you have the two mpnic_base_stats and fold the stats into into
+> > > > it? My guess would be that on stop the counters are reset and you want
+> > > > to preserve the stats.
+> > > >  
+> > > 
+> > > Not sure I understand. I think you are asking about two things:
+> > > 
+> > > 1. Why have two mpnic_base_stats?
+> > > 
+> > > To avoid a separate heap allocation that can fail. Handling an
+> > > allocation failure in the ndo_stop path when doing the aggregation into
+> > > the base stats is tricky.  
+> > 
+> > Right. But looking at hinic3_get_stats64() for instance (I just grabbed
+> > a random one) it simply does query the stats for each queue, add up,
+> > return. It probably does not drop the queues on down, just reallocates
+> > them while changing the number of queues (and maybe MTU).
 > 
-> An example failure is shown below with the second line wrapped:
+> I don't think pre-allocating stats for chips which supports thousands
+> of queues is reasonable.
+
+I don't mean to pre-allocate stats. If device-down removes queues then
+the stats gone, so what. The queues could remain.
+
+> > > 2. Why split stats into base stats and per queue stats, and why reset
+> > > the per queue counts when the device transitions down?
+> > > 
+> > > This is the way the stats in netdev.yaml are exposed depending on the
+> > > 'scope' request attribute. My reading of the relevant kernel docs is
+> > > that the per queue counters are counting events for the current live
+> > > queue, so it makes sense to reset them and fold those counts into the
+> > > base stats when the interface is transitioned down.  
+> > 
+> > Is there any other driver doing this?
+> > There is ::get_sset_count() and so on for the per-queue stats.
 > 
->   EMAD retries (5/5) (tid=9b544fc100001f35)
->   EMAD reg access failed (tid=9b544fc100001f35,reg_id=90f0(mfgd),
->                           type=query,status=0(operation performed))
+> You may be mixing up queue stats (netlink) with the old ethtool -S
+> kitchen sink / garbage dump.
+
+The statistics is folded on device-down into a global counter. So on
+device-up the statistics is still available. At least that is my
+understanding. This means the per-queue stats are lost and global stats
+don't match the per queue stats anymore.
+
+> > If the interface goes down and frees all its queues, then the stats are
+> > gone, true. But preserving them at the price of two (down+up) forced RCU
+> > grace period, I don't know. It looks like a bit too much.
 > 
-> [...]
+> This is a modern driver, the down / up path is not taken when interface
+> is reconfigured. It's only taken when the interface is actually taken
+> down or bought up. Which virtually never happens for a datacenter NIC.
 
-Here is the summary with links:
-  - [net] mlxsw: Initialize register query payloads
-    https://git.kernel.org/netdev/net/c/15b7a86a8888
+So if this never happens, it might not be needed to preserve this. That
+force-RCU might not be needed. This does happen on down and I would
+assume that the device is no longer processing packets.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> I don't mean to dismiss your concerns, we agonized over this off-list
+> for a week, and don't love the resulting flow, either. But I strongly
+> prefer the RCU grace period that never really runs, but is easy to
+> reason about, to more advanced fixes which use memory barriers etc.
 
+Right. If you think is all makes sense and is needed then why not. It
+just looks odd.
 
+> Anyway, I'll punt to Paolo for the final call but I think this is fine.
+> 
+> Acked-by: Jakub Kicinski <kuba@kernel.org>
+
+Sebastian
