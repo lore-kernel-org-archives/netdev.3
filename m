@@ -1,62 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792491044;
-	b=PXhbREeNRtBZw0oXLEW0MInJukfKZR1iLqB6aJuQ6iwJ+0xnksnno6FhS7tIeQGaquhg
-	 JENuJDl2u5hVvaYDMJwqC0udO0mnNX3YqwHY9TTV1/WfT85hYjlPrruNpuuZTUP4KvRDc
-	 cTgO3k7rzVO6ySrtcWI65KaHbUGU6oiB9k1ravFQzbSGTxP/KZxwIH/zz4iDN2WYjS8a2
-	 7H4GLprB4r0VysQxvAUO8MBoUHksavuQ3l3D3nUlTZ98I/LB/dNahzLvSFFd7UOYIMvNP
-	 GgX2uBfS063gom/lF43T5VCec6gWgC662hepehcmqO84OOz35bMKpuLWH0Q+2eOZrWg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792491044;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=fQPIuEpvWD+B7zD+vc2FJ+857BaEpzNPJt644Gt/XNE=;
-	b=sc6iUawt/yDAx8dBm8N7Pk54ACy+GlfRxYvFA/XN1YCu/1h6HgRTQNTlxqWG9aR9NqpC
-	 aupeaRBqo/RqqyZ1sU4UWCqrzlSzk50fHS/M8uSz+llKyVIMBdno/aQWrUjR0+X9zWMvT
-	 m6x+P7A0vbN5B6IfBF8g4alsTaZtDdzzOgHYClUk2lKCjr6xFTBhT4QEmA3qj5kuWY02J
-	 FDXuE1jHh/d8cSmtj2+LHgcgWBMT9yAESTl7BEZjOXGacLICCi2zS3KaHiIOIPi3S9WBn
-	 W9I5eYNUfq1kItbhMPXjjh4DWuMb3jZdGbHXqLqKoSfaUDfRoRBOfzAqjsfWV6yebdg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KiKYLVMC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.55
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792491091;
+	b=uXqjQ6D/Vic9eAA5yHW6fsQqUUOnSjxjdwmBEUtTJhyvTjRUOxm942r6+ICXHi8dW6S8
+	 xY4jNIYGpU7NtcrMq1CCUQvnoYvi9HYsjS5Edz6AD1gzu6dbja/Y11PidnbpWtYGJ52Zq
+	 AwHN5HHXNqAffW5yNJPZvoCRqw+AFGvYmbGmJ9v4lYSvB2sOeI63ArOWCW0bltSo2T1kY
+	 yVBbXVxDypLiGfi82SD7J6l2D37yjjOe/GhnD9ABO6gQkB2shiGkiqb0OLRhgPlD5oRrl
+	 Eq/63Nh2REEPEyOkRxr4dixVMWVPa3KbZ6zVRKl9XiPQNI3WATfKZVUyef0lS/oUNzA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792491091;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=cjSvkt6pmDTNKcq4L0k86IwWllmzcxKoSKxeBKyKWFA=;
+	b=fDOzpeB+WX09FMkLwGlzICXGbUERXmc4A5huCMEpv9HMXBCALuZry4L4qmqlEqNoPmco
+	 bXDtGv5KX1SXUMxEQSh8wMznyJHZQ0AouHe1Qyr4eHHLlxfPlf2TVuBMVcEglEd0oxETt
+	 nqFE3J7NsYCQsIcZkSrIGZTc9eW9aNtbUklhHj2yqUaCvhkfwaU4xL4Z9TkSxfVVDc12x
+	 tGKNiOHmkJZGbO2hHrwB+nT85UGZQHM7L9HSfklRcVYfw/8dbzXZPQCOXF/cPqY2zm3e5
+	 l/K1ndqeFcyQkjJqK+xkjxSQmQB4lUoSWzFRtQLSytQfVjYzsGK+++aRJVCbBvzkyvw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="hP0rY/i1";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.55
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012055.outbound.protection.outlook.com [40.93.195.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750EA606A32A;
-	Tue, 20 Oct 2026 10:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F8606A31C;
+	Tue, 20 Oct 2026 10:11:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 535F8606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KiKYLVMC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3597D1F000C7;
-	Tue, 20 Oct 2026 10:10:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792491044;
-	bh=fQPIuEpvWD+B7zD+vc2FJ+857BaEpzNPJt644Gt/XNE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KiKYLVMCggbH067ZJKEdACaWtrYZoeoYJIiN8o2ZTZiVzEvR1SG87a6QsRgDmlicX
-	 ZrOPC6gY5TuT4NaWhoJmspYcKGvMSgLEOmBpZqyCm0aE5+M6oGwch+bDrY5p/4uGLL
-	 3QLoqlcm8b7uV0qOycg+6oZYgL9FGjGbmFEhLsZbxZhrfYOM8bXhTHxsLt3rplfYLl
-	 FD99Iayp8OzeZVj3Ox5G4ZboMDWB+HzdU7yQO40G/rdaR894bXxbF4bdRgIKpxWYXQ
-	 r8NbuPQMuWE7nkKlPoJwYkDoeL4rrIgqUYe438K7lnNjZcGb+aZ4ybstVrmEN26uXP
-	 5QP4mxOqoSJxQ==
-Subject:
- Re: [PATCH net v5 3/5] net: ethernet: mtk_wed: free up rings during detach
-From: netdev-bot+sashiko@kernel.org
-To: hujy652@gmail.com
-Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- sujuan.chen@mediatek.com, rex.lu@mediatek.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Date: Tue, 20 Oct 2026 10:10:42 +0000
-Message-ID: <179249104276.3135.12420565113536395663@kernel.org>
-In-Reply-To: <20261016-wedfix-v5-3-8b02e78fd34f@gmail.com>
-References: <20261016-wedfix-v5-3-8b02e78fd34f@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hP0rY/i1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ifFDMUOJ5oxEgSvFd7Mn7desF+lTTMdj4UnL4plviRSrhsGyEiaCEB748rr9UMoRrs4i99R5GbUMndwMix8quCGjko01PrhxuOrdbFF593OWal2CiBGsE+SypPrlHF3kSGybO9vD1e8hVSJZ9T/AGiwH5wbtX8tep/73Uw1SOmqwed5Pz6hGYsDf3RG2zYmYW8lh26/s/ZgGHpSLAH8kBA/HIDV+wUVBhTERikRf/zmbmn1ltKH+zHZ9DK4xLqjO0/g5WDh/zIfOL+Z5y9fVnxZm/E2wM3ygUeqWGDGSP+4rAe8rt0l+svironTwqYJRmf5pJINyBPOxLJjM3kgAJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cjSvkt6pmDTNKcq4L0k86IwWllmzcxKoSKxeBKyKWFA=;
+ b=r498A6GqFd/Cly2NkvmgqLNt5qE3VmLi8LzG6wDI+SzjXCLbMw2o/HA8WESjy7XPgOqm1K67d3DBK9E8tCL5a83I4kTbTirz8pusdAcfHazY9G1InOWMmflfEZsrPsxY+5exkeIW5rkAK/+5CfIqhfgEg+yxOwXOG/VyGKC/qJ+E8Gu+WHiPfoZoDrYhShb7nuVQt8c7HCidEGe5TDZHohmKNseIP+4+n5lbZLjyZPuIVbKY0ciExnThE5M7UYG23WY1FS1tC1NfTv5qoVR8JBJcIxAgDq63VNTDiSdYV/mwrFw2IRBgyMa4b1rI0pW8sFzbRUzFAqpL1RP4s+HdOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cjSvkt6pmDTNKcq4L0k86IwWllmzcxKoSKxeBKyKWFA=;
+ b=hP0rY/i1xj1JZ9nGqzIbufj94rlYpUK8A/7omDhrbIQNn6A3+t/i9ItqKBfdKORzD5YgPY4DMIJfLxwIxVwf/8cehVKfgaOyO9se29Q1YE4y8xPz8C9ZpLkGikDGJSy1yOyFpmzU6v335wQhBb+Dh5fv4M2W3ntN4nE0RGMBTO7+5gRRvHI3Z60N2zN6RieLOiF5odLtqzQQoEWcr1vsOZPWfCX7HvppULYOwBXBSEb9UcAyDju98rI1MOCv2kFElumDyA+6zEWpOUSEOeoY4X0rJPO3DUdCFBYQ0RxPAS+Iy7BxFWFgExJd1CRLdqVvOizC6l8O1mR5/EvGgmUI8g==
+Received: from CH2PR02CA0011.namprd02.prod.outlook.com (2603:10b6:610:4e::21)
+ by DS7PR12MB8203.namprd12.prod.outlook.com (2603:10b6:8:e1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Tue, 20 Oct
+ 2026 10:11:24 +0000
+Received: from CH2PEPF00000147.namprd02.prod.outlook.com
+ (2603:10b6:610:4e:cafe::9b) by CH2PR02CA0011.outlook.office365.com
+ (2603:10b6:610:4e::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.18 via Frontend Transport; Tue,
+ 20 Oct 2026 10:11:24 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH2PEPF00000147.mail.protection.outlook.com (10.167.244.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Tue, 20 Oct 2026 10:11:23 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 20 Oct
+ 2026 03:11:06 -0700
+Received: from [10.242.141.2] (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 20 Oct
+ 2026 03:11:02 -0700
+Message-ID: <8255a276-f13e-4aa9-b5e2-d814103f9368@nvidia.com>
+Date: Tue, 20 Oct 2026 13:10:54 +0300
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,187 +104,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 0/2] net/mlx5: HWS, fix pool creation races
+To: Jakub Kicinski <kuba@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, "Simon
+ Horman" <horms@kernel.org>
+CC: Alexandre Cassen <acassen@corp.free.fr>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Mark Bloch
+	<mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
+References: <20261012100555.1317878-1-acassen@corp.free.fr>
+ <09192a25-f141-4a88-bc5e-ffda957da554@nvidia.com>
+ <20261019185104.7a2135c3@kernel.org>
+Content-Language: en-US
+From: Moshe Shemesh <moshe@nvidia.com>
+In-Reply-To: <20261019185104.7a2135c3@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000147:EE_|DS7PR12MB8203:EE_
+X-MS-Office365-Filtering-Correlation-Id: f124edbc-56e1-4f88-4c31-08df2e927f0c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700016|1800799024|23010399003|82310400026|261009223027099003|10067099003|56012099006|22082099003|18002099003|4143699003|11063799006|41080700001;
+X-Microsoft-Antispam-Message-Info:
+	C6cz2I4IzycBM44RTYinJnP5Q0475mmjwUgZGw8irlvfNuZnBsNCaKA32OvPpCpi56qkWeo3/tc16LZquw1G9r03palOw9FGjQvMOZeOzvWqfuqACnz52yypDpoxMzfck7Y4gy6IDTtwqJ06KsPcSOkw4AyAbxx0CQ1a3QXY8mZnim+nYWZFe6otbB5VV9yDsLduHWmrHx1pGCLx4+Tloj64nFaCmxqPvcQpZcLS3PGW/mwIh1XPSwDbr6jaWPoBFAKCaO+6mwOudAnS89GW/QRgrauk1ibD5O5mUsz4MjGcItl8Gr4wqklnM0s4suqSLvHlFR3rPJ0BnXO+m60oLPwquA27K+vBdHe9+s7ffG9j0ys4TX8e9FJBKK4g8nLiZIm/hTE9dcxKvJOmw4zadLuGRzwZH/+MR1rxKT0ikvnoIESsb4dZ2XxWn7BasCU+vwJP3Tfp9KQimXocPlYCt7jLZDWsNNz+w5II349OeHu7Scr/qH0kZw+oJXKNM+as64Lv0DWoYWMCe/btZeMnr3fblbPRBhrGwPFkMiynMqpohk2xV1DhXidwcqjgrlY1dEMn4BQh4ucC31OqkZ+0Uwf8ZBPjrIbrhlpZu8xs8ty/fmwi1N6hk9Q96zvlhV8A+haFbQYpiHdqbruzMO0A4PgefxB1tCwih5igYvTTAz4Ufr3P1wSPBN9w3bOSU5ZgITstECH4TTUGx7VTbIRy2Lbb25UQgaH+MUuOX73wC0yw8fEy3nL/y2QPzOjh+zcnMXvSOLscJ0wTUDP4QoDaYw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(1800799024)(23010399003)(82310400026)(261009223027099003)(10067099003)(56012099006)(22082099003)(18002099003)(4143699003)(11063799006)(41080700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	cerbUXCtRz8JPZwBMvma8I4BLwV/GoSLHt2x5EuPRxnCsw8gQo7vb7PctvkU8z/H4K0VslUWpVNhh0KRoTaIxm4C4V4b5XSMIq4VzeGtNyQl2nrHbffyUUeE/WPPwzyPcGMfkRG99VJr46bFzcooR86rmyDO+VD0E7/NGfHmWV01bmHe4t/wcD46bC9/N2/60e+XBYRiuWaqpJe5IYFFKGotz27P/NZwNWNTMpxGCVtKwLoxIdjpfWGX8WYuxSBh/12PF/V7Fdn0AX7AJjrjgqRr//QuE9YQmXuQOGS3/jCvC9oQ+OlTQVEJG20zoWLX8V1ox4ZkATQlb4nMuypuLuKE/KPsNKA6vo2yKbPGJOYu6J/lYCvEyT7UdXlEyw17ZWOIhdpqr85oIN9ZbOebbzEMD1FSyT0QXSTdQd0GS7D+Y4R4TbeEvDry8NoL+z8r
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 10:11:23.9937
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f124edbc-56e1-4f88-4c31-08df2e927f0c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000147.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8203
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 10/20/2026 4:51 AM, Jakub Kicinski wrote:
+> On Mon, 19 Oct 2026 14:25:38 +0300 Tariq Toukan wrote:
+>> Acked-by: Tariq Toukan <tariqt@nvidia.com>
+> 
+> Clashiko keeps saying that the problem solved by patch 1 doesn't
+> actually exist, could one of the reviewers of this series pls
+> confirm that the AI analysis is wrong? The commit msg says
+> the problem itself was found by AI, so is it not a hallucination?
 
-- [High] Copy-paste bug in the new rx_ring cleanup loop in
-  mtk_wed_free_rx_rings()…
-- [Medium] The new flag gating in mtk_wed_free_tx_rings() causes a leak
-  on partial setup failure.
-- [Medium] The patch now frees the rx_ring descriptor memory in
-  __mtk_wed_detach() → mtk_wed_free_rx_rings(), but WED never disables…
+There is a race here.
+mlx5_cmd_hws_packet_reformat_alloc() doesn't take a lock while calling 
+mlx5_fs_get_pr_encap_pool(), so it can run concurrently for the same 
+size. Reformats can come from independent flows as TC and RDMA flows.
 
---
+Note that the race did not create any leak or UAF. As the commit message 
+says "Two callers allocating the first reformat of a size at once both
+create one and the second fails with -EBUSY.". After the fix the second 
+won't fail but get the pool the first caller allocated.
 
-net: ethernet: mtk_wed: free up rings during detach
-
-This commit adds frees for rx_ring and tx_wdma in mtk_wed_free_rx_rings()
-during __mtk_wed_detach(). It also sets MTK_WED_RING_CONFIGURED in the
-tx/rx ring and wdma tx/rx ring setup paths, and only frees rings that have
-that flag set.
-
-Link: https://github.com/mediatek/mtk-openwrt-feeds/blob/main/25.12/files/target/linux/mediatek/patches-6.12/999-wed-04-Fix-reinsert-wifi-module-cause-memory-leak-issue.patch
-
-> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-> index 3f0be70c3f145..b8264435acbe5 100644
-> --- a/drivers/net/ethernet/mediatek/mtk_wed.c
-> +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-> @@ -949,6 +949,16 @@ mtk_wed_free_ring(struct mtk_wed_device *dev, struct mtk_wed_ring *ring)
->  static void
->  mtk_wed_free_rx_rings(struct mtk_wed_device *dev)
->  {
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(dev->rx_ring); i++)
-> +		if ((dev->tx_ring[i].flags & MTK_WED_RING_CONFIGURED))
-> +			mtk_wed_free_ring(dev, &dev->rx_ring[i]);
-
-[Severity: High]
-Should this check dev->rx_ring[i].flags instead of dev->tx_ring[i].flags?
-
-The flag on rx_ring[idx] is set in mtk_wed_rx_ring_setup(), and that
-function never touches tx_ring[idx]. The existing reader in
-mtk_wed_dma_enable() also tests the flag on the rx ring itself:
-
-	for (i = 0; i < MTK_WED_RX_QUEUES; i++) {
-		struct mtk_wed_ring *ring = &dev->rx_ring[i];
-		...
-		if (!(ring->flags & MTK_WED_RING_CONFIGURED))
-			continue; /* queue is not configured by mt76 */
-
-TX and RX rings are set up separately, so their flags can differ. Take
-MT7992 with a second HIF:
-
-- mt7996_dma_init() puts band1 RX on the primary WED's rx_ring[1].
-- mt7996_register_phy() sends band1 TX to wed_hif2.
-- mt7996_init_tx_queues() then uses MT_WED_Q_TX(0) on wed_hif2.
-
-So the primary WED's tx_ring[1] is never configured.
-
-In that case, is the rx_ring[1] descriptor memory still leaked on every
-detach? This loop skips it, and the pointer is then lost to the
-memset(dev, 0, sizeof(*dev)) at the end of __mtk_wed_detach(). That looks
-like the same leak the commit message says it fixes.
-
-mtk_wed_free_ring() already returns early when ring->desc is NULL. Would
-dropping the flag check here be enough?
-
-> +
-> +	for (i = 0; i < ARRAY_SIZE(dev->tx_wdma); i++)
-> +		if ((dev->tx_wdma[i].flags & MTK_WED_RING_CONFIGURED))
-> +			mtk_wed_free_ring(dev, &dev->tx_wdma[i]);
-> +
->  	mtk_wed_free_rx_buffer(dev);
->  	mtk_wed_free_ring(dev, &dev->rro.ring);
->  }
-
-[Severity: Medium]
-Can rx_ring[i] be freed here while the WLAN chip's WFDMA RX engine still
-points at it?
-
-mtk_wed_rx_ring_setup() writes ring->desc_phys into the WLAN chip's PDMA
-RX ring registers through wpdma_rx_w32(). mtk_wed_dma_enable() then turns
-on the chip's RX DMA:
-
-		val = wifi_r32(dev,
-			       dev->wlan.wpdma_rx_glo -
-			       dev->wlan.phy_base) | MTK_WFMDA_RX_DMA_EN;
-		wifi_w32(dev,
-			 dev->wlan.wpdma_rx_glo - dev->wlan.phy_base,
-			 val);
-
-mtk_wed_dma_disable() never clears MTK_WFMDA_RX_DMA_EN. On normal teardown
-mt7915/mt7996 disable DMA before mt76_dma_cleanup() detaches WED. The
-mt7915 probe error path does not seem to do that:
-
-mt7915_init_hardware()
-  mt7915_dma_init()
-    mt7915_dma_enable()
-      mt7915_dma_start()
-        mtk_wed_device_start()     <- WFDMA RX enabled
-  mt7915_mcu_init()                <- fails, returns without DMA disable
-
-The probe error label in mt7915/pci.c or mt7915/soc.c then runs:
-
-mtk_wed_device_detach()
-  __mtk_wed_detach()
-    mtk_wed_free_rx_rings()
-      mtk_wed_free_ring(dev, &dev->rx_ring[i])
-        dma_free_coherent()
-
-If the chip writes back an RX descriptor after this point, would that
-corrupt memory that has since been reused? Before this patch the ring
-leaked, so such writes landed in memory that was still allocated.
-
-The error path leaving DMA armed predates this patch, and the RX packet
-buffers were already freed in this window. Whether the chip really writes
-descriptors after MCU init fails depends on hardware behaviour. Freeing
-the descriptor ring here is the new part.
-
-> @@ -959,9 +969,11 @@ mtk_wed_free_tx_rings(struct mtk_wed_device *dev)
->  	int i;
->  
->  	for (i = 0; i < ARRAY_SIZE(dev->tx_ring); i++)
-> -		mtk_wed_free_ring(dev, &dev->tx_ring[i]);
-> +		if ((dev->tx_ring[i].flags & MTK_WED_RING_CONFIGURED))
-> +			mtk_wed_free_ring(dev, &dev->tx_ring[i]);
-
-[Severity: Medium]
-Does this leak the tx_ring[idx] descriptor buffer when
-mtk_wed_tx_ring_setup() fails partway?
-
-mtk_wed_tx_ring_setup() allocates the descriptor before it sets the flag:
-
-	if (!reset && mtk_wed_ring_alloc(dev, ring, MTK_WED_TX_RING_SIZE,
-					 sizeof(*ring->desc), true))
-		return -ENOMEM;
-
-	if (mtk_wed_wdma_rx_ring_setup(dev, idx, MTK_WED_WDMA_RING_SIZE,
-				       reset))
-		return -ENOMEM;
-
-	ring->reg_base = MTK_WED_RING_TX(idx);
-	ring->wpdma = regs;
-	ring->flags |= MTK_WED_RING_CONFIGURED;
-
-If the rx_wdma dma_alloc_coherent() fails, tx_ring[idx].desc stays
-allocated but the flag is never set. The -ENOMEM travels up:
-
-mt76_wed_dma_setup()
-  mt76_dma_alloc_queue()
-    mt7915/mt7996 dma init
-      probe error path
-        mtk_wed_device_detach()
-
-Before this patch, mtk_wed_free_tx_rings() freed the ring because
-mtk_wed_free_ring() only checks ring->desc. With the new check the ring
-is skipped, and the memset in __mtk_wed_detach() then drops the pointer.
-
-mtk_wed_rx_ring_setup() uses the same order. A failure in
-mtk_wed_wdma_tx_ring_setup() returns before rx_ring[idx].flags is set, so
-the flag-gated rx_ring free in mtk_wed_free_rx_rings() cannot reclaim
-that ring either.
-
-Since mtk_wed_free_ring() already guards on ring->desc, what does the
-MTK_WED_RING_CONFIGURED check add in these free loops? The commit message
-does not explain why the frees are gated.
-
->  	for (i = 0; i < ARRAY_SIZE(dev->rx_wdma); i++)
-> -		mtk_wed_free_ring(dev, &dev->rx_wdma[i]);
-> +		if ((dev->rx_wdma[i].flags & MTK_WED_RING_CONFIGURED))
-> +			mtk_wed_free_ring(dev, &dev->rx_wdma[i]);
->  }
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-wedfix-v5-0-8b02e78fd34f%40gmail.com
