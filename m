@@ -1,82 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792524612;
-	b=tDiWNW30wPi7BGhSfUy89GjiC0dmM17bEqHnRTZbbqfaIw2LraU+itF59c7pcnf6ZKR/
-	 bS+hJ3lZudkMnDfSVop/V+fPBNoOYh3/jzybXbZkGF9mI5FiK4CApmFi8Tp38vWbjFEdx
-	 aKDyy40LsW0T2MJ/IG0eXurDJ9AriW830fzPb27dPreQRfBYrmoQQwKrou/zE99CajThg
-	 QXgVqU5pA8GsFCVdu7jLxdsFOE/PsKh8i5HHkR5NNCBJmy/X/09IPD1XCW0xk8MCEVeAR
-	 wo1sZcZ/pOAd9iVNaSeIAmaN5//LYJ3TGzkmrPi4YLyY9/NPadxwOkcKYmshgL85k6Q==
+	t=1792524627;
+	b=CLPnZFyntw+9wiMzEWEeh6KwBxEcGyQ4k8hlOGFG9Td3aKPZ1SyB8nOc7HrJRyMtUKE0
+	 7YuGGYNknvMkDyHKL9WdecyZEY38Q9qcjszk5kXnlstcge+VLsTBv4hyZWCn0+lDcedV5
+	 yl0N6ylOm4I6rcHlM84mh5hY7TkM5ZnGvq+gi5TzMUdBgGeyTVJulZwLlTcF3ZaBTHuD3
+	 VCxiKKQV4eszu+a9FlvpX+vtUcBXAWIV3Jd1kmcAV8ULRsH1mDk93R2p4N/Ky+rzPLihq
+	 cOmdjfQyrMruyjwK+AFKTyzwSQxyHo2MwDKsVCMGKIdWHYmhX9Y/+hsdsWLSlYd3oVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792524612;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=Ro+ZQGqvoHjxfsJoqJ8Yh63KTW/BZhi188QX3SNHCQU=;
-	b=XReSWmyk04XHA9hfOMOTB+JssWLyb/2y9wxC7pbBgTNO+AyuaubSWaBLM2/C33oLY4v4
-	 VVAayQZqj/NwvVYJA+qOa+85bJTIj6C/iJZKrOhATGioF9fj0Eu182rjzHzQ5lSfrPc6s
-	 aztsC++/GWyHr6jCRQU949Od0vWaEYc+dOOLNz13iJNGBF89C+Gv9UGgOrTC4r3XEZGdT
-	 u75DBr3e7tV3pZybauM7JpxTsbFHNLOdsBFqKoK0SJEUI2zA+YVfs57SGEHbezo56/98y
-	 8qzsQ81SfZXxj3doUCjeZOVq/oDUlP52hdWCQzMZOL4hXxiOuyEe3AL8Fhizj1c6yzg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792524627;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=KSeUcvYUjSwsww34n8o7HdXqLU0bLoM+ufR8PXL12y8=;
+	b=5hOBgIa29g7Yu8t09LRBLBxC3o6s0UZxIOkcaqXyw2yujndMpsnwjIdGMd+nAfHhPaHw
+	 GawaqkFlm9prbQuIP0Uq9d3RueKDAktAXrvO4WOImI3Tv3/BDOflLYINwtS8/Gsu61ZCF
+	 BPtVJRoX6JoKLn7wwFVL31Oo9Kpt4aLxJALkOf/kuiD4nqt5owMukZtm69PELBDF0rg5f
+	 XV7xGEjlg/pWmiosMSHl0x8BSOjkzYpZ1u+LKKI8JhaBQgWtKdHrC7ywuYKy8sDkzG8Um
+	 UvIzE+LIw+7UpZ/iQMMsnNiq7IvOobxrTBcG84iTMZgkByLpNDEYZ7LobWewQIa9nMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=HGxkr8il;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JAeLnyPy;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF18606A331;
-	Tue, 20 Oct 2026 19:30:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BF18606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D78606A322;
+	Tue, 20 Oct 2026 19:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=HGxkr8il
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Ro+ZQGqvoHjxfsJoqJ8Yh63KTW/BZhi188QX3SNHCQU=; b=HGxkr8ilpsS8CX1H+RCJQyXN9N
-	kgK96RizNWOsvfnVMSk8Tt1EQ7flE2KgXhZ5O/fI2/MmGTw3xKY9+D4UtEo/+1sR+IS99TLqIPlNm
-	mdqkHxouGZwgPCqcGJG3oZmu6wsPQNdQpn2ZN4AgPmvYJhZi3WoFFmVjVMPyCzulyMTs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xJFWw-00BueB-Gr; Tue, 20 Oct 2026 21:29:50 +0200
-Date: Tue, 20 Oct 2026 21:29:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"parthiban.veerasooran@microchip.com" <parthiban.veerasooran@microchip.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"corbet@lwn.net" <corbet@lwn.net>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"rdunlap@infradead.org" <rdunlap@infradead.org>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"edumazet@kernel.org" <edumazet@kernel.org>,
-	"piergiorgio.beruto@gmail.com" <piergiorgio.beruto@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"jerry.ray@microchip.com" <jerry.ray@microchip.com>,
-	"ciprian.regus@analog.com" <ciprian.regus@analog.com>
-Subject: Re: [PATCH net-next v9 03/11] net: ethernet: oa_tc6: Move oa_tc6.c
- to its own directory
-Message-ID: <e40a4fae-b339-4a5a-b21e-3a31dd3ddd5a@lunn.ch>
-References: <20261009-s2500-mac-phy-support-v9-3-dcefe1d0bf0d@onsemi.com>
- <179166121127.434549.2014178695820662916@kernel.org>
- <CH0PR02MB786710538BD4784E5CF2C9A183672@CH0PR02MB7867.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JAeLnyPy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EBB1F000CE;
+	Tue, 20 Oct 2026 19:30:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792524626;
+	bh=KSeUcvYUjSwsww34n8o7HdXqLU0bLoM+ufR8PXL12y8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JAeLnyPyB6jABg2Y16IolXFwqhIFPwWIJRyPK/1woNixgG3DFtV+hdVddTuClialv
+	 xbm8ppWAY3xNJHi/9iHtD1UPRkHCycxTdl5ICzaglY7YSju6bPURo+j4w7u5Np8YLb
+	 GaCAISgXVAgVozkqA6kzg2utb412SSzRg6ZjLAu76DECG3Nh13ydLBC5Hqw48Nu0yW
+	 RIcNmkfpX1PMnL1R5Jxh2Ppf/Pqw1va9kJy+qDDJChV8+3p1f2+tbhu+WmkjkNPtn1
+	 3sqFot52DEzNMWWyXD5+GKLWNtY0ezLcfYmq7qW6L6wXf/QTPIl4QlLrRa69870Bjg
+	 MDU8pGFjCj/5g==
+Subject: Re: [PATCH v4 net-next 09/15] selftests: xsk: run one test case per
+ xskxceiver invocation
+From: netdev-bot+sashiko@kernel.org
+To: maciej.fijalkowski@intel.com
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
+ stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com,
+ tushar.vyavahare@intel.com, kerneljasonxing@gmail.com, bjorn@kernel.org
+Date: Tue, 20 Oct 2026 19:30:25 +0000
+Message-ID: <179252462533.3135.3442908149115698082@kernel.org>
+In-Reply-To: <20261016174338.787135-10-maciej.fijalkowski@intel.com>
+References: <20261016174338.787135-10-maciej.fijalkowski@intel.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,29 +63,150 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CH0PR02MB786710538BD4784E5CF2C9A183672@CH0PR02MB7867.namprd02.prod.outlook.com>
 
-On Tue, Oct 20, 2026 at 04:48:48PM +0000, Selvamani Rajagopal wrote:
-> Andrew, Jakub (and other concerned reviewers).
-> 
-> This following feedback about change of module name is being raised regularly. While I understand 
-> the concern (and I agree with it), this is how it has been from the beginning and I didn't see any 
-> concern from the reviewers. So, I thought it is ok to leave it the way it is.
-> 
-> My question is, should I change the module name back to the original oa_tc6.ko (from
-> oa_tc6_mod.ko that is used in this patch series). If I choose to do that, original file name oa_tc6.c
-> would have to change to oa_tc6_core.c or something like that.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-I don't think we consider module names ABI.
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-However, some distros, especially in the embedded space such as yocto,
-do make use of the module name, it produces a binary RPM named from
-the module name. So if a rename can be avoided, that would be great.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Git is pretty good at following renames, so renaming oa_tc6.c to
-oa_tc6_core.c in order to keep the module name the same should not
-cause problems.
+- [Medium] test_xsk.py reserves the 2 MiB pool only
+  (/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages), on the…
+- [Low] In xsk_wait_endpoint_exit()
+  (tools/testing/selftests/net/lib/py/xsk.py), the TimeoutExpired…
+- [Low] Concern: xsk_reserve_hugepages()/xsk_release_hugepages() read,
+  modify and restore the global 2 MiB nr_hugepages with no protection…
 
-    Andrew
+--
+
+selftests: xsk: run one test case per xskxceiver invocation
+
+This replaces test_xsk.sh and xsk_prereqs.sh with test_xsk.py, which runs
+xskxceiver once per mode and case on a fresh veth pair. It moves the huge
+page, busy-poll and endpoint wait helpers into net/lib/py/xsk.py.
+xskxceiver now requires -m and -t and runs exactly one case.
+
+> diff --git a/tools/testing/selftests/net/lib/py/xsk.py b/tools/testing/selftests/net/lib/py/xsk.py
+> new file mode 100644
+> index 0000000000000..ffaf4b2d35b9d
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/lib/py/xsk.py
+> @@ -0,0 +1,73 @@
+
+[ ... ]
+
+> +NR_HUGEPAGES = 32
+> +# xskxceiver maps the UMEMs of the UNALIGNED cases with MAP_HUGE_2MB.
+> +HUGEPAGES = "/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages"
+
+[Severity: Medium]
+This comment, and the commit message line "test_xsk.py reserves 32 huge
+pages of 2 MiB, the size that xskxceiver maps the UNALIGNED UMEMs with",
+hold for thread_common_ops(). Do they also hold for the probe that decides
+whether the UNALIGNED cases can run?
+
+hugepages_present() in lib/xsk/test_xsk.c does:
+
+	bufs = mmap(NULL, mmap_sz, PROT_READ | PROT_WRITE,
+		    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, MAP_HUGE_2MB);
+
+Here MAP_HUGE_2MB goes in as the offset and is not OR-ed into the flags.
+That leaves no size bits in flags, so the kernel uses the default hstate.
+
+Take a host booted with default_hugepagesz=1G, or arm64 with 64K pages.
+The probe checks the wrong pool there. The 0x54000000 offset is also not
+aligned to the default huge page size, so the mmap fails with -EINVAL.
+
+On such a host the sequence is:
+
+  xsk_reserve_hugepages() fills the 2 MiB pool and returns True
+  _get_cases() keeps the UNALIGNED cases
+  detect_ifobj_caps()->hugepages_present() fails
+  XSK_CAP_UNALIGNED stays clear
+  testapp_validate_traffic() prints "No huge pages present." and skips
+
+Every UNALIGNED case then skips, even though the 2 MiB pages were reserved.
+The docstring says these cases are left out only without huge pages.
+
+The probe was already wrong before this patch, but this patch is the first
+to rely on xskxceiver using the 2 MiB pool. Should hugepages_present() put
+MAP_HUGE_2MB in the flags, the way thread_common_ops() does?
+
+> +
+> +
+> +def xsk_reserve_hugepages(saved, host=None):
+
+[ ... ]
+
+> +    have = cmd(f"cat {HUGEPAGES}", fail=False, host=host)
+> +    if have.ret:
+> +        return False
+> +    have = int(have.stdout)
+> +    if have >= NR_HUGEPAGES:
+> +        return True
+> +    saved.append((host, have))
+> +    cmd(f"echo {NR_HUGEPAGES} > {HUGEPAGES}", shell=True, fail=False,
+> +        host=host)
+
+[ ... ]
+
+> +def xsk_release_hugepages(saved):
+> +    """Restore the counts that xsk_reserve_hugepages() added to saved, the
+> +    last one first, as two hosts can share the pool."""
+> +    for host, have in reversed(saved):
+> +        cmd(f"echo {have} > {HUGEPAGES}", shell=True, fail=False, host=host)
+
+[Severity: Low]
+This probably isn't a problem in practice. The kselftest runner runs tests
+one at a time, and saving and restoring nr_hugepages is the usual pattern
+(mm's run_vmtests.sh does the same).
+
+Still, the 2 MiB nr_hugepages count is global, and it is read, changed and
+restored here with no coordination. If something else on the host changes
+it during the run, would this restore overwrite that change?
+
+[ ... ]
+
+> +def xsk_wait_endpoint_exit(endpoint, label, timeout):
+
+[ ... ]
+
+> +    try:
+> +        endpoint.process(terminate=False, fail=False, timeout=timeout)
+> +    except subprocess.TimeoutExpired:
+> +        endpoint.proc.kill()
+> +        endpoint.process(terminate=False, fail=False)
+
+[Severity: Low]
+Can this second process() call time out too? That could happen if
+xskxceiver is in uninterruptible sleep, for example blocked in the kernel on
+a hung page_pool or XDP teardown, so the SIGKILL does not take effect.
+
+cmd.process() defaults to timeout=20, so this is another bounded
+proc.communicate(timeout=20). A TimeoutExpired raised inside this handler
+is not caught by the except BaseException clause next to it.
+
+The exception would then escape without the "killed after" log, without the
+captured stdout and stderr, and with the child left unreaped. ksft_run()
+would mark the case failed with a traceback.
+
+The case would also take about 2 x CASE_TIMEOUT. The commit message says:
+
+    A case is killed and fails after 20s, so that the run ends within
+    the net timeout even if all cases hang.
+
+> +        ksft_pr(f"killed after {timeout}s", line_pfx=f"{label}|")
+> +    except BaseException:
+> +        endpoint.proc.kill()
+> +        endpoint.proc.wait()
+> +        raise
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016174338.787135-1-maciej.fijalkowski%40intel.com
