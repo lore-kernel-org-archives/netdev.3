@@ -1,70 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.223
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792488090;
-	b=a7hLeFogVJHnw5WNtJe1VoapzaHb/NnaxEcvCyaQpXBSg6V+0MEskHy8wT1BigUINzjk
-	 LufuofU4jpPod8yJ3B0+G6AUmAfomEz5ttAzi763buzLsFotmFRRXmSXXMYR8ayjm8tZQ
-	 Vn8wzbmyetd6tVJZnHMEWPICsw3ePUZiJAz5TDEVXl+VXDMtyJASq+MP5HNJ63e91V3Ko
-	 8KNLda5i9EM509XAk8P+O3pbKuZUoxPOu9z6zIr1Y0HZEZ3ug5gSBGl4cIP5G6xJw530e
-	 qhS/hBTLYSVM55LCSlMzAfp8OxXydYgRavoKwZQ698lhNIrNCIidmXBp7VR+UUNh88g==
+	t=1792488095;
+	b=JJ3aPV/U9g8OWB7DlGeSRD/fVVWLKhBNK2K38mW1AIDkVCKLoGQdKPwIHEabPRo4Ox+j
+	 Qxb0Rmdcc3u8oKJj3H+HKsYeB5mK87MfXsEEOWnQaYZletJGGDcrJl4H5CADKOoQQptRV
+	 HuZLkiDCCojTG/8E+SrPYmtImDtNbFxbj7dfwxFRrSDz9dAV6vSgSPNTUnUoUNQ/F34Xr
+	 AispeZw52PpFD9YrFI0/QU6aBCgcKRLExajIpjLwkPsyuZYChMNd8Rl6KhGXC0/wI77SR
+	 +Qmr+iC4NZwkoDuiHFS1NMY4KdfH8mC7Gzzsv8kEi68nvEsHjaa0HEgaPldrkHqjeSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792488090;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=OyLLAUQgg2lsg9dQ6S3FRdSjv0JAJE2gYyPiInB6GMk=;
-	b=Bn9WTfwJRjpEo8k9Ie/yHdH6k1F/OtLLeveNNVr83xGxHaaQa9I6dV/WCYu8Mvjjq9Eh
-	 iAjTJ1j9nWlXOy24VT2Ie7RNntjJZjBxKaRzfNd+rWQNm0m6bUsg1XQwbDDi3Kfg/wkNx
-	 L+y/3IB4hFKky1waYI0MH6r5rfqr9ZY8l0BEziqZAWqXkj0jgHTwz6QpUaVub+qRNTMmt
-	 4N4AgKiEcCwAp7Uhc/HxfUNidNHnvgt/NNNqQzVEA5pAUTnaEs4r5gTQkgSHMPvysbtel
-	 2ezoMpiGSQMn6pXgbN+dJ/ttiqbk1QBXuCyyb9fHTNL/fnu5Gx0xpS+key3TsahFxQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792488095;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=5e+oqors5ngXUuG02qSoQoio2oIJEIQO9xg33zEm4II=;
+	b=DLCI8hr1OIacee9kQTdizEtWmglHQdol5JGwqeOIRHgbFWvHEAuKe1UR+uXGtX897kS/
+	 jbMwyZSOgR0HMh7laqNN7yU/N2C79MVS22KVYZl44ta1V8JIRLZRGDfcvG8iIvshWYUW7
+	 VOw9sw2FvPORNxDQGGE0+5DEU7hiZXpBNaK610XVJvCD2wn0KfK8jd2gRyVFXeUloRl+W
+	 P3Ltvgh2dEa+m9H2DauN+dy+03vZqR/m+bDUAxVGtT5GR8lIttpFrE/PRH3gnnuXfUnPv
+	 4/dwK518cyNW3j8tNiGcaOanjC0dQ/XIM9STTdN3fp0POR/SA+0G3td0xR16cUbPR8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DeJcECNi;
-	arc=none smtp.remote-ip=95.215.58.223
-Received: from mta1.migadu.com (out-223.mta1.migadu.com [95.215.58.223])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8F8606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:21:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE8F8606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=rbclCkjH;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBF1606A331;
+	Tue, 20 Oct 2026 09:21:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CBF1606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DeJcECNi
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=YNTKApM0NRZweSbGwqQREeW9XGzGVWqnor/S3lp0hng=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792488087; v=1; x=1793092887;
- b=DeJcECNiuHs+hoCDz8hqLT5qHF+kZIQojZ8CCusexWrdskmYUVTcgzSojnw8GZHasrTN9Voy
- TfjrlIhRWkcYoueir1+SHTA1VxdLMJF4xd5o70zPy9nuu/5zWapv+qizd5qRLV4pmrbGCy7Pk+Y
- jKweFhN53seqcKYL8okOv978=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ce2fc71dc6064e2e;
-	Tue, 20 Oct 2026 09:21:27 +0000
-X-Mizu-Trace-ID: ce2fc71dc6064e2e
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=rbclCkjH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=rbclCkjH+HCO6sAi7dtdiLTD6JORM7W7xg5FTdEuflHkpSm/cWeleXuNAwp/bauAxJ5hcHpUUaMjQ
+	 kiILRk5ZAQiVJfHLMOtka/m6QN3a4da8MMvI96DMRa+98D10kb6VcRQZ5p1t2ZY3QsnVLcei7KEv+w
+	 AfpR23Xz49AALz/Q=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16ad7329b0ac-f75f0;
+	Tue, 20 Oct 2026 17:21:31 +0800 (CST)
+X-RM-TRANSID:2ee16ad7329b0ac-f75f0
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.99])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96ad73299558-c826e;
+	Tue, 20 Oct 2026 17:21:31 +0800 (CST)
+X-RM-TRANSID:2ee96ad73299558-c826e
+From: yanxia <yanxia@cmss.chinamobile.com>
+To: bot+bpf-ci@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Cc: yana06070@163.com,
+	ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	richardcochran@gmail.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH net] pppoe: delete session hash entries by pointer match
-Date: Tue, 20 Oct 2026 17:21:11 +0800
-Message-ID: <20261020092118.47416-1-qingfang.deng@linux.dev>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	martin.lau@kernel.org,
+	mason@kernel.org
+Subject: Re: [PATCH bpf-next v2] tools/bpf: Remove legacy BPF tools
+Date: Tue, 20 Oct 2026 17:21:19 +0800
+Message-ID: <20261020092119.918464-1-yanxia@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <a02301c0ff8593349602f81cdf0c21f1b38db0b60118f8eed3199a6a38330234@mail.kernel.org>
+References: <20261020083713.905006-1-yanxia@cmss.chinamobile.com> <a02301c0ff8593349602f81cdf0c21f1b38db0b60118f8eed3199a6a38330234@mail.kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,98 +95,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8bit
 
-pppoe_connect() copies the requested PPPoE address to a socket before
-attempting to insert the socket into the session hash table. If the
-tuple already exists, __set_item() returns -EALREADY, but the copied
-address and ifindex remain set on the failed socket.
+Thanks for the review. Agreed: the table lists mnemonics, addressing
+modes and descriptions. I'll fix the wording in the next revision:
 
-Closing that socket then deletes the existing socket's hash entry
-through pppoe_release(), preventing it from receiving further session
-traffic. An unprivileged process in the same network namespace can
-trigger this through a duplicate connection attempt.
+  The instruction set consists of load, store, branch, alu, miscellaneous
+  and return instructions. This table lists the assembly notation and what
+  the corresponding opcodes defined in linux/filter.h do:
 
-To avoid the accidental delete, pass the pppox_sock to __delete_item(),
-and unlink only an entry whose pointer matches the requested socket.
+Best regards,
+yanxia
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
- drivers/net/ppp/pppoe.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index bf7414b46a26..ee0e318d6a2a 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -194,18 +194,16 @@ static int __set_item(struct pppoe_net *pn, struct pppox_sock *po)
- 	return 0;
- }
- 
--static void __delete_item(struct pppoe_net *pn, __be16 sid,
--					char *addr, int ifindex)
-+static void __delete_item(struct pppoe_net *pn, const struct pppox_sock *po)
- {
--	int hash = hash_item(sid, addr);
-+	int hash = hash_item(po->pppoe_pa.sid, po->pppoe_pa.remote);
- 	struct pppox_sock *ret, __rcu **src;
- 
- 	ret = rcu_dereference_protected(pn->hash_table[hash], lockdep_is_held(&pn->hash_lock));
- 	src = &pn->hash_table[hash];
- 
- 	while (ret) {
--		if (cmp_addr(&ret->pppoe_pa, sid, addr) &&
--		    ret->pppoe_ifindex == ifindex) {
-+		if (ret == po) {
- 			struct pppox_sock *next;
- 
- 			next = rcu_dereference_protected(ret->next,
-@@ -236,11 +234,10 @@ static inline struct pppox_sock *get_item(struct pppoe_net *pn, __be16 sid,
- 	return po;
- }
- 
--static inline void delete_item(struct pppoe_net *pn, __be16 sid,
--					char *addr, int ifindex)
-+static void delete_item(struct pppoe_net *pn, const struct pppox_sock *po)
- {
- 	spin_lock(&pn->hash_lock);
--	__delete_item(pn, sid, addr, ifindex);
-+	__delete_item(pn, po);
- 	spin_unlock(&pn->hash_lock);
- }
- 
-@@ -570,8 +567,7 @@ static int pppoe_release(struct socket *sock)
- 	 * protect "po" from concurrent updates
- 	 * on pppoe_flush_dev
- 	 */
--	delete_item(pn, po->pppoe_pa.sid, po->pppoe_pa.remote,
--		    po->pppoe_ifindex);
-+	delete_item(pn, po);
- 
- 	sock_orphan(sk);
- 	sock->sk = NULL;
-@@ -621,8 +617,7 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
- 	if (stage_session(po->pppoe_pa.sid)) {
- 		pppox_unbind_sock(sk);
- 		pn = pppoe_pernet(sock_net(sk));
--		delete_item(pn, po->pppoe_pa.sid,
--			    po->pppoe_pa.remote, po->pppoe_ifindex);
-+		delete_item(pn, po);
- 		if (po->pppoe_dev) {
- 			dev_put(po->pppoe_dev);
- 			po->pppoe_dev = NULL;
-@@ -672,8 +667,7 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
- 
- 		error = ppp_register_net_channel(dev_net(dev), &po->chan);
- 		if (error) {
--			delete_item(pn, po->pppoe_pa.sid,
--				    po->pppoe_pa.remote, po->pppoe_ifindex);
-+			delete_item(pn, po);
- 			goto err_put;
- 		}
- 
--- 
-2.43.0
 
