@@ -1,62 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792518017;
-	b=XZxqDr9Q/d2Oq8XkvNWEudCizGP+S6Q/fQP4Fo3ucrwjZIzUMFXOw8l9Kbusaao9UKdV
-	 M36dstoY952yRGDpPZl4xmr5IsvX1184SpmZ0vWPQulD5VRYZn8h5eXfpdnsO4w6MaEkE
-	 k9i+DYV9+FAku511ZU1QHyWtyNbK3CZsyyUBhKk54XrPmH5NxRgoVSvMF2jy7pUNr7fWN
-	 4iDqrkz3IcmLIYsdsg83+O0Hkc09j+Zu920tPrKtPN1i82V0eYZKDseYHE6i+I8g2jfMp
-	 kGqXbGVQBT/KrSdwb8v2uPxMmHJ/pD6X1QtPaMxEbLcdFI1JGXNbAO599JQ8bCOm6QQ==
+	t=1792518116;
+	b=im+4c37EO9Ki9pViip0OdsPGrAWLf5fxgiMM4X+GQcItwV8VQGW6IWqhgWHi1Fdh7bt3
+	 2XAbXowfXP8sqlBQjDSRsJTU9qn0XkH0l0eLpjUiL9zGJ/uQULnJc9VJyOcj0uT5HbpFI
+	 Gv4vVbUo7WU12wQT9PlDKydFnYnvctXuqNxbqG8THm3FrpxnN2D808nlU+fH2d2P1HOJQ
+	 7wm5s7wDqq2RaYf8Lot+fYFIpkoPhql13w1Vpk4GS/guJYvv3GGJyTKQjqOdythxNI+9o
+	 8d3+x1WDlpvVzl04mBhXzU3ByNbEsLfF0GE3gKWxtCjNtvgAWJaYh2IMsAecKUlVglg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792518017;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=hgOzPzOjchrqHomdRvZ+L0A3V2FHRfWcryiGxEDDIww=;
-	b=mZdJsRWCxtoJqNZMLK9eYL4UEcjh7AAaghmOBHEuuy9J/AH1Vz2mq6Y8uWonJsS+LCWi
-	 Rk4EI07crH04oZ52EYpp6Nw6MuGlRthmbCKI/6fIU3WxViDzKjpLwYbSGWSZiwfEXxUq6
-	 M59x/0a5Dvk9c8fA7o49OCVBWThcoSMBa147SBr9rO+uC01gFfda8RqynFC7YRiErvK5G
-	 O1KN2UPw8EU1259uZc1wWenEHh8Wu/mxOlreHazhJ1yAoe5jD5jyMcn8vEm8tedhc8ysa
-	 d71Qt8d8A6qh1QJX+pnQ6Pbksz535gmvw6z8fae/sxJpdMLsVeEe2QPh1iKgpx3ixmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792518116;
+	h=Received:Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 X-sashiko-severity:Content-Type:Content-Transfer-Encoding:
+	 MIME-Version;
+	bh=7kHsNvX7qhi13hNAheORWGGXQJ977zoh3p67QbCteZs=;
+	b=ZOmk327MLX5tG1SSTl9k9eFIct5y+VxQM9sxqB4e/EJPQxv0hFLA54WLXEmICeQrFWVK
+	 WBhXAMQ0DlEbV1suoNZeG3WVGGanOuUySa0NEk+VZc+qzLROmodGJNSRBN+Rd3Kb6c4m0
+	 E5oMDMSPdRY2VrHt/F8RcUug2tucJ84643Vd9K6ye5MyLbop6MZzvNux/ercCX80gB7zl
+	 nvbgfdvvI25mV6mwOitPgxdeSdsd0V0di9sIBHnQsAwGYhmNUZQ5znww4fX3M7SHC+ThE
+	 f1bRfPqwAObgGT4X92aqIbF4pP5jZVzzxapqNcVgw0WfcrVD+RPg4dvusI5z23+7BUg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=q6KhtCmK;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45EF606A322;
-	Tue, 20 Oct 2026 17:40:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D45EF606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=q6KhtCmK
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=hgOzPzOjchrqHomdRvZ+L0A3V2FHRfWcryiGxEDDIww=; b=q6
-	KhtCmK7u1b/zKShsk7MFV/2cNuSrVySbbJzTQnuLzUJjI6WGzmqlM1a0Kw0/nfpIE1CXguoTNP0Tt
-	WkQWhSj2EJ80pvaXK05j3xGUDD1U4u0p+CsUNwgrfZK/JTvDSF6oqVc6ya1kmXKOn9JUhV/X9/RH4
-	krPi85TTL1TGOhQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xJDoa-00BtVN-4J; Tue, 20 Oct 2026 19:39:56 +0200
-Date: Tue, 20 Oct 2026 19:39:56 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: netdev-bot+sashiko@kernel.org
-Cc: cyan2254650260@gmail.com, davem@davemloft.net, edumazet@kernel.org,
-	hkallweit1@gmail.com, kuba@kernel.org, pabeni@redhat.com,
-	linux@armlinux.org.uk, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: Add JLSemi JL21xx Gigabit Ethernet
- PHY driver
-Message-ID: <26a568ac-d39a-4b8c-aee3-a7fd539976c0@lunn.ch>
-References: <20261016161543.444356-1-cyan2254650260@gmail.com>
- <179251652395.3135.9790628596697229408@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14755606A31C;
+	Tue, 20 Oct 2026 17:41:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C951F000C9;
+	Tue, 20 Oct 2026 17:41:54 +0000 (UTC)
+Subject:
+ Re: [PATCH net] net: gso: complete partial checksums of fraglist segments
+From: netdev-bot+sashiko@kernel.org
+To: pylaterreur@gmail.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ steffen.klassert@secunet.com, willemb@google.com, nbd@nbd.name,
+ dsahern@kernel.org, alice.kernel@fastmail.im, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 20 Oct 2026 17:41:24 +0000
+Message-ID: <179251808436.3135.4663009008988261682@kernel.org>
+In-Reply-To: <20261016-fraglist-csum-v1-1-93945be7bb5d@gmail.com>
+References: <20261016-fraglist-csum-v1-1-93945be7bb5d@gmail.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,89 +52,221 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179251652395.3135.9790628596697229408@kernel.org>
 
-On Tue, Oct 20, 2026 at 05:15:23PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 10 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 · Medium: 6 · Low: 3
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] jlsemi_set_wol() can leave the MDIO bus mutex held permanently.
-> - [Medium] Wake-on-LAN cannot work, yet the driver tells userspace it is
->   enabled.
-> - [Medium] When WoL is enabled, jlsemi_set_wol() writes JLSEMI_WOL_RMSQ
->   (0x1fff) to page 0xd8a reg 17.
-> - [Medium] jlsemi_config_init() always calls
->   jlsemi_disable_autonomous_eee() (clears PHYCR2 bit 5) on every…
-> - [Medium] When the LED's three link-speed bits are all set,
->   jlsemi_led_hw_control_get() returns TRIGGER_NETDEV_LINK_10, LINK_100…
-> - [Medium] jlsemi_set_wol() ignores every hardware-programming error and
->   always returns 0.
-> - [Medium] In the interrupt-disable branch of jlsemi_config_intr(), `err
->   = phy_write_paged(phydev, JLSEMI_INER_PAGE, JLSEMI_INER, 0)` is never…
-> - [Low] The register map and most of the logic in
->   drivers/net/phy/jlsemi.c are a near-verbatim copy of the RTL8211F…
-> - [Low] jlsemi_config_rgmii_delay() handles rx-/tx-internal-delay-ps
->   inconsistently.
-> - [Low] jlsemi_handle_interrupt() reads INSR (0x1d) once.
-> 
-> --
-> 
-> net: phy: Add JLSemi JL21xx Gigabit Ethernet PHY driver
-> 
-> This commit adds a new phylib driver for the JLSemi JL2101, JL2121 and
-> generic JL21xx Gigabit PHYs. It covers paged register access, RGMII delay
-> configuration, vendor status register parsing, interrupts, hardware LED
-> control, magic packet Wake-on-LAN, autonomous EEE disable and
-> suspend/resume.
-> 
-> Link: https://www.jlsemi.com/
-> 
-> > diff --git a/drivers/net/phy/jlsemi.c b/drivers/net/phy/jlsemi.c
-> > new file mode 100644
-> > index 0000000000000..c3acff48d4618
-> > --- /dev/null
-> > +++ b/drivers/net/phy/jlsemi.c
-> > @@ -0,0 +1,551 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * Driver for JLSemi Gigabit Ethernet PHYs (JL2121 / JL2101)
-> > + *
-> > + * Copyright (C) 2026 Pufan Jin <cyan2254650260@gmail.com>
-> > + */
-> 
-> [ ... ]
-> 
-> > +/* Wake-on-LAN settings */
-> > +#define JLSEMI_WOL_PAGE			0xd8a
-> > +#define JLSEMI_WOL_SETTINGS_EVENTS	16
-> > +#define JLSEMI_WOL_EVENT_MAGIC		BIT(12)
-> > +#define JLSEMI_WOL_RST_RMSQ		17
-> > +#define JLSEMI_WOL_RG_RSTB		BIT(15)
-> > +#define JLSEMI_WOL_RMSQ			0x1fff
-> 
-> [Severity: Low]
-> This isn't a bug, but the register map looks identical to the RTL8211F
-> support in drivers/net/phy/realtek/realtek_main.c. That covers PHYCR2 0x19
-> bit 5, INSR 0x1d, INER page 0xa42 reg 0x12, RGMII page 0xd08 regs
-> 0x11/0x15, WoL page 0xd8a regs 16/17 with RG_RSTB BIT(15) and RMSQ 0x1fff,
-> MAC page 0xd8c, and LEDCR page 0xd04 reg 0x10 with 5-bit per-LED fields.
-> 
-> jlsemi_led_hw_is_supported() and jlsemi_led_hw_control_get() also follow
-> rtl8211x_led_hw_is_supported() and rtl8211f_led_hw_control_get() closely.
-> The same goes for the set_wol, suspend and resume flows.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Interesting. Please see if this really is register compatible. If it
-is, please extend the RTL8211F to cover this device.
+Critical: 1 · High: 0 · Medium: 2 · Low: 1
 
-    Andrew
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Critical] skb_segment_list_csum_help() runs software checksum
+  completion on the head segment while that skb is shared.
+- [Medium] skb_segment_list_csum_help() completes each segment's checksum
+  using the csum_start/csum_offset that skb_segment_list() copied from…
+- [Medium] On a segmentation failure, udp_rcv_segment() counts drops with
+  `drop_count = skb_shinfo(skb)->gso_segs`, then calls sk_drops_add()…
+- [Low] The kerneldoc of skb_segment_list_csum_help() ('Segments that are
+  GSO packets themselves (TCP fraglist GRO can chain those) are left…
+
+--
+
+net: gso: complete partial checksums of fraglist segments
+
+This patch adds skb_segment_list_csum_help(). When the output features
+can't offload the checksum, it completes the CHECKSUM_PARTIAL checksums of
+the segments built by skb_segment_list(). The UDP and TCP (v4/v6) fraglist
+GSO paths call it after the protocol code has fixed up the segment
+headers.
+
+Closes: https://github.com/Ysurac/openmptcprouter/issues/4402
+
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 41beaf625421a..be3fa938e1da2 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -4782,6 +4782,46 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
+>  }
+>  EXPORT_SYMBOL_GPL(skb_segment_list);
+>  
+> +/**
+> + * skb_segment_list_csum_help - finish the checksums of fraglist segments
+
+[ ... ]
+
+> + * Segments that are GSO packets themselves (TCP fraglist GRO can chain
+> + * those) are left alone, as skb_checksum_help() can't handle them.
+
+[Severity: Low]
+Is this still true on the base tree? Commit 66817a979426 ("net: gro: Fix
+nesting of TCP GSO SKBs in skb_gro_receive_list()") changed
+tcp4_check_fraglist_gro() and tcp6_check_fraglist_gro() so that only
+non-GSO skbs start an flist flow:
+
+	NAPI_GRO_CB(skb)->is_flist = !sk && !skb_is_gso(skb);
+
+When a GSO skb meets an flist head, it falls back to regular GRO, and
+tcp_gro_receive() flushes when the is_flist values differ. skb_segment_list()
+also calls skb_gso_reset() on the head. Put together, skb_segment_list()
+doesn't appear to produce GSO segments, so the skb_is_gso() skip below
+would be dead code on mainline.
+
+The changelog gives the same reason:
+
+  Segments that are GSO packets themselves, which TCP fraglist GRO can
+  chain, are left as they were: skb_checksum_help() refuses GSO packets.
+
+The test in the notes with a TSO veth sender can't exercise this skip
+either, because TSO packets never become flist on this tree.
+
+Could the comment and changelog describe the skip as defensive, or mention
+66817a979426? This patch is tagged for stable. On stable trees that don't
+have that commit, the skipped GSO members would still go out with only the
+pseudo-header sum.
+
+> + *
+> + * Return: @segs, or an error pointer after freeing the segments.
+> + */
+> +struct sk_buff *skb_segment_list_csum_help(struct sk_buff *segs,
+> +					   netdev_features_t features)
+> +{
+> +	struct sk_buff *seg;
+> +	int err;
+> +
+> +	if (segs->ip_summed != CHECKSUM_PARTIAL)
+> +		return segs;
+> +
+> +	for (seg = segs; seg; seg = seg->next) {
+> +		if (skb_is_gso(seg))
+> +			continue;
+> +
+> +		err = skb_csum_hwoffload_help(seg, features);
+
+[Severity: Critical]
+Can this hit BUG_ON(skb_shared(skb)) in pskb_expand_head() for the head
+segment?
+
+skb_segment_list() returns the head with an extra reference:
+
+	skb_get(skb);
+
+	return skb;
+
+So the first entry of segs has users == 2 when this loop runs.
+skb_gso_reset() has already cleared its gso_size, so the skb_is_gso() skip
+doesn't apply to it.
+
+If features have no checksum offload that fits the packet,
+skb_csum_hwoffload_help() falls through to skb_checksum_help(), which
+does:
+
+	if (skb_has_shared_frag(skb)) {
+		ret = __skb_linearize(skb);
+
+skb_segment_list() only linearizes the head when NETIF_F_SG is missing, so
+with SG set the head can still have page frags. skb_gro_receive_list()
+copies SKBFL_SHARED_FRAG from every aggregated member onto the head, and
+MSG_SPLICE_PAGES senders (sendfile/splice over TCP or UDP) set that flag.
+
+The resulting chain would be:
+
+validate_xmit_skb()
+  __skb_gso_segment()
+    __udp_gso_segment_list() / __tcp{4,6}_gso_segment_list()
+      skb_segment_list()             /* skb_get(), users == 2 */
+      skb_segment_list_csum_help()
+        skb_csum_hwoffload_help()
+          skb_checksum_help()
+            __skb_linearize()
+              __pskb_pull_tail()
+                pskb_expand_head()   /* BUG_ON(skb_shared(skb)) */
+
+Two cases look like they reach this. The first is forwarding to a tun
+device without TUN_F_CSUM, since tun keeps NETIF_F_SG | NETIF_F_FRAGLIST.
+The second is udp_rcv_segment() for a socket using IP_CHECKSUM, where
+features == NETIF_F_SG.
+
+skb_segment() doesn't have this problem because its segments are freshly
+allocated with a refcount of 1. Would it work to complete or linearize the
+head before skb_get() in skb_segment_list(), or to handle the head
+separately?
+
+[Severity: Medium]
+Do csum_start and csum_offset on each segment always point at that
+segment's L4 check field here?
+
+skb_segment_list() copies them from the head with __copy_skb_header().
+skb_headers_offset_update() then only shifts them by the headroom
+difference.
+
+The fraglist GRO path never normalizes them:
+__virtio_net_hdr_to_skb() accepts any csum_start/csum_offset that fits in
+that packet's own linear data. The is_flist branches of
+udp4_gro_complete() and tcp4_gro_complete() also don't reset them the way
+udp_gro_complete_segment() and tcp_gro_complete() do.
+
+tcp_gso_segment() rejects such packets with:
+
+	if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
+
+__udp_gso_segment() has the same check, but exempts SKB_GSO_FRAGLIST.
+
+Suppose the head has a large csum_offset and is followed by a shorter
+member. Could skb_checksum_help() then hit:
+
+	if (unlikely(offset + sizeof(__sum16) > skb_headlen(skb))) {
+		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
+		WARN_ONCE(true, "offset+2 (%zu) > skb_headlen() (%u)\n",
+
+and drop the whole aggregate with -EINVAL? For members where the offset
+does fit, the folded checksum would be written into payload bytes instead
+of the TCP or UDP check field.
+
+Crafted vnet headers written to a tap opened with IFF_NAPI | IFF_VNET_HDR
+with rx-gro-list on seem enough to trigger this. That is the reproducer
+setup from the notes.
+
+Should each segment's checksum start be checked against its transport
+header, or reset to it, before skb_csum_hwoffload_help() is called?
+
+> +		if (err) {
+> +			kfree_skb_list(segs->next);
+> +			segs->next = NULL;
+> +			/* drop the extra reference skb_segment_list() took */
+> +			kfree_skb(segs);
+> +			return ERR_PTR(err);
+
+[Severity: Medium]
+Does this error path leave the UDP drop counters at zero?
+
+After a failure, udp_rcv_segment() counts drops using the head:
+
+	segs = __skb_gso_segment(skb, features, false);
+	if (IS_ERR_OR_NULL(segs)) {
+		drop_count = skb_shinfo(skb)->gso_segs;
+		goto drop;
+
+skb_segment_list() has already called skb_gso_reset() on that head before
+skb_segment_list_csum_help() runs, so gso_segs is 0 at this point. All the
+aggregated datagrams are freed here, but sk_drops and UDP_MIB_INERRORS go
+up by 0.
+
+This can happen on receive for a socket using IP_CHECKSUM, or when IPv6
+extension headers force the software checksum. skb_checksum_help() can
+fail there with -ENOMEM, or with -EINVAL from the csum offset problem
+above.
+
+The existing late __skb_linearize() failure in skb_segment_list() has the
+same accounting gap. This patch adds a new trigger that is easier to reach.
+
+> +		}
+> +	}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-fraglist-csum-v1-1-93945be7bb5d%40gmail.com
