@@ -1,103 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792480602;
-	b=EP/gSKj2esPXJhlDXNIvI32GayAt6I/KWhfC7GMuhnMkz8j74D/FNPIQmacIMQYFpMeO
-	 /j5zNlnTd1AKDj5L0lB+xh44pSMMm0r6s6wMJXw2dIaLb9DYpzQRll6FTiySADiFwBjJd
-	 bkcdvesfMFnHdRHQKTHsRNSAxM+IxcvYrwN961ZU4B1en0H1aiGmsMSndlArL3OyoXlz4
-	 MvfR1lTE3iU8ZNHAn7SmZeoeamTR6HrE8o5M20yfcX4r/QBN54No9LWOBtW7gWe4LvH5z
-	 gS0H1JvZSEciZWscvenEntBkIv5DIc/T8UnorGiaEK4C4JaT851yW1zeP2BWx+NbxdA==
+	t=1792480637;
+	b=HsUBhscXovPlwaQtiPAHZqvaXRFIW1FVpGkpLl9QNHze2AW59WBGUCBhBX1aRG7vVA8w
+	 MwESqS49u4q4uWSWMWZ3sIvYBJTrwjzaDWzuYHCXNdL672cgvQGYnC+rYpIl2/d3KAjDt
+	 Z5SBPCL9NjXGVSl2k8hmkHOH0wCUF4n9NZu7sLzprDA5K2mwOsXdKCdTKeJwBub1a7xyL
+	 WsIM1isQn1XZb/lOtqbKyiviop1IFKdNkMClClEhGLrj78pRZ64NMR8yxK6wK+bGV1sBM
+	 9Z6yWjRIsjwmrt3dWwYih13sZ6Z+ub5hHU6z2Xd+B+cL/gk5tJrUyfUX6nrvhA9Qw7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792480602;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=CDcVH90vElOma+PIBRsVBwzcSu6I/4oFPmDU468ryv8=;
-	b=FDZ1zVUC5BgRcuUGEWzf2cwRvdFWnLSydTdgxATXwtwxcWEL20MpQC+0uXvlYB8Gzi6b
-	 v0Xn3ZwxZ/Gmtoo/ellxsJwIwIfcCEv509TAeCiYzVBrDdDPhjJTtClQUQN3hXL58jV2m
-	 5SHpGj+TXFKePrKlCyIy3owF10bquYmjMntnEhJT7k7bg12w1evjNt0lRC8lBI+/llNbr
-	 6wmaQ5wRBpiNsMYa9Q3txhXXAmASuFBFrYN5RBGmfR3FEfybofFUgMeFRGzLOWJrPpz0+
-	 5kfa+UtYAkJey5Yf1IzIzjYi9DEPUNvnDPyokcL+zgBHs5CSN2joDEwEUyy6yOOxJQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792480637;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=zKoG1Y27u5lxRf/K5y/SpxjMEPsJ6IGeF6f+oULx/sA=;
+	b=EH6GDThlN3MBhSDrP0h0I9r4TOEq+MvBOoiw0QDuhai04spXxL77Vm5o7zwAKBbZ2Wpj
+	 Yz/NwsQHyPJMHJjGqueepAWescFt7La1NslEpeeTJwAbz3T8hkhFtJK2yWjeknmV4rfSa
+	 /gd4/HZcn9XAYHgC/u+oh+JqhDepjuRYRhQl+kJlUTOYO9qsy5r0ZjC9mDMeJBw+Cb6ph
+	 29OhGpzg0lRNCLfJP/KBx8WVaViyixlncCDxQCaNzK+vGQhgVp/5lgERULMEcHNLGo5Zz
+	 dLePA9HREiDUngoK+L9hEK8MeuNCYhSqZFQL7WL4ehp3J2pj7LGmcef8k7GH2fZKQkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nvX+fDOL;
-	arc=none smtp.remote-ip=74.125.82.176
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=oCLxCk6L;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71173606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 07:16:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71173606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2A1606A319;
+	Tue, 20 Oct 2026 07:17:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C2A1606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=nvX+fDOL
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-354ba08cfd1so5295556eec.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 00:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792480601; x=1793085401; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CDcVH90vElOma+PIBRsVBwzcSu6I/4oFPmDU468ryv8=;
-        b=nvX+fDOLVa8EIMURVKrdikuXBiDAj7FaY2/kaDslST+SgmSmMyJZ/OKks8Wm6q0e2K
-         n2UCBxa2OBIpkW9eD+sPxrkOsTYBsEZwjCpko3fGQy9HwjvUXhQI4H+QvMDwX38Z+1FE
-         63oKwQqCeR3ssCuntXa7ZwS0nZX6ExPIzim3T+iX8ehbg8gCZleSMCoPNcySejxweVeM
-         hF6gmRvSLMvJr2rE7UcyuKRdkXc9Jmbo7J/f0hpm/Mctd6J8uXomXjBPiRA8nWtBWeUB
-         j6vuAcrexOmKfs+ODomSPrf90w57xSnsEdgn2hHPpw7Vk+NUnpL7Yof6c2Utx4B5xwqH
-         xs8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792480601; x=1793085401;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CDcVH90vElOma+PIBRsVBwzcSu6I/4oFPmDU468ryv8=;
-        b=iRjl0Nfg60OVRFNmh1Wlu6UdL/FM2EKuexqgU3yTTsZQXNE/I1iWmxO6i44co+/DJB
-         B61/a+3c4yEEZ2TuEdaNFuIZAw318/HOdVoayuwuSNVck0HO2cro3iuk5sOZj15q5vkD
-         ia439eDpn5LRt+yxnFqbqEc6gZ65pJUgIofcCiRLfoLFdNjk5FJcqD5a1C1GJ3GVQqq/
-         d8QIqsRWmaKwLMTiaJfwX5aE8uw0ZhwtDhLfpdA+ORFOOSwy+xeKbH3+RIw9ZI983ymJ
-         vrRvXQnIkpDLVkj19YdwQA4rhdQzhCSFuHBTzGLDDHcpStANrOGPR8YS9GKhXyOf9Sb6
-         hocg==
-X-Forwarded-Encrypted: i=1; AKwUvBxFn7IIrNnPhspXsln7sfMEvWygMbm55A/Udkzd0TtlcSWyphesSEfFE3B+K+iUWuA5Y1tQNCE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLzpV1cc8vUD2MpDb7NKaG4Inl2LO85Cob4qgMr47JDUSGbCETG
-	2ky9RiSZOpoURM5MxWT97lv7aINuimnJWaJ9VXo6Tf8qM9cKZPi35elF
-X-Gm-Gg: AYBFou3fnMEvc4DnikJ7nuE6X0dYw3POHXZhlBB3a47VhvxdPBOgUp7NqIzsbQ0N5RA
-	l8zpPu7E7//wznAyjpilsIMxolhEQJq0vVt1YXOzES8LqVkSh7ecyeb+y3xEW5ZSQBhqJZ7aOQ4
-	0bRX4NE8nSoeVLUEQTx720fVFssJrAVuiW1OK/iRBuR7RsaEIghRIot1KH4wRJMlVuGCxsj7ZYK
-	2xCy2HnZ0KlqxTJh+i9pkcEC2eaySdcin9Kg0RKhdIzVZovaobHKDaSsbblTtEj6b4Qbv3u2Kkk
-	d9YODuvXseje1cHm856ivUgTfwOgoNAZP/lMeonKzACfW6xRlUlo9ot+DC+BKwbH9qgOSn9v3zl
-	JUuZhlNq0ucNyZlb1Lsm2j9KNHS5tUnSoOnYxr+18+xURBi3ABG9tcySAGGVIVWtVS4NLAgXZOf
-	J301FgatuoeNk9X4CkPy/YnhC96BXSm6XaRb0HxqDMq/AfUWqMXsB9JIXtfra2/STOX60JRqyMf
-	Q3Ak+3D/jbSv8HgjM2O1vY=
-X-Received: by 2002:a05:693c:26c7:b0:35c:ef18:6a78 with SMTP id 5a478bee46e88-3619e925f33mr14707122eec.2.1792480601447;
-        Tue, 20 Oct 2026 00:16:41 -0700 (PDT)
-Received: from CHANDRUS-NITRO.localdomain ([106.200.8.36])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3608219f838sm38434543eec.19.2026.10.20.00.16.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 00:16:41 -0700 (PDT)
-From: Chandru Gopi <chandru.gopi.dev@gmail.com>
-To: alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com
-Cc: maoyixie.tju@gmail.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	marcel@holtmann.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chandru Gopi <chandru.gopi.dev@gmail.com>
-Subject: Re: [PATCH wpan] ieee802154: look up the wpan_phy dump ifindex in the caller's netns
-Date: Tue, 20 Oct 2026 07:20:44 +0000
-Message-ID: <20261020072044.4971-1-chandru.gopi.dev@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261020065125.896530-1-maoyixie.tju@gmail.com>
-References: <20261020065125.896530-1-maoyixie.tju@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=oCLxCk6L
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 05702A15A5;
+	Tue, 20 Oct 2026 09:17:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792480630; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=zKoG1Y27u5lxRf/K5y/SpxjMEPsJ6IGeF6f+oULx/sA=;
+	b=oCLxCk6LYN9H1nikHlyUXQhBehQQp1G0JMqUAjS9c03psxicB9+0hPZpOgEwMaGl9nx7OG
+	sTYURu0a2sk6jAG4DFzmSkE9KDk64QB4m4jE8LCsoc31AV5u52kcl16wDY5T7bGbWsYm6h
+	yM3lpDCmzVROU/GUA3jZrUdzRLF19/fbYThzm6zbL+aGyEJQDMELC4C7NwBUuKdHw5hqGO
+	8vyuGU9aeUGh4IETGR0IM8xPCaYBtt3D4R5SnjwzlUokMw/DoVvGi1yXOXEsZ51P+hDNtz
+	Gvk5rpKh83XWo/NkGdg/D6CjAFs2TnJYWUcI/0Tds84z+rPPywZvwclRVOKpKQ==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net 0/2] net: usb: cdc_ncm/cdc_mbim: fix netpoll lockup in
+ tx_fixup
+Date: Tue, 20 Oct 2026 09:16:54 +0200
+Message-Id: <20261020-cdc-ncm-netpoll-v1-0-682184384b49@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,19 +57,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDQBAEvyJ9zsC6B8V8JeSgM2MyYlbZ1RAQ/
+ +5qjtV01Yak0TThXmyI+rVkU8hQ3grwuw0vJZPM8M5XpfOOWJgCfyjoMk/jSFK3dV81Ip4Z2Zq
+ j9va7ig/kE57/Ma3doLycLez7Af+Hjlt4AAAA
+X-Change-ID: 20261020-cdc-ncm-netpoll-d7a7f69dd2cc
+To: Oliver Neukum <oliver@neukum.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Sjur_Br=C3=A6ndeland?= <sjur.brandeland@stericsson.com>, 
+ Alexey Orishko <alexey.orishko@gmail.com>, 
+ Greg Suarez <gsuarez@smithmicro.com>, 
+ =?utf-8?q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+Cc: Breno Leitao <leitao@debian.org>, linux-usb@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>, Mikkel Eskildsen <mke@visotia.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Tested on v7.3-rc7 (58161ead29e5) with the one-line change from this
-patch applied, in x86_64 QEMU with two mac802154_hwsim radios. phy1 is
-moved into a new netns and NL802154_CMD_GET_WPAN_PHY dumps are
-requested from inside it. This covers the first two rows of your table:
+Mikkel reported lockups with netconsole on a cdc_ncm device. Further
+analysis showed that netpoll calls ndo_start_xmit() with IRQs off but
+BHs on while holding the txq lock, and the spin_unlock_bh() in the
+tx_fixup paths runs pending softirqs. A transmit from one of them then
+spins on that txq lock.
 
-                                         before       with change
-  ifindex of own wpan1                   ENODEV       1 phy
-  ifindex of init_net wpan0              empty dump   ENODEV
+Patch 1 fixes cdc_ncm. Mikkel reproduced the lockup and tested the fix.
+Patch 2 fixes the same code in cdc_mbim and is untested.
 
-The unfiltered dump and the init_net baseline are unchanged. No
-warnings were printed during the netns move. I did not test the
-non-wpan ifindex case or the unprivileged user cases.
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+Nicolai Buchwitz (2):
+      net: usb: cdc_ncm: don't enable BHs in tx_fixup under netpoll
+      net: usb: cdc_mbim: don't enable BHs in tx_fixup under netpoll
 
-Tested-by: Chandru Gopi <chandru.gopi.dev@gmail.com>
+ drivers/net/usb/cdc_mbim.c | 6 ++++--
+ drivers/net/usb/cdc_ncm.c  | 8 ++++++--
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+---
+base-commit: 044ad3c90d9d2df2c5cb3325ae17b4e9603a311f
+change-id: 20261020-cdc-ncm-netpoll-d7a7f69dd2cc
+
+Best regards,
+--  
+Nicolai Buchwitz <nb@tipi-net.de>
+
