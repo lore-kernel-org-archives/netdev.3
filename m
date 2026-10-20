@@ -1,47 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792497046;
-	b=wXgCGLZXhgmC9LqBTU5MwDR0zytC6/PEHybBGQ5EMTVhO/uCPz8+lBfn9Sqw0C1smlFy
-	 2MURHSyMHot8J40HRiBVO+kAasn1aP45SGpfE68ObLH03G3wo+PAF6fmJSHEXkeaOg0lO
-	 8EEn/B3bbZT/q5BtCrYNPIyV4DtqvoI9TIhhAIuAVcNdoYuvn7Pg8sTJq16ile8HaN6ZZ
-	 12/iTtRnQMtpaT3jNKIYvopfWkJik6V0bbGzt8tLd30yGTVSxhqHUKfj0NZoW/fdKlH/+
-	 nuLF+iWHgCYNwdUKrJBlmgtHa7CvbxdGv+3jYWTZkLiMgW8PWAj4/42AYejLqw3xzkQ==
+	t=1792497493;
+	b=VysubJbHQOrVV3FKXzAdwH9o9DovOq9oXuS5ggCdx79g/OyPi1hV8jV/qwNcrynKJRlw
+	 rDTDmAnrW1lhxs6TaIzmbAJEhozM28kdcrsdi1UdjZv6Kch26uVAq3Vp+HHLCcHqcYt5g
+	 RzAB0dulHyRvpTWob3QsyDUXzC/D/UvSi1tHT8F3oa4HZDc6QPsStHbiyw8TyctoM3bjY
+	 DIuLOoQSWL15lzJRM+GyQu+Zb5yOE4/vzG2Ojjp85Iy+MYBwjZzXZwTw7UYNduWsqYObS
+	 BvdugYxO9fzpTO84ck/SraTHFl9PlWag6RnzFToorxh9icRMwQ6J9bua0/v+GLlTdnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792497046;
-	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=xvfrWCxfOyR/vJIJdKHQXu2Obo4wRGA/ULuGNtYBy8M=;
-	b=VzEMSq5+a2K70rJR7Wo6Vkc+MBDsdC0FfGqIS/0n6uG4Vx8FnBlQn3ufOflsv3/UGo+x
-	 osgTqsgXUVTU+mbq/XIwD+NLwN9B34fDkHA+WkHwlGli1djuCqJFEIvCtfGg4XaSvdPJd
-	 0DxfOnveVbtwWnvBN0wWaxPi+cVXd9F3mOG08qp/n+CU1RMCOSV90BosstAYTsvCf66SF
-	 kS+i5lJ0pmwneNrkM2ekKye8sZEbKWLs2ARX1OKAQyMZPWJMHyUe/Lxg7zGS4fVTL2Ioo
-	 hRowxROU2fAQ6ZSv5CinfLPY6AcuUnensPgfmRUjnkQ4bl2ifrdvsNwoShzDFCIPW7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792497493;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=psxTBiyBkH+KxLML7YqAe/upIHPCDfQs4bqvvBxC+lE=;
+	b=HeH3V38RmfCseKhL4g+RbpAT0rcZOFp7UW6/g8wC0i3T+7ZkPrxO+YvzZola20guiGT1
+	 67tYuXnbUuSmiekzsUrVcJKmxt9BinJlP+wku5SFw7AJkHUM8eoLLuvtJehnbLaIF+yzR
+	 yFwssOTOQUWbJukkuHDMNkhBoT3hO1gH7huaGH4WXG50X6BhGaMGKHP93KgHIgxE/Lc+j
+	 X0e0aqu6vj/1u8UU6ahJBAu0CPbabWIGtEfrar8r/UlEq4pZrLfDA/3NAbHAvvevoiOvT
+	 6cFCqQ07KKm79aso2zUbvZ2W7Q+mwupyBwaueowjOp0/LWOKNdkPs26ONjrfYf4VZ5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=miRI68MW;
-	arc=none smtp.remote-ip=117.135.210.5
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HcaoLPDy;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23922606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:50:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23922606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EA7606A31C;
+	Tue, 20 Oct 2026 11:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=miRI68MW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=xvfrWCxfOyR/vJIJdKHQXu2Obo4wRGA/ULuGNtYBy8M=;
-	b=miRI68MWdZ673j/UIpg8FFgyP9+gRH0Y2IDlHmmLarPEVfHUFTXbVKBhO1e3jc
-	t7PzZjtW5ueXFrakiBtbpxIkWhQ4CkjVPtU9NuwPDN7QLVOaQ6E7cmxSn8zmgzxA
-	x1FQrm/rT00xuze/sV4P4ieqGldJHcmKPdz/eVwnO4VjM=
-Message-ID: <aa6f8ef9-56d8-4edb-9ae2-d3f3b7dc1721@163.com>
-Date: Tue, 20 Oct 2026 19:49:48 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HcaoLPDy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955561F000C4;
+	Tue, 20 Oct 2026 11:58:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792497492;
+	bh=psxTBiyBkH+KxLML7YqAe/upIHPCDfQs4bqvvBxC+lE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=HcaoLPDytPyCiCnlZsuFUxkvjLxqnRbTFvBIXp+RP2q/yNkwLA082kKTYIq2GU6FW
+	 Gn8usd6nf4LgC8MXPFuQGkBpW0aLp7FDFTa3nc+5s1tjzRWUVkJUWMxElA9Kev7I1K
+	 kyc9hohT4v+jK7T+22P9qJisyFJ+sfhmb3uDD9Bzz1O4GuKcNRS8TFpxABUp3LAODc
+	 T46mpT5uqV2BESDygC458ZfAZ0r0ZeJEz+DnW3rHMe83siOWtYOplxQuGfvqydXl+1
+	 c66ebZrU97I/82j+OGjFdeGNWXux59i7J4rcyyrIvJ2qy5MV8VWNjn/em2NGziwF4O
+	 7jwgzy229h6Zw==
+Subject: Re: [PATCH net-next v3 1/8] dt-bindings: net: add Xilinx TSN Endpoint
+ Ethernet MAC
+From: netdev-bot+sashiko@kernel.org
+To: srinivas.neeli@amd.com
+Cc: nagadheeraj.rottela@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, richardcochran@gmail.com, michal.simek@amd.com,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org,
+ edumazet@kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rt-devel@lists.linux.dev, neelisrinivas18@gmail.com, git@amd.com
+Date: Tue, 20 Oct 2026 11:58:11 +0000
+Message-ID: <179249749105.3135.3116293825083161439@kernel.org>
+In-Reply-To: <20261016-patches_v2_external-v3-1-e33d3960ca1e@amd.com>
+References: <20261016-patches_v2_external-v3-1-e33d3960ca1e@amd.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,271 +67,158 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v6 1/2] tun: keep a kernel copy of the socket filter
- program
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
- jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, weirongguang@kylinos.cn, willemb@google.com
-References: <20261016070654.170932-2-clementwei90@163.com>
- <179248191680.3135.11424433248985216090@kernel.org>
-Content-Language: en-US
-From: Rongguang Wei <clementwei90@163.com>
-In-Reply-To: <179248191680.3135.11424433248985216090@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3P1BcVddqX64pBg--.5785S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AF4Dtr4xGr1Uur17XFWrKrg_yoWfKw4UpF
-	WrW34jkryDWF4vqw1DXa10yF1Svw1DWF1Uur1rG345uFn0gr1fu3y2gFW5u3ZxArW8ua10
-	va1jgr9ruw1DZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U53kNUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-R78aGrXVV7hnQAA39
 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
+Low priority / nit picks for your consideration:
 
-on 2026/10/20 15:38, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 (2) · Low: 2
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] TUNATTACHFILTER can save a classic BPF program that does not
->   pass validation, and every later queue attach then fails.
-> - [Low] The new kernel-doc for sk_attach_filter_kern()
->   (net/core/filter.c:1582) justifies not keeping orig_prog with "A…
-> - [Low] The kernel-doc 'Return:' section of sk_attach_filter_kern()
->   (net/core/filter.c:1585-1588) lists 0, -EPERM, -EINVAL and -ENOMEM as…
-> 
-> Pre-existing issues:
-> - [Medium] This problem wasn't introduced by this patch, but a
->   TUNATTACHFILTER that fails during the per-queue attach leaves the…
-> - [Medium] This problem wasn't introduced by this patch, but
->   TUNDETACHFILTER calls tun_detach_filter(tun, tun->numqueues).
-> 
-> --
-> 
-> tun: keep a kernel copy of the socket filter program
-> 
-> This patch keeps a kernel copy, in tun->fprog_kern, of the classic BPF
-> program passed to TUNATTACHFILTER. It adds sk_attach_filter_kern(), which
-> builds a per-queue program from that copy. It also fixes the inverted error
-> check in tun_attach() that runs when the filter is re-attached on a
-> persistent device.
-> 
-> Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
-> 
->> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->> index 242899f7fd071..e493c4554d5df 100644
->> --- a/drivers/net/tun.c
->> +++ b/drivers/net/tun.c
-> 
-> [ ... ]
-> 
->> @@ -722,12 +723,47 @@ static void tun_force_wake_queue(struct tun_struct *tun,
->>  	spin_unlock_bh(&tfile->tx_ring.consumer_lock);
->>  }
->>  
->> +/* Copy the filter that @argp points at into the kernel, so that it can be
->> + * installed again later, independent of the ioctl caller's address space.
->> + * tun->fprog and tun->fprog_kern are updated only once the copy succeeded.
->> + */
->> +static int tun_copy_filter(struct tun_struct *tun, struct sock_fprog __user *argp)
->> +{
->> +	struct sock_fprog fprog;
->> +	struct sock_filter *insns;
->> +
->> +	if (copy_from_user(&fprog, argp, sizeof(fprog)))
->> +		return -EFAULT;
->> +
->> +	if (!fprog.len || fprog.len > BPF_MAXINSNS)
->> +		return -EINVAL;
-> 
-> [ ... ]
-> 
->> +	kfree(tun->fprog_kern.filter);
->> +	tun->fprog_kern.len = fprog.len;
->> +	tun->fprog_kern.filter = insns;
->> +	tun->fprog = fprog;
-> 
-> [Severity: Medium]
-> Only the header is checked here. The instructions go into tun->fprog_kern
-> without being validated. Can TUNATTACHFILTER store a program that
-> bpf_check_classic() would reject, and still return 0?
-> 
-> The instructions are only checked in the per-queue loop in
-> tun_attach_filter():
-> 
-> 	for (i = 0; i < tun->numqueues; i++) {
-> 		...
-> 		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
-> 		...
-> 	}
-> 
-> 	tun->filter_attached = true;
-> 
-> If numqueues is 0, the loop never runs, and filter_attached is set to true
-> for the invalid program.
-> 
-> numqueues == 0 seems reachable on a multiqueue TAP device. Disable every
-> queue with TUNSETQUEUE/IFF_DETACH_QUEUE. __tun_detach(tfile, false) lowers
-> numqueues but leaves tfile->tun set, so TUNATTACHFILTER can still be issued
-> from the fd of a disabled queue.
-> 
-> With the inverted check now fixed, tun_attach() then does:
-> 
-> 		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
-> 		release_sock(tfile->socket.sk);
-> 		if (err)
-> 			goto out;
-> 
-> Wouldn't every IFF_ATTACH_QUEUE then fail with -EINVAL? tun_set_queue()
-> always passes skip_filter=false. The same applies to every TUNSETIFF on the
-> persistent device without IFF_NOFILTER. Before this patch, a TUNSETIFF
-> attach of a new tfile in this state succeeded, just without a filter.
-> 
-> The commit message says:
-> 
->   Neither change works on its own: with only the kernel copy, every re-attach
->   returns 0 without publishing the queue; with only the check fixed, a
->   re-attach that used to succeed without installing a filter would start to
->   fail.
-> 
-> The early-failure note in the commit message only covers bad headers. Since
-> the program is now a fixed kernel copy, could it be validated once in
-> tun_copy_filter() before the old copy is replaced? For example, call
-> bpf_prog_create() and then bpf_prog_destroy().
-> 
-OK. I folded the fix into v7. Add a new bpf_prog_validate_classic(), 
-which runs the checks of bpf_check_classic() on the copy without allocating 
-a struct bpf_prog.
-> [ ... ]
-> 
->> @@ -3064,6 +3107,9 @@ static void tun_detach_filter(struct tun_struct *tun, int n)
->>  		release_sock(tfile->socket.sk);
->>  	}
->>  
->> +	kfree(tun->fprog_kern.filter);
->> +	tun->fprog_kern.filter = NULL;
->> +	tun->fprog_kern.len = 0;
->>  	tun->filter_attached = false;
->>  }
-> 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but TUNDETACHFILTER calls
-> tun_detach_filter(tun, tun->numqueues). That only walks the active
-> tun->tfiles[] entries, not the queues on tun->disabled.
-> 
-> So a queue disabled with IFF_DETACH_QUEUE (__tun_detach(tfile, false))
-> keeps its socket filter. Once filter_attached is cleared, re-enabling that
-> queue with IFF_ATTACH_QUEUE goes through tun_attach(), which skips the
-> filter block:
-> 
-> 	if (!skip_filter && (tun->filter_attached == true)) {
-> 
-> Nothing removes the existing sk_filter on that path. Does tun_net_xmit()
-> then keep applying the old filter even though TUNDETACHFILTER succeeded? If
-> the old program was a drop-all filter, it would keep dropping packets.
-> 
->>  
->> @@ -3075,7 +3121,7 @@ static int tun_attach_filter(struct tun_struct *tun)
->>  	for (i = 0; i < tun->numqueues; i++) {
->>  		tfile = rtnl_dereference(tun->tfiles[i]);
->>  		lock_sock(tfile->socket.sk);
->> -		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
->> +		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
->>  		release_sock(tfile->socket.sk);
->>  		if (ret) {
->>  			tun_detach_filter(tun, i);
-> 
-> [Severity: Medium]
-> This is a pre-existing issue, but a TUNATTACHFILTER that fails here leaves
-> the device in an inconsistent state.
-> 
-> By this point tun_copy_filter() has already freed the old fprog_kern and
-> overwritten tun->fprog and tun->fprog_kern. Suppose sk_attach_filter_kern()
-> fails at queue i. Invalid instructions always fail at i == 0, and -ENOMEM
-> can happen at any i. tun_detach_filter(tun, i) then detaches only queues
-> 0..i-1 and clears fprog_kern and filter_attached.
-> 
-> Do queues i..numqueues-1 keep the previous socket filter? tun_net_xmit()
-> would keep running it:
-> 
-> 	if (tfile->socket.sk->sk_filter) {
-> 		drop_reason = sk_filter_reason(tfile->socket.sk, skb);
-> 
-> Queues attached afterwards would get no filter. TUNGETFILTER would return
-> the header of the program that failed.
-> 
-> The patch only moves the length check earlier, so this can still happen
-> with bad instructions or allocation failures. Validating the instructions
-> in tun_copy_filter(), as asked above, would remove the bad-instruction
-> case.
-> 
-> [ ... ]
-> 
->> diff --git a/net/core/filter.c b/net/core/filter.c
->> index 70dc621672f2e..57bef64b72bcc 100644
->> --- a/net/core/filter.c
->> +++ b/net/core/filter.c
->> @@ -1567,6 +1567,47 @@ int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk)
->>  }
->>  EXPORT_SYMBOL_GPL(sk_attach_filter);
->>  
->> +/**
->> + * sk_attach_filter_kern - attach a classic BPF filter held in kernel memory
->> + * @fprog: program to attach, with @fprog->filter pointing at kernel memory
->> + * @sk: socket to attach the filter to
->> + *
->> + * Attach a copy of a classic BPF program that the kernel already holds, the
->> + * way sk_attach_filter() does for one that still lives in user space. The
->> + * caller must hold the socket lock; SOCK_FILTER_LOCKED is checked here.
->> + *
->> + * The program is built by bpf_prog_create(), which does not keep an original
->> + * copy of the instructions. sk_get_filter() therefore returns -EACCES and
->> + * sock_diag leaves the filter out for a socket that uses this helper. A
->> + * classic BPF program cannot be duplicated with bpf_prog_copy(), so keeping
-> 
-> [Severity: Low]
-> This isn't a bug, but is bpf_prog_copy() the intended name here? No
-> function by that name seems to exist in the tree. This comment is the only
-> place it appears.
-> 
->> + * the original would cost another allocation and a copy per attach.
->> + *
->> + * Return: 0 on success, -EPERM if @sk has SOCK_FILTER_LOCKED set, -EINVAL if
->> + * the instructions are not a valid classic BPF program, and -ENOMEM on an
->> + * allocation failure.
->> + */
-> 
-> [Severity: Low]
-> Is this list of return values complete? Any error from bpf_prog_create() is
-> passed through unchanged, including errors from runtime selection:
-> 
-> sk_attach_filter_kern()
->   bpf_prog_create()
->     bpf_prepare_filter()
->       bpf_migrate_filter()
->         bpf_prog_select_runtime()
-> 
-> __bpf_prog_select_runtime() sets -ENOTSUPP when a JIT is required but no
-> JIT image was produced, for example with CONFIG_BPF_JIT_ALWAYS_ON:
-> 
-> 		if (!fp->jited && jit_needed) {
-> 			*err = -ENOTSUPP;
-> 			return fp;
-> 
-> It also passes through whatever bpf_prog_lock_ro() returns. Userspace can
-> see these codes through TUNATTACHFILTER and the tun_attach() re-attach
-> paths.
-> 
-> [ ... ]
-> 
-pw-bot: cr
+- [Low] In Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-
+  ethernet-mac.yaml, the ethernet@ node's dma-names (lines 81-96) does…
+- [Low] Concern: tx-queues-config only enforces a lower bound tied to
+  xlnx,num-priorities, and the rest of the checking is left to a driver…
+- [Low] The child compatibles in
+  Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-…
 
+--
+
+dt-bindings: net: add Xilinx TSN Endpoint Ethernet MAC
+
+This adds a YAML binding for the Xilinx TSN Endpoint Ethernet MAC IP in
+its Bridged Endpoint configuration. The wrapper node owns the shared
+clocks and xlnx,num-priorities. It has two children: an xlnx,tsn-ep-mac
+endpoint that holds the DMA channels, and an xlnx,tsn-switch three-port
+switch with its MDIO buses and ports.
+
+> diff --git a/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> new file mode 100644
+> index 0000000000000..bca834120b3b1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> @@ -0,0 +1,491 @@
+
+[ ... ]
+
+> +properties:
+> +  compatible:
+> +    const: xlnx,tsn-endpoint-ethernet-mac-3.0
+
+[ ... ]
+
+> +patternProperties:
+> +  "^ethernet@[0-9a-f]+$":
+> +    type: object
+> +    $ref: /schemas/net/ethernet-controller.yaml#
+> +    unevaluatedProperties: false
+> +    description:
+> +      Endpoint MAC sub-node. Provides the host-side data path through the
+> +      DMA channels described by its dmas / dma-names.
+> +    properties:
+> +      compatible:
+> +        const: xlnx,tsn-ep-mac
+
+[Severity: Low]
+The wrapper compatible is versioned (xlnx,tsn-endpoint-ethernet-mac-3.0).
+The child compatibles here and on the switch node (xlnx,tsn-switch) are
+generic and carry no version.
+
+writing-bindings.rst asks for specific compatibles, with no device-family
+names. For sub-blocks of a bigger device, it asks for device-based
+compatibles.
+
+If a later IP revision, or the planned Endpoint-only variant, changes the
+endpoint or switch register layout, how would these child nodes be told
+apart? The endpoint driver later in the series matches only on
+"xlnx,tsn-ep-mac" in xlnx_tsn_ep_of_match.
+
+Should the child compatibles be tied to the device or version, the same
+way the wrapper compatible is?
+
+[ ... ]
+
+> +      dma-names:
+> +        minItems: 2
+> +        maxItems: 16
+> +        items:
+> +          pattern: "^(tx|rx)_chan[0-7]$"
+> +        allOf:
+> +          - contains:
+> +              pattern: "^tx_chan[0-7]$"
+> +          - contains:
+> +              pattern: "^rx_chan[0-7]$"
+> +        description: |
+> +          Names matching the entries in 'dmas', one per DMA channel and in
+> +          the same order. TX channel names use "tx_chan<N>" and RX channel
+> +          names use "rx_chan<N>", where N is 0..7. At least one TX and one RX
+> +          channel are required. Example: "tx_chan0", "tx_chan1", ...,
+> +          "rx_chan0", "rx_chan1", ....
+
+[Severity: Low]
+The description says the names are "one per DMA channel". The v3
+changelog says "Cap TX at 8 and RX at 8 channels". Does the schema
+enforce either of these?
+
+Without uniqueItems: true, dt_binding_check appears to accept a 16-entry
+list of fifteen "tx_chan0" plus one "rx_chan0". It also appears to accept
+"tx_chan0".."tx_chan7", then "tx_chan0".."tx_chan6", then "rx_chan0".
+
+dtschema doesn't add uniqueness to -names properties by itself. For
+example, renesas,drif.yaml lists "rx", "rx", while renesas,sdhi.yaml sets
+uniqueItems: true on its clock-names.
+
+Could uniqueItems: true be added here? The pattern only allows eight
+names per direction, so that would also enforce the 8 TX / 8 RX limit.
+
+Later in the series, ep_count_dma_channels() rejects duplicate TX and RX
+names at probe time. So the runtime result is a DT that passes schema
+validation and then fails probe.
+
+[ ... ]
+
+> +        patternProperties:
+> +          "^queue[0-7]$":
+> +            type: object
+> +            additionalProperties: false
+
+[ ... ]
+
+> +        required:
+> +          - queue0
+> +          - queue1
+
+[ ... ]
+
+> +allOf:
+> +  - if:
+> +      properties:
+> +        xlnx,num-priorities:
+> +          const: 3
+> +    then:
+> +      patternProperties:
+> +        "^ethernet@[0-9a-f]+$":
+> +          properties:
+> +            tx-queues-config:
+> +              required:
+> +                - queue0
+> +                - queue1
+> +                - queue2
+
+[Severity: Low]
+With xlnx,num-priorities = <2>, can a tx-queues-config that contains
+queue0 through queue7 still pass dt_binding_check?
+
+The ^queue[0-7]$ pattern accepts every index from 0 to 7. The if/then
+blocks for num-priorities 3..8 only add entries to required. So the
+schema has a lower bound tied to xlnx,num-priorities, but no upper bound.
+
+Later in the series, ep_parse_tx_queue_config() rejects queueN with
+N >= num_tx_queues at probe time, so only schema validation is affected.
+
+Could each if/then block also set queueK: false for K >= N, so the
+schema rejects these nodes too?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261016-patches_v2_external-v3-0-e33d3960ca1e%40amd.com
