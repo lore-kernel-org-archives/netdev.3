@@ -1,100 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792492159;
-	b=Mo19Otwg5K3/ZmEaoy+Cb+9A+IYdAzgAa3E3d5huqPmixYeuQUSuG/IWOQKCxijnJIjL
-	 IJHo1rnft8Q5Bzekc5M5OgQOQ5kHMmWy+zg9G/vVeIQXlQv2XjeEXqMSW9vxiH4RcqsoC
-	 EKQ6UTiKqlPn7Jqe98OahctsfWQdDcIk+8dKlvsIykGMGzA1VqdeZPVJS8FsHTnwxxgPR
-	 kwv80khFCL4s1phCBL4E+EeQv+64YShBUkJvkCHljRoiGhYMDZV5/bmpdVUJfnE33o6Bq
-	 9c9J3uu4hYch36Wj0tjM1d0kHGEKR8GHdsEx21Jlg4koZX3tufcCOABE1JVSHbWj56A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792492159;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=DaGQmjJp37UYSV/iBuExkFx+biffzuBEmX37u8YFfQg=;
-	b=t8FpyC7rseM4B2tlHOIql3rP1L/kJ4WJGmmoGEIeTwL/UN28ypXWXVPiqn/RwcCKna7Q
-	 YukNxwOkGR4hNK8zpk8CZ/VYWsULi31SOAtWdt8kDQpmTMis8uCCW4oDaxookCFawQJ+K
-	 oOok9sRdR5dB0S6xXkylbhOSA45gk/u3lABLdv5QcWR9tC2V9NkaxJpTMfpJ+ZD53X5Jw
-	 0DCVfSkDpitPeu15eQtsW6ah5Lzjq5R7F+Ksd6oDQb6CYc+CYblJ5j0YWNi2o5D1iIgjJ
-	 6YGAoFlXFyO0RxFrVJBeR5sHUb5mfbslL/Lw4HZtlz4ezwuy5j//JG4yIg8Idacs9Rg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=UgnKyVx2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.44
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792492304;
+	b=ePwf5ceOIrcIwamM1LUy8Dwau1AmZGn5nvynA+y3kLwGk8m5nh3q/E2kQwgj6Z9b/DkV
+	 gS1nvrOc5m+NNLjFA33ICQ/v8Fl/g3+VTq1ozQFwuR/gqYKxJ97dLGqjxDnfHZByZ4vRV
+	 tBGSaHvm5qJiTG+ucK43jnJIgQGLgkyM9KVMBVdHL+xzXFSHCxSxTA0yNJDXRhRKsNpPi
+	 goUjwIxSPT0ijLAwyqnmfayElh/Gg+BwbI8jW7HYU0m0zFlYFD6eAEsoSwMWzPpoCLXQ4
+	 iyao1suKhccC4vzIodzmVPcyAOoFxOjMWnyW4M004j9gZX4dx2gqkkHOzfrvIRs7G0A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792492304;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=aW+tUhGIytr6myAG/haqiFo8CoeHUsC4Au7jENp7FB0=;
+	b=Stl5wCs28Hmd0nSs9d0xNKzRMaVuUVBoBfZsJmNKCN2s0gnkW4ThfnCLhlSZkXwdaTdB
+	 bFCuOGXUlt+1mFL0HJyf/k4RPcHVv6X/9z7Gwr4/YT9qBMgucz7zwhONWiMZIgboXiNP6
+	 FLWy6O9ju/AHJfAoXKGywYeaUL9kJHUb9DKTlwiy3p5KjHvSEpvELzJDzVsAbBQHXERl8
+	 X5y6J8p0zFr/qDq0u+uIvlrpBBQiLJRCccftHxDnS5x/oRR8fYdFFliK1yX7Jkm+mKZXp
+	 nCTo21kUu+6KteMDdOqQRAZWLSvG6bu1v1NlybuCM5USgzEyVaX/QT4tOU8WlXk7tMg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fdIsAXuY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3445A606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:29:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3445A606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE31606A31A;
+	Tue, 20 Oct 2026 10:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=UgnKyVx2
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-846566246e8so202261a34.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:29:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792492158; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VI3u203WOc7BK6CeFFbGOCrbwf5ERrmeT5BFB83GyldyyLf2nEglheClyqpAmvxoz2
-         k1kpV8Uo2vwDcUpZvA+/NSd1CKdZ85csXENmOb3KbPn1h7cpJ47KWhJl+Nag71USGRsu
-         RqgrQV3Yu0pWdwgkPseqkaUBvAbDLvDAcQJ4aMiuOFygSaBTRJko7rUBK6toOwqNv0Q2
-         WlxRPj4M+2Lk6zayQRo/3BEdZye4Y9N552MUMN1CZ6z1/zRIfmDOShApSTTXlWJsK7oJ
-         xWdtqpainoKH2ugzNirJxoYGKcrQyPX4nyNSTpCUaaDD4BNwNGkNgWBorQ4AGka/D6Wa
-         bhHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=DaGQmjJp37UYSV/iBuExkFx+biffzuBEmX37u8YFfQg=;
-        fh=XQUCV8MVMYoJTWnh8edFfwg5sROK3ZX3mt1jKYPRNmQ=;
-        b=NGlXus/STN9l8XFofDHe9yn8O/tgwOngQhccdUhKeTklHU6+Yd5ImMB02s5GXa2eBL
-         TB6VCib5YwooKhNn5I0KgSg7KW17vrveCVgpYFYeAsXzbLXP6i0ujtLo8OaBE4XA1NFz
-         DezIxSEcvkWT9GEJ2E4xxLIAxS5L/HPbVhlzAMJN/UNK2DO23CyKEaEbaec3pll1rFqY
-         K9Uiqli4/bYqw51tKauC11fb9b5iUIjXCbwpl/OsQCn9z5OrofcCGp5vbT2Jtchwoc1b
-         9mhpKjYpGiuEtf7RX0779nMSZpAw3swgIAM6NXACJ8jM2pIzrFw+IwrCLWlTMqx8XT3K
-         7wIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792492158; x=1793096958; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DaGQmjJp37UYSV/iBuExkFx+biffzuBEmX37u8YFfQg=;
-        b=UgnKyVx2lESGArjr2dtbpJZ3jxb2VUQkASgb/7srbrB9yEt5S5buntFjZhWHJCK956
-         pd+3dJ4g4voSIxoWT0Yt203YWp0OjJuYg5evDFQDWD54kt7mlm1tiypQtc6YwpK/agtM
-         wim2UG0abVcfEgQ7eHJe23+TGR/pfnSmijn01DT0zfIqh/5T32ZFtGcjmdAP2SM7kLaX
-         RrdYEFZa+nGtPwwBGLiNUxQAchKquKrJX5eb0tPojBTEQmUceLGp9+PBaWXCZe2qh62s
-         vZxYvMCf43HvWKql2UJmSrAvvnRI9J9ysDF2pGSzqeuQlEtxugzmsnHozByQIAgdt0GY
-         Icxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792492158; x=1793096958;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=DaGQmjJp37UYSV/iBuExkFx+biffzuBEmX37u8YFfQg=;
-        b=wqybKkY7QtlWnHuKPCGUnO+dOz++e+FAFertoV0Se9P/xj/TvnqekTLASoGM9m0PaN
-         /qy3o49uoGvfsYmPHzksZnk5dX8+i1u+AcCxeFwBP+Zh0nalXeNOVicT3x4MSQLWEawM
-         8oOJyhWIN4WN+JSsHfYqq7sFWTpzrZaEP5/fulSFe9mwntb5Z2AHVRDQXO7PjUBcjqYo
-         OpqDENdLigRYgDhtJBpbpjoXrvT3j+EY4Lzv+upHw5TNmMDczY8n/8w/XrhPfSIt0psu
-         moiEwB6VzJUdRLWXeZvgkTlU+rbicpLAltz+iGwO7UGIVwr/ijB9WoAHAQWjaIZ5KQrz
-         H2yg==
-X-Forwarded-Encrypted: i=1; AKwUvBwebjidRgGk467/SofV5S5FESwjm2q4QuBUY6+XMoxg2DHjZXi4A6b/po6NG1KK7vAFnDHmXEw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIUb7wz9dJOO0WZdAdcSP9VNikIrlZqDoKqbqWfq2qeUs57j7rL
-	uyZ1iouse+hk2YcYT3PGp9ntQgVS7FWV8sjQb2mQMrRwQrEkn/SG/eLpOqqLxdv7Hn/ZrfugQqx
-	8e7sWri8ZbBAUs5XUaEOmFlvMw/CaDjg=
-X-Gm-Gg: AYBFou1tRDPcDSzjxVkKzMSDPpcdfVUqvEJSBLbudKM8H/43A1SQTx+y6TVUeSL3sJY
-	ZdXf9fTvUlLOiwMQYCEJiU8ojc1u8fOqJ6oByeAGNUg1i/Wlpvuim1ob2g2jqWKarf+rWtBCNDP
-	nAuNSTXBRLCNxFKVgQWzvJ31WORYhepCC0Cpiv7r7MBUbYOY0jHL63DDyLeV22z3dHUNO0yQC+i
-	/8nz8Tq3rVZwn9mrG1rwH/auAJllv+jUwUKVsnSo646Pxjtt2w8rCYI+F9VZI4MRfS7tk7GlIm9
-	sFXA3WjzZgeZylrNN85vXUg0zQO95bMYANFjmkRDiQ7DBsFEUFRkMmhl7zgEj2W+aQbD1BMLOIP
-	U9MEUamMn2Z0q8E5dH7EQKKmkcT5c88wYbMQnZSNxjkBc+DuHzEc1eFLP4RwvtnOiZ60uMH0pUS
-	Fu3ZtiwVVGKId7d0r4TKpvFuTi2yVxH8bt/DPSHnlBdVLA7E6F9eE=
-X-Received: by 2002:a05:6830:718c:b0:821:dd7e:330a with SMTP id
- 46e09a7af769-84b74767c52mr1172363a34.8.1792492158132; Tue, 20 Oct 2026
- 03:29:18 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fdIsAXuY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FD21F000C4;
+	Tue, 20 Oct 2026 10:31:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792492304;
+	bh=aW+tUhGIytr6myAG/haqiFo8CoeHUsC4Au7jENp7FB0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fdIsAXuYNFCvTxZEqUFxtcgLs7ZMUHxO4dBU2zUuVXo8Y32rD52ephxinNlUuIu3u
+	 gGBRPorpuUwTZnCjWKqEZMkSC1qPaYfr5ibX6PakxqzZZY+riitZKwvUSrF3t20u7T
+	 h4UA9C6LIUYm80TkiBDiFtnzLPj9nAsZxAjm8h6gG2E+uizSFZ47WspBg+5VOTrXnk
+	 wYuBOH4BF3oOpTgFtuDC8isv6h/R9eFPaXCp9DbmQTmK/EscMqfaPtR26bN4UxU0/t
+	 38eo7Zotu521jTaRcxY09MfJsOLuG7CJFuC+xeWLONA3dyKCNLZjRcim0bVQTunTsB
+	 wIY2MHR+aCLXg==
+Message-ID: <f54da1f7-4ee2-4e19-b95c-c442f4f91a31@kernel.org>
+Date: Tue, 20 Oct 2026 12:31:39 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,29 +51,129 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAFcZKTyCu7K=1OOETBvVrKf-9YKHRk7wXNRyZW7m5P0PEPg1zQ@mail.gmail.com>
- <20261015092200.GZ219304@unreal>
-In-Reply-To: <20261015092200.GZ219304@unreal>
-From: Peter Morrow <pdmorrow@gmail.com>
-Date: Tue, 20 Oct 2026 11:29:06 +0100
-X-Gm-Features: AclHuK-Hqleao73VUBziUblRp_E3tFyPASV536hNnVlfimnJbooKVRRcaLJeklg
-Message-ID: <CAFcZKTyLm3P8Jr31sQSGpE62W=v9+Jj3iZAQ7MNDM1DcXzroXw@mail.gmail.com>
-Subject: Re: mlx4: no ib device for Ethernet ports without IBoE since v6.6
-To: Leon Romanovsky <leon@kernel.org>
-Cc: tariqt@nvidia.com, petr.pavlu@suse.com, yishaih@nvidia.com, 
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5] net: ipv4: add zero check for snd_cwnd_clamp
+To: Kaho Jiang <kj2864@nyu.edu>, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ edumazet@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ co+71b6509cb791e531@bugs.sh
+References: <20261019222531.1073-1-kj2864@nyu.edu>
+Content-Language: en-US
+From: Eric Dumazet <edumazet@kernel.org>
+In-Reply-To: <20261019222531.1073-1-kj2864@nyu.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 15 Oct 2026 at 10:22, Leon Romanovsky <leon@kernel.org> wrote:
-> The best approach is probably to add a similar mechanism for mlx4. However, since
-> that driver is quite old and has limited test coverage, it would be better to
-> implement something like this:
-[...]
-> Can you please send proper patch?
 
-Thanks Leon. I've tested your change on an Azure VM with two
-ConnectX-3 VFs on 6.12.111: both get eth and ib auxiliary devices,
-and DPDK attaches both VFs and passes traffic. I'll send it as a patch
-this week.
 
-Peter
+On 10/20/26 00:25, Kaho Jiang wrote:
+> User can pass zero to snd_cwnd_clamp via RTAX_CWND type.
+> This could lead to division of zero error if not checked properly.
+> 
+> Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+> Call Trace:
+>   <IRQ>
+>   tcp_reno_cong_avoid (net/ipv4/tcp_cong.c:510 (discriminator 1))
+>   tcp_ack (net/ipv4/tcp_input.c:3517 net/ipv4/tcp_input.c:3873 net/ipv4/tcp_input.c:4440)
+>   tcp_rcv_established (net/ipv4/tcp_input.c:6685)
+>   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
+>   tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
+>   ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207 (discriminator 1))
+>   ip_local_deliver_finish (net/ipv4/ip_input.c:241 (discriminator 1))
+>   ip_local_deliver (./include/linux/netfilter.h:325 ./include/linux/netfilter.h:319 net/ipv4/ip_input.c:262)
+>   ip_rcv (./include/net/dst.h:481 (discriminator 6) net/ipv4/ip_input.c:492 (discriminator 6) ./include/linux/netfilter.h:325 (discriminator 6) ./include/li)
+>   __netif_receive_skb_one_core (net/core/dev.c:6297 (discriminator 4))
+>   __netif_receive_skb (net/core/dev.c:6410)
+>   process_backlog (net/core/dev.c:6761)
+>   __napi_poll.constprop.0 (net/core/dev.c:7830)
+>   net_rx_action (net/core/dev.c:7893 net/core/dev.c:8050)
+>   handle_softirqs (kernel/softirq.c:645)
+>   __irq_exit_rcu (kernel/softirq.c:679 kernel/softirq.c:519 kernel/softirq.c:758)
+>   irq_exit_rcu (kernel/softirq.c:775)
+>   sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1062 (discriminator 35) arch/x86/kernel/apic/apic.c:1062 (discriminator 35))
+> RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
+> 
+> Fix by checking if user pass in zero as parameter,
+> if so reject the value zero.
+> 
+> Fixes: 814d488c6126 ("tcp: fix the timid additive increase on stretch ACKs")
+> Cc: stable@vger.kernel.org
+> Reported-by: co+71b6509cb791e531@bugs.sh
+> Assisted-by: LLM
+> Signed-off-by: Kaho Jiang <kj2864@nyu.edu>
+> ---
+>   include/net/tcp.h  | 2 +-
+>   net/ipv4/metrics.c | 4 ++++
+>   2 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/net/tcp.h b/include/net/tcp.h
+> index 4416cdf9bf30..9f605d9ecb35 100644
+> --- a/include/net/tcp.h
+> +++ b/include/net/tcp.h
+> @@ -1522,7 +1522,7 @@ static inline u32 tcp_snd_cwnd(const struct tcp_sock *tp)
+>   static inline void tcp_snd_cwnd_set(struct tcp_sock *tp, u32 val)
+>   {
+>   	WARN_ON_ONCE((int)val <= 0);
+> -	WRITE_ONCE(tp->snd_cwnd, val);
+> +	WRITE_ONCE(tp->snd_cwnd, max(val, 1U));
+
+No. Please do not hide bugs.
+
+I repeat : Do not change tcp_snd_cwnd_set()
+
+>   }
+>   
+>   static inline bool tcp_in_slow_start(const struct tcp_sock *tp)
+> diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
+> index ad40762a8b38..cb36686973e5 100644
+> --- a/net/ipv4/metrics.c
+> +++ b/net/ipv4/metrics.c
+> @@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
+>   			NL_SET_ERR_MSG(extack, "Unknown flag set in feature mask in metrics attribute");
+>   			return -EINVAL;
+>   		}
+> +		if (type == RTAX_CWND && !val) {
+> +			NL_SET_ERR_MSG(extack, "RTAX_CWND must be greater than zero");
+> +			return -EINVAL;
+> +		}
+>   		metrics[type - 1] = val;
+>   	}
+
+But is it really fixing anything ? I guess this is why you added the 
+max() in tcp_snd_cwnd_set() because you did not understand the issue.
+
+An unlocked CWND of zero is harmless.
+
+I think a better fix would be:
+
+diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
+index 
+ad40762a8b38379e4ccdc505e3885adb8dfff763..b7f8c47f72f9707adb4ef4dde5558af23b46a502 
+100644
+--- a/net/ipv4/metrics.c
++++ b/net/ipv4/metrics.c
+@@ -60,6 +60,12 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
+         if (ecn_ca)
+                 metrics[RTAX_FEATURES - 1] |= DST_FEATURE_ECN_CA;
+
++       if ((metrics[RTAX_LOCK - 1] & (1 << RTAX_CWND)) &&
++           !metrics[RTAX_CWND - 1]) {
++               NL_SET_ERR_MSG(extack, "Locked cwnd metric must be non 
+zero");
++               return -EINVAL;
++       }
++
+         return 0;
+  }
+
+
+
+
+Note that my email address is edumazet@kernel.org
+
+Make sure to refresh your git tree, because git should have handled the 
+change automatically.
+
+pw-bot: cr
+
