@@ -1,45 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792521802;
-	b=k9ne+pWK7JXVFJEPGnvsPDVs778/1wJ7nUa0Gh+KmDFMDqCoIGKa3K/spcEsq/05CfVy
-	 o9zPnIyrzehVZyKwqfNec++2KgxfBeXzJGcildxZyRofcUo6Wn/Z2X+LGqhRlS4I8HS34
-	 RKA9b5UADGTxtDWUnJzUjn+qX7vF9ChXR5rW+8GxYrus3j3Iex//Mnie3bOrKt+q2CVH4
-	 qxd+DbOANMf7OPg933NMpfiL+LEtYJ4ytVOTLB2OOOCP/v9uCTmcDbQaZKbyd6jX8HyYr
-	 puBF2twdJNRM7xdj3LQVqmEXUelOiOr6bGCf8HLOi0oPjn1xKD4rQkyMW4prfCWbUVQ==
+	t=1792521847;
+	b=1/s1F212sKN5mzakwDDCVcxW6fPmBTq0rEV9fydQfo6rTFcGCQHV1y9f6C2GRv9KXUTs
+	 DuGddkSkS1wiXiSGjI3/iXBRNf2WoFVGpJJsREgjBzerd+M886aOHfb9NiD92fvi2DM8+
+	 f9bH4SYTgVjhJyU/R9g/bRqWlpwDQiS9mM7BNEcdqH9+7lOV4z5mQ89mCKQvIDBRmqMkn
+	 Zwlkuht+TtqxcSVW2FZIPW3jWw44StnqOfo4RHykB1cvAEtyfFZH5qz6jxU0ab7Tb3dQs
+	 uEQ/cYl6Zj5IIenZon9htdB2+zJGifhWO7nMZoIPyoH6QO5R0aeKl2xQ87vv9GzC4SA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792521802;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=Cg5i28eI8ZmgAEQYGaNmNXxb4FmSuruGqb2BKhaEY1g=;
-	b=RnmHOFTzvl6gxUwnSGW4MFjybnagwIShA0VbDe/eG+3fuoHsC/24Jk0laXn5rhpkX24o
-	 idx9lCxiIqBKmyxHcqf4N15ElEdQVmNXVeQq0Q+F/z0sGQSYKouWsCfSjHP9MumkB72SF
-	 cWESAm2s9iwvw/LYRYtDyCFa7Elj1lDwVUzJmNwxSLg1IZoMjiTqLue7bib1pJ/OCK0jw
-	 5jjaNTdXmDTQvmdqxIuffr94CS1ULcEzOTuFpz4A/hEqNI786y7U7OKS+MNk9nuf2r8N5
-	 /O9nIhFHDgTmvMM2bGhBzulJwH4T4wVrAPvFH7R4TDl1Jjr6K7ULbJUrLUDBnpGE9ag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792521847;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=p/8qlMm3scfg8hWAkvfPyzt/npLwqZJbe6JVNXEfyeI=;
+	b=lCOhuKrsgTPuCsHKbXQk9IH/5GOR+VNTBW1VCuM9GGInLVQ1Q9yUgDWYnF3yPWRbtPIz
+	 8dwT0zcSo3Bjv+8j0Q+atFvkSd8R0xvGvpPFXWMgvqKCCMbZPg0qcI2Ci3hCBh3JRk13P
+	 cS3Hi8WUwWYvKjWx/gpoZqtmd7s6YvRmjbantonmoumfZ7+NjcTkH2kNe4KeD2mR0Vwb3
+	 3JYZ7ukpSDJhdeQw1bP7nFVyWtnK5mKO5n1Np0KTbrwLqYjSSY00doaslWN8XOoinXjCM
+	 2U/hNyldtvTpMAoKXOF9DHbqC9zAlSSXDwf6opRUEgZgBbIH3N3C+1yYOUWS1fZ9lIQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H+jRGeKM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eeoR3Boz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95162606A31D;
-	Tue, 20 Oct 2026 18:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43DE606A319;
+	Tue, 20 Oct 2026 18:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H+jRGeKM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6551F000C9;
-	Tue, 20 Oct 2026 18:43:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eeoR3Boz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9D31F000C9;
+	Tue, 20 Oct 2026 18:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792521802;
-	bh=Cg5i28eI8ZmgAEQYGaNmNXxb4FmSuruGqb2BKhaEY1g=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=H+jRGeKMfGRWKUtlHBGIdLEHaq5YucF5IvOpzpz2lyiHEKg4uplaXyzx+1Y/HCef9
-	 U0OobKH0D8VOS3fa92ErsElC0y0s/S6zb3wZ9LotduqSn1qYqbqLVuhzQIKKDESb+H
-	 5SP/e/f6Qe/K8igdgz3OeQkdUG9JnOm9TFh7isYa6l5pf/jY0HMTsbsvMmJlggSmTH
-	 9X7gMKoXEp6IWvni/b/p5XkznwfsU1imXCv2JY2NkSR7hQ9NgZ2XO2StClqNqgZH53
-	 pF+mKgUbV58WK6kofBTrouuXZXuy2uJ6U9eSTfLUVb1HKvLMXf37SucGH6AbxfM5G/
-	 kvGG7haFlF3dA==
-Content-Type: multipart/mixed; boundary="===============8583768830564627741=="
+	s=k20260515; t=1792521846;
+	bh=p/8qlMm3scfg8hWAkvfPyzt/npLwqZJbe6JVNXEfyeI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eeoR3Bozk3L6tPetdSZr4CAlptb/RlhaBDSTKp9NTBv4jUrSSu0kDvRXLqxhDdT2O
+	 6Dw87joAqQ4ZUIFueOuVvGXD7kK4wQVaPiUDoAn2EBK6T8hr0q5ajBTL65J/aZ79bw
+	 9McsYJXSBboSxc7zzmrYLPbO+sKISmTi35udK55BgSFZMBXpdErIaQogPm1Icfa9mw
+	 37lDhaNrv9mFXAtk+2WJEAGCaKnjU/1VHscxF5uWCOiX33rx2pMZ1vpXMOK5wpf6kw
+	 nlUxlY1TTbhH3pi7CzqA5Cltr/Bcbd5HYdnW976fJrXRN4dwo7a46P+MIEWRsXGUv1
+	 WO7abZV8OjFtg==
+Date: Tue, 20 Oct 2026 11:44:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Peter Hunt <peter.hunt@opengear.com>
+Cc: netdev-bot+sashiko@kernel.org, loic.poulain@oss.qualcomm.com, Daniele
+ Palmas <dnlplm@gmail.com>, ryazanov.s.a@gmail.com,
+ johannes@sipsolutions.net, mani@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 2/2] net: wwan: mhi_wwan_ctrl: drive
+ DTR/RTS via the IP_CTRL channel
+Message-ID: <20261020114405.38a06826@kernel.org>
+In-Reply-To: <20261016205845.503392-1-peter.hunt@opengear.com>
+References: <20261013183500.261229-3-peter.hunt@opengear.com>
+	<179214346368.434549.12561882856700666394@kernel.org>
+	<20261016205845.503392-1-peter.hunt@opengear.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,73 +65,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <8e8c6aaacd577f4daa13c8e97702e38c9982a98684f964fc564880bfcd624413@mail.kernel.org>
-In-Reply-To: <1fa798d444efac579e91ee0716e228902a8f9afe.1791980149.git.zhilinz@nebusec.ai>
-References: <1fa798d444efac579e91ee0716e228902a8f9afe.1791980149.git.zhilinz@nebusec.ai>
-Subject: Re: [PATCH net 1/1] bpf: reject raw iteration over managed sk_storage values
-From: bot+bpf-ci@kernel.org
-To: zhilinz@nebusec.ai,netdev@vger.kernel.org,bpf@vger.kernel.org
-Cc: davem@davemloft.net,edumazet@kernel.org,pabeni@redhat.com,horms@kernel.org,ameryhung@gmail.com,ast@kernel.org,martin.lau@kernel.org,daniel@iogearbox.net,leon.hwang@linux.dev,mattbobrowski@google.com,zhilinz@nebusec.ai,menglong8.dong@gmail.com,kees@kernel.org,bestswngs@gmail.com,memxor@gmail.com,vega@nebusec.ai,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 20 Oct 2026 18:43:21 +0000 (UTC)
-
---===============8583768830564627741==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-> bpf: reject raw iteration over managed sk_storage values
+On Fri, 16 Oct 2026 14:58:45 -0600 Peter Hunt wrote:
+> Both are corner cases outside normal operation, which I've tested on an
+> EM9291, including bursts of 10,000 DTR changes ending in either state.
+> I'd propose to address them in a small follow-up patch on top of this
+> series, but I'm happy to fold them into a v11 instead if the
+> maintainers prefer.
 
-TL;DR: Fix only covers sk_storage iterators; the bpf_map_elem iterator in
-map_iter.c may still let programs read or overwrite __kptr fields via raw
-value buffers, as agreed in the v1 review.
-
-> diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-> index ecd659f79fd4..b4936f2e5918 100644
-> --- a/net/core/bpf_sk_storage.c
-> +++ b/net/core/bpf_sk_storage.c
-> @@ -865,6 +865,12 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
->  	if (map->map_type != BPF_MAP_TYPE_SK_STORAGE)
->  		goto put_map;
->  
-> +	/* The iterator exposes values as raw buffers, bypassing field checks. */
-> +	if (map->record && prog->aux->max_rdwr_access) {
-> +		err = -EACCES;
-> +		goto put_map;
-> +	}
-> +
->  	if (prog->aux->max_rdwr_access > map->value_size) {
->  		err = -EACCES;
->  		goto put_map;
-
-Does the iter/bpf_map_elem path need the same check?
-
-The sibling attach callback in kernel/bpf/map_iter.c validates only the
-access sizes against the key and value sizes:
-
-kernel/bpf/map_iter.c:bpf_iter_attach_map() {
-    ...
-	if (key_acc_size > key_size || value_acc_size > value_size) {
-		err = -EACCES;
-		goto put_map;
-	}
-    ...
-}
-
-Its value argument is also registered as a writable PTR_TO_BUF (HASH,
-LRU_HASH, ARRAY and the per-cpu variants), so a program attached there can
-still read or overwrite special fields such as __kptr in the same way the
-commit message describes for sk_storage.
-
-This was raised in the v1 review, with a request to cover that path as well.
-It was agreed to extend the fix in a respin, but this commit only touches
-net/core/bpf_sk_storage.c and no later version has been posted.
-
-Should the bpf_map_elem iterator be handled as part of this fix?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39475541232
---===============8583768830564627741==--
+Please follow up
