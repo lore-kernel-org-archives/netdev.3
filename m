@@ -1,76 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792469529;
-	b=WX1tDEHNyP9r25jdAHaQwIHHTkY+XiEMn7LaMQk67fzyVp/dNTE2kZHgbsQLLQELteZQ
-	 XNCSardrsCNn98wHgLcCLkPaFAp0tOwzBsrji+XYb5KVZcY9xLP6SVqXz5T0/BmF9j0O3
-	 Tr10T+dqVZAIx0ZZ7eKNu0Bn32MHNI5RhXLk6mQukaxn58yzkY79vfEGxcEsqeE3khmwo
-	 aftRHf7F0c8ds+GWaYR9C0CgthZE3AXmVneJUuw2EFdyOm0ALUpNhxksrpKjwHUm0ufgb
-	 lGwzbOeb6wnweXma+NCxd6gh3A+/N8kdyA20tNKi7xEUoJvfnF+SykqBkODDFBJp6jQ==
+	t=1792469656;
+	b=In4NpRuEgFNzn8SVE+EZfB73KzUH+ziy6+m3ZoyNImF/DhBBgBLqEm9YqxIhMygY2ZT8
+	 D8Q7eLobF8vtew9FxSuewld+ie/S2alZeE5qYynhsFAVK7uOqaXNy1+IzY9oyK3+TMui0
+	 k0kO3bLMSm5zA81k0KgIUbZ1OkvdQox8vPkrwTlt05Huck+/0LXcTe4oz/+gnL83f0jdT
+	 0dwYc+ityqF8sC4c8XmAIVX6ECkUysgcmzOpRvT/0DaIibm4ku+UKJy/HQSPV9BZHb1JM
+	 I1pYGfoeUyDn1skP9jfFDUpbHW4/ELq3A7lY09XY59WjD5YXbwiTXEc8jO8w3X6NSvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792469529;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792469656;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=uAQVeBdqF8iBjUZznDFAjUGvJNEGAa606+53oDaEyLw=;
-	b=W3XzdfRNiJZDfxE4wgM1uHT7Rh5a9qOln1qeNIUukaHGs1gJ7XMF31aW0KkXVhRiBx0U
-	 1tbET9JMMpC8kTaxCuswX1jxOthrZwsh8hBCPiDtIgnnuEubfYV9nfpgPo7VDOar4SJ9y
-	 nhipR50xxh5k1iMN5xAIt7pz7nHeVsPRj0ZN+bvAsK20WrYRDVZTDsLbGtZe0UrnkXMqg
-	 6L7qC7WHLRl98fJSnvvsJy6keBbWVWOwgG1u8Uc26OFbpMqLfjgtu42k3qzoTpCqkQbAi
-	 j/RR6W0ihgM46gTodNiXe/kn1CGPTuo9TMtVj7oPj1laavYc5JzlsotnevKQ+3XFhIw==
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=DxN0sudUJewCfLMVKKP0r2+HbKPiDu9x82FTF+O+lI0=;
+	b=Mt6LRpTuSJKi3rPs3X8PaHJbCC/a+POCrCkoYvjH/FccWDR7FkCTbZvc7F3zP/KM0NNp
+	 Mhm+atQJaXXBFq5G8N45WRbZOcLbOVyl5kJS414AAIvKsvCOBxeJJxlZgzAketP1yi6Wh
+	 0J0MenP3J7IjEj/6vFUhGNkPmCYrYVSYMSuPgPftrzvznG/5R890iFVxEr6LrKrYaKdL6
+	 6lQhuDjn2zNLWTfVmksMbzPluS05ddkUvaFWDryRIhN/9G6YVoza0IX6H01b+Pi9qJd6Z
+	 9cVl7mFtQus7mR/Wf4Po+fdLlqoIAm4oi3YgpTdrf7BKyZu/NGCyeCHmKjY7jMnxPHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bREnexKh;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LzsmHutE;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8CF606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:12:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F8CF606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0707606A31D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:14:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0707606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bREnexKh
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89f2846ab57so2923513b3a.1
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:12:07 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=LzsmHutE
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3abb4c24125so1774814a91.3
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 21:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792469527; x=1793074327; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uAQVeBdqF8iBjUZznDFAjUGvJNEGAa606+53oDaEyLw=;
-        b=bREnexKhXahp6Bc9honRucDCkEreBwjOPgqmKVZi1KCtuI8Gi6q1oSNXOTDgPw0cp6
-         fXmDAVsHL5jwDGgSRHn5ZAEAkzYoPmRFdw/ut6rUhCb9zgKHLTbN4PdY4IBClV/rvIhZ
-         5oDaJr055lhCGmZnScl2BHVfWPcY9PtiKAvDA7WiFmAVgGMI/ID+lEUv/hyplMT2jz7Z
-         p51zsTmvLAgXQGfVLGtENWquS6NPwrLqY3n5OOb0hWGX5HDnxJEfhpGPy2PZESQu1Q7C
-         hd9k0FXu7q3vcN4/DUUXA2/ekGm4LWjYRkXqaHx4zoh4iusbjor2W9B3eBU12mdugD4t
-         U0EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792469527; x=1793074327;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792469655; x=1793074455; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uAQVeBdqF8iBjUZznDFAjUGvJNEGAa606+53oDaEyLw=;
-        b=RqLnI4JPb3ayeVix5cppGYR4neTghLEhgED+Csjptf+gMnr75iTVBCPyPhaNLa3egi
-         hwDDyg3WCWMzcQReeE5NZ3gtLV3EdA1dC1a10pLricGuTvi2L9tPb7jq1k2s4lQfS+Q8
-         ApHMEdGJUFxioMyKBXvSc3Ir6VH2UNcR5p2duesHedvVER2i7s4UKb722WL0Tzl5wqQ+
-         cbobvwd2Xky6nGgA1VirY+EUanG4IdJy/bXzW8a6GRquKtckMu6T+JgNePc3XG5ZeBTk
-         TsCAC58zL/mMpE9r6RkfwjYTzbC/qhULNYT13B6k/DjhPGyjTe5h3zUiIGFo2qgKtiFr
-         Oi2A==
-X-Forwarded-Encrypted: i=1; AKwUvBw3MHT0Qbx0XtxS4hMcOtCN1K3tAboPXwlVqzbpWll6LDDiX5rnKvXvgXXOS25Dmf2JzbA+ntU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLk+PKeVlXdMwEBCtS+l6h0Wa1DsPIkt34eYfqI81pwoAkHqZj0
-	HOt/KFWdHSUSedixnfM2x09j/9M6eDbATOh+kikY+T4eK2nAYIcM7LIJK3TDKQM0LhB7XV61eGL
-	sYk75aw==
-X-Received: from pfbcj24.prod.google.com ([2002:a05:6a00:2998:b0:889:4fa3:fafc])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f12:b0:89f:9da8:1b66
- with SMTP id d2e1a72fcca58-8a04cc2adfbmr7226294b3a.33.1792469527213; Mon, 19
- Oct 2026 21:12:07 -0700 (PDT)
-Date: Tue, 20 Oct 2026 04:12:06 +0000
-In-Reply-To: <20261019174152.2932829-1-cjubran@nvidia.com>
+        bh=DxN0sudUJewCfLMVKKP0r2+HbKPiDu9x82FTF+O+lI0=;
+        b=LzsmHutEAkSwECaGW7SRlHcfzN1LHNEMg656QTfmCQBqL7UEBi33rfcbEskFy9Vf9s
+         aYzUQz1s+u6xwaHKJIOgvJV+/TU8TQN3Ec7IRKqccgQqKQKiWyfo1iKQ9aFez6FLgZQe
+         De0fmxQuZsv0ZqLwNBKPUfhdTbRVQdYrqMEj4BEjVPjftrU7Jl97RIWyS/Qk6qogxzSW
+         ub4cG4zwOSI4OlPNHSKSLiOPK2dPfY1QS+i7NyYWGIyz57OWVVfnMLvqY47UKXMQN6xI
+         CFd9uSxaAwQWHfjhnNO96tmg9OR0hZxDjb9CZ6xta48phnYcjxa9sYLNlO7AB8AzlSdl
+         Pn+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792469655; x=1793074455;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DxN0sudUJewCfLMVKKP0r2+HbKPiDu9x82FTF+O+lI0=;
+        b=aVprt4v6hTpd3QfGyL0NIytmGx5Vou4L+6D5h7sK6XkxTMCwFUgotkexjlFfUztG2y
+         gwvrXR9M76nKp3JRghOFNfX5D43jAs8nAYy5YkRzoYie0YUqfRckn6eUvvO12AXTPbqo
+         SNArJ+fX4DJIUng43xvCXAPzeHtXLzEimt2IWC6U1JE4vze30wcM/71KRH2t5qdOVaMI
+         Q0xmM9lrQZC/COFZZ04B2GI23hpzeUFucrnWj0UUry4AdP67XQcvSYiDD41nIaEFmijo
+         aMz2/59qVNryXAbfrAkjORrnImgoJxeIa0xlPfeZEEqYvb2iuKds5cBpOdIC/A6hxBv4
+         wU9Q==
+X-Forwarded-Encrypted: i=1; AKwUvBy6mNwkSbWa5pD7jeGXXAzPIGR7cFuJOUeQjJZ9Tc5zNlrwxwtBJgk6O/so+XmWxaIsb3mMPX8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLOeUoS2Xm1zoaus5lFOyzlWioANxb2/gAmv8pg9A7GpElmCdHl
+	/nS4qSARAvI59OMz0ZwWQJoYn1Re1KAc466gCxLtdTw4QosSv3wQPMbQUdRF3D6aM0wM8QTtrqH
+	6w7Fs2A==
+X-Received: from pjee12.prod.google.com ([2002:a17:90b:578c:b0:3ad:4377:79ba])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e7ca:b0:3ab:f38:2b3c
+ with SMTP id 98e67ed59e1d1-3acef13eb0cmr8177489a91.28.1792469654868; Mon, 19
+ Oct 2026 21:14:14 -0700 (PDT)
+Date: Tue, 20 Oct 2026 04:14:14 +0000
+In-Reply-To: <20261019-bug-net-netns-move-rcu-barrier-v2-1-b6eb7780c492@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,69 +78,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261019174152.2932829-1-cjubran@nvidia.com>
-Message-ID: <atbp-Zxbm_Os6-mT@google.com>
-Subject: Re: [PATCH v3 net] net: skbuff: don't copy alloc_cpu in skb header copies
+References: <20261019-bug-net-netns-move-rcu-barrier-v2-0-b6eb7780c492@gmail.com>
+ <20261019-bug-net-netns-move-rcu-barrier-v2-1-b6eb7780c492@gmail.com>
+Message-ID: <atbqjdy_KVld_WAC@google.com>
+Subject: Re: [PATCH net-next v2 1/3] ipv4: draw rt_genid from a sequence
+ shared by all netns
 From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Carolina Jubran <cjubran@nvidia.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+To: Qiliang Yuan <odys.yuan@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jason Xing <kerneljasonxing@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Dragos Tatulea <dtatulea@nvidia.com>, "=?utf-8?B?QmrDtnJuIFTDtnBlbA==?=" <bjorn@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 19 Oct 2026 20:41:52 +0300, Carolina Jubran wrote:
-> Commit 68822bdf76f1 ("net: generalize skb freeing deferral to
-> per-cpu lists") added alloc_cpu to struct sk_buff and placed it in the
-> headers group copied by __copy_skb_header().
->=20
-> This is wrong for newly allocated skbs. For example, skb_segment()
-> allocates a new skb and records the current CPU in alloc_cpu, but
-> __copy_skb_header() overwrites it with the value from the original skb.
->=20
-> If the original skb was allocated on another CPU, the segment may later
-> be treated as remotely allocated and unnecessarily deferred there when
-> it is freed.
->=20
-> Move alloc_cpu out of the headers group so it is preserved across
-> header copies. Copy it explicitly in skb_clone(), which allocates
-> the skb object directly instead of going through __alloc_skb().
->=20
-> This was discovered while investigating a throughput regression with
-> software IPsec. The load used 512 IPsec tunnels carrying traffic over
-> VXLAN, with 512 parallel iperf3 flows and an MTU of 4500.
->=20
-> Before the fix:
->=20
->   16.09%  queued_spin_lock_slowpath
->              |
->              --15.90%--_raw_spin_lock_irqsave
->                        |
->                        --9.37%--__slab_free
->                                  kfree
->                                  skb_release_data
->                                  napi_consume_skb
->                                  mlx5e_poll_tx_cq
->=20
-> After the fix:
->=20
->    6.84%  queued_spin_lock_slowpath
->              |
->              --6.57%--_raw_spin_lock_irqsave
->                       |
->                       --5.00%--__slab_free
->                                 kfree
->                                 skb_release_data
->                                 napi_consume_skb
->                                 mlx5e_poll_tx_cq
->=20
-> Fixes: 68822bdf76f1 ("net: generalize skb freeing deferral to per-cpu lis=
-ts")
-> Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
-> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+On Mon, 19 Oct 2026 11:31:15 +0800, Qiliang Yuan wrote:
+> An IPv4 route records the rt_genid of the netns it was created in, and
+> rt_is_expired() compares it with the rt_genid of the netns its device
+> belongs to when the route is checked. Every netns starts its rt_genid
+> at 0 and increments it on each cache flush, so different netns often
+> hold the same value.
+> 
+> When a device moves to another netns, routes cached through it remain
+> usable until dst_dev_put() points them to blackhole_netdev. For a route
+> using a nexthop object this happens in nexthop_free_rcu(), which
+> free_fib_info_rcu() queues from inside an RCU callback, so the
+> rcu_barrier() in __dev_change_net_namespace() does not wait for it. If
+> the rt_genid of the new netns matches the cached one in that window,
+> ipv4_dst_check() accepts the route and a socket in the old netns keeps
+> sending through a device that now belongs to another netns.
+> 
+> Take every rt_genid bump from one sequence shared by all netns, which
+> never hands out 0, the value every netns starts with. A netns bumps its
+> rt_genid on NETDEV_UP before its devices can carry traffic, so a cached
+> route never matches the rt_genid of the netns its device moves to.
+> Concurrent bumps of one netns can leave the older of two values, so
+> rt_genid is no longer monotonic per netns. It is only compared for
+> equality, so this costs at most an extra route lookup.
+> 
+> A connected UDP socket in netns A caches a route through a nexthop
+> object on a veth. The veth is moved to netns B and brought up with one
+> RTM_NEWLINK, then the socket sends 200000 datagrams. B's rt_genid is
+> bumped 0 to 20 times before the move, 63 trials:
+> 
+>                                 before     after
+>   trials sending after move          2         0
+>   datagrams sent after move       2616         0
+> 
+> Fixes: 4c7e8084fd46 ("ipv4: Plumb support for nexthop object in a fib_info")
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
