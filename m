@@ -1,108 +1,125 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792526980;
-	b=HFOZO/mYRhyuyTjuZTwiEUcT7tYAIUzQyUz24zgpJpYQ0mPFQGVbXVdNj3DHfk3FOlOJ
-	 jOLj3sIYGsdjlHuQgAnyt9Una3i4SowtXqOyaMpx+tQjab0xmLNxSFaeTW95GZCyxX7dK
-	 AphRd/HpHPd811fIIjaioL4hHed+WjXZZkn/Avqm/vl5Kcy7GaShpIXHO37sWcNahUlvb
-	 91oI9juevNpJITv5jUX8KnyKm8oDsWcH3NSP1gw/CGwRJHVR5pldODv5785URbur2v1nm
-	 39UH1qSJ0GZ2CUeT1cNFtii7kQqtoOkv8u4OVuS/Y+w8cpW+7rvbIG8/tY8+UUHO9Pw==
+	t=1792527005;
+	b=zdbOGWqrl6rTBNBDrNHcU5SEGWWQoEPTTYFLSdiUJD1tZdopp84mLuGujucsL7v5nuly
+	 l68jJkknzqAnqUqBXLbJbi/0lnyXHUW29sErCKGSeO+BK4uTJP8oBzxYdNirwRnr1EoB2
+	 wSqlxxc9fjd6DKXW1J6nd1kuEDBU8gVvWRWY3/DwBfnKgoJw5D9SnP5oYwyimzuGuHhm1
+	 hEQ2gcAK2/+hy3rUnoM3FvLuGrvTiaMJiiQ/w0zzqKX+fypbc3F/aIHZQcINSPFtep1My
+	 x94je4F/Epw4RcfFtJFF1edOS7ZvHO8md5nS/2b69XlDk1MPFBH5tyKoO8wnFUbYPqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792526980;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=a/FHpmQozRyX6PRPz0UuyxMFmwgJ5gMZhHW6lZCR6ao=;
-	b=ITL4wTUC5U2V2gF0wnNphoyz6G4ExyV9P8SnnizQAvax6Dr+BWtsXQTkpU2wXkKYpS60
-	 qpY4pE7nRkIsl5LGMx0S43EI+zfBPM89rpp0yF70VuyYOptjpJ5/aCMOsyQ5JoEhBjHdt
-	 8T9SDC+7oqtfl9eVRASveyGG1ZApaFvXfthjjVI5lVvUhgANiwPN0iaQKGk/birIdLYiu
-	 hIUiK2A50yZoqQdJaSGvrPdBUWNWgHFUq6vWwdTzDGmxcMigRZeWYiepA7C12rydWH+XW
-	 dc/iA1IcYG4Lczlhzjmtj199C3b7T9FophjwIi9/R28Xkvc8NqXtA+WhpBeJZTG4WIQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792527005;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=biyZRTLtYoa9JccTtADP7XVfeHu0cGOgCGXxzzSk5nY=;
+	b=x95F8MzxHxaTBFNNICF0ucDPQ7t7oLSZ4UcO03KhOpEFfaa1lmNKkR96KyesMM58poIG
+	 /91uQa0nrDQ0SXLgVxMotz4GScYolGhC96ZRvBGKY80cEO0fjNWffo3cD74/8qqyMCOvm
+	 iHDYGwufC19+AL2dR8z3JIVAzQkC3B4whH7xOL/84uQuDlr/Z7INsLU/oTX1zsoqPZ4KH
+	 bZ5umECZdjNsEPeRu/kYDfmsc5bItMo2DsLwEVl06EHGr8CZ+fOyG1G+23NNg95J80E5K
+	 CO9RkpBOoHHVKXURy03jqvU5J+aTTCUe2dICM8KLcBzpuYyeDQ6EbFQrCQ4SI9+pt7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="B6/6wkgC";
-	arc=none smtp.remote-ip=209.85.221.172
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZUHlkudy;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=rX3KPOmi;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D8D606A31C
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:09:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6D8D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039D3606A31B
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:10:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 039D3606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=B6/6wkgC
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5eadf48fb2dso342405e0c.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:09:39 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZUHlkudy;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=rX3KPOmi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792527004;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=biyZRTLtYoa9JccTtADP7XVfeHu0cGOgCGXxzzSk5nY=;
+	b=ZUHlkudyzyiKHSdwgfsL6/mRONAwiENVBzCn+FGVD3R9qttD0VjQHOFx/6YbD8389lIql2
+	YZELH+QRTyCHSl1mKOUyGKWZsIT0QisHamVXQqi0NO8fZ4X9wIi+N0FxqTSX4J7qr8pxI6
+	T3hbObXaB7bwwqZ3JgCtZzJBgvegaco=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-Ehb8T33NOUqaFgB1WV2WHA-1; Tue, 20 Oct 2026 20:09:56 +0000
+X-MC-Unique: Ehb8T33NOUqaFgB1WV2WHA-1
+X-Mimecast-MFC-AGG-ID: Ehb8T33NOUqaFgB1WV2WHA_1792526995
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a17741243eso131595e9.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:09:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792526979; x=1793131779; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=a/FHpmQozRyX6PRPz0UuyxMFmwgJ5gMZhHW6lZCR6ao=;
-        b=B6/6wkgCtTCgJammcFuwhqKlnyTGcX9RcrAEXFj9ZVVXjP4qzu5LOITCyDW6EZ1qCr
-         x9KwLuEgVoT6rHJuJsR48lfA6KwXYbTiOIPg1HGxbggojsTpvvutYsHxAfj76SU9PQe0
-         A+ajBbMFa7YK1+xEU+5ejZLe569WkcY0ClVwZavS9r2CPQNiMWFBJIsxVArL8dBzNXox
-         jcWO8dOlLGk/MElONkaxHRfmVfo6Y1zU5bWnHXW6bqVxrjRwGX34OyX5JGFoI+rDyrqV
-         ycxc4Ak9UakKVW1PRltZrvZ3maTSfkcIYDHwdHNnRcIl+cFUmdO5UWXda5BOwjnWWFN/
-         3PHg==
+        d=redhat.com; s=google; t=1792526995; x=1793131795; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=biyZRTLtYoa9JccTtADP7XVfeHu0cGOgCGXxzzSk5nY=;
+        b=rX3KPOmizCP4g97+YebllkCTaZVfiMWVjToFn5kmjY0LYqqWIcnYTGg1dgclLKG5Wx
+         yGO4MxPuoAt6QYapo8UnnfuCqfsZzIfunHAz6MsnKNxlMRbLQ6ATZ/r2J+ArOuAsWHD5
+         5tC/V+sNLk9w1AOxAiRL9E7/fut5O9rAvkSnwkVD5N/PR18YrF2Uqu+aB+ALD6iskqiI
+         gy9WoUYtxXf0pKKvh4k1+eXHF9RJll/IFWh+xg1QOfXrN2CxfPMydFdgWm9IDKTkZP5W
+         HluZVAIiF3VCqAM7N2lawwNR8u4E7PiyDdmVyKz0ynGIK/TNfVzMDnIaOvFvoB6qT6aE
+         IVmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792526979; x=1793131779;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792526995; x=1793131795;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=a/FHpmQozRyX6PRPz0UuyxMFmwgJ5gMZhHW6lZCR6ao=;
-        b=bu2Q4q0FGstAKc0pAQX+16xdPEQShv3QIFfis1bcFub1bzWhSBM7E7PNxD8Sv8c2He
-         QEsGCtbC1ZZD7pNpIhNufD/sMyKDt6GGYhX/6ac6DBCwpbYFn3F8k+Fs98EZzPGu+sq+
-         LHlLTK5bN6FP2J4xPxncx4P0mYpIE7erx1Lq7S2ly+grUaxFfo2r+ST7PFJ1mJBRRrsf
-         xIqSvR7OL+7V7mSlMQZrf/shq9VWpAkGfytkg66Bm95/KBAiBExp5KQm5RQF1usMDuZu
-         WW2UNUsrzmvgXO3v8NeX6I4bAeFNWJEzcPMx6ubSnQKQFLwK9rO3GF9i2hbwtw1d9k3l
-         S5eQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzrEmODzxjjtiNeKAOeB+rp14qyj6uYuB6cxeoWl24eda6SiUymr8g8sG4IZnHxWQEVYgJvm+g=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIn0GX+s9tgW3ER6X7RIi628B6/FiJhsh2v5CnPArI/COftCDCl
-	IEg+x2u9B7VV1Rdy+nehKw6cJh9ad1dzSZ1WMDIdQzTrrM80xX4tqoDI
-X-Gm-Gg: AYBFou2METit7KR0WrAqxOXaxw71omEqdrW2SsNT5dTWztx86k3wSy4m9Cz3BiRdGTb
-	KCxMLpXnRiVCAOP6FZgOfnGIsinzvR3eVZvoY9lA4bj+f3pfro5M5t0EU874cloUYgEDGgOr/xN
-	JbSk7eGC54g4jlJhlGDKiTrxbjtOLi1GXJ43Ng29XTXgHaYfqjoTSCchYJdtkLqX1GSeu3woZTE
-	N7pAiJEgURJ9Zs89p27A5Hrg0/o06KbexzQHwPCtzVxn0brKqpbjHFVwRpr/AgLHUlWX90+sm/7
-	b4wrja6f4SgZrjdF/tZQL+ebRhGiF1EQ9kGBT91IT5K1Z66gmGMeBLyp2scotwSXm+SmLrv4pSu
-	6GF9sqNpEPKV8SayQp4l/M2chu1y5KbpUhWwP+8NzhW71+DFKwBYm+hwvLkJnrvV7wC3TyGkl9q
-	vTb0xWi9mvxxvX8SAClnhUMzDI2NliSp5tFqHzSAio9lBveqkASMm8PW3U4Aw5TryvwsH7b2sjt
-	jmigLFNC60JnqJqCxjuIVCQU/wupEf1xCZkKMmwZp0w+ebi8V61RiDwGaAOAj9Oq394vhQSc0fV
-	/LDvsn7HxLmHlu9fqZBtxd5q377CIqInA6bfhQ==
-X-Received: by 2002:a05:6122:8616:b0:5c9:a60b:e5c8 with SMTP id 71dfb90a1353d-5eaaa414a8bmr4189894e0c.11.1792526978625;
-        Tue, 20 Oct 2026 13:09:38 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eae981d239sm558143e0c.14.2026.10.20.13.09.38
+        bh=biyZRTLtYoa9JccTtADP7XVfeHu0cGOgCGXxzzSk5nY=;
+        b=DrVkE+/83+UOs4ILB9hmgI4sjW/yU4dDrK2ywGG/e45gzahsL5EgBCFQyP3OY/7DnL
+         9fXZcwN4fxriQd3yFM8YpnZQ6fKC6fBeMlwCKujUNazpXYFVDHW574xyjPsZBjOb8Qrb
+         MsYreERkk1RCbFRVN0JIuN//HJLYodPuQ1cqY1u2kIfZ5nO8PMl1k9uoeAQpChwk1Xf8
+         pxkHA1qB92vor6ZG3OZ2gFKIQOSz7btsSkUeQ3CLrpCaeFcRgMvqUPhjO3hL2u++vHIk
+         C5PjKBuH+6/0L6fGF4ZEgOr629QsjjtZf6qH9y3rIfqIrZTxZ3sTiFrrMHY8jnl5PxI2
+         2Hdg==
+X-Forwarded-Encrypted: i=1; AKwUvBy1xb0JViCpEFrsOj89mC/Y7yf7ZFP3ui9ej34Hsu1c3w1uc4dnbG2M6a6gMY87DyHk5Un7aa4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKdXcVY4vhletN061XP81gsPOjp30JUUlWbpzlqwq3fwM4f0dze
+	tcLjcVMbwcP2IIBYmJguArCH3h3ZyefZLgdhLFrtU/JS5CwH/j/LBC7UFSRALM6uskxQShNYuug
+	t1+JJqUwI7V9EDXTxkz2OoBH3pPFEFkkHCpFDgaPOOZYa4MR3vhzQ/CDN8g==
+X-Gm-Gg: AYBFou3GXSlVZq2DMzAoqNZ4SC5KVr7qtDrrp16tdFyQ86K1J8aVzuYdcSfWh+r6tV0
+	PAw1arEmPDgGhryrr3lybkYv+NufOBkaktaYnCuV3K7EbqrUd4LLFd5uJqVlYYQg9PIq9po41WB
+	QFdXJQ85nV18RrCasDHt6f0BZrLIc9MV3/KscsFghN/LfaC+W73tE2MNeiifVkECQhwxcS+5spZ
+	wz9TWGuuPaK0wPlonzQV8YYgoxRTtW6H5okH2TViDPNF7gOLjzHymGZcy5w41EKyghtm62khnB7
+	75FlXzBh1kxeQwLFUtbcjtocI0CnAXHvkiLamAWQ00nMwbTViUDH/DcbxOejpq3YghGFVg==
+X-Received: by 2002:a05:600c:3b1c:b0:4a1:d248:25c4 with SMTP id 5b1f17b1804b1-4a1d76046dbmr262528975e9.13.1792526995064;
+        Tue, 20 Oct 2026 13:09:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b1c:b0:4a1:d248:25c4 with SMTP id 5b1f17b1804b1-4a1d76046dbmr262528445e9.13.1792526994567;
+        Tue, 20 Oct 2026 13:09:54 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fc10de99sm10206805e9.1.2026.10.20.13.09.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 13:09:38 -0700 (PDT)
-Date: Tue, 20 Oct 2026 16:09:37 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Josef Bacik <josef@toxicpanda.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Juergen Gross <jgross@suse.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Fernando Fernandez Mancera <fmancera@suse.de>, 
- Mina Almasry <almasrymina@google.com>, 
- David Laight <david.laight.linux@gmail.com>, 
- netdev@vger.kernel.org, 
- xen-devel@lists.xenproject.org, 
- Josef Bacik <josef@toxicpanda.com>
-Message-ID: <willemdebruijn.kernel.29f6b224b2d77@gmail.com>
-In-Reply-To: <20261019-b4-skbuff-bug-on-followups-v1-11-41dbef50b9f7@toxicpanda.com>
-References: <20261019-b4-skbuff-bug-on-followups-v1-0-41dbef50b9f7@toxicpanda.com>
- <20261019-b4-skbuff-bug-on-followups-v1-11-41dbef50b9f7@toxicpanda.com>
-Subject: Re: [PATCH net-next 11/15] net: skbuff: refuse to segment a nested
- frag_list
+        Tue, 20 Oct 2026 13:09:53 -0700 (PDT)
+Date: Tue, 20 Oct 2026 16:09:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Chris Arges <carges@cloudflare.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Max Krasnyansky <maxk@qualcomm.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v3 1/8] net: account for ingress-resolved virtio net
+ hdr state
+Message-ID: <20261020160829-mutt-send-email-mst@kernel.org>
+References: <cover.1792411304.git.mst@redhat.com>
+ <b1dce3e055b973bd87bdbdc9e9729971fa383326.1792411304.git.mst@redhat.com>
+ <willemdebruijn.kernel.26f697d5a674b@gmail.com>
+ <20261020153650-mutt-send-email-mst@kernel.org>
+ <willemdebruijn.kernel.57aa9aa58b62@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,87 +129,216 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <willemdebruijn.kernel.57aa9aa58b62@gmail.com>
 
-Josef Bacik wrote:
-> skb_segment() walks head_skb's frag_list, but for each member it only
-> looks at the linear part and frags[], never at the member's own
-> frag_list.  head_skb->len still counts those bytes, so with a nested
-> frag_list the walk runs out of members while it still owes data, sets
-> list_skb to NULL, and dereferences it on the next pass, before any of
-> the layout checks get a chance to catch it.
+On Tue, Oct 20, 2026 at 04:02:26PM -0400, Willem de Bruijn wrote:
+> Michael S. Tsirkin wrote:
+> > On Tue, Oct 20, 2026 at 03:27:46PM -0400, Willem de Bruijn wrote:
+> > > Michael S. Tsirkin wrote:
+> > > > The following patch will add ingress resolution of uncommon virtio net
+> > > > hdr checksum metadata (software checksum completion at ingress) which
+> > > > adds performance overhead to the packet processing.
+> > > > 
+> > > > We should make it visible, so a hypothetical workload relying on
+> > > > uncommon metadata can be distinguished from none at all. This way issues
+> > > > in the parsing will be reported and not quietly pay the host-CPU
+> > > > checksum overhead instead of offload.
+> > > > 
+> > > > Flip every call to virtio_net_hdr_to_skb to test for negative errno
+> > > > only, and have tun count these events per device as rx_csum_sw, exposed
+> > > > via ethtool -S.
+> > > > 
+> > > > Assisted-by: LLM
+> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > ---
+> > > >  drivers/net/tap.c        |  4 ++--
+> > > >  drivers/net/tun.c        | 41 ++++++++++++++++++++++++++++++++++++++--
+> > > >  drivers/net/virtio_net.c |  2 +-
+> > > >  net/packet/af_packet.c   |  4 ++--
+> > > >  4 files changed, 44 insertions(+), 7 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+> > > > index ff67d99deb39..73e883394446 100644
+> > > > --- a/drivers/net/tap.c
+> > > > +++ b/drivers/net/tap.c
+> > > > @@ -649,7 +649,7 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+> > > >  
+> > > >  	if (vnet_hdr_len) {
+> > > >  		err = tun_vnet_hdr_to_skb(q->flags, skb, &vnet_hdr);
+> > > > -		if (err) {
+> > > > +		if (err < 0) {
+> > > >  			rcu_read_unlock();
+> > > >  			drop_reason = SKB_DROP_REASON_DEV_HDR;
+> > > >  			goto err_kfree;
+> > > > @@ -1084,7 +1084,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+> > > >  
+> > > >  	if (vnet_hdr_len) {
+> > > >  		err = tun_vnet_hdr_to_skb(q->flags, skb, gso);
+> > > > -		if (err) {
+> > > > +		if (err < 0) {
+> > > >  			rcu_read_unlock();
+> > > >  			goto err_kfree;
+> > > >  		}
+> > > 
+> > > similar to tun, should tap count this event?
+> > > 
+> > > > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> > > > index 242899f7fd07..19cb443c89b0 100644
+> > > > --- a/drivers/net/tun.c
+> > > > +++ b/drivers/net/tun.c
+> > > > @@ -210,6 +210,7 @@ struct tun_struct {
+> > > >  	u32 flow_count;
+> > > >  	u32 rx_batched;
+> > > >  	atomic_long_t rx_frame_errors;
+> > > > +	atomic64_t rx_csum_sw;
+> > > 
+> > > is a normal (and cheaper on 32b platforms) atomic_t or atomic_long_t sufficient?
+> > 
+> > well it can overflow easily. i don't know that we care that a slow
+> > path will be even a bit slower on these ancient platforms. correct
+> > reporting seems more important.
 > 
-> Nothing in the tree is known to build such an skb; GRO flushes instead
-> of chaining an skb that already has a frag_list.  Check for it up front
-> and fail the segmentation with -EINVAL, with a DEBUG_NET_WARN_ON_ONCE()
-> for debug kernels, like the other frag_list layout checks.
+> Ok. I would hope that monitoring catches this before it hits 4B, but
+> agreed that as slow path it doesn't matter.
 > 
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> ---
->  net/core/skbuff.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
+> > 
+> > > >  	struct bpf_prog __rcu *xdp_prog;
+> > > >  	struct tun_prog __rcu *steering_prog;
+> > > >  	struct tun_prog __rcu *filter_prog;
+> > > > @@ -1935,11 +1936,16 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+> > > >  		break;
+> > > >  	}
+> > > >  
+> > > > -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
+> > > > +	err = tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr);
+> > > > +	if (err < 0) {
+> > > >  		atomic_long_inc(&tun->rx_frame_errors);
+> > > >  		err = -EINVAL;
+> > > >  		goto free_skb;
+> > > >  	}
+> > > > +	if (err > 0) {
+> > > 
+> > > } else if (err > 0) {
+> > > 
+> > > > +		atomic64_inc(&tun->rx_csum_sw);
+> > > > +		err = 0;
+> > > > +	}
+> > > >  
+> > > >  	if ((tun->flags & TUN_TYPE_MASK) == IFF_TAP)
+> > > >  		skb->protocol = eth_type_trans(skb, tun->dev);
+> > > > @@ -2605,12 +2611,15 @@ static int tun_xdp_one(struct tun_struct *tun,
+> > > >  	tnl_hdr = (struct virtio_net_hdr_v1_hash_tunnel *)gso;
+> > > >  	skb->dev = tun->dev;
+> > > >  	skb_set_network_header(skb, ETH_HLEN);
+> > > > -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr)) {
+> > > > +	ret = tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr);
+> > > > +	if (ret < 0) {
+> > > >  		atomic_long_inc(&tun->rx_frame_errors);
+> > > >  		kfree_skb(skb);
+> > > >  		ret = -EINVAL;
+> > > >  		goto out;
+> > > >  	}
+> > > > +	if (ret > 0)
+> > > 
+> > > same
+> > > 
+> > > > +		atomic64_inc(&tun->rx_csum_sw);
+> > > 
+> > > maybe reset ret = 0 in all these branches
+> > > 
+> > > >  
+> > > >  	skb->protocol = eth_type_trans(skb, tun->dev);
+> > > >  	skb_reset_network_header(skb);
+> > > > @@ -3739,7 +3748,35 @@ static void tun_get_channels(struct net_device *dev,
+> > > >  	channels->max_combined = tun->flags & IFF_MULTI_QUEUE ? MAX_TAP_QUEUES : 1;
+> > > >  }
+> > > >  
+> > > > +#define TUN_STATS_LEN	1
+> > > > +static const char tun_ethtool_strings[TUN_STATS_LEN][ETH_GSTRING_LEN] = {
+> > > > +	"rx_csum_sw",
+> > > > +};
+> > > > +
+> > > > +static int tun_get_sset_count(struct net_device *dev, int sset)
+> > > > +{
+> > > > +	return sset == ETH_SS_STATS ? TUN_STATS_LEN : -EOPNOTSUPP;
+> > > > +}
+> > > > +
+> > > > +static void tun_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+> > > > +{
+> > > > +	if (stringset == ETH_SS_STATS)
+> > > > +		memcpy(data, tun_ethtool_strings,
+> > > > +		       sizeof(tun_ethtool_strings));
+> > > > +}
+> > > > +
+> > > > +static void tun_get_ethtool_stats(struct net_device *dev,
+> > > > +				  struct ethtool_stats *stats, u64 *data)
+> > > > +{
+> > > > +	struct tun_struct *tun = netdev_priv(dev);
+> > > > +
+> > > > +	data[0] = atomic64_read(&tun->rx_csum_sw);
+> > > > +}
+> > > > +
+> > > >  static const struct ethtool_ops tun_ethtool_ops = {
+> > > > +	.get_sset_count		= tun_get_sset_count,
+> > > > +	.get_strings		= tun_get_strings,
+> > > > +	.get_ethtool_stats	= tun_get_ethtool_stats,
+> > > >  	.supported_coalesce_params = ETHTOOL_COALESCE_RX_MAX_FRAMES,
+> > > >  	.get_drvinfo	= tun_get_drvinfo,
+> > > >  	.get_msglevel	= tun_get_msglevel,
+> > > > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> > > > index daab43ac92ce..2e6fd81df9c4 100644
+> > > > --- a/drivers/net/virtio_net.c
+> > > > +++ b/drivers/net/virtio_net.c
+> > > > @@ -2519,7 +2519,7 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
+> > > >  	skb_set_network_header(skb, ETH_HLEN);
+> > > >  	if (virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, vi->rx_tnl,
+> > > >  				      vi->rx_tnl_csum,
+> > > > -				      virtio_is_little_endian(vi->vdev))) {
+> > > > +				      virtio_is_little_endian(vi->vdev)) < 0) {
+> > > >  		net_warn_ratelimited("%s: bad gso: type: %x, size: %u, flags %x tunnel %d tnl csum %d\n",
+> > > >  				     dev->name, hdr->hdr.gso_type,
+> > > >  				     hdr->hdr.gso_size, hdr->hdr.flags,
+> > > 
+> > > should virtio_net count these too? Or do we assume that devices are
+> > > more trustworthy, so unlikely to cause this issue?
+> > 
+> > With memory encryption, from an untrusted host?
+> > i can add that.
 > 
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 56cec58bccb7..b6ada54ecc57 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -4962,6 +4962,17 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
->  }
->  EXPORT_SYMBOL_GPL(skb_segment_list);
->  
-> +/* skb_segment() only walks one level of frag_list. */
-> +static bool skb_segment_nested_frag_list(const struct sk_buff *head_skb)
-> +{
-> +	const struct sk_buff *iter;
-> +
-> +	skb_walk_frags(head_skb, iter)
-> +		if (skb_has_frag_list(iter))
-> +			return true;
+> I honestly don't know if it's worth the effort. Just curious whether
+> you had purposely skipped this and tap.
 
-We can probably check the same without adding an extra skb_walk_frags.
+more like it slipped my mind.
 
-Perhaps
-
-@@ -5025,6 +5025,12 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 
-                while (pos < offset + len) {
-                        if (i >= nfrags) {
-+                               if (unlikely(!list_skb || skb_has_frag_list(list_skb))) {
-+                                       DEBUG_NET_WARN_ON_ONCE(1);
-+                                       err = -EINVAL;
-+                                       goto err;
-+                               }
-+
-
-> +	return false;
-> +}
-> +
->  /**
->   *	skb_segment - Perform protocol segmentation on skb.
->   *	@head_skb: buffer to segment
-> @@ -5023,6 +5034,16 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
->  	sg = !!(features & NETIF_F_SG);
->  	csum = !!can_checksum_protocol(features, proto);
->  
-> +	/* The walk below never looks inside a member's own frag_list, but
-> +	 * head_skb->len counts those bytes, so it would run out of members
-> +	 * and dereference a NULL list_skb.
-> +	 */
-> +	if (unlikely(list_skb && skb_segment_nested_frag_list(head_skb))) {
-> +		DEBUG_NET_WARN_ON_ONCE(1);
-> +		err = -EINVAL;
-> +		goto err;
-> +	}
-> +
->  	if (sg && csum && !gso_by_frags)  {
->  		if (!max_segs && !(features & NETIF_F_GSO_PARTIAL)) {
->  			struct sk_buff *iter;
+> > 
+> > > > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> > > > index 52ae3d875e97..e6aec9ecfa99 100644
+> > > > --- a/net/packet/af_packet.c
+> > > > +++ b/net/packet/af_packet.c
+> > > > @@ -2913,7 +2913,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+> > > >  		}
+> > > >  
+> > > >  		if (has_vnet_hdr) {
+> > > > -			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
+> > > > +			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le()) < 0) {
+> > > >  				tp_len = -EINVAL;
+> > > >  				goto tpacket_error;
+> > > >  			}
+> > > > @@ -3136,7 +3136,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+> > > >  
+> > > >  	if (vnet_hdr_sz) {
+> > > >  		err = virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le());
+> > > > -		if (err)
+> > > > +		if (err < 0)
+> > > >  			goto out_free;
+> > > >  		len += vnet_hdr_sz;
+> > > >  	}
+> > > > -- 
+> > > > MST
+> > > > 
+> > > 
+> > 
 > 
-> -- 
-> 2.55.0
-> 
-
 
