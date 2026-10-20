@@ -1,79 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792491923;
-	b=nEly4dyyzxDjSQ813CMr3bl1gbJGC4MeaTuAfSiM9fWHDh1C2L+yT+N6y7wmiBtxH4Yr
-	 yfwcn+xwahJIfKIgoQpNdzQE9H5FZ63krmJF0buzHHXOaScA8VWtgpN3pQcmuT4hpMwXp
-	 MyySVFvbGVVuGBsilK3XGUNFzKgB1/7vBQ1YyXCID0h/jscki9GosO6JBnEdX+LJM7ymF
-	 kFH7A7GHKj71fdtFuCpFvOJI6rtL3ETmVDk2Y75P7zHG+vVRGg8WBby4+oULxU98QFhjJ
-	 RWW0b6Stc2NxGJP2+LkYqpJoYghsrbS2AQtb6jazJihjTVxgTfan95DnLYyrSkyIREQ==
+	t=1792491924;
+	b=peb7iUReO+BOhrIE+tcm+moXLxSkb3e6SrYzVT1viszz3RrEkbJ+/ni+3k1FuDnsVd64
+	 726yPhub/8k0NwMs4WnEqBqun3L6NPvlTLABL2uXJns5N3gXKYITsquPTX79dqr92BroF
+	 ngyWrvkhpSFPJQlU9yoi63ej7u1fgiwN/xCtnvDz51JXOcLN9KjZSetPpVwGloHKXyEIa
+	 Oqj74d/N1RAKZGX+YYAwUY5/cti/gyTIgyD+UnRjiNYd2qRbn2AmI2xrwcroLaMKPrJea
+	 6xvQP+PwZRaQfKnHhd+xmqtyZhiOajyp2GJIXD8i/Ry4M1IbB9hsta6qEvy3bQI66vQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792491923;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792491924;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=NeXzTwoaQQsPfza4T2NcSCi4eYTRjgEtdtZmqGwt2Jc=;
-	b=JywP/p4uc/vPaSYXIXrt2PhouVUHCecknHIHzuTbpkkHKTsZWJ48kOCpJp3kny7Y1GxP
-	 vFoqj2oOltrP1s4BHrxlkfNHuPmGewpQhaKl0/51ZrTZJibwU38wf+twdmFtDkLbXA/bu
-	 QoW2Ld+NFFqvBGxRAlV3Ew3e8KBFuhJXcjWpaldWRYnEEC+JFCjimRDjDw8/S9WYdZOUL
-	 VeNdbCHGx+BqYLlElDD+nNNFVr/WLAkHMFXkm1I/fAS5d2IqoXzCnkRyZ5o6JicBkw2/7
-	 a20U8gdLaSxwwJLAg/cGb4xI2cZ1zK3mgiAxnVqQRdT4UfoNHt0OrpKfEkEJK4a25Wg==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=TM2nirS6qLCdfkEXwJGzTZRWTT5VvtzmWaq8aIlT8Es=;
+	b=43mTqzkCKwJ7y/98pmsV1tEZpEn+mGlfigiUxkjSsVpatPrbGuvJ/Lefi530MY1JRhQ/
+	 q9/Xo4R/joT3H+W0oxyYzUQdncbs9vwrJMhyGIGkm4q5adXQdc6TemF4W13K6b+K5WM0z
+	 23+IyFn8GhL1qmRwpL5xxn6XjEL+AtVNGpfzMV2G/ysSmOEhf6n8gO+eL1mDoujDS2Mrk
+	 P+LYSWgPJlANA1u7dY7nWtoZ8JRy9IM7wNoit9gD+4CiFAPTDoXTn3KDA4WEF8MwpvW99
+	 AKLR/zM2S9sXsMcB/9GZTNaVeQy3qBMpZstWO0Qt2Ay0VnXodkpoQ9lVpsrpC8xPRig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hgzCAqZI;
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rN+ZIgn5;
+	arc=none smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7BB606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:25:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A7BB606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8240F606A32D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:25:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8240F606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hgzCAqZI
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a1d293b293so17556305e9.2
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:25:23 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rN+ZIgn5
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a1682bff3cso14871615e9.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:25:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792491922; x=1793096722; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NeXzTwoaQQsPfza4T2NcSCi4eYTRjgEtdtZmqGwt2Jc=;
-        b=hgzCAqZIJGESdXYWWGcjsj1KblLotcZdKXwuiV3LomaQCXNTnkafzqR1LT1mS6Y7fY
-         D88Hat3EUlSgnlKepZFEH/T1/Li7EPJT8SOaX6xEOCffujYSXgSfetvrkI70izHAhArF
-         blf+2HnLqeZXb+nL2nEHQu1YRhcswiXNJxGlIL8a07Ys0oTJeW5w7eFW5uutNDYTD4Pq
-         NUGgNdI1aXqAlxkhkzPCpY7H/1laasN7FXjAyTXitHHE7ufsylYzCuCfwSvTWn6VoqQt
-         SRj4oYwKtdVuCu2wVe8Grfyt08aVcOMidxOT8/v+asobMPgrvJEm/yQxFEAaohDA1M49
-         OwyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792491922; x=1793096722;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792491923; x=1793096723; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NeXzTwoaQQsPfza4T2NcSCi4eYTRjgEtdtZmqGwt2Jc=;
-        b=nxNaiRsgamKgLwXORSbkT40zTzTdAVIW1/Abfbai0fXfM7cUZnV9AJeEK+ROl0hw+C
-         L3utBXuYOYPTCEh4RD/6BSv/eTxuzXs12cJSqlimI+7HSpJHLDEA29sVZRcE8v7f57gi
-         1NPRBYzFh17GcA1qon4jVDTF3SH7tRnemiPvqBKUwNObU98q7ebJwhHnb2xWu2uyA3dN
-         WeuXWBvi+zHuDnTP+XVfyCXm1DaZyoV94kjE941ph/LWcasFVceYYUZn8JHzieCddrKX
-         cQ3eCT+UXo633eBt5dGE1tzC+oJU+VcOHBCkLdmeDHiJsDWaz7Z4EhYuf0ajuAe8hUfq
-         Fbxg==
-X-Forwarded-Encrypted: i=1; AKwUvBwLbRa1Hm4WaR4ohaPi22o2XdUBBxyn0Xr3GrxmgNB4zbhUk5YKubkvHNRf9G4awlsqDKHWook=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIMffUZ00wkDvu7MHgXLWntFyFhlCmyruEd41ZC/R74IotFtOTD
-	tiuLqwyToD141r7n2l4rL+EkRqRDQYYh/afkRTEVj14IKJTtIAijs8wu
-X-Gm-Gg: AYBFou0U6/mgqe+l60EuD52eBp2zz4EQOEc3oOlfhRfTJuhJi2oAjDyJcAW8tK6ytGz
-	Kzb0LVSJdEV9fwn8IiwrT0kru6GdiWJQrrfsGpmz2VrYu/bKp16Jv4nfROTNUZEE81nx4N/KfMc
-	HlUtrEVibkqsJo1fLaunfmUiYyf7pA6+hCxh9oA9OgT2QaUDuhx7wEwSt3GFxOftTKgxm0D5JTd
-	UjQmYobWqkwkB3uLViMShVRDYss6o15igOfMzAIfsPjSRidltcxI8uoZjM6tAqBZgtOO/ly88KY
-	G/BYdEDZSIeKu7wWm6iLvjqpuPQKtEab408nZnclGBva5TbSF/Uj2jRyq9MxQqMbBJilm/5G1L3
-	Ycpt8j9binnqlP7/mM0quYOqcuZZGsws+NcphW5Wj8M5BeiQIVfiUmnIKvShPBE0FZtFppwOkiq
-	LLR4v14yOO9VpBEGBUL8HcwxVTIiGiKchwe7fGnpNOOeN+h7zz7avOs4diPgpq+XGE2CgdfCmVr
-	uP6xylv8cCK7nmC4dFvFPfOxW5wz9wCKImgs5xtHkOOXg==
-X-Received: by 2002:a05:600c:b86:b0:4a1:d459:db4b with SMTP id 5b1f17b1804b1-4a1d7610722mr208729645e9.24.1792491921643;
-        Tue, 20 Oct 2026 03:25:21 -0700 (PDT)
+        bh=TM2nirS6qLCdfkEXwJGzTZRWTT5VvtzmWaq8aIlT8Es=;
+        b=rN+ZIgn5UDsDN7iYJJOAzOWGo+ZnZO6ByKmA+QRfdhWJfLlAoTB1Pi3HTkXvmNziCv
+         Y9CRa7/HjbBvVGW3eMSQZHfdejFDKvLBH+xRMeHqu9e0KNgblNBfkrEPfpUeIUPmL6nO
+         4naGbzrVV/c5hvWSBpiawmbKBBYYbRUdldYkPEqxcg+VgcopB4dx1x8kCTvLcIScPMjW
+         Wpx3uY5XsAR0oXYO0UGidtjSIjQ0NKLUGmoyVpqBHPP27xJUATGs6yfGMd2kLApfHdw+
+         OYIQ2JdoWP00tPo0w8DNTWHP2+xMQAvrMrK99/w+39XcRuOYJMxou1TZFfV4gVILlkJR
+         CMsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792491923; x=1793096723;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TM2nirS6qLCdfkEXwJGzTZRWTT5VvtzmWaq8aIlT8Es=;
+        b=lfYTNdWi8f51m5cxVmu0/4KF1RFYs6n3CHlD69FaazYjcDhJnlDQ6RHjJcZwNv9xo5
+         p0GGudIMjszQTAYYXSXrFA0TCqK3E+S29Oyzjm/i0LSz8grtzK/QMlxylk/gXqrjV/Yw
+         fpoyxPblcApb50uKgwW7QLc4dkp43mNoJMoCWNAt981RmodPYN/gA39uxT8mUNsiqdKv
+         WoZdgX9DVB4ke7Inm1cXqiAwqPzuY7aFaKdJTaAit1wheLsNBefNRbfQeBwWFyv15h5f
+         AgvX6Pgfr30mnGY74Tp+bN9/rncELlUkrSfdq+etA4TMIT5dHL74ptb0fAf8AXkMm+p2
+         ovhg==
+X-Forwarded-Encrypted: i=1; AKwUvBylzvvHS05TO379vDi/Ekl33J9YXaG4KciFHiKbroGrlKt4ki5v2bo7a7KMm2vh7VnREeeR4ko=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKKd4ajtV1OMo4yPSXv1VyeVBGNfM79bK2SCt0/ZTk3DxINxE9T
+	A73x7JvSEGZv6cwAOYxslNfbr0uNIeLOd19GXW2N/4gXQbnB/31lAXRp
+X-Gm-Gg: AYBFou1OM4vzVzpaQtl8Fa5V920afdwBZ5gaZQaM3iTv1cZRl5C1cc5vTOYR/IBs+o6
+	UxHXGHtd63PM0jLeFCn+ptkY7Unat+rykE8/sVjIrrDyQLeOksAg6d/ENbfvAqhuW8dwCxyO2u5
+	THZT+aCJb5Mtkjdh90OskE/LJn239FoKdfaurdG1vsEc0wyxZII07VyyqrSpDpL1yiwIHd9TNKL
+	0Olz6BEdd0AchpdK1Gckl7nfcsZo4oUN7eawzHgBLdHlIFTre8JxTPAkIi2ezbMofTtfdNgalx0
+	salxt9GG0tQaysPmW9PtjakZOVCvCO+cm8iiIk03ccliQ0I0CZ4s9zUZtSLjxq9/RicCKUUQpQN
+	ZT0eoXAog7bqCyJ0LfEQlA2zRLs9Zxx5s9c1NUSYOpZKfdG3cxK6VuyaOnFEVbh2weSdVQmrjbM
+	xRpOCbAedTuuxnbdBNylrMaClMTv8RbhpeI6Pn7jgFGHm+ckjxGJ+RVaiDEE0R/byRWsms929Iu
+	nepONKu4PiJq6UMVgb4x9e1YvzabBmemQB0Vtm5MEhYAw==
+X-Received: by 2002:a05:600c:a10c:b0:4a0:1a7f:2abb with SMTP id 5b1f17b1804b1-4a1d75fe221mr175698025e9.11.1792491922422;
+        Tue, 20 Oct 2026 03:25:22 -0700 (PDT)
 Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a1f69d9b1esm37544825e9.7.2026.10.20.03.25.20
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a1f69d9b1esm37544825e9.7.2026.10.20.03.25.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 20 Oct 2026 03:25:21 -0700 (PDT)
 From: Mahe Tardy <mahe.tardy@gmail.com>
@@ -101,10 +102,12 @@ Cc: andrii@kernel.org,
 	emil@etsalapatis.com,
 	almagui@kernel.org,
 	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next 0/8] bpf: Expand ksock send-path support
-Date: Tue, 20 Oct 2026 10:25:04 +0000
-Message-ID: <20261020102512.518479-1-mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next 1/8] bpf: improve ksock_kfunc_set LSM recursion filter
+Date: Tue, 20 Oct 2026 10:25:05 +0000
+Message-ID: <20261020102512.518479-2-mahe.tardy@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261020102512.518479-1-mahe.tardy@gmail.com>
+References: <20261020102512.518479-1-mahe.tardy@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,39 +119,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series improves the bpf_ksock infrastructure in line with the
-work proposed during Prague Plumbers 2026 presentation[^1]:
-* refine the LSM verifier filter
-* allow bpf_ksock_connect() to be called in the send path
-* add bpf_ksock_sendto() kfunc to complement to bpf_ksock_send()
+Improves '7ae4eb14c5f9 ("bpf: Add ksock kfuncs")' verifier filter to
+avoid recursion from calling bpf_ksock_send() from the
+security_socket_sendmsg() LSM hooks. The filter was unnecessarily
+restrictive, this makes sure only bpf_ksock_send() is forbidden and not
+the bpf_ksock_acquire() and bpf_ksock_release() kfuncs that are part of
+the same set but are safe to be called in that context.
 
-This is useful when using ksock to reply to differents peers while
-reusing the same UDP socket and generally works toward the goal of ksock
-to support the basic socket operations.
+Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+---
+ net/core/bpf_ksock.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-[^1]: https://lpc.events/event/20/contributions/2430/
+diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
+index 48a2e2327ace..6c508c7a0adc 100644
+--- a/net/core/bpf_ksock.c
++++ b/net/core/bpf_ksock.c
+@@ -264,6 +264,7 @@ BTF_ID(func, bpf_lsm_socket_sendmsg)
+ #else
+ BTF_ID_UNUSED
+ #endif
++BTF_ID_LIST_SINGLE(bpf_ksock_send_id, func, bpf_ksock_send)
+ #endif
 
-Mahe Tardy (8):
-  bpf: improve ksock_kfunc_set LSM recursion filter
-  selftests/bpf: Test allowed bpf_ksock operations at send LSM attach
-  bpf: move ksock_connect() out of init kfunc set
-  selftests/bpf: Test verifier filter for ksock connect on LSM attach
-  selftests/bpf: Test ksock connect/send combinations
-  bpf: add bpf_ksock_sendto() kfunc
-  selftests/bpf: Test forbidden bpf_ksock_sendto() LSM attach
-  selftests/bpf: Test ksock sendto()
+ static int bpf_ksock_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
+@@ -275,9 +276,13 @@ static int bpf_ksock_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
+ 		return 0;
 
- net/core/bpf_ksock.c                          | 129 +++++++++++++-----
- .../testing/selftests/bpf/prog_tests/ksock.c  |  53 +++++--
- .../selftests/bpf/prog_tests/ksock_sendto.c   | 108 +++++++++++++++
- .../selftests/bpf/progs/ksock_common.h        |   2 +
- tools/testing/selftests/bpf/progs/ksock_lsm.c |  32 +++--
- .../selftests/bpf/progs/ksock_lsm_verifier.c  |  98 ++++++++++++-
- .../selftests/bpf/progs/ksock_sendto.c        |  59 ++++++++
- 7 files changed, 432 insertions(+), 49 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/ksock_sendto.c
- create mode 100644 tools/testing/selftests/bpf/progs/ksock_sendto.c
+ #ifdef CONFIG_BPF_LSM
+-	if (prog->type == BPF_PROG_TYPE_LSM &&
+-	    prog->aux->attach_btf_id != bpf_lsm_socket_sendmsg_id[0])
++	if (prog->type == BPF_PROG_TYPE_LSM) {
++		if (prog->aux->attach_btf_id == bpf_lsm_socket_sendmsg_id[0] &&
++		    kfunc_id == bpf_ksock_send_id[0])
++			return -EACCES;
++
+ 		return 0;
++	}
+ #endif
 
+ 	return -EACCES;
 --
 2.43.0
 
