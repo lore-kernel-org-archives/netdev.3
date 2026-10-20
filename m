@@ -1,59 +1,117 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792481250;
-	b=5lBzRwlo/5bqkCSoIrJyyTHwRop2L+Ex2TsMgDnLH4Gu+eFTEPr6qPCPbfL0oXHYM9kH
-	 mcXaVypwqvuiGP+oOX+dt48UOmmeHS4HixLnstRm7uMzdcWVUX8yqj8iF023JMJ3zD3Uj
-	 hIVItyRqJjOIVW0KdGsxSQWmgg87jTjxg5zqpkjRT2/76FjzYrI/TO7NiEzst4DPrQbP2
-	 PJFQ5xi1DdOo12aexwuRAWEqp3iu2swWN/3c65KCCot+cOjx1DBbUKxzEm5/5Shq2dEx5
-	 5g9Z78yVLMP/dTbtqdZWokgf88BZUjL9LcUxcLZ0kUpufhfnJBaRH6Q1BhQIPBtDA9g==
+	t=1792481257;
+	b=C/CTw7DMJNZrVhokSWxSPBSSG4J58V8j3RHMb037++pWYNSLhpDvPGycsdo5BP5fRafz
+	 zidE0v8Q9Yy0srDF45C3gY7KAQigu0jY1sDlPA7wTq45IjWsqJ064Hw9SsA2hWhU4K2lo
+	 pPQwVw4j/4XGjcl/xs0hatyPSaHODdalRu+cxBDbI/G6R3zysCoBIa8bkUy1nEo/U6UDR
+	 RVlhDqErEMdH6ETBAIiLRk4kAJv5/8RsEkZrjdWM+dU+ftguPfFxYxOCQJWqHKdo0FyAW
+	 2BNwOeFzpCsuCzC0diamZMbM6pj6CjnMqTvsPS3S46kDG+EyqL0rOiJVbaG0S6cjLwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792481250;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Eb4pIl+p0P9P4pch0J7z+pBarnBhT5r7oyHUjiBjFUI=;
-	b=d0ubA+c7zMkvBfeYnHE/mSqwSJL2wZ+j7EKD26YgmC+fe+Z8jgL/nexEjowsTH/F2lo8
-	 oQAG9nLvLci61j1dlyrKWVxsh083c37EMmdwoW3MgCJbLZDM87RjSXf8B/YMuB1t9mpXN
-	 cBmFMGjek3a8yEdNkP8G7sdnngVxkg/f8Pdwws/HUkujkEti9imeHqYGaHq61cDLnL243
-	 9ue6ABTF5yBu0ESwZc+YJgUPcvzNwf420NZuv3lMh0d7VHdU4oEbUYjzk3uqg6PepTMN3
-	 /JfHhCDJLdDn2CXUZ+R+Te4hIF1dOgnuBqL0OTv81Y+GrV2BWcM8wArflb23WYmNcLw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792481257;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=D7VUKLyWmSTuNvyPZCaInGeXEgxZCqef2mwHv3QbNDQ=;
+	b=jspNgJPm6vvNdwQu5Gt7wcuyPqv8/iAos8blz3aMwh+iu2ZsYFZgo6pn539P6vJGC1pb
+	 A1yWTeHu8frjS+ZUx/B21GyyS/fjFnD5WGGAEpisZ0Q17gWzM6Uylvj9XNo0az3n7ApZj
+	 rQM1Is41oMbhLnZvyRDZ+5SJ2QU1U92TMF+ru5BphDvHsI4z3TsmkyQEzE88fSQJSkCJO
+	 7sDAnYVjXFh/pXtDgu1q20FChPxhuDSM6tl1aFLl3h6triP9mvxK/j1EAbcxj9v2w6YO0
+	 2097x/5z/tcPyKx+W9Wp+vtdgTjZ3IW8n648CSPss+OAces7DvEdCQS9hRvtM2Pq7Jg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f1zx3Pqr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FYD5oAto;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=jlanOOup;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D971606A325;
-	Tue, 20 Oct 2026 07:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AF5606A339
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 07:27:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2AF5606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f1zx3Pqr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9371F000C4;
-	Tue, 20 Oct 2026 07:27:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792481250;
-	bh=Eb4pIl+p0P9P4pch0J7z+pBarnBhT5r7oyHUjiBjFUI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f1zx3Pqr3kynKf8YhnkwlNarW+yU7/7wR5eUdXXkX2bk4W3jPRHKbVIMFOSKzAiHO
-	 XDutryKB1Skrm+dJ5TdSWJ2w+v3hnZzFRCWNviyUY5Bbqcw4yH1xKXpYE3lEU8tFgv
-	 C3UR9LnDNleDzNMi3boSVLpcFmq2N3DJWnluKkv4K8hER5Dyhe7hFEjjgredAFKR3R
-	 T7wFfkcJ2hGRbbsTnKihxJlWxBHU8FuZ8VSuNbDVzNbVY9hx9hcboGdfVtYo5ORYSl
-	 c6xW1gyGpWEBuBRaHbCvaykPOzbXsR25pjDe+HX4eJcKY/PxhmkyKQAkyADdKckWI0
-	 3mdx84bTPgIwA==
-Date: Tue, 20 Oct 2026 09:27:27 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Sander Vanheule <sander@svanheule.net>
-Cc: Jonas Jelonek <jelonek.jonas@gmail.com>, 
-	Oleksij Rempel <o.rempel@pengutronix.de>, Kory Maincent <kory.maincent@bootlin.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] dt-bindings: net: pse-pd: realtek,pse: add
- gen1 I2C transport
-Message-ID: <20261020-noisy-amorphous-jackal-1df08a@quoll>
-References: <20261018161248.376205-1-sander@svanheule.net>
- <20261018161248.376205-2-sander@svanheule.net>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FYD5oAto;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=jlanOOup
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792481255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D7VUKLyWmSTuNvyPZCaInGeXEgxZCqef2mwHv3QbNDQ=;
+	b=FYD5oAtoFSspugtKabwEumtICqFmOUXlN+BVkrPvkOHtXqIRPFnIMx7tjFweGSmlNyLQYc
+	8Wf0+k0r+E42e46gn095oFPMoZ8w/3zRjrxV0jYO3S7e95hge+OD7ufUnMOELy3n57fAZP
+	APSLMpFrGqLyrjHdkM9/QtlUsK2RCjA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-618-IoFlBqvVPASQ4Xwg2Nb92A-1; Tue, 20 Oct 2026 07:27:34 +0000
+X-MC-Unique: IoFlBqvVPASQ4Xwg2Nb92A-1
+X-Mimecast-MFC-AGG-ID: IoFlBqvVPASQ4Xwg2Nb92A_1792481253
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1721559b4so29857385e9.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 00:27:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792481253; x=1793086053; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D7VUKLyWmSTuNvyPZCaInGeXEgxZCqef2mwHv3QbNDQ=;
+        b=jlanOOupnmRinGJ9UoP3hh3EcuaDE4JfW73D4J+iyc79nMc9rVkIsIq5kE7GbHKrRT
+         pW0Esnh5erpiYElZX9jOHZv1GrffrldlnlVCCGvPcyo+M1PavB2BUgDDste65XwVx8K0
+         dPN9qG6IcQTXrwEMwPKaUjGbsAoe6Hn57tiMDKLA8RXojyMaUJZazm2sqjKJgfD9m0+y
+         0KhJGjt9AZ66pkoUjru164VsovDaR2GgcRcPEQ4gSgHvFexLxGFYCrb9EwZvjwNZKZdu
+         EtZj2G0tAqCJ6Iup8xVePbsh7d4ZKVfMi9jmNc/0EBNJbSVRtNY46mqkKYsa59kWutS9
+         Uxrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792481253; x=1793086053;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D7VUKLyWmSTuNvyPZCaInGeXEgxZCqef2mwHv3QbNDQ=;
+        b=sS1bWqgTb40PIHJqe6tJz3oUr4eI8qwFX3J4FjTHs34NqFJf30iMzQvNF2VFChckHk
+         hbwxLu4W13W9sUnmUqetyaaIWGjLOusNv+E1o9V4GUATZZW/jemx5jIRJm3zeIS1U6WY
+         m99AVj1fznp00mQDE9fKBoEIQLs6gz4DFuSjw5JDUTlH1CsZQfaLGdjPdRH5SpbeRi1i
+         5B8ZpV0VMNQ95hcBCsTQ+ZV1lr0TOmhqUwnOs5a4wNO3d8fVrsWGf3tskGVoOhYSeM3j
+         5RrgCTvHd5BVnqg81IBPxr2lW2rsajYsj2ri4lTRnJEJl+n9GwwLeFih/OIvxXXHt425
+         AhpQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzwpvhC8hd27o29sfkzVrSfkt9wR1//81MSzMSpEI7WNujXMCqqwqwEYGFJgP9hzX+Kc4lQGOg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJKwOm+D52qhuqFj69LoC37R4IILlHA/f9AiFcS/FDPhcIjeGMN
+	Pu/fdHCu57Ylh0OfxSE48Dh5x0LXtHi84iXPMebew8h7Ee+aTXSsU/CvbEiEgRawx2tv1VOXKzC
+	vIsmErOey8DjHAR4RW+BrIDxo+/sSPNt6nXa/ETrkCyDGGrBilhZ9i22MOw==
+X-Gm-Gg: AYBFou0Myi5u5NlCF4gQee48rDeDlKZdkkFiU8j5YVjr5s9wtsuKLEw1v7vWrGXzz9U
+	9Fp0sFUYL3KHJMEsUn7Grl7hbsAicOt/9m/XfYx8/9DPFM+ZXj/KTuw8Unk0Gbz/Tduraak3Jyr
+	aUTsHLtl4+v/FpFYwhh+1eJM497ft/hdmqqg0P+rEJ28skej37Ge8LKbnhP1Iki8SkFOKClISqC
+	6WT3L3srjAM9H6bTQ6vk0b698dA/CdkA07v8N7pM6qCkom+VcERuKfp6yNEjvV85AN9H8dOHtAg
+	le11t9IJA9KTKpds1D4awGLssoBrh2n0f1iKgI664ujBCNmKKDrJblwG8q041p2yir2Vhg==
+X-Received: by 2002:a05:600c:3b22:b0:4a1:7690:d878 with SMTP id 5b1f17b1804b1-4a1d7615cb9mr212725745e9.17.1792481252768;
+        Tue, 20 Oct 2026 00:27:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b22:b0:4a1:7690:d878 with SMTP id 5b1f17b1804b1-4a1d7615cb9mr212725125e9.17.1792481252104;
+        Tue, 20 Oct 2026 00:27:32 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2cb8d5csm54348855e9.6.2026.10.20.00.27.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 00:27:31 -0700 (PDT)
+Date: Tue, 20 Oct 2026 03:27:28 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: Wang Haoran <haoranwangsec@gmail.com>, jasowangio@gmail.com,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, eperezma@redhat.com
+Subject: Re: [BUG] vhost/vringh: __get_user without access_ok leaks kernel
+ memory via vDPA passthrough
+Message-ID: <20261020032524-mutt-send-email-mst@kernel.org>
+References: <6ad07f8a.a0c71a5e.2d2efd.977a@mx.google.com>
+ <20261018152358-mutt-send-email-mst@kernel.org>
+ <CAHk-=wiUn9EbV4TJ4J7OPY0fVc3UC+xb-pp=+rg3hRc4jQqihg@mail.gmail.com>
+ <20261018174250-mutt-send-email-mst@kernel.org>
+ <376ef9d0-b03f-4f85-aee5-46cf20eb00ae@gmail.com>
+ <20261020021924-mutt-send-email-mst@kernel.org>
+ <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,49 +121,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261018161248.376205-2-sander@svanheule.net>
+In-Reply-To: <CAHk-=wjxtzD1TXZr5iWu0p1+Hu0YZP7jbNSwFkp7AJYmhzhVCA@mail.gmail.com>
 
-On Sun, Oct 18, 2026 at 06:12:47PM +0200, Sander Vanheule wrote:
-> Like the gen2 protocol, the gen1 protocol can also be used over both a
-> raw I2C transport and an SMBUs transport. Add a compatible for the
-> former and the compatible for the Ubiquiti Unifi Switch Lite 16 PoE
-> device that uses it.
+On Mon, Oct 19, 2026 at 08:51:43PM -1000, Linus Torvalds wrote:
+> On Mon, 19 Oct 2026 at 20:31, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > The following seems to work for me. Testing would be appreciated.
 > 
-> Signed-off-by: Sander Vanheule <sander@svanheule.net>
-> ---
->  .../bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml          | 7 +++++++
->  1 file changed, 7 insertions(+)
+> I have a whole branch that removes __get_user() and __put_user() entirely.
 > 
-> diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-> index 3bb32349c28c..526f8525bb4d 100644
-> --- a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-> +++ b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-> @@ -54,6 +54,12 @@ properties:
->                - zyxel,gs1920-24hp-v2-pse
->            - const: realtek,pse-mcu-gen1-smbus
->  
-> +      # I2C, raw framing
-> +      - items:
-> +          - enum:
-> +              - ubnt,usw-lite-16-poe-pse
-> +          - const: realtek,pse-mcu-gen1-i2c
-> +
->        # UART
->        - items:
->            - enum:
-> @@ -100,6 +106,7 @@ allOf:
->            contains:
->              enum:
->                - realtek,pse-mcu-gen1-smbus
-> +              - realtek,pse-mcu-gen1-i2c
+> Somebody should check that I did it right. But I didn't want to do the
+> pagefault_disable() around the vringh_notify() part, so it's not quite
+> the same as yours.
+> 
+> Let me just push it out. I was going to let it simmer, but your email
+> made me go "I should just let more people look at it".
+> 
+> Mind taking a look at the 'uaccess-cleanups' branch?
 
-That's the same device as smbus, no? Same device, same compatible.
+At the virtio things there? Sure, 'bit later.
 
-You can have property deciding about protocol, if this cannot be deduced
-from the clients.
+> It builds for me. That's all the testing it has gotten so far. Blush.
+> 
+>                    Linus
 
-Best regards,
-Krzysztof
+I can help with that.
 
