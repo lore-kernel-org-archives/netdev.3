@@ -1,93 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792492712;
-	b=NexvuNrIvsyvwNQJsgpAqMmED96XN5NzEKYqKlpOUmz1FdEBcsYQF7kpju66ilDtIs23
-	 n5V3FjRLFpt8F0CMKh36da8S4O1MVGkvkGtZtaPU4tpwkRbKO7LU8+DeuNtcD5G23kuHZ
-	 QRC98NtnE6enR0IhKKExv627BPRQZZ0P86lT0EVd8qYxVmd7R2Ah/eZlMv4cqnv7ZzQXK
-	 7bnG/m0IAca+o73aAG/+cC8wYWC/fB0WLTd55HUfgBfznJWxNjDpAGbcRxc/Q0qRrCl90
-	 G/3ovaXz/mynK4S3ksueGsD2ZOHcLG5rTU6RMw9i7NiBGpY3j1HE4nGsTTLKSDdvIPg==
+	t=1792492830;
+	b=KG9SNaEXeinaqKdRgGDq6LGnm+Dkg5VniOG9A7BTknRln7O7Tl8xy2LOTyLsO1gBevtU
+	 De8EOEBcBB+fWBIpmEFunIQebD12ovF9Mb0cfDqOXZIrsJ181vNb1Iy2JK2j6bfXr8Uv9
+	 +BLJfnjxEktrkiaHtAM7Zwt8rTBkBy48WBosQEbYY0KX4r9+QHoaLPWUHDN80UpEZ9A6W
+	 78Kdy6WfPmjm6yscZsFV2rwzDCWJ8scYJMZPXswvLJUgLPACwLRbBivn2k1bdegJRA0P1
+	 1J136DYDCabJgjiLltmGxmP3vJwz6uLrBeS04uMFJYWTaz/JrM5hFEZFG1AFw4G/RWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792492712;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=2zmwZoifCxESn5tFMPkCRwr0daLGLZtL5qkvBzc0DLA=;
-	b=1QWcIyPjJifVl+qbR2z8IEREg9nbW/p3jDCIBfUuNGf6HXm8EtxO5F/CfzwMT6gZCVQ0
-	 /G4JhkWx64QDTwMc0JRDm+tmRw7WxuOAs1qifPPzHtneM6l8EEKr0bdETTLIN+dN8U6KH
-	 viV1BZAWyCUQ2uCRtsFKOFxBMAxRVhIQYwNFcgoDHwT1paZy9HY40zYs9x0S1PoeeDkci
-	 mn7bqaP8z4pUwOXsWjqwmPGbsSswR2wXx+fgus9ws6Vn9Df83t1WM9kXUAPkJXz+sqbty
-	 uzTfc2oXabt+vtZT+xg3nkjoh/8QJpEsv2UDHodQOpRtHXpm8kJFV3RRnmV2BhBe+3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792492830;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
+	 Content-Type:Content-Disposition:X-Mutt-Fcc;
+	bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
+	b=coyZWAmjHKKHNV4jnWZDz8hfXZOmaj1aTz3IHqXM3azQzQ5KfMCFVZhsnoxn2sT+S26c
+	 mXKANDXt63O0Oy/kHaPEjo+WdqfLq5diitoeviXrUC9xc+ohQZ7YlxdoG9X/jecLG4iiv
+	 LYR/FMrGme2z91GFDof34hQ4ySFBku5+F2ZYV/OxdFIwSCpwNtocw0b37+U49tMPq2PCB
+	 tfRj2oUbspidrCuISOqwjN9XaSe4aA+O//jLUkAetHaKgZ6t885LeRNdnG18Bfag+wH0M
+	 ylkhwYQMBXK/SzQGdwCcc7z+cjlX2oCo3qJAh7oEJreJwT7b58BtNzt9nlyg4Au61pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=IqFYPZ2W;
-	arc=none smtp.remote-ip=209.85.219.46
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RmdHq4N7;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MabU5TfZ;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0631A606A31A
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:38:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0631A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B060606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 10:40:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B060606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=IqFYPZ2W
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-917866225aaso28762716d6.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:38:31 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RmdHq4N7;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MabU5TfZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792492828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
+	b=RmdHq4N7uHME6HBybqJQuPI3oaUxpgLWAL0fiClnHcx6Fgu09FS8E1LXsuI76+3nWbcK++
+	Hpf0l2raqDdKuTwZvOEKmcfhngdxVqwUWpzVkwOjb1cGTRKBAbGrKc8WIm/3yAQrZZFcsF
+	Lbnp/7aEfhgIuF0E+gpPABJ5xlo84gc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-dODvhXpwM1uub0wfC49IQQ-1; Tue, 20 Oct 2026 10:40:27 +0000
+X-MC-Unique: dODvhXpwM1uub0wfC49IQQ-1
+X-Mimecast-MFC-AGG-ID: dODvhXpwM1uub0wfC49IQQ_1792492826
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a0284121c6so24370945e9.3
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 03:40:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792492711; x=1793097511; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2zmwZoifCxESn5tFMPkCRwr0daLGLZtL5qkvBzc0DLA=;
-        b=IqFYPZ2Wi7GonAxMyMFIoibl+jVi76AxveoOfJHNVhz+99JjfPl23C/KRYMZPlz8XJ
-         IS+bkmRZZ86mXGhGNtCQaXfUfX/G3vWcf4N/zh+Y+cfi/t6nRPpASQ23XFnfwROEY+nw
-         8Vin2AFY1MPIFRhqnHqx1rVm+teL1mnn54pmQ=
+        d=redhat.com; s=google; t=1792492826; x=1793097626; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
+        b=MabU5TfZonnq5TntfkPQWhWGO+2UMdIlT2+GY4PWW/ZAaI860X3HZpwjka0lZo8jXn
+         vEZ9Nw2LWW1eXuMa+u2L0MA936C+BErZKwZjxsZfznXQNnSBeHjgszmoq+bdcyuO25P5
+         RKMiLAshO21FIY4sGd2gJs+ZY4Aq4B9Yke4Ak+OExDrfNIDujAx5bz9VhrP07JgLtkjT
+         it7F89YFaJ8MtWW9NZV1TGMDJKfbYqJ7uPxBqNa5R02+peIRUxUe+43I84GeVd3ctCtL
+         gnxYqyM5TVvLki0SWSga3qBvMMArEToyOQ2MxTxXsC/RlYXUnx/PtPrbPa9P1PZwWIvn
+         mbyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792492711; x=1793097511;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1792492826; x=1793097626;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2zmwZoifCxESn5tFMPkCRwr0daLGLZtL5qkvBzc0DLA=;
-        b=s4SOL0MUfpkhMrhSv981/r+lOydY8qTAQCLqZ5J+6ehOtGz1uiEM+vYDFScZTB/Qdp
-         p4mrXx6qgtMsK7IwMi+NpUxHr8oIyUp+WG/etUvnfhnjJ2/H3RSCrzHo+NfLzX/ia4qy
-         Z/mXa9BuO2Y+JevYmJIe7OqyksniKexPVT41sqX7JTM3rVrM+xeGM61HE/2xK3vtDo2A
-         0jpS17idVL9WLlWAnJlV0gvt28X8ptqH/mN9Lxa0mF/XgzYZm0Pj5LKyluYrJ5O4i/tR
-         1xSsuavKpP8RbdCldZKtYbQ131eoy6fwCOAl92VzVkNfTRg7TNNo5oq2cPu8meMcURKc
-         F2mA==
-X-Gm-Message-State: AFq9FYKZB6UCISFUkP5LesNxfG3iYLImA1tfXb7H4EVLdpfwqnVf81ZP
-	iIErrT6jC3WEgelze84uj7BtFHh0ixBjwdnIS2Im7ut3LGZGAIJ4Yk/fAO0hJOAbVEg0GvVgy/a
-	h328=
-X-Gm-Gg: AYBFou17/K5srkTI6wC0PcCS0oX9m9xUS7xBd9puD0t878E69Rg9vfltMu2R1lf1ASe
-	bXw+o7vjGgHCpXmcA2uQnZzWPbo0HeA2pObJgaeifkQBp0G3NCsIyDJI5q/BVltvvq5OTrPi5cX
-	twGTp6FqL+dUscRmImjlDaDJoEl8eVfSFMQ7oWhAuAo7f/n2HPs78jrhKQBcmfDZjQBSW038Xyy
-	7wGVmQouequjfEOn4sCzH3V3+GRVb0wsbK0pPzk8R9Xi80+AatLI1AxjHi6+MYUZS/9tkc2oi9l
-	hYvD9bbN2WeE286vEf68RYM/5tKfMwdM1dmEhQ0d8y3c9OpnlYybRpszBnindwfQTP5ePwU6X/n
-	j2DEtAExhVw+jaWrrTn+O1HFalF06+eJ2WOBZTQag8gfggzRRq9iLtBP7ZQ0GwjkdG3WSUCLU63
-	2ZT70SSEPBfPAKOzJqvvHJ6JspcaCa+lKrh6LY/ju2iMIV/UMp6KTyqj9vD7GJ/A3bXkNInPrZW
-	mimO7uH9iODivv+Z4z33c/HDBcPbWBmnhTK6yfFhJNj
-X-Received: by 2002:ad4:5d41:0:b0:91b:8aad:79da with SMTP id 6a1803df08f44-91bdf127c4cmr175945416d6.28.1792492710804;
-        Tue, 20 Oct 2026 03:38:30 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040b4915sm23275556d6.26.2026.10.20.03.38.29
+        bh=VIDP3nx+FxbnMIBjBfYFZNsQEwlHUezNmijwKASBZA4=;
+        b=eJRsqzFd4i8+90VHt08RpyzZEEJil3gBEH78sxMbgxvbud8c/wnW6sJAyUqRmCJFii
+         bg94P9S/DT0T3p+TDQ4BQKExhvO5Xasugo4Mte+2Do818y11ja3kwZTSTlsE7CDrxuL7
+         d++AxP357SmDJvBMcwBqe/K52CfpvQ0So/qnkU5aQPQvJCwyiDHYwwOAVM2N+l1YCuQ6
+         qOK6IHiBcSQK4JZq/QqgLPQwFk984dakdYngVVXCd52+h9eT88LZmZWfvFtsgOiKoOFq
+         lXR8E4OI+IlEpayldQGaiR6+Sc+Ksgpsf1zwistMLyieTy4EiGrFGs5t0mrpgSsH4fLe
+         8pAw==
+X-Forwarded-Encrypted: i=1; AKwUvBybgpuMHtDMBtfR4ScTXY/xHDs3VhWmrs+BG4GqHskMFXXD+EiF7Kk5UKmpkZnGEWKhwA6kOJI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ9ycnyAZdoAWLpyNwXBrNnuRiViNTrD2svfoW5pVhmO0FAHe2X
+	UbFzsOsX1P2AK/Tc9ph0K7nkKLNbx7rhYVCmAb/Ia4Y2c+6s6340UPY85Wxi1OGA9BlknWFaoDI
+	Yzejqh5Wl+b8RQUDUNYvJ0FCCe+95QHJAo86fo5wO6CtpGGFDeIok/s2kVQ==
+X-Gm-Gg: AYBFou1wd1iYhrEtJdDfjBpZPcnvyIKzABJ/kVN3f/L82Y9s+veOY//inhwPSk/GRIM
+	BSP4iPo2V9t3VAB/jhX5FqLwRHmM7qDrw43ms9S6MFxKKOZjNOHNOUerHkbDX9QVtbyPftnH18z
+	CwW6Fpg/pGbJ4VZjOvvjJjS/hB1jEGucrrfxGGyJU6QdSQNtjUtW0KfceRCfIqJRN5w+28HmAfv
+	aF7/WebXRq0Tn6bu6sVLnjd4wT/yko93s0B2wXyqv3qnfkCT3z711/vYebvr8RSupN8+9zwQuXR
+	/3/kYu3+I55qZggQhIiAhE8LslTWazJlfjZQAxOXzg/AsH1/zBby/m2Q/Y9lDclq2T/JgA==
+X-Received: by 2002:a05:600c:1c19:b0:4a1:ec5b:dca with SMTP id 5b1f17b1804b1-4a1ec5b0fb6mr118201115e9.15.1792492825853;
+        Tue, 20 Oct 2026 03:40:25 -0700 (PDT)
+X-Received: by 2002:a05:600c:1c19:b0:4a1:ec5b:dca with SMTP id 5b1f17b1804b1-4a1ec5b0fb6mr118200305e9.15.1792492825235;
+        Tue, 20 Oct 2026 03:40:25 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d6dbf12sm5345167f8f.1.2026.10.20.03.40.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 03:38:30 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	sashiko-bot@kernel.org
-Subject: [PATCH net 0/2 repost2] net/sched: sch_teql: fix shared headroom and header strip
-Date: Tue, 20 Oct 2026 06:38:25 -0400
-Message-Id: <QDISC-6HS9.v1.r2.20261020051718@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+        Tue, 20 Oct 2026 03:40:24 -0700 (PDT)
+Date: Tue, 20 Oct 2026 06:40:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	andrey.drobyshev@virtuozzo.com, den@openvz.org, jiri@resnulli.us,
+	kmehltretter@gmail.com, mst@redhat.com, ptikhomirov@virtuozzo.com,
+	sashiko-bot@kernel.org, tanglongjun@kylinos.cn
+Subject: [GIT PULL] vhost,virtio: fixes, features, cleanups
+Message-ID: <20261020064022-mutt-send-email-mst@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,39 +113,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-Fcc: =sent
 
-Two pre-existing defects on the teql transmit path, both around
-teql_master_xmit() -> teql_resolve().  The first makes the slave's
-headroom write corrupt a shared skb and strips a userspace-supplied link
-header on retry; the second leaves skb->dev pointing at the teql master
-while the skb is parked on a slave's neighbour arp_queue.
+Hi Linus,
+I have a bunch more fixes under review, but let's get this off my plate
+first. Thanks!
 
-Patch 1 fixes the shared-headroom write and the header-strip on retry,
-tracking the header length the slave actually added.
-Patch 2 moves skb->dev = slave ahead of teql_resolve() and restores
-skb->dev at the arp-queue reinjection point, so a parked skb names the
-device whose neighbour took it and is delivered with a link header.
+The following changes since commit 48a4ee65e677559776349128e6a81a6041986c99:
 
-Both are follow-ups to commit dc4b95b8fee9 ("net/sched: sch_teql: restore
-skb->dev on the slave failure path").
+  vduse: return compat ioctl results directly (2026-09-08 03:58:27 -0400)
 
-This is a repost of the same two patches; there is no code change.  The
-previous posting went out unthreaded (patch 2 was not a reply to patch 1),
-so this posting is sent as one threaded series: cover -> patch 1 ->
-patch 2.
+are available in the Git repository at:
 
-Changes since repost1:
-- re-threaded as a single series (no code change).
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
-Jamal Hadi Salim (2):
-  net/sched: sch_teql: fix shared headroom and header strip on slave
-    retry
-  net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+for you to fetch changes up to c69023b5e16e5ffe9368603dca76d85bd544ee57:
 
- net/core/neighbour.c |  1 +
- net/sched/sch_teql.c | 34 ++++++++++++++++++++++++++++------
- 2 files changed, 29 insertions(+), 6 deletions(-)
+  tools/virtio: add missing device-id/virtio.h wrapper header (2026-10-08 18:30:04 -0400)
 
--- 
-2.43.0
+----------------------------------------------------------------
+vhost,virtio: fixes, features, cleanups
+
+This adds CPR support for vhost.
+
+Plus some fixes, notably for a host of races we had when callback fire
+around device reset.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Andrey Drobyshev (3):
+      vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
+      vhost/vsock: re-scan TX virtqueue on device start
+      vhost: synchronize with RCU readers when freeing workers
+
+Karl Mehltretter (6):
+      virtio_ccw: fix synchronize_cbs() after interrupt fallback
+      virtio_ccw: always take irq_lock in the classic interrupt handler
+      remoteproc: implement synchronize_cbs() for virtio devices
+      um: virtio_uml: implement synchronize_cbs()
+      platform/mellanox: mlxbf-tmfifo: implement synchronize_cbs()
+      virtio_vdpa: implement synchronize_cbs()
+
+Longjun Tang (1):
+      tools/virtio: add missing device-id/virtio.h wrapper header
+
+Michael S. Tsirkin (3):
+      virtio: synchronize callbacks after device reset
+      virtio_pci_modern: move avq cleanup from reset to del_vqs
+      virtio_pci: drop callback sync on reset
+
+Pavel Tikhomirov (2):
+      vhost/vsock: split out vhost_vsock_drop_backends helper
+      vhost/vsock: add VHOST_RESET_OWNER ioctl
+
+ arch/um/drivers/virtio_uml.c             | 10 ++++
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 15 ++++++
+ drivers/remoteproc/remoteproc_core.c     | 12 +++++
+ drivers/remoteproc/remoteproc_virtio.c   | 39 +++++++++++---
+ drivers/s390/virtio/virtio_ccw.c         |  6 +--
+ drivers/vhost/net.c                      |  4 +-
+ drivers/vhost/scsi.c                     |  2 +-
+ drivers/vhost/test.c                     |  4 +-
+ drivers/vhost/vdpa.c                     |  4 +-
+ drivers/vhost/vhost.c                    | 26 ++++++++--
+ drivers/vhost/vhost.h                    |  5 +-
+ drivers/vhost/vsock.c                    | 89 +++++++++++++++++++++++++-------
+ drivers/virtio/virtio.c                  |  2 +
+ drivers/virtio/virtio_pci_legacy.c       |  2 -
+ drivers/virtio/virtio_pci_modern.c       | 15 +++---
+ drivers/virtio/virtio_vdpa.c             | 34 ++++++++++--
+ include/linux/remoteproc.h               |  3 ++
+ tools/virtio/linux/device-id/virtio.h    |  2 +
+ 18 files changed, 215 insertions(+), 59 deletions(-)
+ create mode 100644 tools/virtio/linux/device-id/virtio.h
+
