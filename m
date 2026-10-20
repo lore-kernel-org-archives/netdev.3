@@ -1,108 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792480316;
-	b=xX+m2SMIzc1rl43dfTjb7Z2AlwVxkjOsSW3AHjUQvBgAUE2QxG8rIL2igw2+IM627ZDk
-	 YgxV7V7ieVXRkXjQ0U1/60CKHJRdaSV762WfF6D4O9BO37pCnKgu4I9HhDz517cIpokEm
-	 Kc4vFGqqQKFpaclT6dwsEuUHfjED5wBZOa7oN1jqvXTxc+EclkJ1FnlkRN7P1AOb6yVrZ
-	 EYzVVPif5I4eMvzfqpoblIPcu6+w3qa9lqmAGV+BMZbfopFpbzgc0/K+PjhL4kO6X8+dU
-	 wF8xxnEXgohj2UPrVkUnPMKq5FkEr5vJJEHwqghGCu9lphCy0bkkgcbg3YD/tipRCkQ==
+	t=1792480395;
+	b=lIfbxHUc24EeF/gEmFMWwncvGv9igMX44ok8cxTfsTbi4DeyjfKxOyubZYzTMVoUssVV
+	 mqQ+/fTZKavvunEcgjsMlEcfZbTgFn61GpP0N8qpdLM7mk4jcwT4ZAKPpM5oQpeVSCr5A
+	 cWpaQbeWjW0/gnl1fo5ByjlnMOXCE2aQhb8XsVwTFcJpfXcER3DJMo3vcaIpqIHhUfVbU
+	 ZyjvHLOv2+w4T1ybxcfbEcKdb3NuRwNwOLeW45qk1Li1KlXqAIhdp/iMgMK9YE+rm/hS7
+	 LoRBvyMepW8y6h7yPykJHJ1yQUmci7+I6bYTaS+FPcFGkaUFq/LiWy08ExfNxolxFRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792480316;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=M2ZWtK3jwBgT6W5EC/9V6YJ1MiOaCmKaMmxzxQcJy6w=;
-	b=v7EUGkfzJb4WyUlDxy9Avkonmw1L19osTm40xBNgApuJxOGx2ZLaVl1sJWBMEjD6EWzn
-	 uBeetpHfudZ0eF636LInBJqEdqWiob8UHl+yaJPhUG4X9eYSy4XKBaHhp8a5/eU4kJ8sF
-	 Lek497m3jMLxe5z8aHmiazRLdSU2M5j9rJ7h1rmWk1ZwX1u3s9c8FGatdeW7ENClJFbUK
-	 gdt2Q5pts0VvUsWlygPta7f6yNsdw7U3mxNyUt+T0/6vmIGay9TXesq8GxIENi3nJshG5
-	 BFPq40jBF/oGSJ3FCNP1xvW3X9YBgLRagLp8n9yh/tWa98ynyzK9606C1TE35B/jZaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792480395;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
+	 In-Reply-To:References:Subject:From:To:Cc:Date;
+	bh=wd6KFeSMn8LrlLVLM0frHHtnQQM2/rOQcFaVZTGLUB0=;
+	b=y573lmAa+3su55CDIKwhIvsiSCJcixyqiEkYzEQuznaLMtQ9Q9eIsk4Vr1dSsbnER0CF
+	 fiDPFDzNNiNd1rSDdXmaP/a/PIWnZ3tNWJrH85Hp8+IUZh5QHAJZsrw3n6RqoRc2EVCKw
+	 wj6F4ITB6tlxm7Rql/HwVMHhkxC9UCM9RcfKxv9oeie5rCEZ4Q7tohzUwMLSyjh1y1ZS7
+	 aq1uC0pPtRcqXoZfvtMy9kD6d1uQ2TDc0paDsumSsj2cOAdxU3wdlwXEJCuX9ZtQGiqtv
+	 za68w8PsubW/3gIRFJrRpIuxvDvFkQkfKP05YYGlch94ft6+d5Zh4+l52kjkx5nRMUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YlzY38nc;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=rVBKfbQY;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LlXWjNmN;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4335B606A31B
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 07:11:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4335B606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8A8606A31B;
+	Tue, 20 Oct 2026 07:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YlzY38nc;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=rVBKfbQY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792480315;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M2ZWtK3jwBgT6W5EC/9V6YJ1MiOaCmKaMmxzxQcJy6w=;
-	b=YlzY38ncoermWzDcATucwp7c3bM3wTKUhaWZua5w4faAStmyh/1rXjcSxxniDnTGoL1ESL
-	gS9h0bUNpp85DaF/1mBoWkfR2bUPw594zFDiWRBmbMEN2naQycfSTsTWFBvjejkj8fy7bv
-	fyv049ducVmWcRpkddI9UKbfL+lZrAU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-361-djGhAaxWPJ-Z45KJCuJSOA-1; Tue, 20 Oct 2026 07:11:48 +0000
-X-MC-Unique: djGhAaxWPJ-Z45KJCuJSOA-1
-X-Mimecast-MFC-AGG-ID: djGhAaxWPJ-Z45KJCuJSOA_1792480308
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a1721559b4so29728725e9.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 00:11:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792480308; x=1793085108; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M2ZWtK3jwBgT6W5EC/9V6YJ1MiOaCmKaMmxzxQcJy6w=;
-        b=rVBKfbQYqDfcxMDVajSJ0//djDSLUEq072XS+G5TL1DWTT0+GB4v8hqSlkBH/fHiYT
-         Me4ww78z3ubKuKElpTYoIogjUXyPMkuqowXO93J3x+nDZkR21E0A0kO8qfzpKIoC8OpR
-         vePp6xjRYxl9Zt+ym9JLChvG0fbMHq0XOMTJcaDLcsSm04nGo7scVy9fydRuuzA7r+Lg
-         LrI06nWVKT0x2/xYp35Wkl/uSpPwo6pgwDxc3yI6/QNkjKT1YLn3TQmtRTa6G4FNio3K
-         KmNM5uYcp/W9UmNDDK5w7mep/tycZo+DZ9cSAFgyeCdZBuqYgJO1oBCKqmC5UvvjEKWX
-         EDbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792480308; x=1793085108;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M2ZWtK3jwBgT6W5EC/9V6YJ1MiOaCmKaMmxzxQcJy6w=;
-        b=V6a3PZZi/rX2w9bbAbXgDTul+w6O8va2k6leQURACqOuTYyfuYhr5HTsIEPW0USU6n
-         LjVfCulCjwXmSjWpsTuR2hVMPlrJC50trRmXcR5lzUAR74ciRPvlZdX/7V3DscHPg8+E
-         D2Ls+jU5OOFzriBNpkw3kop+EbtYPEHEfSVeML94CjyuN9R+MNOG+/uUjvltSuaWucBp
-         Mpom2v5US1/BgFGP53OAqw1dwiQmqA2wg3Tq0XZRa/1cLdPbY+6tOOyb+jvc01ubxz/h
-         irxKKDvLi6vr1mgqqR/WC1TNmSWMp1HojsLuOFPMosMbrELWG38vS4Q8GMpT61y2TY2x
-         l++g==
-X-Forwarded-Encrypted: i=1; AKwUvBzkZ4wz7CvQg2Km2KfFfkIETe12KAEASPoRbMNKYTm03RC0p2F6lpLcWLZaAzwF2uGa3OTt9kk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLk501N4IJAO1+Qb+66oMsN8P0Rp5uOnTMg9+0wmtOl5Ca3n281
-	cGrjf9clCS1UvRuuUFQa8So8YwaDHo75wJXrBNcU5MRPRKlu8di07UuuPJLH938cl2rUTVIzeO5
-	lcRCZ0ghC+boAquzzOhkw+09y4GnbVl13ZMJXP+Atb85EAdhWaud4gl9KZQ==
-X-Gm-Gg: AYBFou3soAS5t2msmRJDCPEPsiOgvYHqLp3p2Q9uKiBL6hmrcO3ZQwFmqTVQspG2I/g
-	ZaV1wn9I5D6y59+GoAdtQGASCva9r6/UUGzKlwEokMX/MuuK/rVxtIGHSfuYPl5BwCooYTwzG3U
-	V3V8YWo+gL/dmY699Soqh2eV2v9S7mbZSIop2XmDkvAcm3srDZ6v+KyG2sUsvnUZEroQuPk1Zo5
-	2R3xS6JINwNsnm0zV5C/ITAhcMuZ1Hzc2RKyWYLgXxCtYesCtn7mLFoFHiqPtjJYqRuHmq4VrnZ
-	ULETlzGGSHGSMddoYKOuqbqmkwfsHU8f3AQ6dkpy3ecwOZtoFN5UBRpvUCcJS4eA/A0uM6Pm4CB
-	Qe0uSQOCvW9JPHVD4+cwObirndrHbBl7x/jIaN02axli8FzFN8djNCXw8sPMggxhyDRc3zi0ByA
-	==
-X-Received: by 2002:a05:600c:3e05:b0:4a1:71ab:63ba with SMTP id 5b1f17b1804b1-4a1d763625emr205330425e9.29.1792480307705;
-        Tue, 20 Oct 2026 00:11:47 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e05:b0:4a1:71ab:63ba with SMTP id 5b1f17b1804b1-4a1d763625emr205329845e9.29.1792480307327;
-        Tue, 20 Oct 2026 00:11:47 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1dc952d63sm331515125e9.2.2026.10.20.00.11.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Oct 2026 00:11:46 -0700 (PDT)
-Message-ID: <976d815d-a9ec-4fa0-9b16-8e55695706c2@redhat.com>
-Date: Tue, 20 Oct 2026 09:11:45 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LlXWjNmN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B0B1F000C4;
+	Tue, 20 Oct 2026 07:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792480394;
+	bh=wd6KFeSMn8LrlLVLM0frHHtnQQM2/rOQcFaVZTGLUB0=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=LlXWjNmNppfE6C+Lc8V9evRgShMxAi3FLMPztGxZeOvweJWk/cYQrUOybgaL/zXwp
+	 bW195FzrjcPdxZhut65E1UbmOv2Z396gKGdm+pPo0gq7gZoEipTz9a5EX7cZaHBCMi
+	 MH2E6g1k4nx1XAsVH+4nMVNMfBZDNro4ydxCdeDL8QDLYS9X2MU9PucLvO5JtHrAjs
+	 xGyciLIvLrx8oQnhLb+nDCx0zZx51FtCfb9KAXfbJOhWpEjb/Heyto5ZhyV+pEfRhm
+	 PDd6SSmoqbappo9h0lJhQ2U+l7fET1FeUsb8ZCHBiD3fTjcCX2uUDFTbDbpF32S8GK
+	 jaRqgCaMW7NEg==
+Content-Type: multipart/mixed; boundary="===============7625777895205599761=="
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,64 +49,244 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 3/6] net: add a generation counter for
- dev->mc changes
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: netdev-bot+sashiko@kernel.org, ajay.kathat@microchip.com,
- aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch,
- claudiu.beznea@tuxon.dev, davem@davemloft.net, dsahern@kernel.org,
- donald.hunter@gmail.com, edumazet@google.com, idosch@nvidia.com,
- jacob.e.keller@intel.com, kuba@kernel.org, johannes@sipsolutions.net,
- kees@kernel.org, kory.maincent@bootlin.com, kuniyu@google.com,
- nicolas.dichtel@6wind.com, nickgarlis@gmail.com, sd@queasysnail.net,
- shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com,
- vadim.fedorenko@linux.dev, willemb@google.com, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20261012011707.3378-4-sigefriedhyy@gmail.com>
- <179185709988.434549.15422498299449004512@kernel.org>
- <CA+7S2v+LHUWXQMD-cYPEzT5-f3Qhw_vz+LEssQH_A_oqDKtnnA@mail.gmail.com>
- <8dcd9564-e9a3-4b00-93b8-3cb023d68047@redhat.com>
- <CA+7S2v+rWYvz9xKPEeM6=3HPz3o7TbX2uRfRKk95f9Y60HnEiA@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CA+7S2v+rWYvz9xKPEeM6=3HPz3o7TbX2uRfRKk95f9Y60HnEiA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-Id: <f07f9053cf89280975ba16d372db721dbd51d2b7d6462b2f4161f79aebd21b0a@mail.kernel.org>
+In-Reply-To: <96a6b5dcf721e49c049662cc269d8ac8c389b6af.1792217106.git.zhilinz@nebusec.ai>
+References: <96a6b5dcf721e49c049662cc269d8ac8c389b6af.1792217106.git.zhilinz@nebusec.ai>
+Subject: Re: [PATCH bpf v2 1/1] bpf: reject raw iteration over managed map fields
+From: bot+bpf-ci@kernel.org
+To: zhilinz@nebusec.ai,ameryhung@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org,llvm@lists.linux.dev
+Cc: ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,john.fastabend@gmail.com,davem@davemloft.net,edumazet@kernel.org,pabeni@redhat.com,horms@kernel.org,nathan@kernel.org,ndesaulniers@google.com,morbo@google.com,justinstitt@google.com,zhilinz@nebusec.ai,menglong8.dong@gmail.com,bestswngs@gmail.com,mattbobrowski@google.com,vega@nebusec.ai,sashiko-bot@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 20 Oct 2026 07:13:14 +0000 (UTC)
 
-On 10/19/26 13:35, Yuyang Huang wrote:
-> On Mon, Oct 19, 2026 at 8:19 PM Paolo Abeni <pabeni@redhat.com> wrote:
->>
->> I agree this is not a blocker, but I think it would be nice if you could
->> follow-up on this one.
->>
->> The solution proposed by the LLM LGTM.
->>
->> Same here.
->>
->> Also, still speaking of possible follow-up,  I think it would be nice if
->> you could change the addr list lifecycle to RCU (no idea of how much
->> complex would be that).
->>
-> 
-> Thanks for the review. Since we're already at v12 I'd rather not respin
-> just for these, but I agree both are worth fixing, so I'll handle them as
-> follow ups.
-> 
-> The first one is a simple fix, so if v13 ends up being needed
-> for other reasons I'll fold it in there, otherwise I'll send it as a
-> separate patch.
-> 
-> The RCU conversion needs more thought and will probably
-> cause quite a bit of churn, so I'll try it if there's a v13, and if it
-> gets too messy. I'll post it separately later.
-To clarify: every I mentioned in my previous email was about possible
-follow-ups - not to be included here.
+--===============7625777895205599761==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-My understanding is that there is sort of a pending/implicit question
-from Jakub on v9: why are you doing this? is does it solve some
-specific scaling problem or is 'nl is nicer" thing?
+> bpf: reject raw iteration over managed map fields
 
-/P
+TL;DR:
+- Possible kernel fault: map->record may be an ERR_PTR, dereferenced when
+  attaching map iterators
+- Per-CPU map iterators may be wrongly rejected
+- Fixes: tag may be incomplete
 
+>     bpf: reject raw iteration over managed map fields
+>     
+>     BPF map iterators expose values as writable PTR_TO_BUF memory. Attach-time
+>     validation bounds maximum access by value_size, but does not account for
+>     BTF-managed fields in map values. Direct buffer accesses can therefore read
+>     or overwrite fields such as __kptr without the verifier's ownership checks.
+>     
+>     For bpf_map_elem and bpf_sk_storage_map iterators, limit value access to
+>     the prefix before the first managed field. Since max_rdwr_access is an
+>     exclusive end offset and record fields are sorted, accesses ending at the
+>     first managed field remain available while accesses reaching it are denied.
+>     
+>     Revalidate the replacement program against the map associated with an
+>     iterator link before bpf_link_update() swaps programs. Add selftests for
+>     allowed prefix access, rejected managed-field reads and writes, and link
+>     updates that introduce managed-field access.
+>     
+>     Fixes: 9db44fdd8105 ("bpf: Support kptrs in local storage maps")
+>     Cc: stable@vger.kernel.org
+>     Reported-by: Vega <vega@nebusec.ai>
+>     Link: https://lore.kernel.org/all/1fa798d444efac579e91ee0716e228902a8f9afe.1791980149.git.zhilinz@nebusec.ai/
+
+[ ... ]
+
+>     Suggested-by: Amery Hung <ameryhung@gmail.com>
+>     Assisted-by: LLM
+>     Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+
+The only Fixes: tag points at 9db44fdd8105 ("bpf: Support kptrs in local
+storage maps"), which only enabled kptrs in sk/inode/task/cgrp storage maps.
+That tag covers the bpf_sk_storage_map iterator, but this patch also changes
+the bpf_map_elem iterator in kernel/bpf/map_iter.c for hash, LRU hash and
+array maps.
+
+Is that tag complete?  The bpf_map_elem iterators (a5cbe05a6673 ("bpf:
+Implement bpf iterator for map elements")) have handed out the raw hash/array
+value as a writable PTR_TO_BUF, bounded only by value_size, ever since special
+fields appeared in those maps.  That includes bpf_timer (b00628b1c7d5 ("bpf:
+Introduce bpf timers.")) and kptrs (61df10c7799e ("bpf: Allow storing
+unreferenced kptr in map"), v5.19).
+
+At 61df10c7799e, bpf_iter_attach_map() only bounded max_rdwr_access by
+value_size, and the bpf_map_elem iterator value was a writable PTR_TO_BUF, so
+a program could read or overwrite a __kptr slot with raw accesses.  Percpu
+hash and percpu array exposure came later (65334e64a493, 6df4ea1ff0ff), so
+61df10c7799e looks like the oldest introducing commit.
+
+With only 9db44fdd8105 listed, stable trees that have 61df10c7799e (or
+timers) but not 9db44fdd8105, for example 6.1, would not be picked for the
+map_iter.c part of the fix.
+
+Should this carry an additional tag:
+
+  Fixes: 61df10c7799e ("bpf: Allow storing unreferenced kptr in map")
+
+and optionally keep the 9db44fdd8105 tag as a second Fixes: line for the
+sk_storage iterator?
+
+> diff --git a/kernel/bpf/map_iter.c b/kernel/bpf/map_iter.c
+> index c19b360bad9e..04cf255587aa 100644
+> --- a/kernel/bpf/map_iter.c
+> +++ b/kernel/bpf/map_iter.c
+> @@ -97,25 +97,15 @@ static struct bpf_iter_reg bpf_map_reg_info = {
+> +static int bpf_iter_map_elem_check_prog(struct bpf_prog *prog,
+> +					struct bpf_map *map)
+
+[ ... ]
+
+> @@ -135,10 +125,39 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
+>  	else
+>  		value_size = round_up(map->value_size, 8) * num_possible_cpus();
+>  
+> -	if (key_acc_size > key_size || value_acc_size > value_size) {
+> -		err = -EACCES;
+> +	if (key_acc_size > key_size || value_acc_size > value_size)
+> +		return -EACCES;
+> +
+> +	/* Fields are sorted by offset; max_rdwr_access is an exclusive end. */
+> +	if (map->record && value_acc_size > map->record->fields[0].offset)
+> +		return -EACCES;
+
+Can map->record be an ERR_PTR here, so that the map->record test passes and
+map->record->fields[0].offset is then loaded through an invalid pointer?
+
+In map_check_btf() (kernel/bpf/syscall.c), the result of btf_parse_fields()
+is stored without being cleared on error:
+
+    map->record = btf_parse_fields(btf, value_type, ...);
+    if (!IS_ERR_OR_NULL(map->record)) {
+        ...
+    }
+    ret = btf_check_and_fixup_fields(btf, map->record);
+
+btf_check_and_fixup_fields() returns 0 when IS_ERR_OR_NULL(rec), and
+htab_map_check_btf(), array_map_check_btf() and
+bpf_local_storage_map_check_btf() never look at the record.  The ERR_PTR
+stays in map->record and map creation succeeds.
+
+This does not look like a corner case.  btf_find_field() returns -EINVAL for
+any value type that is not a struct, union or datasec:
+
+    if (__btf_type_is_struct(t))
+        return btf_find_struct_field(...);
+    else if (btf_type_is_datasec(t))
+        return btf_find_datasec_var(...);
+    return -EINVAL;
+
+That means every libbpf map declared with __type(value, __u64),
+__type(value, int), an array value and so on has map->record ==
+ERR_PTR(-EINVAL).  Allocation failures and the -E2BIG/-EEXIST parse errors
+also leave an ERR_PTR behind.  Every other reader guards with
+IS_ERR_OR_NULL(map->record): check_map_access(), bpf_obj_memcpy(),
+btf_record_has_field(), bpf_map_mmap(), map_freeze(), array_map_free() and
+bpf_ma_set_dtor().
+
+With this patch, BPF_LINK_CREATE for a bpf_map_elem iterator on such a map
+goes:
+
+    link_create()
+      bpf_iter_link_attach()
+        bpf_iter_attach_map()
+          bpf_iter_map_elem_check_prog()
+
+Once the key and value size checks pass, it evaluates
+map->record->fields[0].offset, which is a load from (void *)-22 +
+offsetof(struct btf_record, fields), i.e. address 0xa.  BPF_LINK_UPDATE
+reaches the same code through bpf_iter_link_replace() ->
+bpf_iter_map_elem_validate_prog().
+
+The existing selftests appear to hit this.  test_bpf_hash_map attaches
+dump_bpf_hash_map and sleepable_dummy_dump to hashmap1 (__type(value, __u64)),
+and test_bpf_array_map and test_bpf_percpu_* attach to maps with __u64/__u32
+values.  Before this patch these iterators worked because map->record was
+never dereferenced.
+
+Should this be !IS_ERR_OR_NULL(map->record), matching the other map->record
+readers?
+
+Separately, does this check also apply to per-CPU maps where map->record is
+valid, even though the iterator never exposes map memory directly there?
+
+map_check_btf() allows BPF_KPTR_* fields in PERCPU_HASH, LRU_PERCPU_HASH and
+PERCPU_ARRAY.  For those map types __bpf_hash_map_seq_show() and
+__bpf_array_map_seq_show() fill a temporary percpu_value_buf instead:
+
+    copy_map_value_long(map, info->percpu_value_buf + off, per_cpu_ptr(pptr, cpu));
+    check_and_init_map_value(map, info->percpu_value_buf + off);
+
+The copy skips special fields and then zeroes them, and writes never reach
+the map, so reading or overwriting a __kptr through this buffer does not seem
+possible.
+
+The new bound is fields[0].offset, an offset within a single CPU's value, but
+value_acc_size is compared here against a buffer of
+round_up(map->value_size, 8) * num_possible_cpus() bytes.  Any access to the
+slot of CPU 1 or higher, or to CPU 0 data after the first kptr, now fails with
+-EACCES.
+
+For example, take a PERCPU_HASH value of the form:
+
+    struct { u64 cnt; struct foo __kptr *p; }
+
+An iterator that sums cnt across CPUs attached fine before this change, and it
+is now rejected.  There is no way to adjust the program to work around it.
+
+Since this is tagged for stable, should per-CPU maps skip the managed-field
+check, given their iterator buffer is already sanitized?
+
+[ ... ]
+
+> diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+> index 1d295a8769fa..ffbcfab9a71c 100644
+> --- a/net/core/bpf_sk_storage.c
+> +++ b/net/core/bpf_sk_storage.c
+> @@ -846,12 +846,35 @@ static void bpf_iter_fini_sk_storage_map(void *priv_data)
+> +static int bpf_iter_sk_storage_map_check_prog(struct bpf_prog *prog,
+> +					      struct bpf_map *map)
+> +{
+> +	if (map->map_type != BPF_MAP_TYPE_SK_STORAGE)
+> +		return -EINVAL;
+> +
+> +	if (prog->aux->max_rdwr_access > map->value_size)
+> +		return -EACCES;
+> +
+> +	/* Fields are sorted by offset; max_rdwr_access is an exclusive end. */
+> +	if (map->record &&
+> +	    prog->aux->max_rdwr_access > map->record->fields[0].offset)
+> +		return -EACCES;
+
+This looks like the same ERR_PTR dereference as in
+bpf_iter_map_elem_check_prog(), and it is reached even more easily.
+bpf_local_storage_map_alloc_check() requires BTF for every SK_STORAGE map:
+
+    /* Enforce BTF for userspace sk dumping */
+    !attr->btf_key_type_id || !attr->btf_value_type_id)
+        return -EINVAL;
+
+So every sk_storage map whose value type is a scalar goes through
+map_check_btf() -> btf_parse_fields() -> btf_find_field() == -EINVAL and keeps
+map->record == ERR_PTR(-EINVAL).  That includes sk_stg_map in
+progs/bpf_iter_bpf_sk_storage_map.c and bpf_iter_bpf_sk_storage_helpers.c,
+both declared with __type(value, int).
+
+The map->record test passes for the ERR_PTR, and map->record->fields[0].offset
+then faults at a near-NULL address.  This happens during BPF_LINK_CREATE
+(bpf_iter_attach_map()) and BPF_LINK_UPDATE
+(bpf_iter_sk_storage_map_validate_prog()) for any bpf_sk_storage_map iterator
+whose max_rdwr_access fits value_size.  Before this patch that was a working
+configuration.
+
+Could this use IS_ERR_OR_NULL(map->record) as well?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39382306212
+--===============7625777895205599761==--
