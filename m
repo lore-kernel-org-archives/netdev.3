@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792531209;
-	b=ZhRxgY9Fz5AbVpfxS2flmn3CreeJlsUqF06ehCVcQbkAI+6PtULyjszZalODXEMQfiZp
-	 z8NRmhckRM7zbPWWqFc8TLRaPWMu2NCmq6tzAqH7225m8+rCPfE+wWuB6N4bnOwVM2aT2
-	 rEpi2WYKXJdGiY2UtxFYLb3kdIew5SaT6E3J7s2JTJMvsVQJvRYsVNcfKhM7L4HaaS9FM
-	 kVYlxNBrvwUGUOmLPAVbsLWxJCI5GkyaHvYCVQrMKMi+7+54XNThOZBBHc7rQEllqlL5L
-	 LDDLWpUPK4qiriv2o4KZkSpRn5PS/BkZEiZYDELNobJ44Yehits9eiZlN0xVli5030A==
+	t=1792531213;
+	b=o4WAp01x8KPpnMF8F3EYf3giaXWgAsoZUk7aKph9rFTDI8SuSnYGzH1thBj5sVeJPm3A
+	 saT+XTKg0DXfDY1auJ7Pj0JP4KeDeF3lat9mlCYX07fieo4u97AWp759E9AxI1wzw/sML
+	 tpyox2v2sjG/WBkggYjfH5aHU7MxcLpBWxQr1SSzPYvFuYWvFdqW9K+zT6Uy+ezopAzXS
+	 8P9/6rEJhf4/uUfu/uiVkb+NTUFvyU4p/qOSYVG23U7JnvmoWK5nAlFw/jQtRcFYHyF6J
+	 2FTblk1DDpOKPCqrGTuQ6QkToNzwZpxJ1iEIlxE+A9NgLrcMs2qO8BZCht1FnYEt+pA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792531209;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792531213;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=VshiOr6IjEiTDYCceUxy4nB4sG60JqMkf3bxNJiTdO0=;
-	b=zxZIKi7H9CY6vocEJG4SXFeJgJI3iEtR4xV056LL6G4h1IBPTdilh6UaON1EZMWKCnts
-	 Er+pE2g6lX3JPcQwOMb/tvmQbnBe3vAI8h8etTNZSya2vsbj1UUfAPMr/KBH8iREaHQ/N
-	 g4V9r/3J/mxt8SfDPCKVoQZMkkh2zCp8lVcBEd69s8OCpZGbfoOq2UJCQoj2vejEq63mX
-	 Bp/ZaDBneZZgpmoUU4Emb16lMtW83gMNYKyNW0aHaAz11V5fQ2/k1OUWRKF4LwtvOg4eg
-	 CqHbDPVcY9S5o/JuV3a1VBgoZzMR8TYRdu/Wl7ojmOqIDi9MfFrG0jHFpZnEm1W5uew==
+	bh=ucNKDkCAgw6e5UqZvf8d/LyJaK9DQ8c+wrKSdAKm0wA=;
+	b=F64/UCC4gYxjga7YEnNuc6oQKX4RLbbFdgi0rAUCeFwjuMaA8v/UIwLHNWabAaesRK1n
+	 KyW9ysGlYUbL4TsrlZ1r3xfBXSpmei/GbqYYaaKuArBM8S5IwoS5PBEnmrF0kIuoq8Ttd
+	 pGxGIS1U2MytZtWyzAuCch191Hn0ugFxhnR2Zxco+PTT/jrdB4319d5RckZwMLk0fYG9/
+	 LiK0Bj5mZcXvAMXeYrZtAWRBplRXOH53CUuu+gRqmWjfi+D4zsAgwQsD1nNUwjRaMtTHw
+	 gscxh+fslCaGN1H8jOfXUH1jrnFit9V7BrLdcEAcRFzHVVqQIIdjiNpGI3Qxg0CadvA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="cDu5lYI/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=euvcJAur;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0038E606A31F;
-	Tue, 20 Oct 2026 21:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EC0606A320;
+	Tue, 20 Oct 2026 21:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cDu5lYI/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B181F000CB;
-	Tue, 20 Oct 2026 21:20:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=euvcJAur
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9E91F000CB;
+	Tue, 20 Oct 2026 21:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792531208;
-	bh=VshiOr6IjEiTDYCceUxy4nB4sG60JqMkf3bxNJiTdO0=;
+	s=k20260515; t=1792531211;
+	bh=ucNKDkCAgw6e5UqZvf8d/LyJaK9DQ8c+wrKSdAKm0wA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=cDu5lYI/8UICnoviT0e3Mq2RFeyikjeb4MPeTDAEuF0fVmL18Ko0qYSoXmbIS8CSy
-	 JySWyRHER5IfIwYlyNsPPRudOtZyk6vWzchp/1wqrOIbBjKqOc9Uo/h+8MYBgJZ3ve
-	 fDmr0vVCePkBKrlh23At9cZNJKmezw+d3YKpqQ9FMTB/vcaOxYnux1IA9DIRu2imSU
-	 pFYgu4AO2QmTkYUxjhWUay6OofS8eFknn7UT+LDbABmOFccmTQz3wiCJ6OBG29c0IM
-	 QRdkNThsgFj+cTxbyvgiSAZW+Aw/K+Ls67rdi9QawLVJrPy85umkUXLeeVFq9jBrZV
-	 lGZTRx137CoWw==
+	b=euvcJAur0j6GScUbxndIkodhU/Pn70BvAs6oL/rGa2EjEu2BD01tzon7xFd7txdQx
+	 OHqNpWne9zpraPM7z8Q7VnBU22Nnk9DImHymtBQFPAeWW8lAGi3+tcs+RctJbawB4P
+	 Jp6MI6epkRf1ebFfgBybny3uPuTcIBcZFZYaX+LYsAdrmm/0mh+2hhWDQS5U/JcaFQ
+	 WLoQT71MhP5bqRCuuhxRWJ1fgcTZhwseVZ6ojskdQiPEFlnRGdKFxc1oJjjuufZTI6
+	 Hq4x+nYDdAlrtbGkzpzc8b0Nf3BsK2xdoskQ+qlmAstGuGDGQyR7QuxuMrFziSg1Nj
+	 oGCkrNY6oN0Vw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7741B3809A09;
-	Tue, 20 Oct 2026 21:20:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B45B83809A09;
+	Tue, 20 Oct 2026 21:20:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: unix: reject negative max_dgram_qlen values
+Subject: Re: [PATCH net-next] net: dsa: realtek: use <module>-y in Makefile
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179253120703.216428.6433539867424959722.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 21:20:07 +0000
-References: <tencent_A643419B56079E9A448D97922763FF069F08@qq.com>
-In-Reply-To: <tencent_A643419B56079E9A448D97922763FF069F08@qq.com>
-To: Yingjie Wang <1075151112@qq.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-api@vger.kernel.org, stable@vger.kernel.org, kuniyu@google.com,
- skhan@linuxfoundation.org, rdunlap@infradead.org
+ <179253121027.216428.10990552984336332525.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 21:20:10 +0000
+References: <20261019-realtek_mkf-v1-1-3246a77d5782@gmail.com>
+In-Reply-To: <20261019-realtek_mkf-v1-1-3246a77d5782@gmail.com>
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: linusw@kernel.org, alvin.sipraga@analog.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 16 Oct 2026 11:02:58 +0800 you wrote:
-> net.unix.max_dgram_qlen is parsed as a signed int and copied to the u32
-> sock::sk_max_ack_backlog when an AF_UNIX socket is created.  Consequently,
-> a negative value such as -1 is accepted and converted to UINT_MAX.  Since
-> the receive queue length is also u32, its fullness check cannot become true
-> for that limit.
+On Mon, 19 Oct 2026 01:26:27 -0300 you wrote:
+> Switch from <module>-objs to <module>-y to eliminate ifdefs and simplify
+> conditional object list construction. Drop the obsolete trailing
+> comment.
 > 
-> max_dgram_qlen has no documented negative sentinel.  Its existing signed
-> interface represents nonnegative values only through INT_MAX; negative bit
-> patterns are not a supported encoding for the upper half of the u32
-> consumer range.
+> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+> ---
+>  drivers/net/dsa/realtek/Makefile | 28 ++++++++++------------------
+>  1 file changed, 10 insertions(+), 18 deletions(-)
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] net: unix: reject negative max_dgram_qlen values
-    https://git.kernel.org/netdev/net/c/1a4e7bc6e345
+  - [net-next] net: dsa: realtek: use <module>-y in Makefile
+    https://git.kernel.org/netdev/net-next/c/56c7aa17f0f0
 
 You are awesome, thank you!
 -- 
