@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792495207;
-	b=PpiidSf5olfEb6QNHiA+InRhlU29ceIO5xzjVkQUMtUrM28uG5mvhAIk4FiwkxE3i6lU
-	 EaoBKU9Aee2NqpyrCyDWY32UMkbJaWpBMajDbC0n592k/nt/s6OAJ3Wc3SKfXJwLvRLNA
-	 JFEK1jPSpD8UyjNxU9+c7on0/WI842zFiKwN0vbE3F+l4/nwMPE0yrbmTqJ4tekZwa5k0
-	 t7DEn6ItET7lV6U5C//YwLlWqkx4p+T+3as1075MvPme+8y3BbLmXONRD9VkXIJeBAgXt
-	 x2mSlRMAuQ/UIza6sYhGlpLmlOdjk8LmbBueXAExfbewayR4+LRTP8G4EDMyzZ6S6Kw==
+	t=1792495208;
+	b=U+lENLgxP66N/aB+hGVkkPK+Fs0KJ03p5uZH+Kzb9M6Nxk9VZXGpL2RmUNrbGYUQ6uUm
+	 p0SNeBjLqqdIgYfWVIKVhJhqCOLf5sXXBgf5rqyPZ3L/Qv+CM5eNkJ08BCiFSFGwqoMRw
+	 nelhRibeU7YAmWpJ9UYf+TymIgiXa2nmKp1GIO12JJIe+OM97HotQNr1wcKY89KbNbHsD
+	 Q3xMKW1ojrKV+45q5igyxeV/IZr2KSpkcTCvXkejrY45Obq6IMw8uBquQWQ6W2zdlRXxV
+	 TYnjDcdVZPFVzoSZypaaS3xgy8aRgYcnhru1teff6U8ObcM1zzEBA07uOBpcqPqDllw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792495207;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792495208;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=Oc64R9Hyc3/pNZgRVj7KfBCvPj3SMFX1Y/jTiXNLTuA=;
-	b=QdDxNHHV3i3CV+3dzNhkaiuA45XFRYHc6fnyAHYWjUxyDQ1qUCzgaVKFsmW9J92M0FGc
-	 X47N0Z21bNc3KB8j57AgbdAWw2O6/w9bBQSzBXDtwWr4o1dUB+11HWvtdZC4eTDJcwO7e
-	 epXctWeIKhKmydiv/RCG6mORWEWwfsjtcbxGREzT/N4KPADjfS00DKUqX42oUQZVIrXC+
-	 J+TdCWtUc5kLpGzuVaYA6cfKlQ8RVSeYlO8R6xqjUt+IruGo+i/iLVvnRZf2JgKbPj4jR
-	 u3Ng0B99A7YZyM4IDplqLM8RkCrJ3+r9ZW8Sm8ZLXHRaV1dEPeHrDAvE/q0Te5mm5/g==
+	bh=PStXvf3iUmXPcABgpAYzb33URw4ffKrt5L254s0zmQA=;
+	b=zjf1C+O581GsBMZy8NV0a4fgGm25eKE3Mph5vne3x7/2U9tnICH4G5BTrzqctMwOtysX
+	 6MqljmOhngclbREG8oaugEm1mzYeAGnnzQ1GKQmWpPUJPqDlgtriSCGN2z2WHmXNv3M59
+	 jYxeUo0M+KJLnSBORfPSM5+bxVDGVwMqPTzTCTydkkfblE5jD5X6sR/ubnarfBOneclE6
+	 SaRrUFpWAmMMioWJjWclt7KQnMvZitZU6h1r6yxg6NWSmimrUkypoiWfx7yfnYZgTJNVB
+	 ltVvOfG0LaYkNSleXMyhu9fWes7WLOP3Qhjxk+LpA3GTS51sM5Tm+sH+Ruyhgr4fbrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOkup+1O;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UAHXjRzz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB36F606A320;
-	Tue, 20 Oct 2026 11:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85700606A31D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOkup+1O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BE61F000C6;
-	Tue, 20 Oct 2026 11:20:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UAHXjRzz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B5B1F000C6;
+	Tue, 20 Oct 2026 11:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792495206;
-	bh=Oc64R9Hyc3/pNZgRVj7KfBCvPj3SMFX1Y/jTiXNLTuA=;
+	s=k20260515; t=1792495208;
+	bh=PStXvf3iUmXPcABgpAYzb33URw4ffKrt5L254s0zmQA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UOkup+1O25xsdt7D90F5OeB0H9xXIpME9HLDenCJqZBGiv+NXXMmWf2QRMPuwTXP9
-	 T+yjep3pVcA+Ge5tz+TeP/iVN19HFV2rgRwMwQAPQkx0QmBP83s1qGOpctvNZc0aJ6
-	 /VrA57c3zcAzpwEYnqVp/ocKLI4TqfsjlHDA51uNAoDbZU1YxqEnOFQuPq6V1dUDnf
-	 o/dIS4RiHree8F3nl3nKJGC8aM5DGuWcRR7063iR0cEgnodJgvsN039y/BsTrnRQ1O
-	 3Slw2PKbKt42sl180/jHEg22i1oi/5XHL+Go9xwqzmYHUmbQ4K3xeNkt08Yz4Cm58S
-	 JAfKxMvz+juIw==
+	b=UAHXjRzzdxfR/ULHHEnHgMSTlKsDykG/sG+9eG+RIaMqPw6SDTn64CI6BZt1bQIef
+	 qAnBs8eF3Ox+C8rM/Tia1qaJ6M/o4bgYikKm55IDQmFJoc4dd0J25dZwG39lbhWG3o
+	 5i1kDgPUTig5tdUf4xg1+uByBg7j1YKcyDmJs95NNhPaY7FTHeMSR93/slISOP1rGc
+	 dm+ScO9L+/l4PvZ/ATjldNGPBB7D2SkJ7T81PqAB+iqcAYvMHgfHS2E3fIBfIIp+hL
+	 qedrcdBIDA+fqTaaS+kGgLCFC65tFeNW0F496ea8Hs92O5wQGB6PinwraddOqcL+qq
+	 ZXvPjIAdMG+Qw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773633808209;
-	Tue, 20 Oct 2026 11:20:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F149E3808209;
+	Tue, 20 Oct 2026 11:20:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,37 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] net: ag71xx: align the IP header behind DSA
- tags
+Subject: Re: [PATCH net-next v2] net: stmmac: fix mqprio and cbs combination
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179249520528.3674783.11516366226063085265.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 11:20:05 +0000
-References: <20261014001334.132962-1-rosenp@gmail.com>
-In-Reply-To: <20261014001334.132962-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, chris.snook@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+ <179249520652.3674783.16445702452498504687.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 11:20:06 +0000
+References: 
+ <20261014-stmmac-mqprio-cbs-combo-v2-1-372249daa81a@oss.qualcomm.com>
+In-Reply-To: 
+ <20261014-stmmac-mqprio-cbs-combo-v2-1-372249daa81a@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, dcaratti@redhat.com,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ daniel@riscstar.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Tue, 13 Oct 2026 17:13:34 -0700 you wrote:
-> The receive buffer offset includes NET_IP_ALIGN to get the IP header
-> aligned behind a 14 byte Ethernet header. Most ag71xx devices use DSA
-> switches whose tag sits in front of the EtherType, which moves the IP
-> header by another 2 bytes. Every access to the IP and TCP headers then
-> traps and gets emulated by the unaligned access handler, around 6 times
-> per forwarded frame.
+On Wed, 14 Oct 2026 11:05:25 +0200 you wrote:
+> The channel-mode mqprio offload and the CBS offload can currently not be
+> enabled at the same time. tc_mqprio_validate_chan_mode() refuses the
+> mqprio offload as soon as any TX queue is configured in AVB mode, and
+> tc_setup_cbs() refuses to enable CBS while the strict-priority scheduler
+> is active. As a result the combination is rejected whichever order the
+> two are configured in.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3] net: ag71xx: align the IP header behind DSA tags
-    https://git.kernel.org/netdev/net-next/c/f09123082704
+  - [net-next,v2] net: stmmac: fix mqprio and cbs combination
+    https://git.kernel.org/netdev/net-next/c/643f9c0bd877
 
 You are awesome, thank you!
 -- 
