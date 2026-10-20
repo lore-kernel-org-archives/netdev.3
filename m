@@ -1,52 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.110
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792460285;
-	b=QPWcboIUCwsWuo77p1DvKL9S4dpqZYjK3sib3tj1/XzXC6mRS6ydjESwWBo3PFQM0Nx8
-	 p4MwuH5AqafoH5/x5ia6KvF3MFWswft5UDV82c/Y7ZPfn9FxPkvNGlabOWQsfiGniEP6U
-	 LpgqUnU4BWCDHJTR78DA4mBDZboQSGHw353qN9KrJGXlOUGK+/Kz2SfL4FJ6jiBdx9VIw
-	 DTONNUkR9c4EF8wfs0blP8Ybd5z3gPgvf8asboAO/LwI2TiloKMwnZAfCPHZqK7DYi4PW
-	 O6GCcQtZwNsDu0PXwA7Pia0OCXSh8RTvJgwikLJLDV+rHmfTEA+KgIUiUCvR1aTm6qQ==
+	t=1792460305;
+	b=vwvfaRc7QgtvTiUcc4tuHnC9GOGc3LsCTOPIHbrD9xaMl/vRS+Wkx/0tpXMHPFyShoar
+	 58u+FxkFuZk5Cy2u4czJE4xUxgF6QAmD40R+HAE6LHSp97yDtXfUJ/yilPzHfTelEU6If
+	 D2W1DodNBkR04GoU8sGw0OYjYTP0OFherJvQ6mdbmOZAadrqyzUAOM+zq2CBZ/IgvYpbT
+	 ooylElVwP5/O2ZfnALqJZV55wUr2vugxcG0mi+ogj63svP3oCTBBbFciiu7gEtht9IVC6
+	 lpUZBSfjRTgaRtTvw++uDEhSq/d0DXOyCZpYATArBwdYB/YPU90pFJY0c8ydO0phUgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792460285;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=PbjFjYksln6X5VCuok/GYUEp4Jt2bFAm9SetP90rGcM=;
-	b=3yM1FUTxHf2jQ8exWJqIo0VVpiLZ02N3lYNzcxiNISTnwOKnJmUlP/STN/1h3zYttreO
-	 6uhGJXLjWeRwBxjylaT1NCx9i8Ex8MnTBiySKZAQGXI/ySJplgowKYKnn5oQ1tuBqiq0B
-	 QZ1II9lhRV7KhMJGk/amJ5avb0V6Ut0blK7dRBCJWOJ9mAwortDwFZCUQZ40/JR5WwoLQ
-	 dZQzyW29VtC+nIWsqA6KdW7cL8DkNh4qc2X/t2+UNTTg3oMvT1SvC+rOcoP/P7efcnBGJ
-	 QrFLPti5vaKCDfZcOzt7tW7RGs1AGq/xbICAHHT8QYUoKK90e130GrWEjiPPBeGm4jw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792460305;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=usNYCTGOXfbAT1C1//piOShSVVfXVlsx9LA+HpO8xUI=;
+	b=FCHTjiB3xixHuB0boChenY4ERhN16wMshMLzvoAjDVYpMS/xBGdAktc5FVBAm9q8o+gn
+	 V5DEFVy/Kte7KTzRM6m6Et7wSd7IRjWfr+FZFYlx2QqJp25p4+j2qZnOGPmcSpuXyWrNA
+	 cfHSkN4IfFxF17rfBvi8fuGCcj6nruiNxHICaAFF7oSDwgSrxOo0IUany2j653b+T4Wuo
+	 vTDUcUZp78iz2nXmU4InKC2pRQDwbOVHTy+CLgqPoVQAwOq6xirhq9/x0zgf6SzQlJHsl
+	 7moR7ZFwMhcG9fvTpTgL8LidASpaRHyBOJyjxzLFTQt89PEVKST+ERZg0OFOY0L9zzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nabladev.com;
-	spf=pass smtp.mailfrom=nabladev.com;
-	dkim=pass header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=gkhjrsVg;
-	arc=none smtp.remote-ip=178.251.229.89
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	arc=none smtp.remote-ip=91.218.175.110
+Received: from mta0.migadu.com (out-110.mta0.migadu.com [91.218.175.110])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECFF606A319;
-	Tue, 20 Oct 2026 01:38:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4ECFF606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nabladev.com header.i=@nabladev.com header.a=rsa-sha256 header.s=dkim header.b=gkhjrsVg
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E71FA108825;
-	Tue, 20 Oct 2026 03:37:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1792460281;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=PbjFjYksln6X5VCuok/GYUEp4Jt2bFAm9SetP90rGcM=;
-	b=gkhjrsVg8YdzKJiWw+oBJJoGOWMSaX2plJh2ECGP6pobGez/hDtH0UV4Rc2GlxMKP/fXbF
-	mFRHOvJDQ5/kcprfkbErcvoAO2cidfW1VgzDUdVmsiwoKZq51M2pIyMSiB9+mFd5e2Y+XE
-	zIrWXd21uoO8qiwXwxlMoS1cEEkqb5V7RipLdtD1smpxlx42HVcI2xhjn7frxAydftEr9K
-	BRNUqGr0Hyai2/OODFby0KhwLg52WWQJ0Ndu4cZfDaERlK07618LcHO8wB2hrcFgrUvMa/
-	vQkCTJEDpb9ssDuGPZeYe/7oi7OrMmtFkutPvii2Ku6bc20iYPHtQno+K7cwGw==
-Message-ID: <fe920b05-6d89-4dc1-83d3-0664fbc2e00c@nabladev.com>
-Date: Mon, 19 Oct 2026 18:10:18 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AD3606A31C
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 01:38:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65AD3606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=SvymMiE1h9eGO72NOBmTXmWopdT7YaAz+Ajx0/HkoVg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792460301; v=1; x=1793065101;
+ b=NxtzGOTyu5QdhuKmNmyEE9601ys6bN9dXLPKY4KYOvQvcA+hay9qrc5F1kdSo1ukQAdytcH3
+ I8fHnc+Oq0T3n9QSd500rOe1CVqaXTXnCmi9v1tHha206lhUnHymEHdvpvrvPolOwHatlc9ut+0
+ Ix6FgAd8K6OqBqGvXX8GdBfE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 41f018b724df8ac4;
+	Tue, 20 Oct 2026 01:38:21 +0000
+X-Mizu-Trace-ID: 41f018b724df8ac4
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 20 Oct 2026 09:38:04 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jiale Yao <yaojiale02@163.com>
+Subject: Re: [PATCH net v5] team: reject CAN, IEEE 802.15.4 and 6LoWPAN
+ devices in team_port_add
+Message-ID: <atbF_LBIJYIynlq3@fedora>
+References: <20261019155407.61487-1-socketcan@hartkopp.net>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,86 +65,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable from
- DT
-To: Wei Fang <wei.fang@nxp.com>, "Frank Li (OSS)" <frank.li@oss.nxp.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
- Eric Dumazet <edumazet@kernel.org>, Frank Li <frank.li@nxp.com>,
- Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20261016193344.115518-1-marex@nabladev.com>
- <20261016193344.115518-2-marex@nabladev.com> <atKDNdxl0w65s8yQ@SMW015318>
- <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
- <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
- <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261019155407.61487-1-socketcan@hartkopp.net>
 
-On 10/19/26 4:59 AM, Wei Fang wrote:
-
-Hello Wei,
-
->>>>> +int enetc_mdio_update_mdc_div(struct mii_bus *bus) {
->>>>> +	struct enetc_mdio_priv *mdio_priv = bus->priv;
->>>>> +	struct device *dev = bus->parent;
->>>>> +	struct clk *enet_clk;
->>>>> +	u32 div, mdc_freq;
->>>>> +
->>>>> +	if (device_property_read_u32(dev, "clock-frequency", &mdc_freq))
->>>>> +		return 0;
->>>>> +
->>>>> +	enet_clk = devm_clk_get(dev, NULL);
->>>>> +	if (IS_ERR(enet_clk))
->>>>> +		return dev_err_probe(dev, PTR_ERR(enet_clk),
->>>>> +				     "Input clock unknown, not changing MDC
->>>> frequency\n");
->>>>
->>>> binding said clock is optional. If return failure here, it will block
->>>> existing dts, which have not clock property.
->>>>
->>>
->>> For EMDIO device, the clocks property is not added to
->>> fsl,enetc-mdio.yaml, I suppose this property should be added to the
->>> dt-binding doc if the clock is really needed here.
->>
->> Isn't this what 1/2 in this series does ? (maybe I misunderstood this
->> paragraph)
+On Mon, Oct 19, 2026 at 05:54:07PM +0200, Oliver Hartkopp wrote:
+> From: Jiale Yao <yaojiale02@163.com>
 > 
-> Sorry, my email filtered out the 1/2 patch, so I missed it.
-
-No worries.
-
->>> For ENETC device, we already have a 'ref' clock in the enetc node, so
->>> devm_clk_get(dev, NULL) may get the 'ref' clock rather than the system
->>> clock of NETC.
->> Shouldn't the clock be described in the MDIO DT node ?
+> When the first port has a non-Ethernet type, team_setup_by_port()
+> copies port_dev->type to the team device while netdev_priv() of the
+> team device still holds a struct team. Several L2 stacks identify their
+> devices by dev->type alone and then access type specific data that the
+> team driver never sets up:
 > 
-> The enetc_mdio_read_* and enetc_mdio_write_* interfaces are not only
-> used by EMDIO devices, the ENETCs and NETC switches also use them.
-> NETC switches and ENETCs can access external PHYs or internal PCS/Serdes
-> through their own port MDIO registers, instead of through EMDIO devices.
+> - CAN protocols rely on the CAN mid-layer private data (ml_priv)
+> - IEEE 802.15.4 code dereferences ieee802154_ptr and the mlme ops in
+>   ml_priv
+> - the 6LoWPAN netdev notifier writes through lowpan_dev(dev) on
+>   NETDEV_DOWN and reads it on NETDEV_UP/NETDEV_CHANGE
 > 
-> Your first patch only modified the EMDIO binding-doc, not the ENETC and
-> switch binding-doc.
-So I need to patch also 
-Documentation/devicetree/bindings/net/dsa/mscc,ocelot.yaml ? Any other 
-binding document ?
+> Enslaving such a device (e.g. vxcan, wpan0, lowpan0) therefore leads to
+> NULL pointer dereferences or to writes into struct team.
+> 
+> This is the same problem that syzbot reported for the bonding driver
+> with a vxcan device enslaved to a bond master, which crashed in
+> can_rx_unregister() and was fixed by commit 8ba68464e478 ("bonding:
+> refuse to enslave CAN devices"). The team driver has the same gap.
+> 
+> Reject ARPHRD_CAN, ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR and
+> ARPHRD_6LOWPAN devices in team_port_add().
+> 
+> Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5-c1c7e647ccca@hartkopp.net/
+> Link: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95 # bonding splat
+> Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+> Assisted-by: Claude:deepseek-v4-pro
+> Signed-off-by: Jiale Yao <yaojiale02@163.com>
+> Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+> ---
+> v5: [Hartkopp] reference the syzbot report of the identical bonding problem
+> v4: [Hartkopp] also reject ARPHRD_6LOWPAN as reported by Sashiko AI
+>     review, reworded commit message (bonding only rejects CAN)
+> v3: [Hartkopp] fixed indention and compilation as reported by kernel test robot
+> ---
+>  drivers/net/team/team_core.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+> --- a/drivers/net/team/team_core.c
+> +++ b/drivers/net/team/team_core.c
+> @@ -1223,10 +1223,21 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+>  		netdev_err(dev, "Device %s is loopback device. Loopback devices can't be added as a team port\n",
+>  			   portname);
+>  		return -EINVAL;
+>  	}
+> 
+> +	if (port_dev->type == ARPHRD_CAN ||
+> +	    port_dev->type == ARPHRD_IEEE802154 ||
+> +	    port_dev->type == ARPHRD_IEEE802154_MONITOR ||
+> +	    port_dev->type == ARPHRD_6LOWPAN) {
+> +		NL_SET_ERR_MSG(extack,
+> +			       "CAN, IEEE 802.15.4 and 6LoWPAN devices can't be added as a team port");
+> +		netdev_err(dev, "Device %s is CAN, IEEE 802.15.4 or 6LoWPAN. These device types can't be added as a team port\n",
+> +			   portname);
+> +		return -EINVAL;
+> +	}
+> +
+>  	if (netif_is_team_port(port_dev)) {
+>  		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
+>  		netdev_err(dev, "Device %s is already a port "
+>  				"of a team device\n", portname);
+>  		return -EBUSY;
+> --
+> 2.53.0
+> 
 
-Thank you for your help !
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
