@@ -1,69 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792486727;
-	b=UT6mrKAhlnt9y9nvV2TcAjcG70fZbnrqQq73A5tz5SeifwPysxyQo9MID5uqA91Sbz1I
-	 Q53fjDppAnHm7kcE/WILLI+3uoLulnd1wGk+3HBNCnXHTw6SXwmLgZtkwzdy565nWfwsM
-	 cG4FnQ14kIfUQ/LYBBypuxSWaP6YMJsdt5EGod6Jgxjlp1gU7QKIPwSHZNsigttd4rtv0
-	 785+dYkZ69TYKxUMsES6yBg+mOmHewAIJgrUF2pTh4DnUm1yTgy3g5WtfZKnpLeoQo7Yx
-	 iZr6F/Rw4ydXo2OZFvqOjTMpDsh0pe5LH2dCnSsjNSkiLrHqmm+K2ldjmrudLsTLx8g==
+	t=1792486734;
+	b=VBmKK3LlAhSBpqtq8RbpjCijsUAhhnnhS8Nm3TCiit2PCitiB6dAWxBIafevSqUgA9MJ
+	 Lac9tQyTdLDHS/JYBrKadUkZ5brXdT5gc+dURjLnMLhNGcNRrUdBbMtB+Jv6PC5EQeC7K
+	 zkYBg5nX+W2R3hq12uLC8u3SWRmNvb6ExvgHtI4IMopoW/ZnGY8d//GdupuMjTbc1tqq7
+	 AlL6tLuXcQEIO3wD7xeeoQDoGAkqDoYjJQgUVrPaJNY/FJBWUavs7UIkmizcQ7L1a/81g
+	 yJ4bBVe0cFx04zVn30Jea7Ndt0Z8++F1rd9eQ+50JKhEqSHRicO+LwzJNIAny14eSZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792486727;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
-	bh=OatRvA2g2ft3qrMPP2PToIR4b5mZwUWsvSN9SYAtqFs=;
-	b=DvsD1fzcbGrJwweU/R7q6+sbKweN8X+C/nVFhMdgmbKTV87SUmsU0v5a1gDPqdRqV/mG
-	 y7At/tvTliIa6EEekXF4nPf6VIrkwkFaytKZCJ7UU5dVybazM3Lhp0m/TxHS7TSgiwBHM
-	 xFyvtDLcM6hpBAgLrJru2TFtida5x8wGGCjCBDNZD1zIdvI+VnTIVISKpATcKf6WF7jZ/
-	 gtSWzHm90CGtFxBwAjJZiNwGKayMzhUnkNuF018FGS2LL75D0eIOVAzgGK3MF4dgVNqFH
-	 R+UtwYw+0c+ds97QI828sA0ArmCiD9gDv7CVY/hrtmREIdhuU7ReXRZ1Rey40DloiLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792486734;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
+	 In-Reply-To:References:Subject:From:To:Cc:Date;
+	bh=HlLZ9zGeNEup/rHEpny5JmMLv3fK5Tlr0wrd1y6qyXY=;
+	b=IyehdeazHh7byR9b+KkNcUk1oI0F9BQd4+6EE4e0bC68+aQClf3AB21Vv+KHZmHrlzKV
+	 uzGg5Lky3C6qKoDkU1anjwTPM3L97ARLHaBvAsTLg9n4/oAfno0gEu2EFr1gspVZsWLKb
+	 UY1S0Y9Eu5OF1dIKIf1ep/uJdktsCtP7shtA8THnZ6kvtFk4AvHLeMyIgogZI/bTIUzev
+	 9eT69ICOP02J8d/cXDoidcFznhZqxLcjQc6vpAeu1il1n9JE0Sy0gf0NITNlnwYIn3vX4
+	 S+P4pLPN+uLdY0rn6L4VQXEadRHwB3DBzMneJThZTGetMBUgOl17YknbE7jk6F5aoqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=CYaDXHqV;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EwlNOE9A;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF36D606A31B;
-	Tue, 20 Oct 2026 08:58:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF36D606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABC9606A31A;
+	Tue, 20 Oct 2026 08:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=CYaDXHqV
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792486726; x=1824022726;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=o4RlZx6NY4ZXP1UWTvwYZ3cQmizRyKcWC1/bfyI80oE=;
-  b=CYaDXHqVs1ner67tJhrOEhdpvgUG+nMEEjdRRdSqU8yksYl0A2/vdzwx
-   qOreop4+A4OkybWUnyzYf88oIlq4o9o8c0hC0JTrvrgmKMOTz44ZqQaoR
-   kYCU0xocuh4iDm8TRfvXCYipDU373ppHKtzPNjh0RrGdKJWBXCPv29AbK
-   Y0JW/zP7CwQdD5myen284LEtUhC+HIn0Qkbou4dOWOUdUqrVs8tp26s5U
-   3KkGIw8gHuGf9rpJ4QptP/q4qeieYO+jhtOJxnCXSEwv/7lvHEENDM17x
-   ODYRc5bO/tdTUUtnhAYdAy615an8XWyifn4cn2q9smDVpibf8JdfMTNS9
-   g==;
-X-CSE-ConnectionGUID: vF/0hLSBSY6Ft+BMIv4DiA==
-X-CSE-MsgGUID: WyYidqJgRvOfgo1a1o0pAg==
-X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="64343655"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2026 01:58:40 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Tue, 20 Oct 2026 01:58:40 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 20 Oct 2026 01:58:38 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Tue, 20 Oct 2026 10:58:35 +0200
-Subject: [PATCH net] net: lan969x: fix DSM calendar for empty taxis
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EwlNOE9A
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C421F000C4;
+	Tue, 20 Oct 2026 08:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792486734;
+	bh=HlLZ9zGeNEup/rHEpny5JmMLv3fK5Tlr0wrd1y6qyXY=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=EwlNOE9A6HClJkvde0kvUnzaqmRf601biMcVfJWjPPZAPytYo3tQ2sQspN5IdLrr8
+	 j1LKmnLBwQ4VpNLE939lziDV64lDN1ppA9OjHtxyFTQorxqVCeeqqvOCfFJG7p8Egx
+	 tn7AU4U63x6jl0VWqgQjuQbUS9YZsLXNhaLarB2KdlyJTu4oVzLwf45aPqOM5euA2P
+	 9jQrzNi9IlM4mQS7knsGSVoJN6EHvMXzKQSveHO0qJdIlLJfLo4pPB7MU15S2LWNtj
+	 3qnN98lfGiaC2xxxviQYyqR0znEe7mJN2E/F3jaWyI1VXLxrGWxhz1C6ns+teAQ8l3
+	 MT8nrF3+l/xEg==
+Content-Type: multipart/mixed; boundary="===============0961616978328380911=="
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,90 +49,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Message-Id: <a02301c0ff8593349602f81cdf0c21f1b38db0b60118f8eed3199a6a38330234@mail.kernel.org>
+In-Reply-To: <20261020083713.905006-1-yanxia@cmss.chinamobile.com>
+References: <20261020083713.905006-1-yanxia@cmss.chinamobile.com>
+Subject: Re: [PATCH bpf-next v2] tools/bpf: Remove legacy BPF tools
+From: bot+bpf-ci@kernel.org
+To: yanxia@cmss.chinamobile.com,daniel@iogearbox.net,bpf@vger.kernel.org
+Cc: yana06070@163.com,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@kernel.org,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,corbet@lwn.net,skhan@linuxfoundation.org,rdunlap@infradead.org,richardcochran@gmail.com,netdev@vger.kernel.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 20 Oct 2026 08:58:53 +0000 (UTC)
+
+--===============0961616978328380911==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261020-lan969x-dsm-empty-taxi-v1-1-14790f1e7430@microchip.com>
-X-B4-Tracking: v=1; b=H4sIADot12oC/x3MQQqAIBBA0avErBsYWyR2lWghOtVAWaiEEd09a
- fkW/z+QOAonGJoHIl+S5AgVqm3ArTYsjOKroaOuV6QMbjaY3hT0aUfez3xjtkWQHGlPdtbaO6j
- xGXmW8o9HCJxhet8Pryu3FG0AAAA=
-X-Change-ID: 20261019-lan969x-dsm-empty-taxi-0c07d0af77dc
-To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Steen
- Hegelund" <Steen.Hegelund@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-X-Mailer: b4 0.14.3
 
-lan969x_dsm_calendar_calc() computes the DSM calendar schedule of one
-taxi. sparx5_config_dsm_calendar() calls it for each taxi, reusing the
-same sparx5_calendar_data.
+> tools/bpf: Remove legacy BPF tools
 
-Before this patch, the schedule is only cleared after the n_devs == 0
-early return. For a taxi with no active ports, the function writes
-SPX5_DSM_CAL_EMPTY only to schedule[0] and leaves the remaining slots
-at whatever they held before. For the first taxi that is zero from
-kzalloc(), so sparx5_dsm_cal_len() returns a bogus length and
-sparx5_dsm_calendar_check() fails, which fails the probe:
+TL;DR: Nit only: the reworded filter.rst sentence says the instruction table
+lists opcodes, but it only has mnemonics and descriptions, so the new wording
+may mislead readers.
 
-  Port 0: distance 20 above limit 0
+> diff --git a/Documentation/networking/filter.rst b/Documentation/networking/filter.rst
+> index e0b9dc14a9bf..ee35cea6face 100644
+> --- a/Documentation/networking/filter.rst
+> +++ b/Documentation/networking/filter.rst
 
-A later empty taxi inherits the previous taxi's schedule instead, which
-passes the check, so only an empty taxi 0 triggers the failure.
+[ ... ]
 
-Clear the full schedule up front on every path, and on the empty path
-place a single idle marker (SPX5_DSM_CAL_MAX_DEVS_PER_TAXI) in slot 0,
-so the update step sees a calendar length of one and programs one idle
-slot into the hardware, matching what sparx5_dsm_calendar_calc() does.
+> @@ -213,9 +210,8 @@ contains a miscellaneous argument that can be interpreted in different
+>  ways depending on the given instruction in op.
+>
+>  The instruction set consists of load, store, branch, alu, miscellaneous
+> -and return instructions that are also represented in bpf_asm syntax. This
+> -table lists all bpf_asm instructions available resp. what their underlying
+> -opcodes as defined in linux/filter.h stand for:
+> +and return instructions. This table lists the assembly notation and
+> +the corresponding opcodes defined in linux/filter.h:
+>
+>    ===========      ===================  =====================
+>    Instruction      Addressing mode      Description
 
-Reported by a customer whose DT enables none of the ports in a taxi.
-Reproduced on lan969x by disabling all taxi 0 ports in the DT.
+Does the table that follows actually list opcodes?
 
-Fixes: 5d2ba3941016 ("net: lan969x: add function for calculating the DSM calendar")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_calendar.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+It only has three columns: Instruction (mnemonics such as ld, ldh, jeq, ret),
+Addressing mode, and Description (prose such as "Load word into A").  There
+are no opcode values like 0x28 and no BPF_* opcode macros from
+linux/filter.h or linux/bpf_common.h in it.
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_calendar.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_calendar.c
-index e857640df185..4442c0c1a957 100644
---- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_calendar.c
-+++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_calendar.c
-@@ -82,6 +82,9 @@ int lan969x_dsm_calendar_calc(struct sparx5 *sparx5, u32 taxi,
- 	struct lan969x_dsm_cal_dev_speed *speed;
- 	int err;
- 
-+	for (u32 i = 0; i < SPX5_DSM_CAL_LEN; i++)
-+		data->schedule[i] = SPX5_DSM_CAL_EMPTY;
-+
- 	/* Maximum bandwidth for this taxi */
- 	taxi_bw = (128 * 1000000) / sparx5_clk_period(sparx5->coreclock);
- 
-@@ -125,7 +128,7 @@ int lan969x_dsm_calendar_calc(struct sparx5 *sparx5, u32 taxi,
- 	}
- 
- 	if (n_devs == 0) {
--		data->schedule[0] = SPX5_DSM_CAL_EMPTY;
-+		data->schedule[0] = SPX5_DSM_CAL_MAX_DEVS_PER_TAXI;
- 		return 0;
- 	}
- 
-@@ -167,9 +170,6 @@ int lan969x_dsm_calendar_calc(struct sparx5 *sparx5, u32 taxi,
- 		return -EINVAL;
- 	}
- 
--	for (u32 i = 0; i < SPX5_DSM_CAL_LEN; i++)
--		data->schedule[i] = SPX5_DSM_CAL_EMPTY;
--
- 	/* Place the remaining devices */
- 	for (u32 i = 0; i < DSM_CAL_DEV_MAX; i++) {
- 		speed = &dev_speeds[i];
+The old text said the table showed what the underlying opcodes defined in
+linux/filter.h "stand for", which matched the Description column.  The new
+wording reads as if the opcodes themselves are listed, so a reader looking
+for the encoding of an instruction will not find it there.
+
+Would something like "This table lists the assembly notation and what the
+corresponding opcodes defined in linux/filter.h do:" keep the original
+meaning?
+
 
 ---
-base-commit: 07bd391eb9572e74f073c49acef327611234f9bb
-change-id: 20261019-lan969x-dsm-empty-taxi-0c07d0af77dc
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-Best regards,
--- 
-Daniel Machon <daniel.machon@microchip.com>
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39395316270
+--===============0961616978328380911==--
