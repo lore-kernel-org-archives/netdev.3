@@ -1,55 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792483434;
-	b=OvEWom4WV+frVihiyePBJXgmnk0R5T0k03dPIO+C69BJEGAZl/tUGLU1I5pgDfGmUwij
-	 FxR0YTRUQ4BPwJkpVGhE8cQKfWvypWA4Lu2gGQI3Y6SEhNHAmUz3u9y77XLXys+cg1jnk
-	 kixvPSP3QiWgStHRuR5lRKCD5FPYzjvA/zS0s38ZcWNmFs+qqm6EYu3yephW5/sPOv/Tl
-	 2UPUrQJg6rU0A1Hgk/9UUq9SyWMqkjc8qq8FQaTGet7V+gSNJwQveWQ8O/e7ASdr6gNO5
-	 P0oMEYkvi3JYmnhli3DlEfbcyckmzcjXw5xZvUHg2nBQzhhj74D5RU4jyu/zyhdZy/w==
+	t=1792483463;
+	b=nn+rgOV0mgR+3yNmfsLaQbMH415ewZ9jucVBuFgMj1T9p0E7DpFp+cIJI/rZLMmbcKPT
+	 a3D3qVkMX9WXzkUYDDHYLCB460NqLoXWTJ356O2Sw3umnUXYqqwScqQdYEAuvzjLA5LXE
+	 CrYWiQ7b+YqecfOUYwImBIeRKLlEJp4K3YKv5k4EnWUqXfy04yFQOKaPyDe37qibbTYlQ
+	 a7rdl7hFHZK5ZbmO/ZkoVirCmZ3zpybDDHu8Kaq8tjmTsgdAXlSAqhjSLQDT2xdcWf1Zp
+	 JBjLKOY8A5x4I9S212z95wnXOeGHgqD2C7eMm1FpFOZ/uoCeth5n5rD2QGZC8x+nrnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792483434;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=W3FYn8+t+xAEUJqETz/VS7X9J4Hf4qfbk8kiNjZx1vA=;
-	b=Jt6sDb2Gqb7tm7W6l7NdGaLfmvSaSqVH39ow0n3ZldzNixNs/M4KbzxSrQZ2RR9yVn14
-	 h7DlLvr0C3WasZtPMTPpWVVa9sGupNSrwkgXmGGG1Ei2X3fxVrqniLmM+u+RFe2PTE0vI
-	 HL3LQvTbsnh9eWeRV5lKqQ3LMIFUhjAC/kKqgr+3UT5ykCAmY3Pa7oCchjT5C5U2/785Q
-	 ClUhNq/FilIkRu08/ibUcarVfwG3R0Hq3Ewre7rHxyW1zW7H9G7FI96i662/8STCHYYCr
-	 O+EsqR55gYfSs/Zmb1DoZv436fxpSv5121IKo8iPuEeVQAEgrbZKBXrwtC5hLVQ0Qqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792483463;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=r1apn0rse9yrbGp949MhUou2z747LInhZntky023sh39EhIX96N6MVQ+PXH+VKPYcOdv
+	 KCGUOu/78Nn7+eDNEha6Zo7WViWuYmMUJHNzRDb/S7lm0A30MjXSZ6fU4bS0BiVEGg45u
+	 +GBa1VVbozS8+6UHUmWGXZOkXLd9B2GUh7jArkhbdYbr73P+K1cxKnQrOAUPgzQ5dzfyw
+	 tJEZgUk5dzqIuMIrsWt8EUKfpa9tx6CzdMUlVsqaHB4HcXKdwJ0s/nisuqVsjnBUFIEod
+	 DQ2NyPYF0whdGsfhOD2kEZ7kIv3MygBRfFGhORRdGWu7P4rVQnwz7gT+WXQYbSVVNXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fhT4oAni;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT9XujEv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805E3606A31D
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397F8606A319;
+	Tue, 20 Oct 2026 08:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fhT4oAni
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA291F000C8
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:03:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT9XujEv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4997E1F000C4;
+	Tue, 20 Oct 2026 08:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792483433;
-	bh=W3FYn8+t+xAEUJqETz/VS7X9J4Hf4qfbk8kiNjZx1vA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fhT4oAni4vhn86mJutTgjqLpl0aJZd83TwHzly3cCBGWuma3P6s2sMIzvRfn2wlJ0
-	 PhRnqj8kfVvPuqchmrsJmTUN2K/TEc3OxzXgfjTBUwFU86dzMRmYqsIfGIUVqycM6o
-	 AsI9+Y/hHE6VfyRJOWaWFD9qFleuNnvEDVq6Ec/KWd+/UI8zigltgozH1YkgixoXBJ
-	 +J0YBHKg5k0pp8a6AzJiOQ5icBnY8sDiUvkcqCZ8T3ko+X+ED60mjehHkJUwIywG2F
-	 nmksFVBkp3rgw0j2/qaF+j7nUyc/fWN86FmsJ/df1kVTSePRLAbRNkzq1tdmRI9Vz5
-	 Bsb1JcF8t9KRw==
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-48e9476e26aso904734fac.3
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 01:03:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwGw6masQNRQvRwMMW0kDiqL1PYTmIf3RzuTr/5U6gH6Qm+WstV3m/WdldlKvZNPIHHMLXZC0Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJU8Mc1cSXY165WTS/i2eAMLxBRHopNlluqIlDxSbKDmxh3owy3
-	43c4VavTq5KSWb4U3ZQ4y+tbEW+PJW3fpLkz2IHDHyixGn9/QbfmNDsxxmuN9+TpkROwppjQ9UP
-	6bD8EUTSEerjbLteITbZS5DtH5TPlsM0=
-X-Received: by 2002:a05:6871:3407:b0:494:7af4:954b with SMTP id
- 586e51a60fabf-4a757974186mr7725987fac.19.1792483432412; Tue, 20 Oct 2026
- 01:03:52 -0700 (PDT)
+	s=k20260515; t=1792483462;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=CT9XujEv8qyVL5es+LW22rM7MFgjushdbgd9qHIXvjXTdrQUTLjQIIZf/KkJDTRMj
+	 1zBt8eqtZdbUHn1XWSD/DqPBuETv0S2IIRgpkSTRWt+3XdRxw2iMDsTMRwSLg0U1nl
+	 cSaFIwe+eRoHGXuq1lG4pYiHO+gS++UsknTs8o7pKtCfPgNhV4DTJiBSo7HgSRba8a
+	 cCXD3gNJ7jpwQO30xHrpYC9hy6+pN8mKRt1pm2ltCMxb2o7HAJTRiJEoZz6slM/Wcy
+	 gVi9zvuD5bfpUsY80Xi5XSE2PcDwfO8dKmd1J3pjHHxvz/KMV8rRgk6z2XZ8s4sMHi
+	 crTNE9pRe5c9w==
+From: netdev-bot+sinfo@kernel.org
+To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, mkl@pengutronix.de,
+ kernel@pengutronix.de, haibo.chen@oss.nxp.com, shawnguo@kernel.org,
+ imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v5] can: dev: can_fill_info(): don't wake up controller if
+ interface is down
+Date: Tue, 20 Oct 2026 08:04:21 +0000
+Message-ID: <179248346178.3290.6150529956117056026@kernel.org>
+In-Reply-To: <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
+References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht>
+ <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,162 +64,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018211514.2817293-1-chia-yu.chang@nokia-bell-labs.com>
- <20261018211514.2817293-4-chia-yu.chang@nokia-bell-labs.com> <CADVnQyn1sjYzfCRiVKOxvyXbx0j2_3y5t9FsyTr81YG9XjdvxA@mail.gmail.com>
-In-Reply-To: <CADVnQyn1sjYzfCRiVKOxvyXbx0j2_3y5t9FsyTr81YG9XjdvxA@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 20 Oct 2026 10:03:41 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiio29vZ1V7FavAH5dXpRQB5U=dpvaHVAjvGPc7K1E=wLEQ@mail.gmail.com>
-X-Gm-Features: AclHuK_ovVSChGzHdfO5X_ok_DHLL08jkCal7WDQ-6ENaDlZb3UvzrU4iI8QpLI
-Message-ID: <CAL4Wiio29vZ1V7FavAH5dXpRQB5U=dpvaHVAjvGPc7K1E=wLEQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/3] tcp: Add mss_cache_set_by_cca for CC
- algorithm to set MSS
-To: Neal Cardwell <ncardwell@google.com>
-Cc: chia-yu.chang@nokia-bell-labs.com, ihor.solodrai@linux.dev, 
-	john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev, 
-	netdev@vger.kernel.org, bpf@vger.kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
-	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, emil@etsalapatis.com, linux-kselftest@vger.kernel.org, 
-	shuah@kernel.org, horms@kernel.org, dsahern@kernel.org, pabeni@redhat.com, 
-	jhs@mojatatu.com, stephen@networkplumber.org, davem@davemloft.net, 
-	andrew+netdev@lunn.ch, donald.hunter@gmail.com, kuniyu@google.com, 
-	ij@kernel.org, koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com, 
-	ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com, 
-	cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com, 
-	vidhi_goel@apple.com, Mike_Rudolph@comcast.com, Jeff_Howe@comcast.com, 
-	srichard@netapp.com, Yuchung Cheng <ycheng@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le lun. 19 oct. 2026 =C3=A0 17:53, Neal Cardwell <ncardwell@google.com> a =
-=C3=A9crit :
->
-> On Sun, Oct 18, 2026 at 5:15=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.co=
-m> wrote:
-> >
-> > From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> >
-> > Make the CC module set the mss_cache smaller than path mtu. This is use=
-ful
->
-> Since many CC modules will not set the mss_cache value, rather than
-> "Make the CC module set" I think it's important to say "Allow the CC
-> module to set".
->
-> > for a CC module that maintains an internal fractional cwnd less than 2 =
-at
-> > very low speed (<100kbps) and very low RTT (<1ms). In this case, the
-> > minimum snd_cwnd for the stack remains at 2, but the CC module will lim=
-it
-> > the pacing rate to ensure that its internal fractional cwnd takes effec=
-t.
-> > Therefore, the CC algorithm can enable fine-grained control without
-> > causing big rate saw-tooth and delay jitter.
-> >
-> > Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> > ---
-> >  include/linux/tcp.h   | 3 ++-
-> >  net/ipv4/tcp.c        | 1 +
-> >  net/ipv4/tcp_output.c | 5 +++--
-> >  3 files changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-> > index e4d1720f49f0..428d63e46206 100644
-> > --- a/include/linux/tcp.h
-> > +++ b/include/linux/tcp.h
-> > @@ -232,7 +232,8 @@ struct tcp_sock {
-> >                 tcp_usec_ts : 1, /* TSval values in usec */
-> >                 is_sack_reneg:1,    /* in recovery from loss with SACK =
-reneg? */
-> >                 is_cwnd_limited:1,/* forward progress limited by snd_cw=
-nd? */
-> > -               recvmsg_inq : 1;/* Indicate # of bytes in queue upon re=
-cvmsg */
-> > +               recvmsg_inq : 1,/* Indicate # of bytes in queue upon re=
-cvmsg */
-> > +               mss_cache_set_by_cca:1;/* mss_cache set by CCA */
-> >         __cacheline_group_end(tcp_sock_read_txrx);
-> >
-> >         /* RX read-mostly hotpath cache lines */
-> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> > index f4c9101e5996..708e1830227b 100644
-> > --- a/net/ipv4/tcp.c
-> > +++ b/net/ipv4/tcp.c
-> > @@ -457,6 +457,7 @@ void tcp_init_sock(struct sock *sk)
-> >         tp->snd_ssthresh =3D TCP_INFINITE_SSTHRESH;
-> >         tp->snd_cwnd_clamp =3D ~0;
-> >         tp->mss_cache =3D TCP_MSS_DEFAULT;
-> > +       tp->mss_cache_set_by_cca =3D false;
-> >
-> >         tp->reordering =3D READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_reor=
-dering);
-> >         tcp_assign_congestion_control(sk);
-> > diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> > index 3248f3895b15..c53d70718830 100644
-> > --- a/net/ipv4/tcp_output.c
-> > +++ b/net/ipv4/tcp_output.c
-> > @@ -2082,7 +2082,7 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pm=
-tu)
-> >         struct inet_connection_sock *icsk =3D inet_csk(sk);
-> >         int mss_now;
-> >
-> > -       if (icsk->icsk_mtup.search_high > pmtu)
-> > +       if (icsk->icsk_mtup.search_high > pmtu && !tp->mss_cache_set_by=
-_cca)
-> >                 icsk->icsk_mtup.search_high =3D pmtu;
->
-> This looks suspicious, or at least I don't understand the motivation
-> here. What's the motivation for this?
->
-> >         mss_now =3D tcp_mtu_to_mss(sk, pmtu);
-> > @@ -2096,6 +2096,7 @@ unsigned int tcp_sync_mss(struct sock *sk, u32 pm=
-tu)
-> >
-> >         return mss_now;
-> >  }
-> > +EXPORT_SYMBOL(tcp_sync_mss);
-> >
-> >  /* Compute the current effective MSS, taking SACKs and IP options,
-> >   * and even PMTU discovery events into account.
-> > @@ -2111,7 +2112,7 @@ unsigned int tcp_current_mss(struct sock *sk)
-> >
-> >         mss_now =3D tp->mss_cache;
-> >
-> > -       if (dst) {
-> > +       if (dst && !tp->mss_cache_set_by_cca) {
-> >                 u32 mtu =3D dst_mtu(dst);
-> >                 if (mtu !=3D inet_csk(sk)->icsk_pmtu_cookie)
-> >                         mss_now =3D tcp_sync_mss(sk, mtu);
->
-> How is this going to work if the path MTU reduces? For example, if the
-> sysadmin lowers the MTU to be lower than what's consistent with the
-> MSS value the CC module chose? Won't the packets from the connection
-> all be bigger than the MTU, causing weird fragmentation or
-> black-holing?
->
-> AFAICT, to be safe, if the dst_mtu() changes then we still have to
-> call tcp_sync_mss(), even if the CC module wants some input into the
-> MSS decision.
->
-> Wouldn't it be safer to propose that the CC module optionally sets a
-> ceiling for the MSS value, rather than giving it direct control over
-> the MSS value? Along those lines, perhaps CC modules that want to do
-> this could export a new optional CC module callback that we use in
-> __tcp_mtu_to_mss(), perhaps something like this?
->
->         /* Clamp it (mss_clamp does not include tcp options) */
->         if (mss_now > tp->rx_opt.mss_clamp)
->                 mss_now =3D tp->rx_opt.mss_clamp;
-> +       /* Optionally clamp MSS based on CC module: */
-> +       if (ca_ops->max_mss)
-> +               mss_now =3D min(mss_now, ca_ops->max_mss(sk));
->
-> Perhaps Eric or Yuchung will have a better idea. :-)
+Hi!
 
-I have not seen the patch in my mailbox.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Chia-Yu Chang I suggest you trim the CC list and make sure to not
-forget linux official maintainers.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-My email address has changed to edumazet@kernel.org one month ago.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
