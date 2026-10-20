@@ -1,128 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792527738;
-	b=xGB0EmKwt3fB83vIqa32kkdcYBr5cJmjMq2aWD93Vsw94Nfzi65tGNwbrzelzYd4HGma
-	 h03anZlJie9hsowMJIKl+3hilIrzKs+mZlmR5WZQo81vDKtdhX8JvzGtJYGtlHpoPttpI
-	 aUwb6H6B424TNSQUIQA08wynaBAYMJmaORq5NeJkXkwQskVOz7xeLJt0QfnDzxoS4Oy++
-	 ELRvgba6H4hVvs9c1mEqnPJYlzkojJq9gIIVcBq04JR3c48uckA+IXplNvBLcgqQZ4LMN
-	 7SASGq11uiJ6ilSxeHjjUcs1FLYV0u4Qnp9+Vb5pmHjWoncoD8LjuCGfseFKOsh4CCg==
+	t=1792527883;
+	b=2NQe3CuAmb5REONC6RJAdxVQGifS1t+Ka9c7aEMk2cKZ/GljwzkqfxWCpqUUzVCSY95B
+	 7DBpqOmsiI+8cUI/UwwAjl/yb/nuwbaetPCZSDgGGtjHwVOq6u+4VkEcDC9ZZvt8920zQ
+	 85SJQ73WTcDLrpLWvAHZxv1g+DMDiKtoxDd/oemDlxovYM24S2czBAe2nGRXfbRctbXQF
+	 W4eEXf9pcYerzgo2SjOFgmn/QvqZhGQ+plMSJWvmTqTcKagjufMs5pGTa+y0kjqmWq7Ho
+	 lAIErqWx0+0hlihGQlj6GDXOlubne4rQVIB8SAwV+t3q1Ad92EhlZUUfRp/F9mwjI8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792527738;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=O3Fa0tNjFaT8a2Kp5IrJp2nupauYC9YO/ztvfGUmcCA=;
-	b=Vdojq4uUwp8CEHxkK/LbydZ5n6O04vh2jSKODFDr9z+EQwGq4qA2I3pD2GkKUDlXwYX1
-	 qwUN1H65wVCUsUzZTgPBzw5FlqXUcr0zyzTyphtLGCHJvZuFseMnpYA0v5d6Bk7dAXSgw
-	 YRfIIh1eJkh3a6WNd/ul3QJwatlOvmzM9lxyC/rIiJjvsd17Jg0fthVNeeruKtNkFNYh6
-	 5YRKKRxUD15IsIzxq37rm/c8s0X1UvGZZ5+BAPP/FD3D7fai4nKEREHEXFr4/Q0v3bu9R
-	 0brSU+YDZvHLhQAgQrQcCOfqx7XluUIp2GzfxxcBCm8faapInQPDUWwIkL35XBmWu+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792527883;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=+uAvWuSQaoAF+FL2ygKeLUjGdfuQVNcj/nsVPiMmrTg=;
+	b=B2mNKegKkNU2H7l9i/ohv65/9f87uZk1Mw/8ZRkvd5BPEiE9FSFYey6HRzorvfK9tbK8
+	 20OsupBc41413tNMCL5rsa5jCnHoe/plPWdYW4q0dSN03gvKLk8KurjABX9+0sTCI4Jb+
+	 gzzX8hFoPs63adtNa4mNHKZqOFIvRzb2hpaa1QJHeo3Gouko6NOY9ZWriyiMyBWEfFH6g
+	 N7f481lyFhoXLYt91qVGb5fHBmo4EStMSSbWcNt1v6Ifvw8cSxgCuoB8/u+lUIecq1lCS
+	 eCppnfBKvHP0uLet9C+gdi4X/9ea2j0DpTPaPbELNrb2JIKfbeq/+I6VvSWxyBbEzkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ugs1THk+;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=jANqynKY;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evojr3Nr;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BE0606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:22:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0BE0606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA171606A319
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ugs1THk+;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=jANqynKY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792527736;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3Fa0tNjFaT8a2Kp5IrJp2nupauYC9YO/ztvfGUmcCA=;
-	b=Ugs1THk+aFEhkNXwghiFoXYZOvvqK2Y/kuQXCmSIuxFc8fjjpzMTjB6MCV5Rvp95wiA+qi
-	pObMy2Md2O1jzDnIBsu0JRBRy3tB2SGEFD/9bQYYyus5a0nhhY0xTLVsc2VWeIoEKW5SKX
-	oR4I0h9OJ45uNNOm8jNtF97IFgsCKFg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-5QYHIQ_QPlOL58SMJr0mJA-1; Tue, 20 Oct 2026 20:22:15 +0000
-X-MC-Unique: 5QYHIQ_QPlOL58SMJr0mJA-1
-X-Mimecast-MFC-AGG-ID: 5QYHIQ_QPlOL58SMJr0mJA_1792527734
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1f03f2e8aso151665e9.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 13:22:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792527734; x=1793132534; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=O3Fa0tNjFaT8a2Kp5IrJp2nupauYC9YO/ztvfGUmcCA=;
-        b=jANqynKYI4bjvIyZ+6Op+etbknpKHYweOauGCKUxq9YND33QXH+mzMbX1QYs6jhDfA
-         gz79jZ8gVhxGjr+9e0EVQ+riY8AXr/FwfQZ8LRL01FR1rcx92aNPf06Xohr/8Uav30cr
-         6Lk8Cy3SQwKfSepCDy3jDJjwPXIVJPtzsGH2BP94SvC5PovVOJPuYiSoaCGZLUSsFjWS
-         UQPYx+XYNoaOC507pLbUV7Rd0VEkWwAnY6UqVt34ucKwMaIq6Rmu0JF7CzMsjbre7Rq9
-         9S5GATcqdHXGsVQojRVtMqXbR3IC3xB1A2OMBDAbotUBg97A5weBiHgRrMbiVr9AZA6b
-         PYqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792527734; x=1793132534;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=O3Fa0tNjFaT8a2Kp5IrJp2nupauYC9YO/ztvfGUmcCA=;
-        b=G77P77MycgGd1990peLQXIV5oV89wdEkWKtAaYnJVbtPuJbDq+4zl9244k84bEKQxK
-         gvKczNFp3Jwe7c5G/nVxoP9Wsji+BpakwFcjvTMo/wQ0CdCLZxS9iuxoQAlxclrq9Aio
-         Xd5JD9d+0wbf48FtD+d9BHRB7hcha9sjsPZaxsM6YFy9HPyIk85ejupENOi5zyjkn39e
-         p4gyOkriCbnYXFDvQLs32YWHWTdWUQOOBCeM+LtdBH6YhSJ0iTxeZtq2oQKJpaoWWudW
-         V4ec5XKjH+433CGeU0VjywhJXO41cFbC8rOhsamPaJhDUpiJF6aG7K353wKUexl0rvhY
-         c5Yw==
-X-Forwarded-Encrypted: i=1; AKwUvBx2jpXq1weWXJgtq4iF756vtmgHObm5rIEB9IyLLtJB0Dz8hPunVqsP/a78ZM4ncskrALjSpqo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJrpxTHvlBdkW64nnsrsiA79LpeOVwFxifeINwcD8AdrAYGCgco
-	jtkdyOwXf+fKF5NEIu0HujKzNnvAbHuE4+xkco44PLzQJ5NWClKCl3yaJITW2TlswGeKfWWmH7T
-	InKOGtK7pXz5/0mJKnZbaKFo+XyBalCAuTjm3Cd0+7kir+Lz2dpTVWk+jKg==
-X-Gm-Gg: AYBFou12xF06gG4c9rwmtUcGTY5X/zDJbeUFghTj0Wd2OAJKhNg1BJorrk8LtFki67g
-	bkNgo4dn1J9l1aSEpZjx/68kNlpBN5EdS9el73h6C3wHsSngyB7478sPdBbbnlrdlJYIbeDANc1
-	AZgXv9VHDwjXgBD7oLtqBJ15EhWB7/2hKTwnGAgndnz8ZRb6lQwSEk3qWLF/CMlHJmGeW7ouWLr
-	55nVL5qLTnuDr2azxj9sGuBVTje0LWyS0HcF81dExF44t+dzZmWN0TgBYWnz27U/RWb48OTanh/
-	LXiLL3Cigl661zhJdW2dgbPBUMEfxiMwlcgeMaWKkzWetWpwO1UQeogsEGVcxY7JEmGuuA==
-X-Received: by 2002:a05:600c:888c:b0:4a1:eccb:53eb with SMTP id 5b1f17b1804b1-4a1eccb55d9mr100028525e9.6.1792527734280;
-        Tue, 20 Oct 2026 13:22:14 -0700 (PDT)
-X-Received: by 2002:a05:600c:888c:b0:4a1:eccb:53eb with SMTP id 5b1f17b1804b1-4a1eccb55d9mr100027865e9.6.1792527733682;
-        Tue, 20 Oct 2026 13:22:13 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2581eedesm625191f8f.14.2026.10.20.13.22.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 13:22:12 -0700 (PDT)
-Date: Tue, 20 Oct 2026 16:22:09 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Chris Arges <carges@cloudflare.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Simon Horman <horms@kernel.org>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net v3 6/8] net: add a sysctl to opt out of virtio net
- hdr checksum validation
-Message-ID: <20261020162048-mutt-send-email-mst@kernel.org>
-References: <cover.1792411304.git.mst@redhat.com>
- <6f23c55c6eba3e3ec6b2c7e3a80728a326ed58af.1792411304.git.mst@redhat.com>
- <willemdebruijn.kernel.187d58ff2bce5@gmail.com>
- <20261020155917-mutt-send-email-mst@kernel.org>
- <willemdebruijn.kernel.2c9decc16892@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evojr3Nr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221D91F000C9;
+	Tue, 20 Oct 2026 20:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792527882;
+	bh=+uAvWuSQaoAF+FL2ygKeLUjGdfuQVNcj/nsVPiMmrTg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=evojr3NrU7BPrLWqGboCXuHjN5MWWl5YmljM6A1qR+bCLN0bAd1DNQQrRej6Mf4v5
+	 TXA/egKLLigYZuu9UiQPyv3zIK1lrcD5TtxaOi0YftCGBXAmUksO77zJcnbqttiv08
+	 tN8o+Pr/N4nC0iq0d89scdLfz9u1H/7dwxHqx3YgI+CxKnhT/r4es/AEpeg5sRXo1f
+	 oMogsYLcCE+TylLUS0nelA0QYC0QliBxPVbtXCIvTIrS1JEHgEikvxWXEnP/CIYKZ0
+	 P8lFFW1YUjJ6vxNadD3fhk7OsgA/Nhpb5gXNeGjL5aYvBNVqHouC8TDoolDVSyqe9w
+	 vVBb+srTOT3tg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: houminxi@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	donald.hunter@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org
+Subject: Re: [PATCH net-next v3 1/2] netlink: specs: add ovs_flow del and set operations
+Date: Tue, 20 Oct 2026 13:24:40 -0700
+Message-ID: <20261020202440.1012706-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261015024132.698658-2-houminxi@gmail.com>
+References: <20261015024132.698658-2-houminxi@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -132,73 +63,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <willemdebruijn.kernel.2c9decc16892@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 20, 2026 at 04:19:41PM -0400, Willem de Bruijn wrote:
-> Michael S. Tsirkin wrote:
-> > On Tue, Oct 20, 2026 at 03:54:23PM -0400, Willem de Bruijn wrote:
-> > > Michael S. Tsirkin wrote:
-> > > > The ingress validation as implemented by the previous
-> > > > patch is stricter than what it replaced: GSO
-> > > > packets whose checksum metadata matches no transport header are
-> > > > dropped, and non-GSO ones get their checksum completed in place.
-> > > > Such packets used to pass with the metadata unvalidated,
-> > > > and with no overhead.
-> > > > 
-> > > > I judge that this should not affect any deployments, but there is still
-> > > > some risk that it does.  In case a deployment depends on them anyway,
-> > > > provide a per-netns switch to get the old behavior back:
-> > > > 
-> > > > echo 0 > /proc/sys/net/core/virtio_net_hdr_csum_check
-> > > > 
-> > > > The default is validating.
-> > > > 
-> > > > Assisted-by: LLM
-> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > ---
-> > > >  Documentation/admin-guide/sysctl/net.rst | 19 ++++++++
-> > > >  include/linux/virtio_net.h               | 23 +++++++++
-> > > >  include/net/netns/core.h                 |  1 +
-> > > >  net/core/dev.c                           |  6 +++
-> > > >  net/core/net_namespace.c                 |  1 +
-> > > >  net/core/sysctl_net_core.c               | 60 ++++++++++++++++++++++++
-> > > >  6 files changed, 110 insertions(+)
-> > > > 
-> > > > diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-> > > > index e586e17fc7a5..b1a1c4714b22 100644
-> > > > --- a/Documentation/admin-guide/sysctl/net.rst
-> > > > +++ b/Documentation/admin-guide/sysctl/net.rst
-> > > > @@ -246,6 +246,25 @@ processes are dropped unless socket option SOF_TIMESTAMPING_OPT_TSONLY is set.
-> > > >  Default: 1 (on)
-> > > >  
-> > > >  
-> > > > +virtio_net_hdr_csum_check
-> > > > +-------------------------
-> > > 
-> > > virtio_net_hdr_validate? In case we do have to add more validation
-> > > later.
-> > 
-> > If you insist. My worry would be what if that validation is again
-> > user-visible somehow and we need to distinguish users who want
-> > to disable that future thing and users who want to disable
-> > just this current thing.
-> > 
-> > Hard to predict the future. But I will go with your intuition.
-> 
-> Thanks, but definitely feel free to ignore my suggestions.
-> 
-> My intuition would be to define as
-> 
-> 0: off
-> 1: everything one
-> 2+: sadly needed fudge values because we keep having to tighten,
->     but some crazy workloads need to opt-out to avoid breakage.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+netlink: specs: add ovs_flow del and set operations
 
-yes you said i just do not get how it will work for userspace,
-maybe u can explain?
+This patch adds the del and set operations to the ovs_flow YNL spec. It
+marks new, del and set as needing admin permission and lists the
+attributes each command reads. It also changes probe from binary to flag
+to match the kernel policy, and rewrites the doc for the key attribute.
 
-and what specifically is needed right now, while we
-just have 1.
+> diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
+> index 951837b72e1d..e5e110b6ccc8 100644
+> --- a/Documentation/netlink/specs/ovs_flow.yaml
+> +++ b/Documentation/netlink/specs/ovs_flow.yaml
+> @@ -384,7 +384,9 @@ attribute-sets:
+>          nested-attributes: key-attrs
+>          doc: |
+>            Nested attributes specifying the flow key. Always present in
+> -          notifications. Required for all requests (except dumps).
+> +          notifications. A request may carry a ufid instead, except for a
+> +          new flow, which needs a key. A set that replaces the actions
+> +          needs a key too.
 
+[Severity: Low]
+Should include/uapi/linux/openvswitch.h get the same update? The
+kernel-doc for enum ovs_flow_attr still says:
+
+ * @OVS_FLOW_ATTR_KEY: Nested %OVS_KEY_ATTR_* attributes specifying the flow
+ * key.  Always present in notifications.  Required for all requests (except
+ * dumps).
+
+The spec text was first copied from that header. After this patch the two
+in-tree descriptions of this attribute disagree, and the header still
+describes a rule the kernel does not enforce.
+
+ovs_flow_cmd_set() only rejects the request when both the key and the ufid
+are missing:
+
+	if (!a[OVS_FLOW_ATTR_KEY] && !ufid_present) {
+		OVS_NLERR(log,
+			  "Flow set message rejected, Key attribute missing.");
+		return -EINVAL;
+	}
+
+ovs_flow_cmd_get() does the same:
+
+	} else if (!ufid_present) {
+		OVS_NLERR(log,
+			  "Flow get message rejected, Key attribute missing.");
+		err = -EINVAL;
+	}
+
+The new wording also drops the "except dumps" exception. "A request may
+carry a ufid instead" suggests that every request other than new needs
+either a key or a ufid. But ovs_flow_cmd_dump() reads neither, and a del
+that carries neither is a valid flush of the data path.
+
+Could the doc mention those two cases as well?
+
+[Severity: Low]
+This is a pre-existing issue, not one this patch introduced, but is
+"Always present in notifications" accurate? This patch keeps the sentence
+in the paragraph it rewrites, and the same text is in
+include/uapi/linux/openvswitch.h.
+
+ovs_flow_cmd_fill_info() calls ovs_nla_put_identifier(). For a
+ufid-identified flow, that emits OVS_FLOW_ATTR_UFID instead of the key:
+
+	if (ovs_identifier_is_ufid(&flow->id))
+		return nla_put(skb, OVS_FLOW_ATTR_UFID, flow->id.ufid_len,
+			       flow->id.ufid);
+
+The key is then added only if should_fill_key() returns true:
+
+	return ovs_identifier_is_ufid(sfid) &&
+	       !(ufid_flags & OVS_UFID_F_OMIT_KEY);
+
+So when the flow is ufid-identified and the request sets
+OVS_UFID_F_OMIT_KEY in ufid-flags, the reply or notification has no key.
+
+[ ... ]
+
+> @@ -438,7 +440,7 @@ attribute-sets:
+>            are exact match bits.
+>        -
+>          name: probe
+> -        type: binary
+> +        type: flag
+
+[Severity: Low]
+This corrects an existing mismatch with the kernel policy in flow_policy:
+
+	[OVS_FLOW_ATTR_PROBE] = { .type = NLA_FLAG },
+
+The binary type came in with the commit that added ovs_flow.yaml. Should
+this change carry a tag like:
+
+Fixes: 93b230b549bc ("netlink: specs: add ynl spec for ovs_flow")
+
+Could it also go in a separate patch, so it can be picked up or backported
+apart from the new del and set operations?
+
+>          doc: |
+>            Flow operation is a feature probe, error logging should be suppressed.
+
+[ ... ]
+-- 
+pw-bot: cr
