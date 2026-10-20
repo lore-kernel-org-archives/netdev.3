@@ -1,61 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.110
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792460305;
-	b=vwvfaRc7QgtvTiUcc4tuHnC9GOGc3LsCTOPIHbrD9xaMl/vRS+Wkx/0tpXMHPFyShoar
-	 58u+FxkFuZk5Cy2u4czJE4xUxgF6QAmD40R+HAE6LHSp97yDtXfUJ/yilPzHfTelEU6If
-	 D2W1DodNBkR04GoU8sGw0OYjYTP0OFherJvQ6mdbmOZAadrqyzUAOM+zq2CBZ/IgvYpbT
-	 ooylElVwP5/O2ZfnALqJZV55wUr2vugxcG0mi+ogj63svP3oCTBBbFciiu7gEtht9IVC6
-	 lpUZBSfjRTgaRtTvw++uDEhSq/d0DXOyCZpYATArBwdYB/YPU90pFJY0c8ydO0phUgw==
+	t=1792460489;
+	b=T7SAkcD0hfE3rA+nMPv8v4KIOoEcJsqTUH7a+DrqsbS5z6f6Tld8uRXpRmE1djBnOY+Q
+	 khtzBvXlJZIPsT0mjXpcUcpxIqR8dtrMQzzeYbvQT6p66MdepD9AZNf/qKOhRy2Iz26+L
+	 f/TeLTuQuHmO7mQem2GqF88rItpkqlqMYdtaYmD3m1Pj/VxZ3tBsiIjoayW9DWAM/vo87
+	 glqTJaM4Y2WbXqYFk0Y3BoIYEnPJ2JwuUFH4kUoHnfLa2/eB7YzskYuQokugQDB1ZkkbO
+	 BrvBNXVV15+hi5fmJEvKwJ2+QmgtqqRT2hI05Ri8K7zFqHZ8UQDGE0s9s76Ka1sQ9UA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792460305;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=usNYCTGOXfbAT1C1//piOShSVVfXVlsx9LA+HpO8xUI=;
-	b=FCHTjiB3xixHuB0boChenY4ERhN16wMshMLzvoAjDVYpMS/xBGdAktc5FVBAm9q8o+gn
-	 V5DEFVy/Kte7KTzRM6m6Et7wSd7IRjWfr+FZFYlx2QqJp25p4+j2qZnOGPmcSpuXyWrNA
-	 cfHSkN4IfFxF17rfBvi8fuGCcj6nruiNxHICaAFF7oSDwgSrxOo0IUany2j653b+T4Wuo
-	 vTDUcUZp78iz2nXmU4InKC2pRQDwbOVHTy+CLgqPoVQAwOq6xirhq9/x0zgf6SzQlJHsl
-	 7moR7ZFwMhcG9fvTpTgL8LidASpaRHyBOJyjxzLFTQt89PEVKST+ERZg0OFOY0L9zzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792460489;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=OSYF1NwugUVOIfmyavH/lgXJtnbm8axpRYf+453IfXI=;
+	b=AxwE9+e3xGcRFGLQ2shBMOizy7GfQ4NOzOVQ1clUulGz+xn5PIuY92V3gm3YRC/wsEzf
+	 FOnUmc8xYgNTlhYkTXMoFhHQZU4HEWWJOE5CV748ix4pvKOTrCWwMvaQY2/2/nXXFytsK
+	 eO9qBK65QBKCObn4okFTM91vtypwB2NTRt4MoJmaFf/92j4+8ia5O0xg7HO+g9QHoEwvm
+	 NOkkLrmrBoS4P3wrXAESxOFZkr/HkIPabs616qC3QiLd+6k2UiUn9mowjKlAh5G0/H1au
+	 Fw8TVfbW1FtfjXprAgLIewL3zXLvE7tiwNpeoGNQ+VwXz0g9uBWTD46eLUlbncX3vag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	arc=none smtp.remote-ip=91.218.175.110
-Received: from mta0.migadu.com (out-110.mta0.migadu.com [91.218.175.110])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Rmr/Y751";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AD3606A31C
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 01:38:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65AD3606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=SvymMiE1h9eGO72NOBmTXmWopdT7YaAz+Ajx0/HkoVg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792460301; v=1; x=1793065101;
- b=NxtzGOTyu5QdhuKmNmyEE9601ys6bN9dXLPKY4KYOvQvcA+hay9qrc5F1kdSo1ukQAdytcH3
- I8fHnc+Oq0T3n9QSd500rOe1CVqaXTXnCmi9v1tHha206lhUnHymEHdvpvrvPolOwHatlc9ut+0
- Ix6FgAd8K6OqBqGvXX8GdBfE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 41f018b724df8ac4;
-	Tue, 20 Oct 2026 01:38:21 +0000
-X-Mizu-Trace-ID: 41f018b724df8ac4
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 20 Oct 2026 09:38:04 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jiale Yao <yaojiale02@163.com>
-Subject: Re: [PATCH net v5] team: reject CAN, IEEE 802.15.4 and 6LoWPAN
- devices in team_port_add
-Message-ID: <atbF_LBIJYIynlq3@fedora>
-References: <20261019155407.61487-1-socketcan@hartkopp.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8F8606A321;
+	Tue, 20 Oct 2026 01:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rmr/Y751
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32871F000C5;
+	Tue, 20 Oct 2026 01:41:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792460488;
+	bh=OSYF1NwugUVOIfmyavH/lgXJtnbm8axpRYf+453IfXI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Rmr/Y7518FkX/XqrQBIxXgYFQMLyu5szj62mX/3lkC+wHy8/FeV7itYT2wi5T/EAF
+	 jbt3TImbq0MIowaI5AGM18Uu7NwGf/o27hqRjQ2HQqExshhdhzNXe+zkU+g3LI6Nos
+	 9IZhM+AxeBJ5rA8urC3XbcrYO+J0ujMiOkY6HnZW6M/Z877SxdqH9V/q/p7diJTtVg
+	 RsfLD1XU5yVxTPu47IML4Ief4cudPa+PC02eOVhq1aqXsb0LXJgqhkisPVFIcBzUfo
+	 DhDyEFf+aonhRuk8jXb2Nn2Zo0btdL4NxLjNZI9gUrcHhqB5dB5wUncvgmO5qDOEVF
+	 bCtYfFz+I1KZQ==
+Subject: Re: [PATCH net-next v6 3/9] net: dsa: realtek: rtl8365mb: set speed
+ for family D
+From: netdev-bot+sashiko@kernel.org
+To: namiltd@yahoo.com
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 20 Oct 2026 01:41:27 +0000
+Message-ID: <179246048740.3135.14592585398817212074@kernel.org>
+In-Reply-To: <75829f0c-69d4-4c16-8300-142023f840d7@yahoo.com>
+References: <75829f0c-69d4-4c16-8300-142023f840d7@yahoo.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,78 +64,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019155407.61487-1-socketcan@hartkopp.net>
 
-On Mon, Oct 19, 2026 at 05:54:07PM +0200, Oliver Hartkopp wrote:
-> From: Jiale Yao <yaojiale02@163.com>
-> 
-> When the first port has a non-Ethernet type, team_setup_by_port()
-> copies port_dev->type to the team device while netdev_priv() of the
-> team device still holds a struct team. Several L2 stacks identify their
-> devices by dev->type alone and then access type specific data that the
-> team driver never sets up:
-> 
-> - CAN protocols rely on the CAN mid-layer private data (ml_priv)
-> - IEEE 802.15.4 code dereferences ieee802154_ptr and the mlme ops in
->   ml_priv
-> - the 6LoWPAN netdev notifier writes through lowpan_dev(dev) on
->   NETDEV_DOWN and reads it on NETDEV_UP/NETDEV_CHANGE
-> 
-> Enslaving such a device (e.g. vxcan, wpan0, lowpan0) therefore leads to
-> NULL pointer dereferences or to writes into struct team.
-> 
-> This is the same problem that syzbot reported for the bonding driver
-> with a vxcan device enslaved to a bond master, which crashed in
-> can_rx_unregister() and was fixed by commit 8ba68464e478 ("bonding:
-> refuse to enslave CAN devices"). The team driver has the same gap.
-> 
-> Reject ARPHRD_CAN, ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR and
-> ARPHRD_6LOWPAN devices in team_port_add().
-> 
-> Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5-c1c7e647ccca@hartkopp.net/
-> Link: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95 # bonding splat
-> Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
-> Assisted-by: Claude:deepseek-v4-pro
-> Signed-off-by: Jiale Yao <yaojiale02@163.com>
-> Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-> ---
-> v5: [Hartkopp] reference the syzbot report of the identical bonding problem
-> v4: [Hartkopp] also reject ARPHRD_6LOWPAN as reported by Sashiko AI
->     review, reworded commit message (bonding only rejects CAN)
-> v3: [Hartkopp] fixed indention and compilation as reported by kernel test robot
-> ---
->  drivers/net/team/team_core.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-> --- a/drivers/net/team/team_core.c
-> +++ b/drivers/net/team/team_core.c
-> @@ -1223,10 +1223,21 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
->  		netdev_err(dev, "Device %s is loopback device. Loopback devices can't be added as a team port\n",
->  			   portname);
->  		return -EINVAL;
->  	}
-> 
-> +	if (port_dev->type == ARPHRD_CAN ||
-> +	    port_dev->type == ARPHRD_IEEE802154 ||
-> +	    port_dev->type == ARPHRD_IEEE802154_MONITOR ||
-> +	    port_dev->type == ARPHRD_6LOWPAN) {
-> +		NL_SET_ERR_MSG(extack,
-> +			       "CAN, IEEE 802.15.4 and 6LoWPAN devices can't be added as a team port");
-> +		netdev_err(dev, "Device %s is CAN, IEEE 802.15.4 or 6LoWPAN. These device types can't be added as a team port\n",
-> +			   portname);
-> +		return -EINVAL;
-> +	}
-> +
->  	if (netif_is_team_port(port_dev)) {
->  		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
->  		netdev_err(dev, "Device %s is already a port "
->  				"of a team device\n", portname);
->  		return -EBUSY;
-> --
-> 2.53.0
-> 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Low priority / nit picks for your consideration:
+
+- [Low] This finding was checked and rejected as a false positive,
+  because later patches in the series finish the work.
+
+--
+
+net: dsa: realtek: rtl8365mb: set speed for family D
+
+This commit adds family D handling to rtl8365mb_ext_config_forcemode().
+On family D, 2500M uses its own speed value (5), and the top speed bit
+goes into a new FORCE_SPEED2 field. The forced-mode configuration is
+written to a per-port register at 0x12c0 + port, and forced mode is
+enabled by writing 0xFFFF to 0x12c8 + port, while family C keeps its
+existing behaviour.
+
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> index 840db5ad32efe..2dabc4da861f4 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+
+[ ... ]
+
+> @@ -1646,23 +1669,32 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
+>  	u32 r_duplex;
+>  	u32 r_speed;
+>  	u32 r_link;
+> +	bool is_d;
+>  	int val;
+>  	int ret;
+>  
+>  	if (!extint)
+>  		return -ENODEV;
+>  
+> +	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
+
+[Severity: Low]
+This isn't a bug, but can the family D branch run at this point in the
+series? Every rtl8365mb_chip_infos[] entry is still RTL8365MB_FAMILY_C
+here. So is_d is always false, and rtl8365mb_ext_config_forcemode() only
+takes the family C path.
+
+Later patches in the series make the path reachable:
+
+  "net: dsa: realtek: rtl8365mb: add family D SDS13 PCS support" adds
+  the family D SerDes setup to rtl8365mb_pcs_config(). It also makes
+  rtl8365mb_pcs_link_up() return early on family D.
+
+  "net: dsa: realtek: rtl8365mb: add support for RTL8367S-VB" adds the
+  first FAMILY_D chip, with extint ports 6 and 7. That keeps
+  0x12c0 + port below the 0x12c8 enable window.
+
+The other preparatory patches in the series say that the family D path
+stays unreachable until the final chip table patch. Could this commit
+message say the same?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/5a4715dd-89e0-4868-9ffb-c8fb73b18d04%40yahoo.com
