@@ -1,72 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792514336;
-	b=mNhnzr9Hqc2MBfyv/z72btIytn8wfWYj0Sn7sfo5E80RN2z0ExlJJq+bAGz2D+GP2/af
-	 m9lX13x+C2e3n4Bwjm27l8xj96Dj7efvW4fb0/ddJnxVqvB5++SmKNDVVMZ4ahRIrpQ/B
-	 pZHLZhVuK6/4Phx3jNSo5iqMbbH9B3XRulcHphfgi56wVAklmwShspN5Y+JQhlXM2LXux
-	 Ddy3NkcI/6WlBYhVCLw44PHhFQnMdH6b/9LadXxWpANIx0Sph3kSzMyVIijVPjRmQUKgz
-	 EJ6jufXC077rrmdB7yAlO7JGmd1lj01XlxXgcnxfvAlp0Z6RH8HskvRU/LGI2TfQn8g==
+	b=1WuEXquCh3umeIyKwVPaOnqxBMknnfA8NoKTh3rsB2I/jHFKEqgcvsJvHutE9qmsWtVj
+	 bZyCNkAJiXCNTvZ0CJGZATFXtRz3cqarvOTakvD47idNiqp0NFFUPwwFOTTczJaNjMSMM
+	 6MQ/mjSJ5fyabgZZGYVZHNgxvKgq/l1P+fg5j2IcJmevxpp5FgL+bbuvPNrvJTxiMi9DS
+	 L35r8GRuueuaGfwAS6hngC7abT1GtiFNaJBDDfygvoZkPoFBE04RxvqiJ0Jrz/TmOzdMZ
+	 OPvzV3H7CjqhhofxGoD9FRNGsjpLhLAbKH4Iy4nhHVUzQhllChYxvVhZte94wT3w9Ww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792514336;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=sDjon1YkUVWurgE5DJMJ6q2wA36HR6BPkBAGDJ72h40=;
-	b=1rAdEoBB8XPdcutq6JSoxZWZXFoRgehe82Yti+s6HI8CNOOaZVW4RQRXMLpeGnKdR6vU
-	 8hwR473dIHNpuEA/gxM7emMrapOe+tba459UKsb1Lw751bDo5bVXyN0uc34E6dS9D8csL
-	 D07nLlCaamq9K7L5/4fs08iZfgrCpyqKcjZYW8Jwq+QkLdrMhOwYUX7/rD9WtUHFdoycz
-	 P5rolvSh8nOGUFEkwGwo0KQ/KzHdC6pcUyQH23jkmX2ILp7OtMJFb3QmqlE4tidlAcqPw
-	 BFcFA/zp7tZZ8UZCmazneRn3DIK4UH2KS6Hc86wEglT8HE2SyQHqSHzNS0G0XbeyXDQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=0eL1bMQxR78cjQluECOSoKDJwxenOA4EKKzM001UOl8=;
+	b=pNKmDBtVCEW1w1Crqdrf3U9Y5dCKwSGlUBHCKpAw17t5e1Lf7JhQn4Xetirgng60RPlZ
+	 W1SHKDh9ZsmEop6Tb4u3XKSjqI4SdvZBHScgBM94ZBqcbB/KO67L4nqWudaLZyCwdBKpz
+	 hR40eZlqOSJehGcp+3goavfG1frN8VeKGnFOiYKTvWUfw+bQ0g79x7dxaA3UJlLyXAuev
+	 WwelHRYzyrDem+rb/pVzUloE5lAQpvsmJP+m74eWWMnWJiQYJmiotTDGkkMLGg/sUKnZv
+	 sVwTXZUfdLnKQPJj8bFXzfJU8IuYm8fRofXiiRpquGD+IARkwyi3m59ipCWYNtI/vXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--tavip.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=I7Tntm94;
-	arc=none smtp.remote-ip=209.85.215.197
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=NX0CBQcY;
+	arc=none smtp.remote-ip=209.85.210.198
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F561606D531
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:38:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F561606D531
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21E0606D508
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 16:38:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C21E0606D508
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=I7Tntm94
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso1512515a12.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:38:54 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=NX0CBQcY
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a065e2933fso3042524b3a.3
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 09:38:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792514334; x=1793119134; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sDjon1YkUVWurgE5DJMJ6q2wA36HR6BPkBAGDJ72h40=;
-        b=I7Tntm94j8c0Q8gLG41FPMx2WyEWKyt0E38yxMVI41VjSu+z9qns+7msJUMbUNkFd9
-         xB41viVNbbE+4C4uAPx5QY2yO7GSnumcFJUnD/83oMAWIeR1wK1IggzSnGFvbNe12Ukh
-         cM1v+21hIQYVrtA0cRZCIWRJF4UlqpRn/5I2BjgmYxOEe3B283eGoDohwDHfZR0/2yGq
-         UxmGWAdCuiKsBXicVDk2G8E5YhnoNGNmnyxSdRH2d8R+jzy4RbSPy27x0a4WEuARY382
-         Gwkr1gCAC4dXSa0sP+OPwfxSIAwc7tryCKogk7BiOaElq+TuRFYXDOslNl1IUW/ZvMS4
-         /7+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792514334; x=1793119134;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792514335; x=1793119135; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sDjon1YkUVWurgE5DJMJ6q2wA36HR6BPkBAGDJ72h40=;
-        b=V80Uob5iAb9LwDfgUcuTf1iL6E8l/fpDqfIRqVb65MSqteAzPlmpzM+zaP4BfnCTZ1
-         RSDKUxmLvPN/9/7XGEG+UM2jGTviL2evHxA4E1Pz/EvnwHJy/+V2tBJ6NRur9O+5HHbF
-         bTBpLYX0nNmT+uU8yE4es7N/PLHaGXaWCfIVdcN21hQooX6+VqtuXfQDaKTPlXRCQBcI
-         Uvf/0OLrKY3sPIByUSMMD7be+P/b57Sd7R/bFzQngOQALhif6iDGgULX8affY7YC7PTR
-         VQ9NsyWhjskj+DdxLUZDfI78cWCztwHg+Ksy5YEwsGfhO7S/5hhBP3YDolYx5uBygNuS
-         QEbw==
-X-Forwarded-Encrypted: i=1; AKwUvBzD6HJFlrF0y4AzqY78mNLLQlnuMswm1u2IANdaxPDwEuWlRqilGPFfahmPRb0dxJyNTKmgiPk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIMOv82YxsBVbYlN8QrAX7VdoFOKPNUE40wGZJ7BoCXwAyO8O7w
-	4sJNhyLRO1RsBEle/RWAKP5v/DaO9sMfGI/PZ0iHM2PLbsEOb+a5rbVInzupdRymPqO+TM/aU0b
-	B3g==
-X-Received: from pfbhb21.prod.google.com ([2002:a05:6a00:8595:b0:89f:4790:689a])
- (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ce4a:b0:3e2:1f0b:5987
- with SMTP id adf61e73a8af0-3e2260d724cmr8507365637.86.1792514334035; Tue, 20
+        bh=0eL1bMQxR78cjQluECOSoKDJwxenOA4EKKzM001UOl8=;
+        b=NX0CBQcY3P4W0TiwsM82em+iAbBrFoTIezq2Di+lUvkr3lD9sYRCd1jbeU/nSNVJ17
+         6wXnIM5GjbFgzDth6MiKPyVeNTJutveDWji2TD+gRs4nKlN5Dp8T/0V0/Z1ZIu1LRiZA
+         HKTHDk+rU//DdS4P03msQoec+9qgMVBTKlV/ZT5S1wU3Zhz9L1yUvBYQmC3IOEVrQwFU
+         5cpFKdke9R643TfNOlfCe/K3I2HhQgkRTy9bQsMBcRTOnJxd1yCQ4XG8oK30ACYMLDu8
+         EtlPhLQVCOgNtgvvVhHqHvirCrQ+J6NpFvZwvYQZn11uCAt0pA7bQ56km0PfLPmgh4gs
+         Wihg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792514335; x=1793119135;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0eL1bMQxR78cjQluECOSoKDJwxenOA4EKKzM001UOl8=;
+        b=Vd2u8LBDyhxZsheMAWB/JN7GeS/3fr14CRrzuqWbvTuiaBH0pWmUmw4e2C3yiQajvR
+         yS6MbxTUCReasiAMeTUJXO91rxNT70XXzDUqkOT/wxt87R5BDMJoCtU0diw4KZqarkJJ
+         ezD3XsH7pnj+YM93H60apUJ7XTtQKvuuDbL3cNIGJ46qFMdHcxEF3Xkjvcld8oHL2dnw
+         bQ5N1qvbhfQV+Ol94U6U76n/RkVsLY5ZAku3YLEBpTgSYpKhnJehpvfOrGI6A282n3lX
+         kVWCck5jttY4rLCndXclUQJgd+viXUT8KKX+oczd+JIWKo4utdj5aj8U9Q4zioT4Htcg
+         aTVw==
+X-Forwarded-Encrypted: i=1; AKwUvBxi5vWBvkWITe50qaFhKe208koj0es8uRwwe410IhUza+v0noHIINeuYRbzV3V1/xmU+Mz7bZY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLHmj+bb5DCDpW8Iuf9ERQkPAS3zpMxxnRas8QorhNJdJ7R3Skw
+	Za6HJh5oOkn+HkIZQIfhaQDwlzSzLVE/bmS7l2xRAOg91tjWdvqp3Mg7eX/WgF8B6DHG46EfGFT
+	/9A==
+X-Received: from pfbdr8.prod.google.com ([2002:a05:6a00:4a88:b0:89f:2041:c861])
+ (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1393:b0:892:e080:4ed8
+ with SMTP id d2e1a72fcca58-8a04ce526edmr8946515b3a.47.1792514334875; Tue, 20
  Oct 2026 09:38:54 -0700 (PDT)
-Date: Tue, 20 Oct 2026 16:38:33 +0000
+Date: Tue, 20 Oct 2026 16:38:34 +0000
+In-Reply-To: <20261020163835.4076594-1-tavip@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,9 +79,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261020163835.4076594-1-tavip@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261020163835.4076594-1-tavip@google.com>
-Subject: [PATCH net v2 0/2] tcp: clamp return value of tcp_wmem_schedule() to non-negative
+Message-ID: <20261020163835.4076594-2-tavip@google.com>
+Subject: [PATCH net v2 1/2] tcp: clamp return value of tcp_wmem_schedule() to non-negative
 From: Octavian Purdila <tavip@google.com>
 To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
 	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
@@ -90,48 +94,57 @@ Cc: Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
 	Octavian Purdila <tavip@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This series fixes a bug discovered in production in tcp_wmem_schedule()
-where a negative sk->sk_forward_alloc under TCP memory pressure causes
-tcp_wmem_schedule() to return a negative copy length when
-sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0].
+When sk_wmem_schedule(sk, copy) fails under TCP memory pressure and
+sk->sk_wmem_queued already reaches or exceeds sysctl_tcp_wmem[0],
+tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc).
 
-sk->sk_forward_alloc can transiently become negative when tcp_collapse()
-re-packs partially read or high payload-to-truesize SKBs in the receive
-queue and charges newly allocated SKBs via sk_mem_charge() before
-freeing the original SKBs. When a subsequent send hits memory pressure
-in sk_wmem_schedule() with sk->sk_wmem_queued >= sysctl_tcp_wmem[0],
-tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc) < 0.
-Callers such as tcp_sendmsg_locked() then pass that negative copy length
-to skb_copy_to_page_nocache() -> copy_from_iter_full() ->
-check_copy_size(), triggering WARN_ON_ONCE(bytes > INT_MAX) in
-production and returning -EFAULT instead of waiting for memory or
-returning -EAGAIN.
+However, sk->sk_forward_alloc is a signed int that can transiently
+become negative when tcp_collapse() re-packs partially read or high
+payload-to-truesize SKBs in the receive queue and charges newly
+allocated SKBs via sk_mem_charge() before freeing the original SKB.
 
-Patch 1 clamps the return value of tcp_wmem_schedule() to [0, copy] so
-a negative sk->sk_forward_alloc is treated as 0 available bytes.
-Patch 2 adds a packetdrill selftest that reproduces the negative
-sk->sk_forward_alloc condition via tcp_collapse() under memory pressure
-and verifies that a non-blocking write fails with EAGAIN rather than
-EFAULT.
+If tcp_wmem_schedule() returns a negative value, tcp_sendmsg_locked()
+passes that negative copy length to skb_copy_to_page_nocache() ->
+copy_from_iter_full() -> check_copy_size(), where it is converted to an
+unsigned size_t > INT_MAX, triggering a WARN_ON_ONCE(bytes > INT_MAX)
+in production and returning -EFAULT instead of waiting for memory or
+returning -EAGAIN:
 
-Changes in v2:
-- Include production warning trace in Patch 1 commit message.
-- Skip the packetdrill test when PAGE_SIZE != 4096 via
-  --define=REQUIRES_PAGESIZE="4096" in ksft_runner.sh.
-- Collect Reviewed-by tags from Kuniyuki Iwashima and Eric Dumazet.
+  WARNING: CPU: 1 PID: 939331 at include/linux/thread_info.h:249 tcp_sendmsg+0x10c1/0x1530
+  Call Trace:
+   <TASK>
+   __sys_sendmsg+0x292/0x490
+   do_syscall_64+0x88/0x340
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Octavian Purdila (2):
-  tcp: clamp return value of tcp_wmem_schedule() to non-negative
-  selftests: net: packetdrill: add test for negative sk_forward_alloc in
-    tcp_wmem_schedule()
+Clamp the return value of tcp_wmem_schedule() to [0, copy] so callers
+treat negative sk_forward_alloc as 0 available bytes.
 
- net/ipv4/tcp.c                                |   2 +-
- .../testing/selftests/net/packetdrill/config  |   1 +
- .../selftests/net/packetdrill/ksft_runner.sh  |   6 +
- .../tcp_wmem_schedule_negative_fwd_alloc.pkt  | 117 ++++++++++++++++++
- 4 files changed, 125 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
+Fixes: 849b425cd091 ("tcp: fix possible freeze in tx path under memory pressure")
+Assisted-by: LLM
+Signed-off-by: Octavian Purdila <tavip@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+---
+v2:
+- Add production warning trace to the commit message.
 
+ net/ipv4/tcp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 87ef6d5cbfeba..0e062fcd94a6c 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1037,7 +1037,7 @@ int tcp_wmem_schedule(struct sock *sk, int copy)
+ 	left = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_wmem[0]) - sk->sk_wmem_queued;
+ 	if (left > 0)
+ 		sk_forced_mem_schedule(sk, min(left, copy));
+-	return min(copy, sk->sk_forward_alloc);
++	return clamp(sk->sk_forward_alloc, 0, copy);
+ }
+ 
+ void tcp_free_fastopen_req(struct tcp_sock *tp)
 -- 
 2.56.0.212.g129ede20d9-goog
 
