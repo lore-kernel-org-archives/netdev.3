@@ -1,53 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792500601;
-	b=mMZ1QB6z5CDBLd4uO75GucAWYcQ4qmUDkyFQALUuzfO9iSsJLV7wOdHYGu1ybyB+S9kM
-	 8LhGke4+83udBKFL2zkO5aee9jTnNBykktz9LtV6RNX4uplkLD8fKjiJ3+gle5qpuaXTv
-	 8Xa/1LAuU8P1hmPDDWEoKASp0FrMuWrTPcyBRmjaelbpjmaVXLzt+0iUzaXblqvDRvkF3
-	 E0ZhxGj6prYDw48sAda9PaprmvZd5W45+2WSxgz0EAcaejt3TQ0A0QO977oL/OAPmsjeF
-	 ZvjIiIuzBbllvUChjEFLDv8ChulIpEcssgxR3dKwXgnkCVW/3oVtqZbsgMkjL95iciA==
+	t=1792500825;
+	b=zbz8fWo0t9E0R74wzy5luKdJr8bJ129KM6elNtCWb3LWfwtx8E3z5VR9qFfQjmP0GzR7
+	 SnGEq/jVuKcVf7eQepRvWlUz/yBws7rL/zVSN/sV7uEzVddzqpvXNaXrTd1Ycy9Z44ANF
+	 1u/zkFEykNfzCG19iOIHFezYUl763gC24dedZ0aN/p39PODC6D/DcA9jb7H5xuhXjmnlz
+	 ZMMpTALW7tOlP8jgBKmiQD83Ct8c3PrOWAKtWvAOWpVNfs57mxfXTh1NgnHiKY5rojAYh
+	 i3D3Gv6tLW1G9x/SHH8gwqvi1RGDXnxbBPqKLHJsD9vVelMThc0x889soVbFOtqdEWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500601;
-	h=DMARC-Filter:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 X-Clacks-Overhead:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=IzQx6pHKIouWCSktHVNsKQuHimzuXnFnXJ6+lki+f2c=;
-	b=2mVGRuQYkVDFGGQ9c2lVqUNku6bL1YBK+ZkYC6MvbLj692ljS3TwXWSkU1VLcXRX7sJp
-	 8TfZGJmYf+AZOipqbQZ/CRQUrWzMN8zyUfJwrjgVYPMJ2fV0XhSyJ2caWggXhphi3HABm
-	 HgkCdgMLUSlUNx4w07zRniBECNnDB8SERmpzK57LWeSf1pRJ5zNfQohP0OApvW6V1B2R5
-	 BcmkfR85QfDYLuEsPaOM+4ZIJoVTJg9/iudI8FGlhM/VXzFB6VywPlChOvLTvQxQAyNEW
-	 Rjuo3YbheEBRZuTBrgOU0HS3e2YOzTmiQYZg4MNN1E1022s81TE7vPcJXEO/S229AFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792500825;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=PHhSiGv7NsVrVBKhJQlP69zE0Ua2+MTZMk1VrAIO/GU=;
+	b=qLbFm6h1o6jrUt/dF8T5M8r0UQUBnC8aNQQE5LGaEzfoFTAfvfNtLUatH/7yA7IH21E3
+	 /xfw9qnAytCdZBLyilVpqyUkto7VF0xcshal9tv4IRb7QwJr0HXJEVAocgImW8a14xqaQ
+	 DdX5pzfz5rWiX6EVpK+AYhMRJPhFyl0eLRGMJcRZ8iYLomIYBid+FpG8SpNmVzjShJmNo
+	 XHH/WENyxmQriSi9StAoS4Iq02O50GHqv8XfuJDrDZ62HgcOUkKep+JVi17e8F0t11Tlk
+	 ZotxNmjJP8q2TZs3oOh2Zqy/3oX+GdhMuqkLSlu+8ADbnfjRe7EzTcaVf2VVYuKTSqQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=toke.dk;
-	spf=pass smtp.mailfrom=toke.dk;
-	arc=none smtp.remote-ip=45.145.95.4
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=l8pNXIPd;
+	arc=none smtp.remote-ip=209.85.208.47
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400A6606A319
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 12:50:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 400A6606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-Authentication-Results: mail.toke.dk; dkim=none
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
- Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- cake@lists.bufferbloat.net, Victor Nogueira <victor@mojatatu.com>, Sashiko
- <sashiko-bot@kernel.org>
-Subject: Re: [PATCH net-next v3 1/4] net/sched/sch_cake: serialize
- reconfiguration with the datapath
-In-Reply-To: <QDISC-5RTM.v3.r0.20261020053711-1@mojatatu.com>
-References: <QDISC-5RTM.v3.r0.20261020053711@mojatatu.com>
- <QDISC-5RTM.v3.r0.20261020053711-1@mojatatu.com>
-Date: Tue, 20 Oct 2026 14:49:57 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87wlrctu2y.fsf@toke.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F314606A322
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 12:53:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F314606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=l8pNXIPd
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b203527bceso3934619a12.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 05:53:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792500824; x=1793105624; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PHhSiGv7NsVrVBKhJQlP69zE0Ua2+MTZMk1VrAIO/GU=;
+        b=l8pNXIPdPKgh6DgFmINJfHrqdYV6b/OPNuQDuY42FxvFthp5pNYGUeDZFIoYiWKOmG
+         vFhQ3Fs8VPQuqk/5oA000CQ3bU+1qdcggTd6nDOLRaK/TgQthZsLvJ9BG+uWy2UrSKNM
+         O5BvXzKyIZsddoFNqjkssqVLkNxrzCiWKsm69+PY1tjIYCgUQZmxYp4TSohTW3YCavzF
+         0YwZgQbHw6ULGc18Kng4THpCsoMyDp1sne/c0hPJpsqqrKzMv9DFnyjrJOfa7HQPE9Ga
+         G85Yz7hwnfBgAmF7xHyNitDWBeMyjK6ClyL9o89gctv8vFJ33LIJmd2OBDLbLen1YF+9
+         6HXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792500824; x=1793105624;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PHhSiGv7NsVrVBKhJQlP69zE0Ua2+MTZMk1VrAIO/GU=;
+        b=v1xPIOpIgAzO8tmDhFDtFGKOAf6RUVcV8IJ6ahwr4yk27bN9jp/NGrumfrO+DiAnN3
+         sBxX/roDTQSc9m4f1qvOm6BEBB5g127/2grjbNaZMR4EhbAzdFBTgpYAuLL+ceY5BKhl
+         jKh5Z2gB9AF/iplJ1IZ3/0zUJJmgATGuiPhO8Cl+z1OLby/IZSE9Yfqzj+MaIh+Mtr7Q
+         P3nDK70beEN4p3AIgiLmIb67XKufwMHLF4AKfAvGvLnQKimdELkQQhBvG0E8qTTejsOB
+         3IapVQvqq8tptBzLX9j+9o19F6wa3lf3kA00U6Iq+4IWh83KSpbYYPdGUvfstbuBncbk
+         TeRA==
+X-Forwarded-Encrypted: i=1; AKwUvBy8lB62iv7BfK3H51GydYym2RIZu4Qh5RR2D02UL0YObmATLNi04/NHlerVhl2kz+vF//5+804=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKMrxYQ62RSfZ6rM6AP0rqBi4E5jLDyxwE+GMwji6YrLBD2OL6+
+	TqhJP15eVIHGfbalitMp8K7Sgnlz487gN3BgHcj3clXyBqEJQP23fpfq
+X-Gm-Gg: AYBFou38ab3EF/pRkqqj764glD+ugQLAxjPhMjIUajaPTxeKxuyLa3Cpwnn7XJKqrDA
+	AmkHYdAF5SoUEaCbVtdLyqryvFv2Yrmbf7NgO7pAVNTiZt+DLrnonHOvUB3cNucTPQWtEnvVI7O
+	xorqqoLHzDKsW+1VFsMAAfaQjqx6nMpbIBXUaQO4EqNCV8ugqgb52pF3fx9J1H2oB2avZ6+nZsK
+	PDsFDGOQrKHxhrpgccdd6tZ1I+qDgMlOsxe0RcImrfQhe9xahCg7p9X3QTb8U5xJ7nkYMFqs2jd
+	d96PHB3fcWDP6UYelLRPGNoY/427nUgu2aeqGSRsx0FPnpX+dLUCx9KmaAiJQyEiTxiG+rW8vxg
+	An9h8pwKS1yOf1j3YP2xoK5av4LIXUHCHKt4+B+Qi7PA3pyeE74Fbx+910itnD6lxo3bu8h3N42
+	t/U/8bqVB4fOfW9BFELib4bCf954pfWd9weXBBWmSwd6wI90UAlBaqmLZl9jRGMuvL
+X-Received: by 2002:a05:6402:a518:20b0:6b3:e575:f4ed with SMTP id 4fb4d7f45d1cf-6b3e575f74dmr1272971a12.21.1792500823260;
+        Tue, 20 Oct 2026 05:53:43 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b38a1335d3sm5347046a12.3.2026.10.20.05.53.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 05:53:42 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: Boqun Feng <boqun@kernel.org>,
+	netdev@vger.kernel.org
+Cc: Eric Dumazet <edumazet@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/2] net/sched: don't wait for RCU when destroying qdisc lockdep keys
+Date: Tue, 20 Oct 2026 05:53:35 -0700
+Message-ID: <20261020125335.678200-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <atZtYi_Xnz27O8Bp@tardis.local>
+References: <atZtYi_Xnz27O8Bp@tardis.local>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,86 +110,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Jamal Hadi Salim <jhs@mojatatu.com> writes:
+On Mon, Oct 19, 2026 at 12:20:02PM -0700, Boqun Feng wrote:
+> I think my concern is still valid: for lockdep PoV,
+> lockdep_unregister_key_nosync() is an API that users have to use it
+> carefully, because it leaves the unregistration process in a stage that
+> you need to guarantee that the lockdep key reclamation is delayed by an
+> RCU grace period. Or in other words, do you have a way to prevent a user
+> from doing lockdep_unregister_key_nosync() but kfree(key), or some sort
+> of debugging to find a mis-use?
 
-> This is a follow-up to commit 7cbfb180945c ("net/sched: sch_cake: fix
-> autorate reconfiguration throttling").  That change only stored
-> last_reconfig_time; it did not address the concurrency between the
-> autorate rate update in cake_enqueue() and the netlink reconfiguration
-> path, which the original review flagged.
->
-> The issue:
-> cake_change() -> cake_config_change() updates the fields of the shared
-> struct cake_sched_config under RTNL but not under the qdisc lock: it only
-> took sch_tree_lock() later, around cake_reconfigure().  The datapath in
-> turn serializes cake_enqueue() with itself under the qdisc lock, and its
-> autorate-ingress path stores the estimated rate into
-> q->config->rate_bps.  Two writers therefore update the same rate with no
-> common lock:
->
->   CPU0: cake_enqueue() sees CAKE_FLAG_AUTORATE_INGRESS, computes an
->         estimate, and is about to store it.
->   CPU1: 'tc qdisc change ... bandwidth X' clears autorate in its local
->         rate_flags, writes rate_bps =3D X, publishes the cleared flag, and
->         waits in sch_tree_lock().
->   CPU0: stores the estimate, calls cake_reconfigure(), and unlocks.
->   CPU1: reconfigures from the estimate and returns.
->
-> The qdisc is left with autorate disabled but with the estimate installed
-> instead of X.
->
-> The fix:
-> Commit the parsed configuration and reconfigure while holding the same
-> qdisc lock that serializes the datapath, so the netlink writer and the
-> autorate writer can no longer interleave.  rate_bps needs no atomic: it is
-> only ever loaded and stored, so plain READ_ONCE()/WRITE_ONCE() annotations
-> are enough for the accesses that run outside the lock.  The lockless
-> paths read the rate once into a local and reuse that value, so a single
-> coherent snapshot is used per operation.
->
-> The annotations do not make a 64-bit access single-copy atomic on 32-bit:
-> READ_ONCE()/WRITE_ONCE() are still two 32-bit accesses there.  The lockle=
-ss
-> readers -- cake_config_dump() and the cake_mq children, which observe the
-> shared config under a different child's lock -- can therefore still see a
-> torn rate on 32-bit.  That rate is an advisory shaper value and is accept=
-ed
-> as best-effort; the state that must be consistent (the configured rate and
-> the autorate flag) is written under the qdisc lock.
->
-> Conditions to recreate the bug:
-> The lost update (a) needs no sanitizer. Put cake in autorate-ingress on a
-> device, drive bursty traffic with gaps so the 250 ms autorate reconfigura=
-tion
-> fires, and concurrently loop 'tc qdisc change ... cake bandwidth <N>kbit'
-> without autorate-ingress (specifying a bandwidth clears the flag).
-> If the autorate store lands after the change wrote its rate but before the
-> change reconfigures, the qdisc ends up with autorate disabled and the est=
-imate
-> installed instead of <N>; reading the rate back then shows the estimate, =
-which
-> an unfixed kernel can do and a fixed one cannot.
-> (b) The unsynchronized access is reported by KCSAN: build with CONFIG_KCS=
-AN=3Dy
-> and run the same trigger with the change loop keeping autorate-ingress se=
-t;
-> KCSAN reports a data race in cake_config_change / cake_enqueue.
-> The non-atomic 64-bit store only shows up as tearing on a 32-bit machine;
-> on 64-bit the store is atomic and KCSAN flags the access discipline inste=
-ad.
->
-> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260816012109.2865223-1-ooonea@gmai=
-l.com
-> Link: https://lore.kernel.org/netdev/20260816012109.2865223-1-ooonea@gmai=
-l.com/
-> Link: https://lore.kernel.org/netdev/875wzctsky.fsf@toke.dk/
-> Link: https://lore.kernel.org/netdev/87ld7t3kl3.fsf@all.your.base.are.bel=
-ong.to.us/
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Not in this version, but lockdep could catch it. Every slab, page and
+vmalloc free already goes through debug_check_no_locks_freed(), so:
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+ - lockdep_unregister_key_nosync() records the key together with
+   get_state_synchronize_rcu() in a small fixed-size table;
+ - debug_check_no_locks_freed() warns if the freed range contains a
+   recorded key whose grace period has not elapsed yet
+   (poll_state_synchronize_rcu()), and retires entries whose grace
+   period has;
+ - lockdep_register_key() warns the same way if a recorded key is
+   reused too early.
+
+The table is empty nearly all the time, so frees only pay for it during
+bursts of unregisters. A correct kfree_rcu() or call_rcu() free runs
+after the grace period and never warns; lockdep_unregister_key_nosync()
+followed by kfree() warns on that kfree().
+
+Would that address your concern? If so I'll add it to v2.
+
+The other way would be for lockdep to keep the dynamic-key hash nodes in
+its own storage, freed via RCU like zapped classes, so is_dynamic_key()
+never dereferences caller memory and lockdep_unregister_key() needs no
+wait at all. That removes the nosync API, but it is a bigger change.
+
+Separately, two corrections to the cover letter: please ignore the
+stray "From: Vlad Poenaru <thevlad@meta.com>" line (Eric, sorry for the
+confusion; the series is from and signed off by vlad.wing@gmail.com),
+and [5] should be:
+
+[5] https://lore.kernel.org/all/20261019170601.805087-1-vlad.wing@gmail.com/
+
+Thanks,
+Vlad
