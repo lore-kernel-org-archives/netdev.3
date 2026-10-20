@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510812;
-	b=Kd2TTqfF6hMWLABae3dae9ePBcXAouSEpxAnabVeOt65qxg4Y9uOcH13Ik20rpUHCFAd
-	 aEyBffeYLdOknsNX8UOwjEwM9pC0c/XLt87yEXO88csxT2dPhT6H5qDg701Nf+m/GfEve
-	 7SQEwhfMMocotGzxwOQVIzo+LLdiBcdmZSLd4i6DNTX8H4UuTj7C2wlUkxwb5KhsBWY0L
-	 LDBMiRKzRCjY/Jfzs5d8ZPAULedOgW6merLz5oUfD2vP/c9hqEM/bW6+/uMChclSKA2E+
-	 tVVxi5KONYJemFlxBEd0C1WM5h/c4iD72nvl/zTnOhXzvPJnnQPeFIaZQcI/ZgvlQvA==
+	t=1792510832;
+	b=PTdHqh2QwKe6DN7dkYsL7NNVnwfUwkOHJ1YcsAjOiyYF+ELpa+8vuoVhdTwQapHt0YZs
+	 H2B1r5fefUhQcAO5fTbGVqMJ+VCvW+MLH6VyMHG/nByaLfg+CWfECAXE+i9q4CAOkMZ0r
+	 p8phE6aCh/YmTfEYJDFFofGU6n7gRiW07ppZrUfI9OWB4YV8l4xoAsKhhEAccRefkLqFr
+	 TUsw/csMpJ3AAZAMGgoiuSbVfNIeCfBE86WKK7gzYyU1fpNzwDcKNtnQ3vTPlOAiERpdg
+	 Kipha+XmIgrIbpnIwYATqBbV0puumDbQd0JtAqHkjmxaLP5tP+tJC0jHnxjT7cO1jQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510812;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792510832;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
@@ -15,88 +15,88 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
 	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
 	 X-DetectorID-Processed;
-	bh=t5WjqSdg7bDbQWoXup3QhnjevPSo+9ekUEMkZZRcrjI=;
-	b=MHdfDyoBt/2DAkjHatkSRaqKJHorwghoW1POxQAa9g2DzEu+DmzLLY2xX0ptYPcTeKJW
-	 fAMNxubMytIinCXFh5YGjQdjNXBy9KxKm1MM8h5l0zioe2s6ODUZjButlJIXh57ip+q2i
-	 WjoTHV4c727n95fUASNSnlupxk21eqIqsEIq6mWCAKoPRK7+1zWjl/YaKeysty0yoKgWJ
-	 TPnSHaX6v3iN+raPqutsBkHMfI0SyoYaMfPk+UG9Lq6FYvk5Lf7eiPUokeyoC/T6Jl1LD
-	 uhrBrd69wx6+qKtlb2N80CGuYrTVdNM4/Civ6TA6H2grabwosieFT4f1YnPZhoLuPkA==
+	bh=ML45x5sW+PAr1KGTLm2moYcZjhtqIIktLxAFW+bDKzs=;
+	b=WdMOrQzww0QfGwXnbKRwTWtbFEtlAei089B5BRfxXU0RIEj+1FbMCRHy/A95zBj8HkXy
+	 dsryqNU2oThRC0Wew0TKtBvhtCjAVJVHmSEuyaF5feq3/MPYfcf/2ZZt+u+wzYBCLS0t1
+	 EPV4mNkMS5mPEMC06dUa0F/XTs/LzGBOu/HSCfpDamUgRn4kLeg2fjLBxKXD0y81twsCE
+	 LpECaZRrbMrW5Z+5wrBL5PPbdmUtRl0IV4dpGJfLgVGxvCdQUjSqvLleCquWtwnMbI0wI
+	 i7pS6X+BQgSz9WFHhgoM7vBBRTAnOxR3G6niOY03MYuknlSNZimLGLjEvGwagpNg9Zw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=aah81HL6;
-	arc=none smtp.remote-ip=209.85.216.97
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=IZX85BI2;
+	arc=none smtp.remote-ip=209.85.219.98
+Received: from mail-qv1-f98.google.com (mail-qv1-f98.google.com [209.85.219.98])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4A2606A325
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:40:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C4A2606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3025B60A2601
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 15:40:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3025B60A2601
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=aah81HL6
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3a7cfe8f761so540821a91.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:40:12 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=IZX85BI2
+Received: by mail-qv1-f98.google.com with SMTP id 6a1803df08f44-917a707f37eso33266846d6.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:40:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792510812; x=1793115612;
+        d=1e100.net; s=20260707; t=1792510831; x=1793115631;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=t5WjqSdg7bDbQWoXup3QhnjevPSo+9ekUEMkZZRcrjI=;
-        b=jaIbVG1Dt7JHBz4lej2VHw4CIyrzoA7HbFCeGYSgbuAb1UUNALrvm1AXMV/8PJRMvQ
-         WHrBj6YnAzhZV7By4pknGoPm3U+QH29Eve6sCuLsznjRTeqc5ECzaVZn7xfCCDrxJ2Pi
-         hyCNV1nUob7nzeyqly1+Kfrd3mshCQ/kLoCsaz5txxz+9jAMVrYY9KgMFAxJuXGFEhDG
-         1BWrWm/hau4ic6wsqtEhFcBaDUyW5zLGuQwpPMqrcO1/9TOxgX8QEy0zCjmEd0iPmUzG
-         6hbi8p6vRmjQn6COX+1cTESRLrLds9CnW/YOUZyYMOBf3Pals9FCEgPGfpKus3KiEDcp
-         ChQw==
-X-Forwarded-Encrypted: i=1; AKwUvBwDZSfYEiNa/KZkOkcw61qKFc2T74F5XtL95QHoyA7Sq3e2cdQk/4fylr/ItXmomaQP5FdsAKI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJS3FuGjao/5/9WWT4kGWv51b+z9lHhT8omegewnuRCPKQcl4jm
-	Ew08voBvALXi0TKJwJKIY5HDVcnZOzL1fQqKX/CJfovUpDTkup4HzgutJT0osQiKBKIcPbFqeJl
-	0FKPD9R3QlnTQ91cDwIDN5Ep9ri55n7KjhaOHm7bWcG7rwI7TgNnyfupiHs5iZAJsPcU6OUwC7s
-	jOkj3ER4WX8YSqq3iKUlmYPxFqL/RLvU0pvSg+76/PMI+RAZn2KczgC3AI2weerQ4cTY/5Vs+zS
-	NkbRy0ZAs2113XN
-X-Gm-Gg: AYBFou2p9YZMPoqUJzIfuGs8C/l36fpzD0yBE+PGb7gfCbsEtSIdR3U7k7QC4gA6wN3
-	/0QQhuuOw3wPPVOzr5z/IOoGxN84Pz/lLkRjzFsOumPVAGS/KfWQEmLO1mR/I4hYy4eTgC3Y8Ob
-	tyqUIZDQOEJUhC237fG4jAhDvCHlDgJRxjQ3axSqqKTX1ZaAqLZ0h3o+/T0/3wDA0/waaUqbePT
-	PGltolniNQzIc2wE/n17eRu/rE4ztvBfr73P4n4+U+ZaauH2XKxi7HZ3rIlGnHlLgPFI2PkMQFz
-	mE6mUNIfBtuMNMJcrOVHo3GUuDVwejaO0Kjaf6if3tKQ8Q7peLUuPOfcoT6tdQ0r3qlbqg6F6sC
-	+bF9dmx6T1B5aSaYWoL1BTcK/lquxtqkV2CCXcnofagdSD9P9dlQIAK2r/ZYo1auOxqr8oZSh3G
-	WIkpQLo9oEhXJV5NNDTLY4wdC4jCyzkWR45RwrUie9
-X-Received: by 2002:a17:90a:ec84:b0:3ac:860e:1af9 with SMTP id 98e67ed59e1d1-3ad64ce951bmr1637707a91.41.1792510811600;
-        Tue, 20 Oct 2026 08:40:11 -0700 (PDT)
+        bh=ML45x5sW+PAr1KGTLm2moYcZjhtqIIktLxAFW+bDKzs=;
+        b=MT6encMOfNncGhUp8ttVUBumQSXAkJEQw9hoB95I+DIooAegHssxwQCP2ZROccTU2v
+         BsMOQ7J7txqDRBAZClkQoQ7WRzJ7jq8WEsAJSgYObRG26bG3cfosMRTzVpip8QjQLfjb
+         aBZYH6zVsVmIs05Gb/7KRiprDjeegx+gIIvrSGh1ydSFGjovD8330gaakkgk/Ka4xzCP
+         /EDKFcrNppyyWztlkcXRP6cbmKNzN1/jI6k4dLedtk8DWGqYcdh/qyG+4+JahP38fxTD
+         bdgY31yek9zxQYR795mhq1tGBPhTUX7LaS+zrsslukBxxQG3/2uaHJB2UoFgymXMnGiT
+         QA7A==
+X-Forwarded-Encrypted: i=1; AKwUvByNn/88ObF1bYxJ816rHMZDJr6k8gRQcePov2dUPjiLlie9VkLQaVLYSG8kS7ZqrsJxY/NyB+c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIFQPN9YH0VxquaYrFqgrc59gqgxpLVmPA21xxjW+hqcXDpLqtL
+	ARklkVQBmMLehktg1bM4g8V3jAtoY471echuEjPSBkx3XzQAoWXqEpuOEvE+YFKNTQyg2TrlJY4
+	tn/sN8SC5Hit+KgLGLHrVpdlzrae3HW4OKamg5zsZiCMUYFT5nnzzgG4dIxbkoS0vHeJ/WzfyN4
+	H/yQKc8M662qHk7MYl6RtIBdqTHT7bHx9wLMh9LPY8MQY0r23gIiOPVYsOn52GASqGlwsTWqOaF
+	BRzvUIh+BLD7zm/
+X-Gm-Gg: AYBFou0DC7mpxmJEar/psvZsSzsHSe69mFKck+yQEgXRlsmlkzvCSQOmcC2ssUP+S/h
+	ki66f247QimQ0hR6S7YfN/+CReob3ImN9yltHuNCncMOUDwU9LOWayJbcDnJdDWMFh75saOnbOU
+	Yl0yGvTLfbR9FIbDyBaPXbLM7ILA+vPaIJZRjPyd7/EByrIY97s3pc1mFzT8l6QaBGXVkXgkbl6
+	6VpM/2GUWdaAKriZpDTOH/On5wfh02I6WlciVk4MnRkC1n3KF0wieeDj9wydsWWnL7/FL/kRDnQ
+	O6Xca3kNa4WTnq7qFUvEIukLZl1N6ovwPJQ6UlWp9lZ0btGAX1GMdUoGXPF/hWQxjRNbV772SSb
+	1+qCid3M/LO2330ZjhpuaNBtZAXgyeOr+AU3NSvySS/zdyAoc+5vG0pwl4KGbxUHnB19vziew+/
+	jHPv6RrN2c5wC/pb0cRKZjnXQRSJG9xJnXSRiZaicd
+X-Received: by 2002:a05:6214:5002:b0:91b:5480:ee2a with SMTP id 6a1803df08f44-91bdf0e861amr192364706d6.41.1792510830506;
+        Tue, 20 Oct 2026 08:40:30 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-17.dlp.protect.broadcom.com. [144.49.247.17])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ad7ffb7993sm90793a91.1.2026.10.20.08.40.11
+        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-91c10c24c50sm7696d6.49.2026.10.20.08.40.29
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Oct 2026 08:40:11 -0700 (PDT)
+        Tue, 20 Oct 2026 08:40:30 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-9179a2035a4so16408926d6.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:40:10 -0700 (PDT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5363b06bcb2so80998261cf.2
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 08:40:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1792510810; x=1793115610; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1792510829; x=1793115629; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t5WjqSdg7bDbQWoXup3QhnjevPSo+9ekUEMkZZRcrjI=;
-        b=aah81HL6gRqNXvrP5L7v6k5a+60qbmtQH03lk76ig8ZV9PVTj9aAnIIOxAMiAoXX2r
-         Cq5Tca3pH1IhRpKTnSZiQSwfGeoRjVwrV30Wc/+8hlGstmMEsS4s1cUqGQiSjd38qH6N
-         wFqdTQEXP10z3j1lhSmZVQLldfCr4BJWVXIP8=
-X-Forwarded-Encrypted: i=1; AKwUvBzCMRk2N7w92/w6eJPBedPfOYZrA95HkHdOV8cPzTS/5zzLvRFogm3zJCbl0SG//KwXtJ9gcj8=@vger.kernel.org
-X-Received: by 2002:a05:622a:4c11:b0:535:b545:e926 with SMTP id d75a77b69052e-53686f3793fmr33774791cf.27.1792510810378;
-        Tue, 20 Oct 2026 08:40:10 -0700 (PDT)
-X-Received: by 2002:a05:622a:4c11:b0:535:b545:e926 with SMTP id d75a77b69052e-53686f3793fmr33774211cf.27.1792510809945;
-        Tue, 20 Oct 2026 08:40:09 -0700 (PDT)
+        bh=ML45x5sW+PAr1KGTLm2moYcZjhtqIIktLxAFW+bDKzs=;
+        b=IZX85BI2CjOQVXf3MfJB93CEuOCp6S0brf/Vz4Ot2DhTAnD92sQDmF+XACFN/rv0Vq
+         3zrQ4lASuAsEdx9ZrvWilN9ReCudYovzAfEGynw8sVAlVhS0So1Rz7q8lENdLcKNyHtC
+         p0uDRWZeSYA0x12ppQwjIn4Y4TcOerm+bp8k0=
+X-Forwarded-Encrypted: i=1; AKwUvBycf34DPeMRYUITbVjMu0Av7KSkIJx4UTWXNUutN8EWptzV8FC9OL80m1mNkAuHTcefxJ7COZo=@vger.kernel.org
+X-Received: by 2002:a05:622a:3cc:b0:535:dd0a:c09e with SMTP id d75a77b69052e-53646083963mr164536531cf.74.1792510828714;
+        Tue, 20 Oct 2026 08:40:28 -0700 (PDT)
+X-Received: by 2002:a05:622a:3cc:b0:535:dd0a:c09e with SMTP id d75a77b69052e-53646083963mr164535781cf.74.1792510828049;
+        Tue, 20 Oct 2026 08:40:28 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5364de4d690sm92439221cf.3.2026.10.20.08.40.06
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53656bcf751sm81961331cf.14.2026.10.20.08.40.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Oct 2026 08:40:08 -0700 (PDT)
-Message-ID: <6125aa53-4fad-46ed-b627-e0fce7df7b84@broadcom.com>
-Date: Tue, 20 Oct 2026 08:40:05 -0700
+        Tue, 20 Oct 2026 08:40:27 -0700 (PDT)
+Message-ID: <d31ed7f0-2b4e-46a8-9345-68173710dd0f@broadcom.com>
+Date: Tue, 20 Oct 2026 08:40:23 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,8 +107,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] ARM: dts: bcm2711: give the GENET MDIO controller its
- clock
+Subject: Re: [PATCH 2/3] clk: bcm2835: register the BCM2711 GISB clock
 To: Nicolai Buchwitz <nb@tipi-net.de>, Stephen Boyd <sboyd@kernel.org>,
  Brian Masney <bmasney+clk@redhat.com>,
  Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>,
@@ -123,7 +122,7 @@ Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
  Stefan Wahren <wahrenst@gmx.net>, Phil Elwell <phil@raspberrypi.com>,
  netdev@vger.kernel.org, James Clark <jjc@jclark.com>
 References: <20261020-devel-bcm2711-gisb-clk-v1-0-a1728724d0f8@tipi-net.de>
- <20261020-devel-bcm2711-gisb-clk-v1-3-a1728724d0f8@tipi-net.de>
+ <20261020-devel-bcm2711-gisb-clk-v1-2-a1728724d0f8@tipi-net.de>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -158,19 +157,43 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20261020-devel-bcm2711-gisb-clk-v1-3-a1728724d0f8@tipi-net.de>
+In-Reply-To: <20261020-devel-bcm2711-gisb-clk-v1-2-a1728724d0f8@tipi-net.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 On 10/20/26 07:58, Nicolai Buchwitz wrote:
-> The MDC of the GENET MDIO controller comes from the GISB clock.
-> Describe it, so mdio-bcm-unimac can get the real 200 MHz from
-> clk_get_rate() instead of assuming the 250 MHz of the STB chips, and
-> can put bounds on when an MDIO write completes for PTP.
+> The generator at CM offset 0x1d8 is not in any documentation I could
+> find, but the firmware calls it gisb and runs it at 200 MHz off
+> PLLD_PER with a 3.75 divider. GISB is the register bus of the STB
+> peripherals, and on BCM2711 the GENET MDIO controller clocks its MDC
+> from it. mdio-bcm-unimac wants that rate to work out the MDC period.
+> 
+> Mark it critical. The firmware enables it at boot and nothing in Linux
+> owns it, so it must never be gated.
+> 
+> Checked on a Raspberry Pi CM4 by moving the divider at runtime, the
+> MDIO busy time follows it.
 > 
 > Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+
+> ---
+>   drivers/clk/bcm/clk-bcm2835.c | 16 ++++++++++++++++
+>   1 file changed, 16 insertions(+)
+> 
+> diff --git a/drivers/clk/bcm/clk-bcm2835.c b/drivers/clk/bcm/clk-bcm2835.c
+> index 118df86d717c6..bc1de20c7e00e 100644
+> --- a/drivers/clk/bcm/clk-bcm2835.c
+> +++ b/drivers/clk/bcm/clk-bcm2835.c
+> @@ -117,6 +117,8 @@
+>   #define CM_EMMCDIV		0x1c4
+>   #define CM_EMMC2CTL		0x1d0
+>   #define CM_EMMC2DIV		0x1d4
+> +#define CM_GISBCTL		0x1d8
+> +#define CM_GISBDIV		0x1dc
+
+Yes, those names are correct and accurate here.
 -- 
 Florian
