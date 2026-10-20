@@ -1,98 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792494023;
-	b=fof8GVPnkNgbh+ZCHErihG4OEzYv4olpGAUUcANi7vGkvJ03V4+SWIpMvO08ehjb5npZ
-	 zX664Zlf2DsomiY+DEgLJQZ1g0Jc1Bt9vHFfqJ3rXAiMwGY/ko+nFyhl11jmRnlPOwbHa
-	 U15gY9kuloLuPOWA3m67rwQlxiF+TNmIdwGpNHNEHv4SsII/nuOftwlCmoJVfYnNho77i
-	 Lbb6Pxfd5vUkiaIQ2wEu49ZguDaiYDh3RimNjB3hIMq+AMOLZArvkv3ekRDjeurIMPX48
-	 Ucu2gBhsng9uv75HQ4qdyWgGjAzrfAgVV8PwQ0TRwDqJR0I3i0Y2+2fuxdBnPjAg8jQ==
+	t=1792494311;
+	b=pnjvnIncrwd6dFhl9OnHg1FE/QvqKOTGc6difnsSmJGifMg0TiuJ7TLRfeUpaJgGCdO9
+	 bdE6oc41b0jojhEMba/1OJRQskTRhRWMfqLT3X+7QYCLySeQfNISfDRMLQTk2I8JiZkoy
+	 Ugw7A0mFWpQGQyeSmDg7PtsUBjnasAP+EqzlyVDBzwG+N8FNmcxzX89Ol1nX6cG7xrCW5
+	 8rqimc1IVB1kW1mVGTbVD8KgMV0zbISeyiIamCeUWc3BwR+hoFgEFdVi4Td23G+ChbidR
+	 qS/y2z8GmmBxpPpKDOOJKLcOJBhxh9LnCxWRt8G7n/yes2s0nUoWQWKrC4PcNI5pmrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792494023;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=FuFUTtK25dGBWnxysXdpyNsNZRA20ZU8zu1KApnKbdg=;
-	b=kIFE4s+6mCmo5grg6XJvBjRA2sinTuQNs20blIPPZyXa85FYIgX4KQBPsDmwOEAM/leY
-	 8CUK/pstzOC8l6/d0qIUl4j3XxGL+/qHwXOoBx+zRLfPZeKTXoFJYPXracYATUXEZCWzv
-	 rPTlxHwzvPuxfkUM/UGu5zKP3H9nefc1Q4vHSr0kaEQ6VvmUUA7h5KKVA9ufw4GE0ncTY
-	 pSzY3vL6gaAsrfE6ZT563pb2lX2bD4EnD+b60Zbv+bcQZPNHEErWKVOI85eRAB2zEtYUd
-	 eyEvNiM2Wp5K7uzrAHKyUdPtx0FgG/4ePwAMBjkqZxmyFQAVfLKfFyAJPQtl2pQ4IqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792494311;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Scanned-By;
+	bh=fLmuyTfd7g4VErTxnTfok7Jz/5L33bdb9HtzrWwzsMQ=;
+	b=TRSyR9ck68wTDHF/b7VoTuHna2qwJzNX7Mni4TRPBEQ89I8/94JJsElALiu8OBFTLnyo
+	 hAoYdS7iLuGJU+g/KtrAs5KvyNiDxR9R5o+jxGgpFvR/kQz5BLal1hCOn+YWWJpdw1zgN
+	 KdRjPG2plzPS5OS4RxL6S8s2bYSfWCt3jn0N0Igk5dnlzsXt95w7ubsVp5an3Uz7XpzOK
+	 eCgaFRr2OvXMuyKHmTOqgMIDxGEG1+S2xJeLYTp73r+MrALrB2tCBnPj3FIXUJFGSPElJ
+	 +cMcX4tupECjNqnuIGWc8KEuRCL2tPkZ6zlGE0IzQGL097O7s++G8fK+jXbGuN/jxng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=NXbbUOn+;
-	arc=none smtp.remote-ip=209.85.219.42
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkjJx1m7;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3D860A2604
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:00:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D3D860A2604
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504BF606A31B
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 11:05:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 504BF606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=NXbbUOn+
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91b8b456dbeso39333766d6.2
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 04:00:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792494021; x=1793098821; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FuFUTtK25dGBWnxysXdpyNsNZRA20ZU8zu1KApnKbdg=;
-        b=NXbbUOn+3xiZtp6/jkb/+Zi7Z0JgkW4vorHI/N6SX2nYb9crhGKOXNqKMJkKEbwjo1
-         QiNK/HMqyrAQdkq2SnIdTS8ymjmsNSBzfn8aRa3k1hvclyKVXh5txkDfoCtMO6YbvkvS
-         a5YyPRvbL0/d7+g2C2JfgVZsC/tNOJOAcAsrY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792494021; x=1793098821;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FuFUTtK25dGBWnxysXdpyNsNZRA20ZU8zu1KApnKbdg=;
-        b=dy2DpXC0DAzmtwgCWqbZAqdy77ZSa2onOfQbZ1hN99Tqy8CQEfwm0qoB27FtbDrzoT
-         fsUJSc4UETjrBVLTAm1LP0C02PVjPHB66n6iyMxcdZVdOoXy4f2QFYm3l11B6ciVfpZK
-         WVNspMl7TLQVvr2S3NJRkXg+7dT70od4SqqDwKYgKwuogmDZFPEEH/lZRgYTtAQR1/6a
-         Z7yXsW88tT3W9O+VGnCRVwz6zff4h4OqnYNMwIoMrEQoE7RG/0sZoq3W4WPt09iaL+lU
-         x8VWnMYj9uHDHPUsrm0cxFEVZSyAS08YhHUCqWVwW/3BJvz0AFhJF1RRG5lvtbv1dI+x
-         9Pew==
-X-Gm-Message-State: AFq9FYJ94eaSLkXoeJXp1gg8pkT7YP6vYEapIvnURIML2juivOHKAy0f
-	LD9A7bqLF6QvHcTsZt2e4Y5NWx7ty2ZyhxlhbNQednT0Hk60CwTZDvqZ1fqEgJpa5JsYVV4zxwI
-	i++8=
-X-Gm-Gg: AYBFou2ZQYUd1uf0lq/FjmRSM5Bjx3yloBbmZMcKZ3hMNHD80dSgKR67rPL9JNBwahx
-	66ywfAS8KEKTfL3D6l5Nz78CFaII+y7J0yY/hcdCHfoLx/x4xXe0oWXCNCetU8ufpeICFkbCKSj
-	B2s8OgPwcztBOd/7Kfrfm3dC05iKfJd5oiMwMiBE0Tmrza90VtoFfTOvcyzv8QXjK6W5u7C22x0
-	27WfEiSkH65H4Tz8/Ksp2/TZjW9SzUyYdzy+Bdojxb/AoZITjtsCJkJdw7d3rfxEAenBEd5Ugkt
-	OV00V8YzLkNbh7ljh8ntM5ZNHvo2XhTTEM+UHPJtvd4fuxcdSz7dwZnYNCBJvg8L+sNa8gvxBYx
-	lQI5iPFRTtgtdZmt55KNJyr3pVQZ9A/TmUHFG6T8DTocu4miWziCStroMHFBKTIn3h7SHKvyV/d
-	tIhRsAFUTFw+miCJRjqr+11SAD6V53UMeE56VnsCst5RTNRRs/mWpg1KiBSC+LNN0WnQ/zhXJaD
-	Hd03HNA5pjRqRg3SfzxCx70MDHfhnu4UzdUIXxGDy65O00Ha+1g6QQ=
-X-Received: by 2002:ad4:5f0f:0:b0:914:4464:41a9 with SMTP id 6a1803df08f44-91bdf1236abmr196653696d6.29.1792494020952;
-        Tue, 20 Oct 2026 04:00:20 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c040e6667sm23382356d6.39.2026.10.20.04.00.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 04:00:19 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	cake@lists.bufferbloat.net
-Subject: [PATCH net-next v3 4/4] net/sched/sch_cake: drop dead nla_nest_end() error check
-Date: Tue, 20 Oct 2026 07:00:08 -0400
-Message-Id: <QDISC-5RTM.v3.r0.20261020053711-4@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-5RTM.v3.r0.20261020053711-3@mojatatu.com>
-References: <QDISC-5RTM.v3.r0.20261020053711@mojatatu.com> <QDISC-5RTM.v3.r0.20261020053711-1@mojatatu.com> <QDISC-5RTM.v3.r0.20261020053711-2@mojatatu.com> <QDISC-5RTM.v3.r0.20261020053711-3@mojatatu.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkjJx1m7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792494310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fLmuyTfd7g4VErTxnTfok7Jz/5L33bdb9HtzrWwzsMQ=;
+	b=DkjJx1m7KYZpAGZoPqCbip6sjxNiVval+MvAQlO7XKoxI8io0aj5NDlSzofIypFKmcVcDx
+	lcEI/m6RyTKLOfCNjRKHh/cA096+bnPjly50JcC9R+Yf8/sGp7WsE01LbjrtaQ0acWTYWo
+	Fk2xMkFeMOU4oG0j+y4n5dQnEJ2JUZY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-m21zt0reOCemHoMKFmPGmQ-1; Tue,
+ 20 Oct 2026 11:05:08 +0000
+X-MC-Unique: m21zt0reOCemHoMKFmPGmQ-1
+X-Mimecast-MFC-AGG-ID: m21zt0reOCemHoMKFmPGmQ_1792494306
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F981180256B;
+	Tue, 20 Oct 2026 11:05:06 +0000 (UTC)
+Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 8D09318002B1;
+	Tue, 20 Oct 2026 11:05:02 +0000 (UTC)
+Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
+	oleg@redhat.com; Tue, 20 Oct 2026 13:05:05 +0200 (CEST)
+Date: Tue, 20 Oct 2026 13:05:01 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Joel Granados <joel.granados@kernel.org>
+Cc: Allison Henderson <achender@kernel.org>,
+	kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev,
+	lkp@intel.com, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+	wireguard@lists.zx2c4.com, rds-devel@oss.oracle.com
+Subject: Re: [linus:master] [sysctl]  8d75c338f0:
+ BUG:KASAN:slab-use-after-free_in_touch_wq_lockdep_map
+Message-ID: <atdK3ZkT4YqjGICq@redhat.com>
+References: <202610190310.9737b2e3-lkp@intel.com>
+ <atYB0bm9eEXp8A2g@redhat.com>
+ <atYW0K3t57puHeLW@hobbes>
+ <atYuE1xnVYe0BDG4@redhat.com>
+ <atY42k00k0Waj6o4@redhat.com>
+ <42964fa071bd8dcafd418c89be6d66856def4dc5.camel@kernel.org>
+ <atdE-TB8hkqcwp6g@hobbes>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,57 +89,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atdE-TB8hkqcwp6g@hobbes>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-cake_dump_class_stats() closes the TCA_STATS_APP nest with
+On 10/20, Joel Granados wrote:
+>
+> On Mon, Oct 19, 2026 at 12:52:58PM -0700, Allison Henderson wrote:
+> >
+> > CONFIG_SYSCTL=n.  A simpler fix might be to just handle the NULL at the
+> > three call sites, e.g.:
+> >
+> >         rds_sysctl_reg_table =
+> >                 register_net_sysctl(&init_net, "net/rds", rds_sysctl_rds_table);
+> >         if (!rds_sysctl_reg_table && IS_ENABLED(CONFIG_SYSCTL))
+> >                 return -ENOMEM;
+> >
+>
+> Remember to NULL check rds_sysctl_reg_table in rds_sysctl_exit(). You
+> might hit another UAF on exit if you don't.
 
-	if (nla_nest_end(d->skb, stats) < 0)
-		return -1;
+Why? unregister_sysctl_table(header) does nothing if header == NULL.
 
-nla_nest_end() never returns a negative value: it has a single
-`return skb->len;` and no error path (that is why the overflow-aware
-nla_nest_end_safe() helper was later added). The '< 0' test can never
-be true, so the 'return -1' is unreachable dead code.
-
-Drop the check and close the nest with the bare statement, matching the
-sibling cake nests in the same file.
-
-This issue was discovered while fixing a bug on the gate action, see:
-https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
-
-Conditions to recreate the bug:
-- not runtime observable: the issue is found by inspection.
-
-Link: https://lore.kernel.org/netdev/87v77csd5q.fsf@toke.dk/
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v2 -> v3:
- - No changes to this patch. Re-sent as part of the series v3; keeps its Reviewed-by and Acked-by tags.
-
-v1 -> v2:
- - No changes to this patch. Re-sent as part of the
-   series v2; it keeps Toke's v1 Acked-by, carried forward.
-
- net/sched/sch_cake.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 4caf9718c9bd..124f552023f8 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -3211,8 +3211,7 @@ static int cake_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 						       READ_ONCE(flow->cvars.drop_next))));
- 		}
- 
--		if (nla_nest_end(d->skb, stats) < 0)
--			return -1;
-+		nla_nest_end(d->skb, stats);
- 	}
- 
- 	return 0;
--- 
-2.43.0
+Oleg.
 
