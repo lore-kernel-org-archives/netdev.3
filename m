@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792524630;
-	b=myUjWJ5rhQ6zxJq0zcRc5wvdVRmskZtbTs3EGlCAYSwBTiAEfJrFDlNAssP3FM4ibY+T
-	 IS6bTW+4p10EEdRQVQ9BBOoSxtfyJjzYC1r3JqrhgAiP2zEMMtGPVTj4eEbkx/fua7UdU
-	 TSSk6G3G0qHBIVuA4YjHrBU/O+agxdV0JytzqVpCWkxHtErIVpl6A1urV/MwH571UC/sR
-	 reIr5ksyZDncyD9CVhUqevP6mlXTmOk9z8/oOgxB2OY9z3Nyu5AEHNS+Nz1ovgPHQge1N
-	 tjR6O10/qVM8Kq1MyX9lSW/C5WB3ZD8T/OrHqaN68IZSujDN/tmp6TXb3ncoOLyjBQg==
+	t=1792524632;
+	b=pwHiHSsiu67MyY5xPpHb3W4xrS08nS91N1MomVTBBBqDmQOjzsuFNyVLFjmCuwakGfH6
+	 UrC8ro6KeeL84w9TEXqz5g+TieObDtP5Szs3p7WeX0ossAlS7wN4oDW/FBGv5S9mzwl2W
+	 1+HLfkEuddhgJYDCXpp0a5783qtp43epKSPgDDUabfmhXWkRr9G0o1s7EWIwz4AodH+xB
+	 qdUE4f1NR0igckExN1RMAnSiqUSoMswLNsp9NKcLqhbAzQhjjbKNSzHrVWwACeYtPyKqE
+	 EMT4XiOtocKH3eM3JieiusXITYuZxCWp4xVIDQb3uapUaXd+reiVJZDXUQszQRiLGuQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792524630;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792524632;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=3/6lfOiLcuVyA3cX0EYsczIjRwzeAaCSLhLn+i8CtDI=;
-	b=2ipiKY3YaPHCMYe59wNNytIiRDOCw0oYHXocKYWOgrrv2w3LipyCH1JmXPWKO1XZ8oJc
-	 /HoEr8ecSt0kqoUz+aL9Jsv68R47btHuSIjgdztsV+iXDlsDPpMWpDw97cOmbrVBP8Hh4
-	 sYl8ztpXjEUaFSxucjbXQFMzg2ZytqSHk3rsygu3HoSSnm4krUU8NcRaS4dVR3OtIe2WX
-	 EepIXu7ZRJr8GLTQmBHFhboWkSAgTebI4wY3HnWpB0PRRYdRKk00ag5KsrFCI+Aeuc3gZ
-	 PuoADchUtDa+jxVW1VzdFbW7CvrRBSdX1236v3GFypJXasmSicGFsbaUEyqvKVqxlYg==
+	bh=VtbXwkCIXbgyZunGhyG1HyvmWfkGMz8AqTPwweIhNfg=;
+	b=Nl4IJ0L/QXFWPrMNYZ8XX4V7b0kaQhQS1nNSu1wo+cNKq7tatui6zOtWxlRaAaWr8GSa
+	 HSuAKOYhU0yhUUjY3L0kFWSmcPMRk9KZDVcBOgQ6kldBlMbgeoLQ8QgAt1mZji05neLFN
+	 2tW8lO/Hc4J74Tpj9mdssOQs0UE77GfqNylolb/2XXJRtxgwU8tXYkQcyLpiaMgdWyEqO
+	 AaXSG78ZWp5h5zgIKRFTo+eOLi6Xoo8QhfYPwp4w6puhHizqzNo7tlhHXkccN5uNJWp6V
+	 44cl7mHJ9CeFQtqvmsp8xDMrNJd+jYNDCnRYJQaRd5mzr/zGPhR3dSReblNgyFyZ7IQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QdfHw1Lk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C68CymfH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674CC606A32D;
-	Tue, 20 Oct 2026 19:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62F9606A338;
+	Tue, 20 Oct 2026 19:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QdfHw1Lk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7961F000D1;
-	Tue, 20 Oct 2026 19:30:29 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C68CymfH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71791F000C9;
+	Tue, 20 Oct 2026 19:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792524630;
-	bh=3/6lfOiLcuVyA3cX0EYsczIjRwzeAaCSLhLn+i8CtDI=;
+	s=k20260515; t=1792524631;
+	bh=VtbXwkCIXbgyZunGhyG1HyvmWfkGMz8AqTPwweIhNfg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QdfHw1LkD5+b+rGvqANXS2NVfo2wC9RlgwMb803Le9givN6mxXU/EUuJKXwiTYTn1
-	 9UMg5yBtcTHf8bFr8Y0CA4bFOGvTizUIRC310n0OlibZlFvrKJ0cDOLM3a5wYTaHfw
-	 Yku2I+RWIkp3ceBRLNOwWZu3cy3FjIFpS64I2b9OZy8Z1XEvkgBpTe4Hh0tYVWQfS4
-	 B9sdv7b3FgRv9eZj1/poIng9lZEUvyHb3/G2zejVkdbiQ41oIME/aoRoM/SDq0Wjr4
-	 0WFkqIRZVJ1Q5eqMsH982nI/R0N/zErNdDHwTtk9pj7fJ7AQDgiyT9lUfryiGGe2Kn
-	 I+HDUHdytOLcQ==
-Subject: Re: [PATCH v4 net-next 12/15] selftests: xsk: prepare xskxceiver for
- endpoints on two hosts
+	b=C68CymfH9mOu+TN/37TzZAKejxsehcnKvn7mkibsNBQGdaIA4CA76an6Z4tDd5pzW
+	 XuPQE3HbYtdL2CbFX6fSVeKxFRHvK1gvCkEDOp8o3YmPose5IPChq1Asmo9X1o+TXm
+	 GUKm7u47lnyqfBqhaKwcA4S6GL36613vxegcvz3/f3uVZgTWKuzBr8M19csZ04lVTG
+	 bBjoWFGhBYvwiHAo6DFcym4+gUGT10FguBZ6Dsj9XDQvgnrFJYud79n3fzoKOReZ/Y
+	 r6ur+2pJJk6OgVICfSNlqZubcROJsNo1WqHiSOt4Y7lHuJ65w4FtiVjmOWyCDQCR+P
+	 SZtUh3wZZvk2Q==
+Subject:
+ Re: [PATCH v4 net-next 13/15] selftests: xsk: list the hardware test cases
 From: netdev-bot+sashiko@kernel.org
 To: maciej.fijalkowski@intel.com
 Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
  stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com,
  tushar.vyavahare@intel.com, kerneljasonxing@gmail.com, bjorn@kernel.org
-Date: Tue, 20 Oct 2026 19:30:29 +0000
-Message-ID: <179252462905.3135.16990828336786085778@kernel.org>
-In-Reply-To: <20261016174338.787135-13-maciej.fijalkowski@intel.com>
-References: <20261016174338.787135-13-maciej.fijalkowski@intel.com>
+Date: Tue, 20 Oct 2026 19:30:30 +0000
+Message-ID: <179252463022.3135.13583685372902273086@kernel.org>
+In-Reply-To: <20261016174338.787135-14-maciej.fijalkowski@intel.com>
+References: <20261016174338.787135-14-maciej.fijalkowski@intel.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,117 +70,54 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] parse_command_line() does not fully validate the new numeric
-  options.
-- [Low] In the adjust-tail cases, RX can decide to skip only after the
-  traffic has run: testapp_validate_rx_endpoint() clears…
+- [Low] The new comment above the test tables in
+  tools/testing/selftests/net/lib/xsk/test_xsk.h (lines 307-312) names…
 
 --
 
-selftests: xsk: prepare xskxceiver for endpoints on two hosts
+selftests: xsk: list the hardware test cases
 
-This prepares xskxceiver to run a case with its two endpoints on two
-hosts. It adds --queue, --max-frags and --timeout options, a SKIP message
-on the control channel, and a wait for the link to come up once the
-endpoints are in sync. It also changes the default case MTU to
-ETH_DATA_LEN and restores the original MTU in cleanup_iface().
+This splits tests[] in test_xsk.h into hw_rx_tx_tests[], hw_rx_tests[],
+hw_tx_tests[] and generic_tests[], grouped in test_groups[], and test IDs
+now follow the order of those arrays. It also adds a -L option to
+xskxceiver, which lists each hardware test once per role it covers.
 
-> diff --git a/tools/testing/selftests/net/lib/xsk/xsk_peer.c b/tools/testing/selftests/net/lib/xsk/xsk_peer.c
-> index e3e353d6abd95..256e63196f923 100644
-> --- a/tools/testing/selftests/net/lib/xsk/xsk_peer.c
-> +++ b/tools/testing/selftests/net/lib/xsk/xsk_peer.c
-
-[ ... ]
-
-> @@ -162,6 +179,30 @@ void xsk_peer_abort(struct xsk_peer *peer)
->  		peer_send(peer, XSK_PEER_ABORT, 0);
->  }
+> diff --git a/tools/testing/selftests/net/lib/xsk/test_xsk.h b/tools/testing/selftests/net/lib/xsk/test_xsk.h
+> index 15534f4ec8f4b..a59b34b156d79 100644
+> --- a/tools/testing/selftests/net/lib/xsk/test_xsk.h
+> +++ b/tools/testing/selftests/net/lib/xsk/test_xsk.h
+> @@ -304,49 +304,73 @@ int testapp_xdp_shared_umem(struct test_spec *test);
+>  int worker_testapp_validate_rx(struct test_spec *test);
+>  int worker_testapp_validate_tx(struct test_spec *test);
 >  
-> +/*
-> + * Tell the peer that this endpoint skips the case, so that it skips too.
-> + * Closing with unread data, or getting data once closed, resets the
-> + * connection and drops the SKIP if the peer has yet to acknowledge it, as
-> + * when a NIC reset holds the link down. So read until the peer closes.
+> -static const struct test_spec tests[] = {
+> +/* Tests by the role of the endpoint that they check. A hardware run, see
+> + * xskxceiver -L, gives that role to its zero-copy endpoint. It does not do
+> + * the generic tests: BIDIRECTIONAL swaps the directions, which
+> + * drivers/net/hw/xsk.py sets up one at a time, and the others skip in
+> + * zero-copy mode.
 > + */
-> +void xsk_peer_skip(struct xsk_peer *peer, int timeout_ms)
 
 [Severity: Low]
-Is "so that it skips too" accurate for the adjust-tail cases?
+This isn't a bug, but the comment above hw_rx_tx_tests[] points to
+drivers/net/hw/xsk.py, and that file is not in the tree at this commit.
 
-In those cases the RX endpoint decides to skip only after the traffic has
-run. testapp_validate_rx_endpoint() clears the support flag:
+The only xsk script under tools/testing/selftests/drivers/net/hw/ here is
+xsk_reconfig.py. Nothing reads the hw_rx/hw_tx fields of struct test_group
+or the -L output yet. The in-tree runner, net/test_xsk.py, still uses -l.
 
-    if (!is_adjust_tail_supported(ifobject->xdp_progs)) {
-        test->adjust_tail_support = false;
-        return TEST_PASS;
-    }
+The next patch in the series, "selftests: drv-net: test AF_XDP zero-copy
+with an SKB peer", adds drivers/net/hw/xsk.py. Its _get_cases() runs
+xskxceiver -L and parses the "ID: NAME rx|tx" lines. So the reference
+is correct once the whole series is applied.
 
-and then testapp_adjust_tail() returns TEST_SKIP:
+Could the comment be added in the patch that adds xsk.py instead, so it
+is accurate at every point in the series?
 
-    if (!test->adjust_tail_support) {
-        ...
-        return TEST_SKIP;
-    }
-
-By that point the TX endpoint has usually finished with TEST_PASS. It
-never sees the SKIP, so it does not skip.
-
-The final verdict still comes out right, because xsk.py later in the
-series reports a pass plus a skip as a skipped case. Could the comment
-say that the peer either skips or passes?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/net/lib/xsk/xskxceiver.c b/tools/testing/selftests/net/lib/xsk/xskxceiver.c
-> index 9704702f60fc9..56ea5ac6a3c63 100644
-> --- a/tools/testing/selftests/net/lib/xsk/xskxceiver.c
-> +++ b/tools/testing/selftests/net/lib/xsk/xskxceiver.c
-
-[ ... ]
-
-> @@ -328,6 +302,18 @@ static void parse_command_line(struct ifobject *ifobj_tx, struct ifobject *ifobj
->  		case OPT_UDP_PORT:
->  			opt_udp_port = strtoul(optarg, NULL, 10);
->  			break;
-> +		case OPT_QUEUE:
-> +			opt_queue = strtoul(optarg, NULL, 10);
-> +			break;
-> +		case OPT_MAX_FRAGS:
-> +			/* It sizes the packet array of TOO_MANY_FRAGS. */
-> +			opt_max_frags = strtoul(optarg, NULL, 10);
-> +			if (opt_max_frags > 0xffff)
-> +				print_usage(argv);
-> +			break;
-> +		case OPT_TIMEOUT:
-> +			opt_timeout = strtoul(optarg, NULL, 10);
-> +			break;
-
-[Severity: Low]
-Should --timeout and --max-frags get a full range check here?
-
-strtoul() returns an unsigned long, and the result is truncated to u32
-before the > 0xffff check. A --max-frags value of 2^32 or more can
-therefore pass the check.
-
---timeout accepts any u32, including 0. Later the value is multiplied by
-1000 in u32 and passed on as an int:
-
-    wait_link_up()
-        err = xsk_wait_link_up(ifobj->ifname, thread_tmout * 1000);
-
-    main()
-        xsk_peer_skip(peer, opt_timeout * 1000);
-
-A timeout of 2147484 seconds or more, or a negative string (which
-strtoul() wraps), gives a negative timeout_ms. With a negative
-timeout_ms, the poll() in xsk_peer_skip() blocks with no limit.
-
-In this series, xsk.py checks --max-frags and --timeout against 1-0xffff
-before passing them on. So this only happens when xskxceiver is run by
-hand.
-
-Could xskxceiver reject these out-of-range values itself, as it already
-does for the --max-frags upper bound?
+> +static const struct test_spec hw_rx_tx_tests[] = {
+>  	{.name = "SEND_RECEIVE", .test_func = testapp_send_receive},
+>  	{.name = "SEND_RECEIVE_2K_FRAME", .test_func = testapp_send_receive_2k_frame},
+>  	{.name = "SEND_RECEIVE_SINGLE_PKT", .test_func = testapp_single_pkt},
 
 [ ... ]
 
