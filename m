@@ -1,54 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792523156;
-	b=B63pX4DUAtV2FfmU8u0rx8TJJteJHm27WmkjwkjUfcft+0Oy2DaGq3c3XuzPXI8j+YBE
-	 3+VmHPr3awZ39tsmNtDJpf1cx4fSEzkpaQAfIc2TTyfCtCJ57EGIEbCmp0mvIEX1RzLit
-	 H+UYvwOkD0HLtTugvH4+QuQ+1iJW4HYNfrGG4j9iKoL0mw316lwDnoumF5uZYxAgTk8se
-	 Ican0ojsnp/HVI1e4/XpIzLJT+xBAfKfbH1dzw+3wOvxKS4oXWaGFSW3WPWrC9cI41awv
-	 b8ujq+fgnYFeU/5cOm7I9j1hRm68xGzWBmZBpJN9oQktNowhplWucYh4wID/Qz6V8kA==
+	t=1792523211;
+	b=iS9hbRF6gImbV3ETlx1ikT/p71X/O2heyr4UFH98bdbcOqYwRaaGG5/9sg8bHE3jkuww
+	 MOzxbj317QPemR3P+p822FlPTIVgZri51Ggt9NC2NEiilPqnEBN5e6Ei784kR3Z/lX5V9
+	 0YC5xdcx44gCEXklLFj48Hc1yF0lw4OFUC9ojFbwWsxDXfY8FCsZHteQt9qzPV73dJNk7
+	 s9U0UN71ojraa+vI6s+bsH110qzBOSaKH8nTCia1Qzl0rdo+KW/L/cnUgrUVle2nCMmFJ
+	 LGhEf/WeV9OZ4Ib2H+737wRBay0+wWDyZoE3doNN1Iukh6uCRfgP55PrCYRLeMIKEXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792523156;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=OPUieOgixUtlEZm2khANVbxuEzFoeGkE+eSrcmmNdHw=;
-	b=KNGp8kCFFUiYJEVjGexgMokS8pShWHi7MD00aZBcoejCk/2qX7eeHv3jamAgHrLOq0cB
-	 +A3gqqLb3037oXPJgUNr3j2XH4T9v1jETc8dfcGNJQhCzwQS4/Z2r+ArGEnGInpMOgnEW
-	 D1c0lSwgvbTOmT8oeNHooCZwOa3GUHy6KwL8ErTjIAiFL2iqqXQ4w3wmzSY7oPJjHzVVs
-	 JsRDCVVEcoR9uMGmdoSaATHPKBCa8gYO9QXqVX92iiiGhz3f7O9UOWuQT4ZthABxcpm6h
-	 ZSs7iF83qzAdL1nEZL+xcW/qq//DIF15TyK3laqkn3l4Z5L90qcyjWJXmIEM3aJZqrw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792523211;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=fWHcLGrpwXfqLXhaJj0WaQH5QqKgXLOGytFJYtpDAYM=;
+	b=NDne5cvk7riCcRBH9ZmZhyb/gbFRLj5Km3NkKcPio+YmhSAif6xVb5jumnVmgWRfH543
+	 nId8K2/Bpp4NRxDD3GcpnZ7+Sa+lCdNvt4ZFXLrmklHcBPqIBsLpyEeQXZXNTtrJFDR0N
+	 lEpU0YjtmRjopIxxZX6cse/ObaGxCx0mW67ryUJVfOatwZtIN2FIXrt21cJBW7eVEcxhB
+	 9jyqrheOLPhht7VkP9tmSEbk3RxOqodW0Y8hHhoQanUvSiBJhRCZSvuPB65ma9kly3+qq
+	 CmsDlJ/hNJr2zU1sp8DEshyTnM63kYrh1hxCvM0s28E3QBEgagX9Z5Hd9WNDruLvphw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OuNot+fg;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cvBMvhO5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D27606A323
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 19:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CA6606A32A;
+	Tue, 20 Oct 2026 19:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OuNot+fg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6741F000CA;
-	Tue, 20 Oct 2026 19:05:55 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cvBMvhO5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDBF1F000C9;
+	Tue, 20 Oct 2026 19:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792523156;
-	bh=OPUieOgixUtlEZm2khANVbxuEzFoeGkE+eSrcmmNdHw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OuNot+fgXHbV2vpbFF1YbOHyVhXJ+BAKEDiqgeheTSbUgFUEyo5bmKklu3odX/tzD
-	 ygwvGIMz8OxtLDbwmN8FiIrhlGKnXKUqXL+hiPSWNebi3412N+JOIDYQ28JeQ8B+3w
-	 Bg5+QGB5XpEsi8NGUlaIHVDHu/Ap2/cKptJDKJB1n/qJfO6y4XByZ15rDrSAiJIePY
-	 7SmPm7x7uOepeFamRgpuIUygL9MN7hO7Kaf5FsDNFuWhOKnTNXR+u4ybWVeka5Ao2O
-	 eKWYznKDDNzveRnBsw/XRgDYoc+mINZZjseNmDX33sXm+bQW8VRsTXn4g2FmDq+uf2
-	 nWpPILKVYB+mg==
-Date: Tue, 20 Oct 2026 12:05:55 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, Claude <noreply@anthropic.com>
-Subject: Re: [PATCH iproute] iptunnel: use worst case buffer for tunnel
- ioctls
-Message-ID: <20261020120555.18bf4986@kernel.org>
-In-Reply-To: <20261020154636.1097849-1-stephen@networkplumber.org>
-References: <20261020154636.1097849-1-stephen@networkplumber.org>
+	s=k20260515; t=1792523210;
+	bh=fWHcLGrpwXfqLXhaJj0WaQH5QqKgXLOGytFJYtpDAYM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=cvBMvhO5eGuUCxu+Ci3R7HHSR/hPR5aHl1ZRoZg8zMPbX8SjLF+ymAl9Eb5wsalPU
+	 Tj5f77QQBw6aM3Mdzfx9/RAU3nuTYEbfH8/huuiWnIjZOhfXYQHHFGVWayPGOyusMl
+	 JMqoKBTTUZZ3q3J+h2Yb7p0f8TOPdAkrurcHRWBRncNfpiwaXQUGlywaV+hztav94S
+	 bFGgL6C7hfsPteXZTcd8w7O50hcqcoZQbKz0Nm2dLVFaz1h48sXJuWfu7ac2YbBtXv
+	 6GwvMiLvPykabNa/Gatz69BocBKLcmmo9sVWZrw84AuiPXH+oQ4Kko06Gl3CkGsu0G
+	 ZH1yVAC5UDBKg==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>
+Cc: Alexander Duyck <alexanderduyck@fb.com>, Jakub Kicinski
+ <kuba@kernel.org>, kernel-team@meta.com, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Mohsin Bashir
+ <mohsin.bashr@gmail.com>, Bobby Eshleman <bobbyeshleman@meta.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dimitri Daskalakis
+ <dimitri.daskalakis1@gmail.com>, Dimitri Daskalakis <daskald@meta.com>
+Subject: Re: [PATCH net] eth: fbnic: Correct packet header prefetch
+In-Reply-To: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
+References: <20261020172706.1090951-1-dimitri.daskalakis1@gmail.com>
+Date: Tue, 20 Oct 2026 21:06:47 +0200
+Message-ID: <87v76w6vjs.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,10 +63,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 20 Oct 2026 08:46:35 -0700 Stephen Hemminger wrote:
-> Subject: [PATCH iproute] iptunnel: use worst case buffer for tunnel ioctls
+Dimitri Daskalakis <dimitri.daskalakis1@gmail.com> writes:
 
-Please tell your bot that the correct tag is iproute2 not iproute
+> From: Dimitri Daskalakis <daskald@meta.com>
+>
+> The existing call to net_prefetch() fetched a stale address. The data
+> pointer is not initialized until after the call to xdp_prepare_buff().
+> Thus, making the prefetch ineffective.
+>
+> Open code the address calcuation to give the prefetch as much time
+> as possible.
+>
+> This was found by manual code inspection. No issues have been observed
+> from this.
+>
+> Fixes: 9064ab485f04 ("eth: fbnic: Prefetch packet headers on Rx")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
+
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
