@@ -1,48 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792516045;
-	b=D73ls/lFI+X3NXRiQ8IB8fulGXkR+rCxFhYrCSez7ov+P6NYUCparPLReuP2/IhmNw3G
-	 7hOxDZgavJbnUmPAWTJMXOb4QmjJwHpB4vgwIcDavJ33p2aPRHsV6/6qd1ld6AglyIld0
-	 BnpYUVcrc14ubYyb8N8ZLchmgq6MgG1UpvpXdzVxK47tPVAIZQnxqpLlyn3XOCquGlJF0
-	 IQwAbhM3SA+q1QRUohWcDhK4hPf4UjBxJ7nad832DbyRv0enhdwZZ97gRUaJ9RT78ZDh9
-	 37aPlBisRXfoLXtWIUZ7957kc0L7G6L/46r0wc2aUe2QGnd+cT599gFl/ISNBm76agA==
+	t=1792516300;
+	b=Db0YHVSCHNhO5RlXHTPNI1uT7Qx6QOd362Ygm7jrJtk+NlNo00JrEAUbhr+nbIolBq6G
+	 rNDR9jakxWCeu5aQHQHHeEL5OzmGDDRKPULmh7DER0gn0tKiTqaxEV7EgXv3pyApf9PfF
+	 WHIaW1H7aRb6Amxw4kelb0Bs5Y4Du2tDpugy7tS1nQI8D7PNCcgxYHM3bXAt5s6Iw0V2B
+	 zT2/u6ooLYeDZWkA3V19C/A9l60cHS4n4SeeA1C6F499EOEIYg2CvWKtXQUKh6EN0sQCy
+	 GN7wjhM1jcmcdgjgWlIIh9O96qupNUhBGpzbejZM/hGW4dKFEbz2sjO6O55PbN0Cvng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792516045;
-	h=Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=9/l68fSQm/RuZObxkeWmD9P0V6B9tkMkoAUEJkdJXq0=;
-	b=OePukrZABgwSLc87tuTC+gaTYhNRepVkOyG6WeE7jMvyMBVPAxcEic9eGcBF3CUJ9huG
-	 urwlHvfiahj2sL9Nw2lgTfOUnCsm2gN+X/fEhdG1Bm8BMF24YLdbqXwVkaHWRu+S3UyjK
-	 J84MNA1ptkplIvivxmhvYsnHio1ayGZGK0CDQQNGqyD2qDGcyoc9CXqbfsRED1TFmmqgx
-	 2qe/2ez03xo8CHjq/OtG1eqgARjbXYTpb1YGx85VZUPbMOU6yEL8vO1XdzzIbh+b/pbLF
-	 0eCTX/g5AQ5TlnMt4ioqjpek5q3Ig2jTpfOaod37XsqdV2nreKwc4xL7DnV3sHBABwQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792516300;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=XNNuCN/U6izbmBVvP629yRqSP6xtDUjEail1X7p38hc=;
+	b=e0kfsRoRfCdPRRwS332gRRqihYmkVrqEWNcvhQhUVEAuNFfPtVtOnGa3+QqOl0Lgbvel
+	 J111Ewbva2+gpbN5qYFt5ZljQJ7T5mtRkIkie+huZRm1zgRIRN78BkW2s6J2WJ81hl8TP
+	 aNaRpX/iarotkQUBUI6wBSDYvthJdiJv+Ud8CzAsFIZsrucAXas22Zw1UvVqgjX8SW04W
+	 05K78tpfCzcegriFCaSGlEQT25966dcqCifvKiwjzzz8bCUpfS7Dt5qqXoXL+C+K5nP2I
+	 Ej2oEBBWF1JzOum/vEZWHW5nNfWB3qn1uWlDFQBIvgnLobRgh1ZBnzd/Aa/1ebNM+Fw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AIa0nnUa;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4A7606A31A;
-	Tue, 20 Oct 2026 17:07:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B891F000C9;
-	Tue, 20 Oct 2026 17:07:22 +0000 (UTC)
-Date: Tue, 20 Oct 2026 18:06:49 +0100
-From: Simon Horman <horms@kernel.org>
-To: Paul Moses <p@1g4.org>
-Cc: netdev-bot+sashiko@kernel.org, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	aleksandr.loktionov@intel.com, maciej.fijalkowski@intel.com,
-	avigailx.dahan@intel.com, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] igc: only strip RX timestamp header from first
- buffer
-Message-ID: <20261020170649.GQ503057@horms.kernel.org>
-References: <20261013010854.4068874-1-p@1g4.org>
- <179194315897.434549.3743742848544230715@kernel.org>
- <Z4u97qIiSB-8nYCRmd03ddR4OFMcrpNVUcTHSoOADzNQcLvQVIQotijZpukYAO4AzV4r6j11nGS_lWTwyh709u_USu516VJmvffbjukcAs0=@1g4.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E16606A325;
+	Tue, 20 Oct 2026 17:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AIa0nnUa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E298C1F000C9;
+	Tue, 20 Oct 2026 17:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792516299;
+	bh=XNNuCN/U6izbmBVvP629yRqSP6xtDUjEail1X7p38hc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AIa0nnUaTNjCk4cIRx+AkEi4jLLZ57Qf0ViSOMKTRIMdooH1Vky3uiDTta6xfOW4x
+	 BVkQRXeK3R1aeCrBTgKo2nQak80wa5W7ZHXUF09k62mYS5GyisQD48yYvJu+PkiFQ9
+	 MNmFzX/F/6av1OECw9Iyp4kGoVMQxS8VmtQ6qcTrtN9A7jC53gaMrsjf+DXG4mcgSt
+	 juuQ7y8yX4dDjvzi3i2hiUbFPl/TDIjvc8UYhzzGmG5ceB4oaqksMyULyYaYOOmQKP
+	 pDprqmhdBXFPk0pIs8hrE2dgqQTpdLSi1ghLcqLy9sXk6xP/rlZFIJ+foQ0uX9eq6b
+	 VSaOSPHWGoMsw==
+Subject: Re: [PATCH net-next 10/11] can: replace ARPHRD_CAN type checks with
+ can_get_ml_priv()
+From: netdev-bot+sashiko@kernel.org
+To: mkl@pengutronix.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de, 1579567540@qq.com,
+ stable@vger.kernel.org, mailhol@kernel.org
+Date: Tue, 20 Oct 2026 17:11:19 +0000
+Message-ID: <179251627911.3135.5362969890074772101@kernel.org>
+In-Reply-To: <20261019170834.1727150-11-mkl@pengutronix.de>
+References: <20261019170834.1727150-11-mkl@pengutronix.de>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,173 +63,129 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z4u97qIiSB-8nYCRmd03ddR4OFMcrpNVUcTHSoOADzNQcLvQVIQotijZpukYAO4AzV4r6j11nGS_lWTwyh709u_USu516VJmvffbjukcAs0=@1g4.org>
 
-On Wed, Oct 14, 2026 at 05:43:10AM +0000, Paul Moses wrote:
-> On Tuesday, October 13th, 2026 at 8:59 PM, netdev-bot+sashiko@kernel.org <netdev-bot+sashiko@kernel.org> wrote:
-> 
-> > Thank you for your contribution! Sashiko AI review found 2 potential
-> > issue(s) to consider.
-> > 
-> > Critical: 0 · High: 2 · Medium: 0 · Low: 0
-> > 
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchwork
-> > know by including "pw-bot: cr" as a separate line at the end of your reply
-> > (one such reply per series is enough).
-> > 
-> > - [High] The patch fixes the TSIP length underflow only in
-> >   igc_clean_rx_irq().
-> > - [High] In igc_clean_rx_irq(), the new condition `if (!skb &&
-> >   igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP))` uses `!skb` to mean…
-> > 
-> > --
-> > 
-> > igc: only strip RX timestamp header from first buffer
-> > 
-> > This patch changes igc_clean_rx_irq() so the 16-byte inline RX timestamp
-> > header is only stripped when no skb is in progress. Before, a continuation
-> > buffer shorter than 16 bytes could underflow the unsigned length and
-> > produce a skb fragment of almost 4 GiB.
-> > 
-> > > diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-> > > index 1fb5f3cbe93c5..41b293dc10c3a 100644
-> > > --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> > > +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> > > @@ -2639,7 +2639,8 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
-> > >
-> > >  		pktbuf = page_address(rx_buffer->page) + rx_buffer->page_offset;
-> > >
-> > > -		if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
-> > > +		if (!skb &&
-> > > +		    igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
-> > 
-> > [Severity: High]
-> > Is !skb a reliable first-buffer test when an XDP program is attached?
-> > 
-> > Suppose the XDP program returns a non-PASS verdict (CONSUMED, TX or
-> > REDIRECT) for the first, non-EOP buffer of a multi-descriptor frame. No skb
-> > gets built, and the loop moves on with skb still NULL:
-> > 
-> > 		/* fetch next buffer in frame if non-eop */
-> > 		if (igc_is_non_eop(rx_ring, rx_desc))
-> > 			continue;
-> > 
-> > On the next continuation descriptor, !skb is still true, so the TSIP branch
-> > subtracts IGC_TS_HDR_LEN again. If that continuation holds fewer than 16
-> > bytes, size wraps.
-> > 
-> > The wrapped size then goes to xdp_prepare_buff(), and the continuation is
-> > run through XDP as a new frame with data_end before data. On XDP_PASS, both
-> > igc_build_skb() and igc_construct_skb() compute:
-> > 
-> > 	unsigned int size = xdp->data_end - xdp->data;
-> > 
-> > That comes out to about 4 GiB:
-> > 
-> > - igc_build_skb() passes it to __skb_put(). On PAGE_SIZE >= 8192,
-> >   igc_get_rx_frame_truesize() also wraps to a tiny truesize, so
-> >   napi_build_skb() would place skb_shared_info inside the packet data.
-> > - igc_construct_skb() turns it into a fragment of almost 4 GiB. That looks
-> >   like the same corrupted skb the commit message describes.
-> > 
-> > Can this be reached from the wire? On PAGE_SIZE >= 8192, igc_set_rx_mode()
-> > never clamps RLPML:
-> > 
-> > #if (PAGE_SIZE < 8192)
-> > 	if (adapter->max_frame_size <= IGC_MAX_FRAME_BUILD_SKB)
-> > 		rlpml = IGC_MAX_FRAME_BUILD_SKB;
-> > #endif
-> > 	wr32(IGC_RLPML, rlpml);
-> > 
-> > So the hardware still accepts jumbo frames even though XDP limits the MTU to
-> > 1500, and with XDP the ring uses 3072-byte buffers. A remote frame that
-> > leaves 1 to 15 bytes in the second descriptor would hit this.
-> > 
-> > Would it be safer to track start-of-frame explicitly, or to drop the rest of
-> > the frame's descriptors after a non-PASS verdict? Another option is to
-> > reject size < IGC_TS_HDR_LEN before the subtraction.
-> > 
-> > >  			ctx.rx_ts = pktbuf;
-> > >  			pkt_offset = IGC_TS_HDR_LEN;
-> > >  			size -= IGC_TS_HDR_LEN;
-> > 
-> > [Severity: High]
-> > The same unchecked subtraction is still present in the AF_XDP zero-copy
-> > path. igc_clean_rx_irq_zc() strips the header from every descriptor with
-> > TSIP set. There is no first-buffer gate and no size check:
-> > 
-> > 		if (igc_test_staterr(desc, IGC_RXDADV_STAT_TSIP)) {
-> > 			ctx->rx_ts = bi->xdp->data;
-> > 
-> > 			bi->xdp->data += IGC_TS_HDR_LEN;
-> > 			...
-> > 			size -= IGC_TS_HDR_LEN;
-> > 		} else {
-> > 			ctx->rx_ts = NULL;
-> > 		}
-> > 
-> > 		bi->xdp->data_end = bi->xdp->data + size;
-> > 
-> > Can zero-copy frames span descriptors at MTU 1500?
-> > igc_configure_rx_ring() programs the XSK frame size through
-> > IGC_SRRCTL_BSIZEPKT(), which is (x) / 1024. With 2048-byte chunks the frame
-> > size is 1792, so the hardware buffer becomes 1 KB.
-> > 
-> > igc_xdp_enable_pool() only checks:
-> > 
-> > 	if (frame_size < ETH_FRAME_LEN + VLAN_HLEN * 2) {
-> > 
-> > That accepts 1792 without allowing for the 1 KB rounding or the 16-byte
-> > inline timestamp, even though the comment there says frames should not
-> > span multiple buffers.
-> > 
-> > On 4K pages RLPML is IGC_MAX_FRAME_BUILD_SKB. A received frame of about
-> > 1009 to 1023 bytes, plus the timestamp header, would leave 1 to 15 bytes in
-> > a second descriptor.
-> > 
-> > The reproduction in the commit message suggests TSIP is set on such
-> > continuation descriptors. If so, size wraps here and data_end ends up about
-> > 4 GiB past the XSK chunk.
-> > 
-> > Wouldn't that let the XDP program's packet bounds checks pass for offsets
-> > past the chunk? On XDP_REDIRECT, it would also report a bogus length to the
-> > XSK socket.
-> > 
-> > Should igc_clean_rx_irq_zc() get a similar fix? Should
-> > igc_xdp_enable_pool() also account for the 1 KB SRRCTL granularity and the
-> > inline timestamp?
-> > 
-> > --
-> > Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013010854.4068874-1-p%401g4.org
-> > 
-> 
-> Yes, there's work needed elsewhere, but it's entirely independent of my fix. It's 
-> questionable how much of this is even reachable and if any impact whatsoever. 
-> 
-> Here's what I can reproduce with and without kasan and what my patch fixes. You are on your 
-> own on the rest.
-> 
-> I'm sorry, if only there were more time...
-> 
-> Good luck.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Hi Paul,
+Low priority / nit picks for your consideration:
 
-Thanks a lot for your patch.
+- [Low] The commit message is inaccurate about where the crash happens.
 
-I  do accept that there are some pre-existing issues in the AI-generated
-review that are not strictly related to this patch.
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but isotp_bind()
+  in net/can/isotp.c still ignores the return value of both…
 
-But I do think that it would be best to make this patch more complete
-in so far as preventing the overrun described by making a wider guard
-for calling igc_test_staterr().
+--
 
-And including igc_clean_rx_irq_zc() in the fix.
+can: replace ARPHRD_CAN type checks with can_get_ml_priv()
 
-My slight preference would be for explicitly tracking the first buffer.
-But perhaps that degrades performance.
+This patch replaces the remaining dev->type == ARPHRD_CAN checks in
+af_can, bcm, gw, isotp and raw with can_get_ml_priv(). The TUNSETLINK
+ioctl can switch a TUN/TAP device to ARPHRD_CAN while dev->ml_priv stays
+NULL, and such a device passes the old type checks.
+
+Link: https://patch.msgid.link/20261012164802.94113-1-socketcan@hartkopp.net
+Link: https://patch.msgid.link/20261019152741.54854-5-socketcan@hartkopp.net
+
+> The TUNSETLINK ioctl allows a down TUN/TAP device to set its hardware
+> type to ARPHRD_CAN while dev->ml_priv remains NULL. Such a repurposed
+> netdevice passes the ARPHRD_CAN checks and triggers a NULL pointer
+> dereference when CAN filters are created and when they are removed,
+> e.g. by the CAN protocols' netdevice notifier handlers.
+
+[Severity: Low]
+Is the "when CAN filters are created" part accurate for this tree?
+
+Commit 8aa59e3559494 ("can: af_can: fix NULL pointer dereference in
+can_rx_register()") already made can_rx_register() reject devices
+without ml_priv:
+
+    if (dev && (dev->type != ARPHRD_CAN || !can_get_ml_priv(dev)))
+        return -ENODEV;
+
+raw, bcm, gw (through cgw_register_filter()) and isotp all create filters
+through can_rx_register(). So creating a filter can't reach the NULL
+ml_priv.
+
+The only dereference left seems to be on removal. can_rx_unregister()
+checked only dev->type, and then can_dev_rcv_lists_find() does:
+
+    struct can_ml_priv *can_ml = can_get_ml_priv(dev);
+    return &can_ml->dev_rcv_lists;
+
+The spin_lock_bh() on dev_rcv_lists->lock then goes through a near-NULL
+pointer.
+
+The path that actually gets there looks like isotp. isotp_bind() ignores
+the -ENODEV from both can_rx_register() calls and sets so->bound = 1
+anyway. Later, unregistering the filters crashes:
+
+isotp_bind()
+    can_rx_register() -> -ENODEV, ignored
+    so->bound = 1
+
+isotp_release() or isotp_notify(NETDEV_UNREGISTER)
+    can_rx_unregister()
+        can_dev_rcv_lists_find()
+        spin_lock_bh(&dev_rcv_lists->lock)
+
+The code change itself looks correct. Could the commit message describe
+the crash on removal and the isotp path instead? That would show stable
+backporters which code is affected.
+
+> diff --git a/net/can/isotp.c b/net/can/isotp.c
+> index 64ff203a37f4..5e1c3971ebfc 100644
+> --- a/net/can/isotp.c
+> +++ b/net/can/isotp.c
+
+[ ... ]
+
+> @@ -1618,7 +1619,7 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+>  		err = -ENODEV;
+>  		goto out;
+>  	}
+> -	if (dev->type != ARPHRD_CAN) {
+> +	if (!can_get_ml_priv(dev)) {
+>  		err = -ENODEV;
+>  		goto out_put_dev;
+>  	}
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch.
+Further down in isotp_bind(), the return values of both can_rx_register()
+calls are still ignored:
+
+	if (isotp_register_rxid(so))
+		can_rx_register(net, dev, rx_id, SINGLE_MASK(rx_id),
+				isotp_rcv, sk, sock_i_ino(sk), sk);
+	...
+	can_rx_register(net, dev, tx_id, SINGLE_MASK(tx_id),
+			isotp_rcv_echo, sk, sock_i_ino(sk), sk);
+
+	/* switch to new settings */
+	...
+	so->bound = 1;
+
+The new can_get_ml_priv() check rules out the -ENODEV cases. However,
+can_rx_register() can still return -ENOMEM:
+
+	rcv = kmem_cache_alloc(rcv_cache, GFP_KERNEL);
+	if (!rcv)
+		return -ENOMEM;
+
+In that case, does bind() report success even though the socket has no RX
+receiver, no echo receiver, or neither? RX frames would be dropped without
+any error, and isotp TX would wait for echo frames that never arrive.
+
+A later isotp_release() or isotp_notify() for NETDEV_UNREGISTER would
+only print "receive list entry not found" from can_rx_unregister(). It
+would not crash.
+
+Other CAN protocols handle this: raw_enable_filters() rolls back on error,
+and bcm_rx_setup() checks err. Should isotp_bind() check these results and
+unwind too? The last patch in this series ("can: protect the receive lists
+with a per-device lock") still leaves both calls unchecked.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019170834.1727150-2-mkl%40pengutronix.de
