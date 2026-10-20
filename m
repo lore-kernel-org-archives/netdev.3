@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792516387;
-	b=IYZEhE7P06TIrPrqq2rsEhlA19OHKsnZzv04eB4p7Bi0G0U/jfEafqXZMA2pfSvNcxTp
-	 TwoQcMU5jqA156bPitFtubV8oKrtKZe9gCdV/GE0JEfIu9zLsbgNNUgO1UsYvI0JjrOeF
-	 7yfaSePypEvLScj9qyiuAD+vrTRz1ATmuXmGtNkqS408jKHv8/a09yhYWpcMkGxouSBpe
-	 ZdfyfczyFpljaB8baJFemlaQBF8yKg423NpigwAX2Wd9bKOO8+5m1jlyLg6NBEmzxNRMh
-	 KL7Um/WoBryYjrcfC0PTrXKuFQgZrB7z8hDsbdNXjHHyF4WBJSA011+IhWB7E+/NnIg==
+	t=1792516389;
+	b=CZjsxVpeoe+c9synonfPdRqwAWGTfSNA8GK24DXsj92FLjG8L2/9fde0hCrYEQnQFv3s
+	 5+2hhTpgcfTlnrEdkhp/lfO+0tCWjgDrFEbVTKPyu36W08LBVdmUk/Jc14VJOlYDywZKy
+	 wQ5S2rt5XX0xsV7zUz+FF/tz4TKTzSjWau1ZTcLWUQIhRdo1GTP7R/qzHUTb+IyUaFba7
+	 r6iVaok75AkGL76GrUBgYvvEiMfAM/WOvQMEc/ZjOo61+OSEdIilLw8jsrx8vcIqWM4Zx
+	 kKl1VKEPcjBrzSNBe1k2sQya2vhI+SsBt74ztgjttkMrGGoXMtCnwPv9Pp5NZtlBL3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792516387;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792516389;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=i0B6FKQTqCem+z0psQ9tl4LqgOvKQwE8q+glxM8Gg0I=;
-	b=YfoUVq6FYDlNSLV1M5h/0GCPidva1yQ2avJhXzExPkBCdREf/10YqOLob4XEemEsN0MF
-	 ecVaaXnCuF9FUbLEAdpvMHhHhMIJZDh7cY2OTuotB+E8T9tHCBNRPjW+U2JFqvPb7ZlDm
-	 h3e2I7REJ+Sy99JdCfXnMRAeGATXV5VyU6s/qJGpPBxesTdlrDyHcfFP7KmC7RXvDvm/T
-	 Cs+iiPIc/SAMkZALYm9eY/r6hG5jDpmFX69Q8WTQfbpHz6slcru5gkkvep8VgYHt1TsBe
-	 S60Ffjkr2nsLiKTTxnv73GQxptpy1v2o8kN+2/g1xyTkwXe8hUvEVphThV31VFJXakQ==
+	bh=euoK0BaQVuSiWOTngh9LsysjB5f7AtkG7sX8OIudhdg=;
+	b=rm+cEKMRNyro9NloXoFpgM1+h5/hms9TEsRg9nofZId+wB0YCamW3SzZU9la6I10lKEx
+	 olcw+c97UBCO1bY8BVsgRGgPnbT5Hr/6DWnfQuD3iUXQsFKZGaNPw25S0ODLIUt6gVhBs
+	 /Ac9JuxeIvLp2hJ0tyl3Ha+zUg6QVbFxtpP8Y7rjInZxijqUTAOXh7avIsuMvYeM2U2OJ
+	 rkSUW5Sbch2cwpn7v2k6m2ZvdUNweS+s6WtyAAikULa3ADKFtUSu7J1gazl8mhRidiKL2
+	 mQl8jkHEzWrutIGGSDUnO7TpVHHxZvZ+sgA0jFv5wPcGVL7/xp3oVGONahyJM/K7lNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=szelinsky.de;
 	spf=pass smtp.mailfrom=szelinsky.de;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=AIOZ3ymY;
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=Kkq6gXar;
 	arc=none smtp.remote-ip=85.214.127.56
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682960A261A;
-	Tue, 20 Oct 2026 17:13:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0682960A261A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A4360A3813;
+	Tue, 20 Oct 2026 17:13:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90A4360A3813
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=AIOZ3ymY
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=Kkq6gXar
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id E6925E83374;
-	Tue, 20 Oct 2026 19:13:04 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 21D60E83495;
+	Tue, 20 Oct 2026 19:13:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1792516384;
+	s=mail; t=1792516387;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=i0B6FKQTqCem+z0psQ9tl4LqgOvKQwE8q+glxM8Gg0I=;
-	b=AIOZ3ymYhnoiH61VB0ViRJaE+hzCkNVpotGf2u97ZB5v2U7i/sb8WgcxKgt1BN+77AN7wN
-	rCjsA/A0F/q7qcajyef8ksh5k2p4vh6JXIU4jFzbHQwejB0jXzKypvbO3sQ5ZDwIsom6zR
-	pssBAkp2ZTw7TEXpXKM9xon7zj8l0YOCIafx+6NSD+UuvcnCVOjPHWuiF7DvV5qHXGOSHC
-	0yzUTPmwe3UoWBlrxFN+l69dJLe3CPRVl74DW2IK5s5cXR3hwIsoTi5pdi7GzUHsH4Uh/I
-	9+quU0ZwdT9yPNkgzJ6lDvaMLSkNr994jL9n1Iqu0brOCek4aK4+aunDu/4F1w==
+	bh=euoK0BaQVuSiWOTngh9LsysjB5f7AtkG7sX8OIudhdg=;
+	b=Kkq6gXar9TNZmkXM8ZzqofoYYuMFuEb5mloOEbHAwb0V0hetuTOw2WIPFe/2I8UMq1O6A8
+	vmm+ZPEgW5OJNGxnG2CZgbeNoblOqPT+zdS+SYwJCfppLaIwJW9c7XyB4FsqtlrGbw/+G+
+	8cmyS77g0FUO2IC04NDloTKxs6xZj0EYSv17mgxrEuOmk4kj+WJVCcRUcx5BNOqJZm/PRe
+	0C0pxKpEmJReVANAbqRe6hBna2lp9Ob9gJGTJ//6lspHrpJDa141ne5Ys4Q1dShZivGzQ+
+	0X4iiBwlaaFbxTCXHnbCWhCcU1edgZ/HL5zYod+dFqefMKOKVgi0cmrjSZwuWA==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id XhMsj1HP6odX; Tue, 20 Oct 2026 19:13:04 +0200 (CEST)
+ id wXOfgk9vHAXd; Tue, 20 Oct 2026 19:13:07 +0200 (CEST)
 Received: from p14sgen5.. (unknown [91.25.97.186])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Tue, 20 Oct 2026 19:13:04 +0200 (CEST)
+	Tue, 20 Oct 2026 19:13:06 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -70,9 +70,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net v2 05/14] net: pse-pd: do not reach a freed PHY from the notification worker
-Date: Tue, 20 Oct 2026 19:12:40 +0200
-Message-ID: <20261020171249.853085-6-github@szelinsky.de>
+Subject: [PATCH net v2 11/14] net: pse-pd: unwind allocations when controller registration fails
+Date: Tue, 20 Oct 2026 19:12:46 +0200
+Message-ID: <20261020171249.853085-12-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261020171249.853085-1-github@szelinsky.de>
 References: <20261020171249.853085-1-github@szelinsky.de>
@@ -87,127 +87,196 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The notification worker holds a reference on the pse_control, but not
-on the PHY that psec->attached_phydev points to. If the PHY is removed
-while the worker runs, the pse_control survives and the worker reads the
-freed PHY. The same happens without a race when two PHYs share one PI:
-attached_phydev keeps pointing at the first PHY after it is removed.
+When pse_controller_register() fails, it does not free the
+notification kfifo. Worse, if pse_register_pw_ds() fails part way, the
+power domains it already set up stay in the global map. Their supply
+handle belongs to a PI regulator that devres then frees, so the next
+user of the map reads freed memory.
 
-pse_control_put() unlinks and frees a pse_control under pse_list_mutex,
-and phy_device_remove() calls it before the PHY is freed. So instead of
-taking a reference, let the worker look the pse_control up and use
-attached_phydev under pse_list_mutex. This nests pse_list_mutex inside
-rtnl; nothing under pse_list_mutex takes rtnl.
+Free the kfifo on every error path, and let pse_register_pw_ds() undo
+its own power domains while it still holds pse_pw_d_mutex, so no other
+controller can pick one up first. The PI array is already freed by
+devres.
 
-For a PI shared by two PHYs there is no single netdev to report to, so
-clear attached_phydev when a second PHY takes the pse_control, and warn.
-Events for that PI are then no longer reported, even after one PHY goes
-away. Failing the second PHY instead would fail its whole MDIO bus.
+Found by code inspection and AI review. Triggered in QEMU (arm64,
+KASAN) with a test-only PSE controller and an injected failure in
+pse_register_pw_ds() at the third PI: reading the regulator summary in
+debugfs then gives
 
-Triggered in QEMU (arm64, KASAN) with a test-only PSE controller:
-removing a PHY while the worker waits for rtnl, and removing one of
-two PHYs on a shared PI, both give
+  BUG: KASAN: slab-use-after-free in regulator_summary_show_subtree+0x770/0x9c4
 
-  BUG: KASAN: slab-use-after-free in pse_send_ntf_worker+0x2b0/0x2bc
+With this patch the failure is undone, and kmemleak reports nothing.
 
-With this patch both are gone.
-
-Fixes: fc0e6db30941 ("net: pse-pd: Add support for reporting events")
+Fixes: 50f8b341d268 ("net: pse-pd: Add support for PSE power domains")
+Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 ---
- drivers/net/pse-pd/pse_core.c | 44 ++++++++++++++++++++++++++---------
- 1 file changed, 33 insertions(+), 11 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 73 +++++++++++++++++++++++++----------
+ 1 file changed, 52 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index eab7e25f2039..af9eb2979270 100644
+index 63217a4808e3..116ad2d1984a 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -238,24 +238,22 @@ static int of_load_pse_pis(struct pse_controller_dev *pcdev)
-  * @pcdev: a pointer to the PSE
-  * @id: index of the PSE control
+@@ -889,7 +889,8 @@ devm_pse_pi_regulator_register(struct pse_controller_dev *pcdev,
+ 	return 0;
+ }
+ 
+-static void __pse_pw_d_release(struct kref *kref)
++/* Release for a put made with pse_pw_d_mutex already held. */
++static void pse_pw_d_release_locked(struct kref *kref)
+ {
+ 	struct pse_power_domain *pw_d = container_of(kref,
+ 						     struct pse_power_domain,
+@@ -897,7 +898,6 @@ static void __pse_pw_d_release(struct kref *kref)
+ 
+ 	regulator_put(pw_d->supply);
+ 	xa_erase(&pse_pw_d_map, pw_d->id);
+-	mutex_unlock(&pse_pw_d_mutex);
+ 	kfree(pw_d);
+ }
+ 
+@@ -922,6 +922,30 @@ static void pse_pi_power_off(struct pse_controller_dev *pcdev, int id)
+ 	pse_pi_deallocate_pw_budget(&pcdev->pi[id]);
+ }
+ 
++static void __pse_pw_d_release(struct kref *kref)
++{
++	pse_pw_d_release_locked(kref);
++	mutex_unlock(&pse_pw_d_mutex);
++}
++
++/* Switch off the PI, give back its budget and clear pi[id].pw_d before
++ * the domain's reference is dropped. The PI regulator ops and pse_isr()
++ * hold pcdev->lock while they use it.
++ */
++static struct pse_power_domain *
++pse_pi_take_pw_d(struct pse_controller_dev *pcdev, int id)
++{
++	struct pse_power_domain *pw_d;
++
++	mutex_lock(&pcdev->lock);
++	pse_pi_power_off(pcdev, id);
++	pw_d = pcdev->pi[id].pw_d;
++	pcdev->pi[id].pw_d = NULL;
++	mutex_unlock(&pcdev->lock);
++
++	return pw_d;
++}
++
+ /**
+  * pse_flush_pw_ds - flush all PSE power domains of a PSE
+  * @pcdev: a pointer to the initialized PSE controller device
+@@ -932,15 +956,7 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+ 	int i;
+ 
+ 	for (i = 0; i < pcdev->nr_lines; i++) {
+-		/* Clear it before the put that may free the domain. The PI
+-		 * regulator ops and pse_isr() hold pcdev->lock while they
+-		 * use it.
+-		 */
+-		mutex_lock(&pcdev->lock);
+-		pse_pi_power_off(pcdev, i);
+-		pw_d = pcdev->pi[i].pw_d;
+-		pcdev->pi[i].pw_d = NULL;
+-		mutex_unlock(&pcdev->lock);
++		pw_d = pse_pi_take_pw_d(pcdev, i);
+ 		if (!pw_d)
+ 			continue;
+ 
+@@ -958,8 +974,8 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
   *
-- * Return: pse_control pointer or NULL. The device returned has had a
-- *	   reference added and the pointer is safe until the user calls
-- *	   pse_control_put() to indicate they have finished with it.
-+ * Must be called with pse_list_mutex held. No reference is taken: the
-+ * pointer is only valid until pse_list_mutex is released.
-+ *
-+ * Return: pse_control pointer or NULL.
+  * A power domain is shared by every controller whose PIs sit on the same
+  * supply, so it must not be tied to the lifetime of the controller that
+- * happened to create it. It is freed by __pse_pw_d_release() on the last
+- * kref_put().
++ * happened to create it. It is freed by pse_pw_d_release_locked() on the
++ * last kref_put().
+  *
+  * Return: Pointer to the newly allocated PSE power domain or error pointers
   */
- static struct pse_control *
- pse_control_find_by_id(struct pse_controller_dev *pcdev, int id)
- {
- 	struct pse_control *psec;
- 
--	mutex_lock(&pse_list_mutex);
-+	lockdep_assert_held(&pse_list_mutex);
-+
- 	list_for_each_entry(psec, &pcdev->pse_control_head, list) {
--		if (psec->id == id) {
--			kref_get(&psec->refcnt);
--			mutex_unlock(&pse_list_mutex);
-+		if (psec->id == id)
- 			return psec;
--		}
+@@ -1047,6 +1063,13 @@ static int pse_register_pw_ds(struct pse_controller_dev *pcdev)
  	}
--	mutex_unlock(&pse_list_mutex);
- 	return NULL;
- }
  
-@@ -268,6 +266,7 @@ pse_control_find_by_id(struct pse_controller_dev *pcdev, int id)
- static struct net_device *pse_control_get_netdev(struct pse_control *psec)
- {
- 	ASSERT_RTNL();
-+	lockdep_assert_held(&pse_list_mutex);
- 
- 	if (!psec || !psec->attached_phydev)
- 		return NULL;
-@@ -1015,13 +1014,23 @@ static void pse_send_ntf_worker(struct work_struct *work)
- 		struct net_device *netdev;
- 		struct pse_control *psec;
- 
--		psec = pse_control_find_by_id(pcdev, ntf.id);
-+		/* If attached_phydev is set, it names the only PHY that
-+		 * holds this pse_control: a second PHY on the same PI
-+		 * clears it in pse_control_get_internal(). That PHY's
-+		 * pse_control_put() unlinks and frees the pse_control under
-+		 * pse_list_mutex before the PHY itself can be freed. Holding
-+		 * the mutex across the lookup and the attached_phydev
-+		 * dereference therefore keeps the PHY alive, which a
-+		 * reference on the pse_control alone would not.
-+		 */
- 		rtnl_lock();
-+		mutex_lock(&pse_list_mutex);
-+		psec = pse_control_find_by_id(pcdev, ntf.id);
- 		netdev = pse_control_get_netdev(psec);
- 		if (netdev)
- 			ethnl_pse_send_ntf(netdev, ntf.notifs);
-+		mutex_unlock(&pse_list_mutex);
- 		rtnl_unlock();
--		pse_control_put(psec);
- 	}
- }
- 
-@@ -1412,6 +1421,19 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
- 
- 	list_for_each_entry(psec, &pcdev->pse_control_head, list) {
- 		if (psec->id == index) {
-+			/* attached_phydev can only name one PHY. If a second
-+			 * one shares the PI, either may be removed first and
-+			 * leave it pointing at a freed phy_device, so stop
-+			 * reporting events for this PI instead.
-+			 */
-+			if (psec->attached_phydev &&
-+			    psec->attached_phydev != phydev) {
-+				dev_warn(pcdev->dev,
-+					 "PI %u shared by several PHYs, not reporting its events\n",
-+					 index);
-+				psec->attached_phydev = NULL;
-+			}
+ out:
++	/* Undo this call's domains before another controller can find them */
++	while (ret && i--) {
++		struct pse_power_domain *pw_d = pse_pi_take_pw_d(pcdev, i);
 +
- 			kref_get(&psec->refcnt);
- 			return psec;
- 		}
++		if (pw_d)
++			kref_put(&pw_d->refcnt, pse_pw_d_release_locked);
++	}
+ 	mutex_unlock(&pse_pw_d_mutex);
+ 	return ret;
+ }
+@@ -1120,24 +1143,25 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 	    !pcdev->ops->pi_get_pw_status) {
+ 		dev_err(pcdev->dev,
+ 			"Mandatory status report callbacks are missing");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto free_kfifo;
+ 	}
+ 
+ 	ret = of_load_pse_pis(pcdev);
+ 	if (ret)
+-		return ret;
++		goto free_kfifo;
+ 
+ 	/* The PI regulator ops use pcdev->pi until devres unregisters the
+ 	 * regulators, so free it from devres too, after them.
+ 	 */
+ 	ret = devm_add_action_or_reset(pcdev->dev, devm_pse_release_pis, pcdev);
+ 	if (ret)
+-		return ret;
++		goto free_kfifo;
+ 
+ 	if (pcdev->ops->setup_pi_matrix) {
+ 		ret = pcdev->ops->setup_pi_matrix(pcdev);
+ 		if (ret)
+-			return ret;
++			goto free_kfifo;
+ 	}
+ 
+ 	/* Each regulator name len is pcdev dev name + 7 char +
+@@ -1154,26 +1178,33 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 			continue;
+ 
+ 		reg_name = devm_kzalloc(pcdev->dev, reg_name_len, GFP_KERNEL);
+-		if (!reg_name)
+-			return -ENOMEM;
++		if (!reg_name) {
++			ret = -ENOMEM;
++			goto free_kfifo;
++		}
+ 
+ 		snprintf(reg_name, reg_name_len, "pse-%s_pi%d",
+ 			 dev_name(pcdev->dev), i);
+ 
+ 		ret = devm_pse_pi_regulator_register(pcdev, reg_name, i);
+ 		if (ret)
+-			return ret;
++			goto free_kfifo;
+ 	}
+ 
+ 	ret = pse_register_pw_ds(pcdev);
+ 	if (ret)
+-		return ret;
++		goto free_kfifo;
+ 
+ 	mutex_lock(&pse_list_mutex);
+ 	list_add(&pcdev->list, &pse_controller_list);
+ 	mutex_unlock(&pse_list_mutex);
+ 
+ 	return 0;
++
++free_kfifo:
++	cancel_work_sync(&pcdev->ntf_work);
++	kfifo_free(&pcdev->ntf_fifo);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(pse_controller_register);
+ 
 -- 
 2.43.0
 
