@@ -1,97 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792533480;
-	b=vng7qvR3OazWGpoOp1yOYZl4ZGMdsCmv9eVVcxnurej0cLi6NHmEUGEoKwzxbDix+4ma
-	 /SRn7md9Jr8rTYIG/2VF40FqlPQ9DnGi9XDJ8KYsXSZ11k0LkRguKfDYRkSAmUC0flbsh
-	 LV0BkWPHWl0p+18bzzKZNshq8CzyYOcfGCYZtY4eRuGhNl0cgw2vEY/zkslRU+h3Wkpoi
-	 UGQxqxmPjRVTzPrbE/pUNqui7yzCEpgNWjfY9RPIE+8DB7GsZNl8YNNLrifTsMS9pCJsh
-	 3kn2QVTPwOAWGxdV6dwB4eVg8g588ZLaQQl8K/FtkD/fS1gzGrApYBomAAkNFNKN0QQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792533480;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.171
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792533508;
+	b=HSvoxaC0ECDer9V7zOuF+grFMn/GTT2aO6hZlfQIeMklAWCl7TlekGa6+uWDEeCICqV0
+	 mCJWleUdNhcuySP2IfBFjBty7IB0EIPmYnve0YKOlEjVlc3J2fc7gBv5H6yduAF1KMVB4
+	 pebc4ay+HVy6biWOTqSkutak9ej2UDyUUGAZ/9P4Xxx3ZKxipzefdGI/2yUGiONCVWc2N
+	 apGCMDYcG0jQiqf4hLzh8smGqn+x7Y39zQpnlhBSr+EjA1WoEcZVgS87dYij0l/OBbPdu
+	 x7i+nnwUyZEksIj7DrL36ToX87g6Pf4cCO5ZTBPY/73goFR0rGND3HzwvRC0Ul3bhRw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792533508;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=hYnXTzJewxVnTsYQsR0lTJu5zv/qnETwI2MNTZueBaE=;
-	b=w8pDMqksdEUYgaKszkLL43yQJZ+wDJmX2PxUgBIM76GTIENZaqez8T/nXZfR1xYAd03m
-	 IgegiN3EvyGDXVARGVfxSqHiZujX73XC84bJXrVaUiyD1LVqqxH6UBBE12+lFvH8LR5X8
-	 OMuOqAOCWOJ53V4FcgZC3R/mjSxJnay5ifiTH9att/ZAhyqiD5eyB0QT2vwnWEzil3Qbz
-	 4lA6898qHMbES1j4h2du3eVDVTvttML4a++lNKzQ6xyBuJh0eWun8AW+WeVfwAH5wJ099
-	 r8u4015ed59KQ3cRwY/SSnSdiOiOJxRXRN1VRq7vqxWlwezg4rDTl32E0rvU1XXIRIQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=J+M8k3LW;
-	arc=none smtp.remote-ip=74.125.229.8
-Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
+	b=Gx43tSiEGjws3wejMCbYZnyVRUuSR/ba//fJh6fUTx9oQZYEQacTiTuzh0VD3DCVlTMM
+	 787dytuGpKbZ71PrBogW0O0U0gmg25dOEbMBTRrOuI+lLqLoZNJ53otQtEITLh/egE3Gq
+	 mwKD96cwnkakX3E3OsPOLh1EWNgJq75MopOv0RZlzvwZ5SUeW8RDXbjFlnKccbNIUQd08
+	 My3c16KtUWS1Q+i9KIy2hWmg3WOnztWN/wya49t8guH+UipZbKwXgD4nyD8VHEkmCdaLL
+	 zO0nabSPzauQtVAw46nsvDD4XfEO0d1L8D3Zry0anS44rEo1nHaQxSzv+njWSmWFYMQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=paul-moore.com;
+	spf=pass smtp.mailfrom=paul-moore.com;
+	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=ZlCPSaes;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.171
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19984606A31A
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:57:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19984606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B23606A31D
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:58:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73B23606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=J+M8k3LW
-Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-33baa8eb238so13198eec.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 14:57:59 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=ZlCPSaes
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e5fb79ce82so338715ad.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 14:58:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792533507; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TGIm7gx41Zd1EgMSOnGtetnUuRqMhew8emLE2T5w0gTrOf4xICWEPwy3S5h1YI0tGe
+         Hw+IL3FCKKkN80OhCmUi0Z1Lk64LHz/NvAASTvQLilA+8yrkGMyiq/LqmsbA+Jj/ROV2
+         nmjO53VDxMHdfqUklN8EmdI+ZOCdgYTIFM6C3rKmqCZPnYNedPNlIth5Eiu+YyDmxHs4
+         S1Ly6o8zbMsDM2ekgdutrKpaPhi/SC9S5yziZWDgJal5Ic3CJmlaiMtlrK8KDGOJHvCg
+         2WNNjGtzLyTOTx0mlJghztcNy6GTVp291U7UJ8ArguCdWnkzCF41mcb01RnLry7N33hN
+         jzNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
+        fh=DUOjEDVvtgWYRHEAPAymTOAr+RfDOB0HlfebCKH5OFk=;
+        b=ExLmvkD+qGY6NeD5kHa3dCZMuxXUhvDVRBgmGXyiZUGN82mZnoK4PCOybQU7uQV8ho
+         yoxaL3VTYa39uCEhUCwgBTzB++cnBVRLu1MM1x8H4adKQ0uzMsOkRYvUqVIKKc4t/O64
+         +n2jaa7JCovP9P6Eh2cIiZRFK0SFfAJMZuFt+EXuAwzV2a/nurOYkEBDmG9pJYrH5fUU
+         ogZbn1g8AiPTGweWxNKigfgQSeLkVYpALqOrsO7ARIfRBIZBn4R1N8IK5vXlxlKheP5Z
+         j2tU3rbzkcO6Qxs1jP0CzjzJo0D4vdGHzK8zpb58sya3LN3hciMQA9nfjZ/XAQ6e3Hg8
+         2hQg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792533479; x=1793138279; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=paul-moore.com; s=google; t=1792533507; x=1793138307; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=hYnXTzJewxVnTsYQsR0lTJu5zv/qnETwI2MNTZueBaE=;
-        b=J+M8k3LW1y1p2rAPNOoanZEOm8pIOU1+hFBlot9nZuGIe4j/NEAa3FoXR4K0fIC/Ww
-         nMySMKfpE2Akc8lwd9+qGjYpg65pMLQArQFxr4tam3HsNsKTXdlfbPjO2xBVcl2cHAk5
-         5zHbTyv+gliwodCFR7WwgWQY720cCKozaMjhp6H0kmml3W2bYWCO0bmj2aC2HDVJlTv4
-         qR0UCKjB/bpPAJupIljMfGC8oih7hHdEW9uM09884Y/2Qa0kNX/x6LnMQp+92vf8im2B
-         qGwF2UGwdNw88cc+T6dT47t7P8G/p9wcCyLXIZf8fox/xEFre6sXoE5mS4Iui8gmh8xT
-         z51g==
+        bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
+        b=ZlCPSaesvwK6ytevnWbTHn0TkN/ILYgKMLvVa+tEKPUiI/PXEgd7eOMiq+SnfX0kRJ
+         wqPZqYXGzmDSfSov9ygbM5FaoZsi8bAJ5yPxoeKuAggi1uuyppnl86Kf6jIq1ueT2MkJ
+         fNMdSChgDXaIEYSYaeWM6YWOdsxPAhe4AbIEkCaAJAsGZ9mOy/IhBXPiNSjTZ3GHubiU
+         XwoZ7vMLO/o01Slg5yXTFqwib0as9ToE5VFmGl9Kq8tH4ULUtbFXWDJNOFVY/oZXWiMe
+         dHnNiznLoItrj5HNuMEJDE+1IKIutN+nzKD0M6XegYgQImAS2CNtMjD7ojkhTlY3ZSpW
+         ZnCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792533479; x=1793138279;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792533507; x=1793138307;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hYnXTzJewxVnTsYQsR0lTJu5zv/qnETwI2MNTZueBaE=;
-        b=XyrcFoFed6ay6wa+ka7o+3B2Jg3ENmN1RGkmDyYytyNxX8HrNqT64oXkZOn0K53/5I
-         GOGQjDEzg8C7ZziLqOmtUnwRO6Mo1PvY7jwdPWOMF1vGJfBo151Mr9ndXcH5OPK7Naeb
-         1m0uRHF5Ue7bjukOv5mlxQ4XTdNsuEVRQmjFCcO9+cwuSaeG3cIVay5IY1tFeDg5nXPW
-         AX41JweXAkvfIcXb6Ts23blO1K3+WNV3RIIGCIewFHrnJEC62aVxW/Ku4XQMjq0njsIT
-         eUcQBgCxv/0dHERTtjrlRaLtzrAqrlTwGWIgH+fn0QveZ0ygynllKFT6DyQ5SWQ/4Ksh
-         vUsQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJFtPPQltz/ne3+aAYgUfZOePVWwVHGZ84cJVe0xeG9QzO1sJb3SWp3zbDFjb2pXPHMeLjX94=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLBsTSSFcHfA32Y5skLRat40V4t8MyYx2xM5/4b/qwt3wPQsCC5
-	/a42KN+glQQdfN6J3GqdGloi8yE022yh5O2DCthIIDvhyJ3oovZ0hOXI
-X-Gm-Gg: AYBFou19G8F9ccZoZmzlAexUNrbgmNfzsnc5sEktAqetGHX6l1jAyIH5oA5T/lYXxGq
-	QRxJGFizBTlJw3McMh/pjzdLbVHVihraagvIqKxGJqhjtFSjCy9PZpFf4Rzhhz9VSrNwO5ICECN
-	1jzzwoc2kSbRR6AFTJpCBzyvBl1hNbmOYv6NECPjAwP5EBBoXuSvQzUEt/pSOn3k6sPiqFNm5av
-	gkKLnpdkKSvDwRbyZN2pKdfB63tF9B/KfM9GnhVGctRBG9zWLJoC0kJw1abgZCcUWXyRPSjHTuH
-	Qo/4MX8U2hTl0JFf12twr6c2ir8Xc+AiWvICh2/CrMS90RLcrnBoF+hKitdQ3HDGGTHv2Fd1HZx
-	2R28y2du3wZscuBiXoTA0hs9Q9eU1KsC/cWs227FVUgi7gLrqEuFQ0CMpMKYhPFLdATs6nD/fuq
-	cXbEKdPx5j3SkHdNJMFfN5Wr1/9LZ/WyprsfmoQFyh1ioFHIRu/cV+10JVmjBfFb927u8yixrZl
-	ILnKyUSoWKlJ9x1tT2zkOIcD+aY5/Op2KXlvNaqOv0c4FW01w==
-X-Received: by 2002:a05:7022:7e84:b0:143:4450:e1e6 with SMTP id a92af1059eb24-190a7660d75mr193063c88.35.1792533478955;
-        Tue, 20 Oct 2026 14:57:58 -0700 (PDT)
-Received: from localhost ([2a03:2880:9ff:70::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903bb7f098sm1857639c88.12.2026.10.20.14.57.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 14:57:58 -0700 (PDT)
-Date: Tue, 20 Oct 2026 14:57:33 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>
-Subject: Re: [PATCH net] net/mlx5e: Stop asserting for RTNL when closing
- channels
-Message-ID: <atfjx6iJJiqAq3Io@devvm16445.scu0.facebook.com>
-References: <20261020153659.3440902-1-tariqt@nvidia.com>
+        bh=sr2CLGfHoWoGGElFIf0Rz1gXMEHFA2vL11vrI5IV4+0=;
+        b=GWgBiC3aYefeYsuSRdTsVzl3kW3+8t7eLAhv010vrGOKyWo9H3/IGgFfgmB6RLAqW5
+         LVLlrUOKPkXoZzuiH3Kdm6h82dKzah2l476S4jcJNqVTnELR23HmsapRNrv/YXsaEZ2y
+         5WRzHlrCL43H1VbF+ar2NNxdIfTBQ7iWIruCbuYYsflabWcpf9jwuVgLn/ofKECYCUQW
+         IljFZFca9fEQyHHcdPu8paz6/dPxelsnxr4T3xyHt5JiLFS1vLtvf08E017zPo1JDV1z
+         lxagDkbfp4P24xRVdan9KH0zFY57QMI4XpctHaIzeP1q1VwudQFQVR+ZvLHlPMokHArl
+         5cBA==
+X-Forwarded-Encrypted: i=1; AKwUvBxSWX0E+nU5Tcbi6KDPIBhRDP9gkFG0nr8il8AOCjGka66s90WkttlIqUqJQFPnOz5nKf/zw6o=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKhRG919hxO3PUNb5kGn3REJnO9W+grNG+xUhYtPospLai+ydNL
+	YvnutGKWzhxCrJfMRaYmQbKhOx7KuCZ+0VVeSjZvmP20qeoNeNWO2/bKrYrNPoa4lR2CeaK1N4E
+	f528rJ4rj35V1meUBbEtLfPy0tXmnFKTcnxtDU7/R
+X-Gm-Gg: AYBFou2+HvmFtWhQ3t/LvbeII80iyFIWRV4vPgAPI3AwOW5GOhv51BYOwiVLGM+kvxC
+	CcWcb+Xcc3EAaOhnvrNy6L5gW0QVmjKGEhn9VHKLOY0FE2xEK2jykC5IcaJdezJm/JGGwK7LH3d
+	XggG6WeCQat6/v0hXjDW7E/u+ovVbf0Bazo+9bD0Jn+gGOv+3zFGEJYjkAMfgNvmOTX3IucoxYT
+	2r9KGvvXNxltzCO7DG1z72I/PdnfZ0exk/9C9KzZCHKPUICqxs6o7pyeLlOubBOMuDrGZT75eZ5
+	PhYv5YpGc0axG+acyC9XbWly7TSdcEhVMBkVzH1+tjSfh83Je9c9SEmHXp54y2UoEo5C83EoJOK
+	q70sD+Ag6javI
+X-Received: by 2002:a17:903:98f:b0:2e9:7e90:8a3 with SMTP id
+ d9443c01a7336-2ea43c649bcmr890865ad.39.1792533506693; Tue, 20 Oct 2026
+ 14:58:26 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,35 +104,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261020153659.3440902-1-tariqt@nvidia.com>
+References: <179138670045.80227.16292613517250896744@gmail.com>
+ <CAL4WiirbJrQThGS4BUo=a=AV9ckJk2AyedO8AgJgozjHOwu5Vw@mail.gmail.com>
+ <CAHC9VhT5w3K1MvmP=1Mxf6KKWZD5BbK14bVHJGYFN93080j5jg@mail.gmail.com> <179216077404.22091.15636720633867774901@gmail.com>
+In-Reply-To: <179216077404.22091.15636720633867774901@gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 20 Oct 2026 17:58:15 -0400
+X-Gm-Features: AclHuK_bFa67Ysq0EPlVn9haOjzs2jVy9717_wwLtZiIrC2qKhEMo2q1W3c8W7E
+Message-ID: <CAHC9VhTDnwGkX47vOLvS_1HTAcqg7qjkXCiJwn=qGhdy_n0Jvw@mail.gmail.com>
+Subject: Re: [PATCH net] calipso: update payload_len when removing the CALIPSO option
+To: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Alice Mikityanska <alice.kernel@fastmail.im>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/20, Tariq Toukan wrote:
-> From: Cosmin Ratiu <cratiu@nvidia.com>
-> 
-> mlx5e_close_channels() has an ASSERT_RTNL() from the time when RTNL was
-> required for closing channels.
-> But the driver has been switched to using the netdev lock a while back,
-> and this fired from a flow which was forgotten during the conversion:
-> 
-> mlx5e_tx_timeout_work()
->   -> mlx5e_reporter_tx_timeout()
->   -> mlx5e_health_report()
->   -> mlx5e_tx_reporter_timeout_recover()
->   -> mlx5e_safe_reopen_channels()
->   -> mlx5e_safe_switch_params()
->   -> mlx5e_close_channels()
-> 
-> The RTNL is not acquired here, but the netdev lock is, and it is enough.
-> 
-> Rather than switching to netdev_assert_locked(), simply drop the assert.
-> Upper layers (networking core, ethtool core) provide locking and lower
-> layers (NAPI helpers) assert that the netdev lock is held.
-> 
-> Fixes: 8f7b00307bf1 ("net/mlx5e: Convert mlx5 netdevs to instance locking")
-> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-> Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+On Fri, Oct 16, 2026 at 10:26=E2=80=AFAM Joas Antonio dos Santos
+<joasantonio108@gmail.com> wrote:
+>
+> On Wed, Oct 14, 2026 at 9:39 AM Paul Moore wrote:
+> > while basic CALIPSO labeling is tested via an automated test job, this
+> > particular code path is not part of the automated testing.
+> > Improvements to the tests are always welcome.
+>
+> Hi Paul,
+>
+> I opened a PR adding a forwarding test to tests/inet_socket:
+>
+>   https://github.com/SELinuxProject/selinux-testsuite/pull/106
+>
+> It builds a client -- router -- server setup with network namespaces
+> and checks both directions: the router removing the CALIPSO option and
+> the router adding one.  On Fedora 44 (6.19.10, without the fix) only
+> the removal subtest fails, with the forwarded packet dropped as
+> truncated; with the fix all inet_socket and sctp tests pass, both as
+> unconfined_t and sysadm_t.
+>
+> Until the fix reaches the kernel used by the CI, the removal subtest
+> will fail there; I'm happy to gate it on a kernel version if you
+> prefer.
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+I see you sent it to the list too - thank you for helping with this!
+
+--=20
+paul-moore.com
