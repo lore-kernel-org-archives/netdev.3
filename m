@@ -1,58 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792456098;
-	b=qR6i4Ps6vndR4XujD2So6zB2JNBqUYjDJtqtE+8WLn9v+PW9si+hR8WLveFn8c14+pjV
-	 Y2m8IAh9yEIGplCkzDUrsQdUdhZA83kp1yGqCyZJ6mugututCqY4nkx0eVWO2PyWBj+tB
-	 TU2d8esKHnFlkYIMYdwSaPFmcDQvaReeYFsq0h+eJb96Q1vfQlwHdCduBk0bfq3q0MRo9
-	 LcWHT29N9Gp7yIdh1AKKaIAFahQHRLdI7or0LlUpSLiqBUXALDWi30JA+hEBs/CFnaU61
-	 3w52iSAivqJPw8QMk6siY5QxgYbVOdvRe2HChUm97MGPcHX9UyY8zb8bs3MIfeHraIw==
+	t=1792456212;
+	b=4qSHYwUWNcckd3cnG4YCsG53KifvsjU4AEkqvI4tg1O26nSm1wr8w2SntssYX3cERTJq
+	 UFLmxTBc17LHBVLs+DuVE4EN088Ecqqfui7/czHz6tXZi1+A/YH6jjElCd/SJK1J5yavJ
+	 vzvZzmRKOl5vEIbA52xFpzcGObm/R20FQTzKagm4fHm+S/sGVYMfi2hmQbCWXBhW4uGyv
+	 fPluG0ESbxlvufOHrKRRp+bUCO5Wz99gyEwzaBrcOmva8c3UwREvHaapvSKC6evtPRNDf
+	 CuT938VDlX+tS97PGTYCzuD65eSXjdJSpGLv7ryCFJJa8LpfJcVkBUiywz6p/SSveow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792456098;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=ULtxg0Fk0whulWZSHTNN5DQiIhcB0QibJjb6BHCTOMs=;
-	b=nK3uFfC8eHuS30B4Z/BBe5O46YaE6qlS0nLphV39pGlJkG7l/TXI17J8KhNL3ZDOo6FF
-	 cTrprNt6u27yKp92TuIR4b9oQjPDQH1uN3fjAK+9bBY0zEaFc0Abg1dcYtWkLX89RYQAv
-	 3GGgpuKP5jgh0nm/jtvJbdHJt9YUYjUoI99WcMOGu/YBO8J1qHq8E1U2afHa4r3F7VLgI
-	 rh6pcj26JmRykjqbrszcneL2luncE2O7qZNeTj8QaQ5hGIjxy8X6RGt7jEni8srZxchpm
-	 CG73ja7SvYsya4gx/Stmn2oX0+Hwpeq+T5WasRpEy3Gh98BZuMTtwQigr0f2WdSTNZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792456212;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
+	b=k1hBglOV25iU0A9+/duOkWayb6c59Vgm5HHAa0OP7DWs1AwxvTiTRjQF/U1ZWbghbaoI
+	 XEMEacZSRLaFsuagxJiWKtri/A77G0wG19xmGsuguv77ccgPBDSL2Qo60I/NnZdN7++z3
+	 YY4V4IY9ed0ufRFan/gdeIbihfw4D0y/f6w99IzyK+aeJIkklPBEHeWaFbanqZ1pLZoVQ
+	 NWMHj8ncLkObJVzFvd+HqHFamZxPFESd5AvOEDpMD1b/vy4v0Y/VXWX9QfwPf0UOOv/UC
+	 UEn2HHOheqcpyKGXxvQYgO6LPdRLR17hjUMu9o/LujJarIIchXIu6Q5baadrgJMAYBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DMyLsdqx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NPlFtxU3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C51606A31B;
-	Tue, 20 Oct 2026 00:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875FB606A31D;
+	Tue, 20 Oct 2026 00:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DMyLsdqx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746D51F000C8;
-	Tue, 20 Oct 2026 00:28:17 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NPlFtxU3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0151F000C4;
+	Tue, 20 Oct 2026 00:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792456097;
-	bh=ULtxg0Fk0whulWZSHTNN5DQiIhcB0QibJjb6BHCTOMs=;
+	s=k20260515; t=1792456211;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DMyLsdqxxxggacI8ZuSNLwCfUPMnLZFFNfybdB4lPYeBi6/UM0XwKQ8gTwJN1o4lU
-	 DH7ClSCrPo4V+R4pANvHEjYglQ/5L+tR3h9DUNPl3dTVKkAlf1NDH2KmoS/6ZDM6VT
-	 Ea6UVP4JLGIRhtWYpfMxgLMvBRgwAOGOv2Hr025/OG6Si97du3lCHKwvAVJ0c0WW5Q
-	 q/WWoeN4L8/KykiH30W4x6UMsbG1VoefqhnnIax6bUBn9XigY+yi2ubI2OdWCzM4Dg
-	 JDtSM/Z7lwQQ3q320yoVvzSx9iC8a/IS/J3VtwEJU+bgn4yGGvPz4u54mEymEC+EU4
-	 SFTdivULfa6/g==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org
-Subject: [PATCH net-next v6 1/2] net/rds: include the scope id in the sendmsg connection cache check
-Date: Mon, 19 Oct 2026 17:28:15 -0700
-Message-ID: <20261020002816.3087414-2-achender@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261020002816.3087414-1-achender@kernel.org>
-References: <20261020002816.3087414-1-achender@kernel.org>
+	b=NPlFtxU39KdcImvC4QnL8KWmpgIUxiP/vl8Z5o15vV575NbjBnWlwfLVy9V2ehoSg
+	 3Zxyi/KL8X/TQ2mntPVHLXSfCtlBJ8uyPRWhrdsrKJOPMfWNqMSKhkjL4MHNGw5cyJ
+	 7wdUZKHgS51mx2dSvVdlSQkVw69F+2CgKEsvJzC7gQ683jkqt7X6q1bjy12oOCgszi
+	 dJ4hOXNgYJGrCT0zzbPFh0qLFPgKWY7uDYLDiIsb0fR7uLLcrCyL3f6/6hXPMuEyrQ
+	 8R/39SLvoe5rPYF1bIX5saD+DI5QthiwOaGeuPa+xxwHaTVXUNPGWvJjIr+ZWrQyQ6
+	 bskxKjsgRgB2A==
+From: netdev-bot+sinfo@kernel.org
+To: Omar Ramadan <omar@blockcast.net>
+Cc: Taehee Yoo <ap420073@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v4 0/5] amt: relay tunnel lifetime, validation and
+ request-path hardening
+Date: Tue, 20 Oct 2026 00:30:10 +0000
+Message-ID: <179245621074.3290.4127113725002865428@kernel.org>
+In-Reply-To: <20261020002557.3984927-1-omar@blockcast.net>
+References: <20261020002557.3984927-1-omar@blockcast.net>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,53 +65,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-rds_sendmsg() reuses the connection cached in rs->rs_conn when its
-peer address and ToS match the request.  The interface index is part
-of a connection's identity as well: rds_conn_create_outgoing() passes
-the request's scope_id down as dev_if, and rds_conn_lookup() compares
-c_dev_if, so sends to the same link-local address through two
-interfaces are two different connections.  The cache-hit test never
-looked at it.
+Hi!
 
-A socket bound to a non-link-local address has rs_bound_scope_id 0,
-and the scope check at the top of rds_sendmsg() accepts any non-zero
-destination scope for such a socket.  So after a send to fe80::x%ifA,
-a send to fe80::x%ifB hits the cached ifA connection and the datagram
-leaves through ifA, to whichever peer answers to that address there.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Compare c_dev_if with the request's scope_id in the cache test, so
-that such a send takes the lookup path and finds, or creates, the ifB
-connection - the same key the lookup uses.  A send without a
-destination takes its scope from the socket, and the connection it
-created was keyed on that same scope, so the comparison holds for it
-too; the next patch gives that send the connected peer's own scope.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-Found by inspection while reworking this cache for the connection
-lifetime series on net-next; not observed in the field.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-Fixes: 1e2b44e78eea ("rds: Enable RDS IPv6 support")
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
----
- net/rds/send.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/rds/send.c b/net/rds/send.c
-index 1afa981e5c06..38b9cc9e0d20 100644
---- a/net/rds/send.c
-+++ b/net/rds/send.c
-@@ -1342,7 +1342,8 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
- 	/* rds_conn_create has a spinlock that runs with IRQ off.
- 	 * Caching the conn in the socket helps a lot. */
- 	if (rs->rs_conn && ipv6_addr_equal(&rs->rs_conn->c_faddr, &daddr) &&
--	    rs->rs_tos == rs->rs_conn->c_tos) {
-+	    rs->rs_tos == rs->rs_conn->c_tos &&
-+	    rs->rs_conn->c_dev_if == scope_id) {
- 		conn = rs->rs_conn;
- 	} else {
- 		conn = rds_conn_create_outgoing(sock_net(sock->sk),
--- 
-2.50.1
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
