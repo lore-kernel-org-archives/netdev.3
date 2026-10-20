@@ -1,66 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792530531;
-	b=PKuvUbQQt/Uw8CLEJqZRmsWADtAlv2kW9O5vsizOt9UoDrya4hjc2wc8aKOA6/MUNYFn
-	 cC4XnwrBh6TVLL0iOpG9d2O7XxWa1RpnFE4mrl+EVv/GhP2Le7J32smjVPSxDEyyGVL71
-	 nBRFLQ6o2E7ewazVixM106S2zSLlFQKH4l+AVwL3Yz/ZRmbrjJel0jCV9Ad/nBdhBu8eK
-	 DZXsY2QVba6T82ihhv42Au0apLUamp8gKBJqomUTHQx6945MP67oPiWJmuikaes2J6GYt
-	 t853TA0Yi/B+9RDmHfdZRv6YYRZhhxUYNdll8RIAXiKU9feiyIM6FfIDrUxp5CnWI5w==
+	t=1792530609;
+	b=yts1ERZyRiasoukxPoMocgaJbwUGkWfLl51gtQnTFuZTa6kfdpExODtKYw9zcYWOZNjw
+	 0F2C8Uz5VcZFbq2K+a7I3w0hJAIJaIlLYHbvS+MbwmsiMMs8M6hCYFpzX+bv10Xz4ExPH
+	 EvSv+b8mVLVBij05FcYJzYuyWF50+qVr+6HbityrkcD6Pu3EzL9H2FWzQ9Dpvli6Ke0r/
+	 cCCC6XwKAPv9aPD0HeEoHJWbBRV6XOjPjMZW46Fqc9l0q48eSbx2eVXOqxddKoBEL81N9
+	 /gonypl0SZRYXQcTjl9j6JftibLSmIhcUyqAQXBALpYXVCqIO8td7D7rwSqlZ6DQ7HQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792530531;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=LHNZsy1AhmzsrhwZyxEBJo+bnbpDcTwMAklGp3PSgbg=;
-	b=jqZRAZSB5Ze6MIgRRcpP9L0FtznhBZk0Q9mrhcBIGz6G6TY6TejBUISItByeCYBbhTjP
-	 D2b15mtGn98POO1+aPtlpeWsvnz+IA8QRFldgYHqXbLnjLwiQ57k8FalfH6srH/cQmOYp
-	 AB7U5Ro5up7JhLFsRfLFseph1qlro7k1SCTvVne7bcdk+D3yjnoNtas9wGYLT5A/3KWa6
-	 U+SsafW6KpN+03u/fY6ALv7tTpmkqyxMeF7hjGw2TGONao8Ocsvgf2Yup4GUZVLDvhlr5
-	 PdaRvM1kzazYil42t6ZUZOu6YBwgb8838CpIFSFf04ARr55iVYiVKcs6TFPLph7yHjQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792530609;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=/ktSwLWQExy9PPjlqWAYb5B6X43q20aXbteYHOKd9Jw=;
+	b=ErFHgvrHxd4Xrb/yO20dAG1RgSgRfD8Whmkfw10RWQymEB9b9FzzkAeTm36X26FM2C1j
+	 pgSFnTLMUzGN3BR3ejj84jdPUvAx+ap+6pSmu4ZzFxLaxjoaythgziEjjGwwtjcEl8RLC
+	 2z1JUGmPhGYAlpCXy7Qd8K09JIBGCHRJ6FMNx9ZrVRVp/T71hDC4RoYUXWVK8ZxljE3DN
+	 O1JP8zuPQl8zRhPFAzIDJIILu/+szJzPGYeax+KnOmO8iynd4MQIy5bYPATmy+I3mS/9q
+	 k4U5n6X+eZfuFnR1xyhOK+EBmpj0NTZ++5Vt09ZZ6xmWnS2duEbznmA30TPXc59pk0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MjHSLj6i;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HMj6gi6n;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A82606A322;
-	Tue, 20 Oct 2026 21:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A736B606A329
+	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 21:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MjHSLj6i
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90921F000CE;
-	Tue, 20 Oct 2026 21:08:49 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HMj6gi6n
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807751F000CC;
+	Tue, 20 Oct 2026 21:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792530530;
-	bh=LHNZsy1AhmzsrhwZyxEBJo+bnbpDcTwMAklGp3PSgbg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MjHSLj6imdArMWL3vvkO7ju8c//mQbQeY5QXTMPxyT+Z6ghZHyG0SXQr41amV76SZ
-	 aGCChnRkuifPNl87J4jDXC+XEhfpf4EXdAdS1LuAVo3yIkPjMwPZdz8UmUX8cAsXXH
-	 XCtNspvjoUlRVJ0EaZpzvYr8sZuIoUpH1oLOiwtnRjusbuCb6vIzdtBEmpnAvsuZDk
-	 rZ8koiGsJSFWBS5XxRVd9BmDlst3URLlogwzPx0q1besV0QenMGaGRyc3L16dc4Etc
-	 hFJOIu3FVDB7xc58fmDLRr1AD9+TgQUzZuYalQ9ozgNlMW0av4O5qpmTbI3DPg58S2
-	 hx0G+jRLJ5JAA==
-Date: Tue, 20 Oct 2026 14:08:49 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kurt Kanzenbach <kurt@linutronix.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Paolo
- Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Song Yoong Siang <yoong.siang.song@intel.com>, Mohd
- Faizal Abdul Rahim <faizal.abdul.rahim@intel.com>, Ong Boon Leong
- <boon.leong.ong@intel.com>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net v3 0/2] net: stmmac: Fix XSK crashes on stm32mp2
-Message-ID: <20261020140849.12fc79ef@kernel.org>
-In-Reply-To: <20261013-stmmac_xsk_crashes-v3-0-50fca7790af2@linutronix.de>
-References: <20261013-stmmac_xsk_crashes-v3-0-50fca7790af2@linutronix.de>
+	s=k20260515; t=1792530609;
+	bh=/ktSwLWQExy9PPjlqWAYb5B6X43q20aXbteYHOKd9Jw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=HMj6gi6nhFxbXXkYiYBBYW7Marj9e0K03H/RdA1BEVm+u7lP2a0zhowQswYRn15ol
+	 acrNnMPRLqhdY6DpDmgI4MBPGY2ssycRTpF0kKjbSJO+uZ5PC22wPsgtH2PKNHrE+X
+	 pGkHfQI1KMibpXqwVWHh2A3Jwdc8NtkkCMJcfQMe/aonqJauGfszqdmRweGvpu44YP
+	 2uaY71Gs3Qit59KNUdIbCytE41d5VFB8Ya/oBRaIxu1on0ffPMi9ZM05P3FkOu/BvY
+	 hemL8uDACpOFTW0GbqD7x1hxYqhbxQyshXYuybR9cOBig91ykGXwE+pLXkKuOY+MCK
+	 uVRXdftQZZ9wQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773243809A09;
+	Tue, 20 Oct 2026 21:10:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,15 +53,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] ip6mr: clear skb->cb[] in reg_vif_xmit()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179253060802.212662.8966600542568977512.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 21:10:08 +0000
+References: <20261017104228.3418775-1-edumazet@kernel.org>
+In-Reply-To: <20261017104228.3418775-1-edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
+ netdev@vger.kernel.org
 
-On Tue, 13 Oct 2026 10:57:20 +0200 Kurt Kanzenbach wrote:
-> while looking at the TBS thingy [1], I've noticed kernel crashes. That
-> happens when opening or closing an AF_XDP/ZC socket while parallel Tx
-> traffic is going on.
+Hello:
 
-Let's respin this against net-next. The merge window has started,
-applying this to net would give us an immediate conflict and pain.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sat, 17 Oct 2026 12:42:28 +0200 you wrote:
+> reg_vif_xmit() hands the skb to ip6mr_cache_report() as an
+> MRT6MSG_WHOLEPKT report. skb_realloc_headroom() copies skb->cb[]
+> into the report, which is queued to the mroute socket, where
+> rawv6_recvmsg() reads it as IP6CB.
+> 
+> By the time the pim6reg device transmits the packet, skb->cb[] is
+> not IP6CB anymore: qdisc_pkt_len_init() overwrites iif and ra,
+> and any qdisc installed on the device (fq, fq_codel, pie, cake...)
+> or a tc BPF program writing skb->cb[] fills the area holding
+> dst0, srcrt, dst1, lastopt and flags.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] ip6mr: clear skb->cb[] in reg_vif_xmit()
+    https://git.kernel.org/netdev/net-next/c/238164201431
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
