@@ -1,49 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.74
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792494613;
-	b=IagGTVellNYOjBEM0pfYMs9eArSABF2KN0lc7TCM86abZ4QoVcScgnc1TSJV1M8W566w
-	 dGRF/UxD5DyJ3nLPqD1ADeYf+1zaZy/Od5WPXu9U+N5o+F+UT2zUjqIKQegNPsXj1Z33Y
-	 Njaha6E63I1DPebDzRThezOmMi37q58Jq5w3qDzFuO7/8SVf4EMGM2RgE6tdwc77w4/bU
-	 2OtShVpNnX/c2HmJQYq9I6e1l6omV7kx0NJ3wgjZfJJ8Z+OoRlky2HaMBu1QhzUIzEXvh
-	 awiPpOogb6C/R5Z9dFvxx+aGjioNKwABh4Z+2YAUP72Xz4XgX9HDEOdo9I7hJfra3ug==
+	t=1792494693;
+	b=Wn/l6LLPNgAtykXaNiDLwBR490e0ME6RBcHX6rSlNWDUklFrZdwQH8g7ALeOsbnRbGBM
+	 BZ94upBIXb7M6PdwhflQZ+6vDI8jKLH1mxZL4Zj4vfHVwMdaERj/+IHPSwXnkRbUnsB2s
+	 nIc9iQZKjsCL2HNv1EqYptZW5+sbVA60OYO3wqd1C8Zi1xaGZVynWOwpvNnBto8kgEbV0
+	 50cKbQFlIb4LqEF2ImuetHCDfaNcdpWj9aTreMg6rBTrsIncwOwYKsWzTzP2X5F1rpPVJ
+	 QQSuWx/wZCGHO3zMzisPhwmIWHtskppI7fE3czdU7wT9y2tpUXPwGqmabAgGox05WDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792494613;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=P4h9TC2io46Bq+01lwp1kjn/etlJt1LLfgkjec69ha0=;
-	b=35T962vLIg4puJuwIWuCs/tAtu0I+kRs7TzbRoxF8QcbnuzM//HVDqNNI5OspqfuRgFd
-	 Z/lBuFTbw4Li1rrbf80vxeWO/rBdWVc+S+7u37uVxI4QhT2wcrOKLmT/R5QnEjjmHo/n+
-	 O93JSi8z/FugsuHpdy5RP8+x24xzptypeMZaTH7sA+zEb7A5A6mUZuutmRSA467jGo5nv
-	 bvtKyl8oXDnwS3wqZ2l76tDkJ3SsSZaelmORzxVCs6DMD8GURi2RXZmu8pdEg1QWd26ph
-	 FRTtETjXOBmshe6JTJ+KIAHQjH7ppVx/wuOMFm7Kve13q5yBo8V2pbhfoSpgsB7ohBA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792494693;
+	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=zOO21uz9MwUO2eNDkgr3BLnA+IJI4wMV/UkAs/11CkE=;
+	b=PJnZ/1ujRN5WM0FKKrSCAam+0Igrw3G0yPi7CA4GJCvPtaYEaVmRRb5ZnXsCdizg7yUK
+	 A4Hm60aBh8ugZiopyc5Hm+lSG9u+vebNI7p55rTMZOTCNK89CzIdgpazyyIATJSswxHyy
+	 gdqbvEwBXy1G509iRaBBCK5XOoP1h6W5JrOBrCzNz4Vr11lFRke1Mhu/yhQVdrcUW11jt
+	 wa1gRcHOI1bx0DfNGEpJQTZHX1tgxtPPAYGsfDhi3ooKX1HJoL7gFbcyHq5nXmUBdoejq
+	 va+VaOE7UdPUzSebFO2EuF4ghwKzybGWrj1sajTZ+HBNj16ItYzvcVrj2V5ofbFZfkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hcd74N1W;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=motor-comm.com;
+	spf=pass smtp.mailfrom=motor-comm.com;
+	arc=none smtp.remote-ip=115.124.28.74
+Received: from out28-74.mail.aliyun.com (out28-74.mail.aliyun.com [115.124.28.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3FB606A319;
-	Tue, 20 Oct 2026 11:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hcd74N1W
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7571F000CA;
-	Tue, 20 Oct 2026 11:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792494613;
-	bh=P4h9TC2io46Bq+01lwp1kjn/etlJt1LLfgkjec69ha0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hcd74N1WF4k/GU9f1SogMznwoL0EZbMDtLgMU+E8thcOXxDUQQaUPT8if2SJJmc7r
-	 PWL+CKdV50x9RRt+VOKQ9Ad2R9AxtFCIXvg6JWK90OnDHMmmanHl0TJ93Y6dE0Ck/i
-	 TochueyH8NpL70WGAjelgoufkGCUtwS69gcS5Pn9oamK3mepRIhnDpdQWZeIzHo3H/
-	 Sdm7h74oPOtRwmcCsd/NQSt9ql5QtBdEwtxNhNKApZhziKqEWBvoHugtoPDI/Sje9z
-	 zXCDNVYLzWTcEtw3zc1th86vtBW8tL4KDPJZ++/81HRTFFTCNfZ7ELNMYHJbnzo6ba
-	 iPSnw4yKh/FdA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F18013808209;
-	Tue, 20 Oct 2026 11:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D893E606A332;
+	Tue, 20 Oct 2026 11:11:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D893E606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07858402|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00587506-7.46963e-05-0.99405;FP=11562894019367980694|14|2|17|0|-1|-1|-1;HT=maildocker-contentspam033045038069;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jlqQH3w_1792494681;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jlqQH3w_1792494681 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 20 Oct 2026 19:11:22 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mmyangfl@gmail.com,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com,
+	wei.zhang@gl-inet.com,
+	sijia.huang@gl-inet.com
+Subject: [PATCH net-next v16 2/5] net: dsa: motorcomm: use max_ports in series for port bounds checking
+Date: Tue, 20 Oct 2026 19:11:12 +0800
+Message-Id: <20261020111115.3072180-3-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261020111115.3072180-1-kyle.switch@motor-comm.com>
+References: <20261020111115.3072180-1-kyle.switch@motor-comm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,41 +67,60 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: tc-testing: preload all qdisc modules
- enabled in config
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179249461152.3669402.6400194971670892353.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 11:10:11 +0000
-References: <20261014122045.2375722-1-ivecera@redhat.com>
-In-Reply-To: <20261014122045.2375722-1-ivecera@redhat.com>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- shuah@kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
 
-Hello:
+Replace the hardcoded YT921X_PORT_NUM macro with the per-series
+max_ports field in port validation. This removes family-specific
+constants from the common code path and simplifies adding new
+switch families with different port counts.
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+No functional change for existing YT921X devices.
 
-On Wed, 14 Oct 2026 14:20:45 +0200 you wrote:
-> tdc.sh preloads only some of the qdisc modules that the tc-testing
-> config enables. Add the missing ones: ingress, mqprio, multiq, netem,
-> pie, plug, prio, qfq, red, sfb, sfq, skbprio, taprio and tbf.
-> 
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->  tools/testing/selftests/tc-testing/tdc.sh | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+---
+ drivers/net/dsa/motorcomm/mdio_bus.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Here is the summary with links:
-  - [net-next] selftests: tc-testing: preload all qdisc modules enabled in config
-    https://git.kernel.org/netdev/net-next/c/8e793b899b90
-
-You are awesome, thank you!
+diff --git a/drivers/net/dsa/motorcomm/mdio_bus.c b/drivers/net/dsa/motorcomm/mdio_bus.c
+index dd6c52f37bbf..83f0212551ff 100644
+--- a/drivers/net/dsa/motorcomm/mdio_bus.c
++++ b/drivers/net/dsa/motorcomm/mdio_bus.c
+@@ -113,7 +113,7 @@ static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
+ 	u16 val;
+ 	int res;
+ 
+-	if (port >= YT921X_PORT_NUM)
++	if (port >= priv->series->max_ports)
+ 		return U16_MAX;
+ 
+ 	mutex_lock(&priv->reg_lock);
+@@ -131,7 +131,7 @@ yt921x_mbus_int_write(struct mii_bus *mbus, int port, int reg, u16 data)
+ 	struct yt921x_priv *priv = mbus->priv;
+ 	int res;
+ 
+-	if (port >= YT921X_PORT_NUM)
++	if (port >= priv->series->max_ports)
+ 		return -ENODEV;
+ 
+ 	mutex_lock(&priv->reg_lock);
+@@ -145,6 +145,7 @@ int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
+ {
+ 	struct device *dev = yt921x_priv_to_device(priv);
+ 	struct mii_bus *mbus;
++	u32 max_ports;
+ 	int res;
+ 
+ 	mbus = devm_mdiobus_alloc(dev);
+@@ -157,7 +158,8 @@ int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
+ 	mbus->read = yt921x_mbus_int_read;
+ 	mbus->write = yt921x_mbus_int_write;
+ 	mbus->parent = dev;
+-	mbus->phy_mask = (u32)~GENMASK(YT921X_PORT_NUM - 1, 0);
++	max_ports = priv->series->max_ports;
++	mbus->phy_mask = (u32)~GENMASK(max_ports - 1, 0);
+ 
+ 	res = devm_of_mdiobus_register(dev, mbus, mnp);
+ 	if (res)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
