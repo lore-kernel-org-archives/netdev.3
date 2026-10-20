@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792525220;
-	b=MpXaYIPdXZKCFSXhHu6SFwfL7ngVdQSayRfxJNCpP+xq/+urYhvNeCAdcuSnrrkspYnF
-	 eBfoeqkPAADwnrWz0jPcMJ0fH5C+EAgeCK7H/w2YUiNRsu/MUl0DwqYe9R9197NtDwnbQ
-	 ZjJpVN8zmOZJwCeO9hwoLgzybEgs1tDhNSuuffVELxbO+yb8E8TnyoNVRlXHti3yQT+V2
-	 DKMUcPY/t759dkvyqUhBt23wxVkR5gKraAbzYgfufyVaj246AaVrKg3GsKIcvNfgq3jXs
-	 UTgoHfkaYgnFSJHa9QJYK9BpfIPF6QAY+V8Q+kPiASwfnc2dKEVWmbZKbSSDG34I50w==
+	t=1792525217;
+	b=Vw7j1tPaoDkHx4ouxGE/4fME/3DaYaoPjoElcTAbuWd5NnVVfroCwaThIds2fEdr50ZE
+	 5szX9APLs5NBCH43wiL5dVvcA4yCztAuh/7xwqXhYDoEX50CJSH2cp+oHeJF3X+3eEq1m
+	 WIVD6DjLVU9Mb6TErAIhYcWdTEQ/NSMM4FoiZop3R+ytFJEvhWEWSinrdX+xBo1EO5wGY
+	 1O4K2/D0hJbADTLxagUY1VI/UIsLMv1Ll9D4BktNymtkd6F1jHozGqb8IYYDydSxIn5eX
+	 6sZnuCxn5Korb5oPNMaZVI8rW4485OknkpMKwjFydOV7JuaLAfwI3kJjKmAF2TwtUYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792525220;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792525217;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=d5kFB5UieyWzDHi1vxyzRWFWGnl9UcUS9COrlep8IGQ=;
-	b=n0/ndARt/u6pIIafAvyr6TqRpaI0LtJnVzraxCofCq46MOeMSt2lEPkcj/nUxX6aHxUY
-	 QJz28PgxN6XcfKTrWm1XxQt5Q6hlUd/sQDPm+kCEMgeR7kdRT1XMlOk9hY8my2JTgdNoV
-	 vAl4dFsER56ZyNkd4JjiS8q+jHMKRlr+xEq7IzW4KzAOHOVWtMKqBrGjx6ROPm6o93ttF
-	 s5txi95uRCqEv9fqU6pcgCVqSotwl6E2LeZ6rPlBV654oI73FHvowtHoRLRwnZG3oeDzF
-	 ucD+X1A3AzZAbjG0JHdE5seW1M1Ws1NaUW48kNP4/uyYdsL4Ol4CLU9sHUlm7QaHT+g==
+	bh=2lvqCqMBxgWzFE2VQX/8QsaiiTqSkwkqy28rpZSbCSM=;
+	b=bTeChVsT2f9wFoC/x7MnfXmd23iXTG36WOAizD2U9tOlHJ2cSMBpO5DgIqOm+1in7kL7
+	 k5644d4fROw83cimWOHbXWTZ/8V9uftRusDy1W8A/ntWa851CJndh4N2aa5SfcNyzoPOF
+	 SZuRNvfvPUdzIU3NTBtxqm7LcLhx936N5yqNRiD+jtabyjA8yaV4Tam1qH8hMd0J6VLYO
+	 +eo6jY8BX/aYLH//0VHOPuY9KfESnCEu1GnnEA2dHhq9OOdZOSdBR2n5mmKmZZRXU/fJL
+	 r8Bj2j2k56lt+3ycsCaMEmgXfcQJeNCrpA0wFptRdab0u0mRf3nlOiqpJzfQVK8NusQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aUAY1hlH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A90M9pwn;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFEE606A326
-	for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 19:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740BC606A31D;
+	Tue, 20 Oct 2026 19:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aUAY1hlH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067D21F000CE;
-	Tue, 20 Oct 2026 19:40:20 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A90M9pwn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CA61F000CA;
+	Tue, 20 Oct 2026 19:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792525220;
-	bh=d5kFB5UieyWzDHi1vxyzRWFWGnl9UcUS9COrlep8IGQ=;
+	s=k20260515; t=1792525217;
+	bh=2lvqCqMBxgWzFE2VQX/8QsaiiTqSkwkqy28rpZSbCSM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aUAY1hlHx6MMdY35FWRLAP8fDYFTd4jYpM2X1h6AlKiufyU2sW5c+yx0tCypMpF7q
-	 ONoNaqtXafLRh9nzhDqNdyBOY+2OyZeNwL5UXrz6kDStEpXXxnNj88zxdCdsnOuSOt
-	 DWH171HVWrncBG5sO20FL8A/jWe3VoyB/N4DPlFeLSuwm88PYuuhzbjojFxcjqpJzN
-	 O1r5RYBarOJx+uZa1Gvz/v+6pwdPqatSSoKZ40nYsE+Zef+nHzW9FqZdqpgHixZlMY
-	 e1fuaHDdvQ7xN7qR2oLZcjS6lIVqNsu/Jlgz1QZVgcDfpxOHU/ohoS3wfxtxdXyC7S
-	 j9q2erf0ixl6w==
+	b=A90M9pwns8xiFGNXOBf2tBPGPLWtcrgAZz3JrJhUgRBZrbiMUDURRlOp+4ivNkb8N
+	 3iVjuUc1OOyrlGDcKrczl/NhDvuE0MCI2EUT2f34CiMGSY5g2PxPxZ7RspjEPR288d
+	 acwGvp/m35EIdbiI3iX4M8BdBx4/rYQooNpeRlZRNdnpAT/ORHFqoRV35EZxmJQQ9C
+	 91jnzkdZYTGg+QuhfVZMvZx2UiTvb0F2Vgx5Qlt4qWBhOxq8nhq4SckAf87V9cdBlX
+	 iD4l1+AbLI4+73EMx9KoYWmq0i7TXtljBeTIVZuoA+lD08AgBt7epcmQVk+2aiG9qp
+	 +ePDGbbrWLhZg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F179A3809A09;
-	Tue, 20 Oct 2026 19:40:19 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F17BD3809A09;
+	Tue, 20 Oct 2026 19:40:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,45 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tcp: tcp_metrics: use the socket netns,
- not the dst device netns
+Subject: Re: [PATCH net v4 0/4] ipv6: fix address publication races with
+ addrconf_ifdown
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179252521852.176933.17096404531205983034.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Oct 2026 19:40:18 +0000
-References: <20261016084802.2725187-1-edumazet@kernel.org>
-In-Reply-To: <20261016084802.2725187-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
- netdev@vger.kernel.org, odys.yuan@gmail.com
+ <179252521578.176933.2936110107894868867.git-patchwork-notify@kernel.org>
+Date: Tue, 20 Oct 2026 19:40:15 +0000
+References: <20261015050651.1841557-1-4ncienth@gmail.com>
+In-Reply-To: <20261015050651.1841557-1-4ncienth@gmail.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ hannes@stressinduktion.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 16 Oct 2026 10:48:02 +0200 you wrote:
-> tcp_get_metrics(), __tcp_get_metrics_req() and tcpm_new() look up and
-> create metrics entries in the netns of the cached dst device rather than
-> in the netns of the socket.
+On Thu, 15 Oct 2026 14:06:47 +0900 you wrote:
+> The first patch removes each non-kept ifaddr from the address hash during
+> the per-device list cleanup. This prevents addrconf_ifdown() from freeing
+> a captured object that a late publisher left linked in the hash.
 > 
-> These usually match, but not after the device has been moved to another
-> netns or unregistered: a socket can keep a stale dst in sk_dst_cache
-> until it is checked again, and tcp_update_metrics() reads it with
-> __sk_dst_get() without any dst_check(). Once dst_dev_put() has run, the
-> dst device is blackhole_netdev and the entry is created in init_net.
-> Before that, for instance for routes through nexthop objects whose
-> cached dsts are released from a nested RCU callback, it is the netns the
-> device has just been moved to.
+> The second patch serializes hash and device-list publication with dead
+> device teardown. The cleanup patch is now first, so the newly atomic
+> publisher cannot create a captured-but-still-hashed intermediate state.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tcp: tcp_metrics: use the socket netns, not the dst device netns
-    https://git.kernel.org/netdev/net/c/504bdcb8c156
+  - [net,v4,1/4] ipv6: remove ifaddr from hash during ifdown list cleanup
+    https://git.kernel.org/netdev/net/c/6ace56ed7b13
+  - [net,v4,2/4] ipv6: serialize address publication with device teardown
+    https://git.kernel.org/netdev/net/c/06227034e2d9
+  - [net,v4,3/4] ipv6: initialize temporary ifaddr before publication
+    https://git.kernel.org/netdev/net/c/ed7f278812e5
+  - [net,v4,4/4] ipv6: do not restart DAD for a dead ifaddr
+    https://git.kernel.org/netdev/net/c/ffb668669ce4
 
 You are awesome, thank you!
 -- 
