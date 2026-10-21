@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792560067;
-	b=OBCqOhxEVu6IAEyaJus3kF+hjhyelD6Pn6PMnYKpUL+CLAfWtKyW0JULu35tghihW6GJ
-	 pBK3gjq1urkkAvIfvdio9yU7MNfXsLziNrdaViaPgwdmoH0Zl2PvKDJxM4mWZj8kVIIQD
-	 b/HfR9dlp+vFyBaTZoviwrlY4elytMKvtNZmwv7MumA0iQmI4TPp39nN0TKMmrZy0Paic
-	 eCB+xSli/Dc5w0qZwtuiiBheUm5GVx800kQjCWYLVTLxnI2I/sUOzOglUm6DsqSNR63AD
-	 BWdAp4ufGDYrtjkl9wI9WMca1thpKyFoLbfY89NlyN8K8PdC8XHvIBGatSo8f9QWvxw==
+	t=1792560066;
+	b=lu6MLy7SY4cyYzdU1lUpAJa2m12l1RaBLkAsz6yEMdRTPssefWco46GGcEY5w2nb8E/9
+	 Jn0Dss4JgqScoiCEi19KqLpT7uwpBdSipQysBEubDJPnjU8SjD4JLp8uPXgOnqMIaEP+Q
+	 63wmuCcKDEbxl+C+x6Tz0rp3k2j6JuzprP9Y8RN1w5iEiRolkjuac/EGEea9ZqqiNwnY6
+	 ot8I3yu9rMXe+3V9Nc1E9Mc88CRvWaR5hxxm0zv3Y3UuNWT9zDA2Yg94OQpCFtuEu63bX
+	 lGYys5tkKaEAW4siOcnrWEq4eHfz3gZWwxOUkoz7gvMFw3VzWUVB9P0SL684dkq7BMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792560067;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792560066;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=+zwq9CURf+CmUWAR+V9f51vXK3xezEQGZb6fNB7au+E=;
-	b=efR4jfPxwBxlVmPGKyxZtmzhVLoregonQ56Pepu9mGzHzlP/sGCfy/g2lbYKgt/yacr2
-	 5n/tQ8PVEGLwewvYde7ULeiPWrAw32Kjna+vO8twEhpiMRs1wIKad17hBZ7g5OOSrsm1P
-	 YR2NtP2DVwwq4D7YarHLlhyiqUuby2TT8iTPQS8/FxZy1rEpt4mhQm/Civo7+zA5clYNe
-	 zO42ipTukn3T8kcW3kmxiywR974xkUmTx+WqRkvHqUsAsG8bfXLj2dbgPgZdj6ZpLl9Gk
-	 taALimyupaHKJ3ZxCjiyutE031TzdHlpwuMBBJCIKUMy3TCwKvchbakqIdjYjhtoIkg==
+	bh=N1IkFkLJmopa22B4Ujdc/+lpdLepjyVDkGevXe28X7I=;
+	b=YV2Wr0pN0FyrF8pRkFdeignYpfVfLFuaitlN4q2qSoP4IpauGvwUpbLokS4lzy008Qgs
+	 L2hVrO4cZMEJWcJgEqDyhDzXgdOUtv6Df3Nvr16ppgqdO/ST3G6Hdk10bdPFpFD5Cu6ej
+	 goQUVBWMSXI55cI6INHF3SnbWVJgCMsTqe4NRTBamhys1kLnaKFOO0DVaK/8RfSqN1lDb
+	 u74Ek8b+igF+r8SeZRl7zwWVp6HWGpWDBsQImE9ztwu3L5RG7RshpLjQzVw46lSbDQ7ls
+	 9ZCHfazGNpHdnltJ3KrqBjW0NTX0/tGiqC1xlLs/W33VwEuZNX+BPadX8mY5jUvDHmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QOqnDTCn;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O80iRg6z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A21606A31D;
-	Wed, 21 Oct 2026 05:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QOqnDTCn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27661F000CC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C0C606A31B;
 	Wed, 21 Oct 2026 05:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O80iRg6z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B001F000CB;
+	Wed, 21 Oct 2026 05:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792560067;
-	bh=+zwq9CURf+CmUWAR+V9f51vXK3xezEQGZb6fNB7au+E=;
+	s=k20260515; t=1792560065;
+	bh=N1IkFkLJmopa22B4Ujdc/+lpdLepjyVDkGevXe28X7I=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QOqnDTCneMPwB6usyLEYfCXEBsg6juKbSiDdRyszCM89QVG/4wFpVHXfrC1J1qf9X
-	 20hGym9soeGNN+HxvgBAk5nYEsO+JvRcAYcaX/xnaOiFd4h+B6Qyt/RZFtIB9oHSWB
-	 Md94UgKBiuG7dinmy8/UqgwSt/mPfMWQEyDqfL7Qv+qAcIANbbzlemPTBeNQ1jyn3e
-	 k4L2kAhtefQpjd8UZiZb28ByfDlwnnjG/B8Ost/FrLASE24abPT5CAUX0XHWVMfXKe
-	 ShHkUrF/HnHX4QX7PhoMjIesDutDBSl9IKhKKHwP8WYAWPKF5GrQ47hVrPJFWlId+4
-	 qp1uTqPI4d3WA==
-Subject: Re: [PATCH net-next v27 2/3] net: phy: Add support for Template
- Control register for PMA
+	b=O80iRg6z5H1Pr/oZT1x/DLOhP8KI6ZZMfxTW+P2esfqgkubw4hhuicVE2UemUX1tX
+	 3EXQK7F/XE3fULx1Y0YiEmB8ekLStOqiSD1Me5zMHsFw59IM97qTCgA6eYkQNN5sM0
+	 YiPJeQnU0vKxp5jUpalr10pzryvExW1MUX3EdRrVOKtKPs6wkudW/edu5RegKyvflk
+	 JCM1Nsc0e1lN8ErsB4kzuO8DBtYyTiu+dh42pDsNrsLjgGbPIVCQXazGv757U7dv5S
+	 +V4NPkf2SOKHQO38R/Xe73rWus9O9RXmqZPgpm4vHYn8gjpeSdhG7YaoglfRGLbWWX
+	 uZz1HkwG2XljA==
+Subject: Re: [PATCH net-next v27 1/3] dt-bindings: net: Document Motorcomm
+ YT8824 PHY package
 From: netdev-bot+sashiko@kernel.org
 To: kyle.switch@motor-comm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -51,10 +51,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
  jianmin.wang@motor-comm.com
-Date: Wed, 21 Oct 2026 05:21:05 +0000
-Message-ID: <179256006554.3135.14588045194539327406@kernel.org>
-In-Reply-To: <20261020021929.3028490-3-kyle.switch@motor-comm.com>
-References: <20261020021929.3028490-3-kyle.switch@motor-comm.com>
+Date: Wed, 21 Oct 2026 05:21:03 +0000
+Message-ID: <179256006385.3135.9820779006338159316@kernel.org>
+In-Reply-To: <20261020021929.3028490-2-kyle.switch@motor-comm.com>
+References: <20261020021929.3028490-2-kyle.switch@motor-comm.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -74,61 +74,82 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] include/uapi/linux/mdio.h line 325 defines the new exported uAPI
-  macro MDIO_PMA_10GBT_TESTMODE_MASK as GENMASK(15, 13).
+- [Low] In Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml,
+  the package 'reg' is redefined as the absolute MDIO address of the…
 
 --
 
-net: phy: Add support for Template Control register for PMA
+dt-bindings: net: Document Motorcomm YT8824 PHY package
 
-This commit adds definitions for the 10GBASE-T PMA Template Test Mode
-register (PMA register 132, bits 15:13) to the mdio uAPI header. It also
-adds a genphy_c45_template_testmode() helper, which selects one of the
-eight test modes (Normal through TestMode7).
+This commit adds a DT binding schema for the Motorcomm YT8824, a package
+of four PHYs, built on ethernet-phy-package.yaml. It adds a
+motorcomm,package-mode property and defines the package reg as the MDIO
+address of the shared top extend register block. It also adds the new
+file and a second maintainer to the MOTORCOMM PHY DRIVER entry in
+MAINTAINERS.
 
-> diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
-> index 06f4bc3c20c7..353ca13c64fc 100644
-> --- a/include/uapi/linux/mdio.h
-> +++ b/include/uapi/linux/mdio.h
+> diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+> new file mode 100644
+> index 000000000000..4c67f8afcf27
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
 
 [ ... ]
 
-> @@ -320,6 +321,17 @@
->  /* PMA 10GBASE-R Fast Retrain status and control register. */
->  #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
->  
-> +/* PMA 10GBASE-T Template Test Mode Register*/
-> +#define MDIO_PMA_10GBT_TESTMODE_MASK GENMASK(15, 13) /* Template test mode */
+> +  reg:
+> +    description:
+> +      The absolute MDIO address of the YT8824 shared top extend
+> +      register block.
+> +      For internal mode, this is fixed at 9;
+> +      For external mode, it is the base MDIO address of the four
+> +      member PHYs plus 4, where base is typically 0x0.
+> +      Note that this is NOT the reg of the first member PHY.
+> +
+> +required:
+> +  - compatible
+> +  - motorcomm,package-mode
+> +  - reg
+> +
+> +unevaluatedProperties: false
 
 [Severity: Low]
-Will MDIO_PMA_10GBT_TESTMODE_MASK compile when userspace uses it?
+Does the schema enforce "fixed at 9" for internal mode anywhere? I could
+not find an allOf/if-then on motorcomm,package-mode that sets reg to
+const 9. So a node with package-mode = "internal" and any reg in the
+0..31 range inherited from ethernet-phy-package.yaml would still pass
+dt_binding_check.
 
-GENMASK() is defined in the kernel-only include/linux/bits.h. The
-exported include/uapi/linux/bits.h only provides these:
+The two address rules also don't line up. The internal mode example below
+has the member PHYs at 4..7 and reg = <9>:
 
-    #define __GENMASK(h, l) ...
-    #define __GENMASK_ULL(h, l) ...
-    #define __GENMASK_U128(h, l) ...
+    ethernet-phy-package@9 {
+        ...
+        reg = <9>;
 
-Also, include/uapi/linux/mdio.h only includes <linux/types.h> and
-<linux/mii.h>.
+        motorcomm,package-mode = "internal";
 
-So a userspace program that includes the installed <linux/mdio.h> and
-uses MDIO_PMA_10GBT_TESTMODE_MASK would fail with GENMASK undeclared. The
-in-tree build works because phy-c45.c gets GENMASK() from the kernel
-headers. CONFIG_UAPI_HEADER_TEST would not catch this either, because
-the macro is never expanded there.
+        ethernet-phy@4 {
 
-Could this use __GENMASK(15, 13) with the uapi <linux/bits.h>, or the
-literal 0xe000?
+For that layout, the "base plus 4" rule from external mode would give 8.
+Could the description explain why the top extend block sits at a different
+offset in internal mode?
 
-The header already has the same problem in MDIO_AN_C73_0_S_MASK,
-MDIO_AN_C73_0_E_MASK and MDIO_AN_C73_1_T_MASK, but this patch adds a new
-exported symbol with it. The later patches in the series leave this
-definition unchanged.
+The reg value matters at runtime. Later in this series,
+of_phy_package_join() in drivers/net/phy/phy_package.c reads the package
+node's reg into base_addr:
 
-> +#define MDIO_PMA_10GBT_TESTMODE_NORMAL 0x0 /* Template Normal */
-> +#define MDIO_PMA_10GBT_TESTMODE_1 0x1 /* Template TestMode1 */
+    if (of_property_read_u32(package_node, "reg", &base_addr)) {
+
+and ytphy_read_top_ext()/ytphy_write_top_ext() in drivers/net/phy/motorcomm.c
+access offset 0 from that base:
+
+    ret = __phy_package_write(phydev, 0, YTPHY_PAGE_SELECT, regnum);
+
+With a wrong reg, every top extend access (page select, SerDes PLL control
+and so on) would go to a member PHY or to an empty MDIO address.
+
+Would it make sense to add an if/then on motorcomm,package-mode that
+constrains reg to const 9 for internal mode?
 
 [ ... ]
 
