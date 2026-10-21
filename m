@@ -1,91 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792598064;
-	b=KbUaPXJ7ganiU0S9wI7wMMpBa+iLnFtakWW7yOtME3VwXLmpbGzn4tibGkLywHxLy7XJ
-	 dOIP6j1Ew2MPb9cxmnmkRT3XVDkctSkebtJ4mgaGg2mOb1ZZGp7RqkZ19qDd/gqTTXneA
-	 1rglanL9Oi95ur6IgyEKtp6+EoUzOLnibilrwj2BG1m1VGAho60LFRDmhi3xZQEn5ciir
-	 nzmQTuMAgVpW94dn6K+mc26P7Sb6nzlSb2vlz1H97x00CdYxPZiCxQrkJhxubbMM1/DGa
-	 aA41QYR6cfb1auaoTKXgD7QrPHdDYwD96CjU16LPmgoqwoWK/v6D8DFAwq9Cmh1tgDQ==
+	t=1792598080;
+	b=Kuy6weddi6JHpL3y9P/srhYbgTNLl3Hy6DkaG1vl67tpN6uxbHT6jWWobLQpFoP6iJ/9
+	 8hSJfjGSC7y0DLCFUH72eV1o6N72/EPeFBlke6yN9il2vhbzKyk95QXg6mBP6va9Msz4J
+	 XigE/YYOoQi29nrvSom8cS1urek0lsdjCKejMHY+Gml/nfTvbF3/Lu83cbWuaU7JDwOvp
+	 G1OXgX7llvMqj7HaKfW7owMhiNyd1Ql80CGdjO0efJLal7hwri7rIrfXe8r00uSjqAPuq
+	 esozssm5sI/R52nWTUzf3UuKZ0YDf2HVCKXgBLCbBf85LpUjciAYoMWnwu1tpQ5GRfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598064;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598080;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=KjD3wOAZFh+mgSIl71daz0t7F3RO0rZ/s87feoGG8CY=;
-	b=vDQjZMt0J0gnkii1+S2AbdT8RmyFi6Uvj89ozwXq+3E4heJnVy6pxXUm/hNyEvbCio9Q
-	 pt29qOfZ4NZbjE07XuUeLelZjYrs7ZQGcIYxfyyOiBN4CmrOTN6SOmacgexNq1sDp1IlC
-	 ULVS6E7XSyCz4TB+/A06f7+EUE+ubqUyPFP6g+8IzjjPb7ONaMPa/Ra2xXzV0+zr/OoFi
-	 5xdhsoxcE6g4s6lUV7JfaoWSJbJb8FwhRcx99fMT5fdFidZTcOLbhbrfMZYxn0m4zDkDP
-	 DqJtrU7n64CFqXEpbbJ5jhyFPrWU7aGrUHf7IqcL3vbdj+TRbtONMtJJILWmW8dOQ6Q==
+	bh=wjEig9clHR6aSVdxUT5EImtsz/5Z13pmefiOyn+eLYY=;
+	b=a1uBqaQZnLy7aDYltahC5O9WpBO1oPdKm/u0O+oWhzzjPkwada2DesA2hLgxrQpugKhm
+	 eq0TqWzFoIq/UaMnQByAlFcbTordFk+DSEhRNGE4TiRibB8edovyISZHFLavdjm2foViM
+	 exVYdB1Lu/uBRycQJuC/m5BxGDqclfvBfoZx95xLT5PH8b8Sb6OyS397sgShckRSdPTPB
+	 k0m83vMOc39UlsfCvRU+t0UehQrkc5a39oZqXn/Toe7pDsPTWA1ryKWQmjBFDZQTZkzvi
+	 LqVAhdfR6476u5EPZnDsOf3ee+ut7LIGJ/zspKYjjacT/zuC4VO5efNTjj5dC1Di4rQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LoVVnL9r;
-	arc=none smtp.remote-ip=209.85.216.54
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lTadkrYi;
+	arc=none smtp.remote-ip=209.85.214.181
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AB2606A31E
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:54:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3AB2606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2A4606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:54:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A2A4606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=LoVVnL9r
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3acb11973c3so746714a91.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:54:23 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=lTadkrYi
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e831e86ebfso5090175ad.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:54:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792598063; x=1793202863; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792598079; x=1793202879; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KjD3wOAZFh+mgSIl71daz0t7F3RO0rZ/s87feoGG8CY=;
-        b=LoVVnL9r1xJFGu3Vk+G+WonmQVF6E6RrS/wRi5p5Ajki4YWnrUWp5cEmA60DSbuD0s
-         kjZOAFxivBhRNNmX8EkbYaWd8cpNjNjMtBQNHMOIblwBhv9EcmtphNTIxNvsKqLXUrFu
-         WPryA1L7W4qkf3OaJaJ4vSpKetWi0UY1Fq3NHzJHSEUl9hWlsIPZu2snUsA2ay1nYVa/
-         Mm5B1Q7HzkFCk4djK7N9TvWKpvhR1EgMb1QnZscjKxXBMzG4nsl2rPpZM/gVWvoBNCg2
-         7CjUvI+1/JsAuEKB5cKmjhoOokTvDybxkLiz2RaXYL7DiBc4O7eCwmVGBa6JDY37SPE7
-         C+rw==
+        bh=wjEig9clHR6aSVdxUT5EImtsz/5Z13pmefiOyn+eLYY=;
+        b=lTadkrYiMRc0uaYYxJ07adNpwg3iR+wHFyg/0ElZf1jAjjF/N02uvNuJi+2BUwcCGC
+         Ru2LK9ag9idsM17vk5uVPDIoi+gevI/kKY69Q6+9fgqeEdu0ef+PVHkW7t9adEmjYNgh
+         gKpiOpYJkVnPx1f4USj0Y2RcN/7OCkPoI61y6qPC9Fd2psqaLWq8Zf1G7IkyV9lwY+6p
+         Hb9z4xtSaHYRD9dR2N7SwEsveDZizKcZHb177NppRWwph6xW5MMoSL2nNQoBzyd7kVDR
+         R9VM0XDqJsMKLqh+ttFo1TFBRTy71Zjqik3FN31odyKrIP2Tog6RtOYxHBwqcPDdP6xC
+         WZ7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792598063; x=1793202863;
+        d=1e100.net; s=20260707; t=1792598079; x=1793202879;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=KjD3wOAZFh+mgSIl71daz0t7F3RO0rZ/s87feoGG8CY=;
-        b=1sBovpeSwyAu4hXl92txtrTD1tV0ntL0yaQ4A8mGMs8grhX0XVrbGG7LIppsWjJEWd
-         WCM+xBDr/8AgP6gavAnxxrpmdcQM4R5k2G2K66yXXj2cbAgQ2Xy4HKsRncYGiHb0D22K
-         xdcPIajjCC9H3gO21VFtbx4yFRGY5WVVZmg0yiBF6EOwb5Rda7RDAlJdiWvlP0GDGWm5
-         TEp+zUBOVZyKvWKVPtNcOQ/Rd756R3ANBixhSZ0zOjYN8684JuhUthBW6vilphM64L0U
-         mdZwtuyKfc3tq2LCZDpTS7ETYyB+95Ku5gJAtxiwPeLbxAVOW/SfHN1PnyzBivUHua2W
-         tk7w==
-X-Gm-Message-State: AFq9FYKTpUM1nWdbljUtGEAWzD+CRnBt0Z1V127kIpTdeCb+pgHQtLMk
-	Y9r1ONS/tIvNaszrOZh1BU6HUfMMxray0slq9pbIhjc6uE5+utCwrOAy
-X-Gm-Gg: AYBFou33C2xeI4jUNyjf7Q5mFdfWAMHyyiDLmRAOSzVRrppZlmzvrlXM7hfivJKg4cR
-	GvkzVZMx8CwyR4eU9g0uqh1VnEc0dpycbwvEqIf6/WlYxuVF1HLtGKdREx0KJY77+I7/53rOPao
-	y6vptAEKZNBHlmKjVzCsKrWvVbb1jdPdS8LWOpcbkVWx8Qep92QTznSm4NPs+sp1Gp8XhkbS2eg
-	uWW3hI2pCrOk+w537Y+BrtDFM5kgaSGxfiOWE2jjkCo85r2x/NNSurjUv1MY0ZsG0+oQgz03Wl8
-	YzNfpZz+gNAagja/gOivvmLTbwZzPDeKaWHCdHNXyvrgHLGXB6yK902Sb8WGXRE63SsYCNMywa8
-	bqQNAP9LxZLa11ViQ6Zx/mEEIkStnWbptP3Um1B6gB5/WdbzPg9SYtA7qHSzRx2r2fYeZeN5PWY
-	6pcHf0HWtZ1Rx2zC6gVZScYMprgs4vBajcOVCW7saYB2iqbhTJ4Nq3Lymn6mRH3dYpvmSJFdw0R
-	v01Wvxradtast69lHPZ7Mp/QySH0rSnyZqEb3p8PnGtHudBrOfHBu4HFQ3RV+i7xHHJP1xT2VR0
-	CS/g+/m16ukW1L9rgh5tXo/tekVm2yoeW5o71DKunYm+E9lNnaTdmxotpoTTQKL7RSEJG8V+d9i
-	CxfCN
-X-Received: by 2002:a17:90b:3d8b:b0:3ac:4e18:2390 with SMTP id 98e67ed59e1d1-3ad86dcac3cmr1927714a91.7.1792598063013;
-        Wed, 21 Oct 2026 08:54:23 -0700 (PDT)
+        bh=wjEig9clHR6aSVdxUT5EImtsz/5Z13pmefiOyn+eLYY=;
+        b=sG06ulj6SgQnUhShasADZfxOF7jpomGEOcbu58i7gJvqTjYqfr5+bifoMLBZMuw7zZ
+         +4l1tZy1JaEnk4ceShB12nE5o7ulgNzEwNvgg66bmXzDwc+SmsA6Fybfypi7u5s/vaI6
+         H6dOiEIUycEkioBb1xcL5HMbNXeej3Y41woZ7B0MBh9U/55PahQFi9QP4pfADXK2v65p
+         ymAm8uM0z+R2fe3AMLDZlpB64hxvaR9JYCIG+dh8fxWTm3HsAVuYURh6PxUXscQMTm8d
+         z4u9MGMApHVTcR3AewkBbazsviSRO2RO6GCHEERA5O4Pw62D1H2/vbPu6WvKjkLdh1m7
+         4VQQ==
+X-Gm-Message-State: AFq9FYK8TeLdmGoIhMUALYEdUvitnGaBdXKHdei6ISOXLTIeUg3nqTLd
+	zTUkHt/u6vhC9zZuAkDAUxevHgSUbZLqtNO/MZgZvoXam2CEJouazK17A1KgXEdI
+X-Gm-Gg: AYBFou2GKxuvbynue/nvTo9zYHE8pHpHkPxIQ4N2TkJmBTRM9qhe/0vrnzbJUBf/wqJ
+	5TySOXeCWDro7gzwR2J+3q20vDBjrb4/ljFcfMV/Udy9slsWC1pU/Ot4VGH5CZHviHC2LaoD2KL
+	4saza6BCw/RO4u7go4W3uxo8l89AcAxJ/XAUPxGEvYcyCzQ1NV+KiOxTKlEtPxh2mC7Blr/BhTp
+	Xj2FEPSVd518jpJSwFIWAco+NKeQAmNXpjHVyWvWMi+zsszN8V5tUyTUJh119tX743tP6N9uXWj
+	yLrVpfgKOTnOwLip6dK8oBc+zaHSCWFRO+V46J/u9Am9z+8mrq/ebRINnEPb+977Vd5uBqdvR7q
+	CC3+Q4GdFP/pinbMfp1sUBBmTQNIRAfuieR0DED5wRL5hF8eULiu2wBNQIyj/n7tJVpPeAoAA3x
+	KHLTEI6b7DiwJ/wQGFLl6oa8yyh7h2HmtzXKrhZ9/zjsnexV73Avx0Mwko+oHNS17EQQAyGPEYB
+	5iGI7u32M6Yb1/mjN1jBW1lgqyncwquFCGlCrVDBgLyHaMBj5WF/ZR4cGqNUHC8K3lR06Z7LhFX
+	W+wMTf0FMejCHVt2HWEKohZfi0lxaVv8B26bUXy8doBsH+CtyM4iQpWiYnA=
+X-Received: by 2002:a17:902:da81:b0:2e4:4eed:5cc5 with SMTP id d9443c01a7336-2ea439da841mr21175995ad.38.1792598079292;
+        Wed, 21 Oct 2026 08:54:39 -0700 (PDT)
 Received: from localhost.localdomain (69-172-67-073.static.imsbiz.com. [69.172.67.73])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada490e5edsm69968a91.8.2026.10.21.08.54.21
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b41096bsm13893475ad.26.2026.10.21.08.54.37
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 08:54:22 -0700 (PDT)
+        Wed, 21 Oct 2026 08:54:38 -0700 (PDT)
 From: Dudu Lu <phx0fer@gmail.com>
-To: vinicius.gomes@intel.com,
-	jhs@mojatatu.com,
+To: jhs@mojatatu.com,
 	jiri@resnulli.us
 Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net/sched: taprio: unwind the netdevice notifier if register_qdisc() fails
-Date: Wed, 21 Oct 2026 23:54:17 +0800
-Message-Id: <20261021155417.66254-1-phx0fer@gmail.com>
+Subject: [PATCH net] net/sched: gred: keep the qdisc lock while updating the table
+Date: Wed, 21 Oct 2026 23:54:33 +0800
+Message-Id: <20261021155434.66572-1-phx0fer@gmail.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,41 +97,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-taprio_module_init() registers taprio_device_notifier and then returns
-register_qdisc()'s error directly.  When register_qdisc() fails the
-notifier stays registered, but the loader's failure path frees the module
-image without ever calling the __exit function, so netdev_chain is left
-pointing at taprio_device_notifier.notifier_call -- a function pointer
-that lives in text that has just been freed.
+gred_change_table_def() publishes table->DPs/def/red_flags under
+sch_tree_lock(), drops the lock, and then keeps writing state the
+datapath reads without it:
 
-register_qdisc() has two failure returns: -EEXIST (duplicate .id) and
--EINVAL (malformed cl_ops).  taprio_class_ops satisfies every checked
-implication, so -EINVAL is unreachable and -EEXIST is the only reachable
-failure; it needs a pre-existing "taprio" entry in qdisc_base.  In-tree
-that is reachable only through bpf_qdisc_reg() (CONFIG_NET_SCH_BPF); a
-module calling the exported register_qdisc() reaches it as well.
+  - gred_enable_rio_mode()/gred_disable_rio_mode()/gred_disable_wred_mode()
+    set/clear table->flags;
+  - the red_flags_changed loop writes table->tab[i]->red_flags;
+  - the shadowed-VQ loop frees table->tab[i] and clears the slot.
 
-Once the notifier is left dangling, the next netdevice event that walks
-netdev_chain calls through the stale pointer:
+gred_enqueue() and gred_dequeue() read those same fields (test_bit on
+table->flags, q->red_flags, t->tab[]/t->DPs) under the same root lock on
+another CPU, so the post-unlock writes race with the enqueue path:
 
-  BUG: KASAN: vmalloc-out-of-bounds in notifier_call_chain+0x650/0xb5c
-  Read of size 8 at addr ffff80001fc5ab08 by task ip/110
-   notifier_call_chain+0x650/0xb5c
-   raw_notifier_call_chain+0x34/0x64
-   call_netdevice_notifiers_info+0xa8/0x198
-   __dev_close_many+0xe0/0x800
-   ...
-  >ffff80001fc5ab00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+  BUG: KCSAN: data-race in gred_change_table_def [sch_gred] / gred_enqueue [sch_gred]
+  read (marked) to 0xffff000007ad3b00 of 8 bytes by task 110 on cpu 0:
+   gred_enqueue+0x88/0xc60 [sch_gred]
+   dev_qdisc_enqueue+0x4c/0x19c
+   __dev_queue_xmit+0x10a4/0x1ea4
 
-The shadow row is all f8 (KASAN_VMALLOC_INVALID): the read lands in
-vmalloc memory that was poisoned when the module image was freed, and the
-indirect call is unguarded because the only check, func_ptr_is_kernel_text(),
-is compiled out unless CONFIG_DEBUG_NOTIFIERS.
+The comment justifying the early unlock only covers the DP-vs-DPs check,
+which the shadowed-VQ free loop relies on; it does not cover the scalar
+mode bits and per-VQ red_flags written afterwards.  Move the unlock below
+those updates so everything the datapath reads is published under the
+lock that protects it.
 
-Mirror the sibling sch_cbs.c and act_mirred.c, which unwind the notifier
-on this failure path.
-
-Fixes: 7b9eba7ba0c1 ("net/sched: taprio: fix picos_per_byte miscalculation")
+Fixes: 6639607ed9de ("[PKT_SCHED]: GRED: Use a central table definition change procedure")
 Assisted-by: LLM
 Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
@@ -149,16 +138,14 @@ linux-next too.
 Reproducer status
 -----------------
 A reproducer was written and executed on an arm64 QEMU guest with
-CONFIG_NET_SCH_TAPRIO=m, KASAN_VMALLOC=y, CONFIG_MODULE_UNLOAD=y; it fires at the
-claimed sink.  The reproducer source is not posted here per
-Documentation/process/security-bugs.rst; it is available on request.
+CONFIG_NET_SCH_GRED=m; KCSAN reported the race at the claimed sink.  The
+reproducer source is not posted here per Documentation/process/security-bugs.rst;
+it is available on request.
 
 Triggering conditions
 ---------------------
-A pre-existing "taprio" entry in qdisc_base, so register_qdisc() returns
--EEXIST (the only reachable failure).  In-tree this is reachable via
-bpf_qdisc_reg() (CONFIG_NET_SCH_BPF); the reproducer reaches it through the
-exported register_qdisc().  Then a NETDEV_UP event.
+CAP_NET_ADMIN to reconfigure the qdisc; the race is stochastic (long clean
+stretches between reports).
 
 Notes
 -----
@@ -167,23 +154,40 @@ Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
 it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
 0 warnings.
 
- net/sched/sch_taprio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/sched/sch_gred.c | 18 ++++++++++--------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 39ac5b97aa3a..6eb40a379e79 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -2572,7 +2572,11 @@ static int __init taprio_module_init(void)
- 	if (err)
- 		return err;
+diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
+index f04f425c6c44..f3d9a7252949 100644
+--- a/net/sched/sch_gred.c
++++ b/net/sched/sch_gred.c
+@@ -442,13 +442,6 @@ static int gred_change_table_def(struct Qdisc *sch, struct nlattr *dps,
+ 	red_flags_changed = table->red_flags != sopt->flags;
+ 	table->red_flags = sopt->flags;
  
--	return register_qdisc(&taprio_qdisc_ops);
-+	err = register_qdisc(&taprio_qdisc_ops);
-+	if (err)
-+		unregister_netdevice_notifier(&taprio_device_notifier);
+-	/*
+-	 * Every entry point to GRED is synchronized with the above code
+-	 * and the DP is checked against DPs, i.e. shadowed VQs can no
+-	 * longer be found so we can unlock right here.
+-	 */
+-	sch_tree_unlock(sch);
+-
+ 	if (sopt->grio) {
+ 		gred_enable_rio_mode(table);
+ 		gred_disable_wred_mode(table);
+@@ -474,6 +467,15 @@ static int gred_change_table_def(struct Qdisc *sch, struct nlattr *dps,
+ 		}
+ 	}
+ 
++	/*
++	 * Keep the lock until every field the datapath reads (the
++	 * RIO/WRED mode bits, the per-VQ red_flags and the tab[] slots)
++	 * has been updated: gred_enqueue()/gred_dequeue() read them under
++	 * the same lock, so publishing them after the unlock races with
++	 * the enqueue path.
++	 */
++	sch_tree_unlock(sch);
 +
-+	return err;
+ 	gred_offload(sch, TC_GRED_REPLACE);
+ 	return 0;
  }
- 
- static void __exit taprio_module_exit(void)
