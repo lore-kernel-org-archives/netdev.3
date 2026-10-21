@@ -1,91 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=81.169.146.167
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792582441;
-	b=WqiI9UIMYwv74QOGIOS3aljGRuV0O7SZTGAGneucRDtfHHMmdBeDSB06pFo7Vsbnuhqw
-	 Veo3BGsOmH9RNAR09ns2PQc0HL4c6eNgbfIxMOJMhxLm/dYtt+trNl2eQkSHuyZ3vnpN8
-	 sDJhLH0URwK7f6bHZmVa2pjvO6JGEWbCF774K6uFhR3KwuZdPjeJJZN9XxFGfKEDv2XCR
-	 EOmjKM/AFRhGac4Xtj3GpiB49RP7tFS+2SAD52vasvhEvhJA8kqCjmUUM7+SEdL2/fZwU
-	 xiswig7N0K93BfxtVUkgRvXT1xh8JQ6UnvemZu1Yr1GHI0xcAEnCu3f+WakAN+TznXA==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.17
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792582498;
+	b=v44snNJjE2INB467ZCT1PcbGw67vTM9fCP3X33FBP1OAEt44Bq74QkbJegZcI3fSBoQu
+	 E+rEx6smu9Z+z04DFPdRcb59TfDTnXjRmIg/muXXbFApJD/gdBCmi9QunIUkXxya7//NK
+	 VRytLDfxj+W9O2NUrL4zp8C1xoFvpcCNSc7xklaFPHrgX5G0iJ5W5zIcuHenYTHSDeBmd
+	 hD5pIULpZKIYcOoGK8rqUsBW2oWdn1sCI7IiG4KbD1TdQvZD0bIRgSF7xdJ9oBsRdaDCD
+	 fD1ay7t0WcScEK0nvGXnTxopJe4IbmpXNV/k8wKDxlAyXk4r0pp50P9iPWOG2V7oIHA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792582441;
-	h=DMARC-Filter:X-RZG-CLASS-ID:DKIM-Signature:DKIM-Signature:X-RZG-AUTH:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=XZbpYx2QT8SRqRQMd9EWM51qhGzQzVjgKxv8x7jW8MY=;
-	b=FRjbXYgcT3mlU9U04k8E9d1z4XF0858cJm93KIr2VQ0Fc+uFeNF3rcdWtqYr8RyVOs3d
-	 MpOhj/p0108Vq8JLX1oexBAtz5qZRtmuoHBLdd9mrwyvAu7xsgV26WPljV3FC1+gNWI9Y
-	 by2/XjiQf4tgx0m3f+GNZLAw+3hy2XADdv813I3KVtrG0XJtj2vkeIxXhcQQ4A6JFkQsx
-	 wfZ0o2jFIT65QQWaWhIwkmPmdI+M1ubbReHDhxT/jB9SBTixug/zLys4zvM919A1ApAIi
-	 Y/IufRPwuV7QSPkbmieq+J5kUquXW7qD8SK7bYYcTg6hwRceGrveAj7C5GHHPck9JCg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792582498;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
+	b=Nm0elDHNqFhvS0vFx3yBbI4bBG4wCXY+HMChed5Nt6aJwtY+3L7l/GdSJZ0cwtcY9vvT
+	 0QMIRZ7qtcg1y8Q7rEYauopfsFoaL9/cnJZI2oFw/SCWlTeIapk3YenVNppYkXllcG312
+	 6qahK5iSdIaXUxKpA+bX8ackopSsDYTptIXyvwbxcrYNxpvHGmWH1uFkt+V4ljTy74Kvj
+	 enxmQJjqhvnUPA8/6LKKhZ4UwsyUWC0jAYGCHENshlVkbVzP/Mq0/5UyjkGt8PN+QUq0/
+	 pzBIUezdbJ5ZTZ0Cl3xlfoTfeWkpKH2PsUwoqce67wtxPZtBNuMdIRaXA5qOPhM5snA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hartkopp.net;
-	spf=fail smtp.mailfrom=hartkopp.net;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=qoKfKa1n;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b="/eF1EWpk";
-	arc=fail smtp.remote-ip=81.169.146.167
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=L749O85Y;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.17
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013017.outbound.protection.outlook.com [52.101.83.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8D5606A319;
-	Wed, 21 Oct 2026 11:33:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D8D5606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BC4606A319;
+	Wed, 21 Oct 2026 11:34:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21BC4606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=qoKfKa1n;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=/eF1EWpk
-ARC-Seal: i=1; a=rsa-sha256; t=1792582424; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=kQsJCEKykk1OKrTFFmYQkbT47Lbrt+2jAPr6cOUcsEZ+t8Xkd1fN5d/gbacYHcACeA
-    2EC5I5jQHHSAe4k31kUQJbVzpWwwoexSZqZ95vD8xXZpCgVoY16VS5IUIwGrDqQIpoBd
-    2ato1AYLLq6jEhUZ4Ac5rMsqouOYsOFknHS9QeHZ3KECLnZsmuPukW3hlcnhj23b+9V1
-    HDyx+0etKPXgoqRM1L/8opQBspAGpSJOZxyZLUz9It+QYftB2orwxmhSqGYRL1K7KQwa
-    QfDPOxqWDYb3oRTKKljRI0m3LLp4U67oE5Mav5XuN+D2hDgJ1HhWhfkXBbAdVoz3CmQG
-    DmAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792582424;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=XZbpYx2QT8SRqRQMd9EWM51qhGzQzVjgKxv8x7jW8MY=;
-    b=NwieL3BAqxtwMCCyz6nzohoJ9+zM0yNe5va+EsBIenmVGpvsBBsYGABLR0UYUG5a/x
-    qIVUVh6hNKpXTwJtVjwnpX8oOh2GI3zdwOopVrtWRNcgovzliTtv67EJipq3XLmFuUNR
-    PBB0xRbvQnM4NPzf24DP4Ax24QdwujKc/eK/eSd58L/bkk60Vx+2ONpqPrh5DA75DRqq
-    21yxf0I+QATU24U/KDeeLmjfGiNLLzNXjYdW9VAdKGTkJ1pLNn2b0nne49a464hSaSpi
-    WrhbnRokL/frulwb12gEpt0TjXs1PvM95dGC2TJ1yluGe1f0cVM55QjyE/VZg2YeAERG
-    KloA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792582424;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=XZbpYx2QT8SRqRQMd9EWM51qhGzQzVjgKxv8x7jW8MY=;
-    b=qoKfKa1n3aMqI+c1cHVqogZRZy2YQv0Wt/ArFqgtYgk+eaFfXoso+kXA/kP28Qxn5g
-    ljcm09IxRq9XBNJg0jwPeoYGDizruDWJKcybNdJWQ2irqJK+eCf5fFpwj+U4nAzowk+W
-    kOrP0+bwTSgkG4fhnOjV8TT7inpDtiGwORCnmPJOTB8X4d8Kze77FjZD3KSyCQpQ5Ih4
-    A83ojexJv6R4AfRESNKSZhFINFV2/+0Y3YaViuyVj4pZKkUqJtEu8G6oPIlh39LqoLot
-    R18i/8749sZlTgcHJQjZvMJMpJy7Yy4RL55oEDa/JYkHwtYi2cfIv8+rJlPjQoUbo7QU
-    nQhA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792582424;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=XZbpYx2QT8SRqRQMd9EWM51qhGzQzVjgKxv8x7jW8MY=;
-    b=/eF1EWpkDFIHDuutZNK3CdiMtTogAPRZmtmLOmS3iMu0/OWrVxlCbAtIZ3dqzvmczB
-    0e9Jq+85pxS/+J7GJaBQ==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a29LBXhhiQ
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 21 Oct 2026 13:33:43 +0200 (CEST)
-Message-ID: <37e1db71-eaeb-40ab-8589-099f9d5611d9@hartkopp.net>
-Date: Wed, 21 Oct 2026 13:33:38 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=L749O85Y
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b/cTBLVBt2g6y1PPHFXODD8O3bARgPRJoXj7NCq8Esbrb5VkVFpyNDduBGmthsGlsBRyDshPTOGftGOGENJjx4MyN6zCqTxXX6znQMom/NYtKwwSltGSOYplXrfrJCsYqnOC8GHFA8JLDockAjZPT6Rx4iobuVFrCagXX6GmZIFBbwKV6NbW4dKJSrKo/qLc4PEdhPjl3b96YXhodx7bNideYA3rERunU3DoktdLlkafdNg71zJcovyo2dx09zSPN6zpOxmP/rWYmJpIsQQFWwGwA+CRnQAEEL8EIUSyJ9Rm++kHmo+rGT9XcqurcXP3wo/8Pv0OV6fa9hwuvrGZJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
+ b=Lmo5knlTZkWqMIZ9uXazjsBG7X1d02jgL7EoswvPm84E5T6eIkfX54SKkgSZoKazwXRix578B67dhGwReWWfkck1PI3hiJKES7iqP55yRHiehEd52HGe/1AquAynvObSgWB1tTRTS/TZ2VFhpqPw88dKEU/7skFAcBxEuhgkGDmitwjCIOqY3npiGWeaXex/snLIp35MPECtFX7hEoRT39Xw8FeAZRjgYymHWXgNn5fVLHQHbPWoTWuTGSh0O0wWsS55I/VoS98TIm6L5fCG0MTx37VuBhCEtSTIusaLjjRTixS+pjuEw0iBqjOdwxj7CoT97EGCA5Q7G4Kflw6qOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
+ b=L749O85Y/7jqnRkUmf5v8Ij4NnjDcGZSuE7L0tH4agdUP7Q8zcp1ZUcVQExZPXpPU4UdVCOrPQeoOXgtU4aXz88EHz75QkO4TafWoPQfDLjzAtffGCWbQ3l7Y9RlJYXvkN8PoCVwRwbiPfwLzXIrvoxOlxd0plKFHKP+fjwCROnMUkCi/lXOUy1/3+2VHONllaBHTjUu/xkOjh59eOSBXpN5yC7T7hH+Z9IXbiy5ZaZCQYH5GHUlNik8a3yroVgkgsUd3vLC3ndBCYsfu2BtBjs5lRrVgUSK5r11vNh/bZNgoxWNYim3CSk0LoxtEQFyTrxiWN+hcf8cw3MFtfoR9A==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by VE1PR04MB7310.eurprd04.prod.outlook.com (2603:10a6:800:1a2::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 21 Oct
+ 2026 11:34:54 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 11:34:54 +0000
+Date: Wed, 21 Oct 2026 14:34:50 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+	Zefir Kurtisi <zefir.kurtisi@westermo.com>, Zefir Kurtisi <zefir.kurtisi@gmail.com>, 
+	David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 net 0/8] Fix short frame transmission in enetc
+Message-ID: <hnpdglhqlyaxp62tdqtr6bht7ltbawwinrfisrhfd5ncgfgter@ngf35z7rubch>
+References: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
+X-ClientProxiedBy: FR2P281CA0064.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:93::12) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,46 +99,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/11] pull-request: can-next 2026-10-21
-To: Paolo Abeni <pabeni@redhat.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
- kernel@pengutronix.de
-References: <20261021102756.1900679-1-mkl@pengutronix.de>
- <313fdacc-a8e9-40b0-a125-2317ffaae79d@redhat.com>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <313fdacc-a8e9-40b0-a125-2317ffaae79d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|VE1PR04MB7310:EE_
+X-MS-Office365-Filtering-Correlation-Id: b96f1267-ca7f-4342-9ac8-08df2f67537a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|366016|376014|7416014|6133799003|10067099003|18002099003|22082099003|261009223027099003|11063799006|5023799004|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	1IHtCUGHsGyMH08kjx8DhCC27zVz3JiIiJxngb2im9Pt7jZB4d0z4wKipYVd8Y0JAvem3L64Vtj1sdzJYFHeW8dpw0inqd9FqkIEYQlHg9HfQZcGocM8iHwGfmWcQWg+s2C/jSykDvzfBPdEeG6u4SuuixEt0Xcdt1+f0idYL0Ii2RzQV7NTz/tVuhntGXaCGYh9wB6RbrIFM9SyVux2nZcpNbrG4vfVJZHzueB49QIURqSmVQkCYs/FIAEns2GJI7Q2Lh0U0gHjhi8cne0BE5zDu68Wjf6XvA83LJA1mbCQawM5Nh02R26PrAJtNTC071kojOJ21rrKLtW0GEOVlCHmI3k4kN9TmVbjahRcuK7D1wIMzJSUUwJZyMzzbI2IMdu5TSBNJ6vMZ7eVzntTprt7zqPV/HDAWIQRKyC2IHS+Jx/nGIVGBl8Hl1vIYmq4WNKE7D5IW+bB7WfIDPYo5gogmi3z6pBF5IaLcBMkpOeHpBzzbu0zomflIrO5ti6/27RXBfvm9r5rLJrQijGzbafLlPWYyRFLGnLQs+0MAKjXTz7feHq+0zliqPHRo5BQNlxHnj971Tc0Qe0q5zldTaCrsap+ZieCP1jA3x5PBjxEIfE9P8dMkeBQrwO/Y57y
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(366016)(376014)(7416014)(6133799003)(10067099003)(18002099003)(22082099003)(261009223027099003)(11063799006)(5023799004)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fXKaYoSUvc1kbzhhxS7EvWZrO30l2WcCp/lggfV3KOBvI5fU3AYFdJKtdcjS?=
+ =?us-ascii?Q?KF1QCL9IT9j5KuE5lmqutQfMjzLePIKY8+sNboKvDNxVgwDoIchD1DfIYURF?=
+ =?us-ascii?Q?4cMELBNnbA1vDsRpblIZ22yF1aK6TjK4dMwewqa2kEQcvyBNmDM/i4k8w5Kv?=
+ =?us-ascii?Q?jcpqMvDbr/F9RDF3Bw2cY/roH9tp7KEKVSP+4AZuvUpG8DCpKGCITXX6dzOo?=
+ =?us-ascii?Q?RkPggHTyMBnGJD4JxOCiLeo9PGLDK+bJ9lHV//oEqz1fr+YEA7W1ZFZfwQaM?=
+ =?us-ascii?Q?BfMt2h1IPjzYq7YHw/tc1+MXDqMWoH9wGtdH/m18dt2IunaRgxVB/Fi8tZcf?=
+ =?us-ascii?Q?2WxxHTAEXJGFgBYoO3cYnU16YezGUNte2HFQoO/bl/2Xd+01kr+UpF3xzS04?=
+ =?us-ascii?Q?zyjey7I3D5a7SrrdjRjhMpASkv5vlylojkDxxhS48a98w6r/boxi707HPzEC?=
+ =?us-ascii?Q?yI9MQJhdzh3yWkSb7TDGrYbMkG2+hmlVzwr9qpg2BjlfdlUtAI+pARpGLFm7?=
+ =?us-ascii?Q?fplXaMg7UySc75y3WTQFAWYnh2WDgKrGqrnuV+//Jt7Ut2cgRd/SW7ZP02DA?=
+ =?us-ascii?Q?0wPSv0CcxTwXhWejdaQfkYP4J4pLdLalBruP9R9Hm0ptf2O3xTv4SuRYReix?=
+ =?us-ascii?Q?AazAAQLzWAb3EPaKfnAfbY3uD+QBRE9DVsCZWCFhdEXSQo7Y3qSAgeLpXB3Q?=
+ =?us-ascii?Q?FWoO/1UWo+hkNgU+SFV2xeW86HyN6Nsq4saP7jtMqP3LOBIcpPUpx/a1AiBQ?=
+ =?us-ascii?Q?b6l5+YzCRYY3kjRIJaGe7ZdwoazoPn8iLuvVYGNGIH51QF3VNo/z3zGGt1I6?=
+ =?us-ascii?Q?iB2k/JZmfrDM/6kLW2yLVQIp5W5cYPoCf+L2QqsOFIqqgLfBYMkE0sQ9g1mT?=
+ =?us-ascii?Q?Lhg7vM6viZvccrsJjxR22VToZmOyUZcBRxrGtvpJ/Uytw6kWT2YdoQZhapt/?=
+ =?us-ascii?Q?KdFVTAIHaRJEyeEloKGmDKkhvHusE596z7UZIFUf3WGQmaHioqV7Z93BhDKF?=
+ =?us-ascii?Q?OTMSUTZs2aabLSa7x7fXjtmsis8RUeLAiBUIJrquwLBDJgQuVPC6LueAJFUv?=
+ =?us-ascii?Q?wvLHR1zu0kisHSwnnDAnDySJFfwBhHxxiUiDtA0HWDuqwGgXB+oPpzaAC4m8?=
+ =?us-ascii?Q?BvwotcLlkJeopSPeJDTcNtV+pEf/jNdiOPSNjLAGauyQRy01P5OEMNpFPN+1?=
+ =?us-ascii?Q?y7YhB8beBJn7Yh02rP+Ocqpsh1HI/ipm9mnbR5rtSVHiRW5cFg1p3MhAHK08?=
+ =?us-ascii?Q?IZ0fQLNmFw6EIMVYppXU+CfjfpwJqyqp6WcmHauk6lh2EdSEf0zejHm6SsUj?=
+ =?us-ascii?Q?+4MGMwE1TaEPSlNBCnZxAqcTMAzn5H65NmbJ3EVqKgiM+ITMboSjONRsHwcz?=
+ =?us-ascii?Q?dtfspjSlxDa6T3RKTShB4jBqrgVsjgTKEj0u95CccwfUrS/E2dkqMHn70d2N?=
+ =?us-ascii?Q?M5S8NS9rV/Qthb8Pu1unXK2BT/BtuBE60rOUZW3jo2aDX/dFCohHQseBCMXd?=
+ =?us-ascii?Q?Zt4Aour6dO8sOuKrHlutRf+lHG73MvcFdMnTVl1EjbwvVT/wdQ20KJynNUbZ?=
+ =?us-ascii?Q?IzTanlaMzHeGyC98C4SehEpp6Lk059et2Asc98PPs3cRwy2tgfNwEBchqvQd?=
+ =?us-ascii?Q?fl+YD4SSOh5MJ8y2YLO/47jQB2rShkFiC5DqsPYYajFSsLZLiUv918dlJ4c7?=
+ =?us-ascii?Q?NIf5nUpvurX4Ce6+HtB1/ML+Ana1FJcsf/HAr4xhOleeGEiTHbmLlpa5+eUI?=
+ =?us-ascii?Q?YerYBD57Yg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b96f1267-ca7f-4342-9ac8-08df2f67537a
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 11:34:54.0259
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 714lpFNrNfF0pdQXTShclWRAimGcxSw+dUylDdcthQVJl1zEESX20JO9p3abOwzaLsYTO3Bkp0K1pCXqyEZqUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7310
 
-Hi Paolo,
-
-the original PR is pull-request: can-next 2026-10-18
-
-https://lore.kernel.org/linux-can/20261018164417.1540449-1-mkl@pengutronix.de/
-
-and I had to fix some sashiko-bots reports that didn't show up in 
-previous postings on the CAN mailing list and its LMM.
-
-So its really just a fixes version of can-next 2026-10-18.
-
-Sorry for the re-sending :-/
-My faults.
-
-Best regards,
-Oliver
-
-On 21.10.26 13:19, Paolo Abeni wrote:
-> On 10/21/26 12:24, Marc Kleine-Budde wrote:
->> this is a pull request of 11 patches for net-next/main and obsoletes
->> pull-request: can-next 2026-10-19.
+On Thu, Oct 15, 2026 at 01:55:28PM +0300, vladimir.oltean@nxp.com wrote:
+> This is a belated follow-up to Zefir Kurtisi's report:
+> https://lore.kernel.org/netdev/20260220132930.2521155-1-zefir.kurtisi@gmail.com/
 > 
-> This is a bit tricky. We are already into the merge window, we should
-> defer all 'next' material posted after the merge window start.
+> which is that the ENETC misbehaves when transmitting packets smaller
+> than 16 octets sans FCS: it sends them but does not update the completed
+> index in the transmit BD ring. I did find a sentence in the reference
+> manual explicitly stating these short frames are not supported.
 > 
-> /P
+> The original series was focused on handling the invalid frame
+> geometries (now patches 4, 5 and 6). However, review pointed out further
+> issues in annex code. The other patches handle those.
 > 
+> v1 at:
+> https://lore.kernel.org/netdev/20260401172246.1075883-1-vladimir.oltean@nxp.com/
 > 
+> v2 at:
+> https://lore.kernel.org/netdev/20260406204122.167237-1-vladimir.oltean@nxp.com/
+> 
+> v3 at:
+> https://lore.kernel.org/netdev/20260915222735.1016937-5-vladimir.oltean@nxp.com/
+> 
+> Change log in individual patches. At a high level:
+> - applied feedback from Wei Fang, David Laight and Sashiko
+> - dropped "[PATCH v3 net 7/7] net: enetc: drain and cancel one-step TX
+>   tstamp queue when going down" because addressing Sashiko's feedback
+>   would grow this series to a point where it would become impossible to
+>   make any progress; plus it becomes more and more unrelated to the main
+>   objective. Will address that part separately.
+> - dropped "[PATCH v3 net 6/7] net: enetc: linearize PTP event packets
+>   with one-step TX timestamping"; also unrelated to short frames, will
+>   resubmit separately.
+> - split v3's "pad short frames in software" into patch 4 (do not rely on
+>   mEMAC hardware frame padding) and patch 5 (ensure head buffer has at
+>   least 16 octets).
+> - reworked v3's "pad short XDP frames coming from devmap": instead of
+>   padding the xdp_frame in place through a new generic xdp_frame_pad()
+>   helper (which only covered ndo_xdp_xmit()), patch 6 now pads in the
+>   driver using the shared tx_pad buffer, covering the XDP_TX path too.
+>   Consequently, there is no longer a change to include/net/xdp.h, so the
+>   BPF/XDP folks are no longer CCed.
+> - new patches:
+>   - 2/8: serialize access to the same TX ring from NAPI XDP_TX and
+>     ndo_xdp_xmit()
+>   - 7/8: fix leak of pending XDP_TX frames when going down
+> 
+> Vladimir Oltean (8):
+>   net: enetc: consistently track dropped frames in enetc_xdp_xmit()
+>   net: enetc: serialize access to the same TX ring from NAPI XDP_TX and
+>     ndo_xdp_xmit()
+>   net: enetc: fix bogus TX ring consumer index after reinitialization
+>   net: enetc: do not rely on mEMAC hardware frame padding
+>   net: enetc: ensure head buffer has at least 16 octets
+>   net: enetc: pad short XDP frames in software
+>   net: enetc: fix leak of pending XDP_TX frames when going down
+>   net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
+> 
+>  drivers/net/ethernet/freescale/enetc/enetc.c | 160 ++++++++++++++++---
+>  drivers/net/ethernet/freescale/enetc/enetc.h |  12 ++
+>  2 files changed, 148 insertions(+), 24 deletions(-)
+> 
+> -- 
+> 2.43.0
+>
 
+In short:
+
+pw-bot: cr
+
+I've received a rainfall of AI review from the Sashiko bot, on some
+emails netdev was copied, on some it was not. Some of the feedback is
+valid (a lot is duplicated, and that makes up a lot of the noise), and
+that valid feedback falls into one of 2 categories:
+- in scope for this patch set
+- out of scope for this patch set
+
+I can't humanly respond to all that verbiage, sorry.
+
+Because I want to get this issue resolved ASAP, I will trim v5 to just 4
+patches, which touch only what is strictly in scope, and will defer the
+rest of the feedback to other patch sets to follow.
