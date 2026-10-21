@@ -1,120 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792576124;
-	b=ypvNdejgi2LBx0I9B3ss2LZesbs7q8ssqVr8+k5tOHN1eA60NpJNQ/pjETmvZLXzUAAI
-	 0sc0PhcFzCkKDnumF6HzAkqW1LhQj4MU1NEk2zOu7cu6edqkRPYGjQI2wTZi+TvPBuELK
-	 k5qp4QEYQ3p4DSHJEUskb1DeYMLd7e0tbhYQy9NB0QSEixQWpMvdK+3+UvQkvfBVPFZmF
-	 m2uCW7+NCaagvBmqqPDLu5i5v6jXCOM8JisCszFoyUS+OyVHX54PREpMmMHdTHkw2BqhJ
-	 bvvqpaVDj5z8bK0f4F4qmdxei1a+LH0AgcJjoItBGs6Fj+LLmo5anAjm+5WmMxNXERA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792576124;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.128.173
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792576336;
+	b=AS4m0PtHZh6a0AXOQza9roHv02q+lDT13WAseSyNtAbff29Z6RHGnh5aXWM56acFbx14
+	 gdukMUCTUvjFpeco6rJz3e74Kzm/yiDuGG3KpgBUT5RkBRDx5nuJjzpe/8BzChruUAuRS
+	 F6D4yb4yRRBddsg0P8rRGixXNMhEajUw+ntxKwcSNTDKylLrWmJjFKG4wj+LL+Yf43/Fu
+	 1qBY34uy0vLKt/wz5qDBaq3Y5+U0jidMzyL4+462289D7Rglec47Uw4VQxUQ5hfdD8mDe
+	 ky3RNK9y7Dgq0fYR77jLlr46XDa1Ddp5D+3WC6XBF81UQJaCK/6DZ/i+BBBa9gadGvw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792576336;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=3oOP1y+9aN6aMBiBqwXHlYcfXTBVxTTDMi2tTB6X1Pw=;
-	b=gxErxeDh/lZl+IGwR7+/UES3xTUlrRFCsX96u+rudcm+PNfW0DvkXIN23XCz31K6hSOj
-	 S1Bhcl2vshN9vvLu8fxaktksEaQfPCRycWCrg4+5Lhe/YvZSWGWBdsogAFuK6zERsaua/
-	 apz2VLqWgXPv4CjbHxBwatSXnXYWUX/fUSGdTxCCXMzTiB3CgwSViWYJKTGCBa3l9aHUU
-	 xuQVEMV2oMBl9bqcXwhe8w1k3RxsvvyBeoSHvksta+13kLpVzb+2bS+tZMS5FD1iF22ob
-	 hh9TfNp6KfRKSKVdGc6IYMrzdw3xwj8uGwJvCjXyS+7wRfHQuNmuxy/LWwKUClX3FMw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iAyP185u;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fOIDGL33;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=Jvum9vHoM5in6HyLcCxwho4XKzNHKiwHpUd+vconds8=;
+	b=GwhvDOxNbajla78CXB2c3i3lU4+AjnXUUNWUwIYcd6JEX0Qojlaxqb03/35gBSeRB1HC
+	 ZaC+3TK/+3Y7X14okZECv13BxyP93qlb4Bltmh3SA6vxz5WbMhQ64MRxVuZ0AHaog4BrE
+	 UAURXAXf2oP8vYLSK1lLzRJEcuraUhVnkwUpgwOa67NLaS00TrCxX+phz8JftAyKoY8y+
+	 5k6Pyr3Z17YvTjlt30/Pyd51Wyv0OJYGvl/V0KlnBsC+4prXa5rR/El/+uqBRn5gGCfb6
+	 w6NmCIW9bfjvxsQ5+4kXxfsgtmWrL3LIgkNfYQMcV47GwY77hpX8tZ0eN9SyziButMw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bairaktaris.de;
+	spf=pass smtp.mailfrom=bairaktaris.de;
+	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=bFdHvy08;
+	arc=fail smtp.remote-ip=209.85.128.173
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78B9606A32C
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:48:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C78B9606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CDA606A31D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:52:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74CDA606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iAyP185u;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fOIDGL33
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792576122;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3oOP1y+9aN6aMBiBqwXHlYcfXTBVxTTDMi2tTB6X1Pw=;
-	b=iAyP185u9WCtzmuB8Ga4yrARIPQVN7dKL8XtML1yGN+8qXVmsTraOqIDXcwem8ihrFkYoG
-	iIUyEFy2XXpoXNT2BCTzcuhDTEFBTrtLcuJS0slTVJolgVae53OSzvK1ZSON2zR7BDGAre
-	kS8k+OU/t2Ux1AFF43dYFz7wyb0kp6Y=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-ExYZndgwM_-0ATRWwYLuuQ-1; Wed, 21 Oct 2026 09:48:41 +0000
-X-MC-Unique: ExYZndgwM_-0ATRWwYLuuQ-1
-X-Mimecast-MFC-AGG-ID: ExYZndgwM_-0ATRWwYLuuQ_1792576120
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a01d1fb07bso6570865e9.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:48:41 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=bFdHvy08
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8ab38a051aaso4367717b3.3
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:52:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792576335; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IMxId/pekB+YHsCpMglM3He42rQJmAXdmzlqSd9mp4cD+yI3aq/M00qB+shchXgvX1
+         1dTO4zMYOVet/wqSQ3203YLp908gQtAQZZ6Ffh2QR6B53K2ftYWkuV5fMJmr7WNAtoWE
+         0+vn/Tj67SJmZqzsLzENM/AhDvBxkyLA95EL+EJR/FdbvQX+4V+o6JFfZMwsphlHS0dn
+         4T3AO8R6UkRi1FoA52jUxRI21Afa27usJC/lCK7oUe034UBY8u2oGFVfxCPB9HFyEh0O
+         +rcnvL5zzeWe9I+Dw2mv7I46481iEAJphxlDgHjUUQfaXetImAw4wbFPPgSBgHY9ZU/i
+         XaEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Jvum9vHoM5in6HyLcCxwho4XKzNHKiwHpUd+vconds8=;
+        fh=UHNYsD4+d3OyYtO6tDyITm2yRCHFd4gIUzBZ3H9ovas=;
+        b=s+mMvPT1eWCLCNmyjbvic5o7f/KCAniK06iUXhTiwC9OhAuLqhVH7yKt/MpkPPJps3
+         4olM6xGvYDDYm5vZaCfH2GVmtDaWCUcDBrpSwd+fG0AprdQ2MEqlz0yYfL9lv0wqTInJ
+         /oG/spDLVLk96b8g9TDgzHVNdm5EMdmQMkxCMcAyDSjiN/XDrGZx2ICqd4OXFasc+PX3
+         L9CF7f8VpHqNGQEvqwv35nCtDnx3XPYmTx/7hS0NsqR1lxOB6pKgAAUW1sSftWRrqeuC
+         ZLOhBrgfndzJf4I4zvfw7XyUF1RvAi2LLlRciBO9g5Xkrr7OumSuk+a7IgAc+1jecD6k
+         fubg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792576120; x=1793180920; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3oOP1y+9aN6aMBiBqwXHlYcfXTBVxTTDMi2tTB6X1Pw=;
-        b=fOIDGL33NTrxPKx+BfsSsDVnXGS4e8t1HJJGUsc3zBeYFcQ3ytvC0qEBRWjlfcyZrr
-         ZCckOHMhq0gDAviC7f++/hBeFg2lT7fA0dttpTW7BGm1HhGK9eEMaPmE7TDHycXFjXHk
-         h7isdhUMxs7yCNSiurFJE3JaxJ7pN3pn9BsYs9SHANIIphkdRwNpO4FR9itNunWMSxhy
-         771t03Cx22KDx1i08QAh+IExKyggLErVRHkGmOFSmSqteiSE5s2VW/g06SXItYaSgVJN
-         K4stLeA5BBNcDnmNyRisJHaTIbAhf60v4At2UHbhm/fT0XdPXzWoegysEI2GbNcnjv+Q
-         j4HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792576120; x=1793180920;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=bairaktaris.de; s=google; t=1792576335; x=1793181135; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3oOP1y+9aN6aMBiBqwXHlYcfXTBVxTTDMi2tTB6X1Pw=;
-        b=PuRrbKX4Mzx8aPs6Dx5/csa6wW8vmcKzSRsTW84CR7P3Hr4wQxtyAcSgtzAZGW4jQW
-         TegdcrG3ka4g+8colYOCnrlYl9Fm2xax2yR6z38xRl3TEWCrbFvOcvYiSoucJ293rnQh
-         GjRGWO1/fvN1d7GRZ87sR1SYn1/0iShDLu6JGxMYEmHNAEM0oYEGRUYUOkJy+cfT5bqO
-         Uc4ztgRoHVzZjs9mkEqySqDGGSDhCCf34638pVNiERyJVVgYJOOsIaMQZ+NoCGfYIMaz
-         Q3HCfMQfSHVHNAvpTl5BDc5eEQrSEb7Cmo2Je5jCTY7bFY0ACmZsTqzEFporho4rnbZ+
-         0ZvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxqbUhaMtNXSLSQNNSrJGKWRgdmkHpjm0zllRyWLI3lApQKyETSaEkK71LAqu6AVM+Aoskkw9g=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJwimWhF2zXBSo2rHZaiesIPr6jc4kldB17TFr2ardAcB2wKqwr
-	VHiseltOSSjlP7iYv91SenMgHuMnQHPPDCm62C/B51dVp9Ith6lLpBs2zzkt7BGASTvn+NC3v6M
-	B2n5qLn/1PZFp/mfD1DdqCr4boSn3m248yph9nNc0VxsQKFp/kURm9cB0VQ==
-X-Gm-Gg: AYBFou2Ol6kGkCdMO4QBUrE3Qdk67MGJFYmR3ypIA3RQ8dVcod6p0uN7R16z7dg8eqM
-	EFJxm72tet8fmnVNeC8EHrnLf5tS5KnMNtoC5iLTeQSCnK4tyYriYJpv6kiSh/dFDOYWhscYkPC
-	MMDZl0sd2mCyr6G1Jx4SdTpUQkbJZX1VsvIe9bHe5+KVtzhLiHm7SfedGoZwX7yJKpr3u+e5tiC
-	Uz60iXvaL3gxJczFSEKtIN8Vu6Ez6z9saOBKmcQn5bTyHKlSLI5VUcfzA1B4cwesyimUSX46Eh6
-	osykRwiEAxOx4GCSQN5AhdIgfY9LXMwfJoI/p1ZRKWZYl2OJrLd6iMYWgFd5h+mRxESu0WJtzjq
-	+DvPsEw==
-X-Received: by 2002:a05:600c:6085:b0:4a1:d0e4:2bc7 with SMTP id 5b1f17b1804b1-4a1fdafd610mr29312435e9.15.1792576120181;
-        Wed, 21 Oct 2026 02:48:40 -0700 (PDT)
-X-Received: by 2002:a05:600c:6085:b0:4a1:d0e4:2bc7 with SMTP id 5b1f17b1804b1-4a1fdafd610mr29311875e9.15.1792576119740;
-        Wed, 21 Oct 2026 02:48:39 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.178.135])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fc1b227dsm52096435e9.6.2026.10.21.02.48.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 02:48:37 -0700 (PDT)
-Date: Wed, 21 Oct 2026 11:48:30 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	Eric Dumazet <edumazet@kernel.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
-	Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: Re: [PATCH net-next v4 0/7] vsock: assign the guest vsock device to
- a network namespace
-Message-ID: <atiKKS3piuBLEiSd@sgarzare-redhat>
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
+        bh=Jvum9vHoM5in6HyLcCxwho4XKzNHKiwHpUd+vconds8=;
+        b=bFdHvy08P5qTB+4vC3oEIRt/xKMa3RZ5dVG7cKzf2O6NwQgBTnKsoJAKPu00bMNLqX
+         eDayHVV406lPN30nVfCqvhQsSPAMYRUsDDx/Yfu8By1+D71d6Xs2cYpYqDcNkhyuHWUr
+         QTWvxkxavzRGSjvR+pobQhyGFRotU54L/noqHEgJG1EYXju2pcCE8w8XGdtXZI2ELx9v
+         SVqkS0saCjWz8uxENbAQB1dqqIeVrCEl2mUE6lr9c9g0G/CctkGjy2YUYbz4fdva9jH/
+         pl//1WVpvsuc7nb8TCyOSdjeFtNpUQvQTmZDg0TltV5F/bFhVAWImJnglr0HUmpi+9PZ
+         a7Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792576335; x=1793181135;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Jvum9vHoM5in6HyLcCxwho4XKzNHKiwHpUd+vconds8=;
+        b=ax35DiN2NMzj6CJgv38BhoaTG/Ntua+alJodO8gYfd+b00uLm2GLLFUzh93pAYbLud
+         0esRb9R7M22wOOLswel/be5RdCwQ9arRUPASCQGEMCQTTPt/8FaYEgKY0dm10w2mBqMh
+         XPtkAVXcKU+RWpt+ozb2RxGvC5JZMp89pW4hQzuFMtHLS8kYL0oBFLCacnFaa3jPyzAj
+         k0Ku0bVW7JFjeWeT8cQKddNGvwjvSFtQEHOvdDTSdRRgiXrCMxxqOQEcW6hkGTlnpRbQ
+         lKZ9+7XtG6Xj/yxjVWOVHRsg3UnP7I2Wsz2xWKSEq/uPdohGX09Kz9Un4yIbUqVoK/10
+         dkdg==
+X-Forwarded-Encrypted: i=1; AKwUvBwxT8ulgMjW27VQFos5ygHIXQPed+G20wFi16kC+gOArV1YhfFZa3mNUViYDHBFoU+2AV111Xs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL60fCxqxbfG6NXNrtjfeqQ2OLRyn+Fn4yVj+mL2z+VhZWhjzAn
+	bhM4Qb5cjcJ/XXNOgZxTNUFdIceH2anh6V92O6wxOA0Gfh8szi7NEusKyNk9svJJjXBWC0E+oMo
+	qqJudiP7ZtCwJQnxSYKAIWK8PCPdKfciSl9HJXQiG
+X-Gm-Gg: AYBFou0UB6Us8lXVUN3X4HZfpBLzZdE+QNbYsVxDOabiPsAY1Gm1LtWUOTiDfxtSHQH
+	jyByOBKAnho7yJBFnMykPmu05BsjyT9buD8YfszbZE67+WukWpBWC+KgQXItxtuJArAoDcC0pi3
+	ZQrHgflvjqR56ChtvUX3S5S+sZc5Lv428aujesyvvVd/XYe+s24bfRrl4S8a/UtBoQxhO5xPwhI
+	B0SyVO4TpnqU4IL4oFT5RlPk9Qp6VMiEfrmvYzSy+aj/V/KxvKjinQ+sCyvbgzy50IWrMT4VmmL
+	TaLdN00hxBmcLKQkxzJ5j0BAucew/ULrl6safYTvp91+jKnjnJ/xG2JFxpkxqVJerl7Qb7cDmKN
+	YUDBeYnUw3x3folV4gKGdZN7QsQWrmHhZRryLZ6BbQ4QH9D2b9oLuogl+FOMx/85xUGIQdv0bK6
+	liXYjBzprKG0A5eF0wz34stdp1YwyJr7cEv1e7b6GBxUgSxpSVXGxbTfgkycqCG6oesaWuVOTTW
+	whyzbAubOnGjaQiXPl3cV4mjeTBuKVNuQJGiI2NICwKVm2YZYyppM6mBp4nt4tg25SDoL9bbVvm
+	tbJVs6/ZsrGL8p7W3z2WjUzx3bOVnWBe4SGCQRHWS4O/TJBu4K9mE3Z7ZhNnnV3RTr3rAx8=
+X-Received: by 2002:a05:690c:e653:b0:8a9:da0d:1d94 with SMTP id
+ 00721157ae682-8b133fbd819mr5144797b3.68.1792576335378; Wed, 21 Oct 2026
+ 02:52:15 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -124,54 +106,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
+References: <atQmpPlfT_DSd9dq@chamomile> <20261018025319.1445197-1-julius@bairaktaris.de>
+ <athy9HUHBPfCBKu6@strlen.de>
+In-Reply-To: <athy9HUHBPfCBKu6@strlen.de>
+From: Julius Bairaktaris <julius@bairaktaris.de>
+Date: Wed, 21 Oct 2026 09:51:40 +0000
+X-Gm-Features: AclHuK-pk6kFTufeu4wo_iVpKWwHjnmfy3Rd4sMx-D_9eg3gvY73gs9VtcFkc1Y
+Message-ID: <CAC1t37KrcwpXz5BDrPMpKBdpwJMon=WQWs8sbxDh-FrGFkAaMQ@mail.gmail.com>
+Subject: Re: [PATCH nf-next 2/3] netfilter: flowtable: update upper device
+ stats in the fast path
+To: Florian Westphal <fw@strlen.de>
+Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org, phil@nwl.cc, 
+	coreteam@netfilter.org, netdev@vger.kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	andrew+netdev@lunn.ch, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nbd@nbd.name
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 20, 2026 at 06:15:03PM -0700, Bobby Eshleman wrote:
->vsock network namespaces let a host put each VM in a namespace of its
->own. A guest has no equivalent yet. It has a single G2H device that
->cannot be assigned to a network namespace.
->
->This series lets a guest move that device into a network namespace. A
->new generic netlink family, "vsock", supports the command
->VSOCK_CMD_DEV_NETNS_SET which assigns the device to the namespace the
->request was sent from. The namespace's existing ns_mode then decides who
->may use it: a "global" namespace shares the device with every other
->global namespace, and a "local" namespace keeps the host connection to
->itself. The device starts out in the initial namespace, so until the
->command is issued nothing has moved and no mode has changed. There is no
->explicit unassign as assigning the device back to the initial namespace
->is equivalent.
->
->The command requires CAP_NET_ADMIN in the initial user namespace, so
->that an unprivileged user namespace cannot claim the device.
->
->Connections that can no longer reach the device after a move are reset,
->so that a namespace which has lost access cannot keep using a socket it
->opened while it still had access. The assignment holds a reference on
->the namespace, so deleting that namespace does not move the device; only
->another assignment does.
->
->Transports opt in through a new netns_assign_allow flag. Only
->virtio-vsock sets it here, because it is the only guest transport
->that I am able to test against.
->
->Based off of Stefano's original series:
->https://lore.kernel.org/all/20200116172428.311437-1-sgarzare@redhat.com/
->
->Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
->Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->---
->Changes in v4:
->- All Sashiko fixes (see individual patch change lists)
->- Link to v3: https://lore.kernel.org/r/20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com
->
+Am Mi., 21. Okt. 2026 um 08:08 Uhr schrieb Florian Westphal <fw@strlen.de>:
+> Conceptually, with flowtable, offloaded packets bypass that device entirely
+> and therefore should not touch stats of the virtual device.  At least
+> thats how I'd expect it to behave.
 
-Sorry, yesterday I started to review v3, but didn't post comments :-(
-I'll send on this series.
+Fair point. Users could just as well report that as a bug.
 
-Thanks,
-Stefano
+Pablo, I have a v2 ready if you still want it. Otherwise I'm fine with
+dropping the series until the expected behaviour is clear.
 
+And thanks for giving your thoughts, Pablo and Florian!
+
+Julius
