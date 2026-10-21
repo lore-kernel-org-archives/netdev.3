@@ -1,55 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792587580;
-	b=KZjxr/WvJmMDPWw5BbS7mhB9CQs/husbjlR3H+FruqhgR+dQCD69BLqv2JkbBm8wEjjA
-	 stMuqMz6Enqp+yiSV2klPeRd7SQsGTJzY4Fm+9jc4rLF7vzkIPn97FmmOpBfr6Ua/ev+L
-	 pEzOt0uqySMuQNFuhQQwvNAihd/xfr9lu3IPx6cd4fP1bN6UCi+dAzO0AXOd9hG8u6rXl
-	 yV1wyAI2KecKvrL6JQ2AeypN4FyverER+M+fyoWTJK8pKzSpCrRobOAgiNymndKUSWtEx
-	 y1rMdsQHkbTuQYefb8ZQe1szviWKFB9LKT57vCfIy1guNnBXNigoTOvYrGowXgBxB2g==
+	t=1792587666;
+	b=pyPXftCVI80/8w1MCxcqHNKxRj4pHHYK2Pk5khFavPuUyaCUmh8kTTIiVZdu28vU+sRM
+	 8B90GIGDvkxdeXxX1sECBV8qKALikO8euwAG8r/MpUSrerPvtYti0WzootY/6GXrjAl50
+	 CdKqfw971rN5MeAlkSGldXGg8BAk1TN7NxANKFdaDRimCkOd2SWRoe893al19DoGIBMcm
+	 wFCPh5BDlv1Kv5p0YfHsJufkPJeMk/MvUY/ITqO7W+PykjxnQnwHJw3dsRIVBdYql0rsG
+	 WJuO2KErFg8AinYbpICv5FpPY9wQ4y6v6UvCGn8kORWQmoCh2gfocW1AKfAg2QbGkRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792587580;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=GIJg6VKroIEKiKwNbncnOaNqN5TLBnzrp4Dp2ytEtUM=;
-	b=qPOtFqXVdGWTYShXP2w3uoV1INDKICSXSMip36wYlVEhWX7psRyPO5aYWaa3NpHvbryY
-	 AK43QWJW3GLTs0j09ryP3Iti6t8+eCthKYxSRZfVYof5ynev70QtdR1E7jpu5OrUw2aHU
-	 tneftDhj2yYasw1DU5H3HhesPZW/XdiIy8D70TAOS4VhFwSyLoJl1CVg8agkLjl7Rs0ek
-	 tHHCr42jvzWVkKZqV98n4zQdwd1Q3ZlDK/UVzvjC4wFDlhP0NPbq8mCV4wP26BXXfWmtc
-	 dMd2SovubJCwbeXfRRIZdiB8XXrIK4f9QeEzv9sjFKXRbhAkLqsqIq4qX/ivB49Ga6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792587666;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
+	b=Pb501tHxUaih1pTV57+pQeivu4xXgo39HHjIovuT+w8yUNSJl41bOjFesyJqF6nLPsiV
+	 bd6u3SVn1KJssXaSucuoV864SGP0HOBW1YhjXyYwIgvzq02arxUC2k+vXv2yr9WhpUPgi
+	 oC3jlZosNEvrDUrwZLKJfY73j8E8M2JwR9JQ3f8ZWSYurTHUXUHYnCDd05zN01Uo7ji8B
+	 DGV/+s7octAr5iD9oFWRqAsNzMlW0y5e9B82wFXCERxmzLGnk0RL7EylM3KV7HuT2mzpn
+	 xLRG55/97ec1DWDb95/9xrNz5IYB3JcTT9N641bpQTHq5eF5bK1iFpwsbsW9bZvTjrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Q8QRuj/7";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ozh8G6kW;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eqhbLB33;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D9E606A31D
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 12:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286C9606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:01:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 286C9606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q8QRuj/7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7401F000C8
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 12:59:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792587579;
-	bh=GIJg6VKroIEKiKwNbncnOaNqN5TLBnzrp4Dp2ytEtUM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Q8QRuj/7vHke3NtM8c+QHspOJAGgjABtyagUQ7X80Z9PGEepoS/B8Ci6yJTHUPh6P
-	 qp3T1WKQVHG3RdsAxNWqb1lnMNnFHDD4SRK+I9x3iO5rzfY3Lz8LpemFn8POSNsQgW
-	 Dgq4WHfhRhqVXAKOnQWbooSjJm1YxIEfLgig2PL+1S4hvLDXqezK1lGSQAfjSyBMc1
-	 Ig4GapvM7jgyWRHiBnaunTEnpU6QumMT3BSm3Kgm7msqwojNkH8a9hUPfATTo/VbyF
-	 IyWBXlijbL72JXAmTMkaU28S8jiR/D3eTVl41B0TeowiRFjNjMqqFJrwQd6ye+rVzC
-	 ovmd69nILQ14A==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3a9841363b5so5664241fa.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 05:59:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx/Zz6j2yodZ237PlkSpMUXQ29cenDJClxDgfblavaBrlsMObbN467S+jykMaCTcM8lVyRvpXs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJDjblwbiMYl26YVLypJsbbihM+zKaCOjthJFlNdB7x1TqFl+kl
-	7iwchAoOKHZm7LLTGU6h1TYbOEukuJuDiCN6nvWmzghGUZ43VE1833VffR5dG+k61CwO18r1rBj
-	uNcCf+fu5eoe5LR7jDi+JH+y/kQ8rmMI=
-X-Received: by 2002:a2e:be0b:0:b0:3a6:4a45:df84 with SMTP id
- 38308e7fff4ca-3ac440a1b48mr6226641fa.1.1792587577987; Wed, 21 Oct 2026
- 05:59:37 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ozh8G6kW;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eqhbLB33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792587665;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
+	b=Ozh8G6kWaAnPHnLAb9UZVK0rYxqSCXI0pHsO+va1Ze+R5jLpLUy7DR9UfdE2c65sX8nH3Z
+	7bJN3CaKTJHUstIEE45omZTPn+kykDvkmEUE/i1PDtRmjj/GSB7jjUJiVNmpIo0lIbMJ3U
+	45NJA4iF1AgCCqvQXtzbWl6W+sZuIf8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-7-Q3jofPw5MziwWkwcdgQeeQ-1; Wed, 21 Oct 2026 09:01:03 -0400
+X-MC-Unique: Q3jofPw5MziwWkwcdgQeeQ-1
+X-Mimecast-MFC-AGG-ID: Q3jofPw5MziwWkwcdgQeeQ_1792587662
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1de9dac94so6878375e9.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:01:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792587662; x=1793192462; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
+        b=eqhbLB33SLTe8SvEB8cV7kZVJA9k2DbszVVbQlVPSTfTXwOYYhwEcVxZ1LSHbeypW+
+         nnFhGnc3v5Frau+Oej69xkp0k7NrK2JqvcgjNRiRDDqLcGhFC0rvvkzjTb7K+4KPncms
+         soy6KLsZH0xaZURxz6z9IuSftdvsbPJ6jHeKC7OOa2HFaj5PWzlbRNKZlD9CFCQlYHsC
+         F4QPc06Q6NVmF7GI/XMv1WI2bvJ6H2lZkGtkqRFDASXAM7EdIuTv39nUCeNuu9Kz3UR4
+         DoJtrLnCsZmT2IGRq1Qc9KtoNQT+O7/GC3VsLZLYOS3oH6P7B+CZRv5kynlermkmZVcB
+         Fsrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792587662; x=1793192462;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
+        b=vJ9gceIMPHZbQd7pr0PS8B7w5JCLA/XP0QKd7cJRLMdSEsTZX7tTw9Q5JEkipfKdjh
+         6kd1GzytX0jspXkydvIF2RqGvtV0Sq+hX++XjurI5a2MI86I2Tw23Q7haPPj95Z5Z+RV
+         bf7XX1+Oovijd6nxWcO004SUxvAN9sroQIsoJ14dt45+byaLY6ZS6meN+YcZO6fTqn6w
+         QwUdqBX4dbfKBUWIM1vqXwv3mdJXJsJIeY41g1OcgL0p476w/sPqv514hsU8UUObhJ6h
+         xFg609CjK/xUtnk25Vjt1Bq3UOC/MReXKV36Ob5HthaT6dJN/dOCl+UiB2UU53shyPsf
+         tW6A==
+X-Forwarded-Encrypted: i=1; AKwUvBxYu/9TCxLmj6Qj3SoqNMV+/ce91CVlbTHnVbig3IWUlv/PPPPhqDwtk+lOlKOc+qNvq8gnWT0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK4Q+yBYdahx4PfJ47thY+5GQEWtWiQeDPzHEPZv8VQYFWdbfpL
+	0+GIYdVks/TpN41IGtjt5Rem+aAqXIOHAzYMiaxGCedFMfUeQG/cf7Lf7YlKmn/Fi0aVYUKEzGi
+	PBGm5lJJfdMi/rhQXbM7CvK66K7h/KcjHfXCHeWpX/9S6Tone6aDCaYgy5Q==
+X-Gm-Gg: AYBFou1j8n1CIruU1a3r/utXOSLfj9CUWSrFF7iawUVcRlMin225qkGbjoRLPr3xKbm
+	eXhGgpa344qPsJaiJS+vwSFH9LoQ5TnjTrsmRsDMHa739cZkxohHn29qDjeWaxiXzOwGollxiKF
+	M8copK0WuxrfrVr375Ve5pBy373lOvC6pWh5C7pFRB8qXo86jpajlclj6W8d6ScmmxeF0LMo1Ei
+	ml9hVy4/3UhA1M3+EQXP3x2kHKvkxz8Ed3A8GAzUobS5THD5sCF5tWU0VmtkAWhhdaVCdJVypLJ
+	zRmZzAWyPLHPHCFdsImlZHeByI122EYXpz3mrZD0ZXS+kdYGPKPsWsgprVIs3soFFVrPHLDZSmv
+	NnN1iX4Xc7hvkjIIf+OUKiB/7xy+a+G+w3gAfx8f6h49YBap/NVXGUTPTivQ=
+X-Received: by 2002:a05:600c:3b24:b0:4a1:f736:79d1 with SMTP id 5b1f17b1804b1-4a1fdb20d04mr44728815e9.16.1792587661570;
+        Wed, 21 Oct 2026 06:01:01 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b24:b0:4a1:f736:79d1 with SMTP id 5b1f17b1804b1-4a1fdb20d04mr44725765e9.16.1792587660186;
+        Wed, 21 Oct 2026 06:01:00 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835e22sm6113081f8f.44.2026.10.21.06.00.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 06:00:59 -0700 (PDT)
+Message-ID: <d6f50e2e-adcc-4d85-9be3-ff24cb8f8cc2@redhat.com>
+Date: Wed, 21 Oct 2026 15:00:56 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,148 +111,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019174522.55644-1-kaifengw@google.com> <ef23d9b7-33c1-40dd-854e-1911ad3534a4@redhat.com>
-In-Reply-To: <ef23d9b7-33c1-40dd-854e-1911ad3534a4@redhat.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 21 Oct 2026 14:59:25 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqDG2+vhkpCckc1mqMCcH1XAFJ_g0=OdCgv049gG7HgzA@mail.gmail.com>
-X-Gm-Features: AclHuK_Z2qfEA1qqbI9J4CzMT9qDwZOPde0aorWAVjSYKIu6-DuKrwXEsyuD1Sc
-Message-ID: <CAL4WiiqDG2+vhkpCckc1mqMCcH1XAFJ_g0=OdCgv049gG7HgzA@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: reject devmem tx with fastopen and repair
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Kaifeng Wang <kaifengw@google.com>, netdev@vger.kernel.org, 
-	Kuniyuki Iwashima <kuniyu@google.com>, ncardwell@google.com, davem@davemloft.net, 
-	kuba@kernel.org, horms@kernel.org, asml.silence@gmail.com, 
-	almasrymina@google.com, willemb@google.com, kaiyuanz@google.com, 
-	sdf@fomichev.me, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: linux-next: manual merge of the bluetooth-fixes tree with the net
+ tree
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Mark Brown <broonie@kernel.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>, David Miller <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Liu Chao <liuc63@xiaopeng.com>, Networking <netdev@vger.kernel.org>,
+ Piotr Kubik <piotr@kubik.pl>
+References: <atiblfL12VddJgjU@sirena.co.uk> <atioPA8ofnC-PCGi@chamomile>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <atioPA8ofnC-PCGi@chamomile>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Le mer. 21 oct. 2026 =C3=A0 12:53, Paolo Abeni <pabeni@redhat.com> a =C3=A9=
-crit :
->
-> Adding Eric (for real) and Kuniyuki
+On 10/21/26 13:55, Pablo Neira Ayuso wrote:
+> @netdev maintainers: Please, see below.
+> 
+> On Wed, Oct 21, 2026 at 12:01:41PM +0100, Mark Brown wrote:
+>> Hi all,
+>>
+>> Today's linux-next merge of the bluetooth-fixes tree got a conflict in:
+>>
+>>    net/netfilter/nf_conntrack_netlink.c
+>>
+>> between commit:
+>>
+>>    cd37ab22a74e0 ("netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter")
+>>
+>> from the net tree and commit:
+>>
+>>    1ae2d094b0200 ("netfilter: ctnetlink: fix inverted IPv6 address match in dump filter")
+>>
+>> from the bluetooth-fixes tree.
+>>
+>> I fixed it up (see below) and can carry the fix as necessary. This
+>> is now fixed as far as linux-next is concerned, but any non trivial
+>> conflicts should be mentioned to your upstream maintainer when your tree
+>> is submitted for merging.  You may also want to consider cooperating
+>> with the maintainer of the conflicting tree to minimise any particularly
+>> complex conflicts.
+> 
+> Sorry for this: This patch is duplicated, one variant went into
+> net.git and another into net-next.git.
+> 
+> Two possibilities:
+> 
+> - Revert 1ae2d094b020 ("netfilter: ctnetlink: fix inverted IPv6
+>    address match in dump filter") in net-next.git
+> 
+> or
+> 
+> - Revert cd37ab22a74e ("netfilter: nf_conntrack_netlink: fix inverted
+>    IPv6 tuple filter")
+> 
+> before net-next.git gets merged into net.git, because these two
+> patches address the same issue.
+The 2 patches are equivalent, right? We pull net into net-next before
+sending the net-next PR; I think the easier solution would
+be manually solving the conflict at that time. I understand that accepting
+either 'net' or 'net-next' variant would be ok.
 
-Thanks Paolo.
+/P
 
->
-> On 10/19/26 19:45, Kaifeng Wang wrote:
-> > tcp_sendmsg_locked() enforces that devmem TX can only proceed if the
-> > zero-copy path is active and a valid dmabuf binding exists. However,
-> > subsequent branches in tcp_sendmsg_locked() can still intercept the
-> > message before it reaches the devmem zero-copy loop:
-> >
-> > 1. TCP Fast Open (MSG_FASTOPEN or DEFER_CONNECT):
-> >     If TCP_FASTOPEN_CONNECT is set, the socket may have a valid dst wit=
-h
-> >     NETIF_F_SG (so zc =3D=3D MSG_ZEROCOPY and binding is present), but
-> >     tcp_sendmsg_fastopen() -> tcp_send_syn_data() will use
-> >     copy_page_from_iter() to byte-copy from the iterator. Since iov_bas=
-e
-> >     represents dma-buf offsets rather than user virtual addresses, this
-> >     misinterprets offsets as user pointers and copies the caller's memo=
-ry
-> >     at those addresses into the SYN packet.
-> >
-> > 2. TCP repair mode:
-> >     If tp->repair is enabled with TCP_RECV_QUEUE, tcp_send_rcvq() simil=
-arly
-> >     calls skb_copy_datagram_from_iter(), byte-copying from the iterator=
-.
-> >
-> > Neither path supports or makes sense for devmem transmission. Reject
-> > devmem sends inside the Fast Open and TCP repair branches when a devmem
-> > binding is present. Checking inside the tp->repair branch also covers
-> > the case where repair mode is enabled while sk_stream_wait_connect()
-> > drops the socket lock.
-
-
-Note that the check in the tp->repair branch also rejects
-TCP_SEND_QUEUE, not only TCP_RECV_QUEUE. This is fine (a devmem
-binding can not be restored by CRIU anyway), but the changelog
-could say so.
-
-Also, an application using TCP_FASTOPEN_CONNECT will now get -EINVAL
-on its first devmem sendmsg(), and the SYN is not sent. Again fine
-for a net fix, just worth being aware of.
-
-> >
-> > Additionally, drop the !sockc_err gate from the devmem validation check
-> > and return sockc_err if set. Otherwise, if a valid SCM_DEVMEM_DMABUF is
-> > followed by a failing cmsg, sockc.dmabuf_id remains set while binding i=
-s
-> > not acquired, allowing the Fast Open and TCP_RECV_QUEUE repair paths to
-> > proceed and return before sockc_err is checked.
-> >
-> > This pre-existing issue was identified by Sashiko AI review on commit
-> > 125755776bc6 ("tcp: reject non zerocopy devmem tx") and has not been
-> > hit in production.
-> >
-> > Fixes: 125755776bc6 ("tcp: reject non zerocopy devmem tx")
-> > Fixes: bd61848900bf ("net: devmem: Implement TX path")
-> > Reviewed-by: Mina Almasry <almasrymina@google.com>
-> > Signed-off-by: Kaifeng Wang <kaifengw@google.com>
-> > ---
-> > v1 -> v2:
-> > - Move the devmem rejection checks into the Fast Open and TCP repair
-> >    branches directly, also covering the case where tp->repair is enable=
-d
-> >    while sk_stream_wait_connect() drops the socket lock.
-> > - Drop the !sockc_err gate from the devmem validation check and return
-> >    sockc_err if set, preventing a valid SCM_DEVMEM_DMABUF followed by a
-> >    failing cmsg from bypassing the check.
-> >
-> >   net/ipv4/tcp.c | 12 ++++++++++--
-> >   1 file changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> > index 87ef6d5cbfeb..2792923f0748 100644
-> > --- a/net/ipv4/tcp.c
-> > +++ b/net/ipv4/tcp.c
-> > @@ -1169,14 +1169,18 @@ int tcp_sendmsg_locked(struct sock *sk, struct =
-msghdr *msg, size_t size)
-> >                       zc =3D MSG_SPLICE_PAGES;
-> >       }
-> >
-> > -     if (!sockc_err && sockc.dmabuf_id && (zc !=3D MSG_ZEROCOPY || !bi=
-nding)) {
-> > -             err =3D -EINVAL;
-> > +     if (sockc.dmabuf_id && (zc !=3D MSG_ZEROCOPY || !binding)) {
-> > +             err =3D sockc_err ?: -EINVAL;
-> >               goto out_err;
-> >       }
-> >
-> >       if (unlikely(flags & MSG_FASTOPEN ||
-> >                    inet_test_bit(DEFER_CONNECT, sk)) &&
-> >           !tp->repair) {
-> > +             if (binding) {
-> > +                     err =3D -EINVAL;
-> > +                     goto out_err;
-> > +             }
-> >               err =3D tcp_sendmsg_fastopen(sk, msg, &copied_syn, size, =
-uarg);
-> >               if (err =3D=3D -EINPROGRESS && copied_syn > 0)
-> >                       goto out;
-> > @@ -1200,6 +1204,10 @@ int tcp_sendmsg_locked(struct sock *sk, struct m=
-sghdr *msg, size_t size)
-> >       }
-> >
-> >       if (unlikely(tp->repair)) {
-> > +             if (binding) {
-> > +                     err =3D -EINVAL;
-> > +                     goto out_err;
-> > +             }
-> >               if (tp->repair_queue =3D=3D TCP_RECV_QUEUE) {
-> >                       copied =3D tcp_send_rcvq(sk, msg, size);
-> >                       goto out_nopush;
->
-> The ever increasing number of conditionals is a bit concerning, but
-> I don't see how to avoid the new ones.
-
-Yes. sendmsg() has been hijacked by so many slow path components.
-
-At least this patch only adds code in unlikely() branches.
-
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-
-Thanks.
