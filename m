@@ -1,121 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792573464;
-	b=t6PGcUVxqGFoKKyLv5vqDEUp55zvWGx00Mu5m85zUzhY8LEuFvs3Rbc34A5zcY1B2Zr0
-	 feGkxiNZr6s9uPcVa6CBfqUucBjphAmaATcDuPbN0GE1TYkfwlEp6sjjYLCM1d6yny4Dk
-	 bVtmI00/uvR4m9RBrWppUmIKtEoTfLZPpMek1mSPRWFiPvoA0l2MpDn1yE6h+bAx3l5lX
-	 Hm7uL7tu23CsnH45nXFe4DpUpxrTr2u2gvMJp6y2hP7crDlOoof1EGK772Bjl4hso1Nuh
-	 xQ/2ZnQC0+nzJbfl1ObfnMuNFh9LJRfmgN5TB39K4dfucz6/gpevDgopN2Fc6yKM/Ag==
+	t=1792573514;
+	b=lU8KwPdk8EE6H1WaFoQBAa2TlBUQF6j8OKd94mYgfdBv5RCVi2Id/o9KEySnUhcdBqC4
+	 rjoWlBFPNKVz3bxQ9BluzgDqVbI39fjbtDXkpm8G1YpsHu3FsaPxV4m16NOfC6kQNA9Lc
+	 +oOoQ+MAl8AwjE8QCpHa4I4Qu0trs0GodI65EiGZtGEbUvumPt7Fo2qfFeKziMyDRmWf3
+	 l0aCiyFN5esFiq5SrP79ntI9p39smQ2R50slv3VhpkMq+1YQzjkzzOY47/VageR55/3yU
+	 2Dmm7unB6VsuOjr5so6AYmp4q74BqxHc//JDtIVZca/GYZbN364hzyazEI236GfSTTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792573464;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=csNOmpzOi9opi088UH5aVImfWx2YCUTo70s3xFwzQFM=;
-	b=24DrbqIW0DOuTkTYdwa1a96saXd5e/GTIxiHlb2Is0Sv3fqjmKhJVn8jJf+lXDLOFhjo
-	 raHpZTu/t/rNGcJwfU0awU+jNnCXyzVVA/2H+tsISDs+pYeAUtnd21+cZqfJIjbbSZBt3
-	 Gq0uWwkM1ROq7BN0CZeFjEyRcmACSY6InBXIyIJXTv7cjOq34CUuZSTA1n7YH30ao5UVk
-	 rQfhoeKBviSEewvBKVOXKRfOfNpsT6mnobHmMLAHFaDxrEprvsxSxySrUKMa5laEFjCJK
-	 JB3EkdAmcU/Ql1/2HKHHGfXhT47vDq0DxtQEI0alRBccfodDv5i2I4Bonew+duywjww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792573514;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=kUSrpMFXxWPFRpvXCbMO5u9yaTRX7UqFSSAYtOdk9qk=;
+	b=sl9yjEw/FsNm3/zYVCnIGc0pWtNWLRt3pTZq3MsBt4Lo3WyILoyEINsR8dNDuG8YxZ9q
+	 n5sYTrgxYJJ7r/MpBgBxlDcGn8UthCNsxDiK7GzETDtVM8IEj1Mf7zuyKVjHHm7pFUanV
+	 SIQjmIClsi86UlobP3KQ9LhovpeG1qHqQ2ei5P25sZ5WhLJB94fFKu5bIrab+JssbuQ6J
+	 Z7s7qL+oI0yBzBrCxM1P7CGRshuC5zQu69tCiQit6xdaNWvGkouyFR/DmC8cHrAYmC5Ya
+	 WcDZ55MwVU4YUZbYMQfcj4xeKT6RktZVjR/C6iwapb73VZtXn4PPdQ7MEzFgJ03zJdw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=queasysnail.net;
-	spf=pass smtp.mailfrom=queasysnail.net;
-	dkim=pass header.d=queasysnail.net header.i=@queasysnail.net header.a=rsa-sha256 header.s=fm3 header.b=omeSON72;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=nudGWP2W;
-	arc=none smtp.remote-ip=202.12.124.150
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bCjibVuT;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570A9606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:04:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 570A9606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23D9606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=queasysnail.net header.i=@queasysnail.net header.a=rsa-sha256 header.s=fm3 header.b=omeSON72;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=nudGWP2W
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 857971D00139
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 05:04:22 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 21 Oct 2026 05:04:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1792573462; x=
-	1792659862; bh=csNOmpzOi9opi088UH5aVImfWx2YCUTo70s3xFwzQFM=; b=o
-	meSON72QEHErjg7n+i2yeuPoD4JJO3wC0eQEUP670QY9jVILee30qzKmS4mOVKdh
-	peivkki6RAGkgrXSwPyFReTEuB2+aWZDnKuVFkTVbbhn2IRuPe5EeYiZwiaCXj5t
-	BWH64f724LqnDxwnUntOpa3zIYyNBDfQYtQHdLdokmn+my2gMwsWUEQY/OmWDJe7
-	EJnGJvBElhHJ0OAILgOBGI+yyTKyMjRknJIWe1ECfuY6xvFveHLyHxIAw4Tavkq4
-	RSk9rc/qmrqrc6+egbMBOmveywQYLX+4SUCet7HMTXriVVYcz3rn+0z2xmpE7vfg
-	B2L+2FrywVUryW31X7QbQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1792573462; x=1792659862; bh=csNOmpzOi9opi088UH5aVImfWx2YCUTo70s
-	3xFwzQFM=; b=nudGWP2WpJidpEIlgg3pDi5/YpEIj6ZF1hEBVngrs55d/rt2z2r
-	qVMvOlua5w007vKBlQhSkEwUT/a1btkc382XtH5ii4vJi15RO21GmxCu0XicxAb4
-	uQmUVMfqotwY7kcloF8ILjTkmORbIDWN8UcJ/xa/LrY6FUh4qZjrEpJG5yHQXfVE
-	ZbrqLfoUch8u1E6MsFiWlUcQrTjpuTlexzxZ37gfGwmyiU1fC25AYMzvtXKPjk9i
-	HQ+R/nnmVFfCSJOkjpgvfjt4CDcMArLIqdg5psbzaZwfOpdgPSqLOin8hzEOdnx5
-	YiuwnLQu0GyRO18SV0tdHtmV5O608ehqv/g==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=queasysnail.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792573462; d=queasysnail.net;
-	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm3:rsa-sha256:WeVkTrdodRiBdNYzI0TnW2GVnZv4/+MBCwbmztLBzqd8jCk
-	EufpQsbI7SqEUk7AyY5hDAczmtef6pK4PpbklSOsYTMyN8pF0ggPXbIrWnCQ4f6X
-	7rPYvRUPreocx06LE27YY8PjVyG0p5/dmaTarZ6g4pRXTXdFx3FqJbLRrQw4dC0R
-	sm241iB/CSnw7kU0jKzDX9u2gMTLTNDrpk2imGWQDYlcaU5YK2DI5slP4jnp6Qug
-	J0vzbu3zgx2JucrBIaexb2MKCpxWqGxTwduGa/bycrnTCatgE0DfqIlRgLoDLfn5
-	Td4rsW5k0AmmxwYihcOOlHXaTe5ZPrUdKyZ2Wrw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:BPsFBW8hox1ARX6bqMlGNHye56oNNRkxjp5ruwYW0+0=:SN3lCVCm/+OtZcsJHcgkhERSa+yp3BYbsp+O1Bf8328=;
-X-ME-Sender: <xms:FYDYauMP4a6wy_N2vd6bl73-dVR2gJpMSg2ECRE9E7AoSIfCc0-ObQ>
-    <xme:FYDYai8tYAKVjeW7LlIJgoPvnHmhVc0ki5KINUUIhyzUh0WVk6yclIt0vAOyOSW_5
-    PpkMHEjLj_XNJuJfAHA8izGpTqAMAjbU3B3jFz2O-gPjHOZwRbIBf3A>
-X-ME-Received: <xmr:FYDYagHgn2hk1qgwWQ_s2nu5LBEYvscjvWc-lIkZ3WCp1ipFJudtLW93p1I>
-X-ME-Proxy-Cause: dmFkZTEu9GlWtHXe9v9ClB+erUmoDap8HNWDFhJJi5pP1RUgD8TZuRnUuCCBr1H8B0+f/F
-    xcfo+/mXnhan7i4FzLnwhbRZ1QUo3U6auOgMvtpuwR2wXwUsPO+dgsJWQse6rYu/MYGQEa
-    ad1sJrqX8ZWQOBJ6jfBeswqfi6sidebXP4/b8Bh79NYyEa9JUa5eD7EAXE7AC9a8j3kV2X
-    5MSXnED3dLH8vB0pOcMbwyTMEltKQRLJMoRGB6ZEVyDVa4L7LMImJcGM4lhXxaZEh407Aq
-    XCONGZqAuEXOSov9Vh9qXgV/z7vur5hiAvGh5U/Uw7Bo4UmHthK+M2P+GHo7tPi+cTERg9
-    XIdDkkS/xzWpx+dlIdz6guXu+8uWxwWTolp5QLOE0QqjzRZZU49Cenr04EKtkEtPSW/Ri3
-    DAsATrp2XrU6EkAqZbnespu9lj4RzsN2Xq0lCo5BPfLilXxT2ftpnlKihgY5oDR8pyvSQS
-    xkIOjMMw0kc8+vB8YGSgajmwODNIvlkJ3Toh4fp16CtxXFQgFDed4p2tYLsvQ3qcdivC6r
-    WD4E9l3vvEoaqaR1QWM3iACMvLwrMyeazLpwQ/jGvPOkWrVxtoX0NYe7oSUK+FNw+6lIXW
-    fA63JfweHR0DDhQiCL/GZCRyZ1kSzUB0fW6trlhpQAkO8nJSbNUaQDUHSjxg
-X-ME-Proxy: <xmx:FYDYahhXsVAlRoPfZxlYTlnuGVDc0p2cbNbubdbOVdIHS1xBAzyE0g>
-    <xmx:FYDYaltnXFMlSICTXpMrGUS5sT331VQrnoXPKTE19ku_RQsEJ4Jz8w>
-    <xmx:FYDYastJkBcNLiTvh6lv7qwqBeYpVOLZMtlUriOnvVgES6fl8axYcA>
-    <xmx:FYDYaiERLrOeTp1AA3BRNfh6dO_pV630xhxRy7QThbW2zWXYdQ6Otw>
-    <xmx:FoDYajcdDGLF-Dn0E_Z4KMbYXiTD9mw18eJF4PVv5YGZ6XLz4JvZC956>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 Oct 2026 05:04:21 -0400 (EDT)
-Date: Wed, 21 Oct 2026 11:04:19 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Rishikesh Jethwani <rjethwani@purestorage.com>
-Cc: netdev@vger.kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
-	davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] tls: device: keep tls_sw_fallback() from encrypting
- its own output
-Message-ID: <atiAExld_bpR7sQm@krikkit>
-References: <20261019212651.733565-1-rjethwani@purestorage.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bCjibVuT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595501F000D2
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792573513;
+	bh=kUSrpMFXxWPFRpvXCbMO5u9yaTRX7UqFSSAYtOdk9qk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bCjibVuTkC9xjGUb/gC/jqMADmOr8y3tfHg6338J/Zm4YsTxVGvZuh+7iVlOI+pit
+	 svwR9FMPP16ITZ10xvxJrTLEfkc18Thvn3lhf7zgZySKrZrimakeT0feDlefS27tFc
+	 y8CHqnrQQA8lP9pRhOUxmI+piU4uXspzAJL6U3Ssqd2EUHqzJtFyW03DHL+kOUsBit
+	 6Sn8mHviQ57uNSM3z7N9BTFGybhHDAMtMfeULqByiRpAdP/xTN0k9z9o8fWWZH349a
+	 pd0RrLZr0OpkOf3OCTnLk1ACjzb4jzuReNMXR9XYrbzR0lJMXSCJXFVcMJgrHTwx+J
+	 NGIbqeowxQimg==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3a9787a156eso5255421fa.3
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:05:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxwIIGJTyIJtrYu4iIzsLnWRmvcPGVXifbU2cDOWbmNhjv3Bbvofssw8JFAl1EdwxRWJgmzuVU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIjPeBFSB7XjMHGqdCVZoV4bFrFr0vUWoxaX7X30bj0R4v/bbtu
+	Y3mfu6ijMbF2U8EZxk2Rz/7zFKnSpOpcqodxzMpeMbXmgbArRR2zybBWX8EYLqVCdSjZEpP1yxe
+	cW6avMASbrWTFmeJBnLApueztGAYk+8w=
+X-Received: by 2002:a05:651c:a214:10b0:3ac:418f:332 with SMTP id
+ 38308e7fff4ca-3ac4419a236mr2942911fa.23.1792573511941; Wed, 21 Oct 2026
+ 02:05:11 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -125,103 +59,362 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261019212651.733565-1-rjethwani@purestorage.com>
+References: <ath58Egc-oI6p3Jl@v4bel>
+In-Reply-To: <ath58Egc-oI6p3Jl@v4bel>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Wed, 21 Oct 2026 11:04:58 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiipe-=JDzTvr5_SZaZ7b+QEkMyE0Tjh1x=ryJe50yFxKiw@mail.gmail.com>
+X-Gm-Features: AclHuK87FBXVWJ6B7uZ7KLENjUJQoQzJpIdnTAXl6MV2LkKfqrgL_IzL4LN1rlM
+Message-ID: <CAL4Wiipe-=JDzTvr5_SZaZ7b+QEkMyE0Tjh1x=ryJe50yFxKiw@mail.gmail.com>
+Subject: Re: [PATCH net] inet: reject unhashed sockets during established lookups
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
+	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
+	jiayuan.chen@linux.dev, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-2026-10-19, 15:26:51 -0600, Rishikesh Jethwani wrote:
-> A socket offloaded through a bond has every skb validated twice, once
-> at the master and again at the slave. tls_validate_xmit_skb() passes
-> the master-level call through for that reason (netif_is_bond_master()),
-> but tls_validate_xmit_skb_sw(), the validator tls_device_down()
-> installs, calls tls_sw_fallback() unconditionally, so it encrypts the
-> master-level ciphertext a second time with the same rcd_sn and IV. This
-> cancels the CTR keystream and exposes plaintext on the wire. For a
-> complete record encrypted twice in one skb, the second pass also
-> generates a valid GCM tag, so the peer accepts corrupted data without
-> an authentication failure.
-> 
-> Guard on the content rather than the device. Offload plaintext always
-> carries the decrypted bit (tls_push_data() and
-> tls_device_write_space() send with MSG_SENDPAGE_DECRYPTED), so
-> tls_sw_fallback() can pass through any skb without it: such a skb needs
-> no offload encryption. complete_skb() now clears the bit that
-> skb_copy_header() copied from the plaintext original, so the fallback's
-> own output passes through any later validation pass untouched. This
-> also does not rely on every path validating a skb at both the master
-> and the slave.
-> 
-> Tested on two hosts back to back over a mlx5 port, the only slave of
-> a bond0 (balance-xor, layer3+4), so each transmit is validated at the
+Le mer. 21 oct. 2026 =C3=A0 10:38, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9=
+crit :
+>
+> TCP established ehash lookups are lockless. The socket caches involved
+> use SLAB_TYPESAFE_BY_RCU, so memory can be reused before an RCU reader
+> that retained its old address has finished.
+>
+> After a tuple match, __inet_lookup_established() and
+> __inet6_lookup_established() acquire a reference and repeat the tuple
+> check. They do not check whether the new object is hashed. If the
+> address is reused for a socket with the same tuple, the lookup can
+> acquire a reference to the new object and return it while its nulls node
+> is unhashed.
+>
 
-As in another patch, a couple of selftests for "offload over
-bond->NIC" would be good.
+Thanks for the report.
 
-> master and again at the slave. Run from each host as sender, a TLS 1.2
-> AES-GCM-128 TX socket kept open across an administrative bounce of the
-> slave leaked every later record as plaintext before the fix; after it
-> each record is encrypted exactly once and the kTLS peer reads the
-> stream intact.
+Rejecting unhashed sockets after taking the reference makes sense:
+syncookie, fastopen and migrated request sockets (and children before
+inet_ehash_nolisten()) can all have a non zero refcount while never
+being in ehash. All allocation paths call sk_node_init(), and all
+removals use the _init_rcu() variants, so the pprev test is reliable,
+and pprev shares a cache line with skc_refcnt.
 
-The wording and verbosity of this section ("administrative bounce", 3
-lines to say "before it didn't work and now it does" which IMO
-shouldn't even have to be said) needs to be cleaned up. The rest of
-the commit message as well.
+Please mention in the changelog that lookups racing with the
+TIME_WAIT hashdance, or with a request being replaced by its child,
+will now restart and find the new socket, instead of returning the
+old one.
 
-> Fixes: c55dcdd435aa ("net/tls: Fix use-after-free after the TLS device goes down and up")
-> Cc: stable@vger.kernel.org # needs commit fc6d80eb5044 ("tcp: prevent collapsing skbs across boundary in rtx queue")
-> Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+> A PoC that drives reuse with a SYN cookie request socket reproduced the
+> crash. The new request socket is unhashed and has a NULL rsk_listener.
+> A lookup that had loaded the address of the old request socket acquired
+> the reference published by tcp_get_cookie_sock() and returned the new
+> object. tcp_v4_rcv() then read sk_state through the NULL listener.
+>
+> The resulting crash was:
+>
+>   BUG: kernel NULL pointer dereference, address: 0000000000000012
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   ...
+>
+>
+> The same stale address pattern also affects full sockets. In an x86
+> KASAN test with enlarged race windows, a stale lookup allowed an RST to
+> change a child socket to TCP_CLOSE while it was being initialized and
+> before ehash insertion.
+
+I do not see how this can happen. The child is bh-locked from
+sk_clone() until tcp_child_process() (or until the bh_unlock_sock()
+in tcp_conn_request() for fastopen), and inet_ehash_nolisten() is
+called while the lock is held. A stale reader in tcp_v4_rcv() would
+spin in bh_lock_sock_nested() until the child is hashed.
+
+Please provide the exact interleaving, or remove this paragraph.
+"Enlarged race windows" can easily create schedules that are not
+possible on a real kernel.
+
+Do not add bugs in the instrumented kernel just to pretend things.
+
+
+
+> The creation path then inserted the child, and
+> the server accepted it in TCP_CLOSE. The child was later freed while
+> still hashed, and a subsequent lookup reported a use-after-free.
+>
+> Use refcount_inc_not_zero_acquire() when acquiring the reference.
+
+This is a separate issue, with a different Fixes: tag.
+
+When 3ab5aee7fe84 was written, sk_refcnt was an atomic_t and
+atomic_inc_not_zero() was fully ordered. Even after the conversion to
+refcount_t (41c6d650f653), default builds used atomic_add_unless().
+The ordering was only lost on weakly ordered arches in v5.5, with
+commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations
+of refcount_t").
+
+Please split this into a series:
+
+1) Unhashed check in the lookups, and the __reqsk_free() -> reqsk_put()
+   conversions (these are needed because a stale reader can hold a
+   transient reference on a request that was never hashed).
+   Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash tab=
+le")
+
+2) The acquire/release conversions.
+
+If you convert writers to refcount_set_release(), please be
+consistent: sk_clone() still uses refcount_set(&newsk->sk_refcnt, 2),
+and this is precisely the full socket case you mention.
+On the other hand, inet_twsk_hashdance_schedule() already has an
+smp_wmb() right after the refcount_set(), so changing it is not
+needed.
+
+
+> After the reference is acquired, restart the lookup if the nulls node is
+> unhashed or the tuple no longer matches. This rejects the SYN cookie
+> request socket and blocks the child socket path observed in the x86
+> test.
+>
+> Use release ordering when setting initial nonzero refcounts in the SYN
+> cookie, TCP Fast Open, request migration, and TIME_WAIT paths. This
+> makes initialization performed before the refcount update visible to a
+> reader that acquires a reference. After a nonzero request refcount has
+> been published, release it with reqsk_put() on failure instead of
+> freeing the request directly.
+>
+> Fixes: 3ab5aee7fe84 ("net: Convert TCP & DCCP hash tables to use RCU / hl=
+ist_nulls")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 > ---
->  net/tls/tls_device_fallback.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/net/tls/tls_device_fallback.c b/net/tls/tls_device_fallback.c
-> index 3b7d0ab2bcf1..24fba12febd1 100644
-> --- a/net/tls/tls_device_fallback.c
-> +++ b/net/tls/tls_device_fallback.c
-> @@ -192,6 +192,14 @@ static void complete_skb(struct sk_buff *nskb, struct sk_buff *skb, int headln)
->  	skb->destructor = NULL;
->  	skb->sk = NULL;
->  
-> +	/* nskb carries ciphertext now, but skb_copy_header() inherited the
-> +	 * plaintext original's decrypted bit. Clear it so the bit keeps meaning
-> +	 * "still-plaintext, needs an encryptor": a requeued nskb would otherwise
-> +	 * be re-validated and encrypted a second time on any re-entry into
-> +	 * tls_sw_fallback().
-> +	 */
+>  net/ipv4/inet_connection_sock.c | 14 ++++++++------
+>  net/ipv4/inet_hashtables.c      |  7 ++++---
+>  net/ipv4/inet_timewait_sock.c   |  2 +-
+>  net/ipv4/syncookies.c           |  4 +++-
+>  net/ipv4/tcp_fastopen.c         |  3 +--
+>  net/ipv4/tcp_input.c            |  3 ++-
+>  net/ipv6/inet6_hashtables.c     |  5 +++--
+>  7 files changed, 22 insertions(+), 16 deletions(-)
+>
+> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_s=
+ock.c
+> index 6a30f11384547e..25b46beed63541 100644
+> --- a/net/ipv4/inet_connection_sock.c
+> +++ b/net/ipv4/inet_connection_sock.c
+> @@ -1056,8 +1056,8 @@ static void reqsk_timer_handler(struct timer_list *=
+t)
+>                  * hold another count to prevent use-after-free and
+>                  * call reqsk_put() just before return.
+>                  */
+> -               refcount_set(&nreq->rsk_refcnt, 2 + 1);
+>                 timer_setup(&nreq->rsk_timer, reqsk_timer_handler, TIMER_=
+PINNED);
+> +               refcount_set_release(&nreq->rsk_refcnt, 2 + 1);
+>                 reqsk_queue_migrated(&inet_csk(nsk)->icsk_accept_queue, r=
+eq);
+>
+>                 req =3D nreq;
+> @@ -1136,10 +1136,12 @@ static void reqsk_timer_handler(struct timer_list=
+ *t)
+>          */
+>         if (nreq) {
+>                 __NET_INC_STATS(net, LINUX_MIB_TCPMIGRATEREQFAILURE);
+> +               reqsk_put(nreq);
+>  no_ownership:
+>                 reqsk_migrate_reset(nreq);
+>                 reqsk_queue_removed(queue, nreq);
+> -               __reqsk_free(nreq);
+> +               reqsk_put(nreq);
+> +               reqsk_put(nreq);
 
-"nskb is encrypted now" is enough. the rest of this comment (why it
-was set and what the bug would be) really doesn't belong here.
+The accounting looks right on both paths, but three reqsk_put() split
+around a label are hard to follow. Please add a comment explaining
+which references are released on each path.
 
-> +	nskb->decrypted = 0;
-> +
->  	update_chksum(nskb, headln);
->  
->  	/* sock_efree means skb must gone through skb_orphan_partial() */
-> @@ -371,6 +379,17 @@ static struct sk_buff *tls_sw_fallback(struct sock *sk, struct sk_buff *skb)
->  	s32 sync_size = 0;
->  	u64 rcd_sn;
->  
-> +	/* Only skbs carrying the decrypted bit hold plaintext that awaits
-> +	 * offload encryption; anything else needs no work here. That
-> +	 * includes this function's own output (complete_skb() clears the
-> +	 * bit skb_copy_header() inherited), which is seen again when a skb
-> +	 * is validated a second time, e.g. a bond master handing it to a
-> +	 * slave via bond_dev_queue_xmit(). fill_sg_in() would map it back
-> +	 * onto its own record by tcp_seq, reusing rcd_sn and IV.
-> +	 */
+>         }
+>
+>  drop:
+> @@ -1437,7 +1439,7 @@ struct sock *inet_csk_complete_hashdance(struct soc=
+k *sk, struct sock *child,
+>                                 goto child_put;
+>                         }
+>
+> -                       refcount_set(&nreq->rsk_refcnt, 1);
+> +                       refcount_set_release(&nreq->rsk_refcnt, 1);
+>                         if (inet_csk_reqsk_queue_add(sk, nreq, child)) {
+>                                 __NET_INC_STATS(sock_net(sk), LINUX_MIB_T=
+CPMIGRATEREQSUCCESS);
+>                                 reqsk_migrate_reset(req);
+> @@ -1447,7 +1449,7 @@ struct sock *inet_csk_complete_hashdance(struct soc=
+k *sk, struct sock *child,
+>
+>                         __NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMIGRAT=
+EREQFAILURE);
+>                         reqsk_migrate_reset(nreq);
+> -                       __reqsk_free(nreq);
+> +                       reqsk_put(nreq);
+>                 } else if (inet_csk_reqsk_queue_add(sk, req, child)) {
+>                         return child;
+>                 }
+> @@ -1490,7 +1492,7 @@ void inet_csk_listen_stop(struct sock *sk)
+>                 if (nsk) {
+>                         nreq =3D inet_reqsk_clone(req, nsk);
+>                         if (nreq) {
+> -                               refcount_set(&nreq->rsk_refcnt, 1);
+> +                               refcount_set_release(&nreq->rsk_refcnt, 1=
+);
+>
+>                                 rcu_read_lock();
+>                                 if (inet_csk_reqsk_queue_add(nsk, nreq, c=
+hild)) {
+> @@ -1502,7 +1504,7 @@ void inet_csk_listen_stop(struct sock *sk)
+>                                         __NET_INC_STATS(sock_net(nsk),
+>                                                         LINUX_MIB_TCPMIGR=
+ATEREQFAILURE);
+>                                         reqsk_migrate_reset(nreq);
+> -                                       __reqsk_free(nreq);
+> +                                       reqsk_put(nreq);
+>                                 }
+>                                 rcu_read_unlock();
+>
+> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+> index ba0faa9ae2bb3a..7ffa9171d6de10 100644
+> --- a/net/ipv4/inet_hashtables.c
+> +++ b/net/ipv4/inet_hashtables.c
+> @@ -550,10 +550,11 @@ struct sock *__inet_lookup_established(const struct=
+ net *net,
+>                 if (sk->sk_hash !=3D hash)
+>                         continue;
+>                 if (likely(inet_match(net, sk, acookie, ports, dif, sdif)=
+)) {
+> -                       if (unlikely(!refcount_inc_not_zero(&sk->sk_refcn=
+t)))
+> +                       if (unlikely(!refcount_inc_not_zero_acquire(&sk->=
+sk_refcnt)))
+>                                 goto out;
+> -                       if (unlikely(!inet_match(net, sk, acookie,
+> -                                                ports, dif, sdif))) {
+> +                       if (unlikely(hlist_nulls_unhashed_lockless(&sk->s=
+k_nulls_node) ||
+> +                                    !inet_match(net, sk, acookie, ports,=
+ dif,
+> +                                                sdif))) {
+>                                 sock_gen_put(sk);
+>                                 goto begin;
+>                         }
+> diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.=
+c
+> index d4c781a0667fe5..88ea3a101849aa 100644
+> --- a/net/ipv4/inet_timewait_sock.c
+> +++ b/net/ipv4/inet_timewait_sock.c
+> @@ -141,7 +141,7 @@ void inet_twsk_hashdance_schedule(struct inet_timewai=
+t_sock *tw,
+>          * Also note that after this point, we lost our implicit referenc=
+e
+>          * so we are not allowed to use tw anymore.
+>          */
+> -       refcount_set(&tw->tw_refcnt, 3);
+> +       refcount_set_release(&tw->tw_refcnt, 3);
+>
+>         /* Ensure tw_refcnt has been set before tw is published.
+>          * smp_wmb() provides the necessary memory barrier to enforce thi=
+s
+> diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
+> index 73e12976818473..4b2d2713653b75 100644
+> --- a/net/ipv4/syncookies.c
+> +++ b/net/ipv4/syncookies.c
+> @@ -205,7 +205,7 @@ struct sock *tcp_get_cookie_sock(struct sock *sk, str=
+uct sk_buff *skb,
+>         child =3D icsk->icsk_af_ops->syn_recv_sock(sk, skb, req, dst,
+>                                                  NULL, &own_req, NULL);
+>         if (child) {
+> -               refcount_set(&req->rsk_refcnt, 1);
+> +               refcount_set_release(&req->rsk_refcnt, 1);
+>                 sock_rps_save_rxhash(child, skb);
+>
+>                 if (rsk_drop_req(req)) {
+> @@ -218,6 +218,8 @@ struct sock *tcp_get_cookie_sock(struct sock *sk, str=
+uct sk_buff *skb,
+>
+>                 bh_unlock_sock(child);
+>                 sock_put(child);
+> +               reqsk_put(req);
+> +               return NULL;
+>         }
+>         __reqsk_free(req);
+>
+> diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+> index 471c78be55137a..2506f415f410bb 100644
+> --- a/net/ipv4/tcp_fastopen.c
+> +++ b/net/ipv4/tcp_fastopen.c
+> @@ -364,8 +364,6 @@ static struct sock *tcp_fastopen_create_child(struct =
+sock *sk,
+>         tcp_reset_xmit_timer(child, ICSK_TIME_RETRANS,
+>                              req->timeout, false);
+>
+> -       refcount_set(&req->rsk_refcnt, 2);
+> -
+>         sk_mark_napi_id_set(child, skb);
+>
+>         /* Now finish processing the fastopen child socket. */
+> @@ -378,6 +376,7 @@ static struct sock *tcp_fastopen_create_child(struct =
+sock *sk,
+>         tcp_rsk(req)->rcv_nxt =3D tp->rcv_nxt;
+>         tp->rcv_wup =3D tp->rcv_nxt;
+>         tp->rcv_mwnd_seq =3D tp->rcv_wup + tp->rcv_wnd;
+> +       refcount_set_release(&req->rsk_refcnt, 2);
+>         /* tcp_conn_request() is sending the SYNACK,
+>          * and queues the child into listener accept queue.
+>          */
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 99baf14afdfd8f..131aa475e35f69 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -7777,7 +7777,8 @@ int tcp_conn_request(struct request_sock_ops *rsk_o=
+ps,
+>                 if (!inet_csk_reqsk_queue_add(sk, req, fastopen_sk)) {
+>                         bh_unlock_sock(fastopen_sk);
+>                         sock_put(fastopen_sk);
+> -                       goto drop_and_free;
+> +                       reqsk_put(req);
+> +                       goto drop;
 
-Sorry, I'm not reading all this. 0 or 1 line of comment here, nothing more.
+This leaks the request.
 
-> +	if (!skb_is_decrypted(skb))
-> +		return skb;
-> +
->  	/* worst case is:
->  	 * MAX_SKB_FRAGS in tls_record_info
->  	 * MAX_SKB_FRAGS + 1 in SKB head and frags.
-> -- 
-> 2.50.1
-> 
+tcp_fastopen_create_child() set rsk_refcnt to 2, and
+inet_child_forget() cleared tp->fastopen_rsk without releasing its
+reference. A single reqsk_put() leaves the refcount at 1, leaking the
+request, its rsk_listener reference, and therefore the netns.
 
--- 
-Sabrina
+You need to drop both references here.
+
+>                 }
+>                 READ_ONCE(sk->sk_data_ready)(sk);
+>                 bh_unlock_sock(fastopen_sk);
+> diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
+> index b111b51d69fc9b..7468aca5c1f1ee 100644
+> --- a/net/ipv6/inet6_hashtables.c
+> +++ b/net/ipv6/inet6_hashtables.c
+> @@ -105,10 +105,11 @@ struct sock *__inet6_lookup_established(const struc=
+t net *net,
+>                         continue;
+>                 if (!inet6_match(net, sk, saddr, daddr, ports, dif, sdif)=
+)
+>                         continue;
+> -               if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+> +               if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcn=
+t)))
+>                         goto out;
+>
+> -               if (unlikely(!inet6_match(net, sk, saddr, daddr, ports, d=
+if, sdif))) {
+> +               if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_=
+node) ||
+> +                            !inet6_match(net, sk, saddr, daddr, ports, d=
+if, sdif))) {
+>                         sock_gen_put(sk);
+>                         goto begin;
+>                 }
+> --
+> 2.43.0
+>
