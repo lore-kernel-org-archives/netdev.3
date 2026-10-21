@@ -1,107 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792587666;
-	b=pyPXftCVI80/8w1MCxcqHNKxRj4pHHYK2Pk5khFavPuUyaCUmh8kTTIiVZdu28vU+sRM
-	 8B90GIGDvkxdeXxX1sECBV8qKALikO8euwAG8r/MpUSrerPvtYti0WzootY/6GXrjAl50
-	 CdKqfw971rN5MeAlkSGldXGg8BAk1TN7NxANKFdaDRimCkOd2SWRoe893al19DoGIBMcm
-	 wFCPh5BDlv1Kv5p0YfHsJufkPJeMk/MvUY/ITqO7W+PykjxnQnwHJw3dsRIVBdYql0rsG
-	 WJuO2KErFg8AinYbpICv5FpPY9wQ4y6v6UvCGn8kORWQmoCh2gfocW1AKfAg2QbGkRQ==
+	t=1792587789;
+	b=MBJfi7bIW+2e38XiNscRGD+ECh6EdfcGLzYzskDUxAiw38k2FskENHcxTgi0lpPgyDxP
+	 QymFZaby/NiS/lGQKlBsf0z3Gf1NNoBd32o1OauLt7F9Tko4CcaGSUyHCPw4mPL9GTMVi
+	 0flcTaPF7Sw6f46vLLelAoLz8Yeg2dAF47qC7b4vtrMf+XNPBFPpM0hq2bO5PqpsRIZVl
+	 ssYpAVENC6cf+u/yXpA+DE9H0EWCtj2s5Z7BP7akj3yxmE87C7oT+J07a/I00QJxnZ4On
+	 IKYwHmbwWWCkkRm01gDJJiq0mgFJJGTYaWFCq6OMVqHTh6ssXnaEiNxKBlosa5HGzQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792587666;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
-	b=Pb501tHxUaih1pTV57+pQeivu4xXgo39HHjIovuT+w8yUNSJl41bOjFesyJqF6nLPsiV
-	 bd6u3SVn1KJssXaSucuoV864SGP0HOBW1YhjXyYwIgvzq02arxUC2k+vXv2yr9WhpUPgi
-	 oC3jlZosNEvrDUrwZLKJfY73j8E8M2JwR9JQ3f8ZWSYurTHUXUHYnCDd05zN01Uo7ji8B
-	 DGV/+s7octAr5iD9oFWRqAsNzMlW0y5e9B82wFXCERxmzLGnk0RL7EylM3KV7HuT2mzpn
-	 xLRG55/97ec1DWDb95/9xrNz5IYB3JcTT9N641bpQTHq5eF5bK1iFpwsbsW9bZvTjrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792587789;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=/lEhM+NhQX69KLd8GwWBz22OjDpzEesWZeFnWyadf5E=;
+	b=OV2g8++5LMK3v0u0uLIO5EXTkJj4Y9et+U7Ho5PFM7PUufkvqVMRp3/T4HQ6vIX+9e8g
+	 w2odQ9hao2wXHn0mo2EJl6O6Jhy+KeBzjV9YEAJdfgvnRBT2b0l1dE85tZt95bP4EwHiR
+	 Ij+2cVsqVA9bH6CimrEmYBfVW/TxumCrsGgPGTfjnxOXtJIryb237zFuXxr/sl2oXqk/L
+	 /dglTDZA4Rkqt7VqJjZE1PbtPuBdx+6wCSYd/jdtTVAflzD+B3TLjsfUU9/+n1BG9Fpai
+	 TU2yRU9znJ6/wfomsiGymNKqShhiLXh//ndG/La0EKf+8tA7mi3nMgZHTwSo4vz63EQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ozh8G6kW;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eqhbLB33;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="CKjX/Ila";
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286C9606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:01:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 286C9606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FB3606A31B
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:03:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36FB3606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ozh8G6kW;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eqhbLB33
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792587665;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
-	b=Ozh8G6kWaAnPHnLAb9UZVK0rYxqSCXI0pHsO+va1Ze+R5jLpLUy7DR9UfdE2c65sX8nH3Z
-	7bJN3CaKTJHUstIEE45omZTPn+kykDvkmEUE/i1PDtRmjj/GSB7jjUJiVNmpIo0lIbMJ3U
-	45NJA4iF1AgCCqvQXtzbWl6W+sZuIf8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-7-Q3jofPw5MziwWkwcdgQeeQ-1; Wed, 21 Oct 2026 09:01:03 -0400
-X-MC-Unique: Q3jofPw5MziwWkwcdgQeeQ-1
-X-Mimecast-MFC-AGG-ID: Q3jofPw5MziwWkwcdgQeeQ_1792587662
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1de9dac94so6878375e9.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:01:03 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=CKjX/Ila
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1682bff3cso3731915e9.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:03:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792587662; x=1793192462; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
-        b=eqhbLB33SLTe8SvEB8cV7kZVJA9k2DbszVVbQlVPSTfTXwOYYhwEcVxZ1LSHbeypW+
-         nnFhGnc3v5Frau+Oej69xkp0k7NrK2JqvcgjNRiRDDqLcGhFC0rvvkzjTb7K+4KPncms
-         soy6KLsZH0xaZURxz6z9IuSftdvsbPJ6jHeKC7OOa2HFaj5PWzlbRNKZlD9CFCQlYHsC
-         F4QPc06Q6NVmF7GI/XMv1WI2bvJ6H2lZkGtkqRFDASXAM7EdIuTv39nUCeNuu9Kz3UR4
-         DoJtrLnCsZmT2IGRq1Qc9KtoNQT+O7/GC3VsLZLYOS3oH6P7B+CZRv5kynlermkmZVcB
-         Fsrg==
+        d=gmail.com; s=20251104; t=1792587787; x=1793192587; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/lEhM+NhQX69KLd8GwWBz22OjDpzEesWZeFnWyadf5E=;
+        b=CKjX/IlaIcQnxhfqjN30ZP66qs+vSc72gjUWvDELStdJuDDg7EK7PJ/t5TbP/nHo+u
+         RCimgxUtgbpJ5MrXuGrC/e+l4osDPEELlLvBdKpEVyzIHZLyRG5vMWqA3R3pp4UoKz2V
+         PL1eesAMKZml9Sm1HMGm0N3MppD9p4UcGLOaQQG22tLIjJiLw9y0MSGgPKxzUPzDEVZs
+         qaN8nNDyzI32yx02KB8czJoaZQFruZu8eaDnU9giym0EdokP6EZTLAhtAsjvcvNm5OE9
+         WcCcQPgtoaKA2dsKaKeWH4tvqcQLbrw2IKjos9sov9QH7RDDNyLVhG3KOaT+Sb132K3j
+         GNiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792587662; x=1793192462;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=amQGH1hwIa+htL011xLiNvU/lDwW4NULLyl99/iMwB0=;
-        b=vJ9gceIMPHZbQd7pr0PS8B7w5JCLA/XP0QKd7cJRLMdSEsTZX7tTw9Q5JEkipfKdjh
-         6kd1GzytX0jspXkydvIF2RqGvtV0Sq+hX++XjurI5a2MI86I2Tw23Q7haPPj95Z5Z+RV
-         bf7XX1+Oovijd6nxWcO004SUxvAN9sroQIsoJ14dt45+byaLY6ZS6meN+YcZO6fTqn6w
-         QwUdqBX4dbfKBUWIM1vqXwv3mdJXJsJIeY41g1OcgL0p476w/sPqv514hsU8UUObhJ6h
-         xFg609CjK/xUtnk25Vjt1Bq3UOC/MReXKV36Ob5HthaT6dJN/dOCl+UiB2UU53shyPsf
-         tW6A==
-X-Forwarded-Encrypted: i=1; AKwUvBxYu/9TCxLmj6Qj3SoqNMV+/ce91CVlbTHnVbig3IWUlv/PPPPhqDwtk+lOlKOc+qNvq8gnWT0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK4Q+yBYdahx4PfJ47thY+5GQEWtWiQeDPzHEPZv8VQYFWdbfpL
-	0+GIYdVks/TpN41IGtjt5Rem+aAqXIOHAzYMiaxGCedFMfUeQG/cf7Lf7YlKmn/Fi0aVYUKEzGi
-	PBGm5lJJfdMi/rhQXbM7CvK66K7h/KcjHfXCHeWpX/9S6Tone6aDCaYgy5Q==
-X-Gm-Gg: AYBFou1j8n1CIruU1a3r/utXOSLfj9CUWSrFF7iawUVcRlMin225qkGbjoRLPr3xKbm
-	eXhGgpa344qPsJaiJS+vwSFH9LoQ5TnjTrsmRsDMHa739cZkxohHn29qDjeWaxiXzOwGollxiKF
-	M8copK0WuxrfrVr375Ve5pBy373lOvC6pWh5C7pFRB8qXo86jpajlclj6W8d6ScmmxeF0LMo1Ei
-	ml9hVy4/3UhA1M3+EQXP3x2kHKvkxz8Ed3A8GAzUobS5THD5sCF5tWU0VmtkAWhhdaVCdJVypLJ
-	zRmZzAWyPLHPHCFdsImlZHeByI122EYXpz3mrZD0ZXS+kdYGPKPsWsgprVIs3soFFVrPHLDZSmv
-	NnN1iX4Xc7hvkjIIf+OUKiB/7xy+a+G+w3gAfx8f6h49YBap/NVXGUTPTivQ=
-X-Received: by 2002:a05:600c:3b24:b0:4a1:f736:79d1 with SMTP id 5b1f17b1804b1-4a1fdb20d04mr44728815e9.16.1792587661570;
-        Wed, 21 Oct 2026 06:01:01 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b24:b0:4a1:f736:79d1 with SMTP id 5b1f17b1804b1-4a1fdb20d04mr44725765e9.16.1792587660186;
-        Wed, 21 Oct 2026 06:01:00 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835e22sm6113081f8f.44.2026.10.21.06.00.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Oct 2026 06:00:59 -0700 (PDT)
-Message-ID: <d6f50e2e-adcc-4d85-9be3-ff24cb8f8cc2@redhat.com>
-Date: Wed, 21 Oct 2026 15:00:56 +0200
+        d=1e100.net; s=20260707; t=1792587787; x=1793192587;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/lEhM+NhQX69KLd8GwWBz22OjDpzEesWZeFnWyadf5E=;
+        b=MeOJw7XUPXzC3k98lyDDSciw6SxGgFys+zNL+EExwmqJQgCU2UXSxWFxyKDpUQuH8U
+         fEO7erWHJAKas1w6kvqJjoouteVEft0j1Yu3ER98Q2/mSQrdte19LC1pLHgaOsRgaf4f
+         ux+lNU/IejbY+eJhNjInQyCDfPtMW4SMBA/XoEy+Qo6QoHjt8RJTHsZHdcay9JhgvmiO
+         KRCiLXkMjbHhcKqDtsEKdEtqMQPWNTGvZwcc93FNurSX4ZRJy0C+IlMvHVpOHW1Cqyfv
+         2YRXBbErtct33yWS2onzR5T547cm9PjxObqriD/amDwsBmQ9s5QDBEDenHZIJyRghsNB
+         PhCw==
+X-Forwarded-Encrypted: i=1; AKwUvBzeK4m6RAWNuh6Xu+Buwhqvlx0xtYWJKvwQCH5VRujjVJyO7Cu0SJiV+tv5UbGffuJ98IxQLNw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJPRyKEUVVxlXRGrivZKjFkK70uQJrTjeWsrbk7Z2c6LMuFMCIx
+	f1mta0w9JtvwkrgWcfUVfslf7cpnSGAQG0BhgbUQGeRX4AnDMEPyE5kA
+X-Gm-Gg: AYBFou1xpHT7OoCBMSYHxYkMTBETWsDTVFIzma3g/UMEJyCtS289xvxFH7H8MqzdoI/
+	0JWqX5udJudOXj4yaju1N6mEMySn2Jg7mo+9HLa/59h915d+7/MddgCNZJFbtlXCtClcTZYydwZ
+	kiwsE8HUBF0eDxiI+h6cuLnkoDl/3wGvYEa/epNVE1uY4xi0qswGEVanf4dWY0ioUWdBV0/k8H/
+	pvuCf1Ruxc94yjyGa5xjJMVSJE1PWMCjQTGVkHb5Gmy5BNIXGM87Xbn/uD2ToSc8cJ71gkzUUbt
+	jl3Ode6N59jZK/g1z5vomuKkabEagDDwtxg3TypouzCU2PtqXonltB4r6akP0HeOkkgl4UFVler
+	aTfrmucSg1/Nvxu/BS0XN2xEbx48hMP7vUGECDNnBEfB92TC68RPibtYSrSwqr3nrPn8Lrr2/cP
+	y2CBlHaNZne6aJqCMZjmJmggamutZcWbsHN2W1Hk/wdgbafg9To8Q26JUkSWzXbboXUB5R+bJTd
+	xymUTpw/7XdTY9JvehvSSF4SMRaTvM8Lh+WzLW1GnitZzEDrcybNr7Sx/YxBhavdL7bMVEjdDL2
+	flexSZ4GxxYYhltYYhS6pOERgH6MnbL9CNqb9Q==
+X-Received: by 2002:a05:600d:864b:20b0:4a2:1e1:d55 with SMTP id 5b1f17b1804b1-4a201e10debmr12370745e9.28.1792587785886;
+        Wed, 21 Oct 2026 06:03:05 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25835e22sm6124852f8f.44.2026.10.21.06.03.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 06:03:05 -0700 (PDT)
+Date: Wed, 21 Oct 2026 14:03:03 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: =?UTF-8?B?QW5kcsOp?= Brait <andrebrait@gmail.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ g.goller@proxmox.com
+Subject: Re: [PATCH iwl-net v2] e1000e: work around TSO erratum that
+ corrupts data and hangs Tx
+Message-ID: <20261021140303.5533fb2d@pumpkin>
+In-Reply-To: <CALhGy9n9EMvV2JN8s4kpKb3Wsc3rjRVfibpNvVdAw_rHT=dYeQ@mail.gmail.com>
+References: <20261020230211.75665-1-andrebrait@gmail.com>
+	<20261021095756.0f5770e6@pumpkin>
+	<CALhGy9n9EMvV2JN8s4kpKb3Wsc3rjRVfibpNvVdAw_rHT=dYeQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,71 +102,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: manual merge of the bluetooth-fixes tree with the net
- tree
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Mark Brown <broonie@kernel.org>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>, David Miller <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Liu Chao <liuc63@xiaopeng.com>, Networking <netdev@vger.kernel.org>,
- Piotr Kubik <piotr@kubik.pl>
-References: <atiblfL12VddJgjU@sirena.co.uk> <atioPA8ofnC-PCGi@chamomile>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <atioPA8ofnC-PCGi@chamomile>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 10/21/26 13:55, Pablo Neira Ayuso wrote:
-> @netdev maintainers: Please, see below.
-> 
-> On Wed, Oct 21, 2026 at 12:01:41PM +0100, Mark Brown wrote:
->> Hi all,
->>
->> Today's linux-next merge of the bluetooth-fixes tree got a conflict in:
->>
->>    net/netfilter/nf_conntrack_netlink.c
->>
->> between commit:
->>
->>    cd37ab22a74e0 ("netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter")
->>
->> from the net tree and commit:
->>
->>    1ae2d094b0200 ("netfilter: ctnetlink: fix inverted IPv6 address match in dump filter")
->>
->> from the bluetooth-fixes tree.
->>
->> I fixed it up (see below) and can carry the fix as necessary. This
->> is now fixed as far as linux-next is concerned, but any non trivial
->> conflicts should be mentioned to your upstream maintainer when your tree
->> is submitted for merging.  You may also want to consider cooperating
->> with the maintainer of the conflicting tree to minimise any particularly
->> complex conflicts.
-> 
-> Sorry for this: This patch is duplicated, one variant went into
-> net.git and another into net-next.git.
-> 
-> Two possibilities:
-> 
-> - Revert 1ae2d094b020 ("netfilter: ctnetlink: fix inverted IPv6
->    address match in dump filter") in net-next.git
-> 
-> or
-> 
-> - Revert cd37ab22a74e ("netfilter: nf_conntrack_netlink: fix inverted
->    IPv6 tuple filter")
-> 
-> before net-next.git gets merged into net.git, because these two
-> patches address the same issue.
-The 2 patches are equivalent, right? We pull net into net-next before
-sending the net-next PR; I think the easier solution would
-be manually solving the conflict at that time. I understand that accepting
-either 'net' or 'net-next' variant would be ok.
+On Wed, 21 Oct 2026 12:49:16 +0200
+Andr=C3=A9 Brait <andrebrait@gmail.com> wrote:
 
-/P
+> On Wed, Oct 21, 2026 at 10:57=E2=80=AFAM David Laight
+> <david.laight.linux@gmail.com> wrote:
+>=20
+> > > Apply it to all e1000e parts: limit the first data descriptor of a TSO
+> > > packet to 3 * (max_read_request - 4) bytes (372 on the I219, where
+> > > pcie_get_readrq() returns 128). The rest of the linear part goes into
+> > > the next descriptor, which e1000_xmit_frame() already reserves; =20
+> >
+> > Aren't you using an additional descriptor over and above those the code
+> > might already use?
+> > So either it was reserving one too many, or you need to reserve another=
+ one. =20
+>=20
+> You're right that the split can use one more descriptor than before.
+> The count already covers it, though: the bare count++ in
+> e1000_xmit_frame() is never used by e1000_tx_map().
+
+You could just comment that that count++ is in case the linear part
+has the extra fragment.
+(Indeed the other count++ could be unconditional as well, you aren't
+going to notice if a transmit fails to fit by one descriptor.)
+
+> It comes from e1000,
+> where that descriptor pays for the 4-byte TSO sentinel ("premature desc
+> write-backs in TSO mode"); e1000e dropped the sentinel but kept the
+> count++.
+
+Put that in the commit message.
+
+> With this patch the linear part takes
+> 1 + DIV_ROUND_UP(len - 372, tx_fifo_limit) descriptors instead of
+> DIV_ROUND_UP(len, tx_fifo_limit), at most one more, so it uses exactly
+> that spare.
+>=20
+> If we want the count to say so, I see two ways:
+>=20
+> a) Count the split explicitly and keep the spare:
+>=20
+> if ((mss) || (skb->ip_summed =3D=3D CHECKSUM_PARTIAL))
+> count++;
+> count++;
+> + /* the headers go in a first buffer of at most tx_hdr_buf_max */
+> + if (mss && len > adapter->tx_hdr_buf_max)
+> + count++;
+> count +=3D DIV_ROUND_UP(len, adapter->tx_fifo_limit);
+>=20
+>    The split pays for its own descriptor and the old spare stays a
+>    spare.
+>=20
+> b) Replace the spare with the explicit count:
+>=20
+> if ((mss) || (skb->ip_summed =3D=3D CHECKSUM_PARTIAL))
+> count++;
+> - count++;
+> + if (mss && len > adapter->tx_hdr_buf_max)
+> + count++;
+> count +=3D DIV_ROUND_UP(len, adapter->tx_fifo_limit);
+
+c) Adjust the DIV_ROUND_UP() for the linear part.
+   I think:
+    DIV_ROUND_UP(len + adapter->tx_fifo_limit - 372, adapter->tx_fifo_limit)
+   is right.
+
+Although I wonder if you really want to be doing all those divides?
+I'm guessing that tx_fifo_limit is usually 24k (and the actual buffer large=
+r).
+So the result is almost always 1.
+(Indeed, does TSO and checksum insertion work if the packets are longer
+than the real buffer?)
+
+>=20
+>    The count becomes exact, and one lower for every other packet.
+>=20
+> Neither fixes a bug I have seen: the reservation already covers the
+> split, and in about 3.5 hours of test traffic on the patched driver the
+> ring reached its stop threshold over 300,000 times without a stall. b
+> also changes the reservation for every other packet, which I haven't
+> tested. So I'd keep the patch as it is, the smallest change that fixes
+> the bug, and leave the descriptor accounting for a separate cleanup.
+
+It'll only matter if you are transmitting packets that need more descriptors
+than the post-transmit check.
+Otherwise that check disables transmit first and you don't bounce off the
+'just enough space' check.
+
+>=20
+> If you'd rather have the dependency explicit, I'm happy to fold a) into
+> a v3; it only reserves one more descriptor for those TSO packets.
+>=20
+> > I'm not actually sure all the logic there is actually needed.
+> > The code calculates the number of descriptors the packet is expected to=
+ need
+> > and gets the packet requeued if there aren't enough, but there is also =
+the
+> > 'post transmit' check that stops the transmit if there isn't enough room
+> > for a full length packet.
+> > If the latter is valid you don't need the former.
+> > Although a sanity check that the ring isn't being wrapped might not do =
+any
+> > harm. =20
+>=20
+> The post-transmit check reserves (MAX_SKB_FRAGS + 1) *
+> DIV_ROUND_UP(PAGE_SIZE, tx_fifo_limit) + 4, which assumes no buffer is
+> larger than a page.
+
+That limit is constant (for the device) - so could be pre-calculated.
+
+It has to be said that I've always thought that check should be for a
+'reasonable packet' whereas the docs sort of imply it should be for the
+largest packet and the driver should never really return 'I couldn't do it'.
+
+David
+
+> The linear part and high-order frags can be, so the
+> per-packet count is still needed.
+>=20
+> Andre
 
