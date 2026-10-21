@@ -1,65 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.204
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792547405;
-	b=V2vM5XyIK/byR762juzvb/ehNhc/nDBkQbl5iPt56y5CUQevhiiIOJqQbcn10uzfRBZU
-	 +h43C+nYtzbod4XQxw0yXZwMoBmNc1waWUuGs5TnreyreGUtCNxDb+oh/P/2OAf+PqDGj
-	 Y6O2oV+PTBYtuxE7IQD25e+0qUKj8RNXOTeKY0w9vR7xmJ/Dp2n4Jgmf1D1TZz7oKEUU+
-	 NYxT1UqPPf7FcNPvhi8JGY61iiIr5Sp0fDc37dBUzraUjWXcCxyOnh2lYVVhUE83nWHrt
-	 DijG2Vf8jfkVW84YvkYtQgg2057sc8YMgAVWGQLOtx3sjVXD1HDvf/7QOFcY0GngCKw==
+	t=1792547440;
+	b=G/uHCe0nrbLJ0bQPYBWhugzLWJ0vfUKxj9y2h8G0gaNZFsBoukAVjHgpfzAIqsKBiEa/
+	 C1G5kf1KHSxzPfsFUvOII7D8oHPM0YGEDaIoD0s9gwjTBZ3YkCR40lcVCar75r3jEy3Ec
+	 r7Q4wIWkE8JsLYtDk7exzyOhahSOm0GsDP8MVZTGsyI5JBlEm3LUtwZWBAyNV1ZTqTEZI
+	 trtQJuJio2OVsrXa/OrOeD823HhG+f2RtfsQJ/RIlLKCyXndRcFJEwbOSskjqVn5le21s
+	 qSNHrS3vSsChzSqanT86rUKU+C+tS9rIw22R2xKo2/+/r4gUOVW7/mnhsn7fWa2ia0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792547405;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=4rGPNIS7k+HjEH9fso4aa6clONgPF4t/gVhB+HuArRI=;
-	b=mwKZtlDILEZzwl3cz8FHTGMFZRaz+/qzf3jm3UVlDk5+DFxaBG1Q4lrUSFO2MTC91Qem
-	 txxSh+d1oYqC128onwJKZDO3mUhlPCa2hSlsDZeVpf+WDkkbj7/1XzJnzyXw1ciuracay
-	 MT470hG8SSv1iJByJBfRbTFJgOLd4LAJjkyoYKsoJAA+KO5MiK5PHkJzK6CALkFylSyO7
-	 K4tLKfB6b07eBV8GusE/QDbKl7p08/c4EXN8BJQ+Yp/3u3IFSDd/NpwxHzMPoIXdPLT7H
-	 cu3vb8QkHdOPome0X7znWuWNXIxhr0vPqRiuX7qTnJgJ3mULMc2ngWD2EQGA9WjJrbA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792547440;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=TYUr+H9Go1/ZCJXkY6afMfjog35jxn858taE8zzMuA4=;
+	b=VW3aZjTlos7lefzISNeaXIXt0qvH95sa50eZcqPNN886voONhLgYI2iNApsUhxqmdy3c
+	 w2DluKlog6xwUj8EKkojiUnWWaGQC+O6e7neNve3Yr+oqiDIAjLpezfyyvPjDHD6Lq138
+	 OOjE0NYx1oBTJpjnb7FGScVTxuOJyejHpRYvdwSQlp8dTvPJDnSohMj+WfdNM95l5fVRU
+	 nSeTsfG/23IzdOxjP9mBFJF6QOlPZ30LiKn649CmKmWhzttHJCRHiEGbM4jC/m8Lisyc6
+	 iO1Snir1t82QVlhUSqCMkyd4CUYv6zj3+29mLw/6d4m0NBEQ1q1B6TqAjTqHPYlIf2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VpIqQZzl;
-	arc=none smtp.remote-ip=95.215.58.204
-Received: from mta1.migadu.com (out-204.mta1.migadu.com [95.215.58.204])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B49RA3MI;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F7C606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 01:50:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83F7C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B50F606A31A;
+	Wed, 21 Oct 2026 01:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VpIqQZzl
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=w3qwkLhOQVDClh5xUZDW/DKElp3fojVEAwIDOdthKrU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792547401; v=1; x=1793152201;
- b=VpIqQZzlxE2wpvWXlefmmHZ9eIJ3TA3oXA5WF9Jtmf7Iobv0Bt1X2dIh3f2Af8tx/0KD+7TI
- 0zzRH04OOGc2xBDS1boIVqC0/k4NHlPqJDeC1c/7UV6JL1g4+4jrU4dcKShUndrIR25YPlzP6An
- /6L3EgbRuNy6JNH+zBMdUE+k=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 0c4f03327ff3cea0;
-	Wed, 21 Oct 2026 01:50:01 +0000
-X-Mizu-Trace-ID: 0c4f03327ff3cea0
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 21 Oct 2026 09:49:53 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: netdev <netdev@vger.kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>
-Subject: Re: [ANN] stmmac enters the Netdev CI
-Message-ID: <atgaQZiiuMDC6wiv@fedora>
-References: <bdc75e18-8ae7-4056-8f43-dc280a3414f5@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B49RA3MI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5372F1F000C9;
+	Wed, 21 Oct 2026 01:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792547439;
+	bh=TYUr+H9Go1/ZCJXkY6afMfjog35jxn858taE8zzMuA4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=B49RA3MI1BN1+3F3sndQ9xS3V+iTgPSXMUjTLMHLWtpd/dcd1Zik9g2zYbkYgmuN/
+	 a5d+mk9r8YWoplXXYwmyWT0csrCvGusoNRwKjglD9MNrmus/+iQ4g8J+fDpoTx1gq1
+	 WE59nLWzUr4CMcgSyZidkRNVuoBAm9MA5BvJYlt+vo3RsA601WX1hrhxa+uCuKldbd
+	 QlEQytvpVcQsL7vQWSrYS58A/LaRCcHd1tzlAlV2tl/EqMHH6F1zT81y+z+pjlwgs7
+	 P8J1e9kTTAQWcvurjho72NuNH29Ybd7yN6UbR5CF2ahl8wHUxTXi4gVJ8YXn0KEUbR
+	 ekUZf05CWFoDg==
+Date: Tue, 20 Oct 2026 18:50:38 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stanislaw Pal <kuncy7@gmail.com>
+Cc: Christian Marangi <ansuelsmth@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/2] net: dsa: qca8k: report port statistics
+ from the MIB
+Message-ID: <20261020185038.4dd7aa03@kernel.org>
+In-Reply-To: <20261019191137.307514-1-kuncy7@gmail.com>
+References: <20261019191137.307514-1-kuncy7@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,54 +61,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bdc75e18-8ae7-4056-8f43-dc280a3414f5@bootlin.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Maxime,
-On Tue, Oct 20, 2026 at 11:07:16AM +0200, Maxime Chevallier wrote:
-> Hi everyone,
-> 
-> It's my pleasure to inform you that the stmmac driver now has a runner
-> that feeds into the Netdev CI. It runs in a lab I maintain, and the results
-> are hosted by Bootlin, accessible here :
-> 
-> https://netdevci.bootlin.com/stmmac/results.json
-> 
-> What that means is that now contributions will be subject to CI
-> validation, by having the kernel selftests run on real hardware.
-> 
-> Results are already aggregated in the patchwork contest, and can also
-> be found here :
-> 
-> https://netdev.bots.linux.dev/devices.html
-> https://netdev.bots.linux.dev/status.html
+On Mon, 19 Oct 2026 21:11:35 +0200 Stanislaw Pal wrote:
+> qca8k has no .get_stats64, so a user port's netdev counts only what
+> crosses the CPU port; traffic the switch forwards in hardware never
+> shows up. Patch 2 reports the port counters from the switch MIB through
+> a delayed work, as ar9331 and rtl8365mb do. Patch 1 makes register
+> access safe for such a reader outside rtnl first.
 
-Thanks for your update!
+## Form letter - net-next-closed
 
-> 
-> As stmmac is an off-the-shelf IP from Synopsys and is integrated in a lot
-> of different platforms out there, the CI currently runs on 9 different
-> boards that include the following SoCs :
-> 
->  - Starfive JH7110, riscV, dwmac 5.20 (rgmii-id w/ YT8531 PHY)
->  - LoongSon 2K0300, Loongarch, dwmac 3.70a (rgmii-id w/ YT8531 PHY)
->  - Amlogic S905X, arm64, dwmac 3.70a (rgmii-txid w/ RTL8211F PHY)
->  - Rockchip RK3566, arm64, dwmac4.20a (rgmii-id w/ RTL8211F PHY)
->  - Altera AgileX5, arm64, dwxgmac 2.10 (rgmii-id w/ KSZ9031 PHY)
->  - Altera cycloneV, arm, dwmac 3.70a (rgmii-id w/ KSZ9031 PHY)
->  - ST stm32mp157a, arm, dwmac 4.20a (rgmii-id </ RTL8211F PHY)
->  - Allwinner A20, arm, dwmac1000 (rgmii-id w/ RTL8211E PHY)
->  - Allwinner H2+, arm, Allwinner specific version (mii w/ internal PHY)
+The merge window for Linux v7.4 has begun, and the net-next
+tree is now closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
+Please repost when net-next reopens. There is some uncertainty
+about how long this merge window will last, so please check
+https://netdev.bots.linux.dev/net-next.html
+before reposting. net-next _may_ reopen on Nov 2nd.
 
-I’m curious about how our lab is maintained. Do we stick to a single distro
-across all machines, or reinstall systems periodically? And how are
-reinstalls done, manually or via BMC?
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: close
 
-Also, do we run all selftests via virtme-ng or docker? Does virtme-ng support
-all the architectures?
-
-Thanks
-Hangbin
