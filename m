@@ -1,55 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.19.144.205
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792609827;
-	b=jJx1tkYAL8oTbrHEj/4FApntHhUc9lA0Xtelqmrqi73uVEPf8Ha/4MkysXquBECz0JeX
-	 Tqg3BePDjzUhp9TY20Cm1rKfuZvcmIollwput9yOzwiLHJEZztKDQX8OOg2z+t8fKEmto
-	 3OzLeUOIq7vrWlahgUgG4bSw7jyjARzePC/Rs0MGISP8r1auaJ9iJ6E/zDdT/NUG6zmwR
-	 nBUWTb4ThTEvgh0naqblzvSq37qByKE68VmTV+l7cqoWzOjRT78ayNkj7IZxcjkNNz84/
-	 n2rZFBQ9eYLk3PnK9kc9ASo+0vRiw4BdfZ+0FMVb5tUXMVsK0eNw9Xuvl2vpIyy4Dcw==
+	t=1792609852;
+	b=Pre8ckhVT7y2a2mG3PNapO30aSDXep4jB/bYt7jp0U5En2MOGlNNRF+Zerzi2mp5CJhE
+	 oGxyGT+yMewvjRexn9GJH8ZD+1NnKj07CFlgjLDYh877Yh1qpsong1CUklh0bkjxIi5S+
+	 Ltof1Z5CRe2Cn/1vEfQE1hUN5mTPVFKaBMO7mj1/xszK/Et4DdyPXycYshWc0yVdPbWSJ
+	 wlJPV15zfYoA1RtG0Hb9A9rS1tm39uqWK+dFqQdXsxAw3nVBeoWz9KFisIGxI1VAoZy2h
+	 lwvWRZ4aVJQfujdKcVT+9brjGzNEOpWJ7ULUX1QpKt/v3QyAjBRI/XKB3B8mVtvEz/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792609827;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=y9dMWwPZHkR8GrsKR89BPmqqiEWw72wgPYPBzD9JJ9U=;
-	b=W3hvJdxtxIYkgbnROk69PbLMDK826QKGkgfYm+QQPvdUZM1PfQm5jBpoPKnfoxfjW6l8
-	 +YUprfLTu4hWUuO1+G/HRRHK+6rvf4fD33bj+4R2+TeOfU7SZV+MpgdGzU0qb9Q8kPb2K
-	 RVmgiscMWbdyIs4elz0nj8YRaWV+x4Q0xxo8bonwykuNbLO2l19Gi+agUMs2b/ipYqTGc
-	 sutxpjpTH/2wGPw+if28hyPAw210EvLi+Fn0cF3fibBJ3Dx5CWlpC9X4zS9FkR4z8cLlr
-	 siDeo9eYo+/Xb3Mhs/vA5qo8uoabj0+GL/Fn1CnX2ofS+7Olaw81U7d8tFSS7+ce/ww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792609852;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=mZnLYWYthQyH/1Q08I94hYQu+8M2DcuSm/l3CvY+1vI=;
+	b=BmlZrlk+CSwt2f87KkyAxcqxmA6CUVmzrs6vz0aSfXpnpta0jt5fvOTPN8T0esCMU1/R
+	 XsZe3A9TBuDUiMu9ETIJakAtvRpIzHRkDFZKBEt1MHKuyWgryq7IeT+dWADSLJRYCa4Su
+	 mSUFzvmmRMdXR9g3wuWqgDOtMTdi78rmuL9Uz/c0QgdBSxEBRzpzfP+VjCN9u7/g3RWl/
+	 NaDbolzdRh+3m+5NTawa65tq3gbK7RLtyypIbwnkOuK2jsJh8NKBwEzko9b5GeOTBWPNj
+	 +rgkAu+ZBw4x2qnaBDck5GFrfuOox0d55LCR+pVj6GoGZVHDJBNTvEgzF9Whc/tQBPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oXBNe13O;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=dkimrelay header.b=FPEFi5sf;
+	arc=none smtp.remote-ip=192.19.144.205
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp10.broadcom.com [192.19.144.205])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16A6606A319;
-	Wed, 21 Oct 2026 19:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73796606A31A;
+	Wed, 21 Oct 2026 19:10:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73796606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oXBNe13O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82121F000C1;
-	Wed, 21 Oct 2026 19:10:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792609826;
-	bh=y9dMWwPZHkR8GrsKR89BPmqqiEWw72wgPYPBzD9JJ9U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=oXBNe13Ol5KzhB16HiGxDnbxkLHm0gbPn8FRd/wvGdvCu2mppoI+c+8OLMQ5bC/zu
-	 RhvJsqP/HB9AYOd/P2wkByxeDQxSNbStfO11SDn687fKxMgvK3X5TXRpiYt9Z3iBUy
-	 d0ZpjCIRKb1p0nW490FIhStWFtFNOpr2Z2jUkBFr83eJAK3kLxa2HJTRLW/cQSr3W+
-	 sciUt0hdQA+m3G+5oEoJkrSXDiDRNuFH0fxh6vAWLNiJmk5hMZ/+RXbpXbSOXrOAIS
-	 1Gqq/lJeNMEepBWLLiKh0dlj02EpOdDBBE5GYUeGXRNVNlCbX3/l/Lk+rYpQmf9iWe
-	 +wPzoMq+u4d4w==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Josef Bacik <josef@toxicpanda.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, Josef Bacik
- <josef@toxicpanda.com>
-Subject: Re: [PATCH net] net/mlx5e: Fix stalled channels with threaded NAPI
-In-Reply-To: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
-References: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
-Date: Wed, 21 Oct 2026 21:10:23 +0200
-Message-ID: <87h5ie7tuo.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=dkimrelay header.b=FPEFi5sf
+Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 3089DC0003E6;
+	Wed, 21 Oct 2026 12:10:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 3089DC0003E6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+	s=dkimrelay; t=1792609850;
+	bh=/A5oZYXNQMjUMploRdqR03mvQq8qWvVx5LgB4bTZe0A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FPEFi5sf/RkgD70EOa8WjoESgD0XOeNY19+1DZFYld6W6j4wvXWzpjz5Du+G7LLz/
+	 5jzaT7JiYcHY0qjfEEmb6mtf8FYFQCKzNktKeMQCJjTO4k/MDXHQf/qzbOjciJaYCR
+	 dlBwBzHtZBaj2kNZIHIEygsp8a9oUc9sPqwXgToY=
+Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id BF9E0A88;
+	Wed, 21 Oct 2026 12:10:49 -0700 (PDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jon Mason <jon.mason@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net 1/2] net: ethernet: bgmac: preserve forced 2.5 Gbps link speed
+Date: Wed, 21 Oct 2026 12:10:34 -0700
+Message-ID: <20261021191035.751684-2-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261021191035.751684-1-florian.fainelli@broadcom.com>
+References: <20261021191035.751684-1-florian.fainelli@broadcom.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,91 +81,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Josef Bacik <josef@toxicpanda.com> writes:
+Northstar and Northstar Plus use a 2.5 Gbps internal link between the
+AMAC and the switch.  BGMAC_FEAT_FORCE_SPEED_2500 makes bgmac_miiconfig()
+configure that speed, but bgmac_adjust_link() subsequently replaces it
+with the synthetic fixed PHY's 1 Gbps speed.
 
-> With threaded NAPI an mlx5e channel can stop receiving when a burst of
-> traffic ends. It stays dead for minutes on an idle machine, while the
-> connections hashed to it time out.
->
-> When mlx5e_napi_poll() has more to do, it checks that it runs on a CPU of
-> its interrupt's affinity mask. If it does not, it takes the affinity to
-> have been changed: it completes the NAPI after at most budget - 1 packets
-> and arms the CQs, so that the next interrupt moves the poll to the new CP=
-U.
->
-> A NAPI thread runs wherever the scheduler puts it, so with threaded NAPI a
-> busy queue takes this path at nearly every poll. That costs an interrupt
-> for every 64 packets. Worse, it counts on an interrupt for the CQEs that
-> are still in the CQ when it is armed, and none comes: the next event is
-> raised by the next new completion. While packets keep arriving this goes
-> unnoticed. When a flood stops, what is in the CQ stays there, and is work=
-ed
-> off one poll of 64 packets per new arrival. If the RQ has run dry as well,
-> arrivals are dropped (rx_out_of_buffer) and bring no completion either.
->
-> Seen on a 50 Gbit/s port (firmware 22.47.1088) with 63 channels, threaded
-> NAPI and rx-usecs 64: a CPU-bound task bound to each of the 128 CPUs and
-> 32 Gbit/s of UDP in 8 flows for 7 seconds, then both stopped. After the
-> second round one channel had 0 polls and 0 events for 150 seconds on an
-> idle machine, while TCP connections hashed to it timed out and
-> rx_out_of_buffer counted their SYNs. Later arrivals took it 16 polls and
-> 1018 packets further, it stood still again for 14 seconds, and another 93
-> polls and 5917 packets emptied it. In a longer test 22 of 48 iperf3 runs
-> failed with "unable to connect stream: Connection timed out", with no ping
-> to the same address lost.
->
-> i40e and iavf force an interrupt at this point, and mlx5e does for XSK.
-> Doing that here would cure the stall and keep the interrupt per 64 packet=
-s.
->
-> Fix by going on polling when the NAPI is threaded. With that, 8 of 8
-> rounds leave every channel alive, ch_aff_change stays 0, rx_out_of_buffer
-> does not move once the flood is over, none of the 48 runs fails, and the
-> interrupts taken during the flood halve.
->
-> Fixes: 29863d41bb6e ("net: implement threaded-able napi poll loop support=
-")
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> ---
-> I hit this while comparing threaded NAPI with softirq on two bare metal
-> machines.  The runs in the changelog are from a 7.3-rc5 based kernel, with
-> and without this change.  The patch applies to net unchanged, there I've
-> only compiled it.
->
-> I don't have the PRM, so "arming the CQ raises no event for the CQEs that
-> are already there" is what the counters showed and not something I checked
-> against the documentation.
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/=
-net/ethernet/mellanox/mlx5/core/en_txrx.c
-> index 185105606469..3142e90e68ce 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> @@ -207,7 +207,14 @@ int mlx5e_napi_poll(struct napi_struct *napi, int bu=
-dget)
->  				rq);
->=20=20
->  	if (busy) {
-> -		if (likely(mlx5e_channel_no_affinity_change(c))) {
-> +		/* A NAPI thread runs where the scheduler puts it, which says
-> +		 * nothing about the affinity of the interrupt. Completing here
-> +		 * would leave the CQEs that are pending to the next interrupt,
-> +		 * and arming the CQs raises none for those, only for a new
-> +		 * completion.
-> +		 */
-> +		if (likely(mlx5e_channel_no_affinity_change(c)) ||
-> +		    test_bit(NAPI_STATE_THREADED, &napi->state)) {
+Use the forced speed when processing link changes so the MAC remains at
+2.5 Gbps.  Together with configuring the switch IMP port for its 2 Gbps
+mode, this eliminates the output queue discards that caused approximately
+1000 TCP retransmissions per second during an iperf3 transmit test.
 
-Interesting. I wonder if more drivers hit this -- I think I've seen
-similar affinity checks elsewhere.
+Fixes: f6a95a24957a ("net: ethernet: bgmac: Add platform device support")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/bgmac.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-I'd move this into a helper to hide these NAPI details. Regardless,
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index 1835266fdd09..7079228e70c0 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -1415,11 +1415,15 @@ void bgmac_adjust_link(struct net_device *net_dev)
+ {
+ 	struct bgmac *bgmac = netdev_priv(net_dev);
+ 	struct phy_device *phy_dev = net_dev->phydev;
++	int speed = phy_dev->speed;
+ 	bool update = false;
+ 
++	if (bgmac->feature_flags & BGMAC_FEAT_FORCE_SPEED_2500)
++		speed = SPEED_2500;
++
+ 	if (phy_dev->link) {
+-		if (phy_dev->speed != bgmac->mac_speed) {
+-			bgmac->mac_speed = phy_dev->speed;
++		if (speed != bgmac->mac_speed) {
++			bgmac->mac_speed = speed;
+ 			update = true;
+ 		}
+ 
+-- 
+2.53.0
 
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
