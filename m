@@ -1,62 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.195
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792571748;
-	b=Fm+iB4iW2SjQF4kU8lE0o3lqChT4kmoJaE5qlzrv3UrMHtTnI9mQOiOX/hgPM/ad/esG
-	 WVyB7DauA4orAhm9uU4fwqjS2yJfYgGLtVR3zSfzCZ7DAr8J43OorC6W0lFXk5zWTsReo
-	 bH09JmXu+t0XdIC1TlanM5Olc+eauxmyR1g7411kUD18+NSJ6eIe9jh8/Z3Pe4xhUhwiN
-	 ttnEqpafsP+wKAxlin8KY8ILFweyzUfpZz4LBxzuf6IKslHxkTSIe4gv3OKC3B+iK4VA4
-	 uJUXNyHMIr1P5D3/NhQhpJedo+GxYoD8CkPSZdmIXVFM+8D28edP+OuqrTq0pfPsVGQ==
+	t=1792571798;
+	b=rlwSVO0ZCnRePMieEXUqgR5pGvrQ7rfXYALufTREtpVJWAHwAJHPLWumOx61EC8KuJM3
+	 AoCP15RKP7j9mVOY8uB0gGNYa/VhDnFBmnrclRnBSh7d1VwmkX/syLxiogT5sPTRzBIiK
+	 EANOsB8qOBHs9Y4JgOOh6mMGLl0SoNBqd2z7tjIkCik7PnLsg+sl7NrEhyJxWgAaF5eiC
+	 fWKKuwYF37PMWa3D01Lcn1d+dkuIF3T8+mITIMnOHQnG2O10dfbSc/YE0mykzGQ/tCHqT
+	 jobo765VekWNAk60iOe6ZmXVrbS9HI4sBprPh8abmxfe54ckez084U+s+Y/8jXatGCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792571748;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
-	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
-	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
-	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
-	bh=ZfD+QNSEHOqBJMRc5WwYyDAHY1RXmea/f6ETko4qoEg=;
-	b=WnqH3z+abTw/naTNRaRtfoRDboygC/40HevBxJH2NEWPLAKxkwOA9b8kgu9J/XJ82iP3
-	 ylELIL8ywmmOARXjxTzUzhirpPwj+7z548yZIy5l10u/osVRTN3SPP4+j/WAi0qobRMzN
-	 u4s1rfURowjaLngVZDUrvc82cLWwCzrmiSzcIwUYJiU7qW00Q5LgXiUFoBvjJ2c2spXGE
-	 D4zYeZpY1zmcyEHLGHzRE5nxNpYCvTZXnl6DxNsq0zzQJvYCYBvRDAm8joFntod9k8L41
-	 d3IdyUBmFetIDzUc1hBtAqlMk7lZ7T30Dkb+KXwDEtk7gsKgURh9jbMzPw0ALE1J6TA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792571798;
+	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=9K9KRsEaxoM/l89/G7N6lVBzd9yD1GfxwhXMyc+Mzdk=;
+	b=Zsbao67LUzrULRszENB5/1leF/ODU47xKmH0dKXzBpaprVqdvJ0b4mXMyA+/9Q+6tbe1
+	 6G2uZAY6LovoHRMwGNtUbUUT6WMNnrlL3dxGgJhA1MCRYgopvaDNE18KmZdZMmd0BrGw3
+	 IxQcTZ34G9peyJwXxiQkM0SndHTZAkRYVeIV9x0H6IQyGb7bgWC/D03A4G/KNS9F9DX+3
+	 y3Gj/U3yXjBtwPbWZDLKFqCAS0er863G3rayxLCuU/XlrLRf1wrOtnUdCL5tJS7Jr3mrv
+	 8ctMV5vLL5TdclczNvOn8IeKXAEFP0CJ42OVj4XZGW3g8iENIoVWsiI//N2j3Xys+Ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=Hi0urQWf;
-	arc=none smtp.remote-ip=115.124.28.195
-Received: from out28-195.mail.aliyun.com (out28-195.mail.aliyun.com [115.124.28.195])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hyTAEOUl;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BAA606A319;
-	Wed, 21 Oct 2026 08:35:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13BAA606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D1C606A319;
+	Wed, 21 Oct 2026 08:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=Hi0urQWf
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1792571743; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
-	bh=ZfD+QNSEHOqBJMRc5WwYyDAHY1RXmea/f6ETko4qoEg=;
-	b=Hi0urQWfC2OLDP6rsNz+h73DjOd9ztZRvPWdT2mWSi5diwo/GbH2OR+5thRVdWQD3HHLoh7wFlwvYF/pqd2bkJj9t6qVyMdSC1D3akHuDFnBuiplAQPI3ICvlcL4oNAVVBGFJ4CFRVByxbH58Cky3qBOcJbZJxDUFE3Bb8AhBMe7+xXQ0mLHls8fMZrZ6Nx2M3y0LZ9iqpgbCd259flsCWq0yapqOngkupbQqdH/5nv7y2wlqmJ3N67pvIqM+pGJWAqcVSd3m3cPJg6PXL8lbp9Is/faAdd77yC4nPkCtRksb7eezRR3uuwERzO79DnFPL6Df7pb9uVPIt9HO5IOyg==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.4604281|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.356285-0.00274064-0.640975;FP=8427287706681930363|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045038069;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=9;RT=9;SR=0;TI=W4_0.2.3_21448169_1792571743001_o7001c67e;
-Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_21448169_1792571743001_o7001c67e] cluster:ay29) at Wed, 21 Oct 2026 16:35:43 +0800
-Date: Wed, 21 Oct 2026 16:35:43 +0800
-From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-To: "Marc Kleine-Budde" <mkl@pengutronix.de>
-Cc: "netdev-bot+sinfo" <netdev-bot+sinfo@kernel.org>,
-  "netdev" <netdev@vger.kernel.org>,
-  "linux-can" <linux-can@vger.kernel.org>,
-  "kernel" <kernel@pengutronix.de>,
-  "haibo.chen" <haibo.chen@oss.nxp.com>,
-  "shawnguo" <shawnguo@kernel.org>,
-  "imx" <imx@lists.linux.dev>,
-  "stable" <stable@vger.kernel.org>
-Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-Message-ID: <b85d4cbb-8197-4b0c-a547-a2630a68b271.chunyuzhiqiang@yinhe.ht>
-Subject: =?UTF-8?B?UkXvvJpbUEFUQ0ggdjZdIGNhbjogZGV2OiBjYW5fZmlsbF9pbmZvKCk6IGRvbid0IHdha2Ug?=
-  =?UTF-8?B?dXAgY29udHJvbGxlciBpZiBpbnRlcmZhY2UgaXMgZG93bg==?=
-X-Mailer: [Alimail-Mailagent revision 74][W4_0.2.3][null][Chrome]
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hyTAEOUl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D01C1F000C9;
+	Wed, 21 Oct 2026 08:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792571797;
+	bh=9K9KRsEaxoM/l89/G7N6lVBzd9yD1GfxwhXMyc+Mzdk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=hyTAEOUlLJ/6crVLQzgFPw5YC+r+R5PbTBPw29STrIIYl2Cjfj+WPZsT/QLY5NUnu
+	 urFfRgJEQfsgwZnOQV8u9PGNchT8igPnjOfz/w1Qy3Jgyn9HJlpVMrYXSeOONeklbH
+	 Xj0kS2H2acSMiVJxLoxAqpEjUET8LaUL8UWCyPLd+GEsBSskNh8w/7I+TvaQwmPyri
+	 APQ0zQgHqoFxXSLTeJX48AWyUagcUZaiu8Zsaip8tMiG89VE/eNmTLqXAnng4UZWx7
+	 b/FDAEwBv0KglNmnfNdQkXU/MrQUO9sZQALThtBUm45H9CCpcRKzX+ZiFHLvlOEdFB
+	 GIxBg8zxlrUCw==
+Message-ID: <e7888169bdc76ea40fcfe782c2bc9b70e037dfc6.camel@kernel.org>
+Subject: Re: rds_wq UAF
+From: Allison Henderson <achender@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Joel Granados <joel.granados@kernel.org>, kernel test robot
+	 <yi1.lai@intel.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, wireguard@lists.zx2c4.com, rds-devel@oss.oracle.com
+Date: Wed, 21 Oct 2026 01:36:36 -0700
+In-Reply-To: <atdoGiW_sHlWgOwt@redhat.com>
+References: <202610190310.9737b2e3-lkp@intel.com>
+	 <atYB0bm9eEXp8A2g@redhat.com> <atYW0K3t57puHeLW@hobbes>
+	 <atYuE1xnVYe0BDG4@redhat.com> <atY42k00k0Waj6o4@redhat.com>
+	 <42964fa071bd8dcafd418c89be6d66856def4dc5.camel@kernel.org>
+	 <atdoGiW_sHlWgOwt@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,16 +68,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-x-aliyun-im-through: {"version":"v1.0"}
-References: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht> <20261021-romantic-jaybird-of-cookies-1ed8e1-mkl@pengutronix.de> <b9c8e7d7-584e-43d0-88a6-ee0ee6e6c700.chunyuzhiqiang@yinhe.ht>,<20261021-robust-electric-beaver-796542-mkl@pengutronix.de>
-x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
-In-Reply-To: <20261021-robust-electric-beaver-796542-mkl@pengutronix.de>
-x-aliyun-mailtrack: {"foreign-track":"0"}
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
 
-SGkgTWFyYywKCj4gVGhhbmtzLCBBcyB5b3UncmUgY29udHJpYnV0aW5nIHJlZ3VsYXJseSwgdXNp
-bmcgYjQgWzFdIGNhbiBzYWZlIHlvdSBhbmQgdGhlCj4gbWFpbnRhaW5lcnMgYSBsb3Qgb2YgdGlt
-ZS4KPgo+IFsxXSBodHRwczovL2I0LmRvY3Mua2VybmVsLm9yZy9lbi9sYXRlc3QvaW5kZXguaHRt
-bAoKVGhhbmtzIGZvciB0aGUgcG9pbnRlci4gSSdsbCBzdGFydCB1c2luZyBiNCBmb3IgdGhlIHY3
-IHJlc3BpbiBhbmQgZnV0dXJlCnNlcmllcy4KCkNodW5ZdVpoaVFpYW5n
+On Tue, 2026-10-20 at 15:09 +0200, Oleg Nesterov wrote:
+> (change subject)
+>=20
+> On 10/19, Allison Henderson wrote:
+> >=20
+> > On Mon, 2026-10-19 at 17:35 +0200, Oleg Nesterov wrote:
+> > > >=20
+> > > > But. rds_init() can also fail even if CONFIG_SYSCTL=3Dy, after
+> > > > rds_sysctl_init(), so to me this looks like a bug in net/rds/.
+> > > >=20
+> >=20
+> > Yes that's a separate bug, so I'll send a separate fix for that.
+>=20
+> Let me try to summarize.
+>=20
+> If rds_init() fails after rds_threads_init() for any reason,
+> rds_threads_exit() will destroy/free rds_wq.
+>=20
+> If rds_rdma_init() is called after that, and rds_ib_init() fails
+> after rds_ib_mr_init(), rds_ib_unregister_client() will try to
+> flush the already freed rds_wq.
+>=20
+> But we have
+>=20
+> 	module_init(rds_init);		// net/rds/af_rds.c
+> 	module_init(rds_rdma_init);	// net/rds/rdma_transport.c
+>=20
+> and IIUC the order of these initcalls is not defined. So if
+> rds_rdma_init() -> rds_ib_init() is called before rds_init(), it
+> can do flush_workqueue(rds_wq) when rds_wq =3D=3D NULL on failure.
+It is sort of defined.  When built as modules the order is enforced by
+symbol dependencies. rds_rdma and rds_tcp need symbols exported by rds
+(rds_wq itself is one of them), so they can't be loaded unless rds_init()
+succeeded.  So the rds_wq =3D=3D NULL case can't happen.
+
+What can happen is what was reported: built in, rds_init() fails,
+do_initcalls() keeps going, and rds_rdma_init()/rds_tcp_init() run against
+a core that has already been torn down.
+
+
+>=20
+> With or without CONFIG_SYSCTL. Right?
+>=20
+> But it seems that rds_ib_init() doesn't need to flush rds_wq on failure,
+> so how about the patch below? Of course, I have no idea if net/rds has
+> more similar issues with rds_wq.
+>=20
+> Oleg.
+> ---
+>=20
+> diff --git a/net/rds/ib.c b/net/rds/ib.c
+> index 786f39169bc1..cde2d1bfabbd 100644
+> --- a/net/rds/ib.c
+> +++ b/net/rds/ib.c
+> @@ -619,7 +619,7 @@ int rds_ib_init(void)
+>  out_sysctl:
+>  	rds_ib_sysctl_exit();
+>  out_ibreg:
+> -	rds_ib_unregister_client();
+> +	ib_unregister_client(&rds_ib_client);
+
+This works for when there are no IB devices, as in the report, but the flus=
+h
+is what ensures rds_ib_dev_free() has finished before rds_rdma.ko's text go=
+es away. =C2=A0
+
+If there is a device,  ib_register_client() has already called rds_ib_add_o=
+ne().
+Then ib_unregister_client() calls rds_ib_remove_one(), which drops the last
+reference.  And then rds_ib_dev_put() does queue_work(rds_wq, ...) on the
+freed workqueue anyway. =20
+
+So I think the fix belongs at the transport init: if the core didn't
+come up, rds_rdma_init() and rds_tcp_init() should return early,
+before they register anything.  I can send that along with the
+sysctl change tomorrow.
+
+Thanks for working on this!
+Allison
+
+
+
+>  out_mr_exit:
+>  	rds_ib_mr_exit();
+>  out:
+>=20
+
