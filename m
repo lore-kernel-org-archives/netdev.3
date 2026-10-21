@@ -1,66 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792573671;
-	b=s+MFqRCxRVL3Kb4OLfqnF0yJaeqpivfSiwv6K4qkDRJEyRdT5g6wRWt4wG5jJUjEtz8z
-	 Bpp1hu9IF2KyVLVKtz1+AjwY1bMCbklV/ma6x6xu96HOpmohYsaHP8b1EWvrcIVao37y1
-	 fdmr0ibGRnKKFr1GyWQ4549zO/Gb/wqrAadgxVHPBCNQq/nHirSbL4r58Hzy9VWqbFZvG
-	 ZFnAz8gfLLk7WwD8LNko2499G8Q3RFsEYXjqQR1lczmwdGxSbn+dBh3s8kJAuGu6sitt4
-	 66IvCcNV2lAPLk70YxrXtIE0Dmiz7l+yMCkUimDPOpod0cbttwQud0UJHjaLc5yF65w==
+	t=1792573747;
+	b=d52PyuWo29HB/y2tnR2PamGChOp1czCfx6OchfveYD+P85/r8NeXmDhOagMwZq422Ns8
+	 k22UfursURRDIMB65iMya378rozMi2/OTzwN1x8z6Hf72fP0YJQZZ/m2cazFqnqxWFp32
+	 YEP07avf13Y+CowfloKinUbWDkBlJoCE74uW3gFQD+fEy4tM5gK+dR3GqBmmV/CJYP/ly
+	 D86xGxbG7qzHwnMYQ5AIK6p+gzc8H4sDkpeXHotZRf4Y/4ePcL5RxNapN+hm0c50K7HpQ
+	 RgvJaQYL5guYosxKVAgdU6nxwT/jZDkiwqcicwGV5oZwAvQ7LAUOkuE/fsIz/yYwKUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792573671;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=92DTiUUK71Q2LhIuCW5C/IPiDJObqZvJg6w+xoJeZg0=;
-	b=wn/ohSDiKYMV3AwuyLyHxMKL7phTQBoiUY4Evtxl9WoK4JD74jci+tmarBCRhwuOaKVx
-	 4pVq9DjFSmiMvofckPelmpHls5FoAV82ga7fV3dhbnvLuymIrUODSi/JUPV4Q2PvTd53F
-	 qMsbRWX1BnrbHCeqJv+esx2rAGwUniJE2MxZUim7+lEmUkzav25D9BN8Bh9LBr0FHAIc+
-	 1W7LCiellGxhmZAebqxnHiDAsl5dUlaj6dijXjz37G2IKJOjEkwCx6PyMjNbWcdc+6vdf
-	 Tgb6MDFyM5/LlwGCEtL8vha3pMY2GAIkCSSVlXNuRK4jFEcTkqMTrHa7Qlra/NI8r5Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792573747;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=m4m+8auzD/3I9aBzl5NjCoQklre0jbzlsPnF0O/VYTM=;
+	b=ceP4XLbyo/fMk4zXjqWrNYWqiWcFOwbjrR6oTnz5yJY2mzZNMdUTQtMpjtRMl5veW0eJ
+	 NKIm4vrSB4NZfMBVM2Epz70U+oL/SNGkqTyIwDjp3gfF+ltpju+bvq8+ZoFxX/tsKhWUS
+	 h3FyqFXe7xVw4s+io6m8aG6zmvd4QNs+A0Zo5nquxDKgMaZP2z3Ohtn+NWhulrqLnPWgx
+	 lqCJ8P+1KwCK9Z+qkEQdiRDVcFqsCA2P8VZWPAAknybVW+461qSxPns8Ui4rqVUT4Iqzm
+	 M6UGIEO0nf66TetKDIKfU+EfMHg2BACE7s7AYRl/W+pIxAalLwG2h1463yNaLkt1rmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Wi7ENg9k;
-	arc=none smtp.remote-ip=220.197.31.4
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=yZQo5++J;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4416606A31A;
-	Wed, 21 Oct 2026 09:07:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4416606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D45606A32D;
+	Wed, 21 Oct 2026 09:09:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4D45606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Wi7ENg9k
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=92
-	DTiUUK71Q2LhIuCW5C/IPiDJObqZvJg6w+xoJeZg0=; b=Wi7ENg9k9LJM6XDpUP
-	F17zrGQfPluyE0Ot15pI5BtfMYoFi7JhjoEyoPZMaploq2z5QQIemjygn9RPPyjF
-	NpKIdG+pSB4m+F65hZgLm0G+U4OR8/+BIZ0q+bEKtQuvF/OM0qEGmv7KFjOt/rLl
-	CZNLwBcazQIa2f2L6CbeuCRqk=
-Received: from GHT-5854251031.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgDHaYjAgNhq_ue0BA--.13927S2;
-	Wed, 21 Oct 2026 17:07:16 +0800 (CST)
-From: Wanquan Zhong <zwq2226404116@163.com>
-To: krishna.chundru@oss.qualcomm.com
-Cc: mani@kernel.org,
-	loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com,
-	andrew+netdev@lunn.ch,
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=yZQo5++J
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A7973C5CD73;
+	Wed, 21 Oct 2026 09:10:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BDF8A606E3;
+	Wed, 21 Oct 2026 09:09:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5945810328D3A;
+	Wed, 21 Oct 2026 11:08:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792573742; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=m4m+8auzD/3I9aBzl5NjCoQklre0jbzlsPnF0O/VYTM=;
+	b=yZQo5++JcnYNWNXWd0vHBue5PUMvZ6865ctrT4zoe2JrbgrRHJ86isl6CN0ky4hiy+4pHf
+	KyVMZlLhg1Gs+3vI4jnTDXHpoFj/9Ya+NbQpfy9b7u0nIhrmq0sXHT1Y4LeKOfU0FnEyE7
+	4b7RCljF2m/0sRwQtQGL+vzXD/kceq/NQwFTPxAEHnH3fxGojN8xoxfwP+IE+vQV8GVjZc
+	dM6HJkK9T77PXSWZ70Kzade1WUQKstj1HgDuMJiyJEwhJ9c7p7DSlh7eMzR0/+5EceK3UW
+	c8hsfuvh8eHKo1HXWJbDts+Rbf5P7GTKT6Fjrn4Iz0ALOsAPW9IP/qYMyf39lg==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
-	kuba@kernel.org,
-	wanquan.zhong@fibocom.com,
-	linux-arm-msm@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Breno Leitao <leitao@debian.org>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
 	netdev@vger.kernel.org,
-	mhi@lists.linux.dev
-Subject: Re: [PATCH v4 1/1] bus: mhi: pci_generic: fix Rolling Wireless RW151 MBIM channel ring size
-Date: Wed, 21 Oct 2026 17:07:10 +0800
-Message-ID: <20261021090710.28118-1-zwq2226404116@163.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <c53fe666-7cca-4d25-8ee0-a787e5d1bbce@oss.qualcomm.com>
-References: <c53fe666-7cca-4d25-8ee0-a787e5d1bbce@oss.qualcomm.com>
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net] selftests: drv-net: devmem: Skip when hugetlbfs isn't supported
+Date: Wed, 21 Oct 2026 11:08:51 +0200
+Message-ID: <20261021090852.996899-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,25 +80,53 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgDHaYjAgNhq_ue0BA--.13927S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUjfO7UUUUU
-X-CM-SenderInfo: h2ztjjaswuikqrrwqiywtou0bp/xtbC0QQieWrYgMTXPgAA3R
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jul 03, 2026 at 10:00:07AM +0530, Krishna Chaitanya Chundru wrote:
-> can you include what is the side affect if we don't have this change,
-> like what is functional issue, low throughput etc.
+The devmem selftest requires accessing /proc/sys/vm/nr_hugepages,
+which is only available when hugetlbfs is supported. This isn't the
+case on all CPU architectures, for example it isn't supported on ARM
+32-bits on cores that don't support LPAE.
 
-Sorry for the late reply.
+On these devices, the devmem kselftest doesn't skip gracefully, it hits
+an exception while trying to open the nr_hugepages file :
 
-It is a functional mismatch, not a throughput tweak. RW151 firmware
-configures the MBIM channel with 32 ring elements; v1/v2 used 4. The
-device can then post more transfers than the host ring can hold, so
-MBIM control TREs are dropped or never completed.
+  # Exception|     _reserve_hugepages()
+  # Exception|     ~~~~~~~~~~~~~~~~~~^^
+  # Exception|   File "/usr/lib/kselftests/drivers/net/hw/devmem_lib.py", line 36, in _reserve_hugepages
+  # Exception|     with open(NR_HUGEPAGES_FILE, 'r+', encoding='utf-8') as f:
+  # Exception|          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  # Exception| FileNotFoundError: [Errno 2] No such file or directory: '/proc/sys/vm/nr_hugepages'
 
-v6 will include ring size 32 in the initial RW151 config, matching the
-firmware and RW135R-GL.
+Let's check if the file exists before trying to open it, and return
+immediately if we can't.
 
-Thanks,
-Wanquan Zhong
+The _reserve_hugepages() runs as part of the "require_devmem()", that
+skips if devmem itself isn't supported. Before the blamed commit, this
+check was done prior to accessing nr_hugepages, so the problem wasn't
+showing.
+
+This has been found by trying to run the selftest on stmmac, on an
+Altera CycloneV SoC (Cortex A9, doesn't support hugepages).
+
+Fixes: 8ac4255c1e0c ("selftests/net: devmem.py: add check_rx_large_niov")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ tools/testing/selftests/drivers/net/hw/devmem_lib.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/testing/selftests/drivers/net/hw/devmem_lib.py b/tools/testing/selftests/drivers/net/hw/devmem_lib.py
+index 3554954a6691..24637fb180ca 100644
+--- a/tools/testing/selftests/drivers/net/hw/devmem_lib.py
++++ b/tools/testing/selftests/drivers/net/hw/devmem_lib.py
+@@ -33,6 +33,8 @@ def _restore_nr_hugepages(nr_hugepages):
+ 
+ def _reserve_hugepages(want=64):
+     """Raise nr_hugepages to @want and arrange for it to be restored."""
++    if not os.path.exists(NR_HUGEPAGES_FILE):
++        return
+     with open(NR_HUGEPAGES_FILE, 'r+', encoding='utf-8') as f:
+         nr_hugepages = int(f.read().strip())
+         if nr_hugepages >= want:
+-- 
+2.56.0
 
