@@ -1,104 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792590162;
-	b=IPT6y4PwcYLlcIFwxteHjn80rYdvPcbZ8OYzU+rJQ7Edum7fHegwxVWrwt7fyOI7ryJT
-	 +mZryso2Z1Cdmxxo9dVFvmM7T1PpVFtA0XvnfSgDbNDehZvgYc3HtFyGyH6WcZCIe9kqm
-	 jyhJI3WXuMjsYPhEOkITCUuCJ7d/mCZPwpUcmy1a7J1p10zy1i6Cl9nZv5KXaPu3gpZ6J
-	 k5bxikTIAt6gHbiate1+hpinonjgk/big67Z/opgncYT91h5Hb+I/d5wwLuRmAlw/6e7G
-	 XJ0x3/do17Xwem5p3j3LvlgJodC5oLJHihDPQcTl6wlLU2KezMuwUvrvGaymXA40XbQ==
+	t=1792590174;
+	b=v6oeihmF9MUrbZ3QmmvkPguyPnB+mXuTfFLkkkRJKo6WGtp6BZWrlV+5uPcosJmCy+NF
+	 FtXtEQaZqrdCPfHKEBp1lv5lhTG948xYB7xhq0dsFovvv+XfRZB1MW/Xz8jRyvm8hle62
+	 YJ/zxr146BY5El1yA0oTPM/CnH5yvk+0jfLx/QxT+KX6qdCoSJCrIPQVlGTWNPnbUbwCb
+	 BiVaaobIaWtBcPBg+b+jWNg0pfsBWV1viyrcAW4/6f9Hf18pI0xWwwdk0oFY9eojxyyl3
+	 dbWvrSVs3z4TZ9M02NY/gLo/ZbwOISLGW2NkwzHAbg9I6DkBILEoGrSJQzTMXCekTXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792590162;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
-	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
-	 X-Spam-Score;
-	bh=qEgSvgGQIN5UC/cEOcl8Ma5axvPfziiFmfY6ClYNUSA=;
-	b=q+RWLpG7h+litiA66pYL2O+ILs5MEIvBlyMa6g1yURoFRyKxpHtatYL96yOIKivF+K1P
-	 isHozTcPvoSuWSN6kLS4k0ZhxYTWUKmS4NqwGeVJX8AchAJkwkD5ZRIX5Hbya9CM3Edh/
-	 erI+46vuvtql8bqIY8IK4RpcU09Cj6k6Aj0YieApB90gj6r4aw9NatV/EAPA5l6qXYIHE
-	 qkv38pVa5ym5MoYZjZ0S48RGBmHCFf7Fm+6SYIQW5nbU1lITCeGYrWkmUQ7+RMV2v8dfG
-	 EJ6eT/sNNfSsm9yZWdA/Kj1r4Ib8Ro5IM3qudN+NiZs41nA6fYxf3sGez+1yLlA09Bg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792590174;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Arn8+K++I1dg9a18y21WepmyzobpDI4T/OMbR7Awn18=;
+	b=Nj2O0V1VhCi3H3OWOivzxlT0VCBeYUuI79Gl93Kq18QZG3WOXRHEPhy1gmU2nmFsBwz0
+	 Kt7nnKYFI1tO9ErF5bjTAMtqmkEx12P88FnyQbaROChHRjU5wVGCcN5gulxikcGccBgNd
+	 eU66dpDI/RHYdqcZ2QgQrEZbTwNa8pyG2i/BWGjUJYjJv79OH5vQm9MVE4+Q+qolYqLGq
+	 LBSE6VMyxyMWrvY+b8zZ37GDfThvGcaVSrlXBuJEDAnFJg7YuP0EmMiEdaKmClkopExes
+	 NVO/nHnLCRdMkZ0hPEBy5+76CTNHpc3TaaWLxStaBg2au8ToUBaZk1MY3omeBR5qP0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b="d/pAMTTH";
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MMMznhCx;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b="d/pAMTTH";
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MMMznhCx;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d+jSdQ0f;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=lP67IOnr;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDBD606A321;
-	Wed, 21 Oct 2026 13:42:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EDBD606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490BE606A31E
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:42:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 490BE606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=d/pAMTTH;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MMMznhCx;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=d/pAMTTH;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MMMznhCx
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 27F3C1F842;
-	Wed, 21 Oct 2026 13:42:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792590160; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d+jSdQ0f;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=lP67IOnr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792590173;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qEgSvgGQIN5UC/cEOcl8Ma5axvPfziiFmfY6ClYNUSA=;
-	b=d/pAMTTH0m1EW5ad38O0p6SlVC6D6HLuXYFQPH2xGDkitB9kxKiv1LMbV811cF7DH7nJLW
-	FYHXiFQ0+30+v1Vre6jhc3gV/o+5Giyd5SREjq9xuunH7TCKDx7YS2KAOF3arzYrf23+MT
-	b4Xkn3YKzTdzPI+VJMSP7GTZulAJT1c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792590160;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qEgSvgGQIN5UC/cEOcl8Ma5axvPfziiFmfY6ClYNUSA=;
-	b=MMMznhCxbwXJZ6RliIBvdkTuWPGQgRwNsHoPu5AtyGKjyXyQ4lvUCmwAv/yoRNMmxUd1vr
-	uMxORaNGhT5WPNAA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="d/pAMTTH";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MMMznhCx
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1792590160; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qEgSvgGQIN5UC/cEOcl8Ma5axvPfziiFmfY6ClYNUSA=;
-	b=d/pAMTTH0m1EW5ad38O0p6SlVC6D6HLuXYFQPH2xGDkitB9kxKiv1LMbV811cF7DH7nJLW
-	FYHXiFQ0+30+v1Vre6jhc3gV/o+5Giyd5SREjq9xuunH7TCKDx7YS2KAOF3arzYrf23+MT
-	b4Xkn3YKzTdzPI+VJMSP7GTZulAJT1c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1792590160;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qEgSvgGQIN5UC/cEOcl8Ma5axvPfziiFmfY6ClYNUSA=;
-	b=MMMznhCxbwXJZ6RliIBvdkTuWPGQgRwNsHoPu5AtyGKjyXyQ4lvUCmwAv/yoRNMmxUd1vr
-	uMxORaNGhT5WPNAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE783134A5;
-	Wed, 21 Oct 2026 13:42:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id boB8L07B2GpcIgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 21 Oct 2026 13:42:38 +0000
-Message-ID: <5eb0f607-5cc0-46aa-a51d-9cdacea3fe3d@suse.de>
-Date: Wed, 21 Oct 2026 15:41:22 +0200
+	bh=Arn8+K++I1dg9a18y21WepmyzobpDI4T/OMbR7Awn18=;
+	b=d+jSdQ0fTFGbdUyP8bXXnFi1y0iouUz/8P75/gqMfHOVi68k7po1ud1JppRHlbROMjBJho
+	mjNV0yMvTg9QYyn5I+IUjMUP0gW0NKLYHWpbvYDugj0sSWjiaTKR+pAInCZRZweHr4+DIM
+	2lSADYvhCd+4ovH1LC4rXiQQ5mAc4Ew=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-544-ZXsDCwF1Na2oR462YgFRzw-1; Wed, 21 Oct 2026 13:42:42 +0000
+X-MC-Unique: ZXsDCwF1Na2oR462YgFRzw-1
+X-Mimecast-MFC-AGG-ID: ZXsDCwF1Na2oR462YgFRzw_1792590162
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48dfdc0f491so433219f8f.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792590161; x=1793194961; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Arn8+K++I1dg9a18y21WepmyzobpDI4T/OMbR7Awn18=;
+        b=lP67IOnrQ1yivLQC43oIqrUyyjDrYOv9ayL2QZQBv4ug+thRjcSf36YBavzPphotsn
+         w4mOvEa10ns9DZzxninOZ0MiyMIru665JtAgQ/AqPX3RRkL+TTtG2bKk5jYnDXGUj+Vu
+         jxKjDlu72/7ZInKUEfxigSte2srRiUYW4WISdZKSyxmasYxVVgH7LPUl6ytW9OB6k1u8
+         +hJyG/ZeYUAt8JJ/4b66kDjvWWsxgeeg27yIN4iLcMUDOh9csQXaMMD6eMQwoHnYSrsQ
+         A9+/ng220Pvy4QU7jxaJ4/zBe0fLX6wtMHrfDfErV1ZjpQ/YfPrXihJMFkcNP7GCXXOc
+         UzHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792590161; x=1793194961;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Arn8+K++I1dg9a18y21WepmyzobpDI4T/OMbR7Awn18=;
+        b=Uem9b++9Vpw2dxNEpsT0nCI2BuBnmM82X3pIjKce98wFx6DeUKbJQ1fYCGfxkw+Ntz
+         yIoiRWD7iIEjLVwFOECmjgXVVwwMIsGG6zlAdFhB87pW8Aa940ZCd54aCj4TJvLWd1XZ
+         BfSEqr2cNlMZ57yuSlTW/oCFMZElnpmnzXJMCFET78eRYvVgrReYeYmwRpOFekHwopma
+         QVwcQHeSV6yAO5lvGh1QeHoOWmXqpX9kZqexgYITm63XNwoaZ2cE2Zt241Lxx54sa0li
+         nlg2pSQVRwxwRVXMHJUxymIiXOB1x4gBqdkPrVyFPlLQ+mP4RarxC8e9X0CP8+3lyrNH
+         JxZw==
+X-Forwarded-Encrypted: i=1; AKwUvByEqtu30e7ifnl0GL9Vk5EjaWkyYE588jus9pjp2XSFWtbZgRageu0v93CM/k724mG/yjgvVZU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYITPApSgPW7gmlKOZhoK1rSP4tM1EJShGcYU6lghPE5NV6FtG0v
+	uy43jKncWqbaXFt7peL0VcoLYB10ve3ecUNCamKKAex4MykVOVC1650ppwju2UJBDYgboz+rPhO
+	k5Hta8/4fP8JSPvJfjyrtLGG3ZQnUHPPcD3v4aklOGapqzEB+UMOK4POo5w==
+X-Gm-Gg: AYBFou1eGXMvHt3XRvm30EoSWvQ6A5GA1T/rHUWG/aYl8uWJKOO3q6kuKPj5VsDdOJQ
+	9r0Kml8LYTw2vOueV9M+CsN6btaxv0+/AsLAQtNLDLUfacszXm4hgEqWIZhNo01hwoQUlHeEdFT
+	dTWVp1HuozEjUJcwBdv79HHLrvU/lzve2r8qE6ZnqmJCn2wyxWOCtAIQFxz9usQLWfj16w5fhAO
+	hbWIgIETEANqft2p4EQIxIHZYR5z/2q34ZBSRUG7/zcP16q5v7Jg0oCUuDpBSHeof0m+7/hNTIQ
+	zq18gWzSjPcKlGka7SYWDDKJkMiHTsYzM8cy3LHC8pT4GFjhRBdLDyOpzuVxAqnJw8Nrs/BPrsO
+	mPBhjHWsJAGKmlk5DaFGlXCmfQW5oMVBPYGSq2cEC3x3PH4Qo/ryyH0vdAGPaHHTXfyOW9g98PA
+	==
+X-Received: by 2002:a05:6000:230b:b0:48d:ee59:3a30 with SMTP id ffacd0b85a97d-48e264b6937mr3990685f8f.22.1792590161622;
+        Wed, 21 Oct 2026 06:42:41 -0700 (PDT)
+X-Received: by 2002:a05:6000:230b:b0:48d:ee59:3a30 with SMTP id ffacd0b85a97d-48e264b6937mr3990623f8f.22.1792590161148;
+        Wed, 21 Oct 2026 06:42:41 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e254ef1bfsm5887490f8f.6.2026.10.21.06.42.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 06:42:40 -0700 (PDT)
+Message-ID: <e0f4776a-0457-4069-9f79-3c97de2a54d0@redhat.com>
+Date: Wed, 21 Oct 2026 15:42:39 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,111 +113,83 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/mlx5e: IPsec, Fix out-of-bounds comparison of
- neighbour keys
-To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Boris Pismenny <borisp@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Jianbo Liu <jianbol@nvidia.com>, Kees Cook <kees@kernel.org>,
- Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org,
- Mark Bloch <mbloch@nvidia.com>,
- Prathamesh Deshpande <prathameshdeshpande7@gmail.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Simon Horman <horms@kernel.org>,
- Sridhar Samudrala <sridhar.samudrala@intel.com>,
- Yael Chemla <ychemla@nvidia.com>
-References: <20261021064231.3466989-1-tariqt@nvidia.com>
+Subject: Re: [PATCH net-next] net/sched: em_text: pad the text pattern in the
+ ematch dump
+To: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ netdev@vger.kernel.org
+Cc: horms@kernel.org, Sashiko <sashiko-bot@kernel.org>
+References: <QDISC-7SHE.v1.r0.20261016101330-1@mojatatu.com>
 Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20261021064231.3466989-1-tariqt@nvidia.com>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <QDISC-7SHE.v1.r0.20261016101330-1@mojatatu.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 27F3C1F842
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-12.00 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,vger.kernel.org,gmail.com,intel.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,nvidia.com:email]
-X-Spam-Score: -12.00
 
-On 10/21/26 8:42 AM, Tariq Toukan wrote:
-> From: Gal Pressman <gal@nvidia.com>
+On 10/16/26 17:01, Victor Nogueira wrote:
+> This is a follow-up to commit 9c572a83037a ("net/sched: fix potential
+> stack infoleak in em_text_dump()"), which zero-initialised the dump-side
+> struct.  Sashiko separately pointed at the unaligned pattern tail on the
+> same dump path.
 > 
-> mlx5e_ipsec_netevent_event() keeps the L2 headers of offloaded tunnel
-> mode SAs up to date: on every neighbour change it looks for SAs whose
-> endpoint matches the neighbour's address. The compare width, 4 bytes for
-> IPv4 or 16 for IPv6, is chosen from the SA's address family, with no
-> check that the neighbour is of the same family.
+> em_text_dump() appends the text pattern with nla_append(), which is a bare
+> skb_put_data() and does not pad the attribute to a 4-byte boundary.  When
+> pattern_len is not a multiple of four the skb tail is left unaligned.
 > 
-> An ARP entry only stores a 4-byte key, so with an IPv6 tunnel mode SA
-> offloaded, any IPv4 neighbour update in the system is compared as if it
-> were a 16-byte IPv6 address, reading past the end of the object:
+> tcf_em_tree_dump() records the raw span as the ematch entry's nla_len and
+> then writes the next ematch's nlattr header at that unaligned tail.
+> Userspace walks the list with RTA_NEXT()/NLA_NEXT(), which rounds each
+> attribute length up to four bytes, so it looks for the next entry at an
+> aligned offset the kernel did not write.  The ematch list is therefore
+> misparsed as soon as a text ematch has a pattern length that is not a
+> multiple of four.
 > 
->    BUG: KASAN: slab-out-of-bounds in mlx5e_ipsec_netevent_event+0x736/0x8d0 [mlx5_core]
->    Read of size 4 at addr ff110001260a4ad8 by task swapper/8/0
->    Call Trace:
->     <IRQ>
->     mlx5e_ipsec_netevent_event+0x736/0x8d0 [mlx5_core]
->     notifier_call_chain+0x97/0x2b0
->     atomic_notifier_call_chain+0x5d/0x130
->     neigh_timer_handler+0x35c/0x1140
->     call_timer_fn+0x164/0x490
->     __run_timers+0x5b9/0x960
->     run_timer_softirq+0xf0/0x1d0
->     handle_softirqs+0x189/0x8a0
->     __irq_exit_rcu+0x10d/0x250
->     ...
+> Append the pattern with nla_put_nohdr(), which reserves NLA_ALIGN(attrlen)
+> bytes and zero-fills the padding, so the following ematch stays aligned.
+> The emitted ematch entry then carries the padding in its nla_len, which is
+> what NLA_NEXT() already assumes.  em_text_change() only checks that len
+> covers the struct and the pattern, so a dump replayed as a request is still
+> accepted.  This also removes the last variable-length nla_append() caller
+> (sch_gred's is a fixed-size, already aligned struct).
 > 
->    Allocated by task 1015:
->     __kmalloc_noprof+0x2e6/0x8b0
->     ___neigh_create+0xcc9/0x24c0
->     ip_finish_output2+0xfc7/0x1e80
->     ip_output+0x172/0x3b0
->     ip_send_skb+0xa5/0x1b0
->     udp_send_skb+0x852/0x10f0
->     udp_sendmsg+0x1333/0x2150
->     ...
+> Conditions to recreate the bug:
+> - CAP_NET_ADMIN on the target netns (namespace-local via unshare -Urn is
+>    enough)
+> - add a basic filter with two text ematches whose pattern_len is not a
+>    multiple of 4 (e.g. 1 and 2), then dump it with RTM_GETTFILTER
+> - the first ematch entry comes back with an unaligned nla_len and the next
+>    entry's nlattr header is written at that raw offset, while RTA_NEXT()
+>    reads an aligned offset three bytes later
 > 
-> The opposite mix (IPv4 SA with IPv6 neighbour) stays in bounds, but only
-> the first 32 bits of the IPv6 address are compared, so an unrelated
-> neighbour can match.
+> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260918133953.12494-1-bernard.ladenthin%40gmail.com
+> Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> ---
+>   net/sched/em_text.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Skip neighbours whose address family doesn't match the SA.
-> 
-> Fixes: 4c24272b4e2b ("net/mlx5e: Listen to ARP events to update IPsec L2 headers in tunnel mode")
-> Signed-off-by: Gal Pressman <gal@nvidia.com>
-> Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-> Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> diff --git a/net/sched/em_text.c b/net/sched/em_text.c
+> index 4132f8c3c5fc..fbf78d61f109 100644
+> --- a/net/sched/em_text.c
+> +++ b/net/sched/em_text.c
+> @@ -125,8 +125,8 @@ static int em_text_dump(struct sk_buff *skb, struct tcf_ematch *m)
+>   
+>   	if (nla_put_nohdr(skb, sizeof(conf), &conf) < 0)
+>   		goto nla_put_failure;
+> -	if (nla_append(skb, conf.pattern_len,
+> -		       textsearch_get_pattern(tm->config)) < 0)
+> +	if (nla_put_nohdr(skb, conf.pattern_len,
+> +			  textsearch_get_pattern(tm->config)) < 0)
+>   		goto nla_put_failure;
+>   	return 0;
+Sashiko suspects this can introduce another issue:
+
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-7SHE.v1.r0.20261016101330-1@mojatatu.com
+
+(the 2nd concern)
+
+I think it should be addressed in the same patch.
+
+/P
+
