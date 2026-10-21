@@ -1,62 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792585161;
-	b=nJIDCjIxCT43uct7u9njRDBldRZmZ6Qmts6y4xvJe6ttYHfC2XBjL4ycvGhvg5S3avOi
-	 sbDHipf9nfJ+LXfm/UT2I5tqwoE8NsfxizbZM2Iz6PTFL4GLPwpnKJOxE+yXXZgiyz9AL
-	 V6wxkuE1FsBdI/pVYNn4ND9dBPwULrFREKcUXbyEFUMNlx2/LLw2tp0oMjmWKzPXxXaEF
-	 tYgeiJY42U2ntXpJqf206ZMpf+qNHizECAYngysgXLJCUxshcM9Fr95tkRQCucoExroDF
-	 EpwOq1QncxCP3gTelSvzKRjEF3Y19j5H2dWWZ/kQ5ruNLSYK+d+HojH7jyLaWwqGXTw==
+	t=1792585203;
+	b=i0nPKhr39W1YfC28eWI+HfhxuI919K9w93UnNPV5/Jiy6XBaGuzfMcIaxwse08/Yc+8H
+	 uNzoNqF/doB0LU0wi2uFrObKhCCxTj+jzfPmlYemgxmpVr/lZwRjP5xmEc3urQq3zRko1
+	 yk/nYbgiL1kfJeIsLVDSGTdRLG6oV+8726gHXVDVk82+3PvU5JgLj9hlJ8zqEt+VwW7kf
+	 nZlsuVKkl/uFmu9sHu0BCPnvhZgFNog4zdKfCgIDf/vN7xovdxVixNYdLJwsUnEZdJqZp
+	 hE2Cn904DUtFyX/fzV7cHtBQr+TRdCu8WEzKgG/6zSReH2Qn6kXnvigl1pEFaoBI+lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792585161;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=AMHcS9Ye7mJ4VtQa8j3eoiUCpuDp1FJCCfYruVi3NE4=;
-	b=b74PIRk6uM4CDoUexOrY3D6ypx0Iv0x1VdAjSCu+8RohFmzOac7spQc+rF7aYjeMrWJt
-	 Jwtp5UYKL0YIgIE6v3KlkHHP+iUmIwqSswmjqar83pg3Al4npwuOkTL1ArLLg2O8TKBEo
-	 o3cYi+OUOYO1GmWgWGc5wtVG8FkDr0dAnhgzlAJQl3SDDoqKww1h5hKi+AMlYtdkF/eOw
-	 DXpsDZZE8aSzn4c7U1APg5aMbeQlQisj29aVqKb22aw8DoQVot4/KzcE5WySxEOx7M5jB
-	 BaTJJhb6StxQXk6S+e/3UFc+lg/CQ/nWroO0TB5qaLj35AobjmCq+Ylis3xgDVvVUKg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792585203;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=1uTc9TmOc4Is/5wWhtZa0heYhwtrLLP+laiU4UTmzayeVNhrpOHMpePMklDlF4uYQIyF
+	 lK0tXmQOVJtxJ9IPCVfFYXAuWgtyk/AOL0GcPgAJUcFPu5T/htVqdVCnnKkw4dawnd+4h
+	 2N6Gg59pPphIM1jK/LBmlk9G7E84KATQXB/i5djSGpfGav4VDIESwe/kmH2M8hvt8J3ih
+	 9M8rJ8UnBFZYRNm9/OxAJFD0MnJ7ISMpuY3ms/Ius4HzumVRGTmY00I7dhqPhrMXnRSBR
+	 Tfwg0cwXHC0iRtbSFTWbNl4Z5e7ihR3vKhGzzxbBZYxy0mcGfIxU/frfkJRf5MClbiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=4XDsezLS;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EhXTfV4O;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE272606A31E;
-	Wed, 21 Oct 2026 12:19:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE272606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3391606A31E;
+	Wed, 21 Oct 2026 12:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=4XDsezLS
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=AMHcS9Ye7mJ4VtQa8j3eoiUCpuDp1FJCCfYruVi3NE4=; b=4XDsezLSrHNAlSFojIShKXMs7k
-	OHevL229eR+vIGZtluUMY0+oDP7ibpcH70dMXsjrW28uwH7/OQ1GVWrCeY9OPkJweaHu5n5GkswdR
-	HDgekvY5ovSUM/KuFZvt4y0yXMv/Q4iRfHKHhxQBKEMr4IgZzRyiGH1wokQtRul2B/pg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xJVHg-00C4yl-PR; Wed, 21 Oct 2026 14:19:08 +0200
-Date: Wed, 21 Oct 2026 14:19:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Pufan Jin <cyan2254650260@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3] net: phy: realtek: Add support for JLSemi
- JL2101 and JL2121 PHYs
-Message-ID: <d4517460-7598-4c87-8540-3abd6f6339b3@lunn.ch>
-References: <20261021042029.44853-1-cyan2254650260@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EhXTfV4O
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8F91F000C4;
+	Wed, 21 Oct 2026 12:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792585202;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EhXTfV4OSNL/DJj8wOrjKR0QjhUD1mubLlEXJdQMSBpIGOPlF+Zg4uUtBimUX3+T0
+	 kpUu6SkumaP0NUo4EX2lI/nYXv3LTZHPRDhHGelU0FkrlaHIDI9AYq/sh23b6WN9yB
+	 0/npTH12uJJj5j9PVBlFJzB6zOKuZ9pZCPmC3dCGyKysMgE8LH+LuvLM+gC041drCX
+	 c/iUOiQhm/VpopK+Ob787kxv95KAnjdATQUPjbg17fy+V9OFwFLBl8nnCKQrrbuFuc
+	 FOPB7/1PmtTjSOGQX9TCPQfgu2hCXjt0ULpXnRnTBllpEI1Gy+clUqMuVb6RcPZBtt
+	 mLiQ1RJfsxzWg==
+From: netdev-bot+sinfo@kernel.org
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, shenjian15@huawei.com,
+ liuyonglong@huawei.com, chenhao418@huawei.com, yangshuaisong@h-partners.com,
+ ningwei15@huawei.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net 0/3] net: hns3: three fixes for hns3 driver
+Date: Wed, 21 Oct 2026 12:20:00 +0000
+Message-ID: <179258520087.3290.6496269232236757723@kernel.org>
+In-Reply-To: <20261021121426.3096838-1-shaojijie@huawei.com>
+References: <20261021121426.3096838-1-shaojijie@huawei.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,29 +63,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021042029.44853-1-cyan2254650260@gmail.com>
 
-> - Drop standalone driver drivers/net/phy/jlsemi.c and extend the Realtek
->   PHY driver directly as suggested by Andrew Lunn.
+Hi!
 
-> +#define JLSEMI_JL2101_PHYID			0x937c4032
-> +#define JLSEMI_JL2121_PHYID			0x937c4030
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-> +	}, {
-> +		PHY_ID_MATCH_EXACT(JLSEMI_JL2101_PHYID),
-> +		.name		= "JLSemi JL2101 Gigabit Ethernet",
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-...
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-> +	}, {
-> +		PHY_ID_MATCH_MODEL(JLSEMI_JL2121_PHYID),
-> +		.name		= "JLSemi JL2121 Gigabit Ethernet",
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-Do you have any documentation about these IDs? Why do you think one
-should be an exact match, and the other a model match? The fact the
-2102 is within the 2121 range makes this look odd to me. So it would
-be good to have some explanation.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-       Andrew
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
