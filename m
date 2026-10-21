@@ -1,71 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792620809;
-	b=cT6UTiTupZbiJ6ZUnf/6PNVficCxokdOfa86A6xsAvyvK+0U8w/uFx/n/DLQNSWyHAtH
-	 CYyVLgnAdP11cGuAXAqAI5jv2tV4yNSmQ2sRLuFgGvDAATRMspCGkFhnt0OptNWXG7RKx
-	 kewDVa61sYMCt6Ay8oCcfqACKG3hFDmWOSvDdJ60m8aoSCwZD+tRBLRToLHGdKrpiOCZD
-	 ZOR8TO9BEKFzb+1AaI/HVdu23RnSFVS5s2SGqGQfusdS+/IlitWUPLKuttjjkl9BiEXrk
-	 8DJw63GaK/Vvc2Bav6v19I/vPCw3Id+Cofvi6HQRCStAcmPf2j4pNX8ay/NZuukz7yQ==
+	t=1792620806;
+	b=CcpOtjmd+zOS76tURCTuP/SZ0mv3sn+ml5LtED5csp8HWmRRO4aJS1DKuSE9P0GwDhHD
+	 rJSkBIiZW0OphMMIu7dlCNb0Cex4ccSJMz7rqhcgKX+ibfJjLn5+AHOhgK7IzmCi7+r0l
+	 3rYntRTfbImANpen77ZhjW8Lk7B84sUkplk/QVG7xJcpOrf2LAOI30FjAfC64r+rvbecu
+	 fTPrcjSjX++bh9KPA9774XwZk507y75s6bRyegO+be9Qc3OhVmdRVULdqhmSxqiDSlV7X
+	 h+aBUyBe2Jb9HjfpzfO+wnlKhOFOLBxso8msm1ltepdTcSbQp/nFuUVAHd1Jk2Weopg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792620809;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792620806;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=bi5Gs14L+hwjYefZ1iMRP/5grJ4wrhdqfa7iodgRKIo=;
-	b=hQuoQGAiivkay2LKCmrF0LXl3O3ujR3ehmMrS0ijfrOJ3FWIAH+eKQGizizu2AjF3pGs
-	 tOvMCylkcqvLhu0UIZKMYb3aAR6P8LmwEY6VToRY/Dke0WWpjnxjvt7en0fziNbb40W2Q
-	 zX+v4/BXXA442uLebQEcHff7hw70ry7OASIF6QIgoyuTRXgjbDXxcj8HrlRWQjI02Lg5g
-	 3yOfB7m562ALg0/ezwDuR3ntrwTqqojZdZiebxZlENHo8QjUzLFJDjU7YSd+YmKoi7+6X
-	 1tf05FGzLfKwnhI6fuo1F9Ug7ovN0HDRAEeHnSFs2ZNXCnPpeKFqx8Ao+niB0O54WgQ==
+	bh=mz8UdMpNg8Z0DTXykNpHWAv2now5aoalSlKl8v1VTTE=;
+	b=YwWZ5VxyQJHVCH90hqulrZIM23eC5CVScZmCBzzgwD+RAqOELzKaPgJ2NEHc73OGCjV6
+	 6f0kEVTX6LIxPp201SIJ/Sb1ZD6k/1qINa7gwyymDYczp9LN3LO2UoTXOp7mKSwkKYfjA
+	 3JbuyzlAeaRRi3ILAMFn5uS46ZzBjyfGVN0GeEqyjdP961GzbrPwSO8VfUdHs07z5/aSm
+	 bBLt2Xv062qWATUGm07ORYCG4PAD5op3anTBEbLJBsfRUg9kEC6MlJYFnR0NH6FIc5sf0
+	 z8ht7wredunVoKJZoFCWQv08PhR/XogbWxHT4WWYPDDG9X7kIavRDV2Yd7Xn9MHhQUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LtEZWjiT;
+	spf=(null) smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ad9QfHpp;
 	arc=none smtp.remote-ip=198.175.65.15
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841DE606A32A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:13:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 841DE606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B29606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:13:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47B29606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LtEZWjiT
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ad9QfHpp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792620807; x=1824156807;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=gMF1k/DidLnMG3JitjfEhw+MVWBElnr1lKkht2WKj3o=;
-  b=LtEZWjiTp8hp0vl7jMLBZJzMlQX4gzZGEQKnUNRe4xe9706yd5nRKGsI
-   Zznu9xaJoT4p21FdQoYCoSCbt/TjT9PRYiZEXc98LlNT3bv3LihsaDaZk
-   7mkTknrh9b0k/MLZ67WlSiC7RJaXgYLMAc4YCcgXf9rSryl48vqD0A4XV
-   LQK5+ghF6RSLRUs3NZcAK5H6u6hvvE4H9boHMbTLaSk7CkNtu7k0aA39K
-   Safmt6DrHfRLmeS21nUTx8ELNiQqKT7d5RFGXf785UOao+4ZwK0/UeZyG
-   SQSbV5/R2L+9Xlf7QdbySqkOzf2SlQ+ZhCcoLC0P2WDltx5xdwkz4MKSY
-   w==;
-X-CSE-ConnectionGUID: VGtsNa6CQ4eIB5m0W1HGEA==
-X-CSE-MsgGUID: DEN1W6BPTAqRyX4/J1RbDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1363199"
+  t=1792620797; x=1824156797;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=8RupYodYYiIj+h35pMtHQ3VNlViaQFfnlNybwu+WAZs=;
+  b=ad9QfHppbcNH6o+57cjckQtdw6vG47O0Hmh5K/qaG0zpbfE4jCTb6IAo
+   BGYqDglQx21g0+AkOURJzgskwC/+Fu3DdWVauyEBFpKN1CwFstJXMjMvp
+   su/18eoSIQm2LVR8rGNKhGxFfHBLUsa4jBfP5CafNAJZXxCIPbYIAVeX2
+   mLdSh9F+eEf1WVMnKOJdpl4znv8FQrIuX3NkX8NjrLw0VKo904T7DP7dk
+   EP8RuJwuVJBp6lsX2qu8FHh+iiyt+ize5c0k/lw2Y29doky5Q+fki6Wd9
+   WEVXeATkAfp8yfl/tL6BF2IYCNLHboHL8A15s+lDqBqDoTqJ0YJWeELmH
+   A==;
+X-CSE-ConnectionGUID: QTZ8HUEiTpWKqTnntGo65Q==
+X-CSE-MsgGUID: x0O3avUNQRqdAr9qDqxUpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1363154"
 X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="1363199"
+   d="scan'208";a="1363154"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:12 -0700
-X-CSE-ConnectionGUID: 6T1advJjTDKD82at5XO3Zg==
-X-CSE-MsgGUID: TDmTPoNIQ7ObNB74MPWxgg==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:10 -0700
+X-CSE-ConnectionGUID: lHYxHza0SLe9NEpTBi1XaQ==
+X-CSE-MsgGUID: DcCVKCO1RTSYINp/Z+IpuA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="3275478"
+   d="scan'208";a="3275455"
 Received: from orcnseosdtnuc.amr.corp.intel.com ([10.166.241.20])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:11 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:08 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 21 Oct 2026 15:12:52 -0700
-Subject: [PATCH net v5 07/13] ice: E822: cancel offset verification work
- during reset preparation
+Subject: [PATCH net v5 00/13] ice: E82x: timestamp processing logic fixes
+Date: Wed, 21 Oct 2026 15:12:45 -0700
+Message-Id: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,9 +77,12 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-7-72289a4ac8eb@intel.com>
-References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
-In-Reply-To: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5XOwW7CMAwG4FdBOc+T65DS7rT3mHZoEreE0aRKQ
+ gVCffeFIk1otx5t//r830Xi6DiJj91dRJ5dcsGXQb3thDl2fmBwtsyCkGpsqwOcfoAbUgayGzn
+ lbpxgisFwSs4PcA6DM9C7KydI0Vyg16gVWim5QlHQKfJ6LeaX8JzF93OZLvrEJj9ePWJHl3KIt
+ 7XWTGv42YBoa4OZAIGV0nVLFrnWn85nPr+bMK7PZ/nKq828LHytJKm24cZ2zX9+/8dXSLiZ3xd
+ essTetJ01B/nKL8vyCxeYxrPBAQAA
+X-Change-ID: 20260917-jk-e825c-timestamp-processing-logic-fixes-srcu-fb0b50d33e10
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
@@ -93,61 +96,509 @@ Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
  sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com, 
  richardcochran@gmail.com, horms@kernel.org
 X-Mailer: b4 0.17-dev-67df5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2081;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=27753;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=BsQHBsRuqp/m+YzQChD3xdUG73971POEAmOun7Iz2Q4=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqybFh+erPwax+ndHsbctvm1efvi+7L7vrwRXnTEemOpL
- ctZtWfeHaUsDGJcDLJiiiwKDiErrxtPCNN64ywHM4eVCWQIAxenAExkTzvDP42Oax/kLSuUCzcX
- 3zp1Ys+i0DDVTauc96leNt6wyzaxZCPD/4TmxJCnc9KiOvrMVvh9SJ0kFR4QIjHj9sZtCb/21+1
- L5AYA
+ bh=8RupYodYYiIj+h35pMtHQ3VNlViaQFfnlNybwu+WAZs=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqybFq/5Pk5ZanxPcHJIWqjKsz6N2ybm7821Uio8nrw6z
+ 3U89WRkRykLgxgXg6yYIouCQ8jK68YTwrTeOMvBzGFlAhnCwMUpABPx3sfIsCgo/sfU3+qv/m36
+ aXl2u+fkrJPKNxi0rbrvue2fGi5j5MbwP9Og6aXFZveP0jY3Ip99iNhiYM7oxPPh290DX74YG3r
+ 94gIA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+Jake Keller says:
 
-The offset verification work task for E822 is executed after a PHY restart
-to complete vernier calibration. In the event that either Tx or Rx
-calibration hasn't finished, it may still be executing when a reset occurs.
+This series contains several related fixes for the ice driver PTP logic
+relating to timestamp handling and device (re)initialization.
 
-The ice_ptp_wait_for_offsets() function does check if the driver is
-resetting, and will reschedule itself. However, it is possible that a given
-execution is already past this check. The function may then fail to access
-the sideband queue. It treats failures as a reason to re-schedule and check
-again later. This re-schedule will then see the updated reset state via
-ice_is_reset_in_progress() and will keep re-scheduling until the reset
-finishes.
+Of particular note is some changes around the handling of timestamps that
+are requested near device state changes such as administrative up/down
+cycles and link change events.
 
-However, a device reset will result in the PHY being reconfigured either as
-part of the clock owner resetting or due to the ice_ptp_link_change() call
-at the end of the rebuild. Preemptively cancel the task to avoid doing
-unnecessary checks while resetting.
+The E825 device logic in the PHY has an internal counter which is used as
+part of the "threshold" logic which determines when the device will trigger
+an interrupt signal from a given PHY port to the MAC. This internal counter
+requires some precise handling to ensure that the internal device state
+remains in sync with software expectations. Otherwise, the device can be
+finagled into a state where the PHY stops producing new timestamp interrupt
+notifications to the MAC indefinitely. This in turn degrades the timestamp
+processing latency and results in application failures for common
+timestamping applications such as ptp4l.
 
-Fixes: 95af1f1c4c9f ("ice: reschedule ice_ptp_wait_for_offset_valid during reset")
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
+There are four major categories of problem resolved by this series:
+
+ * Timestamp requests made while the PHY_REG_TX_OFFSET_READY bit is cleared
+   will increment the internal counter, but leave their valid bit set to 0.
+   Upon read, the counter is not decremented. This leads to a desync of the
+   counter and blocks the PHY interrupt.
+
+ * Software logic for tracking timestamps incorrectly cleared in-use bits
+   without waiting for completion in certain cases. If the timestamp *does*
+   later complete, it leaves an "orphaned" ready bit which is not
+   tracked by software. This results in the internal counter becoming
+   desynced if that index is re-used.
+
+ * The PHY timestamp memory region lacks pull-down zero-initialization at
+   power on, resulting in uninitialized random data in the memory region.
+   If software reads these values, an entry with its valid bit set to 1 can
+   trigger a counter decrement and cause an underflow which results in the
+   counter becoming desynced.
+
+ * Timestamp request which complete near the beginning of the PHY losing
+   link can become "stuck" such that the hardware logic triggered by a
+   timestamp read does not activate. The memory status bit and the valid
+   bit in the timestamp index are not cleared. This window where this
+   may occur begins *before* the firmware notifies the driver of link loss.
+   When this occurs, the driver may accidentally re-use a stale timestamp,
+   and the IRQ re-trigger logic triggers a repeated IRQ "storm" that can
+   consume significant excess CPU time.
+
+The series' primary focus is towards preventing driver flows that can
+trigger the above sequences. It is based on work from Przemyslaw Korba which
+was previously posted at [1]. During that series development, Petr from
+RedHat reported the 3rd issue mentioned above. While attempting to root
+cause that issue, several other issues were uncovered and those fixes have
+also been included in this series.
+
+First, the PTP reset flow is fixed to stop tearing down the Tx tracker
+during a CORE or GLOBAL reset. This avoids causing Tx timestamps to break
+permanently after such a reset. The fix also ensures that all teardown
+paths properly release the tracker and kworker in a safe order. This issue
+was found by Sashiko during review of a previous version of this series. 
+
+Next, the locking around the PTP ports list in the adapter structure is
+converted to use RCU primitives and a spinlock, resolving a couple of
+reports from Petr about places where the original list was accessed without
+lock protection. Note that an older version of this fix used an xarray
+instead of the list. The xarray has more overhead and results in an
+increase of ~25 microseconds to the average latency for processing Tx
+timestamps. The list is simpler and avoids this overhead.
+
+Next, the PHY restart locking is fixed to avoid an issue with a concurrent
+execution of ice_ptp_restart_all_phy() and a link change on a given port.
+Additionally, the PHY port locks are merged into a single per-adapter lock
+to reduce locking complexity.
+
+Next, the ice_ptp_request_ts() function is updated to sequence the marking
+of the in_use bitmap in order to work properly with the lockless reader in
+the IRQ thread. This issue was reported by Sashiko during review of a
+previous version of this series.
+
+Next, Arkadiusz and Jake modify the driver to stop pretending that the link
+has changed at administrative ice_down() and ice_up(). This removes
+"virtual" PTP link changes that occurred on several flows including MTU
+change, Eswitch setup, and others. Now, the driver only triggers a PTP PHY
+timer reinitialization when the physical PHY link has changed instead of
+during many other actions.
+
+Next, come two fixes for E822 hardware that were originally posted as part
+of Przemyslaw Korba's work [1]. The E822-only "vernier" offset validation
+work task is properly canceled during device reset, and new timestamp
+requests are kept disabled until the validation task completes.
+
+Next, the driver is modified to stop clearing the PHY_REG_TX_OFFSET_READY
+bit. This bits only purpose is to tell hardware to mark any captured
+timestamps as invalid. Since this also disables the necessary side effects
+on read it is problematic to have cleared. According to hardware engineers,
+keeping it enabled should not have any other side effects. Instead, the
+tx.calibrating field is used to disable new timestamps from software in a
+similar manner to the older E822 devices.
+
+Next, the driver is modified to clear the PHY_REG_TX_MEMORY_STATUS by
+reading each index *prior* to the PHY soft reset. This ensures that any
+stale or invalid data left in the memory array is cleared, followed by the
+counter being reset via the PHY soft reset procedure.
+
+Next, the E825 timer start procedure is modified to first include a soft
+reset. This ensures that upon link up the device is reconfigured from a
+known-good state with its internal counter reset and everything cleared.
+
+Next, Petr modifies the ice_ptp_flush_tx_tracker() function to wait a little
+bit for any outstanding timestamps before flushing.
+
+Next, Petr modifies the ice_ptp_process_tx_tstamp() function to avoid
+releasing any index from software unless either a) it is actually completed
+by hardware or b) it is timed out waiting for a full two seconds. This
+closes the final gap from the second issue mentioned above. Instead of
+immediately releasing the index, the software now waits until hardware has
+completed it or the driver has waited long enough to be sufficiently sure
+that no such timestamp will be done.
+
+Finally, the ice_ptp_process_tx_tstamp() function is modified to verify
+that hardware actually cleared the ready bitmap. This ensures that we do
+not report false timestamps near a link down event.
+
+[1] https://lore.kernel.org/intel-wired-lan/20260720120151.2675206-1-przemyslaw.korba@intel.com/
+
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 3 +++
- 1 file changed, 3 insertions(+)
+For those interested, here is a summary of the latency numbers for Tx
+timestamps on my setup for comparison throughout the series. In all cases,
+the ptp4l test used a profile with a sync rate of 16/second and the
+"torture" test additionally operated a second thread on another port
+operating a burst of 32 concurrent timestamp requests every 10
+milliseconds, all operating on E825 hardware, with a 3 minute capture time
+for each test.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 57e2606655c4..6e1f60d7eef7 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -3004,6 +3004,9 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
- 
- 	kthread_cancel_delayed_work_sync(&ptp->work);
- 
-+	if (hw->mac_type == ICE_MAC_GENERIC)
-+		kthread_cancel_delayed_work_sync(&ptp->port.ov_work);
-+
- 	if (reset_type == ICE_RESET_PFR)
- 		return;
- 
+1. Before this series
 
--- 
-2.56.0.212.g129ede20d986
+  ptp4l only
+  Mean: 298.67 microseconds, stddev: 28.60
+
+  ptp4l + torture
+  Mean: 637.02 microseconds, stddev: 351.59
+
+2. After SRCU rework
+
+  ptp4l only
+  Mean: 314.10 microseconds, stddev: 32.99
+
+  ptp4l + torture
+  Mean: 622.68 microseconds, stddev: 343.57
+
+3. Everything up to keeping Tx timestamps tracked until completion
+
+  ptp4l only
+  Mean: 317.43 microseconds, stddev: 34.51
+
+  ptp4l + torture
+  Mean: 622.31 microseconds, stddev: 339.26
+
+5. After the full series (including rechecking the ready bitmap)
+
+  ptp4l only
+  Mean: 195.92 microseconds, stddev: 25.28
+
+  ptp4l + torture
+  Mean: 717.77 microseconds, stddev: 321.58
+
+The run-to-run variance here is somewhat high, but its clear that
+timestamping across multiple ports under heavy load has a significant
+latency cost. This is to be expected due to the nature of serializing the
+timestamps to a single IRQ. In the usual cases with a lower timestamp load
+and especially if ports do not have active timestamp requests, the series
+has a decent reduction in timestamp latency. The use of Sleepable RCU does
+seem to have a minor latency cost but it is overshadowed by the improvement
+to elide checking when there are no requests in software.
+---
+Changes since v4:
+- Resend with the appropriate subject
+Changes since v3:
+- Add <linux/srcu.h> to ice_adapter.h
+- Squash the READ_ONCE/WRITE_ONCE and init re-ordering from later patches
+  into the first patch about PHY restart serialization.
+- Call ice_ptp_cfg_tx_interrupt() before setting the state to
+  ICE_PTP_READY.
+- Update the link state in ice_update_pf_netdev_link by setting
+  get_link_info to true, ensuring that we have up-to-date link settings.
+- Remove a stale comment about the ordering of ice_ptp_rebuild().
+- Always call ice_ptp_link_change instead of only when the link state
+  doesn't match the cached value. Instead, check the ptp_port->link_up
+  field, to ensure that PTP is properly restored to the expected state.
+  This should hopefully finally remove the last few races that Sashiko has
+  pointed out...
+- Always call ice_ptp_port_phy_restart for E825 instead of only on link up.
+  This will stop the PHY (set tx.disabled to true and clear the Rx offset
+  ready flag). This matches the behavior of a restart triggered from
+  another flow besides link-up and better guarantees that we disable
+  timestamp requests immediately.
+- Rename tx.calibrating to tx.disabled and update comments for clarity.
+- Update the dev_err message on a failed port restart to clarify that
+  timestamping is not enabled. Hopefully this will be clear to the AI about
+  the intended meaning.
+- Update the ice_ptp_reset_ts_memory to more clearly indicate that it only
+  really does something on older E82X hardware. Update the kdoc comment and
+  switch statement.
+- Revert back to using ice_ptp_mark_tx_tracker_stale instead of trying to
+  flush the tracker. This better reflects the more widely tested code and
+  avoids many issues reported in v3. This does come with the potential to
+  leave indexes locked for 2 seconds while waiting for the timestamps to
+  complete, but this is a minor issue compared to the potential failures
+  reported by Sashiko. This is also what has been widely tested on several
+  systems at Intel and RedHat.
+- Drop the patch to wait for in-flight timestamps during tracker flush.
+  This was already relegated to only during remove, and after more comments
+  from Sashiko I do not think it will be helpful. It may have aided us in
+  debugging, but I think it really can't be correct. If it is required, we
+  can't really time out since that could leave a window where we end up
+  with a stale counter. But we already assume that might happen and soft
+  reset on re-init and after rebuild anyway. Since we're going to reset
+  there isn't much benefit to trying to wait.
+- Remove the timeout logic from ice_ptp_flush_tx_tracker since that was
+  only added because we called it from link change. This reverts back to
+  the v2 behavior.
+- Change the logic in ice_ptp_maybe_trigger_tx_interrupt to match the
+  original logic moved from the ice_ptp_tx_tstamps_pending() call. Now the
+  IRQ will still be retriggered in the event that there are software
+  timestamps but the ice_check_phy_tx_tstamp_ready() has a transient read
+  failure.
+Changes since v2:
+- Allocate kworker before inserting the PTP port into the adapter port
+  list.
+- Fix cleanup logic to avoid deleting the kworker until the port has been
+  removed from the port list.
+- Mark the pf->ptp.state as ICE_PTP_UNINIT in ice_remove() after performing
+  cleanup for the ICE_PTP_ERROR state.
+- Add the necessary smp_mb__after_atomic() memory barrier before calling
+  wake_up_var().
+- Re-write the description for the commit that removes
+  ice_ptp_link_change() from ice_up_complete() and ice_down() for clarity
+  and to focus on the main issues.
+- Move the seeding of PTP link status into ice_init_link prior to the
+  service task intialization.
+- Have ice_ptp_link_change update the link_up variable regardless of
+  whether the PTP state is ready, ensuring no edges are missed.
+- Set the PTP state to ICE_PTP_READY before performing the final port
+  restart, ensuring that we can't have the port set to down by
+  ice_ptp_init() and then have ice_ptp_link_change try to set the state to
+  up but skip the restart by seeing a stale PTP state value.
+- Cancel E822 offset verification for PF reset as well as CORE and GLOBAL
+  reset. Update the commit description to match.
+- Move the tx->init check in ice_ptp_mark_tx_trakcer_stale to an earlier
+  commit in the series.
+- Remove the erroneous "on link-up" text from a dev_err message.
+- Fix the commit message mentioning clearing the PHY_REG_TX_MEMORY_STATUS
+  to correctly reflect it is clearing the PHY_TSTAMP memory region not the
+  PHY_REG_TX_MEMORY_STATUS ready bitmap.
+- Update several kdoc comments to better reflect the newly updated code.
+- Call ice_ptp_flush_tx_tracker() instead of
+  ice_ptp_mark_tx_tracker_stale() when starting the E825 PHY. This
+  immediately drops the packets instead of blocking the index for 2
+  seconds, and is safe because the PHY will be soft reset as part of the
+  restart procedure.
+- Only wait for in-flight Tx timestamps before tearing down the tracker,
+  rather than for all invocations of ice_ptp_flush_tx_tracker(). The other
+  callers all reset the timestamp memory region and restart the PHY so E825
+  will soft reset anyways.
+- Immediately free the SKB when marking a timestamp as stale due to a stuck
+  ready bit. This avoids potentially keeping the associated socket alive
+  indefinitely. Theoretically we could do the same for
+  ice_ptp_mark_tx_tracker_stale() as well, but those flows don't lock an
+  index indefinitely and should always eventually time the index out after
+  2 seconds. Such a cleanup has been left as an exercise for the future.
+- Drop the E825 recalibration fix. Sashiko pointed out that the restart
+  interacts poorly with the HW semaphore and could result in commands
+  overwriting other actions. Additionally, this fix is incomplete as we
+  discovered some flaws with how the E825 device manages the PHY timer, and
+  a more complete fix is being developed separately.
+- Count timeouts from ice_ptp_flush_tx_tracker() in the case where a
+  timestamp is flushed while being >2 seconds old.
+- Fix the comment about smp_rmb() in ice_ptp_process_tx_tstamp() to better
+  reflect what it orders.
+Changes since v1:
+- Drop the timeout on waiting for kref drain. The synchronize_srcu() makes
+  it moot, and its only purpose is for a case that won't happen without
+  programming errors like a reference leak.
+- Check for errors on init_srcu_struct() when initializing.
+- Hold the ps_lock in ice_ptp_link_change() earlier, as it is safe to
+  acquire around the dplls.lock, which simplifies the reasoning for the
+  given patch as well as following patches in the series.
+- Re-order ice_ptp_init_port() in ice_ptp_init() to happen prior to
+  ice_ptp_setup_pf() so that the Tx timestamp tracker is already
+  initialized before the PTP port is inserted into the list. Ensure that we
+  also tear the tracker down only after the port has been removed from the
+  list.
+- Re-order the patch that adresses PTP link changes to be before E822
+  fixes, since AI pointed out that one of the issues was addressed by the
+  link change re-ordering.
+- Revert back to kthread_cancel_delayed_work_sync() instead of
+  kthread_flush_work() since the latter doesn't safely handle a delayed
+  work task.
+- Fix the ordering of the parameters in the warning in
+  ice_clear_ptp_tstamp_eth56g().
+- Add a note about the E810 hardware skipping the
+  ice_ptp_maybe_trigger_tx_interrupt(). The hardware doesn't have the same
+  ready bitmap issues as E822 and E825. There is a possible gap because
+  nothing will re-arm and sweep the tracker if all 64 slots are filled.
+  However, there is a pre-existing issue on E810 where triggering a new
+  timestamp interrupt could cause issues with outstanding low latency
+  requests. I can't fix that in this series, and plan to address it as a
+  followup.
+- Check tx->init in ice_ptp_mark_tx_tracker_stale.
+- Call ice_ptp_mark_tx_tracker_stale when stopping the PHY timer for E825,
+  preventing existing outstanding timestamps from being reported with a bad
+  offset.
+- Update the dev_err on failure in ice_ptp_port_phy_restart() to better
+  reflect the magnitude of the problem, and indicate a link toggle may help
+  recover.
+- Update some comments and kernel doc messages for clarity.
+- Skip maybe_trigger_tx_interrupt for the E810 low latency interrupt path
+  only, not for the older legacy paths.
+- Re-order patches so that the Tx tracker fix comes first before the PTP
+  port SRCU changes. This should avoid some spurious reports from Sashiko
+  about ordering guarantees which are fixed by that change.
+- Convert to sleepable RCU instead of the convoluted and likely broken
+  dropping of RCU readlock critical sections.
+- Update the messaging to be clear this does not solve the ctrl_pf access
+  issues.
+- Update the comments regarding the teardown and 15 second timeout to
+  better reflect the intention.
+- Drop the patch that reverted marking timestamps as stale during an
+  adjustment. It may be safe for some smaller atomic adjustments, however
+  possible issues were reported for larger adjustments by multiple models.
+  Since we do not have many reports of missing timestamps, just keep the
+  logic as-is.
+- Add a new patch to correct serialization of the PHY port restarts to
+  avoid a potential re-ordering of the link_up status causing the port to
+  be left in a disabled state if a race occurs near a link up transition.
+- Fix the PTP teardown during a failed reset to avoid leaking the Tx
+  timestamp tracker and other PTP state.
+- Add smp_rmb() to the lockless in_use reads in
+  ice_ptp_process_tx_tstamp() ensuring that weak ordered architectures do
+  not re-order the start time in the event of a race with a new timestamp
+  request.
+- Update the patch which drops the E825 clearing of PHY_REG_TX_OFFSET_READY
+  with a software gate of new timestamp requests via the tx.cablibrating
+  field, so that new requests will be rejected until the PHY has been
+  initialized.
+- Update the fixes tag for one of the E822 fixes to better reflect the
+  actual kernel that introduced the problem.
+- Update several commit messages and comments for clarity and accuracy as
+  suggested by Sashiko during review.
+- Since the E822 offset validation work already checks and reschedules when
+  the driver is resetting, replace the kthread_cancel_delayed_work_sync
+  with kthread_flush_work() to ensure that it sees an updated state. This
+  avoids some complex changes that would otherwise be required to be
+  certain that a reset with a concurrent link change wouldn't result in the
+  offset task being canceled indefinitely.
+- Use READ_ONCE/WRITE_ONCE when checking the link_up field of the PTP
+  state.
+- Treat failure to read a timestamp during the E825 sweep before a soft
+  reset as non-fatal with a warning. In practice, if a read is skipped we
+  still should not have a problem unless other code incorrectly reads the
+  index without checking the PHY ready bitmap first. To avoid log spam if
+  the device is truly inaccessible, the total read failure count is
+  summarized in one message per port.
+- Remove the unused soft_reset parameter from one of the E825 functions.
+- Fix the watchdog re-trigger of the timestamp interrupt to work for
+  devices which manage their own interrupt, instead of only on the clock
+  owner.
+- Fix the accounting for timed out timestamps in the unlikely case that a
+  timestamp will timeout but suddenly have its ready bitmap bit stuck high.
+  Now, the timeout counter is only incremented once the timestamp is
+  actually dropped.
+- Update commit message and comments to better reflect current
+  understanding of the PHY soft reset behavior including its (non)impact on
+  configuration registers.
+- Switched to read_poll_timeout for the tracker drain logic to get better
+  timing behavior.
+- Skip the tracker drain on E810 with a has_ready_bitmap flag check.
+
+v1: https://lore.kernel.org/netdev/20260911003430.3386340-1-anthony.l.nguyen@intel.com/
+v2: https://lore.kernel.org/netdev/20261008215614.1987250-1-anthony.l.nguyen@intel.com/
+v3: https://lore.kernel.org/netdev/20261015191102.1174111-1-anthony.l.nguyen@intel.com/
+v4: https://lore.kernel.org/netdev/20261020-jk-e825c-timestamp-processing-logic-fixes-srcu-v4-0-3e30fc9adc73@intel.com/
+
+Possible outstanding issues not addressed:
+- ctrl_pf serialization and access is not handled by this series. Another
+  developer has been investigating this and is still undergoing feedback.
+  Perhaps the solution could piggyback on the port reference count, but we
+  do not yet have a complete solution.
+- Recent reports of missing PTP semaphore locking on certain flows are
+  being investigated by another engineer and will be handled as a follow
+  up.
+- The low latency timestamp interface for E810 appears to possibly have
+  some gaps and potential to override an in-flight timestamp request. This
+  will be investigated as part of a separate follow-up series.
+
+AI reports that may still remain:
+- Sashiko pointed out some ideas about flushing the tracker when we restart
+  the PHY port for E825, which I have not opted to implement in this
+  series. It still needs investigation and I am currently thinking that it
+  is best if we always keep timestamp indexes locked by software until we
+  wait that 2 seconds. There are just so many ways this can race and go
+  wrong :\ Relatedly, Sashiko also pointed out some potential races with
+  flushing the trackers, which I will investigate but do not think should
+  hold this series up.
+- Sashiko pointed out that the behavior of restarting the PHY ports
+  post-reset may be somewhat problematic. This needs investigation and I do
+  not yet have a solution. In particular, we can't just let each port do
+  its own restart because we need to be sure that the clock owner has
+  finished setting the time, but we also cannot necessarily just let the
+  clock owner handle it either because the clock owner cannot reliably know
+  the link state of the other ports. This is being investigated as well,
+  but I would prefer to not hold this already large series up for this.
+- Sashiko has complained about potential for missing link event triggers
+  since we no longer call ice_ptp_link_change() at ice_up_complete(). This
+  seems to be a theoretical problem which I don't have a good solution for.
+  The attempts to fix this in previous versions has consistently still led
+  to complaints from Sashiko. We need to investigate what mechanism would
+  robustly ensure that any link transition or failure to program the PHY is
+  not missed and can be restored. However, I would prefer not to delay this
+  series while we try to figure that out.
+- Sashiko suggested clearing the PHY soft reset device state if the
+  function exits early. I opted not to change this flow as it was the
+  suggested flow from hardware engineers, and the chance of failure in this
+  flow is low and likely already implies a more catastrophic failure (i.e.
+  failure to access the sideband queue).
+- Some models love to point out places where we bail out on failure to
+  access the PHY and leave various flags or state in a disabled way, such
+  as not clearing the calibrating flag or leaving the PHY with its soft
+  reset bit set. I did not make an attempt to fix these. It is very
+  unexpected to be unable to access the PHY, and we're more or less
+  treating such failures as catastrophic.
+- Sashiko complains about possible ways that ice_ptp_process_tx_tstamps()
+  could fail and exit early that would cause problems, either keeping an
+  SKB held in memory and essentially leaked for longer than expected, or if
+  we fail to clear the in_use bits and could keep re-triggering the IRQ.
+  These are highly unexpected errors which are pre-existing issues that may
+  be tricky to address, and I haven't attempted to resolve them here.
+- The PTP clock is registered early when it should be registered near the
+  last step of PTP initialization. It is also removed late, leaving
+  potential windows for use-after-free. This should be fixed but I think it
+  is pre-existing and should not hold this series up.
+- E810 does not clear its cached timestamp array on flushing the tracker.
+  This was reported but I think it works better as a separate fix in a
+  follow-up series.
+- ice_ptp_link_change has serialization issues with ice_ptp_release(), but
+  these again appear to be pre-existing and should not block this series.
+- The ice_adapter is released early prior to the device
+  deinitiatialization. It really should be one of the last steps of the
+  driver, but again this looks to be a pre-existing issue that should be
+  resolved as a follow-up. I think all the reported potential
+  use-after-free pathways are handled in this version anyways.
+- certain transient error flows could cause settime64 to lock timestamps
+  indefinitely. I think this is a pre-existing issue and not necessarily
+  something we consider likely in practice. We also have some forthcoming
+  patches that may address this due to other related changes to settime and
+  adjtime for E825.
+
+---
+Arkadiusz Kubalewski (1):
+      ice: call PTP link change only from link events
+
+Jacob Keller (9):
+      ice: fix removal of PTP timestamp tracker during reset
+      ice: use reference counting and SRCU for PTP port access
+      ice: fix PHY port restart serialization
+      ice: set in_use only after preparing Tx timestamp index
+      ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+      ice: E825: clear PHY_TSTAMP memory prior to soft reset
+      ice: E825: perform a soft reset when starting the PHY timer
+      ice: skip reading Tx ready bitmap on ports with no timestamps
+      ice: don't clear in_use until HW clears ready bitmap
+
+Karol Kolacinski (2):
+      ice: E822: keep Tx timestamps disabled during offset calibration
+      ice: E822: cancel offset verification work during reset preparation
+
+Petr Oros (1):
+      ice: keep Tx timestamp slots tracked until completion or timeout
+
+ drivers/net/ethernet/intel/ice/ice_adapter.h |  21 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.h     |  21 +-
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h  |   2 +-
+ drivers/net/ethernet/intel/ice/ice_adapter.c |  20 +-
+ drivers/net/ethernet/intel/ice/ice_main.c    |  40 ++-
+ drivers/net/ethernet/intel/ice/ice_ptp.c     | 471 +++++++++++++++++----------
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c  | 151 +++++----
+ 7 files changed, 452 insertions(+), 274 deletions(-)
+---
+base-commit: abeacca61eea4f6803df4a595b656ea45c2d3249
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git main
+change-id: 20260917-jk-e825c-timestamp-processing-logic-fixes-srcu-fb0b50d33e10
+
+Best regards,
+--  
+Jacob Keller <jacob.e.keller@intel.com>
 
