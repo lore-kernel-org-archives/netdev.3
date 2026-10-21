@@ -1,108 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792572607;
-	b=1jo2NATzSPiitiRG7pv6aGFzHRvXAFtPMmFNpoLWPtAaGS6xIoMQRwlST1wzc2oqJp1d
-	 qq3RRqgyXk7R1lBAX5xBYz5upVdZooDGvLmgZUYRWaHEVilsCQgX4+QH6jAzKh7vmlZ/D
-	 ru8upidmDjWboFUrUuAICNEmppnS8n+llFTRJrkzJamdTIH+Eck3hF+b3gB3FHXk4qw2S
-	 TVhJJwLfIcuNzsp49a0+TSxAEQqZHASO9LVS27EhdsU/zw/BnN/S9qfoBg11ka1/h6rWN
-	 HY479Q+7E/KCoSvUoQwbWilVXxA6CU23iZqWGFrVAAfQCRRHEM+0c/jvtBYcUmO6xgA==
+	t=1792572940;
+	b=OXUELyYwhJSZ4N9TOUE/RtM4Qov/vCL61td+tqWp4fhJ+XBYgStae4OmvdywhnXm7YtH
+	 7+EbTd5wo+C2MR2PUg4mXt2qxvUhW1LZH8dbmM+8drpxA/1M3scKlyzTQwf36EBPdT1Py
+	 YVHjaDXgydy+rl4HfahyDI9eQHyhDvegx7E0yIN8+rzPuB03iElWDsSv230d5HmZJuycf
+	 pc1fk1ZrcSAnI6xBlSbGT9heULG7QHlx2ljaMsjSHpunjkwKpKOVTgtBwfP23L+LMXZSb
+	 8db23pqcnr+ABL3EQ8NytWR+6k3EIaWp5iShnPkcbmFgLXLL7Ph1QUxxjwZQcNnDr/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792572607;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792572940;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
-	b=XYxLg/N7v4fHYfeXvgiaKdwVjNEzBT51ZA/OfgIKabrdUtJN3qyaleZpyKwjSuReeQTn
-	 FjGtwfHHdaEbj1RuJvXV8GYheqMDy35Q+zwBlL/7Pz4vqnjyT336HSUP8p3pqdyQaOt3W
-	 FTCDwr7y/yyQp4RAMC0oyWZJssxOqVdjcJGFjvh6nEAFNM//haO+O1xtsmCbMDnY4cl7X
-	 GA2K92CLKzg0xNizxpSE1XjayPToXUuWxnaUG33wK9jpWFf3jltZGTZC8VfwUM5p/VdgW
-	 mReBDxXLJ80pha4zPh8ielkuzOfvYlVVRBVLHl52zYrn9dxAMEGrqF15ae0iziO8CBg==
+	bh=ZlzMMtlOMt0j7sxnZGkr7qkygcFA8MGAgcH9bAVX7Kk=;
+	b=Vi5/BeBjUgIEWK03rPhISaZ/3tTOMjsnkOwoZUJ4a1wV/1CIwC1LVlwiKoSoTcSLLJot
+	 g2wQM3s6etAbW1ugxjyVIzlK0ZmJOFpYZJZ1Zc7c/7JMGJoItCbopAvxClXzY7Wl7GEWl
+	 MT8NerttlsojYbtaoU+Abe6IUxUuutCcLzX8p0zxXFeNXrRcN1tC0S/Pih+s2v/E94yhw
+	 IGTm1tUl0OKTzTZu79/oA6iD5arfckZhd+3d3r6w8GLrrgJJ+2czK+BiV+MU5CvSXKnrx
+	 oPzvZLt7DKLluYuSVefrYbjPNIOy8LNGO8ZhYhAK/Vbwtq4CxrO26/7FXlQprdTo7Sw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJoraK3R;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZkrCa2SN;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Q63ZWMYw;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFD3606A320
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:50:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CFD3606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89200606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:55:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89200606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJoraK3R;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZkrCa2SN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792572605;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
-	b=WJoraK3RU08MAKjRf18x20IBDpQAB1LhvQRxOV+SGRm9FmRETy7tDnSWMn17ai1yJpLW+d
-	QJkcibKXD5NEwJIJXbLqKZCuI0UTNzgEu38l+Mtw43OheY1By60xg5P2zNBpr8sQ5nzLPP
-	jRvAe5+HYVLFZ2LFkY5tZ4qKRTHktpg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-183-0YyYRtUWMuuQz6yTau_ZkA-1; Wed, 21 Oct 2026 04:50:03 -0400
-X-MC-Unique: 0YyYRtUWMuuQz6yTau_ZkA-1
-X-Mimecast-MFC-AGG-ID: 0YyYRtUWMuuQz6yTau_ZkA_1792572603
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a1fa972b4fso2631095e9.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 01:50:03 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Q63ZWMYw
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ac7842c17dso305142a91.3
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 01:55:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792572602; x=1793177402; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
-        b=ZkrCa2SNkZnjpp29ifQyXZAuWi2ak14FACLmnRnjqhUMMlNmkf8V+eltF4T4HEDBlh
-         DOnrdJ9w2qa2h3213Qw5p8jViETw4bz3y1VrW+X4Dxgwev+QtKZxr6T1qamSmblia0QT
-         qVWg3G/J1X/EOCi2umsNc1iI6GaBxL+7qWB566mfoMqmrjg9VH6yh4GyjOQJPisJXtwh
-         dIRAlEiHnXFQnfsXRBwx+lxa9kQ/dAkIuKGLSQCwYmnozoHxNoziIF4LoNx8Rz91p/qi
-         OFqSXE30mE2qMO36IBtWsuWN07O7SkIW9lnh6ydHmzFON7+et0McF6JF06o9rX6i5Hu4
-         bP6w==
+        d=gmail.com; s=20251104; t=1792572939; x=1793177739; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZlzMMtlOMt0j7sxnZGkr7qkygcFA8MGAgcH9bAVX7Kk=;
+        b=Q63ZWMYwY2xiEcGgxNT+yzrIlSaw9gGr5WmMgDxgjgm7sxXVG3yzck52PqI5GprMdC
+         0YqC8fY/9VYDsWb6Mw+YnkSo0Q5zzMuwZTqwk99O1vHcqh4zIyKbb13+fHmmKwH2O1bT
+         TjC06GLD1Bf2MvZiPAj0Yb4RkP468nRt4HZtclmCnhYNMF/XcJXxaC/d3cGHUvx3U1Uf
+         phMYsUrcDAVSoLAs5Yp2Av74cYiwVpLJzASoz3MHKVTzRKP+5wqpnvI4sAPOGZRpzV/z
+         ZBdICmaDUU+/c0Wx8a+ojZ9sm+P+Z5cjrFzRe9YC726WzvQgEIgmpAPgKlO+mvbbj7Qt
+         2UjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792572602; x=1793177402;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1792572939; x=1793177739;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
-        b=dmoZMPZiuwMC7guVk6MPQNWERp2LcxFE96RfWHuES9M9KHkOtIUN/Vgv3Q5MyLlmOq
-         +co6CIivAkDc4fZg3WbwNL4LmTCS4Aq2S78gDnnp/a90GbtjHTXHNuZwgCvjirVXsNgV
-         U+vVAbXJZPwsl/Hq2lbJrflyz8qUMfrkz0xDwYrKmtd3ym3PS/b/4QVpmL7z+PSUD85b
-         rOa5+5mdk5E7PIIHMNMadDrgpickSEuZNFoKBIy5vJ0y0jCTJ8cid/srNLR2MuRAKXCP
-         RAMHRH+R7A78IYTsh8fBMu5XJB9rUYstlnV2yTTZLQ4aIso4jb+M80S5hOOh79Va1V6v
-         vEGg==
-X-Forwarded-Encrypted: i=1; AKwUvByg2q7vTgMHVHiDLwcyh2fH6CKMemaBMx4vPikVijZTXRfcPWDqLhGCrDNPTooSEpgLhvW2ULw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIfnnYLa2LmKSILChBcemeZXg1b+hpyy9lD8peDguSrI3Edjlst
-	CvA74gFJtpCWq3QFjvkrtbA3hCgX/bu1uqLEtF/pYn9q9OR345xoQXRbxYaNtxunXHFbh5dDqjw
-	X02Q272pMQv/n2/uRM085DhFxtF8ui3Xz5y+ZkPH97LLwPGjJ3QomjufBoA==
-X-Gm-Gg: AYBFou0eAPnzQTTsjj0cdm8WjGdtivcXMZjkJ2mOJTwmC2Xncfb6H0TA/tA7sVx5A53
-	eoM425rJ8+BQhLEzIMwejMSNF7pjwd/B7Fqecqui0vqJ8HcC/6LSE5QgOLKPhn2amgGbphT/Vyi
-	1vgz1T+q5sQ0/Yt5x2YUmtWnmgUw6i6myo5ZtKgVMmaLw3EGiRVAW/6+LR+hNEOgB84Ta3H6QUP
-	8qnXOKR1jWYOpEQH8EMc42ectTEoTr1gEgw2xCUTo6tH+ufNBJsG0GiYyqDY0K+0wvsMpm6maqf
-	cMUe8NWmfu+I2Gb/bcdQzX77rENN9slHnCwUEIEt+2FvC0Kq9PGxrpdUvy0YR1XLb29G6RU8E14
-	7owPSq2R6gnyYmPm3EqDC/K6AQqvSiwsL0BlbsEnk5BhjMvzsJvsGYJp3mSpghciK5PZqfv6jvg
-	==
-X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr26143975e9.12.1792572602637;
-        Wed, 21 Oct 2026 01:50:02 -0700 (PDT)
-X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr26143565e9.12.1792572602177;
-        Wed, 21 Oct 2026 01:50:02 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fc0ad18esm30903515e9.0.2026.10.21.01.50.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Oct 2026 01:50:01 -0700 (PDT)
-Message-ID: <d3a1b219-84da-4ed8-9d87-5619e74bd1f5@redhat.com>
-Date: Wed, 21 Oct 2026 10:49:59 +0200
+        bh=ZlzMMtlOMt0j7sxnZGkr7qkygcFA8MGAgcH9bAVX7Kk=;
+        b=Pjg4FQRQ78ccayqwDEyaIrHsnjgkaLUYpPB2LJ0swvLKz9vDYlKuWtIL3FxH03E7l7
+         OTX9Y7Vshr6btsHZT9hP2vPv83eELFSHdD7narhu4jWiixPuASX27d4QoVnPfCk18Prl
+         yRo7TE5Azo0p/1/2AP54dyL1l9Kg/YAOWJCDU/f1Lx81YAjPsVAIi36gCogKCvsTIbXv
+         H0VdYac2KYVx0S97ccuG1yULOk2J4jywipMEv2TFKHkByjCHG03r99pQUhGzvmbfoY5J
+         7eBbko8E/XlL4PFkzyhfClPgQs3HVPHPsQl2MrG58MiaIzyZukenGw58g0WuNgKQy0yW
+         i3Hw==
+X-Forwarded-Encrypted: i=1; AKwUvBzQHnuJ9EMDr4YetrEaDKfbZcol5CfR8lutVdtvcdl2nh4y7DSOb1kCmcfk4ilY5PbbZCR0LUI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKItefjL1uvo9Buo89Q4oKPlsxgaTLqhqoAHf7JNM2gczrxMIMw
+	hVKPwMKkM9uzeUdM/jhaSUVO5PIF5mHZQqBdkXLQVqx9x9R3gVT2MRNw
+X-Gm-Gg: AYBFou0mFH2xCqaWZjKKtQhQa+CSRbtwb2IchEOljO1dxTDSa0hh2M944E0GOkeXgYx
+	OUhG5KcEFnLItC0kUs7gds+oN4ZmOxnbW7KwoutdzGBFFKEYBu9WNeeDM3+b6bCRdNIpUtliyUI
+	dNQuyOHKeDrq7Y+WEYmkW7gU6TmMJZ8LAtJREKp4r+S52gol5n6s5VgPa0BcvjsueppiAYd5P0o
+	mEnhWgZqjyJ7WxwE3IDlgBHS56qgZ5s772XbpLbrMlDHGCLZDr//ZlIA4imIbzXdumeDZewB7IO
+	qGil9iVAyLsmY11QfvEBOrsYE+K3vNHrp/XQzubeHcoVBkF7aW9rJKTaxXViOHgTUM8pZ68o5Gl
+	2QsgLW0EtAFFPVADffBm/as0AJ8G27AU/cP63a0VFCdCJ+bpW3OHn8tG4cSQ0AthiFk89R0/CVG
+	7j5LiJQSvc021QhNZUAuPaQl/qRhOHxNlXnVxjMhosk3Ks4lPeUdotMm1eFvCEO+Y1qd7Jdtp6K
+	g4l6wKPn84PLplIyhx7bFh0ZtOCkjNO4Kv+2t6w8ethI0VEG6fB8no=
+X-Received: by 2002:a17:90b:2f8b:b0:3ad:6781:da66 with SMTP id 98e67ed59e1d1-3ad86c79915mr1116703a91.23.1792572938794;
+        Wed, 21 Oct 2026 01:55:38 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad85f56b03sm1398207a91.3.2026.10.21.01.55.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 01:55:38 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost-scsi: fix page reference leak in misaligned I/O fallback
+Date: Wed, 21 Oct 2026 16:54:58 +0800
+Message-Id: <20261021085458.196742-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,69 +100,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 3/6] net: add a generation counter for
- dev->mc changes
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: netdev-bot+sashiko@kernel.org, ajay.kathat@microchip.com,
- aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch,
- claudiu.beznea@tuxon.dev, davem@davemloft.net, dsahern@kernel.org,
- donald.hunter@gmail.com, edumazet@google.com, idosch@nvidia.com,
- jacob.e.keller@intel.com, kuba@kernel.org, johannes@sipsolutions.net,
- kees@kernel.org, kory.maincent@bootlin.com, kuniyu@google.com,
- nicolas.dichtel@6wind.com, nickgarlis@gmail.com, sd@queasysnail.net,
- shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com,
- vadim.fedorenko@linux.dev, willemb@google.com, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20261012011707.3378-4-sigefriedhyy@gmail.com>
- <179185709988.434549.15422498299449004512@kernel.org>
- <CA+7S2v+LHUWXQMD-cYPEzT5-f3Qhw_vz+LEssQH_A_oqDKtnnA@mail.gmail.com>
- <8dcd9564-e9a3-4b00-93b8-3cb023d68047@redhat.com>
- <CA+7S2v+rWYvz9xKPEeM6=3HPz3o7TbX2uRfRKk95f9Y60HnEiA@mail.gmail.com>
- <976d815d-a9ec-4fa0-9b16-8e55695706c2@redhat.com>
- <CA+7S2vLWvQd7GrnwB+B+DiqAgST8EjfWwBKzJXtjGRBPVgmOBg@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CA+7S2vLWvQd7GrnwB+B+DiqAgST8EjfWwBKzJXtjGRBPVgmOBg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/20/26 12:22, Yuyang Huang wrote:
->> To clarify: every I mentioned in my previous email was about possible
->> follow-ups - not to be included here.
-> 
-> Understood, I will send them as separate patches.
-> 
->> My understanding is that there is sort of a pending/implicit question
->> from Jakub on v9: why are you doing this? is does it solve some
->> specific scaling problem or is 'nl is nicer" thing?
-> 
-> I think the motivation question was on the v5 thread, and I replied
-> there as well.
+iov_iter_get_pages2() returns a byte count that excludes the offset
+into the first page, but also returns a reference to that page in
+pages[].
 
-FTR (and just in case it's not obvious enough :-P) the ML traffic is
-quite overwhelming. I unable to read some of the email/patches I
-don't end-up processing, and even when I actually processed the
-relevant email, I could end-up forgetting a specific contents of one
-given email, some 10-100K emails later...
+On the misaligned-I/O fallback,
+vhost_scsi_revert_map_iov_to_sgl() puts pages already added to the SG
+list.  The cleanup loop starts at pages[npages], but accounts for its
+first page as PAGE_SIZE bytes rather than PAGE_SIZE - offset.  If the
+remaining data starts at a non-zero offset, it can finish one page
+early and leave a page reference behind.
 
-TL;DR: please include the relevant information in later revisions, at
-least as a reference link.
+Use PAGE_SIZE - offset for the first remaining page and clear offset
+for later pages, as in the mapping loop.  Without this, each affected
+request leaks one page reference.
 
-> My original motivation is to simplify some userspace hardware offload
-> code I am working on, and to finish moving "ip maddr" to netlink.
-> 
-> RTM_GETMULTICAST already reports IPv4 and IPv6 group memberships with
-> IFA_MC_USERS. dev->mc is the only part of the multicast state still
-> available only from /proc/net/dev_mcast, so every consumer that needs
-> the full picture keeps two paths: netlink for L3 and procfs text
-> parsing for L2. The offload code above is one such consumer. iproute2
-> is another: "ip maddr show" already gets IPv4/IPv6 over netlink but
-> still parses procfs for its link-layer entries. The iproute2 change to
-> drop that is ready to follow this series.
+Fixes: bca939d5bcd0 ("vhost-scsi: Dynamically allocate scatterlists")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+Testing:
 
-I agree that the unified interface makes sense.
+- Four fileio vhost-scsi test instances repeatedly issued affected
+  writes using recycled backing pages.  After about 1.33 million
+  requests, MemAvailable fell from 5.3 GB to 13 MB and swap was nearly
+  exhausted.
 
-/P
+The affected fallback is reachable from guest-issued virtio-scsi I/O.
 
+ drivers/vhost/scsi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 4f8c0260bc9e..b7e41c0a91d4 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -883,11 +883,16 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg);
+ 
+ 	iov_iter_revert(iter, bytes);
++	/*
++	 * pages[npages] is the first page not added to the SG list.  The
++	 * remaining data starts at offset in that page.
++	 */
+ 	while (bytes) {
+-		n = min_t(unsigned int, PAGE_SIZE, bytes);
++		n = min_t(unsigned int, PAGE_SIZE - offset, bytes);
+ 
+ 		put_page(pages[npages++]);
+ 		bytes -= n;
++		offset = 0;
+ 	}
+ 
+ 	return -EINVAL;
+-- 
+2.47.0
