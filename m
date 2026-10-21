@@ -1,58 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792576050;
-	b=48L/l9XVFHual7yKdP+IRCT033jViF3FhgIdlDGJ/LhcSZxkNn5oq2zixaTNmMI+2XH6
-	 0KBOGJLXxZvEeEgs2NmWTMkNLsja9XIymCUvQDQuC5YnAW+1bBf7q/xanGrrKV/Y22COa
-	 kj9M9fJctbTjiimYoqSNcIWfXZB9GsUJ+SiJX/ZsLt1umjn4D3yzM3p6k7wWtiyyRal7I
-	 yQj1cyJYNPhSybMvnO6X1J5mcn/jOQae7a+TNJMkIZSO0LIXu1cTNSHCDtjNBAPcnbTqg
-	 r9pZuHeRuIkMji8lgvs13E+w0Skuk6yFg4FVt+LFVsrbOx/JX2633bBQ5LbWE3jXHkQ==
+	t=1792576045;
+	b=vU2R8e6SfnfnS6lTjzL5afHV9tggXOvFCLFGpWFAaQD9qgJYmAWa44kmpPglH4KlfeFQ
+	 ZyqxCRa5M/tcQtN9Jbe2aSHB7VajVmmMXlXnM3AIgPxeTmL7XE+hYCj+0WA0lG1VCaVdu
+	 /5LPzQfjpRG9EO4SSyyefsOh+HCUv5mZ8GnKWCqnoT0Tx8UKmD55FvSseMXlCz3Ypb1lZ
+	 HbveVq28ZfI4zcHFBun8Wg0yfNjbgiiq04UTw/y9Htt60hLPx77gp82wV4i0vO9S2kzVR
+	 rQ4PJwrECwz5t18nSzURbmauTLVmgM2Ysz5hQMoYbOkTnJVomWTeJTdn2k1piFbkMHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792576050;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=V2A2SjsEBDtbNNGNZqLRA6EbJCTC8KfylpwfOOFsjsE=;
-	b=ifMbkcRRBcSE7JsFKH38HLp4Nzy9LMRCy8zI+OX7J9gWZgeeilbIz/7yiJTSRAT9k1IH
-	 Gi2lWawyavzbO5wPRslobbIr8gKMkqSrkZ1CtZM9VxatKjjOkiPwKJw3p5/7ohgBPnlcD
-	 Ty/xjCD+RFDoASRLM2FaiTPR0FnE/Pz/vVEnoc1uABHIyfAk3GfYo4Tomicif7Ciq4cMh
-	 Un4lS2+Au6ifGBUqUdqArQMsw6gkBFNzKc3TZGaYC99FoHKuFEAUNbTDlKSOLt9cb76GS
-	 s2+/GciGRlSVSaNImMMP1f6k3ji5t99rvGk/FVlYWywYu5XU+vwnTlzg+ljO7ZP0srg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792576045;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=6jxbovViT1dwleMaJSyVR1xtPDE5gaIC6VKfIzW7oqs=;
+	b=osurjl69hAu9QsFJmALPrAVQ9JPTk2WA8SkpiAe8+w57sLf+g6T0L1C+X74jz8rf9OOr
+	 HUvtzqDEGR+SwGAg73KueJIFJ4IjDMlBOXPWsMlYko85M0TkDIBzyTQwrYSPjdSWzsT2T
+	 3cRRi/CWCNnbyo+bzrwjO/Zql/aM2fNMI9mpXYznSZjYveXFXBEjs+Xc5+NE/+5jDtiSi
+	 LLnjJCxtTmEuQZeyfnZRtiJIOZUNuX06tR9vmQDwSAQ0MdYvk6OD2RQO+e/iaKSkB8LnW
+	 LnKQaklCaWEIGjrTOOCOEmZa6krmaU7A+Gs9DGjqeVwiALvqKoG9nnbIPjUipz9uqOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=h0wodTqI;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lWgSk3P2;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D03606A31A;
-	Wed, 21 Oct 2026 09:47:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70D03606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D655606A319;
+	Wed, 21 Oct 2026 09:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=h0wodTqI
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C50261A12AD;
-	Wed, 21 Oct 2026 09:47:26 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 83748606E3;
-	Wed, 21 Oct 2026 09:47:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0A8BA10328934;
-	Wed, 21 Oct 2026 11:47:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792576044; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=V2A2SjsEBDtbNNGNZqLRA6EbJCTC8KfylpwfOOFsjsE=;
-	b=h0wodTqIz2tp/FsrB/CjwzC+YrOz6Q9mYoZWxDpBT30w5ZSLzjrwPHT9n7xKEpzbvEVufr
-	ku3pzPKiYlTVunEjYt/vG98kwkcrSvuqGt4nRpEpe7jpaIDHnfpWgn9LfEHAQ+Wtg12gCK
-	H9c7qhE9I8zhLPDd9PFCBmdh3CLj9e7T4wc7AEnfOVd3JkPHg4rJyhPjcIZnswGYNcN6sH
-	srZlkpH4ni4OQSOnZC4uJP387gDLEE2qvdWlW8Py+RV+/YOkS9R901IX/dxccUDvVv2R56
-	FH0P4vMgUPchXILxzDQ2LCs03Cb3UL1TLhEgDadUEufNtqw32vWQkhNuWifYUA==
-Message-ID: <65a821ad-e219-4f1e-b76d-6cc8502eb117@bootlin.com>
-Date: Wed, 21 Oct 2026 11:47:12 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lWgSk3P2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6497A1F000C9;
+	Wed, 21 Oct 2026 09:47:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792576044;
+	bh=6jxbovViT1dwleMaJSyVR1xtPDE5gaIC6VKfIzW7oqs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=lWgSk3P21BYenopQ2upzfYo3d/TE4oDtM4SR3JFBUhdZMD5viF2Re7D/QpEpSa/Zf
+	 7sP4LYeo+yENInG+nqx12ZhtdozTQ7uVR5+vPueCegxy/4dKbzGtBagLjmXU4m4ejw
+	 S6fbTZhBvonPWyvEU+c92IRdzvs/8V71KuIQH+fruYepE4uUuHiEvjXUgxbaLPzgoC
+	 RQJcYewDbmMS51g9DMnjQTHLr4pxQibEDPd298cncqLzxtyL/GoSNc9+xc1NfB6pBj
+	 YBtO3ds+fKMrJkfQMRLlUHYvmBrPqxjHp/fz+HeDYXMQL5IuYlHcuknSZSsopx2xSp
+	 US+0SlOFkY2mg==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Shuah
+ Khan <skhan@linuxfoundation.org>, Bobby Eshleman <bobbyeshleman@meta.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Breno Leitao <leitao@debian.org>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net] selftests: drv-net: devmem: Skip when hugetlbfs
+ isn't supported
+In-Reply-To: <20261021090852.996899-1-maxime.chevallier@bootlin.com>
+References: <20261021090852.996899-1-maxime.chevallier@bootlin.com>
+Date: Wed, 21 Oct 2026 11:47:21 +0200
+Message-ID: <87qzhj75cm.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,86 +64,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v19 06/10] net: phy: phy_port: Store information
- about a port's upstream
-To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org,
- edumazet@google.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, christophe.leroy@csgroup.eu,
- herve.codina@bootlin.com, f.fainelli@gmail.com, vladimir.oltean@nxp.com,
- kory.maincent@bootlin.com, kabel@kernel.org, o.rempel@pengutronix.de,
- nicveronese@gmail.com, horms@kernel.org, mwojtas@chromium.org,
- romain.gantois@bootlin.com, daniel@makrotopia.org,
- dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
- f@lex.la, chleroy@kernel.org
-References: <20261016133107.54054-7-maxime.chevallier@bootlin.com>
- <179241678791.3135.1638003219102257102@kernel.org>
- <130d9b15-238e-48c6-a293-f48e7d1ada06@redhat.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <130d9b15-238e-48c6-a293-f48e7d1ada06@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Paolo,
+Maxime Chevallier <maxime.chevallier@bootlin.com> writes:
 
-On 10/21/26 11:24, Paolo Abeni wrote:
-> On 10/19/26 15:33, netdev-bot+sashiko@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 2 potential
->> issue(s) to consider.
->>
->> Critical: 0 · High: 1 · Medium: 0 · Low: 1
->>
->> If you believe none of the issues are legitimate, please reply to each
->> issue of Medium severity or higher and explain why the AI is wrong.
->> If any of them are legitimate and you plan to respin, please let patchwork
->> know by including "pw-bot: cr" as a separate line at the end of your reply
->> (one such reply per series is enough).
->>
->> - [High] net: phy: UAF in upstream_port when connect_phy fails
-> 
-> I think this concern has not been reported nor answered in previous
-> revision?
+> The devmem selftest requires accessing /proc/sys/vm/nr_hugepages,
+> which is only available when hugetlbfs is supported. This isn't the
+> case on all CPU architectures, for example it isn't supported on ARM
+> 32-bits on cores that don't support LPAE.
+>
+> On these devices, the devmem kselftest doesn't skip gracefully, it hits
+> an exception while trying to open the nr_hugepages file :
+>
+>   # Exception|     _reserve_hugepages()
+>   # Exception|     ~~~~~~~~~~~~~~~~~~^^
+>   # Exception|   File "/usr/lib/kselftests/drivers/net/hw/devmem_lib.py",=
+ line 36, in _reserve_hugepages
+>   # Exception|     with open(NR_HUGEPAGES_FILE, 'r+', encoding=3D'utf-8')=
+ as f:
+>   # Exception|          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>   # Exception| FileNotFoundError: [Errno 2] No such file or directory: '/=
+proc/sys/vm/nr_hugepages'
+>
+> Let's check if the file exists before trying to open it, and return
+> immediately if we can't.
+>
+> The _reserve_hugepages() runs as part of the "require_devmem()", that
+> skips if devmem itself isn't supported. Before the blamed commit, this
+> check was done prior to accessing nr_hugepages, so the problem wasn't
+> showing.
+>
+> This has been found by trying to run the selftest on stmmac, on an
+> Altera CycloneV SoC (Cortex A9, doesn't support hugepages).
+>
+> Fixes: 8ac4255c1e0c ("selftests/net: devmem.py: add check_rx_large_niov")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  tools/testing/selftests/drivers/net/hw/devmem_lib.py | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/tools/testing/selftests/drivers/net/hw/devmem_lib.py b/tools=
+/testing/selftests/drivers/net/hw/devmem_lib.py
+> index 3554954a6691..24637fb180ca 100644
+> --- a/tools/testing/selftests/drivers/net/hw/devmem_lib.py
+> +++ b/tools/testing/selftests/drivers/net/hw/devmem_lib.py
+> @@ -33,6 +33,8 @@ def _restore_nr_hugepages(nr_hugepages):
+>=20=20
+>  def _reserve_hugepages(want=3D64):
+>      """Raise nr_hugepages to @want and arrange for it to be restored."""
+> +    if not os.path.exists(NR_HUGEPAGES_FILE):
+> +        return
 
-Well it's been reported as low on v17, but this issue isn't correct from
-what I see from the bot's analysis. The bus->phydev pointer is correctly
-cleared, and for the upstream_port part, it's also not correct. the case
-explained in the report can't happen :(
+Maybe raise a KsftSkipEx() would be more robust? No biggie...
 
-> Same for the ops-lock related in the next patch.
-
-So for the ops-lock, for now we simply don't use phy_port when using ops-lock,
-and there's a separate series that has been sent that addresses the ops-lock
-crash when phylink_create is called prior to the netdev ops being set :
-
-https://lore.kernel.org/r/20261008022656.3592191-1-mmyangfl@gmail.com
-
-> 
-> I understand that the high prio comment on patch 9 still relates to
-> PHY-in-SFP unbinding and should be addressed separately, am I correct?
-
-Yes indeed :)
-
-> 
-> The problem is that the net-next PR should be coming very soon and
-> the backlog is still very long, we need a fast clear-cut.
-
-Sorry I didn't aswer sashiko's feedback sooner, it's getting a bit
-overwhelming sifting through these, and when I tell sashiko that an
-issue isn't correct on vXX, it comes back with a similar comment on
-vXX+1, with a different severity :(
-
-I understand your point as a maintainer though, I'll make sure I reply
-faster :(
-
-I've done my best to test this series in and out on various HW, including
-the MAC -> PHY -> PHY setup that sashiko is concerned about, and I did
-not reproduce its reports.
-
-Maxime
-> 
-> /P
-
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
