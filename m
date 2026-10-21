@@ -1,72 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792547761;
-	b=uIFyOTjD7BNZLTrHEtG7KC1xePzKx7p4ow0hVMy96Ahi+h1GviFSB3wrBU7gF83znM69
-	 tf73w8UB+oP201bcT4t/S73ZBkrPBnwcHHooyX6gXzTt95/Npw+pEq5eHj5xBlsZvFUYp
-	 ygMP+tPnKqIxGjtulbZee45bY15uvOT+cHGy7OkuxwE5RXzaNjX5ASSeV4ameSRq9cwpw
-	 tFoEWarN5Vm43W6vit6yzg1xrP8Ln/PZ08Inr+cYsI05aiLbZvbmBotAiywTrowVs0Zw1
-	 N63SnDF/cf6nRt8PfYAZ69o9qbc4yLe783OdSKL5XyC49oiG/v7cyyCFchefWxyyLFg==
+	t=1792547762;
+	b=QpZ00JCgPD6whMVSmLBu7XRUsWrhKTfYzRjxQhcOqJ3cVP3/7rcKsVCEUmXy/i8e4KMZ
+	 nkMY/Hzhq/OhuNvftirg7Lhh8Chc1WkOCwCt+gBzXEUvzWApc7VSIr1rlNBbByQPGSULy
+	 dHJjxvacPDZ06FoWtXG8s3OOAzxi7kDVFSxEyXvkQyP6qOoUdY7cW8VkwJbbTkb4uauDN
+	 yAUPOXG6Xi3/cKruDCpBmvhEfbwDKP5qpugO/es1wpWyZg+/JO3j0Nn0KqhXLPEWLdnG8
+	 DIxOVEtaBzgoHKQ5S6hEs99IDVh2jhxZ/giBVf6F7xOo7lB6S9/HToxDwagv/RZQzSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792547761;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792547762;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=Y4b/p07AdLceqUapVIYWgI0P/ZEXX9X6CrBOWJ0OIWo=;
-	b=xUfgU8NCEpoo61CD318ud8JR6MwnKRsDrH1iQ2eELgjsTi+ukJFVB+/a+ui54FKqY47J
-	 Yyl5o5PGqxzVjqY9ORdVmCVaOX4KBN2JNOYECD3vOGDrdSTFXF666bhu5wtz6vYyFXTSi
-	 P8DLBFAhZjkALsu/Ao47Txmn+0+A1PB2WAeVObIidWP9qjPNjBs6290sEsn/qPvVtnbBn
-	 biR+jZwG/VKaBv7WxVzwUF/oD6WC+llu+QPbhJ/PgfmghWwA93hbFcl9zd4Gidr2IEkfa
-	 MhUvm5xBg8z7QIwK1t0ztlfWeipnOIbybpP0gQWkW2qoSs8D9Bb91tuULiCHv0lDpYQ==
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=4E5HtdtgSOGZPG7fuIdETv1wY4X2gigKvJzRjHwHsBg=;
+	b=JyDyi3DFXjzizjNwOKrX75zqPBMaQiFhRY1q3wuLRhuvKXNidUp5JkKOcj/pg8C8O3fC
+	 RriegdCHQDeJj3RNdJKm08hIAHpZAZIP4fBo4pDAE65kCcfBQvfVJWHZq8iOLtX7iSGp9
+	 heQGN3LpI3RB/UvN2NFXU9R+RMSy0cP47wUGPmz3rPAQRBm9Uxl6kJGiI7/qtpk4R1f0f
+	 1si+cDqT76vx3sc9WEPyXMMHvlFXDtDccze9xJlWm9mU78ZmmP5o+y/pn9tPoCrNrXG+z
+	 WoO93NWUT/NcfHgebLj7xkoU4ZHNvZZMckOCHNv382A3OmbPoFNcP8IsaHrXh8+9G4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bzzdT6r0;
-	arc=none smtp.remote-ip=74.125.82.72
-Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=JbkV1ko0;
+	arc=none smtp.remote-ip=74.125.82.200
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE189606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 01:56:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE189606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA406606A325
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 01:56:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA406606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bzzdT6r0
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-16bc6f3fdb1so239275c88.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 18:56:00 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=JbkV1ko0
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-35c5aef2a74so978240eec.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 18:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792547760; x=1793152560; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y4b/p07AdLceqUapVIYWgI0P/ZEXX9X6CrBOWJ0OIWo=;
-        b=bzzdT6r0nA0mv9yT8Nyb331vATzCkzysQ651946LfUk46Ue5s6ultyJ9Ns77Q9ZZZb
-         6Ckt/lsLdppiO55Fkk04q+LYNdn3zFKXiuYfjm7kLyIpDqkb45dEo6s4gKNcA434UoM1
-         et7RKrTsxSmfm7H3I9pXuLknMX0YtmvAkk9YqOuFh2JzgB6sKCgduTNRdyrj2EMdnl3s
-         rzgoGfPbCqRdha3SdGpkcvGArUsU5sADQuJsd4Gx1Dmcg+94ESbuT2p8K9q97MN6T+jC
-         xTLgCPUPhd0gRLqXOKdtKmACq7laNoMYhm10z0SLZm++vAhFqgBcBGLkJjW70y0JEJ9n
-         dzuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792547760; x=1793152560;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792547761; x=1793152561; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y4b/p07AdLceqUapVIYWgI0P/ZEXX9X6CrBOWJ0OIWo=;
-        b=gr5PenERsarNQw4YF7D4yA/Yp9cIotFhRcVmwur3E37CcF8ZtSugbwctAFxr3ADnDn
-         LZjltn0Wnq+fWH7hD9sQxx9MXMGFcNn95KBTDFUvcBxn6+mKLzMeVAF9DvMPyEPh9XbP
-         /v70sHJQEc3ZoevPot5jK3MiYAMCZxXBCjd2UGsX6aO3WuAGppibtTgKNdtl58JEW969
-         B6Spxe2Mv/ghUR/FSTcL3Fi0cDxxSOQU42HOjznI7pPoOrYmHOZNR6QedmCu4jGkk7Pa
-         rEN9gK0p7evmFzrvjXDs8KlOOttJqdufspuMOUHyTh9GhaK802xgOrVOC93TpfPUBbQX
-         3q0A==
-X-Gm-Message-State: AFq9FYJbu8m+m/5jrDt+GkhQ+oJYyx0M8CjJRA9LDEYOL48mwicsa7U6
-	HCzGZLvVtqIPfeDG29uhPTnPhLIXiOgHFN2+PAznHKyy4RdQUBXeKTASv0dbGSG4sWdqlLWMKlA
-	2wHWDAOdRK7XqR5aPoa+kjges7pwqCyp2+mn+v42jKhm9Ng2lwMWYRav5ZQD+XJJpufqHTq642N
-	1CLUgsoG2qOFEWAQ0PT7GlEY6atbbcnvx+YlA7hDIp0vD7UpjYXdPi/Y68MzYL1v8=
-X-Received: from dlai24.prod.google.com ([2002:a05:701b:2718:b0:17f:8a38:d873])
+        bh=4E5HtdtgSOGZPG7fuIdETv1wY4X2gigKvJzRjHwHsBg=;
+        b=JbkV1ko0FrcP258isdDlk2hoZlL387epD69fG7nbCsqP9LXBR2iG0w6M/03eWC+TEC
+         qIwQs1rAqBdvcHZrVfE6osvOoYyvPQ4Nb1MxdCe9OGV4nyeBPENJK04xN1vKjmD/Cj4H
+         mrOHrfUbfKFpAzwdnjvX2B83iaFjPR4QJhb3pREjHzfgxXC4Manf6eAQZeaEUa7dyYOu
+         PkuGOyEycj7YS0wPK7bYVqutJTQOqEcbS9z/8XXz8xt5Hf3UhviuL4q+154oz5u1hamg
+         2NHeDaSIGfePJHoHa+M0ANBefbG32pas1dSgFOM153bzoYvnsJXnj+OcfXjE1S27BhAw
+         csJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792547761; x=1793152561;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4E5HtdtgSOGZPG7fuIdETv1wY4X2gigKvJzRjHwHsBg=;
+        b=nKcY0zAl+lEbdndqRNnJG5YLZJ0cd0uJQgXJnMIZtVaeaY9r1gfw6M7A/FssRfTSRX
+         NdI36egsAuXhB+sCHspWnNPZaBAxq42Tsn0jKXarj0SO3v8OToletzSEHUlE0y+WF5yg
+         boZACVhf9k0x4JcECo+FraREcNuoLOjmuQxSW0LvpWe3cXSCYxgfH/g7Vdo+50YMBuSr
+         RkQcW9OxpDM6dBc4gGCePMTb75xPPlsGLUl25kz9ZObTRGY7cK5YUPa0FoCozndgjNQ9
+         4VPoR/pJVXvH6vZCxZ9oA0Si0cZ4B1MSjohyK8GG1i2zfNjIR4ehdeoLzIEdyJVGiZM6
+         piDw==
+X-Gm-Message-State: AFq9FYKAAGq48JJ0929kdgtWbHix69mtkugMejZ5TEpF3GG39RAZhRv9
+	MmlJrReiiSvfGHUGzttfGvj+r/ZaF1xaY7kiposZt0oTNW8mHUSqF4/VC6X0w+XAjWKwknQgUK2
+	MehSAwJks4s90j/TTsK/uiRJKyF7hl3gil/aesJRX44+sVVMHWg61jiezw5O4J3jYlNMtVRMcvl
+	hhbHt0nm3UR8LOQfxI0s0VmJd9jWt5djIgqje8auPyUvxUdr5mkWzJn4VzKYcWzLI=
+X-Received: from dlan21-n2.prod.google.com ([2002:a05:7022:eb55:20b0:189:49c0:62ba])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:4092:b0:18a:3911:ec1 with SMTP id a92af1059eb24-190a7ff8258mr658995c88.39.1792547759131;
- Tue, 20 Oct 2026 18:55:59 -0700 (PDT)
-Date: Wed, 21 Oct 2026 01:55:56 +0000
+ 2002:a05:701b:2309:b0:14d:baf5:c415 with SMTP id a92af1059eb24-190a465d2f5mr1170325c88.7.1792547760229;
+ Tue, 20 Oct 2026 18:56:00 -0700 (PDT)
+Date: Wed, 21 Oct 2026 01:55:57 +0000
+In-Reply-To: <20261021015558.4124825-1-almasrymina@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,9 +78,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261021015558.4124825-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261021015558.4124825-1-almasrymina@google.com>
-Subject: [PATCH net-next v1 0/2] netmem: rename non-pp ref helpers to *_inc/dec_ref()
+Message-ID: <20261021015558.4124825-2-almasrymina@google.com>
+Subject: [PATCH net-next v1 1/2] netmem: rename get/put_net_iov() to net_iov_inc/dec_ref()
 From: Mina Almasry <almasrymina@google.com>
 To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: Mina Almasry <almasrymina@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -90,32 +93,218 @@ Cc: Mina Almasry <almasrymina@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	Willem de Bruijn <willemb@google.com>, Daniel Borkmann <daniel@iogearbox.net>
 Content-Type: text/plain; charset="UTF-8"
 
-Rename the net_iov and netmem non-page_pool reference helpers from
-get/put_net_iov(), net_devmem_get/put_net_iov(), and get/put_netmem() to
-net_iov_inc/dec_ref(), net_devmem_net_iov_inc/dec_ref(), and
-netmem_inc/dec_ref() to follow the object_action() naming convention.
+Follow the object_action() naming convention for net_iov non-page_pool
+reference helpers by renaming get_net_iov() and put_net_iov() to
+net_iov_inc_ref() and net_iov_dec_ref(), and renaming
+net_devmem_get_net_iov() and net_devmem_put_net_iov() to
+net_devmem_net_iov_inc_ref() and net_devmem_net_iov_dec_ref().
 
-Use *_inc_ref() and *_dec_ref() rather than netmem_ref() because
-netmem_ref is already the typedef for the generic network memory handle.
+Use *_inc_ref() and *_dec_ref() rather than *_ref() and *_unref() to
+pair symmetrically with netmem_inc_ref() and netmem_dec_ref() (since
+netmem_ref is already the typedef for the generic network memory
+handle).
 
-Mina Almasry (2):
-  netmem: rename get/put_net_iov() to net_iov_inc/dec_ref()
-  netmem: rename get/put_netmem() to netmem_inc/dec_ref()
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ include/net/netmem.h | 12 ++++++------
+ net/core/devmem.c    |  4 ++--
+ net/core/devmem.h    | 10 +++++-----
+ net/core/net_test.c  | 12 ++++++------
+ net/core/skbuff.c    | 20 ++++++++++----------
+ 5 files changed, 29 insertions(+), 29 deletions(-)
 
- drivers/net/veth.c            |  2 +-
- include/linux/skbuff_ref.h    |  8 ++++----
- include/net/netmem.h          | 24 ++++++++++++------------
- net/core/datagram.c           |  2 +-
- net/core/devmem.c             |  4 ++--
- net/core/devmem.h             | 10 +++++-----
- net/core/net_test.c           | 24 ++++++++++++------------
- net/core/skbuff.c             | 20 ++++++++++----------
- net/tls/tls_device.c          |  2 +-
- net/tls/tls_device_fallback.c |  2 +-
- 10 files changed, 49 insertions(+), 49 deletions(-)
-
-
-base-commit: 3c9d71edf50ad153e892ef887e54496286774544
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 193de0d21490f..7f36c734edcd9 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -409,21 +409,21 @@ static inline bool net_is_devmem_iov(const struct net_iov *niov)
+ }
+ #endif
+ 
+-void get_net_iov(struct net_iov *niov);
+-void put_net_iov(struct net_iov *niov);
++void net_iov_inc_ref(struct net_iov *niov);
++void net_iov_dec_ref(struct net_iov *niov);
+ 
+ /**
+  * get_netmem - acquire a non-page_pool reference on a netmem
+  * @netmem: netmem to reference
+  *
+  * Acquires a non-pp backing reference (page._refcount via get_page() or
+- * binding->ref via get_net_iov()) regardless of page_pool membership.
++ * binding->ref via net_iov_inc_ref()) regardless of page_pool membership.
+  * Counterpart to put_netmem().
+  */
+ static __always_inline void get_netmem(netmem_ref netmem)
+ {
+ 	if (netmem_is_net_iov(netmem))
+-		get_net_iov(netmem_to_net_iov(netmem));
++		net_iov_inc_ref(netmem_to_net_iov(netmem));
+ 	else
+ 		get_page(netmem_to_page(netmem));
+ }
+@@ -433,13 +433,13 @@ static __always_inline void get_netmem(netmem_ref netmem)
+  * @netmem: netmem to unreference
+  *
+  * Drops a non-pp backing reference (page._refcount via put_page() or
+- * binding->ref via put_net_iov()) regardless of page_pool membership.
++ * binding->ref via net_iov_dec_ref()) regardless of page_pool membership.
+  * Counterpart to get_netmem().
+  */
+ static __always_inline void put_netmem(netmem_ref netmem)
+ {
+ 	if (netmem_is_net_iov(netmem))
+-		put_net_iov(netmem_to_net_iov(netmem));
++		net_iov_dec_ref(netmem_to_net_iov(netmem));
+ 	else
+ 		put_page(netmem_to_page(netmem));
+ }
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index fd1b727445644..32fafbfa1359e 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -387,12 +387,12 @@ struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id)
+ 	return binding;
+ }
+ 
+-void net_devmem_get_net_iov(struct net_iov *niov)
++void net_devmem_net_iov_inc_ref(struct net_iov *niov)
+ {
+ 	net_devmem_dmabuf_binding_get(net_devmem_iov_binding(niov));
+ }
+ 
+-void net_devmem_put_net_iov(struct net_iov *niov)
++void net_devmem_net_iov_dec_ref(struct net_iov *niov)
+ {
+ 	net_devmem_dmabuf_binding_put(net_devmem_iov_binding(niov));
+ }
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index ad24bca20618b..8fa089776610a 100644
+--- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -43,7 +43,7 @@ struct net_devmem_dmabuf_binding {
+ 	 * those refs are dropped and the binding is no longer desired or in
+ 	 * use.
+ 	 *
+-	 * net_devmem_get_net_iov() on dmabuf net_iovs will increment this
++	 * net_devmem_net_iov_inc_ref() on dmabuf net_iovs will increment this
+ 	 * reference, making sure that the binding remains alive until all the
+ 	 * net_iovs are no longer used. net_iovs allocated from this binding
+ 	 * that are stuck in the TX path for any reason (such as awaiting
+@@ -131,8 +131,8 @@ net_devmem_dmabuf_binding_put(struct net_devmem_dmabuf_binding *binding)
+ 	percpu_ref_put(&binding->ref);
+ }
+ 
+-void net_devmem_get_net_iov(struct net_iov *niov);
+-void net_devmem_put_net_iov(struct net_iov *niov);
++void net_devmem_net_iov_inc_ref(struct net_iov *niov);
++void net_devmem_net_iov_dec_ref(struct net_iov *niov);
+ 
+ void net_devmem_free_dmabuf(struct net_iov *ppiov);
+ 
+@@ -151,11 +151,11 @@ net_devmem_dmabuf_binding_put(struct net_devmem_dmabuf_binding *binding)
+ {
+ }
+ 
+-static inline void net_devmem_get_net_iov(struct net_iov *niov)
++static inline void net_devmem_net_iov_inc_ref(struct net_iov *niov)
+ {
+ }
+ 
+-static inline void net_devmem_put_net_iov(struct net_iov *niov)
++static inline void net_devmem_net_iov_dec_ref(struct net_iov *niov)
+ {
+ }
+ 
+diff --git a/net/core/net_test.c b/net/core/net_test.c
+index cebd83e596d07..6fdab6a55b4d5 100644
+--- a/net/core/net_test.c
++++ b/net/core/net_test.c
+@@ -861,11 +861,11 @@ static void netmem_ref_test_net_iov(struct kunit *test)
+ 	netmem = net_iov_to_netmem(&niov);
+ 	base_ref = atomic_long_read(&binding.ref.data->count);
+ 
+-	/* Non-PP net_iov: get/put_net_iov & get/put_netmem */
+-	get_net_iov(&niov);
++	/* Non-PP net_iov: net_iov_inc/dec_ref & get/put_netmem */
++	net_iov_inc_ref(&niov);
+ 	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
+ 			base_ref + 1);
+-	put_net_iov(&niov);
++	net_iov_dec_ref(&niov);
+ 	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
+ 			base_ref);
+ 
+@@ -886,12 +886,12 @@ static void netmem_ref_test_net_iov(struct kunit *test)
+ 	netmem_or_pp_magic(netmem, PP_SIGNATURE);
+ 	atomic_long_set(&niov.desc.pp_ref_count, 2);
+ 
+-	/* Layer 0 & 1: get_net_iov / get_netmem grab non-pp ref even on PP */
+-	get_net_iov(&niov);
++	/* Layer 0 & 1: net_iov_inc_ref / get_netmem grab non-pp ref on PP */
++	net_iov_inc_ref(&niov);
+ 	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
+ 			base_ref + 1);
+ 	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
+-	put_net_iov(&niov);
++	net_iov_dec_ref(&niov);
+ 	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
+ 			base_ref);
+ 
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index b79d8b702a0b1..a0f2d930ebf5f 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -7643,38 +7643,38 @@ bool csum_and_copy_from_iter_full(void *addr, size_t bytes,
+ EXPORT_SYMBOL(csum_and_copy_from_iter_full);
+ 
+ /**
+- * get_net_iov - acquire a non-page_pool reference on a net_iov
++ * net_iov_inc_ref - acquire a non-page_pool reference on a net_iov
+  * @niov: net_iov to reference
+  *
+  * Acquires a non-pp backing reference (binding->ref) on @niov regardless of
+  * page_pool membership, warning if @niov does not support non-pp references.
+- * Counterpart to put_net_iov().
++ * Counterpart to net_iov_dec_ref().
+  */
+-void get_net_iov(struct net_iov *niov)
++void net_iov_inc_ref(struct net_iov *niov)
+ {
+ 	if (net_is_devmem_iov(niov))
+-		net_devmem_get_net_iov(niov);
++		net_devmem_net_iov_inc_ref(niov);
+ 	else
+ 		DEBUG_NET_WARN_ON_ONCE(true);
+ }
+-EXPORT_SYMBOL(get_net_iov);
++EXPORT_SYMBOL(net_iov_inc_ref);
+ 
+ /**
+- * put_net_iov - release a non-page_pool reference on a net_iov
++ * net_iov_dec_ref - release a non-page_pool reference on a net_iov
+  * @niov: net_iov to unreference
+  *
+  * Drops a non-pp backing reference (binding->ref) on @niov regardless of
+  * page_pool membership, warning if @niov does not support non-pp references.
+- * Counterpart to get_net_iov().
++ * Counterpart to net_iov_inc_ref().
+  */
+-void put_net_iov(struct net_iov *niov)
++void net_iov_dec_ref(struct net_iov *niov)
+ {
+ 	if (net_is_devmem_iov(niov))
+-		net_devmem_put_net_iov(niov);
++		net_devmem_net_iov_dec_ref(niov);
+ 	else
+ 		DEBUG_NET_WARN_ON_ONCE(true);
+ }
+-EXPORT_SYMBOL(put_net_iov);
++EXPORT_SYMBOL(net_iov_dec_ref);
+ 
+ struct vlan_type_depth __vlan_get_protocol_offset(const struct sk_buff *skb,
+ 						  __be16 type,
 -- 
 2.56.0.212.g129ede20d9-goog
 
