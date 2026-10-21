@@ -1,85 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792551887;
-	b=PuCuFClNvmJVQkQa1sFNhPW8w68zMItf02g8ixIjDS2vJxTt2jGfCRMdTBcmVlmRh03J
-	 1e8Bp2OAYwuF6pnHQQsl6dBMxmtBnmLUrwFVT0FFJeXDAQk6Hdh+H8TMOFEFjWkZeL756
-	 dFKyfxgldY0iHjj2T0JBvwiG/2agomLqnUB3nwW3dyCa/PGBhmqPgnv2nyMQrKVuD5OIq
-	 uLzGLS6eVVNn655FtE4n/z2esTN9MIr4k6dhhyk8uNdHFiwnit88vhYv8Hk01Dd5123nA
-	 ulaZ8viU4xF1wAfuc2HenowyZGsWgIIQPfs5fV5b+r6OzR0+Gipv67+gkcGzdOgCLKQ==
+	t=1792551925;
+	b=DxOjA59/x4/IgFWMT9PVsdqRY5nl2MprQN4Llc7BNR+F7bk3BHIikBUwX1I8+ed2vXji
+	 eqTsdP2Qh8Z9K0Vx0qfHVTQqC1BWrxKQ1AjkgU4MJ+PrTdlgzln6rdUgmfWpfVx90m6qN
+	 ndeACt/EyqkHiWolBf4Gsb+AXZs2nmlu2Ikvylp5Ot3TSqkT/tVq5kq4SpesM2CZQKx+o
+	 JrwYWFl4CTxVWvbtvnBMuBbdscCHnnRnQUdiYMazsuC+ZwhwBPrndnnvgffUGqjlgaf7u
+	 Zfw7NW2o3ydRjaxYdj3bGe6bZVhhSlcCcstO7/R7hGLlG7rbNVvxYrlTICCuHAQj9VA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792551887;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792551925;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Subject:From:To:Cc:X-Mailer:References:In-Reply-To;
-	bh=rc5wrhUHr1AVoBfBDZ+r5qvZgVrRLeIPWk5f/ArMKLg=;
-	b=DEi3wz42jrs8wNmBdYTvNezcS5UcdM7XIoS+wbauyDK1lyEXMc/394pU3ZyNpGpaIljn
-	 EIs2iodbFflmG6moyHxVzrtJclVVsTlQT8AS35/EHkHqmfIq8nKP41wuWf9bK2q474Rfl
-	 DqOqhZHyIHipr7IsZ1YCz4lFR/jrwlXT2wmpsg0GwwnkHjWBXbOEwvM1fcq7/qg7gG4Hq
-	 9zT9+4RbWdg2ln0KeUVKVLy4SXZlb5dA3yLdlS5MFv2fSQt+F5uBFMgudy8UxLAehmtMB
-	 IpoIQa7ih2uGpin0qrlpJ/rTvTG31hsjvIt3m23whj4UjAof/SLEjIN97WkLUcWPFQg==
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:X-Mailer:Content-Transfer-Encoding:MIME-Version;
+	bh=aSbx+2JIYEzrqnyu5Jxh+14HH5G/iqzw/BzmiivGbiQ=;
+	b=GXcYTRSLzOOSuDUoT9StBWiqhabmTRJzm8ug227yZlIJDmThvvcO4mOzlNbqRo9Apm3i
+	 NN3q6xN9RXW/2UHrpXpiM9Slueje6UtEzRFupL6P+uRatc10TkUbkZgtLXxbcTyhrcrhq
+	 SQrF+WWZjE9jGPBw3ROwawpHdQ6Pgo7qNZXY4VcnsjYk3ipyCxXPl9kpv0oDsxr5BQjzn
+	 VP6ux3vErfnJluRSfLqKfk3wjL7j+GMwA4PLhAr2jXeZ3dqXiHDKakSd2TiBBz2dEe002
+	 roU9OUeEEFR0PhMln0Xmf3auiFfml3d4j1qVpMfudNXc8P4hu00z5kDlcWhphI5lALg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PuGDi+yC;
-	arc=none smtp.remote-ip=209.85.215.172
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jTUhIXqc;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507B1606A31B
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:04:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 507B1606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CD3606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:05:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98CD3606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PuGDi+yC
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cd5d2dafeccso67696a12.2
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:04:47 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jTUhIXqc
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ac677668a9so270241a91.2
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:05:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792551887; x=1793156687; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=rc5wrhUHr1AVoBfBDZ+r5qvZgVrRLeIPWk5f/ArMKLg=;
-        b=PuGDi+yC/qP1bGcg/TSJFrSAOJewAE8/w32VXn0pviJ9BU1AXHc+a3rPhPUuvSfVDm
-         JR7tpDlII85BMuy9n3vyR4guPVqaMo0FxWhPE9NcoUQbhXT+7mMAI4QRfLXUIcqo5/Xs
-         q6j4Gd+4w4vZcM5fGQi/8qw9VONKn+ZhsJ6qLm4IGL2EXDxGcJlYXGqZxwREBl5JaE7P
-         l6vYVejnVU+p2Lwy4bfhWLOkJSbW+EYU4kJGgtyAWl+a57JCZRRlZ6MXcsMGDQJtdKfX
-         UIsVQLX4CpWTz8Ys24LC4PJxBQF3aDGHBsiFJYu9VBoyLLX+g3l+ljvbGnceydfkRGMe
-         hbQg==
+        d=gmail.com; s=20251104; t=1792551919; x=1793156719; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aSbx+2JIYEzrqnyu5Jxh+14HH5G/iqzw/BzmiivGbiQ=;
+        b=jTUhIXqcHD5paioHMBgpX/nNDFeI6GefwrBU5JCZ9L6hQkgDCCR5V9qDyK90TWxB63
+         BUeHPqsNqUAWjxsKRzhiYWN4gg/2tWiSqAFA02QpOTMVZ8HDrd/73VlSzZ/z6Q6Zcjmb
+         y/SpBz7FnPTQZRm1MiEuoSZnfDeQH8kZYfIu4tSt+PzCSc9QM3JzSGKAPbcRqH35wiGt
+         iIVaNSX1r/6k7vkTPWGRrKb3k7KNyal3wwC2/NRW0KdNFdIthL0IVESKxGtAtYSu8Cn8
+         cBxQ9fMunJcJn3KmG5zDQHXwvhba1VSFsi76J/0MovajXPhER5CLkwBZRb//TPZDUhXi
+         dl9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792551887; x=1793156687;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1792551919; x=1793156719;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rc5wrhUHr1AVoBfBDZ+r5qvZgVrRLeIPWk5f/ArMKLg=;
-        b=WuWTo5hv74pE9p38bj035H+IsVwUPsU1QtXyYbBjhEU6SPXw6mLKmEAw9dBuq+LxQL
-         1JKvwpS3GFUYxcfuZDh0rcKh40dmhnOE5IO5d03IV9s3FIXpqFJkMF7hB3D7TY0FdKGE
-         CbBctjUL7LHy9iVLfGYAKCiEFSs2bGXbE4kfbOkfoGfCj1FQqEO7mRcpzIq/oCABvt2P
-         M/+KlJo7By5NmP2j8AQNjk78N/+OZmSG3PeuXXwg/zmJ4UH/FE3GoFIVa4Z9euekXfkZ
-         HkPeeymuQXRxK7uFBxhGau+aqg4FJKgOJhXicfEmNWs08evN9OVvYARsO5TtTsEFu7oT
-         yUPg==
-X-Forwarded-Encrypted: i=1; AKwUvBzNe0/Wabzm0LWvq6O9GDdNwm6d96cHG4JETQRpcOEY+uRWVrYcpVDGm+63pfTnGtBBrqnMxas=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLMBKU5Wx37uHs8XIYRbZgokGIhLX/fR0n7OxL9idtsiNktji75
-	nAROr3Z6ghM8pgBQl8abJimYZEUgTmMeSPijY+6iUE/Fy6CB28B8UpkI
-X-Gm-Gg: AYBFou0sQVUDoY94jdkLAwFmEbCLZKLkM8aVVZ4Fqs+Fv5Ck6wYtNT9EOBdSZEKD9ov
-	PUXmXvwS2fEIgV0QUB4b6CvVmGD0WK111XexosMAsu+UyfY6lqoMq2xmCOl5TfoXe/FuW7HPQ/E
-	i8op+0QZPr7wm+gEO0TGYCc+H7BHSlRiKA7RR9HYuj0Re5F1bUVLP8phDHTrnsLsynz4XCKLsxS
-	dg5gk9v1lDB5ZC2cw/OtjN2PEHzp9ITbm67f67GBvUawZc8+ngl6wzm5tKWn4BZdFsruNOUiXYn
-	WiwYaVzRXAyBHypwrCDR51k8sIXT+xalg662nN/egE/crsUzNcEFK5WraptBhuaYYX/oHcHjnoI
-	uFkCHa7AI1hwe0URkJKdlFisLM9ZySmwMo5cits6xVvFExhl/reTnez5L6oaj612Uq87ySl3geK
-	9B9qcyLjJi92GPF/+kICy4Uf2p/AkdVaFRgdOpIoXoVsbbgwNlTPJLZW4Cm1MU2xUOpEuR0PB54
-	i+DKypFHWaVabiRGlARn6R0yKi7lTIkgtByBAWFfWUZW+xEi38MGGdt/VycXJzG7+MJ+CbfzEQz
-	XkEJBWW0bdMOm9eeie+eJTyZFeREX+c162IX5eVJPrIZgCN5qblQfkJoACNb6jujC3T/r/gdn85
-	jCwAXBg==
-X-Received: by 2002:a17:90b:288e:b0:3ac:2788:cab1 with SMTP id 98e67ed59e1d1-3ad86ed22f9mr629222a91.30.1792551886548;
-        Tue, 20 Oct 2026 20:04:46 -0700 (PDT)
-Received: from localhost ([153.61.198.250])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad8035883bsm1999788a91.15.2026.10.20.20.04.44
+        bh=aSbx+2JIYEzrqnyu5Jxh+14HH5G/iqzw/BzmiivGbiQ=;
+        b=Dej2wbD6LQ36/Qc3jCPbRwehnCi1CWMph6QYSwrPo463uoYzTsQ5REhfBMSmSrTJ2G
+         cQgRiskOrOJe0jFhPBwgJLK86covrDkWyxBxftTYt3knxH5tUTzhox3J99Bwspru6/BG
+         kTJpLARJ/9URsiJvH/PIl9FZJFFLegUruB38v3lak54B/6sPfrO0GNxCIQwphPG5R1qr
+         sdJKzpAbdHBjqQxI3E2zvdjKzyNh94CNXG/fue3Kf/FHFmiCUyCZ7qwDd48AkV17eth/
+         UObHwdtRtWtfkx3jyrJ29iWBp+EWoYeRjIH/Ai1SawJPHf217fUCGPMZJrlhpGckXbnR
+         tRDA==
+X-Forwarded-Encrypted: i=1; AKwUvBwQiDxbE6lkQRY+Xdjz+G+SLL9i6xKwXh9u05iWARx8mp/p1wFvfKVIab17Uh/UtxIt0ubKvQE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKsd4+kWXPFFFi7JCr3TfHEl1v5+6Miw64R3T6O+s2YBeyOhSht
+	1urUGwed5JIpKKuCGUuAkvQUtm1ocy+msUWDJ2Veqpnjvzo14jRdPtas
+X-Gm-Gg: AYBFou1as2NGvBJymnJ5J1V0jho0RYLdUvyK5SaTepbytSy5ComNKzKIhHxzyF7/0Wm
+	iIDpyuv+7/EYJa5Icb/wcdV8rMTtk4nm4Sf45o6+nry6kbyXUcX2e0DM0R3QuqT2gGgAchtDxCa
+	XWmWdWhg9/8QUlY8WLVBiaNltxcCu2cLTheUn+WLlVwhacOpkouiGUbRSHHltiAIoTULmacUL4f
+	nw7it8nrfIZmubRBXFh30o3FZpZTcRZrSF0WlhJFaVNOglXKOOhlrbMamj+B1umZbLcz+6SDCje
+	WcqNUJka2lx4LqBwlfwDcYjWLKtvFav3RtNRMs9GTQfW9OJfxYnizfRvrYN4Nl98foZckxIlCTW
+	cpKBi3wZpZK0a2DN3a2sODx9LqvINX+VBJx4AWyr8pAvtiXRqyWoy7VPZQOZ77EURbTIXrwYA20
+	XhgGb01U+mmZmnor3+7n5RZLEmA3eYqnIDhxds5N3Z4wRbIq0tgOcbq7TaJF3RTj0U+UsTJAt3Y
+	3uuZBrX6wtm9n+YDrbI/68gqdUCr6CWLJnqg0WPLU0Nv5fYSyTqhh3kzbjJain5l3AOshLE+ZUq
+	sxtuq/91MmcY1jh41bVqOangj4pbbWMFD09M4v098Gb1HdEYKEpW8fnpxmFI
+X-Received: by 2002:a17:90b:2710:b0:3ac:7556:8ed9 with SMTP id 98e67ed59e1d1-3ad86c79924mr698658a91.10.1792551918978;
+        Tue, 20 Oct 2026 20:05:18 -0700 (PDT)
+Received: from localhost ([153.61.198.249])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad812c565esm1924550a91.10.2026.10.20.20.05.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Oct 2026 20:04:45 -0700 (PDT)
+        Tue, 20 Oct 2026 20:05:17 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Oct 2026 03:05:16 +0000
+Message-Id: <DMA6ME9P5EQG.3EI83DBIFMBDE@gmail.com>
+Cc: "Leon Hwang" <leon.hwang@linux.dev>, <bpf@vger.kernel.org>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@kernel.org>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <daniel@iogearbox.net>,
+ <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
+ <martin.lau@linux.dev>, <song@kernel.org>, <yonghong.song@linux.dev>,
+ <jolsa@kernel.org>, <emil@etsalapatis.com>, <ihor.solodrai@linux.dev>,
+ <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+ <rostedt@goodmis.org>, <mhiramat@kernel.org>,
+ <mathieu.desnoyers@efficios.com>, <shuah@kernel.org>, <kuniyu@google.com>,
+ <liuhangbin@gmail.com>, <mkarsten@uwaterloo.ca>, <masashi.honma@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-trace-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH bpf-next v3 0/6] bpf: Add syscall common attrs support
+ for xdp link_create
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jakub Kicinski" <kuba@kernel.org>
+In-Reply-To: <20261020182700.655edf14@kernel.org>
+References: <20261020152804.39863-1-leon.hwang@linux.dev> <179253001886.208021.6536312952037292688.git-patchwork-notify@kernel.org> <20261020182700.655edf14@kernel.org>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,90 +110,15 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Oct 2026 03:04:44 +0000
-Message-Id: <DMA6LZFMAQ3X.2YOXSMADL3LQ5@gmail.com>
-Subject: Re: [PATCH bpf-next v3 2/6] bpf: Add syscall common attrs support
- for xdp link_create
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jakub Kicinski" <kuba@kernel.org>, "Leon Hwang" <leon.hwang@linux.dev>
-Cc: <bpf@vger.kernel.org>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Alexei
- Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
- Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "Ihor Solodrai"
- <ihor.solodrai@linux.dev>, "Jesper Dangaard Brouer" <hawk@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>, "Stanislav Fomichev"
- <sdf@fomichev.me>, "Steven Rostedt" <rostedt@goodmis.org>, "Masami
- Hiramatsu" <mhiramat@kernel.org>, "Mathieu Desnoyers"
- <mathieu.desnoyers@efficios.com>, "Shuah Khan" <shuah@kernel.org>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, "Hangbin Liu"
- <liuhangbin@gmail.com>, "Martin Karsten" <mkarsten@uwaterloo.ca>, "Masashi
- Honma" <masashi.honma@gmail.com>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>
-X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
-References: <20261020152804.39863-1-leon.hwang@linux.dev>
- <20261020152804.39863-3-leon.hwang@linux.dev>
- <20261020182553.534c8d6e@kernel.org>
-In-Reply-To: <20261020182553.534c8d6e@kernel.org>
+MIME-Version: 1.0
 
-On Wed Oct 21, 2026 at 1:25 AM UTC, Jakub Kicinski wrote:
-> On Tue, 20 Oct 2026 23:28:00 +0800 Leon Hwang wrote:
->> --- a/net/core/dev.c
->> +++ b/net/core/dev.c
->> @@ -97,6 +97,7 @@
->>  #include <linux/kthread.h>
->>  #include <linux/bpf.h>
->>  #include <linux/bpf_trace.h>
->> +#include <linux/bpf_verifier.h>
->>  #include <net/net_namespace.h>
->>  #include <net/sock.h>
->>  #include <net/busy_poll.h>
->> @@ -10771,7 +10772,8 @@ static const struct bpf_link_ops bpf_xdp_link_lo=
-ps =3D {
->>  	.update_prog =3D bpf_xdp_link_update,
->>  };
->> =20
->> -int bpf_xdp_link_attach(const union bpf_attr *attr, struct bpf_prog *pr=
-og)
->> +int bpf_xdp_link_attach(const union bpf_attr *attr, struct bpf_prog *pr=
-og,
->> +			struct bpf_verifier_log *log)
->>  {
->>  	struct net *net =3D current->nsproxy->net_ns;
->>  	struct bpf_link_primer link_primer;
->> @@ -10784,6 +10786,7 @@ int bpf_xdp_link_attach(const union bpf_attr *at=
-tr, struct bpf_prog *prog)
->>  	dev =3D dev_get_by_index(net, attr->link_create.target_ifindex);
->>  	if (!dev) {
->>  		rtnl_unlock();
->> +		bpf_log(log, "Invalid target_ifindex.\n");
->>  		return -EINVAL;
->>  	}
->> =20
->> @@ -10812,6 +10815,8 @@ int bpf_xdp_link_attach(const union bpf_attr *at=
-tr, struct bpf_prog *prog)
->>  	if (err) {
->>  		link->dev =3D NULL;
->>  		bpf_link_cleanup(&link_primer);
->> +		if (extack._msg)
->> +			bpf_log(log, "%s\n", extack._msg);
->>  		trace_bpf_xdp_link_attach_failed(extack._msg);
->>  		goto out_put_dev;
->>  	}
->
-> No, this is silly. We shouldn't be spreading bpf_verifier.h includes
-> around, and making core networking code use bpf_log().
->
-> Add an extack to this API and for the extack -> bpf_log() conversion
-> in the caller or some "boundary crossing" helper.
+On Tue, Oct 20, 2026 at 06:27 PM Jakub Kicinski <kuba@kernel.org> wrote:
+> Please don't merge changes touching core networking without an ack from
+> networking maintainers. I haven't even finished mopping up all the ways
+> the XDP link bypasses normal XDP safety checks :/
 
-Tnis will be a trivial refactor in the follow up.
+Fair point. Will wait for an ack next time.
+
+Leon,
+pls send a follow up asap.
 
