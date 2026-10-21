@@ -1,97 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=74.125.224.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792615347;
-	b=N5FAdjT0iKtFSdH25UUTcxtQCEmfpMZvjGSNhOMKAbxi3Nr7lyONtbt22Y/M1IU/0AS+
-	 bKsummCVHERk6/3yoD9oUyXKBxklbBqatmhhOMluyqCEj9Nrg9BJbBKWB7hxLRX681Fz6
-	 wVZ6LSeWF9ySHXjlgLk4nBYbbdvEfXjt0o3aFAGazBq4vZlEreeYZVBw55cmMXZHbjPfc
-	 aqcHijk9KhNv7AKMyx3blyhhc7roj5qIZTWcPIh6MXmGqrLCV+HPNbJ0pFIaXpoyOEh7c
-	 0DNadbDygS/quzblELBnrvkbd+CXXiSNObW+QgEzYmQ6DMy3mRcKoh5LmShzdOJARRw==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792615477;
+	b=yTiV5XoKMIbW+E/uBwmhXM/z0CyFK/ov8pHeEGk7uJJ8ePYZZXvB8a2IxHhXE3EpglKQ
+	 3nlU11aY67Qc11gzaAEvy3mKEto/DdRYR6Z6Pp6oFa85mq8VYOU7nf+9KAHGhTE/oedDT
+	 W7IOYwWJ7791ZWnvFjWR3+r7zavRa8AkQDV+n8L83joxQQhzikdhDeE6c4fqCc3Dn9vw+
+	 IjSTBWtBlfuLTWeXWhSphpOMa24O/ISEdko5cs582P2VnQpeCnRLRYLIRIURJ/ODAp4LM
+	 O2NfrzRetwLPIFkNOKCQn9VzDOqax9+LT0uobGSEeT6AWMJrEcqJzn/6z+ptwsI+PSw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792615347;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792615477;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=8xOtYw2UQzjfVaNRpu7KDUVa/s7vr4AwHD7vVplnNCY=;
-	b=eFgWSICUHG18pqHGByhlZLBBK9u/h40eUcwVcGEmbPwHwGdIKXP7bmOQ/Mf9NTGReHbb
-	 VUz85/eK4T9w57ZbJxvxiqHTNalwQPahctNfyaPYS5F2BC1GCSk4KbFtkk2UWRNOgHfo9
-	 OK8OTTiz+/TkETYCVrULSm0tKMmeDy6yyD69rsnxyZt0czSsUleI1ymmbK7ew9HqXjqcf
-	 f8RwnN7K7+oivtX1dK6GrGt/yHIIQCD8pMGZEgpE3o7UH7jrk2SWGgcQohZnItxA+ifR1
-	 sQ2yCE8cODZi35cAgaSwYN8QIEu0ZAC0nkCuOqsTnlnDozLn7taWthglffVNq8m8rgw==
+	bh=ptFg/AwFxTH5f4L+o+63VUa962mRQD30O48qGbT4Brc=;
+	b=g3mA0yu1YLmgmvUZYwREA6mNlEGr2xSDONn35ajdE8l3v9Lk/eZGQWxBvvmz/hA+sXrO
+	 A2WOgUT6aXVkEmbTf5qJCPoDrTHun7PLmFoPHwIXplrJNTthVN5pzYr0PirwggHrwBdOv
+	 I5vyCtDETwZNNyZVQR5sQBnDAl+EJ5UjaFmybF5/byV+4yxCHBmTMgyOjtAkXESv30c5A
+	 J8KzoDErzPsFnJhqHEAH9otC8GdrP07WFwW5uk1UHpJV36bkTP6NSjDqAqRsCzidvol0Q
+	 1qJZ5iQSYde+lv16X3KYoxqrd5iO+dSd7B2lD7oz9UGPOU/J/jZJTcCkR2tnJflRRWQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=VO3YUyFd;
-	arc=fail smtp.remote-ip=74.125.224.53
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=jbLWr4TJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.44
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089C0606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:42:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 089C0606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF4E606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:44:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EF4E606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=VO3YUyFd
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-677dbe051d4so1001155d50.0
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:42:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792615346; cv=none;
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=jbLWr4TJ
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67921b515a7so1123960d50.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:44:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792615476; cv=none;
         d=google.com; s=arc-20260327;
-        b=eohk3dKqbmtTkBpphy09+lGs4vO4no1gq2Nxh8THUumy6nrpCmjarm0AxJ0sFIZQwQ
-         iOoDbu727jG2URgKq4nOhqWohWQua7PmYBrncC0yEFmlEsWAZYQ01SD0h/fyhpg744MX
-         WBn4Cu48NDT3IgL3oyZ2yeF4JDKBpI1tWd+NzTtJIUuIYlr9Oc1raNwEaFVhg0GuOz2G
-         Yzgv81PWKkUQTRF22drLbyozQwTQK7FkGF4G7yINoctt4FRvxDmAGgVQ+1xZlpBoKE71
-         bbE5OWtSBu6jCr7XjE/f+G5/b83zK6D2mDylxOJQn+W1AsfALPUulr2vjpdV/JGYGFxi
-         zDiQ==
+        b=mDWL0nZdkn4eItYVV2VU6spqZT5H8/hgJzV2OQJ8Zu28fQZQize37IY8ZHwyBwz8Vq
+         yXa+K/d4KGSqpNY9yHbxxdUrDGj5Wck2T7G3oY3genBRTpcA4+X5EOOn8yE91TQB/dLc
+         RbuxLtdzvXaaIHU3Yju08y5X25UgpHWykP0/UlRJoa0wwh5fx2LSrOc/TejiE+8xu28b
+         12r2W2U2IjNivUIlx4ZwRDxIpNUY5Hk2WFeZ3ZHuDDClilGgtRZNbPesm4mQKxvRYlG7
+         lx9jAoHe9NRl72DVqEupENC6STp2z47R6scb6rTxefoKR0Tig1vnylQN4xEfRafBGEFr
+         SWwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8xOtYw2UQzjfVaNRpu7KDUVa/s7vr4AwHD7vVplnNCY=;
-        fh=T+7+xqnufO9O5D660sQuoVntICEdrwW4osVq4aTunOM=;
-        b=LxGfELEiofXlXG2Ow8z/8P51+/vFnx7KEZaodZBPwNKgQkYCj8J9RdzQo0YieYYcAX
-         p++exfCG4T/ID9nNHBiCM2Vllp5G1dU9WPfZgINceTrha6I4Tt92no5D32fOzTn1DyEa
-         8U03svHkfwPzWz4BJQiZBPTxDshi3VSub8bcs8fHTVL71u6Lh7jQ7lms2INH/fMad1VO
-         y/bgwSSV1JIHxJPsBOFi70w3P88W1S3uB7USn4dBeiDuF8GjweTpJRoID8K3h5fLwxAi
-         6LxQtEg9yW8Lxtey+6iwUI2dOh/SXv83ZLt1xXavhhCOEzXssBHLMp/pfprPbEhQnct4
-         vc9w==;
+        bh=ptFg/AwFxTH5f4L+o+63VUa962mRQD30O48qGbT4Brc=;
+        fh=I94r6SN/+9n+53MDbG1a3oA09SuXdPBkVULaK1hSl/Y=;
+        b=AqrD9Hhhv0npBmddd3T6XETaPOBRuSy3eQRcewUno800Ss5Hum8yNUlMMmjrf/hWFG
+         Eg6kiZtM+rGSKy0no+PmAR7KBZhvn8Py9khXmix7KKp3LP0S7wGgChkwDgKuj8gGLVc1
+         Ekwu3wwuwc6xvi5kpjhQuFQ8LXdIxRy/5ST/Dh5NluLqF3PowJverIl8u/Ok1KmSntim
+         Lwq8CNJtQ73VXqiCZcd7uSGN/upAxHdpb+WxIjV+SY4mFg07fSiLoRRSUiWEK10NjytD
+         x1HFfMQI7Ll20hiYg28yYGZyO+u0pO4OBHz87pLfWqx7nWR8/yHyEGMRkoFw+OUgWVvR
+         IsXg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792615346; x=1793220146; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1792615476; x=1793220276; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8xOtYw2UQzjfVaNRpu7KDUVa/s7vr4AwHD7vVplnNCY=;
-        b=VO3YUyFd3pmmCIftZq+xF2ZkQZoIHU9JIzi2JIJ+1ESR/1LcjJdDVnlViAkkfXi36z
-         KI+f3J0R4BZKChF+LZNb+KRrbY81eb4kL8JRiYuIdZ6QbY4V6+IWGHtIHClBHazi44OL
-         XyRuKI9pxH4Pp/IuDAbTbYY1MLG2AjDZpVcpU=
+        bh=ptFg/AwFxTH5f4L+o+63VUa962mRQD30O48qGbT4Brc=;
+        b=jbLWr4TJVuNMXdyXLBgaZpbib4opRvjX3jKGFSgRfBk+Cu0YRHMfBxjM7c744i5S6Y
+         naQNBLFymsMWaY3SW1uVPLHm2/mPRdStegE9E2OwThyTE9LxQgoC4+duq9QBs0UFF2BW
+         CEn1rOznnxbqTHWUw/olW7UQCyf4crkM0d1lQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792615346; x=1793220146;
+        d=1e100.net; s=20260707; t=1792615476; x=1793220276;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8xOtYw2UQzjfVaNRpu7KDUVa/s7vr4AwHD7vVplnNCY=;
-        b=qFUD9qlQ/cJUn44JoVLziOUeJhQHr23ENuGyeWQOnsf6+v0bpID6ClwWYjPwa92Kfv
-         JKk9FoAgGH9b2atVLyhLWK0JmqvIuZDgR0K15oCcQTaxZUtAAA/HWZTfqceSCERpxQZt
-         vuorjKzAqZL1U/CE41K4s7kdJwwXqdT1LiGRjC4FjCa45nDyc71jesbKMUULn79dhsdH
-         qFNbNUyPI+jt+raxipYGRZky5ZEr3YR2oglkS9jKDzFKw6STnNr7qQhVdbx/lMUe8DmB
-         +/UiI5rpc+NPtDvEPq6hTFgu/rQ0EqKm5ySliWksEJGMnlsK1eGMRqmBNIe4UlbO6PCs
-         pR2w==
-X-Forwarded-Encrypted: i=1; AKwUvBy+RM1w1tkhVepeNCE3NmOV+cn/1up9rqh6RnJxuNd2FIi7RPl5XHKXOIqCthk8dd9XoLCeIrs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJeIkZk+c12smlePiAEfL1gT5okLsjYul2+h+E2CNTdAaqsooF/
-	TUiI2u5ARAzExTw0HbNEXo/XUT5iANBhoF164ojnZ1rcbKSWGPKNaPI+9TBRkmOtjLHFQSE371n
-	pA/MneZfmh1zYo2DXJJvQRlm75ZFtgA2ZMdIA7ek4
-X-Gm-Gg: AYBFou3VGOIZYSEQM9/Kw9waYdkYaeWjAFIeJbygG2gVwarKMR7LFke37gB+nKJRkc0
-	JANhJ6f1eig8ut4/xlaKR4DXnu7j6EkmgRpWX0HlVfRy4ArATrfX9OBjm+uxmq3zopLhB/0Rp+Q
-	hC4P+Z/wnWC0/lI1XJhpUNNjXYjn5SoJ+LPgijCSBDEeVQQYIySFl1hwNCSNbJpQSmjHFbJvVSm
-	taaJEYzmxE8DRA6hVu2cdv7PB3H3NDYTgphp4ArW46MQo/Bjj3UIAP4w5wVBs2mRgfEoh8uRKR9
-	KsV0jKce90YsDX4OMgdl/KEexNv3X7iFSo3VpASpj8nYlGKa2Ks/9+evckWkXLtUuMwCg3ukd53
-	9fMyYEofAhbjmdSjjlICiEgz46XmZHj7kdcA+aI0WhMwuczjC6WI=
-X-Received: by 2002:a05:690e:1512:b0:679:b810:6e02 with SMTP id
- 956f58d0204a3-67a0e45c3f7mr1012582d50.26.1792615345995; Wed, 21 Oct 2026
- 13:42:25 -0700 (PDT)
+        bh=ptFg/AwFxTH5f4L+o+63VUa962mRQD30O48qGbT4Brc=;
+        b=fPH15EviQpooPvw+5aHZr9Jrn7zmp1+8OvQmLaw8HeAo1ol/ipWxMuwWrAUhM6pBo/
+         e1MpBU+rP8gCFDExVHqtvW3n/lRs4rJ2nBKrMa+9pxN2G1v0VERs8LG96fLj/CNHhnjG
+         aw+jiiVUNcrGOT4nDrCznLysZrt79+H8zG8JumqLl+aSuBVSEVF/IKrmTV17pZX+Emxh
+         GMjk0Q/Od0lW8nbNpoOk+BZxmGS6qaAoGGfVIwjcRpBMShbhyQWTLMnf4BFWyjkJEhDc
+         DnDT5yrzwEf0GVJw0CblYA3V5naiPq7oQQyDzV8iHxj854+eL8uPbxUTWWmbrdK/gb3I
+         XjmA==
+X-Forwarded-Encrypted: i=1; AKwUvBzrkvoiVeTSgO+t/ct18ec6niJx/k37Mqi2Esz9w8CEG3yxEX8NJEGhZdAGavm6F9BqJk/Cpfo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLrCYLDyeRIoeQyEOXLNA3eZaIbgY7oy/9TnMUcPDPzbEOciw5i
+	j416CwSFRed8qUDTfmC3BJTt0SMDbT8oyTtTNagYGYZiA/U9zJP59knRuxDhB480mb8OnowC5o8
+	RN3njMNF64mwo+GrSnzU9CIkZ34Va6zJeEd+1MIBv
+X-Gm-Gg: AYBFou1ZLQCoO+S1zviypey/zyQxJUuAwhlbFxz4y8Wjq4FnvrCN0O0EVo07sQOY9hs
+	XWfAcNISi3dxy9cHvkIJFJAU5EzYk+fNfYUdOKwdQSiYiRd/8lkihS7AO+NrFSphDqzVjwR+689
+	ZIksEUKes0kRN6cjkquvHNkuB9EqXR+ddOHucmCyYQ+RvSKkdqgMJWN48kuDuUKhO4z0d49RPYZ
+	cijJi4j5vIro1Zh6bO3fhlmWAuX+THypo1QVB0J6P2RjwmcedfhPHHD5eRls6ZXFLhTiCrPkKeO
+	1faWO/G8NYd+e1J7JROLN2+LsXf81yZvTn3il4cYW32dF/SOpesfc9puYzM946ucuDFE7LbaIA1
+	SZkBnNWwer8hiDLfdM6WqdT3qMhbVjARbOv8yzovMFurmI0VCkbrNUXOXUzCZA9yuuNVz+e4Q
+X-Received: by 2002:a05:690e:458a:20b0:679:bb35:96ae with SMTP id
+ 956f58d0204a3-67a0e57febdmr1116875d50.74.1792615476200; Wed, 21 Oct 2026
+ 13:44:36 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,50 +101,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <QDISC-TIAE.v2.r0.20261015163454-1@mojatatu.com>
- <179244597608.3135.14866688728455017187@kernel.org> <3ab59725-e34c-4243-bc72-d93f837bcad1@redhat.com>
-In-Reply-To: <3ab59725-e34c-4243-bc72-d93f837bcad1@redhat.com>
+References: <QDISC-7SHE.v1.r0.20261016101330-1@mojatatu.com> <e0f4776a-0457-4069-9f79-3c97de2a54d0@redhat.com>
+In-Reply-To: <e0f4776a-0457-4069-9f79-3c97de2a54d0@redhat.com>
 From: Victor Nogueira <victor@mojatatu.com>
-Date: Wed, 21 Oct 2026 17:42:13 -0300
-X-Gm-Features: AclHuK8LdBftHZw4Zb8WFN_X048TWKstFrjtX5FLtVeFmM9dmX8keSM3eYtswtE
-Message-ID: <CA+NMeC_kwd5yihR3SSqb+Z8wX+NuobntbvpKtAyOwjZ1Xa4mVg@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/3] net/sched: drr, ets, sfq: skip empty
- rounds in the deficit-refill dequeue loop
+Date: Wed, 21 Oct 2026 17:44:24 -0300
+X-Gm-Features: AclHuK_iJwtn4T9BOcwwmqz_vgKPGYOJxCDP35uTHuQAq1jQv2i6iwQyVeKUy3c
+Message-ID: <CA+NMeC8wOuvc9RNCsro1vYqkEhJLKZhL6PW1jLBpPDqps-LC2Q@mail.gmail.com>
+Subject: Re: [PATCH net-next] net/sched: em_text: pad the text pattern in the
+ ematch dump
 To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev-bot+sashiko@kernel.org, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org, 
-	horms@kernel.org, sashiko-bot@kernel.org, shuah@kernel.org, 
-	linux-kselftest@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org, horms@kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 21, 2026 at 11:22=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wr=
+On Wed, Oct 21, 2026 at 10:42=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wr=
 ote:
 >
-> On 10/19/26 23:39, netdev-bot+sashiko@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 3 potential
-> > issue(s) to consider.
+> On 10/16/26 17:01, Victor Nogueira wrote:
+> > This is a follow-up to commit 9c572a83037a ("net/sched: fix potential
+> > stack infoleak in em_text_dump()"), which zero-initialised the dump-sid=
+e
+> > struct.  Sashiko separately pointed at the unaligned pattern tail on th=
+e
+> > same dump path.
 > >
-> > Critical: 0 =C2=B7 High: 0 (1) =C2=B7 Medium: 2 =C2=B7 Low: 1
+> > em_text_dump() appends the text pattern with nla_append(), which is a b=
+are
+> > skb_put_data() and does not pad the attribute to a 4-byte boundary.  Wh=
+en
+> > pattern_len is not a multiple of four the skb tail is left unaligned.
 > >
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> > know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> > (one such reply per series is enough).
+> > tcf_em_tree_dump() records the raw span as the ematch entry's nla_len a=
+nd
+> > then writes the next ematch's nlattr header at that unaligned tail.
+> > Userspace walks the list with RTA_NEXT()/NLA_NEXT(), which rounds each
+> > attribute length up to four bytes, so it looks for the next entry at an
+> > aligned offset the kernel did not write.  The ematch list is therefore
+> > misparsed as soon as a text ematch has a pattern length that is not a
+> > multiple of four.
 > >
-> > - [Medium] drr_dequeue() and ets_qdisc_dequeue() allow only one bulk
-> >    refill per dequeue: `scanned =3D true` is set at sch_drr.c:414 /=E2=
-=80=A6
+> > Append the pattern with nla_put_nohdr(), which reserves NLA_ALIGN(attrl=
+en)
+> > bytes and zero-fills the padding, so the following ematch stays aligned=
+.
+> > The emitted ematch entry then carries the padding in its nla_len, which=
+ is
+> > what NLA_NEXT() already assumes.  em_text_change() only checks that len
+> > covers the struct and the pattern, so a dump replayed as a request is s=
+till
+> > accepted.  This also removes the last variable-length nla_append() call=
+er
+> > (sch_gred's is a fixed-size, already aligned struct).
+> >
+> > Conditions to recreate the bug:
+> > - CAP_NET_ADMIN on the target netns (namespace-local via unshare -Urn i=
+s
+> >    enough)
+> > - add a basic filter with two text ematches whose pattern_len is not a
+> >    multiple of 4 (e.g. 1 and 2), then dump it with RTM_GETTFILTER
+> > - the first ematch entry comes back with an unaligned nla_len and the n=
+ext
+> >    entry's nlattr header is written at that raw offset, while RTA_NEXT(=
+)
+> >    reads an aligned offset three bytes later
+> >
+> > Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+> > Closes: https://sashiko.dev/#/patchset/20260918133953.12494-1-bernard.l=
+adenthin%40gmail.com
+> > Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> > ---
+> >   net/sched/em_text.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/net/sched/em_text.c b/net/sched/em_text.c
+> > index 4132f8c3c5fc..fbf78d61f109 100644
+> > --- a/net/sched/em_text.c
+> > +++ b/net/sched/em_text.c
+> > @@ -125,8 +125,8 @@ static int em_text_dump(struct sk_buff *skb, struct=
+ tcf_ematch *m)
+> >
+> >       if (nla_put_nohdr(skb, sizeof(conf), &conf) < 0)
+> >               goto nla_put_failure;
+> > -     if (nla_append(skb, conf.pattern_len,
+> > -                    textsearch_get_pattern(tm->config)) < 0)
+> > +     if (nla_put_nohdr(skb, conf.pattern_len,
+> > +                       textsearch_get_pattern(tm->config)) < 0)
+> >               goto nla_put_failure;
+> >       return 0;
+> Sashiko suspects this can introduce another issue:
 >
-> This looks legit.
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-7SHE.v1.r0.2026=
+1016101330-1@mojatatu.com
 >
-> Also is would be great if you could somehow deduplicate the code a bit,
-> (but I have no good idea on how to achieve that)
+> (the 2nd concern)
+>
+> I think it should be addressed in the same patch.
 
-Fair enough, I'll respin this set once net-next reopens.
+Ok, also think it merits a respin.
+Will do once net-next reopens.
 
 cheers,
 Victor
