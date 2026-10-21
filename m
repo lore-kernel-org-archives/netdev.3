@@ -1,55 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792588452;
-	b=wjW4LU+M8tZAFCQzEIPqdJU9tlDEt2xWFKdMc7eCrUaYHt4XXX7Yi+bmSJmbYy8yt+W/
-	 AGdP3o3Yl6QBj5v4UWdY+CpTVfVdNrF3iagO5G3EsL1lMCqnXvezyrDvr/BLi/5AS89rN
-	 /f5lQGfSuFZcnBC44rY8mRFBf7jqpIQIEXYUNjUob0ocSPnWMhT/l27kzUHBEYQ5W186h
-	 KsgeHY9nTwFV4V3Cyhc0jz0hRgF2jsCwaf1H+24TGqUqJgIq/CmFZdFlKZUnkvbnrQyE+
-	 +NLfhzJismeiRsR2U6RQrL1DaNzXMxO8VFPNv8RoNrzVUetDt349hI2b0tgzbm+Hcsg==
+	t=1792588652;
+	b=t1qTj+zXehZxW4+OWy69QFu9oMfZiR6ZSMXT6CLs5SVzngu3H6GeoMa2MKzIMzn6C/Sr
+	 1M9da8DlQxd9vMkxQDuL1NaXyOVLEscPKSCX5UWTWLdKF+qKek4YuzzPKyzruR/Fy7Z8l
+	 3P6dUM6wkh0F2xDadC4YV8kNIdGA7yW3xgo+ukfsXxLQPZij8f882v/b8vhwU6cR6h2He
+	 NoVzKgJ1JA74DVk+VxmiVqSX1vKohiZENHAWjs4AtLfFcJ5N+nxk1L1WDO7UUfhK1LYhb
+	 5sKhBdILbYwlSgeBPQ3Ug6uWYI5bwkxjQjTWdknAVAwmv2D+EYhKmqAnOw1nPB9VAww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792588452;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=KMUlS4kVV/hcwaTj9DNkFEqBacqnZ7xr4+Vq80uk9j8=;
-	b=w9g/cDgqJ+Tv0L8eK4PgMlqVkfhBz/ExQp4FEU/1Z28GGv1D8UHpOB/7kGfn+dL2vE/L
-	 ksZ0W4IxGttdT7tBHvkQGT5nzOlP/rwR2suzkA9JyroHoyKGowjzlGd/iBrHzlweP4+gK
-	 Q9Wb5DiTdqmoIeXAH4ci4zF8c9V0XvDd1Bio0rbLGFddlGD92X48M6ZJNIlhN7QxhxK7o
-	 bsAWm6xtJZPiYK5mBR2v+lp8qkrvQfo5mLzeCqUH4MTN1Ialt0c10F2liHXQpYwrkCohT
-	 WqS2v7tksEYpkes21VMmqd01Xs1IdpqXZElQspQlIldPBF49UcDnfe3S3nbT6imrYaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792588652;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=31RV4AzXCiOH03RZ476fgvMqieB8iJVjkSkupYACOAY=;
+	b=oPOtue5bHpnzcT1QiTpaOUSa2MYVA3gN2trMzigZEJmoqdU0R8FLgN1v7LE+JKQHGPyT
+	 xx6EIW6yaGXXSc/iyGMlNbAw4snfY3hgHtZobFQZifMZ1eVtDwvHZo7MNsUhioa3Dgn6r
+	 J2vji2YiiZph4zGxJQDjAeCxHyimGAjJpzSG/ILNK0YgQrfwx9uj175cW3xL26kmyqO0/
+	 2RQ6xDy6WoiBnmFKOOABnRiPqy07iDbx5Ny7WrBIf4oCHtg3YIGDV1ycw/KSuc53hoBaF
+	 eF1JzPeD72x4AZl6MWkW3dr6c9wbeuRYTYpsVEtC0yXKdjeczl3xTYAP6xX1zR4+wrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CZQGCFnH;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yz9Kp7Ap;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eg76vGkN;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A696E606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF5C606A31B
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:17:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBF5C606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CZQGCFnH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E991F000CC
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:14:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792588451;
-	bh=KMUlS4kVV/hcwaTj9DNkFEqBacqnZ7xr4+Vq80uk9j8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=CZQGCFnHTJb+DdW/zc33BOVgDn6skv2WxjULScgbIFEJgVp8eL4hprvTaB44QIoK8
-	 F5XzK4n4sG46WKUPp/ZKpmodefwDhjoKJxIoC/XgGO3Ggr2vi9LcuLCRnUAWp1MYaa
-	 Y0ER/Q4rmnobYM5KRcMq8QJ/xxAokpBzbXjR2pV8u84VydAOP9M6mFipZN35TieGrq
-	 lHdHkCaqoK1Uw3Njmoo5qJyjTYNaZlFZQpe01Pnt41MqixeXY7szyiQfSJ5xnAbiXD
-	 q+NiZEGijA27+3sxRpq0P0rInWZ7SvJmOneTp2BRLJ77Fkx4Pbb+2BfGHhTF5GhVqS
-	 VyXzlsiaGB7LA==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3ab3b29a298so6020881fa.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:14:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzQv/L/4NrPK0aJS2FV32jAgv9mE0ywomHRAuFT1p3GJMr8+Vy26wZLD9WGRnCj7dt7WfCeLuI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIf69QXqkfTfUDrVaPpN46tCN67LIVePMoDf7c6fN/+d50d35Gr
-	sLHGVdjGTvz2Keh3KD+ajXVcE61bbXLlYaNpRk9jchZLQ65TPkxCAKLJQolNZeVXbkdt6bXKnyv
-	R5yYMGh48X0rLpJKCY5rdPoPUGrfz6Es=
-X-Received: by 2002:a05:651c:a10f:20b0:3ab:3a7c:a4ca with SMTP id
- 38308e7fff4ca-3ac441b323fmr4436701fa.24.1792588450220; Wed, 21 Oct 2026
- 06:14:10 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yz9Kp7Ap;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eg76vGkN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792588650;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=31RV4AzXCiOH03RZ476fgvMqieB8iJVjkSkupYACOAY=;
+	b=Yz9Kp7ApJfYacNAjlwfAHBJWZbV//mi1e+pHSrR7Yn3oFgpPHTn29jcD6prwIqmhY121Wd
+	LZvrAtfJcdGIcPaNnxoJrzbBBW13Rg/cGmCERxdcPZXz0yK6vCnwWe7BpodGb94VEOWyv5
+	4yC8edN1wX2gue/xSdW9alzsn4+eMwc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-65-qyeb9ZwnOOOcI2dH82wYDQ-1; Wed, 21 Oct 2026 09:17:27 -0400
+X-MC-Unique: qyeb9ZwnOOOcI2dH82wYDQ-1
+X-Mimecast-MFC-AGG-ID: qyeb9ZwnOOOcI2dH82wYDQ_1792588646
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49953abe51fso5689025e9.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:17:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792588646; x=1793193446; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=31RV4AzXCiOH03RZ476fgvMqieB8iJVjkSkupYACOAY=;
+        b=eg76vGkNw4/4tmAUmpwQfKsWcJKDPn3FZ5VkoB7bkN8F9dBePT2+Tcug68IOmR8SLl
+         7IIrmOIoflIf/bqHlKxDsZ48pzDV8Oy/ugWsKsnV8wyn58tTbPbTbETArHghMnhKe6Tg
+         gXtF7i/vn3jrBdso38DiswmFc+zSoMODXm8BNT7eamcxwXg3CE7EYNXRj5kqC39iBlLS
+         UU90I4LuSPB9u2A7HiKOZaQcx7jWNJfYbnaDNHq3KtHV1A+BqKDMtsSDGq7AnOKCGVUO
+         Jl8eVK8TcJuWh8oZmVgaIMUg1M3UhWb9eosY6JNGr4vq0Ul4oZtFmclPqtKJXDDQK0Pg
+         0k8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792588646; x=1793193446;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=31RV4AzXCiOH03RZ476fgvMqieB8iJVjkSkupYACOAY=;
+        b=Ihv8C3uBCm88zuR1MNq5CDP1+e+zzPtHy30WVBl8/XAzxqnrSNdfeAYvJp2lQV2Snr
+         Bi8WI1juHpv1ePgfN3XXxLOYjwZH4et9MRKDQg81aECvDGabGDej+6/XJVxxDgIER88h
+         ZsEtoxz3HdDdS8C6R6wJ99E1ltqJVGa4XMOEeoGyvXzMsYjvTZRjC9JMcRRKy9VKf5ZS
+         m7zq9wTur0GKI/GyuRHyjtm5YVNfpqnC542GliOpvU1zgeOfBnpoPfwyslWZ5aeLQUAQ
+         MdXDlJMx/EnP2h50CFT6DG+ov8lunv3waUgc3sk/aY92c/47cntiTHqqeQRN/+lIySbU
+         TpWQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx97UrkrBhmkmiXkgZZUujBBWxa2CYkoIj08KZTxx+sM5l/T4KWfdXZ7x04tbo/VaoNLJj8EFQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJDCfBL7YRGzRo49dql7G7j4j9C/VgR/7IpGBsroGow9LdbfK5O
+	fyEo6jfoJNBSPhejCXS+x8K2DbTUFU3TQZG/qnIHc4H4xp616MBfk5xY0FLChaguJ6yOvT4BZ2B
+	yAPe3D3sGxg4XXKPclAl74ui7JUs3MoQqgTIv6kpOQA1iFHW3D3OflNcmvQ==
+X-Gm-Gg: AYBFou32BFBpAr46M7/k958XOoQZhmGkprsPe/tsd+9PM8+25brRhdtW9SE1PY73M3m
+	CX/20TacLRZ1D9QN7wjbEt/Rbvl9WqD+96wNwsazGIRp7ffFphOu7le3EE52qZLTvfEwviWEmCT
+	MNE+C5oucmCzw/Ajr57hBtVDWxzWjlBDUFsNrD1BmAit8sS1VPK2z7LoiDpViGuN4Ke+IxokrFq
+	iocEpIZempZVctCocEcuPigDFuNvCBpmRM7xBrGvnFwT3ptTSJDh70f3dGAp/cCGjuWXsoOaHq+
+	GszbQmMmSsIeaMzPTvnuUH3jWk9ExJwfn9sCRVz5KIZB3cMV/mhkDA7eWoFs6S+VIA3Jb99hs/1
+	PlEFpo54n/EtE6HTJncvu1uF2KRjceJW3diw5bPY1dA06R/AaWTRx9jHSBBNK09s84OPWyJ2mUA
+	==
+X-Received: by 2002:a05:600c:b86:b0:4a1:90d7:88a8 with SMTP id 5b1f17b1804b1-4a1fdd32c79mr43546755e9.25.1792588646313;
+        Wed, 21 Oct 2026 06:17:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:b86:b0:4a1:90d7:88a8 with SMTP id 5b1f17b1804b1-4a1fdd32c79mr43546185e9.25.1792588645813;
+        Wed, 21 Oct 2026 06:17:25 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fc10de99sm49144505e9.1.2026.10.21.06.17.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 06:17:24 -0700 (PDT)
+Message-ID: <c67725e6-ee8b-42b1-973e-534814712ea0@redhat.com>
+Date: Wed, 21 Oct 2026 15:17:23 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,95 +112,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021101839.3797779-1-fouriezhang@tencent.com>
-In-Reply-To: <20261021101839.3797779-1-fouriezhang@tencent.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 21 Oct 2026 15:13:56 +0200
-X-Gmail-Original-Message-ID: <CAL4WiirY7rHc8J52-Dg3Umb8CPf7Eiwew3wovecT2YaQA__N7w@mail.gmail.com>
-X-Gm-Features: AclHuK8jAF91MmHmH8wRpKg7z_X2t8VoBJFAOh8N_tZ0l011RSI6D4CzvAQSNpQ
-Message-ID: <CAL4WiirY7rHc8J52-Dg3Umb8CPf7Eiwew3wovecT2YaQA__N7w@mail.gmail.com>
-Subject: Re: [PATCH ipsec] xfrm4: use a full socket for local errors
-To: Fourie Zhang <littleddfu@gmail.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Zhiling Zou <zhilinz@nebusec.ai>, netdev@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 01/14] net: ethernet: cortina: Keep shared
+ free queue parent-owned
+To: netdev-bot+sashiko@kernel.org, linusw@kernel.org
+Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, mirq-linux@rere.qmqm.pl, mhun512@gmail.com,
+ edumazet@kernel.org, netdev@vger.kernel.org
+References: <20261015-gemini-ethernet-fixes-3-v5-1-b5c9e2f7b8a3@kernel.org>
+ <179243092325.3135.5534691456764566511@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <179243092325.3135.5534691456764566511@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Le mer. 21 oct. 2026 =C3=A0 12:18, Fourie Zhang <littleddfu@gmail.com> a =
-=C3=A9crit :
->
-> xfrm4_local_error() passes skb->sk to inet_sk() and ip_local_error()
-> without ensuring it points to a full socket. TCP SYN-ACK skbs can be owne=
-d
-> by TCP_NEW_SYN_RECV request sockets.
->
-> When IP-TFS rejects such an skb because it exceeds its payload MTU, the
-> local error path treats the request socket as a struct inet_sock. KASAN
-> reports a slab-out-of-bounds read in ip_local_error() beyond the
-> request_sock_TCP allocation.
->
-> Resolve the skb owner with skb_to_full_sk() before accessing inet_sock
-> state or reporting the error. This maps a request socket to its listener
-> and rejects sockets that cannot be used as full sockets, matching what
-> commit 6973a21ee73c ("ipv6: xfrm: use full sockets in local error paths")
-> did for xfrm6_local_error().
->
+On 10/19/26 19:28, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 (1) · High: 2 (1) · Medium: 0 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] At this commit, gemini_ethernet_remove() calls
+>    devm_of_platform_depopulate() (line 2689), which destroys the children…
+> - [High] net: cortina: MMIO access after pclk disable in remove
 
-Note that xfrm4_tunnel_check_size() already checks sk_fullsock() since
-commit 1620c88887b1 ("xfrm: Fix the usage of skb->sk"), so
-iptfs_is_too_big() is the only remaining IPv4 caller passing a request
-socket here: the sk it tests is the listener, while skb->sk is the
-request socket.
+This looks relevant and legit.
 
-> Fixes: b00897b881f7 ("xfrm4: Don't call icmp_send on local error")
+@Linus: please note that submitters are expected to address the AI comments
+on the ML.
 
-This does not look right. In 2013 SYNACK packets were attached to the
-listener. I would use instead:
+/P
 
-Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handlin=
-g")
-
-> Cc: stable@vger.kernel.org
-> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-> Link: https://lore.kernel.org/netdev/20260908224856.1591189-1-kuba@kernel=
-.org/
-> Assisted-by: tencentos-corvus-ai:hy4-preview
-> Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
-> ---
-> A KASAN reproducer for this issue is available if requested.
->
->  net/ipv4/xfrm4_output.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/net/ipv4/xfrm4_output.c b/net/ipv4/xfrm4_output.c
-> index 0ae67d537499..cf6be50485d1 100644
-> --- a/net/ipv4/xfrm4_output.c
-> +++ b/net/ipv4/xfrm4_output.c
-> @@ -39,8 +39,11 @@ int xfrm4_output(struct net *net, struct sock *sk, str=
-uct sk_buff *skb)
->  void xfrm4_local_error(struct sk_buff *skb, u32 mtu)
->  {
->         struct iphdr *hdr;
-> +       struct sock *sk =3D skb_to_full_sk(skb);
-
-Nit: reverse xmas tree order please.
-
-Otherwise the fix looks good to me, thanks.
-
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-
-> +
-> +       if (!sk)
-> +               return;
->
->         hdr =3D skb->encapsulation ? inner_ip_hdr(skb) : ip_hdr(skb);
-> -       ip_local_error(skb->sk, EMSGSIZE, hdr->daddr,
-> -                      inet_sk(skb->sk)->inet_dport, mtu);
-> +       ip_local_error(sk, EMSGSIZE, hdr->daddr, inet_sk(sk)->inet_dport,=
- mtu);
->  }
-> --
-> 2.43.7
->
