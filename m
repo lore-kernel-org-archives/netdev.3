@@ -1,79 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.41
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792624367;
-	b=E3zsTgqHier3W9jmfhmFd11uMIMOS93KrRUV18xeDaAxBzrBO72brWsKbJ9FqM6P+4q7
-	 5AALfqKw0RG/rXb6AMwS8EkX9cP3cY7YXvHh7ivPyYXTb0GO1FUdQWwwQg2HXSJR/8hDL
-	 QrIc6Lbw3y0eujTKxr4c7AWICftMS0vZoCMXFEHHJQjgLmtQmOqPmlw+LLeg9dyHs53bZ
-	 eH0EJaJtqVxiCzgeLYvRzamw9M4IL0ICAzVzihr0HyhsjkpLU6P+yee3vRmZWGVhM0b5d
-	 FWg6UZ3fh7gCPd67VkVlK6kOIy4acer0NnaS+90uuoKa7EUp0rXs5HXCpLD3FjoEDXA==
+	t=1792624435;
+	b=RURD1x/Z+OI77TpCf3XH28FiJYpXBdABP0bgyZUOMvzHubzCw2UcLMSVo3nhkhX2HUF6
+	 ulqsuv4S+GqJqO2r6gxW865A2GAiPfSCT0sYkP3YiHS3ILeNP+dQxMgyt6tE8D8B7m1gf
+	 1K+mihB/A0XXx4wO8LdmlzbJO1e43SSQvivjrEYHyFXfZzSlEm9zR3jaioG7hKFzzBBPf
+	 ybI6ah2PEgFgPFCAqQHw5XCr3gG8penViTlWVXGZ4mrGDvyV8SIdVJhIC+MnTxwCbgdrN
+	 GBROyhDzlzl6DkUJzIfPdA/43b33Y73QZZ5doAEap8aMzqgT4/mXx0BL8VCyqka9hJw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792624367;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ylXvEHomDk37upseZ/fh6pc49f7rFFf0fRiYXkMT4tk=;
-	b=rX1vWHNqTbdz9mxUcmhuydyz7UYis51Xc++IV+Vrm6oPR2WoV7XG4uq+TEpIsIm6AG+0
-	 j7Q6SeU/d4zB88HvDa/R6bI9cetTrnJwK1OicUXAPd5GfXxntmTpRfROrRej+uCZid2Tq
-	 m19jxL4HhHUF5kM4FuapmaPtMspVQMa5n7LKGwpb3r1sgTvv+KgmMvJqzxyEA5GgMwlFZ
-	 nm4OldfNcVqkZf7jm4Uk8jrlwZ64a/OJyak3Ksn0xCrXlvRxnVo3ayYurBBntg3t9UgEU
-	 Sd1HVzq7wls89DnzaD5UEQkVkkCH8uwcxTps7+d3VsW4J9WgdBUy/IwYzUUEfCBAG5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792624435;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=0bF8UDz4MemY9TmYMQbPDvcYna7bJ06acIjQGEONwiU=;
+	b=Yuo2lrE11TXctBjF2PQpmtArbDAma9qI8wi4zCjGfV6yb3fQVMdsy/tbdMn+1V/dqIBL
+	 F6TZyyk9VrC4yiFVTCZaPsJOM4dssHRO1VgywRgM7U7JGIEuXa2xJ5kQio3CQGBUiqFdd
+	 //sSQYKs5QxKLKWrcVKIqcEFu9gJ/wFK577WOP4Evp/T5ZJwJq3toByHcYjkfuIn7TBeV
+	 3H9sj3tmyrFA4q11lpoFuh67R4IqI9liJRXf5IlHzl7JV+GrWdZDBdSfNMukGYeSAj4Zw
+	 pO9WlaIuHgW2FsmQXiuyVdeB8odpLxIt2RWwmp29bryIksL++APbeO/9clmM13SLA5A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S4C6VYHe;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB15606A31A;
-	Wed, 21 Oct 2026 23:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S4C6VYHe
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792624367;
-	b=QhY3arrDGeHUKwENnnlx+zJMjpmt6Skag9j+H7fT+rWkuT8vbGmWhw3woq3WDKhVi3r4
-	 3QinLjXxx17JoPFRZ/qKj/dJN3HiDV6VNkFxbixhJxEYRmWqWWSkpIt9MXwFkeGfFrPhH
-	 Kc4PbbIXe9NNldlZoMON1CMPHIpaaV7YMSicl6umuO8LfM2DGxAMO++Z/ur/2Q6Jbx5pg
-	 FbOX+x3ScVOjiHsayqG8U/CI1mK42+6zOva5O+zwce8W5GnjLfEjpQOLVxWiyISxtF/Wm
-	 a15sX0GiFVob29jOKqE1JJkFYODCx35Citn4RVeTMfnSBavUBRH6I8SZf9OI9UgN2iA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792624367;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ylXvEHomDk37upseZ/fh6pc49f7rFFf0fRiYXkMT4tk=;
-	b=QaBYH5B5tOAlN8E+7+1SDMxEJdTfTQ6ggkXRtVf3Hf+nygRTMu1YWXo4g5F+DhRwk9+E
-	 JomlrqvzsG3yRD7qkhWM+lDje+yLDwOmsIH2xANsDeBgC8PpoNU2xkO0h8sVrZC/6emsr
-	 w1zyy6fAdQ+Ok+BcHCTJJkV8KTOQrokSOPQIStKHjp6io0/HcqCUHY7BSZ8EzOjtCKhpb
-	 15Do+XjjKuII9nikpUrErKKrIz5TlfLUzmLdWkHNbZxX7ZY3TuboFw1YvcJ6KkiBhjYlV
-	 2/7OwEfyu7edfuT4oYuvZXIg1fWSwNIQaeFvfeRHK27vGfY4RkuCFgjj9MDUJS6Qq/w==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=everpuredata.com;
+	spf=pass smtp.mailfrom=purestorage.com;
+	dkim=pass header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=QzwKB9Sq;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.41
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 876681F000C1;
-	Wed, 21 Oct 2026 23:12:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792624367;
-	bh=ylXvEHomDk37upseZ/fh6pc49f7rFFf0fRiYXkMT4tk=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=S4C6VYHecMm2xuYhXjUgU340yOUYntxc4Rezl1GDUdzdtc/NaByI4haANm9zmRSo8
-	 ETE+DXT5prjI7xitDoV+YwGQiDCAQTCDRBfPyEPNfnEm5ccwNq8Ct3DqaWcCA9f73C
-	 pW7XKwz09mwrhm9YtlUcbC3DBnjw+mL308/lNXRFzNMEyzozYp0+OouwQyrJd1rL3v
-	 rNPh/FvW+Jwmhxz+nlLsfmGuTEHHlxb+VkSSoU8ajANxDPBVyN4CN13exj39D18M2v
-	 dZii81E/KMSFf0ntoa8OxwIbyXMdelz7EpzOtTst2JolEoZ4KkrEdIuvw0swmxuSt5
-	 mPWMJAg58gjDQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id DA98E43450;
-	Wed, 21 Oct 2026 23:12:45 +0000 (UTC)
-From: Colton Pawielski via B4 Relay <devnull+colton.pawielski.gmail.com@kernel.org>
-Date: Wed, 21 Oct 2026 18:11:41 -0500
-Subject: [PATCH net] net: 8139cp: close race between NAPI completion and Rx
- unmask
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08653606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 23:13:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08653606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=QzwKB9Sq
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-9909e82513fso245155241.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 16:13:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792624433; cv=none;
+        d=google.com; s=arc-20260327;
+        b=m9vYyGmIJOrqSYcz2lamDfu0n9SPdidFrbdFlomJpDe2NJNNh8OEv9jNIqnA65Kl62
+         AdGXfKsWXiCaBoYka/ldHJJ6mPY73c/8BORlmF1Um+E6a9IriO37cKI9LuRqQZ21dB/F
+         wQOOHrDc7Irp9gMiqeWanCCO+cNHUNvR3DpcrEh8KvT6Qpw2LOkpZiA6mlgg0f90NK0R
+         JJEXN0mH6mVDzz3z6bq8jIjanmVDrcTIXHLEH/nBOxbhAgh3Fmnm8DdG8HKjyfY1Zq2V
+         6jM4V0YUYCqMIAFTwX/Lb+Id5AWfGHzfE47Ci898AZYc3y2/JAn602GREIZghjKT7Qzc
+         8ZIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0bF8UDz4MemY9TmYMQbPDvcYna7bJ06acIjQGEONwiU=;
+        fh=AZxPVmi79m0sUWMfIEeT9kkHDCLYYkdCHXU6/ksMyE8=;
+        b=HDEhN68OqH3zRd3qXonQsoklFEKXjjjTtfYlgpXmOFbf2d7V1znIq9WI0zCp6qCyf+
+         h2KIENv7fTwWBZSykjaVm/jGbIihufH55DZX3V7xqdZLCLPbhqPFPBu7leonjqf39mzT
+         yUeBxULAIcw2Qg8jhJ6cmwCbVdhZR9RprVkOphtAR6MO+dIH3101WK4ASdM0pGDxyMUO
+         UVTEkq3dcFASRV5K1bsDZe9uGstKqwAfd0Z1XggsWCci31rfqqfcHyr9q+DIIJaD6lVv
+         e3fqVs1OxnrlbP64rJGSCFWPQ7s2KefZ5nSa2hbTaeUUZWkZiE/RgyzH1LbITcFAwD59
+         T3+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=everpuredata.com; s=google; t=1792624433; x=1793229233; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0bF8UDz4MemY9TmYMQbPDvcYna7bJ06acIjQGEONwiU=;
+        b=QzwKB9SqCsdQOurfoRv9ko7cP688myfFiEKxH5ukDnHAPW2EXrFrb57QtkDsCNdfjA
+         RJ6T9wSpL+2BzmjDFqyp5keULnjRTh8+yaYDk2N+8xuWrA+DOgMSl5la8RzV2HO5ir2o
+         3cX5BSdM76+S8gZiZ5ssC2rk6HaTDOJCdVkMJ9vGdadaFM2sYTdXjdXQDYN5VOBcV/Ue
+         hR2SCxk8zYeOHl/iyLGfr++VpK5CXM+mxGtLZk+g4ePRwSYQmMm0RPTEGWHa5l8u7jeB
+         QBpoZHaQOPmY7KalSP96Nhm4ujw0+ICnFrnJ9ojCSrk1qXcweM77tjIz19UbzlRsBM7a
+         YAFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792624433; x=1793229233;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0bF8UDz4MemY9TmYMQbPDvcYna7bJ06acIjQGEONwiU=;
+        b=a65MP9JCZZejX2gs3+Dl7v0Z4wSlz0il1EBWvjS+K0/iuD+gHPT3RP0pM6KQiG/AVe
+         Z0c52VAIjcpZEJCtwe2+thr1toSYfFjpjXki1M/j0P8mJpWBcMB5JyLsNF47pDo/deiv
+         zUiV3AkfQVNhSTnMs0ILEbHFwvqJDRdNTXbPYc8AQGLMP29VM4m1CKIK0Lc4etCxoygl
+         j9Q06Y7cb++pb3WX+aec5PfdbM6g+ExfJSXNLEBBsWbJSFvnIuEXZleL5SD3ghzoiPwn
+         EQWKWODuyZ+APCCXSMsjdf7OaHT6/FMLsSG0kYcs6xwfKM+GUGDd0/FZyGeJsaVHVtNt
+         Qd4w==
+X-Gm-Message-State: AFq9FYK7ZzXetx+N+9sQEx09ZzgI8BtUKO71DfpkAKm3jHPhiyAd/4HQ
+	+b1cz3U+5STmTx1k98bJxnhaNVOmzj21iYEtYPNxZBFKftb205EYU0KFmchKkxMctMOwhfL5gYP
+	7/Ug1nbsyWIN8cfVuDbZ19HVPmdBfAMChTUKOuFzmPA==
+X-Gm-Gg: AYBFou1497fJJAIRAQmbEhHHpZYyzOwCULz1ln48pz+XDA/XZueVy92X0Xet24EeJTp
+	Lls+5khfC+Rt84aJBEf4XTkT/ejFdXx8/fYtaPTc+w1X3UYHg/LyxICFUqnxAqgx3zZppmrlPGl
+	N6Gu9XQ3SI5LiAeDe5BbLhFr0jcRkeDKdkWWTmwoxZ1zKfShvqL2STkZWmY+Ped+dG99O6xjqcp
+	CIO6fuLZ9pxGjGEyjYMyWKnLoh+EAWyMZT7htTWMbyX8a7kYGHVlL2YGVN8UJQsG+RZUjFiHoji
+	aQhccvTPgRfrE4/jGj26bgG+hdeQhQqy4X0mL1zFet0erPWYMOzys0vVY7OQJBqnfyLYrm+WrAf
+	W5E12baH+d1BcYlcDrJKJU0XwIVFVrxD2bveHCxpiPWJdzsrPNQgA7LQnmNKy+4+zNnCtY1rV9U
+	2DxRH+D5oazsiy9c2tnzH++7kZkgdZm4nGgtIyjenorCOVCXGvo9TgFlGIMQKfrzss2/5DFuEFL
+	A+u2Ng73VUlXOUipgbS65iN
+X-Received: by 2002:a05:6102:6898:b0:7b4:db17:bca4 with SMTP id
+ ada2fe7eead31-7cca976709fmr211015137.9.1792624432873; Wed, 21 Oct 2026
+ 16:13:52 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,94 +105,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261021-b4-8139cp-napi-v1-1-c9b683d9564b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQqDMBCE4VeRObtgNmKtryI9aFzb7SGGREtBf
- PdGe/wG5t+RJKokdMWOKB9NuvgMUxZwr8E/hXTKBlfcmIoNjTW1xt5dID8EpVYyZrZ8sw3yKUS
- Z9XsFe3hZ8fiPaRvf4tYzheP4Acf8Luh3AAAA
-X-Change-ID: 20261021-b4-8139cp-napi-8e139f232736
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Daniel Palmer <daniel@0x0f.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
- Colton Pawielski <colton.pawielski@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792624365; l=2614;
- i=colton.pawielski@gmail.com; s=20261021; h=from:subject:message-id;
- bh=xysNCUVTIwjH2gSf4rA52HhJwF/s+KbxeRxHiscJJ5M=;
- b=gwUh2h96+C0ZYB88boeAGPNY+yTTOLkpwJE1w8gE6k6U/SyfaMhc1Hr6DOGDUyPsb3zMuV5Tu
- 5p3PMWu5h6NBUZq0EYzn42RBit3vE8WuXqQMbyvYukNm1I6yZOBWcvV
-X-Developer-Key: i=colton.pawielski@gmail.com; a=ed25519;
- pk=QFoKkkRiV70QY509+evUr/DtmgPqjU3fLV0TaScMuE4=
-X-Endpoint-Received: by B4 Relay for colton.pawielski@gmail.com/20261021
- with auth_id=1266
-X-Original-From: Colton Pawielski <colton.pawielski@gmail.com>
-Reply-To: colton.pawielski@gmail.com
-Content-Transfer-Encoding: 7bit
+References: <20261015201135.2744031-1-rjethwani@purestorage.com>
+ <20261015201135.2744031-2-rjethwani@purestorage.com> <atc7FCQv84jn2CrZ@krikkit>
+In-Reply-To: <atc7FCQv84jn2CrZ@krikkit>
+From: Rishikesh Jethwani <rjethwani@everpuredata.com>
+Date: Wed, 21 Oct 2026 16:13:39 -0700
+X-Gm-Features: AclHuK-bL72iNSIPIkBcgorotxxU52K_whBw0PcWF-473H2-syNd7CbTsZCx3Vo
+Message-ID: <CAKaoeS31sODP9nGvTo4KwHGNF54fWLpJAETYdusqEiUJzibi4Q@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] tls: device: fix record start in the
+ tls_device_decrypted tracepoint
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Colton Pawielski <colton.pawielski@gmail.com>
+.
 
-cp_rx_poll() calls napi_complete_done() and only then takes cp->lock
-with interrupts disabled to unmask the Rx interrupts.  An interrupt
-that is not masked while polling (TxOK, TxErr, ...) can arrive in
-between.  cp_interrupt() then sees the Rx status bits, which are still
-set, finds NAPI no longer scheduled, masks Rx and schedules NAPI again.
-cp_rx_poll() then carries on and unmasks Rx anyway.
+On Tue, Oct 20, 2026 at 2:57=E2=80=AFAM Sabrina Dubroca <sd@queasysnail.net=
+> wrote:
+>
+> 2026-10-15, 14:11:34 -0600, Rishikesh Jethwani wrote:
+> > diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> > index f11d0528fc43..33e6dc3d4164 100644
+> > --- a/net/tls/tls_device.c
+> > +++ b/net/tls/tls_device.c
+> > @@ -835,6 +835,21 @@ void tls_device_rx_resync_new_rec(struct sock *sk,=
+ u32 rcd_len, u32 seq)
+> >       tls_device_resync_rx(tls_ctx, sk, seq, rcd_sn);
+> >  }
+> >
+> > +/* TCP sequence of the first byte of the record the strparser holds. I=
+n
+> > + * normal mode the record stays in the TCP receive queue until
+> > + * tls_strp_msg_consume(), so copied_seq still points at its start. Co=
+py
+> > + * mode saves the start before TCP reads advance copied_seq, possibly
+> > + * over a FIN that is not part of the record.
+> > + */
+> > +static u32 tls_device_rx_rec_start(struct sock *sk,
+> > +                                struct tls_sw_context_rx *sw_ctx)
+> > +{
+> > +     if (sw_ctx->strp.copy_mode)
+> > +             return sw_ctx->strp.copy_seq;
+> > +
+> > +     return tcp_sk(sk)->copied_seq;
+> > +}
+>
+> nit: tls_strp implementation details should stay in tls_strp.c.
+>
+> >  static void tls_device_core_ctrl_rx_resync(struct tls_context *tls_ctx=
+,
+> >                                          struct tls_offload_context_rx =
+*ctx,
+> >                                          struct sock *sk, struct sk_buf=
+f *skb)
+> > @@ -990,7 +1005,7 @@ int tls_device_decrypted(struct sock *sk, struct t=
+ls_context *tls_ctx)
+> >               is_encrypted =3D 0;
+> >       }
+> >
+> > -     trace_tls_device_decrypted(sk, tcp_sk(sk)->copied_seq - rxm->full=
+_len,
+> > +     trace_tls_device_decrypted(sk, tls_device_rx_rec_start(sk, sw_ctx=
+),
+> >                                  tls_ctx->rx.rec_seq, rxm->full_len,
+> >                                  is_encrypted, is_decrypted);
+> >
+> > diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+> > index 6cc222008d95..ad8b5150ac97 100644
+> > --- a/net/tls/tls_strp.c
+> > +++ b/net/tls/tls_strp.c
+> > @@ -132,6 +132,7 @@ int tls_strp_msg_cow(struct tls_sw_context_rx *ctx)
+> >       tls_strp_anchor_free(strp);
+> >       strp->anchor =3D skb;
+> >
+> > +     strp->copy_seq =3D tcp_sk(strp->sk)->copied_seq;
+> >       tcp_read_done(strp->sk, strp->stm.full_len);
+> >       strp->copy_mode =3D 1;
+> >
+> > @@ -418,6 +419,7 @@ static int tls_strp_read_copy(struct tls_strparser =
+*strp, bool qshort)
+> >
+> >       shinfo->frag_list =3D NULL;
+> >
+> > +     strp->copy_seq =3D tcp_sk(strp->sk)->copied_seq;
+>
+> Why not set strp->copy_seq every time we start processing a new
+> record? Then we don't have to worry about whether it's set, handle it
+> in multiple places, and we don't have different cases in _rec_start().
 
-From that point Rx interrupts are enabled while NAPI is scheduled:
-cp_interrupt() leaves the Rx bits for the poll routine, does not mask
-them because napi_schedule_prep() fails, and the level-triggered
-interrupt fires again as soon as it returns.  On an SH7751 LANDISK
-under combined Tx/Rx load this interrupt storm was captured with a RAM
-trace right before the board locked up hard.
+Agreed. I=E2=80=99ll move sequence tracking to the start of each record in
+tls_strp_read_sock()
+and rename copy_seq to seq. The device code will uses
+tls_strp_msg_seq(), a simple
+accessor alongside the other parser helpers in tls.h. This will remove
+the copy-mode-specific
+assignments and checks.
 
-Do the completion and the unmask under the lock, as 8139too does.
-
-Fixes: ab1e7e1d2666 ("8139cp: use napi_complete_done()")
-Signed-off-by: Colton Pawielski <colton.pawielski@gmail.com>
----
-An AI coding assistant (Claude Opus 5.5, in Claude Code) did most of the
-debugging: it instrumented the driver with a RAM-backed trace of register
-accesses and IRQ entry/exit that survives the power cycle, and decoded
-the trace after the hang.
-
-Tested on three I-O DATA LANDISK boards (SH7751R, RTL8139C+ rev 0x20).
-Without this patch, pulling 300 MB over ssh while reading the disk
-(concurrent IDE and network DMA) hard-hung the board in 7 of 8 runs.
-With it, that test passed 8/8, 3/3 and 3/3 on the three boards, and
-copying the full rootfs and multi-GB test files over ssh also completed
-without problems.
----
- drivers/net/ethernet/realtek/8139cp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/realtek/8139cp.c b/drivers/net/ethernet/realtek/8139cp.c
-index 9016527e229a..a9334d3a0f7d 100644
---- a/drivers/net/ethernet/realtek/8139cp.c
-+++ b/drivers/net/ethernet/realtek/8139cp.c
-@@ -554,11 +554,12 @@ static int cp_rx_poll(struct napi_struct *napi, int budget)
- 	/* if we did not reach work limit, then we're done with
- 	 * this round of polling
- 	 */
--	if (rx < budget && napi_complete_done(napi, rx)) {
-+	if (rx < budget) {
- 		unsigned long flags;
- 
- 		spin_lock_irqsave(&cp->lock, flags);
--		cpw16_f(IntrMask, cp_intr_mask);
-+		if (napi_complete_done(napi, rx))
-+			cpw16_f(IntrMask, cp_intr_mask);
- 		spin_unlock_irqrestore(&cp->lock, flags);
- 	}
- 
-
----
-base-commit: 0df412012a26389582b120844d098e1e961f10a6
-change-id: 20261021-b4-8139cp-napi-8e139f232736
-
-Best regards,
---  
-Colton Pawielski <colton.pawielski@gmail.com>
-
-
+> >       strp->copy_mode =3D 1;
+> >       strp->stm.offset =3D 0;
+> >
+> > --
+> > 2.50.1
+> >
+>
+> --
+> Sabrina
