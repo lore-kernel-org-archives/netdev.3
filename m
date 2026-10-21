@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792599164;
-	b=XGM2br7qjuCmIonRGKqiNLZPIhNIwDZDexuCpa6TnYof/7A/IpVuSFw+Hn76seNxcEsr
-	 y0zUKYcgYybJRNS8cB57uVkt6jCiEl7tQP9zjphpuCdf3siNwstbfBeTtsrFHFDirTd5I
-	 Hw5TozBWdh1aAE6U1owp23yGZNUw1fKGMJNjhbREfLPklgfgEuFe9q8AbUtbtbT2qoheu
-	 TtGT5c5JJ4+zhXJDt9Wx+HgHzRc88Gq3kdoD3Zzvzust5LRf+r1/bz1S4i94pAPp3vyL4
-	 tDTIqTc9fwHgziKGEPJhHwFFMaMDYb7tbP6J3oQSUuAFpWLEPmWAqBGrSblFWpQX0Iw==
+	t=1792599157;
+	b=XXFP8B6cTjcg0/C+vrlDHpSzvOLglIjLaHoCB14rDPQ1vSpijqyFSW6PYm5g/NxF8Le+
+	 siESTbHgl/WRgNtB+hx8P6WByEwEuhFNm654ASZKRxXyBr7VQ59qVMwsxx7n5yn21whqT
+	 cOTfAzyozbb5BwWkuT9TkJqP/92sifIV2GixcHrqh5fdASE2wKHqM7RrMKoy/K5Z4qRZ7
+	 f1Rcstv6CgGpkE7lf8BEoT7Kz6hhenoknSUKuGfQ95MtKeC793q3MZ1+9c/nv6ojEEUTJ
+	 6OZ/asyaSxrV3MX+qifWHR8/JWwRVkenAixymF5DTJoiGO1JNshu2dOfNfg6V0wc8jA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792599164;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792599157;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=vvkmrz90lF2pcovbtpnAs1y6acEdyFSaoxmdLGdJVnw=;
-	b=mkZ5CiySl08Dq/im1mgC+WCBMxkQBEzuX/GGL1KjA5z2LzizneMxde4bN0bU6ehK0pnK
-	 LrQf3OYbuQVXKaLGdUGQtjl3wo6WvaN861//RuJrNQ85Hs/Dh7LVL8tgbxg5Q/4lD0Yqb
-	 4iUy8NDCeiCe1BVi1R586pyRbtWGPigA3VGQ1vUsPYuWZyuYX0ANsvZtRYAYwvFa8OxAo
-	 Jh+wML9Bqi5uDxb3GDJhnRga/K74NvL3Em+1KZaqNU+e1TKsC/DmMwL7tTRCzJicp4+P7
-	 IS2oc9cWgukYBnYqEXKsJ/JhE57zgxooaOP83g3JHomIDdti0yI+pNp3++WYU2dF8gw==
+	bh=LOPkZEV6Cm2zaHtJqPrEJTh7x8w9jJnwNm2gyHPm88Q=;
+	b=hibf6KV6ClBgS6l3SWmAOpKGCf34yo04loz49tIr33qo/DhvyrPKppyluVfQiOnZnTG0
+	 xqIUyHPjh4LfkEeNUgvFHdqOgDbALsWf4tQ4pcDg+28v+EcBdnjxGCbFEM4fAcsafbvUv
+	 Z8IiDT974ToevFTe7nDfMziY03mu5Lpm0DW+uFy64biDA55sQ/+eRHuGlHajfKP6+ZxxM
+	 e2CICDJoCb7Siz7vEXWSLykxcw6iwcH08GsVte4RbQtz4+UwyOmWXRXJR2G8rHS4XYDcB
+	 1OIZb+mvYLDCmDeJ975d97h/GG5Ct5w7hJbBFFApUVkyY1feDeu8I/VWmVCgdydY0ww==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e8tLQhpK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="lIP/pfpW";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8252E606B6E9;
-	Wed, 21 Oct 2026 16:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2403606A326;
+	Wed, 21 Oct 2026 16:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e8tLQhpK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lIP/pfpW
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792599162;
-	b=hRjwswsJ2cA6o+Uu2TY91mTkXY8krS0qaNXTERwhDU+/Nqd1mbPlts3A8kR4iU1KxkmP
-	 TLUUYPyiGXwCJn/wAqe6a3Wl1bsJ+8Dr2jjN2sYHVdCyLi2earaQ0PkcGr1FTT/rhfdej
-	 uMWYyFQp59A75XQi/O52ejHFsrDjpcnurIBtHzwLDlafktqvD5pAvKMIAM3Q8qwqif+4U
-	 SHcq0xdVl8zhN7trzGfXZ7kGvHhGM1ly2A9FTrZLI9QHweCgg8k3q/Zk72/FRv/i6R0hX
-	 Ql03wX14U05g/viD4/zfbbXYeVVKX1RmpF9+OBDWTJTYhU4I00gw1GD+jtrq/CI2sbg==
+	t=1792599156;
+	b=Nn5eN3zND9AO039hVLcakMPEPZb79J5FuAJJg9wL1DPBP7yQX/hgSc0uX1r3rqAR4Cnj
+	 Zn9HVZgSq6eR8/hZmFwkDrp/7PJHN3jBmfqRfpDxx0AnBVuDQp+HsUMheMpNc1kdP4vb8
+	 0kgTSqMvswX/d2284L6zOXa38biJfzFzweCxoikrFVloGdPNhDDC9V5HYFEyBqrdsgyxS
+	 CIgiosAShkDymQrsZyvaHTk5DpucGToBo9CLuosYjTQeNoM0MMqp18H/oeP4AM77s0WTI
+	 Mdtb+UflE1TKVQab72Na/72BNsEe/Io1vCc9SxZxiVTJI+XXFgSKBfUmX1rFUPcHWpg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792599162;
+	c=relaxed/relaxed; t=1792599156;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=vvkmrz90lF2pcovbtpnAs1y6acEdyFSaoxmdLGdJVnw=;
-	b=HGqI/nBofxtkCG2a+eeIzQi92jI6OysttejGau4ZylA9VvBQXukfO+rJ91pQLO876i4X
-	 RhCw5cXa1Jf7cunmA8su7L8ddh9NYMi8YQreZYtOQHRDdXGb8VCIKE0yK++lrjVflT9G5
-	 Mq/1V8XOjH7AKZM6YhLS5JSZ2q9g2CeUfCkedjuDDY2d2ekZYpPLmu7yZuAkJb4ht9ZiM
-	 +oRN/+NPFXW9KIF+PdplijB95Cy1BkJTrLT5++0rqvM9L7N47XpPlleRMGcRPlWYkBELJ
-	 vyr87sdjYI/O1cXO8ig91qKDydSABmLI8AcG5cUwMKZZNF20FOOl8m1CDsZL2+d8r3A==
+	bh=LOPkZEV6Cm2zaHtJqPrEJTh7x8w9jJnwNm2gyHPm88Q=;
+	b=Uu21q7/2wf64uiFrXoNdZJwrOVwYcFIjZzGmHkC0wOpWs2QsPPIqOtZjR3B0nkPe3zM6
+	 fruS5f4gxiobQZjwWT5NUDU+QjYXErvu2E+lJMCwpVV3VhLX7CC6MOZYq9MN8A3pdOSKr
+	 MpKDhchUb2ApYDveY2ZlD6NFjAUp1rsrVgN1AzcFsR00R+hgq2HmLacJQjoOPfR7r7OlS
+	 sd93kfo7cynp7Xg6gJEilap97kEPpm9SClAbG/7nnOqBoBsm6YedCSLge1CmjReSZ95ec
+	 G3vhsiAg9NRomluT7L7ND507gXxkf/ebW6YMDZJgpoodl7hwmVXeWC24YcKzbnRNDGA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id D1A2B1F01578;
-	Wed, 21 Oct 2026 16:12:32 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 1931E1F000D3;
+	Wed, 21 Oct 2026 16:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792599162;
-	bh=vvkmrz90lF2pcovbtpnAs1y6acEdyFSaoxmdLGdJVnw=;
+	s=k20260515; t=1792599156;
+	bh=LOPkZEV6Cm2zaHtJqPrEJTh7x8w9jJnwNm2gyHPm88Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=e8tLQhpKYQT11o2C21bKcoAz6SfUW2e5dWrhH6ZHpn1Ot1WA9Me3qyt7RXaL1kDsc
-	 uaZEX+IQyFIqWHmlGacFLu+btMD2o/ndxPklWJIvRPiW2YvFI00ZEm8vzgV5SI4q+D
-	 RpRJJjPNj2zsEy30qbFt+42+o449sP8woMZQCHaT1ijilqLzgRD99B4v1UtUSXImNb
-	 x28QitWcw0IF4ouE33JB2yufTTrBQEQbKMROqH7Lj/p9sIPQ27MQ/bmLnuQyzArE7r
-	 MT16wciBoGwR+P1uTxF3KNSv5XUJmLtcBLv/S3azjIErQ9a2M991Ch/M98MIuTf6x6
-	 4HSOrtvJBgshQ==
+	b=lIP/pfpWUFpy9qgoPyKa4emTxXZ8kgvTtxk/JSQxpcjWxuQ1p0JMiS7no4f7ReuLF
+	 Efc2wUDXKVdgYuoUNRPt6cFvm61HLeeMbEjy6cD6phkgcWQqV3nD214+6jX8cN7/d5
+	 gSA1k9h306xntCtJhd52XmLgketNv1oE6f2fPmjvI1FRk0dqpCYWcUyHV1axKPfygT
+	 qSNh5rO4QL9AA0JTFRCExo9biKSvumcMnCVXUdm33hhhIN4DsvgvtDfwekGpSyuqBK
+	 EGFycHyjz0OgpyAK950Y4mjS0KPB5yUY1nH4I4kqbmdi5ool87v+hWduceC4gxBVoc
+	 bU44WzJhdyZLQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5C0C8433C9;
+	by lkml.kernel.org (Postfix) with ESMTP id 75B1F433D5;
 	Wed, 21 Oct 2026 16:12:23 +0000 (UTC)
 From: Cunhao Lu via B4 Relay <devnull+1579567540.qq.com@kernel.org>
-Date: Thu, 22 Oct 2026 00:11:08 +0800
-Subject: [PATCH 11/27] dt-bindings: i2c: rk3x: Add RK3572
+Date: Thu, 22 Oct 2026 00:11:11 +0800
+Subject: [PATCH 14/27] dt-bindings: net: rockchip-dwmac: Add RK3572
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,7 +83,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261022-add-board-ok3572-c-v1-11-0b0fd85a31ee@qq.com>
+Message-Id: <20261022-add-board-ok3572-c-v1-14-0b0fd85a31ee@qq.com>
 References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
 In-Reply-To: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
 To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
@@ -120,11 +120,11 @@ Cc: Cunhao Lu <1579567540@qq.com>, linux-clk@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, linux-phy@lists.infradead.org, 
  linux-usb@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792599138; l=799;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792599138; l=1343;
  i=1579567540@qq.com; s=20261015; h=from:subject:message-id;
- bh=Nx7+ntMd3JyypCSa/70viO2nR8hCpuFBxGmHD3dE47Y=;
- b=vZBl8Zt+3PSebnH2r6ILhisukiqHp80fAWguymShkduIHG3cLZaoRezGCGlFih4pVzb/lfVDO
- EGF0Q9iKVaBDbbgmigC8Jx1ymQfI4QjpxwQrw1EM57mcUJ142fiq1oS
+ bh=K0gxmniHOFyS01yuDpywB04Gh4PRTh2NilGC49wF0Uw=;
+ b=OW/ekGJbf8lwNEJWQYNfv3I5mTkDqbhiK8fSThBAA6vigH0ZL6//v8ZHW4Ee27ozpu2t/IsRo
+ PGs709KxeCcBq41j/NY9kIAySAoZFX0TROVz+O/VTBtFCliJJ/ZCfYn
 X-Developer-Key: i=1579567540@qq.com; a=ed25519;
  pk=sUTWrzlIwT4C7ctjNfVZAzzg0G7QUn2XxRGpYsw4RtM=
 X-Endpoint-Received: by B4 Relay for 1579567540@qq.com/20261015 with
@@ -135,25 +135,41 @@ Content-Transfer-Encoding: 7bit
 
 From: Cunhao Lu <1579567540@qq.com>
 
-Add the RK3572 I2C compatible using the RK3399 fallback.
+Add the RK3572 GMAC compatible using the snps,dwmac-4.20a fallback.
 
 Signed-off-by: Cunhao Lu <1579567540@qq.com>
 ---
- Documentation/devicetree/bindings/i2c/i2c-rk3x.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/net/rockchip-dwmac.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/i2c/i2c-rk3x.yaml b/Documentation/devicetree/bindings/i2c/i2c-rk3x.yaml
-index 91805fe8f3936..bec2b9cfdd118 100644
---- a/Documentation/devicetree/bindings/i2c/i2c-rk3x.yaml
-+++ b/Documentation/devicetree/bindings/i2c/i2c-rk3x.yaml
-@@ -41,6 +41,7 @@ properties:
-               - rockchip,rk3528-i2c
-               - rockchip,rk3562-i2c
-               - rockchip,rk3568-i2c
-+              - rockchip,rk3572-i2c
-               - rockchip,rk3576-i2c
-               - rockchip,rk3588-i2c
-               - rockchip,rv1126-i2c
+diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
+index 80c252845349c..83b0a81b4f3b7 100644
+--- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
+@@ -27,6 +27,7 @@ select:
+           - rockchip,rk3506-gmac
+           - rockchip,rk3528-gmac
+           - rockchip,rk3568-gmac
++          - rockchip,rk3572-gmac
+           - rockchip,rk3576-gmac
+           - rockchip,rk3588-gmac
+           - rockchip,rv1108-gmac
+@@ -54,6 +55,7 @@ properties:
+               - rockchip,rk3506-gmac
+               - rockchip,rk3528-gmac
+               - rockchip,rk3568-gmac
++              - rockchip,rk3572-gmac
+               - rockchip,rk3576-gmac
+               - rockchip,rk3588-gmac
+               - rockchip,rv1126-gmac
+@@ -137,6 +139,7 @@ allOf:
+         compatible:
+           contains:
+             enum:
++              - rockchip,rk3572-gmac
+               - rockchip,rk3576-gmac
+               - rockchip,rk3588-gmac
+     then:
 
 -- 
 2.34.1
