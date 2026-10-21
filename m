@@ -1,49 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792551606;
-	b=kCRWS33ng2FN0uf7C0VJIHPBTSmOAqwfWLYiLA1qskoQ6f/L1aczp3QKI/s+uzF/R5tz
-	 MoQOh76iSKAt0Ehhb2UAtSBVao5X9O99/ox+C4A61lbYfn9CYOKByZxEMDKgCFx2UHFLe
-	 Jsze0M9zTEoi6pdQlG2rzyFiKYwCyyGU5TbW9SwlCkOpJhkUV5iAdteuqpEUyb/rILk/9
-	 TmDYP2bmHo06NIrXXWVcT7wXo7n/ugOlZzXL6bg0sABW1VOlfOTe5MZG8XETgBlbx1f/P
-	 YkrwOSOPJICmisnNtq1ob439I3pm4vMs016hhupXFakwYvHmJS09kc3t21HasNTvbeQ==
+	t=1792551615;
+	b=rZx5KNYrKkwCnm1EfHo97OpZeVIyT3bZpG45Ji1X9RUXu2fepSLPLe4kyNGfEpF+om7f
+	 BqtSBtuLyCU5kVKqfzSOHM+jmXCJX3/RaPp4RaEeGXeE7Rjp8lJva/B9D8lYIJ4qgP0P0
+	 kRk88sTmTpP5GYSFfMoxus5rXWI0ltinpxSOW0L5JCteWkpB3KRKK9EO0b0QpnNkV7xbt
+	 QJReLlRH/sIrfPrXd2Uqwnv9LWFwc72rx/ZJrHiciMEwVNKIEYJEH3OdD0QEY6CqoIkow
+	 Uf1Ej8EixKRSA7swdyuQxI30sJ2dmvEgdXB6lJqapirPRmTJDeFd8tW7WMAeRmpYgZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792551606;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=s4s17HWemP9hWruMtVvX9EdATWKyGYuU/hj8ppk2By8=;
-	b=HJzJIzfCfcejNLmbnkekLDuZjUcwORM4ZD58XWjv1dBvkA6nym0QxF0Ld06BAhvEE+4L
-	 yk6SoZTfWwB6k0J09y53PlugowgLD5AqcZVVenxX9SMdQU1lMqeR5pDvJrQnAt8zMkALC
-	 HiPIOBTvyssELAzMaeLShy/e8QRaMzAMv8EcQzchB+EFYx2Q0P4Wg+iEp3BKQp3NtTCu/
-	 vzAPlWpZMkile554y0vuQ5EPbvhY0J1OVgfQNGZO220jjFvebDGb1yS0Z7crcQQuVxJ0L
-	 2pfdmt9cr88igxiY4NF+Vrgox3NiSuI3SLfE0LemeSoD1HNysijO4QS3P8b0sRy5JQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792551615;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Content-Type:Date:
+	 Message-Id:From:To:Cc:Subject:In-Reply-To:References:X-Mailer:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=odoVy4PHyyHu7+w2et+fTKefs40eChZdvSs2ZlLln/E=;
+	b=0dTntPSqDt2d1EajtKPkRk+jB84pJvo2vUMWmWrXo1Gz2OO39SNGHIQL4LYr1ujFOszM
+	 G1PGBA6Y4J5ksFLg70/DTCWteKBB8pA9v8CsrSM4sfyOLcszl1imDpwuZ9NRZSS/jUbhI
+	 18Wd15p7JD3hyK2WmRXn6UoOxswYOS4Db0KqMMr22mQpfeVzNx6vjZWLO5sgRHPJHArV2
+	 eAbhLCht/0B6le8xD7fRGNCo53BTxvkE9FROiiT6XnxeLaf2Y+Iu58LP4zoFeQFcONns5
+	 psZ3p1FfryIvQ9UBT34zo2rROXx9QVYM98RzfR5NZEz77lijvHGsobRQWYzwZTVEdWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nbH1AX5N;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TbQ1ir+n;
+	arc=none smtp.remote-ip=209.85.214.179
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEA8606A320;
-	Wed, 21 Oct 2026 03:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F99606A31D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:00:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96F99606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nbH1AX5N
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096001F000C9;
-	Wed, 21 Oct 2026 03:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792551606;
-	bh=s4s17HWemP9hWruMtVvX9EdATWKyGYuU/hj8ppk2By8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nbH1AX5NWyE7AvPO7A+r8UlbvklLfZubgqvhHX1UgEnAk+JsZOtrpFXQ7mfFC0ETN
-	 3Lam08xb6r7HkFL0EtpP/IRTDjSaRx95odZeCDQN/Gw95V6Rpp3tea0vul5VYEjHgW
-	 NZBiSkclXMIqYNN2jcY/XoVPdBTorCfPy11IHbgGriIZF4U90az3hTDIvfxY67ALxg
-	 9TqVj11QB9XLIIdV3ieOMkSXkWQovcWlf10oFkzRKli9Asmy8+k3/4xDPeD71BIwp3
-	 TcFzsw4bGR78XGEDSyMpExqA/M77RGuMS8H0StKDvLNafSJBh//oDFudYQ2GMom+YX
-	 1x7ThNotGtEjw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F160A3809A18;
-	Wed, 21 Oct 2026 03:00:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TbQ1ir+n
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e977109392so1727805ad.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:00:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792551615; x=1793156415; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=odoVy4PHyyHu7+w2et+fTKefs40eChZdvSs2ZlLln/E=;
+        b=TbQ1ir+nzL8W1ncS5tWnowahK+SYP73smf9/7BYeWmtUMPtyv70RLUAh226zlZa7jb
+         sbpre9MRmjA7gVVTUzMb1aNUnP1OOsDTE0qcxY1PHaLuptja1sM33Yl6gmhrJUPWBR2W
+         DNfDqtDrl19ucJwn9azmYnYigKw+g5wRLpSMERY0EZOcrDe9+wMhieJ6rZuuR6ZKkKCJ
+         ITkeYGiBawsb9Nj19QoXs5ZPuVOzHUkWVEV1JZVMR1s6LSRe+99zqTkPgU+01SAO3ZE0
+         i57HlV2ecbliJRYvn/+CiVcI48hE20kSj5sshghfanzaj4A9hixtCCQduFOORM/k449s
+         rkwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792551615; x=1793156415;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=odoVy4PHyyHu7+w2et+fTKefs40eChZdvSs2ZlLln/E=;
+        b=0DhCbfCnZ4Wx6b8FIZdBb9lJn02ZNHifYTYr+tvOzEKHufldMpkCffBsQCS9jkC/M3
+         eWkHyUikxKQlvOhR1d6ZPu5CHeJcCXZ7R9Nfs8RZx+XJhTSgirmKMERVTFkHU5a9qqTd
+         bpxxFwm1uSWFmrCxNJOKImY9vg490zVjpvrX3pKoBMWn1BJUX9VyCoxN6TdLGVD2ugKz
+         A5fqzJ2QWzyYD+buoaGHkz8Eo0Y2wVRy/PuEpazH+05BL943Z+6P7rjNG3A3TQsrutfO
+         Kcuv3vh0icsmsZeMfY8sXXNtw/Hw5pfb1D/pDdT3fG11UGE/9eZZbRDDeDTxJyxIdaLy
+         vSgg==
+X-Gm-Message-State: AFq9FYJwaGB1/Dhr/bqgGLXRojO+gcr4o4aqv0O3ZKN1NL3ZTwxPps19
+	T3H9afZCHRUODcjP/7Kpus6MKHGUoTDMPh0qcKqe/ZENAniIPUeEGXRF
+X-Gm-Gg: AYBFou1pvn+WSyrAn+dKkb07wXZDUnsE/jvfPPqqWhKqXuTeSZ9/V7p4c5rSc55T8dw
+	5jeWO4kGUvhYw6NMyvQIqrXFNbTaCMK1SepLRO9UCwOb0sTXVmVBvg9tu9HfAFs+8EhPXgdjvWt
+	beOVej/OigQeOBZP8+TdHutpvZCcDB9OyxzxE5aPYoyFTlrYp28dlihkanm0Azwup/XhZwntPkZ
+	IERXie9SgnpENCfKATFrZ2DMc09RzqpL4gWs7w73yoY4S8osL0OJfZ4qh8ruNep47ewpnCqFWa8
+	uh+RnmEUE0qTnNy5Wd+2Wpb9y2sS/0q2UQwKoneT/KAul+v7Q911f6eDUhHwRLTKaiPwedb5fDq
+	1QoktjyPZ1+fv4BJZf5unh5RCvSZeBd5KQIAypCEB0XzzulHjuHzJzpxpx94YBL1+fQd6gzAri0
+	Hd+QB/uNU8jPtc1ygjWmxqhHLaPWs1QwnmYP8KXKeOtwv9bsKsBmkobfiSR34te3ggmx14xRYmn
+	aaQG65t/OVP3AHQbdOo4rwNx+BN/uyNT3DILhdu0hQvutrzXzSG0763RzrmAenGyyC1gdLTOtR4
+	oeSPLPgddyZMAz/m8hdXTYzSASO2YxkGgcJsqC4GlseBrt0WOjBoKx7qeM4kYT9vGUeKz+LTMya
+	65OpBFlw=
+X-Received: by 2002:a17:903:26c4:b0:2e9:7719:4104 with SMTP id d9443c01a7336-2ea4396ca12mr6207395ad.8.1792551610224;
+        Tue, 20 Oct 2026 20:00:10 -0700 (PDT)
+Received: from localhost ([153.61.198.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b41096bsm5236935ad.26.2026.10.20.20.00.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Oct 2026 20:00:09 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Oct 2026 03:00:09 +0000
+Message-Id: <DMA6IGX5XTOI.1DVKS3WN0K6NQ@gmail.com>
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>, <daniel@iogearbox.net>,
+ <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
+ <josef@toxicpanda.com>, <mason@kernel.org>, <steffen.klassert@secunet.com>,
+ <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH net] net: free the policies if a socket's clone fails
+ late
+In-Reply-To: <20261020192044.7c3a58a1@kernel.org>
+References: <20261017013912.396296-1-alexei.starovoitov@gmail.com> <20261020192044.7c3a58a1@kernel.org>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +103,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [net,PATCH] Revert "enetc: Increase eMDIO MDC rate to 2.5 MHz"
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179255160477.350120.6545435189269879126.git-patchwork-notify@kernel.org>
-Date: Wed, 21 Oct 2026 03:00:04 +0000
-References: <20261016185817.54096-1-marex@nabladev.com>
-In-Reply-To: <20261016185817.54096-1-marex@nabladev.com>
-To: Marek Vasut <marex@nabladev.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
- xiaoning.wang@nxp.com, claudiu.manoil@nxp.com, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, vladimir.oltean@nxp.com,
- wei.fang@nxp.com, imx@lists.linux.dev, linux-kernel@vger.kernel.org
 
-Hello:
+On Tue, Oct 20, 2026 at 07:20 PM Jakub Kicinski <kuba@kernel.org> wrote:
+> On Sat, 17 Oct 2026 01:39:12 +0000 Alexei Starovoitov wrote:
+>> -	if (bpf_sk_storage_clone(sk, newsk))
+>> +	if (bpf_sk_storage_clone(sk, newsk)) {
+>> +		xfrm_sk_free_policy(newsk);
+>>  		goto free;
+>> +	}
+>
+> why not add a new jump target and add the unwind at the end
+> of the function?
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 16 Oct 2026 20:57:38 +0200 you wrote:
-> This reverts commit 587acb86d6465efdc03f6d8524461e6e725597b7.
-> 
-> While the i.MX95 MDIO MDC clock is improved by the commit
-> 587acb86d646 ("enetc: Increase eMDIO MDC rate to 2.5 MHz"),
-> other SoCs use different base clock for their MDIO and the
-> MDC clock on those SoCs is set out of specification by the
-> aforementioned commit. The fix for the i.MX95 MDIO MDC has
-> to be done differently, and will be done so in a follow up
-> change. Until that is done, revert the commit to fix the
-> other SoCs.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] Revert "enetc: Increase eMDIO MDC rate to 2.5 MHz"
-    https://git.kernel.org/netdev/net-next/c/4a929eba247b
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Don't care. Fix it yourself then.
