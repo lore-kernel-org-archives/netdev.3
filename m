@@ -1,61 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792543841;
-	b=UwPFVkhNyYbotPQ+UXGb/PcTYLvdDWVa9fBrxs0UFpxIb0+zxUCsOsijmKC3hcHF3ggO
-	 +20Ha3CYNkK8/CuUWZmLKMJrAY/LmsZYNUvLrUrit3LtKDMXON5RtOc+38SREtyyvIlA4
-	 ay5VdOcm8rD9lIwKo2wi0HrxA3maWiojwjQhCRkLcQydVND2No8Xte0w22VqDrQDUkmIs
-	 5rz4k39bBengROm7BiooFaky3PnMXsR9D/GTVS8S/Br1KAOLJJlCDCh+aJkESrGAQ33B6
-	 EL5YaDJnnmtpaBSzGn2TWg2r8hDprhIiwsqORCuzOpQNTGWZIj1Q4P8SoGtwZsm0QBg==
+	t=1792543875;
+	b=y/eCju1wZ+QAoG6w3biJTjnX81TlVH7WTnnJZFOOaIABExWymJf8MKEfqbIcDiBaoUvW
+	 YOxJe0Z3B1kvBp1vaB7AIKdUALaeFyklAJGSJTb59EuwP+gyAbxIO8f2QMAyTbyNiV1ed
+	 D7/hsBuSnjkIfRH/d8nEtRIjpOS+w+SZeiBvsahzWSbktlVUbwHBnN3ihqkb/3uxkgCQj
+	 sMB2KEqdISwnorlQXAZ21WnfNuo7en1uEVe+sLxHPZQcBuHZ5CHorGCOeKfkdQ6wYl+MA
+	 eMaIhSsn6Gys9Wxgo2k3GBTme6e3oWrv3AqUitxCKTBwiqsjGIqdOVK6X6h9iSwofIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792543841;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=7NakYNL871cRTQpV2KiS4MwXIGfg/GoB9+Fx09KFnvo=;
-	b=gaNTaYJVIJvFF6JBJikL+D3119CU8ka94mdMahDpO+52Y8Gqg9GYVDAd1W/ZuIAJoPUn
-	 EvKysz0gM8KXEJ8f/vQbLQ+VnMPe5T+MUOSsEizn2WCxFTNA9CunLQPrVsxpFChWDfQw5
-	 s7bL+U7FHpvTzC8V1pROHwRurK8Qoo8u6ED6lE7mfeUPAGnmFprlC1rdVbafhEQ9WoOEh
-	 9JdGrAWsjehEv6SidhRv2Cqtu7jwEQVXWAh6u8O/bmwyCAZSaNzQESUemCiX//P0pXOe+
-	 SYfotWIoEdGcMm/D1NaSU1si3nLtLic3KOOoZAmU8f7wNPxh2NmYRjk+iMltLtpGk1w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792543875;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=BnbQRXf/yuRTZ/Xyc2wpVRtZXvrt7uElwpDWRhPjGpA=;
+	b=5TUeOQaKsEqnyQBpw8HU2MHAq4q28j5up7MpdUHrO3VFvLBHJEWeuj0wp9S60DgqABek
+	 IiSC5eoY/aDbTUxV3CqpjH2MpPDpWMK6F3sG3oGxfn7RBT+kOQHlCDcCM0nmJJ/LYd81h
+	 GAX8MR9Mz/0Sxf87W9Ql5ieG1Rvd/c90VTURu9qBNppCYE40bCcGl7UlYo4uB9va8o5wP
+	 /mwamVACRW46cKrKpgdrJ0+8SLSRZ2AIruRuR5yOwR1tzmyiCtXHlK7OEkb4ZaMadBxx1
+	 ezL4e9TUiUW35tVkWp/39k+8rw6XFbEEaVnStK/O8RUCpP45Vl6NtApnJntySXhgVHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=br3oF4LS;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G+IoWrCI;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC16606A31D;
-	Wed, 21 Oct 2026 00:50:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DC16606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBE0606A319;
+	Wed, 21 Oct 2026 00:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=br3oF4LS
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=7NakYNL871cRTQpV2KiS4MwXIGfg/GoB9+Fx09KFnvo=; b=br3oF4LSH+w9t5Z4Es9N1Z3o5q
-	XOkoZmbw7CLG8L275XdUmjMA3XNYI5hU69TCCVp4NaArIBQTTxznbTiuYOzYWXVTmDYsmfnrVwWTu
-	osaUxGet2maR7WClZXcGLKkHS3qPo11M0nRt6qr/PyLYtWPqcF4SNkRz9w6sASaVqwrk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xJKXD-00BwsC-9z; Wed, 21 Oct 2026 02:50:27 +0200
-Date: Wed, 21 Oct 2026 02:50:27 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Wolfgang Grandegger <wg@grandegger.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: emac: guard PHY bitmap teardown
-Message-ID: <678ea0b4-ba3a-499d-aa5e-217330590663@lunn.ch>
-References: <20261020222723.1746201-1-rosenp@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G+IoWrCI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DA21F000C9;
+	Wed, 21 Oct 2026 00:51:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792543874;
+	bh=BnbQRXf/yuRTZ/Xyc2wpVRtZXvrt7uElwpDWRhPjGpA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=G+IoWrCId6I3cul8W/1ldsyCmrZ2roZxDp56BPtb3ROqCCW6bpiTaipOobCAEKwXA
+	 tFNk3u1uFpHC+mg2190fV+HImAh2cPZrMF5oS92H64CPEDH+KOzIAFcHKmYFOQUk0m
+	 1edn7XoWBLWtonGw/njuebCtuxpKBOmkUm3auMno227Xnu+k11wghe++LCq/CtZpW4
+	 YXacW/2qZMgf9/TChjjRvDJDEX4G3R9ip9umhwFCWb3TCPOim1pSEzzNql9iigaONv
+	 zShzLh7qtatdfXL25GbihVjvU01i+ODjz6P9AxkxywIu6q+oN9xXkula0VgPCbgNy7
+	 fLsz2rkifxbyQ==
+Date: Tue, 20 Oct 2026 17:51:13 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Fan Gong <gongfan1@huawei.com>
+Cc: Wu Di <wudi234@huawei.com>, Teng Peisen <tengpeisen@huawei.com>,
+ <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana
+ Ciornei <ioana.ciornei@nxp.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Mohsin Bashir <mohsin.bashr@gmail.com>,
+ Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
+ <hramamurthy@google.com>, Larysa Zaremba <larysa.zaremba@intel.com>, Vadim
+ Fedorenko <vadim.fedorenko@linux.dev>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
+ <wulike1@huawei.com>
+Subject: Re: [PATCH net-next v17 1/2] hinic3: Add ethtool statistic ops
+ part1
+Message-ID: <20261020175113.182b3b92@kernel.org>
+In-Reply-To: <0d19828afdc0cec629c8b342cc3f7a0c11ecb1f3.1792378301.git.gongfan1@huawei.com>
+References: <cover.1792378301.git.gongfan1@huawei.com>
+	<0d19828afdc0cec629c8b342cc3f7a0c11ecb1f3.1792378301.git.gongfan1@huawei.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,24 +69,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020222723.1746201-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 20, 2026 at 03:27:23PM -0700, Rosen Penev wrote:
-> PHY-less and fixed-link configurations retain a negative PHY address.
-> Avoid shifting by that value while removing the device, and serialize the
-> bitmap update with PHY discovery.
-> 
-> Fixes: d6f144830bdf ("ibm/emac: fix improper cleanup when device is removed to allow re-bind")
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+On Mon, 19 Oct 2026 11:45:37 +0800 Fan Gong wrote:
+> This commit adds per-queue TX/RX software counters and firmware-backed
+> vport and physical port statistics to the hinic3 driver. It implements
+> the .get_strings, .get_sset_count and .get_ethtool_stats callbacks so
+> these can be read with ethtool -S, and adds packet/byte accounting to
+> the RX and TX hot paths.
 
-This is actually two different fixes.
-
-Please split this into two patches, one adding the mutex lock/unlock,
-and the second looking for -1.
-
-Since this is a LLM found issues, not one which actually bothers
-anybody, please submit to net-next, without the Fixes tag.
-
-	Andrew
+Sorry I replied to v15, but I think my comments stand.
