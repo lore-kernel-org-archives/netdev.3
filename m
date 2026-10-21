@@ -1,83 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792620440;
-	b=lZPGG3hq7VR9UWeN/g7vKUCUNzryFpNny9oyrgTRME4E//UwaCrzYfA7YD81Ff6Zpamd
-	 HeNOBGtcUph7X+lIFqIGBqrla2jfs/vvA/HGKTV8ps0TR2gUHy38LCkAP/2lVEoY/o2PY
-	 IldEBJGKPLaziWvYVYb9BhLmTKCwlAACErtRup+8q1Zk2/tIy4tWFmytE5HRWXMZf+dsZ
-	 YYCcGYpg+uVD+jTeS7DkNuNT5s051K7f7TGa/iudAiK94oaHw0QmTIO95ySQjrOckumuS
-	 9Q3OHJubZdWzEDl1cuowsr6knH3+q8XZo+smoQJ018MG2kskG6jfwzREHt+Fm/ANwwQ==
+	t=1792620523;
+	b=pAhIT424ZP2M77LT4znIhUMQyF1oXtTSzYexY3HhvXZs6AhSbmMHrhRX59+BLVKIabFS
+	 PcBdkXO+4ktoInaSCzLtNHs3ceGOIGADmYmy30sN7oSvEVpLHyA8xVdoLzk2AAyqxl+rR
+	 6Wh0nq44ab07ZzblOtl0vAgS9rcgE8v3CcWlKFPSbPyodYu6o04sOgxJMSIN9uaTe4yc9
+	 5Ec7FOie59F1PnGVdOS32amr72GrO4x4oPG3rp5ovG2Rq4RVRn9bmXEpBDjTdS+E4O91n
+	 B3R2BqyB5xvO3g5YSMwOcjuEnKqjYf8BaaxYZDvUZ1jp5nhXErnx3REWNTjTNV2fcEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792620440;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=C0u0/9pvcVlcUIo5ZldC4VZN02KqtRcVCReP8bcjUq8=;
-	b=S5J4O/TszhQwUU2CwxvTzojgrsdDzoZzkrEiC5w/MpfUbWBBKBSHkMUqhUb21SpM9p5/
-	 ZfuwRdw1gGT29YpS/iYiCHr3iUBxf1DDkWjrcpMTukKwkC15OghIj/grThIazrBAkbijs
-	 kf34NHRGRYuPCKoRiHbhIBpm01JXrmAi7wtSUhsYo+1ZR6BLSu7Ga3jc3BWHWLVnxjvxa
-	 CuKsHGelXaBpaB2Rxnas/ppGh0n/clrQbnzIpG5/zaJ5YwtM/DLK6q65D3R5gEiwLd45e
-	 8Tzuuh5O0bVoZrsKebqwuVi1Cshk6vf4w23bduMosv6dQNQTHn9PR9plO1oxKR83nxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792620523;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Spamd-Result:X-Spam-Score:
+	 X-Spam-Level:X-Spam-Flag;
+	bh=Rps3j/Ol+umElVM3i3J1CQ+c26rRYH3c8bCidpO4rlA=;
+	b=CqloMDzcEn1/WMAN/UjbZGYPnqE9t51lHMt4EN1XFkVvxQZGCmBmW2TIEmdltkPDVduT
+	 M/eEsQrMiLmZij+HMxCVdlh4QeJOh/8WFJRWdsYj8LrJ14VOZ/SxmYZvFe36KdZ2JFatF
+	 fGKC4S+PGqdajyJMAt0xIGR5tzuszdgvTKugR4nx/uyrLVx/IuiEcbG9ZEDfU80MRZTRh
+	 WScSQ2H4IU25hAloLQWLFPAbfZB1KA0sDz9dKRpIx4xjcdyKBo3UcquYh/v187jeEQr7q
+	 4cPMtjH2J+qnf0EXxjFu+L0yv8I0EPZLTd35bvH38ghQY/T9nl5K3S/f0lKCvBostRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=iRad8MFx;
-	arc=none smtp.remote-ip=209.85.222.180
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FCQQFScA;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+oI2jbf8;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FCQQFScA;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+oI2jbf8;
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9DC606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:07:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E9DC606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712E0606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:08:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 712E0606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=iRad8MFx
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93efc0452b5so96209985a.0
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:07:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792620439; x=1793225239; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=C0u0/9pvcVlcUIo5ZldC4VZN02KqtRcVCReP8bcjUq8=;
-        b=iRad8MFxVjg0EAUy3IIiedM4z5AaJ0KF+bdAh23ReapVskGy6lW8MF+8yIfjjSS0aF
-         fayr/nVOBitMBPlohzM56OTCfr1jcAlH72nrGtZEOWzPF4S9pTeI9bblaGjDiE6HVvM7
-         9KrjlHfA3hIAl0jkKI8I4l9JU18y8pq7Du8iaIACRFZwWfAtpvglpzG7EDMaWkjeFusy
-         /jvE0eCF1+6aF02vzsK6q34Q51QnAIw4+PLbW5jnCcAGE02CC8DAdk4qP5vFveQhCi4Z
-         mBaRmKM8JAvYRBQ/23tww+CP7wbZgleUhJ1mokp5nS4vE4kYnVPOCn9/UCN1PuZLkOgy
-         aczA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792620439; x=1793225239;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C0u0/9pvcVlcUIo5ZldC4VZN02KqtRcVCReP8bcjUq8=;
-        b=QOI01+97QkLSoC4RBQilIM5AJs3xlimL5jTUeZP5B2PNBN9/MYdzUly7KxhO4hFeXE
-         XLmLidlqoyYQFbqTn5xLUNE5bnDvKluIEiP+9yLEwLxTg48DAIwlbTP79rw3PYnBFvwZ
-         pQxEvMvBx4X79z4pB39OS1yF1RcDvE+MqUKGvkb4Ai6vSp8RDCRizhx1i116HLq6ORJe
-         4vHPeq4FvQri/ho4nu4NznYxRQ+nFTEARlFDkSlVJPegdKDxdbB4BEu3nTdhWHSKVCt7
-         remHwsCTmV45MTsmOYKOuikR/zwXUbl4IHYyoG4YqgZEWeyR3XI9gmjvp24UZjXrI/AP
-         HZww==
-X-Forwarded-Encrypted: i=1; AKwUvBwT/k/UOsScAdZ1Phv0DQp8YgaHQMB8FDDLgWJh82VSJqNwatV2hLnzheBZcnwoE1aNJOXOhiI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLqaC1PEVrc4tzh4uEftUNErzhxxdoa16uEzkQ74Q94dvY4j1mO
-	vR4PFjHR84v+HlFIE90j8uFUoD4307oziCrnQPIfgzXhD8QIDrKTPghU
-X-Gm-Gg: AYBFou0idYzZYDKi2o9Q1wWNWNMvtYtl3ULqC5HBdjSWtVbO3hBNcUIwaeIhni/IS3R
-	3GENRL7aU1hWL+mASZvkjnmy6+lt9TB+BqzaUOxxd854ZYQgq5SPOtSGgfOUyuvwfvV/+JY4U7p
-	C5Gpe7KT+uMMW+h79AL9sHyW2lSdSr19h4hpva6z8rje/gaDOLBuqUgflHiYhHt1kPILi62sr29
-	Ze/782xbTvLubwbFq74RE2GlLzyCteliWip2cyCcyULXQ15V8QsjV9ZgGk+4T8tEXwtjZEmNhgj
-	GSaeynCl7fENbSzzFRc2Dse8C7nchHmdpIIPyPXHw7yaCAZBUfGc5xOda+8xkxNCLtxI3q+CeI5
-	pC02/I+fnOeNoDRAB4d5YBrdDi66YAoIvj1mv+5iGjaA1UWs/WjPLC1Jr7G5WZq9IAm2sbr7rFT
-	SUfyO7Q/hPwKjMyoCrCsO5M4qk2wWvTpKAYSygMdkNLjHjSYvsHvTQg1wehdoznuNQujAwThRWR
-	Jzs1G/o0TpJawfV8tQEb3FJJstn1toblSuwNxCItgvNkq9kbM/QOH0IvYIAkA==
-X-Received: by 2002:a05:620a:3188:b0:93c:68f0:f09b with SMTP id af79cd13be357-93f57ebdd17mr685263985a.5.1792620439473;
-        Wed, 21 Oct 2026 15:07:19 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56c6f16dsm365188585a.4.2026.10.21.15.07.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Oct 2026 15:07:18 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FCQQFScA;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+oI2jbf8;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FCQQFScA;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+oI2jbf8
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 977F11F896;
+	Wed, 21 Oct 2026 22:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792620520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rps3j/Ol+umElVM3i3J1CQ+c26rRYH3c8bCidpO4rlA=;
+	b=FCQQFScAeE3XcQzfVRcAEtYT+0CUb93eoGGcBBOEZ3LkxGCzC5vhHADtH6oINhu4hLZCz0
+	no5fKOb+eGvnpteZZ+UAVS4vPJJulLGUayX7VLwA+o191PRNEXJJr7QwRKzQILuTkMrTg2
+	pqcD6j6ephaIzZ5iEGTTyFDaMhPsM2Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792620520;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rps3j/Ol+umElVM3i3J1CQ+c26rRYH3c8bCidpO4rlA=;
+	b=+oI2jbf8oH/vyZFWBJqu6X7MmPpT3/1lgMz6u7vhzXJgtuqWdgyaSWGzCdxWKaHVyKi9EO
+	fxrYBMZWu6TIlLDw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1792620520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rps3j/Ol+umElVM3i3J1CQ+c26rRYH3c8bCidpO4rlA=;
+	b=FCQQFScAeE3XcQzfVRcAEtYT+0CUb93eoGGcBBOEZ3LkxGCzC5vhHADtH6oINhu4hLZCz0
+	no5fKOb+eGvnpteZZ+UAVS4vPJJulLGUayX7VLwA+o191PRNEXJJr7QwRKzQILuTkMrTg2
+	pqcD6j6ephaIzZ5iEGTTyFDaMhPsM2Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1792620520;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rps3j/Ol+umElVM3i3J1CQ+c26rRYH3c8bCidpO4rlA=;
+	b=+oI2jbf8oH/vyZFWBJqu6X7MmPpT3/1lgMz6u7vhzXJgtuqWdgyaSWGzCdxWKaHVyKi9EO
+	fxrYBMZWu6TIlLDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A8175134A5;
+	Wed, 21 Oct 2026 22:08:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6b6qHOc32WqDLgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Wed, 21 Oct 2026 22:08:39 +0000
+Message-ID: <bea0f98f-b866-48f7-89d4-69ebb98a9af9@suse.de>
+Date: Thu, 22 Oct 2026 00:08:34 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,51 +105,213 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Oct 2026 18:07:14 -0400
-Message-Id: <DMAUWQVPIVKP.1QAK1YSA76EHJ@gmail.com>
-Cc: "Daniel Zahka" <daniel.zahka@gmail.com>, "Jakub Kicinski"
- <kuba@kernel.org>, "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman"
- <horms@kernel.org>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "Shuah Khan"
- <shuah@kernel.org>, "Rahul Rameshbabu" <rrameshbabu@nvidia.com>, "Raed
- Salem" <raeds@nvidia.com>, "Cosmin Ratiu" <cratiu@nvidia.com>,
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net 0/2] psp: drop packets with extension headers in
- transport mode
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Todd Freed" <toddfreed@meta.com>, <netdev@vger.kernel.org>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261021210200.788191-1-toddfreed@meta.com>
-In-Reply-To: <20261021210200.788191-1-toddfreed@meta.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 02/15] net: skbuff: add skb_checksum_full()
+ that reports failure
+To: Josef Bacik <josef@toxicpanda.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Mina Almasry <almasrymina@google.com>,
+ David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+References: <20261021-b4-skbuff-bug-on-followups-v2-0-2aa780a03524@toxicpanda.com>
+ <20261021-b4-skbuff-bug-on-followups-v2-2-2aa780a03524@toxicpanda.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20261021-b4-skbuff-bug-on-followups-v2-2-2aa780a03524@toxicpanda.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-11.79 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[netdev];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,gmail.com,google.com,vger.kernel.org,lists.xenproject.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[toxicpanda.com:email,suse.de:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -11.79
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-On Wed Oct 21, 2026 at 5:01 PM EDT, Todd Freed wrote:
-> While working on adding support for socket-less psp associations, I
-> noticed that this case was not being handled correctly. It will be more
-> relevant with that series, because it adds udp support, for which the
-> psp nexthdr will be taken from the inner packet.
->
-> Since the tx association encodes intent to send encrypted packets, but
-> because of other configuration (socket options, routes) the packets are
-> sent unencrypted, sending this change as a fix.
->
-> The first patch drops the packets, the second patch adds selftests for
-> that case.
->
+On 10/21/26 3:46 PM, Josef Bacik wrote:
+> skb_checksum() can't fail.  When the range runs into unreadable frags
+> or past the end of the skb it returns 0, which is also a valid
+> checksum, so its callers can't tell the sum from a failure.  For the
+> receive-side validation helpers that means a packet whose payload was
+> never checksummed can pass, and commit 20ddd0fd2fcd ("net: skbuff:
+> don't BUG() on leftover length in skb_checksum() and friends") made the
+> past-the-end case one of those instead of a BUG().
+> 
+> Add skb_checksum_full(), which adds the range's sum to *@csump and
+> returns 0, or returns -EFAULT for unreadable frags or a range past the
+> end of the skb, and -EINVAL for a negative length, leaving *@csump
+> alone.  It's __must_check so a caller can't ignore the failure, and it
+> recurses into frag_list members through itself so a failure there
+> isn't lost either.
+> 
+> skb_checksum() becomes a wrapper around it that behaves as before for
+> the callers that haven't been converted: it returns 0 on failure and
+> warns once if that was because of unreadable frags.  The following
+> patches convert the core users, and the rest will follow per subsystem.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-Why not just fix psp_dev_encapsulate() to put the psp headers in the
-right position? With the self test we are going to make PSP + ipv6 ext
-header =3D=3D drop part of the uapi?
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-> Todd Freed (2):
->   psp: drop transport mode packets with extension headers
->   selftests: drv-net: psp: test ipv6 tcp socket with extension headers
->
->  net/psp/psp_main.c                         |   7 +-
->  tools/testing/selftests/drivers/net/config |   1 +
->  tools/testing/selftests/drivers/net/psp.py | 120 ++++++++++++++++++++-
->  3 files changed, 125 insertions(+), 3 deletions(-)
+nit: AFAIU the new wrapper does not behave the same way as before in all 
+situations. Now inside frag_list recursion a child that hits an error 
+returns 0 and in the old code the parent never checks what the child 
+returned.
+
+> ---
+>   include/linux/skbuff.h |  2 ++
+>   net/core/skbuff.c      | 56 +++++++++++++++++++++++++++++++++++++++++---------
+>   2 files changed, 48 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> index 09db32f70b53..969b1c3269ec 100644
+> --- a/include/linux/skbuff.h
+> +++ b/include/linux/skbuff.h
+> @@ -4279,6 +4279,8 @@ int skb_copy_bits(const struct sk_buff *skb, int offset, void *to, int len);
+>   int skb_store_bits(struct sk_buff *skb, int offset, const void *from, int len);
+>   int __must_check skb_copy_and_csum_bits(const struct sk_buff *skb, int offset,
+>   					u8 *to, int len, __wsum *csum);
+> +int __must_check skb_checksum_full(const struct sk_buff *skb, int offset,
+> +				   int len, __wsum *csump);
+>   int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
+>   		    struct pipe_inode_info *pipe, unsigned int len,
+>   		    unsigned int flags);
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index a2b52a5a61a9..061c61422a38 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -3545,12 +3545,31 @@ int skb_store_bits(struct sk_buff *skb, int offset, const void *from, int len)
+>   EXPORT_SYMBOL(skb_store_bits);
+>   
+>   /* Checksum skb data. */
+> -__wsum skb_checksum(const struct sk_buff *skb, int offset, int len, __wsum csum)
+> +/**
+> + *	skb_checksum_full - checksum a range of an skb
+> + *	@skb: buffer to checksum
+> + *	@offset: offset in @skb to start at
+> + *	@len: number of bytes to checksum
+> + *	@csump: the sum to add to; on success the range's sum is added to it
+> + *
+> + *	Return: 0 on success, -EINVAL if @len is negative, or -EFAULT if @skb
+> + *	has unreadable frags in the range or runs out before @len does.  On
+> + *	failure *@csump is not changed.
+> + */
+> +int skb_checksum_full(const struct sk_buff *skb, int offset, int len,
+> +		      __wsum *csump)
+>   {
+>   	int start = skb_headlen(skb);
+>   	int i, copy = start - offset;
+>   	struct sk_buff *frag_iter;
+> +	__wsum csum = *csump;
+>   	int pos = 0;
+> +	int err;
+> +
+> +	if (unlikely(len < 0)) {
+> +		DEBUG_NET_WARN_ON_ONCE(1);
+> +		return -EINVAL;
+> +	}
+>   
+>   	/* Checksum header. */
+>   	if (copy > 0) {
+> @@ -3558,13 +3577,13 @@ __wsum skb_checksum(const struct sk_buff *skb, int offset, int len, __wsum csum)
+>   			copy = len;
+>   		csum = csum_partial(skb->data + offset, copy, csum);
+>   		if ((len -= copy) == 0)
+> -			return csum;
+> +			goto out;
+>   		offset += copy;
+>   		pos	= copy;
+>   	}
+>   
+> -	if (WARN_ON_ONCE(!skb_frags_readable(skb)))
+> -		return 0;
+> +	if (!skb_frags_readable(skb))
+> +		return -EFAULT;
+>   
+>   	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+>   		int end;
+> @@ -3593,7 +3612,7 @@ __wsum skb_checksum(const struct sk_buff *skb, int offset, int len, __wsum csum)
+>   			}
+>   
+>   			if (!(len -= copy))
+> -				return csum;
+> +				goto out;
+>   			offset += copy;
+>   		}
+>   		start = end;
+> @@ -3606,14 +3625,17 @@ __wsum skb_checksum(const struct sk_buff *skb, int offset, int len, __wsum csum)
+>   
+>   		end = start + frag_iter->len;
+>   		if ((copy = end - offset) > 0) {
+> -			__wsum csum2;
+> +			__wsum csum2 = 0;
+> +
+>   			if (copy > len)
+>   				copy = len;
+> -			csum2 = skb_checksum(frag_iter, offset - start, copy,
+> -					     0);
+> +			err = skb_checksum_full(frag_iter, offset - start, copy,
+> +						&csum2);
+> +			if (err)
+> +				return err;
+>   			csum = csum_block_add(csum, csum2, pos);
+>   			if ((len -= copy) == 0)
+> -				return csum;
+> +				goto out;
+>   			offset += copy;
+>   			pos    += copy;
+>   		}
+> @@ -3621,9 +3643,23 @@ __wsum skb_checksum(const struct sk_buff *skb, int offset, int len, __wsum csum)
+>   	}
+>   	if (unlikely(len)) {
+>   		DEBUG_NET_WARN_ON_ONCE(1);
+> -		return 0;
+> +		return -EFAULT;
+>   	}
+> +out:
+> +	*csump = csum;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(skb_checksum_full);
+>   
+> +/* skb_checksum() has no way to report failure, so it returns 0, which is a
+> + * valid checksum.  Use skb_checksum_full() in new code.
+> + */
+> +__wsum skb_checksum(const struct sk_buff *skb, int offset, int len, __wsum csum)
+> +{
+> +	if (unlikely(skb_checksum_full(skb, offset, len, &csum))) {
+> +		WARN_ON_ONCE(!skb_frags_readable(skb));
+> +		return 0;
+> +	}
+>   	return csum;
+>   }
+>   EXPORT_SYMBOL(skb_checksum);
+> 
 
