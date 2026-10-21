@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.212.254.19
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792552575;
-	b=1p36JJWZaeTjT01OnQniD26jUzO+LZh8bXjTsUVnkxZnf/tsdPI6TUR4kTFM7yXfu5/B
-	 rman9fvjBBVDmAEzzdTi9Rz8yeUCWo/17jGLwdSBdFFTe0MQFsnF8vfuOpDK9qROjD7kI
-	 YGR1yoFXXsY1IW7n41MQHF9XYBZQLYf3kcxhrCMIfI856ztGgfQY0N9Mo6s4ZsSAPIJTL
-	 nE8fT+lesRNxWtV8UUv/LSFS7SF3kwYhIdolDL57gQ+nLmLmSI87xpYjg1NFp9uIgotsW
-	 pi+3pakcXVEH5HvOn03qpgW6CPhA3ziQEatB2Qg8TUEfUK2VKTIxnA85y/yJ2ceY0cA==
+	t=1792552609;
+	b=tuvzwwFaYT9bXoDLq4eXrznsJYIToZ4tnJrH9zqeB/zocppDHxhQtRXKXlo5aV0lgC+w
+	 a0QpUeNQmzlqBp+zaVz0smkNAl03rc7I7kR0/LFv1BVSIYh+Z34PoKq/nJbioTvyJusb6
+	 bVIvPF08Ssf7KmXskj9E8sJ6QbXYXFNCnYr/IVksuKjRzKuWfN7QTTw9hbKfYen6luhdB
+	 EODU0OXnI0UPYAbjaYUWrCNbex2UC3/Ov4XfvELxVBLWwLhZLEQXEYciyev7Zh6cM/fxf
+	 uBH0tkLop/zmA+QyGAwSz5Ula8oyiMGtav9d/BpBB5Zp60n+XklIoEDq3B/pej2sb+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792552575;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792552609;
 	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:In-Reply-To:
 	 References:From:Subject:To:Cc:Date;
-	bh=uKOjlqXGHLJlkCL9f8d9rTFDqw8tpf+tLxaHjmSpkKA=;
-	b=0Un7N6cx1zehA3UFalbOhCndMLr7ta6yfoo4eao19b00PIXwxYJTrDupgB42THNs471n
-	 swrUSwaXOCEF3PPkT8DVCxKJzJXPWDzfPRIyAnnwnqU+5fQfQGlQgsAkeVvqpsbhqf4YD
-	 hyB8lcZ+zMei9O5beNeYHKSR+ChT3OBFxk4ftDIBI3L91NCz8mDZHKicA2T9wiY4fesv6
-	 +7vvvB72EC2sM0zfmT1oa10tUqA7Y9yYL8EuO+Uv9CmeKyZWxOTtDJsF4SjVN3gBQAIt6
-	 D88WLLto+iz819lAdKFgY30arcH8I7coXQnrD6NKB01dg4sEre4DPR1Pm3/44TNnQoA==
+	bh=XPetBJfDkAzAZ8UTDQicbQRK+iH8jjbopwvCHr+wr6I=;
+	b=xlRKqqNnHr5O2yYiHYPDxlX6Xrp63nWY9XDVOY5Ly/pIbS6Gd0vm3t8GDN8qzivoNUEp
+	 B7pDyQdjxfIY81Vbx1f28QUtwUcva9WqSryJk2RYW+btwyeX5D6sOd/FUpJ96oEj8tAy2
+	 y3Bc9zo4hqIe+seRORQEDx56+tC+EaRd4iUwfNrUoGDPmntyqntd2sUQiSVveAzkUPiSu
+	 X0QEsMrjF2NcjuX+qUxUK9FXLkOZrUYPBGsHTBNjDwO6eILxgTsPP2pTChVZ2xkMZYoyk
+	 8sxHUX47lvcw+QXHIbaemqTOcX9NyNyvdbGUZYEshnbhYwkOUv3hM4BP82WbDBu1NKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=tuxist.de;
 	spf=fail smtp.mailfrom=tuxist.de;
-	dkim=pass header.d=tuxist.de header.i=@tuxist.de header.a=rsa-sha256 header.s=201705 header.b=Gv9RjMyE;
+	dkim=pass header.d=tuxist.de header.i=@tuxist.de header.a=rsa-sha256 header.s=201705 header.b=MvZnv28O;
 	arc=none smtp.remote-ip=173.212.254.19
 Received: from groupware.tuxist.de (groupware.tuxist.de [173.212.254.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BC760A3828;
-	Wed, 21 Oct 2026 03:16:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9BC760A3828
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE5A607095A;
+	Wed, 21 Oct 2026 03:16:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BE5A607095A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tuxist.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=tuxist.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tuxist.de header.i=@tuxist.de header.a=rsa-sha256 header.s=201705 header.b=Gv9RjMyE
+	dkim=pass (2048-bit key, unprotected) header.d=tuxist.de header.i=@tuxist.de header.a=rsa-sha256 header.s=201705 header.b=MvZnv28O
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tuxist.de; s=201705;
-	t=1792552572; bh=U300U6JBBikbKqzajlQay6DlU/YNXPzZuXT3M0eIs4w=;
+	t=1792552606; bh=vR17OcW5DP2to57LMQkJCXz9sOVicwks2xNBVa+gK/c=;
 	h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
-	b=Gv9RjMyEN8DbUWWtlROM7CV/VPVlno1DteTYy1x7+1M9V/i8RwaxOw6oJzeNuTbLz
-	 ixX2I/stDeS4UAUFFgMCT5fjyvgHP4ZOoLMqw1PfgCw1TPOTmxFWk1dFlVcNHa5fHN
-	 N9BBl/EmRaapJtzyksGHAGehIgqlLcySEG21zDVoIAKQZYkCVQ6lzSyqpTvfVMbZZz
-	 VOAKO5Q8PjSlEH03zYu5l0CF6lVzcrfsbuyqGxOKuBFhNZy9huAnhMvTiNX0YC1Xvi
-	 LxOhMkutE2vjhlCwKBcfVIGkBjX1y4FJTvacXdcTmG5TIYbduv4qONCSz1P9ZMZCeF
-	 5rzVX5lxx9IXQ==
+	b=MvZnv28OBDboO1Uckg4VHuK/UCnr5rurzSeDn9rh3CM8Oi+8NpNgWNtkIccYx5qyF
+	 ndW6QFNpKp4H1P/4JvmDSWzdVIoAEaNqTq0xoPzvfxt/e9z2vys6oMeRq/oKDBtAKX
+	 +aN+sOmHrfuEdV51ZZ2r9g7Wr8TdKTAbfDMuwOcjaJRjx2hJlcsYGzARDsqfxqV/ox
+	 pXIMjzH5sYuB/rluXQcqmrcXuXG3EFvM9A7sdlk/Mb+bGwKBVX2e/Nd0FT74brAjMl
+	 Uv8wqwMlruNGr/0anQBZWwG1U3ZR6i99bXdWRuTg5MYbLZTBKM77f30XEu7RAoTaFi
+	 ZGVDd4t4+1GaQ==
 Received: from [10.1.1.106] (unknown [10.1.2.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by groupware.tuxist.de (Postfix) with ESMTPSA id 277538A092D;
-	Wed, 21 Oct 2026 05:16:12 +0200 (CEST)
-Message-ID: <91ba959f368000c0946cb846af3cbb8c97f7e005.1792552161.git.jan.koester@tuxist.de>
+	by groupware.tuxist.de (Postfix) with ESMTPSA id B90608A096E;
+	Wed, 21 Oct 2026 05:16:45 +0200 (CEST)
+Message-ID: <1151adfbb3aeae57cb26df8723287857f8d0af57.1792552161.git.jan.koester@tuxist.de>
 In-Reply-To: <cover.1792552161.git.jan.koester@tuxist.de>
 References: <cover.1792552161.git.jan.koester@tuxist.de>
 From: Jan Koester <jan.koester@tuxist.de>
-Subject: [RFC PATCH v2 15/41] SUNRPC: name UUID and GUID users to gssd as
- uid_r=
+Subject: [RFC PATCH v2 25/41] uidgid: parse and print ids in their text form
 To: Christian Brauner <brauner@kernel.org>,
     Alexander Viro <viro@zeniv.linux.org.uk>,
     "Serge E. Hallyn" <serge@hallyn.com>
@@ -70,7 +69,7 @@ Cc: Jan Kara <jack@suse.cz>,
     audit@vger.kernel.org,
     keyrings@vger.kernel.org,
     linux-kernel@vger.kernel.org
-Date: Wed, 21 Oct 2026 05:15:35 +0200
+Date: Wed, 21 Oct 2026 05:15:45 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,107 +79,243 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 
-gssd learns the user of an upcall as a 32 bit uid. UUID and GUID users
-would all reach it as the overflow uid and share its credentials.
+Add helpers for interfaces that pass ids as text:
 
-In the text (v1) upcall, name such a user as uid_r= with the text form
-of the id instead of uid=. gssd versions that don't know uid_r= find no
-uid= and refuse the upcall, so nobody ends up with the overflow uid's
-credentials; where gssd's user namespace can't see the user, the upcall
-names no user at all and fails the same way.
-
-A downcall for such a user starts with uid -1, which is never valid,
-followed by the user as __kernel_uid_r_t; downcalls for classic uids are
-unchanged.
-
-The binary (v0) upcall has room for a 32 bit uid only: fail it with
--EACCES for UUID and GUID users.
+- make_kuid_str()/make_kgid_str() parse what kuid_str() writes: a
+  decimal number, a UUID, or a GUID in braces,
+- kuid_str_munged()/kgid_str_munged() write an id as seen from a user
+  namespace, the overflow id if it has no mapping there,
+- kuid_str_signed()/kgid_str_signed() write a legacy id as a signed
+  number, for output that used "%d",
+- KUID_STR() and friends wrap them as expressions with a buffer of the
+  enclosing block, so that printf-like calls can replace
+  "%u", from_kuid(&init_user_ns, uid) by "%s", KUID_STR(uid) and print
+  legacy ids exactly as before.
 
 Assisted-by: Claude:claude-opus-5-5
 
 Signed-off-by: Jan Koester <jan.koester@tuxist.de>
 ---
- net/sunrpc/auth_gss/auth_gss.c | 44 +++++++++++++++++++++++++++++++---
- 1 file changed, 41 insertions(+), 3 deletions(-)
+ include/linux/uidgid.h |  19 ++++++
+ kernel/uidgid_r.c      | 152 +++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 167 insertions(+), 4 deletions(-)
 
-diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
-index 8ddc65e894..5e9e2cf4e9 100644
---- a/net/sunrpc/auth_gss/auth_gss.c
-+++ b/net/sunrpc/auth_gss/auth_gss.c
-@@ -18,6 +18,7 @@
- #include <linux/sched.h>
- #include <linux/pagemap.h>
- #include <linux/sunrpc/clnt.h>
-+#include <linux/uidgid_r.h>
- #include <linux/sunrpc/auth.h>
- #include <linux/sunrpc/auth_gss.h>
- #include <linux/sunrpc/gss_krb5.h>
-@@ -438,10 +439,23 @@ static int gss_encode_v1_msg(struct gss_upcall_msg *gss_msg,
- 	struct gss_api_mech *mech = gss_msg->auth->mech;
- 	char *p = gss_msg->databuf;
- 	size_t buflen = sizeof(gss_msg->databuf);
-+	char idbuf[KID_STR_LEN];
- 	int len;
+diff --git a/include/linux/uidgid.h b/include/linux/uidgid.h
+index ac7786f760..03ece8a4cb 100644
+--- a/include/linux/uidgid.h
++++ b/include/linux/uidgid.h
+@@ -190,6 +190,25 @@ static inline u32 kgid_hash(kgid_t gid)
  
--	len = scnprintf(p, buflen, "mech=%s uid=%d", mech->gm_name,
--			from_kuid_munged(userns, gss_msg->uid));
-+	/*
-+	 * A UUID or GUID user is uid_r= in its text form instead of uid=,
-+	 * which gssd versions that don't know it reject rather than taking
-+	 * an overflow uid. Where gssd can't see the user at all, there is
-+	 * neither, and the upcall fails.
-+	 */
-+	if (uid_is_legacy(gss_msg->uid))
-+		len = scnprintf(p, buflen, "mech=%s uid=%d", mech->gm_name,
-+				from_kuid_munged(userns, gss_msg->uid));
-+	else if (kuid_has_mapping(userns, gss_msg->uid))
-+		len = scnprintf(p, buflen, "mech=%s uid_r=%s", mech->gm_name,
-+				kuid_str(gss_msg->uid, idbuf));
-+	else
-+		len = scnprintf(p, buflen, "mech=%s", mech->gm_name);
- 	buflen -= len;
- 	p += len;
- 	gss_msg->msg.len = len;
-@@ -536,6 +550,15 @@ gss_alloc_msg(struct gss_auth *gss_auth,
- 	err = vers;
- 	if (err < 0)
- 		goto err_free_msg;
-+	/*
-+	 * The binary v0 upcall is a 32 bit uid: UUID and GUID users would
-+	 * all be the overflow uid there and share its credentials.
-+	 */
-+	if (vers == 0 && !uid_is_legacy(uid)) {
-+		put_pipe_version(gss_auth->net);
-+		err = -EACCES;
-+		goto err_free_msg;
-+	}
- 	gss_msg->pipe = gss_auth->gss_pipe[vers]->pipe;
- 	INIT_LIST_HEAD(&gss_msg->list);
- 	rpc_init_wait_queue(&gss_msg->rpc_waitqueue, "RPCSEC_GSS upcall waitq");
-@@ -752,7 +775,22 @@ gss_pipe_downcall(struct file *filp, const char __user *src, size_t mlen)
- 		goto err;
- 	}
- 
--	uid = make_kuid(current_user_ns(), id);
-+	/*
-+	 * A uid of -1, never valid, is followed by a __kernel_uid_r_t: the
-+	 * reply to a uid_r= upcall of a UUID or GUID user.
-+	 */
-+	if (id == (uid_t)-1) {
-+		struct __kernel_uid_r id_r;
+ char *kuid_str(kuid_t uid, char buf[KID_STR_LEN]);
+ char *kgid_str(kgid_t gid, char buf[KID_STR_LEN]);
++char *kuid_str_signed(kuid_t uid, char buf[KID_STR_LEN]);
++char *kgid_str_signed(kgid_t gid, char buf[KID_STR_LEN]);
 +
-+		p = simple_get_bytes(p, end, &id_r, sizeof(id_r));
-+		if (IS_ERR(p)) {
-+			err = PTR_ERR(p);
-+			goto err;
-+		}
-+		uid = make_kuid_r(current_user_ns(), &id_r);
-+	} else {
-+		uid = make_kuid(current_user_ns(), id);
++/*
++ * The text form of an id as an expression, in a buffer that lives until
++ * the end of the enclosing block -- for "%s" in place of "%u" (or "%d",
++ * with the _D variants, which write a legacy id as a signed number) of
++ * from_kuid(&init_user_ns, uid) in printf-like calls.
++ */
++#define KUID_STR(uid)	kuid_str(uid, (char [KID_STR_LEN]) {})
++#define KGID_STR(gid)	kgid_str(gid, (char [KID_STR_LEN]) {})
++#define KUID_STR_D(uid)	kuid_str_signed(uid, (char [KID_STR_LEN]) {})
++#define KGID_STR_D(gid)	kgid_str_signed(gid, (char [KID_STR_LEN]) {})
++char *kuid_str_munged(struct user_namespace *to, kuid_t uid,
++		      char buf[KID_STR_LEN]);
++char *kgid_str_munged(struct user_namespace *to, kgid_t gid,
++		      char buf[KID_STR_LEN]);
++kuid_t make_kuid_str(struct user_namespace *from, const char *str);
++kgid_t make_kgid_str(struct user_namespace *from, const char *str);
+ 
+ #ifdef CONFIG_USER_NS
+ 
+diff --git a/kernel/uidgid_r.c b/kernel/uidgid_r.c
+index d71aecddb2..9bba60f413 100644
+--- a/kernel/uidgid_r.c
++++ b/kernel/uidgid_r.c
+@@ -12,6 +12,7 @@
+ #include <linux/uidgid.h>
+ #include <linux/uidgid_r.h>
+ #include <linux/user_namespace.h>
++#include <linux/uuid.h>
+ 
+ /*
+  * Whether @id is well formed: a known type, reserved bytes zero, a UUID of
+@@ -278,11 +279,12 @@ int put_kgid_r(struct user_namespace *to, kgid_t kgid,
+ }
+ EXPORT_SYMBOL(put_kgid_r);
+ 
+-static char *kid_str(u32 type, u32 legacy, const uuid_t *b, char *buf)
++static char *kid_str(u32 type, u32 legacy, const uuid_t *b, char *buf,
++		     bool sgn)
+ {
+ 	switch (type) {
+ 	case KID_LEGACY:
+-		snprintf(buf, KID_STR_LEN, "%u", legacy);
++		snprintf(buf, KID_STR_LEN, sgn ? "%d" : "%u", legacy);
+ 		break;
+ 	case KID_UUID:
+ 		snprintf(buf, KID_STR_LEN, "%pUb", b);
+@@ -304,7 +306,7 @@ static char *kid_str(u32 type, u32 legacy, const uuid_t *b, char *buf)
+  */
+ char *kuid_str(kuid_t uid, char buf[KID_STR_LEN])
+ {
+-	return kid_str(uid.type, __kuid_val(uid), &uid.uuid, buf);
++	return kid_str(uid.type, __kuid_val(uid), &uid.uuid, buf, false);
+ }
+ EXPORT_SYMBOL(kuid_str);
+ 
+@@ -318,6 +320,148 @@ EXPORT_SYMBOL(kuid_str);
+  */
+ char *kgid_str(kgid_t gid, char buf[KID_STR_LEN])
+ {
+-	return kid_str(gid.type, __kgid_val(gid), &gid.uuid, buf);
++	return kid_str(gid.type, __kgid_val(gid), &gid.uuid, buf, false);
+ }
+ EXPORT_SYMBOL(kgid_str);
++
++/**
++ * kuid_str_signed - like kuid_str(), but a legacy uid as a signed number
++ * @uid: the kuid
++ * @buf: buffer of KID_STR_LEN bytes
++ *
++ * For callers that used to print from_kuid() with "%d".
++ *
++ * Return: @buf.
++ */
++char *kuid_str_signed(kuid_t uid, char buf[KID_STR_LEN])
++{
++	return kid_str(uid.type, __kuid_val(uid), &uid.uuid, buf, true);
++}
++EXPORT_SYMBOL(kuid_str_signed);
++
++/**
++ * kgid_str_signed - like kgid_str(), but a legacy gid as a signed number
++ * @gid: the kgid
++ * @buf: buffer of KID_STR_LEN bytes
++ *
++ * For callers that used to print from_kgid() with "%d".
++ *
++ * Return: @buf.
++ */
++char *kgid_str_signed(kgid_t gid, char buf[KID_STR_LEN])
++{
++	return kid_str(gid.type, __kgid_val(gid), &gid.uuid, buf, true);
++}
++EXPORT_SYMBOL(kgid_str_signed);
++
++/*
++ * Parses the text forms of kuid_str() -- a decimal number, a UUID, a GUID
++ * in braces -- with an optional trailing newline.
++ */
++static int kid_r_from_str(const char *str, struct __kernel_uid_r *id)
++{
++	char buf[KID_STR_LEN];
++	size_t len = strlen(str);
++
++	if (len && str[len - 1] == '\n')
++		len--;
++	if (!len || len >= sizeof(buf))
++		return -EINVAL;
++	memcpy(buf, str, len);
++	buf[len] = '\0';
++	memset(id, 0, sizeof(*id));
++
++	if (len == UUID_STRING_LEN) {
++		id->type = UID_R_UUID;
++		return uuid_parse(buf, (uuid_t *)id->uuid);
 +	}
- 	if (!uid_valid(uid)) {
- 		err = -EINVAL;
- 		goto err;
++	if (len == UUID_STRING_LEN + 2 && buf[0] == '{' && buf[len - 1] == '}') {
++		buf[len - 1] = '\0';
++		id->type = UID_R_GUID;
++		return guid_parse(buf + 1, (guid_t *)id->guid);
++	}
++	id->type = UID_R_LEGACY;
++	return kstrtou32(buf, 10, &id->legacy);
++}
++
++/**
++ * make_kuid_str - map the text form of a uid into a kuid
++ * @from: user namespace the uid is in
++ * @str: a decimal number, a UUID, or a GUID in braces; a trailing newline
++ *       is allowed
++ *
++ * Return: the kuid, INVALID_UID if @str is malformed or has no mapping in
++ * @from.
++ */
++kuid_t make_kuid_str(struct user_namespace *from, const char *str)
++{
++	struct __kernel_uid_r id;
++
++	if (kid_r_from_str(str, &id))
++		return INVALID_UID;
++	return make_kuid_r(from, &id);
++}
++EXPORT_SYMBOL(make_kuid_str);
++
++/**
++ * make_kgid_str - map the text form of a gid into a kgid
++ * @from: user namespace the gid is in
++ * @str: a decimal number, a UUID, or a GUID in braces; a trailing newline
++ *       is allowed
++ *
++ * Return: the kgid, INVALID_GID if @str is malformed or has no mapping in
++ * @from.
++ */
++kgid_t make_kgid_str(struct user_namespace *from, const char *str)
++{
++	struct __kernel_uid_r id;
++
++	if (kid_r_from_str(str, &id))
++		return INVALID_GID;
++	return make_kgid_r(from, &id);
++}
++EXPORT_SYMBOL(make_kgid_str);
++
++/**
++ * kuid_str_munged - text form of a kuid in a user namespace
++ * @to: user namespace the uid is wanted in
++ * @uid: the kuid
++ * @buf: buffer of KID_STR_LEN bytes
++ *
++ * Return: @buf, holding the uid in @to like kuid_str() does, overflowuid if
++ * @uid has no mapping there.
++ */
++char *kuid_str_munged(struct user_namespace *to, kuid_t uid,
++		      char buf[KID_STR_LEN])
++{
++	if (!kuid_has_mapping(to, uid))
++		snprintf(buf, KID_STR_LEN, "%u", overflowuid);
++	else if (uid_is_legacy(uid))
++		snprintf(buf, KID_STR_LEN, "%u", from_kuid(to, uid));
++	else
++		kuid_str(uid, buf);
++	return buf;
++}
++EXPORT_SYMBOL(kuid_str_munged);
++
++/**
++ * kgid_str_munged - text form of a kgid in a user namespace
++ * @to: user namespace the gid is wanted in
++ * @gid: the kgid
++ * @buf: buffer of KID_STR_LEN bytes
++ *
++ * Return: @buf, holding the gid in @to like kgid_str() does, overflowgid if
++ * @gid has no mapping there.
++ */
++char *kgid_str_munged(struct user_namespace *to, kgid_t gid,
++		      char buf[KID_STR_LEN])
++{
++	if (!kgid_has_mapping(to, gid))
++		snprintf(buf, KID_STR_LEN, "%u", overflowgid);
++	else if (gid_is_legacy(gid))
++		snprintf(buf, KID_STR_LEN, "%u", from_kgid(to, gid));
++	else
++		kgid_str(gid, buf);
++	return buf;
++}
++EXPORT_SYMBOL(kgid_str_munged);
 -- 
 2.56.0
 
