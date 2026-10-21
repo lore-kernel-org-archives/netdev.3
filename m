@@ -1,95 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.17
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792582498;
-	b=v44snNJjE2INB467ZCT1PcbGw67vTM9fCP3X33FBP1OAEt44Bq74QkbJegZcI3fSBoQu
-	 E+rEx6smu9Z+z04DFPdRcb59TfDTnXjRmIg/muXXbFApJD/gdBCmi9QunIUkXxya7//NK
-	 VRytLDfxj+W9O2NUrL4zp8C1xoFvpcCNSc7xklaFPHrgX5G0iJ5W5zIcuHenYTHSDeBmd
-	 hD5pIULpZKIYcOoGK8rqUsBW2oWdn1sCI7IiG4KbD1TdQvZD0bIRgSF7xdJ9oBsRdaDCD
-	 fD1ay7t0WcScEK0nvGXnTxopJe4IbmpXNV/k8wKDxlAyXk4r0pp50P9iPWOG2V7oIHA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792582498;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
-	b=Nm0elDHNqFhvS0vFx3yBbI4bBG4wCXY+HMChed5Nt6aJwtY+3L7l/GdSJZ0cwtcY9vvT
-	 0QMIRZ7qtcg1y8Q7rEYauopfsFoaL9/cnJZI2oFw/SCWlTeIapk3YenVNppYkXllcG312
-	 6qahK5iSdIaXUxKpA+bX8ackopSsDYTptIXyvwbxcrYNxpvHGmWH1uFkt+V4ljTy74Kvj
-	 enxmQJjqhvnUPA8/6LKKhZ4UwsyUWC0jAYGCHENshlVkbVzP/Mq0/5UyjkGt8PN+QUq0/
-	 pzBIUezdbJ5ZTZ0Cl3xlfoTfeWkpKH2PsUwoqce67wtxPZtBNuMdIRaXA5qOPhM5snA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nxp.com;
-	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=L749O85Y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.17
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013017.outbound.protection.outlook.com [52.101.83.17])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792583064;
+	b=2T9gcR+H3RkiCdYS/N0I8iMfltpyklicseDFfnP+h0HLo9pWIP1PgXFJ3vxiSnWbw8mu
+	 0xNWugoyptOFq0kw3t2U8g92enadZDDqegFVW614jExRsyRTsrl5am8TPDiOYpCI5z2l1
+	 hvXSfoTWf3GqNcEl9yK2M1x++8bTGbs54jKLktMg657KRSiJujxGymdCmxP+agLmPJmf+
+	 AtiHyPbeUw4hlKrxT367E1YOSUdYIvOlpT4hN9lwrmllOOkfjBJRNYL/kH3pBJY1Mpl6B
+	 HhV9hQBRA5HAEsoSe40/hF8c2710i4+z+x5VPgg/y12GutXrEtd7aCp6VALyax8xR1A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792583064;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=TkZurcPKDZBZyfWIts4MEXVTWQ0qmZO4rf7ffzawFiI=;
+	b=wPom2JJkhLxnRvbjmAji9BX52nzSSNzXJrXXSUaxFkFxCRon7nqnGzmd9V5hdGfKV883
+	 AXVZ6st6ba4B7F43yoXXlmOUlbkAd5BCKNyBo1GjhcVPGzftERxuat1MD9lgUE5wEoYoa
+	 39TdCXbhocjqnIJwjnPOpivdUA1QJtgIRIMDJy9L5W9mpY3m/RR7lZC6g/Mf/vR8NreT9
+	 nqjrAWVMiwuBIf0vu+xLbW3iUamI18T3IMK7LxYGZ0YBJpgEUMebImhb21PApAvaYkkc0
+	 4Fy2vs+uwwh/pIRpbMbM0UMLomAVNfde8cUJuPi/j0h50pFGk7gaWT7TGsTsiD7t8vA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kY4bYoAL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BC4606A319;
-	Wed, 21 Oct 2026 11:34:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21BC4606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3C7606A319;
+	Wed, 21 Oct 2026 11:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=L749O85Y
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b/cTBLVBt2g6y1PPHFXODD8O3bARgPRJoXj7NCq8Esbrb5VkVFpyNDduBGmthsGlsBRyDshPTOGftGOGENJjx4MyN6zCqTxXX6znQMom/NYtKwwSltGSOYplXrfrJCsYqnOC8GHFA8JLDockAjZPT6Rx4iobuVFrCagXX6GmZIFBbwKV6NbW4dKJSrKo/qLc4PEdhPjl3b96YXhodx7bNideYA3rERunU3DoktdLlkafdNg71zJcovyo2dx09zSPN6zpOxmP/rWYmJpIsQQFWwGwA+CRnQAEEL8EIUSyJ9Rm++kHmo+rGT9XcqurcXP3wo/8Pv0OV6fa9hwuvrGZJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
- b=Lmo5knlTZkWqMIZ9uXazjsBG7X1d02jgL7EoswvPm84E5T6eIkfX54SKkgSZoKazwXRix578B67dhGwReWWfkck1PI3hiJKES7iqP55yRHiehEd52HGe/1AquAynvObSgWB1tTRTS/TZ2VFhpqPw88dKEU/7skFAcBxEuhgkGDmitwjCIOqY3npiGWeaXex/snLIp35MPECtFX7hEoRT39Xw8FeAZRjgYymHWXgNn5fVLHQHbPWoTWuTGSh0O0wWsS55I/VoS98TIm6L5fCG0MTx37VuBhCEtSTIusaLjjRTixS+pjuEw0iBqjOdwxj7CoT97EGCA5Q7G4Kflw6qOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1rVS5lv2lXGwUOC8HcUumutJyKA7KNV6pw8LNsf7nII=;
- b=L749O85Y/7jqnRkUmf5v8Ij4NnjDcGZSuE7L0tH4agdUP7Q8zcp1ZUcVQExZPXpPU4UdVCOrPQeoOXgtU4aXz88EHz75QkO4TafWoPQfDLjzAtffGCWbQ3l7Y9RlJYXvkN8PoCVwRwbiPfwLzXIrvoxOlxd0plKFHKP+fjwCROnMUkCi/lXOUy1/3+2VHONllaBHTjUu/xkOjh59eOSBXpN5yC7T7hH+Z9IXbiy5ZaZCQYH5GHUlNik8a3yroVgkgsUd3vLC3ndBCYsfu2BtBjs5lRrVgUSK5r11vNh/bZNgoxWNYim3CSk0LoxtEQFyTrxiWN+hcf8cw3MFtfoR9A==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by VE1PR04MB7310.eurprd04.prod.outlook.com (2603:10a6:800:1a2::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 21 Oct
- 2026 11:34:54 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 11:34:54 +0000
-Date: Wed, 21 Oct 2026 14:34:50 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
-	Zefir Kurtisi <zefir.kurtisi@westermo.com>, Zefir Kurtisi <zefir.kurtisi@gmail.com>, 
-	David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 net 0/8] Fix short frame transmission in enetc
-Message-ID: <hnpdglhqlyaxp62tdqtr6bht7ltbawwinrfisrhfd5ncgfgter@ngf35z7rubch>
-References: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
-X-ClientProxiedBy: FR2P281CA0064.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:93::12) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kY4bYoAL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24EB1F000C4;
+	Wed, 21 Oct 2026 11:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792583063;
+	bh=TkZurcPKDZBZyfWIts4MEXVTWQ0qmZO4rf7ffzawFiI=;
+	h=From:Date:Subject:To:Cc;
+	b=kY4bYoALLvEALm+6tyqbTmK8RQL59Es2+0eyxSnSimBxB6XRZ85zuUeOnhrDfEg87
+	 w3p4zjGsofpWWufs5k7ye2O/jlLfFneKsylE/b7giHHyLa/x2MC/ya8DpNnUecnLNL
+	 W6ADDWGlC0etWKLnKdyCy2Z/Wid7l8nN91W1tNYCnDXuLx0Yqdmyl1jgrLDJS33ahG
+	 kY4rsJpwwbCqp9XOHVD1MjA8yCBATFZQfyoacFQafdpkomy9Dy+rsic8mnPZ76dtXm
+	 K1oLu0cEAz4K7VrDJ5Xu1ecEFomzr3QY9RtY9ADQbLOG3QhglV8tEAeuxV6VGylFil
+	 SBt8a1Ty0AjVA==
+From: Jeff Layton <jlayton@kernel.org>
+Date: Wed, 21 Oct 2026 07:44:13 -0400
+Subject: [PATCH v2] nfsd: add NFSD_CMD_FILEHANDLE_GET for root filehandle
+ lookup
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,139 +53,727 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|VE1PR04MB7310:EE_
-X-MS-Office365-Filtering-Correlation-Id: b96f1267-ca7f-4342-9ac8-08df2f67537a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|1800799024|366016|376014|7416014|6133799003|10067099003|18002099003|22082099003|261009223027099003|11063799006|5023799004|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	1IHtCUGHsGyMH08kjx8DhCC27zVz3JiIiJxngb2im9Pt7jZB4d0z4wKipYVd8Y0JAvem3L64Vtj1sdzJYFHeW8dpw0inqd9FqkIEYQlHg9HfQZcGocM8iHwGfmWcQWg+s2C/jSykDvzfBPdEeG6u4SuuixEt0Xcdt1+f0idYL0Ii2RzQV7NTz/tVuhntGXaCGYh9wB6RbrIFM9SyVux2nZcpNbrG4vfVJZHzueB49QIURqSmVQkCYs/FIAEns2GJI7Q2Lh0U0gHjhi8cne0BE5zDu68Wjf6XvA83LJA1mbCQawM5Nh02R26PrAJtNTC071kojOJ21rrKLtW0GEOVlCHmI3k4kN9TmVbjahRcuK7D1wIMzJSUUwJZyMzzbI2IMdu5TSBNJ6vMZ7eVzntTprt7zqPV/HDAWIQRKyC2IHS+Jx/nGIVGBl8Hl1vIYmq4WNKE7D5IW+bB7WfIDPYo5gogmi3z6pBF5IaLcBMkpOeHpBzzbu0zomflIrO5ti6/27RXBfvm9r5rLJrQijGzbafLlPWYyRFLGnLQs+0MAKjXTz7feHq+0zliqPHRo5BQNlxHnj971Tc0Qe0q5zldTaCrsap+ZieCP1jA3x5PBjxEIfE9P8dMkeBQrwO/Y57y
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(1800799024)(366016)(376014)(7416014)(6133799003)(10067099003)(18002099003)(22082099003)(261009223027099003)(11063799006)(5023799004)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fXKaYoSUvc1kbzhhxS7EvWZrO30l2WcCp/lggfV3KOBvI5fU3AYFdJKtdcjS?=
- =?us-ascii?Q?KF1QCL9IT9j5KuE5lmqutQfMjzLePIKY8+sNboKvDNxVgwDoIchD1DfIYURF?=
- =?us-ascii?Q?4cMELBNnbA1vDsRpblIZ22yF1aK6TjK4dMwewqa2kEQcvyBNmDM/i4k8w5Kv?=
- =?us-ascii?Q?jcpqMvDbr/F9RDF3Bw2cY/roH9tp7KEKVSP+4AZuvUpG8DCpKGCITXX6dzOo?=
- =?us-ascii?Q?RkPggHTyMBnGJD4JxOCiLeo9PGLDK+bJ9lHV//oEqz1fr+YEA7W1ZFZfwQaM?=
- =?us-ascii?Q?BfMt2h1IPjzYq7YHw/tc1+MXDqMWoH9wGtdH/m18dt2IunaRgxVB/Fi8tZcf?=
- =?us-ascii?Q?2WxxHTAEXJGFgBYoO3cYnU16YezGUNte2HFQoO/bl/2Xd+01kr+UpF3xzS04?=
- =?us-ascii?Q?zyjey7I3D5a7SrrdjRjhMpASkv5vlylojkDxxhS48a98w6r/boxi707HPzEC?=
- =?us-ascii?Q?yI9MQJhdzh3yWkSb7TDGrYbMkG2+hmlVzwr9qpg2BjlfdlUtAI+pARpGLFm7?=
- =?us-ascii?Q?fplXaMg7UySc75y3WTQFAWYnh2WDgKrGqrnuV+//Jt7Ut2cgRd/SW7ZP02DA?=
- =?us-ascii?Q?0wPSv0CcxTwXhWejdaQfkYP4J4pLdLalBruP9R9Hm0ptf2O3xTv4SuRYReix?=
- =?us-ascii?Q?AazAAQLzWAb3EPaKfnAfbY3uD+QBRE9DVsCZWCFhdEXSQo7Y3qSAgeLpXB3Q?=
- =?us-ascii?Q?FWoO/1UWo+hkNgU+SFV2xeW86HyN6Nsq4saP7jtMqP3LOBIcpPUpx/a1AiBQ?=
- =?us-ascii?Q?b6l5+YzCRYY3kjRIJaGe7ZdwoazoPn8iLuvVYGNGIH51QF3VNo/z3zGGt1I6?=
- =?us-ascii?Q?iB2k/JZmfrDM/6kLW2yLVQIp5W5cYPoCf+L2QqsOFIqqgLfBYMkE0sQ9g1mT?=
- =?us-ascii?Q?Lhg7vM6viZvccrsJjxR22VToZmOyUZcBRxrGtvpJ/Uytw6kWT2YdoQZhapt/?=
- =?us-ascii?Q?KdFVTAIHaRJEyeEloKGmDKkhvHusE596z7UZIFUf3WGQmaHioqV7Z93BhDKF?=
- =?us-ascii?Q?OTMSUTZs2aabLSa7x7fXjtmsis8RUeLAiBUIJrquwLBDJgQuVPC6LueAJFUv?=
- =?us-ascii?Q?wvLHR1zu0kisHSwnnDAnDySJFfwBhHxxiUiDtA0HWDuqwGgXB+oPpzaAC4m8?=
- =?us-ascii?Q?BvwotcLlkJeopSPeJDTcNtV+pEf/jNdiOPSNjLAGauyQRy01P5OEMNpFPN+1?=
- =?us-ascii?Q?y7YhB8beBJn7Yh02rP+Ocqpsh1HI/ipm9mnbR5rtSVHiRW5cFg1p3MhAHK08?=
- =?us-ascii?Q?IZ0fQLNmFw6EIMVYppXU+CfjfpwJqyqp6WcmHauk6lh2EdSEf0zejHm6SsUj?=
- =?us-ascii?Q?+4MGMwE1TaEPSlNBCnZxAqcTMAzn5H65NmbJ3EVqKgiM+ITMboSjONRsHwcz?=
- =?us-ascii?Q?dtfspjSlxDa6T3RKTShB4jBqrgVsjgTKEj0u95CccwfUrS/E2dkqMHn70d2N?=
- =?us-ascii?Q?M5S8NS9rV/Qthb8Pu1unXK2BT/BtuBE60rOUZW3jo2aDX/dFCohHQseBCMXd?=
- =?us-ascii?Q?Zt4Aour6dO8sOuKrHlutRf+lHG73MvcFdMnTVl1EjbwvVT/wdQ20KJynNUbZ?=
- =?us-ascii?Q?IzTanlaMzHeGyC98C4SehEpp6Lk059et2Asc98PPs3cRwy2tgfNwEBchqvQd?=
- =?us-ascii?Q?fl+YD4SSOh5MJ8y2YLO/47jQB2rShkFiC5DqsPYYajFSsLZLiUv918dlJ4c7?=
- =?us-ascii?Q?NIf5nUpvurX4Ce6+HtB1/ML+Ana1FJcsf/HAr4xhOleeGEiTHbmLlpa5+eUI?=
- =?us-ascii?Q?YerYBD57Yg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b96f1267-ca7f-4342-9ac8-08df2f67537a
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 11:34:54.0259
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 714lpFNrNfF0pdQXTShclWRAimGcxSw+dUylDdcthQVJl1zEESX20JO9p3abOwzaLsYTO3Bkp0K1pCXqyEZqUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7310
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261021-nfsd-filehandle-get-v2-1-bd7fc8b1b783@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0Jm7ZhpoUhceQ/DAssUJjbFtIRoS
+ O9u5QAu3//57++QOAonuFY7RN4kyRIK6FMFdh7CxChjYdCkW0WaMLg0ohPPpR0948QrGst1Q81
+ l0FRDWb4iO3kf1ntfeJa0LvFznGzql/73bQoVdtY0rtWmI3rcnhwD+/MSJ+hzzl965nG8twAAA
+ A==
+X-Change-ID: 20261020-nfsd-filehandle-get-5ce34047a203
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nfs@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=21435; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=xLHi9Nux77lfcUz/azvdFk3AVI1fASFN2eZRj0r3EWc=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBq2KWQqnY/YWRhyXJIUv5Z1xnvHpC+zgFKYVrQu
+ 7tWaz9EVG+JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCatilkAAKCRAADmhBGVaC
+ FYreD/9He9NREJdjEFAqG5657CQGunBRbAkzamdYZJ/lXjeBiehvMJL65WedntWRw9EKkuxbgvI
+ 6Ke6w5A76I+J9AizS0PnsRMXqAwRLogDY9hGFk0z0nDAgVuOu30nhSocpFuDCEK7N6niFHtBG4l
+ yt9VOuhinuVWO3hVso8HSkSOPTi6ULaKb8re5Buc/iPItLZCsJ9r55HmbkKb4IvXZoQc9KWg0J6
+ BeY4AOIQqM8F1/GTD/bBuXfDC9Ow0dks2LD9MfjjdN3iDVbbwbO02E/vMQ/B9f276IW4xm0WK2V
+ wkuwspjivKXNJ2S5zFfoZ0nMvaLE3g/1GZT1aHDTcGXtMzL/tYR9HYpWjcUlaboPIQeCWb6lUNn
+ L9h3UDS+5X9zEJ+kshXGULJn6LsvvGCHTzNmiVbq60Z1w5wVMI38QD+fiCT2Yym4Lk3Md1eb4sD
+ 6DTYDyGDhKpecFbN6oaFKOlg6OOrW9va5u0E1WQDGUVku0ErrsmY6UAS1GKapYwRTagvFGjytr7
+ 9dEy2506KfO1TwGpbLvy3t1kFDpTyo2O9nBEXHMZZGbqFuYCVU6/OnZNfk2AZ2Nchz6r4SNAGQx
+ 7gVsezTl05bYJXDMzsRnqjCNDU0+H98TyUNX9X4bAmMlEmI/OLzpzk8IHxghUxsmNJgkRJtKxWO
+ FeCHLD5cCGm4QPw==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-On Thu, Oct 15, 2026 at 01:55:28PM +0300, vladimir.oltean@nxp.com wrote:
-> This is a belated follow-up to Zefir Kurtisi's report:
-> https://lore.kernel.org/netdev/20260220132930.2521155-1-zefir.kurtisi@gmail.com/
-> 
-> which is that the ENETC misbehaves when transmitting packets smaller
-> than 16 octets sans FCS: it sends them but does not update the completed
-> index in the transmit BD ring. I did find a sentence in the reference
-> manual explicitly stating these short frames are not supported.
-> 
-> The original series was focused on handling the invalid frame
-> geometries (now patches 4, 5 and 6). However, review pointed out further
-> issues in annex code. The other patches handle those.
-> 
-> v1 at:
-> https://lore.kernel.org/netdev/20260401172246.1075883-1-vladimir.oltean@nxp.com/
-> 
-> v2 at:
-> https://lore.kernel.org/netdev/20260406204122.167237-1-vladimir.oltean@nxp.com/
-> 
-> v3 at:
-> https://lore.kernel.org/netdev/20260915222735.1016937-5-vladimir.oltean@nxp.com/
-> 
-> Change log in individual patches. At a high level:
-> - applied feedback from Wei Fang, David Laight and Sashiko
-> - dropped "[PATCH v3 net 7/7] net: enetc: drain and cancel one-step TX
->   tstamp queue when going down" because addressing Sashiko's feedback
->   would grow this series to a point where it would become impossible to
->   make any progress; plus it becomes more and more unrelated to the main
->   objective. Will address that part separately.
-> - dropped "[PATCH v3 net 6/7] net: enetc: linearize PTP event packets
->   with one-step TX timestamping"; also unrelated to short frames, will
->   resubmit separately.
-> - split v3's "pad short frames in software" into patch 4 (do not rely on
->   mEMAC hardware frame padding) and patch 5 (ensure head buffer has at
->   least 16 octets).
-> - reworked v3's "pad short XDP frames coming from devmap": instead of
->   padding the xdp_frame in place through a new generic xdp_frame_pad()
->   helper (which only covered ndo_xdp_xmit()), patch 6 now pads in the
->   driver using the shared tx_pad buffer, covering the XDP_TX path too.
->   Consequently, there is no longer a change to include/net/xdp.h, so the
->   BPF/XDP folks are no longer CCed.
-> - new patches:
->   - 2/8: serialize access to the same TX ring from NAPI XDP_TX and
->     ndo_xdp_xmit()
->   - 7/8: fix leak of pending XDP_TX frames when going down
-> 
-> Vladimir Oltean (8):
->   net: enetc: consistently track dropped frames in enetc_xdp_xmit()
->   net: enetc: serialize access to the same TX ring from NAPI XDP_TX and
->     ndo_xdp_xmit()
->   net: enetc: fix bogus TX ring consumer index after reinitialization
->   net: enetc: do not rely on mEMAC hardware frame padding
->   net: enetc: ensure head buffer has at least 16 octets
->   net: enetc: pad short XDP frames in software
->   net: enetc: fix leak of pending XDP_TX frames when going down
->   net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
-> 
->  drivers/net/ethernet/freescale/enetc/enetc.c | 160 ++++++++++++++++---
->  drivers/net/ethernet/freescale/enetc/enetc.h |  12 ++
->  2 files changed, 148 insertions(+), 24 deletions(-)
-> 
-> -- 
-> 2.43.0
->
+rpc.mountd still fetches export root filehandles via the
+/proc/fs/nfsd/filehandle transaction interface to satisfy v2/3 MNT
+requests.
 
-In short:
+Add a netlink equivalent:
 
-pw-bot: cr
+FILEHANDLE_GET takes domain, path and maxsize and replies with the
+composed handle, like write_filehandle(). Unlike /proc, which silently
+clamps maxsize to NFS3_FHSIZE, maxsize outside [NFS_FHSIZE, NFS3_FHSIZE]
+is rejected with -ERANGE. Include a kselftest covering validation and
+byte-parity with the /proc interface.
 
-I've received a rainfall of AI review from the Sashiko bot, on some
-emails netdev was copied, on some it was not. Some of the feedback is
-valid (a lot is duplicated, and that makes up a lot of the noise), and
-that valid feedback falls into one of 2 categories:
-- in scope for this patch set
-- out of scope for this patch set
+Reviewed-by: Jakub Kicinski <kuba@kernel.org> # ynl
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+This update just fixes a few things that Chuck noticed in review.
+---
+Changes in v2:
+- Reject maxsize > NFS3_FHSIZE (-ERANGE) instead of silently clamping
+- selftest: skip the "\x" prefix when parsing the /proc reply
+- selftest: remove the mount dir when mount(2) fails
+- selftest: add nfsd_netlink_filehandle to .gitignore
+- selftest: push an explicit fsid so provisioning works on a tmpfs /tmp
+- Link to v1: https://patch.msgid.link/20261020-nfsd-filehandle-get-v1-1-8c54f625800b@kernel.org
+---
+ Documentation/netlink/specs/nfsd.yaml              |  50 +++
+ fs/nfsd/netlink.c                                  |  15 +
+ fs/nfsd/netlink.h                                  |   2 +
+ fs/nfsd/nfsctl.c                                   |  62 ++++
+ include/uapi/linux/nfsd_netlink.h                  |  11 +
+ tools/testing/selftests/nfsd/.gitignore            |   1 +
+ tools/testing/selftests/nfsd/Makefile              |   1 +
+ .../selftests/nfsd/nfsd_netlink_filehandle.c       | 378 +++++++++++++++++++++
+ 8 files changed, 520 insertions(+)
 
-I can't humanly respond to all that verbiage, sorry.
+diff --git a/Documentation/netlink/specs/nfsd.yaml b/Documentation/netlink/specs/nfsd.yaml
+index 9ae37bf3ea71..a4991206b45e 100644
+--- a/Documentation/netlink/specs/nfsd.yaml
++++ b/Documentation/netlink/specs/nfsd.yaml
+@@ -51,6 +51,11 @@ definitions:
+       so the caller must skip the udp and udp6 netids for it.
+     entries:
+       - no-udp
++  -
++    type: const
++    name: nfsclnt-idmax
++    value: 1024
++    header: linux/nfsd/export.h
+ 
+ attribute-sets:
+   -
+@@ -460,6 +465,33 @@ attribute-sets:
+         nested-attributes: server-proc-entry
+         multi-attr: true
+ 
++  -
++    name: filehandle
++    attributes:
++      -
++        name: domain
++        type: string
++        doc: Client domain name the export is visible to.
++        checks:
++          max-len: nfsclnt-idmax
++      -
++        name: path
++        type: string
++        doc: Pathname of the export whose root filehandle is requested.
++        checks:
++          max-len: 4095 # PATH_MAX - 1
++      -
++        name: maxsize
++        type: u32
++        doc: Largest filehandle the caller can accept, in bytes.
++        checks:
++          min: 32 # NFS_FHSIZE
++          max: 64 # NFS3_FHSIZE
++      -
++        name: handle
++        type: binary
++        doc: The composed root filehandle. Reply only.
++
+ operations:
+   list:
+     -
+@@ -681,6 +713,24 @@ operations:
+             - proc4ops-ops
+             - proc4cb-ops
+ 
++    -
++      name: filehandle-get
++      doc: >-
++        Look up the root filehandle of an export for a client domain.
++        Netlink equivalent of the /proc/fs/nfsd/filehandle transaction
++        interface used by rpc.mountd.
++      attribute-set: filehandle
++      flags: [admin-perm]
++      do:
++        request:
++          attributes:
++            - domain
++            - path
++            - maxsize
++        reply:
++          attributes:
++            - handle
++
+ mcast-groups:
+   list:
+     -
+diff --git a/fs/nfsd/netlink.c b/fs/nfsd/netlink.c
+index 88a4a4ffcb7f..4ea6a7c1ce7f 100644
+--- a/fs/nfsd/netlink.c
++++ b/fs/nfsd/netlink.c
+@@ -10,6 +10,7 @@
+ #include "netlink.h"
+ 
+ #include <uapi/linux/nfsd_netlink.h>
++#include <linux/nfsd/export.h>
+ 
+ /* Common nested types */
+ const struct nla_policy nfsd_auth_flavor_nl_policy[NFSD_A_AUTH_FLAVOR_FLAGS + 1] = {
+@@ -119,6 +120,13 @@ static const struct nla_policy nfsd_unlock_export_nl_policy[NFSD_A_UNLOCK_EXPORT
+ 	[NFSD_A_UNLOCK_EXPORT_PATH] = { .type = NLA_NUL_STRING, },
+ };
+ 
++/* NFSD_CMD_FILEHANDLE_GET - do */
++static const struct nla_policy nfsd_filehandle_get_nl_policy[NFSD_A_FILEHANDLE_MAXSIZE + 1] = {
++	[NFSD_A_FILEHANDLE_DOMAIN] = { .type = NLA_NUL_STRING, .len = NFSCLNT_IDMAX, },
++	[NFSD_A_FILEHANDLE_PATH] = { .type = NLA_NUL_STRING, .len = 4095, },
++	[NFSD_A_FILEHANDLE_MAXSIZE] = NLA_POLICY_RANGE(NLA_U32, 32, 64),
++};
++
+ /* Ops table for nfsd */
+ static const struct genl_split_ops nfsd_nl_ops[] = {
+ 	{
+@@ -231,6 +239,13 @@ static const struct genl_split_ops nfsd_nl_ops[] = {
+ 		.dumpit	= nfsd_nl_server_stats_get_dumpit,
+ 		.flags	= GENL_CMD_CAP_DUMP,
+ 	},
++	{
++		.cmd		= NFSD_CMD_FILEHANDLE_GET,
++		.doit		= nfsd_nl_filehandle_get_doit,
++		.policy		= nfsd_filehandle_get_nl_policy,
++		.maxattr	= NFSD_A_FILEHANDLE_MAXSIZE,
++		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
++	},
+ };
+ 
+ static const struct genl_multicast_group nfsd_nl_mcgrps[] = {
+diff --git a/fs/nfsd/netlink.h b/fs/nfsd/netlink.h
+index 027e2953db26..57fc86c63b1d 100644
+--- a/fs/nfsd/netlink.h
++++ b/fs/nfsd/netlink.h
+@@ -11,6 +11,7 @@
+ #include <net/genetlink.h>
+ 
+ #include <uapi/linux/nfsd_netlink.h>
++#include <linux/nfsd/export.h>
+ 
+ /* Common nested types */
+ extern const struct nla_policy nfsd_auth_flavor_nl_policy[NFSD_A_AUTH_FLAVOR_FLAGS + 1];
+@@ -44,6 +45,7 @@ int nfsd_nl_unlock_filesystem_doit(struct sk_buff *skb, struct genl_info *info);
+ int nfsd_nl_unlock_export_doit(struct sk_buff *skb, struct genl_info *info);
+ int nfsd_nl_server_stats_get_dumpit(struct sk_buff *skb,
+ 				    struct netlink_callback *cb);
++int nfsd_nl_filehandle_get_doit(struct sk_buff *skb, struct genl_info *info);
+ 
+ enum {
+ 	NFSD_NLGRP_NONE,
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 9327b6289904..85f0ad7429fa 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -2943,6 +2943,68 @@ int nfsd_nl_unlock_export_doit(struct sk_buff *skb, struct genl_info *info)
+ 	return error;
+ }
+ 
++/**
++ * nfsd_nl_filehandle_get_doit - look up the root filehandle of an export
++ * @skb: reply buffer
++ * @info: netlink metadata and command arguments
++ *
++ * Netlink equivalent of the /proc/fs/nfsd/filehandle transaction interface:
++ * compose the root filehandle for @path as visible to client @domain,
++ * no larger than @maxsize bytes.
++ *
++ * Return: 0 on success or a negative errno.
++ */
++int nfsd_nl_filehandle_get_doit(struct sk_buff *skb, struct genl_info *info)
++{
++	struct net *net = genl_info_net(info);
++	struct auth_domain *dom;
++	struct knfsd_fh fh;
++	char *dname, *path;
++	u32 maxsize;
++	void *hdr;
++	int err;
++
++	if (GENL_REQ_ATTR_CHECK(info, NFSD_A_FILEHANDLE_DOMAIN) ||
++	    GENL_REQ_ATTR_CHECK(info, NFSD_A_FILEHANDLE_PATH) ||
++	    GENL_REQ_ATTR_CHECK(info, NFSD_A_FILEHANDLE_MAXSIZE))
++		return -EINVAL;
++
++	dname = nla_data(info->attrs[NFSD_A_FILEHANDLE_DOMAIN]);
++	path = nla_data(info->attrs[NFSD_A_FILEHANDLE_PATH]);
++	maxsize = nla_get_u32(info->attrs[NFSD_A_FILEHANDLE_MAXSIZE]);
++
++	trace_nfsd_ctl_filehandle(net, dname, path, maxsize);
++
++	dom = unix_domain_find(dname);
++	if (!dom)
++		return -ENOMEM;
++
++	err = exp_rootfh(net, dom, path, &fh, maxsize);
++	auth_domain_put(dom);
++	if (err)
++		return err;
++
++	skb = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!skb)
++		return -ENOMEM;
++
++	err = -EMSGSIZE;
++	hdr = genlmsg_iput(skb, info);
++	if (!hdr)
++		goto err_free_msg;
++
++	err = nla_put(skb, NFSD_A_FILEHANDLE_HANDLE, fh.fh_size, fh.fh_raw);
++	if (err)
++		goto err_free_msg;
++
++	genlmsg_end(skb, hdr);
++	return genlmsg_reply(skb, info);
++
++err_free_msg:
++	nlmsg_free(skb);
++	return err;
++}
++
+ /**
+  * nfsd_net_init - Prepare the nfsd_net portion of a new net namespace
+  * @net: a freshly-created network namespace
+diff --git a/include/uapi/linux/nfsd_netlink.h b/include/uapi/linux/nfsd_netlink.h
+index c125af0cc6a5..dcd2126d848b 100644
+--- a/include/uapi/linux/nfsd_netlink.h
++++ b/include/uapi/linux/nfsd_netlink.h
+@@ -280,6 +280,16 @@ enum {
+ 	NFSD_A_SERVER_STATS_MAX = (__NFSD_A_SERVER_STATS_MAX - 1)
+ };
+ 
++enum {
++	NFSD_A_FILEHANDLE_DOMAIN = 1,
++	NFSD_A_FILEHANDLE_PATH,
++	NFSD_A_FILEHANDLE_MAXSIZE,
++	NFSD_A_FILEHANDLE_HANDLE,
++
++	__NFSD_A_FILEHANDLE_MAX,
++	NFSD_A_FILEHANDLE_MAX = (__NFSD_A_FILEHANDLE_MAX - 1)
++};
++
+ enum {
+ 	NFSD_CMD_RPC_STATUS_GET = 1,
+ 	NFSD_CMD_THREADS_SET,
+@@ -300,6 +310,7 @@ enum {
+ 	NFSD_CMD_UNLOCK_FILESYSTEM,
+ 	NFSD_CMD_UNLOCK_EXPORT,
+ 	NFSD_CMD_SERVER_STATS_GET,
++	NFSD_CMD_FILEHANDLE_GET,
+ 
+ 	__NFSD_CMD_MAX,
+ 	NFSD_CMD_MAX = (__NFSD_CMD_MAX - 1)
+diff --git a/tools/testing/selftests/nfsd/.gitignore b/tools/testing/selftests/nfsd/.gitignore
+index 7ac844d0fd57..93a8f31ae2ea 100644
+--- a/tools/testing/selftests/nfsd/.gitignore
++++ b/tools/testing/selftests/nfsd/.gitignore
+@@ -1,4 +1,5 @@
+ nfsd_lockd_netlink
++nfsd_netlink_filehandle
+ nfsd_netlink_listener
+ nfsd_netns_isolation
+ nfsd_netns_stress
+diff --git a/tools/testing/selftests/nfsd/Makefile b/tools/testing/selftests/nfsd/Makefile
+index e74bb3424d45..25c9346954be 100644
+--- a/tools/testing/selftests/nfsd/Makefile
++++ b/tools/testing/selftests/nfsd/Makefile
+@@ -2,6 +2,7 @@
+ CFLAGS += $(KHDR_INCLUDES) -Wall
+ 
+ TEST_GEN_PROGS := nfsd_netlink_listener
++TEST_GEN_PROGS += nfsd_netlink_filehandle
+ TEST_GEN_PROGS += nfsd_lockd_netlink
+ TEST_GEN_PROGS += nfsd_netns_isolation
+ TEST_GEN_PROGS += nfsd_netns_stress
+diff --git a/tools/testing/selftests/nfsd/nfsd_netlink_filehandle.c b/tools/testing/selftests/nfsd/nfsd_netlink_filehandle.c
+new file mode 100644
+index 000000000000..356f087fbcfb
+--- /dev/null
++++ b/tools/testing/selftests/nfsd/nfsd_netlink_filehandle.c
+@@ -0,0 +1,378 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Regression tests for NFSD_CMD_FILEHANDLE_GET: root filehandle lookup
++ * over generic netlink.
++ *
++ * validation  - missing attributes are rejected with -EINVAL, an out-of-range
++ *               maxsize with -ERANGE; a domain with no pushed export fails.
++ * functional  - push an ip_map + svc_export pair the way mountd does, then
++ *               check the lookup returns a stable handle that matches the
++ *               legacy filehandle transaction interface byte for byte.
++ *
++ * Each test runs in a private net + mount namespace. The pushed export
++ * lives in the per-netns svc_export cache and dies with the namespace;
++ * the client domain itself is created in sunrpc's global auth_domain
++ * table, like any real client name would be.
++ */
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <sched.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <time.h>
++#include <unistd.h>
++#include <sys/mount.h>
++#include <sys/socket.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <linux/netlink.h>
++#include <linux/genetlink.h>
++#include <linux/nfsd/export.h>
++#include <linux/nfsd_netlink.h>
++#include <linux/sunrpc_netlink.h>
++
++#include "../kselftest_harness.h"
++#include "nfsd_netlink.h"
++
++#define FH_DOMAIN	"nfsd-fh-selftest"
++#define FH_MAXSIZE	64
++#define FH_TTL		3600
++#define FH_FSID		4242
++
++static int sunrpc_family = -1;
++
++/* Push one ip_map entry the way mountd's cache_export() does. */
++static int ip_map_set(const char *domain)
++{
++	char attrs[256];
++	struct nlattr *nest = (void *)attrs;
++	uint64_t expiry = (uint64_t)time(NULL) + FH_TTL;
++	static const char class[] = "nfsd";
++	static const char addr[] = "127.0.0.2";
++	int inner = NLA_HDRLEN;
++
++	inner = put_attr(attrs, inner, SUNRPC_A_IP_MAP_CLASS,
++			 class, sizeof(class));
++	inner = put_attr(attrs, inner, SUNRPC_A_IP_MAP_ADDR,
++			 addr, sizeof(addr));
++	inner = put_attr(attrs, inner, SUNRPC_A_IP_MAP_DOMAIN,
++			 domain, strlen(domain) + 1);
++	inner = put_attr(attrs, inner, SUNRPC_A_IP_MAP_EXPIRY,
++			 &expiry, sizeof(expiry));
++	nest->nla_type = SUNRPC_A_IP_MAP_REQS_REQUESTS | NLA_F_NESTED;
++	nest->nla_len = inner;
++
++	return genl_request_to(sunrpc_family, SUNRPC_CMD_IP_MAP_SET_REQS,
++			       attrs, NLA_ALIGN4(inner));
++}
++
++/*
++ * Push one positive svc_export entry for @domain/@path. An explicit fsid
++ * lets this work when @path is on tmpfs or another fs without a device.
++ */
++static int export_set(const char *domain, const char *path)
++{
++	char attrs[512];
++	struct nlattr *nest = (void *)attrs;
++	uint64_t expiry = (uint64_t)time(NULL) + FH_TTL;
++	uint32_t anon = 65534, flags = NFSEXP_FSID;
++	int32_t fsid = FH_FSID;
++	int inner = NLA_HDRLEN;
++
++	inner = put_attr(attrs, inner, NFSD_A_SVC_EXPORT_CLIENT,
++			 domain, strlen(domain) + 1);
++	inner = put_attr(attrs, inner, NFSD_A_SVC_EXPORT_PATH,
++			 path, strlen(path) + 1);
++	inner = put_attr(attrs, inner, NFSD_A_SVC_EXPORT_EXPIRY,
++			 &expiry, sizeof(expiry));
++	inner = put_attr(attrs, inner, NFSD_A_SVC_EXPORT_ANON_UID,
++			 &anon, sizeof(anon));
++	inner = put_attr(attrs, inner, NFSD_A_SVC_EXPORT_ANON_GID,
++			 &anon, sizeof(anon));
++	inner = put_attr(attrs, inner, NFSD_A_SVC_EXPORT_FLAGS,
++			 &flags, sizeof(flags));
++	inner = put_attr(attrs, inner, NFSD_A_SVC_EXPORT_FSID,
++			 &fsid, sizeof(fsid));
++	nest->nla_type = NFSD_A_SVC_EXPORT_REQS_REQUESTS | NLA_F_NESTED;
++	nest->nla_len = inner;
++
++	return genl_request(NFSD_CMD_SVC_EXPORT_SET_REQS, attrs,
++			    NLA_ALIGN4(inner));
++}
++
++/* Provision @domain/@path exactly like a mountd MOUNT would. */
++static int provision(const char *domain, const char *path)
++{
++	int ret = ip_map_set(domain);
++
++	if (ret)
++		return ret;
++	return export_set(domain, path);
++}
++
++/* Fine-grained control for negative tests: any field can be omitted. */
++struct raw_fh_req {
++	const char *domain;	/* NULL -> omit NFSD_A_FILEHANDLE_DOMAIN */
++	const char *path;	/* NULL -> omit NFSD_A_FILEHANDLE_PATH */
++	int emit_maxsize;
++	uint32_t maxsize;
++};
++
++/* FILEHANDLE_GET into @fh; returns handle length or -errno. */
++static int filehandle_get_raw(const struct raw_fh_req *r, char *fh,
++			      size_t fhsize)
++{
++	char attrs[256], rbuf[512];
++	const struct nlattr *na;
++	int off = 0, ret, len;
++
++	if (r->domain)
++		off = put_attr(attrs, off, NFSD_A_FILEHANDLE_DOMAIN,
++			       r->domain, strlen(r->domain) + 1);
++	if (r->path)
++		off = put_attr(attrs, off, NFSD_A_FILEHANDLE_PATH,
++			       r->path, strlen(r->path) + 1);
++	if (r->emit_maxsize)
++		off = put_attr(attrs, off, NFSD_A_FILEHANDLE_MAXSIZE,
++			       &r->maxsize, sizeof(r->maxsize));
++
++	ret = genl_request_reply_attrs(NFSD_CMD_FILEHANDLE_GET, attrs, off,
++				       rbuf, sizeof(rbuf));
++	if (ret <= 0)
++		return ret ? ret : -EIO;
++
++	na = genl_find_attr(rbuf, ret, NFSD_A_FILEHANDLE_HANDLE);
++	if (!na)
++		return -EIO;
++	len = na->nla_len - NLA_HDRLEN;
++	if (len <= 0 || (size_t)len > fhsize)
++		return -EIO;
++	memcpy(fh, (const char *)na + NLA_HDRLEN, len);
++	return len;
++}
++
++static int filehandle_get(const char *domain, const char *path,
++			  char *fh, size_t fhsize)
++{
++	struct raw_fh_req r = { .domain = domain, .path = path,
++				.emit_maxsize = 1, .maxsize = FH_MAXSIZE };
++
++	return filehandle_get_raw(&r, fh, fhsize);
++}
++
++static int hexval(char c)
++{
++	if (c >= '0' && c <= '9')
++		return c - '0';
++	if (c >= 'a' && c <= 'f')
++		return c - 'a' + 10;
++	if (c >= 'A' && c <= 'F')
++		return c - 'A' + 10;
++	return -1;
++}
++
++/* Legacy transaction interface: write "domain path maxsize", read "\x<hex>". */
++static int proc_filehandle(const char *mnt, const char *domain,
++			   const char *path, char *fh, size_t fhsize)
++{
++	char file[128], req[256], rsp[512];
++	int fd, i, n, len;
++
++	snprintf(file, sizeof(file), "%s/filehandle", mnt);
++	fd = open(file, O_RDWR);
++	if (fd < 0)
++		return -errno;
++	n = snprintf(req, sizeof(req), "%s %s %u\n", domain, path, FH_MAXSIZE);
++	if (write(fd, req, n) != n) {
++		n = -errno;
++		close(fd);
++		return n;
++	}
++	n = read(fd, rsp, sizeof(rsp) - 1);
++	close(fd);
++	if (n <= 0)
++		return n ? -errno : -EIO;
++	rsp[n] = '\0';
++
++	if (n < 2 || rsp[0] != '\\' || rsp[1] != 'x')
++		return -EIO;
++
++	len = 0;
++	for (i = 2; i + 1 < n && rsp[i] != '\n'; i += 2) {
++		int hi = hexval(rsp[i]), lo = hexval(rsp[i + 1]);
++
++		if (hi < 0 || lo < 0)
++			return -EIO;
++		if ((size_t)len >= fhsize)
++			return -EIO;
++		fh[len++] = (hi << 4) | lo;
++	}
++	return len ? len : -EIO;
++}
++
++/* --------------------------- fixture --------------------------- */
++
++FIXTURE(nfsd_filehandle) {
++	char tmpdir[64];
++	char mnt[80];
++	int mounted;
++};
++
++FIXTURE_SETUP(nfsd_filehandle)
++{
++	if (geteuid() != 0)
++		SKIP(return, "must be run as root");
++	if (unshare(CLONE_NEWNET | CLONE_NEWNS) < 0)
++		SKIP(return, "unshare(NEWNET|NEWNS): %s", strerror(errno));
++	if (mount("", "/", NULL, MS_REC | MS_PRIVATE, NULL) < 0)
++		SKIP(return, "mount(/ private): %s", strerror(errno));
++
++	nfsd_family = genl_resolve_nfsd();
++	if (nfsd_family < 0)
++		SKIP(return, "nfsd genl family not found (modprobe nfsd?)");
++	sunrpc_family = genl_resolve(SUNRPC_FAMILY_NAME,
++				     sizeof(SUNRPC_FAMILY_NAME));
++	if (sunrpc_family < 0)
++		SKIP(return, "sunrpc genl family not found");
++
++	/*
++	 * Probe for FILEHANDLE_GET: an empty request must fail attribute
++	 * validation on a patched kernel, while an unpatched one answers
++	 * -EOPNOTSUPP for the unknown command.
++	 */
++	if (genl_request(NFSD_CMD_FILEHANDLE_GET, NULL, 0) == -EOPNOTSUPP)
++		SKIP(return, "NFSD_CMD_FILEHANDLE_GET not supported");
++
++	strcpy(self->tmpdir, "/tmp/nfsd-fh-XXXXXX");
++	if (!mkdtemp(self->tmpdir))
++		SKIP(return, "mkdtemp: %s", strerror(errno));
++	self->mounted = 0;
++}
++
++FIXTURE_TEARDOWN(nfsd_filehandle)
++{
++	if (self->mounted) {
++		umount(self->mnt);
++		rmdir(self->mnt);
++	}
++	rmdir(self->tmpdir);
++}
++
++/* Mount this netns's nfsd filesystem for the legacy comparison. */
++static int fh_proc_mount(FIXTURE_DATA(nfsd_filehandle) * self)
++{
++	snprintf(self->mnt, sizeof(self->mnt), "%s/mnt", self->tmpdir);
++	if (mkdir(self->mnt, 0700) < 0)
++		return -errno;
++	if (mount("nfsd", self->mnt, "nfsd", 0, NULL) < 0) {
++		int err = -errno;
++
++		rmdir(self->mnt);
++		return err;
++	}
++	self->mounted = 1;
++	return 0;
++}
++
++/* ===================== validation / negative ===================== */
++
++TEST_F(nfsd_filehandle, val_missing_domain)
++{
++	struct raw_fh_req r = { .path = self->tmpdir,
++				.emit_maxsize = 1, .maxsize = FH_MAXSIZE };
++	char fh[FH_MAXSIZE];
++
++	EXPECT_EQ(-EINVAL, filehandle_get_raw(&r, fh, sizeof(fh)));
++}
++
++TEST_F(nfsd_filehandle, val_missing_path)
++{
++	struct raw_fh_req r = { .domain = FH_DOMAIN,
++				.emit_maxsize = 1, .maxsize = FH_MAXSIZE };
++	char fh[FH_MAXSIZE];
++
++	EXPECT_EQ(-EINVAL, filehandle_get_raw(&r, fh, sizeof(fh)));
++}
++
++TEST_F(nfsd_filehandle, val_missing_maxsize)
++{
++	struct raw_fh_req r = { .domain = FH_DOMAIN, .path = self->tmpdir };
++	char fh[FH_MAXSIZE];
++
++	EXPECT_EQ(-EINVAL, filehandle_get_raw(&r, fh, sizeof(fh)));
++}
++
++TEST_F(nfsd_filehandle, val_maxsize_small)
++{
++	struct raw_fh_req r = { .domain = FH_DOMAIN, .path = self->tmpdir,
++				.emit_maxsize = 1, .maxsize = 31 };
++	char fh[FH_MAXSIZE];
++
++	EXPECT_EQ(-ERANGE, filehandle_get_raw(&r, fh, sizeof(fh)));
++	r.maxsize = 0;
++	EXPECT_EQ(-ERANGE, filehandle_get_raw(&r, fh, sizeof(fh)));
++}
++
++TEST_F(nfsd_filehandle, val_maxsize_large)
++{
++	struct raw_fh_req r = { .domain = FH_DOMAIN, .path = self->tmpdir,
++				.emit_maxsize = 1, .maxsize = 65 };
++	char fh[FH_MAXSIZE];
++
++	EXPECT_EQ(-ERANGE, filehandle_get_raw(&r, fh, sizeof(fh)));
++}
++
++TEST_F(nfsd_filehandle, val_no_export)
++{
++	char fh[FH_MAXSIZE];
++
++	/* Well-formed but nothing was ever pushed for this domain. */
++	EXPECT_LT(filehandle_get("nfsd-fh-noexport", self->tmpdir,
++				 fh, sizeof(fh)), 0);
++}
++
++/* ===================== functional ===================== */
++
++TEST_F(nfsd_filehandle, func_roundtrip)
++{
++	char fh1[FH_MAXSIZE], fh2[FH_MAXSIZE];
++	int len1, len2;
++
++	ASSERT_EQ(0, provision(FH_DOMAIN, self->tmpdir));
++
++	len1 = filehandle_get(FH_DOMAIN, self->tmpdir, fh1, sizeof(fh1));
++	ASSERT_GT(len1, 0);
++	EXPECT_LE(len1, FH_MAXSIZE);
++
++	/* The same lookup must compose the same handle. */
++	len2 = filehandle_get(FH_DOMAIN, self->tmpdir, fh2, sizeof(fh2));
++	EXPECT_EQ(len1, len2);
++	EXPECT_EQ(0, memcmp(fh1, fh2, len1));
++}
++
++TEST_F(nfsd_filehandle, func_matches_proc)
++{
++	char fh_nl[FH_MAXSIZE], fh_proc[FH_MAXSIZE];
++	int len_nl, len_proc, ret;
++
++	ASSERT_EQ(0, provision(FH_DOMAIN, self->tmpdir));
++
++	ret = fh_proc_mount(self);
++	if (ret)
++		SKIP(return, "mount(nfsd): %s", strerror(-ret));
++
++	len_proc = proc_filehandle(self->mnt, FH_DOMAIN, self->tmpdir,
++				   fh_proc, sizeof(fh_proc));
++	ASSERT_GT(len_proc, 0);
++
++	len_nl = filehandle_get(FH_DOMAIN, self->tmpdir, fh_nl, sizeof(fh_nl));
++	ASSERT_GT(len_nl, 0);
++
++	EXPECT_EQ(len_proc, len_nl);
++	EXPECT_EQ(0, memcmp(fh_proc, fh_nl, len_nl));
++}
++
++TEST_HARNESS_MAIN
 
-Because I want to get this issue resolved ASAP, I will trim v5 to just 4
-patches, which touch only what is strictly in scope, and will defer the
-rest of the feedback to other patch sets to follow.
+---
+base-commit: b4e06bef38843c8b909d0b4317dfaaf87dba6d72
+change-id: 20261020-nfsd-filehandle-get-5ce34047a203
+
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
+
