@@ -1,117 +1,125 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792569073;
-	b=IjTs/ak+LKeX2DWDfLgYacqflieKxGN88jEEadjlEgo+nHUFXZVi9sYsZA0Q1usdxoHF
-	 1nShiH3p7dgoVw0zau0QucjRkeYGQxc0Kc2ULMQfMp6kwkTnP1xAkQvydlfreNN2gWHjX
-	 B03uiD9nJKoO4pTq9F4YPsCFkR6uK062vvKlBHl7iUGFCrkZMd94OMHx+OKHJabMT1jCn
-	 4loVUM53Vlyo0dSG6aPVbQo+Vy7uLkJdc1f50JnLZoXARXtI7jKF5qZxbDRO7WdOUFyBM
-	 77GnkJIGt2poN9BYsUJs3de264Nauz0fv43aH7BwQLz7NnDSKndXh0S2VexIS4awRRQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792569073;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=2Ac375qKoEqNKHjY28/wFKZzLXr4nYIay+eeXoZD77w=;
-	b=YCdxq1jCLeQwqDzsR/xCoJ63DXk19yEkv+xAqRFPbx7abbkFNotEvw30pp41R+gkzHNz
-	 ExO4e5IHsbf8m+vCr1s0I9E/M4qRR25CUj+qU5n0AUlMUhfndTMb6sRvT/yZW1Vcn5jDL
-	 fqIr4iT6N3BmfwWESSarF/t6OBL7J3YoMZTqNxYdGZCrKoHyyOSOr1BcFNQfKVOes1wp8
-	 4VSKt643xuKlKL9XXaYWH+9b4Rn3QYtUABSkEshOoPuMi7STz05Ch/sxhsz3U4lszFx5g
-	 T2I/IK63F3zutdACOBAkrxKSVjF9UZunSLgYro6kOzf48fFrF4Yl5yZ2BUsoSsl1acA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=r2yPgd0u;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.51
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010051.outbound.protection.outlook.com [52.101.61.51])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792569129;
+	b=e8K8FwHSwfmZjjf6t9sXY82IbpcqDJbpkQZnnbfL0kBprDHldTSghHxIAOvRCdIsKhlJ
+	 tFc6efv5hGomng3dV2Qg1EnzfEwpkrdxRlPyEDdcJx85sl+vHd1klqaVzp7EaejUnZcoo
+	 JBP5wApMos37Wjm8l7I5AJFz+1eTVjw1nfL7fhAuNkKAl/8p9DP2QKgbn+pKQ7Xu3XnRy
+	 lGKlegaoqeosgvEeCDmLGvE9Aakyn0ozQ9UX48ngh3yOMbK+8LNcZ8HqftBbdoGVHbUX6
+	 md5lJJxvSW5RfzGlfiO1rNymnLrlGRcZ61kDWNKUBmmJaTis915PNQIgglm0n68aogA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792569129;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=QITuyYs5+tqSrKrfIpvUKD41r2Vyp9d2xbchRm7msa8=;
+	b=U4330KoacQJzwMTytdFUyJmHQEKFt1vnsUy1e+fjrmoes940J9TbzZDQedDhjp4Lvbtu
+	 C3zs7mTVyRvp0kXeTrNbiGyLsiuWCMWmou1zlGTnom4d43GnSw5FVQDpxi1FhF370DoWv
+	 IxKLMBFFEYb82nOQ7GFebvYtHA6c9KD36bLSd8Sb3e8CoFa4QDjL8rQItC9/zIjKWtfXy
+	 hI6X/iNjg0yY2kwKvD9KwcDVANReudho3hRmjg6qhvJ4RIUWoK+ZlLpS52uwmQ3/e3VJx
+	 lIwboLVvzdP+kRaIu7cY6HAKTutLuiVG03qm3tenviSLEr7iO1FXUKd3FhNA1Cs2iUA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZyaCfOMZ;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=J4BWEF5P;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D771606A31C;
-	Wed, 21 Oct 2026 07:51:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D771606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14153606A31D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 07:52:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14153606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=r2yPgd0u
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hD8DUPXFTRCTnYZfZxwL3Nz1vP+mlycS9QBdR+7XPglUAUK1ZuO0N+0qVfawNA0Q7zK1l4chcrf24N+Zpx7nftLqOY4hKSRE9eAzZ5LIBq8jBNzpcEZfrWIXaLzsFDpZw15bjzL860CvS4HYshIkFzRMGqj+za/vU18xnNVujzEYCEOd1bc7fYQac4oeh7J1CVpL9O+cL5e6AH3164QHKN5Cj3I4j4M5Bd8jvx9r1TdkU/pz52XbP4YXWpD8lMY+9TbkAfTPkMhf7+CUAFD2H4jmIYZtHOde9cI2wHMd+7W0y5tdvTHUQbeT6InM/rUPzUgKjLqdi0DY4cyX5bC76Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Ac375qKoEqNKHjY28/wFKZzLXr4nYIay+eeXoZD77w=;
- b=hUZbQcel5FNEkdD1n77Z51PL6Uf8hJlBKubm2mDbTK1WuqjqaOfgehvG4/Ohi4cZyeVINGz5X+lF55V+W320/8f/wm9W8yhzS8fGR/MUzbNzHXgwoU+7DLTyaNE4196Ugl+BauTKG00u38zlHVZ2Vv5n/blj4d0p22+YM7Kyoj39Roaa3MjtjQccQc1pAVr2uOFovgwXGSxYTtNiCCD0PA/eCyS8/KVzqeXO1g1B3Hm60Ej4N/sty5p9Y99B/vNwCG7GT8ijkrS+B54Id/G1oq3mhV4lV4NLqkxqk78G9MQEgy04lMgrXiJ3tJcl5ucyX9YACEbjLVdiqhR788u+7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Ac375qKoEqNKHjY28/wFKZzLXr4nYIay+eeXoZD77w=;
- b=r2yPgd0unu2X87e0xJd0CiBafAvP43efxk/ybbt5CZ7ygiNkSqz6rl1nzncPKrmsAGEFBmbqEVraKmUKj4eLyNu2ibXnc7bXl9OrExEwv34c68G7tYVKwDBVBgFqNcW0z60nO9RbyLEPdiStZkphXHjJHQYhyYeh9uET0n7i5iiZhbBUP3/zGDja/jHnqHcAxim/j/J/wy8bZ+eoFpmBpUbO6DLABkQj4WsGqOxTtA9Q+ADqhE3xqZ73w8QPA0UeeVVTs+ph9bYowR7HCpWtxN8f86GDNN+6CARYRb7Z1csWDkq5LziTgYNru3yYFDfprAXEQYCfWOG5ABFc3PaBLw==
-Received: from PH0PR07CA0034.namprd07.prod.outlook.com (2603:10b6:510:e::9) by
- MW4PR12MB5668.namprd12.prod.outlook.com (2603:10b6:303:16b::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.14; Wed, 21 Oct
- 2026 07:50:37 +0000
-Received: from PH7PEPF00000008.namprd04.prod.outlook.com
- (2603:10b6:510:e:cafe::8) by PH0PR07CA0034.outlook.office365.com
- (2603:10b6:510:e::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.20 via Frontend Transport; Wed,
- 21 Oct 2026 07:50:36 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- PH7PEPF00000008.mail.protection.outlook.com (10.167.243.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.15 via Frontend Transport; Wed, 21 Oct 2026 07:50:35 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 21 Oct
- 2026 00:50:12 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 21 Oct
- 2026 00:50:12 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Wed, 21
- Oct 2026 00:50:06 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Alexandre Cassen <acassen@corp.free.fr>, Alex Vesker <valex@nvidia.com>,
-	Erez Shitrit <erezsh@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Itamar
- Gozlan" <igozlan@nvidia.com>, Kees Cook <kees@kernel.org>, Kees Cook
-	<kees+treewide@kernel.org>, Leon Romanovsky <leon@kernel.org>, open list
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark Bloch
-	<mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Prathamesh Deshpande
-	<prathameshdeshpande7@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, "Tariq
- Toukan" <tariqt@nvidia.com>, William Theesfeld <william@theesfeld.net>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>
-Subject: [PATCH net 0/3] net/mlx5: Fix HWS and DR steering memory safety bugs
-Date: Wed, 21 Oct 2026 10:49:46 +0300
-Message-ID: <20261021074949.3471704-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZyaCfOMZ;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=J4BWEF5P
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792569128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QITuyYs5+tqSrKrfIpvUKD41r2Vyp9d2xbchRm7msa8=;
+	b=ZyaCfOMZaLkfkP5CIbv/1k8OFGPI/rFHCd+WinSm2OaUZ+PlPMpdVEhD1lGH48qxwGoxSI
+	hSZ6reKymyIhMi3j3r3N93eNEbIy0IEv5b95MVvEUVZcl6jVtKadplSALa6X3QOGPVoKmW
+	npPsF3ueHC72nh73zQz8LCW2p0+M2vA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-r6XxrOUOM36LEir9FLMUvw-1; Wed, 21 Oct 2026 07:52:06 +0000
+X-MC-Unique: r6XxrOUOM36LEir9FLMUvw-1
+X-Mimecast-MFC-AGG-ID: r6XxrOUOM36LEir9FLMUvw_1792569125
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48e0af48c18so334689f8f.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 00:52:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792569125; x=1793173925; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QITuyYs5+tqSrKrfIpvUKD41r2Vyp9d2xbchRm7msa8=;
+        b=J4BWEF5PNGoV82MCnAZffDR3ZZvNJwcMin/NFwAjKIm7DdUufKnGGJbpVy4LN8JXXD
+         xpEDoIJqPhZD1fXC+KTbyXSaLflsyjfNfQ+aiFi5iDySJ/eS5BhYml2czPeoB/2kHRVQ
+         HLRhyEqOpA6FWmarX65ITFblyghzCToej9kOZgVG75vRlJFRSMcq72LyDBcGgZml5EXa
+         IKVl0DPLISk9BBKkAXW9S+KlcgmYIsUi+4uj+/5DEMkB3kS20Rk3qtEZBmPrVz28DoBb
+         uSL8anh7hbU5qXnptZc0/+rzfpnR1gPCGNQsDS8zvCOFc2NHOdOe5uACtSDbLfja10Yi
+         KfNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792569125; x=1793173925;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QITuyYs5+tqSrKrfIpvUKD41r2Vyp9d2xbchRm7msa8=;
+        b=dSKhUviUv21zukkHcjbYxmplzqxx6a4PozMdaPddzNokd9+9KhuWSvhI7Hh9e786cY
+         xwBFZJpXx4owo7eTT7wFl2cctAmJ4/fbkuZGm/TPh0fifPdmRpw9tWuUwlA/HX5C8dzW
+         hweiRZLHMUEfBftSQsX7ouj/M638uo3V659/KqrmVJRBt/gheqWlt7UpYH+unKUWKoVe
+         z3epKe+oQs79jIf/Y1lUt/mL+wlR3dRgtHFbuuk+W30PONu/RnjyZQk5fUoUYQkOpx9+
+         /7L7Af5YLZ1JS4jK0lmsD0xOcJKUcjfDt6lSXTBSEnFJqRQg2fIY5/kcNFN2H/crchrw
+         vDig==
+X-Forwarded-Encrypted: i=1; AKwUvBzMt7bBZCKZKOzVpECxSbcjAuZEFMnYuzni7mgTJBZNSEFmtkUyq8m2W8jMx+9Ttmg6iaAbVS8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKgruJ75DxxoqWlKY30vGEiy8vxWg7S9a4v3oo/sgOpDo4TFzj+
+	MRiKydCyf4bkyw1cE6MaJ3KgVNlOuc4tkCqcIJZxzPWxidHSWbAbNtiYAAhp/nhLw+vcgp8VukY
+	V2MZZc0qVUc2x0iG1HO1OkJ/IK4VGc0SznqAa/QV14yV57F7jR/HkYk+oBw==
+X-Gm-Gg: AYBFou23wLGi3DGCkfpPnCh2iPpz+Pak6Iw2MljWpGs9aBhGV9w2nRzK9avmFlisSez
+	aL8ScFkvU+t/feLcsJyUfeS84duEe+WsS4AyLPfOGNVLzY/FrSxS9vRSAI1RvNL8vLNOaAYSTL7
+	Kodp78RplrhIOx8tzVSyu63xj0N2wPzuGXKMqDQGt/o/3aYzjRDDS5LPKWc5fDB2UjuBc2YHfqA
+	7JFl/NX/3Pr/Sh8hPBLojg5c+Yo/qxZ4NWAxwP6yDE30ViZp25mm39R+ZLCv4d/4Yg/r3RTes0V
+	fDKIpXBXreaLPHOHzc54M2P5u9AvZo7zJXndyQMettEB3f0MEqO5kxYBAxZufJM4nEOwdw==
+X-Received: by 2002:a05:6000:478a:b0:48c:7ee3:e07d with SMTP id ffacd0b85a97d-48e264ef9cdmr1191048f8f.52.1792569125344;
+        Wed, 21 Oct 2026 00:52:05 -0700 (PDT)
+X-Received: by 2002:a05:6000:478a:b0:48c:7ee3:e07d with SMTP id ffacd0b85a97d-48e264ef9cdmr1191026f8f.52.1792569124881;
+        Wed, 21 Oct 2026 00:52:04 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2583ffa8sm3908268f8f.51.2026.10.21.00.52.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 00:52:04 -0700 (PDT)
+Date: Wed, 21 Oct 2026 03:52:00 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Chris Arges <carges@cloudflare.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Max Krasnyansky <maxk@qualcomm.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Paulos Yibelo <habte.yibelo@gmail.com>
+Subject: Re: [PATCH net v3 5/8] net: resolve uncommon partial checksums at
+ ingress
+Message-ID: <20261021035050-mutt-send-email-mst@kernel.org>
+References: <cover.1792411304.git.mst@redhat.com>
+ <9c08d12b3a7819ae03ded6a154e4f908276e93d4.1792411304.git.mst@redhat.com>
+ <willemdebruijn.kernel.2eb449439b094@gmail.com>
+ <20261020170908-mutt-send-email-mst@kernel.org>
+ <willemdebruijn.kernel.1da723f98c23a@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -121,60 +129,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PEPF00000008:EE_|MW4PR12MB5668:EE_
-X-MS-Office365-Filtering-Correlation-Id: 924337b5-238c-4fb6-dd8a-08df2f47fdef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|1800799024|376014|36860700016|82310400026|56012099006|11063799006|261009223027099003|10067099003|18002099003|6133799003|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	rxZMQtF4EYOxPrWLmjfX3e5M+oENsKow4AjTyz7qKhEO6z0dlJwnK/7sN/xMspUYzzqM//3oO2d2OQZmAP6z9rExrvphO0mtTpQEqH4qGGLiCDK1gR0K0yeiFTg1vV2AdMIaEPdPq3eQIOPi11GnalZXdVEmr1wQWwfZXKLHktMJYD27jyABc5I3sOsRgiD+VXDA6mglc4UMcqk24e5E7A29vaVl69zstp5v0Gmo0rV17EIklBggzO2EHBMKEg4yWA55itoJOePOVgR4AiKRIV4eZsZJ/6/etaveeFYoS+3+QTDlwp6eJ6x2VKaeyJhzRGWzO0TEAXombKDZU/UfZZVfdqAJSuYYgq78mjbfwJV4DRO7sD2fp3H/M8F3kCx3yrHwvJ4IdgedC+DgkB5bxmVNb80x9fJ3HCURs05Tx34hVcYs7xO4wsB/lDV3xHinm97Isz54SJ4F2Q89CP0JvXS3oCJT8BlsW55O9ciWhtEOry26xjOGjLRicPXD9FaZhGVz7gQoqibLquFn+biZmdbsAJSrqSmrK69juVXnCqwruuqSwFcEZdEMGgt3Abi3zMcSQSSIZInRVKIO6ZhsM8ucN2sIeZ6pfIL1SgN1sfS7pm5e1YrzK22vIi4efxjoBpA/q0QraHvThtzxu/nlLTQLZjIT1/a3BdLwIN5ek2vIgGUKc0oLkrthbVrMIXPZmAco0SBVCZBAM3dGkHkLHT4NOq2lsQ2+l82wU3sGXTGPEJYdF7QSE7iPVPWAF6SQW0PXeoPtbE987uymDg4rWQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(376014)(36860700016)(82310400026)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003)(6133799003)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	1qXgj+TF++ggms1/QlC1vwWO4jdLNWsA/MJQwRphvvnCh/JUnbVEuz1Q/M/SYChEwwcp6qIG3ceHxdgMsly9oN/5h2joFWrRMRHuM3UlJOK5qhRfuRwJHdei1WMP5s4mORpwp5JQaV7+x8s9UjQEZjLsFuV0t7RRtNyN/GlIYyQO5jXbzCooDLk77SKwVTgUXcrlNtjQfxuzpxWVYnf8x4MvOqUoPTEfGZ3Nt7ZLV0DedRLco7ZYDQE+Az0zYHiioAbwDc91fu8K5XrZgWwIKi3f1AyBs9mVSV7vA0jor8iEbC4bs9jaOCXZphdvAF9Z8GAD1VZxEK+dseECj4uNUTnmz3JbilCU372EUS4sgYh/35g3BEK4Wk2N4+XoHrGKKiky0P35TmjdrWXMDYu8WZhsMX+ppi5/YtzPF/8TAQ+ytU/aW009bFyIGv/L2dPe
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 07:50:35.8101
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 924337b5-238c-4fb6-dd8a-08df2f47fdef
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	PH7PEPF00000008.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5668
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <willemdebruijn.kernel.1da723f98c23a@gmail.com>
 
-Hi,
+On Tue, Oct 20, 2026 at 08:05:29PM -0400, Willem de Bruijn wrote:
+> Michael S. Tsirkin wrote:
+> > On Tue, Oct 20, 2026 at 03:44:35PM -0400, Willem de Bruijn wrote:
+> > > > +/* Walk the L3 header at @nhoff: where does its transport header
+> > > > + * start, and which protocol is it?  Returns false if the header
+> > > > + * is truncated, malformed or fragmented.
+> > > > + */
+> > > > +static inline bool
+> > > > +virtio_net_l4_start(struct sk_buff *skb, unsigned int nhoff, __be16 proto,
+> > > > +		    unsigned int *thoff, int *ip_proto)
+> > > > +{
+> > > > +	if (proto == htons(ETH_P_IP)) {
+> > > > +		const struct iphdr *iph = virtio_net_ip4_parse(skb, nhoff, thoff);
+> > > > +
+> > > > +		if (!iph || ip_is_fragment(iph))
+> > > > +			return false;
+> > > > +		*ip_proto = iph->protocol;
+> > > > +		return true;
+> > > > +	}
+> > > > +
+> > > > +	if (proto == htons(ETH_P_IPV6)) {
+> > > > +		const struct ipv6hdr *iph;
+> > > > +		int flags = 0;
+> > > > +
+> > > > +		if (!pskb_may_pull(skb, nhoff + sizeof(*iph)))
+> > > > +			return false;
+> > > > +		iph = (const void *)(skb->data + nhoff);
+> > > > +		if (iph->version != 6)
+> > > > +			return false;
+> > > > +		*thoff = nhoff + sizeof(*iph);
+> > > > +		*ip_proto = iph->nexthdr;
+> > > > +		if (*ip_proto != IPPROTO_TCP && *ip_proto != IPPROTO_UDP) {
+> > > > +			*thoff = nhoff;
+> > > > +			*ip_proto = ipv6_find_hdr(skb, thoff, -1, NULL,
+> > > > +						  &flags);
+> > > > +			if (*ip_proto < 0 || flags & IP6_FH_F_FRAG)
+> > > > +				return false;
+> > > > +		}
+> > > > +		return true;
+> > > > +	}
+> > > > +
+> > > > +	return false;
+> > > > +}
+> > > 
+> > > for all this parsing: could we use flow dissection, like the
+> > > !VIRTIO_NET_HDR_F_NEEDS_CSUM case?
+> > 
+> > Hmm I don't see how.  That one trusts the caller's protocol and network
+> > header. We could parse L2 ourselves and use the dissector for L3+. But
+> > it stops at whatever it does not know, and every miss would turn into a
+> > drop or a software checksum for a packet the stack delivers fine.  Our
+> > parser deliberately covers everything the stack can deliver.
+> 
+> You're right, the protocol and network offset need to be parsed
+> manually. After that it could be passed to the flow dissector.
 
-This series by Yevgeny fixes three memory safety bugs in the mlx5
-software and hardware steering code paths.
+I posted v4 with the custom parser, since i had it tested. Let's do
+cleanups on top? I spent too much time on this, to be frank.
 
-All three are missing-check or wrong-allocation problems that lead to a
-NULL pointer being inserted into an xarray, a heap buffer overflow, or
-an out-of-bounds write that corrupts the kernel heap.
-
-Regards,
-Tariq
-
-Yevgeny Kliteynik (3):
-  net/mlx5: HWS, Handle NULL in vport destination action creation
-  net/mlx5: HWS, Fix heap buffer overflow in insert header action
-  net/mlx5: DR, Fix out-of-bounds write when sync to HW fails
-
- .../mellanox/mlx5/core/steering/hws/action.c  |  7 +++++-
- .../mellanox/mlx5/core/steering/hws/fs_hws.c  |  3 +++
- .../mlx5/core/steering/sws/dr_icm_pool.c      | 23 +++++++++++++++++--
- 3 files changed, 30 insertions(+), 3 deletions(-)
-
-
-base-commit: b6ef0d965fe8ce0ee4b4dcb58b3511f83003e42d
 -- 
-2.44.0
+MST
 
