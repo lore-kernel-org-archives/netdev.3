@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792543935;
-	b=GeGzUp98xBQpz1tp1eUkrV6bNZiWKGJQR/QuGecLAz14n+hzPXDILaLeKCu0vukfklLl
-	 caBi7skize3pHegGDAsWJe+K9QwtGhzsHq86G+jTTyZ28LKgr2Db2eXzc4nZaBPVIVXoZ
-	 cbM/Pi91nYG/zqewZ+DgRT9fCq0rxJCJ/Tg4ig2Hbq82tbD/0g7cd4MMUV1+XOPwTTyZn
-	 I8pZfbL6NkKvU8EMqSTct84SyInx9aUV8RpQQA85ZhjgNW9uh/bJt327/Y/MBwJ8GbyF6
-	 +iCX5d08c75CZqrSx0CuJp7ep4nOJsUPQTOcVkwMZyjncNwBM6I2Upis5Cc2tKaoIIg==
+	t=1792543933;
+	b=j7p/hmzsnBofJEKzhTfDQ0JyivvV88DSIt1Fgo4uteqHsOqbW64x+L4/LxbbiLHY9dOE
+	 I05XZxohFwQ9rHL4y6l60CFp2goJfGfVx2FKKndxXb2CTjUrYIMsu+BhviXb5wYL7u4Xn
+	 3B8hqgX8HRSvH9oikPec6jIIjlCQbXx0ExPHa2cdHqWm6pGfeOnboAt7+hlQAm+w+vzyK
+	 1U3AN9xLoo8dNKaQrjcgehQ/Bgzg57nnQ6r682L07VJaIyvfZ6mHbBkE5QPe9YYK4ryh7
+	 ObJS3EesQW4XwQtSSD8L67osKN3h5hUCJuUt0CyWKckEU13nPjG+Xt68asmHfFykl9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792543935;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792543933;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=mSMY52hIg7vAcjDlf2LPfos459LIsVBRRd++d9Y3/3o=;
-	b=wTaTA++xyk5ltMxzMSaCCh0IMGKUh5wP6+K/BQF2+V9YiIr0Qxn8tjdTUxBfFao/5tIl
-	 rxS0cKZrCR8xmgF3lR2Ad/0OMQoHaiNBhoKSlU9nKqAzERks6pfzb/Z3Y6UScoIUcoKXx
-	 2+0jwyc5d3M1qzfxlBRoG1TeLb3vUmZpvma03nQCUa9STrWMWdcHEQyLcyf2S80m2AkIx
-	 adUHh5avwwbzGxTzxk10k2zdktsuhfsv/cd8fcqd5XF+fx0lxA2MwhrjBTDef1vV04V1T
-	 26+ezRfU2vqYNeIBpR8+vRvtFthOQkjeNJnjv7+MQLqxo/9PL65ku1cdOo2Ax7eqCsg==
+	bh=GBFH6oRYSJP/dQWfGegi7pqI65g5/qbXzo/olR5/xbg=;
+	b=iMhy+Pb4rCuzJhbWItYKgYWkcy2f4ITE0gzdAzQysELAXJvBPMOOOM12lHV496shFT3H
+	 2jwQROWv0Q4etrzACPTQiWzein+F/Ns8VWesaiBCMKzboUPy72OkZZrH69wHfDVEu2e3l
+	 8Jbb3Ab17Ol4UZl6U9PicFkY6rx5o0H9FFMbgHUcfGjjIPdMIx8IKmRrf0ZN+zKo1rq9z
+	 gFXyOnwVRbysqfdsIh8hoorNI2IRj6RWIo9kBJ3gDu7xhpSRUqSwGUNqqzzjbD/L3zdPU
+	 4HW9fG4jE5aKJyQ8XpPBXyoKmhwJiHwicCfOI5UTdF7SHYeFTONyb9D6lf8CqflM/Iw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oUrlgWNb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bII38EBC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C476606A334;
-	Wed, 21 Oct 2026 00:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61829606A323;
+	Wed, 21 Oct 2026 00:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oUrlgWNb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7091F000CD;
-	Wed, 21 Oct 2026 00:52:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bII38EBC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A690B1F000C9;
+	Wed, 21 Oct 2026 00:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792543935;
-	bh=mSMY52hIg7vAcjDlf2LPfos459LIsVBRRd++d9Y3/3o=;
+	s=k20260515; t=1792543933;
+	bh=GBFH6oRYSJP/dQWfGegi7pqI65g5/qbXzo/olR5/xbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oUrlgWNbShcp2IfJXHva/yfbd4HCjdm3HUzusQFH7rxQkPUe1O3vP06EXoYfNJjYV
-	 3AcbhyAu6qxb67lCqE+limZ9IA6ybTu4N/Jqbdx3nSlZCGDa8ZRxz0jdP8x9ktiZV6
-	 aOXIcUKbAv3fQ9jH8A4qZG2NiSt5Ohs1gmlYmi2Q9CxUXYtoMqnwoypBg2blrvzl1G
-	 /HxY+ULQlVZ794GHegELxwp+QA+T2TknhApj8DKD/lO1s1S6RtEvr4lxVcP1lBNfzE
-	 1pCuXGgUFDgJBfc9NUbJ6vfDEyVEQkDEIVS+QAbh6unn0TI8KLhLJbj96qUDpNxlwM
-	 a9JRUBe9m0wmA==
+	b=bII38EBCvPXNjrjqOumQ4YCpuKNsNvskPH4yy49yKaPsullfPKOZAGf35AFSKgQLy
+	 j9cIwXj2GbDVMG8rr+WoIz6RPtSheHVjwqOdv3BQKUNbHNTyAEtg7JAEZRuOxqhDjk
+	 MStfA7WozJuuoO2uorH5vPqIrnoIMPn0IU+39Ny+6cown/DIpjkUnOvYEuyHTWl/k/
+	 /ZQ+fd548btLFQR4kLQYR9/bD+a2OOOyHkcub2cN5VeOAc77Sl9lZDIdoo8VMiGcz4
+	 1nT+0ZnodbPdx90NmX35t4aSu6SrS5U0J2g2XhVyLhDVMfVauV6V4GcDQFOmR7W2jd
+	 wEIaHTmHdlRaA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: hsu.chih.kai@realtek.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -52,12 +52,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	mail@birger-koblitz.de
-Subject: Re: [PATCH net-next v7 10/10] r8152: enable UPS for RTL8157 and RTL8159 QFN68
-Date: Tue, 20 Oct 2026 17:52:14 -0700
-Message-ID: <20261021005214.1255071-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v7 05/10] r8152: fix up and down register settings for RTL8156/8156B/8157/8159
+Date: Tue, 20 Oct 2026 17:52:12 -0700
+Message-ID: <20261021005212.1254979-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261014081904.6491-11-nic_swsd@realtek.com>
-References: <20261014081904.6491-11-nic_swsd@realtek.com>
+In-Reply-To: <20261014081904.6491-6-nic_swsd@realtek.com>
+References: <20261014081904.6491-6-nic_swsd@realtek.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,193 +72,116 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-r8152: enable UPS for RTL8157 and RTL8159 QFN68
+r8152: fix up and down register settings for RTL8156/8156B/8157/8159
 
-This patch adds r8157_ups_en() and calls it from rtl8157_runtime_enable(),
-so UPS is now switched on and off during runtime suspend and resume for
-RTL_VER_16 and RTL_VER_17_QFN68. It also adds per-speed EEE flags and
-5G/10G speed encodings to r8156_ups_flags(), and skips the lite_mode
-encoding for those chips.
+This commit corrects several up/down and OOB register settings for the
+RTL8156, RTL8156B, RTL8157 and RTL8159 chips, following the earlier
+per-generation split of the up/down callbacks. It changes the PLA_RCR1,
+USB_SPEED_OPTION, Clear_SDR, PLA_BDC_CR/PLA_OOB_CTRL and OOB
+PLA_RMS/PLA_MTPS settings, and drops PLA_MCU_SPDWN_EN handling from
+rtl8157_up()/rtl8157_down().
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 95f510da376de..7a1b34db1d88b 100644
+> index b245b63fb6aaf..045460a35f383 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
 
 [ ... ]
 
-> @@ -4484,6 +4522,49 @@ static void r8156_ups_en(struct r8152 *tp, bool enable)
->  	}
->  }
+> @@ -6938,8 +6937,18 @@ static void r8156_enter_oob(struct r8152 *tp)
+>  	rtl_disable(tp);
+>  	rtl_reset_bmu(tp);
 >  
-> +static void r8157_ups_en(struct r8152 *tp, bool enable)
-> +{
-> +	if (enable) {
-> +		r8156_ups_flags(tp);
-> +
-> +		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
-> +				  UPS_EN | USP_PREWAKE | PHASE2_EN);
+> -	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1522);
+> -	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, MTPS_DEFAULT);
+> +	switch (tp->version) {
+> +	case RTL_VER_16:
+> +	case RTL_VER_17_QFN68:
+> +	case RTL_VER_17_QFN100:
 
 [Severity: Medium]
-This is a pre-existing issue, but this patch adds more callers of the
-ocp_byte_w0w1() read/modify/write path, and that path depends on
-get_registers():
+This patch has three Fixes: tags:
 
-drivers/net/usb/r8152.c:get_registers() {
-    ...
-	if (ret < 0)
-		memset(data, 0xff, size);
-	else
-		memcpy(data, tmp, size);
-    ...
-}
+  Fixes: 195aae321c82 ("r8152: support new chips")
+  Fixes: fd3c7d080df5 ("r8152: Add support for the RTL8157 hardware")
+  Fixes: ad2a55b63b41 ("r8152: Add support for the RTL8159 chip")
 
-usb_control_msg() accepts short IN transfers. Could a malicious device
-reply with fewer than size bytes and leave stale kmalloc() data in the
-part of tmp it never wrote?
+Will it apply and build on the trees those tags point to?
 
-ocp_byte_w0w1() then writes that byte back with only the masked bits
-changed:
+RTL_VER_17_QFN68 and RTL_VER_17_QFN100 come from an earlier patch in this
+series, "r8152: split RTL_VER_17 into QFN68 and QFN100 package variants".
+Before that patch the enum only has RTL_VER_17.
 
-	ocp_data = ocp_read_byte(tp, type, index);
-	ocp_data = (ocp_data & ~clear) | set;
-	ocp_write_byte(tp, type, index, ocp_data);
+rtl8157_up() and rtl8157_down() also only exist after "r8152: split
+rtl8156_enable/up/down into per-generation functions", which is described
+as no functional change. Before that patch there is one shared
+rtl8156_up() with tp->version >= RTL_VER_16 and tp->version < RTL_VER_16
+checks.
 
-That would let the device read back up to 8 bits of stale heap data per
-read/modify/write. This does not happen with init_on_alloc. Every
-read/modify/write in the driver has the same pattern, and this patch does
-not change get_registers().
+So a stable backport would either conflict or need both non-fix patches
+as prerequisites. One of them is the package detection change, which
+makes an unrecognised PLA_PKG_DET value fall back to RTL_VER_UNKNOWN.
 
-> +
-> +		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_MISC_2,
-> +				  UPS_FORCE_PWR_DOWN);
-> +	} else {
-> +		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
-> +				  UPS_EN | USP_PREWAKE);
-> +
-> +		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_MISC_2,
-> +				  UPS_FORCE_PWR_DOWN);
-> +
-> +		if (ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0) & PCUT_STATUS) {
+Could these fixes go to net separately, written against the pre-refactor
+code? Or could the commit message at least name the prerequisites?
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but ocp_read_word() ignores
-the return value of generic_ocp_read() and uses its local tmp anyway:
-
-drivers/net/usb/r8152.c:ocp_read_word() {
-	__le32 tmp;
-    ...
-	generic_ocp_read(tp, index, sizeof(tmp), &tmp, type | byen);
-
-	data = __le32_to_cpu(tmp);
-    ...
-}
-
-If RTL8152_INACCESSIBLE is already set, generic_ocp_read() returns
--ENODEV without writing the buffer. The same happens if kmalloc() fails
-in get_registers(). Would the PCUT_STATUS check here, and the
-BACKUP_RESTRORE poll below, then test an uninitialized stack value?
-
-When the device is inaccessible, the writes that follow do nothing, so
-the most likely visible effect is a KMSAN report. Every ocp_read_*
-caller is affected.
-
-> +			u32 ocp_data;
-> +			int ret;
-> +
-> +			ret = read_poll_timeout(ocp_read_word, ocp_data,
-> +						ocp_data & BACKUP_RESTRORE, 200,
-> +						20000, false, tp, MCU_TYPE_USB,
-> +						USB_GPHY_CTRL);
-> +			if (ret) {
-> +				rtl_set_inaccessible(tp);
-> +				dev_err(&tp->intf->dev,
-> +					"backup-restore timed out\n");
-> +				return;
-> +			}
-
-[Severity: Medium]
-Can this leave the interface unusable after a runtime resume, with
-nothing to recover it?
-
-With this patch, runtime suspend on RTL_VER_16 and RTL_VER_17_QFN68
-enables UPS power cut by default. That means any runtime resume that
-finds PCUT_STATUS set will run this wait:
-
-rtl8152_runtime_resume()
-  tp->rtl_ops.autosuspend_en(tp, false)
-    rtl8157_runtime_enable(tp, false)
-      r8157_ups_en(tp, false)
-        read_poll_timeout() times out
-        rtl_set_inaccessible(tp)
-
-r8157_ups_en() returns void, so rtl8157_runtime_enable() carries on, and
-r8157_u2p3en() and r8153b_u1u2en() quietly do nothing.
-rtl8152_runtime_resume() then runs napi_disable()/napi_enable(),
-rtl8152_get_speed() and usb_submit_urb(), and returns 0.
-
-rtl8152_resume() has a reset fallback, but it is skipped for runtime
-resume:
-
-	if (!runtime_resume && test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-		usb_reset_device(tp->udev);
-
-Once the flag is set, r8152_control_msg() also returns early:
-
-	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-		return -ENODEV;
-
-This happens before it gets to the usb_queue_reset_device() logic, so
-later register accesses cannot start a recovery either.
-
-The netdev stays registered and up while every hardware access is
-skipped. That lasts until a replug, a system suspend/resume, or an
-unrelated reset. Before this patch, rtl8157_runtime_enable() had no such
-wait.
-
-The commit message mentions this and defers recovery to a follow-up
-series. Since this path is on by default for these chips, should this
-patch at least queue a USB reset here (for example with
-usb_queue_reset_device(tp->intf)) or pass the error back?
-
-> +
-> +			/* clear USB fw_ver_reg */
-> +			ocp_write_byte(tp, MCU_TYPE_USB, USB_FW_USB_VER, 0);
-> +
-> +			tp->rtl_ops.hw_phy_cfg(tp);
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but r8157_hw_phy_cfg() can
-return early after it has already turned EEE and ALDPS off:
-
-drivers/net/usb/r8152.c:r8157_hw_phy_cfg() {
-    ...
-	r8153_aldps_en(tp, false);
-	rtl_eee_enable(tp, false);
-    ...
-	if (rtl_phy_patch_request(tp, true, true))
-		return;
-    ...
-}
-
-If the PHY patch handshake times out (for example -ETIME when
-PATCH_READY never appears), the code skips re-enabling EEE and ALDPS and
-skips set_bit(PHY_RESET). By then r8153_eee_en() has already cleared
-tp->ups_info.eee.
-
-hw_phy_cfg returns void, so r8157_ups_en() goes straight on to
-rtl8152_set_speed() and runtime resume reports success. Does EEE and
-ALDPS then stay off until the PHY is reconfigured? Would the next UPS
-suspend also leave out the new per-speed EEE flags in r8156_ups_flags()?
-
-The hw_phy_work path and r8153b_ups_en()/r8156_ups_en() share the same
-early return. This patch adds one more caller.
-
-> +
-> +			rtl8152_set_speed(tp, tp->autoneg, tp->speed,
-> +					  tp->duplex, tp->advertising);
-> +		}
-> +	}
-> +}
+> +		ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1526);
+> +		ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, 10 * 1024 / 64);
+> +		break;
 
 [ ... ]
+
+> @@ -6997,6 +7008,11 @@ static void rtl8157_up(struct r8152 *tp)
+>  	}
+>  
+>  	r8153_aldps_en(tp, true);
+> +
+> +	/* Enable Clear_SDR */
+> +	ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xd378, BIT(7));
+> +	/* Clear SDR bit */
+> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, 0xcd06, BIT(15));
+>  }
+
+[Severity: High]
+The commit message says:
+
+  - RTL8156B (VER_13/15) need Clear_SDR enabled on up, which nothing
+    ever did for them.
+
+Is the RTL8156B part missing from this patch? These are the only
+Clear_SDR writes the patch adds. rtl8157_up() is only used for
+RTL_VER_16, RTL_VER_17_QFN68 and RTL_VER_17_QFN100.
+
+In rtl_ops_init(), RTL_VER_13 and RTL_VER_15 are bound to rtl8156_up():
+
+	case RTL_VER_12:
+	case RTL_VER_13:
+		tp->support_2500full	= 1;
+		fallthrough;
+	case RTL_VER_15:
+		...
+		ops->up			= rtl8156_up;
+
+This patch does not change rtl8156_up(), and it still writes no
+Clear_SDR register:
+
+	r8156_exit_oob(tp);
+
+	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
+
+	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
+			  RG_PWRDN_EN | ALL_SPEED_OFF);
+
+	ocp_write_dword(tp, MCU_TYPE_USB, USB_RX_BUF_TH, 0x00600400);
+	...
+	r8153_aldps_en(tp, true);
+	r8153_u2p3en(tp, true);
+
+So every open or resume on an RTL8156B goes through ops->up ->
+rtl8156_up() without the Clear_SDR enable. The later patches in the
+series don't add it to rtl8156_up() either.
+
+Should rtl8156_up() get the RTL8156B Clear_SDR writes under an
+RTL_VER_13/RTL_VER_15 check, or should this bullet come out of the commit
+message? The 0xd378/0xcd06 writes used for RTL8157/8159 can't be assumed
+to apply to RTL8156B.
