@@ -1,92 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.43
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792567620;
-	b=sa/pju9b2nQRLduFB5FN30+VTsXAXFv0DpiXYFn8RwxSKwneL/ggECfQZkfDmbEe7Obg
-	 mdKTFVRbWVZAgpfNqdY5dmN+5a9u5d8XUiLeYPWIvJKkW2hymETUt67eA8pYATCntgimK
-	 tJE71O4tQ5DK2sscI604485j9enHRk1Ul7xAlJQYVZ3eAXsXO+Xk/4i8hG6QEXRGWwPej
-	 JgFxxigysgPf6omtOvOKzSgxjwD37MSc04IQwHu90WL38G7JVva/LQPHZ9BcAPqmUSnoy
-	 Y0FNC7pBafZRM+MUL+5L6ervCTjzMom+4gpZtZkz65YBS7vbYJ/qZ7HYWdMnCcYCrMw==
+	t=1792567803;
+	b=KS5WUg0rtYMSX+ZjATAgXrmwoXTDyqx4kxfpNPs1SOq4SfioGNVXURP5dJUWiRT/qR1N
+	 gQvhGiqjPJJLaKsRt6W/zfakzN/VDBeaCbikIHAbWcQU+l3FCSwDrtWIjCocQ/lrpKair
+	 RtGcJffjDuAxQWKPsFFXp7U3eCfibJEeAVZfJu+2uknz1446drm3syRE3OU1rJ/rXzuSU
+	 sOz8eketEcebWCeQMO0wOdW0FpkyVXNgllLANAbWFRCL6AwBCD6HiIDvnq/KtcSS5Dz07
+	 0qlkYDaEFcM84TeoipUuaOBDzWmnQgk8NGZFj4l89gzAKKJLZrJJDhlyYRSdh87fObw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792567620;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=aDZ3ndX1fnaLbRfzON1PuMIgEghBiy3kRRWeZ/z+o1M=;
-	b=3/O/x1HxCEeECmC7UIV8v/CzTbxc2vFg/L8ZVpvJsvlcCWo0m8djPR0HG3rgYOis9Teg
-	 HpzhnBdzVFkCwb33Gaz/OxSkD05PFc7tmO2llNgrJMqUOVf7bxRGPUZfDFkjjEtgIBP4l
-	 KjrmYs7fBElx1wwc/cGBsbtNIJMFDM1OROIRnBFZgNvKLTI4Pi6REFRn/fF2XpxScqv6Q
-	 JtDqbY1miZd1e/pUTV8LwwacXFDRRG9CpEYxaTJrqrtqo6jE3osMYvI3KHr7bj8uvmUCn
-	 QKMdf2Apyo/9i0+lBu2N6OredVCy8s3f4Gjfm51h8k/Wn5LPztL36wPqpcRE11Drdxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792567803;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
+	b=jFrCjB6MvAj3Lg9JJbt3KoP1Fj0bsZgDmi6M5NpPSTX5ZdJtb1NgWOMGYZkPhHsXM8Rm
+	 pVrSyOFXS6uTDJryFUDImzpX6yfesOGRHzNKZA6bd+cNx8CQ2m2p2t9079fxLcz/MhjOK
+	 pq1Wi23yy/oMqqryH7tFsqEx3AoqDk/bMxllv6aLZSWQO4HCYrw7pmFpMptTISfT0a6eK
+	 n94NoVMp44rhiyTcvFbtwC3U+XbcUcUkHn7duUZhbuVlZcf+1cm6xh/bB/Dgcea3DBTZp
+	 joyTequ9ZFTFe2leQW7E5kj+0jH753CHqUTpzanXCz73R4jzEbRho2oYK3ETIXdWvYA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RbPB4S1C;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.43
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012043.outbound.protection.outlook.com [40.107.209.43])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MEo0p6wi;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=iPKj99OK;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EC6606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 07:26:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54EC6606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FC7606A320
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 07:30:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82FC7606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RbPB4S1C
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZPa8FGmLQWGCeOKJXIgqA6z3PRvlxV9Aqo1SPQbBkjJ/3OVx/P5vI68AIRiYJexut9TPNRraMyLIBXzSzuiG7vh/XPRcJBczLSkFIDt6R/UEYzqlbVIg/XJJPSb7ofmM7WcO6ITDEk9UMrGhmHTWRJqjb1VhhuSuYGhc7hfcLtmcH+mKezyX0asOPkUqeHCqvGZhAD+BSXg243hdZW6uQQ38MOFEX7teimfMYybnR8jJfY3gUaeWbn4bYxU2f26W9GR2a4QlxGJWY+ccDd4XrK32N19ILHj8BP27YdGPVCMikEts6hk3EkGUxtAYLDaBgbzmQSKdq48AmIWtdUfQrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aDZ3ndX1fnaLbRfzON1PuMIgEghBiy3kRRWeZ/z+o1M=;
- b=jdV0Vs6ZqHVe0YDAt0E53X+d8v62tQqCph9AB1LhwbZC408Gf01HLQ4BwZR132nhVWVvyIOG3N93VGr4IswZUq+w2z8cczmcOEa04OH1ubMhLMeCJWQECOIs67i4pUbYHVcM140L4vqnzZ0sK6LeHepMVV+KYH+vTFyCn01rGfVPeTAc2rUzYzX0pJn98QpeUtpzA/i8TCWPTBEI96wgrVOqo7a1y6vh7KeviYaAO3Ym9P1duHs1qFmOMT8ZZjuZrhvadk+xLAuOc5OpY1xNi9oSS0io7BcWcyxNjQXVOaUgYXSpUlNhLAbYoMmpbTfIR7uJu19GwpUvpIzYUn8U/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aDZ3ndX1fnaLbRfzON1PuMIgEghBiy3kRRWeZ/z+o1M=;
- b=RbPB4S1CS83NIZn29NH5ES1wKbc3a/ycXmaCAnfw8W/4J26KDN1l3PR+BpkVZv0NTw1O1AI1Ers7mZnYF+gY5rK9NZJ4SufZ+ayftTB35wiXClFhW5fSMgOLOa7Pce2wwaxn5hEarWZjXmrm5KRGaI2PQJv4/PDTvQlihQkTHaR8iDDbLctOJGhg7n77FaRRA0ZhxHVQhC3BlXhmArwfrla0CunoAc65fEubC3ouWV2kfUSXCiBWtq/CclTvuwVtkmWkCdT6CS2GI4ZVXnFE9l3JORigzDuu0sIaR9Ylz9HcXrCzxV3ut+pYPqoFYMxreiDXFx6WHd1cIwHsg2m7Xw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by BL3PR12MB6377.namprd12.prod.outlook.com (2603:10b6:208:3b0::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 07:26:56 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 07:26:56 +0000
-Date: Wed, 21 Oct 2026 10:26:45 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: edumazet@google.com, netdev@vger.kernel.org, dsahern@kernel.org,
-	davem@davemloft.net, pabeni@redhat.com, horms@kernel.org,
-	leone4fernando@gmail.com, vega@nebusec.ai
-Subject: Re: [PATCH net v6 1/1] ipmr: only copy pktinfo to cache reports
-Message-ID: <20261021072645.GA3280290@shredder>
-References: <cover.1792476357.git.zhilinz@nebusec.ai>
- <0545f0c83f5ee2f6696210f87268e811ef655715.1792476357.git.zhilinz@nebusec.ai>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0545f0c83f5ee2f6696210f87268e811ef655715.1792476357.git.zhilinz@nebusec.ai>
-X-ClientProxiedBy: TL0P290CA0009.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:5::6)
- To PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MEo0p6wi;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=iPKj99OK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792567801;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
+	b=MEo0p6wiV0/R/3nHv0Agn6BGUrhqJa+uywYRPZFlq/M0cClJEonQ+FFpq6WLkNWGVgpWdb
+	S2FnjkfHj2uAcqsUlCXxqr7bIOLV9xlDVAnLeP6MuVE4dGRbuB6elm8N5ogmYrALCYSi0o
+	ucKS4A/+IfSTynEDj0VRe5X2a+ffBpc=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-301-Ol6hW2gGNcmCZwOFQdVY0Q-1; Wed, 21 Oct 2026 03:29:59 -0400
+X-MC-Unique: Ol6hW2gGNcmCZwOFQdVY0Q-1
+X-Mimecast-MFC-AGG-ID: Ol6hW2gGNcmCZwOFQdVY0Q_1792567799
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8b0a8c1b87dso6462727b3.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 00:29:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792567799; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sQadjPEA8sTPqtsEjKfVTU/HrhOA2cniX7Pa+IVDi4CE4ibFLXkE0++JtmruUi69/K
+         Xt76CnzpKcNEySjFPYmq2mds+2X23Org1kVspbIcgrH4IuOdIzJpSHTjapnIHm0/01EI
+         abPjN+M1N00qEkNG4O5QyTpKTBGd/pLWP/2EjFliNRbPnAdD7fTFwbdImzoWwkJDdZwg
+         PqBgHJZIk18w88TnO8FB/940XKW+xEe/X2LAUjNckeTux6XDymSo/40Y5rm+hSPc1yLg
+         gLENtlvFcNVrxuoQjWmnCa47ZaiUS4P030/nsdh9jg1CFOKmYWi2/RBY7jSPmp89EcWZ
+         WXSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
+        fh=K2qylNGwA0jhmNqucxwJRTEyH9CLdaBdOCFkeolJOdI=;
+        b=C1mhLi1A5dtykaVv5rJGQaEecqGJNlw8t9OX78VEPBCnXImtG8GM40ZJCLbb4ABl2F
+         xIzsiHfvOC+YrhUmXfTSZiCrTbBgzL72APf0epNmcGFw9Vhe58J3P+FZM5BGdDwRUpuh
+         dVbtz7SeRdGhhjriPjNw742mOZfaZBPHSQb1QRXUCnLq82yYCFkGjqnws/UVM1PvrdDJ
+         oP0e4Xm8fD0CKjvUl6E+xQE1rFZK93WRrOUSI2kyZgU9uN/PKC66FstOXV2UVRs8o+vJ
+         2TNB9hFI0jOijlF7vZu6o6AXLjvGF3/Zap3I2lCe9kWFK8eDM7Ys/DrNRnjBFKYXCbBK
+         Nm3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792567799; x=1793172599; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
+        b=iPKj99OKCYBLxKoFRZQf2Hg6XfmZny80yGZlMAmrHp5kx5XGo0TgWwOm1D8U1+QkFs
+         UERYQore2pDeV1iNLK/bRlznsPf785W4T+NrHK/BAf18mYAiDfpZM/nVmxT27tawAbFd
+         XsQVcFDBnTpT0wR8MAtQ9B/oS0eK085+i7rMB0YbRIyFnv7lD6qH+ZNDHWZeuKxmXnri
+         EboiCCaMxHi9C1T91+RZpQUHX2EfDuCBuWDo7KFZ7OLZdbcK5IpbHsC4PpR5r5GXnYzx
+         rT1z5IzF+foNu4wQnWwAjH9ek8D/VK41l8kXhSuAsNfYzEv/SS3IVpywD7hRuiA9z/rL
+         AJIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792567799; x=1793172599;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ruNbPegljZ2HSbDe2VgJL7losQAaVxHulyE93NG9OdQ=;
+        b=aetC18MNZPtb6o5WLL1BfBqkc3/BX/Yf1qRZYi2kXs1N10LyAt7EcHGHVf4MFS0+mp
+         UEkyTwspDwSM56oNq0ZGaU+iqDk2QC2qRHGgM/JNv/jKoalQmnod6V62ED34fVnuZyGp
+         mc81hnDLep7j2Et7smjlu3WYUaK/fsbD35L5J85u63K9MoV5Jb2qaXJ0PyQ3AVUYl/j6
+         TEjd4VJ1ud6+zy0KNZP1arSizRdlb3xiN+gqLsAolHPpUE9HMpuTJK3w4hh+/O+7azdO
+         +SCzUSzu3IA1b2n4tZB6lmedL/q8fJOCo6GeR1DrqvmygGiThWcREAlcDE7//ZzrVBT2
+         s67Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwpIA4xEjA0r9QXt+fi7pqBbUjs1q5obdjqM9MDwluydFIBU0DJUIJQ08upa+kf59PhhdkRXV0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKfnyPFNZ6WMnJe4N19HyQwh/xw1tqAneJHScq6U8AxAFMGGcz9
+	pSKRRNcnueyz0YhdD0TP1460flilUKyYr09l4ypEdSeVfa6dzSMZb/acW47TgJUZvunDGvwWf4z
+	Uy2HkAnT3udzUL++2mJjsW1JnwqUXffAqrY1Lf9CPje8qlF+5Wn1CEIDxVrjjz0enMrPp+JRA9K
+	6m0lAYB1mLg77RJ2aXoQiv05vPYFLe3lU7
+X-Gm-Gg: AYBFou02xr57dMg1/CX1cRP9/yiAOTaAKInzRPUlN66Lq+SYRCxfL+aki/CmaCHaqP6
+	F7sWCrYyw/fCSIWhax1yi60PjciAZbCdei0PrjLe5//DMHfr6+Z0UWSlXU6wKEYpWDp/Hlo/UvH
+	nR5EnaPGDkWggokSRQnVT3LwPAqKjA8sODPke/mkb0lg98x/lnvG/KP730BeUqU9HvTnNCpmWwy
+	ychNYLVFYOATCQEjuPz6GW5uhLsuTwFCQCEGlGRTnEDFpF3j1XMT09kWNM=
+X-Received: by 2002:a05:690c:a909:10b0:8b0:e238:2719 with SMTP id 00721157ae682-8b133fff1d6mr5006427b3.31.1792567798921;
+        Wed, 21 Oct 2026 00:29:58 -0700 (PDT)
+X-Received: by 2002:a05:690c:a909:10b0:8b0:e238:2719 with SMTP id
+ 00721157ae682-8b133fff1d6mr5006297b3.31.1792567798485; Wed, 21 Oct 2026
+ 00:29:58 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,89 +125,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|BL3PR12MB6377:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff9a3429-3797-4cd4-bab0-08df2f44af68
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|56012099006|4143699003|11063799006|261009223027099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	edSo/MeTRAbzwp8PYj7np5YFx4M8QJiDIEtZ5d3CZjfAR5ezZ85wT33I4h1f84+4z/BVALckB+GUPxz2W3w4mAP+d7mBpitIZqcWpVcGYheXbhJfnEw0EsmXU4QtZFllIGjfBGcWmMSlEVwYPsW3vuAHT0QHuwgKMUn0tHTsTncbt/TQhUgjAfsRFGm3l/xRGFs8qU+1NPXoBD33vURFLIA/RMKx9uktd2lRfNdzmV7jBp6SRl+m5a/p0ygALrlIGe67PiR5ipCEqPqrLyV/d2Wz+tYaskAXzYSP33yJq/W7fMHM4U/mPeYheGEFUFXv6IBzG044e/DGlN69wd8BDDbI/6o7AjYEEtp3deCXojcsOhkPICSDcHaSHo3cw67K80v9L6PXpoDcJtvVFz09N1RAeCCXzKlEybjxtBJ1IuIy7e36QmnWIJVaI5eK/zYnq/uyw7+wghfBUhaWVJ+cdrP6s8HpRbhiN2Dz74pFDB3TUamwiQ0WK+3q4n6bPC3R+1bd1zcWEE6dEGOzC5s9Hbu/RDIIVJ9+G4fhQGT8/6gUg9s8W4RvgEF4KAm77wr61OiUj8AiyPFjtM1bxPrRmbzpiqYGBVxCblPpDUVSNr3GWoBtWgVl+3T88izOU2CEmeeQTqzUQbvr2jzANKJ9DdA8EPKlidYN8K/8ol7D7DE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(56012099006)(4143699003)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hSBY0poiVDjoDppUUuUoQE5NfG7FFQ+fx+j7RPkcTXM/fZC1kTbaUXYsUeYI?=
- =?us-ascii?Q?bZy0oq3NQ+TG12pA/zzXms0kHTtQkFpBFVrLrNoqYpAt3sGfbDH4Svnode0b?=
- =?us-ascii?Q?5pkrxo0MSJVPVNMfj4U3I2Lcpvfk3ixqL475T8Q8g2T+1acpCge3KQnZQgtw?=
- =?us-ascii?Q?YyaOyJFb0bRr8FgQMNrA54MbXYqejUeoJAWdHrj4uFMy+NFdpFohL2sIdZz+?=
- =?us-ascii?Q?IqDn6Pu5VF707gXQgsVDk+9d62M9c+C/rF+mx9dYLdYb7MTN3UxNhHJzK8lV?=
- =?us-ascii?Q?ZXVRym+LT7Kjg+lBBMvXYE9ZvR5oYkGRqYqy62f3REPE6u5F0n5QdDCssiHn?=
- =?us-ascii?Q?3Nmd0T1PMV+ekRQJCazWsfAKu5gyPkhWHqYuo8wFXKJMU3jgf2MoO120+OtW?=
- =?us-ascii?Q?1K2S5PEMdvt4GS7fZNAElrWGwdupxKQk8oK78ttEio70CEwqkwKT0MQ0Cuwa?=
- =?us-ascii?Q?dKicK+lDOS5R3eDMpAEwNdYNgj7xQ9NtooBmUdEuqPCz97MlUvPjWWg6cKyc?=
- =?us-ascii?Q?friPjuoTI4iP0hVYf65Qt46WSBgALxyMrV5SEm5DYf/2YxzfCnXHfSNRrHTF?=
- =?us-ascii?Q?wck8y0ITLQWBjV6bZG0DH3Swzcq6WXE+lYQOMOZwLmuP4HERZ6nQL7/fJT3r?=
- =?us-ascii?Q?4oUi7t79Rw+RjaiyWRM7hesaYavDQQy8p1wC2Oiku2kzpi2Lj98rQQJ8spMb?=
- =?us-ascii?Q?XoaQXze+tgDN6fh+UIjbEOEMPmoQOAAsCkYgMQuqh+MsdxNsJ5vBKPawW1it?=
- =?us-ascii?Q?4Atvpx3Jf5ATpmPv7As3vS05ZdFcbFJDg7XsjWqZh55uKSijjcLJPgQqT19E?=
- =?us-ascii?Q?tFfktuSD3skvQaKmJ1Bknune+lgAFlyOLmT4n7Vn7WmuTQ8EvJranAkBssM4?=
- =?us-ascii?Q?oVLhxGqwhEyhxXJAdVLNlm7bEZ2iBwED9ODtol3X8IYbEoQhA+pGqOI59ZEb?=
- =?us-ascii?Q?E2tEQICvtcY3iRptpdJZ1W1IOfjLEuj2ZeL7PTv+zLWHRDYgwbflpfIVJP2U?=
- =?us-ascii?Q?kSzGX7OWr2PcoBY9cvLeON4YheIfqyKtGJ+Z7E0QAo3H/WVh7PEihgalCpMv?=
- =?us-ascii?Q?D5CIzgs1km9szcf/lcn6unbbVM3nVpoXeO1YkB2IUmh+KrPUMLD4PHuhx1N9?=
- =?us-ascii?Q?y+8qHHGyV4vD0LdoaK6jGzT6Rn+BsDhIhCeHGkAqvxNrP0z+yzRw7KfPB97O?=
- =?us-ascii?Q?SfinSSBFmZvghdf1UZ9uCLXqIdL8H0kvYdFPOrd5Z6utmAYuKcttEfjizzGW?=
- =?us-ascii?Q?u5ZKIONlZBcgAFiATwNTFkIVAKn+nGVi2PKJ+1aG50tdPXCxzhcqUqTxVop1?=
- =?us-ascii?Q?6PBLR1O91fEhWEcX7apCxQS6xsqcGXQuAw/nMHE9QFY9/rRHu+xiWhXsKtOf?=
- =?us-ascii?Q?q8Y7ZdoZMCIgwitqIjmXvqSij0BmYmZ9sf8RC0oc1lQbtUjRC2G2eu9OJInU?=
- =?us-ascii?Q?SzztQQ4a2N4B3CYE1ylUnCw+WSNGoiQDUrIJKBDgzbi1zKYKXsFVK2+6AZM8?=
- =?us-ascii?Q?yk2mTVGH13fti2D8kbR9WgYf1Qw0v0Sc6YNL8pI5sbxf4qlV0ciRQZnz5fGd?=
- =?us-ascii?Q?9M5JEzpLrVY1MmvILvUr+L/BzQ0uKrkucMRJ+tQw4KMCx8BPn0QvOXS7iHLD?=
- =?us-ascii?Q?UX0MqMqJtuOnROxNjsxmVaVA3bhKCcXdY8OMXxG0lCj/C0FZTYMk50bBRQDg?=
- =?us-ascii?Q?3Gt+AHOrLlzhiEYLLVmsfl5HWIAozEsHw41EZUIGccj3njIJ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff9a3429-3797-4cd4-bab0-08df2f44af68
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 07:26:55.9984
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lvnE8a3bawuWoTfHAXeiFHkK9X9JyzdT83Vv/FhzgUC/vW2AK/q6HDWqaDCnICsBMNk2so8ZSFLUbMngde1BZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6377
+References: <20261020232956.99970-1-fangxy@xiaopeng.com>
+In-Reply-To: <20261020232956.99970-1-fangxy@xiaopeng.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Wed, 21 Oct 2026 09:29:21 +0200
+X-Gm-Features: AclHuK-PqFWCN8ST8zFxglfpmVJtYh8ceAExLMaLATIvJ8UfZfghlr_8jg8ahUM
+Message-ID: <CAJaqyWdoQXHiWEh6aCGt7T+U4U4S8Z79hhp5=QYzzkODeDVyOw@mail.gmail.com>
+Subject: Re: [PATCH] vhost: fix used ring index wrap in vhost_add_used_n_in_order
+To: Fang Xieyan <fangxy@xiaopeng.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@redhat.com>, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Weibin Liu <liuwb@xiaopeng.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 20, 2026 at 02:39:36PM +0800, Zhiling Zou wrote:
-> ipmr_cache_report() prepares IP_PKTINFO on the original skb. The
-> ipv4_pktinfo_prepare() helper updates skb->cb and clears the pktinfo fields
-> when packet info is disabled. Since the skb can continue through the data
-> path, preserve and restore its original control block around the helper.
-> 
-> The original implementation copies the entire control block to the report
-> skb. For synthetic RTM_GETROUTE packets, NETLINK_CB data is interpreted as
-> IPCB by the raw IPv4 receive path. With IP_RECVOPTS or IP_RETOPTS enabled,
-> corrupted option offsets cause out-of-bounds reads or a stack buffer
-> overflow. WHOLEPKT and WRVIFWHOLE reports also inherit stale IP option
-> offsets when their header is prepended.
-> 
-> Clear the report skb control block. Only prepare and copy pktinfo when the
-> input skb has an IPv4 header. Synthetic route-query skbs use NETLINK_CB,
-> not IPCB, so leave their report control block zeroed. Restore pkt->cb after
-> preparing pktinfo for regular IPv4 packets.
-> 
-> Fixes: bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP msg")
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+On Wed, Oct 21, 2026 at 1:30=E2=80=AFAM Fang Xieyan <fangxy@xiaopeng.com> w=
+rote:
+>
+> vhost_add_used_n_in_order() advances start by nheads[i] but wraps it
+> with a single subtraction.  If start + nheads[i] >=3D 2 * vq->num, start
+> can remain outside the ring.
+>
+> With used-ring logging enabled, start > vq->num makes (vq->num - start)
+> underflow.  log_write() then sets bits beyond the dirty-log bitmap,
+> potentially corrupting adjacent userspace memory.  This is reachable on
+> the vhost-net TX path with VIRTIO_F_IN_ORDER: done_idx can reach
+> VHOST_NET_BATCH (64), triggering the issue with a 32-entry ring.
+>
+> Wrap start with a mask to keep it within the ring.  VHOST_SET_VRING_NUM
+> enforces a nonzero power-of-two ring size, allowing start to be wrapped
+> using & (vq->num - 1).
+>
+> Fixes: 67a873df0c41 ("vhost: basic in order support")
 > Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Link: https://lore.kernel.org/netdev/20260903113055.GA90787@shredder/
-> Suggested-by: Ido Schimmel <idosch@nvidia.com>
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Assisted-by: LLM
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> Reviewed-by: Weibin Liu <liuwb@xiaopeng.com>
+> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+> ---
+> Reproducer (verified on a kernel containing commit 67a873df0c41 with a
+> temporary WARN_ON_ONCE probe in log_used(); the probe is not part of
+> this patch):
+>
+> With VIRTIO_F_IN_ORDER, num=3D32, and used-ring dirty logging enabled, th=
+e
+> TX batch reaches done_idx=3D64.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Can you send the reproducer? I'm very curious about how vhost_net
+reaches to done_idx=3D64. It seems some bound needs to be added there
+too, isn't it?
 
-There are a few pre-existing issues that the AI review flagged. I will
-take care of them.
+The patch itself looks good to me, even if we will need to modify it
+for packed vqs, so
+
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+
+>  In the observed run, the initial index is
+> 3, so the single subtraction leaves start=3D35.  The resulting length
+> calculation wraps to 34359738344 bytes, as confirmed by the log_used()
+> probe.
+>
+> A 64-byte canary immediately after the 512-byte log bitmap changes from
+> 0xA5 to 0xFF, confirming the out-of-bounds write.  The used-ring canary
+> remains intact because vhost_put_used() runs before start is advanced;
+> the demonstrated corruption is in the dirty-log bitmap.
+>
+>  drivers/vhost/vhost.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index 44cac11b68d2..0226c4c59709 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -3172,8 +3172,7 @@ static int vhost_add_used_n_in_order(struct vhost_v=
+irtqueue *vq,
+>                 }
+>                 start +=3D nheads[i];
+>                 new +=3D nheads[i];
+> -               if (start >=3D vq->num)
+> -                       start -=3D vq->num;
+> +               start &=3D vq->num - 1;
+>         }
+>
+>         if (unlikely(vq->log_used)) {
+> --
+> 2.50.1
+>
+
