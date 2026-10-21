@@ -1,181 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.20
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.218
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1792584894;
-	b=pAnIhe2UCIPgnKpXHKlQPLtJ5A+J2n8wgEfIfBZ4Rmn1LuL8wnR8omKPr78pfz+3V7gq
-	 MjnX0ncp4DPr0pZyc5SPT9UGGqwUOhVYDNQS+InWUzv3P2wSUJbFUyLV7n5hGHS3W7dCw
-	 joz8jod9zZ+H40jO9wmhBV3rR+3BoVxyfcod5lNTqPWc6zSAnqkRod5cktN61OfCxJcVU
-	 CCL19SlrfdsetkiSy0xv+6OIAGU/SAjdlHj5jX7FiDYmN+7cPta2XluArGXOgo6tEHJtC
-	 padOWNVNfcSpzc2NhpS9OU8r9Dl5foZS/CRt6P2qxbrjXvT2Gge93rc13HJfM8G8Y+Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	b=pn7nZpZtJ4CeOw04HrgCnfza/xrarDEgRYI2cX9TbosgvVpSdRWZrM/W/eL66Gggn1BR
+	 g8bGZVqs6H+6lscRwAQUUlT/ju27nQtjICEyDzGog+tiU10bkNt2ChwXLikOKJDAuFoV1
+	 P8+p3HhU/EJrRJY4gpxMDfIhoBPAfbJzvfLU3kNLjmoxv89+7OGQw/XXAivrVJo+vbvbq
+	 shfbar4v0kz8SdgFjQy58SyDiJ9M5cbN+SJd6V2wRFfvoaZNmOxJ4k5RK/6E9M9oal1eF
+	 UPU0O3MdphXt10jMJPa7cR75ODB8cOo6SS9sQR0PWGrEkZ7YFD2TsNdZwTXK/MV1SFQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1792584894;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=5IM5csQqUdF0RSW/cu7rVoeH6wSRSoDgRnOPY/xALa4=;
-	b=qnmLNz+BXQ8tlVZMI5wI+JSUQ3HPpPWOcbmTujU348hTA8KvkYXYQBU++GrW30qfO8by
-	 DLwVDz8Om90uDhSheyjEZwoLdRTo5ItUHzzMoa1iMmstWe0FBcRQame2D1TbpFrusG7KY
-	 iRDVc97pu0g/yGhiVRpRLwQKzQPnL6DP7BRgHg6OCL/A1wRxj+BNmUeL7x3iryKkjmR/a
-	 v9WM2rEASI5+V70cnVMrW3v5TgdBK4eQFldaoZOTvbCUF63AUeL9LLu4eE0nlbO2CfnGE
-	 +n+psY9lGyX0/yYsCI3Cc9U/cc+HdUE2Ml5MrI/FMLtBFc5VvPGfs6EkG2DwaORYxRg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YCUBq62y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.20
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=1aLCrCY83kZmeumsZ3gfrMmWKqOZ+LFH4SgSm2GvtO4=;
+	b=eCkCIlqppFM9TU7xR0yIh2FH0GO7RsbLbkbkl0xH9KDfcI7WSK1mTa1x4okm3BFQL40P
+	 4E0/D57uxwKwQsyl5zOdM67yYNUQTQcQH8tDFYCFjL45btx99zUyLxZZxML0ayZBRz+Rp
+	 W6b4rL5E/qarDjDVHtEsXc5psuD3v+8jbdw7IgT9hja/nHaUoeopKGhUKHtvjxFxKR557
+	 jgtYuNq8fflGVdRAYctYLxQAoWJbwRvaXDd5kKuEO4wnJQXv7U+cvJVYWqXdiguj+k4T7
+	 5ljnntZLMIS7YnZjMx6d/gHodlrhwvEU2ez/c7PvjEC/FGjTqF++gjt5JnR3Rrjsl3A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Ulo7PBC9;
+	arc=none smtp.remote-ip=113.46.200.218
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77663606A31D;
-	Wed, 21 Oct 2026 12:14:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77663606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDACE606A31B;
+	Wed, 21 Oct 2026 12:14:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDACE606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YCUBq62y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792584893; x=1824120893;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=tEMs4EgB4Re9QRvNDbmsgwhTg0X2WR52DKrcwPqcpN4=;
-  b=YCUBq62yISiW4DaYg54UggNt9IbStRqzEqRVy9mbpswzzaIwbkRBUrOb
-   Nv10dVRMBmKxNTjwi6xGRrggUnI2A1JFVdrTkQIOHyZ93LLzjZyq8dVow
-   PW4YLGzlaSzXjx5JV932LXWhpb1wAR/LwzEwdGtMmma+M+2u6nZeZSBXF
-   jDEqHtNtDTgZpslvfwcSuYQqY/K1waZ/OUanVY0Y9yE6Tt9EwbpTkTAVb
-   i6GCWm+hNC+4Z9wLkqKqJJlB/6fc1x7h1i5GnKTQY9VfSj+TItfy77QOj
-   15Amwlu9rON18LR3uNbbf9WbUQE5bQNi1AaigvDr3v/QSaYEQu2SurwX5
-   g==;
-X-CSE-ConnectionGUID: dADG032FSJegeC5/sXAksw==
-X-CSE-MsgGUID: 2chzD3OyTJef/15BggCptg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11941"; a="1317182"
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="1317182"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 05:14:52 -0700
-X-CSE-ConnectionGUID: MYsKCN1aScOu8PCmvHkw7w==
-X-CSE-MsgGUID: O6jEB/GhSP6Up+hIKiU//w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="3131550"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 05:14:51 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Ulo7PBC9
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=1aLCrCY83kZmeumsZ3gfrMmWKqOZ+LFH4SgSm2GvtO4=;
+	b=Ulo7PBC9+384LLGpKjq1CHJP8849stoAn9H763QxZmixrE2zbfELnU07fvHP0qSI7iutqwwvK
+	bxqG4/bSe5oMrPMdNqW7Yr630Isg09cjQfQWmDeQG3phFhgrtwNhMTnWN3/+hKxJfmRPekHdnVH
+	8S0f3aGwud73SoUywN72gV0=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4j8pB64HHDzpTL5;
+	Wed, 21 Oct 2026 20:14:38 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 39CBD40579;
+	Wed, 21 Oct 2026 20:14:48 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 21 Oct 2026 05:14:51 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 21 Oct 2026 05:14:51 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.33) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 21 Oct 2026 05:14:50 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R5CD6F2SqQ6k9gOZyD7cHbND8dPcvqaPaYN4wNhkpMTsHsUJ4SOxWa4UoR32/ZWciGU7AeK7akgrcWwQnnIHWXcJyGH9RhmQxj3i1nuwyufItGQ3NfkG7CFpEmiYixBObEtCvv4MUGbiwTVe3IEIkHFrn+DbIbNwAfIbW14zBscAaHZ2E1GfHlqx4+oeQc6EXSUyv4KgDhNbMLFVRqiB23wg32d87VuKhoMuuIgv3MOq1jzfM6OJS/+geJw/vSAS+9cUWSpIU0xWUxcYQ3eXe0Z/RDxTckeF3kEH+kL0q3v6us4c/Lczrdj2djw8bJfmmgP/qhr6PBaewOsWTS+K7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5IM5csQqUdF0RSW/cu7rVoeH6wSRSoDgRnOPY/xALa4=;
- b=bK+MYDE7ap0CBdO1wyXJXuoPiH2ThTHapqHdr3niYpUo52XGsod89Wf8VoSsXQKt8h4GmHk5eNi+7ifKnRCTKF6camNNhBUqUH9HglNBrVUqqovKMg4p0LqvEfe8o8PYanNKJ2UkCNg/B4BHxTVIzMc/w+sYsSJzqxc94/q3Erm1/Qcg63WMO2BkaR3XRFYW/8vb1hUS7Z5EAXWL27ek/FEEC1XdnKVbkwc7H48IgZgnOGKMxhbMjCIrWHbnhhjTeLqv0M0UCF6Ccc+nW7FFAQp3Ol3Ym75br1D0nmvAp2leiX21oZ2gBRG9CmptV+4/22zLNCIWzF7c3SmArBWvTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB566895.namprd11.prod.outlook.com
- (2603:10b6:610:34d::22) by PH0PR11MB4805.namprd11.prod.outlook.com
- (2603:10b6:510:32::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 12:14:43 +0000
-Received: from CH3PR11MB566895.namprd11.prod.outlook.com
- ([fe80::87f5:c8cf:d52:e584]) by CH3PR11MB566895.namprd11.prod.outlook.com
- ([fe80::87f5:c8cf:d52:e584%7]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 12:14:43 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Aaron Ma <aaron.ma@canonical.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Lobakin,
- Aleksander" <aleksander.lobakin@intel.com>, Richard Cochran
-	<richardcochran@gmail.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: Dan Nowlin <dan.nowlin@intel.com>, Brett Creeley
-	<brett.creeley@intel.com>, "Keller, Jacob E" <jacob.e.keller@intel.com>,
-	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>
-Subject: RE: [PATCH 5/5] ice: quiesce PTP periodic work before system suspend
-Thread-Topic: [PATCH 5/5] ice: quiesce PTP periodic work before system suspend
-Thread-Index: AQHdX7gV6rQRv2Nny0umlPWNKZBuvLcH6/sw
-Date: Wed, 21 Oct 2026 12:14:42 +0000
-Message-ID: <CH3PR11MB56689501C5B27D1510018C8219E5662@CH3PR11MB566895.namprd11.prod.outlook.com>
-References: <20261019105155.3793063-1-aaron.ma@canonical.com>
- <20261019105155.3793063-6-aaron.ma@canonical.com>
-In-Reply-To: <20261019105155.3793063-6-aaron.ma@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB566895:EE_|PH0PR11MB4805:EE_
-x-ms-office365-filtering-correlation-id: d04b6e43-c95b-435b-ec65-08df2f6ce382
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|23010399003|7416014|1800799024|366016|38070700021|921020|4143699003|11063799006|56012099006|261009223027099003|10067099003|21046099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: tccMUfmmxew1YcrAcURzHM7lnNLXe2CjkIVeItDfdeOeUQ8KV/wo4irLLsSu1IXjrCW4rWG1UyqaDhefMIx+/MTtv6Z/uLUfZnBwz7OtIzmyOAemuV995bUw3K9yH+bLlmuCHq708R+FXdxV4DUfYw4yIsRcKq9Kh2pszjLYIbDPeN3Jq0RGnZpdKVXJMVpSBFSgyuA9MzEGGxsmrtLpso945IDjkdawgvSEe18t4RjhIrW22j4Gvw92ROarSR4pBkppHrR9xBcJB7GRr9oZ19pQtcRp31lOQXSurTdC/4IKuct6uMhjdzGN1pxG59VaSSSq5c5j9Sw25EV0iuqrQUvyRlJe+pYVoXLtkCkPNPrelMdFx2nS4eA2q9Mtp7NdYgFolg/tQjTr00lLSVNVqRILDElZ0RzJsmNpZUJw+MbAeL4hHrK9Iv0ifsVZD8WdLl6UckE6DlllQ0tMsEs3ZW6jCkKrCGn9Ew+QB5CDxGYx6QVy5H4VJKgEBHt0Dznrc3geSuI+S9Mg2bq4JKSXoDU9S7kxXm2dJxf3nzHoJv9NPJePJjU/qPiVQ03QsN5he6lrXm6SBDYdn2T2STHu2h9ggeXZQV4KL/VthXMyYzwcOX/24gjUo6q/zrOCQ8XH0Me3UzHR0DWduWHYbggGAItEhBNJMK0UBM3IHB5VIXeAs9QjsSfV3SU/0Y9QpexPtKaoD+dQcwtoxY6jBB+yb5g745bkWiJ9SmchWVOFBbTCXKBul5rMvUqFKh/5Khc0
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB566895.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(1800799024)(366016)(38070700021)(921020)(4143699003)(11063799006)(56012099006)(261009223027099003)(10067099003)(21046099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?6N5DazLcWIy3imjjyksRPKCMPFfHydBET+GjsQ8ZGOFaJnH44xC/u1GS9T6h?=
- =?us-ascii?Q?fUojK9e0uaO1kFd61Nl/8xELABswYRkXbUBguBfFW1Fr4jgIauDQQZnC5usg?=
- =?us-ascii?Q?pTh1TT7ZLxBwHNmnq3fpPStz8YhjGLSFvLsPo5v/QX5S1NGCwx8VJy6Pyd88?=
- =?us-ascii?Q?YblKP2rZWXX+/JMpSFtPsvckhjKLDP4wZOPjOR6vomrPBA8MZ9USgp78e1za?=
- =?us-ascii?Q?GsE53edKBBMb7/zGK2qoMfgcb1E2Wlyif8nA+p8q9QqyLT/J/jikcb2vETMC?=
- =?us-ascii?Q?RBWJJzBLpeU5JDagM/IpGxvIyNYHOSP9r9hiTyCCWtXvTlxfpsF7AhfZezZI?=
- =?us-ascii?Q?wxCBwlXvpjaneMHkMMy7RIkfSR9h6X8ZBk7l4BtE16tPn+d3RL5IwOt3Ra93?=
- =?us-ascii?Q?zbok+8UuO4lHf/M7vId8KSNA+N1fvKcoihrXFaWwJNaOnGpv0w9FsU61Aq5/?=
- =?us-ascii?Q?9mMX6NLI9laUl8jeMkrSqrUbMzw++QSfQ4OKbgA/rj/2DMIV9AnVqOzd4I2F?=
- =?us-ascii?Q?CRofnbWH2Llnk556/kd9T/4j0erX184z3ujMpjWfGayhvWqKczyMw53MYGaH?=
- =?us-ascii?Q?NlRsS83bShUY3D5qeVxY8bEDu+heJnvnhB9J2iBKWCeqURybGs95ZLdLqLkb?=
- =?us-ascii?Q?lLQbAyu2ltDu1NBEbf168k8muRvTpabK370xYuuVSNV9o9DE5QG7490SgJ9e?=
- =?us-ascii?Q?4PTyecF2Ok6mCcuEdpRmwMJTgrgfdeaht0teJNPP+CgY0jGeyIOqsYpkju7v?=
- =?us-ascii?Q?mBbbRbPW4mNlg/Fio9GgHy2/JDwGvYAiCC8BVA/O2XFEctuqphuy3f9P8REY?=
- =?us-ascii?Q?XHyozHyyeDeg6jqNuBZv1hpQDqFtnV+68C+ELBatJrLejLFlPWjmupzAEamj?=
- =?us-ascii?Q?6xlGetRu+6PhM8aF7syQKhhoU3Jba29HVuWprolY7eCJHWAux2EU0rOQBjdR?=
- =?us-ascii?Q?CRQTd0mLgK10CRE5+YR8dIWH391V4lEqwjMyYrCcJ7yrR8CvwGlkXcp1/edi?=
- =?us-ascii?Q?7lY1oOkqx23NO6gIVEctJjsAJMG7mqwuwG0NShoWMZqFCPF5RdzviUK1Vgpl?=
- =?us-ascii?Q?ec+5ECBduVXjmJAnMD4BkTiWghcGbHUPHFm4XNx72Sn5SSYihpw6fihcjjlR?=
- =?us-ascii?Q?Yqn81OZi/sVbOnbAHyilsAVp65na5INy6RUIOpUpNLyknZ4iLnAgrB8CEhDh?=
- =?us-ascii?Q?7Z26/rJhqw48BhdRL1qrTrkNWM5zFRN/Y7hAhnytROGz+DNjK4X5ZksR7xDs?=
- =?us-ascii?Q?PKXrtVp0JBv3Ae0EJh+iqnrhitGlXxuIzwCKAAnK5zIjP89I19nqy7eFnBjP?=
- =?us-ascii?Q?b5/Nu+IKoeITTipqfRCN1fLVjRzpRjvrbMyganf2C3M6X+mtYu7ixfzAHVN0?=
- =?us-ascii?Q?dBn5Lj3eqr1ugjN4X3/HNUrdHZSyk0d9VLqePNA5FZotUb/l1Ww5M0nkk2dj?=
- =?us-ascii?Q?XDro9rgDexB7+dYlHKNXRrKoPQ9oRIv812ZgUsnR8f6lR25jPMbGITMb+PQQ?=
- =?us-ascii?Q?wX/3WBTR2YESQY+pp5hhsx5lPCJ4jVFCoCJxzJkIx+nPxLe7Drsqf9Ki8DgG?=
- =?us-ascii?Q?ZrBWZQjRXpFhdyuJpAc/wCc+s88xsaXEUeCCN2d4bdxUk2xVRDPNFml560nr?=
- =?us-ascii?Q?zw40rmAYUBHp9XHxqfdzpfoi4/oE1X71Y8vgF+8sgKsHiI70jehjQVKJ1YhR?=
- =?us-ascii?Q?RtvCdR72lGhDYMv1PX9swPvIBW1OEfIpoG7UoArH5etNfmM5/7tcQcJ2Q19I?=
- =?us-ascii?Q?/WHKPn6rJbCmiv+MnOyCaQGamr09brc=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.2.2562.45; Wed, 21 Oct 2026 20:14:47 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<ningwei15@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH v2 net 1/3] net: hns3: fix vector resource leak in hns3_nic_alloc_vector_data
+Date: Wed, 21 Oct 2026 20:14:24 +0800
+Message-ID: <20261021121426.3096838-2-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261021121426.3096838-1-shaojijie@huawei.com>
+References: <20261021121426.3096838-1-shaojijie@huawei.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -185,76 +73,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 0nLslNaR3kctYEsCOtFu5xxlSMWXpfDlp328FJEDMYrXb3xAl1rJbZgjwQWXzCG7Vn3xpN1z2qUfjRckxweOI16PFY7WQwfDFlZRi+1iM8WjQgGMAXZ0RtSFwkfjALCcbd4vv2aN6zovxpAufyMHVNVW4UfpesCzm6EsBRIk1LGKWKxYR/O7zWCTJqDL9QrGKj490reND7h67mVYWD2a+835zV0WF/6mGMskmxPjLAPNUPlRLcVdjtMNirVSKMzoT7VKvecI5c3DCY3Z2KsA+n3+vu7vokQCHDbRwjFF0So+79pI4jskwnerP3BkBZNC3e7cVc487YFesyQ8KcUxGQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB566895.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d04b6e43-c95b-435b-ec65-08df2f6ce382
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Oct 2026 12:14:42.9713
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WiUpwHI1XyWs9qqjXAUpNxtFd/pmPTDUwFyO3Z6OB0a1VeWDtm0k29SHrn4cBT4hVHwcg2CLIl9P3OOX+MWGy57+npIYqXwjzfqkHtF8vIs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4805
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
+After h->ae_algo->ops->get_vector() has acquired MSI-X vectors, a
+subsequent devm_kcalloc failure for priv->tqp_vector jumps to 'out'
+and returns without calling put_vector() to release them. The
+underlying hclge/hclgevf bookkeeping (num_msi_used, num_msi_left,
+vector_status[]) is left inconsistent: the vectors are marked as in
+use but hns3_enet never tracks or releases them.
 
+On the reset path this leak accumulates across failed reset attempts,
+steadily reducing num_msi_left until get_vector() can no longer
+satisfy the requested count, at which point the interface fails to
+recover.
 
-> -----Original Message-----
-> From: Aaron Ma <aaron.ma@canonical.com>
-> Sent: Monday, October 19, 2026 12:52 PM
-> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
-> David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@kernel.org>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Lobakin, Aleksander <aleksander.lobakin@intel.com>;
-> Richard Cochran <richardcochran@gmail.com>; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org
-> Cc: Dan Nowlin <dan.nowlin@intel.com>; Brett Creeley
-> <brett.creeley@intel.com>; Keller, Jacob E <jacob.e.keller@intel.com>;
-> moderated list:INTEL ETHERNET DRIVERS <intel-wired-lan@lists.osuosl.org>
-> Subject: [PATCH 5/5] ice: quiesce PTP periodic work before system
-> suspend
->=20
-> ice_suspend() stops the main service task but leaves PTP work active.
-> The PTP kworker is not freezable, so it can continue issuing MMIO
-> accesses after the PCI function has entered D3hot. Both the periodic
-> work updating the cached PHC time and the E822 offset calibration work,
-> which reschedules itself while calibration is pending, are affected.
->=20
-> Synchronously cancel both works when PTP is ready, after disabling the
-> VSIs and before shutting down the control queues.
->=20
-> Fixes: 77a781155a65 ("ice: enable receive hardware timestamping")
-> Fixes: a69f1cb62aec ("ice: exit bypass mode once hardware finishes
-> timestamp calibration")
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_main.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c
-> b/drivers/net/ethernet/intel/ice/ice_main.c
-> index ddebb28b2454f..3962910759067 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -5450,6 +5450,12 @@ static void ice_prepare_for_shutdown(struct
-> ice_pf *pf)
->  	/* disable the VSIs and their queues that are not already DOWN */
->  	ice_pf_dis_all_vsi(pf, false);
->=20
-> +	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) &&
-> +	    pf->ptp.state =3D=3D ICE_PTP_READY) {
-> +		kthread_cancel_delayed_work_sync(&pf->ptp.work);
-> +		kthread_cancel_delayed_work_sync(&pf->ptp.port.ov_work);
-> +	}
-> +
->  	ice_for_each_vsi(pf, v)
->  		if (pf->vsi[v])
->  			pf->vsi[v]->vsi_num =3D 0;
-> --
-> 2.53.0
+Call put_vector() for every vector acquired by get_vector() before
+returning an error, and reset priv->vector_num so the dealloc path
+cannot dereference a NULL priv->tqp_vector.
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Fixes: dd38c72604dc ("net: hns3: fix for coalesce configuration lost during reset")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 47788be64be6..2f3aeade558c 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -4854,7 +4854,7 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
+ 			     GFP_KERNEL);
+ 	if (!priv->tqp_vector) {
+ 		ret = -ENOMEM;
+-		goto out;
++		goto err_put_vector;
+ 	}
+ 
+ 	for (i = 0; i < priv->vector_num; i++) {
+@@ -4865,7 +4865,13 @@ static int hns3_nic_alloc_vector_data(struct hns3_nic_priv *priv)
+ 		hns3_vector_coalesce_init(tqp_vector, priv);
+ 	}
+ 
+-out:
++	devm_kfree(&pdev->dev, vector);
++	return 0;
++
++err_put_vector:
++	for (i = 0; i < vector_num; i++)
++		h->ae_algo->ops->put_vector(h, vector[i].vector);
++	priv->vector_num = 0;
+ 	devm_kfree(&pdev->dev, vector);
+ 	return ret;
+ }
+-- 
+2.43.0
 
