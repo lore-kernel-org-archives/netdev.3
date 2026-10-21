@@ -1,58 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792597396;
-	b=kxr7a9PpdcNJj3ZuKy9Smn8RggAu9rEQh1N7r7bb/z/T+CKaQsCRwdZJLi9Qcmx7yfda
-	 JHHOqqoOHocBb8OMnKhvL/gbLDt2PnxAuNxT0eBNYiwYkzW82LiG0mb3P+leUSWoeRZd9
-	 5zKW05OpIdToZEqGIhp76OIq+rmMPeccIdOvofBpg2HB+VWsL0juw6t0/WUtPAQnExwuJ
-	 JXX13VYUxSW2OcZU6geu+uKGyKkbdYvsfgxf2p09gomsmPRj8ee/6B26rGg4oen6fQ4I7
-	 Qz4xlH6mULsvapHD0GRruJqgcbbgw05oG3572cc/mtFEcqslJIZAti5z585YFPikaaA==
+	t=1792597492;
+	b=ldafFKvjwu1ANH+s1fz2CRbxBFbE3rmLqo1MtaF3YBiFkFK4sFmOOKZe6qBcfx2k0/z/
+	 Gxj08GEqo/17Ux+vPj9duHGLqWyKZqsIrjmXfNY8l7KT0hmDUN9QBqWlnJBoB5AutSZmM
+	 ZVd9Jhp4JsJJ1SsIfXk/PyhJt4cMx3+7TvGv2io26ZA+tKG4bRIlq1bDiO2rhu36/oKUe
+	 ckFQ2oCuIlLvBa5zDPdaO6nuJ3QYpoXgwosPaGpR4FGySgRBDx4Qb5dqID7Qx5ENpP/Cv
+	 /aZEZtXD5E/b1Tq4T5RBX8vzgrN18ohrSqy3rfjR8BOvD07mUkLB/5Us7PSebxx4WVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792597396;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=hnp5nKDzgJnODvsFmkdgk+eeQorA0gslwBiNwwkyGhY=;
-	b=N4QaV7LiMdmOE2wu7sCtYMRoagFLT3xUQqTQEZt6Q09Cz0/gtC1DaPYTfg+Qun+CiL32
-	 LfYf/BewZFsUKHRb89c0khQnEr6hrhMfT3rqbQiG8B9W2+PSmyUvpf87J6kLyxFmlCWKx
-	 YrGfZsekB4+2JCi5iXxHvAb1hMNCFOl30TV6358dlqP6c28T4MfKUyl11HbGx62SbLO6e
-	 BAGBwHoWfAebG9+37O+wQU94JA580wLuYVEIYbje9zOKIIzUEQpHtSaeIBl0OJqM8l0i1
-	 p51txmVPxKJVkYhm8lZfidf6VjiVokplSp93L3T31Cz1cC++J1aNjqBxMuAVEyLX50w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792597492;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=oM2yV+a0OOkQNHpQEHPvv3mf4BJVEOuPGr5iox4wNL4=;
+	b=NMUunNaucUyBEl8CUjVAFMI8+GviGpkyXbcdm3xdlfYnlMd3rpzdcoaS1f3hOu5a2SYj
+	 u0A7ibjdjdvBMyfzVKdN8O0WjlFfL5ZrCNr/fVSshIHZuA6kz091gQzltT5l0tE+2xw4X
+	 1oPGim5FfNnPioMfMOJtPJQFIdLDhUf5D6iFIeavyuwEhXtz3A30QBbWtY54IQzvM3/EB
+	 TlMEO1IhhZ/yidOKWco2scW+28XJxvM71iAxn32YX4KVNWKVyn/vYCxCHhUDCaUYFNei5
+	 aizIX3zHN2hRon51VPw3jlMwDQ4hxXhn33IMnAqSpSCuAZ4ZU9WPzIgbSYx2mfCSnzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="W0ffC/xJ";
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dmarc=pass header.from=proton.me;
+	spf=pass smtp.mailfrom=proton.me;
+	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=ritkwspo3bacretg3bfle5mol4.protonmail2 header.b="aRA/GnuZ";
+	arc=none smtp.remote-ip=109.224.244.30
+Received: from mail-24430.protonmail.ch (mail-24430.protonmail.ch [109.224.244.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7C4606A32A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:43:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A7C4606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9600606A32D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:44:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9600606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=W0ffC/xJ
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4F6DAC5CD6A;
-	Wed, 21 Oct 2026 15:44:06 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4DBB7606E3;
-	Wed, 21 Oct 2026 15:43:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A8AFE10328DD2;
-	Wed, 21 Oct 2026 17:42:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792597386; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=hnp5nKDzgJnODvsFmkdgk+eeQorA0gslwBiNwwkyGhY=;
-	b=W0ffC/xJr/vsjzk/DEL2NTX9HR8MZpnQOJA7N7VLDM1nu2baVu7R9mvlpzJ2NiI72N4VIz
-	ohqn6bCn9Cw8k4Sa4KJBy0r/Gorqc4ce5aaZtsRgbcm3YmxcZgQcKcMtsY0HScEVMMJcUK
-	pnUjRe9E5dIQFPVcu2tVR+L6S9Ea4BmbsLOOZ49SeXoEcR+M64UM0rsnKNrpEFvHLLUk5A
-	kaaZ+VTczl3qxfLEzfk3xc6NOn9pwZ9Ow7j0tbYL6nsn+xSuUnIuoXpWYNu5983aBulATP
-	sfQoq395ir7VjJLqkXmvgYLP78a1IVY0lCvmpu7Cr2MSubxW5Xz0XV5n+ujt1A==
-Message-ID: <2c27a1a0-b0a4-4adc-a3af-edb74e12dcfb@bootlin.com>
-Date: Wed, 21 Oct 2026 17:42:59 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=ritkwspo3bacretg3bfle5mol4.protonmail2 header.b=aRA/GnuZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=ritkwspo3bacretg3bfle5mol4.protonmail2; t=1792597489;
+	x=1792856689; bh=oM2yV+a0OOkQNHpQEHPvv3mf4BJVEOuPGr5iox4wNL4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=aRA/GnuZvP8HzYTxZFp/ItlVnFnDiRVWGKDsaEyweDrN9sOZXvq94CsLN7Q+f2C83
+	 8Lx3vl91YEphSZOnIAUwR9kiCdApBVoNA8FOYMyvm/KUOd9lkFNt9EQfW6kgLEpdk2
+	 dxyArZr2+KjlJgVOUxce8xdBNGCCObj+vjJr1CBtsrdTb2moJgFhCXtwaxZIVQNNFh
+	 ucxh0N6cQ5N7TgIav6YjJiNCdJg934Dyb+kqKkEhEc8WDF91ylGislVgIOP4hfJaH2
+	 o9g38AUVVLjUULmLh+WF4l604xR5qtlgb0h8VuODP7kM6uVbkA0oiMxn6H33JeczIp
+	 1htY5DpQLN5dg==
+Date: Wed, 21 Oct 2026 15:44:47 +0000
+To: netdev-bot+sinfo@kernel.org
+From: omniameasunt@proton.me
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "paul@paul-moore.com" <paul@paul-moore.com>
+Subject: Re: [PATCH net] cipso_v4: fail the walk on malformed options
+Message-ID: <BZyJJDcKn9wLfVaZVXbCOG_rf4_C23keHHVXnq2p8wQ6Ntw75EbXhOA1Zp2BB_UfVznQBp5FbWTu_sZSt53Qvdo2QKr7iyfOV9D62hk6pWU=@proton.me>
+In-Reply-To: <179257559039.3290.8125763300787291489@kernel.org>
+References: <CBLsHx48w8Bn1k_Xg6kJFliLNkxLCqi8SnkifapxYYpVtll4w-W_2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y_CgD_sdzcAbILVA=@proton.me> <179257559039.3290.8125763300787291489@kernel.org>
+Feedback-ID: 219316618:user:proton
+X-Pm-Message-ID: d2bba39bbc4e80c10dd6320b5262ce71412eead7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,134 +64,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net 05/10] net: pse-pd: check the PI state under the lock
- when setting a power limit
-To: Kyle Swenson <kyle.swenson@est.tech>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
- "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>,
- "github@szelinsky.de" <github@szelinsky.de>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@kernel.org" <edumazet@kernel.org>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "piotr.kubik@adtran.com" <piotr.kubik@adtran.com>,
- "saikrishnag@marvell.com" <saikrishnag@marvell.com>,
- "horms@kernel.org" <horms@kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>,
- Marc Kleine-Budde <mkl@pengutronix.de>
-References: <atb-3EIJynaRwuwe@pengutronix.de>
- <0378ccc3-4807-4d63-8e61-03b465952929@bootlin.com> <atjcxjV-scVhA6aF@p620>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <atjcxjV-scVhA6aF@p620>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Discovery: found with Clang static analysis using a custom checker, then ve=
+rified against the affected code paths.
+
+Triggered: yes. On an unmodified v7.3-rc6 kernel with CIPSO labeling config=
+ured.
+
+The information-disclosure impact was demonstrated, and on a build without =
+stack protector the overflow was demonstrated to be exploitable.  The full =
+analysis and a POC were sent privately to the security team and the maintai=
+ner before this patch was posted here at the maintainer's request.
 
 
 
-On 10/21/26 17:40, Kyle Swenson wrote:
-> On Tue, Oct 20, 2026 at 12:19:28PM +0200, Kory Maincent wrote:
->>
->>
->> On 10/20/26 07:40, Oleksij Rempel wrote:
->>> CCing regulator related folks.
->>>
->>> On Mon, Oct 19, 2026 at 02:30:24PM +0200, Kory Maincent wrote:
->>>>
->>>> On 10/19/26 10:51, netdev-bot+sashiko@kernel.org wrote:
->>>>>>     	previous_pw_allocated = pi->pw_allocated_mW;
->>>>>>     	pw_diff = pw_req - previous_pw_allocated;
->>>>>>     	if (!pw_diff) {
-> 
-> [...]
-> 
->>>>> regulator_set_current_limit()
->>>>>      pse_pi_set_current_limit()
->>>>>        ops->pi_set_pw_limit()         <- new, higher limit
->>>>
->>>> @Oleksij, Here is another example of an issue related to the PSE PI being a
->>>> regulator provider.
->>>>
->>>> @Carlo, Kyle is working on a series that remove the support for a PSE PI
->>>> being a regulator provider. We will see where it goes.
->>>
->>> Removing the regulator provider support is a bad idea:
->>>
->>> - We will end up implementing a poor man's regulator framework inside the
->>> network subsystem. Networking folks will have to deal with physical constraints
->>> already solved by the power management community, requiring a different mindset
->>> and domain experience.
->>
->> That's what we thought at the beginning of the implementation of PoE but in
->> fact that's not the case. I don't see currently any cases of using already
->> solved regulator constraint in the PoE core.
->> The drawback are:
->> - locks issues: solved one by using worker but there are still others
->>    appearing like this one
->> - code complexity due to all the regulator callback wrapper
->> - converting mW to mA for regulator framework then to mW again for the
->>    PSE driver callbacks. There are even devices that are using current
->>    limit therefore there will be 3 conversions.
->>
->> The more painful issues are the lock issues.
->>
->>> - We lose built-in regulator infrastructure: DT safety constraints
->>> (regulator-max-microamp), over-current/under-voltage notifications, and
->>> sysfs/debugfs (regulator_summary) visibility.
->>
->> I disagree here.
->> regulator-max-microamp: has not interest from the PI side but this is
->> related to its power supply. The PI should still stay as a regulator
->> consumer so the power supply could describe this binding.
->>
->> over-current/under-voltage notifications: we are already reporting these PSE
->> PIs notification through ethtool. We will loose
->> regulator_notifier_call_chain() call but well there is no consumer to the PI
->> regulator provider so it's mainly useless.
->>
->> Yes, we will loose sysfs/debugfs visibility, but is someone really using it
->> as all PSE communication goes through ethtool?
->>
->>> - The race above is just a lock scope issue across pcdev->lock and the
->>> regulator call, not a flaw in the abstraction.
->>
->> That's not something easy to solve as PSE and regulator provider are nested
->> together.
->> Either we put all of the lock issues inside workers, it will not be
->> synchronous and will smell hackish but well...
->> Or we try to combine the PSE lock with the regulator nested lock in one way
->> or another.
->> Do you have a better idea?
->>
->>> - Writing a custom power state machine in net/ will introduce more bugs than it
->>> fixes - especially if we overestimate our ability to upstream complex custom
->>> logic under LLM review supervision.
->>
->> Removing regulator provider will simplify a lot the implementation so I
->> think it will rather remove bugs than introduce new one.
->> I think we should let Kyle works on it with a RFC and we will see where it
->> goes.
-> 
-> For what it's worth, and for others that might be interested but I missed
-> on cc, the RFC is here:
-> 
-> https://lore.kernel.org/netdev/20261020-pse_regulator_fixes-v1-1-fd6084a22cba@est.tech/
+-------- Original Message --------
+On Wednesday, 10/21/26 at 11:39 netdev-bot+sinfo@kernel.org wrote:
+Hi!
 
-Thank's for that.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-I will take a look at it when I have time, but it seems promising to me 
-to solve lots of issue as you mention.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Regards,
--- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
 
