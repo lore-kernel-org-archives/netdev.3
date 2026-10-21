@@ -1,100 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792609883;
-	b=U2klYtc/oel4hFU3r0BHU1eCcsTclfsDdP8Bne1M9to1lIBohBuYbCA7pEbSQztRZosy
-	 Qrnj2661r7Kit9ElH/CsaJ7pXpF9vpBnfy8qF1aumNzx+uEKl6k0+VGX/rAs4E8X139RW
-	 /dVo8mABPYlSVs/mJHHN+b6bPX+zAEScKWG4J7Zdn2Xe3dbFJbkjQC0PUG6wQKHZ3NlY4
-	 5vAZmo5h+f8DYMarJiFl8xnszIqA6F4DRa+MdiBbKREnZz7nrACzeNNoo7ghp+B7GUUZ7
-	 OKA7zRuJtc+5tOjleDPDz5eSWXo8srgoXXRCLRWiLi5lB6er7bYIz7NgP5H17hkKDtg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792609883;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=+JKXqhdtW6oX94eZMED7N51uhKdO+qZKQDvb/WZHHvU=;
-	b=vLC62OIWaafoNz9LtQAy51PMJb9GECFa8HCAfkpRYDnB3uYgckdxK2iGfJjM3pktOMuE
-	 02/yq6nor7zHkrQTWk3E6j0wCYyTn2U2DqVWuZA2nm7yJTTPL1HJAwLhq27TOvE1MzBBQ
-	 oBJG8kZ/9/tycIJFAdbpEXUc7xhAaza0whPYk1Zdv9AOhfO9j2w/i+RA0GX6A2e8o6zPL
-	 iQrft/Fyd96H3mqQDfhTij98s10UcopqmY4aiJepccdEsMg+qtF+hXd2TP+9N4JaljCMD
-	 DFz2UFGMtm5B9MiFUn0s/1nBRsYEBCjqdgXVzzHfAEIBUDGYYHHHHubI+daae5MaYaA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jN7wO2dV;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.178
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.19.144.207
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792610313;
+	b=Egokz3rPcK7IDUlLTw8KNHTEsgYFtXq/lJgGWCRmb+jgkWCZGehUUuqKOOrROXffRk4i
+	 iC37bf29NF4tSU/iXvccFgLUbIHcdJiTQRDHga3cnYA567AY/tI752lvwT+Qt/X1rVEcZ
+	 n9ceUMLBnFCynJkzU0LKLcSnVfiNOj8z2eksiFl+kbKM+svzCl06S5r8e7V+xu2vXMJga
+	 w/QlY6aAZDTWBsyj4JFCDS+sS50VB/gBIZOBi27lsKccTN7+NsWL1YSLVuiYTHhbarQVR
+	 OLe3+agnyec0ieYvFaju/Lucc4QtEP/IqjdtIogqjNnD/ay/0qwx9QnLnCl4F0+xefA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792610313;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=h8gPfI9JeQ9XOUZVTcwz6/7mOX9l24c3JGDHItgBJZ0=;
+	b=gZeB7b8GSBp7rAg+178XglHwUsRfQB9B/gCWmXWnRVX14mbsf2DD6RfWjsOjwQLSOSaW
+	 gmWfBd/fG0ZjyQRsfvhR+L3cYHq49u0DROJ/OKT44+4eCzh+6/gnONqSzkrrq1xlIlIBw
+	 JDbLZLq6K9x3TloGd2EOQnJZKBfYdnykACRdzm7UF43sbBC3x+qisQYnN8Nxi7Sw+6v/T
+	 C+Yq4YVNKc/30SQM6us0dN6tmY86Aw5fzD1xgbmlZSjNffIFftStnrzMpdePP94RYF3sV
+	 61h6YkjygZ3kVXxrCmTJDobeqOCBTTXvUlrVFRly3XQhNPsA8cnBw6kK/1aL3XqIUfA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=dkimrelay header.b=lbl7iq1k;
+	arc=none smtp.remote-ip=192.19.144.207
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254DF606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 19:11:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 254DF606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45850606A31A;
+	Wed, 21 Oct 2026 19:18:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45850606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jN7wO2dV
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e8ad5b31c7so6227565ad.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 12:11:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792609882; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lQlkuf87w7bSHoJkcyg8BVIFuLWGhn5piN3gD4lUGveQOqO2IGMnUtUeEivLX9xK71
-         ZZzHil/8PgxKPKei1cFztqlftx1of3gwwOd993m6+ZVCf2Py6xN84v1seFMLHorWM+8s
-         3ueVINyTZEjmWEDWLwdzOqaopVVPMjQLN0vOuaXJKi6DDiEi5j/Te+oY53ULHqM+ZmIJ
-         /Jqvn+4N7vTKgpm3eV7gYTvMjFVgnPmGAZockYqY9HVMXQKSWWH5EDkDGV2ZCw/hGOm3
-         I0XgloJ64i3Ly0fceZc3R4v29LsOAaQgbwdLA9mhrsXu9o4ECONSauMg5Sd2g+0tJIXo
-         P+jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=+JKXqhdtW6oX94eZMED7N51uhKdO+qZKQDvb/WZHHvU=;
-        fh=S0v7RGWd9aS3yFv3HpKHlX7iB3PbfqYNXzPScLEex+E=;
-        b=qKlaPuNoIwil5JQKC9bEDzZD0P50ac7bcMGjtX8zoKgEE79ZHff+i6CqKHdujAqj4S
-         8utD8Sgv9GVgLJMaZsXJr5nBMKJqkdDl95KU6Tkc9d6ljATGw10jCGBu7Ljmxxc1PywO
-         w8gTVCnoyaY1kf+Y4974w+TDx9Yc3oKsaeMcaua/FwwAPqPumK13DBUQ9r/r64S24ZrI
-         5n7WLCO6mMQ3QC+0U5/GkwSqEu+ETvRpDQAmjnXPrJ4cTOjOFbIozxaCzgsrEcchfPPD
-         P14MOfiFfeJQvJXxZgUbYpFlriKxaYiGQynItXVQ0LSd0nZG4ZguEtXcmtoGOFfs37qJ
-         hFtA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792609882; x=1793214682; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+JKXqhdtW6oX94eZMED7N51uhKdO+qZKQDvb/WZHHvU=;
-        b=jN7wO2dV3E9BbWv3oyipvcrffEcDvMZngkqDnRbSSfpW+tQQOdtHedrQS8qWWhV9pX
-         ikwU4K2J0Dvdqz/JWuvjDXgMgn0SCdHl92Rmux+1fRwqv2bJVQdEXo71/jF+MPDYT+NR
-         pDbFOYJN7Trxi/KrzIVzpebmGy2XN/EWR5vAenBEQQTaSVb1GbNB7XlGl02Be2NnjNVs
-         Y5qeC3i0ONCjYWf+tCTAhfN6B2sGjSzFV4+dcDUCc/LdRVi1tpaPP21mn06daZ7xcNzK
-         38yNFeuhdV5RrOkmM/RS6/T3HeA0leXeN6QZgaV0xNZYxigOGrlcyNBZPidD/ZHie8oC
-         RR8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792609882; x=1793214682;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=+JKXqhdtW6oX94eZMED7N51uhKdO+qZKQDvb/WZHHvU=;
-        b=FVRjKindx4ArfGSM3KU2fmc7Lgti+DLytlVr8ml0h6BdVv8rlFaDKZ5gtMLfsLa7QY
-         tCI4xmGATVUBhJ6wZ135DkMTb44cfrvPbIeqH/FHPlDAzvO76P43KzBYsEZm6exPbDGv
-         tbBfA6MiWCJ9vT2py8bkQwLDBH626jROkVrULy0iuZ1zTE5GLoDeTFZPKAtsGEmmriPz
-         6iu6sUCG72ly4xJRFAddy+mXs8o13isS3o4+bnBB0inNy8JnmNU/ra4BHTtWetejGYRg
-         TS9bKVN4bXk1vHsE1fsxJhgm9Y6IczknUboit7n8lYiWbiEOKv8sF94PG/TwZETR/BHZ
-         /zIQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxiv7Dlr2oOQk7GskIyxsnczCbUT7jeSZ5toiTQJ9jqP0xzhMnM7hJ8bVlGEtfS3fHZFjMZCcs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJuYooNm5XZbDw/GcKCZewq79akOzBItW/5nHchFg1bpt2sT/ON
-	JCzaWGw0twSePdzhWjMUH2/c+iSarYZGCYfvTSJOLISAQyHDybjWVwvk+bPIdoQ8eRfsXoOE1U/
-	lTvpZs2l3ppDFI/l2xOus0a7PcwD14UE=
-X-Gm-Gg: AYBFou2MjDE02pDOuYH+6YEP3kO0h1Hke32IeBNEqXkY0flNFNjdELATchmCrDQGzQE
-	JSdeDCstywKH3Yfjr2+UvKwv5NS379HIlBpUkxj3DcYrpUik5mVe1GZYgPubvGyaLQTsH8jwTQJ
-	QWQAcaI8d0ywfVCIWSO/UtE49Jv6V5BuNpl80qwRQx/dI3VG2RABfslbNo9orS7KnLRN7KBqN4w
-	6KUpyjwl4XrKlJPk0ds2xX/HAUCuFPm8d3KMPPoUJ78unKL+zkBhqr9WAGucS2jSZix7XXVLnbF
-	emD9dxycKqA6v7a/GyazKNZv0aUtLnL/pn7pvj9QwfcvOjZPAkymlnYkkVIlOFftbBxRpGMYLwc
-	1sZ6KvyiTUOpadoFir/TzknpnYMdAWxOzE3x23J2zC8Jn+RiPlyVKFcv9ZZFtL8jfiCKzjmAMk+
-	aZtEKbYPTSw4tJU3nB
-X-Received: by 2002:a17:903:8cd:b0:2e9:851a:7188 with SMTP id
- d9443c01a7336-2ea43d8873bmr24797245ad.23.1792609882354; Wed, 21 Oct 2026
- 12:11:22 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=dkimrelay header.b=lbl7iq1k
+Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 4EA08C0003DB;
+	Wed, 21 Oct 2026 12:18:32 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 4EA08C0003DB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+	s=dkimrelay; t=1792610312;
+	bh=iiLnhPyF8ngmJEZdGAisLAAWwlZV4iqQ9LtHOUPIS3Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lbl7iq1k5b8BAH5Jfcr8u+z/03Gi1tLIDYLny6HPl0+wa1r/cc45g9yq3eUDJjvYw
+	 RDmrtqtJFLjEKi80xSQEXjcaRzj/9f1ThpKjpW/jyjVcnuCtTDJgtIVcWe4PWHx5Kp
+	 /2i95iKL03qCEEInmUn87eFKP/uCn4mr2v1h5MPc=
+Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 69644AEA3;
+	Wed, 21 Oct 2026 15:18:31 -0400 (EDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net 1/6] net: dsa: b53: serialize SerDes register transactions
+Date: Wed, 21 Oct 2026 12:18:19 -0700
+Message-ID: <20261021191824.752309-2-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261021191824.752309-1-florian.fainelli@broadcom.com>
+References: <20261021191824.752309-1-florian.fainelli@broadcom.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,65 +78,285 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020230211.75665-1-andrebrait@gmail.com> <20261021095756.0f5770e6@pumpkin>
- <CALhGy9n9EMvV2JN8s4kpKb3Wsc3rjRVfibpNvVdAw_rHT=dYeQ@mail.gmail.com> <20261021140303.5533fb2d@pumpkin>
-In-Reply-To: <20261021140303.5533fb2d@pumpkin>
-From: =?UTF-8?B?QW5kcsOpIEJyYWl0?= <andrebrait@gmail.com>
-Date: Wed, 21 Oct 2026 21:10:45 +0200
-X-Gm-Features: AclHuK9y-kelxIPCKCCYwgl-lGFUlZEOjWFrkkhIKj9n4uzUrTg95ra_u3iGOOc
-Message-ID: <CALhGy9kqmeLRH-p9OrdPObC7KHUW9gmD9o7h8Cmr8+nnx6aRAA@mail.gmail.com>
-Subject: Re: [PATCH iwl-net v2] e1000e: work around TSO erratum that corrupts
- data and hangs Tx
-To: David Laight <david.laight.linux@gmail.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
-	g.goller@proxmox.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi David,
+The lane and block selectors are shared by both SerDes lanes. Taking
+reg_mutex separately for each register access allows another port to
+change either selector before the data access. Hold the mutex across the
+complete transaction and use the raw bus operations while it is held.
 
-> You could just comment that that count++ is in case the linear part
-> has the extra fragment.
+Propagate bus errors instead of returning uninitialized register contents,
+only cache a successfully selected lane, and invalidate the cache after
+failed accesses. Make the PCS callbacks fail configuration or report link
+down on read errors, and reject out-of-range lane indices at discovery.
 
-> Put that in the commit message.
+Fixes: 0e01491de646 ("net: dsa: b53: Add SerDes support")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+---
+ drivers/net/dsa/b53/b53_common.c |   1 +
+ drivers/net/dsa/b53/b53_serdes.c | 148 ++++++++++++++++++++++++-------
+ 2 files changed, 115 insertions(+), 34 deletions(-)
 
-Will do both in v3.
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 0880310c9ce3..3f8f956aab82 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -3203,6 +3203,7 @@ struct b53_device *b53_switch_alloc(struct device *base,
+ 	dev->ds = ds;
+ 	dev->priv = priv;
+ 	dev->ops = ops;
++	dev->serdes_lane = B53_INVALID_LANE;
+ 	ds->ops = &b53_switch_ops;
+ 	ds->phylink_mac_ops = &b53_phylink_mac_ops;
+ 	dev->vlan_enabled = true;
+diff --git a/drivers/net/dsa/b53/b53_serdes.c b/drivers/net/dsa/b53/b53_serdes.c
+index 7460122f6abc..c90894877626 100644
+--- a/drivers/net/dsa/b53/b53_serdes.c
++++ b/drivers/net/dsa/b53/b53_serdes.c
+@@ -22,47 +22,96 @@ static inline struct b53_pcs *pcs_to_b53_pcs(struct phylink_pcs *pcs)
+ 	return container_of(pcs, struct b53_pcs, pcs);
+ }
+ 
+-static void b53_serdes_write_blk(struct b53_device *dev, u8 offset, u16 block,
+-				 u16 value)
++/* The caller holds reg_mutex across lane, block and data accesses. */
++static int b53_serdes_write_blk(struct b53_device *dev, u8 offset, u16 block,
++				u16 value)
+ {
+-	b53_write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR, block);
+-	b53_write16(dev, B53_SERDES_PAGE, offset, value);
++	int ret;
++
++	lockdep_assert_held(&dev->reg_mutex);
++
++	ret = dev->ops->write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR,
++				block);
++	if (ret)
++		return ret;
++
++	return dev->ops->write16(dev, B53_SERDES_PAGE, offset, value);
+ }
+ 
+-static u16 b53_serdes_read_blk(struct b53_device *dev, u8 offset, u16 block)
++static int b53_serdes_read_blk(struct b53_device *dev, u8 offset, u16 block)
+ {
+ 	u16 value;
++	int ret;
++
++	lockdep_assert_held(&dev->reg_mutex);
+ 
+-	b53_write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR, block);
+-	b53_read16(dev, B53_SERDES_PAGE, offset, &value);
++	ret = dev->ops->write16(dev, B53_SERDES_PAGE, B53_SERDES_BLKADDR,
++				block);
++	if (ret)
++		return ret;
+ 
+-	return value;
++	ret = dev->ops->read16(dev, B53_SERDES_PAGE, offset, &value);
++	return ret ? ret : value;
+ }
+ 
+-static void b53_serdes_set_lane(struct b53_device *dev, u8 lane)
++static int b53_serdes_set_lane(struct b53_device *dev, u8 lane)
+ {
++	int ret;
++
++	lockdep_assert_held(&dev->reg_mutex);
++
++	if (lane >= B53_N_PCS)
++		return -EINVAL;
++
+ 	if (dev->serdes_lane == lane)
+-		return;
++		return 0;
+ 
+-	WARN_ON(lane > 1);
++	ret = b53_serdes_write_blk(dev, B53_SERDES_LANE,
++				   SERDES_XGXSBLK0_BLOCKADDRESS, lane);
++	if (ret)
++		return ret;
+ 
+-	b53_serdes_write_blk(dev, B53_SERDES_LANE,
+-			     SERDES_XGXSBLK0_BLOCKADDRESS, lane);
+ 	dev->serdes_lane = lane;
++	return 0;
+ }
+ 
+-static void b53_serdes_write(struct b53_device *dev, u8 lane,
+-			     u8 offset, u16 block, u16 value)
++static int b53_serdes_write(struct b53_device *dev, u8 lane,
++			    u8 offset, u16 block, u16 value)
+ {
+-	b53_serdes_set_lane(dev, lane);
+-	b53_serdes_write_blk(dev, offset, block, value);
++	int ret;
++
++	mutex_lock(&dev->reg_mutex);
++	ret = b53_serdes_set_lane(dev, lane);
++	if (!ret)
++		ret = b53_serdes_write_blk(dev, offset, block, value);
++	if (ret)
++		dev->serdes_lane = B53_INVALID_LANE;
++	mutex_unlock(&dev->reg_mutex);
++
++	return ret;
+ }
+ 
+-static u16 b53_serdes_read(struct b53_device *dev, u8 lane,
++static int b53_serdes_read(struct b53_device *dev, u8 lane,
+ 			   u8 offset, u16 block)
+ {
+-	b53_serdes_set_lane(dev, lane);
+-	return b53_serdes_read_blk(dev, offset, block);
++	int ret;
++
++	mutex_lock(&dev->reg_mutex);
++	ret = b53_serdes_set_lane(dev, lane);
++	if (!ret)
++		ret = b53_serdes_read_blk(dev, offset, block);
++	if (ret < 0)
++		dev->serdes_lane = B53_INVALID_LANE;
++	mutex_unlock(&dev->reg_mutex);
++
++	return ret;
++}
++
++static void b53_serdes_error(struct b53_device *dev, u8 lane, int ret)
++{
++	if (ret < 0)
++		dev_err_ratelimited(dev->dev, "SerDes lane %u access failed: %pe\n",
++				    lane, ERR_PTR(ret));
+ }
+ 
+ static int b53_serdes_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+@@ -72,31 +121,37 @@ static int b53_serdes_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ {
+ 	struct b53_device *dev = pcs_to_b53_pcs(pcs)->dev;
+ 	u8 lane = pcs_to_b53_pcs(pcs)->lane;
+-	u16 reg;
++	int reg;
+ 
+ 	reg = b53_serdes_read(dev, lane, B53_SERDES_DIGITAL_CONTROL(1),
+ 			      SERDES_DIGITAL_BLK);
++	if (reg < 0)
++		return reg;
++
+ 	if (interface == PHY_INTERFACE_MODE_1000BASEX)
+ 		reg |= FIBER_MODE_1000X;
+ 	else
+ 		reg &= ~FIBER_MODE_1000X;
+-	b53_serdes_write(dev, lane, B53_SERDES_DIGITAL_CONTROL(1),
+-			 SERDES_DIGITAL_BLK, reg);
+-
+-	return 0;
++	return b53_serdes_write(dev, lane, B53_SERDES_DIGITAL_CONTROL(1),
++				SERDES_DIGITAL_BLK, reg);
+ }
+ 
+ static void b53_serdes_an_restart(struct phylink_pcs *pcs)
+ {
+ 	struct b53_device *dev = pcs_to_b53_pcs(pcs)->dev;
+ 	u8 lane = pcs_to_b53_pcs(pcs)->lane;
+-	u16 reg;
++	int reg;
+ 
+ 	reg = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+ 			      SERDES_MII_BLK);
++	if (reg < 0)
++		goto out;
++
+ 	reg |= BMCR_ANRESTART;
+-	b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+-			 SERDES_MII_BLK, reg);
++	reg = b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
++			       SERDES_MII_BLK, reg);
++out:
++	b53_serdes_error(dev, lane, reg);
+ }
+ 
+ static void b53_serdes_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+@@ -104,12 +159,23 @@ static void b53_serdes_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+ {
+ 	struct b53_device *dev = pcs_to_b53_pcs(pcs)->dev;
+ 	u8 lane = pcs_to_b53_pcs(pcs)->lane;
+-	u16 dig, bmsr;
++	int dig, bmsr;
+ 
+ 	dig = b53_serdes_read(dev, lane, B53_SERDES_DIGITAL_STATUS,
+ 			      SERDES_DIGITAL_BLK);
++	if (dig < 0) {
++		state->link = false;
++		b53_serdes_error(dev, lane, dig);
++		return;
++	}
++
+ 	bmsr = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMSR),
+ 			       SERDES_MII_BLK);
++	if (bmsr < 0) {
++		state->link = false;
++		b53_serdes_error(dev, lane, bmsr);
++		return;
++	}
+ 
+ 	switch ((dig >> SPEED_STATUS_SHIFT) & SPEED_STATUS_MASK) {
+ 	case SPEED_STATUS_10:
+@@ -140,19 +206,24 @@ void b53_serdes_link_set(struct b53_device *dev, int port, unsigned int mode,
+ 			 phy_interface_t interface, bool link_up)
+ {
+ 	u8 lane = b53_serdes_map_lane(dev, port);
+-	u16 reg;
++	int reg;
+ 
+ 	if (lane == B53_INVALID_LANE)
+ 		return;
+ 
+ 	reg = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+ 			      SERDES_MII_BLK);
++	if (reg < 0)
++		goto out;
++
+ 	if (link_up)
+ 		reg &= ~BMCR_PDOWN;
+ 	else
+ 		reg |= BMCR_PDOWN;
+-	b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
+-			 SERDES_MII_BLK, reg);
++	reg = b53_serdes_write(dev, lane, B53_SERDES_MII_REG(MII_BMCR),
++			       SERDES_MII_BLK, reg);
++out:
++	b53_serdes_error(dev, lane, reg);
+ }
+ EXPORT_SYMBOL(b53_serdes_link_set);
+ 
+@@ -213,16 +284,25 @@ int b53_serdes_init(struct b53_device *dev, int port)
+ {
+ 	u8 lane = b53_serdes_map_lane(dev, port);
+ 	struct b53_pcs *pcs;
+-	u16 id0, msb, lsb;
++	int id0, msb, lsb;
+ 
+-	if (lane == B53_INVALID_LANE)
++	if (lane >= B53_N_PCS)
+ 		return -EINVAL;
+ 
+ 	id0 = b53_serdes_read(dev, lane, B53_SERDES_ID0, SERDES_ID0);
++	if (id0 < 0)
++		return id0;
++
+ 	msb = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_PHYSID1),
+ 			      SERDES_MII_BLK);
++	if (msb < 0)
++		return msb;
++
+ 	lsb = b53_serdes_read(dev, lane, B53_SERDES_MII_REG(MII_PHYSID2),
+ 			      SERDES_MII_BLK);
++	if (lsb < 0)
++		return lsb;
++
+ 	if (id0 == 0 || id0 == 0xffff) {
+ 		dev_err(dev->dev, "SerDes not initialized, check settings\n");
+ 		return -ENODEV;
+-- 
+2.53.0
 
-> c) Adjust the DIV_ROUND_UP() for the linear part.
->    I think:
->     DIV_ROUND_UP(len + adapter->tx_fifo_limit - 372, adapter->tx_fifo_limit)
->    is right.
-
-For TSO packets, yes, although it would need min(tx_hdr_buf_max,
-tx_fifo_limit) for parts with a larger max_read_request, and without an
-mss check it also changes the count for every other packet. I'd keep
-that, the unconditional context count++ and pre-calculating the
-post-transmit limit for a separate cleanup.
-
-> Although I wonder if you really want to be doing all those divides?
-> I'm guessing that tx_fifo_limit is usually 24k (and the actual buffer larger).
-> So the result is almost always 1.
-
-Not on the I219. PBA reads 0x0006001a there, 26 KB for Rx and only
-6 KB for Tx, so tx_fifo_limit is 6048; in the ring dumps from my test
-host, 127,676 data descriptors were exactly that size:
-https://github.com/andrebrait/e1000e-i219-tso-hang/blob/5f247ecec758/evidence/related/tx-allocation.txt
-Page fragments of up to 32 KB take several descriptors each, so the
-divides do matter there.
-
-> (Indeed, does TSO and checksum insertion work if the packets are longer
-> than the real buffer?)
-
-TSO does: in a 3-minute window on the patched driver, 39,725 of
-40,223 TSO packets were larger than 6048 bytes, up to 65,226 (45
-segments), and the receiver verified every byte:
-https://github.com/andrebrait/e1000e-i219-tso-hang/blob/5f247ecec758/evidence/related/tso-larger-than-tx-buffer.txt
-Only each descriptor has to fit, hence the cap. Plain checksum
-insertion only sees frames up to the MTU; for jumbo frames
-e1000e_reset() moves space from Rx to Tx to fit two full frames. I
-haven't tested jumbo frames. Nothing in the patch depends on the MTU
-(it only shortens the first descriptor of a TSO packet), so I don't
-expect it to change their behaviour, but I can run the same tests
-with jumbo frames if you'd like.
-
-Andre
