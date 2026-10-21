@@ -1,90 +1,103 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792568991;
-	b=yYeCZCL7K1YX+H/CLY9nwDj+PDtx09/M8MyKY4Aa2sAK14dDlWfKhABVdyptCHR/F3hT
-	 FtAAcEKrUt+UO9IGfjnO/f31Hvxoym9jXwDGfYSNRjKoBNM+r7BPn+ZCfWxC6WbRZkc0T
-	 5N3kwuOpBor1ohgmUzhp6jyp16yQLA1280/K6jtbJbRvy7ImaWXOPr5NT/GkdL3aZG2tq
-	 Obe4C9l0wlxINJvULtSjK4DBtB/Kf+5ydstAHP6LUZf+IOszXDN9V1wutgENXf9SihtSW
-	 ofqCIefgX4k/jv/s4E8HsmLO8rU1yzah/NjOkiHsOWVcQgNFErIZQRykjoOeUL7CMhA==
+	t=1792569002;
+	b=mwq3mFOp9Ya0Cp08Pd2cipHfE9SvBdwbm1uK2hoqX01jOgCBHhJ7GTx8WoC8UL14PVjN
+	 hbZoIe6YuiW9fhI5Djn5GswFn4swO0mn541EZ0+q3n+PQeEReIyiuwJ1JTSGj/DGlZueq
+	 FI1RJeb0jJp2+/cteJNutEi0ZA2L9I2p2UZ5EXh+nyX8cs+pczlvIQ9ZLa1dhvJVWGpLP
+	 3z4kKPQJm6xDl9fcSiS2a9rwqHbIP5+pZLZTc7Ukx6RT8WTS09cae0TjAYFdc6Cvq0Vut
+	 9V5myTXQh8sCn48UqN3v+fEUne0byUl1+4LyIIo8hpd+AVzRLcCYLnrM7WeI5/SfvNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792568991;
-	h=DMARC-Filter:DKIM-Signature:X-MC-Rep:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792569002;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:In-Reply-To:X-Mailer:X-Mutt-Fcc:X-Mimecast-MFC-PROC-ID:
-	 X-Mimecast-Originator:Content-Type:Content-Disposition;
-	bh=cBuvcZ5fAuY78YRxSmJsRXbrsWm4GQ4YuR15OAOYw7I=;
-	b=kOX2hGKT6nYO3WrlNDJdUq+uZ/sbZQNzcVtMab81W+V0mL5tZd7WgMqt4JKnQQhycRUs
-	 dvYM895mDA0skXsDjFPnZOtkED+L9Sshcq3kxEcLXtn/lmhj+6isYd/cYGpXHfCuwGPBz
-	 s6zN5654sNw1E53IuAC5dhWmy2yi7GIBuLsaiXiYv8Xyxf09EoKXRpMAiulnHwBGB0xb/
-	 K9MbM5l6l4MLK+FpPwKgKgzYVttROpoAy9iZ2TZ+prK+UUCCYVCdscza1ytHzqLTkvOFP
-	 034ZOfXpC29MAR8G0HnpmdVkYJKGVlIVUOT6NL6A5591yPQXaAqGvsbyLmRsSY1NSyA==
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:X-Mailer:
+	 X-Mutt-Fcc;
+	bh=8bDfpp7sAel4FSdNGE9WjbJ8LMrLDJQ/k3zaoUEgNSo=;
+	b=pm3ZwkEjzk0qKM9xDtQ1IJNH+cGesFWURXjdQuQ6vDKUcgNgytyQsAumTHqXhJLvn17u
+	 6BZ2VuzPmAXEAkVvdKdCqDlkZ33jyc/lA2HNMjS/KyQxxryb4ePITVZi/Fwe0rhulnavq
+	 A4Xpk6GtI0XF5gQ3f80XzvN8MWCXcrYCaSLSdS5DWnNqY/f92xrIBxyZzbKO8q5RdGPe6
+	 LeqcZMpsZ2kI8K9Qjr+1ye8ArtyxMO9Uo6o4mZ7qeEpsqPCRIMHuSguqy+1Qfor684mYs
+	 54wcpQ6lbf9prLQU0DzyMP7lBSSjKnTAcZp50sexEOCBOUbE/ViQmIFBgTH+RNJ2BXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QsYe02Wf;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BklG6k+g;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=BRQoEBNY;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0C3606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 07:49:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B0C3606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA20606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 07:50:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEA20606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QsYe02Wf
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BklG6k+g;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=BRQoEBNY
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792568989;
+	s=mimecast20190719; t=1792569000;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cBuvcZ5fAuY78YRxSmJsRXbrsWm4GQ4YuR15OAOYw7I=;
-	b=QsYe02WfEgsWlDxLqEoLv4QiMMYICVeYa9RKF7Racyuctp0jY7aVf3ygXAcodvQhR6v+nz
-	wxh8LXYbjRXjLRyy6YtQAhuF527yTz7sXFCZkmo0UfA3FrR8qzFlwv02I47SOMzXlGZSSN
-	QLCTyHl2pLhO00uZpOJnI9CxPEF74sM=
-X-MC-Rep: binary re single
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8bDfpp7sAel4FSdNGE9WjbJ8LMrLDJQ/k3zaoUEgNSo=;
+	b=BklG6k+govS8Ik+bEgRDu5xZFrJNgwLPoeu0umg4KdkPm+osJAxa0l86Ug0tKl10Zi3/CB
+	9uG30Iq/yrej8xP7MLSZRSkD5d9iBll3torNCQYWGKY1HePSa5KcICY9pIBsO66SwYiH5L
+	Qrxd/DsJ+jULZWVcGm1CWxyMx0ec1yU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-1-dlh0G91aPz61SG2ddUHIGg-1; Wed, 21 Oct 2026 03:49:47 -0400
-X-MC-Unique: dlh0G91aPz61SG2ddUHIGg-1
-X-Mimecast-MFC-AGG-ID: dlh0G91aPz61SG2ddUHIGg_1792568986
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48df5b058ddso291590f8f.0
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 00:49:47 -0700 (PDT)
+ us-mta-589-UuOfNiWGM3CqOjCG3MypOw-1; Wed, 21 Oct 2026 07:49:59 +0000
+X-MC-Unique: UuOfNiWGM3CqOjCG3MypOw-1
+X-Mimecast-MFC-AGG-ID: UuOfNiWGM3CqOjCG3MypOw_1792568998
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1df6c2937so4362285e9.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 00:49:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792568998; x=1793173798; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8bDfpp7sAel4FSdNGE9WjbJ8LMrLDJQ/k3zaoUEgNSo=;
+        b=BRQoEBNYKFpU8aToIoApwGJeaLTpKV1ju9zqRtxOrRTEDQ8lJ5Nj9xh1+N9Csd0J4K
+         isq8sjuiYEvbLx/vqtlJphsyYUryg02eo65px7ME9Ki07YToVZb1m25jsv9U1hSbnh0w
+         /vcWSvuf9iAyWvJUOIFVpuI76bi81MInhBDYrbigWTEFkMTbftUCLiv3boopFVXwgn4H
+         1ftXrVx5KGqpurtAwD6bAaJzWh1AXWOJQUWwzRSS+MgEByRA83gQZYukurYosRMOCeTU
+         S7e6cMXloqgWr0eMzzFF5Lt05CGVhMb19Rc+Myr0uJjd00or6yQNBZ1esie3zm+u1Vg3
+         j1WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792568986; x=1793173786;
+        d=1e100.net; s=20260707; t=1792568998; x=1793173798;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cBuvcZ5fAuY78YRxSmJsRXbrsWm4GQ4YuR15OAOYw7I=;
-        b=psgZ14o5eMq+t6zu5rJN+IHs1Q2+SsTB3TYFfbbWreGn2mNN5iCwcgoDA4dlSaidko
-         nDw9ZYrDjPZgGiAvNPoTYgXJHY8srUVQoy0IkNsvo8KGSA0MDiNTTzNlRJ9hkPZ/G/3h
-         4v7IpbF4fYQw0+2lcUdx7o3f7TbnwMY6+e6Smi0cKWTfGmmXmZ13i13qIkJ6xZzEtg93
-         vSSsiOjvTUnTZ0dUfHwiiTkKAS8Gz1wQA2KICcm8wFYGHQsx2LFwzx6KRyxStnDqYKVx
-         +t2ZlRQtV08JBiaOKLVdaY6sUY9mRIRlJ41s3KJvOPA40BLImDh7e21hUl8D3N5j5vnt
-         jqbw==
-X-Forwarded-Encrypted: i=1; AKwUvByg404OhLDI9W9BqFm51YsFLSs05kDNDoYbH5Sy6wOnLiSesNbUVX1w1t3OHyaBp935WkUuKks=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJUhNMByPP1JAmFBP1PRw5kp5A64SjfuXXzRJZo1X4cwSE4qQXc
-	BLDtsVWg5vSFZUAgyTE2aW+BGqosNB9MjxaUd+iYo32PiwcN/ee2a0WVAno1PvJRJXfsYmAVcCr
-	fmxCFe7TwXhw/5i4dicx45xsTcCAchAwqvP7PUSGnbOFAZeC85S9L9+KS8A==
-X-Gm-Gg: AYBFou0Gd58K+4Bks0Bn5GSAprJ1LOFkE64Q6ws6gOkCHgSUh/DnsWYl8WUCcRSpd1m
-	wFHYdRo7rkh7KvSNacWmHEPXRRTgJk+r7MQlGWuu8+c8p4b0Wapkpue11dpusmzNL3UK/jzDs4Z
-	hPUh9DJ+P+ZyEgvjNkprDQfuBMeMhbH/QDRRACmHbtycECsBAnZG58GOB8aaHpDhRjRwYpPfTpZ
-	iFYh3XrAU5NIPnvC5ZSG9pZ2qlnYuT4hmsTtCXzVjId05i893zTRT55EGNTMEn0bixqaAb2t5kI
-	QdsbgSaNCyhO44DCJPScA4s1P9yktahjotuVOWSdUNp6bzdglY8LcXD+i3uaBx+HQBnUWg==
-X-Received: by 2002:a05:6000:2612:b0:48d:f58f:c98 with SMTP id ffacd0b85a97d-48e264d181bmr2118087f8f.40.1792568986130;
-        Wed, 21 Oct 2026 00:49:46 -0700 (PDT)
-X-Received: by 2002:a05:6000:2612:b0:48d:f58f:c98 with SMTP id ffacd0b85a97d-48e264d181bmr2118037f8f.40.1792568985523;
-        Wed, 21 Oct 2026 00:49:45 -0700 (PDT)
+        bh=8bDfpp7sAel4FSdNGE9WjbJ8LMrLDJQ/k3zaoUEgNSo=;
+        b=Qu+jDWBuoo6Cl2H1jbel4E2lSU9sxJYxqUqGV5r4YrsDQEECMVTL/jwizVHrI7vj0i
+         MS2sEiXsZagKUOnIFneUGnE2OIawNwMcGJRimlp+OtjmVBgmLAlRlaROQG/EXovamsvA
+         urHLaOBpfEdTffdzAkWwhG5bq6Fylnn9FEwpmbnPTpKHUtBQEMxoF3rwGufDTXZcbift
+         hHqWQgY20LQdZGBuq1RBeaoPbGgPzSkwYb7VeqkmJcxy8juy7p1r9rk3uVIGC54ZuYSP
+         +QfH3gfCF1B+rzqKAHJG8v219804PGUSvSZOqPlfVKGHJGpaDSlqr4Wx8ocg6I7GN165
+         27Gg==
+X-Forwarded-Encrypted: i=1; AKwUvByOLWqmND8/zDHaGNL2u2jOIfcMlW6J9f8IvwdPBjgJto5sfz8d2hzIwAM2qZVW4X4mMjVfZg8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIn6tR4zC5u7zUPSjIfPOYVYiq6aXulGJME6ADzgfMaAuffeEjJ
+	CyjL6dyeoRjkRjl+ZN2M0W4rFOVN5pzRjUF2rAs8eu7ytvuuCiaqw6z7DQmju2/qbEZAF8M7ymT
+	VbMkRcoyXTe9OpvVNOt3zivUT+p1WqwROi2IfKwQiFQPF+soPrnEqKNi32g==
+X-Gm-Gg: AYBFou1u99Ip6BnuYyb3k3SWUFUrQu9Lo6t/ZhGE8K1iaMhm79/iiMcS3x+EchqTDp8
+	oj+QVkMwN61vnEe8STRK5+un+9XbbWHfY2o6tJ6siiARNBFdBwWCdC9pZnAjjkG6GvBSMMbGPdQ
+	L3VoqZSaQ+VCYa/942GiupkRu3IZGFpvf4hUb71y7cO7pBzYsnVl8vAboLDh6u4abFDbdaJn3G7
+	TSnLUUileB5KiiKhK+FThPH0ly5GIQS2fL9f4ELBIK+SBSrvIAHjXiPL/WS3C2nRvgQ7W6C+VQ8
+	RqKeyN9m1FhPSZmrCYF6P5dx+rrbt54LHboE8s8wepaFAKh9vXgoALQSb6fOTk7UAB9ZmA==
+X-Received: by 2002:a05:600c:3f0d:b0:4a0:34a:588c with SMTP id 5b1f17b1804b1-4a1fdd29c19mr24760685e9.14.1792568998296;
+        Wed, 21 Oct 2026 00:49:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:3f0d:b0:4a0:34a:588c with SMTP id 5b1f17b1804b1-4a1fdd29c19mr24759945e9.14.1792568997732;
+        Wed, 21 Oct 2026 00:49:57 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828ca3sm3811642f8f.25.2026.10.21.00.49.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fc1060f3sm34363505e9.1.2026.10.21.00.49.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 00:49:44 -0700 (PDT)
-Date: Wed, 21 Oct 2026 03:49:41 -0400
+        Wed, 21 Oct 2026 00:49:49 -0700 (PDT)
+Date: Wed, 21 Oct 2026 03:49:45 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
@@ -103,11 +116,10 @@ Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	Richard Weinberger <richard@nod.at>,
 	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
 	Johannes Berg <johannes@sipsolutions.net>,
-	Simon Horman <horms@kernel.org>, linux-um@lists.infradead.org
-Subject: [PATCH net v4 1/7] net: account for ingress-resolved virtio net hdr
- state
-Message-ID: <be251d104f881a309cfef150455efa128ebb101d.1792565282.git.mst@redhat.com>
-References: <cover.v4.git.mst@redhat.com>
+	linux-um@lists.infradead.org
+Subject: [PATCH net v4 2/7] um: vector: trim skbs before verifying the header
+Message-ID: <26741a9a64c28e8de6d13e04972d296d89e1c95d.1792565282.git.mst@redhat.com>
+References: <be251d104f881a309cfef150455efa128ebb101d.1792565282.git.mst@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,381 +129,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <cover.v4.git.mst@redhat.com>
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
-X-Mimecast-MFC-PROC-ID: 3_YLztWn6H5MSKIJykJz0Ac9BVJVVbl4GGkj_fne9ps_1792568986
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <be251d104f881a309cfef150455efa128ebb101d.1792565282.git.mst@redhat.com>
+X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
+X-Mutt-Fcc: =sent
 
-The following patch will add ingress resolution of uncommon virtio net
-hdr checksum metadata (software checksum completion at ingress) which
-adds performance overhead to the packet processing.
+The vector receive path over-allocates the skb and only trims it
+to the received length after the transport header is verified.
 
-We should make it visible, so a hypothetical workload relying on
-uncommon metadata can be distinguished from none at all. This way issues
-in the parsing will be reported and not quietly pay the host-CPU
-checksum overhead instead of offload.
+A follow up patch will complete the packet checksum in software within
+virtio_net_hdr_to_skb so we need the packet trimmed (otherwise the
+checksum would be computed incorrectly over the unreceived tail of the
+buffer).
 
-Flip every call to virtio_net_hdr_to_skb to test for negative errno
-only.  The um vector raw transport even ignored the return value
-altogether: rejected packets went on into the stack with their
-metadata unvalidated, so check it there as well.
-
-Have tun, tap and virtio_net count these events per device as
-rx_csum_sw, exposed via ethtool -S.
+Trim first, so the import sees the packet as it was received.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- arch/um/drivers/vector_transports.c |  4 ++-
- drivers/net/ipvlan/ipvtap.c         | 36 +++++++++++++++++++++++++
- drivers/net/macvtap.c               | 36 +++++++++++++++++++++++++
- drivers/net/tap.c                   |  8 ++++--
- drivers/net/tun.c                   | 41 +++++++++++++++++++++++++++--
- drivers/net/virtio_net.c            | 15 ++++++++---
- include/linux/if_tap.h              |  1 +
- net/packet/af_packet.c              |  4 +--
- 8 files changed, 135 insertions(+), 10 deletions(-)
+ arch/um/drivers/vector_kern.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/vector_transports.c
-index e1fb2a76fdff..8b7548458663 100644
---- a/arch/um/drivers/vector_transports.c
-+++ b/arch/um/drivers/vector_transports.c
-@@ -210,7 +210,9 @@ static int raw_verify_header(
- 		return 1;
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index 8a70b3a62553..1afbef78df72 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -865,6 +865,7 @@ static int vector_legacy_rx(struct vector_private *vp)
  
- 	skb_set_network_header(skb, ETH_HLEN);
--	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
-+	if (virtio_net_hdr_to_skb(skb, vheader,
-+			virtio_legacy_is_little_endian()) < 0)
-+		return -1;
- 	return 0;
- }
- 
-diff --git a/drivers/net/ipvlan/ipvtap.c b/drivers/net/ipvlan/ipvtap.c
-index 66c949d94261..9e2f1c7073d2 100644
---- a/drivers/net/ipvlan/ipvtap.c
-+++ b/drivers/net/ipvlan/ipvtap.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include <linux/etherdevice.h>
-+#include <linux/ethtool.h>
- #include "ipvlan.h"
- #include <linux/if_vlan.h>
- #include <linux/if_tap.h>
-@@ -74,6 +75,32 @@ static void ipvtap_update_features(struct tap_dev *tap,
- 	netdev_update_features(vlan->dev);
- }
- 
-+static int ipvtap_get_sset_count(struct net_device *dev, int sset)
-+{
-+	return sset == ETH_SS_STATS ? 1 : -EOPNOTSUPP;
-+}
-+
-+static void ipvtap_get_strings(struct net_device *dev, u32 stringset,
-+			       u8 *data)
-+{
-+	if (stringset == ETH_SS_STATS)
-+		ethtool_puts(&data, "rx_csum_sw");
-+}
-+
-+static void ipvtap_get_ethtool_stats(struct net_device *dev,
-+				     struct ethtool_stats *stats,
-+				     u64 *data)
-+{
-+	struct ipvtap_dev *vlantap = netdev_priv(dev);
-+
-+	data[0] = atomic64_read(&vlantap->tap.rx_csum_sw);
-+}
-+
-+/* checkpatch warns but this can't be const: cloned from ipvlan's
-+ * ops at newlink time, with the statistics above added.
-+ */
-+static struct ethtool_ops ipvtap_ethtool_ops;
-+
- static int ipvtap_newlink(struct net_device *dev,
- 			  struct rtnl_newlink_params *params,
- 			  struct netlink_ext_ack *extack)
-@@ -91,6 +118,15 @@ static int ipvtap_newlink(struct net_device *dev,
- 	vlantap->tap.update_features =	ipvtap_update_features;
- 	vlantap->tap.count_rx_dropped = ipvtap_count_rx_dropped;
- 
-+	/* ipvlan's ethtool ops are already installed at this point;
-+	 * clone them and add the tap statistics on top.
-+	 */
-+	ipvtap_ethtool_ops = *dev->ethtool_ops;
-+	ipvtap_ethtool_ops.get_sset_count = ipvtap_get_sset_count;
-+	ipvtap_ethtool_ops.get_strings = ipvtap_get_strings;
-+	ipvtap_ethtool_ops.get_ethtool_stats = ipvtap_get_ethtool_stats;
-+	dev->ethtool_ops = &ipvtap_ethtool_ops;
-+
- 	err = netdev_rx_handler_register(dev, tap_handle_frame, &vlantap->tap);
- 	if (err)
- 		return err;
-diff --git a/drivers/net/macvtap.c b/drivers/net/macvtap.c
-index cc975dfb7380..3288cc6ae6c2 100644
---- a/drivers/net/macvtap.c
-+++ b/drivers/net/macvtap.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include <linux/etherdevice.h>
-+#include <linux/ethtool.h>
- #include <linux/if_macvlan.h>
- #include <linux/if_tap.h>
- #include <linux/if_vlan.h>
-@@ -78,6 +79,32 @@ static void macvtap_update_features(struct tap_dev *tap,
- 	netdev_update_features(vlan->dev);
- }
- 
-+static int macvtap_get_sset_count(struct net_device *dev, int sset)
-+{
-+	return sset == ETH_SS_STATS ? 1 : -EOPNOTSUPP;
-+}
-+
-+static void macvtap_get_strings(struct net_device *dev, u32 stringset,
-+				u8 *data)
-+{
-+	if (stringset == ETH_SS_STATS)
-+		ethtool_puts(&data, "rx_csum_sw");
-+}
-+
-+static void macvtap_get_ethtool_stats(struct net_device *dev,
-+				      struct ethtool_stats *stats,
-+				      u64 *data)
-+{
-+	struct macvtap_dev *vlantap = netdev_priv(dev);
-+
-+	data[0] = atomic64_read(&vlantap->tap.rx_csum_sw);
-+}
-+
-+/* checkpatch warns but this can't be const: cloned from macvlan's
-+ * ops at newlink time, with the statistics above added.
-+ */
-+static struct ethtool_ops macvtap_ethtool_ops;
-+
- static int macvtap_newlink(struct net_device *dev,
- 			   struct rtnl_newlink_params *params,
- 			   struct netlink_ext_ack *extack)
-@@ -99,6 +126,15 @@ static int macvtap_newlink(struct net_device *dev,
- 	vlantap->tap.count_rx_dropped = macvtap_count_rx_dropped;
- 	vlantap->tap.update_features  = macvtap_update_features;
- 
-+	/* macvlan's ethtool ops are already installed at this point;
-+	 * clone them and add the tap statistics on top.
-+	 */
-+	macvtap_ethtool_ops = *dev->ethtool_ops;
-+	macvtap_ethtool_ops.get_sset_count = macvtap_get_sset_count;
-+	macvtap_ethtool_ops.get_strings = macvtap_get_strings;
-+	macvtap_ethtool_ops.get_ethtool_stats = macvtap_get_ethtool_stats;
-+	dev->ethtool_ops = &macvtap_ethtool_ops;
-+
- 	err = netdev_rx_handler_register(dev, tap_handle_frame, &vlantap->tap);
- 	if (err)
- 		return err;
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index ff67d99deb39..d7520622e809 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -649,11 +649,13 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 
- 	if (vnet_hdr_len) {
- 		err = tun_vnet_hdr_to_skb(q->flags, skb, &vnet_hdr);
--		if (err) {
-+		if (err < 0) {
- 			rcu_read_unlock();
- 			drop_reason = SKB_DROP_REASON_DEV_HDR;
- 			goto err_kfree;
- 		}
-+		if (err > 0)
-+			atomic64_inc(&tap->rx_csum_sw);
- 	}
- 
- 	skb_probe_transport_header(skb);
-@@ -1084,10 +1086,12 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 
- 	if (vnet_hdr_len) {
- 		err = tun_vnet_hdr_to_skb(q->flags, skb, gso);
--		if (err) {
-+		if (err < 0) {
- 			rcu_read_unlock();
- 			goto err_kfree;
- 		}
-+		if (err > 0)
-+			atomic64_inc(&tap->rx_csum_sw);
- 	}
- 
- 	skb_probe_transport_header(skb);
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 242899f7fd07..19cb443c89b0 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -210,6 +210,7 @@ struct tun_struct {
- 	u32 flow_count;
- 	u32 rx_batched;
- 	atomic_long_t rx_frame_errors;
-+	atomic64_t rx_csum_sw;
- 	struct bpf_prog __rcu *xdp_prog;
- 	struct tun_prog __rcu *steering_prog;
- 	struct tun_prog __rcu *filter_prog;
-@@ -1935,11 +1936,16 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
- 		break;
- 	}
- 
--	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-+	err = tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr);
-+	if (err < 0) {
- 		atomic_long_inc(&tun->rx_frame_errors);
- 		err = -EINVAL;
- 		goto free_skb;
- 	}
-+	if (err > 0) {
-+		atomic64_inc(&tun->rx_csum_sw);
-+		err = 0;
-+	}
- 
- 	if ((tun->flags & TUN_TYPE_MASK) == IFF_TAP)
- 		skb->protocol = eth_type_trans(skb, tun->dev);
-@@ -2605,12 +2611,15 @@ static int tun_xdp_one(struct tun_struct *tun,
- 	tnl_hdr = (struct virtio_net_hdr_v1_hash_tunnel *)gso;
- 	skb->dev = tun->dev;
- 	skb_set_network_header(skb, ETH_HLEN);
--	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr)) {
-+	ret = tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr);
-+	if (ret < 0) {
- 		atomic_long_inc(&tun->rx_frame_errors);
- 		kfree_skb(skb);
- 		ret = -EINVAL;
- 		goto out;
- 	}
-+	if (ret > 0)
-+		atomic64_inc(&tun->rx_csum_sw);
- 
- 	skb->protocol = eth_type_trans(skb, tun->dev);
- 	skb_reset_network_header(skb);
-@@ -3739,7 +3748,35 @@ static void tun_get_channels(struct net_device *dev,
- 	channels->max_combined = tun->flags & IFF_MULTI_QUEUE ? MAX_TAP_QUEUES : 1;
- }
- 
-+#define TUN_STATS_LEN	1
-+static const char tun_ethtool_strings[TUN_STATS_LEN][ETH_GSTRING_LEN] = {
-+	"rx_csum_sw",
-+};
-+
-+static int tun_get_sset_count(struct net_device *dev, int sset)
-+{
-+	return sset == ETH_SS_STATS ? TUN_STATS_LEN : -EOPNOTSUPP;
-+}
-+
-+static void tun_get_strings(struct net_device *dev, u32 stringset, u8 *data)
-+{
-+	if (stringset == ETH_SS_STATS)
-+		memcpy(data, tun_ethtool_strings,
-+		       sizeof(tun_ethtool_strings));
-+}
-+
-+static void tun_get_ethtool_stats(struct net_device *dev,
-+				  struct ethtool_stats *stats, u64 *data)
-+{
-+	struct tun_struct *tun = netdev_priv(dev);
-+
-+	data[0] = atomic64_read(&tun->rx_csum_sw);
-+}
-+
- static const struct ethtool_ops tun_ethtool_ops = {
-+	.get_sset_count		= tun_get_sset_count,
-+	.get_strings		= tun_get_strings,
-+	.get_ethtool_stats	= tun_get_ethtool_stats,
- 	.supported_coalesce_params = ETHTOOL_COALESCE_RX_MAX_FRAMES,
- 	.get_drvinfo	= tun_get_drvinfo,
- 	.get_msglevel	= tun_get_msglevel,
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index daab43ac92ce..b0441bf8e875 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -125,6 +125,7 @@ struct virtnet_rq_stats {
- 	u64_stats_t packets;
- 	u64_stats_t bytes;
- 	u64_stats_t drops;
-+	u64_stats_t rx_csum_sw;
- 	u64_stats_t xdp_packets;
- 	u64_stats_t xdp_tx;
- 	u64_stats_t xdp_redirects;
-@@ -158,6 +159,7 @@ static const struct virtnet_stat_desc virtnet_sq_stats_desc[] = {
- 
- static const struct virtnet_stat_desc virtnet_rq_stats_desc[] = {
- 	VIRTNET_RQ_STAT("drops",         drops),
-+	VIRTNET_RQ_STAT("rx_csum_sw",    rx_csum_sw),
- 	VIRTNET_RQ_STAT("xdp_packets",   xdp_packets),
- 	VIRTNET_RQ_STAT("xdp_tx",        xdp_tx),
- 	VIRTNET_RQ_STAT("xdp_redirects", xdp_redirects),
-@@ -2502,6 +2504,7 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
- {
- 	struct virtio_net_common_hdr *hdr;
- 	struct net_device *dev = vi->dev;
-+	int ret;
- 
- 	hdr = skb_vnet_common_hdr(skb);
- 	if (dev->features & NETIF_F_RXHASH && vi->has_rss_hash_report)
-@@ -2517,15 +2520,21 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
- 
- 	skb->dev = dev;
- 	skb_set_network_header(skb, ETH_HLEN);
--	if (virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, vi->rx_tnl,
--				      vi->rx_tnl_csum,
--				      virtio_is_little_endian(vi->vdev))) {
-+	ret = virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, vi->rx_tnl,
-+					vi->rx_tnl_csum,
-+					virtio_is_little_endian(vi->vdev));
-+	if (ret < 0) {
- 		net_warn_ratelimited("%s: bad gso: type: %x, size: %u, flags %x tunnel %d tnl csum %d\n",
- 				     dev->name, hdr->hdr.gso_type,
- 				     hdr->hdr.gso_size, hdr->hdr.flags,
- 				     vi->rx_tnl, vi->rx_tnl_csum);
- 		goto frame_err;
- 	}
-+	if (ret > 0) {
-+		u64_stats_update_begin(&rq->stats.syncp);
-+		u64_stats_inc(&rq->stats.rx_csum_sw);
-+		u64_stats_update_end(&rq->stats.syncp);
-+	}
- 
- 	skb_record_rx_queue(skb, vq2rxq(rq->vq));
- 	skb->protocol = eth_type_trans(skb, dev);
-diff --git a/include/linux/if_tap.h b/include/linux/if_tap.h
-index 553552fa635c..4eac24bb1df7 100644
---- a/include/linux/if_tap.h
-+++ b/include/linux/if_tap.h
-@@ -41,6 +41,7 @@ struct tap_dev {
- 	struct list_head	queue_list;
- 	int			numvtaps;
- 	int			numqueues;
-+	atomic64_t		rx_csum_sw;
- 	netdev_features_t	tap_features;
- 	int			minor;
- 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 52ae3d875e97..e6aec9ecfa99 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2913,7 +2913,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 		}
- 
- 		if (has_vnet_hdr) {
--			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
-+			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le()) < 0) {
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
+ 	if (skb != NULL) {
+ 		if (pkt_len > vp->header_size) {
++			pskb_trim(skb, pkt_len - vp->rx_header_size);
+ 			if (vp->header_size > 0) {
+ 				header_check = vp->verify_header(
+ 					vp->header_rxbuffer, skb, vp);
+@@ -879,7 +880,6 @@ static int vector_legacy_rx(struct vector_private *vp)
+ 					skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 				}
  			}
-@@ -3136,7 +3136,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 
- 	if (vnet_hdr_sz) {
- 		err = virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le());
--		if (err)
-+		if (err < 0)
- 			goto out_free;
- 		len += vnet_hdr_sz;
- 	}
+-			pskb_trim(skb, pkt_len - vp->rx_header_size);
+ 			skb->protocol = eth_type_trans(skb, skb->dev);
+ 			vp->dev->stats.rx_bytes += skb->len;
+ 			vp->dev->stats.rx_packets++;
+@@ -981,6 +981,8 @@ static int vector_mmsg_rx(struct vector_private *vp, int budget)
+ 	for (i = 0; i < packet_count; i++) {
+ 		skb = (*skbuff_vector);
+ 		if (mmsg_vector->msg_len > vp->header_size) {
++			pskb_trim(skb,
++				mmsg_vector->msg_len - vp->rx_header_size);
+ 			if (vp->header_size > 0) {
+ 				header_check = vp->verify_header(
+ 					mmsg_vector->msg_hdr.msg_iov->iov_base,
+@@ -1005,8 +1007,6 @@ static int vector_mmsg_rx(struct vector_private *vp, int budget)
+ 					skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 				}
+ 			}
+-			pskb_trim(skb,
+-				mmsg_vector->msg_len - vp->rx_header_size);
+ 			skb->protocol = eth_type_trans(skb, skb->dev);
+ 			/*
+ 			 * We do not need to lock on updating stats here
 -- 
 MST
 
