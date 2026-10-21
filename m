@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792590447;
-	b=BDcDVMTenM5qFbk2TdCWTkDGGhLsER2ZRCtJh6frQad4bWnXpg+Ihfk83AtaicyT6DPl
-	 AYHe2a9/6u1RDosNvksNbtoRfZ4yRvOMsa94gmTUzea9zE7Z77UUBNdiFJZrGEolngqH+
-	 TeQwv+xJiSA2JISp5+rN8G0GLKJ3t/v4ZxNff5C+3+NXo4FsrbXH168fzOyYKh0XHHt3O
-	 lge7IZ1GaOrRkGyUmqDVYztmAfTgmNvzIfdFqzbkYZF193o82MRKGRkvMocmWX2QfHCWy
-	 FNTcAUSFuzzu53wjd1ri/YbQIsKd42RBwBM1olHlXXBfdg6ryBlZIM7bQ39fX1/0xIw==
+	t=1792590449;
+	b=UjflM8wxqLpqal9+s033LpPmnzbjqkAjJN0WkmLWuMT8CLy0bpSA/ddcF2+PqFqcR6Ie
+	 i8iOXYF7BV9bEvRMAJ/iVTSWjqnLt7JQdhKMjH3wpgrMJLekfpMklRaZU4uOh+qZ3ldus
+	 QcIbvAX6vzREvnaijB1yei3pEL5eL5CEIQ64ooE+SYu1QKmHMb3FFlCfeurjvZBIJSpRl
+	 915aKv2Opz9SIPFSGFZWuc+ZB9ed1dTUODFxS1IqrQAI6mj+ojQCZUVTB+SwJhLmOtv0j
+	 7wil96WFghaidg7KWsj0pWY0Ppq35IWkPUFX4thoV5mYwkuIvBwsAcY+jTeCXwHzpIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792590447;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792590449;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=NueD3KcSYkb8JdZSOJlKL8CiOB7BO395X3cXr1iZapo=;
-	b=tB6wMlnDjeUNJDeVup3i/ocVADzpQLGc3MLBW0XjElwSNopgCHfjnaQcHVUqZiTkC8Dg
-	 jBeYD7waDcFP1e/92M6HOxZEWdeNyltXnu0bo8SzphBwLaPdM7I2nY7ADVa0NPGxHe2JI
-	 camwLTNDnxf6GBE7osWmeqCX7QidMpfSxHdFsilZAvT5+82RGPRdiSqfmXLowYNc/7TYl
-	 pZ4j6Ne0c+C1ioe06zEUzD3WZsF4Dcx4umlpvi9+vTEAWVdVCezDJI+qS6ZuQPHvuOl/F
-	 uFME+3giZZ9EXfRUA3xSCnLBlJv7rBeGQtgQXxigs1J78/5jbHlhijhUuBbAe7SvqmA==
+	bh=2KWwlh/hCg0SMpmIsRqC2+1Lcm/oFCtvXzTkdFFgQUQ=;
+	b=5mgOCSJpZDjToTPCwqcfhEOrT6ONZqDUDtzIOng9i/3m18F0gp/nu6YNXoZkVkoiVMa7
+	 3RwXRsf07izDtK7VfE03qJwHY9PUNBoCXRibfc5ZXwSik8yXTyfQ989Ob7IeRlniPSuOv
+	 D14O53c3vAw3+Htm2MxYRlnOzOID1CtVyG7ZilGIiB7cG+ziWQP0U1tftfI+MMkviwW0O
+	 eXK3R4rBdmZJvFpQxsFLrIc5qwRssyWqj9/iiI9oGGze39OU06hg1SEMHXa7UmpaMcXdi
+	 hrA1/Tsk1pZAkU/IB+3E8qS6mGczFp5j19MWj6191WAhaRsDDgE6eEqYYqWGJD4HIVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=toxicpanda.com;
 	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=ZWfEGX7E;
-	arc=none smtp.remote-ip=74.125.224.44
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=df7ZSllV;
+	arc=none smtp.remote-ip=209.85.128.180
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C7060A2609
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:47:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36C7060A2609
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD6F606A331
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:47:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CD6F606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=ZWfEGX7E
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67a000ac7efso657038d50.0
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:47:27 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=df7ZSllV
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8acda240937so6380517b3.3
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:47:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1792590446; x=1793195246; darn=vger.kernel.org;
+        d=toxicpanda.com; s=google; t=1792590448; x=1793195248; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NueD3KcSYkb8JdZSOJlKL8CiOB7BO395X3cXr1iZapo=;
-        b=ZWfEGX7EHhCKxrSucIGaIW2UhmKHQUB/Lw0OMR4JhXLZ7mfAYc2/oFeNe1UkzUk5bJ
-         AO+3j3aor3xFlC311J81qY0m20zBQ5f6FfSpfJDkXc/uSLoGN6tnvIL+QNgP7PVwLO0/
-         dg8O0+Op3/oQem0L8BkwytsuDtC5RmDQDirNRm251D8uYyzF/eqROPjL7TK3ZeSLdDD1
-         2hAlDTwBZnJZfWC9Flfdc6AFRaPgt0eP7nSVmuqiqAi6FLwYUt0jCthc6r9cQHlXdiCY
-         E3MsfmTcsPNLU2LMTiO0+LfBMkBWX4ys70jOBC2NyoROhqRwCSUXsoVkFXRQpNn56Dp5
-         knzA==
+        bh=2KWwlh/hCg0SMpmIsRqC2+1Lcm/oFCtvXzTkdFFgQUQ=;
+        b=df7ZSllVKPKZ4+IbzN3K1Yl8iDazfV/u465IbjTbJK5/FGyBp9SJCVzP9v/lP777Ud
+         JNO7agazSazWiC3aVWUdGIjqRVm/cFU5keeOIYkLcGa0qdGICgT05heuQMsnNdEoQLbO
+         2k0YXH+kz5w/tq93a3m8OxuLxYb26HTJu0N+wmqgs9sAMbQdA4M1SkOosGo76vOxxr8C
+         MlsWfUfj6LZb2sNW3yEI7Q2jTdxV6I1R1GSL1Fdk23fRyFdKEdimDbsumVBWAcDd4eo8
+         c/lSCoaDfwsfCUMJT1su0PwSbo/3h3SWwsiUvquEakVHLEkaKpwj1wxXMlZBXu8ywp7R
+         vXEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792590446; x=1793195246;
+        d=1e100.net; s=20260707; t=1792590448; x=1793195248;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NueD3KcSYkb8JdZSOJlKL8CiOB7BO395X3cXr1iZapo=;
-        b=Acxo3mR7sdUuj6FuZRH/nIIeYq0M0c9WwNs8MUXLHMnvxX04D6q2NMh2lR6Anwcqi1
-         N6Afu9bpqjF/ALK5HblT3K6RDoilQbkdNyJ6LSBNXQef8mlCF4U9p2bs+L1TjDVyP4ev
-         FJtKmjLA2TRB+xJutf8X1lGUqNm6ZT5a7anuxhKRfAyOrcnBDovn/P3wPpj8znG4jZyq
-         jMrDpJ02I9K8vdxO+4jRfZmy1d/HceaQO5GlHe3doJ8pd1uvIeJPQwXtI3ohIkIEiDZ0
-         A2gwie1tge9E0d2Bgp2zzzMXrfl3Bk3cQ1DKE990muQlxw/QfRIvzQZJcLO1q8QOwAKt
-         BZRg==
-X-Forwarded-Encrypted: i=1; AKwUvBw87e5lw9UZuE1CZr2JBFhV4jXUrcKCuJekIj9b34sppM4zG0CwTUrHDR2nZ81+w925XM/etRY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL0TDP2zZgAhoi9Nx9BjhWp68waSAHKnvhSIGXQyxIZ96+7uI1e
-	GL8EB9ZTk607qzLlcqP/CHjkOu96KqHM78cPiUVtBJLhUBQUsi4mH/Pd4qaDjWNK2qg=
-X-Gm-Gg: AYBFou2IVo9xm03147ZZo1VWDXmBFmrgvPLATom0oFyc3qUgwcG4uJ3ceddLNWQDoVn
-	lb9F1am+L3mL9HuzSk6YhjaUseDrAOR3uwbhfW1EQaRSo/5yHSbBoTM4+qGKGsT2btLCVIz+EgU
-	Mwcneky2r4lc0SOp0bGhw+4lKWMUYt7D8pVDCOiQyfJ/4ni944bwMyN+zqhKgzcbesFOS2WznMn
-	lYzh0wQSMv2D2miJdexIsR5OpzYKalN4xEb2m3FhbUaDklBaeiS7jn6UgzYRQZpTE8GAA0BsagI
-	pRwWRHQ60pCsNnRKgePM2KcGbfQzzw9MODDA/2A46ErRaHJf3ScSlNQqy+Y1CEMjAbu1F3eHHFs
-	qmEmdUnK9soe5ZiTx/0XoWwKAz7nER+FboG6IbwVzrSfIQ8uq03WFheHH1eyrFBzI/uc5A5TboH
-	LP7qcZPbjoTrAiEo5ALJ4JnBrVrh4JkfpBZkpPpBC9pCgDFRiejSMdA57ZMPESmiBKYMkqNZ/5x
-	8LGvelK8EJbN1WjygEvka3y9dBjsosJp2Ueo9QRai2xRpmUj7B3qNN/kj3Il+Ng8tv49Gh9
-X-Received: by 2002:a05:690e:4853:b0:675:617e:6c2d with SMTP id 956f58d0204a3-67a0e4b66b2mr896013d50.25.1792590446255;
-        Wed, 21 Oct 2026 06:47:26 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.240])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67a0e185441sm1078051d50.3.2026.10.21.06.47.25
+        bh=2KWwlh/hCg0SMpmIsRqC2+1Lcm/oFCtvXzTkdFFgQUQ=;
+        b=W/HNyWITDHhnGNCcgz49UaYOZV0sRf2+7pg0Y6UqZWoNqozN8RvaTl+dFrCifr4vQ2
+         tnNkjyNp42RlxUBCv8FuOA5UIj2nNfjcKupybGEpv66vXe7udMvOW5CotCGF2z96PQvU
+         PJr0QDfJudxVwPXndB+C64rc/4TZq51pxw+FB393UBR1VeCC/c33izWue8a0r88tUJ1O
+         QtjCTxxxmObw7rUmFo02fnJLtsmAuX4iTCcZBPPkluLakALjzDf9UE/ZF8COT6QEewk7
+         WxgN/wlsbARzL5xJJ2xL9xyM3MudDRmDZHuL670DPBF3UvYLxk3tdSFPosm42pvclGpI
+         FXEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzYKiikjMx9vHt1J2/zEv6wVqwtz7QstU2ZII98+vE+BxskBNUWNTysH5d5Cff2aiAPNNaEfM4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ6jp+XSdAWwqXm07vhsxO9isrNOP0G2LgoKKu1rW6yB7YWUurU
+	P1N+DXCZEmD5A6g4d6CRugB63F+COwjg6f6Jc4VNE2o0rzui5fHjRIGBSx1Bad18jDs=
+X-Gm-Gg: AYBFou0EpC51MsPfVvl0PWggmvzsoJ5np8m97iFXuz3FVX5A12I9zXmWh6Xu3k+EnCx
+	2lz1XmO7nkKOsA/C8QhUj4DIgNYp02B/UfUp4J/B4X03qiQcdn71pEK//2Jl1hR6jqv9CtZ7U1i
+	6Ow2vueeJSJxabH7mZwNf7UYOVH75w2MR8vxpfbs3IArv+koyqOhAg/5Ci56mVx+q0L1GjPBfJD
+	9cTKAOcCLUFsloaBwL+8LiZwwgoX2nFl6UD8FOxTt2ieg8TRAU5Fz/eDcv0YfpjtnKBGjfQqLR/
+	aeYQh+rw0qKWu9FZOAfYtajfR6aK1Z2GMiQ7Oy9oGSss6ylVe7uIE6Es7P9KZ4UQHPNjkyg6UBp
+	XUcEVvyToBCkFgaBvNJ2h2AGL8DG44pTLCbJUrqFn8037+ojxDQE6hABRRwzhxLmmjh7ziapl7M
+	Aor9uSz8du0QNRPI3T9j1omT2VHHUWaL2o3WEFHTP6rzlTZfIB9o4P5dWcn9f5H3GrUV812jxO2
+	U9YE5lfmunzLGuGNr4V2Yv5WdjGFF0wf5+nOneG/1XoOTirpTH47f61IzcYXNpaBfjAIFOH
+X-Received: by 2002:a05:690c:d87:b0:873:5bd1:98b7 with SMTP id 00721157ae682-8b13403e9b6mr12177067b3.41.1792590448219;
+        Wed, 21 Oct 2026 06:47:28 -0700 (PDT)
+Received: from toxicpanda.com ([153.61.196.246])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b1300715cfsm11333607b3.14.2026.10.21.06.47.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 06:47:25 -0700 (PDT)
+        Wed, 21 Oct 2026 06:47:27 -0700 (PDT)
 From: Josef Bacik <josef@toxicpanda.com>
-Date: Wed, 21 Oct 2026 13:46:54 +0000
-Subject: [PATCH net-next v2 10/15] net: skbuff: reject a negative length in
- skb_copy_and_csum_bits()
+Date: Wed, 21 Oct 2026 13:46:55 +0000
+Subject: [PATCH net-next v2 11/15] net: skbuff: refuse to segment a nested
+ frag_list
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,7 +94,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-b4-skbuff-bug-on-followups-v2-10-2aa780a03524@toxicpanda.com>
+Message-Id: <20261021-b4-skbuff-bug-on-followups-v2-11-2aa780a03524@toxicpanda.com>
 References: <20261021-b4-skbuff-bug-on-followups-v2-0-2aa780a03524@toxicpanda.com>
 In-Reply-To: <20261021-b4-skbuff-bug-on-followups-v2-0-2aa780a03524@toxicpanda.com>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -107,84 +107,92 @@ Cc: Juergen Gross <jgross@suse.com>,
  Fernando Fernandez Mancera <fmancera@suse.de>, 
  Mina Almasry <almasrymina@google.com>, 
  David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
- xen-devel@lists.xenproject.org, Josef Bacik <josef@toxicpanda.com>
+ xen-devel@lists.xenproject.org, Willem de Bruijn <willemb@google.com>, 
+ Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1792590423; l=2599;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1792590423; l=2884;
  i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=II/CP7Oe6pPmnThcZPqfbajOFeQVtnEAdIjZymwWmTI=;
+ bh=bYC4uz0w4NZKAYryGVW9UUHYf9kR1dL3ZNzRUgIMFMM=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
  JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QBCv/T4tuugSwX2rkOLKSCWrxmAA7LyX/rWbZaGf+yX4wPBG8KKxQ/YtsGe6jDvfA44EL7VQpSI
- 8w8aIZgV/RQE=
+ QB/boFORXWtYqGQkg0oKg7TLwyvigi4nOkir+rQFpE7KoN+Aub774BEuZtAZae7bNyllztx+HmX
+ 8eAIEPekArQE=
 X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
  fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
 
-Commit 417261779eab ("net: skbuff: don't BUG() on leftover length in
-skb_copy_and_csum_bits()") guards its zero-fill against a negative @len
-from a broken caller, but such a @len never gets that far.  The head,
-frag and frag_list copies all clamp their length to @len, so a negative
-one has already turned into a huge copy, or an endless frag walk, by
-then.
+skb_segment() walks head_skb's frag_list, but for each member it only
+looks at the linear part and frags[], never at the member's own
+frag_list.  head_skb->len still counts those bytes, so with a nested
+frag_list the walk runs out of members while it still owes data, sets
+list_skb to NULL, and dereferences it on a later pass, before any of
+the layout checks get a chance to catch it.  When the member is taken
+whole with skb_clone(), the pskb_trim() that follows also drops its
+nested data.
 
-Reject a negative @len on entry with -EINVAL, with a
-DEBUG_NET_WARN_ON_ONCE() for debug kernels, and drop the guard on the
-zero-fill that can no longer be reached with one.  Every caller already
-handles an error from skb_copy_and_csum_bits().
+Nothing in the tree is known to build such an skb; GRO flushes instead
+of chaining an skb that already has a frag_list.  Check each member as
+the walk takes it, in the GSO_BY_FRAGS, clone and frag paths, and fail
+the segmentation with -EINVAL if there's no member left or it has its
+own frag_list, with a DEBUG_NET_WARN_ON_ONCE() for debug kernels, like
+the other frag_list layout checks.  Without SG the payload is copied
+with helpers that do recurse into nested frag_lists, so that path is
+left alone.
 
-Found by the Sashiko AI review of v2 of the series that made the
-change.
-
-Fixes: 417261779eab ("net: skbuff: don't BUG() on leftover length in skb_copy_and_csum_bits()")
-Link: https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com/
+Suggested-by: Willem de Bruijn <willemb@google.com>
 Assisted-by: LLM
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- net/core/skbuff.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ net/core/skbuff.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 782a6bacd568..56cec58bccb7 100644
+index 56cec58bccb7..c5e28a52114b 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -3678,9 +3678,10 @@ EXPORT_SYMBOL(skb_checksum);
-  *	@len: number of bytes to copy
-  *	@csump: where to store the checksum of the copied bytes
-  *
-- *	Return: 0 on success, or -EFAULT if @skb has unreadable frags or runs
-- *	out before @len does.  On failure *@csump is not set and the part of
-- *	@to that couldn't be filled is zeroed.
-+ *	Return: 0 on success, -EINVAL if @len is negative, or -EFAULT if @skb
-+ *	has unreadable frags or runs out before @len does.  On failure *@csump
-+ *	is not set, and on -EFAULT the part of @to that couldn't be filled is
-+ *	zeroed.
-  */
- int skb_copy_and_csum_bits(const struct sk_buff *skb, int offset,
- 			   u8 *to, int len, __wsum *csump)
-@@ -3692,6 +3693,14 @@ int skb_copy_and_csum_bits(const struct sk_buff *skb, int offset,
- 	__wsum csum = 0;
- 	int err;
+@@ -5087,6 +5087,15 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 		int size;
  
-+	/* Everything below clamps copies to @len, so a negative one would
-+	 * turn into a huge copy.
-+	 */
-+	if (unlikely(len < 0)) {
-+		DEBUG_NET_WARN_ON_ONCE(1);
-+		return -EINVAL;
-+	}
+ 		if (unlikely(gso_by_frags)) {
++			/* The walk only goes one level deep: running out of
++			 * members, or finding one with its own frag_list, means
++			 * a nested frag_list that head_skb->len counts.
++			 */
++			if (unlikely(!list_skb || skb_has_frag_list(list_skb))) {
++				DEBUG_NET_WARN_ON_ONCE(1);
++				err = -EINVAL;
++				goto err;
++			}
+ 			len = list_skb->len;
+ 		} else {
+ 			len = head_skb->len - offset;
+@@ -5096,9 +5105,11 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 
+ 		hsize = skb_headlen(head_skb) - offset;
+ 
+-		if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
++		if (hsize <= 0 && i >= nfrags && list_skb &&
++		    skb_headlen(list_skb) &&
+ 		    (skb_headlen(list_skb) == len || sg)) {
+-			if (unlikely(skb_headlen(list_skb) > len)) {
++			if (unlikely(skb_headlen(list_skb) > len ||
++				     skb_has_frag_list(list_skb))) {
+ 				DEBUG_NET_WARN_ON_ONCE(1);
+ 				err = -EINVAL;
+ 				goto err;
+@@ -5216,6 +5227,13 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 
+ 		while (pos < offset + len) {
+ 			if (i >= nfrags) {
++				if (unlikely(!list_skb ||
++					     skb_has_frag_list(list_skb))) {
++					DEBUG_NET_WARN_ON_ONCE(1);
++					err = -EINVAL;
++					goto err;
++				}
 +
- 	/* Copy header. */
- 	if (copy > 0) {
- 		if (copy > len)
-@@ -3777,8 +3786,7 @@ int skb_copy_and_csum_bits(const struct sk_buff *skb, int offset,
- 	if (unlikely(len)) {
- 		DEBUG_NET_WARN_ON_ONCE(1);
- 		/* Don't hand the caller a buffer with stale bytes in it. */
--		if (len > 0)
--			memset(to, 0, len);
-+		memset(to, 0, len);
- 		return -EFAULT;
- 	}
- out:
+ 				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
+ 				    skb_zerocopy_clone(nskb, list_skb,
+ 						       GFP_ATOMIC))
 
 -- 
 2.55.0
