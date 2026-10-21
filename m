@@ -1,101 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.47
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792609073;
-	b=XAXwYm5A5ekW08ZLqZdsLWS6T84D5j+YVXjyeZvYOgMg04JV5rsAbwNQfLFJ0odCvXds
-	 ACtM7IhGa5PoWhB5KSdSMX+ugkI5B25QEzm6/2gbdfTfKSMoPc0LRvkQvYrCzFdWOG9C/
-	 ntGDqbyoPRiLEAF/7VMJJIDZtyoSBUAuXQ8PaRSpa2FrMFSojDHbrDccusNecAsea8adK
-	 T8PE3q5di2qtjrpzcZz5D3J/8nrULbw9+9DOnTxz/QiK3TZcqa8RE6FSLCNHS/7mE5G/A
-	 HKlvh8QHybIMqCZ7kV3bS3ZMW2bQhXJqggmE399NtpqZreBSi5aFwTdE6FOMeOcRhMg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792609073;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.54
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792609293;
+	b=j6AgT6iM5SKOZhljrbj4ku2zhRqOTVHiIA4SQsFaYgJxMgaJeDTyLOkyfxW+8ORslDXF
+	 LJDiSL2nBaHFCyfLDpu2VHptpsJ+xntn07BWymT5ONjfof/TrjJjvOTnXiKIhMkwAVXGO
+	 4X+WypRZvEniP40VmAlr8coxPvcZhg1iim/8Y7tpaxdKJYtLiMJ44jhqFQW2o6KY2qn0p
+	 DUYfWPlRQkB4uAAAzsfqh6ClTWrB6JtH5h75wS6xw5XGnMajgexfF0EcUSNdWHO5pP8eU
+	 fY49rAvPCsopqVj8tbm9dqk6Ox7ic3/ipigB899aFIUssDN3BOP9MtL6sSNF7iqgZpA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792609293;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=SQ1PEtdypxTnohtLknkt/wfldChNdlR9LzYhU4LNZxo=;
-	b=aIGX/saMNAb+D89QnxCRbFuzAd5FjVq5fpVbQ/GX4mFzNTbqjsW55HMdu+Wm5rPWA9rf
-	 zReWyeo5g5CSnQwp/oJN+K2AVXp63pgsW0my+jZ/Ab5BAn4T+oM/0eNuwj3GlUAHh4Ef3
-	 3+f1xlZqaq8DGtLmmzGL1jlxudMxEKyNMWkjyKXgaBAceBKb6rE6rjXznBXATpJDjmq5l
-	 gvgvPA4PsURuveNOn5mfyHk4CAyhHBm5DbZ4B/y+LrPnBQ5TRpdh7qM/zxCPOK/iiZAdw
-	 LRRmuQqx+FYEbRsKYq+Et7mhPK+PoSVH5GSMcP0jkNULFBzLM296h9SSpJWWS8aQqeA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GRJOcBba;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.47
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=+xiuBG98k11v38WJdNTju3R21l2Zmo4Yv8wf7MwifCI=;
+	b=ULlu+kU3ntJjBi+SCHuA9ol2zlmh/lHDFMndAa1hj/MC51B8B1MKPAd6ZYny5jmauvax
+	 24I6IzWx/UfgbDiE7RbJ/mNxA0PBW4H6C6xAZhIrECBO78LxYk8hReFS2qg48flJJA8U9
+	 ZHE8oqbUk/XN/VKYPv2VHzgrRFbGHO5wQDST1Ep8emjmC6t7L05v8xQhlddLPeyl0nvqa
+	 rgZea3BrWHeI5m7VWOvju+FF4edI6SRG9S2UeI0RWfJqtY4a1HpR8E7aTpqJcNJom/KJP
+	 50h+QQlmCCPqigOX4+RNyaf8GhTzfdtGXc08/cmVg8zDj8VXQvwCUV1jIIOFjuMMouQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nebusec.ai;
+	spf=pass smtp.mailfrom=nebusec.ai;
+	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=GR24Dh8e;
+	arc=none smtp.remote-ip=74.125.82.54
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5102B606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 18:57:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5102B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295D3606A31B
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 19:01:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 295D3606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GRJOcBba
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ab98332238so819775a91.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 11:57:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792609072; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VXchpV3FqRLQf2sAAHwgvewgP/fRgw3v6Kyt48KdbI9uSvd+UksA11eQ23wUlII7Nn
-         Gnc4g4AIQjQ54QmYzdaq5O6ugE3ozSoIXRhepEr0ZDghutQLbGttX/5R/6hKKSHjARgn
-         rZNRNLUpTX9gJ/uiT/ogMOtfJYDZE9UyyxPTJExUo8u6gm/KRMG3ij98f95UO/P7Yz3Z
-         tNftqgdZ3UBJRgnAHgoJaZVNkjLWbgwP3H+R1jOJ75ateJtDEYiU8FhLWXtQvF54ZBve
-         jaUZ4rhiCRKn05lNhi3jCtatPz0v127n85a6rllS/HdsICe46oTRsQU26pZCr1L5p/GV
-         dxmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SQ1PEtdypxTnohtLknkt/wfldChNdlR9LzYhU4LNZxo=;
-        fh=mitkmBdjX/EBET7KXmfYcLs4lHhNsA6l31B4VwpfOFQ=;
-        b=NjWLF0l3pVIEmDcHx5XiImuSNEW46xZPcPYn2MmMZQE0QdcO/tmnk9PTB2rV5mk2tw
-         Ap7BQg6xcPbMYDGhP9h9Lplbr4M8sKRhNU3QOpOL0BTrgKpE+zIYz+q4O0vuetDDrPIi
-         8oHxceVZgLop2EyuT1POicwVrdePzJMYwC5KhS2wa3Jk2WKrmXKt9QartODpEIF9Vorx
-         VdL+6+0RusgpHmymApjAUMl/bWf/H6IpVOTVbo9wsVzcglLn3dyoVPbBfFrid/shElS6
-         8UlZvnjONC+pw9GOeKQj5ouA8n1nStHpbMqQ4MYgJc6Z+MeEPcCW4pob94cOrIrOduCn
-         9Lvw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=GR24Dh8e
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1438d9363fbso203390c88.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 12:01:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792609072; x=1793213872; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SQ1PEtdypxTnohtLknkt/wfldChNdlR9LzYhU4LNZxo=;
-        b=GRJOcBba8DEJiP4LcvBvI/lWgshwPX1y+sf60QRIqix2s5+eLDRL3csGLAyNFsOvWL
-         nB1ccO0SJ+HnQCez2D5o4GpAXs4BOndSs90piRyAha75ce8OZw0PaHnKp4fPErDvBAl4
-         NUSDw8och9V4kJEWRTTZreJAcH2/KVrCbRyqle6WFe6oNyGPrf7SevD1WglWcOnHw3la
-         tCLnDSfyX+HFzqQMaqZNazHIG0VbLxOaoDNouTxLLZ1dINEeWEvWf0ikAqCD8/Zau7Uf
-         r9N8F2GqqpdjB8Y5HVC+LmcXFs3KId5bDmHfVQAmcls7hoZhrF1X8Rv/aewb4JmT7vcY
-         HZEQ==
+        d=nebusec.ai; s=google; t=1792609292; x=1793214092; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+xiuBG98k11v38WJdNTju3R21l2Zmo4Yv8wf7MwifCI=;
+        b=GR24Dh8excjC9Z79WSjYtICN7aA1M6cWQwDyo4rtr8fvM3cAZyHUGUxo4qhqvkkDi0
+         9bxlkWwLKE3z5W31rJGW+LUtDXeHdiYHRQCM7EQhUPn4n/utKT9Wv7EZawdFGonbWGFL
+         al8LsEMOhXppDmd4RSkibI+bxfI/JLlXT+K1SQcXPLo5svEHfxv4Jrel3RAuBiYBGIAL
+         tnSVoJi46DHNS9ZAOQY1U5KGHt2BjYw1/j6L83Qe+W3sUCu9BY9JrgJhvKiYb8qrOlJs
+         QIhUOn38DFziZMEYfn7AmKCsAKkSumgmMi6/Gs7UJBhNpRjzYQ4BjygqsnOUXbXdwYaG
+         Y2pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792609072; x=1793213872;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SQ1PEtdypxTnohtLknkt/wfldChNdlR9LzYhU4LNZxo=;
-        b=Tx6kc1c3VR/SrKgMnQepmBRAavrJE2FurNYIl6j7anX1LHXhOFYNdJLREZuR6JIPxp
-         c2VZQ1w8kLwIDyF8TKkfRE8OtyyZYUN2rQLhZ/38s50NI1PPO1nNX6/rGL1GpQOpvtzm
-         T0WulGLuIp5Aw8UkvETsgw6C9/THnsulpDRrNEoY7RQpeX8eGWKOczJIZcDldd1TSQNA
-         hI7UI47PXeavIstwC7hddQ7j94x4E5w7gRO/MFpHZk5b5tZPz9B587/+/7SYa4At3S/q
-         OO+BjvdcqAb85NrjPhqwPoV18LxSFOCP5U+mmvAbLyrLvpXZlAByFcP6a0BXXviAj31p
-         ekpw==
-X-Forwarded-Encrypted: i=1; AKwUvBxn9y0QsJwLxZGaCbtGLHdeecIzeQ5GlsReBGiDAe9zi5Boppwj9WQ+G0v88sUqbOWA2e545go=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIVtIWl5YQIdZu2KSy6a1rmhUP7y6OOWKgYz9qxN23QRJRmSG3q
-	2vkqPfk3dwnxpqMPlGUfqRTB1PWp/y2/SnmRFN11WtAVY09sucMY6uIpk1qU0FB2fP31FMptYmH
-	Mg/dJK5ZMDV7kanV1ZtruZ+YshZHOrNs=
-X-Gm-Gg: AYBFou3wVaqkroS3O9Dxpibc+IoqLXDzbZrCAECAFE+jXzkJekMCZpApiCHNg/rnBYw
-	KKiROVnQvmRKWGtYrFGJxL7FD/3vMi6e0SITFMvlQVRT9WE1HKBaYKshFf3u/t19lHxCIvAW3Lh
-	F7rAOZ/q/fabIqPslNaR5gCu5BqffKQc3Mg86GCnt8F96/QMdBI5dbNShrDIjEIYafEzbIwW4Xz
-	sKd8xVuRM+nFfo0cukGpp51TSB3nR73S77sAVa9bzGhHmRa4sTFCbFRoV8HgSBMFiu8luSaJp9b
-	hAV6T/iJYDSPxB8fj9sNs/VB4G5MtpTNidy+FT4MB1mBKDOjR2hOafxxqfZcGjvATfcpch2glLZ
-	vZgJuDs8jlA4+HKhBE5QEY/voBWxQn54urP2b9/LQv5EgvCx8KuvnECYksjrWd/ajDiwod3TPkc
-	MGqFr1I/j/Sp4NwrFPTw==
-X-Received: by 2002:a17:90b:3e8a:b0:3ac:80dc:f419 with SMTP id
- 98e67ed59e1d1-3ad86ce70c5mr2459965a91.25.1792609071620; Wed, 21 Oct 2026
- 11:57:51 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792609292; x=1793214092;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+xiuBG98k11v38WJdNTju3R21l2Zmo4Yv8wf7MwifCI=;
+        b=PW/vZGCvJcp0EW5S9fOg3IqK5tsXW3fhd6QqyO3C1guPdterwb7zr6xpf9I8uBWtRq
+         5iwxP/3vT4GwKqp7jEG60kL4JdKLZ8gbM9E1BYjkBDcanLtWa4+lCWw5DpqRSVk2ZLo4
+         y7AqZtpLdd9Z13kXvmOu1Q/NEOrRqiOMdamQb6/EyneliNbGNMUaELWPm4L3X9la1rwP
+         vdXWc9w9xmgx288E1JPj3VEDCo5Qp1bbHM95qkWuf3ThM6VwnmWFZmgnoVH5zmiMSpKB
+         taL0L79r/zNcbCw9jEngQDzUXxTbEWlLFrhr24P9AKO5T76+HttnewIAPQ+Nipe2a0at
+         DtbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBya+Eu2Yo1oCIwofho8Z2GDRq2x8+eM/QXxYV/uEsqa3h7RPX9GMHPzV776EfXyCXN7AMXjvYE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIJaGnkf3uagaCKAScPJAutCM0/d6dVq+QNjB3BqH211ypjw5QW
+	5zMe0wOlO6RyD/3JcJwx8l630SaZJz7UwdGKpdWTS+M42/u1h4HBFOcs10ixFLA/ndUt
+X-Gm-Gg: AYBFou2g4GWpmnu54MnYOcWVm1Pk4gbmxienmjV+O8VZYTh3XZ6KNt9wa4Y84yGSgne
+	66+v38/CPhyCmjiczF/GJfgAF1etGHQc+ofBVR/5nXtJXBx5lENoZ5gsm7eMO5F3bRzmzFFvnvw
+	NcRnpXdkgBHefA4qvR0eyH1Ofy5W8ocwcyE4gdOIK96H5ne6pr/fyMUzFEyYYLiV3LRBTY4Ourb
+	VAbXJElnJwkNmgAq2leCX0fUIas4ndDEWtKXAtte6S1Mdy3N3nQVmRkHvKsFS1Mh6q+U2W3FAdZ
+	gjiPQ2DcrMa8ZuMts3e44dmJoCai76GPIkJMIn9U9ckqkFeopzTu1JdjKOUR+HDiGsbE2Sp1NCm
+	on8SgSv/MqPrIeTIrgJiWW20UwJkIEpMXrh1xqDa3er6+oMY49ijBK2vyjUBTYVi4EoRmfasy99
+	/2BtbL8QGAdsPotlErDbnax3OQ+bStap4MI/8ba54lGOifcADsPqOLoDNuD6dgZo2viKB8Hwnzy
+	M8r91yOnQ7kL4PSA01ioPshKqPIZBt/0UrA+9vJQdrbXTJZ1DRCys3AWNS4EbdIbLSN3WE=
+X-Received: by 2002:a05:7022:eb54:20b0:151:7831:e403 with SMTP id a92af1059eb24-192ef933695mr268807c88.13.1792609290274;
+        Wed, 21 Oct 2026 12:01:30 -0700 (PDT)
+Received: from Roxy.sysu.edu.cn ([203.175.14.58])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035c0c9a6sm7581797c88.3.2026.10.21.12.01.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 12:01:29 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: idosch@nvidia.com,
+	namangulati@google.com,
+	netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net v3 1/1] ipmr: drop packets with unknown ingress VIF
+Date: Thu, 22 Oct 2026 03:01:16 +0800
+Message-ID: <5271fcb94a4d9e697ed64a348e92ea9e74faab1c.1792608753.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <cover.1792608753.git.zhilinz@nebusec.ai>
+References: <cover.1792608753.git.zhilinz@nebusec.ai>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,126 +103,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020155848.75711-1-mahe.tardy@gmail.com> <20261020155848.75711-2-mahe.tardy@gmail.com>
- <CAEf4BzapP4Hng7bO8crK4SLg_PMH33oKo8esFo1ur5-QewNfig@mail.gmail.com> <atkG-5eqB8LfVxSa@gmail.com>
-In-Reply-To: <atkG-5eqB8LfVxSa@gmail.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 21 Oct 2026 11:57:39 -0700
-X-Gm-Features: AclHuK-I_9WzDyc9HR2tb49toTqh-ceHwcLBr8TwXe2tIajdsNbAf5oioeQVVC8
-Message-ID: <CAEf4BzYA79tg5C+uzo3S5=MRgM_O7VMYtOwW59QMieJoFNOpVg@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2 1/3] bpf: add bpf_ksock_sendto() kfunc
-To: Mahe Tardy <mahe.tardy@gmail.com>
-Cc: bpf@vger.kernel.org, andrii@kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, davem@davemloft.net, willemb@google.com, 
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com, 
-	kuba@kernel.org, horms@kernel.org, liamwisehart@meta.com, 
-	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org, 
-	netdev@vger.kernel.org, sdf.kernel@gmail.com, yonghong.song@linux.dev, 
-	jolsa@kernel.org, kuniyu@google.com, memxor@gmail.com, emil@etsalapatis.com, 
-	almagui@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 21, 2026 at 11:39=E2=80=AFAM Mahe Tardy <mahe.tardy@gmail.com> =
-wrote:
->
-> On Wed, Oct 21, 2026 at 10:56:23AM -0700, Andrii Nakryiko wrote:
-> > On Tue, Oct 20, 2026 at 8:59=E2=80=AFAM Mahe Tardy <mahe.tardy@gmail.co=
-m> wrote:
-> > >
-> > > The motivation is to plumb more of the socket API into ksock, thus
-> > > supporting sendto() in addition to send() which makes a lot of sense =
-in
-> > > the context of UDP sockets which are the only type currently supporte=
-d.
-> > > This is useful when ksock is used to reply to specific addresses or s=
-end
-> > > to multiple addresses.
-> > >
-> > > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
-> > > ---
-> > >  net/core/bpf_ksock.c | 96 +++++++++++++++++++++++++++++++-----------=
---
-> > >  1 file changed, 69 insertions(+), 27 deletions(-)
-> > >
->
-> [...]
->
-> > >
-> > > -       return ret;
-> > > +/**
-> > > + * bpf_ksock_sendto() - Send data through a BPF kernel socket to a r=
-emote address.
-> > > + * @ks:                The BPF kernel socket context. Must be an acq=
-uired reference.
-> > > + * @data:      Pointer to the data to send.
-> > > + * @data__sz:  Size of the data to send.
-> > > + * @addr__nullable: Pointer to an IPv4 or IPv6 socket address, or NU=
-LL to use
-> > > + *                the connected destination.
-> > > + * @addr__sz:  Size of the address union, ignored when the address i=
-s NULL.
-> > > + *
-> > > + * Sends data to the specified address, or to the connected destinat=
-ion when
-> > > + * the address is NULL, best-effort and nonblocking. This may sleep
-> > > + * (kernel_sendmsg), so it can only be called from sleepable BPF pro=
-grams.
-> > > + *
-> > > + * Return: Number of bytes sent on success, negative errno on error.
-> > > + */
-> > > +__bpf_kfunc int bpf_ksock_sendto(struct bpf_ksock *ks, const void *d=
-ata, u32 data__sz,
-> >
-> > This would limit API to fixed-sized data only. Have you considered
-> > passing dynptr as a source of data, so you can send a wider variety of
-> > data? I don't have a strong opinion whether we should add a separate
-> > API or convert this one into dynptr, but I do think that having
-> > ability to work with variable-sized data is super useful and should be
-> > added early on.
->
-> Oh wow this is really cool that you send this now. I was working this
-> afternoon on trying to see if a ksock sendmsg() would make sense, but
-> with these static buffer limitations as arguments, it actually didn't.
-> I'm not familiar with dynptr so I didn't think about it, but after a
-> quick check it looks like it would be a good match with the ksock API!
->
-> As I understand, since bpf_ksock_send() is already part of 7.3, it's
-> best to not touch it, and having a simple send() available with a
-> fixed-size data might make sense.
+A packet can race with VIF publication and make ipmr_find_vif() return
+-1 even though the VIF device pointer is already visible. The parent VIF
+device check can then pass with an invalid ingress VIF. For (*,G)
+entries, this can also let the packet be forwarded back out its ingress
+VIF.
 
-agreed
+Drop packets whose ingress VIF lookup fails in both IPv4 and IPv6
+forwarding, before checking the MFC parent device. This prevents
+forwarding with an unknown ingress VIF and avoids the (*,G) hairpin.
 
->
-> But since bpf_ksock_sendto() was just merged, we could make it evolve to
-> use dynptr perhaps? How much time do we have for something which was
-> merged yesterday to be part of a release? Is it going to be send with
-> the 7.4 pull soon?
->
+Without the early check, the negative index can reach the IPv4 offload
+lookup only for an skb marked for L3 forwarding offload, currently done
+by mlxsw. The race is rare; the supplied PoC reports only the UBSAN
+negative-index diagnostic.
 
-I'd send a follow up in the next few days, it can go in as a fix for
-kfunc in rc1 or something, unless others have differing opinions on
-this
+Fixes: 4eadb88244d1 ("ipmr: do not acquire mrt_lock while calling ip_mr_forward()")
+Fixes: 9b1c21d898fd ("ip6mr: do not acquire mrt_lock while calling ip6_mr_forward()")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Link: https://lore.kernel.org/netdev/b966eb102e98f299e45be59ada033a8766e4c6df.1791899747.git.zhilinz@nebusec.ai/
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Suggested-by: Naman Gulati <namangulati@google.com>
+Assisted-by: LLM
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+---
+changes in v3:
+  - Drop the ipmr_forward_offloaded() index check; the earlier ingress-VIF
+    check in ip_mr_forward() prevents the invalid index from reaching it.
+  - Rename the subject to describe dropping packets with an unknown ingress
+    VIF in IPv4 and IPv6 forwarding.
+  - v2 Link: https://lore.kernel.org/netdev/23ce70e99d6c710bdc4cf065d70350b754ed8f66.1792476942.git.zhilinz@nebusec.ai/
 
-> >
-> > > +                                const union bpf_ksock_addr *addr__nu=
-llable,
-> > > +                                u32 addr__sz)
-> > > +{
-> > > +       return ksock_sendto(ks, data, data__sz, addr__nullable, addr_=
-_sz);
-> > >  }
-> > >
-> > >  __bpf_kfunc_end_defs();
-> > > @@ -255,6 +296,7 @@ BTF_KFUNCS_START(ksock_kfunc_btf_ids)
-> > >  BTF_ID_FLAGS(func, bpf_ksock_release, KF_RELEASE)
-> > >  BTF_ID_FLAGS(func, bpf_ksock_acquire, KF_ACQUIRE | KF_RCU | KF_RET_N=
-ULL)
-> > >  BTF_ID_FLAGS(func, bpf_ksock_send, KF_SLEEPABLE)
-> > > +BTF_ID_FLAGS(func, bpf_ksock_sendto, KF_SLEEPABLE)
-> > >  BTF_KFUNCS_END(ksock_kfunc_btf_ids)
-> > >
-> > >  #ifdef CONFIG_BPF_LSM
-> > > --
-> > > 2.43.0
-> > >
+changes in v2:
+  - Add ingress-VIF checks in IPv4 and IPv6 forwarding.
+  - Add a negative in_vifi check to the offload helper; removed in v3 after
+    review because the earlier forwarding check handles this case.
+  - Clarify the mlxsw offload-mark condition and UBSAN-only PoC result.
+  - Add the IPv6 Fixes tag.
+  - v1 Link: https://lore.kernel.org/netdev/b966eb102e98f299e45be59ada033a8766e4c6df.1791899747.git.zhilinz@nebusec.ai/
+
+ net/ipv4/ipmr.c  | 3 ++-
+ net/ipv6/ip6mr.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index b9c544d48c452..de869a6ac011f 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -2064,7 +2064,8 @@ static void ip_mr_forward(struct net *net, struct mr_table *mrt,
+ 	}
+ 
+ 	/* Wrong interface: drop packet and (maybe) send PIM assert. */
+-	if (rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
++	if (true_vifi < 0 ||
++	    rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
+ 		if (rt_is_output_route(skb_rtable(skb))) {
+ 			/* It is our own packet, looped back.
+ 			 * Very complicated situation...
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 9d8116b5edb17..faaf04f5c4f33 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -2218,7 +2218,8 @@ static void ip6_mr_forward(struct net *net, struct mr_table *mrt,
+ 	/*
+ 	 * Wrong interface: drop packet and (maybe) send PIM assert.
+ 	 */
+-	if (rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
++	if (true_vifi < 0 ||
++	    rcu_access_pointer(mrt->vif_table[vif].dev) != dev) {
+ 		atomic_long_inc(&c->_c.mfc_un.res.wrong_if);
+ 
+ 		if (true_vifi >= 0 && READ_ONCE(mrt->mroute_do_assert) &&
+-- 
+2.55.0
+
