@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792543933;
-	b=j7p/hmzsnBofJEKzhTfDQ0JyivvV88DSIt1Fgo4uteqHsOqbW64x+L4/LxbbiLHY9dOE
-	 I05XZxohFwQ9rHL4y6l60CFp2goJfGfVx2FKKndxXb2CTjUrYIMsu+BhviXb5wYL7u4Xn
-	 3B8hqgX8HRSvH9oikPec6jIIjlCQbXx0ExPHa2cdHqWm6pGfeOnboAt7+hlQAm+w+vzyK
-	 1U3AN9xLoo8dNKaQrjcgehQ/Bgzg57nnQ6r682L07VJaIyvfZ6mHbBkE5QPe9YYK4ryh7
-	 ObJS3EesQW4XwQtSSD8L67osKN3h5hUCJuUt0CyWKckEU13nPjG+Xt68asmHfFykl9A==
+	t=1792543932;
+	b=f0DzNXzuHVF4IJQ+m3pj6XaR6HVayW7/gUNY8m2hgWahzgTfziSrZuRLy9stJnQsHWmq
+	 04sfK8Iv2KWxwfHIWgeAO2651BDR7NObn43QbzwPxFTU74IX0wXOp+e/Lz3xNFL9j1/wI
+	 kXgxA/10yBJlIBO/z1y0PUEuzd9a5vot+YGO+NSFQmG2PpoGZB40r1Lt83lCMJ5yKeBMM
+	 MCVVaXYSTKUg6jWuQ3C0PHsJIRvhFHSxjX02wHJ7kHB/dmBJ6e1A7C7J1Ipf5iEi6XLFq
+	 dHMJi8s5h5jX3uJbdNsZL52D5/oe9sHVfcKF1lkw/NgM8xjDwtXhZttFAk2fN7ibFrA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792543933;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792543932;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=GBFH6oRYSJP/dQWfGegi7pqI65g5/qbXzo/olR5/xbg=;
-	b=iMhy+Pb4rCuzJhbWItYKgYWkcy2f4ITE0gzdAzQysELAXJvBPMOOOM12lHV496shFT3H
-	 2jwQROWv0Q4etrzACPTQiWzein+F/Ns8VWesaiBCMKzboUPy72OkZZrH69wHfDVEu2e3l
-	 8Jbb3Ab17Ol4UZl6U9PicFkY6rx5o0H9FFMbgHUcfGjjIPdMIx8IKmRrf0ZN+zKo1rq9z
-	 gFXyOnwVRbysqfdsIh8hoorNI2IRj6RWIo9kBJ3gDu7xhpSRUqSwGUNqqzzjbD/L3zdPU
-	 4HW9fG4jE5aKJyQ8XpPBXyoKmhwJiHwicCfOI5UTdF7SHYeFTONyb9D6lf8CqflM/Iw==
+	bh=prmScGbjI7+4MtWkSwMe0QqbWgh0FbO2nXsCboobksk=;
+	b=Ll8eTY/hG+IkEFuumHPBKDmrMp7dJmquO8kYhNXJ5b7lTsfr8nbRk0FTneFbhQcnaixH
+	 kerkwkh65yRATgcwbHeb59T72NPEuZySH8V9ygN8Lx4dN6TpZwmsxB/rzoYR4cbqlArL9
+	 Oky1tB70A+bV7UUwqJ0Xj9vuNEfA4/b/dU0CtS4s46Nh6NVskwQztFhU/mT4Rcby1UpRm
+	 DaaIyt3qCnVJfX+6nT0ZQXo64m0/FlRhCCxzWH98YOzHOvJPekfL9BQ4Y7od7PH8UJ1o4
+	 4tqSaJxoVQ8wvBNe3TD06yEuJfNyITZAEp+BwTnKMD4BKOsYCfr28LohUnRPMRcaQZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bII38EBC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BA2AV4xO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61829606A323;
-	Wed, 21 Oct 2026 00:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C140606A31A;
+	Wed, 21 Oct 2026 00:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bII38EBC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A690B1F000C9;
-	Wed, 21 Oct 2026 00:52:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BA2AV4xO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B49F1F000C9;
+	Wed, 21 Oct 2026 00:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792543933;
-	bh=GBFH6oRYSJP/dQWfGegi7pqI65g5/qbXzo/olR5/xbg=;
+	s=k20260515; t=1792543931;
+	bh=prmScGbjI7+4MtWkSwMe0QqbWgh0FbO2nXsCboobksk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bII38EBCvPXNjrjqOumQ4YCpuKNsNvskPH4yy49yKaPsullfPKOZAGf35AFSKgQLy
-	 j9cIwXj2GbDVMG8rr+WoIz6RPtSheHVjwqOdv3BQKUNbHNTyAEtg7JAEZRuOxqhDjk
-	 MStfA7WozJuuoO2uorH5vPqIrnoIMPn0IU+39Ny+6cown/DIpjkUnOvYEuyHTWl/k/
-	 /ZQ+fd548btLFQR4kLQYR9/bD+a2OOOyHkcub2cN5VeOAc77Sl9lZDIdoo8VMiGcz4
-	 1nT+0ZnodbPdx90NmX35t4aSu6SrS5U0J2g2XhVyLhDVMfVauV6V4GcDQFOmR7W2jd
-	 wEIaHTmHdlRaA==
+	b=BA2AV4xOal6/+GxU4jjEoRySKaCCZQsXun20R2QCHlALBj7zOCiJuv5rnyltXvTrZ
+	 qNFmzKlb3y0Vca/2tdIqQNsAwi4DGnxb9I39nZWcxxz5UtX6RJF8s/lHDAgDEKWZ15
+	 qb5RBx7emeXuS5OlEwD5Nfk20jn9G+G8hrwuzk8G86xx04FFzaI8aKv53XvYH83RpP
+	 wKFOfPKlKqJVIxrHYQzyJ1Q80YEePvBlbjEZP9yM8bpp0+BWJFFDELfdMlLsYusytC
+	 GryvkE6l4bZu1QzxhmuH1JHi5qfel6Uu/s+IhJajVjj9BtBQTBJLaVPlUjF/88tBEM
+	 VmSXAmf7yFKpA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: hsu.chih.kai@realtek.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -52,12 +52,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	mail@birger-koblitz.de
-Subject: Re: [PATCH net-next v7 05/10] r8152: fix up and down register settings for RTL8156/8156B/8157/8159
-Date: Tue, 20 Oct 2026 17:52:12 -0700
-Message-ID: <20261021005212.1254979-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v7 01/10] r8152: split r8156_init by generation and factor out wait_autoload_done
+Date: Tue, 20 Oct 2026 17:52:10 -0700
+Message-ID: <20261021005210.1254886-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261014081904.6491-6-nic_swsd@realtek.com>
-References: <20261014081904.6491-6-nic_swsd@realtek.com>
+In-Reply-To: <20261014081904.6491-2-nic_swsd@realtek.com>
+References: <20261014081904.6491-2-nic_swsd@realtek.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,116 +72,174 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-r8152: fix up and down register settings for RTL8156/8156B/8157/8159
+r8152: split r8156_init by generation and factor out wait_autoload_done
 
-This commit corrects several up/down and OOB register settings for the
-RTL8156, RTL8156B, RTL8157 and RTL8159 chips, following the earlier
-per-generation split of the up/down callbacks. It changes the PLA_RCR1,
-USB_SPEED_OPTION, Clear_SDR, PLA_BDC_CR/PLA_OOB_CTRL and OOB
-PLA_RMS/PLA_MTPS settings, and drops PLA_MCU_SPDWN_EN handling from
-rtl8157_up()/rtl8157_down().
+The patch splits r8156_init() into two functions. r8156_init() now covers
+RTL8156/RTL8156B, and the new r8157_init() covers RTL8157/RTL8159. It also
+moves the repeated PLA_BOOT_CTRL AUTOLOAD_DONE polling loop into a new
+wait_autoload_done() helper built on read_poll_timeout(), and converts the
+r8153 init and ups_en paths to use it.
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index b245b63fb6aaf..045460a35f383 100644
+> index af3d7dcb2f141..518a2b42c2200 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
-
-[ ... ]
-
-> @@ -6938,8 +6937,18 @@ static void r8156_enter_oob(struct r8152 *tp)
->  	rtl_disable(tp);
->  	rtl_reset_bmu(tp);
+> @@ -4172,6 +4172,23 @@ static u16 r8153_phy_status(struct r8152 *tp, u16 desired)
+>  	return data;
+>  }
 >  
-> -	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1522);
-> -	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, MTPS_DEFAULT);
-> +	switch (tp->version) {
-> +	case RTL_VER_16:
-> +	case RTL_VER_17_QFN68:
-> +	case RTL_VER_17_QFN100:
+> +static int wait_autoload_done(struct r8152 *tp)
+> +{
+> +	u16 ocp_data;
+> +	int ret;
+> +
+> +	ret = read_poll_timeout(ocp_read_word, ocp_data,
+> +				test_bit(RTL8152_INACCESSIBLE, &tp->flags) ||
+> +				(ocp_data & AUTOLOAD_DONE),
+> +				20000, 10 * USEC_PER_SEC, false, tp,
+> +				MCU_TYPE_PLA, PLA_BOOT_CTRL);
+> +
+> +	if (ret)
+> +		dev_err(&tp->intf->dev, "autoload done timeout\n");
+> +
+> +	return test_bit(RTL8152_INACCESSIBLE, &tp->flags) ? -ENODEV : 0;
+> +}
+> +
 
 [Severity: Medium]
-This patch has three Fixes: tags:
+Can this end up reading uninitialized stack memory in ocp_read_word()?
 
-  Fixes: 195aae321c82 ("r8152: support new chips")
-  Fixes: fd3c7d080df5 ("r8152: Add support for the RTL8157 hardware")
-  Fixes: ad2a55b63b41 ("r8152: Add support for the RTL8159 chip")
+read_poll_timeout() runs op before it evaluates cond, on the first
+iteration, after every sleep, and once more after the timeout expires.
+So once RTL8152_INACCESSIBLE gets set, the helper still issues another
+ocp_read_word() on PLA_BOOT_CTRL before the test_bit() in the condition
+gets a chance to stop the loop.
 
-Will it apply and build on the trees those tags point to?
+In that case generic_ocp_read() returns -ENODEV without writing to the
+local tmp. ocp_read_word() ignores that return value and still does
+__le32_to_cpu(tmp), then hands the result back as ocp_data.
 
-RTL_VER_17_QFN68 and RTL_VER_17_QFN100 come from an earlier patch in this
-series, "r8152: split RTL_VER_17 into QFN68 and QFN100 package variants".
-Before that patch the enum only has RTL_VER_17.
+The loops being replaced did not do this. r8153b_ups_en() and
+r8153c_ups_en() tested the flag before each read. The init functions
+tested it right after msleep(20) and left the loop before the next
+read.
 
-rtl8157_up() and rtl8157_down() also only exist after "r8152: split
-rtl8156_enable/up/down into per-generation functions", which is described
-as no functional change. Before that patch there is one shared
-rtl8156_up() with tp->version >= RTL_VER_16 and tp->version < RTL_VER_16
-checks.
+The test_bit() short-circuit means the garbage is never acted on, but
+the read itself is still undefined behaviour of the sort KMSAN is meant
+to catch, and it now happens whenever the device goes away while we are
+waiting for AUTOLOAD_DONE.
 
-So a stable backport would either conflict or need both non-fix patches
-as prerequisites. One of them is the package detection change, which
-makes an unrecognised PLA_PKG_DET value fall back to RTL_VER_UNKNOWN.
-
-Could these fixes go to net separately, written against the pre-refactor
-code? Or could the commit message at least name the prerequisites?
-
-> +		ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1526);
-> +		ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, 10 * 1024 / 64);
-> +		break;
+A flag check before the poll would only cover the entry case, since
+the flag can be set during the sleep. Would it be better to initialize
+tmp in ocp_read_word() and the other ocp_read_*() helpers, given that
+plenty of existing callers already read without checking the flag?
+Or is an open-coded loop that tests the flag first preferable here?
 
 [ ... ]
 
-> @@ -6997,6 +7008,11 @@ static void rtl8157_up(struct r8152 *tp)
->  	}
+> @@ -7225,22 +7226,14 @@ static void r8152b_init(struct r8152 *tp)
+>  static void r8153_init(struct r8152 *tp)
+>  {
+>  	u32 ocp_data;
+> -	int i;
 >  
->  	r8153_aldps_en(tp, true);
-> +
-> +	/* Enable Clear_SDR */
-> +	ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xd378, BIT(7));
-> +	/* Clear SDR bit */
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, 0xcd06, BIT(15));
->  }
+>  	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+>  		return;
+>  
+>  	r8153_u1u2en(tp, false);
+>  
+> -	for (i = 0; i < 500; i++) {
+> -		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
+> -		    AUTOLOAD_DONE)
+> -			break;
+> -
+> -		msleep(20);
+> -		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+> -			break;
+> -	}
+> +	if (wait_autoload_done(tp))
+> +		return;
+>  
+>  	r8153_phy_status(tp, 0);
+>  
+> @@ -7341,22 +7334,13 @@ static void r8153_init(struct r8152 *tp)
+>  
+>  static void r8153b_init(struct r8152 *tp)
+>  {
+> -	int i;
+> -
+>  	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+>  		return;
+>  
+>  	r8153b_u1u2en(tp, false);
+>  
+> -	for (i = 0; i < 500; i++) {
+> -		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
+> -		    AUTOLOAD_DONE)
+> -			break;
+> -
+> -		msleep(20);
+> -		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+> -			break;
+> -	}
+> +	if (wait_autoload_done(tp))
+> +		return;
+>  
+>  	r8153_phy_status(tp, 0);
+>  
 
-[Severity: High]
-The commit message says:
+[Severity: Medium]
+Is the commit message accurate for r8153_init() and r8153b_init()? It
+says:
 
-  - RTL8156B (VER_13/15) need Clear_SDR enabled on up, which nothing
-    ever did for them.
+  a plain AUTOLOAD_DONE timeout is logged but otherwise treated as
+  success, same as every one of the loops it replaces, which only bailed
+  out early on RTL8152_INACCESSIBLE and otherwise fell through to the
+  rest of the init sequence.
 
-Is the RTL8156B part missing from this patch? These are the only
-Clear_SDR writes the patch adds. rtl8157_up() is only used for
-RTL_VER_16, RTL_VER_17_QFN68 and RTL_VER_17_QFN100.
+and:
 
-In rtl_ops_init(), RTL_VER_13 and RTL_VER_15 are bound to rtl8156_up():
+  No functional change intended.
 
-	case RTL_VER_12:
-	case RTL_VER_13:
-		tp->support_2500full	= 1;
-		fallthrough;
-	case RTL_VER_15:
-		...
-		ops->up			= rtl8156_up;
+In these two functions the old loops did a break, not a return, when
+RTL8152_INACCESSIBLE was set:
 
-This patch does not change rtl8156_up(), and it still writes no
-Clear_SDR register:
+		msleep(20);
+		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+			break;
 
-	r8156_exit_oob(tp);
+So init always ran to the end of the function. Only r8153c_init(), the
+old r8156_init() and the two *_ups_en() loops returned early.
 
-	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
+wait_autoload_done() returns -ENODEV whenever RTL8152_INACCESSIBLE is
+set, so both functions now return early instead.
 
-	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
-			  RG_PWRDN_EN | ALL_SPEED_OFF);
+The commit message says the early return costs nothing because
+generic_ocp_read()/generic_ocp_write() short-circuit. However, the
+skipped tail also does work that does not go through OCP accesses:
 
-	ocp_write_dword(tp, MCU_TYPE_USB, USB_RX_BUF_TH, 0x00600400);
+  r8153_init():
+	usb_enable_lpm(tp->udev);
 	...
-	r8153_aldps_en(tp, true);
-	r8153_u2p3en(tp, true);
+	tp->coalesce = COALESCE_SUPER;   (or COALESCE_HIGH / COALESCE_SLOW)
 
-So every open or resume on an RTL8156B goes through ops->up ->
-rtl8156_up() without the Clear_SDR enable. The later patches in the
-series don't add it to rtl8156_up() either.
+  r8153b_init():
+	usb_enable_lpm(tp->udev);
+	...
+	set_bit(GREEN_ETHERNET, &tp->flags);
+	...
+	tp->coalesce = 15000;
 
-Should rtl8156_up() get the RTL8156B Clear_SDR writes under an
-RTL_VER_13/RTL_VER_15 check, or should this bullet come out of the commit
-message? The 0xd378/0xcd06 writes used for RTL8157/8159 can't be assumed
-to apply to RTL8156B.
+usb_enable_lpm() is a counted USB core call. It decrements
+udev->lpm_disable_count and does not check the driver's
+RTL8152_INACCESSIBLE flag.
+
+The polling interval also changes. The old loops used msleep(20), while
+read_poll_timeout() with a sleep_us of 20000 ends up in
+usleep_range(5001, 20000).
+
+These differences only show up on error paths. Still, could the commit
+message describe the new early return in r8153_init() and r8153b_init()?
+Or should these two functions keep the old break-and-continue behaviour?
+-- 
+pw-bot: cr
