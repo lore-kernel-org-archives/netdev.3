@@ -1,75 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.212.254.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792552609;
-	b=tuvzwwFaYT9bXoDLq4eXrznsJYIToZ4tnJrH9zqeB/zocppDHxhQtRXKXlo5aV0lgC+w
-	 a0QpUeNQmzlqBp+zaVz0smkNAl03rc7I7kR0/LFv1BVSIYh+Z34PoKq/nJbioTvyJusb6
-	 bVIvPF08Ssf7KmXskj9E8sJ6QbXYXFNCnYr/IVksuKjRzKuWfN7QTTw9hbKfYen6luhdB
-	 EODU0OXnI0UPYAbjaYUWrCNbex2UC3/Ov4XfvELxVBLWwLhZLEQXEYciyev7Zh6cM/fxf
-	 uBH0tkLop/zmA+QyGAwSz5Ula8oyiMGtav9d/BpBB5Zp60n+XklIoEDq3B/pej2sb+A==
+	t=1792552619;
+	b=q8d0Rf5cIOAw/VkEw9imWSrLm70I5iMNo2J4zH7FiqoE0K65qyUCpbDYaI3RG4tTXP7T
+	 Td3ShY46NYmG7kbnS0g6CUdaK5iqTdcy++8wI4QrQ2qntDghvGftWpvAL8AEXNaUXROKo
+	 nvLMzDvk8xOtxGZJ8yM8azIbU3gtwk3FoMc0c0DnRg+/ClCAD8l9EwQoYx4JhsvBCyuAW
+	 +1K4KrKtacMlTP5Of1Vsx+qmM9mfAddNDLb6wh9yQ+MxrBEVzTV5ZTgNFjzbjq6HCGK+a
+	 IHYUTIBH7sscaZzHkOIUsW8qV/PdPV53wu5lYhG5wMp6kUNB+nIncCUAhI6RoYuX/Hg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792552609;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:In-Reply-To:
-	 References:From:Subject:To:Cc:Date;
-	bh=XPetBJfDkAzAZ8UTDQicbQRK+iH8jjbopwvCHr+wr6I=;
-	b=xlRKqqNnHr5O2yYiHYPDxlX6Xrp63nWY9XDVOY5Ly/pIbS6Gd0vm3t8GDN8qzivoNUEp
-	 B7pDyQdjxfIY81Vbx1f28QUtwUcva9WqSryJk2RYW+btwyeX5D6sOd/FUpJ96oEj8tAy2
-	 y3Bc9zo4hqIe+seRORQEDx56+tC+EaRd4iUwfNrUoGDPmntyqntd2sUQiSVveAzkUPiSu
-	 X0QEsMrjF2NcjuX+qUxUK9FXLkOZrUYPBGsHTBNjDwO6eILxgTsPP2pTChVZ2xkMZYoyk
-	 8sxHUX47lvcw+QXHIbaemqTOcX9NyNyvdbGUZYEshnbhYwkOUv3hM4BP82WbDBu1NKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792552619;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=feCAkfcWxEXEVFUTa9GcuWE5XNs6AH6IndZ4hH748YE=;
+	b=cl/0PMzonp7dyQKzpYwpSybaBQHS5VQqNOmRPF0dxZShObNRtq5NUOWbFXjNCZ90weY2
+	 okZE4kXOibciMqVzcBgM8n8j6HQ5ArooGVxwfGHholFGEf9Qrs+SjaVhuqwxv0/YtPOFt
+	 4wUZhj+3xP7N2vsumUJEnsdYeVfk+/InnMWWO1nxpPTcQLrMmZoXZcJoFN4q46nPu54TQ
+	 JPe8az6NmEtMCfHlGf+dnayrq4Obtnxs2Y7b7DzK0lA0JxsRPu8aUgid4+h4ge2mWp8CG
+	 qBLE6yFD2uxozl6bSqbBimqoUR4tzEa1yJU1g1GYHva34GsHmYiW014XS2tjgI3hgMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=tuxist.de;
-	spf=fail smtp.mailfrom=tuxist.de;
-	dkim=pass header.d=tuxist.de header.i=@tuxist.de header.a=rsa-sha256 header.s=201705 header.b=MvZnv28O;
-	arc=none smtp.remote-ip=173.212.254.19
-Received: from groupware.tuxist.de (groupware.tuxist.de [173.212.254.19])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mkYDBAwX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE5A607095A;
-	Wed, 21 Oct 2026 03:16:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BE5A607095A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tuxist.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=tuxist.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E11D6072130;
+	Wed, 21 Oct 2026 03:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tuxist.de header.i=@tuxist.de header.a=rsa-sha256 header.s=201705 header.b=MvZnv28O
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tuxist.de; s=201705;
-	t=1792552606; bh=vR17OcW5DP2to57LMQkJCXz9sOVicwks2xNBVa+gK/c=;
-	h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
-	b=MvZnv28OBDboO1Uckg4VHuK/UCnr5rurzSeDn9rh3CM8Oi+8NpNgWNtkIccYx5qyF
-	 ndW6QFNpKp4H1P/4JvmDSWzdVIoAEaNqTq0xoPzvfxt/e9z2vys6oMeRq/oKDBtAKX
-	 +aN+sOmHrfuEdV51ZZ2r9g7Wr8TdKTAbfDMuwOcjaJRjx2hJlcsYGzARDsqfxqV/ox
-	 pXIMjzH5sYuB/rluXQcqmrcXuXG3EFvM9A7sdlk/Mb+bGwKBVX2e/Nd0FT74brAjMl
-	 Uv8wqwMlruNGr/0anQBZWwG1U3ZR6i99bXdWRuTg5MYbLZTBKM77f30XEu7RAoTaFi
-	 ZGVDd4t4+1GaQ==
-Received: from [10.1.1.106] (unknown [10.1.2.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by groupware.tuxist.de (Postfix) with ESMTPSA id B90608A096E;
-	Wed, 21 Oct 2026 05:16:45 +0200 (CEST)
-Message-ID: <1151adfbb3aeae57cb26df8723287857f8d0af57.1792552161.git.jan.koester@tuxist.de>
-In-Reply-To: <cover.1792552161.git.jan.koester@tuxist.de>
-References: <cover.1792552161.git.jan.koester@tuxist.de>
-From: Jan Koester <jan.koester@tuxist.de>
-Subject: [RFC PATCH v2 25/41] uidgid: parse and print ids in their text form
-To: Christian Brauner <brauner@kernel.org>,
-    Alexander Viro <viro@zeniv.linux.org.uk>,
-    "Serge E. Hallyn" <serge@hallyn.com>
-Cc: Jan Kara <jack@suse.cz>,
-    "Theodore Y. Ts'o" <tytso@mit.edu>,
-    Paul Moore <paul@paul-moore.com>,
-    Arnd Bergmann <arnd@arndb.de>,
-    linux-fsdevel@vger.kernel.org,
-    linux-api@vger.kernel.org,
-    linux-security-module@vger.kernel.org,
-    linux-arch@vger.kernel.org,
-    linux-ext4@vger.kernel.org,
-    linux-nfs@vger.kernel.org,
-    linux-cifs@vger.kernel.org,
-    netdev@vger.kernel.org,
-    audit@vger.kernel.org,
-    keyrings@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Date: Wed, 21 Oct 2026 05:15:45 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mkYDBAwX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B94A1F000CC;
+	Wed, 21 Oct 2026 03:16:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792552618;
+	bh=feCAkfcWxEXEVFUTa9GcuWE5XNs6AH6IndZ4hH748YE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mkYDBAwXINmVLVKYBlSQU8no5KvLsEk0UzJvaVHnaBM1aZzoQKY6w9BKF2J6WaEsv
+	 twJmUfTGlOjM3fwHw7yDFh67+abZLgXzsaXwWsNthBuUGiUvpHGIhDVSsrTX76T14Z
+	 uONsEA2Jr3Be6SL09vKtAtZSS8X9nbBZWU9oOJv2NfXP+G7doMGbquq33P3T1+b5uA
+	 w0DlyaZb7GbTuPoORBqKjHjD3rY334ADRNfwtzKRC5Enpp25/U18jyg43dLpxVB67n
+	 GMOJCJe/xTuh5o4SMkjGtfY6g5OcAuR3fGlTiRF5xmOvAnGhAPQ6oUTKsLNPlnYkBq
+	 yZKSK2HJpl0og==
+Date: Tue, 20 Oct 2026 22:16:57 -0500
+From: Rob Herring <robh@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: srinivas.neeli@amd.com, nagadheeraj.rottela@amd.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
+	richardcochran@gmail.com, michal.simek@amd.com,
+	bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org,
+	edumazet@kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rt-devel@lists.linux.dev, neelisrinivas18@gmail.com,
+	git@amd.com
+Subject: Re: [PATCH net-next v3 1/8] dt-bindings: net: add Xilinx TSN
+ Endpoint Ethernet MAC
+Message-ID: <20261021031657.GA3867774-robh@kernel.org>
+References: <20261016-patches_v2_external-v3-1-e33d3960ca1e@amd.com>
+ <179249749105.3135.3116293825083161439@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,244 +66,171 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179249749105.3135.3116293825083161439@kernel.org>
 
-Add helpers for interfaces that pass ids as text:
+On Tue, Oct 20, 2026 at 11:58:11AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
+> 
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] In Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-
+>   ethernet-mac.yaml, the ethernet@ node's dma-names (lines 81-96) does…
+> - [Low] Concern: tx-queues-config only enforces a lower bound tied to
+>   xlnx,num-priorities, and the rest of the checking is left to a driver…
+> - [Low] The child compatibles in
+>   Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-…
+> 
+> --
+> 
+> dt-bindings: net: add Xilinx TSN Endpoint Ethernet MAC
+> 
+> This adds a YAML binding for the Xilinx TSN Endpoint Ethernet MAC IP in
+> its Bridged Endpoint configuration. The wrapper node owns the shared
+> clocks and xlnx,num-priorities. It has two children: an xlnx,tsn-ep-mac
+> endpoint that holds the DMA channels, and an xlnx,tsn-switch three-port
+> switch with its MDIO buses and ports.
+> 
+> > diff --git a/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> > new file mode 100644
+> > index 0000000000000..bca834120b3b1
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> > @@ -0,0 +1,491 @@
+> 
+> [ ... ]
+> 
+> > +properties:
+> > +  compatible:
+> > +    const: xlnx,tsn-endpoint-ethernet-mac-3.0
+> 
+> [ ... ]
+> 
+> > +patternProperties:
+> > +  "^ethernet@[0-9a-f]+$":
+> > +    type: object
+> > +    $ref: /schemas/net/ethernet-controller.yaml#
+> > +    unevaluatedProperties: false
+> > +    description:
+> > +      Endpoint MAC sub-node. Provides the host-side data path through the
+> > +      DMA channels described by its dmas / dma-names.
+> > +    properties:
+> > +      compatible:
+> > +        const: xlnx,tsn-ep-mac
+> 
+> [Severity: Low]
+> The wrapper compatible is versioned (xlnx,tsn-endpoint-ethernet-mac-3.0).
+> The child compatibles here and on the switch node (xlnx,tsn-switch) are
+> generic and carry no version.
+> 
+> writing-bindings.rst asks for specific compatibles, with no device-family
+> names. For sub-blocks of a bigger device, it asks for device-based
+> compatibles.
+> 
+> If a later IP revision, or the planned Endpoint-only variant, changes the
+> endpoint or switch register layout, how would these child nodes be told
+> apart? The endpoint driver later in the series matches only on
+> "xlnx,tsn-ep-mac" in xlnx_tsn_ep_of_match.
+> 
+> Should the child compatibles be tied to the device or version, the same
+> way the wrapper compatible is?
 
-- make_kuid_str()/make_kgid_str() parse what kuid_str() writes: a
-  decimal number, a UUID, or a GUID in braces,
-- kuid_str_munged()/kgid_str_munged() write an id as seen from a user
-  namespace, the overflow id if it has no mapping there,
-- kuid_str_signed()/kgid_str_signed() write a legacy id as a signed
-  number, for output that used "%d",
-- KUID_STR() and friends wrap them as expressions with a buffer of the
-  enclosing block, so that printf-like calls can replace
-  "%u", from_kuid(&init_user_ns, uid) by "%s", KUID_STR(uid) and print
-  legacy ids exactly as before.
+It's fine. Being specific is less important given there's a specific 
+parent compatible.
 
-Assisted-by: Claude:claude-opus-5-5
+> 
+> [ ... ]
+> 
+> > +      dma-names:
+> > +        minItems: 2
+> > +        maxItems: 16
+> > +        items:
+> > +          pattern: "^(tx|rx)_chan[0-7]$"
+> > +        allOf:
+> > +          - contains:
+> > +              pattern: "^tx_chan[0-7]$"
+> > +          - contains:
+> > +              pattern: "^rx_chan[0-7]$"
+> > +        description: |
+> > +          Names matching the entries in 'dmas', one per DMA channel and in
+> > +          the same order. TX channel names use "tx_chan<N>" and RX channel
+> > +          names use "rx_chan<N>", where N is 0..7. At least one TX and one RX
+> > +          channel are required. Example: "tx_chan0", "tx_chan1", ...,
+> > +          "rx_chan0", "rx_chan1", ....
+> 
+> [Severity: Low]
+> The description says the names are "one per DMA channel". The v3
+> changelog says "Cap TX at 8 and RX at 8 channels". Does the schema
+> enforce either of these?
+> 
+> Without uniqueItems: true, dt_binding_check appears to accept a 16-entry
+> list of fifteen "tx_chan0" plus one "rx_chan0". It also appears to accept
+> "tx_chan0".."tx_chan7", then "tx_chan0".."tx_chan6", then "rx_chan0".
+> 
+> dtschema doesn't add uniqueness to -names properties by itself. For
+> example, renesas,drif.yaml lists "rx", "rx", while renesas,sdhi.yaml sets
+> uniqueItems: true on its clock-names.
+> 
+> Could uniqueItems: true be added here? The pattern only allows eight
+> names per direction, so that would also enforce the 8 TX / 8 RX limit.
+> 
+> Later in the series, ep_count_dma_channels() rejects duplicate TX and RX
+> names at probe time. So the runtime result is a DT that passes schema
+> validation and then fails probe.
 
-Signed-off-by: Jan Koester <jan.koester@tuxist.de>
----
- include/linux/uidgid.h |  19 ++++++
- kernel/uidgid_r.c      | 152 +++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 167 insertions(+), 4 deletions(-)
+IIRC, dma-names is the exception here. So yes, you should add 
+'uniqueItems: true'.
 
-diff --git a/include/linux/uidgid.h b/include/linux/uidgid.h
-index ac7786f760..03ece8a4cb 100644
---- a/include/linux/uidgid.h
-+++ b/include/linux/uidgid.h
-@@ -190,6 +190,25 @@ static inline u32 kgid_hash(kgid_t gid)
- 
- char *kuid_str(kuid_t uid, char buf[KID_STR_LEN]);
- char *kgid_str(kgid_t gid, char buf[KID_STR_LEN]);
-+char *kuid_str_signed(kuid_t uid, char buf[KID_STR_LEN]);
-+char *kgid_str_signed(kgid_t gid, char buf[KID_STR_LEN]);
-+
-+/*
-+ * The text form of an id as an expression, in a buffer that lives until
-+ * the end of the enclosing block -- for "%s" in place of "%u" (or "%d",
-+ * with the _D variants, which write a legacy id as a signed number) of
-+ * from_kuid(&init_user_ns, uid) in printf-like calls.
-+ */
-+#define KUID_STR(uid)	kuid_str(uid, (char [KID_STR_LEN]) {})
-+#define KGID_STR(gid)	kgid_str(gid, (char [KID_STR_LEN]) {})
-+#define KUID_STR_D(uid)	kuid_str_signed(uid, (char [KID_STR_LEN]) {})
-+#define KGID_STR_D(gid)	kgid_str_signed(gid, (char [KID_STR_LEN]) {})
-+char *kuid_str_munged(struct user_namespace *to, kuid_t uid,
-+		      char buf[KID_STR_LEN]);
-+char *kgid_str_munged(struct user_namespace *to, kgid_t gid,
-+		      char buf[KID_STR_LEN]);
-+kuid_t make_kuid_str(struct user_namespace *from, const char *str);
-+kgid_t make_kgid_str(struct user_namespace *from, const char *str);
- 
- #ifdef CONFIG_USER_NS
- 
-diff --git a/kernel/uidgid_r.c b/kernel/uidgid_r.c
-index d71aecddb2..9bba60f413 100644
---- a/kernel/uidgid_r.c
-+++ b/kernel/uidgid_r.c
-@@ -12,6 +12,7 @@
- #include <linux/uidgid.h>
- #include <linux/uidgid_r.h>
- #include <linux/user_namespace.h>
-+#include <linux/uuid.h>
- 
- /*
-  * Whether @id is well formed: a known type, reserved bytes zero, a UUID of
-@@ -278,11 +279,12 @@ int put_kgid_r(struct user_namespace *to, kgid_t kgid,
- }
- EXPORT_SYMBOL(put_kgid_r);
- 
--static char *kid_str(u32 type, u32 legacy, const uuid_t *b, char *buf)
-+static char *kid_str(u32 type, u32 legacy, const uuid_t *b, char *buf,
-+		     bool sgn)
- {
- 	switch (type) {
- 	case KID_LEGACY:
--		snprintf(buf, KID_STR_LEN, "%u", legacy);
-+		snprintf(buf, KID_STR_LEN, sgn ? "%d" : "%u", legacy);
- 		break;
- 	case KID_UUID:
- 		snprintf(buf, KID_STR_LEN, "%pUb", b);
-@@ -304,7 +306,7 @@ static char *kid_str(u32 type, u32 legacy, const uuid_t *b, char *buf)
-  */
- char *kuid_str(kuid_t uid, char buf[KID_STR_LEN])
- {
--	return kid_str(uid.type, __kuid_val(uid), &uid.uuid, buf);
-+	return kid_str(uid.type, __kuid_val(uid), &uid.uuid, buf, false);
- }
- EXPORT_SYMBOL(kuid_str);
- 
-@@ -318,6 +320,148 @@ EXPORT_SYMBOL(kuid_str);
-  */
- char *kgid_str(kgid_t gid, char buf[KID_STR_LEN])
- {
--	return kid_str(gid.type, __kgid_val(gid), &gid.uuid, buf);
-+	return kid_str(gid.type, __kgid_val(gid), &gid.uuid, buf, false);
- }
- EXPORT_SYMBOL(kgid_str);
-+
-+/**
-+ * kuid_str_signed - like kuid_str(), but a legacy uid as a signed number
-+ * @uid: the kuid
-+ * @buf: buffer of KID_STR_LEN bytes
-+ *
-+ * For callers that used to print from_kuid() with "%d".
-+ *
-+ * Return: @buf.
-+ */
-+char *kuid_str_signed(kuid_t uid, char buf[KID_STR_LEN])
-+{
-+	return kid_str(uid.type, __kuid_val(uid), &uid.uuid, buf, true);
-+}
-+EXPORT_SYMBOL(kuid_str_signed);
-+
-+/**
-+ * kgid_str_signed - like kgid_str(), but a legacy gid as a signed number
-+ * @gid: the kgid
-+ * @buf: buffer of KID_STR_LEN bytes
-+ *
-+ * For callers that used to print from_kgid() with "%d".
-+ *
-+ * Return: @buf.
-+ */
-+char *kgid_str_signed(kgid_t gid, char buf[KID_STR_LEN])
-+{
-+	return kid_str(gid.type, __kgid_val(gid), &gid.uuid, buf, true);
-+}
-+EXPORT_SYMBOL(kgid_str_signed);
-+
-+/*
-+ * Parses the text forms of kuid_str() -- a decimal number, a UUID, a GUID
-+ * in braces -- with an optional trailing newline.
-+ */
-+static int kid_r_from_str(const char *str, struct __kernel_uid_r *id)
-+{
-+	char buf[KID_STR_LEN];
-+	size_t len = strlen(str);
-+
-+	if (len && str[len - 1] == '\n')
-+		len--;
-+	if (!len || len >= sizeof(buf))
-+		return -EINVAL;
-+	memcpy(buf, str, len);
-+	buf[len] = '\0';
-+	memset(id, 0, sizeof(*id));
-+
-+	if (len == UUID_STRING_LEN) {
-+		id->type = UID_R_UUID;
-+		return uuid_parse(buf, (uuid_t *)id->uuid);
-+	}
-+	if (len == UUID_STRING_LEN + 2 && buf[0] == '{' && buf[len - 1] == '}') {
-+		buf[len - 1] = '\0';
-+		id->type = UID_R_GUID;
-+		return guid_parse(buf + 1, (guid_t *)id->guid);
-+	}
-+	id->type = UID_R_LEGACY;
-+	return kstrtou32(buf, 10, &id->legacy);
-+}
-+
-+/**
-+ * make_kuid_str - map the text form of a uid into a kuid
-+ * @from: user namespace the uid is in
-+ * @str: a decimal number, a UUID, or a GUID in braces; a trailing newline
-+ *       is allowed
-+ *
-+ * Return: the kuid, INVALID_UID if @str is malformed or has no mapping in
-+ * @from.
-+ */
-+kuid_t make_kuid_str(struct user_namespace *from, const char *str)
-+{
-+	struct __kernel_uid_r id;
-+
-+	if (kid_r_from_str(str, &id))
-+		return INVALID_UID;
-+	return make_kuid_r(from, &id);
-+}
-+EXPORT_SYMBOL(make_kuid_str);
-+
-+/**
-+ * make_kgid_str - map the text form of a gid into a kgid
-+ * @from: user namespace the gid is in
-+ * @str: a decimal number, a UUID, or a GUID in braces; a trailing newline
-+ *       is allowed
-+ *
-+ * Return: the kgid, INVALID_GID if @str is malformed or has no mapping in
-+ * @from.
-+ */
-+kgid_t make_kgid_str(struct user_namespace *from, const char *str)
-+{
-+	struct __kernel_uid_r id;
-+
-+	if (kid_r_from_str(str, &id))
-+		return INVALID_GID;
-+	return make_kgid_r(from, &id);
-+}
-+EXPORT_SYMBOL(make_kgid_str);
-+
-+/**
-+ * kuid_str_munged - text form of a kuid in a user namespace
-+ * @to: user namespace the uid is wanted in
-+ * @uid: the kuid
-+ * @buf: buffer of KID_STR_LEN bytes
-+ *
-+ * Return: @buf, holding the uid in @to like kuid_str() does, overflowuid if
-+ * @uid has no mapping there.
-+ */
-+char *kuid_str_munged(struct user_namespace *to, kuid_t uid,
-+		      char buf[KID_STR_LEN])
-+{
-+	if (!kuid_has_mapping(to, uid))
-+		snprintf(buf, KID_STR_LEN, "%u", overflowuid);
-+	else if (uid_is_legacy(uid))
-+		snprintf(buf, KID_STR_LEN, "%u", from_kuid(to, uid));
-+	else
-+		kuid_str(uid, buf);
-+	return buf;
-+}
-+EXPORT_SYMBOL(kuid_str_munged);
-+
-+/**
-+ * kgid_str_munged - text form of a kgid in a user namespace
-+ * @to: user namespace the gid is wanted in
-+ * @gid: the kgid
-+ * @buf: buffer of KID_STR_LEN bytes
-+ *
-+ * Return: @buf, holding the gid in @to like kgid_str() does, overflowgid if
-+ * @gid has no mapping there.
-+ */
-+char *kgid_str_munged(struct user_namespace *to, kgid_t gid,
-+		      char buf[KID_STR_LEN])
-+{
-+	if (!kgid_has_mapping(to, gid))
-+		snprintf(buf, KID_STR_LEN, "%u", overflowgid);
-+	else if (gid_is_legacy(gid))
-+		snprintf(buf, KID_STR_LEN, "%u", from_kgid(to, gid));
-+	else
-+		kgid_str(gid, buf);
-+	return buf;
-+}
-+EXPORT_SYMBOL(kgid_str_munged);
--- 
-2.56.0
+> 
+> [ ... ]
+> 
+> > +        patternProperties:
+> > +          "^queue[0-7]$":
+> > +            type: object
+> > +            additionalProperties: false
+> 
+> [ ... ]
+> 
+> > +        required:
+> > +          - queue0
+> > +          - queue1
+> 
+> [ ... ]
+> 
+> > +allOf:
+> > +  - if:
+> > +      properties:
+> > +        xlnx,num-priorities:
+> > +          const: 3
+> > +    then:
+> > +      patternProperties:
+> > +        "^ethernet@[0-9a-f]+$":
+> > +          properties:
+> > +            tx-queues-config:
+> > +              required:
+> > +                - queue0
+> > +                - queue1
+> > +                - queue2
+> 
+> [Severity: Low]
+> With xlnx,num-priorities = <2>, can a tx-queues-config that contains
+> queue0 through queue7 still pass dt_binding_check?
+> 
+> The ^queue[0-7]$ pattern accepts every index from 0 to 7. The if/then
+> blocks for num-priorities 3..8 only add entries to required. So the
+> schema has a lower bound tied to xlnx,num-priorities, but no upper bound.
+> 
+> Later in the series, ep_parse_tx_queue_config() rejects queueN with
+> N >= num_tx_queues at probe time, so only schema validation is affected.
+> 
+> Could each if/then block also set queueK: false for K >= N, so the
+> schema rejects these nodes too?
 
+Shrug. Sounds too complicated.
+
+Rob
