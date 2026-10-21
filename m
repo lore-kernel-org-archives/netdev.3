@@ -1,71 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792620803;
-	b=HxxsCRFbxnTaygisFPJ27rniTVeQVW4XmsYSJSeuRGC59klWkFGePQUh7r1037cpMsx8
-	 6pgcLshsvrklZ74OAkYWSKlDdSJ0VQp8xQeX9X4so44LhSiB1VIA+LANQMGYmTRGV7pzV
-	 BC8FJnTsg60C5eTSJ8p8qnupsuqnHxr+6wvr0ePv/GNt61Wz6EjWsWB7wNZOiiuZaFqwU
-	 K3NUex7Ft02mVUHhPCUMH0pOok24MY1nF5DGreHiZ1pATr3imEmGgJl0zxnYy49okME0C
-	 NjTMED48u6ZWH+svevi3Nxj8v4/Z9ky7u4qHiFkyCOfmzoSKioVQpWaGVxoUtckqQMA==
+	t=1792620804;
+	b=33gxC05jBArstqNP9tRAM2e4K6smY+gsB9zn6oUKdBmOGpsT8HeI5KZ1wLUiGIw2bNoJ
+	 VMl/t+Uii31mBEAvi/yJY5M6fteSUUSJntK7OQ+/TYDVr6ALheVry1a8H/XQdTh7JK87D
+	 cjbN7xafE4pqPW1swk6GWoe482Is/crU6qrabtW9Gn+SVHpP8YZ1XfzRV3VS0ruiOOMBP
+	 tsWzr4fkXP9V3sjDIGI0cgJ9CHqYYLwYXV0Okb5p5PuGT60JKXG8fmumukzz1Op0OAGtt
+	 /9pYcoc4N2k82EAALSFqjFMjvQhR2xr1Y6ygcO6l+TQJJpgHi5sqlahiXgzOkkoBgTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792620803;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792620804;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=QlUNAB1Ij2oARhDzTtBQQSk3FmyAQuurIJ7AnucJnMg=;
-	b=KIluCQ3IZP3OUJ+g2GLu+fxN1pG9RcrDbov5z0LQZxz98rK9Bum/02upI0HjHL90dVFL
-	 bPHbu4qlY4tZCmflYIz5/t+9HG25TuclIqWDR3JkiBjhMrwG7Y4T00DV2iprsOX+AYE6W
-	 VveY53nEc+s/YBasOXP88HgZrRC1+2rIYJ8GMniO5Ww1Ie+aXO94SmQ/6WvACvrS2CTgT
-	 z9vsQEpKjzTnk0I0SDvHhGJwZ1QJu22hKdzzNGYDK36AIt/QDL6lZkjNePBqMF34SmOJI
-	 VjUWKRbAmfqoQy0tkMd+lhyHqDvfKGnDPJqxtPqOtU9p5Fr1f7+2Jy6u6DUyWJMTAZg==
+	bh=sX1Q2gW/j3CRYdAcj8pkc2j0bb8JZF+UmyYr8waVAVo=;
+	b=TWX3cwxFDtRYBpVhDpfdJlPByjpdgZ6Zx6RQkGBqokj9qSH6QpHO69qtn1uC0I1bd4iI
+	 Z1GfChd8vrbzkRD1PpUU3CGUO8fRYhlKfslMUcRhZ2+unfMuOuEd+R8WMnna1J+/mj4eq
+	 FWrY+2hY7WSewRI8ourMCukUeV1mXjp9zIHFXKfs6fNygu1TjYNQm2u4DztUToJ7jIspF
+	 HlVGpgD+18qtsEwHSonVYb2iSjgzBTIN6s7M7fQKtws+8ODwnxiN5HfCkpP90cOBcQLK8
+	 zPrCHlTFAXrwzkB2wrv2nfpbrwwryxzpFIiybQJTgzHRzdg2fFTiRtpc82aGde0PZsg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
-	spf=(null) smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BtfajzXl;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QdIrmbiC;
 	arc=none smtp.remote-ip=198.175.65.15
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE608606A31B
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:13:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE608606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618B6606A327
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:13:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 618B6606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BtfajzXl
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QdIrmbiC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792620795; x=1824156795;
+  t=1792620804; x=1824156804;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=SKqFliR7roJcQKlNSunlIe8qTzQ9pSRnoGuGaJYgDoU=;
-  b=BtfajzXlK/Nr3TLkfJxrdVfUrU4EKre/01AjPi34hILN2IvE/uVYakUr
-   BNgXJO8/3yV9nyJewMTfSHYSYGjsAx3N18veqlsd8AtcCkX1PWoOhpJ+Z
-   xki4EMML6bsoVcqwZy3LJPMrS3ULGkgCPNjaJZvmK4QHphIVT+DqS3IEL
-   ECG73fMtjObBsBebqzSaMd5Ugjs0579HlQmwySjlmPVSElfgs0aZRjCcM
-   eqCaUyRfVrmQlmlI3L+/IjlFZBgH9yEQ7Vj0dviGPVk+RCIEz2X/Pqn9Z
-   7KOxyaR7mcwaMF87E4a6hHfYPjnH0+JJbYJylzeqjLzi56LE3rS5hz67Q
-   g==;
-X-CSE-ConnectionGUID: 8cDQxSUiRauIGZkFk34Blw==
-X-CSE-MsgGUID: SmdVmNFDRwO5E0sOTaEFoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1363169"
+  bh=uNafFL4sSCShhKbmP4aPVrpJQzFPp7OUizg2wWDQI3w=;
+  b=QdIrmbiCjVu0yBUyWCFPOC5hPze3r7uMN8x9vR+nPdpL+KTxoIP10wxn
+   jpLrSP57hGHVQfX+5BOuBCgaxe+Skv3Aqp91e8fiKHXyIUv6V+j5+7hC6
+   8TsYEu/r4xXkyXaKuy1kFDH4iC4MfJHD3Xq5x1LCI9bEel252j6D/PER6
+   wJVtDasDxgPqKXryFU5v/QrhDxs2+UO9D8YTZTFSXxfmRGtkYJD1pZ5MA
+   CvZ8UBVDMwqX2Gw22iCpQRpytaj369ijBxI2+JImiDbH9G3r5cQ7PyFGe
+   5R44KXCGiONzOGfjH6bNTvt0nYVwZGMESHRsXU0GcHa0i89Ye2W/uBtaD
+   A==;
+X-CSE-ConnectionGUID: efRhM4Q0RveAaMZBrp7ZDg==
+X-CSE-MsgGUID: AIrYwBSXT4yJ3gBbEFRFxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1363181"
 X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="1363169"
+   d="scan'208";a="1363181"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:11 -0700
-X-CSE-ConnectionGUID: z5B1T/JqQy6OgfR1cOGslw==
-X-CSE-MsgGUID: +oR1Cs5lRXe+Ru+bEP8uBQ==
+X-CSE-ConnectionGUID: jlHTXGD9T8G8+9hQrFGkOA==
+X-CSE-MsgGUID: tBKErq9jRqSZoXfuSdYiTA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
-   d="scan'208";a="3275461"
+   d="scan'208";a="3275467"
 Received: from orcnseosdtnuc.amr.corp.intel.com ([10.166.241.20])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:09 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:10 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 21 Oct 2026 15:12:47 -0700
-Subject: [PATCH net v5 02/13] ice: use reference counting and SRCU for PTP
- port access
+Date: Wed, 21 Oct 2026 15:12:49 -0700
+Subject: [PATCH net v5 04/13] ice: set in_use only after preparing Tx
+ timestamp index
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,7 +77,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-2-72289a4ac8eb@intel.com>
+Message-Id: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-4-72289a4ac8eb@intel.com>
 References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
 In-Reply-To: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -93,422 +93,77 @@ Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
  sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com, 
  richardcochran@gmail.com, horms@kernel.org
 X-Mailer: b4 0.17-dev-67df5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14194;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2771;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=SKqFliR7roJcQKlNSunlIe8qTzQ9pSRnoGuGaJYgDoU=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqybFu/V9v0q2nmjtNlvr74bX+HLr+FOn3/kBWwVN77YW
- 8hfZ3Cno5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgItYMDKczGRQ2y8sGzj9A9+N
- /SffHWGTdfVZ6bYsSTfM4AWne1M3w//MuLPKSVsdGh5v2/ElX3j77fzbPk1neLujbTfHXQzN4eE
- GAA==
+ bh=uNafFL4sSCShhKbmP4aPVrpJQzFPp7OUizg2wWDQI3w=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqybFu+lbb+f3RK2e0bDzLMvdxY5T8hf86fv9brNf5coR
+ c/YqvRnS0cpC4MYF4OsmCKLgkPIyuvGE8K03jjLwcxhZQIZwsDFKQAT+VPA8If/V++8Aw5Lz0w7
+ GqvVu/FDT+nO7X3mj0PDZ5evqXM4f+osw//kyh519sO6HZdKlmXXFO6a7vTNOM93UmSl853lT9e
+ t9+EBAA==
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-The ice adapter structure maintains a list of ports associated with the
-adapter. This is used for supporting PTP, where the clock owner must handle
-many operations that require access to the PTP port structures of the
-associated PFs.
+The ice_ptp_request_ts() function is used to request a timestamp index for
+use with a packet. When reserving an index, it sets the start time and
+saves a pointer to the skb into the appropriate index. The function marks
+the in_use bit first before doing any of these steps. The IRQ handler which
+clears the timestamps reads the in_use bits uses a lockless flow for
+reading the in_use bits to determine which ones are in-use. This is
+necessary as actually processing a complete timestamp must be able to sleep
+so we cannot hold the timestamp tracker lock over the entire sequence.
+Additionally, blocking the Tx hotpath with such a lock indefinitely would
+be problematic.
 
-This is implemented using a linked list and a mutex. This sort of works,
-but a few places within the code do not acquire the mutex when iterating
-the list. This includes ice_ptp_flush_all_tx_tracker(),
-ice_ptp_restart_all_phy(), and ice_ptp_prepare_rebuild_sec().
+However, the existing flow now has a very narrow window where the IRQ
+handler could see a timestamp as in-use but read a stale value for its
+"start" time.
 
-Fixing this is tricky, especially since it is not clear if we can simply
-acquire the lock around the complete iterations.
+Fix this by ordering the sequence to mark the in_use bit last, and add a
+memory barrier to prevent re-ordering of the previous writes to setup the
+index.
 
-The pattern of use for the port list is read-mostly with modifications only
-happening during PF initialization when elements are inserted. This
-typically only happens during early boot, though a PF could in principle be
-removed or loaded at arbitrary times via bind and unbind operations.
+This was found and reported by Sashiko while reviewing an unrelated change.
 
-The use of a mutex does mean the driver can sleep while holding it, but it
-still creates complicates with lock ordering and prevents iterating the
-list in any code path that *can't* sleep.
-
-Instead, use SRCU primitives for the port linked list, along with a
-reference count on the port. The kref reference counter ensures that a PF
-will have a valid lifetime and not be removed until the reference is
-released. Note that this change focuses solely on the port list and does
-not make an effort to resolve access to ctrl_pf, which is currently being
-investigated by another developer.
-
-Use of sleepable RCU is required because we often iterate the PTP port list
-and perform operations that might sleep. Attempts at implementing regular
-RCU have thus far not proven to be acceptable.
-
-The remove path first removes the port from the list, and we use
-kref_get_unless_zero to ensure that such ports are skipped when iterating
-the list. This ensures that once a port starts removing we will drop
-references and no longer be able to acquire new ones. This avoids loop
-iterations chaining together to indefinitely block removal.
-
-The ice_ptp_release_port_srcu() function is used as the release function
-for the kref_put() call. This uses wake_up_var() to wake the removing
-thread. The waiting thread will block until the final reference has been
-removed, then it will use synchronize_srcu() to ensure any outstanding SRCU
-critical sections have had the necessary grace period.
-
-This flow ensures that accesses to ports via the adapter port list will
-remain valid until both the SRCU critical sections have ended and all the
-references to the ports have been dropped. Strictly speaking, SRCU alone
-might be sufficient for existing code paths, but the reference count allows
-the option for passing a pointer to the port on to other functions if
-necessary in the future.
-
-Fixes: e800654e85b5 ("ice: Use ice_adapter for PTP shared data instead of auxdev")
-Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
+Closes: https://sashiko.dev/#/patchset/20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858%40intel.com?part=7
+Fixes: ea9b847cda64 ("ice: enable transmit timestamps for E810 devices")
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_adapter.h |  17 ++--
- drivers/net/ethernet/intel/ice/ice_ptp.h     |   4 +
- drivers/net/ethernet/intel/ice/ice_adapter.c |  17 +++-
- drivers/net/ethernet/intel/ice/ice_ptp.c     | 125 ++++++++++++++++++++-------
- 4 files changed, 121 insertions(+), 42 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
-index 4f695f32da3d..c61bd645e460 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
-@@ -6,6 +6,7 @@
- 
- #include <linux/types.h>
- #include <linux/mutex.h>
-+#include <linux/srcu.h>
- #include <linux/spinlock_types.h>
- #include <linux/refcount_types.h>
- 
-@@ -17,15 +18,19 @@ struct ice_pf;
- /**
-  * struct ice_port_list - data used to store the list of adapter ports
-  *
-- * This structure contains data used to maintain a list of adapter ports
-+ * This structure contains data used to maintain a list of adapter ports.
-+ * Writers modifying the list *must* acquire the lock, and use SRCU safe list
-+ * operations. Readers should use srcu_read_lock() on the provided domain.
-  *
-- * @ports: list of ports
-- * @lock: protect access to the ports list
-+ * @list: list of ports
-+ * @lock: protect write access to the list
-+ * @srcu: Sleepable RCU domain for this adapter
-  */
- struct ice_port_list {
--	struct list_head ports;
--	/* To synchronize the ports list operations */
--	struct mutex lock;
-+	struct list_head list;
-+	/* To synchronize write operations on the port list */
-+	spinlock_t lock;
-+	struct srcu_struct srcu;
- };
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-index c4b0da7ce20e..da2003ba3bb0 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -5,6 +5,8 @@
- #define _ICE_PTP_H_
- 
- #include <linux/ptp_clock_kernel.h>
-+#include <linux/rculist.h>
-+#include <linux/kref.h>
- #include <linux/kthread.h>
- 
- #include "ice_ptp_hw.h"
-@@ -138,6 +140,7 @@ struct ice_ptp_tx {
-  * and determine when the port's PHY offset is valid.
-  *
-  * @list_node: list member structure
-+ * @ref: reference counter for use with adapter ports list
-  * @tx: Tx timestamp tracking for this port
-  * @ov_work: delayed work task for tracking when PHY offset is valid
-  * @ps_lock: mutex used to protect the overall PTP PHY start procedure
-@@ -149,6 +152,7 @@ struct ice_ptp_tx {
-  */
- struct ice_ptp_port {
- 	struct list_head list_node;
-+	struct kref ref;
- 	struct ice_ptp_tx tx;
- 	struct kthread_delayed_work ov_work;
- 	struct mutex ps_lock; /* protects overall PTP PHY start procedure */
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index 2dc3629d6d0f..536923b6ae97 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -6,6 +6,7 @@
- #include <linux/pci.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/srcu.h>
- #include <linux/xarray.h>
- #include "ice_adapter.h"
- #include "ice.h"
-@@ -54,11 +55,18 @@ static unsigned long ice_adapter_xa_index(struct pci_dev *pdev)
- static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
- {
- 	struct ice_adapter *adapter;
-+	int err;
- 
- 	adapter = kzalloc_obj(*adapter);
- 	if (!adapter)
- 		return NULL;
- 
-+	err = init_srcu_struct(&adapter->ports.srcu);
-+	if (err) {
-+		kfree(adapter);
-+		return NULL;
-+	}
-+
- 	adapter->index = ice_adapter_index(pdev);
- 	spin_lock_init(&adapter->ptp_gltsyn_time_lock);
- 	spin_lock_init(&adapter->txq_ctx_lock);
-@@ -66,18 +74,19 @@ static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
- 		mutex_init(&adapter->cpi_phy_lock[i]);
- 	refcount_set(&adapter->refcount, 1);
- 
--	mutex_init(&adapter->ports.lock);
--	INIT_LIST_HEAD(&adapter->ports.ports);
-+	spin_lock_init(&adapter->ports.lock);
-+	INIT_LIST_HEAD(&adapter->ports.list);
- 
- 	return adapter;
- }
- 
- static void ice_adapter_free(struct ice_adapter *adapter)
- {
--	WARN_ON(!list_empty(&adapter->ports.ports));
-+	WARN_ON(!list_empty(&adapter->ports.list));
- 	for (int i = 0; i < ARRAY_SIZE(adapter->cpi_phy_lock); i++)
- 		mutex_destroy(&adapter->cpi_phy_lock[i]);
--	mutex_destroy(&adapter->ports.lock);
-+
-+	cleanup_srcu_struct(&adapter->ports.srcu);
- 
- 	kfree(adapter);
- }
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index e1c66cd0f94f..55241802d17a 100644
+index 7a1deb3ea212..1e6ba6bbf6c2 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1,6 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright (C) 2021, Intel Corporation. */
+@@ -592,6 +592,12 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+ 		bool drop_ts = !link_up;
+ 		struct sk_buff *skb;
  
-+#include <linux/rculist.h>
-+#include <linux/srcu.h>
-+#include <linux/wait_bit.h>
- #include "ice.h"
- #include "ice_lib.h"
- #include "ice_trace.h"
-@@ -673,20 +676,37 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
- 	pf->ptp.tx_hwtstamp_good += tstamp_good;
- }
- 
-+static void ice_ptp_release_port_srcu(struct kref *ref)
-+{
-+	/* wake_up_var() requires full ordering but kref_put only provides
-+	 * release ordering.
-+	 */
-+	smp_mb__after_atomic();
-+	wake_up_var(ref);
-+}
++		/* Paired with smp_mb__before_atomic() in ice_ptp_request_ts()
++		 * to ensure ordering the in_use bitmap and the indexed fields
++		 * in the tstamps array.
++		 */
++		smp_rmb();
 +
- static void ice_ptp_tx_tstamp_owner(struct ice_pf *pf)
- {
-+	struct ice_port_list *ports = &pf->adapter->ports;
- 	struct ice_ptp_port *port;
-+	int srcu_idx;
- 
--	mutex_lock(&pf->adapter->ports.lock);
--	list_for_each_entry(port, &pf->adapter->ports.ports, list_node) {
-+	srcu_idx = srcu_read_lock(&ports->srcu);
-+	list_for_each_entry_srcu(port, &ports->list, list_node,
-+				 srcu_read_lock_held(&ports->srcu)) {
- 		struct ice_ptp_tx *tx = &port->tx;
- 
--		if (!tx || !tx->init)
-+		if (!tx->init)
-+			continue;
-+
-+		if (!kref_get_unless_zero(&port->ref))
- 			continue;
- 
- 		ice_ptp_process_tx_tstamp(tx);
-+
-+		kref_put(&port->ref, ice_ptp_release_port_srcu);
+ 		/* Drop packets which have waited for more than 2 seconds */
+ 		if (time_is_before_jiffies(tx->tstamps[idx].start + 2 * HZ)) {
+ 			drop_ts = true;
+@@ -2670,11 +2676,13 @@ s8 ice_ptp_request_ts(struct ice_ptp_tx *tx, struct sk_buff *skb)
+ 		 * a reference to the skb and the start time to allow discarding old
+ 		 * requests.
+ 		 */
+-		set_bit(idx, tx->in_use);
+-		clear_bit(idx, tx->stale);
+ 		tx->tstamps[idx].start = jiffies;
+ 		tx->tstamps[idx].skb = skb_get(skb);
+ 		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
++		clear_bit(idx, tx->stale);
++		/* Ensure index is setup before marking it as used */
++		smp_mb__before_atomic();
++		set_bit(idx, tx->in_use);
+ 		ice_trace(tx_tstamp_request, skb, idx);
  	}
--	mutex_unlock(&pf->adapter->ports.lock);
-+	srcu_read_unlock(&ports->srcu, srcu_idx);
- }
  
- /**
-@@ -806,10 +826,19 @@ ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
- static void
- ice_ptp_flush_all_tx_tracker(struct ice_pf *pf)
- {
-+	struct ice_port_list *ports = &pf->adapter->ports;
- 	struct ice_ptp_port *port;
-+	int srcu_idx;
- 
--	list_for_each_entry(port, &pf->adapter->ports.ports, list_node)
-+	srcu_idx = srcu_read_lock(&ports->srcu);
-+	list_for_each_entry_srcu(port, &ports->list, list_node,
-+				 srcu_read_lock_held(&ports->srcu)) {
-+		if (!kref_get_unless_zero(&port->ref))
-+			continue;
- 		ice_ptp_flush_tx_tracker(ptp_port_to_pf(port), &port->tx);
-+		kref_put(&port->ref, ice_ptp_release_port_srcu);
-+	}
-+	srcu_read_unlock(&ports->srcu, srcu_idx);
- }
- 
- /**
-@@ -1424,16 +1453,22 @@ static void ice_ptp_reset_phy_timestamping(struct ice_pf *pf)
-  */
- static void ice_ptp_restart_all_phy(struct ice_pf *pf)
- {
--	struct list_head *entry;
-+	struct ice_port_list *ports = &pf->adapter->ports;
-+	struct ice_ptp_port *port;
-+	int srcu_idx;
- 
--	list_for_each(entry, &pf->adapter->ports.ports) {
--		struct ice_ptp_port *port = list_entry(entry,
--						       struct ice_ptp_port,
--						       list_node);
-+	srcu_idx = srcu_read_lock(&ports->srcu);
-+	list_for_each_entry_srcu(port, &ports->list, list_node,
-+				 srcu_read_lock_held(&ports->srcu)) {
-+		if (!kref_get_unless_zero(&port->ref))
-+			continue;
- 
- 		if (port->link_up)
- 			ice_ptp_port_phy_restart(port);
-+
-+		kref_put(&port->ref, ice_ptp_release_port_srcu);
- 	}
-+	srcu_read_unlock(&ports->srcu, srcu_idx);
- }
- 
- /**
-@@ -2694,19 +2729,28 @@ static bool ice_port_has_timestamps(struct ice_ptp_tx *tx)
- 
- static bool ice_any_port_has_timestamps(struct ice_pf *pf)
- {
-+	struct ice_port_list *ports = &pf->adapter->ports;
-+	bool have_tstamps = false;
- 	struct ice_ptp_port *port;
-+	int srcu_idx;
- 
--	scoped_guard(mutex, &pf->adapter->ports.lock) {
--		list_for_each_entry(port, &pf->adapter->ports.ports,
--				    list_node) {
--			struct ice_ptp_tx *tx = &port->tx;
-+	srcu_idx = srcu_read_lock(&ports->srcu);
-+	list_for_each_entry_srcu(port, &ports->list, list_node,
-+				 srcu_read_lock_held(&ports->srcu)) {
-+		if (!kref_get_unless_zero(&port->ref))
-+			continue;
- 
--			if (ice_port_has_timestamps(tx))
--				return true;
--		}
-+		if (ice_port_has_timestamps(&port->tx))
-+			have_tstamps = true;
-+
-+		kref_put(&port->ref, ice_ptp_release_port_srcu);
-+
-+		if (have_tstamps)
-+			break;
- 	}
-+	srcu_read_unlock(&ports->srcu, srcu_idx);
- 
--	return false;
-+	return have_tstamps;
- }
- 
- bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
-@@ -2890,14 +2934,18 @@ void ice_ptp_queue_work(struct ice_pf *pf)
- static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
- 					enum ice_reset_req reset_type)
- {
--	struct list_head *entry;
-+	struct ice_port_list *ports = &pf->adapter->ports;
-+	struct ice_ptp_port *port;
-+	int srcu_idx;
- 
--	list_for_each(entry, &pf->adapter->ports.ports) {
--		struct ice_ptp_port *port = list_entry(entry,
--						       struct ice_ptp_port,
--						       list_node);
-+	srcu_idx = srcu_read_lock(&ports->srcu);
-+	list_for_each_entry_srcu(port, &ports->list, list_node,
-+				 srcu_read_lock_held(&ports->srcu)) {
- 		struct ice_pf *peer_pf = ptp_port_to_pf(port);
- 
-+		if (!kref_get_unless_zero(&port->ref))
-+			continue;
-+
- 		if (!ice_is_primary(&peer_pf->hw)) {
- 			if (rebuild) {
- 				/* TODO: When implementing rebuild=true:
-@@ -2909,7 +2957,10 @@ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
- 				ice_ptp_prepare_for_reset(peer_pf, reset_type);
- 			}
- 		}
-+
-+		kref_put(&port->ref, ice_ptp_release_port_srcu);
- 	}
-+	srcu_read_unlock(&ports->srcu, srcu_idx);
- }
- 
- /**
-@@ -3084,11 +3135,11 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
- 		return -ENODEV;
- 
- 	INIT_LIST_HEAD(&ptp->port.list_node);
--	mutex_lock(&pf->adapter->ports.lock);
-+	kref_init(&ptp->port.ref);
- 
--	list_add(&ptp->port.list_node,
--		 &pf->adapter->ports.ports);
--	mutex_unlock(&pf->adapter->ports.lock);
-+	spin_lock(&pf->adapter->ports.lock);
-+	list_add_rcu(&ptp->port.list_node, &pf->adapter->ports.list);
-+	spin_unlock(&pf->adapter->ports.lock);
- 
- 	/* Seed the per-PHY Tx reference clock usage map for this port.
- 	 * Only meaningful on E825 (other MAC types don't expose tx-clk
-@@ -3110,13 +3161,23 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
- 
- static void ice_ptp_cleanup_pf(struct ice_pf *pf)
- {
-+	struct ice_port_list *ports = &pf->adapter->ports;
- 	struct ice_ptp *ptp = &pf->ptp;
-+	struct kref *ref;
- 
--	if (pf->hw.mac_type != ICE_MAC_UNKNOWN) {
--		mutex_lock(&pf->adapter->ports.lock);
--		list_del(&ptp->port.list_node);
--		mutex_unlock(&pf->adapter->ports.lock);
--	}
-+	if (pf->hw.mac_type == ICE_MAC_UNKNOWN)
-+		return;
-+
-+	spin_lock(&ports->lock);
-+	list_del_rcu(&ptp->port.list_node);
-+	spin_unlock(&ports->lock);
-+
-+	ref = &ptp->port.ref;
-+	kref_put(ref, ice_ptp_release_port_srcu);
-+
-+	wait_var_event(ref, !kref_read(ref));
-+
-+	synchronize_srcu(&ports->srcu);
- }
- 
- /**
 
 -- 
 2.56.0.212.g129ede20d986
