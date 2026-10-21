@@ -1,60 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792572229;
-	b=SHEIh1RT0Bgsdx0GhGgX8HnlUtoMeDctpaPx0C4llZmFg/HrmI7MYpdrVPtOO0c42ymE
-	 9krrl0PK+z9dQ/FLJx1nhQDAYTT9t4/x1jebo4SUjNeKaXuUQG0Rcx88m3kWp6qBK4Dj1
-	 ujuGieHN5//7g27nWps//zQSC9bz0QR5opDQQb6xtjZMC/ka0TbVlZvJy90PtqohMM1R2
-	 QlRkPcgGoEKyr08NJE+IAN1HQ1i47g6jcEDpH0jr21yOa1hpEYG/XOWEUaOv0OQX06NJi
-	 H3XD/jg8TWGZKeUEEEpK4Sdf3PK+XuyI3CWcxHRvlOGl6cgRjFyMbjNcDinAFL5SPSQ==
+	t=1792572286;
+	b=OoFoFFLSg4OdQ5v+wNZ6O+wu/6OgvnT5JKnmImMfV4f0QFoQPQ7+Eqwxu6DPnLrhgPaA
+	 npnKIDa9IH75aUe1VS3/OZ5T/3DfT49h5auHOC+yfXB+34oMLzM+//cA5qf+gq4c6t71Q
+	 d8RZGDWbSDoCH8p2jI4XUw1F6mFznmixAotaeMJjiaUJP4s0y8Fz5254G4FJo2u0IADNm
+	 rDRq2pMWiVXR5T4oygXEslns/1zDuJ8si1YDeWaYHt/jY8xZJc48TyR/Z68ypYRBA388T
+	 PdwrkSmxAFibdlBVIv4H6rbmHPMxMVcfZjSoP97QHRpL/ZwGIU1oZE43zngI4L8bXHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792572229;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=vk1ORYvnZm2kGFv+/frkhzsQBZ70JcuWJzesvTx7fHaU6HE1oa5fV+D3lQfvpaK8nXHs
-	 MPSO1RqreVpzEF+XPytr4OGAvX5sCLkUP4fu8CvNYflb2zsVP0The5ucGsagvqvHkjhg7
-	 42cIpr7dAWVIfQKxx4CBy6Wb8uIOIlUCoillezOI7ycqHdf8XCqSwkDOoheDzdHZDwzyR
-	 +2wsjOK2WuqAG0837NKn5AXofrviT9H8VtggDAoD85Ts7eoW2rxmgK8dLZrfYIrUVYae/
-	 o7oeQFVq5mfuiHEqPyAcUfQgTBOVpfbrCknSGuEBv8yy/ZIg4WEyn7029dnEAlNZxPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792572286;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
+	 DKIM-Signature:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy;
+	bh=Ryt79vtuqgO6oO1oeL3ZfN3BiPEbp12hL9M4yl8jSjo=;
+	b=QxOPfiL5SDOBhJsAArrDrMCcJrXb6OLhb+C0fxk/BfruOnlS+pVnQI+W/3734tl3Cyx/
+	 MiPzwDKjwGJb4WDs9ez7lM/x8yWBv5Q2Jah0NxJd98LfGJ4jWP5rjX7qgItu7DQbr3IXA
+	 zUnmXoq74SZO6/op7UkqPITpM4cXs9BUGam1rltWh+J4mxvXCGrjgRKUwelD1kqzAM15K
+	 YXUU2qJ0IaqWhnahOlIx2B8n9oFelBuwoD98Mv+mU5qeKB0fd5/lIIQZXvTtyGHO4dE6l
+	 8WrhvWV8nRA804ERAFr6lKhOCEoaViEkQYK6iOWcO6TM9UaW7MNzyfOT27uD5D3akBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A8Fw7XkN;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=secunet.com;
+	spf=pass smtp.mailfrom=secunet.com;
+	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=fyFDjeCM;
+	arc=none smtp.remote-ip=62.96.220.36
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C10606A31D
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ADB606A31C
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:44:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8ADB606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A8Fw7XkN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BD71F000C9;
-	Wed, 21 Oct 2026 08:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792572228;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A8Fw7XkN2FgfvegLJ8R/kH9rmcK3y68tqfrWtr7xX0eN/+DJCMWLEZI+290c+Hgru
-	 lw1qIs4ailHRctSBXRSnTXCZ4dd8EarF9ciMPR4vntnre5fPLdma3bd6zvmNqZOw+Y
-	 0iOYMFKxLOs8ohtigqsyTU8YlUDNioMZIDKWBMkzj/dJWRoUGhDsyOtGyGHSq2Hakb
-	 b7N0zvKr3HycY5tHRBBPYEcmmo8koJbjnh7WVj/NJFhWzds8sTy7wiohW3MNmftalZ
-	 rPFfE680JXA1zZWGH8PZyKNFAqDrT7EoHND/h6m4oWp8Ke3CinBgYQZ69DK/aVgEQW
-	 i731Uzrs2WzVQ==
-From: netdev-bot+sinfo@kernel.org
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- martin.lau@linux.dev, john.fastabend@gmail.com, weiwan@google.com,
- sd@queasysnail.net, jiayuan.chen@linux.dev, netdev@vger.kernel.org
-Subject: 
- Re: [PATCH net] inet: reject unhashed sockets during established lookups
-Date: Wed, 21 Oct 2026 08:43:47 +0000
-Message-ID: <179257222719.3290.12321272724290760263@kernel.org>
-In-Reply-To: <ath58Egc-oI6p3Jl@v4bel>
-References: <ath58Egc-oI6p3Jl@v4bel>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=fyFDjeCM
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 50609207E3;
+	Wed, 21 Oct 2026 10:44:37 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id kVjeeb5hzzRi; Wed, 21 Oct 2026 10:44:36 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 5811B207A4;
+	Wed, 21 Oct 2026 10:44:36 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 5811B207A4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1792572276;
+	bh=Ryt79vtuqgO6oO1oeL3ZfN3BiPEbp12hL9M4yl8jSjo=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=fyFDjeCMgoqE+WxSbghr8jX/ZnuNig8IL2sPlBucAhxzBTcgnmI4779btlxNoBO4l
+	 Lyl5YOlCczOXQut69sfLM23zQnWyvEY2rNSgbaYvi63rNyctSS9ME/jNYb+LDbVsax
+	 A1+SDMKrtpbVb6I+POtI4Bve70akz8qByxzw93hgnCDeNkkDANsXkrjb6tGN/r7wLK
+	 dVe3OXj4VFU93D8458FddXra8FFJcAWRgLDY01pNuloS9oUAvcVtF1Jck1cDe6TnAf
+	 pleMQ3J4RqK9+Y1oi+puw7+UNiv0e8Ku2tJP9E3YUn+R5HPjM+LOlNZo1GnyBU8ZdJ
+	 1v3Dd+VZ92Qqw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 21 Oct
+ 2026 10:44:35 +0200
+Received: (nullmailer pid 2570425 invoked by uid 1000);
+	Wed, 21 Oct 2026 08:44:35 -0000
+Date: Wed, 21 Oct 2026 10:44:35 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Jun Yang <juny24602@gmail.com>
+CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<edumazet@kernel.org>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <chopps@labn.net>, <netdev@vger.kernel.org>, Jun Yang
+	<junvyyang@tencent.com>, <stable@kernel.org>, TencentOS Corvus AI
+	<corvus@tencent.com>
+Subject: Re: [PATCH net] xfrm: iptfs: do not seek the sequential skb reader
+ backwards
+Message-ID: <ath7c-r2GuDm5Xo4@secunet.com>
+References: <20261015021747.30346-1-juny24602@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,21 +83,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261015021747.30346-1-juny24602@gmail.com>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-Hi!
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+commit d3c6d0500e742002c13ba4e7b9eff45bdb2c394b
+Author: Jun Yang <junvyyang@tencent.com>
+xfrm: iptfs: do not seek the sequential skb reader backwards
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+iptfs_reassem_cont() can underflow its offset arithmetic when reading
+a saved runt if the sequential reader stepped, leading to an out-of-bounds
+memcpy. This patch aborts and restarts the sequence read to avoid backwards
+seeks. It also fixes a sibling parser to use offset 0 when restarting.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 6920940a35b49..751cceab738a1 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+[ ... ]
+> @@ -1046,7 +1052,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+>  			struct sk_buff *save = skbseq->root_skb;
+>  
+>  			skb_abort_seq_read(skbseq);
+> -			skb_prepare_seq_read(save, data, tail, skbseq);
+> +			skb_prepare_seq_read(save, 0, tail, skbseq);
+>  		}
+>  
+>  		if (first_skb) {
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Does this code introduce a data race that corrupts reassembly?
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+When __input_process_payload() saves a runt, it calls iptfs_input_save_runt()
+without acquiring xtfs->drop_lock or any other SA-level lock:
+
+net/xfrm/xfrm_iptfs.c:__input_process_payload() {
+    ...
+    /* save the bytes we have, advance data and exit */
+    iptfs_input_save_runt(xtfs, seq, hbytes, remaining);
+    ...
+}
+
+This locklessly modifies xtfs->ra_runt, xtfs->ra_runtlen, and
+xtfs->ra_wantseq.
+
+Concurrently, another CPU processing packets for the same IP-TFS SA might
+execute iptfs_input_ordered() and read xtfs->ra_runtlen locklessly, then
+acquire drop_lock for iptfs_reassem_cont():
+
+net/xfrm/xfrm_iptfs.c:iptfs_input_ordered() {
+    ...
+    /* check before locking i.e., maybe */
+    if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
+        spin_lock(&xtfs->drop_lock);
+
+        /* check again after lock */
+        if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
+            data = iptfs_reassem_cont(xtfs, seq, &skbseq, skb, data,
+                                      blkoff, &sublist);
+        }
+        spin_unlock(&xtfs->drop_lock);
+    }
+    ...
+}
+
+Because iptfs_input_save_runt() does not hold drop_lock, the lockless read
+and locked memcpy of xtfs->ra_runt race directly with the lockless writes.
+Can this cause memory corruption, torn reads, and packet corruption?
+
+Can this code cause a lock context violation on PREEMPT_RT kernels?
+
+In iptfs_input_ordered(), a sleepable spinlock is acquired while a
+kmap_atomic mapping might still be held:
+
+net/xfrm/xfrm_iptfs.c:iptfs_input_ordered() {
+    ...
+    if (skb_copy_seq_read(&skbseq, 0, ipth, sizeof(*ipth))) {
+    ...
+    if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
+        spin_lock(&xtfs->drop_lock);
+    ...
+}
+
+If the packet is non-linear and the header resides in a paged fragment,
+skb_copy_seq_read() maps the fragment using kmap_atomic() and leaves
+skbseq.frag_data actively mapped.
+
+Acquiring spin_lock(&xtfs->drop_lock) without first aborting the sequence
+read violates lock context rules, as spinlock_t maps to a sleepable rt_mutex
+on PREEMPT_RT.
+
+Could this lead to a 'sleeping in atomic context' bug?
