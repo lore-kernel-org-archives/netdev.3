@@ -1,60 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792578838;
-	b=L5+OTokdRPxBer4Ft1Q2onIAZp3bblBGGZTDo2o2WWdILdDxRvjg0lbKvVfWDkxweGfl
-	 G+Q5TBE9DoGW+U0ZAfrc4DEYwAi66uOKuqrzLMCX4+IhOBjMWTvzF4PziBWNlYJIrJf4m
-	 T76zfnL7+/bvrGZaY+oe2Y8IiBHUqlPsE/hjcg0HtK+cK5AQ1jElG4cO8N5JAWydvLrT1
-	 0nPgyTJU5SUW0bdJGuulFB9qpWemtW2zx5CzCakRZBdOqKnwi1AqWIYIAZ+sp3w2P5ASS
-	 riIgqZzDQg6soazSKCptU0BacciWBrfh/vmPqvRbvhvM6U5xJ/4/FZHiulkqX2BFEzg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792578838;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=VLCjGAsbLjZCaIJo9je+NLiQHN8b6glnq3nJHIIuFZss864wK5MHTOxEJSctaWPKr0aW
-	 p0Xz7B6A6hv2RxrhTHcAPt0kmPtQFsDlPFreInXvBvYrzC2IdbEYQOqveY5LS90puWAyW
-	 vSJ2NPTCRQHwMXKFfTr42DYAgnMgPFCYWO+HxYixjUzWLXXR/5TBsexLrm/Z59mLQz04w
-	 noppjhfh7yRd6+CXOs1c27dxXbCafLDSRJECeyIsRbfB96Kvil2YEYSplbxXKRsjP0PRb
-	 jDHSilAw0qllP3b11OUM3mBJn3oeG/g+EG/YZ4cku23ALZRATy85kZXLn3XO0D4i7lA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Gr4Ub/lQ";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.12
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792579051;
+	b=fgPdoLuzC6fYK4EZkxJKqrXAZ9+kvNBF1YjWrDcvIpJ7BHUk+uwRSOzzmZGnfbPzJHiC
+	 F/iz1B2k5AEwlCC1QmB+FMDSDIRCv2YNPH5gp9Z9iqVgMdJ494+7MhXufJQCBzkTtYz+i
+	 PbCwmfrkjXolfTxsJbp1o1pUAf+RLAHkc9OYp6pfy3Tv1Knbr226sISsjXchq8yfx35/E
+	 s9ije+1vTGs26t+taYkvE2SWasS/eVdM6fbT+uf0mUvILm5TFikw/BVabxLRX5SGjhomc
+	 HLWUj2Zdp0gqwjgv4N1NIC/OeB6qQa96yHQbutpwpE118tjAf2gGq6RE4EBOJra0GCw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792579051;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Organization:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-ZohoMailClient;
+	bh=QjzGdWbiEqzzV/MbYQG4TopYjAr0X/I+MiCAzcAGLpI=;
+	b=wWZVyrgUj1qdhnEzEZYWIe7jZLplckC/mUiXUDkv1R7QqpmeQT7MgthJFEi3cLeIokgE
+	 /xlD3Os3agvWoQRZtbscDX6b/0duj8Q1WvrdunXpjy23Mxy8QGASnY/VBHkH8n7rGUL56
+	 y18ao31WZvsyJ66CYe/nqDAN29OcGjBoQMEK2qSg4d6/3Y766+f8C8hOk7hA+j5pJrr4u
+	 FDVW0AgWeFw5oWAtzBqooqGa+E2wU5tgtXnZ8sRPNS6RkQGDC5j3G0Yz9SHek6kQUVE9I
+	 Wfo2MAIlJDTHkbz09/UoegfAyyuo5nuJDXupxylOHyH3c6OMJKiuixecAvgicdwyYog==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=kwBQM5Nb;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.12
+Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2A8606A319;
-	Wed, 21 Oct 2026 10:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E047A606A319;
+	Wed, 21 Oct 2026 10:37:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E047A606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gr4Ub/lQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1241F000C9;
-	Wed, 21 Oct 2026 10:33:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792578837;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gr4Ub/lQVuhKjS/xXFXOIwIkPTzZ9wD8D2EfIP+NdoMjG7dbYzC9eop+wZTpPBtfO
-	 ybXCx/EniZONzodXzWJKc1MCbXahorjO4DQFOaSF9CGbP7DHUaasgCUHXzUXH92Ua+
-	 zelBCZULMgmJ8DDUUmffe34sCuse671p9/JIAOiJvCxMbbLdfrbd0g7g7/I2b6Tp+m
-	 uDBzrsEFtsH/pjcC+frqv/df9Yd4xqhQA7hzcXsbZvyDWzHeR+xO00WHL+LwBHGKpg
-	 IVtouVjDd7Hu8XKLbPUAAHx47tClCymfXmkrQnO+D9DHsuObgfwXnI8QbuWPKh6NPF
-	 WXmCcklAGXQDQ==
-From: netdev-bot+sinfo@kernel.org
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de,
- Vincent Mailhol <mailhol@kernel.org>, stable@kernel.org
-Subject: Re: [PATCH net-next 01/11] can: dev: can_dropped_invalid_skb: drop
- CAN XL frames on non-CAN XL devices
-Date: Wed, 21 Oct 2026 10:33:56 +0000
-Message-ID: <179257883662.3290.13718519694562894239@kernel.org>
-In-Reply-To: <20261021102756.1900679-2-mkl@pengutronix.de>
-References: <20261021102756.1900679-1-mkl@pengutronix.de>
- <20261021102756.1900679-2-mkl@pengutronix.de>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=kwBQM5Nb
+ARC-Seal: i=1; a=rsa-sha256; t=1792579004; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Vg4ASxVe/gRrDD7T/H1HLXKpWWkQxEoEToUwf2gjVgQHhTYdsZF+0wcPe/aCT6kTTygdTn8+XsTD4KtGu2NKj4mneTRLu+o0VYhkjaQexiAmfxaPQXlcWkvJ8mu+as0fYuu1Z6VApa5hqNk6BEhCQW+lD4eLzEP2HGCw7Z54wTU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792579004; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=QjzGdWbiEqzzV/MbYQG4TopYjAr0X/I+MiCAzcAGLpI=; 
+	b=XcQSfehKD8VgFwklFZJegFzqLTSxt+T60vRuu/Y6MC3JjpjUtQNDXGycZu7OPrKJ/c3933kKqODgfJqZ/u94N6+w9cbvIoSw6xnfamF74sy/IM1OJvKgt6HY5wh8Ew7eOg21XWfIY6gwNQI+nlUupDgA0qMT0k+bvuRoeCygFlQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=louisalexis.eyraud@collabora.com;
+	dmarc=pass header.from=<louisalexis.eyraud@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792579004;
+	s=zohomail; d=collabora.com; i=louisalexis.eyraud@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=QjzGdWbiEqzzV/MbYQG4TopYjAr0X/I+MiCAzcAGLpI=;
+	b=kwBQM5NbKMKpWskOQ/UK068FN2dUY6f3Tqfsgf0xMc4o9dWO9sF6V3kiGe08IUg7
+	+naym6+93bNkSscqYsND5A/H5/jtiUtWzKFSSmAXBBabwt41p9RF3uJQantmcB+nqwR
+	EgGGkjq59XEsOgSNwGVkJJUUh8lRFRFDV5IdN8ro=
+Received: by smtp.zohomail.com with SMTPS id 1792579002564512.9314975124558;
+	Wed, 21 Oct 2026 03:36:42 -0700 (PDT)
+Message-ID: <b7d26b378e3cfdb54a113cca1d8d53293cad966c.camel@collabora.com>
+Subject: Re: [PATCH net-next v3 5/9] net: stmmac: mediatek: add RX/TX delay
+ stage divider in platform data
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Richard Cochran	 <richardcochran@gmail.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Biao Huang
+ <biao.huang@mediatek.com>, Maxime Coquelin	 <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,  Eric Dumazet
+ <edumazet@kernel.org>
+Cc: kernel@collabora.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, 	linux-mediatek@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com
+Date: Wed, 21 Oct 2026 12:36:37 +0200
+In-Reply-To: <34608ab8-18f3-4680-8276-cd8611c05cb1@bootlin.com>
+References: <20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35@collabora.com>
+	 <20261016-dwmac-mediatek-mt8189-v3-5-25daf2bbcf35@collabora.com>
+	 <34608ab8-18f3-4680-8276-cd8611c05cb1@bootlin.com>
+Organization: Collabora Ltd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,25 +89,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-ZohoMailClient: External
 
-Hi!
+Hi Maxime,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On Fri, 2026-10-16 at 13:37 +0200, Maxime Chevallier wrote:
+> Hi Louis-Alexis,
+>=20
+> On 10/16/26 12:31, Louis-Alexis Eyraud wrote:
+> > In preparation of newer SoC support, that have like MT8189 SoC
+> > different RX and TX internal delay stage steps than MT8188/MT8195,
+> > add
+> > the RX and TX delay stage divider values in the variant platform
+> > data
+> > and replace the hardcoded value uses in mt2712_set_delay and
+> > mt8195_set_delay.
+> >=20
+> > Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> > Signed-off-by: Louis-Alexis Eyraud
+> > <louisalexis.eyraud@collabora.com>
+> > ---
+> > =C2=A0.../net/ethernet/stmicro/stmmac/dwmac-mediatek.c=C2=A0=C2=A0 | 46
+> > ++++++++++++++++++----
+> > =C2=A01 file changed, 38 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > index 596411d4a5b2..cb5bda53edb9 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > @@ -108,6 +108,10 @@ struct mediatek_dwmac_variant {
+> > =C2=A0
+> > =C2=A0	u32 rx_delay_max;
+> > =C2=A0	u32 tx_delay_max;
+> > +	u16 rx_rmii_delay_stage_div;
+> > +	u16 tx_rmii_delay_stage_div;
+> > +	u16 rx_rgmii_delay_stage_div;
+> > +	u16 tx_rgmii_delay_stage_div;
+> > =C2=A0	u8 dma_bit_mask;
+> > =C2=A0};
+> > =C2=A0
+> > @@ -146,14 +150,22 @@ static int mt2712_set_delay(struct
+> > mediatek_dwmac_plat_data *plat)
+> > =C2=A0	u32 fine_val =3D 0;
+> > =C2=A0
+> > =C2=A0	if (phy_interface_mode_is_rgmii(plat->phy_mode)) {
+> > -		rx_delay_stage_div =3D
+> > MT2712_RGMII_DLY_RXC_STAGE_DIV;
+> > -		tx_delay_stage_div =3D
+> > MT2712_RGMII_DLY_TXC_STAGE_DIV;
+> > +		rx_delay_stage_div =3D plat->variant-
+> > >rx_rgmii_delay_stage_div;
+> > +		tx_delay_stage_div =3D plat->variant-
+> > >tx_rgmii_delay_stage_div;
+> > =C2=A0	} else {
+> > -		rx_delay_stage_div =3D
+> > MT2712_RMII_DLY_RXC_STAGE_DIV;
+> > -		tx_delay_stage_div =3D
+> > MT2712_RMII_DLY_TXC_STAGE_DIV;
+> > +		rx_delay_stage_div =3D plat->variant-
+> > >rx_rmii_delay_stage_div;
+> > +		tx_delay_stage_div =3D plat->variant-
+> > >tx_rmii_delay_stage_div;
+>=20
+> Looking closer at this, what's RMII delay ? There's no delays in
+> RMII, and
+> it's a single clock not a RX and TX clock like RGMII, there's no RMII
+> TXC/RXC.
+>=20
+You are right, these structures field and define names are wrong for
+RMII/MII cases.
+The mediatek,tx-delay-ps and mediatek,rx-delay-ps vendor properties are
+used by this driver to fine tune different clocks depending on the phy
+mode:
+ - RX_CLK/TX_CLK in MII
+ - REF_CLK in RMII
+ - TXC/RXC in RGMII
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+I'll fix the fields and define names in next series revision, along the
+issues the Sashiko reviews found.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+> I think it's the same as on allwinner, the delay handling has been
+> mixed-up between
+> RMII and RGMII in the glue, you should be able to simplify this even
+> more by
+> ditching the RMII case.
+The register fields that the driver sets in RMII or MII mode to tune
+the needed clock(s) are different than the ones set in RGMII.
+So I cannot really ditch the case but I'll simplify the delay handling.
+For instance I could use a single divider field per mode, since for all
+compatibles the value is the same in both RX and TX.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Best regards,
+Louis-Alexis
+>=20
+> Maxime
