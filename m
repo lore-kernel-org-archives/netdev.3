@@ -1,101 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792608000;
-	b=RQ3tOV6NBFDtCPfdHRIGLX0lp0tx8aEnMr39WdQgL6zpo7L4tlpSwEUL/Ows+Oxmb58p
-	 hCuoY+e6vtMeaHzpJkZv4yxnqe6TwlcKI9uqxmnz3w2GeRa2iZbu1JoihKpugf9aUciCr
-	 fQPOqK2aFxj/L5BUVrnPqjrhRi8diCevyJOb9brCsicRp1jscf88DX91qadWwclFql/TF
-	 W31CzViHFRlI2IxcYy8/NavStyIoJQLo01APcX41oA/JadFAhPRjN24Ic+STivY0/MX8C
-	 9q7qpENfbyufQnTEIxUMCJ32dwXWFbNRGk6KaWVqOTpAaWeWf7KIDdcRyrCcKz3xOAA==
+	t=1792608477;
+	b=jTH90CSS0ssMjKdNdRoAa1q0UUAahbGEeB+3pFIGhN3m5zBY4OEyb7bbXUKFmb7p8KPy
+	 ES7OBgahHtwMsufurf/fgfYfmxp8vT2e8WnWenywlSBYDUDVVrsBAlC1GC7007zdmVJpw
+	 6tuzpelpes3pIQwo2fvm3VBRWYR9bTHSLV0UTdcoqnBnHYXSirWdrvCQQmWVfIQbxj1J3
+	 3QN1vxZQMuZCaRxcJHpHI5W6b01PXw2RPKvxC+OJX53ZkJWuxNp096U3g04F8j22iYdRB
+	 Sy8skEstE9nbTUZMKvZLWAlpLtOPhq+zz4Cg17llr+8wsvC1+WMraMs/IfU4/5UPN7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792608000;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=FXnb5Rj5qfGts0gZYr/0A/mHLeDZB3dODomhDKpmTdk=;
-	b=z9uV2SFwCVLmeas7oaLKnktni6m6HCIVcUySYDv5x4LqJnLLdhd5ZBIqcLer82RPSaDl
-	 hYUBw0EpNf82DxEYpvUYVZl8YdkUaB00u5PNDP9SpGXPqefKZxMfzcovpVIwCrVf5Ybym
-	 r8Bvs8iW6nNsIuu37oclTskMfO+AdO8bRI2bSceRSPyfK+S9wm9UNq7n60JXdysfq7q04
-	 fOVVNzbnG1OIxkhktnGkuJaxfQbMOsxc9Ux7Qj6FBh0QVw+FGfEXyqhutI5TWLvIfHBa4
-	 qRtPk3N8gGUwieA4olPjEo304V+syjwgVECXN6/1ygbf2DTbyv2IL08XEb62m3Z2t2A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792608477;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=YnDsoLj5+AQd01dBHph+QKt/wDaj4pOQ+Pmx3aP0pWE=;
+	b=rIlSNQqhP2qLBXeh7P2Ji5nMyGLiSlWupYee64SmYwYALO9FkfStM6YGcJqPG2D1eQE7
+	 Xrc9YCqbzZQM1gjhNc0l3BQK4dIoBEM2zUKOkY7dxYf25CHMfS2CGHsy+m8g6Y79uqwQh
+	 K7ka0ShJ3xwOZ/Ffql1XRYvYqHYD9fSadprXEcGSdriHbjBjCSodDYBBQ6wNNADvKiiJM
+	 4KwLOAqRimJuKO3A+mxAW4p+KnjPxHVO9md+RWWqXNaXn9sBMXXuBBGkb3pYyCyCeZCI+
+	 9rMK1RXGwIJxnHWC58SloPxZb5tbo1EZBKdnX9Hv6Z0/UpKhIeFUUuVg1SzxveYoxXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="D1i/BJq9";
-	arc=none smtp.remote-ip=209.85.221.51
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B6C606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 18:39:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33B6C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=D1i/BJq9
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48bbb06e746so651908f8f.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 11:39:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792607997; x=1793212797; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FXnb5Rj5qfGts0gZYr/0A/mHLeDZB3dODomhDKpmTdk=;
-        b=D1i/BJq9eVs8XTcuhNqhkUYYw8TrAvsxkc9Ut9kiL6tbt0z5RB940/ahJed2a0/ZCc
-         yF0oL3uN6pWw1lKve4dSejB2JxLl1/QzCYGZNDf4aMc9rPit+a1kn0IK6eg2IL0foh64
-         u0fuONvYxKsrOO3Vxw8IiNzdBR/qmPQUXP29NN2IT1i0EObFTwOqkS2IJpvkLdmdUyPb
-         vuk6y4jSgLjCEymCqAzmvfkOfD5BMnKf/Ura/Aav9bNR8L+wAOigT/HMXHIO4GM3klfH
-         LzKp8O+BPHkxuLTP00Z4fPrBD8XtGxB3FNS/ML7ASlVbLin806NRRLngIsM3ETOxqKtj
-         oMBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792607997; x=1793212797;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=FXnb5Rj5qfGts0gZYr/0A/mHLeDZB3dODomhDKpmTdk=;
-        b=Ce2T9YFDayC0tpSgqSboZJu4/iv6F4sUnQ2zinqcstT3q3tpn7pTN9a9zRVUmbmQ6w
-         ABj/aVl0/2Q6Pux48GzQXuJgwhW/zQKVN2W+6ibQD9Agjpoa48Rp+M+YQd1fwYVGfWLW
-         jcRWW970Bftd8jD5o3xFun7YDDqmH1mjIjUx3B5yTrUD0sloqfuTWwZxJsviKbif4AFO
-         GpBYPcPl5t63hMfhZG+MEC6S/SV7tV4fhqPrlJSmT5rRLFdpyJVukjfGNICnkmKxaec1
-         qHrY2XA1Zh1vW8GEL+ICBak8X2LtGILcFbMkrhLRW0vA1GZ9zugYFUS5N0DO+sIqlR3Q
-         QcfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz78ESRJ6qPgBaIVQyerM6zAnt5SmSeABF3gVqkQL2GTaaWiLYn/MRqrMdlYj9XLyN9m1wGIL0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIWtZA+4tsqdjDzGbeoFK8YB1JeaPgEqWHHI1C4b/v0RXbig1+R
-	CXHM+RtrKV5QDMvzvZYxFCUaEzN21KKEvOtAx5DZrkywzkBiukk+0c6uU4VOXYWVi38=
-X-Gm-Gg: AYBFou3GcEcxsiisnkgox0MwtEIT5PTp2N816Em/UZkcYzSxTUUCNNYEQZhz1Rqbluy
-	FwptFWl88ay4/lnATelXrOVmhsZUaYzjjoojn9HF137P6fsxn7p0RtPQak0v+Qtp0MEAtuy+5F7
-	2AMAjIFUbzhaeKrDYRg5BBjPi8zS7U1isGtebMWCgLJCH0Vosj4zxaBGr3svJUz1+W6z6xaxfWU
-	LGsCkKVj7YZzD6Nw/Ot6lJAWhJ3HeSODI1kCngIaUd9xb/6S9U/dXefmUArW28wtHU4fecy3eKU
-	MOfPMgic5kNg3ac71TSg8FajsjDFGpz6shtGwxl+5W/H13P0lOEF7FYHiJ1W2+vkGeyGhWahHz3
-	FYu145s1EfjvFifpOTtbloz5lcWA6VhVEi/8SoLt2TIReT2mptor1Dg7CbAZmZ1awBFvQQWtZ3n
-	FCOks2dRHIDk9SeaprEjCJ3nh4+YjJ5PwxobJqRuFOynYpWN35rgibTUuxrwzcAvvUTo5fN4ttO
-	ZlrcT2ilx4VCTSqEAonN96DgM5K+bUxl8WRTlMYY5LoLXTVRpHR1Ak+OyE7HYVB3FxK8wm5oM0Y
-	QBqwW+yhV2vp0DYMDOJVXTIHBVuVO/R1ftBqW0A=
-X-Received: by 2002:a05:600c:8b4c:b0:4a1:fb01:13 with SMTP id 5b1f17b1804b1-4a1fdd15484mr62637735e9.18.1792607997368;
-        Wed, 21 Oct 2026 11:39:57 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a203a447c8sm10641255e9.12.2026.10.21.11.39.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 11:39:56 -0700 (PDT)
-Date: Wed, 21 Oct 2026 20:39:55 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: bpf@vger.kernel.org, andrii@kernel.org, ast@kernel.org,
-	daniel@iogearbox.net, davem@davemloft.net, willemb@google.com,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, horms@kernel.org, liamwisehart@meta.com,
-	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org,
-	netdev@vger.kernel.org, sdf.kernel@gmail.com,
-	yonghong.song@linux.dev, jolsa@kernel.org, kuniyu@google.com,
-	memxor@gmail.com, emil@etsalapatis.com, almagui@kernel.org
-Subject: Re: [PATCH bpf-next v2 1/3] bpf: add bpf_ksock_sendto() kfunc
-Message-ID: <atkG-5eqB8LfVxSa@gmail.com>
-References: <20261020155848.75711-1-mahe.tardy@gmail.com>
- <20261020155848.75711-2-mahe.tardy@gmail.com>
- <CAEf4BzapP4Hng7bO8crK4SLg_PMH33oKo8esFo1ur5-QewNfig@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7207F606A31D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 18:47:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F721F000CE
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 18:47:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792608472;
+	bh=YnDsoLj5+AQd01dBHph+QKt/wDaj4pOQ+Pmx3aP0pWE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PCE2q5W284PVQditrBgCAowG2x6ghrmhq09kRvD8BVhoLfv7Aez8fHZNuOIy5L3Fs
+	 lzQcBMXv7wbjvTZFov3via2YxXqMEiW4tsDXpNLQfu0Opt6WkX50+Jrm7Wxfr4J+PL
+	 Nh9ZzdwPkNrCEBKB0wyLmtrt03pgn/LWq4TusK42J04eoGt9yYkYB7gKxsR9ob2Fur
+	 y93LhTP7lrBpFfIMJMo2PnrRcNonQzYJUpBSuJLr8uFl14X9AJPxsyMULEy9raEaer
+	 T0Eygvi3iDXnmRMjCbw5E19ljt9d1Bhvosx4fWBZi4A3PqtPSnrWm+FyQGnH++Mm1u
+	 UCuWkNKrnzpsw==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-4a77761ff8aso532107fac.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 11:47:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz2OrZEAtThkqXAwzs1kYSU8jqd+3UeJF1KibFkR6dDzlcgcSnIQqmk6Y4LwMezNR5g224jPks=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKdHhYOy2dtIODoTGABQArDxj34lJ2JRuDLZY9F27e/V6cel0Ag
+	Osg1cRnHzZf+x6ch7ZzmJGTQt+OJ0iX0R0wyEKlj41m5yQOmlff9Wcl1noXknCgbMH9kE31ZiHR
+	T/OZgzY8lUmVzpe7NXX6acR83a3qn0Mc=
+X-Received: by 2002:a05:6870:468c:b0:41b:e633:baf4 with SMTP id
+ 586e51a60fabf-4a7dbf43b07mr2060959fac.3.1792608471281; Wed, 21 Oct 2026
+ 11:47:51 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,85 +56,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEf4BzapP4Hng7bO8crK4SLg_PMH33oKo8esFo1ur5-QewNfig@mail.gmail.com>
+References: <20261021180329.26358-1-nick.simo@gmail.com> <20261021180329.26358-4-nick.simo@gmail.com>
+ <CAL4Wiiq6Jy1XPtkrA-Ge2N+voJrE86DWPJp_jXwHJG3ZgMvPaQ@mail.gmail.com>
+In-Reply-To: <CAL4Wiiq6Jy1XPtkrA-Ge2N+voJrE86DWPJp_jXwHJG3ZgMvPaQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Wed, 21 Oct 2026 20:47:40 +0200
+X-Gmail-Original-Message-ID: <CAL4WiirCmk_rZBhaXmmgHSHiUjeBSt5hPoRn6Q+AXUGYVNXRaA@mail.gmail.com>
+X-Gm-Features: AclHuK_w1MCGAcXeLJ8-ObeAgP1aNKiT6XMtPrlEiDBmrYgivjjG-o5TUvwD7FQ
+Message-ID: <CAL4WiirCmk_rZBhaXmmgHSHiUjeBSt5hPoRn6Q+AXUGYVNXRaA@mail.gmail.com>
+Subject: Re: [PATCH net 3/3] ipv6: validate checksum_start before fragmenting
+To: Nick Simpson <nick.simo@gmail.com>
+Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+	Phil Sutter <phil@nwl.cc>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	Jason Xing <kerneljasonxing@gmail.com>, Song Yoong Siang <yoong.siang.song@intel.com>, 
+	Rusty Russell <rusty@rustcorp.com.au>, Max Krasnyansky <maxk@qualcomm.com>, 
+	Sridhar Samudrala <sri@us.ibm.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	bpf@vger.kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 21, 2026 at 10:56:23AM -0700, Andrii Nakryiko wrote:
-> On Tue, Oct 20, 2026 at 8:59 AM Mahe Tardy <mahe.tardy@gmail.com> wrote:
+Le mer. 21 oct. 2026 =C3=A0 20:20, Eric Dumazet <edumazet@kernel.org> a =C3=
+=A9crit :
+>
+> Le mer. 21 oct. 2026 =C3=A0 20:05, Nick Simpson <nick.simo@gmail.com> a =
+=C3=A9crit :
 > >
-> > The motivation is to plumb more of the socket API into ksock, thus
-> > supporting sendto() in addition to send() which makes a lot of sense in
-> > the context of UDP sockets which are the only type currently supported.
-> > This is useful when ksock is used to reply to specific addresses or send
-> > to multiple addresses.
+> > ip6_fragment() and br_ip6_fragment() complete CHECKSUM_PARTIAL skbs wit=
+h
+> > skb_checksum_help() without checking where csum_start points. After
+> > reassembly by nf_defrag_ipv6, the IPv6 header has moved forward by the
+> > 8 bytes of the fragment header while csum_start has not, so a
+> > CHECKSUM_PARTIAL skb from an untrusted source (tun/tap or packet socket=
+s
+> > with a virtio_net_hdr, or AF_XDP TX metadata) can have csum_start insid=
+e
+> > the IPv6 header, and the checksum is then written into a header that th=
+e
+> > forward hook has already accepted. When csum_start lies before the
+> > network header, skb_checksum_help() warns.
 > >
-> > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
-> > ---
-> >  net/core/bpf_ksock.c | 96 +++++++++++++++++++++++++++++++-------------
-> >  1 file changed, 69 insertions(+), 27 deletions(-)
+> > Add the IPv6 counterpart of ip_check_csum_start() from
+> > commit 6785011f8b16 ("ipv4: validate checksum_start before completing
+> > checksum") to the two IPv6 fragmentation paths: refuse to complete a
+> > checksum that starts inside the unfragmentable part of the packet (the
+> > IPv6 header and the extension headers before the fragment header) and
+> > drop the packet instead.
 > >
+> > For IPv4, ip_check_csum_start() is also called from nfnetlink_queue,
+> > xt_CHECKSUM and xfrm_output; their IPv6 counterparts are not changed
+> > here. A reassembled packet that is not fragmented again, such as an
+> > atomic fragment, and an unfragmented packet whose checksum is completed
+> > at egress are not covered either; those have to be handled where the
+> > CHECKSUM_PARTIAL skb is created, or by a check at reassembly time.
+>
+> Then let's do that, instead of adding checks to every consumer.
+>
+> A CHECKSUM_PARTIAL fragment is meaningless: the L4 checksum covers the
+> whole datagram, and our own stack completes it before fragmenting
+> (ip_do_fragment(), ip6_fragment()). Only untrusted injectors produce
+> them. Yet inet_frag_reasm_finish() keeps the reassembled skb
+> CHECKSUM_PARTIAL when all fragments are.
+>
+> Downgrading CHECKSUM_PARTIAL to CHECKSUM_NONE in inet_frag_reasm_finish()
+> covers IPv4, IPv6, nf_defrag_ipv6 (and the bridge path) in one place;
+> the bogus L4 checksum is then verified and the packet dropped.
+>
+>
 
-[...]
+Scratch that suggestion, it would be one more consumer-side check.
 
-> >
-> > -       return ret;
-> > +/**
-> > + * bpf_ksock_sendto() - Send data through a BPF kernel socket to a remote address.
-> > + * @ks:                The BPF kernel socket context. Must be an acquired reference.
-> > + * @data:      Pointer to the data to send.
-> > + * @data__sz:  Size of the data to send.
-> > + * @addr__nullable: Pointer to an IPv4 or IPv6 socket address, or NULL to use
-> > + *                the connected destination.
-> > + * @addr__sz:  Size of the address union, ignored when the address is NULL.
-> > + *
-> > + * Sends data to the specified address, or to the connected destination when
-> > + * the address is NULL, best-effort and nonblocking. This may sleep
-> > + * (kernel_sendmsg), so it can only be called from sleepable BPF programs.
-> > + *
-> > + * Return: Number of bytes sent on success, negative errno on error.
-> > + */
-> > +__bpf_kfunc int bpf_ksock_sendto(struct bpf_ksock *ks, const void *data, u32 data__sz,
-> 
-> This would limit API to fixed-sized data only. Have you considered
-> passing dynptr as a source of data, so you can send a wider variety of
-> data? I don't have a strong opinion whether we should add a separate
-> API or convert this one into dynptr, but I do think that having
-> ability to work with variable-sized data is super useful and should be
-> added early on.
+The fix belongs where CHECKSUM_PARTIAL skbs are created, and Michael
+is already doing this for virtio_net_hdr sources (tun, tap, packet
+sockets, virtio_net):
 
-Oh wow this is really cool that you send this now. I was working this
-afternoon on trying to see if a ksock sendmsg() would make sense, but
-with these static buffer limitations as arguments, it actually didn't.
-I'm not familiar with dynptr so I didn't think about it, but after a
-quick check it looks like it would be a good match with the ksock API!
+https://lore.kernel.org/netdev/cover.1792411304.git.mst@redhat.com/
 
-As I understand, since bpf_ksock_send() is already part of 7.3, it's
-best to not touch it, and having a simple send() available with a
-fixed-size data might make sense.
+In particular "net: resolve uncommon partial checksums at ingress":
+https://lore.kernel.org/netdev/9c08d12b3a7819ae03ded6a154e4f908276e93d4.179=
+2411304.git.mst@redhat.com/
+CHECKSUM_PARTIAL is only kept when csum_start/csum_offset match a
+parsed TCP or UDP header, and fragments are explicitly refused
+(ip_is_fragment(), IP6_FH_F_FRAG): their checksum is completed at
+ingress, before any protocol processing.
 
-But since bpf_ksock_sendto() was just merged, we could make it evolve to
-use dynptr perhaps? How much time do we have for something which was
-merged yesterday to be part of a release? Is it going to be send with
-the 7.4 pull soon?
+Your patch 1/3 applies the same rule to AF_XDP copy mode, and already
+links to Michael's patch.
 
-> 
-> > +                                const union bpf_ksock_addr *addr__nullable,
-> > +                                u32 addr__sz)
-> > +{
-> > +       return ksock_sendto(ks, data, data__sz, addr__nullable, addr__sz);
-> >  }
-> >
-> >  __bpf_kfunc_end_defs();
-> > @@ -255,6 +296,7 @@ BTF_KFUNCS_START(ksock_kfunc_btf_ids)
-> >  BTF_ID_FLAGS(func, bpf_ksock_release, KF_RELEASE)
-> >  BTF_ID_FLAGS(func, bpf_ksock_acquire, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
-> >  BTF_ID_FLAGS(func, bpf_ksock_send, KF_SLEEPABLE)
-> > +BTF_ID_FLAGS(func, bpf_ksock_sendto, KF_SLEEPABLE)
-> >  BTF_KFUNCS_END(ksock_kfunc_btf_ids)
-> >
-> >  #ifdef CONFIG_BPF_LSM
-> > --
-> > 2.43.0
-> >
+With both, no untrusted source can feed a CHECKSUM_PARTIAL fragment
+to reassembly, nor an unfragmented packet with a bogus csum_start, so
+neither this patch nor a reassembly change is needed.
+
+Once the ingress validation is merged, the ip_check_csum_start() calls
+added by commit 6785011f8b16 can be removed as well.
