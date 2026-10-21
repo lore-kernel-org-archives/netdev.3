@@ -1,91 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792598112;
-	b=j6HHpPOwkzbeQJTMD+ljfaP5P3+PRySwf9o/aL9UFLseAa423fLaJxfizNNd/OHmERyE
-	 7+ngQN/0axuKTCkHFEOTexa5pHFKFBx5Q4T8Qz4jcRahWzpQhCERo4nBI9ki8ov4g8zP+
-	 asTFxDFuCNaKM3RJ8stdp78KNpFLsQpoDXcfu3NMSMsrSIOKHTCW1isOx+UffpZHOFXQN
-	 SAyBPzb36G4cHbpkPvWzIjA0+07uYQiyrYjEfFxPJUf2fUkQcQ08S83yM4HCUV1CaIOTy
-	 D9pcgt3oP/YK2l11vEeRAY8EgESS08yOS9UUiBdTQcrEKKjMN67XlaxJQz3X8AjZxHw==
+	t=1792598128;
+	b=RfIOs4neQn7/9Wi55wclGTzcpM6ukW9vPE1mihIJQUoH40lnp62epQgQPl7zFt/DvUtV
+	 Fx/I+277sXiM8DfwaYcSt2nFftaahcaWS0LZdhHL0MmNWr0JtNX9uA0pas58iKosHTeHs
+	 BcF3exT0rmrVBf9DDCva3A4alCQPsPfgDg5u8g8jdikaVY3O3zaolIK5gQUXoxH4nP3cO
+	 3d6I0q48wvcLh5iXLyJd6bimt6fXo64+XVotCrsG020oh8elNUxoYYzWhnq0M8o1ocVDL
+	 7DRLCWvBR7yxgVm4QBi98UiOVtjvj3mylCmhmJY07ZgdtYFgkmXbot7hOY0jU0xfFRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598112;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598128;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=eWU2bVlaO64KjekmMIRHMOpynADD/F8s5EOK5FvSh1I=;
-	b=b7PbWTfDmajRQI8aIrQcLsCTbScERAqX+1hVL1+v2EgHiSNZhY2cNm9S0ZKmmaQ7alQz
-	 YRG0FxCBVBIyTL+q0mUt356U8/tqjpprGym+NB4LcKt1ZDvTFHDmpe3KKxAGi+NIbD6Nq
-	 9SdsjRv6MXpCFr6/Nr/tH8FCGFJgcJuYe0PAfFqSI8umDf/YXSNHtORnUhHjRASuBD6xy
-	 51eBRy60AMWNlCZYlgoHMNPFCuYfN7AjB9kH3scCE6YrBe2nXFk0fFd0/c8p/H/ZlL4L7
-	 qwMddwTMLnexhhBE2YYe82b1sfVOaOtZvLDYGprxsmhmty5x7bdJzvWBxgvgrmIOuVw==
+	bh=XlXnG5YdFZDLjnLxfZKMhexu3MIGr03hairmlo3RpRo=;
+	b=TzN1s3uzAOeL4kMI9vkIlLWGMXm1Pfa5N0xYqKe9Ukl1Z3H66pekxEnL7NMggMH6KG1m
+	 QkrIuToTujub8m8CPZd6NlrkcI+KzIGJBjEqCDFn6bFJCH/rgOcceHyp5I33lL6H+4CHq
+	 y8S8lHDzdfl/CqlaDXjEwInGu634LlZo51ZZImvrqhmUWgccPjs3bOCzCwUxvF0zob5aj
+	 cRvvFzZNZAsUHNBhO9OdU4D6c7C1F2MWvWGjeTqMnk6fi56/HdBD2wzyoAhwthBAVHBFO
+	 Z5ynO5DaoJrUgR4zRpax9maCYX5ggQyPURW8wrLhL+D/5dNu9QIY8YiIU9YoI1L6MGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AGwbTHXu;
-	arc=none smtp.remote-ip=209.85.216.47
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=S5LY7KOU;
+	arc=none smtp.remote-ip=209.85.210.172
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23522606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:55:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23522606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DA8606A320
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:55:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85DA8606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AGwbTHXu
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ab9268d90eso571349a91.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:55:11 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=S5LY7KOU
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a0880a46e7so506966b3a.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:55:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792598111; x=1793202911; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792598128; x=1793202928; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eWU2bVlaO64KjekmMIRHMOpynADD/F8s5EOK5FvSh1I=;
-        b=AGwbTHXuya85RfypvX6CFIjkACpyctue6wii2WjTQ+ldve+tEzx65iAiEC2DbtA+FF
-         IcTT9THDgYhB8F6M+A3Rzz6w6Rumo3JmpE2iEumgv2yxiWY9kaaID1t84QxZPAVQuF44
-         61WDZ9epkpDwWYH8RMfpPPbhBmDaz3ro5rwaL1zhb/Glax+gYYuBnuYMc8dD3ibqkXAY
-         bU7fTfDwBFXFyoBru/RtbNPwifh1CmFH5YGQbLuSTlBKk5snjFABHZgBQvmuPjrwmvVP
-         ETix/cvnewbZae4ZJPxkm4h95Zu/MQcyhg6jOvmNASfKfiw9slFaq4uWh0fQ+0Iq7hNG
-         Y7Ew==
+        bh=XlXnG5YdFZDLjnLxfZKMhexu3MIGr03hairmlo3RpRo=;
+        b=S5LY7KOUChhCVSr1rCRN/9bW/tE+c9V/UFw5uESi1Qwf4TWLNIn7DT6AKaoC1TB40L
+         +xbHHT5KCG/RSPIeKYLo9WuHkfbfrdmCVNc4FyNdflFVdqwBZW8uCRlZrBLkuCJQ1wry
+         hAdSTDFkbCV8U968uKLhPwFixtB7T7xS5LAjqvNJPz7GWmx3aoPF8lynMJeMqw+HLuIG
+         B7FAkbk1btsCSaG6+DO+EH1mRzbXodwFf0Ot4340p5ijHRzau+0uO+SO4LTaE/eXStku
+         idA3Ez10e6Y7GDQL3Kd4/ajlusFcOi4RmwoKVAOS3Zy/h4NKv0j3/lvkf1NDNAvp51CW
+         iulw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792598111; x=1793202911;
+        d=1e100.net; s=20260707; t=1792598128; x=1793202928;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=eWU2bVlaO64KjekmMIRHMOpynADD/F8s5EOK5FvSh1I=;
-        b=nClYdkUV6yqSf37hyskdP58/+IlxU1M+dchmelNdv+w1xTqbGKSrT0oybzKg/4KKd6
-         HZKWmrWNt+4KpAwghhUsUD6KfkrVQcmqyGs3DsJeB/mKhw6sysM5o0+w/TGI/8+cD514
-         sIhnMYCafY2cxHy1O3T69SxpXJX/LkSHYJ03oDKrVlPJe+p26lYXPBcHlL2d1n9Za889
-         1KirmMdkxGFSxkI0j3teFVYxEFZltmU/OqP+39FE/m71+LsHkpdoV0kIZlYJyAcK/vUv
-         jC2I7GWYifI/HroznCfc1G6p8gw0W78YDz1ntysAbkOyctsQ1eBPTYhWyu9NWHtKFBxu
-         A35A==
-X-Gm-Message-State: AFq9FYJBI2RtPrW3j12T6GTbXY/vrNW4RetqrkaL6v4n3MABXnoQPCkb
-	ZxOQ0bPeJYnSBenIuOHvcWpM7M1exrPUCi7kL1QZVtcxj1iEatRjci8l
-X-Gm-Gg: AYBFou02PUc/adVsF4Gk97KR1+f/9QmFAlyrbr66CC72tVfpyzPqWxb4B3ZxpyCO5r3
-	rFtbnLmCOsbww3rJAH+rt5zjq0uymTChI65W2Y1f0yz7fjZjYNID3D7DLlalc7w7Sa4HfvIEQp7
-	cz9//omHGRTXAIzeUWiN+KUvscpXv18eh04Z+vlPmhPopTYAo5VUpDhJXMTM1CBkP+wmbEQGE31
-	ik0ed4uqfRO2WfvksqhZf9QNTs56ZBjZ0pegLV4DG4pYW2e3mC6n+0+cgio+VmoJNo+XatrmWeh
-	DlCe87E73VWWVQaofGQL4bHBMVY9Oxoe3PdjIVFkBr8rIKlQ27bnZkqtDpQPEmLf3AvCzajUyma
-	2gFgLsyx9NbBpQTYPWmwaMJ2D3RFHdtB+NYFo7J6MqD2PBxkzGqIA7o1iRZqFoKoGrLgEBFnj6m
-	WvNK1lRhyv70ITYxwllfX0iBEWEYQObpkyvqXnEch3W8WVQN8oXY/Xy1m2R3yDPXoZqlj7BvTnQ
-	uDPYesGeKqBbTUyOuNPCk6PG937g113l5MXVcliUo3Rs0JLFD3o/MeCaWI8RbBkD2v+1CEPEUeE
-	GvsFvoqq47uisG+vwDKHrS9UKdMfRCN6eiUItm+FbI7JkXpyAC8UztN5jG8=
-X-Received: by 2002:a17:90b:3cc7:b0:3ac:d19e:85f1 with SMTP id 98e67ed59e1d1-3ad86d7e7b9mr1991380a91.53.1792598111346;
-        Wed, 21 Oct 2026 08:55:11 -0700 (PDT)
-Received: from localhost.localdomain (69-172-67-073.static.imsbiz.com. [69.172.67.73])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada49544f1sm60771a91.16.2026.10.21.08.55.09
+        bh=XlXnG5YdFZDLjnLxfZKMhexu3MIGr03hairmlo3RpRo=;
+        b=YaqcT03GZP6+An/fGAa9so5vzWxFwTHwzIh4y7D1ityO/TwqqSNhWWpvf0hD1iIjQA
+         Os6h/2x3w+E8md+5dxTOblxu6gSToaVp7WZIxcQihsMVE58XG4KIGrWvugNIk+KfORYy
+         nOQ+KZNB93C6/IWjYgDxtQe/F8XAN6i3h6AzhyPHGGH8f8lbtdX7nAJn0iiTdtVDpzpX
+         d+HjzSwU8HY7Ein05ndCYATrvRhJLgpePa+8O+xmmlUoEcX5Nrw9xgG0SV35vINGlEzn
+         r8HSsaYvLmalf6nJHE3qoLerfpedD0n06C1co8X86ym8Oi4wJc9EKoEYP3VlrXHbz6Q0
+         REiA==
+X-Gm-Message-State: AFq9FYJ7h46850rBnODKZnNfoModKWh61+dD76i56ZHQt6BwB2q3YIgI
+	x5melBJjolJeTMr67lmanYn8Q0GAvI3x2zeN8qjXFdV62YfVloGLlYtY
+X-Gm-Gg: AYBFou1FiG/59rK8KBr3Cnex5XiGcQ8bXLTVxJg4AYU2WioxC0PHlkmKQueRpDImWIv
+	cp5MTo9fJWcvZANRUcu1B/oxBM7ku31cLIABJXTu76OoNYQZuS86/l+22eR/T1yLY8a/21z59sa
+	Xyb7sVlOOhVhxj/5o9LPzhNJfSXSU4GOKKsAQfF/D4Q/2V7NRJfK6J/eopTPVuT/GkfsNmN/BcK
+	XwufT1mVjlkwMt6God7WWm7sJXEt7S5HlhjRQz6qe1UYShOlppedgqDVDkIzQ9Hnn6EEJkwHqcd
+	11L8IcR0+08XykwdUN/HG+zPbsxYD/l3qmfj6N31ipUH2WYduGi7uaRCIP8YnyG//k3qpyIBJ6D
+	E3tw0gYZorYYSmZblKpH4seXR016IYDBVi8yvSio3NYaY9JFdfQedezyNN6DNgd/m+OdNsczQyH
+	vc9NQ5633TRrXc0IL3KIEq5SN2r7/PeL9pWvaxjKy6BMiSrshcKFgqf/T/ab5+jYuw5CJ14vpY5
+	ZGrwozUVm1BVAHVNLrdEWEE3OlxdUWRBgMqGedJHJ+B+qKcJ/DAUDEip2vPgbfWU7l/56e0iorL
+	OktWR4geOcMg7sky/tCSzPf0AuGgxg==
+X-Received: by 2002:a05:6a00:aa0b:b0:89e:db6c:f199 with SMTP id d2e1a72fcca58-8a089f38e30mr1459600b3a.14.1792598127715;
+        Wed, 21 Oct 2026 08:55:27 -0700 (PDT)
+Received: from localhost.localdomain ([218.253.131.218])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a08960fa88sm1077806b3a.53.2026.10.21.08.55.25
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 08:55:10 -0700 (PDT)
+        Wed, 21 Oct 2026 08:55:27 -0700 (PDT)
 From: Dudu Lu <phx0fer@gmail.com>
 To: davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com
 Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net: reject flow_limit_table_len values below 2
-Date: Wed, 21 Oct 2026 23:55:05 +0800
-Message-Id: <20261021155505.67208-1-phx0fer@gmail.com>
+Subject: [PATCH net] net-sysfs: reject a one-entry RPS flow table
+Date: Wed, 21 Oct 2026 23:55:22 +0800
+Message-Id: <20261021155522.67521-1-phx0fer@gmail.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,28 +99,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-flow_limit_table_len_sysctl() rejects non-powers-of-two but accepts 1,
-which is 2^0.  A length of 1 then gives log_buckets = ilog2(1) = 0, and
-skb_flow_limit() computes hash_32(hash, 0):
+store_rps_dev_flow_table_cnt() accepts rps_flow_cnt == 1.  For count == 1
+the round-up loop leaves mask == 0, which is stored as log == 0 in the
+tag (tag_ptr |= ilog2(mask) + 1).  get_rps_cpu() then calls
+rfs_slot() -> hash_32(hash, rps_tag_to_log(tag_ptr)) with log == 0:
 
   include/linux/hash.h:68
 	return __hash_32(val) >> (32 - bits);   /* bits == 0 -> shift by 32 */
 
-A shift by 32 is undefined and, on arm64/x86, the "hash" becomes the full
-32-bit product val * GOLDEN_RATIO_32 -- an unbounded index into a
-buckets[] flex array that is one byte long inside a 289-byte allocation:
+The shift by 32 is undefined and yields the full 32-bit hash, which is
+used to index the one-entry rps_dev_flow[] table unchecked:
 
   UBSAN: shift-out-of-bounds in ./include/linux/hash.h:68:24
   shift exponent 32 is too large for 32-bit type 'unsigned int'
    __ubsan_handle_shift_out_of_bounds+0x11c/0x208
-   enqueue_to_backlog+0xbe4/0xc44
-   netif_rx_internal+0x130/0x4d4
+   get_rps_cpu+0x12fc/0x1344
+   netif_rx_internal+0x1e0/0x4d4
 
-The subsequent read-modify-write at dev.c:5443-5446 is an out-of-bounds
-write into the allocation (also observed as use-after-free).  Require at
-least two buckets so log_buckets is never 0.
+rps_dev_flow[] is then read (rflow->cpu) and written (last_qtail) out of
+bounds on the packet path.  Require at least two entries.
 
-Fixes: 99bbc7074190 ("rps: selective flow shedding during softnet overflow")
+Fixes: a435163d3100 ("net-sysfs: use rps_tag_ptr and remove metadata from rps_dev_flow_table")
 Assisted-by: LLM
 Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
@@ -141,8 +140,7 @@ Documentation/process/security-bugs.rst; it is available on request.
 
 Triggering conditions
 ---------------------
-root (flow_limit_table_len and netdev_max_backlog live only in the init-net
-net_core_table, absent from the netns table).
+CAP_NET_ADMIN to write rps_flow_cnt.
 
 Notes
 -----
@@ -151,24 +149,26 @@ Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
 it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
 0 warnings.
 
- net/core/sysctl_net_core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/core/net-sysfs.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index eb35da3556f4..bb0fa69f94f5 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -283,7 +283,12 @@ static int flow_limit_table_len_sysctl(const struct ctl_table *table, int write,
- 	ptr = table->data;
- 	old = *ptr;
- 	ret = proc_dointvec(table, write, buffer, lenp, ppos);
--	if (!ret && write && !is_power_of_2(*ptr)) {
-+	/* A length of 1 is a power of two but gives log_buckets == 0,
-+	 * which makes skb_flow_limit() compute hash_32(hash, 0) -- a
-+	 * shift by 32 -- and index the one-byte buckets[] array with the
-+	 * full 32-bit hash.  Require at least two buckets.
-+	 */
-+	if (!ret && write && (*ptr < 2 || !is_power_of_2(*ptr))) {
- 		*ptr = old;
- 		ret = -EINVAL;
- 	}
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 352173df7578..038f7930544f 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -1088,6 +1088,15 @@ static ssize_t store_rps_dev_flow_table_cnt(struct netdev_rx_queue *queue,
+ 		while ((mask | (mask >> 1)) != mask)
+ 			mask |= (mask >> 1);
+ 
++		/* A one-entry table rounds up to mask == 0, which encodes
++		 * log == 0 in the tag.  get_rps_cpu() then computes
++		 * hash_32(hash, 0) -- a shift by 32 -- and indexes the
++		 * one-entry rps_dev_flow[] with the full 32-bit hash.
++		 * Require at least two entries.
++		 */
++		if (!mask)
++			return -EINVAL;
++
+ 		/* Do not accept too large tables. */
+ 		if (mask > (INT_MAX / sizeof(*table) - 1))
+ 			return -EINVAL;
