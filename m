@@ -1,73 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792604143;
-	b=ErQaywkDOnl9/96yH+YcL5gsz/EfcuJcDiDGyaWL4nHkxpWNUF8CWTl4cpPFsJ9k7QsS
-	 5PfbrXls19P+6PFb1rDvqJ2QrU0mnBfijRFfzrxflokqtynVUVKs8j576++ffxEw9alC8
-	 2xqBEe1GEIyetPbvM7DI1R96f550BKE/IYhvfuVK5tEHVfatRxzgbFy8maSj650QO0EH1
-	 buX9Yqlyc/1OAgRUrACl+cmu0IG/WEynx+3nRffGsts/pFPjIQU/wlQlLd3UD0o/jbQ/s
-	 J+S8yHHbIe+20wFLwC+C2PLKYxzepj4qKaFz0nSSFlT0YfLBVVZADmLYOWg5vSuB21Q==
+	t=1792604292;
+	b=Xf+3RLRKlSXgMrOFispuyesmfGCUMabfa08dokoTPDBz1bXv9hP+0ZgM0hwxKakioUc9
+	 Lwy7H2qug3NE0hW9kY5fFfcDVPBdYAZ+pkXkjI6eNWP8JXae3lTDJnpv5Umg0ykk+Amii
+	 b4T0DwgevcoThn0Ur+X//P2iZcsFIrRAdSrGPjz45MLsY5265RoMK1q+mJEml6F9aCwQQ
+	 TsO5UIdEm6CnVxopNkx06WmRi+NdAl7C4ca1QkBz/IHiAQMxJuJ4yU2PJdSENJAY2Ht3r
+	 56h2/W4IGWbZIimtXXBT1FZDop0q7oe9g8P+xQEt6BZu+4GGUguerrNKBbMA9lFyoKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792604143;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=nZQZSw18SACZ1al6YiSFkYg9oVM20D+TpFhKEJVNqeo=;
-	b=LVD/46PfD/Qj5d3j0GuEOFC99PVij7Y+2w3jyoFuqF/zzNCtAhDS1FLGi9Ixp2mmokmu
-	 7prfMofmrVfkv+zJW3CDed6jHMNrZ1ryODLX5mCCPqJQbI/gt8+ZJEdrAbFJi4e8LVvOn
-	 aPRSLHSJuJETN1fsd9Z/Fgs5qmMbkGB7ZOrgWxXcSb2FX3ImgTXQfkV5pE3kdUlnkTZp0
-	 WL7ST+4JBI0oDVKOqEOiSn2ociWYchbrHlgorRjlsxVctua0MCbR9Qe0lEPwZ9o7J8F5Y
-	 ahF1Ombo49ijKToIeUXJf6c6ZQpv2iGlxpe9SZaP1jCb38BS7LY1+HjsJEx9toMM/dQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792604292;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=ZpL07KDDvB0JLojCSM2iYx41Asq0nHhWJ0VD/dVjgwU=;
+	b=codC1a141cejIrVnQbjyxaAk060fkLfZpS8L+C4HrpEJ7O0c9hPlK3nOKjmaslpjXAyp
+	 4yKEaM2rzHmx0GYVB9+wCh2codLqQtqkKpE3roBJGZu/5yeqx5ALVWN3jy5GkEYPSYS5x
+	 1T7p04nGM4QxqrhguqE0WgQKCt5iBMTkrtu19WZiBa7SIdnI6F1s5Hx3kqUAeka6lqrBh
+	 ZiNrRZK6yqDueosXPUzZ0JlCfQPCqBFjB+Oz78bWLNOEdlzNTP34GAMVSOYPok/9d/oF2
+	 gWRL541HlQtRvTWMfZSUA5QiMpJzsdcMLysxHBRmma/poJCQlmfqUjOwVhe/LFQKj+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gtHPyv2D;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=toxicpanda.com;
+	spf=pass smtp.mailfrom=toxicpanda.com;
+	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=mMiOgPrg;
+	arc=none smtp.remote-ip=209.85.219.54
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE56606A31B;
-	Wed, 21 Oct 2026 17:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D540606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 17:38:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D540606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gtHPyv2D
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7821F000C8;
-	Wed, 21 Oct 2026 17:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792604142;
-	bh=nZQZSw18SACZ1al6YiSFkYg9oVM20D+TpFhKEJVNqeo=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=gtHPyv2DytAGwXwqP6AuPtrURaFm2Es6e2+bG+60zzEQjzkkjCH2xhWwDE3vMuH+W
-	 /njNlq5bKa1C0QFRO5yVl3CYVzjJuumbgjChgiKa5cNuoBqQPx3tzAXdWq2jpC+7y4
-	 xfZDP8ctYNyBUsoHqGnqbHyKWFyiydtg2UVaHKz1bxT0eH2yeW7iceeNsx9xDvff0D
-	 d4QWmsRgnZJm8URGCYwD8psqQME5NT4H5VD3SIk89SsgIA6HMZZEAsCYnJEPLVse/v
-	 1178n3snkCX5UTsdJTmWorxjZ/Nm5yhJmvMW7+8VBnvSRDFL7n1GBpZxztin4LJw2Z
-	 dpIDU4fmdMHjg==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 05E1FF40069;
-	Wed, 21 Oct 2026 13:35:41 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Wed, 21 Oct 2026 13:35:41 -0400
-X-ME-Sender: <xms:7PfYatFbK3SGvkv1PZ5WJiKqbnltKgPHrFocaFLc9JUp-IAv1dxn3A>
-    <xme:7PfYatKxLinDI60CCDCNz6n-Sj1DQX516hiu7qtOg8hUKZlVb4_0cJO4J4axVu7QJ
-    n1c5qECWdS6ItzXnr6A1UuwHQpES3rw0oSxFPHU6JXFRfYZownwzmuv>
-X-ME-Proxy-Cause: dmFkZTGCRjlnSR8Neg2mpGTDvJvFQ+WyF5lNldIB0q4zon/r5UxQ070SLuVQHGmuL/1IQs
-    hwZ/xhsfszkwm1t5IL5077RE9E1CmNJeGs5M0heUIqhUPsiPorYZOAoMMquElo45vQkPAL
-    5o6E0JGmgCcNf4/b7AK7NvmWD3X8w88YX8WwNKFCy2mAPFdtZUSubNdlIZYjAp45PwEKqJ
-    i3UG1z5Zs2Q6j+WxyzADnx++ZMd9/Av6U2d1l0Maysg4LiGWlPSZs2/UbKUPa/Sl9zQZru
-    JKCpo88uCIHH/dHiqwxA1Rv195n9u+MHvTsKxE7AJcpg1u+K44QfQeHXoE0mwvDOxUQdsz
-    OHmTRf4blfvfR3Bk+u0TWU/xBbokz/9rHk5FCnl/2PEY0GqpE8jafPjgMx2t9fOQOJifyb
-    OvUSDTZHBf0u1XXyfa1kBlP2Boe47OSRAIwc9jb99f+EMW67C7764RfA5PznCwLRSZ9f/o
-    OqZSXZnbCIdxRw/7VnpgCAqdpuDhD+HX6ju96Wrn7XD7EubQVkBsAIh+oYZKgKtNtPPOCs
-    t0TXsHLIYfOm/HdEysB64ZHxkNQcWRBrSFhbbsvaJxnVRZ1lGQHczXsHXxYjzTZbwDN6kx
-    XWhWdnja+2FHBWi51pwBJFQahQp7RP95auTW9R065CD/aDZKZ4I1gRWDnU2w
-X-ME-Proxy: <xmx:7PfYatVD__8wXb41zYEe29XHtozznhOzv0MZZN1eY7p2KicO12w-DA>
-    <xmx:7ffYaqyWNau02205DPQuCdlHluDhf9_AFQPdUjs5A-o56NnLQ2GlIQ>
-    <xmx:7ffYat4ndxHHVQANfVp63WjkU7APGZB5e8ZcmmUrAQOmxScV7dZNNg>
-    <xmx:7ffYash0_tdrm5M8iKwj5F7TeVZI76mm4tQp4HL6Y-vsbGuMimeBwA>
-    <xmx:7ffYaohOZRNYEwZe0HcPVW550R2avMTr5rBAQvWHh4KFch9VYCrntV3W>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id D6715782738; Wed, 21 Oct 2026 13:35:40 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=mMiOgPrg
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-917a6dccc60so1203156d6.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:38:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda.com; s=google; t=1792604291; x=1793209091; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ZpL07KDDvB0JLojCSM2iYx41Asq0nHhWJ0VD/dVjgwU=;
+        b=mMiOgPrgNzqKNXmYt8A83QEFWXZOMSxa18d4faFbG7kl3lGzDx/C71M0pWmnWIYuzg
+         a7Zpc+eHncuWDIJKhjdz7xlpwBKCm8lXGEFOUio2lhgwW/pIL9sSGkHErWdyttr3f5eY
+         wXSAKCMLO6SXGO/F8kNtreUlCIonTxXIyxoESqR4EGuLg3Sh9IwCu/gh+PGClITYNQHe
+         sB05LRiQ3IYBrl8jlDVADHq04tWSHo4X2PTxCQ5BMPHomjDt9lkDAgkMbdGqNE3umb/a
+         BeVC77pIT/PXcxLzhyj6oLfgdBHBJG4XtAXZawY9Ui9dxU8L2MX8H6W6NuquZPuLbiST
+         cyhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792604291; x=1793209091;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ZpL07KDDvB0JLojCSM2iYx41Asq0nHhWJ0VD/dVjgwU=;
+        b=biUc0iTRfxzDVkGMkkfEy3XVxP0m3WMvEEw+xDc9AAS0bnIeR65OdS9a+VQ6anbkmV
+         vfGb2/85EVNCTvEMVPGocLRGFNU7g1VTVladNgQTFtKWAq38RscNdpFyWBJ3LwL/9t2L
+         bWzTtr2ILpsOdGQTCBQYnmkJmoh8i5AdbyTTU+oOw4Mnprx8aoBX4AEuCBxyQpFiP1pq
+         5LwmCEBc9fHA8BVmOyUHsicDRZR/kKDkrU6UpA2N7uiiHUubwkKdpDiy65EYDyzIsVj9
+         Oo4Idnek8QFP0a08KIt1hfz12iRkGjiZZaYiVOs4/9yFClLM8uCtm3Aw2fA73ceXPxKH
+         n54w==
+X-Gm-Message-State: AFq9FYJ/qFigMGx1YqPrciacjjii3C9fclYrKTAY7FyWgCqIFf3jbZsg
+	8BD1LqTtJFBzXhePpL6bi2IVrcNmTeKCmH5//m8pnnotzXX0XA4Y4ixHTpWrD23LUag=
+X-Gm-Gg: AYBFou0m/PgG2xrAY/dkk6RHvjxOJ299n76BVdGasTU5/Bugp7slltzMrAQlR5GJC65
+	zzG3UcU2+LroitiBbAlQSkpyloBWV6gzBk+2VIWCOm4j7chMZN+6tXPxm+CV5KvqN3T3wloSVo8
+	tjL8ayEq/xAl2c66rlcLbeBKJwp9cjP1vksJJ7e/9TKiYOP/CeaJThKe40bOTLVHKaU56GUsI7g
+	3kqK5ohHyrDD8TivK7+Tp+1IXoOgrVYRO3/uJQ8A9Hx1ORhdt4MsoL92vsM+h2bdukf9fv+pdfM
+	LHh/u97BTRk33hzZCBj7hCFcUmOHHFmAhVANcbnXF7R/e4rn9LmqvXueJ4ztYJFdtWG9cPdAeEd
+	p0iFd3pxIfVt7EvHpMXZcGuJ1GQV9XQn0ojHMEWY5rEJyj4iz31UgJKq1gOWwXTIkiW0Iromtoe
+	bSijdxzOyx3I3fWB3XYz0fEzBNBy0CogcLSh1uAu/eMEZktwuROdGu4udjVa1eYNB9rBZu2IlEl
+	HeRU908i3cSJNhvbJKxYRjaMFAdtKcJ9zAygOg9oDm7WtSGgTz69iqufiJ4+LFFT5kB0XgmXipC
+	JuGD7kVyBgav7iUN1Q==
+X-Received: by 2002:ad4:5d6c:0:b0:914:40f4:d4b9 with SMTP id 6a1803df08f44-91c23247957mr871416d6.12.1792604290972;
+        Wed, 21 Oct 2026 10:38:10 -0700 (PDT)
+Received: from toxicpanda.com ([153.61.196.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c18d79a36sm15125286d6.44.2026.10.21.10.38.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 10:38:07 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Wed, 21 Oct 2026 17:37:24 +0000
+Subject: [PATCH net] net/mlx5e: Fix stalled channels with threaded NAPI
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,66 +90,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AwLsEl3CooH3
-Date: Wed, 21 Oct 2026 13:35:20 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Jan Koester" <jan.koester@tuxist.de>
-Cc: "Christian Brauner" <brauner@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Serge E. Hallyn" <serge@hallyn.com>, "Jan Kara" <jack@suse.cz>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, "Paul Moore" <paul@paul-moore.com>,
- "Arnd Bergmann" <arnd@arndb.de>, linux-fsdevel@vger.kernel.org,
- linux-api@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- netdev@vger.kernel.org, audit@vger.kernel.org, keyrings@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <fd20b840-350e-469c-9fd2-008fa0ded62a@slotpi15m67>
-In-Reply-To: 
- <f444dffc8e6bf98bf44c02456adc2de40e4ecd95.1792552161.git.jan.koester@tuxist.de>
-References: <cover.1792552161.git.jan.koester@tuxist.de>
- <f444dffc8e6bf98bf44c02456adc2de40e4ecd95.1792552161.git.jan.koester@tuxist.de>
-Subject: Re: [RFC PATCH v2 40/41] nfsd, nfs: carry UUID and GUID owners as their text
- form
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261021-b4-mlx5e-threaded-napi-stall-v1-1-d719c17b3ec4@toxicpanda.com>
+X-B4-Tracking: v=1; b=H4sIAFP42GoC/3WNQQ7CIBBFr9LM2omFYEm8inExwCgYxAaoadL07
+ oKuXb6Xn/c3KJwDFzgPG2R+hxJeqYE4DGA9pTtjcI1BjnISoxRoFD7jemKsPjM5dphoDlgqxYj
+ ajSSU1ZNWDlpiznwL6zd/gcQVrj9ZFvNgW3u4zwwVRpMpWd9Vx+PfE9j3DzT0O9m2AAAA
+X-Change-ID: 20261021-b4-mlx5e-threaded-napi-stall-7d0a14c7674d
+To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+ Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+ Josef Bacik <josef@toxicpanda.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openssh-sha256; t=1792604274; l=3889;
+ i=josef@toxicpanda.com; h=from:subject:message-id;
+ bh=qElMGrxeAGeukURkquwi/PR2v1Qn9tNPTt6tEdR0tHI=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
+ JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QC0vkVXx9j9CX12TOZHH20weU7r3Ab2olSeV8e7W0srpTDnyOKmO9p1mltiRKVxjHlIzAgkO0aH
+ zT4FoaFoKKgQ=
+X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
+ fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
 
-On 10/20/26 11:16 PM, Jan Koester wrote:
-> Encode such an id as its text form -- "xxxxxxxx-xxxx-xxxx-xxxx-
-> xxxxxxxxxxxx" for a UUID, the same in braces for a GUID -- in both
-> directions on the server and the client, and take such a string (it
-> has no '@', so it can't be a user@domain name) as that id again.
+With threaded NAPI an mlx5e channel can stop receiving when a burst of
+traffic ends. It stays dead for minutes on an idle machine, while the
+connections hashed to it time out.
 
-A bare UUID in an owner, owner_group, or ACE 'who' string is a new
-owner-string syntax for NFSv4, one that only Linux would recognize.
-Thus it isn't interoperable with other NFSv4 stacks as proposed
-here.
+When mlx5e_napi_poll() has more to do, it checks that it runs on a CPU of
+its interrupt's affinity mask. If it does not, it takes the affinity to
+have been changed: it completes the NAPI after at most budget - 1 packets
+and arms the CQs, so that the next interrupt moves the poll to the new CPU.
 
-RFC 8881 Section 5.9 says a string without an '@' that is not a
-decimal number means no translation was available and the receiver
-"should not use that string as a basis for translation into its
-own internal format." RFC 8000 Section 6.1 forbids bare numeric
-ids in multi-domain deployments because they collide; the same
-applies to bare UUIDs, and more so to GUIDs.
+A NAPI thread runs wherever the scheduler puts it, so with threaded NAPI a
+busy queue takes this path at nearly every poll. That costs an interrupt
+for every 64 packets. Worse, it counts on an interrupt for the CQEs that
+are still in the CQ when it is armed, and none comes: the next event is
+raised by the next new completion. While packets keep arriving this goes
+unnoticed. When a flood stops, what is in the CQ stays there, and is worked
+off one poll of 64 packets per new arrival. If the RQ has run dry as well,
+arrivals are dropped (rx_out_of_buffer) and bring no completion either.
 
-If you are serious about pursuing this, you'll have to start by
-raising the proposed wire format on nfsv4@ietf.org before the
-Linux kernel's NFS stack commits to it.
+Seen on a 50 Gbit/s port (firmware 22.47.1088) with 63 channels, threaded
+NAPI and rx-usecs 64: a CPU-bound task bound to each of the 128 CPUs and
+32 Gbit/s of UDP in 8 flows for 7 seconds, then both stopped. After the
+second round one channel had 0 polls and 0 events for 150 seconds on an
+idle machine, while TCP connections hashed to it timed out and
+rx_out_of_buffer counted their SYNs. Later arrivals took it 16 polls and
+1018 packets further, it stood still again for 14 seconds, and another 93
+polls and 5917 packets emptied it. In a longer test 22 of 48 iperf3 runs
+failed with "unable to connect stream: Connection timed out", with no ping
+to the same address lost.
 
-With nfs4_disable_idmapping and AUTH_SYS, numeric_name_to_id() and
-encode_ascii_id() handle decimal ids in the kernel because there is
-nothing to look up. Recognizing the text form in that branch only
-would be the natural analogue once the format is agreed. Everything
-else should go through the idmapper: extend the nametoid/idtoname
-channels and the client keyring upcall to carry a 128-bit id, and
-let rpc.idmapd and nfsidmap decide which strings map to which ids.
-As written, the UUID check runs before idmapd for every name and
-auth flavor, bypassing the cache and any site policy.
+i40e and iavf force an interrupt at this point, and mlx5e does for XSK.
+Doing that here would cure the stall and keep the interrupt per 64 packets.
 
-So my general preference for NFSv4 would be to pass the new format
-up to the user space idmapper instead of handling these in-kernel
-with no opportunity to apply local policy.
+Fix by going on polling when the NAPI is threaded. With that, 8 of 8
+rounds leave every channel alive, ch_aff_change stays 0, rx_out_of_buffer
+does not move once the flood is over, none of the 48 runs fails, and the
+interrupts taken during the flood halve.
 
+Fixes: 29863d41bb6e ("net: implement threaded-able napi poll loop support")
+Assisted-by: LLM
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+I hit this while comparing threaded NAPI with softirq on two bare metal
+machines.  The runs in the changelog are from a 7.3-rc5 based kernel, with
+and without this change.  The patch applies to net unchanged, there I've
+only compiled it.
 
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+I don't have the PRM, so "arming the CQ raises no event for the CQEs that
+are already there" is what the counters showed and not something I checked
+against the documentation.
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+index 185105606469..3142e90e68ce 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
+@@ -207,7 +207,14 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
+ 				rq);
+ 
+ 	if (busy) {
+-		if (likely(mlx5e_channel_no_affinity_change(c))) {
++		/* A NAPI thread runs where the scheduler puts it, which says
++		 * nothing about the affinity of the interrupt. Completing here
++		 * would leave the CQEs that are pending to the next interrupt,
++		 * and arming the CQs raises none for those, only for a new
++		 * completion.
++		 */
++		if (likely(mlx5e_channel_no_affinity_change(c)) ||
++		    test_bit(NAPI_STATE_THREADED, &napi->state)) {
+ 			work_done = budget;
+ 			goto out;
+ 		}
+
+---
+base-commit: abeacca61eea4f6803df4a595b656ea45c2d3249
+change-id: 20261021-b4-mlx5e-threaded-napi-stall-7d0a14c7674d
+
