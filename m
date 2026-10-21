@@ -1,71 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=31.44.14.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792558424;
-	b=grBcmKL0T0dpUNjb+ij4kdaOcZVgsOEx/MoJBN29Fq5qGXEMWPyYKIDj1a0L9tgt5gRk
-	 M5Z0hdPaB2A40se+H8aDiMVrz5f5jrY/8XvNVRUmc31O4rWvRjZF3e/OtIaFf7fcrxpgV
-	 B7hKEqUQuJGX5ya2sVFIj16GQJtV3+/T802gBJDFfQCe1y5aWqSMrmGsiXraWDsqgs4Vg
-	 bWE6nqH5QIqxDWhs5UpAcwp2Ehu2CqJzqWVG4GIyfFX6hTvXhSXiOi4/GsM1N5USOHIUt
-	 ENA+8c8bvCyO6FEyJ0vHoXVJfstFMQabq+5A13UIK7N642Vz0imXjxa1x8XvCxG0lRw==
+	t=1792559695;
+	b=DgMZigUtgyr3BkBFyge6mVPkSMJnRlM0424lzd0QN/xR6mkCfFL74r6y4TalmsqlCvQl
+	 IRIjb0fiqnxtoUVifhN1Vzck6L80cRuzGdeR1DnLjIzogwJim/BGpZrZQxOapUsMiGH/i
+	 5xGLCP6AT2LOBMzUH2DceQoGx9TP77W52EYq/c7ZShEzpUij+rFmkgpW+0sIKuui+XjtK
+	 g5OFjH592MhDzUe9xOPCaYrTbPlXBGY5W6yyQ1i9otiHvVRUk0sQk6BMUK03lA5DB2qC2
+	 Wv57DYG5LCfj2CyBfaY4vLJPeSzvlO2CggL0oclmMel7ULkXfnd+RedFjPSUIDR1ttg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792558424;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=fY7ZTK1khhR9HlmoUz9qcKC7kwN/J1ah6/E5o6LMewQ=;
-	b=uxjoY1n1cG6b7MdZVTFF2tB0DMdMHAZ1BxKkqUWtwI6m3A4opk19rBX/DKd46p4mhfMR
-	 sulTSIyTpgQg9joQPkvm4vvWdWN4c2HPqW149Jlb9RDuCMZ/T5NRhYm59i27dxHSGubzS
-	 o8Sc6Ghdb//C2YGbznbUeOwQQwVRJ0P2H30bRgXSM9W/yJ79WzuaWzRzRxg4lWLCgDDMc
-	 LHwulX61bbGEK3mfutWCcZI9LSSdPgTY/WgauhjZgj1oJevWZlv+xC+PKjCXScyBWn45V
-	 wUj4O/huH1XVHORolZCJTYLhn12YDcIiShWlreaCexH+f3Nqp/ZfjfIR0ULdOUJzCbA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792559695;
+	h=DMARC-Filter:Received:Received:X-Yandex-Fwd:DKIM-Signature:Received:
+	 From:To:Cc:In-Reply-To:References:Subject:MIME-Version:X-Mailer:Date:
+	 Message-Id:Content-Transfer-Encoding:Content-Type;
+	bh=jqWlW6zqb5Tv2gMRTIRS9fn3wqc6RPqo/Vw3J/4+54M=;
+	b=mBaM596MVg2VWXnTJahxrkr9Vu34JuHGsG8IUQd3cPTZz9ICBMseUkoO5nRIl0hOVTZg
+	 hW3BWZhq0ruJ2ZNeA8W/R/kf/KhTFz44Fp71wS9RWa3X0mx/k59sYWVD9KI20piY8Adaw
+	 H3NQm6HhR2azZzsuyl+89PpsghAwql2jusrprzYvNmH7g9YoSUucw1Ig5Fr48hKxyCsRf
+	 a8YkDRUD/RV48nBi7wG7/kamt9HzhIEyyLRAvFfSIpArCY/RSr9IlMFpAug9JZaxqPJJa
+	 E6PV+XcFY9wqqcfy5O3w8PoIgfZPriMVPRd+fqV6O5Dn0Qcq5uzOY0Gf61UuHM/y/1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eMLszvUQ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=0upti.me;
+	spf=pass smtp.mailfrom=0upti.me;
+	dkim=pass header.d=0upti.me header.i=@0upti.me header.a=rsa-sha256 header.s=mail header.b=dWOYFKWS;
+	arc=none smtp.remote-ip=31.44.14.18
+Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [31.44.14.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E54F606A319;
-	Wed, 21 Oct 2026 04:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EB2606A319;
+	Wed, 21 Oct 2026 05:14:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2EB2606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eMLszvUQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532D81F000C9;
-	Wed, 21 Oct 2026 04:53:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792558423;
-	bh=fY7ZTK1khhR9HlmoUz9qcKC7kwN/J1ah6/E5o6LMewQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eMLszvUQs7ukeFBPwrJfmZWfGvBTWdq70mWd/uZXoS+bgyJHJ9rwlonaRNdYiSOqH
-	 iLs+tPhNqfnvqH8R5g5MbzU688cdJjc+FxOhbnx6r+Tib8sd0Eu30SeBpeMOdavbYp
-	 JacSgzHAaWwm/j0EjD7R+ZfsbSwit7aYXTYaKLjhenT8/RAOOm195QBGrRfFodO+4D
-	 0/0IXJHsogxgYgYYBwo3uWrkWGpF94iz/9a3FALSNOalfZLbG5YkyH4Xny5gQuqQoF
-	 LG3os42pqfsozDdhcjpY001PbJS2GJVG3/inCrm7bgev6v2n47VoElwiWWWiLliR+M
-	 HDI1MgUE81w8A==
-Date: Wed, 21 Oct 2026 12:33:37 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: stmmac: disable TX checksum offload
- for jumbo frames on bugged cores
-Message-ID: <athAoWfW-xesPhFP@xhacker>
-References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
- <20261012-stmmac-xdp-tx-pre-fixes-v1-2-05fd0c90f7e1@oss.qualcomm.com>
- <6d1d99b5-1c3c-4e59-a0b2-e4d671e594ce@bootlin.com>
- <ata8k2EVDCDTmeE6@xhacker>
- <atbbRqSJIJ_glwuf@xhacker>
- <3ca537e7-c9a3-4306-a2f4-9c7d57123bfc@lunn.ch>
+	dkim=pass (1024-bit key, unprotected) header.d=0upti.me header.i=@0upti.me header.a=rsa-sha256 header.s=mail header.b=dWOYFKWS
+Received: from mail-nwsmtp-mxback-production-main-369.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-369.yp-c.yandex.net)
+	by forward502d.mail.yandex.net (postfix) with ESMTPS id 796A5C04E3;
+	Wed, 21 Oct 2026 08:14:45 +0300 (MSK)
+Received: from mail.yandex.ru
+	by mail-nwsmtp-mxback-production-main-369 with HTTPS id fETbd21Loa60-gchyJVsg;
+	Wed, 21 Oct 2026 08:14:45 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1792559685; bh=jqWlW6zqb5Tv2gMRTIRS9fn3wqc6RPqo/Vw3J/4+54M=;
+	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
+	b=dWOYFKWSNM6yJL42a9a6nhJrPaTXHRCAXCDvXZfz0Mj8MvyfAC7uZ0GWpe9jAS71L
+	 FhE15RxA2+D6bYCjtCyfG3HcO1oYjnjjrN/j73Fn7xBU5sBdsxSfwdbjT+BcP3gsLF
+	 4X1wciVB/RM0CldypHt6nJ/wUxcHJMUaBw2qw8w8=
+Authentication-Results: mail-nwsmtp-mxback-production-main-369; dkim=pass header.i=@0upti.me
+Received: by mail-sendbernar-production-main-96 with HTTPS id 52484760394db31a8bc30851e3f601b2;
+	Wed, 21 Oct 2026 08:14:43 +0300
+From: Ilya K <me@0upti.me>
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+In-Reply-To: <04b8b928-b671-4236-a792-1141cd81a34b@candelatech.com>
+References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com> <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df> <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21> <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com> <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4> <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8> <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136> <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd> <143991791036721@40be7595-980b-4665-ba66-1601e10a0899> <c4286904-2a9a-41fd-93ce-be57964909f6@candelatech.com> <221941791052355@558b3e58-c2b1-4e14-91fe-beb5649d18f6>
+	<5955851791966910@d362902e-9931-4ad0-8e86-72401cc67703> <04b8b928-b671-4236-a792-1141cd81a34b@candelatech.com>
+Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,42 +67,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3ca537e7-c9a3-4306-a2f4-9c7d57123bfc@lunn.ch>
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Wed, 21 Oct 2026 08:14:43 +0300
+Message-Id: <93881792559683@cb540089-648e-4f63-be25-5737cfc54c1c>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Tue, Oct 20, 2026 at 02:28:26PM +0200, Andrew Lunn wrote:
-> > > Here I want to query a generic rule from netdev maintainers:
-> > > can XDP frame enable HW checksum on dwmac IP? Per my understanding, the
-> > > dwmac can only do HW checksum for normal particular packets layouts, such as
-> > > TCP, UDP. What about if XDP transmits a non-IP frame?
-> > 
-> > or a generic XDP guide from netdev maintainers:
-> > Since XDP can tranmist arbitrary Eth frames, so how does the eth driver cope
-> > with HW checksum if the HW checksum is intended for supported IP packet
-> > layouts rather than arbitrary layer2 frames?
-> > 
-> > choices:
-> > c1. Simply disabled HW checksum by default. Then XDP prog must provide
-> > checksums themselves, lost the HW offload cap for IP packets.
-> > 
-> > c2. detect the frame in eth driver's xdp code path, then enable/disable
-> > HW checksum accordingly. Then how? Any example in exisiting eth drivers
-> > is appreciated.
-> 
-> Why is this specific to XDP? Cannot the network stack transmit
-> arbitrary layer2 frames? Isn't this a generic problem?
-> 
+> You might try the latest mt76 tree from Felix, it recently gained a large number of fixes.
 
-network stack normal tx supplies the skb->ip_summed metadata, and
-dwmac driver specifically can decide to enable/disable HW csum
-by checking the protocol which is extraced from skb, example
-stmmac_has_ip_ethertype()
-But XDP path doesn't have the necessary metadata, and I'm not sure
-whether stmmac_has_ip_ethertype xdb version can be implemented or
-not. That's the reason I request generic XDP guidence from netdev
-maintainers.
+Well, that survived for a few days, but nope, still crashing :(
 
-correct me if I misunderstood something.
-
-Thanks
+Maybe I just need to make it log the last few firmware messages...
