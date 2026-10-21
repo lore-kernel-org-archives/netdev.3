@@ -1,100 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.49
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792579793;
-	b=fXFIICqf3b+7y0iNgNGrQXQ5HsvuPrOspVor+9fBxDrNCudlA8LJ8ZELZVlksBBTNwqF
-	 +B8cq7hdMEWWG3MSgbn8aJwjXUGAPquzk1kj/VlRYEKZ/jnCGRY+7adcR5WEFT+3VFJek
-	 pMwY56AGOkq4L55IOfbNJXGaqT78fQva39IKUfhRP/EYufXWSLjXxwtHBrCL2SJ4u+Ksr
-	 P8QJoEYp4wZBvowfxM1vlusXdGJOpMuQ81vZxGkWZ0Z8JEPCnv1/2p14SgdADy80vb0NI
-	 vgsW3/F99DxXAvudI4ZMyFmErhZO5QopE92kaEoJBbHRABSEf0QI4zuts4FmmXXvyKA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792579793;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792579996;
+	b=nNrq+i4jX72DBpsuYSqKVP6wpYJzc+0l87WJIrinWqRajUA3plPkHrG/Fub/14V7dMUM
+	 rx+LTpYw5QvQJ7rR79Rvayq/u8yBaKE2bBApYJ46XXU0QDjnmmTq2h6lpBi1eueHYcdMa
+	 rFd3ba8sJsZIAmmt/q46hp8zaaASFuYUlAzrB+diV62O82+59QRiq5LifFgGJY6u3SEdx
+	 0lizLdsDkrYQdrz6MjK696V7DHirjKG8IZJFwfER+vMa/fmFjZPX9xnJc53UeOM9RbHgL
+	 nwxYDlEiVTo5P/sKlq0Fb3iQRNxlddbZkqNyfE5+ppRxZbQf2RCXQuBkFqGJBSGQw2w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792579996;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
-	b=HaZeACDqDVDv2IoJIBp/wBMB+a+U/GqsqaVrJwnvSEU+kUlmtdA9j4ireCA1QHExYwBD
-	 R7C0XQowQUaJiCOGpT1MEZ86virRzZa+e9NgbIkr62ETufLHek79rgzzfAJkKKo5XfuYe
-	 nLtAVCWcLhFfyhqTHvww6WPFUFy1ztRRhyDrjBngeurorUya8dhYPfO39gRYmBlLdK0LJ
-	 nwWpNvmkQ1075Y1Stthl4EtY1I/V5D7lCHetI1vOwFmh1JeGBNY3wdC6Fh56IVnWYuhEx
-	 X/S70tjqy/3XEj44nSVAuKnw4U+AcZzEj0PFvQkiNxIVWUYo4JFeV+N/SuM3jq+85Ag==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KIYq8xDU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.49
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=aYDzqg6x8BQI1Egimv3K7Xzdi+oL1XYI1sfD8JuEwm4=;
+	b=ka3rHR8/HT12fgHwDIEn2Fd5/DwOhw174Xs9ljq1Ig8V3zacxk06nHAtjaFgJcc+aA1y
+	 2xoi2uzIuGWwX2WQulgkVAz7RjdkqIObaNzV26ApLICj1Kvlre08DjSHOLyYKqcIOALCj
+	 WZf1owpFj+bwAggXSLz2gA97azr6sci53cYD3LCAS34JK3x/8WMi51Gx9D5/fj+catCYI
+	 XMybxN3/RAmPAKaRfh9gv/7MplgQN5YGF83IiN8KJGfjqBvhQ0SKxW7NuPuBsihUh+B0O
+	 qXbV7HJ+Ya7IwExh7cL+WCfhr9Q0dKKYI7NOAr2Sh+wSU/3m29iSwQ1Iy9adxD3OnaA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EVZyTgN3;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=JEv8RxVp;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596BC606A32C
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:49:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 596BC606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5B6606A322
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:53:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D5B6606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KIYq8xDU
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3ac9f49b984so368445a91.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:49:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792579793; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aRGm0HnZFcNjBRWAmPTQLm0jg8y0mxnrkHmdUJZgRTbjvfYrfio7FJtMtchGL6MANX
-         JcaX9KNdSH0vUHe5YmuxOsZ79lHPR/a6s9es5oAaoMkOR/pVveBBdVy2uNMo9Q4yaXj1
-         Oz4PlHIsjp2dGUQNHQ5kixlTo7VNz90a1MTlkEd5UpW3RgVNULQHmzAEiyLLby9Jxsdj
-         jFbI019belGWNnDVUF2Yh/MzJaYYPe5/xr54f5135UCLuenjfEHe3d21j5OkbOxtMpM3
-         X0y6E/aR4VwTFQfD0uLTj91T2RogVksN4vTt28IG6UCTz2pswhcxcqbIUA7Z8Q/9Nj4c
-         Z76Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
-        fh=H+ywUV9nN5PbpKNliESxkCnMY9ejWLbBwQAJyGjKbXA=;
-        b=JMRYcVftv695f9ev71g4Hyg5RTH7D1EZcfmEXjh1vtc9tgSTqU60F7j5KylVaqzmiU
-         KdGrQ6qiOb3HoYK4fBxHwzFs01AeUhEdw4eQGKO7PevWTY0TkMf3c0Ac319JHR4q6hG4
-         r09O8Tojc6N01kC9b83Z+9xQ6G73ok7l2172KzYeV0WWlfuZJldbotKtvRWmDab74Hwo
-         yN/Yrx+/Hf3kN7+YFEDpIpsVCEdfvx/y0YODrbOTZ8wFmg2PZNZxg+nLIHiPV917Xe2C
-         etP7cLzB8jwCSqVPwnSh05oSRNc0q5OCUgTe90t0LPrIpsFkEt7e8wLWoESWm14jjNLd
-         RYVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EVZyTgN3;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=JEv8RxVp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792579993;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aYDzqg6x8BQI1Egimv3K7Xzdi+oL1XYI1sfD8JuEwm4=;
+	b=EVZyTgN328oajIXq6E9vF+SJg/Q6Yubc34UcDXgqSDIULsQpSNTifleIUdiiKsaQjxjrsI
+	CsD+LHEUyIhquHFmiqYyz/tf1knAq1xs4dmih5r9rR/doKKwQVLFi+3ewaTYZp978VxnPk
+	eoExYeB4V8ZqVl81YcTLxT98uPSBNKw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-272-IllLFCc6Ow2dmQOX_-DSrg-1; Wed, 21 Oct 2026 10:53:11 +0000
+X-MC-Unique: IllLFCc6Ow2dmQOX_-DSrg-1
+X-Mimecast-MFC-AGG-ID: IllLFCc6Ow2dmQOX_-DSrg_1792579990
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48dea677afcso450067f8f.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792579793; x=1793184593; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
-        b=KIYq8xDUOhEjw41u1XCqU8cJQRE/MwbECB7weNWx6k29Bu2BBmr1VG7CBU0ohDDe3B
-         avi3I+JmpmeRvIQuqq68kUrNTBW74tIHG+q0sROFel6Z6560/nQXvNCBnmiArVFnX/fm
-         PTf8ryT8hd2uQlCi00SC8tW2OR1urvLODfhCjlZChhkUgDnQeylSvoj5R5rFjxL/0o9X
-         DacW+O/ijkgjuQ9ubfNZrmGOfiXZTDd4vO5dB4fqaM/oj9uP8385cQ39dvTWQrYISw9G
-         5lRC+8ohmj3QRoliiYGno5C1cCQ+LlWkraG0ZnEiSgixqmm2U9PkqRewpxQWgrGufu9E
-         RrJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792579793; x=1793184593;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1792579990; x=1793184790; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
-        b=Y994vNGzvep+030Iue3i0h6t4lK6iH+JTpGy5jdr6hr3dsbnDcyeU0L3GWtfEiDyZf
-         NXywK8Iq0kC6DPZcoe3VzQ50n6mb2qjshi6FFgjWs8lJk1yem4KVkaq4v2evLrgW4pos
-         b8y32szW8DDOESctGWuYREk8tP3JzNLMR9Swp1eKA8fXp1FA9qMClWucFnNiMRGnJLvX
-         MVTYQwUn0PxHRg+3O1ApgrZqc1nMFi+V3H13akTZouRg4QbzjIEDKzT5RL12KkHnE7Xg
-         FhakubE2DOlX/zORnTslWwma35+3vE6r1Kp24ryqgPbznsDjoIXXZgbI/tLkFQfYLe/W
-         6Y+g==
-X-Forwarded-Encrypted: i=1; AKwUvBw5FL0VxqwW5vwDN1CPxEBqec03WXcfJaapzNtFrrvofLENVwbsBikzDro6ZgIMpWsh7MYBwss=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKUPVb2X4bo884YwP2LumrpPjbH+camMHI5cbm4Mg8xvX7XuWnE
-	PEHLMlaauskcfl7RGSeS/R+G7cpsYX4paCnsSAlnS/dUjRcweIxAPQ2uZVtzJ5xX51K4RMsHi09
-	lisu0hWWJ0V83fdts1Eaj1WJKPZKnMVk=
-X-Gm-Gg: AYBFou1L5yOrN15VyGjx+3bWyk4Etd39yebXIbKsl+IbU170N+pOYiamxjIFTJ27O+W
-	g1SyJPIffeH7Lk9QR3/ihD6RYkEoyHu/0i2oKZvue9DqSMhYSXoHhha/xT6aYdXCkD3P0FCRMX8
-	lFDpzu9AiE9iTgYqGd9fpQN/XKoezj4wN6zroLfFEgoyVNhX+p1K/tEKuqq2knRW2jL6JMR7+Qu
-	KLpgRfGsfrsrr5PT3Ri5b7BuHi5DdYXJb61/GM2gMEF62Nmp231Ja5vPfh9Q4QrkCOX03dPcedz
-	Sgbb+VtTqqdS35ne+MfhQmwZYq4tnapkiu26JgQKiT7YtDmQCpIsFRVZQd9cqaFUz46m4El1OoX
-	XFSb7QWknXxk2wKxqVz3rlXWDEQsBoLhCLw4d/UwnO5A+jfPYRIKVLLJbEZ+fFT2pfJshpec=
-X-Received: by 2002:a17:90b:3ec5:b0:3ac:b764:8521 with SMTP id
- 98e67ed59e1d1-3ad6571ad27mr3402578a91.38.1792579792717; Wed, 21 Oct 2026
- 03:49:52 -0700 (PDT)
+        bh=aYDzqg6x8BQI1Egimv3K7Xzdi+oL1XYI1sfD8JuEwm4=;
+        b=JEv8RxVpaPCjRqSIcUjHMxL65vtID/PVPPMcb98limxi91V1OnkwVODwRTrs+uRuML
+         yOuMvlQXROmZMvJDrQCYeYiScsGk1Kq9guPqNvwaVPbrySuLK9/TkOCp30DkUQYz4m0e
+         3lBDwukofARNf75jbrhoHywLDkqtM4CMBKgDdw8IBHhjqpYNqgTx24yAzjDB4epIb7Uq
+         it0qmeMxvDBzR4jqIr2arZV07BazENvVL+QqvpcRJHdkr4GqXBPJIo8KDTuTckSuYvLr
+         vTbBGRIyN/Sp1lhSSp6EuullFyc6kZkq1y/RIL3JI0g9MhkaFdqa96Prz1fG6f0HbQ+E
+         LpgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792579990; x=1793184790;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aYDzqg6x8BQI1Egimv3K7Xzdi+oL1XYI1sfD8JuEwm4=;
+        b=O63/ipw7IPUnTV99Kca61EZJyqRAE+MoGeSmkk0hOEunXn+2h48DLhd274QFjwjd1x
+         gexaawyh8/xJ37RqBggiy30I+yj7NmkLgXrbpuuXi0nCMXlm14YeIMXjejfafTsR3Rvd
+         UvfYOTkAgJ/dLLo4rxDLjuyt2ezc2J+vqQnt2y4NK3X+Ka2jPWxqaxxq1kvYR+Rmdp3F
+         1uhmLBaIxgodRbKQpF+koLhgiL2QBDkSS448Hz6FxLImDxMyyB7A9wUH07QCq/djp4av
+         QO1mSlzK7V9vU5a0J2kS/b/c0QoJolQZ0D14CAj7ZVV+EkodQtXjpg5zFWQ4poBVOhBo
+         V6TA==
+X-Forwarded-Encrypted: i=1; AKwUvByZh5hzPgjzaPEjC6cy+7IFpnKXNMeNUXk9e2OJhO3RUBtKLzCxJI7J6RZYA+CIN7dYyi5ou1Y=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ4dnQmnOCaE9A6kTSJbE8oQjvwW8k2+XhjRHDRbLlK7aV2c5w8
+	BJ5QpQ0jXup8RW8zEnsnVLRK4sk3umXHiUriFOPnCPGT/qabIa3PuWsIA906O83co5TbFR+tLNc
+	opvSLV9NiKtqSTEnkRj9pfFktCIePSuwu1DkVDONBy9ymByNsH+Pi/ShUzg==
+X-Gm-Gg: AYBFou0Vw8K/uoWVEfZq1FCSr3Zj15PMpkPh6e3qcqOPZUU1ii6iTXGG5erJknQqRXK
+	/nXBEyjgr3Hmj3KZiRnFGhHVK51m04uhwr9BR9YraJKiX01ulKrI3S5/mKchdToJXLlrXgcNbi7
+	3gm+Eu6dEcv7I6qsy+VuBfetlKbw6IVvEhaz99JPUUYS98PKECDeNwOoxmOLhnJ9r1Gej9QuGF+
+	W4CxrfwizFgnOmSNZErhUSKuQ1ZP/Je9iPbt7Bngru0WC9V7ddar0D9rIhgsCSUkcmXOqcVqGsQ
+	v8JyaecVzm4kYWhb/CADx/4EccWNkEmtwp9VVqyP05ACN7gsxQApGtM/bgrjzqn3/l+EyCDMUHc
+	uTWshZH3g6bF6sSUGEZuHNK6zT1eTVAp7ab2VboUAyzrNor6efXmCxI2Zouqvo7M2r57MguTBRw
+	==
+X-Received: by 2002:a5d:5e86:0:b0:48e:adc:b97d with SMTP id ffacd0b85a97d-48e1e7a7a2emr10981523f8f.8.1792579990231;
+        Wed, 21 Oct 2026 03:53:10 -0700 (PDT)
+X-Received: by 2002:a5d:5e86:0:b0:48e:adc:b97d with SMTP id ffacd0b85a97d-48e1e7a7a2emr10981478f8f.8.1792579989684;
+        Wed, 21 Oct 2026 03:53:09 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e254efb2csm4985120f8f.2.2026.10.21.03.53.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 03:53:09 -0700 (PDT)
+Message-ID: <ef23d9b7-33c1-40dd-854e-1911ad3534a4@redhat.com>
+Date: Wed, 21 Oct 2026 12:53:07 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,95 +112,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020230211.75665-1-andrebrait@gmail.com> <20261021095756.0f5770e6@pumpkin>
-In-Reply-To: <20261021095756.0f5770e6@pumpkin>
-From: =?UTF-8?B?QW5kcsOpIEJyYWl0?= <andrebrait@gmail.com>
-Date: Wed, 21 Oct 2026 12:49:16 +0200
-X-Gm-Features: AclHuK8XYSgL4sJ6lwVw4WXh8iC7jNprlbe1Q1YOL50NcC6qXVcAOpwDNKlpvC0
-Message-ID: <CALhGy9n9EMvV2JN8s4kpKb3Wsc3rjRVfibpNvVdAw_rHT=dYeQ@mail.gmail.com>
-Subject: Re: [PATCH iwl-net v2] e1000e: work around TSO erratum that corrupts
- data and hangs Tx
-To: David Laight <david.laight.linux@gmail.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
-	g.goller@proxmox.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] tcp: reject devmem tx with fastopen and repair
+To: Kaifeng Wang <kaifengw@google.com>, netdev@vger.kernel.org,
+ Eric Dumazet <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>
+Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net,
+ kuba@kernel.org, horms@kernel.org, asml.silence@gmail.com,
+ almasrymina@google.com, willemb@google.com, kaiyuanz@google.com,
+ sdf@fomichev.me, linux-kernel@vger.kernel.org
+References: <20261019174522.55644-1-kaifengw@google.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261019174522.55644-1-kaifengw@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 21, 2026 at 10:57=E2=80=AFAM David Laight
-<david.laight.linux@gmail.com> wrote:
+Adding Eric (for real) and Kuniyuki
 
-> > Apply it to all e1000e parts: limit the first data descriptor of a TSO
-> > packet to 3 * (max_read_request - 4) bytes (372 on the I219, where
-> > pcie_get_readrq() returns 128). The rest of the linear part goes into
-> > the next descriptor, which e1000_xmit_frame() already reserves;
->
-> Aren't you using an additional descriptor over and above those the code
-> might already use?
-> So either it was reserving one too many, or you need to reserve another o=
-ne.
+On 10/19/26 19:45, Kaifeng Wang wrote:
+> tcp_sendmsg_locked() enforces that devmem TX can only proceed if the
+> zero-copy path is active and a valid dmabuf binding exists. However,
+> subsequent branches in tcp_sendmsg_locked() can still intercept the
+> message before it reaches the devmem zero-copy loop:
+> 
+> 1. TCP Fast Open (MSG_FASTOPEN or DEFER_CONNECT):
+>     If TCP_FASTOPEN_CONNECT is set, the socket may have a valid dst with
+>     NETIF_F_SG (so zc == MSG_ZEROCOPY and binding is present), but
+>     tcp_sendmsg_fastopen() -> tcp_send_syn_data() will use
+>     copy_page_from_iter() to byte-copy from the iterator. Since iov_base
+>     represents dma-buf offsets rather than user virtual addresses, this
+>     misinterprets offsets as user pointers and copies the caller's memory
+>     at those addresses into the SYN packet.
+> 
+> 2. TCP repair mode:
+>     If tp->repair is enabled with TCP_RECV_QUEUE, tcp_send_rcvq() similarly
+>     calls skb_copy_datagram_from_iter(), byte-copying from the iterator.
+> 
+> Neither path supports or makes sense for devmem transmission. Reject
+> devmem sends inside the Fast Open and TCP repair branches when a devmem
+> binding is present. Checking inside the tp->repair branch also covers
+> the case where repair mode is enabled while sk_stream_wait_connect()
+> drops the socket lock.
+> 
+> Additionally, drop the !sockc_err gate from the devmem validation check
+> and return sockc_err if set. Otherwise, if a valid SCM_DEVMEM_DMABUF is
+> followed by a failing cmsg, sockc.dmabuf_id remains set while binding is
+> not acquired, allowing the Fast Open and TCP_RECV_QUEUE repair paths to
+> proceed and return before sockc_err is checked.
+> 
+> This pre-existing issue was identified by Sashiko AI review on commit
+> 125755776bc6 ("tcp: reject non zerocopy devmem tx") and has not been
+> hit in production.
+> 
+> Fixes: 125755776bc6 ("tcp: reject non zerocopy devmem tx")
+> Fixes: bd61848900bf ("net: devmem: Implement TX path")
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+> Signed-off-by: Kaifeng Wang <kaifengw@google.com>
+> ---
+> v1 -> v2:
+> - Move the devmem rejection checks into the Fast Open and TCP repair
+>    branches directly, also covering the case where tp->repair is enabled
+>    while sk_stream_wait_connect() drops the socket lock.
+> - Drop the !sockc_err gate from the devmem validation check and return
+>    sockc_err if set, preventing a valid SCM_DEVMEM_DMABUF followed by a
+>    failing cmsg from bypassing the check.
+> 
+>   net/ipv4/tcp.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index 87ef6d5cbfeb..2792923f0748 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -1169,14 +1169,18 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+>   			zc = MSG_SPLICE_PAGES;
+>   	}
+>   
+> -	if (!sockc_err && sockc.dmabuf_id && (zc != MSG_ZEROCOPY || !binding)) {
+> -		err = -EINVAL;
+> +	if (sockc.dmabuf_id && (zc != MSG_ZEROCOPY || !binding)) {
+> +		err = sockc_err ?: -EINVAL;
+>   		goto out_err;
+>   	}
+>   
+>   	if (unlikely(flags & MSG_FASTOPEN ||
+>   		     inet_test_bit(DEFER_CONNECT, sk)) &&
+>   	    !tp->repair) {
+> +		if (binding) {
+> +			err = -EINVAL;
+> +			goto out_err;
+> +		}
+>   		err = tcp_sendmsg_fastopen(sk, msg, &copied_syn, size, uarg);
+>   		if (err == -EINPROGRESS && copied_syn > 0)
+>   			goto out;
+> @@ -1200,6 +1204,10 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+>   	}
+>   
+>   	if (unlikely(tp->repair)) {
+> +		if (binding) {
+> +			err = -EINVAL;
+> +			goto out_err;
+> +		}
+>   		if (tp->repair_queue == TCP_RECV_QUEUE) {
+>   			copied = tcp_send_rcvq(sk, msg, size);
+>   			goto out_nopush;
 
-You're right that the split can use one more descriptor than before.
-The count already covers it, though: the bare count++ in
-e1000_xmit_frame() is never used by e1000_tx_map(). It comes from e1000,
-where that descriptor pays for the 4-byte TSO sentinel ("premature desc
-write-backs in TSO mode"); e1000e dropped the sentinel but kept the
-count++. With this patch the linear part takes
-1 + DIV_ROUND_UP(len - 372, tx_fifo_limit) descriptors instead of
-DIV_ROUND_UP(len, tx_fifo_limit), at most one more, so it uses exactly
-that spare.
+The ever increasing number of conditionals is a bit concerning, but
+I don't see how to avoid the new ones.
 
-If we want the count to say so, I see two ways:
+/P
 
-a) Count the split explicitly and keep the spare:
-
-if ((mss) || (skb->ip_summed =3D=3D CHECKSUM_PARTIAL))
-count++;
-count++;
-+ /* the headers go in a first buffer of at most tx_hdr_buf_max */
-+ if (mss && len > adapter->tx_hdr_buf_max)
-+ count++;
-count +=3D DIV_ROUND_UP(len, adapter->tx_fifo_limit);
-
-   The split pays for its own descriptor and the old spare stays a
-   spare.
-
-b) Replace the spare with the explicit count:
-
-if ((mss) || (skb->ip_summed =3D=3D CHECKSUM_PARTIAL))
-count++;
-- count++;
-+ if (mss && len > adapter->tx_hdr_buf_max)
-+ count++;
-count +=3D DIV_ROUND_UP(len, adapter->tx_fifo_limit);
-
-   The count becomes exact, and one lower for every other packet.
-
-Neither fixes a bug I have seen: the reservation already covers the
-split, and in about 3.5 hours of test traffic on the patched driver the
-ring reached its stop threshold over 300,000 times without a stall. b
-also changes the reservation for every other packet, which I haven't
-tested. So I'd keep the patch as it is, the smallest change that fixes
-the bug, and leave the descriptor accounting for a separate cleanup.
-
-If you'd rather have the dependency explicit, I'm happy to fold a) into
-a v3; it only reserves one more descriptor for those TSO packets.
-
-> I'm not actually sure all the logic there is actually needed.
-> The code calculates the number of descriptors the packet is expected to n=
-eed
-> and gets the packet requeued if there aren't enough, but there is also th=
-e
-> 'post transmit' check that stops the transmit if there isn't enough room
-> for a full length packet.
-> If the latter is valid you don't need the former.
-> Although a sanity check that the ring isn't being wrapped might not do an=
-y
-> harm.
-
-The post-transmit check reserves (MAX_SKB_FRAGS + 1) *
-DIV_ROUND_UP(PAGE_SIZE, tx_fifo_limit) + 4, which assumes no buffer is
-larger than a page. The linear part and high-order frags can be, so the
-per-packet count is still needed.
-
-Andre
