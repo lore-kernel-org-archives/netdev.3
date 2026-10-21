@@ -1,89 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792598179;
-	b=SbYGrcsw9dKODgRqUyKE0EQjERD3rt4yh945OOYoYNYLFg0TddHsoEk99VsTjSnLINFj
-	 XSySJtMDL8xzqF04c5RXeq/K2MztuRHAwREANcexW22rmyRf6dvTH67bsk/759hma0E5y
-	 4Yt1w+gDuFLVUDybos3KCQD95rKHF6Wac/M8g672HKC7jyPOAYUc3crJKX8V4AvOFpC9T
-	 9OealT4RdkoGXcnnAnqK5r5NXeU2/GmWbdUm84AplTaE5VWOIhSJ56xBUPEvIICB6ydaf
-	 ql8pEcEv3f9zVicZ9Av1mxoE326bgFoKSK70mC+YTUojZjXhYlf1JLN7Vhf4ZtBadTw==
+	t=1792598195;
+	b=rREZzAMpmfJ+W3nChIXm0wxYEcQa0VbSjDMMn/Wel4+1dGlrkfJOQGTpm3T5kjdMViZH
+	 HUqGh2zqcQPlA9RFyQn/vnm64Fz8tB4KZAfZot+8jAjIwyKS78n+EK0PlYzkx0W3ZTEfY
+	 ZlzDlICof+/OWPQ/OUBF9/1GUX1YqDbaL6CIVBZ4QQWc2m/MnnaQn7XEXcTdKSxcVHOUG
+	 kumoPsjV2UCyJFpXs0lapC+8rFMp5DvhT7/YoEZQ2Ra1qhwaG1RACyWjYKZEINX77zJP8
+	 Vaw7ZHYYmaOMZAB2hXI4NjwYsYzDI288QVNvjw+2cUQUpHQ5SuqHBaU+R51sLxhr6pA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598179;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598195;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=xUhPV66fOhEACkkpf7HDlHvC6TlZrGc05mb83FyTwjY=;
-	b=pv5rZZ1X9BfXxQNV80VqH15LlDLSMUReYccQUvM+qZYQxc5WwtdHz/Svvtmi0XTjVfWE
-	 SHtVvZDSZp25vn+1JtDsbjtDWaNbd9HRvIbPj1E/jVQCy/UiaJrCIrgdviME8j7I2Mqv0
-	 cY04AVkryoCn6FCY4KWe/O+17rR/q3xa/PGq87eUX++RQG+hWM4xAqBuOspoqdiiAKSKV
-	 e2NVxRgnT25FRAwvw18vyZIsWoHN19kZDPrD6/7cMUq9DG9B95BnLRTUJ8j4bGTUwo97c
-	 CNHpRgaUfNvPwLIYdTUD5gnt+zi8HHrCuAQt+TqFlYve8RLFxcuQLhECnDqTOXzdAFw==
+	bh=FCnhV+lw46CyFDBN1UCX/mRnoUsaQyKF8bIYd93ewTk=;
+	b=2Fm5b30J2+g933QXBp7UtcN+GzI4SapiaF8QUZ9Vdo60zAoF8ZmCmRG83Av8medqgkc5
+	 FvL7K0Sofmkk8dvcR3KdJSV2FO7rnzFk/SoSi+oQGi5rgin+hCeEdGFjvoVlwcTKiR+Vj
+	 Rl7prAS48V7IuN6HxovgVxUxLuEzcjbMEfuWoAOfihxMvan87Z1GVEy/1wqYI269W5Flp
+	 0Q8BLhclfOyedxUIETf8vtI9GMuUXFvJGkK5sYnAuNN93+FayBo4JWSzFTvLHHyf5pIAj
+	 xWVmLYeoJNcBrTJ/AHkEXjIK89Fpv59aKlHBvh5VSGB+zZvm34sJ7x6HSWIwUJaIykg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dRAxB8G2;
-	arc=none smtp.remote-ip=209.85.214.173
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GrsZ2rDA;
+	arc=none smtp.remote-ip=209.85.215.171
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C908606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:56:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C908606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588BE606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:56:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 588BE606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=dRAxB8G2
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ea138a3497so5556555ad.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:56:19 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=GrsZ2rDA
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cd60c5da24cso447929a12.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:56:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792598179; x=1793202979; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792598195; x=1793202995; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xUhPV66fOhEACkkpf7HDlHvC6TlZrGc05mb83FyTwjY=;
-        b=dRAxB8G27mGeptdGRV4myYB5tleb9EZlXbZP3IZWYQz6fUbZnPok4pFiqJmqQSd/lX
-         RTIqOdiaIuSWKhILJlW3EyfBB2O3j3BQR1194ksCycajlbt+DFWzOO0mqSOHuExjsJS1
-         LasLi9FUO7GiolXSN6sinMA/A9GeOzHNb+lZ2nfQOWlJDsx7goNT5B137PiTsER3nOSy
-         cmpSV8iQVM49WIP112jpmOUOUGJcczv46cCfPiZE6RbG3zIo0pAshB4GMykjXBdcEGtC
-         oeCp22RwpltmgTwiK/b3cRdBjEY0hASkmOMphJzVU7mMFJm/eicxDr+48IuRwJTHhr5p
-         U24g==
+        bh=FCnhV+lw46CyFDBN1UCX/mRnoUsaQyKF8bIYd93ewTk=;
+        b=GrsZ2rDAGG0a0xgUAdwsNd41lp8UzTekV9p0VDqvOX9F0jLmUngcbCWBHVjXYazPwn
+         BQtb3EHlwT47Vm5U/87fY62g07CqW9losqZzvjv78F0dYqX+95LsRv8qC5k/+GDtfCMF
+         m4ZZmcWC/ukv4rkDZ8qgzSgyLDV4vzTq24He7LxfhUBgsvj4/P0kURtVvG0rjIDnn4ep
+         84wu6387KnKZjYh642JQeT8N4km8ujQo0ZxdIQewLOFGZTiMYSAyZwcBvW8dFFURjMyX
+         Z8erMmNi0s005H+cpppAESbIXGtBIzo1Oyrz1VXppyYYT49Up/wnsPDtgiQGnNxtFGXJ
+         cC5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792598179; x=1793202979;
+        d=1e100.net; s=20260707; t=1792598195; x=1793202995;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=xUhPV66fOhEACkkpf7HDlHvC6TlZrGc05mb83FyTwjY=;
-        b=C+7BUimB09F8+MBUfRNbKhTcWFRPnDuWgNxQOcuGdJYaEwekCitwQjjqZYrViBCpkt
-         yo1h/HFZ+dMotvNTQSehPKV2kiMBiCOrCwKd48a2f5YSDGx7I9wuTdvR6xE5SjtbMp/F
-         GIkJtFaidF+ooFPDJtt8YwqTBjmJVTQzS2Ar3BlwibrM152Xro8XthrY61uwmQcySyUh
-         hRA1rpC4Oyvlsroi18QALglfRgmrYFVGh651KYIqxAq/Xug3IQI7CWA7hPExNaTw+6ml
-         bLPa2kCDWJALGo24KDL4jVM5mkPSt6Hcwb97LBH+7cA90L78wZDPWX5DsIo5c0NjVoFV
-         LePw==
-X-Gm-Message-State: AFq9FYIMCFVGmZBPMiizcMfC1y+aSljwGrqnLw6tArdsMimk1YZmlkPV
-	YdNUVu6/c4DD56VLb9Gzu/AGmY3jkkJLhYTZM0R1uZfLpliS8Pu6vvEM
-X-Gm-Gg: AYBFou2dEzXNo7cQTmD0gzf9F1+Xt22/OrQ3Np98RCpTMDvdJDGlgGAf/l99sbaU8ws
-	egRfnUkCwWEqgLkWoheaQ+xxOUjl4WYMaJ3J2EqlIek7Z02QFwGu3GvXv7f8q2aBg/Y8iKQDuHe
-	nax0JI6e2N+uAwovuuzPBsq0GuO6KqNes5Ut2SS27pRgO4VG+Bj+sE83pJNiL+mLqHKX5ZAlqqW
-	AImnv8I1iuyldm9orBGSN32X5+pm13w7wi/iTfepTkwMtjuCctxdWkyHFdY8up4SJw7U6A9e0fo
-	KG+MR20Ha+cOGvPoy9bH5FQlO5yyrKDFEYnHaghRH/Cj+NLBjZjtimxwxVgfL8m+fUCC+PdgkvE
-	O5XRRZxLe5a+73yfx80nP1nku181xXH/AyZVPRaOQ9gqQeK02L+pTsdCrjtUuQNSdY958Khfvy5
-	Yw4Q7Qqdf4YAMgYNkUTZe9U3TpCB/WSi1wITl+uILuREDoC4pio24o/pqLP4b1MH1Wi1NxsUFIl
-	cSXK2/fj3M0KfZIvrmvEGYxsmTqn51/EsYUz/dq1zgddjQcF8QM9iU5DAEIsDJEd4UHWH57KcWS
-	6MVQYGguMVuvvptrn4V9jD2NdE5bDg==
-X-Received: by 2002:a17:902:fc4d:b0:2e8:79d:15ec with SMTP id d9443c01a7336-2ea437b4a74mr21629945ad.6.1792598178635;
-        Wed, 21 Oct 2026 08:56:18 -0700 (PDT)
-Received: from localhost.localdomain ([218.253.131.218])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea5a15517asm2885015ad.41.2026.10.21.08.56.14
+        bh=FCnhV+lw46CyFDBN1UCX/mRnoUsaQyKF8bIYd93ewTk=;
+        b=woqY+u99nyWJ6ZE+9AnhxLuz28R5uHZ0DNl7+gyuuPFpkBtUvPl4KDfrvGELddGc8I
+         avLduFMo4jvKq6T8g+lga/l2bilLugHv2EXEddbN5XW0N0jzCMNdbGzp3nSyxyQROVFt
+         OlkNl3ahiF4mHbBSRi/eG+ZyyKY3RW860Zbc+HehgivnYZCvF94YgciMOYzonZRF9Q7f
+         L5f9fiQi0ecQq/Swniv41XAWqJy752oVDZzCY+fs48T5EFDDTRxJ4GpBNMxoKG/Itl9t
+         6BXVDSGFGV7ZXh7874U2etOy7j5o8Zh32b3lpec7cToYVAUPoUOeO5ex8R8Ep9P54YIw
+         mwvw==
+X-Gm-Message-State: AFq9FYI1xoxuGew7Qwmf7CB2gyVUIqPUDgEweh3NhqV2UMX7Wg9/QCjE
+	wedi2biOlpEJmlywb+GsA8ZpuNuzKnDral2S8W9b4ZKIB5ic75pLrs/A
+X-Gm-Gg: AYBFou2MrlsKXSX/VqktTYrcoO8X+07qecmS2F0T0rierplTdR+AtO1+oRWwfM+a7WX
+	eaVsZoevUWzJB/omBpke8hzdGW0N615w5N3M590KIpVuxwIS1HwsGlR7eoJAIMYZv1OifkcU8U0
+	bnddd5/kDoRs614QN0ok9KLyDIaenWjZN7lVpzyeKknzns6x8f1gIfzPZLoJOjR5yN/4eAFzMgX
+	5Du1v8bfDBLXDFvESRsSNdQnwG5UxQRuD0lYgTbCn0E6/Q/AvIb8v9fWX8aGPx12wLS5HndLOU7
+	20Trn/EFhOY/KAAkNeAnmw3bAyadHv5ZJfI05DTycfHOwarrIiwkoDDtKPJRvmcaCUGLqNJU4WX
+	guHGSNkBqI1GdSpSk2irzrVxEDDgXfvMi9s8pyKUKABCwbX+QeCzZtrCNp2e3s3onylvxkvZ0OD
+	71Um5JlBmV3CF15sF8T3Zc08XGhUE6c1ef/b2t6H5sOxlZ3UiK3Lc99OsR3tx29/B9fIvnVfokp
+	BNCH9GxlWOZtVNkCDJX7sp/vZmk3sav5sgyIytbG3FDr8oSO6gpc/z55rQ2Ei+zMHi0ExmuFIal
+	FszmlcKMh/RViCgijKuAEkYMxBhT1yapX9Iz3Y2NmSQt5LWyqeMftbtoOR4=
+X-Received: by 2002:a17:902:ce86:b0:2e8:4066:d247 with SMTP id d9443c01a7336-2ea43e179f9mr19372535ad.33.1792598194718;
+        Wed, 21 Oct 2026 08:56:34 -0700 (PDT)
+Received: from localhost.localdomain (69-172-67-073.static.imsbiz.com. [69.172.67.73])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b4536ddsm13394895ad.43.2026.10.21.08.56.32
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 08:56:18 -0700 (PDT)
+        Wed, 21 Oct 2026 08:56:34 -0700 (PDT)
 From: Dudu Lu <phx0fer@gmail.com>
-To: hawk@kernel.org,
-	ilias.apalodimas@linaro.org
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net: page_pool: bound queue_idx before indexing dev->_rx[]
-Date: Wed, 21 Oct 2026 23:56:11 +0800
-Message-Id: <20261021155611.68473-1-phx0fer@gmail.com>
+To: john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH bpf] bpf, sockmap: use READ_ONCE/WRITE_ONCE for saved_data_ready in the verdict path
+Date: Wed, 21 Oct 2026 23:56:29 +0800
+Message-Id: <20261021155629.68813-1-phx0fer@gmail.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,22 +99,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-page_pool_init() calls __netif_get_rx_queue(pool->slow.netdev,
-pool->slow.queue_idx), which is a bare `dev->_rx + rxq` with no bound,
-and then dereferences the result (rxq->mp_params.mp_priv / .mp_ops).  A
-queue_idx at or beyond real_num_rx_queues reads past the dev->_rx[]
-allocation:
+sk_psock_start_verdict() and sk_psock_stop_verdict() access
+psock->saved_data_ready with plain loads and stores, while the sibling
+sk_psock_stop_strp() uses WRITE_ONCE for the same field.  sock_map_link()
+/ sock_map_unref() touch the same psock from another CPU without the
+lock, so KCSAN reports the race:
 
-  BUG: KASAN: slab-out-of-bounds in page_pool_create_percpu+0xa74/0xafc
-  Read of size 8 at addr ffff000006587eb8 by task kworker/0:1/11
-   page_pool_create_percpu+0xa74/0xafc
-   page_pool_create+0x14/0x20
-   ppidx_work+0x2d8/0x34c [ppidx_probe]
+  BUG: KCSAN: data-race in sock_map_link / sock_map_unref
+  BUG: KCSAN: data-race in sk_psock_start_verdict / sock_map_unref
 
-queue_idx comes from the driver's page_pool_params, so validate it
-against the device before using it to index the queue array.
+Use READ_ONCE() for the reads and WRITE_ONCE() for the writes, matching
+the strp sibling.
 
-Fixes: 0f9214046893 ("memory-provider: dmabuf devmem memory provider")
+Fixes: 2ef2b20cf4e0 ("net: annotate data-races around sk->sk_{data_ready,write_space}")
 Assisted-by: LLM
 Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
@@ -127,20 +126,13 @@ linux-next too.
 
 Reproducer status
 -----------------
-A reproducer was written and executed on an arm64 QEMU guest (KASAN); it
-fires at the claimed sink.  The reproducer source is not posted here per
+A reproducer was written and executed on an arm64 QEMU guest (KCSAN); it
+reported the race.  The reproducer source is not posted here per
 Documentation/process/security-bugs.rst; it is available on request.
 
 Triggering conditions
 ---------------------
-queue_idx is supplied by the driver alongside PP_FLAG_ALLOW_UNREADABLE_NETMEM
-(the gve, bnxt, bnge, fbnic and mlx5 rx paths all set both); it is the
-driver's own rx queue index, so an in-tree driver passes a valid value.
-page_pool_init() still indexes dev->_rx[] with it while only asserting that
-the netdev lock is held, never checking it against real_num_rx_queues, so
-the exported API trusts the caller for the bound.  This is a sink-side
-hardening fix for page_pool_create_percpu(); the QEMU guest used for the
-reproducer has no such NIC, so the pool was created through a small module.
+CAP_BPF / the ability to update sockmap and attach verdict programs.
 
 Notes
 -----
@@ -149,26 +141,35 @@ Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
 it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
 0 warnings.
 
- net/core/page_pool.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/core/skmsg.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index d7c88c0b67e5..87f14ae855e3 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -274,6 +274,15 @@ static int page_pool_init(struct page_pool *pool,
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index df385a5a961e..0bfb8c4e7f36 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1260,10 +1260,10 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
  
- 	if (pool->slow.flags & PP_FLAG_ALLOW_UNREADABLE_NETMEM) {
- 		netdev_assert_locked(pool->slow.netdev);
-+
-+		/* queue_idx indexes dev->_rx[]; reject a value the device
-+		 * cannot serve before dereferencing the queue.
-+		 */
-+		if (pool->slow.queue_idx >= pool->slow.netdev->real_num_rx_queues) {
-+			err = -EINVAL;
-+			goto free_ptr_ring;
-+		}
-+
- 		rxq = __netif_get_rx_queue(pool->slow.netdev,
- 					   pool->slow.queue_idx);
- 		pool->mp_priv = rxq->mp_params.mp_priv;
+ void sk_psock_start_verdict(struct sock *sk, struct sk_psock *psock)
+ {
+-	if (psock->saved_data_ready)
++	if (READ_ONCE(psock->saved_data_ready))
+ 		return;
+ 
+-	psock->saved_data_ready = sk->sk_data_ready;
++	WRITE_ONCE(psock->saved_data_ready, sk->sk_data_ready);
+ 	WRITE_ONCE(sk->sk_data_ready, sk_psock_verdict_data_ready);
+ 	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
+ }
+@@ -1273,9 +1273,9 @@ void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
+ 	psock_set_prog(&psock->progs.stream_verdict, NULL);
+ 	psock_set_prog(&psock->progs.skb_verdict, NULL);
+ 
+-	if (!psock->saved_data_ready)
++	if (!READ_ONCE(psock->saved_data_ready))
+ 		return;
+ 
+ 	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
+-	psock->saved_data_ready = NULL;
++	WRITE_ONCE(psock->saved_data_ready, NULL);
+ }
