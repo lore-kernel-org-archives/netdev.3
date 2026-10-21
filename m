@@ -1,62 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792597152;
-	b=eJs0jNFt/NyfNTnGqcCUPab3ZQbVH039GBBL5ExOTJIZYVkRwkrUb0XRl6PH0FUoYEqE
-	 Uv2LDfcsVsJaIk72C+4zaVCiSHwyJH1JvZfg+NRgkXU2KqVRkPkPHLqC7GdjJZV2EFYCG
-	 bb2wFPTP5JLnXsJ6Qvi6TF2h3X/B+41wyZUN35dRY0SgtIA6B56l9FsNSnSatWWRYcC6J
-	 rIhkDJFKTT+mmOllaPkctNN2sQOazBXYCdq3MjautyZxqnP+2BUDqabuYWIU3d1n0ibXO
-	 MEzC+X8q12Gl3o3BPMmd1eCR2UJWB9QH3Pl7oZiRVQcyRhmzk8AxKZFvsKF1VB0oO2Q==
+	t=1792597187;
+	b=2+FjaYx5TdSvkq8klzUNPNEhhxVoOJoynXOYVFS2Hzj+nw7i9PA9IO6yoQvpC3p+zshW
+	 wQqyTXZ95OZGVe2RPYQ8KUdEi5aBsnJjnXAFniSpyxM7/SVeGdMkZlKZnvo8P8lWUinr3
+	 qJI+6BWu739bD3L17SMKnqwGOy8nHWdGRADnMXe0vWKIAr2tcX8EKfl1gEGX/dR6zH/Ju
+	 iUks08smxiWjI2UldpctWVlBObTnwVS3zeCXm3ApfL6BChdux0xouSYwB9tMU8ZZ1pwsJ
+	 /dweXWOwYIAIMywgZXKYhO3l0XzUWST8zBWSSvMgXv3kJSeANErkbmze33vL7oHj+nw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792597152;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=MBvUCZd8bqreVqsBZdyTrFLIsUWjtGvD3lWIOh8evsg=;
-	b=H8WRHuBXZIvFc/yyrLr6/enakMsyqhpW3e9LfQfLWlksOxtzeXnIP1zn9RyyWUpcfBWo
-	 HxzUMS81+LuhXO9Vjxw6X3TuK4MXfasJdgsL/vZQi5w1JJ51/u4FD+u4qcUcvf95ydtFb
-	 c88WfNLN6dNtw5HvcaJP+bP4vkXcOQNYeKUUS8deVWBGKl8aJAVOgyrH4lyR/xWndhiNS
-	 KrICAm5T5vmLZyo2AFp+iXmMB4kZcz2NtZA3Pu18Sijb6K1I7GVO7iVzhjJ+8Uv4FXCY1
-	 wo/kJcNbEzI9BT1HVBpcZCbPvgxGM9lbFiX94VD8iMQzx+9IBP905lHpaTZasdkq5sw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792597187;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=0gNnFHFiP6Xt7usWAHsHdGVfiCu9ls9/fRWmaFiy7K0=;
+	b=m8qt2NEPfQ2mzsYOaYKmufecEY74uJ1oFyKhkUZ4iFf7/LoEAU3bnIAUFnO78Dgcxiq9
+	 pURCNTYIoywB9p+K7IRN+tPgn+pYOAk11pyvdB39/XMJVf1mZVJcig3i78AgCHKRjKqcV
+	 agSYKLcvsuf0fdzKnj2PxuqLECJJ1nBvV1GJf64wD+tDtNsA89qWOpxgisRsH7NxuQJ6f
+	 /m69BQDLyTLtunWpAiZmN151A8DbFSeHj5KQp5D8Fmv1DcC1n6/L5XEd9lM147QFq2Ye3
+	 e0yvEkk+SGaB4U/TtPfRMiVRu+0Ft4AcUzEoW6zUWhtBoNhpBezf9Ycdb2VrCaEFtXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btT4gfBm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b="Uk4J/HyS";
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D26606A319;
-	Wed, 21 Oct 2026 15:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254CB606A31B
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:39:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 254CB606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btT4gfBm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC7C1F000C1;
-	Wed, 21 Oct 2026 15:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792597151;
-	bh=MBvUCZd8bqreVqsBZdyTrFLIsUWjtGvD3lWIOh8evsg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=btT4gfBmyBDxfrzjx2a0efMfGhFt8VANa7K1hwYjqI8464c4RwmAvv4XDhfoH9eOD
-	 7gZVLDBqKxvPk4tWbifA963rlq+1NT9gS/Pk232WwIk3dOKCLGznnMn30icxJ0wHiT
-	 ZRveYaBOrCy0H4NqWQzHr7diZU1l0bZHLyMXTrLgUGVvR7bMWDx+i5w5LtHg0nIj24
-	 vVbTNQBNttvT4wdBEfe2jloNx1tWby2YosMRY4uuVTtc3S/D6OODprCtoWr9+Vw+w/
-	 PWF002r8RwaOhNQc0OIu+uHGaZUf3VgiEI86rdT/8DInQYQT2E0id/dS/+6i5lCga3
-	 uiBaQL31ZdLrw==
-Date: Wed, 21 Oct 2026 16:39:06 +0100
-From: Simon Horman <horms@kernel.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Felix Fietkau <nbd@openwrt.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: bgmac: fix TX DMA unmapping on fragment mapping
- failure
-Message-ID: <20261021153906.GB708417@horms.kernel.org>
-References: <20261018231348.36884-1-rosenp@gmail.com>
- <179236550812.3290.9443229332836486177@kernel.org>
- <CAKxU2N8rq4bhk-5zAKd3hEWvUh-bfJtntQb9iJ-niZvXgT8rUg@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=Uk4J/HyS
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e9d7791b00so4071065ad.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:39:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792597186; x=1793201986; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0gNnFHFiP6Xt7usWAHsHdGVfiCu9ls9/fRWmaFiy7K0=;
+        b=Uk4J/HyS/VoeC77wkMFIiIgWMUiQdPoqtlgUJBqKAVPA+aUA+KSaLNWcT2OsbzSDNf
+         +dHmJkn+xFtWAm1O4WX0aAQCvaoUPZBBosOqr78zRWBkPvPT00FsnVqF8WsM47UvHoOJ
+         LaJ+kB5TkKI9g2jN6cIPJ+0eRpeFD8UKQjMS1TvHYcyzyGfooLfIiNsPWNq8O+ZUpw8I
+         qJUM2MT3x2v6G/G9ScRZXQrVrdV0TixXqZtgASrUGaVZUX0TXw4VQrU2xEQ66Le4hY/h
+         ELXyBrqdzLTfyUM7m09V1x7zAK9+8Ho4PoloaNAMxdJkT4xHdVKVLCn88XmeDio71B92
+         QKVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792597186; x=1793201986;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0gNnFHFiP6Xt7usWAHsHdGVfiCu9ls9/fRWmaFiy7K0=;
+        b=EzRzDnaW/rM5xoOIiifdUef5iX6JAzYA9SOnud3H2dRb8sR+eb12sxSfboFBP/IjV9
+         QkUiLvlVNJSYUTZzZmoqv+Sq+31QR53Hbuk3zKmuaJ9qDDjFb8rqNceOWuC3wSaD9asa
+         Wi/RbQZJ7ZaiEUiNyu/gpr/zjCNkLMtsM2Xjnd9pqlUTelFoIE2GNpx9TjMrk6Y33+p5
+         QJV3Z1Q/S+ynEZAmy34p1LSG50CjeDm2LFx9BjZbVkwaFIeU49I1kjXHLKZN00tv6ysY
+         kKzFGGf7S7sHkW8WMhkIhgHgPjbPxv3X+shHG3YdS+iwbcv56V1eFdL5uSbYQrOw7z3G
+         yeSQ==
+X-Gm-Message-State: AFq9FYJOzAWyxMPXjyTDoJs/c/BCiX5KlAW7soIdvaU79Zl49ghE9BLR
+	Z/f2Y3SorLOh0aMPe3uZQhLxtCMW/Mt3nHeuVeVwZpJlS9vjzQ+BZf7OXR47KkXYd/VkahbhTlG
+	3xHHupOc=
+X-Gm-Gg: AYBFou1l32n4Wo/A0ISPRw767tEvsNp7J6bwGUDhIGFQmr1oxUMa3iLhZruBjv5EayW
+	3Gg9Oba69rgw4Ci03qCnj+AufN08kZgsyjmlx4NNigj9GeI0gcRD6eFVBltppS+TOsnW6+wgmwf
+	5P9/pjzh4zUksa8FvmNH8tJM/Did9HgWrHbp8qjvaOTK/+XhJzV/f/EGQjn9zU27BfTi81Pg5Hk
+	kzTrdSYpqjM1zfzJ2HotrG7YcQPN0ytVLhZ1d6BltirdQMT7ksfEI+dvbhuErzm3/fbi47wq1O1
+	0EcDui91Q68RdshHVPdNgn5pGSiwJKb8/OblRN7NNvGyQ8lCRkBRWUQjCXWivedot849ylbzMnp
+	OTauSSz2/KvbRSONf4RDPnMrE+mjFMv6ke+gehwg8sPlLdJSZXPMrEGXTfl3zEjwSbJRHbRZng7
+	bAr5JhA/MkyOC9PaGMJn6dQ/GEeI9Hhnpa6DpqxS6W+FyE8BZFkosDvigaLr03/8UBd4tXi84dS
+	tWAmm5CIhqjdQSaUIRCUFFuHtge9McvBHNLDl/6Vpo2FG9u7WG4TQ/1FJRh1+8lSDgfT1ttOyJL
+	nmyRlHCFW5v//JhuDo1Hge08mT/G9++dy0BjaomQ
+X-Received: by 2002:a17:903:35c6:b0:2e9:4bf3:37a1 with SMTP id d9443c01a7336-2ea43d39c1emr20025035ad.63.1792597186465;
+        Wed, 21 Oct 2026 08:39:46 -0700 (PDT)
+Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b4559cfsm13331775ad.47.2026.10.21.08.39.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 08:39:45 -0700 (PDT)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2] lib/fs: drop unused full argument from get_cgroup2_path
+Date: Wed, 21 Oct 2026 08:39:43 -0700
+Message-ID: <20261021153943.3754990-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,37 +93,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKxU2N8rq4bhk-5zAKd3hEWvUh-bfJtntQb9iJ-niZvXgT8rUg@mail.gmail.com>
 
-On Sun, Oct 18, 2026 at 04:23:48PM -0700, Rosen Penev wrote:
-> On Sun, Oct 18, 2026 at 4:18 PM <netdev-bot+sinfo@kernel.org> wrote:
-> >
-> > Hi!
-> >
-> > This is an automated message. This series looks like a fix, but its
-> > commit messages seem to be missing some information:
-> >
-> >  - How the issue was discovered, e.g. hit in production, hit during
-> >    development, syzbot report, manual code inspection, LLM or static
-> >    analysis tool scan.
-> >
-> >  - Whether the issue was actually triggered, or is only theoretical
-> >    (e.g. found by code inspection). If it was triggered please include
-> >    the symptoms, like the stack trace or error messages.
-> This was found by an AI review of a related bgmac patch and confirmed by
-> code inspection. It has not been observed in practice; it requires a
-> fragment DMA mapping failure. Compile tested only; not tested on
-> hardware.
+The only caller, cg_id_to_path(), passes false, and no caller has
+ever passed true. Remove the argument and always return the path
+relative to the cgroup2 mount.
 
-Although this has not been exercised on hardware, the logic does
-look correct to me (now, not before!). And it does seem realistic
-to expect DMA mapping failures can occur on systems under pressure.
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+---
+ include/utils.h |  2 +-
+ lib/cg_map.c    |  2 +-
+ lib/fs.c        | 21 +++++++++------------
+ 3 files changed, 11 insertions(+), 14 deletions(-)
 
-So I lean towards this being net material.
+diff --git a/include/utils.h b/include/utils.h
+index f0d45bad..5812d1a8 100644
+--- a/include/utils.h
++++ b/include/utils.h
+@@ -310,7 +310,7 @@ int cmd_exec(const char *cmd, char **argv, bool do_fork,
+ int make_path(const char *path, mode_t mode);
+ char *find_cgroup2_mount(bool do_mount);
+ __u64 get_cgroup2_id(const char *path);
+-char *get_cgroup2_path(__u64 id, bool full);
++char *get_cgroup2_path(__u64 id);
+ int get_command_name(const char *pid, char *comm, size_t len);
+ int get_task_name(pid_t pid, char *name, size_t len);
+ 
+diff --git a/lib/cg_map.c b/lib/cg_map.c
+index 0feb854f..9c92b2eb 100644
+--- a/lib/cg_map.c
++++ b/lib/cg_map.c
+@@ -118,7 +118,7 @@ const char *cg_id_to_path(__u64 id)
+ 	if (cg)
+ 		return cg->path;
+ 
+-	path = get_cgroup2_path(id, false);
++	path = get_cgroup2_path(id);
+ 	if (path) {
+ 		cg = cg_entry_create(id, path);
+ 		free(path);
+diff --git a/lib/fs.c b/lib/fs.c
+index 1562d25c..86f9fb65 100644
+--- a/lib/fs.c
++++ b/lib/fs.c
+@@ -187,7 +187,7 @@ out:
+ #define FILEID_INO32_GEN 1
+ 
+ /* caller needs to free string returned */
+-char *get_cgroup2_path(__u64 id, bool full)
++char *get_cgroup2_path(__u64 id)
+ {
+ 	char fh_buf[sizeof(struct file_handle) + sizeof(__u64)] = { 0 };
+ 	struct file_handle *fhp = (struct file_handle *)fh_buf;
+@@ -201,6 +201,7 @@ char *get_cgroup2_path(__u64 id, bool full)
+ 	char fd_path[64];
+ 	int link_len;
+ 	char *mnt = NULL;
++	size_t mnt_len;
+ 
+ 	if (!id) {
+ 		fprintf(stderr, "Invalid cgroup2 ID\n");
+@@ -238,18 +239,14 @@ char *get_cgroup2_path(__u64 id, bool full)
+ 	}
+ 	link_buf[link_len] = '\0';
+ 
+-	if (full) {
+-		path = strdup(link_buf);
+-	} else {
+-		size_t mnt_len = strlen(mnt);
++	/* A cgroup outside our cgroup namespace is not under the
++	 * mount and the link reads as just "/".
++	 */
++	mnt_len = strlen(mnt);
++	if (strncmp(link_buf, mnt, mnt_len) != 0)
++		goto out;
+ 
+-		/* A cgroup outside our cgroup namespace is not under the
+-		 * mount and the link reads as just "/".
+-		 */
+-		if (strncmp(link_buf, mnt, mnt_len) != 0)
+-			goto out;
+-		path = strdup(link_buf + mnt_len);
+-	}
++	path = strdup(link_buf + mnt_len);
+ 	if (!path)
+ 		fprintf(stderr,
+ 			"Failed to allocate memory for cgroup2 path\n");
+-- 
+2.53.0
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-...
