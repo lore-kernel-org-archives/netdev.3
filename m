@@ -1,118 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.228.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792602042;
-	b=sY3PrzkpGE0xIiSWf8cQZv23VE+JpKzHL9FDV/Cf3GfwbgUjPiK++NSkz3SCvEl2h7pL
-	 8VHYVf+KqrNuWIwwiiUqaAQuHJIi8uuyaqapq+uVq6f6g8mj8WgzGuMx+cnZb20sTpL1k
-	 v7u14NNOiG/zRH4dKWFaJH8UUclHbCK1Ryr1xTAwscT/hixzav4nlDYyzxyWCzGvrzJaF
-	 TZk14uBUw0SktgvKL0fMRcezXvTn9OzQm9Nx06suZ3Ahi0TJmRirv3bhupN9gnRVTIsxG
-	 Fj4XwHci4vzOybNrTkJFrGNryCpc2QOX2NvLs3D4KLsmOzby8uu1rCh6r9HqdJjoaIg==
+	t=1792602180;
+	b=dva+AA58skNt6/0wI11PTxY5q8V4PGVDFgeKnmfRjgcKVxCNJaQ5Jxyj/RcZeHwABN2Q
+	 IZrCenKIb2PSrDjjNB100I9/ASxjoV7ehBCX+YaWbAdTEhHOnLWrDHN85gwkGysgE4b5A
+	 TyF2XkSLm3O/u+8iQJC82y32eMQYF0JIKVp2raVg203nqZwOyJ5T0D2tE4wxhUaCtHZv0
+	 PeoXN4Uk4zMANz02Jm//KobgAS543P30+pQ16c+GjFW38H7e5LnRqtIwHP6PustAJNA7G
+	 Al8XtLloUh6lnB2oeruvFnE4dE21zQ9Q7mvXbd/maFkLZoDjnH/cq7C5Wt7iJA1dyPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792602042;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=hg756WFowYy+h+rv8OWF8+LfypVcqHe8wBiAPczjXtc=;
-	b=QQE7/2wKdmuun28GP4cF/LDaRRySh0XLW2p9040W3KmOO7jTVZasRH362BPsjJMV67S4
-	 aE3ayv8DNUJA4IUHGfWPQgl0Dr5m/YcVpSMFgZ+D1DKOaepCMBscBtRCGIqXFb9dP4cR7
-	 xZRR6C3MrqS4pvn1lXMZXvHI9LS8w30Pinnzq23eSZ+ozB/sVXtHppCjQ1N8k5yUJoxdm
-	 dQz7q+R4uW4CtD4Fzowv4Uhk3i+ZyM56Z3r8mbm0KiKYcFWeq5SjUCbGDRpYy83PtYHK7
-	 he/TZhw4B8He9hU0Ktji5RL8xvG78P3B8bXklI2O51n6oEPvOLpm/V5X55oTF9c5lkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792602180;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=2jSm9zb8eTcGFKhjyNMrS+8X+DXl1nyYa3sW6PQX9iw=;
+	b=BOJ9pRkOYr5XVlqn672UdiOWT63SkD+IahnUoQZHBxnnCtDoHEVqdSbifpQo0X1N2yzn
+	 v/Bh9OWvPHRqeNDx92gv8Oj0/KxNnSrCHToSpQ3idZUFUy7jXujSurjz+QFh9hRijFP8+
+	 r/eAzzfOqLwg3kcdjX0CNynfCO/gmB6aJPe75scMoYk6z/g9J0ErRlf8rEWzcUc2vKWG1
+	 /HGFliYfX8Qi3dMO580cEZIXvNYuUO6BgdD1h5JQnmAtCKuT74M5T0lRY9KmvhM4zECQd
+	 +7mylkMjEWZPJ7e2As4KuUrvaDMm8gblzrMtPkSn2ffLZJe8eUDXMa6bKrEik5MyYAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMOpKt+b;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=UbimXrB5;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PEsKqQbO;
+	arc=none smtp.remote-ip=74.125.228.8
+Received: from mail-pz2-f8.google.com (mail-pz2-f8.google.com [74.125.228.8])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952F8606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 17:00:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 952F8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA76606A321
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 17:02:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABA76606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMOpKt+b;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=UbimXrB5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792602040;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hg756WFowYy+h+rv8OWF8+LfypVcqHe8wBiAPczjXtc=;
-	b=aMOpKt+b9bJKokL70zGWAC80tgnRVx+0vL00xHOy4BGxAnBDFY/ZnOhEYHSXWUBfC7kL5I
-	1mNBQgrBCMiqca+1yzH+dnr+cu9YyCJ5AlmIiazsUo3OY/vcRaYWp5yGindE5Q0VEu6UIV
-	0SOHfV9sIwRK2D4FsQi82QtiRNQVsBk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-4taBSDXqNbyGwnRv_xkOPA-1; Wed, 21 Oct 2026 17:00:38 +0000
-X-MC-Unique: 4taBSDXqNbyGwnRv_xkOPA-1
-X-Mimecast-MFC-AGG-ID: 4taBSDXqNbyGwnRv_xkOPA_1792602037
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a2001e85c8so5142105e9.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:00:37 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=PEsKqQbO
+Received: by mail-pz2-f8.google.com with SMTP id 41be03b00d2f7-cd3da0e82daso182968a12.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792602037; x=1793206837; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hg756WFowYy+h+rv8OWF8+LfypVcqHe8wBiAPczjXtc=;
-        b=UbimXrB5dGdnO0TsxeGofcIk8ZGbuenQmt+4Krqq2N9jETg6GFKSrNicaEK8SOMOOx
-         RluoUpqKAZKuoZPZ9zVK5w6urFc+EEZ5hb+k82B2vrSFzVHgu7/gXieOJSRCXrXUCY8T
-         CWBz+rkJNObiVMAZ780stknk0A9ApMtdmB90IyGdeDNsCG1GOtGblwHv/0xVZ1+buReF
-         9o/13GiC+N+12rejlU7VIsxpwkwSz0CvoF2npzfKLby1c8/AE+uHprSl/63+flNrHvxX
-         1+7b60YK9e1RSmdPHh+y21luDknXV1MfF7sBf7Ky+XZK/IHLEFu0fLWQxMWGxDmQPvAl
-         O3pw==
+        d=gmail.com; s=20251104; t=1792602179; x=1793206979; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2jSm9zb8eTcGFKhjyNMrS+8X+DXl1nyYa3sW6PQX9iw=;
+        b=PEsKqQbOXvfJFz2c2I7r+EqbYJiJf6mmHhyOTmtewxrRVXE+OjAMOttlPk92p6otPn
+         piF9WW3JL+bZ0FK2Y/wtdlnHvL5obI04iJq21D97f4xhZWsEx3FFpJEWmDDy9//ZUcXc
+         6yYiQDkr6x7LCKpzgE++Fdi41SN5SNQUPpLLBtKqc4340VetJ3i9ouHXb9P/EUkg8VZm
+         jCaPMWaQgMMq2cGo184rdTgODArJbAAHXZ4bCVf3f2higlYQR6Q9X5xjCSDZ99M61TOM
+         4ZLDJFSnNf/sSOWq89VigFClms1egL9v2rHHIerhJnxTlq8vwHJ7RluHBRofxkjt13dt
+         h6VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792602037; x=1793206837;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=hg756WFowYy+h+rv8OWF8+LfypVcqHe8wBiAPczjXtc=;
-        b=fBwoLVfBUciajFWAXnD5aXEKtITzPGYbqOjZWhmhCN8Ada9PQD9qblQ2AXqb6Nt1a8
-         dBa5NbOw7xpnp5bgPt48vUMYCTWp6nkSPR7tfSgqQlwNs5YdHd1TknWfrHkoqJB1Xv1c
-         4UzP0LRBZnKR20m8c0ChXv2KawWOwzCG4v28cO4w16whvOwni7zD6JDxwSbuq4OJJolN
-         juCfYGdvZjOvdX5No54Ocs1kSMh1s52O93wygR3whwBFbXwoibDxD1tuKbYvpchvYD8Y
-         OsjLSAXE4Ygc0T7STZJkIbCG84C34DYAFgYLJ6Ksg6TMtPuF2uVkh0BAXld3Y7uyMXUW
-         pEMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwsWASbISe72qEL+GjZjwlG/uXI/71q2auqInMCnDvwNhQ4ZHkdd/y+0I8OM9So1MC9zKgGy3c=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLBcN2UBJ02Qs00zWnZp/CyrFgIcbJUyiwCROwpmtPNmAtmjW2K
-	Zi4jcIRJQW9LAGfbKCl9qTncEc41Ai/YUC1r9U+u+MYe4lnvVJuka/wS0PvGB+KWZXFxBqL/mxR
-	7jN/0bcwdKMZUECNJ2sCuoSDAZUQsOSDRR7+ScE3PD2ZqkD+H+HSTKIWFyA==
-X-Gm-Gg: AYBFou1FJA+FDaTh2l8N2gbkLz5sGeUlW2kjSb/j2XV6fZWS7uDRWXobfMLHQmcmPj2
-	SWcRVKPYDPPLinkXuXm88nI3qu7rXHcCpdMA3RQ3SD2xVq8IBetF+I58EXb43wKwsA/XlenSdft
-	MN6NNtB5iI1DIERql+0MJ8sGt9X3WaognZNI1kU+0AnRh811LDNnhERNJZ+4Zj3LaonIKKIFUIx
-	7BL0/80Uek/PqZ2V7JhzzgglfqbsyOrhcVQmQTxVgL/f3GXACc2oUjCLB8jPnfJJ6thS4KVPw6Y
-	NZWbNj+6w2nz0Y20a52Y7PSuCgPEUO6S3K/ICc5NUxFSJu6OfcKok+5tGBBP3w2WmQQ=
-X-Received: by 2002:a05:600c:8b6a:b0:4a1:9831:a69c with SMTP id 5b1f17b1804b1-4a1fdd3bc69mr52099405e9.30.1792602036449;
-        Wed, 21 Oct 2026 10:00:36 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b6a:b0:4a1:9831:a69c with SMTP id 5b1f17b1804b1-4a1fdd3bc69mr52098645e9.30.1792602035808;
-        Wed, 21 Oct 2026 10:00:35 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fcd360e4sm46139995e9.4.2026.10.21.10.00.33
+        d=1e100.net; s=20260707; t=1792602179; x=1793206979;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2jSm9zb8eTcGFKhjyNMrS+8X+DXl1nyYa3sW6PQX9iw=;
+        b=ygbtCPTyuMxlTC//16v92qFQNXwDKR0neBdHtElrKMsPgnWZcOB3VNzUvgZk5vtJCF
+         wPTA9Vkqy3fBFx7E2zbzcWPByLgpyRw/BW2znrq2sEeyEP1AjiXf+deDcEQvtTy6jv/s
+         5frP/FpyIRHnjbP6blbRkzJLvI9TrjdqOlcQj4EPvZxdX2joablctCaab/7t3GYUFbqR
+         IWE22KjkCfLSGffPIi2aw8HIBg/mCABZKZ4JtIqUWg3XbBWiACOiCoYHku84WfYHPuDY
+         xsbF+Fu2bW2jNv19gqRX5lsH9zn0PNSu8Zp7ZeTvGhUBPyNuvULtEgSX+DFjBk5XElJy
+         OpVQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx7o+762GooZOYEi9/BH/r/LNRMCmN10ztPrQtwTQhMhP8nRqJEwjJBzwmbqfff2BKu0jJCHGo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMArDxlizOl834ZQ68hlmesYv0cJ31mxMFsJgiTgBc6TqPFUdw
+	dAZgjLev8MXgChMv385IuDUOfT6PiFNIMAtqZy919uZoCULTmv1AjVFj
+X-Gm-Gg: AYBFou3CttZHMT0zp+CYNLlzQbGtht4h3GkTTLdr48YlbjvBjjlhlAS5vaP+IqwpIIg
+	JHFjfIU2oSjaoRWBqUMstlbRzvNVWh3Ekguj6X3IEaV7wRGoaSzqCXJnf6MkXT7QbLaTlVNXgcv
+	+L+uFVf+RuOrgneWK4TBJ+PrlaTfs3Ad0P6d6neXyvOKLK1+VfqvQcEV3mLHSxyXrYQy3AMeQMf
+	o76ScFiP0rFYYt4Oa1iQRHAXY/kEyE1dp3+Kf8LTALqY/wMYElkrN/U+8cSZQaznbnyzX7ar7ed
+	uesmD3EKZEPX2VgrsJB3gQ1RAcnNNUNFTFsehHqBzt3sPmmYCRnrFYdE7M/5fQzyUJyLKIa+HaK
+	z56r0IS1O5jMX0o1puIscXpc8I0SJbLq/XEcj6kst18TX25Y/kskjwY/vpQ1rl24NnnkfhsL5xH
+	tZW3LqKGNtmOkwGz6iijJ8wGi6cCrCnrav43qWFdxkQ1IMH0yjOu/eh/fhW4jowAsWsj8WlXHMM
+	eI0CDMRwWJpGp3Lk3c0SOcly1b9xxfHuPszAE9Pk3PY+Iqm9J/Q0qsrBeG0lk0E34usyrG3ocgq
+	gQ==
+X-Received: by 2002:a05:6a00:950b:b0:878:3538:8f7a with SMTP id d2e1a72fcca58-8a089e946bdmr2149384b3a.40.1792602178944;
+        Wed, 21 Oct 2026 10:02:58 -0700 (PDT)
+Received: from AERO17.taila7786d.ts.net ([152.175.65.31])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0894b3749sm1195785b3a.15.2026.10.21.10.02.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 10:00:34 -0700 (PDT)
-Date: Wed, 21 Oct 2026 13:00:31 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>, netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH net v3] net: gso: validate transport header before
- computing segment length
-Message-ID: <20261021125549-mutt-send-email-mst@kernel.org>
-References: <52b8bfe4ee848aff8ace47752352de486171d45f.1792595507.git.mst@redhat.com>
- <CAL4Wiir3NTn8VdbzS=sV3tfz4XGoBXmSfjm96k9SBMTiYBBtjw@mail.gmail.com>
+        Wed, 21 Oct 2026 10:02:58 -0700 (PDT)
+From: Pufan Jin <cyan2254650260@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4] net: phy: realtek: Add support for JLSemi JL2101 and JL2121 PHYs
+Date: Thu, 22 Oct 2026 01:02:48 +0800
+Message-ID: <20261021170248.49264-1-cyan2254650260@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,44 +100,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL4Wiir3NTn8VdbzS=sV3tfz4XGoBXmSfjm96k9SBMTiYBBtjw@mail.gmail.com>
 
-On Wed, Oct 21, 2026 at 05:49:35PM +0200, Eric Dumazet wrote:
-> Le mer. 21 oct. 2026 à 17:13, Michael S. Tsirkin <mst@redhat.com> a écrit :
-> >
-> > If a TSO packet is processed in the stack before a transport
-> > header was ever established, the TCP data offset is read through the
-> > unset header offset, far outside the packet.
-> >
-> > This was demonstrated by syzkaller, back when the input path did not
-> > dissect such packets: a virtio net header supplying a malformed
-> > network header was enough.  Qdisc length estimation has carried a
-> > guard against exactly this since
-> >
-> > commit a0dce8752193 ("net: Skip GSO length estimation if transport header is not set");
-> >
-> > the GSO length validators never got one.
-> >
-> > We used to, but we no longer allow such packets in: since
-> >
-> > commit 44378d02c5aa ("net: always dissect GSO packets in __virtio_net_hdr_to_skb()")
-> >
-> > the virtio net input path dissects all GSO packets.
-> >
-> > But as a defence in depth measure
-> 
-> I do not think we want this.
-> 
-> The root cause was fixed at the source by 44378d02c5aa. This patch adds
-> code to skb_gso_validate_network_len(), which ip_finish_output_gso() and
-> ip6_finish_output_gso() call for every GSO packet, including locally
-> generated TCP, to guard against a state the stack no longer produces.
+JLSemi (JingLue Semiconductor) JL2101 and JL2121 Gigabit Ethernet PHYs
+are register-compatible second-source alternatives to the Realtek
+RTL8211F. They share the same paged register layout (page select at
+register 0x1f), RGMII TX/RX internal delay registers (page 0xd08
+regs 11/15), and specific status register (0x1a). Wake-on-LAN (WoL)
+events (page 0xd8a regs 16/17 and page 0xd8c reg 16) and LED control
+registers (page 0xd04 reg 0x10) match RTL8211F.
 
-I just worry we missed some entry points. Shrug. As you wish.
+In the IEEE 802.3 PHY ID allocation, JL2101 (0x937c4032) and JL2121
+(0x937c4030) share the same Model number 0x03 (bits [9:4] of register 3),
+differing only in revision number bits [3:0] (0x2 vs 0x0). Both chips
+share identical operational characteristics. Consolidate them under a
+single PHY_ID_MATCH_MODEL(0x937c4030) entry covering all revisions of
+this model.
 
+Unlike RTL8211F where PHYSR (0x1a) can be read directly on page 0,
+JL21xx requires reading PHYSR from page 0xa43 via phy_read_paged().
+Reading 0x1a on page 0 yields 0x0000, which causes rtlgen_decode_physr()
+to erroneously downshift to 10Mbps half duplex. Introduce
+jlsemi_read_status() to read PHYSR from page 0xa43.
+
+Extend the Realtek PHY driver to bind JLSemi JL21xx by its Model ID to
+the RTL8211F-compatible driver operations, and add the ID to the MDIO
+module device table.
+
+Signed-off-by: Pufan Jin <cyan2254650260@gmail.com>
+---
+Changes in v4:
+- Consolidate JL2101 (0x937c4032) and JL2121 (0x937c4030) into a single
+  PHY_ID_MATCH_MODEL(0x937c4030) entry as both share Model number 0x03
+  and differ only in revision number (Andrew Lunn).
+
+Changes in v3:
+- Drop standalone driver drivers/net/phy/jlsemi.c and extend the Realtek
+  PHY driver directly as suggested by Andrew Lunn.
+- Add jlsemi_read_status() to read PHYSR (0x1a) via phy_read_paged()
+  from page 0xa43, avoiding false downshift to 10Mbps half duplex (verified
+  on physical ALINX AX7Z020B board).
+
+Changes in v2:
+- Drop redundant phy_interface_is_rgmii() check in jlsemi_config_init()
+  (Andrew Lunn)
+- Change speed check in jlsemi_read_status() to '>= SPEED_1000' since
+  JL21xx only supports up to 1000M and 100BASE-TX does not use Master/Slave
+  clock resolution (Andrew Lunn)
+- Check device_can_wakeup() and configure wakeup capability and wake IRQ
+  in probe() when 'wakeup-source' is present (Andrew Lunn)
+- Drop redundant .features = PHY_GBIT_FEATURES (Andrew Lunn)
+- Use PHY_ID_MATCH_VENDOR() for generic driver and mdio table (Andrew Lunn)
+ drivers/net/phy/realtek/realtek_main.c | 40 ++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 177b62a7b..13039d9f8 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -259,6 +259,9 @@
+ #define RTL_8261C				0x001cc890
+ #define RTL_8261C_CG				0x001cc898
+ 
++#define JLSEMI_JL21XX_PHYID			0x937c4030
++#define JLSEMI_STATUS_PAGE			0xa43
++
+ #define RTL8261C_CE_MODEL		0x00
+ #define RTL8261D_MODEL			0x81
+ #define RTL8261X_INT_AUTONEG_ERROR	BIT(0)
+@@ -1731,6 +1734,23 @@ static int rtlgen_read_status(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int jlsemi_read_status(struct phy_device *phydev)
++{
++	int ret, val;
++
++	ret = genphy_read_status(phydev);
++	if (ret < 0 || !phydev->link)
++		return ret;
++
++	val = phy_read_paged(phydev, JLSEMI_STATUS_PAGE, RTL_PHYSR);
++	if (val < 0)
++		return val;
++
++	rtlgen_decode_physr(phydev, val);
++
++	return 0;
++}
++
+ static int rtlgen_read_vend2(struct phy_device *phydev, int regnum)
+ {
+ 	return __mdiobus_c45_read(phydev->mdio.bus, 0, MDIO_MMD_VEND2, regnum);
+@@ -3192,6 +3212,25 @@ static struct phy_driver realtek_drvs[] = {
+ 		.led_hw_control_get = rtl8211f_led_hw_control_get,
+ 		.led_hw_control_set = rtl8211f_led_hw_control_set,
+ 		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
++	}, {
++		PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID),
++		.name		= "JLSemi JL2101/JL2121 Gigabit Ethernet",
++		.probe		= rtl8211f_probe,
++		.config_init	= &rtl8211f_config_init,
++		.read_status	= jlsemi_read_status,
++		.config_intr	= &rtl8211f_config_intr,
++		.handle_interrupt = rtl8211f_handle_interrupt,
++		.set_wol	= rtl8211f_set_wol,
++		.get_wol	= rtl8211f_get_wol,
++		.suspend	= rtl8211f_suspend,
++		.resume		= rtl8211f_resume,
++		.read_page	= rtl821x_read_page,
++		.write_page	= rtl821x_write_page,
++		.flags		= PHY_ALWAYS_CALL_SUSPEND,
++		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
++		.led_hw_control_get = rtl8211f_led_hw_control_get,
++		.led_hw_control_set = rtl8211f_led_hw_control_set,
++		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
+ 	}, {
+ 		.name		= "Generic FE-GE Realtek PHY",
+ 		.match_phy_device = rtlgen_match_phy_device,
+@@ -3420,6 +3459,7 @@ module_phy_driver(realtek_drvs);
+ 
+ static const struct mdio_device_id __maybe_unused realtek_tbl[] = {
+ 	{ PHY_ID_MATCH_VENDOR(0x001cc800) },
++	{ PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID) },
+ 	{ }
+ };
+ 
 -- 
-MST
-
+2.56.0
