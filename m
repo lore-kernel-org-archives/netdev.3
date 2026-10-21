@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792551012;
-	b=HTVC13OhUAWN6cOcTgBhQZsTcHq3Og6ikweXkqvtnhgnf9Ng7kWA4ZNXTCIAIdKR4B3F
-	 k0+7sHhUEWt00k8adWrX4yX+yT2GF8ZywvJNAV1wxtLnillns5rZdX6LPkeQ6LmkK6PQ4
-	 YW32J17SRLdPNToEwqMWHkPgQmJxfc7ruse7P0q/eCK+sDD7EeVtPhNhLxHfq5q/JfUvX
-	 d1L3NObDvQZ6m37ITEfnuiuRK8R+u74Pg/qaEjjMw4OvVcPEcK04Zwu0MPszPhG0+3Ji6
-	 s9QMthPwgGcSgJWRwoJ7KaRw8x1+P0s962irmD4uChJe1KD0snmo32sDY6U1ClW2L9A==
+	t=1792551016;
+	b=s1RDMwHX6wg6wUKydW03qBOz/mBJJw72ztJ8LuEOC3HJ5MlMYieFamBVaeP5NTB3B/qb
+	 iggP/ZRzyQRBzx1+hdWvNH+zqYAK2OCkAaRMgDsVEkpZ5Gk5YEi3JQQ86rt41xYoYJlLK
+	 fAY4ZBymbBjs5bf2tAetUpqNondWCaUh04tC/kakHszLMoLXfcIdwVd3s0L6qVB8y7X7d
+	 Lz7e9Lu3R42oYNBe06PddM3Kfllxo1kza11RuK/SQYykK54gofC9KMaQtX5Ijx5+iDETO
+	 dhJm8RCp9F0Zl338jI5M7bnOriplJpQ7CSMEiOrEBtDHMeZoMBmYVARSsTrjDaN9ytg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792551012;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792551016;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=ugcEjM+Zffc2p83YWbfwMX+zvra0v0JNG8Mbcujub0E=;
-	b=a30AAZOcu1lXTn9uy3kzx1mc5TU47ESEJpVmTK57pUKBewI2qGvEjnUbcGA8HpSnbMWZ
-	 4+fTkzOgJX8MBJ8kBo0EpZHFYC7symsJAxKU/eGZBpcoXAAfPo35h/Qw5Ccx85UgB/jTY
-	 ucvvhBZtMoVJbPy1qBMNso7NjkdwBEVqCryQ65B7ayVs2PtR9HmlMrQrNblH3HR277TF6
-	 tRkkeCVxNV1VpxPugU3/EoX7jGwZzXb3UtdyNU3eciB7ljk/Z0Tqk6LLmzmYF312/OJv5
-	 ErESis8iHuKlZyqUMYBK94hHRpeQKki5NMF3LWn1myqaV4pFh3KCMAgMOKpoc+tcqUg==
+	bh=1ja6KA72erx3up5TTib9TXT/aw3D4jKO1OlyUl+CVso=;
+	b=r6PSIUYbl1KCZzkmBaaGKnZhFEvMA4YwStkCSrXtqBAABQzIfzQAmyX/l2J0OwqsrD9D
+	 2nwA9NHpH2blmHXC2Eul7MDZv8KtuyGTwjCFr5UQKGH9RyocjItWwdhEY0jyAdH6zoiMD
+	 V8Ih+rUnidYpURStsQt1BbH6syjWlNNmB4lyUT4S+Azq6yVqSvxLrcYZ+uyNhs0p4+ZEQ
+	 AF2PLp7AJe8FuebRe6NtI7WEGUOo8zib6LQI25/lnv6kyCSFg8ruSxzR3X/tywvtqx5Ls
+	 fN5SvmcXN7nJy8XK2hY/l18wnpc5sG7UujV5uyxIzIVHth/xDN8a48EC9XfeAgSZt7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h6yXnwlN;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JiMN0S1q;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF30606A322;
-	Wed, 21 Oct 2026 02:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC66D606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h6yXnwlN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3D11F000CA;
-	Wed, 21 Oct 2026 02:50:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JiMN0S1q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE6B1F000CA;
+	Wed, 21 Oct 2026 02:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792551011;
-	bh=ugcEjM+Zffc2p83YWbfwMX+zvra0v0JNG8Mbcujub0E=;
+	s=k20260515; t=1792551015;
+	bh=1ja6KA72erx3up5TTib9TXT/aw3D4jKO1OlyUl+CVso=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=h6yXnwlNeVpugnaAz+ZarxMmRqKnP1tSS+8d3uMEjzhKSr1iwKCZTRCWijxhQqqzP
-	 HET/dFRzhxdzyODG+xRQt1auWtitqLzPdhECPRWUZod2JSSCUw+iua6CMG9wbfs9NW
-	 Lpao5UDSGTKlHuM4qqeHpnGeG2bQDL+ngUraCsTmv1X6DT4EVwuo3rHBSm2EZWWpaP
-	 9QxD9033yqzIcYbek8tZ9k+raxzp59foEzWN6V9RIY2A44QgU8gJGzcM6nktt9o1ls
-	 3bzn6aExax/1gyUSHmkPHMA5Ev8HsIAcNucErCQ/7V5LfvEfIFMI25p3vsp4jZzwrO
-	 PxfVHELWFpADQ==
+	b=JiMN0S1qk8YYpP6TFLLMFTtLn4rUBYkFu+oeJzHp0NuUdOcyrIerNTTfhBa4h9iPy
+	 cdaYnR6phYFRBJxjG5URXDSJUEfPtVcY3sHYLlH9aVA7vozFmMB1gkKhjrkQDf2bpi
+	 JampapkZm5Dfv0XKQZW+dlhuUrXD++YQ7Hgcru0ecBNPaiJ1rM/cggi8zdyUKfS+aE
+	 iXYlCHbbs+B/Oc9Xd6pIUAlXh7yFS3BkXKbMh4AqbYgkFwINqjLIsyLpTN58unQej1
+	 tdbuzs6UkDoqg5Y79g1rIWBMcxla4PisYSyPDQHi9iUm4BJH+6kvVhv5B5R4tAPoCM
+	 u3ifpnESqKJ/Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B45FF3809A18;
-	Wed, 21 Oct 2026 02:50:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7749C3809A18;
+	Wed, 21 Oct 2026 02:50:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,43 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] net: pse-pd: Plain I2C transport for Realtek
- Gen1
+Subject: Re: [PATCH iproute2 v2 0/3] iplink: bond: fix partner LACP state
+ decoding
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179255101027.346551.1097123393993834413.git-patchwork-notify@kernel.org>
-Date: Wed, 21 Oct 2026 02:50:10 +0000
-References: <20261018161248.376205-1-sander@svanheule.net>
-In-Reply-To: <20261018161248.376205-1-sander@svanheule.net>
-To: Sander Vanheule <sander@svanheule.net>
-Cc: jelonek.jonas@gmail.com, o.rempel@pengutronix.de,
- kory.maincent@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+ <179255101407.346551.10071782343489919182.git-patchwork-notify@kernel.org>
+Date: Wed, 21 Oct 2026 02:50:14 +0000
+References: <20261019203843.3127235-1-dave.seddon.ca@gmail.com>
+In-Reply-To: <20261019203843.3127235-1-dave.seddon.ca@gmail.com>
+To: dave seddon <dave.seddon.ca@gmail.com>
+Cc: netdev@vger.kernel.org, stephen@networkplumber.org, dsahern@kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series was applied to iproute2/iproute2.git (main)
+by Stephen Hemminger <stephen@networkplumber.org>:
 
-On Sun, 18 Oct 2026 18:12:46 +0200 you wrote:
-> While for the Gen2 protocol both a plain I2C transport and an SMBus
-> transport were provided, Gen1 only got SMBus. The Unifi Switch Lite 16
-> PoE uses the Gen1 protocol to manage a single BCM59121, but does to
-> using plain I2C.
+On Mon, 19 Oct 2026 13:38:40 -0700 you wrote:
+> G'day,
 > 
-> These patches simply add a new compatible for the plain I2C transport
-> and the associated match data. This is sufficient to let the existing
-> code talk to the management MCU.
+> Thanks Stephen for the feedback.
+> 
+> While porting iproute2 to Go, I noticed ip reads the u16
+> IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE as a u8. For normal
+> LACP state values, this makes the partner state print as 0 on
+> big-endian systems.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/2] dt-bindings: net: pse-pd: realtek,pse: add gen1 I2C transport
-    https://git.kernel.org/netdev/net-next/c/9e6df8d57ee5
-  - [net-next,2/2] net: pse-pd: realtek-pse-mcu: add gen1 I2C transport
-    https://git.kernel.org/netdev/net-next/c/ca4bd46de863
+  - [iproute2,v2,1/3] iplink_bond_slave: read ad_partner_oper_port_state as u16
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=0067cbc8166e
+  - [iproute2,v2,2/3] testsuite: fix test_on_not on multi-line output
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=075f1b6f6a79
+  - [iproute2,v2,3/3] testsuite: add bond slave LACP port state test
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=4f49441d2be0
 
 You are awesome, thank you!
 -- 
