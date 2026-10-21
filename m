@@ -1,89 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792598095;
-	b=cEXsghFNLvarLzAdsAF5KkqLDQd43IaSOy//F0fXtziDdVeuN8DR6RjgtXa6YaWky7sv
-	 ep78LKO4SjvU9jBMsoyZL+LRTmWHc3BJUUIrrxrRUmTQrwsF8a3eHUpRoaVwaKEUdZWhp
-	 OHuyuPWBuF1yZJnzmzuHGdlBhAm1giOLx+gZMzJKD+dZ0HV5l2cIH1RdQXX7tec47xtvk
-	 PkWpgPYeybCr4K0qJKKt+NahSg0m93ukUS9ks4cLdnfr+M/sxYQnlMEYlRf32mGSeESgD
-	 yC1dWxCCMa/CQ43yDKZbBCrQfbw0+enHL0LrCuOveW3BKM0OgCHj16cD8yKu1HmMqqQ==
+	t=1792598112;
+	b=j6HHpPOwkzbeQJTMD+ljfaP5P3+PRySwf9o/aL9UFLseAa423fLaJxfizNNd/OHmERyE
+	 7+ngQN/0axuKTCkHFEOTexa5pHFKFBx5Q4T8Qz4jcRahWzpQhCERo4nBI9ki8ov4g8zP+
+	 asTFxDFuCNaKM3RJ8stdp78KNpFLsQpoDXcfu3NMSMsrSIOKHTCW1isOx+UffpZHOFXQN
+	 SAyBPzb36G4cHbpkPvWzIjA0+07uYQiyrYjEfFxPJUf2fUkQcQ08S83yM4HCUV1CaIOTy
+	 D9pcgt3oP/YK2l11vEeRAY8EgESS08yOS9UUiBdTQcrEKKjMN67XlaxJQz3X8AjZxHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598095;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598112;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=if6TsmMO0l2mME0Tfwvz9OCFzNyd7L9Z9uq0gv3oGvI=;
-	b=nz6CpZythVVkNZ6v3MxMUQbKr8hQYSgcWo5DXFi+FD1qEEc+DnYhNa8BgAOhLlv7Mdrg
-	 9HMqnXaHvTvxLy2uNuVESofbt6XbAv+1gt+WHoN3Za6slJ27vguwMMTMXVXIOHTGZIZtZ
-	 Pv2uF5QFh3L+00FyuYV3EKkzgGeB4p6a1hDMj0bzKTkQhs1zYZ3NvYHQIxELTuQz5DuKD
-	 irhxjjatWVLeWlDjqxSPThRGYZNyvKwtOBTHe55+OoAzaMEdpJWMRzifUAVyJ+sDm4VdS
-	 GFVSRSzuJ6h9LzMXz3x5QjraHUDC+nBlXNkK6cZrBlBwqUCYD1s8Sz3vAJ1lNlr7uRA==
+	bh=eWU2bVlaO64KjekmMIRHMOpynADD/F8s5EOK5FvSh1I=;
+	b=b7PbWTfDmajRQI8aIrQcLsCTbScERAqX+1hVL1+v2EgHiSNZhY2cNm9S0ZKmmaQ7alQz
+	 YRG0FxCBVBIyTL+q0mUt356U8/tqjpprGym+NB4LcKt1ZDvTFHDmpe3KKxAGi+NIbD6Nq
+	 9SdsjRv6MXpCFr6/Nr/tH8FCGFJgcJuYe0PAfFqSI8umDf/YXSNHtORnUhHjRASuBD6xy
+	 51eBRy60AMWNlCZYlgoHMNPFCuYfN7AjB9kH3scCE6YrBe2nXFk0fFd0/c8p/H/ZlL4L7
+	 qwMddwTMLnexhhBE2YYe82b1sfVOaOtZvLDYGprxsmhmty5x7bdJzvWBxgvgrmIOuVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="ISfz/zdG";
-	arc=none smtp.remote-ip=209.85.210.171
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AGwbTHXu;
+	arc=none smtp.remote-ip=209.85.216.47
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C40606A31D
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:54:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63C40606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23522606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:55:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23522606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ISfz/zdG
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8a05effaf8dso400350b3a.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:54:55 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AGwbTHXu
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ab9268d90eso571349a91.3
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:55:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792598095; x=1793202895; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792598111; x=1793202911; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=if6TsmMO0l2mME0Tfwvz9OCFzNyd7L9Z9uq0gv3oGvI=;
-        b=ISfz/zdGaUAi2cIYGldhm87WGz/D4Oy8Th1U0HLzwQPzZvt2jXkakFquqzKOxEF8uS
-         EwfksyVCQQy2FKLNcIbO1rCBj/PlzXxRXzONV83M7xWS1W7F/qNnHfNyBS9l263zfr92
-         A24yV8qVyykYTxfQEGWl1mkxFuubALcei+uuiS6qh4d5ea1rYbrue/sINCSXx6jeW56K
-         auDGsXgwz7R5/u6YLQuCFTAQUTCPoelZYpti9H5jE2G4LUU6NWDjwHU/Twjg74gf368T
-         otgJmCZdl0t/a1FCVJmo/Oelz88B3ZBTJnCtgRebBmrXiafFMtV6LvVrtvKp9DIg82jV
-         vwrg==
+        bh=eWU2bVlaO64KjekmMIRHMOpynADD/F8s5EOK5FvSh1I=;
+        b=AGwbTHXuya85RfypvX6CFIjkACpyctue6wii2WjTQ+ldve+tEzx65iAiEC2DbtA+FF
+         IcTT9THDgYhB8F6M+A3Rzz6w6Rumo3JmpE2iEumgv2yxiWY9kaaID1t84QxZPAVQuF44
+         61WDZ9epkpDwWYH8RMfpPPbhBmDaz3ro5rwaL1zhb/Glax+gYYuBnuYMc8dD3ibqkXAY
+         bU7fTfDwBFXFyoBru/RtbNPwifh1CmFH5YGQbLuSTlBKk5snjFABHZgBQvmuPjrwmvVP
+         ETix/cvnewbZae4ZJPxkm4h95Zu/MQcyhg6jOvmNASfKfiw9slFaq4uWh0fQ+0Iq7hNG
+         Y7Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792598095; x=1793202895;
+        d=1e100.net; s=20260707; t=1792598111; x=1793202911;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=if6TsmMO0l2mME0Tfwvz9OCFzNyd7L9Z9uq0gv3oGvI=;
-        b=gpJwMqO6OAE+ZqzqnrCWnJaY3x724wB2EN0i5hAHetzf2TBW3bvuwLJcQDm9zodrxP
-         /rjAYApXeBQXPOP4hHRs0fnti7NyaPphEiC4C5suacE0JfLZz5reAnnQQ7fsVtbPLhcn
-         V0cwSJizrlntbtM9Gz5dpHYCdmXPbi1yF1vgxd58/ak+M0EfutNloiA4B6ul7pbiMPym
-         ai88Ntg60WcoF6O+5ad71qZYBzgxXveSzSS6C8WQDCcmUBRKQAEHXbewHkMPxSjuJ0VY
-         16/eSKdkj8Qsd+CjWKCelINP6fZqTrQIS7T++q+qRCE7OvwAQTjf1DoPZ/lhrWZCStcJ
-         GIWA==
-X-Gm-Message-State: AFq9FYK5PVmgUVk0bkBCyVncl8Lcsk79TMwcnHANuE5LrddDAkfE7mDi
-	TFBquugyoLdC3ERx01Fj8JEBX+neF/NN3xObDmhr1/fp6tC9qs0xaRxnyqqASQ==
-X-Gm-Gg: AYBFou1CVuV3X5vGXseIgb6ji9LwCdKyvkrAZOaWbPgKMOMVfXPKfj7fo2AMC5VZ1oh
-	jM5pAYdc6snqPa89MpALGD09hdDibtbvXZiNS4U0vaNAzNNTQptKHOxTHH/cU7zkH7FQEA5RNaY
-	0dbp4iMseBIJ3aY2duewsoZ1nbMRb0Mh2XG8FF7IYddRPFQDQgsQUlK5WT1pFyrZVK5Bh2imTWo
-	7RoDAFog66laR27C1N1VSR3DeyR3XdS28GUep8ojdcoaWRRclsbZ7VVTi8koefHOw/olA8e7X42
-	rKet8sxrm6gUUZIZdSAyeyx4wRnSm0anxMEjKMfszmd17Mux0xWsdwSKSNec5YtlSgWgsFBrStN
-	xe9gMcmoHvJdz+YLPFfR26/JXTwwKGOHKRUeJxAiLXY2nfa4x96KYQMDO1Reanx4l7ebQnrEk0Y
-	UPItZDewKNI5BjrSWIGJG20pgkuJ7zcYfNpZMm8goIcIGqYvVft+DA/j3+ZfuYhd6tkZp5iAL7v
-	rEivjsBCyaWBvadyzsgPWtyEMoaFmv9yl3E66rRo4Sz6b6NB5FwG/ziF7pWyfAJA1EIrNBlEKGN
-	k4KB+zSSWriVk0H6eEY+Tl9qLT9vFA==
-X-Received: by 2002:a05:6a00:418f:b0:890:a995:1f4f with SMTP id d2e1a72fcca58-8a089cd94a1mr1959456b3a.20.1792598094803;
-        Wed, 21 Oct 2026 08:54:54 -0700 (PDT)
-Received: from localhost.localdomain ([218.253.131.218])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a0895cce93sm1090647b3a.30.2026.10.21.08.54.52
+        bh=eWU2bVlaO64KjekmMIRHMOpynADD/F8s5EOK5FvSh1I=;
+        b=nClYdkUV6yqSf37hyskdP58/+IlxU1M+dchmelNdv+w1xTqbGKSrT0oybzKg/4KKd6
+         HZKWmrWNt+4KpAwghhUsUD6KfkrVQcmqyGs3DsJeB/mKhw6sysM5o0+w/TGI/8+cD514
+         sIhnMYCafY2cxHy1O3T69SxpXJX/LkSHYJ03oDKrVlPJe+p26lYXPBcHlL2d1n9Za889
+         1KirmMdkxGFSxkI0j3teFVYxEFZltmU/OqP+39FE/m71+LsHkpdoV0kIZlYJyAcK/vUv
+         jC2I7GWYifI/HroznCfc1G6p8gw0W78YDz1ntysAbkOyctsQ1eBPTYhWyu9NWHtKFBxu
+         A35A==
+X-Gm-Message-State: AFq9FYJBI2RtPrW3j12T6GTbXY/vrNW4RetqrkaL6v4n3MABXnoQPCkb
+	ZxOQ0bPeJYnSBenIuOHvcWpM7M1exrPUCi7kL1QZVtcxj1iEatRjci8l
+X-Gm-Gg: AYBFou02PUc/adVsF4Gk97KR1+f/9QmFAlyrbr66CC72tVfpyzPqWxb4B3ZxpyCO5r3
+	rFtbnLmCOsbww3rJAH+rt5zjq0uymTChI65W2Y1f0yz7fjZjYNID3D7DLlalc7w7Sa4HfvIEQp7
+	cz9//omHGRTXAIzeUWiN+KUvscpXv18eh04Z+vlPmhPopTYAo5VUpDhJXMTM1CBkP+wmbEQGE31
+	ik0ed4uqfRO2WfvksqhZf9QNTs56ZBjZ0pegLV4DG4pYW2e3mC6n+0+cgio+VmoJNo+XatrmWeh
+	DlCe87E73VWWVQaofGQL4bHBMVY9Oxoe3PdjIVFkBr8rIKlQ27bnZkqtDpQPEmLf3AvCzajUyma
+	2gFgLsyx9NbBpQTYPWmwaMJ2D3RFHdtB+NYFo7J6MqD2PBxkzGqIA7o1iRZqFoKoGrLgEBFnj6m
+	WvNK1lRhyv70ITYxwllfX0iBEWEYQObpkyvqXnEch3W8WVQN8oXY/Xy1m2R3yDPXoZqlj7BvTnQ
+	uDPYesGeKqBbTUyOuNPCk6PG937g113l5MXVcliUo3Rs0JLFD3o/MeCaWI8RbBkD2v+1CEPEUeE
+	GvsFvoqq47uisG+vwDKHrS9UKdMfRCN6eiUItm+FbI7JkXpyAC8UztN5jG8=
+X-Received: by 2002:a17:90b:3cc7:b0:3ac:d19e:85f1 with SMTP id 98e67ed59e1d1-3ad86d7e7b9mr1991380a91.53.1792598111346;
+        Wed, 21 Oct 2026 08:55:11 -0700 (PDT)
+Received: from localhost.localdomain (69-172-67-073.static.imsbiz.com. [69.172.67.73])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada49544f1sm60771a91.16.2026.10.21.08.55.09
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 08:54:54 -0700 (PDT)
+        Wed, 21 Oct 2026 08:55:10 -0700 (PDT)
 From: Dudu Lu <phx0fer@gmail.com>
-To: jhs@mojatatu.com,
-	jiri@resnulli.us
+To: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
 Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net/sched: re-cap skb->queue_mapping before indexing dev->_tx[]
-Date: Wed, 21 Oct 2026 23:54:50 +0800
-Message-Id: <20261021155450.66934-1-phx0fer@gmail.com>
+Subject: [PATCH net] net: reject flow_limit_table_len values below 2
+Date: Wed, 21 Oct 2026 23:55:05 +0800
+Message-Id: <20261021155505.67208-1-phx0fer@gmail.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,25 +99,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-qdisc_restart() computes txq = skb_get_tx_queue(dev, skb), which indexes
-dev->_tx[] with skb->queue_mapping and no bound.  A tc BPF program
-attached to a transmit qdisc can store an arbitrary __sk_buff.queue_mapping
-after the tx queue was picked; that store is not re-capped on this path
-(the existing cap in netdev_tx_queue_mapping() only covers the
-skip_txqueue path), so an out-of-range mapping indexes past dev->_tx[]:
+flow_limit_table_len_sysctl() rejects non-powers-of-two but accepts 1,
+which is 2^0.  A length of 1 then gives log_buckets = ilog2(1) = 0, and
+skb_flow_limit() computes hash_32(hash, 0):
 
-  BUG: KASAN: slab-out-of-bounds in sch_direct_xmit+0x744/0x89c
-  Read of size 8 at addr ffff00000e0802d0 by task A-254-2_S4/100
-   sch_direct_xmit+0x744/0x89c
-   __qdisc_run+0x34c/0x1d04
-   __dev_queue_xmit+0x1aec/0x306c
-  Allocated by task 1: alloc_netdev_mqs+0x758/0xfa0
+  include/linux/hash.h:68
+	return __hash_32(val) >> (32 - bits);   /* bits == 0 -> shift by 32 */
 
-The same stale value is then handed to dev_hard_start_xmit(), which
-reports the same fault.  Re-cap the mapping with netdev_cap_txqueue()
-before it is used to pick the tx queue.
+A shift by 32 is undefined and, on arm64/x86, the "hash" becomes the full
+32-bit product val * GOLDEN_RATIO_32 -- an unbounded index into a
+buckets[] flex array that is one byte long inside a 289-byte allocation:
 
-Fixes: 10c51b56232d ("net: add skb_get_tx_queue() helper")
+  UBSAN: shift-out-of-bounds in ./include/linux/hash.h:68:24
+  shift exponent 32 is too large for 32-bit type 'unsigned int'
+   __ubsan_handle_shift_out_of_bounds+0x11c/0x208
+   enqueue_to_backlog+0xbe4/0xc44
+   netif_rx_internal+0x130/0x4d4
+
+The subsequent read-modify-write at dev.c:5443-5446 is an out-of-bounds
+write into the allocation (also observed as use-after-free).  Require at
+least two buckets so log_buckets is never 0.
+
+Fixes: 99bbc7074190 ("rps: selective flow shedding during softnet overflow")
 Assisted-by: LLM
 Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
@@ -130,16 +135,14 @@ linux-next too.
 
 Reproducer status
 -----------------
-A reproducer was written and executed on an arm64 QEMU guest (KASAN,
-CONFIG_NET_SCH_PRIO=y, cls_bpf); it fires at the claimed sink, and still fires on
-a kernel built with ea4d4b5dddb5 applied.  The reproducer source is not posted
-here per Documentation/process/security-bugs.rst; it is available on request.
+A reproducer was written and executed on an arm64 QEMU guest (KASAN + UBSAN);
+UBSAN fired at the claimed sink.  The reproducer source is not posted here per
+Documentation/process/security-bugs.rst; it is available on request.
 
 Triggering conditions
 ---------------------
-CAP_NET_ADMIN (attach the classifier and qdisc).  The residual is the
-store made by a tc BPF program attached to a transmit qdisc, which ea4d4b5dddb5
-explicitly scopes out.
+root (flow_limit_table_len and netdev_max_backlog live only in the init-net
+net_core_table, absent from the netns table).
 
 Notes
 -----
@@ -148,24 +151,24 @@ Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
 it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
 0 warnings.
 
- net/sched/sch_generic.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/core/sysctl_net_core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 6f6a6f0d5eb0..c326d12942e5 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -432,6 +432,13 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
- 		root_lock = qdisc_lock(q);
- 
- 	dev = qdisc_dev(q);
-+	/* A tc BPF program attached to a transmit qdisc can store an
-+	 * arbitrary skb->queue_mapping after the tx queue was picked, so
-+	 * the value reaching here is not necessarily one the device can
-+	 * serve.  Re-cap it before it indexes dev->_tx[].
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index eb35da3556f4..bb0fa69f94f5 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -283,7 +283,12 @@ static int flow_limit_table_len_sysctl(const struct ctl_table *table, int write,
+ 	ptr = table->data;
+ 	old = *ptr;
+ 	ret = proc_dointvec(table, write, buffer, lenp, ppos);
+-	if (!ret && write && !is_power_of_2(*ptr)) {
++	/* A length of 1 is a power of two but gives log_buckets == 0,
++	 * which makes skb_flow_limit() compute hash_32(hash, 0) -- a
++	 * shift by 32 -- and index the one-byte buckets[] array with the
++	 * full 32-bit hash.  Require at least two buckets.
 +	 */
-+	skb_set_queue_mapping(skb,
-+			      netdev_cap_txqueue(dev, skb_get_queue_mapping(skb)));
- 	txq = skb_get_tx_queue(dev, skb);
- 
- 	return sch_direct_xmit(skb, q, dev, txq, root_lock, validate);
++	if (!ret && write && (*ptr < 2 || !is_power_of_2(*ptr))) {
+ 		*ptr = old;
+ 		ret = -EINVAL;
+ 	}
