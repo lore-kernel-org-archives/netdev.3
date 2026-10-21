@@ -1,63 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.217
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792583435;
-	b=alCpDI1odWoQR4y9Ka4VMk0V3PXaGUMekF6tO6vBAgFtd7PDintHex5OsHjmRCJKcW0X
-	 rUdjHOmnWrV4mpIRqlnsxjssB9+5kZIpHTr19BZbPCM0C8Z/XII6dEB6a5sJHY2ZaGRXz
-	 NHEaH5KC/+/aT2LvhX8DKlyNbLGb/YAVgQnBofRtuMPAYHCzPzw0NYXUpIhNmkzBuTRkV
-	 nqlkBm+ZcI7gt0y+QAbNWnr06KnZADghrc7Ep7uxSzpTRxNmdB2UBLZAFnTi+O8zBcuJ2
-	 aBbgtD9Fo2UXi/H/QnVY8qvq3laGacE5y27IR21XKYIL9/R/YpWMLkjiqZS9Z3E9v8A==
+	t=1792583746;
+	b=K+3Asi/0SYhkvw4QYlhIWM+k8RJP8jbRBhG4fuSecpkkrr9BXgpmDO1SvV02ZCcuCdHy
+	 U31VBdzwakJzjliRjqeKuVI4TcTFVBuTw8BBf5IHMCjliY7p6UWloUBPxU18/t861xr7U
+	 etEqF7cuLmLpfxgvdfsfFmGPJj1RpFIzBSHSrTDWUAfmng28kVCkgc3qW8NhyQi+H9MJW
+	 TMVJN1R6ckFRZoAPEYUXfxB4Wr6Gf+ie9M4wyXdD23VJNLQEz3nv6cggodLDYXmoYzd32
+	 KMfhKszxERN8BYTYvsczD4iUIDpoKzfCpa/OmZr+9WBb9j42v/y6sWInVc/wc2aN5Vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792583435;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
-	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
-	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
-	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
-	bh=72FzsWQIjcY8v6oyt0wQCHWqJMzFBXUTwABFBwus7wg=;
-	b=rZM8LC+xmbrjYRVCa2szAn9cT+5/nt12GjRmgzGSPLfossXoGbrIXGxy52W8RCT/Of2b
-	 Fp3FkRvzGx0H2GCw23JX72Us6Hc6pfzlKAq9UhaNPFfErQ7U3j9OkC51e6fcM9FO86w9f
-	 /GKbDPvFaaUbR1QOZe059o8rbLP16RDZAvLTIKpxzXjFFs9VFvcPlGLcRCkyQ5kDmQOY8
-	 y3YH+5byz9W/kS38UWmfHcV1mjHrKuEKtCF+F3G1nFoqg20eDIunlua6TBS0xvWI/e/jg
-	 JjBCAYOO3dh/mIQdd0DqWGLRAoGuguGJULu4W5ADJqsZvQ3CMDsgXefY5k1S79OYASg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792583746;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=ZNdCeQ9XS2Flnfv4lzRM2sIK+csUFPPvzL/2db4vShQ=;
+	b=0wwIoTTgXFFUThWVU5P/y1xyNXWZUzbpM/owyoOyeDvr3InhmlXfD1DIyc98dmM4gU0G
+	 TqA9KtZyglM/FgVp/nYhlpjMAG5ceql+FyJJWShiv8Bf22y6xSDqOi/LfWBnJ+wZFPgLP
+	 DKuQxqdHkItwDzTfNtyzsPtz8KU3kgc67fRTL+idVZFtbND2+hM0SwhicybrCVsfTAGUh
+	 wwwn2vHIonUnGRoEEz67kfuILNPG8GwXjK5LDy80KRGCE3+RleegntpbPQcX7YyQUqkht
+	 /6rHxfTEsBs58KmUBwPMT8a5aiFRNSLGNozZQVBGiWt9MPA0lZO6EMTIr0izVQe55tA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=yinhe.ht;
-	spf=pass smtp.mailfrom=yinhe.ht;
-	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=bgMF+pv1;
-	arc=none smtp.remote-ip=115.124.28.217
-Received: from out28-217.mail.aliyun.com (out28-217.mail.aliyun.com [115.124.28.217])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Ws2U6S4c;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9561606A319;
-	Wed, 21 Oct 2026 11:50:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9561606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 0EC04606A32A;
+	Wed, 21 Oct 2026 11:55:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EC04606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=bgMF+pv1
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1792583430; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
-	bh=72FzsWQIjcY8v6oyt0wQCHWqJMzFBXUTwABFBwus7wg=;
-	b=bgMF+pv1GPQkl57dOMNOU1b0VSwL7y9CH/rBzMKGrSHxkBGZwYxlinnM6ll+3RMILTphhZnY9W1xgD3ZejdNU71pmEr59SNzbMeMIAiSMBXIjKK87hnnTdEmh91TdDJ6JieHTXnkHhYbDN94hIcxGldWBgQ1JkJqWVNZONpYqfyTqhfROpFcWH+7+F5LvxI2RbLfj2OfbW9n/N+68XVwPfBQvbNEke4MjSg3rGxs5A25lxwyJxW7ecu+q5Aq3Ho/XOXBJ3DETM9QF9NVby7dNey2kDoSDtkO0KGokIuWvkrhMUN6wEvgG6OHkh5j2glfQLLDpU5/shgbfIO+dyxVfA==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.135073|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.0351905-0.00102775-0.963782;FP=2045342384072965914|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034184;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=10;RT=10;SR=0;TI=W4_0.2.3_21251643_1792583429724_o7001c188k;
-Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_21251643_1792583429724_o7001c188k] cluster:ay29) at Wed, 21 Oct 2026 19:50:29 +0800
-Date: Wed, 21 Oct 2026 19:50:29 +0800
-From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-To: "Vincent Mailhol" <mailhol@kernel.org>
-Cc: "netdev" <netdev@vger.kernel.org>,
-  "linux-can" <linux-can@vger.kernel.org>,
-  "mkl" <mkl@pengutronix.de>,
-  "kernel" <kernel@pengutronix.de>,
-  "haibo.chen" <haibo.chen@oss.nxp.com>,
-  "shawnguo" <shawnguo@kernel.org>,
-  "imx" <imx@lists.linux.dev>,
-  "stable" <stable@vger.kernel.org>,
-  "netdev-bot+sinfo" <netdev-bot+sinfo@kernel.org>
-Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
-Message-ID: <7860eacb-9b7f-41f9-9e60-d48fdee47d4f.chunyuzhiqiang@yinhe.ht>
-Subject: =?UTF-8?B?UkXvvJpbUEFUQ0ggdjZdIGNhbjogZGV2OiBjYW5fZmlsbF9pbmZvKCk6IGRvbid0IHdha2Ug?=
-  =?UTF-8?B?dXAgY29udHJvbGxlciBpZiBpbnRlcmZhY2UgaXMgZG93bg==?=
-X-Mailer: [Alimail-Mailagent revision 74][W4_0.2.3][null][Chrome]
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Ws2U6S4c
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792583742;
+	bh=ZNdCeQ9XS2Flnfv4lzRM2sIK+csUFPPvzL/2db4vShQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ws2U6S4cm6HdM2RjSxhp0xr0WAR/N531fqehEQTWHmclX2acBiwRCFPVhVYrqgSXi
+	 E+wcHZnClZ0ICxMpF91GC2a/XBskE9yaBdLjulJI2AJ3nERp+iI2WpXMWLofEOoIXt
+	 kmpP6FRF0tTMEskXIGuVS2D6KtcIyxu5oVgmVJ0C2DPK//d06fEQsyvr25bAiI+OvC
+	 8hUHuFJNtUTYvUFg2zRY/oZG12pQdl1R4w0AfDa3AvCnanLncuhe5iaepvQW/saEjj
+	 3z2g90vPvwu0GZrTp8x7tarbIQjr+Fy9maiDiyVjVODSTHZrr7Ligp6TPndVll0WjB
+	 NmtY6lj9eB10g==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 5579360052;
+	Wed, 21 Oct 2026 13:55:42 +0200 (CEST)
+Date: Wed, 21 Oct 2026 13:55:40 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Liu Chao <liuc63@xiaopeng.com>, Networking <netdev@vger.kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Piotr Kubik <piotr@kubik.pl>
+Subject: Re: linux-next: manual merge of the bluetooth-fixes tree with the
+ net tree
+Message-ID: <atioPA8ofnC-PCGi@chamomile>
+References: <atiblfL12VddJgjU@sirena.co.uk>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,23 +71,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-x-aliyun-im-through: {"version":"v1.0"}
-References: <20261021023334.11803-1-chunyuzhiqiang@yinhe.ht>,<4ef66cfe-9ff8-4d26-87de-48485e9d4fa3@kernel.org>
-x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
-In-Reply-To: <4ef66cfe-9ff8-4d26-87de-48485e9d4fa3@kernel.org>
-x-aliyun-mailtrack: {"foreign-track":"0"}
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <atiblfL12VddJgjU@sirena.co.uk>
 
-SGkgVmluY2VudCwKCj4gTml0cGljazogSSB0aGluayBpdCBpcyBzbGlnaHRseSBiZXR0ZXIgdG8g
-cGFzcyBkZXYgcmF0aGVyIHRoYW4KPiBhdXRvX3RkY3ZfcnVubmluZzoKPgo+ICBzdGF0aWMgc2l6
-ZV90IGNhbl90ZGNfZ2V0X3NpemUoY29uc3Qgc3RydWN0IG5ldF9kZXZpY2UgKmRldiwKPiAgICAg
-ICAgICAgIHN0cnVjdCBkYXRhX2JpdHRpbWluZ19wYXJhbXMgKmRidF9wYXJhbXMsCj4gICAgICAg
-ICAgICB1MzIgdGRjX2ZsYWdzKQo+Cj4gVGhlIHJlYXNvbiBpcyB0aGF0IGJ5IHBhc3NpbmcgZGV2
-LCBpdCB3b3VsZCBiZSBlYXNpZXIgaW4gdGhlIGZ1dHVyZSBpZgo+IGZvciB3aGF0ZXZlciByZWFz
-b24gd2UgbmVlZCB0byByZXRyaWV2ZSBvdGhlciB2YWx1ZXMuCgpBZ3JlZWQsIHRoYXQncyBjbGVh
-bmVyIGFuZCBtb3JlIGNvbnNpc3RlbnQgd2l0aCB0aGUgcmVzdCBvZiB0aGUgZmlsZS4KSSdsbCBm
-b2xkIHRoaXMgaW50byB2NzogY2FuX3RkY19nZXRfc2l6ZSgpIGFuZApjYW5fZGF0YV9iaXR0aW1p
-bmdfZ2V0X3NpemUoKSB3aWxsIHRha2UgZGV2IGluc3RlYWQgb2YgYSBib29sLCBhbmQgdGhlClRE
-Q1Ygc2l6ZSBjb25kaXRpb24gd2lsbCB1c2UgbmV0aWZfcnVubmluZyhkZXYpIGRpcmVjdGx5LgoK
-VGhhbmtzLApDaHVuWXVaaGlRaWFuZw==
+Hi,
+
+@netdev maintainers: Please, see below.
+
+On Wed, Oct 21, 2026 at 12:01:41PM +0100, Mark Brown wrote:
+> Hi all,
+> 
+> Today's linux-next merge of the bluetooth-fixes tree got a conflict in:
+> 
+>   net/netfilter/nf_conntrack_netlink.c
+> 
+> between commit:
+> 
+>   cd37ab22a74e0 ("netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter")
+> 
+> from the net tree and commit:
+> 
+>   1ae2d094b0200 ("netfilter: ctnetlink: fix inverted IPv6 address match in dump filter")
+> 
+> from the bluetooth-fixes tree.
+> 
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
+
+Sorry for this: This patch is duplicated, one variant went into
+net.git and another into net-next.git.
+
+Two possibilities:
+
+- Revert 1ae2d094b020 ("netfilter: ctnetlink: fix inverted IPv6
+  address match in dump filter") in net-next.git
+
+or
+
+- Revert cd37ab22a74e ("netfilter: nf_conntrack_netlink: fix inverted
+  IPv6 tuple filter")
+
+before net-next.git gets merged into net.git, because these two
+patches address the same issue.
+
+Apologies for this.
+
+> diff --combined net/netfilter/nf_conntrack_netlink.c
+> index cc8695d5356d2,4b6abe36028e3..0000000000000
+> --- a/net/netfilter/nf_conntrack_netlink.c
+> +++ b/net/netfilter/nf_conntrack_netlink.c
+> @@@ -911,6 -911,7 +911,7 @@@ struct ctnetlink_filter 
+>   static const struct nla_policy cta_filter_nla_policy[CTA_FILTER_MAX + 1] = {
+>   	[CTA_FILTER_ORIG_FLAGS]		= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
+>   	[CTA_FILTER_REPLY_FLAGS]	= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
+> + 	[CTA_FILTER_ZONE]		= { .type = NLA_FLAG },
+>   };
+>   
+>   static int ctnetlink_parse_filter(const struct nlattr *attr,
+> @@@ -930,6 -931,9 +931,9 @@@
+>   	if (tb[CTA_FILTER_REPLY_FLAGS])
+>   		filter->reply_flags = nla_get_u32(tb[CTA_FILTER_REPLY_FLAGS]);
+>   
+> + 	if (tb[CTA_FILTER_ZONE])
+> + 		filter->zone_filter = true;
+> + 
+>   	return 0;
+>   }
+>   
+> @@@ -1006,6 -1010,7 +1010,7 @@@ ctnetlink_alloc_filter(const struct nla
+>   	if (err)
+>   		goto err_filter;
+>   
+> + 	/* CTA_ZONE is allowed without CTA_FILTER_ZONE. */
+>   	if (cda[CTA_ZONE]) {
+>   		err = ctnetlink_parse_zone(cda[CTA_ZONE], &filter->zone);
+>   		if (err < 0)
+> @@@ -1020,6 -1025,12 +1025,12 @@@
+>   	if (err < 0)
+>   		goto err_filter;
+>   
+> + 	/* CTA_FILTER_ZONE cannot be set without CTA_ZONE. */
+> + 	if (filter->zone_filter && !cda[CTA_ZONE]) {
+> + 		err = -EINVAL;
+> + 		goto err_filter;
+> + 	}
+> + 
+>   	if (filter->orig_flags) {
+>   		if (!cda[CTA_TUPLE_ORIG]) {
+>   			err = -EINVAL;
+> @@@ -1098,13 -1109,13 +1109,13 @@@ static int ctnetlink_filter_match_tuple
+>   		break;
+>   	case NFPROTO_IPV6:
+>   		if ((flags & CTA_FILTER_FLAG(CTA_IP_SRC)) &&
+> - 		    ipv6_addr_cmp(&filter_tuple->src.u3.in6,
+> - 				  &ct_tuple->src.u3.in6))
+> + 		    !ipv6_addr_equal(&filter_tuple->src.u3.in6,
+> + 				     &ct_tuple->src.u3.in6))
+>   			return 0;
+>   
+>   		if ((flags & CTA_FILTER_FLAG(CTA_IP_DST)) &&
+> - 		    ipv6_addr_cmp(&filter_tuple->dst.u3.in6,
+> - 				  &ct_tuple->dst.u3.in6))
+> + 		    !ipv6_addr_equal(&filter_tuple->dst.u3.in6,
+> + 				     &ct_tuple->dst.u3.in6))
+>   			return 0;
+>   		break;
+>   	}
+
+
