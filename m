@@ -1,57 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.167
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792575361;
-	b=qa063uyc0+FVh6Rl8NEw8IzLc/GBjJ5U/NZwudTKsDwsc4sUNF0J8C+U1uVrEWwtUhj4
-	 stM6UoRjzBYM8rxWHQ6fxsa9q2azKtZLDG5nCF5OWH/wx0QWv0ollkkpJD0CfuQSLZUAb
-	 NDE2qkE2Ed7fnk6cFZjvgck6KBW75VVJ4WDW1xjnwRFuM8We6rdaWAjA5oiVBvPeo2VKD
-	 c2dfIFmes6qcFsrlzQ6BVSeZcUxGM83UGEiKCVd4GUyrru94/j7HMdVT+pAC/HWTVziES
-	 cpjEhRBJnuz6J5rnsLoRQvL3sIjTT1uvckx1OozKvswDeqPd1BRzWfh9N84CmaDdZNA==
+	t=1792575372;
+	b=WNITPPBz/fhCD/N2otXVCMhI4SWHsTDqEnpWDl2LL9gS/PDfe1ndLKp0YTp0CBsHiCII
+	 EBt2ADv2VvKFE3Vo18qmjR65/hiPX2KGCzHpD/5hkQqmgFRPhvzb+KlxmdAYAERP56mIb
+	 0dvsCtYD/FTTj2+bo2sDtsY3OuHq9teeYlePymVw2A8uB63oCrLW0rBfI0wkG+snAOu7X
+	 21yoFYCTdwqV2SBl48YJEM0YFxugkfVeKqAci4md5xUsTx08ek5RSRAaUAz6NTehS9s/C
+	 Nsqy12dixleqlDIscbmQX0JS1HRyJhPomG6qOyKGpyktSidWQipZ4WshBz+jF2TOV8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792575361;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=BTY8n4GtMoPAtOS9wvlY9329TuGyuM1KvhHMnkCsjv0=;
-	b=M7HTng9VyV3YYpBTNX5jhxHgYpJceIcbI7UuKeGdYfYelZKqGPd6MYKB3qs26abqBC7i
-	 5nApO/qj5qHBuVQ3A9bm1zEfbI2P8y6gyR50SCjli//9IoQ7T0hF0aFC3NUDW+Vp0HnAu
-	 KF9y1gi9p0HKYig1XtkAeR3ouLAhwhCfq+/FuTb6p4hkpO6glR0NiXtUDZPd+kjnhInLg
-	 W0QCbAk5P3e306PdWszCM5pbz572U//LKQDEGbE9ynuaQdhoPgDBM0Ab1j7rQ/XMbvjWa
-	 XdoboSUfGoOCKm5xbqXjSTdP1mZ7NWg2FMAh9+dWdKxqz2ddysOsTg8D+LTpbEdpxPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792575372;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=cYn3RNb6sZTF5g4zlzB0KoIbKyBPsuwon0NlGTXggxc=;
+	b=vubJ/D5wGY05YEq0LvVjssDqXPY72LZLkeif31gMcfoGit8vrlg2uzDjWK/6q+WBY5qe
+	 APcg+ds4Pd8NaoVE9IRKY2dgTbhoeYShcsp5z209YVPdR2pwRG8dYY+nSbHpbB37ykISZ
+	 oPzkD2OR6MPiz/YpfxZy6lApTmF4PUw4DSQdcIq8sZlksH4u9IY0fovdTAD42e5YLl9yH
+	 xN4qRamGubdE2HDbkVDwtip6qnrLPlZn6mjbfB/j8/9IxbBL3HxYPnvrD5BZ4gzUdclPC
+	 Gd0GiPahwLV+hmhKJWVRPp4tPZdRPJC58+brEskN1ppb3WIpqgyZuMknaXGhUEuYeeg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=proton.me;
-	spf=pass smtp.mailfrom=proton.me;
-	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b="Vj/+hYPO";
-	arc=none smtp.remote-ip=185.70.43.167
-Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JjTEMDlh;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="qhRLRo/M";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D528606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:35:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D528606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DC4606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:36:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1DC4606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=Vj/+hYPO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1792575357; x=1792834557;
-	bh=BTY8n4GtMoPAtOS9wvlY9329TuGyuM1KvhHMnkCsjv0=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Vj/+hYPOrQ2UUcXkFXbP25FvDF3ubE4E8rLWsHWDUcGs4flA+sgfJfhGWddcegwpO
-	 DPrd9DqGlgfvTHViuBfBwC4AEjdT2K/xsBkPz7Asvb+c1o0mAXGoZrPb1xjUJluYy/
-	 SgSgQlN4KuaNlFKsDbZiVNiq8eVHWtXxIHuaEUgIwQCE9UyC8+k1dt/6bL91IgRmjI
-	 sJtG6WQl9quOHZUGUvdWy217la2ozfkmUWvJjPvq5QoPZxCbGka7rTGYcIpKD6W+bm
-	 ckXbsHvPOYtRvocoiPD+1Z2UB4PiQ9mWlf+r7dg+Pd7M/8Bp51jteWNj0wvEvyI1JC
-	 faCRAmqfF38QQ==
-Date: Wed, 21 Oct 2026 09:35:52 +0000
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-From: omniameasunt@proton.me
-Cc: "paul@paul-moore.com" <paul@paul-moore.com>
-Subject: [PATCH net] cipso_v4: fail the walk on malformed options
-Message-ID: <CBLsHx48w8Bn1k_Xg6kJFliLNkxLCqi8SnkifapxYYpVtll4w-W_2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y_CgD_sdzcAbILVA=@proton.me>
-Feedback-ID: 219316618:user:proton
-X-Pm-Message-ID: 91b59c001214af969643a27c4c91f908f07cc14c
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JjTEMDlh;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qhRLRo/M
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792575369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cYn3RNb6sZTF5g4zlzB0KoIbKyBPsuwon0NlGTXggxc=;
+	b=JjTEMDlhceFtrzqx4NkVQH3aNgYe+JyMd+m44jvREOu4qW6WdJnv6QQxe0zjdLrSSXc59l
+	Tq//zjrmdFm4XWSD/Y3fPrzYLunXH3bcoeSCx+9mJI6QVbFkJ6jHr7EtOd0+i1X4RoQbJh
+	pbqSNja5GnsjAo01S0SakuGKhYAGFGg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-381-KVeT7Oo2NDS8Bo5WR7i2Fg-1; Wed, 21 Oct 2026 09:36:08 +0000
+X-MC-Unique: KVeT7Oo2NDS8Bo5WR7i2Fg-1
+X-Mimecast-MFC-AGG-ID: KVeT7Oo2NDS8Bo5WR7i2Fg_1792575367
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1de9dac94so4884465e9.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:36:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792575367; x=1793180167; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cYn3RNb6sZTF5g4zlzB0KoIbKyBPsuwon0NlGTXggxc=;
+        b=qhRLRo/MfxbP8EPkU8684Xy4stEf+aPg7UB8MMYR5PU7qWgtsUIPI4kOhzmA9e2eU3
+         jrVwI5SOESH1p8p+sJxJSMYfaXPT0+VWQyC6npTZg3KoraKTwMMyR1DkaWirqKycHJ3q
+         ery6lU2vBOJ6e2o8uKYWNVkbE6ouKEUljaBaejIMcwVjt02/MzWcyo/tzycT8Iw9XTbN
+         BbadZHemJz7rVICcuAp35gFl1rQkhnljnztcu6BpZnLOp9rLkl/Qy1aLluhexFv+CNMD
+         e9UFKTXLSN54OXkdgeY1RFKcq2fLdnGAwdz9tnLnpiRkKDIUooctkaHfwQ2oQ1xcbzUZ
+         Z6Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792575367; x=1793180167;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cYn3RNb6sZTF5g4zlzB0KoIbKyBPsuwon0NlGTXggxc=;
+        b=uwWkaTw2VONgzhANdcX++j+aAaQDaJN4ZwJ6kKAFEt0mN2M0RQzG/jC+Lyo9+jGmiB
+         kF5irvLqFpmibqR2EnFwpPJy6CYypK0pzaMlwQO8ajP2TWQypu7exjijHqpgspdwmYCv
+         bRdY6cT81NU1p9T8OmZPdMic0GHbypEz/suOjlQkC5a/PmFRCQa98iCQR8JGzigWsy/d
+         pga97hJ0J1HbLB8VgNF8tpvEquwF6e514XNf59ZVlVRKQdJctbp+vgqtuVkrq3ndHzlO
+         uPF27nnWxELUiWNDUTWgK2OT3WmFFG8x10AvQxv5N8jXmerBCt2/8pbFgIOAm5mg/nz1
+         IgpQ==
+X-Gm-Message-State: AFq9FYJvTfAK1gtQBliDTgJ72Egau2Fz56afbs4pCyE9UNjHKLAL8sLB
+	C65gl6wMR7qJ/NKRLizQPzzUwLdqpmGKLUZEiHMt93caAnvV5jyk8e5SZFM8aecx0pG7rWixqD3
+	YmZovJIaETGD3t40UGhAMgIu1jgvufHH3KYBUIcGBlD/QyxRhvi2stpdBXg==
+X-Gm-Gg: AYBFou1kSmxJgBhEkaAjsfRgqZl4VBFZ+Jn6W2NzGNObZ9soSPHzr/OyaAPgXrI5CNC
+	drOkmvWEew/08sHYDLGHNMhfly99KkLGnUT/BmzI8wdsYd71kdE+vYdFE4uaGhcIKauyA6sD8o3
+	h/HugcEDspAucvSycWONrKm8FthAOjUK6nRsdxHjk4Phf1qWgspFHWiMlOd3Xg6Hs30Qvz1HrZ8
+	sTJWWc7YAu9qSvp+YACnai9JXVMHqDHTK/CVLd2YbRJmsmJvpQ2GxwfX0pv3rhkRO8SnlnLrERu
+	zEBA+eZls962pbqLgfXD2YSmJG5Xj3kTls0HOaWsNDzRfBF1byMgV9ORL8sLhP4z2upuciZhwRZ
+	pgfagFg==
+X-Received: by 2002:a05:600c:1c09:b0:4a1:ec5b:dca with SMTP id 5b1f17b1804b1-4a1fdb1f0demr32976615e9.15.1792575367129;
+        Wed, 21 Oct 2026 02:36:07 -0700 (PDT)
+X-Received: by 2002:a05:600c:1c09:b0:4a1:ec5b:dca with SMTP id 5b1f17b1804b1-4a1fdb1f0demr32976135e9.15.1792575366576;
+        Wed, 21 Oct 2026 02:36:06 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.178.135])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2d569d4sm145262265e9.10.2026.10.21.02.36.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 02:36:05 -0700 (PDT)
+Date: Wed, 21 Oct 2026 11:35:59 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: netdev@vger.kernel.org, bobbyeshleman@gmail.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/3] vsock: move SOL_SOCKET options to
+ vsock_sol_socket_setsockopt()
+Message-ID: <atiHbzuo3s6efCxW@sgarzare-redhat>
+References: <20261016132716.272018-1-devnexen@gmail.com>
+ <20261016132716.272018-2-devnexen@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,108 +116,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261016132716.272018-2-devnexen@gmail.com>
 
-cipso_v4_get_actual_opt_len() walks a compacted IP option buffer with no
-validation of the option it is standing on: it reads data[iter + 1]
-without checking that the length byte is inside the buffer, it accepts a
-zero length byte (spinning forever), and it never clamps the walked
-offset to len, so the returned length can exceed the 40-byte MAX_IPOPTLEN
-bound that every caller assumes.
+On Fri, Oct 16, 2026 at 02:27:14PM +0100, David Carlier wrote:
+>SO_ZEROCOPY is handled inline in vsock_connectible_setsockopt(). Move it
+>to a helper with a switch on optname, so other SOL_SOCKET options can be
+>added as new cases. The value parsing goes to its own helper too, so each
+>option can do its own checks before it.
+>
+>No functional change.
+>
+>Signed-off-by: David Carlier <devnexen@gmail.com>
+>---
+> net/vmw_vsock/af_vsock.c | 90 +++++++++++++++++++++++++++++-----------
+> 1 file changed, 65 insertions(+), 25 deletions(-)
 
-After cipso_v4_delopt() memmove-compacts a socket's options, the bytes
-past the compacted region are stale and attacker-controlled via
-setsockopt(IP_OPTIONS).  An unprivileged user (CAP_NET_RAW in a user
-namespace, CIPSO labeling configured) can trigger the walk with
-connect(AF_UNSPEC), which reaches cipso_v4_sock_delattr() through the
-SELinux NetLabel hook.  The poisoned optlen is later used in
-do_ip_getsockopt(), where it causes
-
-  * an out-of-bounds read of the adjacent heap object copied back to
-    userspace (kernel pointer disclosure, KASLR defeat), and
-  * a stack buffer overflow when optlen exceeds the 56-byte scratch
-    buffer (return-address overwrite; exploitable for privilege
-    escalation on kernels built without stack protector).
-
-The same helper is also called from cipso_v4_skbuff_delattr() when a
-label is removed from output or forwarded packets; the option bytes there
-have already been validated by ip_options_compile(), so the new checks
-are defensive for that caller.
-
-Fix the defects by making the walk fail with -EINVAL as soon as an
-option header is truncated or malformed (length byte missing, zero, or
-one) or an option would run past len.  cipso_v4_delopt() then drops the
-socket's entire option set (reusing the existing branch that frees the
-ip_options_rcu when CIPSO was the only option), and
-cipso_v4_skbuff_delattr() leaves a malformed packet unchanged instead
-of rewriting its header based on untrustworthy bytes.
-
-Well-formed option streams are unaffected: a socket whose options
-survive the compaction intact keeps them; only malformed streams now
-lose all options instead of carrying a partially parsed set.
-
-Fixes: 014ab19a69c3 ("selinux: Set socket NetLabel based on connection endp=
-oint")
-Signed-off-by: Lucas Dupr=C3=A9--Rabinovici <omniameasunt@proton.me>
-
----
- net/ipv4/cipso_ipv4.c | 22 +++++++++++++++--------
- 1 file changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
---- a/net/ipv4/cipso_ipv4.c
-+++ b/net/ipv4/cipso_ipv4.c
-@@ -1824,7 +1824,11 @@
- =09=09} else if (data[iter] =3D=3D IPOPT_NOP) {
- =09=09=09iter++;
- =09=09} else {
-+=09=09=09if (iter + 1 >=3D len || data[iter + 1] < 2)
-+=09=09=09=09return -EINVAL;
- =09=09=09iter +=3D data[iter + 1];
-+=09=09=09if (iter > len)
-+=09=09=09=09return -EINVAL;
- =09=09=09optlen =3D iter;
- =09=09}
- =09}
-@@ -2028,6 +2032,13 @@
-=20
- =09=09optlen_new =3D cipso_v4_get_actual_opt_len(opt->opt.__data,
- =09=09=09=09=09=09=09 opt->opt.optlen);
-+=09=09if (optlen_new < 0) {
-+=09=09=09/* malformed option stream, drop all the options */
-+=09=09=09*opt_ptr =3D NULL;
-+=09=09=09hdr_delta =3D opt->opt.optlen;
-+=09=09=09kfree_rcu(opt, rcu);
-+=09=09=09return hdr_delta;
-+=09=09}
- =09=09hdr_delta =3D opt->opt.optlen;
- =09=09opt->opt.optlen =3D (optlen_new + 3) & ~3;
- =09=09hdr_delta -=3D opt->opt.optlen;
-@@ -2249,7 +2260,7 @@
- int cipso_v4_skbuff_delattr(struct sk_buff *skb)
- {
- =09int ret_val, cipso_len, hdr_len_actual, new_hdr_len_actual, new_hdr_len=
-,
--=09    hdr_len_delta;
-+=09    hdr_len_delta, optlen;
- =09struct iphdr *iph;
- =09struct ip_options *opt =3D &IPCB(skb)->opt;
- =09unsigned char *cipso_ptr;
-@@ -2266,9 +2277,12 @@
- =09cipso_ptr =3D (unsigned char *)iph + opt->cipso;
- =09cipso_len =3D cipso_ptr[1];
-=20
--=09hdr_len_actual =3D sizeof(struct iphdr) +
--=09=09=09 cipso_v4_get_actual_opt_len((unsigned char *)(iph + 1),
--=09=09=09=09=09=09     opt->optlen);
-+=09optlen =3D cipso_v4_get_actual_opt_len((unsigned char *)(iph + 1),
-+=09=09=09=09=09     opt->optlen);
-+=09/* malformed option stream, leave the packet unchanged */
-+=09if (optlen < 0)
-+=09=09return -EINVAL;
-+=09hdr_len_actual =3D sizeof(struct iphdr) + optlen;
- =09new_hdr_len_actual =3D hdr_len_actual - cipso_len;
- =09new_hdr_len =3D (new_hdr_len_actual + 3) & ~3;
- =09hdr_len_delta =3D (iph->ihl << 2) - new_hdr_len;
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
