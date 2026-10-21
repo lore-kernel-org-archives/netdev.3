@@ -1,71 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.91
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792550184;
-	b=UdTKYGeK7VNFZEdtiUdzFp3LUZKsitlZIqU99tD8zG+p9Vt46oLH+Fpqrpkbljb+GuHH
-	 KAjTgfwULXWPqU0R+jPWhY9fKxUSSQr3gJc35B4BPnmt7tPx1t/enw6tgKLLtzeSgJxze
-	 fDNErjrHMHN2sgnHr4tFjL5rIz/x7/XTTN0UzNxokzkHRNl/46/4oGRueiqJ8but6em3l
-	 19yX9xfoScumyCXKSsydVU1J1iuBqZTmh5+aTwHHB0Xxxih7OVJp7oPpPGwFIqRIglEXG
-	 g1U3vPg6vwR7kA90ld3A9ZsncynqzpGtt4fygUz6n5sP53fdgN4QZAlOBsdVE/dWAUQ==
+	t=1792550181;
+	b=zaLys2t9EeakJWWkzXuyTCdZjR95rGtp0vsOJmghb28GE0fajuzQ4ZMCrmbG8lTvWLqh
+	 EDD+LrORhTIqzEuEHirkK7h8JcM8upWNbmbVr2tcT7E8Zc3ONYmuutXFBVC86WaYRj86/
+	 mqjSC5rHEwz8/xkLivWDy51AeJnoVkN7Uvr+eG8y/1YPVQwNtmSjCBU+ja6oCAZNT+Qd7
+	 7nFR31kYC1/8HX685s8A9dmbnQ5nQ3JWjXdYYSnIWg9A5uWgobuOp+AQSF1l8oR0C65nW
+	 i+e0zNOuN7nrJxmlPMK7jk1Aup0WBAB4on3kMePHqihSKgYs7BISbz7OCYC+0bK7+Aw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792550184;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=GR124ABTP8hVFzVqn+1Ol538eubHOFABWIZhnPlfz1s=;
-	b=4CuhEMmM3RI7o+Kp/+UmExYmfDS9suhRaQomJUqXBhc2SCMS5uBdNO+0T9qZXX9zHWI1
-	 YdFeQkx8HvsifM74DfM0NEpLGwuifnDSjmIXGoJSddUJ1XnaBX24n/9zNFVXLfUZePRo5
-	 XrHmNKYLq6tKWXd+lAMblR/+bgRxoyR1y485pI+yLr8SezSKrv/M4ryxSSKoQ/ENuOEcz
-	 n+3D22LcT7j/lNO8qwkuQ5gihfRXmM1C48RCRT70/70s19CGhNvtdI3flf0GKJdOkoIPE
-	 A9tzXG2G8+Wjj6afEM+65dy3rFyqM/CD90aikhSC7q7ornyJHStbqdOAk1ZybT+qLUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792550181;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
+	 Cc:Reply-To:Message-ID:Subject:X-Mailer:MIME-Version:
+	 x-aliyun-im-through:References:x-aliyun-mail-creator:In-Reply-To:
+	 x-aliyun-mailtrack:Content-Type:Content-Transfer-Encoding;
+	bh=qsyXpazAhUZahGiFpi6Kdein5RX8nnD9Y+xPSXfamaU=;
+	b=WfHfm/SDazAhMpTjbF6kyGPftkdWmossaOTDKrU0iSiCveoOkJ6PpYITq1XKvh2cDvBJ
+	 UnHy8lBnRS+0ae8dE/OOlj0wnL290KVjC2G0XOMs6oKmeZgo/1m0ulKgIOSJ7MDwV/q3X
+	 PzbuBg0hxMZ7WhTRt5YHteRfwmEmkjS0sAcyloKqk+hlvShrZQnMvvkN+FJoGiEQ6womv
+	 v3PkRfdeMF9XfX8QuN+fsYb9xesMkcZURSiuN8wWXN2Y1jwJbBA3ZrohsIHXYtIUTsYB/
+	 D/RVkprUMUU/JnYyE/2YGxZbvA5C6Y7Rsi9WRdsp2ZNEOJM/N9GH/pD2/Wh0Js3h4zA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=K5HXAtfv;
-	arc=none smtp.remote-ip=91.218.175.91
-Received: from mta0.migadu.com (out-91.mta0.migadu.com [91.218.175.91])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=yinhe.ht;
+	spf=pass smtp.mailfrom=yinhe.ht;
+	dkim=pass header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=RhpaX4dv;
+	arc=none smtp.remote-ip=115.124.28.49
+Received: from out28-49.mail.aliyun.com (out28-49.mail.aliyun.com [115.124.28.49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C817D606A31B
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:36:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C817D606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13493606A319;
+	Wed, 21 Oct 2026 02:36:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13493606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=K5HXAtfv
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=sSx8B/MoT7F+YR3WxVCNi4OfBeJXfUbzIEWDqSFIibo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792550176; v=1; x=1793154976;
- b=K5HXAtfvFriKmutRRMVtanU08/Z/OMNmgxf+kb1ufISeHSY8qPLy6q+8FKvsMFUJrPD4IYJw
- F+jBEeMiDNjq2BbQ5oZixahqS/Kkf5KKpJAK4JDTPWGUU0XSTsOaOy8RO7k05tlDVByWKrxVkB+
- bXwWqnP/wJKQ+hnV7bqxlWsA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 65086cd44d755d15;
-	Wed, 21 Oct 2026 02:36:16 +0000
-X-Mizu-Trace-ID: 65086cd44d755d15
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Breno Leitao <leitao@debian.org>,
-	Kees Cook <kees@kernel.org>,
-	Taegu Ha <hataegu0826@gmail.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	linux-ppp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: James Chapman <jchapman@katalix.com>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net] ppp: linearize bridged packets when required
-Date: Wed, 21 Oct 2026 10:36:06 +0800
-Message-ID: <20261021023608.55867-1-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=yinhe.ht header.i=@yinhe.ht header.a=rsa-sha256 header.s=default header.b=RhpaX4dv
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=yinhe.ht; s=default;
+	t=1792550172; h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
+	bh=qsyXpazAhUZahGiFpi6Kdein5RX8nnD9Y+xPSXfamaU=;
+	b=RhpaX4dvHbil6vsch3SGXYrIaC0u+Rgz7QNJScYebvvlqc8AuJ1t4+HsIyLWwPG7+8XAqCyfrAmWeOSCmgQE50aVK8Bi1+taHKWa8hq3KiPIXJ7HgIee3VIGRC2JE+vKkJ8ax/lWv+KbDtrRy/y/+3pt45T1REpPxXOQD39gJ6ly2NbGgo4OmiKes1Bq1WHvCBHZrnRDMqYsoUZXEBZJvBkm8R5PT13utR/Z4DLGu3aAMnczGwfOv/L6cZUUhi1TRwyhPGcqi+Fy/injSJhpnCeDGxC/aRe24laQq7uJqNYvSNMmE12TW7IpyIa5ant9P1hqG6Fm2j8R1M6iBJvCeQ==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1351674|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_social|0.124289-0.00160616-0.874105;FP=16487930044646701978|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083099174;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DW;RN=10;RT=10;SR=0;TI=W4_0.2.3_21251D6C_1792550167118_o7001c1047;
+Received: from WS-web (chunyuzhiqiang@yinhe.ht[W4_0.2.3_21251D6C_1792550167118_o7001c1047] cluster:ay29) at Wed, 21 Oct 2026 10:36:07 +0800
+Date: Wed, 21 Oct 2026 10:36:07 +0800
+From: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
+To: "Marc Kleine-Budde" <mkl@pengutronix.de>,
+  "Vincent Mailhol" <mailhol@kernel.org>
+Cc: "netdev-bot+sinfo" <netdev-bot+sinfo@kernel.org>,
+  "netdev" <netdev@vger.kernel.org>,
+  "linux-can" <linux-can@vger.kernel.org>,
+  "kernel" <kernel@pengutronix.de>,
+  "haibo.chen" <haibo.chen@oss.nxp.com>,
+  "shawnguo" <shawnguo@kernel.org>,
+  "imx" <imx@lists.linux.dev>,
+  "stable" <stable@vger.kernel.org>
+Reply-To: "=?UTF-8?B?5rez5LqO5pm65by6?=" <chunyuzhiqiang@yinhe.ht>
+Message-ID: <04ea1d30-9b6b-4cc9-b92d-a6151084ef0e.chunyuzhiqiang@yinhe.ht>
+Subject: =?UTF-8?B?UkXvvJpbUEFUQ0ggdjVdIGNhbjogZGV2OiBjYW5fZmlsbF9pbmZvKCk6IGRvbid0IHdha2Ug?=
+  =?UTF-8?B?dXAgY29udHJvbGxlciBpZiBpbnRlcmZhY2UgaXMgZG93bg==?=
+X-Mailer: [Alimail-Mailagent revision 74][W4_0.2.3][null][Chrome]
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,45 +67,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+x-aliyun-im-through: {"version":"v1.0"}
+References: <20261018101744.93657-1-chunyuzhiqiang@yinhe.ht> <20261020075340.417899-1-chunyuzhiqiang@yinhe.ht> <CAMZ6RqKpP62XS5tPR714wUmwf6QkdY4V5fb7c4rTFSyoDc+DAA@mail.gmail.com> <20261020-precise-panther-of-symmetry-db65f4-mkl@pengutronix.de>,<20261020-nebulous-meaty-guillemot-bb7589-mkl@pengutronix.de>
+x-aliyun-mail-creator: W4_0.2.3_null_QuNTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwOS4wLjU0MTQuMTIwIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4xLjAtUmVsZWFzZS42MDIxMTAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAyMTAwIChMaW51eDYuMTIuMTAwK2RlYjEzLWFtZDY0OC4xLjAtUmVsZWFzZS42MDIxMTAxKQ==uM
+In-Reply-To: <20261020-nebulous-meaty-guillemot-bb7589-mkl@pengutronix.de>
+x-aliyun-mailtrack: {"foreign-track":"0"}
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-PPP channel bridging is commonly used for PPPoE relaying or forwarding
-from PPPoE to PPPoL2TP. Both destination channel types handle non-linear
-packets, but other channels, such as PPP Async, require linear packets.
-
-Ethernet drivers can pass non-linear packets to PPPoE. If one is bridged
-to PPP Async, ppp_async_encode() accesses the entire packet through
-skb->data, assuming that it is linear. This can read beyond the linear
-buffer and transmit unrelated memory over the serial interface.
-
-The normal PPP transmit path in ppp_push() linearizes packets before
-passing them to channels without direct_xmit. Apply the same rule in
-ppp_channel_bridge_input(), and drop the packet if linearization fails.
-
-Fixes: 4cf476ced45d ("ppp: add PPPIOCBRIDGECHAN and PPPIOCUNBRIDGECHAN ioctls")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260908072135.877364-1-qingfang.deng@linux.dev
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
- drivers/net/ppp/ppp_generic.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 1a610a18893b..a84618e24d61 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -2299,6 +2299,11 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
- 		goto outl;
- 	}
- 
-+	if (!pchb->chan->direct_xmit && skb_linearize(skb)) {
-+		kfree_skb(skb);
-+		goto outl;
-+	}
-+
- 	skb_scrub_packet(skb, !net_eq(pch->chan_net, pchb->chan_net));
- 	if (!pchb->chan->ops->start_xmit(pchb->chan, skb))
- 		kfree_skb(skb);
--- 
-2.43.0
-
+SGkgVmluY2VudCwgTWFyYywKCj4gVGhlIENBTiBUREMgcGFyYW1ldGVycyBhcmUgc3RpbGwgbWVh
+bmluZ2Z1bCB3aGVuIHRoZSBpbnRlcmZhY2UgaXMgZG93bi4KPgo+IEFDSwo+Cj4gQWxsIHRoZSBv
+dGhlciBUREMgcGFyYW1ldGVycyBzaG91bGQgc3RpbGwgYmUgYXZhaWxhYmxlIHdoZW4gdGhlCj4g
+aW50ZXJmYWNlIGlzIGRvd24sIHNvIGp1c3QgZ2F0aW5nIHRoZSBhdXRvIHRkY3YgaXMgZW5vdWdo
+IEkgdGhpbmsuCj4KPiBZZXMsIHRoZSBjYWxsIHRvIGRidF9wYXJhbXMtPmRvX2dldF9hdXRvX3Rk
+Y3YoKSBzaG91bGQgYmUgZ2F0ZWQuIEFsc28KPiBjaGVjayBpZiB0aGUgc2l6ZSBjYWxjdWxhdGlv
+biBoYXMgdG8gYmUgYWRqdXN0ZWQuCgpBZ3JlZWQsIGdhdGluZyB0aGUgd2hvbGUgY2FuX3RkY19m
+aWxsX2luZm8oKSB3YXMgdG9vIGJyb2FkLiB2NiBvbmx5IGdhdGVzCmRvX2dldF9hdXRvX3RkY3Yo
+KSBvbiBuZXRpZl9ydW5uaW5nKCksIHNvIHRoZSBzdGF0aWMgVERDIHBhcmFtZXRlcnMgYW5kCnRo
+ZSBtYW51YWwgVERDViBhcmUgc3RpbGwgcmVwb3J0ZWQgZm9yIGRvd24gaW50ZXJmYWNlcy4KCkZv
+ciB0aGUgc2l6ZSBjYWxjdWxhdGlvbiwgY2FuX3RkY19nZXRfc2l6ZSgpIG5vdyB0YWtlcyBhbgph
+dXRvX3RkY3ZfcnVubmluZyBhcmd1bWVudCBhbmQgb25seSBza2lwcyB0aGUgSUZMQV9DQU5fVERD
+ViBzaXplIHdoZW4gdGhlCmludGVyZmFjZSBpcyBkb3duIGFuZCB0aGUgZHJpdmVyIHVzZXMgZG9f
+Z2V0X2F1dG9fdGRjdigpLiBUaGUgcmVzdCBvZiB0aGUKVERDIHNpemUgaXMgdW5jaGFuZ2VkLgoK
+VGhlIGJlcnItY291bnRlciBnYXRpbmcgc3RheXMgYXMgaXMuCgpUaGFua3MsCkNodW5ZdVpoaVFp
+YW5n
