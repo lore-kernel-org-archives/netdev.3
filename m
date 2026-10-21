@@ -1,55 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792598368;
-	b=u9Nk6U/P5r/Y7/PMUfOUvZTJhFRXf6+s+Rz4e4TV8a75yEjG854wI5wPR8VFvRVUy+XK
-	 MQqcNhwiJ6hJLI+DwuEx7sY3uhrK98KDeXSmemIl6l8n7iVYXskR1jpqm2koZJEsp9PYr
-	 2Knov5sr79Y6+qOn4EBNEJuIqz2Eg4XbnebDurR9xAm1pdF2YEFqvG06HCSiMBfyz1nnI
-	 afSDIVBMtFbr9DfD6FdtySzRhuytkEZjz4qlpXJYIN/eJhrcKnFEN/f0n+jxZYN3+gmoq
-	 9yqVJK0seGWGGyOWgmueYoIjxqgC2RfvbbF7GDfNSR1T6BJ+b6/vBsultGeLw4Pgp/Q==
+	t=1792598413;
+	b=kkwFk9GAQElKWZu4tJnB+0hgnJt+iDRnenbQIgy5LZ4b75YyCykONbdHbjuIfkzP5fQO
+	 9Pit+K9eVe/BEmvnkQ8Y4ylu7E/PW/P2ax4DJHfJdOfBPtk3/agXXAdCU2WGLYJKAuY5G
+	 UlRuiS13jaDIMuIAda3u1uoWd6att5rQK3qd5kfldWxB9cjcnbvhDYSQKhF5wqH6qUUiM
+	 7LkAO6DV1ylwMDeszDHy+Q13qAzgQ3uad+dJrHp3tDx7YvDHXzx15ghctu6yn4vhpvdnF
+	 TuidDVphtvGFeKj8hBiDPax4fzXwp4YaIsnUB0L8cGlOT/85duSfVNAAaPZc3/l4/BQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598368;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=2BQn0eKB89bn2AsAmi6ydE5TlLgCqTpsqvIon7kf9sM=;
-	b=j0klVFbmxLyTPS64PWIfDsPJD4NxXt59qNhgCpW9NxRXjJxpgBf6U0+mQPB/Gm7xuC0H
-	 4d0diNVyx8j3Fi+6DaI5FJKG3wE0ETSSItkMEiZnsPkzn34+LNxpkM42DirLkj0f9AMkL
-	 9WgIb202FJMxcjzqAbkl5MUCpWXodPa6oyWI2PeaxSCgXBKiP5a2cuDilrOroJbx2OnSc
-	 ainPnaKgb/SseFSN6PYBXew8SgVGoEXK1koCkjNDFt4O4kaeVBMI2EPHF4B7w16X+jmdt
-	 8hE8gN13xFBmnyn/4HlnOTlD2WdHy0TpzallvU8OOTy9lEkKNYMdDwpZIMX7qFlxFfQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598413;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=iToQdD7x0C4OcSO6pRTgbUTrjDhTUaXBpJZn1RQhVSyza0MH8lbLALqfp0XwO1y0sIzO
+	 8u4Ek0qWiOO2sdpvgyuLu5obhzQLssvFZG8jRtdpki62yQqRzTamgkdo2E6T5II+eXzhY
+	 staVaS+PapjT8oIz/uapzEeTisZYeJU8OvS4st0jJdaL7autmT033PVyUgziGobBxc1Nq
+	 lLxd2xiogsjeySBk+esVFJ6vDVBOne48yTzHhus96gx94sEJM7z18eJMK4AfYP9giPRPT
+	 ORXQ+YRULZsjcMK2A77Rg6ao76QfpuUqPxIq1+RGxLRV17PFJRzC4EwMlPpeFbQH3FQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WTqe5o9z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DkxAlDUK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CE2606A324
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1AC606A323
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 16:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WTqe5o9z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BCB1F000C3
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:59:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DkxAlDUK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7ACA1F000C1;
+	Wed, 21 Oct 2026 16:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792598367;
-	bh=2BQn0eKB89bn2AsAmi6ydE5TlLgCqTpsqvIon7kf9sM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WTqe5o9z2SHw07GfrJdOTLni4EGp8lhLF6A3hbDk0E+hJdTTh4kqPSvRw+rRr0Hgx
-	 PTNbWzUz4dBi4oLwhL4aMrkAnzyMtAjkwD4sliBIiCj52f7wxwHB9C34jYCdqnC9OW
-	 k4njKCkWBiUZFija6iNKWNUQFuJE9Fa5stzuyMM4TInmRYYgu3WY3I5O8GkKZhSWH1
-	 4ZNakoxlUS//niTskKIakPxEe34xcKpZDKHSTwE1+OcvAT8xQ/+SDmlGrjR/lgvgTC
-	 AgwIKYfv2Z9OQFQbQts2VTJvPpqDY6Xb15SRZIEIdWK1zCNntGuzH+JrauS19K/tXl
-	 OgxhzhDBOgMZA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5bfa686881fso48253e87.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:59:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzbzRYnhWZgWQvYlYkmrlR1nqfqOvnKvXMSJ64NcppDEcfR0Nh8GpU/Oow3kabHevne2iX+i7A=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIhTZm5lT2HpZGIgUT92HS0TsyZhAcm6WMEQP6GVYfozuZBPSdv
-	oZElBs1Dxqf5n9QwRPZSsjDUrnN4O1d/79qJO46t3q9njqkWdKlCgvgawl6GesrW9UIaHrAOUYG
-	X+5zJf/i3MCmbE2sCPi72BpkD18rGzWg=
-X-Received: by 2002:a05:6512:1152:b0:5bf:a4e5:7266 with SMTP id
- 2adb3069b0e04-5bfa4e573b5mr233787e87.41.1792598366157; Wed, 21 Oct 2026
- 08:59:26 -0700 (PDT)
+	s=k20260515; t=1792598413;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DkxAlDUKPZXTZLmniOgO4CrAbxzGiErjRIPe6lqwyuikemDIWUhQLgM1Is13SKmTd
+	 0RBrcAuiEvMMc5A4LYiU29YrkRoPymZYfOs+0solGwR9WeubPJfEY9QN3ioreBb3B+
+	 hkpiOkI1kc4log01QjXAV5+TBEyrDuIJCrlL5Oo/7NS/UUTVhN6GjBxhVo34i7d7yL
+	 XILjxDUbmHZ/RI6QkADCFvefAF+xJWo66xzp5ei1CYmBhYLL9Qw+PhkdshykfJOdBo
+	 xGbpN44iMVAlBpoUguFhuTFEgxUMyaMVONo3+DRAaqmG5r9+Ky0/SxYj+NZ4Ol407y
+	 3UiUwd+sBApKQ==
+From: netdev-bot+sinfo@kernel.org
+To: Dudu Lu <phx0fer@gmail.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: reject flow_limit_table_len values below 2
+Date: Wed, 21 Oct 2026 16:00:12 +0000
+Message-ID: <179259841249.3290.13674474861641412332@kernel.org>
+In-Reply-To: <20261021155505.67208-1-phx0fer@gmail.com>
+References: <20261021155505.67208-1-phx0fer@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,57 +61,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020151954.22953-1-edumazet@kernel.org> <179259610296.3135.5083998587535514838@kernel.org>
-In-Reply-To: <179259610296.3135.5083998587535514838@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 21 Oct 2026 17:59:10 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiiq+++igFUEuWjznMZYDshBEocD8+JnGx0c2NU9GwBsqYw@mail.gmail.com>
-X-Gm-Features: AclHuK8-17ZnhwZ3KUYwYg6zpdPE1zaadxvyZrxcLPZHmjKLsHV6_wP9UQsvEMk
-Message-ID: <CAL4Wiiq+++igFUEuWjznMZYDshBEocD8+JnGx0c2NU9GwBsqYw@mail.gmail.com>
-Subject: Re: [PATCH net] net: shrink the payload-only part of skb dataref to
- one bit
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, Stephan@adalogics.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le mer. 21 oct. 2026 =C3=A0 17:21, <netdev-bot+sashiko@kernel.org> a =C3=A9=
-crit :
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The patch raises the wrap point of the shared-head reference
->   count from 2^16 to 2^30, but it adds no bound or saturation.
-> - [Low] After the patch, the 'DOC: dataref and headerless skbs' block in
->   include/linux/skbuff.h contradicts itself.
+Hi!
 
-Clones queued by packet_rcv() are charged to the receiving socket with
-skb_set_owner_r(), after the sk_rmem_alloc vs sk_rcvbuf check.
-Each socket can therefore hold only a bounded number of clones.
-Reaching 2^30 clones would need a huge number of sockets
-plus hundreds of GB of memory, outside of any reasonable memcg setup.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-It took 20 years for someone to reach 2^16 clones. 2^30 is far beyond
-practical reach, and I do not want to add a check in the clone fast path fo=
-r it.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Instead we plan (in net-nex) to limit the number of AF_PACKET sockets
-per netns or per device,
-since a large number of taps already causes soft lockups in the data path.
-We also plan similar limits for RAW sockets per netns and for UDP
-multicast receivers.
-These will bound clone fan-out at the source.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-The DOC comment nit can be addressed in a net-next cleanup.
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
