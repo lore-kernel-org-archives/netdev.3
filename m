@@ -1,100 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792597842;
-	b=ZjN1U9kr1b08KVALz/Ii9/lms3mtxsALSwI1hflxX/oIOHz7vnzIo6D3Yep5erkU1guk
-	 4r84t3mqPc482cvuMVk19gVt57/+hdsQBgxUkQbChs1OJcxsK8rIPxgOPACqGCYsW/hB5
-	 F1KyIBICF9W+XstSF9/B+hx/BNqtixQ/0dGKkxuJXlk6dQOpBWJvp6Dy9IGJi3pLpNQ3T
-	 RFm0WpyTRxaiW/meYmWlPYU7QODmrgDy1ZuMk8ve2AP1iVrP/MTuvFOLLf0TOzri/HFVk
-	 y3hSQP0diqgHt3zdLd0sa2817ycGrm4XjNEuv9livJKU/tG2soDnY0J/bFo+stJBDFw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792597842;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792598048;
+	b=APDFBZyJ7505epH3bmlQL0V6W5kmbUM9RucqJcUaMRYUvshENB5IZ9YqsOBwLuoLtC8J
+	 HxXw7AdI6w+Cgn/E63BgtiO9Ks1jXrv2eLSdnPnpnhg/okhNvoJLGT6fd0QU6V0cwwcUO
+	 Fn5Xg/mJARjoBv7V2fkGEgIWp9OpE0Nx1h5ff59Bph4eK6BmXcTruUmYAkWQkKCdNBFlw
+	 u/TugNZsNIBqHckZNUJkhIBrUWKloAL8ql/e69tdUQU9XNYVtFBqWxbJ0L7hpIYbjclpx
+	 mClpy6Adj4HVKYiUdt7+QBgROGplYjEOXq7hiTSwQy2cOTxN+HZ91p9NfzuRNo3PxNw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598048;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=IaUjabYBPr4k3c9P8wC/7GmNjrvY1v03i+TToOuLuDI=;
-	b=H9s0C0uTjdNzKxxnsxtBPpLfhaaWPZTuGP8CrFzUcQRoUobiMTRNepCAQ9ouoAck+ifn
-	 NBSOdLPXi2RBjzVXcqt/AqMBa5wxSS4Ue0lm1x3c7j1hL4MYdM693ROOkJnH8x6QI4uaF
-	 UVkCldQd7enOQmdsBrHGS/tBlYlM1F4BXI3wowSrredHBMotgh4rhU2kFaq8x7rmsklvF
-	 XEi1Nyo1cs7X7fExLNxllXy7MTvaDM/PEAE+AnTmX+EyMMqRN8XpktrNNBnU4htu5fzQa
-	 qCL2r1c+VwhxtOVYFNWJ/3VVqDG/8PaAftwOHkQFC8QB83arwkUUHP7THqdgbtN3whQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ChFiZoAA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=3CTklGnR6qKIfqjBldxG5LZR5vJ0yi1DcM9vKm2oYi8=;
+	b=AGYKmpBk2wzo8J/IkJLq71GxjMc2ilfww8zSNU2184p/1/cv0xopFc1mMBdFj3EZXDzU
+	 aXJkGjdmZwC9RlXC6KfNtr3FMQ9ZHNBzOn3p56DyKfQ9Au57IE+/7/rLpip3wCb1Gd+6m
+	 Il6JpuV0La27yhdAx4L9sCmROQnHn53HdtwCymyEMxscNytqwI9l64dSXplMdZTvhp9G1
+	 pjZDnsddydRGtg2oEtoeK8UxQ2uowco7VaELnhJgwR0CcfWolLHHrb194B4uVrIW2ArMI
+	 aCaZnOl8FmzyHiPQ1kpvJcVPKDtBK3k0kGOzpdZoRrGoUnTEnR4Mt9yB7Di96RNVcKw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="tNEye/+U";
+	arc=none smtp.remote-ip=209.85.215.171
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4BE606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:50:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D4BE606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A62606A31F
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:54:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6A62606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=ChFiZoAA
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e8623790f8so76465ad.0
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:50:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792597841; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GkvaLkJTYs+mPDTNVJBGNPF9MjAvgKARZ53iUVWn4/StSjEu2KlrNRPbM1YNzGnUrV
-         Q/VABHUxQgmyYfWYxF99c0zWvx8ihEsGgQ0y8K8RfXbSQ1jSmGFNBobx5c7HjvI1jSD/
-         V7V55lv5HjMNpafWBx8p6BjcfSlPGLchXNBdoFaUN3w9A4QT8U6vDjKQmzq9KKjf6TKl
-         PLebgZmBqDT5eX65rYOPRWn5TGRdi4uJeUKtfdPeEEjxNLrzkjaPgDPzxBdVuEAcX2ki
-         A4sCJRiag6QbJD8yTwvkIpxhWKmb23PSuV3RqOCIVhMkqmiUOk4YWYkv9RbF0NSsApQs
-         RGug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IaUjabYBPr4k3c9P8wC/7GmNjrvY1v03i+TToOuLuDI=;
-        fh=a9GoajvukXXS0MBTXaLudknTjdLDXQ54mstiSudE3rg=;
-        b=qHNv9zECG4lIU01dKKVhvU9zfKMJEdDJnFIUYBQFop4CbKQXXZ9EiXz5Unig7SQZkC
-         rZ5/mCvJ44/AqewaETZOCTXLU/FYGO+p/Gdh/y5MU4QvDVr87buVnnToZScqcmLdu3J+
-         dumZ0To270N0EiGXgZZE6UrG2VpHbQU0xpDzMUTd9tW0oUwg/xWqXRgj49Z9g4nhnXAf
-         NJ7PHQKjtM8iOo9TI1GDoTJxKcGfrtmyKhwimxJP64daFkiI9KMAVGTdW16EbFpuDY7t
-         8VSRnj110wv0uYtk8b5B81hVktBI/3FcjJkCpTFr3C+KmaGJ1k0ZhrZoJ3Uw3W2AXckT
-         ajhg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=tNEye/+U
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc4be0e5351so300276a12.0
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:54:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792597841; x=1793202641; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IaUjabYBPr4k3c9P8wC/7GmNjrvY1v03i+TToOuLuDI=;
-        b=ChFiZoAA0ry5sqQt5y5BbsFcUMcVLcT3Yp1BSlmpkN7A8BJ+aZcEPDSQcKXhdbLgDR
-         HusH+jsKBWyUVIhmvZLx23sqj7cx25BskULT9q4Ahw3Flwi6MqnnorJ/oxZTDlLTcB/X
-         z3765lszDkqRQ5y4vGS+LC+NURkrNpxPNxYdIByRNCOWCj9j4LlsDK7r7NF8ezFWZkva
-         63ya16Mt9ADI993SclirtHU6fZceD1i2Y9ekQIcOssqLf5FrLvX5jLV6fTnvNbMTP0HK
-         UlWuqg2d20WBXFuMu6N9RAx6awkxvHbj/S1oLyVh77lTm1QeIX6Uzb8p2177ThjyoQZ2
-         j2bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792597841; x=1793202641;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1792598047; x=1793202847; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IaUjabYBPr4k3c9P8wC/7GmNjrvY1v03i+TToOuLuDI=;
-        b=nHxonE/pBRh1Z5olsjioP6mma92/GKmkikpvH5cPTmKbHq4tpGoIu6ch/NP86jJuxG
-         ZQGHkWP3sOE30Zh2KnLK9CsxsvFYWvlW1i9ljXskMPNprWpPUI/mb4AdeA7elIwHB37w
-         vrskoL773oU26TJS47y2dzyvwThoaj4mIn8xmXkqOrR/oFHjEvRKJePLaQFo6Sbrsbsz
-         Zhk6ygRro3xgjx0yCRQM+90TdUPDYVENiK3L4Qzczy/Pchdh1fdKkBUpvvbrpR9j2p8P
-         599qNX+j6GuIg31BIfYYlxnY3zYOAZBabWtA8T3C+3GYQREOVKy16GxosIhqnItX0bjK
-         AiyA==
-X-Forwarded-Encrypted: i=1; AKwUvBzEMb1prjjxZ45h8AJRO1dAybGi/bKquIf+OmBhKYWuPbD6dKlK5+bYI6Sy8YU4dPUR7u01XBg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJVKnQ9Ijm7ayqfoNwuvSO4ZjEuM8AAPaoY4o0vAzCecd8wQI9e
-	j+ChBocYhkm3fYNOaEOsLuRyctijgHjnAjhiqBZt6n3+O9EPETjHbMZUCUXUhW5ML4ReymjXbFl
-	e/bLvP3BbaP34n6iZR3yzV8jBdDt9QcApi/8h/K++
-X-Gm-Gg: AYBFou3af5hg6xP+rHtLFcSABxSClD3AkrGfwijcF8JOAhgquprLnxCpGiktkKSdknv
-	VS+qEZg/t0RZUKkCEFU+zbYAOlC9rsJI2trLUPCbOcVjXLMSpZ5MmBpOLhpfqOnLYdiZJ2h16ZE
-	X2aVkte9/52EucKF/wWXaSXhtgtSgzXwR/eLt3fMwViK3RcpaLBhbG9jRDRpvcqWYVFr/kkry2N
-	iFFsWldXqccgwFLiGjTYhzYS/SCznMCoYxWGVbJHGkKdz8txCxoz3THYyUn0YwYp+ajk+mvW8sk
-	q75MZK/JiTBWRaWRYVydiSMZE+ydTFpUsU3P+8pK/kr+Slf61aOk2bqJO8YQHB3FmmeC8LbevNy
-	pXZ5sJ7EaYBxly3oUIV20RwVpRVf9x0VFN0aiZg==
-X-Received: by 2002:a17:902:dacb:b0:2ca:4bb4:4bd with SMTP id
- d9443c01a7336-2ea1ad8e5b6mr11446815ad.5.1792597840207; Wed, 21 Oct 2026
- 08:50:40 -0700 (PDT)
+        bh=3CTklGnR6qKIfqjBldxG5LZR5vJ0yi1DcM9vKm2oYi8=;
+        b=tNEye/+UEyGcEv+mmO35R5dvve71SFnpGdHRW/DRlxtVWLwzBkim+HfwfLotWHxiS9
+         sKaTn0VpC28ufBvoUqJLxYPS6oA5BG/soKhR/vAOzwGZ2ByTgMy3xNrZQhRIMl2ereqd
+         KNwWeZ/QYTdM1rbkeBrJEE5tEImgecuqhQSSg4hTTE6ybs7kDu4uMfLANl1o5kU4P0eH
+         Z9Krh0UGIZ4pmlONauHULtdHXG8O9Ujl/hs3+hAKdfKjN9RJ5nFDS1CKsX3Yegb9t+w+
+         ADmr01xdfCanedBWLYvLp43nNrl5SyoFCgRGo1I9TWc7BgyWi1DeRjDl3vQ5jOgDaB13
+         tXVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792598047; x=1793202847;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3CTklGnR6qKIfqjBldxG5LZR5vJ0yi1DcM9vKm2oYi8=;
+        b=GN6VYUG2gfb/b/QZylPzX/uW/mMMOWunBIUPPsjf4Jew4E+xR4gBtHl3VTPLDrMmh3
+         dPCz+BV+hP8kVe9ejjeUst8riUELSG/oKgZJYty1M5mHbq9f7z7yBBUFO8sWP3ujOUAe
+         c0cwYQouigPiULUufkI0aVkI2NB6dif2AGMq2N3stK6+Vkp3iaOVxEJXiCl1HENOrnJE
+         dcj+UDIMwq3wgHEp7ERRlQVB4kmegXibMXvpybZg0bNR++tT6ILv5ugtxUrTvUDdNwdo
+         XNKnrxhLa4P7/h+cyNRUmNyK1NQkWposxKcn80fv4y1vhdYU0/kFuFyvSiWu3ZtNkXtB
+         9M5w==
+X-Gm-Message-State: AFq9FYLhDCiOUDLz/0J1Y5iFIvEu/FpmO6UyU9xX3RhH1kGL5pqUNcmy
+	n6mLa+iNStYqgyvtHdiNamadb/MrweiL59MEtyATe7OSbBZ9Dg1m0RLQRW2LDQ==
+X-Gm-Gg: AYBFou2b1MrjSa/erbhT22sf3YvcHUik4kxk3L+czcLp0EdCVDyXnF5jz1YoxEmkA02
+	hp+H8yKKm/42SIJj5DJR4QPoQU5bURrIN4igU3P1guw3vXSo44LqyckTYPrl6FaC6AM7hplhlNa
+	1VlwZb1h8RxC3ZmZB32gskLuf334YwE4IePwk3kLPdAZfVJAkBS3x0sOZ7DScLqvh59wXWwvIQ2
+	q59k+4gC/kdQUaG7i/9UXoHyfoNnZmLSzOo0NgF7AGXXDxjaqvm9kQTilsFfR5Fs3cAhqK+yWwk
+	Q7c3I4x13/CkPJheu48M4YhOVua/Q/49czIvuDVxdQSKAuLdsIEegF4Zp5SymeUvKwgtyTNy/Ew
+	miUEVtiMMTYP0pHAhrhkcjwsEObmbifAl4Ss9o6hnMd8gvc++y1/nAmloB4mN048eesb7A6gvVp
+	QYDnyVDnnqsAcs6U7IuWL4plhZHfAETc/p0i4FotUwGOJ8KOYNqS7vCJPrA3XuebhHQCAQbdrH/
+	zurPADr5M5cfIkim1y2AZvAFSPPsg0MI9cJ7ZjLxKXbqBAC0qKI9FbOAYbryqFdoGNyCBNcnE6d
+	RKwedatoKXhAGAHtFW1VAci9qQxyDWVTeKT9sctHGBjazMm0TVoA4PCSlYQ=
+X-Received: by 2002:a17:90b:3a43:b0:3ac:9c37:9429 with SMTP id 98e67ed59e1d1-3ad86f1b5f7mr2277770a91.52.1792598046956;
+        Wed, 21 Oct 2026 08:54:06 -0700 (PDT)
+Received: from localhost.localdomain (69-172-67-073.static.imsbiz.com. [69.172.67.73])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada48bcb45sm82813a91.16.2026.10.21.08.54.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 21 Oct 2026 08:54:06 -0700 (PDT)
+From: Dudu Lu <phx0fer@gmail.com>
+To: vinicius.gomes@intel.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us
+Cc: netdev@vger.kernel.org
+Subject: [PATCH net] net/sched: etf: initialise the sock_exterr_skb before filling it
+Date: Wed, 21 Oct 2026 23:54:01 +0800
+Message-Id: <20261021155401.65997-1-phx0fer@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,67 +95,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019210604.2433620-1-lrizzo@google.com> <c599f939-0308-428f-aeaa-fc990446cea1@intel.com>
-In-Reply-To: <c599f939-0308-428f-aeaa-fc990446cea1@intel.com>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Wed, 21 Oct 2026 17:50:04 +0200
-X-Gm-Features: AclHuK9FmBdcnW_p7t6lt2QnH0JAdG8PU46GyBiVJSlHu7N5H8oC8Cumb4S0jYI
-Message-ID: <CAMOZA0LrxfP3zDCutahGqRLuS7ueCppbCT7Oi-h9=xwAAit4sw@mail.gmail.com>
-Subject: Re: [PATCH iwl-next v2 0/2] libeth, idpf: use GFP_KERNEL for the
- initial Rx ring fill
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Brian Vazquez <brianvv@google.com>, Joshua Hay <joshua.a.hay@intel.com>, 
-	Larysa Zaremba <larysa.zaremba@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 21, 2026 at 4:57=E2=80=AFPM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
->
-> From: Luigi Rizzo <lrizzo@google.com>
-> Date: Mon, 19 Oct 2026 21:06:02 +0000
->
-> > libeth_rx_alloc() always allocates with GFP_ATOMIC, including when a
-> > driver fills its Rx rings at open or on queue reconfiguration. That
-> > fill runs in process context, right after page_pool_create() and before
-> > the queues' NAPI is enabled, so it may sleep, and GFP_ATOMIC is
-> > needlessly restrictive there: it can neither reclaim nor compact, while
-> > the initial fill can allocate tens of thousands of buffers across all
-> > queues.
-> >
-> > Patch 1 adds libeth_rx_alloc_gfp() taking a gfp_t parameter and turns
-> > libeth_rx_alloc() into its GFP_ATOMIC wrapper.
-> > Patch 2 switches idpf's initial Rx ring fill (both splitq and singleq)
-> > to GFP_KERNEL.
->
-> This is done for simplicity and performance reasons (although I've just
-> realized that this helper is fully inline, so it will inline your new
-> GFP argument as well).
->
-> But could anyone explain me why the initial fill is bad to do with
-> GFP_ATOMIC?
+report_sock_error() clones the transmitted skb, overlays a
+struct sock_exterr_skb on its control block and fills in the seven
+struct sock_extended_err fields, but never clears addr_offset and port.
+skb_clone() copies cb[] verbatim, so the errqueue entry carries the TX
+skb's stale control block to the receive side, and the ipv4 error-queue
+reader trusts those bytes:
 
-It might not be so bad now, but consider something like DMA-PMD
-https://lore.kernel.org/all/20261003212241.3432303-1-lrizzo@google.com/
-that allocates buffers from larger chunks to reduce IOTLB pressure
-and iommu-related costs.
+  net/ipv4/ip_sockglue.c:556
+	sin->sin_addr.s_addr = *(__be32 *)(skb_network_header(skb) +
+					   serr->addr_offset);
+	sin->sin_port = serr->port;
 
-An innocent request for one buffer could cause the pagepool provider
-to request a higher order page, which in turn may require some
-compaction work and sleeping.
+The gate that is supposed to guard that read only asks whether an
+address was requested at all:
 
-Using GFP_ATOMIC could cause unnecessary allocation failures
-if pages are not readily available (and in O(100K) allocations
-something could easily go wrong).
+  net/ipv4/ip_sockglue.c:484
+	return serr->ee.ee_origin == SO_EE_ORIGIN_ICMP ||
+	       serr->ee.ee_origin == SO_EE_ORIGIN_LOCAL || serr->port;
 
-FWIW other drivers are not very consistent in their use of flags for
-initial allocations, but I think this is more to simplify code reuse
-(as you pointed out) than for a real requirement.
+SO_EE_ORIGIN_TXTIME is neither ICMP nor LOCAL, so for sch_etf the gate is
+decided by serr->port alone -- by the stale byte pair.  When it is
+non-zero the reader dereferences skb_network_header() + addr_offset with
+an arbitrary offset.  On the TCP path cb[40..44) is not zero: the
+transmit path stored delivered_mstamp there (tcp_rate_skb_sent()), which
+is exactly where addr_offset/port sit in the arm64 struct layout.
 
-cheers
-luigi
+Reached with an unmodified 7.3-rc4 (arm64, KASAN, in-tree modules): a TCP
+socket enables TX-timestamp error reporting (SO_TXTIME with
+SOF_TXTIME_REPORT_ERRORS), a sch_etf qdisc drops the packet, and a
+recvmsg() reaches ip_recv_error():
+
+  BUG: KASAN: slab-out-of-bounds in ip_recv_error+0x970/0xa0c
+  Read of size 4 at addr ffff0000158ffdd5 by task A-227-A227-1_S2/113
+  ip_recv_error+0x970/0xa0c
+  inet_recv_error+0x94/0xdc
+  tcp_recvmsg+0x378/0x408
+  ...
+  The buggy address is located 149 bytes to the right of
+  allocated 704-byte region
+
+Zero the whole overlay rather than the two fields individually: the
+errqueue entry is handed to the receive side as a self-contained record,
+which is what every other producer in the tree already does (sch_etf was
+the only error-queue producer that cleared neither field).  This does not
+change what the in-tree selftest observes -- so_txtime.c reads only
+ee_origin/ee_errno/ee_code/ee_data/ee_info, never msg_name or sin_port.
+
+Fixes: 4b15c7075352 ("net/sched: Make etf report drops on error_queue")
+Assisted-by: LLM
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+---
+Tested base
+-----------
+Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
+Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
+is unchanged between the two, so the bug is still present there.
+Checked against linux-next next-20261021 (commit 9a482184d910): the
+affected code is unchanged there as well, so the bug is still present in
+linux-next too.
+
+Reproducer status
+-----------------
+A reproducer was written and executed on an arm64 QEMU guest (dummy-virt,
+KASAN kernel) against unmodified 7.3-rc4 in-tree modules; KASAN fired at the
+claimed sink.  The reproducer source is not posted here per
+Documentation/process/security-bugs.rst ("do not publicly share a reproducer");
+it is available on request.
+
+Triggering conditions
+---------------------
+CAP_NET_ADMIN to install the etf qdisc; the socket must opt into TX
+timestamp error reporting (SO_TXTIME + SOF_TXTIME_REPORT_ERRORS); a TCP flow
+with a non-empty retransmit queue.  No out-of-tree module is needed.
+
+Notes
+-----
+Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
+(commit 93f51579e7df) and a full arm64 kernel (defconfig) was built with
+it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
+0 warnings.
+
+ net/sched/sch_etf.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/sched/sch_etf.c b/net/sched/sch_etf.c
+index ada87a8..aaafcf6 100644
+--- a/net/sched/sch_etf.c
++++ b/net/sched/sch_etf.c
+@@ -147,6 +147,7 @@ static void report_sock_error(struct sk_buff *skb, u32 err, u8 code)
+ 		return;
+
+ 	serr = SKB_EXT_ERR(clone);
++	memset(serr, 0, sizeof(*serr));
+ 	serr->ee.ee_errno = err;
+ 	serr->ee.ee_origin = SO_EE_ORIGIN_TXTIME;
+ 	serr->ee.ee_type = 0;
+--
+2.39.5 (Apple Git-154)
