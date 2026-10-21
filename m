@@ -1,101 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792575002;
-	b=eGspKwu5rRVPa/Bryhtlh293L08ch4PLblygXwIjabkfiAVFeFgdIptaVc8huXAoewzf
-	 1KH0wWSNLX7vxI20CiQRnKb/NDgbOiPP4q/JYSS66e2xIDlKWokF5iFA67WsvyBzrn67b
-	 C8BBE+NtYn7jGPBd8nN4lN6Kz4sV7c+dO0wN/4vsL3V1gq5Hyj/u5tbgUUacwOi5cg+gE
-	 n1hr/QzaUZbEebRFUZBwX7xVLnc7LM+vmUB1irP10FrcNVzGF+/PJtE5heSyke1g7e7In
-	 FQO3BrXKoJv33BzRbEHQCAGSaQDHtLi6VhbbbAQBk4GfcqkpQ5LhnKTQumENrmnMnKA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792575002;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=talS54amiPg/yZGwEbzg0hMRny1RlU7saCiWAuyBxB4=;
-	b=YCO16hVUW9mT0OgHZXzgjY9NigzsRNP6U6CpihMNTih00LRp0d6oV49YhD+FqMqAKZxm
-	 6chgAjdufOkCZfuoWgo3zzrbu8BU56+LmOGd7ejwiDBmRzI965+qW8HsNkGEFbrFZttU/
-	 wMDhbc8ADVaP/vjcfCktA9jJkX1c/p/pgAXW4ZtmuyLeZvCFfT6vk16ptFSpOBrfNCb55
-	 oTYdFDy+5c1iNOKOgrPo5iQXHzokuuSWsLlukhFBhmle1wbkjAbHBIE8QAilEES1OaF9f
-	 Eigt/PAUyXuQo3edsjbnvj7/O8Nn/jXVe7TndhDUQr7awD+jyfl0veuwFjV7G8uxnrg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZY49XlYv;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.53
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.167
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792575361;
+	b=qa063uyc0+FVh6Rl8NEw8IzLc/GBjJ5U/NZwudTKsDwsc4sUNF0J8C+U1uVrEWwtUhj4
+	 stM6UoRjzBYM8rxWHQ6fxsa9q2azKtZLDG5nCF5OWH/wx0QWv0ollkkpJD0CfuQSLZUAb
+	 NDE2qkE2Ed7fnk6cFZjvgck6KBW75VVJ4WDW1xjnwRFuM8We6rdaWAjA5oiVBvPeo2VKD
+	 c2dfIFmes6qcFsrlzQ6BVSeZcUxGM83UGEiKCVd4GUyrru94/j7HMdVT+pAC/HWTVziES
+	 cpjEhRBJnuz6J5rnsLoRQvL3sIjTT1uvckx1OozKvswDeqPd1BRzWfh9N84CmaDdZNA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792575361;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=BTY8n4GtMoPAtOS9wvlY9329TuGyuM1KvhHMnkCsjv0=;
+	b=M7HTng9VyV3YYpBTNX5jhxHgYpJceIcbI7UuKeGdYfYelZKqGPd6MYKB3qs26abqBC7i
+	 5nApO/qj5qHBuVQ3A9bm1zEfbI2P8y6gyR50SCjli//9IoQ7T0hF0aFC3NUDW+Vp0HnAu
+	 KF9y1gi9p0HKYig1XtkAeR3ouLAhwhCfq+/FuTb6p4hkpO6glR0NiXtUDZPd+kjnhInLg
+	 W0QCbAk5P3e306PdWszCM5pbz572U//LKQDEGbE9ynuaQdhoPgDBM0Ab1j7rQ/XMbvjWa
+	 XdoboSUfGoOCKm5xbqXjSTdP1mZ7NWg2FMAh9+dWdKxqz2ddysOsTg8D+LTpbEdpxPA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=proton.me;
+	spf=pass smtp.mailfrom=proton.me;
+	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b="Vj/+hYPO";
+	arc=none smtp.remote-ip=185.70.43.167
+Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669E8606A31D
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:30:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 669E8606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D528606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:35:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D528606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZY49XlYv
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c33700b6435so3122966b.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:30:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792575000; cv=none;
-        d=google.com; s=arc-20260327;
-        b=G2/DFqGBhXt9zyiKQuJuZfhgSFu5BQoKeqMo1Bc/kD5UWQWf28Rel/qIC+ZMtygTEO
-         f4pbBzdSAclG2HlzZHEdVG/cpAGsVUvlayZVR4q4npdCg2ZzMoLsqxsEoqGMe2tLbyvI
-         d3edtNzuxCiHQbB3JdQ3qtafGYuvXjzPKzH9YndeIbOwht2bTY1qzTiwEn0k3YL7MBZm
-         1LBLUqBWoWE36C27alxWgRWY2hO7dS3Z/r3mC2yidbuIdqibdrf7iwcArblWL+MSE3gU
-         JKdFWvRnh/50O1O8EPx3dODbO9RRYZ4oEIRDvkxkM4km6uhaOI1KrEiVigFyXXncCQY0
-         IEmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=talS54amiPg/yZGwEbzg0hMRny1RlU7saCiWAuyBxB4=;
-        fh=VLwhX88fyfn3Mx1wCM4By49l7kISwbFZIcLEUBCyuvg=;
-        b=eOmoRxc77t3razBlzHsYtuiGuO8heVU9uBJ5Fl/42gDw383stcZp7aYLSwvsUZt0to
-         WuCYv6NYVdP0TV12OBBtkI810FLLHWedhe0vEmSI8YldA8GR6ZuJS2wnk2Vuk9cA7XrU
-         q3WZi5vZSKSRmzu1V6sdI3TPrFQSTnp5FYIiG+8665TBKSHFLFTYY3RhCdgfTY/RI5HD
-         vSkXJOdvbC02ByPu+S1HfriywVv4wjoNH/2F+92KJxKZhqmHVG0AKWbJauW4b31Bd0gB
-         T3Bu7GCgJuo4Ty75lqvvaQNd7osMWMqetEmK7DaDAI7QR2m+RfTA37GbmjU+0cqZeutN
-         HS4w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792575000; x=1793179800; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=talS54amiPg/yZGwEbzg0hMRny1RlU7saCiWAuyBxB4=;
-        b=ZY49XlYvkhICPRBe2JG4Q3PM7VqkH7EG6aWGw/ZuNk0oUOs8k3O7wWU8gJrbbBLO1W
-         xIUqM8WwjtI6eXZv1Vz2y+zaIjU3c9IaYq5p+fTBB48GvldKdsG+JFqeUdASzQ9vTVgl
-         vXAU04XQZcEZrylEHAqa17XOoHzJ9kiYCYcS6Wh4ygI53TrhyVSb1iXAtfAzq5UcPYks
-         q5KSDXCbjHUpCLpYPUeaVPEnZf3JG7mQeQGd32h+JmesYw7eGG43aNflptWoZSFJZQD6
-         W4HOelzmZUvi8wp7pOkKNa0hjH5cd9SOfqqu8bHMokG3mnui7hwuH6VE5aF7T/LUUfgE
-         6G6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792575000; x=1793179800;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=talS54amiPg/yZGwEbzg0hMRny1RlU7saCiWAuyBxB4=;
-        b=GfRpipc9dhNJl+ItnERJlX7/3Qs0NxHfsSmxowTS79vBYzsROgqPlI80pf54sy9Wn3
-         4wJaF64PIGN5F5EVRW+T8wb1XncmxkxjfO98A82Yimqy0o19hulKQCsw5RIEZ+Bi5vot
-         MOtgfkQjtCYo/SaRs+MkCNm7737Jzy2UJtUdhlJIdmfbzXNEfEyrf/xd15zi9Xm9tHAw
-         tsnDbh0R1BsFMk3Gk6BJ3or2EbviBzJ1EHGyI3YjgsyfgjdgCNMB2VI0COLWVvWRtsl/
-         nV+SvaJkOpGAW6Dw9F/oGxuV/d+98UrXhdxS5CsQIBkvNWVxXgI8lJwEvtjV+Qex9yo2
-         fbyg==
-X-Forwarded-Encrypted: i=1; AKwUvByD5tmSdGPzbKeh1k/kKKy4biZWBfbEWAL6TaQMEOoUL/ZlfZe7u2p6U5ggyGhMTLojoVsmfOU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKxSndr/S3Gwjc9aQt9UL4RsGl8FLj6SHt4fJW7c8XuSN9OLe8C
-	YFYz1aUoi7DqeQPKa9aQWLXeg6pOsi99CxFb/mXwwJwYrKk5x3H5xlX4HRkJn/TToIgVSPkFEIB
-	ihrLR4rlF0wFrMPfyF1+qLrY/bfO2o7Q=
-X-Gm-Gg: AYBFou1U941o/d2CrTA+ncwqazPBpjb+5HCvmFtes9WGYYrmSIgGKm+l0xXBtgk6JqU
-	f6IoLIAm5rId9AJ+/9o6j4sd58aCRZyjctlRKwh7u+2b7WYkBdyN15Vkeks9T8+1UCJjRUtYAEf
-	dW+aQQBVIGwolvJGvv82btY/RJ6//iobVT2pOE3dBYLAMwAYFmapj2E+YSf0dqgnnr4cDwrDf59
-	bRjsuxqbnyQkherTHV9+LohgNtMZAJIk1CXWZDcRgcs7lMuq1zeZKJr5bJvMQTmnxDX1+p3+PyA
-	1iLLSAxfwYES2ETtVliorrFaKTa/B6pTz1TTVTs+LYoSfTM5OFKzaQ/kcl40Y1TMB3XfMohMzc+
-	dPp080rlc6QRvAQ9L5E90i4VD1O597e7VIwYEphKW0Cnneu+rw1t9dyaaXZ0TshC5g+YS/DaQi+
-	a3VZS8CifEH9g=
-X-Received: by 2002:a17:907:3e19:b0:c25:3ec4:9e43 with SMTP id
- a640c23a62f3a-c4678f61921mr142113866b.0.1792574999375; Wed, 21 Oct 2026
- 02:29:59 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=Vj/+hYPO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1792575357; x=1792834557;
+	bh=BTY8n4GtMoPAtOS9wvlY9329TuGyuM1KvhHMnkCsjv0=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Vj/+hYPOrQ2UUcXkFXbP25FvDF3ubE4E8rLWsHWDUcGs4flA+sgfJfhGWddcegwpO
+	 DPrd9DqGlgfvTHViuBfBwC4AEjdT2K/xsBkPz7Asvb+c1o0mAXGoZrPb1xjUJluYy/
+	 SgSgQlN4KuaNlFKsDbZiVNiq8eVHWtXxIHuaEUgIwQCE9UyC8+k1dt/6bL91IgRmjI
+	 sJtG6WQl9quOHZUGUvdWy217la2ozfkmUWvJjPvq5QoPZxCbGka7rTGYcIpKD6W+bm
+	 ckXbsHvPOYtRvocoiPD+1Z2UB4PiQ9mWlf+r7dg+Pd7M/8Bp51jteWNj0wvEvyI1JC
+	 faCRAmqfF38QQ==
+Date: Wed, 21 Oct 2026 09:35:52 +0000
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+From: omniameasunt@proton.me
+Cc: "paul@paul-moore.com" <paul@paul-moore.com>
+Subject: [PATCH net] cipso_v4: fail the walk on malformed options
+Message-ID: <CBLsHx48w8Bn1k_Xg6kJFliLNkxLCqi8SnkifapxYYpVtll4w-W_2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y_CgD_sdzcAbILVA=@proton.me>
+Feedback-ID: 219316618:user:proton
+X-Pm-Message-ID: 91b59c001214af969643a27c4c91f908f07cc14c
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,188 +61,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021065517.198322-1-theodorlarionov@gmail.com>
-In-Reply-To: <20261021065517.198322-1-theodorlarionov@gmail.com>
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-Date: Wed, 21 Oct 2026 17:29:47 +0800
-X-Gm-Features: AclHuK_hzep8ZH3TrnvsmRxGfKoygxUVcd_QNcavMfo3m4kxyL8buVoj_sOJOoc
-Message-ID: <CAAo+4rURfY514Adv6Qg8SsoRofANzAeY2c-qUYOhmr_r4U_o2Q@mail.gmail.com>
-Subject: Re: [PATCH net v2] fou: reserve headroom before pushing the encap header
-To: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	stable@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 21, 2026 at 2:55=E2=80=AFPM Theodor Arsenij Larionov Trichkine
-<theodorlarionov@gmail.com> wrote:
->
-> ip_tunnel_xmit() and ip_md_tunnel_xmit() call ip_tunnel_encap() before
-> reserving headroom. A packet redirected into the tunnel (tc mirred, nft
-> fwd) has only the headroom of its original device, so fou_build_udp()
-> hits skb_under_panic(); with a mirred mirror the push overwrites the
-> Ethernet header of the original packet.
->
-> Reserve the headroom in fou_build_header() and gue_build_header(). GUE
-> sizes and builds the header from one copy of the encap config, which
-> can change concurrently. As the skb head may move, ip_tunnel_xmit() and
-> ip_md_tunnel_xmit() reload inner_iph after ip_tunnel_encap(), and
-> ip_tunnel_xmit() reads tnl_params before it: for GRE with header_ops,
-> tnl_params points into the head.
->
-> Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp e=
-ncapsulation")
-> Fixes: ac931d4cdec3 ("ipip,ip_tunnel,sit: Add FOU support for externally =
-controlled ipip devices")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.=
-com>
-> ---
-> v2: move the headroom reservation into {fou,gue}_build_header(), reload
-> inner_iph after ip_tunnel_encap() and read tnl_params before it, which
-> the Sashiko review of v1 pointed out.
-> v1: https://lore.kernel.org/netdev/20261010223601.1193655-1-theodorlarion=
-ov@gmail.com/
->
-> Chengfeng Ye posted an earlier series for this bug; this takes the
-> builder approach Paolo suggested.
-> Link: https://lore.kernel.org/netdev/20260904165544.1362052-1-nicoyip.dev=
-@gmail.com/
+cipso_v4_get_actual_opt_len() walks a compacted IP option buffer with no
+validation of the option it is standing on: it reads data[iter + 1]
+without checking that the length byte is inside the buffer, it accepts a
+zero length byte (spinning forever), and it never clamps the walked
+offset to len, so the returned length can exceed the 40-byte MAX_IPOPTLEN
+bound that every caller assumes.
 
-My v1/v2 [1][2] reserved the headroom in gue_build_header(), close to
-what this patch does. Ido objected to that [3]: the caller of
-ip_tunnel_encap() is expected to reserve encap_hlen() bytes, and an
-skb_cow_head() in build_header() forces every caller to refresh
-pointers into skb->head. I moved the fix into ip_tunnel_xmit() for
-v3/v4 as Ido suggested, and wait for the IPv6 part [4] to be accepted first=
-.
-That patch is changes-requested, and Paolo said the IPv6 side should become
-an RCU conversion targeting net-next [5].
+After cipso_v4_delopt() memmove-compacts a socket's options, the bytes
+past the compacted region are stale and attacker-controlled via
+setsockopt(IP_OPTIONS).  An unprivileged user (CAP_NET_RAW in a user
+namespace, CIPSO labeling configured) can trigger the walk with
+connect(AF_UNSPEC), which reaches cipso_v4_sock_delattr() through the
+SELinux NetLabel hook.  The poisoned optlen is later used in
+do_ip_getsockopt(), where it causes
 
-I'm fine with either approach, and will drop my v4 if this patch is taken.
+  * an out-of-bounds read of the adjacent heap object copied back to
+    userspace (kernel pointer disclosure, KASLR defeat), and
+  * a stack buffer overflow when optlen exceeds the 56-byte scratch
+    buffer (return-address overwrite; exploitable for privilege
+    escalation on kernels built without stack protector).
 
-If this version is applied, I'd appreciate a Reported-by, as I first
-reported the bug in [1]:
+The same helper is also called from cipso_v4_skbuff_delattr() when a
+label is removed from output or forwarded packets; the option bytes there
+have already been validated by ip_options_compile(), so the new checks
+are defensive for that caller.
 
-Reported-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260801060115.3538849-1-nicoyip.dev=
-@gmail.com/
+Fix the defects by making the walk fail with -EINVAL as soon as an
+option header is truncated or malformed (length byte missing, zero, or
+one) or an option would run past len.  cipso_v4_delopt() then drops the
+socket's entire option set (reusing the existing branch that frees the
+ip_options_rcu when CIPSO was the only option), and
+cipso_v4_skbuff_delattr() leaves a malformed packet unchanged instead
+of rewriting its header based on untrustworthy bytes.
 
-[1] https://lore.kernel.org/netdev/20260801060115.3538849-1-nicoyip.dev@gma=
-il.com/
-[2] https://lore.kernel.org/netdev/20260821145908.2829132-1-nicoyip.dev@gma=
-il.com/
-[3] https://lore.kernel.org/netdev/20260824075011.GA858321@shredder/
-[4] https://lore.kernel.org/netdev/2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280=
-.1788262122.git.petalzu987@gmail.com/
-[5] https://lore.kernel.org/netdev/e651fe9e-2d84-4320-99a1-6fddcfc00889@red=
-hat.com/
+Well-formed option streams are unaffected: a socket whose options
+survive the compaction intact keeps them; only malformed streams now
+lose all options instead of carrying a partially parsed set.
 
->  net/ipv4/fou_core.c  | 15 +++++++++++----
->  net/ipv4/ip_tunnel.c |  6 ++++--
->  2 files changed, 15 insertions(+), 6 deletions(-)
->
-> diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-> index 076fdca44f51..896e63adf698 100644
-> --- a/net/ipv4/fou_core.c
-> +++ b/net/ipv4/fou_core.c
-> @@ -1059,6 +1059,9 @@ static int fou_build_header(struct sk_buff *skb, st=
-ruct ip_tunnel_encap *e,
->         __be16 sport;
->         int err;
->
-> +       if (skb_cow_head(skb, fou_encap_hlen(e)))
-> +               return -ENOMEM;
-> +
->         err =3D __fou_build_header(skb, e, protocol, &sport, type);
->         if (err)
->                 return err;
-> @@ -1071,16 +1074,20 @@ static int fou_build_header(struct sk_buff *skb, =
-struct ip_tunnel_encap *e,
->  static int gue_build_header(struct sk_buff *skb, struct ip_tunnel_encap =
-*e,
->                             u8 *protocol, struct flowi4 *fl4)
->  {
-> -       int type =3D e->flags & TUNNEL_ENCAP_FLAG_CSUM ? SKB_GSO_UDP_TUNN=
-EL_CSUM :
-> -                                                      SKB_GSO_UDP_TUNNEL=
-;
-> +       struct ip_tunnel_encap encap =3D READ_ONCE(*e);
-> +       int type =3D encap.flags & TUNNEL_ENCAP_FLAG_CSUM ?
-> +                  SKB_GSO_UDP_TUNNEL_CSUM : SKB_GSO_UDP_TUNNEL;
->         __be16 sport;
->         int err;
->
-> -       err =3D __gue_build_header(skb, e, protocol, &sport, type);
-> +       if (skb_cow_head(skb, gue_encap_hlen(&encap)))
-> +               return -ENOMEM;
-> +
-> +       err =3D __gue_build_header(skb, &encap, protocol, &sport, type);
->         if (err)
->                 return err;
->
-> -       fou_build_udp(skb, e, fl4, protocol, sport);
-> +       fou_build_udp(skb, &encap, fl4, protocol, sport);
->
->         return 0;
->  }
-> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> index e6bcf01411d0..742c2b309608 100644
-> --- a/net/ipv4/ip_tunnel.c
-> +++ b/net/ipv4/ip_tunnel.c
-> @@ -606,6 +606,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct ne=
-t_device *dev,
->
->         if (ip_tunnel_encap(skb, &tun_info->encap, &proto, &fl4) < 0)
->                 goto tx_error;
-> +       inner_iph =3D (const struct iphdr *)skb_inner_network_header(skb)=
-;
->
->         use_cache =3D ip_tunnel_dst_cache_usable(skb, tun_info);
->         if (use_cache)
-> @@ -749,6 +750,8 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_d=
-evice *dev,
->         }
->
->         tos =3D tnl_params->tos;
-> +       df =3D tnl_params->frag_off;
-> +       ttl =3D tnl_params->ttl;
->         if (tos & 0x1) {
->                 tos &=3D ~0x1;
->                 if (payload_protocol =3D=3D htons(ETH_P_IP)) {
-> @@ -767,6 +770,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_d=
-evice *dev,
->
->         if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
->                 goto tx_error;
-> +       inner_iph =3D (const struct iphdr *)skb_inner_network_header(skb)=
-;
->
->         if (connected && md) {
->                 use_cache =3D ip_tunnel_dst_cache_usable(skb, tun_info);
-> @@ -799,7 +803,6 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_d=
-evice *dev,
->                 goto tx_error;
->         }
->
-> -       df =3D tnl_params->frag_off;
->         if (payload_protocol =3D=3D htons(ETH_P_IP) && !tunnel->ignore_df=
-)
->                 df |=3D (inner_iph->frag_off & htons(IP_DF));
->
-> @@ -821,7 +824,6 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_d=
-evice *dev,
->         }
->
->         tos =3D ip_tunnel_ecn_encap(tos, inner_iph, skb);
-> -       ttl =3D tnl_params->ttl;
->         if (ttl =3D=3D 0) {
->                 if (payload_protocol =3D=3D htons(ETH_P_IP))
->                         ttl =3D inner_iph->ttl;
-> --
-> 2.34.1
->
+Fixes: 014ab19a69c3 ("selinux: Set socket NetLabel based on connection endp=
+oint")
+Signed-off-by: Lucas Dupr=C3=A9--Rabinovici <omniameasunt@proton.me>
 
-Thanks,
-Chengfeng
+---
+ net/ipv4/cipso_ipv4.c | 22 +++++++++++++++--------
+ 1 file changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
+--- a/net/ipv4/cipso_ipv4.c
++++ b/net/ipv4/cipso_ipv4.c
+@@ -1824,7 +1824,11 @@
+ =09=09} else if (data[iter] =3D=3D IPOPT_NOP) {
+ =09=09=09iter++;
+ =09=09} else {
++=09=09=09if (iter + 1 >=3D len || data[iter + 1] < 2)
++=09=09=09=09return -EINVAL;
+ =09=09=09iter +=3D data[iter + 1];
++=09=09=09if (iter > len)
++=09=09=09=09return -EINVAL;
+ =09=09=09optlen =3D iter;
+ =09=09}
+ =09}
+@@ -2028,6 +2032,13 @@
+=20
+ =09=09optlen_new =3D cipso_v4_get_actual_opt_len(opt->opt.__data,
+ =09=09=09=09=09=09=09 opt->opt.optlen);
++=09=09if (optlen_new < 0) {
++=09=09=09/* malformed option stream, drop all the options */
++=09=09=09*opt_ptr =3D NULL;
++=09=09=09hdr_delta =3D opt->opt.optlen;
++=09=09=09kfree_rcu(opt, rcu);
++=09=09=09return hdr_delta;
++=09=09}
+ =09=09hdr_delta =3D opt->opt.optlen;
+ =09=09opt->opt.optlen =3D (optlen_new + 3) & ~3;
+ =09=09hdr_delta -=3D opt->opt.optlen;
+@@ -2249,7 +2260,7 @@
+ int cipso_v4_skbuff_delattr(struct sk_buff *skb)
+ {
+ =09int ret_val, cipso_len, hdr_len_actual, new_hdr_len_actual, new_hdr_len=
+,
+-=09    hdr_len_delta;
++=09    hdr_len_delta, optlen;
+ =09struct iphdr *iph;
+ =09struct ip_options *opt =3D &IPCB(skb)->opt;
+ =09unsigned char *cipso_ptr;
+@@ -2266,9 +2277,12 @@
+ =09cipso_ptr =3D (unsigned char *)iph + opt->cipso;
+ =09cipso_len =3D cipso_ptr[1];
+=20
+-=09hdr_len_actual =3D sizeof(struct iphdr) +
+-=09=09=09 cipso_v4_get_actual_opt_len((unsigned char *)(iph + 1),
+-=09=09=09=09=09=09     opt->optlen);
++=09optlen =3D cipso_v4_get_actual_opt_len((unsigned char *)(iph + 1),
++=09=09=09=09=09     opt->optlen);
++=09/* malformed option stream, leave the packet unchanged */
++=09if (optlen < 0)
++=09=09return -EINVAL;
++=09hdr_len_actual =3D sizeof(struct iphdr) + optlen;
+ =09new_hdr_len_actual =3D hdr_len_actual - cipso_len;
+ =09new_hdr_len =3D (new_hdr_len_actual + 3) & ~3;
+ =09hdr_len_delta =3D (iph->ihl << 2) - new_hdr_len;
+
