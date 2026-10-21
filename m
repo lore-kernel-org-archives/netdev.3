@@ -1,66 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792574628;
-	b=mejlqJK+E+W9p7k9VRtgOzdfuIvqJjtVvL0uhrzwimpjKmNsoo3t3Lg8taLNLoEcQHFX
-	 NV+ZLo7ZOmVsMPp0Bu4REiNB6X4ADtkt0ZYmGVB3hn2RZ6UPTcL8ytHAZlx91TzNBFxd/
-	 ov8NO3BqF8sOiBPx7D0tAf7VgSA0jWV+UaMMrSMO5Fav+PW+IsIAWmAYJvAxLIkwvOTd4
-	 xyMsKpresmwr3M8V1yWRMlYqtaBezcU6EhAfZ2A0fykzrq6A7WGascrKxzs54fo3vYZ9w
-	 0dg4byMmMOt7OUBs8FQpd74m9DaZqnFiVk+d4xHClvCQPCCx9MByw2YCPLrDBEsP6NQ==
+	t=1792574647;
+	b=UdzxmHKNjq4fXafby7L56jXdd6JJjcs8ecnL5FN5AlL/0xoSJlUjG5UBt8S/4r9pxb1y
+	 QLZEbe4Zwj5ONsvL+zJyuPbhbkwAtZssdHGZgXSK+xaWfUBeXdvRwbegNW8Tj8zMcNFre
+	 17LR3RWCnC7GsczQ+ONkABvoRWOkx84axb3BfOiYr0I41oOS/6+vX+XM8qPPsrxey7Owr
+	 nMQsn0Z5x9YFukT8EPSnp6nHtDvkkaMXL+S52aRsQ+F1v61oCgaFzyVW6gErhdBIM3yTH
+	 91UWY9DVEgrMaOMxm261K07VoGKGr0PdWSrfjsTJOtdED1lbUOTywrKIP4mGRuObmSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792574628;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=T8LEbC5Nj/7e8NKVpVO0Ci/FuDt7bXJsHNoJvsHPv2aPIY1isnd37jt/ua2QCseIhab/
-	 nFiuM3FXNN1METmYfPiCkHj7Z6c2BQQzY5k5I3E8joY7MLMovIegTlTX95rOR41God93l
-	 bjJl7bUI2xtIGNzrJmbCy3BlczjXmxmGC88gILBvG7szfuBn5Csvwj5i/CGxvDmj4snVI
-	 HZ1bi/1saZPkp/da1evLum0z1ZsZDlFkpOl1++a4j34MEjrAR4rgizUdHWzSfBahcUCxy
-	 KIutxAukAibqM30EP71k8Sq9bb1SLHWnuTU+VXkPNzKhr+Vyxek3qBNLeXuCK1Fm/NQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792574647;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=GDjWBMaaWCM/Dip/yS4QB10iZNdENkMyLTjWj9Cm2VI=;
+	b=Wx3sYjgIttHU39IbHPTkkbeLPbPqbywYbZCh47oTn8COq79/MmIwA2OZyNSbcCNDgwTQ
+	 giSpEI/P8C93ltl5yxUNuSdvmbgTk5GhhVuBDORfQyK037ejqjtO/LYsRmY67zOdrm8n/
+	 20HB/iPkzTrhCvt92P6ekKxtMcQvH79USy7R1/XqiGFd5cXibStLp9PV0U9xFOkHDPCJm
+	 12S/Nh+YVmrAC1Ur9xDpq7X/6jMMTSR/PRu0ZQ/aTLRk+POFteSTp6T7w+9gmrSNYNaMK
+	 VKz4dGjE23C5DOD1O7mEF6aSn5oKfaNLJiZF4rLOJyqUQmnl3ilsLYiAX0F2bDjclGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YROeivkX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gsFVvLBb;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Fsv3eCb2;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13973606A319;
-	Wed, 21 Oct 2026 09:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D47606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 09:24:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8D47606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YROeivkX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0022F1F000CA;
-	Wed, 21 Oct 2026 09:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792574627;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YROeivkXCb65gOAk06ECi0hILHeWLBUP9TiXxe1j4qys6OKZUZfduoBnUHK6ts8ax
-	 tj5/Qm4n5RlZ0GCg98Ycm8CDHHvqR/+bVa4R9e0d+fbX8QvDKYDuzGtJgYGQa+55K4
-	 LbgnbhO6fd5ziuZCM+Krhg/aycNBmGvUvIfx2uZ0bIEsqBvgrPToBqx9jKy7rn7tnS
-	 NpH2ovA8zTodCjh6uj7lbVNJ0lDSZ63hVc+Tc+zN1mLcMNT32n+WjrOIaFaN8N6VwJ
-	 vO8ACWX9OA02JWuYiMF206pWm5/JcvluFhzccfP748PDppzD3PEWnCUybAV7OpNPjy
-	 kClVrJwG8A9Eg==
-From: netdev-bot+sinfo@kernel.org
-To: kmahammadraf <kmahammadraf@marvell.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Sunil Goutham <sgoutham@marvell.com>, Ratheesh Kannoth <rkannoth@marvell.com>,
- Geetha sowjanya <gakula@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Aditya Thapliyal <athapliyal@marvell.com>
-Subject: Re: [PATCH net] octeontx2-af: Fix representor flow rule PF_FUNC mask
- and channel In representor mode, an AF-installed TX rule must still match on
- PF_FUNC, so do not clear the mask when rep_mode is set. Also, do not
- overwrite a channel already provided in the request when the rule comes from
- a representor device; only default to the PF/VF rx_chan_base when none is
- given.
-Date: Wed, 21 Oct 2026 09:23:46 +0000
-Message-ID: <179257462649.3290.12613681924217714517@kernel.org>
-In-Reply-To: <20261021091736.2406505-1-kmahammadraf@marvell.com>
-References: <20261021091736.2406505-1-kmahammadraf@marvell.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gsFVvLBb;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Fsv3eCb2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792574645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GDjWBMaaWCM/Dip/yS4QB10iZNdENkMyLTjWj9Cm2VI=;
+	b=gsFVvLBb3Ze/qrCrLdykRRfzcw69btxcB0gCgQeSpneWyn4d4LFz/YmKvosgUidwRP4owX
+	1tWE8KNEEVPUJ/jjCCdpV8/OEvws0o+Ot/nL2JtViaiIezbLYwCPv00alkPEq/LgcGKv+r
+	7N8Ntz7mfVKza1zU1WrbamXdlIYgbJE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-209-ymJZviiLPwyhEcSd-AaCkw-1; Wed, 21 Oct 2026 05:24:04 -0400
+X-MC-Unique: ymJZviiLPwyhEcSd-AaCkw-1
+X-Mimecast-MFC-AGG-ID: ymJZviiLPwyhEcSd-AaCkw_1792574643
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a2000d5ebeso2098285e9.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:24:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792574643; x=1793179443; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GDjWBMaaWCM/Dip/yS4QB10iZNdENkMyLTjWj9Cm2VI=;
+        b=Fsv3eCb2hvtJGyMxZkNIhOKkdSw2V2aFArwX//TQYAeuGpTLOXdRa4huZqbRU8sXQk
+         LwNYY8D0Th2J9Cia7FHsxeRl0hhiouqZ220uXw62J33okW5ygtWX1obFeeMVarYii5bH
+         Sx25R4AqX2nQ1Qye2morCoSMQbJMMOXN1BpS7Qz6/WvVyYxG4Zxo/WPV97CkOlsYQbv8
+         P6ED2sb8nd5JsVz8dcm3QQPWx6rs6VFfByJ2WawxfA3FPMojG8yCTc8GnQrAFbOpaYAW
+         MRc1QSLGKRl2S2Ml8n+tGNyYFzemhwc6jmmYTZwM+kTfAgJAfiiKqqs8sgsUA6a+EFrU
+         D+0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792574643; x=1793179443;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GDjWBMaaWCM/Dip/yS4QB10iZNdENkMyLTjWj9Cm2VI=;
+        b=cGjA+HIBtWTSncPZgckFx3WuXKx+KQEydjM1fHBvv2IrcU4RpI5MKtgRI3sMPuHxkr
+         fuRZ2c8tvZjNL20v/NDtAP/6ajiklRll95IvwOah2sh5/9wDqtOOa/kdzzrY1jSIunl4
+         Iccazx5sq5KWYPlkMDbr5yAKRdNzwIZ1UXvswCWtUUV6RSY7Ash2ggrzeT1sohIV2w/h
+         a900MaYnF7pGgINo4vY1w2PeaLJZ/NxpjBnErUVXwnneCQ16IfCBQCZIeGXDqwm15jj2
+         VI+CYuUjy4KqBuXvWlcWtwx9swVOXZ4QZyPax65wWcpEgDbRq4eoJBcPpXd3J/gpnguD
+         MnpA==
+X-Forwarded-Encrypted: i=1; AKwUvBx3TaaeIXb11tgFPno+iqWYXVDEcJZeoClhgTXK71Wj1rIiouWmEyyVzUqDdndORlqYloPohgU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJUINBuHuo/eljaWSOvn4S8ujR4RTxn2ILLzj/hKgkaqvxys3IL
+	SQ1CAsBjFsjElmVkAiA4/HN5o5kNP1AGfIEe+hg+QGYHszS1XAZJ+sOCIeQ0+/G+GJbSfBerfPm
+	MHWWn7NVHniICha+c38A3kC8JT80liHHW2lCAdWj52foVZlfUotB7OR519A==
+X-Gm-Gg: AYBFou1coDHqso7H9Bjf+/Gl0XZ1EhV10phOOCvQ9ltZ/9ub2+01JX7mTy5o4F4Qp3s
+	GR/OgHnIv8uQW68CnN8vRwr/tvVdXJBr/0a8vxDoqK2kMkIYDfKe4RQLSp52k3btR6pRKdMYPK1
+	e7kX6ku3SFLzrwmQmEheCk8vgvEQ7HG5qLRYKrqC6oVFA3ndOQxR11Jsrg1ky+vmnfiXpSiyGJQ
+	7L3BeI73zDh8zsAkkX8liD3PPIAluowJxZKAQmy259CVc+guxptZUtS+y5JGwUvUQLLV+8j5gtE
+	a4klM1HuvlElxiqQRfWXSZGXWyoS0yUsBeWgWoYb1fE6CBYs8z44N0RP0+1pfzkSQMGOn88W19I
+	s/2MgO2kdA0W4HW4dy0k2LIFSQujmEK9c6/7j3H9cdTwbTsm/N3tLRWzYfpAHWMq+BDU+3XjYYA
+	==
+X-Received: by 2002:a05:600c:3b2a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a1fdd4ea2amr27060485e9.27.1792574643114;
+        Wed, 21 Oct 2026 02:24:03 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b2a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a1fdd4ea2amr27060065e9.27.1792574642667;
+        Wed, 21 Oct 2026 02:24:02 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828ca3sm4279047f8f.25.2026.10.21.02.24.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 02:24:01 -0700 (PDT)
+Message-ID: <130d9b15-238e-48c6-a293-f48e7d1ada06@redhat.com>
+Date: Wed, 21 Oct 2026 11:24:00 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,29 +112,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v19 06/10] net: phy: phy_port: Store information
+ about a port's upstream
+To: netdev-bot+sashiko@kernel.org, maxime.chevallier@bootlin.com
+Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org,
+ edumazet@google.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, christophe.leroy@csgroup.eu,
+ herve.codina@bootlin.com, f.fainelli@gmail.com, vladimir.oltean@nxp.com,
+ kory.maincent@bootlin.com, kabel@kernel.org, o.rempel@pengutronix.de,
+ nicveronese@gmail.com, horms@kernel.org, mwojtas@chromium.org,
+ romain.gantois@bootlin.com, daniel@makrotopia.org,
+ dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
+ f@lex.la, chleroy@kernel.org
+References: <20261016133107.54054-7-maxime.chevallier@bootlin.com>
+ <179241678791.3135.1638003219102257102@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <179241678791.3135.1638003219102257102@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi!
+On 10/19/26 15:33, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 0 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] net: phy: UAF in upstream_port when connect_phy fails
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I think this concern has not been reported nor answered in previous
+revision? Same for the ops-lock related in the next patch.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+I understand that the high prio comment on patch 9 still relates to
+PHY-in-SFP unbinding and should be addressed separately, am I correct?
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+The problem is that the net-next PR should be coming very soon and
+the backlog is still very long, we need a fast clear-cut.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+/P
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
