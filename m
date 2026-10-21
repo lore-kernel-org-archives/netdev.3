@@ -1,85 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.12
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792579051;
-	b=fgPdoLuzC6fYK4EZkxJKqrXAZ9+kvNBF1YjWrDcvIpJ7BHUk+uwRSOzzmZGnfbPzJHiC
-	 F/iz1B2k5AEwlCC1QmB+FMDSDIRCv2YNPH5gp9Z9iqVgMdJ494+7MhXufJQCBzkTtYz+i
-	 PbCwmfrkjXolfTxsJbp1o1pUAf+RLAHkc9OYp6pfy3Tv1Knbr226sISsjXchq8yfx35/E
-	 s9ije+1vTGs26t+taYkvE2SWasS/eVdM6fbT+uf0mUvILm5TFikw/BVabxLRX5SGjhomc
-	 HLWUj2Zdp0gqwjgv4N1NIC/OeB6qQa96yHQbutpwpE118tjAf2gGq6RE4EBOJra0GCw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792579051;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Organization:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-ZohoMailClient;
-	bh=QjzGdWbiEqzzV/MbYQG4TopYjAr0X/I+MiCAzcAGLpI=;
-	b=wWZVyrgUj1qdhnEzEZYWIe7jZLplckC/mUiXUDkv1R7QqpmeQT7MgthJFEi3cLeIokgE
-	 /xlD3Os3agvWoQRZtbscDX6b/0duj8Q1WvrdunXpjy23Mxy8QGASnY/VBHkH8n7rGUL56
-	 y18ao31WZvsyJ66CYe/nqDAN29OcGjBoQMEK2qSg4d6/3Y766+f8C8hOk7hA+j5pJrr4u
-	 FDVW0AgWeFw5oWAtzBqooqGa+E2wU5tgtXnZ8sRPNS6RkQGDC5j3G0Yz9SHek6kQUVE9I
-	 Wfo2MAIlJDTHkbz09/UoegfAyyuo5nuJDXupxylOHyH3c6OMJKiuixecAvgicdwyYog==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=kwBQM5Nb;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.12
-Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792579234;
+	b=2Ok0UOWqmO4qoUvQbuPLbldFeT+quCChxxXv90YAUxSVWMblh4C+yTrKRK0BtD8cwwH1
+	 fVIczEvB+hfwPNKqBS+//L2FqI3Sx5kKaW54Wy7Icg+prXsE9Uool9tpQh0H/Nt0iWYKW
+	 BoNAPxLF7SUVdHG1SaOs7i5ua9IbdzzKATNLv4efifnmgFiBftIz3VcNLTcN6zflL28Dc
+	 Y9E6f5nTTiSVvMkKEXcq07GrAKNhlBEcwwGeTZXp1YIsUlQrdgM5ODO3TnHq+x4jmVjbk
+	 Vn1WorMzgSVEL9Oj6kj0Vc2xvF07TuFOQc1Bs/VRbQ/M8o5f0WGPESIUtZOGGTtKqpg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792579234;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=xoyujad1pnAtgsjpNYpF5h6AG9Uxc92FFpX4Fpj1onk=;
+	b=0Q1IOA/T9lM5EUX/wFVvPyIQLibuXwW4uMKXLZetHTQyU6OUoR4sBeFph2Pvsmtx/U6Z
+	 i3zCihuT1q/od8l2hX3Qm0vTa/N/Zz3Rn/aPTkg5i1cYywl9rerpBpBXCM+VOCIsvxJsw
+	 O0O8lm2r+Z5+hTVUtbEfszzZ05c09ZABAOJpROGBUiwfu57wtG6Wl9uWu6SToTIrHNC2O
+	 +n9ixQMSUg8SvioOSw9Z9AmBRkRCIDADpEox+etixv0EwZ/IJXiFNP+5yv4LOA77UTzuN
+	 8v9//KwG8ezOf/075K0cPDvwpzRoZQ6WyY3r9mEDzX6v+E8UE7hCeD+bFLeftWH1QlQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=g6ZKHQUB;
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E047A606A319;
-	Wed, 21 Oct 2026 10:37:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E047A606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC90606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:40:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EC90606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=kwBQM5Nb
-ARC-Seal: i=1; a=rsa-sha256; t=1792579004; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Vg4ASxVe/gRrDD7T/H1HLXKpWWkQxEoEToUwf2gjVgQHhTYdsZF+0wcPe/aCT6kTTygdTn8+XsTD4KtGu2NKj4mneTRLu+o0VYhkjaQexiAmfxaPQXlcWkvJ8mu+as0fYuu1Z6VApa5hqNk6BEhCQW+lD4eLzEP2HGCw7Z54wTU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1792579004; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=QjzGdWbiEqzzV/MbYQG4TopYjAr0X/I+MiCAzcAGLpI=; 
-	b=XcQSfehKD8VgFwklFZJegFzqLTSxt+T60vRuu/Y6MC3JjpjUtQNDXGycZu7OPrKJ/c3933kKqODgfJqZ/u94N6+w9cbvIoSw6xnfamF74sy/IM1OJvKgt6HY5wh8Ew7eOg21XWfIY6gwNQI+nlUupDgA0qMT0k+bvuRoeCygFlQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=louisalexis.eyraud@collabora.com;
-	dmarc=pass header.from=<louisalexis.eyraud@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792579004;
-	s=zohomail; d=collabora.com; i=louisalexis.eyraud@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=QjzGdWbiEqzzV/MbYQG4TopYjAr0X/I+MiCAzcAGLpI=;
-	b=kwBQM5NbKMKpWskOQ/UK068FN2dUY6f3Tqfsgf0xMc4o9dWO9sF6V3kiGe08IUg7
-	+naym6+93bNkSscqYsND5A/H5/jtiUtWzKFSSmAXBBabwt41p9RF3uJQantmcB+nqwR
-	EgGGkjq59XEsOgSNwGVkJJUUh8lRFRFDV5IdN8ro=
-Received: by smtp.zohomail.com with SMTPS id 1792579002564512.9314975124558;
-	Wed, 21 Oct 2026 03:36:42 -0700 (PDT)
-Message-ID: <b7d26b378e3cfdb54a113cca1d8d53293cad966c.camel@collabora.com>
-Subject: Re: [PATCH net-next v3 5/9] net: stmmac: mediatek: add RX/TX delay
- stage divider in platform data
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn	
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Richard Cochran	 <richardcochran@gmail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Biao Huang
- <biao.huang@mediatek.com>, Maxime Coquelin	 <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,  Eric Dumazet
- <edumazet@kernel.org>
-Cc: kernel@collabora.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, 	linux-mediatek@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-Date: Wed, 21 Oct 2026 12:36:37 +0200
-In-Reply-To: <34608ab8-18f3-4680-8276-cd8611c05cb1@bootlin.com>
-References: <20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35@collabora.com>
-	 <20261016-dwmac-mediatek-mt8189-v3-5-25daf2bbcf35@collabora.com>
-	 <34608ab8-18f3-4680-8276-cd8611c05cb1@bootlin.com>
-Organization: Collabora Ltd
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=g6ZKHQUB
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso1092975eec.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:40:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792579233; x=1793184033; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xoyujad1pnAtgsjpNYpF5h6AG9Uxc92FFpX4Fpj1onk=;
+        b=g6ZKHQUBu2X6mfrG0PI64doqcpJVyn5zswlzh4Wn/wKt+qR5tZYZRw2DdCAkFrmy5D
+         JhBW4SnGcTrrU73C7N5WBKrIlZMGdabXqri47yxoTefBdSF/RrFkTljs71b0kwJr8ws5
+         inYITblh1DsVIST4KNdlqmTff4sjCGtpLI46Q3kQDMSByPMqnsD41R0LD39+vGni2oIH
+         qlbESQky05tN3SqaOhjCjiVU9VICCwNOPrFEKtx+/YJusLn24sfmjuD7Nj8ZOMN6YM0u
+         TsMz5A4o/NrJLyh1XHkMV/kBx6Sh2N6uVS6PkoHKGZMhVSfZhlU9U0rKSbwkBLt+ivEE
+         E4cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792579233; x=1793184033;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xoyujad1pnAtgsjpNYpF5h6AG9Uxc92FFpX4Fpj1onk=;
+        b=riwvH3s/K4REF+Y5bl9oBSwxkntaDpRex7J0rfsV9iB7r03Z82FDGA9cgGOd8LmyJ5
+         iozIY97CMFqEFPvAmriW8aZ8dsJ6LRjhWMfi8yGQvV04Z1C9TVQKrkOXhoIWrc4eEQQP
+         IFqWYOsUHc6AULjron5FcAAsX3uO5YaeSPNRgj1qc0lBA7Nymhb1l7QM/NJmstt17FcS
+         U7XTIGgpLbMGWBaoVZmxZc9gI4wokalXe+537c6Vt4v2p2gJ/7toJvpx3laR1zENFVFc
+         i27u/KsSfScbcfUaGNSxCS1u0khmqTP68EQvRPYr7ELmMgixMXGp0vug4Une2VKN2Llb
+         o55g==
+X-Forwarded-Encrypted: i=1; AKwUvBxSqa5onGtkPQVdgU6f2cSO5uVrX3fmllSK40L8xEFoxNEc1eVljOZUazJMiIweJPKYxWkJs4w=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIwd5IjLk/Srx+tz8yfx1rfTGQmotcvsamKVGLdEuy/hW1QvAjD
+	9a8nmZnUVhJeCKXQXomcFdVCKHSFaisQ72aHcoaWitf+zftd1rRbWUKn
+X-Gm-Gg: AYBFou2ZXjgHxETcRICVMqT2BfIzZS4p7f5wfQN4sFeVWjuGeEtz+11MiZKTqf/dJRc
+	0b2VLSC2sDG2iwXXWneGdfcO0QOqizre5he21/mY++GYjyjan8Op9vfot8cYA7kSm1l5NeFAdGi
+	ufxRlITZ+9HmoygUX5DntaNGpp2j4D5IuEgmyC9VZzpfJWivwQiSNjjL9piWoTdF1Y0YbzCkXmC
+	YVptf4m/XV9J8bEP1i9to5VTKct6rri1jCGA6dWx8QqvrmDZ+4yVImsIIAnabEFNKV/KvlyP2bM
+	Z5rUOeYV+F2UYYBE1GvI73RAG1vah6Lxlie8IHRJ7k3bi5lW8KUyDoe71FGixuU6rqDtVP43PB4
+	ldCc2ghYYdSLxD3k1qLD9oCym7YTF8dn8fCKxI+Ag5N/2lFTIW7684c9g7wsJiIGYjguHxEt1un
+	hmWdTQAoKtCUy43/XMUdLWO7dO22iQwgnBz9HO2TitHoWdCUHglNHj/kpakSzXuMboDQOigIPOD
+	UZ2l4BZK4N1ijXrx3c8YmvmUBD6c72bKsAcF7Dq8i+LF5Dz3FGEx2t/HGm8eHUuy2dROM1luuw/
+	u5aFJDVLTXrBbHu7VaAisnju74etRVtqlrbDWrKkxp8i9nOTbnWA9lJ0E2ZtCWsgen4BkxKe
+X-Received: by 2002:a05:7301:da06:b0:351:8cc4:e18b with SMTP id 5a478bee46e88-3674df50b8dmr2692342eec.20.1792579233319;
+        Wed, 21 Oct 2026 03:40:33 -0700 (PDT)
+Received: from nixos ([2405:201:c40d:9039:5209:19f3:3930:87a])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3673e24933csm6096611eec.1.2026.10.21.03.40.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 03:40:32 -0700 (PDT)
+From: Ayushman Rout <ayushmanrout27@gmail.com>
+To: bpf@vger.kernel.org
+Cc: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	memxor@gmail.com,
+	hawk@kernel.org,
+	drosen@google.com,
+	netdev@vger.kernel.org,
+	Ayushman Rout <ayushmanrout27@gmail.com>
+Subject: [PATCH bpf-next] bpf: Use memmove() to load bytes from an skb and an xdp_buff
+Date: Wed, 21 Oct 2026 16:09:57 +0530
+Message-ID: <20261021103957.17532-1-ayushmanrout27@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,98 +100,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
-Hi Maxime,
+bpf_dynptr_read() on an skb or xdp dynptr ends in bpf_skb_load_bytes()
+or bpf_xdp_load_bytes(). The destination can be a slice of the same
+packet, so it can overlap the source, which memcpy() does not allow.
+On x86 with FSRM memcpy() copies forward, so a destination above the
+source gets the first bytes repeated:
 
-On Fri, 2026-10-16 at 13:37 +0200, Maxime Chevallier wrote:
-> Hi Louis-Alexis,
->=20
-> On 10/16/26 12:31, Louis-Alexis Eyraud wrote:
-> > In preparation of newer SoC support, that have like MT8189 SoC
-> > different RX and TX internal delay stage steps than MT8188/MT8195,
-> > add
-> > the RX and TX delay stage divider values in the variant platform
-> > data
-> > and replace the hardcoded value uses in mt2712_set_delay and
-> > mt8195_set_delay.
-> >=20
-> > Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> > Signed-off-by: Louis-Alexis Eyraud
-> > <louisalexis.eyraud@collabora.com>
-> > ---
-> > =C2=A0.../net/ethernet/stmicro/stmmac/dwmac-mediatek.c=C2=A0=C2=A0 | 46
-> > ++++++++++++++++++----
-> > =C2=A01 file changed, 38 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> > b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> > index 596411d4a5b2..cb5bda53edb9 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> > @@ -108,6 +108,10 @@ struct mediatek_dwmac_variant {
-> > =C2=A0
-> > =C2=A0	u32 rx_delay_max;
-> > =C2=A0	u32 tx_delay_max;
-> > +	u16 rx_rmii_delay_stage_div;
-> > +	u16 tx_rmii_delay_stage_div;
-> > +	u16 rx_rgmii_delay_stage_div;
-> > +	u16 tx_rgmii_delay_stage_div;
-> > =C2=A0	u8 dma_bit_mask;
-> > =C2=A0};
-> > =C2=A0
-> > @@ -146,14 +150,22 @@ static int mt2712_set_delay(struct
-> > mediatek_dwmac_plat_data *plat)
-> > =C2=A0	u32 fine_val =3D 0;
-> > =C2=A0
-> > =C2=A0	if (phy_interface_mode_is_rgmii(plat->phy_mode)) {
-> > -		rx_delay_stage_div =3D
-> > MT2712_RGMII_DLY_RXC_STAGE_DIV;
-> > -		tx_delay_stage_div =3D
-> > MT2712_RGMII_DLY_TXC_STAGE_DIV;
-> > +		rx_delay_stage_div =3D plat->variant-
-> > >rx_rgmii_delay_stage_div;
-> > +		tx_delay_stage_div =3D plat->variant-
-> > >tx_rgmii_delay_stage_div;
-> > =C2=A0	} else {
-> > -		rx_delay_stage_div =3D
-> > MT2712_RMII_DLY_RXC_STAGE_DIV;
-> > -		tx_delay_stage_div =3D
-> > MT2712_RMII_DLY_TXC_STAGE_DIV;
-> > +		rx_delay_stage_div =3D plat->variant-
-> > >rx_rmii_delay_stage_div;
-> > +		tx_delay_stage_div =3D plat->variant-
-> > >tx_rmii_delay_stage_div;
->=20
-> Looking closer at this, what's RMII delay ? There's no delays in
-> RMII, and
-> it's a single clock not a RX and TX clock like RGMII, there's no RMII
-> TXC/RXC.
->=20
-You are right, these structures field and define names are wrong for
-RMII/MII cases.
-The mediatek,tx-delay-ps and mediatek,rx-delay-ps vendor properties are
-used by this driver to fine tune different clocks depending on the phy
-mode:
- - RX_CLK/TX_CLK in MII
- - REF_CLK in RMII
- - TXC/RXC in RGMII
+  p = bpf_dynptr_slice_rdwr(&ptr, 8, NULL, 64);
+  bpf_dynptr_read(p, 64, &ptr, 0, 0);
 
-I'll fix the fields and define names in next series revision, along the
-issues the Sashiko reviews found.
+leaves bytes 8-71 of the packet as bytes 0-7 repeated, not bytes 0-63.
+Reproduced with BPF_PROG_TEST_RUN on both an xdp and a tc program.
 
-> I think it's the same as on allwinner, the delay handling has been
-> mixed-up between
-> RMII and RGMII in the glue, you should be able to simplify this even
-> more by
-> ditching the RMII case.
-The register fields that the driver sets in RMII or MII mode to tune
-the needed clock(s) are different than the ones set in RGMII.
-So I cannot really ditch the case but I'll simplify the delay handling.
-For instance I could use a single divider field per mode, since for all
-compatibles the value is the same in both RX and TX.
+Use memmove(), as the store side does since commit 1db084f42884
+("bpf: Use memmove() to store bytes in an skb") and commit ab08863c58b1
+("bpf: Use memmove() to store bytes in an xdp_buff"). A read that spans
+xdp frags still goes through bpf_xdp_copy_buf() and is not changed
+here.
 
-Best regards,
-Louis-Alexis
->=20
-> Maxime
+Fixes: 2012c867c800 ("bpf: verifier: Accept dynptr mem as mem in helpers")
+Signed-off-by: Ayushman Rout <ayushmanrout27@gmail.com>
+Assisted-by: LLM
+---
+ net/core/filter.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b7ac145b68b1..35d38e02fc1e 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1789,7 +1789,7 @@ BPF_CALL_4(bpf_skb_load_bytes, const struct sk_buff *, skb, u32, offset,
+ 	if (unlikely(!ptr))
+ 		goto err_clear;
+ 	if (ptr != to)
+-		memcpy(to, ptr, len);
++		memmove(to, ptr, len);
+ 
+ 	return 0;
+ err_clear:
+@@ -4298,7 +4298,7 @@ BPF_CALL_4(bpf_xdp_load_bytes, struct xdp_buff *, xdp, u32, offset,
+ 	if (!ptr)
+ 		bpf_xdp_copy_buf(xdp, offset, buf, len, false);
+ 	else
+-		memcpy(buf, ptr, len);
++		memmove(buf, ptr, len);
+ 
+ 	return 0;
+ }
+-- 
+2.54.0
+
