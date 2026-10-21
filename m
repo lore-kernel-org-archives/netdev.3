@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792599149;
-	b=eO2dN/OEim2fXMfBLDqhfuboFpst/zY9b9L7VOioKmdVWyH6stst0+MrvL8MLblErzW/
-	 9TjnyAbqQ910rWOJV9fT0XlywzCo7OzX9RqrWXb9mwyGfKU+je3ekCDza62RyhkGDkrLD
-	 6cu3XRx7RHbObCJnhQipZ98AYoHduUovO4uWROdnTYq5sUbGuUHrEWze66oHMYkhxZ0zs
-	 pJTCnz3yuMxgHWaBEKqVjlRcVIhSfogiS0y80UMVw3+wgyZbJkuB7DEsDbVfqj78beDfs
-	 z5e6+MLEgBg+zWmBoaM80Bc3IDF7qf28ylH1mIBZQBpNIvHjfCmBX+es7pKCON+/C5Q==
+	t=1792599154;
+	b=kwQuNN8kEk/RNQzD8yi8BgcV0UZPdekRZllYh91dTQiyI0SaupZanBya0wPww/w4KDng
+	 4My1OfeL+EFetOBGhU9nvicRPyV7SuMKBsaXi4NmcMQA9IMsAkJuqcaGQY8CMr401isXj
+	 MSBXql6/3ICuWl/F/cqLqyfeClz1YLEjXJVFZ99ndSWJMTvpOPv6uZ0ws0F1qx9pqG+SB
+	 JZUqVX+q5ALBx1cMYZSPimUylK9RDuMHYCLjUQt0pUC+jHmr0e/yXVZcc0Vf0Txdjuf3S
+	 7cR1L97cK3Pb2UnpLzz/ZoGqy+iZxYMkagwWnc1qrG8Ar8KHjQPkcLTDPjyF9P1L6MQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792599149;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792599154;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=2kXkfQKoyKeTCN2Sv/f7Ax6sxo++in4BRNf4KH18Q2k=;
-	b=v0x6nJfdXzZ9ZzVmpXrY29ZkEaQwW6D5QnvEKg5KroMn3ziic4ajf0kLgk2TK3dN11ax
-	 y1C/TJIiVqVtpzoFeSm3tztm1jv5m0BvE0YkCQnx2GL+2Gpwff5QJKofucDgr0KLphZOH
-	 GDAR5kALbD9uTtwmoCmF258vQqD/9iEFkh8vhZX32LC5nv3jeWSlgn7TX2Sw0HJyvSAab
-	 fPVFHG9lf443kRVzVmIBm5IrV9clYAJR4wHLQFs3uV1W3xfwmOANZXrmwfsDKYzeW7+2C
-	 YSjCiV8H4fMgOgdCYbTDkQUJIrF0uYH0aswlxJ/Yymsqs1EUkAdU+9bFcJlUy2Y32xQ==
+	bh=wNZNoSNZLuTYE1knJMqvBH+8vSrJt0a6jTPt/IHTyTE=;
+	b=kUUv4Urh4WTIy3jPvlMgckzvIkJ/r+b4q0dzBCxi+d35/Km6a9SHcMlMNVrbHPXzQZ/Q
+	 q7bG4A+7hiku1SPsyBFGo3sJ1v2AGh2NcocdekXYqClBAZ6nEmoywkoIHXN0KvTiknFv2
+	 rhagDlLSennUE7Qsd8yvlL2NgmwU/6luHQzL7gryqwycc97igrgRPSD4mYb4cwW27ouaK
+	 pQi2COyOrcTG3r/dIdQoF5yLe3H33OJejxxyIYjgFJowcMiMvYkXlFMsqG88LYC4ctq6O
+	 oKsJxYTSzxhYjJZHPwfd2B9hRvGUevVPBq0LkWzblfSNCQXRF9X8zifzT3lmFyxF3eQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YSC0vM+B;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eISUM7LD;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E14860A260D;
-	Wed, 21 Oct 2026 16:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBD2606A319;
+	Wed, 21 Oct 2026 16:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YSC0vM+B
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eISUM7LD
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792599148;
-	b=yZMVS0CLVm0HdBZ+Kiw6HBJg4j7tHG06dZBN6nADLL6iD58tEVMFP/qRf8CGXtTXzUSO
-	 0/Y2unvESnOtmydbCt5wXtGmwwILnY9ivUpBZ0A4FDnHmcMPV4o6SKe5pZlr2gdycvJFh
-	 ojxmcumwzadadsEZ4yHuKvKFeSQWVoBEqcmU5i9MqcfPi3hJE0WWllWL48cBeE0l8laRh
-	 1vQqS2ZRmYnOIlTU943VzECfsctdziDW/HzaLO0E2XJ2tqa18m2K7K2wQOuGp/6sk7RH9
-	 mYy53l/Y/n58YPrhawgwif6ZI8E3jNZX2y2THxFhUh7oNX5poJNY8U5XpuoAZncd6gA==
+	t=1792599153;
+	b=yHUpXidIYvDvGULFrckOMffNTUBnME1UUdU+U2bw/v4V+t/QBctprH2vkHpJt94IIukF
+	 Mabzr4kBqJ4tNBov0jQhe27X3Wjmqub9n05qOvwDLAJDGsQv1wv5ExlXXbk69vALR8qqM
+	 0ppkl7WFdrinCewQ3PkpWq3Y8uYLsz1PwXp5htezgXuyVYizq1hXUj0LkDkev1MuYUSJS
+	 ejT117bySOSPFQ41dmFocSXmjXn9+8Zyskx4cH5jEM5R+P9/2Ib8pUjq80/orDdfgU3cT
+	 ASpfdun5UBmegWK+m3ie/tV/Ib4nIgNpnxAywk4n8mMaWvl5AHaHkdYb1C8+qn3qbAw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792599148;
+	c=relaxed/relaxed; t=1792599153;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=2kXkfQKoyKeTCN2Sv/f7Ax6sxo++in4BRNf4KH18Q2k=;
-	b=zriG36Qu6awvryVD7YJ4E8vd8c5BPDKhPV8xdBO4Zgapr3lE13FS2wg0odDM7BAMeinZ
-	 M09gT+IEUC4tcTz1/oMFhWsLSC0W8YPv0Tb8bvNU2MUUDQnTJ6d9UQXjPHvDmQpx3Gpyd
-	 JaaMhrCeCkDGAuEMA6PzqxcTsSon5fPzLIqOEMvimZXdrYJMb7vu/XVkA5In3uu6XIt5K
-	 uciM5EYJ/46XCoV8euW1N1iOz3QDetvuHo/UwPFk7VohTmyLEDUNO1q5tmqWJrUmS/r5a
-	 KQLLpRfZ0zVtyWmZ9UWlhGftdCC0vn7dIsYOYrbz9+ALfgb4NfoiHC620hmaWiowlww==
+	bh=wNZNoSNZLuTYE1knJMqvBH+8vSrJt0a6jTPt/IHTyTE=;
+	b=EbgHSkaaEFX7CmpXS+9kPzPusG3Ye+UVbnRdRJmtRWSeXZ/ZBwzWI9ZIJV4ZiSvbnAaH
+	 H00dUYuqQKZKwa0Fw0HM2bwLO23S/bxB+7qCGT7kKyoWlagyYqGRN0OPyX/9yrIlMrsdS
+	 Ln6lo1naStwsRSTvkfE8E2KiKkXAcDlLHX3RYTGpyQfH/Q5VnSgcf493HniBY+LteIm4D
+	 spNBj1wJFeZpSeBpSg06bSv5gPncG5MzhRpOMkCBErr1sssQZ+SLTaku7+/yzgVOkztwg
+	 ruLuW5pXrDphOw62mCmelAIZyoe2AEHkKx15AsMBh8E00K7+3rnjalBk6OSG9SQXaqA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id BFC901F01579;
-	Wed, 21 Oct 2026 16:12:27 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 5B7EF1F000D3;
+	Wed, 21 Oct 2026 16:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792599148;
-	bh=2kXkfQKoyKeTCN2Sv/f7Ax6sxo++in4BRNf4KH18Q2k=;
+	s=k20260515; t=1792599153;
+	bh=wNZNoSNZLuTYE1knJMqvBH+8vSrJt0a6jTPt/IHTyTE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=YSC0vM+BP9ImyY7ncdpdqQsXp7FhqjPJQAmb2yP3CLbWq+A9IgxOeZkJEvs7wk7KC
-	 kMxp6sm5dz+Y5FMY8paH3jGE2fyufqgl9T28dwPTCyRK4QHAtFvPqPNS/JHkPYSq23
-	 5t9IXF8zYMWs7spxJXW0LwQAVfQFdYpo0yvp5kHh8hc6uuhQigAeRX8xPrrfGx9/37
-	 ZSp5G29kkPIYH++nwUo3mrdJWztJ22UWf0BMne08TMgmYxkNOMrYG2F+8jMegdPQLI
-	 aoSaIxFQsfYFMSnMO50mlg2O6N6o49DgI0aLkLLE00W72dKo89vGPqfKEE7Tmbx6Ad
-	 8O2SuyvTRxPjg==
+	b=eISUM7LD00GpK803nQOh/yXzQNR4XPEZxBkD0HUGr+M7mAQgcZ/xLsUmMSsHYXxuR
+	 k+Qwy7J9xesnaEGdrHcZUErFWWwasZUAnVmLEfYmr7UB4LP0KVO4chOoFuFrgWyKVN
+	 gGe6josURShApzh30aAIXvukiFG/jrBt8JmvGt1fStkkYElJL0iFkImY4H6qG4Psk6
+	 fA/YGWiU39Jv1H2saYsL6hlygVor1y5L9I/pco7I0TrkrQVl/pWDo4EcGnUP6XwXor
+	 12b/sn6Eo8Xkpr/UnOuJPGQ/7R8zNV0gbn1WTnzUSLgSU7VHsrxxjdXKmZj5+XNNpc
+	 xTxFfyinvLw5Q==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 1354E433A7;
+	by lkml.kernel.org (Postfix) with ESMTP id 2DE10433B3;
 	Wed, 21 Oct 2026 16:12:23 +0000 (UTC)
 From: Cunhao Lu via B4 Relay <devnull+1579567540.qq.com@kernel.org>
-Date: Thu, 22 Oct 2026 00:11:00 +0800
-Subject: [PATCH 03/27] dt-bindings: soc: rockchip: Add RK3572 PMU and GRF
+Date: Thu, 22 Oct 2026 00:11:03 +0800
+Subject: [PATCH 06/27] dt-bindings: gpio: rockchip: Add RK3572 GPIO banks
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,7 +83,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261022-add-board-ok3572-c-v1-3-0b0fd85a31ee@qq.com>
+Message-Id: <20261022-add-board-ok3572-c-v1-6-0b0fd85a31ee@qq.com>
 References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
 In-Reply-To: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
 To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
@@ -120,11 +120,11 @@ Cc: Cunhao Lu <1579567540@qq.com>, linux-clk@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, linux-phy@lists.infradead.org, 
  linux-usb@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792599138; l=3106;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792599138; l=1558;
  i=1579567540@qq.com; s=20261015; h=from:subject:message-id;
- bh=wJ94JN5Tzv4cmoYUSh00gVquJOC/PZzfdtSiGGYQM2U=;
- b=vP/t2ay2LwL1h3PbCoXFv8+wP3AFNmubZrHnyotQ/xf9gkVyzVsFDhbGn6+V5Idt9pTZYGUU3
- dUO0oMsepxhC0j2EdjEbgOIsLlgApcxnPm83NvnT40ro+SPr5f73l46
+ bh=71XPLp2LqTx5hu9SnpsYS2dYxBCGTBCIH6TDOlt/UTY=;
+ b=gUcs6i+rCmZW4P9eCpq1UvpoUfHiUAfwTjBWYCyFUWqqTSAST4oT5QX3mhKaRqGm/lrSXDu3E
+ 4i0YyfNKdCEChy+pHpiyrYy/UwckAdQWmSXhXFS1hCFyRwPMSN4yzQY
 X-Developer-Key: i=1579567540@qq.com; a=ed25519;
  pk=sUTWrzlIwT4C7ctjNfVZAzzg0G7QUn2XxRGpYsw4RtM=
 X-Endpoint-Received: by B4 Relay for 1579567540@qq.com/20261015 with
@@ -135,79 +135,61 @@ Content-Transfer-Encoding: 7bit
 
 From: Cunhao Lu <1579567540@qq.com>
 
-The RK3572 PMU and GRF blocks are system controllers shared with the
-clock, power-domain, and USB PHY drivers.
+RK3572 GPIO banks have four parent interrupts and a separate debounce
+clock.
 
 Signed-off-by: Cunhao Lu <1579567540@qq.com>
 ---
- Documentation/devicetree/bindings/arm/rockchip/pmu.yaml |  2 ++
- Documentation/devicetree/bindings/soc/rockchip/grf.yaml | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ .../bindings/gpio/rockchip,gpio-bank.yaml          | 24 +++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml b/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
-index 1cff2328cd01..43dcaa77ffdb 100644
---- a/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
-+++ b/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
-@@ -28,6 +28,7 @@ select:
-           - rockchip,rk3528-pmu
-           - rockchip,rk3562-pmu
-           - rockchip,rk3568-pmu
-+          - rockchip,rk3572-pmu
-           - rockchip,rk3576-pmu
-           - rockchip,rk3588-pmu
-           - rockchip,rv1126-pmu
-@@ -48,6 +49,7 @@ properties:
-           - rockchip,rk3528-pmu
-           - rockchip,rk3562-pmu
-           - rockchip,rk3568-pmu
-+          - rockchip,rk3572-pmu
-           - rockchip,rk3576-pmu
-           - rockchip,rk3588-pmu
-           - rockchip,rv1126-pmu
-diff --git a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-index 7bcb4e2f47ec..3c4e7d1e9a07 100644
---- a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-+++ b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-@@ -30,6 +30,12 @@ properties:
-               - rockchip,rk3568-pipe-grf
-               - rockchip,rk3568-pipe-phy-grf
-               - rockchip,rk3568-usb2phy-grf
-+              - rockchip,rk3572-ioc-grf
-+              - rockchip,rk3572-nvm0-grf
-+              - rockchip,rk3572-php-grf
-+              - rockchip,rk3572-pipe-phy-grf
-+              - rockchip,rk3572-pmu0-grf
-+              - rockchip,rk3572-sys-grf
-               - rockchip,rk3576-bigcore-grf
-               - rockchip,rk3576-cci-grf
-               - rockchip,rk3576-dcphy-grf
-@@ -95,6 +101,7 @@ properties:
-               - rockchip,rk3562-pmu-grf
-               - rockchip,rk3568-grf
-               - rockchip,rk3568-pmugrf
-+              - rockchip,rk3572-usb2phy-grf
-               - rockchip,rk3576-ioc-grf
-               - rockchip,rk3576-pmu0-grf
-               - rockchip,rk3576-usb2phy-grf
-@@ -258,6 +265,7 @@ allOf:
-               - rockchip,rk3308-usb2phy-grf
-               - rockchip,rk3328-usb2phy-grf
-               - rockchip,rk3399-grf
-+              - rockchip,rk3572-usb2phy-grf
-               - rockchip,rk3576-usb2phy-grf
-               - rockchip,rk3588-usb2phy-grf
-               - rockchip,rv1108-grf
-@@ -309,6 +317,10 @@ allOf:
-         compatible:
-           contains:
-             enum:
-+              - rockchip,rk3572-nvm0-grf
-+              - rockchip,rk3572-php-grf
-+              - rockchip,rk3572-pipe-phy-grf
-+              - rockchip,rk3572-usb2phy-grf
-               - rockchip,rk3576-dcphy-grf
-               - rockchip,rk3576-vo1-grf
-               - rockchip,rk3588-vo-grf
+diff --git a/Documentation/devicetree/bindings/gpio/rockchip,gpio-bank.yaml b/Documentation/devicetree/bindings/gpio/rockchip,gpio-bank.yaml
+index 774e9c7de606..8655854ac0a3 100644
+--- a/Documentation/devicetree/bindings/gpio/rockchip,gpio-bank.yaml
++++ b/Documentation/devicetree/bindings/gpio/rockchip,gpio-bank.yaml
+@@ -14,12 +14,14 @@ properties:
+     enum:
+       - rockchip,gpio-bank
+       - rockchip,rk3188-gpio-bank0
++      - rockchip,rk3572-gpio-bank
+ 
+   reg:
+     maxItems: 1
+ 
+   interrupts:
+-    maxItems: 1
++    minItems: 1
++    maxItems: 4
+ 
+   clocks:
+     minItems: 1
+@@ -51,6 +53,26 @@ properties:
+       of this bank, on SoCs such as the RV1106 where each GPIO bank has
+       its own IOC block.
+ 
++allOf:
++  - if:
++      properties:
++        compatible:
++          const: rockchip,rk3572-gpio-bank
++    then:
++      properties:
++        interrupts:
++          items:
++            - description: GPIO group 0
++            - description: GPIO group 1
++            - description: GPIO group 2
++            - description: GPIO group 3
++        clocks:
++          minItems: 2
++    else:
++      properties:
++        interrupts:
++          maxItems: 1
++
+ patternProperties:
+   "^.+-hog(-[0-9]+)?$":
+     type: object
 
 -- 
 2.34.1
