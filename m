@@ -1,69 +1,70 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792610383;
-	b=C5JZIc2cG3uVAdbpyeXMCpIfVd9wkbRbDxiL+oC2rclHgSf8PaAaosYHqyyrStvjJYgM
-	 t18s3eB+Gtu6IKHDAH9jRsTDZpRBDMqjqFsf/EMNJEYMoH4n0IDv2MfVGWZrDKygvHjzL
-	 7YcW3+O6HeKUUqSiWj0CTKitElyE9GRM2RUMWGcCkscCPdwxtDf35tRZ2URc909IWB4A8
-	 SdpS3/AXRUP1JRf7Ht1EFi3B+mtrAPRlPUugYi/PHZ264fQJ+f1Vjd1db49AS1J5EPtla
-	 ugOutVpRqKWz0pOvZ0aCmlYYk7wnL24Hf4s8MP2QY+Gitzsi1O06q+5ti1xA8DMuenw==
+	t=1792610411;
+	b=gHFfwFhvN1ubgD1u3a0yYrJ7kNJumux+JPr6pCmN9eql3wzg5FgSN96RRSbaVrKvAEzO
+	 TkABJbS/+105XaWjxidiXs9qYVb5VLQmhaDdSh483axRE5v6dvbSRPgzX3DCRnURfXM6P
+	 JaZXdn0lxnalnhUCUZUCe/w9t7eeEx9kFsbLyGAEOZugqh94lQ95xB3Hnn6/ieHrqRXPv
+	 0uTx0UyGkAhKsEUFKhol6RDUGMHiFFTMS1U1Pi8XLIOk7uSOhZkPiH4/7sU+mQVAAzWYz
+	 BihY6LnG2jF5i5DqpNFB716ucdRdbJm5DrLGI+SxrbA1+uqn9d6J1Zz1YqBP3hHwHnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792610383;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792610411;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=WKM0XORuuhLQvH0dOGvlGgJrze/6esCqKxEQFA6bgwk=;
-	b=M2EtxiYwpJwY00qtUIlIQEJocws2dMRUdBndQIefvmSPrwkDCir0ww3344pjYzNfBx3P
-	 ovnd7sRqK7JS9qTqatwdWQ1BxJVyLJHzs8yTUOoHh54PFTHIDRMf+peR2jn3DsP2f0IG/
-	 z3+iVVLNlLNmFA6G0MC5fdG9boQxzj0VAcWbBBfwC2S1oGw8LdYXld8qg9AwWcyzqZv/T
-	 maxI9xAyoBk/miTFiqxEgj+pD3rwbICHYmNcAVA75M5tmemSoJlSncZTOLFihikapF4gw
-	 CqVW3Pr3/m0yZIbpGr0I8Kpi6oCI+9jDbqSiQOhBZiqfwfvoZPrxKVW0sIZ+AHzfbAw==
+	bh=N55gIs/itUQnf0q8CJBUzovM0UEJlW4e387F7nHqjT8=;
+	b=rqg6t+UAr1/7s95fGQMsQ9oTCTFnPlXLJFYxT9oNKr4RiH8CyNGkwkhCE5dYdHKC9Slo
+	 K9BQhL3c/IMLn3pF4EnBlTXhsAKK52+wiqSOJD4JqEhdHkwPwIjux/ebR/SG0cbO1eWNM
+	 WqLXIdqPyF+Er3+Oez/93szOlbCK8yY1IwfpLJC9VPfepGfZ/IW8vRyYx5LCf0KmmfLew
+	 VAE3Mvg6eDhBe9tiJ9BFPwSp4Pw7ozy09/tUcN3G/6PGxqyXZMFsuk7slTOEJvgPunYdd
+	 IF0GWnfxC8Et5BmL1e8QFfqQv2gIDEtOlYpoY2PYn+kTm9zAKSqpYQj3GC3J7izS7Jw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eumAA3k4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KP27sovf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3707A606A31B;
-	Wed, 21 Oct 2026 19:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009CC606A31A;
+	Wed, 21 Oct 2026 19:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eumAA3k4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0185A1F000C1;
-	Wed, 21 Oct 2026 19:19:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KP27sovf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A5A1F000C1;
+	Wed, 21 Oct 2026 19:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792610382;
-	bh=WKM0XORuuhLQvH0dOGvlGgJrze/6esCqKxEQFA6bgwk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eumAA3k42K6yB6RZB1WU+xt5GGoRMa4EQmog24F7MJERClHfXOFO7yv08z0jvcCmv
-	 w1uGdCt3PZw3rvBVei3wJi6cCcD3YrMWXxLfyGjV51YUCT5H9CZY1WM+9FX144+H93
-	 PbZXbnow1re3NMVT8taE7YypLSXNbeCdMQ9VMh/N4vIxCxnzqR+n+ANhYyXcwaR2LP
-	 ErhyGeSHX0HKoX24vZ3qa4ipO1l0uT48xXwBaRaNYnFv0DT7AJJcJHK5ZmiJRcGVLJ
-	 I0vWNgkubvcElxaySbtT9b0dgXpVM3xx00admRyflohfS0RgxZbaTECcufe52mCwT0
-	 K/hcSks9Awr4A==
-Date: Wed, 21 Oct 2026 12:19:41 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Harry Yoo (Meta)" <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin
- <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Muchun Song
- <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>, Pedro Falcato
- <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, Willem de
- Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sebastian Andrzej
- Siewior <bigeasy@linutronix.de>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH slab/for-next 05/14] net: skbuff: specify
- SLAB_MAY_ACCOUNT for skbuff_head_cache
-Message-ID: <20261021121941.4d8f8edf@kernel.org>
-In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-5-096800aa3330@kernel.org>
-References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
-	<20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-5-096800aa3330@kernel.org>
+	s=k20260515; t=1792610410;
+	bh=N55gIs/itUQnf0q8CJBUzovM0UEJlW4e387F7nHqjT8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KP27sovf3epPRHQdX3YhqrM0vdEeOuHUWf4x1+ZsE6aGki0XudEx5CF7Qt5W4C2W7
+	 pvdsrdcvTeUnFSucqq0CQDh9xHhntQw54gY8yXVMOdvbPcWY5VuDHalhUlqRQD6dlM
+	 uGRa6ggJ5nPq6V+1onVxAjt8s4LFqh7VpiXrWiTn86i2NC2au0SBhLyY219vzGsFpz
+	 /DlXy1/2lkH+z/PJVp2gmG4BhdHNGOSE52K6/i/O57tyNnQVpDDEqOHrmegRf6Yq++
+	 JAUkZIdbO/kG/LwN4JjbXwXR+LXOtMYtPIasXOh8JNRTuN8ImDO7XFb35Uk0sCB4f5
+	 uYjlEynk5jxnQ==
+From: Chuck Lever <cel@kernel.org>
+To: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2] nfsd: add NFSD_CMD_FILEHANDLE_GET for root filehandle lookup
+Date: Wed, 21 Oct 2026 15:20:06 -0400
+Message-ID: <179261039943.1716542.9468280490238427804.b4-ty@b4>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261021-nfsd-filehandle-get-v2-1-bd7fc8b1b783@kernel.org>
+References: <20261021-nfsd-filehandle-get-v2-1-bd7fc8b1b783@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,31 +74,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, 21 Oct 2026 12:46:46 +0100 Harry Yoo (Meta) wrote:
-> AF_UNIX sets sk->sk_allocation to GFP_KERNEL_ACCOUNT, so skbs can be
-> allocated from skbuff_head_cache with __GFP_ACCOUNT. Specify
-> SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
-> __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
+On Wed, 21 Oct 2026 07:44:13 -0400, Jeff Layton wrote:
+> rpc.mountd still fetches export root filehandles via the
+> /proc/fs/nfsd/filehandle transaction interface to satisfy v2/3 MNT
+> requests.
+> 
+> Add a netlink equivalent:
+> 
+> FILEHANDLE_GET takes domain, path and maxsize and replies with the
+> composed handle, like write_filehandle(). Unlike /proc, which silently
+> clamps maxsize to NFS3_FHSIZE, maxsize outside [NFS_FHSIZE, NFS3_FHSIZE]
+> is rejected with -ERANGE. Include a kselftest covering validation and
+> byte-parity with the /proc interface.
+> 
+> [...]
 
-Could you please skip this for the first batch and resend
-later to net-next?
+Applied to nfsd-testing, thanks!
 
-## Form letter - net-next-closed
+[1/1] nfsd: add NFSD_CMD_FILEHANDLE_GET for root filehandle lookup
+      commit: c9d646d1dd8b2fd96548d3f22fc709a84dc6f3e0
 
-The merge window for Linux v7.4 has begun, and the net-next
-tree is now closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
-
-Please repost when net-next reopens. There is some uncertainty
-about how long this merge window will last, so please check
-https://netdev.bots.linux.dev/net-next.html
-before reposting. net-next _may_ reopen on Nov 2nd.
-
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
--- 
-pw-bot: defer
-pv-bot: closed
+--
+Chuck Lever
 
