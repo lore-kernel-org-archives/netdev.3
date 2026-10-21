@@ -1,62 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.219
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792566172;
-	b=clheuX+dwFJ8J/aMTGIlpwnaG0S4JiH+ZOlEoK9DcRYSUp3pF/qfax7owLU1sV227eUU
-	 nm9sJgLYJDYv3VTxF43C9lTKIyUQHGSpI1C1AhwM4hy+Ck8S0krZ+GthVW16Io0DXsX1e
-	 zzlYqpeNB/1TJq/hscTXWnflnE8lqoKOvd769HZiHBel/lf3oHFk6rqDSyUvlkt51MZ9E
-	 JoYcDqKoxzO2clqzk/+7yJU8pciXQe1livjEZAhV4KzCDhkg+go1iBsX/31/gvdiZcGDE
-	 98VIYp1Jpy2LmD2Q4UouRb+ni+XwFicsSsQS0KT4OLRwliFzx4HYpEEsxm0Uio+Y4AQ==
+	t=1792566219;
+	b=xF9i1brpIs2oLnEvMvZQw/4fqhoS6m94wHsGC4I6EHpSmxoa/ClYXcJLlNbpjSb5sPTu
+	 ta499q0pn7t0cE/MESAFVSLt21WqNJ8WkEIEOywWxj9fZQ+rYhdny45X98EyZF4bEdfPH
+	 L40peeQGBntKiVLSEBvJemKLFAR2nwE63BAbD/JM0K4A39N10bxP5mwTJPbBb39mjB6NW
+	 ZR99sbREzvMTH6nZD1WdKqL1K4fxtHHlYU/2VeNPl8g0Diy6BZMakUKrNf2ZMbCtl+8iv
+	 kfmrBKQudgJKv6J3RprH4HT5RJlWQnKh7W6OJIP4dMyxfv7Aj4WOe0nA+x6X8eYGriA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792566172;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9ejJRb6pdg5woczfJr39UioN6agm7SyfQ7LOX7To5E0=;
-	b=xNqS6mFaNLgzUxDlPLlxoC5TKeQD5cValzKQd9g74NeGqF4VeU8zSiGiUm79XdbZx1j8
-	 7wulky19KINCUbNum7xQGeA8Bs+kK9NxkhPM+3DsR0U94EmdXbJwUzZnrLnxihnaQBX2U
-	 lhcMrzvLG18wC2abvV250mhb4b7j3vkL6PGasFTatrf7eAkwD4RMS+izSZM7Q+XnWjXEn
-	 sgDKLZtpAqyQ9pU/FHAU0e4MpQL3IVPsAIjeVIrJ8CBDnPL8k6UOMp0H4YonXYqmnqwIm
-	 firKnz40LehrKaXgpkGatKJYRJT6kR591W+uIaln+/nbjqphORgLa9pwBdAhwFBK0kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792566219;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=G0JqV33vkTSX97xk3gUqIcjVCnQQRw+1koMj16mwjqCrznl2PPYVuyYQkP+eQHVoPsvW
+	 z+WrSPdq2xfgtWcixLM8N6QIQqJxZy4vJtBDSa7RYjnbZnxzKwHVEIAEMbkw5x6t0o8QU
+	 s42uwtOI/KtsKaXpV//bpinZz2U1vfIcXoUTNrVKCxnpi3waLge4E0WkTeQSFAbZ/ykfc
+	 tCQtnrbKtVvhTMYBo1rsYmsYQg8A9JXJEPQ4HnjZQPTRQW8MzDylcKdGgqtnHqzvs/3j+
+	 fvQCLMvvArZGtIq4QIWd2EDVWRMCNpk5q1uohmc/WFXTDM8huXJJrTE5ejr0BGKp0Vg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=xiaopeng.com;
-	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=YwrEjJIt;
-	arc=none smtp.remote-ip=115.124.28.219
-Received: from out28-219.mail.aliyun.com (out28-219.mail.aliyun.com [115.124.28.219])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KIaS0g9m;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD70606A31E;
-	Wed, 21 Oct 2026 07:02:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AD70606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3702606A31A;
+	Wed, 21 Oct 2026 07:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=YwrEjJIt
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1792566164; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=9ejJRb6pdg5woczfJr39UioN6agm7SyfQ7LOX7To5E0=;
-	b=YwrEjJIt4Qo2FdRuNOIoq0rWZzvczRVxu1ZDl9XYrMwmtZbAsx906yO1AsMaqHJ95+djlFgp/fasCxqckiJRM5wCxhabrr5zhRwRDkuLVG9P0hBLg3t+q45DdRCqsv3kRJYSwOhhzEettNz+mL2VQHSflKpnysf2MOD8xpkPArI=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04958579|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00520256-0.00060955-0.994188;FP=10361852787305131134|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033025068124;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=10;RT=10;SR=0;TI=SMTPD_---.jmQmQl9_1792566162;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jmQmQl9_1792566162 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 21 Oct 2026 15:02:44 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Guanglei Zhu <zhugl3@xiaopeng.com>
-Subject: [PATCH] vhost/vringh: reject zero-length indirect descriptor tables
-Date: Wed, 21 Oct 2026 15:02:42 +0800
-Message-ID: <20261021070242.75009-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KIaS0g9m
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1271F000CF;
+	Wed, 21 Oct 2026 07:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792566219;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KIaS0g9mdn5Rz+bmqqE44xQ8xaasrqmpDSmUeHq8wPx9qVPPx1tgnQWEcrLCRyvr+
+	 jt9dD6sfLx5GvYGNbcKA3TfvA9+qa4LCY146xawlELijJdrkYZ0FihQ/adO6PAnpYS
+	 5boiaNP8BKuIKd/+ep0/6mJXeXhvA61ydTNGGOJBH30N7oeToOjrbkcXIyeCg5HTcG
+	 01L06t9uxW5zlL7sexlimgRn2KldwslZkzv4DzY/OoJYVvLQhdkzZwfFiXZBPLaL1n
+	 yjSjtAGvTVGyXMFIZwgy9f6CpLjpKKG0PiAPHWurpxGlKfg3vmrdWtYCwh3w7ktKtf
+	 x9S2leo8coSqg==
+From: netdev-bot+sinfo@kernel.org
+To: Anil Kaushik <anilkaushikwireless@gmail.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+ Harald Welte <laforge@gnumonks.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+ osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] gtp: Require 'CAP_NET_ADMIN' when joining the gtp
+ multicast group
+Date: Wed, 21 Oct 2026 07:03:37 +0000
+Message-ID: <179256621789.3290.7142786984430868325@kernel.org>
+In-Reply-To: <20261021065750.2069795-1-anilkaushikwireless@gmail.com>
+References: <20261021065750.2069795-1-anilkaushikwireless@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,40 +67,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-move_to_indirect() accepts an indirect descriptor with a zero length,
-setting desc_max to 0. __vringh_iov() then reads descs[0] before
-checking the descriptor bounds, resulting in an out-of-bounds read.
+Hi!
 
-Reject a zero-length indirect table in move_to_indirect() so the
-caller returns -EINVAL before dereferencing the table. Also use the
-converted length in the warning to report invalid lengths correctly
-when the vring byte order differs from the CPU byte order.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
-Cc: stable@vger.kernel.org
-Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
-Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
----
- drivers/vhost/vringh.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 9066f9f12ba1..ce4f5a02c8d2 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -197,8 +197,8 @@ static int move_to_indirect(const struct vringh *vrh,
- 	}
- 
- 	len = vringh32_to_cpu(vrh, desc->len);
--	if (unlikely(len % sizeof(struct vring_desc))) {
--		vringh_bad("Strange indirect len %u", desc->len);
-+	if (unlikely(!len || len % sizeof(struct vring_desc))) {
-+		vringh_bad("Strange indirect len %u", len);
- 		return -EINVAL;
- 	}
- 
--- 
-2.50.1
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
