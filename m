@@ -1,93 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792598215;
-	b=bBcM/DMblBaQ3xJ2KPddRTqrvJHQBwViO/WD/iG77dM2Fuk1zqGUjYxAq1kj9aoBjL6r
-	 kNbF63x7OD1vbLuysBeUBs1PdSdPdE4tzMYY5aywfzGUQ4cd3CfoI8W85KWOrUAVXA97K
-	 4dJOIaWqXHFugphGEltyS8sWvIt+5IgJNuNDDCzmKapKgAGnyGf4nbDQUclJJOey4al7g
-	 qw6DD0VTC89HMsCuhZYSBArrcU18NVrZSAm4pnEsbmBKV5CyMG6WTgwFshbLFevnqJmAe
-	 pU8drmFxdeqbMfHPSFgQ679xFfyOe8cS8hgUPvTGcfj27JCdN2m1OwHh/2f60+sBD/w==
+	t=1792598235;
+	b=ZKe2WpY0rM+VIUuE2yGg4A+Z2B4Q980WWIsW/9b/1Xzuoc9n2YxLIi3T3IR3sJv8MEDY
+	 qR3lSKKlInPltcfyiMH9hKrh5TnvRPGiLY3csWXs4soCKfmlgSIYWH4YQO8ucsIOzGtAq
+	 uxPJXW5P6+ZRKsgS8j0TJgS4TItexlHYwC7KVwyxtVAHyQTEJzbNQDdUGAnPBuzu675Jy
+	 MqnCcXg2bvDg2/H5kBdwViPDic79AJeKH75eHiEEIa8N1Q6dIwsEh6WvwDXlRESLHWvzK
+	 LNgN99GJGXnEOeJqsyUW3oCr87EPYgdrYVNzofiYwQZH3xLwGPWVQcollySiVtNtBnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598215;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598235;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=R/H0Aa4Up4KmSYMG5hbV8V8mjw4aRBSPBfTl+cyvzSY=;
-	b=fuqSvUj+OOmrqVu1qA2g9DoGBsvuq53tRXiX4swpl1yECXBbOQj8/+GlPqYxXK2lWtRk
-	 lTOs2hBKfRDgERL2sVAltC3McejQF+lMa9c8TsPNxnwFicLdeDJzY44dKRu3l7GaNoY9Q
-	 /aN8wPBNZdj5LuqX+CiEeJ5JqZeC1+66uGTFht87xYUMA3r3X4EQVD/e7B8GPtr5y4g6l
-	 9vY1EPWft40R+Im3zEz7Dga7/qNCHKUFcXROsj0il2qDav8mog9yx1BF31gvOxq5+zgRA
-	 WL397sKKxPsMFA5gWIiuR6J/7LVqb/LC60nw+gD4153gEMEsVc2ccOvVkZE4Je10ObA==
+	bh=knoq/Hz8VdzqraNUncDEQRWa4sgvuhUQyEtj317XXVo=;
+	b=isC6pALvnY8aw5deQMp9QhObphJbB5OLH2tWYxrKvIfuBfQZ3qwRe5NXv5U0VAhxCtLO
+	 g5Yif4oWdWsQ+vp39Fot2fQqjTMK/eR8S51q//dcEJMMNhE6+kn+xb30a1dcj8FMGPWE/
+	 CObI8LPcJG/beTGFixN3pj2tNn0Z6mX7w5iWFV1CIS+wTB8bGAZaEqZMhV6YHi+H/wGTc
+	 HxyEVagr/NSZxHa26CMcAph1P35tnkuC0foL5TgUjYMZbgoN4TP+IkgI1OCXjprY3Q4se
+	 aTMP+8U7L2ITI5qATByVIEXWZKyRfMA6hbhcgbmqVOZI1pSr5wHA0XHthrH6Hs0fZEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=POOfgI4q;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MzADfsxS;
+	arc=none smtp.remote-ip=209.85.215.176
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD26606A325
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:56:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CD26606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C66606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:57:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7C66606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=POOfgI4q
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3acdcfa2bd3so727518a91.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:56:55 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MzADfsxS
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cd5c9e52398so320160a12.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:57:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792598215; x=1793203015; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792598234; x=1793203034; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=R/H0Aa4Up4KmSYMG5hbV8V8mjw4aRBSPBfTl+cyvzSY=;
-        b=POOfgI4qcb75idUlrwj64NiUdNvBQHL36qyiKZxfwfgr1hUfm66xGK5FmutGQyUWTH
-         HBndJHM/5BHL7VoEL56rqz2kLb+dXOa1hBAEs0gPP+DH0IQlim5bTO7qJ5JMJ7dL9RzQ
-         PkQNvSr+T+LMEWYdkqGdmOU/VD5c3eeJBAmCTi7rpfNqMZ9pVxMyw4mfx41E1wIM5k8P
-         DNMYJ80alnMboIWiIN4PHimgFCIBDG5LniwoPl7pFhKxj9ACi6cpIytH8EBnLKdWU7r9
-         ouQ3nCKzxoQpw73QCo3BNlTj5MaNokMUHwOSeWRel0idl813NpvC7wFkTGQfGitt06HU
-         ij4g==
+        bh=knoq/Hz8VdzqraNUncDEQRWa4sgvuhUQyEtj317XXVo=;
+        b=MzADfsxSAT7dj9/h9ouk8Y3QFSNGoRckfrw2ZO5PSpzYAPOMWpJmAsaFoS99WgZoYQ
+         5vlguOZoYvJRTIFp25fte4xGBWMzuPCmI7JA+/MrIObsnc3tFN0eQtqygm+ztBU3jWPU
+         EmEENBKYwVzDOGI1IWHGVc5T7XXUzzTQ7CcolIU5KCL+9nozcKpKhh16bHV8xloTtlqn
+         QXehSeLNeQ13RfPq/2U3mczLt90XKtiVUB7noTgNzgxbdgpgbZ8Q4UblbkmSCXp9JlhL
+         PSwDszEsQsUeqR5zKAuShncXnPf8aD3LTCRsUEAjrnG06ltEMuPOKoIF97gynM1lkqwP
+         ESNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792598215; x=1793203015;
+        d=1e100.net; s=20260707; t=1792598234; x=1793203034;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=R/H0Aa4Up4KmSYMG5hbV8V8mjw4aRBSPBfTl+cyvzSY=;
-        b=xax/19afNL7t3TGH8Sk+QdPVpuTJwJ29hjwJgUXwoBbEbW982fXVl15YdBln0U9AGI
-         g6OE00rng9LwcmqOlNOSOeeq+bvdibyfLGkxNPcw6/mwL2MmbyQWJDw7Ee5rWSwBHIAN
-         JHpgn1+Z8veF/hu6mVaIQx09JlZHb7u0NiiWhTuLMq7dd4cItAsJDmBaGO8n49hQ2QK4
-         p6Al0SpAnREgtkISDtPXq1jZOB1F0J0Q2L7dZFejsaKGWtNvrfpulilUDOUwXo50EIH1
-         MQZ1E1BIPm5ErDDwjUjbHWF1+mcAnEhV1LHh0t2ktOT25+JQ7ZIo8llcrgU4QRvyrSzj
-         LYpw==
-X-Gm-Message-State: AFq9FYILSh6KvnfQMDBFEeCm9QHR/WZFHzNVYCsjCc3D/PwBQ8+WbrAu
-	yM9OQjksWaqTLhm0gBjyygTR+U0slUiDwSzwjIalDyMQS+uFyBSA3o3a
-X-Gm-Gg: AYBFou2KiTEpHORJbg7RC2FSnA2zdNzI1GTuwg19N4WgivZoVWptLlMcxN8h7r3suj7
-	lbPM0XaGzJRGdnDoQPnUYvENWjI5BN7OdfQ7TQ+9s5G+J6RTQqlpHPnym4r1j/HRzMfOXK33yES
-	LZdTn7djH5q/SecRk3HandO7CwigmBF6lJ+82ZMiRWiOGjszfIu0pxw1Ly4CD5lcWhtSVGPqOO7
-	1GNtPDTHW/j2i79vwmLuvbjU/6KdvT/S8tp6vSCj6nT47PeWecFro5xMam5zvWPbSl9jpUCooXq
-	vS8MmXJuqQW2fQLR4wSm/ACyRulDnIQ27ivBPYDT+bk6ndDCoxzu6pgc2dfHzi100RC0HzFralt
-	tbmd02t6/rCnfSzEz0OkMYPG9vbfwmUhLd+sQrsu/OwX0cMqbV72IiUhyeqXsZZwXEZmp48euA/
-	dsarbR6S6GPKZXaOo1cJProHtHF1Ln1tuvmOrL2g6Oupf3JYI0ap9QfUjc81StD4NupevfEj1fh
-	gjpsNwoGwLHeKgJf6MUnxiXMH+cSEijBhnmvzBmi4EbGpE8FYP2M/y/UsoDX1daIwfJk2WroNdS
-	eYlTKaARseLF2KZeYCZmzIeUgnONB0c/LEyL8Nf6hZjzeS40HIx5regtVsc=
-X-Received: by 2002:a17:90b:548e:b0:3ac:95d7:2fa5 with SMTP id 98e67ed59e1d1-3ad87083900mr1990329a91.44.1792598214857;
-        Wed, 21 Oct 2026 08:56:54 -0700 (PDT)
-Received: from localhost.localdomain (69-172-67-073.static.imsbiz.com. [69.172.67.73])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada4890bb2sm115257a91.1.2026.10.21.08.56.50
+        bh=knoq/Hz8VdzqraNUncDEQRWa4sgvuhUQyEtj317XXVo=;
+        b=QZpitnJfBz4kt/mrJeQvw0EoMFuFW9NecSotPM9mopPVrgLSw1CLC2SmYe0hgj/eQ5
+         clWh414bz3f92fTqCvleEbVdZ2J0gZa8d+nvtaboCrfBk4JBLqvRvCu4zfSxS1NR7FaV
+         YLCRBhmHfADCbPbIs/FYBQ196LbjoQ/11QMJs7okOCX5/G7nGWHgCylmnjZC2o0i6+t7
+         e3WKUAfqdMKkdYXRcxaHGBEIqkiwdzOM4LNDOZRWKWn1hlvMslC+VDz2+XKGuaD9sNNA
+         BibFPFnVQbj0jkQFha61lMFbVJIrmt/VnDqa2gpDue+2B7354ZK+RVu8Bb7wbnrNeyN2
+         geBg==
+X-Gm-Message-State: AFq9FYLSYmTvTZsy9o0P6YdXkGABG5aqn2yLwY3e+pHrUR8cILrWw77V
+	sgNjL4fxxY2ZzFCzy/wkqL9TpazKy4E4rPiCU3RD6RkK3NTAgzozcvlU
+X-Gm-Gg: AYBFou1OXD8wnVPFwTXODRozQOK+20ZzIgih5FqJ1iQmzCM+pAPrDWsqutyNcG+ra5r
+	JsrEz7C/WMfe5u60WW7A15FbAMhy5+epMISuMQziv+845cb8SzG6heM+wRKVgu2cReMpFl+0wBk
+	ErcHRG7AlAgmBO3f3sJHpD6BGthmw7CFYfS5LLPCRBEow/CpnH+Udg17nKkrBhp0bA38mOrjOJ9
+	rhM/afBEbdbVaxwxCFMKglKpvo47xeehGKGEBOslcX+IEdn3rbXYNGbvDr0SnuN2z71y7ZG6jQu
+	YFxecxiknzONUmXslBMWELmT/5JLP1zSjEI+7zR1X3v0oaLHmrPphhvD1xu6CbVnWl54d03uZRG
+	41Y3DOA9e+Um/LP9mnE/aFw2OQxIJkn05KiB1B3/RWy6XKqIjiU8Cg2659EwO5gKTmqAbT8cYOT
+	l1OWe63JIu8V4UqOT9yYq4TT2ozUg8nqqnwSQxDA/9CGa28rOvibniEyD1iqMe/A7urzX5p03PG
+	mN5MM9Pa+0SlRowhyE3Uf6iP4PFEjPXU1tRME61u/pCipQ4YN1/lpvtANFwMtvYD+9HJR1inUzm
+	kLChhLOHJcYLS2ZTkJfo7UWqAxW5BA==
+X-Received: by 2002:a17:90b:164c:b0:3ab:b39f:41cd with SMTP id 98e67ed59e1d1-3ad86cc64d2mr2256809a91.60.1792598234013;
+        Wed, 21 Oct 2026 08:57:14 -0700 (PDT)
+Received: from localhost.localdomain ([218.253.131.218])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada48ed70dsm85357a91.4.2026.10.21.08.57.10
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 08:56:54 -0700 (PDT)
+        Wed, 21 Oct 2026 08:57:13 -0700 (PDT)
 From: Dudu Lu <phx0fer@gmail.com>
-To: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH bpf] net: return page_pool frags to the pool in bpf_xdp_shrink_data()
-Date: Wed, 21 Oct 2026 23:56:45 +0800
-Message-Id: <20261021155645.69120-1-phx0fer@gmail.com>
+To: jhs@mojatatu.com,
+	jiri@resnulli.us
+Cc: netdev@vger.kernel.org
+Subject: [PATCH net] net/sched: fq_codel: read flowchain under the qdisc lock in fq_codel_walk
+Date: Wed, 21 Oct 2026 23:57:05 +0800
+Message-Id: <20261021155705.69457-1-phx0fer@gmail.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -101,28 +97,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-bpf_xdp_shrink_data() releases a fully-shrunk frag through
-__xdp_return(netmem, mem_type, false, zc_frag), selecting the freer from
-the rxq's mem type.  Under generic XDP the rxq's xdp_rxq_info often has no
-mem model registered (e.g. loopback), so mem_type stays
-MEM_TYPE_PAGE_SHARED == 0 even though the frag was allocated from a page
-pool by skb_pp_cow_data().  __xdp_return() then frees the page through
-page_frag_free() instead of page_pool_put_full_netmem(), so the page is
-returned to the buddy allocator while its page_pool accounting is still
-live:
+fq_codel_walk() tests list_empty(&q->flows[i].flowchain) to decide whether a
+flow is on the new/old flow lists.  It runs from the RTM_GETTCLASS dump
+(tc_dump_tclass -> __tc_dump_tclass -> tc_dump_tclass_root ->
+tc_dump_tclass_qdisc -> cl_ops->walk).  RTM_GETTCLASS is registered without
+RTNL_FLAG_DUMP_UNLOCKED (net/sched/sch_api.c:2533-2534), so rtnl_dumpit()
+runs the walker under rtnl_lock.
 
-  BUG: Bad page state in process A-146-S3_S1  pfn:4694b
-  page dumped because: page_pool leak
-   page_frag_free+0xf0/0x11c
-   __xdp_return+0x160/0x640
-   bpf_xdp_adjust_tail+0x5a4/0xbac
-   bpf_prog_run_generic_xdp+0x4a8/0x1204
+The egress datapath splices the same flowchain under the qdisc root lock
+instead, not rtnl:
 
-Before falling back to __xdp_return(), try the page_pool path: if the
-frag really is a page_pool page, napi_pp_put_page() recycles it through
-the pool and we are done.
+  [w] list_add_tail(&flow->flowchain, &q->new_flows)   fq_codel_enqueue :211
+  [w] list_move_tail(&flow->flowchain, &q->old_flows)  fq_codel_dequeue :302/:313
+  [w] list_del_init(&flow->flowchain)                  fq_codel_dequeue :315
+  [r] list_empty(&q->flows[i].flowchain)               fq_codel_walk    :742
 
-Fixes: 4dce1a0d7cf3 ("bpf: Support pulling non-linear xdp data")
+list_empty() reads one word (head->next, via READ_ONCE); __list_add() writes
+it with a plain store.  The two locks are disjoint, so the walker's read is
+not excluded from the datapath writers.  The walker and the enqueue path can
+run concurrently (enqueue is on the xmit path and does not take rtnl), so this
+is a genuine unsynchronised read of a list_head that the datapath mutates.
+
+Impact is limited: a stale "empty" answer only makes the dump skip a class
+(the per-class stats path re-takes the lock in fq_codel_dump_class_stats), so
+this is a data-race / cosmetic-dump-accuracy issue rather than memory
+corruption.
+
+Take the qdisc root lock around the membership read, the same lock the
+datapath holds when it mutates the list.  The lock is released before
+tc_qdisc_stats_dump() (which takes it again in fq_codel_dump_class_stats), so
+there is no recursion.
+
+Observed:
+
+  (observed on the same path; the sampled race was in __alloc_skb, not the walker)
+  BUG: KCSAN: data-race in __alloc_skb+0x17c/0x314
+   __alloc_skb+0x17c/0x314
+   netlink_dump+0x30c/0x74c
+   __netlink_dump_start+0x304/0x450
+   rtnetlink_rcv_msg+0x5f0/0x830
+
+Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
 Assisted-by: LLM
 Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
@@ -137,16 +152,18 @@ linux-next too.
 
 Reproducer status
 -----------------
-A reproducer was written and executed on an arm64 QEMU guest (generic XDP on
-loopback); the kernel reported "BUG: Bad page state ... page_pool leak".  The
-reproducer source is not posted here per Documentation/process/security-bugs.rst;
-it is available on request.
+A reproducer was written and executed on an arm64 QEMU guest (KCSAN); it
+opens both gates (the dumpit arm reaches fq_codel_walk), though the sampled
+KCSAN report landed on a different symbol on the same netlink-dump path, not on
+fq_codel_walk itself.  The defect below is argued from the code (disjoint locks
+on the same list_head).  The reproducer source is not posted here per
+Documentation/process/security-bugs.rst; it is available on request.
 
 Triggering conditions
 ---------------------
-The ability to load a generic-XDP program (CAP_BPF / CAP_NET_ADMIN) on a
-device whose rxq has no mem model but whose skbs are page_pool-backed (loopback
-via skb_cow_data_for_xdp()).
+Unprivileged: RTM_GETTCLASS is an RTNL_KIND_GET, so no CAP_NET_ADMIN is
+required for the dump that reaches the walker.  Impact is limited (a stale
+"empty" answer makes the dump skip a class).
 
 Notes
 -----
@@ -155,37 +172,30 @@ Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
 it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
 0 warnings.
 
- net/core/filter.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/sched/sch_fq_codel.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 70dc621672f2..94bc367cee12 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -36,6 +36,7 @@
- #include <net/protocol.h>
- #include <net/netlink.h>
- #include <linux/skbuff.h>
-+#include <linux/skbuff_ref.h>
- #include <linux/skmsg.h>
- #include <net/sock.h>
- #include <net/flow_dissector.h>
-@@ -4380,6 +4381,18 @@ static bool bpf_xdp_shrink_data(struct xdp_buff *xdp, skb_frag_t *frag,
- 	}
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index e6c87a32950f..789fdc6551a6 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -739,7 +739,18 @@ static void fq_codel_walk(struct Qdisc *sch, struct qdisc_walker *arg)
+ 		return;
  
- 	if (release) {
-+		/* The frag may be page_pool-backed even when the rxq's
-+		 * xdp_rxq_info carries no mem model (generic XDP on a
-+		 * driver that never registers one, e.g. loopback).  In that
-+		 * case mem_type is MEM_TYPE_PAGE_SHARED and __xdp_return()
-+		 * would free the page through page_frag_free(), leaving the
-+		 * page_pool's accounting dangling -- "page_pool leak".  Route
-+		 * page_pool pages back through the pool instead.
-+		 */
-+		if (IS_ENABLED(CONFIG_PAGE_POOL) &&
-+		    mem_type == MEM_TYPE_PAGE_SHARED && napi_pp_put_page(netmem))
-+			return release;
+ 	for (i = 0; i < q->flows_cnt; i++) {
+-		if (list_empty(&q->flows[i].flowchain)) {
++		bool empty;
 +
- 		__xdp_return(netmem, mem_type, false, zc_frag);
- 	} else {
- 		if (!tail)
++		/* flowchain is spliced by the datapath (fq_codel_enqueue/
++		 * fq_codel_dequeue) under the qdisc root lock.  This walker
++		 * runs under rtnl_lock, which does not exclude those writers,
++		 * so read the membership under the same lock they use.
++		 */
++		sch_tree_lock(sch);
++		empty = list_empty(&q->flows[i].flowchain);
++		sch_tree_unlock(sch);
++
++		if (empty) {
+ 			arg->count++;
+ 			continue;
+ 		}
