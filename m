@@ -1,65 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792585777;
-	b=GOhte5OORcK2hJ1yByBv/twMCNOn9Ly7yF2Gat5f9klZD6shN2qBH4slTzuuT8Pvx3D+
-	 wChLSgQTHknRcnJNKfGFg5Ebavy6Y0//b5CVqjIhz7IHWKouIBHwOwE/COZiHqpBMoA/M
-	 eQ9oBVvWlC+1I47cyoBHhmZBvFG+1khSUMvT1ZVhkWdbR0vcUaxS6SalvszPnrkhe0a5L
-	 vzsmQbHCLF7eCujJOVlrS4Sj+mXV0ErZmrAJfRITSKmcsNSQRTIvo7fUTBOsiqYYwQUK/
-	 4+v6l6pLwm+tT6M5/fwBxXTtZHbG4qpYjZWPVCRd3tNMZ8TuQrvGfz/KzlydtgSSAiQ==
+	t=1792585914;
+	b=rhm8uHxUVX0j1uf5uFNuNh1utrNQlhV0ZhqweO4Vg7SZ+HpQK8BZiDGd5WygIooHvcne
+	 Ak7wSY6+fX+4N0R/4i+EpZRtdmcqnyleWaajPHmvmJVyXmsEkvSCusfaNexJI/lz7B3ug
+	 mChOZ6qZLfLsZN5KRGjipuo4D4n7YtnXsTgSQw1lqs60kmuHNuzOuWza/RlWDvWxvXzrB
+	 vr+a8CjT5UAy4iuvHFGKV6yiHI031HOwdaZw7lvV2u0+BHtdOxxvjXpLkzFv/Cjp09lBH
+	 31sGttHQ4bec1D4bNtMq3tWWdlZyhVZ+dE0i3y80n9rbZY88smyZy83MGGNGSSWiDqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792585777;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:Sender:
-	 X-CM-SenderInfo;
-	bh=ALL6UWpxChP2qKHJAg1/hi5H4UckoPojIx6atEGve9I=;
-	b=JgLXHkEn0Nq1J1c9lrMCVUwmvH/y2dgoasFgFcHCfQXaiRNe7peIOEduJb0i3gvzxeq0
-	 RsvNJMnKop+2usFYOAnzxPob6Gk6Sk9Qnoj2yUO0FNl6uFj0O/h4ULSkkuEz+lsIhMqhe
-	 oLXJG7fVV4cIDTlgRs3asGiFV9PEKedkjg+NLu/L9u8wYrBGpctaUHr93fT6K02GYLZLu
-	 SqWNSmtFeS4U+6jMw8iEGvaQQ2HXzdCpl56GjY2Y+j6yeUl2uaAFZTo7pZ3pTHX2L6kLt
-	 WhS8zEl9BShHY+N5/A9vWwukvwVq1KovCz0DZpeDMeFM5mCTBtkDaJ4B84wv8oJnnDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792585914;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=DvokbbwgUedu+R/7T0+nvoQgtbpEqoqXXbDX6qN/PMY=;
+	b=oGY0chV/9u1iP40xr+YBg85qxkRMQJ8mcp7CHdPPj7Q3XaNgbwSBOxjc8ZU+hzaSOxc2
+	 fUJYSVCraZ7eNsjYI+/eicBxVIXELTytQf2j64NnuXQsjgqtcr3xgGu+TBlbWJIrfuRa+
+	 ifQFj8gZ9V0oxc5Ny4beXdThvWT2VaxM4gNAM4PnktzW9B6T4eur4pZBOmYyG0TKLpCeT
+	 FSjBxnty9v3p9IC4PQPmw1GtBsMpBoZxxRLtdmo32kEjiOW92opqR5FgyPhIG1fpUe6UM
+	 4yu/Ja29lLXPVq5tN+FBSwzl0Pf4AhDzofLldvDO7eijkMfNmf0yX8DC7a8Dubv/7DQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="Q1/VoNY1";
-	arc=none smtp.remote-ip=117.135.210.5
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=epYyEUIG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CF4606A319;
-	Wed, 21 Oct 2026 12:29:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11CF4606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0459C606A322;
+	Wed, 21 Oct 2026 12:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Q1/VoNY1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=AL
-	L6UWpxChP2qKHJAg1/hi5H4UckoPojIx6atEGve9I=; b=Q1/VoNY1IzJHQMHBzC
-	+tvRmlXqZQxj1xzZoNsvv5Zf1R7l4tJGXi/6rIAs7E1fSjB5zh5hDT0Gl2JrD2xQ
-	/qbgGWFQfdwkSmWbtxiWYo+KSALgq4WxkES+lbOVr22AhuiVQsJC6I4oO/fHs9As
-	/mRsiSl+NxHjCDCbJgerGEaY8=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3v7D+r9hqCVq1BQ--.8535S2;
-	Wed, 21 Oct 2026 20:28:46 +0800 (CST)
-From: Wei Tao <taowei@kylinos.cn>
-To: kuba@kernel.org
-Cc: netdev-bot+sinfo@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net/sched: cls_fw: allow filter replace without re-specifying mask
-Date: Wed, 21 Oct 2026 20:28:46 +0800
-Message-Id: <20261021122846.358290-1-taowei@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261020135321.21517b1d@kernel.org>
-References: <20261020135321.21517b1d@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=epYyEUIG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6B61F000C5;
+	Wed, 21 Oct 2026 12:31:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792585913;
+	bh=DvokbbwgUedu+R/7T0+nvoQgtbpEqoqXXbDX6qN/PMY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=epYyEUIG4tu03eofkyY8ffP5iSgRwFlbkSzO7dMBI03AkEcjJ3sjmXW4w1pbNGMM2
+	 8Ul5Zs3wpcQ+hemNNGjErsL4dZWW45c+X+09BatBwRn1vVyv+tsHYNvlhwl0dLobmN
+	 LLn29m6l0VzaE1JgUW+KfYS1V/02xpsmZfeoMmx0wZXcVoIavS49RWvecoWP7rvFN9
+	 pLl7naO3NIyEZlV8iUqk78Eo0v5uUDACB6o4lSoOXS7/G37RlfJXB2Ph9x/hgm/3z8
+	 yLuhQExrFmg/CtxYYo230oix1ktpUmMxK1Re7lEElkr4RGTccb4eupZCGec9DDtMBF
+	 G/Vwv62Ls+Ehw==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Marcin Knap <Marcin.Knap@vecima.com>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>
+Cc: Magnus Karlsson <magnus.karlsson@gmail.com>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Magnus Karlsson <magnus.karlsson@intel.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>,
+ Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper
+ Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, "jtollet@cisco.com" <jtollet@cisco.com>,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+Subject: Re: [PATCH bpf] xsk: Do not free ZC Rx buffer when the Rx ring is full
+In-Reply-To: <DS4PPFFD8A841C22E2663DBBA3A1B4F581E80672@DS4PPFFD8A841C2.namprd18.prod.outlook.com>
+References: <20261019-xsk-zc-rx-double-free-v1-1-2aa19f6628fb@vecima.com>
+ <ataHK9s/MpNgXWhT@boxer>
+ <CAJ8uoz38cE-1diOnih=HYW+ACqq9YQhaM7tz8KCHjTxgZVc+rQ@mail.gmail.com>
+ <DS4PPFFD8A841C2AC917618A9B1B19453C480672@DS4PPFFD8A841C2.namprd18.prod.outlook.com>
+ <atddQ8qN/R1tU1fk@boxer>
+ <DS4PPFFD8A841C22E2663DBBA3A1B4F581E80672@DS4PPFFD8A841C2.namprd18.prod.outlook.com>
+Date: Wed, 21 Oct 2026 14:31:50 +0200
+Message-ID: <87ld7r6xqh.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,33 +77,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3v7D+r9hqCVq1BQ--.8535S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XFW5XrWDJF47Zr1DtFWxCrg_yoW3KFcEka
-	n5XaykWa1UXa1kXF1xKF4YvFZ7G342yFyUAryqqw13Za4DGrnxu3sakwnYvr1rCFWvqFW5
-	tFn5Gw1rAwsxujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0TvVtUUUUU==
-Sender: cs_taowei@163.com
-X-CM-SenderInfo: xfvb3tprzhxqqrwthudrp/xtbC4h77PWrYr-5DQQAA3b
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jakub,
+Marcin Knap <Marcin.Knap@vecima.com> writes:
 
-> You are expected to reply to these questions. If this is an LLM-based
-> report please be more considerate of maintainer's time. If you actually
-> use this feature please include the response to the question above in
-> the commit message and repost. The repost should not carry a Fixes
-> tag, it's not a real bug.
+> On Tue, Oct 20, 2026 at 07:00:47AM +0000, Maciej Fijalkowski wrote:
+>
+>> Please don't top-post on MLs and configure your mail client to wrap your
+>> lines. Kernel people get triggered by this :P
+>
+> Sorry for that, I was trying but not good enough...=20
+> cannot setup this on web outlook and I have blocked every other client.
+>
+>> ZC drivers are supposed to break processing and yield cpu to
+>> application when xsk rxq gets full. We didn't want to expose
+>> particular packet multiple times to XDP progs as that might confuse
+>> internal logic of progs. Therefore we drop the packet in the core and
+>> let driver side know about this via ENOBUFS return value.
+>
+> Thanks, that explains it and it makes sense to me.=20
+> I will drop the core change and fix the
+> drivers that free the buffer again after -ENOBUFS instead.
+>
+>> Marcin, could you re-iterate why Jerome's fixes were not enough for
+>> you?
+>
+> This is how I understand this but I don't know this code well and I can be
+> wrong.
+> Jerome's patches stop mlx5e from releasing the same WQE buffer twice
+> when a refill is retried. They don't cover the case where the core
+> has already freed the buffer on -ENOBUFS. mlx5e_xdp_handle() treats
+> the failed redirect as XDP_DROP, skip-release isn't set, and the
+> buffer is released again when its slot is refilled.
+>
+> xp_free() only catches this if the buffer is still on the free list.
+> The free list is LIFO and refill allocates replacement buffers in
+> bulk, so the buffer freed by the core is usually handed to another
+> WQE before its old slot is refilled. The second free then puts a
+> buffer that is still in use back on the free list, and the same UMEM
+> frame is later published twice.
+>
+>> Would also be nice to align mlx-5 to -ENOBUFS case.
+>
+> Will do, I have potential mlx5 fix (this was my workaround).
+>
+> I did quick analysis with AI tool and it sounds like all drivers have=20
+> similar problem and they don't handle -ENOBUFS correctly except=20
+> Intel drivers needs_wakup path. Given that, would you prefer the driver=20
+> fixes, or do you have any other ideas?
 
-This was found during an LLM-assisted review of the classifier
-->change() replace paths, then verified manually and reproduced in a
-QEMU VM.  The hint came from the cls_route in-place replace fixes
-(41e85e54e564 and b72e025ac556); auditing other classifiers showed that
-cls_fw has the opposite problem: fnew->id is inherited correctly, but
-fw_set_parms() treats a replace like a create and rejects it when
-TCA_FW_MASK is omitted.
+Marcin, FWIW, we'll discuss this topic on the office hours today [1].
+Feel free to join! I added a link with suggested wording for a future
+doc [2], and asked an LLM to audit the drivers [3].
 
-I will drop the Fixes tag and post the v2 once net-next reopens.
+Bj=C3=B6rn
 
-Thanks,
-Wei Tao
-
+[1] https://lore.kernel.org/netdev/aqPxxX9MeGmAqGy6@boxer/
+[2] https://gist.github.com/fb-bjorn/d6835c49650bc3433b427a9c9708fbe2
+[3] https://gist.github.com/fb-bjorn/181786547c4dd8182ba09e23cf394dbe
