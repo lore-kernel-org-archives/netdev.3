@@ -1,57 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.2
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792563720;
-	b=M9CA4cScHiSyDww3QcJv3pFiJemZRw32WBC/uthu7L/CySIRy762/njWW8kql4BQJdgk
-	 +BAXu8mxgwdBuCP+43rbnX9QxLwiDSHoEjbZrMiraAMhzsM85ePB5BDlVZ7jk9Rkawpau
-	 y9g8PJsz0K5vS3DSOJbnQEyn+HaqSAX3+3f0jr3hDbsqH1cXkJPNtow5mK79kAmHlfKT7
-	 6NdpDWwP5Udi4bC2vuppsPsCuwK9G3FbwALr4q1N/v2M1du3SBd81TxVO1IbFd8bkhP9C
-	 dCmj1S3Jq/JsNP6CcGNXezBsTWJlDj9Fhf/KMRriyPFTOhOC5Is/CQ8QjaUj2rlYnwA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792563720;
-	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ZnLCqn59ieBodRrkScnGMpSiAN22uwztVFcvzqoZANU=;
-	b=GDbCCaBi/UkfkN4TLdTLovgLe90bie1DVjiXvQI3QXf57VXvgsKWQ+K4priHVD6U8bMf
-	 4e25iZAYXsIx94WUr0FDPKAknYuHFCqlRJ7CsG0OxqhSyJjGF32WCMlNwsNCzH1Pws+Lh
-	 y1GB0BWBDqzGVPLs4GDwIVZ+5gQl6d9ufyHWdzuTbtC6edHFZJKUQvH4woSkr/PZFvMs6
-	 e+Ra87XUgN7Hem06vznx/0QqQ9il6fuqXty4WRORLX8TblcslpJC1jog/ZHE3f+OZTV5S
-	 81eS/IRJx7jmJbTX7tepiJSiajR/rVHbJjkpBC6LWPaY+SUW2E/uzAxTdGTXCd1xCng==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=nebula-matrix.com;
-	spf=pass smtp.mailfrom=nebula-matrix.com;
-	arc=none smtp.remote-ip=115.124.28.2
-Received: from out28-2.mail.aliyun.com (out28-2.mail.aliyun.com [115.124.28.2])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.1
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792564112;
+	b=Wsdai4J8CqbpbcSYwnAL58SrNX9GKFZWz9r7NgrY+o9q6TI8gYh0NFl/QMKzSJFludCb
+	 wYygwQdgOVHjyeQCJe2BHCswgPohJb+cBVKo13qWEmbYFPmZVf/XySKLnHDSuL2jZRJvc
+	 nLJNyvCaYYz7wlmFHFGNF23ep6rvPUni2AnQaq641Mj9nDurjNTUEF9RLFzM1EFFO4Fee
+	 pZ9OLmLOfDkbeVD258cU1Nc6Suy1kyNn5J642G77emPeR9qoBzuvcJEAaaFU0CFc4D8u0
+	 Zct9D55ngT3mo4Fm32hx1B+S8jBt4ahvhFIp29yXI4OtsCC9MS/znc/USrhxUIn9NJg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792564112;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=jIFTTej/y+5oFuiG9CZfbn8dfBNLngp+zvcYRjgJiNM=;
+	b=Qg4IFMg/svXr7zbuql1H+hmeSEzq7iQYMDE+M36OLBHj2weW9Hi5TECNehlK4Xa43hfs
+	 YHCszqsSPgA3BKGF44pw9nqtLouDHP+Zrl0SqsxyzhplbhGldVMHQzxodrj0yuKvbRpjA
+	 yr2lOExFoOhOKJIRC6UKpMAAlFK2XKJoY2w+eGonUyoKC9pi7J3PTUNXJvuNDq93d5pqA
+	 PS09E+B76lD8JvtfZXT6OFGPf/mRzGD8DKoNq1naB7PSqnxTFV3Nkpaj/r8Hmah5UcqsC
+	 4WUe1mabEQcQk0I38Si1YV6IYmnLbqXLGsNOlT7JyRsXaxn5LDL9hly15t4eCgpX+Cw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=HJrfdobD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.1
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013001.outbound.protection.outlook.com [40.93.196.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DDB60A2608;
-	Wed, 21 Oct 2026 06:21:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48DDB60A2608
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00659982-0.00462166-0.988778;FP=15599339624203837170|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033071099199;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.jmHtK2Q_1792563709;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jmHtK2Q_1792563709 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 21 Oct 2026 14:21:49 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	andrew+netdev@lunn.ch,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v32 net-next 8/8] net/nebula-matrix: add common dev start/stop operation
-Date: Wed, 21 Oct 2026 14:21:07 +0800
-Message-ID: <20261021062113.2158-9-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261021062113.2158-1-illusion.wang@nebula-matrix.com>
-References: <20261021062113.2158-1-illusion.wang@nebula-matrix.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC5C606A31A;
+	Wed, 21 Oct 2026 06:28:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AC5C606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=HJrfdobD
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DprZZy53WzMqnjjc0kTL7cIIaTN5qQomPvrhxe0S8IwEV/4xkLdeZEUh6E6b5aUuUHHdbhXZAoGu55kif6/HN6CR0EdyY+1vrp3Eo6zMChSZDuR/smXUxe+B6SfuJEiFX13B3clPkf1V1BUVwoG+2PGM85/tue/B9aME6yH9JfUe/TYdYDPz+Q83q7HXrX8SQgsVRKFESf+FchPP4UrYu8n/0KfdBnnih1WvggDp3J1uhOVT71+/l9D+1lwDV8bzQiDKc39CPabZhoq/tn5inkNGtSZMxriq3KPyerCJOCDr4qN638QsrtbvJp1qNGY4pckXiBCYxVjhY8qDRfJKhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jIFTTej/y+5oFuiG9CZfbn8dfBNLngp+zvcYRjgJiNM=;
+ b=rLdhQ0pa8F/vAMDJqYcsSBkP+XgT8WF/PYbjb1lzAcmIEKhdhB5k1wnwlmwTIjtwGT7ilOk0tfmOo1ZVlU4hlP182+wgholn3aU5ofQZAF5imtM4Jg4V3a7caSx+yh5aFyHxyEw6nWLipNDYFeeRvk0eWcpIvNqQLts2TiGVXCeRQmn2RJmr8QanAQNEqHyzkkDBjuB+t4IZwEzEZMTy3pd1fv0mCAJ0kaRNfaNoXbid2cH292mOJK8Wz9GsTYxji4s/vXTwyiH8YReyJveKsJdcTCf5ARiX6WSDSOaxVFRYtTtyM58dwdKAGZt9sTZ7i4ThdDBI7rp1BvCNJ9O3yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jIFTTej/y+5oFuiG9CZfbn8dfBNLngp+zvcYRjgJiNM=;
+ b=HJrfdobDvm/X1GtkodiIMC9Bv4oye5yUivPRcN14MAh1ea6dN9Lh8S+vdm0sx+kUt9PFUY6T2jWjsUNPLpj9D6G5uJfl2lVVX9bi/mMfBa0DKfDcBzUVF2bg6ESdTue1+ngxfRBwJZzyAPsMSuKFij2NWImK6ZcjpmpIU1NFvIJJJl5VBvxEOPNapJQGBWp3Blhlf/GGYOkw2ua6uJbjTT2eZsF4wfPVub+vrxx6W/8Hrn0502qGmq/jhCYxYnbZ6J6AZmVE+FJcZiylnf3FxtGMxZvBis5Rw+bmtmXMIe2sByx+zEr3Ml/+aMQr9BwVGk67WjYLoWiG5aEsDoNw6A==
+Received: from DS7PR03CA0297.namprd03.prod.outlook.com (2603:10b6:5:3ad::32)
+ by PH8PR12MB6820.namprd12.prod.outlook.com (2603:10b6:510:1cb::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Wed, 21 Oct
+ 2026 06:28:26 +0000
+Received: from DM3PEPF000265B7.namprd04.prod.outlook.com
+ (2603:10b6:5:3ad:cafe::70) by DS7PR03CA0297.outlook.office365.com
+ (2603:10b6:5:3ad::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.16 via Frontend Transport; Wed,
+ 21 Oct 2026 06:28:26 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ DM3PEPF000265B7.mail.protection.outlook.com (10.167.23.244) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.546.15 via Frontend Transport; Wed, 21 Oct 2026 06:28:26 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 20 Oct
+ 2026 23:28:16 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 20 Oct 2026 23:28:16 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Tue, 20 Oct 2026 23:28:11 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Boris Pismenny <borisp@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark Bloch
+	<mbloch@nvidia.com>, Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu
+	<rrameshbabu@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan
+	<tariqt@nvidia.com>
+Subject: [PATCH net V2] net/mlx5e: SHAMPO: Do not merge PSP packets
+Date: Wed, 21 Oct 2026 09:28:05 +0300
+Message-ID: <20261021062805.3466208-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,590 +120,144 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PEPF000265B7:EE_|PH8PR12MB6820:EE_
+X-MS-Office365-Filtering-Correlation-Id: d43f2e2f-70af-4092-3244-08df2f3c83b3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|23010399003|36860700016|13003099007|11063799006|261009223027099003|10067099003|56012099006|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	5JaMnMej8zcbaxGe3zBQIiQ0ubYajNy/cPQHJZFJCe6P/6a21sgAl+HVzR0GPQqC7qcVlt8OSoHI+VGuwYCleeo72RP593KKPPTM2pp1JwyuAitz3RMpziWcKgXFq4d5WO572g5E4auv0M8F0xnCWAXeTeL75+DxK13HTt0TpNl/jRUvrMxIEUUvrYZFEw4E2rMhHi1L8mYJYN8oDBXb9S6N0DepX8vbtAlY909wJnLVrwzaS8Muv0Bj9BN3muAGC785GcA/FLy/U1xtOI/7ZX3erHWrchC+tLaUM7gjPreKYhbliB3o5ixOsyccruMX7W2vsKVQXB9mQXA0M2FNI13LEDBphCSxFF8Sgl2GBUz2tpldUcut1z6nLOc7jC913NcddQLA8Sv+A7FVzaWX44fvE3DK2a2b2UIL3p/Xb89yvD6Kn6QqUByRtYUrHZgsmisVTGmbzJGZvloDOOfFUkAX2kPz5IrVUhuiovTLiIGShIJbbGEqN4UtVuTK6TUV6RyeSphL7nbmreJpqb78605IVdTTLBrUknrpnWH2Lv63hxsFrYAW+d9LhmT1qyLKKhwznD9o9wm1dsLV7tlszZab9sOyYPqlCwlyvj6V0HBfs8AGz6hVxrvCE7P87uyjxdvaHj5BuQD/mc/yFau/Sp1zppVuQdqizfjmzJnCyeczlQDSuMcufb9LiwStMg6WNta7qvIKlxq1tExNn6EGWg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(13003099007)(11063799006)(261009223027099003)(10067099003)(56012099006)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	6Xpr9hRM7kbdDI1EWy8Gm8HE9+kg89aMDaYv3LtLg4Xc1lRvK1fLXWLSjZGLt0g6shiXO9SRnVef7aFM3AfD2qIqSxBHbcp8aNQxeIS41jYgyLvnh2PZ6oO05oDpCE/2UO3FkWboTen3yyXS6Ja0UsFX6l8LBSFtZmJiu7FWmlppwIutc+S5dGAy64naBu1mB+slyIxTMeCUkIEA2FRmt5eLUm0i93R78rtIWt9Tj8v3QDe00PsRArVQx1ezfdoh9rbGsttlfJJhpdzzrle3cQLK/405i8vzbttxlQHnBmaCaQGjwN5wNOSKgVcIyOxlzKyW66Lrc29dNC8aboHoDIJNRyL+hgud/x5/P9H5SbfnRlyEuiJbgwVWoOGWmVxeV3/lKfZNFraeK3NNvcKAsAEcrnZHyibVRs0v0NswTnP7jOv69gPvTKEBy17A70Kb
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 06:28:26.2533
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d43f2e2f-70af-4092-3244-08df2f3c83b3
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM3PEPF000265B7.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6820
 
-From: illusion wang <illusion.wang@nebula-matrix.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-Add nbl_dev_start() and nbl_dev_stop(), called from nbl_probe() and
-nbl_remove() via nbl_core_start() / nbl_core_stop().
+PSP packets are UDP-encapsulated, and enabling HW GRO (SHAMPO in mlx5)
+makes it possible to merge those packets in a silly way:
+IP|UDP|PSP1|payload1|PSP2|payload2|...
 
-Start configures the device MSI-X map, fetches the VSI/ETH ids, allocates
-the MSI-X vectors and arms the mailbox interrupt; stop performs the
-matching teardown.
+That happens because the HW GRO machinery doesn't know about PSP and
+considers it part of the UDP payload.
 
-The start/stop pair is single-shot and non-repeatable, tied strictly to
-the PCI probe/remove lifecycle: kernel vectors are released only by the
-pcim_msi_release devres at detach, so a second start is rejected.
+Reject merging when the incoming CQE has PSP marker or the pending skb
+has the PSP extension.
 
-Startup RPC errors are propagated unchanged.  A -ETIMEDOUT here is a real
-failure, not a "supplier not ready yet" condition: nbl_probe() already
-deferred this PF in nbl_probe_chip_deps() until the control PF completed
-probing, and that completion includes the control PF's own start, whose
-mailbox responder has been live since nbl_dev_init().  Converting the
-timeout to -EPROBE_DEFER would only hide it behind dev_dbg() and make
-every later bind pay the multi-second wait again.
-
-Teardown is best-effort.  The MSI-X map is torn down even when the
-configure RPC failed: a timeout only means the ACK never arrived, while
-the responder runs to completion before ACKing, so the entry, the
-intr_net/other_bmap bits and the coherent map table stay owned by the
-control PF.  Those are host resources of that driver, freed by a later
-successful configuration of this function or by nbl_intr_mgt_stop() - not
-firmware state.  pci_clear_master() is not a safety net for this: on a
-non-control PF it cannot stop DMA issued with the management PF's BDF.
-
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+Fixes: 29d7f433fcec ("net/mlx5e: Add Rx data path offload")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   8 +
- .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 399 +++++++++++++++++-
- .../nbl/nbl_include/nbl_def_dev.h             |   2 +
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  32 ++
- 4 files changed, 437 insertions(+), 4 deletions(-)
+ .../ethernet/mellanox/mlx5/core/en_accel/en_accel.h |  6 ++++++
+ .../ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h | 13 +++++++++++++
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c     |  6 ++++--
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index c3c4dd685bf6..655dfb43e365 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -40,4 +40,12 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 				  struct nbl_init_param *param);
- void nbl_core_remove(struct nbl_adapter *adapter);
- 
-+/*
-+ * Single-shot start/stop pair, called once each from PCI probe/remove.
-+ * Not repeatable: MSI-X vectors stay allocated until device detach, so
-+ * a second start on a bound device is rejected by the MSI-X core.
-+ */
-+int nbl_core_start(struct nbl_adapter *adapter);
-+void nbl_core_stop(struct nbl_adapter *adapter);
-+
+V2:
+- Separated from the patchset.
+- Moved the PSP merge check into a helper in psp_rxtx.h, with a stub
+  returning true when CONFIG_MLX5_EN_PSP is off, and an en_accel.h
+  wrapper, replacing the #ifdef in en_rx.c.
+- Also reject merging when the pending skb already has the PSP
+  extension, not only when the incoming CQE has the PSP marker.
+- Fixed the commit message diagram and capitalized SHAMPO in the
+  subject.
+
+V1:
+https://lore.kernel.org/all/20260917175433.4090878-8-tariqt@nvidia.com/
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+index 3f212e46fc2f..5a340f1435e6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+@@ -218,6 +218,12 @@ static inline void mlx5e_accel_tx_finish(struct mlx5e_txqsq *sq,
  #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-index cbb0b06b8011..356a23ee7295 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-@@ -6,6 +6,17 @@
- #include <linux/pci.h>
- #include "nbl_dev.h"
- 
-+static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt);
-+
-+/* ----------  Interrupt config  ---------- */
-+static irqreturn_t nbl_dev_clean_mailbox(int irq __always_unused, void *data)
-+{
-+	struct nbl_dev_mgt *dev_mgt = (struct nbl_dev_mgt *)data;
-+
-+	nbl_dev_clean_mailbox_schedule(dev_mgt);
-+	return IRQ_HANDLED;
-+}
-+
- static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
- {
- 	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-@@ -18,6 +29,228 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
- 	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
  }
  
-+static int nbl_dev_request_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++static inline bool
++mlx5e_accel_shampo_can_merge(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
 +{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	u16 lvec;
-+	int irq_num;
-+	int err;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return 0;
-+
-+	lvec = msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	irq_num = pci_irq_vector(common->pdev, lvec);
-+	if (irq_num < 0) {
-+		dev_err(common->dev, "Failed to get mailbox IRQ vector: %d\n",
-+			irq_num);
-+		return irq_num;
-+	}
-+
-+	snprintf(dev_common->mailbox_name, sizeof(dev_common->mailbox_name),
-+		 "nbl_mailbox@pci:%s", pci_name(common->pdev));
-+	err = request_irq(irq_num, nbl_dev_clean_mailbox, 0,
-+			  dev_common->mailbox_name, dev_mgt);
-+	if (err)
-+		return err;
-+
-+	return 0;
++	return mlx5e_psp_shampo_can_merge(rq->hw_gro_data->skb, cqe);
 +}
 +
-+static void nbl_dev_free_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	u16 lvec;
-+	int irq_num;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return;
-+
-+	lvec = msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	irq_num = pci_irq_vector(common->pdev, lvec);
-+	if (irq_num >= 0)
-+		free_irq(irq_num, dev_mgt);
-+}
-+
-+static int nbl_dev_enable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	u16 lvec;
-+	int ret;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return 0;
-+
-+	lvec = msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	/*
-+	 * Enable sequence: perform set_mailbox_irq RPC in polling mode first.
-+	 * Only set NBL_CHAN_IRQ_RDY after RPC succeeds, mirroring disable path.
-+	 * This avoids waiting for an interrupt which has not been armed yet.
-+	 */
-+	ret = disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
-+					lvec, true);
-+	if (ret)
-+		return ret;
-+	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
-+				  NBL_CHAN_IRQ_RDY,
-+				  NBL_CHAN_TYPE_MAILBOX, true);
-+	return 0;
-+}
-+
-+static int nbl_dev_disable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	u16 lvec;
-+
-+	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-+		return 0;
-+
-+	lvec = msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-+	/*
-+	 * Disable sequence invariant: clear the software READY flag first,
-+	 * then mask the hardware interrupt. Must not reverse the order.
-+	 *
-+	 * Clearing NBL_CHAN_IRQ_RDY is what makes an interrupt-mode sender
-+	 * fail fast: nbl_chan_set_queue_state() wakes every per-slot wait
-+	 * queue on the transition, and nbl_chan_send_msg() tests the flag
-+	 * ahead of its timeout branch, so the sender returns -EIO right
-+	 * away instead of waiting out NBL_CHAN_ACK_WAIT_TIME (3s) and
-+	 * reporting a bogus -ETIMEDOUT / "Channel waiting ack failed".
-+	 * Masking first would leave the sleeper blocked on an interrupt
-+	 * that is already masked, i.e. guaranteed to time out.
-+	 *
-+	 * This does NOT preserve in-flight ACKs, and must not be described
-+	 * as doing so: the woken sender gives up and resets its slot to
-+	 * IDLE, so an ACK arriving afterwards finds a non-WAITING slot and
-+	 * is dropped by the receive path ("Skip ack invalid status").
-+	 * Interrupt mode is being torn down here; the guarantee is a
-+	 * bounded, deterministic failure, not delivery.  In this driver
-+	 * every ACK-requesting sender runs from probe/remove and the clean
-+	 * task only sends ACK-less replies, so nothing depends on the
-+	 * stronger claim today.
-+	 *
-+	 * The only caller is nbl_dev_stop(): free_irq() blocks until
-+	 * any in-flight hardirq handler completes and prevents new interrupts.
-+	 * cancel_work_sync() then waits for any already running mailbox cleanup
-+	 * work to finish, or cancels queued but unstarted work items before
-+	 * final channel destruction. No stuck descriptors linger.
-+	 *
-+	 * nbl_dev_start()'s unwind path does not reach here: err_free_irq runs
-+	 * before IRQ_RDY is set, so only nbl_dev_free_mailbox_irq() applies
-+	 * there and no set_mailbox_irq(false) is sent - see the comment on
-+	 * that label.
-+	 */
-+	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
-+				  NBL_CHAN_IRQ_RDY,
-+				  NBL_CHAN_TYPE_MAILBOX, false);
-+
-+	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
-+					 lvec, false);
-+}
-+
-+static int nbl_dev_cfg_msix_map(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	bool mask_en = msix_info->serv_info[NBL_MSIX_NET_TYPE].hw_self_mask_en;
-+	u16 msix_net_num = msix_info->serv_info[NBL_MSIX_NET_TYPE].num;
-+	u16 msix_not_net_num = 0;
-+	int err, i;
-+
-+	msix_info->serv_info[NBL_MSIX_NET_TYPE].base_vector_id = 0;
-+	/*
-+	 * Calculate base_vector_id for each MSIX service type.
-+	 * This relies on NBL_MSIX_TYPE enum being ordered sequentially,
-+	 * starting from NBL_MSIX_NET_TYPE.
-+	 */
-+	for (i = NBL_MSIX_NET_TYPE + 1; i < NBL_MSIX_TYPE_MAX; i++)
-+		msix_info->serv_info[i].base_vector_id =
-+			msix_info->serv_info[i - 1].base_vector_id +
-+			msix_info->serv_info[i - 1].num;
-+
-+	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++) {
-+		if (i == NBL_MSIX_NET_TYPE)
-+			continue;
-+		msix_not_net_num += msix_info->serv_info[i].num;
-+	}
-+
-+	err = disp_ops->cfg_msix_map(dev_mgt->disp_ops_tbl->priv,
-+				     msix_net_num, msix_not_net_num,
-+				     mask_en);
-+
-+	return err;
-+}
-+
-+static int nbl_dev_destroy_msix_map(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+
-+	return disp_ops->destroy_msix_map(dev_mgt->disp_ops_tbl->priv);
-+}
-+
-+static int nbl_dev_init_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	struct irq_affinity affd = { 0 };
-+	int needed = 0;
-+	int err;
-+	int i;
-+
-+	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++)
-+		needed += msix_info->serv_info[i].num;
-+
-+	/*
-+	 * The mailbox vector is the trailing administrative vector;
-+	 * reserve it via post_vectors so it is excluded from managed
-+	 * affinity spreading. A managed vector can be shut down when
-+	 * its last assigned CPU goes offline, which would stall every
-+	 * mailbox RPC while NBL_CHAN_IRQ_RDY stays set.
-+	 */
-+	affd.post_vectors = msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num;
-+
-+	err = pci_alloc_irq_vectors_affinity(common->pdev, needed, needed,
-+					     PCI_IRQ_MSIX | PCI_IRQ_AFFINITY,
-+					     &affd);
-+	if (err < 0) {
-+		dev_err(common->dev,
-+			"pci_alloc_irq_vectors failed, err = %d\n", err);
-+		return err;
-+	}
-+	if (err != needed) {
-+		dev_err(common->dev, "pci_alloc_irq_vectors got %d vecs, need %d\n",
-+			err, needed);
-+		return -ENOSPC;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Kernel-side MSI-X vectors are deliberately NOT freed here. They are
-+ * released at device detach by the pcim_msi_release devres callback
-+ * registered by pci_alloc_irq_vectors() (probe uses pcim_enable_device);
-+ * freeing them here would double-free that callback.
-+ *
-+ * Consequently start/stop is a single-shot pair tied to probe/remove:
-+ * vectors stay allocated until detach, and a second start against a
-+ * device with msix_enabled set is rejected by __pci_enable_msix_range().
-+ */
-+static void nbl_dev_clear_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
-+{
-+}
-+
- /* ----------  Channel config  ---------- */
- static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
+ static inline int mlx5e_accel_init_rx(struct mlx5e_priv *priv)
  {
-@@ -85,6 +318,14 @@ static void nbl_dev_clean_mailbox_task(struct work_struct *work)
- 				      NBL_CHAN_TYPE_MAILBOX);
+ 	return mlx5e_ktls_init_rx(priv);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
+index 2b080c39cc37..9fd1ee789de0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
+@@ -85,6 +85,13 @@ static inline bool mlx5e_psp_is_rx_flow(struct mlx5_cqe64 *cqe)
+ 	return MLX5_PSP_METADATA_MARKER(be32_to_cpu(cqe->ft_metadata));
  }
  
-+static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt)
++static inline bool
++mlx5e_psp_shampo_can_merge(struct sk_buff *skb, struct mlx5_cqe64 *cqe)
 +{
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+	struct nbl_common_info *common = dev_mgt->common;
-+
-+	queue_work(common->wq, &common_dev->clean_mbx_task);
++	/* PSP packets cannot be merged. */
++	return !skb_ext_exist(skb, SKB_EXT_PSP) && !mlx5e_psp_is_rx_flow(cqe);
 +}
 +
- /* ----------  Dev init process  ---------- */
- static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
- {
-@@ -244,15 +485,16 @@ int nbl_dev_init(struct nbl_adapter *adapter)
- 	 */
- 	ret = nbl_dev_setup_common_dev(adapter);
- 	if (ret)
--		goto setup_err;
-+		return ret;
+ bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev, struct sk_buff *skb,
+ 				     struct mlx5_cqe64 *cqe);
+ #else
+@@ -110,6 +117,12 @@ static inline bool mlx5e_psp_is_rx_flow(struct mlx5_cqe64 *cqe)
+ 	return false;
+ }
  
- 	if (common->has_ctrl) {
- 		ret = nbl_dev_setup_ctrl_dev(adapter);
- 		if (ret)
--			goto setup_ctrl_dev_fail;
-+			goto out_remove_common_dev;
++static inline bool
++mlx5e_psp_shampo_can_merge(struct sk_buff *skb, struct mlx5_cqe64 *cqe)
++{
++	return true;
++}
++
+ static inline bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev,
+ 						   struct sk_buff *skb,
+ 						   struct mlx5_cqe64 *cqe)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 903af3b3e779..d49f26323b1e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -49,6 +49,7 @@
+ #include "en_rep.h"
+ #include "en/rep/tc.h"
+ #include "ipoib/ipoib.h"
++#include "en_accel/en_accel.h"
+ #include "en_accel/ipsec.h"
+ #include "en_accel/macsec.h"
+ #include "en_accel/psp_rxtx.h"
+@@ -2268,8 +2269,9 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
  	}
  
- 	return 0;
-+
- /*
-  * A failure after the QINFO routing was programmed leaves those entries
-  * in hardware: driver_status never goes 1 -> 0 on these paths, so
-@@ -261,9 +503,8 @@ int nbl_dev_init(struct nbl_adapter *adapter)
-  * bind until this probe succeeds.  The next successful probe overwrites
-  * the entries, and a chip reset clears them.
-  */
--setup_ctrl_dev_fail:
-+out_remove_common_dev:
- 	nbl_dev_remove_common_dev(adapter);
--setup_err:
- 	return ret;
- }
- 
-@@ -293,3 +534,153 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
- 	if (common->has_ctrl)
- 		nbl_dev_remove_ctrl_dev(adapter);
- }
-+
-+/* ----------  Dev start process  ---------- */
-+int nbl_dev_start(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_dispatch_mgt *priv = dev_mgt->disp_ops_tbl->priv;
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	int cleanup_ret;
-+	int ret;
-+
-+	/*
-+	 * Startup RPC failures are reported as they are, including the
-+	 * -ETIMEDOUT of a 5-6s polling wait against an unresponsive peer.
-+	 * nbl_probe() already deferred this PF until the control PF had
-+	 * completed probing (nbl_probe_chip_deps()), and that completion
-+	 * includes the control PF's own nbl_core_start(); its mailbox
-+	 * responder has been live since nbl_dev_init().  A timeout here
-+	 * is therefore a real failure, not a "supplier not ready yet"
-+	 * condition.  Turning it into -EPROBE_DEFER would hide it behind
-+	 * dev_dbg() and leave the retry to the next unrelated device
-+	 * bind, paying the multi-second timeout again on every retry.
-+	 */
-+	ret = nbl_dev_cfg_msix_map(dev_mgt);
-+	if (ret)
-+		goto err_destroy_map;
-+
-+	/* Fetch VSI/ETH identity after cfg_msix_map */
-+	ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
-+	if (ret)
-+		goto err_destroy_map;
-+	ret = disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_num,
-+				   &common->eth_id, &common->logic_eth_id);
-+	if (ret)
-+		goto err_destroy_map;
-+
-+	ret = nbl_dev_init_interrupt_scheme(dev_mgt);
-+	if (ret)
-+		goto err_destroy_map;
-+
-+	ret = nbl_dev_request_mailbox_irq(dev_mgt);
-+	if (ret)
-+		goto err_destroy_map;
-+
-+	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
-+	if (ret)
-+		goto err_free_irq;
-+
-+	return 0;
-+
-+err_free_irq:
-+	/*
-+	 * nbl_dev_enable_mailbox_irq() only fails before it sets
-+	 * NBL_CHAN_IRQ_RDY - the flag is set after its RPC returns - so
-+	 * there is no interrupt-mode sender to release and no software
-+	 * state to revoke.  The peer-side mailbox routing, if the failed
-+	 * RPC did land, is switched off by the destroy_msix_map() below: its
-+	 * prepare phase, __nbl_res_intr_prepare_destroy_msix_map(), disables
-+	 * mailbox IRQ routing for any CONFIGURED function before the map is
-+	 * torn down.  That is what makes skipping set_mailbox_irq(false)
-+	 * correct here, whatever way the enable failed - a local
-+	 * -ESHUTDOWN/-ENODEV/-EINVAL on the control PF as much as a
-+	 * polling-mode -ETIMEDOUT against an unresponsive peer.
-+	 */
-+	nbl_dev_free_mailbox_irq(dev_mgt);
-+err_destroy_map:
-+	/*
-+	 * Always ask the peer to drop this function's MSI-X map, even when
-+	 * the cfg RPC above failed: the teardown prepare phase returns 0
-+	 * for a function that is not NBL_INTR_FUNC_CONFIGURED, so it is a
-+	 * no-op when nothing landed, but a -ETIMEDOUT only means the ACK
-+	 * never arrived - the responder runs to completion before it ACKs.
-+	 * In that case the map entry, the intr_net/other_bmap bits, the
-+	 * kcalloc()ed vector array and the coherent map table are all
-+	 * still owned by the control PF, i.e. host resources of its
-+	 * driver, released only when this function is configured again or
-+	 * when nbl_intr_mgt_stop() tears the control PF down.  They are not
-+	 * firmware state, so skipping the destroy would strand them for a
-+	 * PF that has no driver to ever ask for them again.
-+	 *
-+	 * The destroy runs before detach even though kernel vectors stay
-+	 * allocated until then (see nbl_dev_clear_interrupt_scheme): it
-+	 * masks all hardware vectors and clears the pcompleter map entry,
-+	 * so no MSI-X message can be delivered after vectors are released
-+	 * at detach.
-+	 *
-+	 * For non-control PFs this is a polling-mode mailbox RPC:
-+	 * NBL_CHAN_IRQ_RDY is never set on any rollback path, since
-+	 * enabling it is the last step of nbl_dev_start().
-+	 *
-+	 * Note: pci_clear_master() runs in nbl_probe() core_start_err path;
-+	 * on a non-control PF it cannot stop DMA using the management PF's
-+	 * BDF, this is a known limitation.
-+	 */
-+	cleanup_ret = nbl_dev_destroy_msix_map(dev_mgt);
-+	if (cleanup_ret)
-+		dev_err(dev_mgt->common->dev,
-+			"rollback: destroy MSI-X map failed: %d\n",
-+			cleanup_ret);
-+	nbl_dev_clear_interrupt_scheme(dev_mgt);
-+
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+	return ret;
-+}
-+
-+void nbl_dev_stop(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+	int ret;
-+
-+	ret = nbl_dev_disable_mailbox_irq(dev_mgt);
-+	if (ret)
-+		dev_err(dev_mgt->common->dev,
-+			"Failed to disable mailbox IRQ: %d\n", ret);
-+	nbl_dev_free_mailbox_irq(dev_mgt);
-+
-+	/*
-+	 * Destroy the hardware MSI-X map now, before the kernel vectors
-+	 * are released at device detach (they deliberately stay
-+	 * allocated until then - see nbl_dev_clear_interrupt_scheme).
-+	 * Masks all device vectors and clears the pcompleter map entry.
-+	 *
-+	 * Best-effort: if the destroy RPC fails, the control PF still owns
-+	 * this function's map entry, its intr_net/other_bmap bits and its
-+	 * coherent map table.  Those are host resources of that driver,
-+	 * released either by a later successful configuration of this
-+	 * function (reconfiguration recycles them) or by
-+	 * nbl_intr_mgt_stop() when the control PF is removed; nothing else
-+	 * collects them, so the hardware entry stays as it is until chip
-+	 * reset - and nothing requests one.
-+	 *
-+	 * pci_clear_master() on a non-control PF cannot stop DMA using the
-+	 * management PF's BDF.
-+	 */
-+	ret = nbl_dev_destroy_msix_map(dev_mgt);
-+	if (ret)
-+		dev_err(dev_mgt->common->dev,
-+			"Failed to destroy MSI-X map: %d\n", ret);
-+
-+	nbl_dev_clear_interrupt_scheme(dev_mgt);
-+
-+	/*
-+	 * destroy_msix_map() sends ack-requested messages which may
-+	 * requeue clean_mbx_task via polling send path.  Drain work
-+	 * after the operation.
-+	 */
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-index 51cf04e4c552..a66c633a0e7a 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-@@ -10,5 +10,7 @@ struct nbl_adapter;
- 
- int nbl_dev_init(struct nbl_adapter *adapter);
- void nbl_dev_remove(struct nbl_adapter *adapter);
-+int nbl_dev_start(struct nbl_adapter *adapter);
-+void nbl_dev_stop(struct nbl_adapter *adapter);
- 
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index 7598ebac91e3..84152cf68394 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -16,6 +16,16 @@
- #include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
- 
-+int nbl_core_start(struct nbl_adapter *adapter)
-+{
-+	return nbl_dev_start(adapter);
-+}
-+
-+void nbl_core_stop(struct nbl_adapter *adapter)
-+{
-+	nbl_dev_stop(adapter);
-+}
-+
- struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 				  struct nbl_init_param *param)
- {
-@@ -235,6 +245,21 @@ static int nbl_probe(struct pci_dev *pdev,
- 	int err;
- 
- 	nbl_get_func_param(pdev, id->driver_data, &param);
-+	/*
-+	 * Reject a function with neither capability before touching any
-+	 * hardware.  nbl_disp_refresh_ctrl_ops() leaves every dispatch op NULL
-+	 * for such a function, while nbl_dev_start() reaches cfg_msix_map,
-+	 * get_vsi_id, get_eth_id and (on unwind) destroy_msix_map through
-+	 * those pointers.  The state is reachable through driver_override:
-+	 * binding this driver to a function that is not in nbl_id_table (a VF,
-+	 * or a non-func-0 PF) makes pci_match_device() pass the dummy ID whose
-+	 * driver_data 0 leaves has_ctrl and has_net both clear.
-+	 */
-+	if (!param.caps.has_ctrl && !param.caps.has_net) {
-+		dev_err(dev, "Function has neither ctrl nor net capability\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	err = pcim_enable_device(pdev);
- 	if (err) {
- 		dev_err(&pdev->dev, "Failed to enable PCI dev, err=%d\n", err);
-@@ -257,8 +282,13 @@ static int nbl_probe(struct pci_dev *pdev,
- 		goto out_clear_master;
+ 	if (*skb &&
+-	    !(match && mlx5e_hw_gro_skb_has_enough_space(*skb, data_bcnt,
+-							 page_size))) {
++	    !(match &&
++	      mlx5e_hw_gro_skb_has_enough_space(*skb, data_bcnt, page_size) &&
++	      mlx5e_accel_shampo_can_merge(rq, cqe))) {
+ 		match = false;
+ 		mlx5e_shampo_flush_skb(rq, cqe, match);
  	}
- 	pci_set_drvdata(pdev, adapter);
-+	err = nbl_core_start(adapter);
-+	if (err)
-+		goto out_core_remove;
- 
- 	return 0;
-+out_core_remove:
-+	nbl_core_remove(adapter);
- out_clear_master:
- 	pci_clear_master(pdev);
- 	return err;
-@@ -271,6 +301,8 @@ static void nbl_remove(struct pci_dev *pdev)
- 	if (!adapter)
- 		return;
- 	pci_set_drvdata(pdev, NULL);
-+
-+	nbl_core_stop(adapter);
- 	nbl_core_remove(adapter);
- 
- 	pci_clear_master(pdev);
+
+base-commit: b6ef0d965fe8ce0ee4b4dcb58b3511f83003e42d
 -- 
-2.47.3
+2.44.0
 
