@@ -1,103 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792624312;
-	b=xJePa1W+6EoT3ws2XTCwL0aoZMYIidWYgzTHp9Ivl/cdflABmgOfjN2t6k9yDmocJY9h
-	 AteQogcR0ZubaTLnNwnr3Df5ZGLjqrrmxRj4WatByXqG95ITPLQdwxIIXqA0uONSGqUUa
-	 2NAeuZE00tedxp+Yg/AfvC6AF0KKfkyTpz1cdY8lrDvdWN0VLnk1+wKuKvecuXxZxFRCH
-	 4JATNXCwA2ETxvusHd0GNNFM99gbamuG+EgK8N8JJcIG+1eLpo7+dpLsv5yfMC1WQccP1
-	 wcMOnjISJMmmpBqzqvs0vCKJRIrHb+LgTPYdudGz8cb+F7cYd9Y0zGua+Ou+oYQRQ4g==
+	t=1792624367;
+	b=E3zsTgqHier3W9jmfhmFd11uMIMOS93KrRUV18xeDaAxBzrBO72brWsKbJ9FqM6P+4q7
+	 5AALfqKw0RG/rXb6AMwS8EkX9cP3cY7YXvHh7ivPyYXTb0GO1FUdQWwwQg2HXSJR/8hDL
+	 QrIc6Lbw3y0eujTKxr4c7AWICftMS0vZoCMXFEHHJQjgLmtQmOqPmlw+LLeg9dyHs53bZ
+	 eH0EJaJtqVxiCzgeLYvRzamw9M4IL0ICAzVzihr0HyhsjkpLU6P+yee3vRmZWGVhM0b5d
+	 FWg6UZ3fh7gCPd67VkVlK6kOIy4acer0NnaS+90uuoKa7EUp0rXs5HXCpLD3FjoEDXA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792624312;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=eALao68/H5C/VsMyz1IjAZA3Cs8TeVJx3ISpy1cycgI=;
-	b=QrVdW993wezF0iCCUuyo1WtcqYJuaKOVwjuGTVYwT5BqmteSlfjK6yVhripwKMdrSVqi
-	 xPNJorF6ZzxXcSZg0t4ovTKYq28URjzgftBmiHHLmHaofFXzHnwRfmPfTVEKK2qXScbN/
-	 uykrak8f6L61hXc9P0dkAssjN4Yi+qXBb9mlRKSCOdw1MxgUgaKBt6hOOvyzKv9tX3Pva
-	 1RzPZ5lgFF6Iwd72Kft+g+6rXJFiGy4X8C4T+HF2c4uqO2jIdkLWqsB+RJCr5QVWgHqJP
-	 NrsbZKGtNMyfqL/Ja/agM92UTXjz3p7kxpr6MmtjMXg7k3lrVjJV2yKttX9TCkYxW6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792624367;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=ylXvEHomDk37upseZ/fh6pc49f7rFFf0fRiYXkMT4tk=;
+	b=rX1vWHNqTbdz9mxUcmhuydyz7UYis51Xc++IV+Vrm6oPR2WoV7XG4uq+TEpIsIm6AG+0
+	 j7Q6SeU/d4zB88HvDa/R6bI9cetTrnJwK1OicUXAPd5GfXxntmTpRfROrRej+uCZid2Tq
+	 m19jxL4HhHUF5kM4FuapmaPtMspVQMa5n7LKGwpb3r1sgTvv+KgmMvJqzxyEA5GgMwlFZ
+	 nm4OldfNcVqkZf7jm4Uk8jrlwZ64a/OJyak3Ksn0xCrXlvRxnVo3ayYurBBntg3t9UgEU
+	 Sd1HVzq7wls89DnzaD5UEQkVkkCH8uwcxTps7+d3VsW4J9WgdBUy/IwYzUUEfCBAG5w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S4C6VYHe;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE4E606A33B;
-	Wed, 21 Oct 2026 23:11:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6EE4E606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B80FE201E09;
-	Thu, 22 Oct 2026 01:11:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792624295;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eALao68/H5C/VsMyz1IjAZA3Cs8TeVJx3ISpy1cycgI=;
-	b=KSyvJjD5T5vJ7kJThO4mrcf+SY9jKViZ+zWOpBSuYWGZ94mNZAdCBH74t1+VyIw1HZ0zFM
-	WUHvIfEjcMJyeierhuZ9Ml84KTqiDLGxAUlm2YVllvgRv+/bd+5ifGYyR1fjwXKbfl32hG
-	rkOgZm0bWi0JtSozqaxE6v/b0ZHtzWUQxJUyJ/9LR5Dqwu0Ly09W95LiClnl8O4gCH7hcb
-	9/GRHRtCzCy/GCjcfyxTpt3znxB6byxcmH35i4pd61aFHkKZfF4hI9ww46LgWHC2j4wfw4
-	r4EYVUPUUr8O9L84TKCu3KHGakCyDyo3dGzxRpBheuo2SODWNjWOoPw2kRgLEw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792624295; a=rsa-sha256;
-	cv=none;
-	b=C1PR7XTDY4K9O0FMZ7bpmWtmQGGY+vHwjRSTcECPOlMFEci6VfH+KbTpxcCg5n+AO0VEhF
-	lAEjlEsaLJ7T1m7PPaQVTbQkXpvL4vUHXwp0hx/8WgxjqlSeH0qvhj/4VCTZnYyHY79/qq
-	v6M4tqscCDYY+jBwo0iLak0y7x5D2xddCuu1r/JGH1imGc30t/E8BuLMVD4wCXKQXPfeVB
-	0MKHsTbazhm84ycRdaS0/CQCyon4/Ajiilm2C2jI+jbBRZ7MRZbYRxv6vtQFAUdyqaojjP
-	eAR2+OP8vxzxe8MboSOlzwkUWFAbDcF47P6IBfJ3i3ExrVco2hwIK2YQSzafXQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792624295;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eALao68/H5C/VsMyz1IjAZA3Cs8TeVJx3ISpy1cycgI=;
-	b=QlSl5yWgIbNQWc8/Sr6YpViUHL25RORVNR9HsRQ71AiI3io84MSPZs1oDxTbI5uwDrAFD3
-	8LCIJgbSswtSJ1C+6grOwHcUSqtMgd1WAfnpPdnddEFISDmMz+S6mMlBfOlIG4js6EHsYW
-	thCD87u3PD9IyuOm3JxQz1SMUQGZw7Sth8hC5gxumRw2fxCzs+RFMQ1X4pqQhqO9wfla2N
-	qvJLANJ3n4nsUg7tCV/+sUHMO0YD21YBIoF3ozHtcC9O34wFSBUmCu/dxyL9IN+8+g0C3h
-	9xAz3iJVho6SK18jk2Z36eiCKeh74tnqncYytDRxSf6AWnqQomD15yEP6RfvaQ==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xJfT5-000cWK-22;
-	Thu, 22 Oct 2026 01:11:35 +0200
-Received: from blackshift.org (unknown [IPv6:2a03:2260:2009::])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB15606A31A;
+	Wed, 21 Oct 2026 23:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S4C6VYHe
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792624367;
+	b=QhY3arrDGeHUKwENnnlx+zJMjpmt6Skag9j+H7fT+rWkuT8vbGmWhw3woq3WDKhVi3r4
+	 3QinLjXxx17JoPFRZ/qKj/dJN3HiDV6VNkFxbixhJxEYRmWqWWSkpIt9MXwFkeGfFrPhH
+	 Kc4PbbIXe9NNldlZoMON1CMPHIpaaV7YMSicl6umuO8LfM2DGxAMO++Z/ur/2Q6Jbx5pg
+	 FbOX+x3ScVOjiHsayqG8U/CI1mK42+6zOva5O+zwce8W5GnjLfEjpQOLVxWiyISxtF/Wm
+	 a15sX0GiFVob29jOKqE1JJkFYODCx35Citn4RVeTMfnSBavUBRH6I8SZf9OI9UgN2iA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792624367;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=ylXvEHomDk37upseZ/fh6pc49f7rFFf0fRiYXkMT4tk=;
+	b=QaBYH5B5tOAlN8E+7+1SDMxEJdTfTQ6ggkXRtVf3Hf+nygRTMu1YWXo4g5F+DhRwk9+E
+	 JomlrqvzsG3yRD7qkhWM+lDje+yLDwOmsIH2xANsDeBgC8PpoNU2xkO0h8sVrZC/6emsr
+	 w1zyy6fAdQ+Ok+BcHCTJJkV8KTOQrokSOPQIStKHjp6io0/HcqCUHY7BSZ8EzOjtCKhpb
+	 15Do+XjjKuII9nikpUrErKKrIz5TlfLUzmLdWkHNbZxX7ZY3TuboFw1YvcJ6KkiBhjYlV
+	 2/7OwEfyu7edfuT4oYuvZXIg1fWSwNIQaeFvfeRHK27vGfY4RkuCFgjj9MDUJS6Qq/w==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E4BC55D06DA;
-	Wed, 21 Oct 2026 23:11:34 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Kaixuan Li <kaixuanli0131@gmail.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Quchaosheng <quchaosheng000406@163.com>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 05/11] can: isotp: check the frame type, not just the length
-Date: Thu, 22 Oct 2026 01:07:52 +0200
-Message-ID: <20261021231130.2085690-6-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261021231130.2085690-1-mkl@pengutronix.de>
-References: <20261021231130.2085690-1-mkl@pengutronix.de>
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 876681F000C1;
+	Wed, 21 Oct 2026 23:12:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792624367;
+	bh=ylXvEHomDk37upseZ/fh6pc49f7rFFf0fRiYXkMT4tk=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=S4C6VYHecMm2xuYhXjUgU340yOUYntxc4Rezl1GDUdzdtc/NaByI4haANm9zmRSo8
+	 ETE+DXT5prjI7xitDoV+YwGQiDCAQTCDRBfPyEPNfnEm5ccwNq8Ct3DqaWcCA9f73C
+	 pW7XKwz09mwrhm9YtlUcbC3DBnjw+mL308/lNXRFzNMEyzozYp0+OouwQyrJd1rL3v
+	 rNPh/FvW+Jwmhxz+nlLsfmGuTEHHlxb+VkSSoU8ajANxDPBVyN4CN13exj39D18M2v
+	 dZii81E/KMSFf0ntoa8OxwIbyXMdelz7EpzOtTst2JolEoZ4KkrEdIuvw0swmxuSt5
+	 mPWMJAg58gjDQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id DA98E43450;
+	Wed, 21 Oct 2026 23:12:45 +0000 (UTC)
+From: Colton Pawielski via B4 Relay <devnull+colton.pawielski.gmail.com@kernel.org>
+Date: Wed, 21 Oct 2026 18:11:41 -0500
+Subject: [PATCH net] net: 8139cp: close race between NAPI completion and Rx
+ unmask
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,60 +83,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261021-b4-8139cp-napi-v1-1-c9b683d9564b@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQqDMBCE4VeRObtgNmKtryI9aFzb7SGGREtBf
+ PdGe/wG5t+RJKokdMWOKB9NuvgMUxZwr8E/hXTKBlfcmIoNjTW1xt5dID8EpVYyZrZ8sw3yKUS
+ Z9XsFe3hZ8fiPaRvf4tYzheP4Acf8Luh3AAAA
+X-Change-ID: 20261021-b4-8139cp-napi-8e139f232736
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Daniel Palmer <daniel@0x0f.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Colton Pawielski <colton.pawielski@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792624365; l=2614;
+ i=colton.pawielski@gmail.com; s=20261021; h=from:subject:message-id;
+ bh=xysNCUVTIwjH2gSf4rA52HhJwF/s+KbxeRxHiscJJ5M=;
+ b=gwUh2h96+C0ZYB88boeAGPNY+yTTOLkpwJE1w8gE6k6U/SyfaMhc1Hr6DOGDUyPsb3zMuV5Tu
+ 5p3PMWu5h6NBUZq0EYzn42RBit3vE8WuXqQMbyvYukNm1I6yZOBWcvV
+X-Developer-Key: i=colton.pawielski@gmail.com; a=ed25519;
+ pk=QFoKkkRiV70QY509+evUr/DtmgPqjU3fLV0TaScMuE4=
+X-Endpoint-Received: by B4 Relay for colton.pawielski@gmail.com/20261021
+ with auth_id=1266
+X-Original-From: Colton Pawielski <colton.pawielski@gmail.com>
+Reply-To: colton.pawielski@gmail.com
+Content-Transfer-Encoding: 7bit
 
-From: Kaixuan Li <kaixuanli0131@gmail.com>
+From: Colton Pawielski <colton.pawielski@gmail.com>
 
-isotp_rcv() separates Classic CAN from CAN FD by skb->len alone:
+cp_rx_poll() calls napi_complete_done() and only then takes cp->lock
+with interrupts disabled to unmask the Rx interrupts.  An interrupt
+that is not masked while polling (TxOK, TxErr, ...) can arrive in
+between.  cp_interrupt() then sees the Rx status bits, which are still
+set, finds NAPI no longer scheduled, masks Rx and schedules NAPI again.
+cp_rx_poll() then carries on and unmasks Rx anyway.
 
-	if (skb->len != so->ll.mtu)
-		return;
+From that point Rx interrupts are enabled while NAPI is scheduled:
+cp_interrupt() leaves the Rx bits for the poll routine, does not mask
+them because napi_schedule_prep() fails, and the level-triggered
+interrupt fires again as soon as it returns.  On an SH7751 LANDISK
+under combined Tx/Rx load this interrupt storm was captured with a RAM
+trace right before the board locked up hard.
 
-	cf = (struct canfd_frame *)skb->data;
+Do the completion and the unmask under the lock, as 8139too does.
 
-A CAN XL frame with cxl->len 4 is CAN_MTU bytes, so it passes, and is then
-read as a canfd_frame whose len comes out of canxl_frame.flags: at least
-0x80.
-
-Of the paths that follow, only the flow control one uses that length
-without bounding it first, so check_pad() walks to 255 over a 16-byte
-frame and the caller reports EBADMSG on an unrelated socket.
-
-bcm_rx_handler(), j1939_can_recv(), can_can_gw_rcv() and raw_rcv() check
-the frame type here, and can_dropped_invalid_skb() switches on
-skb->protocol on the transmit side. isotp_rcv() is the gap.
-
-Fixes: fb08cba12b52 ("can: canxl: update CAN infrastructure for CAN XL frames")
-Signed-off-by: Kaixuan Li <kaixuanli0131@gmail.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Quchaosheng <quchaosheng000406@163.com>
-Link: https://patch.msgid.link/20260920035626.2581040-1-kaixuanli0131@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: ab1e7e1d2666 ("8139cp: use napi_complete_done()")
+Signed-off-by: Colton Pawielski <colton.pawielski@gmail.com>
 ---
- net/can/isotp.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+An AI coding assistant (Claude Opus 5.5, in Claude Code) did most of the
+debugging: it instrumented the driver with a RAM-backed trace of register
+accesses and IRQ entry/exit that survives the power cycle, and decoded
+the trace after the hang.
 
-diff --git a/net/can/isotp.c b/net/can/isotp.c
-index f5dc9d04bd68..d3e43ab48425 100644
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -755,6 +755,14 @@ static void isotp_rcv(struct sk_buff *skb, void *data)
- 	if (skb->len != so->ll.mtu)
- 		return;
+Tested on three I-O DATA LANDISK boards (SH7751R, RTL8139C+ rev 0x20).
+Without this patch, pulling 300 MB over ssh while reading the disk
+(concurrent IDE and network DMA) hard-hung the board in 7 of 8 runs.
+With it, that test passed 8/8, 3/3 and 3/3 on the three boards, and
+copying the full rootfs and multi-GB test files over ssh also completed
+without problems.
+---
+ drivers/net/ethernet/realtek/8139cp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/realtek/8139cp.c b/drivers/net/ethernet/realtek/8139cp.c
+index 9016527e229a..a9334d3a0f7d 100644
+--- a/drivers/net/ethernet/realtek/8139cp.c
++++ b/drivers/net/ethernet/realtek/8139cp.c
+@@ -554,11 +554,12 @@ static int cp_rx_poll(struct napi_struct *napi, int budget)
+ 	/* if we did not reach work limit, then we're done with
+ 	 * this round of polling
+ 	 */
+-	if (rx < budget && napi_complete_done(napi, rx)) {
++	if (rx < budget) {
+ 		unsigned long flags;
  
-+	/* check for correct CAN CC/FD frame content */
-+	if (so->ll.mtu == CAN_MTU) {
-+		if (!can_is_can_skb(skb))
-+			return;
-+	} else if (!can_is_canfd_skb(skb)) {
-+		return;
-+	}
-+
- 	cf = (struct canfd_frame *)skb->data;
+ 		spin_lock_irqsave(&cp->lock, flags);
+-		cpw16_f(IntrMask, cp_intr_mask);
++		if (napi_complete_done(napi, rx))
++			cpw16_f(IntrMask, cp_intr_mask);
+ 		spin_unlock_irqrestore(&cp->lock, flags);
+ 	}
  
- 	/* if enabled: check reception of my configured extended address */
--- 
-2.53.0
+
+---
+base-commit: 0df412012a26389582b120844d098e1e961f10a6
+change-id: 20261021-b4-8139cp-napi-8e139f232736
+
+Best regards,
+--  
+Colton Pawielski <colton.pawielski@gmail.com>
+
 
