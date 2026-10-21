@@ -1,113 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792595627;
-	b=PxyADRKugarwTXTY6ZUST4dZXZtTynwXdqeZ547xa8B74BSwGZIgXiDYj4tR9cJsqM41
-	 yq2YHrGooKXpbUJPZWzLCk8Pqu3RuK7gdbXqPnr6uK7F2pvHvLIUwCE3M5s3fQX9T1QxI
-	 aAE7XJxtp9nCstmUFrQPoxTabh7wrc8UECV7vAClf0OOFQJad2QRSjEVsuywP1zg5QSsY
-	 PmuX0f0LrDY0q49Yv/EO7pwMS0P+b2uSrXRqnw0RlloUDSlod2gcjxxtjvGxFf/ml34Uj
-	 Uu7uErb4ZT1lpxZ0XmcgMu5gq6aIGeHcYxxB1xR7hncWRcbRDrVTu7PXS+uAym9LTBw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792595627;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
-	 Content-Type:Content-Disposition:X-Mailer:X-Mutt-Fcc;
-	bh=QCOfg1rZWMUgTb5ZTU+yOGOcFfR8PsoLRApHT5roxNo=;
-	b=lL/AONlGw9F1iLR1ikgNZB2gKtrzSWh17ZEMvsU2nNnED1zegyqOa/yehHeReQiRNQvv
-	 nlkHZOTQJ5bQgWqkwIbe22VAm8B7dEh4D+vzBQNYumYi+R6qLBdBO/GCp5GpFScbAHV30
-	 7Xejn/xhNw7emqYq7ZQy7TPFokK/rW3YOn4tIbUDF58k649p5teB5HMEd6L71Jr5s6BjY
-	 kxKmAvkPNBcxCpYcJ3oIOnEYzSBlHt9zJu60baAisX4ACW2QFZp6zmCBx1+GjR4RMZlTc
-	 FmvASDn59zV/0z9fzHetnEY+bZ1EE8Z+nlhqlZtcZdJo0hYhdWr48SfINYotM0n6OdA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KWg28qqW;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=lA125dKp;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.16
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792595743;
+	b=rQrWy7iWrN3kSKloawWrUQi41yMrLFHC4lq4h/ofCe/08GtVM6sr0+jrGII07yzR2Xd2
+	 HE+fdly9VAaJMeogiwQjiATqA38yyS2/fvkqHIO5Jrzjf+jUjMce9dAnJm7Q3m2saK8Hx
+	 3iHUwwyK6HlRgUlOP72e4IIHTWvxcfJRIMu621bJfOqQpJIS2lYbQ6Vpln82XhsYbyW3S
+	 RHjkI40X9xGBmwUZFcaD0qbdE49wHrzFHKfsINl2YgvlJL7AYfDgwfCpbwdz4Ribtoit3
+	 fyFHJ6haN5nc9vLC3SZpyOlsLbSOBQIevGk1BG3SiSojSIJV9CNDDtT3SI+VtmL0Dsw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792595743;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=AjeERqTMtTFCemJF8aYOEDp+NdgQGo5LMi0YqasZ8DU=;
+	b=X9V9tC5CGEOvKDs8j1RHLxxy/URcGEk2/qkfluQqiDtxjJV6tNoJ03mUPyt4GOvMGEqM
+	 WecV+0oHJXfoIIBrRv1zFBaQ7t2leuYLtXj9VppnW6vRTRgUZsOdRrXmwv0IJtSkqskSx
+	 3J9A6VRHQHTMimq1kreTq1RSbDvo93EIBhd1JBncWZOwo6i5Eq9/onW8OUmfe4oFM0pfo
+	 K7vlNaDwnPItZqBUQneX89DboiUWdDTEUt0+pY7uOEblBCet8bzJMuJLjhsBzYZ6QS/wU
+	 p+U6qyNl7LYXL0SOhDE3hTWqrVOu0zGhjrIUycu+8aCZBBm/aDD0FAi7OVic0aFw7rg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=TVTSRt29;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.16
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013016.outbound.protection.outlook.com [52.101.83.16])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C2F606A32D
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:13:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53C2F606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38083606A31F;
+	Wed, 21 Oct 2026 15:15:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38083606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KWg28qqW;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=lA125dKp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792595626;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=QCOfg1rZWMUgTb5ZTU+yOGOcFfR8PsoLRApHT5roxNo=;
-	b=KWg28qqW16snJPEMwTL1WLCwkAb3N4MeZBTOl3oHM5PCWza8QzDl9vo2DhiA/yLm7oHqg/
-	I6aaJeJD3/TS9tRrqNg/oZ+2/21+OVeuF8mXR5nrvuVKb4ZVeysC6PtYUh7FwMzbmQHK8y
-	cnZc3qp6ol8GPXPvsUipcWEqTpDCj1w=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-205-eXl33ZnZOI6brV52u_CdNw-1; Wed, 21 Oct 2026 11:13:42 -0400
-X-MC-Unique: eXl33ZnZOI6brV52u_CdNw-1
-X-Mimecast-MFC-AGG-ID: eXl33ZnZOI6brV52u_CdNw_1792595622
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b1bbf8dbe9so1056429a12.3
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:13:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1792595622; x=1793200422; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QCOfg1rZWMUgTb5ZTU+yOGOcFfR8PsoLRApHT5roxNo=;
-        b=lA125dKpTF48B05jQLljtTOtDyrp0VwXaJgZI5jbIK+K4fYZcZmd0l0bI/hOnwNpQO
-         WIDdKWk8WKRKIDF7YiTE2O3XuomKb54jGE52xxLbGGBkdbvXxUOSESXA/dyj0qHuWxhs
-         7mqVFOK2o1H8JCQzMoORMIWvPz+6ErB4KCOWcwiCyYY+fRaMsHP/VUU2YQfseaU6o2Bu
-         einyLwsxZeqQM/CX9U1UI9AsLokCOTavYW0cyiiwsDJkku3JdFHvsDneWHNAtqUJMjfG
-         /ZxdjMZZdMSsWzHCmSQz7JhiKtpiZJZSFYiSth0Y3T9eypqrWwA1NmVSPIfEgmGb2/4U
-         bpcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792595622; x=1793200422;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QCOfg1rZWMUgTb5ZTU+yOGOcFfR8PsoLRApHT5roxNo=;
-        b=LGp2R23fshDdoKos/2lZplg4jlQ3nBBdJyaXxMHg4Yw13X8I1NQdE+p+awE/I/ybWC
-         4ABCarJk7fZs6xG/r8948uTCp4L2yDt92/t2xogKTOgBcIP3bS269hQHPcN7cnRBUKQB
-         y4752lOHkkbDu/Hc332wJPHXuEqKxHRuisItpAKktYTyZKg7NY+LYkkhuxkRZ3esdwvP
-         XrQxrpOZK04hxzA063WJO2YrZDWaHkyd3YlOaMVEgRv04HovXQpy9dh9Lqt6hXy9LSFH
-         liyLKzmJ5HWiGWiUONdbPJPffU3eY+re/jgQcB4c/T4B2JcYgpTI78yPmjDkCGY064E0
-         BB3A==
-X-Forwarded-Encrypted: i=1; AKwUvBwsgNvL+g2c573cAPju8NWd/9IW+9rgUiIuKGl+dWxntoUCi7kOmUVsCawG5kTO061UeZfKKXg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLYmeGus5NMmQUAksutkBpx7M/kPtV4RU1g0Wu7T7f4FI7ElHDY
-	40a+5LMcsDzQcXPJetCobQSNkMxpSGnMPszKI23TfWQHd4y5lhjOXJGUDgXBW7xcy14BsYSR/H4
-	nLbRnA1F0H7hT2eUCX3mwvKPYozMd7aogsOUO1LpCCV2CcYnk6/ouOmYjrA==
-X-Gm-Gg: AYBFou1xAeE6yN3qlAN6+X44p+IxD3Fo5htVUn+AA+gM7swr70Zu2xAzkUY3OIlhzos
-	1UDGXdMULoSTYbv0Oxfq1rjPQBQoUfeqvUAuchD9QSadc9Zmx2RcI02d7b0Ri8zdCnJim/JCeDL
-	KaQgosjUcSZ3uz1cwpTesixoc8SYGTJ+mfc+YGw3vIhyPL2AGEtQgYXoWPnWCqHMR5tEHmDXx5A
-	zzdRUtsA7Bbd+dWpor4J4DRKQWk5xNYVFb0lPikbVDLmgvm0r3J42K4PxCCZls2NUEreWvSIy2U
-	Dkqcn3oH1+TBaYJFvz0BCBLg9wfxf0etZR+dvzBEHxhQaijbjra83ovXIy5xVYd3nXs=
-X-Received: by 2002:a05:6402:3244:b0:6b1:c6fa:c45c with SMTP id 4fb4d7f45d1cf-6b408ee9f92mr1327649a12.38.1792595621518;
-        Wed, 21 Oct 2026 08:13:41 -0700 (PDT)
-X-Received: by 2002:a05:6402:3244:b0:6b1:c6fa:c45c with SMTP id 4fb4d7f45d1cf-6b408ee9f92mr1327622a12.38.1792595620934;
-        Wed, 21 Oct 2026 08:13:40 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e2581f15esm6499835f8f.20.2026.10.21.08.13.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 08:13:39 -0700 (PDT)
-Date: Wed, 21 Oct 2026 11:13:37 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>, netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net v3] net: gso: validate transport header before computing
- segment length
-Message-ID: <52b8bfe4ee848aff8ace47752352de486171d45f.1792595507.git.mst@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=TVTSRt29
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cpl/KOPak2Lfb8qG1C0YPTxqctMCVpOTtJlze4MwQ+dDOXsA7eNAv/0QBMjtIz9vfEKLt+UM/TvIEGn86Z6hAvO9RsyzPBqqZ9A6/jp+Yu1EAlsiohI9+AZKIy3JM04HzqMzEoFVPp8ayfvw3CM97x3Oj/XB90ygbfc9+KoMuLYDCFykb7n7a1YnOqqd+bB4iY324m4XY0ijhJvJmGfSeIVNeGhCT4Hy/TyFdutPRjqkkky6a0amMP4N7dtd309qWlijpzm0OuYP4Xp8ZD1sBrqtsQV0fjecF8HQuAkUwupx+7j6jrqqRm+SsHT0nkWpVdixWl0MZ9cDeDknp1E31w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AjeERqTMtTFCemJF8aYOEDp+NdgQGo5LMi0YqasZ8DU=;
+ b=ZM++6YtnsDEjdj3PFb217JZvSp0u/i1brz34pdYXGem8r/hyTjgB4iR0phpPZyWVbhMJs/vF0bgU+LkZHlM+8ju2BAL4mNTB5t/UnBbYqRAF/vn2DdjuSqQtuaBzf4l68nbTQZ8higf8eygXuVjMHFStFWVcIaHorN6EGvrkwa8hc9CBdo3GvADxegEkeBDej4r5eEtWkWU80ZjN+FKn+BilaFCpZTeJ1o5Od3wKnDL/KUYy3qUuVPtQUm9/o3hwpxthnMuNKbkLzkZYhNvppxhDjLY0L2/ulPC2z470qzCsTgoh9sVxKHe3FXhYT4TQ9nsqZrQm+FZZ5WyXM5yyiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AjeERqTMtTFCemJF8aYOEDp+NdgQGo5LMi0YqasZ8DU=;
+ b=TVTSRt29lXiD0sHZTzy3QcpsDXnfmVd8eRg1XNz941N8k7s2fUg9COIIQ9nT0k4HvtuFt0DT/oDnAJzfMYoC5ky8stvWyAweXGFxyrHFmUUA+udB7glt7q+RkxsCiMFltZ0aYXhrIZLLJ57aV53wM3fH21ppFpJP4nlBs9hQ3eriVlHbVER28e5tB+/ChvjoUS1ym5mAXp3Xv47S03jvNx32HRDhUK3mo2ycmrG9PHx4IYeHnr5h6Ja3rv9jrguHwIb6C26kTd6Zyk0xE/0Bf2cPyno+TwV1VVo3uInfWKRk84oy5eHccsK+YSATWyXoe5Pr2sDPRIqw102ZDcD2MA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by MA6PR04MB066831.eurprd04.prod.outlook.com (2603:10a6:250:56::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Wed, 21 Oct
+ 2026 15:15:40 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 15:15:38 +0000
+Date: Wed, 21 Oct 2026 18:15:34 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Marek Vasut <marex@nabladev.com>, 
+	"Frank Li (OSS)" <frank.li@oss.nxp.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>, 
+	Eric Dumazet <edumazet@kernel.org>, Frank Li <frank.li@nxp.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	"UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [net-next,PATCH 2/2] enetc: Make eMDIO MDC rate configurable
+ from DT
+Message-ID: <ucqfjqsvvnxp7csa53lsbtxxeti4n53wdrybzuemargqkt556y@amr6rfv5oq4f>
+References: <20261016193344.115518-1-marex@nabladev.com>
+ <20261016193344.115518-2-marex@nabladev.com>
+ <atKDNdxl0w65s8yQ@SMW015318>
+ <DB9PR04MB933217F7ADCB6223A44DACA7889A2@DB9PR04MB9332.eurprd04.prod.outlook.com>
+ <661412ff-3942-4d1c-be6f-1ef6c54620fd@nabladev.com>
+ <AS4PR04MB933821150913BDCF35C4827F88982@AS4PR04MB9338.eurprd04.prod.outlook.com>
+ <fe920b05-6d89-4dc1-83d3-0664fbc2e00c@nabladev.com>
+ <AS4PR04MB93389CB9849950CFD78411DE88672@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AS4PR04MB93389CB9849950CFD78411DE88672@AS4PR04MB9338.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: AS4P190CA0017.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d0::7) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,238 +111,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|MA6PR04MB066831:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5dcd3e3c-7427-4f40-9a43-08df2f8629c3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|19092799006|376014|1800799024|366016|6133799003|18002099003|22082099003|4143699003|11063799006|261009223027099003|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	kd64XkLt2PjbuJF+EItCjaaD38obEnIsDl71xCKC+D4aAdUZBv5+v3HEfCMk5z7S/ySmGgsdODOjvQTzPWHN2fhjwe6VSLUCn30BYwImF1KjhEm3cOYIruj/fdkEVfHYZhl56xBJWz0uGkNFCw9jOLmWV8xbWp5KOKEfCksg3ad4ACclXzKU51isMOxsORcHW7s68WJ5j+oL1TweDEmJoENi5MI6KXQKu6VfVg4VUKp3afk2m68Th4q9EpbFncDPqL8ME9XHtwvVnoGnWcYWi7xxjOMEA1cy9Fze0aWpd15tkOCJTreKsNgVpWvyczwobwTcRquG/pqwRusS/ZKKcfQLtTtPTlAmDmbbKo4dBJ+Nh2fXusui0yN8BUVSGa+m/pWXRkeUAOeh413Y2LiJhT8nxB7uPuC/0R1Gy+C71s6/ysszaqo4hkEjZpnnML8llmemAVDng/xfIqJVOJFU1+jZoipaxyN7JAYoDG9POs+bI3oAgUSGOGaSDqW5UgyX4BnYeoOxfLwnUamwOiDKeEVSiZi037Idxba+0K9/TRQBBmwfqSvYbu+F9l/fS3n3eZX0xfKIuHN9RO4XXTdtJx09NzM9QAw/raHAXinqI4heOW88jdAps6fUEqul6SdBX1AhEsobs75VviFmOExJUk9GJ+CYOgJYtafZJ/t/V8E=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(19092799006)(376014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(4143699003)(11063799006)(261009223027099003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TfTo8mYBA4yFQ42LgJBL5heWBuMOO3t8zebKRbHSe2nw6LXMwsqir2xfiuHD?=
+ =?us-ascii?Q?b/OzflaZFw5GR8U7zXcarSF8+ON3DKdMMOexj6MEBP7jaP/7BqIWROKJa6j1?=
+ =?us-ascii?Q?P+xlxbLg6/UlD1Hb6FowdDTwEPQKUW7CoFHkXkCSRCPG06yrla4lAQOfUlVt?=
+ =?us-ascii?Q?U9olkEqE8Aks5bcAP9puH80wk9ZB6TJRPdNFTNm1NDkF7z++dsgIx8QChrE4?=
+ =?us-ascii?Q?NtoSKR85dLbapHQNxjEAgfIV7BZdk4YGJ8ifbbi+4EWT/ZvWdtscV2+7KI2N?=
+ =?us-ascii?Q?60wMQp4XXwyRvpQVQc1QchtbYCwqjZXb2ef/obUd/5HvkE/DxYt5rlvoxXKX?=
+ =?us-ascii?Q?ufO3uRl0MyQuW717/Z7dHCBtr2jk3vcwiOoW1tfwr761L8ErDcE22a3trdu3?=
+ =?us-ascii?Q?TuApmHQbFsIM5QBE5Hs1clst+WNttLF9QFuD5UHCLhmLw95qXRWZs/Ia8oUP?=
+ =?us-ascii?Q?dWNrpJrqbkVXrETIozSfA3u1DMQpy/zb1Pfi3eBuO3a2vxT92FdEQcsB1dZz?=
+ =?us-ascii?Q?mdNZP7Hsu3rH/5zAXEdgxDsHu/AiG5odnc4N1lsWeEjSGNZzpPDNCpEK3RDp?=
+ =?us-ascii?Q?12K82cNuBNiHwV5JovNHTxZjglF1WTBBYD1r/9YB/9U3SlvW94YbEUo0jTPK?=
+ =?us-ascii?Q?kSFT8NBk1ijeTfjhB0ndWISmAAZneaEgYSMtQRWAW/Fr5eK9vzOuDmKDF+Id?=
+ =?us-ascii?Q?Oa0PMLpeGXTANZ/cckHVYN6rGp2Vu4P6HWefM5NhnAJJHUe6JKyxhU7JvTrL?=
+ =?us-ascii?Q?mSiWbYRlLo0nbmpson03D0QgzzMpiyK1NOlWKUjgnuXtXmmZ+Jmm1o3A/cdA?=
+ =?us-ascii?Q?qs4OowUfXsqIel+0OD2Ia2ej18SCh6+NmEvCP87e/sj2bqb7C+Sy8ImnOIr4?=
+ =?us-ascii?Q?9GSajwUplRU0JmbRC4mUUBMn7gzEI24sBwjCDBIQ9i2y8gz5DRZ052X5tGAj?=
+ =?us-ascii?Q?4+Hh0Rp+9VOdY5LwiLr0xveHQmWhxP7SV6crCe/vKCGlD4RAWwk3wyXLPpSJ?=
+ =?us-ascii?Q?oVskEmmMVZY/FrBHGARjN1CXnHAoec8ZM4wmMXIp9AcHO0ka8anzzJWS7mPI?=
+ =?us-ascii?Q?ouSSkfyb1kZZknfqpx3IO0a7OrN4CzaQUEmZmNHKGt7ubjyw3ksNGVMbFyDu?=
+ =?us-ascii?Q?EaLxZNjJ53RuAP/bH+xYMgZVFqNw2Zfkglycx2s83HDXYOrVbewhX9Y0ByVC?=
+ =?us-ascii?Q?PKtngXnnoz8sGHJCDYYhOu6DWce/fFAQiKJhk9EqaR39/JUeTs/5UWxsYL6y?=
+ =?us-ascii?Q?pUS3RlurWpZK0MsoZShj+OO0ZOKLEjLeA73Jjk/4BVQf9hXXIPHp9wT+F8nm?=
+ =?us-ascii?Q?elLin/pRXsXRuNfan2SnuWMa/VIQ6ESlAUjS2TFoq0Rj5kyOFI5mqjxEpGYS?=
+ =?us-ascii?Q?8HIc3H6fQNzlsrP4Hsn1T8pV/2YvuJ13EG0eNnp0bZRSL41SLALK0ac6eHgq?=
+ =?us-ascii?Q?0dejtpUxAxjeTnYnwSguuMZ3Nsi8n7JRckWpNhrK6nEEA7hCwFMBjOenB6aw?=
+ =?us-ascii?Q?26G2fHjPlUHphSUgjmBuSTvvMExFvHd9ch4mvEZaRhyl46IgU6PDnhTWj0Od?=
+ =?us-ascii?Q?QXRuDtQDTx3mEZjWbxrj+6yakAwzuWNV12cE/QPeojcE4hNaa7n02j+z524q?=
+ =?us-ascii?Q?YUJIGEgaAk2H49xmyufzpcfV/M0UvmON/dcblUpN2AZ/51HBrMteOM2fURdK?=
+ =?us-ascii?Q?URcwq5MFpMfdw451TQ/JspCwmI0dxry+CUW3+MakXksVm0vNsH1uYEZKDGJy?=
+ =?us-ascii?Q?O4+El6Kp6Q=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5dcd3e3c-7427-4f40-9a43-08df2f8629c3
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 15:15:38.3740
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5Mtpaz+q1ErxyGWgaFTKVLaUSKfgDRSVWtR5+KDoHkXJMzNgiiAthZ/dbE957LCckkl6kP5FFmmQYrX3BiwF3g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA6PR04MB066831
 
-If a TSO packet is processed in the stack before a transport
-header was ever established, the TCP data offset is read through the
-unset header offset, far outside the packet.
+Hi Wei,
 
-This was demonstrated by syzkaller, back when the input path did not
-dissect such packets: a virtio net header supplying a malformed
-network header was enough.  Qdisc length estimation has carried a
-guard against exactly this since
+On Tue, Oct 20, 2026 at 10:43:12AM +0300, Wei Fang wrote:
+> > >>> For ENETC device, we already have a 'ref' clock in the enetc node, so
+> > >>> devm_clk_get(dev, NULL) may get the 'ref' clock rather than the system
+> > >>> clock of NETC.
+> > >> Shouldn't the clock be described in the MDIO DT node ?
+> > >
+> > > The enetc_mdio_read_* and enetc_mdio_write_* interfaces are not only
+> > > used by EMDIO devices, the ENETCs and NETC switches also use them.
+> > > NETC switches and ENETCs can access external PHYs or internal PCS/Serdes
+> > > through their own port MDIO registers, instead of through EMDIO devices.
+> > >
+> > > Your first patch only modified the EMDIO binding-doc, not the ENETC and
+> > > switch binding-doc.
+> > So I need to patch also
+> > Documentation/devicetree/bindings/net/dsa/mscc,ocelot.yaml ? Any other
+> > binding document ?
+> > 
+> 
+> fsl,enetc.yaml and nxp,netc-switch.yaml.
+> 
+> However, once again, I don't highly recommend adding a clocks property to
+> the DTS to obtain the MDC source clock frequency. My reasons are as follows:
+> 
+> 1. The MDC source clock is the NETC system clock, which is a fixed configuration
+> with a fixed frequency for each SoC, hardcode the rate in driver is simpler.
 
-commit a0dce8752193 ("net: Skip GSO length estimation if transport header is not set");
+In the RCW project (https://github.com/nxp-qoriq/rcw), we have for LS1028A:
+- R_SQPP_0x85bb/rcw_800_sdboot.rcw and R_SQPP_0x85bb/rcw_800_emmcboot.rcw:
+  set CGA_PLL2_RAT=8, giving 800 / 3 = 266.67 MHz.
+- R_SQPP_0x85bb/rcw_1500_gpu700.rcw: sets CGA_PLL2_RAT=14, giving 1400 / 3 =
+  466.67 MHz.
 
-the GSO length validators never got one.
-
-We used to, but we no longer allow such packets in: since
-
-commit 44378d02c5aa ("net: always dissect GSO packets in __virtio_net_hdr_to_skb()")
-
-the virtio net input path dissects all GSO packets.
-
-But as a defence in depth measure, let's also check before we read: if
-the TCP header is unset or outside the linear data, report the packet
-as not fitting.  What happens to it then is up to the caller: the IP
-output path segments in software, a forwarder answers with an ICMP
-error, policers apply their exceed action.
-
-No unprivileged path is known to produce one - IP input resets the
-transport header to the parsed position, local delivery pulls data
-exactly to it, and tunnel decapsulation clears it altogether - but a tc
-BPF program can leave one behind through bpf_skb_adjust_room().  The
-comparison is free, so let's not rely on enumerating producers.
-
-Found by code review.
-
-Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-Cc: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- include/linux/skbuff.h | 30 +++++++++++++++++
- net/core/gso.c         | 75 ++++++++++++++++++++++++++++++++++++------
- 2 files changed, 95 insertions(+), 10 deletions(-)
-
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index a3ff380d43f0..6f33c014e568 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3041,6 +3041,13 @@ static inline bool skb_inner_network_header_was_set(const struct sk_buff *skb)
- 	return skb->inner_network_header > 0;
- }
- 
-+static inline bool skb_inner_transport_header_was_set(const struct sk_buff *skb)
-+{
-+	typeof(skb->inner_transport_header) th = skb->inner_transport_header;
-+
-+	return th > 0 && th != (typeof(th))~0U;
-+}
-+
- static inline unsigned char *skb_inner_mac_header(const struct sk_buff *skb)
- {
- 	return skb->head + skb->inner_mac_header;
-@@ -3250,6 +3257,29 @@ static inline int skb_transport_offset(const struct sk_buff *skb)
- 	return skb_transport_header(skb) - skb->data;
- }
- 
-+/* Is the (inner) transport header, as specified by
-+ * skb->transport_header/inner_transport_header, in the linear data?
-+ */
-+static inline bool skb_transport_header_linear(const struct sk_buff *skb,
-+					       unsigned int hlen)
-+{
-+	int thoff;
-+
-+	if (!skb_transport_header_was_set(skb))
-+		return false;
-+
-+	if (skb->encapsulation) {
-+		if (!skb_inner_transport_header_was_set(skb))
-+			return false;
-+
-+		thoff = skb_inner_transport_offset(skb);
-+	} else {
-+		thoff = skb_transport_offset(skb);
-+	}
-+
-+	return thoff >= 0 && thoff + hlen <= skb_headlen(skb);
-+}
-+
- static inline u32 skb_network_header_len(const struct sk_buff *skb)
- {
- 	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
-diff --git a/net/core/gso.c b/net/core/gso.c
-index e96ef6350064..204ab9d08c18 100644
---- a/net/core/gso.c
-+++ b/net/core/gso.c
-@@ -131,6 +131,22 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
- }
- EXPORT_SYMBOL(__skb_gso_segment);
- 
-+/*
-+ * TSO processing (but not UDP/SCTP GSO, which uses fixed header
-+ * sizes) reads the TCP header as specified by
-+ * skb->transport_header/inner_transport_header.  Make sure it is
-+ * there to read.
-+ */
-+static bool skb_tso_transport_header_ok(const struct sk_buff *skb)
-+{
-+	const struct skb_shared_info *shinfo = skb_shinfo(skb);
-+
-+	if (unlikely(!(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))))
-+		return true;
-+
-+	return skb_transport_header_linear(skb, sizeof(struct tcphdr));
-+}
-+
- /**
-  * skb_gso_transport_seglen - Return length of individual segments of a gso packet
-  *
-@@ -140,12 +156,18 @@ EXPORT_SYMBOL(__skb_gso_segment);
-  * individual segments, including Layer4 headers (TCP/UDP).
-  *
-  * The MAC/L2 or network (IP, IPv6) headers are not accounted for.
-+ *
-+ * Return: the length, or a negative errno if the TCP header is not
-+ * there to read.
-  */
--static unsigned int skb_gso_transport_seglen(const struct sk_buff *skb)
-+static int skb_gso_transport_seglen(const struct sk_buff *skb)
- {
- 	const struct skb_shared_info *shinfo = skb_shinfo(skb);
- 	unsigned int thlen = 0;
- 
-+	if (unlikely(!skb_tso_transport_header_ok(skb)))
-+		return -EINVAL;
-+
- 	if (skb->encapsulation) {
- 		thlen = skb_inner_transport_header(skb) -
- 			skb_transport_header(skb);
-@@ -175,13 +197,21 @@ static unsigned int skb_gso_transport_seglen(const struct sk_buff *skb)
-  * individual segments, including Layer3 (IP, IPv6) and L4 headers (TCP/UDP).
-  *
-  * The MAC/L2 header is not accounted for.
-+ *
-+ * Return: the length, or a negative errno if the TCP header is not
-+ * there to read.
-  */
--static unsigned int skb_gso_network_seglen(const struct sk_buff *skb)
-+static int skb_gso_network_seglen(const struct sk_buff *skb)
- {
--	unsigned int hdr_len = skb_transport_header(skb) -
--			       skb_network_header(skb);
-+	int tlen = skb_gso_transport_seglen(skb);
-+	unsigned int hdr_len;
- 
--	return hdr_len + skb_gso_transport_seglen(skb);
-+	if (tlen < 0)
-+		return tlen;
-+
-+	hdr_len = skb_transport_header(skb) - skb_network_header(skb);
-+
-+	return hdr_len + tlen;
- }
- 
- /**
-@@ -192,12 +222,21 @@ static unsigned int skb_gso_network_seglen(const struct sk_buff *skb)
-  * skb_gso_mac_seglen is used to determine the real size of the
-  * individual segments, including MAC/L2, Layer3 (IP, IPv6) and L4
-  * headers (TCP/UDP).
-+ *
-+ * Return: the length, or a negative errno if the TCP header is not
-+ * there to read.
-  */
--static unsigned int skb_gso_mac_seglen(const struct sk_buff *skb)
-+static int skb_gso_mac_seglen(const struct sk_buff *skb)
- {
--	unsigned int hdr_len = skb_transport_header(skb) - skb_mac_header(skb);
-+	int tlen = skb_gso_transport_seglen(skb);
-+	unsigned int hdr_len;
- 
--	return hdr_len + skb_gso_transport_seglen(skb);
-+	if (tlen < 0)
-+		return tlen;
-+
-+	hdr_len = skb_transport_header(skb) - skb_mac_header(skb);
-+
-+	return hdr_len + tlen;
- }
- 
- /**
-@@ -250,10 +289,18 @@ static inline bool skb_gso_size_check(const struct sk_buff *skb,
-  * skb_gso_validate_network_len validates if a given skb will fit a
-  * wanted MTU once split. It considers L3 headers, L4 headers, and the
-  * payload.
-+ *
-+ * Return: Whether the skb will fit.  Also false if the TCP header
-+ * is not there to read.
-  */
- bool skb_gso_validate_network_len(const struct sk_buff *skb, unsigned int mtu)
- {
--	return skb_gso_size_check(skb, skb_gso_network_seglen(skb), mtu);
-+	int seg_len = skb_gso_network_seglen(skb);
-+
-+	if (seg_len < 0)
-+		return false;
-+
-+	return skb_gso_size_check(skb, seg_len, mtu);
- }
- EXPORT_SYMBOL_GPL(skb_gso_validate_network_len);
- 
-@@ -265,10 +312,18 @@ EXPORT_SYMBOL_GPL(skb_gso_validate_network_len);
-  *
-  * skb_gso_validate_mac_len validates if a given skb will fit a wanted
-  * length once split, including L2, L3 and L4 headers and the payload.
-+ *
-+ * Return: Whether the skb will fit.  Also false if the TCP header
-+ * is not there to read.
-  */
- bool skb_gso_validate_mac_len(const struct sk_buff *skb, unsigned int len)
- {
--	return skb_gso_size_check(skb, skb_gso_mac_seglen(skb), len);
-+	int seg_len = skb_gso_mac_seglen(skb);
-+
-+	if (seg_len < 0)
-+		return false;
-+
-+	return skb_gso_size_check(skb, seg_len, len);
- }
- EXPORT_SYMBOL_GPL(skb_gso_validate_mac_len);
- 
--- 
-MST
-
+Apart from these, yes, the other RCWs do set CGA_PLL2_RAT=12, giving 400 MHz.
+But the statement in general is false.
