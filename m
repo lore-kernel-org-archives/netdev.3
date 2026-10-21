@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.10
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792594475;
-	b=Bcym6CwcpAmT5D9jS916O3wl/Uh1IZSQqEFv60REZa0vckAOE0DXUT8CE6zvnHzGtgis
-	 U+68K99XWiJBwk5+DdQ3UoL7akWb//heUvwzLwgl9IdXjKuiM9twck9oSUQ9jMxJYa3Xm
-	 AwsqReak6m5IVWYrUW7/NdW7A+EgzdoaQzOV5gE5DE7bGJBUH1BwSaJf0Uoqf7xRK6NHp
-	 llQR5TslfyMPiztKbpy6sC+jVv8O6LVogJK7DIn/P/8bL/Oa51YFgKMntb+x/SzHfhX/N
-	 qixJ8bavrlQTLr8wi5aShd17Wzev1MZPTs895QjERVgzKOYs9DtTMOxfyO7VkbwgnQg==
+	t=1792594473;
+	b=SbGl+9pOJC7gB9qELez0YHMNdfw6JdJjpz4xeGMoIjFcJRrnVvOPf9TCOfZ9M5Ww/Ale
+	 0QU6AyOyZVqYfumeWQEOcr2Ss/IMfbc2SXQygd0kGELuDIIKL0WpPCUXqgo9rBeImNEgt
+	 aPOwB75tIGWwjsQlwPsYASsHdlmUKIOsl04JUIAV7e+4gMPlm2f75IjFt7r5kkFOuoSfb
+	 a1YNm9vt3kfYWAUHClxbYAPlIXw4tTuz5YN+8Ha5TxoTaQ/JuDAk139q5vekTwpos9Gig
+	 gK8pqdVWSz/bRBze0PRWUFIinuUjW0tUfdgzghtL2vbJNWU4dyppfOPxv/CG+kBcQjg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792594475;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792594473;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
@@ -24,53 +24,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=TkMJ1BYCvN/N0QVaCkqbmQcaOeCqE3QLcb4vSP+uxng=;
-	b=VV6Xv+t0/TtD/axNaVjIuORqB7co6RrTnd1JYwUgY5kGb8cXfhW8NzZ9kCL63oK3CVEY
-	 xJEOuWfRuC6ECOPCi6/JMk/UnS4a5nCiLXGeuIn+R8lSsTDvKiszDSvfUWJOh6/QHZTOI
-	 yxG64iR459lKNfoAbhG3j38fZewmtsxto2zep+O3xviCPVYPBB2TdsYMUGaV4wM1DNBEn
-	 3SYurwiL8Z/A7e+AHXa0lNWrtrS8omjmWE8ISQak7bVxlV2aD1/f5QwPnEErFU2Yu9+fg
-	 o67PKU3NgqqfLBUCbbKlGFwjM8fl9+Id0QRHrbZ0jQj21n9o/cHF+RhxCaI9poBf7iQ==
+	bh=1z6vYAjElxxPBMe8Q4EBZzXt8tlz5Ak1WLr8qKv+oc4=;
+	b=OLXczUH0sJc85vng+Hldr30t8NA2GJvoBTwoIpXMZPPzO6NFHlPPM9/FPQAvvZ9u9thq
+	 sI/1GpzIHFB2XAaZ0wHkZXD6uY21N+mKmNAWkDMslj1i+EsAHITDrHQQre6eT3XTeTxNw
+	 LykPU9arPdM02oEYIcMsRKON/bFPehP9c190XZsxrbZ+mFfOxA/mHjXHD2gaCNl6qmkBI
+	 dhaWZH57YkLXaxyaXDHlzU7EiIWEbUDjCDup6SDQjvvMMo29m/Cbu0PWddTE7shwp+mn9
+	 aBshTk2Y0qfgeLPSyhpnA5pgYwYakMp5emXYA2I8xtvfAqJ1wGiHTHIsRirlP2yZv8g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nxp.com;
 	spf=pass smtp.mailfrom=nxp.com;
-	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=O61Q1WvR;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=i6FFk6ir;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.10
 Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011010.outbound.protection.outlook.com [40.107.130.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814D060A260D;
-	Wed, 21 Oct 2026 14:54:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 814D060A260D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F80860A2606;
+	Wed, 21 Oct 2026 14:54:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F80860A2606
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=O61Q1WvR
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=i6FFk6ir
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qT/JOx0sMf2rl8ABsqZDnPhQcK54kNLr8CV368RUFjBK4qpKqeLlCauW2Z7hCE3M/ZfWlS2ldFby93GPaqrughNAJ6KZe1upliLxydVFUJFD+t6lxCWuw6DFD3+5vY11Rite7T/bl19hV7iKCbY3RAWuvB4yW9QWKIXw8jqTSLlx4+40pYUX9uk+owUfd0pSDckmv+UEX54fnPVNYJ63YEM+eNIc/e4C2ZF6qopimJWV8PLpbsbbj5lCR+21vpcRKkod78q4cvHiotMB7C4FAebmRLr+CB8cC+kyBstlbaS08Rb6z+/Zz9u1p5kc0glWNqS+emIp5bKFih/nU2nxcA==
+ b=VM7dPJTjOoE1mKpc/4yOQouSV9+Wa+viXE6yc/5IUeSKifVlidhDxohK1CAESpfFfH5KdL2uMwgsrxXyKHBsxVhXIq/I1Um2UhgTE6rrDodPYsJsRWsGSDtf7ZqERUSSkvY9gbxZ9x4kIFdKftbsDIcv/QokPrh2QTTLUeS6o3SAPBFsHrhBTgrxzgOYH9JsPrZHGNGTixGulDmq1eFX8wGo0VVxMtUcY+QbM+CaNql5KrvZzXg2SJdIFbst7BykWLGWyG396keoCs7fXuhmF3yhigGSAzPTrHBlfzn9JeMDx+KE5qQbVy+GbpyldQMxM+tbNmnuDQjcadhp3gUtaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TkMJ1BYCvN/N0QVaCkqbmQcaOeCqE3QLcb4vSP+uxng=;
- b=coe0pmJl/u/0yi6ka0z5UPVNPUiUbc3PULSsDLLul2lzpvfN/hsbmRSzp8xgyOl4n8ej46P8Ynqi+8eRuCLeLp75X6p7QfmMafd3x32K+wpJd+ln4jxvS4QFBWziP0ztex2/QwdRmGQ3EjnEKUeRNwX00re1eokGWziL8lCzqENL4F+ti++ujC33x0hl83r3FBRVYIg9wbYJyPRUSWIX3LX21YXa4kRdX67Tc2tY6pY41rNHk0QB5P/ViSGb/vMbqyjnbiTRTP2rBzsNUmyItqa59lRMLrzqIsi3Ci7zcnbAlGVJXpoueHT9Jkatw/l2o58uYXNCFzVru6Wf7yhQ6g==
+ bh=1z6vYAjElxxPBMe8Q4EBZzXt8tlz5Ak1WLr8qKv+oc4=;
+ b=J6SrTdknqsdJrJh4QY1SSL6d5jC4IVhHfAsefIDkEzGUH+3wD5tPJ7/rjMi4v3oL1fGfAx6LXlEtLBVhkKQAsSv6oxSew7kfCHaHTBEFmNMRWzmbux44yZfkiwWKow/K+YctWPRtgh8isr7t6t9Nje1kq4bq93d3g2UmgW6g644nNltXHE8CJrdIO7RvrpvgC/k/iaIvcaezRWxdNguShkmiV8rn2kMXIhq/34jVoDlZOha8zVKhs5kyyTuZJarNsPwq40uadfs12/ikkyBqEbReQlpGUz65MLaPVQAXrtd3JUim8yc14J+pgXtZdFSQB4ZE9rKw0LmcruEFyG8YYQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TkMJ1BYCvN/N0QVaCkqbmQcaOeCqE3QLcb4vSP+uxng=;
- b=O61Q1WvRtNm15yVPew8YkAca7FC6Bwux5rY+ybvm+EqTF5d9It6X59u1sQAhOU+TpSnSZR5dEBnDuCbDwzpkuW255cUrLJnvkwIXTJHMyVjfqdPfqY/oEJnm35nHmmse1dxy/E44Af7LsA1CeV+bbMWQ+lrG2GGlcTh3Qinr2BZ1uF/7bbArjWVeil/sUskWlFm/jx/WyCrEHmK4N+FgzP790pREHKjKmBuNWfM+Gnjc65ZV2/TARIqd8gGcTOGvnZRMIfSabMHiMsm/4jPQogxjc+gYM81utxLPP+QfJ5bfM8hCs+ACqjDXiOeJ7bf5mojPZJ91ZAhUNkyENEzGqQ==
+ bh=1z6vYAjElxxPBMe8Q4EBZzXt8tlz5Ak1WLr8qKv+oc4=;
+ b=i6FFk6irUvwtdU6TME14jlG3Io/ECq+SfCF4pBwnej7vaD+oICewRZhZPFNdifKmzD8DZHyUJLfjaiDyW3ZMu2ep/f6ZZKM4UQWGCNEG61/uSULOhyY0ZrJcyI4jksCx4CtKDLSqM2fHBcfsczIYsb1urJVMyVCq/P3kGebrq98MH9UOq2BhpKWkeSZuKE5G/XIKO7CcXSJZ/8VZHE6v1/r64WH4jChyIST2nrxFH+FbLxlxMAKOEj5NJoiXQsX5a37iUEW+oSQ+9yUJprGhAqzjUZSdlBsF/+wSAocnIzUzZJePUKLhuoEk2s4HQj5GDPOlZt+PyAn6PHSdSYoMZA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
  by DU4PR04MB10912.eurprd04.prod.outlook.com (2603:10a6:10:58a::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 14:54:33 +0000
+ 2026 14:54:29 +0000
 Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
  ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
  ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 14:54:33 +0000
+ 14:54:29 +0000
 From: vladimir.oltean@nxp.com
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -87,16 +87,16 @@ Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
 	netdev@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 net 4/4] net: enetc: pad short XDP frames in software
-Date: Wed, 21 Oct 2026 17:53:14 +0300
-Message-ID: <20261021145314.1435049-5-vladimir.oltean@nxp.com>
+Subject: [PATCH v5 net 2/4] net: enetc: do not rely on mEMAC hardware frame padding
+Date: Wed, 21 Oct 2026 17:53:12 +0300
+Message-ID: <20261021145314.1435049-3-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
 References: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: AM8P251CA0027.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:21b::32) To AM0PR04MB6900.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM8P251CA0026.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21b::31) To AM0PR04MB6900.eurprd04.prod.outlook.com
  (2603:10a6:208:17d::10)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -109,178 +109,320 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|DU4PR04MB10912:EE_
-X-MS-Office365-Filtering-Correlation-Id: 758c15c9-114d-4fea-da38-08df2f833793
+X-MS-Office365-Filtering-Correlation-Id: a0020264-b830-46e3-b4f9-08df2f83355c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|19092799006|366016|23010399003|7416014|376014|1800799024|18002099003|10067099003|22082099003|261009223027099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	ebAnNDUU9i6O6EwKZFBK2k03AR37bVZYdBnxnRDM7j2neAj3AxvyDsLz3MxhMz56q3fH8muyQH0WzSPcmlRdHnBSW/i6gY3XCjc3pOf+F0l+CrNcKHMf9Xs6aPErJueQE/deCs5ziu+QQycdp//JR5myVji7zN9wYzhl84aUCOH/s9YJC4xR2Q0lpzqghcwZyXLpF1Gz1dkBJ+7X46DOQSeqlPo4cs5JBIiQZOIHuP7e+Un6x9lLwX2r6Djjm441bf5r6ARZhsGY2RO8eqBM+5TNBFksQcAB3D72+kX8klEL6Htqs2CVabTBQNVYDnYjXXb1svkP4vj7ntdT1nWana79Bdyq+Yu4blevlVwjCU1ETN6GCYPQWt4vuhgNAgC/C+9hTHyyBZO6UA4km9ymBChZSc4EDhAOOWRi5wUKgcR0J13RwoI/FS1oo204x3n+OG155jTvHtvcyJ7/F2B8pvr0a/7Av85ysE8X27i/HaYdk245+9zlrBqc4LEFNzfHMRIw6wuIiZqEfGkYqWGa8y/8KkV9+xGIdVyOO/yRW9/eAJr18adf+nw6LTv2cGKe5n1o0mDmvoQLwVQ+kNsZuYhSdxZdVpJDej7ZWdZGDD61MlQZYdiLrEFi61iD13OzM5ktmB3si90ZXvKWAWDfkSccnAPyPCd+CDh5YrVI3uc=
+	a7RjfP0vHUo3XjHV7UlA9uEP02++lrygNVWREuTkKl9kfWfRagZhGqzFsoPgAwWatGq8SDGQLlHLZPDKm/xSgGO8hQmmreveUlnJUFlPCWFT2lesLkKDNxLzU/E1zAAysMj0dd8QxOjTR/vaM4ki9xcpeb5+pITWNgnMD07MipYZ8VdUXx1x/r3CRj6Mr9cSvELFw8HJ8/4IRJb1kUx1MgzDCchDZyS3qi5ZvNP0sYquAM2CBTzI5TLSUD8CcTLVo8YK7TPgd8LaOERRV4tLqYsKTD7CLKLskrIGWztsS6Lr7AliUuV3TJ1TTkz/VInNoenQ658ADysB1shNaD7xAOJk5beN/tvojnhFrhX0uDVF+umqaKCmhtF6Tpyc5DQBJ/m72ktlqDbAD5x9sh1KWpp6ODaNbn6CG4UOmih6C7YBCmIRx6HLV/9EJaLY7hvF8GRFbemqlyIBcBX8ACxJz4T3TksIeLU6MDwsV5yKUzhpQvOJpWYIRC3vJ3kb5a9LPlJo2H/STn1pM5DFY+qGh06khHb65JXhEllfwYujdcVTqssMbNpqGTRTR4kyCmhFQjQE5NsoDazvVkV5LmvODrv7eqjM49mQqtBYPiLqqdfzGifFjMEkLAHsczqIyjJA
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(23010399003)(7416014)(376014)(1800799024)(18002099003)(10067099003)(22082099003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WUUGWusgZXi49027L2PybEecbSUHs5xUBikUhEJKQY4yRTO4OF0UJtmOXL1V?=
- =?us-ascii?Q?xK50XpR+efjvB5A/9LuzgHfwy6HbbXkdcD7EKSQFGTKtYMBIyPayg6bDil6l?=
- =?us-ascii?Q?rB32i2zRSaSxCz5DCCmVdLfmzJuadFzAWeBZ9UyfzByJZ9LB+j3E6KX1lWay?=
- =?us-ascii?Q?ZTtjtQ/eAQxZcymncPU/64izQtJzWOqKLJxMKajODzMMFJw6PX4w4QLxzS7H?=
- =?us-ascii?Q?Ka0u/f0sZ4h/wi2968fqAQDntuvyjsj9GbxeYjszqeFXhQDPAutu6HlJ2cmy?=
- =?us-ascii?Q?dJqe6lDvggevzuxeylANjFbWWn6uTlWvB7g1NMns1LE+bHORcFvK5TC6nyYm?=
- =?us-ascii?Q?t3CiGBwtl/g+uRfygqW/p1r73WnLjRt/PiZSWt4MmUw+QqTCvl15wpxH0UNt?=
- =?us-ascii?Q?sXha5H6X9tbIsNk5tm6jnkMzOV/YzlXxUnuMOG1IVbi/KRli/zCSTo3/89rd?=
- =?us-ascii?Q?wJlMrGmQwKk3KfYadqMkU7Qm9e5e5ny1+zsPjqlHrquFX0NaWXFjFyfVrixz?=
- =?us-ascii?Q?Ix9WGAlOp/HYzhM407agIXLO37GE3YzWbNdEKYbHFjRRcyBZoMh1hsSWqFN4?=
- =?us-ascii?Q?s08rqUrE7d482CHlgF/BLepGU0S2VBTZofCRJ8FeADpfaHTiTMrbhgKQ0gRU?=
- =?us-ascii?Q?6r47/r6y/ua6q1jGIbUJ/2qfTRosdjZFTGZapPYYNxnQI+xmfJrdB7D72TVu?=
- =?us-ascii?Q?0Axhjw8xaOWs4yQEULWlqSWZglDKjzPRaMFS+m8n2ACTK18nExc0Zz41ObxM?=
- =?us-ascii?Q?QhfbzwYAnDdxyY0QfykTwWrbxHw5FKAkY7y3HZ9s3ntPA1rnCxfuYvIz258V?=
- =?us-ascii?Q?nFexZJKti++6ibZlveYcUS5VgtA3McqDbtzsNPqjGuZXjB/IHyjI4zleL7c+?=
- =?us-ascii?Q?QTJgrOp1fdGsXvJn3wrr8OpHiNHK2qT+1uOg5WgdBwLG6LA533mcDE1exj7L?=
- =?us-ascii?Q?DWKs78VpTqacnHNCRmZFPv0LJrVABrAI0dtuPKvhLdd7jnjHAig8ullXFi6R?=
- =?us-ascii?Q?XMnyMQF9eZfBGuVHoZQnp58i/LOthehLBaDpSnW52ZbQM8bff/CO7Qxtcskc?=
- =?us-ascii?Q?lBPLUWGBlRzOGUVH1RIc+LFmkEXNEZZXSE8NF0QsCN32OVl8PB9sBHh2AraE?=
- =?us-ascii?Q?yO55O+Yh63TNmTPdnogtHDleY4pfNl9RxnKfVp6uodfgtS1PCPpXvFmgazdM?=
- =?us-ascii?Q?fBNVMl/YYaDiLwi6XrYFAo1COsIh+bcCCq4Z/SIIqEYNPrs4NNsf2izEiy+z?=
- =?us-ascii?Q?VAGcDSxBa+hWxnhEbIlwpGTswr6I3zylN1gg6iQqBI0j855y/3IoseyEq0QQ?=
- =?us-ascii?Q?qh6V8pAwPjc9wDA7B0EnnmOzJdRlvATbFstJLma/Xq9o0rSf19aaRP/83O1e?=
- =?us-ascii?Q?UM4Ffpfjm2GNPfv+zuWfd846VJzT4w0n9SLmJ+tZ6bzMLRQt9omGrnAcijZ8?=
- =?us-ascii?Q?idjlvSR//6TTFOm8E9BjTDoRR4vDXP+CjjJCcRok9cAvfhZw+1b95tm7nd7U?=
- =?us-ascii?Q?RT+nZZAb4HjD2dZB/me1DImoCCQjk0Rxjcj5XL65KCyk0+hncZtxFjZScJ9G?=
- =?us-ascii?Q?jU2zazA9r272HyhVHGe4lZqXwMUd72UxWczxDeRBgX1rro7arP/dPkWGK3zT?=
- =?us-ascii?Q?ogehH9t35wRkF/h796FXRRHZ/MIWXeYG+9DrP+AyZQ+cHyECU5dEhGgch5C/?=
- =?us-ascii?Q?rC6E9PWs2WpRvwoB0szGTzWnrn4vpnqQr+Yltdv91SCObYVe93jB0KOeU77o?=
- =?us-ascii?Q?Q07wejpimA=3D=3D?=
+	=?us-ascii?Q?ny7EPZfO/kKRbkgqzWeXkgTNz2s5hNnj18auCqeyNTmE/E5rieMQorc/gGVp?=
+ =?us-ascii?Q?D+MaMDU8Xstfi7QTasqKrgYD70BGF7dK/R5/apnzEQqUZqbumMQIzcXFdX6/?=
+ =?us-ascii?Q?G5R+/E9MlL0diUKyqexUBdUcnx+HZSzz9S2uhv1lwKfCN2XqS9mlil9DQjil?=
+ =?us-ascii?Q?CqaRAQgdiVJpdUJC7aNrzl1M5/A/vpesaUh4992zDVI/gE2UMzpI1b0Fz01B?=
+ =?us-ascii?Q?zyjDBdb7V92s2InnKxOy+Lw/SLMyk56bokrcqoiY97k7Pf2HbjiqiyDie/tM?=
+ =?us-ascii?Q?PUkpD7sOMWAwQNYl6jPaBDMR2WpbvoO4A3BIM4yNHHREsOMvBdngsHXCZPmW?=
+ =?us-ascii?Q?gQQ2+RtIIYJO+7kIfm2QWWfagohRcHqOULPUneqDhJ0UHmwUnYf8WU0+DMCo?=
+ =?us-ascii?Q?alImzILuYlWN6xpsbG3ZY3eHFihA3xw3nrVRnFceAqX95cJt15giJ5dEHHeU?=
+ =?us-ascii?Q?a+7826BakuwNMOXhbnVkedbBQkYv1ysA2GL/pwJWHKiSaVoTuu+Sh4mquSP4?=
+ =?us-ascii?Q?4TRoTXwLAh9AyPrkI1Cb2EUfjZB9N/HaaHOSA49wTbo+5f70TW586s+/ZcXp?=
+ =?us-ascii?Q?MjfEUO1u+PCSh1ume2jY0pVjPJHpPoZrihpjfuuQPlPJacQ2ky+5Z59jRBLj?=
+ =?us-ascii?Q?ONpitHoTYMZ/aZ/Hdjmn/FyknhkvO9M4iETIATgx9xxXdnXbGk1edxBO2iQe?=
+ =?us-ascii?Q?PxVjCgFRLVKGOmwtKpWwNcM6weAHnieBSIxEunX6AV5Nav6/KdwUWmo3g5NN?=
+ =?us-ascii?Q?k5iT53DW/5uNoxJbcRTZp85E+FvtcmiyGsLtx67m/cBx8xptF0VeaasaKSNr?=
+ =?us-ascii?Q?VecndMm4f59dsuPK3g+td3y0DAkcYqBpSDwkNttkyaWzjDVCYOqvOXzavAUz?=
+ =?us-ascii?Q?J+Oz9opQtygsEijOFu2PUDSx22zlTj+HDfsamwTvGtxwp2AL8ShyjmfHrCkM?=
+ =?us-ascii?Q?bBDShSzcs6O7w7CNUFGxpctK98KDQsJgZR6Gnr9S3oFvkkXeL/cu9TaNjgKj?=
+ =?us-ascii?Q?OzMgGd8dSUgdfolK8klLWt33yA/Hkbt+GByu7BFtNyxEWZMlBtCHGFE04EML?=
+ =?us-ascii?Q?TwOSrHk2A22gO7VOBnwKg6gufMyXH9rnVvBiNsgPgtlRn9j8rIyLbO++cdMC?=
+ =?us-ascii?Q?PUmTbSWCMNhoQqwrdbnNTod4hMQowlusayA9z7xOn5nrHpcGnnSYijnr3Mbv?=
+ =?us-ascii?Q?1hoFifxlQxTopjh/vQrzSBZNbSAG0dIhFYmBYL0uMIo28yu3kMVxUlfYQKsw?=
+ =?us-ascii?Q?8CmjlX+2Jg5n98+O7pNWRdJvMOer/v2/1ImJP06LGTnpIMvEnnVInYBg2dF/?=
+ =?us-ascii?Q?ZdoVosQRQ1+OObPvzgyHaZhF8Z6n477g25yGci32aGeaoit0RPYdZ0WcyclV?=
+ =?us-ascii?Q?60SNieW9LEJLql9o0sqBiLh8gG4OoiiTdTUa6kE/gZ+NqXnK2W/h+q4P9Grp?=
+ =?us-ascii?Q?E/G3D9j6Km169gQdX8bdnvX4QzJ0ySaDp3QmvFiDJMmqeUG676ajti1UPM79?=
+ =?us-ascii?Q?bZg8RrS/oosk3y2a+lsn7lTUhxDcxc1Zq2WS0iJAQxYnEesgz+/x9l6ZUmXz?=
+ =?us-ascii?Q?tA4oWphz9hW3G8q5wERDmPpKB0cTPZF4w9HQyR5gkitOGeQML9euCFFwARDI?=
+ =?us-ascii?Q?O7uhX+hS2p4w5zHk/5enKI3E67x0PH+cjSPLXqV+eWPlGhgO2MVitbDLppAT?=
+ =?us-ascii?Q?6vD8W5TXGFg/XiFSf6zaBMQQdufIU3ys27PSI6WKKrGhWNwzAFowsUtKLUj8?=
+ =?us-ascii?Q?8Pl2JNvVww=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 758c15c9-114d-4fea-da38-08df2f833793
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0020264-b830-46e3-b4f9-08df2f83355c
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 14:54:33.0533
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 14:54:29.3690
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9P2/WpYHI1eVsbelunYvToYzTx1Etjf9OGIx4tQjVGqsHK9D6vBqfrlr6gCMlVh67QBeIz4w/0L8uZVIxEXdDw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: L0kytCw+30BW10Yqh03aucS8gSvB2lE3Qb/1m9BjVqxfugjLGD42hyUumxCBlLKVEdSaq0Fd8ZMT6SOHSeHpwg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10912
 
-Similar to the skb path, the XDP transmit path may put frames shorter
-than ETH_ZLEN in the TX ring, and may put frames whose first buffer is
-shorter than 16 bytes. The former relies on mEMAC hardware padding,
-which we no longer want to rely upon, and the latter is not supported
-by ENETC at all.
+The driver sets the ENETC_PM0_CMD_TXP bit to pad short buffers.
+This works, however sending short frames from user space and looking at
+the padding bytes inserted by the MAC at the link partner, we notice on
+LS1028A that the first octet of padding is sometimes not 0.
 
-There are two callers of enetc_xdp_tx():
+This is fine per 802.3, which does not require that the padding is zero.
 
-- ndo_xdp_xmit(), which can transmit short frames for example when
-  redirecting from a veth interface pair through a devmap.
+However, there is an unproven suspicion that the padding bytes may
+come from internal memories, and unfortunately I couldn't get sufficient
+priority for this octet's origin to be investigated by hardware
+engineers.
 
-- XDP_TX from enetc_clean_rx_ring_xdp(). With RX VLAN extraction
-  enabled (the default), a minimum-sized VLAN-tagged frame is 56 bytes
-  long when it is sent back, and once the driver honours
-  bpf_xdp_adjust_tail() and bpf_xdp_adjust_head() for XDP_TX (to be
-  addressed separately), the BPF program can make the frame arbitrarily
-  short.
+To be defensive and not leak any sensitive information from the SoC,
+let's pad all frames to ETH_ZLEN in software, so that the MAC doesn't
+have to do anything.
 
-Handle both in enetc_xdp_tx(). When the frame is shorter than ETH_ZLEN,
-append a BD pointing to the shared read-only tx_pad zero buffer, the
-same as for short TSO segments, and advertise the padded frame length
-in the BDs. The pad BD becomes the frame's last BD, so the F flag, the
-is_eof marker and the xdp_frame pointer (for XDP_REDIRECT) move onto
-it. The pad BD has no DMA mapping of its own, and it is not an XDP_TX
-buffer, so TX completion neither unmaps nor recycles it. It is also not
-accounted in xdp_tx_in_flight, which counts RX buffers.
+There are 2 distinct cases to handle, for GSO and non-GSO. For non-GSO
+things are trivial; we need to call eth_skb_pad(). For GSO, things are
+not simple, because user space may set gso_size to a very small value,
+which could make the GSO super-skb smaller than ETH_ZLEN; padding that
+would produce more segments than originally intended. What needs to be
+done is to pad individual segments instead.
 
-The 16 byte limitation for the first buffer cannot be addressed by the
-pad BD, so frames with a head buffer shorter than that are dropped.
-Both callers already treat a false return code from enetc_xdp_tx() as
-a drop.
+When a GSO segment's hdr_len + data_len is below ETH_ZLEN, append a
+zero-padding data BD and advertise the padded length in the header BD's
+frm_len.
 
-Doing this in the driver rather than padding the xdp_frame in place
-also covers multi-buffer frames shorter than ETH_ZLEN, and avoids
-writing to the tailroom of buffers that, in the XDP_TX case, are
-recycled into the RX ring.
+The padding bytes are always the same zeros, so a single read-only
+DMA-coherent buffer (tx_pad, ETH_ZLEN bytes, zero-initialized by
+dma_alloc_coherent() and never written) is shared by all padding BDs of
+the ring. Like the header BD, a padding BD carries no per-BD DMA address,
+so cleanup does not unmap it. The pad BD becomes the segment's last BD,
+so the F flag and the skb pointer move onto it. Segment checksums are
+unaffected as they are computed over data_len only, before padding.
 
-Fixes: 7ed2bc80074e ("net: enetc: add support for XDP_TX")
-Fixes: 9d2b68cc108d ("net: enetc: add support for XDP_REDIRECT")
+The worst-case descriptor reservation grows by one BD per segment.
+The pad BD also counts towards the per-frame chained BD limit (15 on
+LS1028A, including the head and extension BD), so a padded segment may
+use one data BD less.
+
+Only LS1028A (NETCv1) needs this. On i.MX95 (NETC v4.1), it was observed
+that padding bytes are always zero, and the reference manual also
+documents in "106.3.5.1.2.1.3.7 FCS generation and append on transmit"
+that HTA Transmit pads short frames (including LSO segment frames) with
+zeros before appending the FCS. On LS1028A it does not say this (padding
+seems an exclusively mEMAC task).
+
+Nonetheless, for simplicity's sake, we keep the unconditional eth_skb_pad()
+call in the common transmit path, but we leave the hardware LSO transmit
+path unpadded in software. The latter is only present on NETC v4.1 and
+later (thus already contains zeroes).
+
+Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
-v4->v5: none
+v4->v5:
+- account for the pad BD in the new enetc_tso_count_descs() helper
+  from "net: enetc: reserve VLAN extension BDs for software TSO",
+  instead of open-coding it in enetc_start_xmit()
+- count the pad BD towards the per-frame chained BD limit, so a padded
+  segment may use one data BD less
+- explain in the commit message why hardware LSO is not affected
 v3->v4:
-- patch is new. It replaces "net: enetc: pad short XDP frames coming
-  from devmap", which padded the xdp_frame in place using a new generic
-  xdp_frame_pad() helper, and only covered ndo_xdp_xmit(). The XDP_TX
-  path is now covered too, using the tx_pad buffer instead.
+- split from "net: enetc: pad short frames in software", bring its own
+  justification:
+  https://lore.kernel.org/netdev/20260921112946.edo5uw6cl7jx6oez@skbuf/
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 36 +++++++++++++++++---
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 61 ++++++++++++++++++--
+ drivers/net/ethernet/freescale/enetc/enetc.h |  6 ++
+ 2 files changed, 62 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 58a88f15fa5d..275441c2ffa3 100644
+index f6b352a3a49c..a9ea124f7835 100644
 --- a/drivers/net/ethernet/freescale/enetc/enetc.c
 +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1759,8 +1759,11 @@ static bool enetc_xdp_tx(struct enetc_bdr *tx_ring,
+@@ -524,7 +524,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+ 				struct enetc_tx_swbd *tx_swbd,
+ 				union enetc_tx_bd *txbd, int *i, int hdr_len,
+-				int data_len)
++				int data_len, int frm_len)
  {
- 	struct enetc_tx_swbd *tmp_tx_swbd = xdp_tx_arr;
- 	int i, k, frm_len = tmp_tx_swbd->len;
-+	struct enetc_tx_swbd *last_swbd;
-+	int pad_len;
+ 	union enetc_tx_bd txbd_tmp;
+ 	u8 flags = 0, e_flags = 0;
+@@ -541,7 +541,7 @@ static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+ 	txbd_tmp.buf_len = cpu_to_le16(hdr_len);
  
--	if (unlikely(enetc_bd_unused(tx_ring) < ENETC_TXBDS_NEEDED(num_tx_swbd)))
-+	/* Hardware does not support a first buffer size of less than 16 bytes */
-+	if (unlikely(xdp_tx_arr[0].len < ENETC_MIN_BUFF_SIZE))
- 		return false;
+ 	/* first BD needs frm_len and offload flags set */
+-	txbd_tmp.frm_len = cpu_to_le16(hdr_len + data_len);
++	txbd_tmp.frm_len = cpu_to_le16(frm_len);
+ 	txbd_tmp.flags = flags;
  
- 	while (unlikely(!tmp_tx_swbd->is_eof)) {
-@@ -1768,15 +1771,24 @@ static bool enetc_xdp_tx(struct enetc_bdr *tx_ring,
- 		frm_len += tmp_tx_swbd->len;
- 	}
+ 	/* For the TSO header we do not set the dma address since we do not
+@@ -613,6 +613,22 @@ static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+ 	return 0;
+ }
  
-+	/* Pad frames below ETH_ZLEN so the mEMAC does not pad them. */
-+	pad_len = max_t(int, ETH_ZLEN - frm_len, 0);
++static void enetc_append_tx_pad(struct enetc_bdr *tx_ring, int i, int pad_len)
++{
++	struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
++	union enetc_tx_bd *txbd = ENETC_TXBD(*tx_ring, i);
 +
-+	if (unlikely(enetc_bd_unused(tx_ring) <
-+		     ENETC_TXBDS_NEEDED(num_tx_swbd + !!pad_len)))
-+		return false;
++	enetc_clear_tx_bd(txbd);
++	txbd->addr = cpu_to_le64(tx_ring->tx_pad_dma);
++	txbd->buf_len = cpu_to_le16(pad_len);
++	txbd->flags = ENETC_TXBD_FLAGS_F;
 +
++	tx_swbd->len = pad_len;
++	tx_swbd->is_eof = true;
++	tx_swbd->do_twostep_tstamp = false;
++	tx_swbd->check_wb = false;
++}
++
+ static __wsum enetc_tso_hdr_csum(struct tso_t *tso, struct sk_buff *skb,
+ 				 char *hdr, int hdr_len, int *l4_hdr_len)
+ {
+@@ -687,7 +703,8 @@ static int enetc_lso_count_descs(const struct sk_buff *skb)
+ 
+ static int enetc_tso_count_descs(const struct sk_buff *skb)
+ {
+-	int count = tso_count_descs(skb);
++	/* +gso_segs to cover one pad BD per segment */
++	int count = tso_count_descs(skb) + skb_shinfo(skb)->gso_segs;
+ 
+ 	/* Each segment also needs an extension BD for VLAN insertion */
+ 	if (skb_vlan_tag_present(skb))
+@@ -926,6 +943,9 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
  	i = tx_ring->next_to_use;
  
- 	for (k = 0; k < num_tx_swbd; k++) {
- 		struct enetc_tx_swbd *xdp_tx_swbd = &xdp_tx_arr[k];
+ 	while (total_len > 0) {
++		int max_data_bds;
++		int frm_len;
++		int pad_len;
+ 		char *hdr;
  
--		enetc_xdp_map_tx_buff(tx_ring, i, xdp_tx_swbd, frm_len);
-+		enetc_xdp_map_tx_buff(tx_ring, i, xdp_tx_swbd,
-+				      frm_len + pad_len);
-+		last_swbd = &tx_ring->tx_swbd[i];
+ 		/* Get the BD */
+@@ -937,6 +957,12 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+ 		data_len = min_t(int, skb_shinfo(skb)->gso_size, total_len);
+ 		total_len -= data_len;
  
--		/* last BD needs 'F' bit set */
--		if (xdp_tx_swbd->is_eof) {
-+		/* last BD needs 'F' bit set, unless a pad BD follows */
-+		if (xdp_tx_swbd->is_eof && !pad_len) {
- 			union enetc_tx_bd *txbd = ENETC_TXBD(*tx_ring, i);
++		/* Pad segments below ETH_ZLEN so the mEMAC does not pad them. */
++		frm_len = max_t(int, hdr_len + data_len, ETH_ZLEN);
++		pad_len = frm_len - (hdr_len + data_len);
++		/* The pad BD counts towards the max chained BD limit */
++		max_data_bds = priv->max_frags - !!pad_len;
++
+ 		/* prepare packet headers: MAC + IP + TCP */
+ 		hdr = tx_ring->tso_headers + i * TSO_HEADER_SIZE;
+ 		tso_build_hdr(skb, hdr, &tso, data_len, total_len == 0);
+@@ -944,7 +970,7 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+ 		/* compute the csum over the L4 header */
+ 		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
+ 		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
+-					      &i, hdr_len, data_len);
++					      &i, hdr_len, data_len, frm_len);
+ 		bd_data_num = 0;
  
- 			txbd->flags = ENETC_TXBD_FLAGS_F;
-@@ -1785,6 +1797,22 @@ static bool enetc_xdp_tx(struct enetc_bdr *tx_ring,
- 		enetc_bdr_idx_inc(tx_ring, &i);
+ 		while (data_len > 0) {
+@@ -966,8 +992,10 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+ 			csum = csum_block_add(csum, csum2, pos);
+ 			pos += size;
+ 
++			/* When padding, the pad BD is the last one, not this */
+ 			err = enetc_map_tx_tso_data(tx_ring, skb, tx_swbd, txbd,
+ 						    tso.data, size,
++						    !pad_len &&
+ 						    size == data_len);
+ 			if (err) {
+ 				if (i == 0)
+@@ -982,12 +1010,19 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+ 			bd_data_num++;
+ 			tso_build_data(skb, &tso, size);
+ 
+-			if (unlikely(bd_data_num >= priv->max_frags && data_len))
++			if (unlikely(bd_data_num >= max_data_bds && data_len))
+ 				goto err_chained_bd;
+ 		}
+ 
+ 		enetc_tso_complete_csum(tx_ring, &tso, skb, hdr, pos, csum);
+ 
++		if (pad_len) {
++			enetc_bdr_idx_inc(tx_ring, &i);
++			enetc_append_tx_pad(tx_ring, i, pad_len);
++			tx_swbd = &tx_ring->tx_swbd[i];
++			count++;
++		}
++
+ 		if (total_len == 0)
+ 			tx_swbd->skb = skb;
+ 
+@@ -1050,6 +1085,9 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
+ 			enetc_unlock_mdio();
+ 		}
+ 	} else {
++		if (eth_skb_pad(skb))
++			return NETDEV_TX_OK;
++
+ 		if (unlikely(skb_shinfo(skb)->nr_frags > priv->max_frags))
+ 			if (unlikely(skb_linearize(skb)))
+ 				goto drop_packet_err;
+@@ -2285,8 +2323,18 @@ static int enetc_alloc_tx_resource(struct enetc_bdr_resource *res,
+ 		goto err_alloc_tso;
  	}
  
-+	/* The pad BD becomes the last one, so it takes over the xdp_frame
-+	 * (if any) from the last data BD. The pad BD has no DMA mapping of
-+	 * its own, and it is not an XDP_TX buffer to be recycled.
-+	 */
-+	if (unlikely(pad_len)) {
-+		struct enetc_tx_swbd *pad_swbd = &tx_ring->tx_swbd[i];
-+
-+		enetc_append_tx_pad(tx_ring, i, pad_len);
-+		pad_swbd->is_xdp_redirect = last_swbd->is_xdp_redirect;
-+		pad_swbd->xdp_frame = last_swbd->xdp_frame;
-+		last_swbd->xdp_frame = NULL;
-+		last_swbd->is_eof = false;
-+
-+		enetc_bdr_idx_inc(tx_ring, &i);
++	res->tx_pad = dma_alloc_coherent(dev, ETH_ZLEN, &res->tx_pad_dma,
++					 GFP_KERNEL);
++	if (!res->tx_pad) {
++		err = -ENOMEM;
++		goto err_alloc_pad;
 +	}
 +
- 	tx_ring->next_to_use = i;
+ 	return 0;
  
- 	return true;
++err_alloc_pad:
++	dma_free_coherent(dev, bd_count * TSO_HEADER_SIZE, res->tso_headers,
++			  res->tso_headers_dma);
+ err_alloc_tso:
+ 	enetc_dma_free_bdr(res);
+ err_alloc_bdr:
+@@ -2298,6 +2346,7 @@ static int enetc_alloc_tx_resource(struct enetc_bdr_resource *res,
+ 
+ static void enetc_free_tx_resource(const struct enetc_bdr_resource *res)
+ {
++	dma_free_coherent(res->dev, ETH_ZLEN, res->tx_pad, res->tx_pad_dma);
+ 	dma_free_coherent(res->dev, res->bd_count * TSO_HEADER_SIZE,
+ 			  res->tso_headers, res->tso_headers_dma);
+ 	enetc_dma_free_bdr(res);
+@@ -2425,6 +2474,8 @@ static void enetc_assign_tx_resource(struct enetc_bdr *tx_ring,
+ 	tx_ring->tx_swbd = res ? res->tx_swbd : NULL;
+ 	tx_ring->tso_headers = res ? res->tso_headers : NULL;
+ 	tx_ring->tso_headers_dma = res ? res->tso_headers_dma : 0;
++	tx_ring->tx_pad = res ? res->tx_pad : NULL;
++	tx_ring->tx_pad_dma = res ? res->tx_pad_dma : 0;
+ }
+ 
+ static void enetc_assign_rx_resource(struct enetc_bdr *rx_ring,
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index d9e91832a9c1..db3b3bad0f59 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -145,6 +145,8 @@ struct enetc_bdr_resource {
+ 	};
+ 	char *tso_headers;
+ 	dma_addr_t tso_headers_dma;
++	void *tx_pad;
++	dma_addr_t tx_pad_dma;
+ };
+ 
+ struct enetc_bdr {
+@@ -182,6 +184,10 @@ struct enetc_bdr {
+ 	/* DMA buffer for TSO headers */
+ 	char *tso_headers;
+ 	dma_addr_t tso_headers_dma;
++
++	/* Shared read-only zero buffer to pad short frames to ETH_ZLEN */
++	void *tx_pad;
++	dma_addr_t tx_pad_dma;
+ } ____cacheline_aligned_in_smp;
+ 
+ static inline void enetc_bdr_idx_inc(struct enetc_bdr *bdr, int *i)
 -- 
 2.43.0
 
