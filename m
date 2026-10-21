@@ -1,103 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792574230;
-	b=gbQPtsyriJFzEvAPHSjF7lKOqPd9hSDklBs9S3XavyYSuHDejrqLdIS9pZ+f9ojJpre7
-	 CI5IL/dVQ2Yk72zTOM065038sCyXZWO07EVPgBLLkUT/XhWlavMBhCgKKgb3ymN7gq5ci
-	 StwsMtn/KHP5MNZxQU3Ihzk2V4Tj0n4unqMxBZp2FSIupoBcPp5RZ/ukMMYgubQ/2qQ5C
-	 oVT7pJYkJog+QO5IfOwiwPnTdWLXAwNVhUduHiYJfpmCfw2RPkMl4qnqghO2SjpntHVpn
-	 6awTqt9lKbSK5hi10OJYsNFcRyPNHLHH50Hj6dt6aZMspfiKgsy9AYDnOBjyUt662jg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792574230;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
-	 X-Accept-Content-Type;
-	bh=9EKReBFykn7zhpEX3hn+iTvsvnnuD91vc8SRQOGYI+4=;
-	b=xQT/uMpniZ8Uft4af25u0hecVEQ6wuV7SUnvfYGvhxHZdmXUVbpy7iSlWz1JtXo5kpEB
-	 YVxTmbVm3g6mItIdqxqv3V+hu8FqWOnVTa9eowPeq0ATUN8ONn+Rj+dZv5yWSa/wUydde
-	 Q5cDOQqK9coPNSXmU0KkIlIY9v7WJynIe25hsKjayNjrFWQGor0NIUwSQEVZXBcLW/dLX
-	 XIo1+MJ1d71v3c+TnFi/D8gZJ2qSnpFqbobRkrCUNq+lvKgNFpgMre1eQz+a9peqyyqvm
-	 sktzTnUNAuMn7ts2sA8mnBpdhOFCIxwCGGgGWKCAOAgo3W2rhmML5JSV30kKsx47iSQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=XI+rK7Qm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.156.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792574310;
+	b=k0Tdwtsxg2Ga/qC1n4++Ll+T4g/3AvxiFoPZio8/MS4UdX3Z5FFaLoVOVnP47nuWvaF3
+	 XQKyZtYQxbyRRqrcQHBeDoRJYusQ0Zdpnyoan82KjPjMLrtkyGxpguRDk9GC99k3BlRPU
+	 dRCmp+QO9dqZgCweGRQseHLGTQsQc6ibiT4POXFRMPDOcdOA89mtp7ns9Tj+yg+dgDH3o
+	 AYOLvphhgTuLQOKKvEaEv/KM/YA2smEXucmWxDMqMfzxDGvXTHnTVp69sZUF2ZAg4mmOj
+	 e6v8yaSc045DjHUwfZENLTt46YgLQ1gDL52QlNukmGEDdnbDRi27VMCJSJQETZPNC6w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792574310;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version;
+	bh=mciEYXOTOH/Axh/70OgPngXreZRnJbIrBuvHC6F4sS8=;
+	b=1+E7IjKcjIvdC+vY5YWZeYxVe9HuPLigVttBWsl6EAZAwaH6CyqIgvu3b2owG2JeHIs9
+	 BQGE65qBxx8q3wUZDdFxxrD5GBfADx7cnlJMPeUVh+8h+0IrgYywcaoKLTGY9stPFBuos
+	 rhoB+6TQsFc4YvC4J6wJDuxFYwHPBrpWmvR6L5NuSIicJkLlTuJFAwO7rzwNWzP8UIwpw
+	 dAnGVffpc93ag7sxcZ/upKXHPURuSejbJsNsM/TRVq59k4Dyd5WlmbLMOsYEFE8pgeYBT
+	 Vwg42q9fWX6gd6m2thIiCFjj0uAfq3jR3H0pq9PTJZQ0VdR9jShWIggQ9p0EImVnMWQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=marvell.com;
+	spf=pass smtp.mailfrom=marvell.com;
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=KRHLHVmh;
+	arc=none smtp.remote-ip=67.231.156.173
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF953606A31E;
-	Wed, 21 Oct 2026 09:17:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF953606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24D2606A31E;
+	Wed, 21 Oct 2026 09:18:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D24D2606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=XI+rK7Qm
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1B9DA201EF3;
-	Wed, 21 Oct 2026 11:17:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792574227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9EKReBFykn7zhpEX3hn+iTvsvnnuD91vc8SRQOGYI+4=;
-	b=XI+rK7QmMxHtwwrzd8K6EvVXzUXwEaBp83ZVI/e2MCiXmYrnn+uGOLo/2ytCPW6VB5LQJs
-	dTf5OCQ4sBWAXDKxT7TH0r1aNrz+ECTkK60pULRBbYpiK+C+iilS7od/ea6Cxj6O+Ry0SS
-	nfrW7Nh3PWP/KeqvlXzF+koHmM9X9PDrPNiuE82Ywc7T/s4Uaad6jnHXalRl7+u1AK8RQC
-	7guFprqNXEQY/GOn9zH8DLd4h3QbcTVpxS1yHe40Ob/h9P5VKzMHXWefLjOgg2ihLxdohj
-	GBc6aXXlmuF/7WDnerFzeOHWiSbhWGM4c3+RLikPFQCgyzNo4W0ND8L9o/CJbg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792574227; a=rsa-sha256;
-	cv=none;
-	b=HG37pnBOBiCsCwqKm+nxbY+6/CpDS/Lfmzl83u79VnDQOkx7e6ew+poPoDFnRtg2r0HAvW
-	sjOreQbP8Zg2et2ZTrseRT1eeG6TpPx1CUdewM2EnyIWkYuKF2LdQoSNBNxCcb9Ha7UyO9
-	xItLAMT0ZWRtZFWof7X7rxmLOJmkUZAUl+tDJmIq5PjZII57mDli71syIn26jeczC1Hfh3
-	+AkIEUcxb61p5LMK1C4P6zxxGZPt0v+Tg2na7l7BkPFw2Okw+18dxtnjbwu3P6074Q04dc
-	HkdH3B2YOfDQsZ8Q3dW00bf33+iM73yMK+9bt4YOwJtIoFuLEGtIDnWfzqz2Rg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792574227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9EKReBFykn7zhpEX3hn+iTvsvnnuD91vc8SRQOGYI+4=;
-	b=GO3itgvn0pGddeD2kw1+ZfaPEclmudj86AefK5zHTu0uFi7fra5vfwuwkQn9KbXP7q2wQU
-	E4Pf7wi2/QIwRO/rLJWarEhQ5wHg63rS5pqRAjj4lnAnX05c+W9yS+pFwKWHTs6OgGGX1p
-	EiiuVom9+nEoqAVnePlv7+egXBvtqOnaV+m0vTQvl/zqXuNiTO3JF6ot7CRQSxkPtSR98o
-	x+0aqwpKwyHULrgU3ynXQUcI3TG/irvS6yWvn3HiyUuTl4xwLqC9HdhqFgChkPyFQRRRVg
-	4JktSCZfh20K1g91NhWUs9Y3ChdNTGgPOUa45oE+1jY8pYlk+By1E4Eqpe8QJg==
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJSRX-000XJw-05;
-	Wed, 21 Oct 2026 11:17:07 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xJSRW-00000006ejd-3pcm;
-	Wed, 21 Oct 2026 11:17:06 +0200
-Date: Wed, 21 Oct 2026 11:17:06 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
-	netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net v2 05/14] net: pse-pd: do not reach a freed PHY from
- the notification worker
-Message-ID: <atiDEviXh3A5jwzp@pengutronix.de>
-References: <20261020171249.853085-1-github@szelinsky.de>
- <20261020171249.853085-6-github@szelinsky.de>
+	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=KRHLHVmh
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69L5j3AK1215381;
+	Wed, 21 Oct 2026 02:18:11 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=mciEYXOTOH/Axh/70OgPngX
+	reZRnJbIrBuvHC6F4sS8=; b=KRHLHVmhhJgAEjHoJXKgfMvO5WHkAqzWoUcRLya
+	yt6uicAeSgR/MU0GbxKN9QCyFE5syeE5zkkuE9LwvZTAeqkCeGKJafN5bqejIbBM
+	ZX8zepSo9ivzd7kdpVOoEJSOBAMEbIXl2A1a7788ZL0MqzaWtYPpku0JeGBIxn6g
+	D/DPfWPf2Bul955Vm1IZ6tGm7Hx827uokloWRf7FhUrwZmmmp+Vjn4/YGLumcEW9
+	1HVsNJ0vpRPYKuT5pltTaQorTnl5kqINXkG4qEJvNAQ1EaocDL600gvJ7+hEA65L
+	ZpEjiR+GWcJvhL9wRnx/nSPbHbX4vy/MjqXC85uHkZX0ZfA==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hebjb4p62-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Oct 2026 02:18:08 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 21 Oct 2026 02:17:54 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 21 Oct 2026 02:17:54 -0700
+Received: from sjc4ccscust-vm07.sclab.marvell.com (unknown [10.110.24.160])
+	by maili.marvell.com (Postfix) with ESMTP id 06D363F70AB;
+	Wed, 21 Oct 2026 02:17:54 -0700 (PDT)
+From: kmahammadraf <kmahammadraf@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya
+ Sundeep" <sbhatta@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David
+ S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Aditya
+ Thapliyal <athapliyal@marvell.com>,
+        kmahammadraf <kmahammadraf@marvell.com>
+Subject: [PATCH net] octeontx2-af: Fix representor flow rule PF_FUNC mask and channel In representor mode, an AF-installed TX rule must still match on PF_FUNC, so do not clear the mask when rep_mode is set. Also, do not overwrite a channel already provided in the request when the rule comes from a representor device; only default to the PF/VF rx_chan_base when none is given.
+Date: Wed, 21 Oct 2026 09:17:36 +0000
+Message-ID: <20261021091736.2406505-1-kmahammadraf@marvell.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,47 +92,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261020171249.853085-6-github@szelinsky.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: 9bOJ46I5lM7kQ0M189Bna0xOyHKeTZ11
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIxMDAzNiBTYWx0ZWRfX8s6CbpJ0sjbt
+ 3GWfeaDAiKQVXRIKndupsWLZhH1sAS3ESo+PmKzLlO3uqd/EMMYh85fofV4PKbF2/08z4Ypa45T
+ osyirtc4LWD5VrW1z8N9lxBg+UtA4rM8DdsnfJh/24dZGPMUuhEtxpL04tNNRx5rT9DrREeTa6y
+ R/TLLDlkxioUFtWoHjuw2WQMylZMc97utAnaSES9CGEDOo8rck8iL6maP3OCzy6Y+1b8gZQpXs0
+ tUeg6NQxCU8tTXer/rwTX/eLVhEIoaAaouRJXEO1C3S/PWplHoY/h+3nTVekmodDW6oYNINiIut
+ r1vxPjJXM7bg07pftIV30kVpA/xNFXwozb5n8q9l7/4jPfurUzypC/g4CdLyVayKV8LPA6e62bU
+ uU5a+FvOf/Yi/z4wFhjgDcuHchUuvj2yRBPZjG3j0bVQRnCZOFTezkqT1YoC+uhsOjQv4g5RHGP
+ 236YiUEk9mksz4dYM0w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIxMDAzNiBTYWx0ZWRfX9sj6qAawFnKD
+ wn2zsFsivyEMOR8UVQ0GRXS9dpnItFQ0qr8LV2GNNxxsqQcFfHXsW/B/EfUUwOUabSc7KcGqjvG
+ F9a+9YodLn5HtWB0eeuFpOATc6KWnf4=
+X-Proofpoint-ORIG-GUID: 9bOJ46I5lM7kQ0M189Bna0xOyHKeTZ11
+X-Authority-Analysis: v=2.4 cv=BYdNQbt2 c=1 sm=1 tr=0 ts=6ad88350 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=rQimyMRkXGdN88wx:21 a=uleU-PZzgXoA:10 a=660iZSQnnn4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22
+ a=M5GUcnROAAAA:8 a=0xJ0BhhoCPI0sQK9vYcA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-21_02,2026-10-19_02,2025-10-01_01
 
-CCing: Maxime Chevallier <maxime.chevallier@bootlin.com>
-for phy_port part.
+From: Aditya Thapliyal <athapliyal@marvell.com>
 
-On Tue, Oct 20, 2026 at 07:12:40PM +0200, Carlo Szelinsky wrote:
-> The notification worker holds a reference on the pse_control, but not
-> on the PHY that psec->attached_phydev points to. If the PHY is removed
-> while the worker runs, the pse_control survives and the worker reads the
-> freed PHY. The same happens without a race when two PHYs share one PI:
-> attached_phydev keeps pointing at the first PHY after it is removed.
-> 
-> pse_control_put() unlinks and frees a pse_control under pse_list_mutex,
-> and phy_device_remove() calls it before the PHY is freed. So instead of
-> taking a reference, let the worker look the pse_control up and use
-> attached_phydev under pse_list_mutex. This nests pse_list_mutex inside
-> rtnl; nothing under pse_list_mutex takes rtnl.
-> 
-> For a PI shared by two PHYs there is no single netdev to report to, so
-> clear attached_phydev when a second PHY takes the pse_control, and warn.
-> Events for that PI are then no longer reported, even after one PHY goes
-> away. Failing the second PHY instead would fail its whole MDIO bus.
+Fixes: 6c40ca957fe5 ("octeontx2-pf: Adds TC offload support")
+Signed-off-by: kmahammadraf <kmahammadraf@marvell.com>
+Signed-off-by: Aditya Thapliyal <athapliyal@marvell.com>
+---
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-A PI shared by two PHYs on one connector is a rare setup and no in-tree
-DT has one (prtt1c gives each PHY its own PI), so dropping its events is
-fine for this fix.
-
-If this is ever lifted, the PI should hang off the port rather than a
-PHY: a PI powers a connector, and with phy_port
-(Documentation/networking/phy-port.rst) net-next already has a port
-object to attach it to. That is net-next work, not for this series.
-
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index d422bdd5e8f8..a569a63a21d9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -1397,7 +1397,7 @@ static int npc_update_tx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
+ 	/* If AF is installing then do not care about
+ 	 * PF_FUNC in Send Descriptor
+ 	 */
+-	if (is_pffunc_af(req->hdr.pcifunc))
++	if (is_pffunc_af(req->hdr.pcifunc) && !rvu->rep_mode)
+ 		mask = 0;
+ 
+ 	npc_update_entry(rvu, NPC_PF_FUNC, mdata, (__force u16)htons(target),
+@@ -1846,7 +1846,7 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
+ 
+ 	pfvf = rvu_get_pfvf(rvu, target);
+ 
+-	if (from_rep_dev)
++	if (from_rep_dev && !req->channel)
+ 		req->channel = pfvf->rx_chan_base;
+ 	/* PF installing for its VF */
+ 	if (req->hdr.pcifunc && !from_vf && req->vf && !from_rep_dev)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.25.1
+
