@@ -1,62 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792615255;
-	b=yHR+lIqbJRQkShumnOproIe6RM9aT+uIHBHopx86IC+0GnaxyD+DSU6b0Grt8S5cUjWj
-	 7jpFMfMznC2qQaOWhTkflZC5f/TXLBq8vfISpHPDG4SDGULvujNuQEHmG0/P4a+lTJIZ+
-	 pzRT3erEXCzIfYszvM2AEWWNM9eE9ZTqlYhaYZbHLBKgdDIljNBvD4dQJ+u1rp6W03Tc1
-	 cJdADaD17PzJNEX88YP9GwPNA+BDhKC1ecYx4Zk0hhQPmg/ErUHKUrtyLxOFmjaJwDYjn
-	 8aDuO5ybG62+B3aDjoEEHYHu6gyGj2LGCW2w1vedpxcSr3H6/Wtd2h/egKvK8LBDKvQ==
+	t=1792615348;
+	b=Qthmi9SrAEVIw2RnhwBzMWbni8P1jGTwgJHsNbQrE1djw8G7LV/y9lOm6+pwfHmSF13E
+	 JdGhxRMb8MePLQy0XwpEHNxRXyePkZnzeThOrdr3bd8+CE512m1LVKNBj8Mv/L/cmexzO
+	 IWVv0D7Yjwg1o2FLqlVWb+kWVLIZytG/wo6kcRhm4DNHVBSCzj2lWxhquW53PXsGJdY5p
+	 jDJyLKeIlk43FxvbDe8+GDV7Nf8+O02kzlqPYSCkjVO1NZmyPslfwuGIHOc+NkAcqMiri
+	 618Jka+jZ1sW12+4W9qzCrbfhcBrD/cnkBP9u894m+oC0wx5jIAz4AdmbhtLqnLr4yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792615255;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=GSL1GGdImg9hl4VmD8JgKMsvGIQDNZPkKDE0HV3fsIk=;
-	b=CnGukwZKFYo7tdWeFVGnunkGSvcInrz0+PZTkIH30dUHuv3zmSsAf26j/Zr14k0x3pnF
-	 aq8DEmW0alVO5/8nYtjlzz4uJUZr5MDqy2TdVswUmlJK+pO9RPUE8ZS4UUNK/rTadC5nj
-	 vpdejmlh0lRCo7dS5RIrFUmbg5VQXOjUf02wQgRp2lcSNsuuYDW+dxrwNAZ4BVDO0bn2J
-	 MUPFfXlgn7AZvdiU/IGql4joNt6sZDsUCs+Zcl86xwCnO1Pca90FcQ6d/U/MMiqmVzKgj
-	 KdBFYshNFlmXCJ9jHZkN2CeDpovDpH1U8qJRI4jtJK8YX54xcaebqD6frTjuKIvYHiQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792615348;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=34J7LbnzvQ5Zic/ndmCEyRFN7arij33O0IT72Ear8mGITZ8R+4NayiHb9B9jfAIrCJJf
+	 b6bCiMEn0nTLxrK+Ovvrg/FEtZX7Y6meq/HgVgFJBda7DRjiHR/g2dTTK56hbDoTF/Svh
+	 V5YSBF4fOhm1bB8QfYlArVmF2eZzZuqdaCf4GAk4ixk6x+9wXqtk2ygUP/gV0i6qh78eD
+	 2aj5ZVIenzEnX+HvXLcn8XwGDuqcEFIzhFx14dP0hhBIoXH0Hifjxo0rf7XgGTbXZhbcO
+	 I5O7+6Ft/5CFyqbTwgS5yj5pf13lNai/4Q8spt8Wo67KYIeGXqw66WTOYf3iWGN4/pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bY6t7Nko;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hliodYKD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28612606A319;
-	Wed, 21 Oct 2026 20:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089F9606A31D;
+	Wed, 21 Oct 2026 20:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bY6t7Nko
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0654E1F000C1;
-	Wed, 21 Oct 2026 20:40:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hliodYKD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D54C1F000C1;
+	Wed, 21 Oct 2026 20:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792615254;
-	bh=GSL1GGdImg9hl4VmD8JgKMsvGIQDNZPkKDE0HV3fsIk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bY6t7NkopaHQe5aa/mdvJAALDELewJyZEq+q1bwFZuNAuIm53sdBHodM6puPc8Mya
-	 OghPky/009O4iGSgpCnSZvVtdQUi1re/Zb0Y9X5IA6gCj77I5g2Th+1lthOCevqsGS
-	 F0IU62MlXLPaFNFCvwmVweGu+7hTD6pxwbBjT9zJlI3NLRBz9fD6YIKtkXUKyAbeZo
-	 u8eMWbIh25rdKMyclx45baYwDh6GpZFssI2Bw0LC7wXwZ0YOqJINS3aH9BuDbAxGWE
-	 cHDhV6orObUIybY6QLvujsX3XZuB0zKRfiyWDsCxtk+ZbYGb80RnU8wRd1XbTrR8sH
-	 +QgoqAfmrbs1Q==
-Date: Wed, 21 Oct 2026 13:40:53 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Hu <weh@linux.microsoft.com>
-Cc: longli@kernel.org, kotaranov@microsoft.com, davem@davemloft.net,
- pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
- jgg@ziepe.ca, leon@kernel.org, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, shradhagupta@linux.microsoft.com, horms@kernel.org,
- ernis@linux.microsoft.com, stephen@networkplumber.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- gargaditya@linux.microsoft.com, kees+treewide@kernel.org, kees@kernel.org,
- mawasthi@linux.microsoft.com, weh@microsoft.com, edumazet@kernel.org
-Subject: Re: [PATCH net-next v8 0/4] net: mana: concurrent HWC requests and
- dynamic queue depth
-Message-ID: <20261021134053.74169d5a@kernel.org>
-In-Reply-To: <cover.1791998462.git.weh@linux.microsoft.com>
-References: <cover.1791998462.git.weh@linux.microsoft.com>
+	s=k20260515; t=1792615347;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hliodYKDGdw3vIrDwEXiJRZLczydcEIg7WHMAfXTJhZBYe3erVdcMWClgLhc/XP/S
+	 RUN5dkVRAUWHov6fvvgpwHmNgfuRqXh0cNq91rQPya5Btt1I37ggywHMA4xrApkLXP
+	 7+rP1ecJ40W+cgVTyKNkpiutsszOOz9/VTwxbDtaX/+wzG9QIhTMQDPXfUbWtkQ9z3
+	 plkoFzQpdM+p9+8HK9CNihwu8oLMJSDGkdT+kt2fl/7CU/FC/YfUyf1kpfD2Zj+A3+
+	 lL+N0wHSSn/va5RG5QVXXM9GmNVdPaos6cFMuArrpsUp/+HMVK6yknR+OjxpBJ3vMI
+	 ETawwS5UatGJg==
+From: netdev-bot+sinfo@kernel.org
+To: Giorgi Kobakhia <gkobakhi@asu.edu>
+Cc: Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Xiang Mei <xmei5@asu.edu>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: 
+ Re: [PATCH] svcrdma: bound check rc_curpage in svc_rdma_build_read_segment
+Date: Wed, 21 Oct 2026 20:42:26 +0000
+Message-ID: <179261534659.3290.17346208401833249303@kernel.org>
+In-Reply-To: <20261021203817.3898293-1-gkobakhi@asu.edu>
+References: <20261021203817.3898293-1-gkobakhi@asu.edu>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,21 +65,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Oct 2026 12:06:11 +0000 Wei Hu wrote:
-> This series adds concurrent HWC request ownership and negotiated HWC
-> queue depth to MANA. It starts from depth-one bootstrap queues, keeps
-> setup private until the final channel is tested, and preserves the
-> distinction between CPU lifetime and PF ownership of DMA mappings.
+Hi!
 
-Please respond to the netdev-bot AI review in a timely manner.
-(You can ignore the global review bot, it's not even CCed to
-netdev so maintainers don't actually see it :/)
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Can't tell at a glance whether the Medium / High severity issues
-are indeed valid or nit picks, but since the merge window has already
-started let's revisit this after. Please repost in 2 weeks.
--- 
-pw-bot: defer
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
