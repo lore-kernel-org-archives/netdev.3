@@ -1,55 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792567066;
-	b=rQCXRy6MQVV7OIeIf8yf2II73guuC7DX8604IDkYDf2A9/UG8tJIG0/uDx/qI2dOCiNQ
-	 4jSU4L9NiF7u/jlYGyHNbIujImmYGlNA3MYFlhbBASP6s7zl5QdteVA1UFskh/nP9sV0I
-	 Z90vjoyYVlZPVDrEba7mVUatVoItiYmz6k7SNgOdMGcXJr077k1TnLb/g77qvMn+YKJMv
-	 OHnH6NQqMSZhM+JbfnOaWjx/AUaE0fI4ALo0A8wArnj4P+YG85AMqJYmceVjQH3Q2PhWs
-	 JU3KCPfhQ0Qa4PNO5ypUN8pcfgDAupfuPO8g+4TJtkfyzoLU2qxv9efjwgOsyXNjK1g==
+	t=1792567535;
+	b=DLVlJEBBPb8WZQLOBL7uS3oc1ISmshvDwYWxd4itgsN8cfCgXTOGlbiskS2BcckVJC+D
+	 bzaD2NYdizBNi5DpycXikPbk+c3xe8c0bf2oWdkgWRU0uUDso4qPw4Xm3vVaNvDT+H8uG
+	 R0H9cjdAL326gXGlZDiGcTpj9990DP1ZhvPABY7wsXHfNwijZZocLdr8oloJKftPykmeT
+	 bQLhuYe2Opr4Hni9OfCrH0r9lIliuyUFA0fm88iJH57Cn8euc2p9dHYCEZcq7APR18hqy
+	 c/+ZkLDk72WLw0wnghjHvTPTG8xQm+dK9sL/ZZk6dMEco8MM0b30i3qw9ugY7xCR4RA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792567066;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=MMgOZgkUteCFlHmZXsf24fsfX17GQD8RIBRAoV75lVs=;
-	b=AdsLH8YaW8XWsDi6aNJT7PU0lM8Ax6n2a3CXnUTfRa1VxDJKTcCj+63QpKAYE2SGzkUZ
-	 tEWpHS+uHZz484I3sIyoQCEoBALCdHbY4mTpqHoqiyAe8ZW8NDjJtVpK2xW/OAv78g6CR
-	 PgWXN21O7EWc9mpXnL/teZ3ZHjAH5hSSW7IBgrKiu+GitxTph/u1ZHmAsH7Js6fypmUca
-	 AB5aelsGa5lKaK9TnlNZVvimAaCnzzNIy2rFqLuLqWfziz3TcjOBHikldFxEl8ggA6tdm
-	 f9T8vpp/tjDcPcBTE/fTvWas9GJTH2gfjyoVTUHWm0HPaMUxEChcKTZUfyTJVHuTF6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792567535;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=BqNlK5oUyB6wKQ8IfAXz0SrJ30GxNkRirmJEJkun1PI=;
+	b=imemGo2vo/m8twPwnOVdb0cwujedhvyPRl+TOdT/n+Qr07tfWzVrG0cFOXIVMH79RRnK
+	 R6ykiaIDPRfFXf0xQoMaVnEq3FWjLwQ3LG12tgqyNIYKb2xNJOu4WOJCSBAlPUOE+kGek
+	 gHTFrqVRUQg/m6JO4pgnm4w6nGqaDk8SNxBPa590Ab5OQh8Bgsem0+zUG6DNxaZdXyXZi
+	 gPYcML72csf5y/QXZPP2RjlUcJKmwbCOEuUcUEjr87guSEI9DmVaf9TVG9Y9ZggZS16sv
+	 j9EfzUorc22YgbeRAXTWNoGKq/1QrdogkTXFvJxQhIB05SC3IVym9YhOPIffu2gwGFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=feTdqOen;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AIo3J4VH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7FD606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 07:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F30606A31A;
+	Wed, 21 Oct 2026 07:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=feTdqOen
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C991F000CE
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 07:17:45 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AIo3J4VH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E691F000CA;
+	Wed, 21 Oct 2026 07:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792567065;
-	bh=MMgOZgkUteCFlHmZXsf24fsfX17GQD8RIBRAoV75lVs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=feTdqOentVS2bwAoSATRUELrx2e8gCymxaHDdTGCHuN9y1yRf+T4bhyyNfMjm6aSg
-	 xhh/tWD6Vl6PzLTsd9kwlk7nW26nx1DoQTquSSRIiRr3qq8gVsYsCKD8tMItkhnjTb
-	 HmZtCOwqNNjHwONti87IMVOsHmLr3EtSX/2XW9SGE5dH3OxTX39v31kD/DC4UAXwqG
-	 EXKYPoMGmhv3CG+PveWOz4oPQJ1H/2mX6C9746GoiIedUeUsZbnnx3nr/CBjD/BjpU
-	 Fjbz9Q834gfCY12QmFQ/rZAelgpOjOBn8yHCx1wqeYc9i/tY/4o5MniGeG3NWW9z5t
-	 OmKUKoxTtYmtA==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3ab4c608a6dso3612371fa.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 00:17:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwS5m7F16nhIij+L1s/knAB27JARa828Ea30Qu6EzdyK6JbCYA72GVO3zPS77CmvgLln4lJpOQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ5ZsTpCH3KzilOEuwvshuq/XrZd79I7BqxHBP2C+seSr4Qqh5P
-	HgsOVysdkfzEp1pO0RmF44eyTpVlbs7uWZbo1pG03aPyUCa1foDYmESF35OpXGI0lUDmp05hdvb
-	s39fay8o77dlX/Gh87ZbXOG/zQgNXQpw=
-X-Received: by 2002:a05:651c:a0dc:20b0:3a9:a9f3:1e93 with SMTP id
- 38308e7fff4ca-3ac44165272mr2468721fa.10.1792567064242; Wed, 21 Oct 2026
- 00:17:44 -0700 (PDT)
+	s=k20260515; t=1792567534;
+	bh=BqNlK5oUyB6wKQ8IfAXz0SrJ30GxNkRirmJEJkun1PI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AIo3J4VH+6ukWxcRId4tC/Y15Fr+i02NbF776bKoC7mOcXE2hwvXCp3w/L7g9kKtr
+	 ph72GduZmIspAI4g34Vx1RVr2zmbPsdhv9HLdU/l035RWeXSlYZTSTJ1fjbW6tsmo5
+	 NK06lzsi2NpWg8EH+Oay4KvFFzx4fXs/i3jk9U56xTHvIbu/OwkuxyQ0f4GtohZSU0
+	 kJ8XY3xxBdih9TND6ib/+G08XOw4DM07v8DQwelav5+c19ZLAzJVGUgBuHU5qwluzm
+	 q6TN+g3HqG5BmUbjv3rRMxZ9jamOrPrzPaYlQxH9OmJ2TU+B4oH2W1NsWNqZxtbrVW
+	 qmeD9OO72GRDg==
+Date: Wed, 21 Oct 2026 00:25:33 -0700
+From: Wei Liu <wei.liu@kernel.org>
+To: Naman Jain <namjain@linux.microsoft.com>
+Cc: mhklinux@outlook.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, corbet@lwn.net, skhan@linuxfoundation.org,
+	rdunlap@infradead.org, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] Documentation: hyperv: Remove support for guests
+ on Hyper-V 2012/2012R2
+Message-ID: <20261021072533.GG851443@liuwe-devbox-debian-v2.local>
+References: <20261009174007.6745-1-mhklinux@outlook.com>
+ <12b726c0-46c6-4f3e-9119-24f6c877e3fb@linux.microsoft.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,56 +62,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261017104228.3418775-1-edumazet@kernel.org> <179253060802.212662.8966600542568977512.git-patchwork-notify@kernel.org>
-In-Reply-To: <179253060802.212662.8966600542568977512.git-patchwork-notify@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 21 Oct 2026 09:17:31 +0200
-X-Gmail-Original-Message-ID: <CAL4WiirWKxpSGnkY1Udi8kkMhyHEYh=4jir76A8h+dra2uXv8g@mail.gmail.com>
-X-Gm-Features: AclHuK96_QLn7gZWS7cetluTI5BD3tpwUAqq3EFa3exVX7XNiTcbZONe0yaiNs4
-Message-ID: <CAL4WiirWKxpSGnkY1Udi8kkMhyHEYh=4jir76A8h+dra2uXv8g@mail.gmail.com>
-Subject: Re: [PATCH net-next] ip6mr: clear skb->cb[] in reg_vif_xmit()
-To: patchwork-bot+netdevbpf@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12b726c0-46c6-4f3e-9119-24f6c877e3fb@linux.microsoft.com>
 
-Le mar. 20 oct. 2026 =C3=A0 23:10, <patchwork-bot+netdevbpf@kernel.org> a =
-=C3=A9crit :
->
-> Hello:
->
-> This patch was applied to netdev/net-next.git (main)
-> by Jakub Kicinski <kuba@kernel.org>:
->
-> On Sat, 17 Oct 2026 12:42:28 +0200 you wrote:
-> > reg_vif_xmit() hands the skb to ip6mr_cache_report() as an
-> > MRT6MSG_WHOLEPKT report. skb_realloc_headroom() copies skb->cb[]
-> > into the report, which is queued to the mroute socket, where
-> > rawv6_recvmsg() reads it as IP6CB.
-> >
-> > By the time the pim6reg device transmits the packet, skb->cb[] is
-> > not IP6CB anymore: qdisc_pkt_len_init() overwrites iif and ra,
-> > and any qdisc installed on the device (fq, fq_codel, pie, cake...)
-> > or a tc BPF program writing skb->cb[] fills the area holding
-> > dst0, srcrt, dst1, lastopt and flags.
-> >
-> > [...]
->
-> Here is the summary with links:
->   - [net-next] ip6mr: clear skb->cb[] in reg_vif_xmit()
->     https://git.kernel.org/netdev/net-next/c/238164201431
->
-> You are awesome, thank you!
-> --
-> Deet-doot-dot, I am a bot.
-> https://korg.docs.kernel.org/patchwork/pwbot.html
+On Mon, Oct 12, 2026 at 11:10:08AM +0530, Naman Jain wrote:
+> 
+> 
+> On 10/9/2026 11:10 PM, Michael Kelley wrote:
+> > Support for running Linux guests on Windows Server 2012/2012 R2 Hyper-V
+> > hosts and Windows 8/8.1 hosts has been removed, which includes removing
+> > support for operating Hyper-V synthetic timers in other than Direct Mode.
+> > Update the documentation to reflect these removals.
+> > 
+> > Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> > ---
+> > Changes since v1:
+> > * Updated the netvsc.rst network driver documentation [Naman Jain]
+> > * My "below the line" comment in v1 wrong. It said that removal of WS2012
+> >    support was going into 7.4. But it is actually already in 7.3. So
+> >    ideally these doc changes would go into 7.3 as well.
+> > 
+> >   .../device_drivers/ethernet/microsoft/netvsc.rst   | 14 +++++++-------
+> >   Documentation/virt/hyperv/clocks.rst               |  8 ++------
+> >   Documentation/virt/hyperv/overview.rst             |  6 +++---
+> >   3 files changed, 12 insertions(+), 16 deletions(-)
+> > 
+> 
+> Reviewed-by: Naman Jain <namjain@linux.microsoft.com>
 
-For some reason 'Reviewed-by: Ido Schimmel <idosch@nvidia.com>' has been lo=
-st.
+Applied.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/=
-?id=3D238164201431a425e48dfcb8e9a59de63caf175b
-
-Thanks.
+Wei
