@@ -1,49 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792548007;
-	b=B4aSsiNPnmXba2PvGdZInZQ+YWHyfoaEdjUUzwjhDANlvw6eJTyVBAW3/XPVV/L0neNc
-	 6zYBAYEL7BIwfoJVRwT/2QuAGHxgnNloaqVVDw5p2W3qcSYl01qiPdxdjFUP9RPKny1r/
-	 /1g3RAVMrf59UuvpAyLkn1olDb2jWeDVpSJodeL8ZYtm7tnO7cKDeuH00hskagrxDZr+H
-	 2ap87Q2VHd13pM6Y94HhnPWTG1u67b6gD2hOLEUAnB+TyDaTbPzsBIa1X/pHD8hkQ41an
-	 3DMRK5bdFbydROo9aM6mpdoZNeBPtZ0zz8vsOTUCiA3NCCzRoRsnsOVoidHzE9zGvJw==
+	t=1792548212;
+	b=voKhEQrPb5vi4vPcbZHRWaO60jfu10wZMLCUYMsL6gf79R8lPUfsnnbFNIJEZ2wILX63
+	 eaqOBiCLqIoqbe4VOmfYWfuD6D/7nS0hFd4X6rDoHheFhWv+VohcbHA3KmCJzz/o2ORtN
+	 eaXJedU7+50Nol5cGK7kSBVRl6g1iYbkEGBXcstwRZqhWj54S55B8tvOIbscf8kpOSMWI
+	 tU2RC/YlcXMrSIdBXGVkP3KKFnc7QEaJLDG81EIuYjZ1KdChrbMRxSiKuACY2ItBanyc8
+	 vgEZp+0rhDa8ErNw6181xAnuFsP9ascRdOCE0UVJ5H3YznTGPt/u4fsYwPjIt36jQVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792548007;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=0ezzVwOu0VoLVNOGHWkV3BBAKPLq8fzvzE339WEj3Q8=;
-	b=CetDL2+2Bpb4VS1svLONcpf0mtdkQIndR7+nGGL5mVesDniIKiGOQ5aGNVYCGRtgS/2g
-	 zG6KxlvSFxNLfKt3bTffLALUNgwCBcdLsDVmfFZ1pqEUTXgXYMl64LzS8xPPil+LTRsSz
-	 3KMswtLyCRDuC4o5LfdEaZ+j/jewWJdBuMSaOJMtAaf05TnkkqCs7WRgZqc7tHpJgYde8
-	 uWMbr2Xm3PqvlCg9YxjmCRcWqW+10pwQkDw1znG2tXIn0VLQwVFLsGFEbr9SktFPSk2Iz
-	 mq+I1ONzGmBcSegsKvOsjNCIqXmd+vnSvWdI0gfsSKOGlSXkmk0jRCTDe9mTHc5HnYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792548212;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=BlvUMX8Lu0GoGP4/a2/X6c3y355TJFwaE46ARxjS7zQ=;
+	b=GAxAjweaPwuQF3Yihc9f1ZBmxiccIavB7dN3Aj2hVsNv389IlKEjfKFpGUxDTTDUPs1O
+	 faeTRsld6AqBkQ5G62qUl5/kfED+aQIi4mSaDahmejjNs/PfmjM9I6u8AdEsYzUtT6712
+	 geN9QqCAGhyRHxoer3X+7GjNlyyOneYGRTDXLV3zp/VejHHknEaQJ6c1oxWL27WyyCBVJ
+	 NwiTZnSmXiNfShNQ+hX3GB/T6CQ0IylWeDhbkYo0p1lcK3JAPgpO+ylIaaMVUoBh5EFiw
+	 6t47MhbpbgghiPX5nmpbUVoXmdiNJyk333z8XJI53GkKs0Lz6zmnZR9ANWScxHnvonA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AD4TBv6g;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gt.tech.gov.sg;
+	spf=pass smtp.mailfrom=gt.tech.gov.sg;
+	dkim=pass header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.a=rsa-sha256 header.s=google header.b=CifFtXAT;
+	arc=none smtp.remote-ip=209.85.215.171
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0565606A31C;
-	Wed, 21 Oct 2026 02:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D32606A31D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:03:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8D32606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gt.tech.gov.sg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gt.tech.gov.sg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AD4TBv6g
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4745F1F000CA;
-	Wed, 21 Oct 2026 02:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792548006;
-	bh=0ezzVwOu0VoLVNOGHWkV3BBAKPLq8fzvzE339WEj3Q8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=AD4TBv6gzNVxhKE6serzLOd8oRNgmXsYn+B+hDwWYixGF+S7uo1YKCrnr9srM0mrs
-	 VXd6VTtNL3Ck9JMoTeju2Ev4uVPsaA2ySHYEJSIu8Ni+5M09GxMl4zbouMPOQl37Rt
-	 lY+TNCin3/XfqJhWlXV5vERC27EYywYryE6vUHUe9qsZLkboFgUZTnvAdKHZLA01bp
-	 MUXqwdmDV7Q1WyENvgLflH1ZeZw0ySMKKLHR29MDT83g1uKlox4t8sQahTXnvFP7qr
-	 TqnCX/DhkwTy4fSsrN/U0uqxDBZYDonvNRKGi49eMtclTU/Kh8xzEUp08PkDQbZqQh
-	 8FbrX7Klxf0BA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2B03809A0D;
-	Wed, 21 Oct 2026 02:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=gt.tech.gov.sg header.i=@gt.tech.gov.sg header.a=rsa-sha256 header.s=google header.b=CifFtXAT
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cd5e6f0a22bso36864a12.1
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 19:03:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gt.tech.gov.sg; s=google; t=1792548211; x=1793153011; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BlvUMX8Lu0GoGP4/a2/X6c3y355TJFwaE46ARxjS7zQ=;
+        b=CifFtXATkbaGlUsTaBdoFlT+mxYjc+kFA264t+FxPrPhmj7Bsnk92kj5LGKdG3gXbF
+         NEaI+UPYZXsFx6VBd9CSHcq32NVUKOQjKTc0D+Ep2EhxZzJ40GuR97ZT34oJ680QY3GO
+         yAYK2mZBW14HZ0n6VGzAmq/FFAqVw7nAOo98A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792548211; x=1793153011;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BlvUMX8Lu0GoGP4/a2/X6c3y355TJFwaE46ARxjS7zQ=;
+        b=foVNJW9/NTcVYpx/4RZTLqEnYeDTuTWHOWSWdknVqx//H8qpbKThxkNCAcNSSwLSHx
+         jijHoLh2LVOfEyDQL2gV1K35bYcwa+J7E3Y7qLaV0QKCvD8mTIBgvgNOQqN9GVScuxzd
+         IgBf+kp8uPeB5I+4oY/nkyx4OiKMXJ5wf360uKkjhwtSR2tmMzw9lTI3hBODLB/lSKyB
+         NEkGqKXUAUIdni+5D9ObnA1litrPCp1ts+U9AmzuPiGfWED2Uk+ZY8GILbVRKrZh3wOY
+         tT0B73bVEYFRgFby63LGG/Y3b4m7hJE7+58nk+Ongh/stF0MfmPz/yNCsRAlXLe51ZSr
+         LSBw==
+X-Gm-Message-State: AFq9FYJ+QBE8Jbyxz8iQE8EjSnWuUmtL0RK/NQ73Nj8QxiPfAXhUuzQl
+	MngCYNalsMtIY+vTG9fjyi/6dyoSIBANkK2/gz7g4493Lr55R3YL0HZFsCRbkXiCKQY=
+X-Gm-Gg: AYBFou1TI0SkGVHwsA/Teaj7WdEN10O/k+OsGdnKOFm+rTkfWF2qXUFJrz2OO9J7aMH
+	pOELVZSFADY2+phD5293I1SKMJs4Xd0455AHm1FS4uJf4fmtYwTTJhLqDvLqwcGICAbBn58eZuN
+	UpA+ZL5SVkM8IRdbk66eJqY3Mso2qEh2UOULeUPdX1gcmk323NUC9qz2IXtNnOqHqvq/nHP1v5Z
+	of+Q7Db6DlWawi3B77a3aWI1NU5UFb5xAnXLUPSwZf00pvI8FKx+kdr89JpEqDx1GgL1mXXn3nM
+	p6wnAwCDclcv2BHMZ2HhSPZ4U3SHQa8wfmCc0chux2m8qEkiw2usw4OrkPyGn99towLtQ/feTHD
+	DDXBVPuHGrAO/WQeZM4iVWJP6CF4arcVXZpIloQySnnyAnbVOwwJ4da2ticn7rc+MxsJFA1XNgg
+	7mARlCDEqSEF6AN84RF2w+XkYdFF+mVrDK+yW4/KV393yVl7O3pa8HWZgeYN6J9zn0nN4j+nj8M
+	K3+pgNRMjINetlRpDwT7eV4b1Jmfm5wQBcRXD24Hoahq18GzDEmMWTxMMDjztEb7G+8qboeZWYN
+	52AvsmebQQ==
+X-Received: by 2002:a17:90b:548e:b0:3a8:59d3:530f with SMTP id 98e67ed59e1d1-3ad86f23619mr533892a91.57.1792548211109;
+        Tue, 20 Oct 2026 19:03:31 -0700 (PDT)
+Received: from LAPTOP-UUUVNN1I.localdomain ([203.125.131.137])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad8035a117sm1934124a91.16.2026.10.20.19.03.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Oct 2026 19:03:30 -0700 (PDT)
+From: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
+To: Petko Manolov <petkan@nucleusys.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wei Jie Law <98lawweijie@gmail.com>
+Subject: [PATCH net v2 0/2] net: usb: pegasus: fix receive length handling
+Date: Wed, 21 Oct 2026 10:03:08 +0800
+Message-ID: <20261021020310.34045-1-law.wei.jie@gt.tech.gov.sg>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,43 +97,65 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net] net: skbuff: don't copy alloc_cpu in skb header
- copies
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179254800503.322903.6077235155996750199.git-patchwork-notify@kernel.org>
-Date: Wed, 21 Oct 2026 02:00:05 +0000
-References: <20261019174152.2932829-1-cjubran@nvidia.com>
-In-Reply-To: <20261019174152.2932829-1-cjubran@nvidia.com>
-To: Carolina Jubran <cjubran@nvidia.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kerneljasonxing@gmail.com,
- kuniyu@google.com, jiayuan.chen@linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, dtatulea@nvidia.com, bjorn@kernel.org
 
-Hello:
+Two fixes for read_bulk_callback(), both reachable by a USB device that
+identifies itself as a Pegasus II adapter.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Patch 1 fixes an out-of-bounds write: on the 0x8513, every frame that
+is dropped because of an oversized length field advances the receive
+buffer by two bytes, until the host controller writes past the end of
+the skb data area.
 
-On Mon, 19 Oct 2026 20:41:52 +0300 you wrote:
-> Commit 68822bdf76f1 ("net: generalize skb freeing deferral to
-> per-cpu lists") added alloc_cpu to struct sk_buff and placed it in the
-> headers group copied by __copy_skb_header().
-> 
-> This is wrong for newly allocated skbs. For example, skb_segment()
-> allocates a new skb and records the current CPU in alloc_cpu, but
-> __copy_skb_header() overwrites it with the value from the original skb.
-> 
-> [...]
+Patch 2 drops frames whose claimed length exceeds the data actually
+received, or is shorter than an Ethernet header, instead of passing
+stale or uninitialized buffer contents up the stack.
 
-Here is the summary with links:
-  - [v3,net] net: skbuff: don't copy alloc_cpu in skb header copies
-    https://git.kernel.org/netdev/net/c/78d4bd22ec9d
+Both bugs need a malicious or emulated USB device, which
+Documentation/process/threat-model.rst treats as a regular bug rather
+than a vulnerability, so they are posted publicly.
 
-You are awesome, thank you!
+Testing: the series builds without warnings (W=1) on net and passes
+checkpatch --strict. It applies unchanged to v6.12.105, where it was
+tested on a KASAN kernel with a device emulated by raw-gadget +
+dummy_hcd:
+
+The first two tests ran against v1; v2 only adds the lower bound in
+patch 2, which does not affect those frames. The third ran against v2.
+
+- 3000 frames with pkt_len 0xfff, then 20 valid frames. Before: KASAN
+  slab-out-of-bounds writes and a general protection fault in
+  skb_release_data(). After: no KASAN reports, and all 20 valid frames
+  are received.
+
+- Five each of: 1536-byte transfers with pkt_len 1534, 1535 and 1536;
+  101-byte transfers claiming 1500 and 97 bytes; normal frames.
+  Before: all 30 received. After: the 15 that fit are received, and
+  rx_bytes matches; the rest are dropped.
+
+- Frames claiming 0, 4 and 13 bytes (three each) with five normal frames.
+  Before: all 14 are received, including the runts. After: five are
+  received and nine are counted in rx_length_errors.
+
+Both bugs were found, and the patches written, with LLM assistance,
+hence the Assisted-by tags.
+
+Changes in v2 (review by Sashiko):
+- 2/2: also drop frames shorter than ETH_HLEN and count them as length
+  errors, because eth_type_trans() reads h_dest and h_proto without
+  checking skb->len.
+v1: https://lore.kernel.org/all/20261014025307.25233-1-law.wei.jie@gt.tech.gov.sg/
+
+
+
+Wei Jie Law (2):
+  net: usb: pegasus: do not advance rx_skb->data on dropped frames
+  net: usb: pegasus: check rx pkt_len against the received length
+
+ drivers/net/usb/pegasus.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+
+base-commit: 746d0e7e851edefce9656ce744d4ec5e94de6b5f
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
