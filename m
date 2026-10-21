@@ -1,91 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792553090;
-	b=sT38gb1t7Xp/rYkb1c0HI+wV82xv47e+0Bmn9MJeXqzhng18DMMRRpqSfW+V9yzg0R9t
-	 olH2fZA41glh4djl/l5aK4GDk8af4aHChbez8rSObhX/ZFRjobkSp5E/6gp18NCdrHBKb
-	 X8zvqNHXXQaTVO/8mxO2RC2Z/vneR8YZHdaNlPE2nmCW/x5kqu7mbT6j1+YmoOjtlPESr
-	 BDzvxGdX9rw6fZqSVx20cZq0/kK3Tot9dkfzTIb3mEOYf3jDKFCY4dzsE2O+ldeOVjVr3
-	 55oXy2IWY7EbeW4/4S13LhG/vovneCQIfnTCV7iSQILHpZFfWO+np2Igjdfz4yWqWHQ==
+	t=1792553092;
+	b=oR+CPv3w61BZWk68vKJbYmjdjM7ZWAYbuovtUgu+0AtgnYkuffiDZeje3GQwzdruBLKs
+	 pTm/CHLa4efclRjk2CVxpgaBf8yb6wzv0I/1Ma6BtHKBZVspl2I7MgqdEVcvvYbK09/T8
+	 50RPacqUG9dkK9tSCQS6OMT1D0ZrVtE9mZPfwBDjj/IkoDvs2P+K5VZEKv1HHNW2MXwdE
+	 8jiTgbu0bQwfBqNyy/U86sYdSo6azhga46cOAJJdOZZIh27lJSrJAPpenS9e+JW5Bu8lu
+	 6/CJuon2dH76lc2R4TUA+qp2kwy4copAGv6S/NyH96aXbxBkN3hFl7JB39ttG0IuASQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792553090;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792553092;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Y8qAdHKhHoP8DpQW3B1dUXlYVRW6lqzxu3F7cl++c/0=;
-	b=qY+wjZF1ALlK5Q86y4iO6vAbzaqSgOCP0Hio5N1SZxdETTjatbJEGcH1dlfT7YaaHNpz
-	 hLVFt7uBKQSueTADthMyN8YNHnWPCLI07Iwy5526xoYCBoIugPJqG+wKhqIYor4ABrHov
-	 OuWUvAKE++RhAKDNdG/7Mccw9xJRBHJSJWdM9DDSVxETWp4hI84MEnlvXtgDRN9LgJJAc
-	 t4D2e9pR6YW9SuOamZw/LNzLRivYmMB7AHHtkvxSXbqVY1704VUcUAUNZ9X/KKpGM7jYG
-	 N10JJhQ1cUHwJwwW74caAB2k4ebvFsTmS43T/TLt7kO/Fpv1q5XfCzwGUuKPYoAo9KA==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ZFVAKQGsMgdgNfkXAN9sULjMGSL2i7oHnvsLeDRjk+s=;
+	b=RMpGPzl3cmI4pTzkU0B1G5vF96w/i3ORscvYzryH7wC9in1FVX8vGRW8fddIkjezxIZ5
+	 NKtUDL7ePQJMnQQQXDuuiZx8BnbuOvKYckP65SThXRSrQJ6OW7ln2fIPp85KScq5sAnIN
+	 KUS8Qk8l3ygyytkK8/x6lfy0xT/z9k6z+ttBeNtqOMqjx9wplkTxJhfiqH6aw3aeKMiFQ
+	 HyMb1K+RKRKx0bCdhcxkKLYGOLE2prM936Yv/Aq9AcluD2yk6A5S14IwfYramD+pFZrpb
+	 PAGm2r6+lr++fKmUOQloGuT4XKahLENccOVoDG5TOtG0zDd1aVhr0/bKYL/IxEj1A3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=octane.security;
 	spf=pass smtp.mailfrom=octane.security;
-	dkim=pass header.d=octane.security header.i=@octane.security header.a=rsa-sha256 header.s=google header.b=leOHtMeO;
-	arc=none smtp.remote-ip=209.85.215.176
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	dkim=pass header.d=octane.security header.i=@octane.security header.a=rsa-sha256 header.s=google header.b=ojPcxL9A;
+	arc=none smtp.remote-ip=209.85.215.169
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D093A606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:24:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D093A606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5E2606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:24:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D5E2606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=octane.security header.i=@octane.security header.a=rsa-sha256 header.s=google header.b=leOHtMeO
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cd6a7e1f4e4so49862a12.2
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:24:49 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=octane.security header.i=@octane.security header.a=rsa-sha256 header.s=google header.b=ojPcxL9A
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ccca948203aso31201a12.3
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 20:24:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=octane.security; s=google; t=1792553089; x=1793157889; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y8qAdHKhHoP8DpQW3B1dUXlYVRW6lqzxu3F7cl++c/0=;
-        b=leOHtMeOwhzxSgsxomewIt1duzeWAEIpCpdNTaBqelAgj0uslrUJPiMloNlCjUA9VS
-         YxSvo/Z3Ivwxrcym2sN0WF1NyctTGUwjfjF3zCG0r++yx6SC4nXYUF6a+dCy2Lk9jKod
-         KyMgmZxqTEX1ps1x0i5DCoUcchptSrRvrmd9LKkZ2tXZUWkAGg8JabicIikHr1z+RiJq
-         Dy5x/qlX+isJzXwSpz6TOaQoWC48Hg1U3GNtZx3sf6zzfGgj9yoxzMC/OJYWRHa2uXen
-         2FYz1kmZNT7U+jxd2KpUyNV2ZdAAQ4/c5m3v+e5jq4RjunYWSvBD5cdEjVDgyR8eUGNK
-         c8/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792553089; x=1793157889;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=octane.security; s=google; t=1792553092; x=1793157892; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Y8qAdHKhHoP8DpQW3B1dUXlYVRW6lqzxu3F7cl++c/0=;
-        b=d9kuEmgi4coDJs6KVxBkMea/8NJE7mIow3RYnzBKEqyF2rIjXU7WWLZ6nENYbkmd2z
-         jTEeQpNfAdrcSqUz/WfcvjYpIrYZMrSlzraW+BXIb5tTH4y5z9IATqqyEvpkLzLeqgRQ
-         ZxUp8OB6XdQ0ohOQYP+k2C5UJ2DASIYhVJcVDEdgyShSEo7eA1TP7vejUMf6RYKyigH7
-         6UxTiBSPf++tRi8edKosqVkxgpsKeeQa1Phhv3tNG0eD2quhsqWmrVd2LmqAIBzJiBeV
-         A//E6sFq78ziTNT/0e0/l9Y3UGCF3w53Lg1VripWkOLvPI9VfkotrLGUc/iWIQUStf6S
-         jgVw==
-X-Gm-Message-State: AFq9FYLgDBJt+lSd7DEfIOgIagLi0p8YQJ+iWjWqiiA+tFdJYV9Uij4+
-	oo8A2aZTJzouyilI35yNoqv/N32xBK/P0JPtkY3rqMr/gvqbU5y3LUsygJ5SDk3n9RrrWsf8AyR
-	BgAdV
-X-Gm-Gg: AYBFou00E635aND1eIkUbUrSPQhdqWLSGjmD4G1RdwXNQS9oVZ5aifNP5seHBUwdJra
-	8BIIaFh5WLzWVVRZWeYQ+Q5V+o++CrzKywS3z6ULccEqsWIMWGhjgeU5V1T8GGkoNrlFaV9+jQI
-	izirsii0COvohRFYj2vf7gbPtLOFmHM6S4+4z6olKVcS95aK1rjiDJhLcryfMQNuDetXaK1Jrg/
-	YA5ch45Ecd64WcFEHTyMrcYbA/TC5lrDppcQA9SCBrnxXSPhO+/Te6NWW+VVpCwPQBLf/Uajmjn
-	0oNlJPU/6NinoWnRxDWdyjObcobkIWoRhlOvIdswx7ApBtkk5CG7GWGRGeGbUccbLvr8Z5ar78P
-	asGoFLxjsq370p9ai9D5Gr6PE7QTQoFvVBg6NSZ07/El1CS0l6OCStNbd93CG46ebKyZOsY3RuH
-	oHGnFhSN9EElw8T14/ZlkV4KkRws74o3p7ijD2GVd7fj55rFwjbZHOP9loQ3S5qai2WKnf6YZJR
-	jCrEuRPa+kArElQLKmTvG4Y8AheEutllCy5F/Sw7Vmdan6biQmQFAW2p4H2VyeUwjzJ4YAYaDDo
-	xR1+qtRQ2OR1ivKHL21QHkS8GzcS2/YjgGUYabGVQApMIToCR91egkI8Rqy4r/F0c7MiCNh+9zz
-	N
-X-Received: by 2002:a17:90b:4c04:b0:3ac:a491:3cf8 with SMTP id 98e67ed59e1d1-3ad86da24e4mr747324a91.43.1792553089020;
-        Tue, 20 Oct 2026 20:24:49 -0700 (PDT)
+        bh=ZFVAKQGsMgdgNfkXAN9sULjMGSL2i7oHnvsLeDRjk+s=;
+        b=ojPcxL9Amul7kBOJOcMw0LKjDpPLd8q8X4B9mxDTd+UGa5ldBO7U8up7cReajCWUjL
+         q7dsM3IKeJh7w/ESsLpUyS49ZK7zLfX1Jme3+ilA1Xi5x2L5rYG1aMmNL2F961FLUWfJ
+         WfceVgc85Q28m3htW28qpD0iXq6Iv3pPg0vfevqlM9yLNDjHVZ6Ibqye0ijNEGEOj4Fx
+         kUyTfo7Iw6O8lBLh7rbEDQbjhi1kURc4pUlFIkKD24lU/iCToGIUR7WGFYV5RnIMS3tM
+         zx+A5QO0tfj1tT8xxgq3mymKhLtyyxEXmf86a2DBqsSqCY0EAZrvvXzVH7YKZ+DgJW9i
+         I7UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792553092; x=1793157892;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZFVAKQGsMgdgNfkXAN9sULjMGSL2i7oHnvsLeDRjk+s=;
+        b=EzQCDarz3d4pER8UYBKi4zpGMNesQcRJb7G1AhyIrx5G+FNEPK7jq07OKF4Z73sZyU
+         ty0N2aiPvhJsSTlAz/QylZoc6szhChA233M7Jrs+DD4y1Wt5MDA+uM91lKWks4QcW3aW
+         twv7thpuOhyMj5QpdCwQMYZAqOAq8jfPwjQnwbLlvweRrqAKf68o8kSw/ZmLFTHZpqba
+         CXVYgEproDRA/XNpQETtMZtF+cfDpJ1hX+qH1X3qNnjgT/XGsr9J5qU2a9EYr7E69uve
+         DMOgMW3WQIAZl31H3H9xrzq42SeEYzRVX2ckGUHXBx8mR3MtxwQwri4x2PdGIRURvDfZ
+         azag==
+X-Gm-Message-State: AFq9FYLRYMXtoJ9k0SEcjGEKTQrpmRqWr02qMN1jEcJYBFO3tb1ii43g
+	DYMIY2VQtrG3U6BZ4/mUsTsRslS0uYADgptPtZQmY8z9CUQC8BjeniPuavCx1Fp9pfOM0U+vsGA
+	JBPgl
+X-Gm-Gg: AYBFou089GWbBBMr+anW0tsBlqhjHhUaVd5VC/Q+5+m1R6Xkuq2CuMGNJEi6Pp+yrg0
+	kAxhvKAyGYmT0eB2gcbiASANsEHw4eIpOinkHRfU//Ml+K66mMibS7nMRpO10OdjDnFLGcpleze
+	OZkmtRv+bCDIqgS0yf2iP/WYTPLmUaXTQ0cUroSrqbMMfHRH3K1y9f6YpEqSGtg6YxV1VG8jLmq
+	1vDZ5Cv395YOOjFR8eLqXS4l1DVq99supWIodVtqRPLaYrwBqRxZCXYIg9PF5cr9FnDWo2SF/wK
+	4uUsT6ciytrkjhSBiRGxh5KHy/Cn92NJcG7V+brwyyxvu4Sqk4Vwglg9f3BtTen9nD/6vmt1U+a
+	9louCneOlnK0+p2XIQNlsNSyxt7HT9fhuJd/5r/fEj65FwSKRDDqEVVRkojqjdl2iiaf82fWmnL
+	D6XdQ08cWYVT7jKyC7Gi9e5WiVyre2xcbcsdfo+h8nnCe5y0xBTwovl2zOclEOZqYRM0kmsu549
+	fqrm1pQuw36nPtGPoq10iTpt9QBW/WYDSxBKmPTVjVrplwZ2r13rU/NHPcZL8vi/KR0RWkdxei7
+	wlCGOf9VScUuix9BdjHcPv+kbxiB9GU4pOl05FjJ6PWZaDhVNEMfc+8yTe1khOTQXT5xq6lrust
+	chg==
+X-Received: by 2002:a17:90b:390e:b0:3ac:9706:7735 with SMTP id 98e67ed59e1d1-3ad86b0c35cmr794388a91.5.1792553091800;
+        Tue, 20 Oct 2026 20:24:51 -0700 (PDT)
 Received: from localhost.localdomain ([103.207.175.177])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad8030226csm2155285a91.12.2026.10.20.20.24.45
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad8030226csm2155285a91.12.2026.10.20.20.24.49
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 20 Oct 2026 20:24:48 -0700 (PDT)
+        Tue, 20 Oct 2026 20:24:51 -0700 (PDT)
 From: Shubham Antil <shubham@octane.security>
 To: netdev@vger.kernel.org
 Cc: David Heidelberg <david@ixit.cz>,
 	oe-linux-nfc@lists.linux.dev,
-	gio@octane.security
-Subject: [PATCH net v6 0/6] nfc: fix NCI UART and firmware teardown races
-Date: Wed, 21 Oct 2026 08:54:37 +0530
-Message-ID: <20261021032443.44412-1-shubham@octane.security>
+	gio@octane.security,
+	stable@vger.kernel.org
+Subject: [PATCH net v6 1/6] nfc: nci: skip controller reset while unregistering
+Date: Wed, 21 Oct 2026 08:54:38 +0530
+Message-ID: <20261021032443.44412-2-shubham@octane.security>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261021032443.44412-1-shubham@octane.security>
+References: <20261021032443.44412-1-shubham@octane.security>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,67 +102,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes ordering and lifetime problems in NCI UART registration,
-teardown, and nfcmrvl firmware download.
+nci_unregister_device() marks a device as unregistering before closing it,
+but nci_close_device() still sends CORE_RESET and waits for a response.  A
+transport may already be detaching at this point.  In particular, line
+discipline close holds the TTY line discipline lock for writing, so receive
+callbacks cannot deliver the response and close waits for the full timeout.
 
-Patch 1 avoids issuing CORE_RESET after unregister has closed admission to
-the NCI device.  A normal device-down still performs the reset.
+Skip the reset request when NCI_UNREG is set.  Keep the reset for a normal
+device-down operation, where the transport remains attached and can deliver
+the response.
 
-Patches 2 and 3 serialize UART driver selection, protect the transport
-registry, detach TTY callbacks first, and drain receive and transmit work
-before the transport releases its private state.
+Found during a source audit assisted by OpenAI Codex, gpt-5.6-sol, and
+reproduced by closing a pty-backed NCI UART while its NCI device was up.
 
-Patch 4 publishes the Marvell UART state before NCI registration can expose
-the device and rolls that publication back if registration fails.
-
-Patches 5 and 6 serialize firmware-download ownership, copy completion
-metadata before releasing it, and drain the Marvell receive and timeout
-paths before unregistering the NCI device.
-
-OpenAI Codex, gpt-5.6-sol assisted the source audit that found these
-issues.  The UART paths were reproduced with a pty-backed NCI controller
-under KASAN.  The firmware paths were exercised with overlapping download
-requests and repeated download/teardown cycles.
-
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM KASAN
+Signed-off-by: Shubham Antil <shubham@octane.security>
 ---
+ net/nfc/nci/core.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-Changes in v6:
-- Skip CORE_RESET only while unregistering; retain it for normal
-  device-down.
-- Detach the line discipline before quiescing generic UART callbacks.
-- Serialize concurrent NCIUARTSETDRIVER operations and the driver registry.
-- Publish and withdraw Marvell UART state around NCI registration.
-- Serialize generic firmware-download ownership and completion state.
-- Drain Marvell firmware receive, timeout, and queue state before
-  unregister.
-- Add the requested discovery details, Fixes tags, and stable Cc tags.
-
-v5: https://lore.kernel.org/netdev/20261013025746.41292-1-shubham@octane.security/
-v4: https://lore.kernel.org/netdev/20261006115532.72100-1-shubham@octane.security/
-
-Shubham Antil (6):
-  nfc: nci: skip controller reset while unregistering
-  nfc: nci: uart: serialize driver selection
-  nfc: nci: uart: quiesce callbacks during teardown
-  nfc: nfcmrvl: publish UART state before registration
-  nfc: serialize firmware download state
-  nfc: nfcmrvl: stop firmware work before unregistering
-
- drivers/nfc/nfcmrvl/fw_dnld.c    | 199 +++++++++++++++++++++++++----------
- drivers/nfc/nfcmrvl/fw_dnld.h    |   8 ++
- drivers/nfc/nfcmrvl/main.c       |  19 ++--
- drivers/nfc/nfcmrvl/nfcmrvl.h    |   2 +
- drivers/nfc/nfcmrvl/uart.c       |  31 ++++--
- drivers/nfc/st-nci/vendor_cmds.c |   8 +-
- include/net/nfc/nci_core.h       |   6 ++
- include/net/nfc/nfc.h            |   3 +-
- net/nfc/core.c                   |  19 +++-
- net/nfc/nci/core.c               |  12 ++-
- net/nfc/nci/uart.c               | 220 ++++++++++++++++++++++++++++++---------
- 11 files changed, 398 insertions(+), 129 deletions(-)
-
-
-base-commit: 1c1e8c24d537ba6133f08f523a2b8c626da4e966
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 73e3a96470ac..8ee33505e93a 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -582,13 +582,15 @@ static int nci_close_device(struct nci_dev *ndev)
+ 	/* Flush TX wq, RX wq flush can't be under the lock */
+ 	flush_workqueue(ndev->tx_wq);
+ 
+-	/* Reset device */
++	/* Reset device unless it is being unregistered */
+ 	skb_queue_purge(&ndev->cmd_q);
+-	atomic_set(&ndev->cmd_cnt, 1);
+ 
+-	set_bit(NCI_INIT, &ndev->flags);
+-	__nci_request(ndev, nci_reset_req, (void *)0,
+-		      msecs_to_jiffies(NCI_RESET_TIMEOUT));
++	if (!test_bit(NCI_UNREG, &ndev->flags)) {
++		atomic_set(&ndev->cmd_cnt, 1);
++		set_bit(NCI_INIT, &ndev->flags);
++		__nci_request(ndev, nci_reset_req, (void *)0,
++			      msecs_to_jiffies(NCI_RESET_TIMEOUT));
++	}
+ 
+ 	/* After this point our queues are empty
+ 	 * rx work may be running but will see that NCI_UP was cleared
 -- 
 2.43.0
 
