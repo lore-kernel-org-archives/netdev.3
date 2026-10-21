@@ -1,97 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.113
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792584235;
-	b=xDQH1sAZKXgxH7PM5yl971tjVLEvJEVQfYPYEW+4wbljFQdH/4O7A1p39956BzvpszA7
-	 Y4fWq5eqZv08isvBqvhjgE3l7Mth4t0CQw8c93l697ea/yc0ykSE4XZfVQBOijurytDAF
-	 wN5WDEY9lP+N342rU8Jx11thIflRfChYE7hTh0pH7sQ1OIEdv+mLV0goD58D0m2Qv/WVy
-	 DqKtE7p4x0IzzIAZDb68stelqaAsFvqOT6lkvMcqZSwnvVW6nzDAGHZFtWV92/UalxRna
-	 UPBEktqfcVaaFe3j2oh5d592FVH9U9HjD0l+LWqURffsCIBpKTfpbif52NuFvEOWb3Q==
+	t=1792584792;
+	b=Hv33oWnMHFbkHCz0ee8cYHj27pUVu/41060EC4ggNLiczXLqijgEu0H4H1vSbzN6bFsY
+	 WoQU6i0J27OSMhL2DWFDAMLzY9VaaFGQ0fT40IJthc9Tpi2J8L/GcamL4E+LkQAYz0pAj
+	 jdX8N0mUhAn1z1slOToKzF4lmUZy7yjRErgY524Lj7hHYDAKeauRjSd2XIE0hp7BBaEhF
+	 DXPcsxv6d4/eDv+URMvFuxfLlmrl6WytEPiDFJjl2c5GziDxZ5LdA9kPCc7GliD5/zinL
+	 0hmF3EMIRyQ4svQN4TI2MEPgJ9GFDb++8ethnxpObdADfQiJ5TRa1zIwCnQoDiaBqBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792584235;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=GK+opxzbNDvYLIX7cW8mwNi+aajSyz2/r7yxGFUzHOQ=;
-	b=30xtVGF3HjQpsHDC8mHgVAHKCOUm7C28wyjaPs23iWQiB/pg7kMUac4vcKyB/etQ0zqF
-	 Pmpn6piJsJ+8u9Hqvp/BdsLYYgvcf7NNCA0CbAhB1oSzWFunxy9eyv9UU1t151nh5gUnJ
-	 bn+Icz0PlObGYRzv732HG/Uxc5MFUa8Py7UT4zNdDl9YkR1NNHk98o8acgU/YpnrjjZn0
-	 POZAbX172BCi+OSWrw3luqjjbFPa0uxjOj07vt4YZorLltsrZpgYBzs8/ZOMcbF7GoOzJ
-	 hKRkgu2sG/mq/vp1ij6qHOpO/m/JymE2VhQDYFXZ6avoJiaJwEmuPQbz7QJuqks10QA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792584792;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:Date:From:To:
+	 Cc:Subject:Message-ID:Reply-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=qHrtSmupKaWVw2UfmtmjwnVbsnSdj5SnjRXClja/+Ms=;
+	b=wV7P4rNBuYnD8bGx2eAdTAZVksnfw1JfcxEfMle62PSvwLSsT2iqL75KJd9fTFMdp/2m
+	 ssn/hkg3gxwgNXsnvrzSY50kxS+GFNTAdJw/HGzlDbhvc39FvNo+M/hIZ5GVJBwn0gRGF
+	 5SJWmO3YIpdmPfk12oVC5L2zLhSY9EXik3isq28wyA/aAd2uqgmt/CrKpvmeTwjHhbiqZ
+	 XfBWPOK/HXpo79JWRrV0OOBmsMIg749+4TTgQXy6k+RP5NsAI51mTlyEgkRSyHGVi6YcI
+	 cIqSknTTDeYQphexdR7g6lnNJfbr7XZyUQVmAJGZ0ICgn6mq/ux1iivFtUWYO1SWhHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b="qkt54zB/";
-	arc=none smtp.remote-ip=209.85.222.169
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b="Z2I/WGBE";
+	arc=none smtp.remote-ip=115.124.30.113
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5B2606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 12:03:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B5B2606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EDF606A31A;
+	Wed, 21 Oct 2026 12:13:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30EDF606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=qkt54zB/
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93f3c616c84so61407285a.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 05:03:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792584233; x=1793189033; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GK+opxzbNDvYLIX7cW8mwNi+aajSyz2/r7yxGFUzHOQ=;
-        b=qkt54zB/ZzmRP4fJf97FZlKX2wQLBkLCPEMZ359Sr9wPvelXCDeL8i80gwAR0pbRqB
-         aooSSf91ZT+JaIo0aFgdy4Td01UTFsHVhN+bvnFxydhjX6XUi7iWpxff9PX2R6KUgNeZ
-         5fFJjgk55TSAJjP9+a4A14OtHIgbVN2SRpXw0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792584233; x=1793189033;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GK+opxzbNDvYLIX7cW8mwNi+aajSyz2/r7yxGFUzHOQ=;
-        b=foKR4HTv7L96TJ4MxqVWGsp8MYkVH7UQzEdIzbGrotQHiYQDZW5tui/MjrMhzTp3W8
-         TgVEz3ykIRzsT2fdGb43CxPDlUzPI7bU9fYwCeb1OmxmNUq475pC/qL41fD2fBEQ2Cw/
-         Lcwb+uNYjmfaGmcQaqt6DDrBMTMNbY+7VMZ1w8Mmu9IBphE7cjJjqbAgckWFsUwds+Wm
-         dQ1mZ7z0cG/IsuxA4s+W//rnPxcUCfPqkqUlI0iayUD07fl+91ChTTbL5qKXgSCVthiS
-         CS96kAZe8cAmF34lUSUBKTBxR/tvcEBi7nJ3+44gsU8XYmd1mjuJfzuc/eVhXdZmOXvn
-         eMng==
-X-Gm-Message-State: AFq9FYJ1KKLxVk71XIgF2qBIhjNl5ATV8UwFHMxmyra7V1yMiO++gE72
-	U3ZqttUj1Lk+XF8fUdV1Brv14rs2jVILapj4Sp8fBTYUfWiHyXcq1W00w+mgosnBPl1q5SGWQ3+
-	zY/4=
-X-Gm-Gg: AYBFou3TdxmhPhE/oxRZ+aHurYzptEV6Hg85JWVaLM/+P4Ndmes//4bQmuORQSTKF8s
-	RfzJJWk8yR41pykCRet1LWT0lamxWqNNGTBjQSubHoEMHZ+NWDTKTG7bPMCZo6hiClAALSqLh/k
-	H3VOvu8yLQbHAdALyQR9RAvzVXk8x8kLY3JDCko1Y7i+N0juPpJ1lbZ9HDzk/nfweznm6tBL5w7
-	iaQFwQJ6s5oVhH4tV7mNIE+N1H8MSsRLf4s51zB+OU3znzIYjcALf+9geiI3lsTSw8df/wdJKHA
-	Yg/y1A4KUbxnG8aurhAKPDeFhvmaHWYjriW3URFIf6bHrUjby7SbAF7hCFwpNEnBiO4XeKjHpB+
-	0Co5ENLljJqtGiOk0sf2Lv59CFBW+goqHrPtAJbpmGFhgTOdeITs0jLL2uwslxnPRKdceeWjC7T
-	x0CRTYkDSSPpOxk1O/frXZCGfOwCb/AVSPqYFoIiZCsNRhfVN6950H1ONkbEpbf+BH4p509x/sE
-	OugmEVXSh9s7kICYOSL/JeLlEZ1oagE8i+b6WQ8cJDzrLjYxZ35jBEnPQFAgBcD3Oy/BS5jP/rt
-	FjXw1DL1iFNAcLLuIBW/n83HXg==
-X-Received: by 2002:a05:620a:2781:b0:93e:8614:bbe7 with SMTP id af79cd13be357-93f57e45a64mr358244985a.12.1792584233263;
-        Wed, 21 Oct 2026 05:03:53 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93f56e2bee2sm232953185a.42.2026.10.21.05.03.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 05:03:52 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sashiko <sashiko-bot@kernel.org>,
-	bpf@vger.kernel.org,
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Z2I/WGBE
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1792584787; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=qHrtSmupKaWVw2UfmtmjwnVbsnSdj5SnjRXClja/+Ms=;
+	b=Z2I/WGBEcLqV/0fiJzgZ0wLMP0Ki3XWG8rPiaM5Qw8eTgaRIEwTaB1PaISda5+asFw1nTol584goS70z2GNrFho4dLXcg4xNIA6XncLm4qeU7oLY0NVoTc4BTNgkgLBoiSwedt3wlqW+MRbD7gCCnOW7TWKKpzTNvNXW6BLpqRA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XDGOERK_1792584786;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0XDGOERK_1792584786 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 21 Oct 2026 20:13:06 +0800
+Date: Wed, 21 Oct 2026 20:13:05 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>, alibuda@linux.alibaba.com,
+	sidraya@linux.ibm.com, mjambigi@linux.ibm.com, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, horms@kernel.org,
+	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net v4] net/sched: clamp skb->queue_mapping before indexing the tx queue
-Date: Wed, 21 Oct 2026 08:03:48 -0400
-Message-Id: <QDISC-MD1X.v4.r0.20261021042722-1@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH net v3 2/3] net/smc: serialize early link group cleanup
+ with termination
+Message-ID: <atisUaV2eIC2yTvX@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20261013091716.1210420-1-nicoyip.dev@gmail.com>
+ <20261013091716.1210420-3-nicoyip.dev@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,198 +66,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261013091716.1210420-3-nicoyip.dev@gmail.com>
 
-This issue was caught by Sashiko (nipa). A producer-side path cap is
-already merged (ea4d4b5dddb5); this patch adds the matching consumer-side
-cap.
+On 2026-10-13 17:17:15, Chengfeng Ye wrote:
+>smc_lgr_cleanup_early() enters __smc_lgr_terminate() even when another
+>teardown path has already claimed lgr->freeing. Both callers can observe
+>lgr->terminating clear before either sets it, then tear down the same
+>link group, causing use-after-free and duplicate resource release.
+>
+>  BUG: KASAN: use-after-free in __smc_lgr_terminate+0x393/0x3a0
+>  Write of size 1 at addr ffff8880bf2c0300 by task poc/106
+>  Call Trace:
+>   __smc_lgr_terminate+0x393/0x3a0
+>   __smc_connect+0x2e3d/0x4930
+>   smc_connect+0x42c/0x580
+>   __sys_connect+0xfc/0x130
+>   __x64_sys_connect+0x6d/0xb0
+>
+>Check freeing under the link group list lock before unlinking the group
+>or entering termination. The existing locked freeing transition then
+>claims exclusive teardown ownership; an early cleanup that loses the
+>claim leaves teardown to the existing owner and does not remove the group
+>from a device teardown's private list.
+>
+>Keep a temporary link group reference across smc_conn_free() and early
+>cleanup in smc_conn_abort(). Once the connection is unregistered, a
+>termination worker can finish without taking its socket lock. The extra
+>reference keeps the allocation alive until the ownership check returns.
+>
+>A new group is published before its first connection is registered. Hold
+>it before publication until registration or failed-registration cleanup
+>finishes. The reference keeps the allocation alive, but teardown can still
+>destroy the group's resources before registration. Take the list lock
+>around the freeing check and first registration, nesting conns_lock as in
+>the reuse path. Reject a group already claimed for teardown and clear
+>conn->lgr, since that connection never acquired a group reference.
+>
+>On success, acquire the connection reference before dropping the temporary
+>hold. A later terminator sees the registered connection and must acquire
+>its socket lock before removing it. On failure, keep the temporary hold
+>through early cleanup and then release it. Reused groups retain their
+>existing reference protocol.
+>
+>This depends on "net/smc: serialize link group free work scheduling" for
+>the standalone freeing bool and the locked early-cleanup transition.
+>
+>Fixes: f9aab6f2ce57 ("net/smc: immediate freeing in smc_lgr_cleanup_early()")
+>Cc: stable@vger.kernel.org
+>Assisted-by: GPT-6.1-Sol
+>Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+>---
+>Changes in v3:
+>- Serialize first registration with the teardown claim under the group list
+>  lock, nesting conns_lock in the same order as connection reuse.
+>- Reject groups already being freed and clear conn->lgr on that path.
+>- Document the scheduling fix prerequisite in the permanent commit message.
+>
+>Changes in v2:
+>- Pin newly created link groups before publication, covering the
+>  registration failure handoff to early cleanup. Drop the temporary hold
+>  after cleanup on failure, or after the connection hold on success.
+>- Send after the free-work scheduling fix and reuse its standalone
+>  freeing bool and locked early-cleanup transition.
+>- Pin the link group across the smc_conn_abort() early-cleanup ownership
+>  check.
+>
+>v1: https://lore.kernel.org/r/20260927063607.3691520-1-nicoyip.dev@gmail.com/
+>
+>v2: https://lore.kernel.org/r/20261003183237.2284245-3-nicoyip.dev@gmail.com/
+>
+> net/smc/af_smc.c   |  8 ++++++--
+> net/smc/smc_core.c | 21 ++++++++++++++++++---
+> 2 files changed, 24 insertions(+), 5 deletions(-)
+>
+>diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+>index e9f93b3ab435..97b0a0b51066 100644
+>--- a/net/smc/af_smc.c
+>+++ b/net/smc/af_smc.c
+>@@ -1011,12 +1011,16 @@ static void smc_conn_abort(struct smc_sock *smc, int local_first)
+> 	struct smc_link_group *lgr = conn->lgr;
+> 	bool lgr_valid = false;
+> 
+>-	if (smc_conn_lgr_valid(conn))
+>+	if (local_first && smc_conn_lgr_valid(conn)) {
+> 		lgr_valid = true;
+>+		smc_lgr_hold(lgr);
+>+	}
+> 
+> 	smc_conn_free(conn);
+>-	if (local_first && lgr_valid)
+>+	if (lgr_valid) {
+> 		smc_lgr_cleanup_early(lgr);
+>+		smc_lgr_put(lgr);
+>+	}
+> }
+> 
+> /* check if there is a rdma device available for this connection. */
+>diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+>index 660cd41ec720..c1bb284c4233 100644
+>--- a/net/smc/smc_core.c
+>+++ b/net/smc/smc_core.c
+>@@ -693,6 +693,10 @@ void smc_lgr_cleanup_early(struct smc_link_group *lgr)
+> 
+> 	smc_lgr_list_head(lgr, &lgr_lock);
+> 	spin_lock_bh(lgr_lock);
+>+	if (lgr->freeing) {
+>+		spin_unlock_bh(lgr_lock);
+>+		return;
+>+	}
+> 	/* do not use this link group for new connections */
+> 	if (!list_empty(&lgr->list))
+> 		list_del_init(&lgr->list);
+>@@ -999,6 +1003,7 @@ static int smc_lgr_create(struct smc_sock *smc, struct smc_init_info *ini)
+> 		lgr->buf_type = lgr->net->smc.sysctl_smcr_buf_type;
+> 		atomic_inc(&lgr_cnt);
+> 	}
+>+	smc_lgr_hold(lgr); /* lgr_put in smc_conn_create() */
+> 	smc->conn.lgr = lgr;
+> 	spin_lock_bh(lgr_lock);
+> 	list_add_tail(&lgr->list, lgr_list);
+>@@ -2049,15 +2054,25 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
+> 		if (rc)
+> 			goto out;
+> 		lgr = conn->lgr;
+>-		write_lock_bh(&lgr->conns_lock);
+>-		rc = smc_lgr_register_conn(conn, true);
+>-		write_unlock_bh(&lgr->conns_lock);
+>+		spin_lock_bh(lgr_lock);
+>+		if (lgr->freeing) {
+>+			conn->lgr = NULL;
+>+			rc = SMC_CLC_DECL_SYNCERR;
 
-The issue:
-The tx queue is picked and capped in netdev_core_pick_tx(), before the
-__dev_xmit_skb() qdisc enqueue path. A tc BPF program running inside
-egress qdisc (not clsact) can then change __sk_buff->queue_mapping;
-that store is never re-checked. bpf_convert_ctx_access() bounds it only
-by NO_QUEUE_MAPPING, not by the device's queue count.
+This should not be SMC_CLC_DECL_SYNCERR, maybe SMC_CLC_DECL_INTERR or add
+a new error code.
 
-On dequeue, qdisc_restart() calls netdev_get_tx_queue(), which
-indexes dev->_tx[] with that value. netdev_get_tx_queue() guards it with
-just a DEBUG_NET_WARN_ON_ONCE, so sch_direct_xmit() takes the out-of-bounds
-txq->_xmit_lock and writes txq->xmit_lock_owner past the end of the
-allocation on non-lltx devices such as ifb. Drivers that index their rings
-from skb_get_queue_mapping() (ex: ifb) go out of range the same way.
+>+		} else {
+>+			write_lock_bh(&lgr->conns_lock);
+>+			rc = smc_lgr_register_conn(conn, true);
+>+			write_unlock_bh(&lgr->conns_lock);
+>+		}
+>+		spin_unlock_bh(lgr_lock);
+> 		if (rc) {
+> 			smc_lgr_cleanup_early(lgr);
+>+			smc_lgr_put(lgr); /* lgr_hold in smc_lgr_create() */
 
-The Fix:
-Cap the mapping at the consumer and write the capped value back, so both
-the qdisc's _tx[] lookup and any later driver read stay in range. The cap
-folds into the dequeue path instead of a separate walk over the returned
-list: dequeue_skb() caps the head, and each bulk helper caps the element it
-appends. netdev_cap_txqueue() already logs a ratelimited notice and selects
-queue 0.
+smc_lgr_put() may call smcr_buf_free() -> vfree(), which may sleep.
+And you put it in the spinlock.
 
-A TCQ_F_ONETXQUEUE qdisc is bound to a single tx queue: dequeue_skb() uses
-q->dev_queue for the frozen check, the BQL limit and the trace point, while
-qdisc_restart() transmits on the skb's queue. Capping an out-of-range
-mapping to queue 0 would therefore send a per-queue child's skb through a
-different queue than the one it was dequeued for. On mq, mqprio, taprio and
-htb offload children, a stopped queue 0 could then park the list in
-q->gso_skb, and the later wake would schedule queue 0's own child instead
-of this qdisc. Pin a TCQ_F_ONETXQUEUE mapping to the qdisc's own queue to
-keep the documented invariant.
-
-That also keeps a bulk list on one queue by construction: every element of
-a TCQ_F_ONETXQUEUE qdisc, including a follower changed by a filter, is
-pinned to q->dev_queue before it is appended. The fast bulk helper
-therefore needs no head comparison and no skb_bad_txq requeue; the slow
-helper, used only by non-ONETXQUEUE qdiscs, still compares and requeues a
-mismatched follower, where a wake on any queue reschedules q.
-
-Conditions to recreate the bug:
-Load a SCHED_CLS or SCHED_ACT program that stores __sk_buff->queue_mapping
-(a tc BPF action is enough), attach it to a transmit qdisc (for example a
-matchall filter on a prio root), and send a packet. With a 1-queue device a
-store of 1 indexes one past dev->_tx[]. Under KASAN with panic_on_warn=1
-the unfixed kernel faults with "BUG: KASAN: slab-out-of-bounds in
-sch_direct_xmit". Loading the program needs CAP_BPF/CAP_SYS_ADMIN, so the
-trigger is root.
-
-Fixes: 74e31ca850c1 ("bpf: add skb->queue_mapping write access from tc clsact")
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/netdev/179033713973.2160803.4914570693994398206@kernel.org/
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-9R8V.v2.20260924072708%40mojatatu.com
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v1.20261005193231%40mojatatu.com
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v3.r0.20261015165943-1%40mojatatu.com
-Link: https://lore.kernel.org/netdev/20261015125822.GH83879@horms.kernel.org/
-Cc: stable@vger.kernel.org
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v3 -> v4:
-- Cap a TCQ_F_ONETXQUEUE mapping to the qdisc's own tx queue instead of
-  queue 0, so a per-queue child of mq, mqprio, taprio or htb offload keeps
-  the documented invariant between q->dev_queue and the transmitted queue.
-  Reported by Sashiko (nipa).
-- With every element pinned to q->dev_queue, the fast bulk helper no longer
-  needs a head comparison or a skb_bad_txq requeue; a mismatched follower
-  there could otherwise be stranded behind a stopped queue that cannot
-  reschedule this qdisc. Reported by Sashiko (nipa).
-
-v2 -> v3:
-- Considered Comments from Simon Horman (hunk counts did not match the
-  diff content; patch did not apply):
-  https://lore.kernel.org/netdev/20261015125822.GH83879@horms.kernel.org/
-
-v1 -> v2:
-- try_bulk_dequeue_skb(): the fast bulk helper (TCQ_F_ONETXQUEUE) capped
-  each follower but appended it without comparing it against the head, so
-  a mismatched follower was still sent under the head's txq lock. Compare
-  the capped follower with the head and requeue a mismatch to skb_bad_txq,
-  matching try_bulk_dequeue_skb_slow(). Reported by Sashiko (nipa).
-
- net/sched/sch_generic.c | 48 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 43 insertions(+), 5 deletions(-)
-
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 6f6a6f0d5eb0..fdd070840cb5 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -96,9 +96,37 @@ static void qdisc_maybe_clear_missed(struct Qdisc *q,
- 
- #define SKB_XOFF_MAGIC ((struct sk_buff *)1UL)
- 
-+/* A tc BPF program may change skb->queue_mapping after the tx queue
-+ * was picked, so re-cap it before use. A TCQ_F_ONETXQUEUE qdisc is
-+ * bound to a single tx queue, so pin the mapping to q->dev_queue.
-+ */
-+static u16 qdisc_cap_skb_tx_queue(struct Qdisc *q, struct sk_buff *skb)
-+{
-+	u16 queue = skb_get_queue_mapping(skb);
-+	struct net_device *dev = qdisc_dev(q);
-+	u16 capped;
-+
-+	if (q->flags & TCQ_F_ONETXQUEUE)
-+		capped = q->dev_queue - netdev_get_tx_queue(dev, 0);
-+	else
-+		capped = netdev_cap_txqueue(dev, queue);
-+
-+	if (unlikely(capped != queue))
-+		skb_set_queue_mapping(skb, capped);
-+
-+	return capped;
-+}
-+
-+static struct netdev_queue *skb_cap_tx_queue(struct Qdisc *q,
-+					     struct sk_buff *skb)
-+{
-+	return netdev_get_tx_queue(qdisc_dev(q),
-+				   qdisc_cap_skb_tx_queue(q, skb));
-+}
-+
- static inline struct sk_buff *__skb_dequeue_bad_txq(struct Qdisc *q)
- {
--	const struct netdev_queue *txq = q->dev_queue;
-+	const struct netdev_queue *txq;
- 	spinlock_t *lock = NULL;
- 	struct sk_buff *skb;
- 
-@@ -110,7 +138,8 @@ static inline struct sk_buff *__skb_dequeue_bad_txq(struct Qdisc *q)
- 	skb = skb_peek(&q->skb_bad_txq);
- 	if (skb) {
- 		/* check the reason of requeuing without tx lock first */
--		txq = skb_get_tx_queue(txq->dev, skb);
-+		/* re-cap: real_num_tx_queues may have shrunk */
-+		txq = skb_cap_tx_queue(q, skb);
- 		if (!netif_xmit_frozen_or_stopped(txq)) {
- 			skb = __skb_dequeue(&q->skb_bad_txq);
- 			if (qdisc_is_percpu_stats(q)) {
-@@ -216,6 +245,10 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
- 		if (!nskb)
- 			break;
- 
-+		/* The cap pins every element of a TCQ_F_ONETXQUEUE qdisc to
-+		 * q->dev_queue, so the list stays on the head's tx queue.
-+		 */
-+		qdisc_cap_skb_tx_queue(q, nskb);
- 		bytelimit -= nskb->len; /* covers GSO len */
- 		skb->next = nskb;
- 		skb = nskb;
-@@ -233,7 +266,6 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
- 				      struct sk_buff *skb,
- 				      int *packets)
- {
--	int mapping = skb_get_queue_mapping(skb);
- 	struct sk_buff *nskb;
- 	int cnt = 0;
- 
-@@ -241,7 +273,11 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
- 		nskb = q->dequeue(q);
- 		if (!nskb)
- 			break;
--		if (unlikely(skb_get_queue_mapping(nskb) != mapping)) {
-+		/* A tc BPF store may have changed the mapping after
-+		 * pick; cap it and keep the list on one tx queue.
-+		 */
-+		if (unlikely(qdisc_cap_skb_tx_queue(q, nskb) !=
-+			     skb_get_queue_mapping(skb))) {
- 			qdisc_enqueue_skb_bad_txq(q, nskb);
- 			break;
- 		}
-@@ -286,7 +322,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 		if (xfrm_offload(skb))
- 			*validate = true;
- 		/* check the reason of requeuing without tx lock first */
--		txq = skb_get_tx_queue(txq->dev, skb);
-+		txq = skb_cap_tx_queue(q, skb);
- 		if (!netif_xmit_frozen_or_stopped(txq)) {
- 			skb = __skb_dequeue(&q->gso_skb);
- 			if (qdisc_is_percpu_stats(q)) {
-@@ -322,6 +358,8 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 	skb = q->dequeue(q);
- 	if (skb) {
- bulk:
-+		/* cap the head; the bulk helpers cap every appended element */
-+		qdisc_cap_skb_tx_queue(q, skb);
- 		if (qdisc_may_bulk(q))
- 			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
- 		else
--- 
-2.43.0
+Best regards,
+Dust
 
