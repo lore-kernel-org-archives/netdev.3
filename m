@@ -1,74 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.19.166.231
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792610330;
-	b=ZBmYXB7oX7DNdKRujROgGUtYzLP8IHFcuuampKz49EhXVkwbKEXYYx0tDaKgs7UKtZl+
-	 hZPwTbnkIVsYIpzCUSB/kOpwtNQtWNIbASOlhylc9SPvWZtIpYgjbGsCffJxZisFjH/rs
-	 Fjjq4Vs2wJn4onuU75ZvgHXtyIsgBB1/jkrHkWMZ1pFWwCU7/VPOjI1fVJloSPqMUBqpc
-	 4cKP0izNX6ueddLfu3cMokar2JSy2Dw0e5TjHckgP7DR9vX2qpneCbRMRzkmHjqWBVNtz
-	 GEUii+BNN6YvzmQbOnvgNz/ka7MOBE36iZq8lh3yCveS81sFJKubgT4qAs4gON0d5Bw==
+	t=1792610383;
+	b=C5JZIc2cG3uVAdbpyeXMCpIfVd9wkbRbDxiL+oC2rclHgSf8PaAaosYHqyyrStvjJYgM
+	 t18s3eB+Gtu6IKHDAH9jRsTDZpRBDMqjqFsf/EMNJEYMoH4n0IDv2MfVGWZrDKygvHjzL
+	 7YcW3+O6HeKUUqSiWj0CTKitElyE9GRM2RUMWGcCkscCPdwxtDf35tRZ2URc909IWB4A8
+	 SdpS3/AXRUP1JRf7Ht1EFi3B+mtrAPRlPUugYi/PHZ264fQJ+f1Vjd1db49AS1J5EPtla
+	 ugOutVpRqKWz0pOvZ0aCmlYYk7wnL24Hf4s8MP2QY+Gitzsi1O06q+5ti1xA8DMuenw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792610330;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792610383;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=OucDXYhGBdXsYkzJOkUEznMM0q6yUkDYhETeuLwQ0h8=;
-	b=blTd/V5eIZbMDPaK4PxbuLL9fSyka739JYe9sjxnO6qTfa7XEnwHAOoTIvxtM+LHQeRT
-	 goPKZsQF0wSRF6dBR6roByNwqupEixkWnIMSXm0yStPwuvFCRHPJLwRhwzxetN5Zq1Z4m
-	 gnhu/T+2TI8mJsjkq6rYGANsON0cdDaefx/7OL/5HZnZAtK7OW4IsRClJssZu23RQBdS/
-	 s3OBvishnwiDGIXigjJz9/XiTG/uPiS3xZ7YKiMg4E8SRabWfneUry6Vru0JkRDxAbsFR
-	 x1e0yon3JHw3K40b3bS4LhdfmObfKxCH0+ZJRxCfu28B2pfuAuxsFk8jzKRqlUeqVxg==
+	bh=WKM0XORuuhLQvH0dOGvlGgJrze/6esCqKxEQFA6bgwk=;
+	b=M2EtxiYwpJwY00qtUIlIQEJocws2dMRUdBndQIefvmSPrwkDCir0ww3344pjYzNfBx3P
+	 ovnd7sRqK7JS9qTqatwdWQ1BxJVyLJHzs8yTUOoHh54PFTHIDRMf+peR2jn3DsP2f0IG/
+	 z3+iVVLNlLNmFA6G0MC5fdG9boQxzj0VAcWbBBfwC2S1oGw8LdYXld8qg9AwWcyzqZv/T
+	 maxI9xAyoBk/miTFiqxEgj+pD3rwbICHYmNcAVA75M5tmemSoJlSncZTOLFihikapF4gw
+	 CqVW3Pr3/m0yZIbpGr0I8Kpi6oCI+9jDbqSiQOhBZiqfwfvoZPrxKVW0sIZ+AHzfbAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=dkimrelay header.b=pU2qWWe3;
-	arc=none smtp.remote-ip=192.19.166.231
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eumAA3k4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7522C606A31A;
-	Wed, 21 Oct 2026 19:18:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7522C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3707A606A31B;
+	Wed, 21 Oct 2026 19:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=dkimrelay header.b=pU2qWWe3
-Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8C47CC0000F1;
-	Wed, 21 Oct 2026 12:18:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8C47CC0000F1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1792610314;
-	bh=vWvEu/RfvOC0QwKLXxbS5OZwUmUR+Xg2d6zwPiE0S20=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pU2qWWe38LLLCu4HsYEmZ7YHskv5aK+PSfARg7PnynP+cln/mndTuDdhBzwr3zOqi
-	 XS+nBlyMS8NTkjhgbsxd7FfRvTPjmtFrFT6FvtnDvo2qIv/ezd3nt3VGeGnPurrJ4p
-	 6WwxoV2cnYxCgMf39Pnsyq0/tQjHsUKyLZ2lyp/o=
-Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 745CAAEA3;
-	Wed, 21 Oct 2026 15:18:33 -0400 (EDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net 3/6] net: dsa: b53: constrain SerDes interfaces to initialized PCSes
-Date: Wed, 21 Oct 2026 12:18:21 -0700
-Message-ID: <20261021191824.752309-4-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261021191824.752309-1-florian.fainelli@broadcom.com>
-References: <20261021191824.752309-1-florian.fainelli@broadcom.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eumAA3k4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0185A1F000C1;
+	Wed, 21 Oct 2026 19:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792610382;
+	bh=WKM0XORuuhLQvH0dOGvlGgJrze/6esCqKxEQFA6bgwk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eumAA3k42K6yB6RZB1WU+xt5GGoRMa4EQmog24F7MJERClHfXOFO7yv08z0jvcCmv
+	 w1uGdCt3PZw3rvBVei3wJi6cCcD3YrMWXxLfyGjV51YUCT5H9CZY1WM+9FX144+H93
+	 PbZXbnow1re3NMVT8taE7YypLSXNbeCdMQ9VMh/N4vIxCxnzqR+n+ANhYyXcwaR2LP
+	 ErhyGeSHX0HKoX24vZ3qa4ipO1l0uT48xXwBaRaNYnFv0DT7AJJcJHK5ZmiJRcGVLJ
+	 I0vWNgkubvcElxaySbtT9b0dgXpVM3xx00admRyflohfS0RgxZbaTECcufe52mCwT0
+	 K/hcSks9Awr4A==
+Date: Wed, 21 Oct 2026 12:19:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Harry Yoo (Meta)" <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Muchun Song
+ <muchun.song@linux.dev>, Hao Ge <hao.ge@linux.dev>, Pedro Falcato
+ <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, Willem de
+ Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH slab/for-next 05/14] net: skbuff: specify
+ SLAB_MAY_ACCOUNT for skbuff_head_cache
+Message-ID: <20261021121941.4d8f8edf@kernel.org>
+In-Reply-To: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-5-096800aa3330@kernel.org>
+References: <20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org>
+	<20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-5-096800aa3330@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,112 +73,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Publish the supported interface bitmap on each successfully discovered
-PCS and use it for capability reporting and PCS selection. Clear the
-parallel interfaces inherited from the common switch code on ports whose
-mux selects a SerDes. A failed discovery must not leave a usable serial
-interface advertised without its PCS.
+On Wed, 21 Oct 2026 12:46:46 +0100 Harry Yoo (Meta) wrote:
+> AF_UNIX sets sk->sk_allocation to GFP_KERNEL_ACCOUNT, so skbs can be
+> allocated from skbuff_head_cache with __GFP_ACCOUNT. Specify
+> SLAB_MAY_ACCOUNT when the object may be charged to a memcg.
+> __GFP_ACCOUNT without SLAB_MAY_ACCOUNT will not be allowed.
 
-Stop advertising 2500BASE-X: the driver neither selects its baud rate nor
-supports 2.5G in the MAC override code. The downstream robo SerDes speed
-setter likewise only implements 10/100/1000. Keep SGMII and 1000BASE-X on
-both lanes until a complete 2.5G programming path is available.
+Could you please skip this for the first batch and resend
+later to net-next?
 
-Report discovery failures at the SRAB port to make missing capabilities
-diagnosable.
+## Form letter - net-next-closed
 
-Fixes: 0e01491de646 ("net: dsa: b53: Add SerDes support")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/dsa/b53/b53_serdes.c | 28 ++++++++--------------------
- drivers/net/dsa/b53/b53_srab.c   |  9 +++++++--
- 2 files changed, 15 insertions(+), 22 deletions(-)
+The merge window for Linux v7.4 has begun, and the net-next
+tree is now closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
-diff --git a/drivers/net/dsa/b53/b53_serdes.c b/drivers/net/dsa/b53/b53_serdes.c
-index 87771e3788f7..d521050d7c8f 100644
---- a/drivers/net/dsa/b53/b53_serdes.c
-+++ b/drivers/net/dsa/b53/b53_serdes.c
-@@ -273,24 +273,11 @@ void b53_serdes_phylink_get_caps(struct b53_device *dev, int port,
- 	if (lane == B53_INVALID_LANE)
- 		return;
- 
--	switch (lane) {
--	case 0:
--		/* It appears lane 0 supports 2500base-X and 1000base-X */
--		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
--			  config->supported_interfaces);
--		config->mac_capabilities |= MAC_2500FD;
--		fallthrough;
--	case 1:
--		/* It appears lane 1 only supports 1000base-X and SGMII */
--		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
--			  config->supported_interfaces);
--		__set_bit(PHY_INTERFACE_MODE_SGMII,
--			  config->supported_interfaces);
--		config->mac_capabilities |= MAC_1000FD;
--		break;
--	default:
--		break;
--	}
-+	if (lane >= B53_N_PCS || !dev->pcs[lane].dev)
-+		return;
-+
-+	phy_interface_copy(config->supported_interfaces,
-+			   dev->pcs[lane].pcs.supported_interfaces);
- }
- EXPORT_SYMBOL(b53_serdes_phylink_get_caps);
- 
-@@ -304,8 +291,7 @@ struct phylink_pcs *b53_serdes_phylink_mac_select_pcs(struct b53_device *dev,
- 	    !dev->pcs[lane].dev)
- 		return NULL;
- 
--	if (!phy_interface_mode_is_8023z(interface) &&
--	    interface != PHY_INTERFACE_MODE_SGMII)
-+	if (!test_bit(interface, dev->pcs[lane].pcs.supported_interfaces))
- 		return NULL;
- 
- 	return &dev->pcs[lane].pcs;
-@@ -351,6 +337,8 @@ int b53_serdes_init(struct b53_device *dev, int port)
- 	pcs->dev = dev;
- 	pcs->lane = lane;
- 	pcs->pcs.ops = &b53_pcs_ops;
-+	__set_bit(PHY_INTERFACE_MODE_SGMII, pcs->pcs.supported_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_1000BASEX, pcs->pcs.supported_interfaces);
- 
- 	return 0;
- }
-diff --git a/drivers/net/dsa/b53/b53_srab.c b/drivers/net/dsa/b53/b53_srab.c
-index 9988a83fa7b7..77e81e1a414a 100644
---- a/drivers/net/dsa/b53/b53_srab.c
-+++ b/drivers/net/dsa/b53/b53_srab.c
-@@ -451,9 +451,11 @@ static void b53_srab_phylink_get_caps(struct b53_device *dev, int port,
- 
- 	switch (p->mode) {
- 	case PHY_INTERFACE_MODE_SGMII:
-+		/* The mux connects this port to a SerDes, not a parallel bus. */
-+		phy_interface_zero(config->supported_interfaces);
- #if IS_ENABLED(CONFIG_B53_SERDES)
- 		/* If p->mode indicates SGMII mode, that essentially means we
--		 * are using a serdes. As the serdes for the capabilities.
-+		 * are using a SerDes. Ask it for the supported interfaces.
- 		 */
- 		b53_serdes_phylink_get_caps(dev, port, config);
- #endif
-@@ -588,8 +590,11 @@ static void b53_srab_mux_init(struct platform_device *pdev)
- 		case MUX_CONFIG_SGMII:
- 			p->mode = PHY_INTERFACE_MODE_SGMII;
- 			ret = b53_serdes_init(dev, port);
--			if (ret)
-+			if (ret) {
-+				dev_err(dev->dev, "port %d SerDes unavailable: %pe\n",
-+					port, ERR_PTR(ret));
- 				continue;
-+			}
- 			break;
- 		case MUX_CONFIG_MII_LITE:
- 			p->mode = PHY_INTERFACE_MODE_MII;
+Please repost when net-next reopens. There is some uncertainty
+about how long this merge window will last, so please check
+https://netdev.bots.linux.dev/net-next.html
+before reposting. net-next _may_ reopen on Nov 2nd.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 -- 
-2.53.0
+pw-bot: defer
+pv-bot: closed
 
