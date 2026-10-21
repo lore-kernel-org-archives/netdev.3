@@ -1,66 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792544703;
-	b=NmqCppAoc19KGMXVawxjPCAksaC1L0Shkbi2XRKNW0RSryw81tBy4kqfTkIIMy+J2e8d
-	 6EecUpqNMvSDoLYsHwhqQvGQ+hszU2NLNeXvaOSm3WC4kKbwODYggImQ3hqgRgrjyej6Z
-	 CFhXrP7AOODCCXPF6gXz038//RrpN1v5KtQshmk7xHypvLl7mBrzsKEnTLl7grnERax+S
-	 ubgIwTUToMXWoQEmJ0fR6SUKPNhWaRvBMWkAXoGsWxE3sPEnufjWWS5ZZlG0vpiCv2P61
-	 ARtqQtRApZqRKdL8856OaFyv5DM/IFq0bqPSzn05+biesv0t5ayFuOytDa2uY+H9B+Q==
+	t=1792544735;
+	b=L2s0PTu3ZWZrtLoVJMOqMKFz6dmUql06n0wG6GKJUPZYET/TY2EnEPGbMwe3kkhuUDSZ
+	 1amrdGiuS/jW6y65d+tZvtHqxFi78T+rLMoM27dSRcr5UTQXAcLWBS9DoQ100fjpCFQzI
+	 EjRnrVQ4gleAg8A4aeOsfIO3H7BzUDI6y7++8Et/FIBIxRMaQe9z4zx6H6XG2zLLggyXy
+	 EiBsUfWIK+EdoHrrTuXJ5Ra42crDoZc2PzXikwIzzn1bDKzQ8bVXYIRDgdsNV16/t4YW6
+	 fAsH3ToItJU2hTY2euxyGZhwFB4d9jfN+V/nXXTHlp5jvhIN0wSNaVA/Rbq2lsCAYPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792544703;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Nek6SQB9HilcNqrUDKvbjnwNeRbszXlVW1qjIvvxAf8=;
-	b=AGYQ9WvaP2AG13uI7zfRhBlDfhLdZONLMAxKrXwNlzEiBaoGmSVVrrrgIC+5EQZgtkTj
-	 awGtw8x09WnCaQN98tK8dPEs+RYGyrjUrk1FbnuGJvoXzeHgs3b1tAwhICH7fLI8ZafsG
-	 Ne14ERutplOfqRVSdVIs/pYeZYCzhw3C5sy+JdOjsxjvrCwSgCWHMP0EJXfAYKHiEuaIn
-	 yKS8m9/74m4zh2W54/ReIwlv6urr6Bv6nsGlNTQVkotelmtr2abweN5jV44nD24TZiwnN
-	 GVA90tehRRd2Zs/LE6wUzxBnCFW6wB2mQEPaJammS5/PxNCOIsAtGV+Pz2aEgA8P6yw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792544735;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=yzjZW+qTIi0ilDpmbfqEu+IvND2R58m4+1/2tiefcE0=;
+	b=FVh9kL8uk9daFaKpq1yL4Ic1/7ajtPgm72fuxFptRSwFWRrVYnnbMAdhojNP+iga3X4o
+	 JlROXqZsQT02iPFSrgs7eZLOWWvDKDOYoErEoEbjJFALlKTD/ay7YEQ52zpJtWF4mcuEk
+	 G7fmSfQQLrwFXBlyTrHLjlPz9YC5AFBDgj1QDLF9LH8ZKN6msylaOLZFN7kXwiVv8nO+Y
+	 Z/69RaeQdLha/1dg3UqSpq7eN+u1tqozruPf+KRd+9bYM9IfG1Jy6tYWGwL1Crsfsv55+
+	 F8SCHH+eQLlNlE3e+VvzjJXj8Zbofu6ZiZRY+zLitmUhFSYTNV/q1dN1SeBOVmu0m4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQn6XZEm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=IPx3XyZn;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD140606A319;
-	Wed, 21 Oct 2026 01:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240D7606A319;
+	Wed, 21 Oct 2026 01:05:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 240D7606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQn6XZEm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B860C1F000C9;
-	Wed, 21 Oct 2026 01:05:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792544702;
-	bh=Nek6SQB9HilcNqrUDKvbjnwNeRbszXlVW1qjIvvxAf8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CQn6XZEmx4JuBxOCkGUoJxghD6fgxKGGvSTb7ELHt1bjWPlVx48I+kyKIgnc0qr7c
-	 NhgbVZWa4Lwo67KLrbjDl6sjNbG4cTE3Y5zwpFpZVpbAbOITcS/Wfx9vxPUj1slJkb
-	 WQsgQF7PJo+NWG+9REo4JUnCIzps60aCpEq1pTNgCxknuRGsxQ/gOkPWoyRJ4hCZQJ
-	 oygMrQghn5CeQf526xtBNeHcN/kfyQUR9srbICRbEtVMDVVoumuUqSJ5TVXxHPjBdT
-	 nNgxYhhdyIj2yHGGFqz+jS84eNxdAe8gyzYkwDhnv3dL3FzNUVDWKKnYaMtQSYdKhy
-	 MV4yOooKiLIxA==
-Date: Tue, 20 Oct 2026 18:05:01 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Thompson <daniel@riscstar.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Maxime Chevallier <maxime.chevallier@bootlin.com>, Eric
- Dumazet <edumazet@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej
- Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>,
- Alex Elder <elder@riscstar.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH net-next v3 0/2] net: stmmac: Avoid freeing and
- re-requesting IRQ during XDP set prog
-Message-ID: <20261020180501.59a77f38@kernel.org>
-In-Reply-To: <20261015-tc956x-stmmac-no_irq_teardown-v3-0-8189870be545@riscstar.com>
-References: <20261015-tc956x-stmmac-no_irq_teardown-v3-0-8189870be545@riscstar.com>
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=IPx3XyZn
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=yzjZW+qTIi0ilDpmbfqEu+IvND2R58m4+1/2tiefcE0=; b=IPx3XyZncTgKcilragBIPzdckV
+	dsEQcCuka/dbWro/Xth8Ygzo7JpJhxIa5YjSXQosibFqYezE5nm6j6xDUMZOsUHHlNOJR+VzI0QL/
+	CzxGEMQzfC0po06/v4Sbuu3Y3AaQIohT/nmgaG5Ya265J36JULfg45on69Ot5AuTgZIY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xJKli-00Bx1E-Bo; Wed, 21 Oct 2026 03:05:26 +0200
+Date: Wed, 21 Oct 2026 03:05:26 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Christian Lamparter <chunkeey@googlemail.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: emac: release DT PHY resources on teardown
+Message-ID: <59c8f008-9ca0-4620-9a54-e73da131ab6c@lunn.ch>
+References: <20261020223002.1749284-1-rosenp@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,13 +65,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020223002.1749284-1-rosenp@gmail.com>
 
-On Thu, 15 Oct 2026 15:55:00 +0100 Daniel Thompson wrote:
-> Currently stmmac will run a full cycle of IRQ tear down and setup when
-> setting up a new XDP program. This makes tuning TSN systems difficult
-> because whenever a new XDP program is installed then the irq threads will
-> be stopped and restarted which will undo any thread tuning.
+On Tue, Oct 20, 2026 at 03:30:02PM -0700, Rosen Penev wrote:
+> Disconnect PHYLIB PHYs and deregister fixed PHYs during both probe
+> unwind and driver removal. Without this cleanup, unbinding a DT-based
+> EMAC can leave its PHY attached to the freed netdev, while fixed-link
+> instances retain their registered fixed PHY.
 
-Series does not apply
+This driver is quite convoluted with its PHY handling.
+
+Please split this into two, phy_disconnect() and
+of_phy_deregister_fixed_link() and add better commit messages.
+
+	if ((dev->phy_address == 0xffffffff && dev->phy_map == 0xffffffff) ||
+	    of_phy_is_fixed_link(np)) {
+
+		/* PHY-less configuration. */
+		dev->phy.address = -1;
+...
+		if (of_phy_is_fixed_link(np)) {
+			int res = emac_dt_mdio_probe(dev);
+
+			if (res)
+				return res;
+
+			res = of_phy_register_fixed_link(np);
+
+The logic here is more complex than 
+
+> +	if (of_phy_is_fixed_link(np))
+> +		of_phy_deregister_fixed_link(np);
+
+So you need to explain in the commit message why it is correct.
+
+> +static void emac_cleanup_phy(struct emac_instance *dev)
+> +{
+> +	struct device_node *np = dev->ofdev->dev.of_node;
+> +
+> +	if (dev->ndev->phydev && dev->phy.address >= 0)
+> +		phy_disconnect(dev->ndev->phydev);
+
+It is also not clear this is correct, since a fixed-link should be
+connected to, yet a fixed link has dev->phy.address == -1?
+
+	Andrew
