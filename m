@@ -1,79 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792572286;
-	b=OoFoFFLSg4OdQ5v+wNZ6O+wu/6OgvnT5JKnmImMfV4f0QFoQPQ7+Eqwxu6DPnLrhgPaA
-	 npnKIDa9IH75aUe1VS3/OZ5T/3DfT49h5auHOC+yfXB+34oMLzM+//cA5qf+gq4c6t71Q
-	 d8RZGDWbSDoCH8p2jI4XUw1F6mFznmixAotaeMJjiaUJP4s0y8Fz5254G4FJo2u0IADNm
-	 rDRq2pMWiVXR5T4oygXEslns/1zDuJ8si1YDeWaYHt/jY8xZJc48TyR/Z68ypYRBA388T
-	 PdwrkSmxAFibdlBVIv4H6rbmHPMxMVcfZjSoP97QHRpL/ZwGIU1oZE43zngI4L8bXHw==
+	t=1792572607;
+	b=1jo2NATzSPiitiRG7pv6aGFzHRvXAFtPMmFNpoLWPtAaGS6xIoMQRwlST1wzc2oqJp1d
+	 qq3RRqgyXk7R1lBAX5xBYz5upVdZooDGvLmgZUYRWaHEVilsCQgX4+QH6jAzKh7vmlZ/D
+	 ru8upidmDjWboFUrUuAICNEmppnS8n+llFTRJrkzJamdTIH+Eck3hF+b3gB3FHXk4qw2S
+	 TVhJJwLfIcuNzsp49a0+TSxAEQqZHASO9LVS27EhdsU/zw/BnN/S9qfoBg11ka1/h6rWN
+	 HY479Q+7E/KCoSvUoQwbWilVXxA6CU23iZqWGFrVAAfQCRRHEM+0c/jvtBYcUmO6xgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792572286;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
-	 DKIM-Signature:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-ClientProxiedBy;
-	bh=Ryt79vtuqgO6oO1oeL3ZfN3BiPEbp12hL9M4yl8jSjo=;
-	b=QxOPfiL5SDOBhJsAArrDrMCcJrXb6OLhb+C0fxk/BfruOnlS+pVnQI+W/3734tl3Cyx/
-	 MiPzwDKjwGJb4WDs9ez7lM/x8yWBv5Q2Jah0NxJd98LfGJ4jWP5rjX7qgItu7DQbr3IXA
-	 zUnmXoq74SZO6/op7UkqPITpM4cXs9BUGam1rltWh+J4mxvXCGrjgRKUwelD1kqzAM15K
-	 YXUU2qJ0IaqWhnahOlIx2B8n9oFelBuwoD98Mv+mU5qeKB0fd5/lIIQZXvTtyGHO4dE6l
-	 8WrhvWV8nRA804ERAFr6lKhOCEoaViEkQYK6iOWcO6TM9UaW7MNzyfOT27uD5D3akBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792572607;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
+	b=XYxLg/N7v4fHYfeXvgiaKdwVjNEzBT51ZA/OfgIKabrdUtJN3qyaleZpyKwjSuReeQTn
+	 FjGtwfHHdaEbj1RuJvXV8GYheqMDy35Q+zwBlL/7Pz4vqnjyT336HSUP8p3pqdyQaOt3W
+	 FTCDwr7y/yyQp4RAMC0oyWZJssxOqVdjcJGFjvh6nEAFNM//haO+O1xtsmCbMDnY4cl7X
+	 GA2K92CLKzg0xNizxpSE1XjayPToXUuWxnaUG33wK9jpWFf3jltZGTZC8VfwUM5p/VdgW
+	 mReBDxXLJ80pha4zPh8ielkuzOfvYlVVRBVLHl52zYrn9dxAMEGrqF15ae0iziO8CBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=secunet.com;
-	spf=pass smtp.mailfrom=secunet.com;
-	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=fyFDjeCM;
-	arc=none smtp.remote-ip=62.96.220.36
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJoraK3R;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZkrCa2SN;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ADB606A31C
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:44:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8ADB606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFD3606A320
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:50:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CFD3606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=fyFDjeCM
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 50609207E3;
-	Wed, 21 Oct 2026 10:44:37 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id kVjeeb5hzzRi; Wed, 21 Oct 2026 10:44:36 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 5811B207A4;
-	Wed, 21 Oct 2026 10:44:36 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 5811B207A4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1792572276;
-	bh=Ryt79vtuqgO6oO1oeL3ZfN3BiPEbp12hL9M4yl8jSjo=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=fyFDjeCMgoqE+WxSbghr8jX/ZnuNig8IL2sPlBucAhxzBTcgnmI4779btlxNoBO4l
-	 Lyl5YOlCczOXQut69sfLM23zQnWyvEY2rNSgbaYvi63rNyctSS9ME/jNYb+LDbVsax
-	 A1+SDMKrtpbVb6I+POtI4Bve70akz8qByxzw93hgnCDeNkkDANsXkrjb6tGN/r7wLK
-	 dVe3OXj4VFU93D8458FddXra8FFJcAWRgLDY01pNuloS9oUAvcVtF1Jck1cDe6TnAf
-	 pleMQ3J4RqK9+Y1oi+puw7+UNiv0e8Ku2tJP9E3YUn+R5HPjM+LOlNZo1GnyBU8ZdJ
-	 1v3Dd+VZ92Qqw==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 21 Oct
- 2026 10:44:35 +0200
-Received: (nullmailer pid 2570425 invoked by uid 1000);
-	Wed, 21 Oct 2026 08:44:35 -0000
-Date: Wed, 21 Oct 2026 10:44:35 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Jun Yang <juny24602@gmail.com>
-CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-	<edumazet@kernel.org>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <chopps@labn.net>, <netdev@vger.kernel.org>, Jun Yang
-	<junvyyang@tencent.com>, <stable@kernel.org>, TencentOS Corvus AI
-	<corvus@tencent.com>
-Subject: Re: [PATCH net] xfrm: iptfs: do not seek the sequential skb reader
- backwards
-Message-ID: <ath7c-r2GuDm5Xo4@secunet.com>
-References: <20261015021747.30346-1-juny24602@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WJoraK3R;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ZkrCa2SN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1792572605;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
+	b=WJoraK3RU08MAKjRf18x20IBDpQAB1LhvQRxOV+SGRm9FmRETy7tDnSWMn17ai1yJpLW+d
+	QJkcibKXD5NEwJIJXbLqKZCuI0UTNzgEu38l+Mtw43OheY1By60xg5P2zNBpr8sQ5nzLPP
+	jRvAe5+HYVLFZ2LFkY5tZ4qKRTHktpg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-183-0YyYRtUWMuuQz6yTau_ZkA-1; Wed, 21 Oct 2026 04:50:03 -0400
+X-MC-Unique: 0YyYRtUWMuuQz6yTau_ZkA-1
+X-Mimecast-MFC-AGG-ID: 0YyYRtUWMuuQz6yTau_ZkA_1792572603
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a1fa972b4fso2631095e9.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 01:50:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1792572602; x=1793177402; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
+        b=ZkrCa2SNkZnjpp29ifQyXZAuWi2ak14FACLmnRnjqhUMMlNmkf8V+eltF4T4HEDBlh
+         DOnrdJ9w2qa2h3213Qw5p8jViETw4bz3y1VrW+X4Dxgwev+QtKZxr6T1qamSmblia0QT
+         qVWg3G/J1X/EOCi2umsNc1iI6GaBxL+7qWB566mfoMqmrjg9VH6yh4GyjOQJPisJXtwh
+         dIRAlEiHnXFQnfsXRBwx+lxa9kQ/dAkIuKGLSQCwYmnozoHxNoziIF4LoNx8Rz91p/qi
+         OFqSXE30mE2qMO36IBtWsuWN07O7SkIW9lnh6ydHmzFON7+et0McF6JF06o9rX6i5Hu4
+         bP6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792572602; x=1793177402;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ay7su0BaQgQc7vNg3pUCZ5W4k0M/lSxdL0nMfamxf2c=;
+        b=dmoZMPZiuwMC7guVk6MPQNWERp2LcxFE96RfWHuES9M9KHkOtIUN/Vgv3Q5MyLlmOq
+         +co6CIivAkDc4fZg3WbwNL4LmTCS4Aq2S78gDnnp/a90GbtjHTXHNuZwgCvjirVXsNgV
+         U+vVAbXJZPwsl/Hq2lbJrflyz8qUMfrkz0xDwYrKmtd3ym3PS/b/4QVpmL7z+PSUD85b
+         rOa5+5mdk5E7PIIHMNMadDrgpickSEuZNFoKBIy5vJ0y0jCTJ8cid/srNLR2MuRAKXCP
+         RAMHRH+R7A78IYTsh8fBMu5XJB9rUYstlnV2yTTZLQ4aIso4jb+M80S5hOOh79Va1V6v
+         vEGg==
+X-Forwarded-Encrypted: i=1; AKwUvByg2q7vTgMHVHiDLwcyh2fH6CKMemaBMx4vPikVijZTXRfcPWDqLhGCrDNPTooSEpgLhvW2ULw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIfnnYLa2LmKSILChBcemeZXg1b+hpyy9lD8peDguSrI3Edjlst
+	CvA74gFJtpCWq3QFjvkrtbA3hCgX/bu1uqLEtF/pYn9q9OR345xoQXRbxYaNtxunXHFbh5dDqjw
+	X02Q272pMQv/n2/uRM085DhFxtF8ui3Xz5y+ZkPH97LLwPGjJ3QomjufBoA==
+X-Gm-Gg: AYBFou0eAPnzQTTsjj0cdm8WjGdtivcXMZjkJ2mOJTwmC2Xncfb6H0TA/tA7sVx5A53
+	eoM425rJ8+BQhLEzIMwejMSNF7pjwd/B7Fqecqui0vqJ8HcC/6LSE5QgOLKPhn2amgGbphT/Vyi
+	1vgz1T+q5sQ0/Yt5x2YUmtWnmgUw6i6myo5ZtKgVMmaLw3EGiRVAW/6+LR+hNEOgB84Ta3H6QUP
+	8qnXOKR1jWYOpEQH8EMc42ectTEoTr1gEgw2xCUTo6tH+ufNBJsG0GiYyqDY0K+0wvsMpm6maqf
+	cMUe8NWmfu+I2Gb/bcdQzX77rENN9slHnCwUEIEt+2FvC0Kq9PGxrpdUvy0YR1XLb29G6RU8E14
+	7owPSq2R6gnyYmPm3EqDC/K6AQqvSiwsL0BlbsEnk5BhjMvzsJvsGYJp3mSpghciK5PZqfv6jvg
+	==
+X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr26143975e9.12.1792572602637;
+        Wed, 21 Oct 2026 01:50:02 -0700 (PDT)
+X-Received: by 2002:a05:600c:c16e:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a1fdd2aa12mr26143565e9.12.1792572602177;
+        Wed, 21 Oct 2026 01:50:02 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1fc0ad18esm30903515e9.0.2026.10.21.01.50.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 01:50:01 -0700 (PDT)
+Message-ID: <d3a1b219-84da-4ed8-9d87-5619e74bd1f5@redhat.com>
+Date: Wed, 21 Oct 2026 10:49:59 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,98 +112,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261015021747.30346-1-juny24602@gmail.com>
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
- (10.32.0.171)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 3/6] net: add a generation counter for
+ dev->mc changes
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: netdev-bot+sashiko@kernel.org, ajay.kathat@microchip.com,
+ aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch,
+ claudiu.beznea@tuxon.dev, davem@davemloft.net, dsahern@kernel.org,
+ donald.hunter@gmail.com, edumazet@google.com, idosch@nvidia.com,
+ jacob.e.keller@intel.com, kuba@kernel.org, johannes@sipsolutions.net,
+ kees@kernel.org, kory.maincent@bootlin.com, kuniyu@google.com,
+ nicolas.dichtel@6wind.com, nickgarlis@gmail.com, sd@queasysnail.net,
+ shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com,
+ vadim.fedorenko@linux.dev, willemb@google.com, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20261012011707.3378-4-sigefriedhyy@gmail.com>
+ <179185709988.434549.15422498299449004512@kernel.org>
+ <CA+7S2v+LHUWXQMD-cYPEzT5-f3Qhw_vz+LEssQH_A_oqDKtnnA@mail.gmail.com>
+ <8dcd9564-e9a3-4b00-93b8-3cb023d68047@redhat.com>
+ <CA+7S2v+rWYvz9xKPEeM6=3HPz3o7TbX2uRfRKk95f9Y60HnEiA@mail.gmail.com>
+ <976d815d-a9ec-4fa0-9b16-8e55695706c2@redhat.com>
+ <CA+7S2vLWvQd7GrnwB+B+DiqAgST8EjfWwBKzJXtjGRBPVgmOBg@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CA+7S2vLWvQd7GrnwB+B+DiqAgST8EjfWwBKzJXtjGRBPVgmOBg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-commit d3c6d0500e742002c13ba4e7b9eff45bdb2c394b
-Author: Jun Yang <junvyyang@tencent.com>
-xfrm: iptfs: do not seek the sequential skb reader backwards
+On 10/20/26 12:22, Yuyang Huang wrote:
+>> To clarify: every I mentioned in my previous email was about possible
+>> follow-ups - not to be included here.
+> 
+> Understood, I will send them as separate patches.
+> 
+>> My understanding is that there is sort of a pending/implicit question
+>> from Jakub on v9: why are you doing this? is does it solve some
+>> specific scaling problem or is 'nl is nicer" thing?
+> 
+> I think the motivation question was on the v5 thread, and I replied
+> there as well.
 
-iptfs_reassem_cont() can underflow its offset arithmetic when reading
-a saved runt if the sequential reader stepped, leading to an out-of-bounds
-memcpy. This patch aborts and restarts the sequence read to avoid backwards
-seeks. It also fixes a sibling parser to use offset 0 when restarting.
+FTR (and just in case it's not obvious enough :-P) the ML traffic is
+quite overwhelming. I unable to read some of the email/patches I
+don't end-up processing, and even when I actually processed the
+relevant email, I could end-up forgetting a specific contents of one
+given email, some 10-100K emails later...
 
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index 6920940a35b49..751cceab738a1 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-[ ... ]
-> @@ -1046,7 +1052,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
->  			struct sk_buff *save = skbseq->root_skb;
->  
->  			skb_abort_seq_read(skbseq);
-> -			skb_prepare_seq_read(save, data, tail, skbseq);
-> +			skb_prepare_seq_read(save, 0, tail, skbseq);
->  		}
->  
->  		if (first_skb) {
+TL;DR: please include the relevant information in later revisions, at
+least as a reference link.
 
-Does this code introduce a data race that corrupts reassembly?
+> My original motivation is to simplify some userspace hardware offload
+> code I am working on, and to finish moving "ip maddr" to netlink.
+> 
+> RTM_GETMULTICAST already reports IPv4 and IPv6 group memberships with
+> IFA_MC_USERS. dev->mc is the only part of the multicast state still
+> available only from /proc/net/dev_mcast, so every consumer that needs
+> the full picture keeps two paths: netlink for L3 and procfs text
+> parsing for L2. The offload code above is one such consumer. iproute2
+> is another: "ip maddr show" already gets IPv4/IPv6 over netlink but
+> still parses procfs for its link-layer entries. The iproute2 change to
+> drop that is ready to follow this series.
 
-When __input_process_payload() saves a runt, it calls iptfs_input_save_runt()
-without acquiring xtfs->drop_lock or any other SA-level lock:
+I agree that the unified interface makes sense.
 
-net/xfrm/xfrm_iptfs.c:__input_process_payload() {
-    ...
-    /* save the bytes we have, advance data and exit */
-    iptfs_input_save_runt(xtfs, seq, hbytes, remaining);
-    ...
-}
+/P
 
-This locklessly modifies xtfs->ra_runt, xtfs->ra_runtlen, and
-xtfs->ra_wantseq.
-
-Concurrently, another CPU processing packets for the same IP-TFS SA might
-execute iptfs_input_ordered() and read xtfs->ra_runtlen locklessly, then
-acquire drop_lock for iptfs_reassem_cont():
-
-net/xfrm/xfrm_iptfs.c:iptfs_input_ordered() {
-    ...
-    /* check before locking i.e., maybe */
-    if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
-        spin_lock(&xtfs->drop_lock);
-
-        /* check again after lock */
-        if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
-            data = iptfs_reassem_cont(xtfs, seq, &skbseq, skb, data,
-                                      blkoff, &sublist);
-        }
-        spin_unlock(&xtfs->drop_lock);
-    }
-    ...
-}
-
-Because iptfs_input_save_runt() does not hold drop_lock, the lockless read
-and locked memcpy of xtfs->ra_runt race directly with the lockless writes.
-Can this cause memory corruption, torn reads, and packet corruption?
-
-Can this code cause a lock context violation on PREEMPT_RT kernels?
-
-In iptfs_input_ordered(), a sleepable spinlock is acquired while a
-kmap_atomic mapping might still be held:
-
-net/xfrm/xfrm_iptfs.c:iptfs_input_ordered() {
-    ...
-    if (skb_copy_seq_read(&skbseq, 0, ipth, sizeof(*ipth))) {
-    ...
-    if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
-        spin_lock(&xtfs->drop_lock);
-    ...
-}
-
-If the packet is non-linear and the header resides in a paged fragment,
-skb_copy_seq_read() maps the fragment using kmap_atomic() and leaves
-skbseq.frag_data actively mapped.
-
-Acquiring spin_lock(&xtfs->drop_lock) without first aborting the sequence
-read violates lock context rules, as spinlock_t maps to a sleepable rt_mutex
-on PREEMPT_RT.
-
-Could this lead to a 'sleeping in atomic context' bug?
