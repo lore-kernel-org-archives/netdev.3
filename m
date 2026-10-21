@@ -1,97 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792565750;
-	b=bV+W81ixkEXg2AMDQkelbJth+fYB+wACGjbPIT17aNbRBX8iUkhcHwreVZ9YgNY0qyK5
-	 hflb6NwIZTB6r9HHsTZg+aZCAbrdq/QnqC09Pr1bp8aG1gZPoshVagfCnI8j0cSixOP6A
-	 FKrJAAcb+anR4vXEb1VmEVfUOJXN2rg6CuCV2UQjZz7x2ZACtx/cmmmZNShL+xDNR/lY8
-	 gLMpuZJczX7oy1yZicCa0xyKu217nMDrYJILNR1lerq48Zp2jH34MuKcgfZgFGj7svYpp
-	 uofO523EaQDYPELv/JZgfxwKaLZuy3pL7ej7NkEtjHijjXtsHbmpJUOyl+MjeN9a43w==
+	t=1792565879;
+	b=zxfA6AnULWJ7hTIWTik6dKXXxUcc+bmS4EvIFuXv6wOsq+sGG31y8vzNEAFqB7hCetbF
+	 dIb59Sb/hTi6S/j1iePFhiDmWCeuzn/dGgDk4X+5+ScG1ZmLcSIuOPl3w5xSQa3hJfluz
+	 B5AhC/Fhymb0Nve18R9WNyYjESjCShQNZNKk/z5gn2uaTFsjCBCRvzWYda7IVzdPmGtgb
+	 bFLEbSsH/VPEPpTuguBm7b5tcm0JKdDdnHcHuRrSbjcbBJRPU3aB2Z6CgTWYowGvAzNl1
+	 rQOXAL1ifOp8Pbgjc8Y4k5lTgKPkmodlYdJ691umRwHspwZVlc4ZEWkyItUNx05Knag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792565750;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792565879;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=V+R4YF/y9X5+PnJYN2y3x8HJLwi28vjcGLuJXKxuZzw=;
-	b=sdexDtHNszsEDEgwP6FBZwn7pd9xcaUpKc6RetItw1hIZr9ohVV20rFt7XqWPqygS8KQ
-	 t9poOOFPCZF30RTYeqK+6cdpKSEPswH/d5Vfsp/MGaOMAVovblnT0m8/48fPelTAbiAJC
-	 VdhwSOyoNgKZLWooUknCVzvplmvfeWXu8NL2n2RtBgwWercrk/Fp3qYPPLCE5ibtC1wc2
-	 EqlqtDrUlI7Wy1jaduKxXTFeFFkKEOtj2XPhW99s4r2CUVt+hEJWqNLQinoIQcG/KDGXM
-	 hycCPDPnT8Dr1iFLWj7jXkdno7MFZF71r0dQw2EaOt3DRE2DmV/MIjH6Ils4pJuf46w==
+	bh=e2nqfpyXfJR53yAw3YRwGK6gvdGsh0en4mbKV0oOf+o=;
+	b=duIjMbpHKgyiz/cPGy7WMiavQHWPXFTTIRKYScVlPyLJqG4iD4l7IUkTskrwEUocqm0V
+	 RlfvrwZ52xttXr6gcD5yP4fssljNgzxN3rUVJQ6cSMkCq0n58ZBZMQDG84Aoz8QMSiUZN
+	 KyzpqZcvqsVm5bQdV0cPraUCxyHHAFBcmFeo9Ua5+jLJiTrsCKRTPz+9T0SLM4/Tg5scF
+	 qBaxv+A/aCuhhVKCJj0xFGFDt3oIfvnRo444iwiTWLXFbf7/ZAwCYkSts9Y+ea+21rIPv
+	 XpjCPuivdznrZvX5HSUFAxtXqAF+9yG2gmij1s1GYncjLzTOEGNMo6AXtcf8N3pqHgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=CvvqXYrV;
-	arc=none smtp.remote-ip=209.85.208.48
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=V18Ap8EZ;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C86606A31B
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:55:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0C86606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5558606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 06:57:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5558606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=CvvqXYrV
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so486068a12.1
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 23:55:49 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=V18Ap8EZ
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-35b2c599f43so830744eec.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 23:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792565748; x=1793170548; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792565878; x=1793170678; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V+R4YF/y9X5+PnJYN2y3x8HJLwi28vjcGLuJXKxuZzw=;
-        b=CvvqXYrVhzzPQkSFPnwn0++FTGgQkvh80qkMneWETr+RUvhHd8xfNiO0gZOIA3UkB4
-         /HU53j2ToGqS7ek2++CHZl7FxkmR0lNPLtFSwQfwLT9+eP/f0gAVXAuaxeJKD5B8eyph
-         81gV80/1gvzU3UbsJbbpAo7UfuHKPJGxU2G0JYdeeSYHJZlZp+iRNoN4b9fvkdT5LTEC
-         ROAZJdxeieGTPYAxhtcIP/hzIetVpY2czlf8aTHdw5csogJNsPh2JZadvxopL2JiGc4v
-         PGqWi/GbRS2w8S7/jgBNyaCL/DidZamOmTuf4slpO9+K0i2I5tvZ1y4dlWeEgea1blhz
-         k7Hw==
+        bh=e2nqfpyXfJR53yAw3YRwGK6gvdGsh0en4mbKV0oOf+o=;
+        b=V18Ap8EZvxLEHfDo9rRyXAXLgI/iH4CAqIguoR9KG2hQNicwlE4xG14qmtAIOOrJk1
+         nhSmhm7VcmYVAXA8a330g8j6qsK3LIgKqkDd/dZ++6ag4s0hw9OKffWNGjz4D/S/ng1M
+         pZ3GHFmyCeBQIJD0aJNFAjjRHc3yFljclDz5XfmXlNntj+Q/2LuhYZtvUds4PX6oBlMt
+         OB8zlbU/bhjemznFVa6bT6zCkQTm2qvR6iM74efiMd/JGOqipHbA6UQRjjEOPE0APH3H
+         LDtRsY1Ij8rLIeo1mDqsvSh48LyWi6VU372ar92W3xPh2+1IqgW8BT1drdSDAEKLrX58
+         g6RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792565748; x=1793170548;
+        d=1e100.net; s=20260707; t=1792565878; x=1793170678;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V+R4YF/y9X5+PnJYN2y3x8HJLwi28vjcGLuJXKxuZzw=;
-        b=UMxnJiWeLiy+JrPvkDDnQPPELc9P9l5i4uN+wqtcQv4CZaNz4vkqbJx8DUNYlth2fv
-         zVOnC8130UtYYAXCUCxGYb+N1JYy037g6Rm6ff5z878bbH1N7glneM0LXURhcjppyVyq
-         nnmW/uV2NprtqBi4LTM4yDr4R7LA/DJYT3lYyAIUWSNOEVVglu+74ZttSxDg2V5UojcX
-         OrBMxX72GfI/YNo2azaeOwndBNb3IQgYk1APN6uEz9nTLKoDEjXssJ9k0PYu5kTk+7RV
-         GPw3d/YbwAY5Ca8ILWV5gHMFWm43D2DnPUcTt85lGutt2Zx7KewQHwQz7zNRYQ9WqQV8
-         A9Ow==
-X-Forwarded-Encrypted: i=1; AKwUvByva2IrT1UKJLWj0iVXeoHQF1q2rUxnPHqRZwpXlNQMAci6UEW/WGHzRIeTNxwSJolI+g28zYg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLe3nLelVOZsucgvhPUOZ8TPlpODgaROPoxK6QUtmy6kNmJ/QiZ
-	zPMXHeH6J5pTiYM93wg1uvyY4lYnyPIaZQJMwQPTYOl+U0esCG0WWokN
-X-Gm-Gg: AYBFou2Nd9w02LBa8SfwpwUwSUR2P8cdlGE8qUI/3rkUMZ6kKu47y4AvRlUclP4tSPD
-	Lj4+kdfaXSk05wBvqRELZB6F5L0vigqRIhGOR5rJWBLqxDvh6Jh46irlqmUyerdRdx+vvfulKGh
-	iYNgeOG8TxBNK4wgVrS+MSCBt7v0o3OOnnGuOv/WNI9ssXsLX853QJcstD01OYtMrsMflZsflcS
-	b2pkBmiytQ8RCn7nOPpVJlOm/+uk5E2WXQSf0ODy8w9JEUNZvyqVRQwNeiDEWrxMe4XkVymKB4M
-	PGzyNG4zGskdg7MJUcF9cEEjguPqYztpVt5keG0jB4O9/mkQaIzmlDe5ivijFE2X6YNZfpQcs4c
-	pmt77y6x5CdqWKP0QgoONnQgiX9J1e1/1xWeMGgD40Usz4wrNrJY3Q+YdWUc7/w+IpA+gjEKeMn
-	56l/I6hOCjH5N0dCxk+5JC2qZ02RJUw7zZAYvOaaHuvxjDHqi9meXkv+Jue4Q+TwmgFIp6mIF+m
-	y6VXTeseYq0+eBOAUiSh3vv003TgxTywFO28dDN5xNONmsRtyrscUyxhtfMZyn5eri4o20a83wx
-	hJVsiQW3J2zH
-X-Received: by 2002:a05:6402:52d3:b0:6b1:d2d6:4013 with SMTP id 4fb4d7f45d1cf-6b408eb8292mr521517a12.17.1792565747740;
-        Tue, 20 Oct 2026 23:55:47 -0700 (PDT)
-Received: from theodors-laptop.. ([5.255.118.7])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b402f2b8f9sm543690a12.3.2026.10.20.23.55.44
+        bh=e2nqfpyXfJR53yAw3YRwGK6gvdGsh0en4mbKV0oOf+o=;
+        b=gWab4/PvOzwq+UTaTo+81iLxizFY/ZBX8gLYi2jbzJUPm16CIggwkioTUZS1oumJLn
+         Yf/5tSCcmo5iw8bg+nTAFvg9rHTTkYjBpRJeCJ8piloYioA/GlQRGIF8IhantzIFuIkW
+         AWgigHT7sQ5CtYo6iiexUYjEBpLut+qJ9Nh2gw/EWCFfEQH9TGHmUzuuUmXcz9kbGZ4r
+         Rd/GHVs8QAphs+y47jufCbJQtnN3CdgSYFfwbmlptfRiy1FcxUMRkqMjalbEXx5Kt40J
+         ujgr+jdsHcki3Al481xewNJWS2YWxPYah4olybmANUtuRq0OH9aPcvWM6HxLQqf2IvK4
+         oY8g==
+X-Forwarded-Encrypted: i=1; AKwUvBw7IPhJdfylQuI5WnQ9usz2hes+JHE5/OgwFq5WIi3cILM8ZxWzizDUp9CU+NJr2AZR5oXiS58=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKmQKpk7cD8yFaOsWpWufSnwg2M0ssyuJ3iUdHGxvjNvFBpeEhd
+	6B0id+2Nu12VdnsLBq66DbuqfzRwtIcBJv1obLeiZFBRvfKjl8TYrDgK
+X-Gm-Gg: AYBFou1LASLxQhYyeJIuLRFiQbcc28+FaEA7xmumq0+QSyDbUYJlTtp2A0Dghv+8Tph
+	q90LE2PgCWPzeaEfw02YPgIf0mfV+rnWvecT/OjUiH/i1UxEQT+Hs46E1nktFY5piMtt6LFiUTI
+	+Vsy98Wouk4yHL5qNNNMdWeNCVe/v2gNaCnyzuzmApreeQQWyDr8lVJoklGKqeZkh2a80kCDlRQ
+	J6+97Su7kmrtAjCK+pCWilUbKCH3Ble1irEQ1TBeHP/u4NdacfZ0iwNpjIrxA2gHQYJ2qVpoWXP
+	mL6BWqXPwA9PYC3gSLd1QsnnqDeCmMfjOzC8qfyR1hNrNRx5D4FBWlfK+cqrR1GT1wi86wBzBwe
+	xmQdPAtLD4norlIFSh/NUn+x49bwg5fAgP+TMkh6M4sxGSWMpj61ADKbj7Bbcr5s7SS3ByrNJcf
+	rMUYicyLr9PouiFEolAFeKlJzhBcWexQCmekPdkSjMz9heHSjbeIVcsBf1H3RXLoR9QUuzMPHVP
+	b6qVhwbWAzqCNqFyHGSySzi+qCt37F4SArWDfODgHd3fvUV5m3YDuib3N/rwynKdoy1F+7C9R/z
+	4x8GuFDWJHaLhf+jcjEFfarJwuU9l5skXi5BEZ00Vn75p4SsAMvPs+F3H2OT8YBtdiVNZR0SKoA
+	ZBoxMveNDLmJ1oqBlIZ3b3wYV
+X-Received: by 2002:a05:693c:60dc:b0:362:fa87:2aa6 with SMTP id 5a478bee46e88-367487699e9mr2317177eec.0.1792565877638;
+        Tue, 20 Oct 2026 23:57:57 -0700 (PDT)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-367411b4145sm5165118eec.15.2026.10.20.23.57.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 23:55:47 -0700 (PDT)
-From: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
+        Tue, 20 Oct 2026 23:57:57 -0700 (PDT)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	osmocom-net-gprs@lists.osmocom.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
-Subject: [PATCH net v2] fou: reserve headroom before pushing the encap header
-Date: Wed, 21 Oct 2026 14:55:17 +0800
-Message-Id: <20261021065517.198322-1-theodorlarionov@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Anil Kaushik <anilkaushikwireless@gmail.com>
+Subject: [PATCH net] gtp: Require 'CAP_NET_ADMIN' when joining the gtp multicast group
+Date: Wed, 21 Oct 2026 06:57:50 +0000
+Message-Id: <20261021065750.2069795-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,121 +107,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ip_tunnel_xmit() and ip_md_tunnel_xmit() call ip_tunnel_encap() before
-reserving headroom. A packet redirected into the tunnel (tc mirred, nft
-fwd) has only the headroom of its original device, so fou_build_udp()
-hits skb_under_panic(); with a mirred mirror the push overwrites the
-Ethernet header of the original packet.
+The gtp generic netlink family sends notifications on its "gtp"
+multicast group when a PDP context is added or deleted, and for GTP-U
+echo responses. They carry the same attributes as a GETPDP reply: the
+MS and peer addresses, and the TEIDs, or the TID and the flow label.
 
-Reserve the headroom in fou_build_header() and gue_build_header(). GUE
-sizes and builds the header from one copy of the encap config, which
-can change concurrently. As the skb head may move, ip_tunnel_xmit() and
-ip_md_tunnel_xmit() reload inner_iph after ip_tunnel_encap(), and
-ip_tunnel_xmit() reads tnl_params before it: for GRE with header_ops,
-tnl_params points into the head.
+GETPDP requires CAP_NET_ADMIN, but generic netlink lets any user join a
+multicast group by default, so an unprivileged user in the network
+namespace of the gtp device can read all of this.
 
-Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp encapsulation")
-Fixes: ac931d4cdec3 ("ipip,ip_tunnel,sit: Add FOU support for externally controlled ipip devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+Fix by marking the group with GENL_MCAST_CAP_NET_ADMIN, like the psample
+"packets" group. Only users with CAP_NET_ADMIN in the user namespace
+owning the network namespace can then join it.
+
+Tested by joining the group as root, as root without CAP_NET_ADMIN, and
+as an unprivileged user:
+
+Before:
+  root: joined
+  root without CAP_NET_ADMIN: joined
+  nobody: joined
+
+After:
+  root: joined
+  root without CAP_NET_ADMIN: EPERM
+  nobody: EPERM
+
+Fixes: 50aba46c234e ("gtp: add notification mechanism")
+Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
 ---
-v2: move the headroom reservation into {fou,gue}_build_header(), reload
-inner_iph after ip_tunnel_encap() and read tnl_params before it, which
-the Sashiko review of v1 pointed out.
-v1: https://lore.kernel.org/netdev/20261010223601.1193655-1-theodorlarionov@gmail.com/
+ drivers/net/gtp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Chengfeng Ye posted an earlier series for this bug; this takes the
-builder approach Paolo suggested.
-Link: https://lore.kernel.org/netdev/20260904165544.1362052-1-nicoyip.dev@gmail.com/
-
- net/ipv4/fou_core.c  | 15 +++++++++++----
- net/ipv4/ip_tunnel.c |  6 ++++--
- 2 files changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-index 076fdca44f51..896e63adf698 100644
---- a/net/ipv4/fou_core.c
-+++ b/net/ipv4/fou_core.c
-@@ -1059,6 +1059,9 @@ static int fou_build_header(struct sk_buff *skb, struct ip_tunnel_encap *e,
- 	__be16 sport;
- 	int err;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 69fe5717846b..e5ff1621ed62 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -118,7 +118,8 @@ enum gtp_multicast_groups {
+ };
  
-+	if (skb_cow_head(skb, fou_encap_hlen(e)))
-+		return -ENOMEM;
-+
- 	err = __fou_build_header(skb, e, protocol, &sport, type);
- 	if (err)
- 		return err;
-@@ -1071,16 +1074,20 @@ static int fou_build_header(struct sk_buff *skb, struct ip_tunnel_encap *e,
- static int gue_build_header(struct sk_buff *skb, struct ip_tunnel_encap *e,
- 			    u8 *protocol, struct flowi4 *fl4)
- {
--	int type = e->flags & TUNNEL_ENCAP_FLAG_CSUM ? SKB_GSO_UDP_TUNNEL_CSUM :
--						       SKB_GSO_UDP_TUNNEL;
-+	struct ip_tunnel_encap encap = READ_ONCE(*e);
-+	int type = encap.flags & TUNNEL_ENCAP_FLAG_CSUM ?
-+		   SKB_GSO_UDP_TUNNEL_CSUM : SKB_GSO_UDP_TUNNEL;
- 	__be16 sport;
- 	int err;
+ static const struct genl_multicast_group gtp_genl_mcgrps[] = {
+-	[GTP_GENL_MCGRP] = { .name = GTP_GENL_MCGRP_NAME },
++	[GTP_GENL_MCGRP] = { .name = GTP_GENL_MCGRP_NAME,
++			     .flags = GENL_MCAST_CAP_NET_ADMIN, },
+ };
  
--	err = __gue_build_header(skb, e, protocol, &sport, type);
-+	if (skb_cow_head(skb, gue_encap_hlen(&encap)))
-+		return -ENOMEM;
-+
-+	err = __gue_build_header(skb, &encap, protocol, &sport, type);
- 	if (err)
- 		return err;
- 
--	fou_build_udp(skb, e, fl4, protocol, sport);
-+	fou_build_udp(skb, &encap, fl4, protocol, sport);
- 
- 	return 0;
- }
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index e6bcf01411d0..742c2b309608 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -606,6 +606,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	if (ip_tunnel_encap(skb, &tun_info->encap, &proto, &fl4) < 0)
- 		goto tx_error;
-+	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
- 
- 	use_cache = ip_tunnel_dst_cache_usable(skb, tun_info);
- 	if (use_cache)
-@@ -749,6 +750,8 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	}
- 
- 	tos = tnl_params->tos;
-+	df = tnl_params->frag_off;
-+	ttl = tnl_params->ttl;
- 	if (tos & 0x1) {
- 		tos &= ~0x1;
- 		if (payload_protocol == htons(ETH_P_IP)) {
-@@ -767,6 +770,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
- 		goto tx_error;
-+	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
- 
- 	if (connected && md) {
- 		use_cache = ip_tunnel_dst_cache_usable(skb, tun_info);
-@@ -799,7 +803,6 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		goto tx_error;
- 	}
- 
--	df = tnl_params->frag_off;
- 	if (payload_protocol == htons(ETH_P_IP) && !tunnel->ignore_df)
- 		df |= (inner_iph->frag_off & htons(IP_DF));
- 
-@@ -821,7 +824,6 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	}
- 
- 	tos = ip_tunnel_ecn_encap(tos, inner_iph, skb);
--	ttl = tnl_params->ttl;
- 	if (ttl == 0) {
- 		if (payload_protocol == htons(ETH_P_IP))
- 			ttl = inner_iph->ttl;
+ static void pdp_context_delete(struct pdp_ctx *pctx);
 -- 
-2.34.1
+2.25.1
 
