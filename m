@@ -1,95 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792550879;
-	b=EWiXt89o0nHqzoSnA1YIYFBaWZnnw00oXVOO0FwG64A1c7QKB8kkDtnoMR6u1bjfkEN9
-	 aJPb9lbPXQ6OPyVZa35CSN2HLexRjpyfN9/yBGjZfFzq/e5lCNz03+xjnjQrPXkaZr0h7
-	 eLEywxitXg3pqgZfh0u8ey8whXAhTEiEQu2XXuU/ewQ2kW5jsvn7tu8tjX5elD5SratZx
-	 4FdUd5YXb1xNjhEztCYG3N5US0vj6iQ3fjW91PEKojTgD5AM7dbTs0MueUgOqdlY/++0Z
-	 DTfYkPXHVIJa1sgLrFO9GwjcmCCHhJJlkHv3JbIhkWCKCMFEqDcC2FsPeIn7dxWQbUA==
+	t=1792550904;
+	b=lBrWkybKIDULFp/5f6G5ZpGSXmkbjtO56zgFMonKeea2uEL7Tx63G1uvRyasSkPNYraQ
+	 bPIzlN2nDUXcgjx7kJjjH3v9vuC3033ka2C42B+em37uD7d6n8q9bVkRFM7e8siL6HU7d
+	 AANxgiXEg+weP8eLKYjHxaNxwMop7GijJzAHCw7oj3nuE82kcvGNYLXpgEkmAmjOCmKq0
+	 nQl+N8XrUZ6yVVcmS2O/y6da210//5pzgsh5sevUPEiUxbgwTf4FaB5Rr9BtyGWWlvAY4
+	 xeVvwd8G2CTHjG6zid+8IY4HjCPQVbj4OWLQRqJzjro/k9iY2yiIiMrqarJuk09cLRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792550879;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792550904;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=fJiseS4iluYQLnz/LCLSPHnCYq4WmvzCwyXvRqIPruk=;
-	b=XMt3VHNwlwzX9jdgzdIDeYkLxs5lHvVUMAPXbY/im8t6UYadTQpMNq8KYv0EFBJ8DspI
-	 THREdtTBJf6z7zZoWRU+fQJjdUaC//C6QQB7SvF85GcGvUEJZVFy/8q4kzhCjwxBa0E5m
-	 4UALbZEwBs/Tqb5QNhkew0z+Kq/UK/gqf0LazGluSO+LnOULQfW2TUF8rxYtLY8oObrD+
-	 AZH8FIzxr/TBYH9KlXS5T8XAmdIilzbN64PtykKwQ6EUiqsOHcAZ47QxvhQ8S2nKFFWeJ
-	 JPzrVL52rPJ1p7jlbUONLHwWiL8GtWS395OgT4KrnBaRmMCH68e+ZG1+c6s8+6MlScw==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Subject:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=qKIJ5uqdRYL0E2KypFSmmKBLWDmR1eXvzj3oXBexYBA=;
+	b=t0a5E0P5QiuGqWCJhQ61yqN6qW+lBbutT38Wle5p0Os68LWm+T/wxbh6++8JcZQUHAFo
+	 GmZ1oIDPy5mnOkUQb3uOL7csA83KGjyJ1wL4/6ZtmxcGVG+xrYTuwJmR7HpENiFGlEjB1
+	 tlyX8vqfCej3cMtF4yUSSI6KjoM7qDouWyc01VvZuT58iOtxn4O/nD3GI/rto9bnAK3kQ
+	 C3TFPf613Q6mV5IYPJtgfA2GCHvWq2L6KrEOpeyDKYrEns2wdDAmv/0L8xGtpBo6ut0r2
+	 YMZS9CcPwPT/Uzpnv0oKbkeYWpVmfEpo8I5PjMRlYcMZ3Y4k59Omv16EsICG0OyabaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=aixKShim;
-	arc=none smtp.remote-ip=74.125.227.135
-Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=BTvIrXrh;
+	arc=none smtp.remote-ip=209.85.215.177
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A213606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:47:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A213606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920E2606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 02:48:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 920E2606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=aixKShim
-Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-3ac5f801d7cso64194a91.0
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 19:47:59 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=BTvIrXrh
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cd6acc50b8dso31833a12.3
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 19:48:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792550879; x=1793155679; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fJiseS4iluYQLnz/LCLSPHnCYq4WmvzCwyXvRqIPruk=;
-        b=aixKShimpTDGxGTRfhefbj+7AhmdO6TKqIjIH+lAHyLujVDwOdjmJoydzSrpf0+NUg
-         PE0vbFzRZOmwus3Lt3hdddXBokS/pcSx8xumMyWyfMNfHdXN8CVg3Cd/S7p1lKx4fQMh
-         fWcqeJox7ssuCLe8rtYwaDsKejPRW9vKEt5lBFTRnTTZDWMdDiwYfDPML32tn3rteGX8
-         PIEiHeBi+j35RylsGmyXmf8huRPJPaDlEjid8oezQd7NuwVq5E5uq+1vb+8qDEV1Rh9T
-         8QWS6MCp2sDayINWu/YcZE9wXpFvJdHWmuiULlCN16RHpFNTj4kwsxcvvDThr7obPBPB
-         9cvg==
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1792550903; x=1793155703; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qKIJ5uqdRYL0E2KypFSmmKBLWDmR1eXvzj3oXBexYBA=;
+        b=BTvIrXrhp1VU5ae+bIutEaTCVUb3S9W/Y7jogPr7d6nALaPuvnDUoEPtfGz1lVpR/c
+         L7M8FZaV/E6m3c4AEt5dtp+uhhNCcqvk6sXyhO8qG+axymP0BMFI//FGfRD6zXYV8Q7K
+         lsuYGc4icbTw+1v1p6/32jAXCu/BZYhJLETgNbu2AGUK3MMAxafRkouEj3bQmS52uK4E
+         EYtabuzlbJ2inzIFkIy/enfA+sxn/EChBymxc6oi21wOACIq5ydNa9L4aoUjFzHB+pb2
+         sN4TJ4kjT0OGbbA+WTMTI+pDzA2+5Gxh+bTeJe6YaZQ8D1aWQG0GkeoBp8tjsYyuARDd
+         +/3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792550879; x=1793155679;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fJiseS4iluYQLnz/LCLSPHnCYq4WmvzCwyXvRqIPruk=;
-        b=msTuJb60No6XKM0RLDwfdfNJapi2NKuWd++Q37j2iqLlV6+58M6e8h8QZMzZEFP2YC
-         zefgQiv9+1x1hCQk8dHAku9hbuZbMRXkgau7gzCjkhiASIm1LFtc/EgynobaY82ks/8z
-         29QJPW7uzGXzEve7C+HXZ8UfJYiOWBxWdxBC+Dokle65jp4xyyo/q8OXMCkmZuvifNIz
-         SWb2SMLhycNmqPJ0RzvdU2cvScjkKR9WLMC/u9V/8JRANmKCtgCX2cIL3QyDwcx+Zjc6
-         eZimfnNYzqdx5FNA1d0KSM9wPdFSq/x6f7LwnXP94S840ZJHyPF4ahUbJIAIwEf/x7Ua
-         ztdQ==
-X-Gm-Message-State: AFq9FYLOZeiGd5twvYiRz5/ePoQ+t4KtPPyErMbCgqYeOugn3ka5HLTI
-	6CLse0mOnfm7Py7pPAgRPVXfmiiEvSHfRhUI46GdV4f90Wy+ssP1/aWd
-X-Gm-Gg: AYBFou2fz+oPj/8sPWNL3+ypzpYKa+t/QQi0P+mLV9qYu3tYvc9CGveAqqtfpiQ4/xm
-	8umn4Vb9z2/JNQZHqCp+ZxB7u9CM3q/xptC6n3tRk7+e4l/equNc9/pBlBDCaFdAmqAoxJi18ak
-	P6HZP7BZfUH5O9b142EwLIDYgT41eRhUQRW9qBvkrN+LaJOtS6C6MjmF+mYk6Pl1sOKgs9ttuWA
-	BjjlsiWTWzdhbHxkMbPWbuQkjFQ1epGWCuHP5uXP+zlB+8U/OVkchsQAwZVutEcLxz8dtZraR7W
-	jvs9FKGtrPK6zDHX8zHEmUQWdROJfFal9jQYzsmPMeeW1XGTQmKgNqQ7NT6nJmA2wjIelOeUx90
-	Wo1/nYi1/ETNa+C5HpJjSPt2FoG/Ayp+cBatnRuD4KAQABrWQzaSFoxdSt4xkauzyX1Fa44q594
-	1Hxi4OEVHwJyEiUfYDilezMBUK2zZ86YGigQUMe2x/9uSPJD4wkoiDyKENfRA21+PeakgH540nX
-	BWllMSBRiBvQerRuBXl6PpuUy6gLgM85pFfJRuMbNU0K49rKYGK3eVaLhVPcJR+ASw7XUClfi4e
-X-Received: by 2002:a17:90b:1a91:b0:3a8:e1e:3390 with SMTP id 98e67ed59e1d1-3ad86d645f5mr753520a91.56.1792550878273;
-        Tue, 20 Oct 2026 19:47:58 -0700 (PDT)
-Received: from LAPTOP-QJLDGQ2L.localdomain ([112.224.225.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad813ee970sm1796473a91.16.2026.10.20.19.47.54
+        d=1e100.net; s=20260707; t=1792550903; x=1793155703;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qKIJ5uqdRYL0E2KypFSmmKBLWDmR1eXvzj3oXBexYBA=;
+        b=FpbTdFYiSXtNrsGFDEJf5qdPZ+LsCFGTdDuFoBl2f+TtpMJ4MyP0g0PqeF48++MoUM
+         CzKzdhD6eh7Y/sLdmckUfUh674jXSlmG+xfcS9QgHvVl3n7+i1kZu7H4ihTGC03uzVlx
+         Oarl7fEX++92OGcNJy6wUB4vC/VqrLJ1Ba0y2YgysKx0mO6bxrcrUK5EOPIhNWmgKcLh
+         MBiebXGUu+Zyh7lQjUWyPzFwrseDgtuU3XV4iu/u2Oxbl2r//TJ+M8qM/dNwBrnYIhm/
+         +roEG5XkPc53C+u72lcCgBh9T0UKiQJzltt2Xn8pXkk9eFFOvV1oy2Su9HXTA8pZBiNc
+         ITUQ==
+X-Gm-Message-State: AFq9FYKVaWTCBly5Gr9K5Xx0wfvKYqeUZPA/90yrvzdfXr7xfPuPEk57
+	x7faYKDPvybYssGcKqu/dEen6bcm2xALF5UkBwsehKQgWTLRnhTVtLOl7prwPYzsQ0FjmYt75ys
+	JByhh2c8=
+X-Gm-Gg: AYBFou03ubFKiqT63NhxBpP2YJwebaWEJnXtjVd/PDqZKvTrA0deoVNsxMQ4oBDat/Q
+	nX7zlhUnXZBbCG/9PLKclt3GqzFDQbCzfO4k33zuAjQPa5A3aJZtmLojQbtA2nAGQKOhgSmg6jR
+	uZhI536kZMG2F+ittMLA+JtGqbcINaMs+L44jboLPbmslX73UNfQN5acIOSLdFRQJa2lU0vKgSX
+	Y1E/2aEashT6dhnWDwRlY14kwYZrWGjBpakNDuRKWXtIYrEhxTlVUrtDtWziiVacIOBTdHhpA+7
+	dEyYavtLqd9MPZ4A7ppJwvY/We/leiO5G8dCCdBlVdh9GkUJjDyWYAK1WGwkGtxTSWM9OL9m1Be
+	4E0BuVqe9Uq0Y0jp1mXhzLjs8vbXqw3UX1N/527qFkbMvipzLdbLByetZh3zLj76GQKmlM+YBjA
+	iYcV0aZjc2I8+xqvLyaZbW6d5x9Mh4jXzxrO8r1j3F6j5m2dlyrjnjGBias5/l5AecRMd3yhXhW
+	irBFmQg10PHAIZItnWqimnjd2jrMB0bzPFVUMfQWgVeiBE5/Lm3nkS6yw1/p015C2rBOZfs3169
+	96ZYDju1D3RBzaaEnaimeQ==
+X-Received: by 2002:a05:6a21:62c4:b0:3e2:b44:48f6 with SMTP id adf61e73a8af0-3e287de4116mr635059637.43.1792550902860;
+        Tue, 20 Oct 2026 19:48:22 -0700 (PDT)
+Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a08933ca1dsm266478b3a.4.2026.10.20.19.48.21
+        for <netdev@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 19:47:57 -0700 (PDT)
-From: Boyan Liu <yymhvert@gmail.com>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	David Ahern <dsahern@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	co+98d7de09cd94fec5@bugs.sh
-Subject: [PATCH net v3] seg6: Fix unset mac header in SRv6 End.DT VRF decapsulation
-Date: Wed, 21 Oct 2026 10:47:38 +0800
-Message-ID: <20261021024738.17266-1-yymhvert@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Tue, 20 Oct 2026 19:48:22 -0700 (PDT)
+Date: Tue, 20 Oct 2026 19:48:20 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Subject: [ANNOUCE] iproute2 7.3 release
+Message-ID: <20261020194820.5c9fbfb8@phoenix.local>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,89 +92,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-SRv6 End.DT4/End.DT6 VRF decapsulation unsets the mac header in
-end_dt_vrf_rcv() so that the VRF device can rebuild it for packet
-sniffers. The VRF rx handler only performs the rebuild when a
-sniffer is actually attached to the VRF device (ptype_all
-non-empty); otherwise the packet continues up the stack with
-mac_header == 0xffff.
+This is the regular release of iproute2 corresponding to the 7.3 kernel.
 
-Every other receive path delivers packets with a valid mac header:
-NIC drivers set it in eth_type_trans(), and tunnels without an L2
-header (ipip, sit, gre, tun) reset it to the network header after
-decapsulation. skb_mac_header() even warns on the unset state with
-DEBUG_NET_WARN_ON_ONCE().
+Highlights this cycle:
+ * ip link details now show DPLL pin information
+ * ip supports OVPN device mode
+ * bonding gained lacp_strict support and fixes LACP partner port
+   state display
+ * SRv6 encap routes support the lookup attribute
+ * nexthop supports fdb destination port
+ * devlink param show/set supports u64-array values
+ * rdma displays resource limits in curr/max format
+ * ss no longer displays dccp sockets and fixes vsock port filter
+ * ipmaddr uses RTM_GETMULTICAST to list multicast addresses
+ * build fixes for Gcc-17 warnings and several memory leak fixes
 
-If the decapsulated packet is an unexpected UDP GSO packet,
-udp_queue_rcv_skb() re-segments it after restoring skb->data to the
-mac header with __skb_push(skb, -skb_mac_offset(skb)). With the mac
-header unset, skb_mac_offset() returns a large positive value,
-which the unsigned __skb_push() argument turns into a huge length:
-skb->data moves far outside the buffer and skb->len is corrupted,
-so segmentation reads out of bounds:
-
-    BUG: KASAN: slab-out-of-bounds in inet_gso_segment (net/ipv4/af_inet.c:1383)
-    Read of size 1 at addr ffff88800da7ffff by task exploit/149
-    Call Trace:
-     inet_gso_segment (net/ipv4/af_inet.c:1383)
-     skb_mac_gso_segment (net/core/gso.c:53)
-     __skb_gso_segment (net/core/gso.c:124)
-     udp_queue_rcv_skb (net/ipv4/udp.c:2476 net/ipv4/udp.c:2466)
-     udp_unicast_rcv_skb (net/ipv4/udp.c:2620)
-     ip_local_deliver (net/ipv4/ip_input.c:262)
-     seg6_local_input_core (net/ipv6/seg6_local.c:1640)
-     lwtunnel_input (net/core/lwtunnel.c:465)
-     ipv6_rcv (net/ipv6/ip6_input.c:351)
-
-Restore a valid mac header once the VRF rx handler returns: point
-it at the network header, and reset mac_len, which still holds the
-ingress frame's L2 header length. The sniffer rebuild happens
-inside the handler while the header is still unset, so tap behavior
-is unchanged; when no rebuild happened, the packet now carries the
-same mac header state as any packet received on an L3 device.
-
-Fixes: 664d6f86868b ("seg6: add support for the SRv6 End.DT4 behavior")
-Cc: stable@vger.kernel.org
-Reported-by: co+98d7de09cd94fec5@bugs.sh
-Signed-off-by: Boyan Liu <yymhvert@gmail.com>
----
-v3:
-- Also reset skb->mac_len with skb_reset_mac_len(), as suggested by
-  Andrea Mayer: it still held the ingress frame's L2 header length.
-v2: https://lore.kernel.org/netdev/20261017120144.3059-1-yymhvert@gmail.com/
-- Move the fix from the UDP GSO path to seg6local.
-- Restore the mac header after the VRF rx handler returns, preserving
-  the VRF sniffer behavior.
-- Verify the original reproducer, datagram delivery, and VRF sniffer
-  output under QEMU.
-v1: https://lore.kernel.org/netdev/20261010073015.7665-1-yymhvert@gmail.com/
-
- net/ipv6/seg6_local.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 7b5212220185..4ef9d32907e5 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1113,6 +1113,16 @@ static struct sk_buff *end_dt_vrf_rcv(struct sk_buff *skb, u16 family,
- 		/* the skb buffer was consumed by the handler */
- 		return NULL;
+Expected in next cycle:
+ * Bug fixes for Anthropic Open Source Scanner
  
-+	/* the VRF device had its chance to rebuild the mac header for
-+	 * sniffers; restore a valid one pointing at the network header,
-+	 * like any L3 device without an L2 header, before the packet
-+	 * continues up the stack.
-+	 */
-+	if (!skb_mac_header_was_set(skb)) {
-+		skb_reset_mac_header(skb);
-+		skb_reset_mac_len(skb);
-+	}
-+
- 	/* when a packet is received by a VRF or by one of its slaves, the
- 	 * master device reference is set into the skb.
- 	 */
--- 
-2.43.0
 
+Download:
+    https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-7.3.0.tar.gz
+
+Repository for current release:
+    https://github.com/shemminger/iproute2.git
+    git://git.kernel.org/pub/scm/network/iproute2/iproute2.git
+
+And future release (net-next):
+    git://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git
+
+Aman Sharma (1):
+      man: ip-route: document uid parameter for route get
+
+Andrea Mayer (2):
+      seg6: add support for lookup attribute in SRv6 encap routes
+      seg6: man: document the lookup attribute for SRv6 encap routes
+
+Dave Seddon (3):
+      iplink_bond_slave: read ad_partner_oper_port_state as u16
+      testsuite: fix test_on_not on multi-line output
+      testsuite: add bond slave LACP port state test
+
+David Ahern (3):
+      Update kernel headers
+      Update kernel headers
+      Update kernel headers
+
+Ivan Vecera (1):
+      ip: display DPLL pin information in link details
+
+Jack Ma (1):
+      ip nexthop: support fdb destination port
+
+Louis Scalbert (1):
+      ip/bond: add lacp_strict support
+
+Luigi Leonardi (2):
+      ss: widen sockstat lport/rport to long
+      ss: fix vsock port filter
+
+Marco Baffo (1):
+      ip: add OVPN device mode support
+
+Mohammad abu saleh (2):
+      ip: remove redundant human-readable option match
+      lib: fix memory leak in getcmdline()
+
+Prabhakar Pujeri (1):
+      u32: fix IPv6 port match pretty printing
+
+Prijesh Patel (1):
+      man: ip-route: document tcp_usec_ts route feature
+
+Ratheesh Kannoth (2):
+      devlink: use DEVLINK_VAR_ATTR_TYPE_* in param show/set
+      devlink: support u64-array values in devlink param show/set
+
+Stephen Hemminger (8):
+      uapi: update from 7.3 merge
+      json_print: fix Gcc-17 warnings
+      lib: fix warning from ll_addr_a2n
+      tc/f_u32: fix const strchr() warning
+      iplink/can: fix format string warnings
+      uapi: update magic.h
+      lib: fix leak on realloc() failure
+      v7.3.0
+
+Tao Cui (2):
+      rdma: update uapi headers
+      rdma: display resource limits in curr/max format
+
+Yafang Shao (1):
+      ss: stop displaying dccp sockets
+
+Yuyang Huang (1):
+      ipmaddr: use RTM_GETMULTICAST to list multicast addresses
