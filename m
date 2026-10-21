@@ -1,66 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792546503;
-	b=o9p4i9oj/DsJc7IFSRlW4gx0Dm9M/svvJUTONKs+LTxNiW/ZtRFLy/1PvM2P9uU2m3fr
-	 vh2ktC1k4SJsMlASIJZSbVi37pciLUORYb6+q7rzJ2xarMzlnIK5hSLbKVt2uRsap6Wfj
-	 E1aXf4ztxRkTXgdgG2wFqyA2pGFerAzKauR8n9p5qTTjItOf0aHkeASoC+J4h5/iZ72WG
-	 lsFhdonVqdY5kWIwPPQtc+8dWSx771iu25TruEtV6fVW97onpYRQLp4lXbKLZbu+Re9UU
-	 3Czx7Fsyb6l3q0zpoTdDxyI3qxxxZSODUETLq3GLkcabWJVcepQzS7K5d74Hu7Cb0kg==
+	t=1792546598;
+	b=MydLmn2pIF+kYQ0t5dh9JQpywm3+xCmK+l0u2mtRJWGM2w5ov1xi7qArV585qdrlw8g0
+	 LZPm/y3b09XZuFBtoVb4jHVJFaZoL3bQPcpjj/n7DgoGhavaIphtYneP7S03QSj8LxcaQ
+	 KCuZsg+qqyStA6CqcgLx0HPdA9szlG8po6pC3vQnmQZjEAnc9VvsmU0S+hO1wnrO5jjUB
+	 Dj5R23RvRDvR9F7MaYpQCOm972vBcBFYk2UpK/vcjgl0/JksO8kfHHyhp69BK9l3Bd63D
+	 KnQqAdqBc0GrXs6yUYLeRv573ZMaf7i/JZw/fihu+JgusWqCe4OGe4v5x7VCypirJUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792546503;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792546598;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=RrrCMgJ3wDXc/zCjSsVsylYamdUiiZGnBksOK3TkOQw=;
-	b=i1kVf8VFT1UdyTzoGTt9NcbtHvxHvQcO85Sz44gP5IUkkRXkW8KT1IVAbWCmomMRPWpN
-	 gC8CPxT5xhgoxSWaWG2lJMuCgfhRiisHOzV1MYE+O2wHFXdFK89fyGLKPiqbLbpjdMZtY
-	 4YV3yS+TYsJyKNtNESOujthvqOuAjRfPMLcom+KxpSi8ZR1AB5Plcm2sNn0RQH89ORHE2
-	 DWnOb1bPqCxyTY9+j8ppOS7NCy0H+F4HpmleJ3oVABXJf7o759HcfQsjUyICxmmM/tzPC
-	 kiVidrFfQrWiUeSNu4vYHDBIksGOjhhfCcsXaT97N973UA6zOLgBtJKxj22+hOPqx9w==
+	bh=9DWXQQtxd/YTIhHjVZl8evK/hoMf2JH2xzvEAV82hQ0=;
+	b=gGLTxbwJUXR3fKAy3olJ1XpugGzysxF+br2Ur3CP8CVLwyaE3uwhUVNOPsVlstPPzfWM
+	 uqrqq4tVCd6ojeryUeo5Z+6FXnNxqIAlL3D0ua5qf3M4EUgdVjAri9RKYdAg1uYMA7jaG
+	 Kc4ceTOH0vmzTZQMNdt4HJlmQZMk6WI5NSsKVmLG6HqG2rL3ZDaNA1qNIHk5fLAiIzcEA
+	 noJdsepgwgA4ADnZCLyp2hHxQ5iO0F2S8ZLinx6h9cEL3LOlcA2Q+9VfLdmmoveP8FiVd
+	 0SnKrueqipGQax4MLe1Vji4eJMY9PUchv0yZ8wQ5ulZecN7a146D/3x/xF3JMQHkKBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PwgxXx23;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WylmPhEm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A67A606A31A;
-	Wed, 21 Oct 2026 01:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F511606A319;
+	Wed, 21 Oct 2026 01:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PwgxXx23
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1861F000CA;
-	Wed, 21 Oct 2026 01:35:02 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WylmPhEm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFA91F000C9;
+	Wed, 21 Oct 2026 01:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792546503;
-	bh=RrrCMgJ3wDXc/zCjSsVsylYamdUiiZGnBksOK3TkOQw=;
+	s=k20260515; t=1792546597;
+	bh=9DWXQQtxd/YTIhHjVZl8evK/hoMf2JH2xzvEAV82hQ0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PwgxXx230dZhFycujY1r3ztRThXg4iwUxZDjYIVcBgrQUfJ1FGKjlkWTZriFTAND5
-	 /zeeA/coMcRyjwMezIZ4TbB8F3dMmDCtQYGKCTmQu64ZyMAYQLvzNWMv6Hf+UZDGzn
-	 7hjAtUHY2+aeQNkarZL3bKAt0tg5s1869fRe7/EurnAAvTs19T9rXzsBVeTSSpu3AV
-	 2q6iC5pTG4UYRJLCIOnG1/yoBO9l58FaawOAWiZoctzXnX4BtJNtAi8XfsZGpSEosc
-	 xwpi5RdHilx/IrkPV1kDYYJN8q+2ya45u8yIXPc7AOPWjyNV78MDtKMHg5ZUl3QhRw
-	 Tn1DC2CHPxJNQ==
-Date: Tue, 20 Oct 2026 18:35:01 -0700
+	b=WylmPhEm8Qw82UTPE2SDMvY93pvffU1ZuWG1/LmcqE+HCLtGjvWjsD7pgCrCW9hdN
+	 3W8wa/0LJ6O51jeTwmTAp4YK01yixY/s/dM2KGKNjoTEAqsVMAVa/cENxo4ava8dvt
+	 6vODoYEunR3cUvtTIVUCKariZS2Kih7zXcxK1tbjw7EeOwN7HTSZG7UW+r/Sdb7GRm
+	 o1oJ76BdWIbPSgNvrKZr1W1U8q3gBxttr5yocArlsnsRM3Q053ufEEF5A83KH7cEsq
+	 9NTZfHW4yhU7MluJ/MY9LKFxbo+od/7L4BEIVx40udolZLx3GZ2J3n4ltxyltwmZ7b
+	 rgODnPEWfPs2Q==
+Date: Tue, 20 Oct 2026 18:36:36 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
- <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, Randy Dunlap
- <rdunlap@infradead.org>, Donald Hunter <donald.hunter@gmail.com>, Eric
- Dumazet <edumazet@kernel.org>, <virtualization@lists.linux.dev>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <sargun@sargun.me>, <jlinbox@meta.com>,
- Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: Re: [PATCH net-next v4 0/7] vsock: assign the guest vsock device to
- a network namespace
-Message-ID: <20261020183501.6c15777a@kernel.org>
-In-Reply-To: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com
+Subject: Re: [PATCH net-next v27 0/3] net: phy: Add driver for Motorcomm
+ Quad 2.5GbE phy
+Message-ID: <20261020183636.77f631f5@kernel.org>
+In-Reply-To: <20261020021929.3028490-1-kyle.switch@motor-comm.com>
+References: <20261020021929.3028490-1-kyle.switch@motor-comm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,10 +67,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 20 Oct 2026 18:15:03 -0700 Bobby Eshleman wrote:
-> vsock network namespaces let a host put each VM in a namespace of its
-> own. A guest has no equivalent yet. It has a single G2H device that
-> cannot be assigned to a network namespace.
+On Tue, 20 Oct 2026 10:19:26 +0800 Kyle Switch wrote:
+> This patchset mainly implements the phy8824 driver. The phy8824 is
+> an Ethernet PHY that provides one 10G SerDes output to four 2.5G ports.
+> The driver mainly covers two application scenarios:
+>  1. external PHY8824
+>  2. PHY8824 embedded in a switch.
+> The patchset mainly consists of three parts:
+>  1. the DTS for the phy8824
+>  2. a generic template testmode configuration api.
+>  3. the phy8824 functional functions.
 
 ## Form letter - net-next-closed
 
@@ -93,3 +93,4 @@ See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#develop
 -- 
 pw-bot: defer
 pv-bot: closed
+
