@@ -1,90 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792598235;
-	b=ZKe2WpY0rM+VIUuE2yGg4A+Z2B4Q980WWIsW/9b/1Xzuoc9n2YxLIi3T3IR3sJv8MEDY
-	 qR3lSKKlInPltcfyiMH9hKrh5TnvRPGiLY3csWXs4soCKfmlgSIYWH4YQO8ucsIOzGtAq
-	 uxPJXW5P6+ZRKsgS8j0TJgS4TItexlHYwC7KVwyxtVAHyQTEJzbNQDdUGAnPBuzu675Jy
-	 MqnCcXg2bvDg2/H5kBdwViPDic79AJeKH75eHiEEIa8N1Q6dIwsEh6WvwDXlRESLHWvzK
-	 LNgN99GJGXnEOeJqsyUW3oCr87EPYgdrYVNzofiYwQZH3xLwGPWVQcollySiVtNtBnQ==
+	t=1792598243;
+	b=LdtVMe6ih/3TaJZzN1bX5RpmcG9ROp2YIK+jodAsOEh5kNvtBmHL3UB0oMEyqXysF7AW
+	 lSgP1OsveswcOtly3+tvqlwPi7jjML4IOl7efxSXFGwqt7ac1bMj3JxLSJ+fuL8SATlA7
+	 V1yuNiP9E3P6Eh0Bbpi8iTBOTbqFYwOyNrVSSfpTQEBYpB8ybxgbTB0Xba1tNRDaIKZeq
+	 jwqJZ2IxHVNN5fC1ck6uQsASD1/DSuJQVk8VcpM8Xgu3Pjxaa4OaTFLVz431f96sy7qVC
+	 bZytkYE9kjQtKWcyZiABmemnkNQQL98clpul+2TDzM989RYGMQ0UKAeEezqVxJZ00bA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792598235;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792598243;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=knoq/Hz8VdzqraNUncDEQRWa4sgvuhUQyEtj317XXVo=;
-	b=isC6pALvnY8aw5deQMp9QhObphJbB5OLH2tWYxrKvIfuBfQZ3qwRe5NXv5U0VAhxCtLO
-	 g5Yif4oWdWsQ+vp39Fot2fQqjTMK/eR8S51q//dcEJMMNhE6+kn+xb30a1dcj8FMGPWE/
-	 CObI8LPcJG/beTGFixN3pj2tNn0Z6mX7w5iWFV1CIS+wTB8bGAZaEqZMhV6YHi+H/wGTc
-	 HxyEVagr/NSZxHa26CMcAph1P35tnkuC0foL5TgUjYMZbgoN4TP+IkgI1OCXjprY3Q4se
-	 aTMP+8U7L2ITI5qATByVIEXWZKyRfMA6hbhcgbmqVOZI1pSr5wHA0XHthrH6Hs0fZEw==
+	bh=JtAbmr2NF3t4ZTxPDbsg5aPyVRAPZZtbj1QOfmkXENY=;
+	b=uo9ErBSkYE784wixcgmxE+u3Z4ZqbsntV2ysl83NY22tS9HuKvCu6nCN1/9QoN4orOLM
+	 pT0Q+fAEuPTyKExY35WZHJ+c2BHrk3TtBuxvb97/eUlsZ+dEqNBVNlDDrvwffoZPwSc3D
+	 IKJKt2E2afVJ93tY9euvJzLPHeP5Y9rYLtCe4Zlsm1Xg2uiT0sGC6ssmHzFgP+Ni4AxYm
+	 MmOwD6W7Du9Ck0SQK4liFMxC1mG1sHZINXoQdH6WuO2oqhT9wOgXUpY70VilUrzexWOw5
+	 +mj5QrNxl2DCOHTceHRE/4SRcQlLUWyGTUp4YySt9xWQ2dTcnK8DWSLoU/a7RjLIFyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MzADfsxS;
-	arc=none smtp.remote-ip=209.85.215.176
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eo8Bydcp;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C66606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:57:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7C66606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7386606A32A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:57:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7386606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MzADfsxS
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cd5c9e52398so320160a12.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:57:14 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eo8Bydcp
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3514b90bb89so2404186eec.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 08:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792598234; x=1793203034; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=knoq/Hz8VdzqraNUncDEQRWa4sgvuhUQyEtj317XXVo=;
-        b=MzADfsxSAT7dj9/h9ouk8Y3QFSNGoRckfrw2ZO5PSpzYAPOMWpJmAsaFoS99WgZoYQ
-         5vlguOZoYvJRTIFp25fte4xGBWMzuPCmI7JA+/MrIObsnc3tFN0eQtqygm+ztBU3jWPU
-         EmEENBKYwVzDOGI1IWHGVc5T7XXUzzTQ7CcolIU5KCL+9nozcKpKhh16bHV8xloTtlqn
-         QXehSeLNeQ13RfPq/2U3mczLt90XKtiVUB7noTgNzgxbdgpgbZ8Q4UblbkmSCXp9JlhL
-         PSwDszEsQsUeqR5zKAuShncXnPf8aD3LTCRsUEAjrnG06ltEMuPOKoIF97gynM1lkqwP
-         ESNQ==
+        d=gmail.com; s=20251104; t=1792598242; x=1793203042; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JtAbmr2NF3t4ZTxPDbsg5aPyVRAPZZtbj1QOfmkXENY=;
+        b=eo8BydcpBlKhkaBCJwZ1SB3JlHB5TgjSc2WtuGyAFpcg8tzA/EPOO8Q4dojR9RDefc
+         +jXMcRsaKnQ/ax/YRfsNjTmXWuUgitOCv1N/0/HIk3i8J45IDYDqTagOMT+12pHXnb1H
+         cLoYdSXre7z6F4KjiuCmeoxgDKZJi8wu6yh4eYUhUNfOVGIZ+bgUvXcIYmu+eMH1flOV
+         m9qU35vQSavMMT1jZkmCRLVFnWuJAG0PFs1BPQjA3hLtErDWxFSCaFVM8oFpwqqmnb1V
+         a0LlK9233/1FCPjfGpP7OXqIikuDUzSFWuejR++Ot7jjucWw8x2v1dTMwRTTVmiOoLyN
+         Rebw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792598234; x=1793203034;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=knoq/Hz8VdzqraNUncDEQRWa4sgvuhUQyEtj317XXVo=;
-        b=QZpitnJfBz4kt/mrJeQvw0EoMFuFW9NecSotPM9mopPVrgLSw1CLC2SmYe0hgj/eQ5
-         clWh414bz3f92fTqCvleEbVdZ2J0gZa8d+nvtaboCrfBk4JBLqvRvCu4zfSxS1NR7FaV
-         YLCRBhmHfADCbPbIs/FYBQ196LbjoQ/11QMJs7okOCX5/G7nGWHgCylmnjZC2o0i6+t7
-         e3WKUAfqdMKkdYXRcxaHGBEIqkiwdzOM4LNDOZRWKWn1hlvMslC+VDz2+XKGuaD9sNNA
-         BibFPFnVQbj0jkQFha61lMFbVJIrmt/VnDqa2gpDue+2B7354ZK+RVu8Bb7wbnrNeyN2
-         geBg==
-X-Gm-Message-State: AFq9FYLSYmTvTZsy9o0P6YdXkGABG5aqn2yLwY3e+pHrUR8cILrWw77V
-	sgNjL4fxxY2ZzFCzy/wkqL9TpazKy4E4rPiCU3RD6RkK3NTAgzozcvlU
-X-Gm-Gg: AYBFou1OXD8wnVPFwTXODRozQOK+20ZzIgih5FqJ1iQmzCM+pAPrDWsqutyNcG+ra5r
-	JsrEz7C/WMfe5u60WW7A15FbAMhy5+epMISuMQziv+845cb8SzG6heM+wRKVgu2cReMpFl+0wBk
-	ErcHRG7AlAgmBO3f3sJHpD6BGthmw7CFYfS5LLPCRBEow/CpnH+Udg17nKkrBhp0bA38mOrjOJ9
-	rhM/afBEbdbVaxwxCFMKglKpvo47xeehGKGEBOslcX+IEdn3rbXYNGbvDr0SnuN2z71y7ZG6jQu
-	YFxecxiknzONUmXslBMWELmT/5JLP1zSjEI+7zR1X3v0oaLHmrPphhvD1xu6CbVnWl54d03uZRG
-	41Y3DOA9e+Um/LP9mnE/aFw2OQxIJkn05KiB1B3/RWy6XKqIjiU8Cg2659EwO5gKTmqAbT8cYOT
-	l1OWe63JIu8V4UqOT9yYq4TT2ozUg8nqqnwSQxDA/9CGa28rOvibniEyD1iqMe/A7urzX5p03PG
-	mN5MM9Pa+0SlRowhyE3Uf6iP4PFEjPXU1tRME61u/pCipQ4YN1/lpvtANFwMtvYD+9HJR1inUzm
-	kLChhLOHJcYLS2ZTkJfo7UWqAxW5BA==
-X-Received: by 2002:a17:90b:164c:b0:3ab:b39f:41cd with SMTP id 98e67ed59e1d1-3ad86cc64d2mr2256809a91.60.1792598234013;
-        Wed, 21 Oct 2026 08:57:14 -0700 (PDT)
-Received: from localhost.localdomain ([218.253.131.218])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada48ed70dsm85357a91.4.2026.10.21.08.57.10
+        d=1e100.net; s=20260707; t=1792598242; x=1793203042;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JtAbmr2NF3t4ZTxPDbsg5aPyVRAPZZtbj1QOfmkXENY=;
+        b=pQ5+YNWNesW5YjTNYxkA8nftajgzToOm9IfQB7moU5uvJLgZBV6QfCYcm2hrpW22n3
+         Bu3Yh/+pIwJ4qArnkJjYvXf8a9p4boP98cJGHo/DSbGTkFtTr7z5Eqb/U9qS1SiZKTIa
+         hq+0kXd+nhM0M9M/adkdoWV2anlB3VdvH6hTRshY1EslJ0XTgO2q0OOWbIZhdRLPQiz+
+         VLLAv3UuoaoElKhtH712Is5JKcbJ0a5stJKHcGVZcCdOVdJUKKTULu43TTYORzUuGKuh
+         sgfAlxg+GM9mT8AbhIE/1tAa+k5nm/pBzHNp4eklBAgf6dxtnBLS0ee6M20UPtGhGar5
+         meAw==
+X-Forwarded-Encrypted: i=1; AKwUvByUZa2xDyd+vZlAJ0ngGsWcRNZhkXN7EmyFkcOW3VsVr+2Xo7HZ/hrZv9UTORCf582oqtGMWjM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKiqH1WKoyUc7MAnc8uTXbmpF3+950o1NcgTwzgX3e/+0SrpgwC
+	j+EhB+6fC3GOL6AGgeYJftmkDxscq9TxeNEiHVrgEWAJ+DGOy4rjZuDp
+X-Gm-Gg: AYBFou0ezP1dyvo1H9AsKay5T+l6raVAY/nNFjrQ7Z3dlRHTG2NZgayPWpELIbzjGD+
+	1YEZN0/EHBWUi0DZ3866mWLdCpYRZ6t3rfWy8u4d2olC/IJNt0Em6NDAvyNePKNXRn0b8pDlwAs
+	wYMaHdgLfJtQm1Obtmg6hLE8lMNKCTQ5OhDM0KXKhQQO3cSvakJ86KBuciM0/QYwSyEEIuhVC2t
+	UQ3E0R5JpPARzS61eOgM6PdOozrVNaGzYqfFK5UYYMACSXvWWPD1k7MoDzwIS9okMWhmq1DvnA/
+	w5czm+bIUSB38XzFbbaiK8jk8vwK4Ri8II7PzyA4GH0+StsjX5eVl9poHn2GbWMOeX7LWPBHKDA
+	QUuxDvcX5155BTbsi0M3r0Kx2HUjOf+Wp7S96Cy0VB7XZt6bnQHwGTfSpuIGjIe8zPKSMkLQGob
+	fQQyktqDxf/rpTt81ZqG2Qx3lR+qsVb8Ei0JMpd79Xr4M1Y58iQdZM/X+PYp3IuCqiHPW/1rvqw
+	qGcAQoLZY2xKtv4h6MKNaX2+/hxEHDeHSfPMb/EpLhLceMLdiJUyaHtXW+lfBUuwG/7hGGpN+Iy
+	wh1IH7PFPA+xijIwHNv3XeM+R4FjQ83VYQT8DTOkbeGK5sB5YHUUlGm7PvSvbvXC6HjBF1FW2X1
+	C4w3m4BgixbAd9izkfx4++yt+XOib6INmxPQLk5K9WuJ79Bf86DljvtkWYNkTSzjiUfzwXoKdq5
+	p7Juv1j/duYWJFnC49UZBIHKMphozscOpxPNI=
+X-Received: by 2002:a05:693c:8815:20b0:35d:7565:8577 with SMTP id 5a478bee46e88-3674cc3d862mr3556454eec.15.1792598241646;
+        Wed, 21 Oct 2026 08:57:21 -0700 (PDT)
+Received: from FT6N242TWK ([223.181.118.44])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3674198f1d8sm12350080eec.24.2026.10.21.08.57.18
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 08:57:13 -0700 (PDT)
-From: Dudu Lu <phx0fer@gmail.com>
-To: jhs@mojatatu.com,
-	jiri@resnulli.us
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net/sched: fq_codel: read flowchain under the qdisc lock in fq_codel_walk
-Date: Wed, 21 Oct 2026 23:57:05 +0800
-Message-Id: <20261021155705.69457-1-phx0fer@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+        Wed, 21 Oct 2026 08:57:21 -0700 (PDT)
+From: Shashank Mohan Jain <jain.sm@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4 0/2] tcp: keep the route window metric when SO_RCVBUF is set before connect
+Date: Wed, 21 Oct 2026 21:27:13 +0530
+Message-ID: <20261021155715.30094-1-jain.sm@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,108 +102,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-fq_codel_walk() tests list_empty(&q->flows[i].flowchain) to decide whether a
-flow is on the new/old flow lists.  It runs from the RTM_GETTCLASS dump
-(tc_dump_tclass -> __tc_dump_tclass -> tc_dump_tclass_root ->
-tc_dump_tclass_qdisc -> cl_ops->walk).  RTM_GETTCLASS is registered without
-RTNL_FLAG_DUMP_UNLOCKED (net/sched/sch_api.c:2533-2534), so rtnl_dumpit()
-runs the walker under rtnl_lock.
+Since commit b025461303d8 ("tcp: update window_clamp when SO_RCVBUF is
+set"), SO_RCVBUF set before connect() or on a listener leaves a non-zero
+window_clamp behind. The SYN, SYN-ACK and SYN cookie paths take that for
+a TCP_WINDOW_CLAMP set by the user, so the route "window" metric
+(RTAX_WINDOW) is skipped, and a real TCP_WINDOW_CLAMP set before
+SO_RCVBUF is overwritten.
 
-The egress datapath splices the same flowchain under the qdisc root lock
-instead, not rtnl:
+Patch 1 records the clamp the user set with TCP_WINDOW_CLAMP in a new
+field and keys the SYN, SYN-ACK and SYN cookie paths off it. Patch 2
+adds nine packetdrill tests (active open, passive open, SYN cookies over
+IPv4 and IPv6, TCP_WINDOW_CLAMP reset, SO_RCVBUF raise on an established
+socket). All nine fail on net-next without patch 1 and pass with it.
 
-  [w] list_add_tail(&flow->flowchain, &q->new_flows)   fq_codel_enqueue :211
-  [w] list_move_tail(&flow->flowchain, &q->old_flows)  fq_codel_dequeue :302/:313
-  [w] list_del_init(&flow->flowchain)                  fq_codel_dequeue :315
-  [r] list_empty(&q->flows[i].flowchain)               fq_codel_walk    :742
+As Jakub asked, the commit message of patch 1 now says how the problem
+was found and how it was tested.
 
-list_empty() reads one word (head->next, via READ_ONCE); __list_add() writes
-it with a plain store.  The two locks are disjoint, so the walker's read is
-not excluded from the datapath writers.  The walker and the enqueue path can
-run concurrently (enqueue is on the xmit path and does not take rtnl), so this
-is a genuine unsynchronised read of a list_head that the datapath mutates.
+Changes since v3, all from the AI review of v3 (each point was checked
+against net-next before acting on it):
 
-Impact is limited: a stale "empty" answer only makes the dump skip a class
-(the per-class stats path re-takes the lock in fq_codel_dump_class_stats), so
-this is a data-race / cosmetic-dump-accuracy issue rather than memory
-corruption.
+ - SYN cookies: cookie_v4_check() and cookie_v6_check() still used
+   "window_clamp ?: RTAX_WINDOW". With SO_RCVBUF on the listener and a
+   route window metric, v3 sent a SYN-ACK with wscale 0 while the cookie
+   child used rcv_wscale 5 (reproduced on the wire with v3, and by the
+   new cookie tests). The SYN-ACK path and both cookie paths now use
+   one helper, tcp_req_window_clamp().
 
-Take the qdisc root lock around the membership read, the same lock the
-datapath holds when it mutates the list.  The lock is released before
-tc_qdisc_stats_dump() (which takes it again in fq_codel_dump_class_stats), so
-there is no recursion.
+ - A single bit could leave window_clamp too low: v3's tcp_set_rcvbuf()
+   returned early once TCP_WINDOW_CLAMP was set, so after
+   tcp_init_buffer_space() lowered window_clamp, a larger SO_RCVBUF
+   could not raise it again. v4 stores the requested clamp (u32
+   window_clamp_user) and lets SO_RCVBUF move window_clamp up to it.
 
-Observed:
+ - Lockless read of a bitfield: the listener side now reads a separate
+   u32 with READ_ONCE(), written with WRITE_ONCE(), instead of a bit in
+   a byte shared with nonagle and rate_app_limited.
 
-  (observed on the same path; the sampled race was in __alloc_skb, not the walker)
-  BUG: KCSAN: data-race in __alloc_skb+0x17c/0x314
-   __alloc_skb+0x17c/0x314
-   netlink_dump+0x30c/0x74c
-   __netlink_dump_start+0x304/0x450
-   rtnetlink_rcv_msg+0x5f0/0x830
+ - window_clamp_user is listed in net_cachelines/tcp_sock.rst. It sits
+   in the cold part of struct tcp_sock; pahole shows the size (2432
+   bytes on x86_64, with and without MPTCP) and the fast path groups
+   unchanged.
 
-Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
-Assisted-by: LLM
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
----
-Tested base
------------
-Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
-Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
-is unchanged between the two, so the bug is still present there.
-Checked against linux-next next-20261021 (commit 9a482184d910): the
-affected code is unchanged there as well, so the bug is still present in
-linux-next too.
+ - Selftests: symbolic TCP_FASTOPEN_CONNECT and TCP_FASTOPEN_NO_COOKIE
+   (TCP_WINDOW_CLAMP stays numeric because packetdrill has no symbol for
+   it, and the comment no longer refers to a local build); new listener
+   tests for SO_RCVBUF alone and for TCP_WINDOW_CLAMP then SO_RCVBUF;
+   SYN cookie tests for IPv4 and IPv6 that check tcpi_rcv_wscale of the
+   child; a TCP_WINDOW_CLAMP=0 reset test; a test that SO_RCVBUF raises
+   window_clamp up to the user's clamp and not above it.
 
-Reproducer status
------------------
-A reproducer was written and executed on an arm64 QEMU guest (KCSAN); it
-opens both gates (the dumpit arm reaches fq_codel_walk), though the sampled
-KCSAN report landed on a different symbol on the same netlink-dump path, not on
-fq_codel_walk itself.  The defect below is argued from the code (disjoint locks
-on the same list_head).  The reproducer source is not posted here per
-Documentation/process/security-bugs.rst; it is available on request.
+ - Patch 1 changelog: how the bug was found and tested; the cookie paths
+   are named.
 
-Triggering conditions
----------------------
-Unprivileged: RTM_GETTCLASS is an RTNL_KIND_GET, so no CAP_NET_ADMIN is
-required for the dump that reaches the walker.  Impact is limited (a stale
-"empty" answer makes the dump skip a class).
+ - Rebased on current net-next.
 
-Notes
------
-Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
-(commit 93f51579e7df) and a full arm64 kernel (defconfig) was built with
-it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
-0 warnings.
+Link: https://lore.kernel.org/all/20261012132622.48550-1-jain.sm@gmail.com/ (v3)
 
- net/sched/sch_fq_codel.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+Changes since v2:
+ - track a user TCP_WINDOW_CLAMP instead of checking the socket state,
+   so the TCP_SYN_SENT paths (TCP_FASTOPEN_CONNECT, sock_ops) are fixed
+   too; corrected the changelog; two more selftests.
 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index e6c87a32950f..789fdc6551a6 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -739,7 +739,18 @@ static void fq_codel_walk(struct Qdisc *sch, struct qdisc_walker *arg)
- 		return;
- 
- 	for (i = 0; i < q->flows_cnt; i++) {
--		if (list_empty(&q->flows[i].flowchain)) {
-+		bool empty;
-+
-+		/* flowchain is spliced by the datapath (fq_codel_enqueue/
-+		 * fq_codel_dequeue) under the qdisc root lock.  This walker
-+		 * runs under rtnl_lock, which does not exclude those writers,
-+		 * so read the membership under the same lock they use.
-+		 */
-+		sch_tree_lock(sch);
-+		empty = list_empty(&q->flows[i].flowchain);
-+		sch_tree_unlock(sch);
-+
-+		if (empty) {
- 			arg->count++;
- 			continue;
- 		}
+Changes since v1 (single [PATCH net]):
+ - retargeted from net to net-next, added the packetdrill selftest, and
+   rewrote the changelog.
+
+Shashank Mohan Jain (2):
+  tcp: keep the route window metric when SO_RCVBUF is set before connect
+  selftests/net/packetdrill: cover SO_RCVBUF vs the route window clamp
+
+ .../networking/net_cachelines/tcp_sock.rst    |  1 +
+ include/linux/tcp.h                           |  1 +
+ include/net/tcp.h                             | 14 ++++++++++
+ net/ipv4/syncookies.c                         |  3 +--
+ net/ipv4/tcp.c                                | 14 +++++++++-
+ net/ipv4/tcp_minisocks.c                      |  4 +--
+ net/ipv4/tcp_output.c                         |  2 +-
+ net/ipv6/syncookies.c                         |  2 +-
+ .../tcp_fastopen_connect_rcvbuf_window.pkt    | 21 +++++++++++++++
+ .../tcp_rcvbuf_before_connect_window.pkt      | 27 +++++++++++++++++++
+ .../tcp_rcvbuf_listener_window.pkt            | 20 ++++++++++++++
+ .../tcp_syncookies_rcvbuf_window_ip4.pkt      | 22 +++++++++++++++
+ .../tcp_syncookies_rcvbuf_window_ip6.pkt      | 22 +++++++++++++++
+ .../tcp_window_clamp_rcvbuf_raise.pkt         | 27 +++++++++++++++++++
+ .../tcp_window_clamp_reset_rcvbuf.pkt         | 22 +++++++++++++++
+ .../tcp_window_clamp_vs_rcvbuf.pkt            | 23 ++++++++++++++++
+ .../tcp_window_clamp_vs_rcvbuf_listener.pkt   | 25 +++++++++++++++++
+ 17 files changed, 242 insertions(+), 8 deletions(-)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_fastopen_connect_rcvbuf_window.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_rcvbuf_before_connect_window.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_rcvbuf_listener_window.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_syncookies_rcvbuf_window_ip4.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_syncookies_rcvbuf_window_ip6.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_window_clamp_rcvbuf_raise.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_window_clamp_reset_rcvbuf.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_window_clamp_vs_rcvbuf.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_window_clamp_vs_rcvbuf_listener.pkt
+
+
+base-commit: 279d5c8afcd38bd841832a39bfe1aa4f8518d98e
+--
+2.43.0
+
