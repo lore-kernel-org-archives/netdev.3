@@ -1,99 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792620751;
-	b=iEhcv+aYtq5xs2p9SyBDOlbc/kaKUx4AqgPtV4F9/FCkdxmeQ8mF1FlggXSd+xje+EV3
-	 q5Dxov1sDY8eK9s6WB5p5z9glHLMT6k5GhVLIUpOtcvniK4kv4qA6ODZtf34caRE3KIYr
-	 +ozs8z3GPRDRdXUGcdJ24apkBWftWGm0mWwotL5cTmnpbrCm3hB0nZ64SVLuKkWtGe0QT
-	 mz1w6zm0DTsf3RGdIaRGBmv1JdncqH8Rkj6QQDOYjm68IKmk6oLefVHauwTJPH2lgKLhO
-	 Zyv49WGDA9/MbnYdUBx+zw6CerxTyfbxILxl+WZftebJ9HIHQn2vcHuYntXT0FPHzxQ==
+	t=1792620802;
+	b=JxSDb6GfZG42D5qlB4sjES4B2dwJKP8icfwIclI3AeogE+URGkOXVvNjQynZqDrCbAsH
+	 ByvSVo3ptPoErFletGnU1XJLGjNdahpYl9Cpljz8+W/KqFwjs0mK3GBGZHIeLi/tFwlRh
+	 WUfX6My6QLrMeaUhobWf6TlMRRWEwtwA5jom6Yo32H7TZ62UQ9tlX7PHylWTDTHlNgxBN
+	 vtaWPT2nsDrS4xA+OwK1Ya1uk+bJCgwnQYSHjnNQ+0FiycGmGwtL5pJqDePAGjeJWRov7
+	 T6GAK4Ww4zmJf7pYMnbJJE48BMDEr4QXR6IhuiFAALdWZ852v/n6CuFiI8JVpY6hK3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792620751;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=0kWLSTkaGmwILUZyU8FNS5QIr+xYWnhodPqsDv2YknE=;
-	b=J1s7ugLOC+W4GXxyWc5V4jXk7+IaAPmf35FJCKU0q72c9xWqLa3CHWE41kKpLGmH/i00
-	 aDjGSpMpNPg0Y+NTAPTzGru3WXxUGlQAdhPW1sqA6Ox/ObWJ+Y08kP1u+/L+qT8jAZ50H
-	 JXDheOd2tJuM6rRRR5K1WSqTSsX8YSVEK+aTvgvp0Xr3wUKkvkBrqtuFXAL3+gUvM0WGx
-	 K8ftXB3H+6xed9Jvtjf/gobhrM8/j8M7WXIh0oCALn5wMuvgaZ5Sr88HneayTrK0sRCvz
-	 8JZybn3LNM8UcVPDgUVMFnxAJrIK48o4fkbUM1WWUVsQIwawpDYfpzp1NQNHi/qKLQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792620802;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 References:In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=knuQs3FPqFDGUOyRCEf3wE6mk/GKWsb6jjvA3oknn7U=;
+	b=MXRK3qtHiIXAle+2oXTKTYLfU6iV93zOh3dMlmAYbfkPf6KGAbBpegDi2Nl7HUF2kBrN
+	 ECtM7IIY9MyVXWY3Ig2RpOaIgeHrLyGgrtfc0rE6LVshyeC0rkOmkPbPrNoRwe/TYoGvu
+	 VBl39CUFVXh56yelgAbeIMH0CG5c7LywrAVIsWsyhUX4SHA1bC4z9JLB9XHNunwKCvZWm
+	 WQ9GoCOSzL5DQhGbpK0PY/RL8Uicqcun2N80mF6JvOm7K+tdlCEmV6JvI3E9tEQKFmLOI
+	 L2C2PVfP0EHsBI28BI0dcwOy5spRKIUAMclJaOXz9YT726bFNtVNBVKSWvTrWsVvhMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="s9/i5Cxg";
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=(null) smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y+dsA9hK;
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C57606A31A
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:12:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37C57606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41ED8606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:13:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41ED8606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=s9/i5Cxg
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso2228133eec.1
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:12:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792620750; x=1793225550; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0kWLSTkaGmwILUZyU8FNS5QIr+xYWnhodPqsDv2YknE=;
-        b=s9/i5CxgfCcJEOJxQp2HH3Eo6Yw99tKxurJogPoqYoeoupVDjFTHfE9TWRhjR0KEhQ
-         +oKodSeLo30RvYhCPJJWswFvvBeSoqJolN7Q93COkIKGLysC/gHdnswab/8HtJqrvWrM
-         eG/ckopEGI9s/Xpxq6NyzTR5J+lrF+GvwTZw8S23U0C0qDOjECAVvjgmeYcwxHRVjVba
-         h9uKjhDsah+p5HFxskRmu1gVckbZ9zD+B8gSArUtCV3U6bWDe/c1lbYmi17jy13vu7wD
-         +4wRy9hgQ66VtXOFynTzH352ghkJMAPiJ3w1NhOsP4b77Bi6zOlRWSZw7vi5fZZhLbdD
-         MDoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792620750; x=1793225550;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0kWLSTkaGmwILUZyU8FNS5QIr+xYWnhodPqsDv2YknE=;
-        b=OfkJ3T3tQDr3NxeGHGxnmFBehkeLTb7KDEQbR5K1YqTB0ff9and/szofeXYxEoiBV1
-         jaUDKoqmWzcwxAwrUbV1MytRQDUee86xbuCot2cXqf1+86fXogYGZAQck/PA4AWPvWeK
-         0W7kLQfnlr9yLgsZyoODI7GTI4Y7ac1oYDip+3jOgXC5ymrQPpp2MmrGnsZtmx8phz6r
-         uNeDby+mlBH6Htv2XNxd9fnw/dsyWK/XoKfa4L3KI+rG1pN+Cn58qAMy7EbtI8kjx+rU
-         qpNdlI4mJ0qR6x647NoTy/0IacyngvkBn6egP943wvOe4wYYyVlGxLBQ0ZrghlruIxjw
-         yTaw==
-X-Forwarded-Encrypted: i=1; AKwUvBxm7NQ9gjvzACjVZ4GT601ARtPBsfUuDma+Gm6JdThnC6WDNTHFmVAoTyPZc64vEoqIHHc6P6c=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIp6o3qjNr7NldctLE9A0wmzEdDr5Sz0A4b/cp0rvSjd6JY5i85
-	/1xeDhURA8MIzXbEvTcm8hWcGfYbT00gLm1VHt6Ndpub2h9AeQtU5uBZ
-X-Gm-Gg: AYBFou0QRUQSH30jLCick4jhtUW0ZPIbuK5kHQ1rJy6CIz5OV3XzD4vFVclFfmrNtmA
-	gGYUsJSpFXQ7x6ihM5+ZzwOg1hD8X7uE5KFBnQlRIoXPJV/90fiptrKPZDFFMUb8NqJY/zQqPKE
-	H0024EIMaQODp6eu4831stwY9fOpoHN/jrpF4EvCE31Xenj90crDFpznBPNSaFeuN70E6Rc31YN
-	XW6EM4PAfa8x3cLXzzklhNA0f/+8lnYf3lRfCwPKroHVmpAafssEXgD3cCDMKv+sYDCjwGhBZV5
-	GogF0HE6hWQQuvrpKGSglfxZ1MpoigF/jkCiZJD19iTq90XN91I9+gxigcpFfG1XNzk65pesSmY
-	7uUKg1rACuY0bW1hruxshfCVxtbbXJ6wRUWnFSOYT7tOF2tfJ6UCjSaEfxlS4Ns0SgwG1hrEepQ
-	Utlw/K2riaIkjrR1QtFp0KJY2qewYwcqJf7LJRnIKPpG8HRuPB52HscfWe8h6BSRae+hO51uirN
-	ZfUa/HL2TPh+9Rb/Roatl+Bx8WTxGPpjN5x9/yhu/HcF9U+Pmb1GuQTjVblXkboZVfZBDYyS5D9
-	cEkUPVbZ6zKcWt4cMIn1QoakeW9sVvBPixSI5bT96x/l5W+6QOxtnVdw6DQiEAsER1RLhrGzml1
-	fVNIRz4YqWnM=
-X-Received: by 2002:a05:7301:2224:b0:351:735e:2ef8 with SMTP id 5a478bee46e88-3674d54de51mr4539269eec.7.1792620750150;
-        Wed, 21 Oct 2026 15:12:30 -0700 (PDT)
-Received: from kapoor.iiserb.ac.in ([203.18.51.239])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3673e153519sm10580815eec.3.2026.10.21.15.12.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 15:12:29 -0700 (PDT)
-From: Arnav Kapoor <kapoorarnav43@gmail.com>
-To: Ronak Doshi <ronak.doshi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Arnav Kapoor <kapoorarnav43@gmail.com>,
-	syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
-Subject: [PATCH net] vmxnet3: stop DMA mapping the adapter structure
-Date: Thu, 22 Oct 2026 03:42:12 +0530
-Message-ID: <20261021221221.502428-1-kapoorarnav43@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y+dsA9hK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792620796; x=1824156796;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=vpypxwImkEgUwsAkhk6OOYffIuB6exWjo9q/uoAZ81c=;
+  b=Y+dsA9hKSoZ1IU50Jb43AhoXW5sBZmpoV4KGP4igeSxAY9leiwvlHJFV
+   Q4/MO5ezTKJIu4lmL/KXFzwGse4r15hFN09uXKBQlhMVTWSPkt56kXmSk
+   epKhN6RG6ZndMHe6JwhInwUetTjSQWcMo1zINu9LxlfztVPMNkvUo1zxn
+   XmcGcl8DiwxR5FwxauugP6ZwVtUrztCEjwujP+6KeVsJYoSDGrcAq57Jj
+   EyWQ4K5IoZmPytAucwmlqIMACDWnUH+g8AQGssJcZvfgAvOqf1riQ+mT0
+   nh/37ZpkZ3kVuqaJyyXrr89ZcF5T5JsAHuNSBKzCYvrrm4RRaGo/S/RcT
+   Q==;
+X-CSE-ConnectionGUID: J/42hsJATgGYm0uqtvGC4g==
+X-CSE-MsgGUID: 3xrqgZ83QfOL87W43SrtHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1363162"
+X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
+   d="scan'208";a="1363162"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:11 -0700
+X-CSE-ConnectionGUID: iLUgzHvKRPO14EIJyor4YQ==
+X-CSE-MsgGUID: b5ljC4ZLQsiLBAZnaJXVfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
+   d="scan'208";a="3275458"
+Received: from orcnseosdtnuc.amr.corp.intel.com ([10.166.241.20])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 15:13:09 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Wed, 21 Oct 2026 15:12:46 -0700
+Subject: [PATCH net v5 01/13] ice: fix removal of PTP timestamp tracker
+ during reset
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,126 +75,196 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-1-72289a4ac8eb@intel.com>
+References: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
+In-Reply-To: <20261021-jk-e825c-timestamp-processing-logic-fixes-srcu-v5-0-72289a4ac8eb@intel.com>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Alexander Nowlin <alexander.nowlin@intel.com>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, jacob.e.keller@intel.com, 
+ maciej.machnikowski@intel.com, przemyslaw.korba@intel.com, 
+ sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com, 
+ richardcochran@gmail.com, horms@kernel.org
+X-Mailer: b4 0.17-dev-67df5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6107;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=vpypxwImkEgUwsAkhk6OOYffIuB6exWjo9q/uoAZ81c=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqybFu+PdguJ/ZsYK35pS9ydb4JbEgXaVy7JvvDNPlgwJ
+ OSA6KqAjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACZyK4/hv3+hXPjfm5dUytvK
+ d66IzF7C37nXQu7BbvXvMguX53EllDP8D3c8y9vT75CvvHeJ1fk7DAx3AmY+a8x49FzzspBsUos
+ ENwA=
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-vmxnet3_probe_device() maps the whole struct vmxnet3_adapter with
-dma_map_single() and passes its address to the device as the "driver
-data" (misc.ddPA/ddLen) in the shared area.
+Commit 7a25fe5cd5fb ("ice: stop destroying and reinitalizing Tx tracker
+during reset") intended to modify the PTP reset flow of the driver so that
+it stopped calling ice_ptp_reset_tx_tracker() during teardown and stopped
+calling ice_ptp_init_tx_*() during rebuild.
 
-The adapter is the netdev private area, and alloc_netdev_mqs() allocates
-it with kvzalloc(). struct vmxnet3_adapter embeds 32 tx and 32 rx queues
-and is well above PAGE_SIZE, so when a high-order allocation fails the
-adapter ends up in vmalloc memory. dma_map_single() then warns
-("rejecting DMA map of vmalloc memory") and returns DMA_MAPPING_ERROR,
-and probe fails with -EFAULT. syzbot hit this with page allocation
-fault injection.
+Unfortunately, the commit only removed the calls to ice_ptp_init_tx_*().
+This fixed a memory leak in PF reset. However, now a CORE, GLOBAL, or EMP
+reset will leave the device unable to initiate Tx timestamp requests
+indefinitely.
 
-The driver data is only informational: the mapping is DMA_TO_DEVICE,
-done once at probe and never synced, so the device could only ever see
-a stale copy. The per-queue descriptors in this driver already report
-no driver data with ddPA = ~0ULL and ddLen = 0, and other vmxnet3
-drivers, such as the one in DPDK, never set misc.ddPA at all.
+In practice the CORE and GLOBAL resets rarely happen in production
+environments, while EMP resets happen after a firmware update that is often
+followed by a platform reboot. This explains why this has not been caught
+until now. However, it is trivial to verify by triggering the reset from
+userspace via ethtool. For ice the following command will trigger a GLOBAL
+reset:
 
-Drop the mapping and report no driver data in the shared area as well.
-This also removes a probe failure path and the adapter_pa field.
+  $ ethtool --reset eno8303np0 irq-shared dma-shared filter-shared \
+                               offload-shared ram-shared           \
+                               mac-shared phy-shared
 
-Fixes: b0eb57cb97e7 ("VMXNET3: Add support for virtual IOMMU")
-Reported-by: syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8eed6f83440ecdaf4be6
-Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
+Remove the call of ice_ptp_release_tx_tracker() from
+ice_ptp_prepare_for_reset(), to keep the tracker memory in place so that
+timestamping can resume after a reset.
+
+During review of a previous version of this change, sashiko pointed out
+that the teardown flows for ice_ptp_init() and ice_ptp_release() could
+potentially leak the PTP timestamp tracker.
+
+Fix ice_ptp_init() so that it allocates the tracker before adding the port
+to the port list, and properly calls ice_ptp_release_tx_tracker() as part
+of its cleanup on error. Ensure the ps_lock mutex isn't destroyed until the
+PF has been cleared from the port list. Also fix the initialization order
+of the kworker to happen before inserting the port into the list.
+
+Fix ice_ptp_release() so that it handles the cleanup if PTP is in the
+error state by cancelling the kworker items and releasing the Tx tracker as
+appropriate.
+
+This was found by Sashiko review during feedback for an unrelated change,
+and iterated based on further feedback from Sashiko after the initial fix
+to remove the call to ice_ptp_release_tx_tracker(); It was again iterated
+after further sequencing issues were found with initialization and
+teardown.
+
+Closes: https://sashiko.dev/#/patchset/20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858%40intel.com?part=8
+Closes: https://lore.kernel.org/netdev/20260916011213.1632286-1-kuba@kernel.org/
+Fixes: 7a25fe5cd5fb ("ice: stop destroying and reinitalizing Tx tracker during reset")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
-Tested in QEMU (q35, KVM) on net/main (abeacca61eea), with KASAN,
-CONFIG_DMA_API_DEBUG and fail_page_alloc (min-order=4, as in the syzbot
-reproducer):
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 46 +++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 15 deletions(-)
 
-- syzbot C reproducer: before, "rejecting DMA map of vmalloc memory"
-  WARNING and probe fails with -EFAULT; after, no warning (probe then
-  fails at BAR mapping, as the reproducer binds vmxnet3 to a non-vmxnet3
-  device).
-- QEMU's emulated vmxnet3 (-device vmxnet3): probes, link up, ping
-  works, before and after.
-- Same NIC unbound and rebound with order>=4 page allocations failing:
-  before, the WARNING and probe fails, so the NIC is gone; after, it
-  binds and ping works.
-
-No new W=1 warnings in drivers/net/vmxnet3/. Not tested on ESXi.
-
- drivers/net/vmxnet3/vmxnet3_drv.c | 19 +++----------------
- drivers/net/vmxnet3/vmxnet3_int.h |  1 -
- 2 files changed, 3 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index f8df83f9965d..3a9fb5b63e9d 100644
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -2921,8 +2921,8 @@ vmxnet3_setup_driver_shared(struct vmxnet3_adapter *adapter)
- 	devRead->misc.driverInfo.vmxnet3RevSpt = cpu_to_le32(1);
- 	devRead->misc.driverInfo.uptVerSpt = cpu_to_le32(1);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index eaec36ab6ae3..e1c66cd0f94f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2939,8 +2939,6 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
+ 		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
  
--	devRead->misc.ddPA = cpu_to_le64(adapter->adapter_pa);
--	devRead->misc.ddLen = cpu_to_le32(sizeof(struct vmxnet3_adapter));
-+	devRead->misc.ddPA = cpu_to_le64(~0ULL);
-+	devRead->misc.ddLen = cpu_to_le32(0);
+-	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+-
+ 	/* Disable periodic outputs */
+ 	ice_ptp_disable_all_perout(pf);
  
- 	/* set up feature flags */
- 	if (adapter->netdev->features & NETIF_F_RXCSUM)
-@@ -4044,14 +4044,6 @@ vmxnet3_probe_device(struct pci_dev *pdev,
- 	}
- 
- 	spin_lock_init(&adapter->cmd_lock);
--	adapter->adapter_pa = dma_map_single(&adapter->pdev->dev, adapter,
--					     sizeof(struct vmxnet3_adapter),
--					     DMA_TO_DEVICE);
--	if (dma_mapping_error(&adapter->pdev->dev, adapter->adapter_pa)) {
--		dev_err(&pdev->dev, "Failed to map dma\n");
--		err = -EFAULT;
--		goto err_set_mask;
--	}
- 	adapter->shared = dma_alloc_coherent(
- 				&adapter->pdev->dev,
- 				sizeof(struct Vmxnet3_DriverShared),
-@@ -4059,7 +4051,7 @@ vmxnet3_probe_device(struct pci_dev *pdev,
- 	if (!adapter->shared) {
- 		dev_err(&pdev->dev, "Failed to allocate memory\n");
- 		err = -ENOMEM;
--		goto err_alloc_shared;
-+		goto err_set_mask;
- 	}
- 
- 	err = vmxnet3_alloc_pci_resources(adapter);
-@@ -4312,9 +4304,6 @@ vmxnet3_probe_device(struct pci_dev *pdev,
- 	dma_free_coherent(&adapter->pdev->dev,
- 			  sizeof(struct Vmxnet3_DriverShared),
- 			  adapter->shared, adapter->shared_pa);
--err_alloc_shared:
--	dma_unmap_single(&adapter->pdev->dev, adapter->adapter_pa,
--			 sizeof(struct vmxnet3_adapter), DMA_TO_DEVICE);
- err_set_mask:
- 	free_netdev(netdev);
- 	return err;
-@@ -4381,8 +4370,6 @@ vmxnet3_remove_device(struct pci_dev *pdev)
- 	dma_free_coherent(&adapter->pdev->dev,
- 			  sizeof(struct Vmxnet3_DriverShared),
- 			  adapter->shared, adapter->shared_pa);
--	dma_unmap_single(&adapter->pdev->dev, adapter->adapter_pa,
--			 sizeof(struct vmxnet3_adapter), DMA_TO_DEVICE);
- 	free_netdev(netdev);
+@@ -3210,9 +3208,13 @@ static int ice_ptp_init_owner(struct ice_pf *pf)
  }
  
-diff --git a/drivers/net/vmxnet3/vmxnet3_int.h b/drivers/net/vmxnet3/vmxnet3_int.h
-index 9f24d66dbb27..2c2a446a8e4a 100644
---- a/drivers/net/vmxnet3/vmxnet3_int.h
-+++ b/drivers/net/vmxnet3/vmxnet3_int.h
-@@ -438,7 +438,6 @@ struct vmxnet3_adapter {
- 	struct Vmxnet3_CoalesceScheme *coal_conf;
- 	bool   default_coal_mode;
+ /**
+- * ice_ptp_init_work - Initialize PTP work threads
++ * ice_ptp_init_work - Initialize the PTP kworker
+  * @pf: Board private structure
+  * @ptp: PF PTP structure
++ *
++ * Allocate the kworker and initialize the periodic work function. The
++ * periodic work is not queued here; Instead, it will be scheduled once the
++ * PTP state is set to ICE_PTP_READY.
+  */
+ static int ice_ptp_init_work(struct ice_pf *pf, struct ice_ptp *ptp)
+ {
+@@ -3231,9 +3233,6 @@ static int ice_ptp_init_work(struct ice_pf *pf, struct ice_ptp *ptp)
  
--	dma_addr_t adapter_pa;
- 	dma_addr_t pm_conf_pa;
- 	dma_addr_t rss_conf_pa;
- 	bool   queuesExtEnabled;
+ 	ptp->kworker = kworker;
+ 
+-	/* Start periodic work going */
+-	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
+-
+ 	return 0;
+ }
+ 
+@@ -3347,13 +3346,17 @@ void ice_ptp_init(struct ice_pf *pf)
+ 		}
+ 	}
+ 
+-	err = ice_ptp_setup_pf(pf);
++	err = ice_ptp_init_work(pf, ptp);
+ 	if (err)
+ 		goto err_exit;
+ 
+ 	err = ice_ptp_init_port(pf, &ptp->port);
+ 	if (err)
+-		goto err_clean_pf;
++		goto err_release_kworker;
++
++	err = ice_ptp_setup_pf(pf);
++	if (err)
++		goto err_release_tx_tracker;
+ 
+ 	/* Start the PHY timestamping block */
+ 	ice_ptp_reset_phy_timestamping(pf);
+@@ -3363,16 +3366,19 @@ void ice_ptp_init(struct ice_pf *pf)
+ 
+ 	ptp->state = ICE_PTP_READY;
+ 
+-	err = ice_ptp_init_work(pf, ptp);
+-	if (err)
+-		goto err_exit;
++	/* Start periodic work now that the state is READY */
++	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
+ 
+ 	dev_info(ice_pf_to_dev(pf), "PTP init successful\n");
+ 	return;
+ 
+-err_clean_pf:
++err_release_tx_tracker:
++	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
++err_release_kworker:
++	kthread_cancel_delayed_work_sync(&ptp->work);
++	kthread_destroy_worker(ptp->kworker);
++	ptp->kworker = NULL;
+ 	mutex_destroy(&ptp->port.ps_lock);
+-	ice_ptp_cleanup_pf(pf);
+ err_exit:
+ 	/* If we registered a PTP clock, release it */
+ 	if (pf->ptp.clock) {
+@@ -3399,12 +3405,22 @@ void ice_ptp_release(struct ice_pf *pf)
+ 		return;
+ 
+ 	if (pf->ptp.state != ICE_PTP_READY) {
+-		mutex_destroy(&pf->ptp.port.ps_lock);
+-		ice_ptp_cleanup_pf(pf);
+ 		if (pf->ptp.clock) {
+ 			ptp_clock_unregister(pf->ptp.clock);
+ 			pf->ptp.clock = NULL;
+ 		}
++		ice_ptp_cleanup_pf(pf);
++		ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
++		if (pf->ptp.kworker) {
++			kthread_cancel_delayed_work_sync(&pf->ptp.work);
++			if (pf->hw.mac_type == ICE_MAC_GENERIC)
++				kthread_cancel_delayed_work_sync(&pf->ptp.port.ov_work);
++			kthread_destroy_worker(pf->ptp.kworker);
++			pf->ptp.kworker = NULL;
++		}
++		mutex_destroy(&pf->ptp.port.ps_lock);
++
++		pf->ptp.state = ICE_PTP_UNINIT;
+ 		return;
+ 	}
+ 
 
-base-commit: abeacca61eea4f6803df4a595b656ea45c2d3249
 -- 
-2.53.0
+2.56.0.212.g129ede20d986
 
