@@ -1,71 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792614647;
-	b=LhWcvoQBGWIDNqDE35jQ8Cqe8InUNqy4+2hAxxw2lc0xL06aqoP/dXEgYzJNf9jow+vy
-	 udHZXxcPNDibtycFTSJ/nApN4JEJ4+6YU2mTuxT/24tBawPm8afEhKyU5JDLpGl0Yx5+u
-	 ESkotWWT9+LnWxW9NOPH8LzQEblArR7jZD1ZtuZd1X79ve5zsEgswFuvpeaRP5fCFnYrZ
-	 VpjV2xtLEX5bOp73kpov1YzqaOPdnZIw4aCMRWnFp9uBXyNFNcpuAVRx7VbiHfkzSEpSf
-	 pfpVwhypmg3/k2y+t/TBFjlpEWLhG0k293Vqsl2kfWmnb35tYNWibrLUjzHAynRCLjw==
+	t=1792614661;
+	b=z+FIjs4AtvU2TdrxxLJCk2LGDE1It9H8KUjk3v7ThdviBTg0VBVKz9BjcgUCZvQFrIEJ
+	 2DZT2Da8IdXE0HcyWVZJZISzaGQ0pQgGRP8eD5IXmn4PBxSwjHf+DzLwMtIq4/nhCGmjK
+	 rmO7mm8NfuAvEA6/lMNZwJyIqw/7+f5Fyb7rTgvzot4LyQmcoa0ATbjHxruwHLpWqRCkY
+	 rcuHdFHWD8bc8BwRepyTKtxWwZzF/8tx42d9khvQ/TTTDwMFwnp0E9DrE+IRbeTlsP1hV
+	 6h6TSU8QO+G91e1oHml65viQefYoYxtZl+gzkAfjDXD8IigT3x9zxAD7OSY2PwEFGyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792614647;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Z06VJ2f4a73dNOr/RC4E8wz2dI7mQrbd5zBtJK2O47E=;
-	b=GQ9N5vNYF/sxFKkueInOTFKIabnDle5MOUmVTmgDX0cKxaeXpO+KW302xG2x2BkyERwF
-	 LfY9zN3ozFVebbmdZcvNLa9D6sbxUXuKaFdOzjSI8APgWiDpk1iIdj2mtpyfZysu+gdpw
-	 52e4YsKhcxiuwNWJf3M7PDxaP9hlLxW8VhgjFxSnfA1trE7TGA4tBYYl654nhutVlJyrU
-	 g1jGFtlQ1qwmOO9NaHm0ha0fYO3zX9RQzSGp8XzVt78zs4xkXYoh87ZaH32MmbzeLugSn
-	 SVaUEgUBtVmI5GsuZibUnpJs+GsZ4/Rd4RNPIeHugBdJ6T2s4YCVwqtdobDAyU/TtrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792614661;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type;
+	bh=ocx56fWt7XSCk9pq2eAJ2hR9rY2tffC+W+ABZ7B+YxM=;
+	b=P46kbsklV2w0YDBQ8ZeMZq19mt6YfkgeWVDw+D2GXKCYzIi79K+WYz0PaLeA0WtuxnH7
+	 slTMb6RR7eXkUofQJruPBkXgUg3E4e3J6geZ9KWXJLfR8FpMsS4zosWyyVK3g7f3uVwJM
+	 gRkxetQVhUNZ8AkGGUx95cQXvfR1g9TV4/NsmNqxBKDhF1B64IQGdIjtmDlxtbn+hSxN2
+	 +dlap6EAwsDPripEoX4XBDazvFhH7av6NHv0NDngenOwnd1VUhCSHA7+EOd7oQ/COPOou
+	 fthJ92uQ/6efFQBtOoxdl1XVB59hOvKB06OKdAIT5P5LfPifONHhK6b2xPlcOkbLQ7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jFWWyBse;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=XItN2WhY;
+	arc=none smtp.remote-ip=209.85.218.50
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82999606A31A;
-	Wed, 21 Oct 2026 20:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47BF606A31D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:31:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C47BF606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jFWWyBse
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FECB1F000C1;
-	Wed, 21 Oct 2026 20:30:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792614647;
-	bh=Z06VJ2f4a73dNOr/RC4E8wz2dI7mQrbd5zBtJK2O47E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jFWWyBseeOGFsyJZp1cNc1ZvuV1CxVl879SXQFruXJmh6K6gqvWnkmrYajD9vFFbT
-	 s5HNx94zi6AukAoyGly85pAgr1wdJJ4ILK6YHd67xIMi//csKKBJbJuU7zRs5TAW4s
-	 LNneABIAyxYLOdAtXf5do81s/XqWreahLg53tv78DbM+LUFCp+bmlsSN67KpzqNXDR
-	 /I+vb3Q4JbFs/jYRNPxyxqbYpFGFacqsS4PTRUVpM+f1Eb7Nzsvb+yM/omoXDLdhPK
-	 oOSZngZuygQTdIe6ItRflp+Y+0lTE/DD4kHMj3MKzmuvK4PGxZIrfaWJACsFuRNrSU
-	 XiwqIwt+b16Jg==
-From: Chuck Lever <cel@kernel.org>
-To: jlayton@kernel.org,
-	neil@brown.name,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: bfields@fieldses.org,
-	skinsbursky@parallels.com,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	syzbot+561b859d032c8bf2fb53@syzkaller.appspotmail.com
-Subject: Re: [PATCH v3] nfsd: store net in svc_serv instead of deriving it from sv_permsocks
-Date: Wed, 21 Oct 2026 16:30:42 -0400
-Message-ID: <179261463691.2314857.10594741466584262166.b4-ty@b4>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261021124213.6288-1-kartikey406@gmail.com>
-References: <20261021124213.6288-1-kartikey406@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=XItN2WhY
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4395d31228so164488166b.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 13:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1792614659; x=1793219459; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ocx56fWt7XSCk9pq2eAJ2hR9rY2tffC+W+ABZ7B+YxM=;
+        b=XItN2WhYGidbybhgPjERNBnp/WvYFyIkhR1OCZdznUiDYu3ZbeejM/MLx8F42Eclmr
+         ZElA8dOKn5vKCGwWtMyR6GSG2tqG6AZFeI8ohzNfWf78QVHRXDY+oo4Yx2W+x19HHkty
+         TVoJ9QiYtKETrAH2kCdjRtYS3QeUxrZ5lfxhTMnlR+3xzv+wVzf9aRRw2A8APdl7yCAm
+         yg73CowtrHcQKOVvUS3m3IcdvZuompVYnRNlGypxzdLvHP7P8eKD6ta6OAdmZCy8z4ij
+         OQF5TjeGlXfK2mfOvxBF1TWvrO36UnbuHYD2P1HB2zWJBEOZOPOuRNPusLPhRA298LB1
+         qTTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792614659; x=1793219459;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ocx56fWt7XSCk9pq2eAJ2hR9rY2tffC+W+ABZ7B+YxM=;
+        b=cE+EnlV+ZtMpDSoV6Ebnff5z16+b+uHjGz7QowF/kHzwOyvsIK7rmm/02yVStXrnck
+         ujO85/UbiEygjUDqKdAf/ApaDvWkOG11/5NrENVUMJwUOyp4P8gLxLAjAyiN65880lEQ
+         IbLsdoANm6SEz/icFoXGh5scodZ7wg7liPhWyYp2HQXxp6uOD1/hPh/pshzvk2zcD78H
+         EWhZrkFSxFylDPsFBwl0hvAfiIa324ZQ3K9/PSw+Cyf7VRpR0NBkH30UJkDQ/7VUP2/L
+         W3fXxuDzMyfZUFOh8h4YjQPQKMH2sLndRnSkk7q+AptTriavKE3VBa8O6wQWJ2PXmmdE
+         UVug==
+X-Forwarded-Encrypted: i=1; AKwUvBwwdGjS/nLJ9VFK/LWfTJDIhGxGZfuL/yfyFHVDerutgjGM3dXZxDQjveFx4KMLCHZrEop6CYA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI1HOu/l/FHoQaViU0PC4jLj6YTweCjyetzXg2cxxJBFGiEEozT
+	Y2dOySmiASHT4vBKw8MKZMVsTbqK65S2vENY3Oy2/ngN6MKCI9j24EVpydk2yTefKk8=
+X-Gm-Gg: AYBFou0qqMxY1v8aXPIV9RVR/OMgClMO4y+dwOVFFrKvXWDdQEnuZMUMMzAyY7+fpfx
+	Wfrl+VD0W15vwrMN/AK8i4Q0h9BjEpcM1E5DcYHLuzsdo4a3n1vwhCAoxOnNnbdyCfelcRsh+ug
+	opmG8fHx2gYDiBF+aGDP6+rbmQQmF0/r12KjCwhqQBeLLb0pjyccnPvAdaGS6oELQSqJWPyLJKv
+	AA/wJaGAjyhnFP8kltArktBHie0oWpLoOaB0HHYLmnE+F94r/lfn5sDnRl0ddROZn1nIYjoBMSd
+	8xTRdqTy+jdKkP/vXOLM55Zc8ZxfKpo4I7fIc1vojJHmY3p14ifM4wv6c0d9pXEuh/YJGR0X6A/
+	gHpHZPtSOj4O1ux01UENC5vQr21JAd4uClTYHyh8LGS8EPUusqcT/ohqq8R7tDnMid77+0ZQdu9
+	3UTOwcsfFTA019I5V3EFvRtr0IkrjHDopFteAalBlGSXIK05Zvr8bS79DBElU1ePs1sXjsiIBd6
+	iwKglM3Tjzf3EiFzDRnNuK7A4gtH7UcIeCBS6WAVUm9GdU=
+X-Received: by 2002:a17:907:3e89:b0:c40:36ca:9d1b with SMTP id a640c23a62f3a-c46796eb68emr268122766b.40.1792614659124;
+        Wed, 21 Oct 2026 13:30:59 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac6:5067:295f::41f:4a])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c468a55ccabsm33788266b.33.2026.10.21.13.30.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 13:30:58 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Dudu Lu <phx0fer@gmail.com>
+Cc: john.fastabend@gmail.com,  jiayuan.chen@linux.dev,
+  netdev@vger.kernel.org,  bpf@vger.kernel.org
+Subject: Re: [PATCH bpf] bpf, sockmap: use READ_ONCE/WRITE_ONCE for
+ saved_data_ready in the verdict path
+In-Reply-To: <20261021155629.68813-1-phx0fer@gmail.com> (Dudu Lu's message of
+	"Wed, 21 Oct 2026 23:56:29 +0800")
+References: <20261021155629.68813-1-phx0fer@gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Wed, 21 Oct 2026 22:30:57 +0200
+Message-ID: <877bja7q4e.fsf@cloudflare.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,24 +98,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Wed, 21 Oct 2026 18:12:13 +0530, Deepanshu Kartikey wrote:
-> nfsd() derives its struct net from the first entry of
-> serv->sv_permsocks using list_entry() without checking that the list
-> is non-empty. If the list is empty, list_entry() returns a bogus
-> svc_xprt computed from the list head embedded in struct svc_serv, and
-> the following perm_sock->xpt_net load reads past the end of the
-> svc_serv allocation:
-> 
-> [...]
+On Wed, Oct 21, 2026 at 11:56 PM +08, Dudu Lu wrote:
+> sk_psock_start_verdict() and sk_psock_stop_verdict() access
+> psock->saved_data_ready with plain loads and stores, while the sibling
+> sk_psock_stop_strp() uses WRITE_ONCE for the same field.  sock_map_link()
+> / sock_map_unref() touch the same psock from another CPU without the
+> lock, so KCSAN reports the race:
+>
+>   BUG: KCSAN: data-race in sock_map_link / sock_map_unref
+>   BUG: KCSAN: data-race in sk_psock_start_verdict / sock_map_unref
+>
+> Use READ_ONCE() for the reads and WRITE_ONCE() for the writes, matching
+> the strp sibling.
+>
+> Fixes: 2ef2b20cf4e0 ("net: annotate data-races around sk->sk_{data_ready,write_space}")
+> Assisted-by: LLM
+> Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+> ---
+> Tested base
+> -----------
+> Detected on Linux 7.3-rc4 (commit 93f51579e7df), arm64 QEMU guest.
+> Re-checked against mainline f47d223627f8 (v7.3-341): the affected code
+> is unchanged between the two, so the bug is still present there.
+> Checked against linux-next next-20261021 (commit 9a482184d910): the
+> affected code is unchanged there as well, so the bug is still present in
+> linux-next too.
+>
+> Reproducer status
+> -----------------
+> A reproducer was written and executed on an arm64 QEMU guest (KCSAN); it
+> reported the race.  The reproducer source is not posted here per
+> Documentation/process/security-bugs.rst; it is available on request.
+>
+> Triggering conditions
+> ---------------------
+> CAP_BPF / the ability to update sockmap and attach verdict programs.
+>
+> Notes
+> -----
+> Built and checkpatch-clean: this patch was applied on top of 7.3-rc4
+> (commit 93f51579e7df) and a full arm64 kernel (defconfig) was built with
+> it -- no new warnings or errors.  scripts/checkpatch.pl reports 0 errors,
+> 0 warnings.
+>
+>  net/core/skmsg.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+> index df385a5a961e..0bfb8c4e7f36 100644
+> --- a/net/core/skmsg.c
+> +++ b/net/core/skmsg.c
+> @@ -1260,10 +1260,10 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
+>  
+>  void sk_psock_start_verdict(struct sock *sk, struct sk_psock *psock)
+>  {
+> -	if (psock->saved_data_ready)
+> +	if (READ_ONCE(psock->saved_data_ready))
+>  		return;
 
-Applied to nfsd-testing, thanks!
+Okay, but if we're going down that route, now sk_psock_stop_strp() is
+missing a READ_ONCE around psock->saved_data_ready, or rather we should
+do it once and use it through the whole function:
 
-[1/1] nfsd: store net in svc_serv instead of deriving it from sv_permsocks
-      commit: 764ffa45f3f2189cd86ec6d46d248fc0440507b6
+void sk_psock_stop_strp(struct sock *sk, struct sk_psock *psock)
+{
+	psock_set_prog(&psock->progs.stream_parser, NULL);
 
---
-Chuck Lever
+	if (!psock->saved_data_ready)
+		return;
+
+	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
+	WRITE_ONCE(psock->saved_data_ready, NULL);
+	strp_stop(&psock->strp);
+}
+
+>  
+> -	psock->saved_data_ready = sk->sk_data_ready;
+> +	WRITE_ONCE(psock->saved_data_ready, sk->sk_data_ready);
+
+I belive you also need to READ_ONCE(sk->sk_data_ready).
+
+>  	WRITE_ONCE(sk->sk_data_ready, sk_psock_verdict_data_ready);
+>  	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
+>  }
+> @@ -1273,9 +1273,9 @@ void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
+>  	psock_set_prog(&psock->progs.stream_verdict, NULL);
+>  	psock_set_prog(&psock->progs.skb_verdict, NULL);
+>  
+> -	if (!psock->saved_data_ready)
+> +	if (!READ_ONCE(psock->saved_data_ready))
+>  		return;
+>  
+>  	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
+> -	psock->saved_data_ready = NULL;
+> +	WRITE_ONCE(psock->saved_data_ready, NULL);
+>  }
 
