@@ -1,57 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792620107;
-	b=h0grXauRcYprKZ4SZC3vDyubcgYWxWZeuQwA+tiUQBYXfl7dq0wdlsG1Y8PbLwYcuKet
-	 TxkAmdQzs0gNhEyAGAnGwKYAA7bYXSXBB83mQi/Ym1rrqg8Moh2hlvNX2TnDz5C38kLq7
-	 0gtjF/KdzxWJgPaqbn2TQWuW21eOtGN0n0kMW+EXqiGBIDI4CukCIslgQbhpF8+NK2uqH
-	 ee0dKXeLLE+flhR+NnGlJ2ORVYefl7Bgwmit+ilstPkxgy7mD7BnuuzgALFUpY8qsjDnK
-	 +ThqCF/hO+Tg/KazOws+mtb7T4yGfLoSMJXkgbRafKAmw59FE/0NxisbelR+j9VlyUg==
+	t=1792620247;
+	b=E0QJL12dgQ1XX0/pG5qX/NAIn89Ud0+ek4unsJL1YmEIhX0leBmNZvR7Wb+zSgE4NghG
+	 +1QeYgokVT/62s8QmXIOVUKmMJBr9O8dwIWasGszYDuhkK5el2Euj0PyKc/djFi6zf6wJ
+	 KUC8/Xrg01ECcS6oaL08SpeToAnZ8+rgE9obGVbCsNobGG9u6oFbAdBOUH6OioPbN8qXs
+	 HKnJ/axMPX6xh1XWdyi4ruhgdN+TXpuwgYdUKgRU1IJ60U3yaU/LndenP9/jUv04HQNPf
+	 XIQvgQHpT2XEBRd5pjohsFO2okQxIGmIN3ViuOyXs8okPq7LcpanOpCEHT1HT7JEmQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792620107;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=JyaVYtrytA0eaLcHL4hmliuZFXquyT9c4Y2ZvnCIqBc=;
-	b=CxIH0MZ/SVO+kbdtwS7FysIWrHAyGImJ5O09Wr/Ewfa/HiKzKZUeDNinHrfGunNGyme3
-	 n9lohM866rPiXaRre1HYRBiitJ/1q1u02IY1gdRtymubSmGP/WyrXfww+fAm8piomnfPq
-	 qY5W+5Zo77GyFmkRSyUJxg3TZ+CepTuVZc5wlx7vmw6EC9RqYcefnQGOT8/vKnIMUmWC7
-	 78JXGrTEpamAc5RB7WgmsmMHPni5hRqkGLoeF8VmqipbtPH3hQu8NYEPHKOLa10vl3EI1
-	 THCet9l2fETjDkSSHuTZnjMPATX+XwV0M8Z777EcvclA8cCZ4PvOqRyGkn1fuuk/mwQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792620247;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Subject:From:To:Cc:X-Mailer:References:In-Reply-To;
+	bh=lG5s4Mw3QlF02WaVqxKlut5zcHWhED5dwlHSwNS05WM=;
+	b=1eYk7mWCsJojpa8DcyQkWBQzxQRS4bIN28OgctG3TkV7TV2w7DSMOZeVk/GXZqVdkrZG
+	 owRHIAsgQoAld2RGaJfYnPmji2fZDg1HXWa51FPG5+PJnEXN0wMS6AGbLeyD3ASGS97bw
+	 ctZRDqHnYoCNDPlZQK60AGtVC9jgWM5nx0ocGZURYOoKxSklxtmvQnURBKQeWsdMmCmU3
+	 akHa2CGKjG0m4VusD2v2mbX1t9sJsWQeEMBqgTRyraZorXZle7BNIwaP7/ubi9RDV4zvt
+	 vNI4H82Y/KvjJWFMV/hl5ntMrpDoWk529b98tfCbFeEoNaT3s/OzGqIxOiOgHFDdEjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="l+/ePMc2";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="U/VM8qeJ";
+	arc=none smtp.remote-ip=209.85.214.178
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0170E606A319;
-	Wed, 21 Oct 2026 22:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CC9606A31A
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 22:04:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3CC9606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l+/ePMc2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 355FA1F000C3;
-	Wed, 21 Oct 2026 22:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792620106;
-	bh=JyaVYtrytA0eaLcHL4hmliuZFXquyT9c4Y2ZvnCIqBc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=l+/ePMc2pas9bGoAqSfUokAb0f8FZAZLx+G9xwNpw17vswhhu/6hMgjaoPnouoY5v
-	 txabJjv2mQLzq68Om6aOOv2LC6O4Bx+YpDR1sehiw8hoW+Pl8VtGI1/6Hq4+gb+qIA
-	 fGYc6Nc0g4uDUcZ/81qTvk/Lz9msbDQpYsU33yqXkilKal41n+/HV1PmC+W+ezj3Be
-	 BGrhEtUpvx9h8l9W+gFSo/I6UMqW4mMqnP5qzSahPnMd+eFhhuwzsgEDPWhA3lzeeL
-	 HLvqTi3p6k+NV+iJAhIfNgj3MhbNnY0tWCOLqA4Wld5284k8JWiBQEcUy/lTR3dE8K
-	 +YKJ3rscod4Wg==
-Date: Wed, 21 Oct 2026 15:01:45 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
- stfomichev@gmail.com, pabeni@redhat.com, tushar.vyavahare@intel.com,
- kerneljasonxing@gmail.com, bjorn@kernel.org
-Subject: Re: [PATCH v4 net-next 09/15] selftests: xsk: run one test case per
- xskxceiver invocation
-Message-ID: <20261021150145.65a22a61@kernel.org>
-In-Reply-To: <20261016174338.787135-10-maciej.fijalkowski@intel.com>
-References: <20261016174338.787135-1-maciej.fijalkowski@intel.com>
-	<20261016174338.787135-10-maciej.fijalkowski@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=U/VM8qeJ
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e9f6a16aedso7219885ad.2
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 15:04:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792620246; x=1793225046; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=lG5s4Mw3QlF02WaVqxKlut5zcHWhED5dwlHSwNS05WM=;
+        b=U/VM8qeJFsFQB/Tf2sRDCj2FteWlYuHoaLGK8sGh6CW6BWzt3KQ/AaBqLnq45XOEMx
+         CmSWWqriULFtitXY+tKjJ+9sv7eEQweX7ii5zW330nAQ5LdZNCVqg9U/rPus85ctameS
+         1b9mBBsE+JzixQ0F49aC2uBAljszdmIKmZQrDTjsNReyBleoEOzHLk2ucmn6c27uZYCz
+         6ZMgDkE+pFH+dckVBVV6uXHPVaRFWVvT2wKHOWOILH8Fu9GvLa+4s+uulbqy5mIeAC7E
+         OnndhkOfw0IXUmxnQr2ZZIpe1TrblQMMd2+QLsVa2sA1Z1D0Xs4oscpv6Psf7IUBGJHY
+         9iJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792620246; x=1793225046;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lG5s4Mw3QlF02WaVqxKlut5zcHWhED5dwlHSwNS05WM=;
+        b=RqYxxLaUsBNvW597tYCiO4sQYz1ZWjin3VngnrmkuAk+gsAs5LyoqEpJZoLVsZDkwb
+         ZZKl/JTwHEVS0oNmy2XHS94sb8keHdizV1GJxS1nBkq0jpvHVVX0n7FRFFKS7ecZ8mPZ
+         4LzMpa4zFJLjAJuGKA7JntqYER5/eepMcq6oIe1RCKZGegBoGRNrhuBCJmknYCRZbvsZ
+         PNO0tcX7C+I0oFpCpDWhJJ1ZgHpPvHXNmVKQh7A3VX9imB4fzdLAvvNvBsl+HWvdgkJR
+         K2KIJErPpQ8WAjrDeTXLOrmbyF3JfB2Fcz+jbwKF7UKOLRj+R2zgiCkPsIrwxnadecsd
+         HRtg==
+X-Forwarded-Encrypted: i=1; AKwUvBx01g7U8CxQuLDiBu9lvXukMszfceZagcpwO7J+RFQ4ueoeur7MWo9n9YHNoVclOqkEl9mIDPQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLacGf/xhzzpG+mwXJrf/moKoJtkkhTmgAZwxQNgOgXGJUmGlag
+	1ZI2xIKgQLptBz8J7+j841srYv7BfXTdxVlCV5A9I+25iWFSZIx2QWuu
+X-Gm-Gg: AYBFou0bRnH31Nee8ERba+zhR6J8S14NtTwT29jBidvag7k+ZOwcvqD1YBca2Mis/pk
+	jmn/S/VcRLdp6aHYc8LJ6JaWchSYFk9NBOuXUYRvNRfHMtvzVA31SC8lvfOk4xHfvjh7rNWIVmK
+	KJAdsX5ROi/ZLZh3YXTJOHSh4jI68+8OHvUVZTBxjP6Neh8FAl2Hjq/myGJ2c34NUXWfLlcCaBs
+	5GlyIY/z88CypVGEYTd33nQpTY3mvA5iR1VTmMv0qetcNeXVcGufokMvpUwRHTaMe6Wv6VT9HQ8
+	oXnTOt9RntmN9jQpx8J2eIPVLb/36X++O/yjgtwLCCRQlEQyOFhVQOjtz3fDcqnolGIwTbj6gi+
+	agT/AyguhdgMF2vGsbOnhkuX6TtCxabCEJXSSUtfpYgDczvO6S8M4gP0SibYb4l8sm8/nHTmrrQ
+	LUP1ml8JnZKMXDJNp+MzaYvJ2KbZFcgmDAp3CecTwDJAtOsJkATjQUFvK+RLsgcbAA0bNT+pO0D
+	B4TENBcuS5ET8P7YPtjT0Feb+pVaIEh0dGbaZlR51jAbJOIcYaBrRTiBg1nS+o7LQyEUK0IDgJO
+	1JfZsvc4c4AjsZLQMKlb+OghTYp1MFh3ezOO2UKUurfTyLHb6lGlKKVcjYl/Pyj08oOEvF9hHf+
+	qp1n0DA==
+X-Received: by 2002:a17:903:37ce:b0:2ea:19bc:2fd3 with SMTP id d9443c01a7336-2ea43e24abemr27977835ad.24.1792620245977;
+        Wed, 21 Oct 2026 15:04:05 -0700 (PDT)
+Received: from localhost ([153.61.198.255])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea3b4557c8sm15852745ad.46.2026.10.21.15.04.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 15:04:05 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,42 +88,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Oct 2026 22:04:04 +0000
+Message-Id: <DMAUUBNDJCOQ.12UWI6DR7LNYU@gmail.com>
+Subject: Re: [PATCH bpf-next] bpf: Use memmove() to load bytes from an skb
+ and an xdp_buff
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: <bot+bpf-ci@kernel.org>, <ayushmanrout27@gmail.com>,
+ <bpf@vger.kernel.org>
+Cc: <ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
+ <memxor@gmail.com>, <hawk@kernel.org>, <drosen@google.com>,
+ <netdev@vger.kernel.org>, <martin.lau@kernel.org>, <eddyz87@gmail.com>,
+ <yonghong.song@linux.dev>, <mason@kernel.org>, <ihor.solodrai@linux.dev>
+X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
+References: <20261021103957.17532-1-ayushmanrout27@gmail.com>
+ <5a586e05ad8d24d79759c1d99d6d58eb661dc6f4a4c8d258e05a4962cfe7e59e@mail.kernel.org>
+In-Reply-To: <5a586e05ad8d24d79759c1d99d6d58eb661dc6f4a4c8d258e05a4962cfe7e59e@mail.kernel.org>
 
-On Fri, 16 Oct 2026 19:43:32 +0200 Maciej Fijalkowski wrote:
-> Replace test_xsk.sh and xsk_prereqs.sh with test_xsk.py, which runs
-> xskxceiver once per mode and case, so that every case starts from a
-> fresh process and a crash fails only its own case. A single case is
-> also the unit that the next patch splits into RX and TX processes.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 1fc9eaedd744..6985a42bc09c 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -29784,6 +29784,7 @@ F:	include/uapi/linux/if_xdp.h
->  F:	include/uapi/linux/xdp_diag.h
->  F:	net/xdp/
->  F:	tools/testing/selftests/net/*xsk*
-> +F:	tools/testing/selftests/net/lib/py/xsk.py
->  F:	tools/testing/selftests/net/lib/xsk/
+On Wed Oct 21, 2026 at 11:04 AM UTC, bot+bpf-ci wrote:
+>> bpf: Use memmove() to load bytes from an skb and an xdp_buff
+>
+> TL;DR: bpf_skb_load_bytes_relative() still uses memcpy() and may corrupt =
+data
+> when its destination is an overlapping dynptr slice; should it get the sa=
+me
+> memmove() change, or should the commit message explain why not?
+>
+>> diff --git a/net/core/filter.c b/net/core/filter.c
+>> --- a/net/core/filter.c
+>> +++ b/net/core/filter.c
+>> @@ -1789,7 +1789,7 @@ BPF_CALL_4(bpf_skb_load_bytes, const struct sk_buf=
+f *, skb, u32, offset,
+>>  	if (unlikely(!ptr))
+>>  		goto err_clear;
+>>  	if (ptr !=3D to)
+>> -		memcpy(to, ptr, len);
+>> +		memmove(to, ptr, len);
+>>
+>>  	return 0;
+>>  err_clear:
+>
+> Should bpf_skb_load_bytes_relative() get the same change?
 
-pylint has some complaints, about main(), I think?
-Could you make it clean?
++1
 
-> +++ b/tools/testing/selftests/net/lib/py/xsk.py
-
-Really not loving the amount of "library" code added here.
-Do you need this just to run it over veth in net/ and over
-real HW in drivers/net/ ? Are the test cases very different?
-
-I wonder if we could solve this by parameterizing the env
-class to use veth instead of netdevsim and then have unified tests?
-
-
-> +def xsk_wait_endpoint_exit(endpoint, label, timeout):
-
-odd, the existing cmd() / bkg() stuff doesn't work for you?
-It works for many other tests...
--- 
 pw-bot: cr
