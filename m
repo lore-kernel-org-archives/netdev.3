@@ -1,65 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792548520;
-	b=yaSyJmeC06oiql04DkpSeGleJDysoWdomFFPx5Glqs1nekSqbl5TepQtKaKtC+I5bJWW
-	 GKMcC4AvOLe1MTXrKWcnSlZi3VoRbX/4YqVU1QjnaHvup02tWu4Iqes+44Ar99Oz2JW+A
-	 Y+/qGpWCR1FWq/sJuqQRBNgm2hI0n6/kYAn6FEFK7nRMaYR++R0biLH94K26q21ytnmgU
-	 DLUoPpax/UoCrd2sadKOso85deVXp8OC/m2BSYQGj8xf3B3D1Pgi7dSf0neZsPS4Lor0F
-	 0jwQzfLfVY4W8bzqN8BA6P/wRj8Z+3XmsJFv4wCtYAX9Ucfc4APRDfQOCBq1/5JjUEA==
+	t=1792548609;
+	b=vyUivlsgg6FQwHPmLcsKBqfEVGYzo4nXY2QOahb3MeNqfJdQ2ax4zeoIPelhA+C/o7Df
+	 dJ9KBzAVAIVCCiLwmqrsKLebtbnZRo6KYaOGuut7swgRJECd3BgqArLg1wxjMd4TCKHx5
+	 h+yibBYwm8x8vB9sc/39D57jCKC+0HgfkBsNqKWg/B0A+Ku5vCWXkEdVUT1Mqg+K4dUIa
+	 O/Pk2LD90TSF23kZG8TLr6Cp5Urf1iNLx8Lotw/qjEG86uEy0uA9Hl9JoOsS1mrS7TrEE
+	 mcU3Nvg7UIUap7tYVid0z0qT5Tsfs3G5OjzRodAO99Lju0CMg+osjNVoJm6MRlMIdQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792548520;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=/o+ktcXtgylGbQbhfzImy/2UDYuWyqTPPta4Wh5mK34=;
-	b=Xv6CC324tcSq/9RNBwHY9F/VDyUgXmWO3BxFMnTrbmI8N1hcpAad+u2apAdgUwEPs5PA
-	 WWMQ189uudezvdhBn35CsLNsIzp0vRLviVYNFXjlS3MAnlYlPWlbkYQyxcGtvOw4nS9/u
-	 kpNqWbw2N5Adx02DQDkobCpIWvwMFdzKKLYCAGV9okZBKm1q6VFXZ9euQWpfk82yRYxpR
-	 8q7zguuqiGT1Q2wu73fC6x4Zpde95vD3M+Bi06We5GnvFlkIeubU7aKGmgkg7we0GZLBI
-	 ZdH/u+YUAJyx2O0yEQ4p7FakevjZSNqFk5RbzzZpXv6trG1/EikBus/3ptSKbFyg7rQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792548609;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=Oy9Y+Nh0izvjoZi1CnAEtiDpI2daSsikIR7SEEnvW7s=;
+	b=mcra/0vs18bYuSO+wNqdgwrd9sTJtgCNG7RMgMWrhBOORS+l/HvKPfFcPX/Qp5nezOKj
+	 H8xSRH1Uc/kjFYcVQGaCHbvN+FZg+C0G9Lmu0KBo8oOShG7XPc9rO4rK6i0+CTMM/iNrA
+	 Kn7rg34KljbiyFtE5Bl4fUQm0MKW7aAstQb0522ukCVxsZGLKmgnOT/LSigeHFUzjV4f5
+	 zYtkNKYet3NencuOJG3ceQsJFTPfD5WLPygd1OCTn7ON9sslvBr/DTsiKskAMvFPeXnOA
+	 e4xQjtUAIleG78zgde9It0bmLm91zUoPC9mEnr032T+U+ym1rz6gmungPjXfozVJXYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="NXw/DiN+";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lPOCTbHy;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5B5606A319;
-	Wed, 21 Oct 2026 02:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD49A606A31A;
+	Wed, 21 Oct 2026 02:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NXw/DiN+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17131F000CB;
-	Wed, 21 Oct 2026 02:08:38 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lPOCTbHy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085971F000C9;
+	Wed, 21 Oct 2026 02:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792548519;
-	bh=/o+ktcXtgylGbQbhfzImy/2UDYuWyqTPPta4Wh5mK34=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NXw/DiN+sjBq0u8sbzgvYB/BWnFhuxmE2DOCqWrYyIYGZw+3vLzEV82Fp/Vhoxb8k
-	 zM0x/XjjRgG68mNYlYm3l8jq3a9P/LV37zcpAsvR/cOTa5OOKMu6fwz1Yeu2H43Zlq
-	 GBmLtrfIjwTFxQtsSN4Lpp6PPED1C/rzID1mrzD+V8vs8LlsSFfSLDfLUl+3y/uqBi
-	 ftkOb27wzmEZCuOTzu5o6lft46NSRenRnNhTzCJIa1xNP9OApq65XqInf5ojVxY1N1
-	 8s4UU0nIrkDaAEyAuRbxlgWJ9HfmIhXkUMwTDyyiMGywsSLcdCDdLa/KEQ+m9pJelq
-	 WdyVsiG6dS1IQ==
-Date: Tue, 20 Oct 2026 19:08:38 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
-Cc: jackbb_wu@compal.com, Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>, Johannes Berg
- <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>,
- Shi-Wei Yeh <shi-wei.yeh@mediatek.com>, Minano Tseng
- <Minano.tseng@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
- Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Robert Yu <robert_yu@compal.com>, Jeff Chang
- <Jeff_Chang@compal.com>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v10 0/6] net: wwan: t9xx: Add MediaTek T9XX WWAN driver
-Message-ID: <20261020190838.6f5334a7@kernel.org>
-In-Reply-To: <20261014-t9xx_driver_v1-v10-0-4d0dde3613f5@compal.com>
-References: <20261014-t9xx_driver_v1-v10-0-4d0dde3613f5@compal.com>
+	s=k20260515; t=1792548608;
+	bh=Oy9Y+Nh0izvjoZi1CnAEtiDpI2daSsikIR7SEEnvW7s=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=lPOCTbHyXJ505XEzTCXV5SEMfT5mwYGc5WPS6k59jmfJHzZOMpxSld3uSFcU5SMpi
+	 5cyvfBhrtmB4YuL1K39xPLU4eJCROBJ1ltumkdZ1n8JL94xUTp5izho7VbvAZRJsKw
+	 wkTpKpwyDO8WBeiQKLbFRsfdzHmU3KanqhWhny74kDXIrvAHvhcqE+o+DmED78rA+u
+	 X1FMsI1jJbvBB3rl+bme84JFCw+7pcHAq8mQtn67mqX1bRqObZH6auoAiGUHV/HKrE
+	 7gKxSceGPHqzZ6zEIoySHCrOvPXlzYkOlRRGB/gWo5sq+3UydDPDzf1JV31eIpVapt
+	 k9Hjd8xyRtEKA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F153C3809A0D;
+	Wed, 21 Oct 2026 02:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,23 +53,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 01/10] netfilter: nf_conntrack: avoid truncating IPv6
+ nexthdr offset
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179254860678.327181.10126118111103524829.git-patchwork-notify@kernel.org>
+Date: Wed, 21 Oct 2026 02:10:06 +0000
+References: <20261019150249.1879516-2-pablo@netfilter.org>
+In-Reply-To: <20261019150249.1879516-2-pablo@netfilter.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
 
-On Wed, 14 Oct 2026 10:50:58 +0800 Jack Wu via B4 Relay wrote:
-> T9XX is the PCIe host device driver for MediaTek's
-> t900 modem. The driver uses the WWAN framework
-> infrastructure to create the following control ports
-> and network interfaces for data transactions.
-> * /dev/wwan0at0 - Interface that supports AT commands.
-> * /dev/wwan0mbim0 - Interface conforming to the MBIM
->   protocol.
-> * wwan0-X - Primary network interface for IP traffic.
+Hello:
 
-AFAIU AI finds so many bugs in patch 3 it overflows the output token
-budget. Please see the review for other patches here:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014-t9xx_driver_v1-v10-3-4d0dde3613f5@compal.com
-You gotta feed patch 3 into some models yourself and try to bring
-the bug count to a sane baseline before we can proceed :(
+This series was applied to netdev/net.git (main)
+by Pablo Neira Ayuso <pablo@netfilter.org>:
+
+On Mon, 19 Oct 2026 17:02:40 +0200 you wrote:
+> From: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+> 
+> find_prev_fhdr() returns the offset of the Next Header field before an
+> IPv6 Fragment header through an int pointer, but stores the offset in a
+> u8 local.  An extension header chain can put this field beyond byte 255,
+> causing the offset to wrap before it is saved in the fragment queue.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,01/10] netfilter: nf_conntrack: avoid truncating IPv6 nexthdr offset
+    https://git.kernel.org/netdev/net/c/48d522b65fb0
+  - [net,02/10] netfilter: nft_payload: restrict checksum offsets to known values
+    https://git.kernel.org/netdev/net/c/c2226f0c7fe9
+  - [net,03/10] ipvs: fix more races around the overload flag
+    https://git.kernel.org/netdev/net/c/3ba20137287f
+  - [net,04/10] ipvs: skip committing sync_threshold when proc_dointvec fails
+    https://git.kernel.org/netdev/net/c/7f1a04254a05
+  - [net,05/10] netfilter: flowtable: use the vlan id, not the full tci, in the tuple key
+    https://git.kernel.org/netdev/net/c/c203ecf90574
+  - [net,06/10] netfilter: nf_reject: initialize IPCB at inet ingress
+    https://git.kernel.org/netdev/net/c/73a73d442f99
+  - [net,07/10] netfilter: nft_set_rbtree: narrow down range completion to anonymous sets
+    https://git.kernel.org/netdev/net/c/86d47d4c84a1
+  - [net,08/10] netfilter: xt_dccp: handle reserved options as single-byte
+    https://git.kernel.org/netdev/net/c/2edda78aa4eb
+  - [net,09/10] netfilter: flowtable: reset transport header after nf_flow_encap_pop()
+    https://git.kernel.org/netdev/net/c/08f7882637f2
+  - [net,10/10] netfilter: nf_conntrack_netlink: fix inverted IPv6 tuple filter
+    https://git.kernel.org/netdev/net/c/cd37ab22a74e
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
