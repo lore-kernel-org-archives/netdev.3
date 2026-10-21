@@ -1,69 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792614187;
-	b=XTcSMrpMaa96WqBXlVx95x/+Qmvf6iMsEdIkClJTOFTIvV0JrG7RqS9X4j7QdOW0HaEm
-	 fvO2kBVoGFyH3gHSfZ5dkyBjhSW5WMm+4ISpCzGBhxTlMHw1twddi2gJ02SWiVc8VrHgh
-	 3qLQKOBcszjfmkAPCjfEVlnmTkbUj/zG6qjsU1M1MF1KXjyKGaxBff3vYGNnByLNMhHPF
-	 GbHz1qfQCph495Im1mvITQQN/ZNlGIrhNK+yOrTmV01DxRF8FrK4f6Ot/gemkyeUYeFPj
-	 Au9BCPw2iCGWw/P+D2C17RS7cwJYdwVJuUx5gc+8lCs8+sJzp8PP7Qb3WhVqHRQ47Tw==
+	t=1792614550;
+	b=BPGLXAdsIH7myEnpOaF20A5QO3DV5x+ls0RRZ+ZorAMv8I6CpIjXuTk7H2yKVJxA2C98
+	 JutmUHOBO8VvoQwtb27FN13vnfxkzPB3MJOkJV6vJ1j0qXvW9uCDb6ry9Y8tJejrARde1
+	 zgv7YeaHuFttpF5PiolGWU9TWAlvh6Z66Fp4ce171KP716vo6t0ZEAEm5jVIqhk3fCo02
+	 a+B9yh3Ax3c4Wd+/3z/dt+650n/MXgnl774Cl6FY2/f08CkilDzkgAXctxM15wjy/r6BC
+	 iwQlbQGjfBJOQKMeVGxEXRa1HXJQND6Z5TY/8tP4AEGXjF0XfMk5dn47PV9ubuzWESg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792614187;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792614550;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=svbLHawCS4fbgc8FgUAE9dACgxqB99TX/pf/aIWHxmw=;
-	b=PBJPg4b0JVgLwyKdh28vgga5MJOeA7Tc3tYumhhrH/iE+RFYyPnjn4vjdL1DnTX5JtKv
-	 MfGu1o0TzgMYVVADOGijIcusH/nxgJF8WhKxCKyCzX51alqpJsTbeKanSMnaCIpFOrbY4
-	 jPNk8DtA+xkuvrUZD2yjpzMmYVcGeMEUDtXCy8QwuOLoJ82Eczo+W8rFaZJZ383xWfbtI
-	 Y+/jXYs6S8MuRo1qWBSjHP0Ux29xmrCAbv66IRWPu32Hl+7K7As3toIEBDnr0iO52W9wa
-	 LwY82LqhIe6FNs40q3ruVp/qkPKquctBjVt2g9naj0LtyZesSXrAMHarL3j+WjoW4/Q==
+	bh=ZHIWFL8zJ5o+xyhTpRe7yjSUWqzqghhKZbRooUB7i90=;
+	b=mTHIEIKRkhmfqFgSh7n0r7hhuYmO6SHty6ksjg7G1WSjMxOrFptCCt+MxO86+DcsohsY
+	 rtZYE6oEEJYsCZ0j0B+AbJX4gtbPhpOEH10HFicJl+v4SjyDtY7zrXfGtCPbvRY5slVSH
+	 MsEEIWhBsJbek3yRfjUOdQpmcJ0ocBzE4uYChvs4FOv3n3wsvZF9eUhTTTNN1ZWXUiGRJ
+	 3SUcnwn7AVR4+8mxg/H/ElnLSyZ02QgopbhpZEIFrWRlPRBHxEO/4gkHh+SfXQbNKezgF
+	 V1Sdbb2Cch/DCwZ3e/DDQ8GpHam4LxyNgVUW5oQSUfx+OIFpj4uWFCDwgGCg5bckv9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Xt6/atqy";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dcaXHIBp;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5BC606A31B;
-	Wed, 21 Oct 2026 20:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A25606A319;
+	Wed, 21 Oct 2026 20:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xt6/atqy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7038B1F000C1;
-	Wed, 21 Oct 2026 20:23:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dcaXHIBp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5661A1F000C1;
+	Wed, 21 Oct 2026 20:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792614186;
-	bh=svbLHawCS4fbgc8FgUAE9dACgxqB99TX/pf/aIWHxmw=;
+	s=k20260515; t=1792614549;
+	bh=ZHIWFL8zJ5o+xyhTpRe7yjSUWqzqghhKZbRooUB7i90=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Xt6/atqypGAD9faryuoH3pgi4bQyVVE+O07lp7aASyyT+FjnI8XTnoivNgxAwDhec
-	 Xfo3gi2XcyeLmjrLYvmosrThi+PoBZYzkwjHAo0eRu+Vlc9DI+00/VrcYgSCZrPdHb
-	 JOGx4pQdXWFUq8yH3QQEzSRu6hrI+GjfUedgt53bUyqFAQV7XQZTF0LwdsCb1sHWuM
-	 moz22KoG1vi7VY4g0aCEA7fdlfYla+rzgWwRFk5/9HUG5gPMTqGokYS6omzjbIT0O/
-	 ZNvHAn9mKMOD9soFx/Go9d98JombmkpZrOCi4rh36dgn9CTej7Xb6ItJQmx50xcWcQ
-	 suBfY00yvRSqA==
-Date: Wed, 21 Oct 2026 13:23:04 -0700
+	b=dcaXHIBp3J66nXn/HJ3bLRiK1Hxch59cZRoZOCuXGMAR5SRnuEyqU1qYNklc8Lbsx
+	 wK+1LucLYGOFrccc8hcXbygnmu26wKpvIGC9wr3Fqi/d1yBAqBITuiPLmovVQg0ajC
+	 KCRZaajJjr3E/A0dBcjKWF9vzQjlqi4tWD1r0RLTn/jmivpssVOW4CxblXfTir/uvP
+	 1xAOxjJwOCFKxYTGFI54NBNcPAWaK9ncK5OzDhgDpi3iSnrIjS7rQWtAlPRAhKQAS4
+	 sY/8dbPOqdHSMmKwE0+cCkeufYvkeIMFD9IUQcN1oMTV2TtPYjLl2ScWg80cB4l1mS
+	 0pSFNuR14wKjQ==
+Date: Wed, 21 Oct 2026 13:29:08 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>,
- Stanislav Fomichev <sdf@fomichev.me>, Taehee Yoo <ap420073@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Kaiyuan Zhang <kaiyuanz@google.com>, Bobby
- Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, Simon Horman
- <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Dragos Tatulea <dtatulea@nvidia.com>, Nikolay
- Aleksandrov <razor@blackwall.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Tariq Toukan <tariqt@nvidia.com>, Kaifeng Wang <kaifengw@google.com>
-Subject: Re: [PATCH net v4 3/4] netdevsim: support devmem RX and TX bindings
-Message-ID: <20261021132304.23e0a4e7@kernel.org>
-In-Reply-To: <CAHS8izPwWT+vbgAe49m5vXsRxT3unbfjLTkVZBScgAPdQTo2dQ@mail.gmail.com>
-References: <20261015163915.1166043-1-almasrymina@google.com>
-	<20261015163915.1166043-4-almasrymina@google.com>
-	<20261020121858.3b9107c5@kernel.org>
-	<CAHS8izPwWT+vbgAe49m5vXsRxT3unbfjLTkVZBScgAPdQTo2dQ@mail.gmail.com>
+To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 0/2] net: phy: aquantia: fix PMA capability
+ reporting and EEE discovery
+Message-ID: <20261021132908.5a73ea02@kernel.org>
+In-Reply-To: <20261016-net-phy-aqr113c-fix-pma-capability-v3-0-0bbb1b84035d@oss.qualcomm.com>
+References: <20261016-net-phy-aqr113c-fix-pma-capability-v3-0-0bbb1b84035d@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,15 +64,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 20 Oct 2026 23:17:34 -0700 Mina Almasry wrote:
-> But on the other hand the test coverage is nice, and maybe one day if
-> we add enough devmem support in netdevsim we'll be able to fuzz the
-> data path or something. Is there a way to get the best of both worlds?
-> Like put a comment on top of netdevsim that this is test simulator
-> device and any missing functionality and/or bugs in it should be
-> medium criticality max or something? Or is it too much trouble and I
-> should drop the netdevsim support and tests?
+On Fri, 16 Oct 2026 11:23:17 +0800 Hongmei Xu wrote:
+> This series fixes two related issues in the Aquantia PHY driver:
+> - Patch 1 restores EEE discovery for AQR111/114C/115C by replacing
+>   the manual linkmode_or() with genphy_c45_pma_read_abilities().
+> - Patch 2 adds get_features() for AQR113C to correctly report
+>   10G/5G/2.5G/1G PMA capabilities.
 
-I already strip Fixes tags and apply the patches to net-next.
-But it's still a burden. If you're signing up to fix the issues /
-review the slop we can try.
+You need to respond to AI robots in a timely fashion.
+Since you haven't and the merge window has started on Monday
+we have to drop this, please repost for the next release
+cycle
+
+## Form letter - net-next-closed
+
+The merge window for Linux v7.4 has begun, and the net-next
+tree is now closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
+
+Please repost when net-next reopens. There is some uncertainty
+about how long this merge window will last, so please check
+https://netdev.bots.linux.dev/net-next.html
+before reposting. net-next _may_ reopen on Nov 2nd.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
