@@ -1,55 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792605354;
-	b=jYXStGR/aEXM6CYiLyNfHsLUuYaUiDvmZ3UVmhWAFHJ68YiRnVA0QTWaQbA7NxF4jcY5
-	 6zXkaRR3SJ4C/ZK8NQQh4PKSWtcausPM/+1GIUMYopaNPpUU7e7lNKM6gk/+wFeFmmuc6
-	 nTQACalJL7xHYv7WtJjxO/EgmEp6+c3uO891IOGzoRfUxuFVx4847Fg/iy7woNbGVV6Iz
-	 oubF/c7/iK2NHbZ6bj7X0uHkt2whSNhjYguvTtZPyCu+kDzUVljYK1JQVRYI4Bn03adVH
-	 M41TZYphUsJLEwuQ058j/f1/WqypkWYUE5lMyn+w6Pl4/XRQsDEoOmq/ZSUSx130hcw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792605354;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=GX7t2+rzhC36CUFljRoCQC6FXVLVHmjq/gaYHLsA5tY=;
-	b=uCufVQFfZ+YL0YZLVVosJsacoSjijjGwbk7CanLibi2nlX57yGH8hH8M2gy2H/imFzK1
-	 D1DvwOQJAXQvq17svNlYyvJxYND3qIXNkKDVJlSMLWveUCxHh4fJSAeIiH2wVWGQiTXxW
-	 wDc/oaAubuUpIUiqOqolSYHAsvEn0RGsnEyVzUFTLL942mFwoX4AnOuJIpROOOxrGp+fj
-	 7ogWPee0VaeLpQYqvsE58i4vgEq5oDy8ooDRYRi6Oe9LCSgtET7gNNUyHl1xIH1grhaK7
-	 O5OjoPey4XIOY8RtxrYXleWS6DbkvRLGItNfYYp5w/LvpkDGbcXowVQEuUjaiC4vR3w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GZbOALAr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792605397;
+	b=D5VaAMnOjKO/ZpoCS/MEPokwgb6KLPr9n9Use2CUtBjzYr3XVeiAz5QW7FiNV3PtJ9M9
+	 cfEVw/m8tqeyYrARf341/D1Q21DoggVTne8fWwU7xDz14/HPLpqXZ/PGb5RnxEzz7kuSQ
+	 s+iL+him4jPHJeoNXP9wE0gMmkUoTYdYH5dAt6c4uZR8+xZHjodrbG8milE0sdztFopjM
+	 adx68maxnuKwMMK9I/qoUV4AEojkI14dpQAX7pMQa/MVrRto0oiM/hQHpsJjbg8wi1PSf
+	 Wc1NTJFW0bqFEMaFba2uOXZLtTVG7D7W4x5tnDcjNcOJUxor75yLzEpgMeH+jcTkZ6g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792605397;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=VbBlG9dBV9dQwd61zkZiG/rhXlHvnLvyJTnTn4Xv1Ho=;
+	b=5Ap+b9FDXuHs/1GLXbCVKJ+6t8z0rdibS38D2ZGBmPxTWjlz2GLhsBYoWHqP4W8KVWc4
+	 0BoRDw+7JY6kHwph4O7seFvDiTgDhd+ks8OE0+0IHdFNYleC9AdDnNuQ8obGsWr2FHY/5
+	 YrlfTghRPS3lygmWapM23EybqQMVekKo1JSh2pbACRA+ef5KiNYyUI7FluLC0DqaJ91I1
+	 QNdVqp2KxSJvdBCS6/zCKXYARmxOd/QBi4O5IQ/i+05D8qu2A63KiAUFt9zGYr0OjFPWU
+	 4op47QWsACXxuoy9NSHAnCCql46p76zL+V9+S0rHdkoy0bXjiiHuZnYbVixDHDGiAWw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="XjnGAW/l";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.50
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB289606A31B
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 17:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEA0606A31D
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 17:56:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAEA0606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GZbOALAr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BFE1F000C8
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 17:55:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792605353;
-	bh=GX7t2+rzhC36CUFljRoCQC6FXVLVHmjq/gaYHLsA5tY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GZbOALArO+E73lqVEGZdu0mugIdOedXGxIsqd2gdWg10F1/jdv5fE+vcyl7DZFdvD
-	 lY4PJDXyTdd4OU5IaLND6ZoLKvvUkFh4fNPp5f3u/CfOIzJwdck7McSvgQ6e6qTOdg
-	 oLAU92+/j9QqK/1/EWpc3ObypsJB5j0/LjYHIkcBQMn7WcE+Xh7VRkCuw7k/wru0BJ
-	 ORciyG1YXX4LDfsNhh6MblZ6w7Yaz+5ZLprSNyc7/v1jWR+gsmBJyRX02pKK7ZqmGZ
-	 uyWmd0uE5kdTkr51q2ZQQ8uBwl/66F04gpIqBVezCdEyS7gKk2zx3fI5JD7dmAbzAt
-	 51vVgUpmLe+Uw==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4a76d86a3e9so422871fac.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:55:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByrRL+MfKv1jokFBtPh9MOfDIPIsPJoAeCJzgFlIBgFA2QqUsJdwcO/2DnhQzHic+skAg986b4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJzR48DAX+4zFA+nBg8o7840iKT3+SOrRujWWUAThIOCfZCAWJM
-	IBeEkr671LwTeIRQwYjBR5XPGD/II6Y2Mv/lpYpk2cYhugIP5WpGaHViTXMTrntEkFNpXGiWEq1
-	VJP1xJqwLq9iQWlCeOxVeZNJ1VoHedgg=
-X-Received: by 2002:a05:6871:4045:b0:494:7d13:7a5c with SMTP id
- 586e51a60fabf-4a7dc1b092emr1616137fac.30.1792605352760; Wed, 21 Oct 2026
- 10:55:52 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=XjnGAW/l
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3ab2cb8d577so905736a91.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:56:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792605396; cv=none;
+        d=google.com; s=arc-20260327;
+        b=S3RVSAeOazQ63llLsnMfjQ3vYBDyOpy7uOsqxEKo9GEyAifoseifq5HWoaB5dDWAiG
+         cf7g+zFvyrTrhS7eNs7+Yvt+GVKOk8xuhsOAVJXiBd2rKkt/aANnpJEQZ0JL3XETYlv5
+         +0qL8KImg3r3F6VyvRckRDahOKPC0MindcxVoJQrgLsf0XJ6WHWBLrNehTYcnT37Uu+t
+         FOeAvySXbk99jf72Gg8oQBjFyOAISso/Lf5wJ+3Jriq0GP0W0HKchWlgb2E2RwsbWcGL
+         z688u1coAeO8v+Zq/mJz/2Jx7dJX6a+f9SILtwvN3chhhOZPD9SzT6ynxKsXHvhUAGXS
+         vTWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VbBlG9dBV9dQwd61zkZiG/rhXlHvnLvyJTnTn4Xv1Ho=;
+        fh=yJQ89xxk265yyqFXXu03G5MauZwTPPDmHL+NaqRKNl8=;
+        b=YGX4/S0rfsCrWnz5IhcQzwa7O0646bSzv+MLKaSiLiXkqD4YkySxyEx7UANWlydtAb
+         Pu5ZRVK91MLRQoh4mtgLk174rtkkH3937fS8NjhzU3erxMvuJqhdsTtEiKLcqEn3q9Wc
+         t6C89yHlD7kvEA/Drn3Na7YltSZ1eP6olPFiGmvKkr7BWGrthZ1Ol2CnHbirXcAtg2Db
+         Eoy3biqltEmcjAYZ+OkKFVYDvfPkP4/ZWGItp+QfCyO0VGA6PoPmz9XZDQAJEOIuozvl
+         b/WPGXda7WMmgHE3N0UyzcDSvje4QHxoprzjgQK633jh4uYI5SI75yCt7OXAtNdWbYIx
+         7yQw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792605396; x=1793210196; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VbBlG9dBV9dQwd61zkZiG/rhXlHvnLvyJTnTn4Xv1Ho=;
+        b=XjnGAW/lkqm11P0pMYijUpYq1oonr3mzQR4L5QXOUAKweJaJXolhjXgl0KiSNwUi3u
+         RigAv+W5Q8JG8RSqBUZlwXm4QcaPSV25TJ0AY6NLXHBARGVhtc8DXc37Ve1Smjo+7BM/
+         01pl/MPiu96OcvAljgHXE118771IPEAInsahOEQsONtETRODdd6gWJ5te20jZIGCnXd+
+         1Fx4HrqZ8EWJEFjeW5Vk6vd/JvnLa8QmzUjHxXgNVaSIz1j1RlLQYsoIRAzzdUb2mBnS
+         k0CkLW/aKowrDvCZpFU7mOYD5SRfQDVvohVauRNK7tN8aPLO7l+y2gBAS2NapsnO2Uz+
+         3PBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792605396; x=1793210196;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VbBlG9dBV9dQwd61zkZiG/rhXlHvnLvyJTnTn4Xv1Ho=;
+        b=rzOMs83gKDLOY5sVEJ90aKtgEFOUeDy1s8EslrVR4+tSeQ54PU6VfkvAULfJjANyXp
+         kUV7BlKsreDjs4+z7WaALNSjqv+hcbSKoezZk+UIqlquzOySsnRMUidP++KstJaisuG1
+         /qHoUQb4t4dZJFLpwDhtd4H+FWpBeCQBc7pVIlEQfUBJJuV+4fLR0N+qtObKXeBUtH/Y
+         1UuQBb/h57bVrjoISQWxc2BXd1pMAz27OV1c53LLknFzghuOjqV7S3flWCQSlldzZfgw
+         kX0DkbEKTUqd/7Zh01Xmb2sgDwQOIdlvRLH4w/WF8eeq6FxOA1Qiyhq+YCPLGAiLkcmU
+         l+GA==
+X-Forwarded-Encrypted: i=1; AKwUvBwiTI4MAV9uvkpU1fQuDxUnn4HDhOjrmn+eCCsKb8rHwPEfoylvWpXjOdLMXHckmf90ZbrIMww=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJTXrc1LUnuoDrZBJFsa12CuQVExEIEPF1qLLKkWujpaGiIaGlb
+	osGxcuEY4zEhyv6P0LLv8jc30KebDBOc08xwJc4bLZ50eQMJkAffRoXxMNOYZLwU4J/2Yc/n3ns
+	TYim3BT8yzzD0bVg2E1MI3keNB6+g68E=
+X-Gm-Gg: AYBFou05MPb/ajk707jMzZc+X6AQNZ0JIAq4ZVoWkhnicTpggufWevl8fcS3c6aXLKN
+	EQCgKp/ek6qd6KIpc7WfISj0QCnBUlI+rFNHZ/HfWLLdZrg+SzwSqxYCf1DKh2Lv7enzfK072rA
+	+17Hw50t0aL0Avj54azT629QYG2vV/fAVyKruwuQbY3Rl2J43k4ADDEYsKDOXPzPJllJGFv6C9j
+	9rUPdV2aq3tRI8KTHVgS8kvxP21pDo4FcGk1PDQN1P5weDQ1ad2QYrBNkvctiHovAmSNO/d7F4J
+	glxE/W2s1bxvJtCz/acvM0fN1CaClrn3erliVFCdXPzzHi5aQJDyJclPmvnTiKrIvfrhw2yAuyG
+	a9ziMy3jBVmdFm7jzSNfJqd368SjXlnzB3ReS1lM93zBMkisUyODgll/4Nhl7DxWmdkv1/oCWka
+	sjNl/KyOPcM4atblTEssuXd3cCAw48DLldZie5cPo=
+X-Received: by 2002:a17:90b:4a48:b0:3ac:a139:1b14 with SMTP id
+ 98e67ed59e1d1-3ad870a090emr2485173a91.57.1792605396207; Wed, 21 Oct 2026
+ 10:56:36 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,66 +105,190 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021023608.55867-1-qingfang.deng@linux.dev>
- <179255036282.3290.8488375760281728576@kernel.org> <c0f348bf-0e13-4cb1-8014-cd9b7787bfe6@linux.dev>
- <CAL4WiirRPnbSBgcoh8Aiq8zGVzsy34w9uaqAgSKQwpgJ0ht7aA@mail.gmail.com>
- <315a8794-db40-4d0f-9e4c-0cad66174bff@linux.dev> <CAL4WiiouaJ5QU24uKt=CuxpfgHmWHS5oxoE2E_C6KFCLbDh0+w@mail.gmail.com>
- <51ccddcc-53b0-47cd-9526-ccd825f0f6d9@linux.dev>
-In-Reply-To: <51ccddcc-53b0-47cd-9526-ccd825f0f6d9@linux.dev>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 21 Oct 2026 19:55:40 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiip2F59XO3BrjUHVrFqYMuD-LxNmZXhtftkV-JG0Ya84Yg@mail.gmail.com>
-X-Gm-Features: AclHuK-8olJtlfn_X0E97Dd5-TyqwSFatGSZBBSxpWG1Y-iSJJgCbCPIvp7Vs8A
-Message-ID: <CAL4Wiip2F59XO3BrjUHVrFqYMuD-LxNmZXhtftkV-JG0Ya84Yg@mail.gmail.com>
-Subject: Re: [PATCH net] ppp: linearize bridged packets when required
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: netdev-bot+sinfo@kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>, Taegu Ha <hataegu0826@gmail.com>, 
-	Tom Parkin <tparkin@katalix.com>, linux-ppp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, James Chapman <jchapman@katalix.com>, 
-	Sashiko <sashiko-bot@kernel.org>, Felix Fietkau <nbd@nbd.name>, 
-	Pablo Neira Ayuso <pablo@netfilter.org>
+References: <20261020155848.75711-1-mahe.tardy@gmail.com> <20261020155848.75711-2-mahe.tardy@gmail.com>
+In-Reply-To: <20261020155848.75711-2-mahe.tardy@gmail.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Wed, 21 Oct 2026 10:56:23 -0700
+X-Gm-Features: AclHuK_Gjd_0JETWrWSuRV1IbMqYcY07rIIqTjIYhd9Ry3rga3lnZ6YW-KgPkzM
+Message-ID: <CAEf4BzapP4Hng7bO8crK4SLg_PMH33oKo8esFo1ur5-QewNfig@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 1/3] bpf: add bpf_ksock_sendto() kfunc
+To: Mahe Tardy <mahe.tardy@gmail.com>
+Cc: bpf@vger.kernel.org, andrii@kernel.org, ast@kernel.org, 
+	daniel@iogearbox.net, davem@davemloft.net, willemb@google.com, 
+	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com, 
+	kuba@kernel.org, horms@kernel.org, liamwisehart@meta.com, 
+	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org, 
+	netdev@vger.kernel.org, sdf.kernel@gmail.com, yonghong.song@linux.dev, 
+	jolsa@kernel.org, kuniyu@google.com, memxor@gmail.com, emil@etsalapatis.com, 
+	almagui@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le mer. 21 oct. 2026 =C3=A0 19:04, Qingfang Deng <qingfang.deng@linux.dev> =
-a =C3=A9crit :
+On Tue, Oct 20, 2026 at 8:59=E2=80=AFAM Mahe Tardy <mahe.tardy@gmail.com> w=
+rote:
 >
-> On 10/22/2026 12:31 AM, Eric Dumazet wrote:
-> > Le mer. 21 oct. 2026 =C3=A0 12:27, Qingfang Deng <qingfang.deng@linux.d=
-ev> a =C3=A9crit :
-> >>> +       case PPP_IP:
-> >>> +               skb->protocol =3D htons(ETH_P_IP);
-> >>> +               break;
-> >>> +       case PPP_IPV6:
-> >>> +               skb->protocol =3D htons(ETH_P_IPV6);
-> >>> +               break;
-> >>> +       default:
-> >>> +               goto drop;
-> >>> +       }
-> >>> +       skb_set_network_header(skb, PPP_PROTO_LEN);
-> >>> +
-> >>> +       segs =3D skb_gso_segment(skb, 0);
-> >>
-> >> Passing zero features to skb_gso_segment will linearize every segment
-> >> prematurely.
-> >
-> > Good point, PPTP and L2TP do not need linear packets.
-> > I will pass NETIF_F_SG: checksums are still computed in software by
-> > skb_segment(), as openvswitch does, and ppp_bridge_xmit() linearizes
-> > segments only for channels without direct_xmit.
+> The motivation is to plumb more of the socket API into ksock, thus
+> supporting sendto() in addition to send() which makes a lot of sense in
+> the context of UDP sockets which are the only type currently supported.
+> This is useful when ksock is used to reply to specific addresses or send
+> to multiple addresses.
 >
-> What about NETIF_F_FRAGLIST?
+> Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+> ---
+>  net/core/bpf_ksock.c | 96 +++++++++++++++++++++++++++++++-------------
+>  1 file changed, 69 insertions(+), 27 deletions(-)
+>
+> diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
+> index 48a2e2327ace..37168f43c16c 100644
+> --- a/net/core/bpf_ksock.c
+> +++ b/net/core/bpf_ksock.c
+> @@ -37,6 +37,49 @@ static void ksock_release_work_fn(struct work_struct *=
+work)
+>         kfree(ks);
+>  }
+>
+> +static int bpf_ksock_addr_to_sockaddr(const union bpf_ksock_addr *addr,
+> +                                     u32 addr_sz, struct sockaddr_storag=
+e *sa)
+> +{
+> +       if (!addr || addr_sz !=3D sizeof(*addr))
+> +               return -EINVAL;
+> +
+> +       /* Kfunc memory arguments may be unaligned. */
+> +       memcpy(sa, addr, sizeof(*addr));
+> +
+> +       switch (sa->ss_family) {
+> +       case AF_INET:
+> +               return sizeof(struct sockaddr_in);
+> +       case AF_INET6:
+> +               return sizeof(struct sockaddr_in6);
+> +       default:
+> +               return -EAFNOSUPPORT;
+> +       }
+> +}
+> +
+> +static int ksock_sendto(struct bpf_ksock *ks, const void *data, u32 data=
+_sz,
+> +                       const union bpf_ksock_addr *addr, u32 addr_sz)
+> +{
+> +       struct sockaddr_storage sa;
+> +       struct msghdr msg =3D {
+> +               .msg_flags =3D MSG_DONTWAIT,
+> +       };
+> +       struct kvec iov =3D {
+> +               .iov_base =3D (void *)data,
+> +               .iov_len =3D data_sz,
+> +       };
+> +       int addrlen;
+> +
+> +       if (addr) {
+> +               addrlen =3D bpf_ksock_addr_to_sockaddr(addr, addr_sz, &sa=
+);
+> +               if (addrlen < 0)
+> +                       return addrlen;
+> +               msg.msg_name =3D &sa;
+> +               msg.msg_namelen =3D addrlen;
+> +       }
+> +
+> +       return kernel_sendmsg(ks->sock, &msg, &iov, 1, data_sz);
+> +}
+> +
+>  __bpf_kfunc_start_defs();
+>
+>  /**
+> @@ -155,22 +198,9 @@ __bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *=
+ks,
+>         struct sockaddr_storage sa;
+>         int addrlen;
+>
+> -       if (!addr || addr__sz !=3D sizeof(*addr))
+> -               return -EINVAL;
+> -
+> -       /* Kfunc memory arguments may be unaligned. */
+> -       memcpy(&sa, addr, sizeof(*addr));
+> -
+> -       switch (sa.ss_family) {
+> -       case AF_INET:
+> -               addrlen =3D sizeof(struct sockaddr_in);
+> -               break;
+> -       case AF_INET6:
+> -               addrlen =3D sizeof(struct sockaddr_in6);
+> -               break;
+> -       default:
+> -               return -EAFNOSUPPORT;
+> -       }
+> +       addrlen =3D bpf_ksock_addr_to_sockaddr(addr, addr__sz, &sa);
+> +       if (addrlen < 0)
+> +               return addrlen;
+>
+>         return connect_socket(ks->sock, &sa, addrlen, 0);
+>  }
+> @@ -225,18 +255,29 @@ CFI_NOSEAL(bpf_ksock_release_dtor);
+>  __bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *data,
+>                                u32 data__sz)
+>  {
+> -       struct msghdr msg =3D {
+> -               .msg_flags =3D MSG_DONTWAIT,
+> -       };
+> -       struct kvec iov =3D {
+> -               .iov_base =3D (void *)data,
+> -               .iov_len =3D data__sz,
+> -       };
+> -       int ret;
+> -
+> -       ret =3D kernel_sendmsg(ks->sock, &msg, &iov, 1, data__sz);
+> +       return ksock_sendto(ks, data, data__sz, NULL, 0);
+> +}
+>
+> -       return ret;
+> +/**
+> + * bpf_ksock_sendto() - Send data through a BPF kernel socket to a remot=
+e address.
+> + * @ks:                The BPF kernel socket context. Must be an acquire=
+d reference.
+> + * @data:      Pointer to the data to send.
+> + * @data__sz:  Size of the data to send.
+> + * @addr__nullable: Pointer to an IPv4 or IPv6 socket address, or NULL t=
+o use
+> + *                the connected destination.
+> + * @addr__sz:  Size of the address union, ignored when the address is NU=
+LL.
+> + *
+> + * Sends data to the specified address, or to the connected destination =
+when
+> + * the address is NULL, best-effort and nonblocking. This may sleep
+> + * (kernel_sendmsg), so it can only be called from sleepable BPF program=
+s.
+> + *
+> + * Return: Number of bytes sent on success, negative errno on error.
+> + */
+> +__bpf_kfunc int bpf_ksock_sendto(struct bpf_ksock *ks, const void *data,=
+ u32 data__sz,
 
-I do not see your point. Can you elaborate?
+This would limit API to fixed-sized data only. Have you considered
+passing dynptr as a source of data, so you can send a wider variety of
+data? I don't have a strong opinion whether we should add a separate
+API or convert this one into dynptr, but I do think that having
+ability to work with variable-sized data is super useful and should be
+added early on.
 
-There=E2=80=99s also nothing left to gain on fraglist packets.
-
-SKB_GSO_FRAGLIST packets already go through skb_segment_list(),
-which just unchains the original skbs without copying, as the fraglist
-test run showed.
-
-Frag_list skbs that aren=E2=80=99t fraglist GRO go through skb_segment(),
-which with NETIF_F_SG already shares the pages of the chained skbs
-instead of copying them.
+> +                                const union bpf_ksock_addr *addr__nullab=
+le,
+> +                                u32 addr__sz)
+> +{
+> +       return ksock_sendto(ks, data, data__sz, addr__nullable, addr__sz)=
+;
+>  }
+>
+>  __bpf_kfunc_end_defs();
+> @@ -255,6 +296,7 @@ BTF_KFUNCS_START(ksock_kfunc_btf_ids)
+>  BTF_ID_FLAGS(func, bpf_ksock_release, KF_RELEASE)
+>  BTF_ID_FLAGS(func, bpf_ksock_acquire, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
+>  BTF_ID_FLAGS(func, bpf_ksock_send, KF_SLEEPABLE)
+> +BTF_ID_FLAGS(func, bpf_ksock_sendto, KF_SLEEPABLE)
+>  BTF_KFUNCS_END(ksock_kfunc_btf_ids)
+>
+>  #ifdef CONFIG_BPF_LSM
+> --
+> 2.43.0
+>
