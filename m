@@ -1,81 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792561550;
-	b=QOfNeJuwtTh//09u2Bd5t4A4STXtrIxW08HIVgMRTQwDm2y4YJkA2Tp/LfABUYD80dAA
-	 2JvBTqb5UBota3wzVYSomY9WtaMvH07AgGyMwh+kGF4535VrjBZ9NlgmDN0XzsvodQSYm
-	 tDfx9WCX89dUNQueYohNplIha2yW7P3LeVnetbpcRBPetQmJMnyukyRK97ZQ7OdNUR2Q0
-	 pwR7MPa2Em3jLQIo8y4cEPqkVpeH/fEorsB/m5ZlgxClCl81RUGHpBcQj+DlyLn9X2+aE
-	 6/1DLzgLZMCGcrx8qOTiu30wbJVewnyS5c6ZdVqQFjaTRMkiNE4voY4Ku17WnezlIew==
+	t=1792561568;
+	b=ZiT10zKf98mmYvreF31utP5kBCW1fzCqWVp7GmnwXZLm9juJksGr5AknXZ/y4gRjl+3w
+	 CgJXxVjSNkOAstwtyB/WzC1QyECdbyiELeHfWuAfjgTkGvH140J0AHcLfBoOVkPwau+72
+	 DMtZgAWvt74426yoVxmqkJb8kXVnxwMFkJhfGWG9jVco/Jw4uuf+hZBtR2fwR010dFKDD
+	 nOMtIyyAiwHLx1sRicC2ym9+pGFaBeRWv5xDBLitW9DXWT9l2vjXGU+iBNGKbiqsAQ6t1
+	 baysZx1aZHbtb+QxLCjStXOqcAOF9umt3FtvWxj0qJMxKfQiLXF1QdBHOsZjX3b4sIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792561550;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792561568;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=YNlnEeogPiCHR6te9lkj2QiOwWqQwxIx/RUVSVDQoTs=;
-	b=huLfCr330vTI9hPfhc+3x9RBVaFWrPgQtmVs1o1Ecasamax0WwMa/6LNPf563pDwV526
-	 L/L9wk4SfLq1tqlsQgaNX2ZILiTDglG7DkHt7OVAKo/JdxuQCF0V9wEC2jy0pZlwwQrxD
-	 gVDFfG80glSOixrqVgEoDOMb6mZ9/KK5QO9zJuMQdQ03v7aw81xJUm7l9Kj6zQKNaRPsL
-	 4HcTaIZB4A23rxz+K6Jc9ilFuZS1pUd/PK7iZwxFKjHeQkxD6yPwdSad4dz1DQvTL90rl
-	 8qNtXB/+o/N3Fe6ZsrZ9UlJDDMSQtRQbhHQ5ssmTezkW5rFeho+njMUno1hcRN1em8w==
+	bh=i+9UXU32eo1W6vF68Fm8xwvs5/xE61sfCBqy8D9x3MM=;
+	b=Elq3bnQBI0OPkjoLC1rcxhQRjwbas7cDOQRmyq/Z2co65Sd4lo9vXpzxZNWzK8zzmdmF
+	 zttYfMozSKmQ6qMg/Ha4iNhVlleR6wrekOzRWr+knpKzWIpIW72fDUNaC4/z0sSnvyeGR
+	 uYT0nho+4L/rvlqn95oab+MPK6cxVB8nRXV7biyMeCqxepDhncrGA7hVNS+UEt9IHCMGO
+	 zRdMh5jwJkzP9kTbV/JDzcIXBECbbPYlpwYZFUIFVd4TBmOgKutE2kW5tV50Q6k2eh5US
+	 9M0i3c0hcgdc468FWwIfizenjq7Ax+Ron4SI/HxjJE87rL6GF4IzfA9KaEgyRDIlicw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rvj1Ngyd;
-	arc=none smtp.remote-ip=209.85.160.173
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jYHCIPLd;
+	arc=none smtp.remote-ip=209.85.160.174
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDCC606A319
-	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 05:45:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EDCC606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54889606A319
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 05:46:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54889606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rvj1Ngyd
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-53644b28706so4912151cf.3
-        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 22:45:50 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=jYHCIPLd
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5365d26ccbdso5218821cf.0
+        for <netdev@vger.kernel.org>; Tue, 20 Oct 2026 22:46:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792561549; x=1793166349; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792561567; x=1793166367; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YNlnEeogPiCHR6te9lkj2QiOwWqQwxIx/RUVSVDQoTs=;
-        b=rvj1Ngyd1Q6IpIe0F7XRyRAymYaoLHBzbcXE6ZTFzyEwK1jjFwE2Y4XhM9r5w3/yTB
-         UbDDCh3XNaYPBLCdLsUjHTpxEddWsRkSyezwrmpDlvVHOpatxPJFOKKWEytIr6nYBTn6
-         PnYjl5sgVe1Hlf82afwEe+LfBFBKBDRj57m87emEWj9NyE23Wd7hVAzVP9NCFLmu9ZMZ
-         ACwG0oUJVNZexWzbi6MtM+Jfavqtlpt3ZZHHRb1S/JGaIIRD4Mq5Pv4tqYsv5khtN02W
-         /b8cl53qzM782MCq8MiEuve8pSPStj/odusBTNdNOY9DOVE2OYU3Q7CZUbObkfxR1Gz4
-         6YRw==
+        bh=i+9UXU32eo1W6vF68Fm8xwvs5/xE61sfCBqy8D9x3MM=;
+        b=jYHCIPLdTvJg53TbEzuuRb8c53fEa9wHNb8E8RzuWZtENXwcvjwBclubqxZlY21SS3
+         MbWM9Bwr3XRxW9Guh9qymGU4EvlbFo2eX0wkr9jxviEvCvwm0qe6FQdcgL9UNdXV7rHb
+         KpERv52CGWFfZ94sXXAWxZ+XZtBPpdOthEO9asjlNsmcKUOsY4AxPz3gryeSpafRggMc
+         o4TOqCEufC+cD2tCl5qzHTvLsiPZJeblvqEzA5GwJjKSXP1q1JudEnlQwo+nvCrm7v3F
+         Yg7cn67/JHj0w2ZyGzpKgQlCOB8CUbRXoZCctc21oPSqMsaMBg/nmpWi/Pgv3dbAA6p3
+         mx+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792561549; x=1793166349;
+        d=1e100.net; s=20260707; t=1792561567; x=1793166367;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YNlnEeogPiCHR6te9lkj2QiOwWqQwxIx/RUVSVDQoTs=;
-        b=klmL6TTACClNZ4LQj5dmQ47pUnbZQJh5Ouv6dJx3bZtgDk+b90WUAbwbtN/rJkc+LF
-         h59/GrrdTgggQrOtYF3X64Hc4AkFJ6BBQnM/V+d10heC7MJ8LAsdcCY38uiIYYpEj4Xs
-         w3Hokd1rJbRw4T0hJC2HYfbxviF1y0uOQ5Ejmw8/Co+P03tK92QaZUuc54zT411Wcv7Z
-         9Ba3qtasbq4X99x+k6G636B8Pbr9FHE14aOqXL7FL1dSb+VgLK+UyiBP3UuHscYVfbz0
-         kcctqfooMBlFl7SyHYL4Ay19ajfU4zqmr6Epc8JbZ3i8fE+ykjl9lfJG8uHn5mSpXJbS
-         8TuA==
-X-Gm-Message-State: AFq9FYKNYa2TP5F3g0GuG+bz4GInJiwriBKmKj4SF4lI/UrCDLvip5qQ
-	bA6k3kh7suPto4wlh8Shq6A9wng/GXu95EsKB7mjx81sUWlBJd0KPh0U
-X-Gm-Gg: AYBFou0mm5qWZkNuQUnh4Sp7vdJfpAXrcDsjNj0G0Y0dHjFxTC59soGnXkAK4FXXEsv
-	xQupWIhMXN0VSARh5Rno0Gn0VBEH9AbVrh0AsIOOSBqodaAq/ajBKRZo5wzRSwM9skKPMGtcLOB
-	GSe0Px8mCXkwEPUeP6+Z7JVQZ35rKqjzL7oPWK+I3dclbwqyOuOpRc5+fkg5QHucQaqAMOl9xOc
-	UqFY3Ee6T777bgBsPO/oVzdB4wSUBS+nbPRHx4neFm+c6Y9hghKPKIvchrN4dLzRyegYFm+93bj
-	wPArjAaJhW+B9V5/l739rbiBkihVRapX51JJNiPUAninCKihSE/YD1DzegErIcVd2POvTbh5pLk
-	i/Httau689Vb44x1HZKUy7pTjEBh7T+xCp1dnrK7nmBZQ5JaQsKYu9DrxkXQaWWWqcdvYCccier
-	/AcmhhnEzZzUncUrpu5hCZouNk7sFQC00fnWFDF0lEDJSokxFXaCsYCBjHsBjn9+pk5hQhsa6qN
-	OB169ZLcX4Gd7/Ka5hsG8s72/qsDYQ4S7CYJayIS0z+OQAtHic=
-X-Received: by 2002:a05:622a:14ca:b0:534:d369:f398 with SMTP id d75a77b69052e-5369b8943edmr16119711cf.41.1792561549041;
-        Tue, 20 Oct 2026 22:45:49 -0700 (PDT)
+        bh=i+9UXU32eo1W6vF68Fm8xwvs5/xE61sfCBqy8D9x3MM=;
+        b=MrVjYDJERvLtkWATynq5d87UNa5Dqp7BUXMFxPZaNioLCqUSXkkMquZWUE9G4keDco
+         DEPRb56uVBRAuMSMLEVnMwxiDePBnSc2sl+Ur9iNLZizrRc+2j0MmwTkAp+UmSkh3Th1
+         83iPkIq1MgUmZMHkY3p0IX0aHimvD4hErVy7RYcmIUAGiKLmwrivfT6wWvpJYB1NPtfN
+         hCqOQpBSxsQ6FNQOAfW971m5HSuDLdU5y0Id+FTWoXQaTRpgA3qJ75Z9Y59Um/6s7dSf
+         36iVtCKWHb6cAFwb+g/gBg2JZQEzB2OAjoaD9PwLjkI5ArZ6Z4WC6uZKITih8gYVJLOU
+         sPcg==
+X-Gm-Message-State: AFq9FYJBFKRNeiyc9Ha+aWs/diWO3/7Tpc32CxRo+SG9gGU9eOHJn1UH
+	NO0XWtAzRMSZDmpTgTErC5Y8FpPp4a/uabBKrKonpP7bvoD8q+yma2W4
+X-Gm-Gg: AYBFou2ZPJBziIMLZhwBto9dJn91tI/INFUhIEpWjf3XbjZc3RLHbhWwKlrXyAzzhhN
+	nRkuQW2RA7JRJjlOoSqldAsHLnWrQv2CmfrJKlMvADtWa2UwwCcqKD7GgLT5Augc55prqNA5dyI
+	OAo42xSihuT1MnncUE1fwRCg1ydIU3juS+h64LzhTJxsNKB4lCcXEWP4DktoHtGPkD/o0GKy6K9
+	TgHl6r1wJEHiW/ZQLiuZGgXtAr1pib6KoaNBVV5PCqICCq8F48jN58jEIlHEahTH6g1RwikVVjk
+	UDOoNK3/Yb/BM1LT8b5ZQd9lE8d/Zs5a4gtuFApH4mZ4yG4nWUoRpKTEjFu2BOTrsxQIVHmRLvG
+	Pc0Jpz83C0XktJwqCfDXkrLqgS2hjp0uLtyjQ7lttzxoGTg9M4wbNJIC0pfPcqq4vLc02VzHXCg
+	RyPS/kpuaCSk6rVcqL2gx0hX+VMDFceJfv1oTxsVrTmlX4q2VaAd0kA11Kw5OV4+jDaWK1lUHGk
+	zRVimgRZu280DgvsQbr1PvpKmBba+Gd9qJkM8Oje7VX1TOftj4=
+X-Received: by 2002:a05:622a:144b:b0:536:72b4:b84a with SMTP id d75a77b69052e-5369b8b7357mr15316451cf.42.1792561567199;
+        Tue, 20 Oct 2026 22:46:07 -0700 (PDT)
 Received: from houminxi ([61.170.224.204])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91c10b9de47sm16385166d6.16.2026.10.20.22.45.43
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53698b7584csm12130351cf.17.2026.10.20.22.46.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 22:45:48 -0700 (PDT)
+        Tue, 20 Oct 2026 22:46:05 -0700 (PDT)
 From: Minxi Hou <houminxi@gmail.com>
 To: kuba@kernel.org
 Cc: netdev@vger.kernel.org,
@@ -84,12 +84,12 @@ Cc: netdev@vger.kernel.org,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	horms@kernel.org
-Subject: Re: [PATCH net-next v3 1/2] netlink: specs: add ovs_flow del and set operations
-Date: Wed, 21 Oct 2026 01:45:29 -0400
-Message-ID: <20261021054529.1857897-1-houminxi@gmail.com>
+Subject: Re: [PATCH net-next v3 2/2] netlink: specs: add ovs datapath and vport set operations
+Date: Wed, 21 Oct 2026 01:45:49 -0400
+Message-ID: <20261021054549.1858049-1-houminxi@gmail.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261020202440.1012706-1-kuba@kernel.org>
-References: <20261015024132.698658-2-houminxi@gmail.com> <20261020202440.1012706-1-kuba@kernel.org>
+In-Reply-To: <20261020202442.1012753-1-kuba@kernel.org>
+References: <20261015024132.698658-3-houminxi@gmail.com> <20261020202442.1012753-1-kuba@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,31 +101,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Tue, 20 Oct 2026 16:24:40 -0400 Jakub Kicinski wrote:
-> Should include/uapi/linux/openvswitch.h get the same update?
+On Tue, 20 Oct 2026 16:24:42 -0400 Jakub Kicinski wrote:
+> Should this doc also say that per-cpu-pids only takes effect when the
+> same request sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU in user-features?
 
-Yes, the kernel-doc for OVS_FLOW_ATTR_KEY still says a key is required
-for every request except a dump, and the kernel does not enforce that.
-The header is a kernel change, so I will send it separately rather than
-fold it into this series.
+I left that out on purpose. The doc covers the half that changes
+state: a missing user-features attribute is treated as zero and clears
+the features. per-cpu-pids is only read when that flag is set, and a
+request without it succeeds with the pids dropped. The kernel already
+behaves this way.
 
-> Could the doc mention those two cases as well?
+> Could these notifications be described in the specs, either here or
+> in a follow-up?
 
-Yes. A dump reads neither a key nor a ufid, and a del that carries
-neither flushes the data path. The next version says both.
+A follow-up. new and del have the same gap in both specs: the handlers
+send through ovs_notify(), so do() returns only an ack. Describing the
+notifications means adding reply and notify to every write op, which is
+more than this series set out to do.
 
-> is "Always present in notifications" accurate?
+> Should port-no be listed here too?
 
-It is not. A ufid-identified flow with OVS_UFID_F_OMIT_KEY set has no
-key in the reply. The sentence was already in the spec and in the
-header, and this patch only kept it. I will correct it with the header
-change.
+Not on set alone. lookup_vport() accepts a port number for new, del and
+set, but the spec lists port-no only on del. Adding it to set would
+make the three lookup keys disagree in a different way. I will fix all
+three together, separately.
 
-> Should this change carry a tag like:
-> Fixes: 93b230b549bc ("netlink: specs: add ynl spec for ovs_flow")
-> Could it also go in a separate patch
+> Could options be dropped from this request, or could the doc mention
+> these limits?
 
-I would rather keep it here. del and set both list probe, so splitting
-the type fix out would leave them pointing at an attribute the spec
-still encodes wrong. I have not added a Fixes tag for the same reason:
-the change belongs with the operations that use the attribute.
+The doc now mentions them. The list stays: the handler reads both
+attributes, rejects options with -EOPNOTSUPP, and rejects a type that
+differs from the vport's type with -EINVAL. The list is what the
+handler reads, not what it accepts.
