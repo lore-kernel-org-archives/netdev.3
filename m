@@ -1,70 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792579748;
-	b=FfruGCVfjpESzhQzqjJf+0UGV80Cfj3Mic4oH6R9sNYFrHszElYa8zO7UayXK3uZghkI
-	 ZnFGc73utIKdLj1y4V7irI+DKbNJ2N6kvndgR+GM6SNC7zpUcPL2nyuxSeOYswGjfYmXZ
-	 14/zguiLuaKFZtYMlJoK2s1O7L1OLRoisqtNnD3w69F54o73z0qtMAmkwfW+TyEsPoplG
-	 wszKY+OJzCnRzkfJXFOAsdMWq/tcqNkUCkRZZ0aAjSeugGOL7m686VdGbmfn3YV8cc9No
-	 hpWWFavJggApJKv7TNwdiNIJ2NBEsm5w2oQiCMN+u1Tky+KmAx5exya/ftjeEzkK6hQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792579748;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
-	bh=HFVvyD1aHnlLu1dMDSGzg74kJ9XSDJgZ4PQQxQ1rwMM=;
-	b=eHkGCIdR8jkQinKjoi0edzUb7qrvolt9q/1XaupVGb/13Rrp84AKbpHu1SzVk22Qst1s
-	 AbWwGazwFRvSUgzHhV8GVnw5csqeJuAvWlmPYY9/tKkpNBlCKEGIqh+Df7XQxC7Vr1O4i
-	 oePkxQjLb5QSyXXomRQaVNJvFxB2yhZDNiyqdO6J99NtKNOUpi/ON1A8ZQGahqFVCKcpG
-	 IAcR4OZra0E5xLxhyNFRmZqCFfVB9Wx7m3LnhOCPF63uDDDYLsBI09NW/4aYqXkhTw4U0
-	 +l+JzjY3Mzfg0lYJbdNhfHiKCSCmW4KkeXKEOtr5Qa5R/klTRU1HUwNImP5luoLpjCQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=zFHic1Hg;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792579793;
+	b=fXFIICqf3b+7y0iNgNGrQXQ5HsvuPrOspVor+9fBxDrNCudlA8LJ8ZELZVlksBBTNwqF
+	 +B8cq7hdMEWWG3MSgbn8aJwjXUGAPquzk1kj/VlRYEKZ/jnCGRY+7adcR5WEFT+3VFJek
+	 pMwY56AGOkq4L55IOfbNJXGaqT78fQva39IKUfhRP/EYufXWSLjXxwtHBrCL2SJ4u+Ksr
+	 P8QJoEYp4wZBvowfxM1vlusXdGJOpMuQ81vZxGkWZ0Z8JEPCnv1/2p14SgdADy80vb0NI
+	 vgsW3/F99DxXAvudI4ZMyFmErhZO5QopE92kaEoJBbHRABSEf0QI4zuts4FmmXXvyKA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792579793;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
+	b=HaZeACDqDVDv2IoJIBp/wBMB+a+U/GqsqaVrJwnvSEU+kUlmtdA9j4ireCA1QHExYwBD
+	 R7C0XQowQUaJiCOGpT1MEZ86virRzZa+e9NgbIkr62ETufLHek79rgzzfAJkKKo5XfuYe
+	 nLtAVCWcLhFfyhqTHvww6WPFUFy1ztRRhyDrjBngeurorUya8dhYPfO39gRYmBlLdK0LJ
+	 nwWpNvmkQ1075Y1Stthl4EtY1I/V5D7lCHetI1vOwFmh1JeGBNY3wdC6Fh56IVnWYuhEx
+	 X/S70tjqy/3XEj44nSVAuKnw4U+AcZzEj0PFvQkiNxIVWUYo4JFeV+N/SuM3jq+85Ag==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KIYq8xDU;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.49
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2D4606A31B;
-	Wed, 21 Oct 2026 10:49:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A2D4606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596BC606A32C
+	for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 10:49:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 596BC606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=zFHic1Hg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792579754; x=1824115754;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=Gj1oYLTBDiA87DUaik7BYJ9swhiu1prPvBcMftysvEE=;
-  b=zFHic1HgX2kDdaUG0wrb6ZLBt/4EQg6NBfQx1LlWW9X8w5PQhjkZYkfY
-   k8qcJTsBs+LpLGIwsqUaLM+kc+DA2TojVuRpH7eI+hO+9NK/rhhgXCmqO
-   dWT7O9PkpHFsmsZuedvNd0gZZSdVFrgMkR0e3ZYN9aciuGBbEERPH99sx
-   dvruSi6gQOVuWGsqOYOmwVU+SZYxvPteF8TZCvq1DpDzYD0roTLfeNbQW
-   LXf7H5Bu7XFrkGcmfTamL060yRE2Pz3ukg/Q5eSztWuLM9LKROW927TaQ
-   Gcb0fnYgqWcwHF8m0UKsjfd5P/iVQCzAfmNPbPbEdqz+r/J58PQU73tW4
-   g==;
-X-CSE-ConnectionGUID: Io7L0h0CT6WwngO0rpe36w==
-X-CSE-MsgGUID: kTsDSRMPSsePhOScqVszTw==
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="75804722"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Oct 2026 03:49:13 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 21 Oct 2026 03:49:06 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 21 Oct 2026 03:49:04 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Wed, 21 Oct 2026 12:48:26 +0200
-Subject: [PATCH] net: sparx5/lan969x: do not read past skb->len when
- injecting a frame
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=KIYq8xDU
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3ac9f49b984so368445a91.1
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 03:49:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792579793; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aRGm0HnZFcNjBRWAmPTQLm0jg8y0mxnrkHmdUJZgRTbjvfYrfio7FJtMtchGL6MANX
+         JcaX9KNdSH0vUHe5YmuxOsZ79lHPR/a6s9es5oAaoMkOR/pVveBBdVy2uNMo9Q4yaXj1
+         Oz4PlHIsjp2dGUQNHQ5kixlTo7VNz90a1MTlkEd5UpW3RgVNULQHmzAEiyLLby9Jxsdj
+         jFbI019belGWNnDVUF2Yh/MzJaYYPe5/xr54f5135UCLuenjfEHe3d21j5OkbOxtMpM3
+         X0y6E/aR4VwTFQfD0uLTj91T2RogVksN4vTt28IG6UCTz2pswhcxcqbIUA7Z8Q/9Nj4c
+         Z76Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
+        fh=H+ywUV9nN5PbpKNliESxkCnMY9ejWLbBwQAJyGjKbXA=;
+        b=JMRYcVftv695f9ev71g4Hyg5RTH7D1EZcfmEXjh1vtc9tgSTqU60F7j5KylVaqzmiU
+         KdGrQ6qiOb3HoYK4fBxHwzFs01AeUhEdw4eQGKO7PevWTY0TkMf3c0Ac319JHR4q6hG4
+         r09O8Tojc6N01kC9b83Z+9xQ6G73ok7l2172KzYeV0WWlfuZJldbotKtvRWmDab74Hwo
+         yN/Yrx+/Hf3kN7+YFEDpIpsVCEdfvx/y0YODrbOTZ8wFmg2PZNZxg+nLIHiPV917Xe2C
+         etP7cLzB8jwCSqVPwnSh05oSRNc0q5OCUgTe90t0LPrIpsFkEt7e8wLWoESWm14jjNLd
+         RYVQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792579793; x=1793184593; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
+        b=KIYq8xDUOhEjw41u1XCqU8cJQRE/MwbECB7weNWx6k29Bu2BBmr1VG7CBU0ohDDe3B
+         avi3I+JmpmeRvIQuqq68kUrNTBW74tIHG+q0sROFel6Z6560/nQXvNCBnmiArVFnX/fm
+         PTf8ryT8hd2uQlCi00SC8tW2OR1urvLODfhCjlZChhkUgDnQeylSvoj5R5rFjxL/0o9X
+         DacW+O/ijkgjuQ9ubfNZrmGOfiXZTDd4vO5dB4fqaM/oj9uP8385cQ39dvTWQrYISw9G
+         5lRC+8ohmj3QRoliiYGno5C1cCQ+LlWkraG0ZnEiSgixqmm2U9PkqRewpxQWgrGufu9E
+         RrJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792579793; x=1793184593;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eeX6PAsV0Y3sIsjFLfktRyMYpLkWyx6uIk1AtOWozmY=;
+        b=Y994vNGzvep+030Iue3i0h6t4lK6iH+JTpGy5jdr6hr3dsbnDcyeU0L3GWtfEiDyZf
+         NXywK8Iq0kC6DPZcoe3VzQ50n6mb2qjshi6FFgjWs8lJk1yem4KVkaq4v2evLrgW4pos
+         b8y32szW8DDOESctGWuYREk8tP3JzNLMR9Swp1eKA8fXp1FA9qMClWucFnNiMRGnJLvX
+         MVTYQwUn0PxHRg+3O1ApgrZqc1nMFi+V3H13akTZouRg4QbzjIEDKzT5RL12KkHnE7Xg
+         FhakubE2DOlX/zORnTslWwma35+3vE6r1Kp24ryqgPbznsDjoIXXZgbI/tLkFQfYLe/W
+         6Y+g==
+X-Forwarded-Encrypted: i=1; AKwUvBw5FL0VxqwW5vwDN1CPxEBqec03WXcfJaapzNtFrrvofLENVwbsBikzDro6ZgIMpWsh7MYBwss=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKUPVb2X4bo884YwP2LumrpPjbH+camMHI5cbm4Mg8xvX7XuWnE
+	PEHLMlaauskcfl7RGSeS/R+G7cpsYX4paCnsSAlnS/dUjRcweIxAPQ2uZVtzJ5xX51K4RMsHi09
+	lisu0hWWJ0V83fdts1Eaj1WJKPZKnMVk=
+X-Gm-Gg: AYBFou1L5yOrN15VyGjx+3bWyk4Etd39yebXIbKsl+IbU170N+pOYiamxjIFTJ27O+W
+	g1SyJPIffeH7Lk9QR3/ihD6RYkEoyHu/0i2oKZvue9DqSMhYSXoHhha/xT6aYdXCkD3P0FCRMX8
+	lFDpzu9AiE9iTgYqGd9fpQN/XKoezj4wN6zroLfFEgoyVNhX+p1K/tEKuqq2knRW2jL6JMR7+Qu
+	KLpgRfGsfrsrr5PT3Ri5b7BuHi5DdYXJb61/GM2gMEF62Nmp231Ja5vPfh9Q4QrkCOX03dPcedz
+	Sgbb+VtTqqdS35ne+MfhQmwZYq4tnapkiu26JgQKiT7YtDmQCpIsFRVZQd9cqaFUz46m4El1OoX
+	XFSb7QWknXxk2wKxqVz3rlXWDEQsBoLhCLw4d/UwnO5A+jfPYRIKVLLJbEZ+fFT2pfJshpec=
+X-Received: by 2002:a17:90b:3ec5:b0:3ac:b764:8521 with SMTP id
+ 98e67ed59e1d1-3ad6571ad27mr3402578a91.38.1792579792717; Wed, 21 Oct 2026
+ 03:49:52 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,92 +104,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261021-sparx5-inject-tail-bytes-v1-1-7dcc035c8ddf@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAHmY2GoC/x3MQQqAIBBA0avErBtQwYiuEi3MxpoIC0eiiO6et
- HyL/x8QSkwCXfVAopOF91ig6wr84uJMyFMxGGUarYxCOVy6LHJcyWfMjjcc70yC1Gofgrejaiy
- U/EgU+PrX/fC+H+mnxbFqAAAA
-X-Change-ID: 20261020-sparx5-inject-tail-bytes-e81cffc5b065
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Bjarni
- Jonasson" <bjarni.jonasson@microchip.com>, Lars Povlsen
-	<lars.povlsen@microchip.com>
-CC: Steen Hegelund <steen.hegelund@microchip.com>, <netdev@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: b4 0.14.3
+References: <20261020230211.75665-1-andrebrait@gmail.com> <20261021095756.0f5770e6@pumpkin>
+In-Reply-To: <20261021095756.0f5770e6@pumpkin>
+From: =?UTF-8?B?QW5kcsOpIEJyYWl0?= <andrebrait@gmail.com>
+Date: Wed, 21 Oct 2026 12:49:16 +0200
+X-Gm-Features: AclHuK8XYSgL4sJ6lwVw4WXh8iC7jNprlbe1Q1YOL50NcC6qXVcAOpwDNKlpvC0
+Message-ID: <CALhGy9n9EMvV2JN8s4kpKb3Wsc3rjRVfibpNvVdAw_rHT=dYeQ@mail.gmail.com>
+Subject: Re: [PATCH iwl-net v2] e1000e: work around TSO erratum that corrupts
+ data and hangs Tx
+To: David Laight <david.laight.linux@gmail.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
+	g.goller@proxmox.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-sparx5_inject() writes the frame to the injection FIFO one 32-bit word
-at a time, and pads frames shorter than 60 bytes with zero words.
+On Wed, Oct 21, 2026 at 10:57=E2=80=AFAM David Laight
+<david.laight.linux@gmail.com> wrote:
 
-Before this patch, the last word is loaded whole even when skb->len is
-not a multiple of four, so 1 to 3 bytes past the end of the frame are
-read. For a frame shorter than 60 bytes those bytes are also
-transmitted, as VLD_BYTES marks the whole last word valid and the
-padding starts at the next word.
+> > Apply it to all e1000e parts: limit the first data descriptor of a TSO
+> > packet to 3 * (max_read_request - 4) bytes (372 on the I219, where
+> > pcie_get_readrq() returns 128). The rest of the linear part goes into
+> > the next descriptor, which e1000_xmit_frame() already reserves;
+>
+> Aren't you using an additional descriptor over and above those the code
+> might already use?
+> So either it was reserving one too many, or you need to reserve another o=
+ne.
 
-Write the trailing bytes from a zeroed word. The number of words written
-and VLD_BYTES are unchanged.
+You're right that the split can use one more descriptor than before.
+The count already covers it, though: the bare count++ in
+e1000_xmit_frame() is never used by e1000_tx_map(). It comes from e1000,
+where that descriptor pays for the 4-byte TSO sentinel ("premature desc
+write-backs in TSO mode"); e1000e dropped the sentinel but kept the
+count++. With this patch the linear part takes
+1 + DIV_ROUND_UP(len - 372, tx_fifo_limit) descriptors instead of
+DIV_ROUND_UP(len, tx_fifo_limit), at most one more, so it uses exactly
+that spare.
 
-Found by an AI code review agent, and reproduced on lan969x and sparx5
-with register injection: bytes 57 to 59 of a 57 byte frame were not
-zero. With the fix they are zero, and traffic still passes on both
-chips.
+If we want the count to say so, I see two ways:
 
-Fixes: f3cad2611a77 ("net: sparx5: add hostmode with phylink support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- drivers/net/ethernet/microchip/sparx5/sparx5_packet.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+a) Count the split explicitly and keep the spare:
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-index f713656f1fae..14c9ae673e35 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-@@ -169,8 +169,8 @@ static int sparx5_inject(struct sparx5 *sparx5,
- 			 struct sk_buff *skb,
- 			 struct net_device *ndev)
- {
-+	u32 val, w, count, last;
- 	int grp = INJ_QUEUE;
--	u32 val, w, count;
- 	u8 *buf;
- 
- 	val = spx5_rd(sparx5, QS_INJ_STATUS);
-@@ -189,14 +189,23 @@ static int sparx5_inject(struct sparx5 *sparx5,
- 	for (w = 0; w < IFH_LEN; w++)
- 		spx5_wr(ifh[w], sparx5, QS_INJ_WR(grp));
- 
--	/* Write words, round up */
--	count = DIV_ROUND_UP(skb->len, 4);
-+	/* Write the whole words of the frame */
-+	count = skb->len / 4;
- 	buf = skb->data;
- 	for (w = 0; w < count; w++, buf += 4) {
- 		val = get_unaligned((const u32 *)buf);
- 		spx5_wr(val, sparx5, QS_INJ_WR(grp));
- 	}
- 
-+	/* Write the last 1 to 3 bytes, zero padded to a whole word */
-+	last = skb->len % 4;
-+	if (last) {
-+		val = 0;
-+		memcpy(&val, buf, last);
-+		spx5_wr(val, sparx5, QS_INJ_WR(grp));
-+		w++;
-+	}
-+
- 	/* Add padding */
- 	while (w < (60 / 4)) {
- 		spx5_wr(0, sparx5, QS_INJ_WR(grp));
+if ((mss) || (skb->ip_summed =3D=3D CHECKSUM_PARTIAL))
+count++;
+count++;
++ /* the headers go in a first buffer of at most tx_hdr_buf_max */
++ if (mss && len > adapter->tx_hdr_buf_max)
++ count++;
+count +=3D DIV_ROUND_UP(len, adapter->tx_fifo_limit);
 
----
-base-commit: d06ae66516e1aaf023808912af6292aef09d46c3
-change-id: 20261020-sparx5-inject-tail-bytes-e81cffc5b065
+   The split pays for its own descriptor and the old spare stays a
+   spare.
 
-Best regards,
--- 
-Daniel Machon <daniel.machon@microchip.com>
+b) Replace the spare with the explicit count:
 
+if ((mss) || (skb->ip_summed =3D=3D CHECKSUM_PARTIAL))
+count++;
+- count++;
++ if (mss && len > adapter->tx_hdr_buf_max)
++ count++;
+count +=3D DIV_ROUND_UP(len, adapter->tx_fifo_limit);
+
+   The count becomes exact, and one lower for every other packet.
+
+Neither fixes a bug I have seen: the reservation already covers the
+split, and in about 3.5 hours of test traffic on the patched driver the
+ring reached its stop threshold over 300,000 times without a stall. b
+also changes the reservation for every other packet, which I haven't
+tested. So I'd keep the patch as it is, the smallest change that fixes
+the bug, and leave the descriptor accounting for a separate cleanup.
+
+If you'd rather have the dependency explicit, I'm happy to fold a) into
+a v3; it only reserves one more descriptor for those TSO packets.
+
+> I'm not actually sure all the logic there is actually needed.
+> The code calculates the number of descriptors the packet is expected to n=
+eed
+> and gets the packet requeued if there aren't enough, but there is also th=
+e
+> 'post transmit' check that stops the transmit if there isn't enough room
+> for a full length packet.
+> If the latter is valid you don't need the former.
+> Although a sanity check that the ring isn't being wrapped might not do an=
+y
+> harm.
+
+The post-transmit check reserves (MAX_SKB_FRAGS + 1) *
+DIV_ROUND_UP(PAGE_SIZE, tx_fifo_limit) + 4, which assumes no buffer is
+larger than a page. The linear part and high-order frags can be, so the
+per-packet count is still needed.
+
+Andre
