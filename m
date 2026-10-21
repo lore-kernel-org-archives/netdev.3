@@ -1,80 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792581937;
-	b=Rl2Iul1n4xmRQ4z0UvEbPPNpFfv8FSLHiD3ls3+ZykkjSLX3xr8RyYhXR7mf8ZIwJSMW
-	 bCLkZ00Vg+KJ3WabFI2vF5vrJPnFT+WMRzaLkbAGMVx4CYHONims92/7LhnNCFQNmAHvz
-	 lH1Wjh9NKD7F+g8moRck998wGYQqyhJFUDfbasNwnX9JRxxQAE6ioQ6xqLmvLhdV25b0+
-	 HCFqhFcOCzKi199nisIBaIx8IyTSIfCR6pzdzU/CxDxdOB/63pfLn/vrxcpFxvHPoMtO8
-	 FBk3PlOUb5QIIS/rrreky0l9HFT7evOKnGWA3mxLRdeUOkdhjgM0SmneiPxaVQVWWVw==
+	t=1792582208;
+	b=MIUwkBvTwLDaZp51f04KzF7Aej3Dd0Uyh4GAbfj9UA+fOnvsopkyF3s+8wTtHNvfxMlc
+	 DcgGG554sQf0n2NDNkzeq6aBU7U6ay8v7y4utAnOyZw54q1uxHwE265/KNevoNKr0gN4K
+	 r4T41SGRifJfklchfDoE+c2TaZknGB5SjETtmtlvrlYPoThzRPJ+uxIIf4oN7oKlDRvHG
+	 cFheRfWskn5HR6dcTCkL7oSozDNX0zFSBgdVEyeqRP6CzV9SRadcJL2t0hgGdUlZUpTmg
+	 5t+QfR4tPHXqaRxbF+iy971O73AZQ/tZ4bhDNpIgV87k4MwG+F4HPp92NONuyxo1+Mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792581937;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=e4Ze/vAO+3B8RU6Gc23uzZvY6MDhudox9hNR2cpt0FU=;
-	b=aJ0HnbeOrfRkY/jovqozTWgNyzvpyRUcxhryirv5KG/EWzH9HXAsTOfiVr6UJLqAmeoM
-	 u4klvbNJjht9s2kOmCjiFvvz1Dz9wdsZKSoObq6Wgm+q35uvphIZEIKTiwK1vwYXxlLDq
-	 K+Ow90Sx2dwgbzzDPiO7QsQolSwMS6G257Iu7dKuqEdm3Or+sUQiUl/MgAL77pqota/P+
-	 3ekgi1Zm+G3tl5cMMAFkFPJs97aeLRHpxq61E2hAmUaph9Kxc/yF5DI+W8pJzeyqsn9Tr
-	 gKUyvOVwnJQTPxRvEplwvxz7bJDYyH6f3DVyEKO37b/9/NRm9FtJR52UegmtOyt5X2g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792582208;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=bwlpoZEI2gH/o8wQdqLuVVmqJThjYBiGN3e7zDsACCQ=;
+	b=NRRF8sCVPIOkRJiaivi9JEbgSvGqZVagndIZqkrVL5ccci0E4AMoJPAeWVTBBk+mJqCn
+	 q8eRdFmEhbOQsZWStS/HlBQk62ok6akW0yK1ZyoPVKzm7/K3ko+NyeYAYyVTRMdQ+Xdms
+	 7WPWJ/hH17KQ7YXKJ6BCQY0y7UafjHNQUuFggQZfZuvpdggqIbRvvmJ5/lV9jO0nObXQ0
+	 nb62c9VCQx0Lm0nY8H4ra7zNO0io/GTVChJfs90D8N6UQFGuq0Rg1XU3NbowPo9vmFAUV
+	 YNHqe50deqUiSCamkgss0NkRllVa0kFyz+LrKDz/GmocS+6lAtFvJDX0sTHU36eJ3UA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=FLGmsb+k;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AiZyv5Ft;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4481F606A31A;
-	Wed, 21 Oct 2026 11:25:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4481F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F16606A325;
+	Wed, 21 Oct 2026 11:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=FLGmsb+k
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792581937; x=1824117937;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=f6mbtOsoHCOt/e4/sMr9Gei9ixDW9trlJp/NUEcYDZ4=;
-  b=FLGmsb+kXXRda+QGqP7ExnbY6vQcffVVSgnL7TsodOK1I+3fYA5+jImJ
-   t4ZgE6rymuA3/l/cRMZCeCZ80Yp2vX8auNS/goc5cUwoAO5fP6obw6ZXv
-   oAbBW5QTxtATh6z8f1WTQT4o/7osPEswTeZCPX/hX46WXS/vYe2JuLBXC
-   xegOaJCtjLZvT6phHnOOt+4fmA/Z4sY4zPb2LZyCr+t8ebfP+Zq3HlIYS
-   8vcpaa6zMVkw/cTV2asKaJ+DCjJoqVTwMkKwtj87O9KV19W+rANcsEpL7
-   z1kzKnJ+bUcK2MEMtX2syyjtGAeO8LG9TYswE+IekrAdzpwVjDBH1rQVn
-   w==;
-X-CSE-ConnectionGUID: lWCzV498TpKkNg5mcN8lnA==
-X-CSE-MsgGUID: +wcjJoM9RbWrVnCYe05rdw==
-X-IronPort-AV: E=Sophos;i="6.27,170,1787036400"; 
-   d="scan'208";a="65361838"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 04:25:36 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Wed, 21 Oct 2026 04:25:35 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 21 Oct 2026 04:25:33 -0700
-Date: Wed, 21 Oct 2026 13:25:33 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Bjarni
- Jonasson" <bjarni.jonasson@microchip.com>, Lars Povlsen
-	<lars.povlsen@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: sparx5/lan969x: do not read past skb->len when
- injecting a frame
-Message-ID: <20261021112533.m6fh7xoqp74uevho@DEN-DL-M70577.microsemi.net>
-References: <20261021-sparx5-inject-tail-bytes-v1-1-7dcc035c8ddf@microchip.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AiZyv5Ft
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4460B1F000C4;
+	Wed, 21 Oct 2026 11:30:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792582207;
+	bh=bwlpoZEI2gH/o8wQdqLuVVmqJThjYBiGN3e7zDsACCQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=AiZyv5FtQnWD73ogb+kevHVKs2ErFA6fLmiiS8TkJvahs4RkmJQkdaCZBYfItEjIM
+	 Rz0QU8rII3/yD7onseJA+uhV1c9bqD+mSoXyTREZB1K7LRMNbu7emznyxbUrSOrQbb
+	 A+h5sNfCTVU2D8psTd0x2a06CVJJ2fEpeyvZ5IcQX/4bzh57/+MuAviat5fuQh2/QD
+	 MREpBw0dYAQA3p0epIHZI25lzdD311IW+db5aF4qTAg3WyMEMcG2YV1zJtz4p7d8Ud
+	 /3s5VeGrBfPA2371JktSo8V2wsc8/PysoH7w91Yf3EggvoJq0SoMLtRDXRWVbsS3f/
+	 jGpiyA7UzO/Dw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2B43809A33;
+	Wed, 21 Oct 2026 11:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,31 +53,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261021-sparx5-inject-tail-bytes-v1-1-7dcc035c8ddf@microchip.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/2] net/mlx5: HWS,
+ fix modify header pattern compare
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179258220603.570254.15343304656236965586.git-patchwork-notify@kernel.org>
+Date: Wed, 21 Oct 2026 11:30:06 +0000
+References: <20261019133159.1742411-1-acassen@corp.free.fr>
+In-Reply-To: <20261019133159.1742411-1-acassen@corp.free.fr>
+To: Alexandre Cassen <acassen@corp.free.fr>
+Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, moshe@nvidia.com,
+ kliteyn@nvidia.com, hamdani@nvidia.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org
 
-> sparx5_inject() writes the frame to the injection FIFO one 32-bit word
-> at a time, and pads frames shorter than 60 bytes with zero words.
-> 
-> Before this patch, the last word is loaded whole even when skb->len is
-> not a multiple of four, so 1 to 3 bytes past the end of the frame are
-> read. For a frame shorter than 60 bytes those bytes are also
-> transmitted, as VLD_BYTES marks the whole last word valid and the
-> padding starts at the next word.
-> 
-> Write the trailing bytes from a zeroed word. The number of words written
-> and VLD_BYTES are unchanged.
-> 
-> Found by an AI code review agent, and reproduced on lan969x and sparx5
-> with register injection: bytes 57 to 59 of a 57 byte frame were not
-> zero. With the fix they are zero, and traffic still passes on both
-> chips.
-> 
-> Fixes: f3cad2611a77 ("net: sparx5: add hostmode with phylink support")
-> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Hello:
 
-I somehow forgot to include the target tree. This one goes to net.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-/Daniel
+On Mon, 19 Oct 2026 15:31:55 +0200 you wrote:
+> The fs_hws modify header pools and the HWS pattern cache decide whether
+> two modify headers can share a pattern. Two bugs let different patterns
+> compare equal:
+> 
+> - On big-endian the HWS core comparison checks the data dword of each
+>   action instead of its control dword.
+> - The fs_hws pool match ignores the destination of copy and add_field
+>   actions.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3,1/2] net/mlx5: HWS, fix modify header pattern compare on big-endian
+    https://git.kernel.org/netdev/net/c/7eed173447fb
+  - [net,v3,2/2] net/mlx5: HWS, fix modify header pool match for copy actions
+    https://git.kernel.org/netdev/net/c/d425ec9bb937
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
