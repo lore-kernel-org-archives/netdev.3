@@ -1,60 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792614692;
-	b=njvNCJYFxaF8DGaqHo/74OFcsT9YU7gVviiSUECSARaDFuL9zB6vEGxD4LFl001awxIw
-	 75M0RQZ9ouvM79lM89F6RghDY8pAzmwaAtRjuR4yRWTcQRc3cBvBco34bvx1WKhgoUwAY
-	 5shOpdMf9v5jjwSNhGqbdlY0206IEgghABldBMjmbaF8hYBJQKHpWz4xXgILU6IS7pJGC
-	 8q6Z2jqkEBVSwPc5+Oc8k1VDoy2Y49sbThLx/7spmYx91rSLuFQC+4zCkZiOV/YbzLP9B
-	 JsFyYyUYSeemPHqkg8+oWiMlu+dQYRJwUe0qm+yyWZS8iJ12yfa+8cU7uTn6LcREpPw==
+	t=1792614827;
+	b=hqcofNyWN1uYpT8Gr/ZhuBD0MsYGx+gA0Z0bIGaMuXdZqZ5MtM7rwk9/UtRAxZzslRwz
+	 BGddB2Yn997Zuttge5UNFrNA1CyK8bdl5hmcHu3c5oe9XyhLfSbTSxrJjdoCDgxEhK6Br
+	 SQVRjv3JhLYYzTjzKDhoaQJOLDXeYwBy6bcxFyydSIoWiF8eHON2O+epNVLadlaAoNqWI
+	 qTp0bMI4xfSbqi+E6JDTpo1XCOeB+E5c5dlWMrGh+b4qWBdOL1tfDX5o/5KugzuEEd+TZ
+	 gbdmnCuxRHL7cJq2gy5jIzGfh6KUqH54ejvf45a2Ltq4/bGA4HMK1f36mx6DLdtty8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792614692;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792614827;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=ssm0YwnEh2UcHUt8QcjyuPt/pRIf3DpHvZcSL8oz4S0=;
-	b=ADuDVDwYcH1F18QpZoLMABDhwJN+9/C9Xa7hfTv8QYAEay1w+pYLpjXh7V0SqZ8rS/Cm
-	 JVMKYUoEQvXPIWfaP1WyTIyPxQAXSSQgMKHu9jNswSeaBA/hWLGiH7xdsmzLa9AGYRsvR
-	 RnC8OUunerSVy3unC0QO+uwEhhHspSOG0Wcri+RgaeSOV/QMl229WFQylwkxPa+KmZ3AZ
-	 k5fC8lqn95/DhCazTJPK7P3fa+wIeTh4H2dzNnO3W1NtuO17XOsSczEFduPDe/W1Mjerd
-	 l9dXpQj3tWbL0Bvqs2gCbVxVqIDJT+/Kj66K6bhL6HuLFiZgMpcOFm4GnJYOJkVZlcQ==
+	bh=DluZQQKZu2NAKH4Hu7D74hf+x8OtGDSfG/3odA2ccQQ=;
+	b=JyY3EbNFVBl903l6rx1F4xby1iY6D5c9Dxt7daZW7YVJTSMekJOMtLdHi9leowGagS7H
+	 eZUb3LYpe+P/k/096tFyX3e/qz+XfRox6gPIA8iN/22G7db9agzihVEpLkE+FJgJSzr2d
+	 PIwRRli0LWqkYmOBpy6Wg1eFhTe1G2+wSgWD8Bpyj4sPmzbqdZcQK9pgJCD33oACRtUfu
+	 lGJBNnfs7yOndih9iN35ojhAB9LonDRZoMwdMYTCkzXC8vlo+EvdvZaF8fqq8RX3vwXPd
+	 wqhLBSJrR3GLuiUxDswcI3EdFMlT12CHrytNPnXSsH7peHKXCBO9Bl1NFwV5ebZlEzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NDLJV8No;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DlDZYiAG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D96A606A31B;
-	Wed, 21 Oct 2026 20:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C3C606A31A;
+	Wed, 21 Oct 2026 20:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NDLJV8No
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7891F000C3;
-	Wed, 21 Oct 2026 20:31:31 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DlDZYiAG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5121F000C1;
+	Wed, 21 Oct 2026 20:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792614692;
-	bh=ssm0YwnEh2UcHUt8QcjyuPt/pRIf3DpHvZcSL8oz4S0=;
+	s=k20260515; t=1792614826;
+	bh=DluZQQKZu2NAKH4Hu7D74hf+x8OtGDSfG/3odA2ccQQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NDLJV8NoCr5f9+TkGJJl2Hkn6h5j5Mm74AxTTyRkaG+aHi9qqOCyg6zixBH40Wopb
-	 Zaj1RrO4veKx4QpZ/rHuy7QI1R35WQPf4mKaBW1yoxl/i8mwDpbpEpkeqehWkxQoJE
-	 VLbThztCco0/b1N48QUrY+Nn0Lhvryvsg8Hmj+L+VWv7ohWj9UAul6QQPy7bT6teFt
-	 iePvzeCRwyosmNEg5HTj7hr7lI0i/lplJKhuWyZId/PK3W6eVCKJacU8j8YfR+0Ow/
-	 BaasCsW2eS8Uv4S6Z6fBwAlPu47xOmEwhkzHOo5DIDCkvscdM9nlaYzRY+PxO73OCd
-	 9UEeISvpIKHCw==
-Date: Wed, 21 Oct 2026 13:31:30 -0700
+	b=DlDZYiAGFngETCjv71rJv+w03lnhQa6yO0w43vIp0K/MhLSZPpLUw59uQpTBLl0VP
+	 +tfx9lZetH67RAl7NVZcFWFz3WbRsGQSHpGZj0sMgOn+KQQFwoJCHhyQ5fNjpdlePq
+	 74X2EukRAU63iGkU6Gc17totcU7zG8TTE/oTSkJb0VEkKTcpG7BcSL45LETsxPC+GN
+	 UDyV6ddXrojPkYjT93oPBe36Vdj111ivTFncvgotTy4btsa2eeoJqFNjwDO60NKGdR
+	 bIMGkPCKawzZpxD2OoUcPxTl+F0RiPeAdLDUOvcCwUwpj5t2SHeR2DA4axSDQL2y5S
+	 nAbrVm44mc0Jg==
+Date: Wed, 21 Oct 2026 13:33:45 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Chaosheng Qu <chaosheng.qu.linux@gmail.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Vincent Mailhol
- <mailhol@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Nicolas
- Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- linux-can@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/4] can: don't discard the platform_get_irq()
- error in probe
-Message-ID: <20261021133130.2cf75b3c@kernel.org>
-In-Reply-To: <cover.1792118040.git.chaosheng.qu.linux@gmail.com>
-References: <cover.1792118040.git.chaosheng.qu.linux@gmail.com>
+To: Qiliang Yuan <odys.yuan@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] veth: set the real number of queues before
+ registering the devices
+Message-ID: <20261021133345.3e9e72d7@kernel.org>
+In-Reply-To: <20261016-bug-veth-init-queues-before-register-v1-1-f48eb2bb25a0@gmail.com>
+References: <20261016-bug-veth-init-queues-before-register-v1-1-f48eb2bb25a0@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,20 +63,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Oct 2026 14:11:35 +0800 Chaosheng Qu wrote:
-> Four CAN platform drivers collapse every failure of platform_get_irq()
-> into a fixed error code:
-> 
->     sun4i_can    -ENODEV
->     at91_can     -ENODEV  (also tests irq <= 0, which cannot happen)
->     janz-ican3   -ENODEV
->     ifi_canfd    -EINVAL
-> 
-> sun4i_can, at91_can and ifi_canfd match through an of_match_table, so
-> of_irq_get() returns -EPROBE_DEFER while the interrupt controller has not
-> been probed. The probes overwrite it and the driver core stops retrying,
-> leaving the device unbound even though the interrupt controller appears
-> later.
+On Fri, 16 Oct 2026 14:51:05 +0800 Qiliang Yuan wrote:
+> Since commit 9d3684c24a52 ("veth: create by default nr_possible_cpus
+> queues"), each veth device is allocated with one rx and one tx queue
+> per possible CPU, and veth_newlink() reduces the real number of queues
+> to one unless the user asked for a number.
 
-Please don't CC netdev@ on run-of-the-mill CAN patches.
-Follow to MAINTAINERS / get_maintainers.pl
+Please repost this after the merge window
