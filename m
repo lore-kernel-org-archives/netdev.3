@@ -1,70 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660111;
-	b=q+Cw/NDrRE7hkNYB9cASlRI8d5oWlhbeIX1MMhrubbCj4LJppZQqQHIru3ZaeJpOtH61
-	 grr00GgVqoKNnxkRV4sTzi3PV0s+J6BfmTvWcIWIwcZEDW052+Yt0eUGLjIeBHw9mYwiS
-	 CBvsVHu4Gs1FUb9kKQqSPkFu9vh0lfNfSsWj5DwgVK0dCusJ4y5mMu1jV2JEu1Y9/IvLO
-	 VQW8zD+i2k8Chcl95cRUqpe3xtBYJt5jj9hBUhuKl21BG379qXUqumEWWAa01VFIUNh0O
-	 NR5lVwSN8pNx9AJ9b5zmsoWF5RCbQJnpp9+goijttOG+klu2Y4fwy/eEdV5UkDOCZ7g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660111;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=FnPAv4piVPBvJnqlLGMEnfUI5qWz/TzWKkbWb8G7NQ0=;
-	b=SGHi/mu5Ani3CDg/WFm0KglTDjEdJ48yQczrUbwv3FFIGU5Oy/QsFc1qtgGH8j/pTy+l
-	 G6o8bFQ38T8toQHqVzzlMpqSfqRTeWcMU9c6B+35Htz/dLC2+9hWiM5nqeb6gquTfNiyt
-	 V/I9sCCB8ejuxBrbjVkycINFNzDJZaByYKHDkQbVV0dV6SBLegNkFgK+4YRY7Ztq5VA36
-	 FW61fhU2u3oFZwGV2+0rMUFvSUqmVTSywQ/n1yNC+Mw7DP2pK/oqwD9iKriE1T1e1WY4B
-	 PeDVakYGmQT5uBut6IutgUekOE2HVuR5iSHT+r7PNl7W6oHuSD7paesrVSjOHfthzFg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ve3U1wmN;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F6B606A31A;
-	Thu, 22 Oct 2026 09:08:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91F6B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.180
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792660140;
+	b=ZzgLMEwy+eMNv6eQscviv692KMMs4/YnaWV0ARVFB6/yoyReSqzdWw6sFDe5Nz3FxOCg
+	 uSrYrN8/gpAdcDgzLzexwAPqPGlCUMP/abHfpIIAPdIZBN4OUBrmhlwFj4PmXIsqSXbXq
+	 E+xxyAClStgVlKX71ED1AlG8C2k00PkFM7R43wkM2N/PrKFMWzmlObQlUh1DSarKkXkYp
+	 5Ig4FthZ9JIfJcgdDQa4IMQ18dgKUUnq/q4/W1pefGRRde1OQ2DKa0fPtRDYXJdKlBBYJ
+	 VI0tkSxMn6ehhS2V0UUO2cxC2lfkgqnjxChKcyLOIiciXybS5ZQ334IW+nDbMYrAicg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660140;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=x1gSHT1c/ki0I3qgcb+mFwc26qJiBmIOj6KoD3ALLCc=;
+	b=bwzP4nDrDKsSbdiEy5AucAbZG/X0sL2wZ5wyBTVKojXUKhb8nKqsQqLXMSz3bziugiDj
+	 9JrwAhzx3W0SxykaDByyqM3dW2+Dpk/szTvTYNqMVTuCNos1B/gFT93AU9PcMY06ogxsS
+	 b6fvR00mSRZyeIgAWFhXXdQVPMrcgKAbwKCIg+Z3ApFFowFiU6i7IhL5Q0daCs9jembFX
+	 mWx96lRVgbPg6S1wKM1N+FArRGzpx6V86RyBqP9gsq6tnu5W9fSMFAlUAMul9Q0LW24SO
+	 Hb/p82r/C6oV+EQQEy2/4FjAlVlfefe5rvYMqR/LjYbEZFB315KgE/85G3fnzAVKLKA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YmGQigzz;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.180
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C6F606A333
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:09:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52C6F606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ve3U1wmN
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YmGQigzz
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e985106c0cso12973335ad.2
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:09:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792660140; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hN6huQ3RT0EU7Utn04acdW2uTbyMT0S0+Dysu9Ljb5C3EBIhU/DcYvk6pAmirVCr5v
+         u5/LT/3vz4/wYfcMoJoCv65QG7VUKf3ryLiacn5x4Zl7I2cbpRr8ux1hSdlYg7vk4x3D
+         XhHJjt0KLd7LU1UiuAZx16F4fGzMmIMMoMFh0rwc0SIRui4Xn2AwcroUgO9q7dlLHvz/
+         AM+Ss1XTlLzf7WeoLSHDxjsxolcUk5l6vEGWHfr9VaXurKziFS9cxuCzqj/MwJiiVIML
+         S+3VmPpmHsNd8wUVMX8w4Lp7XFbfLmZp2P8kUGOLT842BcM1LBGhJsnGHkCW3J7S8dgF
+         8KPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=x1gSHT1c/ki0I3qgcb+mFwc26qJiBmIOj6KoD3ALLCc=;
+        fh=ygR8cQklBaTHyX7tttNtWArSJ+7fHGeSprGWou1iGAs=;
+        b=Yl0oZT0lk/8XA4IRKgwis2bxFJa366YyaWzIHx+sWwMVDQB2YH6Zg7XGReXFjPS7QF
+         dMc57oy6TUTQuGgkejpnyLgOE+mbJ0xWp16G9cPUl+R6vCGvO5PFAZYFri2kyJBOw3nQ
+         k+MCC+ACIoK9i2UweJShafdVoz9y9R1zDoLsTaCZx8r0o1lEToJ3LjIlF3WJYaiBFVjG
+         vsiaWOnP3jDujwiAPb8X6VB1bc8XtZR0SsWg9au+KUiUIe0t3q+9GH2Cb8Tk1CtYTRCE
+         ieZykTbpdCPQ5GP4GUqJmQt8wHo9FHgG/OpWrlPIv+z5USPQeiRDW36Djb3/m2LdVApA
+         42Gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=ve3U1wmNKvAKWU8zgJGJIVIotNyD/lmrVRwuEeNGTi8Qrgi4pp9P8wnZHw1xAjOyM9hJhEECm+yr0
-	 1kr2K6PGw2urpF6Do13YE/mTH5vVwb+MSOjbeskuI19qw/ED2pdHQXVrYplY4YdTnwigKH87Aj6obv
-	 2/UfiKKDdgfaiTCU=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16ad9d284a4a-0a136;
-	Thu, 22 Oct 2026 17:08:21 +0800 (CST)
-X-RM-TRANSID:2ee16ad9d284a4a-0a136
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.101])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66ad9d282d89-13201;
-	Thu, 22 Oct 2026 17:08:20 +0800 (CST)
-X-RM-TRANSID:2ee66ad9d282d89-13201
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	yana06070@163.com
-Subject: [PATCH net] macvlan: fix passthru promiscuity accounting while down
-Date: Thu, 22 Oct 2026 17:08:09 +0800
-Message-ID: <20261022090809.12019-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+        d=gmail.com; s=20251104; t=1792660140; x=1793264940; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x1gSHT1c/ki0I3qgcb+mFwc26qJiBmIOj6KoD3ALLCc=;
+        b=YmGQigzzpNxmz09qXtRdiVAK3ae/6WkZsxqw93zZJtYIX++tGjQia/CgPAiM4TBa+r
+         ptWQx78OluWSJywzHD7RbDxl5Pzxv6pMtJWxp1qYj+33zQyeQKIT6dvH31zerqn+chQl
+         Zv7Ccf1j8QvsEl44BzYNZGlQ7UXEa7qkl/AfERI46VlWCKNo+jMqDm1vkaRKv8OD8Fmb
+         nm76IU69MfG9g5BT9EfFjkOa5N5DKX3PJLzP0A4Jjh0X2pvMnyznwwy5kZAMks4loUUg
+         pNWCi8zUVH2BZiAnbbx4cePPbTezwl1AYgHm6ak3DK7Tb9/5BE4Jttw8gxlYiMsNYCoI
+         yo+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792660140; x=1793264940;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=x1gSHT1c/ki0I3qgcb+mFwc26qJiBmIOj6KoD3ALLCc=;
+        b=mfqp4mvDoeur8n80/KinqkgfH8jloOmAEUV4sxd6UNhTwXb9s9K17bxuX6JqlfTjM5
+         fgesUx4GpHWSBAbHVqTEHoZqn4T4P3JpBGJvPq0aEdEGlPm5GxxjgO0FPKRXUN2vxPjO
+         eUXduHJfgqRQdIXaFCSeKogI5KNeDoabQy5EdhOUzO9YeAQBuPD5+INUEoiJmEqmi8iw
+         ENuFWrLZvdN2gGsVoPyMvdxyYCNe8dRPLY0Z3Cov0FXY/ilL5Ra0dFZUHz176EyhOfjJ
+         Z1ssEQh3C/MgQN9SzZjFibcbMaz5QO8P3+jPWi0AFc37i9+PuGJf18XTwZMpD3BkC0D/
+         ksaA==
+X-Gm-Message-State: AFq9FYKfInygK9m4b7Z1f4rAFqbhF1BI2Hwxy7Thx6amlGqILnBtJacf
+	MoPfxdxfAs0iQb+ROXHC5o5IQiRIlJWiD//4PwB14/uX/+Q5Mel++UWkyNXjS/eMvNWdgrCsFle
+	ZBf3HY6P1D+uPu6ZwuLLRGVSMNRj/9WE=
+X-Gm-Gg: AYBFou10X8MpVUNeqO8GQDWZ1mmz/HQkhfvgF3s+hvsZZjqGDSKy4wmn/zn6RjVHWm2
+	g2/tf5oQjAmBeov599gYF86/GqFT7t3fhJ77rST4LKRugy4kYfJ31m6eVRaXEiLV72xgW9L/7az
+	OTN9b9mmx30fa9WIIlCHdhOx8aLzriZJbgfqFIzeg0X4Xeqete/qg4uMqX7SaRBduJk4Qo2pHns
+	r/dh4Qe6HpISNxoMwWdoKrGlPhe3D7f4TW7En+cakxLLNmAzkVhwowNBTC2QvKeFQYe4a5gXf2q
+	GSczHEdhVSpNcjevh3AIa5Qq4nw9TV8RDl571Lh6e1/mQKFdnzryIKc4XcJvtGf2oJkzDH3nDRf
+	v4AVlXU+pEDkvNjW89nsKMR2DmWpHLiKk+TeHd8I=
+X-Received: by 2002:a17:903:324d:b0:2e8:8637:5e3 with SMTP id
+ d9443c01a7336-2ea43ca9b18mr41320045ad.34.1792660139775; Thu, 22 Oct 2026
+ 02:08:59 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,52 +102,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <cover.1792654486.git.zhilinz@nebusec.ai> <d2b51708a3ada3b12b986224ee8340ca7ef5b3be.1792654486.git.zhilinz@nebusec.ai>
+In-Reply-To: <d2b51708a3ada3b12b986224ee8340ca7ef5b3be.1792654486.git.zhilinz@nebusec.ai>
+From: Magnus Karlsson <magnus.karlsson@gmail.com>
+Date: Thu, 22 Oct 2026 12:08:47 +0300
+X-Gm-Features: AclHuK8matChSdrnMT5vbHsjOJ36t5qQf1YuHOVEVae9bK9_y35Mye5KmB-ETCM
+Message-ID: <CAJ8uoz0PTUVOTk5LV+LrP4tL-bEiVoKX4jL_V5nQcvSzk=Msew@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] xsk: validate consumer ring producer index
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
+	maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net, 
+	edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org, 
+	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
+	vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
 
-macvlan_changelink() adjusts the lower device's promiscuity count when
-NOPROMISC changes, even if the passthru macvlan is down. The reference
-is acquired in macvlan_open() and released in macvlan_stop(), so a down
-interface has no reference to change.
+On Thu, 22 Oct 2026 at 11:04, Zhiling Zou <zhilinz@nebusec.ai> wrote:
+>
+> __xskq_cons_peek() trusts the userspace-controlled producer index without
+> checking that the producer-consumer distance fits in the ring. In
+> __xp_alloc(), an invalid fill descriptor is consumed one at a time until
+> the cached producer is reached. A one-entry ring with an invalid address
+> and a forged producer index can therefore keep the kernel in this loop
+> for billions of iterations in receive context.
+>
+> Treat producer values beyond the ring capacity as an empty queue.
 
-Clearing NOPROMISC while down leaves an extra reference after the next
-open/stop cycle. Setting it while down can remove a reference held by
-another user of the lower device.
+Thanks for spotting this. If someone intentionally messes with the
+ring state, it is ok if they get no traffic through. The important
+thing is that the kernel does not get affected negatively.
 
-Guard the count adjustment with netif_running(dev). Keep storing the
-requested flags while down so the next open uses the new setting.
+ Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
 
-Comparing changelink with open/stop exposed the unmatched count changes;
-the same issue was also described in earlier macvlan reviews. A netlink
-test on UML reproduced both DOWN cases before the fix and verified the
-expected counts afterwards. Repeated flag updates, two open/stop cycles,
-deletion and bidirectional small-frame delivery were also checked.
-
-Full x86_64 builds completed with WERROR disabled for allmodconfig, and
-WERROR and KASAN disabled for allyesconfig, including the resulting
-dependency changes. Neither comparison showed new diagnostics.
-
-Fixes: df8ef8f3aaa6 ("macvlan: add FDB bridge ops and macvlan flags")
-Link: https://lore.kernel.org/netdev/179170088566.434549.4699134797461783473@kernel.org/
-Link: https://lore.kernel.org/netdev/20261016003009.2692872-1-kuba@kernel.org/
-Cc: stable@vger.kernel.org
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
----
- drivers/net/macvlan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index afad90b..a48c9e6 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1664,7 +1664,8 @@ static int macvlan_changelink(struct net_device *dev,
- 	if (data && data[IFLA_MACVLAN_FLAGS]) {
- 		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
- 		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
--		if (macvlan_passthru(vlan->port) && promisc) {
-+		if (macvlan_passthru(vlan->port) && promisc &&
-+		    netif_running(dev)) {
- 			int err;
- 
- 			if (flags & MACVLAN_FLAG_NOPROMISC)
-
-
+> This
+> bounds the consumer to the userspace-provided ring size and prevents the
+> long loop.
+>
+> Fixes: c5ed924b54c8 ("xsk: Simplify the consumer ring access functions")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Link: https://bugtracker.nebusec.ai/f/13760
+> Assisted-by: LLM
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
+>  net/xdp/xsk_queue.h | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
+> index 1bc42c8902f4b..315b656534749 100644
+> --- a/net/xdp/xsk_queue.h
+> +++ b/net/xdp/xsk_queue.h
+> @@ -344,6 +344,9 @@ static inline void __xskq_cons_peek(struct xsk_queue *q)
+>  {
+>         /* Refresh the local pointer */
+>         q->cached_prod = smp_load_acquire(&q->ring->producer);  /* C, matches B */
+> +       /* A malformed producer must not make us consume beyond the ring. */
+> +       if (q->cached_prod - q->cached_cons > q->nentries)
+> +               q->cached_prod = q->cached_cons;
+>  }
+>
+>  static inline void xskq_cons_get_entries(struct xsk_queue *q)
+>
