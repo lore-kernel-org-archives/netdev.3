@@ -1,61 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.63
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792648800;
-	b=JXtYlePdc6yKjdIKf9HXvbv25gc0a8zGLilhsWeuvImrEAsB0BFT9k3Q9JGvsaL3aFS9
-	 IPL8ubMUeCIlPQJhwmnMt2zBhl7tBFSeL76QN0jBklQaONXj+5mfTa5esxiYZTrXiBj1T
-	 UOydPDu2dCWYyTa7gh/bl8/VUBQ6BHk5YeC2bpQDfbWFdn64sGCagKgJmW8WOygouMrgT
-	 KOIrqmE8h4jARLzBCGM+dO8VmMbhNbGnwBdUprVfmZvV8Xy7a7TODBG5ULKV9yksGySUh
-	 sRnoLi82ElPjZS5TVYOVLDcvZXYOVfZVyvzZiymVyMixOszKYMueteA7afagmQIFI5w==
+	t=1792648950;
+	b=JNqUbBo+sYsDux64YTqEE1WnzpZcgLw0W40tIYK+VYknKs9Pl2YO9O8GiAFi07kQPS0U
+	 HwQ2Zixf+b8YT2bT+Nr076ti0pF38Wfxo1KXfF8tnnB1Y9sqitimKARHl3svHLvVV+XlI
+	 ZUL+dJP41scsGVElmn+QH1J7VwEBXUmQYS5VtPxYWiUFoq1ZRRPr2PlzfcJJ7xkMmdFUq
+	 yNSx0E7Tytr1PwAomsMysgIM3CdJbz/2VVnut2eYVuhXYfugfa8q7ejudx6GpiLbyESsP
+	 95Pv8QB3K78W0lJWK3cGFhRfo2YDwXwv7Qdi15T3rlHgJbSUiL19lL2tBRnlYMta6fA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792648800;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=fIYrm7yyO053Wq4oC47ELZ+0yKxy2k7LASYVZFoQqEo=;
-	b=Qm6dOKTsTvUL+D9YS4JxvIOuY/OtwM4n9ZvJLq9mUWzam+t/Sch2GAnkDxmvooHPgtDf
-	 Z5nGnhyNxFkHC+CV7uP93v81Sw3eYDNq7MKAvgMIfLrXC0EZqacgFMLtNtT8q/lKKoNCU
-	 sGLY0EDCCFIumOLGaV3i4kZXAXK+8AyFYD+HnCy03oU2AsE1ZddvP7UHSZlYOZEl/bf/9
-	 oNfDNX1UD3TAybfyJL/co/JbhPT+TuQzhnGO+059MqxIqaq1TSLmnnwTVZQ8qyYPPeEV4
-	 QRIP/eRk3DkFiRyCoRfLruxuEpN21KRN0UZWldTBu+BTr0JNTJcqmr06EZkLW0W8zuQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792648950;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=h7yy4ERCejIWJUHBaiW1M9hFVXwnhpKlFetEGTE4qE8=;
+	b=V7/fc7uj7dVtGoGErDEPCcK899wkyEku6iaDQNujKwY62fVTn/UKJt0B1Szu8w093bb1
+	 GVS62VD14dyOzXI+xZCIoV4tnut2u1DZhMR5gHtK3CYeMeXe1uBiht2dExqlyj2dtEbxx
+	 Fx8oc4E+AG4ZFzAIg94B3kWkneZb4zIlrIV40Kz5qEqN7+AtK6kdWEAdxMTclZ6FPUZUB
+	 vIy5wb6N9EwINCoORCnznx13ed7MkPf9ZaxBiGuJkM8p6OpzpeZGUF4lY4sZW+hHtvZLy
+	 f8IxIUYSJQKbZo+OEDpFFljZqX3NtNl1fx08R5WovZ/Q7A3fRRW74iFqcZ8gCjHRiBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Pp2rajOZ;
-	arc=none smtp.remote-ip=91.218.175.63
-Received: from mta0.migadu.com (out-63.mta0.migadu.com [91.218.175.63])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ejl443HM;
+	arc=none smtp.remote-ip=198.175.65.14
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAF7606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:59:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CAF7606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDEB606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 06:02:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEDEB606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Pp2rajOZ
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=3/3qEHo3NcT3tbB1SW5QCfRuQZuQpW8oQBAxm/9MJKw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792648797; v=1; x=1793253597;
- b=Pp2rajOZCLeruQH4lUdhCj8/VrhDvtVawgDKltYN/WfBNIYr2BRyhN7ORtui83q2AGdnYwTY
- JCCKB5ZOGdboP36eOF06L2VtatmcywZN9Hh9R36mccgkjXqlxqvcx/pnmDHIubKy3OIffp5BeY7
- 1GOF90mfM7AJqZv56n8AQFfA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 422a1f02f778a91c;
-	Thu, 22 Oct 2026 05:59:57 +0000
-X-Mizu-Trace-ID: 422a1f02f778a91c
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 22 Oct 2026 13:59:50 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Tianyi Chen <hi@tychen.cc>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ipv4: igmp: report interface group allocation
- failure on join
-Message-ID: <atmmVvSN1SEvsjzf@fedora>
-References: <179260356668.911829.6576504063198285556@tychen.cc>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ejl443HM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792648949; x=1824184949;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v1kuDdvZyLBvH1hitXXm71AvDg8GURL01c2wxP2YwcE=;
+  b=ejl443HMpF5Azd4uK4sCeivJa4Lmgu/zVfkot0qzBX1jJGlPMgcxNWiq
+   63SVZeF20MpIgB6IjTs+PCLTo2PZPYj2zyZvT1B1IUWAQF130EtUU0IOY
+   N5ZzKRjX6ppgeza5dHdSmTsdU6HD8s/f9H5XEYelpr58VamIyCsn0dorK
+   m2hK/BN4xfJ4iMVFfu3nZLSME1IOt8DgHeQ8nKDhVlkzUok2hwDptv/Ky
+   ZQB0fVkn3hWFEg6F1xAu9zLynE4DStCpqlHs4mflfaEQgwOMUGfsCNqTm
+   MWMxiK44eiZeFAMSTXhFOOJbz8nbyLC57edXNC+wjHGwrxVQvFS3yLWqj
+   Q==;
+X-CSE-ConnectionGUID: rP9pnOCURfucyuw0GyCPvg==
+X-CSE-MsgGUID: dlwDokvWS+qB4Smdmh7IbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1258429"
+X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
+   d="scan'208";a="1258429"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2026 23:02:20 -0700
+X-CSE-ConnectionGUID: 3xt7Bb08QHqzLGMMiaV6SA==
+X-CSE-MsgGUID: gg1NACHpR/2u0GnVF9SKgQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,171,1787036400"; 
+   d="scan'208";a="3161632"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 21 Oct 2026 23:02:12 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xJlsO-00000000Qcc-2m0t;
+	Thu, 22 Oct 2026 06:02:08 +0000
+Date: Thu, 22 Oct 2026 14:01:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Cunhao Lu via B4 Relay <devnull+1579567540.qq.com@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Elaine Zhang <zhangqing@rock-chips.com>, Lee Jones <lee@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Wu <david.wu@rock-chips.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 07/27] clk: rockchip: Add RK3572 clock and reset support
+Message-ID: <202610221315.TGWtYMdM-lkp@intel.com>
+References: <20261022-add-board-ok3572-c-v1-7-0b0fd85a31ee@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,146 +109,169 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179260356668.911829.6576504063198285556@tychen.cc>
+In-Reply-To: <20261022-add-board-ok3572-c-v1-7-0b0fd85a31ee@qq.com>
 
-Hi Tianyi,
-On Thu, Oct 22, 2026 at 02:23:59AM +0900, Tianyi Chen wrote:
-> setsockopt(IP_ADD_MEMBERSHIP) can return 0 while the group was never
-> joined on the interface.  __ip_mc_join_group() publishes the socket-side
-> ip_mc_socklist in inet->mc_list before calling ____ip_mc_inc_group().
-> That helper returns void, so when its kzalloc_obj() fails it returns
-> without creating the interface-side ip_mc_list and the syscall still
-> reports success.  The socket then passes IP_MSFILTER but cannot receive
-> the group's traffic: no IGMP report is generated, the group is absent
-> from /proc/net/igmp, and the receive path drops the datagrams.  Closing
-> the socket also decrements the interface group for every published
-> ip_mc_socklist, so it can remove a group that another socket joined.
-> 
-> Make the helper return -ENOBUFS on allocation failure, call it before
-> publishing iml, and free iml on failure.  The object is charged with
-> sock_kmalloc(), so sock_kfree_s() with the same size keeps
-> sk_omem_alloc balanced; it was never published and has no source list
-> yet, so no RCU free is needed.  Successful joins still publish the fully
-> initialized socket-side record after the interface group exists.  RTNL
-> serializes the writers, not the RCU readers; this ordering prevents a
-> published socket membership without a device group.
-> 
-> The legacy void wrapper keeps its best-effort behaviour: interface-up,
-> init, bridge and tunnel callers cannot report an allocation failure.  A
-> query does not recreate a missing group; only a later successful
-> inc_group call can.  The silent failure predates the 2019 helper split
-> (9fb20801dab4); there is no recent regression to tag with Fixes.
+Hi Cunhao,
 
-I think the fix could be Linux-2.6.12-rc2.
+kernel test robot noticed the following build warnings:
 
-> 
-> Reproduced with fail-nth on v6.19 and v7.3-rc2.  N=2 fails the helper's
+[auto build test WARNING on a804c5742bff224d4cb4d25dd383554d598be32b]
 
-Is there any details about the reproducer?
+url:    https://github.com/intel-lab-lkp/linux/commits/Cunhao-Lu-via-B4-Relay/dt-bindings-clock-rockchip-Add-RK3572-CRU/20261022-001058
+base:   a804c5742bff224d4cb4d25dd383554d598be32b
+patch link:    https://lore.kernel.org/r/20261022-add-board-ok3572-c-v1-7-0b0fd85a31ee%40qq.com
+patch subject: [PATCH 07/27] clk: rockchip: Add RK3572 clock and reset support
+config: arm-randconfig-1001-20261022 (https://download.01.org/0day-ci/archive/20261022/202610221315.TGWtYMdM-lkp@intel.com/config)
+compiler: clang version 21.1.8 (https://github.com/llvm/llvm-project 2078da43e25a4623cab2d0d60decddf709aaea28)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261022/202610221315.TGWtYMdM-lkp@intel.com/reproduce)
 
-> kzalloc_obj(): the original returns 0 with no interface group and 0/4
-> multicast datagrams delivered; this change returns -ENOBUFS, leaves no
-> socket or interface state, and a later join delivers 2/2.  On the
-> original, closing the half-joined socket also removes a second socket's
-> group; the patched kernel keeps it.  Normal joins, the existing-group
-> users++ path and source-specific joins (allowed 2/2, filtered 0/2) are
-> unchanged.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Tianyi Chen <hi@tychen.cc>
-> ---
->  net/ipv4/igmp.c | 37 ++++++++++++++++++++++++++++---------
->  1 file changed, 28 insertions(+), 9 deletions(-)
-> 
-> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-> index d56355aca797..81a100330630 100644
-> --- a/net/ipv4/igmp.c
-> +++ b/net/ipv4/igmp.c
-> @@ -1566,9 +1566,15 @@ static void inet_ifmcaddr_notify(struct net_device *dev,
->  
->  /*
->   *	A socket has joined a multicast group on device dev.
-> + *
-> + *	Returns 0 if the interface now has a reference to the group, or
-> + *	-ENOBUFS if the new group could not be allocated.  Callers that can
-> + *	report an error to userspace must check it: a socket that reports a
-> + *	successful join while the interface has no group cannot receive the
-> + *	group's traffic.
->   */
-> -static void ____ip_mc_inc_group(struct in_device *in_dev, __be32 addr,
-> -				unsigned int mode, gfp_t gfp)
-> +static int ____ip_mc_inc_group(struct in_device *in_dev, __be32 addr,
-> +			       unsigned int mode, gfp_t gfp)
->  {
->  	struct ip_mc_list __rcu **mc_hash;
->  	struct ip_mc_list *im;
-> @@ -1595,12 +1601,12 @@ static void ____ip_mc_inc_group(struct in_device *in_dev, __be32 addr,
->  	if  (im) {
->  		WRITE_ONCE(im->users, im->users + 1);
->  		ip_mc_add_src(in_dev, &addr, mode, 0, NULL, 0);
-> -		goto out;
-> +		return 0;
->  	}
->  
->  	im = kzalloc_obj(*im, gfp);
->  	if (!im)
-> -		goto out;
-> +		return -ENOBUFS;
->  
->  	WRITE_ONCE(im->users, 1);
->  	im->interface = in_dev;
-> @@ -1630,13 +1636,18 @@ static void ____ip_mc_inc_group(struct in_device *in_dev, __be32 addr,
->  	inet_ifmcaddr_notify(in_dev->dev, im, RTM_NEWMULTICAST);
->  	if (!in_dev->dead)
->  		ip_rt_multicast_event(in_dev);
-> -out:
-> -	return;
-> +	return 0;
->  }
->  
->  void __ip_mc_inc_group(struct in_device *in_dev, __be32 addr, gfp_t gfp)
->  {
-> -	____ip_mc_inc_group(in_dev, addr, MCAST_EXCLUDE, gfp);
-> +	/*
-> +	 * Legacy void interface: interface-up, init, bridge and tunnel
-> +	 * callers cannot report an allocation failure.  Keep the best-effort
-> +	 * behaviour.  A query does not recreate a missing group; only a later
-> +	 * successful inc_group call can.
-> +	 */
-> +	(void)____ip_mc_inc_group(in_dev, addr, MCAST_EXCLUDE, gfp);
->  }
->  EXPORT_SYMBOL(__ip_mc_inc_group);
->  
-> @@ -2386,11 +2397,19 @@ static int __ip_mc_join_group(struct sock *sk, struct ip_mreqn *imr,
->  		goto done;
->  
->  	memcpy(&iml->multi, imr, sizeof(*imr));
-> -	iml->next_rcu = inet->mc_list;
->  	iml->sflist = NULL;
->  	iml->sfmode = mode;
-> +	/*
-> +	 * Make the interface group exist before publishing the socket's
-> +	 * membership: success must mean the group can actually receive.
-> +	 */
-> +	err = ____ip_mc_inc_group(in_dev, addr, mode, GFP_KERNEL);
-> +	if (err) {
-> +		sock_kfree_s(sk, iml, sizeof(*iml));
-> +		goto done;
-> +	}
-> +	iml->next_rcu = inet->mc_list;
->  	rcu_assign_pointer(inet->mc_list, iml);
-> -	____ip_mc_inc_group(in_dev, addr, mode, GFP_KERNEL);
->  	err = 0;
->  done:
->  	return err;
-> 
-> base-commit: df2908090cda368b01ff43709f51890076c56157
-> -- 
-> 2.56.0
-> 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610221315.TGWtYMdM-lkp@intel.com/
 
-BTW, I feel there are too many comments generated by the LLM.
-I wonder if others share the same feeling.
+All warnings (new ones prefixed by >>):
 
-Thanks
-Hangbin
+>> drivers/clk/rockchip/clk-rk3572.c:121:40: warning: implicit conversion from 'int' to 's16' (aka 'short') changes value from 47185 to -18351 [-Wconstant-conversion]
+     121 |         RK3588_PLL_RATE(266580000, 1, 178, 4, 47185),
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   drivers/clk/rockchip/clk.h:607:7: note: expanded from macro 'RK3588_PLL_RATE'
+     604 |         .p = _p,                                                \
+         |         ~
+     605 |         .m = _m,                                                \
+     606 |         .s = _s,                                                \
+     607 |         .k = _k,                                                \
+         |              ^~
+   drivers/clk/rockchip/clk-rk3572.c:116:40: warning: implicit conversion from 'int' to 's16' (aka 'short') changes value from 52428 to -13108 [-Wconstant-conversion]
+     116 |         RK3588_PLL_RATE(604800000, 1, 101, 2, 52428),
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   drivers/clk/rockchip/clk.h:607:7: note: expanded from macro 'RK3588_PLL_RATE'
+     604 |         .p = _p,                                                \
+         |         ~
+     605 |         .m = _m,                                                \
+     606 |         .s = _s,                                                \
+     607 |         .k = _k,                                                \
+         |              ^~
+   drivers/clk/rockchip/clk-rk3572.c:112:40: warning: implicit conversion from 'int' to 's16' (aka 'short') changes value from 43690 to -21846 [-Wconstant-conversion]
+     112 |         RK3588_PLL_RATE(773000000, 2, 258, 2, 43690),
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   drivers/clk/rockchip/clk.h:607:7: note: expanded from macro 'RK3588_PLL_RATE'
+     604 |         .p = _p,                                                \
+         |         ~
+     605 |         .m = _m,                                                \
+     606 |         .s = _s,                                                \
+     607 |         .k = _k,                                                \
+         |              ^~
+   drivers/clk/rockchip/clk-rk3572.c:98:41: warning: implicit conversion from 'int' to 's16' (aka 'short') changes value from 52559 to -12977 [-Wconstant-conversion]
+      98 |         RK3588_PLL_RATE(1186812000, 2, 198, 1, 52559),
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   drivers/clk/rockchip/clk.h:607:7: note: expanded from macro 'RK3588_PLL_RATE'
+     604 |         .p = _p,                                                \
+         |         ~
+     605 |         .m = _m,                                                \
+     606 |         .s = _s,                                                \
+     607 |         .k = _k,                                                \
+         |              ^~
+   drivers/clk/rockchip/clk-rk3572.c:97:41: warning: implicit conversion from 'int' to 's16' (aka 'short') changes value from 52581 to -12955 [-Wconstant-conversion]
+      97 |         RK3588_PLL_RATE(1186814000, 2, 198, 1, 52581),
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   drivers/clk/rockchip/clk.h:607:7: note: expanded from macro 'RK3588_PLL_RATE'
+     604 |         .p = _p,                                                \
+         |         ~
+     605 |         .m = _m,                                                \
+     606 |         .s = _s,                                                \
+     607 |         .k = _k,                                                \
+         |              ^~
+   5 warnings generated.
+
+
+vim +121 drivers/clk/rockchip/clk-rk3572.c
+
+    43	
+    44	static struct rockchip_pll_rate_table rk3572_pll_rates[] = {
+    45		/* _mhz, _p, _m, _s, _k */
+    46		RK3588_PLL_RATE(2520000000, 2, 210, 0, 0),
+    47		RK3588_PLL_RATE(2496000000, 2, 208, 0, 0),
+    48		RK3588_PLL_RATE(2472000000, 2, 206, 0, 0),
+    49		RK3588_PLL_RATE(2448000000, 2, 204, 0, 0),
+    50		RK3588_PLL_RATE(2424000000, 2, 202, 0, 0),
+    51		RK3588_PLL_RATE(2400000000, 2, 200, 0, 0),
+    52		RK3588_PLL_RATE(2376000000, 2, 198, 0, 0),
+    53		RK3588_PLL_RATE(2352000000, 2, 196, 0, 0),
+    54		RK3588_PLL_RATE(2328000000, 2, 194, 0, 0),
+    55		RK3588_PLL_RATE(2304000000, 2, 192, 0, 0),
+    56		RK3588_PLL_RATE(2280000000, 2, 190, 0, 0),
+    57		RK3588_PLL_RATE(2256000000, 2, 376, 1, 0),
+    58		RK3588_PLL_RATE(2232000000, 2, 372, 1, 0),
+    59		RK3588_PLL_RATE(2208000000, 2, 368, 1, 0),
+    60		RK3588_PLL_RATE(2184000000, 2, 364, 1, 0),
+    61		RK3588_PLL_RATE(2160000000, 2, 360, 1, 0),
+    62		RK3588_PLL_RATE(2136000000, 2, 356, 1, 0),
+    63		RK3588_PLL_RATE(2112000000, 2, 352, 1, 0),
+    64		RK3588_PLL_RATE(2088000000, 2, 348, 1, 0),
+    65		RK3588_PLL_RATE(2064000000, 2, 344, 1, 0),
+    66		RK3588_PLL_RATE(2040000000, 2, 340, 1, 0),
+    67		RK3588_PLL_RATE(2016000000, 2, 336, 1, 0),
+    68		RK3588_PLL_RATE(1992000000, 2, 332, 1, 0),
+    69		RK3588_PLL_RATE(1968000000, 2, 328, 1, 0),
+    70		RK3588_PLL_RATE(1944000000, 2, 324, 1, 0),
+    71		RK3588_PLL_RATE(1920000000, 2, 320, 1, 0),
+    72		RK3588_PLL_RATE(1896000000, 2, 316, 1, 0),
+    73		RK3588_PLL_RATE(1872000000, 2, 312, 1, 0),
+    74		RK3588_PLL_RATE(1848000000, 2, 308, 1, 0),
+    75		RK3588_PLL_RATE(1824000000, 2, 304, 1, 0),
+    76		RK3588_PLL_RATE(1800000000, 2, 300, 1, 0),
+    77		RK3588_PLL_RATE(1776000000, 2, 296, 1, 0),
+    78		RK3588_PLL_RATE(1752000000, 2, 292, 1, 0),
+    79		RK3588_PLL_RATE(1728000000, 2, 288, 1, 0),
+    80		RK3588_PLL_RATE(1704000000, 2, 284, 1, 0),
+    81		RK3588_PLL_RATE(1680000000, 2, 280, 1, 0),
+    82		RK3588_PLL_RATE(1656000000, 2, 276, 1, 0),
+    83		RK3588_PLL_RATE(1632000000, 2, 272, 1, 0),
+    84		RK3588_PLL_RATE(1608000000, 2, 268, 1, 0),
+    85		RK3588_PLL_RATE(1584000000, 2, 264, 1, 0),
+    86		RK3588_PLL_RATE(1560000000, 2, 260, 1, 0),
+    87		RK3588_PLL_RATE(1536000000, 2, 256, 1, 0),
+    88		RK3588_PLL_RATE(1512000000, 2, 252, 1, 0),
+    89		RK3588_PLL_RATE(1488000000, 2, 248, 1, 0),
+    90		RK3588_PLL_RATE(1464000000, 2, 244, 1, 0),
+    91		RK3588_PLL_RATE(1440000000, 2, 240, 1, 0),
+    92		RK3588_PLL_RATE(1416000000, 2, 236, 1, 0),
+    93		RK3588_PLL_RATE(1392000000, 2, 232, 1, 0),
+    94		RK3588_PLL_RATE(1320000000, 2, 220, 1, 0),
+    95		RK3588_PLL_RATE(1200000000, 2, 200, 1, 0),
+    96		RK3588_PLL_RATE(1188000000, 2, 198, 1, 0),
+    97		RK3588_PLL_RATE(1186814000, 2, 198, 1, 52581),
+    98		RK3588_PLL_RATE(1186812000, 2, 198, 1, 52559),
+    99		RK3588_PLL_RATE(1109000000, 3, 554, 2, 32767),
+   100		RK3588_PLL_RATE(1100000000, 3, 550, 2, 0),
+   101		RK3588_PLL_RATE(1051000000, 3, 525, 2, 32767),
+   102		RK3588_PLL_RATE(1008000000, 2, 336, 2, 0),
+   103		RK3588_PLL_RATE(1000000000, 3, 500, 2, 0),
+   104		RK3588_PLL_RATE(983040000, 4, 655, 2, 23592),
+   105		RK3588_PLL_RATE(955520000, 3, 478, 2, -15730),
+   106		RK3588_PLL_RATE(903168000, 6, 903, 2, 11009),
+   107		RK3588_PLL_RATE(900000000, 2, 300, 2, 0),
+   108		RK3588_PLL_RATE(816000000, 2, 272, 2, 0),
+   109		RK3588_PLL_RATE(786432000, 2, 262, 2, 9437),
+   110		RK3588_PLL_RATE(786000000, 1, 131, 2, 0),
+   111		RK3588_PLL_RATE(785560000, 3, 393, 2, -14419),
+   112		RK3588_PLL_RATE(773000000, 2, 258, 2, 43690),
+   113		RK3588_PLL_RATE(722534400, 8, 963, 2, 24850),
+   114		RK3588_PLL_RATE(697000000, 2, 232, 2, 21845),
+   115		RK3588_PLL_RATE(610400000, 3, 305, 2, 13107),
+   116		RK3588_PLL_RATE(604800000, 1, 101, 2, 52428),
+   117		RK3588_PLL_RATE(600000000, 2, 200, 2, 0),
+   118		RK3588_PLL_RATE(594000000, 2, 198, 2, 0),
+   119		RK3588_PLL_RATE(408000000, 2, 272, 3, 0),
+   120		RK3588_PLL_RATE(312000000, 2, 208, 3, 0),
+ > 121		RK3588_PLL_RATE(266580000, 1, 178, 4, 47185),
+   122		RK3588_PLL_RATE(216000000, 2, 288, 4, 0),
+   123		RK3588_PLL_RATE(96000000, 2, 256, 5, 0),
+   124		{ /* sentinel */ },
+   125	};
+   126	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
