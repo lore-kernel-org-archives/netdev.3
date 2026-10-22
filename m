@@ -1,99 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792639628;
-	b=Rm+yapzWJdLEuNbNB8BgpoOg5vK+gcPBRdSLKRSjljEyGanL+u9nJpR4cXIxP9TR6GsE
-	 mDisCYMgV3+yPM8kpbbd3K+w5ffaMTHVt/7TbaaSRlbCE7dF+Vuq608bab4fxkKYg31u0
-	 TmJnK57y0oE5h5xID5S6Y336ZDkYT9Fyo83ACm4Nkfz6PUNC0D0Ex46jzwIxjIvieN64d
-	 /NXX94kabvlGBanIBKHM5+psWm1CUQdo1tRqqytuBhegVzFJIenVI9I/tw/u6MD4hgW/U
-	 IL512dhCZC/Pu7JOTbQspmEYTKoCaJdrvQOlmyDLVetY7HW4lJWjNU3X9Svjz9VlhUA==
+	t=1792640049;
+	b=xfSRf7bkPjGJ6eywVaypyxqpzs1F6yNKCUYZpFZcnh9O7MbSJJqmoHuoOoqjTV0q57or
+	 2A2CXZyu+82+vfRZj4kvKLaCNzwoOfUCNyRRyiOy6vVhF/gYnJX5ee+0/+Q2u7OzroatO
+	 L0xR+LWQzoHTHgtPIULFv7cD2de0tjJnU9FTeYpUuoOk2whq5EBprnNWnRSkcimfGQ+YN
+	 aeppx3qObXs6rPU2Q01gXHXewvseKHkZ/avWeUI5t863NAd6M2WpQ8HX1oNbSnExRG7u1
+	 eF/FgOL35+JPxAvmu/JTiSEfCArSZ2gM4z8xJCbwe3TehcGaCpoNlw0yGc8bMX5bqlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792639628;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:To:Cc:Message-ID:
-	 In-Reply-To:References:From:Date:Subject;
-	bh=KYeBVoiHSIqb31GJS7/4bkZPdgBAygf1VBuzTNUUPiw=;
-	b=EYjwTbLgm8w/HO9dAraYS2/JKOXkleoLnSpk5ejm/LwqU33+GmtEaUhW0LYalFMt1rT4
-	 hFhqiH4lhag9AOVbGGZmKjxtOI7r3mcvxJynrvXFC2Oe2GKnLcj/45+haB1R38TFeIqOG
-	 gicvAGdSZo/qteMJKnSIlDOeixtvvX7pWHJTQzV4nqRLdyL2KlBvfQoMnsluyjDAQ1+jA
-	 za4jcq18tZlGANZ00azOgqKzCPXCoFtki4Qwti9cIsIoj9uiHRL2N70ekB8hntA8rjdoH
-	 JMz64f1Pvzey+pzeDLGUQClomFElOSKKChoNJkVcU4LwRothrlJqo7IF87j77N+d/QQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792640049;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=fy/DQiS97mhCTBdmkTL0xt86ohBYhwHUjIks+tRyFUA=;
+	b=bOt4PC0K1hfc5bvIuR0IO+Oj63xiEprioNuZ2OGjKYsWjVpoUkT+M635NJuzfl8qok6v
+	 UyyVcVHHJmslzywer5codESGMbqDWdGfI8Tr0QvluqZ3tnPA1BrDIsn+byJhsACSipxxZ
+	 gU5GEsbCpnxTDe+CvZtrGp2CZP6wduzh5ua/b70dRrZ52oXFQWerUT5TVLkHhp5Us/xTO
+	 vp59LVWAizG+KiHXyXmsgEzVWqxISPJjP9EgBsQNQkHSdzRxQDJJ6fJNQ8cmyU532dTZR
+	 9tTWECX6g+mym6bFTCA04f6PZRiTJ7ov816VrnOEV67rPy2ZEeO8IsRGbN6BFjNy3VQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=h0hk+9EV;
-	arc=none smtp.remote-ip=209.85.210.172
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N3FS3lyW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC9E606A330
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:27:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CC9E606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52392606A323;
+	Thu, 22 Oct 2026 03:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=h0hk+9EV
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-899b7b55c89so124782b3a.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:27:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792639628; x=1793244428; darn=vger.kernel.org;
-        h=subject:date:from:references:in-reply-to:message-id:cc:to:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=KYeBVoiHSIqb31GJS7/4bkZPdgBAygf1VBuzTNUUPiw=;
-        b=h0hk+9EVp2udpisLduAc32kkur4LYmvZfjTD/yI8dnpG46jVinr9t+3drTklQb0l5a
-         IIi2wBW3QrGXsI9paFyCDjci+5L/xSlVLdzkOaxSCOOqh2a+YtpCzWlHjP+C5PmfjK/x
-         rSVyim/GySVOvt4OkJlyYZxsB/C2/nvJve5nf9aK14wSMw2K6w+ZDLsOGNeE+xtLDO3O
-         /5llZTED2uqSTNJvhUPp1hPmSAD9oAsL3AsHgogD2m3CoLWPfPnwtB6HqtbrK+lxKAhd
-         8Pj8MsTHVb3ij4jYEKtgrAJuLIiItSEciJyd2qLva1j+vSTAghgFiYDdukQOkC5uJo79
-         DIqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792639628; x=1793244428;
-        h=subject:date:from:references:in-reply-to:message-id:cc:to:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KYeBVoiHSIqb31GJS7/4bkZPdgBAygf1VBuzTNUUPiw=;
-        b=MHfTOMMHwZ6WWB/Y+f0DUbJH7Ik43C25kMutpYOqAtOXfCqiapvo10l+lNdHe7Rgu2
-         TeIFyL9W1o+HARI3FLVgJtDxSIOn91RixnxMbZL4Mm3+xr9scTV7W6itkynT9NKxWrK2
-         nH11ziS0WGV6fH4OH7agi1bdfoz5OW4xvsRgOiCWoECkN3j+/cJSBu2dsGhKjwiCMgP1
-         I7kw7+fNVBchBnmVzLySPvzHjhMJWAdtGOdCb5sgr+9ZnEqjP6QW/eiBwEvmbb/pjw8a
-         niX5a+7fwjdMv7QmTkM6BFlC8VgY35tNuB1u373X5I4fkp/aALbyrEG85LTZEr2oyHEm
-         4Fpw==
-X-Gm-Message-State: AFq9FYIa7yvsidSoUMHEYA0VqExQ1CV4S4edNirLykype1gWuuNWawk7
-	HwkYYKK/zURRO5KNeYAXR6tceMJzn11mG16uXPep4x4yLrudMQkkzir7HBbHow==
-X-Gm-Gg: AYBFou1+HGCKmA1296wcAQ/Ym2NMh7OEwXW8iJdZ+b6zTWhNOH2htRwfewHr0xAWw/V
-	4L64TlsecHlo25FbX/pVs8x24x8YahuCbXPwcKif0aZaREP+qdHxZIcBU/yoaSLh9m7MZzwsd5F
-	aBY7BO1l6gnOMpHxUgO7KTZNBVZrROVLOdtUa49wzWnv7Xo+CvF19bxrSyOvP1lKjDEUyV1WcVf
-	p8dJNKdqVfiAkpHPpHJdBAoTZMldDuWEtDZ0iXUnPs0g5z46olYM8MckFZPQMWPth0sTJlzesVY
-	OZa8OcTYMqsbN83HHTkuXucT95TO7q1OYw+XGcfvfRRLSf0MuXGZ79t8eHs61VGps01xfvNfcLC
-	1YB6eM0RrfkM7PWH+h8oMHpzyfWPBx4y8qCbObK2MuolLrJgydpaVnZGMJwWXkjli0F/43FfyY3
-	OAqgIcFN0WGexndT59sAjPI2HDG62lho9PCqBfuyo/GX3K+QX+AvxcOC8RvyTmLidAIp3vWyQlT
-	GjbR6T3mAbNg91WUkIMki0Jp2MHPFnoCOMekVVr9IWlqh5In7idbuwdUr83HXtCiwuo31LWd9/o
-	8ymhp8DYShNd50tmF4PRhjDjOTqGgPNz8XoY9cKhvoc=
-X-Received: by 2002:a17:90b:39a7:b0:3ad:50ef:f5ef with SMTP id 98e67ed59e1d1-3ad86f000eemr5853546a91.3.1792639627465;
-        Wed, 21 Oct 2026 20:27:07 -0700 (PDT)
-Received: from msg ([188.253.120.76])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada48879a0sm2027760a91.4.2026.10.21.20.27.01
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 20:27:07 -0700 (PDT)
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	chopps@labn.net,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
-	linux-kernel@vger.kernel.org
-Message-ID: <20261022032129.16118-4-q.h.hack.winter@gmail.com>
-In-Reply-To: <20261022032129.16118-1-q.h.hack.winter@gmail.com>
-References: <20261022032129.16118-1-q.h.hack.winter@gmail.com>
-From: Qihang <q.h.hack.winter@gmail.com>
-Date: Sun, 18 Oct 2026 15:03:23 +0800
-Subject: [PATCH net v6 3/3] xfrm: hold the tunnel device reference across the
- input path
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N3FS3lyW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3973C1F000C3;
+	Thu, 22 Oct 2026 03:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792640048;
+	bh=fy/DQiS97mhCTBdmkTL0xt86ohBYhwHUjIks+tRyFUA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=N3FS3lyW+qnC4JVfAyc2rTdHL7j8mld6LHZlxc+TLvPRRstXh0mCDdHEsGw4kfrhV
+	 Mm/oP/Qakn69gLQ9nVVpMYXuJcXBZCkt/x9MUmIA4KaArWbzha+Q7wP8FBIjB0vtxA
+	 Yt2dkxkp4TEKL/TgrYgZcq51k/6ii05gaHQl3O+0l7v5bfF5JXX4tugwS5BkFVwHAi
+	 DT6miGOSXxX6J+ifFk2lyz5nGgrS76Mec64OnWcG/Wi9hHqUEL8wrKDu0SUwOoxmlF
+	 Fl+t2zZ9oA3yQo+kcDqg0KSFQW8GhIlOZtE0TvVPVUHb22w9cfiXaIbMQlYqIhMiLW
+	 t1n6XTVIV47eA==
+Subject: Re: [PATCH net v5 3/3] xfrm: hold the tunnel device reference across
+ the input path
+From: netdev-bot+sashiko@kernel.org
+To: q.h.hack.winter@gmail.com
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
+ herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, linux-kernel@vger.kernel.org
+Date: Thu, 22 Oct 2026 03:34:07 +0000
+Message-ID: <179264004781.3135.12079608241468960595@kernel.org>
+In-Reply-To: <20261019153247.89957-4-q.h.hack.winter@gmail.com>
+References: <20261019153247.89957-4-q.h.hack.winter@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,337 +63,305 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
 
-vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
-control buffer without taking a reference.  With async crypto the
-receive callback runs from the crypto completion, after a possible
-device teardown, and dereferences the freed tunnel device:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-    BUG: KASAN: slab-use-after-free in vti_rcv_cb
+Critical: 0 · High: 0 (2) · Medium: 1 · Low: 1
 
-Take a reference on the tunnel device when the pointer is cached.  The
-tunnel is the device's private area, so the reference keeps the tunnel
-structure alive as well.  xfrm6_rcv_spi() takes the same reference for
-the tunnel it is given; it is a separate entry point, so vti6 does not
-hold the reference twice.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-A successful vti/vti6 callback leaves the cached tunnel in place for
-xfrm_input() to release after delivery.  A callback that fails only
-updates the error counters; the common drop path releases the reference
-after the skb has been freed.  The helper takes the device out of the
-skb before gro_cells_receive() and transport_finish(), which may already
-consume the skb.  The device reference is therefore always dropped after
-the skb is gone.
+- [Medium] After this patch, every outer ESP skb received through
+  vti/vti6 holds a reference on the tunnel net_device (dev_hold() in…
+- [Low] The new loop at the end of __input_process_payload()
+  (net/xfrm/xfrm_iptfs.c) does more than release the tunnel reference…
 
-IPTFS consumes the outer skb itself and frees it directly, so it must
-release the reference as well.  The IPTFS state carries the address
-family the tunnel was resolved for, and the caller passes it in.  Add
-xfrm_input_drop() and xfrm_input_consume() for the outer-skb free paths
-in __input_process_payload(), iptfs_input_ordered(), iptfs_input(),
-iptfs_drop_timer() and iptfs_destroy_state().  Only the outer skb
-carries the cached tunnel; the inner skbs built by iptfs_alloc_skb()
-have a zeroed control buffer, so they do not release it.  The drop paths
-keep their skb drop reason and the consumed skb keeps consume_skb()
-semantics.  An inner packet that fails validation reaches the drop path
-before the queued inner packets are delivered; drop those as well so the
-outer skb's reference is not leaked.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch
+  leaves it in place and its message overstates its coverage.
+- [High] This problem wasn't introduced by this patch, but IPTFS-parked
+  skbs keep a skb->dev pointer with no reference on it.
 
-The reference is released right after gro_cells_receive(); the NAPI
-that processes the queued skb later still uses skb->dev without a
-reference.  That window is pre-existing and is not changed here.
+--
 
-This depends on the previous two patches: the receive callbacks must
-run before the async dev_put(), and the early drop must know the
-address family to release the reference.
+xfrm: hold the tunnel device reference across the input path
 
-Fixes: df3893c176e9 ("vti: Update the ipv4 side to use it's own receive hook.")
-Fixes: fa9ad96d4905 ("vti6: Update the ipv6 side to use its own receive hook.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
----
-v5:
-- __input_process_payload(): drop the inner packets queued on the
-  delivery list when an inner packet fails validation and jumps to the
-  drop label, so the outer skb's tunnel device reference is released
-  (found by the Sashiko review).
+This patch takes a reference on the vti/vti6 tunnel net_device when the
+tunnel pointer is cached in the skb control buffer. xfrm_input() then
+releases it after delivery or drop. New xfrm_input_drop() and
+xfrm_input_consume() helpers are added, and the IPTFS outer skb free paths
+are converted to use them so the reference is released there too.
 
- net/ipv4/ip_vti.c      |  3 ++
- net/ipv6/ip6_vti.c     |  2 ++
- net/ipv6/xfrm6_input.c |  3 ++
- net/xfrm/xfrm_inout.h  |  4 +++
- net/xfrm/xfrm_input.c  | 63 +++++++++++++++++++++++++++++++++++++++++-
- net/xfrm/xfrm_iptfs.c  | 42 ++++++++++++++++++----------
- 6 files changed, 102 insertions(+), 15 deletions(-)
+> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+> index 517369ba9efe..369817c870ce 100644
+> --- a/net/xfrm/xfrm_input.c
+> +++ b/net/xfrm/xfrm_input.c
 
-diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
-index 3b80929994a0..0277812852e7 100644
---- a/net/ipv4/ip_vti.c
-+++ b/net/ipv4/ip_vti.c
-@@ -63,6 +63,9 @@ static int vti_input(struct sk_buff *skb, int nexthdr, __be32 spi,
- 
- 		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = tunnel;
- 
-+		/* Keep the tunnel alive until xfrm_input() is done with the skb. */
-+		dev_hold(tunnel->dev);
-+
- 		if (update_skb_dev)
- 			skb->dev = tunnel->dev;
- 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index ab94b3a4ba9c..6715bf10bc85 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -319,6 +319,8 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
- 			goto discard;
- 		}
- 
-+		/* Keep the tunnel alive until xfrm_input() is done with the skb. */
-+		dev_hold(t->dev);
- 		rcu_read_unlock();
- 
- 		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 07edef258984..d27bc24f1b16 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -15,6 +15,7 @@
- #include <linux/netfilter.h>
- #include <linux/netfilter_ipv6.h>
- #include <net/ipv6.h>
-+#include <net/ip6_tunnel.h>
- #include <net/xfrm.h>
- #include <net/protocol.h>
- #include <net/gro.h>
-@@ -23,6 +24,8 @@ int xfrm6_rcv_spi(struct sk_buff *skb, int nexthdr, __be32 spi,
- 		  struct ip6_tnl *t)
- {
- 	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-+	if (t)
-+		dev_hold(t->dev);
- 	XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
- 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
- 	return xfrm_input(skb, nexthdr, spi, 0);
-diff --git a/net/xfrm/xfrm_inout.h b/net/xfrm/xfrm_inout.h
-index efc5e6b2e87b..8bd05f62ad56 100644
---- a/net/xfrm/xfrm_inout.h
-+++ b/net/xfrm/xfrm_inout.h
-@@ -6,6 +6,10 @@
- #ifndef XFRM_INOUT_H
- #define XFRM_INOUT_H 1
- 
-+void xfrm_input_drop(struct sk_buff *skb, unsigned int family,
-+		     enum skb_drop_reason reason);
-+void xfrm_input_consume(struct sk_buff *skb, unsigned int family);
-+
- static inline void xfrm4_extract_header(struct sk_buff *skb)
- {
- 	const struct iphdr *iph = ip_hdr(skb);
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 517369ba9efe..369817c870ce 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -120,6 +120,56 @@ static int xfrm_rcv_cb(struct sk_buff *skb, unsigned int family, u8 protocol,
- 	return ret;
- }
- 
-+/*
-+ * The cached tunnel holds one reference on its net_device.
-+ * The address family determines the tunnel type.
-+ */
-+static struct net_device *xfrm_input_take_tunnel_dev(struct sk_buff *skb,
-+						     unsigned int family)
-+{
-+	void *slot = (void *)XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4;
-+	struct net_device *dev;
-+
-+	if (!slot)
-+		return NULL;
-+
-+	switch (family) {
-+	case AF_INET:
-+		dev = ((struct ip_tunnel *)slot)->dev;
-+		break;
-+	case AF_INET6:
-+		dev = ((struct ip6_tnl *)slot)->dev;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return NULL;
-+	}
-+
-+	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
-+	return dev;
-+}
-+
-+void xfrm_input_drop(struct sk_buff *skb, unsigned int family,
-+		     enum skb_drop_reason reason)
-+{
-+	struct net_device *dev = xfrm_input_take_tunnel_dev(skb, family);
-+
-+	kfree_skb_reason(skb, reason);
-+	if (dev)
-+		dev_put(dev);
-+}
-+EXPORT_SYMBOL(xfrm_input_drop);
-+
-+void xfrm_input_consume(struct sk_buff *skb, unsigned int family)
-+{
-+	struct net_device *dev = xfrm_input_take_tunnel_dev(skb, family);
-+
-+	consume_skb(skb);
-+	if (dev)
-+		dev_put(dev);
-+}
-+EXPORT_SYMBOL(xfrm_input_consume);
-+
- struct sec_path *secpath_set(struct sk_buff *skb)
- {
- 	struct sec_path *sp, *tmp = skb_ext_find(skb, SKB_EXT_SEC_PATH);
-@@ -468,6 +518,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 	const struct xfrm_state_afinfo *afinfo;
- 	struct net *net = dev_net(skb->dev);
- 	struct net_device *dev = skb->dev;
-+	struct net_device *tdev;
- 	int err;
- 	__be32 seq;
- 	__be32 seq_hi;
-@@ -748,7 +799,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			skb_dst_drop(skb);
- 		if (async)
- 			dev_put(dev);
-+		/* gro_cells_receive() may free the skb. */
-+		tdev = xfrm_input_take_tunnel_dev(skb, family);
- 		gro_cells_receive(&gro_cells, skb);
-+		if (tdev)
-+			dev_put(tdev);
- 		rcu_read_unlock();
- 		return 0;
- 	} else {
-@@ -756,6 +811,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		if (xo)
- 			xfrm_gro = xo->flags & XFRM_GRO;
- 
-+		tdev = xfrm_input_take_tunnel_dev(skb, family);
- 		err = -EAFNOSUPPORT;
- 		afinfo = xfrm_state_afinfo_get_rcu(family);
- 		if (likely(afinfo))
-@@ -769,6 +825,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			gro_cells_receive(&gro_cells, skb);
- 		}
- 
-+		if (tdev)
-+			dev_put(tdev);
- 		if (async)
- 			dev_put(dev);
- 		rcu_read_unlock();
-@@ -779,9 +837,12 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 	spin_unlock(&x->lock);
- drop:
- 	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
-+	tdev = xfrm_input_take_tunnel_dev(skb, family);
-+	kfree_skb(skb);
-+	if (tdev)
-+		dev_put(tdev);
- 	if (async)
- 		dev_put(dev);
--	kfree_skb(skb);
- 	return 0;
- }
- EXPORT_SYMBOL(xfrm_input);
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 6920940a35b4..2b202c7570f1 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -709,8 +709,9 @@ static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
- 
- 	/* We don't care if it works locking takes care of things */
- 	hrtimer_try_to_cancel(&xtfs->drop_timer);
--	if (free)
--		kfree_skb(xtfs->ra_newskb);
-+	if (free && xtfs->ra_newskb)
-+		xfrm_input_drop(xtfs->ra_newskb, xtfs->x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	xtfs->ra_newskb = NULL;
- }
- 
-@@ -1204,15 +1205,23 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
- 	skb_abort_seq_read(skbseq);
- 
- 	if (defer) {
--		consume_skb(defer);
-+		xfrm_input_consume(defer, x->props.family);
- 	} else if (!first_skb) {
--		/* skb is the original passed in skb, but we didn't get far
--		 * enough to process it as the first_skb, if we had it would
--		 * either be save in ra_newskb, trimmed and sent on as an skb or
--		 * placed in defer to be freed.
--		 */
--		kfree_skb(skb);
-+		/* The original skb was not consumed as the first inner packet. */
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
-+	}
-+
-+	/*
-+	 * A validation failure can bypass delivery of @sublist.  Drop the
-+	 * queued skbs so the outer skb's tunnel reference is released.
-+	 */
-+	list_for_each_entry_safe(skb, next, sublist, list) {
-+		skb_list_del_init(skb);
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
-+
- 	return true;
- }
- 
-@@ -1298,7 +1307,8 @@ static void iptfs_input_ordered(struct xfrm_state *x, struct sk_buff *skb)
- 	if (!consumed) {
- 		skb = skbseq.root_skb;
- 		skb_abort_seq_read(&skbseq);
--		kfree_skb(skb);
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- }
- 
-@@ -1700,7 +1710,8 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
- 	spin_unlock(&xtfs->drop_lock);
- 
- 	if (skb)
--		kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
- 
- 	if (count) {
- 		list_for_each_entry_safe(skb, next, &list, list) {
-@@ -1751,7 +1762,8 @@ static int iptfs_input(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	list_for_each_entry_safe(skb, next, &freelist, list) {
- 		skb_list_del_init(skb);
--		kfree_skb(skb);
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- done:
- 	/* We always have dealt with the input SKB, either we are re-using it,
-@@ -2752,11 +2764,13 @@ static void iptfs_destroy_state(struct xfrm_state *x)
- 	hrtimer_cancel(&xtfs->drop_timer);
- 
- 	if (xtfs->ra_newskb)
--		kfree_skb(xtfs->ra_newskb);
-+		xfrm_input_drop(xtfs->ra_newskb, xtfs->x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 
- 	for (s = xtfs->w_saved, se = s + xtfs->w_savedlen; s < se; s++) {
- 		if (s->skb)
--			kfree_skb(s->skb);
-+			xfrm_input_drop(s->skb, x->props.family,
-+					SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- 
- 	kfree_sensitive(xtfs->w_saved);
+[ ... ]
+
+> @@ -748,7 +799,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+>  			skb_dst_drop(skb);
+>  		if (async)
+>  			dev_put(dev);
+> +		/* gro_cells_receive() may free the skb. */
+> +		tdev = xfrm_input_take_tunnel_dev(skb, family);
+>  		gro_cells_receive(&gro_cells, skb);
+> +		if (tdev)
+> +			dev_put(tdev);
+>  		rcu_read_unlock();
+>  		return 0;
+>  	} else {
+> @@ -756,6 +811,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+>  		if (xo)
+>  			xfrm_gro = xo->flags & XFRM_GRO;
+>  
+> +		tdev = xfrm_input_take_tunnel_dev(skb, family);
+>  		err = -EAFNOSUPPORT;
+>  		afinfo = xfrm_state_afinfo_get_rcu(family);
+>  		if (likely(afinfo))
+> @@ -769,6 +825,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+>  			gro_cells_receive(&gro_cells, skb);
+>  		}
+>  
+> +		if (tdev)
+> +			dev_put(tdev);
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch. In both
+paths in xfrm_input(), the tunnel reference is dropped right after the skb
+goes onto a deferred queue. At that point skb->dev still points at the vti
+device, because vti_rcv_cb() and vti6_rcv_cb() set it:
+
+    skb->dev = dev;
+
+The gro_cells used here is the single static instance bound to
+xfrm_napi_dev. Nothing drains it when a vti device is unregistered.
+flush_all_backlogs() only covers the softnet_data backlogs, and the
+gro_cells_destroy() call in ip_tunnel only covers the tunnel's own
+gro_cells.
+
+The transport path has the same shape:
+
+  transport_finish()->NF_HOOK()->xfrm4_rcv_encap_finish()
+    ->xfrm_trans_queue()
+
+net/ipv4/xfrm4_input.c:xfrm4_rcv_encap_finish() {
+    ...
+	if (xfrm_trans_queue(skb, xfrm4_rcv_encap_finish2))
+		goto drop;
+    ...
+}
+
+That defers the skb to the per-CPU xfrm_trans tasklet, and dev_put(tdev)
+follows straight away.
+
+Suppose the softirq or tasklet holding the skb is delayed, for example to
+ksoftirqd or under PREEMPT_RT. Could synchronize_net() and the
+rcu_barrier() in netdev_run_todo() then complete? If so,
+netdev_wait_allrefs_any() would see no extra reference and the vti
+net_device could be freed. gro_cell_poll()->napi_gro_receive(), or the
+tasklet's ip_route_input()/dst_input(), would then use the freed
+skb->dev.
+
+The commit message says:
+
+  "The device reference is therefore always dropped after the skb is
+  gone."
+
+For these queued paths the skb has been queued, not freed. The message
+mentions the gro_cells window but not the xfrm_trans_queue() one. Could
+it be updated to say so?
+
+>  		if (async)
+>  			dev_put(dev);
+>  		rcu_read_unlock();
+
+[ ... ]
+
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 6920940a35b4..2b202c7570f1 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+> @@ -709,8 +709,9 @@ static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
+>  
+>  	/* We don't care if it works locking takes care of things */
+>  	hrtimer_try_to_cancel(&xtfs->drop_timer);
+> -	if (free)
+> -		kfree_skb(xtfs->ra_newskb);
+> +	if (free && xtfs->ra_newskb)
+> +		xfrm_input_drop(xtfs->ra_newskb, xtfs->x->props.family,
+> +				SKB_DROP_REASON_NOT_SPECIFIED);
+>  	xtfs->ra_newskb = NULL;
+>  }
+
+[Severity: Medium]
+With this patch, the dev_hold() in vti_input(), vti6_input_proto() and
+xfrm6_rcv_spi() means every outer ESP skb received through vti/vti6 pins
+the tunnel net_device. The pin lasts until the skb is freed through
+xfrm_input_drop() or xfrm_input_consume().
+
+IPTFS can keep outer skbs for a long time:
+
+  - in xtfs->ra_newskb, when the reused first_skb is a partial datagram
+  - in the reorder window xtfs->w_saved[] (reorder_win_size defaults
+    to 3)
+
+While they are parked, unregister_netdevice() of the vti device waits in
+netdev_wait_allrefs_any(). The wait is at least drop_time_ns: 1s by
+default, and up to about 4295s through XFRMA_IPTFS_DROP_TIME.
+
+Can that wait become unbounded? ra_newskb and w_saved share drop_timer,
+and __iptfs_reassem_done() cancels it unconditionally, as shown above.
+Consider this sequence:
+
+  seq N starts reassembly, drop_timer is armed
+  seq N+3 is saved in w_saved[1]; iptfs_set_window_drop_times() does
+    not re-arm because the timer is already queued
+  seq N+1 arrives in order; __reorder_this() shifts N+3 into
+    w_saved[0] with __vec_shift(), and N+1 completes the reassembly
+  __iptfs_reassem_done() cancels drop_timer
+
+N+3 now sits in w_saved[0] with no timer. It is only released when more
+traffic arrives on that SA.
+
+Its sec_path holds a reference on the xfrm_state, so
+xfrm_state_gc_destroy()->iptfs_destroy_state() never runs. The new
+xfrm_input_drop() calls in iptfs_destroy_state() therefore can't release
+it either.
+
+If the vti device and its SAs are removed, or the netns is torn down,
+would unregistration then hang waiting for the vti device to become
+free?
+
+The timer cancel behaviour predates this patch. Pinning the tunnel device
+from these parked skbs is new, and the commit message doesn't mention it.
+
+[ ... ]
+
+> @@ -1204,15 +1205,23 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+>  	skb_abort_seq_read(skbseq);
+>  
+>  	if (defer) {
+> -		consume_skb(defer);
+> +		xfrm_input_consume(defer, x->props.family);
+>  	} else if (!first_skb) {
+> -		/* skb is the original passed in skb, but we didn't get far
+> -		 * enough to process it as the first_skb, if we had it would
+> -		 * either be save in ra_newskb, trimmed and sent on as an skb or
+> -		 * placed in defer to be freed.
+> -		 */
+> -		kfree_skb(skb);
+> +		/* The original skb was not consumed as the first inner packet. */
+> +		xfrm_input_drop(skb, x->props.family,
+> +				SKB_DROP_REASON_NOT_SPECIFIED);
+> +	}
+> +
+> +	/*
+> +	 * A validation failure can bypass delivery of @sublist.  Drop the
+> +	 * queued skbs so the outer skb's tunnel reference is released.
+> +	 */
+> +	list_for_each_entry_safe(skb, next, sublist, list) {
+> +		skb_list_del_init(skb);
+> +		xfrm_input_drop(skb, x->props.family,
+> +				SKB_DROP_REASON_NOT_SPECIFIED);
+>  	}
+> +
+>  	return true;
+>  }
+
+[Severity: Low]
+The commit message describes this loop only as "drop those as well so
+the outer skb's reference is not leaked". Doesn't it also fix an older
+skb leak in __input_process_payload()?
+
+Before this patch, several validation failures jump to the done label
+and skip the "Send the packets!" loop:
+
+  - skb_copy_seq_read() failures
+  - an IPv4 header with a bad ihl/tot_len
+  - a version nibble that is not 0, 4 or 6
+
+Anything already queued on @sublist was never freed. That could be
+earlier inner skbs, the reused first_skb, or a datagram that
+iptfs_reassem_cont() had just completed. The done label only freed the
+root skb when !first_skb, and iptfs_input_ordered() never looks at
+@sublist again.
+
+Each leaked skb also kept its sec_path, which holds a reference on the
+xfrm_state through sp->xvec.
+
+That leak dates back to 6c82d24336718 ("xfrm: iptfs: add basic receive
+packet (tunnel egress) handling"). Should the commit message mention
+it, and should a Fixes: tag for that commit be added? The current Fixes:
+tags only point at the vti commits.
+
+[ ... ]
+
+> @@ -1700,7 +1710,8 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
+>  	spin_unlock(&xtfs->drop_lock);
+>  
+>  	if (skb)
+> -		kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
+> +		xfrm_input_drop(skb, x->props.family,
+> +				SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
+>  
+>  	if (count) {
+>  		list_for_each_entry_safe(skb, next, &list, list) {
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch. The
+skbs IPTFS parks keep a skb->dev pointer with no reference held on it.
+
+The device here is the physical ingress device, not the vti device.
+IPTFS is ESP-only, and vti_rcv_proto() calls vti_input() with
+update_skb_dev=false. The tunnel reference added in this patch therefore
+doesn't cover it.
+
+xfrm_input() only holds the ingress device across x->type->input. When
+xfrm_inner_mode_input() returns -EINPROGRESS for IPTFS, it does:
+
+	err = xfrm_inner_mode_input(x, skb);
+	if (err == -EINPROGRESS) {
+		if (async)
+			dev_put(dev);
+		return 0;
+
+After that, two kinds of parked skb carry an unreferenced skb->dev:
+
+  - xtfs->ra_newskb, which is either the reused outer skb or a fresh skb
+    from iptfs_alloc_skb()
+  - the outer skbs in xtfs->w_saved[]
+
+iptfs_alloc_skb() copies the device without a hold:
+
+net/xfrm/xfrm_iptfs.c:iptfs_alloc_skb() {
+    ...
+		/* xfrm_input resume needs dev and xfrm ext from tunnel pkt */
+		skb->dev = tpl->dev;
+		__skb_ext_copy(skb, tpl);
+    ...
+}
+
+Suppose the ingress device is unregistered within drop_time, for example
+a veth during container netns teardown, or a removed NIC. Two paths can
+still deliver a parked skb afterwards. One is a completion arriving on
+another interface through iptfs_reassem_cont(). The other is this timer
+replay:
+
+  iptfs_drop_timer()->__reorder_drop()->iptfs_input_ordered()
+    ->__input_process_payload()->xfrm_input(skb, 0, 0, -2)
+
+Both reach xfrm_input(), which starts with:
+
+	struct net *net = dev_net(skb->dev);
+
+gro_cells_receive() later reads dev->flags. Can either of these
+dereference the freed net_device?
+
 -- 
-2.54.0 (Apple Git-157)
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019153247.89957-1-q.h.hack.winter%40gmail.com
