@@ -1,100 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792708225;
-	b=roieRCGEfZDSHJrFE0VrE1cC5oDCLRfxIqTd+I/0JMmV9Z381B42FUQwAsq8QsT0OZTd
-	 Ic63d+Ldn6uOOndtImow0zGw1CyjDvE2ifvuXIrr8o7vxi8psvplPlHMyWCIjan2qg8FT
-	 /IFKDqBEWN7NqmmsoWDFQIzqILnurMzcML9SRSYXJAnPcX5j6YnivJRj+LQfaQdT76ABe
-	 JgHBEEVX2Qjic+CvpQOWx1E28cUCuvoHB87fFy62BMTzjSx4WHvTRHIkSkEAoNrUU8bum
-	 d8J/CpxkGZ/dbsr5gLAWy0BBa34ZdHkVmyG7J/v/4S87BB13SVTI7WlBJppGYV0m1Rg==
+	t=1792708247;
+	b=zgOpmnVpo7wdW3ak3DO3n6JuUvvv/d9cLV+41fGJqhW/WNL4Ea+eEN1L7YP5ytTtgZ22
+	 BTWYUvL4FBLqD+uDXcAyiJbNXQz97vfV8NXBJFsqREZYTLLT3wLlhm/mJz/YKyhciDRgx
+	 bqShEPfNA+MoFlTkdaJSCKcP6abNHEcJv2blEVsysjjSqrlUDj2YEwfLHfSrl0JYAXEKX
+	 c1LRwmEFDaILzL9MPJlrt5DOcGpry0ZggzG2XHnVuVbUhnIwRBUMunddpe51a/Q7gpgaQ
+	 iQwO1pgxgf7M+D4yDxuKmjPcjY6QLJyRhWtBanU1sv3v9sF55bXu21OQfo3Bhpjfljg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792708225;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=Plu3+ssJmDtN7QABnZS/dzw7T36ZZ1uQzc5jvzqtel4=;
-	b=OhQJZrkCsEpH5ox3I1Lnuz9AvKGm7UeND/WtFCpOrXGLyI/VxS57pydA7irocVgrgqve
-	 mM+qVPT5QKAuJYbz4VutmeDqU9tPVkWnEFN2OUGU4rykFn/IOoTQyVD/sHRfrHvle0+Q2
-	 K6Rp1D61QLMVrHMiy015xqOaDDu7voRbWkqU0bJCJCUfZcsmQpk7y53WUsCxd0juOc6Xe
-	 pNmbCGWDLZ5idixER1YVUMm2I0JGe2tDOENj407+Ni2QxWJri4g7mTbYpw1lpxcooMvIR
-	 C5epV2RQyzmJzd5dJDT5LN8GuQMQQWD54C2cWK3qhAUp3mqGmVdzf/7sF4xlEcc2a+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792708247;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version;
+	bh=saUUCKIqoj1R1jMdOizyAkqU4jCHeGRF/gsnJ9kvDUE=;
+	b=vgP38j95n+BOmlHZLvmjn4azjdHsjPCenVO+Y0BIuH/BIKA0jpIh2oGFmLD5KYQVYiJi
+	 9hv1J6bgucoDFfcpvbqCkIyTIpNhoyaQP3kQ1sZaBtma9pyYuK8CGpCip2vazR85kIkUU
+	 mTpdvoaB9B3KYYe+4xqunVf/V3HIqrS3bDHZ12vrLIQXbxCK+QSmHC5TOKa1XGk7atoi0
+	 QGr7+l84/dUwihRhJVa9bnyjNTnlGaNo6auIbaT3L3iLslL3zYTB3pjSwryUOQdg+vwnW
+	 kJqCeXOQE7OmPiFMc8vMg82oNVdV8ZfLBPVGmFfx765Ruika2GmiWRiOxdXcpNwKsfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Uv2k6mhP;
-	arc=none smtp.remote-ip=209.85.128.53
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b="ca/+PKke";
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B03606A32D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 22:30:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9B03606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA17606A319;
+	Thu, 22 Oct 2026 22:30:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEA17606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Uv2k6mhP
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso2663525e9.3
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:30:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792708223; x=1793313023; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Plu3+ssJmDtN7QABnZS/dzw7T36ZZ1uQzc5jvzqtel4=;
-        b=Uv2k6mhPiQeP5yU8YfvHZplpwjguFYEz748JwfgVSjcRTVTXls1RXkkkU7vmhjMK3C
-         AsbW5zsii1/XLgDdhN5Sy0UxdR5x1+1gnOQgyFETh6ixT+ke46+wFjnRoD2OvPIKfXeU
-         iiigB7kAqd7opuwEh5I7NJVlHaDHpVSKdf03bRsEUcFBtt6PoYAC4yGlIY/OFKeVFmAo
-         vtxgcu2zfxhGyp8t8KWN936ptxg60d+1ET+JSGNHP8A/ODbEDpbL3rlo1gS8qIHDT7vx
-         y4oHx6KBQw4ZMJMCh5LgkV/mPmthj9kjR/EtjJkaIPMvzsGz7cDDHgcBpqX5xKLzFILu
-         lNIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792708223; x=1793313023;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Plu3+ssJmDtN7QABnZS/dzw7T36ZZ1uQzc5jvzqtel4=;
-        b=fDiRes8QtJ+dZw+jMpypyOf9LZGBfkrI8KO0tjycLf7SsXQsSLzLiV7DAvsIbxK1Ss
-         T9rXDYbes7sK9vNHXx0ZPUwEZkCPGoB2l2euzyMKx0VgABIO0PG/4G+xcaNhkBZPKzg4
-         jMpSz2HkUbYRtjtW7mWqEjl6X0maPM5YTNipcBxJ7uWpMonpMEOs8pwwf/gTN+z3Yt5P
-         IPoY1VwImwQalDPvmXMGcM7UK8gMCaQEAzhAb/1YrvooOtAQf+/iaZ2p2qzG5TDOa7Lc
-         99r3Kb+dUosFligRXolXCbKOvBoE9ahHQirv7CxTeo+fN3yjOKQETHQUgk2eM0SXP8R5
-         kzDg==
-X-Forwarded-Encrypted: i=1; AKwUvBz4Flkik5Ykj2yx8pcjMW4D7DtqZrV+XVNuBZFDiNNcHJsQhGyGAsx5jEdWHIeH3OKMDgzcK84=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKR3VRUeDJ0pdmiPB9n3bDVJ1UI0o6arcl2P1K2kHWQVd2i221z
-	0gaytmRDSGtmoOayrWHXi/MuXCESb6ZtG3LIg1e97Nc3OtFvFEnbqadU
-X-Gm-Gg: AYBFou2ma82k8ojCcwmhMt2XMlXnVudJavJn7aoGxmq4/l+hE3H/1iiZxZAPMEOGPeA
-	ooHQ52MJfgUKE+DtZqoAvUa8hdguwGadkqUwQqb5fYvN+VdcOjmapktDf1lD9p/sKeB3n9dNOrp
-	BGoRLejrv3nT2fXC6hJihDuwmS3B45/VaZaO5q+czC3BeIiyoqOzICs9wKSQPCq8f7cG+CCwl+3
-	FQ+1tT348dXoc/IAHfTIRnL45IYliKaCV5WjV0VHelXPKW/LE4mz95qKsIEPw82FJrWSrycRMGx
-	FMEoWG+Z3iCpAqufH0KEkz2BFt/16LL/1kXnXswTLCpTblAX96DYPsfG9A6JZ1sf9HJ00GDJYh9
-	jjjijnVFpTWGvkcXfYlkp/3Ypyxx14X0vgVRN/Mercq+WkuzMjR3L6yrZByUq43DEB0kVs9CjPX
-	C2Q+n1N2NcKesy2GD/Ec1QNXeyl57IgGYo7xS7uJWwEp1IWtc/Z4kBSLuatmSUHVOecN5DwwBkv
-	nmaxvfJJYfWBZ+r35bnrlWLIKKBkzjZqr8SCb6dBr28VZFxR/6W5MJPLk/29gCqQsy3+X1VRMkM
-	gxmwxE3qyGp7e/vbVSL+eL6E2ZEzKLZWqnUjL4oPXfwjHZY+OW0msJBESlyn
-X-Received: by 2002:a05:600c:e548:20b0:4a2:1364:252a with SMTP id 5b1f17b1804b1-4a2136426b5mr1430135e9.3.1792708223011;
-        Thu, 22 Oct 2026 15:30:23 -0700 (PDT)
-Received: from Ansuel-XPS24.localdomain (93-34-92-187.ip49.fastwebnet.it. [93.34.92.187])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a211be8f79sm11958795e9.14.2026.10.22.15.30.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 15:30:20 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 4/4] net: phy: as21xxx: handle odd firmware on loading
-Date: Fri, 23 Oct 2026 00:29:54 +0200
-Message-ID: <20261022222955.698722-4-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261022222955.698722-1-ansuelsmth@gmail.com>
-References: <20261022222955.698722-1-ansuelsmth@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=ca/+PKke
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69MMDfVm1680881;
+	Thu, 22 Oct 2026 15:30:36 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=saUUCKIqo
+	j1R1jMdOizyAkqU4jCHeGRF/gsnJ9kvDUE=; b=ca/+PKkeE8ndbxpe+DSkQK2kV
+	ahwyGl6IYKFb7CvKszlCixKdBvenawdSjs9592CXChGkiLwOYyoJNMTLcJf8nABh
+	JbqKpRy48VsXzi95G04m0RHAML5onLZlbwGq3KXY6VKJLncIpnolCoYXslWBpdal
+	zHnVJDU5N72gWHJTg4HNt27LjsEWWgTgCvocM7HDobAzxGJaFVjwOK41iUFKhNYt
+	onimdD9ldOEF4uppKDylMwi5HqRrUhAMyycdeHsfdm065fjYMyEecC/QnZJrE5yc
+	fRRGWwmAsQwP8S3dweZHIYE2Elk/Ack830nvIJWn8vhzipgKz0SAHweYTQScg==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hfjf6m6bs-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 22 Oct 2026 15:30:36 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1c::1b) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Thu, 22 Oct
+ 2026 22:30:34 +0000
+From: Todd Freed <toddfreed@meta.com>
+To: <netdev@vger.kernel.org>, <toddfreed@meta.com>
+CC: Daniel Zahka <daniel.zahka@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        Shuah Khan <shuah@kernel.org>, Raed Salem
+	<raeds@nvidia.com>,
+        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+        Cosmin Ratiu
+	<cratiu@nvidia.com>, <linux-kernel@vger.kernel.org>,
+        <linux-kselftest@vger.kernel.org>,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?=
+	<bjorn@kernel.org>
+Subject: [PATCH net v2 0/2] psp: fix transport mode with ipv6 extension headers
+Date: Thu, 22 Oct 2026 15:30:12 -0700
+Message-ID: <20261022223014.556388-1-toddfreed@meta.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,37 +88,62 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: 3ULil5fqgAv3mt7l56K3OyMbC0JWKg5J
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDA4OSBTYWx0ZWRfXzoIS1XY62bJp
+ 0+1qFsEbe7aNfmXV0JpA100ePLcYHjQRoNe/dvk9YhAqdrvHtjG+ROFHjYRLvWDrY4K9UC6dCfW
+ 5Z+a60DcyH9XoUYz+iDFXwX5FJbiDD0=
+X-Proofpoint-ORIG-GUID: 3ULil5fqgAv3mt7l56K3OyMbC0JWKg5J
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDA4OSBTYWx0ZWRfX4SfbhkGttDwq
+ dYoCUGPpOExfpEdp+SebbJreBodQC4WoLqSWHDMTGY4a46CTGvaqJ2rerClgv+y+UyICdg0i7o0
+ QRAsD9IONHogBfCM8JS1BMMwbCCDnn2/9KFkUOMerk8EpxCOdZkmhH3z8TkxHPEmk2czj6ojWFD
+ lN38xn0fa5vgU3OawMotd3VZ0sYdxRfDOZmcnxXG9rqHFa+Si+pgrvGqPIsdMf2KeTWgErqRSai
+ NpKxo0ux0PvfpHVQJI1i3JA3xcv4bA/MjSzgGCrCGVnbKpEsdKWJBLvS49Yst1biLOGV5q5is7c
+ hh3Ci8r28QKRJcKlD3o1fd2D4jSa2iIQr1KiphdHd6GEYLVG/vGVbeILw9WoZLog2qxDr6UQkBD
+ AV4MIZ9zi68re644EyaISR6K9jPBIFtBN4eqXXNFpZ6iGG9O4wAEqdTYMRIWKcXC1DUHp+h7vwc
+ AVcWgockLO07f13qFAg==
+X-Authority-Analysis: v=2.4 cv=HOVWhYtv c=1 sm=1 tr=0 ts=6ada8e8c cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=_1IyUuN4QrATX339ibzo:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=gYlc90bweUbmYayN_AcA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-22_07,2026-10-21_02,2025-10-01_01
 
-Even if firmware for AS21xxx should be always u16 aligned, we can't assume
-this will be the same forever. Better address this by simply validate the
-index before reading out of bound from the data buffer.
+While working on adding support for socket-less psp associations, I
+noticed that this case was not being handled correctly. It will be more
+relevant with that series, because it adds udp support, for which the
+psp nexthdr will be taken from the inner packet.
 
-A zero padded buffer will be passed to the AS21xxx mailbox in such case.
+Since the tx association encodes intent to send encrypted packets, but
+because of other configuration (socket options, routes) the packets are
+sent unencrypted, sending this change as a fix.
 
-Fixes: 830877d89edc ("net: phy: Add support for Aeonsemi AS21xxx PHYs")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
-Changes v2:
-- Add this patch
+The first patch adds the requisite code to walk the ipv6 extension
+headers chain, and stamp the last one to UDP instead of the fixed hdr.
+The second patch adds selftests for this case.
 
- drivers/net/phy/as21xxx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Note that no test case is added for ipv6 fragment headers. As far as
+I can tell it's not possible to tx fragments from an ipv6 tcp socket.
 
-diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
-index e2988cb10c04..db1a7cd68cef 100644
---- a/drivers/net/phy/as21xxx.c
-+++ b/drivers/net/phy/as21xxx.c
-@@ -325,7 +325,9 @@ static int aeon_firmware_boot(struct phy_device *phydev, const u8 *data,
- 
- 	/* Firmware is always aligned to u16 */
- 	for (i = 0; i < size; i += 2) {
--		val = data[i + 1] << 8 | data[i];
-+		val = data[i];
-+		if (i + 1 < size)
-+			val |= data[i + 1] << 8;
- 
- 		ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
- 				    VEND1_GLB_REG_MDIO_INDIRECT_LOAD, val);
+v2:
+ - walk the extension headers instead of dropping (Daniel)
+ - reject fragment headers (Bjorn, Daniel)
+ - reject routing headers
+ - psp_dev_rcv() handle the rx case as well
+
+v1:
+ - https://lore.kernel.org/netdev/20261021210200.788191-1-toddfreed@meta.com
+
+Todd Freed (2):
+  psp: fix transport mode encap with ipv6 extension headers
+  selftests: drv-net: psp: test ipv6 tcp socket with extension headers
+
+ net/psp/psp_main.c                         |  78 ++++++++++--
+ tools/testing/selftests/drivers/net/config |   1 +
+ tools/testing/selftests/drivers/net/psp.py | 138 ++++++++++++++++++++-
+ 3 files changed, 207 insertions(+), 10 deletions(-)
+
 -- 
-2.55.0
-
+2.53.0-Meta
