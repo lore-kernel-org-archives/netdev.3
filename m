@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792629024;
-	b=hiNCsLT5TYzdAKGlzhGAEHgP84efU6IKgL4+yxeyPuZXWVg3jCpWvn0A1VbCRcc161ja
-	 ktzvVk2fu4ktEtJjwDhY9JdsRSwN/9OyvVNcUzHSNUokjcHyG4wvLM+yl7FUPXmeB4kde
-	 na8CimsyhgL405baBleAkbw5NLdkKI0D0VwgDYdTyCjk8tTJV5pQQuqwJdwLYPlW7yE5z
-	 qK1odOhYInWqfuPFW6vUkpMHe8KBx3w/oBwYOXx+CDf6vEbbTT2FC28GuNAbIT8GHImVS
-	 SHsoLWh4mjHiMvaZvUPLNbjMXPCU9GqSqvpsqsPuA5IYoMqYhdhFfyFqGZ9wcbQxXpw==
+	t=1792629606;
+	b=Yq9caqOwyg9gasqQSgqZfqcsrBJCgw+ClW0S04vRvNkX7kG6AsHcJtFMNYVL8gk2laxt
+	 FCYSCsOU9e27Hive/L8IdVXYMKC8XYNYpeZPzWxdX9OA2p9b4tYK63jEaD+zFiwzf7Mqe
+	 s0sdz1W5/oWPuO+K4ZyqMZQSJSG+MRZYMAVXfuTkPq3UB6Aat0HVe+udEXngZMqH9TlKG
+	 v0ciSv3sh8ZLoIZJUZUVU05ELuXK9rQER/DtLZ11p/ey+uxIrXJyqv2yYsaOGRk/kG+me
+	 +Da1eIbqZ976SNn7sbBItQqB00B4YeuX1hc7JFJKgbGpadWSM5YE9PbNCD2Up16R92Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792629024;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792629606;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=em8Yw734Aiee0fgKvAc61E0pqQSrkUSzNQGy5AB+nfQ=;
-	b=qGLJ7HhYY9FGxtACNPQRVOsiFWoe9DD+d3+ysvRjE79eZkU4p+I3zeBJcc7AbYsFJpbu
-	 BZE8dLbT29wg6Z9OOUUSqdftqZqsw8SLM035ZHpe3/7y2+zDBF1L3UOPcQJzpIFhBWU5h
-	 k502tkcYG2fqi9q70hJaazX6QtSB6d1suIqVd2hKCPcxk3FRqfERQC+stJnQy5u3Af7BT
-	 x5lmkjSL0o15BU4PFu7VEW5IvqLOKrdytKl3jMbQBjCICHpgt16NtoETbBnm8TqZVVPnu
-	 CH8Jxnu6UOYC4ues+0EDDT3yrRjuBzeMovSnaBCll4NEkK4FVpZc1+M+lzwAPNGePVA==
+	bh=OTrjutFZCDQ0l7WrJm8zKTeNmXt5KhwGLpP4D9UA16Q=;
+	b=Bt/lhZr6mvRr9ft+boe2U9P+Ao1qWOrnPWx8zA0Zv+36lcmJ2g/VtmV/+ofwOmo9Pq8c
+	 FPJV6S7WdcLVhnvbjqXDvzKrV0uHXNbsUX7R4leBd54Mkq/H7YRNQoQArBUzSCG2EME5V
+	 ziSFOLaCGb8KbjIQ7Ogpx0Es84OXFY1c1QNe6pQ8yiW5InzuDZaUPgoEMi1C+XgXwZpz0
+	 oxOvc2dbD8lpwapEdMDxRj227+sR5A6bFY3oOUdSqC73xDaq5uGuEmg4b+EGax889R7Wg
+	 DsRXjMC9IAStgUPouqYpAr0i47UrRvvZdw/qtjH9FDgr4Jn5Ok6P/Njquwkhkt7yrNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XYcJ1ZpF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ASDnPjLs;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628A9606A326
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 00:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EB4606A319;
+	Thu, 22 Oct 2026 00:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XYcJ1ZpF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B8B1F000C5;
-	Thu, 22 Oct 2026 00:30:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ASDnPjLs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE0D1F000C1;
+	Thu, 22 Oct 2026 00:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792629024;
-	bh=em8Yw734Aiee0fgKvAc61E0pqQSrkUSzNQGy5AB+nfQ=;
+	s=k20260515; t=1792629605;
+	bh=OTrjutFZCDQ0l7WrJm8zKTeNmXt5KhwGLpP4D9UA16Q=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XYcJ1ZpFIKflKFDHxFJYgFXTZb/gSpe1c/YAwBK1TqO7FzRGZOl6zIP+Czh1DpHQh
-	 N+6f6jt2s7XR9/nRY6SbbrQ6H/DptdXFMe6DpEBpzxGE7b3IcQXsBD1JsAd8XlKX+V
-	 36ZY2CVZWPjl93bVHA57D4paMyFohzodn9xdXA75bdXHSwSsk8921svw/qwEj0of6h
-	 WFL7c3RtnzROkKx2sm9WdTI9YXgGjaXH48QGr1vDd4w6dCg646QFyV4zlfjYToS1AV
-	 EZwVEE7AoSEXAfn/yFL/uB1PNPl3CedgR4ABYrI12vqWsKvsBSwXG2iBSf6j+rTe7i
-	 FXLw8fp2FPArw==
+	b=ASDnPjLswjTiE5WUv6kmaahpQ2Eq+7dwR1RF+dFcnKIHjbg9qJYNKvXqzFqg4KT2m
+	 TdFDo2xaqUF4Iy4hBAuhrObOsbuKEjkuLJsAIEmRgl4O3MLeDcOURorp/FuwKvttS8
+	 ujBITBsW6e7a6CPtXsev/M0eO2iaZX2SiASkzvyNTeICoLl6y/CskgKwv4WX1hnfz9
+	 P8CyEVtRErtLuDoMDAm9FFjE5J6cbbXNs/6tfklDnD/V9d0oOjwXJc1ItQkOlX1auG
+	 bfZ0xyIgrQgYe5re9ZFNSAPg0WtoR6qI4Cu3UYx/aU9bBxE0Gq/+kFr9RJp5bvuoLO
+	 tfEDmmDPQU2jw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F13F4380A963;
-	Thu, 22 Oct 2026 00:30:23 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4660380A963;
+	Thu, 22 Oct 2026 00:40:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,41 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/2] ionic: fix port_info lifetime bugs
+Subject: Re: [PATCH net] net: bgmac: rate limit RX error messages
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179262902262.1378903.17959804366477138316.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 00:30:22 +0000
-References: <20261015-ionic-port-info-lifetime-v2-0-57232013fd79@amd.com>
-In-Reply-To: <20261015-ionic-port-info-lifetime-v2-0-57232013fd79@amd.com>
-To: Eric Joyner <eric.joyner@amd.com>
-Cc: netdev@vger.kernel.org, brett.creeley@amd.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- nikhil.rao@amd.com, vadim.fedorenko@linux.dev, edumazet@kernel.org
+ <179262960453.1381785.4962376114187945647.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Oct 2026 00:40:04 +0000
+References: <20261018231629.39734-1-rosenp@gmail.com>
+In-Reply-To: <20261018231629.39734-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, rafal@milecki.pl,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ nbd@openwrt.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 15 Oct 2026 16:03:29 -0700 you wrote:
-> Two fixes for the lifetime of the ionic port_info DMA buffer.
+On Sun, 18 Oct 2026 16:16:29 -0700 you wrote:
+> When the RX ring is full the RX FIFO overflows. With RX overflow
+> continue enabled, the DMA engine then writes one frame with a bogus
+> length (always 0x45c2 on a BCM4716), which the driver drops with
+> "Found oversized packet at slot %d, DMA issue!".
 > 
-> Patch 1 fixes a use-after-free. ionic_port_init() allocates port_info
-> only when the pointer is NULL, but its error path frees the buffer
-> unconditionally. On the firmware recovery paths,
-> ionic_lif_handle_fw_up() and ionic_reset_done(), the buffer belongs to
-> an earlier successful init, so a failed PORT_INIT frees it under any
-> ethtool op that is already reading it. The error path now frees only
-> what the same call allocated.
+> Under sustained overload this happens on every NAPI poll. On an Asus
+> RT-N16 a 950 Mbit/s UDP stream to the router printed about 1450 such
+> lines in 20 seconds. The messages are printed from NAPI context, so
+> with a serial console the router spends most of its time printing.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/2] ionic: fix port_info use-after-free on firmware recovery
-    https://git.kernel.org/netdev/net-next/c/d90d1a768b3b
-  - [net,v2,2/2] ionic: free port_info when probe fails after the port is set up
-    https://git.kernel.org/netdev/net-next/c/4e15e0a941ce
+  - [net] net: bgmac: rate limit RX error messages
+    https://git.kernel.org/netdev/net-next/c/77dac783f113
 
 You are awesome, thank you!
 -- 
