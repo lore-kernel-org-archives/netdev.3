@@ -1,85 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792662891;
-	b=FgnaKWQTsrpYqby1AfphQ0uZqMQbLmEIefrzQVaJkKMvNgL3yc98vqoKSJjym3yvtoIk
-	 am9ddlACpyPzKUdVvZuEilligd2XAhJWmIFHuFf8XEqsKl25OtgN4uHrPaOf0MLSqoF3z
-	 BeapE1semG1MC21k75hlxFf6WL7Qk9vLJ8AmGJuR7vANfA83b5fttIkIJ8ShRbYYX7Ilk
-	 jg8dAfw2/CZrBFChefusYe/f57EO96Jru/E93YyNRyghJNYI0gr8Lt9IbTJMYGApS/ErV
-	 Y0vNxLa5dhe1n9IOnC1mRfKCM7v40bkTSsIF241hOnNNaomMOV9xq5eLH+u0ci9/5eA==
+	t=1792662956;
+	b=A1fRWVaeErbHcRdDSACdxtyO7TIirA1RykCwSr3jyi7gR3YJKxo2txvIFLuk/XleQFxj
+	 Hpm7hQmiOS0Dn0Mkv/Y7F0NKNDs4Nj9u+4xXSN+KpbGVY68keqpkDJ1NaX7lzHT64E0eO
+	 14ynsuInh5mcNLTwDomHKJgbp99Gu6/AbxDhrYm/cpe9osBWjDg92YHEp3YLtxdanfHkB
+	 MqkF+FN2vRxE3rqH2kAi1e4BzhXmlmtzlnj17lLv2tFYJXGqfbfDmdSweZBz1STMsj+p6
+	 D/sj4waaScy9LOoyZdUF1T/XSlMa1dh/hwx8qxXWmlR/vy0Fo5XbYg4IY/rVTxQ4GWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792662891;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=r9kdUhEEdo8G0E6TvnmRFTKj2ShBGFBBRPt8LMZ5cqk=;
-	b=bIHDu8rwp6mUmHNWkDgTJadJNxneIVGmHDuLj/wmri1Xiir1CelRh9w/Xquyq09BULIk
-	 BpIJPYxTxuj27tiHYwjilNX7+sIhstbIW6ReZpUm4KCnM+bHe/ik9PQSflesZUb6Xu8JG
-	 kt7VObR7fvcWi2KAD8yzoA0iwiUmDMt6NaiDeirA9PGGvIlgvUpcoSjWfr1gVpaoUabsm
-	 mounhoxz0sUW8I5StRbXV0Wu2eUytAWuEmjIbZoFXignHs/wCtcI2ni2MHYxMhByUK9RV
-	 nJIvcXlwrK5TvI9U3bCbOQgShupEgjL4NIkIHCuz/AbWhhXqZbeUHGUaRXKvG6uiHgw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792662956;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=qaKCa+TjoD1OzgCla43bUHaZNaOHmxBbECmuWAdteZU=;
+	b=OUwhChYVm6l0F1RaGKFSKV+35kizMKdytXYJ1AV4B/W1PaW6CrsOjZ1NslSqqDq+NgXF
+	 /MohJ0fDOryt/mtYlqZh9b/Rpb0t7JPkOOsIYq879VSR9RaV4TmfvCg1RJSmZf7S9IsSi
+	 P8a2Xj880aMhGrGvoHiQUlZBlBxupDmp1qkvSk4oV3r78nMe01uy8PysquMVg2oKkyVDt
+	 VEsKF0YwgMmcw4+uz4wLV3QEwZpNnStQQKw3kDURXwxJIUjbiYzjpR3FaQEdxl2+3pXvQ
+	 oDnXw+OfgKFTze0NyWj54JHt0BHBGJPWE8e1KVjtX7uXfkUaxNHQUCpSCIg9kNFd/Tg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z+x7UeBK;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=jkGd8yDi;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A054606A31D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:54:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A054606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E95606A31A;
+	Thu, 22 Oct 2026 09:55:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6E95606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z+x7UeBK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792662890;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r9kdUhEEdo8G0E6TvnmRFTKj2ShBGFBBRPt8LMZ5cqk=;
-	b=Z+x7UeBKS04VLIz3yczMpPy1476lSi9UaJyrl/LASxmVVP3AWr876GwhSopwoRGZiYP9He
-	Z1zqg21rhu9jHX+iMkQm3W0a8uU5xxxdJBMv553xhhOrTWCER/R/g38LrQ3tnzn4gXZ9aB
-	K8k37yXtVcIOYroRQRS3vBkrDIU/I6k=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-u1OIUuDQNcCF9nGh51KurA-1; Thu,
- 22 Oct 2026 09:54:44 +0000
-X-MC-Unique: u1OIUuDQNcCF9nGh51KurA-1
-X-Mimecast-MFC-AGG-ID: u1OIUuDQNcCF9nGh51KurA_1792662882
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4920C1800633;
-	Thu, 22 Oct 2026 09:54:42 +0000 (UTC)
-Received: from griffin (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7ECB8195608C;
-	Thu, 22 Oct 2026 09:54:37 +0000 (UTC)
-Date: Thu, 22 Oct 2026 11:54:35 +0200
-From: Jiri Benc <jbenc@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Aaron Conole <aconole@redhat.com>, Eelco
- Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, "David
- S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Yi Yang <yi.y.yang@intel.com>, Pravin Shelar
- <pshelar@ovn.org>, Jiri Pirko <jiri@resnulli.us>, Victor Nogueira
- <victor@mojatatu.com>, dev@openvswitch.org, stable@vger.kernel.org
-Subject: Re: [PATCH net 5/5] net: openvswitch: ensure a linear inner
- Ethernet header on NSH pop
-Message-ID: <20261022115128.6eb99768@griffin>
-In-Reply-To: <ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
-References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com>
-	<ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com>
-	<ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com>
-	<ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com>
-	<ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
-	<ACT-N6N4.v1.r0.20261022051412-5@mojatatu.com>
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=jkGd8yDi
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7DD1DA002E;
+	Thu, 22 Oct 2026 11:55:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792662952; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=qaKCa+TjoD1OzgCla43bUHaZNaOHmxBbECmuWAdteZU=;
+	b=jkGd8yDibczG1IzorFlU0eIzFeR7ouTn8kpjRjh7Z8+AH6tILxsPy7X8E6zi1qSBFO3315
+	jQlgC/jX1h+tP+NaF80fxQlpB8233HvEKYYKL800t+7a4eKgLcXQR2u8HzuPl1gDTMsHzz
+	SbuOVUx5ThCI120xgTHKGO+alPwUBXrcwj2lJh6sPxzUTMuQ34ZbLN+XkJgYdC4lOKq9On
+	S/X935HMwWM3CjrtsQS+LxSbro1EOAqgNMuJDxX+kLIiGC2r1HZhdit+DfyxjJ4QQM3z2w
+	nRmDL/QS1EoyeIDeuP/hln1d3WluMMJ2ILpq7LHM2WnI1LG3GqhAoy9hyZs7Ww==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,20 +53,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Date: Thu, 22 Oct 2026 11:55:49 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Steffen Dirkwinkel <lists@steffen.cc>
+Cc: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, Conor Dooley
+ <conor.dooley@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Kevin Hao <haokexin@gmail.com>, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>, Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, Christian Taedcke
+ <christian.taedcke@weidmueller.com>, Andrea della Porta
+ <andrea.porta@suse.com>, stable@vger.kernel.org, Steffen Dirkwinkel
+ <s.dirkwinkel@beckhoff.com>
+Subject: Re: [PATCH RFC net 0/6] net: macb: fix TX stalls, IRQ storms and a
+ lost NCR update on link-up
+In-Reply-To: <20261022-std-macb-v14-send-v1-0-9187bc545bf6@beckhoff.com>
+References: <20261022-std-macb-v14-send-v1-0-9187bc545bf6@beckhoff.com>
+Message-ID: <21335ef00521312c158b0a71bf8ef08d@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 22 Oct 2026 05:22:22 -0400, Jamal Hadi Salim wrote:
-> The fix:
-> Pull the inner Ethernet header into the linear area before restoring
-> MAC_PROTO_ETHERNET.  This is the NSH counterpart of the MPLS/TEB
-> producer fix in the previous patch.
+Hi Steffen
+
+On 22.10.2026 11:38, Steffen Dirkwinkel wrote:
+> Hello Théo, Christian, all,
 > 
-> Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-> Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> I've been looking at RCU and TX stalls on macb devices (Xilinx ZynqMP 
+> on
+> Beckhoff CX9240) for a while and have been carrying downstream patches
+> similar to Christian's. A while ago I let Claude try to reproduce this 
+> on my
+> devices, it was able to reproduce and found some fixes but I wasn't
+> happy with the quality of the patches and my understanding of them. I
+> briefly talked to Théo in Prague and he suggested I send what I have as
+> either the patches or the reproducers may be useful for ideas.
+> I've finally gotten around to it and also ran some more testing and 
+> improved
+> the patches in the meantime. The series includes Christian's patches in 
+> the
+> original form (should also at least be reworded) and I also have Patch 
+> 1 in here
+> since the bench seems to have reproduced the issue on hardware (see 
+> below).
+> 
+> If anyone has other ideas / patches for these issues I'm also happy to
+> run tests on devices.
 
-Reviewed-by: Jiri Benc <jbenc@redhat.com>
+Thanks for posting this RFC. I will go later through the details, but 
+wanted to let you
+know that I'm also investigating the macb watchdog issue on RPi RP1 [1].
 
+Yesterday Théo also shared some findings in the thread.
+
+Three things from that work which touch your series:
+
+- Patch 3 changes the IER write in macb_tx_poll() that I need a readl 
+after. The write
+   is posted, a TCOMP landing between the ring check and the write 
+reaching the MAC is
+   lost. That seems to be the RP1 stall, masking TXUBR does not change 
+it.
+   The two patches need ordering.
+
+- The watchdog only recovers a lost TSTART. With a missed completion 
+TBQP == tx_head and
+   macb_tx_restart() does nothing, the queue never comes back. I have a 
+patch that
+   schedules TX NAPI from macb_tx_timeout() when the tail descriptor has 
+TX_USED set.
+
+- RP1 has a single TX queue, so the starvation from patch 6 is not what 
+we see.
+
+I can run the series on an RP1 board with my reproducer if that helps.
+
+[1] 
+https://github.com/raspberrypi/linux/issues/7661#issuecomment-6322904343
+
+> [...]
+
+Thanks,
+Nicolai
