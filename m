@@ -1,111 +1,111 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792664438;
-	b=DTlezbCY94A/MQUyOxQ3hSyyAkcfwaxqlSuEkCE4Oauq1haUO0sKdcfm0/OTnRtLxXNi
-	 aDz4EndiGpqGJjXqKbBnDmSYCQtPFAfn5x/zgJO0MR/wps4bCvIvvp7ObsIaZbcjMFOBQ
-	 BorL8XSAjaF05a2QalLHnaZA/7pmZC+WScZHJf81djDxVpEzkrSETIlU5R8ivZMwOq9h0
-	 GQ/Ou4JwUh/R7sykVjvBrdVn1+QHp12vwSiBL5jJtOmeWrD5vmQHqgBXsqTJFDkE8t8UF
-	 8vEbBHnBM6jt2NFhuA+vIvNrljs2XgqRLG5NRyGB5vqcSbmsq3rdZ5/VWH4mOyWfKxQ==
+	t=1792664542;
+	b=uV8YN9Nu3Evw09/l+C/9jzj10U/55iJwtI8HnQZibQySupGlGL8LbwHYeju6GasZqYtM
+	 8VDHcbAULTfWl6R/Vkacs81eOvQ1nRq+XTuvuLC8CG15wabeClyohVwYQb2x6RgUASJjs
+	 hT6KojX2upjQSayBf2+lyaUCx1OL6fQD2HK5hCy+XvlDvhGM5m3RIdypNpWou4Rn/C5/i
+	 pUMWUZ9h3RlTXozZ7/bnSdxdlB0BCttyh8wL0juZ1LdXcNLJWqcfawORwAefowi17UW6C
+	 njdDmhyvHP3KxkEhUo9l21pmpZa5LfpnBJx0l9rDjmcjZK0GCQUfIprd4tAunqRLSiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792664438;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792664542;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
 	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
 	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
 	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 Content-Transfer-Encoding:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=CNFluKpc3PiFtbzuhbtuk0N/oHupR2ogDzznwiIe2cw=;
-	b=vcym4gWfmsyM8S9KKoaT+1wJRP+yIZktatQbatDRzdaCzDxPWXaoz1KIlvnh/L6Zh8sE
-	 Bf2hN+q3UzjWMHhR7LMR3AoRm+0ga2dNJ69wj96sHhLosrR53clJlzFi3Ogu7AvAkeYI/
-	 wsdWFZRzM9oL+K0FatoOq8EXGEau0zibp//CyXcSH1b0Stnk2WOVKm8KPZWCAe1oI2Cwi
-	 BZ/QknzsxR8dsoWvZQJuzF5MiDsItDOLBwxRbBUE5fHYrPdd+37CGfSUMx0Y3dC6nkrEb
-	 ds+yDfrden+Vj9tEEw9X4yjURay2dpdRUHylyFbTKHdIHmESVN/lGB5WHja03amJpYw==
+	bh=4F3Bn4K4Bs3YPMzyvcJretv1uwSXuk9sX9+2pTIfL74=;
+	b=T+Po0D4KP3OJE3VpwdTV5P+s9b2x28PZYHM1bKRTyDqGzlx8srl44nsVTQ6SMCg524ZW
+	 OkoYOXINE+HU94HsfY7Ykzc41qGI3zNc/AiCVWfYUXUErOXTPMwqltoge/QhLZ4L/AHTb
+	 juRJ3xN0g3WzSqNLywYO9IZDlzhAECz3M5BTU9YfxWu5YLHGnEAUPcuVAUEmM8k35Wj9m
+	 OJiazhfZvSG9s0kszcsJF+tGyriiSIJtPu/3uDb12m3fOzzafDM53obdNYxiC7OUi1sjj
+	 TDDA8Z4fo8mjmb5hwiObHgcaGmRuhmuX6L0U4vJKwjFzolopZn7pGVR0wE9om56CQmQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.qualcomm.com;
 	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=nkAys81o;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=EesX9ODn;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=JNanIS+6;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=YicCycm0;
 	arc=none smtp.remote-ip=205.220.168.131
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0C1606A31A
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:20:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC0C1606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F277606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:22:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F277606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=nkAys81o;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=EesX9ODn
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69M9xloL2573576
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:20:37 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=JNanIS+6;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=YicCycm0
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69MA06n61963435
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:22:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	CNFluKpc3PiFtbzuhbtuk0N/oHupR2ogDzznwiIe2cw=; b=nkAys81o1wXYj6RC
-	inL06ScI6mTc1xzSrV6YsKj3o2zTC5XgDk7iH2U44qmE3m2x0OAUKb6FpbD6c+vN
-	UGNZde1EFEo4qbLOoPUQlkXrwlOOm9p4rijXuSEdvwPa0ymFma1gKDOxhFzFnXJC
-	dSxCE7gE9jOoAXy6UEjFe2BBKVuZRR/FKp7hWdIJ7Onf2cn1s74MmOs283yuMRFc
-	2U5EvMdrOcM3KJipkXb5wD+Tw6ZKb+P49JupCtaKs0AcHY2IMJ5GEWITfI0D86TC
-	OaxOS0hdmyGrLyCL+7IsySd/g8s2+wGRKW6fmeTxjYouw+awRT41BvX4nX9CdU1l
-	71UD5w==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hf93ahyu7-1
+	4F3Bn4K4Bs3YPMzyvcJretv1uwSXuk9sX9+2pTIfL74=; b=JNanIS+68yj3BCZj
+	JREOdna+K6DvJBM6Ee5phe5EDE8FrgICg27v+D12qkExFPJckHRot3C/HEdi4TC/
+	Bi+5hMHnX+vRkgUdJHznoPQB63Es9IIWnSf1ANK0AVHD8VNRxK8kh8Gka5LZcPlM
+	MQ0SmC3/K/ngZ3rEs8Q3tBudrXHgsHNJtS3vDIwe+hOc/lVmqWm4+wMM0BvfrV+Y
+	eODPCnFOP7jkWMGjLcm7LEiGapDsYHk+3qjzr7Dz6/29dAv2NOntgrQTXSbK5s7r
+	E4TGg1oX0eW77DmrEzLsz8hP9+OmvuHq/e3tEZEWh48hgDTfOKgqagRS97yc2vAW
+	F5mPYQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hf93aj0u4-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:20:36 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3a6d30f66c9so1066068a91.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:20:36 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:22:21 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8a06da65d92so1238699b3a.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:22:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792664436; x=1793269236; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1792664540; x=1793269340; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CNFluKpc3PiFtbzuhbtuk0N/oHupR2ogDzznwiIe2cw=;
-        b=EesX9ODnKI0dNemzZXyDX44Uiw6sZpilS7Td2J/7h4gX4HqRMMPH4qPZjR8ltOdGFg
-         6DZeoNJzUYqkBaGGjIJ0zpIs9LjaKat2na59Hdl+pB1F46IboKAhV+f0NGwXQUVehWoD
-         h0HnSZ5pDmYmoQfwuGMTrco681MmIvtrnyLJ3hUSwDYbQA9aPJzEvWH67HPQYWviZqui
-         sxLpNKWxw66ge0D/Eq1NqEntJksR4rLxJ1p8xrxJ/T+X6+PTr7o14BkaFoniAnezXsrn
-         KW8cyV1l7C2aAAM6/cG3a8ZqD6fOZxrchK7TCTT8oeyNVAUH3GjqqS+xNlc1/V2D0Nbe
-         miEA==
+        bh=4F3Bn4K4Bs3YPMzyvcJretv1uwSXuk9sX9+2pTIfL74=;
+        b=YicCycm0Cm7cnWi1yEVRn4FVsYgnMm7CnVtBoJtRlH/a8dvq5efZkjWjKRbburoi9c
+         KBUdU8onJtVZBMGWC+4IJqlHJmgjung1bgQgGri5GKuYGme3XECfN2w+lI9l81Aegmvq
+         qC7Y9Xj/bqd60j3TBHRygwpdR1QIgmkn0JDTzPWxF4BgHuOngrJt6cwJJpu4fqAoOdNO
+         qxxEvFqLEPLeImj0UhffbOrRPCiQ9dLu+OLMgx9TDhVWhKVd/+C0yg+sP62ddePx52wP
+         MJbal/TOYJ2MV6I170wpZPqpnGcn0IWNmKrsfGTez78V+yd1UxjvEDHMYFLCAPs1oj1u
+         TCog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792664436; x=1793269236;
+        d=1e100.net; s=20260707; t=1792664540; x=1793269340;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CNFluKpc3PiFtbzuhbtuk0N/oHupR2ogDzznwiIe2cw=;
-        b=SYUiM6v6tU5cVw9pN1rHRFizCzS2cLUgnbSdkCk4zsct+tFVJWTU5lmSU4tsLYN2E5
-         9y2UAwro5CBzs165L7/J0ZQagVROpnPa9YQyX75fkp1TqCoxt+l62mcyH6DiTP9T98OA
-         9KyV1UZvfZsJIs3Su0ZP5gp5n7Pn5zYR4D4hDeVue+PTjBjWTuxhnrwWTBBJl2d9NfSs
-         EqzkYzevJP6Up6v+a8bX5SakkDrEdJwCQTN0lGfaYxDNicZ2bv+9TYcTI5HsQBbD77lD
-         KhOnwB4HzHMbyjvMQ9rrjzfVfzdy5v+wsiAsEhBmVfZPyokXwv9yJ1PiCiCXNS2IIpng
-         9IQw==
-X-Forwarded-Encrypted: i=1; AKwUvBwbIvrj6FWHVPj/2oc4zEe3Bh2wwMSpD+14rjsFFpy/dz0fUm1LNSjcyfdZs8KtkhzJG5RQ7xw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL210214T6h0J23j5CFM7dgdghT5r9R+6qQdeKQox3dGYD/YjEo
-	zZi4lLA1FA2JfPQdsHLas2QnQ5QxlW2gCKBEIyUbBGtiM0gztO3MWAJVzfzWLFWSOmtCdOj7EyK
-	pyYp3K+kKIz+A6pVThSAPK1FHzHIkIvpejRvxzC+HZOi6Wi/Oaw83l1Zqcqw=
-X-Gm-Gg: AYBFou0EG8fnjnmJ4Ezg3Ro5YHiLvJKYmPj36f4oEbM0xWg/gfMIDHx9RLUk0SyJTBg
-	EZgfIo7PSee5Eu0F2759lnrj9C3q7kdyntCfIVInHAE6YY5W8lbPoazrS8WNN14mP/MkpmPOJtY
-	XDZYH7OSP/SWOI9Im9KL4LfSpMjd9s47tQOwI9ozPFOiDTPT/XzicnT9WwwH/W/e9wZLcA++oHq
-	dZKKF3J4TqUzGLVxQSmUiWpefpYPBtlNnzso5JDpOzuiFuz6CXwNWRvSzXU+rRMHaKPToci4seM
-	bQMKXEyn66OZu3tKBO4eXXp0ZGTBmXVdKXVOpVXcAEdePTnGfsvViTbfh1ZMnXaNFpUSQtUY0bt
-	hfVaqdWxucacPjr+6L+f43GPk
-X-Received: by 2002:a17:90b:288a:b0:3a6:d850:bf16 with SMTP id 98e67ed59e1d1-3ada6c8df85mr1039598a91.23.1792664436195;
-        Thu, 22 Oct 2026 03:20:36 -0700 (PDT)
-X-Received: by 2002:a17:90b:288a:b0:3a6:d850:bf16 with SMTP id 98e67ed59e1d1-3ada6c8df85mr1039576a91.23.1792664435599;
-        Thu, 22 Oct 2026 03:20:35 -0700 (PDT)
+        bh=4F3Bn4K4Bs3YPMzyvcJretv1uwSXuk9sX9+2pTIfL74=;
+        b=QPGNEPWC7vjI/v2VRmLT9oZsukLzo6UIG50+FIFo4fRckwuu4wlm0VebVRp9k5A8dq
+         l/RWT1rzmbv6Cb8WzvPKpWyzzneef9MI/inU8/SAuZaL0lmASoAwDAPm0brWmrtYCjxS
+         BR3gRKGV48ZY+Bp74zUD9diMAXEZdU0+I5zXcE+14GgjP0wmzq63M+6dOVYYm1lPrrmV
+         pdLLo3yj+zFqtLd3A4nAOyP6gqdaWWNPefKWayGeQtcqL9IwhrZNX9Mg+O0Nyr4S3JU6
+         y8bgxG+bgd23PJNotxncg1TWeQ1HT9FVk8iwgVTNxCaxLSp8qnTQHp5bmv84/DLd6C44
+         uKCA==
+X-Forwarded-Encrypted: i=1; AKwUvByXgtop7zn0htgoO8dSdltblT82BgicmEIZJ1X2N4MCJ7aUL+mYFn+J2Enno64IcTPswUtFqKQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLN2+8dpUNpkBc2k8kRJJR6oCUB+u19Qc7HwSmUGVwJzJLTKdy6
+	1zrAY3Rq2dG8/HWd17kFnIyo0JjJJDUL9sLhz7AxTsF4eKaircrItHMn7qP3jh8+hmKkTEejRlY
+	Uu74AOXIEETlmybOjcBtTbpJNMMlEjTfjnnQJZzOwhhdl3uu1uyupQ9BLqPA=
+X-Gm-Gg: AYBFou0t7t1IqApJpAS81Eux/2o1TUIdQNM2BqIP3BbDUEmmWtk8Kgvy/OeJqjpVaWx
+	P1xvYD7kok5KKq+y+EK+B0xxJBTckFBtn9VWSJsOKgU7s+fmAIBnBFcDvT8f1H7FiJais3b90w7
+	opfftPz8UBEy9BKlcXv7m0DwaMTsRvsi353d7X0AxMgq/nZqo5HrUmQTy9Zmf29AJw+Ly/RZhUl
+	8UJcpV+3wlRM6lhDKdht88MYu4LQZJmUXavZc7N4A4X3Aqtia4c2OJmg3/kil+4KylRrTRGczMV
+	YwR9n6QftFt5TCPNn+l2krauvcR4Wi4drZZ5FlLxR+3NZiab60gS/uqEmcatKfBrnljCkaxB9wo
+	Y/VWYwmNyi7JQd4dUzgmGNO0w
+X-Received: by 2002:a05:6a20:ac43:b0:3e2:8430:917 with SMTP id adf61e73a8af0-3e287e3c861mr4213243637.45.1792664540389;
+        Thu, 22 Oct 2026 03:22:20 -0700 (PDT)
+X-Received: by 2002:a05:6a20:ac43:b0:3e2:8430:917 with SMTP id adf61e73a8af0-3e287e3c861mr4213230637.45.1792664539920;
+        Thu, 22 Oct 2026 03:22:19 -0700 (PDT)
 Received: from [10.233.17.96] ([114.94.8.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada4896c71sm3844903a91.6.2026.10.22.03.20.32
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd6b864e165sm1000679a12.29.2026.10.22.03.22.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 03:20:35 -0700 (PDT)
-Message-ID: <808fbc06-f1e7-4deb-9209-4056ab2e1a55@oss.qualcomm.com>
-Date: Thu, 22 Oct 2026 18:20:31 +0800
+        Thu, 22 Oct 2026 03:22:19 -0700 (PDT)
+Message-ID: <546e2125-7349-4a80-bdf2-d35dcef46985@oss.qualcomm.com>
+Date: Thu, 22 Oct 2026 18:22:15 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,182 +116,77 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 2/2] net: phy: aquantia: add get_features()
- for AQR113C
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20261016-net-phy-aqr113c-fix-pma-capability-v3-2-0bbb1b84035d@oss.qualcomm.com>
- <179243437352.3135.719818276407053323@kernel.org>
+Subject: Re: [PATCH net-next v3 0/2] net: phy: aquantia: fix PMA capability
+ reporting and EEE discovery
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261016-net-phy-aqr113c-fix-pma-capability-v3-0-0bbb1b84035d@oss.qualcomm.com>
+ <20261021132908.5a73ea02@kernel.org>
 Content-Language: en-US
 From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-In-Reply-To: <179243437352.3135.719818276407053323@kernel.org>
+In-Reply-To: <20261021132908.5a73ea02@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 0Ys8zqanN2elXX-vUWE9fk3yOcNgo-Hm
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDA0MSBTYWx0ZWRfX7FLxHBVjPTEW
- ar4UT9l5FRLoNfPBxlSPr3IvMYT+EwPBk6yNuCivyIr5Re2k7sDe3hIZBEgYpoSWD1mOI9UYKNp
- jIZwoVwWVVyEj9448FBAcAeNPzMDdxE=
-X-Proofpoint-ORIG-GUID: 0Ys8zqanN2elXX-vUWE9fk3yOcNgo-Hm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDA0MSBTYWx0ZWRfX2LhvcDfFpSab
- D1QL+qGl6wzeNAwuYbwAhfpPJnpqgopr0GJwHlQJVaIJdq0pKDFjEaRjqABJOyelI4HMnUjHb+P
- b7VTekfsTtaPeoO5VWq/DEtC5+YddS2cV4E5J+BRvPFM9VU6zOE/YLxVMyBz1ohuqHcK1zZ+1bF
- 4FurQnuhb68cFu43FKudQE7QPuw/cHv3jzrWu2kWiCikkclEGTK2Yqxi0cCpldWAw5a5Xzc4Gry
- 3jzgAp1u3LuagVWQ3yr5u/TnqeSwHnhdWBkjBdYSCL8EimmGeCOEd8naxCo7yleyEY9iv30DJu+
- DZ4aqiCJ9ldITjVNqDDxdGvosHp/eB9MNwzHIxYooR9xtQQvvwTWefujwCJjf9ZQIE00NRgvngJ
- ctGvwTVVlN3oo3Vypc4pKbNDKqTCbhxVnbrNRQUO0kZYUxHykhjlwPZCOaBDwPgKOUGETsBri0g
- F8rXEOQZxHRdkhwBj0w==
-X-Authority-Analysis: v=2.4 cv=dOszC+Zb c=1 sm=1 tr=0 ts=6ad9e374 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDIyMDA0MSBTYWx0ZWRfXx5ol5Fwr+cUj
+ JZsyu46UCVMSy4OHiXxHRnMFr53SOTZASY4RKb4jLRsldgG7Kuz7W0m/oWbRSRPH/QTLfP9jMXF
+ +ttP73p87XPnIXiEW+hQ0WI9ne2DX6+YZDLJG2nU0ljO3Hzbd7MMLUzpcaVOIvNnKRgrYxjmajJ
+ kvrxcTB9Dlr2W4MGXbzvPSyGq2r52qwOV6VesnLFycsi7D8CRjBTLtx3bvdYVIq7KPPG5be2nix
+ GJg58FquO6qaRCR98usP8L5/LpE2zmCnOHebLce+TImbWmjO6sb77sqqKTOUiYVw+RKz9yInPG6
+ PGqUCFs0HOol1jovVdDl/Y7Fgl7HjjnB8tDXpwyVcVEtBlDmC2obNOka7mAKUSMhD7fiy/yGpDl
+ WQnD54Y9kekm9StZQxdYF9L5PqcvAsQmkFVzRFzmygOwe2SHnb1S3PsNDl+yOxm6InL4wECggYA
+ dpERVvCFf6Vuce3dTiw==
+X-Proofpoint-GUID: bd0QQj6xwqrgt7tEhBPe-p3J04ixNYnk
+X-Authority-Analysis: v=2.4 cv=feg4WEQF c=1 sm=1 tr=0 ts=6ad9e3dd cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
  a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=VwQbUJbxAAAA:8 a=Ghr841LcyMZEtTkRx-IA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=9R54UkLUAAAA:8 a=VwQbUJbxAAAA:8 a=C-A7-TqGoCA-4_zHprwA:9 a=QEXdDO2ut3YA:10
+ a=zc0IvFSfCIW2DFIPzwfm:22 a=YTcpBFlVQWkNscrzJ_Dz:22
+X-Proofpoint-ORIG-GUID: bd0QQj6xwqrgt7tEhBPe-p3J04ixNYnk
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDIyMDA0MSBTYWx0ZWRfX7Qh/11iZMmlh
+ uUE1KOlDU1NnHubkdakCBhzq3VOxx0Vm1JRQffSU7dpdXndFV9JVetD1UWR+V+cL1HHSaT/Npd6
+ oLHTGQVAjUIbTqzCH7wni+UU8XNF2F0=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-22_04,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- suspectscore=0 spamscore=0 adultscore=0 phishscore=0 bulkscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610220041
+ phishscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 suspectscore=0
+ spamscore=0 adultscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610220041
 
-The commit message is inaccurate in v3 — genphy_c45_pma_read_abilities()
-is still called via the chain. The v4 commit message corrects this.
-Fixes: tag added.
+Thank you for the explanation. I apologize for not responding to the
+netdev-bot+sashiko review in time. The v4 series addresses all the
+raised issues. I will repost when net-next reopens.
 
-On 10/20/2026 2:26 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
+On 10/22/2026 4:29 AM, Jakub Kicinski wrote:
+> On Fri, 16 Oct 2026 11:23:17 +0800 Hongmei Xu wrote:
+>> This series fixes two related issues in the Aquantia PHY driver:
+>> - Patch 1 restores EEE discovery for AQR111/114C/115C by replacing
+>>    the manual linkmode_or() with genphy_c45_pma_read_abilities().
+>> - Patch 2 adds get_features() for AQR113C to correctly report
+>>    10G/5G/2.5G/1G PMA capabilities.
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> You need to respond to AI robots in a timely fashion.
+> Since you haven't and the merge window has started on Monday
+> we have to drop this, please repost for the next release
+> cycle
 > 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
+> ## Form letter - net-next-closed
 > 
-> - [Medium] The commit message says the patch adds get_features() to
->    "explicitly declare 10G/5G/2.5G/1G support instead of relying on PMA…
-> - [Low] The patch is written as a fix for a hardware-reporting defect
->    ("AQR113c does not correctly report its supported PMA capabilities"),…
+> The merge window for Linux v7.4 has begun, and the net-next
+> tree is now closed for new drivers, features, code refactoring
+> and optimizations. We are currently accepting bug fixes only.
 > 
-> --
+> Please repost when net-next reopens. There is some uncertainty
+> about how long this merge window will last, so please check
+> https://netdev.bots.linux.dev/net-next.html
+> before reposting. net-next _may_ reopen on Nov 2nd.
 > 
-> net: phy: aquantia: add get_features() for AQR113C
-> 
-> This adds an aqr113c_get_features() callback to the AQR113C entry in
-> aqr_driver[]. The callback builds on aqr111_get_features() and also sets
-> 10000baseT_Full in phydev->supported. The commit message says the PHY
-> does not correctly report its PMA capabilities.
-> 
->> diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
->> index ed5631f2956ee..8213d9a15b4fe 100644
->> --- a/drivers/net/phy/aquantia/aquantia_main.c
->> +++ b/drivers/net/phy/aquantia/aquantia_main.c
->> @@ -1096,6 +1096,23 @@ static int aqr111_get_features(struct phy_device *phydev)
->>   	return 0;
->>   }
->>   
->> +static int aqr113c_get_features(struct phy_device *phydev)
->> +{
->> +	/* Generic C45 PMA abilities do not fully describe the PHY's copper
->> +	 * autonegotiation modes, so add the 10G mode explicitly.
->> +	 */
->> +	int ret;
->> +
->> +	ret = aqr111_get_features(phydev);
->> +	if (ret)
->> +		return ret;
->> +
->> +	linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
->> +			 phydev->supported);
->> +
->> +	return 0;
->> +}
-> 
-> [Severity: Medium]
-> Does the commit message match what this code does? It says:
-> 
->    Add get_features() to explicitly declare 10G/5G/2.5G/1G support
->    instead of relying on PMA register reads.
-> 
-> The call chain still starts with the generic PMA reads:
-> 
-> aqr113c_get_features()
->    aqr111_get_features()
->      aqr115c_get_features()
->        genphy_c45_pma_read_abilities()
-> 
-> So phydev->supported is still built from the PMA registers. On top of
-> that, the chain only adds 2500baseT_Full in aqr115c_get_features(),
-> 5000baseT_Full in aqr111_get_features() and 10000baseT_Full here.
-> 
-> Nothing in this chain sets 1000baseT_Full explicitly. It still comes only
-> from the PMA extended abilities register:
-> 
-> drivers/net/phy/phy-c45.c:genphy_c45_pma_read_ext_abilities() {
->      ...
-> 	linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
-> 			 phydev->supported,
-> 			 val & MDIO_PMA_EXTABLE_1000BT);
->      ...
-> }
-> 
-> The comment in the function gives a third version ("add the 10G mode
-> explicitly"). It does not mention that 5G and 2.5G are also forced
-> through the callees.
-> 
-> Could the commit message and the comment say which abilities the AQR113C
-> PMA registers (MDIO_PMA_EXTABLE / MDIO_PMA_NG_EXTABLE) actually
-> misreport? For example, if the PHY already reports 10GBASE-T in
-> MDIO_PMA_EXTABLE, the extra linkmode_set_bit() here does nothing.
-> 
-> [ ... ]
-> 
->> @@ -1446,6 +1463,7 @@ static struct phy_driver aqr_driver[] = {
->>   	.get_sset_count = aqr107_get_sset_count,
->>   	.get_strings    = aqr107_get_strings,
->>   	.get_stats      = aqr107_get_stats,
->> +	.get_features   = aqr113c_get_features,
-> 
-> [Severity: Low]
-> The commit message describes this as a fix for a hardware reporting
-> problem. Should it have a Fixes: tag?
-> 
-> This commit added the AQR113C entry in aqr_driver[] without a
-> get_features callback:
-> 
->    commit 12cf1b89a668 ("net: phy: Add support for AQR113C EPHY")
-> 
-> Because of that, phy_probe() has always used
-> genphy_c45_pma_read_abilities() for this PHY:
-> 
-> drivers/net/phy/phy_device.c:phy_probe() {
->      ...
-> 	else if (phydrv->get_features)
-> 		err = phydrv->get_features(phydev);
-> 	else if (phydev->is_c45)
-> 		err = genphy_c45_pma_read_abilities(phydev);
->      ...
-> }
-> 
-> Earlier fixes for the same quirk on related Aquantia PHYs had Fixes:
-> tags. Two examples are 17cbfcdd85f6 ("net: phy: aquantia: AQR115c fix up
-> PMA capabilities") and 8f61d73306c6 ("net: phy: aquantia: remove usage
-> of phy_set_max_speed").
-> 
-> Would something like this be appropriate?
-> 
->    Fixes: 12cf1b89a668 ("net: phy: Add support for AQR113C EPHY")
-> 
-> Without the tag, stable kernels that support AQR113C may not pick up this
-> change.
-> 
-> [ ... ]
-> 
+> See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 
