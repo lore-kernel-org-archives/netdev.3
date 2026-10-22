@@ -1,62 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792674556;
-	b=WZHuPLb74/F4hvDfZEuy5CsOWqPQRBo1PdYeneNmT7gwk3mi+fNLquT/PKuGWnJQfNK/
-	 FqzEYc3oJpStug2yTAnfBhq3M37fpcA8nF/0l0OFxEbs7LVLtw6StRWb2B3UWTVH4/LYU
-	 /Oj/BtVlucRQF9mIIvHp6shab8wzOOgQRQqzcfzdevqH84QFieyd+t9/Ys0IxD/LBVHA4
-	 Ah4lRXuy9gaKdkpPmyuBdjDhuqxTK/Qvf0R/cvXkmUR4rov5MmKoPHhRCchBDLSbSeuX8
-	 qYJLo1kpxXNtjMtOvkeZrQfakISS0SmewsRTsAvMhUlYmODgmvofQxS9lzLcNuhlmFg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792674556;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=WeRbh/wN0/oqV/y3B6lUalfWMI187ISQqMh5if+ga/E=;
-	b=l8oL+YIue1Ar1ThXRxdTLccYYSWkpdcLUm15M8WE4X5l4tq4FsfqPs2M7i7hfKwhTDKm
-	 KljPH5Nf/ENVBw7KEPh6XPr+TZkrzW512BOgg5uZYcVafLA/5mPiwFHUUQKF7SOrulDSW
-	 gjHlrA1eMHzKzaED3+p+d9w2hmtlOH60yGXz7doOxlpd0glA3QAmaEAuviBrxsx6i/Xvc
-	 qgmfAqS0278xJou32a6RtPl1NUtDQU+RNNzDSbFr7LSLBxSlaZQ7fQcD9aqLamywf38YJ
-	 tGgXKkDj9KTo5xWeh8xT/ShA7w+4rlrQlaTFqVqWGi8yrYsavldEA2DQ7ZmI+tSoLlA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=B4f7CQTx;
-	arc=none smtp.remote-ip=220.197.31.4
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792674643;
+	b=GwT8VkXRXyeYiqLUtvSjRrCILXxQPmkTIJmhtZ0ctgttz8egsWMzG+Cs74hUNEBjqoab
+	 u0KknN66AHev8DqhWdRAjsZv9Hf4IIF7RhrCWmT1gYA+ElYx6cHTQ+gvDwLg61NLzvr3s
+	 e9R8QciVWRVbxMx3dNCFEaVRfKLkySwnweNCQkK0qYsXALEiUJ9x1ZmBNZkc3M3oOMzU1
+	 tGmPb8r9ad1xl3PS8yL5jGX9l6HEFez1Hc9OJjZw1C28bF109Mi0Aq7rKRCuuRtiKIlkq
+	 b5MaqCSIVKq2D3hactvpbQEkpi6cggWgzLUJenhPpqLc+nACwZxKTtzCR55nRZE6PVw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792674643;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=uf/Yl1+TUmTsZIOD4UAniucQk2JfyznSXtDPAOEOeac=;
+	b=eimHHYadTPaych4j6PnKpcWx6aE2bwgOzLOmOCMpLruJj03VHPdDGtzk7K3MAR2hAwoc
+	 eefRrjR9dta0WUAzzo5oaIZ+QhXT8DdEy5/UVxbRFOhDbNThh95o+yhMUhqWS4Ajacnq6
+	 DpCJkCLlqDwKg3IeQIfXDsx3YOkWITyD18KpPiWkxoEy6LhJ1S5riTvc5RxWl94qBPxZV
+	 P8O7wzufY95nn/ZGHPEyyTzE6r0W+AiGfsdRYKOvt7Yw+LoWa0roRK4T5RYEaoc2S0AH2
+	 btZzQJIcSJOie9AVJCi2dErqaAsJNQimbSu7BfFLO6+Xb8Cc3K5rAfkqRIEESDXUCnw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J0Dshjbm;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE23606A31A;
+	Thu, 22 Oct 2026 13:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J0Dshjbm
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1792674642;
+	b=zzza3F/HnZBePVDCOggjy9KMPnRMWRDp1DwkFKK14ToC2AO+dqR76JTql3rErhu8ONUH
+	 gJ6wreRw2TD6YAUtEX/hQ9nyC3DpNGd2XnTlY+6ugD5nglCQ7Nz397OODxvmP9AakesSL
+	 J6cmk7uLJc8JyOH5tU4jHgBgQmqXp4vvJixI1vlAHYeWf8X1y2AKjKmZ+60RfbS2DIvuE
+	 sUGC9XMyjsZSRTe2ABFIh3nZmkfVM8sdjy+l/1VEhQc5uYj9FeElAdoP4qcrTLJa4nOi9
+	 L6wpldmshubcMkQ+oLlTKoNtd1a/kAgEAOcaQEq8gc9pDqepYLijWN9pvfUFZjHFRCA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1792674642;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=uf/Yl1+TUmTsZIOD4UAniucQk2JfyznSXtDPAOEOeac=;
+	b=ae7iJHMEGamdpgGeJiv7lBUznzxdmouOpsDcnGRLKInYQm5nNuGqvoqxrTOqBQAh2GO8
+	 TQ6aQJqNrb0YQqZZ0nCkgPUBHLeWcOxSjCHM0NC/Ihv3myzefBinu3D5j5cZNpvPOH4FG
+	 3gx2/e5rL1HyMvo1EsO2oYmUrYAk43hfpIewvX9iznbHDrbeebMhhUw/DwICX6HlNZVuc
+	 Nk+mjNaEnVuDft/yhAmzmzUqE8S6c21NKfN4P2G3kgByKkBN4pMTRh3Zp38YqY6rLuy2M
+	 tApw22Gg1XRaF1MoTzM+K5qDyvgl5XnD2+nsAeXGnmVRRCNvBjPxxuo8ONRixm+2FAA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98CE606A31E;
-	Thu, 22 Oct 2026 13:09:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E98CE606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=B4f7CQTx
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=We
-	Rbh/wN0/oqV/y3B6lUalfWMI187ISQqMh5if+ga/E=; b=B4f7CQTx5dydLOhn9M
-	SL2hK+yNiAAr7DxEGR2HXY6TqCVoqItYnNXLfQGywqsZwriQGlosG2KAC27ha/7Q
-	pWApG9JhpZsYANrTHniHkF9JlNZKo+r3xRa6O4vuMhsY0VlSVroKcBiqR/bdB4Fy
-	mft0tj9Cjtl6R0+lOMlmj63Fc=
-Received: from u2.. (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDnb3XQCtpqMEjsBw--.50219S2;
-	Thu, 22 Oct 2026 21:08:34 +0800 (CST)
-From: taozj888@163.com
-To: theo.lebrun@bootlin.com
-Cc: andrew+netdev@lunn.ch,
-	conor.dooley@microchip.com,
-	linux-kernel@vger.kernel.org,
-	maintainer@kernel.org,
-	netdev@vger.kernel.org,
-	taozj888@163.com
-Subject: Reply to Theo's questions
-Date: Thu, 22 Oct 2026 13:08:24 +0000
-Message-Id: <20261022130824.589241-1-taozj888@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <DLKVCOXTNGVZ.3CC6KFXDIFJ3X@bootlin.com>
-References: <DLKVCOXTNGVZ.3CC6KFXDIFJ3X@bootlin.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 2AE9B1F000C2;
+	Thu, 22 Oct 2026 13:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792674642;
+	bh=uf/Yl1+TUmTsZIOD4UAniucQk2JfyznSXtDPAOEOeac=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=J0Dshjbm2JK06SH1TGRWffD/2+GZ49uNByLL/gITFRJIeWv5ilpVPykLpdcD8B8Eu
+	 s6XOAi3RBGJlkPso/Nmt59cPXV3JCaj0pQKUBfn3wRZPms+HB0t+dCAyEceU2Qydbg
+	 Y2707RDsBEdzT0Jb63oZvXtvnxmSsyFezsx9DFjSnGDadZNrq8wjya6udpnXiq4lCo
+	 uquZ+9lPWcpKsuRplVdgnTIwYbh++TuwPEbTaXtolGpKn38tv8THg6zr7DfdeYsr0a
+	 MXb4JPYo7ZL7hy227Aimpj2NsmMWDITL81svgGYioXePc72w3lWPHIsUy/bZu5Tgpc
+	 IrWfYHLEB5l5g==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 7AE854349D;
+	Thu, 22 Oct 2026 13:10:41 +0000 (UTC)
+From: Michael Lowman via B4 Relay <devnull+michael.d.lowman.gmail.com@kernel.org>
+Date: Thu, 22 Oct 2026 15:10:26 +0200
+Subject: [PATCH] SUNRPC: avoid possible page reuse from
+ svcauth_gss_wrap_integ()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,145 +83,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:_____wDnb3XQCtpqMEjsBw--.50219S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCr4DWrW5WryrCr17Xw47Arb_yoWrAFy8p3
-	y5Gr1jvr1kJr1fKws7Cay2v3WrXr95GF43Wr15GryIka45XFnIgrW7t3yYqFy8u348Wa40
-	vr4UZasak3yqgaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUSfO5UUUUU=
-X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC+RQJ0GraCtQOvgAA3q
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261022-integ-page-reuse-v1-1-fbe571857d4f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQqDMBCE4VeRPRvYpNgWX0U8xDi120OUrEpBf
+ HejHj+G+TdSJIFSXWyUsIrKGDNsWVD4+jjASJ9Njt3Tsn0ZiTMGM/m8JCwKwz1XD7w7Dt5Rvk0
+ JH/lfyaa9rUv3Q5jPDu37ARxRp2p0AAAA
+X-Change-ID: 20261017-integ-page-reuse-0d053e8b0ca2
+To: Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michael Lowman <michael.d.lowman@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2485;
+ i=michael.d.lowman@gmail.com; h=from:subject:message-id;
+ bh=J5FcyzJj5w1NI+B2kzsCRu8psxQMF7yI9ZjgbLBQU78=;
+ b=owEBiQF2/pANAwAKAbhUyZi0A3mzAcsmYgBq2gtMggRxlwYUWnxU0m3X2axlVUp3BHI1AbrpI
+ CcRqyeIECWJAU8EAAEKADkWIQR42JpeMFqVv37vF7e4VMmYtAN5swUCatoLTBscbWljaGFlbC5k
+ Lmxvd21hbkBnbWFpbC5jb20ACgkQuFTJmLQDebPbwwgAqbu3jYLWuD/72zzMOa2jnbH02bFL5v2
+ x5MGr66dgVYycOiwAqRtQ40b7GIctSGkOQsQlDTPxbpNMbvd0YpRrWE1/mgVSeG7eF+93WUmqYH
+ lNT8PRqcoR2hcnWAKTEA0mdEhPgVDrB/zUPV2qBn6wHN81SyXukJyWF/EdJxSYKVBZ0pnOOT0ht
+ tl8z/laCrVntlhgebqoG7aZK/OoLOzYuRfcMJlfJtDgl4aGEu0SRs1oB5YtZHj0c5RjfutDwSeA
+ draF82Tm0QhuLM58HX9+u3bMzhV6F4nfzr/9+zsGoWqgMEnrLqaJ6n6mIjA9s3I2/We4sqlnw82
+ 2Gpamr6wdzQ==
+X-Developer-Key: i=michael.d.lowman@gmail.com; a=openpgp;
+ fpr=6E281440251F4A47DCA99700FD4D12FE546354BA
+X-Endpoint-Received: by B4 Relay for michael.d.lowman@gmail.com/default
+ with auth_id=1283
+X-Original-From: Michael Lowman <michael.d.lowman@gmail.com>
+Reply-To: michael.d.lowman@gmail.com
+Content-Transfer-Encoding: 7bit
 
-=0D
-Hi Theo:=0D
-=0D
-=0D
-Sorry for having missed important things. =0D
-I would like to append some explanations here.=0D
-Please see my answer inline.=0D
-=0D
-=0D
-Thanks,=0D
-Zijin Tao=0D
-=0D
-=0D
-At 2026-10-14 01:55:03, "Th=C3=A9o Lebrun" <theo.lebrun@bootlin.com> wrote:=
-=0D
->Hello Zijin,=0D
->=0D
-> - I'll stop replying inline because you seem to be having issues with=0D
->   your mailer. Please fix it to ease the discussion.=0D
->=0D
->   See here how your email looks:=0D
->   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj=
-888@163.com/=0D
->=0D
-> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong=0D
->   with the current patch, it shold use 4df95131ea80. I don't=0D
->   understand why you are talking about the changelog at the same time,=0D
->   this is unrelated.=0D
->=0D
-=0D
-=0D
-Yes, I made a mistake in V4 commit message with an oversight, it should use=
- 4df95131ea80, so=0D
-I just revised it to 4df95131ea80 in the V5 patch, and I will use it in pos=
-sible later patches.=0D
-=0D
-=0D
-=0D
-=0D
-> - You skipped over explaining why your dropped the start_xmit diff.=0D
->=0D
->I'll have to stop reviewing if you skip over parts of the messages.=0D
->I gave you a TLDR and you skipped over the first bulletpoint.=0D
->=0D
-=0D
-=0D
-Sorry, I forgot to make an explanation here, maybe due to an omission.=0D
-Now I would like to amend it:=0D
-Actually when I started to rate limit the error messages in the data path, =
-I saw =0D
-the netdev_err message print in both the gem_rx_refill and at91ether_start_=
-xmit,=0D
-and I knew they are also in the data path.=0D
-But for the following reasons I just omitted adding rate limits for them:=0D
-1. For the netdev_err in the gem_rx_refill, there is a "unlikely(!skb)" to =
-check if=0D
-the skb is NULL which is a rare case,  so I think it's not so needed to add=
- a =0D
-rate limit here;=0D
-2. For the netdev_err in the at91ether_start_xmit, I think it belongs to an=
-other vendor=0D
-which I am not familiar with, and I didn't know how popular it was used, ev=
-en I was not authorized to =0D
-change it with my will also.=0D
-=0D
-=0D
-If you think it's better or needed to add a rate limit for them, I would li=
-ke to do it in later possible=0D
-patches. =0D
-Would you please give your opinion here?=0D
-=0D
-=0D
-=0D
-=0D
->Thanks,=0D
->=0D
->--=0D
->Th=C3=A9o Lebrun, Bootlin=0D
->Embedded Linux and Kernel engineering=0D
->https://bootlin.com=0D
->=0D
->text:=0D
->Mime-Version: 1.0=0D
->Content-Transfer-Encoding: quoted-printable=0D
->Content-Type: text/plain; charset=3DUTF-8=0D
->Date: Thu, 08 Oct 2026 14:59:55 +0200=0D
->Message-Id: <DLZH4LPJ36YW.1CP7RL0J77DHN@bootlin.com>=0D
->Subject: Re: [PATCH net v4] net: macb: rate limit netdev error info print =
-in=0D
-> the data path=0D
->Cc: <stable@vger.kernel.org>, "Conor Dooley" <conor.dooley@microchip.com>,=
-=0D
-> "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"=0D
-> <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub=0D
-> Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Jeff=0D
-> Garzik" <jeff@garzik.org>, "Haavard Skinnemoen" <hskinnemoen@atmel.com>,=
-=0D
-> "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, "open list"=0D
-> <linux-kernel@vger.kernel.org>=0D
->To: "taozj888" <taozj888@163.com>=0D
->From: =3D?utf-8?q?Th=C3=A9o_Lebrun?=3D <theo.lebrun@bootlin.com>=0D
->X-Mailer: aerc 0.22.0-0-gc2f86b7abde3=0D
->References: <20261007053211.572073-1-taozj888@163.com>=0D
-> <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>=0D
-> <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>=0D
->In-Reply-To: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>=0D
->X-TUID: tHkCkOndXaQQ=0D
->=0D
->Hello Zijin,=0D
->=0D
-> - I'll stop replying inline because you seem to be having issues with=0D
->   your mailer. Please fix it to ease the discussion.=0D
->=0D
->   See here how your email looks:=0D
->   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj=
-888@163.com/=0D
->=0D
-> - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong=0D
->   with the current patch, it shold use 4df95131ea80. I don't=0D
->   understand why you are talking about the changelog at the same time,=0D
->   this is unrelated.=0D
->=0D
-> - You skipped over explaining why your dropped the start_xmit diff.=0D
->=0D
->I'll have to stop reviewing if you skip over parts of the messages.=0D
->I gave you a TLDR and you skipped over the first bulletpoint.=0D
->=0D
->Thanks,=0D
->=0D
->--=0D
->Th=C3=A9o Lebrun, Bootlin=0D
->Embedded Linux and Kernel engineering=0D
->https://bootlin.com=0D
+From: Michael Lowman <michael.d.lowman@gmail.com>
+
+Commit 7702378ac4d4 ("SUNRPC: Convert svcauth_gss_wrap_integ() to
+use xdr_stream()") and its parent changed from calculating the
+integrity checksum in-place in an unused part of the response buffer
+to calculating in a scratch buffer and appending it to the response
+stream. While the unused part of the response buffer happened to
+always end on the first page, the append always occurs on the last.
+
+If less than 32 bytes remain before the page boundary, some or all
+of the checksum will be written to the next page. But since the xdr
+functions do not update the response's page accounting, the page
+will be immediately available for reuse. Data from another request
+will overwrite the portion of the checksum on the new page.
+
+Avoid this by marking the page as used when needed.
+
+Signed-off-by: Michael Lowman <michael.d.lowman@gmail.com>
+Fixes: 7702378ac4d4 ("SUNRPC: Convert svcauth_gss_wrap_integ() to use xdr_stream()")
+---
+When running several reads in parallel from an NFSv4 mount using
+sec=krb5i, I find that the checksum is often invalid; of ten 64k
+reads of ten different files launched in parallel, usually eight fail.
+I observed that this did not occur when using sec=krb5p, and that
+part of the checksum appeared to be overwritten with valid data
+from other packets. After building with the attached change, I
+no longer experience read failures.
+---
+ net/sunrpc/auth_gss/svcauth_gss.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
+index 43839e805531..4219cfb2e88a 100644
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1835,6 +1835,17 @@ static int svcauth_gss_wrap_integ(struct svc_rqst *rqstp)
+ 		goto wrap_failed;
+ 	xdr_commit_encode(xdr);
+ 
++	/**
++	 * While the data protocol normally accounts for pages
++	 * used in the encode of the operation, the checksum is
++	 * written by the above xdr_stream_encode_opaque and can therefore
++	 * end up in the next page.
++	 * Update the request's bookkeeping to avoid reusing the page for the
++	 * next request while it's still referenced by this one.
++	 */
++	if (xdr->page_ptr + 1 > rqstp->rq_next_page)
++		rqstp->rq_next_page = xdr->page_ptr + 1;
++
+ out:
+ 	return 0;
+ 
+
+---
+base-commit: eafb6de800781f0a1be5cdd98d150620041d8b27
+change-id: 20261017-integ-page-reuse-0d053e8b0ca2
+
+Best regards,
+--  
+Michael Lowman <michael.d.lowman@gmail.com>
+
 
