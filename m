@@ -1,62 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792682616;
-	b=vjpZAXwL7YJIJHq/XdLa8Oss04Dufu7s8YqFDHGjA7Nf+h1eFnxgzpdrT7JHnHmxWf6Y
-	 9pMMVbjTWR04Rry/ISvxxZfuVhLYOJjar7IXvzHrCADj+QkhmHMEA0xQJKYWve2N6cckA
-	 tTs9Ay6cMIridNSvUKRxPJOwB9AvkeZVpB+4ZzdhC1OnOEdhBMWivgdHBnVmk6i9RZGT5
-	 VT/bSz9F7Okxsf4d+3SAHMJfwxmNV115SLqCuxPuuSwxBw/uxfybmIdvzc75KWtfuKG7w
-	 3IgNsF3LH5sjI+HLxVZBgPr2A9wsBvKL3gGRFV5JN2jNzMl0zlgyxvRF0rkmqfYu3Fg==
+	t=1792682658;
+	b=IDjPLdUOmoC4uDQnifpFWEgevv4wAbDlCTaqLUvLy5zsoU90cLlFB2JqL0hVgpa28T9H
+	 U/NgPIurfEC6Njq6xfCgzo/2gF/SDL9exZmKaJdl0DThVv3Olv68avu4ea89KM+Eam/SA
+	 r3zVc9NeyxL3Ckara+fZoTDY1J+MAq6OT8T84/dmlSZyWl21haneTTeZ9E946i9xQ356o
+	 zSyjGWHmmaq/kyUrORXrkB08ogA9kVXHaerTmxII5+Zowx0eebaipF+uabUu5/EuLi3B/
+	 KnN0XfMpSyGVis8X6PdBCrH7arGr9rVmv1bpV4WKxJZg7wb1IatANguNjRHpM8yUWrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792682616;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792682658;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=wnTK++/ENxzpo2Dbi6+G/l7vS1tqf/r5+A17f9Auz+w=;
-	b=Uey7bgko0Xwip3ANXq+h579YQHTM0IzAtq3ypx7pPjY7frS1kF9j2nVvMkam61dX2mZc
-	 S1a1yywhWj+IcMOqJuFSCLZJRrkjEHCY0xTB1B/V/zqW9L8vknnTmmyQZgnV3qdtRPxEA
-	 nUZZazAr5+5ZNNonQH6nTYFQ3p0XTE/+6C9S2SwGq9SX+umx7pGINWUrU5grr1WIAmMLF
-	 KOLl/PdL1h5pLVW8Wh/RK39KEK6m+cacAJHFFdECk/im91oQ1t8XC7/8NudYm+uot25IJ
-	 VEFa7M3DV26AHwqVwEczoDgDY7kyqJGzxfe3Dc4tCLghMxbt+RUdi57RpVAIl4LRZ4g==
+	bh=dFvDESgUnUZGXYa5MrlgOZOa2bvfpkpdDye2dUm6l2U=;
+	b=oM81fVhRFYsMqMyvM4Ie7aY3V4P5R3Dt3Gwuq4oNQeETmm6b4xd0KNhjfxh7HXY5OMCv
+	 KJxY1BS1XQDBMAPDOpHcJpVus0WT389BZMRzWroqcp/FUWEBJqUUY83jYNrphvB2i343n
+	 Zu9An89ne2XbgKdSMWuQWsbjj/yyweV12ipAjAmvshf4Tz6aQQie7Pho1g70H23wte1bK
+	 wrF8q1a+4HH+gdpKnz0tq6LfjgGMTqxFckwvD4QFX1rpy566DRJwMPXN1Wu/ztAFG9kLQ
+	 4UtIsL82q7Xc8YfE4U1ijehxP5+84LW0i3cKB42WfxY4fsvomKJFX4uNaG/mouXuwsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iDzx8jBF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=byX6AK+C;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56BB606CC42;
-	Thu, 22 Oct 2026 15:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA50606A33E;
+	Thu, 22 Oct 2026 15:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iDzx8jBF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769741F01825;
-	Thu, 22 Oct 2026 15:23:34 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=byX6AK+C
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047611F01825;
+	Thu, 22 Oct 2026 15:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792682615;
-	bh=wnTK++/ENxzpo2Dbi6+G/l7vS1tqf/r5+A17f9Auz+w=;
+	s=k20260515; t=1792682657;
+	bh=dFvDESgUnUZGXYa5MrlgOZOa2bvfpkpdDye2dUm6l2U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=iDzx8jBFslRlBoVI48B7EZHUF5BZw3o6M9tGEuY11kBqGn4zR2C/W4IHWRFsiI/k+
-	 YAXBs5l78yGdfuAlQBCuTktQsY0PCsJ+sllCcg3Tk/PU6OsEUNEqgsGE0F2q2RUm8t
-	 MFDZmCN7CiskUEOM13LGtId+1qcMCI0X5Zk4zWIlsXnSaMWPLp3aSOG+iSv94qSzBs
-	 xllFGelcvhivzEl8UQFala5ZKSPsUo+M7mnYiRj3ZF3x2TntBF0/4mFrRUQCdvN314
-	 gTKwbjPUpVupCFyCUnepEmySy1YCgoORVOCcz8IegRULL2STiTn6E+NBhpmGxADpB/
-	 qXZvtvpjKjRWg==
-Date: Thu, 22 Oct 2026 08:23:33 -0700
+	b=byX6AK+Ct3sYTEA1YOuiH+8rOA5U738BZz/m7Fa0HZwrJGjgEaYS9QoPDM7nYH1ve
+	 GrOS5BUst05Wey2CSXKLQV+71Rt+DdRLa580en6gjrwfTrSzJWSGtk185nAvzecREe
+	 N79L3VyKjRbCxOv/keA/CHf/lBatVYDsw8I/om3xPlTTQaJxPQYrGV0miAO1xR7z/T
+	 yz8bTJ9soCMwhDD58RFru5OYqF1KYoL0vgu0/25URvG15QM9EmZE+PZcLDc+auNoV6
+	 I5zX4YNjkpQcs26Pq7RRJeWKXA9lizvFrofZ+LKGsrHfloGykMKp7HELT0/xuvOcNJ
+	 TwSNBc7nSQdGA==
+Date: Thu, 22 Oct 2026 08:24:16 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Hu <weh@linux.microsoft.com>
-Cc: longli@kernel.org, kotaranov@microsoft.com, davem@davemloft.net,
- pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
- jgg@ziepe.ca, leon@kernel.org, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, shradhagupta@linux.microsoft.com, horms@kernel.org,
- ernis@linux.microsoft.com, stephen@networkplumber.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- gargaditya@linux.microsoft.com, kees+treewide@kernel.org, kees@kernel.org,
- mawasthi@linux.microsoft.com, weh@microsoft.com, edumazet@kernel.org
-Subject: Re: [PATCH net-next v9 0/4] net: mana: concurrent HWC requests and
- dynamic queue depth
-Message-ID: <20261022082333.5a259426@kernel.org>
-In-Reply-To: <cover.1792679388.git.weh@linux.microsoft.com>
-References: <cover.1792679388.git.weh@linux.microsoft.com>
+To: Fan Gong <gongfan1@huawei.com>
+Cc: Wu Di <wudi234@huawei.com>, Teng Peisen <tengpeisen@huawei.com>,
+ <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana
+ Ciornei <ioana.ciornei@nxp.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Mohsin Bashir <mohsin.bashr@gmail.com>,
+ Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
+ <hramamurthy@google.com>, Larysa Zaremba <larysa.zaremba@intel.com>, Vadim
+ Fedorenko <vadim.fedorenko@linux.dev>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
+ <wulike1@huawei.com>
+Subject: Re: [PATCH net-next v18 0/4] net: hinic3: Support ethtool ops
+Message-ID: <20261022082416.2653fa27@kernel.org>
+In-Reply-To: <cover.1792671176.git.gongfan1@huawei.com>
+References: <cover.1792671176.git.gongfan1@huawei.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,10 +70,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 22 Oct 2026 15:02:58 +0000 Wei Hu wrote:
-> This four-patch series adds concurrent HWC request ownership and
-> PF-directed HWC queue depth to MANA. It starts with depth-one bootstrap
-> queues and keeps setup private until the final channel is tested.
+On Thu, 22 Oct 2026 20:25:14 +0800 Fan Gong wrote:
+> This is [3/3] part of hinic3 Ethernet driver second submission.
+> With this patch hinic3 becomes a complete Ethernet driver.
 
 ## Form letter - net-next-closed
 
