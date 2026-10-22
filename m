@@ -1,47 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792680507;
-	b=JEEfINdMqUDhzP3hnaURuD2YWe/13Cg5JToKtoLlYK/VdRB6wkyWLSs6jp9YKxGcgtzL
-	 Lrspbr32mmYkVQE5dDs531uW9Bsg1wzIwA8CjlKzmz8bE3wioiz7T9lqAE2LcpKOElQ9k
-	 9nYlGUP2LvVoONPJMwLMo31m1OB88cxAiaTWAQHO1+XgNq146OigmBoIiGVgq+fvLN0hB
-	 qoP7XSxliP62QOdoPsxN/k05DQ2YKW8hluszcJ/vs4tW5HR8e3T/sSXzwIf8ypTcwTbmM
-	 cwjMRCFTqt+jBpUo2UMOBTX7MIY5qnssIWFMn9hMJfFoH06Vm57PyA9+NY3CKwM/fUg==
+	t=1792680502;
+	b=WshhdZMW+uR7X/nM89UkX2UtBBBKbOGmcJx3pQGGIKc/tDcH5MXDo3jt4n8dtmCwHVg7
+	 maP/E8PTw6+N6oQCdkXTvVhN3ZSO9a+gcHgb0uJrg1GQK0oxbqyOtlZwr8wcMZqGjMsA0
+	 9Sq7q4s5xO55sBxaJ6gMnAd3kmeBiYV7shGvnA31FG6k6NVBNG6uDInTb42HXFm9xIP/K
+	 7+Pas+IW6z4mIZWJfb4Y4rWXbsVB+Bva0RtNRuJzMmbjytnJuTBm3DO1ztAZfVQQrTWSW
+	 sDWjKvhct1CnSkn75FUcOKO1FTNWctin/G7QA19tCXyjABFxjIakef6jn4E8mh0d6xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792680507;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792680502;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=XIsvbOAnIRW8H1+jITaPE6AgA1HppDDLCXUtfjSNNOo=;
-	b=cWod/5iIvFcvL7Ztgxbvxi/l0tvw1HpzuNHy1GFpDIeRI77atADp66H8yjRAKDpgsaNB
-	 J/tDk/pq+R0iZHX3OyqAulT2H73AFFt4UjaYB+bC581og5+7hHoRNdenkB21MlKD3a2K3
-	 sIzOEgsVtyKUuDYlZRG77AjNdLTZUkZZFfiVQJ6t7FDlNjXDZ3ktXtX7KAE1E/XTX94nB
-	 NLzF71TAb0nQ9eQSVmyRiDr941Rah1MJtiSjN9sKxCik0EnSavBUnH4ggbx2czxSYiFES
-	 Ti5tkjxhdAU/0r14fVGUmPFK0diuPcw0FGNom6gC/BJWSNSODCXMTOfx4wQJXbsUvBA==
+	bh=JIZAZ3c9LS1qnten8xy0SvIuFnFh5L4naIL9e+hozVQ=;
+	b=a1ApZsiLFKfRv+eI3nPIsZHiExRPpk7r3U3OWVT07CkDzbaN+1WEC4f8wENpfp6usASf
+	 LRiMRrYPG5m6ES8SAi809NT6xG/4IrS4339CM3tluEqiFe8Fr3S3hC17J4n7rxbd6iWcX
+	 7j4A+CQ5MtZRNbtHNE4PWuNpQFjRk4s/pDK3hpoAD0/edjLGUz2ZlR0oic4Zqu6a3qqIi
+	 /Wsa3BtGg9aNiNoDLnJRFWBzcRZjJJNRb6iuItfgEs0bDBzrDPPltnMQtTizoU0h57amp
+	 Z/5K4Lb7jK0vU0kQXWSnyisccG3EEVeZ05fWussHRw3ShoiQNF0UZTTiJSAiJ5oAhrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=bQVhcy4W;
-	arc=none smtp.remote-ip=117.135.210.3
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=lU5rHfNN;
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E74D606A32F;
-	Thu, 22 Oct 2026 14:48:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E74D606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650FD606A320;
+	Thu, 22 Oct 2026 14:48:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 650FD606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=bQVhcy4W
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=lU5rHfNN
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=XI
-	svbOAnIRW8H1+jITaPE6AgA1HppDDLCXUtfjSNNOo=; b=bQVhcy4WNHo6CIKTcF
-	svcdcED6/+/QyTtGg6CE4WtgNMCTSNPKwLoNA3lGcYeeioNMLlYbCArgWnVEcE/5
-	ADy3OInDnFCya+qbxCcsuR8DuixTs5pKPEK/gsJl+NYk0YgkPRl88u32MxN6XEr8
-	eHyvCaSiG0fEZ07ejDNM7Q6RY=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=JI
+	ZAZ3c9LS1qnten8xy0SvIuFnFh5L4naIL9e+hozVQ=; b=lU5rHfNNguWBgrWZSy
+	RzyZB3atWdAlF2oRwBZEd3jSEJjNVnrKFMd6GCDHIg576GD0gTo9kdTz1FlyMIJY
+	GOWdu9TwdArApZ8E0Bo+ph8c9k8D6qEO57jUOIk6JlMljTKJ43FfR640p+ldhqkq
+	iHK15P9CZjvq8/A57R3YUvQa4=
 Received: from shaos.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD33wQbItpqVzhsCA--.3667S2;
-	Thu, 22 Oct 2026 22:47:56 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDXP14FItpqmG_qBg--.11453S2;
+	Thu, 22 Oct 2026 22:47:33 +0800 (CST)
 From: shaos <shawnq1@163.com>
 To: jhs@mojatatu.com
 Cc: Jiri Pirko <jiri@resnulli.us>,
@@ -51,11 +51,10 @@ Cc: Jiri Pirko <jiri@resnulli.us>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	security@kernel.org
-Subject: [BUG] net/sched: malformed UFO GSO geometry can soft-lock DRR dequeue
-Date: Thu, 22 Oct 2026 14:47:55 +0000
-Message-Id: <20261022144755.65025-1-shawnq1@163.com>
+	linux-kernel@vger.kernel.org
+Subject: [BUG] net/sched: act_gate cycle time can wrap hrtimer expiry to zero
+Date: Thu, 22 Oct 2026 14:47:32 +0000
+Message-Id: <20261022144732.61188-1-shawnq1@163.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,16 +66,16 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD33wQbItpqVzhsCA--.3667S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr1fGr4kZw4xCF1Utr4fKrg_yoW8KrW5pF
-	yqyayayF17Kan8WF1vgFWkXa18u3s3Cr4jga1UXr1UZw43Cw10yr1Iy34Y9F97JrykKrZY
-	va4UK3Z3Xw18XFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UXeOXUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC8hzg7mraIhw2TwAA3X
+X-CM-TRANSID:_____wDXP14FItpqmG_qBg--.11453S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KryxXrWkuF17XF48GFWkCrg_yoW8AF18pF
+	WvvFWYy3Wqkw1DWFn3KFWxX3WIgwn7Jr45JFn8Jay8Zan0kwn2kF4Sy34YvFn3Zr95CFWF
+	vanYga97XFWUuF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5rcfUUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzwXa6GraIgXJlQAA3z
 
 Hello,
 
-A PACKET_VNET_HDR AF_PACKET send supplies UFO GSO with gso_size=1 and hdr_len=65532 for a 524275-byte frame. qdisc_pkt_len_segs_init() computes an accounted length of 4,294,574,091 bytes. With DRR quantum 256, the dequeue path needs about 16.8 million deficit refills before it can dequeue the skb, keeping the CPU in the qdisc path long enough to trigger the soft-lockup watchdog.
+An RTM_NEWACTION request installs act_gate with base_time=1, cycle_time=UINT64_MAX and one valid entry. The unchecked cycle arithmetic wraps the absolute timer deadline to zero; the hrtimer callback keeps restarting immediately and the add request never returns.
 
 HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
 git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
@@ -84,21 +83,18 @@ source version: Linux 7.3.0, local master
 compiler:       gcc 11.4.0, GNU ld 2.38
 
 console output:
-https://gist.githubusercontent.com/shaos26/8a4f7f445aa23601bfe8e04f9c6a5202/raw/f4ca89881f7b8163ddea72fbc54b204385142bb8/console-output.txt
-user-namespace positive output:
-https://gist.githubusercontent.com/shaos26/8a4f7f445aa23601bfe8e04f9c6a5202/raw/14de8e3a06e7e73c540ebf408e73d301bae3922d/userns-positive.log
+https://gist.githubusercontent.com/shaos26/5393c0a25cccdd0b182a72de6d245c78/raw/3498a27c8537da1604402fd68c433e47de80f0dd/console-output.txt
 kernel config:
-https://gist.githubusercontent.com/shaos26/8a4f7f445aa23601bfe8e04f9c6a5202/raw/6ea0e3da68f1e239d565c64f7906d0f9c73bf784/kernel-config.txt
-reproducer sources:
-https://gist.githubusercontent.com/shaos26/e2add470a38b7aab41f2b79ef021accf/raw/7153646b9233fa53aca81c9af879d48e8f95dd80/poc.c
-https://gist.githubusercontent.com/shaos26/e2add470a38b7aab41f2b79ef021accf/raw/e8acddd986023c10a43b5106b4734a456a063deb/drop_priv.c
+https://gist.githubusercontent.com/shaos26/5393c0a25cccdd0b182a72de6d245c78/raw/e1458ab0ee43d1aa31991c1e3435cf9fee7635f4/kernel-config.txt
+reproducer:
+https://gist.githubusercontent.com/shaos26/5393c0a25cccdd0b182a72de6d245c78/raw/9cf01ec7c86d32377ec34a6fb0e6b4b214a5e931/poc.c
 
-Build the tested kernel with the attached configuration and boot a disposable QEMU guest. Compile the linked userspace reproducer and privilege-drop helper, then run the AF_PACKET/VNET_HDR test from a fresh user/network namespace.
+Build the tested kernel with the attached configuration and boot it in a disposable QEMU VM with softlockup reporting enabled. Compile poc.c statically and run as a process with initial-namespace CAP_NET_ADMIN. Do not run on a production system because the positive intentionally stalls a CPU.
 
 Impact and prerequisites:
-A process with only namespace-scoped CAP_NET_ADMIN and CAP_NET_RAW can keep a CPU in the DRR dequeue path long enough to trigger a host soft-lockup. With softlockup_panic=1, as used in the test configuration, the watchdog panics the kernel. This is a local denial-of-service issue; no memory corruption or privilege escalation is demonstrated.
+The watchdog reports a soft lockup and can panic the machine when softlockup_panic is enabled. This reproduction requires CAP_NET_ADMIN in the initial user namespace; it is a privileged denial of service, not an unprivileged escalation.
 
-Validation: Two fresh positives reproduced the soft lockup, including one run from an unprivileged UID mapped to namespace UID 0. The same-frame non-GSO control completed in milliseconds.
+Validation: Two fresh positive boots reproduced the lockup. Near-maximum-cycle and patched-validation controls completed normally.
 
 Thanks,
 
