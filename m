@@ -1,100 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792652452;
-	b=42zoYs1OF1GcLR6Nv1NBzw52cxAKjnDrYlhH5q8GVWPHjmjc3wFZ4gg/t3V6NNhAf3lB
-	 XiTrTYLqocpbvOtJiF7JDhKgYcdqJUpYkvsfRYkkI/UOMCy3kAKczAWZTafb/jyBfh8PK
-	 5Biz2GmnSfi2BMvApNj8F8UJa9UwOyCD7gcvBCSAxgWy1wlLRz3tez3mflhhBqb7hINmX
-	 5SyWWbskcTSIXeFIo23kMQcFhKCwTIBX2r6cgaD366r8rVGJFN+dDyhwC9OgH+OhvIqtS
-	 17nNQXFs++uEgOjVKxgYWLL7fdaruQMMrdxZXeAzE/FNQiSGd3C1L2NOYSb/V0//r1w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792652452;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=g5nsSSjuBClHBx39NqG0kfSc5pljRc11IezXCRfp1Ic=;
-	b=x5aFtYQ6LxMwrTWmW3XvgOwrlTyxEBq1eDMKvyqN/4qBicvWyngjJQ6N2Oo4wnNfHvFI
-	 IZEa3bWAqh65uCDiTf8irsmOUUahRHJH3Q6ap+5lZuwfF0Vb5RNWe2diroWiS7dVgwNKt
-	 bs18J5qiNHQWc9NDjkl9Oi6p1CxvjcyXmjH5xN1Qrm8ko3wgOyu7pTGLoWUjxBlGu5Udd
-	 gsmbtFVAya93BS/kQgpkEHE8tVf21enWN3wUmOet/AS55k7Z0xjKmhoBmKzJbXrWPwxmk
-	 T3VczgXMcPE9mrWR/vhTPzI89dGJ6GmI2RRSuGBQnVMWiIpkVoESjbp4d9F5KNdm4Bw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=geXRJp1J;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792652505;
+	b=PtlPqe2rNxPx4q4rzvUg8uhXg3uJXcXO779i7H0iKBL/4lntWK6Dk51E+EzKfOYOZzcf
+	 9/HLybPsbycnbYNlaBmAfGxKIARpf+FoBcVp87LxtfTlCAZnSqYQb8KH07aX5TbEN6Md0
+	 EytCADbS8424tw3GYR5C1VHrm9l2z2WuG7xj6zw1Bcd+oPShlcrPayjLSLW4KGUwiN635
+	 XXLMXQ8ot8DLKp9nF4aW1tD4j7eHO2aj1j2uLwgSSuyvSCXkuxYri+ugAaB7/mi+DnU96
+	 lh+1d15NkEKUGpPllyIriWM0xSGJbu6P1xhydAC3IdpgpYgpdnX9hdRIpVvVZUp0xRg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792652505;
+	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=yl5Q0Yhg+88xllrX1kMC1NiLLtnuA2INxcGfBrE9LpI=;
+	b=nVQN69lV1itx7thWf2xl0w6xklIWs48X7oYiDYEYJAt0Qd/deGgCzVUDWtwCxfqiGlaG
+	 CchSWeI9q6B+/7cxFHdshCZcI1K0n7AHTZxv7YXlS6/p8M76NBYHBbSLYUvtXpbQ1KLeT
+	 ktUqLkQQXsMpQ5vlt8H1nJHPnkJAxE23FqgOWFrgA2yGsWqkE7eXF8G5MUhrcpv7/sRwY
+	 aRT9EY4qcE6Yqzqf2huBPePxAuZIQw5E0LLx31HT7kvVZNImjjB+tAGX/rsbWokOiRWfM
+	 6vqmNs+YSSRTRvTH+CZD923A4IC42nC+boZDKUKtRIfabmweG+0U3mv3/RbS7Svuk9w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linutronix.de;
+	spf=pass smtp.mailfrom=linutronix.de;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dbA+IJmf;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=qa9LZRM6;
+	arc=none smtp.remote-ip=193.142.43.55
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40535606A319;
-	Thu, 22 Oct 2026 07:00:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40535606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E20F606A319;
+	Thu, 22 Oct 2026 07:01:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E20F606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=geXRJp1J
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C90AF2008E4;
-	Thu, 22 Oct 2026 09:00:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792652447;
+	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dbA+IJmf;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=qa9LZRM6
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1792652501;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g5nsSSjuBClHBx39NqG0kfSc5pljRc11IezXCRfp1Ic=;
-	b=geXRJp1Jol3L9poDopu0R8VUKm/mRkb0evBpWIFUaXBiM3QyihnCPf5jnAQc+qeQZCPKWc
-	xrr1kvIl8Ent5lGr7y0+LEacoNBiClHFhWoVE1q29HaCl5pJOQ9U1SwgNy5RD0/FRlnshp
-	Jj0HEkilTLBMN8sf87/hlOwRQCBWowI5DfilxOYkrotCNCUBz6F/TCCLJIHT2ClkVGkie/
-	a/oWZStpy2ktHmF5fw1XsV0+wtfw45Yeaho9MW7r3+ygs9fQMTHj+tuUo/TB2cnEM0ye4e
-	h5amPe4kcHfIA35an2va+G4kchRWloI1i1w0E3rBqGLftgv5hG7UW6ASzNrDEg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792652447; a=rsa-sha256;
-	cv=none;
-	b=Cq6ACqQO3tLU849Qwl3nlOozR7OGPfVWKC2GnLc1JqK30uZQ1T1RdabasaJwDdU3EgHTzg
-	Jfg8HlwVwm7QQrVOxKTYwDUuruI0MyaSoEGs+Vj7PiyTb1bT4QLWzA/QxsTkYIP/zs6gzk
-	1hoaNX3uyTHu0UFqE3dL+sF/1DshnSBLFrAI3+E2j7JpBG7p1e/IoD9XhQs+d6rdwnmgSH
-	ERRRrBke0W/AQC0kM+mTZlldEMhV+ccNCKf/AgCp60LkGUtvxfosw94CtUsTgMbTn2bedb
-	RKEWJ9FPTnt+uGYJIEKcWPU3mEw5rzokEnm0MBvFopOyhdnZ7/Con9LVwU23Bw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792652447;
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yl5Q0Yhg+88xllrX1kMC1NiLLtnuA2INxcGfBrE9LpI=;
+	b=dbA+IJmf4k/suoYUrdFptKfzRxSbhEQ7jZiVFdAZ6TrwiDGUw/zysfnHprKtLDoICu+cqD
+	QDWSNiooTP7H5zHoTzA70qVJqnNxH6qviwSQNJtQY2rLGr7S+do91ST07Jg/pHYar0NyBj
+	23BEz/BeroANW/o3lEENWh4+KAEW0v63NPL7PAY0SY0IKdolkDB9A6/nQ42oyJZCs1l814
+	7dlh1dFFW5doJyRWY5x6VajgmcH1PMJR969bEsowy2ffj/h6pQtiZWz7LSOlipczZgVgmr
+	T0Js6QFB2s1gjTiiqr+qrIi+awuIvziaNfNioRNB88zGE8w6rKxwoVeb+u0LZQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1792652501;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g5nsSSjuBClHBx39NqG0kfSc5pljRc11IezXCRfp1Ic=;
-	b=SZwHrfPsuL99dHZQZL0piMR04UZJoEuler4kCfiAQlbnX0NHp67TtQYo1d9wC7h7dTRUFw
-	3qq4vLc4f0wBFa7iDv3NQy5t2LiW3MH6NJUfBCZr305HC9lNxjDCHDrpY8CmRGLVVqwuKW
-	w8kijStDsPVSNG5wEWsk/lkyl3wJrAxnYDDynwQJLIyriVOmVvfrZEPJfgSNGkGfzbdZpT
-	7WtMkKYvQH/fRSkSqk6eHApbSEeX8zKhHTOhw8zWzvC8d58yRG7HR2wLoOGLGCMp65yWpU
-	Qp2Ysiv1/Cib4qbxisi4P8+qUYrWLGrpGfHsjFlOlPducLFxPFiPqPBkjqNBkg==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xJmn9-000fOB-2L;
-	Thu, 22 Oct 2026 09:00:47 +0200
-Received: from pengutronix.de (unknown [IPv6:2a0a:edc0:0:701:97f1:546b:5b0f:c991])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 349905D0AA8;
-	Thu, 22 Oct 2026 07:00:47 +0000 (UTC)
-Date: Thu, 22 Oct 2026 09:00:46 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: "Kumar, Udit" <u-kumar1@ti.com>
-Cc: vigneshr@ti.com, gehariprasath@ti.com, rcsekar@samsung.com, 
-	mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, msp@baylibre.com
-Subject: Re: [PATCH] can: m_can: Implement workaround for errata i2278 and
- i2279
-Message-ID: <20261022-spiked-pigeon-from-mars-3f2786-mkl@pengutronix.de>
-References: <20260514065511.3573223-1-a-dutta@ti.com>
- <20260514-tiny-koel-of-order-65ade7-mkl@pengutronix.de>
- <9787fdc5-8a51-4567-a576-a3b9f4fcc59d@ti.com>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yl5Q0Yhg+88xllrX1kMC1NiLLtnuA2INxcGfBrE9LpI=;
+	b=qa9LZRM6NfQ+MtC/BIOnd6FjneUzpjrFH4DtdbEfuigupMVXcShC/XHmcHLoyn+yJZmVc5
+	1c9R5IhTdN9JcECw==
+Subject: [PATCH net-next v4 0/2] net: stmmac: Fix XSK crashes on stm32mp2
+Date: Thu, 22 Oct 2026 09:01:33 +0200
+Message-Id: <20261022-stmmac_xsk_crashes-v4-0-15c0c750bb96@linutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,51 +68,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ghmookne3nuwdo2i"
-Content-Disposition: inline
-In-Reply-To: <9787fdc5-8a51-4567-a576-a3b9f4fcc59d@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM602WoC/23PwWrDMAwG4FcpPs9DcmyX7rT3GKM4rrx4W5xhu
+ SEj5N3nZKWMkYtASPp+NAumHInF02EWmcbIcUi10Q8H4TuX3kjGS+2FAmXhhFpy6XvnzxN/nH1
+ 23BFLBHc8BovatUbUw69MIU4b+iISFZloKuL1d8LX9p18Wc11t4tchvy95Y+4XdyizF7UiBIko
+ TamCT7U+vwZ07XkIcXp8UJbyKjuDALsM6oy2noLvnVWK9xjmj8MNrtMUxkDwdf/T+CC+s8sy/I
+ DJI/I+GIBAAA=
+X-Change-ID: 20260914-stmmac_xsk_crashes-10a77f614ab5
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ Song Yoong Siang <yoong.siang.song@intel.com>, 
+ Mohd Faizal Abdul Rahim <faizal.abdul.rahim@intel.com>, 
+ Ong Boon Leong <boon.leong.ong@intel.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
+ Kurt Kanzenbach <kurt@linutronix.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1762; i=kurt@linutronix.de;
+ h=from:subject:message-id; bh=CKFc4YQcze+zKieJAJ02zDARwoapA5QsLlCRMkFAJKs=;
+ b=owEBbQKS/ZANAwAKAcGT0fKqRnOCAcsmYgBq2bTU0TnmPz9H28QeFJNjxPJy7hEvZVJVduAF8
+ frD8w3LjDqJAjMEAAEKAB0WIQS8ub+yyMN909/bWZLBk9HyqkZzggUCatm01AAKCRDBk9HyqkZz
+ gqs8D/9rsgS5BD242m5ZHhGynFavy7JQfGNQfvZ3z1nmCZlHSHejvOrfg9VAGHLluF5QRYGdMFi
+ PQxC/pJSTTx6/zSz6KGftJn3qcF5/WkgJcrVv/thIiUJ+m2ISMerEo1cMSMlwvty3vVe7oJRGbm
+ LHPg1dmpcNveiC84UEzwNR5zXS3Z8O4470wGb8xLmhwjm43peFl+9BP6fB231GUB5ziiryJfP/o
+ ShKvGaafWmD720C3xxO5to3TH6Wa6MZI1ZNm24IsoV5pBrozo1vazD7poYtzRBQxPtSDmFvF4O+
+ q71OgXu5AfB6MCOpwO12nNMwDlkeMX7CqPx+cGN6cGgPd0HsSXJq1MZXPNyBKTXD4riNBlhBaAE
+ pQz1YsKxxpx9ZNjFnWtsqz6s/qGAykH16wmH8QX2znKkifInbcu4PiJvuSArqArvde8PFNjy4g4
+ y3pUSIBM/j5ZGleWKW+RGFxIjzSFMYtoW5WzwE9wdI3MYwVPgrjleYaMv9K8oFuOy/EBa2zEgD/
+ dILFswFrE0iOL80LKZVf3PlLe/QKcTLo1OOozzdczDXJfQR3elt993JICMT1XNHjj+U99XPswBl
+ 49uma5Gb1G5BCuKihUCLsFFl1kGkFkZc3W0oDT0VRQxn2iAcNpfOn+qrtytx78vMZe81kQw1+zH
+ hEEgvslF6u/md7w==
+X-Developer-Key: i=kurt@linutronix.de; a=openpgp;
+ fpr=BCB9BFB2C8C37DD3DFDB5992C193D1F2AA467382
 
+Hi,
 
---ghmookne3nuwdo2i
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] can: m_can: Implement workaround for errata i2278 and
- i2279
-MIME-Version: 1.0
+while looking at the TBS thingy [1], I've noticed kernel crashes. That
+happens when opening or closing an AF_XDP/ZC socket while parallel Tx
+traffic is going on.
 
-On 22.10.2026 08:49:22, Kumar, Udit wrote:
-> > The latest Bosch m_can documentation doesn't mention this problem,
-> > neither the TCAN4550 docs. Can this be an integration problem of the SoC
-> > on TI's side?
+So far, I see two issues:
 
-> this is similar to Errata 22 from Bosch
-> Message order inversion when transmitting from dedicated Tx Buffers
-> configured with same Message ID.
-> page-29, release doc REL20210625
+ - Patch #1: stmmac_xdp_release() seems to have the teardown order wrong
+ - Patch #2: stmmac_xdp_(en|dis)able_pool() does not stop the Tx queue
+   at all
 
-Can you give me a link to the Bosch Errata sheet? Do you know if TI's
-tcan4x5x is affected by the erratum?
+The kernel crashes can be reproduced instantly on the stm32mp2 like this:
 
-regards,
-Marc
+ - Run iperf3
+ - Run application which opens an AF_XDP/ZC socket
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+[1] - https://lore.kernel.org/all/20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de/
 
---ghmookne3nuwdo2i
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+---
+Changes in v4:
+- Rebase to net-next (Jakub)
+- Add tags (Nicolai)
+- Link to v3: https://patch.msgid.link/20261013-stmmac_xsk_crashes-v3-0-50fca7790af2@linutronix.de
 
------BEGIN PGP SIGNATURE-----
+Changes in v3:
+- Remove txq_trans_cond_update() (Maciej)
+- Add queue stop check for XDP TX etc. (Nicolai)
+- Add tags (Nicolai and Maxime)
+- Link to v2: https://patch.msgid.link/20261005-stmmac_xsk_crashes-v2-0-46c60cba6421@linutronix.de
 
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatm0mgAKCRDMOmT6rpmt
-0uubAQDF6lnULptj1zzExy4g0Yco4kYq7xT6SwW02f0gkeWykwEA0ZAB6twIeieA
-3RKf/U9c++yRfGVNGdDw0R/ESFWFLAY=
-=Dr6A
------END PGP SIGNATURE-----
+Changes in v2:
+- Remove RFC. No comments.
+- Link to v1: https://patch.msgid.link/20260915-stmmac_xsk_crashes-v1-0-e14553fcf553@linutronix.de
 
---ghmookne3nuwdo2i--
+---
+Kurt Kanzenbach (2):
+      net: stmmac: Disable NAPI before stopping Tx queues in stmmac_xdp_release()
+      net: stmmac: Stop Tx queue when (en|dis)abling XSK pools
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 10 +++++++---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c  | 13 +++++++++++++
+ 2 files changed, 20 insertions(+), 3 deletions(-)
+---
+base-commit: f71ff7d406523748bfb8236830c7eaa6a308aaa1
+change-id: 20260914-stmmac_xsk_crashes-10a77f614ab5
+
+Best regards,
+--  
+Kurt Kanzenbach <kurt@linutronix.de>
+
