@@ -1,46 +1,131 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=12.32.117.8
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792689028;
-	b=AfywCDRZADe3ia5RrjELsst8iNos64tufXjiQ27EL5+BxUEFE4onXWURfEGAed5Ep2lu
-	 8WIvLc+Nd4UjWW0mVM7VhRhA4plXSob61oSOJXVJkUErrPEqImoE1rexE+fJKYiheNWD3
-	 XWKsIaFAQS9cRYUioR4nykZBjLj/f/cPtLGwhA1hg+9I+HV3V/gtaK/0BJ95dQrCYkLwi
-	 W2ZQdfHLBUumNwsGO5ZO3u1KB1WW7bA44f9NJy/J48Zfw6qo7tmmqoLNWTwGeuVXBIgSa
-	 0+GjDZ2yTTUd2WbiFOkJEw2gRhoQJkQ8n8EuxNCkF4f4EusLY420/vNwVyp9xsjpjSg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792689028;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=jyUni9Ogd36X62770ub4Xzk9Dy/vtE1wQbdy1SpAsoU=;
-	b=XofcK5mdLVmEgrMVyLjJe7QqAA7np03EzP5Y929pwrG5Kdpz8NMWQgvYHmxB2Y7dx3Vj
-	 AmHaRiqzJ+gmVwiLrAO49Nt3Sv7dm/r9s12xuRKN+X1rdO/kJT9veETddbGLccvjffc8y
-	 BciP159tDIV0UwzqdBgyUT62u33xVWlr2imUVqR/lyZjL4XkQmI92IUgWk3agVlL0KP3R
-	 TdQXxLig8PGowgZdNTbGVhw7YnyUMxb0i7goKWT2FDGNt4j8Ejb4jzaacMkPW/NWIU40h
-	 zi5JQzu7LsYIu7VP3CdtiMcDMBwdt8XMWLAjNtczLWueSI0/EEMeZCqc0rvz4dy4iJg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chelsio.com;
-	spf=pass smtp.mailfrom=chelsio.com;
-	arc=none smtp.remote-ip=12.32.117.8
-Received: from stargate.chelsio.com (unknown [12.32.117.8])
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.14
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792689018;
+	b=nbdbrouwqup1iwm8DgQpYUO85CGXkPvwTMNfHJf1cH6tffvzaHEimsTZvtm9JOEG4WK1
+	 /tFR2+Wp2bJpfkEDnAVyQqbgGFgOJx/jSWYkUv40x6vXg1SZ1qTqSU2R8uOlzsa/RO+3E
+	 6utS0WsJfJYrwRX8K2qvM/ONQlVN3k0ljnzRJN1e75GgeBMekY7QJ66+bba3QOIz54U2/
+	 i/i/z68Rd5SudMlxXOWNQhFXNZqlCLPHmEenCh5IS5/6jYpj5u5XjAcq7nWa4vcY/LDYB
+	 xCAZdpblFycxn0QNnaQQ55wWKphRdsvDajgWI2F6B/nAWHgqWtR7CMWTvCGfHKZFGnw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792689018;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=szRl2wYjpBQlnh+vOb9NLRFWNgXcdBKmnGcIvjD1E2I=;
+	b=WAev9cLMWDg+KeiNhMC4nTZRuVqa7z/7+iSR3OA2Qd2F4RuWofJfSUWG09z1Gl2oVGFR
+	 8Pc5wxixwG4WKTDF43F+SbiwFQrMd1aInQjgTlgu1D3JAqweK/5BsmFoiX+GXwNhaMgcx
+	 2ABpN7qXch/JhKQarAxfLSX32qEgNjEvCPsGGyHImEQQhcmg6Ghct2DvgUDiqw4CAV8sz
+	 gkq9IVpyHUwhr84Npt7wFzS4H7Gyq+adfklZhf6qTxn9/7J4P3RKZE+RImEseFHVjQOeF
+	 Ehdj4/6F/4L7QqTYWBMIRxMaHsuqt1btTFi+pOb0vkeg0BQk5pIMIsicRqoT5r2Fn2Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eVFi5bAg;
+	arc=fail smtp.remote-ip=192.198.163.14
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDE8606A31E
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:10:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDDE8606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
-Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69MH6Tra025031;
-	Thu, 22 Oct 2026 10:10:15 -0700
-From: Potnuri Bharat Teja <bharat@chelsio.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
-Subject: [PATCH net-next v5 09/12] cxgb4: Add indirect register definitions for T7
-Date: Thu, 22 Oct 2026 22:38:26 -0400
-Message-Id: <20261023023829.1242622-10-bharat@chelsio.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20261023023829.1242622-1-bharat@chelsio.com>
-References: <20261023023829.1242622-1-bharat@chelsio.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B027606A31F;
+	Thu, 22 Oct 2026 17:10:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B027606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eVFi5bAg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1792689019; x=1824225019;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=xkH/BRlpQKywpup9RmazyCw4mpeQgkFgnKl+OcUe3+M=;
+  b=eVFi5bAg76EyWgVaVQRVGT0PGlDdrlf3AeHdVurBM/dOAUkg2RP1DFsx
+   UiyJKMMClMGYCR2TumcU/5SBZfuEDh/y95MwImcrFNm2M2+BHmg+BgMxz
+   6CfmBCtCfkEjsvD3nZDSJ8d5mYxcZs72RqYiR5nWwXvR8BYJuWFn+xFc/
+   g4tP+8QAnHGMTiL1DCDkuH7FgupeTWT30hx/0Xcj895u4s0T87es7Uakk
+   JnQYO213R+MxGDbni+b3DPrVKxJ8T/vGqcOy2MVx9Wcpq8jo+8WPCX3Ot
+   l5G4sYpzHP5MfhmBOq2Jw/uYORurJAqORsnPEgQiG+E7rs8ypcDBMmuE2
+   g==;
+X-CSE-ConnectionGUID: XDs8aL9nRhqo8bNWIhat8Q==
+X-CSE-MsgGUID: 8Ko8+MWWQj2Ewl/lMtt0/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1460192"
+X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
+   d="scan'208";a="1460192"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 10:10:18 -0700
+X-CSE-ConnectionGUID: dkvkhDD8Q5qHZ3YiSLIYtQ==
+X-CSE-MsgGUID: mGpCXpwxQ4eCQMAG3SCiKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
+   d="scan'208";a="3286905"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 10:10:17 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 22 Oct 2026 10:10:16 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Thu, 22 Oct 2026 10:10:16 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.8) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 22 Oct 2026 10:10:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O5oXphzKLT56hC4kBVE8OnDW32VfZB2JtWKc4M3CjUTUgVx0GGm718RZosbaRQ1QO0HcETnfodJPL2Fiop+/FQh2ckIdpxhCEAXr0zesOFFr04Xla3IB3jmkGVztoo34FmCc8XhvzfWlb8/k92xNMjNWFS45AiqPFSDIZneZ5yfMmAv7wIP9WoOvFVzZnLaIph6bxp3b65Q/ThfL3yPi/9kzbIINOPSOVpMMYENuNXTUsG400dU+KkCv1Ejy+D+M20IohXJ5R8wqylAq3rMU7hnXYrOGl6komrYtjuELKXZ3/MNQDQZ1M6Yh89QfwsClTqzf4Vm3POj3ZUhF4wPrVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=szRl2wYjpBQlnh+vOb9NLRFWNgXcdBKmnGcIvjD1E2I=;
+ b=Gh7N80zFurSm1/60KKYJ0hVfEWgdcBqgYtipN2GTYhvGhTMU/weoOLwK7F87oOB1/gaEJiexb7zVFCwq/28UiqdqtBP9YqzrAyaJrrFQ5WN91iCF7I4BUYwMbU5eswJ+BVU2HZlUo9PVdtyNZ3SHXvLR/CuDLdP8RW/AvyRDKaStCCv93BIOSJqSJ4erEH6v54GY9kVFkkAt6bq429ZRCBYTNAMP7XnZJuwAFFZbk++LDML9A/fBf4VBy95TSWWWZ2MNizxe3C6G8PzwdBnIHkCrNHP29MxmwrrghpY+wmey+KCrA+h7i6F6yuGB2SDhzgXsex3+mBt0PhR8fGGtcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
+ SAWPR11MB9709.namprd11.prod.outlook.com (2603:10b6:806:4ca::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.16; Thu, 22 Oct
+ 2026 17:10:14 +0000
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0546.012; Thu, 22 Oct 2026
+ 17:10:14 +0000
+Date: Thu, 22 Oct 2026 19:10:08 +0200
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: Paul Moses <p@1g4.org>
+CC: <netdev@vger.kernel.org>, <magnus.karlsson@intel.com>, <sdf@fomichev.me>,
+	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <bpf@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net] xsk: restore UMEM flags after failed pool assignment
+Message-ID: <atpDcGN3zWhixRj1@boxer>
+References: <20261021224705.2078753-1-p@1g4.org>
+ <atnKf5dNv0Vk1sCo@boxer>
+ <xFs3DcEr8aRQdjIeuzTZ4fmeQ3Ay8_x_94KB387XkLZDamj_rLyn4IGiFdZMi0u69fpiYrPQq9P6o1j_xixC1WbF-tl3JxDLmcMZZkPk70k=@1g4.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <xFs3DcEr8aRQdjIeuzTZ4fmeQ3Ay8_x_94KB387XkLZDamj_rLyn4IGiFdZMi0u69fpiYrPQq9P6o1j_xixC1WbF-tl3JxDLmcMZZkPk70k=@1g4.org>
+X-ClientProxiedBy: WA2PEPF0000089A.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d8::651) To DM4PR11MB6117.namprd11.prod.outlook.com
+ (2603:10b6:8:b3::19)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -50,1193 +135,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|SAWPR11MB9709:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58d3afc8-d146-4c74-1406-08df305f56ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|56012099006|11063799006|4143699003|261021123027099003|261021121427099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: X7en2sWJ5npDLbfPhoDoO8hfU4/JKclkZBGTUb1AXsu+tpaUsnqZNr5l9MSk1QBxlopHYil0I6omzPXNgzBkYdMkvv0L/9XjijWT84JJYNCnSBTIY8ATWSUdlrRxjmi/m8HiV2sAU2br02Q1sHr/d8l6jlu9ibJNZI9sRC8loPx9UiMvVNap7JX2xJ0mUyrrZlTMzTNw852yeM2zIMy90kgoo6vaxOfcfnlTnzN0wr3GGhl5r5fxzl1QqC5ALG+dR3PM36u1Ljlx0vORS+OaFA7awUTdDCSUQC+EaNV4uTdpuBKGwtRcny4M101s5wB8rLGgyjgSNI00YIbvLAu84BKA+BKPrw5aS/oT2Vyc5xEVddXj2J6jYa3haT4tERn3AUbkhF73X+5my821QEHONyFYNNJZevHTD/hde8iCrsBFa7SYZ8NgQP6DheYrqGXV4E+n9dLVk6pa8UmDytTLLBtKgEc6Z+1ZQIimO1+Tvo4AA+tHP63W1/qLqZ9rJRtYj4DC09yZuvAW/9PanB/ypQJaYXtWhEsMPwZRj5lwVS3s19m76ROYazhLi03gFUzJBFRXO7oL6PRRQMm/PLg+9b6gQZuBYWi7aqAJek4Z6WeMjbV6H+J3eNImcIw6Ycv8BeK1jQyaD4qAkdo0nwNYPmUvxjR3Zs6ErZFiSF7YZ2g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(56012099006)(11063799006)(4143699003)(261021123027099003)(261021121427099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?hUCuOGVhNEUKn0Zx/iIqLjr44RvaHSn/lN2zrfHJNHR+SVIrHVs0nruY/S01?=
+ =?us-ascii?Q?n0Sp4UnxHVGvAwiOATdKQeSp2cBY8sleq30XibCj11ssLPL/sE481frXqlvM?=
+ =?us-ascii?Q?aA+LvNEarvvb2XIplmK/f2PYPwaC2tUPGtfYYyktwJmxo1/S1aVGfT5QJ2F/?=
+ =?us-ascii?Q?MMwjXbzyzfKsxcshDBRU88w/IvfRuxzT7xszcYGq9apm3SRbMcve7Sb3xjOx?=
+ =?us-ascii?Q?Opdxz7k9a5id1rgyyylTjhpegwZEKCq1XAZmJFJNQyPIF4FAstwlr5kzwmhw?=
+ =?us-ascii?Q?AWcwaeD8fUXOzNnbkDQIbALL3qhNcqKVA7qqZ/8X/KeHcoebZNqKCyDiQPDz?=
+ =?us-ascii?Q?GA/TaCGi/FmON6V57qg43jgw6M1xl9G3r+5njVNMbfo8GDGv3mQ+Vjnh/ciN?=
+ =?us-ascii?Q?QgfAG8FnMBeb/bQe1z3dF7u/gI4scHn9TtRKfarH3sAG6aAtEBPRwvai1erS?=
+ =?us-ascii?Q?1nZ4xQR8F5G/iF+8VfKt0v5NJ1Iv6eHZaWZw7rLdw839b1AbEsz5lrqYN4Zl?=
+ =?us-ascii?Q?MnjibUJ1R7HG6mgPHmwIW7pkueTBo+ISmtDILYXB8JhJG6oIZW2AeV6spaX6?=
+ =?us-ascii?Q?XJgD2+s44r6/Bjy8L4bfyp5lAHq5lZFSurkJMX0BjG0J21Aiv03IEIkL6igh?=
+ =?us-ascii?Q?GTs0ME8CB0k67ftwQH61NfEFcXgfrhtHAf5CZmx6prSpuDHyH91phH2AkJi3?=
+ =?us-ascii?Q?uB1dE73O3LTGgLWv2oYMMiT0JH9h60XYtODgTFs4wkOgpy1lstAqqhmRT2A8?=
+ =?us-ascii?Q?Ys4/XZgQidmN7tvupWLNT5cjJn9MnLnd/PgJy306epAqBYPQjohuNvGLNstN?=
+ =?us-ascii?Q?MZw3iLnuLfZNdNwyiNp0US/OEwW6Wxnp+J3l6FVYgOmOn7+WIvtucHqF3Tdu?=
+ =?us-ascii?Q?x9VkTDr6pKw1UTEEtu2mjp1RbzU4zP6X183INcHTGuLxKFtWwCTslbfzzNP5?=
+ =?us-ascii?Q?34NPZ7d/l1QKyS1zpPtEvqpnO6NIbQK+Y6A5+YdwQ6wctVKaxVDt51JW+Bps?=
+ =?us-ascii?Q?EbXQdwcYS1FzMs/dYZyRolBCoFAL1mNLGAMibXTU5N6dBUwPZ17og2aX/Va7?=
+ =?us-ascii?Q?J5HEeJnFc4M09vyRhqFRUd3J4stb0Qzv5RNLRyVDRmbg1P7jrtWfZPWtAGmZ?=
+ =?us-ascii?Q?FjXBcle915c44HBnATFaGnpo2IU6mvtrSE3MbheFrQXmfEPJUR398Hq69+NR?=
+ =?us-ascii?Q?8FjGv1xPCd1PXanqDJY0mRRG4el7vBE7quwfr6aXf6/AJkkofEXqMrZR3c8o?=
+ =?us-ascii?Q?u5DmJ4AtQU5s0rfHY4lb76bmPu7G3W4UIUcv+LTQAz4MpAOoT87ySHu5TqFi?=
+ =?us-ascii?Q?qWE/mvST1cnE9xdNM8WGHd8pfCDzK/4Dmw5UeU8iKssZm+4ParYoP/RuKteq?=
+ =?us-ascii?Q?PHN5CNykG4E4AkDwn8rD1wuR6lAhEaI+wasjh59vXVp67PYmnTWf9S3W4ahQ?=
+ =?us-ascii?Q?dCFdBBFJfD5PIY1B6QK3hS3irIwp+39Vg54qRbnfaUbtswc/oDaYQmTKglIT?=
+ =?us-ascii?Q?gCLXG100eICejE7jjn5/r0GWnnm62okfraC8ZUqUK5KjBAjBazL5HkW6rNq0?=
+ =?us-ascii?Q?4a1f16GhGCdQh+oqmE/kZwQNTnByoL2Ukn2OF/EhIKM5JevregnEAn2BNY55?=
+ =?us-ascii?Q?EylbL1ogA3c6uBAmBhfEt8yiKluILwuD1ONtl5ozhix55MQ7ZuWZQerrvX4B?=
+ =?us-ascii?Q?4iCfZIMNZfWV0oVQwSRsflGqYoOMxe5Z9czenKOmao817nAxRYqy4LuoAbcP?=
+ =?us-ascii?Q?/hO5e/zrL0B+SlS4wig76RjrJYcy6PM=3D?=
+X-Exchange-RoutingPolicyChecked: CRb98PhaiBN4+hKWsbI7rUauLTxbdTVUUvC6CGnCL7Z+BzrNA9DmoNrvpSaQ6mj/BXEzLsLFI3M4nlwADLBqYaaIQnfV/071clbBMJLBD9hZIuxTkrCXCDy1e279RGUNXPtWgV6/sEduMGCSNW+m2uav1OpveT3MNUOvKwa7tpECAZ+wdDACxNHE1QTeyfkgNalOsiu0IUCgh+gUbwm8ip65/LSQwZTX4pIyeJ/X76zoLDEB0dSU+PImzg6uI2csGws7YOK5WnIGTVVImubhIeTMf4pWh6Qe2QYepspKKRwO1QDiLi+uIXx0koCApofoGo+6v8hXsFcV1fIBKV8VYw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58d3afc8-d146-4c74-1406-08df305f56ca
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 17:10:14.7610
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Tmsvbc+tBuOCJKlhyvcIZE2gnSdONVdsPZXDczCAQXG+B/tfz8GM1gz5hz+LRJ4YdqWZYMxMUkJVqsBQgRPC1y4tD3LlIOjzOi3JtyUoJCQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR11MB9709
+X-OriginatorOrg: intel.com
 
-Add indirect register definition headers used by the CUDBG
-infrastructure.
+On Thu, Oct 22, 2026 at 04:55:59PM +0000, Paul Moses wrote:
+> On Thursday, October 22nd, 2026 at 3:34 AM, Maciej Fijalkowski <maciej.fijalkowski@intel.com> wrote:
+> 
+> > On Wed, Oct 21, 2026 at 10:47:33PM +0000, Paul Moses wrote:
+> > > xp_assign_dev() sets XDP_UMEM_SG_FLAG before checking whether the
+> > > device supports multibuffer zero-copy. If assignment fails, xsk_bind()
+> > > destroys the pool but retains the registered UMEM. A subsequent bind
+> > > without XDP_USE_SG inherits the stale flag.
+> >
+> > so you opened a socket, tried binding with XDP_USE_SG, failed then retried
+> > without the flag and you noticed unexpected rx frame size due to kept
+> > XDP_UMEM_SG_FLAG - do i get this right?
+> >
+> > socket not being closed kept the umem alive...
+> >
+> > >
+> > > The flag also changes RX buffer sizing after DMA mapping. On igc, a
+> > > failed SG bind followed by a non-SG retry with 4096-byte chunks and
+> > > 1792 bytes of headroom passes admission with 2048 bytes, but programs
+> > > a 1024-byte RX buffer. On I225-V hardware, an ordinary 1514-byte frame
+> > > is truncated to 1024 bytes or 1008 with RX timestamps enabled.
+> > > Restoring the original flags eliminates the truncation in both cases.
+> >
+> > It should be enough to state that sg flag presence takes into account
+> > tailroom size and therefore has influence on final rx frame size provided
+> > to driver.
+> >
+> > >
+> > > Save the UMEM flags before assignment and restore them on failure.
+> >
+> > Regarding the patch content:
+> > Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+> >
+> > >
+> > > Fixes: d609f3d228a8 ("xsk: add multi-buffer support for sockets sharing umem")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Paul Moses <p@1g4.org>
+> > > ---
+> > >  net/xdp/xsk_buff_pool.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > >
+> > > diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+> > > index 0ebd4d46f7ab..7750d2ec4ee2 100644
+> > > --- a/net/xdp/xsk_buff_pool.c
+> > > +++ b/net/xdp/xsk_buff_pool.c
+> > > @@ -166,6 +166,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+> > >  {
+> > >  	u32 needed = netdev->mtu + ETH_PAD_LEN;
+> > >  	u32 segs = netdev->xdp_zc_max_segs;
+> > > +	u8 umem_flags = pool->umem->flags;
+> > >  	bool mbuf = flags & XDP_USE_SG;
+> > >  	bool force_zc, force_copy;
+> > >  	struct netdev_bpf bpf;
+> > > @@ -268,6 +269,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+> > >  	if (!force_zc)
+> > >  		err = 0; /* fallback to copy mode */
+> > >  	if (err) {
+> > > +		pool->umem->flags = umem_flags;
+> > >  		xsk_clear_pool_at_qid(netdev, queue_id);
+> > >  		hlist_del(&pool->dev_node);
+> > >  		pool->netdev = NULL;
+> > >
+> > > --
+> > > 2.56.GIT
+> > >
+> > >
+> >
+> 
+> Right, evidence suggests igc handles it gracefully, I had attempted 
+> to provide multiple examples of real world impact to satiate Sashiko,
+> but only igc survived final edit. It needs to be open for the failed 
+> bind and successful retry, it can be closed after and bad state 
+> remains. If you're looking for greater impact, look at stmmac. I'll
+> send out a v2 without naming drivers specifically soon.
 
-Introduce cudbg_indir_reg.h and cudbg_indir_reg_t7.h containing the
-indirect registers required for cudbg register collection.
-
-These headers will be used by subsequent patch that add indirect
-register handling support to cudbg.
-
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
----
- .../ethernet/chelsio/cxgb4/cudbg_indir_reg.h  |   43 +
- .../chelsio/cxgb4/cudbg_indir_reg_t7.h        | 1113 +++++++++++++++++
- 2 files changed, 1156 insertions(+)
- create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
- create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
-
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
-new file mode 100644
-index 000000000000..a33e003c78d5
---- /dev/null
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
-@@ -0,0 +1,43 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
-+ */
-+
-+#ifndef __CUDBG_INDIR_REG_H__
-+#define __CUDBG_INDIR_REG_H__
-+
-+enum cudbg_indir_type {
-+	CUDBG_INDIR_TYPE_CIM_CTL,
-+	CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL,
-+	CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL,
-+	CUDBG_INDIR_TYPE_TP_MIB_INDEX,
-+	CUDBG_INDIR_TYPE_TP_PIO_ADDR,
-+	CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR,
-+	CUDBG_INDIR_TYPE_UP,
-+	CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG,
-+	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG,
-+	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG,
-+	CUDBG_INDIR_TYPE_MAX, /* New members need to be added at end */
-+};
-+
-+struct cudbg_indir_reg {
-+	u32 addr;
-+};
-+
-+struct cudbg_indir_type_entry {
-+	struct cudbg_indir_reg *reg_arr;
-+	u32 nentries;
-+};
-+
-+#include "cudbg_indir_reg_t7.h"
-+
-+static inline struct cudbg_indir_type_entry *
-+cudbg_get_indir_reg_info(u32 chip_ver, enum cudbg_indir_type type)
-+{
-+	if (chip_ver >= CHELSIO_T7)
-+		return &t7_indir_type_arr[type];
-+
-+	return NULL;
-+}
-+
-+#endif /* __CUDBG_INDIR_REG_H__ */
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
-new file mode 100644
-index 000000000000..a246009ffb8d
---- /dev/null
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
-@@ -0,0 +1,1113 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
-+ */
-+
-+#ifndef __CUDBG_INDIR_REG_T7_H__
-+#define __CUDBG_INDIR_REG_T7_H__
-+
-+static struct cudbg_indir_reg t7_cim_ctl[82] = {
-+	{ .addr = 0x2000 },
-+	{ .addr = 0x2040 },
-+	{ .addr = 0x2044 },
-+	{ .addr = 0x2050 },
-+	{ .addr = 0x2054 },
-+	{ .addr = 0x2060 },
-+	{ .addr = 0x2064 },
-+	{ .addr = 0x2068 },
-+	{ .addr = 0x206c },
-+	{ .addr = 0x2094 },
-+	{ .addr = 0x2098 },
-+	{ .addr = 0x209c },
-+	{ .addr = 0x20a0 },
-+	{ .addr = 0x20a4 },
-+	{ .addr = 0x20a8 },
-+	{ .addr = 0x20ac },
-+	{ .addr = 0x20b0 },
-+	{ .addr = 0x20b4 },
-+	{ .addr = 0x20b8 },
-+	{ .addr = 0x20bc },
-+	{ .addr = 0x20c0 },
-+	{ .addr = 0x20c4 },
-+	{ .addr = 0x20c8 },
-+	{ .addr = 0x20cc },
-+	{ .addr = 0x20d0 },
-+	{ .addr = 0x20e0 },
-+	{ .addr = 0x20e4 },
-+	{ .addr = 0x20e8 },
-+	{ .addr = 0x20ec },
-+	{ .addr = 0x20f0 },
-+	{ .addr = 0x20f4 },
-+	{ .addr = 0x20f8 },
-+	{ .addr = 0x20fc },
-+	{ .addr = 0x2500 },
-+	{ .addr = 0x2504 },
-+	{ .addr = 0x2508 },
-+	{ .addr = 0x250c },
-+	{ .addr = 0x2510 },
-+	{ .addr = 0x2514 },
-+	{ .addr = 0x2518 },
-+	{ .addr = 0x251c },
-+	{ .addr = 0x2520 },
-+	{ .addr = 0x2524 },
-+	{ .addr = 0x2528 },
-+	{ .addr = 0x252c },
-+	{ .addr = 0x2530 },
-+	{ .addr = 0x2534 },
-+	{ .addr = 0x2538 },
-+	{ .addr = 0x253c },
-+	{ .addr = 0x2540 },
-+	{ .addr = 0x2600 },
-+	{ .addr = 0x2604 },
-+	{ .addr = 0x2608 },
-+	{ .addr = 0x260c },
-+	{ .addr = 0x2610 },
-+	{ .addr = 0x2614 },
-+	{ .addr = 0x2618 },
-+	{ .addr = 0x261c },
-+	{ .addr = 0x2620 },
-+	{ .addr = 0x2624 },
-+	{ .addr = 0x2628 },
-+	{ .addr = 0x262c },
-+	{ .addr = 0x2630 },
-+	{ .addr = 0x2634 },
-+	{ .addr = 0x2638 },
-+	{ .addr = 0x263c },
-+	{ .addr = 0x2640 },
-+	{ .addr = 0x26fc },
-+	{ .addr = 0x2700 },
-+	{ .addr = 0x2704 },
-+	{ .addr = 0x2708 },
-+	{ .addr = 0x270c },
-+	{ .addr = 0x2710 },
-+	{ .addr = 0x2714 },
-+	{ .addr = 0x2718 },
-+	{ .addr = 0x271c },
-+	{ .addr = 0x2720 },
-+	{ .addr = 0x2724 },
-+	{ .addr = 0x2728 },
-+	{ .addr = 0x2780 },
-+	{ .addr = 0x2784 },
-+	{ .addr = 0x2788 },
-+};
-+
-+static struct cudbg_indir_reg t7_hmat6_local_debug_cfg[32] = {
-+	{ .addr = 0xa000 },
-+	{ .addr = 0xa001 },
-+	{ .addr = 0xa002 },
-+	{ .addr = 0xa003 },
-+	{ .addr = 0xa004 },
-+	{ .addr = 0xa005 },
-+	{ .addr = 0xa006 },
-+	{ .addr = 0xa007 },
-+	{ .addr = 0xa008 },
-+	{ .addr = 0xa009 },
-+	{ .addr = 0xa00a },
-+	{ .addr = 0xa00b },
-+	{ .addr = 0xa00c },
-+	{ .addr = 0xa00d },
-+	{ .addr = 0xa00e },
-+	{ .addr = 0xa00f },
-+	{ .addr = 0xa010 },
-+	{ .addr = 0xa011 },
-+	{ .addr = 0xa012 },
-+	{ .addr = 0xa013 },
-+	{ .addr = 0xa014 },
-+	{ .addr = 0xa015 },
-+	{ .addr = 0xa016 },
-+	{ .addr = 0xa017 },
-+	{ .addr = 0xa018 },
-+	{ .addr = 0xa019 },
-+	{ .addr = 0xa01a },
-+	{ .addr = 0xa01b },
-+	{ .addr = 0xa01c },
-+	{ .addr = 0xa01d },
-+	{ .addr = 0xa01e },
-+	{ .addr = 0xa01f },
-+};
-+
-+static struct cudbg_indir_reg t7_ma_local_debug_cfg[238] = {
-+	{ .addr = 0xa000 },
-+	{ .addr = 0xa001 },
-+	{ .addr = 0xa002 },
-+	{ .addr = 0xa003 },
-+	{ .addr = 0xa004 },
-+	{ .addr = 0xa005 },
-+	{ .addr = 0xa006 },
-+	{ .addr = 0xa007 },
-+	{ .addr = 0xa008 },
-+	{ .addr = 0xa009 },
-+	{ .addr = 0xa00a },
-+	{ .addr = 0xa00b },
-+	{ .addr = 0xa00c },
-+	{ .addr = 0xa00d },
-+	{ .addr = 0xa00e },
-+	{ .addr = 0xa00f },
-+	{ .addr = 0xa010 },
-+	{ .addr = 0xa011 },
-+	{ .addr = 0xa012 },
-+	{ .addr = 0xa013 },
-+	{ .addr = 0xa014 },
-+	{ .addr = 0xa015 },
-+	{ .addr = 0xa016 },
-+	{ .addr = 0xa400 },
-+	{ .addr = 0xa401 },
-+	{ .addr = 0xa402 },
-+	{ .addr = 0xa403 },
-+	{ .addr = 0xa404 },
-+	{ .addr = 0xa405 },
-+	{ .addr = 0xa406 },
-+	{ .addr = 0xa407 },
-+	{ .addr = 0xa408 },
-+	{ .addr = 0xa409 },
-+	{ .addr = 0xa40a },
-+	{ .addr = 0xa40b },
-+	{ .addr = 0xa40c },
-+	{ .addr = 0xa40d },
-+	{ .addr = 0xa40e },
-+	{ .addr = 0xa40f },
-+	{ .addr = 0xa410 },
-+	{ .addr = 0xa412 },
-+	{ .addr = 0xa413 },
-+	{ .addr = 0xa414 },
-+	{ .addr = 0xa415 },
-+	{ .addr = 0xa416 },
-+	{ .addr = 0xa417 },
-+	{ .addr = 0xa418 },
-+	{ .addr = 0xa419 },
-+	{ .addr = 0xa41a },
-+	{ .addr = 0xa41b },
-+	{ .addr = 0xa41c },
-+	{ .addr = 0xa41d },
-+	{ .addr = 0xa41e },
-+	{ .addr = 0xa800 },
-+	{ .addr = 0xa801 },
-+	{ .addr = 0xa802 },
-+	{ .addr = 0xa803 },
-+	{ .addr = 0xa804 },
-+	{ .addr = 0xa805 },
-+	{ .addr = 0xa806 },
-+	{ .addr = 0xa807 },
-+	{ .addr = 0xa808 },
-+	{ .addr = 0xa809 },
-+	{ .addr = 0xa80a },
-+	{ .addr = 0xa80b },
-+	{ .addr = 0xa80c },
-+	{ .addr = 0xa80d },
-+	{ .addr = 0xa80e },
-+	{ .addr = 0xa80f },
-+	{ .addr = 0xa810 },
-+	{ .addr = 0xa811 },
-+	{ .addr = 0xa812 },
-+	{ .addr = 0xa813 },
-+	{ .addr = 0xac00 },
-+	{ .addr = 0xac01 },
-+	{ .addr = 0xac02 },
-+	{ .addr = 0xac03 },
-+	{ .addr = 0xac04 },
-+	{ .addr = 0xac05 },
-+	{ .addr = 0xac06 },
-+	{ .addr = 0xac07 },
-+	{ .addr = 0xac08 },
-+	{ .addr = 0xac09 },
-+	{ .addr = 0xac0a },
-+	{ .addr = 0xac0b },
-+	{ .addr = 0xac0c },
-+	{ .addr = 0xac0d },
-+	{ .addr = 0xac0e },
-+	{ .addr = 0xac0f },
-+	{ .addr = 0xac10 },
-+	{ .addr = 0xac11 },
-+	{ .addr = 0xac12 },
-+	{ .addr = 0xac13 },
-+	{ .addr = 0xac14 },
-+	{ .addr = 0xac15 },
-+	{ .addr = 0xac16 },
-+	{ .addr = 0xac17 },
-+	{ .addr = 0xac18 },
-+	{ .addr = 0xac19 },
-+	{ .addr = 0xb000 },
-+	{ .addr = 0xb001 },
-+	{ .addr = 0xb002 },
-+	{ .addr = 0xb003 },
-+	{ .addr = 0xb004 },
-+	{ .addr = 0xb005 },
-+	{ .addr = 0xb006 },
-+	{ .addr = 0xb007 },
-+	{ .addr = 0xb008 },
-+	{ .addr = 0xb009 },
-+	{ .addr = 0xb00a },
-+	{ .addr = 0xb00b },
-+	{ .addr = 0xb00c },
-+	{ .addr = 0xb00d },
-+	{ .addr = 0xb00e },
-+	{ .addr = 0xb00f },
-+	{ .addr = 0xb010 },
-+	{ .addr = 0xb011 },
-+	{ .addr = 0xb012 },
-+	{ .addr = 0xb013 },
-+	{ .addr = 0xb014 },
-+	{ .addr = 0xb015 },
-+	{ .addr = 0xb016 },
-+	{ .addr = 0xb017 },
-+	{ .addr = 0xb018 },
-+	{ .addr = 0xb019 },
-+	{ .addr = 0xb400 },
-+	{ .addr = 0xb401 },
-+	{ .addr = 0xb402 },
-+	{ .addr = 0xb403 },
-+	{ .addr = 0xb404 },
-+	{ .addr = 0xb405 },
-+	{ .addr = 0xb406 },
-+	{ .addr = 0xb407 },
-+	{ .addr = 0xb408 },
-+	{ .addr = 0xb409 },
-+	{ .addr = 0xb40a },
-+	{ .addr = 0xb40b },
-+	{ .addr = 0xb40c },
-+	{ .addr = 0xb40d },
-+	{ .addr = 0xb40e },
-+	{ .addr = 0xb40f },
-+	{ .addr = 0xb410 },
-+	{ .addr = 0xb411 },
-+	{ .addr = 0xb412 },
-+	{ .addr = 0xb413 },
-+	{ .addr = 0xb414 },
-+	{ .addr = 0xb415 },
-+	{ .addr = 0xb416 },
-+	{ .addr = 0xb417 },
-+	{ .addr = 0xb418 },
-+	{ .addr = 0xb419 },
-+	{ .addr = 0xe400 },
-+	{ .addr = 0xe420 },
-+	{ .addr = 0xe440 },
-+	{ .addr = 0xe460 },
-+	{ .addr = 0xe480 },
-+	{ .addr = 0xe4a0 },
-+	{ .addr = 0xe4c0 },
-+	{ .addr = 0xe4e0 },
-+	{ .addr = 0xe500 },
-+	{ .addr = 0xe520 },
-+	{ .addr = 0xe540 },
-+	{ .addr = 0xe560 },
-+	{ .addr = 0xe580 },
-+	{ .addr = 0xe5a0 },
-+	{ .addr = 0xe5c0 },
-+	{ .addr = 0xe5e0 },
-+	{ .addr = 0xe600 },
-+	{ .addr = 0xe640 },
-+	{ .addr = 0xe660 },
-+	{ .addr = 0xe680 },
-+	{ .addr = 0xe6a0 },
-+	{ .addr = 0xe6c0 },
-+	{ .addr = 0xe6e0 },
-+	{ .addr = 0xe700 },
-+	{ .addr = 0xe720 },
-+	{ .addr = 0xe740 },
-+	{ .addr = 0xe760 },
-+	{ .addr = 0xe780 },
-+	{ .addr = 0xe7a0 },
-+	{ .addr = 0xe7c0 },
-+	{ .addr = 0xe800 },
-+	{ .addr = 0xe820 },
-+	{ .addr = 0xe840 },
-+	{ .addr = 0xe860 },
-+	{ .addr = 0xe880 },
-+	{ .addr = 0xe8a0 },
-+	{ .addr = 0xe8c0 },
-+	{ .addr = 0xe8e0 },
-+	{ .addr = 0xe900 },
-+	{ .addr = 0xe920 },
-+	{ .addr = 0xe940 },
-+	{ .addr = 0xe960 },
-+	{ .addr = 0xe980 },
-+	{ .addr = 0xe9a0 },
-+	{ .addr = 0xe9c0 },
-+	{ .addr = 0xe9e0 },
-+	{ .addr = 0xec00 },
-+	{ .addr = 0xec20 },
-+	{ .addr = 0xec40 },
-+	{ .addr = 0xec60 },
-+	{ .addr = 0xec80 },
-+	{ .addr = 0xeca0 },
-+	{ .addr = 0xecc0 },
-+	{ .addr = 0xece0 },
-+	{ .addr = 0xed00 },
-+	{ .addr = 0xed20 },
-+	{ .addr = 0xed40 },
-+	{ .addr = 0xed60 },
-+	{ .addr = 0xed80 },
-+	{ .addr = 0xeda0 },
-+	{ .addr = 0xedc0 },
-+	{ .addr = 0xede0 },
-+	{ .addr = 0xee00 },
-+	{ .addr = 0xee20 },
-+	{ .addr = 0xee40 },
-+	{ .addr = 0xee60 },
-+	{ .addr = 0xee80 },
-+	{ .addr = 0xeea0 },
-+	{ .addr = 0xeec0 },
-+	{ .addr = 0xeee0 },
-+	{ .addr = 0xef00 },
-+	{ .addr = 0xef20 },
-+	{ .addr = 0xf000 },
-+	{ .addr = 0xf020 },
-+	{ .addr = 0xf040 },
-+	{ .addr = 0xf100 },
-+	{ .addr = 0xf101 },
-+	{ .addr = 0xf102 },
-+	{ .addr = 0xf103 },
-+	{ .addr = 0xf104 },
-+	{ .addr = 0xf105 },
-+	{ .addr = 0xf106 },
-+	{ .addr = 0xf107 },
-+	{ .addr = 0xf108 },
-+	{ .addr = 0xf120 },
-+	{ .addr = 0xf140 },
-+	{ .addr = 0xf160 },
-+};
-+
-+static struct cudbg_indir_reg t7_ma_local_debug_perf_cfg[4] = {
-+	{ .addr = 0xa000 },
-+	{ .addr = 0xa1e0 },
-+	{ .addr = 0xe000 },
-+	{ .addr = 0xe1e0 },
-+};
-+
-+static struct cudbg_indir_reg t7_pm_rx_dbg_ctrl[57] = {
-+	{ .addr = 0x10013 },
-+	{ .addr = 0x10014 },
-+	{ .addr = 0x10015 },
-+	{ .addr = 0x10016 },
-+	{ .addr = 0x10019 },
-+	{ .addr = 0x1001a },
-+	{ .addr = 0x1001b },
-+	{ .addr = 0x1001c },
-+	{ .addr = 0x1001d },
-+	{ .addr = 0x10020 },
-+	{ .addr = 0x10021 },
-+	{ .addr = 0x10022 },
-+	{ .addr = 0x10023 },
-+	{ .addr = 0x10024 },
-+	{ .addr = 0x10025 },
-+	{ .addr = 0x10026 },
-+	{ .addr = 0x10027 },
-+	{ .addr = 0x10028 },
-+	{ .addr = 0x10029 },
-+	{ .addr = 0x1002a },
-+	{ .addr = 0x1002b },
-+	{ .addr = 0x1002c },
-+	{ .addr = 0x1002d },
-+	{ .addr = 0x1002e },
-+	{ .addr = 0x1002f },
-+	{ .addr = 0x10030 },
-+	{ .addr = 0x10031 },
-+	{ .addr = 0x10032 },
-+	{ .addr = 0x10033 },
-+	{ .addr = 0x10034 },
-+	{ .addr = 0x10035 },
-+	{ .addr = 0x10036 },
-+	{ .addr = 0x10037 },
-+	{ .addr = 0x10038 },
-+	{ .addr = 0x10039 },
-+	{ .addr = 0x1003a },
-+	{ .addr = 0x1003b },
-+	{ .addr = 0x1003c },
-+	{ .addr = 0x1003d },
-+	{ .addr = 0x1003e },
-+	{ .addr = 0x10049 },
-+	{ .addr = 0x10060 },
-+	{ .addr = 0x10061 },
-+	{ .addr = 0x10062 },
-+	{ .addr = 0x10063 },
-+	{ .addr = 0x10070 },
-+	{ .addr = 0x10071 },
-+	{ .addr = 0x10072 },
-+	{ .addr = 0x10073 },
-+	{ .addr = 0x10074 },
-+	{ .addr = 0x10075 },
-+	{ .addr = 0x10076 },
-+	{ .addr = 0x10077 },
-+	{ .addr = 0x10078 },
-+	{ .addr = 0x10080 },
-+	{ .addr = 0x10081 },
-+	{ .addr = 0x10082 },
-+};
-+
-+static struct cudbg_indir_reg t7_pm_tx_dbg_ctrl[38] = {
-+	{ .addr = 0x10000 },
-+	{ .addr = 0x10001 },
-+	{ .addr = 0x10002 },
-+	{ .addr = 0x10003 },
-+	{ .addr = 0x10004 },
-+	{ .addr = 0x10005 },
-+	{ .addr = 0x10006 },
-+	{ .addr = 0x10007 },
-+	{ .addr = 0x10008 },
-+	{ .addr = 0x10009 },
-+	{ .addr = 0x1000a },
-+	{ .addr = 0x1000b },
-+	{ .addr = 0x1000c },
-+	{ .addr = 0x1000d },
-+	{ .addr = 0x1000e },
-+	{ .addr = 0x1000f },
-+	{ .addr = 0x10010 },
-+	{ .addr = 0x10011 },
-+	{ .addr = 0x10012 },
-+	{ .addr = 0x10013 },
-+	{ .addr = 0x10014 },
-+	{ .addr = 0x10015 },
-+	{ .addr = 0x10016 },
-+	{ .addr = 0x10017 },
-+	{ .addr = 0x10018 },
-+	{ .addr = 0x10019 },
-+	{ .addr = 0x1001a },
-+	{ .addr = 0x1001b },
-+	{ .addr = 0x1001c },
-+	{ .addr = 0x1001d },
-+	{ .addr = 0x1001e },
-+	{ .addr = 0x1001f },
-+	{ .addr = 0x10020 },
-+	{ .addr = 0x10021 },
-+	{ .addr = 0x10022 },
-+	{ .addr = 0x10023 },
-+	{ .addr = 0x10024 },
-+	{ .addr = 0x10025 },
-+};
-+
-+static struct cudbg_indir_reg t7_tp_mib_index[130] = {
-+	{ .addr = 0x0 },
-+	{ .addr = 0x1 },
-+	{ .addr = 0x2 },
-+	{ .addr = 0x3 },
-+	{ .addr = 0x4 },
-+	{ .addr = 0x5 },
-+	{ .addr = 0x6 },
-+	{ .addr = 0x7 },
-+	{ .addr = 0x8 },
-+	{ .addr = 0x9 },
-+	{ .addr = 0xa },
-+	{ .addr = 0xb },
-+	{ .addr = 0xc },
-+	{ .addr = 0x10 },
-+	{ .addr = 0x11 },
-+	{ .addr = 0x12 },
-+	{ .addr = 0x13 },
-+	{ .addr = 0x14 },
-+	{ .addr = 0x15 },
-+	{ .addr = 0x18 },
-+	{ .addr = 0x19 },
-+	{ .addr = 0x1a },
-+	{ .addr = 0x1b },
-+	{ .addr = 0x1c },
-+	{ .addr = 0x1d },
-+	{ .addr = 0x1e },
-+	{ .addr = 0x1f },
-+	{ .addr = 0x20 },
-+	{ .addr = 0x21 },
-+	{ .addr = 0x22 },
-+	{ .addr = 0x23 },
-+	{ .addr = 0x24 },
-+	{ .addr = 0x25 },
-+	{ .addr = 0x26 },
-+	{ .addr = 0x27 },
-+	{ .addr = 0x28 },
-+	{ .addr = 0x29 },
-+	{ .addr = 0x2a },
-+	{ .addr = 0x2b },
-+	{ .addr = 0x2c },
-+	{ .addr = 0x30 },
-+	{ .addr = 0x31 },
-+	{ .addr = 0x32 },
-+	{ .addr = 0x33 },
-+	{ .addr = 0x34 },
-+	{ .addr = 0x35 },
-+	{ .addr = 0x36 },
-+	{ .addr = 0x37 },
-+	{ .addr = 0x38 },
-+	{ .addr = 0x39 },
-+	{ .addr = 0x3a },
-+	{ .addr = 0x3b },
-+	{ .addr = 0x3c },
-+	{ .addr = 0x3d },
-+	{ .addr = 0x3e },
-+	{ .addr = 0x3f },
-+	{ .addr = 0x40 },
-+	{ .addr = 0x41 },
-+	{ .addr = 0x42 },
-+	{ .addr = 0x43 },
-+	{ .addr = 0x44 },
-+	{ .addr = 0x45 },
-+	{ .addr = 0x46 },
-+	{ .addr = 0x47 },
-+	{ .addr = 0x48 },
-+	{ .addr = 0x49 },
-+	{ .addr = 0x4a },
-+	{ .addr = 0x4b },
-+	{ .addr = 0x4c },
-+	{ .addr = 0x4d },
-+	{ .addr = 0x4e },
-+	{ .addr = 0x4f },
-+	{ .addr = 0x50 },
-+	{ .addr = 0x51 },
-+	{ .addr = 0x52 },
-+	{ .addr = 0x53 },
-+	{ .addr = 0x54 },
-+	{ .addr = 0x55 },
-+	{ .addr = 0x56 },
-+	{ .addr = 0x57 },
-+	{ .addr = 0x58 },
-+	{ .addr = 0x59 },
-+	{ .addr = 0x5a },
-+	{ .addr = 0x5b },
-+	{ .addr = 0x5c },
-+	{ .addr = 0x5d },
-+	{ .addr = 0x5e },
-+	{ .addr = 0x5f },
-+	{ .addr = 0x60 },
-+	{ .addr = 0x61 },
-+	{ .addr = 0x62 },
-+	{ .addr = 0x63 },
-+	{ .addr = 0x64 },
-+	{ .addr = 0x65 },
-+	{ .addr = 0x68 },
-+	{ .addr = 0x69 },
-+	{ .addr = 0x6a },
-+	{ .addr = 0x6b },
-+	{ .addr = 0x6c },
-+	{ .addr = 0x6d },
-+	{ .addr = 0x6e },
-+	{ .addr = 0x6f },
-+	{ .addr = 0x70 },
-+	{ .addr = 0x71 },
-+	{ .addr = 0x72 },
-+	{ .addr = 0x73 },
-+	{ .addr = 0x80 },
-+	{ .addr = 0x81 },
-+	{ .addr = 0x82 },
-+	{ .addr = 0x83 },
-+	{ .addr = 0x84 },
-+	{ .addr = 0x85 },
-+	{ .addr = 0x86 },
-+	{ .addr = 0x87 },
-+	{ .addr = 0x88 },
-+	{ .addr = 0x89 },
-+	{ .addr = 0x8a },
-+	{ .addr = 0x8b },
-+	{ .addr = 0x90 },
-+	{ .addr = 0x91 },
-+	{ .addr = 0x92 },
-+	{ .addr = 0x93 },
-+	{ .addr = 0x94 },
-+	{ .addr = 0x95 },
-+	{ .addr = 0x96 },
-+	{ .addr = 0x97 },
-+	{ .addr = 0x98 },
-+	{ .addr = 0x99 },
-+	{ .addr = 0x9a },
-+	{ .addr = 0x9b },
-+};
-+
-+static struct cudbg_indir_reg t7_tp_pio_addr[191] = {
-+	{ .addr = 0x1c },
-+	{ .addr = 0x1d },
-+	{ .addr = 0x1e },
-+	{ .addr = 0x1f },
-+	{ .addr = 0x20 },
-+	{ .addr = 0x21 },
-+	{ .addr = 0x22 },
-+	{ .addr = 0x23 },
-+	{ .addr = 0x24 },
-+	{ .addr = 0x25 },
-+	{ .addr = 0x26 },
-+	{ .addr = 0x27 },
-+	{ .addr = 0x28 },
-+	{ .addr = 0x29 },
-+	{ .addr = 0x2a },
-+	{ .addr = 0x2b },
-+	{ .addr = 0x2c },
-+	{ .addr = 0x2d },
-+	{ .addr = 0x2e },
-+	{ .addr = 0x2f },
-+	{ .addr = 0x30 },
-+	{ .addr = 0x31 },
-+	{ .addr = 0x32 },
-+	{ .addr = 0x33 },
-+	{ .addr = 0x34 },
-+	{ .addr = 0x35 },
-+	{ .addr = 0x36 },
-+	{ .addr = 0x37 },
-+	{ .addr = 0x38 },
-+	{ .addr = 0x39 },
-+	{ .addr = 0x3a },
-+	{ .addr = 0x3b },
-+	{ .addr = 0x40 },
-+	{ .addr = 0x41 },
-+	{ .addr = 0x42 },
-+	{ .addr = 0x43 },
-+	{ .addr = 0x44 },
-+	{ .addr = 0x45 },
-+	{ .addr = 0x46 },
-+	{ .addr = 0x47 },
-+	{ .addr = 0x48 },
-+	{ .addr = 0x49 },
-+	{ .addr = 0x50 },
-+	{ .addr = 0x51 },
-+	{ .addr = 0x52 },
-+	{ .addr = 0x53 },
-+	{ .addr = 0x54 },
-+	{ .addr = 0x55 },
-+	{ .addr = 0x56 },
-+	{ .addr = 0x57 },
-+	{ .addr = 0x58 },
-+	{ .addr = 0x59 },
-+	{ .addr = 0x60 },
-+	{ .addr = 0x61 },
-+	{ .addr = 0x62 },
-+	{ .addr = 0x63 },
-+	{ .addr = 0x64 },
-+	{ .addr = 0x65 },
-+	{ .addr = 0x66 },
-+	{ .addr = 0x67 },
-+	{ .addr = 0x68 },
-+	{ .addr = 0x69 },
-+	{ .addr = 0x6a },
-+	{ .addr = 0x6b },
-+	{ .addr = 0x6c },
-+	{ .addr = 0x6d },
-+	{ .addr = 0x6f },
-+	{ .addr = 0x70 },
-+	{ .addr = 0x71 },
-+	{ .addr = 0x72 },
-+	{ .addr = 0x73 },
-+	{ .addr = 0x74 },
-+	{ .addr = 0x75 },
-+	{ .addr = 0x80 },
-+	{ .addr = 0x81 },
-+	{ .addr = 0x82 },
-+	{ .addr = 0x83 },
-+	{ .addr = 0x84 },
-+	{ .addr = 0x85 },
-+	{ .addr = 0x86 },
-+	{ .addr = 0x87 },
-+	{ .addr = 0x88 },
-+	{ .addr = 0x89 },
-+	{ .addr = 0x8a },
-+	{ .addr = 0x8b },
-+	{ .addr = 0x8c },
-+	{ .addr = 0x8d },
-+	{ .addr = 0x8e },
-+	{ .addr = 0x8f },
-+	{ .addr = 0x90 },
-+	{ .addr = 0x91 },
-+	{ .addr = 0x92 },
-+	{ .addr = 0x93 },
-+	{ .addr = 0x94 },
-+	{ .addr = 0x95 },
-+	{ .addr = 0x96 },
-+	{ .addr = 0x97 },
-+	{ .addr = 0x98 },
-+	{ .addr = 0x99 },
-+	{ .addr = 0x130 },
-+	{ .addr = 0x131 },
-+	{ .addr = 0x132 },
-+	{ .addr = 0x133 },
-+	{ .addr = 0x134 },
-+	{ .addr = 0x135 },
-+	{ .addr = 0x136 },
-+	{ .addr = 0x137 },
-+	{ .addr = 0x138 },
-+	{ .addr = 0x139 },
-+	{ .addr = 0x13a },
-+	{ .addr = 0x13b },
-+	{ .addr = 0x13c },
-+	{ .addr = 0x13d },
-+	{ .addr = 0x13e },
-+	{ .addr = 0x13f },
-+	{ .addr = 0x140 },
-+	{ .addr = 0x141 },
-+	{ .addr = 0x145 },
-+	{ .addr = 0x146 },
-+	{ .addr = 0x147 },
-+	{ .addr = 0x148 },
-+	{ .addr = 0x149 },
-+	{ .addr = 0x14a },
-+	{ .addr = 0x14b },
-+	{ .addr = 0x14c },
-+	{ .addr = 0x14d },
-+	{ .addr = 0x14e },
-+	{ .addr = 0x14f },
-+	{ .addr = 0x150 },
-+	{ .addr = 0x151 },
-+	{ .addr = 0x152 },
-+	{ .addr = 0x153 },
-+	{ .addr = 0x154 },
-+	{ .addr = 0x155 },
-+	{ .addr = 0x156 },
-+	{ .addr = 0x157 },
-+	{ .addr = 0x158 },
-+	{ .addr = 0x159 },
-+	{ .addr = 0x15a },
-+	{ .addr = 0x15b },
-+	{ .addr = 0x160 },
-+	{ .addr = 0x161 },
-+	{ .addr = 0x162 },
-+	{ .addr = 0x164 },
-+	{ .addr = 0x165 },
-+	{ .addr = 0x166 },
-+	{ .addr = 0x168 },
-+	{ .addr = 0x169 },
-+	{ .addr = 0x230 },
-+	{ .addr = 0x231 },
-+	{ .addr = 0x232 },
-+	{ .addr = 0x233 },
-+	{ .addr = 0x234 },
-+	{ .addr = 0x235 },
-+	{ .addr = 0x236 },
-+	{ .addr = 0x237 },
-+	{ .addr = 0x238 },
-+	{ .addr = 0x239 },
-+	{ .addr = 0x23a },
-+	{ .addr = 0x23b },
-+	{ .addr = 0x23c },
-+	{ .addr = 0x23d },
-+	{ .addr = 0x23e },
-+	{ .addr = 0x23f },
-+	{ .addr = 0x240 },
-+	{ .addr = 0x241 },
-+	{ .addr = 0x242 },
-+	{ .addr = 0x243 },
-+	{ .addr = 0x244 },
-+	{ .addr = 0x245 },
-+	{ .addr = 0x246 },
-+	{ .addr = 0x247 },
-+	{ .addr = 0x248 },
-+	{ .addr = 0x24a },
-+	{ .addr = 0x24b },
-+	{ .addr = 0x24c },
-+	{ .addr = 0x24d },
-+	{ .addr = 0x24e },
-+	{ .addr = 0x24f },
-+	{ .addr = 0x250 },
-+	{ .addr = 0x251 },
-+	{ .addr = 0x252 },
-+	{ .addr = 0x253 },
-+	{ .addr = 0x254 },
-+	{ .addr = 0x255 },
-+	{ .addr = 0x256 },
-+	{ .addr = 0x257 },
-+	{ .addr = 0x258 },
-+	{ .addr = 0x259 },
-+	{ .addr = 0x260 },
-+	{ .addr = 0x8c0 },
-+};
-+
-+static struct cudbg_indir_reg t7_tp_tm_pio_addr[14] = {
-+	{ .addr = 0x0 },
-+	{ .addr = 0x1 },
-+	{ .addr = 0x2 },
-+	{ .addr = 0x3 },
-+	{ .addr = 0x4 },
-+	{ .addr = 0x5 },
-+	{ .addr = 0x6 },
-+	{ .addr = 0x7 },
-+	{ .addr = 0x8 },
-+	{ .addr = 0x9 },
-+	{ .addr = 0xa },
-+	{ .addr = 0xb },
-+	{ .addr = 0xc },
-+	{ .addr = 0xd },
-+};
-+
-+static struct cudbg_indir_reg t7_up[245] = {
-+	{ .addr = 0x0 },
-+	{ .addr = 0x4 },
-+	{ .addr = 0x8 },
-+	{ .addr = 0xc },
-+	{ .addr = 0x10 },
-+	{ .addr = 0x80 },
-+	{ .addr = 0x84 },
-+	{ .addr = 0x88 },
-+	{ .addr = 0x8c },
-+	{ .addr = 0x90 },
-+	{ .addr = 0xc0 },
-+	{ .addr = 0xc4 },
-+	{ .addr = 0xc8 },
-+	{ .addr = 0xcc },
-+	{ .addr = 0xd0 },
-+	{ .addr = 0xd4 },
-+	{ .addr = 0x100 },
-+	{ .addr = 0x104 },
-+	{ .addr = 0x108 },
-+	{ .addr = 0x10c },
-+	{ .addr = 0x110 },
-+	{ .addr = 0x114 },
-+	{ .addr = 0x118 },
-+	{ .addr = 0x11c },
-+	{ .addr = 0x120 },
-+	{ .addr = 0x130 },
-+	{ .addr = 0x140 },
-+	{ .addr = 0x144 },
-+	{ .addr = 0x14c },
-+	{ .addr = 0x200 },
-+	{ .addr = 0x204 },
-+	{ .addr = 0x208 },
-+	{ .addr = 0x20c },
-+	{ .addr = 0x210 },
-+	{ .addr = 0x214 },
-+	{ .addr = 0x218 },
-+	{ .addr = 0x21c },
-+	{ .addr = 0x220 },
-+	{ .addr = 0x224 },
-+	{ .addr = 0x228 },
-+	{ .addr = 0x22c },
-+	{ .addr = 0x230 },
-+	{ .addr = 0x234 },
-+	{ .addr = 0x238 },
-+	{ .addr = 0x23c },
-+	{ .addr = 0x240 },
-+	{ .addr = 0x244 },
-+	{ .addr = 0x250 },
-+	{ .addr = 0x254 },
-+	{ .addr = 0x260 },
-+	{ .addr = 0x264 },
-+	{ .addr = 0x270 },
-+	{ .addr = 0x274 },
-+	{ .addr = 0x400 },
-+	{ .addr = 0x404 },
-+	{ .addr = 0x408 },
-+	{ .addr = 0x40c },
-+	{ .addr = 0x410 },
-+	{ .addr = 0x414 },
-+	{ .addr = 0x418 },
-+	{ .addr = 0x41c },
-+	{ .addr = 0x420 },
-+	{ .addr = 0x424 },
-+	{ .addr = 0x428 },
-+	{ .addr = 0x42c },
-+	{ .addr = 0x430 },
-+	{ .addr = 0x434 },
-+	{ .addr = 0x438 },
-+	{ .addr = 0x43c },
-+	{ .addr = 0x440 },
-+	{ .addr = 0x444 },
-+	{ .addr = 0x448 },
-+	{ .addr = 0x44c },
-+	{ .addr = 0x450 },
-+	{ .addr = 0x454 },
-+	{ .addr = 0x458 },
-+	{ .addr = 0x45c },
-+	{ .addr = 0x460 },
-+	{ .addr = 0x464 },
-+	{ .addr = 0x468 },
-+	{ .addr = 0x46c },
-+	{ .addr = 0x470 },
-+	{ .addr = 0x474 },
-+	{ .addr = 0x478 },
-+	{ .addr = 0x47c },
-+	{ .addr = 0x480 },
-+	{ .addr = 0x484 },
-+	{ .addr = 0x488 },
-+	{ .addr = 0x48c },
-+	{ .addr = 0x490 },
-+	{ .addr = 0x494 },
-+	{ .addr = 0x498 },
-+	{ .addr = 0x49c },
-+	{ .addr = 0x4a0 },
-+	{ .addr = 0x4a4 },
-+	{ .addr = 0x4a8 },
-+	{ .addr = 0x4ac },
-+	{ .addr = 0x4b0 },
-+	{ .addr = 0x4b4 },
-+	{ .addr = 0x4b8 },
-+	{ .addr = 0x4bc },
-+	{ .addr = 0x4c0 },
-+	{ .addr = 0x4c4 },
-+	{ .addr = 0x4c8 },
-+	{ .addr = 0x4cc },
-+	{ .addr = 0x4d0 },
-+	{ .addr = 0x4d4 },
-+	{ .addr = 0x4d8 },
-+	{ .addr = 0x4dc },
-+	{ .addr = 0x4e0 },
-+	{ .addr = 0x4e4 },
-+	{ .addr = 0x4e8 },
-+	{ .addr = 0x4ec },
-+	{ .addr = 0x4f0 },
-+	{ .addr = 0x4f4 },
-+	{ .addr = 0x4f8 },
-+	{ .addr = 0x4fc },
-+	{ .addr = 0x500 },
-+	{ .addr = 0x504 },
-+	{ .addr = 0x510 },
-+	{ .addr = 0x514 },
-+	{ .addr = 0x520 },
-+	{ .addr = 0x524 },
-+	{ .addr = 0x530 },
-+	{ .addr = 0x534 },
-+	{ .addr = 0x540 },
-+	{ .addr = 0x544 },
-+	{ .addr = 0x550 },
-+	{ .addr = 0x554 },
-+	{ .addr = 0x560 },
-+	{ .addr = 0x564 },
-+	{ .addr = 0x570 },
-+	{ .addr = 0x574 },
-+	{ .addr = 0x580 },
-+	{ .addr = 0x584 },
-+	{ .addr = 0x590 },
-+	{ .addr = 0x594 },
-+	{ .addr = 0x5a0 },
-+	{ .addr = 0x5a4 },
-+	{ .addr = 0x5b0 },
-+	{ .addr = 0x5b4 },
-+	{ .addr = 0x5c0 },
-+	{ .addr = 0x5c4 },
-+	{ .addr = 0x5d0 },
-+	{ .addr = 0x5d4 },
-+	{ .addr = 0x5e0 },
-+	{ .addr = 0x5e4 },
-+	{ .addr = 0x5f0 },
-+	{ .addr = 0x5f4 },
-+	{ .addr = 0x600 },
-+	{ .addr = 0x604 },
-+	{ .addr = 0x608 },
-+	{ .addr = 0x60c },
-+	{ .addr = 0x610 },
-+	{ .addr = 0x614 },
-+	{ .addr = 0x618 },
-+	{ .addr = 0x61c },
-+	{ .addr = 0x620 },
-+	{ .addr = 0x624 },
-+	{ .addr = 0x628 },
-+	{ .addr = 0x62c },
-+	{ .addr = 0x630 },
-+	{ .addr = 0x634 },
-+	{ .addr = 0x638 },
-+	{ .addr = 0x63c },
-+	{ .addr = 0x640 },
-+	{ .addr = 0x644 },
-+	{ .addr = 0x648 },
-+	{ .addr = 0x64c },
-+	{ .addr = 0x650 },
-+	{ .addr = 0x654 },
-+	{ .addr = 0x658 },
-+	{ .addr = 0x65c },
-+	{ .addr = 0x660 },
-+	{ .addr = 0x664 },
-+	{ .addr = 0x668 },
-+	{ .addr = 0x66c },
-+	{ .addr = 0x670 },
-+	{ .addr = 0x674 },
-+	{ .addr = 0x678 },
-+	{ .addr = 0x67c },
-+	{ .addr = 0x680 },
-+	{ .addr = 0x684 },
-+	{ .addr = 0x688 },
-+	{ .addr = 0x68c },
-+	{ .addr = 0x690 },
-+	{ .addr = 0x694 },
-+	{ .addr = 0x698 },
-+	{ .addr = 0x69c },
-+	{ .addr = 0x6a0 },
-+	{ .addr = 0x6a4 },
-+	{ .addr = 0x6a8 },
-+	{ .addr = 0x6ac },
-+	{ .addr = 0x6b0 },
-+	{ .addr = 0x6b4 },
-+	{ .addr = 0x6b8 },
-+	{ .addr = 0x6bc },
-+	{ .addr = 0x6c0 },
-+	{ .addr = 0x6c4 },
-+	{ .addr = 0x6c8 },
-+	{ .addr = 0x6cc },
-+	{ .addr = 0x6d0 },
-+	{ .addr = 0x6d4 },
-+	{ .addr = 0x6d8 },
-+	{ .addr = 0x6dc },
-+	{ .addr = 0x6e0 },
-+	{ .addr = 0x6e4 },
-+	{ .addr = 0x6e8 },
-+	{ .addr = 0x6ec },
-+	{ .addr = 0x6f0 },
-+	{ .addr = 0x6f4 },
-+	{ .addr = 0x6f8 },
-+	{ .addr = 0x6fc },
-+	{ .addr = 0x700 },
-+	{ .addr = 0x704 },
-+	{ .addr = 0x710 },
-+	{ .addr = 0x714 },
-+	{ .addr = 0x720 },
-+	{ .addr = 0x724 },
-+	{ .addr = 0x730 },
-+	{ .addr = 0x734 },
-+	{ .addr = 0x740 },
-+	{ .addr = 0x744 },
-+	{ .addr = 0x750 },
-+	{ .addr = 0x754 },
-+	{ .addr = 0x760 },
-+	{ .addr = 0x764 },
-+	{ .addr = 0x770 },
-+	{ .addr = 0x774 },
-+	{ .addr = 0x780 },
-+	{ .addr = 0x784 },
-+	{ .addr = 0x790 },
-+	{ .addr = 0x794 },
-+	{ .addr = 0x7a0 },
-+	{ .addr = 0x7a4 },
-+	{ .addr = 0x7b0 },
-+	{ .addr = 0x7b4 },
-+	{ .addr = 0x7c0 },
-+	{ .addr = 0x7c4 },
-+	{ .addr = 0x7d0 },
-+	{ .addr = 0x7d4 },
-+	{ .addr = 0x7e0 },
-+	{ .addr = 0x7e4 },
-+	{ .addr = 0x7f0 },
-+	{ .addr = 0x7f4 },
-+};
-+
-+static struct cudbg_indir_type_entry t7_indir_type_arr[CUDBG_INDIR_TYPE_MAX] = {
-+	[CUDBG_INDIR_TYPE_CIM_CTL] = {
-+		.reg_arr = t7_cim_ctl,
-+		.nentries = ARRAY_SIZE(t7_cim_ctl),
-+	},
-+	[CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG] = {
-+		.reg_arr = t7_hmat6_local_debug_cfg,
-+		.nentries = ARRAY_SIZE(t7_hmat6_local_debug_cfg),
-+	},
-+	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG] = {
-+		.reg_arr = t7_ma_local_debug_cfg,
-+		.nentries = ARRAY_SIZE(t7_ma_local_debug_cfg),
-+	},
-+	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG] = {
-+		.reg_arr = t7_ma_local_debug_perf_cfg,
-+		.nentries = ARRAY_SIZE(t7_ma_local_debug_perf_cfg),
-+	},
-+	[CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL] = {
-+		.reg_arr = t7_pm_rx_dbg_ctrl,
-+		.nentries = ARRAY_SIZE(t7_pm_rx_dbg_ctrl),
-+	},
-+	[CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL] = {
-+		.reg_arr = t7_pm_tx_dbg_ctrl,
-+		.nentries = ARRAY_SIZE(t7_pm_tx_dbg_ctrl),
-+	},
-+	[CUDBG_INDIR_TYPE_TP_MIB_INDEX] = {
-+		.reg_arr = t7_tp_mib_index,
-+		.nentries = ARRAY_SIZE(t7_tp_mib_index),
-+	},
-+	[CUDBG_INDIR_TYPE_TP_PIO_ADDR] = {
-+		.reg_arr = t7_tp_pio_addr,
-+		.nentries = ARRAY_SIZE(t7_tp_pio_addr),
-+	},
-+	[CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR] = {
-+		.reg_arr = t7_tp_tm_pio_addr,
-+		.nentries = ARRAY_SIZE(t7_tp_tm_pio_addr),
-+	},
-+	[CUDBG_INDIR_TYPE_UP] = {
-+		.reg_arr = t7_up,
-+		.nentries = ARRAY_SIZE(t7_up),
-+	},
-+};
-+
-+#endif /* __CUDBG_INDIR_REG_T7_H__ */
--- 
-2.39.1
+Not really needed to go with v2 with reworded message. Let us wait for
+bot reports first.
 
