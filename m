@@ -1,97 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792664821;
-	b=cftfI9lbZs/edXjVMrdCw+dQ4Sb+c7bgOUtFwbLHGkOteWUxoSyVFatHOkoBleBEx5Pp
-	 XUm2J+UVfNjQonKUifJOfO7DDmJaC9aV6HcEBkgSxKaEGA7EsHSdO+6munTcuLWEq5AjA
-	 VR7K/koYBpsIciwFzSQYxXB1FT9otVgQQjCZyCazIwNU1FIsXLDBTHjUrdTfJTIgWdVeR
-	 mBcuVFLnidtA4+TgDhjJ5i7vMTPGGGCPxYJ3mMYK8DgcHmrxsg1MsiPDFsyqb6tuUtlpy
-	 O4b5FZR0XATE5gpYINk9qk0dtYRio6nMFmtjSyUx2I+j5p3cmKB5M7qYsQPVNA13eag==
+	t=1792664860;
+	b=qhdl7yUEZldEaod/E3GgPM1S9o9D7BsCz54G/4smzreuLhMHF++OEPCtRH1hGsCtGz96
+	 Tmse4dyT8kh6KUqvHGTQwCr88zc1Hgv+mUpNxBxxqwkRODt7hoUMJSDJkWFSUcRx/gARd
+	 3R7LMPgGipwu1ulk3NQlv0Bxsctsdr5v7fJgASJgx8VqALPyMPTBJWTDE5N7wAD72iReM
+	 yXTDi2ARUnPxZ1N5QCcKT3BXOcjRiEWYfTY+djg/bo3DXS1FwYrOIWCrYn0bnOjPITKut
+	 rPI7/ypZJJ43n3qMkOS33LEQ/xaRDSy5fGKy3rOTrwdA1m5ivvNx3B74WDRMg9yfVdQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792664821;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=e2KBzrPE0/o2A8dZGSaDZAXFxxxAfZMmxtyqxNNywSE=;
-	b=YTRmHSkjAEcN2FsyNekfCehD3uLZ9Gw3528Cy9fD5uZzVlYL5fLZiZtOPl95F5u6uSmx
-	 jSdNu/h0Fv/Mo3W8tp3umu39xi2r5aus318uNyPSVMSEmzdC9eoGueGeJleg1yEV302Lm
-	 L/Wi4EUryylOND119/2gAApWPFZFW+O0Rj65nYa0J4OMNiYK0G8XIKwEX4BrqCXVg7CVW
-	 ybAv5Pepx1KzvKqYG4FHVO0DvxcX8wnhl2o5OsDS3z4FltnF2Q1bZMTVVe6SpooR5K5fv
-	 11STamFAl4QnH6naRuAhAlVZT/yScnnvli0BgB0fgTdYXKYfVUiWGTyVq0Z7VYyWeZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792664860;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ZAd7X9/vJXNgFIS3+YuK/KTO3oVmAseHL1ppDeOuesI=;
+	b=U7fNWy+HS6kBcNnLD72ekD60cqMFQ8wK17vzcx06I7fVotM1sl/gr7lc1wlvd8MYUMiP
+	 TkdMU4oK5pKC3Ti6rpFUTG9nkqoRou0KvCiMzqSjZo1BiubWfqwKS48BsX80Qs8N2sowh
+	 E2KgRtJjwmjPEgxb7yvvE3QKnLXgSHzUV0UwwsSq0JOXun8Ff9kT6GBl13OvrQJinnhnT
+	 we0/HKcvvGjp3aiSMHwXOSniiB9xueJYaiEN0U/1djOcMjApTWtt9Wn0Rr+sUE5qxQojT
+	 nYsPkSlUPxemnFynAHwVw8e9pbH2DQKj4b85t6GrYu6Tm/4U+kIBR3JdBBFKzlhsZeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e6PJc0B5;
-	arc=none smtp.remote-ip=209.85.208.181
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxGUBlou;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BEA606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:27:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82BEA606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039B8606A329;
+	Thu, 22 Oct 2026 10:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e6PJc0B5
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3a60cb94b80so17301071fa.2
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:27:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792664820; x=1793269620; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=e2KBzrPE0/o2A8dZGSaDZAXFxxxAfZMmxtyqxNNywSE=;
-        b=e6PJc0B5EaSmQK5D/4NzScSFnF+dysZ4DiaVEQcvsRB4n9qruixsu3G9EVtQffmTVM
-         cbmf2gScCqWqkqf2x/DAxaEAqnCA1SCu3Br/aqavKZNcek8kYBxgh3BdHHGrq5BpfpL0
-         tN1fCZlroTd/7jSHbqYz46YdLSojbk0gyHPbzkw9E01EoPJl2evXcj0aOgGAYe3IEeii
-         1hivUzHYjdbTDDkiNMr32vLHqkeBB4vJBqD3w3iOxzfLmCOuCWMEgtWBY0L+AGjLVaIb
-         t2oNQOgZKJljcl/oK85MJjeRKbMGSwtWXiADpiTqUd0KRGWbtw9lQfy08gaJ292H/fwC
-         pl3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792664820; x=1793269620;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=e2KBzrPE0/o2A8dZGSaDZAXFxxxAfZMmxtyqxNNywSE=;
-        b=BB8pstXbAjXx0w8Nch9CDkvMOiYD5qDwHiaXMiDAe/5pAkd4lsDeDVfvDSZPdk4erD
-         ZXzhbd6xNGUGV3EDU9ebsp+E7+/DeTUnUbD0xcvOfs7ILQk9gNfuoLCkLE/dLkV7F3Qg
-         lRsk7G306koAz/VsufTpAryV7xuU05GBl4AtVzQMlWZKS0qBUFg2cFMPmz8Hyjeeig8E
-         sY7DOzmMM9hY1d4tfhQNEYv0OuZ9fv6kykTLMQyqLe96Rjtw3X/ZIi+uI8DvbqWZBOm/
-         EG63b1Gh69a1wGV5rG+rvQIOYvWDZNIgGZeN17ruuj/kosEYhRgeIQaBEN1ZqIZGq2wJ
-         Jj1g==
-X-Forwarded-Encrypted: i=1; AKwUvBwfqv425mh5KUVpnBzWnc5CWehF3tspWGiUe7PvhPVC0A42eKpD7RYPGSVrHZWCjcuY60SFTWA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKRR0wJuVKTXNiyWggJvPDdx3Mz8yMU1q6ErpPmUIEW9FD7oq48
-	ipVzUvrSll1cZnW7zBUxrY4CCeeuvGdFw8YmV8xQMH0uYZy9+WdXe2GG
-X-Gm-Gg: AYBFou2nphI5TQeytxOQwYSXHBlHJ7lZy4oIN+SU6fYuiYQhc5Kbis15UC/DsbRp/OG
-	/b6aHd7bqdc7gVY08SDHgSUH9/XAGVtSf7hiQJah1haZ4IvrIwXQ1aZez2jDRZ9HBT/rqKTiM//
-	2bK9vobfAgVKLKvNdtIviXcbqa5cFwEO7Xqlqz0LCntZQXtI/Z43wDMeK3QFQMYAS0E3p20Allp
-	VxbjevHJSzD7g36j+kzD+yIOSafNUi2CHCOAAO2YG6jYPjP93DcZHmWE5NC2v3IaaE6fXxbytNC
-	fvDsDwgOSSwYFj2zSKZQCSapyTMC1ic3qrN2lpa8IZShCcYhd61Rj0ZtpseqmhV3isOQGJZObuS
-	Nb1mzV6cng7RzIdhk6Su0mi3zHC4vBgSPtz6QFeeiHw5xfHXh2E7m2C46m2jnfSTgc9H0ZvERjA
-	hTJwhLj6X4hspIA9MwnljeIlAzM8Muf5Hx3r5MFLM4bOt9FmQAQVxVLWy261Mw//S1kpOYQbyKe
-	+WfmTe75EsxNS4IkJ+Ppbd1SiIcG3qJQytr+HNh02PoKIIw+cOaMjgBpAoFms6zClYLjqxJMQ==
-X-Received: by 2002:a05:651c:547:b0:3a6:622a:2cad with SMTP id 38308e7fff4ca-3ac4416e587mr12026331fa.10.1792664819457;
-        Thu, 22 Oct 2026 03:26:59 -0700 (PDT)
-Received: from linux.tail9b532d.ts.net ([196.240.54.42])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ac4f67a8c8sm6643221fa.33.2026.10.22.03.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 03:26:58 -0700 (PDT)
-From: Eduard Zateev <hackerowskiy@gmail.com>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+f3f4fce0609f8e91b540@syzkaller.appspotmail.com,
-	Eduard Zateev <hackerowskiy@gmail.com>
-Subject: [PATCH] xfrm: disable state hash resize work on netns exit
-Date: Thu, 22 Oct 2026 12:26:41 +0200
-Message-ID: <20261022102641.1429128-1-hackerowskiy@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bxGUBlou
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A9E1F000C2;
+	Thu, 22 Oct 2026 10:27:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792664859;
+	bh=ZAd7X9/vJXNgFIS3+YuK/KTO3oVmAseHL1ppDeOuesI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bxGUBloucVM+lNbKykAaw+ya3sDGs8o0gytT8hhahdNWlvr3VuNZR1/ATpGpSTA1t
+	 PhXH22CVY18yOzTaiczHI0E8Wx0YeQjbbi+Mvi606oCvlyzOHVF9Jqce+WvsZ9I9RJ
+	 fbBsHBIy0v/UUG393k69EJYNrF/lLAlIdjgQMl6mzknakAQiZnD/MCgW3IG48tsiIb
+	 Ds7JfpTempUGRK6B+qWTuanKie0jqif6cy8SmWdOQlTjO8KPshwuCS0eJs/w/cBqC6
+	 +MOELABAqbD2Z4e+vJQhBsgRKSKoDD+NT00SD69umf1Y0EI5bhqsW5r2lH9IfGk0Tc
+	 6fK4+2//XlxPA==
+Subject:
+ Re: [PATCH net] tls: check the right open record in TLS_TX_MAX_PAYLOAD_LEN
+From: netdev-bot+sashiko@kernel.org
+To: rjethwani@purestorage.com
+Cc: netdev@vger.kernel.org, john.fastabend@gmail.com, kuba@kernel.org,
+ sd@queasysnail.net, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, wilfred.mallawa@wdc.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Thu, 22 Oct 2026 10:27:38 +0000
+Message-ID: <179266485852.3135.2917953974496928848@kernel.org>
+In-Reply-To: <20261019222626.745408-1-rjethwani@purestorage.com>
+References: <20261019222626.745408-1-rjethwani@purestorage.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,42 +64,128 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-xfrm_state_fini() flushes state_hash_work before it inspects and frees the
-per-net state hash tables. A concurrent state insertion can queue another
-resize while that flush is in progress. The resize worker may then replace
-and free a table while teardown is still walking it.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Disable and drain state_hash_work before flushing states and freeing the
-tables. This also prevents a new resize from being queued during teardown.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Fixes: f034b5d4efdf ("[XFRM]: Dynamic xfrm_state hash table sizing.")
-Reported-by: syzbot+f3f4fce0609f8e91b540@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f3f4fce0609f8e91b540
-Assisted-by: LLM
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Build-tested: W=1 ARCH=arm64 net/xfrm/ (out-of-tree build).
-No reproducer was available to run the teardown race locally.
+- [Medium] The TLS_HW check added to do_tls_setsockopt_tx_payload_len()
+  (net/tls/tls_main.c) only rejects the change when…
 
-Signed-off-by: Eduard Zateev <hackerowskiy@gmail.com>
----
- net/xfrm/xfrm_state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index e45aa1ed5b9..8a2e465bd73 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -3392,7 +3392,7 @@ void xfrm_state_fini(struct net *net)
- 	unsigned int sz;
- 	int i;
- 
--	flush_work(&net->xfrm.state_hash_work);
-+	disable_work_sync(&net->xfrm.state_hash_work);
- 	xfrm_state_flush(net, 0, false);
- 	flush_work(&xfrm_state_gc_work);
- 
+tls: check the right open record in TLS_TX_MAX_PAYLOAD_LEN
+
+This patch changes do_tls_setsockopt_tx_payload_len() to look up the open
+record based on ctx->tx_conf. For TLS_HW it now checks
+tls_offload_context_tx::open_record, instead of casting priv_ctx_tx to
+struct tls_sw_context_tx. The aim is to stop HW offloaded TX from building
+records larger than a limit that setsockopt has accepted.
+
+> diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+> index fbb274287aa5..8f11b8629492 100644
+> --- a/net/tls/tls_main.c
+> +++ b/net/tls/tls_main.c
+> @@ -837,12 +837,23 @@ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+>  					    unsigned int optlen)
+>  {
+>  	struct tls_context *ctx = tls_get_ctx(sk);
+> -	struct tls_sw_context_tx *sw_ctx = tls_sw_ctx_tx(ctx);
+>  	u16 value;
+>  	bool tls_13 = ctx->prot_info.version == TLS_1_3_VERSION;
+>  
+> -	if (sw_ctx && sw_ctx->open_rec)
+> -		return -EBUSY;
+> +	/* Both TX paths size the record they are filling against
+> +	 * tx_max_payload_len, so refuse to change it under an open record.
+> +	 * priv_ctx_tx is a different struct for each TX configuration.
+> +	 */
+> +	switch (ctx->tx_conf) {
+> +	case TLS_SW:
+> +		if (tls_sw_ctx_tx(ctx)->open_rec)
+> +			return -EBUSY;
+> +		break;
+> +	case TLS_HW:
+> +		if (tls_offload_ctx_tx(ctx)->open_record)
+> +			return -EBUSY;
+> +		break;
+> +	}
+
+[Severity: Medium]
+Can a concurrent HW send still produce records larger than the new limit
+after this check passes?
+
+The setsockopt path takes only the socket lock and not ctx->tx_lock:
+
+net/tls/tls_main.c:do_tls_setsockopt() {
+    ...
+	case TLS_TX_MAX_PAYLOAD_LEN:
+		lock_sock(sk);
+		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
+		release_sock(sk);
+    ...
+}
+
+On the device side, tls_device_sendmsg() holds tx_lock for the whole
+send. However, tls_push_data() reads the limit only once, before its loop:
+
+net/tls/tls_device.c:tls_push_data() {
+    ...
+	max_open_record_len = tls_ctx->tx_max_payload_len +
+			      prot->prepend_size;
+	do {
+		rc = tls_do_allocation(sk, ctx, pfrag, prot->prepend_size);
+		if (unlikely(rc)) {
+			rc = sk_stream_wait_memory(sk, &timeo);
+    ...
+		copy = min_t(size_t, size, max_open_record_len - record->len);
+    ...
+		if (done || record->len >= max_open_record_len ||
+    ...
+}
+
+Inside the loop, the socket lock can be dropped while open_record is NULL.
+This can happen in two places:
+
+  tls_push_record()
+    offload_ctx->open_record = NULL;
+    tls_push_sg()->tcp_sendmsg_locked()->sk_stream_wait_memory()
+      sk_wait_event()->release_sock()
+
+and also when tls_do_allocation() fails with no open record and
+tls_push_data() calls sk_stream_wait_memory() directly.
+
+If a second thread calls setsockopt(SOL_TLS, TLS_TX_MAX_PAYLOAD_LEN) with a
+smaller value during either window, the new TLS_HW check sees open_record
+as NULL and the call returns 0. The blocked send then continues to build
+records against the old, larger max_open_record_len.
+
+The SW path looks different here. tls_sw_sendmsg_locked() re-reads the
+limit after open_rec is allocated on every iteration:
+
+	record_room = tls_ctx->tx_max_payload_len - msg_pl->sg.size;
+
+Given that, is the new comment accurate for TLS_HW? It says "Both TX paths
+size the record they are filling against tx_max_payload_len", but the
+device path uses a cached copy.
+
+Would it make sense to recompute max_open_record_len from
+tls_ctx->tx_max_payload_len each time tls_push_data() starts a new record?
+Another option would be to take tx_lock in the TLS_TX_MAX_PAYLOAD_LEN
+setsockopt path before lock_sock().
+
+>  
+>  	if (sockptr_is_null(optval) || optlen != sizeof(value))
+>  		return -EINVAL;
+
+[ ... ]
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019222626.745408-1-rjethwani%40purestorage.com
