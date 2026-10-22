@@ -1,100 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.218.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792637632;
-	b=h10YT4u8MXfLQt7A1WVyGmoXXTGqJfiux13ybOuGGZs1jBazd2sc/kbFhxhcGU/03mVC
-	 znn9nBeyVFd2wzIsCFW9bL2nBAfF6SaN3Tfo+kuAy+442UPeo5WXYDg64GQUoPWvX1hSc
-	 oTTJMSX5Kn+2PiLcxAUIvXJ0Ex1OF07LuCfoJFT6CuxaKvtSNDEQRIZcJ/YZg1Mjv0vgQ
-	 6SGudGnjjCTJL4//fhmyD7+OWS9uOMnEie305FhVpZKLgVPF0mAyPo/bI/+qsqmjJvP9R
-	 SezVS5qhVsjz12DtfuWm97UMXSUPsik1IWOy6cXSiEJOfjXTawIsgyn+fODOUldNaPQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792637632;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
-	b=OOW87EXuiLDVQSrBnXHs16P/dvbsytZJfbxagiLf4rrwMbcZW6AvLyfbaiflcIs9scU8
-	 jLtVuhjuoGlsud2Zj4y4kWB0ynjlRIjGVQaxq/dDDgvIMAA/z0yZasLfSjPw9n9QEpuAQ
-	 5E8b5/K906WK8IIrcp+YzXEoBn2LCOG8p/8R373rvC+wP4RH/I1fxJLxEGuVVFhBtM9Sw
-	 uXwlWBG6dYwU1qoqm5Ng5tbuLa2/ivwm/dHf1I1rDY8SqfVn128jQ0D0ifI3mIeMOw3Fn
-	 lQND9lDie+7GemmN8mG9gFOOxtsywExzdvptbWmJ+n+7ntQ0Nes8OLP2GRcM6bxq3pg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="DTOI/Pek";
-	arc=fail smtp.remote-ip=209.85.218.44
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792637990;
+	b=ymv8nDMGKyJz8pWgK8iPwU+ueMvCQwqgfIXNamCwJhebRnx0Xi23RqBwuCftEh7py+CR
+	 sCrX43kHEY5M+ZdL5nKfHFUBh8QkU3I2jfAo8qKLvO6jFHyjTiKC9GfaYKjyYl7+KDM/2
+	 7mGnfs1FO/aU7qLesr124ddKk0B0Y/1Q2pBnYylNhwIa+w4fOGqZreI85u/vcXc2tgFRz
+	 hPk+Fi4vGGrMB/ckB3b9Ot9sZ04XC0YRHZ+5+g4bcpR5pdGa6W0v4Ty+OC4+KI4ZOZ7WW
+	 GEy/el1va1c0FmN8Hun3SxwDpCXvYs2IhgPNQZlA3jm6t0+sasqH+uB/uN+EzDnQ8ww==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792637990;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=xOedA95UBVr6IUchxeYQLJLIgKfkEV6sd7a+LlQ2eqY=;
+	b=rL/XMmckzqYdOrBMi84xbkDIie63Tr07rarZ4hWZUY9sMQkflZyOu63BuCuu6O5p2xyk
+	 MIddJHmkF8YYiUeeDxNruziAhKe3vO2wzwCtgugR9Gd7MKuBfxlJapcSCzQ++M9uGsxi8
+	 mLKlMg6PIbYinCL0UH/0k9O+/mL/AFAhYmNFqlFwJGIKOkYym4M5KeaWTRHWKvzvZiHVZ
+	 p4bdmZuBZv9eXMYHFTvxjIFMnjsPh2OhmVsu/AXLRZlBCMjmYx3ae9Q+n841sH5BM7vml
+	 q+ack1hgcMbT8n1acAJzMUwwUPR74Dmvhcvu4OKdwi7GCzWB4jlceTModBNGV4d2txA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bLSTIdhK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B8C606A31D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:53:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77B8C606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6477A606A31A;
+	Thu, 22 Oct 2026 02:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=DTOI/Pek
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso178646866b.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 19:53:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792637631; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xpa6IfO/T5sr04kRN3zA5Ny0L9zCq/bWTz2kHS0/lqwnvnTeSbzA47vgh2GohpYi/e
-         JWNi+O1V/YxfR8fk0R4fFcX3IrYRyrTIJ7VtVeMIIasuUGzabwmnoAHTpL26UcJjMvBu
-         hpjDWBOmw2+jyD2m5yx+Qmoh3TGfWSqnDfmsbMxZELXfVgA5AEGaaDeWMahudywe/UTl
-         NnJSoTQZz86CpHRvMH5a0eOJJx69yfUxxhlPmqvFJajpZfemRHGr1uYHtZozXPB/2cg9
-         yl5kHcaIWm2Wb4RwUMA+JO5MiOrIH9E4jE9l5hvG2Qm+Y1jltrSpyLwPSGa2oRG3Ysna
-         EZvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
-        fh=mqaWikxOzz/NiKt4svzlfNDf7kL1yKtQ0coE3whyTpE=;
-        b=CQbjJZiOPeZri97tbRHP6ZEK3HcV+kkUnJIzCb9QdKoVSlC9hkkseyOmQsCzEKVhC/
-         AOmeuAAM5zEVHboAyTmjM6pApje5jL8UQ7iKM7pxj0qoUQH1G36kCNNFSkXu38qBpNXZ
-         yeJpHm2KrVoc0yUhvH3ClrUnbZP8MQOGwabA+711Dw+r0A1+CY+veXYzM+qEfUYOlMc3
-         kIboI1yGm0jbrkprILCdUTaqekAXkHKUBgt5g6JT7oPsOBFhAnApoXbvynb/huLDRIN2
-         Ro0hv/rYp4ONtsftF5+Q4Ij1Sss7OWBMkgrABPD3xgfq3dZpA5lsjX4FVzba1g61udL1
-         Va/A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792637631; x=1793242431; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
-        b=DTOI/PekpHCFwbCxS6btLnjWQNCiYVc9jJXCEYwAmPekEK8t/PxBNEKZNgCm5yMo5O
-         ZHRqWqq6Sa4prnp5961iu97eKvO2fCe1P/oDhQUuXQyhe3en4gFePLH+ndAycKrOkdLY
-         ZBtVPzCtW837QZIUsvIlXqXaajHAOKuqlnaym36x90uyaZGBsQGk0lDoH47TKDdTDSv/
-         +bNghojo2jLNQuKI4CGPrg7pLnnWdQfj43K8C91aQyr5qb1zEo8L/J/KSRypGRSRs42E
-         gu3hUif099K3NIyvd05k0+GuTWcbFOAPWaSRNh9N1gfC8G9MuampVJBqQHApn7d+PZp0
-         CiAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792637631; x=1793242431;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NnU6rs3hrQM9btLPDOKgfodkMRYa3+dqaWM6BzIydXs=;
-        b=mhIBAwGGI7ZKd4s15RBXIUznd4Imu8C7SAOdMuY38UgJJUUct/Iqjmo50MYjSes8UW
-         Z8uGvwZnp/ox2I3XTgtMQoUGDftCcQPyHtd98rO/IFYcJ9uY5pl447F5sZZfvaFGs/Rz
-         tBsbsimuJB/mcIOehrBZC7zVqutJo/px8a/cOQ+zybLwD2LcQhEi/jsjESktxC707fZ1
-         QR4lXUIO7Hh+tEuVX3UnTGAnVatHb1iOsNIPntc/D6rSmakHPgGdNuKHohe1/3Bs8HBw
-         lfmgIfh0t7WOVGnzGKdo4ytCkjHSf2MwrdsuhRoA217e2CsET7OWrb45seLwILyNAFRc
-         zUTQ==
-X-Forwarded-Encrypted: i=1; AKwUvByQ16+wrMu8vIuB7Qb07n18LVw0QCcwr7ddfFX4YE0just+3nu1Qh64Ss1I5TF3Xw+fORsIBuI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKSmKLOc7ZTzRQp+bBcBDe+i2cIfSIQT2c0j+lZ4cQPZ1O6+Hl5
-	byRnvjTSY8DB+VxCKPmfYOmdQtyND/xfSPxgOUlWC8H48d5fImLbMvPhSeyHJYGr0lgAEXUNovn
-	n8ignqnm41qmX2BEtF2gKluj5JOe8gvA=
-X-Gm-Gg: AYBFou0U8rg6k6CLUJQiNdTejMv6wCTLSfVx7USEhAE2R5jK6C2DcE9JUCKp1MFVSac
-	q01mUFgFBS409jXoSWSqZTPPrHfq0wCIwUgw3ICvK1XUjgSyQNuvMesQTD/e16Wv4Jr8Q8OtrRS
-	0WaFWkFci+gd3P6UcLFuJUEMyWkFj1bnAPCPnc1dS4YrPx4njiw5naSw6cvFhlcj1BrMEbKzoth
-	PRT1iGe9e9ML5Gqvo53yaZPfgKTWjYPCtOZL71Auk93Ok6jd8m0oMI/quD1OWXvamizlKPxNA+X
-	ppvVgKtl85bp4SNawV2i5wyIcxv2ZAgX3M7uiBcIs7AKZcYQGkraM8wn0WLgF8aiR+QlSTqwyCn
-	EaI1jfShoAbYOxb3gM2L7CuHcWROJbDdyEiX+utFtoEHUN7buHbXlQtvVIA==
-X-Received: by 2002:a17:906:ba84:b0:c41:8e21:4d60 with SMTP id
- a640c23a62f3a-c46791326c1mr341731966b.1.1792637630664; Wed, 21 Oct 2026
- 19:53:50 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bLSTIdhK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB6C1F000C1;
+	Thu, 22 Oct 2026 02:59:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792637990;
+	bh=xOedA95UBVr6IUchxeYQLJLIgKfkEV6sd7a+LlQ2eqY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bLSTIdhK19WKYU92YFi6rCv9yA7v6aXnKsLog6ChLfKzjsu10mEmigzMz0T6zEgzN
+	 +LoZUwhju5NtVTrvU0I/yVQQIQzk7cFFrutjCGV6qNYvDM9zOWCfcF8FWEGKSqmeUW
+	 mBb2Ql1VymTJ6yCCe56FcUDycL/iQbCQ5r05tLcOj8yyFRVUdptb59T0RnxjgmzOX3
+	 /BiYrmSwKqzFZQL+K1RyjND5CB7ER3ra6zVDvQlbNUq5uECbzfl2VCIS7CH+8600q9
+	 MnEc2IKZej5d94yroypKswA1QuZP9Ofx7DMndDp8dZpf/0Oc3/uvDUN/WIu0bLZDHg
+	 s+YljzY7agwHQ==
+Subject: Re: [PATCH net v2] net: gso: validate transport header before
+ computing segment length
+From: netdev-bot+sashiko@kernel.org
+To: mst@redhat.com
+Cc: linux-kernel@vger.kernel.org, willemb@google.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ maxk@qualcomm.com, netdev@vger.kernel.org
+Date: Thu, 22 Oct 2026 02:59:48 +0000
+Message-ID: <179263798891.3135.3227135992904229099@kernel.org>
+In-Reply-To:
+ <a53dbcdf068b3813689cf2359949578f627f9edd.1792410745.git.mst@redhat.com>
+References:
+ <a53dbcdf068b3813689cf2359949578f627f9edd.1792410745.git.mst@redhat.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,63 +65,239 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1792552161.git.jan.koester@tuxist.de> <f444dffc8e6bf98bf44c02456adc2de40e4ecd95.1792552161.git.jan.koester@tuxist.de>
- <fd20b840-350e-469c-9fd2-008fa0ded62a@slotpi15m67>
-In-Reply-To: <fd20b840-350e-469c-9fd2-008fa0ded62a@slotpi15m67>
-From: Takeshi Nishimura <takeshi.nishimura.linux@gmail.com>
-Date: Thu, 22 Oct 2026 04:52:00 +0200
-X-Gm-Features: AclHuK8zMCY_XzKvgZWVeEW29rK2WIKSmZA1a7YbTdfyZ3EtSnPZJ1CNUxd7pQ8
-Message-ID: <CALWcw=FYKcDNXeArpsabHiQOAL+cWkF=L3stL6MB0OvVaHei1g@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 40/41] nfsd, nfs: carry UUID and GUID owners as
- their text form
-To: Chuck Lever <cel@kernel.org>
-Cc: Jan Koester <jan.koester@tuxist.de>, Christian Brauner <brauner@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, "Serge E. Hallyn" <serge@hallyn.com>, Jan Kara <jack@suse.cz>, 
-	"Theodore Y. Ts'o" <tytso@mit.edu>, Paul Moore <paul@paul-moore.com>, Arnd Bergmann <arnd@arndb.de>, 
-	linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, netdev@vger.kernel.org, audit@vger.kernel.org, 
-	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 21, 2026 at 7:44=E2=80=AFPM Chuck Lever <cel@kernel.org> wrote:
->
-> On 10/20/26 11:16 PM, Jan Koester wrote:
-> > Encode such an id as its text form -- "xxxxxxxx-xxxx-xxxx-xxxx-
-> > xxxxxxxxxxxx" for a UUID, the same in braces for a GUID -- in both
-> > directions on the server and the client, and take such a string (it
-> > has no '@', so it can't be a user@domain name) as that id again.
->
-> A bare UUID in an owner, owner_group, or ACE 'who' string is a new
-> owner-string syntax for NFSv4, one that only Linux would recognize.
-> Thus it isn't interoperable with other NFSv4 stacks as proposed
-> here.
->
-> RFC 8881 Section 5.9 says a string without an '@' that is not a
-> decimal number means no translation was available and the receiver
-> "should not use that string as a basis for translation into its
-> own internal format." RFC 8000 Section 6.1 forbids bare numeric
-> ids in multi-domain deployments because they collide; the same
-> applies to bare UUIDs, and more so to GUIDs.
->
-> If you are serious about pursuing this, you'll have to start by
-> raising the proposed wire format on nfsv4@ietf.org before the
-> Linux kernel's NFS stack commits to it.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-I recall rumors of MS wanting to stick Windows SID in text form into
-the NFSv4 protocol.
+Critical: 0 · High: 2 · Medium: 1 · Low: 0
 
-THIS proposal is even worse, in every imaginable way:
-Stuff an unreadable 128bit blob everywhere. I am sure people having to
-debug that in the kernel will LOVE the idea (compare blob a with blob
-b as human,YAY!), and admins facing the 128bit hexdump will send
-marriage proposals to the author, for making their lives even more
-heartless and miserable.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-NAK, -1, for the whole patch series.
---=20
-Internationalization&localization dev / =E5=A4=A7=E9=98=AA=E5=A4=A7=E5=AD=
-=A6
-Takeshi Nishimura <takeshi.nishimura.linux@gmail.com>
+- [High] This patch makes legitimate encapsulated TCP fraglist GRO
+  packets fail the GSO length checks.
+- [High] net: gso: skb_gso_transport_header_ok() drops XFRM tunnel TCP
+  GSO packets
+- [Medium] net: skb_inner_transport_header_was_set() returns true for ~0U
+  sentinel
+
+--
+
+net: gso: validate transport header before computing segment length
+
+This patch adds skb_gso_transport_header_ok(). With it, the TCP GSO
+length validators reject an skb when its transport header (or inner
+transport header) is unset or lies outside the linear data.
+skb_gso_network_seglen() and skb_gso_mac_seglen() now return a negative
+errno, and skb_gso_validate_network_len() and skb_gso_validate_mac_len()
+turn that into false.
+
+> diff --git a/net/core/gso.c b/net/core/gso.c
+> index e96ef63500648..874e4c8b1f1bb 100644
+> --- a/net/core/gso.c
+> +++ b/net/core/gso.c
+> @@ -131,6 +131,35 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
+>  }
+>  EXPORT_SYMBOL(__skb_gso_segment);
+>  
+> +/*
+> + * TSO processing (but not UDP/SCTP GSO, which uses fixed header
+> + * sizes) reads the TCP header as specified by
+> + * skb->transport_header/inner_transport_header.  Make sure it is
+> + * there to read.
+> + */
+> +static bool skb_gso_transport_header_ok(const struct sk_buff *skb)
+> +{
+> +	const struct skb_shared_info *shinfo = skb_shinfo(skb);
+> +	int thoff;
+> +
+> +	if (unlikely(!(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))))
+> +		return true;
+> +
+> +	if (skb->encapsulation) {
+> +		if (!skb_inner_transport_header_was_set(skb))
+> +			return false;
+
+[Severity: High]
+Does this break TCP GSO over IPsec tunnel and BEET mode SAs that use
+ESP offload?
+
+xfrm_dev_offload_ok() succeeds for software ESP GSO via
+esp4_offload/esp6_offload and also for XFRM_DEV_OFFLOAD_CRYPTO. When
+it does, xfrm_output() sets skb->encapsulation on a GSO skb before the
+outer mode has run:
+
+net/xfrm/xfrm_output.c:xfrm_output() {
+	...
+		skb->encapsulation = 1;
+
+		if (skb_is_gso(skb)) {
+			...
+			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
+			goto out;
+		}
+	...
+}
+
+For a plain TCP skb, inner_protocol is 0, so xfrm_output_gso() is not
+taken. The skb goes through xfrm_output2(), xfrm_output_resume()
+and xfrm_output_one() to xfrm4_prepare_output(). That calls
+xfrm_inner_extract_output(), which reaches xfrm4_tunnel_check_size()
+and skb_gso_validate_network_len(). Only after that does
+xfrm4_tunnel_encap_add() call skb_set_inner_transport_header(). In
+BEET mode, xfrm4_beet_encap_add() does not set it at all.
+xfrm6_prepare_output() and xfrm6_tunnel_check_size() follow the same
+order.
+
+So the skb seen by skb_gso_transport_header_ok() has encapsulation
+set, SKB_GSO_TCPV4 or SKB_GSO_TCPV6 in gso_type and
+inner_transport_header == 0. Before this patch,
+skb_gso_network_seglen() returned a bogus but small value that passed
+the MTU check. The unsigned subtraction of transport_header in
+skb_gso_transport_seglen() cancelled against the transport_header -
+network_header term. Now the check fails every time.
+
+xfrm4_tunnel_check_size() (with DF set) and xfrm6_tunnel_check_size()
+then return -EMSGSIZE and report an MTU error. For local sockets that
+goes through xfrm_local_error(), otherwise through ICMP_FRAG_NEEDED or
+ICMPV6_PKT_TOOBIG. The reported MTU is one the flow already fits in.
+As far as I can tell, every TCP GSO packet on such an SA is dropped.
+That makes this a regression for what looks like a common IPsec
+setup, and the Fixes: tag means it is likely to be backported to
+stable.
+
+Should xfrm set the inner headers before xfrm_inner_extract_output()
+runs? Or should this check key off the tunnel gso_type bits rather
+than skb->encapsulation alone? Falling back to the outer transport
+header when inner_transport_header is unset might be another option,
+though skb_gso_transport_seglen() would need the same treatment.
+
+[Severity: Medium]
+Does this treat an inner transport header that was copied from an
+unset outer one as set?
+
+skb_inner_network_header_was_set() can get away with a > 0 test
+because network_header starts at 0 and is never set to ~0U. That does
+not hold for transport_header. __finalize_skb_around() initialises it
+to (typeof(skb->transport_header))~0U and skb_unset_transport_header()
+puts it back there. skb_reset_inner_headers() copies it verbatim:
+
+include/linux/skbuff.h:skb_reset_inner_headers() {
+	...
+	skb->inner_transport_header = skb->transport_header;
+}
+
+bpf_skb_net_grow() does the same. iptunnel_handle_offloads(),
+bpf_lwt_push_ip_encap(), bpf_push_seg6_encap() and gtp_dev_xmit() all
+go through skb_reset_inner_headers(). An skb whose transport header
+was never set, or was unset as gro_cells_receive() does, therefore
+ends up with skb->encapsulation = 1 and inner_transport_header ==
+0xffff.
+
+For such an skb, skb_inner_transport_header_was_set() returns true.
+skb_gso_transport_header_ok() then only rejects it through the bounds
+test on thoff = 0xffff - skb_headroom(skb). Consider a large linear
+GSO skb where
+skb_headroom(skb) + skb_headlen(skb) >= 65535 + sizeof(struct tcphdr),
+for example one that bpf_skb_net_grow() has just linearized. It passes
+that test, and inner_tcp_hdrlen() in skb_gso_transport_seglen() then
+reads payload at skb->head + 0xffff as a TCP header. The access stays
+within the linear area, but the segment length is then computed from
+arbitrary payload bytes. That is what the unset check is meant to
+prevent.
+
+The helper lives in include/linux/skbuff.h, so other callers may pick
+it up with the same blind spot. Should it also treat
+(typeof(skb->inner_transport_header))~0U as unset, the way
+skb_transport_header_was_set() does for the outer header?
+
+[Severity: High]
+Can this reject legitimate TCP fraglist GRO packets that arrive inside a
+UDP tunnel?
+
+udp_gro_complete() sets skb->encapsulation before it calls the tunnel's
+inner gro_complete. It also clears encap_mark so that inner frag_list
+completion can run:
+
+net/ipv4/udp_offload.c:udp_gro_complete() {
+    ...
+		NAPI_GRO_CB(skb)->encap_mark = 0;
+		...
+		skb->encapsulation = 1;
+		err = udp_sk(sk)->gro_complete(sk, skb,
+				nhoff + sizeof(struct udphdr));
+    ...
+}
+
+tcp4_check_fraglist_gro() sets is_flist = !sk && !skb_is_gso(skb) and
+never looks at encapsulation. Any inner flow without a local socket
+qualifies, for example forwarded traffic or containers behind a VXLAN
+bridge. tcp4_gro_complete() then returns early:
+
+net/ipv4/tcp_offload.c:tcp4_gro_complete() {
+    ...
+	if (unlikely(NAPI_GRO_CB(skb)->is_flist)) {
+		skb_shinfo(skb)->gso_type |= SKB_GSO_FRAGLIST | SKB_GSO_TCPV4;
+		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
+
+		__skb_incr_checksum_unnecessary(skb);
+
+		return 0;
+	}
+    ...
+	tcp_gro_complete(skb);
+    ...
+}
+
+tcp_gro_complete() is the only TCP GRO code that sets the inner
+transport header:
+
+net/ipv4/tcp_offload.c:tcp_gro_complete() {
+    ...
+	if (skb->encapsulation)
+		skb->inner_transport_header = skb->transport_header;
+    ...
+}
+
+tcp6_gro_complete() has the same flist early return.
+
+The resulting skb has encapsulation set, a gso_type that includes
+SKB_GSO_UDP_TUNNEL, SKB_GSO_FRAGLIST and SKB_GSO_TCPV4, and
+inner_transport_header == 0.
+
+Before this patch, skb_gso_transport_seglen() read the TCP data offset
+relative to skb->head, which is inside the headroom. The unsigned
+arithmetic gave a value that passed the size check. After this patch,
+skb_gso_validate_network_len() and skb_gso_validate_mac_len() always
+return false for these skbs.
+
+Some effects of that:
+
+tcf_police_mtu_check() always takes the exceed action, even with the
+default tcfp_mtu of ~0.
+
+ip_exceeds_mtu() returns true, so ip_forward() sends ICMP_FRAG_NEEDED
+with the route MTU and drops DF transit tunnel traffic. GRO applies to
+that traffic when it matches a wildcard-bound local tunnel socket. The
+sender already honours that MTU, so the flow stays blackholed.
+
+ip_finish_output_gso() falls back to software segmentation and
+fragmentation.
+
+Triggering this needs rx-gro-list enabled on the NIC and a UDP tunnel
+socket with gro_receive, but the packets themselves come from remote
+traffic. The patch also has a Fixes: tag, so it will likely be
+backported to stable kernels that have TCP fraglist GRO.
+
+Would it make sense to set inner_transport_header in the flist branch of
+tcp4_gro_complete() and tcp6_gro_complete() when skb->encapsulation is
+set? Another option is to skip the encapsulated check here for
+SKB_GSO_FRAGLIST skbs.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/a53dbcdf068b3813689cf2359949578f627f9edd.1792410745.git.mst%40redhat.com
