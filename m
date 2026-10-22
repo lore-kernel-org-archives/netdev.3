@@ -1,94 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660664;
-	b=Wa9j9PTNiMQqmFbFFu71GeoBXiYfkbzWGe5jkDcAfa3C43d6jlzW371idxtzg7US0rhY
-	 Fu4NLEinP0zvIfz6TZESLs1O/QksZtueGdVISkD4hflgmYpYQaLArVMqcoKf8YjoEMnb9
-	 6v7ohlW7hHFpKq9KMHcii9WlQ0UE+yUgKPS9HEuPgGAFcio6gdPsY7KZL2N/qmS5GCCBF
-	 +QL/B7z+f7OjXnbumNnEssPxLj8mDlnCqqbO5R9vtfn2nDCdcuKoFMo8KouwjQStDsrK9
-	 HwSxHnKp0NQxotcnsLanTs7DoxewcZvkHvsAH1T4j7CBrjIdoTJnMXpQFLO/n2MYl2A==
+	t=1792660740;
+	b=P6AI2lx4hZlEIOe+gb9zDjTl7Z+fk0XnuZygd0mbHrdUI4m8P0knL6UqvTgwc+oSoecV
+	 tnVn3e1e8svy4VOD2B1yS3Zfht8aLqwQbfgElm3Y7yCtAUU8vZyqsZebuTrlA0gVCU4jV
+	 0v2PdVdgArNR+yMgKe+40Mo3GP/jrzgdWzt3fB65L9SO1xo0TgR8rDD9s7yE3NDM8XYHG
+	 78g5FLAbz4Y62b7+CfO68r4YOCIT+RnqWOzSJTLfu/VVBi1y7Xuy3HqC9ybYZ9JBCi33V
+	 T/S41/k5oUBPn8tBDQ6ggfso4JVTDDwmBXmEZ0NtUd1JYnA62YZtSoXlTn27fxNh6Mg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660664;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660740;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=ydSllVnxJwUmROhHxhg7pIdiTiTIT+tFa1S9Tfrhzkk=;
-	b=PipMnN62HsFz2I4JWBlcJM+w5QI/qjoDxIOLKmcUvqjSBaYdDQp53zaV9+9w8UzZAFGd
-	 sODJIV4Kmnf9oeW5l5z9LszZdim9T2sTcBM0/1omSENS97g3WyxnAPADmRaT2w3JoHK1P
-	 cZszHg5TnOSVLXW/cQE9C4UuzPAQvreb7SXIrDqDBBet9rDxLinNB59OuRSzh5FjI4wsa
-	 Y5qitL1J7HHCDV2Z6ejeekxywscqfsZ0lWv3Zvco2xiAhNpAqSF5XvfHkReDC0e323tUt
-	 vkt/PNrHWKGKYC8mqOP66PMZbG0EOdn48tBCnsgCAwWaedpYWWn8wT3JehcYdnoaunw==
+	bh=+3+RimD4u8oBrFVN6CFkCZt6Ny3U/0D/dKYnMLBj9z0=;
+	b=yO5c5Ly/J4QfemJn7dcoAw9JlJ3sdcnM2mta4PzmHry2cU4/Nt5cMiAWGd2oVpzyDY54
+	 vVHs7Nvfva2l0Zko2VMCPXbQQLZII5w5NdL8xLoH7a0NMfpKpwFlk7BCYUyDabLd12SrM
+	 SuAh00ygBPkM2poQaennRkdbaHg1aQzrmwdyKLMuSOla8Y88qP44qOng842lOZf24Z5S6
+	 J0o3r+DZ7zgEfMAhpx+vcNDnHJvQDXsjnSdai0CUs5o6VyiYNST2HGaxapq6k7Q1bVCnJ
+	 cqJHhYTzooIv2PAM2OsXYUZ4uZvBCby0LMLfYDO8qQBwZYid+BdHv1w8Fr04PN/yCTQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kPiKtKO5;
-	arc=none smtp.remote-ip=74.125.229.135
-Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e1FUsMFr;
+	arc=none smtp.remote-ip=74.125.82.41
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC0F606A320
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:17:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCC0F606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA22606A326
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:18:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EDA22606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=kPiKtKO5
-Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-13985f8229aso1509039c88.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:17:43 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=e1FUsMFr
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-16079d54c17so3058168c88.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:18:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792660663; x=1793265463; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792660738; x=1793265538; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ydSllVnxJwUmROhHxhg7pIdiTiTIT+tFa1S9Tfrhzkk=;
-        b=kPiKtKO5Rb6lsY5ec6uXIph35wXgBO8niiwzM+/FTJEEmYLw4ZEUibPsKIpXJRP1QJ
-         E66wE9fkB/medbvdzQcGd3vgJh4CvZJ42hyutBHAnrtOrpQVBtg5X/CezxuPfJh1xIsf
-         YrkH5OSwm+tbcB8fjjuVOhRICDwjuwyqB9TKgWPh8nSv07CcTzH+6HkZUWR5wFtpna/t
-         bOWwavwu8o1XsT4KuLig20dRzTEcDCNo4ijxgvdBNQC21VV3+5R8Jtcy2NGyTdsuTYkn
-         bBGsbBTo+bKIjVsRs+GxUuasEDGfxRoEQqFuL7Fv5xa6RWhJkInlWhB2uVgYRp33Lo8z
-         mQrg==
+        bh=+3+RimD4u8oBrFVN6CFkCZt6Ny3U/0D/dKYnMLBj9z0=;
+        b=e1FUsMFrTAW6QUpswIa27YiiEcGG5ijLLfxGR6RmpqWQsR4NH+jWQrxhV4Cd+WZeqY
+         SilvJXZEpx8dcyIkaaG3dqf/oi7lQCdZL+hVZunr6sh4Xz9x5EkYUgclVMFHIEoFcMqR
+         WqjZl8Cd1Grb3KGpm5TB3loCliDh2wioVKem9bzi8huMz+rIPBvWX4cJnJ0k659DA7Xc
+         y5M61fbbg/QUgdxQdy5EkaEHvmYzS+AJBOM3weQgQR0F6yzcdhkdN6S25ZJY8SSkNGeh
+         LVESuY1D4biD13sEGWrOUFQsr+/HnjxyVx0rlOXU2oXSzxWSKgm+Q6/OsvgJEdaxt2C3
+         xorw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660663; x=1793265463;
+        d=1e100.net; s=20260707; t=1792660738; x=1793265538;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ydSllVnxJwUmROhHxhg7pIdiTiTIT+tFa1S9Tfrhzkk=;
-        b=L1L50UoKT1ZyY8n4DXTse2D6yHjIK3+NgF0A0JJO/9JaxKf3LOBkmD9L8+2XuBFSO9
-         S+Ggbg8y+znDrVY5eKF+7d1YScCnx3ORZe7tb4fui+aw+dKQg+USigrc6dAG7e/tuqIW
-         aMo4FjKfmwtU1Yqt+kg3DH7yAw0wUyDM4L7Gu3G38yY1G1HRcgAs75GQeE3neCodGOqg
-         umL8VNPjIO9gLxjfzeF5FWTj7MrhKlAMsr1k1tcsxg1KbIkJcQntsqhgm/MYnNPN6t7a
-         /BZpI/dphAikNXG+wFBAfKlgS8l1ZjLgwo/Te5+nMPkSwXuTIA24pbXJ2Q76fdW7pxsF
-         6BxA==
-X-Forwarded-Encrypted: i=1; AKwUvBzQnd2oIf64YmrVeaWLOFBzWS1WUzz473wB3OVIsMbO3DP59BY2PWydUdRl1JXEKI7fTgFjZB0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJgDRCDnBddIiXxgfhZ3BhlQNRPNTn45Z9o8F3Kg8GFnx4IF/7f
-	rMseg1MxrXbQTGd70pVWQeaO3dtXyF6tIE/6OW4HUheIJHak+BRLlWhq
-X-Gm-Gg: AYBFou1PiU3wy8b9Fju6tSkZNCINbuZUzmErIPxgOs5R5h6v8EcfHkG2TH43XIdiRSp
-	1IrowLj/qhuNaaO6mDgol/9RrwyYi2l9+dQZ5kb0eYEPJPmxKN8l7uy/YBxSSM49+CwMQw/onkO
-	tUwwOPUctGLS3kFb7rkpQrW8xmrr4CuJal+3TQsXEyY7qnMNzQ4NYBHsTyQIJeWCe7zqCkSTcMw
-	s+wrDJpa50fndfORBDGgy431UCioU9ioxEbp5CZ9uUkQRZAgSzCzw4IESz2LGh61MqFwQevsJlv
-	91nhTWkVtpkPxsq9S2M1haNeW591DcFjn6b1kGkwtv0c8np5HQwqpTGioPOX+mk+G/ZR5xI65Uh
-	fwC7FeXCoO7aMtlZJ0QI+Ou9PU2kIl5d822+CA2UufYtV71NYP2VTxs/oXBUe2BMFE5e8MMTvxM
-	B9TRpc7mvLmYuYNxGVHk3H4fasf1+epCyryKLXO2qpDpVJ83FWsPgqSJPM1iLlcqNozqlM8+VFp
-	mS0f08Lfy/0WI3wsElNUuN8xorbRB1It2cZG6xa9IxTrki9jGPiYKHqwQ0LW5Cb1LpjW9TqKvVA
-	z1HDf9iq/UO/lr8L9zn2jmKKYbQzu4L3w8jzh4Mv
-X-Received: by 2002:a05:7022:3804:b0:17e:6de6:6a1a with SMTP id a92af1059eb24-190a4f064a9mr5160458c88.8.1792660662898;
-        Thu, 22 Oct 2026 02:17:42 -0700 (PDT)
+        bh=+3+RimD4u8oBrFVN6CFkCZt6Ny3U/0D/dKYnMLBj9z0=;
+        b=D2R0T8/xQRKGMPw6zv46Hhj5P0YYMFBNHYeA6NuRiulwLL6ykO2kK3+XH7Rh2hqihc
+         VSoxNBaxJnnXeTNdJj7qt5QbSM0yoVjHZxHbJh1PbdvpFt6h4ZM1EcsBnkp3Xw+ytOAA
+         ZPu4gxjGFtOxMlgirn/niVpv7SnRWQHKPX1x/bewMCiPgDuYVm+AvIccSLxPew3DsemC
+         lArGPGqSc2P8rwZAzu8lKBzQva0k8AVtzwH62OtcPKNoSKGQQWY+5pGaWMv7Yw2A3QLM
+         8Mpv/YYyXw0sv+ZNDgS6F7jANBxF9HTwFIHZo3VniQotCsQpqJYC71dzDE+L3FWeiN1x
+         4aUg==
+X-Forwarded-Encrypted: i=1; AKwUvBzUPpgxJPCqwxgLXHySKSPs6MAYZcHXOWXrPhbMhdap4XixMmHJZOcSD9iCLJHSQdpLmeynRlQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLZ7B8M/l+2n6QVEjlMiR2hDIdrpRRc+xp5+y/d/qdWKPsKzBy/
+	lKXTkIVE1c0go1bzzGv3esAlYJ/HdWra/MH81lGXwnkM/ytUUbk+4czZ
+X-Gm-Gg: AYBFou1UNQrner171RzTgTLv1BtgAu1VIQNWJ362ieMNIE855gPDYsgIwBL/9Lxbh4X
+	i4HINCC068Z4B2Jlfm8h3l0/fBx/cWvjwXAtudNGsh60xm4vRDyEv4q68wFb/8GETzQzhOebCyV
+	w6LWHmI1MlRTJeGhF4gSxFJ30/Q8FkJe1SMxNukDbjTTtocwBcSXaL8jBqDG6XD5kylDtuNCKQV
+	Nep8T+iBQ1VL71Km4iJcGrkMFUwjF3tlOUtUir7VgJLAgTU0pfof3xbmiSdKOldJfWf1EM99c8k
+	CijJZhc4yAks1ms382AqgpHgfpM+6Yp2NzMIr6GXiK9Vv6+wbrUoaNNkJL35SbM73ou2yyOLhF/
+	nxEoFPauSfxdCRPl1alR20HoJRfQLejnmX1w/cP9yE6+SWaxwpwOAQ5SbNXBTBoNQpBQt/WLwcC
+	QiZ/yr9P04iZZhDc9uZRLuI2HG9si7OGFTB+8JyVTAc9f+FTuWR6h3b9qklSu13q2He9Hyn1W/z
+	qqtmY/gfUpWH0XkQNyci7o5h/cFfmPYPxXH1sdwzzddGvADRof2fnwJwX1oMv0Y0LHKWd46E1Au
+	jnreI7kY2MuhN1xsBAJMkLSiNM0yV47EI6ceyvEI
+X-Received: by 2002:a05:7022:ea57:b0:144:f089:b189 with SMTP id a92af1059eb24-190a74775b8mr5453836c88.36.1792660736253;
+        Thu, 22 Oct 2026 02:18:56 -0700 (PDT)
 Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903a275026sm19890469c88.5.2026.10.22.02.17.39
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-19035926035sm11607230c88.1.2026.10.22.02.18.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:17:42 -0700 (PDT)
+        Thu, 22 Oct 2026 02:18:55 -0700 (PDT)
 From: Cheng Yongkang <teel4res@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S . Miller" <davem@davemloft.net>,
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Eugenio Perez <eperezma@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] net: ipvlan: ambiguous external multicast frame is dropped
-Date: Thu, 22 Oct 2026 02:17:36 -0700
-Message-Id: <20261022091736.3652981-1-teel4res@gmail.com>
+Subject: [BUG] net: tun: zero-copy path can expose uninitialized packet data
+Date: Thu, 22 Oct 2026 02:18:47 -0700
+Message-Id: <20261022091847.3654028-1-teel4res@gmail.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,48 +111,53 @@ Content-Transfer-Encoding: 8bit
 
 Hi all,
 
-ipvlan_external_frame() classifies an ingress multicast frame as local
-when its Ethernet source equals the shared ipvlan parent/slave MAC and
-its L3 source is present in the port-wide address hash.  An external
-sender can produce the same tuple.  The frame is then returned with
-RX_HANDLER_PASS and is not queued to any L2 ipvlan slave.
+The experimental vhost-net TX zero-copy path can hand TUN a user buffer
+whose effective vhost virtio header size is smaller than the TUN
+device's configured vnet_hdr_sz.  TUN computes an skb copylen that
+remains larger than the bytes actually available after stripping its
+configured header, publishes skb->len from that copylen, and
+zerocopy_sg_from_iter() initializes only the real payload.
+
+The resulting frame contains an uninitialized tail.  The tail can be
+read by userspace from the TAP peer through normal forwarding.
 
 Observed on Linux v7.3, commit
-08ab31164c55f20c7a2653de3186ae333470e2c1, with two ipvlan L2 slaves
-and a veth peer acting as the external sender:
+08ab31164c55f20c7a2653de3186ae333470e2c1, with:
 
-  external ARP broadcast, source MAC == ipvlan MAC,
-  sender address configured on a slave:
+  init_on_alloc=0
+  vhost_net.experimental_zcopytx=1
+  TAP vnet_hdr_sz=200
+  vhost TX total length=256
+  real payload length=56
+  TUN copylen / skb len=128
 
-    parent RX +1
-    slave 0 RX +0
-    slave 1 RX +0
+The exact control with vnet_hdr_sz=10 delivered the expected 246-byte
+frame.  The corrected trigger delivered 128 bytes after submitting only
+56 payload bytes.
 
-  identical frame with a different sender MAC:
+Sixteen of sixteen corrected triggers produced the overlong skb.
+Eleven of sixteen had nonzero bytes in the 72-byte uninitialized tail.
+Several contained recognizable stale kernel allocation content from
+previous skbuff_small_head users, including fragments of environment
+entries.  Those bytes were never supplied in the virtio TX buffer.
 
-    parent RX +1
-    slave 0 RX +1
-    slave 1 RX +1
+This is a userspace-observable kernel-memory disclosure on a
+network-forwarding path.  It is configuration-gated by experimental
+zero-copy and an enlarged TAP vnet header, but the overlong skb occurs
+regardless of init_on_alloc; init_on_alloc=0 is needed to observe the
+stale tail in this test build.
 
-Packet-socket marker captures agreed with the RX counters.  The frame
-is lost only when the ambiguous source tuple is used.
+This is distinct from candidate BR-023/BR-025, which exercise
+IFF_NAPI_FRAGS.  This reproducer uses the non-frags tun_alloc_skb() /
+zerocopy_sg_from_iter() branch.
 
-The macvlan sibling documents that source-MAC ambiguity cannot be
-resolved and prefers delivery, accepting possible duplicates.  ipvlan
-currently chooses the opposite behavior and can cause packet loss.
-The same classifier also explains the duplicate direction in candidate
-BR-015 when a reflected local frame has an address that is not in the
-port hash.
+I found no direct upstream fix or CVE.
 
-The classifier should use an unambiguous local-origin indication or
-make the ambiguity policy consistent with macvlan.  Candidate BR-016 is
-canonical because packet loss is the more important symptom.
+The vhost ring reproducer and complete program/console logs are
+available on request.
 
-The self-checking reproducer and complete console log are available on
-request.
-
-This was found with a multi-agent workflow; the packet
-delivery differential was reproduced in QEMU.
+This was found with a multi-agent workflow; the
+information disclosure was reproduced in QEMU/KVM.
 
 Thanks,
 Cheng Yongkang
