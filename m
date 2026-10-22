@@ -1,49 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792684204;
-	b=oyZRRgElFQKn2bQ510Ji5gm9CLLiclTDxH9oAjHvL/xE9LgfTGtgHHftLwYBSI2a8wGx
-	 2ftBOGQiDlq6IVQCkZ53rWDnKAVscxQDImsc8puOS25O54e8Vut8dp3GLPMA1R5d8xZUT
-	 9Ovqh+guyrKgOx+kIUbxevEsRw+sgtv6eUfUIR80EX9/+1TGfu09vihg5BuxAy+owfsO6
-	 NGgBX6oi0yNuif4xK/qV3f18F2n/iVysV/GbUrnz0grq+SaLbWQa+8fWJYHCoDsDv6khH
-	 I8IAXAp/q4/B1AAK3Vs8LwW/ApJJR9ePuYsOP1gO3KDCrl9dsHHTmrujJJcVxxw0IwA==
+	t=1792684481;
+	b=W+cyGOi+Dldx5Yl72157X/zjJMJZqy1dAkvkd5/irMg3m9J4/hYxsDqk4FB1nvob+bit
+	 dTvCubETbzFjheQVK0mcTTia4lB3D+OpS6AMN/le0tuihV49sUvh8/SVhBaAbkoWgnzVL
+	 fHxzq9SbqT+DPgDU4Q5NYpaaQytbqJIY376mEAQk8JnF44U+22drEv33K6icfDMfKhfXx
+	 utQaOvJQ8fkNv9ciO3flszGquTgDCP9HotGhRVFjzu3bUzYLsVzx1LIJm33/aS1PAqWnQ
+	 dE9wQ5Rh3oTXZpAz5Y8obc6FIlWlC2e6Gb1aqupQpacbtqidtfbI12bsAYZBXJ0kbHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792684204;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=YMFZPVLOjolHkjO7a//48t6ctbhnzielB51AcrhMs3A=;
-	b=BUuQASzeQfLmnmzD5vrrcmFTdDHVJHrFF+WnYNZPETtUM3c48lgwJ5vN9NXKXTTokiJv
-	 1gtrdLAQtwLPAlNYI/1zayL8zAT02zfW6NQpmFFA+3PFUvk5EKuAk5BknOdTB4w1R51FY
-	 RkH/EY+0QrRwbuLZviVF7n8dGT5xyddD3oTQRRPYxyOQmPMlWFdRsjXk2nnXR78+b5jFT
-	 Ag1Yd++KsNhAs9e5hTvvPP2HzeNF3eEBzoS0l1wIvCVlVgmHX4LkzJbkKo3N3yPOTackD
-	 xM/EgG+9cecYDO5E3Xq1g9nb6X5ySFY4jGOQLxVsQtJpPXWPvKkt94PL7BZgqjnFMEg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792684481;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=fw9MZRcOmU8Ehb4tKOD55KkHpTquvtk01ZhunBeT+b8=;
+	b=hr1qoWIdBzgsKX1AvIhIonXlq17KGdJ+4BnyNawnSuBJx32Qq/PT5jJEvJK8bYFqPAhE
+	 KIbeMpNfb6ffLYqfJkVYMsGY22yakv09rLH2KNrPpbBbkGEE+KvUtq6ednEy/yiXhNgOu
+	 AET8cZ3qBDTXsqmIue4dAT7Sukur2Y7QU649oMGl88Ec/awJ9fBpIOZtJQ9QVV3Kv0ghQ
+	 ZDL+IybfzisSOAEpCQQ2w4aMj0TaZpK5weJFcLfD19xSZSVI2nUhRWiiRSfikpqkQWPzr
+	 nlu9DcgsJnfsRU19mOp93I3mUcRDlY2X/Bzlh9qvjhESzY4fo69BnTDQSKo7djDPglg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jATCGwh0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gTvUvctM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77655606A319;
-	Thu, 22 Oct 2026 15:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ED5606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 15:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jATCGwh0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAA11F031E0;
-	Thu, 22 Oct 2026 15:50:04 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gTvUvctM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58BF1F01825;
+	Thu, 22 Oct 2026 15:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792684204;
-	bh=YMFZPVLOjolHkjO7a//48t6ctbhnzielB51AcrhMs3A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jATCGwh0pvbFj70npzC8KQgDH1BKkIBOzIpJ8LqU486bMWcPiEa1lRfE0pgw5F5oR
-	 0Gpld2KJlkW5sFmj5SkAzYwsLeTc3i442Awn0fGXS8+1rPDbrsXEj+08DNsyHt6nZ6
-	 lLNnOXm3jtMRkQZooDY8uYTUb/QFfw5/Tkun6Wc1Qt6Y6QblQqCQTPOv+jQ6TvAVSX
-	 VgUhHRCshcjzSek5T6HA9pdcmo8Z7QJgAGPvwY4u76XncF9dw2N33tGoud57R9kz17
-	 ulh+Q1DydYgQLJ6JkUbmlJejGSRHz8W2tMQ2NvMhJLF918hqxOvXCdePKhdIsu1pyT
-	 0z/2WES84UYKw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 074603808222;
-	Thu, 22 Oct 2026 15:50:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792684480;
+	bh=fw9MZRcOmU8Ehb4tKOD55KkHpTquvtk01ZhunBeT+b8=;
+	h=From:To:Cc:Subject:Date;
+	b=gTvUvctMpSAIH6x4EfkBneI6lDwjKW47MzbKS+qLmVvLispfvp4teLSl1W+6HaaUt
+	 kMH1bLoE7NADid68I823+BpPWtICyKb3hxlBSiMw63Bzr/LGTqrVd8tIiazTkHcRDf
+	 CmJTZDuz/lUXRsJ/312RhTWyM4bbxnUdSbH1RGrKc80Fki2UDJ6pU9IkN4G8bFvkya
+	 hj3N4TojvDQZ35emfXugFIj4NQ1U2JcJY/Wi2SIP7OWQnr7ulV8/5eg/ZWtOTq/QMF
+	 kJA1CnVWH7u6NAwiIbSXARiX10yxUZfseon2lsp6UpJZVrQBLLsPv2GCeNYHMzJUNZ
+	 a5Oenct6vxI+g==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	shaos <shawnq1@163.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH net] net: harden qdisc_pkt_len_segs_init() against malicious GSO packets
+Date: Thu, 22 Oct 2026 17:54:36 +0200
+Message-ID: <20261022155436.117507-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,44 +64,66 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] Bluetooth: btusb: disable by default Qualcomm
- multi-subsystem
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179268420358.16170.5584192397287704019.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 15:50:03 +0000
-References: 
- <50f92fe870de717fca6368e750e0a6cbc8f46597.1792683340.git.pabeni@redhat.com>
-In-Reply-To: 
- <50f92fe870de717fca6368e750e0a6cbc8f46597.1792683340.git.pabeni@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: marcel@holtmann.org, luiz.dentz@gmail.com,
- linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
 
-Hello:
+An SKB_GSO_DODGY packet can carry untrusted gso_size and headers.
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+For instance, gso_size=1 and hdr_len=65532 for a 524275-byte frame
+makes qdisc_pkt_len_segs_init() compute an accounted length of
+about 4,294,574,091 bytes (after gso_segs silently wrapped in a u16).
 
-On Thu, 22 Oct 2026 17:38:06 +0200 you wrote:
-> New knobs should default to 'n'. The mentioned one depends on
-> BT_HCIBTUSB, but the latter is enabled on most systems.
-> 
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> ---
-> this is a last minute fixlet to avoid breaking expectation for the
-> upcoming net-next PR. I'll merge it in a matter of minutes unless
-> someone scream very loudly very soon!
-> 
-> [...]
+With DRR quantum 256, the dequeue path then needs ~16.8 million
+deficit refills before it can dequeue the skb, keeping the CPU in
+the qdisc path long enough to trigger the soft-lockup watchdog.
 
-Here is the summary with links:
-  - [net-next] Bluetooth: btusb: disable by default Qualcomm multi-subsystem
-    https://git.kernel.org/netdev/net-next/c/1a2c35c49cc7
+Commit 8f735d64382d ("net/sched: bound qdisc_pkt_len to prevent
+qdisc soft lockup") added QDISC_PKT_LEN_MAX to bound size table
+amplification. Use the same bound for DODGY packets:
 
-You are awesome, thank you!
+- Make gso_segs a u32 and drop packets whose segment count does
+  not fit GSO_MAX_SEGS, instead of silently truncating it.
+
+- Drop packets whose estimated qdisc_pkt_len() would exceed
+  QDISC_PKT_LEN_MAX.
+
+Fixes: 15e5a0307164 ("net_sched: better precise estimation on packet length for untrusted packets")
+Reported-by: shaos <shawnq1@163.com>
+Closes: https://lore.kernel.org/netdev/20261022144755.65025-1-shawnq1@163.com/
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+---
+ net/core/dev.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index e76762e29360ea87ade0846e4a4f9016dca587d6..573bcc9d67b1b1e21e844f054f0b51a172713a90 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4175,7 +4175,7 @@ static enum skb_drop_reason qdisc_pkt_len_segs_init(struct sk_buff *skb)
+ {
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 	unsigned int hdr_len, tlen;
+-	u16 gso_segs;
++	u32 gso_segs;
+ 
+ 	qdisc_skb_cb(skb)->pkt_len = skb->len;
+ 	if (!shinfo->gso_size) {
+@@ -4226,6 +4226,15 @@ static enum skb_drop_reason qdisc_pkt_len_segs_init(struct sk_buff *skb)
+ 		if (payload <= 0)
+ 			return SKB_DROP_REASON_SKB_BAD_GSO;
+ 		gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
++		/* shinfo->gso_segs is a 16bit field.
++		 * Also make sure untrusted gso_size/hdr_len can not inflate
++		 * qdisc_pkt_len() beyond QDISC_PKT_LEN_MAX, or deficit
++		 * schedulers could spin in their refill loops.
++		 */
++		if (unlikely(gso_segs > GSO_MAX_SEGS ||
++			     skb->len + (u64)(gso_segs - 1) * hdr_len >
++			     QDISC_PKT_LEN_MAX))
++			return SKB_DROP_REASON_SKB_BAD_GSO;
+ 		shinfo->gso_segs = gso_segs;
+ 		qdisc_skb_cb(skb)->pkt_segs = gso_segs;
+ 	}
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
