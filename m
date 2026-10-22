@@ -1,128 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.202
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792699956;
-	b=PShpV/pjXPpxaEDh97DkhHV+hLsVtdA1sVyroPHxb6ADeRSDHgNw4z7dxBoKePirvbvo
-	 7ZBciR5oc80ea3xHWkwLA2pxHszn09KmJTcYGcRKiee5lfzmlw2Tf/BrCa+SXUY9RlX3G
-	 lxP85FJmdY14M/R48K+/1AMtrsZxjja63D4SKsA1LajrPhDkJuGseE4rFtl2zx4SPEW/7
-	 0BM7jNK7iVOhXeQ17DFxOGZRuNOvbEBgTyhNEaooxlCuYU2V3LxXpJHFJlQAIfTnhoqTb
-	 tMwXJ2on2pXl2xnI8yETMYF/ADwg8+PyHARkD+CpffCTsFjFKGYCFodv3ksHcFx+/Ag==
+	t=1792700072;
+	b=M/lGUP0LEH1cVqvKVo7wspGoZliqvH/UVxycUWTcfuE9MumOc1Q1ubkcEcd+NqLLNBSm
+	 FqM4t/3AkZ10MzrJ/WFkemZOMsQln+++rJFwSnm+2mvIWfJixJVzcTEaez2GykGBEx6Yi
+	 pg+9WngXN22oOYjI3a/xP6LBXDdnP/RwsR4s5Zgui+6U81Yc1eCjtQAKgpVPRwxHA6x6n
+	 Ni1HEiAFtM33MGO018vlbZqhgI0qZxQlDXV0jnbfmoGCLzmzvD+ChEzuPJRWD8otdiAb5
+	 IskSrydwoo7igm/kgdfCHY+13oE+1wryqWPyw5XrNIj75jTLT1mXOk5kmoJT5GyEOKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792699956;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=I8JrjL/Toni0rgHeKLxMi210agLPfR373jhOEmm9NDM=;
-	b=3IFor2n9tvyrqJ5fu3NpbwLQl9kLvKeybPN/lu0LGE71yBVwZEnvQRM6XGoQl2VkEFSO
-	 8sUehOTn6vbXb6zrgUK47+GJBiByRhQKhuJBH8VnHplu5JjxwlpElVEtPHugRSyF7KuVH
-	 6lnLc3PLd/9L1Fzpkwgz8a4fuVpwHQfTi+tQzPmCLgHL6naymPj1buhvYeNT+NNQoHkhl
-	 IvlYath49P/a54mKlirknQv2Dul9GhaPEKR3M00H9h9+MZcVPZyTr83ilp0wN3/y3VNFy
-	 NkwxnROnG+0GyzC9yvPVkpda89WD2qKfpUiUZh1oLJRnfNwQQv4FsNlu371ceajOFIA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792700072;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Subject:Date:X-OQ-MSGID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=LAPtyJfEMoCnzw9imSIjb9889rqZ7TMiB3U5SmWB/LY=;
+	b=wdR+KAM6LI3Xf1HbIEPIDTbH+tMZ1J3XHPM4JdBz5Ey/ZESPsexHAbsRRu8kw3Fmv9dV
+	 klFML/ZqylPLjWW3yW9W520eQPCu78yYw02qClcHHDN1jSwYQvNPihgNFhiccEeFK+hfE
+	 vkuWPb6eZQJiiOWRiZeqyw0nA1z34ptWqpH7NdH2REJK5fqAN3XLF6ITHyY5G5IpbjX74
+	 qCmWk2frTZGuRD7vP4jSHokXJ87xSf12+Ou8Yh7bJs/fTnRHO+BONxbyQIvL2YcAsnh3v
+	 af419msQ2c0CjLWi/IIQibFt5cCBUnXklz9DySMyZhGOQpR/EfpsUs3raSHdBZUSaMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bEf24BE7;
-	arc=none smtp.remote-ip=209.85.160.173
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=Ip6eSAcI;
+	arc=none smtp.remote-ip=203.205.221.202
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DCC606A31D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 20:12:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89DCC606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F008606A31D
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 20:14:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F008606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bEf24BE7
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5364c951da4so1325841cf.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 13:12:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1792699950; x=1793304750; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I8JrjL/Toni0rgHeKLxMi210agLPfR373jhOEmm9NDM=;
-        b=bEf24BE77jeSVrye/0K8bqAhBtq3l4ipVokvy1WTo9I171dh1cPnLebWZP98ZbHc1p
-         AY82b/V/Z8Ber8ZWp8VUWvVQdVKVcws1+qTT8I1nIkiiUcBGdUJt2If+NgtXZWXT8aBs
-         uKfYqDijGgrn/rN6GkRbg/nS7tyReOXZC1wz27PGG3UX69KRZ1voQbKcO/EJ7VCH+ev3
-         9w3+gkzOCiUWskxpeRuVsDRp3YDSWCkTFq4QinNxLt/YPbd0DW10RzKL39WEfK6b51Xg
-         gE0pjKAlKmDwW9sqvGKBvCi87C9mbwgaQyyqQUYs4WaTKD+zF6NXq0IhdXGPVmv9ZqYX
-         i7oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792699950; x=1793304750;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I8JrjL/Toni0rgHeKLxMi210agLPfR373jhOEmm9NDM=;
-        b=wk9yNuiOTzZDrA3mKitSHAEw2qeX8tgnJTraXLVnfGMoK7EZ9RbyzJLKNhYb1QBkFC
-         QTuSr4pgZPp1ZXrkGsI7aHTMR0AlL4DrcraXGCyv43O93aHEUIuZoZUsL7c8jKlcjU1t
-         ipA7XL+wr75rLlWwhACm/poNP4VLxJrjaiPD7XMF8zEwmS28wi3IlN9sZbug/9qsVZsx
-         kDNe/Nue0PKVeO+8DrRkkfzE9ElNWTqYhpcQsGWXQey4KZwH2LX0syZgZtZ/YPYkwqta
-         rSPkHOSSuHK/cqqPcBfIkVWMt7VpkH44sXojbl1MVYuBiwc7ktHJGp6QAX9wFAQLgjd+
-         AkAw==
-X-Forwarded-Encrypted: i=1; AKwUvByI1gXX/4aZ4UIvhzhkRV7uzOCq1WeAsd/wvaCfLMsAHfpTukJfVn3R0nYRAs5+l51sZJmSAdM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIbX/84euNFbpiScEXxcWNorwe9kNuoT6hAnt1fRi4s2E4AI38w
-	WBIvGOptU6WVO7GDHijesC4lEhdm1GFeDbhBKWB24XUPgUE8t2vUdB3gM0jKQTDZZ3o=
-X-Gm-Gg: AYBFou2tYzFJo3YZeCOjCLX1X6WIwuanw8Tyd5dEkoXKyDFwjETmRtx3L/sheME+7MT
-	nZscVYaS3fT+iINgJPJNgNEq6sa4/tLMQg/0aLyZ6aFFcWR/BdDZ8JGewUeHnbNM6Us/8mzogxK
-	Y4GWchZmcprN4R/Zc/A7Ut8xpBeIwxUK6O5DKzO1FfuCo2TIGVeOa/xxlBzW/2g8Y2wooJvl928
-	rU4sJVRejWNM9kB8dPDVGszKLB57IA9Ey++SzYfBwNtqzxBcL0UqrBPjlfa8nFX4xYhOWKsBodk
-	Srx3YTL1ch/r2dFguaHPlXSq1yIg0GytJQom0pK4umSNRU54rDL5f4tqyQfJGzINrCgHboN4RBY
-	SQ0Gn/rPIVetyAycZFNSR1kMXKP4W12URK+tCND2UuzueRPsAU+dd2XrCgpihanDngK93M/j1JQ
-	HL7v493MBgUkInJX0HhlJ7maBRbTsDY69gXZtHy+jJNnK/IOdOJnzizRFWKA8/wEQbOEmZKxdvR
-	jMogWGG/ugoOG8dPnlLHATOGgKC6OQUUqtXAco15z+y5WbCy+R41NXFV+7ji0VDiRAU3E4Xvf5Y
-	MJxgOnhvq56Nf4/8Vm1jcqIJlk4gdMPTCsn+KA==
-X-Received: by 2002:ac8:5a85:0:b0:536:6378:c7fe with SMTP id d75a77b69052e-5369b8204d9mr99553871cf.47.1792699950468;
-        Thu, 22 Oct 2026 13:12:30 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536c14da10csm1768631cf.0.2026.10.22.13.12.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 13:12:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xJz9J-0000000FoSN-1XEC;
-	Thu, 22 Oct 2026 17:12:29 -0300
-Date: Thu, 22 Oct 2026 17:12:29 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-Message-ID: <20261022201229.GH3381610@ziepe.ca>
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
- <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=Ip6eSAcI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1792700062;
+	bh=LAPtyJfEMoCnzw9imSIjb9889rqZ7TMiB3U5SmWB/LY=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=Ip6eSAcITahWxT8Rv2VPbIg8BW1OpIFQETjo+JeHWwQZeQ0Fwdan1NZ9+oFUPoTD4
+	 snPw1A8LiiWMndpqspDZNTht7WNaupCYGIUc7AIAU8AfdA9E69pTpcg0RfkJpEBqNb
+	 Umi0kfoC639CLKECSRIn1nwMgNfa1ZSCfMlq2caU=
+Received: from localhost.localdomain ([180.165.29.111])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 3943CEE7; Fri, 23 Oct 2026 04:14:20 +0800
+X-QQ-mid: xmsmtpt1792700060tafu7is3n
+Message-ID: <tencent_1450C834A812C63AE916E5F22AC31A453C06@qq.com>
+X-QQ-XMAILINFO: M1rD3f8svNznNAJO8ZeIu/Sk9j9qYfm/wPfLZaqn8t+6EYPk1IcRRSIzhSDlGi
+	 iDZQhdrWF/cFXPfkwyyVTAYXOkd5KU+1QE+YDjjgkk87opAZHEL/HJuVWAtpr8yniJgZOc1k/DpO
+	 XryLob27DY1NRUwVSy/QOrO57p0dij4YT7RDf6onUznw6NYQp0v+bf8kzpG4aj/aMgptyc0UMO/K
+	 9cNDfo1Zz4DvheDNu1MvIibozs79K2NLC8id79BKB2EVP83Ok6B8Am065s92E+HEyMQWfOs6HST2
+	 iAIkrguE8rr1lGClaxq596x83F/wm7hDH5YOfZmt18xzJ5ZurEhR9IHPJrxtv+DMF3f/luLKleUQ
+	 QwtSwGJigQ1SDU4OKB0iZeKtrhY4wPk3kIvr1DWY7ljOV7aoLxH+h6mmOUykr5/DQwObRODCiEtk
+	 NLssogMUXtjvQ7bO7OIOEcKNpWgoMt2NCf6C/2MKqayc5XLfJabxgWVKKH36DDLchu5TE19jDq0R
+	 M8bxxIku8LQJCmuhDhprpc4L/RDxG20PUM1JUkAwCW0i2DRzTO6RC1j+tR/TpYk6pcHBMw0MrRma
+	 Szw+8d1M2sZUta1Hes0IIDOL2u28+WJzZYiPZC4ept+z5mhLbXZC6v3+53Qcv8MqVc+5/JkeH9no
+	 gM39TCV5obX2Yu0laivhFLi61Mb03l8lWUthuBMrh7vSvTTfWH9qFsb7HQUjMy2jxqO5hBx2Vwal
+	 dnnv/0VmKH1Y/JDDOdq0eLpypVeDfUiHN8PZNY3tcJPVTLv5LnqItD9LW2EwiX7UAq7N2Q/lacrU
+	 5k43mqKiQ0rn0K3boEo3cVUlOxHIE41UAQjm4deoqCbviMW73THG2I7IVIj/9hjbJ1KAhjaPUe+y
+	 IUZEv3D+0Fs1wF7z5JX2LXRyI2qL7kIqLAfnU/YEW40OrWlvh+Rp4RNjSu3jxYnyQeijgFojQVB8
+	 AOsJg/mqJGNiAqVhVSyVFwO6K6twSXwQLv68nBM3e7YW/o7jJavWWmNjlGq8GE/kY+H7fgA6hXGO
+	 CWgStxDl1HfPck2ECcL6CPcigY/Dc=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: memoriaru@foxmail.com
+To: netdev@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net: dsa: mxl862xx: bound FDB dump walk by table capacity
+Date: Fri, 23 Oct 2026 04:14:20 +0800
+X-OQ-MSGID: <20261022201420.81861-1-memoriaru@foxmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <179269966728.3290.2627206928544645649@kernel.org>
+References: <20261022200425.80147-1-memoriaru@foxmail.com> <179269966728.3290.2627206928544645649@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -132,31 +77,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 17, 2026 at 07:11:28PM +0200, Luigi Rizzo wrote:
-> > We should probably just find a way to describe that this is a POOL that focuses
-> > on physical contiguity in some configured granularity.
-> 
-> Before embarking in a global renaming, I would like to get opinions on
-> acceptable alternative names (possibly with a short prefix usable for
-> identifiers in the code). I could think of the following
-> 
-> DMA_PMAP (for PreMapped or Persistent Mapped)
-> or, ahemm...
-> DMA_PISA (Pooled IOMMU Superpage Allocator)
-> both using dmap_ for internal name prefixes
+From: Zhang Hewei <memoriaru@foxmail.com>
 
-Can someone explain what outside netdev would use this? And why you
-couldn't do this in the netdev page pool?
+Hi,
 
-It is not a common workload to have the DMA allocator be the one that
-allocates the memory. Usually we are DMA'ing from memory that was
-allocated someplace else.
+Replying with the missing context requested by the bot:
 
-I think Robin is right, this is just a special case of the dma pool,
-and it certainly shouldn't be something as grandiose as a subsystem..
+Discovery: both issues were found by manual code inspection, while
+auditing this driver's handling of device-controlled responses (the
+MAC table walk and the BRIDGE_ALLOC reply).
 
-Jason
+Trigger status:
+
+Patch 1 (unbounded FDB dump walk): the loop mechanism was reproduced
+in-kernel. A self-contained module carrying the verbatim loop shape of
+mxl862xx_port_fdb_dump() (device transport stubbed) was built against
+the official Ubuntu 6.8.0-71 kernel headers and loaded under QEMU (TCG,
+unmodified official vmlinuz): the walk never terminated on its own
+(100M iterations logged; a real table holds 4-16k entries). The
+reproduction is fully automated in Docker and needs no special
+hardware. I do not have access to mxl862xx hardware, so this
+exercises the driver-side loop logic, not the real device.
+
+Patch 2 (bridge_id == 0 accepted): reproduced at the logic level in
+the same module: the driver consumes the firmware-supplied bridge_id
+with only a ret < 0 check, so id 0 -- which the API header declares
+unused (mxl862xx-api.h:243-244) and which equals
+MXL862XX_DEFAULT_BRIDGE (the CPU port) -- is accepted verbatim as the
+port FID, merging the port's filtering domain with the CPU port's.
+Whether a device can be made to actually return 0 is unknown without
+hardware; per the API spec such a reply is already protocol-invalid.
+
+Build status: the reproduction module compiles and runs on the
+official kernel; the two patch hunks themselves are small and
+mechanical and have not been compile-tested against a full kernel
+tree (no mxl862xx hardware available here). Reproduction code can be
+shared on request.
+
+Thanks,
+Zhang Hewei
+
