@@ -1,55 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792680395;
-	b=g1KZoDUnpYfrti+uO/6BZmPv0BMyu9TncCrQOOQ/WPCHvnSEIJhBzlUHIXnQ/HySkmNW
-	 QbTaS0vw/5+Ve8BuBqM2rVwI1p8xJ8SUmLToMbJbLuAmiKFOhwlRQchgI0ycE4Dc52iVc
-	 I7WmyNVVqyvpX9L3tM4+CztzO0u3ky0vkghJRpAGBvX00/JKkPJhy8z1rOUqFBqv6ep5h
-	 1twvttE4jFBySN5tLufZAbhxl61y1UbMW16VEdU1hwxHm3+/3fvTWXlboGToOnLRyzcTT
-	 0wRWPzOh5lH9Hh7+UuyeAP29hUYQL0jRteS2qH+JmRmF0DWXGh1KKb7hBYR0smpPq0Q==
+	t=1792680464;
+	b=CoSNs5sn9x5npX5o+5NtEby7VshRYYT2CkEGFsIGuFOVPMVzxgZRnZb3ejKcTX8M42qF
+	 mKlPXQ5RmyyS6/aBIsv4iiYYyh3QDMbhmMruLq1Lldv4o1joASeqCpwK/PrO+N6rIlyqN
+	 +wf5dlp98KYA5tG1KKFrgjMhOwj5IdzcWl2R0Nigs65lxRSPrK6h0QtaF4q9Z9DIMy3Oe
+	 fzjSv0T3XdgaS5J/cId7fMGK+RFWykYTLe3Ee4i869pfrza5dGxWY3910gHFU4NaNejAb
+	 hdstD2IyDfnNswi7Bxl91+jb6EJiST8dq/P69Wq+HndequVYjjtaUFI1PVr8Mwqj/wQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792680395;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=+oHYwW+2+REHEr6vVJAo/VLToYTJjn8LSKpd6kIFqVk=;
-	b=iZ1a6wiA+DnqOlxNUf8MYCGIh9+rLHR2WfvT2X2UDP31jCpiSlsOlWVyqge14EPMwNMp
-	 N7mFbG/b3RUl9noVvXEdDrgvGqllS2j6YPqZ5zhfErflF0+URJjXEZeFoJOlV+4rqf/sV
-	 fgFATkUl0/oS2BoldOvxCFDrEAcS9bWTWRaYOzxm6d1DAICupLihZcwlbqGdLNtt0tDf2
-	 7CYnNPlHTxe6JEVnOpGJZtkwIvUrQuWdrTHCzblq1uGwmIrVGXrzHByUHlU2FyVC6CCXa
-	 4/V1D0xlaMoOrPO2VTpaIe94nzynmaiuT1+h6mRL0ighXnu327HY5DkZcEdQyFxhzpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792680464;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=fAr2ze+GnzYp76pjsyO3KRLM40bM3z0iFttGuo43GmE=;
+	b=UGjVMbdF/iJdYWAiR0k41GR9e7HHTL+dK3mEpgi2wqGc1KZVeDOilPDdODMEHXE90dzr
+	 mRooPNx2+KRBf5w5b/fBR7stg4GiBdZlNpz2X0JDLoPf4shsC6z9Q1FTa3B62wCfV+WUn
+	 PUSYwAkygKZGQsrPNH51sTE2WO8Sb5B4+9RBd41gl2/Fnb6vPNa13Sht+3dy9bM2S3Jyp
+	 JidxCtOr9R0jBYszh3RohjKNFMSaoUgzz+GKgQTBV/ZlhHaLTPxZ6WMcT9DE3b1rVMSal
+	 XzZ5FhY77TS+5OGgXOrADarucAB80Wlp6FmMNAy5LKyvusc0g/CwSTYHfCpRIgz3ZPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MDnhHOoR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=GAZ05K3+;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247D9606A31B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2137A606A31F;
+	Thu, 22 Oct 2026 14:47:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2137A606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MDnhHOoR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56E71F000C5
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:46:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792680393;
-	bh=+oHYwW+2+REHEr6vVJAo/VLToYTJjn8LSKpd6kIFqVk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MDnhHOoR0YdNyYJ1me1ajZRLCz1Bq2Ck49Vz5d+G10/s2Pc0vz9gxuzmKyA91IGMO
-	 G6NhvrtMY0x9cK2OtbfgmCW3x9iSDOG6Si8JrVrdsBElR03vfPNsiu39jKtJGgc1eR
-	 Vl3tCGM69Rk0puqxY52folQycDewZMmKYfsfpLaKhhiOp8izSp2BxUsD5Qk/9Lziqj
-	 oxjUth7jX45n3PGv8xRt5oV7yRwwknaEY9COPEpJnC7g/7VT8m2hyMaNqD0fiVpTav
-	 sig2OVOtnW/z31nf6/sfgjgX4tYeE1Tf+fnWm+WTUWSc20TVDnCzYnie1sX53xqK+x
-	 5Bvk20EKE7L+Q==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6fe4372c5f3so1283429eaf.3
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 07:46:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwKEz0e1e6Yaa4ZiVRgtkXlgm8pOsFIiEID8xR795Rqvld/bSyePdKnDjdJHxjfVB+WxXom2RE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLTr05yofa8cUR/KaLUrmxYRC17YbquXjFlJ9O18pT9X3oqyxNa
-	PeYjIVbQz/FVVyNvdbfbQuNvjoNoL8RVycOg9Tx7aRNiPlnRKKGZ9EC2smdyjVCbxoR4OwKln5w
-	fLMx7purGMcHjBYROeZ7vGyEUh/EPoC4=
-X-Received: by 2002:a05:6820:160a:b0:6fc:373a:1775 with SMTP id
- 006d021491bc7-70941a50e37mr3218344eaf.79.1792680393015; Thu, 22 Oct 2026
- 07:46:33 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=GAZ05K3+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fA
+	r2ze+GnzYp76pjsyO3KRLM40bM3z0iFttGuo43GmE=; b=GAZ05K3+fPSFHLOebs
+	7D1F2E9NQKuN0ve4obwPx1pTN2RihnzVoDZuImgmxUAgvpq+G5wgPRNsIYKPwYF1
+	T3G4kxbUQ/58CFcIsSIbQ36LgiJUsrSL8MoL3d0aGHPx/Dpcikgwy2YDtknZyycX
+	iW2jSGJvisOmlRiZBXEvEi5EA=
+Received: from shaos.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3n2PdIdpq_ITKBg--.59388S2;
+	Thu, 22 Oct 2026 22:46:54 +0800 (CST)
+From: shaos <shawnq1@163.com>
+To: jhs@mojatatu.com
+Cc: Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	security@kernel.org
+Subject: [BUG] net/sched: act_csum can checksum beyond a short IPv6 jumbogram skb
+Date: Thu, 22 Oct 2026 14:46:53 +0000
+Message-Id: <20261022144653.60550-1-shawnq1@163.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,99 +66,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021193151.1819085-2-Jeremy.Jean@oss.cyber.gouv.fr>
-In-Reply-To: <20261021193151.1819085-2-Jeremy.Jean@oss.cyber.gouv.fr>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 22 Oct 2026 16:46:21 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com>
-X-Gm-Features: AclHuK_eJ8qt7rFIbVyfxXEh_VsPWT_SRnJGCQzv1xMfMCKNtYZIIndkv2R0CTA
-Message-ID: <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com>
-Subject: Re: [PATCH] tcp: fix authentication bypass via unsupported TCP auth options
-To: =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3n2PdIdpq_ITKBg--.59388S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF4kArykWF18CrWUZFWUJwb_yoW5Jr1xpF
+	9Yv3WavF47Kr4qqwnrKFW8Xws8Zwn3G3yDX34DXry8ArZI9w1jy3yft3yF9FykXr9YgrWS
+	ya10v3WxJrW8ZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5a93UUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC0B-Q3mraId-ZJgAA3w
 
-Le mer. 21 oct. 2026 =C3=A0 21:32, J=C3=A9r=C3=A9my Jean
-<Jeremy.Jean@oss.cyber.gouv.fr> a =C3=A9crit :
->
-> tcp_inbound_hash() parses both TCP-MD5 and TCP-AO options when at
-> least one of the two features is enabled. With TCP_MD5SIG=3Dy and
-> TCP_AO=3Dn, a packet with an AO option reaches the disabled
-> tcp_inbound_ao_hash() stub. That stub returns success, so sockets
-> configured to require MD5 authentication end up accepting
-> unauthenticated data.
->
-> The inverse configuration with TCP_MD5SIG=3Dn and TCP_AO=3Dy has the same
-> problem for an MD5 option on AO sockets.
->
-> Make the disabled stubs reject options for the unsupported
-> authentication scheme.
->
-> Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-> ---
->  include/net/tcp_ao.h | 2 +-
->  net/ipv4/tcp.c       | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
-> index 9a2333e62e994..bb249d6df8723 100644
-> --- a/include/net/tcp_ao.h
-> +++ b/include/net/tcp_ao.h
-> @@ -303,7 +303,7 @@ static inline enum skb_drop_reason tcp_inbound_ao_has=
-h(struct sock *sk,
->                 const struct request_sock *req, int l3index,
->                 const struct tcp_ao_hdr *aoh)
->  {
-> -       return SKB_NOT_DROPPED_YET;
-> +       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
->  }
->
->  static inline struct tcp_ao_key *tcp_ao_do_lookup(const struct sock *sk,
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 87ef6d5cbfeba..7d800b6283bd2 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -4962,7 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk, const s=
-truct sk_buff *skb,
->                      const void *saddr, const void *daddr,
->                      int family, int l3index, const __u8 *hash_location)
->  {
-> -       return SKB_NOT_DROPPED_YET;
-> +       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
->  }
->
->  #endif
-> --
-> 2.47.3
->
+Hello,
 
-Good catch, thanks.
+An unprivileged process with namespace-scoped CAP_NET_ADMIN and CAP_NET_RAW installs a csum action for UDP-Lite and sends a 300-byte IPv6 frame with a Jumbo Payload value of 0xffffffca and UDP-Lite coverage longer than the bytes present. The jumbo-length addition wraps the pull-length check, while the later checksum path still uses the unwrapped length.
 
-The forged AO option makes us skip the unsigned fast path, which is
-the only place where tcp_md5_do_lookup() can return MD5NOTFOUND.
-An attacker able to hit the window of an MD5-protected session (BGP...)
-can therefore inject RST or data with a junk AO option, which is
-exactly what RFC 2385 is supposed to prevent.
+HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
+git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
+source version: Linux 7.3.0, local master
+compiler:       gcc 11.4.0, GNU ld 2.38
 
-Please mention in the changelog that TCP_AO depends on 64BIT: every
-32-bit kernel with TCP_MD5SIG=3Dy is in the vulnerable configuration.
+console output:
+https://gist.githubusercontent.com/shaos26/6522612a4cac2b4db3e4cfc32ec8ea8f/raw/5b12fad1d38c90b7a8214e02bffeb7bfd0994ebe/console-output.txt
+kernel config:
+https://gist.githubusercontent.com/shaos26/6522612a4cac2b4db3e4cfc32ec8ea8f/raw/f6506700a588fd394fdd662c4bd91115e0cb8c3b/kernel-config.txt
+reproducer sources:
+https://gist.githubusercontent.com/shaos26/ef3fd748f2329565eca96a4f4e3b2c85/raw/7694fd571c683bb1f98793979b7bf2fe09559bd4/poc.c
+https://gist.githubusercontent.com/shaos26/ef3fd748f2329565eca96a4f4e3b2c85/raw/200625ab70731666abbb27f0e233a42626ac7c58/run-unpriv.c
+https://gist.githubusercontent.com/shaos26/ef3fd748f2329565eca96a4f4e3b2c85/raw/7c17996d150eb55421fd88cf62b4a71b8ba14207/seed-secret.c
 
-With your patch the stubs now return what the real helpers return for
-a socket without keys (AOUNEXPECTED / MD5UNEXPECTED), so behavior
-becomes consistent across configs. One visible change is that MD5=3Dn,
-AO=3Dy kernels will now drop segments carrying an MD5 option to unkeyed
-sockets, as MD5=3Dy kernels already do. That is fine, but worth one
-sentence.
+Build the tested kernel with the attached configuration and boot a disposable QEMU guest. The linked userspace sources seed the skb allocation, drop privileges, enter fresh user and network namespaces, install the action, and capture checksum responses.
 
-Optional: bumping LINUX_MIB_TCPAOKEYNOTFOUND / LINUX_MIB_TCPMD5UNEXPECTED
-from the stubs would make these drops visible in nstat.
+Impact and prerequisites:
+The checksum oracle consumes 42 bytes beyond the skb's logical data. In two fresh boots, checksum output matched the checksum of a marker seeded by a different initial-namespace UID in 75/512 and 85/512 trials; two wrong-pattern controls had 0/512 matches. This demonstrates that data from a prior root-owned skb allocation can influence output readable by an unprivileged namespace process. The oracle is limited; no arbitrary-address read or privilege escalation is demonstrated.
 
-This is a fix, please send v2 as [PATCH net].
+Validation: Two fresh user/network-namespace positives matched the root-seeded marker checksum in 75/512 and 85/512 trials. Two wrong-pattern controls returned 0/512 matches.
 
-Also please CC TCP-AO folks from Arista
+Thanks,
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+shaos
+
