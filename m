@@ -1,61 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792678389;
-	b=hhO5JHZYZavBs9d8YMv8Sy/WC8Kg2YCV+86CyGkPFTCc2mHtoLJZXXeexicGcIwADh0H
-	 lVYlKToPv7y11d6yShvp64mECewvXz8OgMTdexXpSTfRBmr8zUjqBQLveABzIRIJ/S1KL
-	 v6sy1VlNUdML2gP9EIL0NJssX5ChxlPRnyc2Bsbu/Y+v1lsmXW9loRwkr0qVI1Ay5+naj
-	 ixZSlwTk6sdaVlAlZETYo49lpsEfqAdBlIkRVm8ZsVWnsCG4W+amWDcO0smq76RvZoNwM
-	 f1cXZRrBghDff+DjwM0Y9Bo7lMs7yfRweoD4/KgfRkm9u8OJMamMDHq0jYt5NGHM7sg==
+	t=1792678452;
+	b=U59xQQNybHxtTC0amlx8eZcCKZd3MM+DqZlRGES6YdI9xfYz2vQk3Hfe73bOiJk7w1by
+	 Y/nGaGHmEUaKD07GRdrFqIRsD5gojPdjEzV7VVX6uUc8ZNVauMqbCap5PVpTcoyoYABUY
+	 0oAAtGJukNXiXSVF9Dat4iY6I27+MeNB8Bxj//DIp4YF9bYAxQeRjgIzf6y/rab4AxIym
+	 nSNu1Y9C3m+3A3k6IMQEBm8wCp1bVl36IrjgC4S11rjWa26Ehu/qQl0zXNmzQtR1W8isi
+	 cqNDmXsg7w1SPqrm9wPhhazVqehLVsNpupgiUEggPJ4l82f6oaaK41r1ETETFCkz86g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792678389;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=lVyCsAyW+f6wFm05LptcX8c53okKTmSAzUoLzdTwIEs=;
-	b=wJUVwb65GyzNBnmIgsZHTSC0188HScAi2H3c6aHGDhYK7rWSyq1coxDQd+yJW1LsMmf2
-	 128UGxAErh/Zw69lnkMaaMhsEReZQM+uMnVl/M/+MJ8ICl2e3CkQWFYAcgZC9cAPRedGc
-	 uqW0LVT9x1zirm2KttV54xPy3huamSHge0BV9jqjikR5nvI3WKoQMHWTfmf3vPJeQJfud
-	 EBToCuG1kQx0tgzy2AF4MYRS3vpZaJkdLTS1myLurF2hry/+mOoavWDxrixJrryxc02eD
-	 MT4LU5O8QRzYNHV4y2s5wUhJJu6X3iUdvSlkCQeoDw4PZtl1oLT3FIfsWWuSBK3FB2w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792678452;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=ar1E8sP3jvEI9uhwbxm9hO7paRp/1SObcXepAZxmBtQ=;
+	b=jXasuba/FxO44/JpiE8rUaKPSk5fKf/c0KzEfmiF7MtJmDpAkoWiagLLCFV7E9ozVNqv
+	 9eXdP3M6V923yKqz+8p0I+0P38InU7MLDTGDrSirZmoPLvCz+2vakLmf28Ko6hMlX67vs
+	 3zSdfBnx/Pmmm5KLi23VSUsZEVB4kFKUmCO0ZvA9lFKBWpdR/ln7HblXvWz8w1vAIWw4y
+	 wNGDiHdn2KKE21fBhmY1ft6vJwFTE6ZtMd/i3WnV+QV16QKi+RP6D2f/bPA9BHxZPyRBY
+	 KHinSxXZ7edfb9MvzwiNwWUzWHAnunilUmWU0gOo2rQ2cM+s+JYQcef8O/xEcvhETkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GAkbFUMH;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oarfeyxf;
+	arc=none smtp.remote-ip=209.85.217.50
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F76606A327;
-	Thu, 22 Oct 2026 14:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBB4606A319
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 14:14:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EBB4606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GAkbFUMH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEC21F000C1;
-	Thu, 22 Oct 2026 14:13:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792678388;
-	bh=lVyCsAyW+f6wFm05LptcX8c53okKTmSAzUoLzdTwIEs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GAkbFUMHDzBKKbZkl3JMrYDZPR48XXJ7UUtT+UPPVA2uV+e+/Bb2HtlZP788n+FkH
-	 ZMCCmB7P83Rnq5jHIygQZX/3sc84m8JA3yUPhoOMVVZOjr6jH3P+mKP7DGrQS/f5Tc
-	 9n6bCpAiVJS84gXn3ReeSTa6C3CSBlrRDSieHtbCAc1yxtgIsQlFN5XnECNWJV6aZo
-	 YCKLb7UyAUaRU03heJdoNcQVaunmPK1D9FqJziOtIoQVyS3lobaFqh1COvt6RL39OZ
-	 pqT/zkr/kc4//vhqFCevmGdd8WrsWKwVYyUuAA2oIgVN225O3Jti6BCvh9bqk1uhE6
-	 iYAEOnOxddusQ==
-Subject: Re: [PATCH net v12] net/smc: fix lgr/lnk lifetime vs diag reader race
-From: netdev-bot+sashiko@kernel.org
-To: mjambigi@linux.ibm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Thu, 22 Oct 2026 14:13:06 +0000
-Message-ID: <179267838686.3135.11610279010793695525@kernel.org>
-In-Reply-To: <20261019111008.3367567-1-mjambigi@linux.ibm.com>
-References: <20261019111008.3367567-1-mjambigi@linux.ibm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oarfeyxf
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-74ab99038afso274190137.3
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 07:14:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792678451; x=1793283251; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ar1E8sP3jvEI9uhwbxm9hO7paRp/1SObcXepAZxmBtQ=;
+        b=oarfeyxfEjEhCOV2PRbr2HmPUgigNYcvYFz+Bo0jWDOGvyJEyzRACvL0BB5m5iwLam
+         la+JCSgOlKiVLTki/x5TP/kzdLaD45y4DUyehUyLTAUpLb1GuphHqCoVbnf7oevFUSMO
+         YK0J9bOin5mX7i1si8hc30kK2l0zD1uVHSMxxTBIO5sk/YpzjhO4xk4JZXHsboQGB1B0
+         p36y/RBJilfJA19LJP0ODeDhnuSC95jR6wY+8zsCMeRzGkufuSbetiutPLLy6dd8sxW8
+         mEpbeZ0sY3nJRFE2CDesoZPmW/58xDFqgNs2Q9dhIJxFf/OK5rU0dtJGhSNHRHWaaf1q
+         4nxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792678451; x=1793283251;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ar1E8sP3jvEI9uhwbxm9hO7paRp/1SObcXepAZxmBtQ=;
+        b=nMo2Jv9x40sU2baK/llvKGGp7ZXKEEXAM2hrENWbstWLOt2BZql2vXsHXH4cumYu5e
+         ErDbInHvGZjdqBFgx85SdvJy/GGSymUPdr909X2GsILxpmAQztxGrD078uuELAelKxEu
+         CgyvoPUGGqfjlQVxcJNH5Zk9FQtn7E+R2ZLE/ESTe6oxHiB4qcjbehXJbz5un5LIOPrh
+         xmTReOKTlRsueg9FDFp3IcQK9Sh6jyM1ShKRtiZijrGSroi5o2BsjhW9fjq1v7bbZvl2
+         +Rfm454gzvtblZWBAFxmlugsV/y1M4sIuWRs6SDB66EVGZgfV34Obtd8XCnzVhBLF7Kh
+         F4hg==
+X-Forwarded-Encrypted: i=1; AKwUvBzczTzfWyLArxodAfxuNEp/ideRBDwWQ851JvjcKh0541EBhQHYQj1bfv7SehgmPJUW32Fb3cI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYInR8tBM5HxFHNghRUkkuDaj8HzROKSsHpq1zPDfutvOnY6tCmV
+	jx2skk27DbvOP+oVNQlCZTeic5JzxRS0IjkeaBhwUTOY2RxGjVy8Ek/0
+X-Gm-Gg: AYBFou0+RtxTXPldMhsSfHpfrZ7ZX4SPYM9MSGvxGvSoTLNMzAbYTB2bvzR79FKZZy0
+	ItEBuZzFCXSRn8Miy2w5vx17GoMfSn3FQI6An7IjuwaMUGc0SPHkybQjI1CglLA2Ei5ngfh9lD5
+	KVQFEKd13wlUjF66Uvo4lu6aJ7a9XjfO+QCGPO8z5V55dh2vuql05IyJcg9KxlgFgiDPu4E14bc
+	6M+UqIfBJjOULxj0Zsmdr1FfnbWXMgtoH9Kv5VmfB/Xu0y1m4a9MOkrz88n71Q96l06DzTuoN/h
+	Ba1HKp0owlYiINBvWLVmGdOwbiorUiJSsclu748ATrMEIMAjDXiWmwKdg+PzqIOtHZvVbch9jNB
+	sRXu2T4yhKizh/I5thc0X89fLKnlq8lvbAxgCjKTPHPQkbHKgGGctnzToO7nxMaWqYnbDJrSGB3
+	tuYpc6V3iVR71/ysN7woDDXuJjVzYt8tNWvSoyqw3QtRL+jBjiPpNL4iqAHOwn/Z6XgpjW5ZnZd
+	80qfTZPsbZyz8ryw10lePp/wBWVdRngwn+eZp/r9UsZ17fgF0ZmToDhaTeGu6lqebmPdyEv3SOq
+	Ddf2FfbEYEgQWMpEFZ4MFjdIlo2n/y1An9BYUlQJWc7RIBV7x9KeRdlfynvnSFDTqwPCFjmiifW
+	3c+WdFhM34VhLXkh0OWY=
+X-Received: by 2002:a05:6102:160e:b0:7c3:f07c:f49c with SMTP id ada2fe7eead31-7cc9264273fmr2170632137.11.1792678451117;
+        Thu, 22 Oct 2026 07:14:11 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7ccb8fd4dfbsm1074530137.10.2026.10.22.07.14.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 07:14:10 -0700 (PDT)
+Date: Thu, 22 Oct 2026 10:14:10 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>, 
+ Cheng Yongkang <teel4res@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, 
+ Eugenio Perez <eperezma@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ netdev@vger.kernel.org, 
+ virtualization@lists.linux.dev, 
+ kvm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.78222817ba37@gmail.com>
+In-Reply-To: <9756cf25-6951-4330-959b-3260f4760c3e@redhat.com>
+References: <20261022091847.3654028-1-teel4res@gmail.com>
+ <9756cf25-6951-4330-959b-3260f4760c3e@redhat.com>
+Subject: Re: [BUG] net: tun: zero-copy path can expose uninitialized packet
+ data
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,239 +112,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Paolo Abeni wrote:
+> On 10/22/26 11:18, Cheng Yongkang wrote:
+> > The experimental vhost-net TX zero-copy path can hand TUN a user buffer
+> > whose effective vhost virtio header size is smaller than the TUN
+> > device's configured vnet_hdr_sz.  TUN computes an skb copylen that
+> > remains larger than the bytes actually available after stripping its
+> > configured header, publishes skb->len from that copylen, and
+> > zerocopy_sg_from_iter() initializes only the real payload.
+> > 
+> > The resulting frame contains an uninitialized tail.  The tail can be
+> > read by userspace from the TAP peer through normal forwarding.
+> > 
+> > Observed on Linux v7.3, commit
+> > 08ab31164c55f20c7a2653de3186ae333470e2c1, with:
+> > 
+> >    init_on_alloc=0
+> >    vhost_net.experimental_zcopytx=1
+> >    TAP vnet_hdr_sz=200
+> >    vhost TX total length=256
+> >    real payload length=56
+> >    TUN copylen / skb len=128
+> > 
+> > The exact control with vnet_hdr_sz=10 delivered the expected 246-byte
+> > frame.  The corrected trigger delivered 128 bytes after submitting only
+> > 56 payload bytes.
+> > 
+> > Sixteen of sixteen corrected triggers produced the overlong skb.
+> > Eleven of sixteen had nonzero bytes in the 72-byte uninitialized tail.
+> > Several contained recognizable stale kernel allocation content from
+> > previous skbuff_small_head users, including fragments of environment
+> > entries.  Those bytes were never supplied in the virtio TX buffer.
+> > 
+> > This is a userspace-observable kernel-memory disclosure on a
+> > network-forwarding path.  It is configuration-gated by experimental
+> > zero-copy and an enlarged TAP vnet header, but the overlong skb occurs
+> > regardless of init_on_alloc; init_on_alloc=0 is needed to observe the
+> > stale tail in this test build.
+> > 
+> > This is distinct from candidate BR-023/BR-025, which exercise
+> > IFF_NAPI_FRAGS.  This reproducer uses the non-frags tun_alloc_skb() /
+> > zerocopy_sg_from_iter() branch.
+> > 
+> > I found no direct upstream fix or CVE.
+> > 
+> > The vhost ring reproducer and complete program/console logs are
+> > available on request.
+> > 
+> > This was found with a multi-agent workflow; the
+> > information disclosure was reproduced in QEMU/KVM.
+> Please stop this AI-generated test-walls dump: it's not very helpful
+> except for other agents consumption.
+> 
+> Really, please stop now.
+> 
+> Please instead ask your LLMs to try to generated fixes for each of them,
+> manually review the generate code if you have the skills, and share
+> the patches on the ML, at a very limited rated (no more than a couple
+> of series in flight at any given time, with no more than an handful of
+> patches overall).
+> 
+> Please consider collaborating with other already in place projects
+> (i.e. nebusec) to make you finding available to the community in a
+> responsible way.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
++1, see the documentation on how to report and help address potential
+vulnerabilities at
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+    https://docs.kernel.org/process/security-bugs.html 
 
-- [High] The v12 `!lgr->terminating` guard in
-  smc_lgr_schedule_free_work() (net/smc/smc_core.c) does not close the…
-- [Low] The commit message says "Other kill paths leave the socket
-  hashed, since it can stay open until close()".
-- [Low] The commit message's 'Fifth' paragraph gets the mechanism of its
-  own example wrong.
-
---
-
-net/smc: fix lgr/lnk lifetime vs diag reader race
-
-This patch closes several windows where the SMC sock_diag dump can
-dereference conn/lgr/lnk state that has already been freed. It skips the
-CONNINFO/LGRINFO/DMBINFO attributes for SMC_INIT and SMC_CLOSED sockets,
-orders sk_state with acquire/release, unhashes sockets before teardown in
-several paths, and copies the cached link->ibname. It also unregisters
-connections unconditionally in smc_conn_free() and stops arming free_work
-on a terminating link group.
-
-> Fifth, on the smc_lgr_cleanup_early() path (e.g. server CLC decline with
-> SYNCERR) __smc_lgr_terminate() sets terminating=1 and unlinks the LGR
-> without setting freeing=1.
-
-[Severity: Low]
-Is the SYNCERR example here accurate? On the server, smc_clc_wait_msg()
-handles a DECLINE that carries SMC_FIRST_CONTACT_MASK like this
-(smc_clc_send_decline() sets that mask for SMC_CLC_DECL_SYNCERR):
-
-net/smc/smc_clc.c:smc_clc_wait_msg() {
-    ...
-		if ((dclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK) &&
-		    smc->conn.lgr) {
-			smc->conn.lgr->sync_err = 1;
-			smc_lgr_terminate_sched(smc->conn.lgr);
-		}
-    ...
-}
-
-smc_lgr_terminate_sched() then unlinks the LGR itself and sets freeing:
-
-net/smc/smc_core.c:smc_lgr_terminate_sched() {
-    ...
-	list_del_init(&lgr->list);
-	lgr->freeing = 1;
-    ...
-}
-
-All of this happens before smc_listen_decline()->smc_conn_abort()->
-smc_conn_free(). Also, smc_conn_abort() calls smc_conn_free() before it
-calls smc_lgr_cleanup_early():
-
-	smc_conn_free(conn);
-	if (local_first && lgr_valid)
-		smc_lgr_cleanup_early(lgr);
-
-So in this example smc_lgr_terminate_sched() unlinks the LGR with freeing
-== 1, and the new !lgr->terminating check has no effect.
-
-The skipped smc_lgr_unregister_conn() that leaves alert_token_local
-non-zero does look real on this path. However, it is caused by the
-terminate_sched unlink, not by smc_lgr_cleanup_early(). The problem is
-only in the cited example and its freeing claim.
-
-Could this paragraph name smc_lgr_terminate_sched() for the SYNCERR case,
-or use a different example for the smc_lgr_cleanup_early() path?
-
-> diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-> index bb0313ef5f7c1..aa6363abdd747 100644
-> --- a/net/smc/smc_close.c
-> +++ b/net/smc/smc_close.c
-> @@ -154,6 +154,7 @@ void smc_close_active_abort(struct smc_sock *smc)
->  		if (sk->sk_state != SMC_PEERABORTWAIT)
->  			break;
->  		sk->sk_state = SMC_CLOSED;
-> +		sk->sk_prot->unhash(sk);
->  		smc_conn_free(&smc->conn);
->  		release_clcsock = true;
->  		sock_put(sk); /* passive closing */
-> @@ -165,6 +166,7 @@ void smc_close_active_abort(struct smc_sock *smc)
->  		if (sk->sk_state != SMC_PEERABORTWAIT)
->  			break;
->  		sk->sk_state = SMC_CLOSED;
-> +		sk->sk_prot->unhash(sk);
->  		smc_conn_free(&smc->conn);
->  		release_clcsock = true;
->  		break;
-
-[Severity: Low]
-The commit message says:
-
-  Other kill paths leave the socket hashed, since it can stay open until
-  close().
-
-Does that match the code? Every smc_conn_kill() ends in
-smc_close_active_abort(). These new unhash calls run in its
-PEERCLOSEWAIT1/PEERCLOSEWAIT2/PEERFINCLOSEWAIT branch and its
-PROCESSABORT/APPFINCLOSEWAIT branch.
-
-Sockets whose fd is still open can be in those states:
-
-  smc_close_shutdown_write()          ACTIVE -> SMC_PEERCLOSEWAIT1
-  smc_close_passive_work()            -> SMC_APPFINCLOSEWAIT
-                                      ("just shutdown, but not yet
-                                       closed locally")
-  smc_close_passive_abort_received()  -> SMC_PROCESSABORT
-
-When the link group terminates through __smc_lgr_terminate()->
-smc_conn_kill()->smc_close_active_abort(), these open sockets are removed
-from the SMC hash, and sock_prot_inuse is decremented before close().
-
-smc_close_active_abort() also sets SOCK_DEAD unconditionally. That means
-the SOCK_DEAD-gated unhash added to smc_close_passive_work() can fire for
-sockets whose fd is still open.
-
-The dmb_nocopy unhash in smc_conn_kill() has a similar effect. It hides
-ACTIVE/APPCLOSEWAIT sockets that stay open, but only on loopback-ism
-devices.
-
-The v10 changelog gives the opposite reasoning for the other paths ("they
-must stay visible to smcss and keep their inuse accounting"). Could the
-commit message say that killed sockets in these states are unhashed
-before close()? Could it also say that visibility to smcss now depends on
-the close state and the device type?
-
-[ ... ]
-
-> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-> index 9974149659c2f..9d8165d1b40c5 100644
-> --- a/net/smc/smc_core.c
-> +++ b/net/smc/smc_core.c
-> @@ -84,7 +84,7 @@ static void smc_lgr_schedule_free_work(struct smc_link_group *lgr)
->  	 * creation. For client use a somewhat higher removal delay time,
->  	 * otherwise there is a risk of out-of-sync link groups.
->  	 */
-> -	if (!lgr->freeing) {
-> +	if (!lgr->freeing && !lgr->terminating) {
->  		mod_delayed_work(system_percpu_wq, &lgr->free_work,
->  				 (!lgr->is_smcd && lgr->role == SMC_CLNT) ?
->  						SMC_LGR_FREE_DELAY_CLNT :
-
-[Severity: High]
-Does this check fully stop free_work from being re-armed on a
-terminating link group? The flag check and mod_delayed_work() are not
-done under any lock that __smc_lgr_terminate() also takes. On the other
-side, the cancel happens before the flag store:
-
-net/smc/smc_core.c:__smc_lgr_terminate() {
-	if (lgr->terminating)
-		return;	/* lgr already terminating */
-	/* cancel free_work sync, will terminate when lgr->freeing is set */
-	cancel_delayed_work(&lgr->free_work);
-	lgr->terminating = 1;
-    ...
-}
-
-smc_lgr_cleanup_early() never sets lgr->freeing, so on that path
-terminating is the only thing protecting free_work.
-
-On an SMC-D server, smc_listen_work() drops smc_server_lgr_pending right
-after sending the ACCEPT:
-
-	/* SMC-D does not need this lock any more */
-	if (ini->is_smcd)
-		mutex_unlock(&smc_server_lgr_pending);
-
-So a second connection B can join the LGR of first-contact connection A.
-Can the following interleaving happen?
-
-CPU1 (connection A, CONFIRM wait failed)
-smc_listen_decline()
-  smc_conn_abort(A, 1)
-    smc_conn_free(A)
-      smc_lgr_unregister_conn()        /* conns_num 1 */
-
-CPU2 (connection B)
-smc_conn_free(B)
-  smc_lgr_unregister_conn()            /* conns_num 0 */
-  smc_lgr_schedule_free_work()
-    if (!lgr->freeing && !lgr->terminating)   /* passes */
-
-CPU1
-    smc_lgr_cleanup_early()
-      list_del_init(&lgr->list)
-      __smc_lgr_terminate()
-        cancel_delayed_work()          /* nothing pending yet */
-        lgr->terminating = 1
-        /* conns_all is empty, B is not waited for */
-        smc_lgr_cleanup()
-        smc_lgr_free()                 /* drops base reference */
-
-CPU2
-    mod_delayed_work(..., &lgr->free_work, ...)
-  smc_lgr_put()                        /* last reference */
-    __smc_lgr_free()
-      kfree(lgr)
-
-__smc_lgr_free() does not cancel free_work again. The timer would then
-fire on freed memory after SMC_LGR_FREE_DELAY_SERV. The same window
-exists if CPU2's check lands between the cancel and the terminating
-store.
-
-Before this patch the race could happen through B passing the
-!list_empty(&lgr->list) check. With smc_lgr_unregister_conn() now called
-unconditionally in smc_conn_free(), conns_num can reach 0 at any point up
-to the terminating store.
-
-Another question: terminating:1 is written without lgr_lock, and
-freeing:1 is written under lgr_lock. Both share a bitfield byte with
-sync_err:1. Can concurrent read-modify-writes lose one of the flags this
-check relies on?
-
-The comment in __smc_lgr_terminate() says "cancel free_work sync, will
-terminate when lgr->freeing is set". However, the code uses a non-sync
-cancel, and this path never sets freeing.
-
-Would one of these work instead? Either publish terminating before the
-cancel, under a lock that smc_lgr_schedule_free_work() also holds across
-its check and mod_delayed_work(). Or do a cancel_delayed_work_sync() of
-free_work before the final kfree(lgr) in __smc_lgr_free().
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019111008.3367567-1-mjambigi%40linux.ibm.com
+Do not just send reports of unfixed bugs to a public list.
