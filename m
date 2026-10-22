@@ -1,99 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.53
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792656269;
-	b=QjgovhXzSNI5Etg5tcvi/AVUXcgt9/VpIFYzgECqPbDJLdcCwm+Qz8M6Sz7ICbm4EvAU
-	 E6moqSK0PTREsWvhTQ/0V/VbQDYZsbtvLgNNuWVLhT8nv8+Mc0BS8otc+8YWPvdAQxmkJ
-	 KkfglrScCqstvQY2xllDSXloj8U/BVles1Z/3qdmOv5gzNQJMQxK/yC1nfNqUa775Mcms
-	 FhgFBUnVeckHaBCA+7tnxyKt8iB2VXt6H2hRDRCwqf49gZu2lxag3hZGSTgf+FGc4YK3w
-	 2ZPsG/0/UXdRRiKyeEB2K+EL51Gv5qifx2JPI2w1nBxTctx+h4cbFBLeOdYEp6SJIog==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792656269;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=UvDK0wI43J9wCVFly8Sel32okFV+wP/02Pa6wIx7AmQ=;
-	b=ofoPQGlmVAsnxfga9Hs7cnVAPnZYw+6NuELyBMJOcPvP/nvUsGdSi2vmMshHm0cGf3z9
-	 8XFEBqwUCJaj+NNUI6wgiwXKmi3LYNxg5v1/VEemEVXaDW7EgmJCA5h6/y2vlhzH+jpHA
-	 NIzloEOH4AgtN0nDgpTtC2TjrG/9n+vfLLvWDTa/lhdZfrOLohCq8kBIfCiqhCtGbCI53
-	 +CmJM7mAMcgsTvUX3fddYBsQL5d9R57QTl9yCjcZWyYFnMCC4agHPJcL6P8J1wqcnkXj7
-	 qa1ULi0g8wNJ3vNziRBCBXKChuvaszldH4pPzcfUw6159b7air7wd7mZWTW7Rx/lQ0w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nebusec.ai;
-	spf=pass smtp.mailfrom=nebusec.ai;
-	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=M1i9kRr2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.53
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.75.126.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792656541;
+	b=3t0NPHNTkOOJ+dsiAkR3h9s7NuSUOQtXay2wB0pMrh8h3a7zA5lwa7KbprddXBsbJLAJ
+	 TN+M108uEm5GJGWs109hi9LgJzM7dEknrgfFcyGImVfeHdK/HBPNE6XXXqxdvsju/xQ2q
+	 lOTWJXum/KqhWn+aoy3h0u1Q6WOrkjI99G2OwCfbh/3GCqInr7bf9w8sna1f+pAJKlLaN
+	 2XNpYFVFfaXKL5QutQioICUYBdYnNat2n0Q3zOl9oXDMa7MnnEFGewjggqy9Ov1TDwdRT
+	 dWoEuqPt221+qHwSAg+iu4Xv3rm7L2/jOHpbcD7NyWs2hxY+CAZVCXEol1ueCxbV1VQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792656541;
+	h=DMARC-Filter:X-SpamFilter-By:DKIM-Signature:Received:Received:
+	 Received:Received:From:To:CC:Subject:Thread-Topic:Thread-Index:Date:
+	 Message-ID:References:In-Reply-To:Accept-Language:Content-Language:
+	 x-originating-ip:Content-Type:Content-Transfer-Encoding:MIME-Version;
+	bh=SrQOB/R3SLUbovIU/JTFQuMZaTtCp4c2h+ziHO4QK18=;
+	b=Aqy0kfYwlNU+lywRIj+L33WHI649PFZolXUYZYW4rzMH+81M1SMzPMSXeK3smVZzB2Eo
+	 dPLmo04cSX5THBYrrbP2YOkj+oA+ulFS1SuYMGqx7oRGqBfW/NHjTMFzqXu7vciJnHWQ1
+	 cv8nGG0OGs83vovUrbEf+P1UYEpRsYTLVYSSR/OUzs5qMIbY3FcBq+s31Yy9WKW4URIz3
+	 16f+qnwOvesa72JnfQgRMTQ1Ns/jLdaSRhY+d0KApDQ5GKzvhtrDUgJfvaXo6J9xObR/W
+	 EBRli6Qh8J/WXiVed8sza6zla+F28AwIyuDTAjwb04XdTARsbUnx4kKG0CjLUw2mnIA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=realtek.com;
+	spf=pass smtp.mailfrom=realtek.com;
+	dkim=pass header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=JtocyhfD;
+	arc=none smtp.remote-ip=211.75.126.72
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7372B606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 08:04:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7372B606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01888606A319;
+	Thu, 22 Oct 2026 08:09:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01888606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=M1i9kRr2
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6798eb0d13fso1826454d50.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 01:04:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792656268; cv=none;
-        d=google.com; s=arc-20260327;
-        b=imzF0QdqBaha68sRacU3FIodBQFiepDO6QCZ6O3AyqGS+wAr05lITHgmtufWt8m/HV
-         AYJTM/soD9Nk3IWLLkkvXHTcFefWBjHzDSGDa+CYq9gDv0r6OlJe4VT7pUXVooHY5clw
-         dhstQA3X25iQ0d8HBzugdI3TTQ9+A/W79JuRBcj949z3mFwNSgDikgKoAjeZfHKTthwh
-         YAH2elG9E1eb7XaIa6d4vbl3akBrRA7Ey5KxFH+YTInEphF758PukdLCh4o/OYEjSdcP
-         hJRxREZivgQ0P+hxAGuSgnDt5LL0KLfcf2fgU/PHy0e7j1iCSmDZ0iqgUo7VWmaymbOe
-         at1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UvDK0wI43J9wCVFly8Sel32okFV+wP/02Pa6wIx7AmQ=;
-        fh=xr5yl59joksgJTFgmiBnQ6aAJSgyT6lzHMLAbh7REms=;
-        b=Fr4O3YQ/zoadDB4Qwu4BoO1SlEVgCmeSUJFSzjW9jAD7o2tAms+AYDg6VwBluYI9fT
-         c0WSU2zyFuTZiQUvNu9WnvQRIqnX0mbXtQlUxABBJ+ZMt1GQeaSGd/TquPdvPZThg4LB
-         PspuURhJwTI8f8ukhehOFMUhTbEQXROgrOnIWTBxfKPjPySk/DdeGHbDlJVog6wuOmFH
-         VYTleu2etUbZIbzVZGeLr8VJKNr1mnGmzJzpw8xqWUmdwi6Jno0Q0buHErrCa8T8EaTF
-         tkEvs3X6x7pTLds2/7JAxTnCNSOP59Ip4TYyqOaeC7+KFwk81j7GNydlldcrUz+ZktOI
-         ubpg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1792656268; x=1793261068; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UvDK0wI43J9wCVFly8Sel32okFV+wP/02Pa6wIx7AmQ=;
-        b=M1i9kRr2So/mB54OOe7b24fDDZPhcuzLofxb1mTsd6/CnM7bhwcEYTqi+oH6KFV17j
-         TbyI6v69ifh4j32NTNGCafeDMq/LAnZJ34jGKvMBl1Iz82n/4PRSJ7f0arcuVbFIm60K
-         lgAK3Ut5OOBpnpbPm8eMhZf7+AEGMivWguzvGcE+1aM/fUA2v4xsXWjTeLA64ov47KA7
-         EogOzuBwe5ACbOt9FG5bC7SPYjyU8QPHSvMenVAduMIFIHoeltXL4G2ri/P8MqvIjRUP
-         gsKjU+NJasCWaqeoryJCSQtYYpxAaSjFZHQhZovpREwdvk1kllptrF2nhqveSzIWBg/l
-         sswg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792656268; x=1793261068;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UvDK0wI43J9wCVFly8Sel32okFV+wP/02Pa6wIx7AmQ=;
-        b=kDbM7mrIhzPjuT/IYNnW+7fhdvIetrqSw+NxBjf+RDgxf+Qx5TR2NMsLbH06c8j/gi
-         wZjuBiIQiPcJ+ZPNP3EESTcLbbVgWljbJZMAFiuuVQXqEPfokRapfnL4SUDBvc5vQ6Jb
-         9dky4QT7pbiHju9e5YW6KP8+CP+Wgjft/jTp0SXz1VS7JlVYP9+W8ocrJfKiuQS7qtUJ
-         SlgsGnKkKNGTnJwQxlmIU1cnw0PXXyvoeUoS2W9eyFm+8mUQ1DfBj0peDNQKblzNODtI
-         +33Gn9OgjcYfLkSonNH14QdutatbneEaRwJRSkIzv5IowZaUEI8L4AVkySGPMiEaNE9l
-         m9wg==
-X-Gm-Message-State: AFq9FYKeCKyNcn9JM6t07OxAUQYXv7NznVv4IwYeB629qfvP8vnJQu4q
-	TT7lcAFyhLxJPR76GiE9V39vy1i22w3NF5HP8gGInoJvokKN/Eb53VydTFU5uNxGXcqhNEOtiZ6
-	T2Urd7Umb+9BOzy09roumNvLcU47LKWKW2SnyJu1ilU8=
-X-Gm-Gg: AYBFou2j/bR8A9p33i7xh/96uY1zsmf6U+6PDD2R/9ODgHwgbN9q+/lmy6yw3OEM+4+
-	LKPbwOqhQjs61IZ3Edv1XYKWAC3P7kZChU97fTY6d25G4Y55H2endnkxX8ttO1oH4vSBN2T6rOM
-	/ZyKaMxw9S8Lqechvdoe7pSaZ+MIMUN0n5yf/4ELspif3lkXDh/uGcZyW6TTB2hkKRSMUSBJlkn
-	11kbu6ykaTSlRVrXQeDSHcc2ukx1n7UQW/09KsW8WOwJ7bEk54AJldhlm19CsO615DP4ZVwDC93
-	HjpXRWe1Wbyuhsx8hVKuzCoE2zpCEzqbt0PgXiiIZoSiKwfDxeN6keCfQmInV4IwCPN7y08+iZE
-	aOTTljnoZ1/2fpKkgU68CaxupBVqUFXFQxL5xWYJD2MiDmdoXs12BRvBp3A==
-X-Received: by 2002:a05:690e:43cf:b0:679:a353:7a7d with SMTP id
- 956f58d0204a3-67a0e499423mr1493514d50.53.1792656268256; Thu, 22 Oct 2026
- 01:04:28 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=JtocyhfD
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69M88W080738026, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1792656512; bh=SrQOB/R3SLUbovIU/JTFQuMZaTtCp4c2h+ziHO4QK18=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=JtocyhfDotR85/5iXRd5H5dOm2ab6Mhc1Lx64bJAsv9prot2YhTM8Ev1JP73I2Sxc
+	 yPbcywXvE/9FS9btjXDNWN0Hucfxf8EvvDyoAWyhdjO8lKB9rfS+bxckt65laKl0DS
+	 6XTctr1kyMD4jt6jGZRihXN+W2w0MxDxS0Njpt6dreLSFASVpbYtlJY730iI7Y5w5a
+	 Ll93n9jIY/yuMHqi6ubSwSW3cgx0V1+0v0OZpDUbbMnN4vPmoJauHbpSdz9y82JpE7
+	 +wHyZIG1UsGOQANwLUIOO4+b2ZFZ3wRd8zzryRxCVikrlPbOiCeiCUDiZK5i0X6ZYb
+	 VYrKi5Oq0vsKg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69M88W080738026
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 22 Oct 2026 16:08:32 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 22 Oct 2026 16:08:27 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 22 Oct 2026 16:08:26 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Thu, 22 Oct 2026 16:08:26 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, nic_swsd <nic_swsd@realtek.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>, "bjorn@mork.no" <bjorn@mork.no>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "mail@birger-koblitz.de" <mail@birger-koblitz.de>
+Subject: RE: [PATCH net-next v7 05/10] r8152: fix up and down register
+ settings for RTL8156/8156B/8157/8159
+Thread-Topic: [PATCH net-next v7 05/10] r8152: fix up and down register
+ settings for RTL8156/8156B/8157/8159
+Thread-Index: AQHdW7Sw+V1oQp1ZvEmSf7eTjx4JUbcGr0sAgAKOofA=
+Date: Thu, 22 Oct 2026 08:08:26 +0000
+Message-ID: <0595476b3b8f4aefa6f9eb990b17c7d0@realtek.com>
+References: <20261014081904.6491-6-nic_swsd@realtek.com>
+ <20261021005212.1254979-1-kuba@kernel.org>
+In-Reply-To: <20261021005212.1254979-1-kuba@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,48 +92,143 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1792654486.git.zhilinz@nebusec.ai> <179265618778.3290.6590304416142136273@kernel.org>
-In-Reply-To: <179265618778.3290.6590304416142136273@kernel.org>
-From: zhilin zou <zhilinz@nebusec.ai>
-Date: Thu, 22 Oct 2026 16:04:16 +0800
-X-Gm-Features: AclHuK-ttxpk1qZkWA7RJa0y-e5ZRmyvNmGza_feFtiOdaTdxm9Ij-dj8EOUrr8
-Message-ID: <CANB6i5zgeY7U+2sjEWjvKxCJBM1vcwYVz_rJP2E6y56wjTxOLA@mail.gmail.com>
-Subject: Re: [PATCH net 0/1] xsk: validate fill-ring producer index
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com, 
-	maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net, 
-	edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
-	vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 22, 2026 at 4:03=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+On Wednesday, October 21, 2026 8:52 AM, Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this emai=
+l has
+> considered the AI review valid, or at least plausible.
+> ---
+> r8152: fix up and down register settings for RTL8156/8156B/8157/8159
+>=20
+> This commit corrects several up/down and OOB register settings for the
+> RTL8156, RTL8156B, RTL8157 and RTL8159 chips, following the earlier
+> per-generation split of the up/down callbacks. It changes the PLA_RCR1,
+> USB_SPEED_OPTION, Clear_SDR, PLA_BDC_CR/PLA_OOB_CTRL and OOB
+> PLA_RMS/PLA_MTPS settings, and drops PLA_MCU_SPDWN_EN handling from
+> rtl8157_up()/rtl8157_down().
+>=20
+> > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c index
+> > b245b63fb6aaf..045460a35f383 100644
+> > --- a/drivers/net/usb/r8152.c
+> > +++ b/drivers/net/usb/r8152.c
+>=20
+> [ ... ]
+>=20
+> > @@ -6938,8 +6937,18 @@ static void r8156_enter_oob(struct r8152 *tp)
+> >       rtl_disable(tp);
+> >       rtl_reset_bmu(tp);
+> >
+> > -     ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1522);
+> > -     ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, MTPS_DEFAULT);
+> > +     switch (tp->version) {
+> > +     case RTL_VER_16:
+> > +     case RTL_VER_17_QFN68:
+> > +     case RTL_VER_17_QFN100:
+>=20
+> [Severity: Medium]
+> This patch has three Fixes: tags:
+>=20
+>   Fixes: 195aae321c82 ("r8152: support new chips")
+>   Fixes: fd3c7d080df5 ("r8152: Add support for the RTL8157 hardware")
+>   Fixes: ad2a55b63b41 ("r8152: Add support for the RTL8159 chip")
+>=20
+> Will it apply and build on the trees those tags point to?
+>=20
+> RTL_VER_17_QFN68 and RTL_VER_17_QFN100 come from an earlier patch in
+> this series, "r8152: split RTL_VER_17 into QFN68 and QFN100 package
+> variants".
+> Before that patch the enum only has RTL_VER_17.
+>=20
+> rtl8157_up() and rtl8157_down() also only exist after "r8152: split
+> rtl8156_enable/up/down into per-generation functions", which is described=
+ as
+> no functional change. Before that patch there is one shared
+> rtl8156_up() with tp->version >=3D RTL_VER_16 and tp->version < RTL_VER_1=
+6
+> checks.
+>=20
+> So a stable backport would either conflict or need both non-fix patches a=
+s
+> prerequisites. One of them is the package detection change, which makes a=
+n
+> unrecognised PLA_PKG_DET value fall back to RTL_VER_UNKNOWN.
+>=20
+> Could these fixes go to net separately, written against the pre-refactor =
+code? Or
+> could the commit message at least name the prerequisites?
 
-Hi,
+I will reorder the series so the fixes come first, written against the pre-=
+refactor code,=20
+with the refactor rebased on top.
 
-Please disregard the mismatch between the cover letter subject and the
-patch subject. This was my mistake, and I apologize for the confusion. The
-patch subject is the intended one; the patch itself is unchanged.
+>=20
+> > +             ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1526);
+> > +             ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, 10 * 1024 /
+> 64);
+> > +             break;
+>=20
+> [ ... ]
+>=20
+> > @@ -6997,6 +7008,11 @@ static void rtl8157_up(struct r8152 *tp)
+> >       }
+> >
+> >       r8153_aldps_en(tp, true);
+> > +
+> > +     /* Enable Clear_SDR */
+> > +     ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xd378, BIT(7));
+> > +     /* Clear SDR bit */
+> > +     ocp_word_clr_bits(tp, MCU_TYPE_USB, 0xcd06, BIT(15));
+> >  }
+>=20
+> [Severity: High]
+> The commit message says:
+>=20
+>   - RTL8156B (VER_13/15) need Clear_SDR enabled on up, which nothing
+>     ever did for them.
+>=20
+> Is the RTL8156B part missing from this patch? These are the only Clear_SD=
+R
+> writes the patch adds. rtl8157_up() is only used for RTL_VER_16,
+> RTL_VER_17_QFN68 and RTL_VER_17_QFN100.
+>=20
+> In rtl_ops_init(), RTL_VER_13 and RTL_VER_15 are bound to rtl8156_up():
+>=20
+>         case RTL_VER_12:
+>         case RTL_VER_13:
+>                 tp->support_2500full    =3D 1;
+>                 fallthrough;
+>         case RTL_VER_15:
+>                 ...
+>                 ops->up                 =3D rtl8156_up;
+>=20
+> This patch does not change rtl8156_up(), and it still writes no Clear_SDR
+> register:
+>=20
+>         r8156_exit_oob(tp);
+>=20
+>         ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
+> PLA_MCU_SPDWN_EN);
+>=20
+>         ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
+>                           RG_PWRDN_EN | ALL_SPEED_OFF);
+>=20
+>         ocp_write_dword(tp, MCU_TYPE_USB, USB_RX_BUF_TH,
+> 0x00600400);
+>         ...
+>         r8153_aldps_en(tp, true);
+>         r8153_u2p3en(tp, true);
+>=20
+> So every open or resume on an RTL8156B goes through ops->up ->
+> rtl8156_up() without the Clear_SDR enable. The later patches in the serie=
+s don't
+> add it to rtl8156_up() either.
+>=20
+> Should rtl8156_up() get the RTL8156B Clear_SDR writes under an
+> RTL_VER_13/RTL_VER_15 check, or should this bullet come out of the commit
+> message? The 0xd378/0xcd06 writes used for RTL8157/8159 can't be assumed
+> to apply to RTL8156B.
 
-Best regards,
-Zhiling
+I accidentally dropped the corresponding code; I will add it back.
+
+Best Regards,
+Chih-Kai
