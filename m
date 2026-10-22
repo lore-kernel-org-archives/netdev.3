@@ -1,97 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660626;
-	b=0h3fGPIKWZPsX8jw1pyAHQn/gE/HaU26I5HL4yPWJ3yts5WhaP+YOs5F5mBw5PuA30c7
-	 iP+PYqFoviIuiBk/AYwpoC1VnyWu+ibEQiF4ShULWDtrvf8ZSjymVJD5CP/Fx8bIpTspK
-	 sBTGV50esy6vcyG+S5ESApKEgnNHe9+uEpvVIG5HSnAta35GiWEkaXF4T+Y+olgn9eFNY
-	 O0MTSwjwjZNqmqUwxxtnnfKgYaHD996NfdHKqVYHD/x1SKB0fZxOE4w8IcppQpGlhE4XM
-	 nQZrBDly7syX1cPnkHpliqkGC7UN+++v7tgs3dMI6KLarqfSXaV81i+fQkwD0kX9X7A==
+	t=1792660652;
+	b=k09Z5zX/w1DfM2wXzfBw/WmGO4LN58VhkeRhUqW0ajUroF9NbF6pgdd1k9dpzt9m0yZ1
+	 YxeNN2sJ7s77Xk6LCxQ6uyYFOIsZn0DFqx77PEh3JFOgs9kJlUecqN+V11+IDYyJAXsVZ
+	 edJ31Y3qbtPh87c+r+eGb10Nxlvx//hlTRrQGklm1FdNmwTytsG1x3RTiHzMisGFefHDu
+	 yrMYChdM49MLx1IiLmP3XDp4Ea7BARxKcuiN8TDTIczhtlSPNz3bC0GOLG0ugKtcKAY5+
+	 gCnqajk931Iaz9O3vKNtgUYZGVmzF46FedbVqQuBIHz98OyKCuh+odp13w9bioqW55Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660626;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660652;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=74Vw0j5rE4cQu4U2NNcGbj29GdZNeea1qUhNAa2u8VA=;
-	b=XqbHIKtfOks7urSNyaacKFKRDURo17J8TYeOWdZm5t3VxXvTEl0IIzSMgf3HLUUQtB9H
-	 VAm4JAae+1CIHrGkVV65q3RpImwFzG3DheE1IApjSJMfIQffzWkHDonYjTsAMSCF4hfAG
-	 XwFcSLPuI3jX2DUm4cimHJQX0xwaVKFAvH75s+yBm0BFL8cV2OYRtqEft1O0nMMJQX410
-	 nqRuz0wrU7sayL/RDvkc3d+PzB3V+Haj8r7JvUWmT88zxQlhlcILE0q3OuLBZWQpBACUt
-	 ttVSSmRY8g7hSs3UJuhMkS2jjhRfznLauCOTNgAVIl/Sn3tB3lVygcQREwL8YZ95jaw==
+	bh=YrU9NXkLhPc11UNj4ze98iYIGfoVOje0QPpEBEMUH0Q=;
+	b=vYQf29ti6CYXFS7dpaCbXLkBKIr/i+u6+yYAknM0SmKgvlU37CvvRwlGMG+ajt2cH/Bt
+	 r9XLEzXlBcligPXlknK5nHLH2H6Wh9RXjQSzWJ3EWAPFdLHC8QCYk8O/IfJM/4FsS9Zn4
+	 crelfBVsAqTY8/AfyOudgZ6BQiPkrXgHIqseP+dRY5wUWj4BmhVLshrhJ8rmdBWe3mauG
+	 2QeJwvHeroiB+kD5BX5XLekmszKCvUdxBL2Yf8H1ClJQs7P5x3hqQEbI3LJledpFXv8tT
+	 jbUTdnqEegTZemuVIV6DsTs8Y3rZelzyCwH4aUwLPzIPls/9patlsQ2thvbe6KSJvHg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hBhy5ypY;
-	arc=none smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YoqQ2qEo;
+	arc=none smtp.remote-ip=74.125.82.44
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22B7606A31E
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:17:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C22B7606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666C1606A320
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:17:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 666C1606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hBhy5ypY
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-35943f55c06so916696eec.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:17:00 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YoqQ2qEo
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1517bda04a0so1765301c88.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:17:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792660620; x=1793265420; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792660651; x=1793265451; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=74Vw0j5rE4cQu4U2NNcGbj29GdZNeea1qUhNAa2u8VA=;
-        b=hBhy5ypYXncRiYmIbapRlcQE46DIqBPNYMXjj0YperJhiElOGSByawpFQkZOhrd7ZF
-         raidv5wjumP0e+/xF4C8bKZMhpNOKrzmgJIThRFLCzjxuNiW00QPwAvaOC9ISYsNS9uH
-         wef0d8VmA/Adb3Oz3F5S6EwsxwXPxemesi7Ni4pMdinKMOdZhmXh8c9u7EV3Equ0qz7c
-         ey2HLceyg8SmILm64uEFz6DdoAAiggL9yJz5RlNSoGX2IebOli46rAstSdLDm/bwhi1K
-         JE1KuJQtwDh40tlsY8ZlERp8KTqHrlU9d4oyvcEoFbXnow72bOPtpW8JzihTBqwy4xqt
-         FF0g==
+        bh=YrU9NXkLhPc11UNj4ze98iYIGfoVOje0QPpEBEMUH0Q=;
+        b=YoqQ2qEoUEfKXEqbta2HMACEfMy+lta0Cv6sAawZGIhlTO61tZUOyOPCCiiMxW7Cdg
+         Ew9z2G5Ob7q5DTIGNmZcPFSgoWmBbGiihn91T/Oe1rKc51mtUQFvsM7c8uEgOZKGSfw+
+         0VR8xm2hETmRmDJyP6b83Im8rpVOhKB7RxnbKvg3YWAjWzZrk44jbnUk5Rf2CW2PmTy0
+         ChHcvJlJXNp21zKMK29jVvbCO6IHpx9+8QlNcCkOwzRRfs/Ppb57C+QMM649U2AqgMt/
+         lsg+C0ZdnybAUSjrB9QIdOt/5GNWZKvQE2Mh6ndUGnCOyNaQjOX9oZTR+pt4Hoh8b4Dw
+         MtrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660620; x=1793265420;
+        d=1e100.net; s=20260707; t=1792660651; x=1793265451;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=74Vw0j5rE4cQu4U2NNcGbj29GdZNeea1qUhNAa2u8VA=;
-        b=tCazHbQaWd9wEKnvWBiUb4cO7vtkEfsNgF4NaSxR4f4O8Sm4vyLFm0fzvS2RA42vL5
-         M6Sr5DI54Dzs5HGA1QSy0sPTJtk0wMDdKTqtqSnUcKSzwx9QsR881anK6Q+3kKpJo8zk
-         V5TOVldAm4i8Nb8teHr4edoAkAjw2P5AjDisW1JqcND4xA/wvkdyNKmPoriP4OcXFDPQ
-         yguIyHJRf3t1qw/4Yde30ALaJDJuoQkyg5Ok8TdAH+d8l8u6CqOzQ2B/f3MmpwbuZBy9
-         RNMd6CPrGleM9x/B1fNZInRW1OIVqM/T86eO1VnC9sns8ZrP9AtYw5KThVOTRmDI9ihR
-         f4Rg==
-X-Forwarded-Encrypted: i=1; AKwUvByejKMzyipGLOHUoxSCMgoqjSub+lHgryQEMdEyR93ZV3nLIbDDP8nNf/6bc6Klu0oCfHm9nqc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLwPK4I8gYb/CR8hHtLBGl4P7Faf12hdpZ4lsr9coD1k97/MkvQ
-	ih5I6vMspR+oQwjc6X1kLrvCi0QwcI+/kJezIeK7J9xqUN97mQVlnhZ7
-X-Gm-Gg: AYBFou0utRbgUqIspK7e6ijj9uh7IYP3zyBn9dFOuuNNj6/2PYbfqOJ1QVQZcETPk+b
-	BSIxvY3ZevR1sNDCnsr75IIm5oO/B0rWQ+0Gz/SwWL8FrG6W8zM9xTjm2w8gj4ICppA1MDbEc8P
-	KweOBp+4F8TAwBfgeZ72FpAEdkuj2r9FgobjtgRQNQfgfbMpWm/9B3em5vFUdKWWk6X36VIW1S5
-	SJo0JvkG0t0jGKkZFIUC6OprvclN78BpFWT/kYmk+a5ElZTyGODWvsmFTak6cCCZWGuB9u2F8Ru
-	MMv9RT1X6Xui7Hkx+oT+Mg7bY0QqwnTyYtJEf9gAkdw095p6f7v4KBYnW4X7nWxauumoDZ+slGh
-	rr48nlXIJO9a51TUIu49XlPIBwbJHyQurPI8xHjhvIKVrnxcmGFj0r+LcFOSc749h1jyVYpJZmB
-	h8N3+skJ4MYbmtO36kjyAu6HRIvNv8k6DCcIXGtGBrytd+idr5K5xXKMNs+Mnr4gxR5rG/Bncgs
-	4EomZM8BpvJgXJROuVQMo4v41FZqrqSJXb5NiRCqhb8qAL9ba/0gAOeQ0UrvOC44j+3WjbXZd+h
-	UVK/13lerIWg6+RKLac=
-X-Received: by 2002:a05:7301:7e17:b0:366:6c79:212b with SMTP id 5a478bee46e88-368b122ff22mr2280564eec.25.1792660619861;
-        Thu, 22 Oct 2026 02:16:59 -0700 (PDT)
+        bh=YrU9NXkLhPc11UNj4ze98iYIGfoVOje0QPpEBEMUH0Q=;
+        b=ylBWmh8zbA9qs0XpeeOi9r2zN5ZdgWB/mhQGL4qfGPFfHXHva59tqgqi7G74TaUDjD
+         9a8X34OUgtlPIu0VPXrmlX5rij4Hl/YYTVEuoHwvt0lBaaFWtLTs1Edh2o1eLyEnNMAa
+         /0ETBnDLYfVsfpm4rRR1DISM8Je308/CJNIENap18H+mz6xVgo/GoaF+QRtq+LkIghYG
+         R1h4FIjQxCcN6jeePWvc/UdTtqjDIIAIluW6BGt/iQaLyp7AEmRRGvX8YTDvFK7Q+q1J
+         71hyXUbiZVrvSEMsdR6B+zOnHnhe2FfD/OSj3rMoEfwpsxYsDXjlE9wYgce6xgVvy+no
+         6fbg==
+X-Forwarded-Encrypted: i=1; AKwUvByOVmCkavcVWekbYW08jGI/bBEdcufJx4ZtVNBDy8D5vN0y2TLbYRBnNww5+wl/MGdlv8yPVPY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIdqUwwYKm1FCg5twS1fh5H2y/YEykBGyoPlPWrDxhVdXI0bvYL
+	Mvu0AkO0efTf1NlsMPfK2ZSFszvQSEbHp5aT9WILdlzO79wixqr8MBMC
+X-Gm-Gg: AYBFou3id/vaCzVPzZmHpeFs3CdaHYEhboe9Gr/rxGQap45tFC0rD440ESODEFnXE1i
+	NvF4hLZofFnhlu81M16xk6xjtK15kjCG9hQPCV5PwKl/7EktHzQUjbenLh49EGfYlNhwjbnEKWK
+	HdJhFB+hAKqjRbIVNrmGop7HkaLRbw35EyYY336p1OFIXr97vRZFgkFSmVrqyEpy9gr3EhFbd1Y
+	S7acXRDYhElQ8hB+ufbO4FTAwi2Lc+kkgfEBuR00c5sOvtSPPWnz4zWFv5eckEO+B02NP4OXe1m
+	3KMCJMuLGQjK/gMbMUpnrvM/HvgY1BOXLaeVKgitUuuiEZVHMbqahVHjwsrhLyV0QWMHClQhmzp
+	1UsZ5sRxbm8uFu4CctwXpUOfP+q2uiw6892hovyWl1Al9NlZ85G6aIvuI3Vbkzbs4aASlDNcsGG
+	n2Xp14YJSRPHw8a7j8lsrhkvQgBl8Bqzg9HEyoKRW6q4WvwOlOIYZ6imRwSXYbXTFvNI85pn4+e
+	L5ntkVfU8WO1kARE0cerv/z19FrLeGQZk2kCQqLUviXC93Md6WohycWXvQo2sPKZELX0jTxfy1r
+	H2OdHl43TPzuH8IMMDU=
+X-Received: by 2002:a05:7023:a82:b0:149:1b5b:1f25 with SMTP id a92af1059eb24-190a4c1fa39mr5950603c88.15.1792660651419;
+        Thu, 22 Oct 2026 02:17:31 -0700 (PDT)
 Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36740cc8439sm15295791eec.11.2026.10.22.02.16.56
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903e4f2eacsm12227509c88.23.2026.10.22.02.17.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:16:59 -0700 (PDT)
+        Thu, 22 Oct 2026 02:17:30 -0700 (PDT)
 From: Cheng Yongkang <teel4res@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [BUG] net: bridge: CFM CCM transmission state races with delayed work
-Date: Thu, 22 Oct 2026 02:16:53 -0700
-Message-Id: <20261022091653.3652341-1-teel4res@gmail.com>
+Subject: [BUG] net: ipvlan: down-slave deletion leaks parent allmulti state
+Date: Thu, 22 Oct 2026 02:17:25 -0700
+Message-Id: <20261022091725.3652834-1-teel4res@gmail.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -107,54 +104,40 @@ Content-Transfer-Encoding: 8bit
 
 Hi all,
 
-br_cfm_cc_ccm_tx() and ccm_tx_work_expired() mutate
-mep->ccm_tx_end and mep->cc_ccm_tx_info.period without a common lock.
-The start path also queues ccm_tx_dwork before saving the new
-cc_ccm_tx_info.
+ipvlan_change_rx_flags() increments the parent netdevice's allmulti
+reference for an ipvlan slave with IFF_ALLMULTI.  Unlike macvlan,
+ipvlan_stop() does not release that reference and ipvlan_open() does not
+reacquire it as an ownership pair.
 
-One reachable interleaving is:
-
-  writer: store ccm_tx_end
-  writer: queue ccm_tx_dwork
-  worker: observe an expired end, store period = 0, do not requeue
-  writer: store the requested nonzero period
-
-The final state reports an active nonzero CCM period, but no delayed
-work remains and no CCM frames are sent.  The keep-alive branch has the
-mirror interleaving: it can update ccm_tx_end and return success while
-the worker subsequently clears period and stops transmitting.
+If the slave is brought down while IFF_ALLMULTI remains set and is then
+deleted, netif_close_many() skips the already-down device, so
+ipvlan_stop() is never run.  ipvlan_uninit(), __ipvlan_link_delete() and
+ipvlan_port_destroy() also contain no decrement.  The parent therefore
+stays in all-multicast mode after every such cycle.
 
 Observed on Linux v7.3, commit
-08ab31164c55f20c7a2653de3186ae333470e2c1.  A self-checking userspace
-program exercised the start-path ordering and found six phantom states
-in 384 attempts:
+08ab31164c55f20c7a2653de3186ae333470e2c1.  Three
+create/allmulti-on/down/delete cycles changed the parent's
+IFLA_ALLMULTI count from 0 to 1, 2, and 3.  A later live-slave
+allmulti-on/off test changed it 3 -> 4 -> 3, showing that only an
+explicit off transition releases one reference.  The leaked reference
+survived deletion.
 
-  start_period=67108864
-  probe_period=12738873
-  two readbacks remained 12738873
-  keepalive returned success
-  final period remained 12738873 with no pending work
+The 2019 review of ipvlan multicast propagation already noted that a
+dev_set_allmulti(1/-1) open/stop pair was missing.  Current source still
+has the asymmetry.
 
-Four independent snapshot-VM boots produced 98 explicit confirmations
-in total.  KASAN and UBSAN were clean, as expected for a control-plane
-liveness defect.  The target lacked KCSAN, so the report does not rely
-on a KCSAN warning: the queue-before-save ordering is directly visible
-in source and the inconsistent externally visible state was observed.
+A fix should pair acquisition/release in open/stop, as macvlan does, or
+provide one release path that runs for deletion in both up and down
+states.
 
-The worker and configuration path need serialization, and the new CCM
-state should be stored before the delayed work can execute.
+Candidate BR-014 is the broader deletion-path description of the same
+root cause.
 
-This is distinct from candidate BR-038, which reports the 32-bit period
-conversion overflow in the same state fields; that arithmetic bug needs
-a separate fix.
+The self-checking reproducer and serial log are available on request.
 
-I found no matching upstream fix or CVE.
-
-The self-contained reproducer and complete logs are available on
-request.
-
-This was found with a multi-agent workflow; the state
-mismatch was reproduced in QEMU.
+This was found with a multi-agent workflow; the
+refcount growth was reproduced in QEMU.
 
 Thanks,
 Cheng Yongkang
