@@ -1,98 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792636005;
-	b=j0C4f84+Smsx10ft3xf8Kd3D1A7C4yvfbMaTkpgge31kvPAboWZO4XPw4/mYnc9bP/M+
-	 rpGh77NjrzxRP6pTpCok3OaA1KKjxbkX2CRJLuzWDEmb1VTdjp1WQQWl/akquKcygqrXF
-	 zUUinXozfl27ikUzayhBZ8r0BYhpTX4V7OCBn//h1MD8XU5vd9NhTabaDa1HVFgqsDTNd
-	 UdLLn3cPiY1OGCvG7UL2M9JjnqrLUhuRao7pSwp2MvqOd1Qiu5GHx+SNGRpe9dJ7J45gu
-	 m/awT3+Jp6f37nVkYFY1e1wYN3UrzPV4LEPvvBixNwahaNzOxm34nCfMySxpMDjQWIw==
+	t=1792636806;
+	b=h4YpVyXD0shKJwGyoZMy+9WLhUAP1vbfePduMNsdeX/Dct3b9IWwCSbV6jKYv4rvRvKU
+	 h8f1m1fgBIa+PiCnwuYqBfwd3C59jtrtORDeODL0252UmWtHjrc8kpyvlGRuEQK0HcS6d
+	 84EXjpANilW+Pg1NANYkmml/uPadYirFxoeLPsAz31Ccj3Ooj7pueK2vwh6bbINy6E0IA
+	 01puLkZcbSgVQ1VcHvs7Vo/sroNfQq5j3gXVCLuwTDaw0Dekf05NPDFiiRKu9OIRVEkRt
+	 PN3op7hUbxE45TzuV3cUtrpXBvpU2si3SP0vQcl238ruXFaIoHa7SG9QJsRrw/04d5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792636005;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=NmZHEWlQZjYjTV2Jiiaxgc5qSyoqK4bbRrly0szFWi8=;
-	b=1gap8SAlVFZJwygMBPbnc/EfMPS4taupCzTQm+BysdJcTxA3TOfAlS7YIlRKsKVTyFlB
-	 6V26WkY9u6YmwxF4diVe60CQ+F+4DSRtyZ3cXzi3RzLaRPQt8s60jfAqn7BLiqPgXu/gf
-	 O858jpO/HMqEf7s9AUWQGuImtVSnZEliTWK0zaVFqsv58CyI5J1gQjGdjjtLQmjYqrA+j
-	 FYKY9yElLypYKpWHvM7NQUQW31ZJwxMGrsKVnsAdXHkVX4oRIAnaibbwg4ndmUq3UxRCr
-	 gjlpUea06EgNwvmWY5mHcN3HXKv8mQJxLQt/zyzqjS4fuwyz9jaR+JqVSARUZ2QquJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792636806;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=M/fg1+U3EnOh2+pYzx/9Onq1tlvh1e+sbL+GlRjzD9o=;
+	b=WBFh31TKGjrmyNJD9Js7cD7lrz75MFCqHOW+abNlJanrtQFCGog7Sg5M6wdUL9Y3Cn2y
+	 7QrRVzWspd9wYMll+xPyXNCtL0voqQvsokBGtQWm5qFzwIpAzlizLDADMEY5M2vH65res
+	 EAD6iMH4QuGJftMPsGL1yr17wIxwZKfBFoj1XxxtsUZDiBwQlCs9SWmC9C/9Vjiuzw0Ks
+	 4UuoLlTOVTSA43ghzTFnF6po2vtUnMuHZ1XVF8U0L3zf4LEsNuyrN2/WEW4u13wV/hmW1
+	 psgx6P/gYl7Edgvw6vCh1louexVagew0IJ4ZobIzaz7NKhoB/j7gcKfihDtb6H9rc1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rrxUfOgd;
-	arc=none smtp.remote-ip=209.85.215.170
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LJjKf6fc;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC35606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:26:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FC35606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A57B606A319;
+	Thu, 22 Oct 2026 02:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rrxUfOgd
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cd633ef819bso535483a12.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 19:26:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792636005; x=1793240805; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NmZHEWlQZjYjTV2Jiiaxgc5qSyoqK4bbRrly0szFWi8=;
-        b=rrxUfOgdd/PL37RrqPELxylj88nYDj3VAUPLHKoPPzQ+MP6R6NzMt5vUV57umIhrGG
-         muOt+sfD5Q7rGOxABrbR20O+sTVM5evE66YwnaQj+OUgIk97qADyNcOqo/SupoGLpZpr
-         7dozEl2Jk9Sg9PDEwlFHrNou65zuYCXxM2xbqDL0GzUJqVQQcWpt71Vx0W432RcfOk4y
-         2omlcbXEB2rM2fhjnNkehPRfxS97qHphcdQVHPYnIhXmVIKsogX5WL1UaZZXM1OwVd1S
-         tbLPRnJD7StmnZTTOqLMlUQGvuhOIUP0s0ftOJc5MEgQX01vpw3XJlVt9zOCwHyQa/4m
-         g89A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792636005; x=1793240805;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NmZHEWlQZjYjTV2Jiiaxgc5qSyoqK4bbRrly0szFWi8=;
-        b=fLOHHEpv/kqWS+iV9XG5yp9ttUEiu9kuCjXLdlh6e/IN23ICggmF3VN6kF5lyQXMR2
-         hZDyEOmys7kK+jzRuRbuuMeE5P4u0W1BKGIQofTQsuoyn9FSa8ZzGRG7HaeCaqiAFS0X
-         Rmt8gFBNH5QDFXykHGmQiu+p64O8QXmPHteWwEXsJpcJMuUZkbKc3LBiTvpnsU18Ydaa
-         RIJ91xrLP/0+g/m+X2ASYUylxzBM/9S1vMRZO50hvNn+Xoso2rkN8Y5fxMfx0OuCxEx8
-         J3T6Qe8MZQ26iz+FrhavnbITgPmYk20NqeBhpu+q9t+WfbHVXrp5qA8rgsiC4avTT/HQ
-         IAXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzkQxrglfV1WWqKSDF23JpH3epc3JkiR2D6HFMFeC8va5Tm6XoHSOBEzIeFL+DAllBVe+QXZeM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLVl4+saQSJ2IobeLCzxniCk2ThgdXedX3FgtIrZ8fQbuUz2jHm
-	5CyT85B+jAUYDVwBAW3MOglIJp5fHdyJxi4l0uWXjGpyTxF1MrYIKGM/
-X-Gm-Gg: AYBFou17Wf2Ey7GF54j8XZEOlvGtlLFuZ6v6U+cPjf79G4NuieuSvVfXPZ+8OL01hgQ
-	g0c1RZk97rfDl/Brpowoi3xf8A88ZDoSe3w0lgu8CB7ZI/P1nujWG2GLcqkQCiXBng27J/Swu8p
-	kOFC6atCockeMCz8WwAewzT2L+LdMMDfZw+/xuRqBgzCOSVR1VAhs3nS3YU+DgvEzRh9afdbRRm
-	p56iB+XRF7kJBlUzH3XR3xlePc/QUtekOh8jYtQ6Hu9tILqimkFznsGX1FuCIBk1Pe4Mvoa0LQ+
-	aDgRMT9yhQyhO/vyln/P0kgwIbpQcvU6beML6CUkZIRyAg4rfvyk+XQgHHcFhpBOSp7i0pdzHts
-	oFiXQHjLIxCrWE+U+JeQNZRxVXm7qN53g1sLBWq5I6vkITrhZtTW7vaJ2KY0EAbpMFEGMjIrzGU
-	M1KapTFL3RQVB3mZQsKMd4hiJQ0spE6tF16A85X620WpEYzPOygDhxBYycWwRJ6U2Z4rOpCG7vv
-	gPECdX3K09zF9IrNXCnHwp3/f84XHpmEcO9Z8T70GH362fGL2phL70kBkxLgGNLkxo=
-X-Received: by 2002:a17:90b:1642:b0:3ac:c90a:10d2 with SMTP id 98e67ed59e1d1-3ad86c9041bmr3439757a91.30.1792636004587;
-        Wed, 21 Oct 2026 19:26:44 -0700 (PDT)
-Received: from TENCENT64.site ([103.7.29.106])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada4896c58sm1844518a91.8.2026.10.21.19.26.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 19:26:44 -0700 (PDT)
-From: Fourie Zhang <littleddfu@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Zhiling Zou <zhilinz@nebusec.ai>,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	netdev@vger.kernel.org,
-	Fourie Zhang <fouriezhang@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH ipsec v2] xfrm4: use a full socket for local errors
-Date: Thu, 22 Oct 2026 10:26:22 +0800
-Message-ID: <20261022022627.4132880-1-littleddfu@gmail.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LJjKf6fc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EFC1F000C1;
+	Thu, 22 Oct 2026 02:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792636806;
+	bh=M/fg1+U3EnOh2+pYzx/9Onq1tlvh1e+sbL+GlRjzD9o=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=LJjKf6fcVA2qQOUUET3ViPyD3a93dso2Jr3KbQKiunfmx1EU4CQplSZPGEudgkC17
+	 DtryIOy3uSi1NBmNul7bLA1NLpJHM4TGr1dtnH0SkFjukuEkLmZSluWltYW4QaGVlH
+	 eBQMFl8a99gn9YyUdg4qOZQx/bE9928FmWxBJF87TJradKnrLqI8kkPcwP3O2WF3rz
+	 UcMWzJhwDpIhnlczxzV8an/AGydjm9Uf4R3Eh++4lLkO6X1tJ7DjwVucq4dC7krAio
+	 OpHxp87eEc6qSazFrBvmSdOMIPOzU6IKoJ2tIkCMeyBLauNEej/Vtfv3+EQNw0ETHN
+	 DFOfAfgsGPweg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A44E380A965;
+	Thu, 22 Oct 2026 02:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,68 +54,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] r8169: clear TX LPI on RTL8168h at link up after
+ phylink conversion
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179263680504.1419062.880435030900903777.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Oct 2026 02:40:05 +0000
+References: <20261020161543.3712208-1-sashal@kernel.org>
+In-Reply-To: <20261020161543.3712208-1-sashal@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, javen_xu@realsil.com.cn,
+ o.rempel@pengutronix.de, d.piecha@ymail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-From: Fourie Zhang <fouriezhang@tencent.com>
+Hello:
 
-xfrm4_local_error() passes skb->sk to inet_sk() and ip_local_error()
-without ensuring it points to a full socket. TCP SYN-ACK skbs can be owned
-by TCP_NEW_SYN_RECV request sockets.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-xfrm4_tunnel_check_size() already checks sk_fullsock() since commit
-1620c88887b1 ("xfrm: Fix the usage of skb->sk"), so iptfs_is_too_big() is
-the only remaining IPv4 caller passing a request socket here: the sk it
-tests is the listener, while skb->sk is the request socket.
+On Tue, 20 Oct 2026 12:15:42 -0400 you wrote:
+> Commit 3cdeaef1754a ("r8169: disable EEE on RTL8168h/8111h") disables
+> EEE on RTL_GIGA_MAC_VER_46 with phy_disable_eee() but keeps the version
+> EEE-capable, so that link up still calls rtl_enable_tx_lpi(tp, false)
+> and clears the MAC TX-LPI bits (ERI 0x1b0[1:0]). rtl_hw_start_8168h_1()
+> does not clear them, so a warm reboot from an EEE-active state could
+> otherwise leave TX-LPI asserted while the PHY no longer negotiates EEE.
+> 
+> [...]
 
-When IP-TFS rejects such an skb because it exceeds its payload MTU, the
-local error path treats the request socket as a struct inet_sock. KASAN
-reports a slab-out-of-bounds read in ip_local_error() beyond the
-request_sock_TCP allocation.
+Here is the summary with links:
+  - [net-next] r8169: clear TX LPI on RTL8168h at link up after phylink conversion
+    https://git.kernel.org/netdev/net-next/c/f71ff7d40652
 
-Resolve the skb owner with skb_to_full_sk() before accessing inet_sock
-state or reporting the error. This maps a request socket to its listener
-and rejects sockets that cannot be used as full sockets, matching what
-commit 6973a21ee73c ("ipv6: xfrm: use full sockets in local error paths")
-did for xfrm6_local_error().
-
-Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handling")
-Cc: stable@vger.kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Link: https://lore.kernel.org/netdev/20260908224856.1591189-1-kuba@kernel.org/
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-Assisted-by: tencentos-corvus-ai:hy4-preview
-Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
----
-v2 (Eric Dumazet):
-- Fixes: use the IP-TFS commit
-- Note why IP-TFS is the only remaining IPv4 caller
-- Reverse xmas tree; add Reviewed-by
-
-v1: https://lore.kernel.org/netdev/20261021101839.3797779-1-fouriezhang@tencent.com/
-
-A KASAN reproducer for this issue is available if requested.
-
- net/ipv4/xfrm4_output.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/xfrm4_output.c b/net/ipv4/xfrm4_output.c
-index 0ae67d537499..fffa3c4f456e 100644
---- a/net/ipv4/xfrm4_output.c
-+++ b/net/ipv4/xfrm4_output.c
-@@ -38,9 +38,12 @@ int xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 
- void xfrm4_local_error(struct sk_buff *skb, u32 mtu)
- {
-+	struct sock *sk = skb_to_full_sk(skb);
- 	struct iphdr *hdr;
- 
-+	if (!sk)
-+		return;
-+
- 	hdr = skb->encapsulation ? inner_ip_hdr(skb) : ip_hdr(skb);
--	ip_local_error(skb->sk, EMSGSIZE, hdr->daddr,
--		       inet_sk(skb->sk)->inet_dport, mtu);
-+	ip_local_error(sk, EMSGSIZE, hdr->daddr, inet_sk(sk)->inet_dport, mtu);
- }
+You are awesome, thank you!
 -- 
-2.43.7
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
