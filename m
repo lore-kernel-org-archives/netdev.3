@@ -1,56 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792694216;
-	b=uWwxQWFhzmWGO5b6aEi+wa8MpZGzDy9pz5UeZSgqqoVlVoMPnKee8UcmW+bBg+R+gnrj
-	 Ec0nbZUeT6wY6xxgo29p4aSekdJ36Muh7z5GzuN0JvsQUkxW67Y0vKUowFkqp5pYOCCN0
-	 wpdimrNdXIETz3JyhhC4ij3DtyX9wPwsrFWfIj4pKfIOZ/RgG2kG0/VBs9nUWBAgJsQfT
-	 vyluOvkMoQMeZSn9g1uJbFlPoLupyH2i3dI2mpRqgPluAoYtIKTUsWZvdMpA6h5n1t4eh
-	 wcXMuPhrCyjzTJJXQs1T5rpQVekGKkUdYLYBcIwBA5F/muQQhHO43F5cge6zyBVx7pg==
+	t=1792694736;
+	b=KgkXJof7mm90Km3dkWFMueoyXS69uVOZqA/BvBivgrva8BjxUWVTKkGe2QKU9oM1B7Pj
+	 lAjpcgvrVJzNSvkM8bDCWX9PyXt0WDitV7tWzB0eyfZ4XKiF6kgEyhj5zGH29mpDg4p/b
+	 SVohUomZv131C9amOuvb9MeYgW1bJ492Elg8ghcUQLcPNHwV2LxOJJGO+JMGuwOntwlIp
+	 CCtbLG7RzfsceUEJ1NmcpzRxB4iPRMnCotIe5GoM1TCEunDU2tFu40pclvOeXbJtjzt37
+	 3+adywQMuI0FtvgGiXZML8L/CjVRMJpzPcyUJ5C25Owsfjbq95GXtv9KSumK6R+UV1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792694216;
-	h=DMARC-Filter:DKIM-Signature:Received:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Message-ID:X-Sender:
-	 Content-Type:Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
-	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=V8UYp7qVy64yxBL1iZ5RNTwYBzXsnnh4TVvEsNUf1A8=;
-	b=wcfhKjE7e+xIVoGbM9Tdcbm1OjudgE8scNxlCkcQ3mcpLRSMswlm4zos/ZIZqlbNly8B
-	 /jo9ZTt2sM4K24sjSQK0YPJDqAqnex8Kz5Ey6spIVt/BB2/YuS6sTJI/wXq5rKhzt9UT5
-	 xUb/Q4PAItAJrAVum+4BO7PTpC2D95cK0cvN7O7JFWF8Zobg2nsodkRq1HsqH/put73Wj
-	 xXZV69uC+Hsqa7pI9Id0z3e3JYMFjhQRQ/vYrC1cF9xS3jzOOVHWO6pRQ5SLWOnQnV0gZ
-	 PVFiMN1r9+JPGSCXMsKxAO/s/yBFT5lG7pK9EO7dQXcToG6I2K4pyQNlmMgJFtYOMQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792694736;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
+	 In-Reply-To:References:Subject:From:To:Cc:Date;
+	bh=G28HEn/VXJld9jkYtD/8yZsBEWZtFggug0SssZsruNY=;
+	b=SkJ7jvtaAc21WN8/3HMuTi2IS8qvPShY29amGl3DkOHMqxSBhbzoDOmAkOtbPTas+tIN
+	 Tl8+rBVKmnt5o7Me1QwJmr8aRUFVKLN5cjjcLzEOhJDjoObRFM9Q63fJPOY9tO2OUVOAJ
+	 lwdKk3wu16F6XO9lHQeERm7Akk5AvywnthURq3re0mVANKLrT8SlHDJ1Fpke291d7CX51
+	 hisj0e8tkjS4JZe6zwBouj83Ul7qpAGBPIMyBEMtJ6kUO5W3w+4QYkNpidfeWAjc3Cu9m
+	 TdlpXAFsez7OU6x1/X4+IS9/vOcdXYofDBhOIaMMCQGH9DpEXNzE8ylB4JJbfPi8nmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.cyber.gouv.fr;
-	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=HT8csTrz;
-	arc=none smtp.remote-ip=51.159.188.251
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h9U6yV6z;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C8360A2615;
-	Thu, 22 Oct 2026 18:36:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5C8360A2615
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1F6606A31B;
+	Thu, 22 Oct 2026 18:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=HT8csTrz
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=V8UYp7qVy64yxBL1iZ5RNTwYBzXsnnh4TVvEsNUf1A8=; b=HT8csTrzXZtDDxrBa9FBDoxRbX
-	o+8tyr5/Th61ko7LJS71QLW+4GwHxIKzL5eqs571eSv14Fma/4pnv6Ai7EyUEF1ZjYIE+lVblxXEJ
-	rifipuahKXrxq513U2fgW0nUMXWpuIOIbjnQw2k0baWUK35AmgROl20nH8KadFnUWweEP62DSoKbD
-	cCbFml9j2gTYtH/bhmvZj7jGUTe/5BgQa9jCF0Pv2FeXECgp7itGrgk4nQoUvJfT1EV62yR4zNw+K
-	k86lothh+an0hffCDqVLhLEkZXkwB6Y+GqWMf5JGLfjak8dFEfQ2zRtlmwi5HEOAc9jkvyte2FJZP
-	WPCBeS4w==;
-Received: from [::1] (port=41390 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xJxeo-0000000BPPs-17qD;
-	Thu, 22 Oct 2026 20:36:53 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h9U6yV6z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76AE81F01825;
+	Thu, 22 Oct 2026 18:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792694735;
+	bh=G28HEn/VXJld9jkYtD/8yZsBEWZtFggug0SssZsruNY=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=h9U6yV6zctGDT2s7FTFQvlXT/pcrtKGrr/d4BaOX6gvREBJ3jce3VwauedN+iElUr
+	 tyEFBos984982QJRYf+xj2sjb6P8y6x+9gaF+wu5KkN4cxDjtuMAdn4PaMYOfyX1/h
+	 ZVZ23TPw4t7+QHQkEtu1NUYWFjqJ+zqRP+E04PeX5idWkGqsWLaa6ybUAQt4IWAmOv
+	 12qZhnJomhUI8ZwysUlQBoTvipZUaP84fHOD/aYkVPiaFh7neTBZBdVqf7aDgHrllV
+	 r1iDHHQ4+RFuNSs0muMfpGboKIaSQvnsAdJrVLljYVkHGIEJtBCgDasmd0rZa26LLe
+	 Lz5caL7PrK9Kw==
+Content-Type: multipart/mixed; boundary="===============8279392703451209759=="
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,166 +49,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 22 Oct 2026 20:36:53 +0200
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] tcp: fix authentication bypass via unsupported TCP auth
- options
-In-Reply-To: <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com>
-References: <20261021193151.1819085-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.6.19
-Message-ID: <76cd85fa3315cd7efbd99c791514f22e@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Message-Id: <e31194dd72efd3c182707e870b7e7a6d67b78be23cea06aded0275678373c64c@mail.kernel.org>
+In-Reply-To: <20261022181620.247201-1-mahe.tardy@gmail.com>
+References: <20261022181620.247201-1-mahe.tardy@gmail.com>
+Subject: Re: [PATCH bpf-next 1/2] bpf: Add bpf_ksock_bind() kfunc
+From: bot+bpf-ci@kernel.org
+To: mahe.tardy@gmail.com,bpf@vger.kernel.org
+Cc: andrii@kernel.org,ast@kernel.org,daniel@iogearbox.net,davem@davemloft.net,willemb@google.com,eddyz87@gmail.com,edumazet@google.com,john.fastabend@gmail.com,kuba@kernel.org,horms@kernel.org,liamwisehart@meta.com,martin.lau@linux.dev,pabeni@redhat.com,song@kernel.org,netdev@vger.kernel.org,sdf.kernel@gmail.com,yonghong.song@linux.dev,jolsa@kernel.org,kuniyu@google.com,memxor@gmail.com,emil@etsalapatis.com,almagui@kernel.org,mahe.tardy@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Thu, 22 Oct 2026 18:45:34 +0000 (UTC)
 
-On 2026-10-22 16:46, Eric Dumazet wrote:
-> Le mer. 21 oct. 2026 à 21:32, Jérémy Jean
-> <Jeremy.Jean@oss.cyber.gouv.fr> a écrit :
->> 
->> tcp_inbound_hash() parses both TCP-MD5 and TCP-AO options when at
->> least one of the two features is enabled. With TCP_MD5SIG=y and
->> TCP_AO=n, a packet with an AO option reaches the disabled
->> tcp_inbound_ao_hash() stub. That stub returns success, so sockets
->> configured to require MD5 authentication end up accepting
->> unauthenticated data.
->> 
->> The inverse configuration with TCP_MD5SIG=n and TCP_AO=y has the same
->> problem for an MD5 option on AO sockets.
->> 
->> Make the disabled stubs reject options for the unsupported
->> authentication scheme.
->> 
->> Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
->> ---
->>  include/net/tcp_ao.h | 2 +-
->>  net/ipv4/tcp.c       | 2 +-
->>  2 files changed, 2 insertions(+), 2 deletions(-)
->> 
->> diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
->> index 9a2333e62e994..bb249d6df8723 100644
->> --- a/include/net/tcp_ao.h
->> +++ b/include/net/tcp_ao.h
->> @@ -303,7 +303,7 @@ static inline enum skb_drop_reason 
->> tcp_inbound_ao_hash(struct sock *sk,
->>                 const struct request_sock *req, int l3index,
->>                 const struct tcp_ao_hdr *aoh)
->>  {
->> -       return SKB_NOT_DROPPED_YET;
->> +       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
->>  }
->> 
->>  static inline struct tcp_ao_key *tcp_ao_do_lookup(const struct sock 
->> *sk,
->> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
->> index 87ef6d5cbfeba..7d800b6283bd2 100644
->> --- a/net/ipv4/tcp.c
->> +++ b/net/ipv4/tcp.c
->> @@ -4962,7 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk, 
->> const struct sk_buff *skb,
->>                      const void *saddr, const void *daddr,
->>                      int family, int l3index, const __u8 
->> *hash_location)
->>  {
->> -       return SKB_NOT_DROPPED_YET;
->> +       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
->>  }
->> 
->>  #endif
->> --
->> 2.47.3
->> 
-> 
-> Good catch, thanks.
-> 
-> The forged AO option makes us skip the unsigned fast path, which is
-> the only place where tcp_md5_do_lookup() can return MD5NOTFOUND.
-> An attacker able to hit the window of an MD5-protected session (BGP...)
-> can therefore inject RST or data with a junk AO option, which is
-> exactly what RFC 2385 is supposed to prevent.
-> 
-> Please mention in the changelog that TCP_AO depends on 64BIT: every
-> 32-bit kernel with TCP_MD5SIG=y is in the vulnerable configuration.
-> 
-> With your patch the stubs now return what the real helpers return for
-> a socket without keys (AOUNEXPECTED / MD5UNEXPECTED), so behavior
-> becomes consistent across configs. One visible change is that MD5=n,
-> AO=y kernels will now drop segments carrying an MD5 option to unkeyed
-> sockets, as MD5=y kernels already do. That is fine, but worth one
-> sentence.
-> 
-> Optional: bumping LINUX_MIB_TCPAOKEYNOTFOUND / 
-> LINUX_MIB_TCPMD5UNEXPECTED
-> from the stubs would make these drops visible in nstat.
-> 
-> This is a fix, please send v2 as [PATCH net].
-> 
-> Also please CC TCP-AO folks from Arista
-> 
-> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+--===============8279392703451209759==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hello Eric,
+> bpf: Add bpf_ksock_bind() kfunc
 
-Thanks for the quick review.
+TL;DR: bpf_ksock_bind() called from a bpf_wq callback runs with kworker's full
+capabilities, so a CAP_BPF-only SYSCALL program may bypass the privileged-port
+(CAP_NET_BIND_SERVICE) check; the review asks whether to block it.
 
-I have prepared a v2, which only adds some bits to the commit message,
-and leave the actual patch untouched.
+> diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
+> index 37168f43c16c..c7b487d90cd0 100644
+> --- a/net/core/bpf_ksock.c
+> +++ b/net/core/bpf_ksock.c
 
-Noted for the Cc:, I will use the 3 @arista.com addresses at the top of
-the tcp_ao.c file.
+[ ... ]
 
-For your optional remark, I was thinking of adding a second commit as
-a 2/2 in a 2-patch series. Something like the below diff, which AFAICT,
-would make the drops visible under TCPAOKeyNotFound and TCPMD5Unexpected
-in nstat. Is it what you had in mind? I am not particularly familiar
-with that subsystem; yet, while getting this kind of feedbacks in nstat
-seems good, I am opened for advice. Do you prefer that I add this
-in the same fix instead?
+> @@ -178,6 +178,33 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
+>  	return NULL;
+>  }
+>
+> +/**
+> + * bpf_ksock_bind() - Bind a BPF kernel socket to a local address.
 
-Regards,
-Jérémy
+[ ... ]
+
+> +__bpf_kfunc int bpf_ksock_bind(struct bpf_ksock *ks,
+> +			       const union bpf_ksock_addr *addr, u32 addr__sz)
+> +{
+> +	struct sockaddr_storage sa;
+> +	int addrlen;
+> +
+> +	addrlen = bpf_ksock_addr_to_sockaddr(addr, addr__sz, &sa);
+> +	if (addrlen < 0)
+> +		return addrlen;
+> +
+> +	return __sys_bind_socket(ks->sock, &sa, addrlen);
+> +}
+> +
+
+Can the CAP_NET_BIND_SERVICE check for privileged ports be bypassed when
+this runs from a bpf_wq callback?
+
+bpf_ksock_bind() is added to ksock_init_kfunc_btf_ids, the same set as
+bpf_ksock_connect().  Commit 60bbe76a3f9e ("bpf: Allow ksock connect/send
+calls from wq") made the kfuncs in this set callable from bpf_wq callbacks
+of SYSCALL programs, and tools/testing/selftests/bpf/progs/ksock_wq.c
+already calls bpf_ksock_connect() from such a callback.
+
+bpf_wq_work() runs that callback in a kworker, where current->cred is
+init_cred with cap_effective set to CAP_FULL_SET (see init/init_task.c).
+
+The bind path is:
+
+  bpf_ksock_bind()
+    __sys_bind_socket()
+      security_socket_bind()
+      inet_bind() -> inet_bind_sk() -> __inet_bind()
+
+and __inet_bind() then does:
+
+    snum = ntohs(addr->sin_port);
+    err = -EACCES;
+    if (!(flags & BIND_NO_CAP_NET_BIND_SERVICE) &&
+        snum && inet_port_requires_bind_service(net, snum) &&
+        !ns_capable(net->user_ns, CAP_NET_BIND_SERVICE))
+            goto out;
+
+__inet6_bind() has the same check.  With init_cred, cap_capable_helper()
+walks up to init_user_ns and finds the capability raised, so the check
+passes for any netns.
+
+For example, a task holding only CAP_BPF can load a SYSCALL program, since
+is_net_admin_prog_type() does not ask for CAP_NET_ADMIN for that type.
+Such a program could bind its ksock to UDP port 53, 123 or 514 from a wq
+callback, while the same call made synchronously from the SYSCALL program
+returns -EACCES.  A bpf_task_work callback looks like it has the same
+problem in a different form, since the check would be evaluated against
+whichever task the work was scheduled on.
+
+Commit 60bbe76a3f9e only argued about LSM checks ("bypassing LSM checks for
+BPF-created sockets could be acceptable"), and connect and send on a UDP
+ksock have no capability gate.  bind appears to be the first ksock
+operation that does, and the commit message does not address the wq
+context.
+
+Should bpf_ksock_bind() refuse to run from kthread context, the way
+bpf_ksock_create() does with its PF_KTHREAD check?  Alternatively, should
+it be kept out of the set that is reachable from wq callbacks, or should
+the commit message state that bypassing the privileged-port check is
+intended?
+
+No fix for this was found in the provided range; 76406b1f799f
+("selftests/bpf: Test bpf_ksock_bind() kfunc") only adds tests.
+
 
 ---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
-index 9a2333e62e994..xxxxxxx 100644
---- a/include/net/tcp_ao.h
-+++ b/include/net/tcp_ao.h
-@@ -303,6 +303,7 @@ static inline enum skb_drop_reason 
-tcp_inbound_ao_hash(struct sock *sk,
-               const struct request_sock *req, int l3index,
-               const struct tcp_ao_hdr *aoh)
-  {
-+     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOKEYNOTFOUND);
-       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
-  }
-
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 87ef6d5cbfeba..xxxxxxx 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4962,6 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk, const 
-struct sk_buff *skb,
-                    const void *saddr, const void *daddr,
-                    int family, int l3index, const __u8 *hash_location)
-  {
-+     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5UNEXPECTED);
-       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
-  }
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/39831790314
+--===============8279392703451209759==--
