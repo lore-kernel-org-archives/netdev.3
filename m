@@ -1,55 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792653916;
-	b=1fzYWHGZeXmw3ednyn4YP0LvsjolYBEPBqoAWVccQ625K53qazY2b1qluGReenw5lBTC
-	 eT/VNEOcLb/ncOWn6p2zp3EDu3PfEmtTfyqiqS1cMLwSa5+p3OH2ir2wZKBw4sUnqnjWy
-	 av9ZxbT6y9qTDZC0DO/XBps93utCV7eLVsxBK2S3zdaCR/DIx31FDYUJgfo+PZToC6t8f
-	 693fZhCtk4cwQbAuF+gah7jKFmW2OJfjyAFSZT6IIyz1W806YU5jS99ZhQE39GemK6J2o
-	 20M381p0QM1Dqdm1DalLojTbhpS2eVLHACp24J18P23wqqmApQocB9IWlV+ZkXtqwAw==
+	t=1792653914;
+	b=x8EksNXHPvIu2m4whx0c5qkWKobP7RzQWWgtEj4JB41ByxTC5MkPQAOh3iySlFBUgC/g
+	 RTFOnVTKfrDI6ydklmliT3X8o0O8Wo7RtmZK7kH9wek+n/9mcJToN+2CWUNftQuMcAAvq
+	 6/8KN3KD+/tqy5f+WoyH+rYJx7lPj1NOqmAIDj+OCjvB8KI2K3oaIMq972YVNVKURUhbW
+	 Q57Pb47dgr0BpMqDUWG/zjD9JJRH6bQrx+yfTbYYtaeqR8eyIKVjBJvyDGPnUK9MdNjNg
+	 +bM+TlYLx9mosytGGtQwnyicWTjaS2XXIzVJXBrVawnRtRQ/R8Eq+CHM6FeMR97XSeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792653916;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792653914;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=yGPjtW4dPyExBLHegpCAYaoNHXzJvfRMMf+pf+UEbrQ=;
-	b=kTVzE/uu0BeVY2N7IV9PtHQ4h1QyhgT+Odv7kO+RHGrrWdwaf4o9LQVt3EFJFIZcjoeX
-	 mivO4xA31lYLRxu6V1zoJRElv9E0sfFQdCI1xrf4ZZgaNMlGQVa1b1tNHFeUupRbObGFU
-	 lBp9Oo3wejEiFaXZ8tOf68Up/Vw15R01gfKRmf1AuNDYv/MCfQyrh4QWbebwYYhv23yg9
-	 6Cq58y6lr6NgHrOScbfRkf9oJac3el9JUMLrHsEQ/krvLAJcY9F/b4Y/OW3oXITVbJTJF
-	 19M8Eiga8yqhctQ0eE7yvLLaXu7G/pmbmXa4T5r9GMtEDa3tXe2rztn+NAsZFC8NcLw==
+	bh=kY3rxeufBWnulhzLNXslToghbLfgKp38Kw8D+5p+OLA=;
+	b=x82Buc68AqXg1wM4CAm6MTlP5IB9wp9Z+1QrZ1P2ueCB1Eb/2OGo8IQ2N3EFoLaajLo8
+	 Yqm+n6jWetqBKCiKVh8hKN8HRPKL90eH2CQm0r8FRP38oyHhIfnBP9KYcsbUuk7yMx8ru
+	 x5O2hAzODJLt/7cbNa0E92Vy+6LddWdrBuuwHQSXeTK6tVoLou1Nk0YfJXZ7hFw8nneIw
+	 gSUWOET6FOu6ETkDO65ItDBKVLSnLOoadzk7e4eh/d6rU0Qx4ioWuKhSvwxSsK67nIZ2v
+	 hMn4Y1NoVkEW8hKS2fAdVEOgyMXbac7ucSrErs7yJqeZ4GoeZMAbe16eBpe6x9K+xsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bBhz2xlM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AG1lraI8;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876F606A336;
-	Thu, 22 Oct 2026 07:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ED7606A31E;
+	Thu, 22 Oct 2026 07:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bBhz2xlM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995401F000C1;
-	Thu, 22 Oct 2026 07:25:15 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AG1lraI8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9E51F000C1;
+	Thu, 22 Oct 2026 07:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792653915;
-	bh=yGPjtW4dPyExBLHegpCAYaoNHXzJvfRMMf+pf+UEbrQ=;
+	s=k20260515; t=1792653913;
+	bh=kY3rxeufBWnulhzLNXslToghbLfgKp38Kw8D+5p+OLA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bBhz2xlM2v082BJnf1rR1dE4irElqCWR565Z0tgwFxjgAO98FknqeCOFsh0jMKlbi
-	 aSn3IViQmWIITFsxaBT5aBZprh6Vg655nBGRUIBzocUcTFLJItcqBIxY6H7C8Sg+WR
-	 fNkXFpzMBo/y522vdvNtj/4mkd3HGaCR3xVIN+9nsp9qXaBYCz3JrywyVCDkQ7ImsA
-	 tOplc0lxxstVuF0HL1BLFebOuaV8CzkRJFZJnuk5ZoNroHiZEiI9O0tRsEy6KqIzhO
-	 O8jypKeBADDHMzzWOrvyNtbccq3h2/aIkpYuBHFLrTVQ40mn3ifQJNmuosBPUd8x+q
-	 E2Bz8FlLNFtGg==
-Subject: Re: [PATCH] ipv4: icmp: use skb_dst_dev_net_rcu() in icmp_build_probe
+	b=AG1lraI8+UjpC5FCk1hv1QZorsZYrs9nv8g4ADtlR17dPO0GhMmmfILvHM5nLeKWN
+	 SMX2uRvSGiJ2YI9pLxNo8cZEduejciJBLHVBN4lP98zChOLAjl9wYb2Duj9HdHoSWE
+	 DS3TywAXwXVvgX2rKTZI4s4ltMg1NkJcQ6p7zrETREvC6hsdqhozF1/WO5et7pywh5
+	 RMH+flt/TUpavP2GWJwpimmrJ//9Kjv2ZfQ1wXA5OVtvO5dSsmRaii0dUnrFNJ9wLX
+	 1ssLk+cuR5dADrkOF1sQTfD07GNoueHUdl8YJxwlWLvfp/SEyHq270SrU4Xw8AWgMY
+	 AVGlwHoZ4/HAQ==
+Subject: Re: [PATCH] iucv: fix lockless sk_for_each in afiucv_netdev_event
 From: netdev-bot+sashiko@kernel.org
 To: haoranwangsec@gmail.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Thu, 22 Oct 2026 07:25:15 +0000
-Message-ID: <179265391520.3135.6406546959065554687@kernel.org>
-In-Reply-To: <179241614083.5916.6651154069510905781@whr>
-References: <179241614083.5916.6651154069510905781@whr>
-X-sashiko-severity: Medium
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, netdev@vger.kernel.org, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 22 Oct 2026 07:25:12 +0000
+Message-ID: <179265391209.3135.1121448339141763327@kernel.org>
+In-Reply-To: <179241612354.5916.12881323209252769976@whr>
+References: <179241612354.5916.12881323209252769976@whr>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -62,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 2 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -73,163 +75,220 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message describes a netns bug that does not exist.
-- [Medium] icmp_build_probe() is a shared helper; its comment says
-  'Helper for icmp_echo and icmpv6_echo_reply'.
-- [Low] icmp_build_probe() now takes the netns for the remote-controlled
-  interface lookups from skb_dst(skb)->dev_rcu, and that pointer can…
+- [High] Race with concurrent close() that can dereference a NULL hs_dev,
+  in afiucv_netdev_event() (net/iucv/af_iucv.c).
+- [High] Self-deadlock on iucv_sk_list.lock in afiucv_netdev_event()
+  (net/iucv/af_iucv.c, lines 2229 and 2244).
+- [Medium] New failure path in afiucv_netdev_event() (net/iucv/af_iucv.c,
+  lines 2240-2242) that skips the whole disconnect.
+- [Medium] In afiucv_netdev_event() (net/iucv/af_iucv.c), the second pass
+  stops at `if (n == count) break;`, but count was taken in an earlier,…
+- [Low] The commit fixes a user-reachable use-after-free: the lockless
+  sk_for_each() in afiucv_netdev_event() races with iucv_sock_kill() ->…
 
 --
 
-ipv4: icmp: use skb_dst_dev_net_rcu() in icmp_build_probe
+iucv: fix lockless sk_for_each in afiucv_netdev_event
 
-This commit changes icmp_build_probe() so that it gets the network
-namespace from the skb's dst device via skb_dst_dev_net_rcu(), not from
-skb->dev. The commit message says this fixes PROBE device lookups and
-reply policy running in the wrong namespace under a VRF.
+This patch takes iucv_sk_list.lock around the sk_for_each() traversal in
+afiucv_netdev_event(). Matching sockets are counted in a first pass. An
+array is then allocated and filled with sock_hold() references in a second
+pass, and iucv_send_ctrl(), the state change and sock_put() run after the
+lock is dropped.
 
-> The ICMP Extended Echo (RFC 8335) PROBE replies identify the queried
-> interface by name/index/address and should look it up and apply policy
-> in the netns the packet is destined to, not the netns of the ingress
-> device.  Under a VRF, skb->dev is the VRF master, so dev_net_rcu(skb->dev)
-> returns the master's netns and the device lookup / reply policy run in
-> the wrong namespace.
->
-> The rest of the IPv4 ICMP echo path already uses skb_dst_dev_net_rcu(skb)
-> (net/ipv4/icmp.c:1123, :1267, :1437), while icmp_build_probe() is the
-> exception.
-
-[Severity: Medium]
-Can the VRF master actually be in a different netns from the dst device
-here?
-
-vrf_ip_rcv() does set skb->dev = vrf_dev. But the master always sits in
-the same netns as its slaves, because do_set_master() looks it up in the
-slave's own netns:
-
-net/core/rtnetlink.c:do_set_master() {
-    ...
-	upper_dev = __dev_get_by_index(dev_net(dev), ifindex);
-    ...
-}
-
-A slave that moves to another netns gets NETDEV_UNREGISTER, and
-vrf_device_event() unlinks it.
-
-For local-input routes, ip_rt_get_dev() returns either the l3mdev master
-or the loopback device of the same netns:
-
-net/ipv4/route.c:ip_rt_get_dev() {
-    ...
-	dev = l3mdev_master_dev_rcu(nhc->nhc_dev);
-	return dev ? : net->loopback_dev;
-}
-
-ip6_rt_get_dev_rcu() does the same thing with dev_net(dev)->loopback_dev.
-
-So on normal receive paths, dev_net_rcu(skb->dev) and
-skb_dst_dev_net_rcu(skb) appear to return the same struct net.
-
-Would it be more accurate to describe this as a consistency cleanup? The
-other option is to show a setup where the two pointers really differ. As
-written, the change reads like a VRF netns fix and could be queued for
-net or stable on that basis.
-
-The cited precedent also looks inaccurate. Of the three call sites, only
-the one in icmp_echo() is on the echo path. The first is in
-icmp_unreach(), which handles ICMP_DEST_UNREACH and similar errors. The
-last is the error stats path in icmp_timestamp():
-
-	__ICMP_INC_STATS(skb_dst_dev_net_rcu(skb), ICMP_MIB_INERRORS);
-
-> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-> index 90c0e22c29be..a577dfc652b2 100644
-> --- a/net/ipv4/icmp.c
-> +++ b/net/ipv4/icmp.c
-> @@ -1293,7 +1293,7 @@ static enum skb_drop_reason icmp_echo(struct sk_buff *skb)
->  
->  bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
->  {
-> -	struct net *net = dev_net_rcu(skb->dev);
-> +	struct net *net = skb_dst_dev_net_rcu(skb);
-
-[Severity: Medium]
-icmp_build_probe() is shared with IPv6; the comment above it says
-"Helper for icmp_echo and icmpv6_echo_reply". Is the change in IPv6
-behaviour intended? The subject and commit message only mention IPv4.
-
-The IPv6 caller still gets its netns from skb->dev:
-
-net/ipv6/icmp.c:icmpv6_echo_reply() {
-	struct net *net = dev_net_rcu(skb->dev);
-    ...
-	if (icmph->icmp6_type == ICMPV6_EXT_ECHO_REQUEST)
-		if (!icmp_build_probe(skb, (struct icmphdr *)&tmp_hdr))
-			goto out_dst_release;
-    ...
-}
-
-icmpv6_rcv() does the same. After this patch, a single ICMPv6 Extended
-Echo request uses two netns sources:
-
-The dst netns controls the sysctl_icmp_echo_enable_probe check and the
-dev_get_by_name(), dev_get_by_index(), ip_dev_find() and ipv6_dev_find()
-lookups.
-
-The skb->dev netns controls everything else:
-icmpv6_echo_ignore_multicast/anycast, IP6_REPLY_MARK, sock_net_uid(),
-icmpv6_xmit_lock(), the route and xfrm lookup, icmpv6_global_allow() and
-the ICMP6 MIB counters.
-
-Before the patch, the helper and its IPv6 caller used the same netns.
-
-If the two netns can differ, as the commit message says, wouldn't IPv6
-keep the problem the patch claims to fix, and also split one reply
-across two namespaces? Would it be cleaner to pass net in from each
-caller, or to convert both callers the same way?
+> Signed-off-by: Haoran Wang <haoranwangsec@gmail.com>
 
 [Severity: Low]
-Can skb_dst_dev_net_rcu() return init_net here for a packet that was
-received in another netns?
+This isn't a bug, but this fixes a use-after-free in the lockless
+traversal. Should it carry a Fixes: tag, and possibly Cc: stable? The
+function and its lockless sk_for_each() were added by:
 
-dst_dev_put() switches the dst device to blackhole_netdev, even though
-skbs may still hold the dst:
+Fixes: 9fbd87d41392 ("af_iucv: handle netdev events")
 
-net/core/dst.c:dst_dev_put() {
+The sk_for_each() line itself was changed later by b67bfe0d42cac.
+
+> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+> index db261ecd19af..20c8943b85cd 100644
+> --- a/net/iucv/af_iucv.c
+> +++ b/net/iucv/af_iucv.c
+> @@ -2222,18 +2222,49 @@ static int afiucv_netdev_event(struct notifier_block *this,
+>  
+>  	switch (event) {
+>  	case NETDEV_REBOOT:
+> -	case NETDEV_GOING_DOWN:
+> +	case NETDEV_GOING_DOWN: {
+> +		struct sock **matches;
+> +		int i, n = 0, count = 0;
+> +
+> +		read_lock(&iucv_sk_list.lock);
+
+[Severity: High]
+Can this deadlock against a softirq writer on the same CPU?
+
+The notifier runs in process context under RTNL with BH enabled. The same
+rwlock is also write-locked from softirq context:
+
+afiucv_hs_rcv()                 /* netif RX softirq */
+  afiucv_hs_callback_syn()
+    iucv_sock_alloc(NULL, ..., GFP_ATOMIC, 0)
+      iucv_sock_link()
+        write_lock_bh(&l->lock);
+
+The IUCV tasklet path iucv_callback_connreq()->iucv_sock_alloc() reaches
+the same writer. So do the error branches through
+iucv_sock_kill()->iucv_sock_unlink().
+
+Suppose a HiperSockets SYN arrives and NET_RX softirq runs on the CPU that
+holds the read lock in either pass. Wouldn't the writer then spin forever,
+waiting for a reader that can't run again on that CPU?
+
+The commit message says this matches the other two sites, but
+iucv_callback_connreq() and afiucv_hs_rcv() already run with BH disabled.
+The other process context users, iucv_sock_bind(), iucv_sock_autobind()
+and iucv_sock_link()/iucv_sock_unlink(), all use the _bh variants.
+
+Should both passes use read_lock_bh()/read_unlock_bh() instead?
+
+>  		sk_for_each(sk, &iucv_sk_list.head) {
+>  			iucv = iucv_sk(sk);
+> -			if ((iucv->hs_dev == event_dev) &&
+> -			    (sk->sk_state == IUCV_CONNECTED)) {
+> -				if (event == NETDEV_GOING_DOWN)
+> -					iucv_send_ctrl(sk, AF_IUCV_FLAG_FIN);
+> -				sk->sk_state = IUCV_DISCONN;
+> -				sk->sk_state_change(sk);
+> +			if (iucv->hs_dev == event_dev &&
+> +			    sk->sk_state == IUCV_CONNECTED)
+> +				count++;
+> +		}
+> +		read_unlock(&iucv_sk_list.lock);
+> +
+> +		if (!count)
+> +			break;
+> +		matches = kmalloc_array(count, sizeof(*matches), GFP_KERNEL);
+> +		if (!matches)
+> +			break;
+
+[Severity: Medium]
+If this allocation fails, does every socket bound to event_dev stay in
+IUCV_CONNECTED?
+
+The break skips the FIN, the move to IUCV_DISCONN and sk_state_change()
+for all matching sockets. __dev_close_many() ignores the notifier's return
+value and carries on with the shutdown. NETDEV_DOWN and NETDEV_UNREGISTER
+do nothing in this notifier, so nothing retries later.
+
+iucv_sock_poll() only sets EPOLLIN once sk_state is IUCV_DISCONN. Readers
+waiting for that would stay blocked.
+
+The previous loop did no allocation, so it could not fail this way.
+
+> +
+> +		read_lock(&iucv_sk_list.lock);
+> +		sk_for_each(sk, &iucv_sk_list.head) {
+> +			if (n == count)
+> +				break;
+
+[Severity: Medium]
+Can this cap skip sockets that were counted in the first pass?
+
+count comes from a separate critical section, and the lock is dropped
+around kmalloc_array(). NETDEV_GOING_DOWN is sent before
+__dev_close_many() clears __LINK_STATE_START, so RX is still active.
+
+In that window, afiucv_hs_callback_syn() can link a new socket on the same
+device:
+
+	niucv->hs_dev = iucv->hs_dev;
+	...
+	nsk->sk_state = IUCV_CONNECTED;
+
+Also, afiucv_hs_callback_synack() can move an existing BOUND socket to
+IUCV_CONNECTED.
+
+iucv_sock_link() uses sk_add_node(), which inserts at the head, so the new
+sockets fill matches[] first. Once n reaches count, the walk stops before
+it reaches older sockets that are still IUCV_CONNECTED on event_dev. Those
+sockets would get no FIN and no move to IUCV_DISCONN.
+
+> +			iucv = iucv_sk(sk);
+> +			if (iucv->hs_dev == event_dev &&
+> +			    sk->sk_state == IUCV_CONNECTED) {
+> +				sock_hold(sk);
+> +				matches[n++] = sk;
+>  			}
+>  		}
+> +		read_unlock(&iucv_sk_list.lock);
+> +
+> +		for (i = 0; i < n; i++) {
+> +			sk = matches[i];
+> +			if (event == NETDEV_GOING_DOWN)
+> +				iucv_send_ctrl(sk, AF_IUCV_FLAG_FIN);
+> +			sk->sk_state = IUCV_DISCONN;
+> +			sk->sk_state_change(sk);
+> +			sock_put(sk);
+> +		}
+
+[Severity: High]
+Can a concurrent close() set hs_dev to NULL before this loop runs?
+
+sock_hold() keeps the struct sock allocated, but this loop does not take
+lock_sock(). It also does not recheck hs_dev or sk_state after the list
+lock is dropped.
+
+close() goes through iucv_sock_release()->iucv_sock_close(). That path
+holds only lock_sock(), not RTNL, and ends with:
+
+net/iucv/af_iucv.c:iucv_sock_close() {
     ...
-	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
+	if (iucv->hs_dev) {
+		dev_put(iucv->hs_dev);
+		iucv->hs_dev = NULL;
+		sk->sk_bound_dev_if = 0;
+	}
     ...
 }
 
-rt_fibinfo_free() and fib6_nh_release_dsts() call it.
-rt_flush_dev() and rt6_uncached_list_flush_dev() make the same switch
-when a device is unregistered. blackhole_netdev is allocated through
-alloc_netdev, which calls dev_net_set(dev, &init_net), so it belongs to
-init_net.
+If that runs between the second pass and this loop, iucv_send_ctrl() then
+computes:
 
-A PROBE skb in netns X can keep its dst across this switch through
-NFQUEUE, because __nf_queue() calls skb_dst_force(). Suppose the local
-address or route is deleted while the packet is queued, and the packet
-is then reinjected at LOCAL_IN:
+	blen = sizeof(struct af_iucv_trans_hdr) +
+	       LL_RESERVED_SPACE(iucv->hs_dev);
 
-icmpv6_rcv()
-  icmpv6_echo_reply()     net = dev_net_rcu(skb->dev)      /* netns X */
-    icmp_build_probe()    net = skb_dst_dev_net_rcu(skb)   /* init_net */
+That reads through a NULL hs_dev before afiucv_hs_send() gets to check
+skb->dev.
 
-icmp_build_probe() would then check init_net's
-sysctl_icmp_echo_enable_probe and resolve the name, index or address
-chosen by the sender in init_net. The reply would say whether that
-init_net interface exists, whether it is up, and whether it has IPv4 or
-IPv6 addresses.
+The loop also writes sk->sk_state = IUCV_DISCONN on a socket that
+iucv_sock_close() has already moved to IUCV_CLOSED, which moves its state
+backwards. iucv_send_ctrl() also changes sk->sk_shutdown without the
+socket lock.
 
-icmpv6_echo_reply() still builds and routes the reply in netns X, so the
-sender would receive it. Before the patch the helper used skb->dev, so
-these lookups stayed in netns X.
+The old code had the same check-then-use race, but the check and the use
+were back to back. Here the check happens during collection, and the use
+only comes after the whole list has been walked.
 
-This only happens if init_net has icmp_echo_enable_probe=1, which is off
-by default, and the window is narrow. On IPv4, icmp_rcv(), icmp_echo()
-and icmp_reply() already used the dst netns, so this patch extends that
-existing exposure to the probe lookups.
+For comparison, afiucv_hs_callback_fin() does this transition under the
+socket lock:
+
+	bh_lock_sock(sk);
+	if (sk->sk_state == IUCV_CONNECTED) {
+		sk->sk_state = IUCV_DISCONN;
+
+The commit message says:
+
+  sock_hold() pins each sk for the out-of-lock work, so a concurrent
+  close can no longer free it from under the notifier.
+
+Given the above, does that claim hold for the fields used here? Would it
+make sense to take lock_sock(sk) in this loop and recheck
+sk->sk_state == IUCV_CONNECTED and iucv->hs_dev == event_dev before
+acting?
+
+> +		kfree(matches);
+>  		break;
+> +	}
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241614083.5916.6651154069510905781%40whr
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179241612354.5916.12881323209252769976%40whr
