@@ -1,76 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792672400;
-	b=U48lH1pTX7wlhXvwvn8yDYLWdBR1J8A6lPQ/X4zlewV4v+gkJA2K57xCP6yFKDxAX01d
-	 LeISce6t0WwBMLvjgHCWMormeIeCx2KjxAnP2AWlnQB3zt/3U/B08l97d7SS9ay9w/X15
-	 R/PeLincWdTldwrCgtyH9jTmXrmT4FyUSZXJsuSUG+4J71zy+L2ys2UodBrcCMuJmcAOb
-	 uODEnj843L5oWZ4WiFHcSyPCvhvaT57/FE6+jvY6ZaWp3l472riLttzlAurVk9Ig6Aok4
-	 DYEcjMZarYRsOVitrMpkAIZmDqCGOUUuppQdIfUyd25IcciTu1Ji0tgdAjRZHzMdpdQ==
+	t=1792672402;
+	b=urbLkyCnlLNQJB84ckTP0w7uzUAj5rThDaoxBgq5J7f/ruEdmGtZTTXPFSkuj2GPJEFx
+	 yuojFG5hN2miYfAeOA50JA8sEfVHUV39UceWLyOk1AbSf68dMprZgueIIffXtNt2AvanN
+	 f7vvxV3og+cBv/lvEyjGhqk20gvxT+4YAW/ZbXJ8icBXwgAnzx5BNjYpFAPx5v9Oe2j9T
+	 UJcl0NSjrcq9bEwmHp0Cp41Ey4Srnb3SXEizWb5ejhT7gZeVBo+m/I8U3QqMfzSasKnJJ
+	 txq+JWbV3g2YbjaxkoBu/DsCY5Z7ahZe1CsH9a/s6Q87a24ZVZolDhdy0Uz4nZakXIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792672400;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Scanned-By;
-	bh=ORzLwHM8BGYbMikpTiVo/3MerTLh128qa09MowVExQQ=;
-	b=FIdEEQ6srKaxhaT4E+cLNvoB5EFl2jcKCdRJACJyAJkSABUPdkK9iEfpcKEXle7KSeZ7
-	 WEHGcoucvxK9qJ7rfQjJ5ZQGmzZf0RZvBM31U4KF0ymyGfavF/5TmPJ9WafUEVLGkm9Pi
-	 jVdxwnOlFzwV/aaEj642J6jXw22RItz0vbA+8vaw84xAeoF9xPZhPlNmn7x16E5Zgt+Yy
-	 TEkPisohPJRvojOudFZY7Qjo5Y5787EtaCRNkvRiIT2P9wNHT2JHjk49ol6XXMs/Snf18
-	 L1qkkXallFLofolpkmchCMGeWboDRgCUU4rWuNUpDcKqdB9jxdu0/FpX9dTv/xYX0Pg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792672402;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=AQgLzkQrozgIbDjYY3AEngjEn+d9fWFph9ODFSJMbAmi19eq4rgsTsx/CQS2vqx0paT7
+	 NSk71EzauSwIo96AONaTtctiXEMocGAqgr6sx2ue0lBOQG1T9KseJhW9uCrXJ+gYf+CFb
+	 o73wBlII9/m9hzK0j7iZTSSYglG1IeoI7FlSS7geevz36m7LD5nueRMDASdfZ1YJh2eJm
+	 EqmGUMfzA7wTYPXHPhfOVz9bnfc+lmpavSwuttp8irldcRpvBP7/w1BmMreCo7NvMg+qZ
+	 HVUmFmYzq2WKtvMzOeqyB1041MfcFCqlVPYs1Rdx+M+44DbrE5bTixIOcOSUExRFM4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N5erlkmk;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YlskONQq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822A2606A31B
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:33:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 822A2606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFE4606A31B;
+	Thu, 22 Oct 2026 12:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N5erlkmk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1792672398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ORzLwHM8BGYbMikpTiVo/3MerTLh128qa09MowVExQQ=;
-	b=N5erlkmk6B7WbVpSkMlDATuGaDNrp2ef8cA+n8VbdVxnaHs5aGAjg0t8v9nFw/uoANASqn
-	UQmJK6sfF8YoxW5JAuiqbGyDCoHmxu6gRm+w+2f+GPgW/CkbWvdQ6oE/U6Om3r9SdrTKVR
-	hS0dMX5Xfukp2dFuupZrXOyv0rsFVk4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-344-fU_oay6oNrCdi7x5QJoKOQ-1; Thu,
- 22 Oct 2026 08:33:17 -0400
-X-MC-Unique: fU_oay6oNrCdi7x5QJoKOQ-1
-X-Mimecast-MFC-AGG-ID: fU_oay6oNrCdi7x5QJoKOQ_1792672396
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C969718011D4;
-	Thu, 22 Oct 2026 12:33:15 +0000 (UTC)
-Received: from onestero-thinkpadp1gen7.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 4EE071800347;
-	Thu, 22 Oct 2026 12:33:13 +0000 (UTC)
-Received: by onestero-thinkpadp1gen7.tpbc.csb (nbSMTP-1.00) for uid 13628
-	oleg@redhat.com; Thu, 22 Oct 2026 14:33:15 +0200 (CEST)
-Date: Thu, 22 Oct 2026 14:33:11 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Allison Henderson <achender@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
-	edumazet@google.com, kuba@kernel.org, horms@kernel.org,
-	joel.granados@kernel.org
-Subject: Re: [PATCH net 1/2] net/rds: do not fail init when CONFIG_SYSCTL=n
-Message-ID: <atoCh3jw_1noK2Nr@redhat.com>
-References: <20261021195837.142802-1-achender@kernel.org>
- <20261021195837.142802-2-achender@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YlskONQq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5EA1F000C5;
+	Thu, 22 Oct 2026 12:33:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792672401;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YlskONQqlGmGMQb9ECFSuCj6onEQohryXk/DM1Ryc5lUbFgr6FXTy3aJ+IE/HYYaK
+	 OmPysvA/pHJNLJSi6B1S8auHU3HEa+DQQQP5TY5uqmNsbj1+XGM8RMgBV6SZEUAkRR
+	 4V5un+f+zAte0SJbvGE/ctDzua7h/D6RJHF+C8jZhOqrkX2omaJXN7/Ijl6BziJUxa
+	 Y1+BKVhUszKrmUvC+WnHEAo4e4ghKE0emT4+HzjUWiPJoHgVxr2yc6Um8/JH3R4/lW
+	 jVPG3pxk0rEvw71Fmq97nx5X9wvk0J/0Bi1EsoQ6hnnrCW6gHF71wIrNeRvhggJNqp
+	 Dcgp9I/yVBxCQ==
+From: netdev-bot+sinfo@kernel.org
+To: Yingjie Wang <1075151112@qq.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com,
+ kuniyu@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] tcp: limit tcp_tso_rtt_log to a valid shift count
+Date: Thu, 22 Oct 2026 12:33:20 +0000
+Message-ID: <179267240064.3290.8981594665549104094@kernel.org>
+In-Reply-To: <tencent_53CDCF8AA0022B75CF72A294CB9993D2FF07@qq.com>
+References: <tencent_53CDCF8AA0022B75CF72A294CB9993D2FF07@qq.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,25 +62,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261021195837.142802-2-achender@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 10/21, Allison Henderson wrote:
->
-> Only treat the NULL return as a failure when sysctl support is actually
-> compiled in.  The exit paths need no change: unregister_net_sysctl_table()
-> is an empty stub with CONFIG_SYSCTL=n and already tolerates a NULL header
-> otherwise.
+Hi!
 
-FWIW,
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Acked-by: Oleg Nesterov <oleg@redhat.com>
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-I'll rebase my changes which move all the sysctl related code in net/rds
-under ifdef(CONFIG_SYSCTL) on top and send the patch(es) for review.
-
-Oleg.
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
