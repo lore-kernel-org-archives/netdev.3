@@ -1,98 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792643768;
-	b=vU6QL9LKzMlr/Ed1Mf96670WpUh/Ob+gQAbr4suJbezJjuwWwckHRhUDXygKLHrpMHvS
-	 JE0DbsEw2vuSHYDrkdt+NNgszDB0d0U61QCORFeybpcMolCHM2m7PFKj54m+zdq1n1h2V
-	 iWljtAq5momyECKyafGraTCsiyqgBE0L1xncwLfWGzs6PsGW5iI/FtWbS0YVU9ohr+Hys
-	 M81bV4O7Ukg0qFGNuNlspnwePKZfxQUXlP36x4o01i0Oe+MOLaGrOqCyh/PTkPpUIeEiU
-	 k4fL6ax/UjjGhXoDxBMGUWxcI3IUl8yvz3bTBI1IQK9okrUpOW2Mt4RZwMW3Ui14Olg==
+	t=1792643976;
+	b=O9tIaWpigz1xlILL4cKUQzsyQIQFZJeB0mvOZwpEViHjhQSG2zOU1egJIPk7eaa18kE7
+	 NF1RD01EN6ZkQwxbvCY+nDwsMW/mgqn/qc28fimemOl43QACwVIn6eLVmut8iq8HQn7bZ
+	 B7RFrronhjdtD6TGgUhoXmttF6J90d0DMeqmzArGOA6Zw/IN5iljVi0YjxxuwdnC7dpH3
+	 sYxHzmCReSUr5C5XgoGB3Np7oA23pq5GO/8vf16CBDwf15yLRbEGo8nyzI4Mx6j8dEDRx
+	 pXUvr2JSrg+B6nf92FmxFK0KcoYzM2pRsSGGSKcGGz4ldvFM0dvs8HGbknncb/Xat+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792643768;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=/7tpPcJ0uUKLTHvPEfaChoh+KwUwTnCA4Qa2nt1mS1c=;
-	b=y0m9oIzUPA7zQKuYLpmIVUEvMNt3/kV/J1BvWDH17Ni0JGTqr4YtRg8wW0n30JbFk2c7
-	 768fzNECPspV9NEUgUVX5xEej5QwNIbMkXcYcjv7/7FpSBjVFYSXvgwcjmXA3ZaXhWyIh
-	 uhkViGtmLIlVbf1bRhL7yRGCj5+QEiv5KfYy231yagULhkckvAX12RZdKKHI/I9R0Tk8v
-	 DRKKjxthhs+sUgVLKbDBMgrFLDu9aQpgCyrE7gVQ09fFoPGQlqOmos+oAWd+BTZ01yShD
-	 dvbuS3NorgjTZXvhPgtp43d2WEIRGmxeenfMd10PSf0SoWkGE1fX8gLuMUXdRdfpKpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792643976;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=ThEALp9KDam4vLS+PSEBuO21snQDowXhI7y10it8/1s=;
+	b=nMWr+PjVNBv/zLlXUqMIuH2n87zDjzNDzQoT4Cl4iECL4kHbfdrBH6eEPpnhbMTFHSdb
+	 AIbRTZ4gRFtrQrtWMQJ589e72PWZMb6Yh07CgxkeTctF5q/fxd5Q8yBrj3NhmPi61tlp4
+	 mcMhMp2nZ1f9MS+Dv9OlydDmnuW0dKaYoW91gLRFc/fqz6IuXUuL5u095vAGxzXUijAl5
+	 0MhYy4w6YZ0KsXzlRAXNt29uzjOTTrTEuTLGbmhF/kmG3u01uz4FiXdZbX2Ooa+AM8mCT
+	 BfkIG84/XWrzTu9xDrwQE4uFBLM11Dk5sngn/D250VLbIBlykGgry2LnyTbqs+Id9Eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=smartx.com;
-	spf=pass smtp.mailfrom=smartx.com;
-	dkim=pass header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=m3KRsj6i;
-	arc=none smtp.remote-ip=74.125.82.44
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=codeconstruct.com.au;
+	spf=pass smtp.mailfrom=codeconstruct.com.au;
+	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b="d96Rzo/i";
+	arc=none smtp.remote-ip=203.29.241.158
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC69606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 04:36:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFC69606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EB5606A319;
+	Thu, 22 Oct 2026 04:39:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54EB5606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=m3KRsj6i
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1846bc43c28so487536c88.0
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 21:36:06 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=d96Rzo/i
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1792643766; x=1793248566; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/7tpPcJ0uUKLTHvPEfaChoh+KwUwTnCA4Qa2nt1mS1c=;
-        b=m3KRsj6iAYqkj4vEeMUdHfEuLT6b58tIMnR6uKmMidgysRguWHudVAURWLIvILb7PE
-         ud//uHY47+iLHj8nvAlJtHxA3rg8LSxuyP+4HkNNTIgadWIQWCSz0y95pIGvieTmYPI9
-         KBlzU034rtLpnEYuyhzOwQC655A0sSOci/G/0OEu9lro7Tyeh25lxGDXf4fTkrYAdleG
-         RmwN7gT3VHyRC5+Ic6fXbav299lKI3rk5sn+BLZejIeTxrrItiH0KT2wZxBrM8IQyZoP
-         jSrRBwOIYWlzQb+2U4lEMqp0A6jgpiwZ/Wy69QNOtHm26p8skuZSOdyYugqVx2NEjsjX
-         w6kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792643766; x=1793248566;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/7tpPcJ0uUKLTHvPEfaChoh+KwUwTnCA4Qa2nt1mS1c=;
-        b=NoJOI79FPpA5KHIhikLukxMl82A/qV4p2GF5+ys4llGPZNLWMQ5VB5wv8hlPPHdQDm
-         zpw3ASDShvKTBARBEMju2B3UbVbPOrGxNVVmwytcYTIunoUyz6JA5U/Dr9GoMOvhRVc7
-         Kacx0tJiIQHvfjzkbeg5C45EXMJwxadciOGQc4ZPRXSSopceQa8CcXzq5csyOjDtpp6L
-         wcnQA2AVSe4tKFVJZyZcRRWtz51EjRBYDxcvWkSa6KmeBGg/Kes3WhEgJxLPo1a8uQ8x
-         IYOqUbk040r/ZO9YDsW0Obl/H8wylB6ytLK2M8YPaxIW8EvDElljEJ7n6dsd4Tuijt/G
-         ONQA==
-X-Gm-Message-State: AFq9FYLFw8FB6aChMv1laSGhzlF1b0jlZ/hL/cTL0CEjI46XF2XLyTID
-	r5kn17sOAfsXUGffKQd58TOmzWIMYYimGR7GHEqT/NFr9z6ziQAofFDGatB4LYOhrF0Bc8L4X8u
-	QzZAZUsv3f72RmyTVwSOiEoarrP3FNB60ZnxKvNpmXvCPWEWU1jkNnuk0aluhha654elAwgE0
-X-Gm-Gg: AYBFou3rlzITNROxDnnYpobIgAVdpAtJSN0FcGzsppCL+ImerZ2Xr+cE5gtlafcq/Gs
-	N2AYeTW44rNJIbbWnTfRJhOGfG7Z9jEd+62HmRj1/cx9m3ULlvbjxtv/NVmU8WgqEW8fqXJN1Y3
-	uND5cFpqDEgEUJyNi2LoM3UcrwtrTypA3W/paL5r+Z7gX6dD3MUaeAUjzdrK14mb9sF3zSGxU+J
-	NDEWLptYwQD0dbWnta7kzuLPg8DBxL3zGCDBl1qCcBheHd2fmNKFflFu8b4SNTF6J5uq7EKxzeh
-	cO8+chSp/QEok2MJYIz8yAiM+JFUKupRGB5jNOruofkp54vyUpCHuCKbJmDMntsYmfEqZSHkfNR
-	Yy+wZZG7LAH9TyjIQMfUrtpCQ1+62doCVxJK0nymY6kgcdVBRSCXku5t23YbAQVyu3LqWl0x4Tn
-	matz+4s4G40fuz9+kcJsxncCeZcz95Qnfv6tMZqqmtP9NbykQb2l/SykVCcd4dc5416dHzwFuhd
-	jMb5w9i1xkXTtWjfjwQ03IemTALAKhtlIJqgUbIWpgLsC7giMnzIjE3bifj3Q3otx2VTg==
-X-Received: by 2002:a05:7022:43aa:b0:187:ec67:2fc5 with SMTP id a92af1059eb24-190a5d7115dmr7374488c88.32.1792643765232;
-        Wed, 21 Oct 2026 21:36:05 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.128])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1903bf5d0a1sm11178696c88.14.2026.10.21.21.36.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 21:36:04 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>
-Cc: Wang Zhan <wang.zhan@smartx.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Simon Polack <spolack+git@mailbox.org>
-Subject: Re: [PATCH net] net: fix frag_list leak in skb_segment_list() error path
-Date: Thu, 22 Oct 2026 12:35:37 +0800
-Message-ID: <20261022043537.3481475-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261021161858.761205-1-edumazet@kernel.org>
-References: <20261021161858.761205-1-edumazet@kernel.org>
+	d=codeconstruct.com.au; s=2022a; t=1792643966;
+	bh=ThEALp9KDam4vLS+PSEBuO21snQDowXhI7y10it8/1s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=d96Rzo/iolCWJqDYNNC41kudhUh5rYxt6JtirOQIdSt72lvSZ7f8H953BODBBe6m3
+	 ZtZBeGOuaCWHRtKAc/u9vtsQu5S+E6Rpxv2UK4zHnnTQF2YhVINtzSrm7vY2Bs+b0p
+	 PxmBKYt9ernKl5/A4cNCf2LxQM6089l6BHpMaimmq9N7oCySecEv4otfyD9rn7Edk6
+	 5chTkTrMenXWHw8M4wCbGJfO+eHZywMBw/vWu5nxAMpdmMKtHBkwfHbLL5ZdegGoWn
+	 8ca8ETUDzIms0E9ByEbLSdsilMGFhtWgY2XFCZqaa6u+ShTN0Gc2L+P+7QRfti0otk
+	 7fccr5TpxpI+A==
+Received: from [192.168.12.105] (unknown [144.6.157.237])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 7B160707FB;
+	Thu, 22 Oct 2026 12:39:25 +0800 (AWST)
+Message-ID: <51bf6b10b2fc1c5d6ed7234e61067869380eebad.camel@codeconstruct.com.au>
+Subject: Re: [PATCH net] mctp i2c: fix double free of midev on netdev
+ register failure
+From: Matt Johnston <matt@codeconstruct.com.au>
+To: Kenny Hsieh <kenny_hsieh@jabil.com>, netdev@vger.kernel.org, Jeremy Kerr
+	 <jk@codeconstruct.com.au>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+	 <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	 <pabeni@redhat.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 22 Oct 2026 12:39:25 +0800
+In-Reply-To: <20261022031704.2295541-1-kenny_hsieh@jabil.com>
+References: <20261022031704.2295541-1-kenny_hsieh@jabil.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-9 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,26 +70,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Wed, 21 Oct 2026 18:18:58 +0200 Eric Dumazet wrote:
-> skb_segment_list() detaches the frag_list from the head skb and moves
-> its members one by one to the skb->next chain. On error, err_linearize
-> frees that chain with kfree_skb_list(skb->next), relying on the members
-> not yet processed to still be linked after the current one.
->
-> This does not hold when the current member was shared: it is replaced
-> by skb_clone(), and __skb_clone() clears ->next. If __skb_linearize()
-> then fails on that clone, the remaining members are no longer reachable
-> from skb->next nor from skb_shinfo(skb)->frag_list, and they leak.
->
-> The skb_shared() error branch already relinks nskb->next to list_skb
-> before jumping to err_linearize. Do it unconditionally right after nskb
-> is added to the chain, so every error exit sees the remaining members.
-> On the last member list_skb is NULL, which still terminates the chain.
->
-> Fixes: 53475c5dd856 ("net: fix use-after-free when UDP GRO with shared fraglist")
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> Cc: Simon Polack <spolack+git@mailbox.org>
+Hi Kenny,
 
-Reviewed-by: Wang Zhan <wang.zhan@smartx.com>
+Thanks for looking into this.
+
+On Thu, 2026-10-22 at 11:17 +0800, Kenny Hsieh wrote:
+> mctp_i2c_add_netdev() initialises midev before registering the netdev,
+> and frees it on its own error path when mctp_register_netdev() fails.
+> The netdev's ndo_uninit, mctp_i2c_ndo_uninit(), frees it too.
+>=20
+> register_netdevice() calls ndo_uninit on its later failures: the
+> err_uninit path and a NETDEV_REGISTER notifier error. On those, midev is
+> freed twice. The second mctp_i2c_midev_free() runs list_del() on an entry
+> that is already poisoned, and drops a second reference on both the
+> adapter device and the client device, which can free either early.
+
+I wonder if it would be better to delete mctp_i2c_ndo_uninit() and move the
+the mctp_i2c_midev_free() to mctp_i2c_unregister(), before free_netdev().
+Then the free sequence would be symmetrical with the init sequence in
+mctp_i2c_add_netdev.
+
+Prior to mctp_i2c_midev_free() calling mctp_unregister_netdev() it would ne=
+ed
+to deselect mcli->sel if matching (the reason mctp_i2c_ndo_uninit() existed=
+):
+
+	/* Perform cleanup here to ensure that mcli->sel isn't holding
+	 * a reference that would prevent unregister_netdevice()
+	 * from completing.
+
+Cheers,
+Matt
+
+
+> Earlier failures do not reach ndo_uninit. mctp_add_dev() failing,
+> ethtool_check_ops() failing and a name that is already taken all return
+> before it, so the error path's own free is still needed for those.
+>=20
+> Make mctp_i2c_midev_free() safe to call twice, by clearing midev->client
+> once it has run and returning early when it is already clear. Both
+> callers keep working unchanged.
+>=20
+> Tested on an AST2700 BMC by taking the netdev name before creating it,
+> so the register fails early with -EEXIST. midev is freed once, and a
+> later create on the same adapter succeeds.
+>=20
+> The double free was pointed out by the Sashiko AI review of a pending
+> mctp-i2c change, as a problem that predates it.
+>=20
+> Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+> Closes: https://lore.kernel.org/netdev/179239912623.3135.1135265215662681=
+7288@kernel.org/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kenny Hsieh <kenny_hsieh@jabil.com>
+> ---
+>  drivers/net/mctp/mctp-i2c.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+> index b02476d33..bca379af3 100644
+> --- a/drivers/net/mctp/mctp-i2c.c
+> +++ b/drivers/net/mctp/mctp-i2c.c
+> @@ -788,6 +788,13 @@ static void mctp_i2c_midev_free(struct mctp_i2c_dev =
+*midev)
+>  	struct mctp_i2c_client *mcli =3D midev->client;
+>  	unsigned long flags;
+> =20
+> +	/* Runs from ndo_uninit and from the mctp_i2c_add_netdev() error
+> +	 * path, and register_netdevice() calls ndo_uninit on some failures
+> +	 * but not others. A NULL client means midev is already freed.
+> +	 */
+> +	if (!mcli)
+> +		return;
+> +
+>  	if (midev->tx_thread) {
+>  		kthread_stop(midev->tx_thread);
+>  		midev->tx_thread =3D NULL;
+> @@ -810,6 +817,7 @@ static void mctp_i2c_midev_free(struct mctp_i2c_dev *=
+midev)
+>  	skb_queue_purge(&midev->tx_queue);
+>  	put_device(&midev->adapter->dev);
+>  	put_device(&mcli->client->dev);
+> +	midev->client =3D NULL;
+>  }
+> =20
+>  /* Stops, unregisters, and frees midev */
