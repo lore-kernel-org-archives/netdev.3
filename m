@@ -1,98 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792672895;
-	b=aggEXpdSgwp4/PxoyRyPr2qpdGbGXnIUS1Kwu+rFb1shGoWd2jcNecLx4t9C9yHn4Qj6
-	 SbSYFlJXQPTqhpo7z6m+BGOrppLHVwr5ztPnOHqC2vhcF5PSeFNXUUfInf72Elt4ui4bl
-	 ThmR5mlY9o62inbvv3JvK8v3FXER/TH3ptx8lVNK7D3W4h5s5N0EyjCPK9QNC7aUo9meM
-	 VcVJBZRCa1rbc4DEdpq0ZjBNzquKYzBzvYil7OVVdsDxm4WZQrly9QQpFv1TKMcUtMq9R
-	 UZKOmhyaqX1Q5hCbT3iowvfQPDHFjOHqoDpHNFnv0dDwjwJM6LX50CaKxjBe5LbfN9A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792672895;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=A2+dp2zkYoXzciDDCmS52+BBtcBhvPkmwUgZHfvAXvs=;
-	b=eGFWMiJHah+8i+qIxJT/n1YeYbwBkwHVmtmL6/cEC3wSnq+oFVr3pqKRoRs4HNDfK2ML
-	 WT+5k2YHtrqLA/OG7EUh1fwr4VoGRP5X96Q/rXnLH7YXkYzNXjKA4mC+81fqZKdty7Vtn
-	 c8Rec6Qn3+AuQG1flK01golybNqKxda8RY6HvoTHh8noMXSTJH3ITCOBTjrLMECVVYnKt
-	 h6twaWSxMNO6JMlBG4Glce4Aq3Zrkh9iwKZOx1YaTVxeBSOLG2oHhqh99i7n1Af4i4bM5
-	 8NyDmQrHkXyjXY2bH5OPTR61Z+QJgp8mLZ9sIGBNRU90vtokCGjknQg7jdRTfdjCN5Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=YJDZpVpI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=149.28.215.223
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792672930;
+	b=TAGFu3ToLg3gD6cUgdYDNsiayjmTXhMcJXxBkAwAdAKQhapj9jhsYebSDtGxGguzkEBZ
+	 7c9Ts1ZabKkzq6xRULR4LeMH5SRPqm3du70UIOlOma5c7Bd9bHnGkFQuT84zZBZEEefQF
+	 6uqFbdkbhoELwM7vVuj6wnL+E2AD6VTj8gym9f/LrYAnvcXvEk+nhaY9WJA1N/5mm/rmP
+	 8jLlLudWML83XqoTSiTg/6iC+ZBX+rHapFpbJw2a0Oki/QzH5kd7/rzju5KidqN62XOYi
+	 NMdfrYhmEtOLn91XnJI05VyQLsJH6gGHeUrJOq3VD6/M4XBK8s2xJ99iiiVYDcKi/rg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792672930;
+	h=DMARC-Filter:DKIM-Signature:X-Forward-Email-ID:
+	 X-Forward-Email-Sender:X-Forward-Email-Version:
+	 X-Forward-Email-Website:X-Complaints-To:X-Report-Abuse:
+	 X-Report-Abuse-To:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
+	 Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=kUqgr6Ebn72/WlEz4GBlEk/lhIUVm9v26hY/9pAXckQ=;
+	b=X4G41mwn7YBRZEP/HIuckdqdKUVBeXSRSrHzIZ/Yob9Lhmi0uFRAAsmrmBZEiuPkEi3V
+	 mayg0z+pbBCGRPaG6kMk22p9ZEEc2U4VbQ0e7UtB0f1IG2GuxaSRL4B+t0szo9T8nPYKZ
+	 QoH12OBerACwPnuORSC1shrkszXucFMt8M3f06RP2S3A+G7Sptz6Qjil0TVTajmrDJJCo
+	 kE5Z92HVj5ox9QdWEtpZ8fAjzawVnxwO+i6Oda/5nroUrVAb7ef5ZFvIgdbl74OsrOuzu
+	 aAnVCt78c7/fK529Q47UkvhPPhCeN1hDjskaWktvdWUWsIu/Km3EjNc94Au3IbaprfQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ovn.org;
+	spf=pass smtp.mailfrom=fe-bounces.ovn.org;
+	dkim=pass header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=V11bMTVB;
+	arc=none smtp.remote-ip=149.28.215.223
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B057E606A319;
-	Thu, 22 Oct 2026 12:41:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B057E606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B854D606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:42:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B854D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=YJDZpVpI
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DC8B92009B1;
-	Thu, 22 Oct 2026 14:41:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792672891;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A2+dp2zkYoXzciDDCmS52+BBtcBhvPkmwUgZHfvAXvs=;
-	b=YJDZpVpIePgnc8rdAsxAXGZ9CihqydGZ9x4ZV0fgs/kpUrSbSxQorTQoevDOtCotSdHbmr
-	CXxtzwo6Z5DyYPFeTFnenc7Z5z9J2guNF2Eym/QhBsRq1VuvyuYzYdeFXuQIrLT5w1ydEi
-	niu6oti3Vnii2+r6IfPOu9y1ZdYbLUMpKu4uf/4+XpJBUGuIpa1/aqggBA4HRHNtfzJKZR
-	zHfnJv3ufP5sz45lizC02+VG8meMXuVHJQzR0qNI1cSZNBPBmgjchRlhANmb4My1egAqiP
-	pEDfJSl6bDn/Jsw/Fb3uedJnwpLU3EbRqPev+YLflRhuTCP8Es6aGIQxNtFxjA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792672891; a=rsa-sha256;
-	cv=none;
-	b=Tq6/UYICModPxkJiZaY4wbGmazMeA4GVAvA7+q7QhMrd+d8+/99nD10hTeHnyKAoTbPG7X
-	M/eW0PfdPZq5bqc8GmIR/FaYU8jRBiMd+mRJoFmKQ4+geh2t0lSOALm5zMu9fW9vSvTrCi
-	6spW5wR7XmNKEf0xsl3HtK/5r0tIF3meqx6MKj83YUwDNAsQjLLB5Cz0HwTZpTIKi0EN0v
-	m9fAqEK5BDOtaz9yCjWC/Nz8BmkPCKP8yTS7SmNFvtThBCBtfyd9+nAfuWPnCH6JJf1Z2P
-	C8h1+PUIxhZjZPYVg3hZu6duhUxgvK2B7qWRqajlP6z6a011tj6p0vM7c4HurQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792672891;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A2+dp2zkYoXzciDDCmS52+BBtcBhvPkmwUgZHfvAXvs=;
-	b=PQNHcoEHJfZ7DxB1zhUvRByrSdXBP+IR9eUSSvwL6Z7oMWdTiQ8O/PLoXixWi5pUnzTZUf
-	f/8oAjuW9qCqyAxokWHZl0blqFL77Wh61c1JNin2tSPSlfcfE0191E306QgrvqYBO6AFMj
-	kkMZ9rMKfTO7Fk47ZVOoMYw+AiHXMkFipi8BLszo1gTCOolS/GC+aeGiorxhl88IUJ7d2U
-	2XljY/kyHP9XHMZsNgVVau29egXm8Ua82glkz2n+9OR6pJ/C3vRyFgfWzN9rUFYG2dU8hX
-	HLkHfcez+y+0ncz8+X5Z9kG/hFq4B0obDygvCd4dMzGrLI9cA6ZZiITr55uuwA==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xJs6t-000hzp-2b;
-	Thu, 22 Oct 2026 14:41:31 +0200
-Received: from pengutronix.de (unknown [IPv6:2a0a:edc0:0:701:46a6:1197:ccb4:99ca])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 622705D0E8C;
-	Thu, 22 Oct 2026 12:41:31 +0000 (UTC)
-Date: Thu, 22 Oct 2026 14:41:31 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org, 
-	kernel@pengutronix.de
-Subject: Re: [PATCH net-next 0/11] pull-request: can-next 2026-10-22
-Message-ID: <20261022-unique-famous-dachshund-f51d3d-mkl@pengutronix.de>
-References: <20261021231130.2085690-1-mkl@pengutronix.de>
- <eb3b2eee-3460-4b03-a180-1d3806a7f8f7@redhat.com>
- <5fdffd4b-7f80-471b-93b3-706c00cb51da@hartkopp.net>
+	dkim=pass (1024-bit key, unprotected) header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=V11bMTVB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-13eddc7e57; t=1792672922;
+ bh=kUqgr6Ebn72/WlEz4GBlEk/lhIUVm9v26hY/9pAXckQ=;
+ b=V11bMTVBkaqmLWtYjxrW7lLQQa4j1kxIuhNXsWAr+qLwO1u2h7FbN8pqB94E0uS9Jd3u9DRGG
+ 43/2A/2Z+o7Mt0n5Ax51kpRVXvu72L9dcdbPwk5AtjKIuvtcRQXfzRA7F9b7uXq+3KjHvpCKPvk
+ kMQRkG5NixTlS1ELxLUL0z4=
+X-Forward-Email-ID: 6ada04971a70b93336fa8f72
+X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 2.18.9
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <372c6019-2ee1-46ec-bf5f-ccbf9b4d8659@ovn.org>
+Date: Thu, 22 Oct 2026 14:41:54 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,50 +63,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nforibwexwhhwea5"
-Content-Disposition: inline
-In-Reply-To: <5fdffd4b-7f80-471b-93b3-706c00cb51da@hartkopp.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 4/5] net: openvswitch: ensure a linear inner Ethernet
+ header on TEB pop
+To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Martin Varghese
+ <martin.varghese@nokia.com>, Jiri Pirko <jiri@resnulli.us>,
+ Victor Nogueira <victor@mojatatu.com>, dev@openvswitch.org,
+ stable@vger.kernel.org
+References: <ACT-N6N4.v1.r0.20261022051412@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-1@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-2@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-3@mojatatu.com>
+ <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <ACT-N6N4.v1.r0.20261022051412-4@mojatatu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 10/22/26 11:22 AM, Jamal Hadi Salim wrote:
+> The issue:
+> pop_mpls() restores MAC_PROTO_ETHERNET when the popped ethertype is
+> ETH_P_TEB, but skb_mpls_pop() only guarantees that the MPLS shim is in
+> the linear area.  When the inner Ethernet header sits in a page
+> fragment, the datapath now claims an Ethernet header it cannot access
+> linearly.
+> 
+> Output to an OVS internal vport then calls eth_type_trans(), which
+> pulls ETH_HLEN from an empty linear area and triggers the BUG in
+> __skb_pull():
+> 
+>   kernel BUG at ./include/linux/skbuff.h:2830!
+>   RIP: 0010:eth_type_trans+0x335/0x500
+>   internal_dev_recv
+>   ovs_vport_send
+>   do_output
+>   do_execute_actions
+>   ovs_execute_actions
+>   ovs_dp_process_packet
+>   ovs_vport_receive
+>   internal_dev_xmit
+> 
+> Conditions to recreate the bug:
+> On a system with 4 KiB pages and CONFIG_OPENVSWITCH and CONFIG_PACKET
+> enabled, use CAP_NET_ADMIN to create an OVS datapath and bring its local
+> internal port up with MTU 9000.  Install a flow matching an Ethernet/MPLS
+> packet with one bottom-of-stack label and actions pop_eth,
+> pop_mpls(0x6558), output to the local port.  With CAP_NET_RAW, send a
+> 4128-byte AF_PACKET/SOCK_RAW frame containing outer Ethernet, the MPLS
+> label, inner Ethernet and 4096 payload bytes.  The two pops consume the
+> linear headers and expose the inner Ethernet header in page fragments.
+> 
+> The Fix:
+> Pull the inner Ethernet header into the linear area before restoring
+> MAC_PROTO_ETHERNET.
+> 
+> Fixes: f66b53fdbb22 ("openvswitch: New MPLS actions for layer 2 tunnelling")
+> Link: https://lore.kernel.org/netdev/e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> ---
+>  net/openvswitch/actions.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+> index 27152bca8a8c..03b31e33e880 100644
+> --- a/net/openvswitch/actions.c
+> +++ b/net/openvswitch/actions.c
+> @@ -153,8 +153,11 @@ static int pop_mpls(struct sk_buff *skb, struct sw_flow_key *key,
+>  	if (err)
+>  		return err;
+>  
+> -	if (ethertype == htons(ETH_P_TEB))
+> +	if (ethertype == htons(ETH_P_TEB)) {
+> +		if (!pskb_may_pull(skb, ETH_HLEN))
+> +			return -ENOMEM;
+>  		key->mac_proto = MAC_PROTO_ETHERNET;
+> +	}
+>  
+>  	invalidate_flow_key(key);
+>  	return 0;
 
---nforibwexwhhwea5
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next 0/11] pull-request: can-next 2026-10-22
-MIME-Version: 1.0
-
-On 22.10.2026 13:19:08, Oliver Hartkopp wrote:
-> Unfortunately sashiko-bot complained about something new in my patch 11/11
-> and suggests to move some release_sock() calls 4 lines down behind
-> sk_error_report(sk) :-/
-
-Is this review already available to the public?
-
-> Would you like to have that re-spin PR to be named as "net" PR ?
-> And when would it be best to be sent?
-
-I'll rebase the changes to net, and usually "net" is always open.
-(Correct me, if this is outdated information.)
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---nforibwexwhhwea5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCatoEeAAKCRDMOmT6rpmt
-0uShAP0WK2mUhM76NDmM1sTaw9RY3flN1gl2MjbuMh/e+iiFGgD/e84G79VDot6/
-nUNQB95cQW3f7PeK4XF6EQ0ioxllxwY=
-=kMkj
------END PGP SIGNATURE-----
-
---nforibwexwhhwea5--
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
