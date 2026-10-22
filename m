@@ -1,137 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1792667503;
-	b=aC/+llg6M0aAN1PIIC6YNc7xtpKRDdaqsrIF+K+q8rSWmPvebALL21Qshy4pHenb8rJ0
-	 Dt5jmqUzzbhcpZ+YvZbGnSwVyCYg/0h+YE35gs/Zbc7PLZIYDsVJ4uWsGF43ViBogzpSN
-	 +AUdpIifhmSnsiXGf7fuKSYDhKQDmJ9ec681HDS60pMdYJC1OuVJhg2FNzMcZ69BKgMqA
-	 Gxe0HILXiGB8u7O926FjHBIlgglIRi0RRpShTPjktn25I2K/Y5SfzO62ADBGmNeG8tyeS
-	 OhgkZBym3IZHyYKMUKmY/wfzKDb1kRtA2+vZPj7bcqJkoORfmO4wtWQO+Hh3U7bxH7g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792667503;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=Lv0h8wYpfemIWPmpERW5irYbfKpk3/lwz4m2Uk/RcBA=;
-	b=ZM5et+4QAJCfHyy0zIuRmueyNWBLhqcu5TLFgB8DBeEYEvG8m3KP9TgtDwUrh3ZokCEi
-	 7JASI2PZS5GCuvcII/P4yJcIvhOzbOyj1Yywzh8sss8JUnMjbdG0lrsBrvFJhSVUw2wwv
-	 74C8NLKBx2cEx37HGIznOd+wf6yweg7HEoSygu/n6pZj+w+1JFVahyKN9flkwLwrbSvaG
-	 RhkPyCOi6uyzQy2UIOegl9ykPiM/+TjRLXl16lVK48sPjY1zaWIT/5svlfqqFYPdhz6fm
-	 5pML46edZWFkzDuPk4yzvGPgSO/x5qKAMXxOM6WCPc4SsY8ptewM90IgJxc5eP0m49g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CkZmc7ch;
-	arc=fail smtp.remote-ip=192.198.163.19
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792667678;
+	b=S2jtRFsj3eI+ttDCM6nbpu0qjVHVKuz4QgFysntZJQVWB+OArQacf7m4sIfSC5oBJRqs
+	 dWU2c2+gZNf2zq7qqu5amWjlUYIsAj8Tm/STNrI8uf1tODikIG6mMVABeLI+X8gZrmI5s
+	 8a8hzFcoqN0TcjFl4n2m5mIjXwYgfx1BKutTYZwx5Jnu9aQpJs8jG3+me1EfXnnGXY8Ya
+	 bN/MVT24K0rPV03exZFVpE7gNAe/wkc0Cdr6tBaaQyGLJZOFkt6obuVys67vV3/BAG5M8
+	 BSxHKL2Bh3+cXTY44CtrjhyKlzjjKZY1LpIqhpQkKPfZzu+1hqV03v6Y0jWG4RrqS/g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792667678;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=t+yL5LIQB/XmcvJ8XLaIeDs48TsCXFtavG5KeRNid4c=;
+	b=HXJ8eg36w2/AdriSmA57j3ZV6VaF/ODyBKrZGgN2XsUuTNLyw3lNd0a0/hryq6zfqPMS
+	 w9gVvocsyvZ67n6yHiGSVH2SnG1ysbqizFIWK1f1KzDq/JsKRfIGqP5QOgluci9OghGH3
+	 b32PQTOlk/03OeVwS85cdVuFXXEWtqYlyx5G3S5VPen/Egt/E0/vcHhn+gd7UJLBuaJh6
+	 5HGH8hKx+gkzuzIzvN45xjR9CK0NKkTJ/3LPCZHGHqvMZe74WZaZLsaU6/HbqFriZbeB0
+	 rhmdoH9X47xHEJHtF5eoNFQzy8LrgQ/DO/Zex0135dMGsP17i+DDG1VD2tR75U9u5ZQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GIlf13MG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038C9606A319;
-	Thu, 22 Oct 2026 11:11:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 038C9606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4E5606A31A;
+	Thu, 22 Oct 2026 11:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CkZmc7ch
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792667501; x=1824203501;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=E/wygCOESoMJTWvkQYXjuKt/1Wb0k3c+cCfgtOuyFBM=;
-  b=CkZmc7chyXsbWIsVMen9FiGtqEt6lIpbym7Mpj17kRe1D5CfjuFKxIpG
-   xFEMUnvch+wf9w/ZgC3OHSs08CaMppp5pHmDVDcxIjwo/V7UmuDDR8EPj
-   4xhsgZKzTEp0XialowaoPKmZT3zN60U4C8SAmElG+RZaLVNVNFEi9HxKR
-   UypZ2IM4E2Q8fD2GlpkRBqyWpiH8YkmAfXLBo4xeNtSFiMw+bayXMZpTY
-   DWg9h1k2k21aYIzjP8Z3sp7U0POyyrYQHnVc9HW+EB+t8hGUJU1K4ARb9
-   buBNKfVk9mf2vt2ZatkybyEynsMfuatQx50aN0IvZlz6FS0O8JIuHx4Vb
-   w==;
-X-CSE-ConnectionGUID: dSzCi2ESRZSuYUTRvEgM9Q==
-X-CSE-MsgGUID: Hblg29LBT/Oc1CKD1qYBIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1517027"
-X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="1517027"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 04:04:31 -0700
-X-CSE-ConnectionGUID: 7qfOeZANTSmSWGOstxYRMA==
-X-CSE-MsgGUID: R//FouXNSTyRRQf1R9G2WA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="3696588"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2026 04:04:30 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 22 Oct 2026 04:04:29 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 22 Oct 2026 04:04:29 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.48) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 22 Oct 2026 04:04:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nGaeNDZrJkXfF4VklyNdv451/8HNh0LUrtTvQi76zZP/tr24l3t8gOgRpaXxeYj/L4Cs+cVKbH0TC3ExmN1W1DwPpbXGvagRRDHViN1X0Y6vGBQ8Ei9MRhNPzacMnTf9I5V72TsI/96Lvf70y5ZHK7dokK+tCe+rwH/zySUF94JsM2YZZrE6CTxHAdj3AlF92VKKQvSfcE4Hrjhgab4uqlo7pYx1bkp/0DFBYIcz6AOq0egCF23ZNwEKxPj9gmWWhoWx4oyL/dZiBELoJzyc+pYeu8EYccNTp2lq5adeJ29/FwhHBLK8tP3IQvPi3tXgpEE4BXYUTlM0lKUbeQ/4QQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lv0h8wYpfemIWPmpERW5irYbfKpk3/lwz4m2Uk/RcBA=;
- b=V6p4g5ljkc0iI6jSUgliCbOIDSxIq3hWSYrVSb2jPpqrasaxofIFlA0F7DkiRGlnZeXZjk70oTOKtEO4XNNK6LyoVXgo+itAerRtbqhA3cyihJhF7C2JWVXMh9k3fkawCM3J3EqXsXJUqFG4DjRDdVg8lqD2OHcdD2sFN5Oq1DJu3NYHQKaQHqMfhyE4/x2U9fd/rb6NUTIF8vZ1I1lF+BhcAH78eFTbFCG2K8mzyUr/W6dt4E9D4X1ZskbzAF2of6qUpneLGKExCoogao93pb/UUEZ67QiE/lutlauFMuz21TL/xmWMOCEeQbB09CKU8Kuxf97glGv2/CrhRyAvxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
- by DS0PPF0A1E7F360.namprd11.prod.outlook.com (2603:10b6:f:fc02::504) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
- 2026 11:04:22 +0000
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0522.017; Thu, 22 Oct 2026
- 11:04:22 +0000
-Message-ID: <ac4fb583-4721-48ec-bea5-ee4e7380f606@intel.com>
-Date: Thu, 22 Oct 2026 13:10:16 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] ice: scope global configuration lock to the adapter
-To: Aaron Ma <aaron.ma@canonical.com>
-CC: Dan Nowlin <dan.nowlin@intel.com>, Brett Creeley
-	<brett.creeley@intel.com>, Jacob Keller <jacob.e.keller@intel.com>,
-	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20261019105155.3793063-1-aaron.ma@canonical.com>
- <20261019105155.3793063-4-aaron.ma@canonical.com>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <20261019105155.3793063-4-aaron.ma@canonical.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL0P290CA0005.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:5::16) To LV3PR11MB8508.namprd11.prod.outlook.com
- (2603:10b6:408:1b4::8)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GIlf13MG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411B51F000C1;
+	Thu, 22 Oct 2026 11:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792667677;
+	bh=t+yL5LIQB/XmcvJ8XLaIeDs48TsCXFtavG5KeRNid4c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GIlf13MGlXhAX/mXk5BsRycqLHftbyuOxyQnVjsBO8hLoRnZQ0VjikgebF0P4ejmQ
+	 WUTa4omRJ3wCX+kxUkcFYCUXpsbGZVpTNGQIFDtB7vqw7WKc2o42DfD/xf5aKqJbK6
+	 KQlu+Z95/SnJs1nLV85YoJAbFyRhuyFOl4x1vCycsRXOxpDX8aLlMrd6tVKIzaC+Ru
+	 RGXnwvnRwIhFijAOKFkqhToOxWAEN8WXfwMfi6/8+3xDz4F+88vmZIaTvtSGnlndxH
+	 R8nac2q575zxBJz9D6RkN825n/7GVSwTpj/wH4nS7XMo0Gv/q4z2BkXFBfpZ5BO/uY
+	 3WgVY2LMHZSwA==
+Subject: Re: [PATCH net-next 11/11] can: protect the receive lists with a
+ per-device lock
+From: netdev-bot+sashiko@kernel.org
+To: mkl@pengutronix.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de, mailhol@kernel.org,
+ stable@kernel.org
+Date: Thu, 22 Oct 2026 11:14:36 +0000
+Message-ID: <179266767682.3135.6448103178144570295@kernel.org>
+In-Reply-To: <20261021102756.1900679-12-mkl@pengutronix.de>
+References: <20261021102756.1900679-12-mkl@pengutronix.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -141,125 +63,316 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|DS0PPF0A1E7F360:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a0c42a6-ff3a-430d-0133-08df302c3a2b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|23010399003|7416014|1800799024|6133799003|18002099003|10067099003|261021121427099003|3023799007|261021135927099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: ZOwmIx5WYbh7WCQlQ9BtDmz48v5RmBXGV/0LRYa+5kK6wXpWEDo8JcmGVnB2vTOeGyPgzs6IPQb0w7NiwKU4MVWZaGByFZRJykSu7pszABGQMCxdIGjlKLF8Ulq0vkgg8O6QVNT+OIi7iFArHmxS8AatQ27GSKTGorjHRZ9R4fWAJ/LQHedyF3xUYJo+NW2U6LRrzW42Ss2p2TVNuU1HIeUSA1yZ2ylaF44DZCPmBdAkWtJEv59CmvtGfLDF+Yu6yw9NceGdOJvuk/rDwBVzP7KnsOfwhqyZ1fladZLiL7jrUg+X4+5p2qV9Z3t6w58faHpiQl5y16S3mgEo8UzG8yFfp7T641dh5fcNcGVOV6e3PpH2YX/RVoKuQxjYJ+T/b2tIfF01g8u7dP6FG+vCJhASj7DFYOqxUAJHt0zkW33rNHal4kp1m3lqRjh3u+QyhZUJry8k5qqkQKRhwGO9fKNljD5nbVY+MuMrt6e22NttgJXROk2W5cpDoCMU2K3S9SmLx6K2G0CZO9XDh7NZLunYg+gDCJgTrZuJcQy7GzG57DKuoMgr+fvPny14cIxyoV0vfYZF4pfPEY09vru+V/Zby1Xzk+nHxmnB2gl20pmbUFlswtauDztTePjL9BJ97uXd9sWDSrF9BGK5x5oSy5WCbTwIK3RCdeG07ztjlrY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(1800799024)(6133799003)(18002099003)(10067099003)(261021121427099003)(3023799007)(261021135927099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QUJ4aEY2QUdaUS84a2tQcU5GSVMrMzNSd2hKTlFtTjR3Q1dKYU94bFJ5K2E3?=
- =?utf-8?B?R3QxR3FqaFAzRXUrcndXUlVCYjVGaG1oU1RBUWk0SFhRQnZZK2VPSzNMVlcv?=
- =?utf-8?B?WmRhY202dWM1ckU3QVJyMHJEMWdMT21EWmdrL25oRDZTbHJhYXBUb0NGcU1l?=
- =?utf-8?B?MjczSjBVUC9MZ3BzeVBxTVBWbDVBenk5YzBFdjFNUFhaL285WnJCektPMWNZ?=
- =?utf-8?B?eC9PYkRSVHJTVGw3R2Z3QXBFTUZLWThsU3ZMbm8xMnJGdFFFd3RGTE9Wc1Fx?=
- =?utf-8?B?cUdIc241a20yM081VXhWMlR3K2pJbDB1Tmx6N2p4SUs4a0JoQktsWmFBcmJQ?=
- =?utf-8?B?WVlmeW5WaENxNE9lWEs0R3MzRVpITk9YYXBMME5ZS1dTQk1XbUkzeXNldjhu?=
- =?utf-8?B?Rk11UzJSUEt2ZHRhaVhSWFVudGdhQzFVbE5MVmRrNk5ZQTlGRDZtZ1FCUG5x?=
- =?utf-8?B?N0U1cVZmT3lwdmRma0hzSmo5R2t2MHpPc2c2SjFFM0lKTVpTdHQ5dXBTVUNw?=
- =?utf-8?B?eUEyZFc1QzBrbWtGamUzZGFEK3JGZjNqVWZMMHlGSjQ4TWU1c1BmWjF1Tlg2?=
- =?utf-8?B?VXgybkl2VUd1RWhMVUVwWXpicUtaMzc2TEl0QXNtRzZSWHpjN3hOMVdiN1Rv?=
- =?utf-8?B?WUJNY2xKL2IrVGV1UnF3b2R4Nlo1T1NMZXREdngzRGhOZ3l2elNWNHlqNmZ1?=
- =?utf-8?B?aUNNZkZsSE8zS1d0bW93UkhhKzYzY3ljUCsyNElFOWlMWm1MM0psY2twS2hw?=
- =?utf-8?B?K2RBVmlFTXdXTkJhQWtvdml1b3BMcDBmbHNHdVJDSk9WR29xNVF4Mk13YVBt?=
- =?utf-8?B?eFZGTnNWclJEa2RMcW85OEpVeERCMzNvK2F0dDNsanNKa3UvcG5VRjlTYlVl?=
- =?utf-8?B?WU5SS0RnL1dhVHAwZTRjT1RQbUR2ajhJbUd2dUdzZ0U3RTNBYU1rd1VPMjFn?=
- =?utf-8?B?RWF0amlnWTdINXVDQVd6ODhxMEh4ZCt0dXBqQk1yaXM3czkrVWRHTDJIOFFO?=
- =?utf-8?B?cWROL01ZVzlQbFowN1JkMm5lY2ZSMUJOMm1IM1JhS1RCTkxVYitrdnVMNlVs?=
- =?utf-8?B?UThDbC9Lb1pVVTlOMk9teVczQzJQU0pxL0J0cFlXZCs3ZERRRnAzeURxSUFX?=
- =?utf-8?B?dkhFamdPZHVWTzgyQ2txWUI0MGh0Z3Z6K0xtUzN6cmdQYzdJazAyVnBDTUYx?=
- =?utf-8?B?M3BRRGRoKzhlRnBZZTZhOTIxUFQ4Z0NMbXBsRW5sa2grMFNlM2daQ3E3R0w3?=
- =?utf-8?B?c25WdmJKSlorYmE3aFYzTlh2b3lSZTdOVlFWZUdra0Q2anBzOXl0a3FMRjA4?=
- =?utf-8?B?MnRrUEdLSmw2d25FNVpScUxhTGVPSTNPbUp2ekpURjN2N2VJSUtUTTV6YUZj?=
- =?utf-8?B?c2o0MUh0QmJmemZjN1E3M0lVMVYvdisxdG0vaE5BbHh6V1FVZytXZmFZcHpt?=
- =?utf-8?B?eFhiK3NXWkRRVmNwUVlRZEE1SFhDMG1TZ1NiUXBJTnZvNmtvWnJBNFZncGhD?=
- =?utf-8?B?UG5HV28vajlQcnI2eStZdHhCTnlPbXNsZURpSi9kbndnc2VVOVdRVDNCUkl4?=
- =?utf-8?B?bEhLK3hNS2w0RXgrTk9SemROQXhSdTdOc2M4TE9rQkEvVHprU1NKNk5IbXZx?=
- =?utf-8?B?d09DWE0rOWNEYy9xMlJ1LzlFK3lNT0ExSXlJaXBOaktQWEc4MElSVEVJOTJI?=
- =?utf-8?B?cHBWY3p5dzRwT0wxeURqTk1PMUgvZ1BhWUtHL1kyek9iZkU3UWpXWHgveVBR?=
- =?utf-8?B?akZlbHp1TmFGdHZxakgwQklSRnFma3FaOEt0QVI3TkVMbzBhNi9OYzQyM0di?=
- =?utf-8?B?ckIrdVVldnkxdldFbjNlQndWTGtScWdSb3lPQjZaTUMyWHBCUWg3VDhMM1ow?=
- =?utf-8?B?RExmUmg0b3BaQWVidVpjSTZjV0RWc1dhbzZDMlluSTN6c251Ujl5SndWYzlB?=
- =?utf-8?B?SktYQ3c5OHU0MVJQQ0VaZHB4TU9YTkZlRTQrNXVnOVRSYm9lZzZMdkEzTmlo?=
- =?utf-8?B?eFlnUTV0dWUxNER0R096Z0xhVEpzeWRyWitBM0tpTk9HTFRuZWgzekFOVnBB?=
- =?utf-8?B?L2tQcTN6MnhBa09Xd09PelgxUzNpRVQ1T05EVjB1NU5RVjg1c0R2bGgyWlAz?=
- =?utf-8?B?bkhuV2MwVzl5bG1ySXNZZkh2L1VYOFUzcEJMMGhIZ09jZWhLc01CWEhhMUZQ?=
- =?utf-8?B?MWtXUnFDZThIS1JINHFzYkljeHhFLzVkOVZmRnkyWWppV3VHNEgvUWxmbE1p?=
- =?utf-8?B?dzlVMEpMWWd0R2tSbCs2Ym1CWW5VanZ1M1RMWTAvbFIrSzhJTGxyMWdNT2sz?=
- =?utf-8?B?Q1YrVnVFREhmTDQxWEFSdWNOM2U0aTl4ZjZ6bHRCUGxrMFZYQVI1SmxTUGpB?=
- =?utf-8?Q?n51ysKvud4HPaQ9Y=3D?=
-X-Exchange-RoutingPolicyChecked: E7vd+QQYhqJVlwZOgGNU/hxp30MP7FvACh0pHLBddu40nnm5T4y1qWDzHTAeCoazmTz8KRAsgXrbhRG3PnLsZdrkxny11EDmLXyiH319cWx66wA052uCTcBV8GA4Be00BSC4BBoTL3Yy0cKqygseyDdCyj282X0hifcRSBRBWTcXFvSDDqvspX7hXw4GMWP/WwcCiemu5rn8YhbyhJB5Ht1m4lbvzZjv2Y9UU1Eg5N+mnvi+us1l9Jh2icJsd+i8GI0C0aEpXz+S8rro6TmFDuYk73QOyX0SxLpXJobzgOpWut1+xSVkQsISse5GKbzTjs4GAA9cx2kGdVCDbWbXkw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a0c42a6-ff3a-430d-0133-08df302c3a2b
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 11:04:22.6026
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qQQ/Ro2DPY57GSABgz+FkQzM8VA0Z25t7VBvClt2ThDgTM0TzRS+byDF001mrcOUmGDRN05DZIPH6+HM5Q1IlJlQiW4WOoLGRePEpYNua38=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PPF0A1E7F360
-X-OriginatorOrg: intel.com
 
-On 10/19/26 12:51 PM, Aaron Ma wrote:
-> ice_global_cfg_lock_sw is a module-global mutex, so a package download
-> on one E810 adapter blocks Admin Queue commands on unrelated adapters in
-> the same system. In addition, the mutex is acquired only after firmware
-> grants the Global Configuration Lock and dropped before firmware
-> releases it, while the opcode exemption list in ice_aq_send_cmd() does
-> not check whether the caller is the lock owner. Non-owning PFs on the
-> same adapter can therefore submit exempted Admin Queue commands or
-> sideband requests while another PF holds firmware ownership.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-This is not a bug to allow exempted commands, does not matter from which
-PF.
+Critical: 0 · High: 0 · Medium: 2 · Low: 1 (1)
 
-> 
-> Move the software mutex to struct ice_adapter and record the owning task
-> across the entire Global Configuration Lock acquisition and release
-> sequence, including the core reset path in ice_cfg_tx_topo(). In
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-this is fine,
-would be better to not track mutex holder
+- [Medium] After this patch, CAN_RAW serializes bind/setsockopt/release
+  against NETDEV_UNREGISTER only with lock_sock().
+- [Medium] can: raw/isotp: race in bind() overwrites ENODEV with ENETDOWN
+  on unbind
+- [Low] isotp_bind() now publishes so->dev with WRITE_ONCE(so->dev, dev)
+  inside the RCU lookup (net/can/isotp.c:1623).
 
-> ice_aq_send_cmd(), require non-owning tasks to wait on the adapter mutex
-> while allowing the owning task to issue the permitted configuration
-> commands. 
+Pre-existing issues:
+- [Low] isotp_bind() calls can_rx_register() twice: for rx_id when
+  isotp_register_rxid(so) is true (net/can/isotp.c:1648-1650), and for…
 
+--
 
-> Route the Admin Queue fallback in ice_sbq_send_cmd() through
-> ice_aq_send_cmd() as well.
+can: protect the receive lists with a per-device lock
 
-perhaps this should be separate commit?
+This commit adds a spinlock to struct can_dev_rcv_lists. The receive lists
+of a CAN device are now protected per device instead of by the per-netns
+rcvlists_lock, so can_rx_unregister() can find subscriptions after the
+device has moved to another namespace.
 
-> 
-> This patch depends on the previous patch in this series.
-> 
-> Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+RTNL is dropped from raw_bind(), raw_setsockopt(), raw_release(),
+isotp_bind() and isotp_release(). These paths now use lock_sock() and a
+device pointer published under RCU to serialize against the netdev
+notifier.
 
+Link: https://lore.kernel.org/linux-can/CEA6A38A-2646-4ADA-95B4-CBAE2F301A8E@doyensec.com/
+Link: https://patch.msgid.link/20261020203257.230955-6-socketcan@hartkopp.net
 
-> @@ -1895,17 +1894,24 @@ ice_aq_send_cmd(struct ice_hw *hw, struct libie_aq_desc *desc, void *buf,
->   		u16 buf_size, struct ice_sq_cd *cd)
->   {
->   	struct libie_aqc_req_res *cmd = libie_aq_raw(desc);
-> -	bool lock_acquired = false;
-> -	int status;
-> +	struct ice_pf *pf = hw->back;
-> +	struct ice_adapter *adapter = pf->adapter;
+> diff --git a/net/can/isotp.c b/net/can/isotp.c
+> index 5e1c3971ebfce..8ec37d252557e 100644
+> --- a/net/can/isotp.c
+> +++ b/net/can/isotp.c
 
-RCT violation
+[ ... ]
 
-> +
-> +	if (READ_ONCE(adapter->global_cfg_owner) != current) {
-> +		guard(mutex)(&adapter->global_cfg_lock);
-
-no guard()()
-especially here scoped_guard() fits nicely
-
-> +		return ice_sq_send_cmd_retry(hw, &hw->adminq, desc, buf,
-> +					     buf_size, cd);
+> @@ -1614,7 +1612,17 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+>  		goto out;
+>  	}
+>  
+> -	dev = dev_get_by_index(net, addr->can_ifindex);
+> +	/* Publish the device inside the RCU section of the lookup: When it
+> +	 * is unlisted concurrently, either isotp_notify() sees so->dev after
+> +	 * synchronize_net() or the lookup fails.
+> +	 */
+> +	rcu_read_lock();
+> +	dev = dev_get_by_index_rcu(net, addr->can_ifindex);
+> +	if (dev) {
+> +		dev_hold(dev);
+> +		WRITE_ONCE(so->dev, dev);
 > +	}
+> +	rcu_read_unlock();
+>  	if (!dev) {
+>  		err = -ENODEV;
+>  		goto out;
+> @@ -1627,7 +1635,12 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+>  		err = -EINVAL;
+>  		goto out_put_dev;
+>  	}
 
+[Severity: Low]
+so->dev is now visible to the lockless check in isotp_notify() before the
+remaining checks in isotp_bind() run, and before so->bound is set. The MTU
+check can still fail the bind:
+
+	if (READ_ONCE(dev->mtu) < so->ll.mtu) {
+		err = -EINVAL;
+		goto out_put_dev;
+	}
+
+so->dev is only cleared again at out_put_dev.
+
+isotp_bind() no longer holds RTNL. Can a NETDEV_DOWN for the same device
+run isotp_notifier()->isotp_notify() inside this window?
+
+The NETDEV_DOWN case only checks READ_ONCE(so->dev) != dev. It does not
+look at so->bound or recheck under lock_sock():
+
+	case NETDEV_DOWN:
+		sk->sk_err = ENETDOWN;
+		if (!sock_flag(sk, SOCK_DEAD))
+			sk_error_report(sk);
+		break;
+
+Would this set a stale ENETDOWN on a socket that was never bound, whose
+bind() then returns -EINVAL? A later successful bind() to another device
+(after fixing ll.mtu with CAN_ISOTP_LL_OPTS) would then get that error from
+the next recvmsg() or poll().
+
+raw_bind() avoids this. It only publishes ro->bind_dev early, which
+raw_notify() uses for NETDEV_UNREGISTER only, and it sets ro->dev after
+success. Could isotp use the same approach?
+
+> @@ -1653,15 +1666,17 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+>  	 * can safely reach the device later, even if a concurrent
+>  	 * NETDEV_UNREGISTER has already unlisted it by ifindex.
+>  	 */
+> -	so->dev = dev;
+>  	netdev_hold(so->dev, &so->dev_tracker, GFP_KERNEL);
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but isotp_bind() ignores the
+return values of both can_rx_register() calls just above this:
+
+	if (isotp_register_rxid(so))
+		can_rx_register(net, dev, rx_id, SINGLE_MASK(rx_id),
+				isotp_rcv, sk, sock_i_ino(sk), sk);
+	...
+	can_rx_register(net, dev, tx_id, SINGLE_MASK(tx_id),
+			isotp_rcv_echo, sk, sock_i_ino(sk), sk);
+
+It then sets so->bound = 1 unconditionally.
+
+can_rx_register() returns -ENOMEM if kmem_cache_alloc(rcv_cache,
+GFP_KERNEL) fails. Can the socket then report a successful bind() while it
+is missing its FC/RX receiver or its echo receiver?
+
+Later, isotp_release() and isotp_notify() would call can_rx_unregister()
+for an entry that was never added and hit the "receive list entry not
+found" warning. raw_enable_filters() and bcm_rx_setup() check this return
+value and unwind.
+
+-ENODEV from the net_eq() check does not look reachable here.
+isotp_notify() waits on lock_sock() for NETDEV_UNREGISTER, so dev_net(dev)
+cannot change during the registrations. That leaves -ENOMEM as the only
+error.
+
+The earlier commit "can: replace ARPHRD_CAN type checks with
+can_get_ml_priv()" in this series already notes that isotp_bind() ignores
+these return values.
+
+[ ... ]
+
+> diff --git a/net/can/raw.c b/net/can/raw.c
+> index dfea48768b231..d07f3bb68cd5c 100644
+> --- a/net/can/raw.c
+> +++ b/net/can/raw.c
+
+[ ... ]
+
+> @@ -750,18 +772,47 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
+>  			  sockptr_t optval, unsigned int optlen)
+>  {
+>  	struct sock *sk = sock->sk;
+
+[ ... ]
+
+> -	rtnl_lock();
+> +	if (optname == CAN_RAW_FILTER) {
+> +		/* Copy the filters before lock_sock(), so a stalled copy can
+> +		 * not block raw_notify() waiting for lock_sock() under RTNL.
+> +		 */
+
+[ ... ]
+
+> +	}
+> +
+>  	lock_sock(sk);
+>  
+> -	err = raw_setsockopt_locked(sock, optname, optval, optlen);
+> +	err = raw_setsockopt_locked(sock, optname, optval, optlen,
+> +				    filter, &sfilter, count);
+
+[Severity: Medium]
+The comment says a stalled copy must not block raw_notify() while it waits
+for lock_sock() under RTNL. The early copy only covers CAN_RAW_FILTER,
+though. Do the other options still copy from user memory with lock_sock()
+held?
+
+In raw_setsockopt_locked(), CAN_RAW_ERR_FILTER still does:
+
+	if (copy_from_sockptr(&err_mask, optval, optlen))
+		return -EFAULT;
+
+CAN_RAW_LOOPBACK, CAN_RAW_RECV_OWN_MSGS, CAN_RAW_FD_FRAMES,
+CAN_RAW_XL_FRAMES, CAN_RAW_XL_VCID_OPTS and CAN_RAW_JOIN_FILTERS do the
+same after lock_sock(sk) is taken here.
+
+raw_getsockopt(CAN_RAW_FILTER) also writes to the user buffer with
+lock_sock() held:
+
+	lock_sock(sk);
+	...
+		if (copy_to_iter(ro->filter, len,
+				 &opt->iter_out) != len)
+			err = -EFAULT;
+
+Suppose one of these copies stalls on a FUSE-backed mapping while the
+socket is bound, or while ro->bind_dev matches the device. Would a
+NETDEV_UNREGISTER of that device then leave raw_notify() sleeping in
+lock_sock() with RTNL held?
+
+raw_notifier()
+  raw_notify()
+    lock_sock(sk)   <- waits for the stalled setsockopt/getsockopt
+
+The unregister could come from ip link del of a vcan device in the user's
+own network namespace, a namespace move, or a USB unplug.
+
+The new ro->bind_dev hint also adds cases where raw_notify() takes
+lock_sock(): a stale bind_dev that matches the unregistered device leads
+there too.
+
+Before this patch, raw_setsockopt() held rtnl_lock() itself across these
+copies, so overall exposure is lower than before. The new design relies on
+lock_sock() never being held across a user copy, though. Should the
+remaining copies in raw_setsockopt_locked() and raw_getsockopt() also move
+out of the locked section?
+
+isotp_setsockopt() has the same pattern against isotp_notify(), since every
+option is copied under lock_sock():
+
+	lock_sock(sk);
+	ret = isotp_setsockopt_locked(sock, level, optname, optval, optlen);
+	release_sock(sk);
+
+That code predates this patch. With RTNL gone from isotp_bind(), however,
+bind relies on lock_sock() alone to serialize with isotp_notify().
+
+[ ... ]
+
+> @@ -528,16 +557,24 @@ static int raw_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int len
+>  		ro->ifindex = ifindex;
+>  		ro->bound = 1;
+>  		/* bind() ok -> hold a reference for new ro->dev */
+> -		ro->dev = dev;
+> +		WRITE_ONCE(ro->dev, dev);
+>  		netdev_hold(ro->dev, &ro->dev_tracker, GFP_KERNEL);
+> +
+> +		if (dev) {
+> +			/* Either raw_notify() sees ro->dev on NETDEV_DOWN or
+> +			 * we see the cleared IFF_UP, pairs with raw_notify()
+> +			 */
+> +			smp_mb();
+> +			if (!(READ_ONCE(dev->flags) & IFF_UP))
+> +				notify_enetdown = 1;
+> +		}
+>  	}
+>  
+>  out_put_dev:
+> -	/* remove potential reference from dev_get_by_index() */
+> +	/* remove reference from the device lookup */
+>  	dev_put(dev);
+>  out:
+>  	release_sock(sk);
+> -	rtnl_unlock();
+>  
+>  	if (notify_enetdown) {
+>  		sk->sk_err = ENETDOWN;
+
+[Severity: Medium]
+With RTNL gone from raw_bind(), can a concurrent NETDEV_UNREGISTER now
+leave the socket reporting ENETDOWN instead of ENODEV?
+
+unregister_netdevice_many_notify() and __dev_change_net_namespace()
+close the device first, which clears IFF_UP. Only after that do they
+call unlist_netdevice(), synchronize_net() and the NETDEV_UNREGISTER
+notifier.
+
+Suppose raw_bind() looks up the device before it is unlisted. It then
+publishes ro->bind_dev, sees IFF_UP already cleared, and sets
+notify_enetdown. raw_notify() for NETDEV_UNREGISTER matches
+ro->bind_dev and sleeps in lock_sock() with RTNL held.
+
+Once raw_bind() calls release_sock(), both threads write sk->sk_err
+outside the socket lock:
+
+raw_notify()                    raw_bind()
+  lock_sock(sk)
+  unbind, ro->dev = NULL
+  release_sock(sk)
+  sk->sk_err = ENODEV
+                                  sk->sk_err = ENETDOWN
+                                  sk_error_report(sk)
+
+sk_err holds a single value, so the later write wins and the ENODEV is
+lost. Userspace then sees ENETDOWN on a socket that is no longer bound
+and has ro->count == 0 with no filters registered.
+
+An application that treats ENETDOWN as "interface is down, wait for it
+to come back" keeps blocking in recvmsg(). It never learns that the
+device is gone and that it has to rebind.
+
+The old code also wrote sk_err after rtnl_unlock(). There,
+NETDEV_UNREGISTER could only start after bind() dropped RTNL, and the
+synchronize_net() before the notifier made this ordering practically
+unreachable. With this patch the notifier is already queued on
+lock_sock() and runs as soon as bind() releases it.
+
+isotp_bind() and isotp_notify() have the same pattern. so->dev is
+published early and IFF_UP is already clear, so notify_enetdown gets
+set. isotp_notify() then writes ENODEV after its release_sock(), while
+isotp_bind() writes ENETDOWN after its own.
+
+Would it work to set sk_err and call sk_error_report() before
+release_sock() in both bind() paths and in the NETDEV_UNREGISTER case
+of raw_notify() and isotp_notify()? The reported error would then
+follow lock_sock() ownership. Or do you prefer another way to keep the
+ENODEV from being clobbered?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021102756.1900679-2-mkl%40pengutronix.de
