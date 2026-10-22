@@ -1,111 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792702087;
-	b=DW+BpwKi9Fef4Q0/gX/meM6FSPA+VrlvSUhQbNZjS9tesn4QQYUSIm4v0c265Ftw9Zyj
-	 B5NFaxrOm/Y2rEhx64UuEN+uXam6ljc7Ls/3togaU/R+jMX8r0Zb6mCSobdi2yy6plF91
-	 8m8qjmNxZTcYBwgsKk5bemWP3+/Xxwblk3vYeh5ZVQEGflM/t2hHfbK3VQ6boSncubTZb
-	 YNXTLsQtW4aapMZJ1bsr3z7qYv3m1IXVEXFejpuHvMMsexAiguP6sriI8H19IwfS40er/
-	 CWnxcuc8lWcAALCDDEkHJygQO2nN/6mpkbwZAe8PaR7WEUVsJzraid5Mj7jV/5yq1Pw==
+	t=1792702612;
+	b=RLzjO1sstT8DviW0iEgNy2bCNUCLJWV4pXkoZsNRiLLigpGhxUcZjFm9lhT5NMZRPH6A
+	 xlKMLprC5RHUMlV4sgi2Bc7YLFd8TboDp+mfg98DQhJI5Hc7Z97+CHzHW1i0PjuVmaO/d
+	 JOTQLdUofyklTZHaFLXLjd9Rj4uCL6kFTgooYkcyYU+rGgwPlEkqyrvAmpI0W5G1xqfRn
+	 N4750vE4Y1RyWetdv03MDd7jf//yRF5nBxr3tcL32oKFjXnu+yu/VqKBRtp0LDM/M2HUb
+	 F/o09KMXRCoD4I/yyNTzOgfXglCw7sVkll8+W7L+/Ou+4IPV7Sd5Ll8BVblnqdnrORA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792702087;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792702612;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=y5/2svsntF9R7wAKTIjqq4lXpmG9ahkTltbSjO27xnw=;
-	b=1PTLFkBCihcIR+SjbJKohmw+ZrMn+pUx/VGXwNWlf7TkB5UxvfzqYNVYyFGdtw4dvt5R
-	 Nr+Xp4R6UEkprGY6rDX762BaYs2WWPwsaRrZKhwFvYHS9wgtCnIyhhiie3x0RxjVgjvMU
-	 mCRNbpTLLY1pB7CTwWDWrNkKZSNCksipEBXK2YgaHDVw0ymvOLWS4E6LMbPqNDLguj/hS
-	 /V0t+aub5Lom+cGasq1jzi0ZDxF8lqEw7utagSwG96FkWt3Zm054qJhkjlVTkGnaQAajn
-	 M1huLtXvBpEy+/fM6y30xyJ2UYyWU8U2TjYq9u5OAhE9hoNKvE624Or9jl4d/VC5hjg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=f7qXl+oFgNrZyAAUVUqI0RrjFdQvCwDXCCumBq2lEJY=;
+	b=3AYHNjBTF/1tIjgosxjkr66ku/Wof033Xv+IOlQrbJYDjcYSAqPCspFKaK07Z+2FH2lb
+	 /JWmObbbkmoeFK7gZvfrF4CzkgtoV8FKzPD8RD8rzUphnHS7KN6iul17LAcraMV97aEhb
+	 MR+ITUKcLRNAiGnNoyGVBgPWVXv6xR9MpiKVDhUkje3dNAYBo4yi8Nl/0FccyqvAofpQg
+	 ENceJ4gzHfr8AzkXEvVThxeTUeDns2zPUcR4LQapnuZjK+mSFUO86kdIkldwqUcrBdEix
+	 dmTb6B8TYmeG6bqgSaPuSSmL0rjNiATkz/JuaXijDG/1pha8PrzrHUsMp+Z9xVS95BQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=mbtscbdr;
-	arc=none smtp.remote-ip=209.85.128.53
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oeVgD0+I;
+	arc=none smtp.remote-ip=209.85.215.180
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979CC606A32D
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 20:48:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 979CC606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A94606A31A
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 20:56:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26A94606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=mbtscbdr
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a1dede3c2cso2368995e9.2
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 13:48:07 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=oeVgD0+I
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc7d154ec4fso98653a12.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 13:56:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792702086; x=1793306886; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=y5/2svsntF9R7wAKTIjqq4lXpmG9ahkTltbSjO27xnw=;
-        b=mbtscbdrs7qZgCYJ+njfdJf5aVFoyYRLmprOpQi6PPJ3oWFxP4h9Z2G7jXnP9/uTve
-         QN0ANENOrCfjMEiNhzjQhtxEdb50u3UrAupcb6Qm4gXaBz7gJs+KPa1yQCNYIiE5GpVO
-         Ilmy2epFjqP4RtbJ202z8d/RMnqOKlht50McXYEipVy2Q7hbJtTklVfihlxv+/hGJAyX
-         VNzQFq331nQL3Qwn+pSiANu2ysd0xfEcW9S00FYww2oKTSLEr+lTxchpj3MKv/CZZ9pI
-         uWkyBQLjvNGE00Tx80HO2RANZBbBo9bA9nY7bNBh3qHxG4RmRB6mQaLystsYuiikPnN8
-         9aDw==
+        d=gmail.com; s=20251104; t=1792702611; x=1793307411; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f7qXl+oFgNrZyAAUVUqI0RrjFdQvCwDXCCumBq2lEJY=;
+        b=oeVgD0+IVFRCHVPNFC+UMrz49tWubYArf677C+o6KCO6zprH4RFT1/Dg6sGx8MbgxA
+         OAx1OmYYPB0HSutkfw3TVYopZyEWFFZW7PzO/8gub0W9BW3I/JCDxrVh2lX9dQBDVAK6
+         KAX9HKt4uHoX6v6zn5RUPwdveQ+kBA/BgeP/g+387SkIVzJ36D6TmjZChptdWYWW+QO9
+         xYCjtbsuogyVAOOEqsIoKjkZadOVRpvFxeJCdFsWrCNYfezCfuDkaxyLOqxz0Ie/ujtd
+         nvwe3vNKPeJTg7ESemlFNHzcZIFmSXIeoUJReXNO4AwK7H41IPDboYe4js+I8dSVJAQS
+         WDCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792702086; x=1793306886;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y5/2svsntF9R7wAKTIjqq4lXpmG9ahkTltbSjO27xnw=;
-        b=On+mnCf3T2RN6ERaEa95gbU11wwnm7hkKkEh6jBs27GJkQF1f1P6OSGf/ApTbZISd7
-         bqxdAEvVRDmCDTIUmFXgt73tlrTt0CLDVEl2uykD/61PmzAiEvR8s5OcoaF6KJ70XwVV
-         Vo+9sovpwfqM4A03Rn+fUi5upDEBm+ch0+O4noy6rtr+yr9Jc1ZNodhjq0l0Hugh37At
-         D9VzfAHX0z7q6GXw2fpAgxJ6eCKrV7VB7hEndmSUgGi2ZEagRRYwdiU5E67IaggBWOTs
-         +zMqCgOvhf9KkjQK+XruLdQYmxOnDCrE7Lp2u702yF6broxrF3cmRvtp+L+jm+jHSXty
-         jhOA==
-X-Forwarded-Encrypted: i=1; AKwUvBzY2TR5oqgH4vBFM0o2p+QYgFGyFlqC/gT1AVmHva0MDxcq/H6aDJYKT4wx1424T8MmUJqOio0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJzGGpMM0NR2+dnzPuFbn7SeqXmO+77WTEj40FMihXH1/indPBe
-	8h0c2DQwML8QI+OuUghO9o7+aHNnrHB0sciR4OQTKaT7ISFr3yXOmgjU
-X-Gm-Gg: AYBFou3xQ8HeHn2IA6MCKJlZtIzZn8V0kL3kIPa9HnEti8lmPl9Jvy1NZWMnQuiU/HB
-	9UsEpdE0oAOmJjATCgpuDC8BGYv1O4vgrsSbS+VUDaMT7vWgXriIVrE2evAvn6DQX3nFC1bFKF7
-	brKaTwlVGUNm7TbH8H/85ljc1gPWgDSkOjdTXqhJaWEO8HoMECtOU5PAODbigG15JLUE+uPr5cv
-	Xz+5XlFdMWaDg+yqei0sRkN8EEEsOeM6vXk5A187gH0pM9QFcanxPQBi/LizPwy3UbV9G47CnHo
-	uG/jK02gqygylT78v6HpLBroW5XRGS75tKL5jDUhAx1URNxGxmzADqaeD6H0W4SO/AKs3Anx3SZ
-	I9uPBCz2hY/eScvR3WQCe/+gyBLNeF/2BOYQmMDKK1D5ztF7tRZMWqX8xgVJyo5JLewoc0YRXE8
-	mX4goG4mXNdso3NwOH8zLx7YrjMHlg/XNRSwBthLj+E6S+w5buO0soN1bfxcXHKm4hKsYCGFk/S
-	nIUrqLHhXClBumQiXxaS8qjxmRgLiN0GPAG7vDcvE7YilwYl7zOgbSgwwaYITa2t/7xXxjW95oy
-	n54iP/2dkyr99IEfT3gxxCO1/dWp9tlPABj6HMY=
-X-Received: by 2002:a05:600c:1c09:b0:4a1:f377:5c6d with SMTP id 5b1f17b1804b1-4a211cd5bb2mr3236035e9.6.1792702085705;
-        Thu, 22 Oct 2026 13:48:05 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e380314aesm308718f8f.28.2026.10.22.13.48.05
+        d=1e100.net; s=20260707; t=1792702611; x=1793307411;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f7qXl+oFgNrZyAAUVUqI0RrjFdQvCwDXCCumBq2lEJY=;
+        b=c6GmuOrEisr/Z+aKertpW5ZzF/Nm/+Xzf4ds1id2UN9J/3CpY/ra4tfHwhnLUJBzW9
+         /q+4eHHNH4aneAiZFwbtmukHUkDae0zxVYicFsIRqtBYIkrPe9Sj8KS0and5x7hG/+rN
+         CZA6ONYKYv/pArxq37sHUOS0VvPcu7fpprWkWYurZCKXFc0l0MFnWOkm7+gy55eWdk2h
+         0sHtgzdetwFFlwc1k72uQ5525aOrdl9qsCH9k48niX2ryzv57TeARjdacOfeDp1u34wk
+         WekOXOly8vGOyPj8odLPyjKI1I3RigkVacb2kEh97qBDhFFI3LycQBB7om8wXKiZj3w9
+         Oh0A==
+X-Gm-Message-State: AFq9FYLLIAVubW9XOwDI7pGCbYgEKiMIuvlyDnylM6gMVZgJ0yqJ02FL
+	eKxFaJ2pyFl4YZgwMaxzcpZOBeBua79WoqeQtMpCaCIyh6IEDOiKcUjpuIkCSxPAeAw=
+X-Gm-Gg: AYBFou1vZTNKvzx1uNAYwThjNZfd63futZ1pXBoj6r1fo8q1+F2nq97PydSVi+IcUpX
+	kok2FzKCCjE5rb/beHrd2PgVkoxkpFqkSkJateF6x6ICtRlIxz8IGbWVGHvyseNatC5HMHWKixP
+	XxbdHuqRaD/P9SdNOEYGEmXnML90UUY67+GPDjed1MipXkigpu1g1338bJihHq5ZZ76dqw3XbGX
+	xFx+diq/wA+AwEfpogqsPXuurb5814sq69b8i66YhNFsjMzLv3+RjxWsVb5iZHH1eGGWG4+XyXI
+	/6fxWELLxvNJl1zuTkqH8rvm9ZbOmL8XuPv1Sj4pLZzRph5vH3QR2UGguy6vl7ifEGrGOsaHYdD
+	GjVtG0cnCeIfQw1APQjazBmy48SnIdPWvDwisKzrCdHl9+a9DRbMlns9AZEqtASlaTDvhVrVKeM
+	RYz0NQsqbuOWRZUoLSkpdIHJe+BSGV+Yt96TrzZq/+kJc/qvRcncJzS74oJxS82BPVskJogR11J
+	rEJv8qrNQ3+3pHIs9eydy2O5XEJxoX79YL0Nzin4f7YrgSept0TQPitj+2O4EvG7ByWuH5kA70e
+	e5pZc7sw5oGaT1w=
+X-Received: by 2002:a17:90b:4a12:b0:3a4:b0f3:6597 with SMTP id 98e67ed59e1d1-3adcd7fe438mr149838a91.0.1792702611337;
+        Thu, 22 Oct 2026 13:56:51 -0700 (PDT)
+Received: from abs.sf.dndws.com ([50.35.86.68])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada495315dsm6263941a91.15.2026.10.22.13.56.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 13:48:05 -0700 (PDT)
-Date: Thu, 22 Oct 2026 21:48:03 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Claudiu Manoil
- <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang
- <xiaoning.wang@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Zefir
- Kurtisi <zefir.kurtisi@westermo.com>, Zefir Kurtisi
- <zefir.kurtisi@gmail.com>, netdev@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 net 2/4] net: enetc: do not rely on mEMAC hardware
- frame padding
-Message-ID: <20261022214803.40cb2aac@pumpkin>
-In-Reply-To: <kaqeg262ql6mucqzn46axaniowt35eq3hd52nefev2uvvkbfkz@6onteyxyjypx>
-References: <20261021145314.1435049-1-vladimir.oltean@nxp.com>
-	<20261021145314.1435049-3-vladimir.oltean@nxp.com>
-	<20261022093359.723c7e93@pumpkin>
-	<euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
-	<20261021145314.1435049-1-vladimir.oltean@nxp.com>
-	<20261021145314.1435049-3-vladimir.oltean@nxp.com>
-	<20261022093359.723c7e93@pumpkin>
-	<euqz7djxfn4tqbd63ymcj2bnu7k2bb6hzlmeilao3rvjdhyisf@bk3wj5hinfnr>
-	<20261022112218.11a1faa8@pumpkin>
-	<20261022112218.11a1faa8@pumpkin>
-	<kaqeg262ql6mucqzn46axaniowt35eq3hd52nefev2uvvkbfkz@6onteyxyjypx>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Thu, 22 Oct 2026 13:56:50 -0700 (PDT)
+From: Tao Gong <gongtao0607@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Tao Gong <gongtao0607@gmail.com>,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net v3] net: dsa: mt7530: trap frames to conduit in MFC on EN7581 and AN7583
+Date: Thu, 22 Oct 2026 20:56:48 +0000
+Message-ID: <20261022205649.2351696-1-gongtao0607@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,144 +109,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 22 Oct 2026 15:35:05 +0300
-Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
+On EN7581, STP BPDUs received on switch user ports never reach the CPU.
 
-> On Thu, Oct 22, 2026 at 11:22:18AM +0100, David Laight wrote:
-> > On Thu, 22 Oct 2026 12:41:49 +0300
-> > Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
-> >   
-> > > On Thu, Oct 22, 2026 at 09:33:59AM +0100, David Laight wrote:  
-> > > > On Wed, 21 Oct 2026 17:53:12 +0300
-> > > > vladimir.oltean@nxp.com wrote:
-> > > >     
-> > > > > The driver sets the ENETC_PM0_CMD_TXP bit to pad short buffers.
-> > > > > This works, however sending short frames from user space and looking at
-> > > > > the padding bytes inserted by the MAC at the link partner, we notice on
-> > > > > LS1028A that the first octet of padding is sometimes not 0.
-> > > > > 
-> > > > > This is fine per 802.3, which does not require that the padding is zero.
-> > > > > 
-> > > > > However, there is an unproven suspicion that the padding bytes may
-> > > > > come from internal memories, and unfortunately I couldn't get sufficient
-> > > > > priority for this octet's origin to be investigated by hardware
-> > > > > engineers.
-> > > > > 
-> > > > > To be defensive and not leak any sensitive information from the SoC,
-> > > > > let's pad all frames to ETH_ZLEN in software, so that the MAC doesn't
-> > > > > have to do anything.
-> > > > > 
-> > > > > There are 2 distinct cases to handle, for GSO and non-GSO. For non-GSO
-> > > > > things are trivial; we need to call eth_skb_pad(). For GSO, things are
-> > > > > not simple, because user space may set gso_size to a very small value,
-> > > > > which could make the GSO super-skb smaller than ETH_ZLEN;    
-> > > > 
-> > > > That isn't sensible.
-> > > > The minimum frame is 64 bytes (including FCS), subtract that, the MAC
-> > > > header (14 bytes), minimum IP header (20), minimum TCP (20) and that
-> > > > leaves 6 bytes for user data.
-> > > > I doubt it is sensible to do GSO for anything under the minimum mtu
-> > > > (128 bytes rings a bell somewhere).    
-> > > 
-> > > My fault for not being clear and inviting this kind of objection.
-> > > 
-> > > Since we do GSO in software, we advertise NETIF_F_GSO_UDP_L4 too, and
-> > > there, Sashiko came on v3 with the observation that for UDP GSO, user
-> > > space can set gso_size to a small value using setsockopt(UDP_SEGMENT):
-> > > https://lore.kernel.org/netdev/178960175550.22033.10648880872141935672@kernel.org/  
-> > 
-> > I'd fix that in the setsockopt code.
-> > But that might be a bug anyway.  
-> 
-> Why a bug?
-> 
-> > UDP segmentation has to use IP fragmentation and that is usually done because
-> > the interface/path mtu is too short.  
-> 
-> In my testing, UDP GSO does not generate IP fragments, but rather, each
-> UDP segment is its own datagram.
+Like MT7531 and MT7988, EN7581 and AN7583 only set the CPU port bitmap
+in MT7531_CFC and are skipped by mt753x_conduit_state_change(). On
+EN7581 this is not enough: trapped BPDUs reach the CPU only when
+MT7530_CPU_EN and MT7530_CPU_PORT are also set in MT753X_MFC. Add
+EN7581 and AN7583 to mt753x_conduit_state_change().
 
-Hmmm....
-I wouldn't have thought that was generally useful.
-Losing data from random points in a connection is going to be hard
-to recover from.
-I guess that it why it is per-socket rather than system wide.
-I mean, you can run telnet over udp and just hope no packets get lost.
+Tested on an AN7581 board (Gemtek W1700K, airoha,en7581-switch), where
+only lan3 and lan4 are switch user ports. With RSTP BPDUs arriving on
+lan4:
+- without this patch, none reached the CPU;
+- setting CPU_EN and CPU_PORT by hand delivered them, and clearing them
+  stopped them;
+- with this patch, they are received from boot.
 
-> Are you thinking of UDP Fragmentation Offload instead? As per
-> https://docs.kernel.org/networking/segmentation-offloads.html#udp-fragmentation-offload
-> this is deprecated and AFAIU not what this is about.
+Only BPDUs were tested. AN7583 is untested and is included because the
+driver sets it up like EN7581.
 
-That is the sort of UDP segmentation I thought made sense.
-OTOH I think the main user of it was NFS, but even then 8k datagrams
-were actually so unreliable it was often much better to tell UDP to fragment
-the 8k blocks into 1k chunks (IIRC that was a mount option).
+Fixes: 2b0229f67932 ("net: dsa: mt7530: Add EN7581 support")
+Fixes: d76556db10bf ("net: dsa: mt7530: Add AN7583 support")
+Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Signed-off-by: Tao Gong <gongtao0607@gmail.com>
+---
 
-> 
-> The docs do also explicitly say that UDP Segmentation Offload does not
-> generate IP fragments.
-> 
-> > But there is a minimum mtu for IPv4 of (something like) 128 bytes, and
-> > it may be invalid to fragment into smaller pieces.  
-> 
-> I have no idea what you are referring to, here, with the minimum MTU of
-> 128 bytes.
+v2 was withdrawn after 4cb3cd670b2a ("net: dsa: mt7530: untag
+VLAN-aware bridge PVID") fixed what patch 1/2 addressed. Patch 2/2 was
+dropped with it by mistake: the test that seemed to show it was not
+needed received BPDUs on ports that do not go through the switch. On a
+switch user port, BPDUs are still lost without it, as described above.
 
-The correct number is probably 68 (min max size of an IPv4 fragment) rather
-than 576 (for a reassembled message) - I think both are from the start of
-the IP headers.
-That means there is no sane reason to fragment anything so small that
-ethernet frames get padded.
+To Paolo's question on v2: the issue is seen on real hardware (AN7581).
+The results above are from the OpenWrt 6.18.55 kernel with this patch
+applied; the code involved is the same in net.
 
-> 
-> > > Sensible or not, it is possible, and I did generate a test program using
-> > > an LLM to confirm this.
-> > > 
-> > > Regardless of that, the last segment of a GSO super-skb would need
-> > > padding anyway, because even with a 'normal' TCP MSS, the skb->len
-> > > modulo gso_size could still result in a last frame < ETH_ZLEN. Padding
-> > > just the GSO super-skb, as I did in v3, would also not fix this.  
-> > 
-> > True, but that is a different check to the one you did.  
-> 
-> So what is your suggestion for the driver to do?
+The board has a single CPU port, so the test does not show which of CFC
+and MFC selects the destination CPU port on EN7581. The comment on the
+CPU port bitmap in mt753x_cpu_port_enable() is left unchanged.
 
-Clearly you need to allow a BD for padding if the final fragment is short.
-That is one extra BD for the entire frame, that same as a non-GSO message.
-You could leave the hardware padding 'stupidly short' gso fragments.
-I assume the driver is building the ethernet/IP/UDP/TDP header so that
-will be one buffer and not hit the 'fragmented after 14 bytes' issue.
+The MT753X_MIRROR_EN() issue on AN7583 found in the v2 review is
+separate and not addressed here.
 
-> 
-> > > > But does this code allow for the VLAN tag that you forgot about in the
-> > > > other patch?    
-> > > 
-> > > Not sure I understand your concern here? Is it that with VLAN TX
-> > > insertion offload, we pad "too much" (i.e. to ETH_ZLEN, then the NIC
-> > > pushes an extra VLAN_HLEN)? I'm not sure that's a problem..  
-> > 
-> > That is a problem, VLAN packets should only be padded to 64 bytes
-> > including the VLAN header and CRC.
-> > However such overlong packets are likely to be tolerated because
-> > an ethernet switch can add a VLAN header before forwarding a packet
-> > and it can't know whether a short packet is padded.  
-> 
-> Well, if it's a theoretical problem but it's not a practical problem,
-> I'd prefer leaving it as is.
-> 
-> Since eth_skb_pad() itself is unaware of VLAN TX offloads, I'd be
-> opening myself up to an endless rabbit hole ("why didn't you fix this
-> in eth_skb_pad()? It's a generic problem." followed by
-> "changing eth_skb_pad() broke 20 drivers!")...
-> 
-> Unless it's very clear why I'd be doing this, I'd very much prefer not to.
+Changes in v3:
+- Drop patch 1/2, fixed by 4cb3cd670b2a.
+- Add a Fixes tag for AN7583.
+- Update the comment in mt753x_conduit_state_change().
+- Add test results to the commit message.
+- Keep Lorenzo's Acked-by from v1: the code change is the same, only the
+  comment and the commit message changed.
 
-VLAN headers came in after I stopped writing ethernet drivers!
-I think systems have to tolerate extra padding when a VLAN header is present.
+v2: https://lore.kernel.org/netdev/20260923055103.949540-1-gongtao0607@gmail.com/
 
-David
+ drivers/net/dsa/mt7530.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 96832852c65a..5dbcea38209f 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -3335,10 +3335,13 @@ mt753x_conduit_state_change(struct dsa_switch *ds,
+ 
+ 	/* Set the CPU port to trap frames to for MT7530. Trapped frames will be
+ 	 * forwarded to the numerically smallest CPU port whose conduit
+-	 * interface is up.
++	 * interface is up. On EN7581, trapped BPDUs do not reach the CPU port
++	 * without this, even with the CPU port bitmap set. AN7583 is set up
++	 * the same way as EN7581.
+ 	 */
+ 	if (priv->id != ID_MT7530 && priv->id != ID_MT7621 &&
+-	    priv->id != ID_EN7528)
++	    priv->id != ID_EN7528 &&
++	    priv->id != ID_EN7581 && priv->id != ID_AN7583)
+ 		return;
+ 
+ 	mask = BIT(cpu_dp->index);
+
+base-commit: f4377bf85887f57b59abb5479f7660a81ffe4449
+-- 
+2.56.0
 
