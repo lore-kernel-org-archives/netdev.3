@@ -1,54 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792689659;
-	b=NedDZrvFc8u+E5Basal1E/n1qfOCAkBcKvKiSoN+lomK70cs4VE/N1y0zLJBiOKGvrVo
-	 +GOPPSP9QAPBRrUsQsLM3qEBm0JDbiT69gG5qLwGDnhcRzKVpDxqKIDlDCv8ATMbxW4Nq
-	 P385QbGfSZSP3dLmFY9H5fm3WZKaxTCOUgh4gVfJ+wnO0FfmSIpECNT7SXMEGK7qeCXoU
-	 RJpGTk90ockUacp4tdx3xbQvFUL3P/p3vP84SkneIKSDHGcvA5FlbIlERvyRB4KQAx2yO
-	 NzQLxZi9AwC2jdUYG+lxnNQ7ojUDGMq5JkodGow82VMfz9P0Yj87pHzfWnS4fevAsIw==
+	t=1792689777;
+	b=IuzgFvTvbfk8fFvMBnCyILr/YDn8mEOvwL9keUp/bTGQlVPK3C6GntERknEc7kPS1r8M
+	 kutPsByJg8YPMXx2d8M5m+x4WGE/GUPWiXDUHiUwEWgq9xANQNRMVfftVcy6GmkuJi+hh
+	 tr2OqaRBxGJ//u+Bgy5CORQ8Eb+xlDJlbMZNe4jqSvZoIdHyt1hrzXBittTA7SiqQ1bjC
+	 /ViNAOcEyVceaRjySu0NIKXloa/sK2+0rbEoZ8rg3hmA2ManW/Xnkq2rE9j/Ar+NjcCz9
+	 7XMpnc95r2ubCq6xP7Wq30tKyjFDSL9rg2zPEMj/aD9gu4Ej6VB0LKZBjSg7BNwe5VA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792689659;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=dMUwdNNlX47GZDregQd1aU44dhCXXAKv5Dr+YMUKeZM=;
-	b=b1ss0Nwick0M2xtkOanV0ET1HPgGLphYwSnQkp4fIdcg7rA4D+Lzd25Z6dT2JQKlVqNP
-	 9IhKCothzL/vky23n4la2ujlA1PlI2A/yQ15+bYImQhyLkc3rwCaJFMulFC36WISuJ24C
-	 TJxO6YNV9nuJXtP6DhCep8yV9InMJ4SthKHafskCJwH8q0MS3/Q0zsFvYQ2/nbmcJXvoI
-	 BhOdtwFi74j6ahHArkD6RqKxc2eel3iPHmWoFapl+0+Cmp1NZsW1xfVbimk5dL5b8PB9s
-	 c2QmZridwH1pZ1oMO1aUIWITim9VtxTnFj5Ur9mIAgpNY4Ph0EEmjLZ9rj0fX7FECZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792689777;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=3Fxnb+tmDz8vD/RCSb1yDfS8uHLVRtbiJwimxAWXwl8=;
+	b=5iPmM8LhyQhKDs2zxR49Q3Y6DF9ZZc5rP1KjhwIX58E57/yOWVI98t6WZPi5ODiA5KPl
+	 loGc5tp8KwZX5cI5tY7OIICTsVxMUFLrrU0baYn5gbXPGkOeHZRbnvBAsdG6tEOyiE0mV
+	 qCnV5Edx6L9+dy5HGIKDY0ooGLbryusNnK550+OZnYj2LFGWP8yJ/T01B473/Kwjxypvx
+	 KerBP5qIWthH5x+SW1yO8Bl1TE7fzqP/dR8rUXZw6rtcbf94ep1eTyKYJDlwbL+5bmnUn
+	 UQSjPxbjnlFkMGTqUfCTO/G5r4yDR4E+5WG/eA7S73LJJ/w13auDidbZB9u80ZirpsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKt9hsN6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=D7y+e548;
+	arc=none smtp.remote-ip=209.85.214.180
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E632E606A319
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A765C606A321
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:22:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A765C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EKt9hsN6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803431F031E0
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:20:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792689658;
-	bh=dMUwdNNlX47GZDregQd1aU44dhCXXAKv5Dr+YMUKeZM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EKt9hsN6+QlaQlXb3P5LlOvTa9SI9XXwkm8go83sjLImRym9h3iIEQfNKwWc0a5fB
-	 TjWrRTzeX1z+yv2nUL5e/fxIHi29hrwP3I9i9sY2wMk6v0xAezPcmfBTWqpO1HSFJb
-	 Sn7gcdL+NDApcRr41wm3s37DJqD5ZLsbFlCZM3f6rNtguY4zsVm1BztPTT6SPB+x5y
-	 FClSksaawhVSQbFiTNl7WEGh6046jrcSbZfEnh4+qcKyuHGYcyh5SXq8EUN3b+BXnq
-	 6ebjmPynUK8CQxnRKfymtJ5DXjBIrDhdSZLjzIZlNt7HnMFNgFiwznlB1k5odDWOrJ
-	 7WxJG5XTjOefA==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3ab35e31f6dso10281471fa.1
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:20:58 -0700 (PDT)
-X-Gm-Message-State: AFq9FYJQUm901DmmIK82yFLtZYLxwSEXMy+DqbZsWe2NUUr67LVpc0L0
-	R6nxenTav3V1D9k63tMOxil+tPSYsag5JTfwM9sAZ0G9L9qGEFMlZVoQSjzSy/Ps7JejyokWfM6
-	UD6CaAGkDMjP8eNGhONTNM0s6lROi26Y=
-X-Received: by 2002:a05:651c:345c:b0:3a9:8775:5f11 with SMTP id
- 38308e7fff4ca-3ac510bec21mr8824021fa.4.1792689657196; Thu, 22 Oct 2026
- 10:20:57 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=D7y+e548
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e8246b13cbso16947675ad.2
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:22:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792689776; x=1793294576; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3Fxnb+tmDz8vD/RCSb1yDfS8uHLVRtbiJwimxAWXwl8=;
+        b=D7y+e548RrVflPxq20p6GTx6fhtREdk3YQuLBVSgVzBv+bTswPoGTzj3iua7j9o1dk
+         6YR/zzZ5fm9OmD91z2AUk2nEWIDH5+2Hv5gClEbE+knloO7Y4EiOheYnaoQc81H9Zp4B
+         XWFsHK0v+nRiIcSyej8SvGnzPruFGf0D/+D6vPIJU+ZOQ32+dHKDgWBYjAnfpK4HXygv
+         RzeRMc5jur2GRVX5+GDojE4Dcyy0ZLU5AHJxovZSFddDPdli05xu93cgEXlL/d0ZXMVw
+         2TxF61j6SxekpAzrwUvE9mm3i8GCMX17RUE/tqzyT2Hc4OjX32M0fY2ovHrIRIHpizwn
+         4S1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792689776; x=1793294576;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3Fxnb+tmDz8vD/RCSb1yDfS8uHLVRtbiJwimxAWXwl8=;
+        b=XAKAQjsJ9+VLoJZN86bqWKTHIpbZMdeEv0wRB9SouqXtiENon7UpJ0wIKeqZYvEkUI
+         ZDPpINGGabgnZxDISXMYyhhIlNuMPJP9skJFg+2u6TlOWRtXUqOHTlaUx3fko4FfenjV
+         1Lhc4CzhmvnMUj1uDxM/FWCgQsTLJSaHL0urxwLnFTU3CWM2wIuXrJhJqFVGpeRtqfJl
+         Sp8YtgPsot6zfzyGwlMFWvTU5MC7gk+iOruxIJkZRpaOBQfBzK6Z5UN+FRl9ShvkqgE2
+         ZT2fKcxM+XJI8YEp5uUKIt4hqfo8EolrdVD8WyWsl5pKEvzmjzR7kFgtOoyubpCBHrXC
+         GncA==
+X-Forwarded-Encrypted: i=1; AKwUvByBQqNGdxM1YiiZZ/cXC1GhmlD0EtdZY49LYFwBKkiH72d1rKlS5+Ft5r1aTyKsawDsd0Dfg6I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJuNgJHM/zaCZjYMeo5A/uMvdqIPSURCjn9vIuDJT0G9hy38oBc
+	CSAujbQcW76yUaw4a50Kwu3n59uLuctZEyP7kDjPyfzghDnWolZmktlv
+X-Gm-Gg: AYBFou32U9CrJLmkzNbdcvapa3EirmjbV+FgH0b5B0+obKuvHBMyWF7ma2HoZTDBzBx
+	I8blYsoowOfFVp/QGmR4/PkZV//huzqgGTp26FBlF2/r23419cqKxLeEhM4Dt+8ZUhDkDm4EP3G
+	PMsbCaQ/KdQGEPjEmJglrQToiCVz1edTNliPpCUY150NN+lvFCD/WSnriApdKsfBwqmyzj+scYc
+	Q8hxvjd2fiIUDqCerOHtaP5VCh3piOJd2GDfBMskBDFn2DBFs1xXtd5JcOqIBarVFDJxpjTfLO2
+	S0AQNCEVlOvW+SC/QwMv67KxUQm0tVWGuXYD2aYrYxdgEnUX9UUj8Csm1wINJGvt+2zuzBb4gLZ
+	agCmxmuHDjZojPMhuZHtMPktzPMkZKyetWsqiRiCeMMYWSuCPXRa0rwTm941kay2+zg54ktHcRY
+	c2vSlHB98grM5amsB9hlU22LyueULo1iG8gw6GK+MquZPChN1TViNSKCBib9hGMRyWJeTDOvHWP
+	+T3pk7ygSaqo43yCPRR9x8c/GsN+VZPFEHX7fSZhs6cumvpI6TNO/AgReXRUqFd1jd8o8FlwDMW
+	kf0Wg4Z9sLcwWnkPaIqXYjD1RVcZgPe//I9FLH7n3+3BggtmtpmBmZ6EYQjt1ddyxcX+IRD3vMD
+	9OpU0nsd0Ce4=
+X-Received: by 2002:a17:903:1acc:b0:2e5:cb1f:898c with SMTP id d9443c01a7336-2ea43fb8270mr49485025ad.46.1792689775940;
+        Thu, 22 Oct 2026 10:22:55 -0700 (PDT)
+Received: from test.. ([118.68.116.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ea7b3bc816sm1217915ad.51.2026.10.22.10.22.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 10:22:55 -0700 (PDT)
+From: Duc Anh Luu <luuducanh05051995@gmail.com>
+To: pablo@netfilter.org,
+	fw@strlen.de
+Cc: netfilter-devel@vger.kernel.org,
+	phil@nwl.cc,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Duc Anh Luu <luuducanh05051995@gmail.com>
+Subject: [PATCH] netfilter: nf_conntrack_sip: fix out-of-bounds read in ct_sip_parse_transport()
+Date: Fri, 23 Oct 2026 00:22:48 +0700
+Message-ID: <20261022172248.554687-1-luuducanh05051995@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,211 +100,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022011539.6882-1-tung.quang.nguyen@est.tech>
-In-Reply-To: <20261022011539.6882-1-tung.quang.nguyen@est.tech>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 22 Oct 2026 19:20:43 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiogRi0-zhfw1vHxQMsf30TTb-vFZymQQgCwiCpTs_Ca+g@mail.gmail.com>
-X-Gm-Features: AclHuK-56Zydd_GeAy-1gWfJYTA5OtsO83acQye9DAJXnz3sd6lhVU7KKN_WBGY
-Message-ID: <CAL4WiiogRi0-zhfw1vHxQMsf30TTb-vFZymQQgCwiCpTs_Ca+g@mail.gmail.com>
-Subject: Re: [PATCH net v3] tipc: fix refcount panic in tipc_rcv() when
- receiving shared skb
-To: Tung Nguyen <tung.quang.nguyen@est.tech>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, jmaloy@redhat.com, horms@kernel.org, 
-	tipc-discussion@lists.sourceforge.net, 
-	syzbot+0017742620a9d06f06ef@syzkaller.appspotmail.com, 
-	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 22 oct. 2026 =C3=A0 03:15, Tung Nguyen <tung.quang.nguyen@est.tech>=
- a =C3=A9crit :
->
-> TIPC assumes that the received skb is not shared with other users.
-> However, syzbot reports a bug triggered by receiving a shared skb:
->
-> ...
-> RIP: 0010:pskb_expand_head+0x135a/0x13a0 net/core/skbuff.c:2308
-> __pskb_pull_tail+0x111/0x1870 net/core/skbuff.c:2890
-> skb_cow_data+0x2ed/0xc50 net/core/skbuff.c:5398
-> tipc_aead_decrypt net/tipc/crypto.c:892 [inline]
-> tipc_crypto_rcv+0x346/0x23d0 net/tipc/crypto.c:1843
-> tipc_rcv+0x4b7/0x1040 net/tipc/node.c:2119
-> tipc_l2_rcv_msg+0x2d9/0x470 net/tipc/bearer.c:669
-> deliver_ptype_list_skb net/core/dev.c:2533 [inline]
-> ...
->
-> The root cause is that local delivery hooks in the kernel (e.g.,
-> deliver_skb()) may increment the skb's reference count (`users`) before
-> TIPC processes it on ingress.
->
-> Fix this by calling skb_share_check() to ensure exclusive ownership
-> before passing the skb to tipc_rcv(). As TIPC needs to modify the skb's
-> data, the cloned skb needs to be uncloned in tipc_sk_conn_proto_rcv(),
-> tipc_sk_filter_connect(), tipc_msg_lookup_dest() and tipc_link_tnl_rcv().
->
-> Reported-by: syzbot+0017742620a9d06f06ef@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D0017742620a9d06f06ef
-> Closes: https://lore.kernel.org/all/20261018145928.58317-1-ngocthang2710.=
-1999@gmail.com/T/
-> Fixes: 6e967adf798a ("tipc: relocate common functions from media to beare=
-r")
+ct_sip_parse_transport() compares the "transport=" parameter value against
+"TCP" and "UDP" with a fixed length of 3, without first checking that the
+parsed value is that long:
 
-This commit only moved recv_msg() from eth_media.c to bearer.c,
-the bug was there from day 0.
+	if (ct_sip_parse_param(ct, dptr, dataoff, datalen, "transport=",
+			       &matchoff, &matchlen)) {
+		if (!strncasecmp(dptr + matchoff, "TCP", strlen("TCP")))
+		...
 
-Fixes: b97bf3fd8f6a ("[TIPC] Initial merge")
+ct_sip_parse_param() sets the value end to the surrounding limit when no
+';' delimiter follows, and that limit can be the end of the SIP message
+(dptr + datalen) when no ',' is present either. A Contact/Via parameter
+such as "transport=tc" placed at the very end of the payload therefore
+yields matchlen < 3 with matchoff + matchlen == datalen, and the
+strncasecmp() reads up to two bytes past the end of the message buffer.
 
-> Co-developed-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-> Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-> ---
-> v3: Use skb_share_check() to unshare the skb and unclone that skb
->     when needed.
-> v2: https://lore.kernel.org/all/20261020104852.90350-1-tung.quang.nguyen@=
-est.tech/
-> v1: https://lore.kernel.org/all/20261019050648.287309-1-tung.quang.nguyen=
-@est.tech/
->
->  net/tipc/bearer.c |  4 ++++
->  net/tipc/link.c   |  7 +++++++
->  net/tipc/msg.c    |  3 +++
->  net/tipc/socket.c | 10 ++++++++++
->  4 files changed, 24 insertions(+)
->
-> diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-> index 05dcd2f9e887..5e7e220fa7f5 100644
-> --- a/net/tipc/bearer.c
-> +++ b/net/tipc/bearer.c
-> @@ -659,6 +659,10 @@ static int tipc_l2_rcv_msg(struct sk_buff *skb, stru=
-ct net_device *dev,
->  {
->         struct tipc_bearer *b;
->
-> +       skb =3D skb_share_check(skb, GFP_ATOMIC);
-> +       if (!skb)
-> +               return NET_RX_DROP;
-> +
+The value of the over-read bytes can also flip the detected transport,
+so this is not purely a read: a crafted short value can make the helper
+classify the transport using out-of-bounds data.
 
-This part is fine, and is what other L3 handlers do.
+Both call sites (process_register_request() and
+process_register_response()) are reached from attacker-supplied SIP
+traffic when the nf_conntrack_sip helper is active.
 
-The skb_unclone() parts are addressing a different (and older) issue:
-TIPC already receives cloned skbs today, as soon as a packet tap
-(tcpdump) is active, since af_packet clones the shared skb.
+Bound each comparison by matchlen. A value shorter than three characters
+can never equal "TCP"/"UDP", so this only rejects already-malformed input
+and leaves valid transports (TCP, UDP, TLS, SCTP, ...) unchanged.
 
-Please split this into two patches: the skb_share_check() one
-(small, easy to backport), and a second one dealing with cloned skbs.
+Reachability and behavioural equivalence were verified with a userspace
+ASan harness built from the verbatim parser functions: the over-read is
+confirmed as a read past dptr + datalen, and the fix removes it while
+producing identical results for all well-formed transport values.
 
-Some comments on the second part:
+Fixes: f5b321bd37fb ("netfilter: nf_conntrack_sip: add TCP support")
+Signed-off-by: Duc Anh Luu <luuducanh05051995@gmail.com>
+---
+ net/netfilter/nf_conntrack_sip.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 64bc440b1181..1f9cf75c7bd5 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -701,9 +701,11 @@ static int ct_sip_parse_transport(struct nf_conn *ct, const char *dptr,
+ 
+ 	if (ct_sip_parse_param(ct, dptr, dataoff, datalen, "transport=",
+ 			       &matchoff, &matchlen)) {
+-		if (!strncasecmp(dptr + matchoff, "TCP", strlen("TCP")))
++		if (matchlen >= 3 &&
++		    !strncasecmp(dptr + matchoff, "TCP", strlen("TCP")))
+ 			*proto = IPPROTO_TCP;
+-		else if (!strncasecmp(dptr + matchoff, "UDP", strlen("UDP")))
++		else if (matchlen >= 3 &&
++			 !strncasecmp(dptr + matchoff, "UDP", strlen("UDP")))
+ 			*proto = IPPROTO_UDP;
+ 		else
+ 			return 0;
+-- 
+2.43.0
 
->         rcu_read_lock();
->         b =3D rcu_dereference(dev->tipc_ptr) ?:
->                 rcu_dereference(orig_dev->tipc_ptr);
-> diff --git a/net/tipc/link.c b/net/tipc/link.c
-> index 6427c69f8929..d7ce384d3b89 100644
-> --- a/net/tipc/link.c
-> +++ b/net/tipc/link.c
-> @@ -1363,6 +1363,13 @@ static int tipc_link_tnl_rcv(struct tipc_link *l, =
-struct sk_buff *skb,
->                 }
->                 kfree_skb(skb);
->         } else {
-> +               if (skb_unclone(skb, GFP_ATOMIC) =3D=3D -ENOMEM) {
-> +                       kfree_skb(skb);
-> +                       return tipc_link_fsm_evt(l, LINK_FAILURE_EVT);
-> +               }
-> +
-> +               hdr =3D buf_msg(skb);
-> +
->                 /* Set fragment type for buf_append */
->                 if (msg_fragm_no(hdr) =3D=3D 1)
->                         msg_set_type(hdr, FIRST_FRAGMENT);
-> diff --git a/net/tipc/msg.c b/net/tipc/msg.c
-> index b0bba0feef56..9a222e15ed31 100644
-> --- a/net/tipc/msg.c
-> +++ b/net/tipc/msg.c
-> @@ -736,6 +736,9 @@ bool tipc_msg_lookup_dest(struct net *net, struct sk_=
-buff *skb, int *err)
->         sk.node =3D tipc_scope2node(net, scope);
->         if (!tipc_nametbl_lookup_anycast(net, &ua, &sk))
->                 return false;
-> +       if (skb_unclone(skb, GFP_ATOMIC) =3D=3D -ENOMEM)
-> +               return false;
-> +       msg =3D buf_msg(skb);
->         msg_incr_reroute_cnt(msg);
->         if (sk.node !=3D self)
->                 msg_set_prevnode(msg, self);
-> diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-> index d5d70eb230b5..9789d1ce6bd4 100644
-> --- a/net/tipc/socket.c
-> +++ b/net/tipc/socket.c
-> @@ -1345,6 +1345,10 @@ static void tipc_sk_conn_proto_rcv(struct tipc_soc=
-k *tsk, struct sk_buff *skb,
->                                       tsk_peer_port(tsk));
->                 sk->sk_state_change(sk);
->
-> +               if (skb_unclone(skb, GFP_ATOMIC) =3D=3D -ENOMEM)
-> +                       goto exit;
-> +               hdr =3D buf_msg(skb);
-> +
->                 /* State change is ignored if socket already awake,
->                  * - convert msg to abort msg and add to inqueue
->                  */
-> @@ -1359,6 +1363,9 @@ static void tipc_sk_conn_proto_rcv(struct tipc_sock=
- *tsk, struct sk_buff *skb,
->         tsk->probe_unacked =3D false;
->
->         if (mtyp =3D=3D CONN_PROBE) {
-> +               if (skb_unclone(skb, GFP_ATOMIC) =3D=3D -ENOMEM)
-> +                       goto exit;
-
-tipc_msg_reverse() always allocates a new skb, so there is no need
-to unclone here. Simply set the type on the new skb:
-
-if (tipc_msg_reverse(onode, &skb, TIPC_OK)) {
-    msg_set_type(buf_msg(skb), CONN_PROBE_REPLY);
-    __skb_queue_tail(xmitq, skb);
-}
-
-
-> +               hdr =3D buf_msg(skb);
->                 msg_set_type(hdr, CONN_PROBE_REPLY);
->                 if (tipc_msg_reverse(onode, &skb, TIPC_OK))
->                         __skb_queue_tail(xmitq, skb);
-> @@ -2223,6 +2230,9 @@ static bool tipc_sk_filter_connect(struct tipc_sock=
- *tsk, struct sk_buff *skb,
->                                 return true;
->                         /* Empty ACK-, - wake up sleeping connect() and d=
-rop */
->                         sk->sk_state_change(sk);
-> +                       if (skb_unclone(skb, GFP_ATOMIC) =3D=3D -ENOMEM)
-> +                               break;
-
-The break leads to the "Abort connection setup attempt" path, after
-tipc_sk_finish_conn() was already called. A memory allocation failure
-should not abort a connection that was just established.
-
-msg_set_dest_droppable() is only used here to ask the caller to
-silently drop the packet. Now that the skb is not shared, a bit in
-TIPC_SKB_CB() (or a different return value) would avoid both the
-header write and this new error path.
-
-
-> +                       hdr =3D buf_msg(skb);
->                         msg_set_dest_droppable(hdr, 1);
->                         return false;
->                 }
-> --
-> 2.53.0
->
-
-skb_unclone() returns 0 or -ENOMEM, the usual form is:
-
-if (skb_unclone(skb, GFP_ATOMIC))
-
-Because it is very possible that in the future skb_unclone() start
-returning other error codes instead of crashing with BUG_ON()
-
-pw-bot: cr
