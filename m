@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792693810;
-	b=kiFcsWAq8rcMMQvEwBDKsglH1lb8kUKkCHscYKX4kCOU8GkxnKt0Jo7DkPsglWcq4FYv
-	 rOvB6+Ei6ZFMFSD1un/+XzRKd88uR/MiS8RJSGVp9L4fjyxDdqWUNyw6dSRXdDFCKmLgI
-	 /VaqNE/+J59t5+d0x3NfCvQFv5yxpNIXUvsHkJ8qbJxOyAD1jMyEPgCNtMBmC7wN3OdzC
-	 PNShYXzp3Bx27vcqItsRma9jMBfmrcxP6lXjcJkZkhJmauOmq3wlX3pCP7Kji2A33uJ7j
-	 c62qSLZuBS3V4YGx9hsFeHWHTnrfpOP9EahupWnMrOhW2hharWU7LwVQ3wX0c4odp7g==
+	t=1792693812;
+	b=iAUQ0IOqD9pBLolq686KJISuap3OLFZRke+1wN4jR90wc2fnhhV+8OBdDUu4GjKyGW+o
+	 pFqw0GHqnQFSxF5L6x7ooEdcV4RA7W99cKbHFeaLNtotbDnWAz6h6budOxiCX4+oEGcGS
+	 GhNP7ZwwWZVOKsuETwU+C33T3a/QLhNyvZhcxMX02N/9+8+lrp4UhkbR9d1Juiss6qElF
+	 mevxcAhfpYAqr5xUU69hhF4DrEAhb94YGueJauQh6bfoYemHyHhagjPW/iSdBZZEq2Xm6
+	 dE2rNGehavryfJkbmJzr85t7L1P2fKIfuFYhr95UOtqdaNoqKQaMVcTi2aWxBZB53FA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792693810;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792693812;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=dXzCN7Cx2O7b6G0T2Mwf8ETdFbzwB7uStNfANh0Qtks=;
-	b=LfCDf1Mr32fEJAElB/PT4X2KHSOTfCCY7aCSYnWajI+LmA468MIKEkN/bV30zZJ8BKF2
-	 TBB6Jyl9rhnl9lVqhMGtUWqCi3yqI4IFSHCVOx8kJPmFCEaYsclI/ZEocp0y8o7hw0OwG
-	 yVD1FOdzNLI4qkcbJlQAUs7zBTyyqEkMPaAyvIaM9Q+LOAQSt7Hod5R+nqk0a9+Ykvh4g
-	 clOnKDERPMrlrpokP3UFjnal7JJLIjS5Tla8gbZyj9KeicIDH1sereJyBCqY4NCJnbm+O
-	 1JcFRPN2SuHazXuV0bfuRHQtWqSPL6T+2ElWiTJXcWivlXyzBLEnfJe8PVYf3/Cjz3A==
+	bh=poNZhlx0vT8Sjn8+gP/uHahZJq3mmsuf1D82WqGqrso=;
+	b=pDxaKlx+QfXWyz6TLHNb4S5AKKsGyJeCbkWWBjkLfRZvZ7IgRCdSlQglY6yg5jAdjtG9
+	 SEg3zH+vdR7tCTsywmCDEpJqKj0AYnjNHTuNM5POyWu07pTqizayFw4W1wsDrNu225ZZu
+	 ADu6jQ0g9uVa7r5yw6HbBvNF8/gga6tuHEW2JnEfzAvCc7vZzYUagFYuo7ZfOpJfbuDlT
+	 dmgaszVb2rBwjFayGyIcOBNUuQ1Dl5MjVKDLk/K3YjW+7PsK1Y0cXhi1tTAcIo/b/isgs
+	 41eOFA9u+KVhGxBnoLfO5LXXL8yYvUE4nZuvMpcF5dT6PdOUdytTeahkloHkZRilpiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OkLTvNtG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KsuT8B65;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9254A606A321
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40799606A32E
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OkLTvNtG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1481F01825;
-	Thu, 22 Oct 2026 18:30:10 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KsuT8B65
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DBE1F01825;
+	Thu, 22 Oct 2026 18:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792693810;
-	bh=dXzCN7Cx2O7b6G0T2Mwf8ETdFbzwB7uStNfANh0Qtks=;
+	s=k20260515; t=1792693811;
+	bh=poNZhlx0vT8Sjn8+gP/uHahZJq3mmsuf1D82WqGqrso=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=OkLTvNtGlerwIA9n0cJ/O2YiM108B+s5CPtq+o+IJP9qeBO9vJOCRw0lAHZ6BNKkL
-	 xh9bOK3mYanx/DnoSLMdae6IhakxtEQHT0bNvyLF/BXRovKNeMX4HeQU9IdpWh6Pix
-	 y58y0Vxa6+/Dn/4w+iqZjFBizKhCoMgWhP4vITTxMDjV41wS8KmDhquqtxwnUcHvZ1
-	 ybIdTuoI3FnGhOJygY4A03b6V/f+DYn4y+VNQyGFRg9mlEDmAc0lgQ0aZw3KbO23Sp
-	 zh+A9VcN1dNpdCohc5S5u3V+exdMpuKidZZrrKTLkvw8Y42aYu5z3IVrvW3mDMvp1g
-	 4erbZXknyWxKg==
+	b=KsuT8B652YIyaKQw+q/ElVyju5AJagFAZzA5PuBbm9Q4WFgB1al6AuwmBVg/JivxA
+	 dgoo3isPEMRMxljWgY5LrKfuVy+wELWsPmx0bQwvUF+Ck3xahR5t9tvgsrNSh4ntsI
+	 cDW7ydoo3WwI6PDz7MgLbElnAIcTEp7bnt6r6i4Z+R5ogHyn3KvxTVJKJ6jfO2zD2E
+	 dGVBboBmE89HISXDPltoCj5FPrzpO7+HMT8z34BXwxIoTlNextyCxRB0RvW+DS91o8
+	 7F+IG9foS13HbIeBTruIkbiHRGJw/eItaq/Pwh5jCgE8Wkh3ObETmkTQ/zFTx+Xfph
+	 WsFkE+9/gpjsg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 444713808222;
-	Thu, 22 Oct 2026 18:30:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE5133808222;
+	Thu, 22 Oct 2026 18:30:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,36 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute2] lib/fs: fix cgroup2 path for cgroups outside the
- cgroup namespace
+Subject: Re: [PATCH iproute2-next] man: ss.8: document delack timer name
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179269380907.87273.10417636674537764715.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 18:30:09 +0000
-References: <20261020225114.18233-1-gopalmalaviya53@gmail.com>
-In-Reply-To: <20261020225114.18233-1-gopalmalaviya53@gmail.com>
-To: Gopal Malaviya <gopalmalaviya53@gmail.com>
-Cc: netdev@vger.kernel.org, stephen@networkplumber.org, mkoutny@suse.com
+ <179269381032.87273.10914164445610018301.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Oct 2026 18:30:10 +0000
+References: <20261021044030.46065-1-prijeshpatel.dev@gmail.com>
+In-Reply-To: <20261021044030.46065-1-prijeshpatel.dev@gmail.com>
+To: Prijesh Patel <prijeshpatel.dev@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, stephen@networkplumber.org,
+ prpatel@redhat.com
 
 Hello:
 
 This patch was applied to iproute2/iproute2.git (main)
 by Stephen Hemminger <stephen@networkplumber.org>:
 
-On Tue, 20 Oct 2026 22:51:13 +0000 you wrote:
-> get_cgroup2_path() opens a cgroup by its ID, reads the path of the
-> resulting fd from /proc/self/fd and returns it with the cgroup2 mount
-> point stripped. It assumes that the path always starts with the mount
-> point.
+On Wed, 21 Oct 2026 10:10:30 +0530 you wrote:
+> The delayed ACK timer ("delack") was added to tcp_timer_print() in
+> commit 37c010d59a44 ("ss: add support for TCP delack timers"). Add
+> it to the list of timer names in the man page alongside the existing
+> on/keepalive/timewait/persist/unknown entries.
 > 
-> That is not true for a cgroup outside the caller's cgroup namespace:
-> the link then reads as just "/". Skipping strlen(mnt) characters of
-> it reads past the end of the string into stale stack data, which ss
-> then prints as the cgroup path.
+> Signed-off-by: Prijesh Patel <prijeshpatel.dev@gmail.com>
+> Assisted-by: Claude:claude-sonnet-5
 > 
 > [...]
 
 Here is the summary with links:
-  - [iproute2] lib/fs: fix cgroup2 path for cgroups outside the cgroup namespace
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=7a0464e280dd
+  - [iproute2-next] man: ss.8: document delack timer name
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=3ae613dd2fae
 
 You are awesome, thank you!
 -- 
