@@ -1,82 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.75.126.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792670801;
-	b=4TLSsVHjfdSPmNyAFNKZ84j+bS5gFnRNfMradKWtjglWPv72O1a3WXDGKKxOZhgnDmb1
-	 Ti3ofRcexqpYDjfNkGtnpbTEi4EjV2xeqyrih8ufFO1qlxvw/SzAbwjBC3sKjd9s5SsIi
-	 O7UFcqT+yApCxQGaLPZ7ItFeMWwVZ6LVNHPWJ+41ERTGNOgBgx5tsy211VtfeaKDzc+Qt
-	 LaZ77CejiOV33NrjLq8YRowKiFerIF1T7lGpHmzvtLTdJFOV03UXRLDTpSJuOdyuWXrwa
-	 W6qHBZ10ddrT4UpUKHPFwH96a2F0xR+tFSIJYFIWWGZpfOc07F0Est6/bLBCfXFwJlA==
+	t=1792671142;
+	b=0As42/aKoCoEGVertWxME7KU1R5zcwIr6F175JVexDTVwgqxnRa2CEfKTlLHapGwHin9
+	 F88Mw2PgcP7RuxaBZGGfv5n2OjRxpeDyDFgChHZ+7jLmwbFfU1iCJUHG1F3dJce7BiBPh
+	 eZ8yZSE4y/hxjrOgEJVOFV6DYPhQNaQCk//KYslI5UbsFvlJCfxmLT1af6sZVyamM7/UV
+	 ubmSePIDVm3ZO2IJRm92OmETAM94klf0EkS2hgEf0yLIucVxcsqXyk++sURh0+9S1gLto
+	 EiH26jM48vTQSgITd/qwdQdpS5VwLR5mq2RoYzBaT0JHYS54N5fqrkVP1Taj9ioZ8OA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792670801;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:From:
-	 To:Cc:X-Mailer:References:In-Reply-To;
-	bh=gQPf1gojSipDfNLOKsfEvoilcb1WU2m4yt6GDonHOXw=;
-	b=nhn5DxLQzn+gYzKk8IorTzh1OMtT6FSzbD808hIi5qskipEdEv6OhmXQS9M153yPfWM6
-	 5903PnA9qcU8I+9AlDOawLjrE1Kfv7Ezxf8EZlUumosE7snvqREnyp10qDS3y87/sSqu7
-	 ApGQ151QMuAHlQ/Vd0g7e1jPaKcid4Z5MHGy5f1adPiRNi6HJCHMvV0HDaR68D/Asm+mG
-	 94vSO2nVAjvafDtnjj6NWJOlPEcEmXYsoobI4w/MFeL3ZlETukPYT0rJ124pRoQitP+Ph
-	 CXkXODrtEnFljHvNtA0FIPgzMb7eOh9Xfezw2W19owiDZU3e+yWHp/JQdHGkXGfuHaw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792671142;
+	h=DMARC-Filter:X-SpamFilter-By:DKIM-Signature:Received:Received:
+	 Received:From:To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
+	 References:In-Reply-To:Accept-Language:Content-Language:
+	 x-originating-ip:Content-Type:Content-Transfer-Encoding:MIME-Version;
+	bh=9ESlXKsYqubuEcnbT5ehTIabgxo+rsipXRoTVCUbPFM=;
+	b=vhVDOvBxYOU8tBb0kxaqfccnf9a7vTGhHZwoPo9CIF6/S9AA19GF60FncoTCW85NjSAP
+	 el+E2rc3KUBZZmLwJvY7dUwz6fBp+cRjSsT2kz/HEMtrG8EqeGCbSZ8YU2FRlSp1sJKgz
+	 1qq4g5me0LZ31SI+dUC2cc8IaP6OTWTixJZ/DYZ2u/G6N7oW4Ao/qsJAmwbfRqOmYLHcC
+	 0SUccgOKLUEJv7U9VpixeUp/FBX7wtu8lDFlUc9S5FmnZFRppEESDbk/eSVc4tlMf9UaR
+	 0bNQpR7WTVh+v7/MpkAwf0Y5st5rBe5mZxVOo1nK8DuchQr31cKieB6GjxsANHSU+dw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZCQJ8kLB;
-	arc=none smtp.remote-ip=209.85.160.177
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=realtek.com;
+	spf=pass smtp.mailfrom=realtek.com;
+	dkim=pass header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=fGmNIcZ0;
+	arc=none smtp.remote-ip=211.75.126.72
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17E7606A320
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 12:06:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A17E7606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34837606A319;
+	Thu, 22 Oct 2026 12:12:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34837606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=ZCQJ8kLB
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-534e6545939so13057041cf.3
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 05:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792670799; x=1793275599; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gQPf1gojSipDfNLOKsfEvoilcb1WU2m4yt6GDonHOXw=;
-        b=ZCQJ8kLBJ/MoSPXRe8glkbJdNFWhnxWRRkDnFOjub/FZcJMQmkE1MFqc1aZEPDE9hJ
-         oVBCyqu74h/KrpBIeywlmu/wEiQhWF4qvn9c9Djt3knhAb0a5BC5jDJJWPZsT0m3CMNX
-         W+fUs17d6PXFlZ8g83RRkClLll40EeJvANyUBZrOnHBGzSQt2AxLqprx864kwUB0b/6c
-         wNUp3W4oGTuXf+bRYw9kyYaa5Ai6GL1o934vdKOutIOOkIkhnEAiyeg6m5iKNq7qRA9m
-         b/ZRJ9/mFtAd3fQu8PLXqvPeReGjgbUb5RW0t3AwDmqeTbMwl78bbHeRH0akkZjZFT+g
-         Wc5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792670799; x=1793275599;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gQPf1gojSipDfNLOKsfEvoilcb1WU2m4yt6GDonHOXw=;
-        b=RGAmeBoEXlzYVrPM7sRuUXw3x86D8n3DAMfotRiEDaGyDXnHLcBFsQTHfDQTxvXgfW
-         lPDh95ouBLO3lU3u6QBZOJ9QKcB0FfP7Jubeg8ah3q0g1ojMi8/1neQTqdO94BK9idSm
-         iZVIXWAIhnmv7yw/F9WuoATrxfOvaOVAWwgviL+qXbrF+A7IFIZieYhcNWC5f8vpJnjh
-         INhgxvtg4RCFSXDk4huoGYl/DWYiS0oF0Aj12Tf1mxcglWLBkA+Fx1ryaKuOoaLSnROi
-         GO/hnubY42btwJF4X70c0laGyF55v92oN7SEuYt2sIpRSE37b/KiQulTenuHR1eMsZVw
-         1WHw==
-X-Gm-Message-State: AFq9FYIBYKrRQQNUPvY7t6shSFFB7wxFU2P4RrFOUxFhnCT+x4yPtJiH
-	GWjs61vn2eGhhLDuSrSf+8XoPtX/LKgXjvuprFRZD6ix30C2u2sMJfmV
-X-Gm-Gg: AYBFou36lBbuLGzOEASJr//Qwkz7z68qLG4HdRe+MS+jlG/kirHSOpfIKOVnhCEAr37
-	I2MiSQsMjLGA/hD/4C4Gbhc2Ws4TTuPiXLJvKp2L6rDIZ+VvszeIGeBvXuvM/g59IDF14wsTBK3
-	5TT8Kg70qams/OLKG/B4rk+YB8x8cuWBmP/figzWw4XBpnfOppIhlhp2rNXca46ZKzo6WOE3zyZ
-	A2oGA7pOWZ2x1IzVqYnMF9Af3//DaS9BSF+CxS9P3vi/ADCVd/ry4yAMU8NjQtOiGSQbuKyld2C
-	/jhBamm8Qjc2LpkRK9bdk4rKNXTzbawycwTClFLeWNa9D+EeTsTc8+/kHVJYvJ35+7SJaS6l01b
-	aklUHivz6UCvdJU9L0KUt2/QayDq22PT3bEXqP+zt9t7CNTPYAGLO84SUBAlAXPM0RdhZcYxx7v
-	rfjliDD3LuRHl1fIu0KyBFEEaeZGfqRcaGjQDzLoTRp/vY7LVQwxBs6Mofb7AZKt2Le20x9tsG7
-	Bf1x3pQR3/2NrSdBZ6HDBkInq49V4nukKWUhUyqS1PzdjftAxalABrBR45eZQ==
-X-Received: by 2002:a05:622a:15c4:b0:532:d773:99a3 with SMTP id d75a77b69052e-5369b4f30abmr78052581cf.6.1792670799372;
-        Thu, 22 Oct 2026 05:06:39 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536ab76a3a2sm24907881cf.22.2026.10.22.05.06.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Oct 2026 05:06:38 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=realtek.com header.i=@realtek.com header.a=rsa-sha256 header.s=dkim header.b=fGmNIcZ0
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69MCBpUI2876145, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1792671111; bh=9ESlXKsYqubuEcnbT5ehTIabgxo+rsipXRoTVCUbPFM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=fGmNIcZ077XGNLsKVRECLPISFgWdPPwewGBlLWbYA5lcVgKKdBHgvYgg0NkYGcy8l
+	 KddHX1+IKE+bX3E0hXxKCOsEeakuEpPztRX/rtvy37dQIMB8vDi6SDcM9qIt0WkP1Z
+	 U1Ra4qGTKs7bvyDjft1HYBoYHwVDdflsJQCaxUBN9Pit9z7UFRzsV3fdpGKGZHn3e2
+	 Kqc9ojsfjvj6I2P7+8yVDsuMZX+JZ/reBhpDbn/3fJ23Kfk463TWpJZ1PlhkZFodrK
+	 uMjqNYR6659gwnBanKEfJSpHD5bP2MuaobTvZSzMvHiuawQ2C8qI6EUlaCYnYINpzm
+	 +3SmJa5qcP82g==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69MCBpUI2876145
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 22 Oct 2026 20:11:51 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 22 Oct 2026 20:11:51 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Thu, 22 Oct 2026 20:11:51 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, nic_swsd <nic_swsd@realtek.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>, "bjorn@mork.no" <bjorn@mork.no>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "mail@birger-koblitz.de" <mail@birger-koblitz.de>
+Subject: RE: [PATCH net-next v7 10/10] r8152: enable UPS for RTL8157 and
+ RTL8159 QFN68
+Thread-Topic: [PATCH net-next v7 10/10] r8152: enable UPS for RTL8157 and
+ RTL8159 QFN68
+Thread-Index: AQHdW7SvE2omqpJKSk+ew+lE/ivmXbcGr00AgALK34A=
+Date: Thu, 22 Oct 2026 12:11:51 +0000
+Message-ID: <d7adc461849b43bf91eb94e7834d5b9c@realtek.com>
+References: <20261014081904.6491-11-nic_swsd@realtek.com>
+ <20261021005214.1255071-1-kuba@kernel.org>
+In-Reply-To: <20261021005214.1255071-1-kuba@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,71 +87,257 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 22 Oct 2026 08:06:37 -0400
-Message-Id: <DMBCRFEQZ7D8.1SQ5SSTSTGZFR@gmail.com>
-Subject: Re: [PATCH net 0/2] psp: drop packets with extension headers in
- transport mode
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Todd Bert Freed" <toddfreed@meta.com>, "Daniel Zahka"
- <daniel.zahka@gmail.com>
-Cc: <netdev@vger.kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Willem de
- Bruijn" <willemdebruijn.kernel@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "Shuah Khan" <shuah@kernel.org>, "Rahul
- Rameshbabu" <rrameshbabu@nvidia.com>, "Raed Salem" <raeds@nvidia.com>,
- "Cosmin Ratiu" <cratiu@nvidia.com>, <linux-kselftest@vger.kernel.org>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261021210200.788191-1-toddfreed@meta.com>
- <DMAUWQVPIVKP.1QAK1YSA76EHJ@gmail.com>
- <CADh2yMypAdV07rRufDqj1aOdEzAqEaH2bDkJ2jYV_z1_9iXRkg@mail.gmail.com>
-In-Reply-To: <CADh2yMypAdV07rRufDqj1aOdEzAqEaH2bDkJ2jYV_z1_9iXRkg@mail.gmail.com>
+MIME-Version: 1.0
 
-On Wed Oct 21, 2026 at 7:16 PM EDT, Todd Bert Freed wrote:
-> On Wed, Oct 21, 2026 at 3:07=E2=80=AFPM Daniel Zahka <daniel.zahka@gmail.=
-com> wrote:
->> >
->> > The first patch drops the packets, the second patch adds selftests for
->> > that case.
->> >
->>
->> Why not just fix psp_dev_encapsulate() to put the psp headers in the
->> right position? With the self test we are going to make PSP + ipv6 ext
->> header =3D=3D drop part of the uapi?
->
-> If the original ipv6 packet has extension headers, then the nexthdr on th=
-e
-> fixed ipv6 header identifies the first extension header, and the L4 proto=
- is
-> in the nexthdr on the last one in the chain.
->
-> psp_dev_encapsulate() places the udp+psp headers after all the extension
-> headers in this case.
->
-> The issue is that it rewrites the fixed ipv6 header nexthdr to be UDP,
->
->   ipv6_hdr(skb)->nexthdr =3D IPPROTO_UDP;
->
-> It would need to walk the chain, and set the nexthdr on the final extensi=
-on
-> header to UDP, instead, if the correct policy were for udp+psp to come
-> after the extension headers in all cases.
->
-> I'm not sure that's the correct policy though ; for some headers (e.g. th=
-e
-> fragment header) it might make sense to leave them on the inner packet.
-> Note that the psp spec does not describe this. Perhaps the user should
-> express the desired policy?
->
-> Explicitly dropping ipv6 packets with fragments is consistent with the
-> current behavior (it already doesn't work).
->
-> -Todd
+On Wednesday, October 21, 2026 8:52 AM, Kicinski wrote:=20
+> This is an AI-generated review of your patch. The human sending this emai=
+l has
+> considered the AI review valid, or at least plausible.
+> ---
+> r8152: enable UPS for RTL8157 and RTL8159 QFN68
+>=20
+> This patch adds r8157_ups_en() and calls it from rtl8157_runtime_enable()=
+, so
+> UPS is now switched on and off during runtime suspend and resume for
+> RTL_VER_16 and RTL_VER_17_QFN68. It also adds per-speed EEE flags and
+> 5G/10G speed encodings to r8156_ups_flags(), and skips the lite_mode
+> encoding for those chips.
+>=20
+> > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c index
+> > 95f510da376de..7a1b34db1d88b 100644
+> > --- a/drivers/net/usb/r8152.c
+> > +++ b/drivers/net/usb/r8152.c
+>=20
+> [ ... ]
+>=20
+> > @@ -4484,6 +4522,49 @@ static void r8156_ups_en(struct r8152 *tp, bool
+> enable)
+> >       }
+> >  }
+> >
+> > +static void r8157_ups_en(struct r8152 *tp, bool enable) {
+> > +     if (enable) {
+> > +             r8156_ups_flags(tp);
+> > +
+> > +             ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
+> > +                               UPS_EN | USP_PREWAKE |
+> PHASE2_EN);
+>=20
+> [Severity: Medium]
+> This is a pre-existing issue, but this patch adds more callers of the
+> ocp_byte_w0w1() read/modify/write path, and that path depends on
+> get_registers():
+>=20
+> drivers/net/usb/r8152.c:get_registers() {
+>     ...
+>         if (ret < 0)
+>                 memset(data, 0xff, size);
+>         else
+>                 memcpy(data, tmp, size);
+>     ...
+> }
+>=20
+> usb_control_msg() accepts short IN transfers. Could a malicious device re=
+ply
+> with fewer than size bytes and leave stale kmalloc() data in the part of =
+tmp it
+> never wrote?
+>=20
+> ocp_byte_w0w1() then writes that byte back with only the masked bits
+> changed:
+>=20
+>         ocp_data =3D ocp_read_byte(tp, type, index);
+>         ocp_data =3D (ocp_data & ~clear) | set;
+>         ocp_write_byte(tp, type, index, ocp_data);
+>=20
+> That would let the device read back up to 8 bits of stale heap data per
+> read/modify/write. This does not happen with init_on_alloc. Every
+> read/modify/write in the driver has the same pattern, and this patch does=
+ not
+> change get_registers().
+>=20
+> > +
+> > +             ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_MISC_2,
+> > +                               UPS_FORCE_PWR_DOWN);
+> > +     } else {
+> > +             ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
+> > +                               UPS_EN | USP_PREWAKE);
+> > +
+> > +             ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_MISC_2,
+> > +                               UPS_FORCE_PWR_DOWN);
+> > +
+> > +             if (ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0) &
+> > + PCUT_STATUS) {
 
-I think walking the extension headers and inserting before the transport
-header is better than dropping. I agree with Bjorn that rejecting
-fragment header makes sense because the receiver can't decrypt the
-fragmented PSP payload.
+Agree. But I think this issue is out of scope.
+
+>=20
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but ocp_read_word() ignores th=
+e
+> return value of generic_ocp_read() and uses its local tmp anyway:
+>=20
+> drivers/net/usb/r8152.c:ocp_read_word() {
+>         __le32 tmp;
+>     ...
+>         generic_ocp_read(tp, index, sizeof(tmp), &tmp, type | byen);
+>=20
+>         data =3D __le32_to_cpu(tmp);
+>     ...
+> }
+>=20
+> If RTL8152_INACCESSIBLE is already set, generic_ocp_read() returns -ENODE=
+V
+> without writing the buffer. The same happens if kmalloc() fails in get_re=
+gisters().
+> Would the PCUT_STATUS check here, and the BACKUP_RESTRORE poll below,
+> then test an uninitialized stack value?
+>=20
+> When the device is inaccessible, the writes that follow do nothing, so th=
+e most
+> likely visible effect is a KMSAN report. Every ocp_read_* caller is affec=
+ted.
+>=20
+> > +                     u32 ocp_data;
+> > +                     int ret;
+> > +
+> > +                     ret =3D read_poll_timeout(ocp_read_word, ocp_data=
+,
+> > +                                             ocp_data &
+> BACKUP_RESTRORE, 200,
+> > +                                             20000, false, tp,
+> MCU_TYPE_USB,
+> > +                                             USB_GPHY_CTRL);
+> > +                     if (ret) {
+> > +                             rtl_set_inaccessible(tp);
+> > +                             dev_err(&tp->intf->dev,
+> > +                                     "backup-restore timed out\n");
+> > +                             return;
+> > +                     }
+>=20
+
+I will add test_bit(tp->flag, RTL8152_INACCESSIBLE) to prevent the garbage =
+value from being used.
+
+> [Severity: Medium]
+> Can this leave the interface unusable after a runtime resume, with nothin=
+g to
+> recover it?
+>=20
+> With this patch, runtime suspend on RTL_VER_16 and RTL_VER_17_QFN68
+> enables UPS power cut by default. That means any runtime resume that find=
+s
+> PCUT_STATUS set will run this wait:
+>=20
+> rtl8152_runtime_resume()
+>   tp->rtl_ops.autosuspend_en(tp, false)
+>     rtl8157_runtime_enable(tp, false)
+>       r8157_ups_en(tp, false)
+>         read_poll_timeout() times out
+>         rtl_set_inaccessible(tp)
+>=20
+> r8157_ups_en() returns void, so rtl8157_runtime_enable() carries on, and
+> r8157_u2p3en() and r8153b_u1u2en() quietly do nothing.
+> rtl8152_runtime_resume() then runs napi_disable()/napi_enable(),
+> rtl8152_get_speed() and usb_submit_urb(), and returns 0.
+>=20
+> rtl8152_resume() has a reset fallback, but it is skipped for runtime
+> resume:
+>=20
+>         if (!runtime_resume && test_bit(RTL8152_INACCESSIBLE, &tp->flags)=
+)
+>                 usb_reset_device(tp->udev);
+>=20
+> Once the flag is set, r8152_control_msg() also returns early:
+>=20
+>         if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+>                 return -ENODEV;
+>=20
+> This happens before it gets to the usb_queue_reset_device() logic, so lat=
+er
+> register accesses cannot start a recovery either.
+>=20
+> The netdev stays registered and up while every hardware access is skipped=
+. That
+> lasts until a replug, a system suspend/resume, or an unrelated reset. Bef=
+ore this
+> patch, rtl8157_runtime_enable() had no such wait.
+>=20
+> The commit message mentions this and defers recovery to a follow-up serie=
+s.
+> Since this path is on by default for these chips, should this patch at le=
+ast queue a
+> USB reset here (for example with
+> usb_queue_reset_device(tp->intf)) or pass the error back?
+
+Agreed that the latch is not recoverable from runtime resume. I kept it con=
+sistent
+with the existing r8159_wait_backup_restore() timeout in r8159_init(), whic=
+h also
+latches without a reset. Queuing a reset from here without a retry budget c=
+ould
+loop through reset, probe, runtime suspend, resume, and timeout again.
+
+>=20
+> > +
+> > +                     /* clear USB fw_ver_reg */
+> > +                     ocp_write_byte(tp, MCU_TYPE_USB,
+> USB_FW_USB_VER,
+> > + 0);
+> > +
+> > +                     tp->rtl_ops.hw_phy_cfg(tp);
+>=20
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but r8157_hw_phy_cfg() can ret=
+urn
+> early after it has already turned EEE and ALDPS off:
+>=20
+> drivers/net/usb/r8152.c:r8157_hw_phy_cfg() {
+>     ...
+>         r8153_aldps_en(tp, false);
+>         rtl_eee_enable(tp, false);
+>     ...
+>         if (rtl_phy_patch_request(tp, true, true))
+>                 return;
+>     ...
+> }
+>=20
+> If the PHY patch handshake times out (for example -ETIME when PATCH_READY
+> never appears), the code skips re-enabling EEE and ALDPS and skips
+> set_bit(PHY_RESET). By then r8153_eee_en() has already cleared
+> tp->ups_info.eee.
+>=20
+> hw_phy_cfg returns void, so r8157_ups_en() goes straight on to
+> rtl8152_set_speed() and runtime resume reports success. Does EEE and ALDP=
+S
+> then stay off until the PHY is reconfigured? Would the next UPS suspend a=
+lso
+> leave out the new per-speed EEE flags in r8156_ups_flags()?
+
+Agreed that the failure leaves EEE and ALDPS off, but this isn't new. The s=
+ame
+early return after rtl_phy_patch_request() has been in r8156_hw_phy_cfg() a=
+nd
+r8156b_hw_phy_cfg() since RTL8157 support was added, and it is shared by
+the hw_phy_work, r8153b_ups_en() and r8156_ups_en() callers. r8157_ups_en()
+follows the same pattern as the existing UPS paths. Fixing it means changin=
+g
+hw_phy_cfg to return a status, or restoring the state on the early-return p=
+ath,
+for every chip, so I'd keep it out of this patch
+
+>=20
+> The hw_phy_work path and r8153b_ups_en()/r8156_ups_en() share the same
+> early return. This patch adds one more caller.
+>=20
+> > +
+> > +                     rtl8152_set_speed(tp, tp->autoneg, tp->speed,
+> > +                                       tp->duplex, tp->advertising);
+> > +             }
+> > +     }
+> > +}
+>=20
+> [ ... ]
+
+Best Regards,
+Chih Kai
