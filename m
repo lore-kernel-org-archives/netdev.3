@@ -1,102 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.10
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792690579;
-	b=i611RxAID8XlJiwDXPYxpPP7eACZl/PVlJCeh0uA4bFcqWh7fSeN8SdfxRS8g1NMKv5r
-	 Fecit2M7xrxH9k/bu/4YzyTphcuQaDIVx/gzX86Dkm4zcyQeNdQ1r9y5N5meBXu8awI4H
-	 l4wPnOgYRWV07AMudcxu8YBSyau0MdE+mxa4zFukRZPe7Kw1DmLUJHOwXTGzj1HmGftwR
-	 i4kDlS2HgGyHyu6ybfwxOVm2hu4zwWgfEsN/ZoxhCn38hSFJ6jwPEHNKGM1VxSBuOuTJr
-	 utwwETQMAVEd06hd6a0vNFAhOBIF6BTquJffa/j9GCg+3kbdrq1Y6lhZOySMFw5RllA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792690579;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=ys0ZbqSZjxTcQ8JGafAGIwGRj7KWS9F87pux9gegOGk=;
-	b=DqtOs249UcSkY6gUKUpq5uceP0vI+Wq3poXErJ/SXqsKs8KTc60HQ2wZ1fEA9XrCvRKL
-	 z2TwWY5pDy1GqJ7pwQ9h8Smed72WzBgjG16afEN/3V7ai7p9bc/7du688Q04rjYCivocg
-	 /0obPT3tvS1AQAiQXyTqD7oeDZDRBNh/47MAmUhWapm92QqOIp/d1+W71HZ8RA3rGdkf8
-	 Uy/u/rYHi7T6uyGM2zx/ybj+R2qUrcrNOO+IyBF2Mbq9dM26JxpmSurgcAflDmAtt4kHb
-	 TNQZG+lIdq97U5/P9GTvMCWjLOnCx1iEOheiMiRwJnVdY+UySSnXt8x2SJJZ5aWkevQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pCHf7NlL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.10
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011010.outbound.protection.outlook.com [52.101.52.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792690643;
+	b=KgxSMD8lZngeunUza56bzKWsyjSwSitH0YexBXYvnEEHozKNTPse7mpE5ARUttcbtvJT
+	 E6E3vSw7whRmJOwyU+/FXcIXIeq5mUPRoT5qJRNuHbb730Sh4+ytdBaV/es9GAriWZg4F
+	 sK6uzJflQ7Iv8vU0kbaJ6QC3wT7O0E05orOMK/Ta49NGNa2IjJ0iv0HVL4XWuCNkHjRe/
+	 lmR+8UXSNYghnXJZlErSF8o7EPge3SliF1VAiWgG8amG6NA6LqQseQ4YwC68MGwrY00go
+	 vYB1QfqcNGWEQi1jdT4twXv5P8mYqAQnSEyr4dSzYk4joZzAWsiZPgWIwD7bVW2YARg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792690643;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=90PpyRvqw50zWmq9+jh1atWjcGYKGRTrDoZ7I20u5a0=;
+	b=r0ZIS86OZvgzPWswSSoiGWKgNfBd+SvG6mNVhkyZrMlwsTufWYkYSCeS5+TwV6Sw9t/G
+	 aOxpDp/OaraYoKaHxFRmtpTJq/k33us2vsc5ygdCD86crwEgLwMrRNJepkg7VTmP964nC
+	 nOtcYv/+BoijW900PSzsT9wYR3DIFXfxVIalppFZzSVp2rjoui3XcuC8jXGeDoYT8wq9e
+	 I9Me9inP1LDjqmFdzyfCTfkgN/fGB9w6QQBSdBthMkMEfR4o4hKOIjCe868jAccUiCMfU
+	 5qEqG4q8ygJ0/4nbYy2EmJ6jC94Z1MLIWkYuEr4zhiWYCFOZIzthwcTqY5VOP+CO+Hg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=linux.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=209.85.221.49
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98805606A334;
-	Thu, 22 Oct 2026 17:36:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98805606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pCHf7NlL
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zEAqnfG321FDPuHw1W1lzb5moVcB9gU8Wcn7GBhqqTIvz0c1/6gj0KF52Y26wX4O/8dN+YbRTViAbqNdO13uBgqoPskQKg/Pcc7uQHwiFyUkw0TmX1mXx18LQVV1bQ8Bfg9+54Hlc9EwHSrO5eAZZUllVj6RRowEBJfhG7vmkF2ypLKD18E8Lixg61wnCrV9NZCIVc0Ff1nQOuy158yksdmXKQnLSt3wsmPdvcMGHScPG+t0yW4BfKj4hT8llqHSwbCt6bMwDK9ks9tTulrx3/TuzbjUdJfuKHYlj9PfGlbEmaXPgB7l7S88oLOpPQAz6gba3I1YAyv8roNhVDXbuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ys0ZbqSZjxTcQ8JGafAGIwGRj7KWS9F87pux9gegOGk=;
- b=aSXZwr4w+SgoRpf92mGJJUeiZ+p/JMGXThLNKEdj3nlwcnjz7MCehGb/It/TMvqRL1DFlAgAy/ltOR8FvxLRVYGw+70s8VgbqKxqU1PsW4vUe2QIPSbbjy58Mmh9wYuoAVInASbEvR3DC9++0m8HFIdutelvLbhmWq1B0LtAFzQx14Ore5aEDrmU1nk+cH87ilvusoVxEc1/iiPU3prpLMzrszd2ZITukpTLF4sxc+/2pmcWV7gdbtWmxyhFfUuqGdjwwRcRa3aplzxdWKlMPNDgGgTM7kd2rOikF6Cb80obivTDow0EoQ/EFfalpDdaUdzGkYRvcyqRuBBNjaq9DQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ys0ZbqSZjxTcQ8JGafAGIwGRj7KWS9F87pux9gegOGk=;
- b=pCHf7NlLMDA8+bWXcVdyctnLFWedmNIGDLmcusRvHTWdmYUmYb0CpsXDJBdaAdTdccuVTgm4BfmyTjduCzcpk67pY7f69FoqgD6qbqQwY+6BGPcvjk1g4zqDWvGwFEAn/1Xetzk6Eum6Ss8wpxZM49wkk3CdsPAzTfYSPm6Fqqr4GX78S10gYMG3y4qmL/qtz9wDZ/mkzgb/imIN1wf3arjlfmPexr5tpRvxwVar7kgODjLE7d/fPk2oBMV/j6FxRc/3uSGZ+TzKEF95s9WURx8yf/LEXieGp63ffrdn6O2ZHEjuuUzaFUO14QVv58AU4MvzbHaQfaKkvbC4rzT9SA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15) by PH8PR12MB7328.namprd12.prod.outlook.com
- (2603:10b6:510:214::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
- 2026 17:36:12 +0000
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0546.016; Thu, 22 Oct 2026
- 17:36:11 +0000
-Message-ID: <66dec41f-a263-444f-b47b-553a63fd4d74@nvidia.com>
-Date: Thu, 22 Oct 2026 20:36:06 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net V2] net/mlx5e: SHAMPO: Do not merge PSP packets
-To: Daniel Zahka <daniel.zahka@gmail.com>, Tariq Toukan <tariqt@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Boris Pismenny <borisp@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
- linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
- Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
- Saeed Mahameed <saeedm@nvidia.com>
-References: <20261021062805.3466208-1-tariqt@nvidia.com>
- <DMAG3G194BUB.JJKBBQWZCU5C@gmail.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <DMAG3G194BUB.JJKBBQWZCU5C@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0059.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cc::7) To IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8C9606AB50
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 17:37:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF8C9606AB50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48e09aa5264so20309f8f.2
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 10:37:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792690641; x=1793295441;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=90PpyRvqw50zWmq9+jh1atWjcGYKGRTrDoZ7I20u5a0=;
+        b=ZxhOR2ohsXibSQpSBrgakSzbtOSxLTFZ7V14pw/pVfBj8/xKS0sksRGhXJSc9Dt/wZ
+         sE9LDHek7QrUhMK6oGTJdqPfaswJNEz3lTU6J6x/MWnULmX42n8P9+ty+ydMdVP0bjj4
+         HLvfZnMBnR1tdSVcj8CT49PjAumtFH9Sg9CKOQ3j1dpUvjNQIX7SqYQBauHHqRBkUlFn
+         9ldZGiLIN8Mrpzj+8gD9moPxt3EtIjBqA6BWCdv/r3T232zBJ9621Da7vj5Hb6693feQ
+         Ve/e+j60T5l86t6I4wFzcnKRoT54NVFwKQa2i2y/nmTOnsE3Rsojl/4Y8U35PJFo6o0x
+         GtKg==
+X-Forwarded-Encrypted: i=1; AKwUvBypoWuN+nw9usxoVKcFS76lO5s22vRgWfoEzTxK9jvJ1hr6UMrXKPqJRbtMB5ZyC2Mdylruw/8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIdaxSeq7l+J05Co3Q/cZS/x3KC8iu85zYT+qJQ/kk3Bjwk36gb
+	4LKMyP/e1fYDMLdx9HX5jmIkL1lIgALZ6deCqhCAUW4qh/Lpdr2HT2Ay
+X-Gm-Gg: AYBFou06qAELUETsvwM6OlzDGc309I58A3rfWG3517tFJAVvMgVBu21ubuojgXDdW42
+	8h0s9PgI4c8HbVhODJfZgOnnjcQK6VP0YQ0HvKBfAlc4kovZnttjFNU9Yw0O+kABOsuLrfhdqxs
+	gHSg8cq4awLk31ccEva2Ss4lYSnLFDFkE2YvvCLMY7NuAivZ5/KmmavM+Gf64ATw9oOPiGQPp2P
+	3FrTVd/oCK8/4GaPiOAV83c0Kt4QdP/7UjwAaSniAlC6VGzvjb6urtslP+z1NNpxrrMQiDp7cru
+	RmwKH+KM/bgOJPBNkAESmkPITAJg9bjPeS6v0JtNX0fS3nLFP5QJbg2Gvmz3ouMCLB06Uw0UEgZ
+	hHiy+rQxHghzUoA8aYeYVH/y7+9VihnorgEkPTNfkuYnekezQho52CbFZ7In7RL0aY+KhqbAS4l
+	ZR4K4oS+bwPxNOhy+xeAQMMftCPBCULAxX8PSABJe0Q4bQhUTRQmp1BvN9zm3haNUVqrYxDQxso
+	rD3xz6agqxy9BHlnW/onzOQEuNY/oULTPsTo1MOhVu3N0zeWHx9ortIErLOvdLYEc3aXo4eHzhf
+	HWcxswj99afVprWNA4bhkMd1mhE29JNW
+X-Received: by 2002:a05:6000:4e:b0:48d:f3a4:a6aa with SMTP id ffacd0b85a97d-48e264f2be7mr9021652f8f.35.1792690640831;
+        Thu, 22 Oct 2026 10:37:20 -0700 (PDT)
+Received: from [192.168.1.135] ([81.79.62.202])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e254f0bc2sm13391825f8f.1.2026.10.22.10.37.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Oct 2026 10:37:20 -0700 (PDT)
+Message-ID: <00b94eed-fe1b-4cf3-a4ed-12813faacb86@linux.com>
+Date: Thu, 22 Oct 2026 18:37:19 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,195 +75,156 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|PH8PR12MB7328:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0976ac73-fe7c-47aa-b587-08df3062f6d6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|23010399003|261021123027099003|261022105027099002|56012099006|4143699003|11063799006|261009223027099003|22082099003|10067099003|18002099003|3023799007|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	t9ntS8C2eWUArlLTNLOZGf7U/v6MxWA0kTzQVgf5lcIrLkit/UG+8jQbo0H+SanOlGfQ0VQx+SRis1pCc7ljE8DfHYAd3F5ilcHQuz8W2CqOPbwYNB6DWAHGITcqt1HWosxm+SvZVNjSjruVmkEqjDFCq+HB71Y00QsCGAkYGfSf6qJ3sHzNuqnKz4WEv6zXTgy75UbAtE9Jl4YbN47V2ptM784cKDETRF41vOuwRaKve8Wkw97iU9VMzpYolwGoaQR3RPnT6a0etw2yEQGyIx6uvNL7i1c3Xl7ijykMS3wkz3nmWVk2Yq6m9FJtmkUjWJOkY++PYYK2zGdSOuEyEYAtfOFTWQRg1vZBwkO9rp1Qw84ZUlQK/4DCnzCCm5KZ1IX9mq/TQgSJDNbtZwGJUblvMg+phbDzTqg9zgw2Tr2vRVaLd8UNPi84LccaPLAF/0cIAa7meYrJWNlkHIRUxAUt5E9p0zRLltLmcMlZsjDCleh72Z4FvoYnx8GI9wF856XQgbkWfJvD3gfqDHqWJNkae5s1BjGn2T67n8pOp+amkx0eUs6yD7XRHXo3igNkod6XpjWlJTft90tn6Dp88Jv3xC5qksPJ4Ur1izur8lSWM78scUbVfxlm/gU/voZmMdDsciEmr6D/k/MZ7GMs0LeBtCPkrQDDQ1TAtL2EWGI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(23010399003)(261021123027099003)(261022105027099002)(56012099006)(4143699003)(11063799006)(261009223027099003)(22082099003)(10067099003)(18002099003)(3023799007)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RE43VlY2emRqZnhmUDRwQXNBTks0QmIwVjBQRnc5T1pTU3VMRURPVHA3VTRL?=
- =?utf-8?B?TzFReGNnbXRnQTNMbU0xTSt0MGRkRVpDVEtDZHc4UkxKRlFzbG5IcjVEbzBK?=
- =?utf-8?B?dXQvNWYxL1NsblhIYm0zVEFuUGJuR25EdG01NVpzeUQzblMxS2FpVkc4QjYv?=
- =?utf-8?B?b0o1eVNySFZNd0RNcGd2bHhBL2h0MUFxZjRFY1c5bVF3WkZ3cHp6S3BNeWIz?=
- =?utf-8?B?Vm12Y20zc3dSL1dyRmRIY2RwZkwvZFQ2U2hvOUlPWitMZTN0SmV0YURkenpn?=
- =?utf-8?B?ZWxaTUpqZHpJNnQ1TUZiQk9JUWorY0xQaFEyU2FmcjV3bzRROVUwaUdRMVdi?=
- =?utf-8?B?dUswek1pb0RkUWdWSmtPRVExMGQ2bUUvU3FiUGJ6dDNHTE42SldNMWNBYmI5?=
- =?utf-8?B?MjBpT3J4SkdRcnczTWx1c21YcWNpamNiSnk4NEVQZEJleW1tQlVrb2c4SnlP?=
- =?utf-8?B?NFA4T0ZkSEpXTHBrVjRtKzA0bXVkY25FbFNhSGM2WXpoaE52S0hCSWVublFz?=
- =?utf-8?B?WUdWV2c5QmMzc3dTcDFBZndZRk42UmtXZWZNdjJ4d0F4bmZuU1RoNFlSU01v?=
- =?utf-8?B?S01OTHNuY25aWDNZUHdBOUN1UGxaV29xL0FJanpGcnZYdGlNb0xILzFBRnZW?=
- =?utf-8?B?MUNJTDg2OXhsWjVVY1pNdmcwUllMdVNIeEl2VFdrc3pXZnNjbWR3K2tFSVVk?=
- =?utf-8?B?MmQvV3I1aWJjaUlQbGVWVk80bDM1alRQdGpUaW5LdldsNnlkdUVoNGxVUStu?=
- =?utf-8?B?UVNFd0N0NXA2QTc0VG5EWUJCSjVpVWEySkpHakRnd045RVBkZVFWSVhZL1Nz?=
- =?utf-8?B?NGMrSFhQMUJ2bUNwdXF3enpSSVJTdEFEUEcweW1KS0RmRFhYTGpwdUxuR2kr?=
- =?utf-8?B?WXk4Y1RmYVF0M2c3NXVybzhpbGZpT2JzUDBKbE12ZUJLM1FtUlFBRkJKVUVU?=
- =?utf-8?B?MHoyejl1ZTZQRXJPL1lML2xJazgvemtRd3dzUXlPTkwrbGJadnFhQXJSVnpO?=
- =?utf-8?B?aC8vSkxkUnB5a2lDMFI0RnZuVHhOeVVZSGtpdXh4K1V3T2tNQ2krdXRjbFBE?=
- =?utf-8?B?S2xRUFhBeGkvOWx2VFdhS1BzblJWS2RnbDQ3VnRtWXhHMUVWc29kWDM5OUE5?=
- =?utf-8?B?V0FmN2RzSkJRTGZ4Vm1veStSdjNzdkQwM0pKcWhSUFVCRTBqRC9yck5JMlRV?=
- =?utf-8?B?bCtRNzlhUlhuckw2bzVHcHRyVGFCM0gxNlFwWXA0eXp4RndpaGozaklGYVQv?=
- =?utf-8?B?UFZMYWJmbXB2dVk5VjB4VWMrZFRaWkFwOE5meTdUbkpvNXhodTVVZjl4L0xT?=
- =?utf-8?B?dHhUT0ZnV2VON2VFVnA0OUw2WHN6UjF1QUlYeHJsS2dadDFVRHMzb0FpTnVv?=
- =?utf-8?B?blZGTy9UNTkzVWdUMHFmZWVFTEdMeGFHSlpCeDgrejVVb0xBa2xJQW5iQ1ZK?=
- =?utf-8?B?bUZ4ZWZaT1pLZm5OSVV3eXRGQkw4bXJORkE0T3Fxak5RRW51ZzlFMFphczUr?=
- =?utf-8?B?cnRvUTM3dFZOWnNyVTdzNXk0RkN6N2VJYXd5bzVlYmx0NnlBZHdzS3pscjFj?=
- =?utf-8?B?ZlZPbGFINmhLWTBIL0ZNUllhQjVOeDZobUlRWnFxdTNLMGw5Yk1hMnhCTE5K?=
- =?utf-8?B?cmVkbEQ2RXVUYW5pOHhaUmlzUVZyY3hFZWNicXlVU2dhQlZTL2Jrblh3ZGtw?=
- =?utf-8?B?QUZteEtvNGJ1MUw1SzJqeTZtZEhkVUpCdUFRblM3TkVRTHB3cGlkblc5QXNH?=
- =?utf-8?B?WGJTMElmUENzRFpIc3NNcEovMUFDb2VIMURuSm5wclh2REFiRGZaU1FHZjFT?=
- =?utf-8?B?Q0RvbUYrMUx4RHNQSkRHN1FydVBZanlIUU0yMjdXK2E3SmxKNmxiRVh2WjBL?=
- =?utf-8?B?RTVUb0g4VXhLa2haMjZZNTQxVStWTEQxdHkwcVMxL1ErLzZQTW44MjNuZHdY?=
- =?utf-8?B?TWVzbmZONDhOUk5HUTZ1Z3VnWGgzQXB4VytYeUZBQlVpajRWMW9nL3NRVWQ5?=
- =?utf-8?B?MnIxM0QxZ0JtZnFjcHV1V2JCK3dDbmtpU1JYZkZudHdXYmU1SlNMOEQ4NHkv?=
- =?utf-8?B?YXFHK0RqOFVoWE84b2t5K1NTMmswM0h0a1pKRHcxaUtBN2dsQ054ckVRY2Rk?=
- =?utf-8?B?d1Fzbk0wU1BJanE2WjNnb0pNNTZYdUNNMkc5a3JHTjNwVjhlL1ZSd0tOcDdS?=
- =?utf-8?B?ekFGeFJ4RXI0S0ZDdlNlWVhOZ3VON0NBcWNRbzZ6ZUJsT3Y5VmI1NDFiSVpy?=
- =?utf-8?B?NUpWc3JmakVacDg2VlE5RlQ0RFh0UGZxS0JnemRoNTJCM0svczRoVGxwQ3Zv?=
- =?utf-8?B?cGRGOVYzZXpISThqQUFRSFB5WENMVzNaSXFidXB6YkF0SFdMd2FTQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0976ac73-fe7c-47aa-b587-08df3062f6d6
-X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 17:36:11.7800
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c6acJEZd5XLYvjqwLfvRhtCreuTIfRYZJsy/+GcqVAB0zZ4MshEFYJnF6Nv8ssDAMFIAUjwd+svsdNNmT0Olvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7328
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/8] net: stmmac: dwmac-meson8b: apply the RGMII delays
+ the T7 way
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261010105900.247342-1-tanure@linux.com>
+ <20261010105900.247342-5-tanure@linux.com>
+ <a1c0b76b-7b67-43e9-af15-3139f17d7fe7@lunn.ch>
+Content-Language: en-US
+From: Lucas Tanure <tanure@linux.com>
+In-Reply-To: <a1c0b76b-7b67-43e9-af15-3139f17d7fe7@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 12/10/2026 13:30, Andrew Lunn wrote:
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
+>> @@ -82,6 +82,7 @@ struct meson8b_dwmac_data {
+>>   	int (*set_phy_mode)(struct meson8b_dwmac *dwmac);
+>>   	bool has_prg_eth1_rgmii_rx_delay;
+>>   	bool has_pipeline_clk;
+>> +	bool mac_applies_dt_delays;
+> 
+> Please can you invert this and call it broken delays.
+> 
+> We should make it clear that new devices should not set this, because
+> it wrong, broken.
 
+Moved to a function for T7. And the previous SoCs have their own 
+function which gets a comment that new SoCs must not use it.
 
-On 21/10/2026 13:30, Daniel Zahka wrote:
-> On Wed Oct 21, 2026 at 2:28 AM EDT, Tariq Toukan wrote:
->> From: Cosmin Ratiu <cratiu@nvidia.com>
->>
->> PSP packets are UDP-encapsulated, and enabling HW GRO (SHAMPO in mlx5)
->> makes it possible to merge those packets in a silly way:
->> IP|UDP|PSP1|payload1|PSP2|payload2|...
->>
->> That happens because the HW GRO machinery doesn't know about PSP and
->> considers it part of the UDP payload.
->>
->> Reject merging when the incoming CQE has PSP marker or the pending skb
->> has the PSP extension.
->>
->> Fixes: 29d7f433fcec ("net/mlx5e: Add Rx data path offload")
->> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
->> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
->> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
->> ---
->>   .../ethernet/mellanox/mlx5/core/en_accel/en_accel.h |  6 ++++++
->>   .../ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h | 13 +++++++++++++
->>   drivers/net/ethernet/mellanox/mlx5/core/en_rx.c     |  6 ++++--
->>   3 files changed, 23 insertions(+), 2 deletions(-)
->>
->> V2:
->> - Separated from the patchset.
->> - Moved the PSP merge check into a helper in psp_rxtx.h, with a stub
->>    returning true when CONFIG_MLX5_EN_PSP is off, and an en_accel.h
->>    wrapper, replacing the #ifdef in en_rx.c.
->> - Also reject merging when the pending skb already has the PSP
->>    extension, not only when the incoming CQE has the PSP marker.
->> - Fixed the commit message diagram and capitalized SHAMPO in the
->>    subject.
->>
->> V1:
->> https://lore.kernel.org/all/20260917175433.4090878-8-tariqt@nvidia.com/
->>
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
->> index 3f212e46fc2f..5a340f1435e6 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
->> @@ -218,6 +218,12 @@ static inline void mlx5e_accel_tx_finish(struct mlx5e_txqsq *sq,
->>   #endif
->>   }
->>   
->> +static inline bool
->> +mlx5e_accel_shampo_can_merge(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
+> 
+>> +static int meson_dwmac_init_dt_delays(struct meson8b_dwmac *dwmac,
+>> +				      struct plat_stmmacenet_data *plat_dat)
 >> +{
->> +	return mlx5e_psp_shampo_can_merge(rq->hw_gro_data->skb, cqe);
->> +}
+>> +	struct device_node *np = dwmac->dev->of_node;
+>> +	u32 tx_delay_ps = 0, rx_delay_ps = 0;
+>> +	phy_interface_t phy_mode;
+>> +	bool mac_tx, mac_rx;
 >> +
->>   static inline int mlx5e_accel_init_rx(struct mlx5e_priv *priv)
+>> +	mac_tx = !of_property_read_u32(np, "tx-internal-delay-ps", &tx_delay_ps);
+>> +	mac_rx = !of_property_read_u32(np, "rx-internal-delay-ps", &rx_delay_ps);
+>> +
+>> +	/* one step is a quarter of the RGMII clock period, 2ns at 1Gbit/s */
+>> +	if (tx_delay_ps > 6000 || tx_delay_ps % 2000)
+>> +		return dev_err_probe(dwmac->dev, -EINVAL,
+>> +				     "The RGMII TX delay must be 0, 2000, 4000 or 6000ps\n");
+> 
+> tx-internal-delay is not listed in amlogic,meson-dwmac.yaml. Please
+> could you add it, and list the valid values.
+Patch 2 of this series adds it to the T7 block with the valid values.
+That changes in v4, see below.
+> 
+> Do you have access to the datasheet? Could you check these numbers are
+> correct, because they are larger than typical. 4ns, and 6ns makes no
+> sense, the RGMII standard only calls for 2ns.
+
+Yes. The field is not a delay line. It selects the phase of the TX
+clock sent to the PHY: 0, 1/4, 1/2 or 3/4 of the clock period. At
+1Gbit/s that is 0, 2, 4 or 6ns, which is where the numbers come from
+(the existing amlogic,tx-delay-ns property lists the same four). Only
+1/4 is a usable RGMII delay; 1/2 is an inverted clock and 3/4 is a 2ns
+lead. And since it is a fraction of the period, the 2ns is only true at
+1Gbit/s, at 100Mbit/s the same setting is 10ns. I agree 4000 and 6000
+make no sense.
+
+> 
+>> +
+>> +	/* the RX delay line moves in 200ps steps and reaches 3000ps */
+>> +	if (rx_delay_ps > 3000 || rx_delay_ps % 200)
+>> +		return dev_err_probe(dwmac->dev, -EINVAL,
+>> +				     "The RGMII RX delay range is 0..3000ps in 200ps steps\n");
+> 
+> Please could you listing these values in the binding.
+> 
+> Also, mark that amlogic,tx-delay-ns & amlogic,rx-delay-ns are not
+> valid for this compatible.
+The RX values are in patch 2 as well, the T7 shares the G12A list
+(0..3000ps in 200ps steps); v4 drops the 0. The two vendor properties
+are already rejected for the T7: they are only defined for the older
+compatibles and the schema has unevaluatedProperties: false. v4 adds an
+explicit "false" for both in the T7 block so that it is visible.
+> 
+>> +
+>> +	phy_mode = phy_fix_phy_mode_for_mac_delays(dwmac->phy_mode, mac_tx,
+>> +						   mac_rx);
+> 
+> This is not correct. This function assumes mac_tx and mac_rx are
+> Boolean values, the MAC is applying the full 2ns delay. However, if
+> rx-internal-delay-ps is only providing 200ps, that is not true.
+> 
+> I would prefer you keep to the usual way of doing things. Allow the
+> MAC to apply small tuning delays, but have the PHY do the 2ns. So
+> don't make any modification to phy-mode.
+> 
+
+OK. v4 does not touch phy-mode. rx-internal-delay-ps becomes the tuning
+the MAC adds on top, 200..3000ps. On the TX side the T7 has nothing
+small to offer, the only step is the 2ns phase, so v4 does not accept
+tx-internal-delay-ps on the T7 at all, in the binding and in the
+driver. The VIM4 then uses plain rgmii-id with the PHY adding both
+delays. That also removes the wrong claim in patch 7 that the RTL8211F
+TX delay does not work; the real cause was a bootloader value left in
+the glue register, details in my reply to Martin on patch 7.
+>>   static int meson8b_init_rgmii_delays(struct meson8b_dwmac *dwmac)
 >>   {
->>   	return mlx5e_ktls_init_rx(priv);
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
->> index 2b080c39cc37..9fd1ee789de0 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
->> @@ -85,6 +85,13 @@ static inline bool mlx5e_psp_is_rx_flow(struct mlx5_cqe64 *cqe)
->>   	return MLX5_PSP_METADATA_MARKER(be32_to_cpu(cqe->ft_metadata));
->>   }
+>>   	u32 tx_dly_config, rx_adj_config, cfg_rxclk_dly, delay_config;
+>> @@ -411,32 +455,34 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
+>>   	dwmac->dev = &pdev->dev;
+>>   	dwmac->phy_mode = plat_dat->phy_interface;
 >>   
->> +static inline bool
->> +mlx5e_psp_shampo_can_merge(struct sk_buff *skb, struct mlx5_cqe64 *cqe)
->> +{
->> +	/* PSP packets cannot be merged. */
->> +	return !skb_ext_exist(skb, SKB_EXT_PSP) && !mlx5e_psp_is_rx_flow(cqe);
->> +}
->> +
->>   bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev, struct sk_buff *skb,
->>   				     struct mlx5_cqe64 *cqe);
->>   #else
->> @@ -110,6 +117,12 @@ static inline bool mlx5e_psp_is_rx_flow(struct mlx5_cqe64 *cqe)
->>   	return false;
->>   }
->>   
->> +static inline bool
->> +mlx5e_psp_shampo_can_merge(struct sk_buff *skb, struct mlx5_cqe64 *cqe)
->> +{
->> +	return true;
->> +}
->> +
->>   static inline bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev,
->>   						   struct sk_buff *skb,
->>   						   struct mlx5_cqe64 *cqe)
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
->> index 903af3b3e779..d49f26323b1e 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
->> @@ -49,6 +49,7 @@
->>   #include "en_rep.h"
->>   #include "en/rep/tc.h"
->>   #include "ipoib/ipoib.h"
->> +#include "en_accel/en_accel.h"
->>   #include "en_accel/ipsec.h"
->>   #include "en_accel/macsec.h"
->>   #include "en_accel/psp_rxtx.h"
->> @@ -2268,8 +2269,9 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
->>   	}
->>   
->>   	if (*skb &&
->> -	    !(match && mlx5e_hw_gro_skb_has_enough_space(*skb, data_bcnt,
->> -							 page_size))) {
->> +	    !(match &&
->> +	      mlx5e_hw_gro_skb_has_enough_space(*skb, data_bcnt, page_size) &&
->> +	      mlx5e_accel_shampo_can_merge(rq, cqe))) {
+>> -	/* use 2ns as fallback since this value was previously hardcoded */
+>> -	if (of_property_read_u32(pdev->dev.of_node, "amlogic,tx-delay-ns",
+>> -				 &dwmac->tx_delay_ns))
+>> -		dwmac->tx_delay_ns = 2;
+>> -
+>> -	/* RX delay defaults to 0ps since this is what many boards use */
+>> -	if (of_property_read_u32(pdev->dev.of_node, "rx-internal-delay-ps",
+>> -				 &dwmac->rx_delay_ps)) {
+>> -		if (!of_property_read_u32(pdev->dev.of_node,
+>> -					  "amlogic,rx-delay-ns",
+>> -					  &dwmac->rx_delay_ps))
+>> -			/* convert ns to ps */
+>> -			dwmac->rx_delay_ps *= 1000;
+>> -	}
+>> -
+>> -	if (dwmac->data->has_prg_eth1_rgmii_rx_delay) {
+>> -		if (dwmac->rx_delay_ps > 3000 || dwmac->rx_delay_ps % 200) {
+>> -			dev_err(dwmac->dev,
+>> -				"The RGMII RX delay range is 0..3000ps in 200ps steps");
+>> -			return -EINVAL;
+>> +	if (!dwmac->data->mac_applies_dt_delays) {
 > 
-> nit: we already have the skb from the line above, why go back to the rq
-> just to find the same skb again?
-> 
+> I suggest you do this at a higher level. Either call this function if
+> _broken_delay is set, or the other one.
 
-Because we have a followup patch to be submitted soon, that adds a check 
-for TLS. It needs the RQ, not the SKB.
-
->>   		match = false;
->>   		mlx5e_shampo_flush_skb(rq, cqe, match);
->>   	}
->>
->> base-commit: b6ef0d965fe8ce0ee4b4dcb58b3511f83003e42d
+Done through the callback. Probe makes one call, and the parsing of the
+vendor properties moves into the older function.
 > 
-> Makes sense to me:
-> 
-> Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
-
-Thanks for the review.
+> 	Andrew
 
