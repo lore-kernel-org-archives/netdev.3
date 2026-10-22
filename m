@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792629020;
-	b=QrYnQPXp8IMX9U6QSQLFl1xyAJpE0Nt3l5YEdERkh6GDSSvE4IVkGeT02LVrSWYAHTKP
-	 +gG/laHg6GP6A+XwA6xtMp4GDpGq05JBQsIT8mthGkac5oEQlxj+r2u96RqggucfZxCCM
-	 sZKvKovCrlgfl610Y4Pia7PqDpYCwAVVcxF+AH8KOXrZU/bokXN6QgAL4r4VCHTeFz/yd
-	 5lriHUWNejmVxKrsVsbZ6Ese8lhurVapdR2Tmr5TgHGtqR+D2BzlMp6OiuokV494rEZfI
-	 AyAzi5DYMnSIrst0962W1zW3xvogcbgbTlwaNKeAokTB5Yms+AJ97Dj57oOOsVQzj+Q==
+	t=1792629015;
+	b=xLAWnUduyo6tF69VjcMiCbWZ/eLQnOVeMdO8tV7bO0TzkSsY+mQuhf45751hjJHam1vy
+	 0L2Pc1TL2BuInRBCaFUz0NV1pLU1qE1d+eLA367QHVybT8OLbyk/EwS1Q/EgnXH35WvtC
+	 4zlZw9WPUGVkYMN4c8w2xy+hrsTo3rUF8L9hk6lWkVX2u2qBmJ4m5i3cfE6zgawr37fqq
+	 LQKOxNnTwwklCN2+1StnetHQxHIg+qcUfdx2nNfOog6K/Pi/qDrtxA0sn0K7gU5U2YIHU
+	 1O0imlpuySHDHLD7LAj5UjPHzGEAigkHKGNf+s56IobfXlHqktwEfx7HWJWsDvj/+Jw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792629020;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792629015;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=8pNHSkapv5Hh6MFB+4Zfh9P0PKU9Hwu71Ww3kljWSoU=;
-	b=FO5moAbEh8mmolUha1pueaR32HSwrR9jLY4KZM41iOVPpDoKlkag0zXuiR6G34jk/bkn
-	 JCXTPNPmbHquguqi0USZ8/fyD8Azw6BO0j7CVTGcy8ujC/jLKwy1yrfHVFbeIC/OZSqj2
-	 41pbahL8siJKVUcOrNt/R+94WH+Pc3GvfYkkhr0aXFG36VZwns3bFZgI8DqZMJZA8jNv+
-	 wWyEzp63gjdY+5B4GcR6zWNBBb8gXM4GTGlYHO7qODAJdleA97QRrHqLaLz+17HdMR3sa
-	 v3TFmYgJA+CCIc3PG1SEyNkkCi57yId6v0oA0QxLULU+JlrpWsgelCg8tntA9lOVtyA==
+	bh=3mJzhrpoxuYrCmmHFAca45B8JBZuEIGuuX3tUAue25w=;
+	b=AQZc1KyJTHGRJ9NRBHmGlM+M8NDDZjM1nId/0gEk7Y4k7sXX9Kg+j365T6PIYSjPIZ+o
+	 bJqlAebmtRpXTxfqdS7Ke/bd0sylfR3i7yPT33SYr+if/ehIsnJi2fLEYo4R9gjWYs89g
+	 lfiJUDSViMBVbQqMuFAn4+xuvCRl0k/lEXbQmAFTglDS02KEJxY0ojFhRMl3KOojyhQr6
+	 ByFSE4SBQHD3eWbWO+ewfKzxowlKZg1+R+R10jQFEDRcaOEVhz3fKHBdrL8fO2u1NsFJE
+	 kEhba0f/GrSkssy1rESLCC5JB4DBybYByJmdYaP226SQPu6mlZ/wOtswtaui6yLnAvA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jWRsxr+z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HkLWnI79;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B5D606A339
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 00:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7CD606A327;
+	Thu, 22 Oct 2026 00:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jWRsxr+z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092A21F000CA;
-	Thu, 22 Oct 2026 00:30:20 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HkLWnI79
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E8E1F000C1;
+	Thu, 22 Oct 2026 00:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792629020;
-	bh=8pNHSkapv5Hh6MFB+4Zfh9P0PKU9Hwu71Ww3kljWSoU=;
+	s=k20260515; t=1792629015;
+	bh=3mJzhrpoxuYrCmmHFAca45B8JBZuEIGuuX3tUAue25w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jWRsxr+zLKzt7XBLSobKNzmkFtzJ5fORq2o/RidN5BH8Z6pPwjucJiPHMdiZQUNsQ
-	 rAbL0YAuKamGhYZgpJwm5s+zMv93m4SVIjIgYlEfACyVo8XHSxLyss035VEhSFmEAs
-	 uKgyZ3AZYHMGqp+xki/rxp8VSAzGT+0vHOKjiHPIioqIvbPETU6YJC4i6DuPZ9qb3/
-	 7neD8dGZ/FNuPeKkriE1TuIATv46QS90IF6NUSzqpuNCZwg6ddyTOBTSf0LtH5kAaq
-	 ///9UGOPjti2Bh4RZZJnNCbxz8NJV5Dx1yxAKhImlzkQFYK0pHRgM2XjqTR2z+w5ld
-	 /tCQ9dq+5E5FQ==
+	b=HkLWnI79onTJmrX11iYHjKPBesf/qdh667Qd26q0HmwkwmQ0T+S1WE1MtGO9EEvUC
+	 JpKkBLPGiRBghm3U5cy1jJ0UoueVLHDEehor59RQ0wai6LJz7vcWWpiS94ajUkaj2D
+	 qB7Ej0f/cI1s1cDxOh6KfQDWeEvSfQyojXEfeXpJM+zlt+NNrx3AMMCqq7cqKwm58r
+	 EHx/hi7qV1m5wU/8SD+STMKaGaj3r/Ih5/xaoP7r4ch5bcARY4rPnrmWprjWBaMT3t
+	 tlwul6FmRCokTV06wYrHCNOf91JGh5aqVgAwcWLyGOIDcVlZN/sdymvKSCrGjeJY3A
+	 9pDel8g7fV6NA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F13EA380A963;
-	Thu, 22 Oct 2026 00:30:19 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F147A380A963;
+	Thu, 22 Oct 2026 00:30:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,39 +54,40 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] virtio-net: fix frag overflow in big packets receive
+Subject: Re: [PATCH net] pppoe: delete session hash entries by pointer match
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179262901854.1378903.15801370235793249806.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Oct 2026 00:30:18 +0000
-References: <20261020032108.81879-1-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20261020032108.81879-1-willemdebruijn.kernel@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, mst@redhat.com, jasowangio@gmail.com,
- eperezma@redhat.com, willemb@google.com
+ <179262901348.1378903.6285875327252867524.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Oct 2026 00:30:13 +0000
+References: <20261020092118.47416-1-qingfang.deng@linux.dev>
+In-Reply-To: <20261020092118.47416-1-qingfang.deng@linux.dev>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, kees@kernel.org, horms@kernel.org,
+ manizada@pm.me, ericwouds@gmail.com, nbd@nbd.name, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 19 Oct 2026 23:15:50 -0400 you wrote:
-> From: Willem de Bruijn <willemb@google.com>
+On Tue, 20 Oct 2026 17:21:11 +0800 you wrote:
+> pppoe_connect() copies the requested PPPoE address to a socket before
+> attempting to insert the socket into the session hash table. If the
+> tuple already exists, __set_item() returns -EALREADY, but the copied
+> address and ifindex remain set on the failed socket.
 > 
-> In big packets mode with guest GSO, add_recvbuf_big() posts a chain of
-> MAX_SKB_FRAGS + 1 pages. page_to_skb() copies only ETH_HLEN of the
-> first page into the linear area and adds the rest of that page as a
-> frag, then one frag per remaining page. A device that fills the entire
-> buffer therefore causes MAX_SKB_FRAGS + 1 frags, writing one
-> skb_frag_t past the end of skb_shinfo(skb)->frags[].
+> Closing that socket then deletes the existing socket's hash entry
+> through pppoe_release(), preventing it from receiving further session
+> traffic. An unprivileged process in the same network namespace can
+> trigger this through a duplicate connection attempt.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] virtio-net: fix frag overflow in big packets receive
-    https://git.kernel.org/netdev/net/c/b0e4ea3a0cd4
+  - [net] pppoe: delete session hash entries by pointer match
+    https://git.kernel.org/netdev/net/c/b5b8c81836e2
 
 You are awesome, thank you!
 -- 
