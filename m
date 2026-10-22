@@ -1,100 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792660053;
-	b=mdOHoUgLqq3s76PGiJ64oUECtbq7iCRK4F01Tstz3dOU8V8L+96hgxABDgpFerqs2O81
-	 XAC49XjMEpsjrHMZMeogjnncFsKPYJyGXa7T+TtR3tAsP1+Oj/AbBTHpolhTOg59dl3Ec
-	 2zZp9rz49oUlsXLS2U8K2byNbLR4qFb78EO425p5TeRfqiT1NcdpwuI8MFMetAsjaOG8L
-	 Hr7JSkUAreL5pnMpjhW2r12UwswoUsd8koHXvWa4oimpZ3Kp/GSM68nZCJkuFG3VQ7AiC
-	 qaVnVkolrhFpxUqeDR331tiTIl3amnsjaC6zJX3uW/E+wOApbnpKnsrAK8+SBpeJUng==
+	t=1792660111;
+	b=q+Cw/NDrRE7hkNYB9cASlRI8d5oWlhbeIX1MMhrubbCj4LJppZQqQHIru3ZaeJpOtH61
+	 grr00GgVqoKNnxkRV4sTzi3PV0s+J6BfmTvWcIWIwcZEDW052+Yt0eUGLjIeBHw9mYwiS
+	 CBvsVHu4Gs1FUb9kKQqSPkFu9vh0lfNfSsWj5DwgVK0dCusJ4y5mMu1jV2JEu1Y9/IvLO
+	 VQW8zD+i2k8Chcl95cRUqpe3xtBYJt5jj9hBUhuKl21BG379qXUqumEWWAa01VFIUNh0O
+	 NR5lVwSN8pNx9AJ9b5zmsoWF5RCbQJnpp9+goijttOG+klu2Y4fwy/eEdV5UkDOCZ7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792660053;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792660111;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=9URtOwr/J7TkzlGgRbYmOknzNQNn+Yi2oYcy4B3bLaI=;
-	b=ZzCOuAjCpqv08CGF+zpoLaNt7bB93y4/CDFXjYYXuXS7OPAx//SPqn2GPq3I5MVbRe/u
-	 4cf2SZsMgjRnd2Lf6UguXfdo3txgs2/yAT7+LYnefFywG2LSe4luplB2iCA93AC7mxijB
-	 F7yqk4lBiGZFoE8EEIZxTe+YrE11bqN4I01MB4ugnuEm2o0X3dLAxgZmdO9nGRW0fF6My
-	 hk/qwS5Q4qXOLMT7a/iYqL5rWnzwHCEsfKAzvUqnDEOY+Fhow9uP7I7R52tYC8tRahar8
-	 aPb9XO1ylET9yE85GiH8fWnGBY9w7V62mOjiFWDa6qcE3uhn+kUFQWsLlKuzGXIwSJw==
+	bh=FnPAv4piVPBvJnqlLGMEnfUI5qWz/TzWKkbWb8G7NQ0=;
+	b=SGHi/mu5Ani3CDg/WFm0KglTDjEdJ48yQczrUbwv3FFIGU5Oy/QsFc1qtgGH8j/pTy+l
+	 G6o8bFQ38T8toQHqVzzlMpqSfqRTeWcMU9c6B+35Htz/dLC2+9hWiM5nqeb6gquTfNiyt
+	 V/I9sCCB8ejuxBrbjVkycINFNzDJZaByYKHDkQbVV0dV6SBLegNkFgK+4YRY7Ztq5VA36
+	 FW61fhU2u3oFZwGV2+0rMUFvSUqmVTSywQ/n1yNC+Mw7DP2pK/oqwD9iKriE1T1e1WY4B
+	 PeDVakYGmQT5uBut6IutgUekOE2HVuR5iSHT+r7PNl7W6oHuSD7paesrVSjOHfthzFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HVZKXgHD;
-	arc=none smtp.remote-ip=74.125.82.45
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E9B606A320
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 09:07:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20E9B606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ve3U1wmN;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F6B606A31A;
+	Thu, 22 Oct 2026 09:08:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91F6B606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=HVZKXgHD
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-1438d9363fbso575264c88.0
-        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 02:07:32 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ve3U1wmN
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792660052; x=1793264852; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9URtOwr/J7TkzlGgRbYmOknzNQNn+Yi2oYcy4B3bLaI=;
-        b=HVZKXgHDanhShJw8E0d4K0w2QBiQl9RZpmkaE7rsFczVEtf9PEZWSAU8H7xlKk/bCI
-         Y/H3DcMjWnGeNo9exCA77hEiGIqgV1+Tv7vS09h9WlWiSXoq4Id4z8VIUn/IttRTk+5W
-         ZjKKyzsFnrFK0TVXtXlpuwr7QHLkMrbDfTo1fcFvApSf+xqBkOD9IbTNgF0ifBFq64YZ
-         fVmFJ/Lfe4Fh7HL9tcPQ3bwmdyaEooLhB8O3d3otW64v4Wzj93AJ9OE6Z5F+v7jscfAY
-         pXRGWjOB9VbCdSvhkekbX85xNroMDOjw+Tefs5SrqMhGSekFBqLslmeWArJKKFchRT3h
-         efZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792660052; x=1793264852;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9URtOwr/J7TkzlGgRbYmOknzNQNn+Yi2oYcy4B3bLaI=;
-        b=2sFM6OawzdocgcHpuTAudLR8OH5mUTOhGFy+eFsqHC2nDIRoWPsY4gLBnLFi33wY3r
-         mifhSiT3ZacvFsnyGldkL4GWHyJ+nkVEbl3AfcG5JwDJAXoN+LOS5t7A1zErs7oICbE/
-         63G3u8YnpcaQfFYxdSvr24k8xZoTio9VX0uhrODe/JrfDRy5LMELRUaknyLQJW1Z+4tD
-         yaMa7NW0XR2UUWD0UnsW64lloH6mMvl0W6Ecqfl2unKO/HbZ3qQEmjI9MLqQrpd+Vrxq
-         pKUqI3c/U11mA47tsUkZD7ilZyYpVc4nd1nwTU4n3xzFcJKdObM2OxEtnCcJK6QUcqnK
-         v0nQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzRA5wL3Hh4TQH+EqDcqh0bdRFpveRunCQ5sdtB9tjgqmjceU8rlCCM2LdNUn69RSFW+lgRZxA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJrJ+laZ5x/xeg110ffJwPn17kxwE787K8P95QE9fIOUzgN+qgL
-	bCNHW9FA/WiKOCDIEqzD9gWESlEhRrLMWb+e6Cy8QUvUhaHvCSbkQu+M
-X-Gm-Gg: AYBFou2ewz5Xylsrnm/eVgeo4IhpEL093+N/OA8V2wJvrJTsoJ/oNpM64K7oc33pCiU
-	lTsWVORQmP3J+wFSzjFTX2NKcFJKb4pNHnxyAHi3saOyY4+F2mKq6oAZA3l2lQ8qn0oxGemKhuH
-	ypLcFxu5JFqp1soCHdYPU7fGXMhG/5UOCcNGe2xdrJ3JyRgd+UH0N7ZXSGuddCTvVGSLRvyq2s+
-	GORqRhKf5J7qEjrxOQUG1eKdnHx3DqsfTtF1GMI6+tC/RdNzsjZMTqbkTjBowmcqYEMvVAIboJS
-	93NtDkc5mJyDXX6GUyWI2Cj2wgh8C2Q1W6vXY3DGgNffyI42/H9xd++YrYdmSzrMlS7/GycX4dr
-	nBtespiSbvH8vPqMRJaEzs22Wax1amwdQDakvkjhe/NA4Gs1aspXNFjARTT61lQbeZEe8WsbtB0
-	B1WFP7jKZtRu4jFHJWfYLQ7PObPLuf3ejnX+kx7EN8svXjqefqQyFTeeozmdLR9GBdGXv8cmXVe
-	l17IKP2qzDMwtdjgdfYcrAwTJ7soA7Zd5eE0VZQvGvQawlQk0GkAtFvwK5fUS0MVEdgWM9PKHII
-	oTuT3IVWn+Ulp5+f6RY=
-X-Received: by 2002:a05:701b:280a:b0:14e:61bb:ec3d with SMTP id a92af1059eb24-192f03cb940mr2225519c88.16.1792660052045;
-        Thu, 22 Oct 2026 02:07:32 -0700 (PDT)
-Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-190e29381d9sm11175412c88.18.2026.10.22.02.07.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 02:07:31 -0700 (PDT)
-From: Cheng Yongkang <teel4res@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] net: bridge: failed offload leaks busy hwdoms and TX refs
-Date: Thu, 22 Oct 2026 02:07:23 -0700
-Message-Id: <20261022090723.3644079-1-teel4res@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=ve3U1wmNKvAKWU8zgJGJIVIotNyD/lmrVRwuEeNGTi8Qrgi4pp9P8wnZHw1xAjOyM9hJhEECm+yr0
+	 1kr2K6PGw2urpF6Do13YE/mTH5vVwb+MSOjbeskuI19qw/ED2pdHQXVrYplY4YdTnwigKH87Aj6obv
+	 2/UfiKKDdgfaiTCU=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16ad9d284a4a-0a136;
+	Thu, 22 Oct 2026 17:08:21 +0800 (CST)
+X-RM-TRANSID:2ee16ad9d284a4a-0a136
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66ad9d282d89-13201;
+	Thu, 22 Oct 2026 17:08:20 +0800 (CST)
+X-RM-TRANSID:2ee66ad9d282d89-13201
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	yana06070@163.com
+Subject: [PATCH net] macvlan: fix passthru promiscuity accounting while down
+Date: Thu, 22 Oct 2026 17:08:09 +0800
+Message-ID: <20261022090809.12019-1-yanxia@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,55 +74,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi all,
+macvlan_changelink() adjusts the lower device's promiscuity count when
+NOPROMISC changes, even if the passthru macvlan is down. The reference
+is acquired in macvlan_open() and released in macvlan_stop(), so a down
+interface has no reference to change.
 
-br_add_if() can fail after a switchdev bridge port has partially
-offloaded.  For a bond over DSA user ports whose LAG members report
-different switch IDs, the first member successfully reserves a
-busy_hwdoms bit and increments the tx-forward-offload static key.  The
-second member returns -EBUSY, which aborts the upper-device link and
-eventually frees the new net_bridge_port.
+Clearing NOPROMISC while down leaves an extra reference after the next
+open/stop cycle. Setting it while down can remove a reference held by
+another user of the lower device.
 
-The br_add_if() error unwind does not call nbp_switchdev_del() for this
-partially offloaded port.  The reserved domain and TX static-key
-reference remain with no bridge port owner.  Repeated failures consume
-BR_HWDOM_MAX domains globally for that bridge.
+Guard the count adjustment with netif_running(dev). Keep storing the
+requested flags while down so the next open uses the new setting.
 
-Observed on Linux v7.3, commit
-08ab31164c55f20c7a2653de3186ae333470e2c1:
+Comparing changelink with open/stop exposed the unmatched count changes;
+the same issue was also described in earlier macvlan reviews. A netlink
+test on UML reproduced both DOWN cases before the fix and verified the
+expected counts afterwards. Repeated flag updates, two open/stop cycles,
+deletion and bidirectional small-frame delivery were also checked.
 
-  before attach:        busy_hwdoms=0x0, key count=0
-  after one failure:    busy_hwdoms=0x2, key count=1
-  after three failures: busy_hwdoms=0xe, key count=3
+Full x86_64 builds completed with WERROR disabled for allmodconfig, and
+WERROR and KASAN disabled for allyesconfig, including the resulting
+dependency changes. Neither comparison showed new diagnostics.
 
-After every failed RTM_SETLINK, bond0 had no bridge port and
-/sys/class/net/bond0/brport did not exist.  The bridge port list had no
-owner for the reserved bits.
+Fixes: df8ef8f3aaa6 ("macvlan: add FDB bridge ops and macvlan flags")
+Link: https://lore.kernel.org/netdev/179170088566.434549.4699134797461783473@kernel.org/
+Link: https://lore.kernel.org/netdev/20261016003009.2692872-1-kuba@kernel.org/
+Cc: stable@vger.kernel.org
+Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+---
+ drivers/net/macvlan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The target bridge and DSA code were unchanged.  Because the VM has no
-physical DSA driver, an in-tree dsa_loop build was exposed as an
-external test module and a second switch ID was supplied through the
-normal DSA identity objects.  The reproduced path was:
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index afad90b..a48c9e6 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -1664,7 +1664,8 @@ static int macvlan_changelink(struct net_device *dev,
+ 	if (data && data[IFLA_MACVLAN_FLAGS]) {
+ 		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+ 		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
+-		if (macvlan_passthru(vlan->port) && promisc) {
++		if (macvlan_passthru(vlan->port) && promisc &&
++		    netif_running(dev)) {
+ 			int err;
+ 
+ 			if (flags & MACVLAN_FLAG_NOPROMISC)
 
-  br_add_if -> NETDEV_CHANGEUPPER
-    -> dsa_user_lag_changeupper
-    -> dsa_port_lag_join
-    -> dsa_port_bridge_join
-    -> switchdev_bridge_port_offload
 
-The failed br_add_if() unwind must fully undo partial bridge switchdev
-offload before the port is destroyed.
-
-Candidate BR-030 is a distinct packet-suppression bug caused by a
-self-match and hwdom 0; it is not this resource leak.
-
-The module sources, harness, and full logs are available on request.
-
-This was found with AI-assisted source analysis and fuzzing; the exact
-resource progression was reproduced in QEMU.
-
-Thanks,
-Cheng Yongkang
