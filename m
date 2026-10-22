@@ -1,59 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792667677;
-	b=IjpYKOIsT2J2diZLeGMMN/m/Tv+hHiD13fFCX0E18zRKJAKK+6PW/07tE7t6TboKNscZ
-	 1y6h+E5O9YzPntLXHX/brWbjlNZAB4DTrM0XSvXbcwQGE6KfbyyxMNjk8ver+rp4djxlE
-	 SjMv+dhbFlDW1Tm73oTC3Nhb+xJmvmvb4KK9YxhIAThLcwUtLJeyyfpcaf9+UxWg/+IO6
-	 w7ZWkokGpnpKSSbdpEYh/C4RyFSL/6dIHhfpjKxCuK0G8qG9EcuBIlhpdBrRqmRnGA8g4
-	 uMmCKgzB2f5ZhdwI4D5WmscDMki9rBF1Pv3OH1WH2doKrNt1PIukkrJNKIqUkbKg5zw==
+	t=1792667765;
+	b=2ovgFgGok0lTDDPPDEyehWpacqLddKcMmH7cDGHQUR1jKlVfsDCKHE0BH9ARXwKfdG/c
+	 VNynUhbd+7WKtM/s8V5gj0onxnKSmrHigfrIfIr5vG5V5PDDG6oE3eU+0BpnIx41JpD/Y
+	 GND0KhggElYbfHUP+sbCeKV6lGBgI5qfs6R+1ViOAgxGep4S8DJ5c5j0Oo6+EzukHSgLC
+	 nvq7fCCbGk9pxNTF2JM2dNCgLFyQVLy81aZMilnlY9C+rPsF12XDQkJkblfxV1rMFTsFP
+	 r16xa96BS+/CmPnH2ZzzNoLdl4prLOL22CRvUaHLcVO+6uvg7A39T0nP73moWZ1K81Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792667677;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Ths0YCGvNmn17Y9VFGEfg1JvJ+KX1P+SPBSIpfosUZQ=;
-	b=1UoWfakgnG68nN92FMv1DwfI4rUbpgjaqPmf5ZHZZHdsmxmDxw5vGvbVQD8LZF85nsu+
-	 PFcipMBoRjgr0rcBd1XzRgs/5zVRGQdSN9ho6cXX0xrW/d785Y5uwaDMp5sd5V91g1sL9
-	 0HLrtgGzhs+ZkJ0kFgEuY/hnxfgzX9DB9ELkisdfiAk56usPLR1qgrt+WJ1iVKCKu1TJB
-	 aUXD73P+P6shwAW3l7sSYPSn2CEo8mO/F8+AoLQxE7PhVvJgsGIlmUOk4sgTQ6pYWxKSA
-	 IH0IswATDY0w3/tWJc5oD+u4NJZJgRik6BbNOLYEawjz66kejoOFBxrJ23MvribAe7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792667765;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=BrtZdZuRvHE7UaprIXjohtPs6I5PYcsDi23QTQ2VB7k=;
+	b=uMxdbWv/eVL8Pe7UJy0065oIsh1PWkha4mucG4mI1an9FWwJ75/hmTvmnzZpcibjFalk
+	 jbOCybGzp9Zwn64g4YbzSslKjP/hr9QcVZK7M+rsUTBS3o5MdJumPZbyXIM1GUyJ+WBok
+	 yayUFmC3Wi65wx2HxgqACvQrgiXMa43az1zPcSy64lLvLGafQsG4oVHWg4MBzZkJo6wfV
+	 PR3niRc2b7BbqJbRx8FbFWCLM1H+75qCLSmbroSMf4SwdcZMC9jsoLg3JIVpa4iJehHQo
+	 EAaj+Np1K6XkFMx0HDk5HSj90n7VlgWNoxa0n1oCvr5VO63Nw11UYWsy0BlyX6N+yLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T9OBLRqz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=A2rz3DNx;
+	arc=none smtp.remote-ip=209.85.221.44
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE83606A31B;
-	Thu, 22 Oct 2026 11:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF69606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 11:16:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FF69606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T9OBLRqz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340DF1F000C1;
-	Thu, 22 Oct 2026 11:14:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792667676;
-	bh=Ths0YCGvNmn17Y9VFGEfg1JvJ+KX1P+SPBSIpfosUZQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=T9OBLRqzx7s5E6EcZruwFqgER8Y6DCkvmdHzGPOOw5i60wZsSP1nrVbYcY7eVp9+G
-	 gs+DAFDV6Djvhs7sMA8Yt3HK3V2tRjvmM+k7CduSqjgX4sCFijdpMgenEZSuGOatQT
-	 +UU6AFWhaRTLA1KX1FE+OCxRQiG4piZZrv0zUvXCMBCcB7hlk5Gx5dZ/WIMgzRYmCO
-	 76AEXpCRns5g9sbfEsnSnEYM5fRBwtb7ohCLu0ywDV9703j6nl/yxS7bqGt5LIDDpd
-	 SpjVgICbGiz26+Gf0hnfpdn83i7AB0wZdl9meqNUy8nJkBkqNIBom45Mk1zBeJpTkl
-	 yxNSkmdcWkAsA==
-Subject: Re: [PATCH net-next 02/11] can: skb: make echo skb freeing safe in
- any IRQ context
-From: netdev-bot+sashiko@kernel.org
-To: mkl@pengutronix.de
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, mailhol@kernel.org,
- stable@kernel.org
-Date: Thu, 22 Oct 2026 11:14:35 +0000
-Message-ID: <179266767571.3135.16315389281254713343@kernel.org>
-In-Reply-To: <20261021102756.1900679-3-mkl@pengutronix.de>
-References: <20261021102756.1900679-3-mkl@pengutronix.de>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=A2rz3DNx
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c5358fc28so1453738f8f.0
+        for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 04:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792667762; x=1793272562; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BrtZdZuRvHE7UaprIXjohtPs6I5PYcsDi23QTQ2VB7k=;
+        b=A2rz3DNxOwpE516/gjaffiFW2OJnETBppxpXTf4DPLWLfx06LkqXLJwSbh5QQ+T6Mc
+         NlJdvi0RQIwBoacbSuY18ZfApEzw3ubQvSGBmyYOvSxKod9IGl9rAC/y/eBfi9QyZfMm
+         9ViZeKOXzsVWsFARih1caoOSPo1ARCS6eoIiFKC3UJQMntv7eLMeKF9tHSMUSLzJ1Hcs
+         KswjoysneqomW7hLU+46Wu7dhbFBcFMuaMignWAzWnxewBWd+sl7LwlNxTJcxZbiHV5r
+         2aRpidu9HblJIYa5si0diJJGMGU4bTw+gTDM6y+FT2WAnB1NMBhZBQjqGqKpOcO6g2nw
+         XvAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792667762; x=1793272562;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BrtZdZuRvHE7UaprIXjohtPs6I5PYcsDi23QTQ2VB7k=;
+        b=2JkpB+QBMXqZUMFclwfnZHt1hMA86eJfja+QFIgQISZ1ocuhiT/VNVX/h8Eswf2ON+
+         59cAb+3mYOr4lg7xOphbn4Rr3Kbx2kDTtAK1+wWo91OuO5WLIyx1PTR5FeyPUJY1h5r3
+         zxh8U02jOE+gH0uyuGlxdMHVVB4lOUoz2Rzu38+QJEyIZcti85HFzHzn7rpyUu5xejlH
+         YbraHeI6HuvETttk1wihDUsIk2vnvlzMA4tGbWLI6k1BmjM7WAjvQjHY8ZuApIhzV3SZ
+         9yOE23tYIw2vJNe4lFRDPf1d2DkypAWBpC0cHWMBdy/54RqoR4TpnGVMGO17d5qqxImL
+         4nIA==
+X-Forwarded-Encrypted: i=1; AKwUvBy11IXJKqLrrUQoTGmn3bIkZiNpaxUsAOqpQh2W41Av8t8LAcU1duW2NB1MgUohlYBEnrLJxT0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJLlo4k+meQMqX6YDO56IYvJtUHKXDbyf9GMfDI/eeWDXTwtFFp
+	s1NvL6TROssX394Y2CCQ4U+4b/DfIMGk3lKnSEKj6dJyHRnD3EpMtaw6
+X-Gm-Gg: AYBFou0PQqwIJl/J+E3akUANhnMn/ypiaqEso+awxzNz86eBsQt5sH5a2ayMOdHqxRt
+	FpCGgSas8e8b1NNBQBXI1uqOCGej4tWSS7c6ihv5b2EKOM5Zq1B7ri24LLW5ylN1m8uqdPStROs
+	BMY44cMgbv+/XQE8QXRDmArGCR0GggdAWAt0uN2q5BMhy+xquBYNwXdfLwo+PPxBXPsIUVrw+81
+	f5JC+U9VmvIHoeR1Q/3mKW2HXknuHDvuQG2j9clAWjI4V1c/TaURttzkgPzCsUpHhbaSaNsNhwG
+	9bUq3nllER33vb4Lu2nh4scrgIz0LsN8xUwnZRKOFAzH9UgdYHXhhX3eHmo7dfNdynvH0fYXNN2
+	FNmKQDEfaaxmHC8o4HyVRWNRWLbWdW7OCyqtXUdODXAQW8+V1Th2Cf4gyV97ARBtYBpEslP87Lz
+	Y3KyTVTqrNtoVF4OZWdCO6rJ31iXN5rXcymmY4QuYU09citlZNWaI4wfAEVyHKFMC1U1iEj/xdH
+	jMIrg5XSHcNb9jPnaqVDWCJR8FdHops+t8VjWqmUFparyTxMRmCt7b1uvN2Ic1iaYfj84g2xqXE
+	5yIUEQk5h/BYI63KOup17y+UUoSpWoIw3VGVGZ2dfFm32LkYoyhUSs3+zhLcXbCrtLowFJuY
+X-Received: by 2002:a05:6000:1861:b0:48e:cd3:b3ec with SMTP id ffacd0b85a97d-48e264bc4a3mr9591983f8f.28.1792667761957;
+        Thu, 22 Oct 2026 04:16:01 -0700 (PDT)
+Received: from emanueleg-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25828c6dsm12536753f8f.24.2026.10.22.04.16.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Oct 2026 04:16:01 -0700 (PDT)
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+To: stable@vger.kernel.org
+Cc: Breno Leitao <leitao@debian.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	netdev@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Subject: [PATCH 6.12.y] net: call getsockopt_iter if available
+Date: Thu, 22 Oct 2026 13:15:21 +0200
+Message-ID: <20261022111535.528099-1-ghidoliemanuele@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,131 +103,184 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+From: Breno Leitao <leitao@debian.org>
 
-Low priority / nit picks for your consideration:
+commit 5bd0dec150f56b6307d599132dcb7c01007bbecc upstream.
 
-- [Low] After this patch, the comment in virtio_can_start_xmit()
-  (drivers/net/can/virtio_can.c) still says "can_put_echo_skb() already…
+Update do_sock_getsockopt() to use the new getsockopt_iter callback
+when available. Add do_sock_getsockopt_iter() helper that:
 
-Pre-existing issues:
-- [Medium] At this commit, can_put_echo_skb() in
-  drivers/net/can/dev/skb.c handles skb ownership differently depending…
+1. Reads optlen from user/kernel space
+2. Initializes a sockopt_t with the appropriate iov_iter (kvec for
+   kernel, ubuf for user buffers) and sets opt.optlen
+3. Calls the protocol's getsockopt_iter callback
+4. Writes opt.optlen back to user/kernel space
 
---
+The optlen is always written back, even on failure. Some protocols
+(e.g. CAN raw) return -ERANGE and set optlen to the required buffer
+size so userspace knows how much to allocate.
 
-can: skb: make echo skb freeing safe in any IRQ context
+The callback is responsible for setting opt.optlen to indicate the
+returned data size.
 
-This patch replaces kfree_skb() with dev_kfree_skb_any() on the drop
-paths of can_put_echo_skb(), can_dropped_invalid_skb(),
-can_dev_dropped_skb() and can_create_echo_skb(). After a successful clone,
-can_create_echo_skb() now releases the original skb with
-dev_consume_skb_any() instead of consume_skb(). With these changes the
-helpers are safe to call with hardware interrupts disabled.
+Important to say that  iov_out does not need to be copied back in
+do_sock_getsockopt().
 
-Link: https://patch.msgid.link/tencent_E84809CF236D0137885E7E4E4D58340B3208@qq.com
+When optval is not kernel (the userspace path), sockptr_to_sockopt()
+sets up opt->iter_out as a ITER_DEST ubuf iterator pointing directly at
+the userspace buffer (optval.user). So when getsockopt_iter
+implementations call copy_to_iter(..., &opt->iter_out), the data is
+written directly to userspace — no intermediate kernel buffer is
+involved.
 
-> diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-> index bc0787535b524..46c151eece8f7 100644
-> --- a/drivers/net/can/dev/skb.c
-> +++ b/drivers/net/can/dev/skb.c
-> @@ -63,7 +63,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
->  	    (skb->protocol != htons(ETH_P_CAN) &&
->  	     skb->protocol != htons(ETH_P_CANFD) &&
->  	     skb->protocol != htons(ETH_P_CANXL))) {
-> -		kfree_skb(skb);
-> +		dev_kfree_skb_any(skb);
->  		return 0;
->  	}
->  
-> @@ -91,7 +91,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
->  	} else {
->  		/* locking problem with netif_stop_queue() ?? */
->  		netdev_err(dev, "%s: BUG! echo_skb %d is occupied!\n", __func__, idx);
-> -		kfree_skb(skb);
-> +		dev_kfree_skb_any(skb);
->  		return -EBUSY;
->  	}
+When optval.is_kernel is true (the in-kernel path, e.g. from io_uring),
+the kvec points at the already-provided kernel buffer (optval.kernel),
+so the data lands in the caller's buffer directly via the kvec-backed
+iterator.
 
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. Since
-these error paths in can_put_echo_skb() are being changed anyway, should
-the out-of-bounds index path free the skb as well?
+In both cases the iterator writes to the final destination in-place at
+protocol callback. There's nothing to copy back — only optlen needs to
+be written back.
 
-At this commit that path returns without freeing or storing the skb:
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20260408-getsockopt-v3-2-061bb9cb355d@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+---
+Clean cherry-pick of the upstream commit, no changes. Needed in 6.12.y
+only.
 
-drivers/net/can/dev/skb.c:can_put_echo_skb() {
-	if (idx >= priv->echo_skb_max) {
-		netdev_err(dev, "%s: BUG! Trying to access can_priv::echo_skb out of bounds (%u/max %u)\n",
-			   __func__, idx, priv->echo_skb_max);
-		return -EINVAL;
-	}
-    ...
-}
+v6.12.114 picked up commit 41fbf726915b ("net: add getsockopt_iter
+callback to proto_ops", upstream 67fab22a7adc) and commit 22ebe6ab0b67
+("Bluetooth: L2CAP: convert to getsockopt_iter", upstream bf01627cc04b)
+as dependencies of commit 3af72bf8f73c ("Bluetooth: L2CAP: access
+chan->conn safely in get/setsockopt", upstream ca2c4c264986), but not
+this patch, which is the one making do_sock_getsockopt() actually call
+->getsockopt_iter().
 
-The -EBUSY, -ENOMEM and IFF_ECHO/protocol drop paths all free the skb,
-and callers depend on that. For example, virtio_can_start_xmit() does:
+Since l2cap_sock_ops no longer provides ->getsockopt, every getsockopt()
+on an L2CAP socket at SOL_L2CAP/SOL_BLUETOOTH level fails with
+-EOPNOTSUPP on v6.12.114. As a result bluetoothd never registers the
+adapter and bluetoothctl reports "No default controller available":
+BlueZ's btio calls getsockopt(L2CAP_OPTIONS) while bluetoothd sets up
+the BR/EDR ATT listening socket of the GATT database, and the adapter
+is dropped when that fails. Our CI sees this on every Bluetooth-enabled
+board running v6.12.114 (i.MX 8M Plus and AM62 based, BlueZ 5.72),
+while v6.12.113 was fine. The same regression was reported with an
+Intel AX201 on Debian 13:
+https://bugzilla.kernel.org/show_bug.cgi?id=222177
 
-	err = can_put_echo_skb(skb, dev, can_tx_msg->putidx, 0);
-	if (unlikely(err)) {
-		/* skb was already freed by can_put_echo_skb() on error */
-		...
-		goto kick;
-	}
+L2CAP is the only user of ->getsockopt_iter in 6.12.y. The other stable
+trees either did not get these backports or already contain the
+upstream commit. The patch applies cleanly on v6.12.114.
 
-Won't the skb leak if a driver passes idx >= priv->echo_skb_max?
+Tested on a Verdin iMX8M Plus with our v6.12.114 based kernel plus
+this patch.
 
-The -EINVAL branch comes from commit 6411959c10fe. A later patch in this
-series, "can: dev: can_put_echo_skb(): free skb on invalid echo index",
-adds dev_kfree_skb_any(skb) before the return -EINVAL. By the end of the
-series, every return path consumes the skb.
+The root cause analysis (comparing CI logs, reviewing the
+v6.12.113..v6.12.114 changes and reading the BlueZ code) was done with
+the help of an AI coding assistant (Claude); I reviewed the analysis
+and the backport.
 
-[ ... ]
+ net/socket.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 51 insertions(+), 3 deletions(-)
 
-> diff --git a/include/linux/can/skb.h b/include/linux/can/skb.h
-> index 5d27843862fca..87ace09c0d8bd 100644
-> --- a/include/linux/can/skb.h
-> +++ b/include/linux/can/skb.h
-> @@ -78,12 +78,12 @@ static inline struct sk_buff *can_create_echo_skb(struct sk_buff *skb)
->  
->  	nskb = skb_clone(skb, GFP_ATOMIC);
->  	if (unlikely(!nskb)) {
-> -		kfree_skb(skb);
-> +		dev_kfree_skb_any(skb);
->  		return NULL;
->  	}
->  
->  	can_skb_set_owner(nskb, skb->sk);
-> -	consume_skb(skb);
-> +	dev_consume_skb_any(skb);
+diff --git a/net/socket.c b/net/socket.c
+index 723bc3a1ba5c..b8d662e19310 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -77,6 +77,7 @@
+ #include <linux/mount.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/security.h>
++#include <linux/uio.h>
+ #include <linux/syscalls.h>
+ #include <linux/compat.h>
+ #include <linux/kmod.h>
+@@ -2345,11 +2346,45 @@ SYSCALL_DEFINE5(setsockopt, int, fd, int, level, int, optname,
+ INDIRECT_CALLABLE_DECLARE(bool tcp_bpf_bypass_getsockopt(int level,
+ 							 int optname));
+ 
++/*
++ * Initialize a sockopt_t from sockptr optval/optlen, setting up iov_iter
++ * for both input and output directions.
++ * It is important to remember that both iov points to the same data, but,
++ * .iter_in is read-only and .iter_out is write-only by the protocol callbacks
++ */
++static int sockptr_to_sockopt(sockopt_t *opt, sockptr_t optval,
++			      sockptr_t optlen, struct kvec *kvec)
++{
++	int koptlen;
++
++	if (copy_from_sockptr(&koptlen, optlen, sizeof(int)))
++		return -EFAULT;
++
++	if (koptlen < 0)
++		return -EINVAL;
++
++	if (optval.is_kernel) {
++		kvec->iov_base = optval.kernel;
++		kvec->iov_len = koptlen;
++		iov_iter_kvec(&opt->iter_out, ITER_DEST, kvec, 1, koptlen);
++		iov_iter_kvec(&opt->iter_in, ITER_SOURCE, kvec, 1, koptlen);
++	} else {
++		iov_iter_ubuf(&opt->iter_out, ITER_DEST, optval.user, koptlen);
++		iov_iter_ubuf(&opt->iter_in, ITER_SOURCE, optval.user,
++			      koptlen);
++	}
++	opt->optlen = koptlen;
++
++	return 0;
++}
++
+ int do_sock_getsockopt(struct socket *sock, bool compat, int level,
+ 		       int optname, sockptr_t optval, sockptr_t optlen)
+ {
+ 	int max_optlen __maybe_unused = 0;
+ 	const struct proto_ops *ops;
++	struct kvec kvec;
++	sockopt_t opt;
+ 	int err;
+ 
+ 	err = security_socket_getsockopt(sock, level, optname);
+@@ -2362,15 +2397,28 @@ int do_sock_getsockopt(struct socket *sock, bool compat, int level,
+ 	ops = READ_ONCE(sock->ops);
+ 	if (level == SOL_SOCKET) {
+ 		err = sk_getsockopt(sock->sk, level, optname, optval, optlen);
+-	} else if (unlikely(!ops->getsockopt)) {
+-		err = -EOPNOTSUPP;
+-	} else {
++	} else if (ops->getsockopt_iter) {
++		err = sockptr_to_sockopt(&opt, optval, optlen, &kvec);
++		if (err)
++			return err;
++
++		err = ops->getsockopt_iter(sock, level, optname, &opt);
++
++		/* Always write back optlen, even on failure. Some protocols
++		 * (e.g. CAN raw) return -ERANGE and set optlen to the
++		 * required buffer size so userspace can discover it.
++		 */
++		if (copy_to_sockptr(optlen, &opt.optlen, sizeof(int)))
++			return -EFAULT;
++	} else if (ops->getsockopt) {
+ 		if (WARN_ONCE(optval.is_kernel || optlen.is_kernel,
+ 			      "Invalid argument type"))
+ 			return -EOPNOTSUPP;
+ 
+ 		err = ops->getsockopt(sock, level, optname, optval.user,
+ 				      optlen.user);
++	} else {
++		err = -EOPNOTSUPP;
+ 	}
+ 
+ 	if (!compat)
 
-[Severity: Low]
-This isn't a bug, but the comment in virtio_can_start_xmit() still names
-the old helper:
-
-drivers/net/can/virtio_can.c:virtio_can_start_xmit() {
-    ...
-		/*
-		 * can_put_echo_skb() already consumed skb via consume_skb(),
-		 * so returning NETDEV_TX_BUSY would cause the stack to requeue
-		 * a freed pointer. Drop the frame and return OK instead.
-		 */
-    ...
-}
-
-What the comment says about ownership is still correct.
-dev_consume_skb_any() gives up the skb whether it frees it directly or
-defers the free. Only the helper name is out of date.
-
-The commit message FAQ says this comment will be updated in a separate
-series to make backporting easier, and it is still unchanged at the end of
-this series. Should it say dev_consume_skb_any() instead?
-
->  	return nskb;
->  }
-
+base-commit: 85d82e0d7c2dfd3e75d34f35b7ebbf41f45c9c4e
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021102756.1900679-2-mkl%40pengutronix.de
+2.53.0
+
